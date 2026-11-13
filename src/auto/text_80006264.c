@@ -271,7 +271,7 @@ void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
 
 void fn_80006754(void)
 {
-    extern u32 lbl_80367118;
+    extern u32 gFrameCount;
     extern u32 lbl_80367120;
     extern u32 lbl_80367124;
     extern u32 lbl_80367128;
@@ -284,11 +284,11 @@ void fn_80006754(void)
     u32 stack_lo;
     u64 time;
 
-    count = lbl_80367118;
+    count = gFrameCount;
     stack_hi = lbl_80367128;
     stack_lo = lbl_8036712C;
     count += 1;
-    lbl_80367118 = count;
+    gFrameCount = count;
     lbl_80367124 = stack_lo;
     lbl_80367120 = stack_hi;
 
@@ -315,8 +315,8 @@ s64 fn_80006798(void) {
 }
 
 s32 Game_GetFrameCount(void) {
-    extern s32 lbl_80367118;
-    return lbl_80367118;
+    extern s32 gFrameCount;
+    return gFrameCount;
 }
 
 void Math_Ease(s32 arg0, void *arg1) {
