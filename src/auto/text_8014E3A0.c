@@ -2677,7 +2677,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     void Text_Draw(s16, s16, s32, s32, ...);
     s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
-    void fn_8008BC94(s32, s32, s32);
+    void Ui_DrawRouteTexCw(s32, s32, s32);
     s32 *Ui_GetColor(s32);
     extern s32 gUiTexAtlas;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368008;
@@ -2720,7 +2720,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
     flags = x;
-    fn_8008BC94(flags + 0x18, (s16)y - 3, 0);
+    Ui_DrawRouteTexCw(flags + 0x18, (s16)y - 3, 0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();

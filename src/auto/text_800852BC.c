@@ -2823,7 +2823,7 @@ void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     fn_8007D004(arg5, var_r7, (f32) arg0, (f32) arg1, (f32) var_r5, (f32) arg3);
 }
 
-void fn_8008BC94(s32 arg0, s32 arg1, u8 arg2) {
+void Ui_DrawRouteTexCw(s32 arg0, s32 arg1, u8 arg2) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
