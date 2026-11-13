@@ -3309,7 +3309,7 @@ void fn_8016A400(void *arg0) {
 
     extern u8 gUiMenuDrawVtbl[];
     extern u16 lbl_802920E0[76];
-    extern u8 lbl_80293D64[];
+    extern u8 gUiMenuVtblSlotPtrs[];
     extern u16 gUiMenuConfigVtbl[76];
     extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
@@ -3349,7 +3349,7 @@ void fn_8016A400(void *arg0) {
     init = (volatile Config *)config;
     if (config != NULL) {
         init->table = gUiMenuDrawVtbl;
-        init->field00 = lbl_80293D64;
+        init->field00 = gUiMenuVtblSlotPtrs;
         init->table = lbl_802920E0;
         init->field08 = 0;
         init->field0A = 0;
@@ -3670,7 +3670,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     void *Heap_Alloc(u32);
     extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
-    extern u8 lbl_80293D64[];
+    extern u8 gUiMenuVtblSlotPtrs[];
     extern u8 gUiMenuConfigVtbl[];
     extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
@@ -3694,7 +3694,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     p = Heap_Alloc(0x20);
     if (p != NULL) {
         M2C_FIELD(p, void **, 4) = gUiMenuDrawVtbl;
-        M2C_FIELD(p, void **, 0) = lbl_80293D64;
+        M2C_FIELD(p, void **, 0) = gUiMenuVtblSlotPtrs;
         M2C_FIELD(p, void **, 4) = lbl_802920E0;
         M2C_FIELD(p, s16 *, 8) = 0;
         M2C_FIELD(p, s16 *, 0xA) = 0;
