@@ -15461,7 +15461,7 @@ END:
     return result;
 }
 
-s32 fn_800EC0A4(s32 arg0, s32 arg1, s32 arg2) {
+s32 Crc32_Calc(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_r6;
     s32 var_r9;
     u8 *var_r4;

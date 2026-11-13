@@ -16441,7 +16441,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     void fn_800E9B80(void *, s32, s32, s32, s32);
     void *memset(void *, s32, s32);
 
@@ -16478,7 +16478,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
             } else {
                 buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                 Crc32_InitTable();
-                sum = fn_800EC0A4(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
+                sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
                 fn_800C4588(buf);
                 if (*(u32 *)(slot + 0x50) != sum) {
                     chkOk = 0;
@@ -16515,7 +16515,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
             } else {
                 buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                 Crc32_InitTable();
-                sum = fn_800EC0A4(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
+                sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
                 fn_800C4588(buf);
                 if (*(u32 *)(slot + 0x50) != sum) {
                     chkOk = 0;
@@ -16692,7 +16692,7 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     extern void *gSaveDataBase;
     extern u8 lbl_8027E980[];
 
@@ -16823,7 +16823,7 @@ loop2:
     } else {
         buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
         Crc32_InitTable();
-        sum = fn_800EC0A4(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
+        sum = Crc32_Calc(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
         fn_800C4588(buf);
         if (*(u32 *)(dst + 0x50) != sum) {
             chkOk = 0;
@@ -16864,7 +16864,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
     void fn_800E9B80(void *, s32, s32, s32, s32);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     void Crc32_InitTable(void);
     void fn_8010FBA8(void *, void *);
     void fn_8014C39C(void *, void *);
@@ -16917,7 +16917,7 @@ loop:
         } else {
             buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
             Crc32_InitTable();
-            sum = fn_800EC0A4(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
+            sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
             fn_800C4588(buf);
             if (*(u32 *)(slot + 0x50) != sum) {
                 chkOk = 0;
@@ -18005,7 +18005,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     void fn_8021D614(u32, s32 *, u32);
     u64 OSGetTime(void);
     s32 fn_80211690(s32, s32);
@@ -18090,7 +18090,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
             } else {
                 buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                 Crc32_InitTable();
-                hash = fn_800EC0A4(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
+                hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
                 fn_800C4588(buf);
                 if (*(u32 *)(blk + 0x50) != hash) {
                     ok2 = 0;
@@ -18192,7 +18192,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
                 } else {
                     buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                     Crc32_InitTable();
-                    hash = fn_800EC0A4(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
+                    hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
                     fn_800C4588(buf);
                     if (*(u32 *)(blk + 0x50) != hash) {
                         ok2 = 0;
@@ -18693,7 +18693,7 @@ void fn_801E3CA8(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
-    s32 fn_800EC0A4(void *, void *, s32);
+    s32 Crc32_Calc(void *, void *, s32);
     s64 OSGetTime(void);
     void fn_8020B294(s64, void *);
     void fn_80231E74(void *, s32, void *, ...);
@@ -18841,7 +18841,7 @@ void fn_801E3CA8(void *arg0) {
     memcpy((u8 *)arg0 + 0x20, sp58, strlen(sp58));
     buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
     Crc32_InitTable();
-    *(u32 *)((u8 *)arg0 + 0x50) = fn_800EC0A4(buf, dst, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
+    *(u32 *)((u8 *)arg0 + 0x50) = Crc32_Calc(buf, dst, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
     fn_800C4588(buf);
     fn_800056CC(lbl_8027E980 + 0x1E9, *(s32 *)((u8 *)arg0 + 0x50));
 }
@@ -18856,7 +18856,7 @@ u32 fn_801E417C(void *arg0) {
 s32 Save_BumpVersionChecksum(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     void fn_800056CC(char *, ...);
     extern u8 lbl_8027E980[];
@@ -18877,7 +18877,7 @@ s32 Save_BumpVersionChecksum(void *arg0) {
     }
     buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
     Crc32_InitTable();
-    *(u32 *)((u8 *)arg0 + 0x50) = fn_800EC0A4(buf, p, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
+    *(u32 *)((u8 *)arg0 + 0x50) = Crc32_Calc(buf, p, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
     fn_800C4588(buf);
     fn_800056CC((char *)(lbl_8027E980 + 0x1E9), *(u32 *)((u8 *)arg0 + 0x50));
     return 1;
@@ -18886,7 +18886,7 @@ s32 Save_BumpVersionChecksum(void *arg0) {
 s32 Save_IsValid(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
-    u32 fn_800EC0A4(void *, void *, s32);
+    u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 lbl_8027E980[];
     u32 sum;
@@ -18903,7 +18903,7 @@ s32 Save_IsValid(void *arg0) {
     } else {
         buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
         Crc32_InitTable();
-        sum = fn_800EC0A4(buf, (u8 *)arg0 + 0x70, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
+        sum = Crc32_Calc(buf, (u8 *)arg0 + 0x70, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
         fn_800C4588(buf);
         if (*(u32 *)((u8 *)arg0 + 0x50) != sum) {
             ok = 0;
