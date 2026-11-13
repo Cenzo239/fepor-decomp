@@ -5167,7 +5167,7 @@ void fn_800675C8(void *arg0) {
     lbl_80366DD4 = lbl_80311AF8;
 }
 #pragma peephole reset
-s32 fn_800675E0(void) {
+s32 Fog_GetColor(void) {
     extern s32 lbl_80366DD4;
     return lbl_80366DD4;
 }

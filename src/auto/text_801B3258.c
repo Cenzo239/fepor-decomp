@@ -7641,7 +7641,7 @@ void fn_801C6F9C(void) {
     void *fn_8000C0C0(void *);
     s32 Light_GetChannel(s32);
     void fn_800673E4(s32, s32);
-    u8 *fn_800675E0(void);
+    u8 *Fog_GetColor(void);
     void fn_8005F788(u32, s32, s32);
     void *p = fn_8000C0C0(lbl_802981D0);
     u8 *work;
@@ -7663,7 +7663,7 @@ void fn_801C6F9C(void) {
                 fn_8005F788(ptr[3], 0, 1);
             }
         }
-        out = fn_800675E0();
+        out = Fog_GetColor();
         out[1] = data[8];
         out[2] = data[9];
         out[3] = data[10];
@@ -7691,7 +7691,7 @@ void Light_FadeProcess(void *arg0) {
     void Process_Unlink(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
-    u8 *fn_800675E0(void);
+    u8 *Fog_GetColor(void);
     extern u8 lbl_802981D0[];
     extern f64 lbl_8036B440;
     extern f64 lbl_8036B470;
@@ -7763,7 +7763,7 @@ void Light_FadeProcess(void *arg0) {
     c0[2] = (u8)v;
     c2[2] = (u8)v;
 
-    out = fn_800675E0();
+    out = Fog_GetColor();
     v = (((u8 *)&sp8)[0] * t0) / 128;
     if (v > 0xFF) v = 0xFF;
     out[1] = (u8)v;
@@ -7786,7 +7786,7 @@ void Light_FadeProcess(void *arg0) {
 
 extern u32 lbl_8036C510;
 void fn_801C7598(void *arg0) {
-    void *tmp = (void *)fn_800675E0();
+    void *tmp = (void *)Fog_GetColor();
     if (tmp != NULL && *(u8 *)tmp != 0) {
         u32 local_c;
         u8 local_b1;

@@ -6436,7 +6436,7 @@ void fn_80041514(void *arg0, char *arg1)
     void fn_800673E4(void *);
     void fn_8006720C(void *);
     void fn_800675C8(s32);
-    void *fn_800675E0(void);
+    void *Fog_GetColor(void);
     void fn_80067480(void);
     void fn_80040B78(void *, void *, void *, s8, f32, f32);
     void *fn_80145EBC(void);
@@ -6720,7 +6720,7 @@ void fn_80041514(void *arg0, char *arg1)
     fn_800673E4(tmp);
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
-    fog = fn_800675E0();
+    fog = Fog_GetColor();
     fn_80067480();
     ((u8 *)fog)[0] = lbl_8036728C;
     M2C_FIELD(fog, f32 *, 4) = lbl_80368EF4 * ((f32)(s8)lbl_8036728D * M2C_FIELD(arg0, f32 *, 0x6C));
@@ -8037,7 +8037,7 @@ void fn_80045604(s32 unused) {
 void fn_80045B9C(void *arg0) {
     M2C_UNK fn_80067480();
     M2C_UNK fn_800675C8(M2C_UNK);
-    void *fn_800675E0();
+    void *Fog_GetColor();
     extern u8 lbl_8036728C;
     extern u8 lbl_8036728D;
     extern u8 lbl_8036728E;
@@ -8046,7 +8046,7 @@ void fn_80045B9C(void *arg0) {
     void *temp_r31;
 
     fn_800675C8(0);
-    temp_r31 = fn_800675E0();
+    temp_r31 = Fog_GetColor();
     fn_80067480();
     M2C_FIELD(temp_r31, u8 *, 0) = (u8) lbl_8036728C;
     M2C_FIELD(temp_r31, f32 *, 4) = (f32) (lbl_80368EF4 * ((f32) (s8) lbl_8036728D * M2C_FIELD(arg0, f32 *, 0x6C)));

@@ -8191,7 +8191,7 @@ void fn_800DAB24(void *arg0, void *arg1, s32 arg2) {
 
 void fn_800DB110(void *arg0) {
     void fn_800056CC(char *, ...);
-    u8 *fn_800675E0(void);
+    u8 *Fog_GetColor(void);
     void *Heap_Alloc(s32);
     void *fn_800D9B10(void *);
     void fn_8000CAA0(void *, void *);
@@ -8204,7 +8204,7 @@ void fn_800DB110(void *arg0) {
 
     fn_800056CC(lbl_802711B0 + 0x263);
     lbl_80367878 = 1;
-    fog = fn_800675E0();
+    fog = Fog_GetColor();
     *fog = 0;
     tmp = Heap_Alloc(0x90);
     if (tmp != 0) {
