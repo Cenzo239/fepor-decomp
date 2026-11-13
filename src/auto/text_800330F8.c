@@ -8697,6 +8697,7 @@ s32 fn_8004721C(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
 }
 
 #pragma global_optimizer off
+/* Update map-entry world matrices; alternate half-ranges each frame, then transform visible entries. */
 void Map_UpdateTransforms(void *arg0) {
 void Map_PrepareEntryRange(void *, s32, s32);
 void fn_80060060(void *);
