@@ -6905,7 +6905,7 @@ void fn_8006DFD8(void) {
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
-    extern u32 lbl_803682A0;
+    extern u32 gDvdCheckSnapshot;
     extern u32 gGameFlags;
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
@@ -7042,7 +7042,7 @@ check:
     }
 done:
     fn_8009E870();
-    if (lbl_803682A0 != fn_80211690() && !(gGameFlags & 8)) {
+    if (gDvdCheckSnapshot != fn_80211690() && !(gGameFlags & 8)) {
         gGameFlags |= 4;
     }
     VISetNextFrameBuffer(DemoCurrentBuffer);
@@ -7079,7 +7079,7 @@ if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(co
 
 extern s32 lbl_8036732C;
 extern u32 lbl_80367334;
-extern s32 lbl_803682A0;
+extern s32 gDvdCheckSnapshot;
 extern f32 lbl_803692C8;
 extern f64 lbl_803692D0;
 extern f32 lbl_803692CC;
@@ -7138,7 +7138,7 @@ void fn_8006E660(void)
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer1;
     extern void *DemoFrameBuffer2;
-    extern s32 lbl_803682A0;
+    extern s32 gDvdCheckSnapshot;
     extern u32 gGameFlags;
     extern u8 lbl_80366DE0;
 
@@ -7166,7 +7166,7 @@ void fn_8006E660(void)
         fn_8022097C();
         fn_8009E870();
 
-        if ((u32)lbl_803682A0 != fn_80211690()) {
+        if ((u32)gDvdCheckSnapshot != fn_80211690()) {
             if (!(gGameFlags & 8)) {
                 gGameFlags |= 4;
             }
@@ -7210,7 +7210,7 @@ void DEMOBeforeRender(void)
     void fn_80220198(void);
     void fn_80222EB4(void);
     extern s32 lbl_8036732C;
-    extern s32 lbl_803682A0;
+    extern s32 gDvdCheckSnapshot;
     extern void *DEMORmode;
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
@@ -7220,7 +7220,7 @@ void DEMOBeforeRender(void)
     u16 h;
     u32 flag;
 
-    lbl_803682A0 = fn_80211690();
+    gDvdCheckSnapshot = fn_80211690();
     if (lbl_8036732C != 0) {
         fn_802208BC(0xFEEB);
         fn_80225BF4();
