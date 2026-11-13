@@ -8024,47 +8024,48 @@ void fn_80071CE8(void *arg0, void *arg1) {
     }
 }
 
-void Ui_DrawObjRouteIcon(void *unused, void *unit) {
+/* Average obj screen pos toward its linked gfx entity, then draw the route icon. */
+void Ui_DrawObjRouteIcon(void *unused, void *obj) {
     void *GfxEnt_Get(s32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Ui_DrawRouteIconEx(s32, s32, s32);
     extern f32 lbl_803692F0;
-    u8 *addr;
-    void *p;
-    s16 a;
-    s16 b;
-    s32 flag;
+    u8 *row;
+    void *ent;
+    s16 sx;
+    s16 sy;
+    s32 pulse;
 
     (void)unused;
-    addr = (u8 *)unit;
-    addr += *(s8 *)(addr + 0x62);
-    p = GfxEnt_Get(*(u8 *)(addr + 0x40));
-    a = *(s16 *)((u8 *)p + 0x30);
+    row = (u8 *)obj;
+    row += *(s8 *)(row + 0x62);
+    ent = GfxEnt_Get(*(u8 *)(row + 0x40));
+    sx = *(s16 *)((u8 *)ent + 0x30);
 
-    addr = (u8 *)unit;
-    addr += *(s8 *)(addr + 0x62);
-    p = GfxEnt_Get(*(u8 *)(addr + 0x40));
-    b = *(s16 *)((u8 *)p + 0x32);
+    row = (u8 *)obj;
+    row += *(s8 *)(row + 0x62);
+    ent = GfxEnt_Get(*(u8 *)(row + 0x40));
+    sy = *(s16 *)((u8 *)ent + 0x32);
 
-    if (*(s16 *)((u8 *)unit + 0x3A) < 0) {
-        *(s16 *)((u8 *)unit + 0x38) = a;
-        *(s16 *)((u8 *)unit + 0x3A) = b;
+    if (*(s16 *)((u8 *)obj + 0x3A) < 0) {
+        *(s16 *)((u8 *)obj + 0x38) = sx;
+        *(s16 *)((u8 *)obj + 0x3A) = sy;
     } else {
-        *(s16 *)((u8 *)unit + 0x38) = (s16)((*(s16 *)((u8 *)unit + 0x38) + a) / 2);
-        *(s16 *)((u8 *)unit + 0x3A) = (s16)((*(s16 *)((u8 *)unit + 0x3A) + b) / 2);
+        *(s16 *)((u8 *)obj + 0x38) = (s16)((*(s16 *)((u8 *)obj + 0x38) + sx) / 2);
+        *(s16 *)((u8 *)obj + 0x3A) = (s16)((*(s16 *)((u8 *)obj + 0x3A) + sy) / 2);
     }
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803692F0);
     Prim2D_PrepareTex();
 
-    flag = 0;
-    if (((u8 *)unit)[0x2D] == 0 && ((u8 *)unit)[0x2E] == 0) {
-        flag = 1;
+    pulse = 0;
+    if (((u8 *)obj)[0x2D] == 0 && ((u8 *)obj)[0x2E] == 0) {
+        pulse = 1;
     }
-    Ui_DrawRouteIconEx(*(s16 *)((u8 *)unit + 0x38), *(s16 *)((u8 *)unit + 0x3A), flag);
+    Ui_DrawRouteIconEx(*(s16 *)((u8 *)obj + 0x38), *(s16 *)((u8 *)obj + 0x3A), pulse);
 }
 
 void fn_80071E0C(void *arg0, void *arg1) {
