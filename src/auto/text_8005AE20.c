@@ -77,14 +77,12 @@ static inline u8 *FindEntryByName(char *name) {
 }
 
 static inline u32 FindUnk48(void *arg0) {
-    void *current = arg0;
-
-    while (current != NULL) {
-        u32 temp = M2C_FIELD(current, u32 *, 0x48);
+    while (arg0 != NULL) {
+        u32 temp = M2C_FIELD(arg0, u32 *, 0x48);
         if (temp != 0U) {
             return temp;
         }
-        current = M2C_FIELD(current, void **, 4);
+        arg0 = M2C_FIELD(arg0, void **, 4);
     }
     return 0U;
 }
@@ -4234,9 +4232,9 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
 s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
     void **temp;
     u8 *base;
-    s32 n;
+    u16 n;
     u16 lim;
-    u16 key;
+    u32 key;
     s32 best;
     s32 i;
     s32 off_idx;
@@ -4246,7 +4244,7 @@ s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
     u16 off;
     s32 ctr;
     s32 j;
-    s32 val;
+    u16 val;
 
     if (arg0 == NULL) {
         base = NULL;
@@ -4305,15 +4303,10 @@ check:
 void *fn_80065634(void ***arg0, s32 arg1) {
     void **mid;
     u8 *base;
-    u8 *entry;
-    u16 offset;
     u16 lim;
     s32 tmp;
     s32 count;
     s32 index;
-    s32 diff1;
-    s32 diff2;
-    s32 mask;
 
     if (arg0 == NULL) {
         base = NULL;
@@ -4330,19 +4323,24 @@ void *fn_80065634(void ***arg0, s32 arg1) {
         return NULL;
     }
 
+#pragma global_optimizer off
     tmp = 0x10000 - 1;
     count = *(u16 *)base;
     index = 0;
     lim = (u16)tmp;
 
     while (count > 0) {
-        offset = *(u16 *)((u8 *)*(void **)(base + 4) + index);
+        u16 offset;
+        s32 diff1;
+        s32 diff2;
+        s32 mask;
+        u8 *entry;
 
+        offset = *(u16 *)((u8 *)*(void **)(base + 4) + index);
         diff1 = (s32)offset - (s32)lim;
         diff2 = (s32)lim - (s32)offset;
         mask = ~(diff1 | diff2) >> 31;
-
-        entry = (u8 *)(((u32)base + offset) & ~(u32)mask);
+        entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
 
         if (*(u16 *)entry == arg1) {
             return entry;
@@ -4353,6 +4351,7 @@ void *fn_80065634(void ***arg0, s32 arg1) {
     }
 
     return NULL;
+#pragma global_optimizer on
 }
 
 #pragma optimization_level 2
@@ -5027,25 +5026,26 @@ void fn_8006720C(void *arg0) {
     u8 m14[0x30];
     void *lights;
     s32 i;
+    s32 *src;
     f32 scale;
 
     if ((lights = lbl_80366DDC) != NULL) {
-    scale = lbl_80369248;
-    i = 0;
-    do {
-        vec[0] = lbl_8026B75C[0];
-        vec[1] = lbl_8026B75C[1];
-        vec[2] = lbl_8026B75C[2];
-        fn_80202300(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
-        fn_80202300(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
-        fn_80202024(m74, m44, m14);
-        if (arg0 != NULL) {
-            fn_80202024(arg0, m14, m14);
+        scale = lbl_80369248;
+        i = 0;
+        src = lbl_8026B75C + i;
+        for (; i < 8; i++) {
+            vec[0] = src[0];
+            vec[1] = src[1];
+            vec[2] = src[2];
+            fn_80202300(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
+            fn_80202300(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
+            fn_80202024(m74, m44, m14);
+            if (arg0 != NULL) {
+                fn_80202024(arg0, m14, m14);
+            }
+            fn_802029C4(m14, vec, (u8 *)lights + 0x14);
+            lights = (u8 *)lights + 0x2C;
         }
-        fn_802029C4(m14, vec, (u8 *)lights + 0x14);
-        i += 1;
-        lights = (u8 *)lights + 0x2C;
-    } while (i < 8);
     }
 }
 
@@ -5123,9 +5123,12 @@ void *fn_80067440(s32 arg0) {
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern u8 *lbl_80366DDC;
-    if (arg0 != NULL) {
-    } else {
-        lbl_80366DDC = lbl_80311B04;
+    void *p;
+
+    p = arg0;
+    if (p == NULL) {
+        p = lbl_80311B04;
+        lbl_80366DDC = p;
     }
 }
 #pragma peephole on
@@ -7076,8 +7079,8 @@ void fn_8006E660(void)
     void fn_80211478(void);
     void fn_802107A8(void);
 
-    void *ten;
     void *cur;
+    void *ten;
 
     if (lbl_8036732C != 0) {
         fn_8006DFD8();
@@ -7111,8 +7114,8 @@ void fn_8006E660(void)
         }
         fn_802107A8();
 
-        cur = lbl_80367318;
         ten = lbl_80367310;
+        cur = lbl_80367318;
         if (cur == ten) {
             cur = lbl_80367314;
             lbl_80367318 = cur;
