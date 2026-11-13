@@ -5537,7 +5537,7 @@ void fn_8011D87C(void *arg0)
     Process_Goto(obj, 1);
 }
 
-void UiPanel_Create(void *arg0, void *arg1) {
+void UiPanel_Create(void *owner, void *parent) {
     void UiPanel_ClearFlags(void *);
     void *Process_CreateEx(void *, void *);
     void fn_8012205C(void *);
@@ -5549,37 +5549,38 @@ void UiPanel_Create(void *arg0, void *arg1) {
     extern u16 gUiPanelProc[];
     extern u8 lbl_8032BDE8[];
     extern s32 gUiInputFlags;
-    u8 *e;
+    u8 *panel;
 
+    /* Create the UI panel process, init its slots, and run or yield for input. */
     UiPanel_ClearFlags(&gUiPanelFlags);
-    e = (u8 *)Process_CreateEx(gUiPanelProc, arg1);
-    *(s32 *)(e + 0x34) = 0;
-    *(s32 *)(e + 0x38) = 0;
-    *(s32 *)(e + 0x3C) = 0;
-    *(s32 *)(e + 0x40) = 0;
-    *(s32 *)(e + 0x48) = 0;
-    *(s32 *)(e + 0x4C) = 0;
-    *(s32 *)(e + 0x50) = 0;
-    *(s32 *)(e + 0x54) = 0;
-    *(s32 *)(e + 0x58) = 0;
-    *(s32 *)(e + 0x44) = 0;
-    *(s8 *)(e + 0x5E) = -1;
-    *(s8 *)(e + 0x65) = -1;
-    *(void **)(e + 0x30) = arg0;
-    e[0x5F] = 1;
-    *(s16 *)(e + 0x68) = 0x10B;
-    e[0x63] = 0;
-    *(s16 *)(e + 0x5C) = 0x82;
-    e[0x61] = 0;
-    e[0x60] = 0;
-    e[0x62] = 1;
+    panel = (u8 *)Process_CreateEx(gUiPanelProc, parent);
+    *(s32 *)(panel + 0x34) = 0;
+    *(s32 *)(panel + 0x38) = 0;
+    *(s32 *)(panel + 0x3C) = 0;
+    *(s32 *)(panel + 0x40) = 0;
+    *(s32 *)(panel + 0x48) = 0;
+    *(s32 *)(panel + 0x4C) = 0;
+    *(s32 *)(panel + 0x50) = 0;
+    *(s32 *)(panel + 0x54) = 0;
+    *(s32 *)(panel + 0x58) = 0;
+    *(s32 *)(panel + 0x44) = 0;
+    *(s8 *)(panel + 0x5E) = -1;
+    *(s8 *)(panel + 0x65) = -1;
+    *(void **)(panel + 0x30) = owner;
+    panel[0x5F] = 1;
+    *(s16 *)(panel + 0x68) = 0x10B;
+    panel[0x63] = 0;
+    *(s16 *)(panel + 0x5C) = 0x82;
+    panel[0x61] = 0;
+    panel[0x60] = 0;
+    panel[0x62] = 1;
     fn_8012205C(lbl_8032BDE8);
-    e[0x66] = 1;
+    panel[0x66] = 1;
     fn_80120CFC(&gUiPanelFlags);
     if (gUiInputFlags & 1) {
-        fn_8011DED8(e);
+        fn_8011DED8(panel);
         if (!(gUiPanelFlags & 0x10)) {
-            Process_Unlink(e);
+            Process_Unlink(panel);
         }
     } else {
         fn_80013864();
