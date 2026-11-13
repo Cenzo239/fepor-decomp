@@ -5302,38 +5302,39 @@ void fn_8011CC04(u8 *arg0) {
     *(s32 *)(arg0 + 0x64) = base + shifted + 2;
 }
 #pragma global_optimizer reset
-void ListBox_HandleInput(void *arg0) {
+void ListBox_HandleInput(void *list) {
     void Win_UpdatePos(void *);
     void Win_SetDirty(void *);
     extern void *gPadInput;
-    void *obj;
+    void *owner;
     u32 buttons;
 
-    Win_UpdatePos(arg0);
-    obj = M2C_FIELD(arg0, void **, 0x0);
+    /* Move list-box cursor with D-pad (1/10 steps) and keep the scroll window in range. */
+    Win_UpdatePos(list);
+    owner = M2C_FIELD(list, void **, 0x0);
     buttons = M2C_FIELD(gPadInput, u32 *, 0xC);
-    if (M2C_FIELD(arg0, u8 *, 0xF0) != 0) {
+    if (M2C_FIELD(list, u8 *, 0xF0) != 0) {
         if (buttons & 8) {
-            M2C_FIELD(arg0, s32 *, 0xEC) -= 1;
+            M2C_FIELD(list, s32 *, 0xEC) -= 1;
         } else if (buttons & 4) {
-            M2C_FIELD(arg0, s32 *, 0xEC) += 1;
+            M2C_FIELD(list, s32 *, 0xEC) += 1;
         } else if (buttons & 1) {
-            M2C_FIELD(arg0, s32 *, 0xEC) -= 10;
+            M2C_FIELD(list, s32 *, 0xEC) -= 10;
         } else if (buttons & 2) {
-            M2C_FIELD(arg0, s32 *, 0xEC) += 10;
+            M2C_FIELD(list, s32 *, 0xEC) += 10;
         }
-        if (M2C_FIELD(arg0, s32 *, 0xEC) < 0) {
-            M2C_FIELD(arg0, s32 *, 0xEC) = 0;
+        if (M2C_FIELD(list, s32 *, 0xEC) < 0) {
+            M2C_FIELD(list, s32 *, 0xEC) = 0;
         }
-        if (M2C_FIELD(arg0, s32 *, 0xEC) >= M2C_FIELD(arg0, s32 *, 0xB0)) {
-            M2C_FIELD(arg0, s32 *, 0xEC) = M2C_FIELD(arg0, s32 *, 0xB0) - 1;
+        if (M2C_FIELD(list, s32 *, 0xEC) >= M2C_FIELD(list, s32 *, 0xB0)) {
+            M2C_FIELD(list, s32 *, 0xEC) = M2C_FIELD(list, s32 *, 0xB0) - 1;
         }
-        if (M2C_FIELD(arg0, s32 *, 0xEC) >= M2C_FIELD(arg0, s32 *, 0xF4) + M2C_FIELD(arg0, s32 *, 0xF8)) {
-            M2C_FIELD(arg0, s32 *, 0xF4) = M2C_FIELD(arg0, s32 *, 0xEC) - M2C_FIELD(arg0, s32 *, 0xF8) + 1;
-        } else if (M2C_FIELD(arg0, s32 *, 0xEC) < M2C_FIELD(arg0, s32 *, 0xF4)) {
-            M2C_FIELD(arg0, s32 *, 0xF4) = M2C_FIELD(arg0, s32 *, 0xEC);
+        if (M2C_FIELD(list, s32 *, 0xEC) >= M2C_FIELD(list, s32 *, 0xF4) + M2C_FIELD(list, s32 *, 0xF8)) {
+            M2C_FIELD(list, s32 *, 0xF4) = M2C_FIELD(list, s32 *, 0xEC) - M2C_FIELD(list, s32 *, 0xF8) + 1;
+        } else if (M2C_FIELD(list, s32 *, 0xEC) < M2C_FIELD(list, s32 *, 0xF4)) {
+            M2C_FIELD(list, s32 *, 0xF4) = M2C_FIELD(list, s32 *, 0xEC);
         }
-        Win_SetDirty(obj);
+        Win_SetDirty(owner);
     }
 }
 
