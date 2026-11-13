@@ -2368,7 +2368,7 @@ extern "C" void *fn_801364A0(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiUnitPanelVtbl[];
-    extern u8 lbl_80291944[];
+    extern u8 gUiUnitPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
     ListNode *sp10;
@@ -2381,7 +2381,7 @@ extern "C" void *fn_801364A0(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = gUiUnitPanelVtbl;
         if (arg0 != NULL) {
-            a0->vtbl = lbl_80291944;
+            a0->vtbl = gUiUnitPanelMidVtbl;
             if (&a0->subA4 != NULL) {
                 a0->subA4 = lbl_80295478;
                 ((Obj *)&a0->subA4)->v2();
@@ -2436,7 +2436,7 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
     void fn_80136F2C(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_80291944[];
+    extern u8 gUiUnitPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
     ListNode *sp10;
@@ -2447,7 +2447,7 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
 
     a0 = (Owner *)arg0;
     if (arg0 != NULL) {
-        a0->vtbl = lbl_80291944;
+        a0->vtbl = gUiUnitPanelMidVtbl;
         if (&a0->subA4 != NULL) {
             a0->subA4 = lbl_80295478;
             ((Obj *)&a0->subA4)->v2();

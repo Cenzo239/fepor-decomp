@@ -4883,7 +4883,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     extern void *lbl_8028FDB0[];
     extern void *lbl_80292230[];
     extern void *lbl_80292208[];
-    extern void *lbl_80291944[];
+    extern void *gUiUnitPanelMidVtbl[];
     extern void *lbl_80295478[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2E0;
@@ -4953,7 +4953,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x38) = zero;
     *(void **)self = vt92208;
     fn_80142060((u8 *)tmp + 0x3C);
-    *(void **)self = lbl_80291944;
+    *(void **)self = gUiUnitPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
     *(s16 *)((u8 *)self + 0x4E) = 0;
