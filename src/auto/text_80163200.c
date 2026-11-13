@@ -10244,7 +10244,8 @@ s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
+/* Draw a centered UI slot label, with optional leading icon. */
+extern "C" void Ui_DrawLabeledSlot(void *self, void *host, void *slot) {
     void Prim2D_SetText(s32);
     void Prim2D_SetTextScale(s32, f32);
     void Prim2D_SetColorPacked(s32 *);
@@ -10267,8 +10268,8 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v1() = 0;
         virtual void v2() = 0;
         virtual void v3() = 0;
-        virtual s32 v4(void *) = 0;
-        virtual s32 v5() = 0;
+        virtual s32 getLabel(void *) = 0;
+        virtual s32 getIconId() = 0;
         virtual void v6() = 0;
         virtual void v7() = 0;
         virtual void v8() = 0;
@@ -10280,9 +10281,9 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v14() = 0;
         virtual void v15() = 0;
         virtual void v16() = 0;
-        virtual void v17() = 0;
+        virtual void draw() = 0;
     };
-    struct ObjB {
+    struct Host {
         u8 pad[4];
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -10304,7 +10305,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v17() = 0;
         virtual void v18() = 0;
         virtual void v19() = 0;
-        virtual s16 v20() = 0;
+        virtual s16 getInnerH() = 0;
         virtual void v21() = 0;
         virtual void v22() = 0;
         virtual void v23() = 0;
@@ -10319,56 +10320,56 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v32() = 0;
         virtual void v33() = 0;
         virtual void v34() = 0;
-        virtual s16 v35() = 0;
+        virtual s16 getInnerW() = 0;
     };
 
-    s32 sp8;
-    s32 t26;
-    s16 t30;
-    s16 t29;
-    s32 t28;
-    s16 t26b;
-    f32 f31;
-    f32 f30;
-    s16 mask;
-    s32 diff;
+    s32 packedColor;
+    s32 hostH;
+    s16 yOff;
+    s16 iconYOff;
+    s32 label;
+    s16 hostW;
+    f32 drawX;
+    f32 drawY;
+    s16 iconPad;
+    s32 xPad;
 
-    ((Obj *)arg0)->v17();
+    ((Obj *)self)->draw();
 
     {
-        s32 v = ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5();
-        void *p3c = *(void **)((u8 *)arg1 + 0x3c);
-        mask = v != 0 ? 0x18 : 0;
-        t26 = ((ObjB *)p3c)->v20();
+        s32 v = ((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId();
+        void *p3c = *(void **)((u8 *)host + 0x3c);
+        iconPad = v != 0 ? 0x18 : 0;
+        hostH = ((Host *)p3c)->getInnerH();
     }
 
-    t30 = (s16)((t26 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
+    yOff = (s16)((hostH - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
 
-    t29 = (s16)((((ObjB *)*(void **)((u8 *)arg1 + 0x3c))->v20() - 0x18) >> 1);
+    iconYOff = (s16)((((Host *)*(void **)((u8 *)host + 0x3c))->getInnerH() - 0x18) >> 1);
 
-    t28 = ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v4(arg2);
+    label = ((Obj *)*(void **)((u8 *)slot + 0x34))->getLabel(slot);
 
-    t26b = ((ObjB *)*(void **)((u8 *)arg1 + 0x3c))->v35();
+    hostW = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerW();
 
-    diff = t26b - Text_MeasureWidth(t28, -1, lbl_8036AB6C);
-    f31 = (f32)(*(s16 *)((u8 *)arg2 + 0x30) + (diff >> 1));
-    f30 = (f32)*(s16 *)((u8 *)arg2 + 0x32);
+    xPad = hostW - Text_MeasureWidth(label, -1, lbl_8036AB6C);
+    drawX = (f32)(*(s16 *)((u8 *)slot + 0x30) + (xPad >> 1));
+    drawY = (f32)*(s16 *)((u8 *)slot + 0x32);
 
     Prim2D_AddPrim(6);
-    Prim2D_SetPos(f31 + (f32)mask, f30 + (f32)t30);
+    Prim2D_SetPos(drawX + (f32)iconPad, drawY + (f32)yOff);
 
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        sp8 = *Ui_GetColor(0);
-        Prim2D_SetColorPacked(&sp8);
+    if (*(u8 *)((u8 *)slot + 0x39) == 2) {
+        packedColor = *Ui_GetColor(0);
+        Prim2D_SetColorPacked(&packedColor);
     } else {
         Prim2D_SetTextScale(1, lbl_8036AB8C);
     }
 
-    Prim2D_SetText(t28);
+    Prim2D_SetText(label);
     Prim2D_EndPrim();
 
-    if (((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5() != 0) {
-        Ui_DrawIcon(gUiIconDrawer, (s32)f31, (s32)(f30 + (f32)t29), ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5());
+    if (((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId() != 0) {
+        Ui_DrawIcon(gUiIconDrawer, (s32)drawX, (s32)(drawY + (f32)iconYOff), ((Obj *)*(void **)((u8 *)slot + 0x34))->getIconId());
     }
 
     Prim2D_Begin();
