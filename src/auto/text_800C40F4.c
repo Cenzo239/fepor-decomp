@@ -13549,7 +13549,8 @@ s32 field_0x198;
 s32 field_0x19C;
 s32 field_0x1A0;
 extern "C" void Camera_SetTransition(void *, s32, f32, f32, s32);
-extern "C" void UiObj_SetCamerasTransition(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
+extern "C" void UiObj_SetCamerasTransition(void *obj, s32 flag, s32 frames, f32 duration) {
+    /* Find each Camera child under obj and start a timed transition on it. */
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13571,13 +13572,13 @@ extern "C" void UiObj_SetCamerasTransition(void *arg0, s32 arg1, s32 arg2, f32 f
     s32 i;
 
     ObjList_Init(list);
-    if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
+    if (M2C_FIELD(obj, u8 *, 0x3C) == 0) {
         ObjList_Destroy(list, -1);
         return;
     }
-    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
+    count = ((Obj *)obj)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        Camera_SetTransition((void *)ObjList_Get(list, i), arg2, farg0, gFloat_1_0, arg1);
+        Camera_SetTransition((void *)ObjList_Get(list, i), frames, duration, gFloat_1_0, flag);
     }
     ObjList_Destroy(list, -1);
 }
