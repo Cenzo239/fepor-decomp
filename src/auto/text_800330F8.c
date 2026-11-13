@@ -1427,7 +1427,7 @@ void fn_80036834(u8 *arg0)
     }
 }
 #pragma global_optimizer reset
-void fn_800368C8(void *arg0, u8 arg1, void *arg2) {
+void Unit_AddAffinityBonuses(void *arg0, u8 arg1, void *arg2) {
     void *fn_80019DA8(u8);
     void *temp_r3;
 
