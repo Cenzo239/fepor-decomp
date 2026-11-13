@@ -182,7 +182,7 @@ s32 Event_StartBless(s32 parent) {
     return 1;
 }
 
-void fn_800AD554(UnkAD554 *arg0) {
+void Event_BlessNextUnit(UnkAD554 *arg0) {
     void Process_Goto(void *, s32);
     void UiCtx_BeginMoveSelect(void *, void *);
     void fn_8002629C(void *, void *);
