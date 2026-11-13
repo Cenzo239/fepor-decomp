@@ -834,7 +834,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     extern s32 lbl_80369C70;
     extern s32 lbl_80369C74;
     extern f32 gPhaseBannerZero;
-    extern f32 lbl_80369C94;
+    extern f32 gPhaseBannerPrimParam;
     extern f32 lbl_80369C98;
     extern f32 lbl_80369C9C;
     extern f32 lbl_80369CA0;
@@ -864,7 +864,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_SetColorByte((u8)temp_r31);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
-    Prim2D_SetPrimParam(lbl_80369C94);
+    Prim2D_SetPrimParam(gPhaseBannerPrimParam);
     Prim2D_SetRect(gPhaseBannerZero, lbl_80369C98, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp18 = lbl_80369C6C;
@@ -874,7 +874,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_SetCornerColors(&sp24, &sp20, &sp1C, &sp18);
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
-    Prim2D_SetPrimParam(lbl_80369C94);
+    Prim2D_SetPrimParam(gPhaseBannerPrimParam);
     Prim2D_SetRect(gPhaseBannerZero, lbl_80369CA4, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp8 = lbl_8036C494;
