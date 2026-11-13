@@ -2138,7 +2138,7 @@ void fn_800A828C(s32 arg0) {
     fn_8006EDA0(arg0 + 0x30);
 }
 
-void fn_800A82B0(void *arg0) {
+void Bg_DrawScrollLayers(void *arg0) {
     s32 Game_GetFrameCount();
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetUvCorners(s32, f32, f32, f32, f32);
