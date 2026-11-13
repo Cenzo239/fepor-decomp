@@ -1,6 +1,6 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
-extern u16 lbl_80273DF8[];
+extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
 
 typedef struct String {
@@ -269,16 +269,16 @@ extern "C" void fn_80110228(void *arg0) {
         str294.cap = 0;
         switch (*(s32 *)((u8 *)self + 0x1CC)) {
         case 1:
-            n = strlen((char *)lbl_80273DF8 + 0x1D);
-            String_AssignCStr(&str294, (char *)lbl_80273DF8 + 0x1D, n);
+            n = strlen((char *)gActorXmlStrs + 0x1D);
+            String_AssignCStr(&str294, (char *)gActorXmlStrs + 0x1D, n);
             break;
         case 2:
-            n = strlen((char *)lbl_80273DF8 + 0x2D);
-            String_AssignCStr(&str294, (char *)lbl_80273DF8 + 0x2D, n);
+            n = strlen((char *)gActorXmlStrs + 0x2D);
+            String_AssignCStr(&str294, (char *)gActorXmlStrs + 0x2D, n);
             break;
         case 3:
-            n = strlen((char *)lbl_80273DF8 + 0x3E);
-            String_AssignCStr(&str294, (char *)lbl_80273DF8 + 0x3E, n);
+            n = strlen((char *)gActorXmlStrs + 0x3E);
+            String_AssignCStr(&str294, (char *)gActorXmlStrs + 0x3E, n);
             break;
         default:
             String_Destroy(&str294, -1);
@@ -287,8 +287,8 @@ extern "C" void fn_80110228(void *arg0) {
         *(f32 *)&pos.z = lbl_8036A184;
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
-        n = strlen((char *)lbl_80273DF8 + 0x4E);
-        if (fn_800C9400(&str294, 0, (void *)str294.size, (char *)lbl_80273DF8 + 0x4E, n) != 0) {
+        n = strlen((char *)gActorXmlStrs + 0x4E);
+        if (fn_800C9400(&str294, 0, (void *)str294.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -300,7 +300,7 @@ extern "C" void fn_80110228(void *arg0) {
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
-                String_Init(&str240, (char *)lbl_80273DF8 + 0x51, &scratch);
+                String_Init(&str240, (char *)gActorXmlStrs + 0x51, &scratch);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str240, &str294, &copyB, &copyA, 0);
             }
@@ -325,16 +325,16 @@ after_2b:
         str288.cap = 0;
         switch (*(s32 *)((u8 *)self + 0x1CC)) {
         case 1:
-            n = strlen((char *)lbl_80273DF8 + 0x55);
-            String_AssignCStr(&str288, (char *)lbl_80273DF8 + 0x55, n);
+            n = strlen((char *)gActorXmlStrs + 0x55);
+            String_AssignCStr(&str288, (char *)gActorXmlStrs + 0x55, n);
             break;
         case 2:
-            n = strlen((char *)lbl_80273DF8 + 0x66);
-            String_AssignCStr(&str288, (char *)lbl_80273DF8 + 0x66, n);
+            n = strlen((char *)gActorXmlStrs + 0x66);
+            String_AssignCStr(&str288, (char *)gActorXmlStrs + 0x66, n);
             break;
         case 3:
-            n = strlen((char *)lbl_80273DF8 + 0x77);
-            String_AssignCStr(&str288, (char *)lbl_80273DF8 + 0x77, n);
+            n = strlen((char *)gActorXmlStrs + 0x77);
+            String_AssignCStr(&str288, (char *)gActorXmlStrs + 0x77, n);
             break;
         default:
             String_Destroy(&str288, -1);
@@ -343,8 +343,8 @@ after_2b:
         *(f32 *)&pos.z = lbl_8036A184;
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
-        n = strlen((char *)lbl_80273DF8 + 0x4E);
-        if (fn_800C9400(&str288, 0, (void *)str288.size, (char *)lbl_80273DF8 + 0x4E, n) != 0) {
+        n = strlen((char *)gActorXmlStrs + 0x4E);
+        if (fn_800C9400(&str288, 0, (void *)str288.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -356,7 +356,7 @@ after_2b:
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
-                String_Init(&str1F8, (char *)lbl_80273DF8 + 0x51, &scratch2);
+                String_Init(&str1F8, (char *)gActorXmlStrs + 0x51, &scratch2);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str1F8, &str288, &copyB, &copyA, 0);
             }
@@ -385,16 +385,16 @@ after_2c:
         str27C.cap = 0;
         switch (*(s32 *)((u8 *)self + 0x1CC)) {
         case 1:
-            n = strlen((char *)lbl_80273DF8 + 0x88);
-            String_AssignCStr(&str27C, (char *)lbl_80273DF8 + 0x88, n);
+            n = strlen((char *)gActorXmlStrs + 0x88);
+            String_AssignCStr(&str27C, (char *)gActorXmlStrs + 0x88, n);
             break;
         case 2:
-            n = strlen((char *)lbl_80273DF8 + 0x99);
-            String_AssignCStr(&str27C, (char *)lbl_80273DF8 + 0x99, n);
+            n = strlen((char *)gActorXmlStrs + 0x99);
+            String_AssignCStr(&str27C, (char *)gActorXmlStrs + 0x99, n);
             break;
         case 3:
-            n = strlen((char *)lbl_80273DF8 + 0xAA);
-            String_AssignCStr(&str27C, (char *)lbl_80273DF8 + 0xAA, n);
+            n = strlen((char *)gActorXmlStrs + 0xAA);
+            String_AssignCStr(&str27C, (char *)gActorXmlStrs + 0xAA, n);
             break;
         default:
             String_Destroy(&str27C, -1);
@@ -403,8 +403,8 @@ after_2c:
         *(f32 *)&pos.z = lbl_8036A184;
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
-        n = strlen((char *)lbl_80273DF8 + 0x4E);
-        if (fn_800C9400(&str27C, 0, (void *)str27C.size, (char *)lbl_80273DF8 + 0x4E, n) != 0) {
+        n = strlen((char *)gActorXmlStrs + 0x4E);
+        if (fn_800C9400(&str27C, 0, (void *)str27C.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -416,7 +416,7 @@ after_2c:
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
-                String_Init(&str1B0, (char *)lbl_80273DF8 + 0x51, &scratch3);
+                String_Init(&str1B0, (char *)gActorXmlStrs + 0x51, &scratch3);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str1B0, &str27C, &copyB, &copyA, 0);
             }
@@ -441,16 +441,16 @@ after_2e:
         str270.cap = 0;
         switch (*(s32 *)((u8 *)self + 0x1CC)) {
         case 1:
-            n = strlen((char *)lbl_80273DF8 + 0xBB);
-            String_AssignCStr(&str270, (char *)lbl_80273DF8 + 0xBB, n);
+            n = strlen((char *)gActorXmlStrs + 0xBB);
+            String_AssignCStr(&str270, (char *)gActorXmlStrs + 0xBB, n);
             break;
         case 2:
-            n = strlen((char *)lbl_80273DF8 + 0xCC);
-            String_AssignCStr(&str270, (char *)lbl_80273DF8 + 0xCC, n);
+            n = strlen((char *)gActorXmlStrs + 0xCC);
+            String_AssignCStr(&str270, (char *)gActorXmlStrs + 0xCC, n);
             break;
         case 3:
-            n = strlen((char *)lbl_80273DF8 + 0xDD);
-            String_AssignCStr(&str270, (char *)lbl_80273DF8 + 0xDD, n);
+            n = strlen((char *)gActorXmlStrs + 0xDD);
+            String_AssignCStr(&str270, (char *)gActorXmlStrs + 0xDD, n);
             break;
         default:
             String_Destroy(&str270, -1);
@@ -459,8 +459,8 @@ after_2e:
         *(f32 *)&pos.z = lbl_8036A184;
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
-        n = strlen((char *)lbl_80273DF8 + 0x4E);
-        if (fn_800C9400(&str270, 0, (void *)str270.size, (char *)lbl_80273DF8 + 0x4E, n) != 0) {
+        n = strlen((char *)gActorXmlStrs + 0x4E);
+        if (fn_800C9400(&str270, 0, (void *)str270.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -472,7 +472,7 @@ after_2e:
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
-                String_Init(&str168, (char *)lbl_80273DF8 + 0x51, &scratch4);
+                String_Init(&str168, (char *)gActorXmlStrs + 0x51, &scratch4);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str168, &str270, &copyB, &copyA, 0);
             }
@@ -640,17 +640,17 @@ after_3c:
             t = fn_80199310();
             fn_800DF670(*(void **)((u8 *)self + 0x11C));
             if (t == 3) {
-                fn_800E4FE8(*(void **)((u8 *)self + 0x11C), self, (char *)lbl_80273DF8 + 0xEE);
+                fn_800E4FE8(*(void **)((u8 *)self + 0x11C), self, (char *)gActorXmlStrs + 0xEE);
             } else {
-                fn_800E4FE8(*(void **)((u8 *)self + 0x11C), self, (char *)lbl_80273DF8 + 0xF5);
+                fn_800E4FE8(*(void **)((u8 *)self + 0x11C), self, (char *)gActorXmlStrs + 0xF5);
             }
-            String_Init(&str24C, (char *)lbl_80273DF8 + 0xFC, &scratch5);
+            String_Init(&str24C, (char *)gActorXmlStrs + 0xFC, &scratch5);
             fn_800CBF24(&str258, fn_801992F8(*(void **)((u8 *)self + 0x11C)), &str24C);
             String_Assign((u8 *)self + 0x154, &str258, 0, -1);
             String_Destroy(&str258, -1);
             String_Destroy(&str24C, -1);
         }
-        fn_800CB90C(&str264, (u8 *)self + 0x154, (char *)lbl_80273DF8 + 0xFE);
+        fn_800CB90C(&str264, (u8 *)self + 0x154, (char *)gActorXmlStrs + 0xFE);
         t = fn_800DDAA4(*(void **)((u8 *)self + 0xDC), &str264) == 0 ? 1 : 0;
         String_Destroy(&str264, -1);
         if ((u8)t != 0) {
@@ -666,10 +666,10 @@ after_3c:
         tmp = *(void **)((u8 *)self + 0x11C);
         if (tmp != NULL) {
             if (*(u32 *)((u8 *)self + 0x120) != 0) {
-                fn_800E4E7C(&sp324, self, (char *)lbl_80273DF8 + 0x103);
+                fn_800E4E7C(&sp324, self, (char *)gActorXmlStrs + 0x103);
                 sp378 = sp324;
             } else {
-                fn_800E4E7C(&sp318, tmp, (char *)lbl_80273DF8 + 0x103);
+                fn_800E4E7C(&sp318, tmp, (char *)gActorXmlStrs + 0x103);
                 sp378 = sp318;
             }
             flag = 0;
@@ -680,7 +680,7 @@ after_3c:
                 *(f32 *)&copyB.x = sp378.x;
                 *(f32 *)&copyB.y = sp378.y;
                 *(f32 *)&copyB.z = sp378.z;
-                String_Init(&str2E8, (char *)lbl_80273DF8 + 0x51, &scratch6);
+                String_Init(&str2E8, (char *)gActorXmlStrs + 0x51, &scratch6);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str2E8, (u8 *)gGame + 0x19C, &copyB, &copyA, 0);
             }
@@ -695,10 +695,10 @@ after_3c:
         tmp = *(void **)((u8 *)self + 0x11C);
         if (tmp != NULL) {
             if (*(u32 *)((u8 *)self + 0x120) != 0) {
-                fn_800E4E7C(&sp2DC, self, (char *)lbl_80273DF8 + 0x103);
+                fn_800E4E7C(&sp2DC, self, (char *)gActorXmlStrs + 0x103);
                 sp378 = sp2DC;
             } else {
-                fn_800E4E7C(&sp2D0, tmp, (char *)lbl_80273DF8 + 0x103);
+                fn_800E4E7C(&sp2D0, tmp, (char *)gActorXmlStrs + 0x103);
                 sp378 = sp2D0;
             }
             flag = 0;
@@ -709,7 +709,7 @@ after_3c:
                 *(f32 *)&copyB.x = sp378.x;
                 *(f32 *)&copyB.y = sp378.y;
                 *(f32 *)&copyB.z = sp378.z;
-                String_Init(&str2A0, (char *)lbl_80273DF8 + 0x51, &scratch);
+                String_Init(&str2A0, (char *)gActorXmlStrs + 0x51, &scratch);
                 flag = 1;
                 obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &str2A0, (u8 *)gGame + 0x1A8, &copyB, &copyA, 0);
             }
@@ -795,39 +795,39 @@ extern "C" void fn_80111740(void *arg0) {
     sp54.data = 0;
     sp54.cap = 0;
 
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x109));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x109));
     if (fn_800C9400(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)lbl_80273DF8 + 0x109), n) == 0)
+                    (char *)((u32)gActorXmlStrs + 0x109), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x10E));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x10E));
     if (fn_800C9400(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)lbl_80273DF8 + 0x10E), n) == 0)
+                    (char *)((u32)gActorXmlStrs + 0x10E), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x113));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x113));
     if (fn_800C9400(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)lbl_80273DF8 + 0x113), n) == 0)
+                    (char *)((u32)gActorXmlStrs + 0x113), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x118));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x118));
     if (fn_800C9400(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)lbl_80273DF8 + 0x118), n) == 0)
+                    (char *)((u32)gActorXmlStrs + 0x118), n) == 0)
         goto fail;
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x11D));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x11D));
     if (fn_800C9400(&self->name, 0, (void *)self->name.size,
-                    (char *)((u32)lbl_80273DF8 + 0x11D), n) == 0)
+                    (char *)((u32)gActorXmlStrs + 0x11D), n) == 0)
         goto fail;
 
     switch (self->state) {
     case 1:
-        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x122));
-        String_AssignCStr(&sp54, (char *)((u32)lbl_80273DF8 + 0x122), n);
+        n = strlen((char *)((u8 *)gActorXmlStrs + 0x122));
+        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x122), n);
         break;
     case 2:
-        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x133));
-        String_AssignCStr(&sp54, (char *)((u32)lbl_80273DF8 + 0x133), n);
+        n = strlen((char *)((u8 *)gActorXmlStrs + 0x133));
+        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x133), n);
         break;
     case 3:
-        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x144));
-        String_AssignCStr(&sp54, (char *)((u32)lbl_80273DF8 + 0x144), n);
+        n = strlen((char *)((u8 *)gActorXmlStrs + 0x144));
+        String_AssignCStr(&sp54, (char *)((u32)gActorXmlStrs + 0x144), n);
         break;
     default:
         goto fail;
@@ -836,9 +836,9 @@ extern "C" void fn_80111740(void *arg0) {
     *(f32 *)&pos.z = lbl_8036A184;
     *(f32 *)&pos.y = lbl_8036A184;
     *(f32 *)&pos.x = lbl_8036A184;
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x4E));
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x4E));
     if (fn_800C9400(&sp54, 0, (void *)sp54.size,
-                    (char *)((u32)lbl_80273DF8 + 0x4E), n) != 0) {
+                    (char *)((u32)gActorXmlStrs + 0x4E), n) != 0) {
         got = ((Actor *)self)->GetPos(0);
         flag = 0;
         *(f32 *)&pos.y = got.y;
@@ -850,7 +850,7 @@ extern "C" void fn_80111740(void *arg0) {
             fn_800DBB74(&tmpVec, self);
             copyA = tmpVec;
             copyB = pos;
-            String_Init(&sp48, (char *)lbl_80273DF8 + 0x51, &scratch);
+            String_Init(&sp48, (char *)gActorXmlStrs + 0x51, &scratch);
             flag = 1;
             obj = fn_80151D50(obj, self->mgr, &sp48, &sp54, &copyB, &copyA, 0);
         }
@@ -968,7 +968,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
 
     xml = Heap_Alloc(0x60);
     if (xml != 0) {
-        String_Init(&sp118, (char *)lbl_80273DF8 + 0x38E, &sc48);
+        String_Init(&sp118, (char *)gActorXmlStrs + 0x38E, &sc48);
         made = 1;
         xml = Xml_ParseFile(xml, path, &sp118);
     }
@@ -976,7 +976,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         String_Destroy(&sp118, -1);
     }
 
-    String_Init(&sp10C, (char *)lbl_80273DF8 + 0x393, &sc44);
+    String_Init(&sp10C, (char *)gActorXmlStrs + 0x393, &sc44);
     Xml_GetNamedValue(sp33C, xml, &sp10C);
     count = *(s32 *)sp33C;
     String_Destroy(&sp10C, -1);
@@ -993,78 +993,78 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         String_Assign(node, &str124, 0, -1);
     }
 
-    String_Init(&spF4, (char *)lbl_80273DF8 + 0x39A, &sc40);
+    String_Init(&spF4, (char *)gActorXmlStrs + 0x39A, &sc40);
     Xml_GetNamedValue(sp2FC, xml, &spF4);
     *(f32 *)((u8 *)self + 0x124) = *(f32 *)sp2FC;
     String_Destroy(&spF4, -1);
 
-    String_Init(&spE8, (char *)lbl_80273DF8 + 0x3A3, &sc3C);
+    String_Init(&spE8, (char *)gActorXmlStrs + 0x3A3, &sc3C);
     Xml_GetNamedValue(sp2DC, xml, &spE8);
     *(f32 *)((u8 *)self + 0x128) = *(f32 *)sp2DC;
     String_Destroy(&spE8, -1);
 
-    String_Init(&spDC, (char *)lbl_80273DF8 + 0x3AA, &sc38);
+    String_Init(&spDC, (char *)gActorXmlStrs + 0x3AA, &sc38);
     Xml_GetNamedValue(sp2BC, xml, &spDC);
     *(s32 *)((u8 *)self + 0x12C) = *(s32 *)sp2BC;
     String_Destroy(&spDC, -1);
 
-    String_Init(&spD0, (char *)lbl_80273DF8 + 0x3B7, &sc34);
+    String_Init(&spD0, (char *)gActorXmlStrs + 0x3B7, &sc34);
     Xml_GetNamedValue(sp29C, xml, &spD0);
     *(s32 *)((u8 *)self + 0x130) = *(s32 *)sp29C;
     String_Destroy(&spD0, -1);
 
-    String_Init(&spC4, (char *)lbl_80273DF8 + 0x3C6, &sc30);
+    String_Init(&spC4, (char *)gActorXmlStrs + 0x3C6, &sc30);
     Xml_GetNamedValue(sp27C, xml, &spC4);
     *(s32 *)((u8 *)self + 0x134) = *(s32 *)sp27C;
     String_Destroy(&spC4, -1);
 
-    String_Init(&spB8, (char *)lbl_80273DF8 + 0x3D3, &sc2C);
+    String_Init(&spB8, (char *)gActorXmlStrs + 0x3D3, &sc2C);
     Xml_GetNamedValue(sp25C, xml, &spB8);
     *(s32 *)((u8 *)self + 0x138) = *(s32 *)sp25C;
     String_Destroy(&spB8, -1);
 
-    String_Init(&spAC, (char *)lbl_80273DF8 + 0x3E0, &sc28);
+    String_Init(&spAC, (char *)gActorXmlStrs + 0x3E0, &sc28);
     Xml_GetNamedValue(sp23C, xml, &spAC);
     *(s32 *)((u8 *)self + 0x13C) = *(s32 *)sp23C;
     String_Destroy(&spAC, -1);
 
-    String_Init(&spA0, (char *)lbl_80273DF8 + 0x3ED, &sc24);
+    String_Init(&spA0, (char *)gActorXmlStrs + 0x3ED, &sc24);
     Xml_GetNamedValue(sp21C, xml, &spA0);
     *(s32 *)((u8 *)self + 0x19C) = *(s32 *)sp21C;
     String_Destroy(&spA0, -1);
 
-    String_Init(&sp94, (char *)lbl_80273DF8 + 0x3F4, &sc20);
+    String_Init(&sp94, (char *)gActorXmlStrs + 0x3F4, &sc20);
     Xml_GetNamedValue(sp1FC, xml, &sp94);
     tmp = *(s32 *)sp1FC;
     *((u8 *)self + 0x1A1) = (u8)(tmp != 0);
     String_Destroy(&sp94, -1);
 
-    String_Init(&sp88, (char *)lbl_80273DF8 + 0x401, &sc1C);
+    String_Init(&sp88, (char *)gActorXmlStrs + 0x401, &sc1C);
     Xml_GetNamedValue(sp1DC, xml, &sp88);
     *(s32 *)((u8 *)self + 0x198) = *(s32 *)sp1DC;
     String_Destroy(&sp88, -1);
 
-    String_Init(&sp7C, (char *)lbl_80273DF8 + 0x40A, &sc18);
+    String_Init(&sp7C, (char *)gActorXmlStrs + 0x40A, &sc18);
     Xml_GetNamedValue(sp1BC, xml, &sp7C);
     *(f32 *)((u8 *)self + 0x150) = *(f32 *)sp1BC;
     String_Destroy(&sp7C, -1);
 
-    String_Init(&sp70, (char *)lbl_80273DF8 + 0x417, &sc14);
+    String_Init(&sp70, (char *)gActorXmlStrs + 0x417, &sc14);
     Xml_GetNamedValue(sp19C, xml, &sp70);
     *(s32 *)((u8 *)self + 0x188) = *(s32 *)sp19C;
     String_Destroy(&sp70, -1);
 
-    String_Init(&sp64, (char *)lbl_80273DF8 + 0x420, &sc10);
+    String_Init(&sp64, (char *)gActorXmlStrs + 0x420, &sc10);
     Xml_GetNamedValue(sp17C, xml, &sp64);
     *(s32 *)((u8 *)self + 0x18C) = *(s32 *)sp17C;
     String_Destroy(&sp64, -1);
 
-    String_Init(&sp58, (char *)lbl_80273DF8 + 0x42D, &scC);
+    String_Init(&sp58, (char *)gActorXmlStrs + 0x42D, &scC);
     Xml_GetNamedValue(sp15C, xml, &sp58);
     *(s32 *)((u8 *)self + 0x190) = *(s32 *)sp15C;
     String_Destroy(&sp58, -1);
 
-    String_Init(&sp4C, (char *)lbl_80273DF8 + 0x43A, &sc8);
+    String_Init(&sp4C, (char *)gActorXmlStrs + 0x43A, &sc8);
     Xml_GetNamedValue(sp13C, xml, &sp4C);
     tmp = *(s32 *)sp13C;
     *((u8 *)self + 0x1B6) = (u8)(tmp != 0);
@@ -1173,20 +1173,20 @@ u8 fn_80112F3C(void *arg0) {
 #pragma global_optimizer off
 s32 fn_80112F44(void *arg0) {
     s32 n;
-    extern u16 lbl_80273DF8[];
+    extern u16 gActorXmlStrs[];
     s32 strlen(char *);
     s32 fn_800C9400(void *, s32, void *, char *, s32);
     s32 fn_800D5948(void *, char *, s32, s32);
     u8 fn_800E56C4(void *);
 
-    n = strlen((char *)lbl_80273DF8 + 0x43F);
+    n = strlen((char *)gActorXmlStrs + 0x43F);
     if (fn_800C9400((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
-                    (char *)lbl_80273DF8 + 0x43F, n) != 0) {
-        if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)lbl_80273DF8 + 0x43F, 0,
-                              strlen((char *)lbl_80273DF8 + 0x43F)) +
+                    (char *)gActorXmlStrs + 0x43F, n) != 0) {
+        if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
+                              strlen((char *)gActorXmlStrs + 0x43F)) +
                   0x10000) == 0xFFFF) {
-            if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)lbl_80273DF8 + 0x444, 0,
-                                  strlen((char *)lbl_80273DF8 + 0x444)) +
+            if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
+                                  strlen((char *)gActorXmlStrs + 0x444)) +
                       0x10000) != 0xFFFF) {
                 if (fn_800E56C4(arg0) == 0) {
                     return 1;
@@ -1234,26 +1234,26 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     sp3C.cap = 0;
 
     String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, arg3) + 0xC, 0, -1);
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x1C));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)lbl_80273DF8 + 0x1C), n) == 0) {
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
+    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
         String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, a2) + 0xC, 0, -1);
     }
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x1C));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)lbl_80273DF8 + 0x1C), n) == 0) {
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
+    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
         String_Init(&sp30, lbl_8028F6B8[idx & 3], &sp8);
         String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, &sp30) + 0xC, 0, -1);
         String_Destroy(&sp30, -1);
     }
-    n = strlen((char *)((u8 *)lbl_80273DF8 + 0x449));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)lbl_80273DF8 + 0x449), n) == 0) {
+    n = strlen((char *)((u8 *)gActorXmlStrs + 0x449));
+    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x449), n) == 0) {
         String_Assign(&sp3C, (u8 *)self + 0xB0, 0, -1);
     }
-    fn_800CBF24(&sp24, (char *)((u8 *)lbl_80273DF8 + 0x450), (u8 *)self + 0xB0);
-    fn_800CB90C(&sp18, &sp24, (char *)((u8 *)lbl_80273DF8 + 0x454));
+    fn_800CBF24(&sp24, (char *)((u8 *)gActorXmlStrs + 0x450), (u8 *)self + 0xB0);
+    fn_800CB90C(&sp18, &sp24, (char *)((u8 *)gActorXmlStrs + 0x454));
     String_Assign(&sp48, &sp18, 0, -1);
     String_Destroy(&sp18, -1);
     String_Destroy(&sp24, -1);
-    fn_800CB90C(&spC, &sp3C, (char *)((u8 *)lbl_80273DF8 + 0x456));
+    fn_800CB90C(&spC, &sp3C, (char *)((u8 *)gActorXmlStrs + 0x456));
     fn_800C99A0(&sp48, &spC, 0, -1);
     String_Destroy(&spC, -1);
     fn_800E5044(self, fn_800C93EC(&sp48));
@@ -1324,8 +1324,8 @@ void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
         s32 n;
         temp_r30 = fn_800DDB94(unk_dc, (u8 *)self + 0xBC);
         String_AssignCStr(&spC, temp_r30, strlen(temp_r30));
-        n = strlen((char *)((u8 *)lbl_80273DF8 + 0x1C));
-        if (fn_800C9400(&spC, 0, (void *)spC.size, (char *)((u32)lbl_80273DF8 + 0x1C), n) == 0) {
+        n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
+        if (fn_800C9400(&spC, 0, (void *)spC.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
             String_Destroy(&sp24, -1);
             String_Destroy(&sp18, -1);
             String_Destroy(&spC, -1);
@@ -1391,7 +1391,7 @@ void fn_801136EC(f32 *arg0, void *arg1) {
     f32 z;
     s32 index;
 
-    index = fn_800E4F0C(arg1, (char *)((u32)lbl_80273DF8 + 0x45b));
+    index = fn_800E4F0C(arg1, (char *)((u32)gActorXmlStrs + 0x45b));
     if (index == -1) {
         (*(void (**)(f32 *, void *, s32))(*(u8 **)((u8 *)arg1 + 0x40) + 0x38))(arg0, arg1, 0);
     } else {
@@ -1414,7 +1414,7 @@ void fn_801136EC(f32 *arg0, void *arg1) {
 void fn_801137AC(f32 *out, void *arg1, u8 arg2) {
     s32 fn_800E4F0C(void *, char *);
     void fn_80060F70(void *, s32, f32 *);
-    extern u16 lbl_80273DF8[];
+    extern u16 gActorXmlStrs[];
     extern f32 lbl_8036A184;
     extern f32 lbl_8036A1B4;
     extern f32 lbl_8036A1B8;
@@ -1424,7 +1424,7 @@ void fn_801137AC(f32 *out, void *arg1, u8 arg2) {
     f32 y;
     f32 z;
 
-    idx = fn_800E4F0C(arg1, (char *)lbl_80273DF8 + 0x45F);
+    idx = fn_800E4F0C(arg1, (char *)gActorXmlStrs + 0x45F);
     fn_80060F70(M2C_FIELD(arg1, void **, 0xE0), idx, sp8);
     x = sp8[0];
     if (x > lbl_8036A1B4 && x < lbl_8036A1B8) {
@@ -1520,7 +1520,7 @@ extern "C" void fn_80113930(void *arg0) {
     c.y = zero;
     c.x = zero;
 
-    fn_800E4E7C(&tmpA, arg0, (char *)lbl_80273DF8 + 0x464);
+    fn_800E4E7C(&tmpA, arg0, (char *)gActorXmlStrs + 0x464);
     a.x = tmpA.x;
     a.y = tmpA.y;
     a.z = tmpA.z;
@@ -1616,32 +1616,32 @@ void fn_80113C84(void *self, s32 mode) {
     sp30.data = 0;
     sp30.cap = 0;
 
-    String_AssignCStr((u8 *)self + 0x16C, (char *)&lbl_80273DF8 + 0x1C, strlen((char *)&lbl_80273DF8 + 0x1C));
+    String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x1C, strlen((char *)&gActorXmlStrs + 0x1C));
     *(s32 *)((u8 *)self + 0x144) = mode;
 
     switch (mode) {
     case 0:
-        String_AssignCStr(&sp3C, (char *)&lbl_80273DF8 + 0x46A, strlen((char *)&lbl_80273DF8 + 0x46A));
+        String_AssignCStr(&sp3C, (char *)&gActorXmlStrs + 0x46A, strlen((char *)&gActorXmlStrs + 0x46A));
         break;
     case 1:
-        String_AssignCStr(&sp3C, (char *)&lbl_80273DF8 + 0x46F, strlen((char *)&lbl_80273DF8 + 0x46F));
+        String_AssignCStr(&sp3C, (char *)&gActorXmlStrs + 0x46F, strlen((char *)&gActorXmlStrs + 0x46F));
         break;
     case 2:
-        String_AssignCStr(&sp3C, (char *)&lbl_80273DF8 + 0x46F, strlen((char *)&lbl_80273DF8 + 0x46F));
+        String_AssignCStr(&sp3C, (char *)&gActorXmlStrs + 0x46F, strlen((char *)&gActorXmlStrs + 0x46F));
         break;
     case 3:
-        String_AssignCStr(&sp3C, (char *)&lbl_80273DF8 + 0x478, strlen((char *)&lbl_80273DF8 + 0x478));
+        String_AssignCStr(&sp3C, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478));
         break;
     }
 
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)&lbl_80273DF8 + 0x478, strlen((char *)&lbl_80273DF8 + 0x478)) == 0) {
+    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478)) == 0) {
         String_Init(&spC, fn_800C93EC(&sp3C), &sp8);
         fn_800CB8A4(&sp18, (u8 *)self + 0x154, &spC);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &sp18) != 0;
         String_Destroy(&sp18, -1);
         String_Destroy(&spC, -1);
         if (ok == 0) {
-            String_AssignCStr(&sp3C, (char *)&lbl_80273DF8 + 0x46A, strlen((char *)&lbl_80273DF8 + 0x46A));
+            String_AssignCStr(&sp3C, (char *)&gActorXmlStrs + 0x46A, strlen((char *)&gActorXmlStrs + 0x46A));
         }
     }
 
@@ -1649,7 +1649,7 @@ void fn_80113C84(void *self, s32 mode) {
     fn_801134EC(&sp24, self, &sp3C);
     String_Assign(&sp3C, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
-    String_AssignCStr((u8 *)self + 0x16C, (char *)&lbl_80273DF8 + 0x43F, strlen((char *)&lbl_80273DF8 + 0x43F));
+    String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F));
     fn_80113298(self, fn_800C93EC(&sp3C), *(s32 *)((u8 *)self + 0x188), 0, 1);
     String_Assign((u8 *)self + 0x160, &sp30, 0, -1);
     *(u8 *)(*(u8 **)((u8 *)self + 0x11C) + 0x14D) = 0;
@@ -1695,17 +1695,17 @@ void fn_80113F88(void *arg0) {
     if (child != 0) {
         fn_800E4BE0(child, 0x80, 0x270f, lbl_8036A1C4);
     }
-    fn_80147578((char *)lbl_80273DF8 + 0x481, 0x64, fx, fy, fz);
+    fn_80147578((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
 void fn_80114078(void *arg0) {
     s32 n;
 
     *(u8 *)((u8 *)arg0 + 0x184) = 1;
-    fn_80113298(arg0, (u8 *)lbl_80273DF8 + 0x498, *(s32 *)((u8 *)arg0 + 0x188) * 2, 0, 1);
-    n = strlen((char *)lbl_80273DF8 + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x160, (char *)lbl_80273DF8 + 0x1C, n);
-    n = strlen((char *)lbl_80273DF8 + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)lbl_80273DF8 + 0x1C, n);
+    fn_80113298(arg0, (u8 *)gActorXmlStrs + 0x498, *(s32 *)((u8 *)arg0 + 0x188) * 2, 0, 1);
+    n = strlen((char *)gActorXmlStrs + 0x1C);
+    String_AssignCStr((u8 *)arg0 + 0x160, (char *)gActorXmlStrs + 0x1C, n);
+    n = strlen((char *)gActorXmlStrs + 0x1C);
+    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)gActorXmlStrs + 0x1C, n);
     *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
     *(u8 *)((u8 *)arg0 + 0x1A6) = 1;
 }
@@ -1799,39 +1799,39 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     fy = spEC.y;
     fz = spEC.z;
 
-    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&lbl_80273DF8 + 0x1C,
-                strlen((char *)&lbl_80273DF8 + 0x1C));
+    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x1C,
+                strlen((char *)&gActorXmlStrs + 0x1C));
 
     if (*(void **)((u8 *)arg0 + 0x11C) != 0) {
         t = fn_80199310();
         fn_800DF670(*(void **)((u8 *)arg0 + 0x11C));
         if (t == 3) {
-            fn_800E4FE8(*(void **)((u8 *)arg0 + 0x11C), arg0, (char *)&lbl_80273DF8 + 0xEE);
+            fn_800E4FE8(*(void **)((u8 *)arg0 + 0x11C), arg0, (char *)&gActorXmlStrs + 0xEE);
         } else {
-            fn_800E4FE8(*(void **)((u8 *)arg0 + 0x11C), arg0, (char *)&lbl_80273DF8 + 0xF5);
+            fn_800E4FE8(*(void **)((u8 *)arg0 + 0x11C), arg0, (char *)&gActorXmlStrs + 0xF5);
         }
-        String_Init(&spA4, (char *)&lbl_80273DF8 + 0xFC, &scratch0);
+        String_Init(&spA4, (char *)&gActorXmlStrs + 0xFC, &scratch0);
         fn_800CBF24(&spB0, fn_801992F8(*(void **)((u8 *)arg0 + 0x11C)), &spA4);
         String_Assign((u8 *)arg0 + 0x154, &spB0, 0, -1);
         String_Destroy(&spB0, -1);
         String_Destroy(&spA4, -1);
     }
 
-    fn_800CB90C(&spBC, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0xFE);
+    fn_800CB90C(&spBC, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0xFE);
     t = fn_800DDAA4(*(void **)((u8 *)arg0 + 0xDC), &spBC) == 0 ? 1 : 0;
     String_Destroy(&spBC, -1);
     if ((u8)t != 0) {
         *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
     }
 
-    String_Init(&spE0, (char *)&lbl_80273DF8 + 0x444, &scratch1);
+    String_Init(&spE0, (char *)&gActorXmlStrs + 0x444, &scratch1);
     fn_801134EC(&spD4, arg0, &spE0);
     String_Assign(&sp104, &spD4, 0, -1);
     String_Destroy(&spD4, -1);
     String_Destroy(&spE0, -1);
 
     if (arg1 != 0) {
-        String_Init(&sp8C, (char *)&lbl_80273DF8 + 0x49D, &scratch2);
+        String_Init(&sp8C, (char *)&gActorXmlStrs + 0x49D, &scratch2);
         fn_800CB8A4(&sp98, (u8 *)arg0 + 0x154, &sp8C);
         t = fn_800DDC04(*(void **)((u8 *)arg0 + 0xDC), &sp98) != 0 ? 1 : 0;
         String_Destroy(&sp98, -1);
@@ -1842,21 +1842,21 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
         goto skip_43f;
     }
 do_43f:
-    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&lbl_80273DF8 + 0x43F,
-                strlen((char *)&lbl_80273DF8 + 0x43F));
+    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x43F,
+                strlen((char *)&gActorXmlStrs + 0x43F));
 skip_43f:
 
     fn_80113298(arg0, fn_800C93EC(&sp104), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
 
     {
         s32 n;
-        n = strlen((char *)((u32)&lbl_80273DF8 + 0x49D));
-        if (fn_800C9400(&sp104, 0, (void *)sp104.size, (char *)((u32)&lbl_80273DF8 + 0x49D), n) == 0) {
-            String_AssignCStr((u8 *)arg0 + 0x160, (char *)&lbl_80273DF8 + 0x1C,
-                        strlen((char *)&lbl_80273DF8 + 0x1C));
+        n = strlen((char *)((u32)&gActorXmlStrs + 0x49D));
+        if (fn_800C9400(&sp104, 0, (void *)sp104.size, (char *)((u32)&gActorXmlStrs + 0x49D), n) == 0) {
+            String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x1C,
+                        strlen((char *)&gActorXmlStrs + 0x1C));
         } else {
-            String_AssignCStr((u8 *)arg0 + 0x160, (char *)&lbl_80273DF8 + 0x444,
-                        strlen((char *)&lbl_80273DF8 + 0x444));
+            String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x444,
+                        strlen((char *)&gActorXmlStrs + 0x444));
         }
     }
 
@@ -1929,7 +1929,7 @@ after_dist:
     }
 
     *(s32 *)((u8 *)arg0 + 0x140) = 0;
-    fn_80147578((char *)&lbl_80273DF8 + 0x4A7, 0x64, fx, fy, fz);
+    fn_80147578((char *)&gActorXmlStrs + 0x4A7, 0x64, fx, fy, fz);
     *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
     String_Destroy(&sp104, -1);
 }
@@ -2016,9 +2016,9 @@ extern "C" void fn_80114840(void *arg0) {
         fn_800DBB74(&tmpVec, self);
         copyA = tmpVec;
         copyB = pos;
-        String_Init(&strB, (char *)lbl_80273DF8 + 0x4BE, &scratch);
+        String_Init(&strB, (char *)gActorXmlStrs + 0x4BE, &scratch);
         flagB = 1;
-        String_Init(&strA, (char *)lbl_80273DF8 + 0x51, &scratch2);
+        String_Init(&strA, (char *)gActorXmlStrs + 0x51, &scratch2);
         flagA = 1;
         obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &strA, &strB, &copyB, &copyA, 0);
     }
@@ -2036,9 +2036,9 @@ extern "C" void fn_80114840(void *arg0) {
         fn_800DBB74(&tmpVec2, self);
         copyA2 = tmpVec2;
         copyB2 = pos;
-        String_Init(&strD, (char *)lbl_80273DF8 + 0x4CB, &scratch3);
+        String_Init(&strD, (char *)gActorXmlStrs + 0x4CB, &scratch3);
         flagA = 1;
-        String_Init(&strC, (char *)lbl_80273DF8 + 0x51, &scratch4);
+        String_Init(&strC, (char *)gActorXmlStrs + 0x51, &scratch4);
         flagB = 1;
         obj = fn_80151D50(obj, *(void **)((u8 *)self + 0xAC), &strC, &strD, &copyB2, &copyA2, 0);
     }
@@ -2049,7 +2049,7 @@ extern "C" void fn_80114840(void *arg0) {
     if (flagA) {
         String_Destroy(&strD, -1);
     }
-    fn_80147578((char *)lbl_80273DF8 + 0x4DA, 0x64, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
+    fn_80147578((char *)gActorXmlStrs + 0x4DA, 0x64, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
     fn_80025624(lbl_80367240, 4);
     *(u8 *)((u8 *)self + 0x1A4) = 1;
 }
@@ -2084,7 +2084,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     void fn_80203184(f32 *, f32 *, f32 *);
     void fn_802031CC(f32 *, f32 *, f32);
     f32 fn_802032CC(f32 *, f32 *);
-    extern u16 lbl_80273DF8[];
+    extern u16 gActorXmlStrs[];
     extern void *gGame;
     extern f32 lbl_8036A184;
     extern f32 lbl_8036A1D0;
@@ -2119,7 +2119,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     spAC = lbl_8036A184;
     ret = 0;
     spA8 = lbl_8036A184;
-    String_AssignCStr((u8 *)self + 0x16C, (char *)&lbl_80273DF8 + 0x1C, strlen((char *)&lbl_80273DF8 + 0x1C));
+    String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x1C, strlen((char *)&gActorXmlStrs + 0x1C));
     other = *(void **)((u8 *)self + 0x118);
     if (other == 0) return 1;
     if (*(u8 *)((u8 *)self + 0x195) != 0) return 1;
@@ -2152,7 +2152,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         dist = fn_802032CC((f32 *)&sp54, (f32 *)&sp60);
     }
     pad = lbl_8036A1D4;
-    if (fn_800C9400((u8 *)self + 0xB0, 0, *(s32 *)((u8 *)self + 0xB0), (char *)&lbl_80273DF8 + 0x15F, strlen((char *)&lbl_80273DF8 + 0x15F)) == 0) {
+    if (fn_800C9400((u8 *)self + 0xB0, 0, *(s32 *)((u8 *)self + 0xB0), (char *)&gActorXmlStrs + 0x15F, strlen((char *)&gActorXmlStrs + 0x15F)) == 0) {
         pad = lbl_8036A1D0;
     }
     if (dist <= pad + (*(f32 *)((u8 *)self + 0x128) + *(f32 *)((u8 *)self + 0x1B0))) {
@@ -2163,45 +2163,45 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         && *(u8 *)((u8 *)self + 0x1A4) != 0
         && *(u8 *)((u8 *)self + 0x1A5) == 0) {
         *(u8 *)((u8 *)self + 0x184) = 1;
-        fn_80113298(self, (char *)&lbl_80273DF8 + 0x535, *(s32 *)((u8 *)self + 0x188), 0, 1);
+        fn_80113298(self, (char *)&gActorXmlStrs + 0x535, *(s32 *)((u8 *)self + 0x188), 0, 1);
         *(s32 *)((u8 *)self + 0x140) = 0;
-        String_AssignCStr((u8 *)self + 0x160, (char *)&lbl_80273DF8 + 0x535, strlen((char *)&lbl_80273DF8 + 0x535));
+        String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x535, strlen((char *)&gActorXmlStrs + 0x535));
         return 1;
     }
     if (*(u8 *)((u8 *)self + 0x1A4) != 0) {
         fn_800E56CC(self); return 1;
     }
-    if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&lbl_80273DF8 + 0x53A, strlen((char *)&lbl_80273DF8 + 0x53A)) == 0
-        || fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&lbl_80273DF8 + 0x43F, strlen((char *)&lbl_80273DF8 + 0x43F)) == 0) {
-        String_Init(sp84, (char *)&lbl_80273DF8 + 0x53F, sp8);
+    if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53A, strlen((char *)&gActorXmlStrs + 0x53A)) == 0
+        || fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F)) == 0) {
+        String_Init(sp84, (char *)&gActorXmlStrs + 0x53F, sp8);
         fn_800CB8A4(sp90, (u8 *)self + 0x154, sp84);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), sp90) != 0;
         String_Destroy(sp90, -1);
         String_Destroy(sp84, -1);
         if (ok) {
             *(u8 *)((u8 *)self + 0x184) = 1;
-            fn_80113298(self, (char *)&lbl_80273DF8 + 0x53F, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            fn_80113298(self, (char *)&gActorXmlStrs + 0x53F, *(s32 *)((u8 *)self + 0x18C), 0, 1);
             fn_80111740(self);
         }
-    } else if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&lbl_80273DF8 + 0x53F, strlen((char *)&lbl_80273DF8 + 0x53F)) == 0) {
+    } else if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53F, strlen((char *)&gActorXmlStrs + 0x53F)) == 0) {
         if (*(u8 *)((u8 *)self + 0xD0) == 0) {
             *(u8 *)((u8 *)self + 0x184) = 1;
-            fn_80113298(self, (char *)&lbl_80273DF8 + 0xFE, *(s32 *)((u8 *)self + 0x18C), 1, 1);
-            String_AssignCStr((u8 *)self + 0x160, (char *)&lbl_80273DF8 + 0xFE, strlen((char *)&lbl_80273DF8 + 0xFE));
+            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 1, 1);
+            String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0xFE, strlen((char *)&gActorXmlStrs + 0xFE));
             doMove = 1;
             ret = 1;
         }
     } else {
         *(u8 *)((u8 *)self + 0x184) = 1;
         if (*(s32 *)((u8 *)self + 0x19C) == 0) {
-            fn_80113298(self, (char *)&lbl_80273DF8 + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
-            String_AssignCStr((u8 *)self + 0x160, (char *)&lbl_80273DF8 + 0xFE, strlen((char *)&lbl_80273DF8 + 0xFE));
+            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0xFE, strlen((char *)&gActorXmlStrs + 0xFE));
             fn_80111740(self);
             doMove = 1;
             ret = 0;
         } else {
-            fn_80113298(self, (char *)&lbl_80273DF8 + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
-            String_AssignCStr((u8 *)self + 0x160, (char *)&lbl_80273DF8 + 0x1C, strlen((char *)&lbl_80273DF8 + 0x1C));
+            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x1C, strlen((char *)&gActorXmlStrs + 0x1C));
             fn_80111740(self);
             doMove = 0;
             *(u8 *)((u8 *)self + 0x1A0) = 1;
@@ -2260,12 +2260,12 @@ void fn_8011631C(void *arg0, s8 arg1)
     sp24.cap = 0;
 
     if (fn_800C9400((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
-                    (char *)&lbl_80273DF8 + 0x43f,
-                    strlen((char *)&lbl_80273DF8 + 0x43f)) == 0
-        || (u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)&lbl_80273DF8 + 0x43f, 0,
-                             strlen((char *)&lbl_80273DF8 + 0x43f)) + 0x10000) != (u32)-1
-        || ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)&lbl_80273DF8 + 0x444, 0,
-                              strlen((char *)&lbl_80273DF8 + 0x444)) + 0x10000) != (u32)-1
+                    (char *)&gActorXmlStrs + 0x43f,
+                    strlen((char *)&gActorXmlStrs + 0x43f)) == 0
+        || (u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x43f, 0,
+                             strlen((char *)&gActorXmlStrs + 0x43f)) + 0x10000) != (u32)-1
+        || ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x444, 0,
+                              strlen((char *)&gActorXmlStrs + 0x444)) + 0x10000) != (u32)-1
             && fn_800E56C4(arg0) == 0)) {
         flag = 1;
     } else {
@@ -2273,20 +2273,20 @@ void fn_8011631C(void *arg0, s8 arg1)
     }
 
     if (flag == 0 && *(u8 *)((u8 *)arg0 + 0x1A6) == 0) {
-        String_Init(&sp18, (char *)&lbl_80273DF8 + 0x43f, &sp8);
+        String_Init(&sp18, (char *)&gActorXmlStrs + 0x43f, &sp8);
         fn_801134EC(&spC, arg0, &sp18);
         String_Assign(&sp24, &spC, 0, -1);
         String_Destroy(&spC, -1);
         String_Destroy(&sp18, -1);
         *(u8 *)((u8 *)arg0 + 0x184) = arg1;
 
-        if (fn_800C9400(&sp24, 0, (void *)sp24.size, (char *)&lbl_80273DF8 + 0x43f,
-                        strlen((char *)&lbl_80273DF8 + 0x43f)) == 0) {
+        if (fn_800C9400(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
+                        strlen((char *)&gActorXmlStrs + 0x43f)) == 0) {
             fn_80113298(arg0, fn_800C93EC(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
         } else {
             fn_80113298(arg0, fn_800C93EC(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
-            String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&lbl_80273DF8 + 0x43f,
-                        strlen((char *)&lbl_80273DF8 + 0x43f));
+            String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x43f,
+                        strlen((char *)&gActorXmlStrs + 0x43f));
         }
     }
 
@@ -2328,7 +2328,7 @@ void fn_801165B4(void *arg0, void *arg1) {
         fn_80199318(arg0, temp_r4);
         return;
     }
-    String_Init(arg0, (char *)lbl_80273DF8 + 0x1C, sp8);
+    String_Init(arg0, (char *)gActorXmlStrs + 0x1C, sp8);
 }
 #pragma optimization_level reset
 s32 fn_80116604(void *arg0) {
@@ -2379,7 +2379,7 @@ extern "C" void fn_801166C4(void *arg0, void *arg1) {
         virtual void v9(f32, f32, f32) = 0;
     };
     extern f32 lbl_8036A184;
-    extern u16 lbl_80273DF8[];
+    extern u16 gActorXmlStrs[];
 
     void fn_800DF670(void *);
     void fn_800E4FE8(void *, void *, void *);
@@ -2409,16 +2409,16 @@ extern "C" void fn_801166C4(void *arg0, void *arg1) {
         fn_800E4FE8(
             *(void **)(obj + 0x120),
             obj,
-            (u8 *)lbl_80273DF8 + 0xF5
+            (u8 *)gActorXmlStrs + 0xF5
         );
     }
 }
 #pragma cplusplus reset
 void fn_80116760(s32 arg0, s32 arg1) {
-    extern u16 lbl_80273DF8[];
+    extern u16 gActorXmlStrs[];
     s32 sp8;
 
-    fn_800CB90C(&sp8, arg1, (u8 *)lbl_80273DF8 + 0xfc);
+    fn_800CB90C(&sp8, arg1, (u8 *)gActorXmlStrs + 0xfc);
     String_Assign((void *)(arg0 + 0x154), &sp8, 0, -1);
     String_Destroy(&sp8, -1);
 }
@@ -2513,7 +2513,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
     f30 = *(f32 *)((u8 *)arg0 + 0x128) * f31 + sp74.x;
 
     if (*(s32 *)((u8 *)arg0 + 0x19C) == 0) {
-        fn_800CB90C(&sp68, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0x53F);
+        fn_800CB90C(&sp68, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0x53F);
         String_Assign(&sp8C, &sp68, 0, -1);
         String_Destroy(&sp68, -1);
         if (fn_800DDC04(*(void **)((u8 *)arg0 + 0xDC), &sp8C) != 0) {
@@ -2546,7 +2546,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
         } else {
             f26 = lbl_8036A184;
         }
-        fn_800CB90C(&sp5C, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0xFE);
+        fn_800CB90C(&sp5C, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0xFE);
         String_Assign(&sp8C, &sp5C, 0, -1);
         String_Destroy(&sp5C, -1);
         {
@@ -2561,7 +2561,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
         }
     } else {
         f32 tmp;
-        fn_800CB90C(&sp50, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0xFE);
+        fn_800CB90C(&sp50, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0xFE);
         String_Assign(&sp8C, &sp50, 0, -1);
         String_Destroy(&sp50, -1);
         f28 = *(f32 *)((u8 *)arg0 + 0x48);
@@ -2621,7 +2621,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
 
     {
         f32 tmp;
-        fn_800CB90C(&sp44, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0x535);
+        fn_800CB90C(&sp44, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0x535);
         String_Assign(&sp8C, &sp44, 0, -1);
         String_Destroy(&sp44, -1);
         f28 = *(f32 *)((u8 *)arg0 + 0x48);
@@ -2656,7 +2656,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
         *(u8 *)((u8 *)arg0 + 0x1A4) = 0;
     }
 
-    fn_800CB90C(&sp38, (u8 *)arg0 + 0x154, (char *)&lbl_80273DF8 + 0x53A);
+    fn_800CB90C(&sp38, (u8 *)arg0 + 0x154, (char *)&gActorXmlStrs + 0x53A);
     String_Assign(&sp8C, &sp38, 0, -1);
     String_Destroy(&sp38, -1);
     f28 = *(f32 *)((u8 *)arg0 + 0x48);
@@ -2684,8 +2684,8 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
     *(f32 *)((u8 *)arg0 + 0x4C) = f27;
     *(f32 *)((u8 *)arg0 + 0x50) = f26;
 
-    String_AssignCStr((u8 *)arg0 + 0x160, (char *)&lbl_80273DF8 + 0x1C,
-                strlen((char *)&lbl_80273DF8 + 0x1C));
+    String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x1C,
+                strlen((char *)&gActorXmlStrs + 0x1C));
     String_Destroy(&sp8C, -1);
 }
 #pragma cplusplus reset
@@ -2757,8 +2757,8 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
     s32 a4;
     s8 a5;
 
-    String_Init(&sp24, (char *)lbl_80273DF8 + 0x573, &sp14);
-    String_Init(&sp18, (char *)lbl_80273DF8 + 0x579, &sp10);
+    String_Init(&sp24, (char *)gActorXmlStrs + 0x573, &sp14);
+    String_Init(&sp18, (char *)gActorXmlStrs + 0x579, &sp10);
     a3 = arg3;
     a4 = arg4;
     a5 = arg5;
@@ -2824,9 +2824,9 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
         self[0x1B6] = 0;
         *(s32 *)(self + 0x1B8) = 1;
 
-        String_AssignCStr(self + 0x154, (char *)lbl_80273DF8 + 0x581, strlen((char *)lbl_80273DF8 + 0x581));
-        String_AssignCStr(self + 0x160, (char *)lbl_80273DF8 + 0x1C, strlen((char *)lbl_80273DF8 + 0x1C));
-        String_AssignCStr(self + 0x16C, (char *)lbl_80273DF8 + 0x1C, strlen((char *)lbl_80273DF8 + 0x1C));
+        String_AssignCStr(self + 0x154, (char *)gActorXmlStrs + 0x581, strlen((char *)gActorXmlStrs + 0x581));
+        String_AssignCStr(self + 0x160, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
+        String_AssignCStr(self + 0x16C, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
 
         self[0x1D7] = 1;
         self[0x1D6] = 1;
@@ -2886,7 +2886,7 @@ BOOL fn_80117D80(s32 arg0, s32 arg1)
     if (temp_r3 >= 0) {
         r4_temp = arg0;
         if (r4_temp >= 0) {
-            r31 = (u8 *)lbl_80273DF8 + (arg0 >> 2);
+            r31 = (u8 *)gActorXmlStrs + (arg0 >> 2);
             if (r31 != NULL) {
                 if (temp_r3 < 8) {
                     return (*(u8 *)r31 & (1 << temp_r3)) != 0;

@@ -1450,7 +1450,7 @@ void fn_801B1194(s32 arg0) {
     }
 }
 
-extern s32 lbl_80273DF8[];
+extern s32 gActorXmlStrs[];
 extern u16* lbl_80296128;
 void fn_801B1218(void* arg0, void* arg1) {
     if (arg0 != NULL && arg1 != NULL) {
