@@ -611,7 +611,7 @@ void Map_UpdateCursorMoveLimit(void) {
     }
 }
 
-void fn_800AA4F8(void *arg0) {
+void MapUi_ShowUnitRanges(void *arg0) {
     void fn_80028160(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);

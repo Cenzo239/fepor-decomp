@@ -33,7 +33,7 @@ static inline u8 *map_first(s32 *m) {
 void fn_8002887C(void) {
     s32 Unit_GetMov(void *);
     M2C_UNK fn_8003B69C(void *);
-    M2C_UNK fn_800AA4F8();
+    M2C_UNK MapUi_ShowUnitRanges();
     M2C_UNK fn_800F0C30(u8, u8, s32);
     void *Map_GetCursorUnit();
     u8 temp_r31;
@@ -41,7 +41,7 @@ void fn_8002887C(void) {
     void *temp_r29;
 
     temp_r29 = Map_GetCursorUnit();
-    fn_800AA4F8();
+    MapUi_ShowUnitRanges();
     temp_r31 = M2C_FIELD(temp_r29, u8 *, 0x19F);
     temp_r30 = M2C_FIELD(temp_r29, u8 *, 0x19E);
     fn_800F0C30(temp_r30, temp_r31, Unit_GetMov(temp_r29));
@@ -89,7 +89,7 @@ void fn_800289D0(void *arg0) {
                 if ((u8) *(ptr + 0x16) == 0) {
                     s32 temp_r31 = *(s32*)ptr;
                     fn_8002807C(ptr);
-                    fn_800AA4F8(temp_r31);
+                    MapUi_ShowUnitRanges(temp_r31);
                     Process_Unlink(0x1C); // arg0, not 0
                     return;
                 }
@@ -133,7 +133,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
     void Process_Goto(void *, s32);
     u8 fn_800281F4(void *);
     void Ui_ConfirmUnitAction(void *);
-    void fn_800AA4F8(void *);
+    void MapUi_ShowUnitRanges(void *);
     void fn_800F0C30(u8, u8, s32);
     extern u8 gUiContext[];
     u8 *ctx;
@@ -159,7 +159,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
     if ((u8)fn_800281F4(gUiContext) != 0) {
         Ui_ConfirmUnitAction(gUiContext);
         unit = *(void **)gUiContext;
-        fn_800AA4F8(unit);
+        MapUi_ShowUnitRanges(unit);
         fn_800F0C30(
             ((u8 *)unit)[0x19E],
             ((u8 *)unit)[0x19F],
@@ -215,7 +215,7 @@ common:
 void fn_80028DBC(s32 arg0) {
     void fn_800271C8(void *, s32);
     void fn_8002807C(void *);
-    s32 fn_800AA4F8(s32);
+    s32 MapUi_ShowUnitRanges(s32);
 
     extern u8 gUiContext[];
     u8 *ptr = &gUiContext[0];
@@ -227,7 +227,7 @@ void fn_80028DBC(s32 arg0) {
                 if ((u8) ptr[0x16] == 0) {
                     s32 temp_r31 = *(s32*)ptr;
                     fn_8002807C(ptr);
-                    fn_800AA4F8(temp_r31);
+                    MapUi_ShowUnitRanges(temp_r31);
                     Process_Goto(arg0, 3);
                     return;
                 }
