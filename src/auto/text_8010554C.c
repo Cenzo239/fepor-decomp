@@ -111,7 +111,7 @@ s32 fn_801055B0(s32 arg0) {
         u8 unkF;
         u8 unk10;
     } gUiContext;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s8 temp;
 
     fn_800BEAC0(arg0, gUiContext.unk8, gUiContext.unkF, gUiContext.unk10);
@@ -122,7 +122,7 @@ s32 fn_801055B0(s32 arg0) {
     }
 
     fn_80094A08(gUiContext.unk0, temp);
-    *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000;
+    *(u32 *)(gBattle + 0xCAC) |= 0x2000;
     return 1;
 }
 
@@ -3017,7 +3017,7 @@ void fn_8010AC54(void) {
 
 s32 fn_8010AC58(s32 arg0, s32 arg1) {
     extern u32 lbl_802F757C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     extern u32 lbl_80330E64[];
     
     // Function signature appears to be: s32 fn_8010AC58(s32 arg0, s32 arg1)
@@ -3029,7 +3029,7 @@ s32 fn_8010AC58(s32 arg0, s32 arg1) {
         return 0;
     }
     
-    if ((s32) lbl_80330EAC[arg1] == 0) {
+    if ((s32) gBattle[arg1] == 0) {
         return 0;
     }
     
@@ -4469,7 +4469,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     extern u16 gUnits[];
     extern AiParam lbl_80273BB8;
     extern AiParam lbl_80273BA8;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     AiParam sp28;
     AiParam sp18;
@@ -4644,8 +4644,8 @@ ok_done:
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
-            fn_801A7A68(lbl_80330EAC, &sp28, &sp18);
-            fn_801A49AC(lbl_80330EAC, (s8)slot);
+            fn_801A7A68(gBattle, &sp28, &sp18);
+            fn_801A49AC(gBattle, (s8)slot);
 
             ciff = fn_8003CFF0(arg0, unit);
             if (ciff < 5) {
@@ -4695,7 +4695,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     extern u16 gUnits[];
     extern AiParam lbl_80273B98;
     extern AiParam lbl_80273B88;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     AiParam sp28;
     AiParam sp18;
@@ -4874,8 +4874,8 @@ ok_done:
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
-            fn_801A7A68(lbl_80330EAC, &sp28, &sp18);
-            fn_801A49AC(lbl_80330EAC, (s8)slot);
+            fn_801A7A68(gBattle, &sp28, &sp18);
+            fn_801A49AC(gBattle, (s8)slot);
 
             ciff = fn_8003CFF0(arg0, unit);
             if (ciff < 5) {

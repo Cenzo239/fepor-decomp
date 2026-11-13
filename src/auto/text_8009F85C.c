@@ -1530,7 +1530,7 @@ s32 fn_800A19C0(void) {
     extern u8 lbl_8026D8D8[];
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *temp_r31;
     void *temp_r30;
     u8 *cls;
@@ -1552,8 +1552,8 @@ s32 fn_800A19C0(void) {
         return 6;
     }
     fn_8003E8DC(temp_r30);
-    fn_801A75DC(lbl_80330EAC, temp_r30, -1);
-    fn_801A4958(lbl_80330EAC);
+    fn_801A75DC(gBattle, temp_r30, -1);
+    fn_801A4958(gBattle);
     fn_8019B704(temp_r31, 0);
     return 6;
 }

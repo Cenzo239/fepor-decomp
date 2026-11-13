@@ -325,14 +325,14 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
 #pragma global_optimizer on
 void fn_80083278(void *arg0) {
     void fn_80082298(void *, s32, f32, f32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern f32 lbl_80369430;
     extern f32 lbl_803695C8;
     f32 x;
     f32 y;
     void *mgr;
 
-    mgr = lbl_80330EAC;
+    mgr = gBattle;
     x = lbl_80369430 + *(f32 *)((u8 *)arg0 + 0x14);
     y = lbl_803695C8 + *(f32 *)((u8 *)arg0 + 0x18);
     fn_80082298(mgr, 1, x, y);

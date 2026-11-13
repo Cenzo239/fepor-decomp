@@ -234,7 +234,7 @@ extern s8 lbl_803678BD;
 extern s8 lbl_803678BF;
 extern s32 lbl_8028D788[];
 extern u8 gUnits[]; /* unit table, 0x280 bytes per unit */
-extern u32 lbl_80330EAC[];
+extern u32 gBattle[];
 
 extern u16 lbl_8028E090[];
 extern u16 lbl_8028E148[];
@@ -2823,7 +2823,7 @@ void fn_800CAE9C(void *arg0) {
     u8 Status_Test(void *, s32);
     extern u8 lbl_80367878;
     extern void *lbl_8036787C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     void *tmp;
 
     if (lbl_80367878 != 0) {
@@ -2831,19 +2831,19 @@ void fn_800CAE9C(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(lbl_8036787C, s32 *, 0x2CC);
         return;
     }
-    tmp = M2C_FIELD(lbl_80330EAC, void **, 0x190);
+    tmp = M2C_FIELD(gBattle, void **, 0x190);
     M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(tmp, u8 *, 8);
-    tmp = M2C_FIELD(lbl_80330EAC, void **, 0x470);
+    tmp = M2C_FIELD(gBattle, void **, 0x470);
     M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(tmp, u8 *, 8);
-    if (!(M2C_FIELD(lbl_80330EAC, u32 *, 0xCAC) & 0x20000000)) {
+    if (!(M2C_FIELD(gBattle, u32 *, 0xCAC) & 0x20000000)) {
         M2C_FIELD(arg0, s32 *, 0x274) = 1;
     } else {
         M2C_FIELD(arg0, s32 *, 0x274) = 0;
     }
-    if (Status_Test((u8 *)lbl_80330EAC + 0x1BC, 0x5C) != 0) {
+    if (Status_Test((u8 *)gBattle + 0x1BC, 0x5C) != 0) {
         M2C_FIELD(arg0, u8 *, 0x70) = 1;
     }
-    if (Status_Test((u8 *)lbl_80330EAC + 0x49C, 0x5C) != 0) {
+    if (Status_Test((u8 *)gBattle + 0x49C, 0x5C) != 0) {
         M2C_FIELD(arg0, u8 *, 0x71) = 1;
     }
 }
@@ -2852,7 +2852,7 @@ void fn_800CAF74(void *arg0) {
     extern char lbl_802704F8[];
     extern u8 lbl_80367878;
     extern u8 *lbl_8036787C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     void String_Init(String *, char *, void *);
     String *String_AssignCStr(String *, char *, u32);
     void String_Copy(void *, String *);
@@ -2873,8 +2873,8 @@ void fn_800CAF74(void *arg0) {
     if (lbl_80367878 != 0) {
         p = (char *)lbl_8036787C + 0x268;
         String_AssignCStr(&str, p, strlen(p));
-    } else if ((u8 *)lbl_80330EAC + 0x56C != 0) {
-        obj = *(void **)((u8 *)lbl_80330EAC + 0x56C);
+    } else if ((u8 *)gBattle + 0x56C != 0) {
+        obj = *(void **)((u8 *)gBattle + 0x56C);
         if (obj != 0) {
             ch = obj != 0 ? ((u8 *)obj)[0x15] : 0;
             sprintf(buf, lbl_802704F8 + 0x1B1, (u8)ch + 0x60, UnitRef_GetName());
@@ -2896,7 +2896,7 @@ void fn_800CB070(String *arg0) {
     extern char lbl_802704F8[];
     extern u8 lbl_80367878;
     extern void *lbl_8036787C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     char buf[0x40];
     String str;
     void *scratch;
@@ -2911,7 +2911,7 @@ void fn_800CB070(String *arg0) {
         tmp = (u32)((char *)lbl_8036787C + 0x100);
         String_AssignCStr(&str, (char *)tmp, strlen((char *)tmp));
     } else {
-        slot = (u8 **)((u8 *)lbl_80330EAC + 0x28C);
+        slot = (u8 **)((u8 *)gBattle + 0x28C);
         if (slot != NULL) {
             entry = *slot;
             if (entry != NULL) {
@@ -2934,7 +2934,7 @@ void *fn_800CB27C(void) {
     u8 Status_Test(void *, s32);
     extern u8 lbl_80367878;
     extern u8 *lbl_8036787C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     u8 *base;
     void **slot;
     void *obj;
@@ -2950,7 +2950,7 @@ void *fn_800CB27C(void) {
         return 0;
     }
 
-    base = (u8 *)lbl_80330EAC;
+    base = (u8 *)gBattle;
     slot = (void **)(base + 0x56C);
     bits = *Item_GetFlagsPtr(slot);
     if ((bits & 0x20000000000ULL) != 0) {
@@ -2998,7 +2998,7 @@ void fn_800CB484(void *arg0, void *arg1)
     if (lbl_80367878 != 0) {
         String_Init(arg0, (char *)lbl_8036787C + 0x2D0, &scratch10);
     } else {
-        ptr = *(char ***)((u8 *)lbl_80330EAC + 0x74C);
+        ptr = *(char ***)((u8 *)gBattle + 0x74C);
         if (ptr == NULL) {
             String_Init(arg0, lbl_802704F8 + 0x1B0, &scratchC);
         } else {
@@ -3031,7 +3031,7 @@ void fn_800CB538(void *arg0, void *arg1)
     if (lbl_80367878 != 0) {
         String_Init(arg0, (char *)lbl_8036787C + 0x168, &scratchC);
     } else {
-        source = **(char ***)((u8 *)lbl_80330EAC + 0x46C);
+        source = **(char ***)((u8 *)gBattle + 0x46C);
 
         String_Init(&temp, source, &scratch8);
 
@@ -3063,7 +3063,7 @@ void fn_800CB5CC(void *arg0, void *arg1)
     if (lbl_80367878 != 0) {
         String_Init(arg0, (char *)lbl_8036787C, &scratchC);
     } else {
-        source = **(char ***)((u8 *)lbl_80330EAC + 0x18C);
+        source = **(char ***)((u8 *)gBattle + 0x18C);
 
         String_Init(&temp, source, &scratch8);
 
@@ -3327,7 +3327,7 @@ extern "C" void fn_800CC3D8(void *arg0, s32 arg1) {
     extern void *gGame;
     extern u8 lbl_80367878;
 s32 fn_80165B14(void *);
-extern u32 lbl_80330EAC[];
+extern u32 gBattle[];
     String str80, str74, str68, str5C, str50, str44, str38, str2C, str20;
     void *alloc1C, *alloc18, *alloc14, *alloc10, *allocC, *alloc8;
     void *self;
@@ -3347,7 +3347,7 @@ if(*(void **)((u8 *)self+0x80)&&fn_80165B14(*(void **)((u8 *)self+0x80))){
 String_Destroy(&str68,-1);String_Destroy(&str74,-1);String_Destroy(&str80,-1);return;
 }
 if(lbl_80367878)String_Assign(&str80,(String *)(*(u8 **)((u8 *)self+0x1DC)+arg1*12),0,-1);
-else {obj=*(void **)((u8 *)lbl_80330EAC+0xCB4);String_AssignCStr(&str80,(char *)obj,strlen((char *)obj));}
+else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,strlen((char *)obj));}
     ((Host *)*(void **)((u8 *)self + 4))->v6((char *)lbl_802704F8 + 0x30F, (char *)lbl_802704F8 + 0x315);
     ((Host *)*(void **)((u8 *)self + 4))->v6((char *)lbl_802704F8 + 0x31A, (char *)lbl_802704F8 + 0x320);
     String_AssignCStr(&str74, &lbl_802704F8[0x324], strlen((char *)lbl_802704F8 + 0x324));
@@ -4209,7 +4209,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     extern char lbl_802704F8[];
     extern void *lbl_8028DA94[];
     extern void *lbl_8028DAA4[];
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     extern u8 lbl_80367878;
     extern u8 *lbl_8036787C;
 
@@ -4281,9 +4281,9 @@ extern "C" void fn_800CF5B8(void *arg0) {
         r19 = (s8)*(s16 *)((u8 *)stream + (*stream << 2) + 6);
         *stream += 1;
         r18 = (s8)*(s16 *)((u8 *)stream + (*stream << 2) + 6);
-        tmp = *(void **)((u8 *)lbl_80330EAC + 0x190);
+        tmp = *(void **)((u8 *)gBattle + 0x190);
         r17 = *((u8 *)tmp + 8);
-        tmp = *(void **)((u8 *)lbl_80330EAC + 0x470);
+        tmp = *(void **)((u8 *)gBattle + 0x470);
         r16 = *((u8 *)tmp + 8);
     }
 
@@ -4890,7 +4890,7 @@ extern "C" void *GameScene_Create(void *arg0)
     extern void *lbl_803682B8;
     extern void *gGame;
     extern void *lbl_8036787C;
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
 
     extern f32 lbl_80369E20;
     extern f32 lbl_80369E24;
@@ -5614,14 +5614,14 @@ extern "C" void *GameScene_Create(void *arg0)
         configuration = (u8 *)lbl_8036787C;
         obj[0x278] = configuration[0x450];
     } else {
-        obj[0x278] = (u8)((*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) >> 30) & 1);
+        obj[0x278] = (u8)((*(u32 *)((u8 *)gBattle + 0xCAC) >> 30) & 1);
     }
 
     if (lbl_80367878 != 0) {
         configuration = (u8 *)lbl_8036787C;
         p[0x228 / 4] = *(u32 *)(configuration + 0x44C);
     } else {
-        p[0x228 / 4] = *(u32 *)((u8 *)lbl_80330EAC + 0xCA8);
+        p[0x228 / 4] = *(u32 *)((u8 *)gBattle + 0xCA8);
     }
 
     elapsed = OSGetTime() - timestamp;
@@ -5647,7 +5647,7 @@ extern "C" void *GameScene_Create(void *arg0)
             (*(u32 *)(configuration + 0x438) * 0xC)
         );
     } else {
-        configurationText = *(char **)((u8 *)lbl_80330EAC + 0xCB0);
+        configurationText = *(char **)((u8 *)gBattle + 0xCB0);
     }
 
     String_Init(&configurationString, configurationText, &configurationScratch);
@@ -5699,7 +5699,7 @@ extern "C" void *GameScene_Create(void *arg0)
 
     /* First lookup: target uses the default configuration table
        only when lbl_80367878 is zero. */
-    lookupFallback = (void *)((u8 *)lbl_80330EAC + 0x28C);
+    lookupFallback = (void *)((u8 *)gBattle + 0x28C);
     if (lbl_80367878 != 0) {
         lookupFallback = 0;
     }
@@ -5710,7 +5710,7 @@ extern "C" void *GameScene_Create(void *arg0)
 
     /* Second lookup. The existing fn_800CB27C declaration returns
        void, so its return value cannot be used directly in C. */
-    lookupFallback = (void *)((u8 *)lbl_80330EAC + 0x56C);
+    lookupFallback = (void *)((u8 *)gBattle + 0x56C);
     if (lbl_80367878 != 0) {
         lookupFallback = 0;
     }
@@ -5720,7 +5720,7 @@ extern "C" void *GameScene_Create(void *arg0)
     );
 
     /* Next checkpoint: third top-level lookup. */
-    lookupFallback = (void *)((u8 *)lbl_80330EAC + 0x84C);
+    lookupFallback = (void *)((u8 *)gBattle + 0x84C);
     if (lbl_80367878 != 0) {
         lookupFallback = 0;
     }
@@ -6004,7 +6004,7 @@ extern "C" void *GameScene_Create(void *arg0)
     if (lbl_80367878 != 0) {
         assignedText0 = lbl_802704F8 + 0x1BC;
     } else {
-        assignedText0 = *(char **)((u8 *)lbl_80330EAC + 0x188);
+        assignedText0 = *(char **)((u8 *)gBattle + 0x188);
     }
     assignedText0 = fn_800A8A88(assignedText0);
     String_Init(&assignedName0, assignedText0, &assignedScratch0);
@@ -6019,7 +6019,7 @@ extern "C" void *GameScene_Create(void *arg0)
     if (lbl_80367878 != 0) {
         assignedText2 = lbl_802704F8 + 0x1BC;
     } else {
-        assignedText2 = *(char **)((u8 *)lbl_80330EAC + 0x468);
+        assignedText2 = *(char **)((u8 *)gBattle + 0x468);
     }
     assignedText2 = fn_800A8A88(assignedText2);
     String_Init(&assignedName2, assignedText2, &assignedScratch2);
@@ -6042,7 +6042,7 @@ extern "C" void *GameScene_Create(void *arg0)
             (u8 *)lbl_8036787C + 0x454;
     } else {
         *(void **)(obj + 0x1FC) =
-            (u8 *)lbl_80330EAC + 0x8A0;
+            (u8 *)gBattle + 0x8A0;
     }
 
     /* Next checkpoint: initialize the selected configuration block. */
@@ -18722,7 +18722,7 @@ void fn_800F60D4(void *arg0,s32 *arg1){
 void *Res_GetByName(void *);s32 fn_800F6F94(void *,s32);
 s8 fn_8003B2D0(void *);s8 fn_800386E0(void *);
 u8 Allegiance_Compare(void *,void *);
-extern u32 lbl_80330EAC[];
+extern u32 gBattle[];
 extern u8 lbl_80272F44[],gBattleMap[],gUnits[],gBattleState[];
 extern f32 lbl_8036A068,lbl_8036A06C;
 f32 maxhp,amount;
@@ -18735,7 +18735,7 @@ s32 total;
 u8 *unit;
 cfg=Res_GetByName(M2C_FIELD(arg0,void **,0x244));
 score=fn_800F6F94(cfg,1);
-unit=(u8 *)lbl_80330EAC+0x2E0;
+unit=(u8 *)gBattle+0x2E0;
 maxhp=(f32)fn_8003B2D0(unit);
 remaining=fn_8003B2D0(unit)-(s8)unit[0x1A8];
 amount=(f32)remaining;
@@ -18746,14 +18746,14 @@ p=lbl_80272F44;
 total=0;
 for(;(s32)p[0]!=0x7F;p+=3){
 outside=0;
-x=(s16)((s8)p[0]+(s8)((u8 *)lbl_80330EAC)[0x19E]);
-y=(s16)((s8)p[1]+(s8)((u8 *)lbl_80330EAC)[0x19F]);
+x=(s16)((s8)p[0]+(s8)((u8 *)gBattle)[0x19E]);
+y=(s16)((s8)p[1]+(s8)((u8 *)gBattle)[0x19F]);
 if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<y)outside=1;
 if(!outside){
 id=gBattleMap[(s8)x+((s8)y<<6)+0xD];
 if(id){
 if(id)other=gUnits+(id-1)*0x280;else other=0;
-if(relation_is_one(M2C_FIELD(M2C_FIELD(lbl_80330EAC,void **,0x280),void **,0x190),M2C_FIELD(other,void **,0x190))==0)total+=(s8)p[2];
+if(relation_is_one(M2C_FIELD(M2C_FIELD(gBattle,void **,0x280),void **,0x190),M2C_FIELD(other,void **,0x190))==0)total+=(s8)p[2];
 }
 }
 }
@@ -18793,7 +18793,7 @@ s16 fn_800F833C(void *);
 void *fn_800F8344(void *);
 void *fn_800F834C(void *);
 f64 fmod(f64, f64);
-extern u32 lbl_80330EAC[];
+extern u32 gBattle[];
 extern s32 lbl_80366E6C;
 extern f32 lbl_8036A06C, lbl_8036A078, lbl_8036A07C, lbl_8036A080, lbl_8036A090;
 extern f64 lbl_8036A088;
@@ -18827,14 +18827,14 @@ extern f64 lbl_8036A088;
     void *temp_r3;
     s32 var_r31;
 
-    base = (u8 *)lbl_80330EAC;
+    base = (u8 *)gBattle;
     unit2 = base + 0x2E0;
     var_r31 = 0;
     list = fn_801A7FF4(unit2);
     uy = unit2[0x19F];
     ux = unit2[0x19E];
-    by = ((u8 *)lbl_80330EAC)[0x19F];
-    bx = ((u8 *)lbl_80330EAC)[0x19E];
+    by = ((u8 *)gBattle)[0x19F];
+    bx = ((u8 *)gBattle)[0x19E];
     dy = fn_80230BCC((s8)by - (s8)uy);
     dist = fn_80230BCC((s8)bx - (s8)ux);
     wpn = *list;
@@ -18889,8 +18889,8 @@ extern f64 lbl_8036A088;
     if (arg1 != 0) {
         var_r31 = (s32)(lbl_8036A06C * ((f32)var_r31 * (f32)*(s8 *)((u8 *)arg0 + 0xB)));
         if (var_r31 <= 0) {
-            temp_r30 = fn_800F834C(lbl_80330EAC);
-            temp_r31 = fn_800F8344(lbl_80330EAC);
+            temp_r30 = fn_800F834C(gBattle);
+            temp_r31 = fn_800F8344(gBattle);
             arg0 = (void *)((s16)fn_800F833C(temp_r31) + 4);
             flag2 = (s16)fn_800F833C(temp_r30) >= (s32)arg0;
             temp_ret = fn_800F8328(Item_GetFlagsPtr(fn_801A7FF4(temp_r30)), 0x20ULL);
@@ -18937,7 +18937,7 @@ void *fn_800F8344(void *);
 void *fn_800F834C(void *);
 u8 fn_800F8350(void *);
 f64 fmod(f64,f64);
-extern u32 lbl_80330EAC[];
+extern u32 gBattle[];
 extern s32 lbl_80366E68;
 extern f32 lbl_8036A06C,lbl_8036A078,lbl_8036A07C,lbl_8036A080,lbl_8036A090;
 extern f64 lbl_8036A098;
@@ -18962,11 +18962,11 @@ extern f64 lbl_8036A098;
     u8 temp_r4;
     void *temp_r3;
 
-    base = (u8 *)lbl_80330EAC;
+    base = (u8 *)gBattle;
     temp_r29 = *(s16 *)(base + 0x29C) >= (s32)(*(s16 *)(base + 0x57C) + 4);
     temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(base));
     temp_r4 = temp_r29 | (u8)((*(u64 *)temp_r3 & 0x20ULL) != 0);
-    var_r30 = *(s16 *)((u8 *)lbl_80330EAC + 0x298) - *(s16 *)(base + 0x57A);
+    var_r30 = *(s16 *)((u8 *)gBattle + 0x298) - *(s16 *)(base + 0x57A);
     if (var_r30 < 0) {
         var_r30 = 0;
     }
@@ -18993,8 +18993,8 @@ extern f64 lbl_8036A098;
     if (arg1 != 0) {
         var_r30 = (s32) (lbl_8036A06C * ((f32) var_r30 * (f32) *(s8 *)((u8 *)arg0 + 5)));
         if (var_r30 <= 0) {
-            temp_r29_2 = fn_800F834C(lbl_80330EAC);
-            temp_r30 = fn_800F8344(lbl_80330EAC);
+            temp_r29_2 = fn_800F834C(gBattle);
+            temp_r30 = fn_800F8344(gBattle);
             var_r27 = 0;
             if (fn_800F73EC(temp_r29_2, temp_r30, fn_801A7FF4(temp_r30)) != 0) {
                 if (fn_800F8350(fn_801A7FF4(temp_r30)) != 0) {
@@ -19124,8 +19124,8 @@ extern "C" s32 fn_800F773C(s32 arg0, void *arg1) {
     b.b4[0] = M2C_FIELD(arg1, u8 *, 0);
     b.b4[1] = M2C_FIELD(arg1, u8 *, 1);
     b.b4[2] = M2C_FIELD(arg1, u16 *, 2);
-    fn_801A7A68(lbl_80330EAC, &b, &a);
-    fn_801A6F34(lbl_80330EAC, gUiContext[8]);
+    fn_801A7A68(gBattle, &b, &a);
+    fn_801A6F34(gBattle, gUiContext[8]);
     fn_800F6550(arg0, arg1);
     return 1;
 }
@@ -21355,7 +21355,7 @@ void fn_800FD774(void *arg0) {
     void fn_801A7A68(void *, void *, void *);
     extern u8 gBattleMap[];
     extern u8 lbl_8032B5E0[];
-    extern u32 lbl_80330EAC[];
+    extern u32 gBattle[];
     extern u8 gUnits[];
     extern u32 lbl_80273220[];
     extern u32 lbl_80273210[];
@@ -21376,7 +21376,7 @@ void fn_800FD774(void *arg0) {
     u16 spA;
     u16 sp8;
     u8 *map = gBattleMap;
-    u8 *ui = (u8 *)lbl_80330EAC;
+    u8 *ui = (u8 *)gBattle;
     OutEnt *out = (OutEnt *)lbl_8032B5E0;
     void *self = arg0;
     s8 y;
@@ -21494,14 +21494,14 @@ void fn_800FD774(void *arg0) {
                             sp2C.x = ((u8 *)unit)[0x19E];
                             sp2C.y = ((u8 *)unit)[0x19F];
                             sp2C.z = (u8)bestHi;
-                            fn_801A7A68(lbl_80330EAC, &sp2C, &sp3C);
-                            fn_801A6F34(lbl_80330EAC, 0xF);
+                            fn_801A7A68(gBattle, &sp2C, &sp3C);
+                            fn_801A6F34(gBattle, 0xF);
                             diff = *(s16 *)(ui + 0x298) - *(s16 *)(ui + 0x57A);
                             if (diff < 0) {
                                 diff = 0;
                             }
-                            f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)lbl_80330EAC + 0x2A2);
-                            if (*(s16 *)((u8 *)lbl_80330EAC + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
+                            f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)gBattle + 0x2A2);
+                            if (*(s16 *)((u8 *)gBattle + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
                                 f2 = lbl_8036A0B4 - f1;
                                 diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2 * f2));
                             } else {
@@ -21523,14 +21523,14 @@ void fn_800FD774(void *arg0) {
                             spC.x = ((u8 *)unit)[0x19E];
                             spC.y = ((u8 *)unit)[0x19F];
                             spC.z = (u8)bestLo;
-                            fn_801A7A68(lbl_80330EAC, &spC, &sp1C);
-                            fn_801A6F34(lbl_80330EAC, 0xF);
+                            fn_801A7A68(gBattle, &spC, &sp1C);
+                            fn_801A6F34(gBattle, 0xF);
                             diff = *(s16 *)(ui + 0x298) - *(s16 *)(ui + 0x57A);
                             if (diff < 0) {
                                 diff = 0;
                             }
-                            f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)lbl_80330EAC + 0x2A2);
-                            if (*(s16 *)((u8 *)lbl_80330EAC + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
+                            f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)gBattle + 0x2A2);
+                            if (*(s16 *)((u8 *)gBattle + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
                                 f2 = lbl_8036A0B4 - f1;
                                 diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2 * f2));
                             } else {

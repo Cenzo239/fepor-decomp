@@ -3265,8 +3265,8 @@ void fn_80025FA4(void *arg0) {
 }
 
 void fn_80025FC8(void) {
-    extern void* lbl_80330EAC[];
-    fn_801A4BE0(lbl_80330EAC);
+    extern void* gBattle[];
+    fn_801A4BE0(gBattle);
 }
 
 void fn_80025FF0(void *arg0) {
@@ -3274,18 +3274,18 @@ void fn_80025FF0(void *arg0) {
     M2C_UNK fn_801A4958(M2C_UNK *);
     M2C_UNK fn_801A4A88(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_801A75DC(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_80330EAC[];
-    fn_801A75DC(lbl_80330EAC, M2C_FIELD(arg0, s32 *, 0x30), -1);
-    fn_801A4958(lbl_80330EAC);
-    fn_801A4A88(lbl_80330EAC, -0xA);
+    extern M2C_UNK gBattle[];
+    fn_801A75DC(gBattle, M2C_FIELD(arg0, s32 *, 0x30), -1);
+    fn_801A4958(gBattle);
+    fn_801A4A88(gBattle, -0xA);
     fn_8019B704(arg0, 0);
 }
 
 void fn_80026054(s32 arg0) {
     M2C_UNK fn_800BEAC0(s32, M2C_UNK, u8, u8);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
-    if ((s8)lbl_80330EAC[0x488] == 0) {
+    extern u8 gBattle[];
+    if ((s8)gBattle[0x488] == 0) {
         fn_800BEAC0(arg0, 0, gUiContext[0xF], gUiContext[0x10]);
     }
 }
@@ -3294,22 +3294,22 @@ s32 fn_8002609C(s32 arg0)
 {
     void fn_801EDA48(s32, s32);
     void fn_801EDA88(s32, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 *chosen;
     u8 *second;
 
     chosen = NULL;
-    if (*(s32 *)(lbl_80330EAC + 0x1A0) & 0x40000) {
-        chosen = lbl_80330EAC;
+    if (*(s32 *)(gBattle + 0x1A0) & 0x40000) {
+        chosen = gBattle;
     }
-    second = lbl_80330EAC + 0x2E0;
+    second = gBattle + 0x2E0;
     if (*(s32 *)(second + 0x1A0) & 0x40000) {
         chosen = second;
     }
     if (chosen == NULL) {
         return 0;
     }
-    if (*(s32 *)(lbl_80330EAC + 0xCAC) & 0x10000000) {
+    if (*(s32 *)(gBattle + 0xCAC) & 0x10000000) {
         fn_801EDA48(*(s32 *)(chosen + 0x280), arg0);
     } else {
         fn_801EDA88(*(s32 *)(chosen + 0x280), arg0);
@@ -3318,18 +3318,18 @@ s32 fn_8002609C(s32 arg0)
 }
 
 void fn_80026130(void) {
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void fn_801A4BE0(void *);
     void fn_80050C90(void *);
     u32 tmp;
 
-    fn_801A4BE0(lbl_80330EAC);
-    if (*(u32 *)(lbl_80330EAC + 0xcac) & 0x10) {
-        tmp = *(u32 *)(lbl_80330EAC + 0x280);
+    fn_801A4BE0(gBattle);
+    if (*(u32 *)(gBattle + 0xcac) & 0x10) {
+        tmp = *(u32 *)(gBattle + 0x280);
         if (tmp != 0) {
             fn_80050C90((void *)tmp);
         }
-        tmp = *(u32 *)(lbl_80330EAC + 0x560);
+        tmp = *(u32 *)(gBattle + 0x560);
         if (tmp != 0) {
             fn_80050C90((void *)tmp);
         }
@@ -3343,11 +3343,11 @@ void fn_80026194(s32 arg0) {
     void fn_8019BE54(s32, void (*)(void));
     void fn_80026204(void);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
-    fn_801A75DC(lbl_80330EAC, *(void **)gUiContext, -1);
-    fn_801A4958(lbl_80330EAC);
-    fn_801A48A4(lbl_80330EAC, 0xA);
+    fn_801A75DC(gBattle, *(void **)gUiContext, -1);
+    fn_801A4958(gBattle);
+    fn_801A48A4(gBattle, 0xA);
     fn_8019BE54(arg0, fn_80026204);
 }
 
@@ -3400,7 +3400,7 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
     extern u8 lbl_80268E40[];
     extern s32 lbl_802EF4E0[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     s32 *self;
     s32 other;
@@ -3429,8 +3429,8 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
         ((u8 *)entry)[2] = b2;
         ((u8 *)entry)[3] = b3;
     }
-    fn_801A75DC(lbl_80330EAC, *(void **)gUiContext, -1);
-    fn_801A4958(lbl_80330EAC);
+    fn_801A75DC(gBattle, *(void **)gUiContext, -1);
+    fn_801A4958(gBattle);
     fn_8019C0C0(other, fn_80026374);
 }
 #pragma use_lmw_stmw reset
@@ -3477,15 +3477,15 @@ void fn_800264BC(s32 *arg0, s32 arg1) {
     void fn_801A75DC(void *, void *, s32);
     extern u8 lbl_80268E40[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void fn_80026544(void);
 
     s32 temp_r31;
 
     temp_r31 = *arg0;
     fn_8002AB9C(temp_r31, Item_GetByIid(lbl_80268E40 + 0x1AF));
-    fn_801A75DC(lbl_80330EAC, *(void **)gUiContext, -1);
-    fn_801A4958(lbl_80330EAC);
+    fn_801A75DC(gBattle, *(void **)gUiContext, -1);
+    fn_801A4958(gBattle);
     fn_8019C110(arg1, fn_80026544);
 }
 
@@ -3506,7 +3506,7 @@ void fn_80026570(void *arg0) {
     void fn_8002662C(void);
     extern s32 lbl_802EF4E0[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s32 *p;
     s32 idx;
     void *obj;
@@ -3514,24 +3514,24 @@ void fn_80026570(void *arg0) {
     p = lbl_802EF4E0;
     idx = *(s32 *)((u8 *)arg0 + 0x60);
     if (idx == *p) {
-        fn_801A75DC(lbl_80330EAC, *(void **)gUiContext, -1);
-        fn_801A4958(lbl_80330EAC);
+        fn_801A75DC(gBattle, *(void **)gUiContext, -1);
+        fn_801A4958(gBattle);
         return;
     }
     fn_8002F658(p, idx);
     obj = fn_8002F740();
-    fn_801A75DC(lbl_80330EAC, obj, -1);
-    fn_801A4958(lbl_80330EAC);
+    fn_801A75DC(gBattle, obj, -1);
+    fn_801A4958(gBattle);
     fn_8019C070(arg0, fn_8002662C);
     *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
     Process_Goto(arg0, 0);
 }
 
 void fn_8002662C(void) {
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
-    fn_80104480(lbl_80330EAC + 0x1A4);
-    fn_80104480(*(u8 **)(lbl_80330EAC + 0x280) + 0x1A4);
+    fn_80104480(gBattle + 0x1A4);
+    fn_80104480(*(u8 **)(gBattle + 0x280) + 0x1A4);
 }
 
 void fn_8002666C(void *arg0) {
@@ -3543,7 +3543,7 @@ void fn_80026678(void *arg0) {
     void fn_80094ABC(s32, void *, s32, void *);
     void fn_801A4BE0(void *);
     extern u8 lbl_802EF4C8[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     struct { u8 hi:1; u8 flag:1; u8 lo:6; } *bf;
     s32 zero;
     void *temp_r4;
@@ -3558,15 +3558,15 @@ void fn_80026678(void *arg0) {
     bf->flag = zero;
     fn_80094ABC(a0, temp_r4, zero, lbl_802EF4C8);
     fn_800949A4(temp_r31, lbl_802EF4C8[0xA]);
-    fn_801A4BE0(lbl_80330EAC);
+    fn_801A4BE0(gBattle);
 }
 
 void fn_800266E4(s32 arg0) {
     extern void *gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void fn_80034A8C(void *, void *, s32, s32, s32);
 
-    fn_80034A8C(lbl_80330EAC, gUiContext[0], 0xA, arg0, 1);
+    fn_80034A8C(gBattle, gUiContext[0], 0xA, arg0, 1);
 }
 
 void fn_80026724(void *arg0) {
@@ -3642,7 +3642,7 @@ s32 fn_800268A8(s32 arg0) {
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
     void *fn_801A4624(void *);
     void *fn_801A46BC(void *);
-    extern M2C_UNK lbl_80330EAC[];
+    extern M2C_UNK gBattle[];
     u8 sp9;
     u8 sp8;
     u8 temp_r7;
@@ -3653,14 +3653,14 @@ s32 fn_800268A8(s32 arg0) {
     s8 idx1;
     s8 idx2;
 
-    temp_r3 = fn_801A46BC(lbl_80330EAC);
+    temp_r3 = fn_801A46BC(gBattle);
     if (temp_r3 == 0) {
         return 0;
     }
     if (!(M2C_FIELD(temp_r3, s32 *, 0x1A0) & 2)) {
         return 0;
     }
-    temp_r3_2 = fn_801A4624(lbl_80330EAC);
+    temp_r3_2 = fn_801A4624(gBattle);
     temp_r7 = M2C_FIELD(temp_r3_2, u8 *, 0x198);
     idx1 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19E);
     idx2 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19F);
@@ -3684,10 +3684,10 @@ s32 fn_800269C0(s32 arg0)
     u8 fn_8003C038(void *);
     void fn_80183BE4(void *, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *temp_r31;
 
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x100) {
+    if (*(u32 *)(gBattle + 0xCAC) & 0x100) {
         return 0;
     }
     temp_r31 = *(void **)(gUiContext + 4);
@@ -3725,7 +3725,7 @@ s32 fn_80026A80(s32 arg0) {
 }
 
 s32 fn_80026AF4(s32 arg0) {
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     u8 *base;
     u8 *second;
     u8 *selected;
@@ -3733,13 +3733,13 @@ s32 fn_80026AF4(s32 arg0) {
     void *temp_r4;
 
     selected = NULL;
-    base = (u8 *)lbl_80330EAC;
+    base = (u8 *)gBattle;
     second = base + 0x2E0;
 
     if (*(u8 *)((u8 *)(*(void **)(base + 0x190)) + 8) == 0 && *(u8 *)(base + 0x2C6) != 0) {
         selected = base;
     }
-    if ((*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 1) == 0 && *(u8 *)((u8 *)(*(void **)(second + 0x190)) + 8) == 0 && *(u8 *)(second + 0x2C6) != 0) {
+    if ((*(u32 *)((u8 *)gBattle + 0xCAC) & 1) == 0 && *(u8 *)((u8 *)(*(void **)(second + 0x190)) + 8) == 0 && *(u8 *)(second + 0x2C6) != 0) {
         selected = second;
     }
     if (selected == NULL) {
@@ -3765,7 +3765,7 @@ s32 fn_80026D24(s32 arg0) {
     void fn_8007386C(s32, void *, s32);
     void *fn_801A4624(void *);
     s32 fn_801A46BC(void *);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 sp8[8];
     s32 handle;
     s32 i;
@@ -3773,10 +3773,10 @@ s32 fn_80026D24(s32 arg0) {
     void *entry;
     void *sub;
 
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x100) {
+    if (*(u32 *)(gBattle + 0xCAC) & 0x100) {
         return 0;
     }
-    obj = fn_801A4624(lbl_80330EAC);
+    obj = fn_801A4624(gBattle);
     if (obj == NULL) {
         return 0;
     }
@@ -3784,7 +3784,7 @@ s32 fn_80026D24(s32 arg0) {
     if (*(u8 *)((u8 *)sub + 8) != 0) {
         return 0;
     }
-    handle = fn_801A46BC(lbl_80330EAC);
+    handle = fn_801A46BC(gBattle);
     for (i = 0; i < 8; i++) {
         entry = Unit_GetItemSlot(handle, i);
         if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
@@ -4068,12 +4068,12 @@ void fn_800285C0(void *arg0) {
 #pragma global_optimizer reset
 void fn_800285EC(void) {
     extern u8 lbl_80367707;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u32 flags;
     u8 *base;
 
     if (lbl_80367707 == 0) {
-        base = lbl_80330EAC;
+        base = gBattle;
         flags = *(u32 *)(base + 0xCAC);
         if ((flags & 0x80000000) != 0) {
             fn_80098A9C();
@@ -4108,18 +4108,18 @@ void fn_80028694(void) {
 }
 
 void fn_800286C8(void *arg0) {
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void Process_Goto(void *, s32);
     void *fn_801A46BC(void *);
     void fn_8004B1B4(s32);
     u32 v;
     void *p;
 
-    v = *(u32 *)(lbl_80330EAC + 0xcac);
+    v = *(u32 *)(gBattle + 0xcac);
     if ((v & 0x10) && (v & 0x10000000)) {
         Process_Goto(arg0, 0x63);
     }
-    p = fn_801A46BC(lbl_80330EAC);
+    p = fn_801A46BC(gBattle);
     if (p != 0) {
         fn_8004B1B4(*(s32 *)((u8 *)p + 0x280));
     }
@@ -4188,7 +4188,7 @@ s32 func_80025338(struct Unit* unit)
 #include "global.h"
 #include "ef.h"
 
-extern u8 lbl_80330EAC[0x1000];
+extern u8 gBattle[0x1000];
 extern u8 lbl_80268E40[];
 extern u16 lbl_80368DA0;
 extern u16 lbl_80368DA4;

@@ -102,13 +102,13 @@ s32 fn_801A2C30(s32 arg0) {
     void fn_80036150(void *);
     void fn_8019C85C(s32, s32);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     u8 *base;
 
-    fn_801A75DC(lbl_80330EAC, *(s32 *)gUiContext, -1);
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
-    fn_80036150(lbl_80330EAC);
-    base = (u8 *)lbl_80330EAC;
+    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_80036150(gBattle);
+    base = (u8 *)gBattle;
     ((struct { u8 pad:3; u8 mid:3; u8 lo:2; } *)(base + 0x1A6))->mid = 4;
     fn_8019C85C(arg0, 0);
     return 0;
@@ -184,12 +184,12 @@ s32 fn_801A2F54(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     extern void fn_801A2FE0;
 
-    fn_801A75DC(lbl_80330EAC, *(s32 *)gUiContext, -1);
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
-    fn_80036150(lbl_80330EAC);
+    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A2FE0);
     return 0;
 }
@@ -200,7 +200,7 @@ void fn_801A2FE0(void) {
     void fn_800381EC(void *, s8);
     void fn_80104480(void *);
     extern u8 gUnits[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 sp8[8];
     void *unit;
     s32 i;
@@ -218,8 +218,8 @@ void fn_801A2FE0(void) {
             fn_80104480((u8 *)unit + 0x1A4);
         }
     }
-    fn_800381EC(lbl_80330EAC, (s8)fn_8003B2D0(lbl_80330EAC));
-    fn_80104480(lbl_80330EAC + 0x1A4);
+    fn_800381EC(gBattle, (s8)fn_8003B2D0(gBattle));
+    fn_80104480(gBattle + 0x1A4);
 }
 
 s32 fn_801A30B8(void) {
@@ -233,14 +233,14 @@ s32 fn_801A30C0(s32 arg0) {
     void fn_80036150(void *);
     void fn_8019BCC0(s32, s32, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 *ctx;
 
     ctx = gUiContext;
     Unit_SetMapPos(*(void **)(ctx + 4), ctx[0xF], ctx[0x10]);
-    fn_801A7794(lbl_80330EAC, *(void **)ctx, *(void **)(ctx + 4));
-    fn_801A49AC(lbl_80330EAC, ctx[0xA]);
-    fn_80036150(lbl_80330EAC);
+    fn_801A7794(gBattle, *(void **)ctx, *(void **)(ctx + 4));
+    fn_801A49AC(gBattle, ctx[0xA]);
+    fn_80036150(gBattle);
     fn_8019BCC0((s8)ctx[0xF], (s8)ctx[0x10], arg0);
     return 0;
 }
@@ -267,7 +267,7 @@ s32 fn_801A31C8(s32 arg0) {
     void fn_8019BC50(s8, s8, s32);
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 sp9;
     u8 sp8;
     u8 *map;
@@ -285,9 +285,9 @@ s32 fn_801A31C8(s32 arg0) {
     map[(s8)sp9 + ((s8)sp8 << 6) + 0xD] = 0xFF;
     fn_8003CCB0(other, &sp9, &sp8);
     Unit_SetMapPos(other, sp9, sp8);
-    fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)(ctx + 4));
-    fn_801A49AC(lbl_80330EAC, gUiContext[0xA]);
-    fn_80036150(lbl_80330EAC);
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)(ctx + 4));
+    fn_801A49AC(gBattle, gUiContext[0xA]);
+    fn_80036150(gBattle);
     x = sp9;
     a = arg0;
     y = sp8;
@@ -309,14 +309,14 @@ s32 fn_801A32F8(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     u8 *base;
 
-    fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
-    base = (u8 *)lbl_80330EAC;
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
+    base = (u8 *)gBattle;
     ((struct { u8 hi:3; u8 lo:5; } *)(base + 0x486))->hi = 7;
-    fn_80036150(lbl_80330EAC);
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
@@ -332,17 +332,17 @@ s32 fn_801A3390(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
 
-    fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
-        fn_801A4A24(lbl_80330EAC, 1);
+        fn_801A4A24(gBattle, 1);
     } else {
-        fn_801A4A24(lbl_80330EAC, 0);
+        fn_801A4A24(gBattle, 0);
     }
-    fn_80036150(lbl_80330EAC);
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
@@ -358,22 +358,22 @@ s32 fn_801A3478(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 *ctx;
     u8 *base;
 
     ctx = gUiContext;
-    fn_801A7794(lbl_80330EAC, *(void **)ctx, *(void **)(ctx + 4));
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_801A7794(gBattle, *(void **)ctx, *(void **)(ctx + 4));
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)(ctx + 4))) != 0
         && fn_8003C7D0(*(void **)(ctx + 4)) == 0) {
-        base = (u8 *)lbl_80330EAC;
+        base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
-        fn_801A4A24(lbl_80330EAC, 1);
+        fn_801A4A24(gBattle, 1);
     } else {
-        fn_801A4A24(lbl_80330EAC, 0);
+        fn_801A4A24(gBattle, 0);
     }
-    fn_80036150(lbl_80330EAC);
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
@@ -389,20 +389,20 @@ s32 fn_801A3570(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     u8 *base;
 
-    fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
-        base = (u8 *)lbl_80330EAC;
+        base = (u8 *)gBattle;
         ((struct { u16 hi:6; u16 mid:3; u16 lo:7; } *)(base + 0x484))->mid = 5;
-        fn_801A4A24(lbl_80330EAC, 1);
+        fn_801A4A24(gBattle, 1);
     } else {
-        fn_801A4A24(lbl_80330EAC, 0);
+        fn_801A4A24(gBattle, 0);
     }
-    fn_80036150(lbl_80330EAC);
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
@@ -421,23 +421,23 @@ s32 fn_801A36A0(s32 arg0) {
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     extern void fn_801A372C;
 
-    fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
-    fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
-    fn_80036150(lbl_80330EAC);
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
+    fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A372C);
     return 0;
 }
 
-extern u16 lbl_80330EAC[];
+extern u16 gBattle[];
 void fn_801A372C(void) {
     void fn_80104480(void *);
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
     u8 *temp_r31;
 
-    temp_r31 = (u8 *)lbl_80330EAC;
+    temp_r31 = (u8 *)gBattle;
     fn_80104480(temp_r31 + 0x484);
     fn_80104480((u8 *)*(void **)(temp_r31 + 0x560) + 0x1A4);
 }
@@ -1365,7 +1365,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     void **fn_801A7FF4(void *);
     void fn_801A8010(void *);
     extern u8 lbl_802EFDB8[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
 
     u8 *tbl;
     u16 *fl;
@@ -1426,7 +1426,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             } else {
                 chance = 0x32;
             }
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(chance);
@@ -1445,7 +1445,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x30) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
             half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1467,7 +1467,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     if (Status_Test((u8 *)arg1 + 0x1BC, 0x5A) != 0) {
         half = fn_8003AF28(arg1);
-        if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+        if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
             ok = 0;
         } else {
             ok = fn_8000CE68(half);
@@ -1497,7 +1497,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (Unit_GetCon(arg1) > tmp_s8 && fn_8003B258(arg1) >= 4
                 && Status_Test((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
                 half = fn_8003AF28(arg1);
-                if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+                if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                     ok = 0;
                 } else {
                     ok = fn_8000CE68(half);
@@ -1519,7 +1519,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 0x2000) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x34) != 0) {
             half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1541,7 +1541,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x39) != 0) {
             half = fn_8003AF28(arg1);
             chance = half / 2;
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(chance);
@@ -1563,7 +1563,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             && Status_Test((u8 *)arg1 + 0x1BC, 0x5F) == 0) {
             half = fn_8003AF28(arg2);
             chance = half / 2;
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(chance);
@@ -1598,7 +1598,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (Status_Test((u8 *)arg2 + 0x1BC, 0x2E) != 0
             && ((s8)*(u8 *)((u8 *)arg2 + 0x1A8) - *(s16 *)((u8 *)arg1 + 0x2AA)) <= 0) {
             half = fn_8003ACF8(arg2);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1634,7 +1634,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 0x80) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2C) != 0) {
             half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1652,7 +1652,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if (Status_Test((u8 *)arg1 + 0x1BC, 0x35) != 0) {
         half = fn_8003AF28(arg1);
         chance = half / 2;
-        if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+        if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
             ok = 0;
         } else {
             ok = fn_8000CE68(chance);
@@ -1667,7 +1667,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 0x100) == 0) {
         if (Status_Test((u8 *)arg2 + 0x1BC, 0x2D) != 0) {
             half = fn_8003AF28(arg2);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1692,7 +1692,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2F) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
             half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
+            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
                 ok = fn_8000CE68(half);
@@ -1727,7 +1727,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     void fn_801A8F80(s32, s32);
 
     extern s8 lbl_80297240[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
 
     s32 self;
     s32 u1;
@@ -1830,7 +1830,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         fn_801A8AF4(u1);
         fn_801A8AF4(u2);
     }
-    if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x100) {
+    if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x100) {
         *(s16 *)(u1 + 0x2A2) = 0x64;
         *(s16 *)(u1 + 0x2A8) = 0;
     }
@@ -1931,7 +1931,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void fn_801A895C(void *, void *);
     u8 fn_801A8A28(void *);
     extern u8 lbl_802EFDB8[];
-    extern u16 lbl_80330EAC[];
+    extern u16 gBattle[];
 
     s32 i;
     s32 lim;
@@ -1974,7 +1974,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             lv = ((u8 *)fn_801A7FF4(unit))[4];
         }
         tbl = lbl_802EFDB8;
-        g = (u8 *)lbl_80330EAC;
+        g = (u8 *)gBattle;
         for (i = 0; i < lim; i++) {
             idx = i + add;
             if ((*(u16 *)(tbl + 0x20 + ((tbl[0x60] + idx) << 1)) & 1) != 0) {

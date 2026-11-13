@@ -1077,7 +1077,7 @@ void fn_8012DFA8(void *arg0) {
     extern u8 gUnitLists[];
     extern u8 gUiContext[];
     extern u8 gBattleState[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern s16 lbl_8036A4E0;
     extern s16 lbl_8036A4E4;
     extern f32 lbl_8036A500;
@@ -1284,8 +1284,8 @@ void fn_8012DFA8(void *arg0) {
     slot = *(u8 **)(self + 0x3C);
     i = 0;
     while (i < self[0x61]) {
-        p28c = (void **)(lbl_80330EAC + 0x28C);
-        fn_801A7218(lbl_80330EAC, *(void **)slot, -1);
+        p28c = (void **)(gBattle + 0x28C);
+        fn_801A7218(gBattle, *(void **)slot, -1);
         *(s32 *)(slot + 0xC) = 0;
         *(s32 *)(slot + 0x10) = 0;
         fn_800C1F1C(*(void **)slot, slot + 0xC);
@@ -1301,20 +1301,20 @@ void fn_8012DFA8(void *arg0) {
             } else {
                 slot[0x22] = 0;
             }
-            slot[0x1C] = (u8)*(s16 *)(lbl_80330EAC + 0x298);
-            slot[0x1D] = (u8)*(s16 *)(lbl_80330EAC + 0x29E);
-            slot[0x1E] = (u8)*(s16 *)(lbl_80330EAC + 0x2A0);
-            slot[0x1F] = (u8)*(s16 *)(lbl_80330EAC + 0x2A4);
-            slot[0x20] = (u8)*(s16 *)(lbl_80330EAC + 0x2A6);
+            slot[0x1C] = (u8)*(s16 *)(gBattle + 0x298);
+            slot[0x1D] = (u8)*(s16 *)(gBattle + 0x29E);
+            slot[0x1E] = (u8)*(s16 *)(gBattle + 0x2A0);
+            slot[0x1F] = (u8)*(s16 *)(gBattle + 0x2A4);
+            slot[0x20] = (u8)*(s16 *)(gBattle + 0x2A6);
         } else {
             *(void **)(slot + 8) = NULL;
             slot[0x21] = 0;
             slot[0x22] = 0;
             slot[0x1C] = 0;
             slot[0x1D] = 0;
-            slot[0x1E] = (u8)*(s16 *)(lbl_80330EAC + 0x2A0);
+            slot[0x1E] = (u8)*(s16 *)(gBattle + 0x2A0);
             slot[0x1F] = 0;
-            slot[0x20] = (u8)*(s16 *)(lbl_80330EAC + 0x2A6);
+            slot[0x20] = (u8)*(s16 *)(gBattle + 0x2A6);
         }
         i++;
         slot += 0x24;

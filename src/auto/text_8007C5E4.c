@@ -430,7 +430,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     void fn_801A7218(void *, void *, s32);
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *info;
     void *unit;
     void *listHead;
@@ -554,7 +554,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     animId = fn_800639B4();
     *(s32 *)((u8 *)*(void **)((u8 *)info + 0x60) + 0x44) = animId;
     GActor_Finalize(*(void **)((u8 *)info + 0x60));
-    fn_801A7218(lbl_80330EAC, *(void **)((u8 *)info + 0x58), -1);
+    fn_801A7218(gBattle, *(void **)((u8 *)info + 0x58), -1);
 
     unit = *(void **)((u8 *)info + 0x58);
     iconSlot = 0;
@@ -824,7 +824,7 @@ void fn_8007E2C4(void *arg0) {
  void sprintf(void *,void *,...);
  s16 Text_MeasureWidth(void *,s32,f32);
  void fn_8001003C(s16,s16,u8,s32,s32,void *,...);
- extern u8 lbl_80330EAC[],gUiStrings[];
+ extern u8 gBattle[],gUiStrings[];
  extern void *gUiAtlas;
  extern f32 lbl_8036948C,lbl_80369430,lbl_80369418,lbl_8036942C;
  extern f32 lbl_803694B0,lbl_803694B4,lbl_803694B8,lbl_803694BC;
@@ -845,7 +845,7 @@ void fn_8007E2C4(void *arg0) {
  f32 scale;
  x=lbl_8036948C+M2C_FIELD(arg0,f32 *,0x14);
  y=M2C_FIELD(arg0,f32 *,0x18);
- fn_801A8CB8(lbl_80330EAC,&labels.info);
+ fn_801A8CB8(gBattle,&labels.info);
  dim=*fn_8006EDD8(gUiAtlas,0x1A);
  dimw=(f32)dim[0]; dimh=(f32)dim[1];
  scaledw=dimw*lbl_80369430;

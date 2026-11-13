@@ -7908,10 +7908,10 @@ void fn_80070EDC(void) {
 
 s32 fn_80070EE0(void *arg0, s32 unused, s32 arg2) {
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void fn_801A6FB4(void *, s32, s32);
     s32 saved = *(s32 *)gUiContext;
-    fn_801A6FB4(lbl_80330EAC, saved, (*(s32 (**)(void *, s32))((u8 *)*(void **)arg0 + 0x48))(arg0, arg2));
+    fn_801A6FB4(gBattle, saved, (*(s32 (**)(void *, s32))((u8 *)*(void **)arg0 + 0x48))(arg0, arg2));
     return 0;
 }
 
@@ -8448,7 +8448,7 @@ extern f32 lbl_8036932C;
 extern f32 lbl_80369330;
 extern f32 lbl_80369334;
 extern f32 lbl_80369338;
-extern u8 lbl_80330EAC[];
+extern u8 gBattle[];
 
 extern u8 lbl_8030F4E0[];
 extern u8 lbl_803672EB;

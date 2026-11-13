@@ -315,7 +315,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void fn_801A7CDC(void *);
     void *fn_801E45FC(void);
     extern u8 lbl_80277060[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 lbl_8032BB58[];
     extern u8 lbl_803200AC[];
     extern u8 lbl_803206EC[];
@@ -380,7 +380,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_8005C4C4(fn_801E45FC(), 4);
     fn_8003F670(temp_r28);
     fn_800BE068((u8 *)arg0 + 0xB4);
-    fn_801A7CDC(lbl_80330EAC);
+    fn_801A7CDC(gBattle);
     fn_80016DE0();
     fn_8010FF90(lbl_8032BB58);
     fn_800C341C(lbl_803200AC);

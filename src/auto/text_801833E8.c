@@ -2058,9 +2058,9 @@ void MoveAnim_AttachClassCue(void *anim) {
 }
 
 void fn_80188EF4(void *arg0) {
-    void Process_ClearFunc(void);
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void Model_SetAlpha(void *, u8);
+    void fn_8000C188(void);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    void fn_8005F7B0(void *, u8);
     extern f32 lbl_8036ACF8;
     extern f64 lbl_8036AD10;
     void *ptr;
@@ -2070,10 +2070,10 @@ void fn_80188EF4(void *arg0) {
     *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x3C) + lbl_8036ACF8;
     if (*(f32 *)((char *)self + 0x3C) >= *(f32 *)((char *)self + 0x38)) {
         *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x38);
-        Process_ClearFunc();
+        fn_8000C188();
     }
     ptr = (void *)(*(s32 *)((char *)self + 0x30) + 0x1C);
-    Model_SetAlpha(ptr, (u8)(s32)Math_Lerp((f32)*(u8 *)((char *)self + 0x50),
+    fn_8005F7B0(ptr, (u8)(s32)fn_80059F64((f32)*(u8 *)((char *)self + 0x50),
         (f32)*(u8 *)((char *)self + 0x51),
         *(f32 *)((char *)self + 0x38),
         *(f32 *)((char *)self + 0x3C)));
@@ -2711,8 +2711,8 @@ void fn_8018B920(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_8018B934(void *arg0) {
-    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    void Process_ClearFunc(void *);
+    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    void fn_8000C188(void *);
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD48;
     f32 ad48;
@@ -2721,14 +2721,14 @@ void fn_8018B934(void *arg0) {
     void *temp_r4;
 
     M2C_FIELD(arg0, s32 *, 0x3C) = M2C_FIELD(arg0, s32 *, 0x3C) + 1;
-    temp_f1 = Math_EaseOutPow(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
+    temp_f1 = fn_8005A028(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
     ad48 = lbl_8036AD48;
     ace8 = lbl_8036ACE8;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 0x15C) = (s16) (ace8 * (temp_f1 - ad48 * (f32) (s32) (temp_f1 / ad48)));
     if (M2C_FIELD(arg0, s32 *, 0x3C) == M2C_FIELD(arg0, s32 *, 0x38)) {
         temp_r4 = M2C_FIELD(arg0, void **, 0x30);
         M2C_FIELD(temp_r4, s16 *, 0x15C) = (s16) (ace8 * M2C_FIELD(arg0, f32 *, 0x34));
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
 }
 #pragma fp_contract reset
@@ -4599,7 +4599,7 @@ extern "C" void fn_80190920(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     s32 Text_MeasureHeight(s32, f32);
-    void UnitRef_Draw(void *, s32, s32, s32);
+    void UnitRef_Draw(void *, s32, s16, s16);
     extern f32 lbl_8036ADFC;
     extern f32 lbl_8036AE18;
     struct Obj {
@@ -4616,21 +4616,24 @@ extern "C" void fn_80190920(void *arg0) {
         virtual void v10() = 0;
         virtual void v11() = 0;
     };
-    s16 tmp;
-    void *p3c;
+    void *self;
     s32 y;
+    void *p3c;
+    s16 tmp;
 
-    ((Obj *)arg0)->v3();
-    tmp = *(s16 *)((u8 *)arg0 + 0x46);
-    y = (s32)tmp - Text_MeasureHeight(-1, lbl_8036ADFC);
-    p3c = *(void **)((u8 *)arg0 + 0x3C);
-    tmp = *(s16 *)((u8 *)arg0 + 0x4A);
-    y = (y >> 1) + *(s16 *)((u8 *)arg0 + 0x4C);
+    self = arg0;
+    ((Obj *)self)->v3();
+    tmp = *(s16 *)((u8 *)self + 0x46);
+    y = Text_MeasureHeight(-1, lbl_8036ADFC);
+    p3c = *(void **)((u8 *)self + 0x3C);
+    y = tmp - y;
+    tmp = *(s16 *)((u8 *)self + 0x4A);
+    y = (y >> 1) + *(s16 *)((u8 *)self + 0x4C);
     if (p3c != NULL) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AE18);
         Prim2D_PrepareTex();
-        UnitRef_Draw(p3c, ((Obj *)arg0)->v9(p3c), tmp, y);
+        UnitRef_Draw(p3c, ((Obj *)self)->v9(p3c), tmp, (s16)y);
     }
 }
 #pragma cplusplus reset
@@ -7600,7 +7603,7 @@ s32 fn_80196194(s32 arg0) {
     void fn_80094A08(s32, s32);
     void fn_800910D8(s8, s32, s32, s32, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *p;
     void **slot;
     void *obj;
@@ -7611,7 +7614,7 @@ s32 fn_80196194(s32 arg0) {
     kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
     fn_80092528(p, kind);
     fn_80094A08((s32)p, *(s8 *)&gUiContext[0xA]);
-    *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000;
+    *(u32 *)(gBattle + 0xCAC) |= 0x2000;
     kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
     fn_800910D8((s8)kind, arg0, -1, -1, -1);
     return 1;
@@ -7663,7 +7666,7 @@ s32 fn_80196388(s32 arg0) {
     void fn_80094A08(s32, s32);
     void fn_8009127C(void *, s32, void *);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s32 temp_r31;
     void *temp_r30;
 
@@ -7671,7 +7674,7 @@ s32 fn_80196388(s32 arg0) {
     temp_r30 = *fn_800285C0(gUiContext);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
     fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
-    fn_8009127C(temp_r30, (*(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000, arg0), lbl_80330EAC);
+    fn_8009127C(temp_r30, (*(u32 *)(gBattle + 0xCAC) |= 0x2000, arg0), gBattle);
     return 1;
 }
 
@@ -7706,14 +7709,14 @@ s32 fn_801964C8(s32 arg0) {
     void fn_80094A08(s32, s32);
     void fn_8009127C(s32, s32, void *);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s32 temp;
 
     temp = *fn_800285C0(gUiContext);
     fn_8003708C(*(s32 *)gUiContext, temp + 0x1F);
     fn_80094A08(*(s32 *)gUiContext, *(s8 *)&gUiContext[0xA]);
-    *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000;
-    fn_8009127C(temp, arg0, lbl_80330EAC);
+    *(u32 *)(gBattle + 0xCAC) |= 0x2000;
+    fn_8009127C(temp, arg0, gBattle);
     return 1;
 }
 #pragma opt_common_subs on
@@ -7780,10 +7783,10 @@ s32 fn_80196704(s32 arg0) {
         s8 unkA;
         u8 pad[0x18 - 0xB];
     } gUiContext;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     fn_80094A08(gUiContext.unk0, gUiContext.unkA);
-    *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000;
+    *(u32 *)(gBattle + 0xCAC) |= 0x2000;
     if (fn_800061F4() == 0x10) {
         fn_801EDA88(gUiContext.unk0, arg0);
     } else {
@@ -7802,11 +7805,11 @@ void fn_801967B4(void *arg0) {
     void Unit_Promote(s32);
     void fn_8004EB14(s32, s32);
     void fn_80050C90(s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     fn_8004EA60(*(s32 *)((u8 *)arg0 + 0x30), 0);
     Unit_Promote(*(s32 *)((u8 *)arg0 + 0x30));
-    *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
+    *(u32 *)(gBattle + 0xCAC) |= 0x10;
     fn_8004EB14(*(s32 *)((u8 *)arg0 + 0x30), 0);
     fn_80050C90(*(s32 *)((u8 *)arg0 + 0x30));
 }
@@ -9535,7 +9538,7 @@ void fn_8019B2FC(void *arg0) {
 
 #pragma optimization_level 4
 #pragma inline auto
-extern u16 lbl_80330EAC[0x834];
+extern u16 gBattle[0x834];
 #pragma optimization_level 4
 #pragma inline auto
 s32 fn_8019B51C(s16 arg0) {
@@ -9546,14 +9549,14 @@ s32 fn_8019B51C(s16 arg0) {
     u8 var_r4;
     void *temp_r30;
 
-    temp_r30 = &lbl_80330EAC[0x8A0];
+    temp_r30 = &gBattle[0x8A0];
     sp8 = 0;
-    temp_r31 = lbl_80330EAC[0x8A0];
-    lbl_80330EAC[0x8A0] = arg0;
-    lbl_80330EAC[0x8A0] = (u16)(arg0 + 1);
+    temp_r31 = gBattle[0x8A0];
+    gBattle[0x8A0] = arg0;
+    gBattle[0x8A0] = (u16)(arg0 + 1);
     
 loop_1:
-    temp_r0 = *(u8*)((u8*)temp_r30 + ((lbl_80330EAC[0x8A0] * 4) + 4));
+    temp_r0 = *(u8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 4));
     if ((s32)temp_r0 == 0x23) {
         goto block_21;
     }
@@ -9563,7 +9566,7 @@ loop_1:
         break;
     case 0x9:
     case 0x15:
-        if (*(s8*)((u8*)temp_r30 + ((lbl_80330EAC[0x8A0] * 4) + 6)) == 0) {
+        if (*(s8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 6)) == 0) {
             sp8 |= 0x20000;
         }
         goto block_21;
@@ -9628,30 +9631,30 @@ loop_1:
     }
     
 block_21:
-    lbl_80330EAC[0x8A0] = temp_r31;
+    gBattle[0x8A0] = temp_r31;
     if (sp8 & 0x10000004) {
-        lbl_80330EAC[0x8A0] = arg0;
+        gBattle[0x8A0] = arg0;
         var_r4 = 0;
-        lbl_80330EAC[0x8A0] = (u16)(arg0 + 1);
+        gBattle[0x8A0] = (u16)(arg0 + 1);
         
 loop_24:
-        temp_r0_2 = *(u8*)((u8*)temp_r30 + ((lbl_80330EAC[0x8A0] * 4) + 4));
+        temp_r0_2 = *(u8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 4));
         switch ((s32)temp_r0_2) {
         case 0x0:
         case 0x24:
             break;
         case 0x9:
         case 0x15:
-            if (*(s8*)((u8*)temp_r30 + ((lbl_80330EAC[0x8A0] * 4) + 6)) > 0) {
+            if (*(s8*)((u8*)temp_r30 + ((gBattle[0x8A0] * 4) + 6)) > 0) {
                 var_r4 = 1;
             }
             /* fall through */
         default:
-            lbl_80330EAC[0x8A0] = (u16)(lbl_80330EAC[0x8A0] + 1);
+            gBattle[0x8A0] = (u16)(gBattle[0x8A0] + 1);
             goto loop_24;
         }
         
-        lbl_80330EAC[0x8A0] = temp_r31;
+        gBattle[0x8A0] = temp_r31;
         if (var_r4 != 0) {
             sp8 |= 0x1;
         }
@@ -13419,7 +13422,7 @@ struct UnkStruct_802EF4C8 {
 };
 
 extern struct UnkStruct_802EF4C8 gUiContext;
-extern u16 lbl_80330EAC[];
+extern u16 gBattle[];
 extern u16 gUiInputFlags;
 extern u16 lbl_80330E90[4];
 extern u16 lbl_80296F90[];

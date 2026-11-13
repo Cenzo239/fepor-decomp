@@ -1136,7 +1136,7 @@ extern "C" void fn_80076174(void *arg0, void *arg1) {
         virtual void v17() = 0;
         virtual s16 v18() = 0;
     };
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     f32 t;
 
     t = fn_80023EE0(arg1);
@@ -1157,8 +1157,8 @@ extern "C" void fn_80076174(void *arg0, void *arg1) {
         Prim2D_AddZ(0.1f);
         Prim2D_PrepareTex();
     }
-    fn_80071410(arg0, lbl_80330EAC, 312.0f, 282.0f);
-    fn_80070F54(arg0, lbl_80330EAC, 500.0f, 212.0f);
+    fn_80071410(arg0, gBattle, 312.0f, 282.0f);
+    fn_80070F54(arg0, gBattle, 500.0f, 212.0f);
 }
 #pragma cplusplus off
 s32 fn_8007633C(void) {

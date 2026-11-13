@@ -371,13 +371,13 @@ void fn_801B6064(s32 unused, s16 *p) {
 
 s32 fn_801B6098(s32 arg0) {
     void fn_801B32C8(void *, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u32 flags;
     u8 ok;
     void *obj;
     u8 byte;
 
-    flags = *(u32 *)(lbl_80330EAC + 0xCAC);
+    flags = *(u32 *)(gBattle + 0xCAC);
     if ((flags >> 4) & 1) {
         ok = 0;
     } else if (flags & 0x800) {
@@ -388,14 +388,14 @@ s32 fn_801B6098(s32 arg0) {
     if (ok == 0) {
         return 0;
     }
-    obj = *(void **)(lbl_80330EAC + 0x280);
+    obj = *(void **)(gBattle + 0x280);
     if (obj != NULL) {
         byte = *((u8 *)*(void **)((u8 *)obj + 0x190) + 8);
         if (byte == 0 || byte == 5) {
             goto do_call;
         }
     }
-    obj = *(void **)(lbl_80330EAC + 0x560);
+    obj = *(void **)(gBattle + 0x560);
     if (obj != NULL) {
         byte = *((u8 *)*(void **)((u8 *)obj + 0x190) + 8);
         if (byte == 0 || byte == 5) {
@@ -412,9 +412,9 @@ s32 fn_801B6164(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
     void *Process_Create(void *, s32);
     extern u8 lbl_80297AC8[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
-    if (!(M2C_FIELD(lbl_80330EAC, s32 *, 0xCAC) & 0x400)) {
+    if (!(M2C_FIELD(gBattle, s32 *, 0xCAC) & 0x400)) {
         return 0;
     }
     if (arg0 == 0) {
@@ -429,13 +429,13 @@ s32 fn_801B61CC(u32 arg0) {
     void fn_8000CAA0(void *, u32);
     void Process_Create(void *, s32);
     extern u8 lbl_80297B3C[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u32 flags;
     u32 bit4;
     u8 a;
     u8 b;
 
-    flags = *(u32 *)((u8 *)lbl_80330EAC + 0xCAC);
+    flags = *(u32 *)((u8 *)gBattle + 0xCAC);
     bit4 = flags & 0x10;
     if ((flags >> 4) & 1) {
         a = 0;
@@ -468,13 +468,13 @@ void fn_801B6290(void *arg0) {
     u8 fn_800AA188(void);
     void fn_8004BE88(void *, s32);
     void Process_Goto(void *, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 byte;
     void *obj;
     void *sub;
 
     if (fn_800AA188() != 0) {
-        obj = *(void **)(lbl_80330EAC + 0x280);
+        obj = *(void **)(gBattle + 0x280);
         if (obj != NULL) {
             sub = *(void **)((u8 *)obj + 0x190);
             byte = *(u8 *)((u8 *)sub + 8);
@@ -485,7 +485,7 @@ void fn_801B6290(void *arg0) {
             }
         } else {
         try_second:
-            obj = *(void **)(lbl_80330EAC + 0x560);
+            obj = *(void **)(gBattle + 0x560);
             if (obj != NULL) {
                 sub = *(void **)((u8 *)obj + 0x190);
                 byte = *(u8 *)((u8 *)sub + 8);
@@ -510,7 +510,7 @@ void fn_801B6290(void *arg0) {
 s32 fn_801B6348(void *arg0)
 {
     void fn_801B32C8(void *, void *);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     u8 *base;
     u8 *object;
@@ -518,7 +518,7 @@ s32 fn_801B6348(void *arg0)
     u32 flags;
     u8 state;
 
-    base = lbl_80330EAC;
+    base = gBattle;
     flags = *(u32 *)(base + 0xCAC);
 
     if ((flags & 0x10) != 0 || (flags & 0x800) == 0) {
@@ -557,9 +557,9 @@ s32 fn_801B6414(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
     void *Process_Create(void *, s32);
     extern u8 lbl_80297AC8[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
-    if (!(M2C_FIELD(lbl_80330EAC, s32 *, 0xCAC) & 0x400)) {
+    if (!(M2C_FIELD(gBattle, s32 *, 0xCAC) & 0x400)) {
         return 0;
     }
     if (arg0 == 0) {
@@ -575,14 +575,14 @@ void fn_801B647C(void *arg0) {
     void fn_800536B0(void *, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void fn_8014876C(void *, s32, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 lbl_8027C248[];
     extern u8 gFxChannels[];
     extern f32 lbl_8036B1B0;
     extern f32 lbl_8036B1B4;
     extern f32 lbl_8036B1B8;
 
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
+    if (*(u32 *)(gBattle + 0xCAC) & 0x10) {
         fn_800536B0(fn_8005381C(lbl_8027C248 + 0xE4, arg0), lbl_8036B1B0, lbl_8036B1B4, lbl_8036B1B8);
         Ui_PlaySeCue(lbl_8027C248 + 0xF1, 0x64);
         fn_8014876C(gFxChannels + ((u8 *)arg0)[0x3A] * 0x30, 0x32, 0xFA);
@@ -592,7 +592,7 @@ void fn_801B647C(void *arg0) {
 void fn_801B6510(void *arg0) {
     void fn_8006D8E8(void *);
     void fn_8014876C(void *, s32, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 gFxChannels[];
     void *p;
 
@@ -600,7 +600,7 @@ void fn_801B6510(void *arg0) {
     if (p != NULL) {
         fn_8006D8E8(p);
     }
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
+    if (*(u32 *)(gBattle + 0xCAC) & 0x10) {
         fn_8014876C(gFxChannels + ((u8 *)arg0)[0x3A] * 0x30, 0x64, 0x3E8);
     }
 }
@@ -3739,12 +3739,12 @@ void fn_801BCC60(s32 arg0) {
     void fn_801A4BE0(void *);
     void fn_801ED970(s32, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s32 saved;
 
     saved = *(s32 *)gUiContext;
-    fn_801A4BE0(lbl_80330EAC);
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
+    fn_801A4BE0(gBattle);
+    if (*(u32 *)(gBattle + 0xCAC) & 0x10) {
         fn_801ED970(saved, arg0);
     }
 }
@@ -3758,7 +3758,7 @@ void fn_801BCCC4(void *arg0) {
     extern u8 gUiUnitPanelStrings[];
     extern u8 gUiContext[];
     extern u8 gBattleState[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *p;
     void *obj;
     s32 v;
@@ -3772,7 +3772,7 @@ void fn_801BCCC4(void *arg0) {
     v = *(s32 *)gUiContext;
     saved = *(s32 *)((u8 *)base + 0x1C);
     *(s32 *)((u8 *)base + 0x1C) = saved - fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
-    fn_80034A8C(lbl_80330EAC, v, (u8)*(s16 *)((u8 *)obj + 0x3E), arg0, 0);
+    fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), arg0, 0);
     *(s16 *)((u8 *)base + 0x70) = 0;
     p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
@@ -15155,17 +15155,23 @@ void *fn_801DC070(void *arg0)
     u8 *result;
 
     result = (u8 *)fn_801E2324(&gSaveDataBase, arg0);
-    if (result != NULL) {
-        if (result[0x60] == 2) {
-        } else {
-            result = NULL;
-        }
+    if (result == NULL) {
+        goto clear1;
     }
-    if (result != NULL) {
-        if (result[0x64] != 0x20) {
-            result = NULL;
-        }
+    if (result[0x60] == 2) {
+        goto after1;
     }
+clear1:
+    result = NULL;
+after1:
+    if (result == NULL) {
+        goto done;
+    }
+    if (result[0x64] == 0x20) {
+        goto done;
+    }
+    result = NULL;
+done:
     return result;
 }
 

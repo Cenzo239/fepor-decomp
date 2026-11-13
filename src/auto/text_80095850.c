@@ -60,10 +60,10 @@ void fn_80095850(void *arg0) {
 }
 
 s32 fn_800958A4(s32 arg0) {
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     u8 *base;
     u32 t;
-    base = lbl_80330EAC;
+    base = gBattle;
     t = (u32)(-arg0 | arg0);
     return *(s32 *)(base + ((t >> 29) & 4) + 0xCBC);
 }

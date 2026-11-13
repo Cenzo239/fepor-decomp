@@ -332,10 +332,10 @@ s32 Event_HandleItemCmd(void *arg0)
 void fn_80098A9C(s32 arg0) {
     void fn_8019A7E8(void);
     void fn_8000CAA0(void *, s32);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 lbl_80289C54[];
 
-    if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x200) {
+    if (*(u32 *)(gBattle + 0xCAC) & 0x200) {
         fn_8019A7E8();
     } else {
         fn_8000CAA0(lbl_80289C54, arg0);

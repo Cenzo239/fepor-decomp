@@ -325,14 +325,14 @@ void fn_801A895C(void *arg0, void *arg1) {
 }
 
 extern u8 lbl_802EFDB8[104];
-extern u16 lbl_80330EAC[1634];
+extern u16 gBattle[1634];
 u8 fn_8000CD88(s16);
 u8 fn_8000CE68(s16);
 s32 fn_801A8A28(void *arg0) {
     u8 fn_8000CD88(s16);
     u8 fn_8000CE68(s16);
     extern u8 lbl_802EFDB8[104];
-    extern u16 lbl_80330EAC[1634];
+    extern u16 gBattle[1634];
     u8 flags;
     u8 *base;
 
@@ -351,7 +351,7 @@ s32 fn_801A8A28(void *arg0) {
 
     if (*(u8 *)((u8 *)arg0 + 0x2CA) != 0) {
         *(u8 *)((u8 *)arg0 + 0x2CA) = 0;
-        *(u32 *)((u8 *)lbl_80330EAC + 0xCAC) |= 0x1000;
+        *(u32 *)((u8 *)gBattle + 0xCAC) |= 0x1000;
         return 0x51;
     }
 

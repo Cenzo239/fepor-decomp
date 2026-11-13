@@ -990,7 +990,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     u8 fn_8003D13C(void *);
     u8 fn_8014DA68(void);
     extern u8 lbl_8026A120[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern f32 lbl_80368E8C;
     extern f32 lbl_80368EA0;
 
@@ -1007,16 +1007,16 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
 
     if (fn_8014DA68() == 0) {
         if (arg1 != 0) {
-            *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x400;
+            *(u32 *)(gBattle + 0xCAC) |= 0x400;
         }
         exp = (u8)(arg1 + fn_800386B0(arg0));
         if (exp >= 0x64) {
             exp -= 0x64;
             ((u8 *)arg0)[0x19A]++;
-            *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x800;
+            *(u32 *)(gBattle + 0xCAC) |= 0x800;
             if ((s8)((u8 *)arg0)[0x19A] > 0x14) {
                 *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
-                *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
+                *(u32 *)(gBattle + 0xCAC) |= 0x10;
             } else {
                 BattleAnim_Queue(arg3, 0x29);
                 fn_80034130(arg0, arg3);
@@ -1185,16 +1185,16 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     fn_800056CC(lbl_8026A120 + 0x213, (s8)((u8 *)arg0)[0x1B4], (s8)((u8 *)arg0)[0x1B5], (s8)((u8 *)arg0)[0x1B6], (s8)((u8 *)arg0)[0x1B7], (s8)((u8 *)arg0)[0x1B8], (s8)((u8 *)arg0)[0x1B9], (s8)((u8 *)arg0)[0x1BA], (s8)((u8 *)arg0)[0x1BB]);
 
     if (arg1 != 0) {
-        *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x400;
+        *(u32 *)(gBattle + 0xCAC) |= 0x400;
     }
     exp = (u8)(arg1 + fn_800386B0(arg0));
     if (exp >= 0x64) {
         exp -= 0x64;
         ((u8 *)arg0)[0x19A]++;
-        *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x800;
+        *(u32 *)(gBattle + 0xCAC) |= 0x800;
         if ((s8)((u8 *)arg0)[0x19A] > 0x14) {
             *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
-            *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
+            *(u32 *)(gBattle + 0xCAC) |= 0x10;
         } else {
             BattleAnim_Queue(arg3, 0x29);
             Unit_CalcLevelUpGrowths(arg0, arg3);

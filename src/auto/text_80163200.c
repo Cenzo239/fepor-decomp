@@ -7419,7 +7419,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
     extern u32 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     void *tmp44;
     void *self;
@@ -7438,7 +7438,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     t = (s8)fn_8003B2D0(unit);
     fn_800381EC(unit, t);
     tmp44 = *(void **)((u8 *)self + 0x44);
-    if (*(u32 *)(lbl_80330EAC + 0xcac) & 0x10) {
+    if (*(u32 *)(gBattle + 0xcac) & 0x10) {
         fn_80138808(tmp44, unit);
         fn_80050C90(unit);
     }

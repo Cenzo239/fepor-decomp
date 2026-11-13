@@ -69,7 +69,7 @@ void fn_80098C04(void *arg0) {
     void fn_80184618(s32, void *);
     u8 fn_801A2690();
     extern u8 gUiContext[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     s8 *p;
     s32 var_r31;
     u32 temp_r3;
@@ -89,7 +89,7 @@ void fn_80098C04(void *arg0) {
         }
         var_r31 += 1;
     } while (var_r31 < 3);
-    if ((*(u32 *)(lbl_80330EAC + 0xCAC) & 0x100) != 0U) {
+    if ((*(u32 *)(gBattle + 0xCAC) & 0x100) != 0U) {
         M2C_FIELD(arg0, s8 *, 0x34) = 1;
         temp_r3 = Map_Get();
         if (temp_r3 != 0U) {

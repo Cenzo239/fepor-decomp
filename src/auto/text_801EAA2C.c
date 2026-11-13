@@ -1922,21 +1922,21 @@ void fn_801EDDF0(void *arg0) {
     void fn_801A9CF4(void *, void *);
     void Battle_QueuePromotionGains(void *, void *);
     void Unit_Promote(void *);
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 gUiContext[];
     void *temp;
     u8 *base;
     u8 *base_2e0;
 
-    if (*(u32 *)(lbl_80330EAC + 0x188) != 0) {
+    if (*(u32 *)(gBattle + 0x188) != 0) {
         temp = Heap_Alloc(0x2E0);
         if (temp != NULL) {
             temp = fn_801A7FA4(temp);
         }
         *(void **)((u8 *)arg0 + 0x4C) = temp;
-        fn_801A9CF4(*(void **)((u8 *)arg0 + 0x4C), lbl_80330EAC);
+        fn_801A9CF4(*(void **)((u8 *)arg0 + 0x4C), gBattle);
     }
-    base = lbl_80330EAC;
+    base = gBattle;
     base_2e0 = base + 0x2E0;
     if (base_2e0 != NULL && *(u32 *)(base + 0x468) != 0) {
         temp = Heap_Alloc(0x2E0);
@@ -1947,7 +1947,7 @@ void fn_801EDDF0(void *arg0) {
         fn_801A9CF4(*(void **)((u8 *)arg0 + 0x50), base_2e0);
     }
     gUiContext[0x14] = 0xFF;
-    Battle_QueuePromotionGains(lbl_80330EAC, *(void **)((u8 *)arg0 + 0x30));
+    Battle_QueuePromotionGains(gBattle, *(void **)((u8 *)arg0 + 0x30));
     Unit_Promote(*(void **)((u8 *)arg0 + 0x30));
 }
 
@@ -2086,7 +2086,7 @@ void fn_801EE76C(void *arg0) {
     extern char gGActorPathExt[];
     extern u8 lbl_8029A5FC[];
     extern u8 gBattleState[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     extern u8 lbl_8029A5BC[];
     extern f32 lbl_8036B7B8;
     extern f32 lbl_8036B7C0;
@@ -2182,8 +2182,8 @@ set0:
         ok = 0;
 setdone:
         if ((u8)ok == 0) {
-            r29 = *(void **)(lbl_80330EAC + 0xCB0);
-            path = *(char **)(lbl_80330EAC + 0xCB4);
+            r29 = *(void **)(gBattle + 0xCB0);
+            path = *(char **)(gBattle + 0xCB4);
         } else {
             goto use30708;
         }
@@ -2305,7 +2305,7 @@ void GActor_LoadResources(void *arg0, s32 arg1)
     void fn_801C6E60(void *);
     void fn_801EF39C(void *, void *, s32);
     extern char gGActorPathExt[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     String path;
     String baseName;
@@ -2409,7 +2409,7 @@ void GActor_LoadResources(void *arg0, s32 arg1)
     *(u8 *)((u8 *)actor + 0x87) = 0;
     actor = *(void **)((u8 *)self + 0xBC);
     *(u32 *)actor |= 0x4001E400;
-    slot = (void **)(lbl_80330EAC + 0x28C);
+    slot = (void **)(gBattle + 0x28C);
     if (slot != NULL && (p = *slot, p != NULL)) {
         val = (p != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC;
         if ((u8)val == 3) {
@@ -2538,7 +2538,7 @@ void fn_801EF6BC(void *arg0) {
     void fn_801C6E60(void *);
     s32 strlen(char *);
     extern char gGActorPathExt[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     String spE4;
     String spD8;
@@ -2579,7 +2579,7 @@ void fn_801EF6BC(void *arg0) {
     String_Init(&spCC, gGActorPathExt + 0x224, &sp8);
     p = 0;
     *(void **)((u8 *)self + 0xC0) = p;
-    slot = lbl_80330EAC + 0x28C;
+    slot = gBattle + 0x28C;
     *(void **)((u8 *)self + 0xC4) = p;
     if (slot == NULL || *(void **)slot == NULL) {
         String_Destroy(&spCC, -1);
@@ -2802,7 +2802,7 @@ void fn_801EFDC8(void *arg0) {
     s32 strlen(char *);
     extern char gGActorPathExt[];
     extern char lbl_8027F25C[];
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
 
     char buf260[0x20];
     char buf224[0x20];
@@ -2934,8 +2934,8 @@ void fn_801EFDC8(void *arg0) {
         classNames[2] = src[2];
         classNames[3] = src[3];
     }
-    mgrs[0] = lbl_80330EAC;
-    mgrs[1] = lbl_80330EAC + 0x2E0;
+    mgrs[0] = gBattle;
+    mgrs[1] = gBattle + 0x2E0;
     slot = mgrs;
     base = self;
     strBase = gGActorPathExt;
