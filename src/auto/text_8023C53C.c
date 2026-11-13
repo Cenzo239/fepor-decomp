@@ -6512,7 +6512,7 @@ void fn_8025164C(void *arg0)
 void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     extern f32 gSoundVolCurve[];
     extern s32 gSoundTimeCurve[];
-    extern u8 lbl_8029FB7C[];
+    extern u8 gSoundLevelCurve[];
     extern f32 lbl_8036C260;
     struct {
         s32 unk0;
@@ -6527,7 +6527,7 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     vol = gSoundVolCurve[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk0 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk4 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk8 = 0xC1 - lbl_8029FB7C[__cvt_fp2unsigned(lbl_8036C260 * vol)];
+    params.unk8 = 0xC1 - gSoundLevelCurve[__cvt_fp2unsigned(lbl_8036C260 * vol)];
     params.unkA = gSoundTimeCurve[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unkC = 0x80000000;
     params.unk10 = 0x80000000;
@@ -6541,7 +6541,7 @@ void fn_80251B70(void *arg0, u32 *arg1) {
     void fn_80257C04(void *);
     extern f32 lbl_8036C244;
     extern f32 lbl_8036C248;
-    extern u8 lbl_8029FB7C[];
+    extern u8 gSoundLevelCurve[];
 
     void *sv;
     u8 *data;
@@ -6591,7 +6591,7 @@ void fn_80251B70(void *arg0, u32 *arg1) {
         if (idx > 0x3FF) {
             idx = 0x3FF;
         }
-        *(s16 *)((u8 *)sv + 0x204) = 0xC1 - lbl_8029FB7C[idx];
+        *(s16 *)((u8 *)sv + 0x204) = 0xC1 - gSoundLevelCurve[idx];
         *(u32 *)((u8 *)sv + 0x208) = hA;
         fn_80257C04((u8 *)sv + 0x1E8);
         *(u32 *)((u8 *)sv + 0x114) |= 0x200;
@@ -9408,7 +9408,7 @@ void fn_80257C04(void *arg0) {
 
 s32 fn_80257C2C(u8 *arg0, u32 arg1) {
     u32 __cvt_fp2unsigned(f32, f32, f32);
-    extern u8 lbl_8029FB7C[];
+    extern u8 gSoundLevelCurve[];
     extern f32 lbl_8036C298;
     f32 temp_f2;
     u32 temp_r3;
@@ -9426,7 +9426,7 @@ s32 fn_80257C2C(u8 *arg0, u32 arg1) {
         break;
     case 1:
         if (arg0[0x26] == 0 && arg0[1] == 1) {
-            *(s32 *)(arg0 + 0xC) = (0xC1 - lbl_8029FB7C[*(s32 *)(arg0 + 8) >> 21]) << 16;
+            *(s32 *)(arg0 + 0xC) = (0xC1 - gSoundLevelCurve[*(s32 *)(arg0 + 8) >> 21]) << 16;
         }
         temp_f2 = lbl_8036C298 * (f32)*(s32 *)(arg0 + 0xC);
         *(u32 *)(arg0 + 4) = __cvt_fp2unsigned(temp_f2 * (f32)arg1, temp_f2, lbl_8036C298) >> 12;
@@ -9447,7 +9447,7 @@ s32 fn_80257C2C(u8 *arg0, u32 arg1) {
 
 s32 fn_80257D7C(u8 *arg0) {
     u32 __cvt_fp2unsigned(f32, f32, f32);
-    extern u8 lbl_8029FB7C[];
+    extern u8 gSoundLevelCurve[];
     extern f32 lbl_8036C298;
     f32 temp_f2;
     u32 temp_r3;
@@ -9473,7 +9473,7 @@ s32 fn_80257D7C(u8 *arg0) {
             break;
         case 1:
             if (arg0[0x26] == 0 && arg0[1] == 1) {
-                *(s32 *)(arg0 + 0xC) = (0xC1 - lbl_8029FB7C[*(s32 *)(arg0 + 8) >> 21]) << 16;
+                *(s32 *)(arg0 + 0xC) = (0xC1 - gSoundLevelCurve[*(s32 *)(arg0 + 8) >> 21]) << 16;
             }
             temp_f2 = lbl_8036C298 * (f32)*(s32 *)(arg0 + 0xC);
             *(u32 *)(arg0 + 4) = __cvt_fp2unsigned(temp_f2 * (f32)temp_r4, temp_f2, lbl_8036C298) >> 12;
@@ -13701,7 +13701,7 @@ void fn_802618E4(s32 arg0)
 void fn_80261934(u8 arg0, void *arg1, s32 arg2)
 {
     extern u8 *gSoundVoices;
-    extern u8 lbl_8029FB7C[];
+    extern u8 gSoundLevelCurve[];
     extern u32 fn_80257940(u32);
 
     u8 *entry;
@@ -13745,7 +13745,7 @@ void fn_80261934(u8 arg0, void *arg1, s32 arg2)
             index = 0x3FF;
         }
 
-        value = lbl_8029FB7C[index];
+        value = gSoundLevelCurve[index];
         *(u16 *)(entry + 0xC0) = 0xC1 - value;
         break;
 
@@ -16708,7 +16708,7 @@ extern u8 lbl_802A4590[];
 #include "ef.h"
 
 extern s32 gSoundVoices;
-extern u16 lbl_8029FB7C[];
+extern u16 gSoundLevelCurve[];
 extern s32 gSoundVoices;
 extern u8 lbl_80368AD0;
 #include "global.h"
