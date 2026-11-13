@@ -10258,7 +10258,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     s16 Text_MeasureWidth(s32, s32, f32);
     void Ui_DrawIcon(void *, s32, s32, s32);
     s32 *Ui_GetColor(s32);
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     extern f32 lbl_8036AB6C;
     extern f32 lbl_8036AB8C;
 
@@ -10368,7 +10368,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     Prim2D_EndPrim();
 
     if (((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5() != 0) {
-        Ui_DrawIcon(lbl_802F0308, (s32)f31, (s32)(f30 + (f32)t29), ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5());
+        Ui_DrawIcon(gUiIconDrawer, (s32)f31, (s32)(f30 + (f32)t29), ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5());
     }
 
     Prim2D_Begin();
@@ -15487,7 +15487,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     void Ui_DrawIcon(void *, s16, s16, s32);
     void *fn_800A8A88(void *);
     extern u8 gUiUnitInfoStrings[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     extern f32 lbl_8036ACA8;
     s16 temp_arg1 = arg1;
     s16 temp_arg2 = arg2;
@@ -15590,7 +15590,7 @@ draw_unit:
         void *name = fn_800A8A88(*(void **)((u8 *)unit + 0x188));
         x = (s16)(temp_arg2 + halfH);
         Text_Draw((s16)(temp_arg1 + 0x18), x, mode, gUiUnitInfoStrings + 0x14A, name);
-        Ui_DrawIcon(lbl_802F0308, temp_arg1, x, slot);
+        Ui_DrawIcon(gUiIconDrawer, temp_arg1, x, slot);
     }
 }
 #pragma use_lmw_stmw reset

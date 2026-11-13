@@ -939,7 +939,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     extern f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D0;
     extern f32 lbl_8036A5BC;
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     Obj *self;
     s32 startX;
 
@@ -1005,7 +1005,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
                 if (*(u32 *)cell != 0) {
                     p = Item_GetByIid(*(void **)cell);
                     x16 = (s16)x;
-                    Ui_DrawIcon(lbl_802F0308, x16, curY16, ((u8 *)p)[0x15] + 0x61);
+                    Ui_DrawIcon(gUiIconDrawer, x16, curY16, ((u8 *)p)[0x15] + 0x61);
                     Prim2D_Begin();
                     Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
                     Prim2D_PrepareTex();
@@ -1186,7 +1186,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     extern f32 lbl_8036A5BC;
     extern Cells lbl_80276318;
     extern u8 lbl_802764BC[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     Cells cells;
     s16 temp_r31;
     s16 temp_r30;
@@ -1239,7 +1239,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     for (i = 0; i < 5; i++) {
         cx = p->x;
         cy = p->y;
-        Ui_DrawIcon(lbl_802F0308, cx, cy, p->unk4);
+        Ui_DrawIcon(gUiIconDrawer, cx, cy, p->unk4);
         Prim2D_Begin();
         Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
         Prim2D_PrepareTex();
@@ -2823,7 +2823,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     extern s32 lbl_8036A610;
     extern s32 lbl_8036A614;
     extern u8 lbl_802767E0[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     s32 coords[4];
     Obj *self;
     s32 idx;
@@ -2868,10 +2868,10 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
                     goto after_icon;
                 }
             }
-            unit = (u8)fn_8005A310(lbl_802F0308, idx_u8, 0);
+            unit = (u8)fn_8005A310(gUiIconDrawer, idx_u8, 0);
             fn_8001E5D0(idx_u8, 0);
         after_icon:
-            Ui_DrawIcon(lbl_802F0308, x, (s16)((s16)slot + ((fn_800102BC(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
+            Ui_DrawIcon(gUiIconDrawer, x, (s16)((s16)slot + ((fn_800102BC(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
             Prim2D_Begin();
             Prim2D_SetTex(0, (u16)(flags | 3));
             Prim2D_PrepareTex();
@@ -6379,7 +6379,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     s32 fn_800102BC(M2C_UNK, f32);
     M2C_UNK Ui_DrawIcon(M2C_UNK *, s32, s32, s32);
     s32 *Ui_GetColor(M2C_UNK);
-    extern M2C_UNK lbl_802F0308;
+    extern M2C_UNK gUiIconDrawer;
     extern f32 lbl_8036A6C0;
     extern f32 lbl_8036A6C4;
     s32 sp8;
@@ -6425,7 +6425,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     temp_r3_6 = M2C_FIELD(arg2, void ***, 0x34);
     if (M2C_FIELD(*temp_r3_6, s32 (**)(void **), 0x1C)(temp_r3_6) != 0) {
         temp_r3_7 = M2C_FIELD(arg2, void ***, 0x34);
-        Ui_DrawIcon(&lbl_802F0308, (s32) temp_f31, (s32) (temp_f30 + (f32) (temp_r5_2 >> 1)), M2C_FIELD(*temp_r3_7, s32 (**)(void **), 0x1C)(temp_r3_7));
+        Ui_DrawIcon(&gUiIconDrawer, (s32) temp_f31, (s32) (temp_f30 + (f32) (temp_r5_2 >> 1)), M2C_FIELD(*temp_r3_7, s32 (**)(void **), 0x1C)(temp_r3_7));
     }
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);

@@ -143,7 +143,7 @@ void fn_800900F4(u8 *arg0) {
     void Text_Draw(s16, s16, s32, void *, ...);
     extern f32 gZeroF, lbl_80369780, lbl_80369784, lbl_80369788, lbl_80369768, lbl_80369754;
     extern char lbl_8026CD60[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     u8 *self;
     s32 t;
     s32 b;
@@ -172,7 +172,7 @@ void fn_800900F4(u8 *arg0) {
     p = Msg_Expand(lbl_8026CD60 + 0x135);
     fn_8001003C(0x10, 0x48, 1, 1, 0, lbl_8026CD60 + 0x12D, p, lbl_80369754, gZeroF);
     b = 0;
-    t = (s32)lbl_802F0308;
+    t = (s32)gUiIconDrawer;
     x = 0x48;
     while (b < fn_8010424C(self + 0x1A4)) {
         Ui_DrawIcon((void *)t, x, 0x4A, fn_8010418C(self + 0x1A4, b));
@@ -196,7 +196,7 @@ void fn_800900F4(u8 *arg0) {
     p = Msg_Expand(lbl_8026CD60 + 0x135);
     fn_8001003C(0x10, 0xAC, 1, 1, 0, lbl_8026CD60 + 0x12D, p, lbl_80369754, gZeroF);
     b = 0;
-    t = (s32)lbl_802F0308;
+    t = (s32)gUiIconDrawer;
     x = 0x48;
     while (b < fn_8010424C(self + 0x1A4)) {
         Ui_DrawIcon((void *)t, x, 0xAE, fn_8010418C(self + 0x1A4, b));

@@ -68,7 +68,7 @@ void fn_8007F410(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 gUiStrings[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     extern s32 lbl_803674F4;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
@@ -155,7 +155,7 @@ void fn_8007F410(void *arg0) {
     id = fn_8003B938(pid);
     obj = fn_8003B9AC(pid);
     width = Text_MeasureWidth(obj, -1, lbl_80369430);
-    Ui_DrawIcon(lbl_802F0308, lbl_80369500 + (nx + width), by, id);
+    Ui_DrawIcon(gUiIconDrawer, lbl_80369500 + (nx + width), by, id);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();

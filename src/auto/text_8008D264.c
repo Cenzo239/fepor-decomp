@@ -65,7 +65,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
     s32 UnitRef_GetName(void *);
     void sprintf(void *, void *, s32, ...);
     extern u16 lbl_8026CD08[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     extern f32 lbl_8036973C;
     extern f64 lbl_80369740;
     char priceBuf[0x10];
@@ -121,7 +121,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
             Text_Draw((s16)(x + 0xA2), (s16)y, enabledBit.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)ref + 4));
             Text_Draw((s16)(x + 0xBC), (s16)y, usesColor, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x18) : 0));
         }
-        Ui_DrawIcon(lbl_802F0308, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
 void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
@@ -133,7 +133,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     s32 UnitRef_GetName(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u16 lbl_8026CD08[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     struct { unsigned b : 8; } t;
     u8 var_r26;
     u32 var_r3;
@@ -142,7 +142,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
 
     if (*(void **)arg0 != NULL) {
         if ((*(u8 *)((u8 *)arg0 + 5) >> 7) & 1) {
-            Ui_DrawIcon(lbl_802F0308, arg2 + 9, arg3 + 9, 1);
+            Ui_DrawIcon(gUiIconDrawer, arg2 + 9, arg3 + 9, 1);
         }
         {
             s32 cond = arg1;
@@ -169,7 +169,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
             Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)arg0 + 4));
             Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
         }
-        Ui_DrawIcon(lbl_802F0308, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(gUiIconDrawer, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
     }
 }
 void fn_8008D6D8(void *arg0) {

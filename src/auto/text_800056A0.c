@@ -208,7 +208,7 @@ void fn_80005C8C(void) {
     void fn_801A2AC4(void);
     void fn_80200494(void);
     extern u8 lbl_80267B80[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     extern u8 lbl_802F0350[];
     extern u8 gBattleState[];
     extern u8 lbl_80367AEC;
@@ -232,7 +232,7 @@ void fn_80005C8C(void) {
     fn_8005BCAC();
     fn_800110B8();
     fn_8008CD9C();
-    fn_8005AC88(lbl_802F0308);
+    fn_8005AC88(gUiIconDrawer);
     fn_8005AC88(lbl_802F0350);
     fn_8003FCCC(lbl_80267B80 + 0xB2);
     fn_8003FCCC(lbl_80267B80 + 0xBD);
