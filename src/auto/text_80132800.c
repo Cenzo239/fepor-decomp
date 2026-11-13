@@ -10629,6 +10629,7 @@ void fn_80146B00(void) {
     lbl_80367AF8 |= 1;
 }
 
+#pragma peephole off
 s32 fn_80146B10(s32 arg0) {
     void *fn_8000D2BC(void *);
     void fn_800056A0(s32);
@@ -10644,9 +10645,9 @@ s32 fn_80146B10(s32 arg0) {
 
     header = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x30b);
     count = *header;
+    table = header + 1;
     lo = 0;
     hi = count - 1;
-    table = header + 1;
     while (lo <= hi) {
         mid = lo + ((hi - lo) >> 1);
         key = table[mid * 2];
@@ -10669,6 +10670,7 @@ s32 fn_80146B10(s32 arg0) {
     fn_800056A0(0);
     return result;
 }
+#pragma peephole on
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
