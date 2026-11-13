@@ -4049,7 +4049,7 @@ s32 fn_8010C4B0(void *arg0) {
     return M2C_FIELD(Res_GetByName(M2C_FIELD(arg0, s32 *, 0x240)), u8 *, 7) != 0;
 }
 
-s32 fn_8010C504(void *arg0) {
+s32 Unit_IsLowHp(void *arg0) {
     u8 fn_80102EA8(void);
     s8 fn_8003B2D0(void *);
     s32 fn_8022C568(f32);

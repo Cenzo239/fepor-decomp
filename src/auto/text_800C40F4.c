@@ -20714,7 +20714,7 @@ void fn_800FB9C0(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6)
 
 s32 fn_800FB9F8(void *arg0) {
     void fn_80037814(void);
-    void fn_8010C504(void *);
+    void Unit_IsLowHp(void *);
     u8 fn_80017318(void *);
     void fn_8018256C(void *);
     void fn_80182B7C(void *);
@@ -20727,7 +20727,7 @@ s32 fn_800FB9F8(void *arg0) {
     u8 v;
 
     fn_80037814();
-    fn_8010C504(arg0);
+    Unit_IsLowHp(arg0);
     v = fn_80017318((u8 *)arg0 + 0x236);
     switch (v) {
     case 1:
@@ -20819,7 +20819,7 @@ s32 fn_800FBB68(void) {
 
 s32 fn_800FBBD8(void *arg0) {
     u8 fn_8010C4B0(void *);
-    u8 fn_8010C504(void *);
+    u8 Unit_IsLowHp(void *);
     u8 fn_8010C244(void *);
     u8 fn_8010BEB8(void *);
     u8 fn_8010BDE0(void *);
@@ -20833,7 +20833,7 @@ s32 fn_800FBBD8(void *arg0) {
     if ((*(u8 *)(gAiState + 1) & 4) != 0) {
         return 1;
     }
-    if ((fn_8010C4B0(arg0) != 0) && (fn_8010C504(arg0) != 0)) {
+    if ((fn_8010C4B0(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
         if (fn_8010C244(arg0) != 0) {
             return 1;
         }
@@ -22652,7 +22652,7 @@ void fn_801007A0(void *arg0) {
         u16 f3 : 4;
         u16 f4 : 3;
     };
-    void fn_8010C504(void *);
+    void Unit_IsLowHp(void *);
     u8 fn_8009339C(void *, void *);
     u64 *Item_GetFlagsPtr(void **);
     s32 i;
@@ -22660,7 +22660,7 @@ void fn_801007A0(void *arg0) {
     void *unit = arg0;
 
     M2C_FIELD(unit, u32 *, 0x254) &= 0xFEFF80EB;
-    fn_8010C504(unit);
+    Unit_IsLowHp(unit);
 
     for (i = 0; i < 4; i++) {
         item = Unit_GetHeldItemSlot(unit, i);
