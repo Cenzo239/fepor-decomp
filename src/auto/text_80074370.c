@@ -2422,7 +2422,7 @@ s32 fn_800787F8(void) {
     return 5;
 }
 
-s32 fn_80078810(void) {
+s32 Ui_HasWeaponTarget(void) {
     void *Item_GetFlagsPtr(void);
     void fn_8002C034(void *, u32);
     u32 *Unit_GetHeldItemSlot(void *, s32);
