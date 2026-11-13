@@ -5916,23 +5916,22 @@ void *fn_80069CFC(void) {
     lbl_80367304 = ++idx;
     return *entry;
 }
-#pragma global_optimizer on
-s32 GMaterial_AllocMtx(void) {
-    void Game_Assert(void *, s32, void *);
+#pragma global_optimizer off
+void *GMaterial_AllocMtx(void) {
     extern u8 lbl_80367303;
     extern u8 gGMaterialAssertMsg[];
-    extern s32 lbl_80285F08[];
+    extern void *lbl_80285F08[];
+    void Game_Assert(const char *, s32, const char *);
+    void **entry;
     u8 idx;
-    s32 *entry;
-    if (lbl_80367303 >= 0x3C) {
-        Game_Assert(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
-    }
+    if (lbl_80367303 >= 0x3C)
+        Game_Assert((const char *)gGMaterialAssertMsg + 1, 0x96, (const char *)gGMaterialAssertMsg + 0x5B);
     idx = lbl_80367303;
     entry = &lbl_80285F08[idx];
-    lbl_80367303++;
+    lbl_80367303 = ++idx;
     return *entry;
 }
-
+#pragma global_optimizer reset
 u8 fn_80069DB4(void) {
     extern u8 lbl_80367302;
     return lbl_80367302;
