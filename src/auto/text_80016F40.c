@@ -970,7 +970,7 @@ void fn_8001885C(void) {
     }
 }
 
-s32 fn_800188A4(u8 arg0) {
+s32 Camera_HasMoved(u8 arg0) {
     extern f32 lbl_80368CB0;
     f32 var_f2;
     u8 r;

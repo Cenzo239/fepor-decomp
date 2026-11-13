@@ -5744,7 +5744,7 @@ s32 fn_800BAB64(u8 arg0) {
 }
 
 s32 fn_800BABFC(void) {
-    u8 fn_800188A4(s32);
+    u8 Camera_HasMoved(s32);
     M2C_UNK fn_800187F0(void);
     M2C_UNK Process_CreateChild(void *, s32);
     M2C_UNK fn_80013874(void *);
@@ -5756,7 +5756,7 @@ s32 fn_800BABFC(void) {
         fn_800187F0();
         return 0;
     }
-    if (fn_800188A4(1) == 0) {
+    if (Camera_HasMoved(1) == 0) {
         return 0;
     }
     Process_CreateChild(lbl_8028D19C, fn_800C0658());
@@ -5766,11 +5766,11 @@ s32 fn_800BABFC(void) {
 }
 
 void fn_800BAC70(s32 arg0) {
-    u8 fn_800188A4(s32);
+    u8 Camera_HasMoved(s32);
     M2C_UNK fn_800187F0(void);
     extern s32 gUiInputFlags;
 
-    if (fn_800188A4(1) == 0) {
+    if (Camera_HasMoved(1) == 0) {
         Process_ClearFunc(arg0);
     } else if (gUiInputFlags & 1) {
         fn_800187F0();
@@ -5779,7 +5779,7 @@ void fn_800BAC70(s32 arg0) {
 }
 
 s32 fn_800BACCC(void) {
-    u8 fn_800188A4(s32);
+    u8 Camera_HasMoved(s32);
     M2C_UNK fn_800187F0(void);
     M2C_UNK Process_CreateChild(void *, s32);
     M2C_UNK fn_80013874(void *);
@@ -5791,7 +5791,7 @@ s32 fn_800BACCC(void) {
         fn_800187F0();
         return 0;
     }
-    if (fn_800188A4(0) == 0) {
+    if (Camera_HasMoved(0) == 0) {
         return 0;
     }
     Process_CreateChild(lbl_8028D188, fn_800C0658());
@@ -5801,11 +5801,11 @@ s32 fn_800BACCC(void) {
 }
 
 void fn_800BAD40(s32 arg0) {
-    u8 fn_800188A4(s32);
+    u8 Camera_HasMoved(s32);
     M2C_UNK fn_800187F0(void);
     extern s32 gUiInputFlags;
 
-    if (fn_800188A4(0) == 0) {
+    if (Camera_HasMoved(0) == 0) {
         Process_ClearFunc(arg0);
     } else if (gUiInputFlags & 1) {
         fn_800187F0();
