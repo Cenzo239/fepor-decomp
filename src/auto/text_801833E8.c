@@ -725,7 +725,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
-    f32 fn_8004BE18(void);
+    f32 Unit_GetAngleTo(void);
     void fn_80185078(void *, void *);
     extern u16 lbl_80295A78[36];
     u8 sp8[0x34];
@@ -735,7 +735,7 @@ void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     if (arg1 == 0U) {
         return NULL;
     }
-    temp_f31 = fn_8004BE18();
+    temp_f31 = Unit_GetAngleTo();
     M2C_FIELD(sp8, void **, 0x30) = arg0;
     fn_8000A388(&lbl_80295A78, fn_80185078, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
@@ -1449,7 +1449,7 @@ void fn_80186E10(void *arg0) {
 void fn_8018715C(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    f32 fn_8004BE18(void *);
+    f32 Unit_GetAngleTo(void *);
     void fn_80185078(void *, void *);
     extern u16 lbl_80295A78[36];
     extern f32 lbl_8036ACEC;
@@ -1466,7 +1466,7 @@ void fn_8018715C(void *arg0) {
     check = *(void **)((u8 *)arg0 + 0x34);
     temp_r30 = *(void **)((u8 *)arg0 + 0x30);
     if (check) {
-        temp_f31 = fn_8004BE18(temp_r30);
+        temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x68) = temp_r30;
         fn_8000A388(&lbl_80295A78, fn_80185078, sp + 0x38);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
@@ -1480,7 +1480,7 @@ void fn_8018715C(void *arg0) {
     check = *(void **)((u8 *)arg0 + 0x30);
     temp_r30 = *(void **)((u8 *)arg0 + 0x34);
     if (check) {
-        temp_f31 = fn_8004BE18(temp_r30);
+        temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x30) = temp_r30;
         fn_8000A388(&lbl_80295A78, fn_80185078, sp);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
@@ -1639,7 +1639,7 @@ void fn_801877C4(void *arg0) {
     void *Process_Create(void *, s32);
     f32 fn_80023430(void *, f32, f32);
     void fn_80025624(void *, s32);
-    f32 fn_8004BE18(void *);
+    f32 Unit_GetAngleTo(void *);
     u8 fn_8004BF80(void *);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
@@ -1695,7 +1695,7 @@ void fn_801877C4(void *arg0) {
             f31 = *(f32 *)((u8 *)pos + 4);
             f30 = *(f32 *)((u8 *)pos + 8);
             f29 = *(f32 *)((u8 *)pos + 0xC);
-            f28 = fn_8004BE18(*(void **)((u8 *)arg0 + 0x30));
+            f28 = Unit_GetAngleTo(*(void **)((u8 *)arg0 + 0x30));
             obj = *(void **)((u8 *)arg0 + 0x34);
             count = 1;
             count += 1;
@@ -1784,7 +1784,7 @@ void fn_801877C4(void *arg0) {
 void fn_80187D70(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    f32 fn_8004BE18(void *);
+    f32 Unit_GetAngleTo(void *);
     f32 fn_8004BDA8(void *, f32, f32);
     void fn_8004FC70(void *, s32);
     void GActor_RequestRes(void *);
@@ -1810,7 +1810,7 @@ void fn_80187D70(void *arg0) {
     if (temp_r4 != NULL) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         if (temp_r4 != NULL) {
-            f = fn_8004BE18(unit);
+            f = Unit_GetAngleTo(unit);
             *(void **)(sp + 0x68) = unit;
             fn_8000A388(&lbl_80295A78, fn_80185078, sp + 0x38);
             if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {

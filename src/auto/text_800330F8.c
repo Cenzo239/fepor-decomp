@@ -10569,7 +10569,7 @@ f32 fn_8004BDA8(void *arg0, f32 farg0, f32 farg1) {
     return Math_Angle2D(M2C_FIELD(arg0, f32 *, 4), M2C_FIELD(arg0, f32 *, 8), farg0, farg1);
 }
 
-f32 fn_8004BE18(void *arg0, void *arg1) {
+f32 Unit_GetAngleTo(void *arg0, void *arg1) {
     f32 Math_Angle2D(f32, f32, f32, f32);
     extern f32 lbl_80368FF8;
     f32 y1;
