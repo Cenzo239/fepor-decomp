@@ -227,15 +227,22 @@ void fn_8003333C(u8 *arg0, s32 arg1) {
 #pragma scheduling reset
 }
 
+#pragma opt_strength_reduction off
 void fn_800333DC(u8 *arg0, s32 arg1) {
-    u8 *base;
+    u8 *p;
+    u16 v;
 
-    base = arg0 + (arg0[0x60] + arg1) * 2;
-    *(u16 *)&base[0x20] |= 0x4002;
-    base = arg0 + (arg0[0x60] + arg1) * 2;
-    *(u16 *)&base[0x22] |= 4;
+    p = arg0 + ((arg0[0x60] + arg1) << 1);
+    v = *(u16 *)(p + 0x20);
+    v |= 0x4002;
+    *(u16 *)(p + 0x20) = v;
+
+    p = arg0 + ((arg0[0x60] + arg1) << 1);
+    v = *(u16 *)(p + 0x22);
+    v |= 4;
+    *(u16 *)(p + 0x22) = v;
 }
-
+#pragma opt_strength_reduction reset
 void fn_80033E70(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x400), s16 *, 2) = (s16) (M2C_FIELD(arg0, s16 *, 0) - M2C_FIELD(arg0, s16 *, 2));
     M2C_FIELD(arg0, void **, 0x400) = NULL;
