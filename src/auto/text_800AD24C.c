@@ -831,7 +831,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     void Prim2D_Begin(void);
     extern s32 gPhaseBannerBlack0;
     extern s32 gPhaseBannerBlack1;
-    extern s32 lbl_80369C70;
+    extern s32 gPhaseBannerBlack2;
     extern s32 lbl_80369C74;
     extern f32 gPhaseBannerZero;
     extern f32 gPhaseBannerPrimParam;
@@ -880,7 +880,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     sp8 = lbl_8036C494;
     spC = lbl_8036C490;
     sp10 = lbl_80369C74;
-    sp14 = lbl_80369C70;
+    sp14 = gPhaseBannerBlack2;
     Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
     Prim2D_ResetState();
