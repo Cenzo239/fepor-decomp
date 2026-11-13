@@ -1841,20 +1841,21 @@ void fn_80245014(u16 arg0) {
     }
 }
 
-void Sound_SetVoicePortU16(u32 arg0, u16 arg1) {
+void Sound_SetVoicePortU16(u32 vid, u16 value) {
+    /* Set the u16 at unk1508[].unk32 for all 16 ports, or queue it on the deferred voice. */
     extern SynthVoice gSynthVoicePool[];
     u32 id;
     u32 i;
 
-    id = Sound_FindVoiceId(arg0);
+    id = Sound_FindVoiceId(vid);
     if (!(id & 0x80000000)) {
         for (i = 0; i < 16; i++) {
-            gSynthVoicePool[id].unk1508[i].unk32 = arg1;
+            gSynthVoicePool[id].unk1508[i].unk32 = value;
         }
         return;
     }
     gSynthVoicePool[id & 0x7FFFFFFF].unkEFA |= 0x20;
-    gSynthVoicePool[id & 0x7FFFFFFF].unkEF8 = arg1;
+    gSynthVoicePool[id & 0x7FFFFFFF].unkEF8 = value;
 }
 
 /* Key off a synth voice by vid: demote active to keyed list, or clear deferred key-off flag. */
