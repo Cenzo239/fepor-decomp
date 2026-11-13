@@ -4488,7 +4488,7 @@ void fn_8024BCE4(void) {
     u32 fn_80262154(s32);
     void fn_80262200(void *, s32, s32, u8, s32, s32);
     s32 fn_802622D0(u8);
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     extern u8 lbl_8034C110[];
     extern s32 gSynthVoices;
     extern u8 lbl_803689CC;
@@ -4509,7 +4509,7 @@ void fn_8024BCE4(void) {
         return;
     }
     lbl_803689CD = lbl_803689CC;
-    slot = lbl_8034D4B8;
+    slot = gSoundSlots;
     lim = lbl_8034C110[0x210];
     for (i = 0; i < lim; slot += 0x68, i++) {
         mode = slot[0xC];
@@ -4568,11 +4568,11 @@ void fn_8024C5C8(void) {
 }
 
 void fn_8024C5CC(u32 arg0) {
-    extern u16 *lbl_8034D4B8;
+    extern u16 *gSoundSlots;
     s32 i;
     u16 *entry;
     
-    entry = lbl_8034D4B8;
+    entry = gSoundSlots;
     for (i = 0x40; i != 0; i--) {
         if ((entry[0xC / 2] == 1) || (entry[0xC / 2] == 2)) {
             u32 temp_r4 = entry[0x4C / 2];
@@ -4591,11 +4591,11 @@ void fn_8024C5CC(u32 arg0) {
 
 s32 Sound_FindSlotById(u32 arg0)
 {
-  extern u8 lbl_8034D4B8[];
+  extern u8 gSoundSlots[];
   u8 *entry;
   s32 i;
   u32 new_var;
-  entry = lbl_8034D4B8;
+  entry = gSoundSlots;
   for (i = 0; i < 64; i++)
   {
     if ((*((u8 *) (entry + 0xC))) != 0)
@@ -4654,11 +4654,11 @@ void fn_8024C808(void *arg0, u8 arg1, u8 arg2, u8 arg3,
 }
 
 void fn_8024C84C(u32 arg0) {
-    extern u16 *lbl_8034D4B8;
+    extern u16 *gSoundSlots;
     s32 i;
     u16 *entry;
     
-    entry = lbl_8034D4B8;
+    entry = gSoundSlots;
     for (i = 0x14; i != 0; i--) {
         if ((entry[0] == 1) || (entry[0] == 2)) {
             if (entry[0x26] == arg0) {
@@ -4676,30 +4676,30 @@ void fn_8024C84C(u32 arg0) {
 
 #pragma global_optimizer off
 u32 fn_8024C97C(s8 a,s32 b,s32 c,s32 d,s8 e,s8 f,s8 g,s8 h,u8 p,u8 q,u32 flags,s32 data,s32 extra,s16 *coef){
-extern u8 lbl_8034D4B8[],lbl_803689C4[8];extern u32 lbl_803689C0,lbl_803689A4;
+extern u8 gSoundSlots[],lbl_803689C4[8];extern u32 lbl_803689C0,lbl_803689A4;
 void Audio_Lock(void);void Audio_Unlock(void);s32 fn_8024CE1C(s32,s32);u32 fn_8024E100(u32);void fn_80261C98(s32,void*,void*);u32 fn_80262290(s32);
 u8 *state,*slot,*scan,*base;u32 next,id,j,index; s32 offset,size,k;u8 voice; s8 pan,span;
 Audio_Lock();
-base=lbl_8034D4B8;scan=base;for(index=0;index<64;scan+=0x68,index++){if(scan[0xc]==0)break;}
+base=gSoundSlots;scan=base;for(index=0;index<64;scan+=0x68,index++){if(scan[0xc]==0)break;}
 if(index!=64){
 next=lbl_803689C0;
 do{
 id=next++;if(id==0xffffffffU)id=next++;
 scan=base;for(j=0;j<64;scan+=0x68,j++){if(scan[0xc]&&id==*(u32*)(scan+4))break;}
 }while(j!=64);
-offset=index*0x68;lbl_803689C0=next;slot=lbl_8034D4B8+offset;
+offset=index*0x68;lbl_803689C0=next;slot=gSoundSlots+offset;
 *(u32*)(slot+4)=id;*(u32*)(slot+8)=flags;
 size=fn_8024CE1C(c,flags);
-slot=lbl_8034D4B8+offset;*(s32*)(slot+0x14)=b;*(s32*)(slot+0x18)=c;*(s32*)(slot+0x1c)=size;*(s32*)(slot+0x10)=data;*(s32*)(slot+0x4c)=-1;
-if(flags&1){if(coef){*(s16*)(slot+44)=coef[0];*(s16*)(slot+46)=coef[1];*(s16*)(slot+48)=coef[2];*(s16*)(slot+50)=coef[3];*(s16*)(slot+52)=coef[4];*(s16*)(slot+54)=coef[5];*(s16*)(slot+56)=coef[6];*(s16*)(slot+58)=coef[7];*(s16*)(slot+60)=coef[8];*(s16*)(slot+62)=coef[9];*(s16*)(slot+64)=coef[10];*(s16*)(slot+66)=coef[11];*(s16*)(slot+68)=coef[12];*(s16*)(slot+70)=coef[13];*(s16*)(slot+72)=coef[14];*(s16*)(slot+74)=coef[15];*(s16*)(slot+0x24)=8;} (lbl_8034D4B8+offset)[0xd]=1;}else slot[0xd]=0;
-slot=lbl_8034D4B8+offset;*(s32*)(slot+0x54)=d;slot[0x60]=q;slot[0x58]=a;slot[0x59]=e;slot[0x5c]=h;slot[0x5d]=p;slot[0x5e]=f;slot[0x5f]=g;
+slot=gSoundSlots+offset;*(s32*)(slot+0x14)=b;*(s32*)(slot+0x18)=c;*(s32*)(slot+0x1c)=size;*(s32*)(slot+0x10)=data;*(s32*)(slot+0x4c)=-1;
+if(flags&1){if(coef){*(s16*)(slot+44)=coef[0];*(s16*)(slot+46)=coef[1];*(s16*)(slot+48)=coef[2];*(s16*)(slot+50)=coef[3];*(s16*)(slot+52)=coef[4];*(s16*)(slot+54)=coef[5];*(s16*)(slot+56)=coef[6];*(s16*)(slot+58)=coef[7];*(s16*)(slot+60)=coef[8];*(s16*)(slot+62)=coef[9];*(s16*)(slot+64)=coef[10];*(s16*)(slot+66)=coef[11];*(s16*)(slot+68)=coef[12];*(s16*)(slot+70)=coef[13];*(s16*)(slot+72)=coef[14];*(s16*)(slot+74)=coef[15];*(s16*)(slot+0x24)=8;} (gSoundSlots+offset)[0xd]=1;}else slot[0xd]=0;
+slot=gSoundSlots+offset;*(s32*)(slot+0x54)=d;slot[0x60]=q;slot[0x58]=a;slot[0x59]=e;slot[0x5c]=h;slot[0x5d]=p;slot[0x5e]=f;slot[0x5f]=g;
 span=g;pan=f;
 if(lbl_803689A4&1){pan=0x40;span=0;}else if(!(lbl_803689A4&2))span=0;
-slot=lbl_8034D4B8+offset;slot[0x5a]=pan;slot[0x5b]=span;slot[0x61]=lbl_803689C4[0];
+slot=gSoundSlots+offset;slot[0x5a]=pan;slot[0x5b]=span;slot[0x61]=lbl_803689C4[0];
 if(lbl_803689C4[0])fn_80261C98(*(s32*)(lbl_803689C4+4),slot+0x62,slot+0x64);
 else{*(s16*)(slot+0x64)=0;*(s16*)(slot+0x62)=0;}
-slot=lbl_8034D4B8+offset;*(s32*)(slot+0x50)=extra;*(s32*)(lbl_8034D4B8+offset)=-1;slot[0xc]=3;state=slot+0xc;
-voice=(u8)fn_80262290(size);(lbl_8034D4B8+offset)[0xe]=voice;
+slot=gSoundSlots+offset;*(s32*)(slot+0x50)=extra;*(s32*)(gSoundSlots+offset)=-1;slot[0xc]=3;state=slot+0xc;
+voice=(u8)fn_80262290(size);(gSoundSlots+offset)[0xe]=voice;
 if(voice!=0xff){if(!(flags&0x10000)&&!fn_8024E100(id))id=-1;}else id=-1;
 if(id==0xffffffffU)*state=0;
 }else id=-1;
@@ -4726,7 +4726,7 @@ s32 fn_8024CE1C(s32 arg0, s32 arg1)
 #pragma global_optimizer off
 void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
 {
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     extern u32 lbl_803689A4;
     extern f32 lbl_8036C228;
     extern f64 lbl_8036C230;
@@ -4753,7 +4753,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
     s32 i;
 
     Audio_Lock();
-    base = lbl_8034D4B8;
+    base = gSoundSlots;
     scan = base;
     index = 0;
     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4766,7 +4766,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
 found1:
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
-        slot = lbl_8034D4B8 + offset;
+        slot = gSoundSlots + offset;
         slot[0x59] = arg1;
         slot[0x5C] = arg4;
         pan = arg2;
@@ -4780,12 +4780,12 @@ found1:
         } else if (!(lbl_803689A4 & 2)) {
             span = 0;
         }
-        slot = lbl_8034D4B8 + offset;
+        slot = gSoundSlots + offset;
         slot[0x5A] = pan;
-        typep = lbl_8034D4B8 + 0xC;
+        typep = gSoundSlots + 0xC;
         slot[0x5B] = span;
         if (typep[offset] == 2) {
-            slot = lbl_8034D4B8 + offset;
+            slot = gSoundSlots + offset;
             fn_80261E6C(
                 *(s32 *)(slot + 0x4C),
                 0,
@@ -4795,7 +4795,7 @@ found1:
                 lbl_8036C228 * (f32)slot[0x5C],
                 lbl_8036C228 * (f32)slot[0x5D]);
         }
-        parent = *(u32 *)(lbl_8034D4B8 + offset);
+        parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             Audio_Lock();
             scan = base;
@@ -4811,7 +4811,7 @@ found2:
             if ((u32)(index + 0x10000) != 0xFFFFU) {
                 offset = index * 0x68;
                 sp8 = arg3;
-                slot = lbl_8034D4B8 + offset;
+                slot = gSoundSlots + offset;
                 sp9 = arg2;
                 fn_8024C7F8(slot, arg1, arg4, 0);
                 slot[0x5E] = sp9;
@@ -4835,7 +4835,7 @@ found2:
                     index = Sound_FindSlotById(parent);
                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                         offset = index * 0x68;
-                        slot = lbl_8034D4B8 + offset;
+                        slot = gSoundSlots + offset;
                         fn_8024C808(slot, arg1, arg2, arg3, arg4, 0);
                         if (typep[offset] == 2) {
                             fn_8024BC58(slot);
@@ -4855,7 +4855,7 @@ found2:
 }
 
 void fn_8024D3C4(u32 arg0, u32 arg1) {
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     extern u8 lbl_8034C110[];
     extern f64 lbl_8036C230;
     extern f32 lbl_8036C238;
@@ -4875,7 +4875,7 @@ void fn_8024D3C4(u32 arg0, u32 arg1) {
     f32 f1;
 
     Audio_Lock();
-    base = lbl_8034D4B8;
+    base = gSoundSlots;
     scan = base;
     index = 0;
     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4888,14 +4888,14 @@ void fn_8024D3C4(u32 arg0, u32 arg1) {
 found1:
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
-        valp = lbl_8034D4B8 + 0x54;
-        typep = lbl_8034D4B8 + 0xC;
+        valp = gSoundSlots + 0x54;
+        typep = gSoundSlots + 0xC;
         *(u32 *)(valp + offset) = arg1;
         if (typep[offset] == 2) {
             f1 = lbl_8036C238 * (f32)arg1;
-            fn_80261BC8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
+            fn_80261BC8(*(s32 *)(gSoundSlots + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
         }
-        parent = *(u32 *)(lbl_8034D4B8 + offset);
+        parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             Audio_Lock();
             scan = base;
@@ -4913,9 +4913,9 @@ found2:
                 *(u32 *)(valp + offset) = arg1;
                 if (typep[offset] == 2) {
                     f1 = lbl_8036C238 * (f32)arg1;
-                    fn_80261BC8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
+                    fn_80261BC8(*(s32 *)(gSoundSlots + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
                 }
-                parent = *(u32 *)(lbl_8034D4B8 + offset);
+                parent = *(u32 *)(gSoundSlots + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     Audio_Lock();
                     scan = base;
@@ -4933,9 +4933,9 @@ found3:
                         *(u32 *)(valp + offset) = arg1;
                         if (typep[offset] == 2) {
                             f1 = lbl_8036C238 * (f32)arg1;
-                            fn_80261BC8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
+                            fn_80261BC8(*(s32 *)(gSoundSlots + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
                         }
-                        parent = *(u32 *)(lbl_8034D4B8 + offset);
+                        parent = *(u32 *)(gSoundSlots + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             Audio_Lock();
                             index = Sound_FindSlotById(parent);
@@ -4944,9 +4944,9 @@ found3:
                                 *(u32 *)(valp + offset) = arg1;
                                 if (typep[offset] == 2) {
                                     f1 = lbl_8036C238 * (f32)arg1;
-                                    fn_80261BC8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
+                                    fn_80261BC8(*(s32 *)(gSoundSlots + offset + 0x4C), (s32)(f1 / (f32)*(u32 *)lbl_8034C110));
                                 }
-                                parent = *(u32 *)(lbl_8034D4B8 + offset);
+                                parent = *(u32 *)(gSoundSlots + offset);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                                     fn_8024D3C4(parent, arg1);
                                 }
@@ -4966,7 +4966,7 @@ found3:
 
 void fn_8024DA2C(u32 arg0)
 {
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     void Audio_Lock(void);
     void Audio_Unlock(void);
     void fn_8024E758(u32);
@@ -4986,7 +4986,7 @@ void fn_8024DA2C(u32 arg0)
     s32 i;
 
     Audio_Lock();
-    base = lbl_8034D4B8;
+    base = gSoundSlots;
     scan = base;
     index = 0;
     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5000,9 +5000,9 @@ found1:
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         fn_8024E758(arg0);
         off1 = index * 0x68;
-        voicep = lbl_8034D4B8 + 0xE;
+        voicep = gSoundSlots + 0xE;
         fn_802622B0(voicep[off1]);
-        parent = *(u32 *)(lbl_8034D4B8 + off1);
+        parent = *(u32 *)(gSoundSlots + off1);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             Audio_Lock();
             scan = base;
@@ -5019,7 +5019,7 @@ found2:
                 fn_8024E758(parent);
                 off2 = index * 0x68;
                 fn_802622B0(voicep[off2]);
-                parent = *(u32 *)(lbl_8034D4B8 + off2);
+                parent = *(u32 *)(gSoundSlots + off2);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     Audio_Lock();
                     scan = base;
@@ -5036,7 +5036,7 @@ found3:
                         fn_8024E758(parent);
                         off3 = index * 0x68;
                         fn_802622B0(voicep[off3]);
-                        parent = *(u32 *)(lbl_8034D4B8 + off3);
+                        parent = *(u32 *)(gSoundSlots + off3);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             Audio_Lock();
                             index = 0;
@@ -5052,7 +5052,7 @@ found4:
                                 fn_8024E758(parent);
                                 off4 = index * 0x68;
                                 fn_802622B0(voicep[off4]);
-                                parent = *(u32 *)(lbl_8034D4B8 + off4);
+                                parent = *(u32 *)(gSoundSlots + off4);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                                     Audio_Lock();
                                     index = Sound_FindSlotById(parent);
@@ -5060,33 +5060,33 @@ found4:
                                         fn_8024E758(parent);
                                         off5 = index * 0x68;
                                         fn_802622B0(voicep[off5]);
-                                        if ((u32)(*(u32 *)(lbl_8034D4B8 + off5) + 0x10000) != 0xFFFFU) {
-                                            fn_8024DA2C(*(u32 *)(lbl_8034D4B8 + off5));
+                                        if ((u32)(*(u32 *)(gSoundSlots + off5) + 0x10000) != 0xFFFFU) {
+                                            fn_8024DA2C(*(u32 *)(gSoundSlots + off5));
                                         }
-                                        (lbl_8034D4B8 + off5)[0xC] = 0;
+                                        (gSoundSlots + off5)[0xC] = 0;
                                     }
                                     Audio_Unlock();
                                 }
-                                (lbl_8034D4B8 + off4)[0xC] = 0;
+                                (gSoundSlots + off4)[0xC] = 0;
                             }
                             Audio_Unlock();
                         }
-                        (lbl_8034D4B8 + off3)[0xC] = 0;
+                        (gSoundSlots + off3)[0xC] = 0;
                     }
                     Audio_Unlock();
                 }
-                (lbl_8034D4B8 + off2)[0xC] = 0;
+                (gSoundSlots + off2)[0xC] = 0;
             }
             Audio_Unlock();
         }
-        (lbl_8034D4B8 + off1)[0xC] = 0;
+        (gSoundSlots + off1)[0xC] = 0;
     }
     Audio_Unlock();
 }
 
 #pragma global_optimizer off
 s32 fn_8024E100(u32 arg0) {
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     void Audio_Lock(void);
     void Audio_Unlock(void);
     s32 fn_80256C14(u8);
@@ -5106,7 +5106,7 @@ s32 fn_8024E100(u32 arg0) {
 
     result = 0;
     Audio_Lock();
-    base = lbl_8034D4B8;
+    base = gSoundSlots;
     scan = base;
     index = 0;
     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5119,11 +5119,11 @@ s32 fn_8024E100(u32 arg0) {
 found1:
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
-        typep = lbl_8034D4B8 + 0xC;
+        typep = gSoundSlots + 0xC;
         if (typep[offset] == 3) {
-            slot = lbl_8034D4B8 + offset;
+            slot = gSoundSlots + offset;
             voice = fn_80256C14(slot[0x58]);
-            slot = lbl_8034D4B8 + offset;
+            slot = gSoundSlots + offset;
             *(s32 *)(slot + 0x4C) = voice;
             if ((u32)(voice + 0x10000) == 0xFFFFU) {
                 Audio_Unlock();
@@ -5132,7 +5132,7 @@ found1:
             *(s32 *)(slot + 0x20) = 0;
             typep[offset] = 1;
         }
-        parent = *(u32 *)(lbl_8034D4B8 + offset);
+        parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             result = 0;
             Audio_Lock();
@@ -5149,9 +5149,9 @@ found2:
             if ((u32)(index + 0x10000) != 0xFFFFU) {
                 offset = index * 0x68;
                 if (typep[offset] == 3) {
-                    slot = lbl_8034D4B8 + offset;
+                    slot = gSoundSlots + offset;
                     voice = fn_80256C14(slot[0x58]);
-                    slot = lbl_8034D4B8 + offset;
+                    slot = gSoundSlots + offset;
                     *(s32 *)(slot + 0x4C) = voice;
                     if ((u32)(voice + 0x10000) == 0xFFFFU) {
                         Audio_Unlock();
@@ -5161,7 +5161,7 @@ found2:
                     *(s32 *)(slot + 0x20) = 0;
                     typep[offset] = 1;
                 }
-                parent = *(u32 *)(lbl_8034D4B8 + offset);
+                parent = *(u32 *)(gSoundSlots + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     result = 0;
                     Audio_Lock();
@@ -5178,9 +5178,9 @@ found3:
                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                         offset = index * 0x68;
                         if (typep[offset] == 3) {
-                            slot = lbl_8034D4B8 + offset;
+                            slot = gSoundSlots + offset;
                             voice = fn_80256C14(slot[0x58]);
-                            slot = lbl_8034D4B8 + offset;
+                            slot = gSoundSlots + offset;
                             *(s32 *)(slot + 0x4C) = voice;
                             if ((u32)(voice + 0x10000) == 0xFFFFU) {
                                 Audio_Unlock();
@@ -5190,7 +5190,7 @@ found3:
                             *(s32 *)(slot + 0x20) = 0;
                             typep[offset] = 1;
                         }
-                        parent = *(u32 *)(lbl_8034D4B8 + offset);
+                        parent = *(u32 *)(gSoundSlots + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             result = 0;
                             Audio_Lock();
@@ -5198,9 +5198,9 @@ found3:
                             if ((u32)(index + 0x10000) != 0xFFFFU) {
                                 offset = index * 0x68;
                                 if (typep[offset] == 3) {
-                                    slot = lbl_8034D4B8 + offset;
+                                    slot = gSoundSlots + offset;
                                     voice = fn_80256C14(slot[0x58]);
-                                    slot = lbl_8034D4B8 + offset;
+                                    slot = gSoundSlots + offset;
                                     *(s32 *)(slot + 0x4C) = voice;
                                     if ((u32)(voice + 0x10000) == 0xFFFFU) {
                                         Audio_Unlock();
@@ -5210,7 +5210,7 @@ found3:
                                     *(s32 *)(slot + 0x20) = 0;
                                     typep[offset] = 1;
                                 }
-                                id = *(u32 *)(lbl_8034D4B8 + offset);
+                                id = *(u32 *)(gSoundSlots + offset);
                                 if ((u32)(id + 0x10000) != 0xFFFFU) {
                                     result = fn_8024E100(id);
                                 } else {
@@ -5259,7 +5259,7 @@ after2:
 
 void fn_8024E758(u32 arg0)
 {
-    extern u8 lbl_8034D4B8[];
+    extern u8 gSoundSlots[];
     void Audio_Lock(void);
     void Audio_Unlock(void);
     void fn_80256DD8(s32);
@@ -5275,7 +5275,7 @@ void fn_8024E758(u32 arg0)
     s32 i;
 
     Audio_Lock();
-    base = lbl_8034D4B8;
+    base = gSoundSlots;
     scan = base;
     index = 0;
     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5288,13 +5288,13 @@ void fn_8024E758(u32 arg0)
 found1:
     if ((u32)(index + 0x10000) != 0xFFFFU) {
         offset = index * 0x68;
-        typep = lbl_8034D4B8 + 0xC;
+        typep = gSoundSlots + 0xC;
         type = typep[offset];
         if (type == 1 || type == 2) {
-            fn_80256DD8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C));
+            fn_80256DD8(*(s32 *)(gSoundSlots + offset + 0x4C));
             typep[offset] = 3;
         }
-        parent = *(u32 *)(lbl_8034D4B8 + offset);
+        parent = *(u32 *)(gSoundSlots + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             Audio_Lock();
             scan = base;
@@ -5311,10 +5311,10 @@ found2:
                 offset = index * 0x68;
                 type = typep[offset];
                 if (type == 1 || type == 2) {
-                    fn_80256DD8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C));
+                    fn_80256DD8(*(s32 *)(gSoundSlots + offset + 0x4C));
                     typep[offset] = 3;
                 }
-                parent = *(u32 *)(lbl_8034D4B8 + offset);
+                parent = *(u32 *)(gSoundSlots + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     Audio_Lock();
                     scan = base;
@@ -5331,10 +5331,10 @@ found3:
                         offset = index * 0x68;
                         type = typep[offset];
                         if (type == 1 || type == 2) {
-                            fn_80256DD8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C));
+                            fn_80256DD8(*(s32 *)(gSoundSlots + offset + 0x4C));
                             typep[offset] = 3;
                         }
-                        parent = *(u32 *)(lbl_8034D4B8 + offset);
+                        parent = *(u32 *)(gSoundSlots + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             Audio_Lock();
                             index = 0;
@@ -5350,10 +5350,10 @@ found4:
                                 offset = index * 0x68;
                                 type = typep[offset];
                                 if (type == 1 || type == 2) {
-                                    fn_80256DD8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C));
+                                    fn_80256DD8(*(s32 *)(gSoundSlots + offset + 0x4C));
                                     typep[offset] = 3;
                                 }
-                                parent = *(u32 *)(lbl_8034D4B8 + offset);
+                                parent = *(u32 *)(gSoundSlots + offset);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                                     Audio_Lock();
                                     index = Sound_FindSlotById(parent);
@@ -5361,11 +5361,11 @@ found4:
                                         offset = index * 0x68;
                                         type = typep[offset];
                                         if (type == 1 || type == 2) {
-                                            fn_80256DD8(*(s32 *)(lbl_8034D4B8 + offset + 0x4C));
+                                            fn_80256DD8(*(s32 *)(gSoundSlots + offset + 0x4C));
                                             typep[offset] = 3;
                                         }
-                                        if ((u32)(*(u32 *)(lbl_8034D4B8 + offset) + 0x10000) != 0xFFFFU) {
-                                            fn_8024E758(*(u32 *)(lbl_8034D4B8 + offset));
+                                        if ((u32)(*(u32 *)(gSoundSlots + offset) + 0x10000) != 0xFFFFU) {
+                                            fn_8024E758(*(u32 *)(gSoundSlots + offset));
                                         }
                                     }
                                     Audio_Unlock();
