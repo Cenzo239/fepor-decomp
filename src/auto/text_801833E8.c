@@ -1981,75 +1981,76 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 }
 }
 
-void MoveAnim_AttachClassCue(void *arg0) {
+void MoveAnim_AttachClassCue(void *anim) {
     s32 fn_802342B8(void *, void *);
     s32 fn_800056CC(const char *, ...);
     s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 MoveAnim_str[];
-    void *ent;
-    void *str;
-    void *parent;
-    f32 f31;
-    f32 f30;
-    f32 f29;
+    void *klass;
+    void *cuePath;
+    void *unit;
+    f32 x;
+    f32 y;
+    f32 z;
 
-    str = NULL;
-    parent = *(void **)((u8 *)arg0 + 0x30);
-    ent = *(void **)((u8 *)parent + 0x18C);
-    if (*(u8 *)((u8 *)ent + 0x42) == 9) {
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3AB) == 0) {
-            str = MoveAnim_str + 0x393;
+    /* For class-type 9 units, pick an SE cue from JID/PID and attach it to the MoveAnim. */
+    cuePath = NULL;
+    unit = *(void **)((u8 *)anim + 0x30);
+    klass = *(void **)((u8 *)unit + 0x18C);
+    if (*(u8 *)((u8 *)klass + 0x42) == 9) {
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3AB) == 0) {
+            cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3BF) == 0) {
-            str = MoveAnim_str + 0x393;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3BF) == 0) {
+            cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3D2) == 0) {
-            str = MoveAnim_str + 0x393;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3D2) == 0) {
+            cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3FF) == 0) {
-            str = MoveAnim_str + 0x3E7;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3FF) == 0) {
+            cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x410) == 0) {
-            str = MoveAnim_str + 0x3E7;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x410) == 0) {
+            cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x423) == 0) {
-            str = MoveAnim_str + 0x3E7;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x423) == 0) {
+            cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x434) == 0) {
-            str = MoveAnim_str + 0x3E7;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x434) == 0) {
+            cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x312) == 0) {
-            str = MoveAnim_str + 0x447;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x312) == 0) {
+            cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x332) == 0) {
-            str = MoveAnim_str + 0x447;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x332) == 0) {
+            cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x33E) == 0) {
-            str = MoveAnim_str + 0x447;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x33E) == 0) {
+            cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2E7) == 0) {
-            str = MoveAnim_str + 0x45F;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2E7) == 0) {
+            cuePath = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x305) == 0) {
-            str = MoveAnim_str + 0x45F;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x305) == 0) {
+            cuePath = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2BC) == 0) {
-            str = MoveAnim_str + 0x477;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2BC) == 0) {
+            cuePath = MoveAnim_str + 0x477;
         }
-        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2DA) == 0) {
-            str = MoveAnim_str + 0x477;
+        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2DA) == 0) {
+            cuePath = MoveAnim_str + 0x477;
         }
-        parent = *(void **)((u8 *)arg0 + 0x30);
-        if (fn_802342B8(**(void ***)((u8 *)parent + 0x188), MoveAnim_str + 0x4A7) == 0) {
-            str = MoveAnim_str + 0x48F;
+        unit = *(void **)((u8 *)anim + 0x30);
+        if (fn_802342B8(**(void ***)((u8 *)unit + 0x188), MoveAnim_str + 0x4A7) == 0) {
+            cuePath = MoveAnim_str + 0x48F;
         }
-        if (str != NULL) {
-            parent = *(void **)((u8 *)arg0 + 0x30);
-            f31 = *(f32 *)((u8 *)parent + 4);
-            f30 = *(f32 *)((u8 *)parent + 8);
-            f29 = *(f32 *)((u8 *)parent + 0xC);
-            fn_800056CC((char *)(MoveAnim_str + 0x4B3), str);
-            *(s8 *)((u8 *)arg0 + 0x6A) = SeCue_PlayAt(str, 0x64, f31, f30, f29);
+        if (cuePath != NULL) {
+            unit = *(void **)((u8 *)anim + 0x30);
+            x = *(f32 *)((u8 *)unit + 4);
+            y = *(f32 *)((u8 *)unit + 8);
+            z = *(f32 *)((u8 *)unit + 0xC);
+            fn_800056CC((char *)(MoveAnim_str + 0x4B3), cuePath);
+            *(s8 *)((u8 *)anim + 0x6A) = SeCue_PlayAt(cuePath, 0x64, x, y, z);
         }
     }
 }
