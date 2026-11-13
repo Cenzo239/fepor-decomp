@@ -1331,7 +1331,7 @@ int fn_802195B0(int arg0, void *arg1, void *arg2)
     return fn_8021791C(arg0, size, (void *)fn_80219334);
 }
 
-s32 fn_8021965C(void *arg0) {
+s32 __CARDGetDirBlock(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x84);
 }
 
@@ -2352,7 +2352,7 @@ s32 fn_8021BCCC(void *arg0, void *arg1)
 
 s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
 {
-    u8 *fn_8021965C(void *);
+    u8 *__CARDGetDirBlock(void *);
     s32 fn_80231944(const void *, const void *, u32);
     extern u8 lbl_8033A420[];
 
@@ -2371,7 +2371,7 @@ s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
         return -3;
     }
 
-    entry = fn_8021965C(arg0);
+    entry = __CARDGetDirBlock(arg0);
     defaultReference = lbl_8033A420;
     index = 0;
 
@@ -2432,7 +2432,7 @@ s32 fn_8021BDC0(void *arg0, char *arg1, s32 *arg2)
 s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
 {
     s32 fn_80217B18(void *, void **);
-    void *fn_8021965C(void *);
+    void *__CARDGetDirBlock(void *);
     s32 fn_8021BB04(void *, void *);
     s32 fn_8021BA9C(void *, void *);
     s32 fn_80217BD0(void *, s32);
@@ -2455,7 +2455,7 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
     if (*(s32 *)handle == 0) {
         result = -3;
     } else {
-        entry = (u8 *)fn_8021965C(handle);
+        entry = (u8 *)__CARDGetDirBlock(handle);
         index = 0;
 
         do {
@@ -2477,7 +2477,7 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
     }
 
     if (result >= 0) {
-        base = (u8 *)fn_8021965C(handle);
+        base = (u8 *)__CARDGetDirBlock(handle);
         entry = base + (foundIndex << 6);
 
         value = *(u16 *)(entry + 0x36);
@@ -2517,7 +2517,7 @@ void fn_8021C088(s32 chan, s32 result)
 {
     extern u16 __CARDBlock[];
 
-    s32 fn_8021965C(void *);
+    s32 __CARDGetDirBlock(void *);
     s32 fn_802197FC(s32, s32);
     s32 fn_80217BD0(void *, s32);
     s64 OSGetTime(void);
@@ -2537,7 +2537,7 @@ void fn_8021C088(s32 chan, s32 result)
     status = result;
 
     if (status >= 0) {
-        entry = (u8 *)fn_8021965C(card);
+        entry = (u8 *)__CARDGetDirBlock(card);
         entry += *(u16 *)(card + 0xBC) << 6;
 
         source = *(u8 **)(card + 0x10C);
@@ -2585,7 +2585,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
     s32 fn_80217BD0(void *, s32);
     void *fn_80219258(void *);
     s32 fn_802193FC(s32, u32, void *);
-    u8 *fn_8021965C(s32);
+    u8 *__CARDGetDirBlock(s32);
     s32 fn_8021BA9C(u8 *, char *);
     s32 fn_80231944(u8 *, void *, s32);
     void fn_8023440C(u8 *, char *, s32);
@@ -2616,7 +2616,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
         }
     }
     freeIdx = 0xFFFF;
-    dir = fn_8021965C(card);
+    dir = __CARDGetDirBlock(card);
     ent = dir;
     for (i = 0; i < 0x7F; ent += 0x40, i += 1) {
         if (*ent == 0xFF) {
@@ -2750,7 +2750,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     s32 fn_8021C420(void *, u32, u32, void **);
     s32 fn_802190A4(s32, u32, u32, void *, void *);
     s32 fn_80217BD0(void *, s32);
-    s32 fn_8021965C(void *);
+    s32 __CARDGetDirBlock(void *);
     s32 fn_8021BCCC(void *, void *);
     void DCInvalidateRange(void *, u32);
     void fn_80216994(void);
@@ -2774,7 +2774,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
         return result;
     }
 
-    entry = (u8 *)fn_8021965C(card);
+    entry = (u8 *)__CARDGetDirBlock(card);
     entry += arg0[1] << 6;
 
     result = fn_8021BCCC(card, entry);
@@ -2830,7 +2830,7 @@ s32 fn_8021C84C(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s64 OSGetTime(void);
-s32 fn_8021965C(void *arg0);
+s32 __CARDGetDirBlock(void *arg0);
 s32 fn_80219258(void *arg0);
 s32 fn_802197FC(s32 arg0, s32 arg1);
 s32 fn_80217BD0(void *arg0, s32 arg1);
@@ -2857,7 +2857,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
 
     *(s32 *)(fileInfo + 0xC) -= *(s32 *)(card + 0xC);
     if (*(s32 *)(fileInfo + 0xC) <= 0) {
-        ent = (u8 *)fn_8021965C(card) + (*(s32 *)(fileInfo + 0x4) << 6);
+        ent = (u8 *)__CARDGetDirBlock(card) + (*(s32 *)(fileInfo + 0x4) << 6);
         *(u32 *)(ent + 0x28) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 / 4));
         callback = *(void (**)(s32, s32))(card + 0xD0);
         *(void (**)(s32, s32))(card + 0xD0) = 0;
@@ -2886,7 +2886,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
 {
     s32 fn_8021C420(void *, u32, u32, void **);
     s32 fn_80217BD0(void *, s32);
-    void *fn_8021965C(void);
+    void *__CARDGetDirBlock(void);
     s32 fn_8021BB98(void *, void *);
     void fn_80205110(void *, u32);
     s32 fn_8021791C(void *, u32);
@@ -2914,7 +2914,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
         return fn_80217BD0(state, -0x80);
     }
 
-    buffer = (u8 *)fn_8021965C();
+    buffer = (u8 *)__CARDGetDirBlock();
     buffer += (*(u32 *)((u8 *)arg0 + 4) << 6);
 
     result = fn_8021BB98(state, buffer);
@@ -3138,7 +3138,7 @@ valid:
         return result;
     }
 
-    entry = (CardDirEntry *)((u8 *)fn_8021965C((void *)card) + (fileNo << 6));
+    entry = (CardDirEntry *)((u8 *)__CARDGetDirBlock((void *)card) + (fileNo << 6));
     result = fn_8021BB98((void *)card, entry);
     if (result < 0) {
         return fn_80217BD0((void *)card, result);
@@ -3196,7 +3196,7 @@ s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
         return ret;
     }
     
-    entry = (u8 *)fn_8021965C((void *)stack[0]) + (index << 6);
+    entry = (u8 *)__CARDGetDirBlock((void *)stack[0]) + (index << 6);
     ret = fn_8021BCCC(stack[0], entry);
     if (ret >= 0) {
         memcpy(dst, entry, 0x40);
@@ -3212,7 +3212,7 @@ s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
 s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 fn_80217B18(s32, s32 *);
     s32 fn_80217BD0(void *, s32);
-    u8 *fn_8021965C(s32);
+    u8 *__CARDGetDirBlock(s32);
     s32 fn_802197FC(s32, s32);
     s32 fn_8021BB98(s32, CardDirEntry *);
     s32 fn_80231944(void *, void *, u32);
@@ -3233,7 +3233,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     if (ret < 0) {
         return ret;
     }
-    base = fn_8021965C(sp18);
+    base = __CARDGetDirBlock(sp18);
     slot = (CardDirEntry *)(base + (arg1 << 6));
     ret = fn_8021BB98(sp18, slot);
     if (ret < 0) {
