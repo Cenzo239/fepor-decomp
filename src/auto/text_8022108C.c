@@ -397,7 +397,7 @@ s32 fn_802216E0(s32 arg0) {
     return (ret - *(ptr + 7)) + 0x4000;
 }
 
-void fn_802217AC(u8 *arg0, u32 arg1)
+void GXSetCopyClear(u8 *arg0, u32 arg1)
 {
     volatile u8 *fifo;
     u32 value;

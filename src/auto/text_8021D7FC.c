@@ -380,7 +380,7 @@ void *GXInit(void *base, u32 size) {
 
 void __GXInitGX(void) {
     s32 VIGetTvFormat(void);
-    void fn_802217AC(void *, s32);
+    void GXSetCopyClear(void *, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetNumChans(s32);
     void GXClearVtxDesc(void);
@@ -506,7 +506,7 @@ void __GXInitGX(void) {
     }
 
     sp1C = sp28;
-    fn_802217AC(&sp1C, 0xFFFFFF);
+    GXSetCopyClear(&sp1C, 0xFFFFFF);
 
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_802201A8(1, 1, 5, 0x3C, 0, 0x7D);

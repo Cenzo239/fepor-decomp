@@ -7807,7 +7807,7 @@ void fn_801C7598(void *arg0) {
         ((u8 *)&local_c)[1] = local_b2;
         ((u8 *)&local_c)[2] = local_b3;
         local_8 = local_c;
-        fn_802217AC(&local_8, 0xFFFFFF, local_b2, local_b1);
+        GXSetCopyClear(&local_8, 0xFFFFFF, local_b2, local_b1);
     }
 }
 
@@ -8718,7 +8718,7 @@ void Game_InitVideo(void) {
     s32 fn_8006E650(void);
     void DEMOInit(void *);
     void fn_8020602C(char *, s32, char *, ...);
-    void fn_802217AC(void *, s32);
+    void GXSetCopyClear(void *, s32);
     void fn_80221A40(s32, s32);
     extern s32 gGameFlags;
     extern void *gGameRenderMode;
@@ -8807,7 +8807,7 @@ void Game_InitVideo(void) {
     }
 
     sp8 = gClearColor;
-    fn_802217AC(&sp8, 0xFFFFFF);
+    GXSetCopyClear(&sp8, 0xFFFFFF);
     fn_80221A40(fn_8006E650(), 1);
 }
 

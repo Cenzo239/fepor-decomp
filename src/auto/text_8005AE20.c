@@ -4597,7 +4597,7 @@ void fn_800661A8(void *arg0) {
     void fn_802029C4(void *, void *, f32 *);
     void fn_80202A18(void *, f32 *, f32 *);
     void fn_802031CC(void *, f32 *, f32);
-    void fn_802217AC(s32 *, s32);
+    void GXSetCopyClear(s32 *, s32);
     void fn_80221D6C(void *, f32, f32, f32, f32, f32, f32);
     void fn_80221D88(void *, s32, f32);
     void fn_80221F18(void *, s32, f32, f32);
@@ -4733,7 +4733,7 @@ void fn_800661A8(void *arg0) {
         fn_802244B4(1, 0x140, buf0);
     }
     sp64 = lbl_8036C44C;
-    fn_802217AC(&sp64, 0xFFFFFF);
+    GXSetCopyClear(&sp64, 0xFFFFFF);
     lbl_80366DD0 = 3;
     fn_802245D8(0, 1, 0, 7);
     fn_802246B8(1);
