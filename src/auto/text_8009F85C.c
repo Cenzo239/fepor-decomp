@@ -1515,6 +1515,7 @@ void *fn_800A19B0(void) {
     return (u16*)((char*)lbl_8026D8D8 + 0x667);
 }
 
+/* Kill the unit under the cursor: zero HP, then death cleanup or death anim. */
 s32 Ui_KillCursorUnit(void) {
     void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
@@ -1532,30 +1533,30 @@ s32 Ui_KillCursorUnit(void) {
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
     extern u8 gBattle[];
-    void *temp_r31;
-    void *temp_r30;
-    u8 *cls;
+    void *proc;
+    void *unit;
+    u8 *person;
 
-    temp_r31 = Process_FindByName(lbl_8026D8D8 + 0x531);
-    if (temp_r31 == NULL) {
+    proc = Process_FindByName(lbl_8026D8D8 + 0x531);
+    if (proc == NULL) {
         return 0x10;
     }
-    Process_Goto(temp_r31, 9);
+    Process_Goto(proc, 9);
     fn_800A6A3C();
-    temp_r30 = Map_GetCursorUnit();
-    UiCtx_BeginMoveSelect(gUiContext, temp_r30);
+    unit = Map_GetCursorUnit();
+    UiCtx_BeginMoveSelect(gUiContext, unit);
     UiCtx_EndMoveSelect(gUiContext, 1);
-    Unit_SetHp(temp_r30, 0);
-    cls = *(u8 **)((u8 *)temp_r30 + 0x190);
-    if (cls[8] != 0) {
-        Unit_OnZeroHp(temp_r30);
+    Unit_SetHp(unit, 0);
+    person = *(u8 **)((u8 *)unit + 0x190);
+    if (person[8] != 0) {
+        Unit_OnZeroHp(unit);
         Map_RefreshUnitMap(gBattleMap);
         return 6;
     }
-    Unit_OnZeroHp(temp_r30);
-    Battle_SetupUnit(gBattle, temp_r30, -1);
+    Unit_OnZeroHp(unit);
+    Battle_SetupUnit(gBattle, unit, -1);
     Battle_QueueDeathAnim(gBattle);
-    fn_8019B704(temp_r31, 0);
+    fn_8019B704(proc, 0);
     return 6;
 }
 
