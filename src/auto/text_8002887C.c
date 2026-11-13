@@ -3802,7 +3802,7 @@ extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_8003284C(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawDualStatus(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
     extern u8 gUiContext[];
