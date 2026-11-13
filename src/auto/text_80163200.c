@@ -16225,7 +16225,8 @@ s32 fn_80182AC4(s32 arg0) {
     return 1;
 }
 
-s32 Ai_TryApproachIke(s32 arg0) {
+/* AI: approach Ike unless he has blocking flags; else store result code in gAiState. */
+s32 Ai_TryApproachIke(s32 unit) {
     void *Unit_FindIke(s32);
     u8 fn_800F5504(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
@@ -16234,23 +16235,23 @@ s32 Ai_TryApproachIke(s32 arg0) {
     u8 fn_8018D4CC(s32, u8 *);
     extern u8 Ai_UnitIsIke[];
     extern u8 gAiState[];
-    s16 spA;
-    s16 sp8;
-    s32 temp_r3;
+    s16 x;
+    s16 y;
+    s32 flags;
 
-    temp_r3 = *(s32 *)((u8 *)Unit_FindIke(arg0 + 0x236) + 0x1A0);
-    if (temp_r3 & 0x98) {
+    flags = *(s32 *)((u8 *)Unit_FindIke(unit + 0x236) + 0x1A0);
+    if (flags & 0x98) {
         *(s32 *)(gAiState + 8) = 1;
         return 0;
     }
-    if (temp_r3 & 4) {
+    if (flags & 4) {
         *(s32 *)(gAiState + 8) = 4;
         return 0;
     }
-    if ((fn_8010F52C(arg0, Ai_UnitIsIke) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsIke) == 0) &&
+    if ((fn_8010F52C(unit, Ai_UnitIsIke) == 0) && (fn_8018D4CC(unit, Ai_UnitIsIke) == 0) &&
         (fn_800F5504(Ai_UnitIsIke, 0xF) == 0) &&
-        (Ai_FindLowestCostUnitTile(Ai_UnitIsIke, arg0, &spA, &sp8) != 0)) {
-        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+        (Ai_FindLowestCostUnitTile(Ai_UnitIsIke, unit, &x, &y) != 0)) {
+        Ai_SetUnitMoveTo(unit, x, y, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
 }
