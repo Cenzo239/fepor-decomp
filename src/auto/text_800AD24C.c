@@ -2947,7 +2947,7 @@ partition:
 
 void fn_800B5708(void) {
     void Script_RegisterCommand(void *, void *, s32);
-    void fn_801B6F44(void);
+    void Script_RegisterWinCondCommands(void);
     extern u8 lbl_8026ECB8[];
     void fn_800BAD9C(void);
     void fn_800BAE4C(void);
@@ -3252,7 +3252,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x73D, fn_800B7658, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x74E, fn_80089524, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x75F, fn_800894F8, 0);
-    fn_801B6F44();
+    Script_RegisterWinCondCommands();
     Script_RegisterCommand(lbl_8026ECB8 + 0x76E, fn_800B7580, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x778, fn_800B74AC, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x78F, fn_800B7410, 0);

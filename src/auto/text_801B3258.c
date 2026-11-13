@@ -745,7 +745,7 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
     return 0;
 }
 
-void fn_801B6F44(void) {
+void Script_RegisterWinCondCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 lbl_8027C370[];
     void fn_801B7818(void);
