@@ -19794,8 +19794,8 @@ extern void *lbl_803678F8;
     s16 y;
 
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        (Ai_FindLowestCostAllyTile(*(s32 *)((u8 *)work + 0x14), &x, &y) != 0)) {
-        Ai_SetUnitMoveTo(arg0, x, y, 1, M2C_FIELD(gAiState, u16 *, 4), 1, 0, -1);
+                  Ai_FindLowestCostAllyTile(*(s32 *)((u8 *)work + 0x14), &x, &y)) {
+        Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
     }
     if (lbl_803678F4 == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
