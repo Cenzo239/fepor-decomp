@@ -1146,62 +1146,63 @@ void fn_80014F94(void *arg0, s32 arg1) {
     Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 3));
 }
 
-void *Msg_ExpandMmTag(void *arg0) {
+void *Msg_ExpandMmTag(void *ctrl) {
+    /* Select an MM_* message tag from two control bytes and expand it via Msg_Expand. */
     void *Msg_Expand(void *);
     extern u8 gMsgCommonStr[];
-    u8 temp_r0;
-    u8 temp_r0_2;
-    u8 var_r4;
-    void *var_r3;
+    u8 variant;
+    u8 kind;
+    u8 useAlt;
+    void *tag;
 
-    temp_r0 = *(u8 *)((u8 *)arg0 + 1);
-    switch ((s32) temp_r0) {
+    variant = *(u8 *)((u8 *)ctrl + 1);
+    switch ((s32) variant) {
     case 0:
-        var_r4 = 1;
+        useAlt = 1;
         break;
     case 3:
-        var_r4 = 0;
+        useAlt = 0;
         break;
     default:
         return &gMsgCommonStr[0x1D];
     }
-    temp_r0_2 = *(u8 *)arg0;
-    switch ((s32) temp_r0_2) {
+    kind = *(u8 *)ctrl;
+    switch ((s32) kind) {
     case 0:
-        if (var_r4 != 0) {
-            var_r3 = &gMsgCommonStr[0x1D];
+        if (useAlt != 0) {
+            tag = &gMsgCommonStr[0x1D];
         } else {
-            var_r3 = &gMsgCommonStr[0x22];
+            tag = &gMsgCommonStr[0x22];
         }
-        return Msg_Expand(var_r3);
+        return Msg_Expand(tag);
     case 1:
-        if (var_r4 != 0) {
-            var_r3 = &gMsgCommonStr[0x28];
+        if (useAlt != 0) {
+            tag = &gMsgCommonStr[0x28];
         } else {
-            var_r3 = &gMsgCommonStr[0x2E];
+            tag = &gMsgCommonStr[0x2E];
         }
-        return Msg_Expand(var_r3);
+        return Msg_Expand(tag);
     case 2:
-        if (var_r4 != 0) {
-            var_r3 = &gMsgCommonStr[0x34];
+        if (useAlt != 0) {
+            tag = &gMsgCommonStr[0x34];
         } else {
-            var_r3 = &gMsgCommonStr[0x3A];
+            tag = &gMsgCommonStr[0x3A];
         }
-        return Msg_Expand(var_r3);
+        return Msg_Expand(tag);
     case 3:
-        if (var_r4 != 0) {
-            var_r3 = &gMsgCommonStr[0x40];
+        if (useAlt != 0) {
+            tag = &gMsgCommonStr[0x40];
         } else {
-            var_r3 = &gMsgCommonStr[0x46];
+            tag = &gMsgCommonStr[0x46];
         }
-        return Msg_Expand(var_r3);
+        return Msg_Expand(tag);
     case 4:
-        if (var_r4 != 0) {
-            var_r3 = &gMsgCommonStr[0x4C];
+        if (useAlt != 0) {
+            tag = &gMsgCommonStr[0x4C];
         } else {
-            var_r3 = &gMsgCommonStr[0x52];
+            tag = &gMsgCommonStr[0x52];
         }
-        return Msg_Expand(var_r3);
+        return Msg_Expand(tag);
     default:
         return &gMsgCommonStr[0x1D];
     }
