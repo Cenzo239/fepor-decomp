@@ -4827,54 +4827,55 @@ s32 fn_800D3590(void *arg0) {
 
 #pragma cplusplus on
 #pragma inline_depth(0)
-extern "C" void *GameScene_Destroy(u8 *p, s16 arg1) {
+/* Destroy a GameScene: release child objects, strings, and optionally free the scene itself. */
+extern "C" void *GameScene_Destroy(u8 *self, s16 doFree) {
 extern u8 lbl_80367878; extern u8 *gGame;
 void *fn_800D6314(void *,s16); void fn_801C777C(); void fn_8005C7E8(void *); void fn_80040854(int); void fn_8004084C(void *); void BinTree_Destroy(void *,void *); void fn_800C428C(void *);
 struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(int); };
- void *other; Obj *obj;
-if(p) {
+ void *game; Obj *child;
+if(self) {
 fn_801C777C();
-obj=*(Obj **)(p+4); if(obj)obj->v1(1); *(void **)(p+4)=0;
-if(!lbl_80367878) { other=gGame; if(other){String_Destroy((u8 *)other+0x1A8,-1);String_Destroy((u8 *)other+0x19C,-1);String_Destroy(other,-1);fn_800C428C(other);}}
-if(*(void **)(p+116))fn_8005C7E8(*(void **)(p+116));
-if(*(void **)(p+120))fn_8005C7E8(*(void **)(p+120));
-if(*(void **)(p+124))fn_8005C7E8(*(void **)(p+124));
-if(*(void **)(p+832))fn_8005C7E8(*(void **)(p+832));
-if(*(void **)(p+836))fn_8005C7E8(*(void **)(p+836));
-if(*(void **)(p+840))fn_8005C7E8(*(void **)(p+840));
-if(*(void **)(p+844))fn_8005C7E8(*(void **)(p+844));
-if(*(void **)(p+0))fn_8005C7E8(*(void **)(p+0));
-if(!lbl_80367878){fn_80040854(0);fn_8004084C(*(void **)(p+0x27C));}
-if(p+512)if(p+512)fn_800D6314(p+512,0);
-if(p+496)if(p+496)fn_800CA6C8(p+496,0);
-if(p+480)if(p+480)if(*(void **)(p+484))BinTree_Destroy(p+480,*(void **)(p+484));
-if(p+468)if(p+468)fn_800CA6C8(p+468,0);
-if(p+456)if(p+456)fn_800CA6C8(p+456,0);
-if(p+444)if(p+444)fn_800CA6C8(p+444,0);
-String_Destroy(p+408,-1);
-String_Destroy(p+352,-1);
-String_Destroy(p+340,-1);
-String_Destroy(p+328,-1);
-String_Destroy(p+316,-1);
-String_Destroy(p+304,-1);
-String_Destroy(p+292,-1);
-String_Destroy(p+280,-1);
-String_Destroy(p+268,-1);
-String_Destroy(p+256,-1);
-String_Destroy(p+244,-1);
-String_Destroy(p+232,-1);
-String_Destroy(p+220,-1);
-String_Destroy(p+208,-1);
-String_Destroy(p+196,-1);
-String_Destroy(p+184,-1);
-String_Destroy(p+92,-1);
-String_Destroy(p+80,-1);
-String_Destroy(p+68,-1);
-String_Destroy(p+56,-1);
-String_Destroy(p+44,-1);
-String_Destroy(p+32,-1);
-if(arg1>0)fn_800C428C(p);
-}return p;
+child=*(Obj **)(self+4); if(child)child->v1(1); *(void **)(self+4)=0;
+if(!lbl_80367878) { game=gGame; if(game){String_Destroy((u8 *)game+0x1A8,-1);String_Destroy((u8 *)game+0x19C,-1);String_Destroy(game,-1);fn_800C428C(game);}}
+if(*(void **)(self+116))fn_8005C7E8(*(void **)(self+116));
+if(*(void **)(self+120))fn_8005C7E8(*(void **)(self+120));
+if(*(void **)(self+124))fn_8005C7E8(*(void **)(self+124));
+if(*(void **)(self+832))fn_8005C7E8(*(void **)(self+832));
+if(*(void **)(self+836))fn_8005C7E8(*(void **)(self+836));
+if(*(void **)(self+840))fn_8005C7E8(*(void **)(self+840));
+if(*(void **)(self+844))fn_8005C7E8(*(void **)(self+844));
+if(*(void **)(self+0))fn_8005C7E8(*(void **)(self+0));
+if(!lbl_80367878){fn_80040854(0);fn_8004084C(*(void **)(self+0x27C));}
+if(self+512)if(self+512)fn_800D6314(self+512,0);
+if(self+496)if(self+496)fn_800CA6C8(self+496,0);
+if(self+480)if(self+480)if(*(void **)(self+484))BinTree_Destroy(self+480,*(void **)(self+484));
+if(self+468)if(self+468)fn_800CA6C8(self+468,0);
+if(self+456)if(self+456)fn_800CA6C8(self+456,0);
+if(self+444)if(self+444)fn_800CA6C8(self+444,0);
+String_Destroy(self+408,-1);
+String_Destroy(self+352,-1);
+String_Destroy(self+340,-1);
+String_Destroy(self+328,-1);
+String_Destroy(self+316,-1);
+String_Destroy(self+304,-1);
+String_Destroy(self+292,-1);
+String_Destroy(self+280,-1);
+String_Destroy(self+268,-1);
+String_Destroy(self+256,-1);
+String_Destroy(self+244,-1);
+String_Destroy(self+232,-1);
+String_Destroy(self+220,-1);
+String_Destroy(self+208,-1);
+String_Destroy(self+196,-1);
+String_Destroy(self+184,-1);
+String_Destroy(self+92,-1);
+String_Destroy(self+80,-1);
+String_Destroy(self+68,-1);
+String_Destroy(self+56,-1);
+String_Destroy(self+44,-1);
+String_Destroy(self+32,-1);
+if(doFree>0)fn_800C428C(self);
+}return self;
 }
 
 extern "C" void *GameScene_Create(void *arg0)
