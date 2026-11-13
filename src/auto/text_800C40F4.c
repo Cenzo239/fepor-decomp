@@ -4829,7 +4829,7 @@ s32 fn_800D3590(void *arg0) {
 #pragma inline_depth(0)
 extern "C" void *GameScene_Destroy(u8 *p, s16 arg1) {
 extern u8 lbl_80367878; extern u8 *gGame;
-void *fn_800D6314(void *,s16); void fn_801C777C(); void fn_8005C7E8(void *); void fn_80040854(int); void fn_8004084C(void *); void fn_800D6374(void *,void *); void fn_800C428C(void *);
+void *fn_800D6314(void *,s16); void fn_801C777C(); void fn_8005C7E8(void *); void fn_80040854(int); void fn_8004084C(void *); void BinTree_Destroy(void *,void *); void fn_800C428C(void *);
 struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(int); };
  void *other; Obj *obj;
 if(p) {
@@ -4847,7 +4847,7 @@ if(*(void **)(p+0))fn_8005C7E8(*(void **)(p+0));
 if(!lbl_80367878){fn_80040854(0);fn_8004084C(*(void **)(p+0x27C));}
 if(p+512)if(p+512)fn_800D6314(p+512,0);
 if(p+496)if(p+496)fn_800CA6C8(p+496,0);
-if(p+480)if(p+480)if(*(void **)(p+484))fn_800D6374(p+480,*(void **)(p+484));
+if(p+480)if(p+480)if(*(void **)(p+484))BinTree_Destroy(p+480,*(void **)(p+484));
 if(p+468)if(p+468)fn_800CA6C8(p+468,0);
 if(p+456)if(p+456)fn_800CA6C8(p+456,0);
 if(p+444)if(p+444)fn_800CA6C8(p+444,0);
@@ -6643,7 +6643,7 @@ void *fn_800D6314(void *arg0, s16 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_800D6374(s32 arg0, void *arg1) {
+void BinTree_Destroy(s32 arg0, void *arg1) {
 void fn_800C428C(void *);
 void String_Destroy(void *, s32);
 void *fn_800D5C88(void *, s32);
@@ -6667,15 +6667,15 @@ v28=*(void**)v29;
 if(v28!=NULL){
 v27=*(void**)v28;
 if(v27!=NULL){
-if(*(void**)v27!=NULL){fn_800D6374(self,*(void**)v27);}
-if(*(void**)((u8*)v27+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v27+4));}
+if(*(void**)v27!=NULL){BinTree_Destroy(self,*(void**)v27);}
+if(*(void**)((u8*)v27+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v27+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v27+0xC);
 fn_800D67EC(fn_800D6810(self),v27,1);
 }
 v27=*(void**)((u8*)v28+4);
 if(v27!=NULL){
-if(*(void**)v27!=NULL){fn_800D6374(self,*(void**)v27);}
-if(*(void**)((u8*)v27+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v27+4));}
+if(*(void**)v27!=NULL){BinTree_Destroy(self,*(void**)v27);}
+if(*(void**)((u8*)v27+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v27+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v27+0xC);
 fn_800D67EC(fn_800D6810(self),v27,1);
 }
@@ -6688,15 +6688,15 @@ v27=*(void**)((u8*)v29+4);
 if(v27!=NULL){
 v28=*(void**)v27;
 if(v28!=NULL){
-if(*(void**)v28!=NULL){fn_800D6374(self,*(void**)v28);}
-if(*(void**)((u8*)v28+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v28+4));}
+if(*(void**)v28!=NULL){BinTree_Destroy(self,*(void**)v28);}
+if(*(void**)((u8*)v28+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v28+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v28+0xC);
 fn_800D67EC(fn_800D6810(self),v28,1);
 }
 v28=*(void**)((u8*)v27+4);
 if(v28!=NULL){
-if(*(void**)v28!=NULL){fn_800D6374(self,*(void**)v28);}
-if(*(void**)((u8*)v28+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v28+4));}
+if(*(void**)v28!=NULL){BinTree_Destroy(self,*(void**)v28);}
+if(*(void**)((u8*)v28+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v28+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v28+0xC);
 fn_800D67EC(fn_800D6810(self),v28,1);
 }
@@ -6719,15 +6719,15 @@ v28=*(void**)v27;
 if(v28!=NULL){
 v29=*(void**)v28;
 if(v29!=NULL){
-if(*(void**)v29!=NULL){fn_800D6374(self,*(void**)v29);}
-if(*(void**)((u8*)v29+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v29+4));}
+if(*(void**)v29!=NULL){BinTree_Destroy(self,*(void**)v29);}
+if(*(void**)((u8*)v29+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v29+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v29+0xC);
 fn_800D67EC(fn_800D6810(self),v29,1);
 }
 v29=*(void**)((u8*)v28+4);
 if(v29!=NULL){
-if(*(void**)v29!=NULL){fn_800D6374(self,*(void**)v29);}
-if(*(void**)((u8*)v29+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v29+4));}
+if(*(void**)v29!=NULL){BinTree_Destroy(self,*(void**)v29);}
+if(*(void**)((u8*)v29+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v29+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v29+0xC);
 fn_800D67EC(fn_800D6810(self),v29,1);
 }
@@ -6740,15 +6740,15 @@ v28=*(void**)((u8*)v27+4);
 if(v28!=NULL){
 v29=*(void**)v28;
 if(v29!=NULL){
-if(*(void**)v29!=NULL){fn_800D6374(self,*(void**)v29);}
-if(*(void**)((u8*)v29+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v29+4));}
+if(*(void**)v29!=NULL){BinTree_Destroy(self,*(void**)v29);}
+if(*(void**)((u8*)v29+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v29+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v29+0xC);
 fn_800D67EC(fn_800D6810(self),v29,1);
 }
 v29=*(void**)((u8*)v28+4);
 if(v29!=NULL){
-if(*(void**)v29!=NULL){fn_800D6374(self,*(void**)v29);}
-if(*(void**)((u8*)v29+4)!=NULL){fn_800D6374(self,*(void**)((u8*)v29+4));}
+if(*(void**)v29!=NULL){BinTree_Destroy(self,*(void**)v29);}
+if(*(void**)((u8*)v29+4)!=NULL){BinTree_Destroy(self,*(void**)((u8*)v29+4));}
 fn_800D6818(fn_800D6874(self),(u8*)v29+0xC);
 fn_800D67EC(fn_800D6810(self),v29,1);
 }

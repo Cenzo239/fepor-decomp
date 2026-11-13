@@ -2722,7 +2722,7 @@ void fn_80116FE8(void)
 }
 
 void *fn_801179DC(void *arg0, s16 arg1) {
-    void fn_800D6374(void *, void *);
+    void BinTree_Destroy(void *, void *);
     void String_Destroy(void *, s32);
     void fn_800E5F84(void *, s32);
     void fn_800C428C(void *);
@@ -2735,7 +2735,7 @@ void *fn_801179DC(void *arg0, s16 arg1) {
         if (p + 0x1BC)
             if (p + 0x1BC)
                 if (*(void **)(p + 0x1C0))
-                    fn_800D6374(p + 0x1BC, *(void **)(p + 0x1C0));
+                    BinTree_Destroy(p + 0x1BC, *(void **)(p + 0x1C0));
         String_Destroy(p + 0x178, -1);
         String_Destroy(p + 0x16C, -1);
         String_Destroy(p + 0x160, -1);

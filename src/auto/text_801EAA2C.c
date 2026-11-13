@@ -3444,11 +3444,11 @@ void fn_801F1888(void *arg0) {
         void *unk8;
         void **first;
     };
-    void fn_800D6374(struct Tree *, void *);
+    void BinTree_Destroy(struct Tree *, void *);
     struct Tree *tree = arg0;
 
     if (tree->root != NULL) {
-        fn_800D6374(tree, tree->root);
+        BinTree_Destroy(tree, tree->root);
         tree->count = 0;
         tree->root = NULL;
         tree->first = &tree->root;
