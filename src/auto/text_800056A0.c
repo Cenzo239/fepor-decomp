@@ -264,17 +264,17 @@ void fn_80005DC8(void) {
 
 u8 fn_80005E2C(void) {
     u32 OSGetResetCode();
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     u8 var_r3;
 
     if ((OSGetResetCode() >> 0x1FU) == 0) {
         return 0U;
     }
     var_r3 = 1;
-    if (lbl_803682A4 & 0x90000) {
+    if (gGameFlags & 0x90000) {
         return (u8) ((OSGetResetCode() & 2) == 0);
     }
-    if (lbl_803682A4 & 0x60000) {
+    if (gGameFlags & 0x60000) {
         var_r3 = (OSGetResetCode() & 0x20) == 0;
     }
     return var_r3;

@@ -271,7 +271,7 @@ void fn_800548E8(void *arg0)
     void *fn_80055DC0(f32 *, s32 *, s32, f32);
     extern f32 lbl_803690CC;
     extern f32 lbl_8036908C;
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern char GActor_str[];
     struct {
         s32 sp8;
@@ -377,12 +377,12 @@ void fn_800548E8(void *arg0)
             *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48) = NULL;
         }
         if (Pad_IsButton(node, 0x1C) != 0) {
-            lbl_803682A4 |= 1;
+            gGameFlags |= 1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) |= 0x40000000;
         }
         if (Pad_IsButton(node, 0x1D) != 0) {
-            lbl_803682A4 &= ~1;
+            gGameFlags &= ~1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) &= 0xBFFFFFFF;
         }

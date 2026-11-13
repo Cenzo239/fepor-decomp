@@ -1397,8 +1397,8 @@ void fn_800C78D0(void *arg0) {
 void fn_800C792C(void) {
     M2C_UNK fn_801FE32C();
     M2C_UNK fn_8020055C();
-    extern s32 lbl_803682A4;
-    if (lbl_803682A4 & 0x60000) {
+    extern s32 gGameFlags;
+    if (gGameFlags & 0x60000) {
         fn_8020055C();
         return;
     }
@@ -1408,8 +1408,8 @@ void fn_800C792C(void) {
 void fn_800C7960(void) {
     M2C_UNK fn_801FE360();
     M2C_UNK fn_80200590();
-    extern s32 lbl_803682A4;
-    if (lbl_803682A4 & 0x60000) {
+    extern s32 gGameFlags;
+    if (gGameFlags & 0x60000) {
         fn_80200590();
         return;
     }
@@ -1419,8 +1419,8 @@ void fn_800C7960(void) {
 void fn_800C7994(void) {
     M2C_UNK fn_801FEF6C();
     M2C_UNK fn_8020119C();
-    extern s32 lbl_803682A4;
-    if (lbl_803682A4 & 0x60000) {
+    extern s32 gGameFlags;
+    if (gGameFlags & 0x60000) {
         fn_8020119C();
         return;
     }
@@ -1430,8 +1430,8 @@ void fn_800C7994(void) {
 void fn_800C79C8(void) {
     M2C_UNK fn_801FEFA0();
     M2C_UNK fn_802011D0();
-    extern s32 lbl_803682A4;
-    if (lbl_803682A4 & 0x60000) {
+    extern s32 gGameFlags;
+    if (gGameFlags & 0x60000) {
         fn_802011D0();
         return;
     }
@@ -22803,11 +22803,11 @@ loop_22:
 }
 
 s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
-    s32 fn_80230BCC(s32);
     u8 fn_8001DD54(void *, void *);
+    s32 fn_80230BCC(s32);
     s8 fn_8003A398(void *);
-    u8 a;
     u8 b;
+    u8 a;
     s32 dy;
     s32 dist;
     u8 bonus;

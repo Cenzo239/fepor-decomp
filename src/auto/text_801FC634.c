@@ -754,14 +754,14 @@ s32 fn_801FE32C(void) {
 
 void *fn_801FE360(void) {
     void *fn_8000CAF0(void *, s32);
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern u8 lbl_80281F00[];
     void *temp;
 
-    if (lbl_803682A4 & 0x20) {
+    if (gGameFlags & 0x20) {
         return NULL;
     }
-    if (lbl_803682A4 & 0x40) {
+    if (gGameFlags & 0x40) {
         temp = fn_8000CAF0(lbl_8029B634, 3);
         M2C_FIELD(temp, u8 **, 0x34) = lbl_80281F00 + 0x2F;
         return temp;
@@ -784,8 +784,8 @@ void fn_801FE3DC(void *arg0) {
 }
 
 s32 fn_801FE430(void) {
-    extern u32 lbl_803682A4;
-    return !(lbl_803682A4 & 0x20);
+    extern u32 gGameFlags;
+    return !(gGameFlags & 0x20);
 }
 
 void fn_801FE444(void) {
@@ -1021,8 +1021,8 @@ void fn_801FEFF8(void *arg0) {
 }
 
 s32 fn_801FF04C(void) {
-    extern u32 lbl_803682A4;
-    return !(lbl_803682A4 & 0x20);
+    extern u32 gGameFlags;
+    return !(gGameFlags & 0x20);
 }
 
 void fn_801FF060(void *arg0) {
@@ -1069,17 +1069,17 @@ void fn_801FF0F8(void *arg0) {
 #pragma global_optimizer reset
 void fn_801FF2D0(void) {
     extern u8 gUiContext[];
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern void fn_80209968(s32);
     
     u8 temp_r0 = gUiContext[8];
     switch ((s32)temp_r0) {
         case 0x81:
-            lbl_803682A4 |= 0x40;
+            gGameFlags |= 0x40;
             fn_80209968(1);
             return;
         case 0x80:
-            lbl_803682A4 &= 0xFFFFFFBF;
+            gGameFlags &= 0xFFFFFFBF;
             fn_80209968(0);
             return;
     }
@@ -1633,13 +1633,13 @@ s32 fn_8020055C(void) {
 
 void *fn_80200590(void) {
     void *fn_8000CAF0(void *, s32);
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     void *temp;
 
-    if (lbl_803682A4 & 0x20) {
+    if (gGameFlags & 0x20) {
         return NULL;
     }
-    if (lbl_803682A4 & 0x100) {
+    if (gGameFlags & 0x100) {
         temp = fn_8000CAF0(lbl_8029B7FC, 3);
         M2C_FIELD(temp, u8 **, 0x34) = lbl_802820B8 + 0x2B;
         return temp;
@@ -1662,8 +1662,8 @@ void fn_8020060C(void *arg0) {
 }
 
 s32 fn_80200660(void) {
-    extern u32 lbl_803682A4;
-    return !(lbl_803682A4 & 0x20);
+    extern u32 gGameFlags;
+    return !(gGameFlags & 0x20);
 }
 
 void fn_80200674(void) {
@@ -1975,8 +1975,8 @@ void fn_80201228(void *arg0) {
 }
 
 s32 fn_8020127C(void) {
-    extern u32 lbl_803682A4;
-    return !(lbl_803682A4 & 0x20);
+    extern u32 gGameFlags;
+    return !(gGameFlags & 0x20);
 }
 
 void fn_80201290(void *arg0) {
@@ -2020,17 +2020,17 @@ void fn_80201328(void *arg0) {
 
 void fn_80201534(void) {
     extern u8 gUiContext[];
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern void fn_80209AE8(s32);
     
     u8 temp_r0 = gUiContext[8];
     switch ((s32)temp_r0) {
         case 0x81:
-            lbl_803682A4 |= 0x100;
+            gGameFlags |= 0x100;
             fn_80209AE8(1);
             return;
         case 0x80:
-            lbl_803682A4 &= 0xFFFFFEFF;
+            gGameFlags &= 0xFFFFFEFF;
             fn_80209AE8(0);
             return;
     }
@@ -2364,4 +2364,4 @@ extern f32 gFloatZero;
 extern f32 gFloatOne;
 #include "global.h"
 
-extern u16 lbl_803682A4;
+extern u16 gGameFlags;

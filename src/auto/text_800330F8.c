@@ -6065,7 +6065,7 @@ void Map_Update(void) {
     void fn_800449C8(void);
     void fn_80048518(void);
     extern void *gMap;
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern u8 sMapUpdateInited;
     extern s32 sMapUpdateCounter;
     extern f64 lbl_80368EF8;
@@ -6093,7 +6093,7 @@ void Map_Update(void) {
     f32 temp_f0;
 
     p0 = gMap;
-    if (p0 != 0 && (lbl_803682A4 & 2) == 0) {
+    if (p0 != 0 && (gGameFlags & 2) == 0) {
         if (*(u32 *)(p0 + 0xC) != 0) {
             if ((s8)sMapUpdateInited == 0) {
                 a = 0;
@@ -7188,7 +7188,7 @@ void fn_80043A00(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 void fn_80043AC8(void *arg0) {
     M2C_UNK fn_80068550(s32);
     M2C_UNK fn_800C4588(void *);
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     void *temp_r31;
 
     fn_80068550(M2C_FIELD(arg0, s32 *, 0x54));
@@ -7196,7 +7196,7 @@ void fn_80043AC8(void *arg0) {
     fn_800C4588(M2C_FIELD(temp_r31, void **, 0x114));
     M2C_FIELD(temp_r31, void **, 0x114) = NULL;
     fn_800C4588(temp_r31);
-    lbl_803682A4 &= 0xFFFFFFF7;
+    gGameFlags &= 0xFFFFFFF7;
 }
 
 void fn_80043B20(void) {

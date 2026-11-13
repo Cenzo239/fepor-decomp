@@ -954,7 +954,7 @@ void main(void) {
     extern s32 lbl_803671B4;
     extern u8 lbl_803671B8;
     extern u8 lbl_803671B0;
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern u8 lbl_80367700;
     extern u8 lbl_80367701;
     extern u8 lbl_80367702;
@@ -1020,9 +1020,9 @@ void main(void) {
         while (lbl_803671B0) {
             fn_8020A51C();
         }
-        tmp = lbl_803682A4;
+        tmp = gGameFlags;
         if (tmp & 2) {
-            lbl_803682A4 = tmp & ~2;
+            gGameFlags = tmp & ~2;
             fn_80066124(0);
         } else {
             fn_8009E9D0();
@@ -1060,10 +1060,10 @@ void main(void) {
             fn_8000C194(7);
             fn_8009E6F0();
             fn_8009E6B4();
-            tmp = lbl_803682A4;
+            tmp = gGameFlags;
             if (tmp & 4) {
-                lbl_803682A4 = tmp & ~4;
-                lbl_803682A4 = lbl_803682A4 | 2;
+                gGameFlags = tmp & ~4;
+                gGameFlags = gGameFlags | 2;
             }
         }
         fn_8009E5B4();
@@ -1077,7 +1077,7 @@ void main(void) {
         fn_8009E9A0();
         fn_8009E588();
         fn_80224658(1);
-        if (!(lbl_803682A4 & 2)) {
+        if (!(gGameFlags & 2)) {
             fn_8006E660();
         }
         fn_80006754();
@@ -1843,14 +1843,14 @@ void fn_80015ED4(void) {
     void fn_8004DC5C(s32);
     u32 fn_80055D94(s32);
     extern u8 gUnits[];
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     u8 sp8[4];
     u8 *pBase;
     s32 i;
     u8 *entry;
     u8 *sub;
 
-    if (fn_80055D94(0x200) == 0U && !(lbl_803682A4 & 2)) {
+    if (fn_80055D94(0x200) == 0U && !(gGameFlags & 2)) {
         fn_8004D370();
         fn_8004C108();
         fn_8004B218();

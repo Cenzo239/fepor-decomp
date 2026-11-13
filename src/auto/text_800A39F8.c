@@ -1109,7 +1109,7 @@ void fn_800A5DC4(void *arg0)
     void *fn_8006E658(void);
     void fn_80221824(u8, void *, s32, void *);
     extern u8 lbl_80330708[];
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern f32 lbl_80369A68;
     extern f32 lbl_80369A80;
     extern f32 lbl_80369A84;
@@ -1142,7 +1142,7 @@ void fn_800A5DC4(void *arg0)
     fn_8009E638();
     fn_801C9714();
     fn_800C426C(*(void **)((u8 *)arg0 + 0x5C));
-    if (lbl_803682A4 & 0x40) {
+    if (gGameFlags & 0x40) {
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
         var_r7 = 0;
@@ -1230,7 +1230,7 @@ void fn_800A6114(void *arg0)
     u32 OSGetTick(void);
     extern u8 lbl_8026E1B0[];
     extern u8 lbl_80330708[];
-    extern s32 lbl_803682A4;
+    extern s32 gGameFlags;
     extern f32 lbl_80369A68;
     extern f32 lbl_80369A80;
     extern f32 lbl_80369A84;
@@ -1257,7 +1257,7 @@ void fn_800A6114(void *arg0)
     void *self;
 
     self = arg0;
-    if (lbl_803682A4 & 0x40) {
+    if (gGameFlags & 0x40) {
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
         var_r7 = 0;

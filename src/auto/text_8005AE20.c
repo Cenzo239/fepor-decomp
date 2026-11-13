@@ -162,7 +162,7 @@ void fn_8005AE78(void) {
     extern s8 lbl_803672E2;
     extern u8 lbl_803672E3;
     extern s8 lbl_803672E4;
-    extern u32 lbl_803682A4;
+    extern u32 gGameFlags;
     s32 temp_r0;
     s32 var_r31;
     u16 temp_r3;
@@ -199,18 +199,18 @@ void fn_8005AE78(void) {
         VIWaitForRetrace();
         VIWaitForRetrace();
         var_r31 = 0;
-        if (lbl_803682A4 & 0x90000) {
-            if (!(lbl_803682A4 & 0x10)) {
+        if (gGameFlags & 0x90000) {
+            if (!(gGameFlags & 0x10)) {
                 var_r31 |= 2;
             }
-            if (lbl_803682A4 & 0x40) {
+            if (gGameFlags & 0x40) {
                 var_r31 |= 1;
             }
-        } else if (lbl_803682A4 & 0x60000) {
-            if (!(lbl_803682A4 & 0x10)) {
+        } else if (gGameFlags & 0x60000) {
+            if (!(gGameFlags & 0x10)) {
                 var_r31 |= 0x20;
             }
-            if (lbl_803682A4 & 0x100) {
+            if (gGameFlags & 0x100) {
                 var_r31 |= 0x10;
             }
         }
@@ -6896,7 +6896,7 @@ void fn_8006DFD8(void) {
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
     extern u32 lbl_803682A0;
-    extern u32 lbl_803682A4;
+    extern u32 gGameFlags;
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
     u8 fifo[0x80];
@@ -7032,8 +7032,8 @@ check:
     }
 done:
     fn_8009E870();
-    if (lbl_803682A0 != fn_80211690() && !(lbl_803682A4 & 8)) {
-        lbl_803682A4 |= 4;
+    if (lbl_803682A0 != fn_80211690() && !(gGameFlags & 8)) {
+        gGameFlags |= 4;
     }
     VISetNextFrameBuffer(DemoCurrentBuffer);
     if (lbl_80366DE0 != 0) {
@@ -7041,11 +7041,11 @@ done:
         lbl_80366DE0 = 0;
     }
     VIFlush();
-    if (lbl_803682A4 & 1) {
-        if (!(lbl_803682A4 & 4)) {
+    if (gGameFlags & 1) {
+        if (!(gGameFlags & 4)) {
             VIWaitForRetrace();
         }
-        lbl_803682A4 &= ~4;
+        gGameFlags &= ~4;
     }
     VIWaitForRetrace();
     if (DemoCurrentBuffer == DemoFrameBuffer1) {
@@ -7129,7 +7129,7 @@ void fn_8006E660(void)
     extern void *DemoFrameBuffer1;
     extern void *DemoFrameBuffer2;
     extern s32 lbl_803682A0;
-    extern u32 lbl_803682A4;
+    extern u32 gGameFlags;
     extern u8 lbl_80366DE0;
 
     void fn_8006DFD8(void);
@@ -7157,8 +7157,8 @@ void fn_8006E660(void)
         fn_8009E870();
 
         if ((u32)lbl_803682A0 != fn_80211690()) {
-            if (!(lbl_803682A4 & 8)) {
-                lbl_803682A4 |= 4;
+            if (!(gGameFlags & 8)) {
+                gGameFlags |= 4;
             }
         }
 
@@ -7171,11 +7171,11 @@ void fn_8006E660(void)
 
         VIFlush();
 
-        if (lbl_803682A4 & 1) {
-            if (!(lbl_803682A4 & 4)) {
+        if (gGameFlags & 1) {
+            if (!(gGameFlags & 4)) {
                 VIWaitForRetrace();
             }
-            lbl_803682A4 &= ~4;
+            gGameFlags &= ~4;
         }
         VIWaitForRetrace();
 
