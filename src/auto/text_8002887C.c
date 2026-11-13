@@ -3150,7 +3150,8 @@ void fn_8002FA54(void) {
     }
 }
 
-void MapUi_HandleRangeConfirm(void *arg0) {
+/* Confirm cursor tile if it is marked in the range map (A), or cancel (B). */
+void MapUi_HandleRangeConfirm(void *proc) {
     void Ui_PlaySeCue(void *, s32);
     void Process_Goto(void *, s32);
     extern void *gPadInput;
@@ -3158,29 +3159,29 @@ void MapUi_HandleRangeConfirm(void *arg0) {
     extern u8 gBattleMap[];
     extern u8 gMapUiStrs[];
     extern u8 gMapUiResult;
-    s32 temp_r3;
+    s32 held;
     s32 pressed;
-    f32 f0;
-    f32 f1;
-    u16 *cell;
+    f32 cursorY;
+    f32 cursorX;
+    u16 *rangeMap;
 
-    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (pressed & 0x100) {
-        f0 = gBattleState[0x528 / 4];
-        f1 = gBattleState[0x524 / 4];
-        cell = (u16 *)(gBattleMap + 0xC18E);
-        if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] != 0) {
+        cursorY = gBattleState[0x528 / 4];
+        cursorX = gBattleState[0x524 / 4];
+        rangeMap = (u16 *)(gBattleMap + 0xC18E);
+        if (rangeMap[(s8)(s32)cursorX + ((s8)(s32)cursorY << 6)] != 0) {
             Ui_PlaySeCue(gMapUiStrs + 0xFC, 0x64);
             gMapUiResult = 5;
-            Process_Goto(arg0, 0x63);
+            Process_Goto(proc, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
         Ui_PlaySeCue(gMapUiStrs + 0x10C, 0x64);
         gMapUiResult = 9;
-        Process_Goto(arg0, 0x63);
+        Process_Goto(proc, 0x63);
     }
 }
 
