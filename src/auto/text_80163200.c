@@ -24,7 +24,7 @@ M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)
 #pragma opt_common_subs on
 extern u32 gUiContext[];
 extern u16 gUiMsgStrings[];
-extern u16 lbl_80294604[];
+extern u16 gUiListPanelProc[];
 
 typedef struct Unk8016F694_Inner {
     u8 pad0[0x4C];
@@ -53,7 +53,7 @@ extern f32 lbl_8036AC70;
 extern f32 lbl_8036AC74;
 extern f32 lbl_8036AC78;
 extern f32 lbl_8036AB94;
-extern u16 lbl_80294604[];
+extern u16 gUiListPanelProc[];
 extern u16 lbl_80295580[10];
 extern f32 lbl_8036ABB0;
 extern f32 lbl_8036ABBC;
@@ -1771,7 +1771,7 @@ void fn_801669B0(void* arg0, s32 arg1) {
     // Load various data from globals
     temp_r3 = gUiContext[arg1];
     temp_r4 = *(u32*)&gUiMsgStrings[temp_r3 * 2 + 0x10];
-    temp_r5 = *(u32*)&lbl_80294604[temp_r3 * 2 + 0x10];
+    temp_r5 = *(u32*)&gUiListPanelProc[temp_r3 * 2 + 0x10];
     temp_r6 = *(u16*)&gBattleState[arg1 * 2];
     temp_r7 = *((u16 *)&lbl_803680E8 + arg1 * 2);
     temp_r8 = *(u16*)&gUiMsgStrings[temp_r3 * 2 + 0x12];
@@ -5720,13 +5720,13 @@ void *fn_8016E92C(u32 arg0) {
     void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     void Process_Goto(void *, s32);
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     void *var_r31;
 
     if (arg0 != 0U) {
-        var_r31 = fn_8000CAA0(lbl_80294604, arg0);
+        var_r31 = fn_8000CAA0(gUiListPanelProc, arg0);
     } else {
-        var_r31 = Process_Create(lbl_80294604, arg0);
+        var_r31 = Process_Create(gUiListPanelProc, arg0);
     }
     if ((u32)var_r31 != 0U) {
         fn_801403F0(var_r31);
@@ -5751,13 +5751,13 @@ void *fn_8016E9DC(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
     void *Process_Create(void *, u32);
     void fn_801403F0(void *);
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     void *var_r31;
 
     if (arg0 != 0U) {
-        var_r31 = fn_8000CAA0(lbl_80294604, arg0);
+        var_r31 = fn_8000CAA0(gUiListPanelProc, arg0);
     } else {
-        var_r31 = Process_Create(lbl_80294604, arg0);
+        var_r31 = Process_Create(gUiListPanelProc, arg0);
     }
     if (var_r31 != NULL) {
         fn_801403F0(var_r31);
@@ -10006,7 +10006,7 @@ extern "C" void fn_80176DDC(s32 arg0, void *arg1) {
     u8 temp_r0;
 
     fn_8013E300();
-    temp_r0 = *(u8 *)((u8 *)Process_Find(lbl_80294604) + 0x64);
+    temp_r0 = *(u8 *)((u8 *)Process_Find(gUiListPanelProc) + 0x64);
     if ((s8)temp_r0 < 0) {
         return;
     }
@@ -10016,12 +10016,12 @@ extern "C" void fn_80176DDC(s32 arg0, void *arg1) {
 #pragma cplusplus reset
 
 void fn_80176E24(s32 arg0, void *arg1) {
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     void *Process_Find(u16 *, void *);
     void fn_8013E2C8(s32, void *);
     void *res;
 
-    res = Process_Find(lbl_80294604, arg1);
+    res = Process_Find(gUiListPanelProc, arg1);
     *(u8 *)((u8 *)res + 0x64) = *(u8 *)((u8 *)arg1 + 0x62);
     fn_8013E2C8(arg0, arg1);
 }
@@ -10091,12 +10091,12 @@ void fn_801771FC(void) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, u8 *);
 
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u16 gUiMsgStrings[];
 
     fn_8013E300();
     {
-        u32 r = Ui_FindChild(Process_Find(lbl_80294604), -0x1000, 0);
+        u32 r = Ui_FindChild(Process_Find(gUiListPanelProc), -0x1000, 0);
         if (r != 0) {
             Ui_SetWidgetText(r, (u8 *)gUiMsgStrings + 0x457);
         }
@@ -10109,12 +10109,12 @@ void fn_8017724C(void) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, u8 *);
 
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u16 gUiMsgStrings[];
 
     fn_8013E2C8();
     {
-        u32 r = Ui_FindChild(Process_Find(lbl_80294604), -0x1000, 0);
+        u32 r = Ui_FindChild(Process_Find(gUiListPanelProc), -0x1000, 0);
         if (r != 0) {
             Ui_SetWidgetText(r, (u8 *)gUiMsgStrings + 0x1FD);
         }
@@ -10154,11 +10154,11 @@ s32 fn_80177440(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
 
-    temp = Process_Find(lbl_80294604);
+    temp = Process_Find(gUiListPanelProc);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x8A;
     Process_Goto(temp, 0x2F);
@@ -10180,11 +10180,11 @@ s32 fn_801774E4(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
 
-    temp = Process_Find(lbl_80294604);
+    temp = Process_Find(gUiListPanelProc);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x89;
     Process_Goto(temp, 0x2E);
@@ -10206,11 +10206,11 @@ s32 fn_80177588(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
 
-    temp = Process_Find(lbl_80294604);
+    temp = Process_Find(gUiListPanelProc);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x88;
     Process_Goto(temp, 0x2D);
@@ -10494,7 +10494,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     void fn_8000C5B8(s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *obj;
     void *temp;
@@ -10510,7 +10510,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x51E;
         return 0;
     }
-    temp = Process_Find(lbl_80294604);
+    temp = Process_Find(gUiListPanelProc);
     *((u8 *)gUiContext + 8) = 0x85;
     Process_Goto(temp, 0x16);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
@@ -10572,7 +10572,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     void fn_8000C5B8(s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
-    extern u16 lbl_80294604[];
+    extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *obj;
     void *temp;
@@ -10588,7 +10588,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x53F;
         return 0;
     }
-    temp = Process_Find(lbl_80294604);
+    temp = Process_Find(gUiListPanelProc);
     *((u8 *)gUiContext + 8) = 0x84;
     Process_Goto(temp, 0x13);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
@@ -10639,7 +10639,7 @@ s32 Ui_ConfirmListCmd83(void *arg0, void *arg1, void *arg2) {
         }
         return 0;
     }
-    proc = Process_Find(lbl_80294604);
+    proc = Process_Find(gUiListPanelProc);
     ((u8 *)gUiContext)[8] = 0x83;
     Process_Goto(proc, 0x28);
     fn_8000C5B8(M2C_FIELD(proc, void **, 0x5C));
@@ -16267,7 +16267,7 @@ s32 fn_80182CE4(s32 arg0, s32 arg1) {
         case 1:
             return gUiMsgStrings[arg0];
         case 2:
-            return lbl_80294604[arg0];
+            return gUiListPanelProc[arg0];
         case 3:
             return *((u16 *)&lbl_803680E8 + arg0) & 0xFF;
         case 4:
