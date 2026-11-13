@@ -822,7 +822,7 @@ void fn_801F3338(void *arg0) {
     }
 }
 
-void fn_801F363C(void *arg0) {
+void Options_InitPanel(void *arg0) {
     struct Entry {
         u32 unk0;
         char *name;
