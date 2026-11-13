@@ -6137,7 +6137,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A6C0;
     extern f32 lbl_8036A6C4;
-    extern f32 lbl_8036A6E8;
+    extern f32 gUiMenuSlotPlainTextZ;
     extern f32 lbl_8036A6EC;
     struct Obj {
         virtual void v0() = 0;
@@ -6173,7 +6173,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     var_r29 = arg2;
     ((Obj *)arg0)->v17();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036A6E8);
+    Prim2D_AddZ(gUiMenuSlotPlainTextZ);
     Prim2D_PrepareTex();
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
