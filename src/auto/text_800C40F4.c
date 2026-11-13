@@ -10242,7 +10242,7 @@ u8 fn_800DF6A8(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0x2C);
 }
 
-s32 fn_800DF6B0(void *arg0) {
+s32 Sort_GetKey(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x28);
 }
 
@@ -10810,18 +10810,18 @@ void fn_800E01C8(void *arg0) {
 
 s32 fn_800E0340(void *arg0, void *arg1, void *arg2)
 {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
     s32 a;
     s32 b;
 
-    a = fn_800DF6B0(arg1);
-    b = fn_800DF6B0(arg2);
+    a = Sort_GetKey(arg1);
+    b = Sort_GetKey(arg2);
     return a < b;
 }
 
 #pragma use_lmw_stmw on
 s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
     s32 *start;
     s32 *keyp;
     s32 count;
@@ -10837,8 +10837,8 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
         mid = count / 2;
         ptr = start + mid;
         elem = *ptr;
-        key = fn_800DF6B0((void *)*keyp);
-        if (fn_800DF6B0((void *)elem) <= key) {
+        key = Sort_GetKey((void *)*keyp);
+        if (Sort_GetKey((void *)elem) <= key) {
             start = ptr + 1;
             count -= mid + 1;
         } else {
@@ -10862,8 +10862,8 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     while (count > 0) {
         mid = count / 2;
         mid_ptr = (void **)((u8 *)arg0 + (mid * 4));
-        mid_val = fn_800DF6B0(*mid_ptr);
-        key_val = fn_800DF6B0(key);
+        mid_val = Sort_GetKey(*mid_ptr);
+        key_val = Sort_GetKey(key);
         if (key_val > mid_val) {
             arg0 = (u8 *)mid_ptr + 4;
             count -= (u32)mid + 1;
@@ -10910,7 +10910,7 @@ void fn_800E0EE0(s32 *left, s32 *mid, s32 *end) {
 
 void fn_800E0F2C(s32 *begin, s32 *end)
 {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
 
     s32 other;
     register s32 *cur;
@@ -10927,8 +10927,8 @@ void fn_800E0F2C(s32 *begin, s32 *end)
 
             while (begin < hole &&
                    (other = *--prev,
-                    key = fn_800DF6B0((void *)value),
-                    fn_800DF6B0((void *)other) > key)) {
+                    key = Sort_GetKey((void *)value),
+                    Sort_GetKey((void *)other) > key)) {
                 *hole = *prev;
                 --hole;
             }
@@ -10967,7 +10967,7 @@ void fn_800E0FBC(void *arg0, s32 arg1)
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,SortCompare comp) {
- s32 fn_800DF6B0(void *);
+ s32 Sort_GetKey(void *);
  void fn_800E18B4(s32 *,s32 *,SortIterator,SortCompare);
  void fn_800E1340(SortIterator,SortIterator,SortIterator,SortIterator,s32 *,SortCompare);
  void fn_800E14E4(s32 *,s32 *,s32 *,SortCompare,s32,s32,SortIterator,SortIterator);
@@ -10981,8 +10981,8 @@ extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,Sor
  if(n<=1) return;
  if(n==2) {
  value=*begin;
- key=fn_800DF6B0((void *)end[-1]);
- if(fn_800DF6B0((void *)value)>key) {
+ key=Sort_GetKey((void *)end[-1]);
+ if(Sort_GetKey((void *)value)>key) {
  other=*begin; *begin=end[-1]; end[-1]=other;
  }
  } else if(n<=20) {
@@ -10990,7 +10990,7 @@ extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,Sor
  s32 *hole,*prev; s32 value; s32 *cur; s32 other,key;
  for(cur=begin+1;cur<end;cur++) {
  value=*cur; prev=cur; hole=cur;
- while(begin<hole && (other=*--prev,key=fn_800DF6B0((void *)value),fn_800DF6B0((void *)other)>key)) {
+ while(begin<hole && (other=*--prev,key=Sort_GetKey((void *)value),Sort_GetKey((void *)other)>key)) {
  *hole=*prev; --hole;
  }
  *hole=value;
@@ -11015,7 +11015,7 @@ extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,Sor
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
 extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s32 len1, s32 len2, SortIterator a, SortIterator b) {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
     s32 *fn_800E060C(s32 *, s32 *, s32 *, SortCompare);
     s32 *fn_800E069C(s32 *, s32 *, s32 *, SortCompare);
     s32 *fn_800E0728(s32 *, s32 *, s32 *, s32, s32, SortIterator, SortIterator);
@@ -11029,8 +11029,8 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
         return;
     if (len1 + len2 == 2) {
         s32 v = *begin;
-        s32 key = fn_800DF6B0((void *)*mid);
-        if (fn_800DF6B0((void *)v) > key) {
+        s32 key = Sort_GetKey((void *)*mid);
+        if (Sort_GetKey((void *)v) > key) {
             s32 t = *begin;
             *begin = *mid;
             *mid = t;
@@ -11085,7 +11085,7 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
-    s32 fn_800DF6B0(void *);
+    s32 Sort_GetKey(void *);
     void fn_800E0398(SortIterator, SortIterator, SortIterator, SortIterator, s32 *, SortCompare);
     void fn_800E2138(s32 *, s32 *, SortIterator, SortCompare);
     void fn_800E2168(s32 *, s32 *, SortIterator, SortCompare);
@@ -11109,8 +11109,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
     }
     if (n == 2) {
         value = *begin;
-        key = fn_800DF6B0((void *)end[-1]);
-        if (fn_800DF6B0((void *)value) > key) {
+        key = Sort_GetKey((void *)end[-1]);
+        if (Sort_GetKey((void *)value) > key) {
             *out = end[-1];
             it = out;
             ++it;
@@ -11129,7 +11129,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
                 value = *cur;
                 prev = cur;
                 hole = cur;
-                while (begin < hole && (other = *--prev, key = fn_800DF6B0((void *)value), fn_800DF6B0((void *)other) > key)) {
+                while (begin < hole && (other = *--prev, key = Sort_GetKey((void *)value), Sort_GetKey((void *)other) > key)) {
                     *hole = *prev;
                     --hole;
                 }
