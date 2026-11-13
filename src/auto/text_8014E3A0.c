@@ -2156,7 +2156,8 @@ void fn_80154BE4(void) {
 }
 
 #pragma use_lmw_stmw on
-void Ui_DrawPanelDecor(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 arg5) {
+/* Draw panel decor sprites 0x81 and 0x80, centered in the given box. */
+void Ui_DrawPanelDecor(s16 x, s16 y, s16 boxW, s16 boxH, s32 unused, s32 flags) {
     void fn_8015D240(void);
     s32 fn_80009E44(f32 *);
     void Prim2D_Begin(void);
@@ -2175,55 +2176,55 @@ void Ui_DrawPanelDecor(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 a
     extern f64 lbl_8036A868;
     extern f32 lbl_8036A878;
     extern f32 lbl_8036A884;
-    f32 sp8;
-    s16 *rect;
+    f32 savedZ;
+    s16 *uv;
     s16 w;
-    s32 a2;
+    s32 bw;
     s16 h;
-    s32 a0;
+    s32 bx;
     s32 saved;
-    s16 x;
-    s16 y;
+    s16 drawX;
+    s16 drawY;
 
     fn_8015D240();
-    saved = fn_80009E44(&sp8);
+    saved = fn_80009E44(&savedZ);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
-    rect = (s16 *)&gUiPanelDecorUvA;
-    a2 = arg2;
-    a0 = arg0;
-    x = (s16)(a0 + ((a2 >> 2) - ((s16)(rect[2] - gUiPanelDecorUvA.f0) >> 1)));
-    y = (s16)((f32)arg1 + (lbl_8036A884 * (f32)arg3 - (f32)((s16)(rect[3] - rect[1]) >> 1)));
+    uv = (s16 *)&gUiPanelDecorUvA;
+    bw = boxW;
+    bx = x;
+    drawX = (s16)(bx + ((bw >> 2) - ((s16)(uv[2] - gUiPanelDecorUvA.f0) >> 1)));
+    drawY = (s16)((f32)y + (lbl_8036A884 * (f32)boxH - (f32)((s16)(uv[3] - uv[1]) >> 1)));
     fn_8006ECCC(gUiTexAtlas, lbl_80330D18, 0x81);
-    h = (s16)(rect[3] - rect[1]);
-    w = (s16)(rect[2] - gUiPanelDecorUvA.f0);
+    h = (s16)(uv[3] - uv[1]);
+    w = (s16)(uv[2] - gUiPanelDecorUvA.f0);
     if (w) {
         if (h) {
             Prim2D_Begin();
-            fn_8000A174(lbl_80330D18, (u16)(arg5 | 1));
+            fn_8000A174(lbl_80330D18, (u16)(flags | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)x, (f32)y, (f32)gUiPanelDecorUvA.f0, (f32)rect[1], (f32)w, (f32)h);
+            Prim2D_SetRectUv((f32)drawX, (f32)drawY, (f32)gUiPanelDecorUvA.f0, (f32)uv[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
     fn_8006ECCC(gUiTexAtlas, lbl_80330D18, 0x80);
-    rect = (s16 *)&gUiPanelDecorUvB;
-    x = (s16)((a0 + (a2 - (s16)(rect[2] - gUiPanelDecorUvB.f0))) >> 1);
-    w = (s16)(rect[2] - gUiPanelDecorUvB.f0);
-    h = (s16)(rect[3] - rect[1]);
+    uv = (s16 *)&gUiPanelDecorUvB;
+    drawX = (s16)((bx + (bw - (s16)(uv[2] - gUiPanelDecorUvB.f0))) >> 1);
+    w = (s16)(uv[2] - gUiPanelDecorUvB.f0);
+    h = (s16)(uv[3] - uv[1]);
     if (w) {
         if (h) {
             Prim2D_Begin();
-            fn_8000A174(lbl_80330D18, (u16)(arg5 | 1));
+            fn_8000A174(lbl_80330D18, (u16)(flags | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)x, (f32)(s16)(arg1 + 0x28), (f32)gUiPanelDecorUvB.f0, (f32)rect[1], (f32)w, (f32)h);
+            Prim2D_SetRectUv((f32)drawX, (f32)(s16)(y + 0x28), (f32)gUiPanelDecorUvB.f0, (f32)uv[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
-    fn_80009E64(saved, sp8);
+    fn_80009E64(saved, savedZ);
 }
 #pragma use_lmw_stmw on
 
