@@ -585,7 +585,7 @@ void FileCache_WorkerThread(void) {
     void fn_8005D9A8(void *);
     void fn_800C4588(s32);
     void fn_8020ADD8(u8 *);
-    extern u8 lbl_8030F4E0[];
+    extern u8 gFileCacheWorkQueue[];
     extern volatile u8 lbl_803672EA;
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
@@ -595,7 +595,7 @@ void FileCache_WorkerThread(void) {
 
     goto check;
 loop:
-    obj = lbl_8030F4E0 + lbl_803672EA * 0xC;
+    obj = gFileCacheWorkQueue + lbl_803672EA * 0xC;
     type = *(u8 *)obj;
     switch (type) {
     case 0:
@@ -1326,12 +1326,12 @@ void fn_8005DE84(void *a)
 
 void fn_8005DF60(void *arg0, s32 arg1) {
     void fn_8020AEC4(u8 *);
-    extern u8 lbl_8030F4E0[];
+    extern u8 gFileCacheWorkQueue[];
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     u8 *entry;
 
-    entry = lbl_8030F4E0 + lbl_803672EB * 0xC;
+    entry = gFileCacheWorkQueue + lbl_803672EB * 0xC;
     entry[0] = 3;
     *(void **)(entry + 4) = arg0;
     *(s32 *)(entry + 8) = arg1;
@@ -1341,13 +1341,13 @@ void fn_8005DF60(void *arg0, s32 arg1) {
 
 void fn_8005DFB8(void *arg0) {
     void fn_8020AEC4(u8 *);
-    extern u8 lbl_8030F4E0[];
+    extern u8 gFileCacheWorkQueue[];
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     u8 *entry;
     s32 val;
 
-    entry = lbl_8030F4E0 + lbl_803672EB * 0xC;
+    entry = gFileCacheWorkQueue + lbl_803672EB * 0xC;
     val = *(s32 *)((u8 *)arg0 + 0x6c);
     entry[0] = 2;
     *(void **)(entry + 4) = arg0;
@@ -1358,12 +1358,12 @@ void fn_8005DFB8(void *arg0) {
 
 void fn_8005E014(void *arg0) {
     void fn_8020AEC4(u8 *);
-    extern u8 lbl_8030F4E0[];
+    extern u8 gFileCacheWorkQueue[];
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     u8 *entry;
 
-    entry = lbl_8030F4E0 + lbl_803672EB * 0xC;
+    entry = gFileCacheWorkQueue + lbl_803672EB * 0xC;
     entry[0] = 1;
     *(void **)(entry + 4) = arg0;
     *(s32 *)(entry + 8) = 0;
@@ -1374,7 +1374,7 @@ void fn_8005E014(void *arg0) {
 void fn_8005E070(s32 arg0, void *arg1) {
     void fn_8020C79C(void *);
     void fn_8020AEC4(u8 *);
-    extern u8 lbl_8030F4E0[];
+    extern u8 gFileCacheWorkQueue[];
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     u8 *entry;
@@ -1383,7 +1383,7 @@ void fn_8005E070(s32 arg0, void *arg1) {
     val = *(s32 *)((u8 *)arg1 + 0x2C);
     fn_8020C79C(arg1);
     if (arg0 >= 0) {
-        entry = lbl_8030F4E0 + lbl_803672EB * 0xC;
+        entry = gFileCacheWorkQueue + lbl_803672EB * 0xC;
         entry[0] = 0;
         *(s32 *)(entry + 4) = val;
         *(s32 *)(entry + 8) = 0;
@@ -8451,7 +8451,7 @@ extern f32 lbl_80369334;
 extern f32 lbl_80369338;
 extern u8 gBattle[];
 
-extern u8 lbl_8030F4E0[];
+extern u8 gFileCacheWorkQueue[];
 extern u8 lbl_803672EB;
 extern u32 lbl_803672EC;
 extern s32 RunQueueBits_80368518;
