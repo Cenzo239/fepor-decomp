@@ -4816,31 +4816,46 @@ s32 fn_8013AC00(void *arg0, s32 arg1) {
 }
 
 void *Ui_ListGetSelected(void *arg0) {
-    void **node;
-    s16 idx;
+    struct Node {
+        struct Node *prev;
+        struct Node *next;
+        void *unk8;
+    };
+    struct Node *node;
+    s32 tmp;
+    s16 n;
     u32 count;
 
     count = *(u32 *)((u8 *)arg0 + 0x70);
     if (count == 0) {
         return NULL;
     }
-    idx = *(s16 *)((u8 *)arg0 + 0x4E);
-    if (idx >= 0 && count <= (u32)idx) {
-        return NULL;
-    }
-    node = *(void ***)((u8 *)arg0 + 0x78);
-    if (idx >= 0) {
-        while (idx > 0) {
-            node = (void **)node[1];
-            idx--;
+    tmp = *(s16 *)((u8 *)arg0 + 0x4E);
+    n = (s16)tmp;
+    if (n >= 0) {
+        if (count <= (u32)n) {
+            return NULL;
         }
+    }
+    node = *(struct Node **)((u8 *)arg0 + 0x78);
+    if (n >= 0) {
+        goto loop_pos;
+        do {
+            node = node->next;
+            n -= 1;
+        loop_pos:
+            ;
+        } while (n > 0);
     } else {
-        while (idx < 0) {
-            node = (void **)node[0];
-            idx++;
-        }
+        goto loop_neg;
+        do {
+            node = node->prev;
+            n += 1;
+        loop_neg:
+            ;
+        } while (n < 0);
     }
-    return node[2];
+    return node->unk8;
 }
 
 #pragma cplusplus on
@@ -11115,7 +11130,7 @@ s8 Ui_PlaySeCue(void *arg0, int arg1) {
     void *Hash_Lookup(void *);
     extern u8 gSeCueSlots[1344];
     extern s32 gUiInputFlags;
-    extern u8 lbl_8029275C[];
+    extern u8 gSeCueVtblBase[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
@@ -11151,21 +11166,21 @@ found:
     switch (kind) {
     case 0:
         if (found != NULL) {
-            *(void **)(found + 8) = lbl_8029275C;
+            *(void **)(found + 8) = gSeCueVtblBase;
             *(void **)found = src;
             *(void **)(found + 8) = lbl_802926EC;
         }
         break;
     case 1:
         if (found != NULL) {
-            *(void **)(found + 8) = lbl_8029275C;
+            *(void **)(found + 8) = gSeCueVtblBase;
             *(void **)found = src;
             *(void **)(found + 8) = lbl_8029267C;
         }
         break;
     case 2:
         if (found != NULL) {
-            *(void **)(found + 8) = lbl_8029275C;
+            *(void **)(found + 8) = gSeCueVtblBase;
             *(void **)found = src;
             *(void **)(found + 8) = lbl_8029260C;
         }
@@ -11276,7 +11291,7 @@ s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
 s8 Fx_AllocSlot(void *name, s8 param, s16 duration) {
     void *Hash_Lookup(void *);
     extern u8 gFxSlots[];
-    extern u8 lbl_8029275C[];
+    extern u8 gSeCueVtblBase[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
@@ -11310,21 +11325,21 @@ found:
         switch (kind) {
         case 0:
             if (fx != NULL) {
-                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)(fx + 8) = gSeCueVtblBase;
                 *(void **)fx = def;
                 *(void **)(fx + 8) = lbl_802926EC;
             }
             break;
         case 1:
             if (fx != NULL) {
-                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)(fx + 8) = gSeCueVtblBase;
                 *(void **)fx = def;
                 *(void **)(fx + 8) = lbl_8029267C;
             }
             break;
         case 2:
             if (fx != NULL) {
-                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)(fx + 8) = gSeCueVtblBase;
                 *(void **)fx = def;
                 *(void **)(fx + 8) = lbl_8029260C;
             }
@@ -11552,7 +11567,7 @@ extern "C" void fn_801480D8(s16 arg0) {
 extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     /* Start named FX in channel arg0; return -1 if that name is already active in any channel. */
     void *Hash_Lookup(void *);
-    extern u8 lbl_8029275C[];
+    extern u8 gSeCueVtblBase[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
@@ -11634,21 +11649,21 @@ after_search:
     switch (kind) {
     case 0:
         if (slot != NULL) {
-            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            *(void **)((u8 *)slot + 8) = gSeCueVtblBase;
             slot->names = (void **)def;
             *(void **)((u8 *)slot + 8) = lbl_802926EC;
         }
         break;
     case 1:
         if (slot != NULL) {
-            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            *(void **)((u8 *)slot + 8) = gSeCueVtblBase;
             slot->names = (void **)def;
             *(void **)((u8 *)slot + 8) = lbl_8029267C;
         }
         break;
     case 2:
         if (slot != NULL) {
-            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            *(void **)((u8 *)slot + 8) = gSeCueVtblBase;
             slot->names = (void **)def;
             *(void **)((u8 *)slot + 8) = lbl_8029260C;
         }
