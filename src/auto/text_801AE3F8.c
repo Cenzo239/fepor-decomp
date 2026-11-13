@@ -1758,7 +1758,7 @@ void Ui_ShowConfirmChild(void *panel) {
 void Ui_CreateConfirmChild(void *arg0) {
     void *Heap_Alloc(s32);
     void *Ui_ConfirmChild_Ctor(void *, s32, s32, s32, s32, s32);
-    void fn_80133FBC(void *, void *);
+    void Ui_ConfirmChild_BindItem(void *, void *);
     void Ui_AddChild(void *, void *);
     void fn_80140234(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32, void *);
@@ -1782,7 +1782,7 @@ void Ui_CreateConfirmChild(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 8) = 6;
     *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3C) = 0;
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x24) = 8;
-    fn_80133FBC(*(void **)((u8 *)arg0 + 0x48), &gUnitRef);
+    Ui_ConfirmChild_BindItem(*(void **)((u8 *)arg0 + 0x48), &gUnitRef);
     Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x48));
     fn_80140234(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x6C);

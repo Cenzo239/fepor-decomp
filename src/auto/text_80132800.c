@@ -868,7 +868,7 @@ s32 fn_80133FA4(void *arg0) {
 }
 
 void Item_Copy(void *);
-void fn_80133FBC(void *arg0, void *arg1) {
+void Ui_ConfirmChild_BindItem(void *arg0, void *arg1) {
  s32 positive=5; s32 negative=-5;
  Item_Copy((u8 *)arg0+0x60);
  M2C_FIELD(arg0,s8 *,84)=0;
