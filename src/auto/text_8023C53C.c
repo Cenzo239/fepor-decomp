@@ -9546,7 +9546,8 @@ void fn_80258100(void) {
 
 #pragma global_optimizer off
 #pragma inline_depth(0)
-int Sound_AllocStream(u32 arg0) {
+/* Free any prior stream for callId, allocate a slot, init it, and return id|serial or -1. */
+int Sound_AllocStream(u32 callIdIn) {
 extern u8 gSoundStreamCtrl[];
 s32 fn_802631AC(u8,s32*);
 void Sound_SetVoiceStreamParams(s32,s32,s32);
@@ -9559,32 +9560,32 @@ u8 i, slot, j;
 s32 offset;
 u8 callId;
 u16 *serialPtr;
-u8 *map;
-u32 id=(u8)arg0;
+u8 *slotMap;
+u32 id=(u8)callIdIn;
 u8 *idPtr;
 s32 result;u32 *handle;
 u8 *scan;
 u32 limit;
 for(i=0;i<(count=gSoundStreamCtrl[0]);i++){
-u8 *p=gSoundStreamCtrl+i*0x2c;
-u8 *state=p+8;u8 *owner;
-if(*state!=0){ owner=p+11;
-if(*owner==(u8)arg0){*state=0;(*(gSoundStreamCtrl+*owner+0xb08))=255;}}
+u8 *entry=gSoundStreamCtrl+i*0x2c;
+u8 *state=entry+8;u8 *owner;
+if(*state!=0){ owner=entry+11;
+if(*owner==(u8)callIdIn){*state=0;(*(gSoundStreamCtrl+*owner+0xb08))=255;}}
 }
 for(slot=0;slot<count;slot++) {
 if((*(gSoundStreamCtrl+slot*0x2c+8))==0) {
-u8 *p;u8 state=1;
-p=gSoundStreamCtrl+slot*0x2c;
-p[8]=state;*(u32*)(p+12)=0;goto allocated;
+u8 *entry;u8 state=1;
+entry=gSoundStreamCtrl+slot*0x2c;
+entry[8]=state;*(u32*)(entry+12)=0;goto allocated;
 }
 }
 slot=255;
 allocated:
 callId=id;
-map=gSoundStreamCtrl+0xb08;
-map[callId]=slot;
+slotMap=gSoundStreamCtrl+0xb08;
+slotMap[callId]=slot;
 if(slot!=255){
-{s32 value=fn_802631AC(map[callId],0);Sound_SetVoiceStreamParams(callId,value,*(s32*)(gSoundStreamCtrl+4));}
+{s32 value=fn_802631AC(slotMap[callId],0);Sound_SetVoiceStreamParams(callId,value,*(s32*)(gSoundStreamCtrl+4));}
 {u16 value=fn_80261B28(callId);offset=slot*0x2c;
 *(u16*)(gSoundStreamCtrl+offset+0x18)=value;}
 limit=gSoundStreamCtrl[0];
@@ -9597,7 +9598,7 @@ if(scan[8]!=0 && *(u16*)(scan+0x1a)==serial) break;
 }while(j!=limit);
 serialPtr=(u16*)(gSoundStreamCtrl+offset);
 *(serialPtr+=13)=serial;
-result=fn_80256000(arg0);
+result=fn_80256000(callIdIn);
 handle=(u32*)(gSoundStreamCtrl+offset);
 *(handle+=7)=result;
 if((u32)result+0x10000U!=0xffffU)
@@ -9610,7 +9611,7 @@ idPtr=gSoundStreamCtrl+offset+11;
 if(*(u32*)(gSoundStreamCtrl+0xb4c)!=0 && (*(u32(**)(s32,void*))(gSoundStreamCtrl+0xb4c))(0,gSoundStreamCtrl+offset+0x18)==0) return (id&~0xffff00)|((*serialPtr<<8)&0xffff00);
 Sound_SetVoiceStreamParams(callId,0,0);
 *(gSoundStreamCtrl+offset+8)=0;
-map[*idPtr]=255;
+slotMap[*idPtr]=255;
 }
 else Sound_SetVoiceStreamParams(callId,0,0);
 return -1;
