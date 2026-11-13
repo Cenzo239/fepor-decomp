@@ -2179,37 +2179,23 @@ extern "C" void fn_801360FC(void *arg0) {
 #pragma cplusplus reset
 
 void fn_80136168(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5) {
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(s32, u16);
-    void Prim2D_PrepareTex(void);
-    void Text_Draw(s16, s16, s32, void *, s32, ...);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetColorPacked(void *);
-    void Prim2D_SetTextScale(s32, f32);
-    void fn_80006B18(s16, s16, s32, s32, u8);
-    void Prim2D_EndPrim(void);
-    void Ui_DrawIcon(void *, s16, s16, u8);
-    s32 fn_8010586C(void *);
-    s32 *Ui_GetColor(s32);
-    extern u8 lbl_80276720[];
-    extern u8 lbl_802F0350[];
-    extern f32 lbl_8036A5E0;
-
-    s32 sp8;
-    s32 flag;
-
-    flag = arg5 != 0;
-    Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 0x13));
-    Prim2D_PrepareTex();
-    Text_Draw((s16)(arg1 + 0x20), (s16)(arg2 + 4), flag, lbl_80276720 + 0x1D, fn_8010586C(arg4));
-    Prim2D_AddPrim(6);
-    sp8 = *Ui_GetColor(flag);
-    Prim2D_SetColorPacked(&sp8);
-    Prim2D_SetTextScale(1, lbl_8036A5E0);
-    fn_80006B18((s16)(arg1 + 0x20), (s16)(arg2 + 8), 0, 0, ((u8 *)arg4)[0x1A]);
-    Prim2D_EndPrim();
-    Ui_DrawIcon(lbl_802F0350, arg1, arg2, ((u8 *)arg4)[0x19]);
+void Prim2D_Begin(void); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex(void);
+void Text_Draw(s16,s16,s32,void *,s32,...);
+void Prim2D_AddPrim(s32); void Prim2D_SetColorPacked(void *);
+void Prim2D_SetTextScale(s32,f32); void fn_80006B18(s32,s32,s32,s32,u8);
+void Prim2D_EndPrim(void); void Ui_DrawIcon(void *,s16,s16,u8);
+s32 fn_8010586C(void *); s32 *Ui_GetColor(s32);
+extern u8 lbl_80276720[],lbl_802F0350[]; extern f32 lbl_8036A5E0;
+s32 sp8; s32 y,tx,x,name; s32 flag;
+flag=arg5!=0;
+Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)arg0+0x34)|0x13)); Prim2D_PrepareTex();
+name=fn_8010586C(arg4);
+y=arg2; x=arg1; tx=x+0x20;
+Text_Draw(tx,y+4,flag,lbl_80276720+0x1d,name);
+Prim2D_AddPrim(6); sp8=*Ui_GetColor(flag); Prim2D_SetColorPacked(&sp8);
+Prim2D_SetTextScale(1,lbl_8036A5E0);
+fn_80006B18(tx,y+8,0,0,((u8 *)arg4)[0x1a]);
+Prim2D_EndPrim(); Ui_DrawIcon(lbl_802F0350,x,y,((u8 *)arg4)[0x19]);
 }
 
 s32 fn_80136268(void *arg0, void *arg1) {
@@ -8644,8 +8630,8 @@ void fn_801427D4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 arg5) 
 }
 
 void fn_80142814(s32 arg0, s16 arg1, s16 arg2, s32 arg3, s32 *arg4, s32 arg5) {
-    M2C_UNK fn_8008D000(s32, s32, s32, s32);
-    fn_8008D000(*arg4, arg5, arg1, arg2);
+    M2C_UNK UnitRef_DrawSell(s32, s32, s32, s32);
+    UnitRef_DrawSell(*arg4, arg5, arg1, arg2);
 }
 
 s32 fn_8014284C(s32 unused, void **arg1) {

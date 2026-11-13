@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 #pragma use_lmw_stmw on
-void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
+void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
