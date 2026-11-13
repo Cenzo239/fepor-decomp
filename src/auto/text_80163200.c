@@ -6674,7 +6674,8 @@ extern "C" void fn_80170160(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void MapCursor_UpdateUnitInfo(void *arg0) {
+/* Tick map-cursor unit-info: follow the hovered unit and handle A/B/X popup input. */
+extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
@@ -6715,28 +6716,28 @@ extern "C" void MapCursor_UpdateUnitInfo(void *arg0) {
         virtual Vec2s v10() = 0;
     };
 
-    void *obj4c;
-    u32 var_r30;
+    void *cursor;
+    u32 unit;
     void *self;
     register int btn;
     register u8 gate;
     register int flags;
     u32 *bits;
-    void *obj;
+    void *child;
     u32 sp1C;
     u32 sp18;
     u32 sp14;
 
-    self = arg0;
-    obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    var_r30 = MapCursor_GetUnit(obj4c);
-    fn_8013FDA0(arg0);
-    if (var_r30 != MapCursor_GetUnit(obj4c)) {
-        var_r30 = MapCursor_GetUnit(obj4c);
+    self = proc;
+    cursor = *(void **)((u8 *)proc + 0x4C);
+    unit = MapCursor_GetUnit(cursor);
+    fn_8013FDA0(proc);
+    if (unit != MapCursor_GetUnit(cursor)) {
+        unit = MapCursor_GetUnit(cursor);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            if (var_r30 != 0) {
-                *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r30, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
+            if (unit != 0) {
+                *(Vec2s *)&sp1C = ((Obj *)cursor)->v10();
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, unit, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
             } else {
                 Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
@@ -6750,20 +6751,20 @@ extern "C" void MapCursor_UpdateUnitInfo(void *arg0) {
     if (!gate) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            bits = fn_8001CB64(var_r30);
+        if ((btn & 0x100) && unit != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+            bits = fn_8001CB64(unit);
             if ((*(u64 *)bits & 0x200ULL) != 0) {
-                *(Vec2s *)&sp18 = ((Obj *)obj4c)->v10();
-                obj = fn_8000CAA0(lbl_80294580, self);
-                *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
-                *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
-                *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x236;
+                *(Vec2s *)&sp18 = ((Obj *)cursor)->v10();
+                child = fn_8000CAA0(lbl_80294580, self);
+                *(f32 *)((u8 *)child + 0x30) = (f32)*(s16 *)&sp18;
+                *(f32 *)((u8 *)child + 0x34) = (f32)*((s16 *)&sp18 + 1);
+                *(void **)((u8 *)child + 0x54) = (u8 *)gUiMsgStrings + 0x236;
             } else {
                 Process_ClearFunc(self);
             }
-        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != 0) {
-            *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && unit != 0) {
+            *(Vec2s *)&sp14 = ((Obj *)cursor)->v10();
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, unit, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
