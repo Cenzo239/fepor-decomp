@@ -9180,7 +9180,7 @@ void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     void *fn_800D75FC(void *,void *);
     void fn_800E3F54(void *);
     extern char CameraWin_str[];
-    extern u8 lbl_80298418[];
+    extern u8 CameraWin_vtable[];
     u32 spB8[3];
     u32 spAC[3];
     u32 spA0[3];
@@ -9214,7 +9214,7 @@ void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     String_Destroy(spA0,-1);
     String_Destroy(spAC,-1);
     String_Destroy(spB8,-1);
-    *(void **)(self+0xC)=lbl_80298418;
+    *(void **)(self+0xC)=CameraWin_vtable;
     *(u32 *)(self+0x424)=0;
     *(u32 *)(self+0x428)=0;
     *(u32 *)(self+0x42C)=0;
