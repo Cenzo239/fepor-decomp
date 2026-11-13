@@ -2010,7 +2010,7 @@ void BattlePreview_Draw(void *arg0) {
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
-    void fn_801F690C(void *, f32, f32);
+    void BattlePreview_DrawDetails(void *, f32, f32);
     extern u8 gBattlePreviewStrings[];
     void *temp_r31;
     void *temp_r30;
@@ -2048,10 +2048,10 @@ void BattlePreview_Draw(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B93C);
     Prim2D_PrepareTex();
-    fn_801F690C(temp_r30, lbl_8036B940, lbl_8036B944);
+    BattlePreview_DrawDetails(temp_r30, lbl_8036B940, lbl_8036B944);
 }
 
-void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
+void BattlePreview_DrawDetails(void *arg0, f32 farg0, f32 farg1) {
     void fn_800066B4(s32, s32, u32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
