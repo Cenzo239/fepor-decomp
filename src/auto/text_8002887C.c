@@ -129,7 +129,8 @@ void fn_80028B4C(s32 arg0) {
     }
 }
 
-void MapUi_HandleUnitSelect(void *arg0) {
+void MapUi_HandleUnitSelect(void *proc) {
+    /* Cancel unit select in some UI modes, or confirm and show move ranges. */
     void Process_Goto(void *, s32);
     u8 Ui_CanConfirmUnitSelect(void *);
     void Ui_ConfirmUnitAction(void *);
@@ -152,7 +153,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
     case 0x1B:
     case 0x1C:
     case 0x28:
-        Process_Goto(arg0, 6);
+        Process_Goto(proc, 6);
         return;
     }
 
@@ -165,7 +166,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
             ((u8 *)unit)[0x19F],
             (s8)gUiContext[0x11]
         );
-        Process_Goto(arg0, 3);
+        Process_Goto(proc, 3);
     }
 }
 
