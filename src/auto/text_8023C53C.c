@@ -5667,7 +5667,7 @@ s32 AudioTable_Insert(u16 id, s32 data) {
     return 1;
 }
 #pragma opt_strength_reduction off
-s32 fn_80250414(u16 id) {
+s32 AudioTable_Remove(u16 id) {
  void Audio_Lock(void); void Audio_Unlock(void);
  extern AudioTableRange gAudioTableRanges[];
  extern AudioTableEntry gAudioTableEntries[];
@@ -9827,7 +9827,7 @@ void *fn_80258AD8(void) {
 }
 
 void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
- void AudioTable_Insert(s32,s32); s32 fn_80250414();
+ void AudioTable_Insert(s32,s32); s32 AudioTable_Remove();
  void fn_8024EE6C(s32,s32); void fn_8024F05C(s32);
  s32 fn_8024F1D8(); void fn_8024F420(s32);
  s32 fn_8024F5E4(); void fn_8024F7E8(s32);
@@ -9840,7 +9840,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
    node=FindAudioResource(data,(u16)(id),0);
    if(node!=NULL) AudioTable_Insert(id,(s32)(node+8));
    else AudioTable_Insert(id,0);
-  } else fn_80250414(id);
+  } else AudioTable_Remove(id);
   break;
  case 2:
   if(remove==0) {
