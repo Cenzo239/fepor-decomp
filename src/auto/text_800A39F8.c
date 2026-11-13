@@ -1793,7 +1793,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     u8 Status_Test(void *, s32);
     extern u32 lbl_80369A98;
     extern u32 lbl_80369A9C;
@@ -1841,7 +1841,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
         var_r26 = 4;
     } else {
         if (*(void **)((u8 *)var_r30 + 0xC) != NULL) {
-            temp_r3 = fn_8000D354(*(void **)((u8 *)var_r30 + 0xC));
+            temp_r3 = Res_GetByName(*(void **)((u8 *)var_r30 + 0xC));
         } else {
             temp_r3 = NULL;
         }
@@ -2369,7 +2369,7 @@ void *fn_800A893C(void *arg0) {
 
 s32 fn_800A8978(void *arg0) {
     s32 Msg_Expand(s32);
-    if (fn_8000D354(M2C_FIELD(arg0, s32 *, 4)) != 0U) {
+    if (Res_GetByName(M2C_FIELD(arg0, s32 *, 4)) != 0U) {
         return Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
     }
     return M2C_FIELD(arg0, s32 *, 0);
@@ -2399,12 +2399,12 @@ void fn_800A8A64(void *arg0) {
 
 s32 fn_800A8A88(void *arg0) {
     s32 Msg_Expand(s32);
-    s32 fn_8000D354(s32);
+    s32 Res_GetByName(s32);
     s32 fn_8007C378(s32);
     if (*(u32 *)((u8 *)arg0 + 4) != 0U) {
         return Msg_Expand(*(s32 *)((u8 *)arg0 + 4));
     }
-    if (fn_8000D354(*(s32 *)((u8 *)arg0 + 0xC)) != 0U) {
+    if (Res_GetByName(*(s32 *)((u8 *)arg0 + 0xC)) != 0U) {
         return fn_8007C378(*(s32 *)((u8 *)arg0 + 0xC));
     }
     return *(s32 *)arg0;

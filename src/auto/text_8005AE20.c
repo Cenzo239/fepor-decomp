@@ -251,14 +251,14 @@ s32 fn_8005B448(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, s32)) {
 #pragma global_optimizer off
 s32 fn_8005B4D8(s32 arg0) {
     s32 Hash_Lookup(void *);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     s32 fn_8001B894(s32 *);
     void fn_8001B940(s32 *);
     extern u8 lbl_8026B308[];
     s32 sp8;
     s32 i;
 
-    if (fn_8000D354(lbl_8026B308 + 8) != 0) {
+    if (Res_GetByName(lbl_8026B308 + 8) != 0) {
         sp8 = Hash_Lookup(lbl_8026B308 + 8);
         fn_8001B940(&sp8);
         fn_8001B940(&sp8);
@@ -5405,7 +5405,7 @@ void fn_80068550(s32 arg0) {
 #pragma use_lmw_stmw on
 void fn_80068558(void *arg0, void *arg1, void *arg2)
 {
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void fn_800C4588(void *);
     s32 Str_Cmp(void *, void *);
     s32 i;
@@ -5461,7 +5461,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         }
     } else {
         if (arg0 == NULL) {
-            found = fn_8000D354(arg1);
+            found = Res_GetByName(arg1);
         } else {
             i = 0;
             j = i;
@@ -5508,7 +5508,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
 s32 fn_800688D4(void *arg0, void *arg1,u32 arg2,s32 arg3) {
-void *fn_8000D354(void*);void *fn_800C4638(s32,void*,s32);s32 Str_Cmp(void*,void*);
+void *Res_GetByName(void*);void *fn_800C4638(s32,void*,s32);s32 Str_Cmp(void*,void*);
 extern u8 gGMaterialAssertMsg[];
 s32 i,off,j;
 u32 value;
@@ -5533,7 +5533,7 @@ if(!value){slots[j]=arg2;break;}
 }
 return 1;
 }
-if(!arg0)found=fn_8000D354(arg1);
+if(!arg0)found=Res_GetByName(arg1);
 else for(i=0,off=0;i<*(u16*)((u8*)arg0+0x54);i++,off+=32){
 if(!Str_Cmp(*(void**)(*(u8**)((u8*)arg0+0x34)+off),arg1)){
 found=*(u8**)((u8*)arg0+0x34)+(i<<5);break;

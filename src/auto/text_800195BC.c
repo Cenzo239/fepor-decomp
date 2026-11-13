@@ -337,8 +337,8 @@ s32 fn_80019DBC(u8 arg0) {
 }
 
 void fn_80019DD0(void) {
-    M2C_UNK fn_8000D354();
-    fn_8000D354();
+    M2C_UNK Res_GetByName();
+    Res_GetByName();
 }
 
 s32 fn_80019DF0(u8 arg0) {
@@ -347,8 +347,8 @@ s32 fn_80019DF0(u8 arg0) {
 }
 
 void Item_GetByIid(void) {
-    M2C_UNK fn_8000D354();
-    fn_8000D354();
+    M2C_UNK Res_GetByName();
+    Res_GetByName();
 }
 
 #pragma dont_inline on
@@ -362,8 +362,8 @@ s32 fn_80019E24(s32 arg0) {
 #pragma dont_inline reset
 
 void fn_80019E48(void) {
-    M2C_UNK fn_8000D354();
-    fn_8000D354();
+    M2C_UNK Res_GetByName();
+    Res_GetByName();
 }
 
 s32 fn_80019E68(s32 arg0) {
@@ -375,8 +375,8 @@ s32 fn_80019E68(s32 arg0) {
 }
 
 void fn_80019E8C(void) {
-    M2C_UNK fn_8000D354();
-    fn_8000D354();
+    M2C_UNK Res_GetByName();
+    Res_GetByName();
 }
 
 s32 fn_80019EAC(s32 arg0) {
@@ -1006,7 +1006,7 @@ void fn_8001B134(void) {
     void fn_8003FCCC();
     void fn_800056CC(char *, ...);
     u8 *Hash_Lookup(char *);
-    s32 fn_8000D354(char *);
+    s32 Res_GetByName(char *);
     void fn_8000D3EC(u32, void *);
     void fn_80019FC4(void);
     void fn_8001A5E4(void);
@@ -1190,7 +1190,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x265);
 
-    lbl_80367210 = (void *)fn_8000D354(lbl_80268510 + 0x1D);
+    lbl_80367210 = (void *)Res_GetByName(lbl_80268510 + 0x1D);
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x287);
 
@@ -1767,7 +1767,7 @@ void *fn_8001C76C(void *arg0) {
 void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
-    u32 fn_8000D354(void *);
+    u32 Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
     extern u8 lbl_80268820[];
@@ -1778,7 +1778,7 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
         strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
-    if (fn_8000D354(lbl_802CA4FC) == 0) {
+    if (Res_GetByName(lbl_802CA4FC) == 0) {
         s = NULL;
         s->fn(arg2);
     }
@@ -1787,7 +1787,7 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
-    u32 fn_8000D354(void *);
+    u32 Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
     extern u8 lbl_80268820[];
@@ -1799,7 +1799,7 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
         strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
-    ret = fn_8000D354(lbl_802CA4FC);
+    ret = Res_GetByName(lbl_802CA4FC);
     if (ret == 0) {
         cb = *(void (**)(void *))((u8 *)ret + 0x8);
         if (cb != NULL) {
@@ -1814,7 +1814,7 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
 u32 fn_8001C914(void *arg0, void *arg1) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
     extern u8 lbl_80268820[];
@@ -1825,7 +1825,7 @@ u32 fn_8001C914(void *arg0, void *arg1) {
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
         strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
-    obj = fn_8000D354(lbl_802CA4FC);
+    obj = Res_GetByName(lbl_802CA4FC);
     if (obj == 0) {
         obj = 0;
     }
@@ -1838,7 +1838,7 @@ u32 fn_8001C914(void *arg0, void *arg1) {
 u32 fn_8001C9BC(void *arg0) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
-    u32 fn_8000D354(void *);
+    u32 Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
     extern u8 lbl_80268820[];
@@ -1849,7 +1849,7 @@ u32 fn_8001C9BC(void *arg0) {
         strcpy(lbl_802CA4FC, *(s32 *)arg0);
         strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
-    ret = fn_8000D354(lbl_802CA4FC);
+    ret = Res_GetByName(lbl_802CA4FC);
     if (ret == 0) {
         return 0;
     }
@@ -2119,7 +2119,7 @@ u16 UnitRef_GetValue(void* arg0) {
 
 void *fn_8001D2C8(void *arg0) {
     u8 *fn_800C2E3C(u8 *, s32);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void *Msg_Expand(void *);
     extern u8 lbl_803206EC[];
     u8 flag;
@@ -2137,7 +2137,7 @@ void *fn_8001D2C8(void *arg0) {
     }
     if (flag == 0) {
         inner = *(void **)arg0;
-        if (fn_8000D354(*(void **)((u8 *)inner + 4)) != NULL) {
+        if (Res_GetByName(*(void **)((u8 *)inner + 4)) != NULL) {
             return Msg_Expand(*(void **)((u8 *)inner + 4));
         }
         return *(void **)inner;
@@ -2343,7 +2343,7 @@ s32 fn_8001D684(void *arg0) {
 
 s32 fn_8001D780(void *arg0, void *arg1)
 {
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void fn_800C3220(void *, s32);
     extern u8 lbl_803206EC[];
     typedef struct {
@@ -2355,7 +2355,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
     s32 mask;
     void *result;
 
-    result = fn_8000D354(arg1);
+    result = Res_GetByName(arg1);
     *(s32 *)arg0 = 0;
     *((u8 *)arg0 + 4) = 0;
     bf = (Bit6 *)((u8 *)arg0 + 5);
@@ -2731,7 +2731,7 @@ void *fn_8001ED1C(void *arg0) {
 
 s32 fn_8001ED58(void *arg0) {
     s32 Msg_Expand(s32);
-    if (fn_8000D354(M2C_FIELD(arg0, s32 *, 4)) != 0U) {
+    if (Res_GetByName(M2C_FIELD(arg0, s32 *, 4)) != 0U) {
         return Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
     }
     return M2C_FIELD(arg0, s32 *, 0);

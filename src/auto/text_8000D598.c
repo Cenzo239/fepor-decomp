@@ -182,7 +182,7 @@ void *fn_8000D8BC(s32 arg0, char *arg1) {
 }
 
 u8 *fn_8000D910(u8 *arg0, u8 arg1) {
-    u8 *fn_8000D354(u8 *);
+    u8 *Res_GetByName(u8 *);
     void fn_80231E74(u8 *, s32, void *, u8 *, ...);
     void strcpy(u8 *, void *);
     extern u8 lbl_80267DC0[];
@@ -203,7 +203,7 @@ u8 *fn_8000D910(u8 *arg0, u8 arg1) {
     u8 sjis;
 
     if (arg1 == 0) {
-        resolved = fn_8000D354(arg0);
+        resolved = Res_GetByName(arg0);
         if (resolved == NULL) {
             return arg0;
         }
@@ -305,8 +305,8 @@ copy_body:
     }
 
     fn_80231E74(sp8, 0x80, lbl_80267DC0, arg0);
-    if (fn_8000D354(sp8) == NULL) {
-        resolved = fn_8000D354(arg0);
+    if (Res_GetByName(sp8) == NULL) {
+        resolved = Res_GetByName(arg0);
         if (resolved == NULL) {
             return arg0;
         }
@@ -407,7 +407,7 @@ copy_body2:
         return resolved;
     }
 
-    resolved = fn_8000D354(sp8);
+    resolved = Res_GetByName(sp8);
     if (resolved == NULL) {
         return sp8;
     }
@@ -509,7 +509,7 @@ copy_body3:
 }
 
 u8 *Msg_Expand(u8 *arg0) {
-    u8 *fn_8000D354();
+    u8 *Res_GetByName();
     M2C_UNK strcpy(u8 *, void *);
     extern u8 lbl_802AEB10;
     extern M2C_UNK lbl_802AED10;
@@ -536,7 +536,7 @@ u8 *Msg_Expand(u8 *arg0) {
     u8 var_r0;
     u8 var_r0_2;
 
-    var_r3 = fn_8000D354();
+    var_r3 = Res_GetByName();
     if (var_r3 == NULL) {
         return arg0;
     }

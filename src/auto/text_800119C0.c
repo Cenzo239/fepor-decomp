@@ -276,7 +276,7 @@ s32 fn_80013A90(void *arg0) {
     extern s32 lbl_8036718C;
     extern s32 lbl_80367184;
     extern s32 lbl_80367188;
-    u32 fn_8000D354(void *);
+    u32 Res_GetByName(void *);
     void fn_800142B0(s32);
 
     u32 result;
@@ -286,7 +286,7 @@ s32 fn_80013A90(void *arg0) {
     context = lbl_803671A4;
     lbl_80367180 = context;
     lbl_8036718C = *(s32 *)((u8 *)context + 0x18);
-    result = fn_8000D354(arg0);
+    result = Res_GetByName(arg0);
     lbl_80367184 = result;
     if (result == 0U) {
         fn_800142B0(5);
@@ -739,7 +739,7 @@ s32 fn_80014398(void *arg0) {
     temp_r3 = *(void **)((u8 *)arg0 + 4);
     temp_r31 = *(s32 *)((u8 *)temp_r3 + 4);
     *(void **)((u8 *)arg0 + 4) = (void *) ((u8 *)temp_r3 + 8);
-    if (fn_8000D354(temp_r31) == 0U) {
+    if (Res_GetByName(temp_r31) == 0U) {
         return 1;
     }
     fn_800C08AC(temp_r31, arg0);
@@ -747,7 +747,7 @@ s32 fn_80014398(void *arg0) {
 }
 
 s32 fn_80014400(void *arg0) {
-    u32 fn_8000D354(s32);
+    u32 Res_GetByName(s32);
     void Process_Goto(void *, s32);
     void *ptr;
     u32 word0;
@@ -759,14 +759,14 @@ s32 fn_80014400(void *arg0) {
     word1 = *(s32 *)((u8 *)ptr + 4);
     *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
     hi = (s16)(word0 >> 16);
-    if (fn_8000D354(word1) == 0U) {
+    if (Res_GetByName(word1) == 0U) {
         Process_Goto(arg0, hi & 0xFF);
     }
     return 1;
 }
 
 s32 fn_80014468(void *arg0) {
-    u32 fn_8000D354(s32);
+    u32 Res_GetByName(s32);
     void Process_Goto(void *, s32);
     void *ptr;
     s16 hi;
@@ -776,7 +776,7 @@ s32 fn_80014468(void *arg0) {
     hi = (s16)(*(u32 *)ptr >> 16);
     word1 = *(s32 *)((u8 *)ptr + 4);
     *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
-    if (fn_8000D354(word1) != 0U) {
+    if (Res_GetByName(word1) != 0U) {
         Process_Goto(arg0, hi & 0xFF);
     }
     return 1;
@@ -1115,7 +1115,7 @@ void fn_80014EA8(void) {
 }
 
 s32 fn_80014EDC(u32 arg0) {
-    s32 fn_8000D354(s32);
+    s32 Res_GetByName(s32);
     s32 Msg_Expand(s32);
     extern void *lbl_80367210;
     s32 var_r31;
@@ -1126,7 +1126,7 @@ s32 fn_80014EDC(u32 arg0) {
     p = (u8 *)lbl_80367210;
     p += off;
     var_r31 = *(s32 *)(p + 4);
-    if (fn_8000D354(var_r31) != 0U) {
+    if (Res_GetByName(var_r31) != 0U) {
         var_r31 = Msg_Expand(var_r31);
     }
     return var_r31;
@@ -2353,14 +2353,14 @@ void *fn_80016B7C(u32 arg0) {
 }
 
 void *fn_80016BDC(void) {
-    u32 fn_8000D354(void);
+    u32 Res_GetByName(void);
     extern u8 gUnits[];
     u8 *p;
     s32 i;
     u32 id;
     u32 v;
 
-    id = fn_8000D354();
+    id = Res_GetByName();
     if (id == 0U) {
         return NULL;
     }

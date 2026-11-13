@@ -2863,9 +2863,9 @@ return NULL;
 }
 
 void fn_800793EC(void *arg0,s32 arg1){
-void *fn_8000D354(void *); void *fn_802002F0(void *); void fn_80200270(void *); void fn_80009EB0(void *,s32,s32,s32); extern u8 lbl_8026C640[];
+void *Res_GetByName(void *); void *fn_802002F0(void *); void fn_80200270(void *); void fn_80009EB0(void *,s32,s32,s32); extern u8 lbl_8026C640[];
 s32 idx; void *node;
-node=fn_8000D354(arg0); node=node ? node : fn_8000D354(lbl_8026C640+0xef);
+node=Res_GetByName(arg0); node=node ? node : Res_GetByName(lbl_8026C640+0xef);
 idx=*(u16*)((u8*)node+0x1a); if(idx==65535)idx=0;
 fn_80009EB0(fn_802002F0(arg0),idx,0,arg1); fn_80200270(arg0);
 }
@@ -4063,26 +4063,26 @@ void fn_8007C34C(void) {
 
 #pragma peephole off
 void fn_8007C378(void) {
-    void *fn_8000D354();
+    void *Res_GetByName();
     void Msg_Expand(u32);
     extern u8 lbl_8026C640[];
     void *x;
 
-    x = fn_8000D354();
+    x = Res_GetByName();
     switch ((u32)x) {
     case 0:
-        Msg_Expand(*(u32 *)((u8 *)fn_8000D354(lbl_8026C640 + 0xEF) + 4));
+        Msg_Expand(*(u32 *)((u8 *)Res_GetByName(lbl_8026C640 + 0xEF) + 4));
         break;
     }
 }
 #pragma peephole reset
 void fn_8007C3BC(void) {
     extern u8 lbl_8026C640[];
-    unsigned int fn_8000D354();
+    unsigned int Res_GetByName();
 
-    switch ((unsigned int)fn_8000D354()) {
+    switch ((unsigned int)Res_GetByName()) {
     case 0U:
-        fn_8000D354(lbl_8026C640 + 0xEF);
+        Res_GetByName(lbl_8026C640 + 0xEF);
         break;
     }
 }

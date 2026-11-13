@@ -33,7 +33,7 @@ extern struct UnkStruct_802AEE80 gUnk_802AEE80;
 extern s32 gUnknown_0x80369C84;
 extern s32 gUnknown_0x80369C88;
 
-s32 fn_8000D354(s8 *str) {
+s32 Res_GetByName(s8 *str) {
     extern u8 lbl_802ADB20[];
     struct {
         u32 h1;

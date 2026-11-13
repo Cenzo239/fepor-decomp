@@ -129,7 +129,7 @@ extern s32 gGameState;
 
 extern u16 lbl_8026A458[];
 
-void *fn_8000D354(s32);
+void *Res_GetByName(s32);
 
 #pragma opt_strength_reduction off
 

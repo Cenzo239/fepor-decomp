@@ -6145,7 +6145,7 @@ void fn_8016F404(void *arg0) {
     void fn_8000A408(s32);
     void fn_8013FED0(void *);
     void sprintf(void *, void *, ...);
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     void fn_80190C24(void *, s32);
     void *temp_r31;
     s32 temp_r0;
@@ -6154,7 +6154,7 @@ void fn_8016F404(void *arg0) {
     fn_8013FED0(arg0);
     temp_r31 = (u8 *)gUiMsgStrings + 0x14A;
     sprintf(temp_r31, (u8 *)gUiMsgStrings + 0x15A, gBattleState[0x10]);
-    temp_r0 = fn_8000D354(temp_r31);
+    temp_r0 = Res_GetByName(temp_r31);
     fn_80190C24(arg0, temp_r0);
 }
 
@@ -6187,7 +6187,7 @@ void fn_8016F55C(void *arg0) {
     void fn_8000A408(void *);
     void fn_8013FED0(void *);
     void sprintf(void *, void *, ...);
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     void fn_80190D9C(void *, s32);
     extern u16 gUiMsgStrings[];
     extern u8 gBattleState[];
@@ -6200,7 +6200,7 @@ void fn_8016F55C(void *arg0) {
     base = (s32)gUiMsgStrings;
     fmt = (void *)(base + 0x16C);
     sprintf(fmt, (void *)(base + 0x17C), gBattleState[0x10]);
-    tmp = fn_8000D354(fmt);
+    tmp = Res_GetByName(fmt);
     fn_80190D9C(arg0, tmp);
 }
 

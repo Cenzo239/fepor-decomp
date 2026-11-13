@@ -5665,7 +5665,7 @@ s32 fn_800BA8F8(u8 arg0) {
 }
 
 s32 fn_800BA96C(void) {
-    void *fn_8000D354(void);
+    void *Res_GetByName(void);
     M2C_UNK fn_800A87D4(s32);
     void *fn_801A46BC(void *);
     extern u8 lbl_80330EAC[];
@@ -5676,11 +5676,11 @@ s32 fn_800BA96C(void) {
         return 0;
     }
     fn_800A87D4(M2C_FIELD(p, s32 *, 0x188));
-    return fn_8000D354() != NULL;
+    return Res_GetByName() != NULL;
 }
 
 extern void *fn_801A46BC(u32 *);
-extern s32 fn_8000D354();
+extern s32 Res_GetByName();
 extern s32 fn_800A87D4(s32);
 s32 fn_800BA9BC(void) {
     void *temp_r3;
@@ -5690,7 +5690,7 @@ s32 fn_800BA9BC(void) {
         return 0;
     }
     
-    if (fn_8000D354() == 0) {
+    if (Res_GetByName() == 0) {
         return 0;
     }
     
@@ -5701,7 +5701,7 @@ s32 fn_800BA9BC(void) {
 }
 
 s32 fn_800BAAD4(void) {
-    void *fn_8000D354(void);
+    void *Res_GetByName(void);
     void *fn_8000BCA4(void *);
     s32 fn_800A876C(s32);
     M2C_UNK fn_8011D79C(s32);
@@ -5714,7 +5714,7 @@ s32 fn_800BAAD4(void) {
         return 0;
     }
     obj = fn_800A876C(M2C_FIELD(gUiContext[0], s32 *, 0x188));
-    if (fn_8000D354() != NULL) {
+    if (Res_GetByName() != NULL) {
         if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
             fn_8011D79C(obj);
         } else {
@@ -8437,14 +8437,14 @@ void fn_800C08AC(void *arg0, void *arg1)
     extern u8 lbl_8026FC78[];
     extern s32 gUiInputFlags;
 
-    extern void *fn_8000D354(void *);
+    extern void *Res_GetByName(void *);
     extern void *fn_8000CAA0(void *, void *);
     extern void fn_800BDBC8(void *, void *);
 
     void *result;
     u8 *entry;
 
-    result = fn_8000D354(arg0);
+    result = Res_GetByName(arg0);
 
     if (result != 0) {
         entry = (u8 *)fn_8000CAA0(lbl_8028D4F8, arg1);

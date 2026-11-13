@@ -64,7 +64,7 @@ void fn_80098D30(void *arg0) {
     s32 temp_r30;
 
     fn_80055204(**((s32 ***)arg0 + 0xE), 0);
-    fn_8000D354();
+    Res_GetByName();
     temp_r31 = fn_80098140();
     temp_r30 = fn_80098110();
     fn_8018CAD8(0x32, 0x1E, arg0);

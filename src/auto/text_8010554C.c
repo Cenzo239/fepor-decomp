@@ -374,11 +374,11 @@ void fn_80105DAC(s32 *arg0, s32 arg1) {
 }
 
 u8 fn_80105E88(s32 arg0, s32 arg1) {
-    s32 fn_8000D354(s32);
+    s32 Res_GetByName(s32);
     void *fn_80234198(void *, u8 *);
     extern u8 lbl_802738F8[];
     void *temp_r3;
-    if (fn_8000D354(arg0) == 0U) {
+    if (Res_GetByName(arg0) == 0U) {
         return 0U;
     }
     temp_r3 = fn_80234198((void *)arg0, lbl_802738F8 + 0x26);
@@ -393,7 +393,7 @@ u8 fn_80105E88(s32 arg0, s32 arg1) {
 void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void fn_800056CC(const char *, ...);
     void *fn_8000CAA0(void *, u32);
-    u32 fn_8000D354(void *);
+    u32 Res_GetByName(void *);
     void fn_80016180(void);
     void fn_800163F8(void);
     void *fn_80016BDC(void *);
@@ -437,7 +437,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     arg1b = defer;
     mode_local = mode;
     fn_800056CC((const char *)(lbl_802738F8 + 0x33), self);
-    if (fn_8000D354(self) != 0) {
+    if (Res_GetByName(self) != 0) {
         nibble = fn_801A1CC8() & 0xF;
         if (gUiInputFlags & 1) {
             arg1b = 0;
@@ -4033,19 +4033,19 @@ after_loop:
 #pragma use_lmw_stmw reset
 
 s32 fn_8010C4B0(void *arg0) {
-    void *fn_8000D354(s32);
+    void *Res_GetByName(s32);
     u8 fn_80102EA8();
     if (fn_80102EA8() != 0) {
         return 1;
     }
-    return M2C_FIELD(fn_8000D354(M2C_FIELD(arg0, s32 *, 0x240)), u8 *, 7) != 0;
+    return M2C_FIELD(Res_GetByName(M2C_FIELD(arg0, s32 *, 0x240)), u8 *, 7) != 0;
 }
 
 s32 fn_8010C504(void *arg0) {
     u8 fn_80102EA8(void);
     s8 fn_8003B2D0(void *);
     s32 fn_8022C568(f32);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     extern f64 lbl_8036A168;
     extern f32 lbl_8036A160;
     extern f32 lbl_8036A164;
@@ -4073,7 +4073,7 @@ s32 fn_8010C504(void *arg0) {
         s8 v = (s8)*(u8 *)((u8 *)arg0 + 0x1A8);
         val = fn_8022C568((lbl_8036A164 * (f32)v) / (f32)b2d);
     }
-    data = fn_8000D354(*(void **)((u8 *)arg0 + 0x240));
+    data = Res_GetByName(*(void **)((u8 *)arg0 + 0x240));
     flags = *(u32 *)((u8 *)arg0 + 0x254);
     if (flags & 1) {
         if (data[6] <= val) {

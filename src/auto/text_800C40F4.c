@@ -18718,7 +18718,7 @@ void fn_800F5A8C(void *arg0, void *arg1) {
 #pragma cplusplus off
 #pragma use_lmw_stmw on
 void fn_800F60D4(void *arg0,s32 *arg1){
-void *fn_8000D354(void *);s32 fn_800F6F94(void *,s32);
+void *Res_GetByName(void *);s32 fn_800F6F94(void *,s32);
 s8 fn_8003B2D0(void *);s8 fn_800386E0(void *);
 u8 fn_80015610(void *,void *);
 extern u32 lbl_80330EAC[];
@@ -18732,7 +18732,7 @@ u8 outside,id,equal;
 u8 *cfg,*other,*p;
 s32 total;
 u8 *unit;
-cfg=fn_8000D354(M2C_FIELD(arg0,void **,0x244));
+cfg=Res_GetByName(M2C_FIELD(arg0,void **,0x244));
 score=fn_800F6F94(cfg,1);
 unit=(u8 *)lbl_80330EAC+0x2E0;
 maxhp=(f32)fn_8003B2D0(unit);
@@ -19328,7 +19328,7 @@ void fn_800F8390(void *arg0)
     extern s32 lbl_803678F4;
     extern u8 lbl_803678F0;
 
-    extern void *fn_8000D354(void *);
+    extern void *Res_GetByName(void *);
 
     long index;
     u8 *entry;
@@ -19341,9 +19341,9 @@ void fn_800F8390(void *arg0)
     count = *(s32 *)(lbl_803678F8 + 0x10);
 
     if (lbl_803678F4 == 0) {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x238));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x23C));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     }
 
     if (count) {
@@ -19375,7 +19375,7 @@ void fn_800F8464(void *arg0)
     extern s32 lbl_803678F4;
     extern u8 lbl_803678F0;
 
-    extern void *fn_8000D354(void *);
+    extern void *Res_GetByName(void *);
 
     long index;
     u8 *entry;
@@ -19388,9 +19388,9 @@ void fn_800F8464(void *arg0)
     count = *(s32 *)(lbl_803678F8 + 0x10);
 
     if (lbl_803678F4 == 0) {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x238));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x23C));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     }
 
     if (count) {
@@ -20264,7 +20264,7 @@ void fn_800FAEA4(void *arg0)
     extern u8 *lbl_803678F8;
     extern s32 lbl_803678F4;
 
-    extern void *fn_8000D354(void *);
+    extern void *Res_GetByName(void *);
 
     long count;
     long index;
@@ -20277,9 +20277,9 @@ void fn_800FAEA4(void *arg0)
     count = *(s32 *)(lbl_803678F8 + 0x10);
 
     if (lbl_803678F4 == 0) {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x238));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
-        entry = (u8 *)fn_8000D354(*(void **)(obj + 0x23C));
+        entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     }
 
     if (count) {
@@ -20503,7 +20503,7 @@ u8 fn_800FB64C(void) {
     extern s32 lbl_803678F4;
     extern u8 lbl_8032B3C0[];
     extern u8 lbl_80273000[];
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void *fn_800FB918(void *, void *, s32 *, u8 *);
 
     u8 *obj;
@@ -20515,7 +20515,7 @@ u8 fn_800FB64C(void) {
     s32 gap;
 
     obj = *(u8 **)gUiContext;
-    entry = (u8 *)fn_8000D354(*(void **)(obj + 0x23C));
+    entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     lbl_803678F8 = entry;
     off = obj[0x251] * 0x1C;
     lbl_803678F0 = 0;
@@ -20543,7 +20543,7 @@ u8 fn_800FB6FC(void) {
     extern s32 lbl_803678F4;
     extern u8 lbl_8032B3C0[];
     extern u8 lbl_80273000[];
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void *fn_800FB918(void *, void *, s32 *, u8 *);
 
     u8 *obj;
@@ -20555,7 +20555,7 @@ u8 fn_800FB6FC(void) {
     s32 gap;
 
     obj = *(u8 **)gUiContext;
-    entry = (u8 *)fn_8000D354(*(void **)(obj + 0x238));
+    entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     lbl_803678F8 = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F0 = 0;

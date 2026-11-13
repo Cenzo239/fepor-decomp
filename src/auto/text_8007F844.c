@@ -467,7 +467,7 @@ void fn_80080698(void *arg0) {
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, f32, f32);
     u8 Status_Test(void *, s32);
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     extern f32 lbl_80369580;
     extern f32 lbl_80369584;
     extern f32 lbl_80369588;
@@ -524,7 +524,7 @@ void fn_80080698(void *arg0) {
         (void)Prim2D_SetQuadMax;
         (void)fn_8001003C;
         (void)Status_Test;
-        (void)fn_8000D354;
+        (void)Res_GetByName;
         (void)lbl_80369488;
     } else {
         (void)Status_Test(*(u8 **)((u8 *)self + 0x58) + 0x1BC, 9);

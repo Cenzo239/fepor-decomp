@@ -5269,11 +5269,11 @@ extern u8 lbl_8027F710[32];
 extern u8 gBattleState[1400];
 
 u8 fn_801F19A0(void) {
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     s32 temp_r3;
     s8 var_r0;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5296,11 +5296,11 @@ u8 fn_801F19A0(void) {
 }
 
 u8 fn_801F1A2C(void) {
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     s8 var_r0;
     void *temp_r3;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5323,11 +5323,11 @@ u8 fn_801F1A2C(void) {
 }
 
 u8 fn_801F1AB8(void) {
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     s32 temp_r3;
     s8 var_r0;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5350,11 +5350,11 @@ u8 fn_801F1AB8(void) {
 }
 
 u8 fn_801F1B44(void) {
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     s32 temp_r3;
     s8 var_r0;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5377,11 +5377,11 @@ u8 fn_801F1B44(void) {
 }
 
 u8 fn_801F1BD0(void) {
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     s8 var_r0;
     void *temp_r3;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5404,11 +5404,11 @@ u8 fn_801F1BD0(void) {
 }
 
 u8 fn_801F1C5C(void) {
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
     s32 temp_r3;
     s8 var_r0;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
     switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
@@ -5432,12 +5432,12 @@ u8 fn_801F1C5C(void) {
 
 u8 fn_801F1CE8(void)
 {
-    s32 fn_8000D354(void *);
+    s32 Res_GetByName(void *);
 
     s32 temp_r3;
     s8 var_r0;
 
-    temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
+    temp_r3 = Res_GetByName(lbl_8027F710 + 0x15);
 
     switch ((s32)gBattleState[0xA6]) {
     case 3:

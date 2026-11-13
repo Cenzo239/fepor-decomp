@@ -129,7 +129,7 @@ extern s32 gGameState;
 
 extern u16 lbl_8026A458[];
 
-void *fn_8000D354(s32);
+void *Res_GetByName(s32);
 
 #pragma opt_strength_reduction off
 
@@ -315,7 +315,7 @@ void *fn_80055204(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 /* Walk a GActor link chain and return whether each node's resource path is present. */
 u8 GActor_CheckResources(s32 name) {
-    void *fn_8000D354(s32);
+    void *Res_GetByName(s32);
     void sprintf(void *, void *, void *, ...);
     u8 fn_8005BA10(void *);
     u8 fn_800B2FF4(s32);
@@ -335,7 +335,7 @@ u8 GActor_CheckResources(s32 name) {
     u8 ok;
     s32 v;
 
-    node = fn_8000D354(name);
+    node = Res_GetByName(name);
     sprintf(path0, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(path0) == 0) {
         return 0;
@@ -350,7 +350,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success1;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path1, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(path1) == 0) {
         ok = 0;
@@ -367,7 +367,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success2;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path2, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(path2) == 0) {
         ok = 0;
@@ -384,7 +384,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success3;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path3, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(path3) == 0) {
         ok = 0;
@@ -401,7 +401,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success4;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path4, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(path4) == 0) {
         ok = 0;
@@ -418,7 +418,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success5;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path5, GActor_str + 0x120, GActor_str + 0x129, fn_80055C84(node));
     if ((u8)fn_8005BA10(path5) == 0) {
         ok = 0;
@@ -435,7 +435,7 @@ u8 GActor_CheckResources(s32 name) {
         goto success6;
     }
 
-    node = fn_8000D354(*(s32 *)((u8 *)node + 8));
+    node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     GActor_FormatPath(node, (s32)path6);
     if ((u8)fn_8005BA10(path6) == 0) {
         ok = 0;

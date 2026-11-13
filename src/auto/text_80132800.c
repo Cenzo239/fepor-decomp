@@ -1115,7 +1115,7 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     extern u8 lbl_802764BC[];
     extern u8 lbl_80291794[];
     extern u8 gBattleState[];
-    void *fn_8000D354(void *);
+    void *Res_GetByName(void *);
     void fn_80134E48(void *, s32, s32, s32, s32, s32);
     void sprintf(void *, void *, u8, ...);
 
@@ -1123,7 +1123,7 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     *(void **)arg0 = lbl_80291794;
     *(s32 *)((char *)arg0 + 0x4c) = arg1;
     sprintf(lbl_802764BC + 0x218, lbl_802764BC + 0x228, *(u8 *)((char *)gBattleState + 0x10));
-    *(void **)((char *)arg0 + 0x50) = fn_8000D354(lbl_802764BC + 0x218);
+    *(void **)((char *)arg0 + 0x50) = Res_GetByName(lbl_802764BC + 0x218);
     if (*(void **)((char *)arg0 + 0x50) == NULL) {
         *(void **)((char *)arg0 + 0x50) = lbl_80276354;
     }
