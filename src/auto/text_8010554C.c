@@ -3475,7 +3475,8 @@ outer_cmp:
     return gAiState[0x21C];
 }
 #pragma use_lmw_stmw reset
-u8 Ai_TrySelectApproachTile(void *arg0) {
+/* AI: pick a reachable approach tile and set the unit's move destination. */
+u8 Ai_TrySelectApproachTile(void *unit) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void *Terrain_GetEntry(u8);
@@ -3502,7 +3503,7 @@ u8 Ai_TrySelectApproachTile(void *arg0) {
     u8 *map2;
     void *other;
 
-    self = arg0;
+    self = unit;
     if ((gAiState[1] & 2) || (*(u32 *)((u8 *)self + 0x254) & 0x03000000)) {
         return 0;
     }
