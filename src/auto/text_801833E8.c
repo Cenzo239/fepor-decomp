@@ -2701,15 +2701,20 @@ void fn_8018B89C(void *arg0) {
     }
 }
 
+#pragma scheduling off
 #pragma global_optimizer off
 void fn_8018B920(void *arg0) {
     extern f32 lbl_8036ACEC;
-    s32 z = 0;
-    f32 f = lbl_8036ACEC;
+    s32 z;
+    f32 f;
+
+    z = 0;
+    f = lbl_8036ACEC;
     *(s32 *)((u8 *)arg0 + 0x40) = z;
     *(f32 *)((u8 *)arg0 + 0x44) = f;
 }
 #pragma global_optimizer reset
+#pragma scheduling reset
 void fn_8018B934(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
