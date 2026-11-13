@@ -253,7 +253,7 @@ extern u32 lbl_80368A14;
 
 extern s32 lbl_8035B220[];
 extern s32 lbl_80368A58;
-extern s32 *lbl_80368A5C;
+extern s32 *gAudioGroupState;
 extern s32 *lbl_80368A60;
 extern void *lbl_80368950;
 extern u8 *lbl_803688E8;
