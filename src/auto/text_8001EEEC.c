@@ -2733,7 +2733,7 @@ end:
 
 #pragma cplusplus on
 extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -2803,7 +2803,7 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
     spC = lbl_80368D98;
     sp10 = lbl_80368D94;
     sp14 = lbl_80368D90;
-    fn_800072B0(&sp14, &sp10, &spC, &sp8);
+    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
 }
 #pragma cplusplus reset

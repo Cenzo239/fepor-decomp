@@ -70,7 +70,7 @@ void fn_8008532C(s32 unused, s16 *p) {
 
 /* Draw the unit info panel: child widgets, gradient bar, and status text. */
 void Ui_DrawUnitInfo(void *proc) {
-    M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
+    M2C_UNK Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
     M2C_UNK Prim2D_EmitQuad();
     M2C_UNK Prim2D_SetQuadMax(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -141,7 +141,7 @@ void Ui_DrawUnitInfo(void *proc) {
         colorA2 = lbl_80369400;
         colorA1 = lbl_8036C464;
         colorA0 = lbl_8036C460;
-        fn_800072B0(&colorA0, &colorA1, &colorA2, &colorA3, lbl_8036C464, lbl_80369400, lbl_80369404);
+        Prim2D_SetCornerColors(&colorA0, &colorA1, &colorA2, &colorA3, lbl_8036C464, lbl_80369400, lbl_80369404);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
@@ -151,7 +151,7 @@ void Ui_DrawUnitInfo(void *proc) {
         colorB2 = lbl_8036C468;
         colorB1 = lbl_8036940C;
         colorB0 = lbl_80369408;
-        fn_800072B0(&colorB0, &colorB1, &colorB2, &colorB3, lbl_8036940C, lbl_8036C468, lbl_8036C46C);
+        Prim2D_SetCornerColors(&colorB0, &colorB1, &colorB2, &colorB3, lbl_8036940C, lbl_8036C468, lbl_8036C46C);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_Begin();

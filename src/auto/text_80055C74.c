@@ -381,7 +381,7 @@ void TextBanner_SetString(void *arg0, u32 arg1) {
 }
 
 void fn_80056B0C(void *arg0) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -455,7 +455,7 @@ void fn_80056B0C(void *arg0) {
         sp3C = lbl_803690D8;
         sp40 = lbl_8036C420;
         sp44 = lbl_8036C41C;
-        fn_800072B0(&sp44, &sp40, &sp3C, &sp38);
+        Prim2D_SetCornerColors(&sp44, &sp40, &sp3C, &sp38);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
@@ -472,7 +472,7 @@ void fn_80056B0C(void *arg0) {
         sp2C = lbl_8036C424;
         sp30 = lbl_803690E4;
         sp34 = lbl_803690E0;
-        fn_800072B0(&sp34, &sp30, &sp2C, &sp28);
+        Prim2D_SetCornerColors(&sp34, &sp30, &sp2C, &sp28);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         break;
@@ -484,7 +484,7 @@ void fn_80056B0C(void *arg0) {
         sp1C = lbl_803690E8;
         sp20 = lbl_8036C430;
         sp24 = lbl_8036C42C;
-        fn_800072B0(&sp24, &sp20, &sp1C, &sp18);
+        Prim2D_SetCornerColors(&sp24, &sp20, &sp1C, &sp18);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
@@ -509,7 +509,7 @@ void fn_80056B0C(void *arg0) {
         spC = lbl_803690F8;
         sp10 = lbl_803690F4;
         sp14 = lbl_803690F0;
-        fn_800072B0(&sp14, &sp10, &spC, &sp8);
+        Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         break;

@@ -2807,7 +2807,7 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
 
 #pragma use_lmw_stmw on
 void fn_8010A704(void *arg0, u8 arg1) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetUvCorners(f32, f32, f32, f32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
@@ -2895,7 +2895,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     spC = sp1C;
     sp10 = sp20;
     sp14 = sp24;
-    fn_800072B0(&sp14, &sp10, &spC, &sp8);
+    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset

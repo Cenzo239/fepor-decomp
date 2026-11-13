@@ -717,7 +717,7 @@ void Prim2D_SetTint(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
  ptr[0x1B] = arg3;
 }
 
-void fn_800072B0(u8 *a, u8 *b, u8 *c, u8 *d) {
+void Prim2D_SetCornerColors(u8 *a, u8 *b, u8 *c, u8 *d) {
     extern void *lbl_80367140;
     u8 *dst;
     u8 *mid;
@@ -2098,9 +2098,9 @@ void Prim2D_PopZ(void *src, f32 farg0) {
 void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_8006EBC4(void *, void *, void *, s32, s32);
     extern u16 lbl_80367140;
-    int mask;
+    register s32 mask;
     unsigned long a;
-    int b;
+    u32 b;
     u8 sp8[0xC];
     u8 sp14[0x20];
     register u8 *p;
@@ -2129,8 +2129,8 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     p = *(u8 **)&lbl_80367140;
     a = *(u32 *)(sp8 + 0);
     b = *(u32 *)(sp8 + 4);
-    *(u32 *)(p + 0x54) = a;
     *(u32 *)(p + 0x58) = b;
+    *(u32 *)(p + 0x54) = a;
     *(u32 *)(p + 0x5C) = *(u32 *)(sp8 + 8);
     (*(u8 **)&lbl_80367140)[0x22] = arg2;
     *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
@@ -3519,25 +3519,22 @@ void *fn_8000BCA4(u8 *arg0) {
     u8 *entry;
     u8 *a;
     u8 *b;
-    u32 n;
+    s32 n;
     u32 diff;
     u32 raw1;
     u32 raw2;
     s32 c1;
     s32 c2;
-    u32 ctr;
 
-    n = 0;
     entry = lbl_802A66D8;
-    ctr = 0x80;
-    for (; ctr != 0; ctr--) {
+    for (n = 0; n < 0x80; n++) {
         if (*(u32 *)entry != 0) {
             a = *(u8 **)(entry + 0x14);
             b = arg0;
             goto cmp1_ld;
         cmp1:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
+                diff = (u32)(c2 - c1);
                 goto cmp1_done;
             }
             a += 1;
@@ -3556,14 +3553,13 @@ void *fn_8000BCA4(u8 *arg0) {
                 return entry;
             }
         }
-        entry += 0x70;
-        if (*(u32 *)entry != 0) {
+        if (*(u32 *)(entry += 0x70) != 0) {
             b = arg0;
             a = *(u8 **)(entry + 0x14);
             goto cmp2_ld;
         cmp2:
             if ((s8)raw1 != (s8)raw2) {
-                diff = (u32)(c1 - c2);
+                diff = (u32)(c2 - c1);
                 goto cmp2_done;
             }
             a += 1;
@@ -3582,7 +3578,6 @@ void *fn_8000BCA4(u8 *arg0) {
                 return entry;
             }
         }
-        n += 1;
         entry += 0x70;
     }
     return 0;

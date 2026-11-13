@@ -236,7 +236,7 @@ void Debug_DrawGuideFrame(void) {
 #pragma use_lmw_stmw on
 void fn_8009D95C(s32 arg0, s32 arg1) {
     void Prim2D_SetText(void *);
-    void fn_800072B0(u32 *, u32 *, u32 *, u32 *);
+    void Prim2D_SetCornerColors(u32 *, u32 *, u32 *, u32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
@@ -294,7 +294,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(lbl_803698FC, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
     a = c1; b = c1; c = c0; d = c0;
-    fn_800072B0(&a, &b, &c, &d);
+    Prim2D_SetCornerColors(&a, &b, &c, &d);
     Prim2D_EndPrim();
 
     bus = *(u32 *)0x800000F8 >> 2;
@@ -308,7 +308,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(f30, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
     a = c1; b = c1; c = c0; d = c0;
-    fn_800072B0(&a, &b, &c, &d);
+    Prim2D_SetCornerColors(&a, &b, &c, &d);
     Prim2D_EndPrim();
 
     f30 = f30 + f31;
@@ -322,7 +322,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(f30, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
     a = c1; b = c1; c = c0; d = c0;
-    fn_800072B0(&a, &b, &c, &d);
+    Prim2D_SetCornerColors(&a, &b, &c, &d);
     Prim2D_EndPrim();
 
     f29 = f30 + f31;
@@ -336,7 +336,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(f29, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
     a = c1; b = c1; c = c0; d = c0;
-    fn_800072B0(&a, &b, &c, &d);
+    Prim2D_SetCornerColors(&a, &b, &c, &d);
     Prim2D_EndPrim();
 
     bus = *(u32 *)0x800000F8 >> 2;
@@ -349,7 +349,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(f29 + f31, lbl_803698FC, f30, lbl_8036996C);
     Prim2D_EmitQuad();
     a = c1; b = c1; c = c0; d = c0;
-    fn_800072B0(&a, &b, &c, &d);
+    Prim2D_SetCornerColors(&a, &b, &c, &d);
     Prim2D_EndPrim();
 
     Prim2D_AddPrim(1);

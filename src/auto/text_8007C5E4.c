@@ -243,7 +243,7 @@ s32 fn_8007CB08(void) {
 }
 
 void Ui_DrawCaptionBar(void *text, u8 leftAlign) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -291,7 +291,7 @@ void Ui_DrawCaptionBar(void *text, u8 leftAlign) {
     topC2 = lbl_80369400;
     topC1 = lbl_8036C464;
     topC0 = lbl_8036C460;
-    fn_800072B0(&topC0, &topC1, &topC2, &topC3);
+    Prim2D_SetCornerColors(&topC0, &topC1, &topC2, &topC3);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
@@ -301,7 +301,7 @@ void Ui_DrawCaptionBar(void *text, u8 leftAlign) {
     botC2 = lbl_8036C468;
     botC1 = lbl_8036940C;
     botC0 = lbl_80369408;
-    fn_800072B0(&botC0, &botC1, &botC2, &botC3);
+    Prim2D_SetCornerColors(&botC0, &botC1, &botC2, &botC3);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();

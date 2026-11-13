@@ -114,7 +114,7 @@ s32 fn_800A9710(void) {
 }
 
 #pragma cplusplus on
-extern "C" M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
+extern "C" M2C_UNK Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
 extern "C" M2C_UNK Prim2D_EmitQuad();
 extern "C" M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
 extern "C" M2C_UNK Prim2D_EndPrim();
@@ -192,7 +192,7 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     spC = lbl_80369BA0;
     sp10 = lbl_80369B9C;
     sp14 = lbl_80369B98;
-    fn_800072B0(&sp14, &sp10, &spC, &sp8, lbl_80369B9C, lbl_80369BA0, lbl_80369BA4);
+    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8, lbl_80369B9C, lbl_80369BA0, lbl_80369BA4);
     Prim2D_EndPrim();
 
     Prim2D_Begin();

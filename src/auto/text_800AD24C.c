@@ -817,7 +817,7 @@ void fn_800AE9CC(void) {
 }
 
 void Battle_DrawPhaseBanner(void *arg0) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetPrimParam(f32);
@@ -871,7 +871,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     sp1C = lbl_80369C68;
     sp20 = lbl_8036C48C;
     sp24 = lbl_8036C488;
-    fn_800072B0(&sp24, &sp20, &sp1C, &sp18);
+    Prim2D_SetCornerColors(&sp24, &sp20, &sp1C, &sp18);
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(lbl_80369C94);
@@ -881,7 +881,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     spC = lbl_8036C490;
     sp10 = lbl_80369C74;
     sp14 = lbl_80369C70;
-    fn_800072B0(&sp14, &sp10, &spC, &sp8);
+    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
     fn_80009B28();
 }

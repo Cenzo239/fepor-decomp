@@ -5674,7 +5674,7 @@ void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(s16 *)((u8 *)obj + 0x3A) = v;
 }
 void fn_801C1E0C(void *arg0) {
-    void fn_800072B0(void *, void *, void *, void *);
+    void Prim2D_SetCornerColors(void *, void *, void *, void *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -5740,7 +5740,7 @@ void fn_801C1E0C(void *arg0) {
     spC = lbl_8036B324;
     sp10 = lbl_8036C508;
     sp14 = lbl_8036B320;
-    fn_800072B0(&sp14, &sp10, &spC, &sp8);
+    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B348);

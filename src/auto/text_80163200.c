@@ -4822,7 +4822,7 @@ void fn_8016C3C8(void *arg0) {
 }
 
 void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -4949,7 +4949,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
             c2 = colors[pal * 4 + 2];
             c1 = colors[pal * 4 + 1];
             c0 = colors[pal * 4 + 0];
-            fn_800072B0(&c0, &c1, &c2, &c3);
+            Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
             Prim2D_EmitQuad();
             Prim2D_EndPrim();
             fn_8007D044(0, 0, fx, fy, lbl_8036AAA0, lbl_8036AAA8);

@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     typedef struct { u8 r, g, b, a; } Color;
     typedef struct { f32 v[9]; } Arr9;
-    void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
+    void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void fn_80007628(f32, f32, f32, f32);
     void fn_80007648(f32, f32, f32, f32);
@@ -231,7 +231,7 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
                 sp14 = sp8;
                 sp18 = sp8;
                 sp1C = sp8;
-                fn_800072B0(&sp1C, &sp18, &sp14, &sp10);
+                Prim2D_SetCornerColors(&sp1C, &sp18, &sp14, &sp10);
                 Prim2D_EndPrim();
             }
             pA++;
