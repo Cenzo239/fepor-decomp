@@ -5399,7 +5399,7 @@ s32 fn_800BA230(u32 arg0, s32 arg1) {
 
 s32 ScriptCmd_SoundSetParam(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     u32 Sound_FindByName(void);
-    void fn_80109448(u32, s32, s32, f32, f32, f32);
+    void Sound_TweenParam(u32, s32, s32, f32, f32, f32);
     extern f32 gPercentToFloat;
     extern f64 lbl_80369CF8;
     u32 tmp;
@@ -5425,7 +5425,7 @@ s32 ScriptCmd_SoundSetParam(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s3
         }
         break;
     }
-    fn_80109448(tmp, arg1, arg2, var_f1, var_f2, (f32)arg5);
+    Sound_TweenParam(tmp, arg1, arg2, var_f1, var_f2, (f32)arg5);
     return 1;
 }
 

@@ -3530,7 +3530,7 @@ void fn_801F94D8(void *arg0) {
 void fn_801F99C4(void *arg0) {
     s32 fn_800A8A00(void *);
     void *fn_80109180(void *, void *);
-    void fn_80109448(void *, s32, s32, f32, f32, f32);
+    void Sound_TweenParam(void *, s32, s32, f32, f32, f32);
     void Sound_FadeFromZero(void *, s32);
     void sprintf(void *, void *, ...);
     extern u8 StaffRoll_str[];
@@ -3583,15 +3583,15 @@ void fn_801F99C4(void *arg0) {
     *(f32 *)((u8 *)temp_r3_2 + 0x44) = f2;
     *(f32 *)((u8 *)temp_r3_2 + 0x48) = (f32)temp_r4;
     Sound_FadeFromZero(*(void **)((u8 *)temp_r31 + 0x58), 0x18);
-    fn_80109448(*(void **)((u8 *)temp_r31 + 0x58), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
+    Sound_TweenParam(*(void **)((u8 *)temp_r31 + 0x58), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
     Sound_FadeFromZero(*(void **)((u8 *)temp_r31 + 0x5C), 0x18);
-    fn_80109448(*(void **)((u8 *)temp_r31 + 0x5C), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
+    Sound_TweenParam(*(void **)((u8 *)temp_r31 + 0x5C), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
     *(u16 *)((u8 *)temp_r29 + 0x28) = 0xF0;
 }
 
 void fn_801F9BD8(void *arg0) {
     void Sound_FadeToVol(void *, s32);
-    void fn_80109448(void *, s32, s32, f32, f32, f32);
+    void Sound_TweenParam(void *, s32, s32, f32, f32, f32);
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA90;
     extern f32 lbl_8036BA8C;
@@ -3609,11 +3609,11 @@ void fn_801F9BD8(void *arg0) {
         row = (u8 *)self + idx;
         a = *(void **)(row + 0x58);
         Sound_FadeToVol(a, 0x18);
-        fn_80109448(a, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
+        Sound_TweenParam(a, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
         row = (u8 *)self + idx;
         b = *(void **)(row + 0x5C);
         Sound_FadeToVol(b, 0x18);
-        fn_80109448(b, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
+        Sound_TweenParam(b, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
     }
     *(u16 *)((u8 *)self + 0x28) = 0x18;
 }

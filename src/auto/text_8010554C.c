@@ -2200,7 +2200,7 @@ void fn_80109244(struct Arg0 *arg0) {
     Prim2D_PrepareTex();
 }
 
-void fn_80109448(void *arg0, s32 arg1) {
+void Sound_TweenParam(void *arg0, s32 arg1) {
     void *temp_r3;
     s32 temp_r5;
 
