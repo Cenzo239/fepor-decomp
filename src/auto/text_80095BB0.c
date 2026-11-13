@@ -408,26 +408,26 @@ void fn_80096418(s16 arg0) {
 void fn_80096AB8(void) {
     void fn_8017F9A8(void);
     void fn_8004FC70(u32, s32);
-    extern u8 lbl_803120C0[];
+    extern u8 gEventSlots[];
     u32 a;
     u32 b;
     u32 c;
     void *p;
 
     fn_8017F9A8();
-    p = *(void **)lbl_803120C0;
+    p = *(void **)gEventSlots;
     if (p != NULL) {
         a = *(u32 *)((u8 *)p + 0x280);
     } else {
         a = 0U;
     }
-    p = *(void **)(lbl_803120C0 + 0x14);
+    p = *(void **)(gEventSlots + 0x14);
     if (p != NULL) {
         b = *(u32 *)((u8 *)p + 0x280);
     } else {
         b = 0U;
     }
-    p = *(void **)(lbl_803120C0 + 0x28);
+    p = *(void **)(gEventSlots + 0x28);
     if (p != NULL) {
         c = *(u32 *)((u8 *)p + 0x280);
     } else {
@@ -477,13 +477,13 @@ s32 fn_80096B80(void) {
 s32 fn_80096C18(void)
 {
   extern u8 gBattle[];
-  extern u8 lbl_803120C0[];
+  extern u8 gEventSlots[];
   extern u8 *lbl_80367504;
   u8 *new_var[2];
   extern f32 lbl_803697BC;
   if ((*((u32 *) (gBattle + 0xCAC))) & 0x100)
   {
-    new_var[0] = lbl_803120C0 + 0x14;
+    new_var[0] = gEventSlots + 0x14;
   }
   else
     if (lbl_80367504 != NULL)
@@ -796,7 +796,7 @@ typedef struct {
 
 s16 fn_80097740(void) {
     extern s16 gBattle[];
-    extern u8 lbl_803120C0[];
+    extern u8 gEventSlots[];
     extern void *lbl_80367500;
     extern void *lbl_80367504;
     s16 *idx;
@@ -826,7 +826,7 @@ s16 fn_80097740(void) {
             result = n;
             break;
         case 0x20:
-            p = (void *)lbl_803120C0;
+            p = (void *)gEventSlots;
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -837,7 +837,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h1:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -851,7 +851,7 @@ s16 fn_80097740(void) {
             result = *idx;
             break;
         case 0x21:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -862,7 +862,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h3:
-            p = (void *)lbl_803120C0;
+            p = (void *)gEventSlots;
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -876,7 +876,7 @@ s16 fn_80097740(void) {
             result = *idx;
             break;
         case 0x22:
-            p = (void *)(lbl_803120C0 + 0x28);
+            p = (void *)(gEventSlots + 0x28);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -887,7 +887,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h5:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -914,8 +914,8 @@ void fn_80097970(void) {
 }
 
 void fn_8009799C(void) {
-    extern u8 lbl_803120C0[];
-    u8 *p = lbl_803120C0;
+    extern u8 gEventSlots[];
+    u8 *p = gEventSlots;
     s32 i;
     for (i = 0; i < 3; i++, p += 0x14) {
         void *u = *(void **)p;
@@ -929,7 +929,7 @@ void fn_8009799C(void) {
 void fn_800979FC(void) {
     s8 fn_8004ABD4(void *, s32);
     extern u8 gBattle[];
-    extern u8 lbl_803120C0[];
+    extern u8 gEventSlots[];
     u8 *it;
     u8 *tbl;
     s32 i;
@@ -937,7 +937,7 @@ void fn_800979FC(void) {
     void *q;
     s32 ca8;
 
-    it = lbl_803120C0;
+    it = gEventSlots;
     tbl = gBattle;
     for (i = 0; i < 3; i++) {
         p = *(void **)it;
@@ -956,22 +956,22 @@ void fn_800979FC(void) {
 }
 
 void fn_80097AB4(void) {
-extern u8 lbl_803120C0[],gBattle[];
+extern u8 gEventSlots[],gBattle[];
 extern void *lbl_80367500,*lbl_80367504;
 extern f32 lbl_803697BC;
 void fn_800340E4(void *);
-u8 *base=lbl_803120C0;
+u8 *base=gEventSlots;
 u8 *second=base+20;
 u8 *script=gBattle+0x8a0;
 u8 *other;
 s16 saved=*(s16 *)script;
-M2C_FIELD(lbl_803120C0,void **,0)=0;M2C_FIELD(base,f32 *,4)=lbl_803697BC;M2C_FIELD(base,f32 *,8)=lbl_803697BC;M2C_FIELD(base,f32 *,12)=lbl_803697BC;M2C_FIELD(base,f32 *,16)=lbl_803697BC;M2C_FIELD(second,void **,0)=0;M2C_FIELD(base,f32 *,24)=lbl_803697BC;M2C_FIELD(base,f32 *,28)=lbl_803697BC;M2C_FIELD(base,f32 *,32)=lbl_803697BC;M2C_FIELD(base,f32 *,36)=lbl_803697BC;M2C_FIELD(base,void **,40)=0;M2C_FIELD(base,f32 *,44)=lbl_803697BC;M2C_FIELD(base,f32 *,48)=lbl_803697BC;M2C_FIELD(base,f32 *,52)=lbl_803697BC;M2C_FIELD(base,f32 *,56)=lbl_803697BC;M2C_FIELD(lbl_803120C0,void **,0)=gBattle+0;{ s32 value=0; fn_800340E4(script); other=gBattle+0x2e0;
+M2C_FIELD(gEventSlots,void **,0)=0;M2C_FIELD(base,f32 *,4)=lbl_803697BC;M2C_FIELD(base,f32 *,8)=lbl_803697BC;M2C_FIELD(base,f32 *,12)=lbl_803697BC;M2C_FIELD(base,f32 *,16)=lbl_803697BC;M2C_FIELD(second,void **,0)=0;M2C_FIELD(base,f32 *,24)=lbl_803697BC;M2C_FIELD(base,f32 *,28)=lbl_803697BC;M2C_FIELD(base,f32 *,32)=lbl_803697BC;M2C_FIELD(base,f32 *,36)=lbl_803697BC;M2C_FIELD(base,void **,40)=0;M2C_FIELD(base,f32 *,44)=lbl_803697BC;M2C_FIELD(base,f32 *,48)=lbl_803697BC;M2C_FIELD(base,f32 *,52)=lbl_803697BC;M2C_FIELD(base,f32 *,56)=lbl_803697BC;M2C_FIELD(gEventSlots,void **,0)=gBattle+0;{ s32 value=0; fn_800340E4(script); other=gBattle+0x2e0;
 for(;;) {
 s32 offset=*(s16 *)script*4;
 switch((s32)script[offset+4]) {
 case 0: case 0x54: goto done00;
-case 4: if(gBattle==M2C_FIELD(lbl_803120C0,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 16: if(other==M2C_FIELD(lbl_803120C0,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
+case 4: if(gBattle==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
+case 16: if(other==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
 }
 ++*(s16 *)script;
 }
@@ -984,8 +984,8 @@ for(;;) {
 s32 offset=*(s16 *)script*4;
 switch((s32)script[offset+4]) {
 case 0: case 0x54: goto done01;
-case 3: if(gBattle==M2C_FIELD(lbl_803120C0,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 15: if(other==M2C_FIELD(lbl_803120C0,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
+case 3: if(gBattle==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
+case 15: if(other==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
 }
 ++*(s16 *)script;
 }
@@ -1049,7 +1049,7 @@ done21:
 *(s16 *)script=saved;
 M2C_FIELD(base,f32 *,48)=value;
 }
-M2C_FIELD(base,f32 *,56)=M2C_FIELD(base,f32 *,44); M2C_FIELD(base,f32 *,52)=lbl_803697BC;{void *p=lbl_803120C0; u32 valid;
+M2C_FIELD(base,f32 *,56)=M2C_FIELD(base,f32 *,44); M2C_FIELD(base,f32 *,52)=lbl_803697BC;{void *p=gEventSlots; u32 valid;
 if(p) {void *unit=*(void **)p; if(unit) valid=M2C_FIELD(unit,u32 *,0x280); else valid=0; if(valid) lbl_80367500=p; else lbl_80367500=0;} else lbl_80367500=0;
 p=second;
 if(p) {void *unit=*(void **)p; if(unit) valid=M2C_FIELD(unit,u32 *,0x280); else valid=0; if(valid) lbl_80367504=p; else lbl_80367504=0;} else lbl_80367504=0;
@@ -1064,12 +1064,12 @@ s32 fn_80098094(void) {
 
 void *fn_8009809C(void) {
     extern u8 gBattle[];
-    extern char lbl_803120C0[];
+    extern char gEventSlots[];
     extern void *lbl_80367500;
     extern void *lbl_80367504;
 
     if ((*(u32 *)(gBattle + 0xCAC) & 0x100) != 0) {
-        return lbl_803120C0 + 0x14;
+        return gEventSlots + 0x14;
     }
     if (lbl_80367504 == NULL) {
         return lbl_80367500;
@@ -1078,14 +1078,14 @@ void *fn_8009809C(void) {
 }
 
 void *fn_800980D4(s32 arg0) {
-    extern u16 lbl_803120C0[];
-    return (u8 *)lbl_803120C0 + arg0 * 0x14;
+    extern u16 gEventSlots[];
+    return (u8 *)gEventSlots + arg0 * 0x14;
 }
 
 s32 Event_GetSlotUnit(s32 arg0)
 {
-    extern u8 lbl_803120C0[];
-    void *p = *(void **)(lbl_803120C0 + arg0 * 0x14);
+    extern u8 gEventSlots[];
+    void *p = *(void **)(gEventSlots + arg0 * 0x14);
     if (p != NULL) {
         return M2C_FIELD(p, s32 *, 0x280);
     }
