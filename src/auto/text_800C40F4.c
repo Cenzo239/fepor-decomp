@@ -21829,7 +21829,7 @@ s32 Battle_BuildUnitScoreList(void) {
     extern u8 gBattleState[];
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
-    extern s32 lbl_80366E78;
+    extern s32 sUnitScoreFloorSpecial;
     extern s32 lbl_80366E7C;
     extern u8 lbl_8032B3C0[];
     s32 sp8;
@@ -21881,8 +21881,8 @@ s32 Battle_BuildUnitScoreList(void) {
                 && (*(u32 *)((u8 *)unit + 0x254) & 1)
                 && (fn_80102EA8(unit) == 0 || (u8)fn_80017318((u8 *)unit + 0x236) == 6)) {
                 q = &sp8;
-                if (sp8 < lbl_80366E78) {
-                    q = &lbl_80366E78;
+                if (sp8 < sUnitScoreFloorSpecial) {
+                    q = &sUnitScoreFloorSpecial;
                 }
                 result = *q;
             } else if (Status_Test((u8 *)unit + 0x1BC, 0x3C) != 0) {
