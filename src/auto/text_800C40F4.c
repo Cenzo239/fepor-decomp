@@ -6106,7 +6106,7 @@ extern "C" void *fn_800D38BC(void *arg0)
 #pragma cplusplus on
 extern "C" void fn_800D52F8(void) {
     void fn_801C76E8(void);
-    extern void *lbl_80367880;
+    extern void *gGameScene;
     struct Obj {
         u8 pad[0x10];
         virtual void v0();
@@ -6130,7 +6130,7 @@ extern "C" void fn_800D52F8(void) {
     u8 *unit;
     Obj *obj;
 
-    unit = (u8 *)lbl_80367880;
+    unit = (u8 *)gGameScene;
     if (unit == NULL) {
         return;
     }
@@ -6181,7 +6181,7 @@ void fn_800C428C(void *);
 void *GameScene_Destroy(void *, s16);
 void Process_ClearFunc(void *);
 extern char lbl_802704F8[];
-extern void *lbl_80367880;
+extern void *gGameScene;
 extern f32 lbl_80369DC8;
 extern f32 lbl_80369DD0;
 extern void *gGame;
@@ -6220,19 +6220,19 @@ u32 tickRate;
 u32 conv;
 
 self = arg0;
-if (lbl_80367880 == NULL) {
+if (gGameScene == NULL) {
 t0 = OSGetTime();
 p = Heap_Alloc(0x350);
 if (p != NULL) {
 p = fn_800D38BC(p);
 }
-lbl_80367880 = p;
+gGameScene = p;
 t1 = OSGetTime();
 tickRate = *(volatile u32 *)0x800000F8;
 conv = (u32)(((u64)0x10624dd3ULL * (tickRate >> 2)) >> 32) >> 6;
 fn_800056CC(lbl_802704F8 + 0x891, __div2i(t1 - t0, (s64)conv));
 }
-obj = lbl_80367880;
+obj = gGameScene;
 if (obj != NULL) {
 while (fn_800D0C5C(obj) != 0) {
 }
@@ -6285,9 +6285,9 @@ if (lbl_8036787C != NULL && *(s32 *)((u8 *)lbl_8036787C + 0x444) != 2) {
 fn_800C428C(lbl_8036787C);
 lbl_8036787C = NULL;
 }
-if (lbl_80367880 != NULL) {
-GameScene_Destroy(lbl_80367880, 1);
-lbl_80367880 = NULL;
+if (gGameScene != NULL) {
+GameScene_Destroy(gGameScene, 1);
+gGameScene = NULL;
 }
 Process_ClearFunc(self);
 Process_ClearFunc(lbl_80367888);
@@ -6303,7 +6303,7 @@ extern "C" void fn_800D5784(s32 arg0) {
     extern u8 lbl_80284668[];
     extern u8 lbl_8028DA48[];
     extern u8 lbl_8028DA70[];
-    extern s32 lbl_80367880;
+    extern s32 gGameScene;
     extern s32 lbl_80367884;
     extern s32 lbl_80367888;
     extern u8 lbl_8036788C;
@@ -6311,7 +6311,7 @@ extern "C" void fn_800D5784(s32 arg0) {
     s32 temp;
 
     fn_800056CC(lbl_802704F8 + 0x8B2);
-    lbl_80367880 = 0;
+    gGameScene = 0;
     lbl_8036788C = 1;
     if (lbl_80367878 != 0) {
         temp = fn_8000CAA0(lbl_8028DA48, arg0);
@@ -6329,7 +6329,7 @@ void fn_800D5818(s32 arg0) {
     extern char lbl_802704F8[];
     extern u8 lbl_80284668[];
     extern u8 lbl_8028DA70[];
-    extern s32 lbl_80367880;
+    extern s32 gGameScene;
     extern s32 lbl_80367884;
     extern s32 lbl_80367888;
     extern u8 lbl_8036788C;
@@ -6337,7 +6337,7 @@ void fn_800D5818(s32 arg0) {
     s32 temp;
 
     fn_800056CC(lbl_802704F8 + 0x8BF);
-    lbl_80367880 = 0;
+    gGameScene = 0;
     lbl_8036788C = 0;
     lbl_80367878 = 0;
     temp = fn_8000CAA0(lbl_80284668, arg0);
