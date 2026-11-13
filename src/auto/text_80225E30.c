@@ -768,8 +768,8 @@ s32 TRK_cc_write(void*,s32);
 s32 TRKMessageSend(void*);
 void MWTRACE(u8,char*,...);
 void *memset(void*,s32,s32);
-extern char lbl_802824C0[];
-s32 result, err; s8 code; char *strings=lbl_802824C0;
+extern char gTRK_str_SerialIO[];
+s32 result, err; s8 code; char *strings=gTRK_str_SerialIO;
 u8 request[0x40], invalid[0x40], reply[0x40];
 s32 outLen;
 if(*(u16*)((u8*)arg0+0x1c)>*(u16*)((u8*)arg0+0x20)){
