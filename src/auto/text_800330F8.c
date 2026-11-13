@@ -4253,7 +4253,7 @@ void fn_8003C1B4(s32 arg0) {
     }
 }
 
-void fn_8003C3CC(void *arg0, s32 arg1) {
+void Unit_WriteExtra(void *arg0, s32 arg1) {
     void *Hash_Lookup(void *);
     void Stream_WriteU8(s32, u8);
     void Stream_WriteS32(s32, s32);
@@ -4440,7 +4440,7 @@ void Unit_Write(void *arg0, s32 arg1) {
     void fn_8001C21C(void *, s32);
     void fn_8001D044(void *, s32);
     void fn_800174A8(void *, s32);
-    void fn_8003C3CC(void *, s32);
+    void Unit_WriteExtra(void *, s32);
     void fn_8004BCCC(void *, s32);
     s32 i;
     u32 tmp;
@@ -4496,7 +4496,7 @@ void Unit_Write(void *arg0, s32 arg1) {
     fn_8001D044((u8 *)arg0 + 0x20C, arg1);
     fn_800174A8((u8 *)arg0 + 0x228, arg1);
     Stream_Write(arg1, 0xA, (u8 *)arg0 + 0x214);
-    fn_8003C3CC(arg0, arg1);
+    Unit_WriteExtra(arg0, arg1);
     fn_8004BCCC(arg0, arg1);
     Stream_WriteU16(arg1, 0);
 }
