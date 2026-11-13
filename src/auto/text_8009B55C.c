@@ -156,6 +156,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
     fn_8014BB58(0x10A, 0x40, &c5, (char *)gDebugHudStrs + 0x43);
 }
 
+/* Draw the debug guide rectangle and optional T/E markers from gUiInputFlags. */
 void Debug_DrawGuideFrame(void) {
     void Prim2D_SetText(u8 *);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
