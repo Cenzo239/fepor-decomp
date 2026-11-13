@@ -1387,7 +1387,7 @@ void fn_80036248(s32 self) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma global_optimizer off
 void fn_80036834(u8 *arg0)
 {
     s32 i;
@@ -1414,15 +1414,15 @@ void fn_80036834(u8 *arg0)
     arg0[0x21D] = i;
     arg0[0x227] = i;
 
-    if (*(void **)((u8 *)*(void **)(arg0 + 0x188) + 0x50) == NULL) {
+    if (*(u32 *)((u8 *)*(void **)(arg0 + 0x188) + 0x50) == 0) {
         return;
     }
-    while (i < (u8)*(u32 *)((u8 *)*(void **)((u8 *)*(void **)(arg0 + 0x188) + 0x50) + 4)) {
-        arg0[i + 0x21E] = 5;
+    while (i < (u8)*(s32 *)((u8 *)*(void **)((u8 *)*(void **)(arg0 + 0x188) + 0x50) + 4)) {
+        *(arg0 + i + 0x21E) = 5;
         i += 1;
     }
 }
-
+#pragma global_optimizer reset
 void fn_800368C8(void *arg0, u8 arg1, void *arg2) {
     void *fn_80019DA8(u8);
     void *temp_r3;
@@ -1441,21 +1441,33 @@ void fn_80036984(s32 arg0, s32 arg1) {
     ptr[arg1] += 1;
 }
 
-void fn_80036998(void *arg0,s32 arg1) {
- u8 fn_80036B20(void);
- u8 *target;
- s32 offset;
- u8 value;
- void *table;
- if (fn_80036B20()) return;
- target=(u8*)arg0+arg1;
- offset=arg1<<3;
- target[0x214]++;
- table=M2C_FIELD(M2C_FIELD(arg0,void**,0x188),void**,0x50);
- value=((u8*)table)[offset+6]+1;
- if (target[0x214] > value) target[0x214]=((u8*)table)[offset+0xE]+1;
-}
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
+void fn_80036998(void *arg0, s32 arg1) {
+    u8 fn_80036B20(void *, s32);
+    u8 *target;
+    s32 offset;
+    s32 off8;
+    u8 *table;
+    u8 *row;
+    u8 cur;
 
+    if (fn_80036B20(arg0, arg1)) {
+        return;
+    }
+    target = (u8 *)arg0 + arg1;
+    offset = arg1 << 3;
+    target[0x214]++;
+    off8 = offset + 8;
+    table = *(u8 **)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x50);
+    row = table + off8;
+    cur = target[0x214];
+    if (cur > (u8)(row[6] + 1)) {
+        target[0x214] = *(table + offset + 0xE) + 1;
+    }
+}
+#pragma global_optimizer reset
+#pragma opt_strength_reduction reset
 s32 fn_80036A24(u8 *arg0) {
     u8 *obj;
     u8 *table;
