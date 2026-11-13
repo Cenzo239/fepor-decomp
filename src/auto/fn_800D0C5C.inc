@@ -47,7 +47,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800CAC7C(void *);
     void fn_80114AF0(void *, s32, s32, s32);
     void Ui_Meter_ApplyDelta(void *, s32, s32, void *);
-    void fn_801968CC(void *);
+    void Ui_Meter_Nudge(void *);
     void fn_801968CC2(void *, s32);
     void fn_800E77A0(void *, s32, s32, f32);
     void fn_80114840(void *);

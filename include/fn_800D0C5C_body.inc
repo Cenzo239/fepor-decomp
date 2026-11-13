@@ -44,7 +44,7 @@
     void fn_800CAC7C(void *);
     void fn_80114AF0(void *, s32, s32, s32);
     void Ui_Meter_ApplyDelta(void *, s32, s32, void *);
-    void fn_801968CC(void *);
+    void Ui_Meter_Nudge(void *);
     void fn_801968CC2(void *, s32);
     void fn_800E77A0(void *, s32, s32, f32);
     void fn_80114840(void *);
@@ -350,7 +350,7 @@
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 0, (u8 *)self + 0x1F0);
                         fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x80));
                     } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                        fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                     } else {
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                         fn_80114840(*(void **)((u8 *)self + 0xA0));
@@ -358,7 +358,7 @@
                     if (*(s32 *)((u8 *)self + 0x220) < 0)
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x224), 0, (u8 *)self + 0x1F0);
                     else if (*(s32 *)((u8 *)self + 0x220) > 0)
-                        fn_801968CC(*(void **)((u8 *)self + 0xB0));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xB0));
                     fn_800CAD4C(self, 2, 0);
                 }
             } else if ((u8)fn_800E5248(*(void **)((u8 *)self + 0x9C), 1)) {
@@ -405,7 +405,7 @@
                     Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 1, (u8 *)self + 0x1F0);
                     fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x84));
                 } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                    fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                    Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                 } else {
                     Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                     fn_80114840(*(void **)((u8 *)self + 0xA0));
@@ -413,7 +413,7 @@
                 if (*(s32 *)((u8 *)self + 0x220) < 0)
                     Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x220), 0, (u8 *)self + 0x1F0);
                 else if (*(s32 *)((u8 *)self + 0x220) > 0)
-                    fn_801968CC(*(void **)((u8 *)self + 0xB0));
+                    Ui_Meter_Nudge(*(void **)((u8 *)self + 0xB0));
                 fn_800CAD4C(self, 2, 0);
             }
             if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
@@ -464,7 +464,7 @@
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 1, (u8 *)self + 0x1F0);
                         fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x88));
                     } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                        fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                     } else {
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                         fn_80114840(*(void **)((u8 *)self + 0xA0));
@@ -472,7 +472,7 @@
                     if (*(s32 *)((u8 *)self + 0x220) < 0)
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x220), 0, (u8 *)self + 0x1F0);
                     else if (*(s32 *)((u8 *)self + 0x220) > 0)
-                        fn_801968CC(*(void **)((u8 *)self + 0xB0));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xB0));
                     *(s32 *)((u8 *)self + 0x18) = 1;
                     if (*(s32 *)((u8 *)self + 0x244) == 0x1B)
                         fn_800CAD4C(self, 2, 0);
@@ -514,7 +514,7 @@
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 0, (u8 *)self + 0x1F0);
                         fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x80));
                     } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                        fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                     } else {
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                         fn_80114840(*(void **)((u8 *)self + 0xA0));
@@ -522,7 +522,7 @@
                     if (*(s32 *)((u8 *)self + 0x220) < 0)
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x220), 0, (u8 *)self + 0x1F0);
                     else if (*(s32 *)((u8 *)self + 0x220) > 0)
-                        fn_801968CC(*(void **)((u8 *)self + 0xB0));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xB0));
                     fn_800CAD4C(self, 2, 0);
                 }
             } else if ((u8)fn_801138E8(*(void **)((u8 *)self + 0x9C))) {
@@ -571,7 +571,7 @@
                     if (*(s32 *)((u8 *)self + 0x220) < 0)
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x220), 0, (u8 *)self + 0x1F0);
                     else if (*(s32 *)((u8 *)self + 0x220) > 0)
-                        fn_801968CC(*(void **)((u8 *)self + 0xB0));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xB0));
                 } else {
                     fn_801146BC(*(void **)((u8 *)self + 0xA0));
                     fn_80114124(*(void **)((u8 *)self + 0xA0), *(s32 *)((u8 *)self + 0x218));
@@ -656,7 +656,7 @@
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 0, (u8 *)self + 0x1F0);
                         fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x90));
                     } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                        fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                     } else {
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                         fn_80114840(*(void **)((u8 *)self + 0xA0));
@@ -738,7 +738,7 @@
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), *(s32 *)((u8 *)self + 0x224), 0, (u8 *)self + 0x1F0);
                         fn_800E77A0(*(void **)((u8 *)self + 4), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x90));
                     } else if (*(s32 *)((u8 *)self + 0x224) > 0) {
-                        fn_801968CC(*(void **)((u8 *)self + 0xAC));
+                        Ui_Meter_Nudge(*(void **)((u8 *)self + 0xAC));
                     } else {
                         Ui_Meter_ApplyDelta(*(void **)((u8 *)self + 0xAC), 0, 0, (u8 *)self + 0x1F0);
                         fn_80114840(*(void **)((u8 *)self + 0xA0));

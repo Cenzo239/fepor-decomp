@@ -7853,7 +7853,7 @@ void *fn_80196848(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_801968CC(void *arg0, s32 arg1) {
+void Ui_Meter_Nudge(void *arg0, s32 arg1) {
     s32 temp_r0;
     s32 temp_r5;
 
