@@ -13,7 +13,7 @@ extern f32 lbl_803696AC;
 
 extern void* gActiveFace;
 extern s32 gFaceDbgMouthStartStr;
-extern s32 lbl_803693C4;
+extern s32 gFaceDbgMouthEndStr;
 extern f64 lbl_803693C8;
 extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;

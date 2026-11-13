@@ -175,7 +175,7 @@ s32 fn_8007C8F4(void)
 #pragma global_optimizer on
 extern void* gActiveFace;
 extern s32 gFaceDbgMouthStartStr;
-extern s32 lbl_803693C4;
+extern s32 gFaceDbgMouthEndStr;
 extern f64 lbl_803693C8;
 extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
@@ -196,7 +196,7 @@ void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
 
     var_r30 = 0;
     sp[0] = gFaceDbgMouthStartStr;
-    sp[1] = lbl_803693C4;
+    sp[1] = gFaceDbgMouthEndStr;
     if ((*(u16*)((u8*)gActiveFace + 0x46) & 2) != 0) {
         var_r30 = 1;
     }
