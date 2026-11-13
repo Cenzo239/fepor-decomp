@@ -524,7 +524,7 @@ void fn_801FDA40(void) {
 #pragma use_lmw_stmw on
 void FallingParticle_Spawn(void *arg0) {
     void *Process_Create(void *, void *);
-    s32 fn_8000C510(void);
+    s32 Process_CountFree(void);
     u32 Rand_Next(void);
     extern u8 gFallingParticleProc[];
     extern u8 gFallingParticleCtrlProc[];
@@ -559,7 +559,7 @@ void FallingParticle_Spawn(void *arg0) {
         *(f32 *)((u8 *)temp_r23 + 0x30) = f1;
         *(f32 *)((u8 *)temp_r23 + 0x34) = f0;
         for (;;) {
-            if (0x100 - fn_8000C510() < 1) {
+            if (0x100 - Process_CountFree() < 1) {
                 break;
             }
             var_r24 = Process_Create(gFallingParticleProc, temp_r23);

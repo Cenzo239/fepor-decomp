@@ -3898,7 +3898,7 @@ done2:
     ;
 }
 
-s32 fn_8000C510(void) {
+s32 Process_CountFree(void) {
     extern void *gProcessFreeTop;
     extern u8 lbl_802AD6D8[];
 
