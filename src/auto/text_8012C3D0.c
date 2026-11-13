@@ -188,15 +188,10 @@ s32 fn_8012C628(void) {
 }
 
 char *fn_8012C6A8(void) {
-    void fn_80109BA8(s32);
-    void sprintf(void *, ...);
-    extern s32 lbl_80367A88;
-    extern char lbl_802758F8[];
-    extern char lbl_8032FE60[];
-
-    fn_80109BA8(lbl_80367A88);
-    sprintf(lbl_8032FE60, lbl_802758F8 + 0x188);
-    return lbl_8032FE60;
+ double fn_80109BA8(s32); void sprintf(void *, ...);
+ extern s32 lbl_80367A88; extern char lbl_802758F8[]; extern char lbl_8032FE60[];
+ sprintf(lbl_8032FE60, lbl_802758F8 + 0x188, fn_80109BA8(lbl_80367A88));
+ return lbl_8032FE60;
 }
 
 void *fn_8012C6F0(void) {
