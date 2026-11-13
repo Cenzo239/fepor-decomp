@@ -1793,13 +1793,13 @@ void fn_801ED8CC(void *arg0)
 {
     extern u8 gUiContext[];
     extern void *lbl_8029A734[];
-    extern u8 lbl_8027F26C[];
+    extern u8 gGActorPathExt[];
     void *fn_8000E0E4(void *);
     void fn_8000D864(s32, void *);
     void fn_801B79A0(void *, s32, void *, s32);
 
     fn_8000D864(0, fn_8000E0E4(lbl_8029A734[gUiContext[0x14]]));
-    fn_801B79A0(fn_8000E0E4(lbl_8027F26C + 0x17E), 0, arg0, 0);
+    fn_801B79A0(fn_8000E0E4(gGActorPathExt + 0x17E), 0, arg0, 0);
 }
 
 void fn_801ED940(s32 arg0) {
@@ -1811,7 +1811,7 @@ void fn_801ED940(s32 arg0) {
 
 void fn_801ED970(void *arg0, void *arg1)
 {
-    extern u8 lbl_8027F26C[];
+    extern u8 gGActorPathExt[];
     extern u8 lbl_8029A5FC[];
     extern u8 lbl_80366F00;
 
@@ -1821,7 +1821,7 @@ void fn_801ED970(void *arg0, void *arg1)
     u8 *entry;
     void *value;
 
-    value = fn_8000BCA4(lbl_8027F26C + 0x186);
+    value = fn_8000BCA4(gGActorPathExt + 0x186);
 
     entry = (u8 *)fn_8000CAA0(lbl_8029A5FC, value);
 
@@ -1833,7 +1833,7 @@ void fn_801ED970(void *arg0, void *arg1)
 
 void fn_801ED9DC(void *arg0, void *arg1)
 {
-    extern u8 lbl_8027F26C[];
+    extern u8 gGActorPathExt[];
     extern u8 lbl_8029A5FC[];
     extern u8 lbl_80366F00;
 
@@ -1843,7 +1843,7 @@ void fn_801ED9DC(void *arg0, void *arg1)
     u8 *entry;
     void *value;
 
-    value = fn_8000BCA4(lbl_8027F26C + 0x186);
+    value = fn_8000BCA4(gGActorPathExt + 0x186);
 
     entry = (u8 *)fn_8000CAA0(lbl_8029A5FC, value);
 
@@ -2036,9 +2036,9 @@ void fn_801EE018(void *arg0) {
 
 void fn_801EE054(void *arg0) {
     s8 fn_80148618(void *, s32);
-    extern u16 lbl_8027F26C[];
+    extern u16 gGActorPathExt[];
 
-    *(s16 *)((char *)arg0 + 0x3A) = fn_80148618((u8 *)lbl_8027F26C + 0x195, 1);
+    *(s16 *)((char *)arg0 + 0x3A) = fn_80148618((u8 *)gGActorPathExt + 0x195, 1);
 }
 
 void fn_801EE098(void) {
@@ -2083,7 +2083,7 @@ void fn_801EE76C(void *arg0) {
     void fn_800E99CC(void *);
     void fn_801EEDB4(void);
     s32 strlen(char *);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
     extern u8 lbl_8029A5FC[];
     extern u8 lbl_80330708[];
     extern u8 lbl_80330EAC[];
@@ -2159,10 +2159,10 @@ void fn_801EE76C(void *arg0) {
     fn_801EFDC8(*(void **)((char *)self + 0x48));
 
     path = (char *)*(void **)((char *)self + 0x48) + 0x5C;
-    str = lbl_8027F26C;
+    str = gGActorPathExt;
     str += 0x1CE;
     n = strlen(str);
-    str = lbl_8027F26C;
+    str = gGActorPathExt;
     if (fn_800C9400(path, 0, *(void **)path, str + 0x1CE, n) != 0) {
         r29 = fn_8000C0C0(lbl_8029A5FC);
         if (r29 == NULL) {
@@ -2195,13 +2195,13 @@ use30708:
     }
 
     obj = *(void **)((char *)self + 0x48);
-    String_Init(&sp24, lbl_8027F26C + 0x1D6, &sp10);
+    String_Init(&sp24, gGActorPathExt + 0x1D6, &sp10);
     n = strlen((char *)r29);
     fn_800C992C(&sp24, (char *)r29, n);
-    str = lbl_8027F26C;
+    str = gGActorPathExt;
     str += 0x1BF;
     n = strlen(str);
-    str = lbl_8027F26C;
+    str = gGActorPathExt;
     fn_800C992C(&sp24, str + 0x1BF, n);
     fn_800408A8(1);
     fn_8004084C();
@@ -2212,9 +2212,9 @@ use30708:
     flag26 = 0;
     r29 = Heap_Alloc(0x60);
     if (r29 != NULL) {
-        String_Init(&sp30, lbl_8027F26C + 0x1DB, &sp14);
+        String_Init(&sp30, gGActorPathExt + 0x1DB, &sp14);
         flag27 = 1;
-        fn_800CB90C(&sp3C, &sp24, lbl_8027F26C + 0x1E0);
+        fn_800CB90C(&sp3C, &sp24, gGActorPathExt + 0x1E0);
         flag26 = 1;
         r29 = Xml_ParseFile(r29, &sp3C, &sp30);
     }
@@ -2225,17 +2225,17 @@ use30708:
         String_Destroy(&sp30, -1);
     }
 
-    String_Init(&sp48, lbl_8027F26C + 0x1EA, &sp18);
+    String_Init(&sp48, gGActorPathExt + 0x1EA, &sp18);
     Xml_GetNamedValue(buf6C, r29, &sp48);
     *(s32 *)((char *)obj + 0xA8) = *(s32 *)buf6C;
     String_Destroy(&sp48, -1);
 
-    String_Init(&sp54, lbl_8027F26C + 0x1F3, &sp1C);
+    String_Init(&sp54, gGActorPathExt + 0x1F3, &sp1C);
     Xml_GetNamedValue(buf8C, r29, &sp54);
     *(s32 *)((char *)obj + 0xAC) = *(s32 *)buf8C;
     String_Destroy(&sp54, -1);
 
-    String_Init(&sp60, lbl_8027F26C + 0x1FE, &sp20);
+    String_Init(&sp60, gGActorPathExt + 0x1FE, &sp20);
     Xml_GetNamedValue(bufAC, r29, &sp60);
     *(s32 *)((char *)obj + 0xB0) = *(s32 *)bufAC;
     String_Destroy(&sp60, -1);
@@ -2246,7 +2246,7 @@ use30708:
     fn_801EFB2C(*(void **)((char *)self + 0x48), path);
     fn_801EF6BC(*(void **)((char *)self + 0x48));
     GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
-    fn_800558D8(lbl_8027F26C + 0x1AB);
+    fn_800558D8(gGActorPathExt + 0x1AB);
     *(void **)((char *)self + 0x44) = fn_8000CAF0(lbl_8029A5BC, self);
     *(void **)((char *)self + 0x40) = fn_80059208((void *)fn_801EEDB4, self);
     *(s16 *)((char *)self + 0x3E) = 0;
@@ -2302,7 +2302,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void fn_801C4468(void *);
     void fn_801C6E60(void *);
     void fn_801EF39C(void *, void *, s32);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
     extern u8 lbl_80330EAC[];
 
     String spBC;
@@ -2339,13 +2339,13 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     fn_801EF39C(&sp98, self, arg1);
     fn_800C9B6C(&spB0, &sp98);
     String_Destroy(&sp98, -1);
-    fn_800CBF24(&sp8C, lbl_8027F26C + 0x1BB, &spB0);
-    fn_800CB90C(&sp80, &sp8C, lbl_8027F26C + 0x1BF);
+    fn_800CBF24(&sp8C, gGActorPathExt + 0x1BB, &spB0);
+    fn_800CB90C(&sp80, &sp8C, gGActorPathExt + 0x1BF);
     fn_800C9B6C(&spA4, &sp80);
     String_Destroy(&sp80, -1);
     String_Destroy(&sp8C, -1);
     fn_800CB8A4(&sp74, &spA4, &spB0);
-    fn_800CB90C(&sp68, &sp74, lbl_8027F26C + 0x1C1);
+    fn_800CB90C(&sp68, &sp74, gGActorPathExt + 0x1C1);
     String_Assign(&spBC, &sp68, 0, -1);
     String_Destroy(&sp68, -1);
     String_Destroy(&sp74, -1);
@@ -2355,7 +2355,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     row = (u8 *)self + arg1 * 0xC;
     path44 = row + 0x44;
     fn_800CB8A4(&sp5C, &spA4, path44);
-    fn_800CB90C(&sp50, &sp5C, lbl_8027F26C + 0x208);
+    fn_800CB90C(&sp50, &sp5C, gGActorPathExt + 0x208);
     String_Assign(&spBC, &sp50, 0, -1);
     String_Destroy(&sp50, -1);
     String_Destroy(&sp5C, -1);
@@ -2364,7 +2364,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
     fn_800CB8A4(&sp44, &spA4, path44);
-    fn_800CB90C(&sp38, &sp44, lbl_8027F26C + 0x20C);
+    fn_800CB90C(&sp38, &sp44, gGActorPathExt + 0x20C);
     String_Assign(&spBC, &sp38, 0, -1);
     String_Destroy(&sp38, -1);
     String_Destroy(&sp44, -1);
@@ -2373,7 +2373,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
     fn_800CB8A4(&sp2C, &spA4, row + 0x14);
-    fn_800CB90C(&sp20, &sp2C, lbl_8027F26C + 0x1C9);
+    fn_800CB90C(&sp20, &sp2C, gGActorPathExt + 0x1C9);
     String_Assign(&spBC, &sp20, 0, -1);
     String_Destroy(&sp20, -1);
     String_Destroy(&sp2C, -1);
@@ -2382,7 +2382,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
     fn_800CB8A4(&sp14, &spA4, row + 0x2C);
-    fn_800CB90C(&sp8, &sp14, lbl_8027F26C + 0x20F);
+    fn_800CB90C(&sp8, &sp14, gGActorPathExt + 0x20F);
     String_Assign(&spBC, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
     String_Destroy(&sp14, -1);
@@ -2411,13 +2411,13 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     if (slot != NULL && (p = *slot, p != NULL)) {
         val = (p != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC;
         if ((u8)val == 3) {
-            *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), lbl_8027F26C + 0x213);
+            *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x213);
         } else {
             goto block_else;
         }
     } else {
 block_else:
-        *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), lbl_8027F26C + 0x21A);
+        *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x21A);
     }
     if (*(s32 *)((u8 *)self + 0xAC) == 2) {
         fn_801C4468(*(void **)((u8 *)self + 0xB8));
@@ -2438,7 +2438,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     void fn_800CB90C(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
     s32 strlen(char *);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
 
     String sp54;
     String sp48;
@@ -2468,8 +2468,8 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     fn_800C9B6C(&sp30, row + 0x5C);
     fn_800C9B6C(&sp24, row + 0x8C);
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp24) + 0xC, 0, -1);
-    n = strlen((char *)((u8 *)lbl_8027F26C + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)lbl_8027F26C + 0x221), n) != 0) {
+    n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
+    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         fn_800C9B6C(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2478,14 +2478,14 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
         String_Destroy(&sp54, -1);
         return;
     }
-    fn_800CB90C(&sp18, &sp3C, (char *)((u8 *)lbl_8027F26C + 0x222));
+    fn_800CB90C(&sp18, &sp3C, (char *)((u8 *)gGActorPathExt + 0x222));
     fn_800CB8A4(&spC, &sp18, &sp30);
     String_Assign(&sp54, &spC, 0, -1);
     String_Destroy(&spC, -1);
     String_Destroy(&sp18, -1);
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp54) + 0xC, 0, -1);
-    n = strlen((char *)((u8 *)lbl_8027F26C + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)lbl_8027F26C + 0x221), n) != 0) {
+    n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
+    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         fn_800C9B6C(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2495,8 +2495,8 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
         return;
     }
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp3C) + 0xC, 0, -1);
-    n = strlen((char *)((u8 *)lbl_8027F26C + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)lbl_8027F26C + 0x221), n) != 0) {
+    n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
+    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         fn_800C9B6C(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2505,7 +2505,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
         String_Destroy(&sp54, -1);
         return;
     }
-    String_Init(out, (char *)((u8 *)lbl_8027F26C + 0x221), sp8);
+    String_Init(out, (char *)((u8 *)gGActorPathExt + 0x221), sp8);
     String_Destroy(&sp24, -1);
     String_Destroy(&sp30, -1);
     String_Destroy(&sp3C, -1);
@@ -2535,7 +2535,7 @@ void fn_801EF6BC(void *arg0) {
     s32 fn_800E49D0(void);
     void fn_801C6E60(void *);
     s32 strlen(char *);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
     extern u8 lbl_80330EAC[];
 
     String spE4;
@@ -2574,7 +2574,7 @@ void fn_801EF6BC(void *arg0) {
     spD8.size = 0;
     spD8.data = 0;
     spD8.cap = 0;
-    String_Init(&spCC, lbl_8027F26C + 0x224, &sp8);
+    String_Init(&spCC, gGActorPathExt + 0x224, &sp8);
     p = 0;
     *(void **)((u8 *)self + 0xC0) = p;
     slot = lbl_80330EAC + 0x28C;
@@ -2590,9 +2590,9 @@ void fn_801EF6BC(void *arg0) {
     }
     String_AssignCStr(&spD8, p->name, strlen(p->name));
     fn_800CB8A4(&spC0, &spCC, &spD8);
-    fn_800CB90C(&spB4, &spC0, lbl_8027F26C + 0x1BF);
+    fn_800CB90C(&spB4, &spC0, gGActorPathExt + 0x1BF);
     fn_800CB8A4(&spA8, &spB4, &spD8);
-    fn_800CB90C(&sp9C, &spA8, lbl_8027F26C + 0x229);
+    fn_800CB90C(&sp9C, &spA8, gGActorPathExt + 0x229);
     String_Assign(&spE4, &sp9C, 0, -1);
     String_Destroy(&sp9C, -1);
     String_Destroy(&spA8, -1);
@@ -2604,9 +2604,9 @@ void fn_801EF6BC(void *arg0) {
         *(s32 *)((u8 *)self + 0xC0) = fn_8005C84C();
         *(void **)((u8 *)self + 0xC4) = GActor_Create();
         fn_800CB8A4(&sp90, &spCC, &spD8);
-        fn_800CB90C(&sp84, &sp90, (char *)((u32)lbl_8027F26C + 0x1BF));
+        fn_800CB90C(&sp84, &sp90, (char *)((u32)gGActorPathExt + 0x1BF));
         fn_800CB8A4(&sp78, &sp84, &spD8);
-        fn_800CB90C(&sp6C, &sp78, lbl_8027F26C + 0x208);
+        fn_800CB90C(&sp6C, &sp78, gGActorPathExt + 0x208);
         String_Assign(&spE4, &sp6C, 0, -1);
         String_Destroy(&sp6C, -1);
         String_Destroy(&sp78, -1);
@@ -2617,9 +2617,9 @@ void fn_801EF6BC(void *arg0) {
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
         fn_800CB8A4(&sp60, &spCC, &spD8);
-        fn_800CB90C(&sp54, &sp60, (char *)((u8 *)lbl_8027F26C + 0x1BF));
+        fn_800CB90C(&sp54, &sp60, (char *)((u8 *)gGActorPathExt + 0x1BF));
         fn_800CB8A4(&sp48, &sp54, &spD8);
-        fn_800CB90C(&sp3C, &sp48, lbl_8027F26C + 0x20C);
+        fn_800CB90C(&sp3C, &sp48, gGActorPathExt + 0x20C);
         String_Assign(&spE4, &sp3C, 0, -1);
         String_Destroy(&sp3C, -1);
         String_Destroy(&sp48, -1);
@@ -2630,9 +2630,9 @@ void fn_801EF6BC(void *arg0) {
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
         fn_800CB8A4(&sp30, &spCC, &spD8);
-        fn_800CB90C(&sp24, &sp30, (char *)(lbl_8027F26C + 0x1BF));
+        fn_800CB90C(&sp24, &sp30, (char *)(gGActorPathExt + 0x1BF));
         fn_800CB8A4(&sp18, &sp24, &spD8);
-        fn_800CB90C(&spC, &sp18, lbl_8027F26C + 0x1C9);
+        fn_800CB90C(&spC, &sp18, gGActorPathExt + 0x1C9);
         String_Assign(&spE4, &spC, 0, -1);
         String_Destroy(&spC, -1);
         String_Destroy(&sp18, -1);
@@ -2686,7 +2686,7 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     void String_Init(void *, char *, void *);
     void fn_800CB90C(void *, void *, char *);
     s32 strlen(char *);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
     extern f32 lbl_8036B7D0;
 
     String sp54;
@@ -2713,41 +2713,41 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     sp54.size = 0;
     sp54.data = 0;
     sp54.cap = 0;
-    String_Init(&sp48, lbl_8027F26C + 0x1D6, &sp8);
+    String_Init(&sp48, gGActorPathExt + 0x1D6, &sp8);
     n = strlen(arg1);
     fn_800C992C(&sp48, arg1, n);
-    n = strlen((char *)((u32)lbl_8027F26C + 0x1BF));
-    fn_800C992C(&sp48, (char *)((u8 *)lbl_8027F26C + 0x1BF), n);
+    n = strlen((char *)((u32)gGActorPathExt + 0x1BF));
+    fn_800C992C(&sp48, (char *)((u8 *)gGActorPathExt + 0x1BF), n);
     n = strlen(arg1);
     fn_800C992C(&sp48, arg1, n);
-    fn_800CB90C(&sp3C, &sp48, lbl_8027F26C + 0x229);
+    fn_800CB90C(&sp3C, &sp48, gGActorPathExt + 0x229);
     String_Assign(&sp54, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
     fn_800C93EC(&sp54);
     *(s32 *)((u8 *)self + 0xCC) = fn_8005C84C();
     *(void **)((u8 *)self + 0xD0) = GActor_Create();
-    fn_800CB90C(&sp30, &sp48, lbl_8027F26C + 0x208);
+    fn_800CB90C(&sp30, &sp48, gGActorPathExt + 0x208);
     String_Assign(&sp54, &sp30, 0, -1);
     String_Destroy(&sp30, -1);
     fn_800C93EC(&sp54);
     tmp = (void *)fn_8006CE14();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
-    fn_800CB90C(&sp24, &sp48, lbl_8027F26C + 0x20C);
+    fn_800CB90C(&sp24, &sp48, gGActorPathExt + 0x20C);
     String_Assign(&sp54, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
     fn_800C93EC(&sp54);
     tmp = (void *)fn_80065EE8();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
-    fn_800CB90C(&sp18, &sp48, lbl_8027F26C + 0x1C9);
+    fn_800CB90C(&sp18, &sp48, gGActorPathExt + 0x1C9);
     String_Assign(&sp54, &sp18, 0, -1);
     String_Destroy(&sp18, -1);
     fn_800C93EC(&sp54);
     tmp = (void *)fn_8006D948();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
-    fn_800CB90C(&spC, &sp48, lbl_8027F26C + 0x20F);
+    fn_800CB90C(&spC, &sp48, gGActorPathExt + 0x20F);
     String_Assign(&sp54, &spC, 0, -1);
     String_Destroy(&spC, -1);
     fn_800C93EC(&sp54);
@@ -2797,7 +2797,7 @@ void fn_801EFDC8(void *arg0) {
     void Xml_GetNamedValue(char *, void *, String *);
     void fn_801F1888(void *);
     s32 strlen(char *);
-    extern char lbl_8027F26C[];
+    extern char gGActorPathExt[];
     extern char lbl_8027F25C[];
     extern u8 lbl_80330EAC[];
 
@@ -2850,13 +2850,13 @@ void fn_801EFDC8(void *arg0) {
 
     self = arg0;
     fn_800D58C0();
-    String_Init(&path, lbl_8027F26C + 0x22E, &sp2C);
-    strBase = lbl_8027F26C;
+    String_Init(&path, gGActorPathExt + 0x22E, &sp2C);
+    strBase = gGActorPathExt;
     fn_800C992C(&path, strBase + 0x234, strlen(strBase + 0x234));
     flag0 = 0;
     file = Heap_Alloc(0x60);
     if (file != NULL) {
-        String_Init(&spF8, lbl_8027F26C + 0x1DB, &sp28);
+        String_Init(&spF8, gGActorPathExt + 0x1DB, &sp28);
         flag0 = 1;
         file = Xml_ParseFile(file, &path, &spF8);
     }
@@ -2872,8 +2872,8 @@ void fn_801EFDC8(void *arg0) {
     str160.size = 0;
     str160.data = NULL;
     str160.cap = 0;
-    String_Init(&spEC, lbl_8027F26C + 0x240, &sp24);
-    fn_8023440C(buf224, lbl_8027F26C + 0x246, 0x20);
+    String_Init(&spEC, gGActorPathExt + 0x240, &sp24);
+    fn_8023440C(buf224, gGActorPathExt + 0x246, 0x20);
     {
         u32 *d = (u32 *)buf260;
         u32 *s2 = (u32 *)buf224;
@@ -2884,7 +2884,7 @@ void fn_801EFDC8(void *arg0) {
     String_Destroy(&spEC, -1);
 
     p204 = buf204;
-    strBase = lbl_8027F26C;
+    strBase = gGActorPathExt;
     while (Xml_AdvanceChild(file) != 0) {
         Xml_GetChildName(&spE0, file);
         String_Assign(&str16c, &spE0, 0, -1);
@@ -2914,7 +2914,7 @@ void fn_801EFDC8(void *arg0) {
     str148.size = 0;
     str148.data = NULL;
     str148.cap = 0;
-    String_Init(&str13c, lbl_8027F26C + 0x1BB, &sp20);
+    String_Init(&str13c, gGActorPathExt + 0x1BB, &sp20);
 
     str130.cap = 0;
     str124.cap = 0;
@@ -2935,7 +2935,7 @@ void fn_801EFDC8(void *arg0) {
     mgrs[1] = lbl_80330EAC + 0x2E0;
     slot = mgrs;
     base = self;
-    strBase = lbl_8027F26C;
+    strBase = gGActorPathExt;
     for (i = 0; i < 2; i++) {
         s = *(char **)(*(void **)((u8 *)*slot + 0x188));
         String_AssignCStr((String *)((u8 *)base + 0x5C), s, strlen(s));
@@ -2958,7 +2958,7 @@ void fn_801EFDC8(void *arg0) {
         flag2 = 0;
         file2 = Heap_Alloc(0x60);
         if (file2 != NULL) {
-            String_Init(&spA4, lbl_8027F26C + 0x1DB, &sp1C);
+            String_Init(&spA4, gGActorPathExt + 0x1DB, &sp1C);
             flag0 = 1;
             fn_800CB8A4(&sp98, &str13c, &str148);
             flag1 = 1;
@@ -2995,7 +2995,7 @@ void fn_801EFDC8(void *arg0) {
         flag2 = 0;
         file2 = Heap_Alloc(0x60);
         if (file2 != NULL) {
-            String_Init(&sp74, lbl_8027F26C + 0x1DB, &sp18);
+            String_Init(&sp74, gGActorPathExt + 0x1DB, &sp18);
             flag0 = 1;
             fn_800CB8A4(&sp68, &str13c, &str148);
             flag1 = 1;
@@ -3218,8 +3218,8 @@ void fn_801F109C(void *arg0) {
 }
 
 void fn_801F10D4(void) {
-    extern u16 lbl_8027F26C[];
-    fn_8000E0E4((u8 *)lbl_8027F26C + 0x422);
+    extern u16 gGActorPathExt[];
+    fn_8000E0E4((u8 *)gGActorPathExt + 0x422);
 }
 
 s32 fn_801F1100(void) {
@@ -3296,7 +3296,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     extern f32 lbl_8036B7FC;
     extern f32 lbl_8036B800;
     extern void *lbl_8029A734[];
-    extern u8 lbl_8027F26C[];
+    extern u8 gGActorPathExt[];
     struct Obj {
         u8 pad[4];
         virtual void *v0() = 0;
@@ -3389,7 +3389,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     row = (struct Row *)((u8 *)row + *(s8 *)((u8 *)arg1 + 0x62));
     item = fn_8000B908(row->id);
     fn_8000D864(0, fn_8000E0E4(lbl_8029A734[*(u8 *)((u8 *)item + 0x3A)]));
-    fn_80234450(sp8, fn_8000E0E4(lbl_8027F26C + 0x42D));
+    fn_80234450(sp8, fn_8000E0E4(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();
     f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - fn_80010B78(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
     fn_8001019C((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
