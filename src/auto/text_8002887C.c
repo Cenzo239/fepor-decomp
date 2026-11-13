@@ -2573,7 +2573,7 @@ void fn_8002E738(s32 arg0) {
     }
 }
 
-void fn_8002E780(void)
+void Battle_ResetAllyTurnVisuals(void)
 {
     void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
