@@ -5289,6 +5289,7 @@ void fn_8011CC04(u8 *arg0) {
     s32 a;
     s32 b;
     s32 shifted;
+    s32 base;
 
     arg0[0xF0] = 1;
     a = *(s32 *)(arg0 + 0xB0);
@@ -5297,7 +5298,8 @@ void fn_8011CC04(u8 *arg0) {
         a = b;
     }
     shifted = a << 4;
-    *(s32 *)(arg0 + 0x64) = *(s32 *)(arg0 + 0xC8) + shifted + 2;
+    base = *(s32 *)(arg0 + 0xC8);
+    *(s32 *)(arg0 + 0x64) = base + shifted + 2;
 }
 #pragma global_optimizer reset
 void fn_8011D014(void *arg0) {
