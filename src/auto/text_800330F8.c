@@ -7328,7 +7328,7 @@ void fn_80043E88(void) {
 }
 
 #pragma global_optimizer off
-void fn_80043F9C(void *cam, f32 *mtx, f32 x, f32 y) {
+void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     f32 Map_GetTileCornerHeight(void *, s32, s32, s32);
     void fn_80203290(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
@@ -12467,7 +12467,7 @@ static inline void *get_53260_object(void *base) {
 void fn_80053260(void *arg0)
 {
     void *fn_80040844(void);
-    void fn_80043F9C(void *, void *, f32, f32);
+    void Map_BuildSlopeMatrix(void *, void *, f32, f32);
     void fn_8004E670(f32 *, void *, s32);
     void fn_8005A1E8(s32, f32 *, f32 *);
     void PSMTXIdentity(void *);
@@ -12558,7 +12558,7 @@ void fn_80053260(void *arg0)
                 case 0:
                     scale = (f32)((f64)scale * lbl_803690B8);
                     if (*(u32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x8) & 0x40) {
-                        fn_80043F9C(cam, sp8C, pos.x, pos.y);
+                        Map_BuildSlopeMatrix(cam, sp8C, pos.x, pos.y);
                         PSMTXConcat(sp8C, spBC, spBC);
                     }
                     break;

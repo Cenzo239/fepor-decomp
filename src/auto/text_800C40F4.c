@@ -17448,7 +17448,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
 
 void fn_800F18A4(s32 arg0,s32 arg1) {
 void fn_80060060(void *); f32 fn_80023068(void *,f32,f32); void PSMTXScale(void *,f32,f32,f32);void PSMTXTrans(void *,f32,f32,f32);void PSMTXRotRad(void *,s32,f32);
-void *fn_80040844(void);void fn_80043F9C(void *,void *,f32,f32);void fn_802033AC(void *,void *);void fn_80203604(void *,void *,void *,f32);void fn_80202640(void *,void *);void PSMTXIdentity(void *);void PSMTXConcat(void *,void *,void *);void fn_80201FF0(void *,void *);
+void *fn_80040844(void);void Map_BuildSlopeMatrix(void *,void *,f32,f32);void fn_802033AC(void *,void *);void fn_80203604(void *,void *,void *,f32);void fn_80202640(void *,void *);void PSMTXIdentity(void *);void PSMTXConcat(void *,void *,void *);void fn_80201FF0(void *,void *);
 void fn_8005F7B0(void *,s32);void fn_8005F7E0(void *,s32,s32,s32);void fn_800606BC(void *);
 extern u8 lbl_8032AC58[],gBattleMap[];extern f32 lbl_8028E588[],lbl_8028E578[];extern f32 lbl_8036A014,lbl_8036A030,lbl_8036A034,lbl_8036A038,lbl_8036A03C;
 f32 m108[12],mD8[12],mA8[12],m78[12],m48[12],m18[12],q[4];
@@ -17467,7 +17467,7 @@ angle=lbl_8036A038;step=lbl_8036A03C; qp=base;obj=base;i=0;
 do{
 fx=M2C_FIELD(base,f32 *,0x5E0)+*xs;fy=M2C_FIELD(base,f32 *,0x5E4)+*ys;fz=M2C_FIELD(base,f32 *,0x5E8);
 if(terrain){
-fn_80043F9C(terrain,m18,fx,fy);fn_802033AC(q,m18);fn_80203604(qp+0x5F8,q,q,lbl_8036A030);
+Map_BuildSlopeMatrix(terrain,m18,fx,fy);fn_802033AC(q,m18);fn_80203604(qp+0x5F8,q,q,lbl_8036A030);
 M2C_FIELD(qp,f32 *,0x5F8)=q[0];M2C_FIELD(qp,f32 *,0x5FC)=q[1];M2C_FIELD(qp,f32 *,0x600)=q[2];M2C_FIELD(qp,f32 *,0x604)=q[3];
 fn_80202640(mD8,q);
 }else PSMTXIdentity(mD8);
@@ -17492,7 +17492,7 @@ void fn_800F1C24(void *arg0) {
 s32 fn_800067B4(void);
 f32 fn_80023068(void *, f32, f32);
 void *fn_80040844(void);
-void fn_80043F9C(void *, void *, f32, f32);
+void Map_BuildSlopeMatrix(void *, void *, f32, f32);
 void fn_8005F7B0(void *, s32);
 void fn_8005F7E0(void *, s32, s32, s32);
 void fn_800606BC(void *);
@@ -17584,7 +17584,7 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
         f27 = *(f32 *)((u8 *)self + 0x5E4) + *ys;
         f28 = *(f32 *)(h + 0x5E8);
         if (terrain != 0) {
-            fn_80043F9C(terrain, m18, f26, f27);
+            Map_BuildSlopeMatrix(terrain, m18, f26, f27);
             fn_802033AC(q, m18);
             fn_80203604(qp + 0x5F8, q, q, lbl_8036A030);
             *(f32 *)(qp + 0x5F8) = q[0];
