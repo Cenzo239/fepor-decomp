@@ -396,7 +396,7 @@ s32 fn_802267FC(void *arg0, void *arg1, u32 arg2)
     return result;
 }
 
-s32 fn_80226888(void *arg0, u8 *arg1, u32 arg2) {
+s32 TRKAppendBuffer_ui8x(void *arg0, u8 *arg1, u32 arg2) {
     s32 temp_r3;
     s32 var_r31;
     u32 temp_r0;
@@ -653,7 +653,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
     s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessExtended1(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessExtended2(u16, u16, void *, s32 *, s32);
-    s32 fn_80226888(void *, void *, s32);
+    s32 TRKAppendBuffer_ui8x(void *, void *, s32);
     s32 TRK_cc_write(void *, s32);
     s32 TRKMessageSend(void *);
     void MWTRACE(u8, char *, ...);
@@ -712,7 +712,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
         *(s32 *)reply2 = 0x40;
         reply2[4] = 0x80;
         reply2[8] = (u8)err;
-        err = fn_80226888(obj, reply2, 0x40);
+        err = TRKAppendBuffer_ui8x(obj, reply2, 0x40);
     }
 
     if (err != 0) {
