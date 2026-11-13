@@ -2340,7 +2340,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     *(f32 *)(self+0x4C)=lbl_8036AD38* *(f32 *)(self+0x5C);
     *(f32 *)(self+0x50)=lbl_8036AD38* *(f32 *)(self+0x60);
 }
-void fn_8018AD1C(void *arg0) {
+void MoveAnim_PollPadNodeLinks(void *arg0) {
     u32 fn_80057F04(s32, void *, void *, void *);
     void fn_800588EC(s32);
     void fn_80058970(void *, void *);
