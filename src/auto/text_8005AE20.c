@@ -792,10 +792,11 @@ s32 FileCache_Exists(char *name) {
 #pragma no_register_save_helpers on
 #pragma use_lmw_stmw on
 void FileCache_OrFlags(char *name, s32 flags) {
-    u8 *e = FindEntryByName(name);
-    s32 v = *(u16 *)(e + 0x30);
+    /* OR flags into the named file-cache entry's flag word at +0x30. */
+    u8 *entry = FindEntryByName(name);
+    s32 v = *(u16 *)(entry + 0x30);
     v |= flags;
-    *(u16 *)(e + 0x30) = v;
+    *(u16 *)(entry + 0x30) = v;
 }
 /* Mark the named file-cache entry as relocated (flags |= 0x4000). */
 void FileCache_MarkRelocated(char *name) {
