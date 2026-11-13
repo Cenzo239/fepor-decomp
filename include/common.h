@@ -78,6 +78,20 @@ typedef IconSlot Unk800C2ACC;
 #define SAVE_SLOT_PAYLOAD_OFF  0x70
 #define SAVE_SLOT_BLOCK_SIZE   0x2000
 
+/* ID string prefix kinds (Id_GetKind: PID_/JID_/IID_/…) */
+enum IdKind {
+    ID_KIND_NONE = 0,
+    ID_KIND_PID = 1, /* PID_ person */
+    ID_KIND_JID = 2, /* JID_ job/class */
+    ID_KIND_IID = 3, /* IID_ item */
+    ID_KIND_FID = 4, /* FID_ face */
+    ID_KIND_MSG = 5, /* M*_ / M***_ / MY* message */
+    ID_KIND_EID = 6, /* EID_ event */
+    ID_KIND_AID = 7, /* AID_ animation */
+    ID_KIND_RID = 8, /* RID_ */
+    ID_KIND_SID = 9  /* SID_ skill */
+};
+
 /* Unit/class map-move SFX category flags (MSFX_*) */
 #define MSFX_FLAG_MAGE   0x0001
 #define MSFX_FLAG_FLY    0x0002
