@@ -1681,7 +1681,7 @@ void fn_8005E644(void *arg0) {
     void *fn_8005F410(void *);
     void Model_SetAlpha(void *, u8);
     void Model_SetColor(void *, u8, u8, u8);
-    void *fn_80060690(void *);
+    void *GActor_GetNodeTable(void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
     void fn_80201FF0(void *, void *);
@@ -1719,7 +1719,7 @@ void fn_8005E644(void *arg0) {
         }
 
         if (child != NULL && grand != NULL) {
-            info = fn_80060690(child);
+            info = GActor_GetNodeTable(child);
             i = 0;
             off = i;
             while (i < *(s32 *)((u8 *)info + 8)) {
@@ -1911,7 +1911,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void Game_Assert(void *, s32, void *);
     void fn_800618E4(void *);
     void GActor_Finalize(void *);
-    void *fn_80060690(void *);
+    void *GActor_GetNodeTable(void *);
     void fn_80201FF0(void *, void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
@@ -2026,7 +2026,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     if (node != 0 && (void *)count != 0) {
         off = 0;
-        i = (s32)fn_80060690(node);
+        i = (s32)GActor_GetNodeTable(node);
         anim = (void *)off;
         goto copy60b_test;
     copy60b_body:
@@ -2732,7 +2732,7 @@ u32 fn_80060664(void *arg0) {
     return 0U;
 }
 
-u32 fn_80060690(void *arg0) {
+u32 GActor_GetNodeTable(void *arg0) {
     void *current = arg0;
 
     while (current != NULL) {
@@ -2886,7 +2886,7 @@ void fn_80061A08(void *arg0)
     void *sel;
 
     obj = (void *)fn_80060664(self);
-    base = (void *)fn_80060690(self);
+    base = (void *)GActor_GetNodeTable(self);
     ctx = (u8 *)fn_8006049C(self);
     if (obj == NULL) {
         return;

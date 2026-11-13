@@ -7962,7 +7962,7 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
     void fn_8005FA14(void *, s32);
     void fn_800608AC(void *);
     void fn_80060F70(void *, s32, f32 *);
-    void *fn_80060690(void *);
+    void *GActor_GetNodeTable(void *);
     void fn_8005FC74(void *, s32, s32);
     void fn_8005FEE8(void *, f32);
     void fn_802031A8(f32 *, f32 *, f32 *);
@@ -8031,7 +8031,7 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
         }
 
         if (id2 != -1) {
-            base = fn_80060690(obj);
+            base = GActor_GetNodeTable(obj);
             if (flag != 0) {
                 entry = (u8 *)(*(void **)((u8 *)base + 0xC)) + id2 * 0xF4;
                 *(u32 *)((u8 *)entry + 0xC) |= 0x40000000;
