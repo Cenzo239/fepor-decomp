@@ -8020,42 +8020,27 @@ s32 fn_802555A0(
 }
 
 void fn_802559D8(void) {
-    u8* ptr;
-    u32 count;
-    s32 i;
-    
-    gSynthIdleList = 0;
-    gSynthSchedList = 0; 
-    gSynthTimeLo = 0;
-    gSynthTimeHi = 0;
-    count = 0U;
-    
-    ptr = &gSoundData[0x34];
+    s32 zero;
+    s32 offset;
+    u32 i;
+    s32 two;
+
+    zero = 0;
+    gSynthIdleList = zero;
+    offset = gSynthIdleList;
     i = 0;
-    do {
-        *(ptr + i) = 0;
-        i += 0x458;
-        count++;
-        if (count >= gSoundData[0x210]) break;
-    } while (1);
-    
-    ptr = &gSoundData[0x4C];
-    i = 0;
-    do {
-        *(ptr + i) = 2;
-        i += 0x458;
-        count++;
-        if (count >= gSoundData[0x210]) break;
-    } while (1);
-    
-    ptr = &gSoundData[0xAA];
-    i = 0;
-    do {
-        *(ptr + i) = 0;
-        i += 0x458;
-        count++;
-        if (count >= gSoundData[0x210]) break;
-    } while (1);
+    gSynthSchedList = zero;
+    two = 2;
+    gSynthTimeLo = zero;
+    gSynthTimeHi = zero;
+
+    while (i < gSoundData[0x210]) {
+        *(s32 *)(gSynthVoices + offset + 0x34) = zero;
+        *(s32 *)(gSynthVoices + offset + 0x4C) = two;
+        *(u16 *)(gSynthVoices + offset + 0xAA) = zero;
+        offset += 0x458;
+        i++;
+    }
 }
 
 void* fn_80255A40(void)
@@ -9116,30 +9101,36 @@ void fn_80257444(void *arg0)
     }
 }
 
-s32 fn_802575A0(void *arg0) {
-    extern u16 lbl_8035A610[];
-    extern u16 lbl_8035A650[];
-    s32 temp_r4;
-    u8 temp_r0;
-    u8 temp_r5;
+s32 fn_802575A0(void *arg0)
+{
+    extern u8 lbl_8035A610[];
+    extern u8 lbl_8035A650[];
 
-    temp_r4 = *(s32*) ((u8*) arg0 + 0xF4);
-    if ((u32) (temp_r4 + 0x10000) != -1U) {
-        temp_r5 = *(u8*) ((u8*) arg0 + 0x121);
-        if (temp_r5 != 0xFF) {
-            temp_r0 = *(u8*) ((u8*) arg0 + 0x122);
-            if (temp_r0 == 0xFF) {
-                if (*(u8*) (lbl_8035A610 + (u8) temp_r4) == (u8) temp_r4) {
+    u8 *voice;
+    u32 value;
+    u8 index;
+    u8 group;
+    u8 voiceId;
+    u8 *table;
+
+    voice = (u8 *)arg0;
+    value = *(u32 *)(voice + 0xF4);
+
+    if ((u32)(value + 0x10000) != 0xFFFF) {
+        index = voice[0x121];
+        if (index != 0xFF) {
+            group = voice[0x122];
+            voiceId = (u8)value;
+            if (group == 0xFF) {
+                if (lbl_8035A610[voiceId] == voiceId) {
                     return 1;
                 }
-                /* Duplicate return node #7. Try simplifying control flow for better match */
-                return 0;
+            } else {
+                table = lbl_8035A650 + ((u32)group << 4);
+                if (table[index] == voiceId) {
+                    return 1;
+                }
             }
-            if ((u8) temp_r4 == *(u8*) (lbl_8035A650 + (((temp_r0 * 0x10) & 0xFF0) + temp_r5))) {
-                return 1;
-            }
-            /* Duplicate return node #7. Try simplifying control flow for better match */
-            return 0;
         }
     }
     return 0;
