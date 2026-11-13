@@ -2520,9 +2520,10 @@ s32 fn_80234278(u8 *arg0, u8 *arg1, u32 arg2) {
     return 0;
 }
 
-s32 Str_Cmp(u8 *arg0, u8 *arg1) {
-    register u8 *left = arg0;
-    register u8 *right = arg1;
+s32 Str_Cmp(u8 *s1, u8 *s2) {
+    // Word-at-a-time strcmp: align, then compare 4 bytes until a zero byte or mismatch.
+    register u8 *left = s1;
+    register u8 *right = s2;
     u32 align;
     u32 mask;
     register u32 l1;
