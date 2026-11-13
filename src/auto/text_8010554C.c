@@ -5760,7 +5760,7 @@ restart:
     }
 }
 
-void *fn_8010FEEC(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
+void *MapObjEvent_Push(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     char *temp_r8;
 
     temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);

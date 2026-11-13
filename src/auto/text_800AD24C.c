@@ -4349,8 +4349,8 @@ s32 fn_800B8250(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 extern u8 gMapObjEventList[];
 s32 fn_800B8298(s8 arg0, s8 arg1) {
-    void *fn_8010FEEC(void *, s32, s32, s32, s32);
-    fn_8010FEEC(gMapObjEventList, arg0, arg1, 9, 0);
+    void *MapObjEvent_Push(void *, s32, s32, s32, s32);
+    MapObjEvent_Push(gMapObjEventList, arg0, arg1, 9, 0);
     return 1;
 }
 
@@ -4364,13 +4364,13 @@ s32 fn_800B82D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s32 fn_800B8340(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8010FEEC(void *, s8, s8, s32, s32);
+    void *MapObjEvent_Push(void *, s8, s8, s32, s32);
     extern u8 gMapObjEventList[];
     u8 *temp_r3;
     s32 t2;
 
     t2 = arg2;
-    temp_r3 = fn_8010FEEC(gMapObjEventList, arg0, arg1, 4, 0);
+    temp_r3 = MapObjEvent_Push(gMapObjEventList, arg0, arg1, 4, 0);
     temp_r3[4] = t2;
     temp_r3[5] = t2;
     temp_r3[6] = 0;
@@ -4379,7 +4379,7 @@ s32 fn_800B8340(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_800B83A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    void *fn_8010FEEC(void *, s8, s8, u8, u8);
+    void *MapObjEvent_Push(void *, s8, s8, u8, u8);
     extern u8 gMapObjEventList[];
     u8 *temp_r3;
     s32 t5;
@@ -4387,7 +4387,7 @@ s32 fn_800B83A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 
     t5 = arg5;
     t4 = arg4;
-    temp_r3 = fn_8010FEEC(gMapObjEventList, arg0, arg1, arg2, arg3);
+    temp_r3 = MapObjEvent_Push(gMapObjEventList, arg0, arg1, arg2, arg3);
     temp_r3[4] = t4;
     temp_r3[5] = t5;
     temp_r3[6] = 0;
