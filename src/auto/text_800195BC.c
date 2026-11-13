@@ -1491,13 +1491,13 @@ s8 fn_8001C084(u8 *arg0) {
 }
 
 extern u8 gItemFlagsDummyReady;
-extern s32 lbl_80367228;
+extern s32 gItemFlagsDummy;
 extern s32 lbl_8036722C;
 s32 fn_8001C0C8(u8 *arg0)
 {
     extern u8 gItemFlagsDummyReady;
     extern s32 lbl_8036722C;
-    extern s32 lbl_80367228;
+    extern s32 gItemFlagsDummy;
 
     void *temp_r7;
     unsigned long long *p;
@@ -1505,7 +1505,7 @@ s32 fn_8001C0C8(u8 *arg0)
 
     if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
-        lbl_80367228 = 0;
+        gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
 
@@ -1513,7 +1513,7 @@ s32 fn_8001C0C8(u8 *arg0)
     if (temp_r7 != NULL) {
         p = (unsigned long long *)((u8 *)temp_r7 + 0x38);
     } else {
-        p = (unsigned long long *)&lbl_80367228;
+        p = (unsigned long long *)&gItemFlagsDummy;
     }
 
     if ((*p & 0x318ULL) != 0) {
@@ -1878,7 +1878,7 @@ s32 fn_8001CA2C(void *arg0) {
 
     if ((s8) gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
-        lbl_80367228 = 0;
+        gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
 
@@ -1886,7 +1886,7 @@ s32 fn_8001CA2C(void *arg0) {
     if (temp_r6 != NULL) {
         var_r5_2 = *(u16 *)((char *)temp_r6 + 0x38);
     } else {
-        var_r5_2 = *(u16 *)lbl_80367228;
+        var_r5_2 = *(u16 *)gItemFlagsDummy;
     }
 
     temp_r8 = *(s32 *)((char *)var_r5_2 + 4);
@@ -1940,13 +1940,13 @@ void *Item_GetFlagsPtr(void *arg0)
 {
     extern u8 gItemFlagsDummyReady;
     extern s32 lbl_8036722C;
-    extern s32 lbl_80367228;
+    extern s32 gItemFlagsDummy;
 
     void *ptr;
 
     if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
-        lbl_80367228 = 0;
+        gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
 
@@ -1956,7 +1956,7 @@ void *Item_GetFlagsPtr(void *arg0)
         return (u8 *)ptr + 0x38;
     }
 
-    return &lbl_80367228;
+    return &gItemFlagsDummy;
 }
 
 #pragma peephole off
@@ -2307,7 +2307,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
 s32 Item_DecUses(void *arg0) {
     void fn_800C3220(void *, s32);
     extern u8 gItemFlagsDummyReady;
-    extern s32 lbl_80367228;
+    extern s32 gItemFlagsDummy;
     extern s32 lbl_8036722C;
     extern u8 lbl_803206EC[];
     typedef struct {
@@ -2321,14 +2321,14 @@ s32 Item_DecUses(void *arg0) {
 
     if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
-        lbl_80367228 = 0;
+        gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
 
     if (*(void **)arg0 != 0) {
         p = (unsigned long long *)((u8 *)*(void **)arg0 + 0x38);
     } else {
-        p = (unsigned long long *)&lbl_80367228;
+        p = (unsigned long long *)&gItemFlagsDummy;
     }
 
     if ((*p & 0x10000000000ULL) != 0) {

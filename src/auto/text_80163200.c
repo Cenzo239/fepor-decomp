@@ -16353,7 +16353,7 @@ extern u16 lbl_80277EA0;
 extern u16 lbl_80293D8C;
 extern void *lbl_8028D9A4[];
 extern u8 gItemFlagsDummyReady;
-extern s32 lbl_80367228;
+extern s32 gItemFlagsDummy;
 extern s32 lbl_8036722C;
 #include <common.h>
 #include "global.h"
