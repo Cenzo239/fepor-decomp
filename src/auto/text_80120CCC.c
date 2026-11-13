@@ -1399,7 +1399,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void *);
     void String_Init(void *, void *, void *);
     void fn_800C8DCC(void *, void *, void *);
-    void fn_800C96F8(void *, void *, u32);
+    void String_AssignCStr(void *, void *, u32);
     void String_Destroy(void *, s32);
     s32 fn_800C9400(void *, u32, u32, char *, u32);
     s32 fn_800E7FB4(void *, void *);
@@ -1482,13 +1482,13 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     String_Init(&sp3C, lbl_80274DB0 + 0x12, &sp14);
     fn_800C8DCC(spC0, path, &sp3C);
     buf = (Obj *)spC0;
-    fn_800C96F8(&self->str54, buf, strlen((char *)buf));
+    String_AssignCStr(&self->str54, buf, strlen((char *)buf));
     String_Destroy(&sp3C, -1);
 
     String_Init(&sp30, lbl_80274DB0 + 0x1A, &sp10);
     fn_800C8DCC(spA0, path, &sp30);
     buf = (Obj *)spA0;
-    fn_800C96F8(&sp48, buf, strlen((char *)buf));
+    String_AssignCStr(&sp48, buf, strlen((char *)buf));
     String_Destroy(&sp30, -1);
 
     String_Init(&sp24, lbl_80274DB0 + 0x1F, &spC);
