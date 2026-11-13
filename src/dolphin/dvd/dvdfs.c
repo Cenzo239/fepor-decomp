@@ -2141,7 +2141,7 @@ void fn_802107A8(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80210C70(void *arg0) {
+void VIConfigure(void *arg0) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
     void OSReport(char *, ...);

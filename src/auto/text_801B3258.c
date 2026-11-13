@@ -8068,7 +8068,7 @@ void fn_801C7C08(void *arg0) {
 
 void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     void *fn_8006E658(void);
-    void fn_80210C70(void *);
+    void VIConfigure(void *);
     void fn_8009E574(void);
     void fn_802204F8(void);
     void fn_80221824(u8, void *, s32, void *);
@@ -8117,7 +8117,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     temp_r3 = fn_8006E658();
     *(s16 *)((u8 *)temp_r3 + 0xA) = (s16)(lbl_80366E98 + lbl_803682B0);
     *(s16 *)((u8 *)temp_r3 + 0xC) = (s16)(lbl_80366E9A + lbl_803682B1);
-    fn_80210C70(temp_r3);
+    VIConfigure(temp_r3);
     if (lbl_803682A4 & 0x40) {
         var_f2 = lbl_8036B478;
     } else {
@@ -8521,7 +8521,7 @@ void fn_801C85E0(void *arg0) {
 }
 void fn_801C8E84(void) {
     void *fn_8006E658(void);
-    void fn_80210C70(void *);
+    void VIConfigure(void *);
     void fn_80221824(u8, void *, s32, void *);
     void *memcpy(void *, void *, u32);
     extern s16 lbl_80366E98;
@@ -8560,7 +8560,7 @@ void fn_801C8E84(void) {
     temp_r3 = fn_8006E658();
     *(s16 *)((u8 *)temp_r3 + 0xA) = (s16)(lbl_80366E98 + lbl_803682B0);
     *(s16 *)((u8 *)temp_r3 + 0xC) = (s16)(lbl_80366E9A + lbl_803682B1);
-    fn_80210C70(temp_r3);
+    VIConfigure(temp_r3);
     if (lbl_803682A4 & 0x40) {
         var_f2 = lbl_8036B478;
     } else {

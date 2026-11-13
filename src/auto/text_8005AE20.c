@@ -6718,7 +6718,7 @@ void fn_8006DA98(void *arg0)
     void fn_802246EC(s32, s32);
     void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
-    void fn_80210C70(void *);
+    void VIConfigure(void *);
     void fn_802115A8(void *);
     void fn_80211478(void);
     void fn_802107A8(void);
@@ -6825,7 +6825,7 @@ void fn_8006DA98(void *arg0)
     }
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
-    fn_80210C70(DEMORmode);
+    VIConfigure(DEMORmode);
     fn_802115A8(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     fn_80211478();
@@ -6862,7 +6862,7 @@ void fn_8006DFD8(void) {
     void fn_802246EC(s32, s32);
     void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
-    void fn_80210C70(void *);
+    void VIConfigure(void *);
     void fn_802115A8(void *);
     void fn_80211478(void);
     void fn_802107A8(void);
@@ -7001,7 +7001,7 @@ body:
     }
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
-    fn_80210C70(DEMORmode);
+    VIConfigure(DEMORmode);
     fn_802115A8(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     fn_80211478();
@@ -7238,7 +7238,7 @@ void DEMOInit(void *arg0)
     void OSSetArenaLo(void *);
     void fn_800C5300(void);
     void fn_800C50FC(void *, s32);
-    void fn_80210C70(void *);
+    void VIConfigure(void *);
     void *fn_800C4638(s32, void *, s32);
     void *GXInit(void *, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -7334,7 +7334,7 @@ void DEMOInit(void *arg0)
     OSSetArenaLo((void *)(((u32)DemoFrameBuffer2 + (fbSize + 0x1F)) & ~0x1Fu));
     fn_800C5300();
     fn_800C50FC(lbl_8026B990 + 0x16b, 0x533333);
-    fn_80210C70(DEMORmode);
+    VIConfigure(DEMORmode);
     buf = fn_800C4638(0x80000, lbl_8026B990 + 0x170, 0x80000);
     DefaultFifo = buf;
     DefaultFifoObj = GXInit(buf, 0x80000);
