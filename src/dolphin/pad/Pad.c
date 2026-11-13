@@ -163,7 +163,7 @@ static void PADDisable(s32 chan) {
     void OSRestoreInterrupts(s32);
     void fn_80209C10(s32 chan, u16 id);
     u32 fn_8023B930(u32 poll);
-    extern u32 lbl_8036866C;
+    extern u32 EnabledBits;
     extern u32 lbl_80368678;
     extern u32 lbl_8036867C;
     extern u32 lbl_80368680;
@@ -174,7 +174,7 @@ static void PADDisable(s32 chan) {
     enabled = OSDisableInterrupts();
     chanBit = 0x80000000 >> chan;
     fn_8023B930(chanBit);
-    lbl_8036866C &= ~chanBit;
+    EnabledBits &= ~chanBit;
     lbl_80368678 &= ~chanBit;
     lbl_8036867C &= ~chanBit;
     lbl_80368680 &= ~chanBit;
@@ -186,7 +186,7 @@ static void PADDisable(s32 chan) {
 void fn_80211F78(s32 arg0, s32 arg1) {
     extern s32 lbl_80366FA4;
     extern s32 PADSpec;
-    extern s32 lbl_8036866C;
+    extern s32 EnabledBits;
     extern s32 lbl_80368670;
     extern char Origin[];
     extern void fn_802121E0(void);
@@ -202,10 +202,10 @@ void fn_80211F78(s32 arg0, s32 arg1) {
     if (!(arg1 & 0xF)) {
         fn_80211DD4(lbl_80366FA4);
         r31 = lbl_80366FA4;
-        lbl_8036866C |= 0x80000000U >> r31;
+        EnabledBits |= 0x80000000U >> r31;
         fn_8023BA70(r31, buf);
         fn_8023B804(r31, PADSpec | 0x400000);
-        fn_8023B894(lbl_8036866C);
+        fn_8023B894(EnabledBits);
     }
     lbl_80366FA4 = __cntlzw(lbl_80368670);
     if (lbl_80366FA4 != 0x20) {
@@ -225,7 +225,7 @@ void fn_80212108(s32 chan, u32 type) {
     extern u8 Origin[];
     extern s32 lbl_80366FA4;
     extern u32 PADSpec;
-    extern u32 lbl_8036866C;
+    extern u32 EnabledBits;
     extern u32 lbl_80368670;
     extern u32 lbl_80368678;
     u32 sr;
@@ -238,10 +238,10 @@ void fn_80212108(s32 chan, u32 type) {
     if (!(type & 0xF)) {
         bitConst = 0x80000000U;
         chanBit = lbl_80366FA4;
-        lbl_8036866C |= bitConst >> chanBit;
+        EnabledBits |= bitConst >> chanBit;
         fn_8023BA70(chanBit, &sr);
         fn_8023B804(chanBit, PADSpec | 0x400000);
-        fn_8023B894(lbl_8036866C);
+        fn_8023B894(EnabledBits);
         lbl_80368678 |= bitConst >> lbl_80366FA4;
     }
     bit = lbl_80368670;
@@ -258,14 +258,14 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     extern void PADOriginCallback(void);
     extern u8 Origin[];
     extern u32 cmdGetOrigin;
-    extern u32 lbl_8036866C;
+    extern u32 EnabledBits;
     extern u32 lbl_80368678;
     extern u32 lbl_8036867C;
     u32 error;
     u32 chanBit;
 
     chanBit = 0x80000000 >> chan;
-    if (!(lbl_8036866C & chanBit)) {
+    if (!(EnabledBits & chanBit)) {
         return;
     }
 
@@ -302,7 +302,7 @@ u32 fn_802129C0(PADStatus *status)
   extern u8 Origin[];
   extern s32 lbl_80366FA4;
   extern u16 cmdGetOrigin;
-  extern u32 lbl_8036866C;
+  extern u32 EnabledBits;
   extern u32 lbl_80368670;
   extern u32 lbl_80368678;
   extern u32 lbl_8036867C;
@@ -333,7 +333,7 @@ u32 fn_802129C0(PADStatus *status)
       status->err = -2;
       memset(status, 0, 10);
     }
-    else if (!(lbl_8036866C & bit))
+    else if (!(EnabledBits & bit))
     {
       status->err = -1;
       memset(status, 0, 10);
@@ -411,7 +411,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
     s32 SIGetType(s32);
     void fn_8023B804(s32, u32);
     void fn_8023B818(void);
-    extern s32 lbl_8036866C;
+    extern s32 EnabledBits;
     extern u32 lbl_80366FB0;
     extern u32 PADSpec;
     s32 enabled;
@@ -420,7 +420,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
 
     var_r30 = arg1;
     enabled = OSDisableInterrupts();
-    if ((lbl_8036866C & (0x80000000U >> arg0)) && (SIGetType(arg0) & 0x20000000) == 0) {
+    if ((EnabledBits & (0x80000000U >> arg0)) && (SIGetType(arg0) & 0x20000000) == 0) {
         if (lbl_80366FB0 < 2U && var_r30 == 2) {
             var_r30 = 0;
         }
