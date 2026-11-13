@@ -874,6 +874,7 @@ fail:
 #pragma cplusplus reset
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+/* Parse actor XML at path into self: string-map entries, scalars, then apply defaults. */
 void Actor_LoadXml(void *arg0, void *arg1) {
     void *Heap_Alloc(s32);
     void Xml_GetChildName(String *, void *);
@@ -945,7 +946,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void *sc10;
     void *scC;
     void *sc8;
-    void *self;
+    BattleActor *self;
     void *xml;
     char *nameBuf;
     s32 count;
@@ -955,7 +956,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     s32 tmp;
     String *node;
 
-    self = arg0;
+    self = (BattleActor *)arg0;
     path = arg1;
     made = 0;
     str130.cap = 0;
@@ -996,101 +997,101 @@ void Actor_LoadXml(void *arg0, void *arg1) {
 
     String_Init(&spF4, (char *)gActorXmlStrs + 0x39A, &sc40);
     Xml_GetNamedValue(sp2FC, xml, &spF4);
-    *(f32 *)((u8 *)self + 0x124) = *(f32 *)sp2FC;
+    self->height = *(f32 *)sp2FC;
     String_Destroy(&spF4, -1);
 
     String_Init(&spE8, (char *)gActorXmlStrs + 0x3A3, &sc3C);
     Xml_GetNamedValue(sp2DC, xml, &spE8);
-    *(f32 *)((u8 *)self + 0x128) = *(f32 *)sp2DC;
+    self->radius = *(f32 *)sp2DC;
     String_Destroy(&spE8, -1);
 
     String_Init(&spDC, (char *)gActorXmlStrs + 0x3AA, &sc38);
     Xml_GetNamedValue(sp2BC, xml, &spDC);
-    *(s32 *)((u8 *)self + 0x12C) = *(s32 *)sp2BC;
+    self->unk_12C = *(s32 *)sp2BC;
     String_Destroy(&spDC, -1);
 
     String_Init(&spD0, (char *)gActorXmlStrs + 0x3B7, &sc34);
     Xml_GetNamedValue(sp29C, xml, &spD0);
-    *(s32 *)((u8 *)self + 0x130) = *(s32 *)sp29C;
+    self->unk_130 = *(s32 *)sp29C;
     String_Destroy(&spD0, -1);
 
     String_Init(&spC4, (char *)gActorXmlStrs + 0x3C6, &sc30);
     Xml_GetNamedValue(sp27C, xml, &spC4);
-    *(s32 *)((u8 *)self + 0x134) = *(s32 *)sp27C;
+    self->unk_134 = *(s32 *)sp27C;
     String_Destroy(&spC4, -1);
 
     String_Init(&spB8, (char *)gActorXmlStrs + 0x3D3, &sc2C);
     Xml_GetNamedValue(sp25C, xml, &spB8);
-    *(s32 *)((u8 *)self + 0x138) = *(s32 *)sp25C;
+    self->unk_138 = *(s32 *)sp25C;
     String_Destroy(&spB8, -1);
 
     String_Init(&spAC, (char *)gActorXmlStrs + 0x3E0, &sc28);
     Xml_GetNamedValue(sp23C, xml, &spAC);
-    *(s32 *)((u8 *)self + 0x13C) = *(s32 *)sp23C;
+    self->unk_13C = *(s32 *)sp23C;
     String_Destroy(&spAC, -1);
 
     String_Init(&spA0, (char *)gActorXmlStrs + 0x3ED, &sc24);
     Xml_GetNamedValue(sp21C, xml, &spA0);
-    *(s32 *)((u8 *)self + 0x19C) = *(s32 *)sp21C;
+    self->heightFlag = *(s32 *)sp21C;
     String_Destroy(&spA0, -1);
 
     String_Init(&sp94, (char *)gActorXmlStrs + 0x3F4, &sc20);
     Xml_GetNamedValue(sp1FC, xml, &sp94);
     tmp = *(s32 *)sp1FC;
-    *((u8 *)self + 0x1A1) = (u8)(tmp != 0);
+    self->flag_1A1 = (u8)(tmp != 0);
     String_Destroy(&sp94, -1);
 
     String_Init(&sp88, (char *)gActorXmlStrs + 0x401, &sc1C);
     Xml_GetNamedValue(sp1DC, xml, &sp88);
-    *(s32 *)((u8 *)self + 0x198) = *(s32 *)sp1DC;
+    self->rate = *(s32 *)sp1DC;
     String_Destroy(&sp88, -1);
 
     String_Init(&sp7C, (char *)gActorXmlStrs + 0x40A, &sc18);
     Xml_GetNamedValue(sp1BC, xml, &sp7C);
-    *(f32 *)((u8 *)self + 0x150) = *(f32 *)sp1BC;
+    self->unk_150 = *(f32 *)sp1BC;
     String_Destroy(&sp7C, -1);
 
     String_Init(&sp70, (char *)gActorXmlStrs + 0x417, &sc14);
     Xml_GetNamedValue(sp19C, xml, &sp70);
-    *(s32 *)((u8 *)self + 0x188) = *(s32 *)sp19C;
+    self->unk_188 = *(s32 *)sp19C;
     String_Destroy(&sp70, -1);
 
     String_Init(&sp64, (char *)gActorXmlStrs + 0x420, &sc10);
     Xml_GetNamedValue(sp17C, xml, &sp64);
-    *(s32 *)((u8 *)self + 0x18C) = *(s32 *)sp17C;
+    self->unk_18C = *(s32 *)sp17C;
     String_Destroy(&sp64, -1);
 
     String_Init(&sp58, (char *)gActorXmlStrs + 0x42D, &scC);
     Xml_GetNamedValue(sp15C, xml, &sp58);
-    *(s32 *)((u8 *)self + 0x190) = *(s32 *)sp15C;
+    self->unk_190 = *(s32 *)sp15C;
     String_Destroy(&sp58, -1);
 
     String_Init(&sp4C, (char *)gActorXmlStrs + 0x43A, &sc8);
     Xml_GetNamedValue(sp13C, xml, &sp4C);
     tmp = *(s32 *)sp13C;
-    *((u8 *)self + 0x1B6) = (u8)(tmp != 0);
+    self->flag_1B6 = (u8)(tmp != 0);
     String_Destroy(&sp4C, -1);
 
-    if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x124)) {
-        *(f32 *)((u8 *)self + 0x124) = fActorDefaultHeight;
+    if (lbl_8036A184 == self->height) {
+        self->height = fActorDefaultHeight;
     }
-    if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x128)) {
-        *(f32 *)((u8 *)self + 0x128) = fActorDefaultRadius;
+    if (lbl_8036A184 == self->radius) {
+        self->radius = fActorDefaultRadius;
     }
-    if (*(s32 *)((u8 *)self + 0x198) == 0) {
-        *(s32 *)((u8 *)self + 0x198) = 1;
+    if (self->rate == 0) {
+        self->rate = 1;
     }
-    if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x150)) {
-        *(f32 *)((u8 *)self + 0x150) = *(f32 *)((u8 *)gGame + 0xEC);
+    if (lbl_8036A184 == self->unk_150) {
+        self->unk_150 = *(f32 *)((u8 *)gGame + 0xEC);
     }
-    if (*(s32 *)((u8 *)self + 0x188) == 0) {
-        *(s32 *)((u8 *)self + 0x188) = *(s32 *)((u8 *)gGame + 0x180);
+    if (self->unk_188 == 0) {
+        self->unk_188 = *(s32 *)((u8 *)gGame + 0x180);
     }
-    if (*(s32 *)((u8 *)self + 0x18C) == 0) {
-        *(s32 *)((u8 *)self + 0x18C) = *(s32 *)((u8 *)gGame + 0x188);
+    if (self->unk_18C == 0) {
+        self->unk_18C = *(s32 *)((u8 *)gGame + 0x188);
     }
-    if (*(s32 *)((u8 *)self + 0x190) == 0) {
-        *(s32 *)((u8 *)self + 0x190) = *(s32 *)((u8 *)gGame + 0x184);
+    if (self->unk_190 == 0) {
+        self->unk_190 = *(s32 *)((u8 *)gGame + 0x184);
     }
 
     Xml_Destroy(xml, 1);
