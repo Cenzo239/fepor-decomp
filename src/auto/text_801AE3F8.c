@@ -147,7 +147,7 @@ extern "C" void Ui_DestroyPanel(void *panel) {
 void fn_801AE73C(s32 arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     
     s32 temp_r4;
     u8 var_r3;
@@ -159,7 +159,7 @@ void fn_801AE73C(s32 arg0) {
     if (var_r3 == 0) {
         temp_r4 = *(s32*)((char*)gPadInput + 4);
         if (temp_r4 & (*(s32*)((char*)gPadInput + 8) ^ temp_r4) & 0x300) {
-            Ui_PlaySeCue(&lbl_8027BD18[0x36E], 0x64);
+            Ui_PlaySeCue(&gFShopStrings[0x36E], 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -270,7 +270,7 @@ void fn_801AE9A4(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     u8 flag;
     u32 a;
     u32 b;
@@ -286,7 +286,7 @@ void fn_801AE9A4(void *arg0) {
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x54));
             TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x68));
-            Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -301,7 +301,7 @@ void fn_801AEA58(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     u8 flag;
     u32 a;
     u32 b;
@@ -318,7 +318,7 @@ void fn_801AEA58(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x60));
-            Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
             str = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x88);
             tmp = Ui_FindChild(arg0, -0x1000, 0);
             if (tmp != 0) {
@@ -338,7 +338,7 @@ void FShop_OnAnimalHelp(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     u8 flag;
     u32 a;
     u32 b;
@@ -361,7 +361,7 @@ void FShop_OnAnimalHelp(void *arg0) {
             if (tmp != 0) {
                 Ui_SetWidgetText(tmp, str);
             }
-            Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -376,7 +376,7 @@ void fn_801AEC14(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     u8 flag;
     u32 a;
     u32 b;
@@ -399,7 +399,7 @@ void fn_801AEC14(void *arg0) {
             if (tmp != 0) {
                 Ui_SetWidgetText(tmp, str);
             }
-            Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -410,7 +410,7 @@ void fn_801AECF8(void *arg0) {
     M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 fn_8013FF94(void *, s32, s32);
     M2C_UNK fn_801475FC(void *, M2C_UNK);
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u32 lbl_80367110;
     extern void *lbl_80367240;
     u8 var;
@@ -432,7 +432,7 @@ void fn_801AECF8(void *arg0) {
     }
     if (var == 0 && (mask & 0x300)) {
         Ui_BringChildToFront(arg0, *(s32 *)((char *)arg0 + 0x48));
-        fn_801475FC(&lbl_8027BD18[0x36E], 0x64);
+        fn_801475FC(&gFShopStrings[0x36E], 0x64);
         fn_8000C188(arg0);
     }
 }
@@ -444,7 +444,7 @@ void fn_801AEDA0(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     u8 flag;
     u32 a;
     u32 b;
@@ -459,7 +459,7 @@ void fn_801AEDA0(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 1, 0));
-            Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -739,7 +739,7 @@ void fn_801AF6BC(void *arg0) {
     void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u8 gBattleState[];
     extern u8 gConvoy[];
     extern f32 lbl_8036B0AC;
@@ -824,7 +824,7 @@ void fn_801AF6BC(void *arg0) {
         pressed = held & (gPadInput[2] ^ held);
         if ((pressed & 0x100) != 0 && sel != NULL) {
             tmp = *(void **)((u8 *)panel + 0x3C);
-            Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
             if ((*Item_GetFlagsPtr(tmp) & 5ULL) != 0 && fn_80092F9C(sel) >= 4) {
                 TalkUi_ShowMsg(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x40));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x84);
@@ -852,10 +852,10 @@ void fn_801AF6BC(void *arg0) {
             if (fn_8014D8DC(gBattleState) == 0) {
                 vt = *(void ***)list;
                 ((void (*)(s16 *, void *))vt[0x2C / 4])(sp14, list);
-                Ui_CreateMsgPopup(lbl_8027BD18 + 0x38E, self, (f32)sp14[0], (f32)sp14[1]);
+                Ui_CreateMsgPopup(gFShopStrings + 0x38E, self, (f32)sp14[0], (f32)sp14[1]);
                 return;
             }
-            Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
             if (Convoy_FindEmpty(gConvoy) < 0) {
                 TalkUi_ShowMsg(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x64));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x7C);
@@ -934,7 +934,7 @@ void fn_801AF6BC(void *arg0) {
             } else {
                 Process_Goto(self, 0xE);
             }
-            Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
         }
     }
 }
@@ -1189,7 +1189,7 @@ extern "C" void fn_801B0564(void *arg0) {
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80331C38[];
     extern u32 gUiInputFlags;
@@ -1269,14 +1269,14 @@ extern "C" void fn_801B0564(void *arg0) {
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             switch (saved) {
             case 0:
-                Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x3B0, 0x64);
                 break;
             case 1:
                 *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0x40) = -1;
-                Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
                 break;
             case 2:
-                Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
                 Process_ClearFunc(self);
                 break;
             }
@@ -1292,7 +1292,7 @@ extern "C" void fn_801B0564(void *arg0) {
             void *obj4c;
             void *obj58;
             s32 n;
-            Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
             obj4c = *(void **)((u8 *)self + 0x4C);
             Ui_SlideWidgetChild(self, obj4c, Pair(0x260, *(s16 *)((u8 *)obj4c + 0xC)), 0);
             obj58 = *(void **)((u8 *)self + 0x58);
@@ -1439,7 +1439,7 @@ void fn_801B1130(void *arg0)
 void fn_801B1194(s32 arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     
     s32 temp_r4;
     u8 var_r3;
@@ -1451,7 +1451,7 @@ void fn_801B1194(s32 arg0) {
     if (var_r3 == 0) {
         temp_r4 = *(s32*)((char*)gPadInput + 4);
         if (temp_r4 & (*(s32*)((char*)gPadInput + 8) ^ temp_r4) & 0x300) {
-            Ui_PlaySeCue(&lbl_8027BD18[0x36E], 0x64);
+            Ui_PlaySeCue(&gFShopStrings[0x36E], 0x64);
             Process_ClearFunc(arg0);
         }
     }
@@ -1522,7 +1522,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u8 gBattleState[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -1629,14 +1629,14 @@ extern "C" void fn_801B14DC(void *arg0) {
                     }
                     break;
                 }
-                Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
                 return;
             }
         }
         if (bit100 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 &&
             *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E) == 4) {
             if (score > *(s32 *)(gBattleState + 0x18)) {
-                Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x3B0, 0x64);
                 TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x38));
                 self = (void *)*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x84);
                 ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -1645,7 +1645,7 @@ extern "C" void fn_801B14DC(void *arg0) {
                 }
                 Process_Goto(arg0, 0x1D);
             } else {
-                Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
                 Process_ClearFunc(arg0);
             }
             return;
@@ -1661,7 +1661,7 @@ extern "C" void fn_801B14DC(void *arg0) {
                 }
             }
             *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E) = 4;
-            Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
             return;
         }
         if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
@@ -1688,10 +1688,10 @@ extern "C" void fn_801B14DC(void *arg0) {
                 if (ret != NULL) {
                     Ui_SetWidgetText(ret, (s32)self);
                 }
-                Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
                 return;
             }
-            Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
             fn_80140210(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
             obj = *(void **)((u8 *)arg0 + 0x48);
             if (obj != NULL) {
@@ -1982,7 +1982,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u8 gBattleState[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -2067,7 +2067,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if (child->cost > *(s32 *)(gBattleState + 0x18)) {
-                Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x3B0, 0x64);
                 TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x6C) + 0x38));
                 owner = *(void **)((u8 *)self + 0x6C);
                 saved = *(s32 *)((u8 *)owner + 0x84);
@@ -2077,7 +2077,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
                 }
                 Process_Goto(self, 0x1C);
             } else {
-                Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
+                Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
                 panel40 = *(void **)((u8 *)self + 0x40);
                 Ui_SlideWidgetChild(self, panel40, Pair(0x260, *(s16 *)((u8 *)panel40 + 0xC)), 0);
                 panel44 = *(void **)((u8 *)self + 0x44);
@@ -2108,7 +2108,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
             *(f32 *)((u8 *)panel40 + 0x30) = lbl_8036B0A8;
             Ui_BringChildToFront(self, panel40);
             Process_Goto(self, 3);
-            Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
         }
     }
 }
@@ -2183,7 +2183,7 @@ extern "C" void fn_801B27B0(void *arg0) {
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
-    extern u8 lbl_8027BD18[];
+    extern u8 gFShopStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -2247,7 +2247,7 @@ extern "C" void fn_801B27B0(void *arg0) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            Ui_PlaySeCue(lbl_8027BD18 + 0x37e, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x37e, 0x64);
             Process_ClearFunc(self);
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
@@ -2262,7 +2262,7 @@ extern "C" void fn_801B27B0(void *arg0) {
             sp8[1] = tmp;
             Ui_SlideWidgetChild(self, p, sp8, 0);
             Process_Goto(self, 0x24);
-            Ui_PlaySeCue(lbl_8027BD18 + 0x3a0, 0x64);
+            Ui_PlaySeCue(gFShopStrings + 0x3a0, 0x64);
         }
     }
     (void)sp10;
@@ -2477,7 +2477,7 @@ void *Ui_MainListPanel_Ctor(void *arg0) {
 }
 extern s32 gUiInputFlags;
 extern s32 *gPadInput;
-extern u8 lbl_8027BD18[];
+extern u8 gFShopStrings[];
 #include "global.h"
 #include "unit.h"
 
