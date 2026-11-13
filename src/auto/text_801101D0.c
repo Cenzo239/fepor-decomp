@@ -6178,7 +6178,7 @@ got_unit:
 }
 
 #pragma global_optimizer off
-s32 TalkUi_LayoutSlot(void *arg0, u32 arg1) {
+s32 TalkUi_LayoutSlot(void *talk, u32 slot) {
     s32 fn_801208BC(void *, u32);
     void fn_80108BD0(void *, s32, s32, s32);
     void fn_80122DD0(void *, s16, s16);
@@ -6187,104 +6187,105 @@ s32 TalkUi_LayoutSlot(void *arg0, u32 arg1) {
     extern u16 TalkUi_str[];
     extern s16 lbl_80312060[];
     void *self;
-    s32 var30;
+    s32 width;
     u32 idx;
-    s32 var29;
-    void *obj;
-    s32 pos;
-    u8 *tmp;
+    s32 side;
+    void *panel;
+    s32 baseW;
+    u8 *slotPtr;
 
-    self = arg0;
-    tmp = (u8 *)self + ((arg1 << 2) & 0x3FC);
-    *(void **)((u8 *)self + 0x44) = *(void **)(tmp + 0x34);
-    idx = arg1 & 0xFF;
-    obj = *(void **)((u8 *)self + 0x44);
-    if ((u32)obj != 0 && *(u8 *)((u8 *)obj + 0x68) == 0) {
-        pos = fn_801208BC(*(void **)((u8 *)self + 0x30), idx) + 0xE0;
+    /* Position the talk window and portrait for speaker slot 0-3 from text width. */
+    self = talk;
+    slotPtr = (u8 *)self + ((slot << 2) & 0x3FC);
+    *(void **)((u8 *)self + 0x44) = *(void **)(slotPtr + 0x34);
+    idx = slot & 0xFF;
+    panel = *(void **)((u8 *)self + 0x44);
+    if ((u32)panel != 0 && *(u8 *)((u8 *)panel + 0x68) == 0) {
+        baseW = fn_801208BC(*(void **)((u8 *)self + 0x30), idx) + 0xE0;
         switch (idx) {
         case 0:
-            obj = *(void **)((u8 *)self + 0x34);
-            var30 = pos;
-            if ((u32)obj != 0 && *(u8 *)((u8 *)obj + 0x6B) != 0) {
-                if (pos < 0x170) {
-                    var30 = 0x170;
+            panel = *(void **)((u8 *)self + 0x34);
+            width = baseW;
+            if ((u32)panel != 0 && *(u8 *)((u8 *)panel + 0x6B) != 0) {
+                if (baseW < 0x170) {
+                    width = 0x170;
                 }
-                if (var30 > 0x230) {
-                    var30 = 0x230;
+                if (width > 0x230) {
+                    width = 0x230;
                 }
-                fn_80108BD0((char *)TalkUi_str + 0xD6, 0x18, 0x14, var30);
-                obj = *(void **)((u8 *)self + 0x34);
-                if ((u32)obj != 0) {
-                    fn_80122DD0(obj, (s16)(var30 - 0x40), 0x7C);
+                fn_80108BD0((char *)TalkUi_str + 0xD6, 0x18, 0x14, width);
+                panel = *(void **)((u8 *)self + 0x34);
+                if ((u32)panel != 0) {
+                    fn_80122DD0(panel, (s16)(width - 0x40), 0x7C);
                 }
             }
             break;
         case 1:
-            obj = *(void **)((u8 *)self + 0x38);
-            var30 = pos;
-            if ((u32)obj != 0 && *(u8 *)((u8 *)obj + 0x6B) != 0) {
-                if (pos < 0x170) {
-                    var30 = 0x170;
+            panel = *(void **)((u8 *)self + 0x38);
+            width = baseW;
+            if ((u32)panel != 0 && *(u8 *)((u8 *)panel + 0x6B) != 0) {
+                if (baseW < 0x170) {
+                    width = 0x170;
                 }
-                if (var30 > 0x230) {
-                    var30 = 0x230;
+                if (width > 0x230) {
+                    width = 0x230;
                 }
-                fn_80108BD0((char *)TalkUi_str + 0xDF, 0x248 - var30, 0x13C, var30);
-                fn_80122E28(*(void **)((u8 *)self + 0x38), (s16)(0x278 - var30), 0x14C);
-                obj = *(void **)((u8 *)self + 0x38);
-                if ((u32)obj != 0) {
-                    fn_80122DD0(obj, (s16)(0x288 - var30), 0x1A4);
+                fn_80108BD0((char *)TalkUi_str + 0xDF, 0x248 - width, 0x13C, width);
+                fn_80122E28(*(void **)((u8 *)self + 0x38), (s16)(0x278 - width), 0x14C);
+                panel = *(void **)((u8 *)self + 0x38);
+                if ((u32)panel != 0) {
+                    fn_80122DD0(panel, (s16)(0x288 - width), 0x1A4);
                 }
             }
             break;
         case 2:
-            obj = *(void **)((u8 *)self + 0x3C);
-            var29 = pos;
-            if ((u32)obj != 0 && *(u8 *)((u8 *)obj + 0x6B) != 0) {
-                var30 = 0x60;
-                if (pos < 0x170) {
-                    var29 = 0x170;
+            panel = *(void **)((u8 *)self + 0x3C);
+            side = baseW;
+            if ((u32)panel != 0 && *(u8 *)((u8 *)panel + 0x6B) != 0) {
+                width = 0x60;
+                if (baseW < 0x170) {
+                    side = 0x170;
                 }
-                if (var29 > 0x230) {
-                    var29 = 0x230;
+                if (side > 0x230) {
+                    side = 0x230;
                 }
-                if (var29 + 0x60 > 0x230) {
-                    var30 = 0x230 - var29;
+                if (side + 0x60 > 0x230) {
+                    width = 0x230 - side;
                 }
-                fn_80108BD0((char *)TalkUi_str + 0xE8, var30 + 0x18, 0xA0, var29);
-                fn_80122E28(*(void **)((u8 *)self + 0x3C), (s16)(var30 + 0xC0), 0xB0);
-                lbl_80312060[6] = (s16)(var30 + 0x70);
+                fn_80108BD0((char *)TalkUi_str + 0xE8, width + 0x18, 0xA0, side);
+                fn_80122E28(*(void **)((u8 *)self + 0x3C), (s16)(width + 0xC0), 0xB0);
+                lbl_80312060[6] = (s16)(width + 0x70);
                 lbl_80312060[7] = 0x10F;
                 lbl_80312060[8] = 1;
-                obj = *(void **)((u8 *)self + 0x3C);
-                if ((u32)obj != 0) {
-                    s32 t = var29 - 0x40;
-                    fn_80122DD0(obj, (s16)(var30 + t), 0x108);
+                panel = *(void **)((u8 *)self + 0x3C);
+                if ((u32)panel != 0) {
+                    s32 t = side - 0x40;
+                    fn_80122DD0(panel, (s16)(width + t), 0x108);
                 }
             }
             break;
         case 3:
-            obj = *(void **)((u8 *)self + 0x40);
-            var30 = pos;
-            if ((u32)obj != 0 && *(u8 *)((u8 *)obj + 0x6B) != 0) {
-                var29 = 0x60;
-                if (pos < 0x170) {
-                    var30 = 0x170;
+            panel = *(void **)((u8 *)self + 0x40);
+            width = baseW;
+            if ((u32)panel != 0 && *(u8 *)((u8 *)panel + 0x6B) != 0) {
+                side = 0x60;
+                if (baseW < 0x170) {
+                    width = 0x170;
                 }
-                if (var30 > 0x230) {
-                    var30 = 0x230;
+                if (width > 0x230) {
+                    width = 0x230;
                 }
-                if (var30 + 0x60 > 0x230) {
-                    var29 = 0x230 - var30;
+                if (width + 0x60 > 0x230) {
+                    side = 0x230 - width;
                 }
-                fn_80108BD0((char *)TalkUi_str + 0xF1, (0x248 - var30) - var29, 0xB4, var30);
-                fn_80122E28(*(void **)((u8 *)self + 0x40), (s16)((0x278 - var30) - var29), 0xC4);
-                lbl_80312060[9] = (s16)(0x1F0 - var29);
+                fn_80108BD0((char *)TalkUi_str + 0xF1, (0x248 - width) - side, 0xB4, width);
+                fn_80122E28(*(void **)((u8 *)self + 0x40), (s16)((0x278 - width) - side), 0xC4);
+                lbl_80312060[9] = (s16)(0x1F0 - side);
                 lbl_80312060[10] = 0x123;
                 lbl_80312060[11] = 0;
-                obj = *(void **)((u8 *)self + 0x40);
-                if ((u32)obj != 0) {
-                    fn_80122DD0(obj, (s16)((0x288 - var30) - var29), 0x11C);
+                panel = *(void **)((u8 *)self + 0x40);
+                if ((u32)panel != 0) {
+                    fn_80122DD0(panel, (s16)((0x288 - width) - side), 0x11C);
                 }
             }
             break;
