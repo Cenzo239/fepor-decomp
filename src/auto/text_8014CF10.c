@@ -602,7 +602,7 @@ void fn_8014DFE8(s32 arg0) {
 }
 
 #pragma global_optimizer off
-void fn_8014E014(void) {
+void MsgDebug_Init(void) {
     void fn_8005B918(void *);
     u8 fn_8005B888(s32);
     void *fn_8005B8AC(s32);
