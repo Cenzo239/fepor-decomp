@@ -1695,7 +1695,7 @@ extern "C" void fn_8012F360(void *arg0) {
     void fn_8012EF5C(void *, void *, s32);
     void fn_8012F5CC(void *);
     void Ui_DrawUnitCountBanner(void *);
-    void fn_8012FF60(void *);
+    void Ui_DrawUnitListModels(void *);
     void fn_801302F4(void *);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
@@ -1719,7 +1719,7 @@ extern "C" void fn_8012F360(void *arg0) {
     s32 var_r29;
     s32 var_r28;
 
-    fn_8012FF60(arg0);
+    Ui_DrawUnitListModels(arg0);
     var_r30 = arg0;
     Ui_DrawUnitCountBanner(var_r30);
     fn_8012F5CC(var_r30);
@@ -2125,7 +2125,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8012FF60(void *arg0) {
+void Ui_DrawUnitListModels(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
