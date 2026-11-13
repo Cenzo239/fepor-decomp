@@ -2128,7 +2128,7 @@ void fn_8002D854(s32 arg0) {
     }
 }
 
-void fn_8002D940(s32 arg0) {
+void Battle_ClearProcIfFxActive(s32 arg0) {
     s8 Fx_FindSlotByName(u8 *);
     void Process_ClearFunc(s32);
     extern u8 Battle_str[];
