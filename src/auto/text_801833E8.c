@@ -3319,7 +3319,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void fn_800FE2A0(void *, s32, s32);
+    void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
     void fn_8002F658(void *, s32);
@@ -3368,7 +3368,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
         fn_80022FD8(base, 5);
         ((s16 *)*(void **)((u8 *)base + 0x14190))[(s8)*(u8 *)((u8 *)arg0 + 0x19E) + ((s8)*(u8 *)((u8 *)arg0 + 0x19F) << 6)] = 0;
     } else {
-        fn_800FE2A0(arg0, 5, -1);
+        Map_BuildUnitMoveRange(arg0, 5, -1);
     }
     bestDist = 0x7FFFFFFF;
     if (!Status_Test((u8 *)arg0 + 0x1BC, 0x3C)) {
