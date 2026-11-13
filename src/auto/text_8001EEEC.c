@@ -1935,7 +1935,7 @@ f32 fn_80023430(void *arg0, f32 x, f32 y) {
     }
 }
 #pragma fp_contract reset
-extern f32 lbl_80368D8C;
+extern f32 gMapFlatEdgeEps;
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 void Map_PruneFlatEdges(void *arg0) {
@@ -1971,9 +1971,9 @@ inner:
     if (flags & 8) {
         scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
         t = scale * (f32)(*(s16 *)p9 - *(s16 *)((u8 *)p10 + 4));
-        if (t * t < lbl_80368D8C) {
+        if (t * t < gMapFlatEdgeEps) {
             t = scale * (f32)(*(s16 *)((u8 *)p9 + 2) - *(s16 *)((u8 *)p10 + 6));
-            if (t * t < lbl_80368D8C) {
+            if (t * t < gMapFlatEdgeEps) {
                 goto skip8;
             }
         }
@@ -1983,9 +1983,9 @@ skip8:
     if (flags & 4) {
         scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
         t = scale * (f32)(*(s16 *)((u8 *)p9 + 4) - *(s16 *)p11);
-        if (t * t < lbl_80368D8C) {
+        if (t * t < gMapFlatEdgeEps) {
             t = scale * (f32)(*(s16 *)((u8 *)p9 + 6) - *(s16 *)((u8 *)p11 + 2));
-            if (t * t < lbl_80368D8C) {
+            if (t * t < gMapFlatEdgeEps) {
                 goto skip4;
             }
         }
@@ -1995,9 +1995,9 @@ skip4:
     if (flags & 1) {
         scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
         t = scale * (f32)(*(s16 *)p9 - *(s16 *)((u8 *)p12 + 2));
-        if (t * t < lbl_80368D8C) {
+        if (t * t < gMapFlatEdgeEps) {
             t = scale * (f32)(*(s16 *)((u8 *)p9 + 4) - *(s16 *)((u8 *)p12 + 6));
-            if (t * t < lbl_80368D8C) {
+            if (t * t < gMapFlatEdgeEps) {
                 goto skip1;
             }
         }
@@ -2007,9 +2007,9 @@ skip1:
     if (flags & 2) {
         scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
         t = scale * (f32)(*(s16 *)((u8 *)p9 + 2) - *(s16 *)p31);
-        if (t * t < lbl_80368D8C) {
+        if (t * t < gMapFlatEdgeEps) {
             t = scale * (f32)(*(s16 *)((u8 *)p9 + 6) - *(s16 *)((u8 *)p31 + 4));
-            if (t * t < lbl_80368D8C) {
+            if (t * t < gMapFlatEdgeEps) {
                 goto skip2;
             }
         }
