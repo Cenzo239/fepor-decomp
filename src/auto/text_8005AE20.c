@@ -7894,9 +7894,9 @@ extern "C" void fn_80070C24(void *arg0, s32 arg1, void *arg2) {
         virtual s32 v16(void *) = 0;
         virtual void v17() = 0;
     };
-    void fn_8008D510(s32, bool, s16, s16);
+    void UnitRef_Draw(s32, bool, s16, s16);
     ((Obj *)arg0)->v17();
-    fn_8008D510(((Obj *)arg0)->v16(arg2), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
+    UnitRef_Draw(((Obj *)arg0)->v16(arg2), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 #pragma cplusplus reset
 void fn_80070EDC(void) {

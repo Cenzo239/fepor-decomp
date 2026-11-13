@@ -99,7 +99,7 @@ void fn_800907B8(void *arg0) {
     void fn_8008BA80(void *, s32, s32, u8);
     void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
     void fn_8008CD64(f32);
-    void fn_8008D510(s32, s32, s32, s32);
+    void UnitRef_Draw(s32, s32, s32, s32);
     s32 fn_80037BBC(void *, s32);
     s32 fn_8001C0C8(void);
     extern f32 lbl_80369768;
@@ -117,7 +117,7 @@ void fn_800907B8(void *arg0) {
     do {
         temp = fn_80037BBC(arg0, i);
         id = fn_8001C0C8();
-        fn_8008D510(temp, id, 0x1C, offset);
+        UnitRef_Draw(temp, id, 0x1C, offset);
         i += 1;
         offset += 0x1C;
     } while (i < 4);
@@ -150,7 +150,7 @@ void fn_80090874(void *arg0, s32 arg1) {
     var_r31 = 0;
     do {
         fn_80037BBC(var_r27, var_r31);
-        fn_8008D510(*(u8*)var_r28, 0x1C, 0x2C, var_r31);
+        UnitRef_Draw(*(u8*)var_r28, 0x1C, 0x2C, var_r31);
         var_r31 += 1;
         var_r28 += 1;
     } while (var_r31 < 4);
@@ -158,7 +158,7 @@ void fn_80090874(void *arg0, s32 arg1) {
     var_r27 = arg0;
     var_r31 = 0;
     do {
-        fn_8008D510(*(u8*)((u8*)var_r27 + 0x1EC), *(u8*)((u8*)var_r27 + 0x4), 0x1C, var_r31);
+        UnitRef_Draw(*(u8*)((u8*)var_r27 + 0x1EC), *(u8*)((u8*)var_r27 + 0x4), 0x1C, var_r31);
         var_r31 += 1;
         var_r27 = (void*)((u8*)var_r27 + 0x8);
     } while (var_r31 < 4);
@@ -194,7 +194,7 @@ void fn_80090990(void *arg0) {
     
     do {
         fn_80037BBC(var_r27, var_r31);
-        fn_8008D510(*var_r28, 0x1C, 0x2C + (var_r31 * 0x1C));
+        UnitRef_Draw(*var_r28, 0x1C, 0x2C + (var_r31 * 0x1C));
         var_r31 += 1;
         var_r28 += 1;
     } while (var_r31 < 4);
@@ -203,7 +203,7 @@ void fn_80090990(void *arg0) {
     var_r31 = 0;
     
     do {
-        fn_8008D510(((u8*)var_r27 + 0x1EC)[0], ((u8*)arg0 + 4)[0], 0x1C, 0x94 + (var_r31 * 0x1C));
+        UnitRef_Draw(((u8*)var_r27 + 0x1EC)[0], ((u8*)arg0 + 4)[0], 0x1C, 0x94 + (var_r31 * 0x1C));
         var_r31 += 1;
         var_r27 = (u8*)var_r27 + 8;
         var_r28 += 1;

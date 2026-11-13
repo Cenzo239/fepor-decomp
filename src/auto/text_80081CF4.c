@@ -94,7 +94,7 @@ s32 fn_80081CF4(void) {
         fn_80093DA8(r27, 0x4);
         
         if (r27 >= 4) {
-            fn_8008D510(0, 0, f29);  // Parameters are guessed
+            UnitRef_Draw(0, 0, f29);  // Parameters are guessed
         }
         
         r27++;

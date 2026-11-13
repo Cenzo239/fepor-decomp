@@ -912,13 +912,13 @@ void fn_80164940(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 }
 
 void fn_80164994(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5) {
-    void fn_8008D510(void *, s32, s16, s16);
+    void UnitRef_Draw(void *, s32, s16, s16);
     s16 t1;
     s16 t2;
     void *p = arg4;
     t2 = (s16)arg2;
     t1 = (s16)arg1;
-    fn_8008D510(p, arg5, t1, t2);
+    UnitRef_Draw(p, arg5, t1, t2);
 }
 
 s32 fn_801649C8(void *arg0, s32 *arg1) {

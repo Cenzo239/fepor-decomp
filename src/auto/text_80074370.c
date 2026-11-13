@@ -69,7 +69,7 @@ virtual void v16() = 0;
 virtual void v17() = 0; };
 u64 *Item_GetFlagsPtr(void *);
 void *Unit_GetItemSlot(void *, s32);
-void fn_8008D510(void *, bool, s16, s16);
+void UnitRef_Draw(void *, bool, s16, s16);
 extern u64 lbl_8036746C;
 extern void *lbl_80367468;
 void *result;
@@ -82,7 +82,7 @@ u64 flags=*Item_GetFlagsPtr(&lbl_8036746C);
 void *base=lbl_80367468;
 result=Unit_GetItemSlot(base, ((flags & 5ULL)?0:4)+index);
 }
-fn_8008D510(result,((u8 *)arg2)[0x39]==0,*(s16 *)((u8 *)arg2+0x30),*(s16 *)((u8 *)arg2+0x32));
+UnitRef_Draw(result,((u8 *)arg2)[0x39]==0,*(s16 *)((u8 *)arg2+0x30),*(s16 *)((u8 *)arg2+0x32));
 }
 #pragma cplusplus reset
 
@@ -412,10 +412,10 @@ extern "C" void fn_80074E4C(void *arg0, s32 arg1, void *arg2) {
         virtual void v17() = 0;
     };
     s32 Unit_GetItemSlot(s32, u8);
-    void fn_8008D510(s32, bool, s16, s16);
+    void UnitRef_Draw(s32, bool, s16, s16);
     extern s32 gUiContext[];
     ((Obj *)arg0)->v17();
-    fn_8008D510(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
+    UnitRef_Draw(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 
 extern "C" s32 fn_80074EB0(s32 arg0, s32 arg1, void *arg2) {
@@ -585,10 +585,10 @@ extern "C" void fn_80075290(void *arg0, s32 arg1, void *arg2) {
         virtual void v17() = 0;
     };
     s32 Unit_GetItemSlot(s32, u8);
-    void fn_8008D510(s32, bool, s16, s16);
+    void UnitRef_Draw(s32, bool, s16, s16);
     extern s32 gUiContext[];
     ((Obj *)arg0)->v17();
-    fn_8008D510(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
+    UnitRef_Draw(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 #pragma cplusplus reset
 

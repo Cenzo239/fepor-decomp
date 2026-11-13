@@ -9021,8 +9021,8 @@ void fn_80143490(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 }
 
 void fn_801434E4(s32 arg0, s16 arg1, s16 arg2, s32 arg3, s32 *arg4, s32 arg5) {
-    M2C_UNK fn_8008D510(s32, s32, s32, s32);
-    fn_8008D510(*arg4, arg5, arg1, arg2);
+    M2C_UNK UnitRef_Draw(s32, s32, s32, s32);
+    UnitRef_Draw(*arg4, arg5, arg1, arg2);
 }
 
 s32 fn_8014351C(void *arg0, s32 arg1) {

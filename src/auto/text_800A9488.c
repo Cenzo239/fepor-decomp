@@ -1918,7 +1918,7 @@ void fn_800ACD18(void *arg0)
     void fn_8008BBF8(s32, s32, s32, s32, s32, u8);
     void fn_8008BE84(s16, s16);
     void fn_8008BF68(s16, s16, s32);
-    void fn_8008D510(void *, s32, s32, s16);
+    void UnitRef_Draw(void *, s32, s32, s16);
     s32 fn_80093DA8(s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     extern u8 lbl_80312ACC[];
@@ -2001,7 +2001,7 @@ void fn_800ACD18(void *arg0)
         ent4 = ent + 4;
         x = *(s32 *)(ent + 4);
         if (((u32)(-x | x) >> 31) != 0) {
-            fn_8008D510(ent4, fn_80093DA8(v27), *(s16 *)ent - 0x118, *(s16 *)(ent + 2));
+            UnitRef_Draw(ent4, fn_80093DA8(v27), *(s16 *)ent - 0x118, *(s16 *)(ent + 2));
         }
         i += 1;
         ent += 0x10;
@@ -2030,7 +2030,7 @@ void fn_800ACD18(void *arg0)
         ent4 = ent + 4;
         x = *(s32 *)(ent + 4);
         if (((u32)(-x | x) >> 31) != 0) {
-            fn_8008D510(ent4, fn_80093DA8(pair2[0]), *(s16 *)ent, *(s16 *)(ent + 2));
+            UnitRef_Draw(ent4, fn_80093DA8(pair2[0]), *(s16 *)ent, *(s16 *)(ent + 2));
         }
         i += 1;
         ent += 0x10;

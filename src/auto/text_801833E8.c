@@ -4581,7 +4581,7 @@ extern "C" void fn_80190920(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     s32 Text_MeasureHeight(s32, f32);
-    void fn_8008D510(void *, s32, s32, s32);
+    void UnitRef_Draw(void *, s32, s32, s32);
     extern f32 lbl_8036ADFC;
     extern f32 lbl_8036AE18;
     struct Obj {
@@ -4612,7 +4612,7 @@ extern "C" void fn_80190920(void *arg0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AE18);
         Prim2D_PrepareTex();
-        fn_8008D510(p3c, ((Obj *)arg0)->v9(p3c), tmp, y);
+        UnitRef_Draw(p3c, ((Obj *)arg0)->v9(p3c), tmp, y);
     }
 }
 #pragma cplusplus reset

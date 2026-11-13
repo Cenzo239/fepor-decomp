@@ -124,7 +124,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
         Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
-void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
+void UnitRef_Draw(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
