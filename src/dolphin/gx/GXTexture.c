@@ -1002,7 +1002,7 @@ void GXSetTevColorOp(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
     *(u16 *)(gx + 2) = 0;
 }
 
-u16* fn_80223B4C(s32 arg0) {
+u16* GXSetTevAlphaOp(s32 arg0) {
     return __GXData + 0x388 + (arg0 * 0x10);
 }
 

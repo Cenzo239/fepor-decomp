@@ -8876,7 +8876,7 @@ void fn_800C15A8(void) {
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
@@ -8918,7 +8918,7 @@ void fn_800C15A8(void) {
     GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
     GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(r31, 7, 7, 7, 0);
-    fn_80223B4C(r31, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(r31, 0, 0, 0, 1, 0);
 }
 
 #pragma optimization_level 2
@@ -8936,7 +8936,7 @@ s32 fn_800C1730(void) {
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223C78(s32, s32 *);
     void fn_80223CDC(s32, s32);
     void fn_80223F2C(s32, s32, s32, s32);
@@ -9001,7 +9001,7 @@ s32 fn_800C1730(void) {
         break;
     }
     GXSetTevAlphaIn(r31, 7, 7, 7, 0);
-    fn_80223B4C(r31, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(r31, 0, 0, 0, 1, 0);
     return 1;
 }
 #pragma optimization_level 4

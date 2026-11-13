@@ -230,7 +230,7 @@ void fn_800566D4(void *arg0) {
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -260,7 +260,7 @@ void fn_800566D4(void *arg0) {
                 GXSetTevColorIn(0, 0xF, 0xF, 0xF, 8);
                 GXSetTevColorOp(0, 0, 0, 0, 1, 0);
                 GXSetTevAlphaIn(0, 7, 7, 7, 5);
-                fn_80223B4C(0, 0, 0, 0, 1, 0);
+                GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
                 fn_80220428(1);
                 fn_80223F2C(0, 0, 0, 4);
                 fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
@@ -1404,7 +1404,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802240C8(s32);
@@ -1463,12 +1463,12 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xF);
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(0, 4, 7, 7, 7);
-    fn_80223B4C(0, 0, 0, 0, 0, 0);
+    GXSetTevAlphaOp(0, 0, 0, 0, 0, 0);
     fn_80223F2C(1, 1, 1, 0xFF);
     GXSetTevColorIn(1, 0xF, 0xF, 0xF, 0);
     GXSetTevColorOp(1, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(1, 4, 7, 7, 0);
-    fn_80223B4C(1, 1, 0, 0, 0, 0);
+    GXSetTevAlphaOp(1, 1, 0, 0, 0, 0);
     fn_80224E50(sp58, 0x1E, 1);
     fn_80224E50(sp28, 0x21, 1);
     fn_8021FBB8();

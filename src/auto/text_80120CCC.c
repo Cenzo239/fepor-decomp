@@ -2660,7 +2660,7 @@ s32 fn_80125BB0(void) {
     M2C_UNK GXSetTevColorIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevAlphaIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevColorOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223B4C(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevAlphaOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223F2C(s32, s32, s32, M2C_UNK);
     M2C_UNK fn_80224E50(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK lbl_80274EE0;
@@ -2739,7 +2739,7 @@ s32 fn_80125BB0(void) {
     GXSetTevColorIn(temp_r29, 0xF, 0, 8, 0xF);
     GXSetTevColorOp(temp_r29, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(temp_r29, 7, 7, 7, 0);
-    fn_80223B4C(temp_r29, 1, 0, 0, 1, 0);
+    GXSetTevAlphaOp(temp_r29, 1, 0, 0, 1, 0);
     return 1;
 }
 

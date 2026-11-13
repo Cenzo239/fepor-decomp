@@ -10208,7 +10208,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
-    void fn_80223B4C(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80069010(s32, s32);
     void fn_800690D4(s32, s32, void *);
     void GMaterial_SetupColor(s32, s32, s32, void *);
@@ -10242,7 +10242,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
         GXSetTevColorIn(t27, 0xF, 8, 0xA, 0xA);
         GXSetTevColorOp(t27, 0, 2, 3, 1, 0);
         GXSetTevAlphaIn(t27, 7, 4, 5, 7);
-        fn_80223B4C(t27, 0, 0, 0, 1, 0);
+        GXSetTevAlphaOp(t27, 0, 0, 0, 1, 0);
     }
     fn_80069010(t30, t29);
     fn_800690D4(t30, t29, arg0);

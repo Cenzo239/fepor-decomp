@@ -5752,7 +5752,7 @@ u8 fn_80064938(s32,s16,void*,f32);void fn_80064BBC(s32,s16,void*,f32);
 void fn_8006DA64(void*,s32,void*);
 void GXSetTevColor(s32,MaterialColor*);void fn_8022224C(s32,MaterialColor*);
 void fn_80223F2C(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
-void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void fn_80223B4C(s32,s32,s32,s32,s32,s32);
+void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);
 extern u8 gMaterialTevStageCount;extern u8 gGMaterialAssertMsg[];extern s32 gMaterialStageIds[16];
 extern f32 gInv255f;extern u32 lbl_8036C450,lbl_8036C454,lbl_8036C458;
 MaterialColor color,copy3,c3,copy4,c4,copy2,c2;
@@ -5781,7 +5781,7 @@ fn_80223F2C(stage,255,255,255);
 GXSetTevColorIn(stage,15,0,6,15);
 GXSetTevColorOp(stage,0,0,0,1,0);
 GXSetTevAlphaIn(stage,7,7,7,0);
-fn_80223B4C(stage,0,0,0,1,0);
+GXSetTevAlphaOp(stage,0,0,0,1,0);
 }
 c4=*(MaterialColor*)&lbl_8036C454;c4.r=color.r;c4.g=color.g;c4.b=color.b;c4.a=color.a;
 copy4=c4;fn_8022224C(4,&copy4);
@@ -5797,7 +5797,7 @@ fn_80223F2C(stage,255,255,255);
 GXSetTevColorIn(stage,15,12,4,0);
 GXSetTevColorOp(stage,0,0,0,1,0);
 GXSetTevAlphaIn(stage,7,7,7,0);
-fn_80223B4C(stage,0,0,0,1,0);
+GXSetTevAlphaOp(stage,0,0,0,1,0);
 }
 return 1;
 }
