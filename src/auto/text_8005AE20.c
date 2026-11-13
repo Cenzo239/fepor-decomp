@@ -6728,7 +6728,7 @@ void fn_8006DA98(void *arg0)
     extern void *lbl_80367320;
     extern void *lbl_80367318;
     extern void *lbl_80367314;
-    extern void *lbl_80367310;
+    extern void *DemoFrameBuffer1;
     extern u8 lbl_8029DFA8[];
     extern u8 lbl_8029E020[];
     extern u8 lbl_8029E05C[];
@@ -6826,7 +6826,7 @@ void fn_8006DA98(void *arg0)
     fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
     fn_80210C70(DEMORmode);
-    fn_802115A8(lbl_80367310);
+    fn_802115A8(DemoFrameBuffer1);
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
@@ -6882,7 +6882,7 @@ void fn_8006DFD8(void) {
     extern void *lbl_80367320;
     extern void *lbl_80367318;
     extern void *lbl_80367314;
-    extern void *lbl_80367310;
+    extern void *DemoFrameBuffer1;
     extern u32 lbl_80367330;
     extern u32 lbl_80367334;
     extern u8 lbl_8029DFA8[];
@@ -7002,7 +7002,7 @@ body:
     fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
     fn_80210C70(DEMORmode);
-    fn_802115A8(lbl_80367310);
+    fn_802115A8(DemoFrameBuffer1);
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
@@ -7045,7 +7045,7 @@ done:
         lbl_803682A4 &= ~4;
     }
     fn_802107A8();
-    if (lbl_80367318 == lbl_80367310) {
+    if (lbl_80367318 == DemoFrameBuffer1) {
         lbl_80367318 = lbl_80367314;
     }
 }
@@ -7123,7 +7123,7 @@ void fn_8006E660(void)
 {
     extern s32 lbl_8036732C;
     extern void *lbl_80367318;
-    extern void *lbl_80367310;
+    extern void *DemoFrameBuffer1;
     extern void *lbl_80367314;
     extern s32 lbl_803682A0;
     extern u32 lbl_803682A4;
@@ -7176,7 +7176,7 @@ void fn_8006E660(void)
         }
         fn_802107A8();
 
-        ten = lbl_80367310;
+        ten = DemoFrameBuffer1;
         cur = lbl_80367318;
         if (cur == ten) {
             cur = lbl_80367314;
@@ -7261,7 +7261,7 @@ void DEMOInit(void *arg0)
     extern void *lbl_8036731C;
     extern void *lbl_80367318;
     extern void *lbl_80367314;
-    extern void *lbl_80367310;
+    extern void *DemoFrameBuffer1;
     extern s32 lbl_80367328;
     extern u8 lbl_8029DFA8[];
     extern u8 lbl_8029E020[];
@@ -7327,9 +7327,9 @@ void DEMOInit(void *arg0)
     rm = DEMORmode;
     w = (*(u16 *)((u8 *)rm + 4) + 0xF) & 0xFFF0;
     fbSize = w * *(u16 *)((u8 *)rm + 8) * 2;
-    lbl_80367310 = (void *)(((u32)arenaLo + 0x1F) & ~0x1Fu);
+    DemoFrameBuffer1 = (void *)(((u32)arenaLo + 0x1F) & ~0x1Fu);
     lbl_80367328 = fbSize;
-    lbl_80367314 = (void *)(((u32)lbl_80367310 + (fbSize + 0x1F)) & ~0x1Fu);
+    lbl_80367314 = (void *)(((u32)DemoFrameBuffer1 + (fbSize + 0x1F)) & ~0x1Fu);
     lbl_80367318 = lbl_80367314;
     OSSetArenaLo((void *)(((u32)lbl_80367314 + (fbSize + 0x1F)) & ~0x1Fu));
     fn_800C5300();
@@ -7369,7 +7369,7 @@ void DEMOInit(void *arg0)
     }
     fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
-    fn_802115A8(lbl_80367310);
+    fn_802115A8(DemoFrameBuffer1);
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
