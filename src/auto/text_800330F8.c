@@ -10769,7 +10769,7 @@ void fn_8004C444(void *arg0) {
 
 void Unit_DrawShadows(void) {
     void fn_80015320(s32, void *);
-    void fn_8004CACC(void *, s32);
+    void Unit_DrawShadow(void *, s32);
     void fn_80066D00(s32);
     void *Light_GetChannel(s32);
     void *fn_80067FDC(void);
@@ -10860,7 +10860,7 @@ void Unit_DrawShadows(void) {
                 flag = 1;
             }
             if ((u8)flag != 0) {
-                fn_8004CACC(unit, var_r31);
+                Unit_DrawShadow(unit, var_r31);
             }
         }
         var_r30 += 1;
@@ -10869,7 +10869,7 @@ void Unit_DrawShadows(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8004CACC(u8 *arg0, s32 arg1) {
+void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     f32 fn_80023068(void *);
     void fn_80051564(void *, s32, f32, f32);
     u32 fn_80055D94(s32);
