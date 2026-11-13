@@ -7160,8 +7160,9 @@ void Sound_SelectSource10(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x38C, arg1, 0x40000000, 0x400);
 }
 
-void Sound_SelectSource11(void *arg0, u32 *arg1) {
-    SelectSource(arg0, (u8 *)arg0 + 0x3B0, arg1, 0x80000000, 0x800);
+void Sound_SelectSource11(void *voice, u32 *step) {
+    /* MusyX select-source macro for modulator slot 11 (voice+0x3B0). */
+    SelectSource(voice, (u8 *)voice + 0x3B0, step, 0x80000000, 0x800);
 }
 
 void Sound_SelectSource2(void *voice, u32 *step) {
