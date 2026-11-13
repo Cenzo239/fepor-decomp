@@ -9888,7 +9888,8 @@ void *fn_8014488C(void *arg0, s16 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorPanelC(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelC(void *self, s16 doFree) {
+    /* C++ destructor for UI panel C (gUiPanelCVtbl): destroy embeds, chain base vtors, optional free. */
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -9914,34 +9915,34 @@ extern "C" void *Ui_DtorPanelC(void *arg0, s16 arg1) {
     extern u8 gUiPanelCMidVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
-    Owner *self;
+    Owner *owner;
 
-    self = (Owner *)arg0;
-    if (arg0 != NULL) {
-        self->vtbl = gUiPanelCVtbl;
-        if (&self->subB0 != NULL) {
-            self->subB0 = gEmptyVtbl;
-            ((Obj *)&self->subB0)->v2();
+    owner = (Owner *)self;
+    if (self != NULL) {
+        owner->vtbl = gUiPanelCVtbl;
+        if (&owner->subB0 != NULL) {
+            owner->subB0 = gEmptyVtbl;
+            ((Obj *)&owner->subB0)->v2();
         }
-        if (&self->sub88 != NULL) {
-            self->sub88 = gEmptyVtbl;
-            ((Obj *)&self->sub88)->v2();
+        if (&owner->sub88 != NULL) {
+            owner->sub88 = gEmptyVtbl;
+            ((Obj *)&owner->sub88)->v2();
         }
-        if (&self->sub40[0] != NULL) {
-            *(void **)((u8 *)self + 0x84) = gUiPanelCMidVtbl;
-            ((Sub40 *)&self->sub40[0])->v2();
+        if (&owner->sub40[0] != NULL) {
+            *(void **)((u8 *)owner + 0x84) = gUiPanelCMidVtbl;
+            ((Sub40 *)&owner->sub40[0])->v2();
         }
-        if (arg0 != NULL) {
-            self->vtbl = lbl_80292230;
-            if (arg0 != NULL) {
-                self->vtbl = lbl_8028FDB0;
+        if (self != NULL) {
+            owner->vtbl = lbl_80292230;
+            if (self != NULL) {
+                owner->vtbl = lbl_8028FDB0;
             }
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
