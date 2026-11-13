@@ -2158,7 +2158,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     extern f32 gScrollBgUvScale;
     extern f32 gScrollBgUvH;
     extern f32 gScrollBgPrimParam;
-    extern f32 lbl_80369B80;
+    extern f32 gScrollBgOverlayParam;
     f32 temp_f2;
     s32 temp_r3;
 
@@ -2180,7 +2180,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     Prim2D_AddPrim(1);
     Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, gScrollBgHeight);
     Prim2D_SetColor(0x32, 0x32, 0x32, 0);
-    Prim2D_SetPrimParam(lbl_80369B80);
+    Prim2D_SetPrimParam(gScrollBgOverlayParam);
     Prim2D_EndPrim();
 }
 
