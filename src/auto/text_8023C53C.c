@@ -4589,7 +4589,7 @@ void fn_8024C5CC(u32 arg0) {
     }
 }
 
-s32 fn_8024C664(u32 arg0)
+s32 Sound_FindSlotById(u32 arg0)
 {
   extern u8 lbl_8034D4B8[];
   u8 *entry;
@@ -4735,7 +4735,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
     void fn_80261E6C(s32, s32, s32, s32, f32, f32, f32);
     void fn_8024C7F8(void *, u8, u8, u8);
     void fn_8024C7C4(u8 *, u8 *);
-    s32 fn_8024C664(u32);
+    s32 Sound_FindSlotById(u32);
     void fn_8024C808(void *, u8, u8, u8, u8, u8);
     void fn_8024BC58(void *);
 
@@ -4832,7 +4832,7 @@ found2:
                 parent = *(u32 *)slot;
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     Audio_Lock();
-                    index = fn_8024C664(parent);
+                    index = Sound_FindSlotById(parent);
                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                         offset = index * 0x68;
                         slot = lbl_8034D4B8 + offset;
@@ -4862,7 +4862,7 @@ void fn_8024D3C4(u32 arg0, u32 arg1) {
     void Audio_Lock(void);
     void Audio_Unlock(void);
     void fn_80261BC8(s32, s32);
-    s32 fn_8024C664(u32);
+    s32 Sound_FindSlotById(u32);
 
     u8 *base;
     u8 *scan;
@@ -4938,7 +4938,7 @@ found3:
                         parent = *(u32 *)(lbl_8034D4B8 + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             Audio_Lock();
-                            index = fn_8024C664(parent);
+                            index = Sound_FindSlotById(parent);
                             if ((u32)(index + 0x10000) != 0xFFFFU) {
                                 offset = index * 0x68;
                                 *(u32 *)(valp + offset) = arg1;
@@ -4971,7 +4971,7 @@ void fn_8024DA2C(u32 arg0)
     void Audio_Unlock(void);
     void fn_8024E758(u32);
     void fn_802622B0(u8);
-    s32 fn_8024C664(u32);
+    s32 Sound_FindSlotById(u32);
 
     u8 *base;
     u8 *scan;
@@ -5055,7 +5055,7 @@ found4:
                                 parent = *(u32 *)(lbl_8034D4B8 + off4);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                                     Audio_Lock();
-                                    index = fn_8024C664(parent);
+                                    index = Sound_FindSlotById(parent);
                                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                                         fn_8024E758(parent);
                                         off5 = index * 0x68;
@@ -5090,7 +5090,7 @@ s32 fn_8024E100(u32 arg0) {
     void Audio_Lock(void);
     void Audio_Unlock(void);
     s32 fn_80256C14(u8);
-    s32 fn_8024C664(u32);
+    s32 Sound_FindSlotById(u32);
 
     u8 *base;
     u8 *scan;
@@ -5194,7 +5194,7 @@ found3:
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             result = 0;
                             Audio_Lock();
-                            index = fn_8024C664(parent);
+                            index = Sound_FindSlotById(parent);
                             if ((u32)(index + 0x10000) != 0xFFFFU) {
                                 offset = index * 0x68;
                                 if (typep[offset] == 3) {
@@ -5263,7 +5263,7 @@ void fn_8024E758(u32 arg0)
     void Audio_Lock(void);
     void Audio_Unlock(void);
     void fn_80256DD8(s32);
-    s32 fn_8024C664(u32);
+    s32 Sound_FindSlotById(u32);
 
     u8 *base;
     u8 *scan;
@@ -5356,7 +5356,7 @@ found4:
                                 parent = *(u32 *)(lbl_8034D4B8 + offset);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                                     Audio_Lock();
-                                    index = fn_8024C664(parent);
+                                    index = Sound_FindSlotById(parent);
                                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                                         offset = index * 0x68;
                                         type = typep[offset];
