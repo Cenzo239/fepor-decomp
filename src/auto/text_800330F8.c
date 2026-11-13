@@ -6052,7 +6052,7 @@ void fn_8003FFF8(void) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_800404DC(void) {
-    void fn_80047B00(void *, s32, s32);
+    void Map_PrepareEntryRange(void *, s32, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8006785C(s32, void *, void *);
@@ -6108,7 +6108,7 @@ void fn_800404DC(void) {
                 a = (s32)(((u32)b >> 31) + b) >> 1;
             }
             lbl_803672A0 = lbl_803672A0 + 1;
-            fn_80047B00(p0, a, b);
+            Map_PrepareEntryRange(p0, a, b);
         }
         obj = lbl_803672AC;
         if ((*(u32 *)(obj + 0x64) & 0x80000000) == 0 && (*(u32 *)(obj + 0x64) & 0x40000000) != 0) {
@@ -8698,7 +8698,7 @@ s32 fn_8004721C(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
 
 #pragma global_optimizer off
 void Map_UpdateTransforms(void *arg0) {
-void fn_80047B00(void *, s32, s32);
+void Map_PrepareEntryRange(void *, s32, s32);
 void fn_80060060(void *);
 void fn_800609DC(void *);
 void fn_8006785C(s32, void *, void *);
@@ -8755,7 +8755,7 @@ extern f32 lbl_80368EF4;
                 a = (s32)(((u32)b >> 31) + b) >> 1;
             }
             lbl_803672A0 = lbl_803672A0 + 1;
-            fn_80047B00(self, a, b);
+            Map_PrepareEntryRange(self, a, b);
         }
         if ((*(u32 *)((u8 *)self + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)self + 0x64) & 0x40000000) != 0) {
             ent = *(u8 **)((u8 *)self + 0x14);
@@ -8877,7 +8877,7 @@ u8 fn_80047AF8(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma opt_loop_invariants off
 #pragma opt_peephole off
-void fn_80047B00(void *arg0, s32 arg1, s32 arg2) {
+void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     void fn_80060638(void *);
     void fn_8006049C(void *);
     void fn_80202300(void *, s32, f32);
