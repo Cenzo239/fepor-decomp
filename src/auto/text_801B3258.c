@@ -8729,7 +8729,7 @@ void Game_InitVideo(void) {
     extern u8 GameEurgb60Hz480IntDf[];
     extern u8 GameMpal480IntDf[];
     extern char lbl_8027D740[];
-    extern s32 lbl_8036C518;
+    extern s32 gClearColor;
 
     s32 sp8;
     s32 fmt;
@@ -8806,7 +8806,7 @@ void Game_InitVideo(void) {
         }
     }
 
-    sp8 = lbl_8036C518;
+    sp8 = gClearColor;
     fn_802217AC(&sp8, 0xFFFFFF);
     fn_80221A40(fn_8006E650(), 1);
 }
