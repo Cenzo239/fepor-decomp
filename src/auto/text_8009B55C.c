@@ -45,10 +45,10 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void Ui_DrawTerrainInfoDecor(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
-    M2C_UNK Prim2D_EmitQuad();
-    M2C_UNK Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    M2C_UNK Prim2D_BindTexture(s32, M2C_UNK, M2C_UNK);
+void Ui_DrawTerrainInfoDecor(s32 tex, s32 mode, f32 x, f32 y) {
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
+    void Prim2D_BindTexture(s32, s32, s32);
     extern f32 lbl_803697E4;
     extern f32 lbl_803697F8;
     extern f32 lbl_803697FC;
@@ -65,11 +65,12 @@ void Ui_DrawTerrainInfoDecor(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     extern f32 lbl_80369888;
     extern f32 lbl_8036988C;
 
-    switch (arg1) {
+    // Draw terrain-info popup frame pieces for mode 0/1/2 (tex slots 8/9/A).
+    switch (mode) {
     case 0:
         Prim2D_Begin();
-        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
-        Prim2D_BindTexture(arg0, 8, 0x11);
+        Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
+        Prim2D_BindTexture(tex, 8, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_8036987C, lbl_803697FC, lbl_803697E4, lbl_803697E4, lbl_80369860, lbl_8036981C);
@@ -86,8 +87,8 @@ void Ui_DrawTerrainInfoDecor(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         break;
     case 1:
         Prim2D_Begin();
-        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
-        Prim2D_BindTexture(arg0, 9, 0x11);
+        Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
+        Prim2D_BindTexture(tex, 9, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_803697F8, lbl_803697FC, 0.0f, 0.0f, lbl_803697F8, lbl_8036981C);
@@ -96,8 +97,8 @@ void Ui_DrawTerrainInfoDecor(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         break;
     case 2:
         Prim2D_Begin();
-        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
-        Prim2D_BindTexture(arg0, 0xA, 0x11);
+        Prim2D_SetTransform(x, y, lbl_80369808, lbl_8036980C);
+        Prim2D_BindTexture(tex, 0xA, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_80369844, lbl_803697FC, 0.0f, 0.0f, lbl_8036988C, lbl_803697FC);
