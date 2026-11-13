@@ -744,7 +744,7 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
 }
 
 void fn_801B6F44(void) {
-    void fn_80013AE8(void *, void *, s32);
+    void Script_RegisterCommand(void *, void *, s32);
     extern u8 lbl_8027C370[];
     void fn_801B7818(void);
     void fn_801B7638(void);
@@ -758,17 +758,17 @@ void fn_801B6F44(void) {
     void fn_801B70C8(void);
     void fn_801B7094(void);
 
-    fn_80013AE8(lbl_8027C370 + 0xCE, fn_801B7818, 2);
-    fn_80013AE8(lbl_8027C370 + 0xD9, fn_801B7638, 0);
-    fn_80013AE8(lbl_8027C370 + 0xE9, fn_801B75F4, 0);
-    fn_80013AE8(lbl_8027C370 + 0xF8, fn_801B7564, 1);
-    fn_80013AE8(lbl_8027C370 + 0x10C, fn_801B7488, 0);
-    fn_80013AE8(lbl_8027C370 + 0x11B, fn_801B73DC, 0);
-    fn_80013AE8(lbl_8027C370 + 0x131, fn_801B7330, 0);
-    fn_80013AE8(lbl_8027C370 + 0x141, fn_801B7260, 0);
-    fn_80013AE8(lbl_8027C370 + 0x153, fn_801B7188, 0);
-    fn_80013AE8(lbl_8027C370 + 0x165, fn_801B70C8, 0);
-    fn_80013AE8(lbl_8027C370 + 0x178, fn_801B7094, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0xCE, fn_801B7818, 2);
+    Script_RegisterCommand(lbl_8027C370 + 0xD9, fn_801B7638, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0xE9, fn_801B75F4, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0xF8, fn_801B7564, 1);
+    Script_RegisterCommand(lbl_8027C370 + 0x10C, fn_801B7488, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x11B, fn_801B73DC, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x131, fn_801B7330, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x141, fn_801B7260, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x153, fn_801B7188, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x165, fn_801B70C8, 0);
+    Script_RegisterCommand(lbl_8027C370 + 0x178, fn_801B7094, 0);
 }
 
 s32 fn_801B7094(void) {

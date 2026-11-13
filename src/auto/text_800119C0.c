@@ -297,7 +297,7 @@ s32 fn_80013A90(void *arg0) {
     return 1;
 }
 
-s32 fn_80013AE8(void *arg0, void *arg1, u8 arg2)
+s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
 {
     extern s16 lbl_8036719E;
     extern s16 lbl_8036719C;
