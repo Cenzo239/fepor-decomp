@@ -178,34 +178,25 @@ s32 fn_8018361C(void) {
 }
 
 void fn_80183624(void **arg0) {
-    u8 *fn_8014C5A8(void *, u8);
-    s32 *Ui_GetColor(u8);
-    void Prim2D_SetColorPacked(s32 *);
-    extern u8 gBattleState[];
-    extern u8 lbl_803681F0;
-    s32 sp8;
-    void *table;
-    u8 *temp;
-    u8 saved;
-    s32 mode;
-
-    table = gBattleState;
-    mode = 3;
-    if (lbl_803681F0 == 0x32) {
-        mode = 0;
-    }
-    temp = fn_8014C5A8(table, (u8)mode);
-    if (temp != NULL) {
-        saved = *temp;
-        if (saved == ((u8 (*)(void **))(*(void **)((u8 *)*(void **)arg0 + 0x54)))(arg0)) {
-            mode = 6;
-            if (lbl_803681F0 == 0x32) {
-                mode = 7;
-            }
-            sp8 = *Ui_GetColor((u8)mode);
-            Prim2D_SetColorPacked(&sp8);
-        }
-    }
+ u8 *fn_8014C5A8(void *,u8);
+ s32 *Ui_GetColor(u8);
+ void Prim2D_SetColorPacked(s32 *);
+ extern u8 gBattleState[],lbl_803681F0;
+ s32 sp8; void *table; u8 *temp; u8 saved; s32 mode;
+ u8 result;
+ u8 (*method)(void **);
+ table=gBattleState; mode=3;
+ if(lbl_803681F0==0x32) mode=0;
+ temp=fn_8014C5A8(table,(u8)mode);
+ if(temp) {
+ saved=*temp;
+ method=*(u8 (**)(void **))((u8 *)*arg0+0x54);
+ result=method(arg0);
+ if(saved==result) {
+ mode=6; if(lbl_803681F0==0x32) mode=7;
+ sp8=*Ui_GetColor((u8)mode); Prim2D_SetColorPacked(&sp8);
+ }
+ }
 }
 
 #pragma cplusplus on
@@ -643,7 +634,7 @@ void fn_80184618(s32 arg0, u32 arg1) {
  *(s32 *)((u8 *)p+0x30)=value;
 }
 
-void fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
+void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
     s32 fn_80052B30(s32);
@@ -670,6 +661,7 @@ void fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     p[0x39] = ((u8 *)&sp8)[1];
     p[0x3A] = ((u8 *)&sp8)[2];
     p[0x3B] = ((u8 *)&sp8)[3];
+    return p;
 }
 
 extern u16 *gUnitArray;
@@ -9980,19 +9972,18 @@ void fn_8019BEA4(void *arg0) {
     void *Effect_Create(u8 *, void *);
     extern void fn_8019BF5C(void);
     extern s32 gTargetList[];
-    s32 *table;
+    s32 *table = gTargetList;
     s32 i;
     void *item;
     void *obj;
 
-    table = gTargetList;
     i = 0;
     goto check;
 loop:
     fn_8002F658(table, i);
     item = UnitRef_GetUnit();
     obj = Effect_Create((u8 *)arg0 + 0x41, arg0);
-    if (obj != NULL) {
+    if (obj) {
         fn_80053680(obj, item);
         *(void **)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x40) = (void *)&fn_8019BF5C;
         fn_80053658(obj, 0, arg0);
