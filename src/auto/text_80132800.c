@@ -9534,7 +9534,7 @@ extern "C" void fn_8014413C(void *arg0) {
     self->subB0.v9(self->unk34);
 }
 
-extern "C" void fn_801441A4(void *arg0) {
+extern "C" void Ui_DrawMenuSlots(void *arg0) {
     extern f32 lbl_8036A75C;
     typedef struct {
         u8 r, g, b, a;
