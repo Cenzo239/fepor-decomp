@@ -46,7 +46,8 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 #pragma use_lmw_stmw on
-void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
+/* Draw a unit-ref inventory row with sell price (half value, or dashes if unpriced). */
+void UnitRef_DrawSell(void *ref, u8 enabled, s32 x, s32 y) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -61,57 +62,57 @@ void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     extern u16 gUnitRefStrs[];
     extern u8 gUiIconDrawer[];
     extern f32 lbl_8036973C;
-    char sp8[0x10];
-    u8 var_r26;
+    char priceBuf[0x10];
+    u8 nameColor;
     u8 var_r4;
     u8 var_r0;
-    void *temp_r3;
+    void *flagsPtr;
     u64 flags;
-    s16 width;
+    s16 priceWidth;
     s32 var_color;
-    u32 var_r3;
+    u32 usesColor;
     u8 temp_r30;
-    struct { unsigned b:8; } t;
+    struct { unsigned b:8; } enabledBit;
     s32 ext;
 
-    if (*(void **)arg0 != NULL) {
+    if (*(void **)ref != NULL) {
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        temp_r3 = Item_GetFlagsPtr(arg0);
-        flags = *(u64 *)temp_r3;
+        flagsPtr = Item_GetFlagsPtr(ref);
+        flags = *(u64 *)flagsPtr;
         if (flags & (0x200ULL << 32)) {
-            strcpy(sp8, (u8 *)gUnitRefStrs + 0x26);
+            strcpy(priceBuf, (u8 *)gUnitRefStrs + 0x26);
         } else {
-            sprintf(sp8, (u8 *)gUnitRefStrs + 0x2F, (s32)((UnitRef_GetValue(arg0) >> 1) & 0x7FFF));
+            sprintf(priceBuf, (u8 *)gUnitRefStrs + 0x2F, (s32)((UnitRef_GetValue(ref) >> 1) & 0x7FFF));
         }
-        width = Text_MeasureWidth(sp8, -1, lbl_8036973C);
-        Text_Draw((s16)(arg2 + (0x10E - width)), (s16)arg3, arg1 != 0, sp8);
+        priceWidth = Text_MeasureWidth(priceBuf, -1, lbl_8036973C);
+        Text_Draw((s16)(x + (0x10E - priceWidth)), (s16)y, enabled != 0, priceBuf);
         {
-            s32 cond = arg1;
-            t.b = cond != 0;
+            s32 cond = enabled;
+            enabledBit.b = cond != 0;
             var_color = 0;
             if (cond != 0) {
                 var_color = 4;
             }
         }
-        var_r3 = (u8)var_color;
-        var_r26 = t.b;
-        if (t.b == 1 && (*(u8 *)((u8 *)arg0 + 5) & 0x3F)) {
-            var_r26 = 4;
+        usesColor = (u8)var_color;
+        nameColor = enabledBit.b;
+        if (enabledBit.b == 1 && (*(u8 *)((u8 *)ref + 5) & 0x3F)) {
+            nameColor = 4;
         }
-        if ((*(u8 *)((u8 *)arg0 + 5) >> 6) & 1) {
-            var_r26 = 3;
+        if ((*(u8 *)((u8 *)ref + 5) >> 6) & 1) {
+            nameColor = 3;
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        Text_Draw((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)gUnitRefStrs + 0x21, UnitRef_GetName(arg0));
-        flags = *(u64 *)Item_GetFlagsPtr(arg0);
+        Text_Draw((s16)(x + 0x18), (s16)y, nameColor, (u8 *)gUnitRefStrs + 0x21, UnitRef_GetName(ref));
+        flags = *(u64 *)Item_GetFlagsPtr(ref);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
-            Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)gUnitRefStrs + 0x34, *(u8 *)((u8 *)arg0 + 4));
-            Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)gUnitRefStrs + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
+            Text_Draw((s16)(x + 0xA2), (s16)y, enabledBit.b, (u8 *)gUnitRefStrs + 0x34, *(u8 *)((u8 *)ref + 4));
+            Text_Draw((s16)(x + 0xBC), (s16)y, usesColor, (u8 *)gUnitRefStrs + 0x3A, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x18) : 0));
         }
-        Ui_DrawIcon(gUiIconDrawer, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
