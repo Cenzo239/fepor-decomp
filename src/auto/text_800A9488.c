@@ -564,7 +564,7 @@ void Map_UpdateCursorMoveLimit(void) {
     extern u8 gBattleState[1400];
     extern void *gPadInput;
     extern void *gCursorHoverUnit;
-    extern s8 lbl_80367804;
+    extern s8 gCursorHoverUnitInited;
 
     void *unit;
     u8 id;
@@ -579,9 +579,9 @@ void Map_UpdateCursorMoveLimit(void) {
         u32 unk4;
     } *ctrl;
 
-    if (lbl_80367804 == 0) {
+    if (gCursorHoverUnitInited == 0) {
         gCursorHoverUnit = NULL;
-        lbl_80367804 = 1;
+        gCursorHoverUnitInited = 1;
     }
 
     sx = *(float *)&gBattleState[0x524];
