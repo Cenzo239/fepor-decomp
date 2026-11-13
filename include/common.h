@@ -54,6 +54,21 @@ typedef struct Unk800C2ACC {
 #define SAVE_SLOT_PAYLOAD_OFF  0x70
 #define SAVE_SLOT_BLOCK_SIZE   0x2000
 
+/* Unit/class map-move SFX category flags (MSFX_*) */
+#define MSFX_FLAG_MAGE   0x0001
+#define MSFX_FLAG_FLY    0x0002
+#define MSFX_FLAG_KNIGHT 0x0004
+#define MSFX_FLAG_ARMOR  0x0008
+#define MSFX_FLAG_ALIZE  0x0010
+#define MSFX_FLAG_HUMAN  0x0020
+#define MSFX_FLAG_BEAST  0x0040
+#define MSFX_FLAG_DRAGON 0x0080
+#define MSFX_FLAG_BIRD   0x0100
+#define MSFX_FLAG_FINAL  0x0200
+#define MSFX_FLAG_HERO   0x0400
+#define MSFX_FLAG_BOSS   0x0800
+#define MSFX_FLAG_DOORBREAK 0x1000
+
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
