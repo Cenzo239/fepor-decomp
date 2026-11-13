@@ -20820,7 +20820,7 @@ s32 fn_800FBB68(void) {
 s32 Ai_TryHandleLowHp(void *arg0) {
     u8 Unit_HasLowHpAi(void *);
     u8 Unit_IsLowHp(void *);
-    u8 fn_8010C244(void *);
+    u8 Ai_TryUseHealItem(void *);
     u8 fn_8010BEB8(void *);
     u8 fn_8010BDE0(void *);
     void fn_8010AD94(void *);
@@ -20834,7 +20834,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
         return 1;
     }
     if ((Unit_HasLowHpAi(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
-        if (fn_8010C244(arg0) != 0) {
+        if (Ai_TryUseHealItem(arg0) != 0) {
             return 1;
         }
         if (fn_8010BEB8(arg0) != 0) {

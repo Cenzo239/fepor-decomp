@@ -3937,7 +3937,7 @@ u8 fn_8010BEB8(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
-s32 fn_8010C244(void *arg0) {
+s32 Ai_TryUseHealItem(void *arg0) {
     void *Item_GetByIid(void *);
     void *Unit_GetItemSlot(void *, s32);
     s8 Unit_GetMaxHp(void *);
