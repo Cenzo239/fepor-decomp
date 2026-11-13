@@ -13750,32 +13750,34 @@ s32 FloatAnim_IsActive(void) {
 }
 
 #pragma opt_strength_reduction off
-void FloatAnim_Start(void *arg0, s32 arg1, s32 arg2) {
+/* Start a process that lerps target's float at +4 by amount (duration from amount). */
+void FloatAnim_Start(void *target, s32 amount, void *parent) {
     void FloatAnim_UnlinkSame(void *, u32);
-    M2C_UNK fn_8000A388(void *, void *, void *);
-    M2C_UNK Process_Goto(void *, M2C_UNK);
-    void *Process_Create(void *, s32);
-    s32 temp_r0;
-    s32 temp_r0_2;
-    void *temp_r3;
-    if (arg0 != NULL) {
-        fn_8000A388(E_FloatAnim_script, FloatAnim_UnlinkSame, arg0);
-        temp_r3 = Process_Create(E_FloatAnim_script, arg2);
-        M2C_FIELD(temp_r3, void **, 0x30) = arg0;
-        M2C_FIELD(temp_r3, f32 *, 0x40) = M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
-        M2C_FIELD(temp_r3, f32 *, 0x44) = (f32) arg1 + M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
-        M2C_FIELD(temp_r3, s32 *, 0x34) = 0;
-        M2C_FIELD(temp_r3, s32 *, 0x38) = arg1;
-        temp_r0 = M2C_FIELD(temp_r3, s32 *, 0x38);
-        if (temp_r0 > 0) {
-            M2C_FIELD(temp_r3, s32 *, 0x38) = temp_r0 * 4;
+    void fn_8000A388(void *, void *, void *);
+    void Process_Goto(void *, s32);
+    void *Process_Create(void *, void *);
+    s32 duration;
+    s32 duration2;
+    void *proc;
+
+    if (target != NULL) {
+        fn_8000A388(E_FloatAnim_script, FloatAnim_UnlinkSame, target);
+        proc = Process_Create(E_FloatAnim_script, parent);
+        M2C_FIELD(proc, void **, 0x30) = target;
+        M2C_FIELD(proc, f32 *, 0x40) = M2C_FIELD(M2C_FIELD(proc, void **, 0x30), f32 *, 4);
+        M2C_FIELD(proc, f32 *, 0x44) = (f32) amount + M2C_FIELD(M2C_FIELD(proc, void **, 0x30), f32 *, 4);
+        M2C_FIELD(proc, s32 *, 0x34) = 0;
+        M2C_FIELD(proc, s32 *, 0x38) = amount;
+        duration = M2C_FIELD(proc, s32 *, 0x38);
+        if (duration > 0) {
+            M2C_FIELD(proc, s32 *, 0x38) = duration * 4;
         }
-        if (M2C_FIELD(temp_r3, s32 *, 0x38) == 0) {
-            Process_Goto(temp_r3, 0x63);
+        if (M2C_FIELD(proc, s32 *, 0x38) == 0) {
+            Process_Goto(proc, 0x63);
         }
-        temp_r0_2 = M2C_FIELD(temp_r3, s32 *, 0x38);
-        if (temp_r0_2 < 0) {
-            M2C_FIELD(temp_r3, s32 *, 0x38) = (s32) ((u32) temp_r0_2 * 0xFFFFFFFFU);
+        duration2 = M2C_FIELD(proc, s32 *, 0x38);
+        if (duration2 < 0) {
+            M2C_FIELD(proc, s32 *, 0x38) = (s32) ((u32) duration2 * 0xFFFFFFFFU);
         }
     }
 }
