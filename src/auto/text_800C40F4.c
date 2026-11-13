@@ -21830,7 +21830,7 @@ s32 Battle_BuildUnitScoreList(void) {
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
     extern s32 sUnitScoreFloorSpecial;
-    extern s32 lbl_80366E7C;
+    extern s32 sUnitScoreFloorDefault;
     extern u8 lbl_8032B3C0[];
     s32 sp8;
     u8 *map;
@@ -21913,7 +21913,7 @@ s32 Battle_BuildUnitScoreList(void) {
                     }
                 }
                 sp8 += score;
-                result = *(sp8 < lbl_80366E7C ? &lbl_80366E7C : &sp8);
+                result = *(sp8 < sUnitScoreFloorDefault ? &sUnitScoreFloorDefault : &sp8);
             }
             *(s32 *)((u8 *)unit + 0x24C) = result;
             count += 1;
