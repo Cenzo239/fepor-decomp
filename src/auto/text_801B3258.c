@@ -4768,7 +4768,7 @@ void fn_801BE8F0(void) {
 
 void *fn_801BE91C(void) { extern u8 gUiUnitPanelStrings[]; return gUiUnitPanelStrings+0x2D4; }
 
-s32 fn_801BE92C(void *arg0) {
+s32 Ui_ValidateSkillAssign(void *arg0) {
     void *Process_Find(void *);
     void *Res_GetEntry(u8);
     u8 Skill_UnitMeetsReqs(void *, void *);
