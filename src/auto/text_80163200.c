@@ -14363,13 +14363,13 @@ void fn_8017F4B0(void *arg0) {
 }
 
 void fn_8017F540(void *arg0) {
-    f32 fn_8005A028(s32, s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     s32 old;
 
     old = *(s32 *)((u8 *)arg0 + 0x3C);
     *(s32 *)((u8 *)arg0 + 0x3C) = old + 1;
-    *(f32 *)((u8 *)arg0 + 0x38) = fn_8005A028(2, old, -32.0f, 0.0f, 10.0f, (f32)*(s32 *)((u8 *)arg0 + 0x3C));
+    *(f32 *)((u8 *)arg0 + 0x38) = Math_EaseOutPow(2, old, -32.0f, 0.0f, 10.0f, (f32)*(s32 *)((u8 *)arg0 + 0x3C));
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= 10) {
         *(s32 *)((u8 *)arg0 + 0x3C) = 0;
         Process_ClearFunc(arg0);
@@ -14451,14 +14451,14 @@ void fn_8017F744(void *arg0) {
 }
 
 void fn_8017F7D4(void *arg0) {
-    f32 fn_8005A028(s32, s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     s32 old;
     f32 temp;
 
     old = *(s32 *)((u8 *)arg0 + 0x3C);
     *(s32 *)((u8 *)arg0 + 0x3C) = old + 1;
-    temp = fn_8005A028(2, old, 0.0f, 8.0f, 10.0f, (f32)*(s32 *)((u8 *)arg0 + 0x3C)) - 4.0f;
+    temp = Math_EaseOutPow(2, old, 0.0f, 8.0f, 10.0f, (f32)*(s32 *)((u8 *)arg0 + 0x3C)) - 4.0f;
     *(f32 *)((u8 *)arg0 + 0x38) = (temp * temp) - 16.0f;
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= 10) {
         *(s32 *)((u8 *)arg0 + 0x3C) = 0;

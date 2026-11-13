@@ -7466,7 +7466,7 @@ void fn_801C6978(u32 arg0) {
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B434;
     void *Process_Find(void *);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005FA14(void *, s32);
     void PSMTXTrans(void *, void *, f32, f32, f32);
@@ -7516,7 +7516,7 @@ void fn_801C6978(u32 arg0) {
                 *(u32 *)&sp8 = lbl_8027D540[0];
                 *(u32 *)&spC = lbl_8027D540[1];
                 *(u32 *)&sp10 = lbl_8027D540[2];
-                t = fn_8005A028(2, lbl_8036B424, lbl_8036B434, (f32)max, (f32)counter);
+                t = Math_EaseOutPow(2, lbl_8036B424, lbl_8036B434, (f32)max, (f32)counter);
                 sp8 = -Math_Lerp(*(f32 *)(entry + 8), lbl_8036B424, lbl_8036B434, t);
                 sp10 = -Math_Lerp(*(f32 *)(entry + 0x10), lbl_8036B424, lbl_8036B434, t);
                 obj = *(void **)entry;
@@ -7695,7 +7695,7 @@ void Light_FadeProcess(void *proc) {
     void *Process_Find(void *);
     void Process_ClearFunc(void *);
     void Process_Unlink(void *);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
     u8 *Fog_GetColor(void);
     extern u8 LightFade_script[];
@@ -7732,11 +7732,11 @@ void Light_FadeProcess(void *proc) {
     dst0 = Light_GetChannel(0);
     dst2 = Light_GetChannel(2);
 
-    t0 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
+    t0 = (s32)Math_EaseOutPow(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));
-    t1 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
+    t1 = (s32)Math_EaseOutPow(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));
-    t2 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
+    t2 = (s32)Math_EaseOutPow(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));
 
     v = (srcLight[4] * t0) / 128;

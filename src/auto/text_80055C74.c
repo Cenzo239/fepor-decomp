@@ -1616,7 +1616,7 @@ for(i=1;i<n;i++) { x *= d; y *= c; }
 return a + diff*x/y;
 }
 
-f32 fn_8005A028(s32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
+f32 Math_EaseOutPow(s32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
 f32 step=farg2-farg3;
 f32 diff=farg1-farg0;
 f32 x=step;

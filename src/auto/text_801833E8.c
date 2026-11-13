@@ -1413,7 +1413,7 @@ void fn_80186BC0(void *arg0) {
 }
 
 void fn_80186E10(void *arg0) {
-    f32 fn_8005A028(s32, void *, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, void *, f32, f32, f32, f32);
     void fn_80050C50(void *, f32, f32);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
@@ -1431,11 +1431,11 @@ void fn_80186E10(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x44) + lbl_8036ACF8;
     p34 = *(void **)((u8 *)arg0 + 0x34);
     r31 = (u8 *)p34 + 0x1C;
-    r30 = (s32)fn_8005A028(2, p34, lbl_8036AD00, lbl_8036ACEC, lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    r30 = (s32)Math_EaseOutPow(2, p34, lbl_8036AD00, lbl_8036ACEC, lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     p30 = *(void **)((u8 *)arg0 + 0x30);
-    f31 = fn_8005A028(2, p30, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)p30 + 4), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    f31 = Math_EaseOutPow(2, p30, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)p30 + 4), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     p30 = *(void **)((u8 *)arg0 + 0x30);
-    tmp = fn_8005A028(2, p30, *(f32 *)((u8 *)arg0 + 0x3C), *(f32 *)((u8 *)p30 + 8), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    tmp = Math_EaseOutPow(2, p30, *(f32 *)((u8 *)arg0 + 0x3C), *(f32 *)((u8 *)p30 + 8), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     fn_80050C50(*(void **)((u8 *)arg0 + 0x34), f31, tmp);
     Model_SetAlpha(r31, (u8)r30);
     if (*(f32 *)((u8 *)arg0 + 0x44) == lbl_8036ACF4) {
@@ -1924,7 +1924,7 @@ void fn_80187FBC(void *arg0) {
 
 void fn_8018820C(void *arg0) {
     M2C_UNK fn_80050C50(s32, f32, f32);
-    f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32, f32);
     extern f32 lbl_8036ACD8;
     extern f32 lbl_8036AD0C;
     f32 temp_f1;
@@ -1933,8 +1933,8 @@ void fn_8018820C(void *arg0) {
 
     temp_r31 = M2C_FIELD(arg0, void **, 0x18);
     M2C_FIELD(arg0, s32 *, 0x60) = (s32) (M2C_FIELD(arg0, s32 *, 0x60) + 1);
-    temp_f31 = fn_8005A028(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
-    temp_f1 = fn_8005A028(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
+    temp_f31 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
+    temp_f1 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
     fn_80050C50(M2C_FIELD(temp_r31, s32 *, 0x34), temp_f31, temp_f1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x60) >= 8) {
         Process_ClearFunc(arg0);
@@ -2240,7 +2240,7 @@ void fn_8018A7FC(void *arg0)
 
 void fn_8018A824(void *arg0) {
     void Process_ClearFunc(void *);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f32 lbl_8036AD28;
     extern f32 lbl_8036ACEC;
     f32 f31;
@@ -2256,8 +2256,8 @@ void fn_8018A824(void *arg0) {
         *(s32 *)((u8 *)arg0 + 0x34) = 0xA;
         Process_ClearFunc(arg0);
     }
-    f31 = fn_8005A028(2, *(f32 *)((u8 *)arg0 + 0x54), *(f32 *)((u8 *)arg0 + 0x4C), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
-    f1 = fn_8005A028(2, *(f32 *)((u8 *)arg0 + 0x58), *(f32 *)((u8 *)arg0 + 0x50), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+    f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x54), *(f32 *)((u8 *)arg0 + 0x4C), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+    f1 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x58), *(f32 *)((u8 *)arg0 + 0x50), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
     p = *(void **)((u8 *)arg0 + 0x30);
     z = lbl_8036ACEC;
     *(f32 *)((u8 *)p + 0x10) = f31;
@@ -2444,7 +2444,7 @@ void fn_8018B060(void *arg0) {
     void fn_80050BCC(void *, s32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f64 lbl_8036ACE0;
     extern f32 lbl_8036ACD8;
     extern f32 lbl_8036ACEC;
@@ -2480,7 +2480,7 @@ void fn_8018B060(void *arg0) {
     half = lbl_8036ACD8 * (f32)*(s32 *)((u8 *)self + 0x54);
     temp = *(s32 *)((u8 *)self + 0x50);
     if ((f32)(s32)temp < half) {
-        f30 += fn_8005A028(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)(s32)temp);
+        f30 += Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)(s32)temp);
     } else {
         f30 += Math_EaseInPow(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)(s32)temp - half);
     }
@@ -2705,7 +2705,7 @@ void fn_8018B920(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_8018B934(void *arg0) {
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD48;
@@ -2715,7 +2715,7 @@ void fn_8018B934(void *arg0) {
     void *temp_r4;
 
     M2C_FIELD(arg0, s32 *, 0x3C) = M2C_FIELD(arg0, s32 *, 0x3C) + 1;
-    temp_f1 = fn_8005A028(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
+    temp_f1 = Math_EaseOutPow(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
     ad48 = lbl_8036AD48;
     ace8 = lbl_8036ACE8;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 0x15C) = (s16) (ace8 * (temp_f1 - ad48 * (f32) (s32) (temp_f1 / ad48)));
@@ -2961,11 +2961,11 @@ void fn_8018C9A4(void *arg0) {
 }
 
 void fn_8018C9CC(void *arg0) {
-    f32 fn_8005A028(M2C_UNK, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32);
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF8;
     M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) + 1);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x78) = fn_8005A028(2, lbl_8036ACEC, lbl_8036ACF8, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40));
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x78) = Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036ACF8, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x40) >= (s32) M2C_FIELD(arg0, s32 *, 0x3C)) {
         Process_ClearFunc(arg0);
     }
@@ -3053,7 +3053,7 @@ void fn_8018CC3C(void *arg0) {
 }
 
 void fn_8018CCB8(void *arg0) {
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
     void Process_Unlink(void *);
     void Process_ClearFunc(void *);
@@ -3064,7 +3064,7 @@ void fn_8018CCB8(void *arg0) {
     u8 *dst2;
 
     *(s32 *)((u8 *)arg0 + 0x3C) = *(s32 *)((u8 *)arg0 + 0x3C) + 1;
-    *(s32 *)((u8 *)arg0 + 0x30) = (s32) fn_8005A028(
+    *(s32 *)((u8 *)arg0 + 0x30) = (s32) Math_EaseOutPow(
         2,
         (f32)*(s32 *)((u8 *)arg0 + 0x34),
         (f32)*(s32 *)((u8 *)arg0 + 0x38),
@@ -7124,7 +7124,7 @@ void fn_80195170(void *arg0, s8 arg1) {
 void fn_80195178(void *arg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     void fn_802031E8(f32 *, f32 *);
     extern f32 lbl_8027A580[];
@@ -7198,7 +7198,7 @@ void fn_80195178(void *arg0) {
     {
         f32 a14 = *(f32 *)((u8 *)self + 0x14);
         f32 a18 = *(f32 *)((u8 *)self + 0x18);
-        *(f32 *)((u8 *)self + 0x10) = fn_8005A028(2, a14, a18, a18 - a14, *(f32 *)((u8 *)self + 0x1C));
+        *(f32 *)((u8 *)self + 0x10) = Math_EaseOutPow(2, a14, a18, a18 - a14, *(f32 *)((u8 *)self + 0x1C));
     }
     if (*(f32 *)((u8 *)self + 0x10) > *(f32 *)((u8 *)self + 0x18)) {
         *(f32 *)((u8 *)self + 0x10) = *(f32 *)((u8 *)self + 0x18);
@@ -9117,7 +9117,7 @@ s32 fn_8019A364(void *arg0)
     void fn_800536B0(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -9184,8 +9184,8 @@ s32 fn_8019A364(void *arg0)
     scaled = lbl_8036AF1C * vec[2];
     f25 = lbl_8036AF20;
     if ((f32)*(s16 *)(obj + 0x48) < f24) {
-        f31 += fn_8005A028(2, lbl_8036AF24, -scaled, f24, (f32)*(s16 *)(obj + 0x48));
-        alpha = (s32)fn_8005A028(2, lbl_8036AF20, lbl_8036AF28, f24, (f32)*(s16 *)(obj + 0x48));
+        f31 += Math_EaseOutPow(2, lbl_8036AF24, -scaled, f24, (f32)*(s16 *)(obj + 0x48));
+        alpha = (s32)Math_EaseOutPow(2, lbl_8036AF20, lbl_8036AF28, f24, (f32)*(s16 *)(obj + 0x48));
     } else {
         f31 += Math_EaseInPow(2, -scaled, f25, f24, (f32)*(s16 *)(obj + 0x48) - f24);
     }
@@ -9392,7 +9392,7 @@ s32 fn_8019ADD8(void *arg0)
     void fn_800536B0(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_8027AA08[3];
@@ -9455,9 +9455,9 @@ s32 fn_8019ADD8(void *arg0)
     {
         f32 scaled = lbl_8036AF1C * vec[2];
         if ((f32)*(s16 *)(obj + 0x68) < f31) {
-            f26 = f28 + fn_8005A028(2, lbl_8036AF24, -scaled, f31, (f32)*(s16 *)(obj + 0x68));
-            f27 = fn_8005A028(2, lbl_8036AF38, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68));
-            alpha = (s32)fn_8005A028(2, lbl_8036AF20, lbl_8036AF28, f31, (f32)*(s16 *)(obj + 0x68));
+            f26 = f28 + Math_EaseOutPow(2, lbl_8036AF24, -scaled, f31, (f32)*(s16 *)(obj + 0x68));
+            f27 = Math_EaseOutPow(2, lbl_8036AF38, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68));
+            alpha = (s32)Math_EaseOutPow(2, lbl_8036AF20, lbl_8036AF28, f31, (f32)*(s16 *)(obj + 0x68));
         } else {
             f26 = f28 + Math_EaseInPow(2, -scaled, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68) - f31);
             f27 = Math_EaseInPow(2, lbl_8036AF20, lbl_8036AF3C, f31, (f32)*(s16 *)(obj + 0x68) - f31);

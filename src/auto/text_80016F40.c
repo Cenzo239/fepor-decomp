@@ -355,13 +355,13 @@ void Process_ClearFunc(void *);
 void CamPath_Apply(void *, f32);
 f32 Math_Lerp(f32, f32, f32, f32);
 f32 Math_EaseInPow(s32, f32, f32, f32, f32);
-f32 fn_8005A028(s32, f32, f32, f32, f32);
+f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
 void CamPath_Update(void *arg0) {
     void Process_ClearFunc(void *);
     void CamPath_Apply(void *, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern s32 gUiInputFlags;
     extern f32 lbl_80368C88;
 
@@ -391,7 +391,7 @@ void CamPath_Update(void *arg0) {
         break;
     case 2:
         lim = *(s32 *)((u8 *)arg0 + 0x38);
-        f1 = fn_8005A028(2, f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        f1 = Math_EaseOutPow(2, f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
         break;
     case 3: {
         s32 half;
@@ -400,7 +400,7 @@ void CamPath_Update(void *arg0) {
         if (*(s32 *)((u8 *)arg0 + 0x34) < half) {
             f1 = Math_EaseInPow(2, f1, (f32)half, (f32)half, (f32)*(s32 *)((u8 *)arg0 + 0x34));
         } else {
-            f1 = fn_8005A028(2, (f32)half, (f32)lim, (f32)half, (f32)(*(s32 *)((u8 *)arg0 + 0x34) - half));
+            f1 = Math_EaseOutPow(2, (f32)half, (f32)lim, (f32)half, (f32)(*(s32 *)((u8 *)arg0 + 0x34) - half));
         }
         break;
     }

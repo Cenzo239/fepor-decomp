@@ -10279,7 +10279,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
 void fn_8004B588(u8 *arg0)
 {
     f32 Math_Lerp(f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     void PSMTXRotRad(void *, s32, f32);
@@ -10342,8 +10342,8 @@ void fn_8004B588(u8 *arg0)
         Ui_LoadAtlasTex(gUnitShadowMat, sp4C, 3);
         break;
     case 1:
-        alpha = (s32)fn_8005A028(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32)arg0[1]);
-        scale = fn_8005A028(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32)arg0[1]);
+        alpha = (s32)Math_EaseOutPow(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32)arg0[1]);
+        scale = Math_EaseOutPow(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32)arg0[1]);
         Ui_LoadAtlasTex(gUnitShadowMat, sp4C, 4);
         break;
     }
