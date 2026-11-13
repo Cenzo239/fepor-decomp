@@ -9841,7 +9841,8 @@ void fn_80258D74(void) {
     fn_80262410();
 }
 
-s32 Sound_PushGroup(void *arg0, u16 arg1, s32 arg2, s32 arg3, s32 arg4) {
+/* Find groupId in groupData and register its sample/macro/curve/keymap/layer id lists. */
+s32 Sound_PushGroup(void *groupData, u16 groupId, s32 translate, s32 sampleDir, s32 poolData) {
 extern u8 gSoundReady;
 extern s32 *gAudioGroupState;
 s32 fn_802622F4(s32);
@@ -9853,31 +9854,31 @@ s16 n;
 AudioGroupState *state;
 u32 i; u16 *p; u8 *node;
 if(gSoundReady && (state=(AudioGroupState *)gAudioGroupState, n=state->count)<128) {
-for(node=arg0; *(u32 *)node != 0xFFFFFFFF; node=(u8 *)arg0+*(u32 *)node) {
-if(*(u16 *)(node+4)==arg1) {
+for(node=groupData; *(u32 *)node != 0xFFFFFFFF; node=(u8 *)groupData+*(u32 *)node) {
+if(*(u16 *)(node+4)==groupId) {
 state=(AudioGroupState *)((u8 *)state+n*12); state->slots[0].node=node;
-state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state+state->count*12); state->slots[0].data=arg0;
-state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state+state->count*12); state->slots[0].id=arg3;
-p=(u16 *)((u8 *)arg0+*(u32 *)(node+12));
-if(fn_8024F964(arg3,fn_802622F4(arg2))) {
-while(*p!=0xFFFF) { if(*p & 0x8000) { for(i=*p & 0x3FFF;(u16)i<=p[1];i++) Sound_SetResource(i,(void *)arg3,1,0); p+=2; } else { Sound_SetResource(*p++,(void *)arg3,1,0); } }
+state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state+state->count*12); state->slots[0].data=groupData;
+state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state+state->count*12); state->slots[0].id=sampleDir;
+p=(u16 *)((u8 *)groupData+*(u32 *)(node+12));
+if(fn_8024F964(sampleDir,fn_802622F4(translate))) {
+while(*p!=0xFFFF) { if(*p & 0x8000) { for(i=*p & 0x3FFF;(u16)i<=p[1];i++) Sound_SetResource(i,(void *)sampleDir,1,0); p+=2; } else { Sound_SetResource(*p++,(void *)sampleDir,1,0); } }
 }
 { u32 j; u16 *q;
-q=(u16 *)((u8 *)arg0+*(u32 *)(node+8));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,0,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,0,0); } }
+q=(u16 *)((u8 *)groupData+*(u32 *)(node+8));
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)poolData,0,0); q+=2; } else { Sound_SetResource(*q++,(void *)poolData,0,0); } }
 }
 { u32 j; u16 *q;
-q=(u16 *)((u8 *)arg0+*(u32 *)(node+16));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,4,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,4,0); } }
+q=(u16 *)((u8 *)groupData+*(u32 *)(node+16));
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)poolData,4,0); q+=2; } else { Sound_SetResource(*q++,(void *)poolData,4,0); } }
 }
 { u32 j; u16 *q;
-q=(u16 *)((u8 *)arg0+*(u32 *)(node+20));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,2,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,2,0); } }
+q=(u16 *)((u8 *)groupData+*(u32 *)(node+20));
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)poolData,2,0); q+=2; } else { Sound_SetResource(*q++,(void *)poolData,2,0); } }
 }
 { u32 j; u16 *q;
-q=(u16 *)((u8 *)arg0+*(u32 *)(node+24));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,3,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,3,0); } }
-if(*(u16 *)(node+6)==1) { q=(u16 *)((u8 *)arg0+*(u32 *)(node+28)); fn_8024FE1C(arg1,(u8 *)q+4,*q); }
+q=(u16 *)((u8 *)groupData+*(u32 *)(node+24));
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)poolData,3,0); q+=2; } else { Sound_SetResource(*q++,(void *)poolData,3,0); } }
+if(*(u16 *)(node+6)==1) { q=(u16 *)((u8 *)groupData+*(u32 *)(node+28)); fn_8024FE1C(groupId,(u8 *)q+4,*q); }
 }
 fn_802624B8(); (*(s16 *)((u8 *)gAudioGroupState+8))++; return 1;
 }
