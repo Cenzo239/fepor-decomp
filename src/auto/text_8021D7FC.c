@@ -847,6 +847,7 @@ void GXSetGPFifo(void *fifo) {
     extern void* __GXCurrentCPUFifo;
     extern void* __GXCurrentGPFifo;
     extern u8 __GXGPFifoAttached;
+    // Bind fifo as the GP FIFO and optionally link it with the CPU FIFO.
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
     u32 reg;
