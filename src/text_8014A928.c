@@ -341,7 +341,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     void sprintf(void *, void *, ...);
     extern f32 gOneF;
     extern f32 gMenuItemZBias;
-    extern f32 lbl_8036A7C4;
+    extern f32 gMenuTextScale;
     extern u8 gSoundMenuStrings[];
     char sp8[8];
 
@@ -353,7 +353,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText((*(Drawer **)((u8 *)arg2 + 0x34))->v4(arg2));
-    Prim2D_SetScale(lbl_8036A7C4);
+    Prim2D_SetScale(gMenuTextScale);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
@@ -365,7 +365,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x60), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
-    Prim2D_SetScale(lbl_8036A7C4);
+    Prim2D_SetScale(gMenuTextScale);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
