@@ -6287,7 +6287,7 @@ void Ui_ConfirmItemDiscard(void *arg0) {
     typedef struct { u8 hi : 1; u8 lo : 7; } Bit7;
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    extern u8 lbl_80294AE8[];
+    extern u8 gUiAmulMetamorDescProc[];
     void *temp_r28;
     void *temp_r31;
     void *temp_r3;
@@ -6308,7 +6308,7 @@ void Ui_ConfirmItemDiscard(void *arg0) {
                 if ((*(long long *)temp_r3 & 0x100000000LL) != 0
                     && (*(s32 *)((u8 *)*(void **)gUiContext + 0x1A0) & 0x800000)) {
                     ((Bit7 *)((u8 *)temp_r31 + 5))->hi = 0;
-                    Process_CreateChild(lbl_80294AE8, arg0);
+                    Process_CreateChild(gUiAmulMetamorDescProc, arg0);
                 }
             }
             Item_Clear(temp_r31);
@@ -7908,7 +7908,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoPopup(void *, void *, u32, f32, f32);
     extern u16 gUiMsgStrings[];
-    extern u8 lbl_80294AE8[];
+    extern u8 gUiAmulMetamorDescProc[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -7990,7 +7990,7 @@ extern "C" void fn_80172DA4(void *arg0) {
                 bits = Item_GetFlagsPtr(var_r29);
                 if ((*(u64 *)bits & 0x100000000ULL) != 0
                     || (*(s32 *)((u8 *)item + 0x1A0) & 0x800000) != 0) {
-                    Process_CreateChild(lbl_80294AE8, self);
+                    Process_CreateChild(gUiAmulMetamorDescProc, self);
                 }
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r29 != 0) {
