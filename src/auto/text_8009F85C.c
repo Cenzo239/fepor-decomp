@@ -2125,13 +2125,13 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_EndPrim(void);
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Ui_DrawMenuTextItem(s32, s32, void *);
-    s32 fn_80104338(void *, u8);
+    s32 Unit_GetSkillRank(void *, u8);
     M2C_UNK sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
     extern f32 gItemMenuTextScale;
     u8 sp8[8];
 
-    sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
+    sprintf(sp8, lbl_8026D8D8 + 0x6E5, Unit_GetSkillRank((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
     Ui_DrawMenuTextItem(arg0, arg1, arg2);
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));

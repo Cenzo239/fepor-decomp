@@ -610,7 +610,7 @@ void fn_801042A8(void *arg0, u32 arg1, s32 arg2) {
     }
 }
 
-s32 fn_80104338(void *arg0, u32 arg1) {
+s32 Unit_GetSkillRank(void *arg0, u32 arg1) {
     struct { u8 hi:3; u8 lo:5; } *p;
     struct { u16 hi:6; u16 mid:3; u16 lo:7; } *h;
     struct { u8 hi:1; u8 mid:3; u8 lo:4; } *q;
