@@ -5898,6 +5898,7 @@ void fn_80192EE8(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
+    /* Handle shop-buy list cursor: A buy (funds check), Y unit info, B cancel. */
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     void fn_8000D8BC(s32, s32);
@@ -5944,27 +5945,27 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
         virtual void v10() = 0;
         virtual void v11() = 0;
         virtual void v12() = 0;
-        virtual Pair v13() = 0;
+        virtual Pair getPos() = 0;
     };
     struct Child {
         u8 pad[0xC];
-        s16 unkC;
+        s16 y;
         u8 padE[0x2E];
-        s32 unk3C;
+        s32 cost;
     };
 
-    void *obj40;
-    s32 *var_r30;
+    void *listWidget;
+    s32 *entry;
     Child *child;
     void *self;
     register int btn;
-    register u8 gate;
+    register u8 blocked;
     register int flags;
     void *unit;
     u32 *bits;
-    void *nest;
+    void *owner;
     s32 saved;
-    u32 ret;
+    u32 msg;
     s32 val;
     u32 pos1;
     u32 pos2;
@@ -5972,43 +5973,43 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     f32 scale;
 
     self = arg0;
-    obj40 = *(void **)((u8 *)arg0 + 0x4C);
-    var_r30 = ListWidget_GetSelected(obj40);
-    *(u8 *)((u8 *)obj40 + 0x4C) = 1;
+    listWidget = *(void **)((u8 *)arg0 + 0x4C);
+    entry = ListWidget_GetSelected(listWidget);
+    *(u8 *)((u8 *)listWidget + 0x4C) = 1;
     fn_8013FDA0(arg0);
-    if (var_r30 != ListWidget_GetSelected(obj40)) {
-        var_r30 = ListWidget_GetSelected(obj40);
+    if (entry != ListWidget_GetSelected(listWidget)) {
+        entry = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            if (var_r30 != NULL) {
-                *(Pair *)&pos1 = ((Obj *)obj40)->v13();
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *var_r30, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
+            if (entry != NULL) {
+                *(Pair *)&pos1 = ((Obj *)listWidget)->getPos();
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *entry, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
             } else {
                 Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
     child = (Child *)fn_8013FF94(arg0, 1, 0);
-    val = *(s32 *)*var_r30;
-    child->unk3C = val;
+    val = *(s32 *)*entry;
+    child->cost = val;
     flags = gUiInputFlags;
-    gate = 0;
+    blocked = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+        blocked = 1;
     }
-    if (!gate) {
+    if (!blocked) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30 != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-              unit = (void *)*var_r30;
+        if ((btn & 0x100) && entry != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+              unit = (void *)*entry;
               price = (f32)(s32)(u16)UnitRef_GetValue(unit);
               scale = *(f32 *)((u8 *)self + 0x64);
               if ((s32)(scale * price) > *(s32 *)((u8 *)lbl_80330708 + 0x18)) {
                   Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x501, 0x64);
                   fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x20));
-                  nest = *(void **)((u8 *)self + 0x68);
-                  saved = *(s32 *)((u8 *)nest + 0x54);
-                  ret = fn_8013FF94(self, -0x1000, 0);
-                  if (ret != 0) fn_801658DC(ret, saved);
+                  owner = *(void **)((u8 *)self + 0x68);
+                  saved = *(s32 *)((u8 *)owner + 0x54);
+                  msg = fn_8013FF94(self, -0x1000, 0);
+                  if (msg != 0) fn_801658DC(msg, saved);
                   fn_8000C070(self, 0xB);
               } else {
                   Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x4BC, 0x64);
@@ -6019,15 +6020,15 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
                   fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x10));
                   fn_8000C188(self);
               }
-        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != NULL) {
-            *(Pair *)&pos2 = ((Obj *)obj40)->v13();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && entry != NULL) {
+            *(Pair *)&pos2 = ((Obj *)listWidget)->getPos();
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *entry, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            *(u8 *)((u8 *)obj40 + 0x4C) = 0;
-            fn_80140258(self, child, Pair(0x260, child->unkC), 0);
+            *(u8 *)((u8 *)listWidget + 0x4C) = 0;
+            fn_80140258(self, child, Pair(0x260, child->y), 0);
             fn_8000C070(self, 0x11);
             Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x4DE, 0x64);
         }
