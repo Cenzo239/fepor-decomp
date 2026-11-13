@@ -8679,9 +8679,9 @@ void fn_801993E0(void *arg0) {
 
 void fn_80199484(void *arg0) {
     M2C_UNK fn_800E5B68();
-    M2C_UNK fn_80198CA4();
+    M2C_UNK MoveAnim_SyncWeaponBones();
     if ((s32) M2C_FIELD(arg0, s32 *, 0x124) == 3) {
-        fn_80198CA4();
+        MoveAnim_SyncWeaponBones();
         return;
     }
     fn_800E5B68();
@@ -13504,7 +13504,7 @@ void fn_80198910(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_80198CA4(void *arg0) {
+void MoveAnim_SyncWeaponBones(void *arg0) {
     void fn_800608AC(void *);
     void *fn_800E56BC(void *);
     void *fn_80060690(void *);
