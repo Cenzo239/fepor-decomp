@@ -117,7 +117,7 @@ s32 fn_800A9710(void) {
 extern "C" M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
 extern "C" M2C_UNK fn_800075D8();
 extern "C" M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
-extern "C" M2C_UNK fn_80007884();
+extern "C" M2C_UNK Prim2D_EndPrim();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" M2C_UNK fn_80009B8C(M2C_UNK);
 extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
@@ -192,7 +192,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     sp10 = lbl_80369B9C;
     sp14 = lbl_80369B98;
     fn_800072B0(&sp14, &sp10, &spC, &sp8, lbl_80369B9C, lbl_80369BA0, lbl_80369BA4);
-    fn_80007884();
+    Prim2D_EndPrim();
 
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
@@ -242,7 +242,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     void fn_800076AC(s32, s32, s32, s32);
     void fn_80007124(void);
     void fn_8000727C(f32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
@@ -294,7 +294,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     fn_80007124();
     fn_8000727C(lbl_80369C24);
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 

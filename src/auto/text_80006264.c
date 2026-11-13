@@ -1189,7 +1189,7 @@ void fn_80007870(f32 arg0) {
     *(f32 *)(ptr + 0x8) = arg0;
 }
 
-void fn_80007884(void) {
+void Prim2D_EndPrim(void) {
     extern u8 *lbl_80367140;
     *(s16 *)(lbl_80367140 + 0x92) += 1;
 }

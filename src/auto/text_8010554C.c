@@ -2735,7 +2735,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void fn_80007220(u8, f32);
     void fn_800071D8(u8, f32);
     void fn_80007124(void *);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     extern f32 lbl_8036A130;
     extern f32 lbl_8036A118;
     extern f32 lbl_8036A154;
@@ -2776,7 +2776,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     fn_80007220(*(u8 *)((u8 *)temp_r29 + 0x10), lbl_8036A154);
     fn_800071D8(*(u8 *)((u8 *)temp_r29 + 0x11), lbl_8036A118);
     fn_80007124(temp_r31);
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 
 #pragma use_lmw_stmw on
@@ -2785,7 +2785,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     void fn_800075D8(void);
     void fn_80007770(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009EB0(s32, u8, u8, s32);
     void Prim2D_BindTexture(s32, u8, s32);
@@ -2870,7 +2870,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     sp10 = sp20;
     sp14 = sp24;
     fn_800072B0(&sp14, &sp10, &spC, &sp8);
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
 
@@ -2879,7 +2879,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     void Prim2D_SetAlpha(u8);
     void fn_80007770(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009EB0(s32, u8, u8, s32);
     void Prim2D_BindTexture(s32, u8, s32);
@@ -2941,7 +2941,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
         (f32)*(u16 *)((u8 *)arg0 + 0x20),
         (f32)*(u16 *)((u8 *)arg0 + 0x22));
     Prim2D_SetAlpha(var_r31);
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 void fn_8010AB78(void *arg0) {

@@ -2227,7 +2227,7 @@ extern "C" M2C_UNK fn_80007124();
 extern "C" M2C_UNK fn_8000727C(f32);
 extern "C" M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK fn_80007858(f32, f32);
-extern "C" M2C_UNK fn_80007884();
+extern "C" M2C_UNK Prim2D_EndPrim();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
@@ -2289,7 +2289,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
         fn_80007290(0, 0, 0, 0xFF);
     }
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 void fn_80024364(void *arg0) {
@@ -2732,7 +2732,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void fn_800075D8(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B8C(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -2800,7 +2800,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     sp10 = lbl_80368D94;
     sp14 = lbl_80368D90;
     fn_800072B0(&sp14, &sp10, &spC, &sp8);
-    fn_80007884();
+    Prim2D_EndPrim();
 }
 #pragma cplusplus reset
 s32 fn_80025440(void) {

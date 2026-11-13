@@ -91,7 +91,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007124();
     M2C_UNK fn_800076AC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80007858(f32, f32);
-    M2C_UNK fn_80007884();
+    M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK fn_80009C0C(f32);
     M2C_UNK Prim2D_PrepareTex();
@@ -121,7 +121,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     fn_800076AC(0, 0, 0, 0xFF);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
     fn_80007124();
-    fn_80007884();
+    Prim2D_EndPrim();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036A404);
     Prim2D_PrepareTex();
@@ -1627,7 +1627,7 @@ void fn_8012B7DC(void *arg0) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
     void fn_80007870(f32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
@@ -1771,7 +1771,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A49C);
         fn_80007124(buf);
-        fn_80007884();
+        Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
         sprintf(buf, lbl_802758F8 + 0x39,
                     (s32)(lbl_8036A4A0 * *(f32 *)((u8 *)cam + 0x54)));
@@ -1779,7 +1779,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A4A4);
         fn_80007124(buf);
-        fn_80007884();
+        Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
         sprintf(buf, lbl_802758F8 + 0x45,
                     (s32)*(f32 *)((u8 *)cam + 0x5C));
@@ -1787,7 +1787,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A4A8);
         fn_80007124(buf);
-        fn_80007884();
+        Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);
         fn_8000A174(0, 0x10);
@@ -1795,7 +1795,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_8036A49C, lbl_8036A49C, lbl_8036A4B0, lbl_8036A4B4);
         fn_800076AC(0, 0, 0, (u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        fn_80007884();
+        Prim2D_EndPrim();
     }
 
     pad = (void *)lbl_80367240;
@@ -1964,7 +1964,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_SetRect(lbl_8036A4B8, lbl_8036A498, lbl_8036A4BC, lbl_8036A4C0);
         fn_800076AC(0, 0, 0, 0xB4);
         fn_80007870(lbl_8036A4C4);
-        fn_80007884();
+        Prim2D_EndPrim();
     }
 }
 

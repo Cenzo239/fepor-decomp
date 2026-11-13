@@ -55,7 +55,7 @@ void fn_8007F410(void *arg0) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_800075D8(void);
     void fn_800076AC(s32, s32, s32, s32);
-    void fn_80007884(void);
+    void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
     Color *fn_8018D900(s32);
     void Prim2D_BindTexture(s32, s32, s32);
@@ -117,7 +117,7 @@ void fn_8007F410(void *arg0) {
     Prim2D_SetRect(bx, by, lbl_803694E8, lbl_80369434);
     fn_800075D8();
     fn_800076AC(0, 0, 0, 0xFF);
-    fn_80007884();
+    Prim2D_EndPrim();
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
     sh = lbl_80369430 * tex[0];
     sw = lbl_80369430 * tex[1];
@@ -135,7 +135,7 @@ void fn_8007F410(void *arg0) {
     fn_80007818(tx + sw, by + sh, w, h);
     fn_800076AC(color.r, color.g, color.b, 0xFF);
     fn_800075D8();
-    fn_80007884();
+    Prim2D_EndPrim();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036942C);
     Prim2D_PrepareTex();
