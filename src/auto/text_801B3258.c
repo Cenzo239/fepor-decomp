@@ -4820,7 +4820,7 @@ s32 Ui_ValidateSkillAssign(void *item) {
     return 0;
 }
 
-s32 fn_801BEA38(void *arg0, void *arg1, void *arg2) {
+s32 Ui_SkillAssignMenuItem(void *arg0, void *arg1, void *arg2) {
     void fn_80176888(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u8 gUiContext[];
