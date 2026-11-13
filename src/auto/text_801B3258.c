@@ -8927,7 +8927,7 @@ s32 fn_801C98EC(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-s32 fn_801C9940(void) {
+s32 CameraWin_CaptureKeyframe(void) {
     void *fn_800DC3B0(void *);
     s32 fn_8011C9E4(s32);
     s32 fn_8011C984(s32, s32);
@@ -9272,7 +9272,7 @@ void *CameraWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(void **)(*(u8 **)(self + 0x43c) + 0xA4) = (void *)fn_801C9B08;
     *(void **)(*(u8 **)(self + 0x440) + 0xA4) = (void *)fn_801C9A90;
     *(void **)(*(u8 **)(self + 0x444) + 0xA4) = (void *)fn_801C9A88;
-    *(void **)(*(u8 **)(self + 0x448) + 0xA4) = (void *)fn_801C9940;
+    *(void **)(*(u8 **)(self + 0x448) + 0xA4) = (void *)CameraWin_CaptureKeyframe;
     *(void **)(*(u8 **)(self + 0x44c) + 0xA4) = (void *)fn_801C98EC;
     *(void **)(*(u8 **)(self + 0x450) + 0xA4) = (void *)CameraWin_OnCancel;
     *(void **)(self + 0x14) = *(void **)(self + 0x430);
