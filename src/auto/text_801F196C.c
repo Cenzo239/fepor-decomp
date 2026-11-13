@@ -4843,7 +4843,7 @@ void fn_801FBC84(void) {
     void fn_800DE9FC(void *);
     void Tree_Destroy(void *, void *);
     void Tree_InsertKey(void *, void *, u16 *);
-    void fn_801FC4F8(void *, void *, void *);
+    void Tree_Init(void *, void *, void *);
     u16 fn_802072A0(void);
     void fn_80207628(s32, s32);
     void fn_802078A4(u8 *, void *, s32, s32, s32 *);
@@ -4883,7 +4883,7 @@ void fn_801FBC84(void) {
     u16 code;
     s8 tmp_ch;
 
-    fn_801FC4F8(&tree, &sp8, &spC);
+    Tree_Init(&tree, &sp8, &spC);
     tables = (void *)lbl_8029B520;
     goto outer_cond;
 outer_body:
@@ -5222,7 +5222,7 @@ void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
     }
 }
 #pragma opt_common_subs on
-void fn_801FC4F8(s32 arg0, s32 arg1, s32 arg2) {
+void Tree_Init(s32 arg0, s32 arg1, s32 arg2) {
     s32 temp_arg2 = (arg2 < 0 ? 0 : arg2);
     
     *(s32*)(arg0 + 0x4) = arg1;
