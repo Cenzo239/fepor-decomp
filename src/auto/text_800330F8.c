@@ -6295,48 +6295,49 @@ u8 fn_80040B1C(void *arg0, s32 arg1, s32 arg2) {
     return (u8) ((M2C_FIELD(arg0, s16 *, 2) - temp_r6) <= arg2);
 }
 
-void Map_DecodeHeaderFlags(void *arg0) {
+/* Decode map header flags at +0x64 into gMapBlendMode and gBattleSkyIndex. */
+void Map_DecodeHeaderFlags(void *map) {
     extern u8 gBattleState[];
     extern s8 gMapBlendMode;
     extern s8 gBattleSkyIndex;
 
-    s32 temp_r4;
-    s32 temp_r3;
-    s8 var_r5;
+    s32 blendBits;
+    s32 skyBits;
+    s8 blend;
 
-    temp_r4 = *(s32 *)((char *)arg0 + 0x64) & 0xC0000;
-    switch (temp_r4) {
+    blendBits = *(s32 *)((char *)map + 0x64) & 0xC0000;
+    switch (blendBits) {
     case 0x80000:
-        var_r5 = 1;
+        blend = 1;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
-            var_r5 = 0;
+            blend = 0;
         }
-        gMapBlendMode = var_r5;
+        gMapBlendMode = blend;
         break;
     case 0xC0000:
-        var_r5 = 2;
+        blend = 2;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
-            var_r5 = 0;
+            blend = 0;
         }
-        gMapBlendMode = var_r5;
+        gMapBlendMode = blend;
         break;
     case 0x40000:
-        var_r5 = 3;
+        blend = 3;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
-            var_r5 = 0;
+            blend = 0;
         }
-        gMapBlendMode = var_r5;
+        gMapBlendMode = blend;
         break;
     default:
-        var_r5 = 0;
+        blend = 0;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
-            var_r5 = 0;
+            blend = 0;
         }
-        gMapBlendMode = var_r5;
+        gMapBlendMode = blend;
         break;
     }
-    temp_r3 = *(s32 *)((char *)arg0 + 0x64) & 0x01F00000;
-    switch (temp_r3) {
+    skyBits = *(s32 *)((char *)map + 0x64) & 0x01F00000;
+    switch (skyBits) {
     case 0x0:
         gBattleSkyIndex = 0;
         return;
