@@ -7410,7 +7410,7 @@ void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
     return arg1;
 }
 
-void Prim2D_ScissorFromRect(void *arg0, void *arg1) {
+void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
     struct {
         s16 x;
@@ -7419,54 +7419,55 @@ void Prim2D_ScissorFromRect(void *arg0, void *arg1) {
         s16 y2;
     } r;
     s16 v;
-    s16 t;
+    s16 clamped;
 
-    ((u32 *)&r)[0] = ((u32 *)arg1)[0];
-    ((u32 *)&r)[1] = ((u32 *)arg1)[1];
+    /* Clamp a pixel rect to [0, 0x7FF] and set GX scissor to its width/height. */
+    ((u32 *)&r)[0] = ((u32 *)rectSrc)[0];
+    ((u32 *)&r)[1] = ((u32 *)rectSrc)[1];
 
     v = r.x;
     if (v < 0) {
-        t = 0;
+        clamped = 0;
     } else {
-        t = 0x7FF;
+        clamped = 0x7FF;
         if (v <= 0x7FF) {
-            t = v;
+            clamped = v;
         }
     }
-    r.x = t;
+    r.x = clamped;
 
     v = r.y;
     if (v < 0) {
-        t = 0;
+        clamped = 0;
     } else {
-        t = 0x7FF;
+        clamped = 0x7FF;
         if (v <= 0x7FF) {
-            t = v;
+            clamped = v;
         }
     }
-    r.y = t;
+    r.y = clamped;
 
     v = r.x2;
     if (v < 0) {
-        t = 0;
+        clamped = 0;
     } else {
-        t = 0x7FF;
+        clamped = 0x7FF;
         if (v <= 0x7FF) {
-            t = v;
+            clamped = v;
         }
     }
-    r.x2 = t;
+    r.x2 = clamped;
 
     v = r.y2;
     if (v < 0) {
-        t = 0;
+        clamped = 0;
     } else {
-        t = 0x7FF;
+        clamped = 0x7FF;
         if (v <= 0x7FF) {
-            t = v;
+            clamped = v;
         }
     }
-    r.y2 = t;
+    r.y2 = clamped;
 
     GXSetScissor(r.x, r.y, (s16)(r.x2 - r.x), (s16)(r.y2 - r.y));
 }
