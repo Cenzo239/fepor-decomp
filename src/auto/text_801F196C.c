@@ -1852,19 +1852,22 @@ void fn_801F6170(void *arg0)
     void Process_ClearFunc(void *);
     u32 local[4];
     u32 tmp[4];
+    u32 *src;
     s32 i;
     u32 *p;
 
     *(u8 *)((u8 *)arg0 + 0x4C) = 1;
 
-    local[0] = lbl_80280B48[0];
-    local[1] = lbl_80280B48[1];
-    local[2] = lbl_80280B48[2];
-    local[3] = lbl_80280B48[3];
+    src = lbl_80280B48;
+    local[0] = src[0];
+    local[1] = src[1];
+    local[2] = src[2];
+    local[3] = src[3];
 
     p = local;
-    for (i = 0; i < 4; i++) {
-        if (fn_8023C410(p[0]) == 0x40000) {
+    i = 0;
+    do {
+        if (fn_8023C410(*p) == 0x40000) {
             tmp[0] = lbl_80280B48[0];
             tmp[1] = lbl_80280B48[1];
             tmp[2] = lbl_80280B48[2];
@@ -1875,10 +1878,12 @@ void fn_801F6170(void *arg0)
             Process_ClearFunc(arg0);
             return;
         }
-        p++;
-    }
+        i += 1;
+        p += 1;
+    } while (i < 4);
+    (void)src;
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 void fn_801F6260(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x4C) = 0;
     fn_8005C7C8((u8 *)&gCardLinkStr + 0x18C);
@@ -2956,11 +2961,11 @@ void fn_801F894C(s32 arg0) {
 
 void fn_801F897C(void) {
     void Battle_SetPhase(void *, s32);
-    void fn_8002D548(void);
+    void Battle_LoadMap(void);
     extern u8 gBattleState[];
 
     Battle_SetPhase(gBattleState, 0x1F);
-    fn_8002D548();
+    Battle_LoadMap();
 }
 
 void fn_801F89AC(s32 arg0, s32 arg1) {

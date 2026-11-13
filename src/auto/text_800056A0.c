@@ -304,7 +304,7 @@ void fn_80005F04(void)
     void fn_8014D41C(void *);
     void fn_801E2594(void *);
     void *Process_Find(void *);
-    void fn_8002D548(void);
+    void Battle_LoadMap(void);
     void fn_8014D920(void);
     s32 fn_8016947C(void);
     void fn_80016C58(void);
@@ -349,7 +349,7 @@ void fn_80005F04(void)
     case 5:
     case 6:
     case 7:
-        fn_8002D548();
+        Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
         fn_801E2594(&gSaveDataBase);
@@ -359,7 +359,7 @@ void fn_80005F04(void)
         break;
 
     case 1:
-        fn_8002D548();
+        Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
         fn_801E2594(&gSaveDataBase);
@@ -384,7 +384,7 @@ void fn_80005F04(void)
         break;
 
     case 2:
-        fn_8002D548();
+        Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
         fn_801E2594(&gSaveDataBase);

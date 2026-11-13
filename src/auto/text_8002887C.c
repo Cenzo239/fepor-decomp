@@ -1986,7 +1986,7 @@ void fn_8002D4B8(void)
     fn_800C4B8C();
 }
 #pragma global_optimizer off
-void fn_8002D548(void)
+void Battle_LoadMap(void)
 {
     extern u8 lbl_80269210[];
     extern u8 gBattleState[];
