@@ -106,7 +106,7 @@ extern u16 lbl_803548B8;
 extern u16 lbl_80368A08;
 extern u16 lbl_8035A510[];
 extern u16 lbl_8035D118[256];
-extern u16 lbl_80361A98[4288];
+extern u16 gSoundChanParamsDefault[4288];
 extern f32 lbl_802831BC[];
 extern f64 lbl_8036C348;
 extern u16 lbl_803670C0;
@@ -12158,7 +12158,7 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
     extern u8 lbl_80283128[];
     extern u8 lbl_802830A0[];
     extern u8 gSoundChanParams[];
-    extern u16 lbl_80361A98[4288];
+    extern u16 gSoundChanParamsDefault[4288];
 
     void fn_80260174(u8, u8, u8);
 
@@ -12175,7 +12175,7 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
     if (arg1 != 0xFF) {
         dst = gSoundChanParams + (arg1 * 0x860) + (arg0 * 0x86);
     } else {
-        dst = (u8 *)lbl_80361A98 + (arg0 * 0x86);
+        dst = (u8 *)gSoundChanParamsDefault + (arg0 * 0x86);
     }
 
     if (arg2 != 0) {
@@ -12207,12 +12207,12 @@ if(arg0>=0x60U && arg0<0x66U) return 0;
 if(arg0==0x80U || arg0==0x81U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
 if(arg0==0x84U || arg0==0x85U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
 return (gSoundChanParams+arg2*0x860+arg1*0x86)[arg0]<<7;}
-else {if(arg0<0x40U){u32 index; s32 offset; offset=arg1*0x86;index=arg0&31;return ((((u8*)lbl_80361A98+offset)[index]<<7)|((u8*)lbl_80361A98+offset)[index+0x20]);}
-if(arg0<0x46U) return ((u8*)lbl_80361A98+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
+else {if(arg0<0x40U){u32 index; s32 offset; offset=arg1*0x86;index=arg0&31;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+0x20]);}
+if(arg0<0x46U) return ((u8*)gSoundChanParamsDefault+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
 if(arg0>=0x60U && arg0<0x66U) return 0;
-if(arg0==0x80U || arg0==0x81U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)lbl_80361A98+offset)[index]<<7)|((u8*)lbl_80361A98+offset)[index+1]);}
-if(arg0==0x84U || arg0==0x85U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)lbl_80361A98+offset)[index]<<7)|((u8*)lbl_80361A98+offset)[index+1]);}
-return ((u8*)lbl_80361A98+arg1*0x86)[arg0]<<7;}
+if(arg0==0x80U || arg0==0x81U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
+if(arg0==0x84U || arg0==0x85U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
+return ((u8*)gSoundChanParamsDefault+arg1*0x86)[arg0]<<7;}
 }
 else return 0;
 }
@@ -12309,8 +12309,8 @@ void fn_80260060(u8 arg0, void *arg1, void *arg2) {
         temp_r6 = (u8) temp_r0 * 0x86;
         temp_r5 = arg0 & 0x1F;
         temp_r7 = (u8) temp_r4 * 0x86;
-        temp_r8 = &lbl_80361A98 + 0x20;
-        *(u16*)((u8*)(&lbl_80361A98) + temp_r7 + temp_r5) = *(u16*)((u8*)(&lbl_80361A98) + temp_r6 + temp_r5);
+        temp_r8 = &gSoundChanParamsDefault + 0x20;
+        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7 + temp_r5) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6 + temp_r5);
         *(u16*)((u8*)temp_r8 + (temp_r7 + temp_r5)) = *(u16*)((u8*)temp_r8 + (temp_r6 + temp_r5));
         return;
     }
@@ -12320,8 +12320,8 @@ void fn_80260060(u8 arg0, void *arg1, void *arg2) {
         temp_r6_2 = (u8) temp_r0 * 0x86;
         temp_r5_2 = arg0 & 0xFE;
         temp_r7_2 = (u8) temp_r4 * 0x86;
-        temp_r8_2 = &lbl_80361A98 + 1;
-        *(u16*)((u8*)(&lbl_80361A98) + temp_r7_2 + temp_r5_2) = *(u16*)((u8*)(&lbl_80361A98) + temp_r6_2 + temp_r5_2);
+        temp_r8_2 = &gSoundChanParamsDefault + 1;
+        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7_2 + temp_r5_2) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6_2 + temp_r5_2);
         *(u16*)((u8*)temp_r8_2 + (temp_r7_2 + temp_r5_2)) = *(u16*)((u8*)temp_r8_2 + (temp_r6_2 + temp_r5_2));
         return;
     case 0x84:
@@ -12329,12 +12329,12 @@ void fn_80260060(u8 arg0, void *arg1, void *arg2) {
         temp_r6_3 = (u8) temp_r0 * 0x86;
         temp_r5_3 = arg0 & 0xFE;
         temp_r7_3 = (u8) temp_r4 * 0x86;
-        temp_r8_3 = &lbl_80361A98 + 1;
-        *(u16*)((u8*)(&lbl_80361A98) + temp_r7_3 + temp_r5_3) = *(u16*)((u8*)(&lbl_80361A98) + temp_r6_3 + temp_r5_3);
+        temp_r8_3 = &gSoundChanParamsDefault + 1;
+        *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r7_3 + temp_r5_3) = *(u16*)((u8*)(&gSoundChanParamsDefault) + temp_r6_3 + temp_r5_3);
         *(u16*)((u8*)temp_r8_3 + (temp_r7_3 + temp_r5_3)) = *(u16*)((u8*)temp_r8_3 + (temp_r6_3 + temp_r5_3));
         return;
     default:
-        *(u16*)((u8*)(&lbl_80361A98) + ((u8) temp_r4 * 0x86) + arg0) = *(u16*)((u8*)(&lbl_80361A98) + ((u8) temp_r0 * 0x86) + arg0);
+        *(u16*)((u8*)(&gSoundChanParamsDefault) + ((u8) temp_r4 * 0x86) + arg0) = *(u16*)((u8*)(&gSoundChanParamsDefault) + ((u8) temp_r0 * 0x86) + arg0);
         return;
     }
 }

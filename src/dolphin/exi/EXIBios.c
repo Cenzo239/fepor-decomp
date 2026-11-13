@@ -68,7 +68,7 @@ extern u16 lbl_803548B8;
 extern u16 lbl_80368A08;
 extern u16 lbl_8035A510[];
 extern u16 lbl_8035D118[256];
-extern u16 lbl_80361A98[4288];
+extern u16 gSoundChanParamsDefault[4288];
 extern f32 lbl_802831BC[];
 extern f64 lbl_8036C348;
 extern u16 lbl_803670C0;
