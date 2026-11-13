@@ -11,7 +11,7 @@
   extern f32 lbl_803696A8;
   extern f32 lbl_803696AC;
   
-  extern void* lbl_80367488;
+  extern void* gActiveFace;
   extern s32 lbl_803693C0;
   extern s32 lbl_803693C4;
   extern f64 lbl_803693C8;

@@ -14,13 +14,13 @@ extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
 
 s32 fn_8007C5E4(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     extern void *gFaceSlots[];
     void Process_Unlink(void *);
     void *obj;
     s32 index;
 
-    obj = lbl_80367488;
+    obj = gActiveFace;
     if (obj != NULL) {
         if (obj != NULL) {
             index = *(u8 *)((u8 *)obj + 0x40);
@@ -39,10 +39,10 @@ void *fn_8007C64C(void) {
 }
 
 s32 fn_8007C65C(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     void *temp_r3;
 
-    temp_r3 = M2C_FIELD(lbl_80367488, void **, 0x54);
+    temp_r3 = M2C_FIELD(gActiveFace, void **, 0x54);
     if (temp_r3 != NULL) {
         M2C_FIELD(temp_r3, s16 *, 0x36) = 7;
     }
@@ -55,10 +55,10 @@ void *fn_8007C67C(void) {
 }
 
 s32 fn_8007C68C(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *ptr;
 
-    ptr = *(u8 **)((u8 *)lbl_80367488 + 0x54);
+    ptr = *(u8 **)((u8 *)gActiveFace + 0x54);
 
     if (ptr != NULL) {
         *(u16 *)(ptr + 0x36) = 6;
@@ -73,10 +73,10 @@ void *fn_8007C6AC(void) {
 }
 
 s32 fn_8007C6BC(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *ptr;
 
-    ptr = *(u8 **)((u8 *)lbl_80367488 + 0x54);
+    ptr = *(u8 **)((u8 *)gActiveFace + 0x54);
 
     if (ptr != NULL) {
         *(u16 *)(ptr + 0x36) = 3;
@@ -91,10 +91,10 @@ void *fn_8007C6DC(void) {
 }
 
 s32 fn_8007C6EC(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *ptr;
 
-    ptr = *(u8 **)((u8 *)lbl_80367488 + 0x54);
+    ptr = *(u8 **)((u8 *)gActiveFace + 0x54);
 
     if (ptr != NULL) {
         *(u16 *)(ptr + 0x36) = 4;
@@ -109,10 +109,10 @@ void *fn_8007C70C(void) {
 }
 
 s32 fn_8007C71C(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *ptr;
 
-    ptr = *(u8 **)((u8 *)lbl_80367488 + 0x54);
+    ptr = *(u8 **)((u8 *)gActiveFace + 0x54);
 
     if (ptr != NULL) {
         *(u16 *)(ptr + 0x36) = 5;
@@ -127,10 +127,10 @@ void *fn_8007C73C(void) {
 }
 
 s32 fn_8007C74C(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *ptr;
 
-    ptr = *(u8 **)((u8 *)lbl_80367488 + 0x54);
+    ptr = *(u8 **)((u8 *)gActiveFace + 0x54);
 
     if (ptr != NULL) {
         *(u16 *)(ptr + 0x36) = 1;
@@ -142,11 +142,11 @@ s32 fn_8007C74C(void) {
 #pragma global_optimizer off
 s32 fn_8007C8F4(void)
 {
-  extern void *lbl_80367488;
+  extern void *gActiveFace;
   u8 *obj;
   u16 flags;
   s32 value;
-  obj = (u8 *) lbl_80367488;
+  obj = (u8 *) gActiveFace;
   value = 0x20;
   obj = *((u8 **) (obj + 0x50));
   if (!obj)
@@ -169,11 +169,11 @@ s32 fn_8007C8F4(void)
   *((u16 *) (obj + 0x46)) = ((*((u16 *) (obj + 0x46))) & (~0xE0)) & 0xFFFFFFFF;
   *((u16 *) (obj + 0x36)) = 1;
   ;
-  *((u16 *) (((u8 *) lbl_80367488) + 0x46)) = (*((u16 *) (((u8 *) lbl_80367488) + 0x46))) | ((u16) value);
+  *((u16 *) (((u8 *) gActiveFace) + 0x46)) = (*((u16 *) (((u8 *) gActiveFace) + 0x46))) | ((u16) value);
   return 0;
 }
 #pragma global_optimizer on
-extern void* lbl_80367488;
+extern void* gActiveFace;
 extern s32 lbl_803693C0;
 extern s32 lbl_803693C4;
 extern f64 lbl_803693C8;
@@ -197,7 +197,7 @@ void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
     var_r30 = 0;
     sp[0] = lbl_803693C0;
     sp[1] = lbl_803693C4;
-    if ((*(u16*)((u8*)lbl_80367488 + 0x46) & 2) != 0) {
+    if ((*(u16*)((u8*)gActiveFace + 0x46) & 2) != 0) {
         var_r30 = 1;
     }
     Prim2D_Begin();
@@ -218,19 +218,19 @@ void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
 }
 
 s32 fn_8007CAC4(void) {
-    extern void *lbl_80367488;
+    extern void *gActiveFace;
     u8 *base;
     s32 flag;
     u16 val;
 
-    base = lbl_80367488;
+    base = gActiveFace;
     flag = 2;
     if ((*(u16 *)(base + 0x46) & 2) != 0) {
         flag = 0;
     }
-    val = *(u16 *)((u8 *)lbl_80367488 + 0x46);
+    val = *(u16 *)((u8 *)gActiveFace + 0x46);
     *(u16 *)(base + 0x46) = val & -0x203;
-    base = lbl_80367488;
+    base = gActiveFace;
     *(u16 *)(base + 0x46) = *(u16 *)(base + 0x46) | (u16)flag;
     return 0;
 }
