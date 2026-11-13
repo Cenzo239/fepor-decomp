@@ -35,12 +35,12 @@ void fn_8002887C(void) {
     M2C_UNK fn_8003B69C(void *);
     M2C_UNK fn_800AA4F8();
     M2C_UNK fn_800F0C30(u8, u8, s32);
-    void *fn_800AA794();
+    void *Map_GetCursorUnit();
     u8 temp_r31;
     u8 temp_r30;
     void *temp_r29;
 
-    temp_r29 = fn_800AA794();
+    temp_r29 = Map_GetCursorUnit();
     fn_800AA4F8();
     temp_r31 = M2C_FIELD(temp_r29, u8 *, 0x19F);
     temp_r30 = M2C_FIELD(temp_r29, u8 *, 0x19E);
@@ -287,11 +287,11 @@ void fn_800291D8(void) {
 }
 
 void fn_800294E8(void) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
 
-    if (fn_800AA794() != NULL) {
+    if (Map_GetCursorUnit() != NULL) {
         gBattleState[0x51D] = 0xB;
     } else {
         gBattleState[0x51D] = 9;

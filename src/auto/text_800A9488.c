@@ -740,7 +740,7 @@ s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
     return var_r5;
 }
 
-void *fn_800AA794(void) {
+void *Map_GetCursorUnit(void) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];

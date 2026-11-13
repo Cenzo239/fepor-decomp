@@ -3106,7 +3106,7 @@ void fn_801186E4(void *arg0)
     void fn_8004A1F0(void);
     void fn_8004A224(void);
     void fn_800A8400(void);
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void fn_800AACDC(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(u8 *, s32);
@@ -3130,7 +3130,7 @@ void fn_801186E4(void *arg0)
     void *self;
 
     self = arg0;
-    unit = fn_800AA794();
+    unit = Map_GetCursorUnit();
     if (unit != NULL) {
         if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
@@ -3177,7 +3177,7 @@ void fn_801186E4(void *arg0)
         lbl_803679F0 = NULL;
         lbl_803679F4 = 1;
     }
-    unit2 = fn_800AA794();
+    unit2 = Map_GetCursorUnit();
     if (unit2 == NULL && (gUiInputFlags & 0x400)) {
         fn_8004A1F0();
     }
@@ -3336,7 +3336,7 @@ void fn_80118C84(void *arg0) {
     void fn_8004A224(void);
     void fn_800A6AAC(void);
     void fn_800A8400(void);
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void fn_800AACDC(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(u8 *, s32);
@@ -3378,7 +3378,7 @@ void fn_80118C84(void *arg0) {
     s32 i;
 
     self = arg0;
-    unit = fn_800AA794();
+    unit = Map_GetCursorUnit();
     ef = gUiContext;
     cur_y = (s8)ef[0xE];
     sel_x = (s32)*(f32 *)((u8 *)gBattleState + 0x524);
@@ -3462,7 +3462,7 @@ void fn_80118C84(void *arg0) {
         lbl_803679F0 = NULL;
         lbl_803679F4 = 1;
     }
-    unit2 = fn_800AA794();
+    unit2 = Map_GetCursorUnit();
     if (unit2 == NULL && (gUiInputFlags & 0x400))
         fn_8004A1F0();
     skip = 0;
@@ -3746,7 +3746,7 @@ sound:
 }
 
 void fn_80119884(void *arg0) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     u8 fn_80015648(s32, u8);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *);
@@ -3758,7 +3758,7 @@ void fn_80119884(void *arg0) {
     s32 cx, cy;
     u8 *base;
 
-    unit = fn_800AA794();
+    unit = Map_GetCursorUnit();
     base = (u8 *)gBattleState;
     cx = (s32)*(f32 *)(base + 0x524);
     cy = (s32)*(f32 *)(base + 0x528);

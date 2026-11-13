@@ -261,7 +261,7 @@ void fn_801EB294(void *arg0)
     void fn_8004A1F0(void);
     void fn_8004A224(void);
     void fn_800A8400(void);
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void fn_800AACDC(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(u8 *, s32);
@@ -288,7 +288,7 @@ void fn_801EB294(void *arg0)
 
     unit2 = 0;
     self = arg0;
-    unit = fn_800AA794();
+    unit = Map_GetCursorUnit();
     if (unit != NULL) {
         if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
@@ -335,7 +335,7 @@ void fn_801EB294(void *arg0)
         lbl_80368370 = NULL;
         lbl_80368374 = 1;
     }
-    unit2 = fn_800AA794();
+    unit2 = Map_GetCursorUnit();
     if (unit2 == NULL && (gUiInputFlags & 0x400)) {
         fn_8004A1F0();
     }

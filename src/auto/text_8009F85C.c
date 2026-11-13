@@ -25,7 +25,7 @@ void fn_8009F8A8(void *unused, void *arg1) {
 }
 
 s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     u8 fn_80092ADC(void *, u8);
     extern void *gPadInput;
     u8 *base;
@@ -35,7 +35,7 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     void *obj;
     u32 flags;
 
-    base = fn_800AA794();
+    base = Map_GetCursorUnit();
     index = *(u8 *)((u8 *)arg2 + 0x3A);
     value = fn_80092ADC(base, index);
     step = 1;
@@ -61,7 +61,7 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
 }
 
 void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
     void Prim2D_SetTint(s32, s32, s32, s32);
@@ -78,7 +78,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     u8 temp;
     s32 name;
 
-    temp = fn_80092ADC(fn_800AA794(), *(u8 *)((u8 *)arg2 + 0x3A));
+    temp = fn_80092ADC(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
     name = fn_8001CDE4(temp);
     sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
     fn_80024214(arg0, arg1, arg2);
@@ -101,7 +101,7 @@ void *fn_8009FAAC(void) {
 }
 
 s32 fn_8009FABC(s32 arg0, s32 arg1, void *arg2) {
-void *fn_800AA794(void);
+void *Map_GetCursorUnit(void);
 void *fn_80105C5C(s32, u8);
 void Status_Set(s32, u8);
 s32 src;
@@ -110,10 +110,10 @@ s32 idx;
 s32 count;
 s32 target;
 void *entry;
-dst = (s32)fn_800AA794();
+dst = (s32)Map_GetCursorUnit();
 target = *(u8 *)((u8 *)arg2 + 0x3A);
 count = 0;
-src = (s32)fn_800AA794();
+src = (s32)Map_GetCursorUnit();
 for (idx = count; idx < 0x62; ++idx) {
 entry = fn_80105C5C(src + 0x1BC, (u8)idx);
 if (entry != NULL) {
@@ -131,9 +131,9 @@ return 0;
 }
 
 s32 fn_8009FB4C(s32 arg0, s32 arg1, void *arg2) {
-void *fn_800AA794(void); void *fn_80105C5C(s32,u8); void fn_80024398(void*,s32,s32); extern u8 lbl_803675E4;
+void *Map_GetCursorUnit(void); void *fn_80105C5C(s32,u8); void fn_80024398(void*,s32,s32); extern u8 lbl_803675E4;
 s32 src; s32 idx; s32 count; s32 target; void *entry;
-fn_800AA794(); target=*((u8*)arg2+0x3A); src=(s32)fn_800AA794();
+Map_GetCursorUnit(); target=*((u8*)arg2+0x3A); src=(s32)Map_GetCursorUnit();
 idx=0;
 for(count=idx;idx<0x62;idx++) {
 entry=fn_80105C5C(src+0x1BC,(u8)idx);
@@ -1128,14 +1128,14 @@ char *fn_800A0D48(void)
     extern u8 lbl_8026D8D8[];
     extern char lbl_80312338[];
 
-    extern void *fn_800AA794(void);
+    extern void *Map_GetCursorUnit(void);
     extern s32 fn_800A8A88(void *);
     extern s32 sprintf(char *, const char *, ...);
 
     u8 *unit;
     s32 value;
 
-    unit = (u8 *)fn_800AA794();
+    unit = (u8 *)Map_GetCursorUnit();
 
     if (unit == 0) {
         return (char *)lbl_8026D8D8 + 0x582;
@@ -1153,10 +1153,10 @@ char *fn_800A0D48(void)
 }
 
 u8 fn_800A0DB0(void) {
-    u32 fn_800AA794(void);
+    u32 Map_GetCursorUnit(void);
     u32 result;
     u32 r0;
-    result = fn_800AA794();
+    result = Map_GetCursorUnit();
     r0 = 2;
     if (result != 0) {
         r0 = 0;
@@ -1487,7 +1487,7 @@ void *fn_800A1910(void) {
 }
 
 s32 fn_800A1920(s32 unused, s32 arg1) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     u8 Status_Test(void *, s32);
     void fn_8003BD58(void *);
     void *fn_800241C8(s32);
@@ -1496,7 +1496,7 @@ s32 fn_800A1920(s32 unused, s32 arg1) {
     void *temp_r31;
     void *temp_r3;
 
-    temp_r31 = fn_800AA794();
+    temp_r31 = Map_GetCursorUnit();
     if (temp_r31 == NULL) {
         return 0x10;
     }
@@ -1518,7 +1518,7 @@ s32 fn_800A19C0(void) {
     void *fn_8000BCA4(void *);
     void Process_Goto(void *, s32);
     void fn_800A6A3C(void);
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void fn_800283C8(void *, void *);
     void fn_80027F98(void *, s32);
     void fn_800381EC(void *, s32);
@@ -1541,7 +1541,7 @@ s32 fn_800A19C0(void) {
     }
     Process_Goto(temp_r31, 9);
     fn_800A6A3C();
-    temp_r30 = fn_800AA794();
+    temp_r30 = Map_GetCursorUnit();
     fn_800283C8(gUiContext, temp_r30);
     fn_80027F98(gUiContext, 1);
     fn_800381EC(temp_r30, 0);
@@ -1664,12 +1664,12 @@ s32 fn_800A1C74(s32 arg0, s32 arg1, void *arg2) {
 #pragma opt_strength_reduction off
 s32 fn_800A1CB4(void)
 {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void *p;
     s32 two;
     s32 v;
 
-    p = fn_800AA794();
+    p = Map_GetCursorUnit();
     p = *(void **)((u8 *)p + 0x188);
     two = 1 + 1;
     v = *(s32 *)((u8 *)p + 0x50);
@@ -1683,14 +1683,14 @@ void *fn_800A1CF0(void) {
 
 s32 fn_800A1D00(void) {
     M2C_UNK fn_80037AB8();
-    M2C_UNK fn_800AA794();
-    fn_800AA794();
+    M2C_UNK Map_GetCursorUnit();
+    Map_GetCursorUnit();
     fn_80037AB8();
     return 6;
 }
 
 void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     s32 Unit_GetItemSlot(s32, s32);
     s32 UnitRef_GetName(void);
     void sprintf(void *, void *, ...);
@@ -1711,7 +1711,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void **temp_r31;
 
     temp_r30 = arg2;
-    temp_r31 = (void **)Unit_GetItemSlot((s32)fn_800AA794(), *(u8 *)((u8 *)temp_r30 + 0x3A));
+    temp_r31 = (void **)Unit_GetItemSlot((s32)Map_GetCursorUnit(), *(u8 *)((u8 *)temp_r30 + 0x3A));
     if (temp_r31 == NULL || *temp_r31 == NULL) {
         return;
     }
@@ -1901,11 +1901,11 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 
 s32 fn_800A2624(void *arg0)
 {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void *p;
     s32 ret;
 
-    p = fn_800AA794();
+    p = Map_GetCursorUnit();
     p = *(void **)((u8 *)p + 0x18c);
     ret = 0;
     *(u16 *)((u8 *)arg0 + 4) = *(u16 *)((u8 *)p + 0x38);
@@ -1968,7 +1968,7 @@ s32 fn_800A2748(void *arg0) {
     s32 Job_Get(s16);
     s32 fn_8003C6BC(s32, s32, s32);
 
-    s32 temp_r31 = fn_800AA794();
+    s32 temp_r31 = Map_GetCursorUnit();
     s16 temp_r5 = M2C_FIELD(arg0, s16 *, 4);
     s32 temp_r3 = Job_Get(temp_r5);
     fn_8003C6BC(temp_r31, 0, temp_r3);
@@ -1977,11 +1977,11 @@ s32 fn_800A2748(void *arg0) {
 
 s32 fn_800A279C(void *arg0)
 {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     void *p;
     u16 v;
 
-    p = fn_800AA794();
+    p = Map_GetCursorUnit();
     p = *(void **)((u8 *)p + 0x188);
     v = *(u16 *)((u8 *)p + 0x18);
     *(u16 *)((u8 *)arg0 + 4) = v;
@@ -2044,7 +2044,7 @@ s32 fn_800A28C0(void *arg0) {
     s32 Person_Get(s16);
     M2C_UNK fn_8003C6BC(s32, s32, M2C_UNK);
 
-    s32 temp_r31 = fn_800AA794();
+    s32 temp_r31 = Map_GetCursorUnit();
     s32 arg1 = Person_Get(M2C_FIELD(arg0, s16 *, 4));
     fn_8003C6BC(temp_r31, arg1, 0);
     return 0;
@@ -2092,7 +2092,7 @@ s32 fn_800A29E8(void) {
     extern u8 lbl_80366E08;
     s32 temp_r31;
 
-    temp_r31 = fn_800AA794();
+    temp_r31 = Map_GetCursorUnit();
     Res_GetEntry(lbl_80366E08);
     if (Status_Test(temp_r31 + 0x1BC, lbl_80366E08) == 0) {
         Status_Clear(temp_r31 + 0x1BC, lbl_80366E08);
@@ -2115,7 +2115,7 @@ void fn_800A2A58(void *arg0, void *arg1) {
 }
 
 void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     M2C_UNK Prim2D_SetText(void *);
     M2C_UNK Prim2D_SetScale(f32);
     M2C_UNK Prim2D_SetTint(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -2129,7 +2129,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     extern f32 lbl_803699E8;
     u8 sp8[8];
 
-    sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)fn_800AA794() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
+    sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
     fn_80024214(arg0, arg1, arg2);
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));
@@ -2154,7 +2154,7 @@ s32 fn_800A2CC8(void) {
 }
 
 s32 fn_800A2CD0(void *a, void *b, s32 arg) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     u8 fn_8003701C(void);
     u32 fn_80037004(void *, u8);
     s32 fn_80036FD0(void *, u8);
@@ -2162,7 +2162,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
     void *p;
     u8 value;
 
-    obj = fn_800AA794();
+    obj = Map_GetCursorUnit();
     p = *(void **)((u8 *)obj + 0x188);
     if (*(u32 *)((u8 *)p + 0x50) == 0) {
         return 3;
@@ -2178,7 +2178,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
 }
 
 void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
-    void *fn_800AA794(void);
+    void *Map_GetCursorUnit(void);
     M2C_UNK Prim2D_Begin(void);
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
@@ -2209,7 +2209,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     s32 vals[4];
     u8 sp18[0x20];
 
-    obj = fn_800AA794();
+    obj = Map_GetCursorUnit();
     if (M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) != NULL) {
         idx = M2C_FIELD(arg2, u8 *, 0x3A);
         if ((u8) fn_8003701C(obj) > idx) {
