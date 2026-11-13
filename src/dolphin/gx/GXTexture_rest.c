@@ -432,6 +432,7 @@ void fn_80224A68(s32 arg0, s32 arg1) {
     *(volatile s32 *)0xCC008000 = arg1;
 }
 
+/* Transform a point by the model-view matrix and project it to screen space (perspective or ortho). */
 void GXProject(f32 x, f32 y, f32 z, f32 mtx[3][4], f32 *pm, f32 *vp, f32 *sx, f32 *sy, f32 *sz) {
     f32 peye_x;
     f32 peye_y;
