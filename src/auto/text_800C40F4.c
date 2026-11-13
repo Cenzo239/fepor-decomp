@@ -17449,7 +17449,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
 void fn_800F18A4(s32 arg0,s32 arg1) {
 void fn_80060060(void *); f32 fn_80023068(void *,f32,f32); void PSMTXScale(void *,f32,f32,f32);void PSMTXTrans(void *,f32,f32,f32);void PSMTXRotRad(void *,s32,f32);
 void *fn_80040844(void);void Map_BuildSlopeMatrix(void *,void *,f32,f32);void fn_802033AC(void *,void *);void fn_80203604(void *,void *,void *,f32);void fn_80202640(void *,void *);void PSMTXIdentity(void *);void PSMTXConcat(void *,void *,void *);void fn_80201FF0(void *,void *);
-void fn_8005F7B0(void *,s32);void fn_8005F7E0(void *,s32,s32,s32);void fn_800606BC(void *);
+void fn_8005F7B0(void *,s32);void Model_SetColor(void *,s32,s32,s32);void fn_800606BC(void *);
 extern u8 lbl_8032AC58[],gBattleMap[];extern f32 lbl_8028E588[],lbl_8028E578[];extern f32 lbl_8036A014,lbl_8036A030,lbl_8036A034,lbl_8036A038,lbl_8036A03C;
 f32 m108[12],mD8[12],mA8[12],m78[12],m48[12],m18[12],q[4];
 u8 *base,*origin,*p,*h,*qp,*obj; f32 *xs,*ys,*x,*y; void *terrain; s32 i; f32 offset,angle,step,fx,fy,fz;
@@ -17474,7 +17474,7 @@ fn_80202640(mD8,q);
 PSMTXRotRad(m108,0x5A,angle*(step*(f32)i));PSMTXTrans(mA8,fx,fy,fz);
 PSMTXConcat(m78,m48,m18);PSMTXConcat(m108,m18,m18);PSMTXConcat(mD8,m18,m18);PSMTXConcat(mA8,m18,obj+0x18);
 M2C_FIELD(obj,u32 *,8)|=0x50000400;fn_80201FF0(obj+0x18,obj+0x338);
-M2C_FIELD(obj,u32 *,0x328)|=0x30000400;fn_8005F7B0(obj+0x328,0xF0);fn_8005F7E0(obj+0x328,0x80,0x20,0x80);
+M2C_FIELD(obj,u32 *,0x328)|=0x30000400;fn_8005F7B0(obj+0x328,0xF0);Model_SetColor(obj+0x328,0x80,0x20,0x80);
 M2C_FIELD(obj,f32 *,0x380)=M2C_FIELD(obj,f32 *,0x60);fn_800606BC(obj+8);fn_800606BC(obj+0x328);
 i++;ys++;base+=4;qp+=16;obj+=0xA0;xs++;
 }while(i<4);
@@ -17494,7 +17494,7 @@ f32 fn_80023068(void *, f32, f32);
 void *fn_80040844(void);
 void Map_BuildSlopeMatrix(void *, void *, f32, f32);
 void fn_8005F7B0(void *, s32);
-void fn_8005F7E0(void *, s32, s32, s32);
+void Model_SetColor(void *, s32, s32, s32);
 void fn_800606BC(void *);
 void PSMTXIdentity(void *);
 void fn_80201FF0(void *, void *);
@@ -17605,7 +17605,7 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
         fn_80201FF0(obj + 0x18, obj + 0x338);
         *(u32 *)(obj + 0x328) |= 0x30000400;
         fn_8005F7B0(obj + 0x328, 0xF0);
-        fn_8005F7E0(obj + 0x328, 0x80, 0x20, 0x80);
+        Model_SetColor(obj + 0x328, 0x80, 0x20, 0x80);
         *(f32 *)(obj + 0x380) = *(f32 *)(obj + 0x60);
         fn_800606BC(obj + 8);
         fn_800606BC(obj + 0x328);

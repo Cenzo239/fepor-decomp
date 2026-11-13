@@ -2139,7 +2139,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     void fn_80007340(void *, s32);
     void Prim2D_EndPrim(void);
     void fn_8004BD1C(void *, f32 *, f32);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_8005F7B0(void *, s32);
     void fn_8005F780(void *, s32);
@@ -2224,11 +2224,11 @@ void Ui_DrawUnitListModels(void *arg0) {
         if (inRange != 0) {
             mode = *(u8 *)((u8 *)self + 0x6C);
             if ((mode == 1) && (*(u32 *)((u8 *)item + 0x1A0) & 0x10)) {
-                fn_8005F7E0(obj, 0x40, 0x40, 0x40);
+                Model_SetColor(obj, 0x40, 0x40, 0x40);
             } else if ((mode == 2) && !(*(u32 *)((u8 *)item + 0x1A0) & 0x400000)) {
-                fn_8005F7E0(obj, 0x40, 0x40, 0x40);
+                Model_SetColor(obj, 0x40, 0x40, 0x40);
             } else {
-                fn_8005F7E0(obj, 0x80, 0x80, 0x80);
+                Model_SetColor(obj, 0x80, 0x80, 0x80);
             }
             PSMTXTrans(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
             PSMTXConcat(spD4, sp14, (u8 *)obj + 0x10);

@@ -1047,25 +1047,22 @@ extern "C" void fn_80134280(void *arg0) {
     limit = lim;
     p = (u32 *)((u8 *)base + off);
     for (; i != 0; i--) {
-        if (*p == 0) {
-            goto end;
-        }
-        if (count++ == limit) {
-            goto end;
-        }
-        p += 2;
-        if (*p == 0) {
-            goto end;
-        }
-        if (count++ == limit) {
-            goto end;
+        if (*p != 0) {
+            if (count++ == limit) {
+                goto end;
+            }
         }
         p += 2;
-        if (*p == 0) {
-            goto end;
+        if (*p != 0) {
+            if (count++ == limit) {
+                goto end;
+            }
         }
-        if (count++ == limit) {
-            goto end;
+        p += 2;
+        if (*p != 0) {
+            if (count++ == limit) {
+                goto end;
+            }
         }
         unk += 2;
         p += 2;
@@ -2745,28 +2742,31 @@ s32 fn_80136F24(void) {
     return 6;
 }
 
-void fn_80136F2C(ListIter *ret, List *list, ListIter *start, ListIter *end) {
-    ListNode *first;
-    ListNode *last;
-    ListNode *a;
-    ListNode *node;
+void fn_80136F2C(ListIter *ret, List *list, ListIter *start, ListIter *end)
+{
+  ListNode *first;
+  ListNode *last;
+  ListNode *a;
+  ListNode *node;
+  first = start->node;
+  if (first == last)
+  {
+    ret->node = last;
+    return;
+  }
+  a = last->prev;
+  first->prev->next = a->next;
+  last = end->node;
+  a->next->prev = first->prev;
+  while (start->node != end->node)
+  {
+    node = start->node;
+    start->node = node->next;
+    fn_800C428C(node);
+    list->size--;
+  }
 
-    first = start->node;
-    last = end->node;
-    if (first == last) {
-        ret->node = last;
-        return;
-    }
-    a = last->prev;
-    first->prev->next = a->next;
-    a->next->prev = first->prev;
-    while (start->node != end->node) {
-        node = start->node;
-        start->node = node->next;
-        fn_800C428C(node);
-        list->size--;
-    }
-    ret->node = end->node;
+  ret->node = end->node;
 }
 
 #pragma cplusplus on
@@ -3341,7 +3341,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void fn_80202574(void *, void *, f32, f32, f32);
     f32 fn_80138AC0(void *);
     s32 fn_80138908(void *);
-    void fn_8005F7E0(void *, u8, u8, u8);
+    void Model_SetColor(void *, u8, u8, u8);
     void fn_8005F7B0(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
@@ -3516,7 +3516,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         if (*pb >= 0xFF) {
             pb = &c8;
         }
-        fn_8005F7E0(self->unk50, (u8)*pr, (u8)*pg, (u8)*pb);
+        Model_SetColor(self->unk50, (u8)*pr, (u8)*pg, (u8)*pb);
         fn_8005F7B0(self->unk50, fn_80138908(self));
         fn_8005F780(self->unk50, 0xFF);
         fn_80060060(self->unk50);
@@ -3904,7 +3904,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void Prim2D_EndPrim(void);
     void fn_80009C0C(f32);
     void fn_8004BD1C(void *, f32 *, s16, f32);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void fn_8005F7B0(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
@@ -4020,9 +4020,9 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
             fy = (f32)((s16)(y + self->unkC)) + sp10[1];
             fn_80202574(sp4C, (u8 *)spr + 0x10, fx, fy, (f32)self->a22);
             if (self->v14(node->obj) != 0) {
-                fn_8005F7E0(spr, 0x80, 0x80, 0x80);
+                Model_SetColor(spr, 0x80, 0x80, 0x80);
             } else {
-                fn_8005F7E0(spr, 0x40, 0x40, 0x40);
+                Model_SetColor(spr, 0x40, 0x40, 0x40);
             }
             fn_8005F7B0(spr, 0xFF);
             fn_8005F780(spr, 0xFF);
@@ -4864,33 +4864,29 @@ extern "C" void fn_8013ACC4(s32 *arg0, void *arg1) {
     struct Point *fn_8013F748(void *, struct Point *, struct Point *);
     struct Point out;
     struct Point in;
-    s32 vret;
+    unsigned vret;
     s16 v4e;
     s16 v58;
     s16 v56;
     s16 v5a;
     s16 v62;
     s16 v64;
-    s32 quot;
-    s32 rem;
+    u32 quot;
+    s16 rem;
     s16 adj;
 
     vret = ((Obj *)arg1)->v11();
     v4e = *(s16 *)((u8 *)arg1 + 0x4E);
     v58 = *(s16 *)((u8 *)arg1 + 0x58);
     v56 = *(s16 *)((u8 *)arg1 + 0x56);
-    quot = v4e / v58;
     v5a = *(s16 *)((u8 *)arg1 + 0x5A);
     v62 = *(s16 *)((u8 *)arg1 + 0x62);
     v64 = *(s16 *)((u8 *)arg1 + 0x64);
-    rem = quot * v58;
-    adj = (s16)quot;
-    adj = adj - v56;
-    rem = v4e - rem;
-    adj = (s16)adj;
-    rem = (s16)rem;
-    in.x = vret * rem + v62;
-    in.y = v5a * adj + v64;
+    quot = v4e / v58;
+    rem = (s16)(v4e - quot * v58);
+    adj = (s16)((s16)quot - v56);
+    in.y = (s16)(v5a * adj + v64);
+    in.x = (s16)(vret * rem + v62);
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
 extern "C" void fn_8013AF08(void *arg0, s16 arg1) {

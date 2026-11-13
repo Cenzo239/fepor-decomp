@@ -3205,7 +3205,7 @@ void fn_801F8E30(void *arg0) {
     void fn_8004DDB8(s32);
     void fn_8005F780(void *, s32);
     void fn_8005F7B0(void *, s32);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8006ECCC(void *, void *, s32);
@@ -3356,7 +3356,7 @@ clear:
             f27 = lbl_8036BA70;
             fn_8004BD1C(*(void **)((u8 *)node + 8), sp8, lbl_8036BA6C);
             fn_80202574(sp14, (u8 *)draw + 0x10, f27 + sp8[0], f28 + sp8[1], lbl_8036BA1C);
-            fn_8005F7E0(draw, 0x80, 0x80, 0x80);
+            Model_SetColor(draw, 0x80, 0x80, 0x80);
             fn_8005F7B0(draw, 0xFF);
             fn_8005F780(draw, 0xFF);
             fn_80060060(draw);

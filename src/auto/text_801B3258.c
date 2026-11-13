@@ -12797,7 +12797,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     void Prim2D_EndPrim(void);
     void fn_8004BD1C(void *, f32 *, f32);
     u8 fn_800BE890(void *);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void fn_8005F7B0(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
@@ -12974,7 +12974,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
             } else {
                 *(u32 *)spr |= 0x20000u;
             }
-            fn_8005F7E0(spr, 0x80, 0x80, 0x80);
+            Model_SetColor(spr, 0x80, 0x80, 0x80);
             fn_8005F7B0(spr, 0xFF);
             fn_8005F780(spr, 0xFF);
             fn_80060060(spr);

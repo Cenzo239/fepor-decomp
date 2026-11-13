@@ -2285,7 +2285,7 @@ void GActor_LoadResources(void *arg0, s32 arg1)
 {
     s32 fn_8005C84C(void);
     void fn_8005F7B0(void *, s32);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void *GActor_FindNode(void *, char *);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
@@ -2403,7 +2403,7 @@ void GActor_LoadResources(void *arg0, s32 arg1)
     *(void **)((u8 *)self + 0xBC) = GActor_Create();
     actor = *(void **)((u8 *)self + 0xBC);
     *(void **)((u8 *)actor + 4) = nameField;
-    fn_8005F7E0(*(void **)((u8 *)self + 0xBC), 0, 0, 0);
+    Model_SetColor(*(void **)((u8 *)self + 0xBC), 0, 0, 0);
     fn_8005F7B0(*(void **)((u8 *)self + 0xBC), fn_800E49D0());
     actor = *(void **)((u8 *)self + 0xBC);
     *(u8 *)((u8 *)actor + 0x87) = 0;
@@ -2520,7 +2520,7 @@ void fn_801EF6BC(void *arg0) {
     u16 fn_8005C144(void);
     s32 fn_8005C84C(void);
     void fn_8005F7B0(void *, s32);
-    void fn_8005F7E0(void *, s32, s32, s32);
+    void Model_SetColor(void *, s32, s32, s32);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_80065EE8(void);
@@ -2656,7 +2656,7 @@ void fn_801EF6BC(void *arg0) {
         *(void **)((u8 *)self + 0xC8) = GActor_Create();
         obj = *(void **)((u8 *)self + 0xC8);
         *(void **)((u8 *)obj + 4) = slot;
-        fn_8005F7E0(*(void **)((u8 *)self + 0xC8), 0, 0, 0);
+        Model_SetColor(*(void **)((u8 *)self + 0xC8), 0, 0, 0);
         fn_8005F7B0(*(void **)((u8 *)self + 0xC8), fn_800E49D0());
         obj = *(void **)((u8 *)self + 0xC8);
         *(u8 *)((u8 *)obj + 0x87) = 0;
@@ -3177,7 +3177,7 @@ extern "C" void fn_801F0A08(void *arg0) {
 void fn_801F0E4C(void *arg0) {
     f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
     M2C_UNK fn_8005F7B0(s32, u8);
-    M2C_UNK fn_8005F7E0(s32, u8, u8, u8);
+    M2C_UNK Model_SetColor(s32, u8, u8, u8);
 
     s32 temp_r28;
     s32 temp_r29;
@@ -3208,7 +3208,7 @@ void fn_801F0E4C(void *arg0) {
     temp_r4_4 = M2C_FIELD(arg0, u8 *, 0x4B);
     temp_r29 = (s32) Math_Lerp(temp_r4_3, temp_r6_3, (f32) temp_r6_3, (f32) temp_r4_3, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
     temp_r31_2 = (s32) Math_Lerp(temp_r4_4, temp_r6_4, (f32) temp_r6_4, (f32) temp_r4_4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    fn_8005F7E0(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31, (u8) temp_r28, (u8) temp_r29);
+    Model_SetColor(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31, (u8) temp_r28, (u8) temp_r29);
     fn_8005F7B0(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31_2);
 }
 

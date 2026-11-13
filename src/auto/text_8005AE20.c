@@ -1679,7 +1679,7 @@ void fn_8005E644(void *arg0) {
     s32 fn_8005F3B8(void *);
     void *fn_8005F410(void *);
     void fn_8005F7B0(void *, u8);
-    void fn_8005F7E0(void *, u8, u8, u8);
+    void Model_SetColor(void *, u8, u8, u8);
     void *fn_80060690(void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
@@ -1754,7 +1754,7 @@ void fn_8005E644(void *arg0) {
             alpha = (u8)(((ub - (ub * b) / (n + 1)) * ((u8 *)&color)[3]) / 255);
             ((u8 *)&color)[3] = alpha;
             fn_8005F7B0(grand, alpha);
-            fn_8005F7E0(grand, ((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2]);
+            Model_SetColor(grand, ((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2]);
         }
     }
 
@@ -1921,7 +1921,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     s32 fn_8005F378(void *);
     s32 fn_8005F3B8(void *);
     void fn_8005F7B0(void *, u8);
-    void fn_8005F7E0(void *, u8, u8, u8);
+    void Model_SetColor(void *, u8, u8, u8);
     extern char lbl_8026B590[];
 
     u8 spC[4];
@@ -2083,7 +2083,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             alpha = (u8)(((t - (t * i) / (flags + 1)) * sp8[3]) / 255);
             sp8[3] = alpha;
             fn_8005F7B0((void *)count, alpha);
-            fn_8005F7E0((void *)count, sp8[0], sp8[1], sp8[2]);
+            Model_SetColor((void *)count, sp8[0], sp8[1], sp8[2]);
         }
     }
 
@@ -2329,7 +2329,7 @@ void fn_8005F7B0(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 0) = (s32) (M2C_FIELD(arg0, s32 *, 0) & 0xFFFFFFDF);
 }
 
-void fn_8005F7E0(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
+void Model_SetColor(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     M2C_FIELD(arg0, s8 *, 8) = arg1;
     M2C_FIELD(arg0, s8 *, 9) = arg2;
     M2C_FIELD(arg0, s8 *, 0xA) = arg3;
