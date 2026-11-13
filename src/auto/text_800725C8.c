@@ -341,7 +341,8 @@ void fn_80072ED4(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x30) = -3;
 }
 
-void Card_PollProbe(void *arg0) {
+void Card_PollProbe(void *proc) {
+    /* Refresh the insert-card caption, cancel on B, and Process_Goto when CARDProbeEx result changes. */
     void Process_Goto(void *, s32);
     s32 Msg_Expand(u8 *);
     s32 Card_GetChannel(void);
@@ -351,33 +352,33 @@ void Card_PollProbe(void *arg0) {
     extern void *gPadInput;
     s32 buttons;
     s32 prev;
-    s32 var_r3;
+    s32 result;
 
-    *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
+    *(s32 *)((u8 *)proc + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
         gMsgBox[1] = 0xC8;
-        Process_Goto(arg0, 9);
+        Process_Goto(proc, 9);
         return;
     }
-    var_r3 = CARDProbeEx(Card_GetChannel(), 0, 0);
-    if (var_r3 != -1) {
-        if (var_r3 == -0xD) {
-            var_r3 = -6;
+    result = CARDProbeEx(Card_GetChannel(), 0, 0);
+    if (result != -1) {
+        if (result == -0xD) {
+            result = -6;
         }
-        if (var_r3 != *(s32 *)((u8 *)arg0 + 0x30)) {
+        if (result != *(s32 *)((u8 *)proc + 0x30)) {
             gMsgBox[1] = 0xC8;
-            switch (var_r3) {
+            switch (result) {
             case 0:
             case -66:
-                Process_Goto(arg0, 0);
+                Process_Goto(proc, 0);
                 return;
             case -3:
-                Process_Goto(arg0, 2);
+                Process_Goto(proc, 2);
                 return;
             case -2:
-                Process_Goto(arg0, 3);
+                Process_Goto(proc, 3);
                 break;
             }
         }
