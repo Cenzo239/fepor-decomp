@@ -6105,7 +6105,7 @@ extern "C" void *GameScene_Create(void *arg0)
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_800D52F8(void) {
+extern "C" void GameScene_StopWorlds(void) {
     void fn_801C76E8(void);
     extern void *gGameScene;
     struct Obj {
