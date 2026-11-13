@@ -486,6 +486,7 @@ BOOL OSDisableInterrupts(void);
 BOOL OSRestoreInterrupts(BOOL level);
 s64 OSGetTime(void);
 #pragma scheduling off
+/* Return whether an EXI device is stably present on chan (chan 2 always true). */
 BOOL __EXIProbe(s32 chan) {
     EXIControl *exi = &Ecb_8033E188[chan];
     BOOL enabled;
