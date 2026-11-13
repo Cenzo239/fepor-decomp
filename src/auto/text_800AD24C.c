@@ -255,7 +255,7 @@ void fn_800AD700(void *arg0) {
     BattleState_SetCamPos(gBattleState, (f32)u->y, (f32)u->x);
 }
 
-void fn_800AD76C(void *arg0) {
+void Battle_SetupVsCurrentTarget(void *arg0) {
     void fn_801A4BE0(void *);
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
