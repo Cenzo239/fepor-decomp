@@ -544,14 +544,14 @@ void fn_8014DEA8(void) {
     void sprintf(char *, char *, ...);
     void fn_8005C7C8(char *);
     void fn_800056CC(char *, ...);
-    extern s32 lbl_80367B74;
+    extern s32 gMsgDebugKinds;
     extern s32 gMsgDebugPtrs;
     extern s32 lbl_80367B78;
     extern u8 lbl_80277238[];
     char buffer[0x20];
     s32 i;
 
-    fn_800C426C(lbl_80367B74);
+    fn_800C426C(gMsgDebugKinds);
     fn_800C426C(gMsgDebugPtrs);
     lbl_80367B78 = 0;
     gMsgDebugPtrs = 0;
@@ -620,7 +620,7 @@ void MsgDebug_Init(void) {
     extern u8 lbl_80277238[];
     extern s32 lbl_80367B78;
     extern u32 *gMsgDebugPtrs;
-    extern u8 *lbl_80367B74;
+    extern u8 *gMsgDebugKinds;
     extern s32 lbl_80367B7C;
     extern s32 lbl_80367B80;
     char sp8[0x18];
@@ -659,7 +659,7 @@ void MsgDebug_Init(void) {
         i += 1;
     } while (i < 0x2800);
     gMsgDebugPtrs = (u32 *)fn_800C42AC(lbl_80367B78 << 2);
-    lbl_80367B74 = (u8 *)fn_800C42AC(lbl_80367B78);
+    gMsgDebugKinds = (u8 *)fn_800C42AC(lbl_80367B78);
     lbl_80367B78 = 0;
     j = 0;
     do {
@@ -683,9 +683,9 @@ void MsgDebug_Init(void) {
                 }
             }
             if (flag == 0) {
-                lbl_80367B74[lbl_80367B78] = 0;
+                gMsgDebugKinds[lbl_80367B78] = 0;
             } else {
-                lbl_80367B74[lbl_80367B78] = 1;
+                gMsgDebugKinds[lbl_80367B78] = 1;
                 val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
                 if (val == 0) {
                     flag = 0;
@@ -701,7 +701,7 @@ void MsgDebug_Init(void) {
                     }
                 }
                 if (flag != 0) {
-                    lbl_80367B74[lbl_80367B78] = 2;
+                    gMsgDebugKinds[lbl_80367B78] = 2;
                 } else {
                     val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
                     if (val == 0) {
@@ -723,7 +723,7 @@ void MsgDebug_Init(void) {
                         ;
                     }
                     if (flag != 0) {
-                        lbl_80367B74[lbl_80367B78] = 4;
+                        gMsgDebugKinds[lbl_80367B78] = 4;
                     }
                 }
             }

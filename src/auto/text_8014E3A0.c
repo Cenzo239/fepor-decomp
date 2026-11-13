@@ -121,7 +121,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     void *fn_8000E0E4(void *);
     extern s32 lbl_80367B7C;
     extern u32 lbl_80367B78;
-    extern u8 *lbl_80367B74;
+    extern u8 *gMsgDebugKinds;
     extern u32 gMsgDebugPtrs;
     extern f32 lbl_8036A800;
     extern f32 lbl_8036A804;
@@ -159,7 +159,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     }
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    switch (lbl_80367B74[idx]) {
+    switch (gMsgDebugKinds[idx]) {
     case 0:
         r = 0; g = 0; b = 0;
         break;
