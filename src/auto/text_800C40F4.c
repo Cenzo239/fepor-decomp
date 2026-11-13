@@ -15341,7 +15341,7 @@ void Card_PrintResult(void) {
     DebugPrint(gCardStrings + 0x26B, msg);
 }
 
-s32 fn_800EB74C(void) {
+s32 Card_GetChannel(void) {
     extern u32 gCardWork[];
     return *(u32*)((u8*)gCardWork + 0xA000);
 }

@@ -344,7 +344,7 @@ void fn_80072ED4(void *arg0) {
 void Card_PollProbe(void *arg0) {
     void Process_Goto(void *, s32);
     s32 Msg_Expand(u8 *);
-    s32 fn_800EB74C(void);
+    s32 Card_GetChannel(void);
     s32 fn_8021A8C8(s32, s32, s32);
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
@@ -361,7 +361,7 @@ void Card_PollProbe(void *arg0) {
         Process_Goto(arg0, 9);
         return;
     }
-    var_r3 = fn_8021A8C8(fn_800EB74C(), 0, 0);
+    var_r3 = fn_8021A8C8(Card_GetChannel(), 0, 0);
     if (var_r3 != -1) {
         if (var_r3 == -0xD) {
             var_r3 = -6;
