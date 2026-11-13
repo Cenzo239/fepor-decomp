@@ -2588,80 +2588,81 @@ void fn_8001E71C(void *arg0) {
     }
 }
 
-s32 Item_GetKindFromIid(void *arg0) {
+/* Map a special item IID string to its ItemData kind (0x81–0x87), or 0xC for normal items. */
+s32 Item_GetKindFromIid(char *iid) {
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_80268820[];
 
-    if (fn_802342B8(arg0, lbl_80268820 + 0x35D) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x35D) == 0) { /* IID_LIVE */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x366) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x366) == 0) { /* IID_RELIVE */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x371) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x371) == 0) { /* IID_RECOVER */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x37D) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x37D) == 0) { /* IID_REBLOW */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x388) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x388) == 0) { /* IID_RESERVE */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x394) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x394) == 0) { /* IID_REST */
         return 0x83;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x39D) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x39D) == 0) { /* IID_SLEEP */
         return 0x84;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3A7) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3A7) == 0) { /* IID_BERSERK */
         return 0x84;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3B3) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3B3) == 0) { /* IID_SILENCE */
         return 0x84;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3BF) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3BF) == 0) { /* IID_WARP */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3C8) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3C8) == 0) { /* IID_RESCUE */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3D3) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3D3) == 0) { /* IID_HAMMERNE */
         return 0x86;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3E0) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3E0) == 0) { /* IID_MSHIELD */
         return 0x87;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3EC) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3EC) == 0) { /* IID_TORCH */
         return 0x87;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x3F6) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x3F6) == 0) { /* IID_UNLOCK */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x401) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x401) == 0) { /* IID_VULNERARY */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x40F) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x40F) == 0) { /* IID_ELIXIR */
         return 0x81;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x41A) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x41A) == 0) { /* IID_TREASUREKEY */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x42A) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x42A) == 0) { /* IID_DOORKEY */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x436) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x436) == 0) { /* IID_ROBBERSKEY */
         return 0x85;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x445) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x445) == 0) { /* IID_DETOXDRUG */
         return 0x83;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x453) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x453) == 0) { /* IID_HOLYWATER */
         return 0x87;
     }
-    if (fn_802342B8(arg0, lbl_80268820 + 0x461) == 0) {
+    if (fn_802342B8(iid, lbl_80268820 + 0x461) == 0) { /* IID_JACKLIGHT */
         return 0x87;
     }
-    return fn_802342B8(arg0, lbl_80268820 + 0x46F) ? 0xC : 0x85;
+    return fn_802342B8(iid, lbl_80268820 + 0x46F) ? 0xC : 0x85; /* IID_MINE or default item */
 }
 
 s32 fn_8001EB44(const char *arg0)
