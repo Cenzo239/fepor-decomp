@@ -5943,7 +5943,7 @@ void fn_800BB0E8(void) {
     void fn_800BD470(void);
     void fn_800BD424(void);
     void fn_800BD5AC(void);
-    void fn_800BD4C0(void);
+    void ScriptCmd_UnitGetByPos(void);
     void fn_800BD0CC(void);
     void fn_800BD08C(void);
     void fn_800BD034(void);
@@ -6024,7 +6024,7 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x12D, fn_800BD470, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x139, fn_800BD424, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x146, fn_800BD5AC, 1);
-    Script_RegisterCommand(lbl_8026F728 + 0x153, fn_800BD4C0, 2);
+    Script_RegisterCommand(lbl_8026F728 + 0x153, ScriptCmd_UnitGetByPos, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x160, fn_800BD0CC, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x169, fn_800BD08C, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x172, fn_800BD034, 1);
@@ -7246,7 +7246,7 @@ u8 fn_800BD470(u8 arg0) {
     return 0U;
 }
 
-u8 fn_800BD4C0(s32 arg0, s32 arg1) {
+u8 ScriptCmd_UnitGetByPos(s32 arg0, s32 arg1) {
     void Allegiance_FillMask(s32, void *);
     extern u16 gUnits[];
     u8 sp8[8];
