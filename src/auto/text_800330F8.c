@@ -2170,7 +2170,7 @@ s32 fn_80037E00(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80037E88(void *arg0, void *arg1) {
+void Unit_Copy(void *arg0, void *arg1) {
     void fn_8001C4FC(void *, void *);
     struct Pair { s32 x; s32 y; };
     void *dst;

@@ -862,14 +862,14 @@ void fn_801A9C0C(void *arg0) {
 }
 
 void fn_801A9CB8(void *arg0, s32 arg1) {
-    M2C_UNK fn_80037E88();
-    fn_80037E88();
+    M2C_UNK Unit_Copy();
+    Unit_Copy();
     M2C_FIELD(arg0, s32 *, 0x280) = arg1;
 }
 
 void *fn_801A9CF4(void *dst, void *src) {
     if (src != dst) {
-        fn_80037E88();
+        Unit_Copy();
         *(u32*)(((char*)dst) + 0x280) = *(u32*)(((char*)src) + 0x280);
         fn_8001C4FC(((char*)dst) + 0x284, ((char*)src) + 0x284);
         fn_8001C4FC(((char*)dst) + 0x28C, ((char*)src) + 0x28C);
