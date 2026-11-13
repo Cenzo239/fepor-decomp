@@ -2,7 +2,7 @@
 #pragma opt_common_subs off
 static inline void init_761F8_base(void *p,s16 x,s16 y,s16 w,s16 h,s16 style) {
  extern u16 lbl_8028FDB0[],lbl_80292230[];
- extern f32 lbl_8036AB6C;
+ extern f32 gF32_1;
  f32 zero;
  M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=x;
 M2C_FIELD(p,s16 *,12)=y;
@@ -17,7 +17,7 @@ M2C_FIELD(p,s16 *,28)=0;M2C_FIELD(p,u8 *,30)=0xFF;
 M2C_FIELD(p,u8 *,31)=0xFF;
 M2C_FIELD(p,u8 *,32)=0xFF;
 M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)=0;
- zero=lbl_8036AB6C; M2C_FIELD(p,f32 *,0x28)=zero; M2C_FIELD(p,f32 *,0x2C)=zero; M2C_FIELD(p,f32 *,0x30)=zero;
+ zero=gF32_1; M2C_FIELD(p,f32 *,0x28)=zero; M2C_FIELD(p,f32 *,0x2C)=zero; M2C_FIELD(p,f32 *,0x30)=zero;
  M2C_FIELD(p,s32 *,0x34)=0; M2C_FIELD(p,s32 *,0x38)=0;
  
 }
@@ -7108,7 +7108,7 @@ void fn_80171218(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     extern u16 lbl_80292230[10];
     extern u16 lbl_8029518C[11];
     extern u16 lbl_802951B8[11];
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
 
     *(u16**)arg0 = lbl_8028FDB0;
     *((s32*)arg0 + 1) = 0;
@@ -7130,9 +7130,9 @@ void fn_80171218(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     *((s8*)arg0 + 33) = 0xFF;
     *((s16*)arg0 + 17) = arg4;
     *((s16*)arg0 + 18) = 0;
-    *((f32*)arg0 + 10) = lbl_8036AB6C;
-    *((f32*)arg0 + 11) = lbl_8036AB6C;
-    *((f32*)arg0 + 12) = lbl_8036AB6C;
+    *((f32*)arg0 + 10) = gF32_1;
+    *((f32*)arg0 + 11) = gF32_1;
+    *((f32*)arg0 + 12) = gF32_1;
     *((s32*)arg0 + 14) = 0;
     *((s32*)arg0 + 15) = 0;
     *(u16**)arg0 = lbl_802951B8;
@@ -7173,7 +7173,7 @@ extern "C" void fn_80171374(void *arg0) {
     extern u8 gUnitLists[], lbl_8028FDB0[], lbl_80292230[], lbl_80292178[], lbl_80291A3C[], lbl_802919DC[], lbl_80293C84[], lbl_80293C2C[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    extern f32 lbl_8036AB6C, lbl_8036AB70, lbl_8036AB78;
+    extern f32 gF32_1, lbl_8036AB70, lbl_8036AB78;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -7621,7 +7621,7 @@ extern "C" void fn_801723E8(void *arg0) {
     extern u16 lbl_802919DC[];
     extern u16 lbl_80293C84[];
     extern u16 lbl_80293C2C[];
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB70;
     struct Obj {
         virtual void v0() = 0;
@@ -7673,7 +7673,7 @@ extern "C" void fn_801723E8(void *arg0) {
         *(u8 *)((u8 *)temp_r31 + 0x21) = 0xFF;
         *(s16 *)((u8 *)temp_r31 + 0x22) = 0x1F4;
         *(s16 *)((u8 *)temp_r31 + 0x24) = 0;
-        f0 = lbl_8036AB6C;
+        f0 = gF32_1;
         *(f32 *)((u8 *)temp_r31 + 0x28) = f0;
         *(f32 *)((u8 *)temp_r31 + 0x2C) = f0;
         *(f32 *)((u8 *)temp_r31 + 0x30) = f0;
@@ -7713,7 +7713,7 @@ extern "C" void fn_801723E8(void *arg0) {
         *(u8 *)((u8 *)temp_r4 + 0x21) = 0xFF;
         *(s16 *)((u8 *)temp_r4 + 0x22) = 0x226;
         *(s16 *)((u8 *)temp_r4 + 0x24) = 0;
-        f0 = lbl_8036AB6C;
+        f0 = gF32_1;
         *(f32 *)((u8 *)temp_r4 + 0x28) = f0;
         *(f32 *)((u8 *)temp_r4 + 0x2C) = f0;
         *(f32 *)((u8 *)temp_r4 + 0x30) = f0;
@@ -9620,7 +9620,7 @@ extern "C" void fn_801761F8(void *arg0) {
  u8 *Ui_GetColor(s32);
  extern u8 gUnitLists[],lbl_8028FDB0[],lbl_80292230[],lbl_80292178[],lbl_80291A3C[];
  extern u16 gUiMsgStrings[];
- extern f32 lbl_8036AB6C;
+ extern f32 gF32_1;
  struct Obj {
  virtual void v0() = 0;
 virtual void v1() = 0;
@@ -10047,7 +10047,7 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
     s32 Text_MeasureHeight(M2C_UNK, f32);
     s16 Text_MeasureWidth(s32, M2C_UNK, f32);
     s32 *Ui_GetColor(M2C_UNK);
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB8C;
     s32 spC;
     s32 sp8;
@@ -10065,12 +10065,12 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
     temp_r3 = M2C_FIELD(arg1, void **, 0x3C);
     temp_r29 = M2C_FIELD(M2C_FIELD(temp_r3, void **, 4), s16 (**)(void *), 0x58)(temp_r3);
     temp_r3_2 = M2C_FIELD(arg2, void ***, 0x34);
-    temp_r28 = (s16) ((s32) (temp_r29 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
+    temp_r28 = (s16) ((s32) (temp_r29 - Text_MeasureHeight(-1, gF32_1)) >> 1);
     temp_r3_3 = M2C_FIELD(arg1, void **, 0x3C);
     temp_r31 = M2C_FIELD(*temp_r3_2, s32 (**)(void **, void *), 0x18)(temp_r3_2, arg2);
     temp_r29_2 = M2C_FIELD(M2C_FIELD(temp_r3_3, void **, 4), s16 (**)(void *), 0x94)(temp_r3_3);
     temp_r5 = M2C_FIELD(arg2, s16 *, 0x32) + 6;
-    temp_f31 = (f32) (M2C_FIELD(arg2, s16 *, 0x30) + ((s32) (temp_r29_2 - Text_MeasureWidth(temp_r31, -1, lbl_8036AB6C)) >> 1));
+    temp_f31 = (f32) (M2C_FIELD(arg2, s16 *, 0x30) + ((s32) (temp_r29_2 - Text_MeasureWidth(temp_r31, -1, gF32_1)) >> 1));
     Prim2D_AddPrim(6, temp_r5);
     Prim2D_SetPos(temp_f31, (f32) temp_r5 + (f32) temp_r28);
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
@@ -10270,7 +10270,7 @@ extern "C" void Ui_DrawLabeledSlot(void *self, void *host, void *slot) {
     void Ui_DrawIcon(void *, s32, s32, s32);
     s32 *Ui_GetColor(s32);
     extern u8 gUiIconDrawer[];
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB8C;
 
     struct Obj {
@@ -10353,7 +10353,7 @@ extern "C" void Ui_DrawLabeledSlot(void *self, void *host, void *slot) {
         hostH = ((Host *)p3c)->getInnerH();
     }
 
-    yOff = (s16)((hostH - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
+    yOff = (s16)((hostH - Text_MeasureHeight(-1, gF32_1)) >> 1);
 
     iconYOff = (s16)((((Host *)*(void **)((u8 *)host + 0x3c))->getInnerH() - 0x18) >> 1);
 
@@ -10361,7 +10361,7 @@ extern "C" void Ui_DrawLabeledSlot(void *self, void *host, void *slot) {
 
     hostW = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerW();
 
-    xPad = hostW - Text_MeasureWidth(label, -1, lbl_8036AB6C);
+    xPad = hostW - Text_MeasureWidth(label, -1, gF32_1);
     drawX = (f32)(*(s16 *)((u8 *)slot + 0x30) + (xPad >> 1));
     drawY = (f32)*(s16 *)((u8 *)slot + 0x32);
 
@@ -10816,7 +10816,7 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
     void Text_Draw(s16, s16, s32, ...);
     extern u16 gUiMsgStrings[];
     extern f32 lbl_8036AB80;
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     void *str;
     void *p;
     s16 w;
@@ -10836,8 +10836,8 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
         str = (p != NULL) ? fn_800A8A88(*(s32 *)((u8 *)p + 0x188)) : Msg_Expand((u8 *)gUiMsgStrings + 0x58D);
     }
     w = *(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12);
-    x = (s16)((w - Text_MeasureWidth(str, -1, *(s16 *)((u8 *)arg0 + 0x12), lbl_8036AB6C)) >> 1);
-    y = (s16)((0x16 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
+    x = (s16)((w - Text_MeasureWidth(str, -1, *(s16 *)((u8 *)arg0 + 0x12), gF32_1)) >> 1);
+    y = (s16)((0x16 - Text_MeasureHeight(-1, gF32_1)) >> 1);
     Text_Draw(x, y, 1, str);
 }
 #pragma cplusplus reset
@@ -11043,11 +11043,11 @@ extern "C" void fn_80178C5C(void *arg0, void *arg1) {
         virtual void v24() = 0;
         virtual f32 v25() = 0;
     };
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     bool flag;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(((Obj *)arg0)->v21(), ((Obj *)arg0)->v22(), ((Obj *)arg0)->v25(), lbl_8036AB6C);
+    Prim2D_SetTransform(((Obj *)arg0)->v21(), ((Obj *)arg0)->v22(), ((Obj *)arg0)->v25(), gF32_1);
     Prim2D_SetColorByte(0xFF);
     flag = false;
     if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
@@ -11118,7 +11118,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB74;
     extern f32 lbl_8036AB80;
     extern f32 lbl_8036AB84;
@@ -11185,10 +11185,10 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     x = *(s16 *)((u8 *)obj + 0x30);
     y = *(s16 *)((u8 *)obj + 0x32);
     str = ((StrObj *)*(void **)((u8 *)obj + 0x34))->v1();
-    textW = (s16)Text_MeasureWidth(str, -1, lbl_8036AB6C);
+    textW = (s16)Text_MeasureWidth(str, -1, gF32_1);
     x = (s16)(x - (textW / 2));
     str = ((StrObj *)*(void **)((u8 *)obj + 0x34))->v1();
-    t = 0x1C - fn_80010770(str, -1, lbl_8036AB6C);
+    t = 0x1C - fn_80010770(str, -1, gF32_1);
     y = (s16)(y + (t / 2));
     if (*(s16 *)((u8 *)a1 + 0x38) < 0 || *(s16 *)((u8 *)a1 + 0x3A) < 0) {
         *(s16 *)((u8 *)a1 + 0x38) = x;
@@ -11398,7 +11398,7 @@ void fn_801793EC(void **arg0, void *arg2) {
     s32 fn_80010770(M2C_UNK, f32);
     u32 Text_MeasureWidth(M2C_UNK, f32);
     s32 *Ui_GetColor(M2C_UNK);
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     s32 spC;
     s32 sp8;
     f32 temp_f30;
@@ -11411,10 +11411,10 @@ void fn_801793EC(void **arg0, void *arg2) {
     temp_f31 = (f32) M2C_FIELD(arg2, s16 *, 0x30);
     temp_f30 = (f32) M2C_FIELD(arg2, s16 *, 0x32);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    temp_r3 = Text_MeasureWidth(-1, lbl_8036AB6C);
+    temp_r3 = Text_MeasureWidth(-1, gF32_1);
     temp_f31_2 = temp_f31 - (f32) ((s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    temp_r4 = 0x1C - fn_80010770(-1, lbl_8036AB6C);
+    temp_r4 = 0x1C - fn_80010770(-1, gF32_1);
     Prim2D_AddPrim(6, temp_r4);
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
         spC = *Ui_GetColor(0);
@@ -11460,7 +11460,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern u8 lbl_80285CCC[];
     extern u8 lbl_80292504[];
     extern u8 lbl_80295478[];
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB70;
     struct Sub {
         virtual void v0() {}
@@ -11516,7 +11516,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     z = 0;
     n1 = -1;
     c108 = 0x108;
-    one = lbl_8036AB6C;
+    one = gF32_1;
     self = (Parent *)arg0;
     vtdc = lbl_802924DC;
     vt30 = lbl_80292230;
@@ -11562,7 +11562,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         f32 f0;
         void *vt = lbl_80295478;
         *(void **)((u8 *)self + 0x88) = vt;
-        f1 = lbl_8036AB6C;
+        f1 = gF32_1;
         *(s32 *)((u8 *)self + 0x8C) = 0;
         f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0x90) = 0;
@@ -11584,7 +11584,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         f32 f0;
         void *vt = lbl_80295478;
         *(void **)((u8 *)self + 0xB0) = vt;
-        f1 = lbl_8036AB6C;
+        f1 = gF32_1;
         *(s32 *)((u8 *)self + 0xB4) = 0;
         f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0xB8) = 1;
@@ -11687,7 +11687,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     extern u8 lbl_80292208[];
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
-    extern f32 lbl_8036AB6C;
+    extern f32 gF32_1;
     extern f32 lbl_8036AB70;
     struct Obj {
         virtual void v0() = 0;
@@ -11720,7 +11720,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(void **)self = vt92230;
     {
         void *tmp = self;
-        f32 one = lbl_8036AB6C;
+        f32 one = gF32_1;
         s16 y1;
         *(s16 *)((u8 *)self + 8) = neg1;
         y1 = keep2[1];
@@ -11767,7 +11767,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x7C) = 0;
     *(void **)((u8 *)self + 0x84) = lbl_80295478;
     {
-        f32 f1 = lbl_8036AB6C;
+        f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0x88) = 0;
         *(s32 *)((u8 *)self + 0x8C) = 2;
@@ -11786,7 +11786,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     }
     *(void **)((u8 *)self + 0xAC) = lbl_80295478;
     {
-        f32 f1 = lbl_8036AB6C;
+        f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0xB0) = 0;
         *(s32 *)((u8 *)self + 0xB4) = 3;
@@ -16353,7 +16353,7 @@ extern u16 lbl_80292230[];
 extern u16 lbl_8028FDB0[];
 extern u16 lbl_80292208[];
 extern u16 lbl_80292488[];
-extern f32 lbl_8036AB6C;
+extern f32 gF32_1;
 extern f32 lbl_8036AB70;
 #include "global.h"
 
