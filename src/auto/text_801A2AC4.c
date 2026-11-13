@@ -182,7 +182,7 @@ s32 fn_801A2F54(s32 arg0) {
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, void *);
+    void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
     extern u16 lbl_80330EAC[];
     extern void fn_801A2FE0;
@@ -190,7 +190,7 @@ s32 fn_801A2F54(s32 arg0) {
     fn_801A75DC(lbl_80330EAC, *(s32 *)gUiContext, -1);
     fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, &fn_801A2FE0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A2FE0);
     return 0;
 }
 
@@ -307,7 +307,7 @@ s32 fn_801A32F8(s32 arg0) {
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, s32);
+    void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 lbl_80330EAC[];
     u8 *base;
@@ -317,7 +317,7 @@ s32 fn_801A32F8(s32 arg0) {
     base = (u8 *)lbl_80330EAC;
     ((struct { u8 hi:3; u8 lo:5; } *)(base + 0x486))->hi = 7;
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
 
@@ -330,7 +330,7 @@ s32 fn_801A3390(s32 arg0) {
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, s32);
+    void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 lbl_80330EAC[];
 
@@ -343,7 +343,7 @@ s32 fn_801A3390(s32 arg0) {
         fn_801A4A24(lbl_80330EAC, 0);
     }
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
 
@@ -356,7 +356,7 @@ s32 fn_801A3478(s32 arg0) {
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, s32);
+    void MapAnim_DispatchByIid(void *, s32, s32);
     extern u8 gUiContext[];
     extern u8 lbl_80330EAC[];
     u8 *ctx;
@@ -374,7 +374,7 @@ s32 fn_801A3478(s32 arg0) {
         fn_801A4A24(lbl_80330EAC, 0);
     }
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
 
@@ -387,7 +387,7 @@ s32 fn_801A3570(s32 arg0) {
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, s32);
+    void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 lbl_80330EAC[];
     u8 *base;
@@ -403,7 +403,7 @@ s32 fn_801A3570(s32 arg0) {
         fn_801A4A24(lbl_80330EAC, 0);
     }
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
     return 0;
 }
 
@@ -419,7 +419,7 @@ s32 fn_801A36A0(s32 arg0) {
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
-    void fn_801A3B40(void *, s32, void *);
+    void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
     extern u16 lbl_80330EAC[];
     extern void fn_801A372C;
@@ -427,7 +427,7 @@ s32 fn_801A36A0(s32 arg0) {
     fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(lbl_80330EAC, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(lbl_80330EAC);
-    fn_801A3B40(*fn_800285C0(gUiContext), arg0, &fn_801A372C);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A372C);
     return 0;
 }
 
@@ -457,7 +457,7 @@ s32 fn_801A3B08(void) {
     return lbl_802EF4E0[0] != 0;
 }
 
-void fn_801A3B40(void *item, s32 arg1, s32 arg2) {
+void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
     void *fn_80019E04(const char *name);
     void fn_8019C394(s32, s32);
     void fn_8019C3DC(s32, s32);
