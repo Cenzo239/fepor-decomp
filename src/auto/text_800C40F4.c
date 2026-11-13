@@ -316,7 +316,7 @@ static inline const u32 *MinU32(const u32 *a, const u32 *b) {
 }
 
 
-void **fn_80037BBC(void *, s32);
+void **Unit_GetHeldItemSlot(void *, s32);
 u8 fn_8009326C(void *, void *);
 extern struct {
     char pad0[0xF9];
@@ -18528,7 +18528,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     void Allegiance_FillMask(s32, u8 *);
     s8 Unit_GetMov(void *);
@@ -18573,7 +18573,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     }
     map = gBattleMap;
     for (i = 0; i < 4; i++) {
-        list = fn_80037BBC(self, i);
+        list = Unit_GetHeldItemSlot(self, i);
         if (*list == 0) {
             break;
         }
@@ -19578,7 +19578,7 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     u8 fn_8001D500(void **);
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
-    void **fn_80037BBC(void *, s8);
+    void **Unit_GetHeldItemSlot(void *, s8);
     s8 Unit_GetMov(void *);
     u8 fn_8009339C(void *);
     s32 fn_800F7838(void *, s16, s16);
@@ -19637,7 +19637,7 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     }
 
     for (slot = 0; slot < 4; slot++) {
-        itemp = fn_80037BBC(self, slot);
+        itemp = Unit_GetHeldItemSlot(self, slot);
         if (*itemp == NULL) {
             continue;
         }
@@ -21045,7 +21045,7 @@ void fn_800FC6B0(void *arg0) {
     void fn_800227F8(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
     s8 fn_8003B258(void *);
@@ -21118,7 +21118,7 @@ void fn_800FC6B0(void *arg0) {
             bestLo = NULL;
             bestHi = NULL;
             for (i = 0; i < 4; i++) {
-                slot = fn_80037BBC(unit, i);
+                slot = Unit_GetHeldItemSlot(unit, i);
                 if (*slot == NULL) {
                     break;
                 }
@@ -21352,7 +21352,7 @@ void fn_800FD774(void *arg0) {
     u8 fn_8001D500(void *);
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s32 fn_80037E00(void *);
     u8 fn_8009339C(void *);
     u8 fn_80100F10(void *, void *, void *);
@@ -21425,7 +21425,7 @@ void fn_800FD774(void *arg0) {
                     bestLo = -1;
                     slotLo = NULL;
                     for (i = 0; i < 4; i++) {
-                        slot = fn_80037BBC(unit, i);
+                        slot = Unit_GetHeldItemSlot(unit, i);
                         if (*slot == NULL) {
                             break;
                         }
@@ -21827,7 +21827,7 @@ s32 Battle_BuildUnitScoreList(void) {
     /* Score on-map faction units by position, status and inventory; fill the battle priority list and return its count. */
     u8 fn_80017318(void *);
     u8 fn_8001DD54(void *, void *);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     u8 fn_800934CC(void *, void *);
     s32 fn_800FCF48(u8, u8);
@@ -21900,10 +21900,10 @@ s32 Battle_BuildUnitScoreList(void) {
                 s32 tmp;
                 itemScore = 0x4B0;
                 for (i = 0; i < 4; i++) {
-                    if (*fn_80037BBC(unit, i) == NULL) {
+                    if (*Unit_GetHeldItemSlot(unit, i) == NULL) {
                         break;
                     }
-                    item = *fn_80037BBC(unit, i);
+                    item = *Unit_GetHeldItemSlot(unit, i);
                     if (fn_800934CC(unit, item) != 0) {
                         if ((*(u64 *)((u8 *)item + 0x38) & 4ULL) != 0) {
                             if (itemScore > 0xC8) {
@@ -22049,7 +22049,7 @@ void fn_800FF0D4(s32 *arg0, s32 *arg1, u8 (*arg2)(s32, s32)) {
 void Ai_SelectBestHeldWeapon(void) {
     extern u8 gUiContext[];
     extern u8 gAiState[];
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s32 fn_8001D500(void **);
     s32 fn_8001DD54(void *, void *);
     s32 fn_8009339C(void *, void *);
@@ -22093,7 +22093,7 @@ L_one:
         best = -1;
         bestScore = -0x80;
         for (i = 0; i < 4; i++) {
-            item = fn_80037BBC(unit, i);
+            item = Unit_GetHeldItemSlot(unit, i);
             if (*item == NULL) {
                 break;
             }
@@ -22662,7 +22662,7 @@ void fn_801007A0(void *arg0) {
     fn_8010C504(unit);
 
     for (i = 0; i < 4; i++) {
-        item = fn_80037BBC(unit, i);
+        item = Unit_GetHeldItemSlot(unit, i);
         if (*item == NULL) {
             break;
         }
@@ -22674,7 +22674,7 @@ void fn_801007A0(void *arg0) {
     }
 
     for (i = 0; i < 4; i++) {
-        item = fn_80037BBC(unit, i);
+        item = Unit_GetHeldItemSlot(unit, i);
         if (*item == NULL) {
             break;
         }
@@ -22686,7 +22686,7 @@ void fn_801007A0(void *arg0) {
     }
 
     for (i = 0; i < 4; i++) {
-        item = fn_80037BBC(unit, i);
+        item = Unit_GetHeldItemSlot(unit, i);
         if (*item == NULL) {
             break;
         }
@@ -22699,7 +22699,7 @@ void fn_801007A0(void *arg0) {
     for (i = 0; i < 4; i++) {
         void *cur;
 
-        item = fn_80037BBC(unit, i);
+        item = Unit_GetHeldItemSlot(unit, i);
         if (*item == NULL) {
             break;
         }
@@ -22723,7 +22723,7 @@ void fn_801007A0(void *arg0) {
     }
 
     for (i = 0; i < 4; i++) {
-        item = fn_80037BBC(unit, i);
+        item = Unit_GetHeldItemSlot(unit, i);
         if (*item == NULL) {
             break;
         }

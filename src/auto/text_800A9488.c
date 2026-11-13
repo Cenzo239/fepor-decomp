@@ -777,7 +777,7 @@ void fn_800AA80C(void *arg0) {
 void fn_800AA89C(void *arg0) {
     u8 fn_8001DDBC(void *);
     void fn_8002011C(u8 *, s8, s8, u8, u8);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     u8 Status_Test(void *, s32);
     extern u8 gBattleMap[151280];
@@ -810,7 +810,7 @@ void fn_800AA89C(void *arg0) {
 
     goto slot_cmp;
 slot_loop:
-    pp = (u32)fn_80037BBC(self, slot);
+    pp = (u32)Unit_GetHeldItemSlot(self, slot);
     item = *(void **)pp;
     if (item == NULL) {
         goto slots_done;
@@ -917,7 +917,7 @@ void fn_800AAB3C(void *arg0) {
     void fn_8002011C(void *, u8, u8, u8);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     extern u16 gBattleMap;
 
@@ -937,7 +937,7 @@ void fn_800AAB3C(void *arg0) {
     var_r28 = 0;
     var_r27 = 0;
 loop_1:
-    temp_r3 = fn_80037BBC(arg0, var_r27);
+    temp_r3 = Unit_GetHeldItemSlot(arg0, var_r27);
     if ((void *) *temp_r3 != NULL) {
         if (fn_8009339C(arg0) != 0) {
             temp_r3_2 = *temp_r3;

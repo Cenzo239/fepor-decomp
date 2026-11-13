@@ -3056,7 +3056,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     s32 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     void fn_800951D0(void *, s32);
     u8 fn_800F4D78(void *, void *, void **);
@@ -3106,7 +3106,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
 
     slot = 0;
 loop_slot:
-    item = fn_80037BBC(arg0, slot);
+    item = Unit_GetHeldItemSlot(arg0, slot);
     if (*item != NULL) {
         if (fn_8009339C(arg0) != 0) {
             result.slot = (u16)slot;
@@ -4101,7 +4101,7 @@ s32 fn_8010C504(void *arg0) {
 s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
-    void **fn_80037BBC(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 fn_8003A778(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -4131,10 +4131,10 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         fn_80022DAC(map,5,-1); fn_80022FD8(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
-    fn_80100D18(arg0,fn_80037BBC(arg0,slot),-1);
+    fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
     x=*(s8 *)((u8 *)arg0+0x19e); y=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=(u8)-1;
-    item=*fn_80037BBC(arg0,slot);
+    item=*Unit_GetHeldItemSlot(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=(u8)0;
     range=Unit_GetMov(arg0)+(u8)extra;
     minX=x-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
@@ -4205,7 +4205,7 @@ void fn_8010CAAC(void) {
 s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
-    void **fn_80037BBC(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_8010CF28(void *,void *,s16 *,s16 *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -4238,10 +4238,10 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         fn_80022DAC(map,5,-1); fn_80022FD8(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
-    fn_80100D18(arg0,fn_80037BBC(arg0,slot),-1);
+    fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=0;
-    item=*fn_80037BBC(arg0,slot);
+    item=*Unit_GetHeldItemSlot(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
@@ -4449,7 +4449,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s8 fn_80037E00(void *);
     u8 fn_8003863C(void *);
     s8 Unit_GetMov(void *);
@@ -4517,7 +4517,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         Map_BuildUnitMoveRange(arg0, 5, -1);
     }
 
-    weapon = fn_80037BBC(arg0, slot);
+    weapon = Unit_GetHeldItemSlot(arg0, slot);
     fn_80100D18(arg0, weapon, -1);
     bestRank = 0;
     best = NULL;
@@ -4575,7 +4575,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
             }
 
             for (i = 0; i < 4; i++) {
-                if (*fn_80037BBC(unit, i) != NULL) {
+                if (*Unit_GetHeldItemSlot(unit, i) != NULL) {
                     if (fn_800934CC(unit) != 0) {
                         ok = 1;
                         goto ok_done;
@@ -4675,7 +4675,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s8 fn_80037E00(void *);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
@@ -4743,7 +4743,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         Map_BuildUnitMoveRange(arg0, 5, -1);
     }
 
-    weapon = fn_80037BBC(arg0, slot);
+    weapon = Unit_GetHeldItemSlot(arg0, slot);
     fn_80100D18(arg0, weapon, -1);
     bestRank = 0;
     best = NULL;
@@ -4804,7 +4804,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
             }
 
             for (i = 0; i < 4; i++) {
-                void **sp = fn_80037BBC(unit, i);
+                void **sp = Unit_GetHeldItemSlot(unit, i);
                 if (*sp != NULL) {
                     if ((*Item_GetFlagsPtr(sp) & 6ULL) != 0 && fn_800934CC(unit, *sp) != 0) {
                         ok = 1;
@@ -4905,7 +4905,7 @@ ok_done:
 s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
-    void **fn_80037BBC(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_801044FC(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -4937,10 +4937,10 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         fn_80022DAC(map,5,-1); fn_80022FD8(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
-    fn_80100D18(arg0,fn_80037BBC(arg0,slot),-1);
+    fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=0;
-    item=*fn_80037BBC(arg0,slot);
+    item=*Unit_GetHeldItemSlot(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
@@ -4996,7 +4996,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     u8 fn_8001DD54(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void *fn_80037BBC(void *, s32);
+    void *Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     s32 fn_800F7838(void *, s16, s16);
     s32 fn_800F7994(void *, s16, s16);
@@ -5080,7 +5080,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     }
     bestScore = -1;
     bestX = -1;
-    list = fn_80037BBC(self, sp10);
+    list = Unit_GetHeldItemSlot(self, sp10);
     {
         s8 ux = (s8)((u8 *)self)[0x19E];
         s8 uy = (s8)((u8 *)self)[0x19F];
@@ -5226,7 +5226,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     s8 fn_8003B2D0(void *);
     s32 fn_800F7838(void *, s8, s8);
@@ -5296,7 +5296,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     }
     bestCost = 0x64;
     best = NULL;
-    itemSlot_store[0] = fn_80037BBC(arg0, slot);
+    itemSlot_store[0] = Unit_GetHeldItemSlot(arg0, slot);
     item = *itemSlot_store[0];
     ax = (s8)*((u8 *)arg0 + 0x19e);
     ay = (s8)*((u8 *)arg0 + 0x19f);
@@ -5419,7 +5419,7 @@ void fn_8010EF54(void) {
 s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
-    void **fn_80037BBC(void *,s32);
+    void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 fn_8003B2D0(void *);
     extern f32 lbl_8036A170;
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
@@ -5453,10 +5453,10 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
         fn_80022DAC(map,5,-1); fn_80022FD8(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
-    fn_80100D18(arg0,fn_80037BBC(arg0,slot),-1);
+    fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=100;
-    item=*fn_80037BBC(arg0,slot);
+    item=*Unit_GetHeldItemSlot(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];

@@ -6425,7 +6425,7 @@ s32 fn_800BC204(u8 arg0) {
 }
 
 s32 fn_800BC29C(u8 arg0) {
-    void *fn_80037BBC(void *, s32);
+    void *Unit_GetHeldItemSlot(void *, s32);
     s32 fn_80037E00(void *);
     u8 Status_Test(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
@@ -6450,7 +6450,7 @@ s32 fn_800BC29C(u8 arg0) {
     if (var_r30 < 0) {
         return -1;
     }
-    item = fn_80037BBC(var_r31, var_r30);
+    item = Unit_GetHeldItemSlot(var_r31, var_r30);
     t = *((u8 *)item + 5);
     *((u8 *)item + 5) = (u8)__rlwimi(t, 0, 7, 24, 24);
     if ((var_r30 >= 0) && (var_r30 <= 3)) {

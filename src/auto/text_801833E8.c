@@ -4,10 +4,10 @@
 
 
 static inline s32 CountUnitItemReferences(u8 *unit,u8 *target) {
-void **fn_80037BBC(void *,s32);
+void **Unit_GetHeldItemSlot(void *,s32);
 s32 count=0; u8 *entry; void *item; s32 i;
 if((*(u64 *)(target+0x38)&5ULL)!=0) {
-for(i=count;i<4;i++) { entry=(u8 *)fn_80037BBC(unit,i);item=*(void **)entry; if(!item) break;
+for(i=count;i<4;i++) { entry=(u8 *)Unit_GetHeldItemSlot(unit,i);item=*(void **)entry; if(!item) break;
 if(!(entry[5]&63) && target==item) count++;
 }
 } else {
@@ -4266,7 +4266,7 @@ extern "C" void fn_8018FC1C(void *arg0) {
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
 extern "C" s32 fn_8018FC58(void *arg0) {
-void **fn_80037BBC(void *,s32);
+void **Unit_GetHeldItemSlot(void *,s32);
 extern u32 gUnitLists[]; extern u32 lbl_803200AC[];
 u8 *self=(u8 *)arg0; s32 total;
 {
@@ -6931,7 +6931,7 @@ extern "C" void fn_8019477C(void *arg0) {
 extern "C" void fn_80194988(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_80194DA0(void *, s32, s32, s32, s32, s32);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     void fn_801439F0(void *, void *, void *);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
@@ -7000,7 +7000,7 @@ extern "C" void fn_80194988(void *arg0) {
     goto loop1_cond;
 loop1_body:
     for (i = 0; i < 4; i++) {
-        entry = fn_80037BBC(unit, i);
+        entry = Unit_GetHeldItemSlot(unit, i);
         if (*(u32 *)entry == 0) {
             break;
         }
@@ -7027,7 +7027,7 @@ loop1_cond:
     goto loop2_cond;
 loop2_body:
     for (i = 0; i < 4; i++) {
-        entry = fn_80037BBC(unit, i);
+        entry = Unit_GetHeldItemSlot(unit, i);
         if (*(u32 *)entry == 0) {
             break;
         }

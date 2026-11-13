@@ -1080,11 +1080,11 @@ s32 fn_800760B8(s32 arg0, s32 arg1, void *arg2) {
 }
 
 s32 fn_800760E4(s32 arg0, s32 arg1, s32 arg2) {
-    u32 *fn_80037BBC(s32, u8);
+    u32 *Unit_GetHeldItemSlot(s32, u8);
     u8 fn_8009204C(s32, u32);
     extern u8 gUiContext[];
     u32 value;
-    value = *fn_80037BBC(*(s32 *)gUiContext, (u8)arg2);
+    value = *Unit_GetHeldItemSlot(*(s32 *)gUiContext, (u8)arg2);
     if (value == 0U) return 3;
     return (fn_8009204C(*(s32 *)gUiContext, value) == 0) + 1;
 }
@@ -1217,7 +1217,7 @@ s32 fn_80076494(void) {
 #pragma global_optimizer off
 s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
 {
-    u32 *fn_80037BBC(s32, s32);
+    u32 *Unit_GetHeldItemSlot(s32, s32);
     u8 fn_8009339C(s32);
     void fn_8002BEFC(s32, u32);
     void fn_8002C034(s32, u32);
@@ -1225,7 +1225,7 @@ s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
     u32 *entry;
 
-    entry = fn_80037BBC(*(s32 *)gUiContext, arg2);
+    entry = Unit_GetHeldItemSlot(*(s32 *)gUiContext, arg2);
     if (*entry == 0) {
         return 3;
     }
@@ -1255,7 +1255,7 @@ s32 fn_80076574(s32 arg0, s32 arg1, void *arg2) {
 
 s32 fn_800765BC(s32 arg0, s32 arg1, void *arg2) {
     void fn_80070EE0(void);
-    void *fn_80037BBC(void *, u8);
+    void *Unit_GetHeldItemSlot(void *, u8);
     s32 fn_8001DDBC(void);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, u8);
@@ -1277,7 +1277,7 @@ s32 fn_800765BC(s32 arg0, s32 arg1, void *arg2) {
         void *f;
         s32 tmp;
         p = *(void **)gUiContext;
-        f = *(void **)fn_80037BBC(p, idx);
+        f = *(void **)Unit_GetHeldItemSlot(p, idx);
         if (f != 0) {
             tmp = ((u8 *)f)[0x1D];
         } else {
@@ -2034,7 +2034,7 @@ void fn_80077B80(void) {
 
 s32 fn_80077BAC(void) {
     u8 fn_8001C914(s32, u32);
-    u32 *fn_80037BBC(s32, s32);
+    u32 *Unit_GetHeldItemSlot(s32, s32);
     u8 fn_8009326C(s32);
     extern u8 gUiContext[];
     s32 obj;
@@ -2050,7 +2050,7 @@ s32 fn_80077BAC(void) {
     i = 0;
     goto loop;
 body:
-    entry = fn_80037BBC(obj, i);
+    entry = Unit_GetHeldItemSlot(obj, i);
     if (*entry == 0) {
         goto next;
     }
@@ -2373,7 +2373,7 @@ s32 fn_80078694(void) {
 s32 fn_800786AC(void) {
     void *Item_GetFlagsPtr(void);
     void fn_8002BEFC(void *, u32);
-    u32 *fn_80037BBC(void *, s32);
+    u32 *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *, u32);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
@@ -2388,7 +2388,7 @@ s32 fn_800786AC(void) {
     }
     i = 0;
     do {
-        entry = fn_80037BBC(*(void **)p, i);
+        entry = Unit_GetHeldItemSlot(*(void **)p, i);
         if (*entry != 0) {
             tmp = Item_GetFlagsPtr();
             if ((*(u64 *)tmp & 1) != 0
@@ -2425,7 +2425,7 @@ s32 fn_800787F8(void) {
 s32 fn_80078810(void) {
     void *Item_GetFlagsPtr(void);
     void fn_8002C034(void *, u32);
-    u32 *fn_80037BBC(void *, s32);
+    u32 *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *, u32);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
@@ -2440,7 +2440,7 @@ s32 fn_80078810(void) {
     }
     i = 0;
     do {
-        entry = fn_80037BBC(*(void **)p, i);
+        entry = Unit_GetHeldItemSlot(*(void **)p, i);
         if (*entry != 0) {
             tmp = Item_GetFlagsPtr();
             if ((*(u64 *)tmp & 1) != 0

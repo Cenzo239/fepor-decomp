@@ -1360,7 +1360,7 @@ extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
         virtual void v2() = 0;
         virtual void v3(s32, s32) = 0;
     };
-    extern u8 gBattleMap[];
+    extern u8 lbl_802CA518[];
     void *self;
     s32 x;
     s32 y;
@@ -1372,7 +1372,7 @@ extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
     s32 byteOff;
     s16 *arr;
 
-    map = gBattleMap;
+    map = lbl_802CA518;
     self = arg0;
     thresh = (s8)arg1;
     map2 = map + 0x10000;
@@ -1835,7 +1835,7 @@ void fn_8002D0FC(void *arg0, void *arg1) {
 
 void fn_8002D15C(void *arg0, void *arg1) {
     u8 Allegiance_Compare(s32, s32);
-    void fn_80037BBC(void *, s32);
+    void Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8001C0C8(void);
     void fn_8002F6E8(void *, u8, u8, u8, u8);
     extern u8 lbl_802EF4E0[];
@@ -1846,7 +1846,7 @@ void fn_8002D15C(void *arg0, void *arg1) {
     }
     i = 0;
     do {
-        fn_80037BBC(arg1, i);
+        Unit_GetHeldItemSlot(arg1, i);
         if (fn_8001C0C8() != 0) {
             fn_8002F6E8(lbl_802EF4E0, *(u8 *)((char *)arg1 + 0x19E), *(u8 *)((char *)arg1 + 0x19F), *(u8 *)((char *)arg1 + 0x198), i);
             return;
@@ -2963,7 +2963,7 @@ void fn_8002F4EC(void *arg0, void *arg1) {
 void fn_8002F564(void) {
     void fn_80022DAC(void *, s32, s32);
     void fn_8004A224(void);
-    extern u8 gBattleMap[];
+    extern u8 lbl_802CA518[];
     extern s32 lbl_802EF4E0[];
     s32 *p;
     s32 i;
@@ -2973,8 +2973,8 @@ void fn_8002F564(void) {
     s8 x;
     s8 y;
 
-    fn_80022DAC(gBattleMap, 5, -1);
-    fn_80022DAC(gBattleMap, 8, 0);
+    fn_80022DAC(lbl_802CA518, 5, -1);
+    fn_80022DAC(lbl_802CA518, 8, 0);
 
     p = lbl_802EF4E0;
     i = 0;
@@ -2991,7 +2991,7 @@ void fn_8002F564(void) {
             p = (s32 *)((u8 *)p + 0x14);
             x = (s8)entry[0];
             i += 1;
-            *(u16 *)(gBattleMap + ((x + (y << 6)) * 2) + 0xC18E) = 1;
+            *(u16 *)(lbl_802CA518 + ((x + (y << 6)) * 2) + 0xC18E) = 1;
         } while (--n != 0);
     }
     fn_8004A224();

@@ -2119,7 +2119,7 @@ void fn_80037AB8(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x1AA) = (s8) (0x14 - M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3E));
 }
 
-s32 fn_80037BBC(s32 arg0, s32 arg1) {
+s32 Unit_GetHeldItemSlot(s32 arg0, s32 arg1) {
     return (arg1 * 8) + arg0 + 0x1CC;
 }
 
@@ -3987,41 +3987,41 @@ s32 fn_8003B938(u8 arg0) {
 
 extern s32 gGameState;
 void fn_8003B9AC(u32 arg0) {
-    void Msg_Expand(void *);
+    void fn_8000E0E4(void *);
     extern u16 lbl_8026A458[];
     u8 *s;
 
     switch ((u8)arg0) {
-    case 1:
+    case 0:
         s = (u8 *)lbl_8026A458 + 0x8;
         break;
-    case 2:
+    case 1:
         s = (u8 *)lbl_8026A458 + 0xF;
         break;
-    case 3:
+    case 2:
         s = (u8 *)lbl_8026A458 + 0x16;
         break;
-    case 4:
+    case 3:
         s = (u8 *)lbl_8026A458 + 0x1D;
         break;
-    case 5:
+    case 4:
         s = (u8 *)lbl_8026A458 + 0x25;
         break;
-    case 6:
+    case 5:
         s = (u8 *)lbl_8026A458 + 0x2B;
         break;
-    case 7:
+    case 6:
         s = (u8 *)lbl_8026A458 + 0x33;
         break;
-    case 8:
+    case 7:
         s = (u8 *)lbl_8026A458 + 0x3A;
         break;
-    case 0:
+    case 8:
     default:
         s = (u8 *)lbl_8026A458 + 0x43;
         break;
     }
-    Msg_Expand(s);
+    fn_8000E0E4(s);
 }
 
 extern u16 lbl_8026A458[];
@@ -4063,7 +4063,7 @@ s32 fn_8003BA80(void *arg0) {
 
 void fn_8003BD58(void *arg0) {
     u8 Status_Test(void *, s32);
-    void *fn_80037BBC(void *, s32);
+    void *Unit_GetHeldItemSlot(void *, s32);
     void fn_8001D580(void *);
     void *Res_GetByName(void *);
     void fn_80094A54(void *, void *);
@@ -4080,7 +4080,7 @@ void fn_8003BD58(void *arg0) {
 
     if ((u8)Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
         for (i = 0; i < 4; i++) {
-            fn_8001D580(fn_80037BBC(arg0, i));
+            fn_8001D580(Unit_GetHeldItemSlot(arg0, i));
         }
 
         cls = *(void **)((u8 *)arg0 + 0x18C);
@@ -4107,7 +4107,7 @@ void fn_8003BD58(void *arg0) {
         }
         if (val != 0) {
             fn_80094A54(arg0, (void *)val);
-            slot = fn_80037BBC(arg0, 0);
+            slot = Unit_GetHeldItemSlot(arg0, 0);
             ((struct Bit7 *)((u8 *)slot + 5))->flag = 1;
         }
     }
@@ -5317,7 +5317,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void fn_8003BD58(void *);
     void fn_80092438(void *);
     u8 fn_80092ADC(void *, u8);
-    void *fn_80037BBC(void *, s32);
+    void *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_80093DA8(void *);
     void fn_800056A0(s32);
     void fn_80036834(void *);
@@ -5547,7 +5547,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     }
     if (src->unk8 & 1) {
         for (i = 0; i < 4; i++) {
-            item = fn_80037BBC(self, i);
+            item = Unit_GetHeldItemSlot(self, i);
             if (item != 0 && *(void **)item != 0 && fn_80093DA8(self) == 0) {
                 p = *(void **)item;
                 a = p ? *(u8 *)((u8 *)p + 0x12) : 0xC;

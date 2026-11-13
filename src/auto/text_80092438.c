@@ -533,14 +533,14 @@ u8 fn_80092F38(void *arg0) {
 
 u8 fn_80092F9C(void *arg0)
 {
-  extern void *fn_80037BBC(void *, s32);
+  extern void *Unit_GetHeldItemSlot(void *, s32);
   unsigned long new_var;
   u8 count;
   s32 i;
   count = 0;
   for (i = 0; i < 4; i++)
   {
-    if ((*((u32 *) fn_80037BBC(arg0, i))) != 0)
+    if ((*((u32 *) Unit_GetHeldItemSlot(arg0, i))) != 0)
     {
       new_var = 1;
       if (new_var)
@@ -573,7 +573,7 @@ s32 fn_80093010(void *arg0, void *arg1)
 
 s32 fn_80093088(void *arg0)
 {
-  void *fn_80037BBC(void *, s32);
+  void *Unit_GetHeldItemSlot(void *, s32);
   s32 i;
   u32 new_var3;
   int new_var2;
@@ -583,7 +583,7 @@ s32 fn_80093088(void *arg0)
   new_var = 3;
   i = 0;
   loop:
-  if ((*((u32 *) fn_80037BBC(arg0, i))) == 0)
+  if ((*((u32 *) Unit_GetHeldItemSlot(arg0, i))) == 0)
   {
   }
   else
@@ -1391,8 +1391,8 @@ void fn_800947E0(s32 arg0) {
     var_r21 = var_r31;
     var_r19 = 0;
     do {
-        Item_Copy(var_r23, fn_80037BBC(arg0, var_r19));
-        fn_80037BBC(arg0, var_r19);
+        Item_Copy(var_r23, Unit_GetHeldItemSlot(arg0, var_r19));
+        Unit_GetHeldItemSlot(arg0, var_r19);
         fn_8001D580();
         Item_Copy(var_r21, var_r22 + 0x1EC);
         fn_8001D580(var_r22 + 0x1EC);
@@ -1434,13 +1434,13 @@ void fn_800947E0(s32 arg0) {
 }
 
 void fn_800949A4(void *arg0, s8 arg1) {
-    void *fn_80037BBC(void);
+    void *Unit_GetHeldItemSlot(void);
     void fn_8001D580(void *);
     void fn_800947E0(void *);
     s32 t;
 
     if (arg1 < 4) {
-        fn_8001D580(fn_80037BBC());
+        fn_8001D580(Unit_GetHeldItemSlot());
         fn_800947E0(arg0);
         return;
     }
@@ -1504,7 +1504,7 @@ s32 fn_80094C10(s32 arg0, void *arg1) {
 #pragma use_lmw_stmw off
 #pragma optimization_level 2
 void *fn_80094CDC(void *arg0, s32 arg1) {
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_800940B0(void *, void *);
     void *fn_8009542C(void *, s32);
     u8 Status_Test(void *, s32);
@@ -1520,12 +1520,12 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
 
     if (arg1 < 4) {
         if (Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
-            return fn_80037BBC(arg0, 0);
+            return Unit_GetHeldItemSlot(arg0, 0);
         }
         var_r30 = 0;
         var_r29 = 0;
         do {
-            slot = fn_80037BBC(arg0, var_r30);
+            slot = Unit_GetHeldItemSlot(arg0, var_r30);
             {
                 u8 t = *((u8 *)slot + 5);
                 var_r30 += 1;
@@ -1533,7 +1533,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
             }
         } while (var_r30 < 4);
         if (arg1 >= 0) {
-            slot = fn_80037BBC(arg0, arg1);
+            slot = Unit_GetHeldItemSlot(arg0, arg1);
             obj = *slot;
             result = 0;
             flags = *(u64 *)((u8 *)obj + 0x38);
@@ -1549,7 +1549,7 @@ void *fn_80094CDC(void *arg0, s32 arg1) {
         } else {
             var_r30 = 0;
             for (;;) {
-                slot = fn_80037BBC(arg0, var_r30);
+                slot = Unit_GetHeldItemSlot(arg0, var_r30);
                 obj = *slot;
                 if (((u32)(-(s32)obj | (s32)obj) >> 31) == 0) {
                     return NULL;
@@ -1671,7 +1671,7 @@ void fn_80095070(void* arg0, void* arg1, s32 arg2) {
 
 #pragma optimization_level 2
 void *fn_800951D0(void *arg0, s32 arg1) {
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_800940B0(void *, void *);
     void *fn_8009542C(void *, s32);
     u8 Status_Test(void *, s32);
@@ -1684,12 +1684,12 @@ void *fn_800951D0(void *arg0, s32 arg1) {
     s32 var_r30;
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
-        return fn_80037BBC(arg0, 0);
+        return Unit_GetHeldItemSlot(arg0, 0);
     }
     var_r30 = 0;
     var_r29 = 0;
     do {
-        slot = fn_80037BBC(arg0, var_r30);
+        slot = Unit_GetHeldItemSlot(arg0, var_r30);
         {
             u8 t = *((u8 *)slot + 5);
             var_r30 += 1;
@@ -1697,7 +1697,7 @@ void *fn_800951D0(void *arg0, s32 arg1) {
         }
     } while (var_r30 < 4);
     if (arg1 >= 0) {
-        slot = fn_80037BBC(arg0, arg1);
+        slot = Unit_GetHeldItemSlot(arg0, arg1);
         obj = *slot;
         result = 0;
         flags = *(u64 *)((u8 *)obj + 0x38);
@@ -1714,7 +1714,7 @@ void *fn_800951D0(void *arg0, s32 arg1) {
     } else {
         var_r29 = 0;
         for (;;) {
-            slot = fn_80037BBC(arg0, var_r29);
+            slot = Unit_GetHeldItemSlot(arg0, var_r29);
             obj = *slot;
             if (obj == NULL) {
                 return NULL;

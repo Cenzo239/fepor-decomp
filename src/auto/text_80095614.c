@@ -46,11 +46,11 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 s32 fn_80095614(s32 arg0) {
-    u32 *fn_80037BBC(s32, s32);
+    u32 *Unit_GetHeldItemSlot(s32, s32);
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (*fn_80037BBC(arg0, i) == 0) {
+        if (*Unit_GetHeldItemSlot(arg0, i) == 0) {
             return i;
         }
     }

@@ -8565,7 +8565,7 @@ extern "C" void fn_801743B4(void *arg0) {
     void fn_8013AF08(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     void fn_801439F0(void *, void *, void *);
     u8 Status_Test(void *, u8);
     u32 *Item_GetFlagsPtr(u32);
@@ -8682,7 +8682,7 @@ extern "C" void fn_801743B4(void *arg0) {
         goto loop1_cond;
     loop1_body:
         for (i = 0; i < 4; i++) {
-            entry = fn_80037BBC(unit1, i);
+            entry = Unit_GetHeldItemSlot(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
@@ -8733,7 +8733,7 @@ extern "C" void fn_801743B4(void *arg0) {
     goto loop2_cond;
 loop2_body:
     for (i = 0; i < 4; i++) {
-        entry = fn_80037BBC(unit2, i);
+        entry = Unit_GetHeldItemSlot(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }
@@ -9082,7 +9082,7 @@ extern "C" void fn_801752EC(void *arg0) {
     void fn_8013AF08(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
-    void **fn_80037BBC(void *, s32);
+    void **Unit_GetHeldItemSlot(void *, s32);
     void fn_801439F0(void *, void *, void *);
     u8 Status_Test(void *, u8);
     u32 *Item_GetFlagsPtr(u32);
@@ -9201,7 +9201,7 @@ extern "C" void fn_801752EC(void *arg0) {
         goto loop1_cond;
     loop1_body:
         for (i = 0; i < 4; i++) {
-            entry = fn_80037BBC(unit1, i);
+            entry = Unit_GetHeldItemSlot(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
@@ -9262,7 +9262,7 @@ extern "C" void fn_801752EC(void *arg0) {
     goto loop2_cond;
 loop2_body:
     for (i = 0; i < 4; i++) {
-        entry = fn_80037BBC(unit2, i);
+        entry = Unit_GetHeldItemSlot(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }

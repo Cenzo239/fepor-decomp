@@ -9138,7 +9138,7 @@ break;
 void fn_80143784(void **arg0, void *arg1) {
     extern void *lbl_8036C4E8;
     extern void *lbl_8036C4EC;
-    void fn_80037BBC(void *, s32);
+    void Unit_GetHeldItemSlot(void *, s32);
     void fn_80144E34(void *, void *, void **);
     void fn_80144EAC(void *, void *, void **, u32 **);
     void memcpy(void *, void *, s32);
@@ -9146,7 +9146,7 @@ void fn_80143784(void **arg0, void *arg1) {
 
     (void)lbl_8036C4E8;
     (void)lbl_8036C4EC;
-    (void)fn_80037BBC;
+    (void)Unit_GetHeldItemSlot;
     (void)fn_80144E34;
     (void)fn_80144EAC;
 
