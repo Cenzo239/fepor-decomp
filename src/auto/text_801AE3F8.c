@@ -8,7 +8,7 @@ struct SetupMenuObj {
  virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(s32); virtual void v12(s32);
 };
 #pragma cplusplus reset
-extern u8 lbl_802917D0[];
+extern u8 gUiMainListPanelVtbl[];
 extern struct unk_struct lbl_80331C6C;
 
 void *fn_801AE3F8(u32 arg0) {
@@ -2467,7 +2467,7 @@ void *Ui_MainListPanel_Ctor(void *arg0) {
     void fn_80134E48(void *);
 
     fn_80134E48(arg0);
-    *(void **)arg0 = lbl_802917D0;
+    *(void **)arg0 = gUiMainListPanelVtbl;
     return arg0;
 }
 extern s32 gUiInputFlags;

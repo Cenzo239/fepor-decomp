@@ -1518,11 +1518,11 @@ void *fn_80134FF8(void *arg0, s16 arg1) {
     M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
     extern u16 lbl_80292230[];
-    extern u8 lbl_802917D0[];
+    extern u8 gUiMainListPanelVtbl[];
     extern u8 lbl_8029180C[];
 
     if (arg0 != NULL) {
-        M2C_FIELD(arg0, void **, 0) = lbl_802917D0;
+        M2C_FIELD(arg0, void **, 0) = gUiMainListPanelVtbl;
         if (arg0 != NULL) {
             M2C_FIELD(arg0, void **, 0) = lbl_8029180C;
             if (arg0 != NULL) {
