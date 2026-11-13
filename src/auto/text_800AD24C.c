@@ -9512,7 +9512,7 @@ void fn_800C3220(s32 arg0, s32 arg1) {
     *(temp_r3 - 0x1) = 0xFF;
 }
 
-s32 fn_800C3260(u8* arg0) {
+s32 Icon_AllocSlot(u8* arg0) {
     s32 i;
     u8* p;
 
