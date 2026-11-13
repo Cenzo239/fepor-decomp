@@ -16070,7 +16070,7 @@ s32 fn_8018256C(void) {
 
 s32 fn_80182574(s32 arg0) {
     void fn_8010AC58(s32);
-    u8 fn_8010B658(s32);
+    u8 Ai_TryApproachHealer(s32);
     u8 Ai_TrySelectApproachTile(s32);
     u8 fn_8010BB74(s32);
     u8 Ai_TrySeekHealer(s32);
@@ -16094,7 +16094,7 @@ s32 fn_80182574(s32 arg0) {
             fn_8010AC58(arg0);
         } else if (Ai_TrySelectApproachTile(arg0) != 0) {
             fn_8010AC58(arg0);
-        } else if (fn_8010B658(arg0) != 0) {
+        } else if (Ai_TryApproachHealer(arg0) != 0) {
             fn_8010AC58(arg0);
         }
         goto block_15;

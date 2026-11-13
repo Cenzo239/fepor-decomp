@@ -3343,7 +3343,7 @@ s32 fn_8010B60C(void *arg0, void *arg1) {
 }
 
 #pragma use_lmw_stmw on
-u8 fn_8010B658(void *arg0) {
+u8 Ai_TryApproachHealer(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(s32, s32);
