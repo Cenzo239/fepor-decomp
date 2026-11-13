@@ -11850,12 +11850,12 @@ s32 fn_8019FCD0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 s32 fn_8019FD40(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_Find(void *);
     void fn_80017840(s32, s32, f32, f32, f32);
-    extern u8 lbl_80296F90[];
+    extern u8 E_EventState_script[];
     void *temp;
     s32 scale;
     f32 fscale;
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         scale = *(s32 *)((u8 *)temp + 0x3C);
     } else {
@@ -12098,18 +12098,18 @@ s32 fn_801A0298(s32 arg0) {
     s32 fn_800C0658();
     s32 Map_Get(void);
     void fn_8004496C(s32, u8);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u8 gBattleState[];
     extern s32 gUiInputFlags;
 
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         ((u8 *)p)[0x30] = 1;
         ((u8 *)p)[0x31] = 0;
         ((u8 *)p)[0x32] = 0;
@@ -12378,7 +12378,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
 
 s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 gUnits[];
-    extern u8 lbl_80296F90[];
+    extern u8 E_EventState_script[];
     extern u8 lbl_80296FA8[];
     extern u8 gBattleMap[];
     extern s32 gUiInputFlags;
@@ -12416,7 +12416,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     }
 
     var_r30 = 0x80;
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         b = ((u8 *)temp)[0x30];
     } else {
@@ -12426,7 +12426,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         var_r30 |= 0x40;
     }
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         b = ((u8 *)temp)[0x31];
     } else {
@@ -12436,7 +12436,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         var_r30 |= 0x200;
     }
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         sw = ((u8 *)temp)[0x32];
     } else {
@@ -12451,7 +12451,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         break;
     }
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         temp_r0 = *(u16 *)((u8 *)temp + 0x34);
     } else {
@@ -12711,17 +12711,17 @@ s32 fn_801A1A90(s32 arg0) {
     void *Process_Create(void *, s32);
     void Process_UnlinkByKey(void *);
     s32 fn_800C0658(void);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 lbl_80296F68[];
     extern u16 gBattleState[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         M2C_FIELD(p, s8 *, 0x31) = 0;
         M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -12749,13 +12749,13 @@ s32 fn_801A1B58(s32 arg0) {
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
     void fn_8004DC54(s32);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 gBattleState[];
 
-    void *p = Process_Find(lbl_80296F90);
+    void *p = Process_Find(E_EventState_script);
     if (p == NULL) {
         s32 x = fn_800C0658();
-        p = Process_Create(lbl_80296F90, x);
+        p = Process_Create(E_EventState_script, x);
         ((u8 *)p)[0x30] = 1;
         ((u8 *)p)[0x31] = 0;
         ((u8 *)p)[0x32] = 0;
@@ -12774,7 +12774,7 @@ s32 fn_801A1BF4(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 gBattleState[];
     s32 v;
     void *p;
@@ -12784,13 +12784,13 @@ s32 fn_801A1BF4(s32 arg0) {
         v = 0x64;
     }
     if (v < 0) {
-        p = Process_Find(lbl_80296F90);
+        p = Process_Find(E_EventState_script);
         if (p != NULL) {
             ((u8 *)gBattleState)[0xA0] = ((u8 *)p)[0x33];
         }
     } else {
-        if (Process_Find(lbl_80296F90) == NULL) {
-            p = Process_Create(lbl_80296F90, fn_800C0658());
+        if (Process_Find(E_EventState_script) == NULL) {
+            p = Process_Create(E_EventState_script, fn_800C0658());
             M2C_FIELD(p, s8 *, 0x30) = 1;
             M2C_FIELD(p, s8 *, 0x31) = 0;
             M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -12808,10 +12808,10 @@ s32 fn_801A1BF4(s32 arg0) {
 
 u16 fn_801A1CC8(void) {
     void *Process_Find(void *);
-    extern u8 lbl_80296F90[];
+    extern u8 E_EventState_script[];
     void *p;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         return *(u16 *)((u8 *)p + 0x34);
     }
@@ -12822,15 +12822,15 @@ s32 fn_801A1D04(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         M2C_FIELD(p, s8 *, 0x31) = 0;
         M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -12854,17 +12854,17 @@ s32 fn_801A1DB8(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 gBattleState[];
     void *p;
     void *v;
     u16 t;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         *(s8 *)((u8 *)p + 0x30) = 1;
         *(s8 *)((u8 *)p + 0x31) = 0;
         *(s8 *)((u8 *)p + 0x32) = 0;
@@ -12886,13 +12886,13 @@ s32 fn_801A1DB8(s32 arg0) {
 s32 fn_801A1E6C(s8 arg0, s8 arg1) {
     void *Process_Find(void *);
     f32 fn_80023430(void *, f32, f32);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u8 gBattleMap[];
     void *temp;
     s32 scale;
     f32 f;
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         scale = *(s32 *)((u8 *)temp + 0x3C);
     } else {
@@ -12905,13 +12905,13 @@ s32 fn_801A1E6C(s8 arg0, s8 arg1) {
 s32 fn_801A1F38(s8 arg0, s8 arg1) {
     void *Process_Find(void *);
     f32 Map_SampleHeight(void *, f32, f32);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u8 gBattleMap[];
     void *temp;
     s32 scale;
     f32 f;
 
-    temp = Process_Find(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         scale = *(s32 *)((u8 *)temp + 0x3C);
     } else {
@@ -12925,15 +12925,15 @@ s32 fn_801A2004(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         M2C_FIELD(p, s8 *, 0x31) = 0;
         M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -12953,15 +12953,15 @@ s32 fn_801A2098(void) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         v = p;
         M2C_FIELD(p, s8 *, 0x31) = 0;
@@ -12981,15 +12981,15 @@ s32 fn_801A212C(void) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         v = p;
         M2C_FIELD(p, s8 *, 0x31) = 0;
@@ -13009,16 +13009,16 @@ s32 fn_801A21C0(void) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 gBattleState[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         *(s8 *)((u8 *)p + 0x30) = 1;
         v = p;
         *(s8 *)((u8 *)p + 0x31) = 0;
@@ -13038,15 +13038,15 @@ s32 fn_801A2254(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         M2C_FIELD(p, s8 *, 0x31) = 0;
         M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -13068,10 +13068,10 @@ s32 fn_801A2254(s32 arg0) {
 
 u8 fn_801A2300(void) {
     void *Process_Find(void *);
-    extern u8 lbl_80296F90[];
+    extern u8 E_EventState_script[];
     void *p;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         return M2C_FIELD(p, u8 *, 0x30);
     }
@@ -13082,15 +13082,15 @@ s32 fn_801A233C(void) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         v = p;
         M2C_FIELD(p, s8 *, 0x31) = 0;
@@ -13110,15 +13110,15 @@ s32 fn_801A23D0(void) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         v = p;
         M2C_FIELD(p, s8 *, 0x31) = 0;
@@ -13222,16 +13222,16 @@ s32 fn_801A25FC(s8 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
-    extern u16 lbl_80296F90[];
+    extern u16 E_EventState_script[];
     extern u16 gBattleState[];
     void *p;
     void *v;
 
-    p = Process_Find(lbl_80296F90);
+    p = Process_Find(E_EventState_script);
     if (p != NULL) {
         v = p;
     } else {
-        p = Process_Create(lbl_80296F90, fn_800C0658());
+        p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
         M2C_FIELD(p, s8 *, 0x31) = 0;
         M2C_FIELD(p, s8 *, 0x32) = 0;
@@ -13249,9 +13249,9 @@ s32 fn_801A25FC(s8 arg0) {
 
 u8 fn_801A2690(void) {
     void *Process_Find(u16 *);
-    extern u8 lbl_80296F90[];
+    extern u8 E_EventState_script[];
     void *temp_r3;
-    temp_r3 = Process_Find((u16 *)lbl_80296F90);
+    temp_r3 = Process_Find((u16 *)E_EventState_script);
     if (temp_r3 == NULL) {
         return 0U;
     }
@@ -13454,7 +13454,7 @@ extern struct UnkStruct_802EF4C8 gUiContext;
 extern u16 gBattle[];
 extern u16 gUiInputFlags;
 extern u16 lbl_80330E90[4];
-extern u16 lbl_80296F90[];
+extern u16 E_EventState_script[];
 #include "global.h"
 #include "structs.h"
 
