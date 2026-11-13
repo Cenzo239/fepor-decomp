@@ -1951,7 +1951,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(s32);
     void fn_80009B98(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void fn_8000A174(s32, s32);
@@ -2022,7 +2022,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         }
         limit = (s16)lbl_802EF4E0[0];
         Prim2D_Begin();
-        fn_80009C0C(lbl_8036A560);
+        Prim2D_AddZ(lbl_8036A560);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         if (count == limit) {
@@ -2061,7 +2061,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         }
         count = (s16)lbl_802EF4E0[0];
         Prim2D_Begin();
-        fn_80009C0C(lbl_8036A560);
+        Prim2D_AddZ(lbl_8036A560);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         if (limit == count) {

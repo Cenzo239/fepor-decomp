@@ -4436,7 +4436,7 @@ extern "C" void fn_8011B580(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 void fn_8011B5FC(void *arg0, void *arg1) {
-    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 fn_800102BC(M2C_UNK, f32, f32);
@@ -4454,7 +4454,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     fn_80071D28();
     M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(void *, void *), 0x7C)(arg0, arg1);
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036A234);
+    Prim2D_AddZ(lbl_8036A234);
     Prim2D_PrepareTex();
     temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
     temp_r29 = (s32) (lbl_8036A238 * temp_f2);
@@ -4462,7 +4462,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
     fn_8008AB7C(M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0) >> 1, temp_r31 + temp_r30, temp_r29, 0x17, 0xA, 0x28, 1);
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036A23C);
+    Prim2D_AddZ(lbl_8036A23C);
     Prim2D_PrepareTex();
 }
 

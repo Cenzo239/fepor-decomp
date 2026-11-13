@@ -93,7 +93,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007858(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 fn_800102BC(M2C_UNK, f32);
@@ -123,7 +123,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     fn_80007124();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036A404);
+    Prim2D_AddZ(lbl_8036A404);
     Prim2D_PrepareTex();
 }
 

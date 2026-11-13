@@ -3276,7 +3276,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -3360,7 +3360,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036B7F4);
+    Prim2D_AddZ(lbl_8036B7F4);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     Prim2D_SetRect(f31, f30, lbl_8036B7F8, lbl_8036B7B8);
@@ -3380,7 +3380,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     Prim2D_EndPrim();
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
-    fn_80009C0C(lbl_8036B800);
+    Prim2D_AddZ(lbl_8036B800);
     Prim2D_PrepareTex();
     str = ((Obj *)arg0)->v0();
     tmp = (f32)fn_80010B78(str, -1, lbl_8036B7C8);

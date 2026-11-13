@@ -192,7 +192,7 @@ void fn_801210CC(void *arg0) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(u8);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
@@ -253,7 +253,7 @@ void fn_801210CC(void *arg0) {
         Prim2D_EndPrim();
         Prim2D_Begin();
         fn_8000A174((void *)0, 0x13);
-        fn_80009C0C(lbl_8036A270);
+        Prim2D_AddZ(lbl_8036A270);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(6);
         fn_80007858(
@@ -1328,14 +1328,14 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 #pragma use_lmw_stmw reset
 
 void fn_8012323C(void *arg0) {
-    f64 fn_80238638(f64);
     extern f32 lbl_8036A2DC;
+    f64 fn_80238638(f64);
     extern f64 lbl_8036A2E0;
     extern f32 lbl_8036A2E8;
-    f32 cos_v;
-    f32 sin_v;
-    f32 halfpi;
+    register f32 halfpi;
+    register f32 cos_v;
     f32 clamp;
+    f32 sin_v;
 
     if (M2C_FIELD(arg0, s32 *, 0x90) > 0) {
         cos_v = (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x84));

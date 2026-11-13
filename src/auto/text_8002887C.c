@@ -3715,7 +3715,7 @@ extern "C" void fn_80032488(void *arg0, void *arg1) {
 extern "C" void fn_80090C50(s32);
 extern "C" void fn_800900F4(s32);
 extern "C" void fn_8008BD90(s32, s32, s32);
-extern "C" void fn_80009C0C(f32);
+extern "C" void Prim2D_AddZ(f32);
 extern "C" void fn_80032564(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
@@ -3741,7 +3741,7 @@ extern "C" void fn_80032564(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
         fn_800900F4(M2C_FIELD(gUiContext, s32 *, 0));
         Prim2D_Begin();
-        fn_80009C0C(lbl_80368E34);
+        Prim2D_AddZ(lbl_80368E34);
         Prim2D_PrepareTex();
         fn_8008BD90(0x64, 0xD2, 0);
         Prim2D_Begin();
@@ -3783,7 +3783,7 @@ extern "C" void fn_800326B4(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
         ((Obj *)arg0)->v0(&x2, &y2, &alpha2);
         Prim2D_Begin();
-        fn_80009C0C(lbl_80368E34);
+        Prim2D_AddZ(lbl_80368E34);
         Prim2D_SetColorByte((u8)alpha2);
         Prim2D_PrepareTex();
         fn_8008BD90(0x64, 0x6A, 1);

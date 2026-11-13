@@ -154,7 +154,7 @@ void fn_80085360(void *arg0) {
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_Begin();
-        fn_80009C0C(lbl_8036942C);
+        Prim2D_AddZ(lbl_8036942C);
         Prim2D_PrepareTex();
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
@@ -162,7 +162,7 @@ void fn_80085360(void *arg0) {
         var_r3 = 0x130 - (fn_80010B78(sp28, -1, lbl_80369430) / 2);
         fn_8001003C(var_r3, 0x197, 1, 1, 0, sp28, lbl_80369430, lbl_80369418);
         Prim2D_Begin();
-        fn_80009C0C(lbl_80369430);
+        Prim2D_AddZ(lbl_80369430);
         Prim2D_PrepareTex();
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
@@ -180,7 +180,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     u16 **fn_8006EDD8(s32, s32);
     Color *fn_8018D900(s32);
     void Prim2D_BindTexture(s32, s32, s32);
@@ -224,7 +224,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_SetColor(arg0[0], arg0[1], arg0[2], arg0[3]);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036942C);
+    Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
 
     tex = *fn_8006EDD8(lbl_803674F4, 0x45);
@@ -381,7 +381,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369430);
+    Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
 }
 
@@ -393,7 +393,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void fn_80007870(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -468,7 +468,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036942C);
+    Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 0xC);
@@ -671,7 +671,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     }
 
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369430);
+    Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
 }
 
@@ -683,7 +683,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void fn_80007870(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -741,7 +741,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036942C);
+    Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 6);
@@ -905,7 +905,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
         }
     }
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369430);
+    Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
 }
 
@@ -917,7 +917,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void fn_80007870(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -977,7 +977,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_8036942C);
+    Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 0);
@@ -1148,7 +1148,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369430);
+    Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
     (void)lbl_80369440;
 }
@@ -2502,7 +2502,7 @@ u16 fn_8008AF9C(s32 arg0, s32 arg1) {
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     void Prim2D_Begin(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void fn_8000A174(void *, s32);
     void Prim2D_AddPrim(s32);
@@ -2523,7 +2523,7 @@ u16 fn_8008AF9C(s32 arg0, s32 arg1) {
     sp.x = fn_80222A80(sp.buf);
     sp.y = fn_80222A90(sp.buf);
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369704);
+    Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_8000A174(sp.buf, 0x10);
@@ -2532,7 +2532,7 @@ u16 fn_8008AF9C(s32 arg0, s32 arg1) {
     Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.x, (f32)sp.y);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369708);
+    Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
     return sp.x;
 }
@@ -2552,7 +2552,7 @@ u16 fn_8008B09C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     sp28 = fn_80222A80(&sp8);
     sp2A = fn_80222A90(&sp8);
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369704);
+    Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_8000A174(&sp8, 0x10);
@@ -2561,7 +2561,7 @@ u16 fn_8008B09C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Prim2D_SetRect((f32) arg0, (f32) arg1, (f32) arg2, (f32) arg3);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369708);
+    Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
     return sp28;
 }
@@ -2571,7 +2571,7 @@ u16 fn_8008B1B0(s32 arg0, s32 arg1) {
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     void Prim2D_Begin(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void fn_8000A174(void *, s32);
     void Prim2D_AddPrim(s32);
@@ -2592,7 +2592,7 @@ u16 fn_8008B1B0(s32 arg0, s32 arg1) {
     sp.x = fn_80222A80(sp.buf);
     sp.y = fn_80222A90(sp.buf);
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369704);
+    Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_8000A174(sp.buf, 0x10);
@@ -2601,7 +2601,7 @@ u16 fn_8008B1B0(s32 arg0, s32 arg1) {
     Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.x, (f32)sp.y);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369708);
+    Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
     return sp.x;
 }
@@ -2636,7 +2636,7 @@ void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
     fn_80007124(arg4);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369704);
+    Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_8000A174(&sp8, 0x10);
@@ -2645,7 +2645,7 @@ void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
     Prim2D_SetRect(sp28, (f32) (arg0 - 8), (f32) arg1, (f32) sp28, (f32) sp2A);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369708);
+    Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
 }
 
@@ -2665,7 +2665,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void *fn_80009E44(s32);
     s32 fn_8022C568(f32, f32, f32);
     void fn_80009BC0(void (*)(s32, s32), s32);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void fn_8007B4D8(s32, s32, s32, void *);
     void fn_80009B98(void);
     void *fn_800A8A88(void *);
@@ -2722,20 +2722,20 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     fn_80009BC0(fn_8008BA50, cb);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369710);
+    Prim2D_AddZ(lbl_80369710);
     Prim2D_PrepareTex();
 
     if (tex != NULL) {
         fn_8007B4D8(x + 0xC0, y + 0x5D, 0xFF, tex);
     }
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369714);
+    Prim2D_AddZ(lbl_80369714);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_80009B98();
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369708);
+    Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
 
     fn_8006ECCC(handle, sp.buf, 0x1F);
@@ -2751,7 +2751,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     fn_8000A174(NULL, 0x13);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369710);
+    Prim2D_AddZ(lbl_80369710);
     Prim2D_PrepareTex();
 
     {
@@ -2792,7 +2792,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
                 lbl_8026CC88 + 0x56, fn_8003B2D0(self), lbl_80369704, lbl_803696E0);
 
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369720);
+    Prim2D_AddZ(lbl_80369720);
     Prim2D_PrepareTex();
     if (tex != NULL) {
         fn_8007AD6C(tex);
@@ -2992,9 +2992,9 @@ void fn_8008CD34(void) {
 }
 
 void fn_8008CD64(f32 farg0) {
-    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     Prim2D_Begin();
-    fn_80009C0C(farg0);
+    Prim2D_AddZ(farg0);
     Prim2D_PrepareTex();
 }
 

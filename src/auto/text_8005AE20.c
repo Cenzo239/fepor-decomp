@@ -5136,15 +5136,18 @@ void *Light_GetChannel(s32 arg0) {
     return (u8 *)lbl_80366DDC + arg0 * 0x2c;
 }
 
-#pragma peephole off
+#pragma global_optimizer off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
-    extern u8 *lbl_80366DDC;
-    if (arg0 == NULL) {
-        lbl_80366DDC = lbl_80311B04;
+    extern void *lbl_80366DDC;
+    void *p;
+    if (arg0 != 0) {
+        return;
     }
+    p = lbl_80311B04;
+    lbl_80366DDC = p;
 }
-#pragma peephole on
+#pragma global_optimizer reset
 s32 fn_80067478(void) {
     extern s32 lbl_80366DDC;
     return lbl_80366DDC;
@@ -7984,13 +7987,13 @@ void fn_80071B54(void) {
 }
 
 void fn_80071B88(void) {
-    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 lbl_80369300;
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369300);
+    Prim2D_AddZ(lbl_80369300);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
 }
@@ -8009,7 +8012,7 @@ void fn_80071CE8(void *arg0, void *arg1) {
 void fn_80071D28(void *unused, void *unit) {
     void *fn_8000B908(s32);
     void Prim2D_Begin(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void fn_8008BF68(s32, s32, s32);
     extern f32 lbl_803692F0;
@@ -8039,7 +8042,7 @@ void fn_80071D28(void *unused, void *unit) {
     }
 
     Prim2D_Begin();
-    fn_80009C0C(lbl_803692F0);
+    Prim2D_AddZ(lbl_803692F0);
     Prim2D_PrepareTex();
 
     flag = 0;
@@ -8071,7 +8074,7 @@ void fn_80071E0C(void *arg0, void *arg1) {
     fn_8008C1D8(0, 0, 0x90, (temp_r28 << 5) + 0x20, 1);
     if ((s16) M2C_FIELD(arg1, s16 *, 0x3A) >= 5) {
         Prim2D_Begin();
-        fn_80009C0C(lbl_80369320);
+        Prim2D_AddZ(lbl_80369320);
         Prim2D_PrepareTex();
         var_r28 = 0;
         if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
@@ -8085,7 +8088,7 @@ void fn_80071E0C(void *arg0, void *arg1) {
         temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
         fn_8008AB7C((s32) (((u32) temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
         Prim2D_Begin();
-        fn_80009C0C(lbl_80369328);
+        Prim2D_AddZ(lbl_80369328);
         Prim2D_PrepareTex();
     }
 }

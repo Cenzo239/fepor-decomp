@@ -1695,7 +1695,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     s32 fn_8001D2C8(void);
     void sprintf(void *, void *, ...);
     void Prim2D_Begin(void);
-    void fn_80009C0C(f32);
+    void Prim2D_AddZ(f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
@@ -1717,7 +1717,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     }
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x6C7, fn_8001D2C8());
     Prim2D_Begin();
-    fn_80009C0C(lbl_80369A04);
+    Prim2D_AddZ(lbl_80369A04);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
@@ -2180,7 +2180,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
 void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
     M2C_UNK Prim2D_Begin(void);
-    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex(void);
     s32 fn_80037004(void *, s32);
@@ -2214,7 +2214,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
         idx = M2C_FIELD(arg2, u8 *, 0x3A);
         if ((u8) fn_8003701C(obj) > idx) {
             Prim2D_Begin();
-            fn_80009C0C(lbl_80369A04);
+            Prim2D_AddZ(lbl_80369A04);
             fn_8000A174(0, 0x13);
             Prim2D_PrepareTex();
             sprintf(sp18, lbl_8026D8D8 + 0x6C7, fn_800A8A88(fn_80037004(obj, idx)));

@@ -1998,7 +1998,7 @@ f32 fn_80009C00(void) {
     return *(f32 *)(*(u8 **)&lbl_80367140 + 0x28);
 }
 
-void fn_80009C0C(f32 farg0) {
+void Prim2D_AddZ(f32 farg0) {
     extern u16 lbl_80367140;
     *(f32 *)(*(u8 **)&lbl_80367140 + 0x28) += farg0;
 }
