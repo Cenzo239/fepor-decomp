@@ -792,49 +792,50 @@ s32 fn_801A99E8(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 
 #pragma opt_common_subs off
 void BattleUnit_Apply(void *arg0) {
-    struct Obj {
+    /* Write this battle unit's HP, flags, and weapon changes back onto its linked unit. */
+    struct BattleUnit {
         u8 pad0[0x1A4];
         u16 unk1A4;
         u16 unk1A6;
-        s8 unk1A8;
+        s8 hp;
         u8 pad1A9[0x1BC - 0x1A9];
-        u8 unk1BC[0x20C - 0x1BC];
+        u8 status[0x20C - 0x1BC];
         u8 unk20C[8];
         u8 pad214[0x280 - 0x214];
-        void *unk280;
-        u8 unk284[8];
-        u8 unk28C[8];
-        s8 unk294;
+        void *unit;
+        u8 item[8];
+        u8 itemSrc[8];
+        s8 itemSlot;
         u8 pad295[0x2C8 - 0x295];
-        s8 unk2C8;
-    } *p = arg0;
+        s8 itemUses;
+    } *bu = arg0;
     u8 Status_Test(void *, s32);
     void Unit_SetHeldItem(void *, u8, void *);
-    void *temp_r3;
+    void *unit;
 
-    Unit_SetHp(p->unk280, p->unk1A8);
-    temp_r3 = p->unk280;
-    M2C_FIELD(temp_r3, u16 *, 0x1A4) = p->unk1A4;
-    M2C_FIELD(temp_r3, u16 *, 0x1A6) = p->unk1A6;
-    if (p->unk1A8 == 0 && Status_Test(p->unk1BC, 0x5C) == 0) {
-        M2C_FIELD(p->unk280, u32 *, 0x1A0) |= 0x01000000;
+    Unit_SetHp(bu->unit, bu->hp);
+    unit = bu->unit;
+    M2C_FIELD(unit, u16 *, 0x1A4) = bu->unk1A4;
+    M2C_FIELD(unit, u16 *, 0x1A6) = bu->unk1A6;
+    if (bu->hp == 0 && Status_Test(bu->status, 0x5C) == 0) {
+        M2C_FIELD(bu->unit, u32 *, 0x1A0) |= 0x01000000;
     }
-    if (p->unk294 >= 0) {
-        Item_Copy(p->unk284, p->unk28C);
-        Item_SetUses(p->unk284, (u8)p->unk2C8);
-        Unit_SetHeldItem(p->unk280, p->unk294, p->unk284);
-        fn_800947E0(p->unk280);
-        temp_r3 = p->unk280;
-        M2C_FIELD(temp_r3, u8 *, 0x20C) = p->unk20C[0];
-        M2C_FIELD(temp_r3, u8 *, 0x20D) = p->unk20C[1];
-        M2C_FIELD(temp_r3, u8 *, 0x20E) = p->unk20C[2];
-        M2C_FIELD(temp_r3, u8 *, 0x20F) = p->unk20C[3];
-        M2C_FIELD(temp_r3, u8 *, 0x210) = p->unk20C[4];
-        M2C_FIELD(temp_r3, u8 *, 0x211) = p->unk20C[5];
-        M2C_FIELD(temp_r3, u8 *, 0x212) = p->unk20C[6];
-        M2C_FIELD(temp_r3, u8 *, 0x213) = p->unk20C[7];
-        if (p->unk2C8 <= 0) {
-            fn_800951D0(p->unk280, -1);
+    if (bu->itemSlot >= 0) {
+        Item_Copy(bu->item, bu->itemSrc);
+        Item_SetUses(bu->item, (u8)bu->itemUses);
+        Unit_SetHeldItem(bu->unit, bu->itemSlot, bu->item);
+        fn_800947E0(bu->unit);
+        unit = bu->unit;
+        M2C_FIELD(unit, u8 *, 0x20C) = bu->unk20C[0];
+        M2C_FIELD(unit, u8 *, 0x20D) = bu->unk20C[1];
+        M2C_FIELD(unit, u8 *, 0x20E) = bu->unk20C[2];
+        M2C_FIELD(unit, u8 *, 0x20F) = bu->unk20C[3];
+        M2C_FIELD(unit, u8 *, 0x210) = bu->unk20C[4];
+        M2C_FIELD(unit, u8 *, 0x211) = bu->unk20C[5];
+        M2C_FIELD(unit, u8 *, 0x212) = bu->unk20C[6];
+        M2C_FIELD(unit, u8 *, 0x213) = bu->unk20C[7];
+        if (bu->itemUses <= 0) {
+            fn_800951D0(bu->unit, -1);
         }
     }
 }
