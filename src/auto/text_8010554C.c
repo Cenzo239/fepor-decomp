@@ -4673,7 +4673,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s8 fn_8003AFA0(void *);
     s8 fn_8003CFF0(void *, void *);
     u8 fn_800934CC(void *, void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     s32 fn_800F7838(void *, s8, s8);
     s32 fn_800F7994(void *, s8, s8);
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
@@ -4798,7 +4798,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
             for (i = 0; i < 4; i++) {
                 void **sp = fn_80037BBC(unit, i);
                 if (*sp != NULL) {
-                    if ((*fn_8001CB64(sp) & 6ULL) != 0 && fn_800934CC(unit, *sp) != 0) {
+                    if ((*Item_GetFlagsPtr(sp) & 6ULL) != 0 && fn_800934CC(unit, *sp) != 0) {
                         ok = 1;
                         goto ok_done;
                     }

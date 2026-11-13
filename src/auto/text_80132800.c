@@ -8658,7 +8658,7 @@ void fn_80142814(s32 arg0, s16 arg1, s16 arg2, s32 arg3, s32 *arg4, s32 arg5) {
 }
 
 s32 fn_8014284C(s32 unused, void **arg1) {
-void *fn_8001CB64(void **);
+void *Item_GetFlagsPtr(void **);
 s32 result=12;
 void *p=*arg1;
 u8 kind;
@@ -8672,7 +8672,7 @@ case 4:result=4;break;
 case 5:result=5;break;
 case 6:result=6;break;
 case 7:
-if((*(u64*)fn_8001CB64(arg1)&3ULL)!=0){result=7;break;}
+if((*(u64*)Item_GetFlagsPtr(arg1)&3ULL)!=0){result=7;break;}
 case 8:result=8;break;
 case 9:result=9;break;
 case 10:result=10;break;

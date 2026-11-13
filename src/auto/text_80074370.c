@@ -67,7 +67,7 @@ virtual void v14() = 0;
 virtual void v15() = 0;
 virtual void v16() = 0;
 virtual void v17() = 0; };
-u64 *fn_8001CB64(void *);
+u64 *Item_GetFlagsPtr(void *);
 void *fn_80037BD0(void *, s32);
 void fn_8008D510(void *, bool, s16, s16);
 extern u64 lbl_8036746C;
@@ -78,7 +78,7 @@ s32 index;
 index=((u8 *)arg2)[0x3A];
 if(index==4) result=&lbl_8036746C;
 else {
-u64 flags=*fn_8001CB64(&lbl_8036746C);
+u64 flags=*Item_GetFlagsPtr(&lbl_8036746C);
 void *base=lbl_80367468;
 result=fn_80037BD0(base, ((flags & 5ULL)?0:4)+index);
 }
@@ -96,7 +96,7 @@ s32 fn_80074864(void) {
 
 void *fn_8007486C(void *unused, void *arg1)
 {
-  u64 *fn_8001CB64(void *);
+  u64 *Item_GetFlagsPtr(void *);
   u64 *new_var;
   void *fn_80037BD0(void *, s32);
   extern u64 lbl_8036746C;
@@ -112,7 +112,7 @@ void *fn_8007486C(void *unused, void *arg1)
     new_var = &lbl_8036746C;
     return new_var;
   }
-  new_var2 = fn_8001CB64(&lbl_8036746C);
+  new_var2 = Item_GetFlagsPtr(&lbl_8036746C);
   val = *new_var2;
   ;
   addend = ((val & 5ULL) != 0ULL) ? (0) : (4);
@@ -120,7 +120,7 @@ void *fn_8007486C(void *unused, void *arg1)
 }
 
 void fn_800748E8(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_80037BD0(void *, s32);
     s32 UnitRef_GetName(void);
     void sprintf(void *, char *, ...);
@@ -141,7 +141,7 @@ void fn_800748E8(void) {
         result = &lbl_8036746C;
     } else {
         result = fn_80037BD0(lbl_80367468,
-            ((*fn_8001CB64(&lbl_8036746C) & 5ULL) ? 0 : 4) + index);
+            ((*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL) ? 0 : 4) + index);
     }
     obj = *(void **)result;
     if (obj != NULL) {
@@ -778,11 +778,11 @@ void fn_800758A4(void) {
 }
 
 s32 fn_800758D0(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_800285C0(void *);
     extern u8 gUiContext[];
 
-    if (*fn_8001CB64(fn_800285C0(gUiContext)) & 0x20000000000ULL) {
+    if (*Item_GetFlagsPtr(fn_800285C0(gUiContext)) & 0x20000000000ULL) {
         return 2;
     }
     return 0;
@@ -852,7 +852,7 @@ extern "C" s32 fn_80075930(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus off
 
 s32 fn_800759E8(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_800285C0(void *);
     void fn_8002C194(void *, u8);
     extern u8 gUiContext[];
@@ -868,7 +868,7 @@ s32 fn_800759E8(void) {
     if (lbl_802EF4E0[0] == 0) {
         return 3;
     }
-    if (*fn_8001CB64(fn_800285C0(gUiContext)) & 0x200ULL) {
+    if (*Item_GetFlagsPtr(fn_800285C0(gUiContext)) & 0x200ULL) {
         return 2;
     }
     return 0;
@@ -949,7 +949,7 @@ void fn_80075BD8(void) {
 }
 
 s32 fn_80075C04(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_800285C0(void *);
     extern u8 gUiContext[];
     void *item;
@@ -958,7 +958,7 @@ s32 fn_80075C04(void) {
     if (!((*(u8 *)((char *)item + 5) >> 7) & 1)) {
         return 3;
     }
-    if (*fn_8001CB64(item) & 0x200ULL) {
+    if (*Item_GetFlagsPtr(item) & 0x200ULL) {
         return 2;
     }
     return 0;
@@ -975,7 +975,7 @@ void fn_80075DD8(void) {
 }
 
 s32 fn_80075E04(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_800285C0(void *);
     u8 fn_80091EF0(void *, void *);
     extern void *gUiContext[];
@@ -989,7 +989,7 @@ s32 fn_80075E04(void) {
     if ((*(u8 *)((char *)item + 5) >> 7) & 1) {
         return 3;
     }
-    if (*fn_8001CB64(item) & 4ULL) {
+    if (*Item_GetFlagsPtr(item) & 4ULL) {
         return 3;
     }
     return fn_80091EF0(temp_r30, temp_r31) ? 0 : 3;
@@ -997,7 +997,7 @@ s32 fn_80075E04(void) {
 
 s32 fn_80075EB4(void *arg1, void *arg2) {
     M2C_UNK fn_8000CAA0(M2C_UNK *, void *);
-    void *fn_8001CB64();
+    void *Item_GetFlagsPtr();
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK fn_800285C0(M2C_UNK *);
     s8 fn_80037E00(void *);
@@ -1020,7 +1020,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
         temp_r30 = M2C_FIELD(arg1, void **, 0x18);
         M2C_FIELD(temp_r30, s8 *, 0x62) = fn_80037E00(M2C_FIELD(&gUiContext, void **, 0));
     }
-    if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (fn_800285C0(&gUiContext), temp_r3 = fn_8001CB64(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
+    if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (fn_800285C0(&gUiContext), temp_r3 = Item_GetFlagsPtr(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
         fn_8000CAA0(&lbl_802872B0, M2C_FIELD(arg1, void **, 0x18));
     }
     temp_r30_2 = M2C_FIELD(arg1, void **, 0x18);
@@ -2369,7 +2369,7 @@ s32 fn_80078694(void) {
 }
 
 s32 fn_800786AC(void) {
-    void *fn_8001CB64(void);
+    void *Item_GetFlagsPtr(void);
     void fn_8002BEFC(void *, u32);
     u32 *fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *, u32);
@@ -2388,7 +2388,7 @@ s32 fn_800786AC(void) {
     do {
         entry = fn_80037BBC(*(void **)p, i);
         if (*entry != 0) {
-            tmp = fn_8001CB64();
+            tmp = Item_GetFlagsPtr();
             if ((*(u64 *)tmp & 1) != 0
                 && fn_8009339C(*(void **)gUiContext, *entry) != 0) {
                 fn_8002BEFC(*(void **)gUiContext, *entry);
@@ -2421,7 +2421,7 @@ s32 fn_800787F8(void) {
 }
 
 s32 fn_80078810(void) {
-    void *fn_8001CB64(void);
+    void *Item_GetFlagsPtr(void);
     void fn_8002C034(void *, u32);
     u32 *fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *, u32);
@@ -2440,7 +2440,7 @@ s32 fn_80078810(void) {
     do {
         entry = fn_80037BBC(*(void **)p, i);
         if (*entry != 0) {
-            tmp = fn_8001CB64();
+            tmp = Item_GetFlagsPtr();
             if ((*(u64 *)tmp & 1) != 0
                 && fn_8009339C(*(void **)gUiContext, *entry) != 0) {
                 fn_8002C034(*(void **)gUiContext, *entry);
@@ -4158,7 +4158,7 @@ void fn_8007C4D4(void *arg0, s32 arg1) {
 
 extern u16 gUiContext[12];
 extern s32 lbl_802EF4E0[];
-extern void *fn_8001CB64(void);
+extern void *Item_GetFlagsPtr(void);
 extern void *fn_800285C0(void *);
 extern u16 lbl_8026C0B8[];
 #include "global.h"

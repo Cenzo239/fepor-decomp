@@ -158,7 +158,7 @@ void fn_80091B84(void *arg0) {
 
 void fn_80091CD8(void *arg0)
 {
-  u64 *fn_8001CB64(void *);
+  u64 *Item_GetFlagsPtr(void *);
   u8 *new_var;
   u32 *fn_80037C20(void);
   u32 *p;
@@ -171,7 +171,7 @@ void fn_80091CD8(void *arg0)
   }
   else
   {
-    new_var3[0] = ((*fn_8001CB64(p)) & 0x100000000ULL) != 0;
+    new_var3[0] = ((*Item_GetFlagsPtr(p)) & 0x100000000ULL) != 0;
   }
   if (((u8) new_var3[0]) != 0)
   {
@@ -190,7 +190,7 @@ void fn_80091CD8(void *arg0)
 }
 
 s32 fn_80091D74(void) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u32 *fn_80037C20(void);
     u32 *p;
 
@@ -198,7 +198,7 @@ s32 fn_80091D74(void) {
     if (p == NULL || *p == 0) {
         return 0;
     }
-    return (*fn_8001CB64(p) & 0x100000000ULL) != 0;
+    return (*Item_GetFlagsPtr(p) & 0x100000000ULL) != 0;
 }
 
 s8 fn_80091DE0(void* arg0, void* arg1) {

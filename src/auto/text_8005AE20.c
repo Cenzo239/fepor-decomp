@@ -5137,18 +5137,17 @@ void *Light_GetChannel(s32 arg0) {
     return (u8 *)lbl_80366DDC + arg0 * 0x2c;
 }
 
-#pragma global_optimizer off
+#pragma peephole off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
     void *p;
-    if (arg0 != 0) {
-        return;
+    if (arg0 == 0) {
+        p = &lbl_80311B04[0];
+        lbl_80366DDC = p;
     }
-    p = lbl_80311B04;
-    lbl_80366DDC = p;
 }
-#pragma global_optimizer reset
+#pragma peephole on
 s32 fn_80067478(void) {
     extern s32 lbl_80366DDC;
     return lbl_80366DDC;
@@ -5170,7 +5169,7 @@ void fn_800675C8(void *arg0) {
     }
     lbl_80366DD4 = lbl_80311AF8;
 }
-#pragma peephole reset
+#pragma peephole on
 s32 Fog_GetColor(void) {
     extern s32 lbl_80366DD4;
     return lbl_80366DD4;
@@ -6459,8 +6458,9 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(register s32 arg0) {
-    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(s32 arg0) {
+    register u32 gqr;
+    gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 
@@ -7918,14 +7918,14 @@ void fn_80070F3C(void *arg0) {
 }
 
 void fn_80071410(s32 unused, void *arg1, f32 f1, f32 f2) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_8007CFB8(void *, s32, f32, f32);
     void *p;
 
     if (arg1 != NULL) {
         p = (u8 *)arg1 + 0x28C;
         if (p != NULL) {
-            if ((*fn_8001CB64(p) & 1ULL) != 0) {
+            if ((*Item_GetFlagsPtr(p) & 1ULL) != 0) {
                 fn_8007CFB8(arg1, 0, f1, f2);
             }
         }

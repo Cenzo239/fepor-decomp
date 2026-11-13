@@ -725,7 +725,7 @@ void fn_801AF6BC(void *arg0) {
     void fn_8013FF00(void *, void *);
     u8 fn_8014D8DC(void *);
     void Ui_PlaySeCue(void *, s32);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_80092F9C(void *);
     u8 fn_80092F38(void *);
     void fn_8011D79C(void *);
@@ -823,7 +823,7 @@ void fn_801AF6BC(void *arg0) {
         if ((pressed & 0x100) != 0 && sel != NULL) {
             tmp = *(void **)((u8 *)panel + 0x3C);
             Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-            if ((*fn_8001CB64(tmp) & 5ULL) != 0 && fn_80092F9C(sel) >= 4) {
+            if ((*Item_GetFlagsPtr(tmp) & 5ULL) != 0 && fn_80092F9C(sel) >= 4) {
                 fn_8011D79C(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x40));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x84);
                 tmp = Ui_FindChild(self, -0x1000, 0);
@@ -833,7 +833,7 @@ void fn_801AF6BC(void *arg0) {
                 Process_Goto(self, 0x1E);
                 return;
             }
-            if ((*fn_8001CB64(tmp) & 0x18ULL) != 0 && fn_80092F38(sel) >= 4) {
+            if ((*Item_GetFlagsPtr(tmp) & 0x18ULL) != 0 && fn_80092F38(sel) >= 4) {
                 fn_8011D79C(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x40));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x84);
                 tmp = Ui_FindChild(self, -0x1000, 0);
@@ -1048,7 +1048,7 @@ void *Heap_Alloc(s32);
 void *fn_80193B60(void *,s16 *,s16 *,s32);
 void fn_8013B064(void *,void *);
 void fn_8013AD70(void *,void *);
-u64 *fn_8001CB64(void *);
+u64 *Item_GetFlagsPtr(void *);
 void *fn_80193950(void *,s16,s16,s32);
 void *fn_801938F8(void *,s16,s16,s32);
 void fn_8013FF00(void *,void *);
@@ -1095,7 +1095,7 @@ if (!q) {
 }
 *(u8 *)((u8 *)list + 0x4c)=0;Ui_AddChild(self,list);
 if(*(s16 *)((u8 *)list + 0xa)!=0x118){y=*(s16 *)((u8 *)list + 0xc);sp10[0]=0x118;sp10[1]=y;fn_8014027C(self,list,sp10,0);}
-if((*fn_8001CB64(item)&5ULL)!=0) {
+if((*Item_GetFlagsPtr(item)&5ULL)!=0) {
  p=Heap_Alloc(0x78);if(p)p=fn_80193950(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;
 } else {p=Heap_Alloc(0x78);if(p)p=fn_801938F8(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;}
 q=*(void * *)((u8 *)self + 0x60);if(q)*(s32 *)((u8 *)q + 0x4)+=1;

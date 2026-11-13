@@ -82,7 +82,7 @@ u16 *fn_801A7FF4(void *arg0) {
 }
 
 void fn_801A8010(void *arg0) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001DDE8(s32);
     extern u16 lbl_80367218;
     u64 *p;
@@ -96,7 +96,7 @@ void fn_801A8010(void *arg0) {
         } else {
             base = (u8 *)arg0 + 0x284;
         }
-        p = fn_8001CB64(base);
+        p = Item_GetFlagsPtr(base);
         if ((*p & 0x100ULL) == 0) {
             if (*(u8 *)((u8 *)arg0 + 0x295) == 0x52) {
                 if (*(s8 *)((u8 *)arg0 + 0x2C8) <= 0) {
@@ -495,7 +495,7 @@ void fn_801A8F14(void *arg0, void *arg1) {
 }
 
 void fn_801A8F80(void *arg0, void *arg1) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     u8 fn_8001D37C(void *);
     u8 fn_8001D3FC(void *);
     u8 fn_8001D47C(void *);
@@ -583,7 +583,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
         } else {
             base = (u8 *)self + 0x284;
         }
-        bits = (u64 *)fn_8001CB64(base);
+        bits = (u64 *)Item_GetFlagsPtr(base);
         if ((*bits & 0x1000ULL) == 0) {
             if ((s8)*(u8 *)((u8 *)self + 0x2C8) <= 0) {
                 base = &lbl_80367218;
@@ -679,7 +679,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     } else {
         base = (u8 *)self + 0x284;
     }
-    bits = (u64 *)fn_8001CB64(base);
+    bits = (u64 *)Item_GetFlagsPtr(base);
     if ((*bits & 0x2000ULL) != 0) {
         *(s16 *)((u8 *)self + 0x2A4) = 0;
     }

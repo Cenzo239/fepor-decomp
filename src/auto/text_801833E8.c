@@ -5304,7 +5304,7 @@ extern "C" void fn_80191CFC(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_80191F2C(void *arg0) {
     void Process_Goto(void *, s32);
-    u32 *fn_8001CB64(void *);
+    u32 *Item_GetFlagsPtr(void *);
     u8 fn_80092F38(void *);
     u8 fn_80092F9C(void *);
     s32 fn_800C3D48(void *);
@@ -5431,7 +5431,7 @@ extern "C" void fn_80191F2C(void *arg0) {
         if ((btn & 0x100) && unit != 0) {
             nest = (void *)child->unk3C;
             Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
-            bits = fn_8001CB64(nest);
+            bits = Item_GetFlagsPtr(nest);
             if ((*(u64 *)bits & 5ULL) != 0 && (u8)fn_80092F9C(unit) >= 4) {
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
                 nest = *(void **)((u8 *)self + 0x68);
@@ -5442,7 +5442,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                 }
                 Process_Goto(self, 0xC);
             } else {
-                bits = fn_8001CB64(nest);
+                bits = Item_GetFlagsPtr(nest);
                 if ((*(u64 *)bits & 0x18ULL) != 0 && (u8)fn_80092F38(unit) >= 4) {
                     fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
                     nest = *(void **)((u8 *)self + 0x68);
@@ -5632,7 +5632,7 @@ extern "C" void fn_801927DC(void *arg0) {
     void *fn_80193B60(void *, s16 *, s16 *, s32);
     void fn_8013B064(void *, void *);
     void fn_8013AD70(void *, void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void *fn_80193950(void *, s16, s16, s32);
     void *fn_801938F8(void *, s16, s16, s32);
     void fn_8013FF00(void *, void *);
@@ -5753,7 +5753,7 @@ extern "C" void fn_801927DC(void *arg0) {
         fn_8014027C(self, list, sp10, 0);
     }
 
-    if ((*fn_8001CB64(unit) & 5ULL) != 0) {
+    if ((*Item_GetFlagsPtr(unit) & 5ULL) != 0) {
         p = Heap_Alloc(0x78);
         if (p != NULL)
             p = fn_80193950(p, 0x260, 0x108, 0x1F4);
@@ -5925,7 +5925,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8000D8BC(s32, s32);
-    u32 *fn_8001CB64(void *);
+    u32 *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
     void Ui_UpdatePanelWidgets(void *);
@@ -6556,7 +6556,7 @@ void fn_80194174(void) {
 extern "C" void fn_80194178(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_8000CAA0(void *, void *, void *);
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8001D580(void *);
     void fn_800947E0(void *);
@@ -6607,7 +6607,7 @@ extern "C" void fn_80194178(void *arg0) {
         fn_8014D268(gBattleState, *(s32 *)(gBattleState + 0x18) + temp_r5, temp_r5);
         ((Obj *)temp_r29)->v12(temp_r31);
         if (__rlwinm(*(u8 *)((u8 *)temp_r31 + 5), 25, 31, 31)) {
-            if ((*(u64 *)fn_8001CB64(temp_r31) & 0x100000000ULL) != 0
+            if ((*(u64 *)Item_GetFlagsPtr(temp_r31) & 0x100000000ULL) != 0
                 && (*(s32 *)((u8 *)temp_r30 + 0x1A0) & 0x800000) != 0) {
                 *(u8 *)((u8 *)temp_r31 + 5) =
                     (u8)__rlwimi(*(u8 *)((u8 *)temp_r31 + 5), 0, 7, 24, 24);
@@ -6679,7 +6679,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8000D8BC(s32, s32);
-    u32 *fn_8001CB64(void *);
+    u32 *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
     void Ui_UpdatePanelWidgets(void *);
@@ -6780,7 +6780,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
         if ((btn & 0x100) && selected != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             unit = (void *)*selected;
             Ui_PlaySeCue((u8 *)lbl_8027A360 + 0x1a0, 0x64);
-            bits = fn_8001CB64(unit);
+            bits = Item_GetFlagsPtr(unit);
             if ((*(u64 *)bits & 0x20000000000ULL) != 0) {
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x18));
                 nest = *(void **)((u8 *)self + 0x44);

@@ -246,7 +246,7 @@ s32 fn_80096264(u8 arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80096418(s16 arg0) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void fn_8004FC70(s32, s32);
     void *fn_80055204(void *, s32);
     void fn_800558D8(void *);

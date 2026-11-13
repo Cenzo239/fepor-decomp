@@ -1452,7 +1452,7 @@ void fn_800ABE74(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     s32 Msg_Expand(void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_80166AE8(s16, s32, s32, void *, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -1483,7 +1483,7 @@ void fn_800ABE74(void *arg0) {
         entry = lbl_80312ACC + (((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7)
                               + (((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4);
         if (*(u32 *)(entry + 4) != 0) {
-            if (*fn_8001CB64(entry + 4) & 0x200) {
+            if (*Item_GetFlagsPtr(entry + 4) & 0x200) {
                 var_r31 = 1;
             }
         }
@@ -1679,7 +1679,7 @@ void fn_800AC5DC(void *arg0) {
     void fn_800AC810(void);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     s32 Msg_Expand(void *);
     void fn_80166AE8(s16, s32, s32, void *, void *);
     void Process_Goto(void *, s32);
@@ -1708,7 +1708,7 @@ void fn_800AC5DC(void *arg0) {
             u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)self + 0x3C) << 7)
                                       + ((s8)*(u8 *)((char *)self + 0x3D) << 4);
             if (*(u32 *)(entry + 4) != 0) {
-                if (*fn_8001CB64(entry + 4) & 0x200) {
+                if (*Item_GetFlagsPtr(entry + 4) & 0x200) {
                     pressed = 1;
                 }
             }

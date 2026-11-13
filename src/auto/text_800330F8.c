@@ -2642,7 +2642,7 @@ s8 fn_800388C8(void *arg0) {
 
 s8 fn_80038A48(void *arg0) {
     u8 Status_Test(void *, s32);
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void *Res_GetByName(void *);
 
     s8 var_r31;
@@ -2807,7 +2807,7 @@ s8 fn_80038A48(void *arg0) {
     if ((u32)ptr != 0) {
         item = *(void **)ptr;
         var_r31 += *(u8 *)((u8 *)item + 0x23);
-        bits = (u64 *)fn_8001CB64(item);
+        bits = (u64 *)Item_GetFlagsPtr(item);
         if ((*bits & 2ULL) != 0) {
             other = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (other != 0) {
@@ -2825,7 +2825,7 @@ s8 fn_80038A48(void *arg0) {
 
 #pragma cplusplus off
 s8 fn_80038F28(void *arg0) {
-void *fn_8001CB64(void *);
+void *Item_GetFlagsPtr(void *);
 void *Res_GetByName(void *);
 u8 Status_Test(void *,s32);
 s8 result=0, hp, value, idx;
@@ -2883,7 +2883,7 @@ else idx=-1;
 if(idx<0)slot=0;else slot=(void **)((u8 *)arg0+492+idx*8);
 if(slot){
 item=*slot;result+=M2C_FIELD(item,u8 *,0x22);
-flags=fn_8001CB64(item);
+flags=Item_GetFlagsPtr(item);
 if((M2C_FIELD(flags,u64 *,0)&2)!=0){
 base=M2C_FIELD(arg0,void **,0x18C);
 if(M2C_FIELD(base,void **,0xC))other=Res_GetByName(M2C_FIELD(base,void **,0xC));else other=0;
@@ -2894,7 +2894,7 @@ return result;
 }
 s32 fn_80039408(void *arg0) {
     u8 Status_Test(void *, s32);
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void *Res_GetByName(void *);
     s32 fn_801660A8(void *);
     void fn_801660C4(s32, u16, u16, u8);
@@ -3039,7 +3039,7 @@ s32 fn_80039408(void *arg0) {
     if ((u32)ptr != 0) {
         item = *(void **)ptr;
         var_r31 = (s8)(var_r31 + *(u8 *)((u8 *)item + 0x20));
-        bits = (u64 *)fn_8001CB64(item);
+        bits = (u64 *)Item_GetFlagsPtr(item);
         if ((*bits & 2ULL) != 0) {
             other = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (other != 0) {
@@ -3243,7 +3243,7 @@ s8 fn_8003A5B4(void *arg0) {
 
 s8 fn_8003A778(void *arg0) {
     void *Res_GetByName(void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80165E90(void *, void *);
     s32 fn_801660A8(void *);
     void fn_801660C4(s32, u16, u16, u8);
@@ -3323,7 +3323,7 @@ s8 fn_8003A778(void *arg0) {
     if ((u32)temp != 0) {
         obj = *(void **)temp;
         var_r30 += *(u8 *)((u8 *)obj + 0x26);
-        if ((*fn_8001CB64((void *)temp) & 2ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)temp) & 2ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -3351,7 +3351,7 @@ s8 fn_8003A778(void *arg0) {
 
 s8 fn_8003AA40(void *arg0) {
     void *Res_GetByName(void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80165E90(void *, void *);
     s32 fn_801660A8(void *);
     void fn_801660C4(s32, u16, u16, u8);
@@ -3431,7 +3431,7 @@ s8 fn_8003AA40(void *arg0) {
     if (temp != 0) {
         obj = *(void **)temp;
         var_r30 += *(u8 *)((u8 *)obj + 0x25);
-        if ((*fn_8001CB64((void *)temp) & 0x200000000ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)temp) & 0x200000000ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -3515,7 +3515,7 @@ s8 fn_8003AF28(void *arg0) {
 #pragma global_optimizer off
 s8 fn_8003AFA0(void *arg0) {
     void *Res_GetByName(void *);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80165E90(void *, void *);
     s32 fn_801660A8(void *);
     void fn_801660C4(s32, u16, u16, u8);
@@ -3596,7 +3596,7 @@ s8 fn_8003AFA0(void *arg0) {
     if ((u32)temp != 0) {
         obj = *(void **)temp;
         var_r30 += *(u8 *)((u8 *)obj + 0x21);
-        if ((*fn_8001CB64((void *)temp) & 2ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)temp) & 2ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)unit + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -4841,7 +4841,7 @@ void fn_8003D70C(s32 arg0) {
 }
 
 s32 fn_8003DAC4(s32 arg0, void *arg1) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001D37C(void *);
     s32 fn_8003B258(void);
     s32 fn_800955BC(s32);
@@ -4856,7 +4856,7 @@ s32 fn_8003DAC4(s32 arg0, void *arg1) {
         if ((s32)fn_8001D37C(arg1) >= (s32)lim) {
             code = 1;
         } else {
-            if ((*fn_8001CB64(arg1) & 5ULL) != 0) {
+            if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
                 if (fn_80095614(arg0) < 0) {
                     code = 3;
                     goto end;
@@ -4873,7 +4873,7 @@ end:
 }
 
 s32 fn_8003DBA8(s32 arg0, void *arg1) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001D37C(void *);
     s32 fn_8003B258(void);
     s32 fn_800955BC(s32);
@@ -4887,7 +4887,7 @@ s32 fn_8003DBA8(s32 arg0, void *arg1) {
     if ((s32)fn_8001D37C(arg1) >= (s32)lim) {
         return 1;
     }
-    if ((*fn_8001CB64(arg1) & 5ULL) != 0) {
+    if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
         if (fn_80095614(arg0) < 0) {
             return 3;
         }
@@ -10018,7 +10018,7 @@ void fn_8004AAA4(void) {
 }
 
 s32 fn_8004ABD4(void **arg0, u8 arg1) {
-    void *fn_8001CB64(void **);
+    void *Item_GetFlagsPtr(void **);
     u8 fn_8001DDBC();
     u8 var_r0;
     u8 var_r0_2;
@@ -10034,7 +10034,7 @@ s32 fn_8004ABD4(void **arg0, u8 arg1) {
             } else {
                 var_r0 = 0;
             }
-            if ((var_r0 > 1U) && (temp_r3 = fn_8001CB64(arg0), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x40) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) == 0) != 0))) {
+            if ((var_r0 > 1U) && (temp_r3 = Item_GetFlagsPtr(arg0), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x40) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) == 0) != 0))) {
                 temp_r3_2 = *arg0;
                 if (temp_r3_2 != NULL) {
                     var_r0_2 = M2C_FIELD(temp_r3_2, u8 *, 0x12);

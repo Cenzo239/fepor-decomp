@@ -1935,7 +1935,7 @@ s32 fn_8001CA2C(void *arg0) {
     return var_r4;
 }
 
-void *fn_8001CB64(void *arg0)
+void *Item_GetFlagsPtr(void *arg0)
 {
     extern u8 lbl_80367220;
     extern s32 lbl_8036722C;

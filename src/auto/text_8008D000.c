@@ -52,7 +52,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     s16 fn_80010B78(void *, s32, f32);
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     s32 UnitRef_GetName(void *);
     void fn_8005AC24(void *, s32, s32, s32);
@@ -78,7 +78,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        temp_r3 = fn_8001CB64(arg0);
+        temp_r3 = Item_GetFlagsPtr(arg0);
         flags = *(u64 *)temp_r3;
         if (flags & (0x200ULL << 32)) {
             strcpy(sp8, (u8 *)lbl_8026CD08 + 0x26);
@@ -107,7 +107,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(arg0));
-        flags = *(u64 *)fn_8001CB64(arg0);
+        flags = *(u64 *)Item_GetFlagsPtr(arg0);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
             fn_8001019C((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)arg0 + 4));
             fn_8001019C((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));

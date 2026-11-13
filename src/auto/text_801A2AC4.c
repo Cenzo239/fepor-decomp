@@ -1061,7 +1061,7 @@ final:
 
 #pragma opt_strength_reduction off
 void fn_801A5008(s32 arg0) {
-    s32 *fn_8001CB64(s32);
+    s32 *Item_GetFlagsPtr(s32);
     void BattleAnim_Queue(s32, s32, s32);
     s32 fn_8003B2D0(s32);
     void fn_801A601C(s32, s32, s32, s32);
@@ -1134,7 +1134,7 @@ void fn_801A5008(s32 arg0) {
         }
     }
     if (*(u32 *)(arg0 + 0x28C) != 0) {
-        temp_r3 = fn_8001CB64(arg0 + 0x28C);
+        temp_r3 = Item_GetFlagsPtr(arg0 + 0x28C);
         if (((((temp_r3[0] & 0x80) ^ 0) | ((temp_r3[1] & 0x400) ^ 0)) == 0) == 0) {
             goto block_18;
         }
@@ -1179,7 +1179,7 @@ block_19:
 #pragma opt_strength_reduction off
 /* Run a full combat: init both sides, resolve rounds, clear hit tables, set result flags. */
 void Battle_Execute(s32 battle, u8 arg1) {
-    u64 *fn_8001CB64(s32);
+    u64 *Item_GetFlagsPtr(s32);
     void BattleAnim_Queue(s32, s32, s32);
     void fn_8004E670(f32 *, void *, s32);
     s32 fn_8005B4D8(u8);
@@ -1292,7 +1292,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
         }
     }
     if (*(u32 *)(self + 0x28C) != 0) {
-        temp_r3 = fn_8001CB64(self + 0x28C);
+        temp_r3 = Item_GetFlagsPtr(self + 0x28C);
         if ((*temp_r3 & 0x8000000400ULL) != 0) {
             goto block_26;
         }
@@ -1349,7 +1349,7 @@ after_blocks:
 #pragma global_optimizer off
 void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     u8 fn_8000CE68(s32);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001DDC4(u8);
     void BattleAnim_Queue(void *, s32, s32);
     u32 *fn_80037C20(void *);
@@ -1576,7 +1576,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(u8 *)((u8 *)arg1 + 0x2CC) = 1;
     }
 
-    bits = fn_8001CB64(fn_801A7FF4(arg1));
+    bits = Item_GetFlagsPtr(fn_801A7FF4(arg1));
     if ((*bits & 0x800ULL) != 0 && fn_8003C7D0(arg2) == 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4E, 0);
         *(u8 *)((u8 *)arg2 + 0x1A4) =
@@ -1585,7 +1585,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     w = fn_80037C20(arg2);
     if (w != NULL && *w != 0) {
-        bits = fn_8001CB64(w);
+        bits = Item_GetFlagsPtr(w);
         if ((*bits & 0x20000ULL) != 0
             && Status_Test((u8 *)arg1 + 0x1BC, 8) != 0) {
             tmp_s16 = *(s16 *)((u8 *)arg1 + 0x2AA);
@@ -1681,7 +1681,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
     }
 
-    bits = fn_8001CB64(fn_801A7FF4(arg1));
+    bits = Item_GetFlagsPtr(fn_801A7FF4(arg1));
     if ((*bits & 0x10ULL) != 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4C, 0);
         *(s16 *)((u8 *)arg1 + 0x2AC) = *(s16 *)((u8 *)arg1 + 0x2AA);
@@ -1712,7 +1712,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
     void BattleAnim_Queue(s32, s32, s32);
@@ -1797,13 +1797,13 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         if ((s8)cur >= 0) {
             goto loop_body;
         }
-        if ((*fn_8001CB64((void *)(u1 + 0x28C)) & 0x80ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)(u1 + 0x28C)) & 0x80ULL) != 0) {
             *(s16 *)(u1 + 0x2C4) *= -1;
             *(s16 *)(u1 + 0x2C2) *= -1;
             *(s16 *)(u2 + 0x2C4) *= -1;
             *(s16 *)(u2 + 0x2C2) *= -1;
         }
-        if ((*fn_8001CB64((void *)(u2 + 0x28C)) & 0x80ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)(u2 + 0x28C)) & 0x80ULL) != 0) {
             *(s16 *)(u2 + 0x2C4) *= -1;
             *(s16 *)(u2 + 0x2C2) *= -1;
             *(s16 *)(u1 + 0x2C4) *= -1;
@@ -1911,7 +1911,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
 
 void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 fn_8000CE68(s32);
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_800331D4(void *, s32);
     void fn_8003333C(void *, s32);
     void fn_800333DC(void *, s32);
@@ -1964,7 +1964,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
         && (*(u8 *)((u8 *)unit + 0x1A5) & 7) == 0
         && Status_Test((u8 *)unit + 0x1BC, 0x60) == 0) {
         lim = 1;
-        if ((*fn_8001CB64(fn_801A7FF4(unit)) & 0x20ULL) != 0) {
+        if ((*Item_GetFlagsPtr(fn_801A7FF4(unit)) & 0x20ULL) != 0) {
             lim = 2;
         }
         add = 0;
@@ -2172,7 +2172,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
 }
 
 void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
-    u64 *fn_8001CB64(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
     void BattleAnim_Queue(s32, s32, s32);
@@ -2244,10 +2244,10 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
         BattleAnim_Queue(self + 0x8A0, 0x36, 0);
     }
     if (*(s32 *)(self + 0xCA8) >= 2) {
-        if ((*fn_8001CB64(fn_801A7FF4(self)) & 0x4000000040ULL) != 0) {
+        if ((*Item_GetFlagsPtr(fn_801A7FF4(self)) & 0x4000000040ULL) != 0) {
             fn_801A85F4(self);
         }
-        if ((*fn_8001CB64(fn_801A7FF4(self + 0x2E0)) & 0x4000000040ULL) != 0) {
+        if ((*Item_GetFlagsPtr(fn_801A7FF4(self + 0x2E0)) & 0x4000000040ULL) != 0) {
             fn_801A85F4(self + 0x2E0);
         }
     }
@@ -2280,7 +2280,7 @@ void fn_801A6F34(void *arg0, void *arg1)
 
 #pragma opt_strength_reduction off
 void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void);
     void fn_800340F0(void *);
     void fn_8003816C(void *, s8, s8);
@@ -2333,9 +2333,9 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
         }
     } else {
         fn_801A9600(var_r30, var_r29);
-        temp_r3 = fn_8001CB64(var_r29);
+        temp_r3 = Item_GetFlagsPtr(var_r29);
         if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
-            temp_r3 = fn_8001CB64(fn_801A7FF4(var_r30));
+            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r30));
             if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
                 *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
                 fn_801A7FF4((u8 *)var_r30 + 0x2E0);
@@ -2347,9 +2347,9 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
         fn_801A94B0(var_r30);
     }
     fn_801A9600(var_r30, var_r31);
-    temp_r3 = fn_8001CB64(var_r31);
+    temp_r3 = Item_GetFlagsPtr(var_r31);
     if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
-        temp_r3 = fn_8001CB64(fn_801A7FF4(var_r30));
+        temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r30));
         if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
             *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
             fn_801A7FF4((char *)var_r30 + 0x2E0);
@@ -2361,7 +2361,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
 
 #pragma opt_strength_reduction off
 void fn_801A7528(void *arg0, void *arg1) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void);
     void *fn_801A7FF4(void *);
     void fn_801A9600(void *, void *);
@@ -2370,9 +2370,9 @@ void fn_801A7528(void *arg0, void *arg1) {
 
     z = 0;
     fn_801A9600(arg0, arg1);
-    temp = fn_8001CB64(arg1);
+    temp = Item_GetFlagsPtr(arg1);
     if (((((M2C_FIELD(temp, s32 *, 4) & 0x1000) ^ z) | ((M2C_FIELD(temp, s32 *, 0) & z) ^ z)) != 0)) {
-        temp = fn_8001CB64(fn_801A7FF4(arg0));
+        temp = Item_GetFlagsPtr(fn_801A7FF4(arg0));
         if (((((M2C_FIELD(temp, s32 *, 4) & 0x4F) ^ z) | ((M2C_FIELD(temp, s32 *, 0) & z) ^ z)) != 0)) {
             *(u32 *)((char *)arg0 + 0xCAC) |= 0x200;
             fn_801A7FF4((u8 *)arg0 + 0x2E0);
@@ -2381,7 +2381,7 @@ void fn_801A7528(void *arg0, void *arg1) {
     }
 }
 void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void);
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -2465,9 +2465,9 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
         }
     } else {
         fn_801A9600(self, temp_r30);
-        temp_r3 = fn_8001CB64(temp_r30);
+        temp_r3 = Item_GetFlagsPtr(temp_r30);
         if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
-            temp_r3 = fn_8001CB64(fn_801A7FF4(self));
+            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(self));
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(self + 0xCAC) |= 0x200;
                 fn_801A7FF4(self + 0x2E0);
@@ -2495,7 +2495,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
-    void *fn_8001CB64(void *);
+    void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void);
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -2551,9 +2551,9 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
         }
     } else {
         fn_801A9600(var_r29, temp_r28);
-        temp_r3 = fn_8001CB64(temp_r28);
+        temp_r3 = Item_GetFlagsPtr(temp_r28);
         if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
-            temp_r3 = fn_8001CB64(fn_801A7FF4(var_r29));
+            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r29));
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(var_r29 + 0xCAC) |= 0x200;
                 fn_801A7FF4(var_r29 + 0x2E0);
