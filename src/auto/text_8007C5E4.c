@@ -15,7 +15,7 @@ extern f32 lbl_803696AC;
 
 s32 fn_8007C5E4(void) {
     extern void *lbl_80367488;
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
     void *obj;
     s32 index;
@@ -24,10 +24,10 @@ s32 fn_8007C5E4(void) {
     if (obj != NULL) {
         if (obj != NULL) {
             index = *(u8 *)((u8 *)obj + 0x40);
-            if (lbl_80312040[index] != NULL) {
-                Process_Unlink(lbl_80312040[index]);
+            if (gFaceSlots[index] != NULL) {
+                Process_Unlink(gFaceSlots[index]);
             }
-            lbl_80312040[index] = NULL;
+            gFaceSlots[index] = NULL;
         }
     }
     return 9;

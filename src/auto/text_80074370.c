@@ -2794,17 +2794,17 @@ void fn_800790D4(s32 arg0, s32 arg1) {
 }
 
 void fn_80079138(void *arg0) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
     void *temp_r3;
 
     temp_r3 = M2C_FIELD(arg0, void **, 0x30);
     if (temp_r3 != NULL) {
         s32 index = *(u8 *)((u8 *)temp_r3 + 0x40);
-        if (lbl_80312040[index] != NULL) {
-            Process_Unlink(lbl_80312040[index]);
+        if (gFaceSlots[index] != NULL) {
+            Process_Unlink(gFaceSlots[index]);
         }
-        lbl_80312040[index] = NULL;
+        gFaceSlots[index] = NULL;
     }
 }
 
@@ -2852,13 +2852,13 @@ void fn_80079300(void *arg0, s8 arg1) {
 }
 
 void *fn_80079380(s8 arg0) {
-extern void *lbl_80312040[];
+extern void *gFaceSlots[];
 void **p; void *v; s32 i;
 if(arg0<0) return NULL;
-p=lbl_80312040;
+p=gFaceSlots;
 for(i=0;i<8;p++,i++) {
 v=*p;
-if(v && arg0==*(s8 *)((u8 *)v+0x43)) return lbl_80312040[i];
+if(v && arg0==*(s8 *)((u8 *)v+0x43)) return gFaceSlots[i];
 }
 return NULL;
 }
@@ -2886,7 +2886,7 @@ void Face_DebugScaleProc(void *arg0) {
     void fn_8007B4D8(s32, s32, s32, void *);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026C640[];
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     extern void *gPadInput;
     extern f32 lbl_803693D0;
     extern f32 lbl_803693D4;
@@ -2935,11 +2935,11 @@ void Face_DebugScaleProc(void *arg0) {
         temp_r3 = *(void **)((u8 *)arg0 + 0x30);
         if (temp_r3 != NULL) {
             index = *(u8 *)((u8 *)temp_r3 + 0x40);
-            entry = lbl_80312040[index];
+            entry = gFaceSlots[index];
             if (entry != NULL) {
                 Process_Unlink(entry);
             }
-            lbl_80312040[index] = NULL;
+            gFaceSlots[index] = NULL;
         }
         Process_ClearFunc(arg0);
     }
@@ -3625,25 +3625,25 @@ void fn_8007AD30(void *arg0, s32 arg1) {
 }
 
 void fn_8007AD6C(void *arg0) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
 
     if (arg0 != NULL) {
         s32 index = *(u8 *)((u8 *)arg0 + 0x40);
-        if (lbl_80312040[index] != NULL) {
-            Process_Unlink(lbl_80312040[index]);
+        if (gFaceSlots[index] != NULL) {
+            Process_Unlink(gFaceSlots[index]);
         }
-        lbl_80312040[index] = NULL;
+        gFaceSlots[index] = NULL;
     }
 }
 
 void fn_8007ADC8(s32 index) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
     void **base;
     void *p;
 
-    base = lbl_80312040;
+    base = gFaceSlots;
     p = base[index];
     if (p == NULL) {
         return;
@@ -3656,11 +3656,11 @@ void fn_8007AE18(void *arg0)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void *entry;
     s32 idx;
 
-    entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x30)];
+    entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x30)];
     *((s8 *)((u8 *)entry + 0x41)) = (s8)Math_Ease(
         *(s32 *)((u8 *)arg0 + 0x44),
         (f32)*(s32 *)((u8 *)arg0 + 0x3c),
@@ -3676,9 +3676,9 @@ void fn_8007AE18(void *arg0)
 }
 
 void fn_8007AF00(void *arg0) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     s32 idx = *(s32 *)((u8 *)arg0 + 0x30);
-    u8 *entry = (u8 *)lbl_80312040[idx];
+    u8 *entry = (u8 *)gFaceSlots[idx];
     *(s32 *)((u8 *)arg0 + 0x34) = 0;
     *(s32 *)((u8 *)arg0 + 0x3C) = entry[0x41];
     if (*(s32 *)((u8 *)arg0 + 0x3C) < *(s32 *)((u8 *)arg0 + 0x40)) {
@@ -3692,7 +3692,7 @@ void fn_8007AF48(void *arg0)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     extern f32 lbl_803693D4;
     f32 scale;
     void *entry;
@@ -3700,7 +3700,7 @@ void fn_8007AF48(void *arg0)
     s32 v68;
 
     scale = lbl_803693D4;
-    entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x60)];
+    entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x60)];
     *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
         0,
         (f32)*(s32 *)((u8 *)arg0 + 0x6C),
@@ -3716,8 +3716,8 @@ void fn_8007AF48(void *arg0)
 }
 
 void fn_8007B01C(void *arg0) {
-    extern void *lbl_80312040[];
-    void *ptr = lbl_80312040[*(s32 *)((char *)arg0 + 0x60)];
+    extern void *gFaceSlots[];
+    void *ptr = gFaceSlots[*(s32 *)((char *)arg0 + 0x60)];
     *(s32 *)((char *)arg0 + 0x68) = 0;
     *(s32 *)((char *)arg0 + 0x6c) = *(u8 *)((char *)ptr + 0x42);
 }
@@ -3725,7 +3725,7 @@ void fn_8007B01C(void *arg0) {
 void fn_8007B044(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     extern f64 lbl_803693C8;
     extern f32 lbl_803693D4;
     extern f32 lbl_803693EC;
@@ -3736,7 +3736,7 @@ void fn_8007B044(void *arg0) {
 
     fa = lbl_803693D4;
     fb = lbl_803693EC;
-    entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x60)];
+    entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x60)];
     *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
         0, fa, fb,
         (f32)*(s32 *)((u8 *)arg0 + 0x68),
@@ -3751,8 +3751,8 @@ void fn_8007B044(void *arg0) {
 }
 
 void fn_8007B104(void *arg0) {
-    extern void *lbl_80312040[];
-    void *ptr = lbl_80312040[*(s32 *)((char *)arg0 + 0x60)];
+    extern void *gFaceSlots[];
+    void *ptr = gFaceSlots[*(s32 *)((char *)arg0 + 0x60)];
     *(s32 *)((char *)arg0 + 0x68) = 0;
     *(u8 *)((char *)ptr + 0x42) = 0;
 }
@@ -3942,28 +3942,28 @@ void fn_8007B4D8(s32 arg0,s32 arg1,u32 a2,void *a3) {
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
 void fn_8007B990(void *arg0) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
 
     if (arg0 != NULL) {
         s32 index = *(u8 *)((u8 *)arg0 + 0x40);
-        if (lbl_80312040[index] != NULL) {
-            Process_Unlink(lbl_80312040[index]);
+        if (gFaceSlots[index] != NULL) {
+            Process_Unlink(gFaceSlots[index]);
         }
-        lbl_80312040[index] = NULL;
+        gFaceSlots[index] = NULL;
     }
 }
 
 void fn_8007B9EC(void *arg0) {
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void Process_Unlink(void *);
     void *obj = *(void **)((u8 *)arg0 + 0x54);
     if (obj != NULL) {
         s32 index = *(u8 *)((u8 *)obj + 0x40);
-        if (lbl_80312040[index] != NULL) {
-            Process_Unlink(lbl_80312040[index]);
+        if (gFaceSlots[index] != NULL) {
+            Process_Unlink(gFaceSlots[index]);
         }
-        lbl_80312040[index] = NULL;
+        gFaceSlots[index] = NULL;
     }
 }
 
@@ -4004,12 +4004,12 @@ s32 fn_8007BA4C(s32 arg0) {
 void fn_8007BC3C(s32 a, s32 b, s32 c, s32 d, s32 e)
 {
     void fn_8007BD30(s8, s32, s32, s32, s32, s32, s32);
-    extern void *lbl_80312040[];
+    extern void *gFaceSlots[];
     void **p;
     void **q;
     s32 n;
 
-    p = lbl_80312040;
+    p = gFaceSlots;
     if (*p == NULL) {
         n = 0;
     } else {
@@ -4048,10 +4048,10 @@ void fn_8007C318(s32 unused, u32 arg1) {
 }
 
 void fn_8007C34C(void) {
-    extern u32 lbl_80312040[];
+    extern u32 gFaceSlots[];
     u32 *p;
 
-    p = lbl_80312040;
+    p = gFaceSlots;
     p[0] = 0;
     p[1] = 0;
     p[2] = 0;
@@ -4171,7 +4171,7 @@ extern void* (*fn_80024398_ptr)(void*, s32, s32);
 extern u16 lbl_80288CAC;
 #include "common.h"
 #include "structs.h"
-extern u16 lbl_80312040[8];
+extern u16 gFaceSlots[8];
 #include <common.h>
 
 extern u16 gUiContext[12];
