@@ -3982,7 +3982,8 @@ extern "C" void fn_801BD28C(void *arg0) {
 
 #pragma cplusplus reset
 
-void Ui_InitUnitHirePanel(void *arg0) {
+/* Build the unit-hire panel: caption widget plus list child bound to gUiContext. */
+void Ui_InitUnitHirePanel(void *panel) {
     void *Heap_Alloc(u32);
     void Ui_SetWidgetText(void *, void *);
     void Ui_AddChild(void *, void *);
@@ -3995,81 +3996,81 @@ void Ui_InitUnitHirePanel(void *arg0) {
     extern u8 lbl_80293C00[];
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
-    void *a;
-    void *p;
-    void *q;
+    void *list;
+    void *caption;
+    void *box;
     void *tmp;
 
-    p = Heap_Alloc(0x60);
-    if (p != NULL) {
-        M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
-        M2C_FIELD(p, u32 *, 4) = 0;
-        M2C_FIELD(p, void **, 0) = lbl_80292230;
-        M2C_FIELD(p, s16 *, 8) = -1;
-        M2C_FIELD(p, s16 *, 0xA) = 0;
-        M2C_FIELD(p, s16 *, 0xC) = -0x3A;
-        M2C_FIELD(p, s16 *, 0xE) = 0x260;
-        M2C_FIELD(p, s16 *, 0x10) = 0;
-        M2C_FIELD(p, s16 *, 0x12) = 0;
-        M2C_FIELD(p, s16 *, 0x14) = 0;
-        M2C_FIELD(p, s16 *, 0x16) = 0x260;
-        M2C_FIELD(p, s16 *, 0x18) = 0x3A;
-        M2C_FIELD(p, s16 *, 0x1A) = 0;
-        M2C_FIELD(p, s16 *, 0x1C) = 0;
-        M2C_FIELD(p, u8 *, 0x1E) = 0xFF;
-        M2C_FIELD(p, u8 *, 0x1F) = 0xFF;
-        M2C_FIELD(p, u8 *, 0x20) = 0xFF;
-        M2C_FIELD(p, u8 *, 0x21) = 0xFF;
-        M2C_FIELD(p, s16 *, 0x22) = 0x1F4;
-        M2C_FIELD(p, s16 *, 0x24) = 0;
-        M2C_FIELD(p, f32 *, 0x28) = 1.0f;
-        M2C_FIELD(p, f32 *, 0x2C) = 1.0f;
-        M2C_FIELD(p, f32 *, 0x30) = 1.0f;
-        M2C_FIELD(p, u32 *, 0x34) = 0;
-        M2C_FIELD(p, u32 *, 0x38) = 0;
-        M2C_FIELD(p, void **, 0) = lbl_80293C84;
-        M2C_FIELD(p, u32 *, 0x3C) = 0;
-        M2C_FIELD(p, u32 *, 0x40) = 0;
-        M2C_FIELD(p, u32 *, 0x44) = 0;
-        M2C_FIELD(p, u32 *, 0x40) = 0;
-        M2C_FIELD(p, u32 *, 0x48) = 0;
-        M2C_FIELD(p, u8 *, 0x4C) = 1;
-        M2C_FIELD(p, s16 *, 0x4E) = 0;
-        M2C_FIELD(p, s16 *, 0x50) = 0;
-        M2C_FIELD(p, s16 *, 0x52) = 0;
-        M2C_FIELD(p, s16 *, 0x54) = 0;
-        M2C_FIELD(p, void **, 0) = lbl_80293C2C;
-        M2C_FIELD(p, void **, 0) = lbl_80293C00;
-        M2C_FIELD(p, u32 *, 0x58) = 0;
-        M2C_FIELD(p, s16 *, 0x5C) = 0xB;
-        M2C_FIELD(p, s16 *, 0x5E) = 0x10;
+    caption = Heap_Alloc(0x60);
+    if (caption != NULL) {
+        M2C_FIELD(caption, void **, 0) = lbl_8028FDB0;
+        M2C_FIELD(caption, u32 *, 4) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80292230;
+        M2C_FIELD(caption, s16 *, 8) = -1;
+        M2C_FIELD(caption, s16 *, 0xA) = 0;
+        M2C_FIELD(caption, s16 *, 0xC) = -0x3A;
+        M2C_FIELD(caption, s16 *, 0xE) = 0x260;
+        M2C_FIELD(caption, s16 *, 0x10) = 0;
+        M2C_FIELD(caption, s16 *, 0x12) = 0;
+        M2C_FIELD(caption, s16 *, 0x14) = 0;
+        M2C_FIELD(caption, s16 *, 0x16) = 0x260;
+        M2C_FIELD(caption, s16 *, 0x18) = 0x3A;
+        M2C_FIELD(caption, s16 *, 0x1A) = 0;
+        M2C_FIELD(caption, s16 *, 0x1C) = 0;
+        M2C_FIELD(caption, u8 *, 0x1E) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x1F) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x20) = 0xFF;
+        M2C_FIELD(caption, u8 *, 0x21) = 0xFF;
+        M2C_FIELD(caption, s16 *, 0x22) = 0x1F4;
+        M2C_FIELD(caption, s16 *, 0x24) = 0;
+        M2C_FIELD(caption, f32 *, 0x28) = 1.0f;
+        M2C_FIELD(caption, f32 *, 0x2C) = 1.0f;
+        M2C_FIELD(caption, f32 *, 0x30) = 1.0f;
+        M2C_FIELD(caption, u32 *, 0x34) = 0;
+        M2C_FIELD(caption, u32 *, 0x38) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80293C84;
+        M2C_FIELD(caption, u32 *, 0x3C) = 0;
+        M2C_FIELD(caption, u32 *, 0x40) = 0;
+        M2C_FIELD(caption, u32 *, 0x44) = 0;
+        M2C_FIELD(caption, u32 *, 0x40) = 0;
+        M2C_FIELD(caption, u32 *, 0x48) = 0;
+        M2C_FIELD(caption, u8 *, 0x4C) = 1;
+        M2C_FIELD(caption, s16 *, 0x4E) = 0;
+        M2C_FIELD(caption, s16 *, 0x50) = 0;
+        M2C_FIELD(caption, s16 *, 0x52) = 0;
+        M2C_FIELD(caption, s16 *, 0x54) = 0;
+        M2C_FIELD(caption, void **, 0) = lbl_80293C2C;
+        M2C_FIELD(caption, void **, 0) = lbl_80293C00;
+        M2C_FIELD(caption, u32 *, 0x58) = 0;
+        M2C_FIELD(caption, s16 *, 0x5C) = 0xB;
+        M2C_FIELD(caption, s16 *, 0x5E) = 0x10;
     }
-    M2C_FIELD(p, s16 *, 8) = 0x80;
-    M2C_FIELD(p, s16 *, 0x24) = 8;
-    M2C_FIELD(p, s16 *, 0x4E) = 0x10;
-    M2C_FIELD(p, u32 *, 0x58) = 1;
-    M2C_FIELD(p, u32 *, 0x34) |= 0x10;
-    M2C_FIELD(p, u8 *, 0x4C) = 2;
-    M2C_FIELD(p, u32 *, 0x48) = 1;
-    Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x227);
-    Ui_AddChild(arg0, p);
-    q = Heap_Alloc(0x94);
-    if (q != NULL) {
-        q = fn_801BEDC4(q, 0x260, 0x78, 0x1C2);
+    M2C_FIELD(caption, s16 *, 8) = 0x80;
+    M2C_FIELD(caption, s16 *, 0x24) = 8;
+    M2C_FIELD(caption, s16 *, 0x4E) = 0x10;
+    M2C_FIELD(caption, u32 *, 0x58) = 1;
+    M2C_FIELD(caption, u32 *, 0x34) |= 0x10;
+    M2C_FIELD(caption, u8 *, 0x4C) = 2;
+    M2C_FIELD(caption, u32 *, 0x48) = 1;
+    Ui_SetWidgetText(caption, gUiUnitPanelStrings + 0x227);
+    Ui_AddChild(panel, caption);
+    box = Heap_Alloc(0x94);
+    if (box != NULL) {
+        box = fn_801BEDC4(box, 0x260, 0x78, 0x1C2);
     }
-    M2C_FIELD(arg0, void **, 0x5C) = q;
-    tmp = M2C_FIELD(arg0, void **, 0x5C);
+    M2C_FIELD(panel, void **, 0x5C) = box;
+    tmp = M2C_FIELD(panel, void **, 0x5C);
     if (tmp != NULL) {
         M2C_FIELD(tmp, s32 *, 4) = M2C_FIELD(tmp, s32 *, 4) + 1;
     }
-    a = M2C_FIELD(arg0, void **, 0x5C);
-    M2C_FIELD(a, s16 *, 8) = 0x105;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s16 *, 0x24) = 8;
-    tmp = M2C_FIELD(arg0, void **, 0x5C);
+    list = M2C_FIELD(panel, void **, 0x5C);
+    M2C_FIELD(list, s16 *, 8) = 0x105;
+    M2C_FIELD(M2C_FIELD(panel, void **, 0x5C), s16 *, 0x24) = 8;
+    tmp = M2C_FIELD(panel, void **, 0x5C);
     M2C_FIELD(tmp, u32 *, 0x34) |= 0x10;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u32 *, 0x40) = gUiContext[0];
-    Ui_AddChild(arg0, M2C_FIELD(arg0, void **, 0x5C));
-    fn_8013FF00(arg0, M2C_FIELD(arg0, void **, 0x5C));
+    M2C_FIELD(M2C_FIELD(panel, void **, 0x5C), u32 *, 0x40) = gUiContext[0];
+    Ui_AddChild(panel, M2C_FIELD(panel, void **, 0x5C));
+    fn_8013FF00(panel, M2C_FIELD(panel, void **, 0x5C));
 }
 
 #pragma cplusplus on
