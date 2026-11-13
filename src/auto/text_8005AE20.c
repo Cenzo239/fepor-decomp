@@ -50,7 +50,7 @@ extern f32 lbl_803691E8;
 extern u8 lbl_8026B658[];
 
 static inline u8 *FindEntryByName(char *name) {
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
     s32 fn_802342B8();
     u8 *e;
     char *start;
@@ -68,9 +68,9 @@ static inline u8 *FindEntryByName(char *name) {
         }
         hash = *name++ + hash * 37;
     }
-    for (i = 0, e = lbl_802F04E0; i < 0x400; i++, e += 0x7C) {
+    for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
         if (hash == *(u32 *)(e + 0x2C) && fn_802342B8(start, e) == 0) {
-            return lbl_802F04E0 + i * 0x7C;
+            return gFileCache + i * 0x7C;
         }
     }
     return NULL;
@@ -507,7 +507,7 @@ void fn_8005BCF0(void) {
     extern s8 lbl_803672EA;
     extern s8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
-    extern u8 lbl_802F04E0[126976];
+    extern u8 gFileCache[126976];
     extern u8 lbl_8030FAF8[8192];
     extern u8 lbl_8030F7E0[792];
     void OSInitThreadQueue(u8 *queue);
@@ -517,7 +517,7 @@ void fn_8005BCF0(void) {
     s32 i;
     u8 (*e)[0x3E0];
 
-    for (i = 0, e = (u8 (*)[0x3E0])lbl_802F04E0; i < 0x80; i++, e++) {
+    for (i = 0, e = (u8 (*)[0x3E0])gFileCache; i < 0x80; i++, e++) {
         *(s8 *)(*e + 0x0) = 0;
         *(s32 *)(*e + 0x2C) = 0;
         *(s16 *)(*e + 0x30) = 0;
@@ -688,7 +688,7 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
 u16 fn_8005C144(u8 *arg0) {
     s32 fn_8020C3E0(u8 *);
     s32 fn_802342B8(u8 *, M2C_UNK *);
-    extern M2C_UNK lbl_802F04E0;
+    extern M2C_UNK gFileCache;
     M2C_UNK *var_r27;
     s32 temp_r3;
     s32 var_r30;
@@ -718,10 +718,10 @@ loop_7:
         goto loop_7;
     }
     var_r30 = 0;
-    var_r27 = &lbl_802F04E0;
+    var_r27 = &gFileCache;
 loop_9:
     if ((var_r29 == (u32) M2C_FIELD(var_r27, u32 *, 0x2C)) && (fn_802342B8(temp_r28, var_r27) == 0)) {
-        var_r3_2 = &lbl_802F04E0 + (var_r30 * 0x7C);
+        var_r3_2 = &gFileCache + (var_r30 * 0x7C);
     } else {
         var_r30 += 1;
         var_r27 += 0x7C;
@@ -753,17 +753,17 @@ s32 fn_8005C268(char *name) {
 
 s32 fn_8005C368(u32 arg0)
 {
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
     u8 *found;
     unsigned long j;
     u8 *e;
     unsigned ctr;
 
-    e = lbl_802F04E0;
+    e = gFileCache;
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if (*(u32 *)(e + 0x38) == arg0) {
-            found = lbl_802F04E0 + j * 0x7C;
+            found = gFileCache + j * 0x7C;
             goto done;
         }
         e += 0x7C;
@@ -864,7 +864,7 @@ void fn_8005CBC8(void) {
 #pragma global_optimizer off
 void *fn_8005CEC0(void) {
     void fn_8005C8D8(s32);
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
     u8 *e;
     s32 i;
     s32 j;
@@ -872,11 +872,11 @@ void *fn_8005CEC0(void) {
     u8 *base;
 
     i = 0;
-    base = lbl_802F04E0;
+    base = gFileCache;
     e = base;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*e == 0) {
-            return lbl_802F04E0 + i * 0x7C;
+            return gFileCache + i * 0x7C;
         }
         e += 0x7C;
         i += 1;
@@ -885,7 +885,7 @@ void *fn_8005CEC0(void) {
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*base == 0) {
-            return lbl_802F04E0 + j * 0x7C;
+            return gFileCache + j * 0x7C;
         }
         base += 0x7C;
         j += 1;
@@ -901,14 +901,14 @@ void fn_8005D1DC(char *name) {
 #pragma global_optimizer off
 void fn_8005D2CC(u32 arg0) {
     void FileCache_Release(void *);
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
     u8 *e;
     s32 i;
     u8 *found;
 
-    for (i = 0, e = lbl_802F04E0; i < 0x400; i++, e += 0x7C) {
+    for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
         if (*(u32 *)(e + 0x38) == arg0) {
-            found = lbl_802F04E0 + i * 0x7C;
+            found = gFileCache + i * 0x7C;
             goto done;
         }
     }
@@ -922,7 +922,7 @@ void FileCache_Release(u8 *arg0) {
     void fn_8003FED8(void *);
     void fn_800C4588(void *);
     void fn_8020A51C(void);
-    extern u8 lbl_802F04E0[];
+    extern u8 gFileCache[];
 
     *(u16 *)(arg0 + 0x32) = *(u16 *)(arg0 + 0x32) - 1;
     *(u32 *)(arg0 + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
@@ -946,12 +946,12 @@ void FileCache_Release(u8 *arg0) {
                 u32 key;
                 u8 *e;
                 unsigned ctr;
-                e = lbl_802F04E0;
+                e = gFileCache;
                 key = *(u32 *)(item + 8);
                 j = 0;
                 for (ctr = 0x400; ctr > 0; ctr--) {
                     if (*(u32 *)(e + 0x38) == key) {
-                        found = lbl_802F04E0 + j * 0x7C;
+                        found = gFileCache + j * 0x7C;
                         goto found1;
                     }
                     e += 0x7C;
@@ -1014,11 +1014,11 @@ void FileCache_Release(u8 *arg0) {
                 u8 *e;
                 unsigned ctr;
                     key = *(u32 *)(item + 8);
-                    e = lbl_802F04E0;
+                    e = gFileCache;
                     j = 0;
                     for (ctr = 0x400; ctr > 0; ctr--) {
                         if (*(u32 *)(e + 0x38) == key) {
-                            found = lbl_802F04E0 + j * 0x7C;
+                            found = gFileCache + j * 0x7C;
                             goto found2;
                         }
                         e += 0x7C;
@@ -1061,12 +1061,12 @@ void FileCache_Release(u8 *arg0) {
                 u32 key;
                 u8 *e;
                 unsigned ctr;
-                    e = lbl_802F04E0;
+                    e = gFileCache;
                     key = *(u32 *)(item + 8);
                     j = 0;
                     for (ctr = 0x400; ctr > 0; ctr--) {
                         if (*(u32 *)(e + 0x38) == key) {
-                            found = lbl_802F04E0 + j * 0x7C;
+                            found = gFileCache + j * 0x7C;
                             goto found3;
                         }
                         e += 0x7C;
