@@ -3272,7 +3272,7 @@ extern "C" void fn_801F1110(void *arg0, void *arg1) {
 }
 extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void Prim2D_SetAlpha(s32);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -3357,7 +3357,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     f30 = (f32)((s16)((Obj *)arg0)->v17() + 0x13);
     Prim2D_AddPrim(1);
     Prim2D_SetRect(f31, f30, lbl_8036B7E8, lbl_8036B7F0);
-    fn_800076AC(0, 0, 0, 0xFF);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036B7F4);

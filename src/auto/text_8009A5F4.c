@@ -389,7 +389,7 @@ s32 fn_8009ADC0(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
 
 void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void fn_80007818(f32, f32, f32, f32);
     void fn_80007838(f32, f32, f32, f32);
@@ -563,7 +563,7 @@ after_cases:
     Prim2D_AddPrim(2);
     fn_80007838(lbl_8036986C, lbl_80369870, lbl_803697E4, lbl_803697E4);
     fn_80007818(lbl_80369874, lbl_80369878, lbl_803697E4, lbl_803697E4);
-    fn_800076AC(0, 0, 0x2C, 0x66);
+    Prim2D_SetColor(0, 0, 0x2C, 0x66);
     fn_800075D8();
     Prim2D_EndPrim();
     fn_80009B28();

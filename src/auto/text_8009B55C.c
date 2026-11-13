@@ -236,7 +236,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void fn_80007124(void *);
     void fn_800072B0(u32 *, u32 *, u32 *, u32 *);
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
@@ -357,7 +357,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetRect(lbl_803698FC, lbl_8036996C,
                 lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8),
                 lbl_803699DC);
-    fn_800076AC(0xFF, 0xA0, 0xFF, 0xFF);
+    Prim2D_SetColor(0xFF, 0xA0, 0xFF, 0xFF);
     Prim2D_EndPrim();
 
     Prim2D_Begin();
@@ -375,7 +375,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         sprintf(buf, lbl_8026D568 + 0x199,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
-    fn_800076AC(0x80, 0xC8, 0xFF, 0xFF);
+    Prim2D_SetColor(0x80, 0xC8, 0xFF, 0xFF);
     fn_80007124(buf);
     Prim2D_EndPrim();
 
@@ -389,7 +389,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         sprintf(buf, lbl_8026D568 + 0x1AF,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
-    fn_800076AC(0xA0, 0xFF, 0xA0, 0xFF);
+    Prim2D_SetColor(0xA0, 0xFF, 0xA0, 0xFF);
     fn_80007124(buf);
     Prim2D_EndPrim();
 
@@ -404,7 +404,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             sprintf(buf, lbl_8026D568 + 0x1C5,
                         (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
         }
-        fn_800076AC(0xFF, 0xA0, 0xA0, 0xFF);
+        Prim2D_SetColor(0xFF, 0xA0, 0xA0, 0xFF);
         fn_80007124(buf);
         Prim2D_EndPrim();
     }
@@ -419,7 +419,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         sprintf(buf, lbl_8026D568 + 0x1DB,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
-    fn_800076AC(0xFF, 0xFF, 0x80, 0xFF);
+    Prim2D_SetColor(0xFF, 0xFF, 0x80, 0xFF);
     fn_80007124(buf);
     Prim2D_EndPrim();
 
@@ -446,7 +446,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         sprintf(buf, lbl_8026D568 + 0x207,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
-    fn_800076AC(0xFF, 0xB4, 0xFF, 0xFF);
+    Prim2D_SetColor(0xFF, 0xB4, 0xFF, 0xFF);
     fn_80007124(buf);
     Prim2D_EndPrim();
 

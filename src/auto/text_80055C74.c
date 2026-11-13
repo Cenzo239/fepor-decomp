@@ -383,7 +383,7 @@ void fn_80056AE0(void *arg0, u32 arg1) {
 void fn_80056B0C(void *arg0) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007818(f32, f32, f32, f32);
     void fn_80007838(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -462,7 +462,7 @@ void fn_80056B0C(void *arg0) {
         fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         temp_r30 = temp_r30 + temp_r30;
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
-        fn_800076AC(0, 0, 0, 0xFF);
+        Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
@@ -490,7 +490,7 @@ void fn_80056B0C(void *arg0) {
         Prim2D_AddPrim(1);
         fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)*(s16 *)((u8 *)arg0 + 4), lbl_80369108, lbl_80369108);
-        fn_800076AC(0, 0, 0, 0xFF);
+        Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
         Prim2D_EndPrim();
         break;
@@ -499,7 +499,7 @@ void fn_80056B0C(void *arg0) {
         fn_80007838(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
         temp_r30 = temp_r30 + temp_r30;
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
-        fn_800076AC(0, 0, 0, 0xFF);
+        Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);

@@ -816,7 +816,7 @@ void fn_8007E2C4(void *arg0) {
  void fn_80007870(f32);
  void fn_80007838(f32,f32,f32,f32);
  void fn_80007818(f32,f32,f32,f32);
- void fn_800076AC(u8,u8,u8,u8);
+ void Prim2D_SetColor(u8,u8,u8,u8);
  void fn_800075D8(void);
  void Prim2D_EndPrim(void);
  void fn_80009C0C(f32);
@@ -858,7 +858,7 @@ void fn_8007E2C4(void *arg0) {
  Prim2D_AddPrim(1);fn_80007870(lbl_80369418);
  fn_80007838(x,y,lbl_80369418,lbl_80369418);
  fn_80007818(x+scaledh,y+scaledw,texh,texw);
- fn_800076AC(((u8 *)&color)[0],((u8 *)&color)[1],((u8 *)&color)[2],0xFF);
+ Prim2D_SetColor(((u8 *)&color)[0],((u8 *)&color)[1],((u8 *)&color)[2],0xFF);
  fn_800075D8();Prim2D_EndPrim();
  Prim2D_Begin();fn_80009C0C(lbl_8036942C);Prim2D_PrepareTex();
  Prim2D_Begin();fn_8000A174(0,0x13);Prim2D_PrepareTex();
@@ -985,7 +985,7 @@ void fn_8007EAD8(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
     Color *fn_8018D900(s32);
@@ -1076,7 +1076,7 @@ void fn_8007EAD8(void *arg0) {
     by = lbl_80369438 + y;
     Prim2D_SetRect(bx, by, lbl_803694E8, lbl_80369434);
     fn_800075D8();
-    fn_800076AC(0, 0, 0, 0xFF);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
     sh = (f32)tex[0] * lbl_80369430;
@@ -1094,7 +1094,7 @@ void fn_8007EAD8(void *arg0) {
     tx = bx + lbl_803694E8;
     fn_80007838(tx, by, lbl_80369418, lbl_80369418);
     fn_80007818(tx + sw, by + sh, tw, th);
-    fn_800076AC(((u8 *)&c0)[0], ((u8 *)&c0)[1], ((u8 *)&c0)[2], 0xFF);
+    Prim2D_SetColor(((u8 *)&c0)[0], ((u8 *)&c0)[1], ((u8 *)&c0)[2], 0xFF);
     fn_800075D8();
     Prim2D_EndPrim();
     Prim2D_Begin();
@@ -1121,7 +1121,7 @@ void fn_8007EAD8(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(4);
         Prim2D_SetRect(barX2, barY, barW, barY - barY);
-        fn_800076AC(((u8 *)&c1)[0], ((u8 *)&c1)[1], ((u8 *)&c1)[2], ((u8 *)&c1)[3]);
+        Prim2D_SetColor(((u8 *)&c1)[0], ((u8 *)&c1)[1], ((u8 *)&c1)[2], ((u8 *)&c1)[3]);
         fn_800075D8();
         Prim2D_EndPrim();
         barY += step;
@@ -1158,7 +1158,7 @@ void fn_8007EAD8(void *arg0) {
                 f32 x1 = (f32)(j + 3) + f24v;
                 Prim2D_SetRect(x0, y0, x1 - x0, y1 - y0);
             }
-            fn_800076AC(((u8 *)&c2)[0], ((u8 *)&c2)[1], ((u8 *)&c2)[2], ((u8 *)&c2)[3]);
+            Prim2D_SetColor(((u8 *)&c2)[0], ((u8 *)&c2)[1], ((u8 *)&c2)[2], ((u8 *)&c2)[3]);
             fn_800075D8();
             Prim2D_EndPrim();
             i += 1;
@@ -1190,7 +1190,7 @@ void fn_8007EAD8(void *arg0) {
             fn_80007870(lbl_80369418);
             fn_80007838(posX, posY, lbl_80369418, lbl_80369418);
             fn_80007818(posX + sw, posY + sh, tw, th);
-            fn_800076AC(((u8 *)&c3)[0], ((u8 *)&c3)[1], ((u8 *)&c3)[2], 0xFF);
+            Prim2D_SetColor(((u8 *)&c3)[0], ((u8 *)&c3)[1], ((u8 *)&c3)[2], 0xFF);
             fn_800075D8();
             Prim2D_EndPrim();
             scaleA = fn_800067BC(0, lbl_80369418,
@@ -1214,7 +1214,7 @@ void fn_8007EAD8(void *arg0) {
             fn_80007870(lbl_80369418);
             fn_80007838(posX, posY, lbl_80369418, lbl_80369418);
             fn_80007818(posX + sw, posY + sh, tw, th);
-            fn_800076AC(((u8 *)&c4)[0], ((u8 *)&c4)[1], ((u8 *)&c4)[2], alpha);
+            Prim2D_SetColor(((u8 *)&c4)[0], ((u8 *)&c4)[1], ((u8 *)&c4)[2], alpha);
             fn_800075D8();
             Prim2D_EndPrim();
         }

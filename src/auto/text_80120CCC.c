@@ -3691,7 +3691,7 @@ extern f64 lbl_8036A2A0;
 extern s32 *fn_8018D900(s32);
 extern void fn_80007124(void *);
 extern void fn_80007668(s32 *);
-extern void fn_800076AC(s32, s32, s32, s32);
+extern void Prim2D_SetColor(s32, s32, s32, s32);
 extern void fn_80007790(f32, f32, f32, f32);
 extern void fn_80007858(f32, f32);
 extern void Prim2D_EndPrim(void);

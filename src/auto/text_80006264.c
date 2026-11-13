@@ -991,7 +991,7 @@ void Prim2D_SetAlpha(u8 arg0) {
     *(u8 *)(ptr + 0xF) = arg0;
 }
 
-void fn_800076AC(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
+void Prim2D_SetColor(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     extern void *lbl_80367140;
     u8 *ptr;
 

@@ -113,7 +113,7 @@ s32 fn_80081CF4(void) {
 void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007818(f32, f32, f32, f32);
     void fn_80007838(f32, f32, f32, f32);
     void fn_80007870(f32);
@@ -174,7 +174,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     fn_80007870(lbl_80369418);
     fn_80007838(x, y, lbl_80369418, lbl_80369418);
     fn_80007818(x + sw, y + sh, w, h);
-    fn_800076AC(color.r, color.g, color.b, 0xFF);
+    Prim2D_SetColor(color.r, color.g, color.b, 0xFF);
     fn_800075D8();
     Prim2D_EndPrim();
     Prim2D_Begin();
@@ -349,7 +349,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
     Color *fn_8018D900(s32);
@@ -419,7 +419,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     by = lbl_80369438 + y;
     Prim2D_SetRect(bx, by, lbl_803694D4, lbl_80369434);
     fn_800075D8();
-    fn_800076AC(0, 0, 0, 0xFF);
+    Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
     sh = lbl_80369430 * tex[0];
@@ -436,7 +436,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     tx = bx + lbl_803694D4;
     fn_80007838(tx, by, lbl_80369418, lbl_80369418);
     fn_80007818(tx + sw, by + sh, w, h);
-    fn_800076AC(color.r, color.g, color.b, 0xFF);
+    Prim2D_SetColor(color.r, color.g, color.b, 0xFF);
     fn_800075D8();
     Prim2D_EndPrim();
     Prim2D_Begin();

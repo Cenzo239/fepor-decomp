@@ -1778,7 +1778,7 @@ void fn_8012F5A8(s32 unused0, s32 unused1, s32 *arg2, s32 *arg3, s32 *arg4, s32 
 #pragma use_lmw_stmw on
 void fn_8012F5CC(void *arg0) {
     void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
+    void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_800076CC(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -1906,7 +1906,7 @@ void fn_8012F5CC(void *arg0) {
             Prim2D_AddPrim(1);
             Prim2D_SetRect(lbl_8036A510, lbl_8036A510, lbl_8036A538, lbl_8036A50C);
             fn_800075D8();
-            fn_800076AC(0xFF, 0xFF, 0xFF, 0xFF);
+            Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
             Prim2D_EndPrim();
         }
         y1 += 0x20;
