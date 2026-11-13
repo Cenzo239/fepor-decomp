@@ -2004,6 +2004,7 @@ void Battle_LoadMap(void)
     void Camera_InitSlots(void);
     void DebugPrint(char *, ...);
 
+    /* Enter a battle map: create heaps, load chapter script and archives, init gfx/units/cameras. */
     Heap_Create(Battle_str + 0x176, 0x180000);
     Chapter_LoadScript(gBattleState[0x10]);
     if (FileCache_Probe(Battle_str + 0x198) != 0x8000) {
