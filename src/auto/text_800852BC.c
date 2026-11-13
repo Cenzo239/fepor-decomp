@@ -2134,7 +2134,8 @@ ptr[0x34]=color.b[0]; ptr[0x35]=color.b[1]; ptr[0x36]=color.b[2]; ptr[0x37]=colo
 *(u16*)(ptr+0x3C)=0; *(u16*)(ptr+0x3E)=(s32)((f32)arg4/div);
 }
 
-void Ui_DrawColorFade(void *arg0) {
+/* Ease fullscreen fade alpha and draw a colored ortho quad when alpha is non-zero. */
+void Ui_DrawColorFade(void *fade) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
@@ -2161,52 +2162,52 @@ void Ui_DrawColorFade(void *arg0) {
     extern f32 gOrthoFar;
     extern f32 gFadeQuadZ;
     extern f32 gViewportFar;
-    u8 spC[0x44];
-    s32 sp8;
-    f32 a;
-    f32 b;
+    u8 mtx[0x44];
+    s32 matColor;
+    f32 easeFrom;
+    f32 easeTo;
     u16 state;
 
     if (gUiInputFlags & 1) {
-        *(u8 *)((u8 *)arg0 + 0x37) = 0;
-        *(u16 *)((u8 *)arg0 + 0x32) = 0;
+        *(u8 *)((u8 *)fade + 0x37) = 0;
+        *(u16 *)((u8 *)fade + 0x32) = 0;
         return;
     }
-    state = *(u16 *)((u8 *)arg0 + 0x32);
+    state = *(u16 *)((u8 *)fade + 0x32);
     switch (state) {
     case 0:
-        *(u8 *)((u8 *)arg0 + 0x37) = 0;
+        *(u8 *)((u8 *)fade + 0x37) = 0;
         break;
     case 1:
-        *(u16 *)((u8 *)arg0 + 0x38) = *(u16 *)((u8 *)arg0 + 0x38) + 1;
-        a = 0.0f;
-        b = 255.0f;
-        *(u8 *)((u8 *)arg0 + 0x37) =
-            (u8)(s32)Math_Ease(0, a, b,
-                                 (f32)*(u16 *)((u8 *)arg0 + 0x38),
-                                 (f32)*(u16 *)((u8 *)arg0 + 0x3A));
-        if (*(u16 *)((u8 *)arg0 + 0x38) >= *(u16 *)((u8 *)arg0 + 0x3A)) {
-            *(u16 *)((u8 *)arg0 + 0x32) = 2;
+        *(u16 *)((u8 *)fade + 0x38) = *(u16 *)((u8 *)fade + 0x38) + 1;
+        easeFrom = 0.0f;
+        easeTo = 255.0f;
+        *(u8 *)((u8 *)fade + 0x37) =
+            (u8)(s32)Math_Ease(0, easeFrom, easeTo,
+                                 (f32)*(u16 *)((u8 *)fade + 0x38),
+                                 (f32)*(u16 *)((u8 *)fade + 0x3A));
+        if (*(u16 *)((u8 *)fade + 0x38) >= *(u16 *)((u8 *)fade + 0x3A)) {
+            *(u16 *)((u8 *)fade + 0x32) = 2;
         }
         break;
     case 2:
-        *(u16 *)((u8 *)arg0 + 0x3C) = *(u16 *)((u8 *)arg0 + 0x3C) + 1;
-        a = 255.0f;
-        b = 0.0f;
-        *(u8 *)((u8 *)arg0 + 0x37) =
-            (u8)(s32)Math_Ease(0, a, b,
-                                 (f32)*(u16 *)((u8 *)arg0 + 0x3C),
-                                 (f32)*(u16 *)((u8 *)arg0 + 0x3E));
-        if (*(u16 *)((u8 *)arg0 + 0x3C) >= *(u16 *)((u8 *)arg0 + 0x3E)) {
-            *(u16 *)((u8 *)arg0 + 0x32) = 0;
+        *(u16 *)((u8 *)fade + 0x3C) = *(u16 *)((u8 *)fade + 0x3C) + 1;
+        easeFrom = 255.0f;
+        easeTo = 0.0f;
+        *(u8 *)((u8 *)fade + 0x37) =
+            (u8)(s32)Math_Ease(0, easeFrom, easeTo,
+                                 (f32)*(u16 *)((u8 *)fade + 0x3C),
+                                 (f32)*(u16 *)((u8 *)fade + 0x3E));
+        if (*(u16 *)((u8 *)fade + 0x3C) >= *(u16 *)((u8 *)fade + 0x3E)) {
+            *(u16 *)((u8 *)fade + 0x32) = 0;
         }
         break;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x37) != 0) {
-        C_MTXOrtho(spC, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
-        GXSetProjection(spC, 1);
-        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
-        GXLoadPosMtxImm(spC, 0);
+    if (*(u8 *)((u8 *)fade + 0x37) != 0) {
+        C_MTXOrtho(mtx, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
+        GXSetProjection(mtx, 1);
+        PSMTXTrans(mtx, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
+        GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, gViewportFar);
         GXClearVtxDesc();
@@ -2218,8 +2219,8 @@ void Ui_DrawColorFade(void *arg0) {
         GXSetNumTevStages(1);
         GXSetCullMode(1);
         GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
-        sp8 = *(s32 *)((u8 *)arg0 + 0x34);
-        GXSetChanMatColor(4, &sp8);
+        matColor = *(s32 *)((u8 *)fade + 0x34);
+        GXSetChanMatColor(4, &matColor);
         fn_802245D8(1, 4, 5, 0);
         GXSetZMode(1, 3, 0);
         GXBegin(0x98, 0, 4);
