@@ -15,7 +15,8 @@ void fn_8012C368(void) {
     extern void *lbl_80367A90;
     extern void *lbl_80367A94;
     extern void *lbl_80367A98;
-    extern void *lbl_80367A9C;
+    extern void *lbl_80367A9C[2];
+    void **dst = lbl_80367A9C;
     void *p86664;
     void *pE30;
     void *pDDC;
@@ -24,19 +25,19 @@ void fn_8012C368(void) {
     void *pC30;
     void *pCB4;
 
-    *(void **)((u8 *)&lbl_80367A9C + 4) = lbl_802845E8;
+    dst[1] = lbl_802845E8;
     p86664 = lbl_80286664;
     pE30 = lbl_80290E30;
     pDDC = lbl_80290DDC;
     pD88 = lbl_80290D88;
     pD34 = lbl_80290D34;
     pC30 = lbl_80290C30;
-    *(void **)((u8 *)&lbl_80367A9C + 4) = p86664;
+    dst[1] = p86664;
     pCB4 = lbl_80290CB4;
     lbl_80367A8C = pE30;
     lbl_80367A90 = pDDC;
     lbl_80367A94 = pD88;
     lbl_80367A98 = pD34;
-    lbl_80367A9C = pC30;
-    *(void **)((u8 *)&lbl_80367A9C + 4) = pCB4;
+    dst[0] = pC30;
+    dst[1] = pCB4;
 }
