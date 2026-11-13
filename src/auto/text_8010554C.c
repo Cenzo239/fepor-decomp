@@ -4049,7 +4049,8 @@ s32 Unit_HasLowHpAi(void *arg0) {
     return M2C_FIELD(Res_GetByName(M2C_FIELD(arg0, s32 *, 0x240)), u8 *, 7) != 0;
 }
 
-s32 Unit_IsLowHp(void *arg0) {
+/* Latch and return whether unit HP is below the AI low-HP threshold (hysteresis via flag bit0). */
+s32 Unit_IsLowHp(void *unit) {
     u8 fn_80102EA8(void);
     s8 Unit_GetMaxHp(void *);
     s32 __cvt_fp2unsigned(f32);
@@ -4057,41 +4058,41 @@ s32 Unit_IsLowHp(void *arg0) {
     extern f64 lbl_8036A168;
     extern f32 sLowHpRatio;
     extern f32 sHpPercentScale;
-    u8 saved;
+    u8 curHp;
     s32 result;
-    u32 val;
+    u32 percent;
     u32 flags;
-    u8 *data;
+    u8 *aiData;
     f32 ratio;
 
     if (fn_80102EA8() != 0) {
-        saved = *(u8 *)((u8 *)arg0 + 0x1A8);
-        ratio = (f32)(s8)saved / (f32)Unit_GetMaxHp(arg0);
+        curHp = *(u8 *)((u8 *)unit + 0x1A8);
+        ratio = (f32)(s8)curHp / (f32)Unit_GetMaxHp(unit);
         if (ratio <= sLowHpRatio) {
-            *(u32 *)((u8 *)arg0 + 0x254) |= 1;
+            *(u32 *)((u8 *)unit + 0x254) |= 1;
             return 1;
         }
-        *(u32 *)((u8 *)arg0 + 0x254) &= ~1U;
+        *(u32 *)((u8 *)unit + 0x254) &= ~1U;
         return 0;
     }
 
     result = 0;
     {
-        s8 b2d = Unit_GetMaxHp(arg0);
-        s8 v = (s8)*(u8 *)((u8 *)arg0 + 0x1A8);
-        val = __cvt_fp2unsigned((sHpPercentScale * (f32)v) / (f32)b2d);
+        s8 maxHp = Unit_GetMaxHp(unit);
+        s8 hp = (s8)*(u8 *)((u8 *)unit + 0x1A8);
+        percent = __cvt_fp2unsigned((sHpPercentScale * (f32)hp) / (f32)maxHp);
     }
-    data = Res_GetByName(*(void **)((u8 *)arg0 + 0x240));
-    flags = *(u32 *)((u8 *)arg0 + 0x254);
+    aiData = Res_GetByName(*(void **)((u8 *)unit + 0x240));
+    flags = *(u32 *)((u8 *)unit + 0x254);
     if (flags & 1) {
-        if (data[6] <= val) {
-            *(u32 *)((u8 *)arg0 + 0x254) = flags & ~1U;
+        if (aiData[6] <= percent) {
+            *(u32 *)((u8 *)unit + 0x254) = flags & ~1U;
         } else {
             result = 1;
         }
-    } else if (data[5] > val) {
+    } else if (aiData[5] > percent) {
         result = 1;
-        *(u32 *)((u8 *)arg0 + 0x254) = flags | 1;
+        *(u32 *)((u8 *)unit + 0x254) = flags | 1;
     }
     return result;
 }
