@@ -2385,36 +2385,37 @@ void fn_801F75D4(void* arg0) {
     *(u32*)((char*)arg0 + 0x198) = 0;
 }
 
-void BattlePreview_InitCaption(void *arg0)
+/* Layout the battle-preview caption widget and build its text from message fragments. */
+void BattlePreview_InitCaption(void *proc)
 {
     extern u8 gBattlePreviewStrings[];
     extern void strcpy(s32 arg0, s32 arg1);
     extern void *Msg_Expand(const char *arg0);
     extern void strcat(void *arg0, const char *arg1);
 
-    u8 *object;
+    u8 *widget;
     u8 *strings;
 
-    object = *(u8 **)((u8 *)arg0 + 0x30);
+    widget = *(u8 **)((u8 *)proc + 0x30);
     strings = gBattlePreviewStrings;
 
-    object[0x88] = 0;
-    object[0x4] = 1;
-    object[0x5] = 1;
-    *(u16 *)(object + 0x8) = 0x31;
-    *(u16 *)(object + 0xA) =
-        (u16)(*(s16 *)(object + 0x6) * 0x18 + 0x78);
-    object[0x16] = 0;
+    widget[0x88] = 0;
+    widget[0x4] = 1;
+    widget[0x5] = 1;
+    *(u16 *)(widget + 0x8) = 0x31;
+    *(u16 *)(widget + 0xA) =
+        (u16)(*(s16 *)(widget + 0x6) * 0x18 + 0x78);
+    widget[0x16] = 0;
 
-    strcpy((s32)(object + 0x28), (s32)(strings + 0x23E));
+    strcpy((s32)(widget + 0x28), (s32)(strings + 0x23E));
 
-    strcat(object + 0x28, Msg_Expand((const char *)(strings + 0x1F1)));
-    strcat(object + 0x28, (const char *)(strings + 0x1FC));
+    strcat(widget + 0x28, Msg_Expand((const char *)(strings + 0x1F1)));
+    strcat(widget + 0x28, (const char *)(strings + 0x1FC));
 
-    strcat(object + 0x28, Msg_Expand((const char *)(strings + 0x204)));
-    strcat(object + 0x28, (const char *)(strings + 0x20F));
+    strcat(widget + 0x28, Msg_Expand((const char *)(strings + 0x204)));
+    strcat(widget + 0x28, (const char *)(strings + 0x20F));
 
-    strcat(object + 0x28, Msg_Expand((const char *)(strings + 0x244)));
+    strcat(widget + 0x28, Msg_Expand((const char *)(strings + 0x244)));
 }
 
 void fn_801F7838(s32 arg0) {
