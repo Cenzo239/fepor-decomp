@@ -489,7 +489,7 @@ void fn_80183EAC(s32 arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
 
 void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     void fn_8000A388(void *, void *, void *);
-    void fn_80185060(void *, void *);
+    void MoveAnim_MatchUnit(void *, void *);
     void *fn_8000CAA0(void *, void *);
     void *fn_800C45B8(s32, void *, s32);
     void fn_80050BCC(void *, s32);
@@ -509,7 +509,7 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     str = fn_8001FC34(gBattleMap);
     search[12] = arg0;
     search[13] = 0;
-    fn_8000A388(lbl_80295BC0, fn_80185060, search);
+    fn_8000A388(lbl_80295BC0, MoveAnim_MatchUnit, search);
     obj = search[13];
     if (obj == 0) {
         obj = fn_8000CAA0(lbl_80295BC0, arg1);
@@ -564,14 +564,14 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
 void *fn_80184264(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
-void fn_8000A388(void *,void *,void *); void fn_80185060(void *,void *);
+void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void fn_80050BCC(void *,s32); void fn_8018851C(void *);
 extern u8 lbl_80295BC0[],lbl_80278E24[];
 void *search[14];
 u8 *obj; s32 i; u8 *p; s32 count; s32 temp; u8 flags;
 search[12]=arg0; search[13]=0;
-fn_8000A388(lbl_80295BC0,fn_80185060,search);
+fn_8000A388(lbl_80295BC0,MoveAnim_MatchUnit,search);
 obj=search[13];
 if(obj==0) {
 obj=fn_8000CAA0(lbl_80295BC0,arg3);
@@ -795,7 +795,7 @@ void fn_80184BE8(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     M2C_FIELD(temp_r3, s32 *, 0x3C) = arg2;
 }
 
-void fn_80185060(void *arg0, void *arg1) {
+void MoveAnim_MatchUnit(void *arg0, void *arg1) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) == (u32) M2C_FIELD(arg1, u32 *, 0x30)) {
         M2C_FIELD(arg1, void **, 0x34) = arg0;
     }
