@@ -23889,7 +23889,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     extern void String_Destroy(void *, s32);
     extern void *fn_800D75FC(void *, void *);
 
-    extern void fn_80103320(void);
+    extern void TagWin_OnOk(void);
     extern void fn_801032F8(void);
 
     u8 *obj;
@@ -23961,7 +23961,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     String_Destroy(temp5, -1);
 
     entry = *(u8 **)(obj + 0x428);
-    *(void **)(entry + 0xA4) = (void *)fn_80103320;
+    *(void **)(entry + 0xA4) = (void *)TagWin_OnOk;
 
     entry = *(u8 **)(obj + 0x42C);
     *(void **)(entry + 0xA4) = (void *)fn_801032F8;
