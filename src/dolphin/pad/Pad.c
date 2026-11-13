@@ -1022,7 +1022,7 @@ void fn_80215D2C(void) {
     OSReport(text, "ResetSW");
 }
 
-void fn_80215D9C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
+void ARQPostRequest(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, s32 arg6, void *arg7) {
     u32 r31;
     u32 r30;
     u32 r29;

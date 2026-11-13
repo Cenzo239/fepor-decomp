@@ -14287,7 +14287,7 @@ void Sound_AramDmaCallback(void *arg0) {
 void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
-    void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
+    void ARQPostRequest(void *, s32, s32, s32, s32, void *, s32, void *);
     void Sound_AramDmaCallback(void *);
     extern u8 gSoundAramQueue[];
     extern u8 gSoundAramQueueHi[];
@@ -14330,7 +14330,7 @@ start:
         q->slots[q->next].a4 = arg4;
         q->slots[q->next].a5 = arg5;
 
-        fn_80215D9C(
+        ARQPostRequest(
             &q->slots[q->next],
             q->slots[q->next].code,
             q->slots[q->next].unk08,
@@ -14379,7 +14379,7 @@ void fn_802627EC(u32 arg0)
     extern void DCFlushRange(void *, u32);
     extern u32 OSDisableInterrupts(void);
     extern void OSRestoreInterrupts(u32);
-    extern void fn_80215D9C();
+    extern void ARQPostRequest();
 
     u8 *queue;
     u8 *entry;
@@ -14426,7 +14426,7 @@ void fn_802627EC(u32 arg0)
             *(u32 *)(entry + 0x20) = 0;
             *(u32 *)(entry + 0x24) = 0;
 
-            fn_80215D9C(
+            ARQPostRequest(
                 entry,
                 *(u32 *)(entry + 0x04),
                 *(u32 *)(entry + 0x08),
@@ -14508,7 +14508,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
 
     extern u32 fn_802142B0(void);
     extern void Sound_AramDmaCallback(void);
-    extern void fn_80215D9C(
+    extern void ARQPostRequest(
         void *, u32, u32, u32, u32, u32, u32, u32
     );
 
@@ -14571,7 +14571,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
                 *(u32 *)(entry + 0x20) = 0;
                 *(u32 *)(entry + 0x24) = 0;
 
-                fn_80215D9C(
+                ARQPostRequest(
                     entry,
                     *(u32 *)(entry + 4),
                     *(u32 *)(entry + 8),
@@ -14630,7 +14630,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
                 *(u32 *)(entry + 0x20) = 0;
                 *(u32 *)(entry + 0x24) = 0;
 
-                fn_80215D9C(
+                ARQPostRequest(
                     entry,
                     *(u32 *)(entry + 4),
                     *(u32 *)(entry + 8),

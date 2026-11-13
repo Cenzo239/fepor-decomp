@@ -892,7 +892,7 @@ void fn_800AECC0(void) {
     void fn_800B16EC(void *);
     void fn_800B49E0(void *,s32,s32,s32,void *);
     void DCInvalidateRange(void *,u32);
-    void fn_80215D9C(void *,void *,s32,s32,u32,void *,u32,void *);
+    void ARQPostRequest(void *,void *,s32,s32,u32,void *,u32,void *);
     extern u8 gSoundSys[];
     s32 i;
     u8 *entry;
@@ -919,7 +919,7 @@ void fn_800AECC0(void) {
         } else {
             base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + offset + *(u16 *)(entry + 4);
             DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
-            fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
+            ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
 
@@ -940,7 +940,7 @@ void fn_800AECC0(void) {
             } else {
                 base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + *(u16 *)(entry + 4);
                 DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), 0x8000);
-                fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
+                ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C))*4 + 0x2C), aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
 
@@ -2373,13 +2373,13 @@ fn_8020A9E0(base+0x450);
 }
 
 void fn_800B46D8(void) {
-void DCInvalidateRange(void *,u32); void fn_8005E0F0(void); void fn_80208780(void *,u32); void fn_8020A824(void *); s32 fn_802142B0(void); void fn_80215D9C(void *,s32,s32,s32,s32,void *,s32,void *); void fn_80215EF8(void); void fn_800B4794(void);
+void DCInvalidateRange(void *,u32); void fn_8005E0F0(void); void fn_80208780(void *,u32); void fn_8020A824(void *); s32 fn_802142B0(void); void ARQPostRequest(void *,s32,s32,s32,s32,void *,s32,void *); void fn_80215EF8(void); void fn_800B4794(void);
 extern s32 lbl_8036780C; extern u8 lbl_80367810; extern u8 lbl_80313020[];
 u8 sp8[0x1C]; s32 dest; s32 size; u8 *base;
 if(lbl_8036780C!=0) {
 size=lbl_8036780C; base=(u8*)fn_802142B0()+0x500; lbl_80367810=1; dest=0x81200000-size;
 fn_8005E0F0(); fn_8020A824(lbl_80313020); fn_80215EF8(); DCInvalidateRange((void*)dest,size);
-fn_80215D9C(sp8,0,1,0,(s32)base,(void*)dest,size,fn_800B4794);
+ARQPostRequest(sp8,0,1,0,(s32)base,(void*)dest,size,fn_800B4794);
 while(lbl_80367810!=0) {} fn_80208780((void*)dest,0x81200000);
 }}
 
@@ -9844,7 +9844,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
     void fn_800B125C(void *);
     void fn_800B49E0(void *, s32, s32, s32, void *);
     void DCInvalidateRange(void *, u32);
-    void fn_80215D9C(void *, void *, s32, s32, u32, void *, u32, void *);
+    void ARQPostRequest(void *, void *, s32, s32, u32, void *, u32, void *);
     u32 fn_8024CE1C(s32, s32);
     void *fn_8024C97C(s32, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, void *, s32, void *);
     void fn_8024CE60(void *, s32, u8, u8, s32);
@@ -9947,7 +9947,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
         } else {
             base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(e + 2) * 4 + 0x134) + offset + *(u16 *)(e + 4);
             DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), 0x8000);
-            fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
+            ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
         *(u16 *)e = (u16)(*(u16 *)e | 0x1000);
@@ -9964,7 +9964,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
             } else {
                 base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(e + 2) * 4 + 0x134) + *(u16 *)(e + 4);
                 DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), 0x8000);
-                fn_80215D9C(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
+                ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
             *(u16 *)e = (u16)(*(u16 *)e | 0x2000);
@@ -10432,7 +10432,7 @@ void fn_800B1368(void *arg0) {
     s32 fn_800B49C8(void *);
     void fn_800B49E0(void *, s32, s32, s32, void *);
     void DCInvalidateRange(void *, u32);
-    void fn_80215D9C(void *, void *, s32, s32, u32, void *, u32, void *);
+    void ARQPostRequest(void *, void *, s32, s32, u32, void *, u32, void *);
 
 
     u32 base, offset, limit, n, step;
@@ -10470,7 +10470,7 @@ void fn_800B1368(void *arg0) {
         } else {
             base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + offset + *(u16 *)(entry + 4);
             DCInvalidateRange((void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], 0x8000);
-            fn_80215D9C(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
+            ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
         if (*(u16 *)(entry + 0x1E) == 2) {
@@ -10498,7 +10498,7 @@ void fn_800B1368(void *arg0) {
             } else {
                 base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(entry + 2)*4 + 0x134) + *(u16 *)(entry + 4);
                 DCInvalidateRange((void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], 0x8000);
-                fn_80215D9C(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
+                ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)((StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C))*4))->buffers[0], aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
         }

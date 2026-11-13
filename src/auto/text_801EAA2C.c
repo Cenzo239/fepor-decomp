@@ -988,7 +988,7 @@ void fn_801EC7B8(void) {
     void *fn_800C45B8(s32, void *, s32);
     void fn_800C4588(void *);
     void DCInvalidateRange(void *);
-    void fn_80215D9C(void *, s32, s32, s32, s32, s32, s32, void *);
+    void ARQPostRequest(void *, s32, s32, s32, s32, s32, s32, void *);
     void fn_801ED838(void);
     extern u8 lbl_8027F1D0[];
     extern u8 lbl_80332270[];
@@ -1058,7 +1058,7 @@ void fn_801EC7B8(void) {
             }
             DCInvalidateRange(buf);
             lbl_803683D0 += 1;
-            fn_80215D9C(*slot, 0, 1, 1, *(s32 *)((u8 *)*slot + 0x68), (s32)buf,
+            ARQPostRequest(*slot, 0, 1, 1, *(s32 *)((u8 *)*slot + 0x68), (s32)buf,
                         *(s32 *)((u8 *)*slot + 0x64), fn_801ED838);
             i += 1;
             *(s32 *)((u8 *)*slot + 0x68) = lbl_803683C8 + used;
@@ -1197,7 +1197,7 @@ void fn_801EC7B8(void) {
             } while (--ctr != 0);
         }
         lbl_803683D0 += 1;
-        fn_80215D9C(lbl_803683C4, 0, 0, 1, (s32)buf0,
+        ARQPostRequest(lbl_803683C4, 0, 0, 1, (s32)buf0,
                     lbl_803683C8 + *(s32 *)((u8 *)lbl_803683C4 + 0x64), used, fn_801ED838);
         while (lbl_803683D0 != 0) {}
         fn_800C4588(buf0);
@@ -1284,7 +1284,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 fn_8000D598(s32);
     s32 fn_8005E55C(void);
     void DCFlushRange(s32, s32);
-    void fn_80215D9C(void *, s32, s32, s32, s32, s32, s32, void *);
+    void ARQPostRequest(void *, s32, s32, s32, s32, s32, s32, void *);
     void *fn_80234200(s32, s32);
     s32 Str_Cmp(void *);
     void strcpy(void *, s32, s32);
@@ -1371,7 +1371,7 @@ found:
     *(s32 *)((u8 *)cell + 0x54) = fn_8000D598(path);
     *(s32 *)((u8 *)cell + 0x58) = fn_8005E55C();
     DCFlushRange(buf, *(s32 *)((u8 *)cell + 0x64));
-    fn_80215D9C(cell, 0, 0, 0, buf, *(s32 *)((u8 *)cell + 0x68), *(s32 *)((u8 *)cell + 0x64), &fn_801ED800);
+    ARQPostRequest(cell, 0, 0, 0, buf, *(s32 *)((u8 *)cell + 0x68), *(s32 *)((u8 *)cell + 0x64), &fn_801ED800);
     return 1;
 }
 #pragma use_lmw_stmw reset
@@ -1777,7 +1777,7 @@ void fn_801ED838(void) {
 void fn_801ED848(void *arg0, void *arg1, void *arg2, void *arg3) {
     void DCInvalidateRange(void *, u32);
     s32 fn_8005E55C(void);
-    void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
+    void ARQPostRequest(void *, s32, s32, s32, s32, void *, s32, void *);
     void fn_801ED800(void *);
     extern s32 lbl_803683D0;
 
@@ -1786,7 +1786,7 @@ void fn_801ED848(void *arg0, void *arg1, void *arg2, void *arg3) {
     *(void **)((char *)arg0 + 0x20) = arg2;
     *(s32 *)((char *)arg0 + 0x58) = fn_8005E55C();
     DCInvalidateRange(arg1, *(u32 *)((char *)arg0 + 0x64));
-    fn_80215D9C(arg0, 0, 1, 0, *(s32 *)((char *)arg0 + 0x68), arg1, *(s32 *)((char *)arg0 + 0x64), fn_801ED800);
+    ARQPostRequest(arg0, 0, 1, 0, *(s32 *)((char *)arg0 + 0x68), arg1, *(s32 *)((char *)arg0 + 0x64), fn_801ED800);
 }
 
 void fn_801ED8CC(void *arg0)
