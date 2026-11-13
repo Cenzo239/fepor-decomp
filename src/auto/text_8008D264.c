@@ -181,7 +181,7 @@ void MsgTip_Create(void *arg0) {
     M2C_UNK Process_Unlink(void *);
     extern u8 lbl_80289AB8[];
     extern f32 lbl_80369754;
-    extern u8 lbl_803674FC[4];
+    extern u8 gMsgTipSlots[4];
     extern f32 lbl_80369758;
     u8 *temp_r31;
     Vec4 sp8;
@@ -193,8 +193,8 @@ void MsgTip_Create(void *arg0) {
     M2C_FIELD(temp_r31, s8 *, 0x3D) = 0;
     while (M2C_FIELD(temp_r31, s8 *, 0x3D) < 4) {
         s32 index = M2C_FIELD(temp_r31, s8 *, 0x3D);
-        if (lbl_803674FC[index] == 0) {
-            lbl_803674FC[index] = 1;
+        if (gMsgTipSlots[index] == 0) {
+            gMsgTipSlots[index] = 1;
             break;
         }
         M2C_FIELD(temp_r31, s8 *, 0x3D)++;
