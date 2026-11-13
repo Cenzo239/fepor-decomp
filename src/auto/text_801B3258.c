@@ -2125,7 +2125,7 @@ extern "C" void fn_801B9500(void *arg0) {
 }
 
 extern "C" void fn_801B9654(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_8017BB94(void *);
     u32 fn_8017BC94(void *);
     void fn_80140258(void *, void *, s16 *, s32);
@@ -2141,8 +2141,8 @@ extern "C" void fn_801B9654(void *arg0) {
     s32 one;
 
     list = *(void **)((u8 *)arg0 + 0x60);
-    obj82 = fn_8013FF94(arg0, 0x82, 0);
-    obj108 = fn_8013FF94(arg0, 0x108, 0);
+    obj82 = Ui_FindChild(arg0, 0x82, 0);
+    obj108 = Ui_FindChild(arg0, 0x108, 0);
     fn_8017BB94(list);
     if (fn_8017BC94(list) == 0) {
         spC.x = *(s16 *)((u8 *)obj82 + 0xA);
@@ -2164,7 +2164,7 @@ extern "C" void fn_801B9654(void *arg0) {
 
 #pragma cplusplus reset
 void fn_801B9748(void *a) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     s32 fn_80019DF0(u8);
     void fn_8017A9F0(void *, s32, void *);
     extern u8 gUiContext[];
@@ -2174,10 +2174,10 @@ void fn_801B9748(void *a) {
     void *q;
     s32 x;
 
-    p = fn_8013FF94(a, 0x82, 0);
+    p = Ui_FindChild(a, 0x82, 0);
     *(f32 *)((u8 *)p + 0x30) = lbl_8036B2DC;
 
-    p = fn_8013FF94(a, 0x108, 0);
+    p = Ui_FindChild(a, 0x108, 0);
     *(f32 *)((u8 *)p + 0x30) = lbl_8036B2DC;
 
     x = fn_80019DF0(gUiContext[0x14]);
@@ -2202,7 +2202,7 @@ void fn_801B97C8(s32 arg0) {
 #pragma use_lmw_stmw on
 extern "C" void fn_801B9978(void *arg0) {
  void fn_8000C070(void *,s32); void Process_ClearFunc(void *);
- s32 fn_80105814(void *); void fn_8013FDA0(void *); void *fn_8013FF94(void *,s32,s32);
+ s32 fn_80105814(void *); void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
  void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
  void fn_80167190(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
  void fn_8016758C(void *,void *,s32,f32,f32); void *fn_8017B908(void *);
@@ -2219,7 +2219,7 @@ extern "C" void fn_801B9978(void *arg0) {
  u32 pos1,pos2;
  self=arg0;
  list=M2C_FIELD(self,void **,0x60);
- obj=fn_8013FF94(self,0x108,0);
+ obj=Ui_FindChild(self,0x108,0);
  unit=fn_8017B908(list);
  fn_8013FDA0(self);
  if(unit!=fn_8017B908(list)) {
@@ -2248,7 +2248,7 @@ extern "C" void fn_801B9978(void *arg0) {
  Ui_HideUnitInfoPopup(gUnitInfoPopup);
  } else if((btn&0x200)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
  fn_80140258(self,obj,Pair(0x260,M2C_FIELD(obj,s16 *,0xC)),1);
- temp=fn_8013FF94(self,0x82,0);
+ temp=Ui_FindChild(self,0x82,0);
  fn_80140258(self,temp,Pair(M2C_FIELD(temp,s16 *,0xA),-0x3A),0);
  Ui_PlaySeCue(lbl_8027C698+0x11C,100);
  fn_8000C070(self,0x11);
@@ -2262,7 +2262,7 @@ extern "C" void fn_801B9978(void *arg0) {
 extern "C" void fn_801B9D94(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_8013FF00(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
@@ -2291,7 +2291,7 @@ extern "C" void fn_801B9D94(void *arg0) {
 
     #pragma use_lmw_stmw on
 
-    temp = fn_8013FF94(arg0, 0x100, 0);
+    temp = Ui_FindChild(arg0, 0x100, 0);
     t0 = *(s16 *)((u8 *)temp + 0xC);
     t1 = *(s16 *)((u8 *)temp + 0x10);
     w = (s16)(t1 - t0);
@@ -2403,7 +2403,7 @@ void fn_801BA200(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801BA3E8(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Process_ClearFunc(void *);
     void fn_8000C070(void *, s32);
     extern u8 gUiContext[];
@@ -2421,7 +2421,7 @@ extern "C" void fn_801BA3E8(void *arg0) {
     void fn_80140258(void *, void *, const Pair &, s32);
     void *temp;
 
-    temp = fn_8013FF94(arg0, 0x108, 0);
+    temp = Ui_FindChild(arg0, 0x108, 0);
     switch ((s32)gUiContext[8]) {
     case 0x81:
         Process_ClearFunc(arg0);
@@ -2439,7 +2439,7 @@ extern "C" void Ui_HandleUnitCursorInput(void *arg0) {
 /* Handle map-cursor input over a unit: select/deploy with A, info with X, cancel with B. */
 void fn_8000C070(void *,s32); void Process_ClearFunc(void *);
 s32 fn_80105814(void *); u8 Status_Test(void *,u8); void *fn_801362C8(void *);
-void fn_8013FDA0(void *); void *fn_8013FF94(void *,s32,s32);
+void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void fn_80167190(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void fn_8016758C(void *,void *,s32,f32,f32);
@@ -2506,7 +2506,7 @@ temp=M2C_FIELD(self,void **,0x6c);
 fn_80140258(self,temp,Pair(0x260,M2C_FIELD(temp,s16 *,0xc)),0);
 {Obj *p=M2C_FIELD(self,Obj **,0x6c);
 if(p) {if(--p->refs==0 && p) p->destroy(1); M2C_FIELD(self,void **,0x6c)=0;}}
-temp=fn_8013FF94(self,0x82,0);
+temp=Ui_FindChild(self,0x82,0);
 fn_80140258(self,temp,Pair(M2C_FIELD(temp,s16 *,0xa),-0x3a),0);
 Ui_PlaySeCue(lbl_8027C698+0x11c,100); fn_8000C070(self,0x11);
 }
@@ -2547,7 +2547,7 @@ extern "C" void fn_801BADB0(void *arg0) {
     s32 fn_80019DF0(u8);
     void fn_8013FCE0(void *, void *, void *, void *);
     void fn_8013FF00(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
@@ -2599,7 +2599,7 @@ extern "C" void fn_801BADB0(void *arg0) {
     void *spC;
     s32 sp8;
 
-    temp = fn_8013FF94(self, 0x100, 0);
+    temp = Ui_FindChild(self, 0x100, 0);
     w = (s16)(*(s16 *)((u8 *)temp + 0x10) - *(s16 *)((u8 *)temp + 0xC));
     pair18[0] = *(s16 *)((u8 *)temp + 0xA);
     pair18[1] = -w;
@@ -2763,7 +2763,7 @@ extern "C" void fn_801BADB0(void *arg0) {
 #pragma cplusplus reset
 
 void fn_801BB1FC(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
@@ -2788,7 +2788,7 @@ void fn_801BB1FC(void *arg0) {
     void *obj60;
     void *p;
 
-    r30 = fn_8013FF94(arg0, 0x100, 0);
+    r30 = Ui_FindChild(arg0, 0x100, 0);
     if (r30 == NULL) {
         r30 = M2C_FIELD(arg0, void **, 0x48);
         Ui_AddChild(arg0, r30);
@@ -2841,7 +2841,7 @@ void fn_801BB1FC(void *arg0) {
     M2C_FIELD(p, f32 *, 0x18) = 200.0f;
     M2C_FIELD(p, s16 *, 0x1E) = 4;
     fn_80024398(p, arg0, 0);
-    p = fn_8013FF94(arg0, -0x1000, 0);
+    p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
         Ui_SetWidgetText(p, lbl_8027C698 + 0x142);
     }
@@ -2926,7 +2926,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_8013AC54(void *);
     void fn_8013B064(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_8014004C(void *, void *);
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
@@ -2955,8 +2955,8 @@ extern "C" void fn_801BB7E0(void *arg0) {
     void *p;
     void *q;
 
-    fn_8014004C(self, fn_8013FF94(self, 0x80, 0));
-    fn_8014004C(self, fn_8013FF94(self, 0x81, 0));
+    fn_8014004C(self, Ui_FindChild(self, 0x80, 0));
+    fn_8014004C(self, Ui_FindChild(self, 0x81, 0));
 
     p = Heap_Alloc(0xD8);
     if (p != NULL) {
@@ -3169,7 +3169,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     void *fn_8013AC54(void *);
     void fn_8013AD70(void *, s32);
     void fn_8013B064(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_8014004C(void *, void *);
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
@@ -3217,7 +3217,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
 
     self = arg0;
     saved = *(s32 *)gUiContext;
-    tmp = fn_8013FF94(self, -0x1000, 0);
+    tmp = Ui_FindChild(self, -0x1000, 0);
     if (tmp != NULL) {
         fn_8014004C(self, tmp);
     }
@@ -3541,7 +3541,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     tmp = *(void **)((u8 *)self + 0x5C);
     *(u32 *)((u8 *)tmp + 0x34) |= 0x10;
     *(s32 *)((u8 *)*(void **)((u8 *)self + 0x5C) + 0x40) = saved;
-    tmp = fn_8013FF94(self, -0x1000, 0);
+    tmp = Ui_FindChild(self, -0x1000, 0);
     if (tmp != NULL) {
         Ui_SetWidgetText(lbl_8027C698 + 0x1E6, tmp);
     }
@@ -3642,7 +3642,7 @@ extern "C" void Ui_InitUnitPanel(void *arg0) {
 void *Heap_Alloc(u32); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 void fn_800381EC(void *,s8); s32 fn_8003B2D0(void *);
-void *fn_8013FF94(void *,s32,s32); u8 fn_8017D6D8(void *);
+void *Ui_FindChild(void *,s32,s32); u8 fn_8017D6D8(void *);
 void Ui_PlaySeCue(void *,s32); void fn_8000C070(void *,s32); void fn_8013FF00(void *,void *);
 extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],lbl_8027C698[],gUiContext[];
 class Pair { public: s16 x,y; Pair(s16 a,s16 b):x(a),y(b) {} };
@@ -3708,7 +3708,7 @@ Ui_AddChild(self,p);
 fn_800381EC(unit,(s8)fn_8003B2D0(unit));
 M2C_FIELD(M2C_FIELD(self,void **,0x5C),s16 *,0x3E)=0;
 if(!fn_8017D6D8(M2C_FIELD(self,void **,0x5C))) {
-temp=fn_8013FF94(self,0x80,0);
+temp=Ui_FindChild(self,0x80,0);
 fn_80140258(self,temp,Pair(M2C_FIELD(temp,s16 *,0xA),-0x3A),0);
 ref=M2C_FIELD(self,Obj **,0x5C);
 if(ref) {
@@ -3746,7 +3746,7 @@ void fn_801BCC60(s32 arg0) {
 }
 
 void fn_801BCCC4(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
     s32 fn_8017D52C(void *, s16);
     void fn_80034A8C(void *, s32, u8, void *, s32);
@@ -3761,7 +3761,7 @@ void fn_801BCCC4(void *arg0) {
     s32 saved;
     void *base;
 
-    p = fn_8013FF94(arg0, 0x80, 0);
+    p = Ui_FindChild(arg0, 0x80, 0);
     Ui_SetWidgetText(p, lbl_8027C698 + 0x1CE);
     obj = *(void **)((u8 *)arg0 + 0x5C);
     base = gBattleState;
@@ -3770,7 +3770,7 @@ void fn_801BCCC4(void *arg0) {
     *(s32 *)((u8 *)base + 0x1C) = saved - fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
     fn_80034A8C(lbl_80330EAC, v, (u8)*(s16 *)((u8 *)obj + 0x3E), arg0, 0);
     *(s16 *)((u8 *)base + 0x70) = 0;
-    p = fn_8013FF94(arg0, -0x1000, 0);
+    p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
         fn_8014004C(arg0, p);
     }
@@ -3850,7 +3850,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     void Process_ClearFunc(void *);
     void fn_8000D8BC(s32, s32);
     void fn_8013FDA0(void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(void *, void *);
@@ -3897,7 +3897,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     s32 refs;
     s16 tmp;
 
-    obj = fn_8013FF94(arg0, 0x80, 0);
+    obj = Ui_FindChild(arg0, 0x80, 0);
     fn_8013FDA0(arg0);
 
     flags = gUiInputFlags;
@@ -3945,7 +3945,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
 }
 
 extern "C" void fn_801BD28C(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
     void Ui_SetWidgetText(void *, void *);
     void fn_8013FF00(void *, void *);
@@ -3957,7 +3957,7 @@ extern "C" void fn_801BD28C(void *arg0) {
     void *p;
     s16 tmp;
 
-    obj = fn_8013FF94(arg0, 0x80, 0);
+    obj = Ui_FindChild(arg0, 0x80, 0);
     if (*(s16 *)((u8 *)obj + 0xC) < 0x28) {
         spC.x = *(s16 *)((u8 *)obj + 0xA);
         spC.y = 0x28;
@@ -3973,7 +3973,7 @@ extern "C" void fn_801BD28C(void *arg0) {
         fn_8014027C(arg0, child, &sp8.x, 0);
     }
     fn_8013FF00(arg0, *(void **)((u8 *)arg0 + 0x5C));
-    p = fn_8013FF94(arg0, -0x1000, 0);
+    p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
         Ui_SetWidgetText(p, lbl_8027C698 + 0x23B);
     }
@@ -4150,7 +4150,7 @@ extern "C" void fn_801BD5A0(void *arg0) {
 extern "C" void fn_801BD8B4(void *arg0) {
     f32 fn_8013893C(void *);
     void fn_8013FF00(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_80140234(void *, void *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
@@ -4180,7 +4180,7 @@ extern "C" void fn_801BD8B4(void *arg0) {
     s16 temp_r7;
 
     var_r30 = arg0;
-    if ((var_r31 = fn_8013FF94(arg0, 0x100, 0)) == 0) {
+    if ((var_r31 = Ui_FindChild(arg0, 0x100, 0)) == 0) {
         var_r31 = *(void **)((u8 *)var_r30 + 0x48);
         Ui_AddChild(var_r30, var_r31);
     }
@@ -4191,7 +4191,7 @@ extern "C" void fn_801BD8B4(void *arg0) {
     }
     *(u8 *)((u8 *)var_r31 + 0x4D) = 0;
     *(f32 *)((u8 *)var_r31 + 0x30) = 1.0f;
-    if ((var_r29 = fn_8013FF94(var_r30, 0x101, 0)) == 0) {
+    if ((var_r29 = Ui_FindChild(var_r30, 0x101, 0)) == 0) {
         var_r29 = *(void **)((u8 *)var_r30 + 0x4C);
         Ui_AddChild(var_r30, var_r29);
     }
@@ -4203,14 +4203,14 @@ extern "C" void fn_801BD8B4(void *arg0) {
         sp10[1] = temp_r7;
         fn_8014027C(var_r30, var_r29, sp10, 0);
     }
-    if ((var_r29 = fn_8013FF94(var_r30, 0x102, 0)) == 0) {
+    if ((var_r29 = Ui_FindChild(var_r30, 0x102, 0)) == 0) {
         var_r29 = *(void **)((u8 *)var_r30 + 0x50);
         Ui_AddChild(var_r30, var_r29);
     }
     if (fn_8013893C(var_r29) < 1.0f) {
         fn_80140234(var_r30, var_r29, 0);
     }
-    if ((var_r29 = fn_8013FF94(var_r30, 0x103, 0)) == 0) {
+    if ((var_r29 = Ui_FindChild(var_r30, 0x103, 0)) == 0) {
         var_r29 = *(void **)((u8 *)var_r30 + 0x54);
         Ui_AddChild(var_r30, var_r29);
     }
@@ -4220,7 +4220,7 @@ extern "C" void fn_801BD8B4(void *arg0) {
         spC[1] = temp_r7;
         fn_8014027C(var_r30, var_r29, spC, 0);
     }
-    if ((var_r29 = fn_8013FF94(var_r30, 0x104, 0)) == 0) {
+    if ((var_r29 = Ui_FindChild(var_r30, 0x104, 0)) == 0) {
         var_r29 = *(void **)((u8 *)var_r30 + 0x58);
         Ui_AddChild(var_r30, var_r29);
     }
@@ -4231,7 +4231,7 @@ extern "C" void fn_801BD8B4(void *arg0) {
         fn_8014027C(var_r30, var_r29, sp8, 0);
     }
     fn_8013FF00(var_r30, var_r31);
-    res = (u32)fn_8013FF94(var_r30, -0x1000, 0);
+    res = (u32)Ui_FindChild(var_r30, -0x1000, 0);
     if (res != 0U) {
         Ui_SetWidgetText(res, (s32)(lbl_8027C698 + 0x277));
     }
@@ -4243,7 +4243,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_8013AC54(void *);
     void fn_8013B064(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_8014004C(void *, void *);
     void Ui_AddChild(void *, void *);
     void fn_8013FF00(void *, void *);
@@ -4278,8 +4278,8 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *q;
     f32 zero;
 
-    fn_8014004C(self, fn_8013FF94(self, 0x80, 0));
-    fn_8014004C(self, fn_8013FF94(self, 0x81, 0));
+    fn_8014004C(self, Ui_FindChild(self, 0x80, 0));
+    fn_8014004C(self, Ui_FindChild(self, 0x81, 0));
 
     p = Heap_Alloc(0xD8);
     if (p != NULL) {
@@ -4715,13 +4715,13 @@ void *fn_801BE7F8(void){extern u8 lbl_8027C698[];return lbl_8027C698+0x29b;}
 u8 fn_801BE808(void)
 {
     void *fn_8000C0C0(void *);
-    void fn_8013FF94(void *, s32, s32);
+    void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BC94(void);
     extern u8 lbl_80297C14[];
     u32 result;
     s32 ret;
 
-    fn_8013FF94(fn_8000C0C0(lbl_80297C14), 0x106, 0);
+    Ui_FindChild(fn_8000C0C0(lbl_80297C14), 0x106, 0);
     result = fn_8017BC94();
     ret = 2;
     if (result != 0) {
@@ -4758,7 +4758,7 @@ s32 fn_801BE92C(void *arg0) {
     void *fn_8000C0C0(void *);
     void *fn_80019DF0(u8);
     u8 fn_801058C4(void *, void *);
-    void fn_8013FF94(void *, s32, s32);
+    void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BD58(void);
     s32 fn_8017C3C8(void *);
     extern u8 lbl_80297C14[];
@@ -4774,7 +4774,7 @@ s32 fn_801BE92C(void *arg0) {
     *((s8 *)arg0 + 4) = 0;
     ret = fn_8000C0C0(lbl_80297C14);
     temp_r31 = (void *)gUiContext[0];
-    fn_8013FF94(ret, 0x106, 0);
+    Ui_FindChild(ret, 0x106, 0);
     if (fn_8017BD58() >= 5U) {
         *((s8 *)arg0 + 4) = -1;
         return 2;
@@ -5020,7 +5020,7 @@ void *fn_801BEF90(void *arg0) {
 void fn_801C09B0(void *arg0) {
     s32 temp_r31;
 
-    temp_r31 = fn_8013FF94(arg0, 0x81, 0);
+    temp_r31 = Ui_FindChild(arg0, 0x81, 0);
     fn_8016A57C(*(s32 *)((char *)arg0 + 0x18));
     fn_8013FEE0();
     if (*(u32 *)((char *)temp_r31 + 0x6C) == 0) {
@@ -5032,7 +5032,7 @@ void fn_801C09B0(void *arg0) {
 void fn_801C0A28(void *arg0) {
     s32 temp_r31;
 
-    temp_r31 = fn_8013FF94(arg0, 0x81, 0);
+    temp_r31 = Ui_FindChild(arg0, 0x81, 0);
     fn_8016A5AC(*(s32 *)((char *)arg0 + 0x18));
     fn_8013FEF0();
     fn_8014876C(lbl_8032FF08, 0x46, 0x2EE);
@@ -5056,7 +5056,7 @@ extern "C" void fn_801C0C58(void *arg0) {
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80167190(void *, s32, f32, f32);
@@ -5103,7 +5103,7 @@ extern "C" void fn_801C0C58(void *arg0) {
     u32 sp14;
 
     self = arg0;
-    obj = fn_8013FF94(arg0, 0x81, 0);
+    obj = Ui_FindChild(arg0, 0x81, 0);
     btn = fn_801D2AAC(obj);
     fn_8013FDA0(self);
     if (btn != fn_801D2AAC(obj)) {
@@ -5146,7 +5146,7 @@ extern "C" void fn_801C0C58(void *arg0) {
 #pragma cplusplus reset
 
 void fn_801C0F54(s32 arg0) {
-    u32 fn_8013FF94(s32, s32, s32);
+    u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, void *);
     void *fn_8000E0E4(void *);
     extern char lbl_8027CF10[];
@@ -5156,11 +5156,11 @@ void fn_801C0F54(s32 arg0) {
 
     self = arg0;
     str = (void *)0;
-    p = (void *)fn_8013FF94(self, 0x80, 0);
+    p = (void *)Ui_FindChild(self, 0x80, 0);
     *(s32 *)((u8 *)p + 0x48) = 1;
     Ui_SetWidgetText((u32)p, lbl_8027CF10 + 0x86);
     str = fn_8000E0E4(lbl_8027CF10 + 0x99);
-    p = (void *)fn_8013FF94(self, -0x1000, 0);
+    p = (void *)Ui_FindChild(self, -0x1000, 0);
     if (p != 0) {
         Ui_SetWidgetText((u32)p, str);
     }
@@ -5208,7 +5208,7 @@ extern "C" void *fn_801C1074(void *arg0, s16 arg1) {
 void fn_801C10D4(void *arg0) {
 void *Heap_Alloc(u32); void Ui_SetWidgetText(void *,void *); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
-s32 fn_8000E0E4(void *); s32 fn_8013FF94(void *,s32,s32);
+s32 fn_8000E0E4(void *); s32 Ui_FindChild(void *,s32,s32);
 extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C2C[],lbl_80293C00[],lbl_80293C58[],lbl_8027CF10[];
 extern f32 lbl_8036B318;
 s32 text;
@@ -5317,7 +5317,7 @@ M2C_FIELD(p,u32 *,0x34)|=0x10;
 M2C_FIELD(p,u32 *,0x58)=1;
 Ui_AddChild(arg0,p);
 text=fn_8000E0E4(lbl_8027CF10+0x99);
-if((obj=(void *)fn_8013FF94(self,-0x1000,0))!=0) Ui_SetWidgetText(obj,(void *)text);
+if((obj=(void *)Ui_FindChild(self,-0x1000,0))!=0) Ui_SetWidgetText(obj,(void *)text);
 }
 #pragma cplusplus off
 
@@ -10986,22 +10986,22 @@ if(p){fn_801403F0();*(s32*)((char*)p+0x40)=0;*(s32*)((char*)p+0x44)=0;*(s32*)((c
 }
 
 void fn_801CE2DC(void *arg0) {
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_80140210(void *, void *, s32);
     void *self;
 
     self = arg0;
-    fn_80140210(self, fn_8013FF94(self, 3, 0), 0);
-    fn_80140210(self, fn_8013FF94(self, 2, 0), 0);
-    fn_80140210(self, fn_8013FF94(self, 1, 0), 0);
-    fn_80140210(self, fn_8013FF94(self, 0, 0), 1);
+    fn_80140210(self, Ui_FindChild(self, 3, 0), 0);
+    fn_80140210(self, Ui_FindChild(self, 2, 0), 0);
+    fn_80140210(self, Ui_FindChild(self, 1, 0), 0);
+    fn_80140210(self, Ui_FindChild(self, 0, 0), 1);
 }
 
 #pragma cplusplus on
 #pragma opt_common_subs off
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
 /* Handle name-entry input: A insert char, L/R move caret, Start confirm, Y info, B back. */
-void *fn_8013FF94(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
+void *Ui_FindChild(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *); void fn_80167190(void *,s32,f32,f32); void fn_8016758C(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void NameEntry_InsertChar(void *,u32); void NameEntry_MoveCaretRight(void *,s32); void NameEntry_MoveCaretLeft(void *,s32);
 void Ui_PlaySeCue(void *,s32); void Process_ClearFunc(void *);
@@ -11015,9 +11015,9 @@ void *field,*entry,*grid;
 u32 ch;
 s32 held;
 s16 *xy;
-field=fn_8013FF94(arg0,0,0);
-entry=fn_8013FF94(arg0,1,0);
-grid=fn_8013FF94(arg0,2,0);
+field=Ui_FindChild(arg0,0,0);
+entry=Ui_FindChild(arg0,1,0);
+grid=Ui_FindChild(arg0,2,0);
 ch=NameGrid_GetCharAtCursor(grid);
 fn_8013FDA0(arg0);
 if(ch!=NameGrid_GetCharAtCursor(grid)) {
@@ -11060,7 +11060,7 @@ Process_ClearFunc(arg0);Ui_PlaySeCue(lbl_8027DE48+0x2e,100);
 #pragma cplusplus off
 
 void fn_801CE744(s32 arg0) {
-    void *fn_8013FF94(s32, s32, s32);
+    void *Ui_FindChild(s32, s32, s32);
     void *fn_8013F6B8(void *, s32 *, s32 *);
     void fn_8013F748(void *, s32 *, s32 *);
     void fn_8013FF00(s32, void *);
@@ -11068,20 +11068,20 @@ void fn_801CE744(s32 arg0) {
     void *obj;
     s32 tmp;
 
-    base = fn_8013FF94(arg0, 0, 0);
-    obj = fn_8013FF94(arg0, 2, 0);
+    base = Ui_FindChild(arg0, 0, 0);
+    obj = Ui_FindChild(arg0, 2, 0);
     tmp = *(s32 *)((u8 *)base + 0x3E);
     fn_8013F748(base, &tmp, &tmp);
     base = obj;
     obj = fn_8013F6B8(base, &tmp, &tmp);
     *(s16 *)((u8 *)base + 0x4C) = *(s16 *)obj;
     *(s16 *)((u8 *)base + 0x4E) = *(s16 *)((u8 *)obj + 2);
-    fn_8013FF00(arg0, fn_8013FF94(arg0, 2, 0));
+    fn_8013FF00(arg0, Ui_FindChild(arg0, 2, 0));
 }
 
 #pragma cplusplus on
 extern "C" void fn_801CE7F4(void *arg0) {
-void *fn_8013FF94(void *,s32,s32);
+void *Ui_FindChild(void *,s32,s32);
 s16 fn_801CF614(void *);
 void fn_8013FF00(void *,void *);
 void Ui_AddChild(void *,void *);
@@ -11117,9 +11117,9 @@ u16 saved;
 void *a,*b,*c;
 s32 idx;
 s32 addr;
-a=fn_8013FF94(arg0,0,0);
-b=fn_8013FF94(arg0,1,0);
-c=fn_8013FF94(arg0,2,0);
+a=Ui_FindChild(arg0,0,0);
+b=Ui_FindChild(arg0,1,0);
+c=Ui_FindChild(arg0,2,0);
 saved=*(u16 *)((u8 *)a+0x3c);
 ((Obj *)a)->v7(arg0);
 ((Obj *)b)->v7(arg0);
@@ -11181,9 +11181,9 @@ if(gate==0) {
 
 void fn_801CEC28(void *arg0) {
     void fn_8013FF00(void *, void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
 
-    fn_8013FF00(arg0, fn_8013FF94(arg0, 0, 0));
+    fn_8013FF00(arg0, Ui_FindChild(arg0, 0, 0));
 }
 
 #pragma cplusplus on
@@ -13554,7 +13554,7 @@ void fn_801D3588(s32 arg0) {
 #pragma cplusplus on
 extern "C" void fn_801D35E0(void *arg0) {
     void Process_ClearFunc(void *);
-    void *fn_8013FF94(void *, s32, s32);
+    void *Ui_FindChild(void *, s32, s32);
     void fn_80140210(void *, void *, s32);
     void Ui_PlaySeCue(void *, s32);
     extern u32 gUiInputFlags;
@@ -13578,7 +13578,7 @@ extern "C" void fn_801D35E0(void *arg0) {
         Process_ClearFunc(arg0);
         return;
     }
-    ((Obj *)fn_8013FF94(arg0, 0x10, 0))->v7(arg0);
+    ((Obj *)Ui_FindChild(arg0, 0x10, 0))->v7(arg0);
     gate = 0;
     flags = gUiInputFlags;
     if (flags & 0x10) {
@@ -13590,7 +13590,7 @@ extern "C" void fn_801D35E0(void *arg0) {
         t = *(s32 *)((char *)gPadInput + 4);
         if (t & (*(s32 *)((char *)gPadInput + 8) ^ t) & 0x300) {
             Ui_PlaySeCue(lbl_8027E148 + 0xA9, 0x64);
-            fn_80140210(arg0, fn_8013FF94(arg0, 0x10, 0), 0);
+            fn_80140210(arg0, Ui_FindChild(arg0, 0x10, 0), 0);
             Process_ClearFunc(arg0);
         }
     }

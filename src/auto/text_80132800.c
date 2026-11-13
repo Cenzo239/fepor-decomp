@@ -7763,7 +7763,7 @@ void fn_8013FF00(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_8013FF94(void *arg0, s16 arg1, u8 arg2) {
+extern "C" void *Ui_FindChild(void *arg0, s16 arg1, u8 arg2) {
     struct Item {
         virtual ~Item();
         virtual void *find(s16, u8);
