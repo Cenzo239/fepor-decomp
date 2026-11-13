@@ -850,7 +850,7 @@ void fn_801069A0(u8 *arg0) {
     u8 Bin_ReadU8(u32 *);
     u32 Bin_ReadU32(u32 *);
     void Dispos_ParseEntry(u32 *, void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
     u32 sp8;
@@ -956,7 +956,7 @@ after_parse:
         var_r27 = (s8)(var_r30 / var_r27);
         var_r26 = (s8)(var_r31 / (s32)(u8)var_r29);
     }
-    fn_8014CBD8(gBattleState, (f32)(s8)var_r27, (f32)(s8)var_r26);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)var_r27, (f32)(s8)var_r26);
 }
 #pragma use_lmw_stmw reset
 

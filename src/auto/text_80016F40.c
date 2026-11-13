@@ -458,7 +458,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
         } else {
             pt = *(void **)((u8 *)self + 0x48);
             i = 0;
-            for (ctr = n; ctr != 0; ctr--) {
+            for (ctr = n; ctr > 0; ctr--) {
                 key = *(s32 *)((u8 *)pt + 4);
                 if ((f32)key >= farg0) {
                     if (i == 0) {
@@ -522,7 +522,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
         } else {
             pt = *(void **)((u8 *)self + 0x4C);
             i = 0;
-            for (ctr = n; ctr != 0; ctr--) {
+            for (ctr = n; ctr > 0; ctr--) {
                 key = *(s32 *)((u8 *)pt + 4);
                 if ((f32)key >= farg0) {
                     if (!i) {
@@ -736,7 +736,7 @@ void fn_8001840C(void *arg0)
     extern f32 lbl_80368C8C;
     extern f32 lbl_80368CA8;
 
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_800C4588(void *);
 
     u8 *dst;
@@ -762,7 +762,7 @@ void fn_8001840C(void *arg0)
     y = *(f32 *)(src + 0x44);
     z = *(f32 *)(src + 0x48);
 
-    fn_8014CBD8(data, x - lbl_80368CA4, y - lbl_80368CA4);
+    BattleState_SetCamPos(data, x - lbl_80368CA4, y - lbl_80368CA4);
 
     *(f32 *)(dst + 0x28) = lbl_80368CA0;
     *(f32 *)(dst + 0x34) = lbl_80368CA0;

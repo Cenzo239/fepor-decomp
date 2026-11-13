@@ -1061,7 +1061,7 @@ void fn_8012A530(void *arg0) {
     f32 Map_SampleHeight(void *, f32, f32);
     void *Map_Get(void);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_80184688(void *, s32, s32, s32);
     void Mu_StartTransfer(void *, s32, s32, s32);
     void Mu_StartBlend(void *, s32, s32, s32);
@@ -1263,7 +1263,7 @@ void fn_8012A530(void *arg0) {
     sub = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)sub + 0x38) = *(f32 *)((u8 *)sub + 0x38) + *(f32 *)((u8 *)sub + 0x2C);
     sub = *(void **)((u8 *)self + 0x30);
-    fn_8014CBD8(gBattleState,
+    BattleState_SetCamPos(gBattleState,
         *(f32 *)((u8 *)sub + 0x10),
         *(f32 *)((u8 *)sub + 0x14));
 }
@@ -1348,7 +1348,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void Map_Get(void);
     void *fn_80046F14(s32, s32, u32, u32);
     s32 Map_FindObjAt(s8, s8, u32, u32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
 
     s32 t31;
     void *t30;
@@ -1377,7 +1377,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     *(s32 *)((u8 *)r6 + 0x3c) = t31;
     *(s32 *)((u8 *)r6 + 0x30) = arg0;
     *(s32 *)((u8 *)r6 + 0x34) = arg1;
-    fn_8014CBD8(gBattleState, (f32)arg0, (f32)arg1);
+    BattleState_SetCamPos(gBattleState, (f32)arg0, (f32)arg1);
 }
 #pragma use_lmw_stmw reset
 void fn_8012AEC4(void *arg0) {

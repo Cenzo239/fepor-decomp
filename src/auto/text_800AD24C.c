@@ -243,7 +243,7 @@ void fn_800AD6AC(void *arg0) {
 }
 
 void fn_800AD700(void *arg0) {
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
     struct {
         u8 pad[0x19E];
@@ -252,7 +252,7 @@ void fn_800AD700(void *arg0) {
     } *u;
 
     u = *(void **)((u8 *)arg0 + 0x30);
-    fn_8014CBD8(gBattleState, (f32)u->y, (f32)u->x);
+    BattleState_SetCamPos(gBattleState, (f32)u->y, (f32)u->x);
 }
 
 void fn_800AD76C(void *arg0) {
@@ -328,7 +328,7 @@ void fn_800AD92C(s32 arg0) {
     void Process_Goto(s32, s32);
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gTargetList[];
     extern u8 gBattleState[];
     void *temp_r3;
@@ -338,7 +338,7 @@ void fn_800AD92C(s32 arg0) {
         return;
     }
     temp_r3 = UnitRef_GetUnit();
-    fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
+    BattleState_SetCamPos(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
 }
 
 void fn_800AD9C8(u8 *self) {
@@ -531,7 +531,7 @@ void fn_800AE278(s32 arg0) {
     void Process_Goto(s32, s32);
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gTargetList[];
     extern u8 gBattleState[];
     void *temp_r3;
@@ -542,7 +542,7 @@ void fn_800AE278(s32 arg0) {
     }
     temp_r3 = UnitRef_GetUnit();
     if ((*(u32 *)((u8 *)temp_r3 + 0x1A0) & 0x010000DC) == 0) {
-        fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
+        BattleState_SetCamPos(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
     }
 }
 
@@ -5734,7 +5734,7 @@ s32 fn_800BAAD4(void) {
 }
 
 s32 fn_800BAB64(u8 arg0) {
-    M2C_UNK fn_8014CBD8(void *, f32, f32);
+    M2C_UNK BattleState_SetCamPos(void *, f32, f32);
     extern u8 gUnits[];
     extern u8 gBattleState[];
     void *unit;
@@ -5745,7 +5745,7 @@ s32 fn_800BAB64(u8 arg0) {
         unit = NULL;
     }
     if (unit != NULL) {
-        fn_8014CBD8(gBattleState, M2C_FIELD(unit, s8 *, 0x19E), M2C_FIELD(unit, s8 *, 0x19F));
+        BattleState_SetCamPos(gBattleState, M2C_FIELD(unit, s8 *, 0x19E), M2C_FIELD(unit, s8 *, 0x19F));
     }
     return 1;
 }
@@ -5822,25 +5822,25 @@ void fn_800BAD40(s32 arg0) {
 
 s32 fn_800BAD9C(s32 arg0, s32 arg1) {
     M2C_UNK fn_8001885C(void);
-    M2C_UNK fn_8014CBD8(void *, f32, f32);
+    M2C_UNK BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
     extern s32 gUiInputFlags;
 
     if (gUiInputFlags & 1) {
-        fn_8014CBD8(gBattleState, arg0, arg1);
+        BattleState_SetCamPos(gBattleState, arg0, arg1);
         fn_8001885C();
         return 0;
     }
-    fn_8014CBD8(gBattleState, arg0, arg1);
+    BattleState_SetCamPos(gBattleState, arg0, arg1);
     return 0;
 }
 
 s32 fn_800BAE4C(s32 arg0, s32 arg1) {
     void fn_8001885C(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
 
-    fn_8014CBD8(gBattleState, (f32)arg0, (f32)arg1);
+    BattleState_SetCamPos(gBattleState, (f32)arg0, (f32)arg1);
     fn_8001885C();
     return 0;
 }

@@ -3341,7 +3341,7 @@ void fn_80118C84(void *arg0) {
     void Map_SetupUnitMoveLimit(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(u8 *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void Ui_SetWidgetText(void *, u8 *);
     extern u8 lbl_80274508[];
     extern u8 lbl_8028F7B8[];
@@ -3644,7 +3644,7 @@ void fn_80118C84(void *arg0) {
         if (gUiInputFlags & 0x400)
             Map_HideMoveLimitView();
         Ui_PlaySeCue(lbl_80274508 + 0x247, 0x64);
-        fn_8014CBD8(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
+        BattleState_SetCamPos(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
         Process_Goto(self, 2);
         return;
     } else {
@@ -3653,7 +3653,7 @@ void fn_80118C84(void *arg0) {
             if (gUiInputFlags & 0x400)
                 Map_HideMoveLimitView();
             Ui_PlaySeCue(lbl_80274508 + 0x247, 0x64);
-            fn_8014CBD8(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
+            BattleState_SetCamPos(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
             Process_Goto(self, 1);
             return;
         }
@@ -4321,7 +4321,7 @@ void fn_8011B310(void *arg0) {
     void fn_800F20E0(void);
     void fn_800F214C(void);
     void Ui_PlaySeCue(void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern s32 gUiInputFlags;
     extern s32 *gPadInput;
     extern u8 lbl_80274508[];
@@ -4344,22 +4344,22 @@ void fn_8011B310(void *arg0) {
         if (flags & 1) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 4);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
+            BattleState_SetCamPos(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 8) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 0xC);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
+            BattleState_SetCamPos(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 2) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 8);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
+            BattleState_SetCamPos(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 4) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 0x10);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
+            BattleState_SetCamPos(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if ((flags & 0xF) == 0) {
             fn_800F214C();

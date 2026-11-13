@@ -309,7 +309,7 @@ void fn_80005F04(void)
     void fn_8014D920(void);
     s32 fn_8016947C(void);
     void fn_80016C58(void);
-    void fn_8014CBD8(float, float);
+    void BattleState_SetCamPos(float, float);
     void fn_800187F0(void);
     void fn_80016DE0(void);
 
@@ -376,7 +376,7 @@ void fn_80005F04(void)
             x = (s8)data[0x52];
             y = (s8)data[0x53];
 
-            fn_8014CBD8((float)x, (float)y);
+            BattleState_SetCamPos((float)x, (float)y);
             fn_800187F0();
 
             state = (u8 *)Process_Find(lbl_802832FC);

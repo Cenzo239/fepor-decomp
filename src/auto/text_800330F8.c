@@ -10572,11 +10572,11 @@ f32 Unit_GetAngleTo(void *arg0, void *arg1) {
 
 void fn_8004BE88(void *arg0, u8 arg1) {
     void fn_8001885C(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
 
     if (!(M2C_FIELD(arg0, s32 *, 0x1A0) & 0x18)) {
-        fn_8014CBD8(gBattleState, (f32)(s32)M2C_FIELD(arg0, f32 *, 4), (f32)(s32)M2C_FIELD(arg0, f32 *, 8));
+        BattleState_SetCamPos(gBattleState, (f32)(s32)M2C_FIELD(arg0, f32 *, 4), (f32)(s32)M2C_FIELD(arg0, f32 *, 8));
         if (arg1 != 0) {
             fn_8001885C();
         }

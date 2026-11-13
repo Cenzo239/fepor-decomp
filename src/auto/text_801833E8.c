@@ -7127,7 +7127,7 @@ void fn_80195178(void *arg0) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_802031E8(f32 *, f32 *);
     extern f32 lbl_8027A580[];
     extern f32 lbl_8027A58C[];
@@ -7326,7 +7326,7 @@ void fn_80195178(void *arg0) {
     if (*(u8 *)((u8 *)self + 4) != 0) {
         if (*(f32 *)((u8 *)self + 0x10) < *(f32 *)((u8 *)self + 0x18)) {
             b = (f32 *)((u8 *)self + 0x220 + (*(s16 *)((u8 *)self + 0xA) - 1) * 0xC);
-            fn_8014CBD8(&gBattleState, b[0], b[1]);
+            BattleState_SetCamPos(&gBattleState, b[0], b[1]);
         }
     }
 }
@@ -9050,7 +9050,7 @@ void MapSelect_StartMove(void *arg0) {
     void fn_80053658(void *, s32, void *);
     void *Effect_Create(u8 *, void *);
     f32 Math_Angle2D(f32, f32, f32, f32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     f32 Vec_Length(f32 *);
     extern void MapSelect_UpdateMove(void);
     extern void MapSelect_SetGhostColor(void);
@@ -9093,7 +9093,7 @@ void MapSelect_StartMove(void *arg0) {
     *(s32 *)((u8 *)inner + 8) = *(s32 *)((u8 *)inner + 8) | 0x801;
     *(f32 *)((u8 *)*(void **)((u8 *)actor + 0x30) + 0x18) = scale;
     *(f32 *)((u8 *)*(void **)((u8 *)actor + 0x30) + 0x24) = angle;
-    fn_8014CBD8(gBattleState, (f32)(s8)((u8 *)arg0)[0x3C], (f32)(s8)((u8 *)arg0)[0x3D]);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)((u8 *)arg0)[0x3C], (f32)(s8)((u8 *)arg0)[0x3D]);
 }
 
 void fn_8019A01C(void *arg0) {
@@ -9513,12 +9513,12 @@ void fn_8019B29C(void *arg0) {
 void fn_8019B2FC(void *arg0) {
     M2C_UNK fn_80049D30(s32);
     M2C_UNK fn_800498A4(s32, M2C_UNK, M2C_UNK);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
 
     fn_80049D30(M2C_FIELD(arg0, s32 *, 0x5C));
     fn_800498A4(M2C_FIELD(arg0, s32 *, 0x5C), 0, 0);
-    fn_8014CBD8(gBattleState, M2C_FIELD(arg0, s8 *, 0x66), M2C_FIELD(arg0, s8 *, 0x67));
+    BattleState_SetCamPos(gBattleState, M2C_FIELD(arg0, s8 *, 0x66), M2C_FIELD(arg0, s8 *, 0x67));
 }
 
 #pragma optimization_level 4
@@ -12105,12 +12105,12 @@ s32 fn_801A0374(void) {
     extern u8 gBattleState[];
     void fn_8014C7C0(void *, s32);
     void fn_8014C798(void *);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_800187F0(void);
 
     fn_8014C7C0(gBattleState, 0);
     fn_8014C798(gBattleState);
-    fn_8014CBD8(gBattleState, (f32) (s8) gBattleState[0x52], (f32) (s8) gBattleState[0x53]);
+    BattleState_SetCamPos(gBattleState, (f32) (s8) gBattleState[0x52], (f32) (s8) gBattleState[0x53]);
     fn_800187F0();
     return 1;
 }

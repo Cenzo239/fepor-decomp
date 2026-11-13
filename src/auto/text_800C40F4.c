@@ -21041,7 +21041,7 @@ void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 }
 
 void fn_800FF75C(void *arg0) {
-    M2C_UNK fn_8014CBD8(M2C_UNK *, u8, f32, f32);
+    M2C_UNK BattleState_SetCamPos(M2C_UNK *, u8, f32, f32);
     extern M2C_UNK gBattleMap;
     extern M2C_UNK gUiContext;
     extern M2C_UNK gBattleState;
@@ -21057,15 +21057,15 @@ void fn_800FF75C(void *arg0) {
     }
     if ((var_r7 != 0) && ((u8) M2C_FIELD(&gBattleState, u8 *, 0x11) == 1)) {
         if (((u8) M2C_FIELD((&gBattleMap + (s8) M2C_FIELD(&gUiContext, u8 *, 0xB) + ((s8) M2C_FIELD(&gUiContext, u8 *, 0xC) << 6)), u8 *, 0x200D) != 0) || ((u8) M2C_FIELD((&gBattleMap + (s8) M2C_FIELD(&gUiContext, u8 *, 0xD) + ((s8) M2C_FIELD(&gUiContext, u8 *, 0xE) << 6)), u8 *, 0x200D) != 0)) {
-            fn_8014CBD8(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
+            BattleState_SetCamPos(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
             return;
         }
         M2C_FIELD(arg0, s8 *, 0x34) = 0;
         if ((u8) M2C_FIELD(&gUiContext, u8 *, 8) == 0x25) {
-            fn_8014CBD8(&gBattleState, M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
+            BattleState_SetCamPos(&gBattleState, M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
         }
     } else {
-        fn_8014CBD8(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
+        BattleState_SetCamPos(&gBattleState, (u8) &gBattleState, (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xB), (f32) (s8) M2C_FIELD(&gUiContext, u8 *, 0xC));
     }
 }
 
@@ -21093,7 +21093,7 @@ void fn_800FF948(void *arg0) {
 
 void fn_800FF9A8(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gMapBlendMode;
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
@@ -21117,7 +21117,7 @@ void fn_800FF9A8(void *arg0) {
             }
         }
     }
-    fn_8014CBD8(gBattleState, *(f32 *)((u8 *)arg0 + 0x30), *(f32 *)((u8 *)arg0 + 0x34));
+    BattleState_SetCamPos(gBattleState, *(f32 *)((u8 *)arg0 + 0x30), *(f32 *)((u8 *)arg0 + 0x34));
 }
 
 #pragma optimization_level 1

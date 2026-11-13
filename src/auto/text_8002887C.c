@@ -66,7 +66,7 @@ void fn_800288E4(void) {
 }
 #pragma global_optimizer on
 void fn_80028950(void) {
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_80183A90(void *);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -74,7 +74,7 @@ void fn_80028950(void) {
 
     temp_r31 = *(void **)gUiContext;
     fn_80183A90(temp_r31);
-    fn_8014CBD8(gBattleState, M2C_FIELD(temp_r31, s8 *, 0x19E), M2C_FIELD(temp_r31, s8 *, 0x19F));
+    BattleState_SetCamPos(gBattleState, M2C_FIELD(temp_r31, s8 *, 0x19E), M2C_FIELD(temp_r31, s8 *, 0x19F));
 }
 
 void fn_800289D0(void *arg0) {
@@ -194,7 +194,7 @@ void fn_80028D04(void *arg0) {
 void Process_Goto(void *,s32);
 void fn_80027038(void *);
 void UiCtx_EndMoveSelect(void *,s32);
-void fn_8014CBD8(void *,f32,f32);
+void BattleState_SetCamPos(void *,f32,f32);
 extern u8 gUiContext[], gBattleState[];
 switch(gUiContext[8]) {
 case 0x32: case 0x33:
@@ -203,7 +203,7 @@ break;
 default:
 fn_80027038(gUiContext);
 UiCtx_EndMoveSelect(gUiContext,1);
-fn_8014CBD8(gBattleState,(f32)(s8)gUiContext[0xD],(f32)(s8)gUiContext[0xE]);
+BattleState_SetCamPos(gBattleState,(f32)(s8)gUiContext[0xD],(f32)(s8)gUiContext[0xE]);
 break;
 }
 }
@@ -268,14 +268,14 @@ void fn_80028EC8(s32 arg0) {
 
 void fn_80028F28(void) {
     void fn_800280C8(void *, s32, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern f32 gBattleState[];
     extern u8 gUiContext[];
     f32 *base;
 
     base = gBattleState;
     fn_800280C8(gUiContext, (s32)base[0x524 / 4], (s32)base[0x528 / 4]);
-    fn_8014CBD8(gBattleState, (f32)(s8)(s32)base[0x524 / 4], (f32)(s8)(s32)base[0x528 / 4]);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)(s32)base[0x524 / 4], (f32)(s8)(s32)base[0x528 / 4]);
 }
 
 void fn_800291D8(void) {
@@ -2031,7 +2031,7 @@ void Battle_StartMapMain(void *arg0) {
     void fn_8014C7C0(void *, void *);
     void fn_801E379C(u32);
     void SaveData_Release(void *);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_800187F0(void);
     void fn_8014C798(void *);
     void fn_800163F8(void);
@@ -2045,7 +2045,7 @@ void Battle_StartMapMain(void *arg0) {
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
     SaveData_Release(&gSaveDataBase);
-    fn_8014CBD8(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
     fn_800187F0();
     fn_8014C798(gBattleState);
     fn_800163F8();
@@ -2439,7 +2439,7 @@ void fn_8002E408(s32 arg0) {
 
 void fn_8002E444(void) {
     u8 Status_Test(void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern struct {
         void *head;
         s32 unk4;
@@ -2455,14 +2455,14 @@ void fn_8002E444(void) {
             }
         }
         if (p != NULL) {
-            fn_8014CBD8(gBattleState, (s8)*((u8 *)p + 0x19E), (s8)*((u8 *)p + 0x19F));
+            BattleState_SetCamPos(gBattleState, (s8)*((u8 *)p + 0x19E), (s8)*((u8 *)p + 0x19F));
         }
     }
 }
 
 void fn_8002E510(void) {
     u8 Status_Test(void *, M2C_UNK);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern struct {
         void *head;
         s32 unk4;
@@ -2477,7 +2477,7 @@ void fn_8002E510(void) {
         }
     }
     if (p != NULL) {
-        fn_8014CBD8(gBattleState, M2C_FIELD(p, s8 *, 0x19E), M2C_FIELD(p, s8 *, 0x19F));
+        BattleState_SetCamPos(gBattleState, M2C_FIELD(p, s8 *, 0x19E), M2C_FIELD(p, s8 *, 0x19F));
     }
 }
 
@@ -2665,7 +2665,7 @@ void fn_8002EA7C(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
 extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     void *Process_CreateChild(void *);
     void *Process_Create(void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 lbl_80285028[];
     extern s32 gTargetList[];
     extern u8 gBattleState[];
@@ -2764,7 +2764,7 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     if (n <= 0) {
         p = (u8 *)0;
     }
-    fn_8014CBD8(gBattleState, (f32)(s8)q[0], (f32)(s8)p[1]);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)q[0], (f32)(s8)p[1]);
     ((Obj *)arg0)->v1(obj);
     *(s32 *)arg0 = 0;
     ((Obj *)arg0)->v5(obj);
@@ -2811,7 +2811,7 @@ void fn_8002F0B0(void) {
 #pragma cplusplus on
 extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     void fn_800F214C(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     extern s32 *gPadInput;
     extern u8 gBattleState[];
@@ -2898,7 +2898,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
                 *(void **)((u8 *)arg1 + 0x44) = found;
             }
         }
-        fn_8014CBD8(gBattleState, (f32)(s8)((u8 *)var_r31)[0], (f32)(s8)((u8 *)var_r31)[1]);
+        BattleState_SetCamPos(gBattleState, (f32)(s8)((u8 *)var_r31)[0], (f32)(s8)((u8 *)var_r31)[1]);
         Ui_PlaySeCue(lbl_802694B8 + 0x10C, 0x64);
         *(void **)((u8 *)arg1 + 0x40) = var_r31;
         if (var_r31 != NULL) {
@@ -2949,11 +2949,11 @@ s32 fn_8002F480(void *arg0, void *arg1) {
 
 void fn_8002F4EC(void *arg0, void *arg1) {
     void Map_HideMoveLimitView(void *);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];
 
     Map_HideMoveLimitView(arg0);
-    fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)arg1 + 0x48), (f32)*(s8 *)((u8 *)arg1 + 0x49));
+    BattleState_SetCamPos(gBattleState, (f32)*(s8 *)((u8 *)arg1 + 0x48), (f32)*(s8 *)((u8 *)arg1 + 0x49));
 }
 
 void fn_8002F564(void) {

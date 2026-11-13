@@ -2672,13 +2672,13 @@ extern "C" void fn_80169394(void) {
     void fn_8014C798(void *);
     void fn_800163F8(void);
     void fn_80016180(void);
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void fn_800187F0(void);
 
     fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();
-    fn_8014CBD8(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
+    BattleState_SetCamPos(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
     fn_800187F0();
 }
 
@@ -16329,10 +16329,10 @@ void fn_80182EC8(s32 arg0) {
 }
 
 void fn_80182F50(void) {
-    void fn_8014CBD8(void *, f32, f32);
+    void BattleState_SetCamPos(void *, f32, f32);
     void Map_HideMoveLimitView();
 
-    fn_8014CBD8(gBattleState, (f32) (s8) ((u8 *)gUiContext)[0xD], (f32) (s8) ((u8 *)gUiContext)[0xE]);
+    BattleState_SetCamPos(gBattleState, (f32) (s8) ((u8 *)gUiContext)[0xD], (f32) (s8) ((u8 *)gUiContext)[0xE]);
     Map_HideMoveLimitView();
 }
 
