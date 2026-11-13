@@ -9,7 +9,7 @@ extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
 extern s32 lbl_803687F8;
 extern f32 lbl_8036C374;
-extern s32 lbl_80368A28;
+extern s32 gSynthTimeHi;
 extern s32 lbl_80368A2C;
 extern s32 gSynthSchedList;
 extern s32 gSynthIdleList;

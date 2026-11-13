@@ -90,7 +90,7 @@ extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
 extern s32 lbl_803687F8;
 extern f32 lbl_8036C374;
-extern s32 lbl_80368A28;
+extern s32 gSynthTimeHi;
 extern s32 lbl_80368A2C;
 extern s32 gSynthSchedList;
 extern s32 gSynthIdleList;
@@ -6017,7 +6017,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
 
 int fn_80250B58(void *arg0, u32 *arg1)
 {
-    extern s32 lbl_80368A28;
+    extern s32 gSynthTimeHi;
     extern s32 lbl_80368A2C;
 
     u16 fn_802611F8(void);
@@ -6093,7 +6093,7 @@ int fn_80250B58(void *arg0, u32 *arg1)
                 baseHigh = *(u32 *)(voice + 0x90);
                 baseLow = *(u32 *)(voice + 0x94);
             } else {
-                baseHigh = lbl_80368A28;
+                baseHigh = gSynthTimeHi;
                 baseLow = lbl_80368A2C;
             }
         } else {
@@ -6118,8 +6118,8 @@ int fn_80250B58(void *arg0, u32 *arg1)
         *(u32 *)(voice + 0x98) = high;
         *(u32 *)(voice + 0x9C) = low;
 
-        if (high > lbl_80368A28 ||
-            (high == lbl_80368A28 && low > lbl_80368A2C)) {
+        if (high > gSynthTimeHi ||
+            (high == gSynthTimeHi && low > lbl_80368A2C)) {
             *(u32 *)(voice + 0xA0) = high;
             *(u32 *)(voice + 0xA4) = low;
             *(u32 *)(voice + 0x98) = 0;
@@ -7598,7 +7598,7 @@ void fn_80254F00(u32 arg0)
         scheduledHigh = *(u32 *)(current + 0x98);
         scheduledLow = *(u32 *)(current + 0x9C);
 
-        timeHigh = (u32)lbl_80368A28;
+        timeHigh = (u32)gSynthTimeHi;
         timeLow = (u32)lbl_80368A2C;
 
         if (scheduledHigh > timeHigh ||
@@ -7612,7 +7612,7 @@ void fn_80254F00(u32 arg0)
         Sound_DeactivateSynthVoice(current);
 
         *(u32 *)(current + 0xA4) = (u32)lbl_80368A2C;
-        *(u32 *)(current + 0xA0) = (u32)lbl_80368A28;
+        *(u32 *)(current + 0xA0) = (u32)gSynthTimeHi;
 
         current = next;
     }
@@ -7652,10 +7652,10 @@ void fn_80254F00(u32 arg0)
     }
 
     timeLow = (u32)lbl_80368A2C;
-    timeHigh = (u32)lbl_80368A28;
+    timeHigh = (u32)gSynthTimeHi;
 
     lbl_80368A2C = (s32)(timeLow + arg0);
-    lbl_80368A28 =
+    gSynthTimeHi =
         (s32)(timeHigh + ((timeLow + arg0) < timeLow));
 }
 
@@ -7800,7 +7800,7 @@ void Sound_DeactivateSynthVoice(void *arg0) {
             fn_80249DD0(arg0);
             *(s32 *)((u8 *)arg0 + 0x9C) = 0;
             *(s32 *)((u8 *)arg0 + 0x98) = 0;
-            *(u64 *)((u8 *)arg0 + 0xA0) = *(u64 *)&lbl_80368A28;
+            *(u64 *)((u8 *)arg0 + 0xA0) = *(u64 *)&gSynthTimeHi;
             *(u64 *)((u8 *)arg0 + 0x114) &= ~0x40004ULL;
         }
         head = gSynthIdleList;
@@ -7898,7 +7898,7 @@ s32 fn_802555A0(
         *(u32 *)(voice + 0x9C) = 0;
         *(u32 *)(voice + 0x98) = 0;
         *(u32 *)(voice + 0xA4) = (u32)lbl_80368A2C;
-        *(u32 *)(voice + 0xA0) = (u32)lbl_80368A28;
+        *(u32 *)(voice + 0xA0) = (u32)gSynthTimeHi;
         *(u32 *)(voice + 0x118) &= 0xFFFBFFFB;
         *(u32 *)(voice + 0x4C) = 2;
     }
@@ -7981,7 +7981,7 @@ s32 fn_802555A0(
             *(u32 *)(voice + 0x9C) = 0;
             *(u32 *)(voice + 0x98) = 0;
             *(u32 *)(voice + 0xA4) = (u32)lbl_80368A2C;
-            *(u32 *)(voice + 0xA0) = (u32)lbl_80368A28;
+            *(u32 *)(voice + 0xA0) = (u32)gSynthTimeHi;
             *(u32 *)(voice + 0x118) &= 0xFFFBFFFB;
             *(u32 *)(voice + 0x114) = 0;
 
@@ -8012,7 +8012,7 @@ void fn_802559D8(void) {
     gSynthIdleList = 0;
     gSynthSchedList = 0; 
     lbl_80368A2C = 0;
-    lbl_80368A28 = 0;
+    gSynthTimeHi = 0;
     count = 0U;
     
     ptr = &gSoundData[0x34];
