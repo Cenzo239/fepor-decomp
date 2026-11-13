@@ -3203,7 +3203,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
-    u8 fn_8003DAC4(void *, void **);
+    u8 Unit_CanReceiveItem(void *, void **);
     s32 Str_Cmp(s32, u32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
@@ -3256,7 +3256,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
                 entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
                     tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
-                    if (!fn_8003DAC4(arg0, entry)) {
+                    if (!Unit_CanReceiveItem(arg0, entry)) {
                         dist = -1;
                     } else {
                         dist = 0;
@@ -3322,7 +3322,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
-    u8 fn_8003DAC4(void *, void **);
+    u8 Unit_CanReceiveItem(void *, void **);
     s32 Str_Cmp(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
@@ -3387,7 +3387,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
                 entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
                     tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
-                    if (!fn_8003DAC4(arg0, entry)) {
+                    if (!Unit_CanReceiveItem(arg0, entry)) {
                         dist = -1;
                     } else {
                         dist = 0;

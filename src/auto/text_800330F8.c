@@ -4888,7 +4888,7 @@ void fn_8003D70C(s32 arg0) {
     *(u8 *)(arg0 + 0x1B2) = *(u8 *)(arg0 + 0x1B2) + (s7 * factor) / 10000;
 }
 
-s32 fn_8003DAC4(s32 arg0, void *arg1) {
+s32 Unit_CanReceiveItem(s32 arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001D37C(void *);
     s32 fn_8003B258(void);

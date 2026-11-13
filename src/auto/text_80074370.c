@@ -514,14 +514,14 @@ void fn_800750D8(s32 arg0, void *arg1) {
 s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
     extern u8 gUiContext[24];
     s32 *Unit_GetItemSlot(s32, u8);
-    u8 fn_8003DAC4(s32, s32 *);
+    u8 Unit_CanReceiveItem(s32, s32 *);
     s32 *temp;
 
     temp = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), (u8)arg2);
     if ((u32)*temp == 0U) {
         return 3;
     }
-    return (fn_8003DAC4(*(s32 *)gUiContext, temp) == 0) ? 2 : 0;
+    return (Unit_CanReceiveItem(*(s32 *)gUiContext, temp) == 0) ? 2 : 0;
 }
 
 s32 fn_80075178(void *arg1, void *arg2) {
