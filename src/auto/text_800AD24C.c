@@ -2457,7 +2457,7 @@ loop_1:
     temp_r4 = M2C_FIELD(temp_r5_2, s32 *, 0x3C);
     M2C_FIELD(temp_r5_2, s32 *, 0x38) = temp_r4;
     M2C_FIELD((&lbl_80312BD0 + 0x6E98), s32 *, 0x3C) = 0;
-    fn_8020A51C(0, temp_r4, temp_r5_2);
+    OS_YieldThread(0, temp_r4, temp_r5_2);
     goto loop_1;
 }
 
@@ -2489,7 +2489,7 @@ s32 fn_800B4A14(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     M2C_FIELD(arg0, s32 *, 0x88) = 0;
 loop_1:
     if (!(M2C_FIELD(arg0, u16 *, 0x90) & 2)) {
-        fn_8020A51C();
+        OS_YieldThread();
         goto loop_1;
     }
     return M2C_FIELD(arg0, s32 *, 0x74);
@@ -2672,10 +2672,10 @@ void fn_800B503C(void) {
 
 void fn_800B50E4(void) {
     M2C_UNK fn_800B4C20();
-    M2C_UNK fn_8020A51C();
+    M2C_UNK OS_YieldThread();
 loop_1:
     fn_800B4C20();
-    fn_8020A51C();
+    OS_YieldThread();
     goto loop_1;
 }
 

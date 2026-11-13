@@ -943,7 +943,7 @@ void main(void) {
     void fn_801FBC48(void);
     void fn_802052E8(void);
     s32 fn_80209FD4(void);
-    void fn_8020A51C(void);
+    void OS_YieldThread(void);
     void fn_8020A558(void *, void *, s32, void *, s32, s32, s32);
     void fn_8020A9E0(void *);
     void fn_80224658(s32);
@@ -1012,13 +1012,13 @@ void main(void) {
     stack = (u32)base + 0x318;
     fn_8020A558((Thread *)base, fn_80014EA8, 0, (void *)(stack + 0x1000), 0x1000, 0x10, 1);
     fn_8020A9E0((Thread *)base);
-    fn_8020A51C();
+    OS_YieldThread();
     fn_801ED52C(0);
     fn_80005C60();
     fn_80008B94();
     for (;;) {
         while (lbl_803671B0) {
-            fn_8020A51C();
+            OS_YieldThread();
         }
         tmp = gGameFlags;
         if (tmp & 2) {
@@ -1092,12 +1092,12 @@ u8 fn_80014E70(void) {
 
 void fn_80014E78(void) {
     extern u8 lbl_803671B8;
-    extern void fn_8020A51C(void);
+    extern void OS_YieldThread(void);
     goto start;
     do {
         /* spin */
     start:
-        fn_8020A51C();
+        OS_YieldThread();
     } while (lbl_803671B8 == 0);
 }
 

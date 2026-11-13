@@ -143,7 +143,7 @@ void __OSReschedule(void) {
     }
 }
 
-void fn_8020A51C(void) {
+void OS_YieldThread(void) {
     BOOL OSDisableInterrupts(void);
     BOOL OSRestoreInterrupts(BOOL level);
     BOOL enabled;

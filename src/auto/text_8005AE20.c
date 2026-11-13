@@ -921,7 +921,7 @@ void FileCache_Release(u8 *arg0) {
     s64 OSGetTime(void);
     void fn_8003FED8(void *);
     void fn_800C4588(void *);
-    void fn_8020A51C(void);
+    void OS_YieldThread(void);
     extern u8 gFileCache[];
 
     *(u16 *)(arg0 + 0x32) = *(u16 *)(arg0 + 0x32) - 1;
@@ -981,7 +981,7 @@ void FileCache_Release(u8 *arg0) {
     if (*(volatile u16 *)(arg0 + 0x30) & 4) {
         goto spin1_check;
     spin1_body:
-        fn_8020A51C();
+        OS_YieldThread();
     spin1_check:
         if (*(volatile u16 *)(arg0 + 0x30) & 0x80) {
             goto spin1_body;
@@ -991,7 +991,7 @@ void FileCache_Release(u8 *arg0) {
 
         goto spin2_check;
     spin2_body:
-        fn_8020A51C();
+        OS_YieldThread();
     spin2_check:
         if (*(volatile u16 *)(arg0 + 0x30) & 0x80) {
             goto spin2_body;
