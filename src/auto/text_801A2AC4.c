@@ -1185,7 +1185,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     s32 fn_8005B580(s32, u8 *, s32);
     void Battle_ResolveRounds(s32);
     void fn_801A601C(s32, s32, s32, s32);
-    void fn_801A6C18(s32, u8, u8);
+    void Battle_ProcessStatusAnims(s32, u8, u8);
     void fn_801A8268(s32);
     extern u8 lbl_802EFDB8[];
     extern u8 gBattleState[];
@@ -1217,7 +1217,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     *(u16 *)((u8 *)leftUnit + 0x228) = *(u16 *)((u8 *)leftUnit + 0x228) + 1;
     rightUnit = *(void **)(self + 0x560);
     *(u16 *)((u8 *)rightUnit + 0x228) = *(u16 *)((u8 *)rightUnit + 0x228) + 1;
-    fn_801A6C18(self, arg1, 0);
+    Battle_ProcessStatusAnims(self, arg1, 0);
     *(u8 *)(self + 0xCA4) = 0;
     fn_801A601C(self, self, self + 0x2E0, 0);
     fn_80034068(self + 0x8A0, 0x54, 0);
@@ -2170,7 +2170,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     }
 }
 
-void fn_801A6C18(s32 arg0, u8 arg1, u8 arg2) {
+void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
     u64 *fn_8001CB64(void *);
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
@@ -2258,7 +2258,7 @@ void fn_801A6C18(s32 arg0, u8 arg1, u8 arg2) {
 void fn_801A6F34(void *arg0, void *arg1)
 {
     extern void fn_801A601C(void *, void *, void *, s32);
-    extern void fn_801A6C18(void *, void *, s32);
+    extern void Battle_ProcessStatusAnims(void *, void *, s32);
     extern void fn_80034068(void *, s32, s32);
 
     u8 *obj;
@@ -2267,7 +2267,7 @@ void fn_801A6F34(void *arg0, void *arg1)
 
     fn_801A601C(obj, obj, obj + 0x2E0, 0);
 
-    fn_801A6C18(obj, arg1, 1);
+    Battle_ProcessStatusAnims(obj, arg1, 1);
 
     obj[0xCA4] = 0;
 
