@@ -615,7 +615,7 @@ void fn_80034130(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 void Battle_QueuePromotionGains(s32 self, void *arg1) {
     void fn_801A7794(void *, void *, void *);
-    void fn_8003D2C4(void *);
+    void Unit_Promote(void *);
     void fn_801A981C(void *, s32, s32);
     s32 Unit_GetHp(void *);
     s32 Unit_GetStr(void *);
@@ -642,7 +642,7 @@ void Battle_QueuePromotionGains(s32 self, void *arg1) {
     s32 t;
 
     fn_801A7794((void *)self, arg1, arg1);
-    fn_8003D2C4((void *)(self + 0x2E0));
+    Unit_Promote((void *)(self + 0x2E0));
     *(u32 *)(self + 0xCAC) |= 0x2000;
     fn_801A981C((void *)self, 0, -1);
     fn_801A981C((void *)(self + 0x2E0), 0, -1);
@@ -4547,7 +4547,7 @@ u8 fn_8003D094(s32 arg0, u8 arg1) {
 }
 
 #pragma opt_strength_reduction off
-void fn_8003D2C4(void *arg0) {
+void Unit_Promote(void *arg0) {
     void *Res_GetByName(void *);
     void fn_800381EC(void *, s8);
     void fn_8003868C(void *, s32);

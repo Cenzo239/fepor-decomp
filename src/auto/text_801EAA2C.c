@@ -1921,7 +1921,7 @@ void fn_801EDDF0(void *arg0) {
     void *fn_801A7FA4(void *);
     void fn_801A9CF4(void *, void *);
     void Battle_QueuePromotionGains(void *, void *);
-    void fn_8003D2C4(void *);
+    void Unit_Promote(void *);
     extern u8 lbl_80330EAC[];
     extern u8 gUiContext[];
     void *temp;
@@ -1948,7 +1948,7 @@ void fn_801EDDF0(void *arg0) {
     }
     gUiContext[0x14] = 0xFF;
     Battle_QueuePromotionGains(lbl_80330EAC, *(void **)((u8 *)arg0 + 0x30));
-    fn_8003D2C4(*(void **)((u8 *)arg0 + 0x30));
+    Unit_Promote(*(void **)((u8 *)arg0 + 0x30));
 }
 
 void fn_801EDEC8(void *arg0) {
