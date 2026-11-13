@@ -1550,7 +1550,7 @@ void fn_801E6CEC(void *arg0) {
     fn_80057020(*(void **)((u8 *)arg0 + 0x5C));
 }
 #pragma peephole on
-void fn_801E7D18(void *arg0) {
+void TabMenu_DrawHud(void *arg0) {
     f32 Math_Ease(s32, u8, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
     void fn_80009C20( f32, f32, f32, f32, f32, f32, f32, f32);
@@ -2588,7 +2588,7 @@ void TabMenu_Init(void *arg0) {
     void fn_8013FCE0(void *, void *, void **, void **);
     void fn_801E4CF8(void *);
     void TabMenu_Draw(void);
-    void fn_801E7D18(void);
+    void TabMenu_DrawHud(void);
     extern u8 gTabMenuStrings[];
     extern void *lbl_802981AC[];
     extern u8 lbl_8036835C;
@@ -2668,7 +2668,7 @@ skip_sub:
     fn_80057860(*(void **)((u8 *)arg0 + 0x5C), t);
     fn_800578A0(*(void **)((u8 *)arg0 + 0x5C), lbl_8036B714);
     Process_AttachFunc(TabMenu_Draw, arg0);
-    Process_AttachFunc(fn_801E7D18, arg0);
+    Process_AttachFunc(TabMenu_DrawHud, arg0);
 }
 
 void fn_801E9B80(void *arg0) {
