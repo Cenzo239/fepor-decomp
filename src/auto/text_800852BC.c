@@ -2672,7 +2672,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void Prim2D_AddZ(f32);
     void fn_8007B4D8(s32, s32, s32, void *);
     void Prim2D_ClearCallbacks(void);
-    void *fn_800A8A88(void *);
+    void *Msg_ResolveName(void *);
     void *fn_800A8978(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
@@ -2759,9 +2759,9 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     Prim2D_PrepareTex();
 
     {
-        void *str = fn_800A8A88(name);
+        void *str = Msg_ResolveName(name);
         width = (f32)Text_MeasureWidth(str, -1, lbl_80369704);
-        str = fn_800A8A88(name);
+        str = Msg_ResolveName(name);
         fn_8001003C((s16)(s32)(lbl_80369718 + (f32)x - lbl_80369700 * width),
                     (s16)(y - 0xB), 1, 0, 0, str, lbl_80369704, lbl_803696E0);
     }

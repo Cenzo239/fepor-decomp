@@ -1791,7 +1791,7 @@ void fn_8012F5CC(void *arg0) {
     void Prim2D_Begin(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     f32 fn_80059EB8(s32, s32, f32, f32);
-    void *fn_800A8A88(s32);
+    void *Msg_ResolveName(s32);
     void Ui_ScissorUnitListRows(void);
     extern f64 lbl_8036A4F0;
     extern f32 lbl_8036A4EC;
@@ -1870,7 +1870,7 @@ void fn_8012F5CC(void *arg0) {
                     icon = 0;
                 }
             }
-            str = fn_800A8A88(*(s32 *)((u8 *)item + 0x188));
+            str = Msg_ResolveName(*(s32 *)((u8 *)item + 0x188));
             if (str != NULL) {
                 Prim2D_Begin();
                 Prim2D_SetTransform(lbl_8036A524, f30, lbl_8036A500, lbl_8036A50C);
@@ -2606,7 +2606,7 @@ void fn_80130B10(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 }
 
 void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
-    s32 fn_800A8A88(s32);
+    s32 Msg_ResolveName(s32);
     s32 sprintf(char *dest, const char *fmt, ...);
     extern char gUiSelectMenuStrings[];
 
@@ -2618,7 +2618,7 @@ void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
         if (temp == 0) {
             sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &gUiSelectMenuStrings[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }
@@ -2627,7 +2627,7 @@ void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
         if (temp == 0) {
             sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &gUiSelectMenuStrings[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }

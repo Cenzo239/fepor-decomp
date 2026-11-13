@@ -2400,7 +2400,7 @@ void fn_800A8A64(void *arg0) {
     Msg_Expand(M2C_FIELD(arg0, s32 *, 8));
 }
 
-s32 fn_800A8A88(void *arg0) {
+s32 Msg_ResolveName(void *arg0) {
     s32 Msg_Expand(s32);
     s32 Res_GetByName(s32);
     s32 fn_8007C378(s32);

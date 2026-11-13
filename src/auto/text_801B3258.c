@@ -1512,7 +1512,7 @@ loop_7:
 #pragma opt_loop_invariants off
 void fn_801B84C0(void) {
     char *Msg_Expand(u32);
-    u32 fn_800A8A88(u32);
+    u32 Msg_ResolveName(u32);
     void DebugPrint(const char *, ...);
     extern char lbl_8027C5C8[];
     extern struct {
@@ -1529,7 +1529,7 @@ void fn_801B84C0(void) {
     } *p;
 
     for (p = (void *)lbl_80367214; p->unk0 != 0; p++) {
-        DebugPrint(lbl_8027C5C8 + 8, Msg_Expand(fn_800A8A88(p->unk0)), Msg_Expand(fn_800A8A88(p->unk4)), p->unk8, p->unk9);
+        DebugPrint(lbl_8027C5C8 + 8, Msg_Expand(Msg_ResolveName(p->unk0)), Msg_Expand(Msg_ResolveName(p->unk4)), p->unk8, p->unk9);
     }
 }
 
@@ -13146,7 +13146,7 @@ int fn_801D2AAC(void *arg0) {
 
 s32 fn_801D2B04(void *arg0) {
     s32 Msg_Expand(void);
-    s32 fn_800A8A88(s32);
+    s32 Msg_ResolveName(s32);
     void fn_800BE728(s32);
     struct Node {
         struct Node *prev;
@@ -13185,7 +13185,7 @@ s32 fn_801D2B04(void *arg0) {
     }
     p = node->unk10;
     if (p != NULL) {
-        return fn_800A8A88(*(s32 *)((u8 *)p + 0x188));
+        return Msg_ResolveName(*(s32 *)((u8 *)p + 0x188));
     }
     fn_800BE728(node->unk8);
     return Msg_Expand();
@@ -15873,7 +15873,7 @@ void fn_801DE474(void *arg0, void *arg1)
     void fn_80006B18(s32, s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void *fn_8014C604(u8 *);
-    void *fn_800A8A88(u32);
+    void *Msg_ResolveName(u32);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32);
     extern f32 lbl_8036B6C0;
     extern f32 lbl_8036B6C4;
@@ -16063,7 +16063,7 @@ void fn_801DE474(void *arg0, void *arg1)
         row_y = (s16)(row_y + gap);
         Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x76));
         if (fn_8014C604(gBattleState) != NULL) {
-            Text_Draw((s16)(left_x + 0x80), row_y, 2, fn_800A8A88(*(u32 *)((u8 *)fn_8014C604(gBattleState) + 0x188)));
+            Text_Draw((s16)(left_x + 0x80), row_y, 2, Msg_ResolveName(*(u32 *)((u8 *)fn_8014C604(gBattleState) + 0x188)));
         } else {
             Text_Draw((s16)(left_x + 0x80), row_y, 0xF, lbl_8027E8D0 + 0x84);
         }
@@ -16098,7 +16098,7 @@ void fn_801DE474(void *arg0, void *arg1)
             && flags8[M2C_FIELD(*(void **)((u8 *)unit + 0x190), u8 *, 8)] != 0
             && (M2C_FIELD(unit, u32 *, 0x1A0) & 0x80000)) {
             any = 1;
-            fn_800A8A88(M2C_FIELD(unit, u32 *, 0x188));
+            Msg_ResolveName(M2C_FIELD(unit, u32 *, 0x188));
             name_w = Text_MeasureWidth((u8 *)-1, -1, lbl_8036B6CC);
             if ((s32)(x_cur + name_w + y0) > right + 0x18) {
                 if (ROW_VISIBLE(ybase)) {
@@ -16118,7 +16118,7 @@ void fn_801DE474(void *arg0, void *arg1)
                 }
             }
             if (ROW_VISIBLE(ybase)) {
-                Text_Draw((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(unit, u32 *, 0x188)));
+                Text_Draw((s16)(left_x + x_cur), row_y, 2, Msg_ResolveName(M2C_FIELD(unit, u32 *, 0x188)));
             }
             y_prev = ybase;
             x_prev = (s16)(left_x + x_cur + name_w);
@@ -16159,7 +16159,7 @@ void fn_801DE474(void *arg0, void *arg1)
         entry = M2C_FIELD(node, void **, 0x184);
         if (M2C_FIELD(node, u32 *, 0x1A0) & 0x8000) {
             any = 1;
-            fn_800A8A88(M2C_FIELD(node, u32 *, 0x188));
+            Msg_ResolveName(M2C_FIELD(node, u32 *, 0x188));
             name_w = Text_MeasureWidth((u8 *)-1, -1, lbl_8036B6CC);
             if ((s32)(x_cur + name_w + y0) > right + 0x18) {
                 if (ROW_VISIBLE(ybase)) {
@@ -16179,7 +16179,7 @@ void fn_801DE474(void *arg0, void *arg1)
                 }
             }
             if (ROW_VISIBLE(ybase)) {
-                Text_Draw((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(node, u32 *, 0x188)));
+                Text_Draw((s16)(left_x + x_cur), row_y, 2, Msg_ResolveName(M2C_FIELD(node, u32 *, 0x188)));
             }
             y_prev = ybase;
             x_prev = (s16)(left_x + x_cur + name_w);

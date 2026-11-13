@@ -4940,7 +4940,7 @@ extern "C" void *GameScene_Create(void *arg0)
     typedef void *(*ObjectLookupFn)(void *, const char *, const char *);
     f32 Actor_GetRadius(void *);
     void Actor_SetRadius(void *, f32);
-    char *fn_800A8A88(const char *);
+    char *Msg_ResolveName(const char *);
     void fn_800DB1FC(void *, void *);
     void fn_800CB070(String *);
     void fn_800CAF74(void *, void *);
@@ -5994,7 +5994,7 @@ extern "C" void *GameScene_Create(void *arg0)
     } else {
         assignedText0 = *(char **)((u8 *)gBattle + 0x188);
     }
-    assignedText0 = fn_800A8A88(assignedText0);
+    assignedText0 = Msg_ResolveName(assignedText0);
     String_Init(&assignedName0, assignedText0, &assignedScratch0);
     fn_800DB1FC(orderedLookup0, &assignedName0);
     String_Destroy(&assignedName0, -1);
@@ -6009,7 +6009,7 @@ extern "C" void *GameScene_Create(void *arg0)
     } else {
         assignedText2 = *(char **)((u8 *)gBattle + 0x468);
     }
-    assignedText2 = fn_800A8A88(assignedText2);
+    assignedText2 = Msg_ResolveName(assignedText2);
     String_Init(&assignedName2, assignedText2, &assignedScratch2);
     fn_800DB1FC(orderedLookup2, &assignedName2);
     String_Destroy(&assignedName2, -1);

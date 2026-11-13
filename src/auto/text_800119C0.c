@@ -2033,7 +2033,7 @@ void fn_80016538(void)
 
     extern s32 fn_80015680(void *);
     extern void DebugPrint(const char *, ...);
-    extern s32 fn_800A8A88(void *);
+    extern s32 Msg_ResolveName(void *);
 
     u8 *node;
     s32 index;
@@ -2063,7 +2063,7 @@ void fn_80016538(void)
                 byte1 = *(u8 *)(node + 0x19F);
                 byte0 = *(u8 *)(node + 0x19E);
                 byte2 = *(u8 *)(node + 0x198);
-                result = fn_800A8A88(ptr);
+                result = Msg_ResolveName(ptr);
                 DebugPrint(
                     strings + 0x3B,
                     byte2,

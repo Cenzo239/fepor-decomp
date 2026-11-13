@@ -1131,7 +1131,7 @@ char *fn_800A0D48(void)
     extern char lbl_80312338[];
 
     extern void *Map_GetCursorUnit(void);
-    extern s32 fn_800A8A88(void *);
+    extern s32 Msg_ResolveName(void *);
     extern s32 sprintf(char *, const char *, ...);
 
     u8 *unit;
@@ -1143,7 +1143,7 @@ char *fn_800A0D48(void)
         return (char *)lbl_8026D8D8 + 0x582;
     }
 
-    value = fn_800A8A88(*(void **)(unit + 0x188));
+    value = Msg_ResolveName(*(void **)(unit + 0x188));
 
     sprintf(
         lbl_80312338,
@@ -1994,7 +1994,7 @@ s32 fn_800A279C(void *arg0)
 
 char *fn_800A27D8(void *arg0) {
     void *Person_Get(s16);
-    s32 fn_800A8A88(void);
+    s32 Msg_ResolveName(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026D8D8[];
     extern char gItemMenuTextBuf[];
@@ -2002,7 +2002,7 @@ char *fn_800A27D8(void *arg0) {
     s32 temp_r6;
 
     temp_r31 = Person_Get(*(s16 *)((u8 *)arg0 + 4));
-    temp_r6 = fn_800A8A88();
+    temp_r6 = Msg_ResolveName();
     sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
     return gItemMenuTextBuf;
 }
@@ -2190,7 +2190,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_PrepareTex(void);
     s32 fn_80037004(void *, s32);
     u8 fn_8003701C(void *);
-    s32 fn_800A8A88(s32);
+    s32 Msg_ResolveName(s32);
     M2C_UNK sprintf(u8 *, void *, ...);
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_SetPos(f32, f32);
@@ -2222,7 +2222,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             Prim2D_AddZ(gItemMenuTextZ);
             Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
-            sprintf(sp18, lbl_8026D8D8 + 0x6C7, fn_800A8A88(fn_80037004(obj, idx)));
+            sprintf(sp18, lbl_8026D8D8 + 0x6C7, Msg_ResolveName(fn_80037004(obj, idx)));
             Prim2D_AddPrim(5);
             Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
             Prim2D_SetText(sp18);

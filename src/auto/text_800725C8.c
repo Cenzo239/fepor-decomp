@@ -83,7 +83,7 @@ void fn_8007278C(void) {
     extern u8 lbl_8026BC88[];
     extern u8 gUiContext[];
     if ((void *) M2C_FIELD(&gUiContext, void **, 4) != NULL) {
-        fn_800A8A88(M2C_FIELD(M2C_FIELD(&gUiContext, void **, 4), s32 *, 0x188));
+        Msg_ResolveName(M2C_FIELD(M2C_FIELD(&gUiContext, void **, 4), s32 *, 0x188));
         fn_80091A1C();
         return;
     }

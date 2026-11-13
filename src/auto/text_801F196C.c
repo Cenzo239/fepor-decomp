@@ -1092,7 +1092,7 @@ void fn_801F3E60(void *arg0) {
     void Ui_DrawCaptionBar(void *, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
-    void *fn_800A8A88(s32);
+    void *Msg_ResolveName(s32);
     void fn_80152010(s16, s16, s32, s32, s32);
     void fn_8015F24C(s32, s32, s32, s32, s32);
     Color *Ui_GetColor(s32);
@@ -1371,7 +1371,7 @@ void fn_801F3E60(void *arg0) {
     (void)c7; (void)c8; (void)f31v; (void)f30v; (void)f29v;
     (void)fn_80009BC0; (void)fn_801F52A8; (void)fn_8015F24C;
     (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
-    (void)fn_800A8A88; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
+    (void)Msg_ResolveName; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
     (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;
     (void)fn_80238638; (void)OSGetTime; (void)__div2i;
     (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
@@ -3225,7 +3225,7 @@ void fn_801F8E30(void *arg0) {
     void fn_800609DC(void *);
     void Ui_LoadAtlasTex(void *, void *, s32);
     void *fn_800A8978(void *);
-    void *fn_800A8A88(void *);
+    void *Msg_ResolveName(void *);
     void fn_80109020(void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -3310,7 +3310,7 @@ clear:
             Prim2D_Begin();
             Prim2D_SetTex(NULL, 0x13);
             Prim2D_PrepareTex();
-            Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
+            Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, Msg_ResolveName(*(void **)((u8 *)unit + 0x188)));
             Text_Draw((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
             if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) != 6) {
                 Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, StaffRoll_str + 0x29F,

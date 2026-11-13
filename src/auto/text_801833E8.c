@@ -2865,14 +2865,14 @@ void fn_8018BC28(void) {
 
 void fn_8018C680(void *arg0)
 {
-    void *fn_800A8A88(void *);
+    void *Msg_ResolveName(void *);
     void DebugPrint(const char *, ...);
     extern u8 MoveAnim_str[];
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
     p = *(void **)((u8 *)p + 0x188);
-    DebugPrint((char *)(MoveAnim_str + 0x97b), fn_800A8A88(p), MoveAnim_str);
+    DebugPrint((char *)(MoveAnim_str + 0x97b), Msg_ResolveName(p), MoveAnim_str);
 }
 
 #pragma opt_strength_reduction off

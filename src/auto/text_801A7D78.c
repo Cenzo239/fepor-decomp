@@ -123,7 +123,7 @@ void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 #pragma use_lmw_stmw on
 void fn_801A8268(void *arg0) {
     s32 DebugPrint(const char *, ...);
-    s32 fn_800A8A88(void *);
+    s32 Msg_ResolveName(void *);
     s32 fn_800A8978(void *);
     s32 Unit_GetMaxHp(void *);
     u8 fn_800386B0(void *);
@@ -152,7 +152,7 @@ void fn_801A8268(void *arg0) {
 
     p = *(void **)((u8 *)arg0 + 0x188);
     DebugPrint((const char *)(lbl_8027B650 + 0x1D),
-                fn_800A8A88(p), *(void **)p);
+                Msg_ResolveName(p), *(void **)p);
     p = *(void **)((u8 *)arg0 + 0x18C);
     DebugPrint((const char *)(lbl_8027B650 + 0x29),
                 fn_800A8978(p), *(void **)p);

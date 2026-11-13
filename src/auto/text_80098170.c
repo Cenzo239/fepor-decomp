@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 s32 fn_80098170(void **arg0) {
-    s32 fn_800A8A88(s32);
+    s32 Msg_ResolveName(s32);
     void *temp_r3;
     void *var_r0;
     void *var_r3;
@@ -63,7 +63,7 @@ s32 fn_80098170(void **arg0) {
         } else {
             var_r3 = NULL;
         }
-        return fn_800A8A88(*(s32 *)((char *)var_r3 + 0x188));
+        return Msg_ResolveName(*(s32 *)((char *)var_r3 + 0x188));
     }
     return 0;
 }

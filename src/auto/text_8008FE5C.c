@@ -139,7 +139,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     s32 fn_8010424C(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
     void UnitInfo_DrawPanel(s32, s32, u8);
-    void *fn_800A8A88(void *);
+    void *Msg_ResolveName(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
     extern f32 gZeroF, lbl_80369780, lbl_80369784, lbl_80369788, lbl_80369768, lbl_80369754;
@@ -184,8 +184,8 @@ void UnitInfo_DrawPair(u8 *arg0) {
     UnitInfo_DrawPanel(9, 0x68, ((u8 *)*(void **)(self + 0x190))[8]);
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
-    b = (0xCF - Text_MeasureWidth(fn_800A8A88(*(void **)(self + 0x188)), -1, lbl_80369754)) / 2;
-    Text_Draw((s16)(b + 9), 0x6C, 1, fn_800A8A88(*(void **)(self + 0x188)));
+    b = (0xCF - Text_MeasureWidth(Msg_ResolveName(*(void **)(self + 0x188)), -1, lbl_80369754)) / 2;
+    Text_Draw((s16)(b + 9), 0x6C, 1, Msg_ResolveName(*(void **)(self + 0x188)));
     Text_Draw((s16)(b - 0xF), 0x6C, 1, gBattleHelpStrings + 0x13D);
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);

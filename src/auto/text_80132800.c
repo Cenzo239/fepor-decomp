@@ -3316,7 +3316,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     s32 fn_8001059C(void *, s32, f32);
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(s32, f32);
-    void *fn_800A8A88(void *);
+    void *Msg_ResolveName(void *);
     void *fn_800A8978(void *);
     u8 fn_800386B0(void *);
     s8 Unit_GetMaxHp(void *);
@@ -3397,7 +3397,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     fgap = (f32)fn_8001059C(lbl_802767E0 + 0x95, -1, lbl_8036A620);
 
     if (self->unk40 & 2) {
-        Text_Draw((s32)fy, (s32)lbl_8036A628, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
+        Text_Draw((s32)fy, (s32)lbl_8036A628, 2, Msg_ResolveName(*(void **)((u8 *)unit + 0x188)));
         fx += lbl_8036A640;
     }
     if (self->unk40 & 4) {
@@ -4758,7 +4758,7 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, void *arg4, u8 arg5) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Text_Draw(s32, s16, s32, void *, s32);
     s32 Text_MeasureHeight(M2C_UNK, f32);
-    s32 fn_800A8A88(s32);
+    s32 Msg_ResolveName(s32);
     M2C_UNK fn_80152010(s16, s16, s16, M2C_UNK, M2C_UNK);
     extern M2C_UNK lbl_802768A0;
     extern f32 lbl_8036A674;
@@ -4777,7 +4777,7 @@ void fn_8013AAB4(void *arg0, s32 arg1, s16 arg2, void *arg4, u8 arg5) {
     Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 0x13));
     Prim2D_PrepareTex();
     temp_r28 = M2C_FIELD(arg0, s16 *, 0x5A);
-    temp_r26 = fn_800A8A88(M2C_FIELD(arg4, s32 *, 0x188));
+    temp_r26 = Msg_ResolveName(M2C_FIELD(arg4, s32 *, 0x188));
     Text_Draw(arg1, (s16) (arg2 + (s16) ((s32) (temp_r28 - Text_MeasureHeight(-1, lbl_8036A674)) >> 1)), var_r27, &lbl_802768A0 + 0x39, temp_r26);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A6B0);

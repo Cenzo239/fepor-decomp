@@ -128,7 +128,7 @@ void fn_80083F08(void *arg0) {
     void fn_800852BC(void);
     void fn_8008532C(s32, s16 *);
     void *fn_800A8978(u32);
-    void *fn_800A8A88(s32);
+    void *Msg_ResolveName(s32);
     s32 fn_801660A8(void *);
     Color *Ui_GetColor(s32);
     void PSMTXCopy(f32 *, void *);
@@ -419,9 +419,9 @@ void fn_80083F08(void *arg0) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
-    fn_800A8A88(nameId);
-    w = (f32)Text_MeasureWidth(fn_800A8A88(nameId), -1, lbl_80369430);
-    fn_8001003C((s32)((lbl_8036961C + bx) - (lbl_80369514 * w)), (s32)(by - lbl_8036949C), 1, 0, 0, fn_800A8A88(nameId), lbl_80369430, lbl_80369418);
+    Msg_ResolveName(nameId);
+    w = (f32)Text_MeasureWidth(Msg_ResolveName(nameId), -1, lbl_80369430);
+    fn_8001003C((s32)((lbl_8036961C + bx) - (lbl_80369514 * w)), (s32)(by - lbl_8036949C), 1, 0, 0, Msg_ResolveName(nameId), lbl_80369430, lbl_80369418);
 
     if (classId != 0) {
         fn_8001003C((s32)(lbl_803695FC + bx), (s32)(lbl_803694B4 + by), 2, 0, 0, fn_800A8978(classId), lbl_80369430, lbl_80369418);
@@ -453,9 +453,9 @@ void fn_80083F08(void *arg0) {
     fn_8001003C((s32)f29v, (s32)f23v, 8, 0, 0, Msg_Expand(gUiStrings + 0x384), lbl_80369430, lbl_80369418);
     child = *(void **)((u8 *)unit + 0x194);
     if (child != NULL) {
-        fn_800A8A88(*(s32 *)((u8 *)child + 0x188));
-        w = (f32)Text_MeasureWidth(fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), -1, lbl_80369430);
-        fn_8001003C((s32)((gUiCaptionBarY2 + bx) - (lbl_80369514 * w)), (s32)f23v, 2, 0, 0, fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), lbl_80369430, lbl_80369418);
+        Msg_ResolveName(*(s32 *)((u8 *)child + 0x188));
+        w = (f32)Text_MeasureWidth(Msg_ResolveName(*(s32 *)((u8 *)child + 0x188)), -1, lbl_80369430);
+        fn_8001003C((s32)((gUiCaptionBarY2 + bx) - (lbl_80369514 * w)), (s32)f23v, 2, 0, 0, Msg_ResolveName(*(s32 *)((u8 *)child + 0x188)), lbl_80369430, lbl_80369418);
     }
 
     fn_8001003C((s32)f29v, (s32)f31v, 8, 0, 0, Msg_Expand(gUiStrings + 0x38C), lbl_80369430, lbl_80369418);
