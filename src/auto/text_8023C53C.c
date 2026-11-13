@@ -11951,7 +11951,7 @@ void fn_8025E4E8(void) {
     fn_8025DBF4();
 }
 
-void fn_8025EC10(u32 arg0) {
+void Sound_ApplyInitFlags(u32 arg0) {
     extern s8 lbl_80368AAF;
     extern s8 lbl_80368AB0;
     extern s8 lbl_80368AB1;
@@ -12013,7 +12013,7 @@ s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize)
         fn_8024ADFC(32000, num);
         fn_8024BB90();
         fn_80258100();
-        fn_8025EC10(flags);
+        Sound_ApplyInitFlags(flags);
         ret = 0;
         gSoundReady = 1;
     }
