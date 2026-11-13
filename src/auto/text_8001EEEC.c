@@ -3865,7 +3865,7 @@ void fn_80026F5C(void *arg0) {
 }
 
 void fn_80026FA0(void *arg0) {
-    void fn_8003816C(s32, s32, s32);
+    void Unit_SetMapPos(s32, s32, s32);
     void fn_80183EAC(s32, s32, s32, s32, void *);
     extern u8 gUiContext[];
     u8 *p;
@@ -3875,7 +3875,7 @@ void fn_80026FA0(void *arg0) {
     p = gUiContext;
     x = (s32)*(f32 *)((u8 *)arg0 + 0x30);
     y = (s32)*(f32 *)((u8 *)arg0 + 0x34);
-    fn_8003816C(*(s32 *)(p + 4), x, y);
+    Unit_SetMapPos(*(s32 *)(p + 4), x, y);
     x = (s32)*(f32 *)((u8 *)arg0 + 0x30);
     y = (s32)*(f32 *)((u8 *)arg0 + 0x34);
     fn_80183EAC(*(s32 *)gUiContext, *(s32 *)(p + 4), x, y, arg0);
@@ -3915,19 +3915,19 @@ void fn_80027F98(void *arg0, u8 arg1) {
 }
 
 void fn_8002807C(void *arg0) {
-    M2C_UNK fn_8003816C(s32, u8, u8);
+    M2C_UNK Unit_SetMapPos(s32, u8, u8);
     M2C_UNK fn_80050C90(s32);
-    fn_8003816C(M2C_FIELD(arg0, s32 *, 0), M2C_FIELD(arg0, u8 *, 0xB), M2C_FIELD(arg0, u8 *, 0xC));
+    Unit_SetMapPos(M2C_FIELD(arg0, s32 *, 0), M2C_FIELD(arg0, u8 *, 0xB), M2C_FIELD(arg0, u8 *, 0xC));
     fn_80050C90(M2C_FIELD(arg0, s32 *, 0));
     fn_8002297C(&gBattleMap);
 }
 
 void fn_800280C8(void *arg0, s32 arg1, s32 arg2) {
-    void fn_8003816C(void *, s32, s32);
+    void Unit_SetMapPos(void *, s32, s32);
     void fn_80050C90(void *);
     s16 *costs;
 
-    fn_8003816C(*(void **)arg0, arg1, arg2);
+    Unit_SetMapPos(*(void **)arg0, arg1, arg2);
     fn_80050C90(*(void **)arg0);
     *((u8 *)arg0 + 0xD) = (u8)arg1;
     *((u8 *)arg0 + 0xE) = (u8)arg2;

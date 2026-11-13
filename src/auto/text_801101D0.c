@@ -4073,9 +4073,9 @@ void *fn_8011AC78(void *arg0)
 }
 
 void fn_8011AE2C(void *arg0) {
-    M2C_UNK fn_8003816C(s32, u8, u8);
+    M2C_UNK Unit_SetMapPos(s32, u8, u8);
     M2C_UNK fn_80050C90(s32);
-    fn_8003816C(M2C_FIELD(arg0, s32 *, 0x30), M2C_FIELD(arg0, u8 *, 0x58), M2C_FIELD(arg0, u8 *, 0x59));
+    Unit_SetMapPos(M2C_FIELD(arg0, s32 *, 0x30), M2C_FIELD(arg0, u8 *, 0x58), M2C_FIELD(arg0, u8 *, 0x59));
     fn_80050C90(M2C_FIELD(arg0, s32 *, 0x30));
 }
 

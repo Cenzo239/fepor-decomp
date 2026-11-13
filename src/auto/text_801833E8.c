@@ -12310,7 +12310,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 lbl_80296FA8[36];
     void *Process_Find(u8 *);
     void *fn_8000CAF0(u8 *, s32);
-    s32 fn_8003816C(void *, u8, u8);
+    s32 Unit_SetMapPos(void *, u8, u8);
     s32 fn_80050C90(void *);
     s32 fn_80107D64(void *, u8 *, u8 *, s32, s32, s32);
     s32 fn_8002297C(u8 *);
@@ -12335,7 +12335,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
     sp9 = arg2;
 
     fn_80107D64(var_r31, &sp8, &sp9, 0, 0, 0);
-    fn_8003816C(var_r31, sp8, sp9);
+    Unit_SetMapPos(var_r31, sp8, sp9);
     fn_8002297C(gBattleMap);
 
     fn_80050C90(var_r31);
@@ -12360,7 +12360,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     void *Process_Find(u8 *);
     void *fn_8000CAF0(u8 *, s32);
     void fn_8002297C(u8 *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8004FE98(void *, s32);
     void fn_80050C90(void *);
     s32 fn_800C0658(void);
@@ -12438,7 +12438,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     sp8 = arg2;
     temp_r28 = fn_80107D64(var_r31, &sp9, &sp8, 1, 0, 0);
     if (temp_r28 != 0) {
-        fn_8003816C(var_r31, sp9, sp8);
+        Unit_SetMapPos(var_r31, sp9, sp8);
         if (gUiInputFlags & 1) {
             fn_8004FE98(var_r31, 0);
             fn_80184750(var_r31, temp_r0 & 0xF, 0, 0);

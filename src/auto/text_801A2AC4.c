@@ -227,7 +227,7 @@ s32 fn_801A30B8(void) {
 }
 
 s32 fn_801A30C0(s32 arg0) {
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
@@ -237,7 +237,7 @@ s32 fn_801A30C0(s32 arg0) {
     u8 *ctx;
 
     ctx = gUiContext;
-    fn_8003816C(*(void **)(ctx + 4), ctx[0xF], ctx[0x10]);
+    Unit_SetMapPos(*(void **)(ctx + 4), ctx[0xF], ctx[0x10]);
     fn_801A7794(lbl_80330EAC, *(void **)ctx, *(void **)(ctx + 4));
     fn_801A49AC(lbl_80330EAC, ctx[0xA]);
     fn_80036150(lbl_80330EAC);
@@ -260,7 +260,7 @@ s32 fn_801A3190(void) {
 
 s32 fn_801A31C8(s32 arg0) {
     void fn_8003CCB0(void *, u8 *, u8 *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
@@ -284,7 +284,7 @@ s32 fn_801A31C8(s32 arg0) {
     sp8 = *(u8 *)((u8 *)*(void **)ctx + 0x19F);
     map[(s8)sp9 + ((s8)sp8 << 6) + 0xD] = 0xFF;
     fn_8003CCB0(other, &sp9, &sp8);
-    fn_8003816C(other, sp9, sp8);
+    Unit_SetMapPos(other, sp9, sp8);
     fn_801A7794(lbl_80330EAC, *(void **)gUiContext, *(void **)(ctx + 4));
     fn_801A49AC(lbl_80330EAC, gUiContext[0xA]);
     fn_80036150(lbl_80330EAC);
@@ -894,14 +894,18 @@ void fn_801A4B40(u8 *obj, s32 a1) {
     void fn_800381EC(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
     s32 orig;
+    s32 v;
+    u8 *o;
 
-    orig = obj[0x488];
-    a1 = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj + 0x2E0), (s8)a1);
-    a1 = (s8)a1;
-    fn_800381EC(obj + 0x2E0, a1 + (s8)obj[0x488]);
-    BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(obj + 0x8A0, 0x15, a1);
-    BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
+    v = a1;
+    o = obj;
+    orig = o[0x488];
+    v = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(o + 0x2E0), (s8)v);
+    v = (s8)v;
+    fn_800381EC(o + 0x2E0, v + (s8)o[0x488]);
+    BattleAnim_Queue(o + 0x8A0, 0x20, 0);
+    BattleAnim_Queue(o + 0x8A0, 0x15, v);
+    BattleAnim_Queue(o + 0x8A0, 0x50, 0);
 }
 #pragma opt_common_subs reset
 void fn_801A4BE0(void *arg0) {
@@ -2278,7 +2282,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void);
     void fn_800340F0(void *);
-    void fn_8003816C(void *, s8, s8);
+    void Unit_SetMapPos(void *, s8, s8);
     void fn_801A601C(void *, void *, s32, s32);
     void *fn_801A7FF4(void *);
     void fn_801A94B0(void *);
@@ -2317,7 +2321,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     *(s32 *)((char *)var_r30 + 0xCBC) = 0;
     *(s32 *)((char *)var_r30 + 0xCC0) = 0;
     fn_801A9CB8(var_r30, *(void **)&sp[0]);
-    fn_8003816C(var_r30, (s8)((u8 *)&sp[1])[0], (s8)((u8 *)&sp[1])[1]);
+    Unit_SetMapPos(var_r30, (s8)((u8 *)&sp[1])[0], (s8)((u8 *)&sp[1])[1]);
     *(u32 *)((char *)var_r30 + 0xCAC) |= 1;
     var_r29 = *(void **)&sp[2];
     if (var_r29 == NULL) {
@@ -2381,7 +2385,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800340F0(s32);
-    void fn_8003816C(s32, s8, s8);
+    void Unit_SetMapPos(s32, s8, s8);
     void *fn_801A7FF4(s32);
     void fn_801A94B0(s32);
     void fn_801A9600(s32, void *);
@@ -2446,8 +2450,8 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
     *(s32 *)(self + 0xCC0) = 0;
     fn_801A9CB8(self, *(void **)sp18);
     fn_801A9CB8(self + 0x2E0, *(void **)sp8);
-    fn_8003816C(self, (s8)((u8 *)sp18)[4], (s8)((u8 *)sp18)[5]);
-    fn_8003816C(self + 0x2E0, (s8)((u8 *)sp8)[4], (s8)((u8 *)sp8)[5]);
+    Unit_SetMapPos(self, (s8)((u8 *)sp18)[4], (s8)((u8 *)sp18)[5]);
+    Unit_SetMapPos(self + 0x2E0, (s8)((u8 *)sp8)[4], (s8)((u8 *)sp8)[5]);
     fn_80022FD8(gBattleMap, 6);
     fn_8002011C(gBattleMap, *(u8 *)(self + 0x19E), *(u8 *)(self + 0x19F), 0x64, 0xF);
     temp_r30 = *(void **)((u8 *)sp18 + 8);
@@ -2495,7 +2499,7 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800340F0(s32);
-    void fn_8003816C(s32, s8, s8);
+    void Unit_SetMapPos(s32, s8, s8);
     void *fn_801A7FF4(s32);
     void fn_801A94B0(s32);
     void fn_801A9600(s32, void *);
@@ -2532,8 +2536,8 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
          var_r29),
         a);
     fn_801A9CB8(var_r29 + 0x2E0, *(void **)var_r31);
-    fn_8003816C(var_r29, (s8)((u8 *)var_r30)[4], (s8)((u8 *)var_r30)[5]);
-    fn_8003816C(var_r29 + 0x2E0, (s8)((u8 *)var_r31)[4], (s8)((u8 *)var_r31)[5]);
+    Unit_SetMapPos(var_r29, (s8)((u8 *)var_r30)[4], (s8)((u8 *)var_r30)[5]);
+    Unit_SetMapPos(var_r29 + 0x2E0, (s8)((u8 *)var_r31)[4], (s8)((u8 *)var_r31)[5]);
     fn_80022FD8(gBattleMap, 6);
     fn_8002011C(gBattleMap, *(u8 *)(var_r29 + 0x19E), *(u8 *)(var_r29 + 0x19F), 0x64, 0xF);
     temp_r28 = *(void **)((u8 *)var_r30 + 8);

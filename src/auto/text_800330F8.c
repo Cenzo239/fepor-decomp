@@ -2306,7 +2306,7 @@ finish:
     return (u8)(var_r0 + var_r5);
 }
 
-void fn_8003816C(void *arg0, s8 arg1, s8 arg2) {
+void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     void fn_80050C50(void *, f32, f32);
     extern f32 lbl_80368EC0;
     void *child;
@@ -3714,17 +3714,17 @@ s8 Unit_GetRes(void *arg0) {
 }
 #pragma opt_peephole reset
 s8 Unit_GetDef(void *arg0) {
-    void *temp_r6;
+    void *temp_r4;
+    s8 temp_r6_2;
     u8 temp_r5;
-    u8 temp_r6_2;
     s8 var_r3;
 
-    temp_r6 = M2C_FIELD(arg0, void **, 0x18C);
-    temp_r5 = M2C_FIELD(arg0, u8 *, 0x1B1);
-    temp_r6_2 = M2C_FIELD(temp_r6, u8 *, 0x52);
-    var_r3 = (s8)((M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x23) + M2C_FIELD(temp_r6, u8 *, 0x4A)) + temp_r5);
-    if (var_r3 > (s8)temp_r6_2) {
-        var_r3 = (s8)temp_r6_2;
+    temp_r4 = *(void **)((u8 *)arg0 + 0x18C);
+    temp_r5 = *(u8 *)((u8 *)arg0 + 0x1B1);
+    temp_r6_2 = *(u8 *)((u8 *)temp_r4 + 0x52);
+    var_r3 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x23) + *(u8 *)((u8 *)temp_r4 + 0x4A)) + temp_r5;
+    if (var_r3 > temp_r6_2) {
+        var_r3 = temp_r6_2;
     }
     if (var_r3 < 0) {
         return 0;
@@ -3785,15 +3785,17 @@ s8 Unit_GetSkl(void *arg0) {
 }
 #pragma opt_peephole reset
 s8 Unit_GetMag(void *arg0) {
-    register void *p18c;
-    register s8 lim;
+    void *p18c;
     u8 t;
+    u8 a;
+    s8 lim;
     s8 var;
 
     p18c = *(void **)((u8 *)arg0 + 0x18C);
     t = *(u8 *)((u8 *)arg0 + 0x1AD);
+    a = *(u8 *)((u8 *)p18c + 0x46);
     lim = *(u8 *)((u8 *)p18c + 0x4E);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + *(u8 *)((u8 *)p18c + 0x46)) + t;
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + a) + t;
     if (var > lim) {
         var = lim;
     }
@@ -4971,7 +4973,7 @@ void fn_8003DFB8(void *arg0) {
     void fn_800156A0(void *);
     void fn_80015718(void *, void *);
     void fn_800157DC(void *, void *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8003B6F0(void *, s32);
     void fn_8003D68C(void *, s32);
     void Unit_SeparateRescue(void *, s32, s32);
@@ -5009,7 +5011,7 @@ void fn_8003DFB8(void *arg0) {
         *(s32 *)((u8 *)partner + 0x1A0) = *(s32 *)((u8 *)partner + 0x1A0) & ~4;
         *(void **)((u8 *)self + 0x194) = NULL;
         *(void **)((u8 *)partner + 0x194) = NULL;
-        fn_8003816C(partner, b, a);
+        Unit_SetMapPos(partner, b, a);
         *(s32 *)((u8 *)partner + 0x1A0) |= 1;
 
         if (*(void **)((u8 *)partner + 0x194) != NULL) {
@@ -5022,7 +5024,7 @@ void fn_8003DFB8(void *arg0) {
                 fn_8003F1F4(fn_8003F21C(p), 4);
                 fn_8003F1EC(partner, 0);
                 fn_8003F1EC(p, 0);
-                fn_8003816C(p, b, a);
+                Unit_SetMapPos(p, b, a);
                 fn_8003F1DC(fn_8003F21C(p), 1);
                 if (fn_8003F204(other) != NULL) {
                     if (fn_8003F1D0(fn_8003F21C(other), 2) != 0) {
@@ -5056,7 +5058,7 @@ void fn_8003DFB8(void *arg0) {
                 fn_8003F1F4(fn_8003F21C(p), 4);
                 fn_8003F1EC(other, 0);
                 fn_8003F1EC(p, 0);
-                fn_8003816C(p, b, a);
+                Unit_SetMapPos(p, b, a);
                 fn_8003F1DC(fn_8003F21C(p), 1);
                 if (fn_8003F204(other) != NULL) {
                     if (fn_8003F1D0(fn_8003F21C(other), 2) != 0) {
@@ -5103,7 +5105,7 @@ void fn_8003DFB8(void *arg0) {
         *(s32 *)((u8 *)other + 0x1A0) = *(s32 *)((u8 *)other + 0x1A0) & ~4;
         *(void **)((u8 *)partner + 0x194) = NULL;
         *(void **)((u8 *)other + 0x194) = NULL;
-        fn_8003816C(other, b, a);
+        Unit_SetMapPos(other, b, a);
         *(s32 *)((u8 *)other + 0x1A0) |= 1;
 
         if (*(void **)((u8 *)partner + 0x194) != NULL) {
@@ -5116,7 +5118,7 @@ void fn_8003DFB8(void *arg0) {
                 fn_8003F1F4(fn_8003F21C(p), 4);
                 fn_8003F1EC(partner, 0);
                 fn_8003F1EC(p, 0);
-                fn_8003816C(p, b, a);
+                Unit_SetMapPos(p, b, a);
                 fn_8003F1DC(fn_8003F21C(p), 1);
                 if (fn_8003F204(other) != NULL) {
                     if (fn_8003F1D0(fn_8003F21C(other), 2) != 0) {
@@ -5150,7 +5152,7 @@ void fn_8003DFB8(void *arg0) {
                 fn_8003F1F4(fn_8003F21C(p), 4);
                 fn_8003F1EC(other, 0);
                 fn_8003F1EC(p, 0);
-                fn_8003816C(p, b, a);
+                Unit_SetMapPos(p, b, a);
                 fn_8003F1DC(fn_8003F21C(p), 1);
                 if (fn_8003F204(other) != NULL) {
                     if (fn_8003F1D0(fn_8003F21C(other), 2) != 0) {
@@ -5264,7 +5266,7 @@ void fn_8003E8DC(void *arg0, void *arg1) {
 }
 
 void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
-    void fn_8003816C(void *, s32, s32);
+    void Unit_SetMapPos(void *, s32, s32);
     s32 flags;
     void *partner;
 
@@ -5274,12 +5276,12 @@ void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)partner + 0x1A0) = *(s32 *)((u8 *)partner + 0x1A0) & ~4;
     *(void **)((u8 *)arg0 + 0x194) = NULL;
     *(void **)((u8 *)partner + 0x194) = NULL;
-    fn_8003816C(partner, arg1, arg2);
+    Unit_SetMapPos(partner, arg1, arg2);
     *(s32 *)((u8 *)partner + 0x1A0) |= 1;
 }
 
 void fn_8003EA84(void *arg0, void *arg1) {
-    fn_8003816C(arg1, *(u8*)((u8*)arg0 + 0x19F), *(u8*)((u8*)arg0 + 0x19E));
+    Unit_SetMapPos(arg1, *(u8*)((u8*)arg0 + 0x19F), *(u8*)((u8*)arg0 + 0x19E));
     *(s32*)((u8*)arg0 + 0x1A0) |= 2;
     *(s32*)((u8*)arg1 + 0x1A0) |= 4;
     *(void**)((u8*)arg0 + 0x194) = arg1;
@@ -5290,7 +5292,7 @@ void fn_8003EA84(void *arg0, void *arg1) {
 void fn_8003EAE8(void *arg0, void *arg1) {
     void *Res_GetByName(void *);
     void fn_80104410(void *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_80105DAC(void *, void *);
     s32 Str_Cmp(void *, void *);
     u8 Status_Test(void *, s32);
@@ -5434,7 +5436,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
     } else {
         self->unk18C = Res_GetByName(src->unk4);
     }
-    fn_8003816C(self, src->unkB, src->unkC);
+    Unit_SetMapPos(self, src->unkB, src->unkC);
     c = self->unk188;
     self->unk1BC |= *(u32 *)((u8 *)c + 0x40);
     self->unk1C0 |= *(u32 *)((u8 *)c + 0x44);

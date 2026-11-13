@@ -398,7 +398,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void fn_800163F8(void);
     void *Unit_FindByName(void *);
     void fn_8002297C(void *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8004FE98(void *, s32);
     void fn_800C1BDC(void);
     void fn_800C4588(void *);
@@ -561,7 +561,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                     }
                 after_sw:
                     if (*(void **)(entry + 4) != 0) {
-                        fn_8003816C(*(void **)(entry + 4), entry[0xA], entry[0xB]);
+                        Unit_SetMapPos(*(void **)(entry + 4), entry[0xA], entry[0xB]);
                     }
                     obj = *(void **)(entry + 4);
                     if (obj != 0) {
@@ -688,7 +688,7 @@ void fn_8010671C(void *arg0) {
 void fn_80106728(u8 *arg0) {
     void Process_ClearFunc(void);
     void *Unit_FindByName(void *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8004F5EC(void *, s32);
     void *fn_80107468(void *);
     void Dispos_ParseEntry(void *, u32 *, u8);
@@ -829,7 +829,7 @@ case2:
     }
 after_sw:
     if (*(void **)(entry + 4) != 0) {
-        fn_8003816C(*(void **)(entry + 4), entry[0xA], entry[0xB]);
+        Unit_SetMapPos(*(void **)(entry + 4), entry[0xA], entry[0xB]);
     }
     if (*(void **)(entry + 4) != 0) {
         fn_8004F5EC(*(void **)(entry + 4), 0);
@@ -1179,7 +1179,7 @@ void *fn_80107468(void *arg0) {
 s32 Dispos_ResolveUnit(u8 *arg0) {
     void Dispos_ParseEntry(u32 *, u32 *, u8);
     void *Unit_FindByName(void *);
-    void fn_8003816C(void *, u8, u8);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8003D5FC(void *, u8);
     void fn_8003D60C(void *, s32);
     void fn_8003D68C(void *, s32);
@@ -1269,7 +1269,7 @@ skip_type:
     *((u8 *)obj + 0x3C) = 0;
     return 0;
 ok:
-    fn_8003816C(unit, sp8[0xB], sp8[0xC]);
+    Unit_SetMapPos(unit, sp8[0xB], sp8[0xC]);
     fn_80050C90(unit);
     fn_80050BCC(unit, 0);
     *(void **)(arg0 + 4) = unit;
