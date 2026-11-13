@@ -18536,7 +18536,7 @@ void fn_801E32C4(s32 unused, s32 arg1) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-u8 fn_801E3308(u8 *p)
+u8 SystemSave_CountPackedSlots(u8 *p)
 {
     s32 count = 0;
     s32 off = 0;

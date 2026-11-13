@@ -6148,9 +6148,9 @@ s32 fn_800BBB58(s32 arg0, s32 arg1) {
 }
 
 u8 fn_800BBC14(void) {
-    s32 fn_801E3308(void *);
+    s32 SystemSave_CountPackedSlots(void *);
     extern u8 gSystemSave[];
-    return (u8)fn_801E3308(gSystemSave);
+    return (u8)SystemSave_CountPackedSlots(gSystemSave);
 }
 
 s32 fn_800BBC40(void) {

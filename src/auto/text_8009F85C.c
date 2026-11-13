@@ -1176,13 +1176,13 @@ s32 fn_800A0DE4(s32 arg0, s32 arg1, void *arg2) {
 }
 
 char *fn_800A0E24(void) {
-    s32 fn_801E3308(void *);
+    s32 SystemSave_CountPackedSlots(void *);
     void sprintf(void *, void *, ...);
     extern u8 gSystemSave[];
     extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x599, (u8)fn_801E3308(gSystemSave));
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x599, (u8)SystemSave_CountPackedSlots(gSystemSave));
     return gItemMenuTextBuf;
 }
 
