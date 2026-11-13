@@ -299,7 +299,7 @@ void fn_80014F94(void *, void *);
 void fn_80199B88(void *, void *);
 void fn_800BDAF8(void *, void *);
 void Stream_WriteStr(void *, s32, void *);
-void fn_8017A3E0(void *, s32, u8);
+void Stream_WritePad(void *, s32, u8);
 #pragma opt_strength_reduction off
 
 #pragma opt_strength_reduction reset

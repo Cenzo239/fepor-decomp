@@ -11883,7 +11883,7 @@ void fn_8017A38C(u8 **arg0, u8 *arg1) {
     *p = b;
 }
 
-void fn_8017A3E0(void *arg0, s32 arg1, u8 arg2) {
+void Stream_WritePad(void *arg0, s32 arg1, u8 arg2) {
     memset(M2C_FIELD(arg0, s32 *, 4), arg2, arg1);
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
 }
