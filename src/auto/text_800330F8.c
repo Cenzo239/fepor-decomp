@@ -9754,7 +9754,7 @@ void fn_8004A224(void) {
 }
 
 void fn_8004A264(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8006785C(s32, void *, void *);
     void fn_8004A2EC(void *);
     extern f32 lbl_80368F84;
@@ -9765,7 +9765,7 @@ void fn_8004A264(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x30) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
     temp_r0 = *(s32 *)((u8 *)arg0 + 0x30);
     if (temp_r0 <= 8) {
-        *(f32 *)((u8 *)arg0 + 0x34) = fn_800067BC(6, lbl_80368F84, lbl_80368F8C, (f32)temp_r0, lbl_80368F98);
+        *(f32 *)((u8 *)arg0 + 0x34) = Math_Ease(6, lbl_80368F84, lbl_80368F8C, (f32)temp_r0, lbl_80368F98);
     }
     fn_8006785C(2, fn_8004A2EC, arg0);
 }

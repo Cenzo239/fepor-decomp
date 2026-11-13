@@ -1709,7 +1709,7 @@ void fn_80200750(void *arg0) {
 }
 
 void fn_802007E0(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetAlphaByte(s32);
@@ -1747,7 +1747,7 @@ void fn_802007E0(void *arg0) {
         break;
     }
     
-    temp_f31 = fn_800067BC(5, lbl_8036BBE0, lbl_8036BBD8, var_f3, lbl_8036BBD8);
+    temp_f31 = Math_Ease(5, lbl_8036BBE0, lbl_8036BBD8, var_f3, lbl_8036BBD8);
     
     Prim2D_Begin();
     

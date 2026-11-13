@@ -2835,7 +2835,7 @@ void fn_800791F0(s32 arg0, s32 arg1) {
     *(s32 *)((char *)temp_r3 + 0x40) = 0xFF;
 }
 
-void fn_80079248(void*p){f32 fn_800067BC(s32,f32,f32,f32,f32);*(s32*)((u8*)p+0x34)+=1;*(s8*)((u8*)*(void**)((u8*)p+0x30)+0x42)=fn_800067BC(0,(f32)*(s32*)((u8*)p+0x3c),(f32)*(s32*)((u8*)p+0x40),(f32)*(s32*)((u8*)p+0x34),(f32)*(s32*)((u8*)p+0x38));}
+void fn_80079248(void*p){f32 Math_Ease(s32,f32,f32,f32,f32);*(s32*)((u8*)p+0x34)+=1;*(s8*)((u8*)*(void**)((u8*)p+0x30)+0x42)=Math_Ease(0,(f32)*(s32*)((u8*)p+0x3c),(f32)*(s32*)((u8*)p+0x40),(f32)*(s32*)((u8*)p+0x34),(f32)*(s32*)((u8*)p+0x38));}
 
 void fn_80079300(void *arg0, s8 arg1) {
     extern s16 lbl_80312060[];
@@ -3653,14 +3653,14 @@ void fn_8007ADC8(s32 index) {
 
 void fn_8007AE18(void *arg0)
 {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern void *lbl_80312040[];
     void *entry;
     s32 idx;
 
     entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x30)];
-    *((s8 *)((u8 *)entry + 0x41)) = (s8)fn_800067BC(
+    *((s8 *)((u8 *)entry + 0x41)) = (s8)Math_Ease(
         *(s32 *)((u8 *)arg0 + 0x44),
         (f32)*(s32 *)((u8 *)arg0 + 0x3c),
         (f32)*(s32 *)((u8 *)arg0 + 0x40),
@@ -3689,7 +3689,7 @@ void fn_8007AF00(void *arg0) {
 
 void fn_8007AF48(void *arg0)
 {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern void *lbl_80312040[];
     extern f32 lbl_803693D4;
@@ -3700,7 +3700,7 @@ void fn_8007AF48(void *arg0)
 
     scale = lbl_803693D4;
     entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x60)];
-    *((s8 *)((u8 *)entry + 0x42)) = (s8)fn_800067BC(
+    *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
         0,
         (f32)*(s32 *)((u8 *)arg0 + 0x6C),
         scale,
@@ -3722,7 +3722,7 @@ void fn_8007B01C(void *arg0) {
 }
 
 void fn_8007B044(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern void *lbl_80312040[];
     extern f64 lbl_803693C8;
@@ -3736,7 +3736,7 @@ void fn_8007B044(void *arg0) {
     fa = lbl_803693D4;
     fb = lbl_803693EC;
     entry = lbl_80312040[*(s32 *)((u8 *)arg0 + 0x60)];
-    *((s8 *)((u8 *)entry + 0x42)) = (s8)fn_800067BC(
+    *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
         0, fa, fb,
         (f32)*(s32 *)((u8 *)arg0 + 0x68),
         (f32)*(s32 *)((u8 *)arg0 + 0x64));
@@ -3757,11 +3757,11 @@ void fn_8007B104(void *arg0) {
 }
 
 void fn_8007B128(void *arg0) {
-    f32 fn_800067BC(M2C_UNK, f32, f32, f32, f32);
+    f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
     M2C_UNK fn_8000C188(void *);
     s32 temp_r3;
 
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), f32 *, 0x38) = fn_800067BC(5, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34), (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x38));
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), f32 *, 0x38) = Math_Ease(5, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34), (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x38));
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x3C);
     if (temp_r3 == (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
         fn_8000C188(arg0);

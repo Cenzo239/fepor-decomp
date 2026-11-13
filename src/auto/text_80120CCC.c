@@ -78,11 +78,11 @@ void fn_80120DD4(void *arg0, s32 arg1) {
 }
 
 void fn_80120E4C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
 
     *(u8 *)((u8 *)arg0 + 0x36) = (u8)(*(u8 *)((u8 *)arg0 + 0x36) + 1);
-    *(s8 *)(*(u8 **)((u8 *)arg0 + 0x30) + 0x41) = (s8)fn_800067BC(
+    *(s8 *)(*(u8 **)((u8 *)arg0 + 0x30) + 0x41) = (s8)Math_Ease(
         0,
         (f32)*(u8 *)((u8 *)arg0 + 0x34),
         (f32)*(u8 *)((u8 *)arg0 + 0x35),
@@ -184,7 +184,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
 }
 
 void fn_801210CC(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_80007124(void *);
     void fn_80007668(void *);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -226,7 +226,7 @@ void fn_801210CC(void *arg0) {
         if (x < 0x68) {
             x = 0x68;
         }
-        M2C_FIELD(self, u8 *, 0x50) = (u8)(s32)fn_800067BC(
+        M2C_FIELD(self, u8 *, 0x50) = (u8)(s32)Math_Ease(
             0,
             (f32)M2C_FIELD(self, u8 *, 0x4C),
             (f32)M2C_FIELD(self, u8 *, 0x4D),
@@ -274,12 +274,12 @@ void fn_80121328(void *arg0) {
 }
 
 void fn_80121338(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     s32 result;
     s32 zero;
     s32 eight;
 
-    result = (s32)fn_800067BC(
+    result = (s32)Math_Ease(
         0,
         (f32)*(u8 *)((u8 *)arg0 + 0x4C),
         (f32)*(u8 *)((u8 *)arg0 + 0x4D),
@@ -769,7 +769,7 @@ void fn_801222A4(void *arg0)
 void fn_80122314(void *arg0) {
     extern u16 lbl_80367A58;
     extern u32 gUiInputFlags;
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_80120CFC(void *);
     s32 cur;
     s32 total;
@@ -804,7 +804,7 @@ void fn_80122314(void *arg0) {
             p->unk48 = 0;
         }
     } else {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) fn_800067BC(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) Math_Ease(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
     }
 }
 

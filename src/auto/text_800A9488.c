@@ -1907,7 +1907,7 @@ void fn_800ACCF8(void) {
 #pragma use_lmw_stmw on
 void fn_800ACD18(void *arg0)
 {
-    void fn_800067BC(s32, f32, f32, f32, f32);
+    void Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -1975,7 +1975,7 @@ void fn_800ACD18(void *arg0)
         break;
     }
 
-    fn_800067BC(5, lbl_80369C38, lbl_80369C30, f31, lbl_80369C30);
+    Math_Ease(5, lbl_80369C38, lbl_80369C30, f31, lbl_80369C30);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369C3C, lbl_80369C40, lbl_80369C44, lbl_80369C30);
     f31 *= lbl_80369C48;

@@ -1492,11 +1492,11 @@ void fn_80088F34(void) {
 }
 
 void fn_80088F8C(void *arg0) {
-    f32 fn_800067BC(s32, s16, f32, f32, f32, f32);
+    f32 Math_Ease(s32, s16, f32, f32, f32, f32);
     s16 temp_r4;
     f32 f4 = 6.0f;
     temp_r4 = *(s16 *)((u8 *)arg0 + 0x28);
-    *(s16 *)((u8 *)arg0 + 0x34) = (s16)fn_800067BC(0, temp_r4, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)arg0 + 0x3C), (f32)(6 - temp_r4), f4);
+    *(s16 *)((u8 *)arg0 + 0x34) = (s16)Math_Ease(0, temp_r4, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)arg0 + 0x3C), (f32)(6 - temp_r4), f4);
 }
 
 #pragma scheduling on
@@ -1917,7 +1917,7 @@ void fn_800899D4(s32 arg0)
 }
 
 void fn_80089A28(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
@@ -1981,7 +1981,7 @@ void fn_80089A28(void *arg0) {
     case 1:
         *(u16 *)((u8 *)arg0 + 0x34) = *(u16 *)((u8 *)arg0 + 0x34) + 1;
         start = lbl_803696B4;
-        f31 = fn_800067BC(0, start, lbl_803696CC,
+        f31 = Math_Ease(0, start, lbl_803696CC,
                           (f32)*(u16 *)((u8 *)arg0 + 0x34),
                           (f32)*(u16 *)((u8 *)arg0 + 0x36));
         mode = 0;
@@ -1996,7 +1996,7 @@ void fn_80089A28(void *arg0) {
     case 3:
         *(u16 *)((u8 *)arg0 + 0x34) = *(u16 *)((u8 *)arg0 + 0x34) + 1;
         start = lbl_80369690;
-        f31 = fn_800067BC(0, start, lbl_803696D0,
+        f31 = Math_Ease(0, start, lbl_803696D0,
                           (f32)*(u16 *)((u8 *)arg0 + 0x34),
                           (f32)*(u16 *)((u8 *)arg0 + 0x36));
         mode = 1;
@@ -2135,7 +2135,7 @@ ptr[0x34]=color.b[0]; ptr[0x35]=color.b[1]; ptr[0x36]=color.b[2]; ptr[0x37]=colo
 }
 
 void fn_80089FA8(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
@@ -2182,7 +2182,7 @@ void fn_80089FA8(void *arg0) {
         a = 0.0f;
         b = 255.0f;
         *(u8 *)((u8 *)arg0 + 0x37) =
-            (u8)(s32)fn_800067BC(0, a, b,
+            (u8)(s32)Math_Ease(0, a, b,
                                  (f32)*(u16 *)((u8 *)arg0 + 0x38),
                                  (f32)*(u16 *)((u8 *)arg0 + 0x3A));
         if (*(u16 *)((u8 *)arg0 + 0x38) >= *(u16 *)((u8 *)arg0 + 0x3A)) {
@@ -2194,7 +2194,7 @@ void fn_80089FA8(void *arg0) {
         a = 255.0f;
         b = 0.0f;
         *(u8 *)((u8 *)arg0 + 0x37) =
-            (u8)(s32)fn_800067BC(0, a, b,
+            (u8)(s32)Math_Ease(0, a, b,
                                  (f32)*(u16 *)((u8 *)arg0 + 0x3C),
                                  (f32)*(u16 *)((u8 *)arg0 + 0x3E));
         if (*(u16 *)((u8 *)arg0 + 0x3C) >= *(u16 *)((u8 *)arg0 + 0x3E)) {

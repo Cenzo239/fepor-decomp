@@ -118,7 +118,7 @@ void fn_80091B84(void *arg0) {
         f2 = (f32)r3;
         f3 = (f32)r4;
         f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)fn_800067BC(0U, f0, f1, f2, f3, f4);
+        arg0 = (void*)Math_Ease(0U, f0, f1, f2, f3, f4);
         
         *(f32*)((u8*)arg0 + 0x30) = *(f32*)((u8*)arg0 + 0x30);
         
@@ -128,7 +128,7 @@ void fn_80091B84(void *arg0) {
         f2 = (f32)r3;
         f3 = (f32)r4;
         f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)fn_800067BC(0U, f0, f1, f2, f3, f4);
+        arg0 = (void*)Math_Ease(0U, f0, f1, f2, f3, f4);
         
         *(f32*)((u8*)arg0 + 0x34) = *(f32*)((u8*)arg0 + 0x34);
         
@@ -138,7 +138,7 @@ void fn_80091B84(void *arg0) {
         f2 = (f32)r4;
         f3 = *(f32*)((u8*)arg0 + 0x50);
         f4 = *(f32*)0x803697B0; // lbl_803697B0
-        arg0 = (void*)fn_800067BC(0U, f1, f2, f3, f4, 0);
+        arg0 = (void*)Math_Ease(0U, f1, f2, f3, f4, 0);
         
         *(f32*)((u8*)arg0 + 0x38) = *(f32*)((u8*)arg0 + 0x38);
         

@@ -320,7 +320,7 @@ s32 fn_800067B4(void) {
     return lbl_80367118;
 }
 
-void fn_800067BC(s32 arg0, void *arg1) {
+void Math_Ease(s32 arg0, void *arg1) {
     s32 temp_r3;
     s32 i;
     s32 r4;

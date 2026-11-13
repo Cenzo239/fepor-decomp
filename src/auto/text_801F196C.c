@@ -207,7 +207,7 @@ void fn_801F20F0(void *arg0) {
 }
 
 void fn_801F230C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -284,13 +284,13 @@ void fn_801F230C(void *arg0) {
                 s16 x = *(s16 *)((u8 *)obj + 0x12);
                 t = 4 - c;
                 *(s16 *)((u8 *)obj + 8) =
-                    (s16)fn_800067BC(4, (f32)e, (f32)x, (f32)t, lbl_8036B808);
+                    (s16)Math_Ease(4, (f32)e, (f32)x, (f32)t, lbl_8036B808);
             }
             {
                 s16 y0 = *(s16 *)((u8 *)obj + 0x10);
                 s16 y1 = *(s16 *)((u8 *)obj + 0x14);
                 *(s16 *)((u8 *)obj + 0xA) =
-                    (s16)fn_800067BC(4, (f32)y0, (f32)y1, (f32)t, lbl_8036B808);
+                    (s16)Math_Ease(4, (f32)y0, (f32)y1, (f32)t, lbl_8036B808);
             }
         }
         p = obj;
@@ -1057,7 +1057,7 @@ void fn_801F3CB0(s32 arg0) {
 #pragma use_lmw_stmw on
 void fn_801F3E60(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -1158,8 +1158,8 @@ void fn_801F3E60(void *arg0) {
     if (*(s16 *)((u8 *)p + 0x16) > 0) {
         *(s16 *)((u8 *)p + 0x16) = (s16)(*(s16 *)((u8 *)p + 0x16) - 1);
         t = 4 - *(s16 *)((u8 *)p + 0x16);
-        *(s16 *)((u8 *)p + 0x12) = (s16)fn_800067BC(4, (f32)*(s16 *)((u8 *)p + 0x18), (f32)*(s16 *)((u8 *)p + 0x1C), (f32)t, lbl_8036B85C);
-        *(s16 *)((u8 *)p + 0x14) = (s16)fn_800067BC(4, (f32)*(s16 *)((u8 *)p + 0x1A), (f32)*(s16 *)((u8 *)p + 0x1E), (f32)t, lbl_8036B85C);
+        *(s16 *)((u8 *)p + 0x12) = (s16)Math_Ease(4, (f32)*(s16 *)((u8 *)p + 0x18), (f32)*(s16 *)((u8 *)p + 0x1C), (f32)t, lbl_8036B85C);
+        *(s16 *)((u8 *)p + 0x14) = (s16)Math_Ease(4, (f32)*(s16 *)((u8 *)p + 0x1A), (f32)*(s16 *)((u8 *)p + 0x1E), (f32)t, lbl_8036B85C);
     }
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B858, lbl_8036B858, lbl_8036B860, lbl_8036B854);
@@ -2479,7 +2479,7 @@ void fn_801F7880(void* arg0) {
 }
 
 void fn_801F7A60(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetAlpha(s32);
     void Prim2D_SetColor(u8, u8, u8, s32);
@@ -2600,8 +2600,8 @@ void fn_801F7A60(void *arg0) {
         if (*(s16 *)(slot + 0xC) > 0) {
             *(s16 *)(slot + 0xC) = (s16)(*(s16 *)(slot + 0xC) - 1);
             t = 4 - *(s16 *)(slot + 0xC);
-            *(s16 *)(slot + 8) = (s16)fn_800067BC(4, (f32)*(s16 *)(slot + 0xE), (f32)*(s16 *)(slot + 0x12), (f32)t, lbl_8036B9AC);
-            *(s16 *)(slot + 0xA) = (s16)fn_800067BC(4, (f32)*(s16 *)(slot + 0x10), (f32)*(s16 *)(slot + 0x14), (f32)t, lbl_8036B9AC);
+            *(s16 *)(slot + 8) = (s16)Math_Ease(4, (f32)*(s16 *)(slot + 0xE), (f32)*(s16 *)(slot + 0x12), (f32)t, lbl_8036B9AC);
+            *(s16 *)(slot + 0xA) = (s16)Math_Ease(4, (f32)*(s16 *)(slot + 0x10), (f32)*(s16 *)(slot + 0x14), (f32)t, lbl_8036B9AC);
         }
         i += 1;
         slot += 0x12;

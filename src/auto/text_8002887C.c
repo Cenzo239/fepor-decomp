@@ -2645,7 +2645,7 @@ s32 fn_8002EA74(void) {
 }
 
 void fn_8002EA7C(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     s32 var_r31;
 
     *arg2 = 0;
@@ -2654,8 +2654,8 @@ void fn_8002EA7C(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     if (var_r31 > 8) {
         var_r31 = 8;
     }
-    *arg1 = (s32)fn_800067BC(6, -64.0f, 0.0f, (f32)var_r31, 8.0f);
-    *arg3 = (s32)fn_800067BC(0, 0.0f, 255.0f, (f32)var_r31, 8.0f);
+    *arg1 = (s32)Math_Ease(6, -64.0f, 0.0f, (f32)var_r31, 8.0f);
+    *arg3 = (s32)Math_Ease(0, 0.0f, 255.0f, (f32)var_r31, 8.0f);
 }
 
 #pragma cplusplus on

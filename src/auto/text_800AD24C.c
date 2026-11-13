@@ -3464,8 +3464,8 @@ s32 fn_800B6E00(s32 arg0) {
 }
 
 s32 fn_800B6E8C(s32 mode, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
-    return (s32)fn_800067BC(mode, (f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    return (s32)Math_Ease(mode, (f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
 }
 
 s32 fn_800B6F10(void)

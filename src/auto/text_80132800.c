@@ -7775,30 +7775,27 @@ extern "C" void *fn_8013FF94(void *arg0, s16 arg1, u8 arg2) {
         void *pad;
         Item *item;
     };
-    Node *sp24;
-    Node *sp20;
-    Node *sp1C;
-    Node *sp18;
-    Node *sp14;
-    Node *sp10;
-    Node *spC;
-    Node *sp8;
+    struct Bundle {
+        Node *a, *b, *c, *d;
+    };
     Node *it;
     Node *head;
     Item *res;
     Item *item;
+    Bundle b0;
+    Bundle b1;
 
     it = (Node *)((char *)arg0 + 0x38);
-    sp24 = it;
+    b0.a = it;
     res = (Item *)0;
-    sp20 = it;
-    sp1C = it;
+    b0.b = it;
+    b0.c = it;
     head = *(Node **)((char *)arg0 + 0x3C);
-    sp18 = it;
-    sp14 = head;
-    sp10 = head;
-    spC = head;
-    sp8 = head;
+    b0.d = it;
+    b1.a = head;
+    b1.b = head;
+    b1.c = head;
+    b1.d = head;
 
     while (it != head) {
         item = it->next->item;
@@ -7814,6 +7811,8 @@ extern "C" void *fn_8013FF94(void *arg0, s16 arg1, u8 arg2) {
         }
         it = it->next;
     }
+    (void)b0;
+    (void)b1;
     return res;
 }
 #pragma cplusplus reset
@@ -8231,17 +8230,17 @@ extern "C" void fn_801411AC(void *arg0) {
 void fn_8014127C(void *arg0) {
     extern f32 lbl_8036A730;
     extern f32 lbl_8036A740;
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     (void)lbl_8036A730;
     (void)lbl_8036A740;
-    (void)fn_800067BC;
+    (void)Math_Ease;
     (void)arg0;
 }
 
 void fn_80141630(void *arg0, s32 arg1) {
     extern f32 lbl_8036A730;
     extern f32 lbl_8036A740;
-    f32 fn_800067BC(s32, s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
     void *fn_8013FC68(void *, s32, void **);
     void *fn_80140B04(s32);
     void fn_801418A0(void *);
@@ -8249,7 +8248,7 @@ void fn_80141630(void *arg0, s32 arg1) {
 
     (void)lbl_8036A730;
     (void)lbl_8036A740;
-    (void)fn_800067BC;
+    (void)Math_Ease;
     (void)fn_8013FC68;
     (void)fn_80140B04;
     (void)fn_801418A0;
@@ -8314,7 +8313,7 @@ extern "C" void fn_801418A0(void *arg0) {
 #pragma cplusplus reset
 
 void fn_80141970(void *arg0, s32 arg1) {
-    f32 fn_800067BC(s32, s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
     extern f32 lbl_8036A730;
     extern f64 lbl_8036A738;
     extern f32 lbl_8036A740;
@@ -8359,7 +8358,7 @@ void fn_80141970(void *arg0, s32 arg1) {
         var_f31 = (var_f31 / temp_f1) * temp_f0;
         break;
     }
-    temp_f1 = fn_800067BC(5, temp_r4, lbl_8036A740, lbl_8036A730, var_f31, lbl_8036A730);
+    temp_f1 = Math_Ease(5, temp_r4, lbl_8036A740, lbl_8036A730, var_f31, lbl_8036A730);
     if (*(u8 *)((char *)arg0 + 0x44) == 0) {
         var_f31 = lbl_8036A730;
     }
@@ -8399,7 +8398,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     void *fn_8013FCE0(void *, void *, void **, void **);
     void *fn_80140B04(void *);
     void fn_80142060(void *);
-    f32 fn_800067BC(s32, s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, s32, f32, f32, f32, f32);
     void fn_801418A0(void *);
     char buf[0x50];
 
@@ -8411,7 +8410,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     (void)fn_8013FCE0;
     (void)fn_80140B04;
     (void)fn_80142060;
-    (void)fn_800067BC;
+    (void)Math_Ease;
     (void)fn_801418A0;
     (void)buf;
 
@@ -8448,7 +8447,7 @@ int fn_80142060(void *arg0) {
 }
 
 void fn_80142078(void *arg0) {
-    f32 fn_800067BC(M2C_UNK, f32, f32, f32, f32);
+    f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
     extern f32 lbl_8036A75C;
     f32 temp_f1;
     s16 temp_r28;
@@ -8513,14 +8512,14 @@ void fn_80142078(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, s16 *, 0x40) = (s16) (temp_r4_2 + 1);
-    temp_r28 = (s16) fn_800067BC(5, (f32) (s16) var_r6, lbl_8036A75C, (f32) M2C_FIELD(arg0, s16 *, 0x40), (f32) temp_r31);
-    temp_f1 = fn_800067BC(5, (f32) var_r29, lbl_8036A75C, (f32) M2C_FIELD(arg0, s16 *, 0x40), (f32) temp_r31);
+    temp_r28 = (s16) Math_Ease(5, (f32) (s16) var_r6, lbl_8036A75C, (f32) M2C_FIELD(arg0, s16 *, 0x40), (f32) temp_r31);
+    temp_f1 = Math_Ease(5, (f32) var_r29, lbl_8036A75C, (f32) M2C_FIELD(arg0, s16 *, 0x40), (f32) temp_r31);
     M2C_FIELD(var_r30, s16 *, 0x8C) = temp_r28;
     M2C_FIELD(var_r30, s16 *, 0x8E) = (s16) temp_f1;
 }
 
 void fn_8014246C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     extern f32 lbl_8036A75C;
     s16 temp_r31;
     void *var_r30;
@@ -8585,8 +8584,8 @@ void fn_8014246C(void *arg0) {
         return;
     }
     *(s16 *)((u8 *)arg0 + 0x40) = (s16)(temp_r4_2 + 1);
-    temp_r28 = (s16)fn_800067BC(2, lbl_8036A75C, (f32)(s16)(s32)var_r6, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
-    temp_f1 = fn_800067BC(2, lbl_8036A75C, (f32)var_r29, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
+    temp_r28 = (s16)Math_Ease(2, lbl_8036A75C, (f32)(s16)(s32)var_r6, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
+    temp_f1 = Math_Ease(2, lbl_8036A75C, (f32)var_r29, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
     *(s16 *)((u8 *)var_r30 + 0x8C) = temp_r28;
     *(s16 *)((u8 *)var_r30 + 0x8E) = (s16)temp_f1;
 }
@@ -10461,7 +10460,7 @@ void fn_801457B4(void) {
 }
 
 void fn_8014589C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10473,14 +10472,14 @@ void fn_8014589C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_8014595C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10492,14 +10491,14 @@ void fn_8014595C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 120.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 120.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145A1C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10511,14 +10510,14 @@ void fn_80145A1C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145ADC(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10530,14 +10529,14 @@ void fn_80145ADC(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 0.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 0.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145B9C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10549,14 +10548,14 @@ void fn_80145B9C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145C5C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
@@ -10568,14 +10567,14 @@ void fn_80145C5C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = fn_800067BC(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEE = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145D1C(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEC;
@@ -10587,14 +10586,14 @@ void fn_80145D1C(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEC = fn_800067BC(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEC = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }
 }
 
 void fn_80145DDC(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern s32 gUiInputFlags;
     extern u8 lbl_80367AEC;
@@ -10606,7 +10605,7 @@ void fn_80145DDC(void *arg0) {
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEC = fn_800067BC(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    lbl_80367AEC = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         fn_8000C188(arg0);
     }

@@ -3742,7 +3742,7 @@ void fn_8018DDA8(void *arg0) {
 }
 
 void fn_8018DE24(void *arg0) {
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -3806,7 +3806,7 @@ void fn_8018DE24(void *arg0) {
         } else {
             *(s16 *)(self + 0x46) = (s16)(t - 1);
         }
-        *(f32 *)(self + 0x38) = fn_800067BC(4, (f32)*(s16 *)(self + 0x44), lbl_8036AD98, lbl_8036ADB8, lbl_8036ADBC);
+        *(f32 *)(self + 0x38) = Math_Ease(4, (f32)*(s16 *)(self + 0x44), lbl_8036AD98, lbl_8036ADB8, lbl_8036ADBC);
         *(f32 *)(self + 0x3C) = lbl_8036AD9C;
         if (*(u16 *)(self + 0x30) & 1) {
             *(u16 *)(self + 0x30) = (u16)(*(u16 *)(self + 0x30) & 0xFFFE);

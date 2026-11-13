@@ -1622,7 +1622,7 @@ void fn_801ADA50(void *arg0) {
     void strcpy(void *, void *);
     void strcat(void *, void *);
     void fn_8007CB3C(void *, s32);
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_AddZ(f32);
     void fn_8008BF68(s32, s32, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
@@ -1696,10 +1696,10 @@ void fn_801ADA50(void *arg0) {
             x0 = self->unk48;
             x1 = self->unk4C;
             t = 4 - self->unk3D;
-            self->unk44 = (s16)fn_800067BC(4, (f32)x0, (f32)x1, (f32)t, lbl_8036AFA8);
+            self->unk44 = (s16)Math_Ease(4, (f32)x0, (f32)x1, (f32)t, lbl_8036AFA8);
             x0 = self->unk4A;
             x1 = self->unk4E;
-            self->unk46 = (s16)fn_800067BC(4, (f32)x0, (f32)x1, (f32)t, lbl_8036AFA8);
+            self->unk46 = (s16)Math_Ease(4, (f32)x0, (f32)x1, (f32)t, lbl_8036AFA8);
         }
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AFAC);

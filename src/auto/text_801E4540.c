@@ -1550,7 +1550,7 @@ void fn_801E6CEC(void *arg0) {
 }
 #pragma peephole on
 void fn_801E7D18(void *arg0) {
-    f32 fn_800067BC(s32, u8, f32, f32, f32, f32);
+    f32 Math_Ease(s32, u8, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
     void fn_80009C20( f32, f32, f32, f32, f32, f32, f32, f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -1631,7 +1631,7 @@ void fn_801E7D18(void *arg0) {
         *(u8 *)((u8 *)self + 0x34) = *(u8 *)((u8 *)self + 0x34) - 1;
     }
 
-    fade = fn_800067BC(5, *(u8 *)((u8 *)self + 0x34), gTabMenuZero, gTabMenuOne, (f32)*(u8 *)((u8 *)self + 0x34), lbl_8036B718);
+    fade = Math_Ease(5, *(u8 *)((u8 *)self + 0x34), gTabMenuZero, gTabMenuOne, (f32)*(u8 *)((u8 *)self + 0x34), lbl_8036B718);
     div = *(s16 *)((u8 *)self + 0x38) / 32;
     row = (s8)*(u8 *)((u8 *)self + 0x33) - div;
     scale = (f32)*(u8 *)((u8 *)self + 0x34) * lbl_8036B75C;
