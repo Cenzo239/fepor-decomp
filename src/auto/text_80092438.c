@@ -55,23 +55,24 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void Unit_ApplyStatusWpnExp(void *arg0) {
+/* If status 0x24-0x28 is set and the matching wpnExp slot is 0, set that slot to 1. */
+void Unit_ApplyStatusWpnExp(void *unit) {
     u8 Status_Test(void *, s32);
 
-    if (*(u8 *)((u8 *)arg0 + 0x20C) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x24) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x20C) = 1;
+    if (*(u8 *)((u8 *)unit + 0x20C) == 0 && Status_Test((u8 *)unit + 0x1BC, 0x24) != 0) {
+        *(u8 *)((u8 *)unit + 0x20C) = 1;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x20D) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x25) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x20D) = 1;
+    if (*(u8 *)((u8 *)unit + 0x20D) == 0 && Status_Test((u8 *)unit + 0x1BC, 0x25) != 0) {
+        *(u8 *)((u8 *)unit + 0x20D) = 1;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x20E) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x26) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x20E) = 1;
+    if (*(u8 *)((u8 *)unit + 0x20E) == 0 && Status_Test((u8 *)unit + 0x1BC, 0x26) != 0) {
+        *(u8 *)((u8 *)unit + 0x20E) = 1;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x20F) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x27) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x20F) = 1;
+    if (*(u8 *)((u8 *)unit + 0x20F) == 0 && Status_Test((u8 *)unit + 0x1BC, 0x27) != 0) {
+        *(u8 *)((u8 *)unit + 0x20F) = 1;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x213) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x28) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x213) = 1;
+    if (*(u8 *)((u8 *)unit + 0x213) == 0 && Status_Test((u8 *)unit + 0x1BC, 0x28) != 0) {
+        *(u8 *)((u8 *)unit + 0x213) = 1;
     }
 }
 
