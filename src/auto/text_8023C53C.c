@@ -9826,48 +9826,78 @@ void *fn_80258AD8(void) {
     return (u8 *)lbl_8035B220 + 0x60c;
 }
 
+/* Bind or unbind an audio resource id by type (table/bank/sample/wave/group). */
 void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
- void AudioTable_Insert(s32,s32); s32 AudioTable_Remove();
- void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
- s32 SampleKey_Insert(); void SampleKey_Remove(s32);
- s32 AudioWave_Insert(); void AudioWave_Remove(s32);
- void AudioGroup_Register(s32,s32); s32 AudioGroup_Unregister();
- extern s32 *gAudioGroupState;
- u8 *node;
- switch(type) {
- case 0:
-  if(remove==0) {
-   node=FindAudioResource(data,(u16)(id),0);
-   if(node!=NULL) AudioTable_Insert(id,(s32)(node+8));
-   else AudioTable_Insert(id,0);
-  } else AudioTable_Remove(id);
-  break;
- case 2:
-  if(remove==0) {
-   node=FindAudioResource(data,(u16)(id|0x4000),8);
-   if(node!=NULL) AudioBank_Insert(id|0x4000,(s32)(node+8));
-   else AudioBank_Insert(id|0x4000,0);
-  } else AudioBank_Remove(id|0x4000);
-  break;
- case 3:
-  if(remove==0) {
-   node=FindAudioResource(data,(u16)(id|0x8000),12);
-   if(node!=NULL) SampleKey_Insert(id|0x8000,(s32)(node+12),(u16)*(u32*)(node+8));
-   else SampleKey_Insert(id|0x8000,0,0);
-  } else SampleKey_Remove(id|0x8000);
-  break;
- case 4:
-  if(remove==0) {
-   node=FindAudioResource(data,(u16)(id),4);
-   if(node!=NULL) AudioWave_Insert(id,(s32)(node+8));
-   else AudioWave_Insert(id,0);
-  } else AudioWave_Remove(id);
-  break;
- case 1:
-  if(remove==0) AudioGroup_Register(id,(s32)((u8*)gAudioGroupState+0x60C));
-  else AudioGroup_Unregister(id,(s32)((u8*)gAudioGroupState+0x60C));
-  break;
- }
+    void AudioTable_Insert(s32, s32);
+    s32 AudioTable_Remove();
+    void AudioBank_Insert(s32, s32);
+    void AudioBank_Remove(s32);
+    s32 SampleKey_Insert();
+    void SampleKey_Remove(s32);
+    s32 AudioWave_Insert();
+    void AudioWave_Remove(s32);
+    void AudioGroup_Register(s32, s32);
+    s32 AudioGroup_Unregister();
+    extern s32 *gAudioGroupState;
+    u8 *node;
+
+    switch (type) {
+    case 0:
+        if (remove == 0) {
+            node = FindAudioResource(data, (u16)(id), 0);
+            if (node != NULL) {
+                AudioTable_Insert(id, (s32)(node + 8));
+            } else {
+                AudioTable_Insert(id, 0);
+            }
+        } else {
+            AudioTable_Remove(id);
+        }
+        break;
+    case 2:
+        if (remove == 0) {
+            node = FindAudioResource(data, (u16)(id | 0x4000), 8);
+            if (node != NULL) {
+                AudioBank_Insert(id | 0x4000, (s32)(node + 8));
+            } else {
+                AudioBank_Insert(id | 0x4000, 0);
+            }
+        } else {
+            AudioBank_Remove(id | 0x4000);
+        }
+        break;
+    case 3:
+        if (remove == 0) {
+            node = FindAudioResource(data, (u16)(id | 0x8000), 12);
+            if (node != NULL) {
+                SampleKey_Insert(id | 0x8000, (s32)(node + 12), (u16)*(u32 *)(node + 8));
+            } else {
+                SampleKey_Insert(id | 0x8000, 0, 0);
+            }
+        } else {
+            SampleKey_Remove(id | 0x8000);
+        }
+        break;
+    case 4:
+        if (remove == 0) {
+            node = FindAudioResource(data, (u16)(id), 4);
+            if (node != NULL) {
+                AudioWave_Insert(id, (s32)(node + 8));
+            } else {
+                AudioWave_Insert(id, 0);
+            }
+        } else {
+            AudioWave_Remove(id);
+        }
+        break;
+    case 1:
+        if (remove == 0) {
+            AudioGroup_Register(id, (s32)((u8 *)gAudioGroupState + 0x60C));
+        } else {
+            AudioGroup_Unregister(id, (s32)((u8 *)gAudioGroupState + 0x60C));
+        }
+        break;
+    }
 }
 
 void fn_80258D74(void) {
