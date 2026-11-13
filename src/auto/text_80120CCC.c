@@ -204,7 +204,7 @@ void Ui_DrawTooltip(void *arg0) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     u32 *Ui_GetColor(s32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     extern u32 gUiInputFlags;
     extern void *gUiAtlas;
     extern f32 lbl_8036A258;
@@ -243,7 +243,7 @@ void Ui_DrawTooltip(void *arg0) {
         Prim2D_PrepareTex();
         Ui_LoadAtlasTex(gUiAtlas, spC, 0x1E);
         *(volatile u16 *)(spC + 0x20) = GXGetTexObjWidth(spC);
-        *(volatile u16 *)(spC + 0x22) = fn_80222A90(spC);
+        *(volatile u16 *)(spC + 0x22) = GXGetTexObjHeight(spC);
         Prim2D_Begin();
         Prim2D_SetTex(spC, 0x10);
         Prim2D_PrepareTex();

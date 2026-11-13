@@ -852,7 +852,7 @@ void fn_800C6028(void *arg0) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
     void fn_80224E50(void *, s32, s32);
@@ -926,7 +926,7 @@ void fn_800C6028(void *arg0) {
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), spA0, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(spA0, 0);
         w = GXGetTexObjWidth(spA0);
-        h = fn_80222A90(spA0);
+        h = GXGetTexObjHeight(spA0);
         GXSetNumChans(1);
         PSMTXScale(sp250, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp250, 0x1E, 1);
@@ -992,7 +992,7 @@ void fn_800C6028(void *arg0) {
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp80, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp80, 0);
         w = GXGetTexObjWidth(sp80);
-        h = fn_80222A90(sp80);
+        h = GXGetTexObjHeight(sp80);
         GXSetNumChans(1);
         PSMTXScale(sp1E0, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp1E0, 0x1E, 1);
@@ -1058,7 +1058,7 @@ void fn_800C6028(void *arg0) {
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp60, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp60, 0);
         w = GXGetTexObjWidth(sp60);
-        h = fn_80222A90(sp60);
+        h = GXGetTexObjHeight(sp60);
         GXSetNumChans(1);
         PSMTXScale(sp170, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp170, 0x1E, 1);
@@ -1126,7 +1126,7 @@ void fn_800C6028(void *arg0) {
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp40, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp40, 0);
         w = GXGetTexObjWidth(sp40);
-        h = fn_80222A90(sp40);
+        h = GXGetTexObjHeight(sp40);
         GXSetNumChans(1);
         PSMTXScale(sp100, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp100, 0x1E, 1);
@@ -1189,7 +1189,7 @@ void fn_800C6E44(void *arg0) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
     void fn_80224E50(void *, s32, s32);
@@ -1250,7 +1250,7 @@ void fn_800C6E44(void *arg0) {
     Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34));
     fn_80222C50(sp20, 0);
     w = GXGetTexObjWidth(sp20);
-    h = fn_80222A90(sp20);
+    h = GXGetTexObjHeight(sp20);
     GXSetNumChans(1);
     PSMTXScale(sp70, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
     fn_80224E50(sp70, 0x1E, 1);
@@ -1297,7 +1297,7 @@ void fn_800C6E44(void *arg0) {
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34) + 1);
         fn_80222C50(sp20, 0);
         w = GXGetTexObjWidth(sp20);
-        h = fn_80222A90(sp20);
+        h = GXGetTexObjHeight(sp20);
         GXSetNumChans(1);
         PSMTXScale(sp40, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp40, 0x1E, 1);

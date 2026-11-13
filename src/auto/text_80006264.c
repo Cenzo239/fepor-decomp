@@ -1840,7 +1840,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void fn_80222CF0(s32, s32);
     void fn_80222C50(void *, s32);
     u32 GXGetTexObjWidth(void *);
-    u32 fn_80222A90(void *);
+    u32 GXGetTexObjHeight(void *);
     s32 fn_80222AA0(void *);
     void fn_80224E50(void *, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -1881,7 +1881,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
             fn_80222CF0(arg2, arg3);
         }
         fn_80222C50(arg1, 0);
-        temp_f31 = lbl_80368B94 / (f32)(u16)fn_80222A90(arg1);
+        temp_f31 = lbl_80368B94 / (f32)(u16)GXGetTexObjHeight(arg1);
         temp_f1 = lbl_80368B94 / (f32)(u16)GXGetTexObjWidth(arg1);
         PSMTXScale(sp8, temp_f1, temp_f31, lbl_80368B94);
         fn_80224E50(sp8, 0x1E, 1);

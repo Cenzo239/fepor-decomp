@@ -5627,7 +5627,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_80224E50(void *, s32, s32);
     s32 fn_80222AA8(void *);
     s32 fn_80222AA0(void *);
-    s32 fn_80222A90(void *);
+    s32 GXGetTexObjHeight(void *);
     s32 GXGetTexObjWidth(void *);
     s32 fn_80222A74(void *);
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
@@ -5746,7 +5746,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     if (*(u16 *)arg3 & 0x20) {
         t31 = fn_80222AA8(sp14);
         t25 = fn_80222AA0(sp14);
-        t24 = fn_80222A90(sp14);
+        t24 = GXGetTexObjHeight(sp14);
         t23 = GXGetTexObjWidth(sp14);
         t4 = fn_80222A74(sp14);
         fn_80222644(sp14, t4, t23, t24, t25, 1, 1, t31);

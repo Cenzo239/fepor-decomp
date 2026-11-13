@@ -408,7 +408,7 @@ s32 GXGetTexObjWidth(void *arg0) {
     return (M2C_FIELD(arg0, s32 *, 8) & 0x3FF) + 1;
 }
 
-s32 fn_80222A90(void *arg0) {
+s32 GXGetTexObjHeight(void *arg0) {
     return (((u32) M2C_FIELD(arg0, u32 *, 8) >> 0xAU) & 0x3FF) + 1;
 }
 

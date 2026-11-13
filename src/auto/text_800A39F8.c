@@ -1898,7 +1898,7 @@ void fn_800A7C94(void *arg0) {
     s32 fn_8000CEE4(s32);
     void Ui_LoadAtlasTex(void *, void *, u16);
     u16 GXGetTexObjWidth(void *);
-    s16 fn_80222A90(void *);
+    s16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
     void fn_800C426C(void *);
@@ -1944,7 +1944,7 @@ void fn_800A7C94(void *arg0) {
         r30 = fn_8000CEE4(8) + 2;
         Ui_LoadAtlasTex(r26, st.sp10, (u16)r30);
         st.sp30 = GXGetTexObjWidth(st.sp10);
-        tmp16 = fn_80222A90(st.sp10);
+        tmp16 = GXGetTexObjHeight(st.sp10);
         t = st.sp30;
         st.sp32 = tmp16;
         r22[0] = 0;
@@ -2000,7 +2000,7 @@ void fn_800A7EC4(void *arg0) {
     void *fn_8022C414(void (*)(void), s32, s32, s32);
     void Ui_LoadAtlasTex(s32, void *, u16);
     u16 GXGetTexObjWidth(void *);
-    s16 fn_80222A90(void *);
+    s16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
     void fn_800C426C(void *);
@@ -2046,7 +2046,7 @@ void fn_800A7EC4(void *arg0) {
         span = fn_8000CEE4(8) + 2;
         Ui_LoadAtlasTex(unk30, sp10, span);
         a = GXGetTexObjWidth(sp10);
-        b = fn_80222A90(sp10);
+        b = GXGetTexObjHeight(sp10);
         sp30 = a;
         sp32 = b;
         M2C_FIELD(cur, u16 *, 0) = 0;
@@ -2094,7 +2094,7 @@ void fn_800A80F0(void *arg0) {
     M2C_UNK Prim2D_SetTex(M2C_UNK *, M2C_UNK);
     M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, u16);
     u16 GXGetTexObjWidth(M2C_UNK *);
-    u16 fn_80222A90(M2C_UNK *);
+    u16 GXGetTexObjHeight(M2C_UNK *);
     f64 fn_802380D0(f32, f32);
     extern f32 lbl_80369B40;
     extern f32 lbl_80369B44;
@@ -2120,7 +2120,7 @@ void fn_800A80F0(void *arg0) {
     }
     Ui_LoadAtlasTex(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30), &sp8, (u16) M2C_FIELD(arg0, s32 *, 0x44));
     sp28 = GXGetTexObjWidth(&sp8);
-    sp2A = fn_80222A90(&sp8);
+    sp2A = GXGetTexObjHeight(&sp8);
     Prim2D_Begin();
     Prim2D_SetTex(&sp8, 0x20);
     Prim2D_PrepareTex();
@@ -2478,7 +2478,7 @@ void Ui_DrawPromptSprites(void *proc) {
     void Prim2D_Begin(void);
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369BAC;
     extern f32 lbl_80369BB0;
@@ -2515,7 +2515,7 @@ void Ui_DrawPromptSprites(void *proc) {
     Prim2D_PrepareTex();
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 0);
     st.x = GXGetTexObjWidth(st.buf);
-    st.y = fn_80222A90(st.buf);
+    st.y = GXGetTexObjHeight(st.buf);
     Prim2D_Begin();
     Prim2D_SetTex(st.buf, 0);
     Prim2D_PrepareTex();
@@ -2533,7 +2533,7 @@ void Ui_DrawPromptSprites(void *proc) {
         Prim2D_PrepareTex();
         Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 1);
         st.x = GXGetTexObjWidth(st.buf);
-        st.y = fn_80222A90(st.buf);
+        st.y = GXGetTexObjHeight(st.buf);
         Prim2D_Begin();
         Prim2D_SetTex(st.buf, 0x10);
         Prim2D_PrepareTex();
@@ -2551,7 +2551,7 @@ void Ui_DrawPromptSprites(void *proc) {
         Prim2D_PrepareTex();
         Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 2);
         st.x = GXGetTexObjWidth(st.buf);
-        st.y = fn_80222A90(st.buf);
+        st.y = GXGetTexObjHeight(st.buf);
         Prim2D_Begin();
         Prim2D_SetTex(st.buf, 0x10);
         Prim2D_PrepareTex();

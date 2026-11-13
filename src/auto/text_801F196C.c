@@ -3218,7 +3218,7 @@ void fn_801F8E30(void *arg0) {
     void fn_80202574(void *, void *, f32, f32, f32);
     void fn_802025E8(void *, void *, f32, f32, f32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     void sprintf(void *, void *, ...);
     f64 fmod(f64, f64);
     void fn_80069F04(void);
@@ -3310,7 +3310,7 @@ clear:
             f28 = f30 + (f32)Text_MeasureHeight(-1, lbl_8036BA20);
             Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
             sp94 = GXGetTexObjWidth(sp74);
-            sp96 = fn_80222A90(sp74);
+            sp96 = GXGetTexObjHeight(sp74);
             Prim2D_Begin();
             Prim2D_SetTex(sp74, 0x10);
             Prim2D_PrepareTex();

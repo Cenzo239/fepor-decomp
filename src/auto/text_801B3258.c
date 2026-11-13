@@ -8308,7 +8308,7 @@ void fn_801C85E0(void *arg0) {
     s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
-    u16 fn_80222A90(void *);
+    u16 GXGetTexObjHeight(void *);
     void fn_80230BBC(s32);
     void fn_80238ABC(char *, s32);
     s32 strlen(char *);
@@ -8359,7 +8359,7 @@ void fn_801C85E0(void *arg0) {
     Prim2D_PrepareTex();
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t0, 0);
     t0.w = GXGetTexObjWidth(&t0);
-    t0.h = fn_80222A90(&t0);
+    t0.h = GXGetTexObjHeight(&t0);
     Prim2D_Begin();
     Prim2D_SetTex(&t0, 0x10);
     Prim2D_PrepareTex();
@@ -8381,7 +8381,7 @@ void fn_801C85E0(void *arg0) {
     len = strlen(buf0);
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t1, 1);
     t1.w = GXGetTexObjWidth(&t1);
-    t1.h = fn_80222A90(&t1);
+    t1.h = GXGetTexObjHeight(&t1);
     Prim2D_Begin();
     Prim2D_SetTex(&t1, 0x11);
     Prim2D_PrepareTex();
@@ -8426,7 +8426,7 @@ void fn_801C85E0(void *arg0) {
     len = strlen(buf1);
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t2, 1);
     t2.w = GXGetTexObjWidth(&t2);
-    t2.h = fn_80222A90(&t2);
+    t2.h = GXGetTexObjHeight(&t2);
     Prim2D_Begin();
     Prim2D_SetTex(&t2, 0x11);
     Prim2D_PrepareTex();
@@ -8471,7 +8471,7 @@ void fn_801C85E0(void *arg0) {
     len = strlen(buf2);
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t3, 1);
     t3.w = GXGetTexObjWidth(&t3);
-    t3.h = fn_80222A90(&t3);
+    t3.h = GXGetTexObjHeight(&t3);
     Prim2D_Begin();
     Prim2D_SetTex(&t3, 0x11);
     Prim2D_PrepareTex();
