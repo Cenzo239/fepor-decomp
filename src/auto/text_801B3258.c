@@ -747,7 +747,7 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
 
 void Script_RegisterWinCondCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     void fn_801B7818(void);
     void fn_801B7638(void);
     void fn_801B75F4(void);
@@ -760,17 +760,17 @@ void Script_RegisterWinCondCommands(void) {
     void fn_801B70C8(void);
     void fn_801B7094(void);
 
-    Script_RegisterCommand(lbl_8027C370 + 0xCE, fn_801B7818, 2);
-    Script_RegisterCommand(lbl_8027C370 + 0xD9, fn_801B7638, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0xE9, fn_801B75F4, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0xF8, fn_801B7564, 1);
-    Script_RegisterCommand(lbl_8027C370 + 0x10C, fn_801B7488, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x11B, fn_801B73DC, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x131, fn_801B7330, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x141, fn_801B7260, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x153, fn_801B7188, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x165, fn_801B70C8, 0);
-    Script_RegisterCommand(lbl_8027C370 + 0x178, fn_801B7094, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0xCE, fn_801B7818, 2);
+    Script_RegisterCommand(gWinCondCmdNames + 0xD9, fn_801B7638, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0xE9, fn_801B75F4, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0xF8, fn_801B7564, 1);
+    Script_RegisterCommand(gWinCondCmdNames + 0x10C, fn_801B7488, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x11B, fn_801B73DC, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x131, fn_801B7330, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x141, fn_801B7260, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x153, fn_801B7188, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x165, fn_801B70C8, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x178, fn_801B7094, 0);
 }
 
 s32 fn_801B7094(void) {
@@ -795,7 +795,7 @@ s32 fn_801B7094(void) {
 s32 fn_801B70C8(void) {
     void DebugPrint(void *, ...);
     void *fn_8010FF24(void *, s8, s8, s32);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gBattleMap[];
     extern u8 lbl_8032BB58[];
     void *table;
@@ -806,7 +806,7 @@ s32 fn_801B70C8(void) {
     void *tmp;
 
     sum = 0;
-    DebugPrint(lbl_8027C370 + 0x18B);
+    DebugPrint(gWinCondCmdNames + 0x18B);
     map = gBattleMap;
     y = (s8)map[9];
     table = lbl_8032BB58;
@@ -824,7 +824,7 @@ s32 fn_801B70C8(void) {
 s32 fn_801B7188(void) {
     void DebugPrint(const char *, ...);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnits[];
     u8 buf[8];
     u8 *unit;
@@ -832,7 +832,7 @@ s32 fn_801B7188(void) {
     s32 i;
 
     count = 0;
-    DebugPrint((const char *)(lbl_8027C370 + 0x19C));
+    DebugPrint((const char *)(gWinCondCmdNames + 0x19C));
     fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
@@ -852,13 +852,13 @@ s32 fn_801B7188(void) {
 s32 fn_801B7260(void) {
     void DebugPrint(const char *, ...);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnits[];
     u8 buf[8];
     u8 *unit;
     s32 i;
 
-    DebugPrint((const char *)(lbl_8027C370 + 0x19C));
+    DebugPrint((const char *)(gWinCondCmdNames + 0x19C));
     fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
@@ -879,7 +879,7 @@ s32 fn_801B7260(void) {
 s32 fn_801B7330(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
     u8 *base;
     void *next;
@@ -887,9 +887,9 @@ s32 fn_801B7330(void) {
     void *node;
 
     count = 0;
-    DebugPrint(lbl_8027C370 + 0x1A9);
+    DebugPrint(gWinCondCmdNames + 0x1A9);
     node = *(void **)(gUnitLists + 0xC);
-    base = lbl_8027C370;
+    base = gWinCondCmdNames;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (Str_Cmp(*(void **)(*(void **)((u8 *)node + 0x18C)), base + 0x1B0) == 0) {
@@ -897,14 +897,14 @@ s32 fn_801B7330(void) {
         }
         node = next;
     }
-    DebugPrint(lbl_8027C370 + 0x1BA, count);
+    DebugPrint(gWinCondCmdNames + 0x1BA, count);
     return count;
 }
 
 s32 fn_801B73DC(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
     u8 *base;
     void *next;
@@ -912,9 +912,9 @@ s32 fn_801B73DC(void) {
     void *node;
 
     count = 0;
-    DebugPrint(lbl_8027C370 + 0x1C0);
+    DebugPrint(gWinCondCmdNames + 0x1C0);
     node = *(void **)(gUnitLists + 0xC);
-    base = lbl_8027C370;
+    base = gWinCondCmdNames;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (Str_Cmp(*(void **)(*(void **)((u8 *)node + 0x188)), base + 0x1CB) == 0) {
@@ -922,14 +922,14 @@ s32 fn_801B73DC(void) {
         }
         node = next;
     }
-    DebugPrint(lbl_8027C370 + 0x1DE, count);
+    DebugPrint(gWinCondCmdNames + 0x1DE, count);
     return count;
 }
 
 s32 fn_801B7488(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
     u8 *base;
     void *next;
@@ -938,9 +938,9 @@ s32 fn_801B7488(void) {
     void *node;
 
     count = 0;
-    DebugPrint(lbl_8027C370 + 0x1E8);
+    DebugPrint(gWinCondCmdNames + 0x1E8);
     node = *(void **)(gUnitLists + 0xC);
-    base = lbl_8027C370;
+    base = gWinCondCmdNames;
     while (node != NULL) {
         entry = *(void **)((u8 *)node + 0x18C);
         next = *(void **)((u8 *)node + 0x184);
@@ -951,21 +951,21 @@ s32 fn_801B7488(void) {
         }
         node = next;
     }
-    DebugPrint(lbl_8027C370 + 0x214, count);
+    DebugPrint(gWinCondCmdNames + 0x214, count);
     return count;
 }
 
 s32 fn_801B7564(void *arg0) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
     void *next;
     s32 count;
     void *node;
 
     count = 0;
-    DebugPrint(lbl_8027C370 + 0x21C);
+    DebugPrint(gWinCondCmdNames + 0x21C);
     node = *(void **)(gUnitLists + 0xC);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
@@ -980,20 +980,20 @@ s32 fn_801B7564(void *arg0) {
 s32 fn_801B75F4(void)
 {
     void DebugPrint(const char *, ...);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
 
-    DebugPrint((char *)lbl_8027C370 + 0x225);
+    DebugPrint((char *)gWinCondCmdNames + 0x225);
     return *(s32 *)(gUnitLists + 0xC) == 0;
 }
 
 s32 fn_801B7638(void)
 {
     void DebugPrint(const char *, ...);
-    extern u8 lbl_8027C370[];
+    extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
 
-    DebugPrint((char *)lbl_8027C370 + 0x22e);
+    DebugPrint((char *)gWinCondCmdNames + 0x22e);
     return *(s32 *)(gUnitLists + 0x48) == 0;
 }
 
@@ -18936,7 +18936,7 @@ extern s16 *gUiUnitPanelStrings;
 
 extern void *gCameraWin;
 extern u8 lbl_802986A8[];
-extern u16 lbl_8027C370[];
+extern u16 gWinCondCmdNames[];
 extern u16 gUnitLists[];
 #include "global.h"
 
