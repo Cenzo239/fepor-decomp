@@ -1528,7 +1528,7 @@ s32 fn_800A19C0(void) {
     void fn_801A4958(void *);
     void fn_8019B704(void *, s32);
     extern u8 lbl_8026D8D8[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_80330EAC[];
     void *temp_r31;
@@ -1542,8 +1542,8 @@ s32 fn_800A19C0(void) {
     fn_8000C070(temp_r31, 9);
     fn_800A6A3C();
     temp_r30 = fn_800AA794();
-    fn_800283C8(lbl_802EF4C8, temp_r30);
-    fn_80027F98(lbl_802EF4C8, 1);
+    fn_800283C8(gUiContext, temp_r30);
+    fn_80027F98(gUiContext, 1);
     fn_800381EC(temp_r30, 0);
     cls = *(u8 **)((u8 *)temp_r30 + 0x190);
     if (cls[8] != 0) {

@@ -110,18 +110,18 @@ s32 fn_801055B0(s32 arg0) {
         u8 padB[4];
         u8 unkF;
         u8 unk10;
-    } lbl_802EF4C8;
+    } gUiContext;
     extern u8 lbl_80330EAC[];
     s8 temp;
 
-    fn_800BEAC0(arg0, lbl_802EF4C8.unk8, lbl_802EF4C8.unkF, lbl_802EF4C8.unk10);
+    fn_800BEAC0(arg0, gUiContext.unk8, gUiContext.unkF, gUiContext.unk10);
 
-    temp = lbl_802EF4C8.unkA;
+    temp = gUiContext.unkA;
     if (temp < 0) {
         return 1;
     }
 
-    fn_80094A08(lbl_802EF4C8.unk0, temp);
+    fn_80094A08(gUiContext.unk0, temp);
     *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x2000;
     return 1;
 }
@@ -140,14 +140,14 @@ void fn_80105624(s32 arg0) {
         u8 padB[4];
         u8 unkF;
         u8 unk10;
-    } lbl_802EF4C8;
+    } gUiContext;
     u8 sp8;
     void *temp;
 
-    lbl_802EF4C8.unk8 = 0xA;
-    temp = fn_800285C0(&lbl_802EF4C8);
+    gUiContext.unk8 = 0xA;
+    temp = fn_800285C0(&gUiContext);
     fn_8001EDB8(&sp8, *(s32 *)temp);
-    fn_80026770(&lbl_802EF4C8, &sp8);
+    fn_80026770(&gUiContext, &sp8);
     fn_800319E8(arg0);
 }
 
@@ -3725,14 +3725,14 @@ outer_cmp:
 u8 fn_8010BDE0(s32 arg0) {
     u8 fn_80102334(s32, s32, s16 *, s16 *);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     s16 spA;
     s16 sp8;
 
     if (fn_80102334(arg0, 0, &spA, &sp8) != 0) {
         fn_801014BC(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
         if ((lbl_8032B3C0[0x21C] != 0)) {
-            if ((spA == (s8) lbl_802EF4C8[0xD]) && (sp8 == (s8) lbl_802EF4C8[0xE])) {
+            if ((spA == (s8) gUiContext[0xD]) && (sp8 == (s8) gUiContext[0xE])) {
                 fn_800FB9C0(0x2C, 0, (s8) spA, (s8) sp8, -1, 0, 0);
             }
         }

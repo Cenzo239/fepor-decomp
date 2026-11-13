@@ -2167,7 +2167,7 @@ void fn_801B9748(void *a) {
     void *fn_8013FF94(void *, s32, s32);
     s32 fn_80019DF0(u8);
     void fn_8017A9F0(void *, s32, void *);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern f32 lbl_8036B2DC;
 
     void *p;
@@ -2180,15 +2180,15 @@ void fn_801B9748(void *a) {
     p = fn_8013FF94(a, 0x108, 0);
     *(f32 *)((u8 *)p + 0x30) = lbl_8036B2DC;
 
-    x = fn_80019DF0(lbl_802EF4C8[0x14]);
+    x = fn_80019DF0(gUiContext[0x14]);
     q = *(void **)((u8 *)a + 0x60);
     *(u8 *)((u8 *)q + 0x3C) = 0;
     fn_8017A9F0(q, x, a);
 }
 
 void fn_801B97C8(s32 arg0) {
-    extern u8 lbl_802EF4C8[];
-    switch ((s32)lbl_802EF4C8[8]) {
+    extern u8 gUiContext[];
+    switch ((s32)gUiContext[8]) {
     case 0x81:
         fn_8000C188(arg0);
         return;
@@ -2206,7 +2206,7 @@ extern "C" void fn_801B9978(void *arg0) {
  void fn_801475FC(void *,s32); u8 fn_80166D8C(void *);
  void fn_80167190(void *,s32,f32,f32); void fn_801673D0(void *);
  void fn_8016758C(void *,void *,s32,f32,f32); void *fn_8017B908(void *);
- extern u8 lbl_8027C698[],lbl_802EF4C8[],lbl_80330D68[];
+ extern u8 lbl_8027C698[],gUiContext[],lbl_80330D68[];
  extern u32 lbl_80367110; extern void *lbl_80367240; extern s32 lbl_80368DC4;
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
  void fn_80140258(void *,void *,const Pair &,s32);
@@ -2238,7 +2238,7 @@ extern "C" void fn_801B9978(void *arg0) {
  a=M2C_FIELD(lbl_80367240,s32 *,4);
  btn=a&(M2C_FIELD(lbl_80367240,s32 *,8)^a);
  if((btn&0x100)&&unit&&!fn_80166D8C(lbl_80330D68)) {
- lbl_802EF4C8[0x14]=M2C_FIELD(unit,u8 *,0x18);
+ gUiContext[0x14]=M2C_FIELD(unit,u8 *,0x18);
  fn_801475FC(lbl_8027C698+0x10C,100); fn_8000C188(self);
  } else if((btn&0x800)&&!fn_80166D8C(lbl_80330D68)&&unit) {
  *(Pair *)&pos2=((Obj *)list)->v9();
@@ -2406,7 +2406,7 @@ extern "C" void fn_801BA3E8(void *arg0) {
     void *fn_8013FF94(void *, s32, s32);
     void fn_8000C188(void *);
     void fn_8000C070(void *, s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     class Pair {
     public:
         s16 x, y;
@@ -2422,7 +2422,7 @@ extern "C" void fn_801BA3E8(void *arg0) {
     void *temp;
 
     temp = fn_8013FF94(arg0, 0x108, 0);
-    switch ((s32)lbl_802EF4C8[8]) {
+    switch ((s32)gUiContext[8]) {
     case 0x81:
         fn_8000C188(arg0);
         return;
@@ -2443,7 +2443,7 @@ void fn_801475FC(void *,s32); u8 fn_80166D8C(void *);
 void fn_80167190(void *,s32,f32,f32); void fn_801673D0(void *);
 void fn_8016758C(void *,void *,s32,f32,f32);
 void fn_80176888(void *,void *,f32,f32); s32 fn_8017C3C8(void *);
-extern u8 lbl_8027C698[],lbl_802EF4C8[],lbl_80330D68[];
+extern u8 lbl_8027C698[],gUiContext[],lbl_80330D68[];
 extern u32 lbl_80367110; extern void *lbl_80367240; extern s32 lbl_80368DC4;
 class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
 void fn_80140258(void *,void *,const Pair &,s32);
@@ -2451,7 +2451,7 @@ struct Obj { virtual void destroy(s32); virtual void v1(); virtual void v2(); vi
 void *self,*owner,*unit,*temp;
 s32 btn; u8 gate; s32 flags;
 u32 pos1,pos2,pos3,pos4;
-self=arg0; owner=*(void **)lbl_802EF4C8;
+self=arg0; owner=*(void **)gUiContext;
 unit=fn_801362C8(M2C_FIELD(self,void **,0x68));
 fn_8013FDA0(self);
 if(unit!=fn_801362C8(M2C_FIELD(self,void **,0x68))) {
@@ -2483,7 +2483,7 @@ if(remaining<M2C_FIELD(unit,u8 *,0x1a)) {
 fn_80176888(lbl_8027C698+0x18c,self,(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
 return;
 }
-lbl_802EF4C8[0x14]=M2C_FIELD(unit,u8 *,0x18);
+gUiContext[0x14]=M2C_FIELD(unit,u8 *,0x18);
 temp=M2C_FIELD(self,void **,0x68);
 fn_80140258(self,temp,Pair(0x260,M2C_FIELD(temp,s16 *,0xc)),0);
 temp=M2C_FIELD(self,void **,0x6c);
@@ -2562,7 +2562,7 @@ extern "C" void fn_801BADB0(void *arg0) {
     extern void *lbl_80293C84[];
     extern void *lbl_80296194[];
     extern s32 lbl_80297E6C[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
 
     struct Obj {
@@ -2611,7 +2611,7 @@ extern "C" void fn_801BADB0(void *arg0) {
         pair14[1] = 0x7C;
         fn_801402A0(self, child, pair14, 0);
     }
-    ctx = *(void **)lbl_802EF4C8;
+    ctx = *(void **)gUiContext;
     alloc = Heap_Alloc(0xD0);
     if (alloc) {
         alloc = fn_801BEB24(alloc, 0x260, 0x68, 0xE2, 0x1E0);
@@ -2859,7 +2859,7 @@ void fn_801BB400(void *arg0) {
     void fn_8017BB94(void *);
     s32 fn_8017C3C8(u32);
     extern u8 lbl_8027C698[];
-    extern u32 lbl_802EF4C8[];
+    extern u32 gUiContext[];
     extern u32 lbl_80367110;
     extern void *lbl_80367240;
     s16 sp8[2];
@@ -2892,7 +2892,7 @@ void fn_801BB400(void *arg0) {
         a = M2C_FIELD(lbl_80367240, s32 *, 4);
         btn = a & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ a);
         if ((btn & 0x100) && var_r31) {
-            fn_8002833C(lbl_802EF4C8, var_r31);
+            fn_8002833C(gUiContext, var_r31);
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), f32 *, 0x30) = 0.5f;
             obj64 = M2C_FIELD(arg0, void **, 0x64);
             tmp = M2C_FIELD(obj64, s16 *, 0xC);
@@ -3189,7 +3189,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     extern u8 lbl_80293C2C[];
     extern u8 lbl_80293C84[];
     extern u8 lbl_802CA264[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2DC;
     extern f32 lbl_8036B2E0;
@@ -3215,7 +3215,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     s16 n;
 
     self = arg0;
-    saved = *(s32 *)lbl_802EF4C8;
+    saved = *(s32 *)gUiContext;
     tmp = fn_8013FF94(self, -0x1000, 0);
     if (tmp != NULL) {
         fn_8014004C(self, tmp);
@@ -3250,7 +3250,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
         entry = *(void **)((u8 *)entry + 0x184);
     }
     fn_8013AD70(*(void **)((u8 *)self + 0x48), saved);
-    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x56) = lbl_802EF4C8[0x15];
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x56) = gUiContext[0x15];
     q = *(void **)((u8 *)self + 0x48);
     *(void **)((u8 *)q + 0x7C) = (void *)fn_801BC71C;
     *(s32 *)((u8 *)q + 0x80) = 0;
@@ -3642,7 +3642,7 @@ s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 void fn_800381EC(void *,s8); s32 fn_8003B2D0(void *);
 void *fn_8013FF94(void *,s32,s32); u8 fn_8017D6D8(void *);
 void fn_801475FC(void *,s32); void fn_8000C070(void *,s32); void fn_8013FF00(void *,void *);
-extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],lbl_8027C698[],lbl_802EF4C8[];
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],lbl_8027C698[],gUiContext[];
 class Pair { public: s16 x,y; Pair(s16 a,s16 b):x(a),y(b) {} };
 void fn_80140258(void *,void *,const Pair &,s32);
 void fn_8014027C(void *,void *,const Pair &,s32);
@@ -3654,7 +3654,7 @@ self=arg0;
 a=M2C_FIELD(self,void **,0x4C); b=M2C_FIELD(self,void **,0x54); c=M2C_FIELD(self,void **,0x58);
 M2C_FIELD(a,f32 *,0x30)=1.0f; M2C_FIELD(b,f32 *,0x30)=1.0f; M2C_FIELD(c,f32 *,0x30)=1.0f;
 M2C_FIELD(M2C_FIELD(self,void **,0x5C),f32 *,0x30)=1.0f;
-unit=*(void **)lbl_802EF4C8;
+unit=*(void **)gUiContext;
 p=Heap_Alloc(0x5C);
 if(p) {M2C_FIELD(p,void **,0)=lbl_8028FDB0;
 M2C_FIELD(p,u32 *,4)=0;
@@ -3732,11 +3732,11 @@ fn_8013FF00(self,M2C_FIELD(self,void **,0x5C));
 void fn_801BCC60(s32 arg0) {
     void fn_801A4BE0(void *);
     void fn_801ED970(s32, s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330EAC[];
     s32 saved;
 
-    saved = *(s32 *)lbl_802EF4C8;
+    saved = *(s32 *)gUiContext;
     fn_801A4BE0(lbl_80330EAC);
     if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
         fn_801ED970(saved, arg0);
@@ -3750,7 +3750,7 @@ void fn_801BCCC4(void *arg0) {
     void fn_80034A8C(void *, s32, u8, void *, s32);
     void fn_8014004C(void *, void *);
     extern u8 lbl_8027C698[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     extern u8 lbl_80330EAC[];
     void *p;
@@ -3763,7 +3763,7 @@ void fn_801BCCC4(void *arg0) {
     fn_801658DC(p, lbl_8027C698 + 0x1CE);
     obj = *(void **)((u8 *)arg0 + 0x5C);
     base = lbl_80330708;
-    v = *(s32 *)lbl_802EF4C8;
+    v = *(s32 *)gUiContext;
     saved = *(s32 *)((u8 *)base + 0x1C);
     *(s32 *)((u8 *)base + 0x1C) = saved - fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
     fn_80034A8C(lbl_80330EAC, v, (u8)*(s16 *)((u8 *)obj + 0x3E), arg0, 0);
@@ -3775,7 +3775,7 @@ void fn_801BCCC4(void *arg0) {
 }
 
 void fn_801BCD8C(void *arg0) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
     void fn_80140258(void *, void *, void *, s32);
     void fn_8000C188(void *);
@@ -3798,7 +3798,7 @@ void fn_801BCD8C(void *arg0) {
     void *self;
     void *obj2;
 
-    flag = lbl_802EF4C8[8];
+    flag = gUiContext[8];
     obj1 = *(void **)((u8 *)arg0 + 0x4C);
     obj2 = *(void **)((u8 *)arg0 + 0x54);
     obj3 = *(void **)((u8 *)arg0 + 0x58);
@@ -3991,7 +3991,7 @@ void fn_801BD37C(void *arg0) {
     extern u8 lbl_80293C2C[];
     extern u8 lbl_80293C00[];
     extern u8 lbl_8027C698[];
-    extern u32 lbl_802EF4C8[];
+    extern u32 gUiContext[];
     void *a;
     void *p;
     void *q;
@@ -4064,7 +4064,7 @@ void fn_801BD37C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s16 *, 0x24) = 8;
     tmp = M2C_FIELD(arg0, void **, 0x5C);
     M2C_FIELD(tmp, u32 *, 0x34) |= 0x10;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u32 *, 0x40) = lbl_802EF4C8[0];
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u32 *, 0x40) = gUiContext[0];
     fn_801400F4(arg0, M2C_FIELD(arg0, void **, 0x5C));
     fn_8013FF00(arg0, M2C_FIELD(arg0, void **, 0x5C));
 }
@@ -4077,7 +4077,7 @@ extern "C" void fn_801BD5A0(void *arg0) {
  void fn_80140210(void *,void *,s32);
  void fn_801475FC(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
  void fn_80176888(void *,void *,f32,f32); s16 fn_8017D604(u32,s32);
- extern u8 lbl_8027C698[]; extern u8 lbl_802EF4C8[]; extern u8 lbl_80330708[];
+ extern u8 lbl_8027C698[]; extern u8 gUiContext[]; extern u8 lbl_80330708[];
  extern u32 lbl_80367110; extern void *lbl_80367240; extern f32 lbl_8036B2E4;
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b): x(a), y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
  void fn_80140258(void *,void *,const Pair &,s32);
@@ -4122,9 +4122,9 @@ extern "C" void fn_801BD5A0(void *arg0) {
  }
  {
 
- fn_8002833C(lbl_802EF4C8,unit);
+ fn_8002833C(gUiContext,unit);
  obj=M2C_FIELD(arg0,void **,0x48);
- lbl_802EF4C8[0x15]=M2C_FIELD(obj,s16 *,0x56);
+ gUiContext[0x15]=M2C_FIELD(obj,s16 *,0x56);
  M2C_FIELD(obj,f32 *,0x30)=lbl_8036B2E4;
  obj=M2C_FIELD(arg0,void **,0x48);
  tmp=M2C_FIELD(obj,s16 *,0x10)-M2C_FIELD(obj,s16 *,0xC);
@@ -4651,11 +4651,11 @@ void *fn_801BE6A8(s32 arg0) {
     void fn_8000C070(void *, s32);
     extern u8 lbl_80297C14[];
     extern u8 lbl_80297E78[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80368274;
     void *temp_r3;
 
-    lbl_802EF4C8[8] = 0x80;
+    gUiContext[8] = 0x80;
     temp_r3 = fn_8000CAA0(lbl_80297C14, arg0);
     if (temp_r3 != NULL) {
         fn_801403F0();
@@ -4731,7 +4731,7 @@ u8 fn_801BE808(void)
 s32 fn_801BE854(s32 arg0, void *arg1, void *arg2) {
     void fn_80176888(void *, void *, f32, f32);
     extern u8 lbl_8027C698[];
-    extern u32 lbl_802EF4C8[];
+    extern u32 gUiContext[];
 
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         fn_80176888(
@@ -4741,7 +4741,7 @@ s32 fn_801BE854(s32 arg0, void *arg1, void *arg2) {
             (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32)));
         return 0;
     }
-    *((u8 *)lbl_802EF4C8 + 8) = 0x83;
+    *((u8 *)gUiContext + 8) = 0x83;
     return 5;
 }
 
@@ -4760,7 +4760,7 @@ s32 fn_801BE92C(void *arg0) {
     u32 fn_8017BD58(void);
     s32 fn_8017C3C8(void *);
     extern u8 lbl_80297C14[];
-    extern u32 lbl_802EF4C8[];
+    extern u32 gUiContext[];
     void *temp_r31;
     void *temp_r4;
     void *unit;
@@ -4771,7 +4771,7 @@ s32 fn_801BE92C(void *arg0) {
 
     *((s8 *)arg0 + 4) = 0;
     ret = fn_8000C0C0(lbl_80297C14);
-    temp_r31 = (void *)lbl_802EF4C8[0];
+    temp_r31 = (void *)gUiContext[0];
     fn_8013FF94(ret, 0x106, 0);
     if (fn_8017BD58() >= 5U) {
         *((s8 *)arg0 + 4) = -1;
@@ -4803,7 +4803,7 @@ s32 fn_801BE92C(void *arg0) {
 s32 fn_801BEA38(void *arg0, void *arg1, void *arg2) {
     void fn_80176888(void *, void *, f32, f32);
     extern u8 lbl_8027C698[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     f32 x;
     f32 y;
 
@@ -4823,7 +4823,7 @@ s32 fn_801BEA38(void *arg0, void *arg1, void *arg2) {
         }
         return 0;
     }
-    lbl_802EF4C8[8] = 0x82;
+    gUiContext[8] = 0x82;
     return 5;
 }
 
@@ -5038,8 +5038,8 @@ void fn_801C0A28(void *arg0) {
 }
 
 void fn_801C0A9C(void *arg0) {
-    extern u8 lbl_802EF4C8[];
-    switch ((s32)lbl_802EF4C8[8]) {
+    extern u8 gUiContext[];
+    switch ((s32)gUiContext[8]) {
     case 0x80:
         break;
     case 0x81:
@@ -11092,7 +11092,7 @@ s32 fn_800C93EC(void *);
 void fn_801475FC(void *,s32);
 void fn_8000C188(void *);
 void fn_8000C070(void *,s32);
-extern u8 lbl_80330D68[],lbl_8027DE48[],lbl_802EF4C8[];
+extern u8 lbl_80330D68[],lbl_8027DE48[],gUiContext[];
 extern u32 lbl_80367110;
 extern void *lbl_80367240;
 extern const s32 lbl_80368DC4;
@@ -11165,7 +11165,7 @@ if(gate==0) {
  } else if((btn&0xa00)&&fn_80166D8C(lbl_80330D68)) {
   fn_801673D0(lbl_80330D68);
  } else if((btn&0x200)&&!fn_80166D8C(lbl_80330D68)) {
-  lbl_802EF4C8[8]=0;
+  gUiContext[8]=0;
   fn_8000C070(arg0,5);
   fn_801475FC(lbl_8027DE48+0x2e,0x64);
  }
@@ -11189,7 +11189,7 @@ extern "C" void fn_801CEC68(void *arg0) {
     void fn_8013FF00(void *,void *);
     void fn_80140234(void *,void *,s32);
     void fn_801CDE2C(void *,s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern void *lbl_8028FDB0[],*lbl_80292230[],*lbl_80298498[],*lbl_80298678[];
     extern const f32 lbl_8036B508;
     struct Obj {
@@ -11207,7 +11207,7 @@ extern "C" void fn_801CEC68(void *arg0) {
     u8 *self=(u8 *)arg0;
     u8 *child;
     void *created;
-    *(u8 *)(lbl_802EF4C8+8)=0xF;
+    *(u8 *)(gUiContext+8)=0xF;
     p=(u8 *)Heap_Alloc(0x3C);
     if(p) {
         *(void **)p=lbl_8028FDB0;

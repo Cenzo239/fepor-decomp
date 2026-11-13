@@ -37,13 +37,13 @@ s32 fn_8007340C(s32 arg0, s32 arg1) {
     void *fn_800241C8(s32);
     M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
     M2C_UNK fn_8018DC18(void *);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern M2C_UNK lbl_80367390;
     s32 temp_r31;
 
     temp_r31 = M2C_FIELD(fn_800241C8(arg1), s32 *, 0x18);
-    lbl_802EF4C8[8] = 0;
-    fn_8018DC18(lbl_802EF4C8);
+    gUiContext[8] = 0;
+    fn_8018DC18(gUiContext);
     fn_80024398(&lbl_80367390, temp_r31, 0);
     return 5;
 }
@@ -89,8 +89,8 @@ void fn_80073518(void) {
 }
 
 s32 fn_80073544(void) {
-    extern u8 lbl_802EF4C8[24];
-    lbl_802EF4C8[8] = 0x35;
+    extern u8 gUiContext[24];
+    gUiContext[8] = 0x35;
     return 5;
 }
 
@@ -307,7 +307,7 @@ extern u8 lbl_80311FD8[];
 extern s32 lbl_80367468;
 extern s32 lbl_8036746C;
 extern s32 lbl_80312000;
-extern u8 lbl_802EF4C8[24];
+extern u8 gUiContext[24];
 void fn_80073BE4(s32 arg0) {
     M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
 
@@ -339,9 +339,9 @@ void fn_80073CA4(void) {
     void fn_8003BE50(void *);
     void fn_8003A398(void *);
     void fn_800F0A3C(void);
-    extern u8 lbl_802EF4C8[24];
-    fn_8003BE50(*(void **)lbl_802EF4C8);
-    fn_8003A398(*(void **)lbl_802EF4C8);
+    extern u8 gUiContext[24];
+    fn_8003BE50(*(void **)gUiContext);
+    fn_8003A398(*(void **)gUiContext);
     fn_800F0A3C();
 }
 
@@ -351,21 +351,21 @@ void fn_80073CE4(s32 arg0) {
     u8 fn_80105BC0(void *, s32);
     u8 fn_80091D74(void *);
     void fn_80183BE4(void *, s32);
-    extern u8 lbl_802EF4C8[24];
+    extern u8 gUiContext[24];
     u8 flags;
     flags = 0;
-    if (fn_80105BC0((u8 *)*(void **)lbl_802EF4C8 + 0x1BC, 9) != 0) flags |= 1;
-    if (fn_80091D74(*(void **)lbl_802EF4C8) != 0) flags |= 2;
+    if (fn_80105BC0((u8 *)*(void **)gUiContext + 0x1BC, 9) != 0) flags |= 1;
+    if (fn_80091D74(*(void **)gUiContext) != 0) flags |= 2;
     switch ((s32)flags) {
     case 3:
-        fn_8003C15C(*(void **)lbl_802EF4C8);
+        fn_8003C15C(*(void **)gUiContext);
         fn_8000C60C(arg0);
         break;
     case 0:
     case 1:
     case 2:
     default:
-        fn_80183BE4(*(void **)lbl_802EF4C8, arg0);
+        fn_80183BE4(*(void **)gUiContext, arg0);
         break;
     }
 }
@@ -396,7 +396,7 @@ void fn_80073E34(s32 arg0) {
     extern u8 lbl_80367414;
     u8 *p;
 
-    p = lbl_802EF4C8;
+    p = gUiContext;
     p[8] = 0;
     fn_80024398(&lbl_80367414, arg0, 0);
 }

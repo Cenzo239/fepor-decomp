@@ -473,7 +473,7 @@ void fn_801AEE58(void) {
 }
 
 void fn_801AF020(void *arg0) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     extern u8 lbl_803200AC[];
     s32 fn_8013AC54(void *);
@@ -493,7 +493,7 @@ void fn_801AF020(void *arg0) {
     s16 sp[2];
     u8 mode;
 
-    mode = lbl_802EF4C8[8];
+    mode = gUiContext[8];
     r31 = *(void **)((u8 *)arg0 + 0x64);
     switch (mode) {
     case 0x81:
@@ -1056,7 +1056,7 @@ s32 fn_8013AC54(void *);
 u8 fn_8014D8DC(void *);
 void fn_8011D79C(void *);
 void fn_801658DC(void *,void *);
-extern u8 lbl_802CA264[],lbl_802EF4C8[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
+extern u8 lbl_802CA264[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
 extern const f32 lbl_8036B0A8;
 s16 sp20[2],sp1c[2],sp18[2],sp14[2],sp10[2],spc[2],sp8[2];
 void *list; void *item; void *panel; void *self; void *p; void *q; void *walk; void *res;
@@ -1091,7 +1091,7 @@ if (!q) {
  *(s16 *)((u8 *)list + 0x58)=2;
  for(walk=*(void **)lbl_802CA264;walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
  for(walk=*(void **)(lbl_802CA264+0x3c);walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
- q=*(void **)lbl_802EF4C8;if(q) fn_8013AD70(list,q);
+ q=*(void **)gUiContext;if(q) fn_8013AD70(list,q);
 }
 *(u8 *)((u8 *)list + 0x4c)=0;fn_801400F4(self,list);
 if(*(s16 *)((u8 *)list + 0xa)!=0x118){y=*(s16 *)((u8 *)list + 0xc);sp10[0]=0x118;sp10[1]=y;fn_8014027C(self,list,sp10,0);}
@@ -1320,7 +1320,7 @@ void fn_801B0C70(void *arg0) {
     void fn_8001BCF4(void *);
     void fn_8000C070(void *, s32);
     extern struct unk_struct lbl_80331C6C;
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     void *obj48;
     void *temp_r30;
     s32 temp_r31;
@@ -1329,7 +1329,7 @@ void fn_801B0C70(void *arg0) {
     obj48 = *(void **)((u8 *)arg0 + 0x48);
     fn_8011D650();
     fn_8001BD4C((u8 *)obj48 + 0x60, &lbl_80331C6C);
-    flag = *((u8 *)lbl_802EF4C8 + 8);
+    flag = *((u8 *)gUiContext + 8);
     if (flag == 0) {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
         temp_r31 = fn_8001D2C8((u8 *)obj48 + 0x60);
@@ -2351,12 +2351,12 @@ void fn_801B2DA8(void *arg0) {
     void fn_8011D79C(s32);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(s32, s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     s32 temp_r31;
     void *temp_r6;
     u32 result;
 
-    switch ((s32)lbl_802EF4C8[8]) {
+    switch ((s32)gUiContext[8]) {
     case 0x80:
         fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x58));
         temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
@@ -2470,4 +2470,4 @@ extern u8 lbl_8027BD18[];
 #include "global.h"
 #include "unit.h"
 
-extern struct SomeStruct lbl_802EF4C8;
+extern struct SomeStruct gUiContext;

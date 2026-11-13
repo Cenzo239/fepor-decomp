@@ -526,7 +526,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
         s8 fogMap[64];
     } lbl_802CA518;
     extern u8 lbl_802B14E4[];
-    extern void *lbl_802EF4C8[];
+    extern void *gUiContext[];
     s16 val;
     u8 id;
     void *unit;
@@ -547,7 +547,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
     } else {
         unit = NULL;
     }
-    if (unit != NULL && unit != lbl_802EF4C8[0]) {
+    if (unit != NULL && unit != gUiContext[0]) {
         return 0;
     }
     return 1;
@@ -619,14 +619,14 @@ void fn_800AA4F8(void *arg0) {
     void fn_800283C8(void *, void *);
     void fn_800AACDC(void *);
     void fn_8004A224(void);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_8026E770[];
     u8 temp_r31;
 
-    if ((s8)lbl_802EF4C8[0x12] != 0) {
-        fn_80028160(lbl_802EF4C8);
-        temp_r31 = lbl_802EF4C8[0x11];
+    if ((s8)gUiContext[0x12] != 0) {
+        fn_80028160(gUiContext);
+        temp_r31 = gUiContext[0x11];
         fn_80022DAC(lbl_802CA518, 8, 0);
         fn_80022FD8(lbl_802CA518, 5);
         fn_800227F8(lbl_802CA518, *(s32 *)((u8 *)arg0 + 0x18C));
@@ -635,7 +635,7 @@ void fn_800AA4F8(void *arg0) {
         fn_8000E0E4(lbl_8026E770 + 0xCE);
         fn_80091A1C();
     } else {
-        fn_800283C8(lbl_802EF4C8, arg0);
+        fn_800283C8(gUiContext, arg0);
         fn_800AACDC(arg0);
         fn_8000E0E4(lbl_8026E770 + 0xD9);
         fn_80091A1C();
@@ -985,7 +985,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void fn_800256A0(void *, s32);
     void fn_8000C070(void *, s32);
     extern u8 lbl_8028CEF8[];
-    extern void *lbl_802EF4C8[];
+    extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_80330708[];
     extern void *lbl_80367240;
@@ -1021,7 +1021,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
         void *w1;
         void *w0;
         ret = fn_8000CAA0(lbl_8028CEF8, arg0);
-        ef = lbl_802EF4C8;
+        ef = gUiContext;
         row = 0;
         w1 = ef[1];
         base = lbl_80312ACC;
@@ -1133,7 +1133,7 @@ void fn_800AB2A4(void *arg0) {
     void fn_800256A0(void *, s32);
     void fn_8000C070(void *, s32);
     extern u8 lbl_8028CE90[];
-    extern void *lbl_802EF4C8[];
+    extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_80330708[];
     extern void *lbl_80367240;
@@ -1169,7 +1169,7 @@ void fn_800AB2A4(void *arg0) {
         void *w1;
         void *w0;
         ret = fn_8000CAA0(lbl_8028CE90, arg0);
-        ef = lbl_802EF4C8;
+        ef = gUiContext;
         row = 0;
         w1 = ef[1];
         rowPtr = lbl_80312ACC;
@@ -1257,10 +1257,10 @@ void fn_800AB2A4(void *arg0) {
     self->unk42 = 1;
     self->unk28 = 4;
     self->unk45 = 0x9A;
-    if (*((u8 *)lbl_802EF4C8 + 8) == 0x28) {
+    if (*((u8 *)gUiContext + 8) == 0x28) {
         fn_800256A0(lbl_80367240, 0x100);
         self->unk3C = 0;
-        self->unk3D = *((u8 *)lbl_802EF4C8 + 0xA);
+        self->unk3D = *((u8 *)gUiContext + 0xA);
         fn_8000C070(self, 3);
     }
 }

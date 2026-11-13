@@ -795,7 +795,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void fn_80234450(void *, s32);
     extern u8 lbl_80275740[];
     extern u8 lbl_80290AE0[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_8032BB58[0x200];
     extern u32 lbl_8036A408;
     extern f32 lbl_8036A420;
@@ -880,7 +880,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     {
         void *child = *(void **)*(void **)((u8 *)node + 0x30);
         *(u8 *)((u8 *)child + 2) = (u8)(*(u8 *)((u8 *)child + 2) & 0xFE);
-        *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 4) = *(s32 *)lbl_802EF4C8;
+        *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 4) = *(s32 *)gUiContext;
         fn_800558D8(lbl_80275740 + 0x165, *(void **)((u8 *)node + 0x30), child);
     }
 }

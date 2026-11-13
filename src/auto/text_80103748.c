@@ -172,7 +172,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     void fn_80168E90(s32);
     extern u8 lbl_802734D0[];
     extern u8 lbl_802CA518[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     s32 temp_r31;
     u8 *temp_r5;
@@ -186,7 +186,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
         return 0x10;
     }
     table = lbl_802CA518;
-    dst = lbl_802EF4C8;
+    dst = gUiContext;
     f1 = *(f32 *)(lbl_80330708 + 0x534);
     str = lbl_802734D0;
     f0 = *(f32 *)(lbl_80330708 + 0x538);

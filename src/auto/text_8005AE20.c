@@ -7796,8 +7796,8 @@ extern "C" void fn_80070B3C(void *arg0, void *arg1) {
 #pragma cplusplus reset
 extern "C" void fn_80070BF4(s32 arg0, void *arg1) {
     void *fn_80037BD0(s32, u8);
-    extern s32 lbl_802EF4C8[];
-    fn_80037BD0(lbl_802EF4C8[0], *(u8 *)((char *)arg1 + 0x3A));
+    extern s32 gUiContext[];
+    fn_80037BD0(gUiContext[0], *(u8 *)((char *)arg1 + 0x3A));
 }
 
 #pragma cplusplus reset
@@ -7834,18 +7834,18 @@ void fn_80070EDC(void) {
 }
 
 s32 fn_80070EE0(void *arg0, s32 unused, s32 arg2) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330EAC[];
     void fn_801A6FB4(void *, s32, s32);
-    s32 saved = *(s32 *)lbl_802EF4C8;
+    s32 saved = *(s32 *)gUiContext;
     fn_801A6FB4(lbl_80330EAC, saved, (*(s32 (**)(void *, s32))((u8 *)*(void **)arg0 + 0x48))(arg0, arg2));
     return 0;
 }
 
 void fn_80070F3C(void *arg0) {
-    extern s32 lbl_802EF4C8[];
+    extern s32 gUiContext[];
     extern s32 lbl_803674F4;
-    *(s32 *)((u8 *)arg0 + 0xC) = lbl_802EF4C8[0];
+    *(s32 *)((u8 *)arg0 + 0xC) = gUiContext[0];
     *(s32 *)((u8 *)arg0 + 8) = lbl_803674F4;
 }
 

@@ -3181,7 +3181,7 @@ s32 ScriptCmd_TutorialInitialize(void)
 }
 
 void fn_80126A98(s32 arg0) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     extern u8 gScriptCmdNames[];
     void fn_8011D79C(void *);
@@ -3193,7 +3193,7 @@ void fn_80126A98(s32 arg0) {
         u8 lo : 1;
     } *bf;
 
-    switch ((s32)lbl_802EF4C8[8]) {
+    switch ((s32)gUiContext[8]) {
     case 0x81:
         bf = (void *)&lbl_80330708[0x9D];
         bf->mid = 0;

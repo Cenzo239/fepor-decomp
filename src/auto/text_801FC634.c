@@ -1063,11 +1063,11 @@ void fn_801FF0F8(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_801FF2D0(void) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern s32 lbl_803682A4;
     extern void fn_80209968(s32);
     
-    u8 temp_r0 = lbl_802EF4C8[8];
+    u8 temp_r0 = gUiContext[8];
     switch ((s32)temp_r0) {
         case 0x81:
             lbl_803682A4 |= 0x40;
@@ -2014,11 +2014,11 @@ void fn_80201328(void *arg0) {
 }
 
 void fn_80201534(void) {
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern s32 lbl_803682A4;
     extern void fn_80209AE8(s32);
     
-    u8 temp_r0 = lbl_802EF4C8[8];
+    u8 temp_r0 = gUiContext[8];
     switch ((s32)temp_r0) {
         case 0x81:
             lbl_803682A4 |= 0x100;

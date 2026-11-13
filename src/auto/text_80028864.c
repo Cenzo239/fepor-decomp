@@ -3,7 +3,7 @@
 #include "common.h"
 
 void fn_80028864(void) {
-    extern u8 lbl_802EF4C8[24];
-    lbl_802EF4C8[0x13] = 0;
-    lbl_802EF4C8[0x16] = 0;
+    extern u8 gUiContext[24];
+    gUiContext[0x13] = 0;
+    gUiContext[0x16] = 0;
 }

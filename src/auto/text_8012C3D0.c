@@ -256,10 +256,10 @@ void fn_8012C808(void *arg0) {
     M2C_UNK fn_8000C070(void *, s32);
     s32 fn_8000E0E4(void *);
     M2C_UNK fn_80056AE0(s32, s32);
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80275AC0[];
 
-    if ((u8)lbl_802EF4C8[8] == 0x81) {
+    if ((u8)gUiContext[8] == 0x81) {
         fn_8000C070(arg0, 0);
     }
 
@@ -1080,7 +1080,7 @@ void fn_8012DFA8(void *arg0) {
     extern u8 lbl_802913E0[];
     extern u8 lbl_80291404[];
     extern u8 lbl_802CA264[];
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     extern u8 lbl_80330EAC[];
     extern s16 lbl_8036A4E0;
@@ -1630,7 +1630,7 @@ void fn_8012DFA8(void *arg0) {
         }
     }
     *(void **)(self + 0x34) = fn_80059208(&fn_8012F360, self);
-    lbl_802EF4C8[8] = 0x80;
+    gUiContext[8] = 0x80;
 }
 #pragma global_optimizer off
 void fn_8012EF04(void *arg0) {

@@ -5989,8 +5989,8 @@ extern "C" void fn_8013CCA0(void *arg0, void *arg1) {
 #pragma cplusplus reset
 void fn_8013CD7C(void)
 {
-    extern u8 lbl_802EF4C8[24];
-    lbl_802EF4C8[8] = 0x80;
+    extern u8 gUiContext[24];
+    gUiContext[8] = 0x80;
 }
 
 void *fn_8013CD90(void *arg0) {
@@ -6005,9 +6005,9 @@ void *fn_8013CD90(void *arg0) {
 
 s32 fn_8013CDCC(void) {
     s8 fn_801475FC(void *, int);
-    extern u8 lbl_802EF4C8[24];
+    extern u8 gUiContext[24];
     extern u8 lbl_80276908[];
-    u8 *ptr1 = (u8 *)&lbl_802EF4C8;
+    u8 *ptr1 = (u8 *)&gUiContext;
     u8 *ptr2 = (u8 *)&lbl_80276908;
     ptr1[8] = 0x80;
     fn_801475FC(ptr2 + 0x73, 0x64);
@@ -6031,8 +6031,8 @@ void fn_8013CE10(void *arg0) {
 }
 
 s32 fn_8013CE64(void) {
-    extern u8 lbl_802EF4C8[24];
-    lbl_802EF4C8[8] = 0x81;
+    extern u8 gUiContext[24];
+    gUiContext[8] = 0x81;
     return 5;
 }
 
@@ -6550,8 +6550,8 @@ extern "C" void fn_8013E2C8(void *arg0) {
 #pragma cplusplus reset
 
 void fn_8013E300(void) {
-    extern u8 lbl_802EF4C8[24];
-    lbl_802EF4C8[8] = 0;
+    extern u8 gUiContext[24];
+    gUiContext[8] = 0;
 }
 
 void *fn_8013E314(void *arg0, s16 arg1) {
@@ -9729,27 +9729,48 @@ extern "C" void fn_80144698(void *arg0) {
 #pragma cplusplus reset
 extern void fn_801446C4(void *arg0);
 void fn_801446C4(void *arg0) {
-void *Heap_Alloc(s32);
-void *fn_8013692C(void *, s32, s32, s32, s32, s32);
-void fn_8013F0F0(void *, void *); void fn_8013F1A0(void *, void *);
-void *child;
-s16 d,c,b,a;
-a=*(s16*)((u8*)arg0+0xc);
-b=*(s16*)((u8*)arg0+0x10);
-c=*(s16*)((u8*)arg0+0xa);
-d=*(s16*)((u8*)arg0+0xe);
-b=(s16)(b-a);
-*(s16*)((u8*)arg0+0x12)=3;
-a=(s16)(d-c);
-*(s16*)((u8*)arg0+0x14)=6;
-*(s16*)((u8*)arg0+0x16)=a-3;
-*(s16*)((u8*)arg0+0x18)=b-6;
-if(*(void**)((u8*)arg0+0x48)) fn_8013F0F0(arg0,*(void**)((u8*)arg0+0x48));
-child=Heap_Alloc(0x9c);
-if(child)child=fn_8013692C(child,(s16)(*(s16*)((u8*)arg0+0x16)-*(s16*)((u8*)arg0+0x12))-12,0,9,(s16)(*(s16*)((u8*)arg0+0x18)-*(s16*)((u8*)arg0+0x14)),*(s16*)((u8*)arg0+0x22)-5);
-*(void**)((u8*)arg0+0x48)=child;
-*(s32*)((u8*)*(void**)((u8*)arg0+0x48)+0x48)=1;
-fn_8013F1A0(arg0,*(void**)((u8*)arg0+0x48));
+    void *Heap_Alloc(s32);
+    void *fn_8013692C(void *, s32, s32, s32, s32, s32);
+    void fn_8013F0F0(void *, void *);
+    void fn_8013F1A0(void *, void *);
+    void *child;
+    s16 t;
+    s16 s;
+    s16 r8;
+    s16 r7;
+    s16 r6;
+    s16 r5;
+
+    t = 3;
+    s = 6;
+    r8 = *(s16 *)((u8 *)arg0 + 0xc);
+    r7 = *(s16 *)((u8 *)arg0 + 0x10);
+    r6 = *(s16 *)((u8 *)arg0 + 0xa);
+    r5 = *(s16 *)((u8 *)arg0 + 0xe);
+    r7 = (s16)(r7 - r8);
+    *(s16 *)((u8 *)arg0 + 0x12) = t;
+    t = (s16)(r5 - r6);
+    r5 = r7 - 6;
+    *(s16 *)((u8 *)arg0 + 0x14) = s;
+    t = t - 3;
+    *(s16 *)((u8 *)arg0 + 0x16) = t;
+    *(s16 *)((u8 *)arg0 + 0x18) = r5;
+    if (*(void **)((u8 *)arg0 + 0x48)) {
+        fn_8013F0F0(arg0, *(void **)((u8 *)arg0 + 0x48));
+    }
+    child = Heap_Alloc(0x9c);
+    if (child) {
+        child = fn_8013692C(
+            child,
+            (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) - 12,
+            0,
+            9,
+            (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14)),
+            *(s16 *)((u8 *)arg0 + 0x22) - 5);
+    }
+    *(void **)((u8 *)arg0 + 0x48) = child;
+    *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x48) = 1;
+    fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x48));
 }
 
 void fn_801447A4(void *arg0, s32 arg1) {

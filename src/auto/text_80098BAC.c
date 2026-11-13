@@ -68,7 +68,7 @@ void fn_80098C04(void *arg0) {
     u32 fn_800980E8(s32);
     void fn_80184618(s32, void *);
     u8 fn_801A2690();
-    extern u8 lbl_802EF4C8[];
+    extern u8 gUiContext[];
     extern u8 lbl_80330EAC[];
     s8 *p;
     s32 var_r31;
@@ -93,7 +93,7 @@ void fn_80098C04(void *arg0) {
         M2C_FIELD(arg0, s8 *, 0x34) = 1;
         temp_r3 = fn_80040844();
         if (temp_r3 != 0U) {
-            p = (s8 *)lbl_802EF4C8;
+            p = (s8 *)gUiContext;
             a = p[0xF];
             b = p[0x10];
             M2C_FIELD(arg0, s32 *, 0x30) = fn_8004721C(temp_r3, a, b, 0x1000, 0x10);
