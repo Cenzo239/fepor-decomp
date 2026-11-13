@@ -3766,7 +3766,8 @@ s32 fn_80026AF4(s32 arg0) {
     return 1;
 }
 
-s32 Battle_TryOfferDroppableItem(s32 arg0) {
+/* If the opponent is a player unit, offer the active combatant's droppable item. */
+s32 Battle_TryOfferDroppableItem(s32 parent) {
     void Item_Destroy(void *, s32);
     void Item_Clone(void *, void *);
     void *Unit_GetItemSlot(s32, s32);
@@ -3774,31 +3775,31 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void *Battle_GetOpponent(void *);
     s32 Battle_GetActiveCombatant(void *);
     extern u8 gBattle[];
-    u8 sp8[8];
-    s32 handle;
+    u8 item[8];
+    s32 combatant;
     s32 i;
-    void *obj;
-    void *entry;
-    void *sub;
+    void *opponent;
+    void *slot;
+    void *person;
 
     if (*(u32 *)(gBattle + 0xCAC) & 0x100) {
         return 0;
     }
-    obj = Battle_GetOpponent(gBattle);
-    if (obj == NULL) {
+    opponent = Battle_GetOpponent(gBattle);
+    if (opponent == NULL) {
         return 0;
     }
-    sub = *(void **)((u8 *)obj + 0x190);
-    if (*(u8 *)((u8 *)sub + 8) != 0) {
+    person = *(void **)((u8 *)opponent + 0x190);
+    if (*(u8 *)((u8 *)person + 8) != 0) {
         return 0;
     }
-    handle = Battle_GetActiveCombatant(gBattle);
+    combatant = Battle_GetActiveCombatant(gBattle);
     for (i = 0; i < 8; i++) {
-        entry = Unit_GetItemSlot(handle, i);
-        if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
-            Item_Clone(sp8, entry);
-            Unit_OfferItem(*(s32 *)((u8 *)obj + 0x280), sp8, arg0);
-            Item_Destroy(sp8, -1);
+        slot = Unit_GetItemSlot(combatant, i);
+        if (slot != NULL && *(u32 *)slot != 0 && ((*(u8 *)((u8 *)slot + 5) >> 6) & 1)) {
+            Item_Clone(item, slot);
+            Unit_OfferItem(*(s32 *)((u8 *)opponent + 0x280), item, parent);
+            Item_Destroy(item, -1);
             return 1;
         }
     }
