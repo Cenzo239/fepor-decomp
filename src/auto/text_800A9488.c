@@ -156,7 +156,7 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
         virtual f32 v25() = 0;
     };
     extern u8 gOptionsStr[];
-    extern u8 lbl_802832E0[];
+    extern u8 gLanguageNamePtrs[];
     extern u8 gBattleState[];
     extern s32 lbl_80369B98;
     extern s32 lbl_80369B9C;
@@ -215,7 +215,7 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
         break;
     }
     Text_Draw(0x160, 0, 1, gOptionsStr + 0x168, var_r7);
-    Text_Draw(0x148, 0x18, 1, gOptionsStr + 0x177, *(void **)(lbl_802832E0 + 4));
+    Text_Draw(0x148, 0x18, 1, gOptionsStr + 0x177, *(void **)(gLanguageNamePtrs + 4));
 }
 #pragma cplusplus reset
 
