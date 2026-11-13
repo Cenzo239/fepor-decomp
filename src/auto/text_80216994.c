@@ -1338,7 +1338,7 @@ s32 __CARDGetDirBlock(void *arg0) {
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
 s32 fn_80205110(void *, s32);
 void fn_80219734(void);
-s32 fn_802197FC(s32 arg0, s32 arg1) {
+s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     u8 *temp_r31;
     u8 *temp_r30;
     void *temp_r6;
@@ -1698,7 +1698,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     s32 fn_80219CF4(void *, s32 *);
     s32 fn_80219F34(void *, s32 *);
     void fn_802198C0(u16 *, s32, u16 *, u16 *);
-    s32 fn_802197FC(s32, s32);
+    s32 __CARDUpdateDir(s32, s32);
     s32 fn_802195B0(s32, void *, void *);
 
     void *card;
@@ -1816,7 +1816,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
         if (outSize != 0) {
             *outSize = 0x2000;
         }
-        return fn_802197FC(chan, (s32)callback);
+        return __CARDUpdateDir(chan, (s32)callback);
     }
     if ((flagFat | flagDirty) != 0) {
         if (outSize != 0) {
@@ -2518,7 +2518,7 @@ void fn_8021C088(s32 chan, s32 result)
     extern u16 __CARDBlock[];
 
     s32 __CARDGetDirBlock(void *);
-    s32 fn_802197FC(s32, s32);
+    s32 __CARDUpdateDir(s32, s32);
     s32 fn_80217BD0(void *, s32);
     s64 OSGetTime(void);
     void *memcpy(void *, const void *, u32);
@@ -2568,7 +2568,7 @@ void fn_8021C088(s32 chan, s32 result)
 
         *(u32 *)(entry + 0x28) = (u32)(time / ticks);
 
-        status = fn_802197FC(chan, (s32)callback);
+        status = __CARDUpdateDir(chan, (s32)callback);
     }
 
     if (status < 0) {
@@ -2832,7 +2832,7 @@ s32 fn_8021C84C(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
 s64 OSGetTime(void);
 s32 __CARDGetDirBlock(void *arg0);
 s32 __CARDGetFatBlock(void *arg0);
-s32 fn_802197FC(s32 arg0, s32 arg1);
+s32 __CARDUpdateDir(s32 arg0, s32 arg1);
 s32 fn_80217BD0(void *arg0, s32 arg1);
 int fn_8021791C(s32 chan, u32 addr, void *callback);
 void fn_8021CA04(s32 chan, s32 result);
@@ -2861,7 +2861,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
         *(u32 *)(ent + 0x28) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 / 4));
         callback = *(void (**)(s32, s32))(card + 0xD0);
         *(void (**)(s32, s32))(card + 0xD0) = 0;
-        result = fn_802197FC(chan, (s32)callback);
+        result = __CARDUpdateDir(chan, (s32)callback);
     } else {
         fat = (u16 *)__CARDGetFatBlock(card);
         *(s32 *)(fileInfo + 0x8) += *(s32 *)(card + 0xC);
@@ -3158,7 +3158,7 @@ valid:
     ticksPerSecond = *(u32 *)0x800000F8 >> 2;
     entry->unk28 = (s32)(OSGetTime() / ticksPerSecond);
 
-    result = fn_802197FC(chan, callback);
+    result = __CARDUpdateDir(chan, callback);
     if (result < 0) {
         fn_80217BD0((void *)card, result);
     }
@@ -3213,7 +3213,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 fn_80217B18(s32, s32 *);
     s32 fn_80217BD0(void *, s32);
     u8 *__CARDGetDirBlock(s32);
-    s32 fn_802197FC(s32, s32);
+    s32 __CARDUpdateDir(s32, s32);
     s32 fn_8021BB98(s32, CardDirEntry *);
     s32 fn_80231944(void *, void *, u32);
     void *memcpy(void *, const void *, u32);
@@ -3281,7 +3281,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     slot->unk3C = arg2->unk3C;
     slot->unk34 = arg2->unk34;
     slot->unk35 = arg2->unk35;
-    ret = fn_802197FC(arg0, arg3);
+    ret = __CARDUpdateDir(arg0, arg3);
     if (ret < 0) {
         fn_80217BD0((void *)sp18, ret);
     }
