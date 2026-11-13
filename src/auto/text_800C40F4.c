@@ -8615,7 +8615,7 @@ void* fn_800DC0BC(void* arg0, s32 arg2, s32 arg3) {
 
 extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
 {
-    extern char lbl_802716A8[];
+    extern char Layer_str[];
     extern u8 lbl_8028DF20[];
     extern f32 lbl_80369E90;
     extern f32 lbl_80369E94;
@@ -8631,9 +8631,9 @@ extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
     f32 zero;
     f32 one;
 
-    strings = lbl_802716A8;
+    strings = Layer_str;
     String_Init(str1C, strings + 4, &scratchC);
-    String_Init(str10, lbl_802716A8 + 0xA, &scratch8);
+    String_Init(str10, Layer_str + 0xA, &scratch8);
     fn_800DFAE0(arg0, arg1, str1C, arg2, str10);
     String_Destroy(str10, -1);
     String_Destroy(str1C, -1);
