@@ -10221,7 +10221,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     s32 fn_8006A37C(void);
     s32 fn_8006A374(void);
     s32 GMaterial_AllocTevStage(void);
-    s32 fn_80069E18(void);
+    s32 GMaterial_AllocTexMap(void);
     s32 GMaterial_AllocTexCoord(void);
     void Ui_LoadAtlasTex(s32, void *, u16);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -10254,7 +10254,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
         GXSetNumTexGens(t27, 4);
     } else {
         Ui_LoadAtlasTex(arg1, sp8, *(u16 *)((u8 *)(*(void **)((u8 *)arg0 + 0x14)) + 4));
-        t26 = fn_80069E18();
+        t26 = GMaterial_AllocTexMap();
         t25 = GMaterial_AllocTexCoord();
         fn_802201A8(t25, 1, 4, 0x3C, 0, 0x7D);
         fn_80222C50(sp8, t26);

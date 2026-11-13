@@ -2633,7 +2633,7 @@ s32 fn_80125BB0(void) {
     void *Process_Find(M2C_UNK *, M2C_UNK *);
     s32 fn_80069D58();
     s32 GMaterial_AllocTexCoord();
-    s32 fn_80069E18();
+    s32 GMaterial_AllocTexMap();
     s32 GMaterial_AllocTevStage();
     M2C_UNK fn_8006A384(M2C_UNK *);
     M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
@@ -2688,7 +2688,7 @@ s32 fn_80125BB0(void) {
     fn_8006A384(&sp64);
     temp_r28 = GMaterial_AllocTexCoord();
     temp_r29 = GMaterial_AllocTevStage();
-    temp_r27 = fn_80069E18();
+    temp_r27 = GMaterial_AllocTexMap();
     temp_r26 = fn_80069D58();
     temp_f1 = lbl_8036A3B4 + M2C_FIELD(temp_r3, f32 *, 0x4C);
     temp_f0 = lbl_8036A3B4 + M2C_FIELD(temp_r3, f32 *, 0x50);

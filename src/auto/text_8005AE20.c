@@ -5954,7 +5954,7 @@ void *GMaterial_AllocTexCoord(void) {
     return *entry;
 }
 #pragma global_optimizer off
-void *fn_80069E18(void) {
+void *GMaterial_AllocTexMap(void) {
     extern u8 lbl_80367301;
     extern u8 gGMaterialAssertMsg[];
     extern void *lbl_80285EC8[];
