@@ -418,7 +418,7 @@ void __GXInitGX(void) {
     void fn_80223CDC(s32, s32);
     void fn_80223D38(s32, s32);
     void GXSetTevSwapMode(s32, s32, s32);
-    void fn_80223DDC(s32, s32, s32, s32, s32);
+    void GXSetTevSwapModeTable(s32, s32, s32, s32, s32);
     void fn_802238CC(s32);
     void fn_802238A8(s32);
     void fn_80223678(s32, s32, s32);
@@ -627,10 +627,10 @@ void __GXInitGX(void) {
         i += 1;
     } while (i < 0x10);
 
-    fn_80223DDC(0, 0, 1, 2, 3);
-    fn_80223DDC(1, 0, 0, 0, 3);
-    fn_80223DDC(2, 1, 1, 1, 3);
-    fn_80223DDC(3, 2, 2, 2, 3);
+    GXSetTevSwapModeTable(0, 0, 1, 2, 3);
+    GXSetTevSwapModeTable(1, 0, 0, 0, 3);
+    GXSetTevSwapModeTable(2, 1, 1, 1, 3);
+    GXSetTevSwapModeTable(3, 2, 2, 2, 3);
 
     i = 0;
     do {

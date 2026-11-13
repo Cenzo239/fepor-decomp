@@ -826,7 +826,7 @@ void Gx_Setup2DState(void *arg0) {
     void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetScissor(s32, s32, s32, s32);
-    void fn_80223DDC(s32, s32, s32, s32, s32);
+    void GXSetTevSwapModeTable(s32, s32, s32, s32, s32);
     extern s32 lbl_80369A28;
     extern s32 lbl_80369A2C;
     extern s32 lbl_80369A30;
@@ -901,7 +901,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_80223C78(1, &spC);
     sp8 = lbl_80369A38;
     fn_80223C78(2, &sp8);
-    fn_80223DDC(0, 0, 1, 2, 3);
+    GXSetTevSwapModeTable(0, 0, 1, 2, 3);
 }
 
 void fn_800A57D8(void) {
@@ -909,7 +909,7 @@ void fn_800A57D8(void) {
     M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevSwapMode(M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223DDC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevSwapModeTable(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetNumTevStages(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -925,10 +925,10 @@ void fn_800A57D8(void) {
     GXSetTevSwapMode(1, 0, 0);
     GXSetTevSwapMode(2, 0, 0);
     GXSetTevSwapMode(3, 0, 0);
-    fn_80223DDC(0, 0, 1, 2, 3);
-    fn_80223DDC(1, 0, 0, 0, 3);
-    fn_80223DDC(2, 1, 1, 1, 3);
-    fn_80223DDC(3, 2, 2, 2, 3);
+    GXSetTevSwapModeTable(0, 0, 1, 2, 3);
+    GXSetTevSwapModeTable(1, 0, 0, 0, 3);
+    GXSetTevSwapModeTable(2, 1, 1, 1, 3);
+    GXSetTevSwapModeTable(3, 2, 2, 2, 3);
 }
 
 void fn_800A58F0(s32 arg0) {

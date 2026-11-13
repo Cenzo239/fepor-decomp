@@ -1125,7 +1125,7 @@ void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
     *(u16 *)__GXData = 0;
 }
 
-void fn_80223DDC(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     M2C_FIELD(arg0, f32 *, 0x10) = farg0;
     M2C_FIELD(arg0, f32 *, 0x14) = farg1;
     M2C_FIELD(arg0, f32 *, 0x18) = farg2;
