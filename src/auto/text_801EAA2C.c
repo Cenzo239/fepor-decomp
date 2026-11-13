@@ -1014,7 +1014,7 @@ void fn_801EC7B8(void) {
     extern void *lbl_80338E70[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    extern s32 lbl_803683C8;
+    extern s32 gAramBase;
     extern s32 lbl_803683CC;
     extern s32 lbl_803683D0;
 
@@ -1080,7 +1080,7 @@ void fn_801EC7B8(void) {
             ARQPostRequest(*slot, 0, 1, 1, *(s32 *)((u8 *)*slot + 0x68), (s32)buf,
                         *(s32 *)((u8 *)*slot + 0x64), fn_801ED838);
             i += 1;
-            *(s32 *)((u8 *)*slot + 0x68) = lbl_803683C8 + used;
+            *(s32 *)((u8 *)*slot + 0x68) = gAramBase + used;
             {
                 s32 sz = *(s32 *)((u8 *)*slot + 0x64);
                 slot += 1;
@@ -1191,7 +1191,7 @@ void fn_801EC7B8(void) {
         gAramFreeList = p;
         *(void **)((u8 *)p + 0x5C) = 0;
         *(void **)((u8 *)gAramFreeList + 0x60) = 0;
-        *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
+        *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
         *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC - used;
         {
             void **rp = arr;
@@ -1217,7 +1217,7 @@ void fn_801EC7B8(void) {
         }
         lbl_803683D0 += 1;
         ARQPostRequest(gAramFreeList, 0, 0, 1, (s32)buf0,
-                    lbl_803683C8 + *(s32 *)((u8 *)gAramFreeList + 0x64), used, fn_801ED838);
+                    gAramBase + *(s32 *)((u8 *)gAramFreeList + 0x64), used, fn_801ED838);
         while (lbl_803683D0 != 0) {}
         fn_800C4588(buf0);
         dt = (u32)(OSGetTick() - tick);
@@ -1276,7 +1276,7 @@ void fn_801EC7B8(void) {
     *(void **)((u8 *)p + 0x60) = 0;
     *(void **)((u8 *)gAramFreeList + 0x5C) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
-    *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
+    *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
 }
 
 extern void *gAramUsedList;
@@ -1584,7 +1584,7 @@ void fn_801ED52C(s32 arg0) {
     extern u8 lbl_80332270[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    extern s32 lbl_803683C8;
+    extern s32 gAramBase;
     extern s32 lbl_803683CC;
     u8 *var_r4;
     s32 zero;
@@ -1622,7 +1622,7 @@ void fn_801ED52C(s32 arg0) {
     if (arg0 == 0) {
         arg0 = 0x400000;
     }
-    lbl_803683C8 = fn_80214184(arg0);
+    gAramBase = fn_80214184(arg0);
     zero_ptr = 0;
     ctr2 = 0x20;
     var_r4 = lbl_80332270;
@@ -1695,7 +1695,7 @@ found:
     *(s32 *)((u8 *)var_r4 + 0x60) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
-    *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
+    *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
 }
 
 void *AramCache_InsertFree(void *list, void *cell)
