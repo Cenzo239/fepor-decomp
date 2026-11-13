@@ -623,7 +623,7 @@ void fn_801B6600(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x3C) = 0;
 }
 
-void fn_801B660C(void *arg0) {
+void Ui_ExpBarFillProc(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
@@ -11897,17 +11897,12 @@ void fn_801D041C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) | 4);
 }
 
-void fn_801D0444(u8 *arg0, s32 arg1) {
-    s32 off;
-    s16 z;
-
+void fn_801D0444(s16 *arg0, s32 arg1) {
     if (arg1 >= 3) {
         return;
     }
-    off = arg1 << 1;
-    z = 0;
-    arg0 += off;
-    *(s16 *)(arg0 + 0xe) = z;
+    arg0 += arg1;
+    arg0[7] = 0;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
@@ -15595,9 +15590,11 @@ void fn_801DDDE8(s32 arg0, s32 arg1) {
 #pragma scheduling off
 void fn_801DDE44(void *arg0) {
     extern f32 lbl_8036B630;
-    *(f32 *)((u8 *)arg0 + 0x30) += lbl_8036B630;
-    if (*(f32 *)((u8 *)arg0 + 0x30) >= *(f32 *)((u8 *)arg0 + 0x34)) {
-        Process_ClearFunc();
+    f32 step = lbl_8036B630;
+    f32 *timer = (f32 *)((u8 *)arg0 + 0x30);
+    *timer = *timer + step;
+    if (timer[0] >= timer[1]) {
+        Process_ClearFunc(arg0);
     }
 }
 #pragma scheduling on
