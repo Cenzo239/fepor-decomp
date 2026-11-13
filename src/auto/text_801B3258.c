@@ -2200,7 +2200,7 @@ void fn_801B97C8(s32 arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801B9978(void *arg0) {
+extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  void fn_8000C070(void *,s32); void Process_ClearFunc(void *);
  s32 fn_80105814(void *); void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
  void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
