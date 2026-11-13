@@ -2116,7 +2116,7 @@ void fn_800A2A58(void *arg0, void *arg1) {
     fn_801043FC(*(u8 *)((char *)arg1 + 0x3A));
 }
 
-void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
+void Ui_DrawSkillRankMenuItem(s32 arg0, s32 arg1, void *arg2) {
     void *Map_GetCursorUnit(void);
     M2C_UNK Prim2D_SetText(void *);
     M2C_UNK Prim2D_SetScale(f32);
