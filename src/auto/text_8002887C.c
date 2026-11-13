@@ -957,7 +957,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     void fn_80022FD8(void *, s32);
     void *fn_80019E24(s32);
     s32 Item_GetMaxRange(void *);
-    void fn_8002011C(void *, s32, s32, s32, s32);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
     void fn_8001EF80(void *, s32, s32, s32);
 
     u8 *source;
@@ -1006,7 +1006,7 @@ void fn_8002BD44(void *arg0, void *arg1)
 
     result = Item_GetMaxRange(unit);
 
-    fn_8002011C(
+    Map_FillAttackRange(
         gBattleMap,
         source[0],
         source[1],
@@ -1078,7 +1078,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
     s32 Item_GetMaxRange(void *);
-    void fn_8002011C(void *, s32, s32, s32, s32);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
 
     u8 *base;
     u8 *table;
@@ -1107,7 +1107,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
 
     result = Item_GetMaxRange(arg1);
 
-    fn_8002011C(
+    Map_FillAttackRange(
         gBattleMap,
         *(u8 *)((u8 *)arg0 + 0x19E),
         *(u8 *)((u8 *)arg0 + 0x19F),
@@ -1157,7 +1157,7 @@ void fn_8002C034(void *arg0, void *arg1)
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
     s32 Item_GetMaxRange(void *);
-    void fn_8002011C(void *, s32, s32, s32, s32);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
 
     u8 *base;
     u8 *row;
@@ -1182,7 +1182,7 @@ void fn_8002C034(void *arg0, void *arg1)
 
     result = Item_GetMaxRange(arg1);
 
-    fn_8002011C(
+    Map_FillAttackRange(
         gBattleMap,
         *(u8 *)((u8 *)arg0 + 0x19E),
         *(u8 *)((u8 *)arg0 + 0x19F),

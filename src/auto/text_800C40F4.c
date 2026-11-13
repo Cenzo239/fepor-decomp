@@ -22752,7 +22752,7 @@ s32 fn_80100CC8(void) {
 
 void fn_80100D18(void *arg0, void **arg1, s16 arg2) {
     u8 fn_8001DD54(void *, void *);
-    M2C_UNK fn_8002011C(M2C_UNK *, s8, s8, u8, u8);
+    M2C_UNK Map_FillAttackRange(M2C_UNK *, s8, s8, u8, u8);
     M2C_UNK fn_80022DAC(M2C_UNK *, M2C_UNK, s16);
     M2C_UNK fn_80022FCC(M2C_UNK *, s32);
     M2C_UNK fn_80022FD8(M2C_UNK *, M2C_UNK);
@@ -22820,7 +22820,7 @@ loop_22:
             if ((s16) M2C_FIELD((&gBattleMap + ((var_r20 + temp_r30) * 2)), s16 *, 0x610E) >= 0) {
                 temp_r26 = &gBattleMap + temp_r30 + var_r20;
                 if (((s8) M2C_FIELD(temp_r26, u8 *, 0xE18E) == 0) && (Map_IsAiTerrainBlocked(var_r21) == 0) && ((u8) M2C_FIELD(temp_r26, u8 *, 0xD) == 0)) {
-                    fn_8002011C(&gBattleMap, var_r20, var_r21, (u8) (s8) var_r0, (u8) (s8) var_r0_2);
+                    Map_FillAttackRange(&gBattleMap, var_r20, var_r21, (u8) (s8) var_r0, (u8) (s8) var_r0_2);
                 }
             }
             var_r20 += 1;

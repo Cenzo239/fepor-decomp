@@ -765,14 +765,14 @@ void fn_800AA80C(void *arg0) {
     u8 Status_Test(void *, s32);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
-    void fn_8002011C(void *, u8, u8, s32, s32);
+    void Map_FillAttackRange(void *, u8, u8, s32, s32);
     extern u8 gBattleMap[];
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 0x43) != 0) {
         fn_80022DAC(gBattleMap, 5, -1);
         fn_80022DAC(gBattleMap, 8, 0);
         fn_80022FD8(gBattleMap, 6);
-        fn_8002011C(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
+        Map_FillAttackRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
     }
 }
 
@@ -780,7 +780,7 @@ void fn_800AA80C(void *arg0) {
 #pragma opt_strength_reduction off
 void fn_800AA89C(void *arg0) {
     u8 Item_GetMaxRange(void *);
-    void fn_8002011C(u8 *, s8, s8, u8, u8);
+    void Map_FillAttackRange(u8 *, s8, s8, u8, u8);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     u8 Status_Test(void *, s32);
@@ -854,7 +854,7 @@ x_loop:
         if (*(s16 *)(map + idx2 + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
-            fn_8002011C(gBattleMap, x, y, (u8)pp, (u8)atk);
+            Map_FillAttackRange(gBattleMap, x, y, (u8)pp, (u8)atk);
         }
         idx2 += 2;
         cell += 1;
@@ -893,7 +893,7 @@ x2_loop:
         if (*(s16 *)(map2 + idx2 + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
-            fn_8002011C(gBattleMap, x, y, 1, 2);
+            Map_FillAttackRange(gBattleMap, x, y, 1, 2);
         }
         idx2 += 2;
         cell += 1;
@@ -918,7 +918,7 @@ y2_cmp:
 
 void fn_800AAB3C(void *arg0) {
     u8 Item_GetMaxRange(void);
-    void fn_8002011C(void *, u8, u8, u8);
+    void Map_FillAttackRange(void *, u8, u8, u8);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -962,7 +962,7 @@ loop_1:
                 if (var_r28 < (s32) var_r0_2) {
                     var_r28 = (s8) var_r0_2;
                 }
-                fn_8002011C(&gBattleMap, M2C_FIELD(arg0, u8 *, 0x19E), M2C_FIELD(arg0, u8 *, 0x19F), var_r0);
+                Map_FillAttackRange(&gBattleMap, M2C_FIELD(arg0, u8 *, 0x19E), M2C_FIELD(arg0, u8 *, 0x19F), var_r0);
             }
         }
         var_r27 += 1;

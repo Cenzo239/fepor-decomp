@@ -652,7 +652,7 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
     return start;
 }
 
-void fn_8002011C(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
+void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
     void fn_80022DAC(void *, s32, s32);
     s8 x;
