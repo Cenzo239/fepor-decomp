@@ -7746,7 +7746,7 @@ extern "C" void fn_801723E8(void *arg0) {
 }
 #pragma cplusplus reset
 
-void fn_80172694(void *arg0) {
+void Ui_RestoreUnitListPanel(void *arg0) {
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
     void fn_8000C5E0(void *);
