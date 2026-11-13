@@ -3961,7 +3961,7 @@ void fn_8000C5E0(void *arg0) {
 
 int Process_Unlink(void *arg0) {
     extern u32 lbl_802ADADC[8];
-    int fn_8000C6AC(void);
+    int Process_Destroy(void);
     u32 *p = (u32 *)arg0;
     u32 *q;
     u32 idx;
@@ -3990,11 +3990,11 @@ int Process_Unlink(void *arg0) {
         }
         p[8] = 0;
         p[9] = 0;
-        fn_8000C6AC();
+        Process_Destroy();
     }
 }
 
-void fn_8000C6AC(void *arg0) {
+void Process_Destroy(void *arg0) {
     void fn_8000C52C(void *);
     extern void **lbl_80367148;
     typedef struct Node {
@@ -4022,10 +4022,10 @@ void fn_8000C6AC(void *arg0) {
         c = n->unk24;
         if (c != NULL) {
             if (c->unk24 != NULL) {
-                fn_8000C6AC(c->unk24);
+                Process_Destroy(c->unk24);
             }
             if (c->unk1C != NULL) {
-                fn_8000C6AC(c->unk1C);
+                Process_Destroy(c->unk1C);
             }
             if ((c->flags & 1) == 0) {
                 if (c->cb != NULL) {
@@ -4043,10 +4043,10 @@ void fn_8000C6AC(void *arg0) {
         c = n->unk1C;
         if (c != NULL) {
             if (c->unk24 != NULL) {
-                fn_8000C6AC(c->unk24);
+                Process_Destroy(c->unk24);
             }
             if (c->unk1C != NULL) {
-                fn_8000C6AC(c->unk1C);
+                Process_Destroy(c->unk1C);
             }
             if ((c->flags & 1) == 0) {
                 if (c->cb != NULL) {
@@ -4081,10 +4081,10 @@ void fn_8000C6AC(void *arg0) {
         c = n->unk24;
         if (c != NULL) {
             if (c->unk24 != NULL) {
-                fn_8000C6AC(c->unk24);
+                Process_Destroy(c->unk24);
             }
             if (c->unk1C != NULL) {
-                fn_8000C6AC(c->unk1C);
+                Process_Destroy(c->unk1C);
             }
             if ((c->flags & 1) == 0) {
                 if (c->cb != NULL) {
@@ -4102,10 +4102,10 @@ void fn_8000C6AC(void *arg0) {
         c = n->unk1C;
         if (c != NULL) {
             if (c->unk24 != NULL) {
-                fn_8000C6AC(c->unk24);
+                Process_Destroy(c->unk24);
             }
             if (c->unk1C != NULL) {
-                fn_8000C6AC(c->unk1C);
+                Process_Destroy(c->unk1C);
             }
             if ((c->flags & 1) == 0) {
                 if (c->cb != NULL) {
