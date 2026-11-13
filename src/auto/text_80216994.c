@@ -319,7 +319,7 @@ void __CARDUnlockedHandler(s32 chan, s32 result) {
     }
 }
 
-s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
+s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
     extern u16 __CARDBlock[];
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -399,7 +399,7 @@ s32 fn_802176AC(s32 chan, void *callback) {
     *(s32 *)(card + 0xA4) = 0;
     *(s32 *)(card + 0xA8) = 0;
 
-    result = fn_80217488(chan, callback, 0);
+    result = __CARDStart(chan, callback, 0);
     if (result == -1) {
         result = 0;
     } else if (result >= 0) {
