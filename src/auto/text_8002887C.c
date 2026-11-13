@@ -2428,11 +2428,10 @@ void Battle_AdvancePhase(void) {
 }
 
 void fn_8002E408(s32 arg0) {
-    void fn_800AE3DC(void);
+    void fn_800AE3DC();
     extern u8 gBattleState[];
-
     if (gBattleState[gBattleState[0x11] + 0x14] != 0) {
-        fn_800AE3DC();
+        fn_800AE3DC(arg0);
     }
 }
 
