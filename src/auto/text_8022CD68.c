@@ -3653,7 +3653,7 @@ f64 fn_80238378(s32 arg0, f64 farg0) {
 }
 
 #pragma global_optimizer off
-f64 fn_80236C94(f64 farg0, f64 farg1) {
+f64 __kernel_cos(f64 farg0, f64 farg1) {
     extern f64 lbl_8036C010;
     extern f64 lbl_8036C018;
     extern f64 lbl_8036C020;
@@ -3802,13 +3802,13 @@ f64 fn_80238638(f64 farg0) {
     temp_r0 = fn_802368F4(sp10, farg0) & 3;
     switch (temp_r0) {
     case 1:
-        return fn_80236C94(sp10[0], sp10[1]);
+        return __kernel_cos(sp10[0], sp10[1]);
     case 2:
         return -fn_80237BDC(1, sp10[0], sp10[1]);
     case 0:
         return fn_80237BDC(1, sp10[0], sp10[1]);
     default:
-        return -fn_80236C94(sp10[0], sp10[1]);
+        return -__kernel_cos(sp10[0], sp10[1]);
     }
 }
 
