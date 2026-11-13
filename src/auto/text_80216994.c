@@ -1155,7 +1155,7 @@ s32 fn_802191F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, s32)) 
     return fn_802177E0(&fn_80219108, temp_r5, move_cost);
 }
 
-s32 fn_80219258(void *arg0) {
+s32 __CARDGetFatBlock(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x88);
 }
 
@@ -2583,7 +2583,7 @@ void fn_8021C088(s32 chan, s32 result)
 s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) {
     s32 fn_80217B18(s32, s32 *);
     s32 fn_80217BD0(void *, s32);
-    void *fn_80219258(void *);
+    void *__CARDGetFatBlock(void *);
     s32 fn_802193FC(s32, u32, void *);
     u8 *__CARDGetDirBlock(s32);
     s32 fn_8021BA9C(u8 *, char *);
@@ -2632,7 +2632,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
     if (freeIdx == 0xFFFF) {
         return fn_80217BD0((void *)card, -8);
     }
-    stat = fn_80219258((void *)card);
+    stat = __CARDGetFatBlock((void *)card);
     if ((u32)(*(u32 *)((u8 *)card + 0xC) * *(u16 *)((u8 *)stat + 6)) < size) {
         return fn_80217BD0((void *)card, -9);
     }
@@ -2671,7 +2671,7 @@ void fn_8021C5D8(s32 chan, s32 result)
 {
     extern u16 __CARDBlock[];
     s32 fn_802190A4(s32, u32, u32, void *, void *);
-    s32 fn_80219258(void *);
+    s32 __CARDGetFatBlock(void *);
     s32 fn_80217BD0(void *, s32);
 
     u8 *card;
@@ -2706,7 +2706,7 @@ void fn_8021C5D8(s32 chan, s32 result)
             *(s32 *)(file + 0xC) = remaining;
 
             if (remaining > 0) {
-                fat = (u16 *)fn_80219258(card);
+                fat = (u16 *)__CARDGetFatBlock(card);
 
                 *(s32 *)(file + 8) += amount;
 
@@ -2831,7 +2831,7 @@ s32 fn_8021C84C(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 s64 OSGetTime(void);
 s32 __CARDGetDirBlock(void *arg0);
-s32 fn_80219258(void *arg0);
+s32 __CARDGetFatBlock(void *arg0);
 s32 fn_802197FC(s32 arg0, s32 arg1);
 s32 fn_80217BD0(void *arg0, s32 arg1);
 int fn_8021791C(s32 chan, u32 addr, void *callback);
@@ -2863,7 +2863,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
         *(void (**)(s32, s32))(card + 0xD0) = 0;
         result = fn_802197FC(chan, (s32)callback);
     } else {
-        fat = (u16 *)fn_80219258(card);
+        fat = (u16 *)__CARDGetFatBlock(card);
         *(s32 *)(fileInfo + 0x8) += *(s32 *)(card + 0xC);
         *(u16 *)(fileInfo + 0x10) = fat[*(u16 *)(fileInfo + 0x10)];
         if (*(u16 *)(fileInfo + 0x10) < 5 || *(u16 *)(fileInfo + 0x10) >= *(u16 *)(card + 0x10)) {
