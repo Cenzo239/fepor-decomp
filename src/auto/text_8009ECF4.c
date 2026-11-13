@@ -52,7 +52,7 @@ void fn_8009ECF4(s32 arg0) {
 #pragma optimization_level 2
 void fn_8009ED1C(void) {
     s32 DebugPrint(const char *, ...);
-    s32 fn_800EB774(void);
+    s32 Card_GetResult(void);
     void *fn_801E2324(void *, s32);
     s32 fn_801E2458(void *);
     void *Save_GetLargeSlot(void *, s32);
@@ -66,7 +66,7 @@ void fn_8009ED1C(void) {
     u8 *base;
     s32 i;
 
-    if (fn_800EB774() == 0 || fn_800EB774() == -0x42) {
+    if (Card_GetResult() == 0 || Card_GetResult() == -0x42) {
         DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
         base = lbl_8026D8D8;
         i = 0;

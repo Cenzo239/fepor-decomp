@@ -15353,7 +15353,7 @@ void fn_800EB760(void *arg0) {
     *(void **)(gCardWork + 0xA004) = arg0;
 }
 
-s32 fn_800EB774(void) {
+s32 Card_GetResult(void) {
     extern u32 gCardWork[];
     return *(u32*)((u8*)gCardWork + 0xA004);
 }

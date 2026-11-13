@@ -53,10 +53,10 @@
   
   void fn_8009EA38(s32 arg0) {
       s32 DebugPrint(const char *, ...);
-      s32 fn_800EB774();
+      s32 Card_GetResult();
       void fn_801E047C(void *, s32);
       
-      if (fn_800EB774() != 0) {
+      if (Card_GetResult() != 0) {
           DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
           return;
       }
@@ -72,12 +72,12 @@
 void fn_8009EAB4(s32 arg0) {
     extern s32 gSaveDataBase;
     s32 DebugPrint(const char *, ...);
-    s32 fn_800EB774(void);
+    s32 Card_GetResult(void);
     void fn_801E0B48(void *, s8, s8, s32);
     s32 a;
     s32 b;
 
-    if (fn_800EB774() != 0) {
+    if (Card_GetResult() != 0) {
         DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
         return;
     }
@@ -96,11 +96,11 @@ void fn_8009EAB4(s32 arg0) {
   void fn_8009EBA0(s32 arg0) {
       extern s32 gSaveDataBase;
       s32 DebugPrint(const char *, ...);
-      s32 fn_800EB774(void);
+      s32 Card_GetResult(void);
       void fn_801E1018(void *, u8, s32, s8);
       s8 v;
   
-      if (fn_800EB774() != 0) {
+      if (Card_GetResult() != 0) {
           DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
           return;
       }
@@ -118,11 +118,11 @@ void fn_8009EAB4(s32 arg0) {
 void fn_8009EC5C(s32 arg0) {
     extern s32 gSaveDataBase;
     s32 DebugPrint(const char *, ...);
-    s32 fn_800EB774(void);
+    s32 Card_GetResult(void);
     void fn_801E2014(void *, u8, s32, s8);
     s8 v;
 
-    if (fn_800EB774() != 0) {
+    if (Card_GetResult() != 0) {
         DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
         return;
     }

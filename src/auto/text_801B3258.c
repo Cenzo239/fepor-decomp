@@ -1215,16 +1215,16 @@ void fn_801B7A74(void *arg0) {
     void fn_801B7B5C(void *, s32, f32);
     extern void *gPadInput;
     extern u8 gSeCueSlots[1344];
+    extern f64 lbl_8036B208;
 
     void *self;
-    s32 count;
     void *pad;
+    s32 count;
     s32 buttons;
     s32 prev;
     s32 pressed;
     void *p;
     s8 slot;
-    u8 idx;
 
     self = *(void **)((u8 *)arg0 + 0x30);
     pad = gPadInput;
@@ -1234,13 +1234,12 @@ void fn_801B7A74(void *arg0) {
     *(s32 *)((u8 *)self + 4) = count + 1;
     pressed = buttons & (prev ^ buttons);
     count = *(s32 *)((u8 *)self + 4);
-    if (count >= 0x78 || (count >= 0x14 && ((pressed & 0x100) || (pressed & 0x200)))) {
+    if (count >= 0x78 || (count >= 0x14 && ((pressed & 0x100) != 0 || (pressed & 0x200) != 0))) {
         p = *(void **)((u8 *)self + 0x90);
-        if (p) {
+        if (p != NULL) {
             slot = fn_80146BE4(p);
             if (slot != -1) {
-                idx = slot;
-                fn_80148980(gSeCueSlots + idx * 0x30, 0x1F4);
+                fn_80148980(&gSeCueSlots[(u8)slot * 0x30], 0x1F4);
             }
         }
         Process_ClearFunc(arg0);
@@ -3770,18 +3769,17 @@ void fn_801BCCC4(void *arg0) {
     void *base;
     void *self;
     void *p;
+    void *ctx;
 
     self = arg0;
     p = Ui_FindChild(self, 0x80, 0);
     Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x1CE);
-    {
-        u8 *ctx = gUiContext;
-        obj = *(void **)((u8 *)self + 0x5C);
-        base = gBattleState;
-        v = *(s32 *)ctx;
-        saved = *(s32 *)((u8 *)base + 0x1C);
-        *(s32 *)((u8 *)base + 0x1C) = saved - (s16)fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
-    }
+    ctx = gUiContext;
+    base = gBattleState;
+    obj = *(void **)((u8 *)self + 0x5C);
+    v = *(s32 *)ctx;
+    saved = *(s32 *)((u8 *)base + 0x1C);
+    *(s32 *)((u8 *)base + 0x1C) = saved - (s16)fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
     fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), self, 0);
     *(s16 *)(gBattleState + 0x70) = 0;
     p = Ui_FindChild(self, -0x1000, 0);
@@ -13853,7 +13851,7 @@ void fn_801D3D3C(void *arg0) {
  void fn_801DBD84(void *);
  void fn_801E2594(void *);
  void fn_801E3118(void *, void *, u8);
- s32 fn_800EB774(void);
+ s32 Card_GetResult(void);
  void *fn_801DC10C(s32);
  u8 fn_801DE368(void *);
  void fn_801DE0EC(s32 *, void *);
@@ -13931,7 +13929,7 @@ void fn_801D3D3C(void *arg0) {
   fn_801E3118(&gSaveDataBase, arg0, *(u8 *)((u8 *)state + 0x10) == 1);
   *(s32 *)state = 3; break;
  case 3:
-  result = fn_800EB774();
+  result = Card_GetResult();
   if (result == -0x80) { *(s32 *)state = 0x28; break; }
   if (result == -0x42) { *(s32 *)state = 0x1e; break; }
   if (result == -0x41) { *(s32 *)state = 0xd; break; }
@@ -14079,7 +14077,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x12:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x13; fn_801DDDE8(5, arg0); break;
  case 0x13:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    Ui_OpenConfirmDialog(gUiSeCues + 0x39a, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
@@ -14105,11 +14103,11 @@ void fn_801D3D3C(void *arg0) {
  case 0x1b:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x1c; fn_801DDDE8(5, arg0); break;
  case 0x1c:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    Ui_OpenConfirmDialog(gUiSeCues + 0x3ef, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-   if (fn_800EB774() == -5) MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0);
+   if (Card_GetResult() == -5) MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0);
    else MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3fd, 0, 1, 0);
    *(s32 *)state = 6;
   }
@@ -14264,7 +14262,7 @@ void fn_801D3D3C(void *arg0) {
   else *(s32 *)state = 0x69;
   break;
  case 0x71:
-  if (fn_800EB774() == 0) { *(s32 *)state = 0x73; fn_801D8894((u8 *)state + 0x60); }
+  if (Card_GetResult() == 0) { *(s32 *)state = 0x73; fn_801D8894((u8 *)state + 0x60); }
   else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
    Ui_OpenConfirmDialog(gUiSeCues + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
@@ -14358,7 +14356,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x78:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x7d; fn_801DDDE8(5, arg0);
  case 0x7d:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    fn_801E21EC(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12)); *(s32 *)state = 0x82;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
@@ -14366,7 +14364,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0x82:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4, (u32)(gUiSeCues + 0x4c1));
    *(s32 *)state = 0x87; fn_801DDDE8(0x64, arg0);
   } else {
@@ -14433,7 +14431,7 @@ void fn_801D3D3C(void *arg0) {
   else *(s32 *)state = 0xcd;
   break;
  case 0xd5:
-  if (fn_800EB774() == 0) { *(s32 *)state = 0xd7; fn_801D8894((u8 *)state + 0x60); }
+  if (Card_GetResult() == 0) { *(s32 *)state = 0xd7; fn_801D8894((u8 *)state + 0x60); }
   else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
    Ui_OpenConfirmDialog(gUiSeCues + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0xcd;
@@ -14444,7 +14442,7 @@ void fn_801D3D3C(void *arg0) {
   fn_801E21EC(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12));
   *(s32 *)state = 0xdc; fn_801DDDE8(0xa, arg0); break;
  case 0xdc:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    fn_8008A290(3, 0xfa); fn_80006220(0x1c);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
   } else {
@@ -14479,7 +14477,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x136:
   fn_801E080C(&gSaveDataBase); *(s32 *)state = 0x13b; fn_801DDDE8(0xa, arg0); break;
  case 0x13b:
-  if (fn_800EB774() == 0) *(s32 *)state = 0x140;
+  if (Card_GetResult() == 0) *(s32 *)state = 0x140;
   else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
    Ui_OpenConfirmDialog(gUiSeCues + 0x4eb, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x131;
@@ -14488,7 +14486,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x140:
   fn_801E00EC(&gSaveDataBase, arg0); *(s32 *)state = 0x145; break;
  case 0x145:
-  if (fn_800EB774() == 0) {
+  if (Card_GetResult() == 0) {
    fn_801D8894((u8 *)state + 0x60);
    fn_8008A290(3, 0xfa); fn_80006220(0x1d);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
@@ -14587,13 +14585,13 @@ void fn_801D3D3C(void *arg0) {
   *(s32 *)state = 0x1a1; break;
     case 0x1a1:
     fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x1a4;
-    if (fn_800EB774() == 0) {
+    if (Card_GetResult() == 0) {
      fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4, (u32)(gUiSeCues + 0x4c1));
      fn_801DDDE8(0x64, arg0);
     } else fn_801DDDE8(5, arg0);
     break;
    case 0x1a4:
-    if (fn_800EB774() == 0) {
+    if (Card_GetResult() == 0) {
      result = fn_801DBFF8();
      if (result >= 1 && result < 5) {
       *(s8 *)((u8 *)state + 0x12) = -1; *(s32 *)state = 0x193;

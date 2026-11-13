@@ -238,7 +238,7 @@ void fn_80072B04(void *arg0) {
 void fn_80072B6C(void *arg0)
 {
     void fn_801E2594(void *);
-    s32 fn_800EB774(void);
+    s32 Card_GetResult(void);
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
     s32 Msg_Expand(u8 *);
     void Process_Goto(void *, s32);
@@ -248,7 +248,7 @@ void fn_80072B6C(void *arg0)
     s32 r;
 
     fn_801E2594(&gSaveDataBase);
-    r = fn_800EB774();
+    r = Card_GetResult();
     switch (r) {
     case -3:
         MsgBox_Init(lbl_80311D50, lbl_8026BE40 + 0x12D, 0, 1, 0);
@@ -386,10 +386,10 @@ void fn_80072F28(void *arg0) {
 
 void fn_8007303C(s32 arg0) {
     M2C_UNK Process_Goto(s32, M2C_UNK);
-    s32 fn_800EB774();
+    s32 Card_GetResult();
     s32 temp_r3;
 
-    temp_r3 = fn_800EB774();
+    temp_r3 = Card_GetResult();
     switch (temp_r3) {                              /* irregular */
     case 0:
     case -66:

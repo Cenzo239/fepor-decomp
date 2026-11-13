@@ -3115,7 +3115,7 @@ void fn_800B5708(void) {
     void fn_8014C6E0(void);
     void fn_8014C6B8(void);
     void fn_800B6F10(void);
-    void fn_800EB774(void);
+    void Card_GetResult(void);
     void fn_800C0750(void);
     void fn_800C068C(void);
     void fn_801E4540(void);
@@ -3291,7 +3291,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x91D, fn_8014C6E0, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x922, fn_8014C6B8, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x927, fn_800B6F10, 0);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x92D, fn_800EB774, 0);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x92D, Card_GetResult, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x936, fn_800C0750, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x943, fn_800C068C, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x94F, fn_801E4540, 0);
@@ -3489,12 +3489,12 @@ void fn_800B6F48(void) {
 }
 
 void fn_800B6F6C(void *arg0) {
-    s32 fn_800EB774(void);
+    s32 Card_GetResult(void);
     void Process_ClearFunc(void *);
     void fn_801E047C(void *, void *);
     extern s32 gSaveDataBase;
 
-    if (fn_800EB774() < 0) {
+    if (Card_GetResult() < 0) {
         Process_ClearFunc(arg0);
     } else {
         fn_801E047C(&gSaveDataBase, arg0);

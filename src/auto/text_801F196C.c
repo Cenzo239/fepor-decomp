@@ -1423,7 +1423,7 @@ void fn_801F53E0(void *arg0)
 
     fn_801E2594(&gSaveDataBase);
 
-    if (fn_800EB774() == 0) {
+    if (Card_GetResult() == 0) {
         MsgBox_Init(
             *(void **)((u8 *)arg0 + 0x50),
             Msg_Expand((u8 *)gCardLinkStr + 0x6A),
@@ -1449,7 +1449,7 @@ void fn_801F5484(void *arg0)
 {
     extern u8 gSaveDataBase;
 
-    if (fn_800EB774() == 0) {
+    if (Card_GetResult() == 0) {
         fn_801DFE60(&gSaveDataBase, arg0);
         return;
     }
