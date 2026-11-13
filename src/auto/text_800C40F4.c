@@ -4877,7 +4877,7 @@ if(arg1>0)fn_800C428C(p);
 }return p;
 }
 
-extern "C" void *fn_800D38BC(void *arg0)
+extern "C" void *GameScene_Create(void *arg0)
 {
     extern void fn_800D6878(void *, void *, void *);
     extern void fn_800DF50C(void *);
@@ -6167,7 +6167,7 @@ s64 OSGetTime(void);
 s64 __div2i(s64, s64);
 void fn_800056CC(const char *, ...);
 void *Heap_Alloc(u32);
-void *fn_800D38BC(void *);
+void *GameScene_Create(void *);
 u8 fn_800D0C5C(void *);
 void String_Init(void *, char *, void *);
 void *fn_800E7E4C(void *, void *);
@@ -6224,7 +6224,7 @@ if (gGameScene == NULL) {
 t0 = OSGetTime();
 p = Heap_Alloc(0x350);
 if (p != NULL) {
-p = fn_800D38BC(p);
+p = GameScene_Create(p);
 }
 gGameScene = p;
 t1 = OSGetTime();
