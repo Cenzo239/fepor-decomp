@@ -381,7 +381,7 @@ s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
     return result;
 }
 
-s32 fn_802176AC(s32 chan, void *callback) {
+s32 __CARDReadPage(s32 chan, void *callback) {
     extern u16 __CARDBlock[];
     extern s32 EXIDma(s32, s32, s32, s32, void *);
     extern void EXIDeselect(s32);
@@ -1125,7 +1125,7 @@ s32 fn_802190A4(s32 chan, u32 addr, u32 length, void *dst, void *callback) {
     *(u32 *)(card + 0xAC) = length / 0x200;
     *(u32 *)(card + 0xB0) = addr;
     *(void **)(card + 0xB4) = dst;
-    return fn_802176AC(chan, fn_80218FC8);
+    return __CARDReadPage(chan, fn_80218FC8);
 }
 
 s32 fn_802191F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, s32)) {
