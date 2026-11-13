@@ -262,7 +262,7 @@ void fn_80202A6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     M2C_FIELD(arg0, f32 *, 0x3C) = (f32) lbl_8036BC60;
 }
 
-void fn_80202B3C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+void C_MTXOrtho(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     extern f32 lbl_8036BC58;
     extern f32 lbl_8036BC5C;
     extern f32 lbl_8036BC60;

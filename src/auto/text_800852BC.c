@@ -1501,7 +1501,7 @@ void fn_80088F8C(void *arg0) {
 
 #pragma scheduling on
 void fn_80088FFC(void *arg0) {
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_80224C4C(void *, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224D7C(void *, s32);
@@ -1535,7 +1535,7 @@ void fn_80088FFC(void *arg0) {
     u8 sp8[0x40];
     u8 alpha;
 
-    fn_80202B3C(&sp8[0], lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+    C_MTXOrtho(&sp8[0], lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
     fn_80224C4C(&sp8[0], 1);
     PSMTXTrans(&sp8[0], lbl_80369690, lbl_80369690, lbl_803696A0);
     fn_80224D7C(&sp8[0], 0);
@@ -1764,7 +1764,7 @@ void fn_80089650(s32 arg0, s32 arg1) {
 
 void fn_80089680(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -1821,7 +1821,7 @@ void fn_80089680(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x43) = (u8)(s32)(bc * (ratio * diff + lo));
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
-        fn_80202B3C(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         fn_80224C4C(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);
@@ -1919,7 +1919,7 @@ void fn_800899D4(s32 arg0)
 void fn_80089A28(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -2006,7 +2006,7 @@ void fn_80089A28(void *arg0) {
         break;
     }
 
-    fn_80202B3C(sp8, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+    C_MTXOrtho(sp8, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
     fn_80224C4C(sp8, 1);
     PSMTXTrans(sp8, lbl_80369690, lbl_80369690, lbl_803696A0);
     fn_80224D7C(sp8, 0);
@@ -2137,7 +2137,7 @@ ptr[0x34]=color.b[0]; ptr[0x35]=color.b[1]; ptr[0x36]=color.b[2]; ptr[0x37]=colo
 void fn_80089FA8(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -2203,7 +2203,7 @@ void fn_80089FA8(void *arg0) {
         break;
     }
     if (*(u8 *)((u8 *)arg0 + 0x37) != 0) {
-        fn_80202B3C(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         fn_80224C4C(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);
@@ -2297,7 +2297,7 @@ u32 fn_8008A59C(void) {
 void fn_8008A5AC(void *arg0) {
     void fn_800C4588(void *);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -2361,7 +2361,7 @@ void fn_8008A5AC(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x43) = (u8)(s32)(bc * ((((f32)u34 / (f32)u36) * (*(f32 *)((u8 *)arg0 + 0x3C) - temp_f5)) + temp_f5));
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
-        fn_80202B3C(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         fn_80224C4C(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);

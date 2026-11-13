@@ -5214,7 +5214,7 @@ loop_2:
 
 void fn_80067EDC(void *arg0)
 {
-    void fn_80202B3C(void *, s32, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void fn_80201FC4(void *);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
@@ -5244,7 +5244,7 @@ void fn_80067EDC(void *arg0)
     negbit = -bit;
     lbl_803672FC = negbit + 2;
     z = lbl_80369228;
-    fn_80202B3C(p + 0x24, negbit, z, lbl_80369250, z, lbl_8036924C, z, lbl_80369254);
+    C_MTXOrtho(p + 0x24, negbit, z, lbl_80369250, z, lbl_8036924C, z, lbl_80369254);
     *(u16 *)p &= 0xFFFE;
     fn_80201FC4(mtx);
     fn_80224D7C(mtx, 0);

@@ -1348,7 +1348,7 @@ void fn_80007898(u8 arg0) {
 void fn_80007B04(void)
 {
     s32 OSGetTick(void);
-    void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
+    void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_80224C4C(void *, s32);
     void fn_8021FBB8(void);
     void fn_8021F4E4(s32, s32);
@@ -1392,7 +1392,7 @@ void fn_80007B04(void)
     mgr = lbl_80367140;
     M2C_FIELD(mgr, s32 *, 0xA4) = OSGetTick();
     f1 = lbl_80368B98;
-    fn_80202B3C(sp128, f1, lbl_80368BAC, f1, lbl_80368BB0, f1, lbl_80368BB4);
+    C_MTXOrtho(sp128, f1, lbl_80368BAC, f1, lbl_80368BB0, f1, lbl_80368BB4);
     fn_80224C4C(sp128, 1);
     fn_8021FBB8();
     fn_8021F4E4(9, 1);
@@ -1530,7 +1530,7 @@ void fn_80007B04(void)
                 {
                     u8 mat[0x40];
                     f32 z = lbl_80368B98;
-                    fn_80202B3C(mat, z, lbl_80368BAC, z, lbl_80368BB0, z, lbl_80368BB4);
+                    C_MTXOrtho(mat, z, lbl_80368BAC, z, lbl_80368BB0, z, lbl_80368BB4);
                     fn_80224C4C(mat, 1);
                 }
                 fn_8021FBB8();
