@@ -1115,13 +1115,13 @@ void fn_801AADA4(void *arg0) {
     s32 fn_80059208(void *, void *);
     u16 fn_8005C6A0(char *);
     void fn_8006EEFC(void *, void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_801ADA50(void *);
     extern u8 lbl_8027B838[];
     if (fn_8005C6A0((char *)lbl_8027B838 + 0x320) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x50, (char *)lbl_8027B838 + 0x320);
         *(s32 *)((char *)arg0 + 0x6C) = fn_80059208(fn_801ADA50, arg0);
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

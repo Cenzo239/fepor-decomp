@@ -654,7 +654,7 @@ void fn_801065A8(void *arg0) {
 
 void fn_80106690(void *arg0) {
     s32 fn_8004F128(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void *entry;
     s32 count;
     s32 value;
@@ -677,7 +677,7 @@ void fn_80106690(void *arg0) {
             entry = (u8 *)entry + 0x110;
         }
     }
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_8010671C(void *arg0) {
@@ -686,7 +686,7 @@ void fn_8010671C(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80106728(u8 *arg0) {
-    void fn_8000C188(void);
+    void Process_ClearFunc(void);
     void *fn_80016BDC(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_8004F5EC(void *, s32);
@@ -711,7 +711,7 @@ void fn_80106728(u8 *arg0) {
     idx = p[0x62];
     count = p[0x63];
     if (idx >= count) {
-        fn_8000C188();
+        Process_ClearFunc();
         return;
     }
     kind = p[0x60];
@@ -1959,7 +1959,7 @@ void fn_80108C80(s32 arg0, s32 arg1) {
 }
 
 void fn_80108CB8(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern void *gPadInput;
     extern f32 lbl_8036A110;
     extern f32 lbl_8036A114;
@@ -1975,7 +1975,7 @@ void fn_80108CB8(void *arg0) {
 
     temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
     if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x200) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
     scale = lbl_8036A110;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = -(((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 2) * scale) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40));
@@ -2496,14 +2496,14 @@ void fn_80109C80(void *arg0, u8 arg1) {
 
 void fn_80109CE8(void *arg0) {
     f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
-    M2C_UNK fn_8000C188(void *);
+    M2C_UNK Process_ClearFunc(void *);
     void *temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, void **, 0x30);
     M2C_FIELD(arg0, s32 *, 0x34) = (s32) (M2C_FIELD(arg0, s32 *, 0x34) + 1);
     M2C_FIELD(temp_r31, s8 *, 0x60) = (s8) Math_Ease(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) M2C_FIELD(arg0, s32 *, 0x34), (f32) M2C_FIELD(arg0, s32 *, 0x38));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x34) >= (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

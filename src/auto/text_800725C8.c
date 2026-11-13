@@ -218,10 +218,10 @@ void fn_80072A94(void) {
 }
 
 void fn_80072AD4(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern void *gPadInput;
     if (*(s32 *)((char *)gPadInput + 4) & 0x300) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

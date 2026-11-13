@@ -410,7 +410,7 @@ void fn_8007D0C0(void *arg0) {
     *(s8 *)((u8 *)temp_r31 + 0xA) = temp_r0;
     *(s8 *)((u8 *)temp_r31 + 8) = temp_r0;
     if (*(s16 *)((u8 *)temp_r31 + 6) <= 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -598,7 +598,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
 
 void fn_8007D638(void *arg0) {
     f32 Math_Ease(s32, s16, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern f32 lbl_80369418;
     extern f32 lbl_80369448;
     extern f32 lbl_8036944C;
@@ -642,7 +642,7 @@ void fn_8007D638(void *arg0) {
     *(s8 *)((u8 *)temp_r31 + 0xA) = temp_r0;
     *(s8 *)((u8 *)temp_r31 + 8) = temp_r0;
     if (*(s16 *)((u8 *)temp_r31 + 6) <= 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

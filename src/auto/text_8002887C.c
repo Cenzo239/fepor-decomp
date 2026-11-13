@@ -2104,7 +2104,7 @@ void fn_8002D82C(void) {
 
 void fn_8002D854(s32 arg0) {
     s8 fn_80146C94(u8 *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 lbl_80269210[];
     u8 flag;
 
@@ -2119,13 +2119,13 @@ void fn_8002D854(s32 arg0) {
         flag = 0;
     }
     if (flag == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
 void fn_8002D940(s32 arg0) {
     s8 fn_80146C94(u8 *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 lbl_80269210[];
     u8 flag;
 
@@ -2140,7 +2140,7 @@ void fn_8002D940(s32 arg0) {
         flag = 0;
     }
     if (flag == 1) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

@@ -607,7 +607,7 @@ void fn_800AE444(void *arg0) {
     M2C_FIELD(arg0, f32 *, 0x38) = fn_8005A028(2, lbl_80369C78, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x30) <= 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -615,7 +615,7 @@ void fn_800AE52C(void *arg0)
 {
     extern u8 *gPadInput;
 
-    extern void fn_8000C188(void *);
+    extern void Process_ClearFunc(void *);
     extern void fn_800535B0(void *);
 
     u8 *obj;
@@ -628,7 +628,7 @@ void fn_800AE52C(void *arg0)
     *(s32 *)(obj + 0x48) -= 1;
 
     if (*(s32 *)(obj + 0x48) == 0) {
-        fn_8000C188(obj);
+        Process_ClearFunc(obj);
     } else {
         input = gPadInput;
 
@@ -640,7 +640,7 @@ void fn_800AE52C(void *arg0)
                 fn_800535B0(*(void **)(obj + 0x4C));
             }
 
-            fn_8000C188(obj);
+            Process_ClearFunc(obj);
         }
     }
 }
@@ -648,7 +648,7 @@ void fn_800AE52C(void *arg0)
 void fn_800AE5A8(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern f64 lbl_80369C88;
     extern f32 lbl_80369C7C;
     extern f32 lbl_80369C80;
@@ -660,7 +660,7 @@ void fn_800AE5A8(void *arg0) {
     *(f32 *)((u8 *)self + 0x38) = fn_8005A028(2, lbl_80369C90, lbl_80369C7C, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
     *(s32 *)((u8 *)self + 0x34) = (s32)Math_Lerp(lbl_80369C7C, lbl_80369C80, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
     if (*(s32 *)((u8 *)self + 0x30) >= *(s32 *)((u8 *)self + 0x44)) {
-        fn_8000C188(self);
+        Process_ClearFunc(self);
     }
 }
 
@@ -757,7 +757,7 @@ void fn_800AE904(void *arg0) {
 
 void fn_800AE918(s32 arg0) {
     u8 GActor_CheckResources(void *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 lbl_80330708[];
     extern u8 lbl_8026EAA0[];
     void *var_r3;
@@ -780,7 +780,7 @@ void fn_800AE918(s32 arg0) {
         break;
     }
     if (GActor_CheckResources(var_r3) != 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3354,7 +3354,7 @@ void fn_800B6B58(s32 arg0) {
 
     temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
     if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x1F70) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3488,12 +3488,12 @@ void fn_800B6F48(void) {
 
 void fn_800B6F6C(void *arg0) {
     s32 fn_800EB774(void);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_801E047C(void *, void *);
     extern s32 lbl_803682F0;
 
     if (fn_800EB774() < 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else {
         fn_801E047C(&lbl_803682F0, arg0);
     }
@@ -3880,7 +3880,7 @@ void fn_800B7748(s32 arg0) {
     extern s32 gUiInputFlags;
 
     if (fn_800A5C88() == 0 || (gUiInputFlags & 1)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3926,7 +3926,7 @@ void fn_800B7890(void *arg0) {
 
     M2C_FIELD(arg0, s32 *, 0x60) = M2C_FIELD(arg0, s32 *, 0x60) - 1;
     if (M2C_FIELD(arg0, s32 *, 0x60) < 0 || (gUiInputFlags & 1)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -4330,10 +4330,10 @@ s32 fn_800B81C0(void) {
 void fn_800B8208(s32 arg0) {
     extern u8 lbl_8026ECB8[];
     u32 fn_8000BCA4(void *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
 
     if (fn_8000BCA4(lbl_8026ECB8 + 0xA29) == 0U) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -4561,10 +4561,10 @@ s32 fn_800B87B4(void) {
 }
 
 void fn_800B8804(s32 arg0) {
-    M2C_UNK fn_8000C188(s32);
+    M2C_UNK Process_ClearFunc(s32);
     u8 fn_80089948();
     if (fn_80089948() == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -4619,7 +4619,7 @@ s32 fn_800B88E8(void) {
 void fn_800B8938(s32 arg0) {
     u8 fn_80089ED8();
     if (fn_80089ED8() == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -5207,7 +5207,7 @@ s32 fn_800B98B8(u32 arg0) {
 
 #pragma optimization_level 1
 void fn_800B995C(void *arg0) {
-    void fn_8000C188();
+    void Process_ClearFunc();
     s32 base;
     s32 shift;
     s32 flags;
@@ -5219,7 +5219,7 @@ void fn_800B995C(void *arg0) {
     if (flags & (base << shift)) return;
     shift = 2;
     if (flags & (base << shift)) return;
-    fn_8000C188(arg0, base);
+    Process_ClearFunc(arg0, base);
 }
 #pragma optimization_level 4
 s32 fn_800B99B8(u32 arg0, s32 arg1) {
@@ -5769,10 +5769,10 @@ void fn_800BAC70(s32 arg0) {
     extern s32 gUiInputFlags;
 
     if (fn_800188A4(1) == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else if (gUiInputFlags & 1) {
         fn_800187F0();
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -5804,10 +5804,10 @@ void fn_800BAD40(s32 arg0) {
     extern s32 gUiInputFlags;
 
     if (fn_800188A4(0) == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else if (gUiInputFlags & 1) {
         fn_800187F0();
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -8279,7 +8279,7 @@ void fn_800C054C(void *arg0) {
     void *fn_80013B60(void *);
     void *fn_8000CAA0(void *, void *);
     void fn_800BDBC8(void *, void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u8 lbl_8028D4F8[];
     extern u8 lbl_8026FC78[];
     extern s32 gUiInputFlags;
@@ -8308,7 +8308,7 @@ void fn_800C054C(void *arg0) {
         *(void **)((u8 *)self + 0x30) = fn_80013B60(*(void **)((u8 *)self + 0x30));
     }
 destroy:
-    fn_8000C188(self);
+    Process_ClearFunc(self);
 }
 
 void fn_800C0624(void *arg0) {
@@ -8500,7 +8500,7 @@ void fn_800C09E4(s32 arg0) {
     s32 fn_800142B8();
     fn_80013880();
     if (fn_800142B8() != 6) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

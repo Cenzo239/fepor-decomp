@@ -99,7 +99,7 @@ void fn_8009A67C(void *arg0) {
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
     M2C_FIELD(arg0, f32 *, 0x30) = fn_8005A028(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -123,7 +123,7 @@ void fn_8009A76C(void *arg0) {
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
     M2C_FIELD(arg0, f32 *, 0x30) = fn_8005A028(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == (u8) M2C_FIELD(arg0, u8 *, 0x40)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

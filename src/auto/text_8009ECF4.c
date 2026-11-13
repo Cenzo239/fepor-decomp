@@ -133,7 +133,7 @@ void fn_8009F02C(s32 arg0) {
 }
 
 void fn_8009F054(s32 arg0) {
-    M2C_UNK fn_8000C188(s32);
+    M2C_UNK Process_ClearFunc(s32);
     u8 fn_800A5C88();
     M2C_UNK fn_800A5CBC();
     extern void *gPadInput;
@@ -142,10 +142,10 @@ void fn_8009F054(s32 arg0) {
     temp_r3 = M2C_FIELD(gPadInput, s32 *, 4);
     if (temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3) & 0x1000) {
         fn_800A5CBC();
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         return;
     }
     if (fn_800A5C88() == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }

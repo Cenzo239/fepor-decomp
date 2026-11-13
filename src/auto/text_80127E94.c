@@ -665,7 +665,7 @@ void fn_801298FC(void *arg0) {
 void fn_80129984(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Model_SetAlpha(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A424;
@@ -684,7 +684,7 @@ void fn_80129984(void *arg0) {
         i += 1;
     }
     if (M2C_FIELD(arg0, s32 *, 0x54) == 0x3C) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 #pragma use_lmw_stmw off
@@ -1033,7 +1033,7 @@ void fn_8012A4CC(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8012A530(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     f32 fn_8001F53C(void *, s8, s8, s32);
     f32 fn_80023068(void *, f32, f32);
     void *fn_80040844(void);
@@ -1161,7 +1161,7 @@ void fn_8012A530(void *arg0) {
                 *(f32 *)((u8 *)sub + 0x14) = (f32)(s32)*((u8 *)sub + 0xD);
             }
         }
-        fn_8000C188(self);
+        Process_ClearFunc(self);
     }
 
     if (oldX != newX || oldY != newY) {
@@ -1379,7 +1379,7 @@ void fn_8012AEC4(void *arg0) {
 }
 
 void fn_8012AF4C(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     f32 Math_Lerp(f32, f32, f32, f32);
     void Model_SetAlpha(void *, s32);
     void PSMTXConcat(void *, void *, void *);
@@ -1442,7 +1442,7 @@ void fn_8012AF4C(void *arg0) {
     Model_SetAlpha(node, Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
 
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
-        fn_8000C188(self);
+        Process_ClearFunc(self);
     }
 }
 
@@ -1634,7 +1634,7 @@ void fn_8012B7DC(void *arg0) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s32 fn_8000CEE4(s32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void fn_80024398(void *, void *, s32);
@@ -1806,17 +1806,17 @@ void fn_8012B7DC(void *arg0) {
             *(s32 *)((u8 *)arg0 + 0x30) + (*(s32 *)((u8 *)arg0 + 0x38) - 1);
         *(s32 *)((u8 *)arg0 + 0x34) %=
             *(s32 *)((u8 *)arg0 + 0x38);
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else if (held & 6) {
         *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
         *(s32 *)((u8 *)arg0 + 0x34) %=
             *(s32 *)((u8 *)arg0 + 0x38);
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else {
         buttons = *(s32 *)((u8 *)pad + 4);
         if ((u32)(buttons & 0x210) == 0x210U) {
             *(s32 *)((u8 *)arg0 + 0x34) = 0x270F;
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         } else {
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x400) {

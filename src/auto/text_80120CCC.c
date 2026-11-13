@@ -79,7 +79,7 @@ void fn_80120DD4(void *arg0, s32 arg1) {
 
 void fn_80120E4C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
 
     *(u8 *)((u8 *)arg0 + 0x36) = (u8)(*(u8 *)((u8 *)arg0 + 0x36) + 1);
     *(s8 *)(*(u8 **)((u8 *)arg0 + 0x30) + 0x41) = (s8)Math_Ease(
@@ -89,7 +89,7 @@ void fn_80120E4C(void *arg0) {
         (f32)*(u8 *)((u8 *)arg0 + 0x36),
         (f32)*(u8 *)((u8 *)arg0 + 0x37));
     if (*(u8 *)((u8 *)arg0 + 0x36) == *(u8 *)((u8 *)arg0 + 0x37)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -100,7 +100,7 @@ void fn_80120F0C(void) {
 
     void *fn_8000C0C0(void *);
     void fn_8000C60C(void);
-    void fn_8000C188(void);
+    void Process_ClearFunc(void);
 
     u16 b;
     u16 a;
@@ -117,7 +117,7 @@ void fn_80120F0C(void) {
             if (lbl_80367110 & 3) {
                 fn_8000C60C();
             } else {
-                fn_8000C188();
+                Process_ClearFunc();
             }
         }
     }
@@ -130,7 +130,7 @@ void fn_80120F94(void)
 {
     void *fn_8000C0C0(void *);
     void Process_Unlink(void);
-    void fn_8000C188(void);
+    void Process_ClearFunc(void);
     extern u16 lbl_80367A58;
     extern u32 gUiInputFlags;
     extern u8 lbl_80290200[];
@@ -142,7 +142,7 @@ void fn_80120F94(void)
             if ((gUiInputFlags & 3) != 0) {
                 Process_Unlink();
             } else {
-                fn_8000C188();
+                Process_ClearFunc();
             }
         }
     }
@@ -694,7 +694,7 @@ void fn_801221E4(s32 arg0)
 {
     void fn_80120CFC(u16 *);
     void fn_80120C2C(void);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u16 lbl_80367A58;
     extern u32 gUiInputFlags;
 
@@ -707,7 +707,7 @@ void fn_801221E4(s32 arg0)
     if ((gUiInputFlags & 3) == 0) {
         return;
     }
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_80122238(void *arg0)
@@ -779,7 +779,7 @@ void fn_80122314(void *arg0) {
     cur = M2C_FIELD(arg0, s32 *, 0x34);
     total = M2C_FIELD(arg0, s32 *, 0x38);
     if (cur > total || (gUiInputFlags & 3)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         if (M2C_FIELD(arg0, s32 *, 0x40) == 0) {
             struct {
                 u8 pad0[0x30];
@@ -841,7 +841,7 @@ void fn_80122524(void *arg0) {
     u8 fn_80120C2C(void);
     void Ui_PlaySeCue(void *, s32);
     void fn_80109BB4(s32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_80121630(void *);
     extern u16 lbl_80367A58;
     extern u8 lbl_80274D60[];
@@ -854,7 +854,7 @@ void fn_80122524(void *arg0) {
         if (*(u32 *)((u8 *)arg0 + 0x30) != 0) {
             fn_80109BB4(*(s32 *)((u8 *)arg0 + 0x38), 8);
         }
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         lbl_80367A58 &= ~0x200;
     } else {
         temp = gPadInput[1];
@@ -2750,13 +2750,13 @@ s32 fn_80125BB0(void) {
 
 void fn_80125DD8(void *arg0) {
     u8 fn_800AA188(void);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
 
     if (fn_800AA188() != 0) {
         *(u8 *)((char *)arg0 + 0x49) = *(u8 *)((char *)arg0 + 0x49) - 1;
         if (*(u8 *)((char *)arg0 + 0x49) == 0) {
             *(u8 *)((char *)arg0 + 0x49) = 0;
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
         *(f32 *)((char *)arg0 + 0x4C) =
             (*(f32 *)((char *)arg0 + 0x38) * *(f32 *)((char *)arg0 + 0x34))
@@ -2777,13 +2777,13 @@ void fn_80125E5C(void *arg0) {
 
 void fn_80125EB8(void *arg0) {
     u8 fn_800AA188(void);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
 
     if (fn_800AA188() != 0) {
         *(u8 *)((char *)arg0 + 0x49) = *(u8 *)((char *)arg0 + 0x49) + 1;
         if (*(u8 *)((char *)arg0 + 0x49) >= 0x80U) {
             *(u8 *)((char *)arg0 + 0x49) = 0x80;
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
         *(f32 *)((char *)arg0 + 0x4C) =
             (*(f32 *)((char *)arg0 + 0x38) * *(f32 *)((char *)arg0 + 0x34))
@@ -3192,7 +3192,7 @@ void fn_80126A98(s32 arg0) {
     extern u8 gScriptCmdNames[];
     void fn_8011D79C(void *);
     void fn_8011D650(void *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     struct {
         u8 hi : 6;
         u8 mid : 1;
@@ -3211,7 +3211,7 @@ void fn_80126A98(s32 arg0) {
         fn_8011D650(lbl_80330708);
         break;
     }
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_80126C44(void) {
@@ -3644,7 +3644,7 @@ void fn_80127C78(void *arg0) {
     }
     fn_800138BC(M2C_FIELD(arg0, s32 *, 0x54));
     if (fn_800142B8() != 6) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

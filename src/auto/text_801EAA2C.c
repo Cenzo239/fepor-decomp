@@ -208,11 +208,11 @@ void fn_801EAF34(s32 arg0) {
 }
 
 void fn_801EAFB4(s32 arg0) {
-    M2C_UNK fn_8000C188(s32);
+    M2C_UNK Process_ClearFunc(s32);
     M2C_UNK fn_800A8400();
     fn_8013FEC0();
     fn_800A8400();
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_801EAFEC(s32 arg0) {
@@ -223,11 +223,11 @@ void fn_801EAFEC(s32 arg0) {
 }
 
 void fn_801EB020(s32 arg0) {
-    M2C_UNK fn_8000C188(s32);
+    M2C_UNK Process_ClearFunc(s32);
     M2C_UNK fn_800A8400();
     fn_8013FEC0();
     fn_800A8400();
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_801EB058(s32 arg0) {
@@ -648,7 +648,7 @@ void fn_801EBE00(void *arg0) {
         fn_80162054();
         fn_801620AC(arg0);
         *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3061,7 +3061,7 @@ void fn_801F0718(void *arg0) {
     void fn_802029C4(void *, void *, void *);
     void fn_80203184(void *, void *, void *);
     void fn_80067FE8(void *, void *, void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern f32 lbl_8036B7C8;
     extern f32 lbl_8036B7D4;
     extern f64 lbl_8036B7D8;
@@ -3143,7 +3143,7 @@ void fn_801F0718(void *arg0) {
     (*(u16 *)((u8 *)arg0 + 0x4E))++;
     if (*(u16 *)((u8 *)arg0 + 0x4E) >= *(u16 *)((u8 *)arg0 + 0x4C)) {
         (*(u16 *)((u8 *)arg0 + 0x48))++;
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3194,7 +3194,7 @@ void fn_801F0E4C(void *arg0) {
 
     M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) + 1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x40) >= (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
-        fn_8000C188();
+        Process_ClearFunc();
     }
     temp_r6 = M2C_FIELD(arg0, u8 *, 0x44);
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x48);
@@ -3215,7 +3215,7 @@ void fn_801F0E4C(void *arg0) {
 void fn_801F109C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x3C) = (s32) (M2C_FIELD(arg0, s32 *, 0x3C) - 1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x3C) < 0) {
-        fn_8000C188();
+        Process_ClearFunc();
     }
 }
 

@@ -46,20 +46,20 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 void fn_8009197C(void) {
-    void fn_8000C188(u32);
+    void Process_ClearFunc(u32);
     extern u32 lbl_803120A0[];
     extern s32 lbl_803674F8;
 
     while (lbl_803674F8 != 0) {
         if (lbl_803674F8 != 0) {
             lbl_803674F8--;
-            fn_8000C188(lbl_803120A0[lbl_803674F8]);
+            Process_ClearFunc(lbl_803120A0[lbl_803674F8]);
         }
     }
 }
 
 void fn_800919D8(void) {
-    M2C_UNK fn_8000C188(s32, s32);
+    M2C_UNK Process_ClearFunc(s32, s32);
     extern u32 lbl_803120A0[];
     extern s32 lbl_803674F8;
     s32 temp_r4;
@@ -67,7 +67,7 @@ void fn_800919D8(void) {
     if ((s32) lbl_803674F8 != 0) {
         temp_r4 = lbl_803674F8 - 1;
         lbl_803674F8 = temp_r4;
-        fn_8000C188(lbl_803120A0[temp_r4], temp_r4);
+        Process_ClearFunc(lbl_803120A0[temp_r4], temp_r4);
     }
 }
 

@@ -1680,7 +1680,7 @@ void fn_8001598C(void)
 }
 
 void fn_80015A2C(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_80015320(s32, u8 *, s32);
     u8 fn_8004F128(void *);
     extern u8 gUnits[];
@@ -1715,7 +1715,7 @@ void fn_80015A2C(void *arg0) {
     ok = 1;
 after:
     if (ok != 0 || *(s32 *)((u8 *)arg0 + 0x60) > 0x4650) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

@@ -115,13 +115,13 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
 
 void fn_801FC790(void *arg0) {
     u8 fn_8005BA10(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     
     if (!fn_8005BA10(lbl_802820B8 + 0x53)) {
         return;
     }
     M2C_FIELD(arg0, u32 *, 0x30) = 0;
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_801FC95C(void) {
@@ -798,7 +798,7 @@ void fn_801FE444(void) {
 void fn_801FE488(void *arg0) {
     u8 fn_8005BA10(void *);
     u32 fn_8003FCCC(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
     extern u32 lbl_80368438;
@@ -810,7 +810,7 @@ void fn_801FE488(void *arg0) {
         fn_8006EEFC(&lbl_80368438, lbl_80281F00 + 0x4D);
     }
     M2C_FIELD(arg0, u32 *, 0x44) = fn_8003FCCC(lbl_80281F00 + 0x64);
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 #pragma opt_common_subs reset
 void fn_801FE520(void *arg0) {
@@ -1052,7 +1052,7 @@ void fn_801FF060(void *arg0) {
 void fn_801FF0F8(void *arg0) {
     u8 fn_8005BA10(void *);
     u32 fn_8003FCCC(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
     extern u32 lbl_80368438;
@@ -1064,7 +1064,7 @@ void fn_801FF0F8(void *arg0) {
         fn_8006EEFC(&lbl_80368438, lbl_80281F00 + 0x4D);
     }
     M2C_FIELD(arg0, u32 *, 0x30) = fn_8003FCCC(lbl_80281F00 + 0x64);
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 #pragma global_optimizer reset
 void fn_801FF2D0(void) {
@@ -1676,7 +1676,7 @@ void fn_80200674(void) {
 void fn_802006B8(void *arg0) {
     u8 fn_8005BA10(void *);
     u32 fn_8003FCCC(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
     if (!fn_8005BA10(lbl_802820B8 + 0x53) || !fn_8005BA10(lbl_802820B8 + 0x68)) {
@@ -1686,7 +1686,7 @@ void fn_802006B8(void *arg0) {
         fn_8006EEFC(&lbl_80368448, lbl_802820B8 + 0x53);
     }
     M2C_FIELD(arg0, u32 *, 0x44) = fn_8003FCCC(lbl_802820B8 + 0x68);
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 #pragma opt_common_subs reset
 void fn_80200750(void *arg0) {
@@ -2005,7 +2005,7 @@ void fn_80201290(void *arg0) {
 void fn_80201328(void *arg0) {
     u8 fn_8005BA10(void *);
     u32 fn_8003FCCC(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
     if (!fn_8005BA10(lbl_802820B8 + 0x53) || !fn_8005BA10(lbl_802820B8 + 0x68)) {
@@ -2015,7 +2015,7 @@ void fn_80201328(void *arg0) {
         fn_8006EEFC(&lbl_80368448, lbl_802820B8 + 0x53);
     }
     M2C_FIELD(arg0, u32 *, 0x30) = fn_8003FCCC(lbl_802820B8 + 0x68);
-    fn_8000C188(arg0);
+    Process_ClearFunc(arg0);
 }
 
 void fn_80201534(void) {

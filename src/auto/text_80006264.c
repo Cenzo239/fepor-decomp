@@ -3744,7 +3744,7 @@ u32 *fn_8000C0C0(u32 arg0) {
     return NULL;
 }
 
-void fn_8000C188(void *arg0) {
+void Process_ClearFunc(void *arg0) {
     *(u32*)((char*)arg0 + 0x10) = 0;
 }
 
@@ -3758,7 +3758,7 @@ void fn_8000C194(s32 arg0) {
 }
 
 void fn_8000B850(void *);
-void fn_8000C188(void *);
+void Process_ClearFunc(void *);
 void Process_Update(void *arg0) {
     extern u32 lbl_802ADAFC[9];
     u8 *self;
@@ -3787,7 +3787,7 @@ void Process_Update(void *arg0) {
                         if (t >= 0) {
                             *(s16 *)(node + 0x28) = (s16)(t - 1);
                             if (*(s16 *)(node + 0x28) < 0) {
-                                fn_8000C188(node);
+                                Process_ClearFunc(node);
                                 continue;
                             }
                         }
@@ -3867,7 +3867,7 @@ done1:
                             if (t >= 0) {
                                 *(s16 *)(node + 0x28) = (s16)(t - 1);
                                 if (*(s16 *)(node + 0x28) < 0) {
-                                    fn_8000C188(node);
+                                    Process_ClearFunc(node);
                                     continue;
                                 }
                             }

@@ -159,7 +159,7 @@ void fn_801AE73C(s32 arg0) {
         temp_r4 = *(s32*)((char*)gPadInput + 4);
         if (temp_r4 & (*(s32*)((char*)gPadInput + 8) ^ temp_r4) & 0x300) {
             Ui_PlaySeCue(&lbl_8027BD18[0x36E], 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -266,7 +266,7 @@ void fn_801AE9A4(void *arg0) {
     void fn_8013FF00(void *, s32);
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -286,7 +286,7 @@ void fn_801AE9A4(void *arg0) {
             fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x54));
             fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x68));
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -297,7 +297,7 @@ void fn_801AEA58(void *arg0) {
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -323,7 +323,7 @@ void fn_801AEA58(void *arg0) {
             if (tmp != 0) {
                 fn_801658DC(tmp, str);
             }
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -334,7 +334,7 @@ void fn_801AEB30(void *arg0) {
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -361,7 +361,7 @@ void fn_801AEB30(void *arg0) {
                 fn_801658DC(tmp, str);
             }
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -372,7 +372,7 @@ void fn_801AEC14(void *arg0) {
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -399,13 +399,13 @@ void fn_801AEC14(void *arg0) {
                 fn_801658DC(tmp, str);
             }
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
 
 void fn_801AECF8(void *arg0) {
-    M2C_UNK fn_8000C188(void *);
+    M2C_UNK Process_ClearFunc(void *);
     M2C_UNK fn_8013FF00(void *, s32);
     s32 fn_8013FF94(void *, s32, s32);
     M2C_UNK Ui_PlaySeCue(void *, M2C_UNK);
@@ -431,7 +431,7 @@ void fn_801AECF8(void *arg0) {
         if (mask & 0x300) {
             fn_8013FF00(arg0, *(s32 *)((char *)arg0 + 0x48));
             Ui_PlaySeCue(&lbl_8027BD18[0x36E], 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -440,7 +440,7 @@ void fn_801AEDA0(void *arg0) {
     s32 fn_8013FF94(void *, s32, s32);
     void fn_8013FF00(void *, s32);
     void Ui_PlaySeCue(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -459,7 +459,7 @@ void fn_801AEDA0(void *arg0) {
         if ((a & (b ^ a) & 0x300) != 0) {
             fn_8013FF00(arg0, fn_8013FF94(arg0, 1, 0));
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -1178,7 +1178,7 @@ void fn_801B04F8(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801B0564(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8001BC5C(void *, u8, u8, u8, u8);
     void fn_8013FDA0(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -1274,7 +1274,7 @@ extern "C" void fn_801B0564(void *arg0) {
                 break;
             case 2:
                 Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-                fn_8000C188(self);
+                Process_ClearFunc(self);
                 break;
             }
         } else if ((btn & 0x1000) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
@@ -1445,7 +1445,7 @@ void fn_801B1194(s32 arg0) {
         temp_r4 = *(s32*)((char*)gPadInput + 4);
         if (temp_r4 & (*(s32*)((char*)gPadInput + 8) ^ temp_r4) & 0x300) {
             Ui_PlaySeCue(&lbl_8027BD18[0x36E], 0x64);
-            fn_8000C188(arg0);
+            Process_ClearFunc(arg0);
         }
     }
 }
@@ -1502,7 +1502,7 @@ void fn_801B1480(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801B14DC(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s32 fn_8001C284(void *, u8, s8, s8, s8, s8);
     u16 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
@@ -1639,7 +1639,7 @@ extern "C" void fn_801B14DC(void *arg0) {
                 fn_8000C070(arg0, 0x1D);
             } else {
                 Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-                fn_8000C188(arg0);
+                Process_ClearFunc(arg0);
             }
             return;
         }
@@ -1959,7 +1959,7 @@ void fn_801B1ED4(void *arg0) {
 extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     /* Handle unit-panel cursor input: A buy/confirm (funds check), Y unit info, B cancel. */
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     u16 UnitRef_GetValue(void *);
     void UnitRef_Set(void *, void *);
     void fn_8011D79C(s32);
@@ -2075,7 +2075,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
                 panel44 = *(void **)((u8 *)self + 0x44);
                 *(s16 *)((u8 *)panel44 + 0x24) = 8;
                 fn_80140258(self, panel44, Pair(0x260, *(s16 *)((u8 *)panel44 + 0xC)), 0);
-                fn_8000C188(self);
+                Process_ClearFunc(self);
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)self + 0x44))->v9();
@@ -2165,7 +2165,7 @@ void fn_801B27A0(void *arg0) {
 #pragma use_lmw_stmw on
 extern "C" void fn_801B27B0(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
     void *fn_8013FF94(void *, s32, s32);
     void fn_80140258(void *, void *, s16 *, s32);
@@ -2239,7 +2239,7 @@ extern "C" void fn_801B27B0(void *arg0) {
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             Ui_PlaySeCue(lbl_8027BD18 + 0x37e, 0x64);
-            fn_8000C188(self);
+            Process_ClearFunc(self);
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
             fn_8016758C(gUnitInfoPopup, self, ((Obj *)obj)->v8(), (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));

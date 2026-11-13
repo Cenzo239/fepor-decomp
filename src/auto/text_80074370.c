@@ -2881,7 +2881,7 @@ void fn_8007947C(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Process_Unlink(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_8007B4D8(s32, s32, s32, void *);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026C640[];
@@ -2940,7 +2940,7 @@ void fn_8007947C(void *arg0) {
             }
             lbl_80312040[index] = NULL;
         }
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -3654,7 +3654,7 @@ void fn_8007ADC8(s32 index) {
 void fn_8007AE18(void *arg0)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern void *lbl_80312040[];
     void *entry;
     s32 idx;
@@ -3668,7 +3668,7 @@ void fn_8007AE18(void *arg0)
         (f32)*(s32 *)((u8 *)arg0 + 0x38));
     idx = *(s32 *)((u8 *)arg0 + 0x34);
     if (idx == *(s32 *)((u8 *)arg0 + 0x38)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else {
         *(s32 *)((u8 *)arg0 + 0x34) = idx + 1;
     }
@@ -3690,7 +3690,7 @@ void fn_8007AF00(void *arg0) {
 void fn_8007AF48(void *arg0)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern void *lbl_80312040[];
     extern f32 lbl_803693D4;
     f32 scale;
@@ -3708,7 +3708,7 @@ void fn_8007AF48(void *arg0)
         (f32)*(s32 *)((u8 *)arg0 + 0x64));
     v64 = *(s32 *)((u8 *)arg0 + 0x64);
     if (v64 == *(s32 *)((u8 *)arg0 + 0x68)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else {
         *(s32 *)((u8 *)arg0 + 0x68) = *(s32 *)((u8 *)arg0 + 0x68) + 1;
     }
@@ -3723,7 +3723,7 @@ void fn_8007B01C(void *arg0) {
 
 void fn_8007B044(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern void *lbl_80312040[];
     extern f64 lbl_803693C8;
     extern f32 lbl_803693D4;
@@ -3742,7 +3742,7 @@ void fn_8007B044(void *arg0) {
         (f32)*(s32 *)((u8 *)arg0 + 0x64));
     idx = *(s32 *)((u8 *)arg0 + 0x64);
     if (idx == *(s32 *)((u8 *)arg0 + 0x68)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     } else {
         idx = *(s32 *)((u8 *)arg0 + 0x68);
         *(s32 *)((u8 *)arg0 + 0x68) = idx + 1;
@@ -3758,13 +3758,13 @@ void fn_8007B104(void *arg0) {
 
 void fn_8007B128(void *arg0) {
     f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
-    M2C_UNK fn_8000C188(void *);
+    M2C_UNK Process_ClearFunc(void *);
     s32 temp_r3;
 
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), f32 *, 0x38) = Math_Ease(5, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34), (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x38));
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x3C);
     if (temp_r3 == (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, s32 *, 0x3C) = (s32) (temp_r3 + 1);

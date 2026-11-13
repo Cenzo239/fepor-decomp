@@ -779,11 +779,11 @@ void fn_800C5EF8(s32 arg0) {
 
 void fn_800C5F34(s32 arg0) {
     void *fn_8000C0C0(void *);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 lbl_8028D7A4[];
 
     if (fn_8000C0C0(lbl_8028D7A4) == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -809,7 +809,7 @@ void fn_800C5F9C(void *arg0) {
     M2C_FIELD(arg0, u32 *, 0x3C) = temp_r0;
     if ((temp_r0 >= 0xDB6U) || (temp_r5 = M2C_FIELD(gPadInput, s32 *, 4), (((temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x1F70) == 0) == 0))) {
         M2C_FIELD(arg0, u32 *, 0x3C) = 0U;
-        fn_8000C188();
+        Process_ClearFunc();
     }
 }
 
@@ -1348,10 +1348,10 @@ void fn_800C755C(void)
 
 void fn_800C77B8(s32 arg0) {
     u8 fn_8005BA10(s32);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
 
     if (fn_8005BA10(lbl_8028D788[1])) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -6179,7 +6179,7 @@ void *fn_800E7DA4(void *, void *);
 void fn_800DBBC8(f32 *, f32 *);
 void fn_800C428C(void *);
 void *fn_800D35A4(void *, s16);
-void fn_8000C188(void *);
+void Process_ClearFunc(void *);
 extern char lbl_802704F8[];
 extern void *lbl_80367880;
 extern f32 lbl_80369DC8;
@@ -6289,8 +6289,8 @@ if (lbl_80367880 != NULL) {
 fn_800D35A4(lbl_80367880, 1);
 lbl_80367880 = NULL;
 }
-fn_8000C188(self);
-fn_8000C188(lbl_80367888);
+Process_ClearFunc(self);
+Process_ClearFunc(lbl_80367888);
 }
 }
 }
@@ -20840,7 +20840,7 @@ void fn_800FBF70(s32 arg0) {
     void fn_80028160(void *);
     void fn_801014BC(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_800FF918(s32);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 gUiContext[];
     extern u8 lbl_8032B3C0[];
     s16 spA;
@@ -20863,7 +20863,7 @@ void fn_800FBF70(s32 arg0) {
             fn_800FF918(saved);
         }
     }
-    fn_8000C188(saved);
+    Process_ClearFunc(saved);
 }
 
 void fn_800FC150(void) {
@@ -20874,10 +20874,10 @@ void fn_800FC150(void) {
 void fn_800FC2C4(s32 arg0) {
     extern u32 gUiContext[];
     u32 fn_800FCF74(u32, s32);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
 
     if ((u8)fn_800FCF74(*gUiContext, 2)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -22103,7 +22103,7 @@ void fn_800FF2EC(void) {
 }
 
 void fn_800FF36C(void *arg0) {
-    M2C_UNK fn_8000C188(void *);
+    M2C_UNK Process_ClearFunc(void *);
     u8 (*temp_r12)();
     u8 var_r3;
 
@@ -22114,7 +22114,7 @@ void fn_800FF36C(void *arg0) {
         var_r3 = 1;
     }
     if (var_r3 == 1) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -22260,7 +22260,7 @@ void fn_800FF918(s32 arg0) {
 }
 
 void fn_800FF948(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_800F20E0(void);
     extern u8 *gPadInput;
     void *self;
@@ -22273,7 +22273,7 @@ void fn_800FF948(void *arg0) {
     if (*(s32 *)((u8 *)self + 0x64) <= 0x2D) {
         goto do_inc;
     }
-    fn_8000C188(self);
+    Process_ClearFunc(self);
     goto done;
 do_inc:
     fn_800F20E0();

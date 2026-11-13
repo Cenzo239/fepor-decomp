@@ -194,12 +194,12 @@ void fn_80055BE0(s32 arg0) {
     void *fn_8000C0C0(void *);
     void fn_801451BC(void);
     u8 fn_80145308(void);
-    void fn_8000C188(s32);
+    void Process_ClearFunc(s32);
     extern u8 lbl_80285990[];
 
     if (fn_8000C0C0(lbl_80285990) == 0 && fn_80145308() == 0) {
         fn_801451BC();
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

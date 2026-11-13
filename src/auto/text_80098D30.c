@@ -217,7 +217,7 @@ void fn_80147548(void *,void *,s32); void fn_80025624(void *,s32);
 void fn_8017F70C(void *,void *); void fn_8017E0C0(void *,s32,void *); void fn_8017F040(void *,s32,void *);
 void fn_80184C7C(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
-u8 fn_8004BF80(void *); void fn_8000C188(void *);
+u8 fn_8004BF80(void *); void Process_ClearFunc(void *);
 extern u8 gEventUiSeCues[]; extern void *gPadInput;
 Word3 posC, tmpC, posA, tmpA, posB, tmpB;
 void *self=arg0;
@@ -329,7 +329,7 @@ M2C_FIELD(self,u8 *,0x43)=0;
 }
 }
 }
-if(fn_8004BF80(unit)) {fn_80184C7C(unit,8,4,0); fn_8000C188(self);}
+if(fn_8004BF80(unit)) {fn_80184C7C(unit,8,4,0); Process_ClearFunc(self);}
 }
 
 void fn_8009991C(void *arg0) {

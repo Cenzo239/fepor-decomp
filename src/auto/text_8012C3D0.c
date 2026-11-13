@@ -485,7 +485,7 @@ void fn_8012CE34(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8012CF7C(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_80057E6C(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_801305F8(void *);
@@ -554,7 +554,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     }
 
     if (trig & 0x04000004) {
-        fn_8000C188(self);
+        Process_ClearFunc(self);
         Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
         Ui_HideUnitInfoPopup(gUnitInfoPopup);
         return;
@@ -1012,27 +1012,27 @@ s32 fn_8012DD94(void *arg0)
 
 void fn_8012DED8(void *arg0) {
     void fn_80057860(s32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s16 *p;
 
     p = (s16 *)((u8 *)arg0 + 0x6A);
     *p = (s16)(*p - *((u8 *)arg0 + 0x6F));
     fn_80057860(*(s32 *)((u8 *)arg0 + 0x4C), *p);
     if (*p % 32 == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
 void fn_8012DF40(void *arg0) {
     void fn_80057860(s32, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s16 *p;
 
     p = (s16 *)((u8 *)arg0 + 0x6A);
     *p = (s16)(*p + *((u8 *)arg0 + 0x6F));
     fn_80057860(*(s32 *)((u8 *)arg0 + 0x4C), *p);
     if (*p % 32 == 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -1636,12 +1636,12 @@ void fn_8012DFA8(void *arg0) {
 void fn_8012EF04(void *arg0) {
     u8 fn_8005BA10(void *);
     void fn_8005C8B4(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u8 lbl_80275AC0[];
 
     fn_8005C8B4(lbl_80275AC0 + 0xC7);
     if (fn_8005BA10(lbl_80275AC0 + 0xC7)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 #pragma global_optimizer on

@@ -351,13 +351,13 @@ extern f64 lbl_80368C98;
 extern f32 lbl_80368CA0;
 extern f32 lbl_80368C8C;
 extern u8 lbl_802CA434[];
-void fn_8000C188(void *);
+void Process_ClearFunc(void *);
 void fn_80017C1C(void *, f32);
 f32 Math_Lerp(f32, f32, f32, f32);
 f32 fn_80059F78(s32, f32, f32, f32, f32);
 f32 fn_8005A028(s32, f32, f32, f32, f32);
 void fn_80017998(void *arg0) {
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void fn_80017C1C(void *, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
@@ -375,7 +375,7 @@ void fn_80017998(void *arg0) {
     }
     if (*(s32 *)((u8 *)arg0 + 0x34) >= *(s32 *)((u8 *)arg0 + 0x38)) {
         *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x38);
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         *((u8 *)arg0 + 0x3c) = 1;
     }
     f1 = lbl_80368C88;

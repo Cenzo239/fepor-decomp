@@ -9416,19 +9416,19 @@ void fn_80049A98(void *arg0) {
     void fn_8004AE28(void *, f32, f32, f32);
     u8 Pad_IsButton(void *, s32);
     void fn_80060060(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x34);
     fn_80060060(p);
     p = *(void **)((u8 *)arg0 + 0x34);
     if (*(u32 *)p & 0x10) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         return;
     }
     if (Pad_IsButton(p, 8) != 0) {
         *(u8 *)((u8 *)arg0 + 0x48) = 1;
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
         return;
     }
     fn_8004AE28(*(void **)((u8 *)arg0 + 0x34),
@@ -12332,7 +12332,7 @@ void fn_80052B54(void *arg0) {
 
 void fn_80052EBC(u8 *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern f32 lbl_8036908C;
     f32 temp_f30;
     f32 temp_f31;
@@ -12348,7 +12348,7 @@ void fn_80052EBC(u8 *arg0) {
     *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0x10) = temp_f31;
     *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0x14) = temp_f1;
     if (*(f32 *)(arg0 + 0x50) >= *(f32 *)(arg0 + 0x4C)) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -12777,7 +12777,7 @@ void fn_80053E9C(void *arg0) {
 void fn_80053F08(void *arg0) {
     void fn_800536E4(void *, void *);
     void fn_8000A388(void *, void *, void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     extern u8 lbl_80285990[];
     struct {
         void *value;
@@ -12788,7 +12788,7 @@ void fn_80053F08(void *arg0) {
     data.result = NULL;
     fn_8000A388(lbl_80285990, fn_800536E4, &data);
     if (data.result == NULL) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 
@@ -12801,7 +12801,7 @@ void fn_80053F68(void *arg0) {
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8006CAD4(void *);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     void MapObj_UpdateMatrix(void *);
     void fn_800548E8(void *);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -12893,7 +12893,7 @@ void fn_80053F68(void *arg0) {
             alpha = (s32)Math_Lerp(lbl_80369084, lbl_803690C4, lbl_803690C8,
                                      (f32)*(s8 *)((u8 *)dst + 3));
             if (alpha == 0) {
-                fn_8000C188(arg0);
+                Process_ClearFunc(arg0);
             }
         }
 
@@ -12948,7 +12948,7 @@ void fn_80053F68(void *arg0) {
                 if ((s8)b >= 0) {
                     ((u8 *)p)[4] = b - 1;
                 } else {
-                    fn_8000C188(arg0);
+                    Process_ClearFunc(arg0);
                 }
             }
         }
@@ -13073,10 +13073,10 @@ M2C_FIELD(M2C_FIELD(child,void * *,0x30),u8 *,3)=M2C_FIELD(M2C_FIELD(arg0,void *
 #pragma use_lmw_stmw reset
 
 void fn_80054808(void *arg0) {
-    M2C_UNK fn_8000C188(void *);
+    M2C_UNK Process_ClearFunc(void *);
     u8 GActor_CheckResources(s32);
     if (GActor_CheckResources(*M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 **, 0x2C)) != 0) {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 

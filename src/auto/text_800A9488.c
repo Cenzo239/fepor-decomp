@@ -1450,7 +1450,7 @@ void fn_800ABA3C(void) {
 void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
     void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
+    void Process_ClearFunc(void *);
     s32 fn_8000E0E4(void *);
     u64 *fn_8001CB64(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -1496,7 +1496,7 @@ void fn_800ABE74(void *arg0) {
                         *(s16 *)((u8 *)entry + var_r31 + 2) + 0x28,
                         str, var_r30, entry);
         } else {
-            fn_8000C188(var_r30);
+            Process_ClearFunc(var_r30);
             Ui_PlaySeCue(lbl_8026E858 + 0xEF, 0x64);
         }
     } else if (var_r31 & 0x200) {
