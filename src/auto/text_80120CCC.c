@@ -148,7 +148,7 @@ void fn_80120F94(void)
     }
 }
 
-void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
+void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *Process_Find(void *);
     void Process_Unlink(void *);
     void *fn_8000CAF0(void *, s32);

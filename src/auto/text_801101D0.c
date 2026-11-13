@@ -5866,7 +5866,7 @@ s32 fn_8011E12C(void *arg0) {
     void fn_801226D0(void *, void *);
     void fn_801222A4(void *, void *);
     void fn_80121D60(void *, void *);
-    void fn_80120FE8(void *, s32, s32, void *);
+    void Ui_SetTooltip(void *, s32, s32, void *);
     u8 fn_80109B24(void *);
     void fn_80120DD4(void *, u8);
     void fn_80122114(void *, u8);
@@ -5966,7 +5966,7 @@ def:
         fn_80121D60(lbl_8032BDE8, *slot->unk34);
         if (self->unk67 == 0) {
             self->unk67 = 1;
-            fn_80120FE8(*slot->unk34, (s32)slot->unk38, (s32)slot->unk3C, self);
+            Ui_SetTooltip(*slot->unk34, (s32)slot->unk38, (s32)slot->unk3C, self);
             ch = self->unk5E;
             if ((s8)self->unk65 != (s8)ch) {
                 self->unk65 = ch;
