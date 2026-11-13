@@ -5424,14 +5424,14 @@ s32 AudioWave_Insert(u16 id, s32 data) {
     void Audio_Lock(void);
     void Audio_Unlock(void);
     extern struct Key gAudioWaveKeys[];
-    extern u16 lbl_80368A10;
+    extern u16 gAudioWaveKeyCount;
 
     s32 i;
     s32 j;
     u16 count;
 
     Audio_Lock();
-    count = lbl_80368A10;
+    count = gAudioWaveKeyCount;
     for (i = 0; i < (s32)count && gAudioWaveKeys[i].id < id; i++) {
     }
 
@@ -5441,7 +5441,7 @@ s32 AudioWave_Insert(u16 id, s32 data) {
                 for (j = (s32)count - 1; j >= i; j--) {
                     gAudioWaveKeys[j + 1] = gAudioWaveKeys[j];
                 }
-                lbl_80368A10++;
+                gAudioWaveKeyCount++;
                 goto insert;
             }
             Audio_Unlock();
@@ -5453,7 +5453,7 @@ s32 AudioWave_Insert(u16 id, s32 data) {
     }
 
     if (count < 0x800U) {
-        lbl_80368A10++;
+        gAudioWaveKeyCount++;
         goto insert;
     }
     Audio_Unlock();
@@ -5861,11 +5861,11 @@ s32 fn_80250884(u16 id) {
     s32 *fn_802612A0(void *, void *, u16, s32, s32 (*)(void *, void *));
     extern struct Key lbl_803689E4;
     extern struct Key gAudioWaveKeys[];
-    extern u16 lbl_80368A10;
+    extern u16 gAudioWaveKeyCount;
     extern s32 *lbl_803689E0;
 
     lbl_803689E4.id = id;
-    if ((lbl_803689E0 = fn_802612A0(&lbl_803689E4, gAudioWaveKeys, lbl_80368A10, 8, fn_80250874)) != NULL) {
+    if ((lbl_803689E0 = fn_802612A0(&lbl_803689E4, gAudioWaveKeys, gAudioWaveKeyCount, 8, fn_80250874)) != NULL) {
         return *lbl_803689E0;
     }
     return 0;
@@ -5971,7 +5971,7 @@ int fn_802509D8(int arg0)
 void fn_80250A74(s32 arg0, s32 arg1) {
     void fn_80262354(void);
     extern u16 lbl_80368A18;
-    extern u16 lbl_80368A10;
+    extern u16 gAudioWaveKeyCount;
     extern u16 lbl_80368A0E;
     extern u16 gSampleKeyCount;
     extern u16 lbl_80368A08;
@@ -5980,7 +5980,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
     s32 i;
 
     lbl_80368A18 = 0;
-    lbl_80368A10 = 0;
+    gAudioWaveKeyCount = 0;
     lbl_80368A0E = 0;
     gSampleKeyCount = 0;
     lbl_80368A08 = 0;
