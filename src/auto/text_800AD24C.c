@@ -5348,31 +5348,32 @@ s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
     return fn_80010710(arg0);
 }
 
-s32 ScriptCmd_SetPos(u32 arg0, s32 arg1, s32 arg2) {
+s32 ScriptCmd_SetPos(u32 name, s32 x, s32 y) {
+    /* Set X/Y on a named sound (floats) or script object (s16s); 0 if missing. */
     void *Sound_FindByName(u32);
     void *ScriptObj_FindByName(u32);
     s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
 
-    if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
+    if ((name < 0x80000000U) || (name >= 0x81800000U)) {
         return 0;
     }
 
-    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
-        void *temp_r3 = Sound_FindByName(arg0);
-        if (temp_r3 == NULL) {
+    if (Str_NCmp((void *)name, lbl_8026ECB8 + 0xA47, 8) != 0) {
+        void *snd = Sound_FindByName(name);
+        if (snd == NULL) {
             return 0;
         }
-        *(f32 *)((u8 *)temp_r3 + 0x40) = (f32)arg1;
-        *(f32 *)((u8 *)temp_r3 + 0x44) = (f32)arg2;
+        *(f32 *)((u8 *)snd + 0x40) = (f32)x;
+        *(f32 *)((u8 *)snd + 0x44) = (f32)y;
         return 1;
     } else {
-        void *temp_r3_2 = ScriptObj_FindByName(arg0);
-        if (temp_r3_2 == NULL) {
+        void *obj = ScriptObj_FindByName(name);
+        if (obj == NULL) {
             return 0;
         }
-        *(s16 *)((u8 *)temp_r3_2 + 0x18) = (s16)arg1;
-        *(s16 *)((u8 *)temp_r3_2 + 0x1A) = (s16)arg2;
+        *(s16 *)((u8 *)obj + 0x18) = (s16)x;
+        *(s16 *)((u8 *)obj + 0x1A) = (s16)y;
         return 1;
     }
 }
