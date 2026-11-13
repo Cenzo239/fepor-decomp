@@ -1693,14 +1693,14 @@ s32 Unit_GetSupportRank(void *arg0, s32 arg1)
 {
     u8 *obj;
     u8 *entry;
-    u8 value;
+    u32 value;
 
     obj = *(u8 **)((u8 *)arg0 + 0x188);
     entry = *(u8 **)(obj + 0x50) + (arg1 * 8) + 8;
     if (entry == 0) {
         return 0;
     }
-    value = *((u8 *)arg0 + arg1 + 0x214);
+    value = ((u8 *)arg0)[arg1 + 0x214];
     if (value <= entry[4]) {
         return 0;
     }
@@ -2310,35 +2310,28 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 }
 #pragma use_lmw_stmw reset
 
-u8 Unit_GetDistance(void *arg0, void *arg1) {
-    s32 var_r5;
-    s32 var_r0;
-    s32 first;
-    s32 second;
+#pragma global_optimizer off
+u8 Unit_GetDistance(void *a, void *b) {
+    s32 dy;
+    s32 dx;
+    s8 t0;
+    s8 t1;
 
-    first = *(volatile s8 *)((u8 *)arg1 + 0x19F);
-    second = *(volatile s8 *)((u8 *)arg0 + 0x19F);
-    var_r5 = second - first;
-
-    if (var_r5 >= 0) {
-        goto second_pair;
+    t0 = *(s8 *)((u8 *)b + 0x19F);
+    t1 = *(s8 *)((u8 *)a + 0x19F);
+    dy = t1 - t0;
+    if (dy < 0) {
+        dy = -dy;
     }
-    var_r5 = -var_r5;
-
-second_pair:
-    first = *(volatile s8 *)((u8 *)arg0 + 0x19E);
-    second = *(volatile s8 *)((u8 *)arg1 + 0x19E);
-    var_r0 = first - second;
-
-    if (var_r0 >= 0) {
-        goto finish;
+    t1 = *(s8 *)((u8 *)a + 0x19E);
+    t0 = *(s8 *)((u8 *)b + 0x19E);
+    dx = t1 - t0;
+    if (dx < 0) {
+        dx = -dx;
     }
-    var_r0 = -var_r0;
-
-finish:
-    return (u8)(var_r0 + var_r5);
+    return (u8)(dx + dy);
 }
-
+#pragma global_optimizer reset
 void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     void fn_80050C50(void *, f32, f32);
     extern f32 lbl_80368EC0;
@@ -11934,12 +11927,12 @@ void fn_80050BF4(void *arg0, s32 arg1)
 {
     void Model_SetColor(void *, u8, u8, u8);
     void Model_SetAlpha(void *, u8);
-    extern s32 lbl_802858E8[];
+    extern s32 gMuFlashPalette[];
     s32 sp8;
     void *r31;
 
     r31 = (u8 *)arg0 + 0x1c;
-    sp8 = lbl_802858E8[arg1];
+    sp8 = gMuFlashPalette[arg1];
     Model_SetColor(r31, ((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2]);
     Model_SetAlpha(r31, ((u8 *)&sp8)[3]);
 }
@@ -12327,8 +12320,8 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
 }
 
 s32 fn_80052B30(s32 arg0) {
-    extern s32 lbl_802858E8[];
-    return lbl_802858E8[arg0];
+    extern s32 gMuFlashPalette[];
+    return gMuFlashPalette[arg0];
 }
 
 void fn_80052B44(void *arg0) {
