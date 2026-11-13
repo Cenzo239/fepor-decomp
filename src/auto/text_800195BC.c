@@ -448,7 +448,7 @@ void fn_80019FC4(void)
     s32 Item_GetKindFromIid(u32);
     s32 fn_8001CE78(u32);
     void fn_8001DE1C(void *, u32);
-    void fn_8001DA94(void *, u32);
+    void Unit_OrMSfxFlag(void *, u32);
     void fn_8001E71C(void *);
     void fn_8000D3EC(u32, void *);
     void fn_8001A5D0(void *);
@@ -646,7 +646,7 @@ void fn_80019FC4(void)
             value = 0;
         }
 
-        fn_8001DA94(entry + 0xC, value);
+        Unit_OrMSfxFlag(entry + 0xC, value);
 
         if (data != 0) {
             value = (data[0] << 24) +
@@ -658,7 +658,7 @@ void fn_80019FC4(void)
             value = 0;
         }
 
-        fn_8001DA94(entry + 0xC, value);
+        Unit_OrMSfxFlag(entry + 0xC, value);
 
         if (data != 0) {
             value = (data[0] << 24) +
@@ -739,7 +739,7 @@ void fn_8001A5E4(void) {
     void fn_80105DAC(void *, u32);
     u8 Status_Test(void *, s32);
     void Status_Clear(void *, s32);
-    void fn_8001DA94(void *, u32);
+    void Unit_OrMSfxFlag(void *, u32);
     u32 fn_80234198(u32, char *);
     void fn_8000D3EC(u32, void *);
     void fn_800A89C0(void *);
@@ -797,11 +797,11 @@ void fn_8001A5E4(void) {
             Status_Clear(rec + 0x1C, 0x44);
         }
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_8001DA94(rec + 0x3A, v);
+        Unit_OrMSfxFlag(rec + 0x3A, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_8001DA94(rec + 0x3A, v);
+        Unit_OrMSfxFlag(rec + 0x3A, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_8001DA94(rec + 0x3A, v);
+        Unit_OrMSfxFlag(rec + 0x3A, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
         *(u32 *)(rec + 0x18) = v;
         rec[0x3C] = ptr[0]; rec[0x3D] = ptr[1]; rec[0x3E] = ptr[2]; rec[0x3F] = ptr[3];
@@ -2406,7 +2406,7 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     return 1;
 }
 
-void fn_8001DA94(u16 *arg0, char *arg1) {
+void Unit_OrMSfxFlag(u16 *arg0, char *arg1) {
     s32 Str_Cmp(char *, char *);
     extern u8 lbl_80268820[];
 
