@@ -3589,7 +3589,7 @@ void fn_801F99C4(void *arg0) {
 }
 
 void fn_801F9BD8(void *arg0) {
-    void fn_80109C1C(void *, s32);
+    void Sound_FadeToVol(void *, s32);
     void fn_80109448(void *, s32, s32, f32, f32, f32);
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA90;
@@ -3607,11 +3607,11 @@ void fn_801F9BD8(void *arg0) {
         idx = (v & 1) << 3;
         row = (u8 *)self + idx;
         a = *(void **)(row + 0x58);
-        fn_80109C1C(a, 0x18);
+        Sound_FadeToVol(a, 0x18);
         fn_80109448(a, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
         row = (u8 *)self + idx;
         b = *(void **)(row + 0x5C);
-        fn_80109C1C(b, 0x18);
+        Sound_FadeToVol(b, 0x18);
         fn_80109448(b, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
     }
     *(u16 *)((u8 *)self + 0x28) = 0x18;

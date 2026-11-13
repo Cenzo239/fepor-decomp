@@ -2470,7 +2470,7 @@ void fn_80109BB4(void *arg0, u8 arg1) {
     *(s16 *)((char *)arg0 + 0x28) = temp_r5;
 }
 
-void fn_80109C1C(void *arg0, u8 arg1) {
+void Sound_FadeToVol(void *arg0, u8 arg1) {
     void *Process_Create(void *, void *);
     extern u8 lbl_8028F360[];
     void *temp_r3;
