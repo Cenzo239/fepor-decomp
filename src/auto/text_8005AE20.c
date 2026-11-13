@@ -6075,7 +6075,7 @@ void GXSetCullMode(s32);
 void GXClearVtxDesc(void);
 void fn_8021F750(s32 *);
 void fn_8021FE4C(s32, s32 *);
-void fn_8006A6C8(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     s32 sp8[0x36];
     s32 spE0[0x6C];
     s32 *var_r31;
@@ -6207,7 +6207,7 @@ u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006
 void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void fn_8006C748(void*,s32);
 void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
 void fn_802245D8(s32,s32,s32,s32);void GXSetZMode(s32,s32,s32);void fn_80067490(s32);
-void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
+void Gfx_SetupVtxFormat(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
 extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
 u8 *data,*node,*p;
 s32 aux,work,addr1,addr2;
@@ -6240,12 +6240,12 @@ format=*(u32*)(node+0x10)&0xfffffff;
 if(last!=format){
 last=format;
 if(*(u16*)(node+8)&1){
-fn_8006A6C8(format,(*(u8**)(data+0x48))[0xc],0,data[0x5e],1);
+Gfx_SetupVtxFormat(format,(*(u8**)(data+0x48))[0xc],0,data[0x5e],1);
 fn_80220154(9,fn_80060520(arg0),12);
 if(format&0x800)fn_80220154(25,fn_80060520(arg0)+6,12);
 else fn_80220154(10,fn_80060520(arg0)+6,12);
 }else {
-fn_8006A6C8(format,data[0x5c],data[0x5d],data[0x5e],0);
+Gfx_SetupVtxFormat(format,data[0x5c],data[0x5d],data[0x5e],0);
 if(!geometry){
 fn_80220154(9,*(s32*)(data+0x24),6);
 if(format&0x800)fn_80220154(25,*(s32*)(data+0x28),3);
