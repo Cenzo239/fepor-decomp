@@ -3043,7 +3043,7 @@ void fn_801F8A98(void *arg0) {
     void StaffRoll_ListInsertActor(void *, void *, void *, void *);
     void sprintf(void *, void *, ...);
     void *memset(void *, s32, u32);
-    u32 fn_801F8D38(void **, void **);
+    u32 StaffRoll_CompareUnits(void **, void **);
     extern u8 gUnits[];
     extern u8 StaffRoll_str[];
     extern void *lbl_8029B378[];
@@ -3106,7 +3106,7 @@ void fn_801F8A98(void *arg0) {
         }
         i += 1;
     } while (0x9F >= i);
-    fn_801FA8B4((void *)((u32)self + 0x30U), fn_801F8D38);
+    fn_801FA8B4((void *)((u32)self + 0x30U), StaffRoll_CompareUnits);
     n = *(Node **)base;
     strs = StaffRoll_str;
     n = n->unk0;
@@ -3138,7 +3138,7 @@ void fn_801F8A98(void *arg0) {
 #pragma optimization_level reset
 #pragma use_lmw_stmw on
 
-u32 fn_801F8D38(void **arg0, void **arg1) {
+u32 StaffRoll_CompareUnits(void **arg0, void **arg1) {
     u16 temp_r0;
     u16 temp_r0_3;
     u16 temp_r3;
