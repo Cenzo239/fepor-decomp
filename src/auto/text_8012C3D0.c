@@ -3333,50 +3333,51 @@ void *fn_80132414(s32 arg0, s32 arg1) {
     }
 }
 
-void Ui_GetSelectMenuStatIconRect(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5)
+/* Write the atlas left/top/right/bottom for select-menu stat icon index 0-5. */
+void Ui_GetSelectMenuStatIconRect(s32 unused, s32 index, s32 *left, s32 *top, s32 *right, s32 *bottom)
 {
-  switch (arg1)
+  switch (index)
   {
     case 0:
-      *arg2 = 0;
-      *arg3 = 0;
-      *arg4 = 0x30;
-      *arg5 = 0x14;
+      *left = 0;
+      *top = 0;
+      *right = 0x30;
+      *bottom = 0x14;
       return;
 
     case 1:
-      *arg2 = 0;
-      *arg3 = 0x14;
-      *arg4 = 0x30;
-      *arg5 = 0x28;
+      *left = 0;
+      *top = 0x14;
+      *right = 0x30;
+      *bottom = 0x28;
       return;
 
     case 2:
-      *arg2 = 0;
-      *arg3 = 0x28;
-      *arg4 = 0x30;
-      *arg5 = 0x3C;
+      *left = 0;
+      *top = 0x28;
+      *right = 0x30;
+      *bottom = 0x3C;
       return;
 
     case 3:
-      *arg2 = 0;
-      *arg3 = 0x3C;
-      *arg4 = 0x30;
-      *arg5 = 0x50;
+      *left = 0;
+      *top = 0x3C;
+      *right = 0x30;
+      *bottom = 0x50;
       return;
 
     case 4:
-      *arg2 = 0;
-      *arg3 = 0x50;
-      *arg4 = 0x30;
-      *arg5 = 0x64;
+      *left = 0;
+      *top = 0x50;
+      *right = 0x30;
+      *bottom = 0x64;
       return;
 
     case 5:
-      *arg2 = 0;
-      *arg3 = 0x64;
-      *arg4 = 0x30;
-      *arg5 = 0x78;
+      *left = 0;
+      *top = 0x64;
+      *right = 0x30;
+      *bottom = 0x78;
       return;
   }
 }
