@@ -335,7 +335,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetText(void *);
-    void fn_8000727C(f32);
+    void Prim2D_SetScale(f32);
     void fn_80007290(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void sprintf(void *, void *, ...);
@@ -353,7 +353,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText((*(Drawer **)((u8 *)arg2 + 0x34))->v4(arg2));
-    fn_8000727C(lbl_8036A7C4);
+    Prim2D_SetScale(lbl_8036A7C4);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         fn_80007290(0xFF, 0xFF, 0, 0xFF);
     }
@@ -365,7 +365,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x60), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
-    fn_8000727C(lbl_8036A7C4);
+    Prim2D_SetScale(lbl_8036A7C4);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         fn_80007290(0xFF, 0xFF, 0, 0xFF);
     }

@@ -242,7 +242,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetText(void);
-    void fn_8000727C(f32);
+    void Prim2D_SetScale(f32);
     void Prim2D_EndPrim(void);
     struct Model {
         u8 pad[4];
@@ -294,7 +294,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     Prim2D_SetText();
-    fn_8000727C(lbl_80369C24);
+    Prim2D_SetScale(lbl_80369C24);
     Prim2D_EndPrim();
 }
 #pragma cplusplus reset

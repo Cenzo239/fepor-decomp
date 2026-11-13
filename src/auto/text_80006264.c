@@ -696,7 +696,7 @@ void fn_80007268(f32 arg0) {
     *(f32 *)(ptr + 0x20) = arg0;
 }
 
-void fn_8000727C(f32 arg0) {
+void Prim2D_SetScale(f32 arg0) {
     extern void *lbl_80367140;
     u8 *ptr;
 
@@ -2181,45 +2181,39 @@ void Prim2D_SetTex(void *arg0, u32 arg1) {
     extern u16 lbl_80367140;
     u8 *g;
     u32 *src;
-    int t1;
-    unsigned long t0;
-    int mask;
-    u8 ff;
+    u32 a;
+    u32 b;
 
     if (arg0 != NULL) {
         g = *(u8 **)&lbl_80367140;
         src = (u32 *)arg0;
-        t0 = src[0];
-        t1 = src[1];
-        *(u32 *)(g + 0x34) = t0;
-        *(u32 *)(g + 0x38) = t1;
-        t0 = src[2];
-        t1 = src[3];
-        *(u32 *)(g + 0x3C) = t0;
-        *(u32 *)(g + 0x40) = t1;
-        t0 = src[4];
-        t1 = src[5];
-        *(u32 *)(g + 0x44) = t0;
-        *(u32 *)(g + 0x48) = t1;
-        t0 = src[6];
-        t1 = src[7];
-        *(u32 *)(g + 0x4C) = t0;
-        *(u32 *)(g + 0x50) = t1;
+        a = src[0];
+        b = src[1];
+        *(u32 *)(g + 0x34) = a;
+        *(u32 *)(g + 0x38) = b;
+        a = src[2];
+        b = src[3];
+        *(u32 *)(g + 0x3C) = a;
+        *(u32 *)(g + 0x40) = b;
+        a = src[4];
+        b = src[5];
+        *(u32 *)(g + 0x44) = a;
+        *(u32 *)(g + 0x48) = b;
+        a = src[6];
+        b = src[7];
+        *(u32 *)(g + 0x4C) = a;
+        *(u32 *)(g + 0x50) = b;
     } else {
         fn_80006298(*(u8 **)&lbl_80367140 + 0x34, 0, 0x2C);
         if ((arg1 & 3) == 0) {
             arg1 &= 0xFFFC;
             arg1 |= 2;
-            arg1 = (u16)arg1;
+            arg1 &= 0xFFFF;
         }
     }
-    mask = 0xFFFF7B0C;
-    ff = 0xFF;
-    (*(u8 **)&lbl_80367140)[0x22] = ff;
-    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
-        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) & mask;
-    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
-        *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | arg1;
+    (*(u8 **)&lbl_80367140)[0x22] = 0xFF;
+    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) &= 0xFFFF7B0C;
+    *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) |= arg1;
 }
 
 void Prim2D_PrepareTex(void) {

@@ -2224,7 +2224,7 @@ void *fn_800241C8(void *arg0) {
 
 #pragma cplusplus on
 extern "C" M2C_UNK Prim2D_SetText();
-extern "C" M2C_UNK fn_8000727C(f32);
+extern "C" M2C_UNK Prim2D_SetScale(f32);
 extern "C" M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_SetPos(f32, f32);
 extern "C" M2C_UNK Prim2D_EndPrim();
@@ -2282,7 +2282,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     Prim2D_SetText();
-    fn_8000727C(lbl_80368DBC);
+    Prim2D_SetScale(lbl_80368DBC);
     if ((u8) M2C_FIELD(arg2, u8 *, 0x38) != 0) {
         fn_80007290(0xFF, 0xFF, 0, 0xFF);
     }
