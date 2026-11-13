@@ -2073,7 +2073,8 @@ void fn_80037904(void *arg0, s32 arg1) {
     fn_801660C4(var_r4, *(u16 *)((u8 *)temp_r6 + 0x58), *(u16 *)((u8 *)arg0 + 0x228), *(u8 *)((u8 *)temp_r6 + 0x55));
 }
 
-s32 Unit_MatchesId(void *arg0, s32 arg1) {
+s32 Unit_MatchesId(void *unit, s32 idName) {
+    /* True if unit matches a PID_/JID_, or if an IID_ is in the convoy or held by a same-side unit. */
     void Allegiance_FillMask(s32, void *);
     u8 Id_GetKind(s32);
     s32 Item_GetByIid(s32);
@@ -2083,33 +2084,33 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     s32 Convoy_FindByIid(void *, s32);
     extern u8 gUnits[];
     extern u8 gConvoy[];
-    u8 sp8[8];
-    s32 temp;
-    void *unit;
+    u8 allegianceMask[8];
+    s32 personOrJob;
+    void *other;
     s32 i;
 
-    switch ((s32)(u8)Id_GetKind(arg1)) {
-    case 1:
-        temp = M2C_FIELD(arg0, s32 *, 0x188);
-        return temp == Person_GetByPid(arg1);
-    case 2:
-        temp = M2C_FIELD(arg0, s32 *, 0x18C);
-        return temp == Job_GetByJid(arg1);
-    case 3:
-        if (Convoy_FindByIid(gConvoy, arg1) >= 0) {
+    switch ((s32)(u8)Id_GetKind(idName)) {
+    case 1: /* PID_ */
+        personOrJob = *(s32 *)((u8 *)unit + 0x188);
+        return personOrJob == Person_GetByPid(idName);
+    case 2: /* JID_ */
+        personOrJob = *(s32 *)((u8 *)unit + 0x18C);
+        return personOrJob == Job_GetByJid(idName);
+    case 3: /* IID_ */
+        if (Convoy_FindByIid(gConvoy, idName) >= 0) {
             return 1;
         }
-        Allegiance_FillMask(4, sp8);
+        Allegiance_FillMask(4, allegianceMask);
         i = 1;
         do {
             if ((u8)i != 0) {
-                unit = gUnits + ((u8)i - 1) * 0x280;
+                other = gUnits + ((u8)i - 1) * 0x280;
             } else {
-                unit = NULL;
+                other = NULL;
             }
-            if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
-                sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
-                (s8)Unit_FindItemSlot(unit, Item_GetByIid(arg1)) >= 0) {
+            if (*(u32 *)((u8 *)other + 0x188) != 0 &&
+                allegianceMask[*(u8 *)(*(u8 **)((u8 *)other + 0x190) + 8)] != 0 &&
+                (s8)Unit_FindItemSlot(other, Item_GetByIid(idName)) >= 0) {
                 return 1;
             }
             i += 1;
