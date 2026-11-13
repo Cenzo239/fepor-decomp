@@ -2744,7 +2744,7 @@ void fn_8010A4D4(void *arg0) {
     }
 }
 
-void fn_8010A53C(void *arg0, s32 arg1) {
+void Ui_DrawTextLabel(void *arg0, s32 arg1) {
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void Prim2D_Begin(void);
