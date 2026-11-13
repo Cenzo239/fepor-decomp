@@ -938,7 +938,7 @@ void main(void) {
     void fn_8009E9A0(void);
     void fn_8009E9D0(void);
     void fn_8014702C(s32);
-    void fn_801C9460(void);
+    void Game_InitVideo(void);
     void fn_801ED52C(s32);
     void fn_801FBC48(void);
     void fn_802052E8(void);
@@ -976,7 +976,7 @@ void main(void) {
     lbl_803671B4 = fn_80209FD4();
     fn_802052E8();
     fn_80025BA0();
-    fn_801C9460();
+    Game_InitVideo();
     fn_8006E568(5);
     fn_801FBC48();
     stack = (u32)base + 0x1698;

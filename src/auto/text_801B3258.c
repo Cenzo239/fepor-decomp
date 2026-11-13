@@ -8711,7 +8711,7 @@ void fn_801C9170(void *arg0) {
     }
 }
 
-void fn_801C9460(void) {
+void Game_InitVideo(void) {
     void VIInit(void);
     s32 VIGetTvFormat(void);
     u32 OSGetResetCode(void);
