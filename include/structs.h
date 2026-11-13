@@ -40,4 +40,12 @@ typedef struct UiTextLabel {
     s8 align;        /* +0x14 */
 } UiTextLabel;
 
+/* Inventory/equipment slot reference (item ptr + uses + flags) */
+typedef struct UnitRef {
+    void *item;   /* +0x00 */
+    u8 pad04;
+    u8 uses;      /* +0x04 */
+    u8 flags;     /* +0x05: bit6 highlight, bit7 badge */
+} UnitRef;
+
 #endif
