@@ -313,7 +313,8 @@ void *fn_80055204(void *arg0, s32 arg1) {
 }
 
 #pragma global_optimizer off
-u8 GActor_CheckResources(s32 arg0) {
+/* Walk a GActor link chain and return whether each node's resource path is present. */
+u8 GActor_CheckResources(s32 name) {
     void *fn_8000D354(s32);
     void sprintf(void *, void *, void *, ...);
     u8 fn_8005BA10(void *);
@@ -323,20 +324,20 @@ u8 GActor_CheckResources(s32 arg0) {
     u8 fn_80055C7C(void *);
     u32 fn_80055C74(void *);
     extern u8 GActor_str[];
-    u8 sp188[0x40];
-    u8 sp148[0x40];
-    u8 sp108[0x40];
-    u8 spC8[0x40];
-    u8 sp88[0x40];
-    u8 sp48[0x40];
-    u8 sp8[0x40];
+    u8 path0[0x40];
+    u8 path1[0x40];
+    u8 path2[0x40];
+    u8 path3[0x40];
+    u8 path4[0x40];
+    u8 path5[0x40];
+    u8 path6[0x40];
     void *node;
     u8 ok;
     s32 v;
 
-    node = fn_8000D354(arg0);
-    sprintf(sp188, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(sp188) == 0) {
+    node = fn_8000D354(name);
+    sprintf(path0, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    if ((u8)fn_8005BA10(path0) == 0) {
         return 0;
     }
     v = *(u8 *)((u8 *)node + 5);
@@ -350,8 +351,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    sprintf(sp148, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(sp148) == 0) {
+    sprintf(path1, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    if ((u8)fn_8005BA10(path1) == 0) {
         ok = 0;
         goto check2;
     }
@@ -367,8 +368,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    sprintf(sp108, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(sp108) == 0) {
+    sprintf(path2, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    if ((u8)fn_8005BA10(path2) == 0) {
         ok = 0;
         goto check3;
     }
@@ -384,8 +385,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    sprintf(spC8, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(spC8) == 0) {
+    sprintf(path3, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    if ((u8)fn_8005BA10(path3) == 0) {
         ok = 0;
         goto check4;
     }
@@ -401,8 +402,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    sprintf(sp88, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(sp88) == 0) {
+    sprintf(path4, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
+    if ((u8)fn_8005BA10(path4) == 0) {
         ok = 0;
         goto check5;
     }
@@ -418,8 +419,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    sprintf(sp48, GActor_str + 0x120, GActor_str + 0x129, fn_80055C84(node));
-    if ((u8)fn_8005BA10(sp48) == 0) {
+    sprintf(path5, GActor_str + 0x120, GActor_str + 0x129, fn_80055C84(node));
+    if ((u8)fn_8005BA10(path5) == 0) {
         ok = 0;
         goto check6;
     }
@@ -435,8 +436,8 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    GActor_FormatPath(node, (s32)sp8);
-    if ((u8)fn_8005BA10(sp8) == 0) {
+    GActor_FormatPath(node, (s32)path6);
+    if ((u8)fn_8005BA10(path6) == 0) {
         ok = 0;
         goto check7;
     }
