@@ -190,7 +190,7 @@ void Game_InitSystems(void) {
     void fn_800110B8(void);
     void fn_8001B134(void *);
     void Archive_Load(void *);
-    void fn_8005AC88(void *);
+    void Ui_InitIconDrawer(void *);
     void fn_8005BCAC(void);
     void FileCache_Load(void *);
     void fn_80066F64(void);
@@ -232,8 +232,8 @@ void Game_InitSystems(void) {
     fn_8005BCAC();
     fn_800110B8();
     fn_8008CD9C();
-    fn_8005AC88(gUiIconDrawer);
-    fn_8005AC88(lbl_802F0350);
+    Ui_InitIconDrawer(gUiIconDrawer);
+    Ui_InitIconDrawer(lbl_802F0350);
     Archive_Load(Game_str + 0xB2);
     Archive_Load(Game_str + 0xBD);
     Archive_Load(Game_str + 0xD1);

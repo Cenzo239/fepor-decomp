@@ -220,7 +220,7 @@ extern s32 D_800F1354;
 extern s32 D_800F1358;
 extern s32 D_800F135C;
 extern s32 D_803B9610;
-s32 fn_8005AC88(s32 arg0, s32 arg1) {
+s32 Ui_InitIconDrawer(s32 arg0, s32 arg1) {
     s32 temp1;
     s32 temp2;
 
