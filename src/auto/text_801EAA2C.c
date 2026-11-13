@@ -2058,7 +2058,7 @@ void fn_801EE76C(void *arg0) {
     void *fn_80068548(void);
     void fn_801C77A4(f32, f32, f32);
     void fn_801EFDC8(void *);
-    s32 fn_800C9400(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, void *, char *, s32);
     void *Process_Find(void *);
     void *fn_8014D8FC(void *);
     void String_Init(void *, char *, void *);
@@ -2163,7 +2163,7 @@ void fn_801EE76C(void *arg0) {
     str += 0x1CE;
     n = strlen(str);
     str = gGActorPathExt;
-    if (fn_800C9400(path, 0, *(void **)path, str + 0x1CE, n) != 0) {
+    if (String_Compare(path, 0, *(void **)path, str + 0x1CE, n) != 0) {
         r29 = Process_Find(lbl_8029A5FC);
         if (r29 == NULL) {
             goto set0;
@@ -2431,7 +2431,7 @@ block_else:
 }
 
 void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
-    s32 fn_800C9400(String *, s32, s32, char *, s32);
+    s32 String_Compare(String *, s32, s32, char *, s32);
     void String_Assign(String *, void *, s32, s32);
     void String_Destroy(String *, s32);
     void String_Init(String *, char *, void *);
@@ -2471,7 +2471,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     String_Copy(&sp24, row + 0x8C);
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp24) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
+    if (String_Compare(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2487,7 +2487,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     String_Destroy(&sp18, -1);
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp54) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
+    if (String_Compare(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2498,7 +2498,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     }
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp3C) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
-    if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
+    if (String_Compare(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
         String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
@@ -2795,7 +2795,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_801EF39C(String *, void *, s32);
     void String_Concat(String *, String *, String *);
     void String_ConcatCStr(String *, String *, char *);
-    s32 fn_800C9400(String *, s32, void *, char *, s32);
+    s32 String_Compare(String *, s32, void *, char *, s32);
     void fn_800D6878(void *, void *, void *);
     void Xml_GetNamedValue(char *, void *, String *);
     void fn_801F1888(void *);
@@ -2979,11 +2979,11 @@ void fn_801EFDC8(void *arg0) {
                 Xml_GetChildName(&sp80, file2);
                 String_Assign(&str154, &sp80, 0, -1);
                 String_Destroy(&sp80, -1);
-                if (fn_800C9400(&str154, 0, str154.data, strBase + 0x255, strlen(strBase + 0x255)) == 0) {
+                if (String_Compare(&str154, 0, str154.data, strBase + 0x255, strlen(strBase + 0x255)) == 0) {
                     Xml_GetChildValue(buf1E4, file2);
                     String_AssignCStr(field44, buf1E4, strlen(buf1E4));
                 }
-                if (fn_800C9400(&str154, 0, str154.data, strBase + 0x25B, strlen(strBase + 0x25B)) == 0) {
+                if (String_Compare(&str154, 0, str154.data, strBase + 0x25B, strlen(strBase + 0x25B)) == 0) {
                     Xml_GetChildValue(buf1C4, file2);
                     String_AssignCStr((String *)((u8 *)base + 0x2C), buf1C4, strlen(buf1C4));
                     break;
@@ -3027,15 +3027,15 @@ void fn_801EFDC8(void *arg0) {
         Xml_Destroy(file2, 1);
 
         String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x8C)) + 0xC), 0, -1);
-        if (fn_800C9400(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
+        if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
             String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, (String *)((u8 *)base + 0x5C)) + 0xC), 0, -1);
         }
-        if (fn_800C9400(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
+        if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
             String_Init(&sp38, (char *)classNames[kind & 3], &sp10);
             String_Assign(&str124, (String *)((u8 *)StringMap_FindOrInsert(tree, &sp38) + 0xC), 0, -1);
             String_Destroy(&sp38, -1);
         }
-        if (fn_800C9400(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
+        if (String_Compare(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {
             String_Assign((String *)((u8 *)base + 0x14), &str148, 0, -1);
         } else {
             String_Assign((String *)((u8 *)base + 0x14), &str124, 0, -1);

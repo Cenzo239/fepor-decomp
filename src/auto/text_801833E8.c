@@ -8576,19 +8576,19 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
 
 #pragma global_optimizer off
 void fn_80199240(void *arg0) {
-    s32 fn_800C9400(void *, s32, u32, char *, s32);
+    s32 String_Compare(void *, s32, u32, char *, s32);
     void *String_CStr(void *);
     void fn_800558D8(void);
     extern u8 gWeaponAttachStr[];
     s32 len;
 
     len = strlen((char *)(gWeaponAttachStr + 0x7A));
-    if (fn_800C9400((u8 *)arg0 + 0x12C, 0, *(u32 *)((u8 *)arg0 + 0x12C), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
+    if (String_Compare((u8 *)arg0 + 0x12C, 0, *(u32 *)((u8 *)arg0 + 0x12C), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x12C);
         fn_800558D8();
     }
     len = strlen((char *)(gWeaponAttachStr + 0x7A));
-    if (fn_800C9400((u8 *)arg0 + 0x138, 0, *(u32 *)((u8 *)arg0 + 0x138), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
+    if (String_Compare((u8 *)arg0 + 0x138, 0, *(u32 *)((u8 *)arg0 + 0x138), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x138);
         fn_800558D8();
     }
@@ -8720,7 +8720,7 @@ void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
     void Xml_GetNamedValue(void *, void *, void *);
     void String_Destroy(void *, s32);
     void String_AssignCStr(void *, char *, u32);
-    s32 fn_800C9400(void *, s32, u32, char *, u32);
+    s32 String_Compare(void *, s32, u32, char *, u32);
     void String_CStr(void *);
     void fn_800558D8(void);
     u32 strlen(char *);
@@ -8839,13 +8839,13 @@ void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
 
     len = strlen((char *)((u8 *)gWeaponAttachStr + 0x7A));
     p = (u8 *)self + 0x12C;
-    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
+    if (String_Compare(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x12C);
         fn_800558D8();
     }
     len = strlen((char *)((u8 *)gWeaponAttachStr + 0x7A));
     p = (u8 *)self + 0x138;
-    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
+    if (String_Compare(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x138);
         fn_800558D8();
     }

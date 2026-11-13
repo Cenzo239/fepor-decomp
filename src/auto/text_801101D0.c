@@ -19,7 +19,7 @@ void String_Destroy(void *, s32);
 void fn_800E6418(void *, s32, void *, s32, s32, void *);
 void fn_800D6878(void *, void *, void *);
 void String_AssignCStr(void *, char *, u32);
-s32 fn_800C9400(void *, s32, void *, char *, s32);
+s32 String_Compare(void *, s32, void *, char *, s32);
 s32 fn_800D5948(void *, char *, s32, s32);
 u8 fn_800E56C4(void *);
 void fn_80113298(void *, void *, s32, s32, s32);
@@ -98,7 +98,7 @@ u8 fn_80110220(void *arg0) {
 extern "C" void fn_80110228(void *arg0) {
     s32 strlen(char *);
     void *Heap_Alloc(s32);
-    s32 fn_800C9400(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, void *, char *, s32);
     void String_AssignCStr(void *, char *, u32);
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
@@ -289,7 +289,7 @@ extern "C" void fn_80110228(void *arg0) {
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
         n = strlen((char *)gActorXmlStrs + 0x4E);
-        if (fn_800C9400(&str294, 0, (void *)str294.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
+        if (String_Compare(&str294, 0, (void *)str294.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -345,7 +345,7 @@ after_2b:
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
         n = strlen((char *)gActorXmlStrs + 0x4E);
-        if (fn_800C9400(&str288, 0, (void *)str288.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
+        if (String_Compare(&str288, 0, (void *)str288.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -405,7 +405,7 @@ after_2c:
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
         n = strlen((char *)gActorXmlStrs + 0x4E);
-        if (fn_800C9400(&str27C, 0, (void *)str27C.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
+        if (String_Compare(&str27C, 0, (void *)str27C.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -461,7 +461,7 @@ after_2e:
         *(f32 *)&pos.y = lbl_8036A184;
         *(f32 *)&pos.x = lbl_8036A184;
         n = strlen((char *)gActorXmlStrs + 0x4E);
-        if (fn_800C9400(&str270, 0, (void *)str270.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
+        if (String_Compare(&str270, 0, (void *)str270.size, (char *)gActorXmlStrs + 0x4E, n) != 0) {
             got = ((Actor *)self)->GetPos(0);
             flag = 0;
             *(f32 *)&pos.y = got.y;
@@ -797,23 +797,23 @@ extern "C" void fn_80111740(void *arg0) {
     sp54.cap = 0;
 
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x109));
-    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+    if (String_Compare(&self->name, 0, (void *)self->name.size,
                     (char *)((u32)gActorXmlStrs + 0x109), n) == 0)
         goto fail;
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x10E));
-    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+    if (String_Compare(&self->name, 0, (void *)self->name.size,
                     (char *)((u32)gActorXmlStrs + 0x10E), n) == 0)
         goto fail;
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x113));
-    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+    if (String_Compare(&self->name, 0, (void *)self->name.size,
                     (char *)((u32)gActorXmlStrs + 0x113), n) == 0)
         goto fail;
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x118));
-    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+    if (String_Compare(&self->name, 0, (void *)self->name.size,
                     (char *)((u32)gActorXmlStrs + 0x118), n) == 0)
         goto fail;
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x11D));
-    if (fn_800C9400(&self->name, 0, (void *)self->name.size,
+    if (String_Compare(&self->name, 0, (void *)self->name.size,
                     (char *)((u32)gActorXmlStrs + 0x11D), n) == 0)
         goto fail;
 
@@ -838,7 +838,7 @@ extern "C" void fn_80111740(void *arg0) {
     *(f32 *)&pos.y = lbl_8036A184;
     *(f32 *)&pos.x = lbl_8036A184;
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x4E));
-    if (fn_800C9400(&sp54, 0, (void *)sp54.size,
+    if (String_Compare(&sp54, 0, (void *)sp54.size,
                     (char *)((u32)gActorXmlStrs + 0x4E), n) != 0) {
         got = ((Actor *)self)->GetPos(0);
         flag = 0;
@@ -1177,12 +1177,12 @@ s32 fn_80112F44(void *arg0) {
     s32 n;
     extern u16 gActorXmlStrs[];
     s32 strlen(char *);
-    s32 fn_800C9400(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, void *, char *, s32);
     s32 fn_800D5948(void *, char *, s32, s32);
     u8 fn_800E56C4(void *);
 
     n = strlen((char *)gActorXmlStrs + 0x43F);
-    if (fn_800C9400((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
+    if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
                     (char *)gActorXmlStrs + 0x43F, n) != 0) {
         if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
                               strlen((char *)gActorXmlStrs + 0x43F)) +
@@ -1202,7 +1202,7 @@ s32 fn_80112F44(void *arg0) {
 void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     void *StringMap_FindOrInsert(void *, void *);
     void String_Assign(void *, void *, s32, s32);
-    s32 fn_800C9400(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, void *, char *, s32);
     void String_Init(void *, char *, void *);
     void String_Destroy(void *, s32);
     void String_JoinCStr(void *, char *, void *);
@@ -1237,17 +1237,17 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
 
     String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, arg3) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
+    if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
         String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, a2) + 0xC, 0, -1);
     }
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
+    if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
         String_Init(&sp30, lbl_8028F6B8[idx & 3], &sp8);
         String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, &sp30) + 0xC, 0, -1);
         String_Destroy(&sp30, -1);
     }
     n = strlen((char *)((u8 *)gActorXmlStrs + 0x449));
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x449), n) == 0) {
+    if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)((u32)gActorXmlStrs + 0x449), n) == 0) {
         String_Assign(&sp3C, (u8 *)self + 0xB0, 0, -1);
     }
     String_JoinCStr(&sp24, (char *)((u8 *)gActorXmlStrs + 0x450), (u8 *)self + 0xB0);
@@ -1327,7 +1327,7 @@ void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
         temp_r30 = fn_800DDB94(unk_dc, (u8 *)self + 0xBC);
         String_AssignCStr(&spC, temp_r30, strlen(temp_r30));
         n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
-        if (fn_800C9400(&spC, 0, (void *)spC.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
+        if (String_Compare(&spC, 0, (void *)spC.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
             String_Destroy(&sp24, -1);
             String_Destroy(&sp18, -1);
             String_Destroy(&spC, -1);
@@ -1634,7 +1634,7 @@ void fn_80113C84(void *self, s32 mode) {
         break;
     }
 
-    if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478)) == 0) {
+    if (String_Compare(&sp3C, 0, (void *)sp3C.size, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478)) == 0) {
         String_Init(&spC, String_CStr(&sp3C), &sp8);
         String_Concat(&sp18, (u8 *)self + 0x154, &spC);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &sp18) != 0;
@@ -1722,7 +1722,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     void String_ConcatCStr(void *, void *, char *);
     void String_JoinCStr(void *, void *, void *);
     void *String_CStr(void *);
-    s32 fn_800C9400(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, void *, char *, s32);
     s32 fn_800DDAA4(void *, void *);
     s32 fn_800DDC04(void *, void *);
     void fn_800DF670(void *);
@@ -1851,7 +1851,7 @@ skip_43f:
     {
         s32 n;
         n = strlen((char *)((u32)&gActorXmlStrs + 0x49D));
-        if (fn_800C9400(&sp104, 0, (void *)sp104.size, (char *)((u32)&gActorXmlStrs + 0x49D), n) == 0) {
+        if (String_Compare(&sp104, 0, (void *)sp104.size, (char *)((u32)&gActorXmlStrs + 0x49D), n) == 0) {
             String_AssignCStr((u8 *)arg0 + 0x160, (char *)&gActorXmlStrs + 0x1C,
                         strlen((char *)&gActorXmlStrs + 0x1C));
         } else {
@@ -2073,7 +2073,7 @@ s32 fn_80114AF0(void *arg0) {
 extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     s32 strlen(char *);
     void String_AssignCStr(void *, char *, s32);
-    s32 fn_800C9400(void *, s32, s32, char *, s32);
+    s32 String_Compare(void *, s32, s32, char *, s32);
     void String_Init(void *, char *, void *);
     void String_Concat(void *, void *, void *);
     s32 fn_800DDC04(void *, void *);
@@ -2152,7 +2152,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         dist = fn_802032CC((f32 *)&sp54, (f32 *)&sp60);
     }
     pad = lbl_8036A1D4;
-    if (fn_800C9400((u8 *)self + 0xB0, 0, *(s32 *)((u8 *)self + 0xB0), (char *)&gActorXmlStrs + 0x15F, strlen((char *)&gActorXmlStrs + 0x15F)) == 0) {
+    if (String_Compare((u8 *)self + 0xB0, 0, *(s32 *)((u8 *)self + 0xB0), (char *)&gActorXmlStrs + 0x15F, strlen((char *)&gActorXmlStrs + 0x15F)) == 0) {
         pad = lbl_8036A1D0;
     }
     if (dist <= pad + (*(f32 *)((u8 *)self + 0x128) + *(f32 *)((u8 *)self + 0x1B0))) {
@@ -2171,8 +2171,8 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     if (*(u8 *)((u8 *)self + 0x1A4) != 0) {
         fn_800E56CC(self); return 1;
     }
-    if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53A, strlen((char *)&gActorXmlStrs + 0x53A)) == 0
-        || fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F)) == 0) {
+    if (String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53A, strlen((char *)&gActorXmlStrs + 0x53A)) == 0
+        || String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F)) == 0) {
         String_Init(sp84, (char *)&gActorXmlStrs + 0x53F, sp8);
         String_Concat(sp90, (u8 *)self + 0x154, sp84);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), sp90) != 0;
@@ -2183,7 +2183,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
             fn_80113298(self, (char *)&gActorXmlStrs + 0x53F, *(s32 *)((u8 *)self + 0x18C), 0, 1);
             fn_80111740(self);
         }
-    } else if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53F, strlen((char *)&gActorXmlStrs + 0x53F)) == 0) {
+    } else if (String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53F, strlen((char *)&gActorXmlStrs + 0x53F)) == 0) {
         if (*(u8 *)((u8 *)self + 0xD0) == 0) {
             *(u8 *)((u8 *)self + 0x184) = 1;
             fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 1, 1);
@@ -2259,7 +2259,7 @@ void fn_8011631C(void *arg0, s8 arg1)
     sp24.data = 0;
     sp24.cap = 0;
 
-    if (fn_800C9400((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
+    if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
                     (char *)&gActorXmlStrs + 0x43f,
                     strlen((char *)&gActorXmlStrs + 0x43f)) == 0
         || (u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x43f, 0,
@@ -2280,7 +2280,7 @@ void fn_8011631C(void *arg0, s8 arg1)
         String_Destroy(&sp18, -1);
         *(u8 *)((u8 *)arg0 + 0x184) = arg1;
 
-        if (fn_800C9400(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
+        if (String_Compare(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
                         strlen((char *)&gActorXmlStrs + 0x43f)) == 0) {
             fn_80113298(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
         } else {

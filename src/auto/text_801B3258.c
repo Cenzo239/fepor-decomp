@@ -8833,7 +8833,7 @@ void fn_801C9724(void) {
 }
 
 s32 fn_801C9734(void) {
-    s32 fn_800C9400(void *, u32, u32, char *, u32);
+    s32 String_Compare(void *, u32, u32, char *, u32);
     void String_Assign(void *, void *, u32, u32);
     void fn_800C992C(void *, const char *, u32);
     void fn_800C99A0(void *, void *, u32, u32);
@@ -8882,7 +8882,7 @@ s32 fn_801C9734(void) {
     fn_800C992C(&sp38, (char *)CameraWin_str + 8, len);
 
     len = strlen((char *)CameraWin_str + 0xE);
-    if (fn_800C9400(&sp2C, 0, sp2C.size, &CameraWin_str[0xE], len) != 0) {
+    if (String_Compare(&sp2C, 0, sp2C.size, &CameraWin_str[0xE], len) != 0) {
         String_ConcatCStr(&sp14, &sp2C, (char *)CameraWin_str + 0xF);
         fn_800C99A0(&sp38, &sp14, 0, -1);
         String_Destroy(&sp14, -1);
@@ -9058,7 +9058,7 @@ s32 fn_801C9D58(void) {
 #pragma global_optimizer off
 /* Reload CameraWin anim list for a category and set the camChara side mode. */
 void CameraWin_LoadList(void *arg0, s32 arg1) {
-    s32 fn_800C9400(void *, s32, u32, char *, u32);
+    s32 String_Compare(void *, s32, u32, char *, u32);
     void String_AssignCStr(void *, char *, u32);
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
@@ -9130,23 +9130,23 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     String_Destroy(&pathTmp, -1);
 
     len = strlen((char *)((u8 *)CameraWin_str + 0x21));
-    if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x21), len) == 0) {
+    if (String_Compare(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x21), len) == 0) {
         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 0);
     } else {
         len = strlen((char *)((u8 *)CameraWin_str + 0x2C));
-        if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x2C), len) == 0) {
+        if (String_Compare(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x2C), len) == 0) {
             fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 1);
         } else {
             len = strlen((char *)((u8 *)CameraWin_str + 0x37));
-            if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x37), len) == 0) {
+            if (String_Compare(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x37), len) == 0) {
                 fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 2);
             } else {
                 len = strlen((char *)((u8 *)CameraWin_str + 0x42));
-                if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x42), len) == 0) {
+                if (String_Compare(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x42), len) == 0) {
                     fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 3);
                 } else {
                     len = strlen((char *)((u8 *)CameraWin_str + 0x4D));
-                    if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x4D), len) == 0) {
+                    if (String_Compare(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x4D), len) == 0) {
                         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 4);
                     }
                 }
@@ -9474,7 +9474,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
     void fn_800D5D04(void *, void *, s32, s32);
     void String_ConcatCStr(void *, void *, char *);
     void String_Assign(void *, void *, s32, s32);
-    s32 fn_800C9400(void *, s32, u32, char *, u32);
+    s32 String_Compare(void *, s32, u32, char *, u32);
     void String_AssignCStr(void *, char *, u32);
     void fn_800C99A0(void *, void *, s32, s32);
     void *String_CStr(void *);
@@ -9550,7 +9550,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
                 String_Destroy(&sp14, -1);
                 String_Destroy(&sp20, -1);
                 len = strlen((char *)lbl_8027DAB0 + 0xCB);
-                if (fn_800C9400(&sp44, 0, sp44.size, &lbl_8027DAB0[0xCB], len) == 0) {
+                if (String_Compare(&sp44, 0, sp44.size, &lbl_8027DAB0[0xCB], len) == 0) {
                     len = strlen((char *)lbl_8027DAB0 + 0xCF);
                     String_AssignCStr(&sp44, &lbl_8027DAB0[0xCF], len);
                 }
@@ -9558,7 +9558,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
                 String_Assign(&sp38, &sp8, 0, -1);
                 String_Destroy(&sp8, -1);
                 len = strlen((char *)lbl_8027DAB0 + 0xD3);
-                if (fn_800C9400(&sp38, 0, sp38.size, &lbl_8027DAB0[0xD3], len) == 0) {
+                if (String_Compare(&sp38, 0, sp38.size, &lbl_8027DAB0[0xD3], len) == 0) {
                     len = strlen((char *)lbl_8027DAB0 + 0xD8);
                     String_AssignCStr(&sp38, &lbl_8027DAB0[0xD8], len);
                 }
@@ -9613,7 +9613,7 @@ extern "C" void *fn_801CB41C(void *arg0, void *arg1, void *arg2) {
 void fn_800DF7A0(void *);
 void String_Init(void *,void *,void *); void Xml_GetNamedValue(void *,void *,void *);
 u32 strlen(void *); void String_AssignCStr(void *,void *,u32); void String_Destroy(void *,s32);
-s32 fn_800C9400(void *,s32,u32,void *,u32); u8 *fn_80117CC0(void *,s32);
+s32 String_Compare(void *,s32,u32,void *,u32); u8 *fn_80117CC0(void *,s32);
 void fn_800D5D04(void *,void *,s32,s32); void String_Assign(void *,void *,s32,s32);
 void *fn_800E7F60(void *,void *); void Xml_AdvanceChild(void *); void Xml_GetChildValue(void *,void *);
 void fn_801CB934(void *,void *,s32,s32);
@@ -9639,7 +9639,7 @@ String_AssignCStr(self+0x54,arg1,strlen(arg1));String_Destroy(&s48,-1);
 String_Init(&s3c,lbl_8027DAB0+0xe5,&a10);
 Xml_GetNamedValue(&p160,arg2,&s3c);arg1=&p160;
 String_AssignCStr(self+0x60,arg1,strlen(arg1));String_Destroy(&s3c,-1);
-if(fn_800C9400(self+0x60,0,*(u32 *)(self+0x60),lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
+if(String_Compare(self+0x60,0,*(u32 *)(self+0x60),lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
 fn_800D5D04(&s30,self+0x54,0,4);String_Assign(self+0x60,&s30,0,-1);String_Destroy(&s30,-1);
 }
 String_Init(&s24,lbl_8027DAB0+0xec,&ac);

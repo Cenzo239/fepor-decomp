@@ -2009,7 +2009,7 @@ M2C_UNK *String_CStr(void *arg0) {
     return temp_r3;
 }
 
-s32 fn_800C9400(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
+s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     s32 fn_80231944(char *, char *, u32);
@@ -3113,7 +3113,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     void Xml_Destroy(void *, s32);
     void *Xml_ParseFile(void *, String *, String *);
     char *String_CStr(String *);
-    s32 fn_800C9400(void *, s32, u32, void *, s32);
+    s32 String_Compare(void *, s32, u32, void *, s32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     void fn_800C992C(String *, char *, u32);
@@ -3195,7 +3195,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
 
     flag = 0;
     if (sp94.size == *(u32 *)(self + 0x198) &&
-        fn_800C9400(&sp94, 0, sp94.size, *(void **)(self + 0x1A0), *(s32 *)(self + 0x198)) == 0) {
+        String_Compare(&sp94, 0, sp94.size, *(void **)(self + 0x1A0), *(s32 *)(self + 0x198)) == 0) {
         flag = 1;
     }
     if (flag != 0) {
@@ -3242,7 +3242,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
         sp10.cap = 0;
         String_AssignCStr(&sp10, base + 0x1C7, strlen(base + 0x1C7));
 
-        if (fn_800C9400(path, 0, *(u32 *)path, base + 0x1B0, strlen(base + 0x1B0)) != 0) {
+        if (String_Compare(path, 0, *(u32 *)path, base + 0x1B0, strlen(base + 0x1B0)) != 0) {
             String_ConcatCStr(&sp1C, (String *)path, base + 0x1CD);
             fn_800C99A0(&sp10, &sp1C, 0, -1);
             String_Destroy(&sp1C, -1);
@@ -3463,7 +3463,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void *fn_8005C82C(s32);
     void fn_8008CDE0(void *, void *);
     char *String_CStr(String *);
-    s32 fn_800C9400(String *, s32, u32, char *, u32);
+    s32 String_Compare(String *, s32, u32, char *, u32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     void fn_800C992C(String *, char *, u32);
@@ -3593,7 +3593,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         sp34.data = 0;
         sp34.cap = 0;
         String_AssignCStr(&sp34, lbl_802704F8 + 0x1C7, strlen(lbl_802704F8 + 0x1C7));
-        if (fn_800C9400(&sp94, 0, sp94.size, lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
+        if (String_Compare(&sp94, 0, sp94.size, lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
             String_ConcatCStr(&sp40, &sp94, lbl_802704F8 + 0x1CD);
             fn_800C99A0(&sp34, &sp40, 0, -1);
             String_Destroy(&sp40, -1);
@@ -3618,7 +3618,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         sp1C.data = 0;
         sp1C.cap = 0;
         String_AssignCStr(&sp1C, lbl_802704F8 + 0x1C7, strlen(lbl_802704F8 + 0x1C7));
-        if (fn_800C9400(&sp70, 0, sp70.size, lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
+        if (String_Compare(&sp70, 0, sp70.size, lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
             String_ConcatCStr(&sp28, &sp70, lbl_802704F8 + 0x1CD);
             fn_800C99A0(&sp1C, &sp28, 0, -1);
             String_Destroy(&sp28, -1);
@@ -4371,7 +4371,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void String_AssignCStr(void *, char *, s32);
     void String_Assign(void *, void *, s32, s32);
     void fn_800E7B80(void *, void *);
-    s32 fn_800C9400(void *, s32, s32, char *, s32);
+    s32 String_Compare(void *, s32, s32, char *, s32);
     void *fn_800E7F60(void *, void *);
     u8 fn_800E8FB4(void *);
     void fn_800DBBC8(f32 *, void *);
@@ -4518,7 +4518,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
             lbl_80367890 = 0;
         }
     }
-    if (fn_800C9400(self + 0xB8, 0, *(s32 *)(self + 0xB8), lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
+    if (String_Compare(self + 0xB8, 0, *(s32 *)(self + 0xB8), lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
         obj = fn_800E7F60(*(void **)(self + 4), self + 0xB8);
         if (obj != NULL) {
             if (fn_800E8FB4(obj) != 0) {
@@ -4813,9 +4813,9 @@ extern "C" s32 fn_800D0C5C(void *arg0) {
 }
 #pragma cplusplus reset
 s32 fn_800D3534(s32 *arg0, s32 arg1) {
-    s32 fn_800C9400(s32 *, M2C_UNK, s32, s32, s32);
+    s32 String_Compare(s32 *, M2C_UNK, s32, s32, s32);
     s32 strlen(s32);
-    return fn_800C9400(arg0, 0, *arg0, arg1, strlen(arg1)) == 0;
+    return String_Compare(arg0, 0, *arg0, arg1, strlen(arg1)) == 0;
 }
 
 s32 fn_800D3590(void *arg0) {
@@ -4946,7 +4946,7 @@ extern "C" void *GameScene_Create(void *arg0)
     void fn_80113030(void *, void *, void *, void *);
     void fn_8011662C(void *, void *);
     void fn_800CB484(void *, void *);
-    s32 fn_800C9400(String *, u32, u32, char *, u32);
+    s32 String_Compare(String *, u32, u32, char *, u32);
     void fn_801168F4(void *, const char *);
     void fn_800CBAF8(s32, void *, u32);
     typedef void *(*ObjectLookupFn)(void *, const char *, const char *);
@@ -5861,7 +5861,7 @@ extern "C" void *GameScene_Create(void *arg0)
 
     /* Target checks whether the third input is an empty string. */
     length = strlen(lbl_802704F8 + 0x1B0);
-    if (fn_800C9400(
+    if (String_Compare(
             &workingString, 0, workingString.size,
             lbl_802704F8 + 0x1B0, length
         ) != 0) {
@@ -9433,7 +9433,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     char *Xml_GetNamedValue(char *, void *, String *);
     u8 Xml_AdvanceChild(void *);
     char *String_CStr(String *);
-    s32 fn_800C9400(String *, s32, u32, char *, s32);
+    s32 String_Compare(String *, s32, u32, char *, s32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     void fn_800C99A0(String *, String *, s32, s32);
@@ -9543,7 +9543,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_AssignCStr(&str138, buf1DC, strlen(buf1DC));
     String_Destroy(&strFC, -1);
 
-    if (fn_800C9400(&str138, 0, str138.size, lbl_80271860, strlen(lbl_80271860)) != 0) {
+    if (String_Compare(&str138, 0, str138.size, lbl_80271860, strlen(lbl_80271860)) != 0) {
         String_ConcatCStr(&strF0, &str138, lbl_80271860 + 0xC);
         fn_800C99A0(&str144, &strF0, 0, -1);
         String_Destroy(&strF0, -1);
@@ -9632,7 +9632,7 @@ loop_body:
     String_Assign(&str24, &str3C, 0, -1);
     String_Destroy(&str3C, -1);
 
-    if (fn_800C9400(&str24, 0, str24.size, strBase, strlen(strBase)) == 0) {
+    if (String_Compare(&str24, 0, str24.size, strBase, strlen(strBase)) == 0) {
         String_Destroy(&str30, -1);
         String_Destroy(&str24, -1);
         ok = 1;
@@ -9641,7 +9641,7 @@ loop_body:
         String_Assign(&str30, &str48, 0, -1);
         String_Destroy(&str48, -1);
         match = 0;
-        if (str24.size == str30.size && fn_800C9400(&str24, 0, str24.size, str30.data, str30.size) == 0) {
+        if (str24.size == str30.size && String_Compare(&str24, 0, str24.size, str30.data, str30.size) == 0) {
             match = 1;
         }
         if (match != 0) {
@@ -10307,7 +10307,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     char *Xml_GetNamedValue(char *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
-    s32 fn_800C9400(String *, u32, u32, char *, u32);
+    s32 String_Compare(String *, u32, u32, char *, u32);
     char *String_CStr(String *);
     s32 fn_800DC018(void *);
     u32 strlen(const char *);
@@ -10386,7 +10386,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     String_Assign(&self->s0, &str60, 0, -1);
     String_Assign(&self->s1, &str54, 0, -1);
     len = strlen(lbl_80271A30);
-    if (fn_800C9400(&str48, 0, str48.size, lbl_80271A30, len) == 0) {
+    if (String_Compare(&str48, 0, str48.size, lbl_80271A30, len) == 0) {
         len = strlen(lbl_80271A30 + 0x17);
         String_AssignCStr(&self->s2, lbl_80271A30 + 0x17, len);
     } else {
@@ -12102,7 +12102,7 @@ extern "C" void *fn_800E4454(void *arg0, String *arg1) {
         virtual void *v4(s32) = 0;
     };
     void fn_800DF6DC(String *, void *);
-    s32 fn_800C9400(String *, u32, u32, char *, u32);
+    s32 String_Compare(String *, u32, u32, char *, u32);
     void *String_Destroy(String *, s32);
     String str;
     void *self;
@@ -12128,7 +12128,7 @@ extern "C" void *fn_800E4454(void *arg0, String *arg1) {
             fn_800DF6DC(&str, child);
             found = 0;
             if (str.size == key->size &&
-                fn_800C9400(&str, 0, str.size, key->data, key->size) == 0) {
+                String_Compare(&str, 0, str.size, key->data, key->size) == 0) {
                 found = 1;
             }
             String_Destroy(&str, -1);
@@ -12226,7 +12226,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void Xml_GetNamedValue(void *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
-    s32 fn_800C9400(String *, u32, u32, char *, u32);
+    s32 String_Compare(String *, u32, u32, char *, u32);
     char *String_CStr(String *);
     void *Heap_Alloc(s32);
     void fn_800E01C8(void *);
@@ -12294,10 +12294,10 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     len = strlen((char *)r28);
     String_AssignCStr(&str44, (char *)r28, len);
     String_Destroy(&str2C, -1);
-    if (fn_800C9400(&str50, 0, str50.size, base + 0x19, strlen(base + 0x19)) == 0) {
+    if (String_Compare(&str50, 0, str50.size, base + 0x19, strlen(base + 0x19)) == 0) {
         String_AssignCStr(&str50, base + 0x1A, strlen(base + 0x1A));
     }
-    if (fn_800C9400(&str44, 0, str44.size, base + 0x19, strlen(base + 0x19)) != 0) {
+    if (String_Compare(&str44, 0, str44.size, base + 0x19, strlen(base + 0x19)) != 0) {
         p2 = String_CStr(&str44);
         obj = ((Obj10 *)cb)->v2(String_CStr(&str50), p2);
         *(void **)((u8 *)self + 0x54) = obj;
@@ -12909,7 +12909,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
     void String_Assign(String *, String *, s32, s32);
-    s32 fn_800C9400(String *, s32, u32, char *, u32);
+    s32 String_Compare(String *, s32, u32, char *, u32);
     char *String_CStr(String *);
     void String_Copy(String *, String *);
     void *fn_800E8008(void *, String *);
@@ -13012,7 +13012,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     self->unkDC = fn_800E8008(owner, &str7C);
     if (self->unkDC != NULL) {
         self->unkE0 = (u32 *)fn_800DDC90(self->unkDC);
-        if (fn_800C9400(&str70, 0, str70.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
+        if (String_Compare(&str70, 0, str70.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
             fn_800E574C(self, String_CStr(&str70), self->unkD1, 1, 0, 0xA, lbl_80369F58);
         }
     } else {
@@ -13020,7 +13020,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     }
     self->unkE4 = 0;
     self->unkE8 = 0;
-    if (fn_800C9400(&str64, 0, str64.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
+    if (String_Compare(&str64, 0, str64.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
         String_Copy(&str1C, &str64);
         fn_800E5418(self, &str1C);
         String_Destroy(&str1C, -1);
@@ -13728,7 +13728,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
     void fn_800DF6DC(u8 *, void *);
-    s32 fn_800C9400(u8 *, u32, u32, char *, u32);
+    s32 String_Compare(u8 *, u32, u32, char *, u32);
     void String_Destroy(void *, s32);
     void fn_800E9044(void *);
     void fn_800E9050(void *);
@@ -13747,7 +13747,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
         item = (void *)fn_800DFFF4(list, i);
         fn_800DF6DC(str, item);
         match = 0;
-        if (*(u32 *)str == key && fn_800C9400(str, 0, *(u32 *)str, *(char **)((u8 *)arg1 + 8), key) == 0) {
+        if (*(u32 *)str == key && String_Compare(str, 0, *(u32 *)str, *(char **)((u8 *)arg1 + 8), key) == 0) {
             match = 1;
         }
         String_Destroy(str, -1);
@@ -14263,7 +14263,7 @@ void fn_800E9050(void *arg0) {
 extern "C" void fn_800E905C(void *arg0) {
 void PSMTXRotRad(void *,s32,f32);void fn_802029C4(void *,void *,void *);void fn_80203184(void *,void *,void *);
 void String_Destroy(void *,s16);void String_Assign(void *,void *,s32,s32);void *String_CStr(void *);
-s32 fn_800C9400(void *,s32,u32,void *,u32);u32 strlen(void *);void fn_80067FE8(void *,void *,void *);
+s32 String_Compare(void *,s32,u32,void *,u32);u32 strlen(void *);void fn_80067FE8(void *,void *,void *);
 extern u8 lbl_80272470[];extern const f32 lbl_80369F78,lbl_80369F84,lbl_80369F88,lbl_80369F8C;
 struct V3 {f32 x,y,z; V3() {} V3(const V3 &v):x(v.x),y(v.y),z(v.z) {} };
 struct Parent {u8 pad[16];virtual void v0();virtual void v1();virtual void *v2(void *,void *);};
@@ -14285,7 +14285,7 @@ M2C_FIELD(self,f32 *,0x60)=dir.x;M2C_FIELD(self,f32 *,0x64)=dir.y;M2C_FIELD(self
 fn_80203184(&pos,&dir,&dir);
 M2C_FIELD(self,f32 *,0xe4)=dir.x;M2C_FIELD((unsigned)self,f32 *,0xe8)=dir.y;M2C_FIELD(self,f32 *,0xec)=dir.z;
 }else{
-if(fn_800C9400(self+0xb0,0,M2C_FIELD(self,u32 *,0xb0),lbl_80272470,strlen(lbl_80272470)) && fn_800C9400(self+0xbc,0,M2C_FIELD(self,u32 *,0xbc),lbl_80272470,strlen(lbl_80272470))){
+if(String_Compare(self+0xb0,0,M2C_FIELD(self,u32 *,0xb0),lbl_80272470,strlen(lbl_80272470)) && String_Compare(self+0xbc,0,M2C_FIELD(self,u32 *,0xbc),lbl_80272470,strlen(lbl_80272470))){
 String_Assign(str,(self+0xbc)+M2C_FIELD(self,s32 *,0xe0)*12,0,-1);
 name=String_CStr(str);
 M2C_FIELD(self,void **,0x12c)=((Parent *)M2C_FIELD(self,void **,0))->v2(String_CStr(self+0xb0),name);

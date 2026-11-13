@@ -1406,7 +1406,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     void Xml_GetNamedValue(void *, void *, void *);
     void String_AssignCStr(void *, void *, u32);
     void String_Destroy(void *, s32);
-    s32 fn_800C9400(void *, u32, u32, char *, u32);
+    s32 String_Compare(void *, u32, u32, char *, u32);
     s32 fn_800E7FB4(void *, void *);
     u32 strlen(const char *);
     extern u8 lbl_802902E8[];
@@ -1520,7 +1520,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&sp18, -1);
 
     buf = (Obj *)(lbl_80274DB0 + 0x2B);
-    if (fn_800C9400(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
+    if (String_Compare(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
         self->unk64 = 1;
     } else {
         self->unk64 = 0;
