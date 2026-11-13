@@ -3662,7 +3662,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
     extern f64 __kcos_C5;
     extern f64 __kcos_C6;
     extern f64 __kcos_half;
-    extern f64 lbl_8036C050;
+    extern f64 __kcos_qx;
     f64 qx;
     f64 x;
     f64 z;
@@ -3682,7 +3682,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
         return __kcos_one - ((__kcos_half * z) - ((z * r) - (x * farg1)));
     }
     if (ix > 0x3FE90000) {
-        qx = lbl_8036C050;
+        qx = __kcos_qx;
     } else {
         ((s32 *)&qx)[0] = ix - 0x00200000;
         ((s32 *)&qx)[1] = 0;
