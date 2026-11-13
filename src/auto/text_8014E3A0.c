@@ -1035,120 +1035,121 @@ s32 fn_801519C0(void *arg0) {
 }
 
 void Camera_ApplyPadControls(void *arg0) {
+    /* Apply pad buttons 9-B / 1E-21 to the camera object using gGame axis rates. */
     void *fn_800536FC(u16);
     s32 Pad_IsButton(void *, s32);
     void fn_800E76E0(void *, f32);
     void fn_800E77A0(void *, s32, s32, f32);
     extern void *gGame;
-    void *r30;
-    s32 var;
-    void *temp;
+    void *camera;
+    s32 pressed;
+    void *pad;
 
-    r30 = *(void **)arg0;
+    camera = *(void **)arg0;
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 9);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 9);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, 0x3C, *(f32 *)((u8 *)gGame + 0x98));
-    }
-    *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0xA);
-        } else {
-            var = 0;
-        }
-    } else {
-        var = 0;
-    }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, 0x3C, *(f32 *)((u8 *)gGame + 0x9C));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, 0x3C, *(f32 *)((u8 *)gGame + 0x98));
     }
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0xB);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0xA);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, 0x3C, *(f32 *)((u8 *)gGame + 0xA0));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, 0x3C, *(f32 *)((u8 *)gGame + 0x9C));
     }
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0x1E);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0xB);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, -1, *(f32 *)((u8 *)gGame + 0x98));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, 0x3C, *(f32 *)((u8 *)gGame + 0xA0));
     }
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0x1F);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0x1E);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, -1, *(f32 *)((u8 *)gGame + 0x9C));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, -1, *(f32 *)((u8 *)gGame + 0x98));
     }
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0x20);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0x1F);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E77A0(r30, 0, -1, *(f32 *)((u8 *)gGame + 0xA0));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, -1, *(f32 *)((u8 *)gGame + 0x9C));
     }
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
-    temp = *(void **)((u8 *)arg0 + 0xB0);
-    if (temp != NULL) {
-        temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
-        if (temp != NULL) {
-            var = Pad_IsButton(temp, 0x21);
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0x20);
         } else {
-            var = 0;
+            pressed = 0;
         }
     } else {
-        var = 0;
+        pressed = 0;
     }
-    if ((u8)var != 0) {
-        fn_800E76E0(r30, *(f32 *)((u8 *)gGame + 0x98));
+    if ((u8)pressed != 0) {
+        fn_800E77A0(camera, 0, -1, *(f32 *)((u8 *)gGame + 0xA0));
+    }
+    *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
+    pad = *(void **)((u8 *)arg0 + 0xB0);
+    if (pad != NULL) {
+        pad = *(void **)((u8 *)*(void **)((u8 *)pad + 0x30) + 0x5C);
+        if (pad != NULL) {
+            pressed = Pad_IsButton(pad, 0x21);
+        } else {
+            pressed = 0;
+        }
+    } else {
+        pressed = 0;
+    }
+    if ((u8)pressed != 0) {
+        fn_800E76E0(camera, *(f32 *)((u8 *)gGame + 0x98));
     }
     *(s32 *)((u8 *)arg0 + 0xC0) = *(s32 *)((u8 *)arg0 + 0xC0) + 1;
 }
