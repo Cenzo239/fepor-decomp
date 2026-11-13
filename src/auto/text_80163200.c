@@ -7484,6 +7484,7 @@ void fn_80171D04(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
+    /* Handle map-cursor unit-select pad input: A tip/reject, Y unit info, B cancel. */
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     void *fn_8000CAA0(void *, void *);
@@ -7528,9 +7529,9 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
         virtual Vec2s v10() = 0;
     };
 
-    void *obj4c;
-    u32 text;
-    u32 var_r30;
+    void *cursorWidget;
+    u32 textWidget;
+    u32 unit;
     void *self;
     register int btn;
     register u8 gate;
@@ -7542,22 +7543,22 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     u32 sp14;
 
     self = arg0;
-    obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    text = fn_8013FF94(arg0, 0x106, 0);
-    var_r30 = MapCursor_GetUnit(obj4c);
+    cursorWidget = *(void **)((u8 *)arg0 + 0x4C);
+    textWidget = fn_8013FF94(arg0, 0x106, 0);
+    unit = MapCursor_GetUnit(cursorWidget);
     fn_8013FDA0(arg0);
-    if (var_r30 != MapCursor_GetUnit(obj4c)) {
-        var_r30 = MapCursor_GetUnit(obj4c);
+    if (unit != MapCursor_GetUnit(cursorWidget)) {
+        unit = MapCursor_GetUnit(cursorWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            if (var_r30 != 0) {
-                *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r30, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
+            if (unit != 0) {
+                *(Vec2s *)&sp1C = ((Obj *)cursorWidget)->v10();
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, unit, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
             } else {
                 Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
-    fn_801658DC(text, (u8 *)gUiMsgStrings + 0x2ff);
+    fn_801658DC(textWidget, (u8 *)gUiMsgStrings + 0x2ff);
     flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
@@ -7566,9 +7567,9 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     if (!gate) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_80091F70(gUiContext[0], *(u32 *)var_r30) == 0) {
-                *(Vec2s *)&sp18 = ((Obj *)obj4c)->v10();
+        if ((btn & 0x100) && unit != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+            if (fn_80091F70(gUiContext[0], *(u32 *)unit) == 0) {
+                *(Vec2s *)&sp18 = ((Obj *)cursorWidget)->v10();
                 obj = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
@@ -7577,9 +7578,9 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
                 Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
                 fn_8000C188(self);
             }
-        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != 0) {
-            *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && unit != 0) {
+            *(Vec2s *)&sp14 = ((Obj *)cursorWidget)->v10();
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, unit, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
