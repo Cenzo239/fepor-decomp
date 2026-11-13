@@ -5085,7 +5085,7 @@ s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 a
     void *ScriptObj_FindByName(u32);
     void fn_801D029C(void *, s32, s32, s32, void *, f32);
     extern s32 gUiInputFlags;
-    extern u32 lbl_80369CF0;
+    extern u32 gColorAlphaFF;
     extern f64 lbl_80369CF8;
     extern f32 gPercentToFloat;
     void *p;
@@ -5107,7 +5107,7 @@ s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 a
     }
     r = (u8)(arg5 >> 16);
     g = (u8)(arg5 >> 8);
-    tmp = lbl_80369CF0;
+    tmp = gColorAlphaFF;
     ((u8 *)&packed)[0] = r;
     ((u8 *)&packed)[1] = g;
     ((u8 *)&packed)[2] = (u8)arg5;
