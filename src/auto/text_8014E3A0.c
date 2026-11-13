@@ -40,12 +40,12 @@ s32 fn_8014E414(void) {
 extern s32 lbl_80367B7C;
 extern u32 lbl_80367B78;
 extern u8 lbl_80277238[];
-extern u32 lbl_80367B70;
+extern u32 gMsgDebugPtrs;
 void *fn_8014E41C(s32 arg0, void *arg1) {
     extern s32 lbl_80367B7C;
     extern u32 lbl_80367B78;
     extern u8 lbl_80277238[];
-    extern u32 lbl_80367B70;
+    extern u32 gMsgDebugPtrs;
     s32 idx;
     s32 limit;
 
@@ -54,7 +54,7 @@ void *fn_8014E41C(s32 arg0, void *arg1) {
     if (idx >= limit) {
         return lbl_80277238 + 0x85;
     }
-    return *(void **)(lbl_80367B70 + idx * 4);
+    return *(void **)(gMsgDebugPtrs + idx * 4);
 }
 
 s32 fn_8014E458(void) {
@@ -74,7 +74,7 @@ s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
     extern s32 lbl_80367B7C;
     extern u32 lbl_80367B78;
     extern s32 lbl_80367B84;
-    extern u32 lbl_80367B70;
+    extern u32 gMsgDebugPtrs;
     char *fn_8000E0E4(void *);
     s32 index;
     char *str;
@@ -86,10 +86,10 @@ s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
     if (index >= (s32)lbl_80367B78) {
         return 0x10;
     }
-    if (*(void **)(lbl_80367B70 + index * 4) == NULL) {
+    if (*(void **)(gMsgDebugPtrs + index * 4) == NULL) {
         flag = 0;
     } else {
-        str = fn_8000E0E4(*(void **)(lbl_80367B70 + index * 4));
+        str = fn_8000E0E4(*(void **)(gMsgDebugPtrs + index * 4));
         if (str[0] != '$') {
             flag = 0;
         } else if (str[1] != 'R') {
@@ -122,7 +122,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     extern s32 lbl_80367B7C;
     extern u32 lbl_80367B78;
     extern u8 *lbl_80367B74;
-    extern u32 lbl_80367B70;
+    extern u32 gMsgDebugPtrs;
     extern f32 lbl_8036A800;
     extern f32 lbl_8036A804;
     extern f32 lbl_8036A808;
@@ -176,14 +176,14 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     Prim2D_AddPrim(5);
     fn_80007858((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     idx <<= 2;
-    str = *(void **)(lbl_80367B70 + idx);
+    str = *(void **)(gMsgDebugPtrs + idx);
     fn_80007124(str);
     fn_8000727C(lbl_8036A808);
     fn_80007290(r, g, b, 0xFF);
     Prim2D_EndPrim();
     Prim2D_AddPrim(5);
     fn_80007858((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0xB0), (f32)*(s16 *)((u8 *)arg2 + 0x32));
-    str = *(void **)(lbl_80367B70 + idx);
+    str = *(void **)(gMsgDebugPtrs + idx);
     if ((u32)str == 0) {
         str = lbl_80277238 + 0x85;
     } else {

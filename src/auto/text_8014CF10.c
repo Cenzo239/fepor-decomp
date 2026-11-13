@@ -545,16 +545,16 @@ void fn_8014DEA8(void) {
     void fn_8005C7C8(char *);
     void fn_800056CC(char *, ...);
     extern s32 lbl_80367B74;
-    extern s32 lbl_80367B70;
+    extern s32 gMsgDebugPtrs;
     extern s32 lbl_80367B78;
     extern u8 lbl_80277238[];
     char buffer[0x20];
     s32 i;
 
     fn_800C426C(lbl_80367B74);
-    fn_800C426C(lbl_80367B70);
+    fn_800C426C(gMsgDebugPtrs);
     lbl_80367B78 = 0;
-    lbl_80367B70 = 0;
+    gMsgDebugPtrs = 0;
     fn_8005B918((char *)lbl_80277238 + 0x28);
     for (i = 0; i < fn_8005B8CC(); i++) {
         if (fn_8005B888(i) == 0) {
@@ -572,7 +572,7 @@ void fn_8014DF68(void *arg0)
     extern u8 lbl_80277238[];
     extern s32 gUiInputFlags;
     extern s32 lbl_80367B84;
-    extern void **lbl_80367B70;
+    extern void **gMsgDebugPtrs;
 
     extern void fn_8000C070(void *, s32);
     extern void fn_800BDBC8(void *, void *);
@@ -589,7 +589,7 @@ void fn_8014DF68(void *arg0)
         gUiInputFlags &= ~1;
 
         fn_8011D908(
-            lbl_80367B70[lbl_80367B84],
+            gMsgDebugPtrs[lbl_80367B84],
             arg0
         );
     }
@@ -619,7 +619,7 @@ void MsgDebug_Init(void) {
     s32 strlen(char *);
     extern u8 lbl_80277238[];
     extern s32 lbl_80367B78;
-    extern u32 *lbl_80367B70;
+    extern u32 *gMsgDebugPtrs;
     extern u8 *lbl_80367B74;
     extern s32 lbl_80367B7C;
     extern s32 lbl_80367B80;
@@ -658,7 +658,7 @@ void MsgDebug_Init(void) {
         }
         i += 1;
     } while (i < 0x2800);
-    lbl_80367B70 = (u32 *)fn_800C42AC(lbl_80367B78 << 2);
+    gMsgDebugPtrs = (u32 *)fn_800C42AC(lbl_80367B78 << 2);
     lbl_80367B74 = (u8 *)fn_800C42AC(lbl_80367B78);
     lbl_80367B78 = 0;
     j = 0;
@@ -666,10 +666,10 @@ void MsgDebug_Init(void) {
         fn_8000D1B4(j);
         if (fn_80019CC0() == 5) {
             val = (u32)fn_8000D1B4(j);
-            arr = lbl_80367B70;
+            arr = gMsgDebugPtrs;
             idx = lbl_80367B78 << 2;
             *(u32 *)((u8 *)arr + idx) = val;
-            val = *(u32 *)((u8 *)lbl_80367B70 + (lbl_80367B78 << 2));
+            val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
             if (val == 0) {
                 flag = 0;
             } else {
@@ -686,7 +686,7 @@ void MsgDebug_Init(void) {
                 lbl_80367B74[lbl_80367B78] = 0;
             } else {
                 lbl_80367B74[lbl_80367B78] = 1;
-                val = *(u32 *)((u8 *)lbl_80367B70 + (lbl_80367B78 << 2));
+                val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
                 if (val == 0) {
                     flag = 0;
                 } else {
@@ -703,7 +703,7 @@ void MsgDebug_Init(void) {
                 if (flag != 0) {
                     lbl_80367B74[lbl_80367B78] = 2;
                 } else {
-                    val = *(u32 *)((u8 *)lbl_80367B70 + (lbl_80367B78 << 2));
+                    val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
                     if (val == 0) {
                         flag = 0;
                     } else {
