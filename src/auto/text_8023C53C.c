@@ -5451,7 +5451,7 @@ insert:
     return 1;
 }
 
-s32 fn_8024FCA8(u32 arg0, void *arg1)
+s32 AudioGroup_Register(u32 arg0, void *arg1)
 {
     void fn_80262378(void *, void *, void *);
 
@@ -9831,7 +9831,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
  s32 SampleKey_Insert(); void SampleKey_Remove(s32);
  s32 AudioWave_Insert(); void AudioWave_Remove(s32);
- void fn_8024FCA8(s32,s32); s32 fn_8024FD80();
+ void AudioGroup_Register(s32,s32); s32 fn_8024FD80();
  extern s32 *gAudioGroupState;
  u8 *node;
  switch(type) {
@@ -9864,7 +9864,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
   } else AudioWave_Remove(id);
   break;
  case 1:
-  if(remove==0) fn_8024FCA8(id,(s32)((u8*)gAudioGroupState+0x60C));
+  if(remove==0) AudioGroup_Register(id,(s32)((u8*)gAudioGroupState+0x60C));
   else fn_8024FD80(id,(s32)((u8*)gAudioGroupState+0x60C));
   break;
  }
