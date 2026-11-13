@@ -8837,7 +8837,7 @@ void fn_801C9724(void) {
     gGameFlags |= 1;
 }
 
-s32 fn_801C9734(void) {
+s32 CameraWin_OnCancel(void) {
     s32 String_Compare(void *, u32, u32, char *, u32);
     void String_Assign(void *, void *, u32, u32);
     void fn_800C992C(void *, const char *, u32);
@@ -9269,7 +9269,7 @@ void *CameraWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(void **)(*(u8 **)(self + 0x444) + 0xA4) = (void *)fn_801C9A88;
     *(void **)(*(u8 **)(self + 0x448) + 0xA4) = (void *)fn_801C9940;
     *(void **)(*(u8 **)(self + 0x44c) + 0xA4) = (void *)fn_801C98EC;
-    *(void **)(*(u8 **)(self + 0x450) + 0xA4) = (void *)fn_801C9734;
+    *(void **)(*(u8 **)(self + 0x450) + 0xA4) = (void *)CameraWin_OnCancel;
     *(void **)(self + 0x14) = *(void **)(self + 0x430);
     *(void **)(self + 0x54) = *(void **)(self + 0x434);
     *(void **)(self + 0x94) = *(void **)(self + 0x43c);
