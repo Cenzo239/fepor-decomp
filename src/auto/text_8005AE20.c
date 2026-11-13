@@ -7223,7 +7223,7 @@ void fn_8006E748(void)
     fn_80222EB4();
 }
 #pragma global_optimizer on
-void fn_8006E838(void *arg0)
+void DEMOInit(void *arg0)
 {
     void OSInit(void);
     void DVDInit(void);

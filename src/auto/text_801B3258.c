@@ -8711,7 +8711,7 @@ void fn_801C9460(void) {
     s32 VIGetTvFormat(void);
     u32 OSGetResetCode(void);
     s32 fn_8006E650(void);
-    void fn_8006E838(void *);
+    void DEMOInit(void *);
     void fn_8020602C(char *, s32, char *, ...);
     void fn_802217AC(void *, s32);
     void fn_80221A40(s32, s32);
@@ -8759,42 +8759,42 @@ void fn_801C9460(void) {
 
     if (lbl_803682A4 & 0x10000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
-            fn_8006E838(lbl_803682A8);
+            DEMOInit(lbl_803682A8);
             lbl_803682A4 &= ~0x40;
         } else {
             if (!(OSGetResetCode() & 1)) {
-                fn_8006E838(lbl_803682A8);
+                DEMOInit(lbl_803682A8);
                 lbl_803682A4 &= ~0x40;
             } else {
-                fn_8006E838(lbl_803682AC);
+                DEMOInit(lbl_803682AC);
                 lbl_803682A4 |= 0x40;
             }
             lbl_803682A4 |= 0x30;
         }
     } else if (lbl_803682A4 & 0x80000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
-            fn_8006E838(lbl_803682A8);
+            DEMOInit(lbl_803682A8);
             lbl_803682A4 &= ~0x40;
         } else {
             if (!(OSGetResetCode() & 1)) {
-                fn_8006E838(lbl_803682A8);
+                DEMOInit(lbl_803682A8);
                 lbl_803682A4 &= ~0x40;
             } else {
-                fn_8006E838(lbl_803682AC);
+                DEMOInit(lbl_803682AC);
                 lbl_803682A4 |= 0x40;
             }
             lbl_803682A4 |= 0x30;
         }
     } else if (lbl_803682A4 & 0x60000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 0x20)) {
-            fn_8006E838(lbl_803682A8);
+            DEMOInit(lbl_803682A8);
             lbl_803682A4 &= ~0x100;
         } else {
             if (!(OSGetResetCode() & 0x10)) {
-                fn_8006E838(lbl_803682A8);
+                DEMOInit(lbl_803682A8);
                 lbl_803682A4 &= ~0x100;
             } else {
-                fn_8006E838(lbl_803682AC);
+                DEMOInit(lbl_803682AC);
                 lbl_803682A4 |= 0x100;
             }
             lbl_803682A4 |= 0x30;
