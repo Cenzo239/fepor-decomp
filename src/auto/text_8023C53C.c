@@ -5372,16 +5372,16 @@ found4:
 
 s32 SampleKey_Insert(u16 id, s32 data, s16 type) {
  void Audio_Lock(void); void Audio_Unlock(void);
- extern SampleKey gSampleKeys[]; extern u16 lbl_80368A0C;
+ extern SampleKey gSampleKeys[]; extern u16 gSampleKeyCount;
  s32 i; s32 j; u16 count;
  Audio_Lock();
- count=lbl_80368A0C;
+ count=gSampleKeyCount;
  for(i=0;i<(s32)count && gSampleKeys[i].id<id;i++) {}
  if(i<(s32)count) {
   if(id!=gSampleKeys[i].id) {
    if(count<0x100U) {
     for(j=(s32)count-1;j>=i;j--) gSampleKeys[j+1]=gSampleKeys[j];
-    lbl_80368A0C++;
+    gSampleKeyCount++;
     goto insert;
    }
    Audio_Unlock(); return 0;
@@ -5389,7 +5389,7 @@ s32 SampleKey_Insert(u16 id, s32 data, s16 type) {
   gSampleKeys[i].ref++;
   Audio_Unlock(); return 0;
  }
- if(count<0x100U) {lbl_80368A0C++; goto insert;}
+ if(count<0x100U) {gSampleKeyCount++; goto insert;}
  Audio_Unlock(); return 0;
 insert:
  gSampleKeys[i].id=id;
@@ -5882,7 +5882,7 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
 {
     extern u8 lbl_803596D8[12];
     extern u16 gSampleKeys[];
-    extern u16 lbl_80368A0C;
+    extern u16 gSampleKeyCount;
     extern void *lbl_803689D0;
 
     void *fn_802612A0(void *, void *, s32, s32, s32 (*)(void *, void *));
@@ -5895,7 +5895,7 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
     result = fn_802612A0(
         lbl_803596D8,
         gSampleKeys,
-        lbl_80368A0C,
+        gSampleKeyCount,
         0xC,
         fn_8025093C
     );
@@ -5957,7 +5957,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
     extern u16 lbl_80368A18;
     extern u16 lbl_80368A10;
     extern u16 lbl_80368A0E;
-    extern u16 lbl_80368A0C;
+    extern u16 gSampleKeyCount;
     extern u16 lbl_80368A08;
     extern u16 gAudioTableCount;
     extern u16 gAudioTableRanges[];
@@ -5966,7 +5966,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
     lbl_80368A18 = 0;
     lbl_80368A10 = 0;
     lbl_80368A0E = 0;
-    lbl_80368A0C = 0;
+    gSampleKeyCount = 0;
     lbl_80368A08 = 0;
     gAudioTableCount = 0;
     for (i = 0; i < 0x200; i++) {
@@ -16690,7 +16690,7 @@ extern u8 lbl_80368AD0;
 #include "global.h"
 
 extern s32 lbl_80368AF8;
-extern u16 lbl_80368A0C;
+extern u16 gSampleKeyCount;
 extern u16 lbl_80368AFC;
 extern u16 gSampleKeys[];
 extern u16 lbl_803596F0[16];
