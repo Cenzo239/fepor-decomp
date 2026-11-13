@@ -1259,85 +1259,86 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
 }
 
 #pragma use_lmw_stmw on
-void Actor_LoadAnim(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
+/* Load an actor animation from a relative path under the actor base dir. */
+void Actor_LoadAnim(void *actor, void *relPath, s32 flag, s32 arg3, s32 arg4) {
     void String_Concat(void *, void *, void *);
     void String_Substr(void *, void *, s32, s32);
     void fn_800E574C(void *, void *, f32, s32, s32, s32, s32);
     char *fn_800DDB94(void *, void *);
     u8 fn_800E7AD4(void *, void *, void *, u8, u8);
     extern f32 lbl_8036A18C;
-    String sp54;
-    String sp48;
-    String sp3C;
-    String sp30;
-    String sp24;
-    String sp18;
-    String spC;
-    void *sp8;
+    String fullPath;
+    String pathStr;
+    String concat;
+    String prefix;
+    String cueName;
+    String cueCopy;
+    String mapped;
+    void *scratch;
     void *path;
     s32 a2;
     s32 a3;
     s32 a4;
     void *self;
-    void *unk_dc;
+    void *strMap;
     void *cstr;
 
-    path = arg1;
-    self = arg0;
-    a2 = arg2;
+    path = relPath;
+    self = actor;
+    a2 = flag;
     a3 = arg3;
     a4 = arg4;
-    sp54.size = 0;
-    sp54.cap = 0;
-    sp54.data = 0;
-    sp54.cap = 0;
+    fullPath.size = 0;
+    fullPath.cap = 0;
+    fullPath.data = 0;
+    fullPath.cap = 0;
     String_AssignCStr((u8 *)self + 0x178, path, strlen(path));
-    String_Init(&sp48, path, &sp8);
-    String_Concat(&sp3C, (u8 *)self + 0x154, &sp48);
-    String_Assign(&sp54, &sp3C, 0, -1);
-    String_Destroy(&sp3C, -1);
-    String_Destroy(&sp48, -1);
-    cstr = String_CStr(&sp54);
+    String_Init(&pathStr, path, &scratch);
+    String_Concat(&concat, (u8 *)self + 0x154, &pathStr);
+    String_Assign(&fullPath, &concat, 0, -1);
+    String_Destroy(&concat, -1);
+    String_Destroy(&pathStr, -1);
+    cstr = String_CStr(&fullPath);
     fn_800E574C(self, cstr, lbl_8036A18C, a3, a4, *(u8 *)((u8 *)self + 0x184), a2);
-    spC.cap = 0;
-    sp18.cap = 0;
-    sp24.cap = 0;
-    spC.size = 0;
-    spC.data = 0;
-    spC.cap = 0;
-    sp18.size = 0;
-    sp18.data = 0;
-    sp18.cap = 0;
-    sp24.size = 0;
-    sp24.data = 0;
-    sp24.cap = 0;
-    unk_dc = *(void **)((u8 *)self + 0xDC);
-    if (unk_dc == NULL) {
-        String_Destroy(&sp24, -1);
-        String_Destroy(&sp18, -1);
-        String_Destroy(&spC, -1);
+    mapped.cap = 0;
+    cueCopy.cap = 0;
+    cueName.cap = 0;
+    mapped.size = 0;
+    mapped.data = 0;
+    mapped.cap = 0;
+    cueCopy.size = 0;
+    cueCopy.data = 0;
+    cueCopy.cap = 0;
+    cueName.size = 0;
+    cueName.data = 0;
+    cueName.cap = 0;
+    strMap = *(void **)((u8 *)self + 0xDC);
+    if (strMap == NULL) {
+        String_Destroy(&cueName, -1);
+        String_Destroy(&cueCopy, -1);
+        String_Destroy(&mapped, -1);
     } else {
-        char *temp_r30;
+        char *mappedCstr;
         s32 n;
-        temp_r30 = fn_800DDB94(unk_dc, (u8 *)self + 0xBC);
-        String_AssignCStr(&spC, temp_r30, strlen(temp_r30));
+        mappedCstr = fn_800DDB94(strMap, (u8 *)self + 0xBC);
+        String_AssignCStr(&mapped, mappedCstr, strlen(mappedCstr));
         n = strlen((char *)((u8 *)gActorXmlStrs + 0x1C));
-        if (String_Compare(&spC, 0, (void *)spC.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
-            String_Destroy(&sp24, -1);
-            String_Destroy(&sp18, -1);
-            String_Destroy(&spC, -1);
+        if (String_Compare(&mapped, 0, (void *)mapped.size, (char *)((u32)gActorXmlStrs + 0x1C), n) == 0) {
+            String_Destroy(&cueName, -1);
+            String_Destroy(&cueCopy, -1);
+            String_Destroy(&mapped, -1);
         } else {
-            String_Substr(&sp30, &spC, 0, 0xB);
-            String_Assign(&sp18, &sp30, 0, -1);
-            String_Destroy(&sp30, -1);
-            String_Assign(&sp24, &sp18, 0, -1);
-            *(u8 *)((u8 *)self + 0x1A7) = fn_800E7AD4(*(void **)((u8 *)self + 0xAC), &sp24, *(void **)((u8 *)self + 0x1AC), *(u8 *)((u8 *)self + 0x1A2), *(u8 *)((u8 *)self + 0x1A3));
-            String_Destroy(&sp24, -1);
-            String_Destroy(&sp18, -1);
-            String_Destroy(&spC, -1);
+            String_Substr(&prefix, &mapped, 0, 0xB);
+            String_Assign(&cueCopy, &prefix, 0, -1);
+            String_Destroy(&prefix, -1);
+            String_Assign(&cueName, &cueCopy, 0, -1);
+            *(u8 *)((u8 *)self + 0x1A7) = fn_800E7AD4(*(void **)((u8 *)self + 0xAC), &cueName, *(void **)((u8 *)self + 0x1AC), *(u8 *)((u8 *)self + 0x1A2), *(u8 *)((u8 *)self + 0x1A3));
+            String_Destroy(&cueName, -1);
+            String_Destroy(&cueCopy, -1);
+            String_Destroy(&mapped, -1);
         }
     }
-    String_Destroy(&sp54, -1);
+    String_Destroy(&fullPath, -1);
 }
 #pragma use_lmw_stmw reset
 
