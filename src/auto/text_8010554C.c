@@ -407,7 +407,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void *fn_80107468(void *);
     s32 fn_80107874(void *, void *);
     void Dispos_ParseEntry(void *, u32 *, u8);
-    u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
+    u8 *Unit_ResolveWarpPos(void *, u8 *, u8 *, s32, s32, void *);
     void fn_80184750(void *, s32, s32, s32);
     s32 fn_801A1CC8(void);
     void strcpy(void *, void *);
@@ -469,7 +469,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                     }
                 case0:
                     if ((u8)(s32)fn_80107468(entry) != 0) {
-                        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+                        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
                         dst = entry + 0xC;
                         if (src != 0) {
                         copy0:
@@ -543,7 +543,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                     }
                     *(void **)(entry + 4) = unit;
                     if (unit != 0) {
-                        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+                        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
                         dst = entry + 0xC;
                         if (src != 0) {
                         copy2:
@@ -694,7 +694,7 @@ void fn_80106728(u8 *arg0) {
     void fn_8004F5EC(void *, s32);
     void *fn_80107468(void *);
     void Dispos_ParseEntry(void *, u32 *, u8);
-    u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
+    u8 *Unit_ResolveWarpPos(void *, u8 *, u8 *, s32, s32, void *);
     extern u16 gUnits[];
     u8 sp8[0x68];
     u8 idx;
@@ -738,7 +738,7 @@ check4:
     }
 case0:
     if ((u8)(s32)fn_80107468(entry) != 0) {
-        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
         dst = entry + 0xC;
         if (src != 0) {
         copy0:
@@ -812,7 +812,7 @@ case2:
     }
     *(void **)(entry + 4) = unit;
     if (unit != 0) {
-        src = fn_80107D64(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
+        src = Unit_ResolveWarpPos(*(void **)(entry + 4), entry + 0xA, entry + 0xB, 1, count, base);
         dst = entry + 0xC;
         if (src != 0) {
         copy2:
@@ -1458,7 +1458,7 @@ void Dispos_ParseEntry(u32 *cursor, u32 *out, u8 dispos_id) {
                 *(s8 *)((u8 *)parsed + 0xE));
 }
 
-s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
+s32 Unit_ResolveWarpPos(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     void *Map_Get(void);
     u8 fn_8004434C(void *, s32, s32);
     u8 fn_80040B1C(void *, s32, s32);
