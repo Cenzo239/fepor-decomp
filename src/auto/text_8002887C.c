@@ -131,7 +131,7 @@ void fn_80028B4C(s32 arg0) {
 
 void MapUi_HandleUnitSelect(void *arg0) {
     void Process_Goto(void *, s32);
-    u8 fn_800281F4(void *);
+    u8 Ui_CanConfirmUnitSelect(void *);
     void Ui_ConfirmUnitAction(void *);
     void MapUi_ShowUnitRanges(void *);
     void MapCursor_InitTrail(u8, u8, s32);
@@ -156,7 +156,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
         return;
     }
 
-    if ((u8)fn_800281F4(gUiContext) != 0) {
+    if ((u8)Ui_CanConfirmUnitSelect(gUiContext) != 0) {
         Ui_ConfirmUnitAction(gUiContext);
         unit = *(void **)gUiContext;
         MapUi_ShowUnitRanges(unit);

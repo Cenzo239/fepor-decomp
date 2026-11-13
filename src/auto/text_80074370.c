@@ -1305,7 +1305,7 @@ s32 fn_800766B0(void) {
 }
 
 s32 fn_800766D4(void) {
-    u8 fn_800281F4(void *);
+    u8 Ui_CanConfirmUnitSelect(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     extern u8 gUnitInfoPopup[];
     extern u8 gUiContext[24];
@@ -1313,7 +1313,7 @@ s32 fn_800766D4(void) {
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         return 0x40;
     }
-    if (fn_800281F4(gUiContext) == 0 && gUiContext[0x16] != 0) {
+    if (Ui_CanConfirmUnitSelect(gUiContext) == 0 && gUiContext[0x16] != 0) {
         return 0x10;
     }
     return 9;
