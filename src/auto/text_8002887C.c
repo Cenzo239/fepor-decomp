@@ -3205,7 +3205,7 @@ void fn_8002FBA8(s32 arg0) {
 
 #pragma dont_inline on
 void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     void fn_8005C8B4(void *);
     u8 fn_8005BA10(void *);
     void fn_8006EEFC(s32 *, void *);
@@ -3215,7 +3215,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 sp6C;
     s32 sp68;
 
-    sp6C = *fn_8018D900(1);
+    sp6C = *Ui_GetColor(1);
     if (arg0 != 0 && ((gBattleState[0x9D] >> 6) & 3) != 2) {
         fn_8005C8B4(lbl_802695F0 + 0x11C);
         if (fn_8005BA10(lbl_802695F0 + 0x11C) != 0) {

@@ -1216,7 +1216,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     s16 fn_800102BC(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     f64 fn_802380D0(f32);
@@ -1338,14 +1338,14 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         lx = left - half;
         ty = top - 0xA;
         Prim2D_SetRect((f32)lx, (f32)ty, (f32)sp34, (f32)sp36);
-        sp8 = *fn_8018D900(0x18);
+        sp8 = *Ui_GetColor(0x18);
         Prim2D_SetColorPacked(&sp8);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect((f32)((left + half) - (s16)sp34), (f32)ty, (f32)sp34, (f32)sp36);
         fn_800076EC();
-        spC = *fn_8018D900(0x18);
+        spC = *Ui_GetColor(0x18);
         Prim2D_SetColorPacked(&spC);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
@@ -1360,7 +1360,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
             Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)sp36);
-            sp10 = *fn_8018D900(0x18);
+            sp10 = *Ui_GetColor(0x18);
             Prim2D_SetColorPacked(&sp10);
             Prim2D_SetAlpha(alpha);
             Prim2D_EndPrim();

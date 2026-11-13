@@ -1206,7 +1206,7 @@ void Prim2D_AddPrim(u8 arg0) {
     s32 fn_80006264(void *, void *, s32);
     void fn_800062CC(void *, void *, s32);
     void OSPanic(char *, ...);
-    u8 *fn_8018D900(s32);
+    u8 *Ui_GetColor(s32);
 
     void *prev;
     void *node;
@@ -1335,7 +1335,7 @@ void Prim2D_AddPrim(u8 arg0) {
             *(f32 *)((u8 *)e + 0x1C) = f1;
             *(s16 *)((u8 *)e + 0x24) = z;
             *(s16 *)((u8 *)e + 0x26) = z;
-            p = fn_8018D900(1);
+            p = Ui_GetColor(1);
             *(u8 *)((u8 *)e + 0x18) = p[0];
             *(u8 *)((u8 *)e + 0x19) = p[1];
             *(u8 *)((u8 *)e + 0x1A) = p[2];

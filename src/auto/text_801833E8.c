@@ -179,7 +179,7 @@ s32 fn_8018361C(void) {
 
 void fn_80183624(void **arg0) {
     u8 *fn_8014C5A8(void *, u8);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     void Prim2D_SetColorPacked(s32 *);
     extern u8 gBattleState[];
     extern u8 lbl_803681F0;
@@ -202,7 +202,7 @@ void fn_80183624(void **arg0) {
             if (lbl_803681F0 == 0x32) {
                 mode = 7;
             }
-            sp8 = *fn_8018D900((u8)mode);
+            sp8 = *Ui_GetColor((u8)mode);
             Prim2D_SetColorPacked(&sp8);
         }
     }
@@ -3522,7 +3522,7 @@ extern f32 lbl_8036AD80;
 extern f32 lbl_8036AD84;
 #pragma optimization_level 4
 #pragma inline auto
-void* fn_8018D900(u8 arg0) {
+void* Ui_GetColor(u8 arg0) {
     u32 temp_r3;
     u32 temp_r6;
     u32 temp_r0;
@@ -3761,7 +3761,7 @@ void fn_8018DE24(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void **fn_8006EDD8(s32, s32);
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     extern u8 lbl_80279900[];
     extern u8 gBattleState[];
     extern f32 lbl_8036AD98;
@@ -3841,7 +3841,7 @@ void fn_8018DE24(void *arg0) {
         if (mode == 0) {
             fy = *(f32 *)(self + 0x3C);
             fx = *(f32 *)(self + 0x38);
-            *(s32 *)col = *fn_8018D900(2);
+            *(s32 *)col = *Ui_GetColor(2);
             p = fn_8006EDD8(*(s32 *)(self + 0x34), 0);
             tex = *p;
             h = *(u16 *)((u8 *)tex + 2);
@@ -3928,7 +3928,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     void *Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, ...);
     void Prim2D_AddPrim(s32);
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     void Prim2D_SetColorPacked(s32 *);
     void fn_80006B18(s32, s16, s32, s32, s32);
     void Prim2D_EndPrim(void);
@@ -3960,7 +3960,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     Text_Draw(y, x, 0xF, str);
     if (arg2 != 0 && M2C_FIELD(arg0, void **, 0x40) != NULL) {
         Prim2D_AddPrim(6);
-        spC = *fn_8018D900(2);
+        spC = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&spC);
         target = M2C_FIELD(arg0, void **, 0x40);
         count = 0;
@@ -4000,7 +4000,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         Prim2D_EndPrim();
     } else {
         Prim2D_AddPrim(6);
-        sp8 = *fn_8018D900(2);
+        sp8 = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&sp8);
         fn_80006B18(y + 0xA4, x, 0, 0, 0);
         Prim2D_EndPrim();
@@ -4143,7 +4143,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     s32 fn_800102BC(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80104E58(void);
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     extern u8 lbl_80279C40[];
     extern u8 gBattleState[];
     extern f32 lbl_8036ADF0;
@@ -4183,7 +4183,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
             arg1 = 2;
         }
         Prim2D_AddPrim(6);
-        spC = *fn_8018D900((u8)arg1);
+        spC = *Ui_GetColor((u8)arg1);
         Prim2D_SetColorPacked(&spC);
         fn_80006B18(y, (s16)x, 0, 0, *(s32 *)((u8 *)arg0 + 0x3C));
         Prim2D_EndPrim();
@@ -4193,7 +4193,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         Text_Draw(h, (s16)((arg1 = (s16)x) + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0xED));
         Text_Draw(y2, (s16)(arg1 + 0x20), 0xF, Msg_Expand((u8 *)lbl_80279C40 + 209));
         Prim2D_AddPrim(6);
-        sp8 = *fn_8018D900(2);
+        sp8 = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&sp8);
         fn_80006B18(y, (s16)(arg1 + 0x20), 0, 0, *(s32 *)(gBattleState + 0x18));
         Prim2D_EndPrim();

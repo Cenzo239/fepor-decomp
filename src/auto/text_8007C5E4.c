@@ -808,7 +808,7 @@ void fn_8007E2C4(void *arg0) {
 #pragma opt_common_subs off
  void fn_801A8CB8(void *,void *);
  void **fn_8006EDD8(void *,s32);
- u32 *fn_8018D900(s32);
+ u32 *Ui_GetColor(s32);
  void Prim2D_Begin(void);
  void Prim2D_BindTexture(void *,s32,s32);
  void Prim2D_PrepareTex(void);
@@ -850,7 +850,7 @@ void fn_8007E2C4(void *arg0) {
  dimw=(f32)dim[0]; dimh=(f32)dim[1];
  scaledw=dimw*lbl_80369430;
  scaledh=dimh*lbl_80369430;
- color=*fn_8018D900(1);
+ color=*Ui_GetColor(1);
  obj=lbl_803674F4;
  dim=*fn_8006EDD8(obj,0x1A);
  texh=(f32)dim[1]; texw=(f32)dim[0];
@@ -988,7 +988,7 @@ void fn_8007EAD8(void *arg0) {
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
-    Color *fn_8018D900(s32);
+    Color *Ui_GetColor(s32);
     void Prim2D_BindTexture(s32, s32, s32);
     void fn_80007870(f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -1081,7 +1081,7 @@ void fn_8007EAD8(void *arg0) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    c0 = *(u32 *)fn_8018D900(1);
+    c0 = *(u32 *)Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x1D);
     tw = (f32)tex[1];
@@ -1115,7 +1115,7 @@ void fn_8007EAD8(void *arg0) {
     barY = lbl_803694F0 + barBaseY;
     barW = (lbl_803694F8 + barX) - barX;
     for (i = 0; i < 5; i++) {
-        c1 = *(u32 *)fn_8018D900((u8)(i == 2));
+        c1 = *(u32 *)Ui_GetColor((u8)(i == 2));
         Prim2D_Begin();
         fn_8000A174(0, 0x12);
         Prim2D_PrepareTex();
@@ -1146,7 +1146,7 @@ void fn_8007EAD8(void *arg0) {
         do {
             f28v = Math_Ease(0, f23v, f26v, (f32)j, lbl_80369500);
             f27v = Math_Ease(0, f23v, f26v, (f32)(j + 3), lbl_80369500);
-            c2 = *(u32 *)fn_8018D900(1);
+            c2 = *(u32 *)Ui_GetColor(1);
             Prim2D_Begin();
             fn_8000A174(0, 0x12);
             Prim2D_PrepareTex();
@@ -1178,7 +1178,7 @@ void fn_8007EAD8(void *arg0) {
             tex = *fn_8006EDD8(lbl_803674F4, 0x28);
             sh = (f32)tex[0] * lbl_80369430;
             sw = (f32)tex[1] * lbl_80369430;
-            c3 = *(u32 *)fn_8018D900(1);
+            c3 = *(u32 *)Ui_GetColor(1);
             id = lbl_803674F4;
             tex = *fn_8006EDD8(id, 0x28);
             tw = (f32)tex[1];
@@ -1202,7 +1202,7 @@ void fn_8007EAD8(void *arg0) {
             tex = *fn_8006EDD8(lbl_803674F4, 0x28);
             sh = (f32)tex[0] * scaleA;
             sw = (f32)tex[1] * scaleA;
-            c4 = *(u32 *)fn_8018D900(1);
+            c4 = *(u32 *)Ui_GetColor(1);
             id = lbl_803674F4;
             tex = *fn_8006EDD8(id, 0x28);
             tw = (f32)tex[1];

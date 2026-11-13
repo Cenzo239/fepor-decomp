@@ -129,7 +129,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     u32 fn_80037D54(void *);
     u16 **fn_8006EDD8(s32, s32);
     void fn_80081E68(void *, void *, f32, f32);
-    Color *fn_8018D900(s32);
+    Color *Ui_GetColor(s32);
     s32 Str_Cmp(void *, void *);
     extern u8 gUiStrings[];
     extern s32 lbl_803674F4;
@@ -163,7 +163,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x19);
     sh = (f32)(u32)tex[0] * lbl_80369430;
     sw = (f32)(u32)tex[1] * lbl_80369430;
-    color = *fn_8018D900(1);
+    color = *Ui_GetColor(1);
     tex = *fn_8006EDD8((id = lbl_803674F4), 0x19);
     w = (f32)(u32)tex[1];
     h = (f32)(u32)tex[0];
@@ -352,7 +352,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
-    Color *fn_8018D900(s32);
+    Color *Ui_GetColor(s32);
     void Prim2D_BindTexture(s32, s32, s32);
     void fn_80007870(f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -424,7 +424,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
     sh = lbl_80369430 * tex[0];
     sw = lbl_80369430 * tex[1];
-    color = *fn_8018D900(1);
+    color = *Ui_GetColor(1);
     tex = *fn_8006EDD8((id = lbl_803674F4), 0x1D);
     w = tex[1];
     h = tex[0];

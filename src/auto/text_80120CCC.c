@@ -198,7 +198,7 @@ void fn_801210CC(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Ui_LoadAtlasTex(void *, void *, s32);
-    u32 *fn_8018D900(s32);
+    u32 *Ui_GetColor(s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     extern u32 gUiInputFlags;
@@ -259,7 +259,7 @@ void fn_801210CC(void *arg0) {
         fn_80007858(
             (f32)(s32)(x - (s32)((u32)M2C_FIELD(self, u8 *, 0x51) >> 1)),
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC));
-        color = *fn_8018D900(1);
+        color = *Ui_GetColor(1);
         Prim2D_SetColorPacked(&color);
         fn_80007124((u8 *)self + 0x30);
         Prim2D_EndPrim();
@@ -3688,7 +3688,7 @@ extern f32 lbl_8036A294;
 extern f32 lbl_8036A298;
 extern f64 lbl_8036A2A0;
 
-extern s32 *fn_8018D900(s32);
+extern s32 *Ui_GetColor(s32);
 extern void fn_80007124(void *);
 extern void Prim2D_SetColorPacked(s32 *);
 extern void Prim2D_SetColor(s32, s32, s32, s32);

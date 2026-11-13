@@ -2748,7 +2748,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
     void fn_80007870(f32);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
     void fn_80007220(u8, f32);
@@ -2789,7 +2789,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     Prim2D_AddPrim(6);
     fn_80007858(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));
     fn_80007870((f32)*(s8 *)((u8 *)temp_r29 + 2));
-    sp8 = *fn_8018D900(*(u8 *)((u8 *)temp_r29 + 0x12));
+    sp8 = *Ui_GetColor(*(u8 *)((u8 *)temp_r29 + 0x12));
     Prim2D_SetColorPacked(&sp8);
     Prim2D_SetAlpha(temp_r30);
     fn_80007220(*(u8 *)((u8 *)temp_r29 + 0x10), lbl_8036A154);

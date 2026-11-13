@@ -2081,7 +2081,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     void Ui_DrawWindowFrame(s16, s16, s32, s32, s32, s32);
     s32 Prim2D_PushZ(f32 *);
     void Ui_LoadAtlasTex(s32, void *, s32);
-    u8 *fn_8018D900(s32);
+    u8 *Ui_GetColor(s32);
     void Prim2D_Begin(void);
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
@@ -2116,7 +2116,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     Ui_DrawWindowFrame(arg0, arg1, arg2, arg3, arg5, arg6);
     saved = Prim2D_PushZ(&sp10);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xC);
-    color = fn_8018D900(0);
+    color = Ui_GetColor(0);
     rect = (s16 *)&gUiJobPersonalIconUv;
     spC[0] = color[0];
     w = (s16)(rect[2] - rect[0]);
@@ -2676,7 +2676,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     s32 fn_800102BC(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_8008BC94(s32, s32, s32);
-    s32 *fn_8018D900(s32);
+    s32 *Ui_GetColor(s32);
     extern s32 gUiTexAtlas;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80368008;
     extern f32 lbl_8036A874;
@@ -2731,7 +2731,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     x = y + x;
     Text_Draw((s16)(flags + 0x40), (s16)x, 0xF, str);
     Prim2D_AddPrim(6);
-    sp8 = *fn_8018D900(2);
+    sp8 = *Ui_GetColor(2);
     Prim2D_SetColorPacked(&sp8);
     fn_80006B18(flags + 0xC0, (s16)x, 0, 0, (u8)a2);
     Prim2D_EndPrim();

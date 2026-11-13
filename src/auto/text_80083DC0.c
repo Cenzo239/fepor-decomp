@@ -130,7 +130,7 @@ void fn_80083F08(void *arg0) {
     void *fn_800A8978(u32);
     void *fn_800A8A88(s32);
     s32 fn_801660A8(void *);
-    Color *fn_8018D900(s32);
+    Color *Ui_GetColor(s32);
     void PSMTXCopy(f32 *, void *);
     void PSMTXConcat(f32 *, f32 *, f32 *);
     void PSMTXRotRad(f32 *, s32, f32);
@@ -239,7 +239,7 @@ void fn_80083F08(void *arg0) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x1C);
         sh = (f32)tex[0] * lbl_80369430;
         sw = (f32)tex[1] * lbl_80369430;
-        col0 = *fn_8018D900(1);
+        col0 = *Ui_GetColor(1);
         id = lbl_803674F4;
         tex = *fn_8006EDD8(id, 0x1C);
         tw = (f32)tex[1];
@@ -263,7 +263,7 @@ void fn_80083F08(void *arg0) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x15);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    col1 = *fn_8018D900(1);
+    col1 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x15);
     tw = (f32)tex[1];
@@ -294,7 +294,7 @@ void fn_80083F08(void *arg0) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x1E);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    col2 = *fn_8018D900(1);
+    col2 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x1E);
     tw = (f32)tex[1];
@@ -316,7 +316,7 @@ void fn_80083F08(void *arg0) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x22);
         sh = (f32)tex[0] * lbl_80369430;
         sw = (f32)tex[1] * lbl_80369430;
-        col3 = *fn_8018D900(0xA);
+        col3 = *Ui_GetColor(0xA);
         id = lbl_803674F4;
         tex = *fn_8006EDD8(id, 0x22);
         tw = (f32)tex[1];
@@ -337,7 +337,7 @@ void fn_80083F08(void *arg0) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x22);
         sh = (f32)tex[0] * lbl_80369430;
         sw = (f32)tex[1] * lbl_80369430;
-        col3 = *fn_8018D900(0xB);
+        col3 = *Ui_GetColor(0xB);
         id = lbl_803674F4;
         tex = *fn_8006EDD8(id, 0x22);
         tw = (f32)tex[1];
@@ -358,7 +358,7 @@ void fn_80083F08(void *arg0) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x23);
         sh = (f32)tex[0] * lbl_80369430;
         sw = (f32)tex[1] * lbl_80369430;
-        col4 = *fn_8018D900(0xA);
+        col4 = *Ui_GetColor(0xA);
         id = lbl_803674F4;
         tex = *fn_8006EDD8(id, 0x23);
         tw = (f32)tex[1];
@@ -379,7 +379,7 @@ void fn_80083F08(void *arg0) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x23);
         sh = (f32)tex[0] * lbl_80369430;
         sw = (f32)tex[1] * lbl_80369430;
-        col5 = *fn_8018D900(0xB);
+        col5 = *Ui_GetColor(0xB);
         id = lbl_803674F4;
         tex = *fn_8006EDD8(id, 0x23);
         tw = (f32)tex[1];

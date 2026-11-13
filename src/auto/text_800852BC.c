@@ -183,7 +183,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddZ(f32);
     u16 **fn_8006EDD8(s32, s32);
-    Color *fn_8018D900(s32);
+    Color *Ui_GetColor(s32);
     void Prim2D_BindTexture(s32, s32, s32);
     void fn_80007870(f32);
     void Prim2D_EmitQuad(void);
@@ -231,7 +231,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x45);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    c0 = *fn_8018D900(1);
+    c0 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x45);
     tw = (f32)tex[1];
@@ -250,7 +250,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x47);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    c1 = *fn_8018D900(1);
+    c1 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x47);
     tw = (f32)tex[1];
@@ -271,7 +271,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x4A);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    c2 = *fn_8018D900(1);
+    c2 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x4A);
     tw = (f32)tex[1];
@@ -292,7 +292,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     tex = *fn_8006EDD8(lbl_803674F4, 0x4C);
     sh = (f32)tex[0] * lbl_80369430;
     sw = (f32)tex[1] * lbl_80369430;
-    c3 = *fn_8018D900(1);
+    c3 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x4C);
     tw = (f32)tex[1];
@@ -308,7 +308,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    c4 = *fn_8018D900(1);
+    c4 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x46);
     tw = (f32)tex[1];
@@ -329,7 +329,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    c5 = *fn_8018D900(1);
+    c5 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x4B);
     tw = (f32)tex[1];
@@ -346,7 +346,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    c6 = *fn_8018D900(1);
+    c6 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x48);
     tw = (f32)tex[1];
@@ -364,7 +364,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    c7 = *fn_8018D900(1);
+    c7 = *Ui_GetColor(1);
     id = lbl_803674F4;
     tex = *fn_8006EDD8(id, 0x49);
     tw = (f32)tex[1];
@@ -399,7 +399,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void **fn_8006EDD8(void *, s32);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     extern void *lbl_803674F4;
     extern f64 lbl_80369440;
     extern f32 lbl_80369418;
@@ -451,7 +451,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     f32 yMid;
     f32 scale;
 
-    sp30 = *fn_8018D900((u8)(arg1 + 0x24));
+    sp30 = *Ui_GetColor((u8)(arg1 + 0x24));
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x21);
     th = (f32)tex[1];
@@ -476,7 +476,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp1C = *fn_8018D900(1);
+    sp1C = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xC);
     th = (f32)tex[1];
@@ -496,7 +496,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp18 = *fn_8018D900(1);
+    sp18 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xD);
     th = (f32)tex[1];
@@ -518,7 +518,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp14 = *fn_8018D900(1);
+    sp14 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xE);
     th = (f32)tex[1];
@@ -540,7 +540,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp10 = *fn_8018D900(1);
+    sp10 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xF);
     th = (f32)tex[1];
@@ -557,7 +557,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp2C = *fn_8018D900(1);
+    sp2C = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 4);
     th = (f32)tex[1];
@@ -575,7 +575,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp28 = *fn_8018D900(1);
+    sp28 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x10);
     th = (f32)tex[1];
@@ -592,7 +592,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp24 = *fn_8018D900(1);
+    sp24 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x11);
     th = (f32)tex[1];
@@ -609,7 +609,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp20 = *fn_8018D900(1);
+    sp20 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x12);
     th = (f32)tex[1];
@@ -632,7 +632,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
         scale = lbl_80369430;
         sw = (f32)tex[0] * scale;
         sh = (f32)tex[1] * scale;
-        spC = *fn_8018D900(1);
+        spC = *Ui_GetColor(1);
         mgr = lbl_803674F4;
         tex = (u16 *)*fn_8006EDD8(mgr, 0x13);
         th = (f32)tex[1];
@@ -653,7 +653,7 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
         scale = lbl_80369430;
         sw = (f32)tex[0] * scale;
         sh = (f32)tex[1] * scale;
-        sp8 = *fn_8018D900(1);
+        sp8 = *Ui_GetColor(1);
         mgr = lbl_803674F4;
         tex = (u16 *)*fn_8006EDD8(mgr, 0x14);
         th = (f32)tex[1];
@@ -689,7 +689,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void **fn_8006EDD8(void *, s32);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     extern void *lbl_803674F4;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
@@ -724,7 +724,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     f32 tmp;
     f32 scale;
 
-    sp28 = *fn_8018D900((u8)(arg1 + 0x24));
+    sp28 = *Ui_GetColor((u8)(arg1 + 0x24));
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x21);
     th = (f32)tex[1];
@@ -749,7 +749,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp14 = *fn_8018D900(1);
+    sp14 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 6);
     th = (f32)tex[1];
@@ -769,7 +769,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp10 = *fn_8018D900(1);
+    sp10 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 7);
     th = (f32)tex[1];
@@ -791,7 +791,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    spC = *fn_8018D900(1);
+    spC = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 8);
     th = (f32)tex[1];
@@ -813,7 +813,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     scale = lbl_80369430;
     sw = (f32)tex[0] * scale;
     sh = (f32)tex[1] * scale;
-    sp8 = *fn_8018D900(1);
+    sp8 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 9);
     th = (f32)tex[1];
@@ -829,7 +829,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp24 = *fn_8018D900(1);
+    sp24 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xA);
     th = (f32)tex[1];
@@ -847,7 +847,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp20 = *fn_8018D900(1);
+    sp20 = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xB);
     th = (f32)tex[1];
@@ -864,7 +864,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    sp1C = *fn_8018D900(1);
+    sp1C = *Ui_GetColor(1);
     mgr = lbl_803674F4;
     tex = (u16 *)*fn_8006EDD8(mgr, 5);
     th = (f32)tex[1];
@@ -885,7 +885,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
             Prim2D_EmitQuad();
             Prim2D_EndPrim();
 
-            sp18 = *fn_8018D900(1);
+            sp18 = *Ui_GetColor(1);
             mgr = lbl_803674F4;
             tex = (u16 *)*fn_8006EDD8(mgr, 5);
             tw = (f32)tex[0];
@@ -923,7 +923,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void **fn_8006EDD8(void *, s32);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     extern void *lbl_803674F4;
     extern f64 lbl_80369440;
     extern f32 lbl_80369418;
@@ -959,7 +959,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     f32 xa, ya, yb, xb;
     f32 t0, t1;
 
-    colp = fn_8018D900((u8)(arg1 + 0x24));
+    colp = Ui_GetColor((u8)(arg1 + 0x24));
     mgr = lbl_803674F4;
     sp28 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x21);
@@ -986,7 +986,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     t1 = (f32)(u32)tex[1];
     sw = t0 * lbl_80369430;
     sh = t1 * lbl_80369430;
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp14 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 0);
@@ -1008,7 +1008,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     t1 = (f32)(u32)tex[1];
     sw = t0 * lbl_80369430;
     sh = t1 * lbl_80369430;
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp10 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 1);
@@ -1032,7 +1032,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     t1 = (f32)(u32)tex[1];
     sw = t0 * lbl_80369430;
     sh = t1 * lbl_80369430;
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     spC = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 2);
@@ -1056,7 +1056,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     t1 = (f32)(u32)tex[1];
     sw = t0 * lbl_80369430;
     sh = t1 * lbl_80369430;
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp8 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 3);
@@ -1073,7 +1073,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp24 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 4);
@@ -1092,7 +1092,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp20 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 4);
@@ -1110,7 +1110,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp1C = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 5);
@@ -1130,7 +1130,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    colp = fn_8018D900(1);
+    colp = Ui_GetColor(1);
     mgr = lbl_803674F4;
     sp18 = *colp;
     tex = (u16 *)*fn_8006EDD8(mgr, 5);
@@ -2452,7 +2452,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
-    s32 *fn_8018D900(u8);
+    s32 *Ui_GetColor(u8);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
     void Prim2D_EndPrim(void);
@@ -2487,17 +2487,17 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     Prim2D_SetQuadMin((f32)width, (f32)(y - 0xA), lbl_803696E0, lbl_803696E0);
     width = lo + width; bottom = (y + hi) - 0xA;
     Prim2D_SetQuadMax((f32)width, (f32)bottom, (f32)lo, (f32)hi);
-    Prim2D_EmitQuad(); col0 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col0); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col0 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col0); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
     Prim2D_AddPrim(1); x += half; half = x - lo;
     Prim2D_SetQuadMin((f32)half, (f32)(y - 0xA), (f32)lo, lbl_803696E0);
     Prim2D_SetQuadMax((f32)x, (f32)bottom, lbl_803696E0, (f32)hi);
-    Prim2D_EmitQuad(); col1 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col1); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col1 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col1); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
     Ui_LoadAtlasTex(handle, sp.buf, 0x44);
     sp.w = fn_80222A80(sp.buf); sp.h = fn_80222A90(sp.buf);
     Prim2D_Begin(); fn_8000A174(sp.buf, 0x11); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
     Prim2D_SetQuadMin((f32)width, (f32)(y - 0xA), lbl_803696E0, lbl_803696E0);
     Prim2D_SetQuadMax((f32)half, (f32)bottom, (f32)(u32)sp.w, (f32)(u32)sp.h);
-    Prim2D_EmitQuad(); col2 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col2 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
 }
 u16 fn_8008AF9C(s32 arg0, s32 arg1) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
