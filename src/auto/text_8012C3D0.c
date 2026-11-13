@@ -2950,57 +2950,58 @@ void *fn_801317B0(s32 arg0, s32 arg1) {
     }
 }
 
-void Ui_GetSelectMenuIconRect(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5)
+/* Return the atlas UV rect for select-menu icon index. */
+void Ui_GetSelectMenuIconRect(s32 unused, s32 index, s32 *left, s32 *top, s32 *right, s32 *bottom)
 {
-  switch (arg1)
+  switch (index)
   {
     case 0:
-      *arg2 = 0;
-      *arg3 = 0;
-      *arg4 = 0x30;
-      *arg5 = 0x14;
+      *left = 0;
+      *top = 0;
+      *right = 0x30;
+      *bottom = 0x14;
       return;
 
     case 1:
-      *arg2 = 0;
-      *arg3 = 0x154;
-      *arg4 = 0x30;
-      *arg5 = 0x168;
+      *left = 0;
+      *top = 0x154;
+      *right = 0x30;
+      *bottom = 0x168;
       return;
 
     case 2:
-      *arg2 = 0;
-      *arg3 = 0x168;
-      *arg4 = 0x30;
-      *arg5 = 0x17c;
+      *left = 0;
+      *top = 0x168;
+      *right = 0x30;
+      *bottom = 0x17c;
       return;
 
     case 3:
-      *arg2 = 0;
-      *arg3 = 0x17c;
-      *arg4 = 0x30;
-      *arg5 = 0x190;
+      *left = 0;
+      *top = 0x17c;
+      *right = 0x30;
+      *bottom = 0x190;
       return;
 
     case 4:
-      *arg2 = 0;
-      *arg3 = 0x190;
-      *arg4 = 0x30;
-      *arg5 = 0x1a4;
+      *left = 0;
+      *top = 0x190;
+      *right = 0x30;
+      *bottom = 0x1a4;
       return;
 
     case 5:
-      *arg2 = 0;
-      *arg3 = 0x1a4;
-      *arg4 = 0x30;
-      *arg5 = 0x1b8;
+      *left = 0;
+      *top = 0x1a4;
+      *right = 0x30;
+      *bottom = 0x1b8;
       return;
 
     case 6:
-      *arg2 = 0;
-      *arg3 = 0x1b8;
-      *arg4 = 0x30;
-      *arg5 = 0x1cc;
+      *left = 0;
+      *top = 0x1b8;
+      *right = 0x30;
+      *bottom = 0x1cc;
       return;
   }
 }
