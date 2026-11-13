@@ -8613,7 +8613,7 @@ void* fn_800DC0BC(void* arg0, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-extern "C" void *fn_800DC1E4(void *arg0, void *arg1, void *arg2, void *arg3)
+extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
 {
     extern char lbl_802716A8[];
     extern u8 lbl_8028DF20[];
@@ -11164,17 +11164,18 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
 }
 #pragma cplusplus off
 
-#pragma optimization_level 2
-void fn_800E2138(s32 *out, s32 *in, s32 idx) {
-    s32 sp[2];
+#pragma optimization_level 1
+void fn_800E2138(s32 *out, s32 *in, s32 idx)
+{
+    struct { s32 a; s32 b; } tmp;
     s32 p;
 
-    sp[0] = in[0];
-    p = sp[0] + (idx << 2);
-    sp[1] = in[1];
+    tmp.a = in[0];
+    p = tmp.a + (idx << 2);
+    tmp.b = in[1];
     out[0] = p;
-    sp[0] = p;
-    out[1] = sp[1];
+    tmp.a = p;
+    out[1] = tmp.b;
 }
 #pragma optimization_level reset
 s32 fn_800E2168(s32 *arg0, s32 *arg1) {
@@ -15386,6 +15387,7 @@ void fn_800EB80C(void) {
     gCardWork[0xA01A] = 0;
 }
 
+#pragma peephole off
 s32 fn_800EB854(void) {
     extern u8 gCardWork[];
     s32 result = 0;
@@ -15396,7 +15398,7 @@ s32 fn_800EB854(void) {
     }
     return result;
 }
-
+#pragma peephole on
 s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + arg1 + arg2;
 }
