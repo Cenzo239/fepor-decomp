@@ -2935,6 +2935,7 @@ void fn_801262A8(s32 arg0) {
     fn_8014C718(lbl_80330708, arg0);
 }
 
+/* Register tutorial/script command names and their handlers. */
 void Script_RegisterCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 gScriptCmdNames[];
