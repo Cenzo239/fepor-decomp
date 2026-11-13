@@ -134,7 +134,7 @@ void fn_801FC980(u32 arg0, f32 farg0)
 {
     void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
-    extern u8 lbl_8029B590[];
+    extern u8 gFallingParticleExProc[];
     extern char lbl_80281EC8[];
     extern u8 gFallingParticleTex;
     extern f32 gFloatZero;
@@ -147,7 +147,7 @@ void fn_801FC980(u32 arg0, f32 farg0)
     if (arg0 == 0) {
         arg0 = 3;
     }
-    obj = Process_Create(lbl_8029B590, arg0);
+    obj = Process_Create(gFallingParticleExProc, arg0);
     if (f <= gFloatZero) {
         f = lbl_8036BB00;
     }
