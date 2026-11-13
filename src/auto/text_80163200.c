@@ -7355,7 +7355,7 @@ extern "C" void fn_80171374(void *arg0) {
 #pragma cplusplus reset
 #pragma opt_common_subs on
 
-void fn_80171B18(void *arg0) {
+void Ui_RestoreUnitListAfterDetail(void *arg0) {
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     s16 UnitInv_FindFilledUp(void *, s32);
