@@ -13353,11 +13353,11 @@ void fn_800E9A10(s32 arg0) {
         u8 busy;
     };
     s32 fn_8021BA54(s32, void (*)(void));
-    void fn_800EB80C(void);
+    void Card_AsyncDone(void);
     extern struct CardWork gCardWork;
 
     gCardWork.busy = 1;
-    gCardWork.result = fn_8021BA54(gCardWork.chan, fn_800EB80C);
+    gCardWork.result = fn_8021BA54(gCardWork.chan, Card_AsyncDone);
     if (gCardWork.result < 0) {
         Process_Goto(arg0, 0x63);
         gCardWork.busy = 0;
@@ -13452,7 +13452,7 @@ void fn_800E9CE4(s32 arg0) {
     u32 *fn_800C4638(s32, void *, s32);
     void fn_800C4588(u32 *);
     s32 fn_8021CAB4(void *, s32, s32, s32, void *);
-    extern void fn_800EB80C;
+    extern void Card_AsyncDone;
     extern u8 gCardWork[];
     extern u8 gCardStrings[];
 
@@ -13581,7 +13581,7 @@ void fn_800E9CE4(s32 arg0) {
             {
                 u8 *b = gCardWork + 0x10000;
                 b[-0x5FE6] = 1;
-                *(s32 *)(base - 0x5FFC) = fn_8021CAB4(b - 0x5FE4, buf, 0x2000, 0, &fn_800EB80C);
+                *(s32 *)(base - 0x5FFC) = fn_8021CAB4(b - 0x5FE4, buf, 0x2000, 0, &Card_AsyncDone);
                 if (*(s32 *)(base - 0x5FFC) < 0) {
                     Process_Goto(self, 0x63);
                     b[-0x5FE6] = 0;
@@ -13703,7 +13703,7 @@ void fn_800EA8F4(s32 arg0) {
     u32 *fn_800C4638(s32, void *, s32);
     void fn_800C4588(u32 *);
     s32 fn_8021CAB4(void *, s32, s32, s32, void *);
-    extern void fn_800EB80C;
+    extern void Card_AsyncDone;
     extern u8 gCardWork[];
     extern u8 gCardStrings[];
 
@@ -13795,7 +13795,7 @@ void fn_800EA8F4(s32 arg0) {
         fn_80006298(buf + 0x1C00, (s32)(crc ^ ~0U), 8);
         fn_800C4588(table);
         *(base2 - 0x5FE6) = 1;
-        *(s32 *)(base - 0x5FFC) = fn_8021CAB4(base2 - 0x5FE4, buf, 0x2000, 0, &fn_800EB80C);
+        *(s32 *)(base - 0x5FFC) = fn_8021CAB4(base2 - 0x5FE4, buf, 0x2000, 0, &Card_AsyncDone);
         if (*(s32 *)(base - 0x5FFC) < 0) {
             Process_Goto(self, 0x63);
             *(base2 - 0x5FE6) = 0;
@@ -13819,7 +13819,7 @@ void Card_SetNoCopyAttr(s32 proc) {
         u8 unkA01B;
         u8 fileInfo[0x14];
     };
-    void fn_800EB80C(void);
+    void Card_AsyncDone(void);
     void Process_Goto(s32, s32);
     s32 Card_GetFileAttr(s32, s32, u8 *);
     s32 Card_SetFileAttr(s32, s32, u8, void *);
@@ -13840,7 +13840,7 @@ void Card_SetNoCopyAttr(s32 proc) {
         Card_GetFileAttr(gCardWork.chan, fileNo, &attr);
         attr |= 8;
         gCardWork.busy = 1;
-        gCardWork.result = Card_SetFileAttr(gCardWork.chan, fileNo, attr, fn_800EB80C);
+        gCardWork.result = Card_SetFileAttr(gCardWork.chan, fileNo, attr, Card_AsyncDone);
         if (gCardWork.result < 0) {
             Process_Goto(proc, 0x63);
             gCardWork.busy = 0;
@@ -13863,7 +13863,7 @@ void Card_CreateSaveFile(s32 arg0) {
         u8 unkA01B;
         u8 fileInfo[0x14];
     };
-    void fn_800EB80C(void);
+    void Card_AsyncDone(void);
     s32 CARDCreateAsync(s32, char *, u32, void *, void *);
     extern struct CardWork gCardWork;
     extern char gCardStrings[];
@@ -13879,7 +13879,7 @@ void Card_CreateSaveFile(s32 arg0) {
     if (skip == 0) {
         gCardWork.busy = 1;
         gCardWork.result = CARDCreateAsync(gCardWork.chan, gCardStrings + 0x70, 0x26000,
-                                          gCardWork.fileInfo, fn_800EB80C);
+                                          gCardWork.fileInfo, Card_AsyncDone);
         if (gCardWork.result < 0) {
             Process_Goto(arg0, 0x63);
             gCardWork.busy = 0;
@@ -13933,14 +13933,14 @@ void fn_800EB2DC(s32 arg0) {
         u8 unkA019;
         u8 busy;
     };
-    void fn_800EB80C(void);
+    void Card_AsyncDone(void);
     extern struct CardWork gCardWork;
 
     switch (gCardWork.result) {
     case 0:
     case -6:
         gCardWork.busy = 1;
-        gCardWork.result = fn_8021A7D4(gCardWork.chan, fn_800EB80C);
+        gCardWork.result = fn_8021A7D4(gCardWork.chan, Card_AsyncDone);
         if (gCardWork.result < 0) {
             Process_Goto(arg0, 0x50);
         }
@@ -13962,7 +13962,7 @@ void fn_800EB374(s32 arg0) {
         u8 busy;
     };
     void fn_800EB7E4(void);
-    void fn_800EB80C(void);
+    void Card_AsyncDone(void);
     extern struct CardWork gCardWork;
     u8 ok;
 
@@ -13980,7 +13980,7 @@ void fn_800EB374(s32 arg0) {
         return;
     }
     gCardWork.busy = 1;
-    gCardWork.result = fn_8021AFD0(gCardWork.chan, gCardWork.workArea, fn_800EB7E4, fn_800EB80C);
+    gCardWork.result = fn_8021AFD0(gCardWork.chan, gCardWork.workArea, fn_800EB7E4, Card_AsyncDone);
 }
 
 s32 fn_800EB428(s32 arg0) {
@@ -14150,7 +14150,7 @@ void fn_800EB7E4(void) {
     *(s32 *)(gCardWork + 0xA004) = -3;
 }
 
-void fn_800EB80C(void) {
+void Card_AsyncDone(void) {
     s32 fn_80217C34(s32);
     extern u8 gCardWork[];
 
