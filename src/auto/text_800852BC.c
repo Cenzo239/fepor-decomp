@@ -89,7 +89,7 @@ void Ui_DrawUnitInfo(void *proc) {
     extern s32 lbl_8036940C;
     extern f32 lbl_80369418;
     extern f32 gUiCaptionBarY0;
-    extern f32 lbl_80369420;
+    extern f32 gUiCaptionBarX1;
     extern f32 lbl_80369424;
     extern f32 lbl_80369428;
     extern f32 lbl_8036942C;
@@ -136,7 +136,7 @@ void Ui_DrawUnitInfo(void *proc) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369418, gUiCaptionBarY0, lbl_80369418, lbl_80369418);
-        Prim2D_SetQuadMax(lbl_80369420, lbl_80369424, lbl_80369418, lbl_80369418);
+        Prim2D_SetQuadMax(gUiCaptionBarX1, lbl_80369424, lbl_80369418, lbl_80369418);
         colorA3 = lbl_80369404;
         colorA2 = lbl_80369400;
         colorA1 = lbl_8036C464;
@@ -146,7 +146,7 @@ void Ui_DrawUnitInfo(void *proc) {
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369418, lbl_80369424, lbl_80369418, lbl_80369418);
-        Prim2D_SetQuadMax(lbl_80369420, lbl_80369428, lbl_80369418, lbl_80369418);
+        Prim2D_SetQuadMax(gUiCaptionBarX1, lbl_80369428, lbl_80369418, lbl_80369418);
         colorB3 = lbl_8036C46C;
         colorB2 = lbl_8036C468;
         colorB1 = lbl_8036940C;

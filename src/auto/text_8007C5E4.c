@@ -260,7 +260,7 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     extern s32 lbl_8036940C;
     extern f32 lbl_80369418;
     extern f32 gUiCaptionBarY0;
-    extern f32 lbl_80369420;
+    extern f32 gUiCaptionBarX1;
     extern f32 lbl_80369424;
     extern f32 lbl_80369428;
     extern f32 lbl_8036942C;
@@ -284,7 +284,7 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, gUiCaptionBarY0, lbl_80369418, lbl_80369418);
-    Prim2D_SetQuadMax(lbl_80369420, lbl_80369424, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(gUiCaptionBarX1, lbl_80369424, lbl_80369418, lbl_80369418);
     sp14 = lbl_80369404;
     sp10 = lbl_80369400;
     spC = lbl_8036C464;
@@ -294,7 +294,7 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, lbl_80369424, lbl_80369418, lbl_80369418);
-    Prim2D_SetQuadMax(lbl_80369420, lbl_80369428, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(gUiCaptionBarX1, lbl_80369428, lbl_80369418, lbl_80369418);
     sp24 = lbl_8036C46C;
     sp20 = lbl_8036C468;
     sp1C = lbl_8036940C;
