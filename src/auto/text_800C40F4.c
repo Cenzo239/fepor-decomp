@@ -14361,7 +14361,7 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(void *, char *, u32);
     void fn_800DF50C(void *);
     void fn_800DF478(void *, f32, f32, f32);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     u32 strlen(const char *);
     extern char lbl_80272470[];
     extern u8 lbl_8028E2B0[];
@@ -14532,7 +14532,7 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     if (z0 == *(f32 *)((u8 *)arg0 + 0x100)) {
         *(f32 *)((u8 *)arg0 + 0x100) = lbl_80369F8C;
     }
-    *(void **)((u8 *)arg0 + 0x128) = fn_80068548();
+    *(void **)((u8 *)arg0 + 0x128) = Camera_Get();
     fn_800DF478((u8 *)arg0 + 0x134,
                 *(f32 *)((u8 *)arg0 + 0xF0),
                 *(f32 *)((u8 *)arg0 + 0xF4),
@@ -16306,7 +16306,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void *fn_80060664(void);
     void *fn_80067FDC(void);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     void fn_80069010(void *, void *);
     void fn_800690D4(void *, void *, void *);
     void fn_80069354(void *, void *, void *, void *, s32);
@@ -16411,7 +16411,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_800690D4(r24, r26, self);
     GMaterial_SetupColor(r24, r25v, r26, self);
     fn_80069354(r24, r25v, r26, r27, arg1s);
-    cam = fn_80068548();
+    cam = Camera_Get();
     *(s32 *)&sp88[0] = *(s32 *)(tbl + 0x58);
     *(s32 *)&sp88[1] = *(s32 *)(tbl + 0x5C);
     *(s32 *)&sp88[2] = *(s32 *)(tbl + 0x60);
@@ -16572,7 +16572,7 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32* arg3)
 
 s32 Map_SetupProjTexTev(void) {
     void fn_8004D5D4(void *);
-    s32 fn_80068548(void);
+    s32 Camera_Get(void);
     s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
@@ -16610,7 +16610,7 @@ s32 Map_SetupProjTexTev(void) {
     temp_r31 = GMaterial_AllocTevStage();
     temp_r29 = GMaterial_AllocTexMap();
     temp_r28 = GMaterial_AllocMtx();
-    temp_r3 = fn_80068548();
+    temp_r3 = Camera_Get();
     fn_802026E4(sp58, (void *)(temp_r3 + 0xD4), (void *)(temp_r3 + 0xEC), (void *)(temp_r3 + 0xE0));
     fn_80202870(sp88, lbl_80369FCC, lbl_80369FD0, lbl_80369FC8, lbl_80369FE0, lbl_80369FC8, lbl_80369FC8);
     fn_8006A384(sp28);
@@ -16636,7 +16636,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     void *fn_80060664(void);
     f32 fn_8006469C(void *, s32, f32);
     s32 *fn_80067478(void);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
@@ -16812,7 +16812,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     fn_80222C50(spE4, t25);
     fn_802201A8(t24, 0, 0, t29, 0, 0x7D);
     GXSetTevOrder(t23, t24, t25, 4);
-    vf4 = *(f32 *)((u8 *)fn_80068548() + 0x100);
+    vf4 = *(f32 *)((u8 *)Camera_Get() + 0x100);
     if (vf4 < lbl_80369FB8) {
         vf4 = lbl_80369FB8;
     }
@@ -17677,7 +17677,7 @@ void fn_800F2174(void *arg0)
 {
     void *Map_Get(void);
     u8 fn_80047AF8(void);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     void Ui_PlaySeCue(void *, s32);
     void fn_8014CAD4(void *, f32, f32);
     f64 fn_802380D0(f32);
@@ -17847,7 +17847,7 @@ void fn_800F2174(void *arg0)
             if (*(s32 *)(gPadInput + 4) & 0x200) {
                 if (!(gUiInputFlags & 0x80)) {
                     stick = *(u8 **)gPadInput;
-                    f26 = lbl_8036A038 * -*(f32 *)((u8 *)fn_80068548() + 0xFC);
+                    f26 = lbl_8036A038 * -*(f32 *)((u8 *)Camera_Get() + 0xFC);
                     f28 = (f32)(s8)stick[2] / lbl_8036A04C;
                     f29 = (f32)(s8)stick[3] / lbl_8036A04C;
                     f27 = (f32)fn_802380D0(f26);
@@ -17880,7 +17880,7 @@ void fn_800F2174(void *arg0)
                 lbl_803671C1 = 1;
             } else if (!(gUiInputFlags & 0x80)) {
                 stick = *(u8 **)gPadInput;
-                f26 = lbl_8036A038 * -*(f32 *)((u8 *)fn_80068548() + 0xFC);
+                f26 = lbl_8036A038 * -*(f32 *)((u8 *)Camera_Get() + 0xFC);
                 f29 = (f32)(s8)stick[2] / lbl_8036A054;
                 f28 = (f32)(s8)stick[3] / lbl_8036A054;
                 f27 = (f32)fn_802380D0(f26);

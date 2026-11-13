@@ -2055,7 +2055,7 @@ void fn_801EE76C(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_800D6878(void *, void *, void *);
     void fn_8022C260(void *, void *, void *, s32, s32);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     void fn_801C77A4(f32, f32, f32);
     void fn_801EFDC8(void *);
     s32 String_Compare(void *, s32, void *, char *, s32);
@@ -2140,7 +2140,7 @@ void fn_801EE76C(void *arg0) {
     }
     *(void **)((char *)self + 0x48) = obj;
 
-    cam = fn_80068548();
+    cam = Camera_Get();
     f3 = lbl_8036B7B8;
     f2 = lbl_8036B7C0;
     *(f32 *)((char *)cam + 0xE0) = f3;
@@ -3057,7 +3057,7 @@ void fn_801EFDC8(void *arg0) {
 #pragma global_optimizer reset
 void fn_801F0718(void *arg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
-    void *fn_80068548(void);
+    void *Camera_Get(void);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_80203184(void *, void *, void *);
@@ -3085,7 +3085,7 @@ void fn_801F0718(void *arg0) {
     u32 *src;
     u16 n;
 
-    cam = (struct Cam *)fn_80068548();
+    cam = (struct Cam *)Camera_Get();
     t = lbl_8036B7C8;
     n = *(u16 *)((u8 *)arg0 + 0x4C);
     if (n != 0) {

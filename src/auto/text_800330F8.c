@@ -7336,7 +7336,7 @@ void fn_80043E88(void) {
     temp_f27 = temp_r3[2];
     temp_f26 = temp_r3[3];
     
-    fn_80068548(temp_r3);
+    Camera_Get(temp_r3);
     
     temp_r3[0x38] = temp_f31;
     temp_r3[0x39] = temp_f30;

@@ -2462,7 +2462,7 @@ void fn_80125624(void *arg0) {
         s32 unk6C;
     } Obj;
     u8 fn_800AA188(void);
-    Cam *fn_80068548(void);
+    Cam *Camera_Get(void);
     void fn_8005A1E8(s32, Vec *, Vec *);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
@@ -2483,7 +2483,7 @@ void fn_80125624(void *arg0) {
         if (fn_800AA188() == 0) {
             return;
         }
-        cam = fn_80068548();
+        cam = Camera_Get();
         fn_8005A1E8(0, &cam->pos, &delta);
         fn_8005A1E8(0, &obj->pos, &pos);
         delta.x -= pos.x;

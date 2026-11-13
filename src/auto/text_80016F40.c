@@ -1302,7 +1302,7 @@ extern "C" void fn_80018EC0(void)
 #pragma optimization_level 2
 #pragma peephole off
 extern "C" void fn_80018F08(void) {
-    s32 fn_80068548(void);
+    s32 Camera_Get(void);
     extern u8 lbl_802CA2C8[];
     extern u8 lbl_803671C1;
     extern f32 lbl_80368C88;
@@ -1322,7 +1322,7 @@ extern "C" void fn_80018F08(void) {
     base = (struct Slot *)lbl_802CA2C8;
     slot = (struct Slot *)((char *)base + 0);
     *(s32 *)((u8 *)slot + 0x20) = 0;
-    *(s32 *)base = fn_80068548();
+    *(s32 *)base = Camera_Get();
     *(f32 *)((u8 *)slot + 0x10) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
@@ -1355,7 +1355,7 @@ extern "C" void fn_80018F08(void) {
     }
 
     *(s32 *)((u8 *)slot + 0x20) = 0;
-    *(s32 *)((u8 *)base + 0x78) = fn_80068548();
+    *(s32 *)((u8 *)base + 0x78) = Camera_Get();
     *(f32 *)((u8 *)slot + 0x10) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
@@ -1388,7 +1388,7 @@ extern "C" void fn_80018F08(void) {
     }
 
     *(s32 *)((u8 *)slot + 0x20) = 0;
-    *(s32 *)((u8 *)base + 0xF0) = fn_80068548();
+    *(s32 *)((u8 *)base + 0xF0) = Camera_Get();
     *(f32 *)((u8 *)slot + 0x10) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
@@ -1421,7 +1421,7 @@ extern "C" void fn_80018F08(void) {
     }
 
     *(s32 *)((u8 *)slot + 0x20) = 0;
-    *(s32 *)((u8 *)base + 0x16C) = fn_80068548();
+    *(s32 *)((u8 *)base + 0x16C) = Camera_Get();
     *(f32 *)((u8 *)slot + 0x10) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x4) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x14) = lbl_80368CC8;
@@ -1459,7 +1459,7 @@ extern "C" void fn_80018F08(void) {
 
 #pragma cplusplus on
 static inline void fn_80018F08_init(u8 *base, u8 *slot) {
-    s32 fn_80068548(void);
+    s32 Camera_Get(void);
     extern u8 lbl_803671C1;
     extern f32 lbl_80368C88;
     extern f32 lbl_80368CC8;
@@ -1472,7 +1472,7 @@ static inline void fn_80018F08_init(u8 *base, u8 *slot) {
     };
     f32 f1;
     *(s32 *)(slot + 0x20) = 0;
-    *(s32 *)slot = fn_80068548();
+    *(s32 *)slot = Camera_Get();
     *(f32 *)(slot + 0x10) = lbl_80368C88;
     *(f32 *)(slot + 0x4) = lbl_80368C88;
     *(f32 *)(slot + 0x14) = lbl_80368CC8;

@@ -1627,12 +1627,12 @@ return farg0+(diff-diff*x/y);
 }
 
 void fn_8005A1E8(void *arg0, f32 *arg1, f32 *arg2) {
-void *fn_80068548(void);
+void *Camera_Get(void);
 void fn_80225034(f32 *);
 void fn_80224AD8(void *, f32 *, f32 *, f32 *, f32 *, f32 *, f32, f32, f32);
 extern f32 lbl_80369108;
 f32 vals[7]; f32 sp8[6];
-if(arg0==NULL) arg0=fn_80068548();
+if(arg0==NULL) arg0=Camera_Get();
 vals[0]=lbl_80369108;
 vals[1]=*(f32 *)((u8 *)arg0+36);
 vals[2]=*(f32 *)((u8 *)arg0+44);
