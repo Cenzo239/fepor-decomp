@@ -295,7 +295,7 @@ static inline const u32 *StrMin(const u32 *a, const u32 *b) {
 }
 
   /* list object helpers (construct, destroy, get item) */
-  void fn_800E01C8(void *);
+  void ObjList_Init(void *);
   /* fn_800E0140 declared at definition */
   void fn_800E8A88(void *, f32);
 s32 Str_Cmp(); /* strcmp */
@@ -10788,7 +10788,7 @@ extern "C" void *fn_800E0140(void *arg0, s16 arg1)
     return self;
 }
 #pragma cplusplus reset
-void fn_800E01C8(void *arg0) {
+void ObjList_Init(void *arg0) {
     extern u8 lbl_8028DFE8[56];
     u32 *p = (u32 *)arg0;
 
@@ -12154,13 +12154,13 @@ extern "C" void fn_800E4550(void *arg0, void *arg1) {
         virtual void v5(void *) = 0;
     };
     void *Heap_Alloc(s32);
-    void *fn_800E01C8(void *);
+    void *ObjList_Init(void *);
     void *tmp;
 
     if (*(void **)((u8 *)arg0 + 0xA0) == 0) {
         tmp = Heap_Alloc(0x14);
         if (tmp != 0) {
-            tmp = fn_800E01C8(tmp);
+            tmp = ObjList_Init(tmp);
         }
         *(void **)((u8 *)arg0 + 0xA0) = tmp;
     }
@@ -12224,7 +12224,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     s32 String_Compare(String *, u32, u32, char *, u32);
     char *String_CStr(String *);
     void *Heap_Alloc(s32);
-    void fn_800E01C8(void *);
+    void ObjList_Init(void *);
     void fn_800DF6B8(String *, void *);
     void String_Assign(String *, String *, s32, s32);
     u32 strlen(char *);
@@ -12300,7 +12300,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
         if (*(void **)((u8 *)cb + 0xA0) == NULL) {
             list = Heap_Alloc(0x14);
             if (list != NULL) {
-                fn_800E01C8(list);
+                ObjList_Init(list);
             }
             *(void **)((u8 *)cb + 0xA0) = list;
         }
@@ -13446,7 +13446,7 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
     s32 count;
     s32 i;
 
-    fn_800E01C8(list);
+    ObjList_Init(list);
     if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
         fn_800E0140(list, -1);
         return;
@@ -13570,7 +13570,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     s32 count;
     s32 i;
 
-    fn_800E01C8(list);
+    ObjList_Init(list);
     if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
         fn_800E0140(list, -1);
         return;
@@ -13736,7 +13736,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     u8 str[0xC];
     u8 list[0x14];
 
-    fn_800E01C8(list);
+    ObjList_Init(list);
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     key = *(u32 *)arg1;
     for (i = 0; i < count; i++) {
@@ -13856,7 +13856,7 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 #pragma dont_inline on
-  extern "C" void fn_800E01C8(void *);
+  extern "C" void ObjList_Init(void *);
   extern "C" s32 fn_800DFFF4(void *, s32);
 extern "C" u8 fn_800E903C(void *);
 extern "C" s32 fn_800E7EA0(void *arg0) {
@@ -13880,7 +13880,7 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
     s32 item;
     s32 i;
 
-    fn_800E01C8(list);
+    ObjList_Init(list);
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         item = fn_800DFFF4(list, i);
