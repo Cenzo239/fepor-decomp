@@ -87,6 +87,7 @@ void QUATMtx(Quaternion *qOut, Mtx m) {
     }
 }
 
+/* Spherical-linear interpolate quaternion p toward q by t into r (shortest path). */
 void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
     f32 sinf(f32);
     f32 acosf(f32);
