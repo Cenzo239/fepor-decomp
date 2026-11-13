@@ -9517,7 +9517,7 @@ void fn_80175CA0(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80175E3C(void *arg0) {
+extern "C" void Ui_HandleUnitSelectCursorInput(void *arg0) {
     void Process_Goto(void *, s32);
     void UiCtx_BindUnit(void *, u32);
     void fn_80138808(void *, u32);
