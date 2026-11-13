@@ -2935,7 +2935,7 @@ void fn_801262A8(s32 arg0) {
     fn_8014C718(lbl_80330708, arg0);
 }
 
-void fn_801262F0(void) {
+void Script_RegisterCommands(void) {
     void fn_80013AE8(void *, void *, s32);
     extern u8 lbl_80275048[];
     void fn_80127918(void);
