@@ -8691,7 +8691,7 @@ void* fn_80199508(void* arg0, s16 arg1) {
 #pragma global_optimizer off
 void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     void fn_800E6058(void *);
-    void fn_800C9758(void *, void *, s32, s32);
+    void String_Assign(void *, void *, s32, s32);
     void String_Init(void *, char *, void *);
     void fn_800C8DCC(void *, void *, void *);
     void String_Destroy(void *, s32);
@@ -8784,7 +8784,7 @@ void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     self->unk17C = z;
     self->unk178 = z;
     self->unk174 = z;
-    fn_800C9758(&self->str118, (u8 *)self + 0x10, 0, -1);
+    String_Assign(&self->str118, (u8 *)self + 0x10, 0, -1);
 
     String_Init(&sp3C, (char *)(lbl_8027A858 + 0x7B), sp14);
     fn_800C8DCC(spA8, path, &sp3C);
