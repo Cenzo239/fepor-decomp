@@ -2938,7 +2938,7 @@ void fn_801262A8(s32 arg0) {
 void Script_RegisterCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 gScriptCmdNames[];
-    void fn_80127918(void);
+    void ScriptCmd_GameBind(void);
     void fn_801278EC(void);
     void fn_80127BA8(void);
     void fn_80127B50(void);
@@ -2986,7 +2986,7 @@ void Script_RegisterCommands(void) {
     void fn_801281E4(void);
     void fn_80128160(void);
 
-    Script_RegisterCommand(gScriptCmdNames + 0x176, fn_80127918, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x176, ScriptCmd_GameBind, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x17F, fn_801278EC, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x18A, fn_80127BA8, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x197, fn_80127B50, 1);
@@ -3497,7 +3497,7 @@ s32 fn_801278EC(void) {
     return 1;
 }
 
-s32 fn_80127918(void) {
+s32 ScriptCmd_GameBind(void) {
     void *fn_8000BCA4(void *);
     void fn_8000B950(void *, void (*)(void *));
     void *fn_8000CAA0(void *, void *);
