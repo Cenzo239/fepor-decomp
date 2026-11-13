@@ -11225,7 +11225,7 @@ extern "C" void fn_801478D0(s32 arg0) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern u8 lbl_8032FFC8[];
+    extern u8 gFxSlots[];
     extern f32 lbl_8036A7A0;
     s16 a;
     u8 *entry;
@@ -11236,7 +11236,7 @@ extern "C" void fn_801478D0(s32 arg0) {
 
     a = (s16)arg0;
     i = 0;
-    for (entry = lbl_8032FFC8; i < 0xA; entry += 0x30, ++i) {
+    for (entry = gFxSlots; i < 0xA; entry += 0x30, ++i) {
         flags = entry[0xC];
         if (flags & 1) {
             if ((s16)arg0 <= 0) {
@@ -11259,13 +11259,13 @@ extern "C" void fn_801478D0(s32 arg0) {
 #pragma cplusplus reset
 s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
     s32 Fx_AllocSlot(void);
-    extern u8 lbl_8032FFC8[];
+    extern u8 gFxSlots[];
     s32 temp_r3;
     u8 *temp_r4;
 
     temp_r3 = Fx_AllocSlot();
     if ((s8)temp_r3 >= 0) {
-        temp_r4 = (u8 *)lbl_8032FFC8 + ((s8)temp_r3 * 0x30);
+        temp_r4 = (u8 *)gFxSlots + ((s8)temp_r3 * 0x30);
         *(f32 *)(temp_r4 + 0x1C) = farg0;
         *(f32 *)(temp_r4 + 0x20) = farg1;
         *(f32 *)(temp_r4 + 0x24) = farg2;
@@ -11276,7 +11276,7 @@ s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
 
 s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     void *fn_8000D2BC(void *);
-    extern u8 lbl_8032FFC8[];
+    extern u8 gFxSlots[];
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
@@ -11293,7 +11293,7 @@ s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     s16 n;
     s32 temp;
 
-    entry = lbl_8032FFC8;
+    entry = gFxSlots;
     for (i = 0; i < 0xA; i++) {
         if (!(entry[0xC] & 1)) {
             slot = i;
@@ -11304,7 +11304,7 @@ s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     slot = -1;
 found:
     if (slot >= 0) {
-        found = lbl_8032FFC8 + ((u8)slot * 0x30);
+        found = gFxSlots + ((u8)slot * 0x30);
         src = fn_8000D2BC(arg0);
         kind = src[5] & 3;
         switch (kind) {
