@@ -4483,7 +4483,7 @@ void fn_8016C1EC(void *arg0) {
 
 void fn_8016C3C8(void *arg0) {
     void fn_80015320(s32, u8 *);
-    u8 fn_8001F4CC(void *, u8, u8);
+    u8 Map_IsInViewBounds(void *, u8, u8);
     void *fn_80037710(void *);
     void *fn_800377D8(void *);
     void fn_800C4588(void *);
@@ -4595,7 +4595,7 @@ void fn_8016C3C8(void *arg0) {
             if (flags[kind] != 0) {
                 name = fn_800377D8(unit);
                 if ((*(u32 *)((u8 *)unit + 0x1A0) & 0xD8) == 0 &&
-                    fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) != 0) {
+                    Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) != 0) {
                     cur = *(void **)((u8 *)self + 0x3C);
                     while (cur != NULL) {
                         t = *(u8 *)cur;

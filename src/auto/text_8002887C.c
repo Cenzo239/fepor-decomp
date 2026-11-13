@@ -2480,7 +2480,7 @@ void fn_8002E510(void) {
 }
 
 void fn_8002E5B4(s32 arg0) {
-    u8 fn_8001F4CC(void *, s8, s8);
+    u8 Map_IsInViewBounds(void *, s8, s8);
     void fn_8000C070(s32, M2C_UNK);
     extern struct {
         void *head;
@@ -2495,7 +2495,7 @@ void fn_8002E5B4(s32 arg0) {
     p = gUnitLists[lbl_80330708[0x11]].head;
     while (p != NULL) {
         next = M2C_FIELD(p, void **, 0x184);
-        if (fn_8001F4CC(gBattleMap, M2C_FIELD(p, s8 *, 0x19E), M2C_FIELD(p, s8 *, 0x19F))) {
+        if (Map_IsInViewBounds(gBattleMap, M2C_FIELD(p, s8 *, 0x19E), M2C_FIELD(p, s8 *, 0x19F))) {
             return;
         }
         p = next;
@@ -2572,7 +2572,7 @@ void fn_8002E738(s32 arg0) {
 void fn_8002E780(void)
 {
     void fn_80015320(s32, u8 *);
-    u8 fn_8001F4CC(void *, u8, u8);
+    u8 Map_IsInViewBounds(void *, u8, u8);
     void fn_8002297C(void *);
     void fn_80184AFC(u8 *, s32, s32, f32);
     extern u8 lbl_802B14E4[];
@@ -2597,7 +2597,7 @@ void fn_8002E780(void)
             if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 *(u32 *)(unit + 0x1A0) &= ~1;
                 if (!((base[0x9E] >> 4) & 1)) {
-                    if (fn_8001F4CC(gBattleMap, unit[0x19E], unit[0x19F]) != 0) {
+                    if (Map_IsInViewBounds(gBattleMap, unit[0x19E], unit[0x19F]) != 0) {
                         fn_80184AFC(unit, 0x10, 0, lbl_80368DE8);
                     }
                 }

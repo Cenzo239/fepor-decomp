@@ -347,7 +347,7 @@ void fn_8001F140(void *arg0) {
     }
     OSGetTick();
 }
-s32 fn_8001F4CC(void *arg0, s8 arg1, s8 arg2) {
+s32 Map_IsInViewBounds(void *arg0, s8 arg1, s8 arg2) {
     if (arg1 < (s8) M2C_FIELD(arg0, u8 *, 8)) {
         return 0;
     }

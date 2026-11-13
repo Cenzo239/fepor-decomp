@@ -416,7 +416,7 @@ void fn_8007D0C0(void *arg0) {
 
 #pragma use_lmw_stmw on
 void UnitInfo_AdvanceCursor(void *arg0) {
-    u8 fn_8001F4CC(void *, u8, u8);
+    u8 Map_IsInViewBounds(void *, u8, u8);
     void *fn_8003A114(void *);
     void fn_800506E0(void *, s32, void *);
     void GActor_Finalize(void *);
@@ -477,7 +477,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
             node = *(void **)((u8 *)obj + 0x58);
             flags = *(s32 *)((u8 *)node + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
+                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
                 if (!(*(u32 *)obj & 0x01000000)) {
                     continue;
                 }
@@ -521,7 +521,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
             node = *(void **)((u8 *)obj + 0x58);
             flags = *(s32 *)((u8 *)node + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
+                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
                 if (!(*(u32 *)obj & 0x01000000)) {
                     continue;
                 }
