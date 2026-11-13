@@ -54,7 +54,7 @@ void fn_801E460C(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
     void fn_801E4900(s16 *, void *);
     void fn_801E4C48(void *, s8);
@@ -126,7 +126,7 @@ void fn_801E460C(void *arg0) {
             return;
         }
         if ((pressed & 0xA00) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0)) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
             return;
         }
         if ((pressed & 0x200) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {

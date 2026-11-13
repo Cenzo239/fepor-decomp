@@ -1121,7 +1121,7 @@ void fn_801FF3AC(void *arg0) {
 extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     extern u8 gUnitInfoPopup[];
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void *fn_8000B908(u8);
     void fn_80024B6C(void);
     struct Handler {
@@ -1145,7 +1145,7 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
         void *entry;
         u8 *a1;
-        fn_801673D0(gUnitInfoPopup);
+        Ui_HideUnitInfoPopup(gUnitInfoPopup);
         a1 = (u8 *)arg1;
         entry = fn_8000B908(a1[0x40 + (s8)a1[0x62]]);
         (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
@@ -2073,7 +2073,7 @@ void fn_8020164C(void *arg0, void *arg1) {
     extern u8 gUnitInfoPopup[];
 
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void *fn_8000B908(s32);
     void fn_80024B6C(void);
 
@@ -2088,7 +2088,7 @@ void fn_8020164C(void *arg0, void *arg1) {
 
     if (*(u32 *)(obj + 0x28) >= *(u32 *)(obj + 0x2C)) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
 
             index = (s8)*((u8 *)arg1 + 0x62);
             index = *((u8 *)arg1 + index + 0x40);

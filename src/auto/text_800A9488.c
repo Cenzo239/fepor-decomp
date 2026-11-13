@@ -1456,7 +1456,7 @@ void fn_800ABE74(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_80166AE8(s16, s32, s32, void *, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, void *, f32, f32);
     extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -1476,7 +1476,7 @@ void fn_800ABE74(void *arg0) {
     var_r31 = a & (((u32 *)gPadInput)[2] ^ a);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         if (var_r31 & 0xA00) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         }
     } else if (var_r31 & 0x100) {
         register var_r31 = 0;
@@ -1520,7 +1520,7 @@ void fn_800AC0C0(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     extern void *gPadInput;
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
@@ -1663,7 +1663,7 @@ void fn_800AC0C0(void *arg0) {
                             (f32)*(s16 *)temp_r7,
                             (f32)(*(s16 *)(temp_r7 + 2) + 0x28));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -1678,7 +1678,7 @@ void fn_800AC400(void) {
 void fn_800AC5DC(void *arg0) {
     void fn_800AC810(void);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     u64 *fn_8001CB64(void *);
     s32 fn_8000E0E4(void *);
     void fn_80166AE8(s16, s32, s32, void *, void *);
@@ -1700,7 +1700,7 @@ void fn_800AC5DC(void *arg0) {
     pressed = ((u32 *)gPadInput)[1] & (((u32 *)gPadInput)[2] ^ ((u32 *)gPadInput)[1]);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         if (pressed & 0xA00) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         }
     } else if (pressed & 0x100) {
         pressed = 0;

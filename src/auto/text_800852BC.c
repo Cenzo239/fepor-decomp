@@ -1251,7 +1251,7 @@ void fn_80088300(void *arg0) {
 u32 *fn_80037BD0(void *, s32);
 void fn_8007DAC4(void *, void *);
 void fn_801475FC(void *, s32);
-void fn_801673D0(void *);
+void Ui_HideUnitInfoPopup(void *);
 extern u8 lbl_8026C86C[];
 extern Menu888Entry lbl_80288FE8[][37];
 extern u8 gUnitInfoPopup[];
@@ -1261,7 +1261,7 @@ u32 pressed = M2C_FIELD(gPadInput,u32 *,4);
 u32 repeat = M2C_FIELD(gPadInput,u32 *,12);
 pressed &= M2C_FIELD(gPadInput,u32 *,8) ^ pressed;
 if ((pressed & 0x200) || (pressed & 0x800)) {
-M2C_FIELD(self,s16 *,4)=0; fn_801673D0(gUnitInfoPopup); return;
+M2C_FIELD(self,s16 *,4)=0; Ui_HideUnitInfoPopup(gUnitInfoPopup); return;
 }
 if (repeat & 0x08000008) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);

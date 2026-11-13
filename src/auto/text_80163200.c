@@ -2129,7 +2129,7 @@ loop_3:
 }
 
 #pragma dont_inline on
-void fn_801673D0(void *arg0) {
+void Ui_HideUnitInfoPopup(void *arg0) {
     void fn_801475FC(void *, s32);
     extern u8 lbl_80277A20[];
     extern s32 lbl_8036A938;
@@ -6328,7 +6328,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     u32 fn_80164BB0(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
@@ -6382,7 +6382,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r30, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -6416,7 +6416,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
             fn_8016746C(gUnitInfoPopup, self, var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if(fn_80037E00(gUiContext[0])<0)fn_800951D0(gUiContext[0],-1);
  if(gUiContext[0])fn_80184C7C(gUiContext[0],0,4,0);
@@ -6668,7 +6668,7 @@ extern "C" void fn_801703FC(void *arg0) {
     u32 fn_80164BB0(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
@@ -6722,7 +6722,7 @@ extern "C" void fn_801703FC(void *arg0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r30, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -6750,7 +6750,7 @@ extern "C" void fn_801703FC(void *arg0) {
             fn_8016746C(gUnitInfoPopup, self, var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x27);
             fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
@@ -6931,7 +6931,7 @@ extern "C" void fn_80170AD0(void *arg0) {
     void fn_801658DC(u32, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, s32, f32, f32);
     extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
@@ -6996,7 +6996,7 @@ extern "C" void fn_80170AD0(void *arg0) {
                 *(Vec2s *)&sp14 = ((Obj *)obj54)->v13();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, *var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -7015,7 +7015,7 @@ extern "C" void fn_80170AD0(void *arg0) {
             fn_8016746C(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x24);
             fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
@@ -7481,7 +7481,7 @@ extern "C" void fn_80171F00(void *arg0) {
     u32 fn_80164BB0(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
@@ -7537,7 +7537,7 @@ extern "C" void fn_80171F00(void *arg0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r30, (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -7566,7 +7566,7 @@ extern "C" void fn_80171F00(void *arg0) {
             fn_8016746C(gUnitInfoPopup, self, var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x1c);
             fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
@@ -7880,7 +7880,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     u32 fn_80164BB0(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 gUiMsgStrings[];
     extern u8 lbl_80294AE8[];
@@ -7936,7 +7936,7 @@ extern "C" void fn_80172DA4(void *arg0) {
                 *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r29, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -7973,7 +7973,7 @@ extern "C" void fn_80172DA4(void *arg0) {
             fn_8016746C(gUnitInfoPopup, self, var_r29, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x15);
             fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
@@ -8165,7 +8165,7 @@ void fn_801475FC(void *, s32);
 u32 fn_80164BB0(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
-void fn_801673D0(void *);
+void Ui_HideUnitInfoPopup(void *);
 void fn_8016746C(void *, void *, u32, f32, f32);
 extern u16 gUiMsgStrings[];
 extern u8 gUnitInfoPopup[];
@@ -8221,7 +8221,7 @@ if (var_r27 != 0 && *(u32 *)var_r27 != 0) {
 *(Vec2s *)&sp10 = ((Obj *)obj4c)->v10();
 Ui_ShowUnitInfoPopup(gUnitInfoPopup, var_r27, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
 } else {
-fn_801673D0(gUnitInfoPopup);
+Ui_HideUnitInfoPopup(gUnitInfoPopup);
 }
 }
 }
@@ -8296,7 +8296,7 @@ fn_801475FC((u8 *)gUiMsgStrings + 0x1DD, 0x64);
 fn_8016746C(gUnitInfoPopup, self, var_r27, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
 *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
 } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-fn_801673D0(gUnitInfoPopup);
+Ui_HideUnitInfoPopup(gUnitInfoPopup);
 } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
 *(u8 *)((u8 *)obj54 + 0x4D) = 0;
 fn_80143E0C(obj54, *(s16 *)((u8 *)obj54 + 0x7A));
@@ -8379,7 +8379,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     void fn_801658DC(u32, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016746C(void *, void *, s32, f32, f32);
     void fn_80184C7C(u32, s32, s32, s32);
     extern u16 gUiMsgStrings[];
@@ -8449,7 +8449,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 *(Vec2s *)&sp14 = ((Obj *)listWidget)->v13();
                 Ui_ShowUnitInfoPopup(gUnitInfoPopup, *entry, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             } else {
-                fn_801673D0(gUnitInfoPopup);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
@@ -8506,7 +8506,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
             fn_8000C070(arg0, 0xa);
             fn_801475FC((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if (fn_80037E00(gUiContext[0]) < 0) {
                 fn_800951D0(gUiContext[0], -1);
@@ -9730,7 +9730,7 @@ void fn_801768E4(s32 arg0) {
     if (var_r3 == 0) {
         temp_r5 = *(s32 *)((u8 *)gPadInput + 4);
         if (temp_r5 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5) & 0x0F001F7F) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
             fn_8000C188(arg0);
         }
     }
@@ -14645,7 +14645,7 @@ extern "C" void fn_80180084(void *arg0)
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80167190(void *, void *, f32, f32);
-    void fn_801673D0(void *);
+    void Ui_HideUnitInfoPopup(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
     void fn_80176888(void *, void *, f32, f32);
     extern char lbl_802789F0[];
@@ -14773,7 +14773,7 @@ extern "C" void fn_80180084(void *arg0)
             fn_8016758C(gUnitInfoPopup, self, lbl_802789F0 + 0x3E, (f32)*(s16 *)&sp8, (f32)*((s16 *)&sp8 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            fn_801673D0(gUnitInfoPopup);
+            Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             void *sub = fn_8013FF94(self, 0x81, 0);
             s16 a = *(s16 *)((u8 *)sub + 0xA);

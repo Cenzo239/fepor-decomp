@@ -2522,7 +2522,7 @@ extern "C" void fn_80024734(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_80024768(void *arg0) {
 void *fn_8000B908(u8);void fn_8000C188(void*);
-void fn_801475FC(void*,s32);void fn_801673D0(void*);void fn_8016746C(void*,void*,void*,f32,f32);void fn_8016758C(void*,void*,void*,f32,f32);
+void fn_801475FC(void*,s32);void Ui_HideUnitInfoPopup(void*);void fn_8016746C(void*,void*,void*,f32,f32);void fn_8016758C(void*,void*,void*,f32,f32);
 extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 gUnitInfoPopupFlag;
 f32 x,y;
@@ -2572,7 +2572,7 @@ q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);
 fn_8016746C(gUnitInfoPopup,arg0,q,x,y);
 }
 *(u32*)gUnitInfoPopup|=gUnitInfoPopupFlag;
-}else if(flags&64)fn_801673D0(gUnitInfoPopup);
+}else if(flags&64)Ui_HideUnitInfoPopup(gUnitInfoPopup);
 }
 #pragma cplusplus reset
 
