@@ -348,7 +348,7 @@ void fn_8022257C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16* arg5, u1
 }
 
 void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
-void fn_80222890(void *obj, void *image_ptr, u16 width, u16 height,
+void GXInitTexObjCI(void *obj, void *image_ptr, u16 width, u16 height,
                  s32 format, s32 wrap_s, s32 wrap_t, u8 mipmap, u32 tlut_name)
 {
     fn_80222644(obj, image_ptr, width, height, format, wrap_s, wrap_t, mipmap);
