@@ -5775,7 +5775,8 @@ void *fn_8016E9DC(u32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_DestroyListPanel(void *arg0) {
+/* Release a list panel's seven child refs and destroy the panel base. */
+extern "C" void Ui_DestroyListPanel(void *panel) {
     extern void Ui_DestroyPanelBase(void *, s32);
 
     struct RefObj {
@@ -5785,68 +5786,68 @@ extern "C" void Ui_DestroyListPanel(void *arg0) {
 
     struct Holder {
         u8 pad[0x40];
-        RefObj *p40;
-        RefObj *p44;
-        RefObj *p48;
-        RefObj *p4c;
-        RefObj *p50;
-        RefObj *p54;
-        RefObj *p58;
+        RefObj *child0;
+        RefObj *child1;
+        RefObj *child2;
+        RefObj *child3;
+        RefObj *child4;
+        RefObj *child5;
+        RefObj *child6;
     };
 
     Holder *h;
     RefObj *p;
 
-    h = (Holder *)arg0;
+    h = (Holder *)panel;
     if (h != NULL) {
-        p = h->p40;
+        p = h->child0;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p40 = (RefObj *)0;
+            h->child0 = (RefObj *)0;
         }
-        p = h->p44;
+        p = h->child1;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p44 = (RefObj *)0;
+            h->child1 = (RefObj *)0;
         }
-        p = h->p48;
+        p = h->child2;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p48 = (RefObj *)0;
+            h->child2 = (RefObj *)0;
         }
-        p = h->p4c;
+        p = h->child3;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p4c = (RefObj *)0;
+            h->child3 = (RefObj *)0;
         }
-        p = h->p50;
+        p = h->child4;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p50 = (RefObj *)0;
+            h->child4 = (RefObj *)0;
         }
-        p = h->p54;
+        p = h->child5;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p54 = (RefObj *)0;
+            h->child5 = (RefObj *)0;
         }
-        p = h->p58;
+        p = h->child6;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
                 p->destroy(1);
             }
-            h->p58 = (RefObj *)0;
+            h->child6 = (RefObj *)0;
         }
         Ui_DestroyPanelBase(h, 0);
     }
