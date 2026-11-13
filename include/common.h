@@ -62,6 +62,10 @@ typedef struct Unk800C2ACC {
 #define CARD_RESULT_CANCELED   -13
 #define CARD_RESULT_ENCODING   -14
 #define CARD_RESULT_FATAL_ERROR -128
+/* Game-specific card/save results (beyond Dolphin CARD API) */
+#define CARD_RESULT_DONE        -66 /* -0x42; treated like READY */
+#define CARD_RESULT_CORRUPT     -65 /* -0x41 */
+#define CARD_RESULT_MISSING     -64 /* -0x40; treated like NOFILE */
 
 /* Save-file version stamps (YYYYMMDD as hex) */
 #define SAVE_VER_20041216 0x20041216
