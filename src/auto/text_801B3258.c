@@ -13384,7 +13384,7 @@ void fn_801D2E9C(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorScrollListPanel(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorScrollListPanel(void *self, s16 doFree) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -13416,35 +13416,36 @@ extern "C" void *Ui_DtorScrollListPanel(void *arg0, s16 arg1) {
     DtorNode *spC;
     u8 sp8[4];
     DtorNode *end;
-    Owner *a0;
+    Owner *owner;
 
-    a0 = (Owner *)arg0;
-    if (arg0) {
-        a0->vtbl = gUiScrollListPanelVtbl;
-        if (&a0->subA0) {
-            a0->subA0 = gEmptyVtbl;
-            ((Obj *)&a0->subA0)->v2();
+    /* C++ destructor for scroll-list UI panel: destroy embeds, clear list, run base dtor, optional free. */
+    owner = (Owner *)self;
+    if (self) {
+        owner->vtbl = gUiScrollListPanelVtbl;
+        if (&owner->subA0) {
+            owner->subA0 = gEmptyVtbl;
+            ((Obj *)&owner->subA0)->v2();
         }
-        if (&a0->sub78) {
-            a0->sub78 = gEmptyVtbl;
-            ((Obj *)&a0->sub78)->v2();
+        if (&owner->sub78) {
+            owner->sub78 = gEmptyVtbl;
+            ((Obj *)&owner->sub78)->v2();
         }
-        if (&a0->list) {
-            if (&a0->list) {
-                if (&a0->list) {
-                    end = &a0->list.node;
+        if (&owner->list) {
+            if (&owner->list) {
+                if (&owner->list) {
+                    end = &owner->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_801C1824(sp8, &a0->list, &spC, &sp10);
+                    fn_801C1824(sp8, &owner->list, &spC, &sp10);
                 }
             }
         }
-        fn_8013F2A4(arg0, 0);
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        fn_8013F2A4(self, 0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
