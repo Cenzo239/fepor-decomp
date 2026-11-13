@@ -3836,7 +3836,7 @@ extern "C" void UnitInfo_DrawDualStatus(void *win, void *slot) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8003297C(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawCombat(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     extern u32 gUiContext[];
