@@ -408,7 +408,7 @@ void fn_80099AD0(void *arg0) {
     void *Event_GetCmdFlagRes(s32);
     void *fn_80053AE8(void *, void *);
     void fn_80052FB0(void *, f32 *, f32 *);
-    void fn_80184A00(void *, void *, s32, void *);
+    void Unit_FaceToward(void *, void *, s32, void *);
 
     void *ptrs[3];
     f32 dst[3];
@@ -432,7 +432,7 @@ void fn_80099AD0(void *arg0) {
             src[1] = *(f32 *)((u8 *)temp_r3 + 8);
             src[2] = *(f32 *)((u8 *)temp_r3 + 0xC);
             do {
-                fn_80184A00(*var_r31, temp_r29, 0x18, arg0);
+                Unit_FaceToward(*var_r31, temp_r29, 0x18, arg0);
                 temp_r4 = *var_r31;
                 dst[0] = *(f32 *)((u8 *)temp_r4 + 4);
                 dst[1] = *(f32 *)((u8 *)temp_r4 + 8);
@@ -599,7 +599,7 @@ void fn_80099F20(void *arg0) {
 
 void fn_80099FAC(s32 arg0) {
     u32 fn_800980E8(s32);
-    void fn_80184A00(u32, u32, s32, s32);
+    void Unit_FaceToward(u32, u32, s32, s32);
     void fn_80184C7C(u32, s32, s32, s32);
     s32 temp_r28;
     u32 temp_r31;
@@ -612,11 +612,11 @@ void fn_80099FAC(s32 arg0) {
     temp_r29 = fn_800980E8(2);
     fn_80184C7C(temp_r31, 8, 0x10, temp_r28);
     if (temp_r30 != 0U) {
-        fn_80184A00(temp_r31, temp_r30, 0x18, temp_r28);
-        fn_80184A00(temp_r30, temp_r31, 0x18, temp_r28);
+        Unit_FaceToward(temp_r31, temp_r30, 0x18, temp_r28);
+        Unit_FaceToward(temp_r30, temp_r31, 0x18, temp_r28);
         fn_80184C7C(temp_r30, 8, 0x10, temp_r28);
         if (temp_r29 != 0U) {
-            fn_80184A00(temp_r29, temp_r30, 0x18, temp_r28);
+            Unit_FaceToward(temp_r29, temp_r30, 0x18, temp_r28);
             fn_80184C7C(temp_r29, 8, 0x10, temp_r28);
         }
     }

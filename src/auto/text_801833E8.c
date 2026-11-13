@@ -722,7 +722,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return temp_r3;
 }
 
-void *fn_80184A00(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
+void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     f32 fn_8004BE18(void);
@@ -10639,14 +10639,14 @@ void fn_8019D068(s32 arg0)
 {
   u32 temp_r31;
   u32 fn_800980E8(M2C_UNK);
-  M2C_UNK fn_80184A00(u32, u32, M2C_UNK, s32);
+  M2C_UNK Unit_FaceToward(u32, u32, M2C_UNK, s32);
   u32 temp_r30;
   temp_r31 = fn_800980E8(0);
   temp_r30 = fn_800980E8(1);
   if ((temp_r31 != 0U) && (temp_r30 != 0U))
   {
-    fn_80184A00(temp_r31, temp_r30, 0x10, arg0);
-    fn_80184A00(temp_r30, temp_r31, 0x10, arg0);
+    Unit_FaceToward(temp_r31, temp_r30, 0x10, arg0);
+    Unit_FaceToward(temp_r30, temp_r31, 0x10, arg0);
   }
 }
 
