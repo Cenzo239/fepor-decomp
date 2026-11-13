@@ -10030,7 +10030,7 @@ extern "C" bool fn_800DF298(void *arg0, const char *arg1) {
 #pragma cplusplus reset
 
 void Vec3Interp_Update(void *arg0) {
-    f32 fn_80059500(f32, f32, f32, f32, f32);
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
     f32 temp_f5;
     s32 temp_r0;
     f32 temp_f31;
@@ -10051,9 +10051,9 @@ void Vec3Interp_Update(void *arg0) {
         }
         temp_f5 = M2C_FIELD(arg0, f32 *, 0x18);
         temp_f31 = (temp_f5 - (f32) temp_r0) / temp_f5;
-        M2C_FIELD(arg0, f32 *, 0) = fn_80059500(M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x3C), M2C_FIELD(arg0, f32 *, 0x48), M2C_FIELD(arg0, f32 *, 0x54), temp_f31);
-        M2C_FIELD(arg0, f32 *, 4) = fn_80059500(M2C_FIELD(arg0, f32 *, 0x34), M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x4C), M2C_FIELD(arg0, f32 *, 0x58), temp_f31);
-        M2C_FIELD(arg0, f32 *, 8) = fn_80059500(M2C_FIELD(arg0, f32 *, 0x38), M2C_FIELD(arg0, f32 *, 0x44), M2C_FIELD(arg0, f32 *, 0x50), M2C_FIELD(arg0, f32 *, 0x5C), temp_f31);
+        M2C_FIELD(arg0, f32 *, 0) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x3C), M2C_FIELD(arg0, f32 *, 0x48), M2C_FIELD(arg0, f32 *, 0x54), temp_f31);
+        M2C_FIELD(arg0, f32 *, 4) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x34), M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x4C), M2C_FIELD(arg0, f32 *, 0x58), temp_f31);
+        M2C_FIELD(arg0, f32 *, 8) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x38), M2C_FIELD(arg0, f32 *, 0x44), M2C_FIELD(arg0, f32 *, 0x50), M2C_FIELD(arg0, f32 *, 0x5C), temp_f31);
     }
 }
 

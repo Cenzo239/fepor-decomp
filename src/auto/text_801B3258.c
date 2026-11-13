@@ -11925,7 +11925,7 @@ void fn_801D0460(void *arg0, s32 arg1) {
 
 void fn_801D0480(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    f32 fn_80059500(f32, f32, f32, f32, f32);
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -12081,9 +12081,9 @@ void fn_801D0480(void *arg0) {
                 }
                 lx = px;
                 ly = py;
-                px = *(f32 *)(self + 0x1C) * fn_80059500((f32)*(s16 *)(seg + 2), (f32)*(s16 *)(seg + 6),
+                px = *(f32 *)(self + 0x1C) * Math_Hermite((f32)*(s16 *)(seg + 2), (f32)*(s16 *)(seg + 6),
                                                            (f32)*(s16 *)(seg + 0xA), (f32)*(s16 *)(seg + 0xE), t);
-                py = *(f32 *)(self + 0x1C) * fn_80059500((f32)*(s16 *)(seg + 4), (f32)*(s16 *)(seg + 8),
+                py = *(f32 *)(self + 0x1C) * Math_Hermite((f32)*(s16 *)(seg + 4), (f32)*(s16 *)(seg + 8),
                                                            (f32)*(s16 *)(seg + 0xC), (f32)*(s16 *)(seg + 0x10), t);
                 if (i == 0) {
                     lx = px;

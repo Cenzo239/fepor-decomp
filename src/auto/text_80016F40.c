@@ -416,7 +416,7 @@ void fn_80017BFC(void) {
 
 #pragma use_lmw_stmw on
 void CamPath_Apply(void *arg0, f32 farg0) {
-    f32 fn_80059500(f32, f32, f32, f32, f32);
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
     extern s32 lbl_80268318[];
     extern s32 gActiveCam;
     extern f32 lbl_80368C88;
@@ -478,9 +478,9 @@ void CamPath_Apply(void *arg0, f32 farg0) {
                         {
                             void *p0 = (2 <= i) ? (void *)((u8 *)pt - 0x28) : (void *)((u8 *)pt - 0x14);
                             void *p2 = (i < n - 1) ? (void *)((u8 *)pt + 0x14) : pt;
-                            *(f32 *)&sp38.x = fn_80059500(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
-                            *(f32 *)&sp38.y = fn_80059500(*(f32 *)((u8 *)p0 + 0xC), *(f32 *)((u8 *)pt - 8), *(f32 *)((u8 *)pt + 0xC), *(f32 *)((u8 *)p2 + 0xC), t);
-                            *(f32 *)&sp38.z = fn_80059500(*(f32 *)((u8 *)p0 + 0x10), *(f32 *)((u8 *)pt - 4), *(f32 *)((u8 *)pt + 0x10), *(f32 *)((u8 *)p2 + 0x10), t);
+                            *(f32 *)&sp38.x = Math_Hermite(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
+                            *(f32 *)&sp38.y = Math_Hermite(*(f32 *)((u8 *)p0 + 0xC), *(f32 *)((u8 *)pt - 8), *(f32 *)((u8 *)pt + 0xC), *(f32 *)((u8 *)p2 + 0xC), t);
+                            *(f32 *)&sp38.z = Math_Hermite(*(f32 *)((u8 *)p0 + 0x10), *(f32 *)((u8 *)pt - 4), *(f32 *)((u8 *)pt + 0x10), *(f32 *)((u8 *)p2 + 0x10), t);
                         }
                     }
                     sp68 = sp38;
@@ -542,9 +542,9 @@ void CamPath_Apply(void *arg0, f32 farg0) {
                         {
                             void *p0 = (2 <= i) ? (void *)((u8 *)pt - 0x28) : (void *)((u8 *)pt - 0x14);
                             void *p2 = (i < n - 1) ? (void *)((u8 *)pt + 0x14) : pt;
-                            *(f32 *)&sp20.x = fn_80059500(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
-                            *(f32 *)&sp20.y = fn_80059500(*(f32 *)((u8 *)p0 + 0xC), *(f32 *)((u8 *)pt - 8), *(f32 *)((u8 *)pt + 0xC), *(f32 *)((u8 *)p2 + 0xC), t);
-                            *(f32 *)&sp20.z = fn_80059500(*(f32 *)((u8 *)p0 + 0x10), *(f32 *)((u8 *)pt - 4), *(f32 *)((u8 *)pt + 0x10), *(f32 *)((u8 *)p2 + 0x10), t);
+                            *(f32 *)&sp20.x = Math_Hermite(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
+                            *(f32 *)&sp20.y = Math_Hermite(*(f32 *)((u8 *)p0 + 0xC), *(f32 *)((u8 *)pt - 8), *(f32 *)((u8 *)pt + 0xC), *(f32 *)((u8 *)p2 + 0xC), t);
+                            *(f32 *)&sp20.z = Math_Hermite(*(f32 *)((u8 *)p0 + 0x10), *(f32 *)((u8 *)pt - 4), *(f32 *)((u8 *)pt + 0x10), *(f32 *)((u8 *)p2 + 0x10), t);
                         }
                     }
                     sp50 = sp20;

@@ -3056,7 +3056,7 @@ void fn_801EFDC8(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_801F0718(void *arg0) {
-    f32 fn_80059500(f32, f32, f32, f32, f32);
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
     void *Camera_Get(void);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
@@ -3091,37 +3091,37 @@ void fn_801F0718(void *arg0) {
     if (n != 0) {
         t = (f32)*(u16 *)((u8 *)arg0 + 0x4E) / (f32)n;
     }
-    f27 = fn_80059500(
+    f27 = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[0],
         (*(f32 **)((u8 *)arg0 + 0x3C))[0],
         (*(f32 **)((u8 *)arg0 + 0x40))[0],
         (*(f32 **)((u8 *)arg0 + 0x44))[0], t);
-    f28 = fn_80059500(
+    f28 = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[1],
         (*(f32 **)((u8 *)arg0 + 0x3C))[1],
         (*(f32 **)((u8 *)arg0 + 0x40))[1],
         (*(f32 **)((u8 *)arg0 + 0x44))[1], t);
-    f29 = fn_80059500(
+    f29 = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[2],
         (*(f32 **)((u8 *)arg0 + 0x3C))[2],
         (*(f32 **)((u8 *)arg0 + 0x40))[2],
         (*(f32 **)((u8 *)arg0 + 0x44))[2], t);
-    f30 = fn_80059500(
+    f30 = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[3],
         (*(f32 **)((u8 *)arg0 + 0x3C))[3],
         (*(f32 **)((u8 *)arg0 + 0x40))[3],
         (*(f32 **)((u8 *)arg0 + 0x44))[3], t);
-    f31 = fn_80059500(
+    f31 = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[4],
         (*(f32 **)((u8 *)arg0 + 0x3C))[4],
         (*(f32 **)((u8 *)arg0 + 0x40))[4],
         (*(f32 **)((u8 *)arg0 + 0x44))[4], t);
-    fn_80059500(
+    Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[5],
         (*(f32 **)((u8 *)arg0 + 0x3C))[5],
         (*(f32 **)((u8 *)arg0 + 0x40))[5],
         (*(f32 **)((u8 *)arg0 + 0x44))[5], t);
-    ftmp = fn_80059500(
+    ftmp = Math_Hermite(
         (*(f32 **)((u8 *)arg0 + 0x38))[6],
         (*(f32 **)((u8 *)arg0 + 0x3C))[6],
         (*(f32 **)((u8 *)arg0 + 0x40))[6],

@@ -1383,7 +1383,7 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     return dx - lbl_8036917C * (f32)(s32)(dx / lbl_8036917C);
 }
 
-f32 fn_80059500(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
+f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
   extern f32 lbl_8036912C;

@@ -7151,7 +7151,7 @@ void fn_80195170(void *arg0, s8 arg1) {
 }
 
 void fn_80195178(void *arg0) {
-    f32 fn_80059500(f32, f32, f32, f32, f32);
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
@@ -7281,9 +7281,9 @@ void fn_80195178(void *arg0) {
         }
         for (j = 1; j <= 0x10; j++) {
             t2 = (f32)j * lbl_8036AE58;
-            dst[0] = fn_80059500(p0[0], curpt[0xA0 / 4], p2[0], p3[0], t2);
-            dst[1] = fn_80059500(p0[1], curpt[0xA4 / 4], p2[1], p3[1], t2);
-            dst[2] = fn_80059500(p0[2], curpt[0xA8 / 4], p2[2], p3[2], t2);
+            dst[0] = Math_Hermite(p0[0], curpt[0xA0 / 4], p2[0], p3[0], t2);
+            dst[1] = Math_Hermite(p0[1], curpt[0xA4 / 4], p2[1], p3[1], t2);
+            dst[2] = Math_Hermite(p0[2], curpt[0xA8 / 4], p2[2], p3[2], t2);
             dst += 3;
         }
         curpt = (f32 *)((u8 *)curpt + 0xC);
