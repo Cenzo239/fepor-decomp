@@ -3723,7 +3723,7 @@ loop:
         *(s32 *)((u8 *)arg0 + 0x10) = 0;
         return;
     }
-    ptr = (u32 *)((u8 *)ptr + ((node & 0x0F000000) >> 22));
+    ptr = (u32 *)((u8 *)ptr + ((node >> 10) & 0x3C));
 load:
     node = *ptr;
     if (node != 0) {
