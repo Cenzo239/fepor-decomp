@@ -23871,7 +23871,7 @@ void fn_8010329C(void *arg0, void *arg1) {
     }
 }
 
-s32 fn_801032F8(void) {
+s32 TagWin_OnCancel(void) {
     void fn_800D758C(void *);
     extern void *lbl_80367918;
     fn_800D758C(lbl_80367918);
@@ -23890,7 +23890,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     extern void *fn_800D75FC(void *, void *);
 
     extern void TagWin_OnOk(void);
-    extern void fn_801032F8(void);
+    extern void TagWin_OnCancel(void);
 
     u8 *obj;
     u8 *strings;
@@ -23964,7 +23964,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     *(void **)(entry + 0xA4) = (void *)TagWin_OnOk;
 
     entry = *(u8 **)(obj + 0x42C);
-    *(void **)(entry + 0xA4) = (void *)fn_801032F8;
+    *(void **)(entry + 0xA4) = (void *)TagWin_OnCancel;
 
     return obj;
 }
