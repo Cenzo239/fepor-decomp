@@ -6882,7 +6882,7 @@ void fn_801C5B80(void *arg0) {
     void *GActor_Create(void);
     void sprintf(void *, void *, ...);
     void fn_8005F554(void *, void *);
-    void fn_8005F4F4(void *, void *);
+    void GActor_LoadG(void *, void *);
     void fn_8005F5B4(void *, void *);
     void fn_8005F494(void *, void *);
     void GActor_Finalize(void *);
@@ -7017,7 +7017,7 @@ void fn_801C5B80(void *arg0) {
     fn_8005F554(*(void **)((u8 *)self + 0x40), sp28);
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x198);
-    fn_8005F4F4(*(void **)((u8 *)self + 0x40), sp28);
+    GActor_LoadG(*(void **)((u8 *)self + 0x40), sp28);
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x19B);
     fn_8005F5B4(*(void **)((u8 *)self + 0x40), sp28);

@@ -2277,7 +2277,7 @@ void fn_8005F494(void *arg0, void *arg1) {
 
 extern u32 fn_80065E88(s32, s32);
 extern void fn_80065E68(void);
-void fn_8005F4F4(void *arg0, s32 arg1) {
+void GActor_LoadG(void *arg0, s32 arg1) {
     void *fn_80065E88(s32, s32);
     void fn_80065E68(void *);
     void *saved;
@@ -5137,7 +5137,7 @@ void *Light_GetChannel(s32 arg0) {
     return (u8 *)lbl_80366DDC + arg0 * 0x2c;
 }
 
-#pragma optimization_level 2
+#pragma peephole off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
@@ -5145,7 +5145,7 @@ void fn_80067460(void *arg0) {
         lbl_80366DDC = lbl_80311B04;
     }
 }
-#pragma optimization_level reset
+#pragma peephole on
 s32 fn_80067478(void) {
     extern s32 lbl_80366DDC;
     return lbl_80366DDC;
@@ -6457,7 +6457,7 @@ void fn_8006D52C(s32 arg0) {
 }
 
 void fn_8006D53C(s32 arg0) {
-    register u32 gqr;
+    u32 gqr;
     gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }

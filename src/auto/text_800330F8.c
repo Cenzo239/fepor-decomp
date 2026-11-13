@@ -11369,7 +11369,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     u16 fn_8005C144(void *);
     void *fn_8005C82C(void *, u16);
     void fn_8005F434(void *, void *, u16);
-    void fn_8005F4F4(void *, s32);
+    void GActor_LoadG(void *, s32);
     void fn_8005F554(void *, s32);
     void Model_SetAlpha(void *, s32);
     void fn_8005FEE8(void *, f32);
@@ -11409,7 +11409,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         M2C_FIELD(sub, u8 *, 0x87) = 1;
         arg1 = (u16)arg1 | 8;
         M2C_FIELD(arg0, void **, 0x164) = fn_8005C82C(fn_8004B158(res), (u16)arg1);
-        fn_8005F4F4(sub, fn_8004B0C8(res));
+        GActor_LoadG(sub, fn_8004B0C8(res));
         fn_8005F554(sub, fn_8004B110(res));
         id = get_4F128_id(arg0);
         res = get_4F128_resource(arg0, id);
@@ -12026,7 +12026,7 @@ void fn_80050F64(void) {
     void fn_80061824(void *);
     void sprintf(char *, char *, ...);
     void fn_8005F554(void *, char *);
-    void fn_8005F4F4(void *, char *);
+    void GActor_LoadG(void *, char *);
     void fn_8005F5B4(void *, char *);
     void fn_8005F494(void *, char *);
     void GActor_Finalize(void *);
@@ -12119,7 +12119,7 @@ void fn_80050F64(void) {
                         (char *)(lbl_8026AB18 + 0xB0), b + 1,
                         (char *)(lbl_8026AB18 + 0xC7));
         }
-        fn_8005F4F4((void *)c, sp10);
+        GActor_LoadG((void *)c, sp10);
         if (b + 1 < 0) {
             sprintf(sp10, (char *)(lbl_8026AB18 + 0xA5),
                         (char *)(lbl_8026AB18 + 0xB0),
@@ -13006,7 +13006,7 @@ void MapObj_InitGraphics(void *arg0) {
  void fn_8005C82C(void *, s32);
  void *GActor_Create(void);
  void fn_8005F554(void *, void *);
- void fn_8005F4F4(void *, void *);
+ void GActor_LoadG(void *, void *);
  void fn_8005F5B4(void *, void *);
  void fn_8005F494(void *, void *);
  u8 fn_8005C3C4(void *);
@@ -13045,7 +13045,7 @@ void MapObj_InitGraphics(void *arg0) {
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&4) M2C_FIELD(node,u32 *,0)|=0x180;
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x80) M2C_FIELD(node,u32 *,0)|=0x10000000;
  sprintf(buf,GActor_str+330,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F554(node,buf);
-sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F4F4(node,buf);
+sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadG(node,buf);
 sprintf(buf,GActor_str+345,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
 sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) fn_8005F494(node,buf);
  GActor_Finalize(node);
