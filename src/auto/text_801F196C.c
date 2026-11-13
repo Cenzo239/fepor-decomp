@@ -6,7 +6,7 @@ extern struct {
     u32 pad4;
     u32 *pad8;
     u32 padC;
-} lbl_8029B068;
+} gCardLinkProc;
 extern void* fn_800C08AC(void *, s32, void *);
 
 extern f32 lbl_8036B910;
@@ -1485,7 +1485,7 @@ void CardLink_ApplyBonus(void *arg0) {
     s32 code;
     s32 flag;
 
-    tmp = fn_8000C0C0(&lbl_8029B068);
+    tmp = fn_8000C0C0(&gCardLinkProc);
     if (tmp == NULL) {
         flag = 0;
     } else {
@@ -1496,7 +1496,7 @@ void CardLink_ApplyBonus(void *arg0) {
         fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0x9A), 0, 1, 0);
         fn_8000C070(arg0, 0x59);
     } else {
-        tmp = fn_8000C0C0(&lbl_8029B068);
+        tmp = fn_8000C0C0(&gCardLinkProc);
         if (tmp == NULL) {
             code = -1;
         } else {
@@ -1535,7 +1535,7 @@ void CardLink_ApplyBonus(void *arg0) {
             break;
         }
     }
-    fn_8000BF00(&lbl_8029B068);
+    fn_8000BF00(&gCardLinkProc);
 }
 
 void fn_801F5A28(void *arg0) {
@@ -1551,7 +1551,7 @@ void fn_801F5A28(void *arg0) {
     s32 temp_r4_2;
     void *temp_r5;
 
-    tmp = fn_8000C0C0(&lbl_8029B068);
+    tmp = fn_8000C0C0(&gCardLinkProc);
     if (tmp == NULL) {
         var_r0 = 0;
     } else {
@@ -1570,7 +1570,7 @@ void fn_801F5A28(void *arg0) {
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         fn_8000C070(arg0, 0);
-        fn_8000BF00(&lbl_8029B068);
+        fn_8000BF00(&gCardLinkProc);
     }
 }
 
@@ -1613,7 +1613,7 @@ void fn_801F5BB0(void *arg0) {
         *(void **)((u8 *)arg0 + 0x50) = NULL;
     }
     fn_80109020(0);
-    fn_8000BF00(&lbl_8029B068);
+    fn_8000BF00(&gCardLinkProc);
 }
 
 void fn_801F5C04(void *arg0) {
@@ -1650,7 +1650,7 @@ extern s32 lbl_8036840C;
 }
 
 void fn_801F5CDC(void) {
-    fn_8000CAF0(&lbl_8029B068, 3);
+    fn_8000CAF0(&gCardLinkProc, 3);
 }
 
 void fn_801F5D08(void *arg0) {
