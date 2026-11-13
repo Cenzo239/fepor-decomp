@@ -3653,7 +3653,8 @@ f64 fn_80238378(s32 arg0, f64 farg0) {
 }
 
 #pragma global_optimizer off
-f64 __kernel_cos(f64 farg0, f64 farg1) {
+/* fdlibm __kernel_cos: cosine on a reduced argument (x, y) with |x| ~<= pi/4. */
+f64 __kernel_cos(f64 x, f64 y) {
     extern f64 __kcos_one;
     extern f64 __kcos_C1;
     extern f64 __kcos_C2;
@@ -3664,22 +3665,22 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
     extern f64 __kcos_half;
     extern f64 __kcos_qx;
     f64 qx;
-    f64 x;
+    f64 xLocal;
     f64 z;
     f64 r;
     s32 ix;
 
-    x = farg0;
-    ix = ((s32 *)&x)[0] & 0x7FFFFFFF;
+    xLocal = x;
+    ix = ((s32 *)&xLocal)[0] & 0x7FFFFFFF;
     if (ix < 0x3E400000) {
-        if ((s32)farg0 == 0) {
+        if ((s32)x == 0) {
             return __kcos_one;
         }
     }
-    z = x * x;
+    z = xLocal * xLocal;
     r = z * (((((__kcos_C6 * z + __kcos_C5) * z + __kcos_C4) * z + __kcos_C3) * z + __kcos_C2) * z + __kcos_C1);
     if (ix < 0x3FD33333) {
-        return __kcos_one - ((__kcos_half * z) - ((z * r) - (x * farg1)));
+        return __kcos_one - ((__kcos_half * z) - ((z * r) - (xLocal * y)));
     }
     if (ix > 0x3FE90000) {
         qx = __kcos_qx;
@@ -3687,7 +3688,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
         ((s32 *)&qx)[0] = ix - 0x00200000;
         ((s32 *)&qx)[1] = 0;
     }
-    return (__kcos_one - qx) - (((__kcos_half * z) - qx) - ((z * r) - (x * farg1)));
+    return (__kcos_one - qx) - (((__kcos_half * z) - qx) - ((z * r) - (xLocal * y)));
 }
 
 s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
