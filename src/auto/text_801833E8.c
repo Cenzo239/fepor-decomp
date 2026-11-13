@@ -11556,7 +11556,7 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
     void fn_800056A0(s8);
     void fn_80016180(void);
     s32 fn_80049D6C(void *);
-    void fn_80049C30(void *, u8);
+    void MapObj_Hide(void *, u8);
     void MapObjEvent_Push(void *, s32, s32, u8, s32);
     s32 sp8[10];
     s32 count;
@@ -11578,7 +11578,7 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
     while (i < count) {
         v = *p;
         if ((u8)fn_80049D6C((void *)v) == 0) {
-            fn_80049C30((void *)v, 0);
+            MapObj_Hide((void *)v, 0);
         }
         p++;
         i++;
@@ -11712,7 +11712,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     void *fn_80046F14(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, s32 *);
     u8 fn_80049D6C(void *);
-    void fn_80049C30(void *, s32);
+    void MapObj_Hide(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
     extern u8 gMapObjEventList[];
@@ -11746,7 +11746,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
             while (i < count) {
                 v = *p;
                 if ((u8)fn_80049D6C((void *)v) == 0) {
-                    fn_80049C30((void *)v, 0);
+                    MapObj_Hide((void *)v, 0);
                 }
                 p++;
                 i++;
