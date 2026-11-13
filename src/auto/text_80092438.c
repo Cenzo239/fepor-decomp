@@ -78,7 +78,7 @@ void fn_80092438(void *arg0) {
 #pragma use_lmw_stmw on
 s32 fn_80092528(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
-    u8 fn_8001CCE4(u8);
+    u8 WpnRank_GetNext(u8);
     u32 fn_8001CFA8(u8);
     void *self;
     s32 a1;
@@ -150,7 +150,7 @@ clamp79:
         result = 0x79;
     }
 done1:
-    result2 = fn_8001CCE4(result);
+    result2 = WpnRank_GetNext(result);
 
     if ((u8)a1 == 7) {
         if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {

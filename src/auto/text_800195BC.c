@@ -1719,7 +1719,7 @@ void *Item_Clone(void *arg0, void *arg1) {
         u8 rest : 6;
     } Bit6;
     Bit6 *dst;
-    u8 src5;
+    Bit6 tmp;
     s32 word;
     u8 byte4;
     s32 mask;
@@ -1729,11 +1729,11 @@ void *Item_Clone(void *arg0, void *arg1) {
 
     dst = (Bit6 *)((u8 *)arg0 + 5);
     word = *(s32 *)arg1;
-    src5 = *((u8 *)arg1 + 5);
-    mask = src5 & 0x3F;
+    *(u8 *)&tmp = *((u8 *)arg1 + 5);
+    mask = tmp.rest;
     dst->rest = 0;
-    pad = (src5 >> 7) & 1;
-    flag = (src5 >> 6) & 1;
+    pad = tmp.pad;
+    flag = tmp.flag;
     byte4 = *((u8 *)arg1 + 4);
     *(s32 *)arg0 = word;
     *((u8 *)arg0 + 4) = byte4;
@@ -2023,7 +2023,7 @@ void fn_8001CC48(u8 *dst, u8 *src) {
     }
 }
 
-s32 fn_8001CCE4(u8 arg0) {
+s32 WpnRank_GetNext(u8 arg0) {
     u8 var_r0;
 
     if (arg0 >= 0xFBU) {
