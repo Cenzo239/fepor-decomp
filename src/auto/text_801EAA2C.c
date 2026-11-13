@@ -2689,7 +2689,7 @@ void GActor_LoadByName(void *arg0, char *arg1) {
     void String_ConcatCStr(void *, void *, char *);
     s32 strlen(char *);
     extern char gGActorPathExt[];
-    extern f32 lbl_8036B7D0;
+    extern f32 gGActorDefaultScale;
 
     String sp54;
     String sp48;
@@ -2758,7 +2758,7 @@ void GActor_LoadByName(void *arg0, char *arg1) {
     *(s32 *)((u8 *)obj + 0x44) = (s32)tmp;
     GActor_Finalize(*(void **)((u8 *)self + 0xD0));
     obj = *(void **)((u8 *)self + 0xD0);
-    f = lbl_8036B7D0;
+    f = gGActorDefaultScale;
     *(u32 *)obj |= 0x01040000;
     obj = *(void **)((u8 *)self + 0xD0);
     *(f32 *)((u8 *)obj + 0x5C) = f;
