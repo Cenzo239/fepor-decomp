@@ -11126,7 +11126,8 @@ s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     return temp_r3;
 }
 
-s8 Ui_PlaySeCue(void *arg0, int arg1) {
+/* Allocate an SE cue slot from a named cue and start it at the given volume. */
+s8 Ui_PlaySeCue(void *cueName, int volume) {
     void *Hash_Lookup(void *);
     extern u8 gSeCueSlots[1344];
     extern s32 gUiInputFlags;
@@ -11161,7 +11162,7 @@ found:
         return -1;
     }
     found = gSeCueSlots + ((u8)slot * 0x30);
-    src = Hash_Lookup(arg0);
+    src = Hash_Lookup(cueName);
     kind = src[5] & 3;
     switch (kind) {
     case 0:
@@ -11223,9 +11224,9 @@ found:
         tmp = 1;
     }
     found[0x11] = tmp;
-    found[0x16] = arg1;
+    found[0x16] = volume;
     found[0x28] = found[0x16];
-    found[0x29] = arg1;
+    found[0x29] = volume;
     *(s16 *)(found + 0x2E) = 1;
     *(s16 *)(found + 0x2C) = 0;
     return slot;
