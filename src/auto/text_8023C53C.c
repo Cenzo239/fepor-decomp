@@ -10008,7 +10008,7 @@ s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
 extern u8 gSoundVoiceCount, gSoundStudioCount;
 extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *lbl_80368A9C, *lbl_80368A94;
 extern s32 lbl_80368A68;
-extern u8 lbl_8035B838[];
+extern u8 gSoundStudios[];
 void *fn_802637D0(u32); void *fn_802637A4(u32);
 s32 fn_80262AD0(void); void fn_80259A94(s32,s32,s32); void fn_80259A5C(void);
 void fn_8020516C(void *,u16);
@@ -10049,7 +10049,7 @@ fn_8020516C(*(void **)(gSoundVoices+off),0xC4);
 *(u32 *)(gSoundVoices+off+48)=0;
 *(u32 *)(gSoundVoices+off+52)=0;
 }
-for(off=0,i=(u32)lbl_8035B838;off<gSoundStudioCount;i+=0xBC,off++) {
+for(off=0,i=(u32)gSoundStudios;off<gSoundStudioCount;i+=0xBC,off++) {
 ((u8 *)i)[0x50]=0;
 if (!(*(void **)i=fn_802637D0(0x36))) return 0;
 if (!(*(void **)(i+0x28)=fn_802637D0(0x3C00))) return 0;
@@ -10475,7 +10475,7 @@ void fn_8025A3A4(void *arg0, u32 arg1) {
     extern u8 *lbl_80368A7C;
     extern u32 lbl_80368A90;
     extern u32 lbl_80368A8C;
-    extern u8 lbl_8035B838[];
+    extern u8 gSoundStudios[];
     extern void *lbl_80368A70;
     extern u16 lbl_80368A74;
     extern u16 lbl_80368A84;
@@ -10512,7 +10512,7 @@ void fn_8025A3A4(void *arg0, u32 arg1) {
         tick += 0xBB8;
     }
     pad0 = 0;
-    studioBase = lbl_8035B838;
+    studioBase = gSoundStudios;
     studioIdx = 0;
     for (;;) {
         studio = studioBase + studioIdx * 0xBC;
@@ -10598,7 +10598,7 @@ s32 fn_8025C99C(void *arg0, s32 arg1)
 #pragma use_lmw_stmw reset
 void fn_8025C9E0(void *arg0, u8 arg1) {
     void fn_8025CA80(void);
-    extern u8 lbl_8035B838[];
+    extern u8 gSoundStudios[];
     void *temp_r0;
     u8 *temp_r4;
 
@@ -10607,7 +10607,7 @@ void fn_8025C9E0(void *arg0, u8 arg1) {
         *(s32 *)((char *)arg0 + 0x24) |= 0x20;
     }
     ((u8 *)arg0)[0xF1] = 0;
-    temp_r4 = lbl_8035B838 + arg1 * 0xBC;
+    temp_r4 = gSoundStudios + arg1 * 0xBC;
     temp_r0 = *(void **)(temp_r4 + 0x48);
     *(void **)((char *)arg0 + 0xC) = temp_r0;
     if (temp_r0 != NULL) {
@@ -10622,7 +10622,7 @@ void fn_8025C9E0(void *arg0, u8 arg1) {
 }
 
 void fn_8025CA80(void *arg0) {
-    extern u8 lbl_8035B838[];
+    extern u8 gSoundStudios[];
     void *temp_r4;
 
     if ((u8) M2C_FIELD(arg0, u8 *, 0xF0) != 0) {
@@ -10630,7 +10630,7 @@ void fn_8025CA80(void *arg0) {
         if (temp_r4 != NULL) {
             M2C_FIELD(temp_r4, void **, 0xC) = (void *) M2C_FIELD(arg0, void **, 0xC);
         } else {
-            M2C_FIELD((void *)(lbl_8035B838 + (u32)(u8)M2C_FIELD(arg0, u8 *, 0xF3) * 0xBC), void **, 0x48) = (void *) M2C_FIELD(arg0, void **, 0xC);
+            M2C_FIELD((void *)(gSoundStudios + (u32)(u8)M2C_FIELD(arg0, u8 *, 0xF3) * 0xBC), void **, 0x48) = (void *) M2C_FIELD(arg0, void **, 0xC);
         }
         temp_r4 = (void *) M2C_FIELD(arg0, void **, 0xC);
         if (temp_r4 != NULL) {
@@ -13850,7 +13850,7 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
                  f32 arg3, f32 arg4, f32 arg5)
 {
     extern u8 *gSoundVoices;
-    extern u8 lbl_8035B838[];
+    extern u8 gSoundStudios[];
     extern u16 lbl_802831E0[];
     extern f32 lbl_8036C35C;
     extern f32 lbl_8036C370;
@@ -13886,7 +13886,7 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     index = *(u8 *)(entry + 0xF3);
     flags = *(u32 *)(entry + 0xF4);
 
-    table = lbl_8035B838 + index * 0xBC;
+    table = gSoundStudios + index * 0xBC;
 
     sign = flags >> 31;
     option = (*(u32 *)(table + 0x54) == 1);
@@ -13958,10 +13958,10 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
 }
 
 void fn_8026212C(u8 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    extern u16 lbl_8035B838[];
+    extern u16 gSoundStudios[];
     void *temp_r3;
 
-    temp_r3 = (char *)lbl_8035B838 + (arg0 * 0xBC);
+    temp_r3 = (char *)gSoundStudios + (arg0 * 0xBC);
     *(s32 *)((char *)temp_r3 + 0xAC) = arg1;
     *(s32 *)((char *)temp_r3 + 0xB4) = arg2;
     *(s32 *)((char *)temp_r3 + 0xB0) = arg3;

@@ -221,7 +221,7 @@ extern u16 lbl_80368AFC;
 extern s32 lbl_80368AF8;
 extern u8 lbl_8035A610[];
 extern u8 lbl_8035A650[];
-extern s32 lbl_8035B838[];
+extern s32 gSoundStudios[];
 typedef struct {
     u32 field_0x0;
     u32 field_0x4;
