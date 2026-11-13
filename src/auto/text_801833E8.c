@@ -2184,7 +2184,9 @@ void fn_8018A6F4(void *arg0) {
     u8 sp8[0x38];
     void *self;
     void *obj;
-    u32 var;
+    void *var;
+    void *obj2;
+    void *var2;
 
     self = arg0;
     if (*(u16 *)((u8 *)self + 0x52) & 0x40) {
@@ -2194,22 +2196,22 @@ void fn_8018A6F4(void *arg0) {
         fn_8004FC70(*(void **)((u8 *)self + 0x30), 0xF);
     }
     obj = *(void **)((u8 *)self + 0x30);
-    var = (u32)self;
+    var = self;
     *(void **)(sp40 + 0x30) = obj;
     fn_8000A388(lbl_80295A40, fn_80185078, sp40);
     if (!self) {
-        var = 3;
+        var = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(lbl_80295A40, var) + 0x30) = obj;
+    *(void **)((u8 *)Process_Create(lbl_80295A40, (u32)var) + 0x30) = obj;
 
-    var = (u32)self;
-    obj = *(void **)((u8 *)self + 0x30);
-    *(void **)(sp8 + 0x30) = obj;
+    obj2 = *(void **)((u8 *)self + 0x30);
+    var2 = self;
+    *(void **)(sp8 + 0x30) = obj2;
     fn_8000A388(lbl_80295A60, fn_80185078, sp8);
     if (!self) {
-        var = 3;
+        var2 = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(lbl_80295A60, var) + 0x30) = obj;
+    *(void **)((u8 *)Process_Create(lbl_80295A60, (u32)var2) + 0x30) = obj2;
 }
 
 #pragma global_optimizer reset
