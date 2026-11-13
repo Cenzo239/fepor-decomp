@@ -9164,7 +9164,7 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
     }
 }
 
-void fn_800DD0B4(void *arg0) {
+void ListWin_HandleInput(void *arg0) {
 void fn_800E43EC(void *); void fn_800E7C88(void *); extern u8 *gPadInput;
 void *owner; s32 keys, size;
 fn_800E43EC(arg0); owner=M2C_FIELD(arg0,void **,0);
