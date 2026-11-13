@@ -4297,7 +4297,7 @@ loop_16:
     goto loop_6;
 }
 
-s32 fn_8024B654(s32 arg0, s32 arg1, s32 arg2) {
+s32 Snd_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
     s32 fn_8024A4AC(s32, s32, s32);
     s32 temp_r31;
 
