@@ -75,7 +75,7 @@ void fn_80098D30(void *arg0) {
 void fn_80098DA4(void) {
     void fn_8009799C(void);
     void fn_800980D4(s32);
-    s32 fn_800980E8(s32);
+    s32 Event_GetSlotUnit(s32);
     u8 fn_80098568(void);
     void fn_80184C7C(s32, s32, s32, s32);
     s32 i;
@@ -83,7 +83,7 @@ void fn_80098DA4(void) {
 
     fn_8009799C();
     for (i = 0; i < 3; i++) {
-        temp = fn_800980E8(i);
+        temp = Event_GetSlotUnit(i);
         if (temp != 0) {
             fn_800980D4(i);
             if (fn_80098568() == 0) {
@@ -94,7 +94,7 @@ void fn_80098DA4(void) {
 }
 
 void fn_80098E1C(s32 arg0) {
-    s32 fn_800980E8(s32);
+    s32 Event_GetSlotUnit(s32);
     void fn_80050BF4(s32, s32);
     void fn_800980D4(s32);
     u8 fn_80098568(void);
@@ -105,7 +105,7 @@ void fn_80098E1C(s32 arg0) {
 
     var_r31 = 0;
     do {
-        temp_r3 = fn_800980E8(var_r31);
+        temp_r3 = Event_GetSlotUnit(var_r31);
         if (temp_r3 != 0) {
             fn_80050BF4(temp_r3, 0);
             fn_800980D4(var_r31);
@@ -403,7 +403,7 @@ void fn_80099994(void *arg0) {
 
 void fn_80099AD0(void *arg0) {
     s32 Event_GetCmdFlags(s16);
-    void *fn_800980E8(s32);
+    void *Event_GetSlotUnit(s32);
     void *fn_800958A4(s32);
     void *Event_GetCmdFlagRes(s32);
     void *fn_80053AE8(void *, void *);
@@ -420,12 +420,12 @@ void fn_80099AD0(void *arg0) {
     void *temp_r4;
 
     if (Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x46)) & 0x40000) {
-        ptrs[0] = fn_800980E8(0);
+        ptrs[0] = Event_GetSlotUnit(0);
         ptrs[1] = fn_800958A4(0);
         ptrs[2] = fn_800958A4(1);
         var_r31 = ptrs;
         if (ptrs[0] != NULL && ptrs[1] != NULL && ptrs[2] != NULL) {
-            temp_r3 = fn_800980E8(1);
+            temp_r3 = Event_GetSlotUnit(1);
             src[0] = *(f32 *)((u8 *)temp_r3 + 4);
             temp_r29 = temp_r3;
             var_r30 = 0;
@@ -598,7 +598,7 @@ void fn_80099F20(void *arg0) {
 }
 
 void fn_80099FAC(s32 arg0) {
-    u32 fn_800980E8(s32);
+    u32 Event_GetSlotUnit(s32);
     void Unit_FaceToward(u32, u32, s32, s32);
     void fn_80184C7C(u32, s32, s32, s32);
     s32 temp_r28;
@@ -607,9 +607,9 @@ void fn_80099FAC(s32 arg0) {
     u32 temp_r29;
 
     temp_r28 = arg0;
-    temp_r31 = fn_800980E8(0);
-    temp_r30 = fn_800980E8(1);
-    temp_r29 = fn_800980E8(2);
+    temp_r31 = Event_GetSlotUnit(0);
+    temp_r30 = Event_GetSlotUnit(1);
+    temp_r29 = Event_GetSlotUnit(2);
     fn_80184C7C(temp_r31, 8, 0x10, temp_r28);
     if (temp_r30 != 0U) {
         Unit_FaceToward(temp_r31, temp_r30, 0x18, temp_r28);

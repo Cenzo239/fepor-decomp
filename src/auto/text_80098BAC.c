@@ -66,7 +66,7 @@ void MapUi_Init(void *proc) {
     void fn_80096AB8();
     void fn_800979FC();
     void fn_80097AB4();
-    u32 fn_800980E8(s32);
+    u32 Event_GetSlotUnit(s32);
     void fn_80184618(s32, void *);
     u8 fn_801A2690();
     extern u8 gUiContext[];
@@ -85,8 +85,8 @@ void MapUi_Init(void *proc) {
     fn_80097AB4();
     slot = 0;
     do {
-        if (fn_800980E8(slot) != 0U) {
-            fn_80184618(fn_800980E8(slot), proc);
+        if (Event_GetSlotUnit(slot) != 0U) {
+            fn_80184618(Event_GetSlotUnit(slot), proc);
         }
         slot += 1;
     } while (slot < 3);

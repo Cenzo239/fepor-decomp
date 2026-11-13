@@ -1082,7 +1082,7 @@ void *fn_800980D4(s32 arg0) {
     return (u8 *)lbl_803120C0 + arg0 * 0x14;
 }
 
-s32 fn_800980E8(s32 arg0)
+s32 Event_GetSlotUnit(s32 arg0)
 {
     extern u8 lbl_803120C0[];
     void *p = *(void **)(lbl_803120C0 + arg0 * 0x14);

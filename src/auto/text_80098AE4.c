@@ -51,7 +51,7 @@ void fn_80098AE4(void *arg0) {
     void fn_8004FE98(s32, s32);
     void fn_8005376C(void);
     void fn_800980D4(s32);
-    s32 fn_800980E8(s32);
+    s32 Event_GetSlotUnit(s32);
     u8 fn_80098568(void);
     s32 i;
     s32 temp;
@@ -60,7 +60,7 @@ void fn_80098AE4(void *arg0) {
     if (*(u8 *)((char *)arg0 + 0x40) == 0) {
         fn_8009799C();
         for (i = 0; i < 3; i++) {
-            temp = fn_800980E8(i);
+            temp = Event_GetSlotUnit(i);
             if (temp != 0) {
                 fn_800980D4(i);
                 if (fn_80098568() != 0) {

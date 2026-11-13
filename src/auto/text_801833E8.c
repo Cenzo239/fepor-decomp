@@ -10639,11 +10639,11 @@ void fn_8019D038(void *arg0) {
 void fn_8019D068(s32 arg0)
 {
   u32 temp_r31;
-  u32 fn_800980E8(M2C_UNK);
+  u32 Event_GetSlotUnit(M2C_UNK);
   M2C_UNK Unit_FaceToward(u32, u32, M2C_UNK, s32);
   u32 temp_r30;
-  temp_r31 = fn_800980E8(0);
-  temp_r30 = fn_800980E8(1);
+  temp_r31 = Event_GetSlotUnit(0);
+  temp_r30 = Event_GetSlotUnit(1);
   if ((temp_r31 != 0U) && (temp_r30 != 0U))
   {
     Unit_FaceToward(temp_r31, temp_r30, 0x10, arg0);
