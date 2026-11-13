@@ -2072,7 +2072,7 @@ void fn_801EE76C(void *arg0) {
     void *fn_800C91EC(void *, void *, void *);
     void fn_800C9A60(void *, s32);
     void fn_800C8DCC(void *, void *, void *);
-    void fn_800C9120(void *, s32);
+    void Xml_Destroy(void *, s32);
     void fn_801EFB2C(void *, char *);
     void fn_801EF6BC(void *);
     void fn_801EEF74(void *, s32);
@@ -2240,7 +2240,7 @@ use30708:
     *(s32 *)((char *)obj + 0xB0) = *(s32 *)bufAC;
     fn_800C9A60(&sp60, -1);
 
-    fn_800C9120(r29, 1);
+    Xml_Destroy(r29, 1);
     fn_800C9A60(&sp24, -1);
 
     fn_801EFB2C(*(void **)((char *)self + 0x48), path);
@@ -2787,7 +2787,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_800CBF24(String *, char *, String *);
     void fn_800C99A0(String *, String *, s32, s32);
     void *fn_800D59CC(void *, String *);
-    void fn_800C9120(void *, s32);
+    void Xml_Destroy(void *, s32);
     char *fn_80050AB8(void *);
     void fn_801EF39C(String *, void *, s32);
     void fn_800CB8A4(String *, String *, String *);
@@ -2904,7 +2904,7 @@ void fn_801EFDC8(void *arg0) {
         }
         fn_800C9758((String *)((u8 *)fn_800D59CC((u8 *)self + 4, &str16c) + 0xC), &str160, 0, -1);
     }
-    fn_800C9120(file, 1);
+    Xml_Destroy(file, 1);
 
     str154.cap = 0;
     str148.cap = 0;
@@ -2987,7 +2987,7 @@ void fn_801EFDC8(void *arg0) {
                 }
             }
         }
-        fn_800C9120(file2, 1);
+        Xml_Destroy(file2, 1);
 
         fn_800D6878(tree, &sp8, &spC);
         flag0 = 0;
@@ -3021,7 +3021,7 @@ void fn_801EFDC8(void *arg0) {
             fn_800C96F8(&str124, buf184, strlen(buf184));
             fn_800C9758((String *)((u8 *)fn_800D59CC(tree, &str130) + 0xC), &str124, 0, -1);
         }
-        fn_800C9120(file2, 1);
+        Xml_Destroy(file2, 1);
 
         fn_800C9758(&str124, (String *)((u8 *)fn_800D59CC(tree, (String *)((u8 *)base + 0x8C)) + 0xC), 0, -1);
         if (fn_800C9400(&str124, 0, str124.data, strBase + 0x221, strlen(strBase + 0x221)) == 0) {

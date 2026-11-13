@@ -879,7 +879,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void Xml_GetChildValue(char *, void *);
     void fn_800C8DCC(void *, void *, String *);
     void Xml_AdvanceChild(void *);
-    void fn_800C9120(void *, s32);
+    void Xml_Destroy(void *, s32);
     void *fn_800C91EC(void *, void *, String *);
     void fn_800C96F8(String *, char *, u32);
     void fn_800C9758(String *, String *, s32, s32);
@@ -1092,7 +1092,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         *(s32 *)((u8 *)self + 0x190) = *(s32 *)((u8 *)lbl_80368278 + 0x184);
     }
 
-    fn_800C9120(xml, 1);
+    Xml_Destroy(xml, 1);
     fn_800C9A60(&str124, -1);
     fn_800C9A60(&str130, -1);
 }

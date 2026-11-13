@@ -1527,7 +1527,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_80041514(s32, void *);
     void *fn_800C42D8(s32);
     void fn_800C8DCC(void *, void *, void *);
-    void fn_800C9120(void *, s32);
+    void Xml_Destroy(void *, s32);
     void *fn_800C91EC(void *, void *, void *);
     void *fn_800C93EC(void *);
     void fn_800C9A60(void *, s16);
@@ -1607,7 +1607,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     fn_800C8DCC(&spB4, a2, &sp50);
     *(void **)((u8 *)self + 0x50) = *(void **)spB4;
     fn_800C9A60(&sp50, -1);
-    fn_800C9120(a2, 1);
+    Xml_Destroy(a2, 1);
     return self;
 }
 #pragma global_optimizer reset
@@ -7785,7 +7785,6 @@ void fn_80172B74(void *arg0) {
     void *self;
     void *obj;
     void *p;
-    void *cb;
     u32 ret;
 
     self = arg0;
@@ -7796,10 +7795,11 @@ void fn_80172B74(void *arg0) {
         *(s32 *)((u8 *)obj + 0x60) = 2;
         *(u8 *)((u8 *)obj + 0x4B) = 1;
     }
-    p = (void *)lbl_802EF4C8[0];
-    *(void **)((u8 *)obj + 0x70) = (void *)fn_80172C68;
-    *(void **)((u8 *)obj + 0x74) = p;
-    *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(obj, 0, p);
+    *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(
+        obj, 0,
+        (p = *(void **)lbl_802EF4C8,
+         *(void **)((u8 *)obj + 0x70) = (void *)fn_80172C68,
+         *(void **)((u8 *)obj + 0x74) = p, p));
     fn_8013FF00(self, obj);
     ret = fn_8013FF94(self, -0x1000, 0);
     if (ret != 0) {

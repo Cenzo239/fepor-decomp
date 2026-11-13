@@ -1934,7 +1934,7 @@ void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma auto_inline off
-void *fn_800C9120(void *arg0, s16 arg1) {
+void *Xml_Destroy(void *arg0, s16 arg1) {
     void fn_800C426C(void *);
     void fn_800C428C(void *);
     void *fn_800C9A60(void *, s16);
@@ -3110,7 +3110,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     char *fn_800C8DCC(char *, void *, String *);
     void Xml_AdvanceChild(void *);
     void fn_800C8F70(void *, s32);
-    void fn_800C9120(void *, s32);
+    void Xml_Destroy(void *, s32);
     void *fn_800C91EC(void *, String *, String *);
     char *fn_800C93EC(String *);
     s32 fn_800C9400(void *, s32, u32, void *, s32);
@@ -3258,7 +3258,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
         fn_800C9A60(&sp10, -1);
     }
 
-    fn_800C9120(obj, 1);
+    Xml_Destroy(obj, 1);
     fn_800C9A60(&sp88, -1);
     fn_800C9A60(&sp94, -1);
 }
@@ -3419,7 +3419,7 @@ void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91E
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
 void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
-void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
+void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
 extern char lbl_802704F8[];
 struct Block { u32 a,b,c,d,e,f,g,h; };
 struct Block sp118,spF8;
@@ -3452,7 +3452,7 @@ Xml_GetChildName(&sp18,f);fn_800C9758(&sp6C,&sp18,0,-1);fn_800C9A60(&sp18,-1);
 Xml_GetChildValue(sp78,f);fn_800C96F8(&sp60,arg1,strlen(arg1));
 fn_800CA18C((void *)(arg0+0x1D4),M2C_FIELD(arg0,s32 *,0x1D8)*12+M2C_FIELD(arg0,u8 **,0x1DC),1,&sp60);
 }
-fn_800C9120(f,1);fn_800C9A60(&sp60,-1);fn_800C9A60(&sp6C,-1);
+Xml_Destroy(f,1);fn_800C9A60(&sp60,-1);fn_800C9A60(&sp6C,-1);
 }
 
 #pragma cplusplus on
@@ -7435,7 +7435,7 @@ void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91E
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
 void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
-void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
+void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
 void fn_8011C674(void *,void *); void fn_8011C64C(void *,void *); void *fn_8011C9EC(void *); void fn_8011CA3C(void *,void *,void *);
 extern char lbl_802711B0[]; extern void *lbl_80367A50; extern void *lbl_803678C0;
 struct Block { u32 a,b,c,d,e,f,g,h; };
@@ -7469,7 +7469,7 @@ fn_8011C64C(lbl_80367A50,&sp5C);
 fn_800CA18C((void *)(arg0+0x58),M2C_FIELD(arg0,u8 **,0x60)+M2C_FIELD(arg0,s32 *,0x5C)*12,1,&sp50);
 }
 {void *t;t=fn_8011C9EC(*(void **)((u8 *)lbl_80367A50+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x448),t,lbl_803678C0);t=fn_8011C9EC(*(void **)((u8 *)lbl_80367A50+0x428));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x450),t,lbl_803678C0);}
-fn_800C9120(f,1);fn_800C9A60(&sp50,-1);fn_800C9A60(&sp5C,-1);
+Xml_Destroy(f,1);fn_800C9A60(&sp50,-1);fn_800C9A60(&sp5C,-1);
 }
 #pragma use_lmw_stmw reset
 
