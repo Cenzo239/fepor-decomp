@@ -2557,7 +2557,7 @@ void fn_80109EEC(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_80109F88(void *arg0, void *arg1) {
     void *Hash_Lookup(void *);
-    void fn_801FDA70(void *);
+    void FallingParticle_Spawn(void *);
     void fn_801FCC68(void *);
     void fn_801FC6E0(void *, f32);
     void fn_801FC634(void *, f32);
@@ -2667,7 +2667,7 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
     }
     switch ((s32)*((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0xE)) {
     case 1:
-        fn_801FDA70(arg0);
+        FallingParticle_Spawn(arg0);
         break;
     case 2:
         fn_801FCC68(arg0);

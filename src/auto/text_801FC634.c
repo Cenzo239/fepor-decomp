@@ -522,7 +522,7 @@ void fn_801FDA40(void) {
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-void fn_801FDA70(void *arg0) {
+void FallingParticle_Spawn(void *arg0) {
     void *fn_8000CAF0(void *, void *);
     s32 fn_8000C510(void);
     u32 fn_8000CD60(void);
