@@ -2497,11 +2497,12 @@ u8 fn_8001DDE8(void *arg0) {
     return (u8)((*(unsigned long long *)((u8 *)arg0 + 0x38) & 0x40EULL) != 0);
 }
 
-char *WpnType_GetName(u8 arg0, u8 arg1)
+/* Returns the display name for weapon type kind (0–11); kind 7 picks an alternate if flag != 0. */
+char *WpnType_GetName(u8 kind, u8 flag)
 {
     extern u8 gDataStr[];
 
-    switch (arg0) {
+    switch (kind) {
     case 0:
         return (char *)gDataStr + 0x2D4;
 
@@ -2524,7 +2525,7 @@ char *WpnType_GetName(u8 arg0, u8 arg1)
         return (char *)gDataStr + 0x2F5;
 
     case 7:
-        if (arg1 != 0) {
+        if (flag != 0) {
             return (char *)gDataStr + 0x2FA;
         }
         return (char *)gDataStr + 0x300;
