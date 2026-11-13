@@ -1426,9 +1426,9 @@ void fn_8001185C(void) {
 
 void fn_80011910(void) {
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802239D0(M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     fn_802201A8(0, 1, 4, 0x21, 0, 0x7D);
-    fn_802239D0(0, 0);
+    GXSetNumTexGens(0, 0);
     GXSetTevOrder(0, 0, 1, 4);
 }

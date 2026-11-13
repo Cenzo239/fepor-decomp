@@ -286,7 +286,7 @@ void fn_8014E864(void *arg0) {
     void GXSetNumChans(s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_8022100C(s32);
     void fn_80220F44(s32, s32);
     void GXBegin(s32, s32, s32);
@@ -421,7 +421,7 @@ void fn_8014E864(void *arg0) {
                         GXSetNumChans(0);
                         GXSetNumTevStages(1);
                         GXSetTevOrder(0, 0xFF, 0xFF, 4);
-                        fn_802239D0(0, 4);
+                        GXSetNumTexGens(0, 4);
                         fn_8022100C(0);
                         w = (s32)(lbl_8036A81C * (f32)*(s16 *)(entry + 0x10));
                         scale = lbl_8036A81C * (f32)*(s16 *)(entry + 0x14);
@@ -512,7 +512,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void GXSetNumTevStages(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_80220FC4(s32, s32, s32);
     void GXBegin(s32, s32, s32);
     void fn_80220F84(s32, s32);
@@ -546,7 +546,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         GXSetNumTevStages(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         GXSetTevOrder(0, 0, 0, 4);
-        fn_802239D0(0, 0);
+        GXSetNumTexGens(0, 0);
         fn_80220FC4(0, 0, 1);
         ctr = 0;
         goto check1;
@@ -583,7 +583,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         GXSetNumChans(0);
         GXSetNumTevStages(1);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
-        fn_802239D0(0, 4);
+        GXSetNumTexGens(0, 4);
         ctr = 0;
         goto check2;
         do {

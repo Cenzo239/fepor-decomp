@@ -1634,7 +1634,7 @@ void fn_80123D1C(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void fn_8022100C(s32);
@@ -1706,7 +1706,7 @@ void fn_80123D1C(void *arg0) {
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
-    fn_802239D0(0, 0);
+    GXSetNumTexGens(0, 0);
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
     fn_8022100C(0);
@@ -1769,7 +1769,7 @@ void fn_80123D1C(void *arg0) {
     GXSetNumChans(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0xFF, 4);
-    fn_802239D0(0, 4);
+    GXSetNumTexGens(0, 4);
 
     {
         s8 a = *(s8 *)((u8 *)arg0 + 0x50);
@@ -2359,7 +2359,7 @@ void fn_80125388(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void fn_8022100C(s32);
@@ -2399,7 +2399,7 @@ void fn_80125388(void *arg0) {
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
-    fn_802239D0(0, 0);
+    GXSetNumTexGens(0, 0);
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
     fn_8022100C(2);

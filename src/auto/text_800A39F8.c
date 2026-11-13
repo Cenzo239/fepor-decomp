@@ -907,7 +907,7 @@ void Gx_Setup2DState(void *arg0) {
 void fn_800A57D8(void) {
     M2C_UNK GXSetNumChans(M2C_UNK);
     M2C_UNK fn_80222334(M2C_UNK);
-    M2C_UNK fn_802239D0(M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223D94(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223DDC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -920,7 +920,7 @@ void fn_800A57D8(void) {
     fn_80222334(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
-    fn_802239D0(0, 3);
+    GXSetNumTexGens(0, 3);
     fn_80223D94(0, 0, 0);
     fn_80223D94(1, 0, 0);
     fn_80223D94(2, 0, 0);

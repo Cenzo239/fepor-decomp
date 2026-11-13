@@ -1840,7 +1840,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     s32 fn_80222AA0(void *);
     void fn_80224E50(void *, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
@@ -1901,7 +1901,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         if (var_r30 != 0) {
             b = 0;
         }
-        fn_802239D0(a, b);
+        GXSetNumTexGens(a, b);
         break;
     case 0x10:
         fn_802245D8(1, 4, 5, 0);
@@ -1916,11 +1916,11 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
                 GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
                 break;
             default:
-                fn_802239D0(0, 0);
+                GXSetNumTexGens(0, 0);
                 break;
             }
         } else {
-            fn_802239D0(0, 4);
+            GXSetNumTexGens(0, 4);
         }
         break;
     case 0x20:
@@ -1930,7 +1930,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         if (var_r30 != 0) {
             b = 0;
         }
-        fn_802239D0(a, b);
+        GXSetNumTexGens(a, b);
         break;
     case 0x30:
         fn_802245D8(3, 4, 1, 0);
@@ -1939,7 +1939,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         if (var_r30 != 0) {
             b = 0;
         }
-        fn_802239D0(a, b);
+        GXSetNumTexGens(a, b);
         break;
     case 0x40:
         GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);

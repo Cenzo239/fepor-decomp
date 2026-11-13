@@ -5637,7 +5637,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_80222CF0(void *, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     extern u8 gGMaterialAssertMsg[];
     extern s32 gMaterialStageIds[];
     extern u8 gMaterialTevStageCount;
@@ -5764,7 +5764,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     }
     fn_80222C50(sp14, r30);
     GXSetTevOrder(r28, r29, r30, 4);
-    fn_802239D0(r28, 0);
+    GXSetNumTexGens(r28, 0);
 }
 /* Compute material color/alpha and bind it to GX channel + optional TEV stages. */
 s32 GMaterial_SetupColor(void *mat, s32 animCtx, void *matParam, void *obj)

@@ -9603,7 +9603,7 @@ void Map_DrawRangeTiles(void) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetChanMatColor(s32, void *);
     void GXSetNumTevStages(s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -9657,7 +9657,7 @@ void Map_DrawRangeTiles(void) {
         matColor = lbl_80368F80;
         GXSetChanMatColor(4, &matColor);
         GXSetNumTevStages(1);
-        fn_802239D0(0, 0);
+        GXSetNumTexGens(0, 0);
         GXSetTevOrder(0, 0, 0, 4);
         GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
@@ -9781,7 +9781,7 @@ void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
 void fn_80222334(s32);
 void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
 void GXSetNumTevStages(s32);
-void fn_802239D0(s32, s32);
+void GXSetNumTexGens(s32, s32);
 void GXSetTevOrder(s32, s32, s32, s32);
 void GXSetNumChans(s32);
 void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -9830,7 +9830,7 @@ extern u8 lbl_80285828[];
         fn_80222334(1);
         fn_80222370(4, 0, 0, 1, 0, 0, 2);
         GXSetNumTevStages(1);
-        fn_802239D0(0, 4);
+        GXSetNumTexGens(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         GXSetNumChans(0);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
@@ -9979,7 +9979,7 @@ void fn_8004AAA4(void) {
     M2C_UNK fn_8022100C(M2C_UNK);
     M2C_UNK fn_80222334(M2C_UNK);
     M2C_UNK fn_80222370(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802239D0(M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetNumTevStages(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -9997,7 +9997,7 @@ void fn_8004AAA4(void) {
     fn_80222334(1);
     fn_80222370(4, 0, 0, 1, 0, 0, 2);
     GXSetNumTevStages(1);
-    fn_802239D0(0, 4);
+    GXSetNumTexGens(0, 4);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     GXSetNumChans(0);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
@@ -10204,7 +10204,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     s32 fn_80069DBC(void);
     void fn_8006ECCC(s32, void *, u16);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void fn_80223DDC(s32, s32, s32, s32, s32);
@@ -10230,7 +10230,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     t27 = fn_80069EA8();
     if ((*(s32 *)t30 & 0x2000) != 0) {
         GXSetTevOrder(t27, 0xFF, 0xFF, 4);
-        fn_802239D0(t27, 4);
+        GXSetNumTexGens(t27, 4);
     } else {
         fn_8006ECCC(arg1, sp8, *(u16 *)((u8 *)(*(void **)((u8 *)arg0 + 0x14)) + 4));
         t26 = fn_80069E18();
@@ -10238,7 +10238,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
         fn_802201A8(t25, 1, 4, 0x3C, 0, 0x7D);
         fn_80222C50(sp8, t26);
         GXSetTevOrder(t27, t25, t26, 4);
-        fn_802239D0(t27, 0);
+        GXSetNumTexGens(t27, 0);
     }
     if ((*(s32 *)((u8 *)t28 + 0x1A0) & 1) != 0) {
         fn_80223DDC(1, 1, 1, 1, 3);
@@ -10776,7 +10776,7 @@ void fn_8004C80C(void) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
@@ -10820,7 +10820,7 @@ void fn_8004C80C(void) {
     fn_80224684(1, 3, 0);
     fn_802245D8(1, 4, 5, 7);
     fn_80223E5C(7, 0, 1, 7, 0);
-    fn_802239D0(0, 0);
+    GXSetNumTexGens(0, 0);
     p = (u8 *)Light_GetChannel(0);
     t0 = p[0];
     t4 = p[4];

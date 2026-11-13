@@ -7414,7 +7414,7 @@ void fn_801959FC(void *arg0) {
     void GXSetChanMatColor(s32, void *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXLoadPosMtxImm(void *, s32);
@@ -7467,7 +7467,7 @@ void fn_801959FC(void *arg0) {
     fn_80222334(1);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
-    fn_802239D0(0, 4);
+    GXSetNumTexGens(0, 4);
     GXSetNumChans(0);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);

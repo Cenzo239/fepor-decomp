@@ -903,7 +903,7 @@ void __GXFlushTextureState(void) {
     *(u16 *)__GXData = 0;
 }
 
-void fn_802239D0(s32 arg0, u32 arg1)
+void GXSetNumTexGens(s32 arg0, u32 arg1)
 {
     extern u8 lbl_8029E2E0[];
 

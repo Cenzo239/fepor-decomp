@@ -8642,7 +8642,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_80222334(s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
@@ -8685,7 +8685,7 @@ void fn_800C0CDC(void *arg0) {
     fn_80222334(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
-    fn_802239D0(0, 3);
+    GXSetNumTexGens(0, 3);
     PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
     PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
     PSMTXRotRad(spC8, 0x5A, lbl_80369D34);

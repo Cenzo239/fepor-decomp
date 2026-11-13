@@ -1562,7 +1562,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
-    fn_802239D0(0, 4);
+    GXSetNumTexGens(0, 4);
     fn_80224684(0, 3, 0);
     fn_802245D8(1, 0, 7, 0);
     GXBegin(0x80, 0, 4);

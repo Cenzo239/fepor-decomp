@@ -7313,7 +7313,7 @@ void fn_801C65E0(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_802239D0(s32, s32);
+    void GXSetNumTexGens(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -7366,7 +7366,7 @@ void fn_801C65E0(void *arg0) {
         GXSetTevOrder(0, 0, 0, 4);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_802245D8(1, 4, 5, 7);
-        fn_802239D0(0, 0);
+        GXSetNumTexGens(0, 0);
         t = *(s16 *)((u8 *)arg0 + 0x10);
         alpha = 0xFF;
         if (t < 0x3C) {
