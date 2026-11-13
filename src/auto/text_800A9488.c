@@ -125,7 +125,7 @@ extern "C" M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void Text_Draw(s32, s32, s32, void *, ...);
-extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
+extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
