@@ -8928,6 +8928,7 @@ s32 fn_801C98EC(void) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 s32 CameraWin_CaptureKeyframe(void) {
+    /* Snapshot current camera eye/look-at/FOV and slot id into the selected CameraWin keyframe. */
     void *fn_800DC3B0(void *);
     s32 fn_8011C9E4(s32);
     s32 fn_8011C984(s32, s32);
@@ -8938,42 +8939,42 @@ s32 CameraWin_CaptureKeyframe(void) {
     f32 Camera_GetFov(void *);
     extern void *gCameraWin;
 
-    f32 z1;
-    f32 y1;
-    f32 x1;
-    f32 z2;
-    f32 y2;
-    f32 x2;
-    void *result;
-    void *obj;
+    f32 eyeZ;
+    f32 eyeY;
+    f32 eyeX;
+    f32 lookZ;
+    f32 lookY;
+    f32 lookX;
+    void *keyframe;
+    void *cam;
     s32 index;
-    f32 sp14[3];
-    f32 sp8[3];
-    f32 f1;
+    f32 eye[3];
+    f32 lookAt[3];
+    f32 fov;
     u32 slot;
 
     index = (s32)fn_800DC3B0(*(void **)((u8 *)gCameraWin + 0x438));
-    obj = gCameraWin;
-    obj = (void *)fn_8011C984(*(s32 *)((u8 *)obj + 0x430), fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
-    result = CameraAnim_GetKeyframe(obj, index);
-    Camera_GetEyePos(sp14, obj = CameraAnim_GetCamera(obj));
-    x1 = sp14[0];
-    y1 = sp14[1];
-    z1 = sp14[2];
-    Camera_GetLookAt(sp8, obj);
-    x2 = sp8[0];
-    y2 = sp8[1];
-    z2 = sp8[2];
-    f1 = Camera_GetFov(obj);
+    cam = gCameraWin;
+    cam = (void *)fn_8011C984(*(s32 *)((u8 *)cam + 0x430), fn_8011C9E4(*(s32 *)((u8 *)cam + 0x430)));
+    keyframe = CameraAnim_GetKeyframe(cam, index);
+    Camera_GetEyePos(eye, cam = CameraAnim_GetCamera(cam));
+    eyeX = eye[0];
+    eyeY = eye[1];
+    eyeZ = eye[2];
+    Camera_GetLookAt(lookAt, cam);
+    lookX = lookAt[0];
+    lookY = lookAt[1];
+    lookZ = lookAt[2];
+    fov = Camera_GetFov(cam);
     slot = *(u32 *)((u8 *)*(void **)((u8 *)gCameraWin + 0x42C) + (index << 2));
-    *(f32 *)((u8 *)result + 0x00) = x1;
-    *(f32 *)((u8 *)result + 0x04) = y1;
-    *(f32 *)((u8 *)result + 0x08) = z1;
-    *(f32 *)((u8 *)result + 0x0C) = x2;
-    *(f32 *)((u8 *)result + 0x10) = y2;
-    *(f32 *)((u8 *)result + 0x14) = z2;
-    *(f32 *)((u8 *)result + 0x18) = f1;
-    *(u32 *)((u8 *)result + 0x1C) = slot;
+    *(f32 *)((u8 *)keyframe + 0x00) = eyeX;
+    *(f32 *)((u8 *)keyframe + 0x04) = eyeY;
+    *(f32 *)((u8 *)keyframe + 0x08) = eyeZ;
+    *(f32 *)((u8 *)keyframe + 0x0C) = lookX;
+    *(f32 *)((u8 *)keyframe + 0x10) = lookY;
+    *(f32 *)((u8 *)keyframe + 0x14) = lookZ;
+    *(f32 *)((u8 *)keyframe + 0x18) = fov;
+    *(u32 *)((u8 *)keyframe + 0x1C) = slot;
     return 0;
 }
 #pragma global_optimizer reset
