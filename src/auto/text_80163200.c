@@ -1449,9 +1449,9 @@ s32 fn_80165B14(void *arg0) {
 
 void fn_80165B1C(void) {
     M2C_UNK fn_80040844();
-    M2C_UNK fn_800472D4();
+    M2C_UNK Map_UpdateTransforms();
     fn_80040844();
-    fn_800472D4();
+    Map_UpdateTransforms();
 }
 
 void *fn_80165B40(void *arg0, s16 arg1) {
