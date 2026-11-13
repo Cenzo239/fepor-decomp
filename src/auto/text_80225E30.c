@@ -646,7 +646,7 @@ s32 fn_80227174(void *arg0) {
     return 0;
 }
 
-s32 fn_80227444(void *arg0) {
+s32 TRKDoWriteRegisters(void *arg0) {
     void fn_8022692C(void *, u32);
     void TRKResetBuffer(void *, u32);
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
