@@ -20418,37 +20418,41 @@ s32 fn_800FB45C(void *arg0) {
     return Str_Cmp(((s32*)gAiCmd)[0x14/4], ((s32**)arg0)[0x188/4][0], gAiCmd) == 0;
 }
 
-s32 Ai_UnitHostileNotInCmdList(void *arg0) {
-    extern void *gAiCmd;
-    s32 Str_Cmp(u8 *, u8 *);
-    s32 Allegiance_Compare(void *, void *);
+s32 Ai_UnitHostileNotInCmdList(void *arg0)
+{
+    extern u8 *gAiCmd;
     extern u8 gUiContext[];
+    s32 Str_Cmp(void *, void *);
+    s32 Allegiance_Compare(void *, void *);
 
-    register u8 *name;
-    u8 **list;
-    register u8 *entry;
+    void *key;
+    void **list;
+    u8 *other;
+    u8 *obj;
+    void *item;
     u8 found;
-    void *other;
 
-    list = M2C_FIELD(gAiCmd, u8 ***, 0x14);
-    other = *(void **)gUiContext;
-    name = *M2C_FIELD(arg0, u8 ***, 0x188);
+    obj = (u8 *)arg0;
+    other = *(u8 **)gUiContext;
+    key = **(void ***)(obj + 0x188);
+    list = *(void ***)(gAiCmd + 0x14);
 
-    while ((entry = *list++) != NULL) {
-        if (Str_Cmp(entry, name) == 0) {
+    goto load;
+    do {
+        if (Str_Cmp(item, key) == 0) {
             found = 1;
-            goto checked;
+            goto done;
         }
-    }
+    load:
+        item = *list;
+        list++;
+    } while (item != NULL);
     found = 0;
-
-checked:
+done:
     if (found) {
         return 0;
     }
-
-    return (u8)Allegiance_Compare(M2C_FIELD(arg0, void **, 0x190),
-                          M2C_FIELD(other, void **, 0x190)) == 1;
+    return (u8)Allegiance_Compare(*(void **)(obj + 0x190), *(void **)(other + 0x190)) == 1;
 }
 
 s32 Ai_UnitNameInCmdList(void *arg0)
