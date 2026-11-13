@@ -1722,37 +1722,38 @@ void fn_801F5DD0(void *arg0)
 }
 
 #pragma opt_common_subs off
-void CardLink_PollSendKey(void *arg0) {
+void CardLink_PollSendKey(void *proc) {
+    /* Timeout or poll GBA status, write gCardLinkKey, then debug-print it and clear this callback. */
     void Process_Goto(void *, s32);
     s32 GBAGetStatus(void *, void *);
     s32 GBAWrite(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
     extern s8 *gCardLinkKey;
-    s8 *p;
+    s8 *key;
 
-    *(s16 *)((u8 *)arg0 + 0x48) = *(s16 *)((u8 *)arg0 + 0x48) + 1;
-    if (*(s16 *)((u8 *)arg0 + 0x48) > 0xF0) {
-        Process_Goto(arg0, 2);
+    *(s16 *)((u8 *)proc + 0x48) = *(s16 *)((u8 *)proc + 0x48) + 1;
+    if (*(s16 *)((u8 *)proc + 0x48) > 0xF0) {
+        Process_Goto(proc, 2);
         return;
     }
-    if (GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0) {
+    if (GBAGetStatus(*(void **)((u8 *)proc + 0x38), (u8 *)proc + 0x4B) != 0) {
         return;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x20) {
+    if (*(u8 *)((u8 *)proc + 0x4B) != 0x20) {
         return;
     }
-    if (GBAWrite(*(void **)((u8 *)arg0 + 0x38), gCardLinkKey, (u8 *)arg0 + 0x4B) != 0) {
+    if (GBAWrite(*(void **)((u8 *)proc + 0x38), gCardLinkKey, (u8 *)proc + 0x4B) != 0) {
         return;
     }
-    GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
-    if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x30) {
+    GBAGetStatus(*(void **)((u8 *)proc + 0x38), (u8 *)proc + 0x4B);
+    if (*(u8 *)((u8 *)proc + 0x4B) != 0x30) {
         return;
     }
-    p = gCardLinkKey;
-    DebugPrint((char *)gCardLinkStr + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
-    Process_ClearFunc(arg0);
-    *(s16 *)((u8 *)arg0 + 0x48) = 0;
+    key = gCardLinkKey;
+    DebugPrint((char *)gCardLinkStr + 0x149, (s32)key[0], (s32)key[1], (s32)key[2], (s32)key[3]);
+    Process_ClearFunc(proc);
+    *(s16 *)((u8 *)proc + 0x48) = 0;
 }
 #pragma opt_common_subs on
 void fn_801F5F58(void *arg0) {
