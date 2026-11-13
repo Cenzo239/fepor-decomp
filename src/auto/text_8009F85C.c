@@ -60,7 +60,8 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     return 0;
 }
 
-void Ui_DrawWpnRankMenuItem(s32 arg0, s32 arg1, void *arg2) {
+/* Draw a menu text item, then overlay the cursor unit's weapon exp and rank letter. */
+void Ui_DrawWpnRankMenuItem(s32 unused, s32 parent, void *item) {
     void *Map_GetCursorUnit(void);
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
@@ -74,22 +75,22 @@ void Ui_DrawWpnRankMenuItem(s32 arg0, s32 arg1, void *arg2) {
     void sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
     extern f32 gItemMenuTextScale;
-    u8 sp8[8];
-    u8 temp;
-    s32 name;
+    u8 buf[8];
+    u8 exp;
+    s32 letter;
 
-    temp = Unit_GetWpnExp(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
-    name = WpnRank_GetLetter(temp);
-    sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
-    Ui_DrawMenuTextItem(arg0, arg1, arg2);
+    exp = Unit_GetWpnExp(Map_GetCursorUnit(), *(u8 *)((u8 *)item + 0x3A));
+    letter = WpnRank_GetLetter(exp);
+    sprintf(buf, lbl_8026D8D8 + 0x2A8, exp, letter);
+    Ui_DrawMenuTextItem(unused, parent, item);
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x40), (f32)*(s16 *)((u8 *)arg2 + 0x32));
-    Prim2D_SetText(sp8);
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)item + 0x30) + 0x40), (f32)*(s16 *)((u8 *)item + 0x32));
+    Prim2D_SetText(buf);
     Prim2D_SetScale(gItemMenuTextScale);
-    if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
+    if (*(u8 *)((u8 *)item + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
+    if (*(u8 *)((u8 *)item + 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
