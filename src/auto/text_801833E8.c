@@ -494,7 +494,7 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     void *fn_800C45B8(s32, void *, s32);
     void fn_80050BCC(void *, s32);
     void fn_8018851C(void *);
-    u8 *fn_8001FC34(void *);
+    u8 *BattleMap_GetPath(void *);
     extern u8 gMoveAnimClass[];
     extern u8 lbl_80278E24[];
     extern u8 gBattleMap[];
@@ -506,7 +506,7 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     u8 flags;
     u8 *str;
 
-    str = fn_8001FC34(gBattleMap);
+    str = BattleMap_GetPath(gBattleMap);
     search[12] = arg0;
     search[13] = 0;
     fn_8000A388(gMoveAnimClass, MoveAnim_MatchUnit, search);

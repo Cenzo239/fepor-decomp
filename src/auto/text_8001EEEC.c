@@ -528,7 +528,7 @@ arg0+=0x14194;
 return arg0;
 }
 
-s32 fn_8001FC34(s32 arg0) {
+s32 BattleMap_GetPath(s32 arg0) {
     return arg0 + 0x14194;
 }
 
