@@ -83,7 +83,7 @@ void fn_8014A0D4(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x30) = 0;
 }
 
-void fn_8014A160(void *arg0) {
+void SoundMenu_Update(void *arg0) {
     extern f32 lbl_8036A7B8;
     extern f32 gOneF;
     extern u8 gSoundMenuStrings[];
