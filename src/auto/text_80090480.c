@@ -218,7 +218,7 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern s32 gUnitInfoPanelColorPlayer;
@@ -259,7 +259,7 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
         break;
     }
     Prim2D_Begin();
-    fn_8000A174(0, 0x10);
+    Prim2D_SetTex(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)x, (f32)y, gUnitInfoPanelW, gUnitInfoPanelH);

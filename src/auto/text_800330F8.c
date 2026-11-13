@@ -11172,7 +11172,7 @@ void fn_8004DDB8(s32 arg0) {
     void fn_80009B28(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     u32 fn_80055D94(s32);
@@ -11196,7 +11196,7 @@ void fn_8004DDB8(s32 arg0) {
         lbl_803672BD = flag;
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_80368FCC, lbl_80368FCC, (f32)arg0, lbl_80368FC0);
-        fn_8000A174(0, 0x410);
+        Prim2D_SetTex(0, 0x410);
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(0xB);
@@ -12816,7 +12816,7 @@ void fn_80053F68(void *arg0) {
     void MapObj_UpdateMatrix(void *);
     void fn_800548E8(void *);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_SetColorByte(u8);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -12942,7 +12942,7 @@ void fn_80053F68(void *arg0) {
             inner = *(void **)((u8 *)arg0 + 0x30);
             Prim2D_SetTransform(lbl_80369084, lbl_80369084,
                         (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);
-            fn_8000A174(0, 0x410);
+            Prim2D_SetTex(0, 0x410);
             Prim2D_SetColorByte(0xFF);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xB);

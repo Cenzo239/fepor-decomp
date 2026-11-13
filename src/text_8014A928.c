@@ -330,7 +330,7 @@ void fn_8014AE50(void *arg0, void *arg1, void *arg2) {
     };
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
@@ -348,7 +348,7 @@ void fn_8014AE50(void *arg0, void *arg1, void *arg2) {
     Prim2D_Begin();
     Prim2D_SetTransform((f32)*(s16 *)((u8 *)arg1 + 0x30), (f32)*(s16 *)((u8 *)arg1 + 0x32),
                 (*(Model **)((u8 *)arg1 + 0x3C))->v25() - lbl_8036A7C0, lbl_8036A7BC);
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     fn_80007858((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
@@ -517,13 +517,13 @@ void fn_8014BB58(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     M2C_UNK fn_80007858(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+    M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 sp8;
 
     Prim2D_Begin();
-    fn_8000A174(0, 0x23);
+    Prim2D_SetTex(0, 0x23);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(0xA);
     fn_80007858((f32) arg0, (f32) arg1);

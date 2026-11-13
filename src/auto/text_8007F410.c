@@ -50,7 +50,7 @@ void fn_8007F410(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_AddZ(f32);
     void *Msg_Expand(void *);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
@@ -109,7 +109,7 @@ void fn_8007F410(void *arg0) {
     Prim2D_PrepareTex();
     str = Msg_Expand(gUiStrings + 0x236);
     Prim2D_Begin();
-    fn_8000A174(0, 0x12);
+    Prim2D_SetTex(0, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     bx = lbl_8036943C + x;
@@ -140,14 +140,14 @@ void fn_8007F410(void *arg0) {
     Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     fn_8001003C(lbl_80369438 + bx, by - lbl_8036943C, 9, 0, 0, str, lbl_80369430, lbl_80369418);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     obj = fn_8003B9AC(pid);
     nx = lbl_80369488 + x;

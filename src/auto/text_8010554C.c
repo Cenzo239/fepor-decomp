@@ -2743,7 +2743,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void Prim2D_Begin(void);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
@@ -2784,7 +2784,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
         break;
     }
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
     fn_80007858(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));

@@ -161,7 +161,7 @@ void fn_8009CF28(void) {
     void fn_80007858(f32, f32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Prim2D_EndPrim(void);
@@ -188,7 +188,7 @@ void fn_8009CF28(void) {
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_803698FC, lbl_803698FC, lbl_803698FC, lbl_80369900);
-    fn_8000A174(0, 0);
+    Prim2D_SetTex(0, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     fn_80007790(lbl_80369930, lbl_80369934, lbl_80369938, lbl_80369934);
@@ -215,7 +215,7 @@ void fn_8009CF28(void) {
     fn_80007790(lbl_8036995C, lbl_80369960, lbl_8036995C, lbl_80369964);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_8000A174(0, 3);
+    Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
     if (gUiInputFlags & 2) {
         Prim2D_AddPrim(7);
@@ -243,7 +243,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void sprintf(void *, void *, s32, ...);
@@ -272,7 +272,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     y = arg1;
     Prim2D_Begin();
     Prim2D_SetTransform((f32)x, (f32)(y + 0x28), lbl_803698FC, lbl_80369900);
-    fn_8000A174(0, 0x10);
+    Prim2D_SetTex(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
     fn_80007790(lbl_803698FC, lbl_8036996C, lbl_803699D0, lbl_8036996C);
@@ -362,7 +362,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
-    fn_8000A174(0, 0x23);
+    Prim2D_SetTex(0, 0x23);
     Prim2D_PrepareTex();
 
     Prim2D_AddPrim(0xA);

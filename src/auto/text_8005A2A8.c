@@ -84,7 +84,7 @@ extern "C" void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
 extern "C" void Prim2D_EndPrim(void);
 extern "C" void Prim2D_AddPrim(s32);
 extern "C" void fn_8000A03C(void *, void *, s32, s32);
-extern "C" void fn_8000A174(void *, s32);
+extern "C" void Prim2D_SetTex(void *, s32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_80222CDC(void *);
@@ -166,7 +166,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
                 fn_8000A03C((u8 *)arg0 + 4, (u8 *)arg0 + 0x30, 0, 0x11);
             }
         } else {
-            fn_8000A174((u8 *)arg0 + 4, 0x11);
+            Prim2D_SetTex((u8 *)arg0 + 4, 0x11);
         }
         Prim2D_PrepareTex();
         w = ((Obj *)arg0)->v14();

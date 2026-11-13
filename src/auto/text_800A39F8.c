@@ -1790,7 +1790,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Res_GetByName(void *);
@@ -1828,7 +1828,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     var_r30 = *(void **)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x18C);
     Prim2D_Begin();
     Prim2D_SetTransform((f32)x, (f32)y, lbl_80369ABC, lbl_80369AC0);
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
     fn_8000727C(lbl_80369AC0);
@@ -2091,7 +2091,7 @@ cleanup:
 #pragma use_lmw_stmw reset
 
 void fn_800A80F0(void *arg0) {
-    M2C_UNK fn_8000A174(M2C_UNK *, M2C_UNK);
+    M2C_UNK Prim2D_SetTex(M2C_UNK *, M2C_UNK);
     M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, u16);
     u16 fn_80222A80(M2C_UNK *);
     u16 fn_80222A90(M2C_UNK *);
@@ -2122,7 +2122,7 @@ void fn_800A80F0(void *arg0) {
     sp28 = fn_80222A80(&sp8);
     sp2A = fn_80222A90(&sp8);
     Prim2D_Begin();
-    fn_8000A174(&sp8, 0x20);
+    Prim2D_SetTex(&sp8, 0x20);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     temp_r6 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u32 *, 0x34);
@@ -2473,7 +2473,7 @@ void Ui_DrawPromptSprites(void *proc) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(void *, s32);
+    void Prim2D_SetTex(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Ui_LoadAtlasTex(void *, void *, s32);
@@ -2517,7 +2517,7 @@ void Ui_DrawPromptSprites(void *proc) {
     st.x = fn_80222A80(st.buf);
     st.y = fn_80222A90(st.buf);
     Prim2D_Begin();
-    fn_8000A174(st.buf, 0);
+    Prim2D_SetTex(st.buf, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect(lbl_80369BB4, lbl_80369BB8, (f32)(u32)st.x, (f32)(u32)st.y);
@@ -2535,7 +2535,7 @@ void Ui_DrawPromptSprites(void *proc) {
         st.x = fn_80222A80(st.buf);
         st.y = fn_80222A90(st.buf);
         Prim2D_Begin();
-        fn_8000A174(st.buf, 0x10);
+        Prim2D_SetTex(st.buf, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_80369BD4, lbl_80369BD8, (f32)(u32)st.x, (f32)(u32)st.y);
@@ -2553,7 +2553,7 @@ void Ui_DrawPromptSprites(void *proc) {
         st.x = fn_80222A80(st.buf);
         st.y = fn_80222A90(st.buf);
         Prim2D_Begin();
-        fn_8000A174(st.buf, 0x10);
+        Prim2D_SetTex(st.buf, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_80369BEC, lbl_80369BF0, (f32)(u32)st.x, (f32)(u32)st.y);
@@ -2637,7 +2637,7 @@ void fn_800A9174(void) {
     s32 fn_8017A950(void *);
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void fn_800C4588(void *);
@@ -2664,7 +2664,7 @@ void fn_800A9174(void) {
     b = fn_8017A950(&tmp);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369C0C, lbl_80369BB0);
-    fn_8000A174(0, 3);
+    Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
     fn_8001003C(0xb8, 0x190, 1, 0, 1, lbl_8026E470 + 0xc2, a, b, lbl_80369BB0, lbl_80369BA8);
     tmp.vt = lbl_802842B8;

@@ -402,7 +402,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(u32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -545,7 +545,7 @@ after_cases:
     if (str != NULL) {
         Prim2D_Begin();
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         w = 0x90 - Text_MeasureWidth(str, -1, lbl_8036980C);
         w = ((s32)((u32)w >> 31) + w) >> 1;
@@ -561,7 +561,7 @@ after_cases:
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_8000A174(0, 0x12);
+    Prim2D_SetTex(0, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(2);
     Prim2D_SetQuadMin(lbl_8036986C, lbl_80369870, lbl_803697E4, lbl_803697E4);

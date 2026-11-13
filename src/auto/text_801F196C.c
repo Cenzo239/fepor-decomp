@@ -219,7 +219,7 @@ void fn_801F230C(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -396,7 +396,7 @@ void fn_801F230C(void *arg0) {
         Prim2D_AddZ(lbl_8036B818);
         Prim2D_PrepareTex();
         Prim2D_Begin();
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         fn_8001003C(0xF0, 0x3D, 2, 0, 0, Msg_Expand(lbl_8027F730 + 0x128), lbl_8036B814, lbl_8036B80C);
 
@@ -468,7 +468,7 @@ void fn_801F230C(void *arg0) {
             Prim2D_SetAlphaByte((u8)*(s16 *)((u8 *)p + 0x1E));
             Prim2D_PrepareTex();
             Prim2D_Begin();
-            fn_8000A174(0, 0x13);
+            Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
             Msg_Expand(*(void **)(ep + 4));
             tw = (u16)Text_MeasureWidth((void *)0, -1, lbl_8036B814);
@@ -1071,7 +1071,7 @@ void fn_801F3E60(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -1254,7 +1254,7 @@ void fn_801F3E60(void *arg0) {
         Prim2D_AddZ(lbl_8036B850);
         Prim2D_PrepareTex();
         Prim2D_Begin();
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         fn_8001003C(0xB4, 0x3D, 2, 0, 0, Msg_Expand((u8 *)p + 0x3C), lbl_8036B854, lbl_8036B858);
         Prim2D_Begin();
@@ -2002,7 +2002,7 @@ void fn_801F676C(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -2038,7 +2038,7 @@ void fn_801F676C(void *arg0) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     temp_r31 = Msg_Expand(lbl_80280D38 + 0x6B);
     fw = (f32)Text_MeasureWidth(temp_r31, -1, lbl_8036B934);
@@ -2059,7 +2059,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -2148,7 +2148,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
     str = Msg_Expand(lbl_80280D38 + 0x7D);
@@ -2212,7 +2212,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
     switch (gBattleState[0x10]) {
@@ -2492,7 +2492,7 @@ void fn_801F7A60(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(void *, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
@@ -2642,7 +2642,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
     p = self;
@@ -2671,7 +2671,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_AddZ(lbl_8036B9D0);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x12);
+    Prim2D_SetTex(0, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetQuadMin(lbl_8036B910, lbl_8036B910, lbl_8036B910, lbl_8036B910);
@@ -2758,7 +2758,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
     if ((s8)*(u8 *)((u8 *)self + 0x88) == 0) {
@@ -3195,7 +3195,7 @@ void fn_801F8E30(void *arg0) {
     void Prim2D_SetColorByte(s32);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(void *, s32);
+    void Prim2D_SetTex(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Process_Goto(void *, s32);
@@ -3294,7 +3294,7 @@ clear:
         if (flag) {
             unit = *(void **)((u8 *)node + 8);
             Prim2D_Begin();
-            fn_8000A174(NULL, 0x13);
+            Prim2D_SetTex(NULL, 0x13);
             Prim2D_PrepareTex();
             Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
             Text_Draw((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
@@ -3312,7 +3312,7 @@ clear:
             sp94 = fn_80222A80(sp74);
             sp96 = fn_80222A90(sp74);
             Prim2D_Begin();
-            fn_8000A174(sp74, 0x10);
+            Prim2D_SetTex(sp74, 0x10);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
             Prim2D_SetRect(lbl_8036BA54, f28, (f32)sp94, (f32)sp96);
@@ -3321,7 +3321,7 @@ clear:
     }
     f26 = lbl_8036BA04 + *(f32 *)((u8 *)arg0 + 0x3C);
     Prim2D_Begin();
-    fn_8000A174(NULL, 0x410);
+    Prim2D_SetTex(NULL, 0x410);
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(0xB);
@@ -3396,7 +3396,7 @@ void fn_801F94D8(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
     void Process_Goto(void *, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_AddZ(f32);
     void *Msg_Expand(void *);
     s16 Text_MeasureWidth(void *, s32, f32);
@@ -3445,7 +3445,7 @@ void fn_801F94D8(void *arg0) {
     Prim2D_PrepareTex();
     sel_byte = ((u8 *)temp_r29)[0x54];
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     sel = (s8)sel_byte;
     Prim2D_AddZ((f32)(sel * 2));
     Prim2D_PrepareTex();
@@ -3783,7 +3783,7 @@ void fn_801FA00C(void *arg0) {
 void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
 void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte(s32); void Prim2D_PrepareTex(void);
 void Process_Goto(void*,s32); void fn_80109020(void*);
-void fn_8000A174(s32,s32); void *Msg_Expand(void*);
+void Prim2D_SetTex(s32,s32); void *Msg_Expand(void*);
 s32 fn_800102BC(s32,f32); s16 Text_MeasureWidth(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
 void sprintf(void*,void*,...); f64 fmod(f64,f64);
@@ -3828,7 +3828,7 @@ if(flag){
 a=StaffRoll_str+0x30c;b=StaffRoll_str+0x31b;
 sprintf(a,StaffRoll_str+0x32c,*ent);
 sprintf(b,StaffRoll_str+0x33d,*ent);
-Prim2D_Begin();fn_8000A174(0,19);Prim2D_PrepareTex();
+Prim2D_Begin();Prim2D_SetTex(0,19);Prim2D_PrepareTex();
 str=Msg_Expand(a);
 fn_8001003C((s32)((f32)(128-(Text_MeasureWidth(str,-1,lbl_8036BA20)>>1))-lbl_8036BA98),(s32)y,1,1,0,str,lbl_8036BA20,lbl_8036BA18);
 fn_8001003C((s32)(lbl_8036BA9C+lbl_8036BA98),(s32)y,1,1,0,Msg_Expand(b),lbl_8036BA20,lbl_8036BA18);
@@ -3910,7 +3910,7 @@ void StaffRoll_Draw(void *proc) {
     void Prim2D_PrepareTex(void);
     void Process_Goto(void *, s32);
     void *Hash_Lookup(void *);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     s16 Text_MeasureWidth(void *, s32, f32);
     void Text_Draw(s32, s32, s32, void *, ...);
     f64 fmod(f64, f64);
@@ -3966,7 +3966,7 @@ void StaffRoll_Draw(void *proc) {
         }
         if (visible != 0) {
             Prim2D_Begin();
-            fn_8000A174(0, 0x13);
+            Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
             if ((u32)line->left != 0U) {
                 width = Text_MeasureWidth(line->left, -1, lbl_8036BA20);

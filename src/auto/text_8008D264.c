@@ -55,7 +55,7 @@ extern Vec4 lbl_8026CD50;
 /* Draw an item/unit-ref row: scaled price (dimmed if unaffordable), name, uses, and icon. */
 void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
     void fn_8005AC24(void *, s32, s32, s32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s16, s16, u8, void *, ...);
@@ -84,7 +84,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
 
     if (*(void **)ref != NULL) {
         Prim2D_Begin();
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         price = (s32)(priceScale * (f32)(u16)UnitRef_GetValue(ref));
         sprintf(priceBuf, (u8 *)lbl_8026CD08 + 0x2F, price);
@@ -113,7 +113,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
             nameColor = 3;
         }
         Prim2D_Begin();
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         Text_Draw((s16)(x + 0x18), (s16)y, nameColor, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(ref));
         flags = *(u64 *)Item_GetFlagsPtr(ref);
@@ -125,7 +125,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
     }
 }
 void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s16, s16, u8, void *, ...);
@@ -161,7 +161,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
             var_r26 = 3;
         }
         Prim2D_Begin();
-        fn_8000A174(0, 0x13);
+        Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         Text_Draw((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(arg0));
         flags = *(u64 *)Item_GetFlagsPtr(arg0);

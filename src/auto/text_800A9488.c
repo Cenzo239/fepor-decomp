@@ -121,7 +121,7 @@ extern "C" M2C_UNK Prim2D_EndPrim();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" M2C_UNK Prim2D_SetColorByte(M2C_UNK);
 extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
-extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+extern "C" M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void Text_Draw(s32, s32, s32, void *, ...);
@@ -175,7 +175,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25(), lbl_80369BB0);
-    fn_8000A174(0, 0x12);
+    Prim2D_SetTex(0, 0x12);
     var_r3 = 0;
     if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
         var_r3 = 1;
@@ -195,7 +195,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     switch (gBattleState[0xA6]) {
     case 0:
@@ -235,7 +235,7 @@ s32 fn_800A9B0C(void) {
 extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
@@ -286,7 +286,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32),
         M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80369C20, lbl_80369BB0);
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));

@@ -103,7 +103,7 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
 
     temp_r28 = fn_8008B1B0();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     if (arg2 != 0U) {
         temp_r27 = Msg_Expand(arg2);

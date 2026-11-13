@@ -1765,19 +1765,18 @@ void fn_80022FD8(void *arg0, s32 arg1) {
     *(s32 *)((char *)arg0 + 0x14190) = (s32)arg0 + 0x818E;
 }
 
+#pragma opt_strength_reduction off
 f32 Map_GetTileCornerHeight(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 {
     u8 *base;
     s32 index;
-    u8 *p;
 
     base = (u8 *)arg0 + 0x20000;
     index = arg1 + (arg2 << 6);
     index = (u8)arg3 + (index << 2);
-    p = base + (index << 1);
-    return (f32)*(s16 *)(p - 0x3D28) * *(f32 *)(base - 0x3D2C);
+    return (f32)((s16 *)(base - 0x3D28))[index] * *(f32 *)(base - 0x3D2C);
 }
-
+#pragma opt_strength_reduction reset
 void fn_80023068(u16 *a0, u16 *a1, f32 a2, f32 a3) {
     extern f32 lbl_8036A7F0;
     
@@ -2231,7 +2230,7 @@ extern "C" M2C_UNK fn_80007858(f32, f32);
 extern "C" M2C_UNK Prim2D_EndPrim();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
-extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+extern "C" M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
@@ -2277,7 +2276,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
@@ -2737,7 +2736,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     struct Model {
@@ -2784,7 +2783,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     Prim2D_Begin();
     fv = M2C_FIELD(arg1, Model **, 0x3C)->v25();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), fv, lbl_80368DA8);
-    fn_8000A174(0, 0x12);
+    Prim2D_SetTex(0, 0x12);
     var_r3 = 0;
     if ((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0 && (u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
         var_r3 = 1;

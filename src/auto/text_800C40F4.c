@@ -4385,7 +4385,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void fn_800E8FBC(void *, f32, f32, f32);
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
@@ -4603,7 +4603,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
             if (self[0x194] != 0) {
                 Prim2D_Begin();
                 Prim2D_SetTransform(lbl_80369DC8, lbl_80369DC8, lbl_80369DC8, lbl_80369DE8);
-                fn_8000A174(0, 0x23);
+                Prim2D_SetTex(0, 0x23);
                 Prim2D_PrepareTex();
                 Prim2D_AddPrim(5);
                 fn_80007858(lbl_80369DEC, lbl_80369DF0);
@@ -11281,7 +11281,7 @@ void fn_800E273C(void *arg0) {
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
-    M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+    M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 lbl_80369EE8;
@@ -11304,7 +11304,7 @@ void fn_800E273C(void *arg0) {
     }
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369EE8, lbl_80369EE8, (f32) M2C_FIELD(arg0, s32 *, 0x44), lbl_80369EEC);
-    fn_8000A174(0, var_r30);
+    Prim2D_SetTex(0, var_r30);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32) temp_r27, (f32) temp_r26, (f32) temp_r29, (f32) temp_r28);
@@ -11357,7 +11357,7 @@ void fn_800E2A00(Unit *unit, void *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
     
     Prim2D_Begin(0x1E);
     Prim2D_SetTransform(lbl_80369F00, lbl_80369F00, (f32) *(s32 *)((u8 *)unit + 0x44), lbl_80369F04);
-    fn_8000A174(0, 0x10);
+    Prim2D_SetTex(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32) temp_r25, (f32) temp_r24, (f32) temp_r27, (f32) temp_r26);

@@ -7986,13 +7986,13 @@ void fn_80071B54(void) {
 
 void fn_80071B88(void) {
     M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+    M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 lbl_80369300;
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369300);
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 }
 

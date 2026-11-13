@@ -1515,7 +1515,7 @@ void Options_DrawHeader(void *arg0) {
     void Prim2D_SetColor(u8, u8, u8, s32);
     void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
-    void fn_8000A174(s32, s32);
+    void Prim2D_SetTex(s32, s32);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, ...);
     extern f32 lbl_8036B084;
@@ -1603,7 +1603,7 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_AddZ(lbl_8036AF98);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_8000A174(0, 0x13);
+    Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     str = Msg_Expand(gOptionsTable[self->selected].ptr);
     fn_8001003C(0x64, 0x3D, 2, 0, 0, str, lbl_8036AF9C, lbl_8036AFA0);

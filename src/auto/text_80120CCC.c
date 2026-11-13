@@ -194,7 +194,7 @@ void fn_801210CC(void *arg0) {
     void Prim2D_SetColorByte(u8);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8000A174(void *, s32);
+    void Prim2D_SetTex(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Ui_LoadAtlasTex(void *, void *, s32);
@@ -241,7 +241,7 @@ void fn_801210CC(void *arg0) {
         *(volatile u16 *)(spC + 0x20) = fn_80222A80(spC);
         *(volatile u16 *)(spC + 0x22) = fn_80222A90(spC);
         Prim2D_Begin();
-        fn_8000A174(spC, 0x10);
+        Prim2D_SetTex(spC, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         w = *(u16 *)(spC + 0x20);
@@ -252,7 +252,7 @@ void fn_801210CC(void *arg0) {
             (f32)*(u16 *)(spC + 0x22));
         Prim2D_EndPrim();
         Prim2D_Begin();
-        fn_8000A174((void *)0, 0x13);
+        Prim2D_SetTex((void *)0, 0x13);
         Prim2D_AddZ(lbl_8036A270);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(6);
@@ -3700,7 +3700,7 @@ extern void Prim2D_SetColorByte(u8);
 extern void fn_80009B98(void);
 extern void fn_80009BC0(void *, s32);
 extern void Prim2D_SetTransform(f32, f32, f32, f32);
-extern void fn_8000A174(s32, s32);
+extern void Prim2D_SetTex(s32, s32);
 extern void Prim2D_PrepareTex(void);
 extern void Prim2D_Begin(void);
 extern void fn_80057020(u32);

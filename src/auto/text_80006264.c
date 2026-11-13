@@ -2170,7 +2170,7 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
         *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | flags;
 }
 
-void fn_8000A174(void *arg0, u32 arg1) {
+void Prim2D_SetTex(void *arg0, u32 arg1) {
     void fn_80006298(void *, s32, u32);
     extern u16 lbl_80367140;
     u8 *g;
