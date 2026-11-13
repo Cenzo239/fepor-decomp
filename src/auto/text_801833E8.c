@@ -3216,7 +3216,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     extern u8 lbl_80296078[];
     extern s32 lbl_802EF4E0[];
     extern u8 lbl_802798D0[];
-    extern u8 lbl_8032B3C0[];
+    extern u8 gAiState[];
 
     struct {
         void *vtbl;
@@ -3310,7 +3310,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
             *(u16 *)((u8 *)arg0 + 0x258) + 1;
         fn_800FB96C(0x11, (s8)sp12, (s8)sp10, bestUnit, bx, by, bestSlot, 0, 0);
     }
-    return lbl_8032B3C0[0x21C];
+    return gAiState[0x21C];
 }
 
 #pragma use_lmw_stmw on
@@ -3336,7 +3336,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     extern u8 lbl_80296078[];
     extern s32 lbl_802EF4E0[];
     extern u8 lbl_802798D0[];
-    extern u8 lbl_8032B3C0[];
+    extern u8 gAiState[];
 
     struct {
         void *vtbl;
@@ -3363,7 +3363,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     if (!Status_Test((u8 *)arg0 + 0x1BC, 0x3C)) {
         return 0;
     }
-    if ((lbl_8032B3C0[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
+    if ((gAiState[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
         fn_80022DAC(base, 5, -1);
         fn_80022FD8(base, 5);
         ((s16 *)*(void **)((u8 *)base + 0x14190))[(s8)*(u8 *)((u8 *)arg0 + 0x19E) + ((s8)*(u8 *)((u8 *)arg0 + 0x19F) << 6)] = 0;
@@ -3440,7 +3440,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
             *(u16 *)((u8 *)arg0 + 0x258) + 1;
         fn_800FB96C(0x11, (s8)sp10, (s8)sp12, bestUnit, bx, by, bestSlot, 0, 0);
     }
-    return lbl_8032B3C0[0x21C];
+    return gAiState[0x21C];
 }
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset

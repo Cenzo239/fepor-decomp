@@ -1025,7 +1025,7 @@ void fn_801AA03C(s32 unused, s32 arg1) {
 u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
     u8 Status_Test(void *, s32);
     extern s32 lbl_80297278[];
-    extern u8 lbl_8032B3C0[];
+    extern u8 gAiState[];
     s32 *entry;
     void (*handler)(void *, void *);
     u8 key;
@@ -1052,7 +1052,7 @@ found:
         return 0;
     }
     ((void (*)(void *, void *))entry[1])(arg0, arg2);
-    return lbl_8032B3C0[0x21C];
+    return gAiState[0x21C];
 }
 
 extern u8 lbl_802973C8[16];
