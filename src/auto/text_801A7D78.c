@@ -2,7 +2,7 @@
 #include "common.h"
 
 extern u16 lbl_80367218;
-u32 fn_801A7D78(u32 arg0, s16 arg1) {
+u32 Battle_Destroy(u32 arg0, s16 arg1) {
     M2C_UNK fn_8001C5F8(s32, M2C_UNK);
     M2C_UNK Heap_Free(u32);
     M2C_UNK fn_801A9EB8(u32);
