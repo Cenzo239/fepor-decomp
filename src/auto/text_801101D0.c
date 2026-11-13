@@ -5369,11 +5369,11 @@ void fn_8011D428(void *arg0) {
 
 u32 fn_8011D484(void) {
     void *Process_Find(void *);
-    extern u8 lbl_8028FE50[];
+    extern u8 gUiPanelProc[];
     void *p;
     u32 v;
 
-    p = Process_Find(lbl_8028FE50);
+    p = Process_Find(gUiPanelProc);
     if (p != NULL) {
         v = *(u32 *)((u8 *)p + 0x58);
         if (v != 0U) {
@@ -5384,14 +5384,14 @@ u32 fn_8011D484(void) {
 }
 
 void fn_8011D5EC(void) {
-    extern u8 lbl_8028FE50[];
+    extern u8 gUiPanelProc[];
     extern u16 gUiPanelFlags;
     void *Process_Find(void *);
     void fn_80120CCC(u16 *);
     void Process_Goto(void *, s32);
     u8 *obj;
 
-    obj = Process_Find(lbl_8028FE50);
+    obj = Process_Find(gUiPanelProc);
     fn_80120CCC(&gUiPanelFlags);
     *(u32 *)(obj + 0x30) = *(u32 *)(obj + 0x30) + 2;
     gUiPanelFlags &= ~0x10;
@@ -5399,7 +5399,7 @@ void fn_8011D5EC(void) {
 }
 
 void fn_8011D650(void) {
-    extern u8 lbl_8028FE50[];
+    extern u8 gUiPanelProc[];
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
@@ -5413,7 +5413,7 @@ void fn_8011D650(void) {
     void *obj;
     u32 flags;
 
-    obj = Process_Find(lbl_8028FE50);
+    obj = Process_Find(gUiPanelProc);
     fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = *(s32 *)((u8 *)obj + 0x30) + 2;
@@ -5433,7 +5433,7 @@ void fn_8011D650(void) {
 }
 
 void fn_8011D6F4(s32 arg0) {
-    extern u8 lbl_8028FE50[];
+    extern u8 gUiPanelProc[];
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
@@ -5447,7 +5447,7 @@ void fn_8011D6F4(s32 arg0) {
     void *obj;
     u32 flags;
 
-    obj = Process_Find(lbl_8028FE50);
+    obj = Process_Find(gUiPanelProc);
     fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = arg0;
@@ -5468,7 +5468,7 @@ void fn_8011D6F4(s32 arg0) {
 
 extern u16 TalkUi_str[];
 extern u16 lbl_8032FE04[];
-extern u16 lbl_8028FE50[];
+extern u16 gUiPanelProc[];
 void fn_8011D79C(void *arg0) {
     s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
@@ -5490,7 +5490,7 @@ void fn_8011D79C(void *arg0) {
     DebugPrint((char *)TalkUi_str + 0x35, arg0);
     result = Msg_Expand(arg0);
     Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
-    obj = Process_Find(lbl_8028FE50);
+    obj = Process_Find(gUiPanelProc);
     fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(void **)((u8 *)obj + 0x30) = result;
@@ -5527,7 +5527,7 @@ void fn_8011D87C(void *arg0)
 
     Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
 
-    obj = (u8 *)Process_Find(lbl_8028FE50);
+    obj = (u8 *)Process_Find(gUiPanelProc);
     *(void **)(obj + 0x30) = result;
 
     flags = gUiPanelFlags;
@@ -5546,13 +5546,13 @@ void UiPanel_Create(void *arg0, void *arg1) {
     void Process_Unlink(void *);
     void fn_80013864(void);
     extern u16 gUiPanelFlags;
-    extern u16 lbl_8028FE50[];
+    extern u16 gUiPanelProc[];
     extern u8 lbl_8032BDE8[];
     extern s32 gUiInputFlags;
     u8 *e;
 
     fn_80120CE0(&gUiPanelFlags);
-    e = (u8 *)fn_8000CA64(lbl_8028FE50, arg1);
+    e = (u8 *)fn_8000CA64(gUiPanelProc, arg1);
     *(s32 *)(e + 0x34) = 0;
     *(s32 *)(e + 0x38) = 0;
     *(s32 *)(e + 0x3C) = 0;
