@@ -9591,6 +9591,7 @@ s32 fn_80049E1C(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void Map_DrawRangeTiles(void) {
+    /* Draw GX quads for map tiles flagged as movement/range overlays. */
     u8 fn_800AA188(void);
     void fn_8021FBB8(void);
     void fn_8021F4E4(s32, s32);
@@ -9624,14 +9625,14 @@ void Map_DrawRangeTiles(void) {
     extern f64 lbl_80368F90;
     extern s32 lbl_803674F0;
     extern u8 gBattleMap[];
-    u32 sp8;
-    f32 spC[12];
-    u8 sp3C[16][32];
+    u32 matColor;
+    f32 mtx[12];
+    u8 texBuf[16][32];
     s32 pos;
     s32 yOff;
     s8 y;
     s8 x;
-    s32 tex;
+    s32 texId;
     u8 *p;
     s32 i;
     u16 tile;
@@ -9640,7 +9641,7 @@ void Map_DrawRangeTiles(void) {
     f32 fx1;
     f32 fy1;
     f32 z;
-    s32 off;
+    s32 texIdx;
 
     if (fn_800AA188() != 0 && !(gUiInputFlags & 0x1000)) {
         fn_8021FBB8();
@@ -9650,25 +9651,25 @@ void Map_DrawRangeTiles(void) {
         fn_8021FBF0(0, 0xD, 1, 0, 0);
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
-        sp8 = lbl_80368F80;
-        GXSetChanMatColor(4, &sp8);
+        matColor = lbl_80368F80;
+        GXSetChanMatColor(4, &matColor);
         fn_802240C8(1);
         fn_802239D0(0, 0);
         GXSetTevOrder(0, 0, 0, 4);
         fn_80220428(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-        PSMTXTrans(spC, lbl_80368F84, lbl_80368F84, lbl_80368F88);
-        PSMTXConcat(fn_80067FDC(), spC, spC);
-        GXLoadPosMtxImm(spC, 0);
+        PSMTXTrans(mtx, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        PSMTXConcat(fn_80067FDC(), mtx, mtx);
+        GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
         fn_80223D94(0, 0, 3);
         fn_80223DDC(3, 0, 1, 2, 0);
-        tex = lbl_803674F0;
-        p = &sp3C[0][0];
+        texId = lbl_803674F0;
+        p = &texBuf[0][0];
         i = 0;
         do {
-            fn_8006ECCC(tex, p, i + 1);
+            fn_8006ECCC(texId, p, i + 1);
             i += 1;
             p += 0x20;
         } while (i < 0x10);
@@ -9682,8 +9683,8 @@ void Map_DrawRangeTiles(void) {
             do {
                 tile = *(u16 *)(gBattleMap + 0x1218E + (pos << 1));
                 if (tile & 0x2000) {
-                    off = (tile >> 4) & 15;
-                    fn_80222C50(sp3C[off], 0);
+                    texIdx = (tile >> 4) & 15;
+                    fn_80222C50(texBuf[texIdx], 0);
                     fx = (f32)x;
                     fy = (f32)y;
                     fx1 = lbl_80368F8C + fx;
