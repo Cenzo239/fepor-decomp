@@ -1689,7 +1689,7 @@ s32 fn_800A1D00(void) {
     return 6;
 }
 
-void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
+void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     void *Map_GetCursorUnit(void);
     s32 Unit_GetItemSlot(s32, s32);
     s32 UnitRef_GetName(void);
