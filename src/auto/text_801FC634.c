@@ -1411,7 +1411,7 @@ void fn_801FFDA8(void) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8001019C(s16, s16, u8, void *, ...);
+    void Text_Draw(s16, s16, u8, void *, ...);
     extern u8 lbl_80282008[];
     extern s32 gSaveMigrateCount;
     extern f32 lbl_8036BBB8;
@@ -1432,8 +1432,8 @@ void fn_801FFDA8(void) {
     Prim2D_SetTransform(lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBC0);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    fn_8001019C(0x40, 0x40, 1, lbl_80282008 + 0x33, gSaveMigrateCount);
-    fn_8001019C(0x40, 0x60, 1, lbl_80282008 + 0x58);
+    Text_Draw(0x40, 0x40, 1, lbl_80282008 + 0x33, gSaveMigrateCount);
+    Text_Draw(0x40, 0x60, 1, lbl_80282008 + 0x58);
 }
 
 void fn_801FFE8C(void) {
@@ -2135,7 +2135,7 @@ extern "C" void fn_80201778(void *arg0) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
     char *String_CStr(void *);
     void fn_800C9874(void *, u32, char);
@@ -2243,7 +2243,7 @@ extern "C" void fn_80201778(void *arg0) {
             {
                 s32 x = (s32)var_f31;
                 s32 y = (s32)var_f30;
-                fn_8001019C(x, y, 1, var_r31 + 0xB6, String_CStr(&sp8));
+                Text_Draw(x, y, 1, var_r31 + 0xB6, String_CStr(&sp8));
             }
             if (*var_r29 == 0xA) {
                 var_f30 += (f32)fn_800102BC(-1, lbl_8036BBD8);

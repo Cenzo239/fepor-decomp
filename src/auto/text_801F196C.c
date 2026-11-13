@@ -3200,7 +3200,7 @@ void fn_801F8E30(void *arg0) {
     void Prim2D_Begin(void);
     void Process_Goto(void *, s32);
     void *Msg_Expand(void *);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8004DDB8(s32);
@@ -3296,16 +3296,16 @@ clear:
             Prim2D_Begin();
             fn_8000A174(NULL, 0x13);
             Prim2D_PrepareTex();
-            fn_8001019C((s32)lbl_8036BA44, (s32)f30, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
-            fn_8001019C((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
+            Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
+            Text_Draw((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
             if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) != 6) {
-                fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, StaffRoll_str + 0x29F,
+                Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, StaffRoll_str + 0x29F,
                     Msg_Expand(StaffRoll_str + 0x2A6), (s8)*(u8 *)((u8 *)unit + 0x19A));
-                fn_8001019C((s32)lbl_8036BA50, (s32)f30, 2, StaffRoll_str + 0x2B1,
+                Text_Draw((s32)lbl_8036BA50, (s32)f30, 2, StaffRoll_str + 0x2B1,
                     *(u16 *)((u8 *)unit + 0x22A), Msg_Expand(StaffRoll_str + 0x2B8));
             } else {
                 sprintf(buf, StaffRoll_str + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
-                fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buf));
+                Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buf));
             }
             f28 = f30 + (f32)fn_800102BC(-1, lbl_8036BA20);
             fn_8006ECCC(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
@@ -3911,7 +3911,7 @@ void StaffRoll_Draw(void *arg0) {
     void *Hash_Lookup(void *);
     void fn_8000A174(s32, s32);
     s16 Text_MeasureWidth(void *, s32, f32);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     f64 fmod(f64, f64);
     extern s32 gUiInputFlags;
     extern f32 lbl_8036BA18;
@@ -3969,15 +3969,15 @@ void StaffRoll_Draw(void *arg0) {
             Prim2D_PrepareTex();
             if ((u32)ent->str0 != 0U) {
                 w = Text_MeasureWidth(ent->str0, -1, lbl_8036BA20);
-                fn_8001019C((s32)(f32)(0x120 - w), (s32)scroll, 1, ent->str0);
+                Text_Draw((s32)(f32)(0x120 - w), (s32)scroll, 1, ent->str0);
             }
             if ((u32)ent->str4 != 0U) {
                 w = Text_MeasureWidth(ent->str4, -1, lbl_8036BA20);
-                fn_8001019C((s32)(f32)(0x130 - (w >> 1)), (s32)scroll, 1, ent->str4);
+                Text_Draw((s32)(f32)(0x130 - (w >> 1)), (s32)scroll, 1, ent->str4);
             }
             if ((u32)ent->str8 != 0U) {
                 Text_MeasureWidth(ent->str8, -1, lbl_8036BA20);
-                fn_8001019C((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(StaffRoll_str + 0x39A), ent->str8);
+                Text_Draw((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(StaffRoll_str + 0x39A), ent->str8);
             }
         }
         scroll += step;

@@ -1959,7 +1959,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     void Prim2D_Begin(void);
     void fn_8000D8BC(s32, s32);
     void *Msg_Expand(void *);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     extern f32 lbl_8036A4EC;
     extern f32 lbl_8036A50C;
     extern f32 lbl_8036A510;
@@ -2026,12 +2026,12 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         if (count == limit) {
-            fn_8001019C(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1C8));
-            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1DA, count, limit);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1C8));
+            Text_Draw(0x140, 0x10, 1, lbl_80275AC0 + 0x1DA, count, limit);
         } else {
             fn_8000D8BC(0, limit - count);
-            fn_8001019C(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1E7));
-            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1F7, count, limit);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1E7));
+            Text_Draw(0x140, 0x10, 1, lbl_80275AC0 + 0x1F7, count, limit);
         }
         break;
     case 2:
@@ -2065,12 +2065,12 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         if (limit == count) {
-            fn_8001019C(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x208));
-            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1DA, limit, count);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x208));
+            Text_Draw(0x128, 0x10, 1, lbl_80275AC0 + 0x1DA, limit, count);
         } else {
             fn_8000D8BC(0, count - limit);
-            fn_8001019C(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x21E));
-            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1F7, limit, count);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x21E));
+            Text_Draw(0x128, 0x10, 1, lbl_80275AC0 + 0x1F7, limit, count);
         }
         break;
     default:

@@ -90,7 +90,7 @@ void fn_8008FE5C(void* arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     void *Msg_Expand(u32);
-    void fn_8001019C(s16, s16, u8, void *, ...);
+    void Text_Draw(s16, s16, u8, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_8008B1B0();
     extern f32 lbl_80369754;
@@ -108,17 +108,17 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     if (arg2 != 0U) {
         temp_r27 = Msg_Expand(arg2);
         temp_r4 = temp_r28 - Text_MeasureWidth(temp_r27, -1, lbl_80369754);
-        fn_8001019C((s16) (arg0 + temp_r4 / 2), (s16) (arg1 + 0x1E), 2, temp_r27);
+        Text_Draw((s16) (arg0 + temp_r4 / 2), (s16) (arg1 + 0x1E), 2, temp_r27);
     }
     if (arg3 != 0U) {
         temp_r27_2 = Msg_Expand(arg3);
         temp_r4_2 = temp_r28 - Text_MeasureWidth(temp_r27_2, -1, lbl_80369754);
-        fn_8001019C((s16) (arg0 + temp_r4_2 / 2), (s16) (arg1 + 0x3C), 8, temp_r27_2);
+        Text_Draw((s16) (arg0 + temp_r4_2 / 2), (s16) (arg1 + 0x3C), 8, temp_r27_2);
     }
     if (arg4 != 0U) {
         arg4 = (u32) Msg_Expand(arg4);
         temp_r4_3 = temp_r28 - Text_MeasureWidth((void *) arg4, -1, lbl_80369754);
-        fn_8001019C((s16) (arg0 + temp_r4_3 / 2), (s16) (arg1 + 0x54), 8, (void *) arg4);
+        Text_Draw((s16) (arg0 + temp_r4_3 / 2), (s16) (arg1 + 0x54), 8, (void *) arg4);
     }
 }
 
@@ -140,7 +140,7 @@ void fn_800900F4(u8 *arg0) {
     void UnitInfo_DrawPanel(s32, s32, u8);
     void *fn_800A8A88(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
-    void fn_8001019C(s16, s16, s32, void *, ...);
+    void Text_Draw(s16, s16, s32, void *, ...);
     extern f32 gZeroF, lbl_80369780, lbl_80369784, lbl_80369788, lbl_80369768, lbl_80369754;
     extern char lbl_8026CD60[];
     extern u8 lbl_802F0308[];
@@ -184,8 +184,8 @@ void fn_800900F4(u8 *arg0) {
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
     b = (0xCF - Text_MeasureWidth(fn_800A8A88(*(void **)(self + 0x188)), -1, lbl_80369754)) / 2;
-    fn_8001019C((s16)(b + 9), 0x6C, 1, fn_800A8A88(*(void **)(self + 0x188)));
-    fn_8001019C((s16)(b - 0xF), 0x6C, 1, lbl_8026CD60 + 0x13D);
+    Text_Draw((s16)(b + 9), 0x6C, 1, fn_800A8A88(*(void **)(self + 0x188)));
+    Text_Draw((s16)(b - 0xF), 0x6C, 1, lbl_8026CD60 + 0x13D);
     b = self[0x1A8];
     t = fn_8003B2D0(self);
     p = Msg_Expand(lbl_8026CD60 + 0x111);

@@ -3285,7 +3285,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void *fn_8000B908(u8);
     void fn_8000D864(s32, void *);
     void *Msg_Expand(void *);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8015A2D8(s32, s32, s32, s32, s32, s32);
     void strcpy(void *, void *);
@@ -3387,7 +3387,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     tmp = (f32)Text_MeasureWidth(str, -1, lbl_8036B7C8);
     f31 = ((f32)(s16)((Obj *)arg0)->v18() - tmp) * lbl_8036B7EC;
     str = ((Obj *)arg0)->v0();
-    fn_8001019C((s32)f31, 0x18, 1, str);
+    Text_Draw((s32)f31, 0x18, 1, str);
     row = (struct Row *)arg1;
     row = (struct Row *)((u8 *)row + *(s8 *)((u8 *)arg1 + 0x62));
     item = fn_8000B908(row->id);
@@ -3395,7 +3395,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     strcpy(sp8, Msg_Expand(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();
     f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - Text_MeasureWidth(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
-    fn_8001019C((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
+    Text_Draw((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
     if (f30) {
         /* keep y in f31-phys so text/half prefer f30 */
     }

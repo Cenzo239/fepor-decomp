@@ -3894,7 +3894,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     void UnitRef_Set(void *, s32);
     void fn_8001C5F8(void *, s32);
     s32 fn_800102BC(s32, f32);
-    void fn_8001019C(s16, s16, s32, ...);
+    void Text_Draw(s16, s16, s32, ...);
     void fn_8008CFB4(void *, s16, s16);
     extern u8 lbl_80279C40[];
     extern f32 lbl_8036ADF0;
@@ -3916,7 +3916,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     w = UnitRef_GetName(sp8);
     y2 = y;
     x = (s16)(a1 + half);
-    fn_8001019C((s16)(y2 + 0x18), x, 2, lbl_80279C40 + 0x50, w);
+    Text_Draw((s16)(y2 + 0x18), x, 2, lbl_80279C40 + 0x50, w);
     fn_8008CFB4(sp8, y2, x);
     fn_8001C5F8(sp8, -1);
 }
@@ -3926,7 +3926,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
 void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     s32 fn_800102BC(s32, f32);
     void *Msg_Expand(void *);
-    void fn_8001019C(s16, s16, s32, ...);
+    void Text_Draw(s16, s16, s32, ...);
     void Prim2D_AddPrim(s32);
     s32 *fn_8018D900(s32);
     void Prim2D_SetColorPacked(s32 *);
@@ -3957,7 +3957,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     x = (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1);
     str = Msg_Expand(lbl_80279C40 + 0x53);
     x += arg1;
-    fn_8001019C(y, x, 0xF, str);
+    Text_Draw(y, x, 0xF, str);
     if (arg2 != 0 && M2C_FIELD(arg0, void **, 0x40) != NULL) {
         Prim2D_AddPrim(6);
         spC = *fn_8018D900(2);
@@ -4006,14 +4006,14 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         Prim2D_EndPrim();
     }
     str = Msg_Expand(lbl_80279C40 + 0x66);
-    fn_8001019C((s16)(y + 0xB0), x, 0xF, str);
+    Text_Draw((s16)(y + 0xB0), x, 0xF, str);
 }
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
 void fn_8018EFE0(void *arg0, s16 arg1) {
     void *Msg_Expand(void *);
-    void fn_8001019C(s16, s16, s32, ...);
+    void Text_Draw(s16, s16, s32, ...);
     s32 fn_800102BC(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80279C40[];
@@ -4027,7 +4027,7 @@ void fn_8018EFE0(void *arg0, s16 arg1) {
     h = Text_MeasureWidth(str, -1, lbl_8036ADF0);
     t = *(s16 *)((u8 *)arg0 + 0x12);
     y = (s16)(((s16)(*(s16 *)((u8 *)arg0 + 0x16) - t) - h) >> 1);
-    fn_8001019C(y, (s16)(arg1 + (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1)), 2, str);
+    Text_Draw(y, (s16)(arg1 + (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1)), 2, str);
 }
 
 #pragma cplusplus on
@@ -4139,7 +4139,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
-    void fn_8001019C(s16, s16, s32, void *, ...);
+    void Text_Draw(s16, s16, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80104E58(void);
@@ -4173,8 +4173,8 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     fn_8000A174(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 0x13));
     Prim2D_PrepareTex();
 
-    fn_8001019C(h, x, 0xF, Msg_Expand(lbl_80279C40 + 0xBE));
-    fn_8001019C((s16)(y + 8), x, 0xF, Msg_Expand(lbl_80279C40 + 0xD1));
+    Text_Draw(h, x, 0xF, Msg_Expand(lbl_80279C40 + 0xBE));
+    Text_Draw((s16)(y + 8), x, 0xF, Msg_Expand(lbl_80279C40 + 0xD1));
     y2 = y + 8;
 
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= 0) {
@@ -4189,9 +4189,9 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         Prim2D_EndPrim();
     } else {
         arg1 = (s32)(lbl_80279C40 + 0xE4);
-        fn_8001019C((s16)(y - (s16)Text_MeasureWidth((void *)arg1, -1, lbl_8036ADF0)), x, 0, (void *)arg1);
-        fn_8001019C(h, (s16)((arg1 = (s16)x) + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0xED));
-        fn_8001019C(y2, (s16)(arg1 + 0x20), 0xF, Msg_Expand((u8 *)lbl_80279C40 + 209));
+        Text_Draw((s16)(y - (s16)Text_MeasureWidth((void *)arg1, -1, lbl_8036ADF0)), x, 0, (void *)arg1);
+        Text_Draw(h, (s16)((arg1 = (s16)x) + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0xED));
+        Text_Draw(y2, (s16)(arg1 + 0x20), 0xF, Msg_Expand((u8 *)lbl_80279C40 + 209));
         Prim2D_AddPrim(6);
         sp8 = *fn_8018D900(2);
         Prim2D_SetColorPacked(&sp8);

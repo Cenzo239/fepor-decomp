@@ -1945,7 +1945,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     void Prim2D_EndPrim(void);
     void fn_8006ECCC(s32, void *, s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_8001019C(s16, s16, s32, s32, s16, ...);
+    void Text_Draw(s16, s16, s32, s32, s16, ...);
     void fn_80009E64(s32, f32);
     extern u8 lbl_802774F0[];
     extern f32 lbl_8036A874;
@@ -2043,7 +2043,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
-    fn_8001019C(
+    Text_Draw(
         (s16)(temp_r23 + (s16)(temp_r26[2] - lbl_80367CE8.f0)),
         (s16)(temp_r24 + ((s16)(temp_r25[3] - temp_r25[1]) + 8 + temp_r20)),
         9, temp_r21, lbl_80367CE8.f0);
@@ -2672,7 +2672,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     s32 Msg_Expand(void *);
-    void fn_8001019C(s16, s16, s32, s32, ...);
+    void Text_Draw(s16, s16, s32, s32, ...);
     s32 fn_800102BC(s32, f32);
     void fn_8006ECCC(s32, void *, s32);
     void fn_8008BC94(s32, s32, s32);
@@ -2729,7 +2729,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     x = (s16)((x - fn_800102BC(-1, lbl_8036A874)) >> 1);
     str = Msg_Expand(lbl_802774F0 + 0x1f6);
     x = y + x;
-    fn_8001019C((s16)(flags + 0x40), (s16)x, 0xF, str);
+    Text_Draw((s16)(flags + 0x40), (s16)x, 0xF, str);
     Prim2D_AddPrim(6);
     sp8 = *fn_8018D900(2);
     Prim2D_SetColorPacked(&sp8);

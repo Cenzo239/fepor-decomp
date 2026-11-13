@@ -8304,7 +8304,7 @@ void fn_801C85E0(void *arg0) {
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
     void fn_8006ECCC(void *, void *, s32);
     u16 fn_80222A80(void *);
@@ -8410,9 +8410,9 @@ void fn_801C85E0(void *arg0) {
     tmp = fn_800102BC(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x40);
     if (v0 > 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
     } else if (v0 < 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
     }
 
     raw = lbl_803682B0;
@@ -8455,9 +8455,9 @@ void fn_801C85E0(void *arg0) {
     tmp = fn_800102BC(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x90);
     if (v1 > 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
     } else if (v1 < 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
     }
 
     raw = lbl_80366E9C;
@@ -8500,9 +8500,9 @@ void fn_801C85E0(void *arg0) {
     tmp = fn_800102BC(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x100);
     if (v2 > 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
     } else if (v2 < 0) {
-        fn_8001019C(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
+        Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDD);
     }
 
     obj = *(void **)((u8 *)self + 0x38);
@@ -15856,7 +15856,7 @@ void fn_801DE474(void *arg0, void *arg1)
     s32 fn_8001059C(u8 *, s32, f32);
     s16 Text_MeasureWidth(u8 *, s32, f32);
     void *Msg_Expand(u8 *);
-    void fn_8001019C(s32, s32, s32, void *, ...);
+    void Text_Draw(s32, s32, s32, void *, ...);
     void Prim2D_AddPrim(s32);
     s32 *fn_8018D900(s32);
     void Prim2D_SetColorPacked(s32 *);
@@ -15961,8 +15961,8 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(ybase);
     if (visible) {
         row_y = (s16)(ybase + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x24));
-        fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x24));
+        Text_Draw(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
         Prim2D_SetColorPacked(&tmp);
@@ -15979,8 +15979,8 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(row_y);
     if (visible) {
         row_y = (s16)(row_y + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x35));
-        fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x35));
+        Text_Draw(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1E);
         Prim2D_SetColorPacked(&tmp);
@@ -15997,8 +15997,8 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(row_y);
     if (visible) {
         row_y = (s16)(row_y + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x44));
-        fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x44));
+        Text_Draw(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(2);
         Prim2D_SetColorPacked(&tmp);
@@ -16015,8 +16015,8 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(row_y);
     if (visible) {
         row_y = (s16)(row_y + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x54));
-        fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x54));
+        Text_Draw(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
         Prim2D_SetColorPacked(&tmp);
@@ -16033,8 +16033,8 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(row_y);
     if (visible) {
         row_y = (s16)(row_y + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x66));
-        fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x66));
+        Text_Draw(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
         Prim2D_SetColorPacked(&tmp);
@@ -16051,11 +16051,11 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(row_y);
     if (visible) {
         row_y = (s16)(row_y + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x76));
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x76));
         if (fn_8014C604(gBattleState) != NULL) {
-            fn_8001019C((s16)(left_x + 0x80), row_y, 2, fn_800A8A88(*(u32 *)((u8 *)fn_8014C604(gBattleState) + 0x188)));
+            Text_Draw((s16)(left_x + 0x80), row_y, 2, fn_800A8A88(*(u32 *)((u8 *)fn_8014C604(gBattleState) + 0x188)));
         } else {
-            fn_8001019C((s16)(left_x + 0x80), row_y, 0xF, lbl_8027E8D0 + 0x84);
+            Text_Draw((s16)(left_x + 0x80), row_y, 0xF, lbl_8027E8D0 + 0x84);
         }
         vt = *(V0 **)arg0;
         ((VS)vt[0x2C / 4])(arg0, (s16)(half + row_y));
@@ -16068,7 +16068,7 @@ void fn_801DE474(void *arg0, void *arg1)
     visible = ROW_VISIBLE(ybase);
     if (visible) {
         row_y = (s16)(ybase + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x8D));
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x8D));
         vt = *(V0 **)arg0;
         ((VS)vt[0x2C / 4])(arg0, (s16)(half + row_y));
     }
@@ -16104,11 +16104,11 @@ void fn_801DE474(void *arg0, void *arg1)
             }
             if (x_prev != 0) {
                 if (ROW_VISIBLE(y_prev)) {
-                    fn_8001019C(x_prev, (s16)(y_prev + gap), 2, Msg_Expand(str_colon));
+                    Text_Draw(x_prev, (s16)(y_prev + gap), 2, Msg_Expand(str_colon));
                 }
             }
             if (ROW_VISIBLE(ybase)) {
-                fn_8001019C((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(unit, u32 *, 0x188)));
+                Text_Draw((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(unit, u32 *, 0x188)));
             }
             y_prev = ybase;
             x_prev = (s16)(left_x + x_cur + name_w);
@@ -16117,7 +16117,7 @@ void fn_801DE474(void *arg0, void *arg1)
     }
     if (any == 0) {
         if (ROW_VISIBLE(ybase)) {
-            fn_8001019C((s16)(left_x + 0x80), (s16)(ybase + gap), 0xF, lbl_8027E8D0 + 0x84);
+            Text_Draw((s16)(left_x + 0x80), (s16)(ybase + gap), 0xF, lbl_8027E8D0 + 0x84);
         }
     }
     if (ROW_VISIBLE(ybase)) {
@@ -16131,7 +16131,7 @@ void fn_801DE474(void *arg0, void *arg1)
     Prim2D_PrepareTex();
     if (ROW_VISIBLE(ybase)) {
         row_y = (s16)(ybase + gap);
-        fn_8001019C(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x9C));
+        Text_Draw(left_x, row_y, 0xF, Msg_Expand(lbl_8027E8D0 + 0x9C));
         vt = *(V0 **)arg0;
         ((VS)vt[0x2C / 4])(arg0, (s16)(half + row_y));
     }
@@ -16165,11 +16165,11 @@ void fn_801DE474(void *arg0, void *arg1)
             }
             if (x_prev != 0) {
                 if (ROW_VISIBLE(y_prev)) {
-                    fn_8001019C(x_prev, (s16)(y_prev + gap), 2, Msg_Expand(str_colon));
+                    Text_Draw(x_prev, (s16)(y_prev + gap), 2, Msg_Expand(str_colon));
                 }
             }
             if (ROW_VISIBLE(ybase)) {
-                fn_8001019C((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(node, u32 *, 0x188)));
+                Text_Draw((s16)(left_x + x_cur), row_y, 2, fn_800A8A88(M2C_FIELD(node, u32 *, 0x188)));
             }
             y_prev = ybase;
             x_prev = (s16)(left_x + x_cur + name_w);
@@ -16179,7 +16179,7 @@ void fn_801DE474(void *arg0, void *arg1)
     }
     if (any == 0) {
         if (ROW_VISIBLE(ybase)) {
-            fn_8001019C((s16)(left_x + 0x80), (s16)(ybase + gap), 0xF, lbl_8027E8D0 + 0x84);
+            Text_Draw((s16)(left_x + 0x80), (s16)(ybase + gap), 0xF, lbl_8027E8D0 + 0x84);
         }
     }
     {

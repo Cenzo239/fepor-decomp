@@ -741,7 +741,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
-    void fn_8001019C(s16, s16, u8, void *, ...);
+    void Text_Draw(s16, s16, u8, void *, ...);
     void Prim2D_AddZ(f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     extern f32 gTabMenuOne;
@@ -860,7 +860,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     if (arg5 != 0) {
         mode = 0x15;
     }
-    fn_8001019C(px, (s16)py, (u8)mode, arg6);
+    Text_Draw(px, (s16)py, (u8)mode, arg6);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B720);

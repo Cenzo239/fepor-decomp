@@ -124,7 +124,7 @@ extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
-extern "C" void fn_8001019C(s32, s32, s32, void *, ...);
+extern "C" void Text_Draw(s32, s32, s32, void *, ...);
 extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     struct Model {
         u8 pad[4];
@@ -214,8 +214,8 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
         var_r7 = NULL;
         break;
     }
-    fn_8001019C(0x160, 0, 1, lbl_8026E470 + 0x168, var_r7);
-    fn_8001019C(0x148, 0x18, 1, lbl_8026E470 + 0x177, *(void **)(lbl_802832E0 + 4));
+    Text_Draw(0x160, 0, 1, lbl_8026E470 + 0x168, var_r7);
+    Text_Draw(0x148, 0x18, 1, lbl_8026E470 + 0x177, *(void **)(lbl_802832E0 + 4));
 }
 #pragma cplusplus reset
 
