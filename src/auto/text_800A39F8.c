@@ -1779,7 +1779,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     s8 fn_8003C114(void *);
     void fn_80006B18(s32, s32, s32, s32, s32);
     void Prim2D_SetScale(f32);
-    void fn_80007290(s32, s32, s32, s32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColorPacked(u32 *);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1833,7 +1833,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_AddPrim(6);
     Prim2D_SetScale(lbl_80369AC0);
     fn_80006B18(0xDE, 0x30, 0, 0, temp_r31);
-    fn_80007290(0x80, 0x40, 0x40, 0xFF);
+    Prim2D_SetTint(0x80, 0x40, 0x40, 0xFF);
     Prim2D_SetColor(0x80, 0x40, 0x40, 0xFF);
     Prim2D_EndPrim();
     var_r26 = 3;

@@ -116,7 +116,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
-    void fn_80007290(s32, s32, s32, s32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
     extern s32 gMsgDebugPage;
@@ -179,7 +179,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     str = *(void **)(gMsgDebugPtrs + idx);
     Prim2D_SetText(str);
     Prim2D_SetScale(lbl_8036A808);
-    fn_80007290(r, g, b, 0xFF);
+    Prim2D_SetTint(r, g, b, 0xFF);
     Prim2D_EndPrim();
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0xB0), (f32)*(s16 *)((u8 *)arg2 + 0x32));
@@ -217,7 +217,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     }
     Prim2D_SetText(str);
     Prim2D_SetScale(lbl_8036A808);
-    fn_80007290(r, g, b, 0xFF);
+    Prim2D_SetTint(r, g, b, 0xFF);
     Prim2D_EndPrim();
 }
 #pragma global_optimizer reset

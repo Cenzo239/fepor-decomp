@@ -64,7 +64,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
-    void fn_80007290(s32, s32, s32, s32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -87,10 +87,10 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_SetText(sp8);
     Prim2D_SetScale(lbl_803699E8);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
-        fn_80007290(0xFF, 0xFF, 0, 0xFF);
+        Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        fn_80007290(0, 0, 0, 0xFF);
+        Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
 }
@@ -2118,7 +2118,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
     M2C_UNK Prim2D_SetText(void *);
     M2C_UNK Prim2D_SetScale(f32);
-    M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK Prim2D_SetTint(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim(void);
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
@@ -2136,10 +2136,10 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_SetText(sp8);
     Prim2D_SetScale(lbl_803699E8);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
-        fn_80007290(0xFF, 0xFF, 0, 0xFF);
+        Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        fn_80007290(0, 0, 0, 0xFF);
+        Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
 }
@@ -2190,7 +2190,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_SetText(void *);
-    M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK Prim2D_SetTint(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetScale(f32);
     M2C_UNK Prim2D_EndPrim(void);
     s32 fn_80036F5C(void *, s32);
@@ -2222,7 +2222,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
             Prim2D_SetText(sp18);
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
-                fn_80007290(0, 0, 0, 0xFF);
+                Prim2D_SetTint(0, 0, 0, 0xFF);
             }
             Prim2D_SetScale(lbl_803699E8);
             Prim2D_EndPrim();
@@ -2241,7 +2241,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             Prim2D_SetPos((f32) (M2C_FIELD(arg2, s16 *, 0x30) + 0x5A), (f32) M2C_FIELD(arg2, s16 *, 0x32));
             Prim2D_SetText(sp18);
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
-                fn_80007290(0, 0, 0, 0xFF);
+                Prim2D_SetTint(0, 0, 0, 0xFF);
             }
             Prim2D_SetScale(lbl_803699E8);
             Prim2D_EndPrim();

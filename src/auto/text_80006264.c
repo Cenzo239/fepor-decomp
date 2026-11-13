@@ -706,7 +706,7 @@ void Prim2D_SetScale(f32 arg0) {
     *(f32 *)(ptr + 0x1C) = arg0;
 }
 
-void fn_80007290(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
+void Prim2D_SetTint(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
  extern void *lbl_80367140;
  u8 *ptr = (u8 *)lbl_80367140;
  ptr = *(u8 **)(ptr + 0xC);
