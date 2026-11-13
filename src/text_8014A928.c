@@ -267,7 +267,8 @@ s32 fn_8014ADF0(void) {
     return 0;
 }
 
-void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
+/* Draw the sound-menu Distance row: item label plus signed %+6d value. */
+void SoundMenu_DrawDistanceItem(void *ctrl, void *parent, void *item) {
 #pragma cplusplus on
     struct Model {
         u8 pad[4];
@@ -343,33 +344,33 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     extern f32 gMenuItemZBias;
     extern f32 gMenuTextScale;
     extern u8 gSoundMenuStrings[];
-    char sp8[8];
+    char buf[8];
 
     Prim2D_Begin();
-    Prim2D_SetTransform((f32)*(s16 *)((u8 *)arg1 + 0x30), (f32)*(s16 *)((u8 *)arg1 + 0x32),
-                (*(Model **)((u8 *)arg1 + 0x3C))->v25() - gMenuItemZBias, gOneF);
+    Prim2D_SetTransform((f32)*(s16 *)((u8 *)parent + 0x30), (f32)*(s16 *)((u8 *)parent + 0x32),
+                (*(Model **)((u8 *)parent + 0x3C))->v25() - gMenuItemZBias, gOneF);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
-    Prim2D_SetText((*(Drawer **)((u8 *)arg2 + 0x34))->v4(arg2));
+    Prim2D_SetPos((f32)*(s16 *)((u8 *)item + 0x30), (f32)*(s16 *)((u8 *)item + 0x32));
+    Prim2D_SetText((*(Drawer **)((u8 *)item + 0x34))->v4(item));
     Prim2D_SetScale(gMenuTextScale);
-    if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
+    if (*(u8 *)((u8 *)item + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
+    if (*(u8 *)((u8 *)item + 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
-    sprintf(sp8, gSoundMenuStrings + 0x10D, ((Obj *)arg0)->v20());
+    sprintf(buf, gSoundMenuStrings + 0x10D, ((Obj *)ctrl)->v20());
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x60), (f32)*(s16 *)((u8 *)arg2 + 0x32));
-    Prim2D_SetText(sp8);
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)item + 0x30) + 0x60), (f32)*(s16 *)((u8 *)item + 0x32));
+    Prim2D_SetText(buf);
     Prim2D_SetScale(gMenuTextScale);
-    if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
+    if (*(u8 *)((u8 *)item + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
+    if (*(u8 *)((u8 *)item + 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
