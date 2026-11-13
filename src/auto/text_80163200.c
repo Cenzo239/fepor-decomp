@@ -3665,7 +3665,7 @@ void *fn_8016AE6C(void) {
     return &lbl_80277BC0[0x101];
 }
 
-s32 fn_8016AE7C(s32 arg0, s32 arg1, void *arg2) {
+s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK fn_80024398(void *, s32, s32);
     void *Heap_Alloc(u32);
     extern u8 lbl_802845E8[];
