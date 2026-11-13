@@ -10220,7 +10220,7 @@ extern s32 lbl_80367308;
 s32 fn_8004B3DC(void *arg0, s32 arg1) {
     s32 fn_8006A37C(void);
     s32 fn_8006A374(void);
-    s32 fn_80069EA8(void);
+    s32 GMaterial_AllocTevStage(void);
     s32 fn_80069E18(void);
     s32 fn_80069DBC(void);
     void Ui_LoadAtlasTex(s32, void *, u16);
@@ -10248,7 +10248,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     t30 = fn_8006A37C();
     t29 = fn_8006A374();
     t28 = *(s32 *)((u8 *)t30 + 0x90);
-    t27 = fn_80069EA8();
+    t27 = GMaterial_AllocTevStage();
     if ((*(s32 *)t30 & 0x2000) != 0) {
         GXSetTevOrder(t27, 0xFF, 0xFF, 4);
         GXSetNumTexGens(t27, 4);

@@ -6003,7 +6003,7 @@ s32 fn_80069E7C(void)
 }
 
 #pragma global_optimizer off
-void *fn_80069EA8(void) {
+void *GMaterial_AllocTevStage(void) {
     extern u8 gMaterialTevStageCount;
     extern u8 gGMaterialAssertMsg[];
     extern u16 gMaterialStageIds[0x20];

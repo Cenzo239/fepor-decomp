@@ -148,45 +148,41 @@ void fn_80120F94(void)
     }
 }
 
+#pragma global_optimizer off
 void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *Process_Find(void *);
     void Process_Unlink(void *);
     void *fn_8000CAF0(void *, s32);
     void *fn_8007C378(void *);
-    void strcpy(void *, void *);
+    void strcpy(char *, char *);
     u8 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80290200[];
     extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
+    void *obj;
 
-    void *owner = arg0;
-    s16 x = arg1;
-    s16 y = arg2;
-    s32 parent = arg3;
-    {
-        void *obj = Process_Find(lbl_80290200);
-        if (obj != NULL) {
-            if (*(void **)((u8 *)obj + 0x44) == owner &&
-                *(s16 *)((u8 *)obj + 0x48) == x &&
-                *(s16 *)((u8 *)obj + 0x4A) == y) {
-                return;
+    obj = Process_Find(lbl_80290200);
+    if (obj != NULL) {
+        if (*(void **)((u8 *)obj + 0x44) == arg0) {
+            if (*(s16 *)((u8 *)obj + 0x48) == arg1) {
+                if (*(s16 *)((u8 *)obj + 0x4A) == arg2) {
+                    return;
+                }
             }
-            Process_Unlink(obj);
         }
+        Process_Unlink(obj);
     }
-    if (gUiPanelFlags & 0x40) {
+    if ((gUiPanelFlags & 0x40) != 0) {
         return;
     }
-    {
-        void *obj = fn_8000CAF0(lbl_80290200, parent);
-        *(void **)((u8 *)obj + 0x44) = owner;
-        strcpy((u8 *)obj + 0x30, fn_8007C378(owner));
-        *(s16 *)((u8 *)obj + 0x48) = x;
-        *(s16 *)((u8 *)obj + 0x4A) = y;
-        *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
-    }
+    obj = fn_8000CAF0(lbl_80290200, arg3);
+    *(void **)((u8 *)obj + 0x44) = arg0;
+    strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
+    *(s16 *)((u8 *)obj + 0x48) = arg1;
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
+    *(s16 *)((u8 *)obj + 0x4A) = arg2;
 }
-
+#pragma global_optimizer reset
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
 void Ui_DrawTooltip(void *tip) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
@@ -2638,7 +2634,7 @@ s32 fn_80125BB0(void) {
     s32 fn_80069D58();
     s32 fn_80069DBC();
     s32 fn_80069E18();
-    s32 fn_80069EA8();
+    s32 GMaterial_AllocTevStage();
     M2C_UNK fn_8006A384(M2C_UNK *);
     M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK PSMTXConcat(M2C_UNK *, M2C_UNK *, M2C_UNK *);
@@ -2691,7 +2687,7 @@ s32 fn_80125BB0(void) {
     }
     fn_8006A384(&sp64);
     temp_r28 = fn_80069DBC();
-    temp_r29 = fn_80069EA8();
+    temp_r29 = GMaterial_AllocTevStage();
     temp_r27 = fn_80069E18();
     temp_r26 = fn_80069D58();
     temp_f1 = lbl_8036A3B4 + M2C_FIELD(temp_r3, f32 *, 0x4C);
