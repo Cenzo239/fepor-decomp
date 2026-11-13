@@ -4768,7 +4768,8 @@ void fn_801BE8F0(void) {
 
 void *fn_801BE91C(void) { extern u8 gUiUnitPanelStrings[]; return gUiUnitPanelStrings+0x2D4; }
 
-s32 Ui_ValidateSkillAssign(void *arg0) {
+/* Validate skill assign on the unit panel; store error -1/-2/-3 at +4, return 2 on fail or 0. */
+s32 Ui_ValidateSkillAssign(void *item) {
     void *Process_Find(void *);
     void *Res_GetEntry(u8);
     u8 Skill_UnitMeetsReqs(void *, void *);
@@ -4777,40 +4778,40 @@ s32 Ui_ValidateSkillAssign(void *arg0) {
     s32 Unit_GetSkillCapacityUsed(void *);
     extern u8 gUiUnitPanelClass[];
     extern u32 gUiContext[];
-    void *temp_r31;
-    void *temp_r4;
     void *unit;
-    s32 temp_r30;
+    void *cls;
+    void *skill;
+    s32 capacity;
     u8 found;
     s32 i;
-    void *ret;
+    void *panel;
 
-    *((s8 *)arg0 + 4) = 0;
-    ret = Process_Find(gUiUnitPanelClass);
-    temp_r31 = (void *)gUiContext[0];
-    Ui_FindChild(ret, 0x106, 0);
+    *((s8 *)item + 4) = 0;
+    panel = Process_Find(gUiUnitPanelClass);
+    unit = (void *)gUiContext[0];
+    Ui_FindChild(panel, 0x106, 0);
     if (Unit_CountExtraSkills() >= 5U) {
-        *((s8 *)arg0 + 4) = -1;
+        *((s8 *)item + 4) = -1;
         return 2;
     }
-    temp_r4 = *(void **)((u8 *)temp_r31 + 0x18C);
-    temp_r30 = *((u8 *)temp_r4 + 0x40);
-    if (temp_r30 <= Unit_GetSkillCapacityUsed(temp_r31)) {
-        *((s8 *)arg0 + 4) = -2;
+    cls = *(void **)((u8 *)unit + 0x18C);
+    capacity = *((u8 *)cls + 0x40);
+    if (capacity <= Unit_GetSkillCapacityUsed(unit)) {
+        *((s8 *)item + 4) = -2;
         return 2;
     }
     found = 0;
     i = 0;
     do {
-        unit = Res_GetEntry((u8)i);
-        if (*((u8 *)unit + 0x19) != 0 && Skill_UnitMeetsReqs(unit, temp_r31) != 0) {
+        skill = Res_GetEntry((u8)i);
+        if (*((u8 *)skill + 0x19) != 0 && Skill_UnitMeetsReqs(skill, unit) != 0) {
             found = 1;
             break;
         }
         i += 1;
     } while (i < 0x62);
     if (found == 0) {
-        *((s8 *)arg0 + 4) = -3;
+        *((s8 *)item + 4) = -3;
         return 2;
     }
     return 0;
