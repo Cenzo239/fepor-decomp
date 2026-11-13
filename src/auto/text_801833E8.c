@@ -6587,7 +6587,7 @@ extern "C" void fn_80194178(void *arg0) {
     void Process_CreateChild(void *, void *, void *);
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     void fn_800947E0(void *);
     void fn_8011D79C(s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -6644,7 +6644,7 @@ extern "C" void fn_80194178(void *arg0) {
                 Process_CreateChild(lbl_802966B0, arg0, gUiContext);
             }
         }
-        fn_8001D580(temp_r31);
+        Item_Clear(temp_r31);
         if (temp_r30 != NULL) {
             fn_800947E0(temp_r30);
             fn_80143784(temp_r29, temp_r30);
@@ -7674,17 +7674,18 @@ s32 fn_80196388(s32 arg0) {
     void **fn_800285C0(void *);
     void fn_80037040(s32, u8, u8);
     void fn_80094A08(s32, s32);
-    void StatBonus_ShowHelp(void *, s32, void *);
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
+    extern u8 lbl_802EF4C8[];
+    void fn_8009127C(void *, s32, void *);
     s32 temp_r31;
+    extern u8 lbl_80330EAC[];
     void *temp_r30;
 
-    temp_r31 = *(s32 *)gUiContext;
-    temp_r30 = *fn_800285C0(gUiContext);
+    temp_r31 = *(s32 *)lbl_802EF4C8;
+    temp_r30 = *fn_800285C0(lbl_802EF4C8);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
-    fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
-    StatBonus_ShowHelp(temp_r30, (*(u32 *)(gBattle + 0xCAC) |= 0x2000, arg0), gBattle);
+    fn_80094A08(temp_r31, *(s8 *)&lbl_802EF4C8[0xA]);
+    *(u32 *)((unsigned short)lbl_80330EAC + 0xCAC) |= 0x2000;
+    fn_8009127C(temp_r30, arg0, lbl_80330EAC);
     return 1;
 }
 

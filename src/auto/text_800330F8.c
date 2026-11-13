@@ -3889,7 +3889,7 @@ void fn_8003B6C4(void* arg0, s32 arg1) {
 
 void Unit_Clear(u8 *arg0, s32 arg1) {
     void fn_80104410(void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     u8 *ptr;
     s32 i;
 
@@ -3935,8 +3935,8 @@ void Unit_Clear(u8 *arg0, s32 arg1) {
     *(u32 *)(arg0 + 0x1BC) = 0;
 
     do {
-        fn_8001D580(ptr + 0x1CC);
-        fn_8001D580(ptr + 0x1EC);
+        Item_Clear(ptr + 0x1CC);
+        Item_Clear(ptr + 0x1EC);
         i += 1;
         ptr += 8;
     } while (i < 4);
@@ -4093,7 +4093,7 @@ s32 fn_8003BA80(void *arg0) {
 void fn_8003BD58(void *arg0) {
     u8 Status_Test(void *, s32);
     void *Unit_GetHeldItemSlot(void *, s32);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     void *Res_GetByName(void *);
     void fn_80094A54(void *, void *);
     struct Bit7 {
@@ -4109,7 +4109,7 @@ void fn_8003BD58(void *arg0) {
 
     if ((u8)Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
         for (i = 0; i < 4; i++) {
-            fn_8001D580(Unit_GetHeldItemSlot(arg0, i));
+            Item_Clear(Unit_GetHeldItemSlot(arg0, i));
         }
 
         cls = *(void **)((u8 *)arg0 + 0x18C);

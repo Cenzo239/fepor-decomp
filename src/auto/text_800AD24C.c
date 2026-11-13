@@ -6312,7 +6312,7 @@ s32 fn_800BBFD0(u8 arg0) {
     u32 *Unit_GetItemSlot(void *, s32);
     void fn_800947E0(void *);
     void fn_800C35C4(void *, u32 *);
-    void fn_8001D580(u32 *);
+    void Item_Clear(u32 *);
     extern u8 gUnits[];
     extern u8 gConvoy[];
     void *var_r30;
@@ -6332,7 +6332,7 @@ s32 fn_800BBFD0(u8 arg0) {
         temp_r3 = Unit_GetItemSlot(var_r30, var_r28);
         if ((temp_r3 != NULL) && (*temp_r3 != 0U)) {
             fn_800C35C4(gConvoy, temp_r3);
-            fn_8001D580(temp_r3);
+            Item_Clear(temp_r3);
         }
         var_r28 += 1;
     } while (var_r28 < 8);
@@ -9576,7 +9576,7 @@ void fn_800C341C(s32 arg0) {
     s32 r30 = 0;
     
     do {
-        fn_8001D580(r31);
+        Item_Clear(r31);
         r30 += 1;
         r31 += 8;
     } while (r30 < 0xC8);
@@ -9592,8 +9592,8 @@ void fn_800C3468(void *arg0) {
 }
 
 void fn_800C3864(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8001D580(s32);
-    fn_8001D580(arg0 + (arg1 * 8));
+    M2C_UNK Item_Clear(s32);
+    Item_Clear(arg0 + (arg1 * 8));
 }
 
 extern struct Unit;

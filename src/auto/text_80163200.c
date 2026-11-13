@@ -6279,7 +6279,7 @@ void fn_8016F790(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     s32 MapCursor_GetUnit(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -6310,7 +6310,7 @@ void fn_8016F790(void *arg0) {
                     Process_CreateChild(lbl_80294AE8, arg0);
                 }
             }
-            fn_8001D580(temp_r31);
+            Item_Clear(temp_r31);
         }
         break;
     case 0x80:
@@ -6545,7 +6545,7 @@ void fn_8016FE60(void *arg0) {
 void fn_8016FF34(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     u32 *Unit_GetItemSlot(void *, s32);
     u8 fn_800C3C1C(void *, void *);
     s16 fn_800C3D48(void *);
@@ -6570,7 +6570,7 @@ void fn_8016FF34(void *arg0) {
             if ((*(u64 *)temp & 0x200ULL) == 0) {
                 if ((s16)fn_800C3D48(gConvoy) >= 0) {
                     if (fn_800C3C1C(gConvoy, slot) != 0) {
-                        fn_8001D580(slot);
+                        Item_Clear(slot);
                     }
                 } else {
                     break;
@@ -6855,7 +6855,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     void UnitInv_Refresh(void *);
     void fn_801436AC(void *, s32);
     void fn_80143C9C(void *);
-    void fn_8001D580(s32);
+    void Item_Clear(s32);
     s16 fn_80164FBC(void *, s16);
     s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
@@ -6929,7 +6929,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     UnitInv_Refresh(inv);
     fn_801436AC(list, item);
     fn_80143C9C(list);
-    fn_8001D580(item);
+    Item_Clear(item);
     next = fn_80164FBC(inv, *(s16 *)((u8 *)inv + 0x4c));
     if (next < 0) {
         next = fn_80164E78(inv, *(s16 *)((u8 *)inv + 0x4c));
@@ -8173,7 +8173,7 @@ u32 *Item_GetFlagsPtr(u32);
 void Item_Copy(u32 *, s32);
 void fn_8001C5F8(void *, s32);
 void fn_8001C690(void *, u32 *, u32);
-void fn_8001D580(s32);
+void Item_Clear(s32);
 s32 fn_800C3D48(void *);
 void fn_800C3C1C(void *, void *);
 void Ui_UpdatePanelWidgets(void *);
@@ -8276,7 +8276,7 @@ fn_8001C690(sp28, r26b, r5);
 Item_Copy(r26b, *r27b);
 fn_801436AC(r28, *r27b);
 fn_80143C9C(r28);
-fn_8001D580(*r27b);
+Item_Clear(*r27b);
 if (r25) {
 s32 idx = fn_800C3D48(gConvoy);
 fn_800C3C1C(gConvoy, sp28);

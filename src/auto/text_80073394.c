@@ -266,9 +266,9 @@ void fn_800739E8(void *arg0)
 }
 
 void fn_80073A3C(void) {
-    M2C_UNK fn_8001D580(M2C_UNK *);
+    M2C_UNK Item_Clear(M2C_UNK *);
     extern M2C_UNK lbl_8036746C;
-    fn_8001D580(&lbl_8036746C);
+    Item_Clear(&lbl_8036746C);
 }
 
 void fn_80073A60(void) {

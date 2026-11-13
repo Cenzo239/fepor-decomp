@@ -2280,7 +2280,7 @@ void fn_801A6F34(u8 *arg0, void *arg1)
 #pragma opt_strength_reduction off
 void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void);
+    void Item_Clear(void);
     void fn_800340F0(void *);
     void Unit_SetMapPos(void *, s8, s8);
     void fn_801A601C(void *, void *, s32, s32);
@@ -2338,7 +2338,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
             if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
                 *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
                 fn_801A7FF4((u8 *)var_r30 + 0x2E0);
-                fn_8001D580();
+                Item_Clear();
             }
         }
     }
@@ -2352,7 +2352,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
         if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
             *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
             fn_801A7FF4((char *)var_r30 + 0x2E0);
-            fn_8001D580();
+            Item_Clear();
         }
     }
     fn_801A601C(var_r30, var_r30, 0, 0);
@@ -2361,7 +2361,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
 #pragma opt_strength_reduction off
 void fn_801A7528(void *arg0, void *arg1) {
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void);
+    void Item_Clear(void);
     void *fn_801A7FF4(void *);
     void fn_801A9600(void *, void *);
     void *temp;
@@ -2375,13 +2375,13 @@ void fn_801A7528(void *arg0, void *arg1) {
         if (((((M2C_FIELD(temp, s32 *, 4) & 0x4F) ^ z) | ((M2C_FIELD(temp, s32 *, 0) & z) ^ z)) != 0)) {
             *(u32 *)((char *)arg0 + 0xCAC) |= 0x200;
             fn_801A7FF4((u8 *)arg0 + 0x2E0);
-            fn_8001D580();
+            Item_Clear();
         }
     }
 }
 void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void);
+    void Item_Clear(void);
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800340F0(s32);
@@ -2470,7 +2470,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(self + 0xCAC) |= 0x200;
                 fn_801A7FF4(self + 0x2E0);
-                fn_8001D580();
+                Item_Clear();
             }
         }
     }
@@ -2495,7 +2495,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
 #pragma use_lmw_stmw on
 void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
-    void fn_8001D580(void);
+    void Item_Clear(void);
     void fn_8002011C(void *, u8, u8, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800340F0(s32);
@@ -2556,7 +2556,7 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(var_r29 + 0xCAC) |= 0x200;
                 fn_801A7FF4(var_r29 + 0x2E0);
-                fn_8001D580();
+                Item_Clear();
             }
         }
     }

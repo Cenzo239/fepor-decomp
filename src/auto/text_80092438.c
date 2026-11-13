@@ -1393,9 +1393,9 @@ void fn_800947E0(s32 arg0) {
     do {
         Item_Copy(var_r23, Unit_GetHeldItemSlot(arg0, var_r19));
         Unit_GetHeldItemSlot(arg0, var_r19);
-        fn_8001D580();
+        Item_Clear();
         Item_Copy(var_r21, var_r22 + 0x1EC);
-        fn_8001D580(var_r22 + 0x1EC);
+        Item_Clear(var_r22 + 0x1EC);
         var_r19 += 1;
         var_r22 += 8;
         var_r21 += 8;
@@ -1435,17 +1435,17 @@ void fn_800947E0(s32 arg0) {
 
 void fn_800949A4(void *arg0, s8 arg1) {
     void *Unit_GetHeldItemSlot(void);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     void fn_800947E0(void *);
     s32 t;
 
     if (arg1 < 4) {
-        fn_8001D580(Unit_GetHeldItemSlot());
+        Item_Clear(Unit_GetHeldItemSlot());
         fn_800947E0(arg0);
         return;
     }
     t = (arg1 - 4) * 8;
-    fn_8001D580((u8 *)arg0 + t + 0x1EC);
+    Item_Clear((u8 *)arg0 + t + 0x1EC);
     fn_800947E0(arg0);
 }
 

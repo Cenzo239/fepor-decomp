@@ -1335,11 +1335,11 @@ void fn_800AB75C(void *arg0) {
 #pragma cplusplus on
 #pragma opt_strength_reduction off
 extern "C" void *Item_Copy(void *, void *);
-extern "C" void fn_8001D580(void *);
+extern "C" void Item_Clear(void *);
 #pragma cplusplus off
 void fn_800ABA3C(void) {
     void fn_8001C76C(void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     void fn_8001C5F8(void *, s32);
     extern u8 lbl_80312ACC[];
     u8 *base;
@@ -1354,7 +1354,7 @@ void fn_800ABA3C(void) {
         fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
 
         q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
+        for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
         base=lbl_80312ACC;
         i=0; n=i; off=i; dst=base+0;
         for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
@@ -1363,7 +1363,7 @@ void fn_800ABA3C(void) {
                 n++; off+=8;
                 Item_Copy(out,p+4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
@@ -1380,7 +1380,7 @@ void fn_800ABA3C(void) {
         fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
 
         q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
+        for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
         base=lbl_80312ACC;
         i=0; n=i; off=i; dst=base+64;
         for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
@@ -1389,7 +1389,7 @@ void fn_800ABA3C(void) {
                 n++; off+=8;
                 Item_Copy(out,p+4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
@@ -1406,7 +1406,7 @@ void fn_800ABA3C(void) {
         fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
 
         q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
+        for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
         base=lbl_80312ACC;
         i=0; n=i; off=i; dst=base+128;
         for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
@@ -1415,7 +1415,7 @@ void fn_800ABA3C(void) {
                 n++; off+=8;
                 Item_Copy(out,p+4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
@@ -1432,7 +1432,7 @@ void fn_800ABA3C(void) {
         fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
 
         q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
+        for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
         base=lbl_80312ACC;
         i=0; n=i; off=i; dst=base+192;
         for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
@@ -1441,7 +1441,7 @@ void fn_800ABA3C(void) {
                 n++; off+=8;
                 Item_Copy(out,p+4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);

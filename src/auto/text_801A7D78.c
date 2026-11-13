@@ -725,7 +725,7 @@ void fn_801A949C(void *arg0) {
 void fn_801A9600(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
     u8 fn_80094614(void *, void *);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
     void *fn_80037C20(void *);
     extern u16 lbl_80367218;
     void *sel;
@@ -752,7 +752,7 @@ void fn_801A9600(void *arg0, void *arg1) {
             sel = (u8 *)arg0 + 0x284;
         }
         if (fn_80094614((*(void **)sel, arg0), *(void **)sel) == 0) {
-            fn_8001D580((u8 *)arg0 + 0x284);
+            Item_Clear((u8 *)arg0 + 0x284);
         }
     }
     p = *(void **)((u8 *)arg0 + 0x28C);
@@ -930,12 +930,12 @@ void *BattleUnit_Copy(void *dst, void *src) {
 
 void BattleUnit_Reset(void *arg0) {
     void Unit_Clear(void *, s32);
-    void fn_8001D580(void *);
+    void Item_Clear(void *);
 
     Unit_Clear(arg0, 0);
     *(u32*)(((char*)arg0) + 0x280) = 0;
-    fn_8001D580(((char*)arg0) + 0x284);
-    fn_8001D580(((char*)arg0) + 0x28C);
+    Item_Clear(((char*)arg0) + 0x284);
+    Item_Clear(((char*)arg0) + 0x28C);
     *(s8*)(((char*)arg0) + 0x294) = -1;
     *(u8*)(((char*)arg0) + 0x295) = 0;
     *(u8*)(((char*)arg0) + 0x296) = 0;

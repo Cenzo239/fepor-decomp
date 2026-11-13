@@ -2254,7 +2254,7 @@ u8 fn_8001D500(void *arg0) {
     return (u8)var;
 }
 
-void fn_8001D580(void *arg0) {
+void Item_Clear(void *arg0) {
     void fn_800C3220(void *, s32);
     extern u8 lbl_803206EC[];
     typedef struct {
