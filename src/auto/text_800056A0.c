@@ -201,7 +201,7 @@ void Game_InitSystems(void) {
     void fn_8008CD9C(void);
     void fn_800A6450(void);
     void fn_800C2750(void);
-    void fn_800C4664(s32);
+    void Heap_AdjustExtent(s32);
     void fn_800FC678(void);
     void fn_80146AF0(void);
     void fn_80147188(s32);
@@ -215,9 +215,9 @@ void Game_InitSystems(void) {
     extern u8 lbl_80367AEE;
     extern u8 lbl_80367AF6;
 
-    fn_800C4664(0x100000);
+    Heap_AdjustExtent(0x100000);
     FileCache_Load(Game_str + 0x9B);
-    fn_800C4664(0xFFF00000);
+    Heap_AdjustExtent(0xFFF00000);
     fn_800C2750();
     fn_8006826C(0x200);
     fn_80066F64();

@@ -10816,7 +10816,7 @@ extern "C" s8 Fx_FindSlotByName(void *arg0) {
 void fn_80146F0C(void)
 {
     s32 fn_800C44F4(s32);
-    void fn_800C4664(s32);
+    void Heap_AdjustExtent(s32);
     void fn_800B36D8(void *);
     void fn_800B34B0(s32);
     void fn_800B3490(void);
@@ -10847,12 +10847,12 @@ void fn_80146F0C(void)
 
     fn_800B36D8(lbl_80276BC8 + 0x326);
 
-    fn_800C4664(value);
+    Heap_AdjustExtent(value);
 
     fn_800B34B0(0);
     fn_800B3490();
 
-    fn_800C4664(-value);
+    Heap_AdjustExtent(-value);
 
     Sound_LoadPack(lbl_80276BC8 + 0x326);
 
@@ -12723,7 +12723,7 @@ extern s32 fn_800B412C(void);
 extern void fn_80210008(void *arg0);
 extern s32 fn_800C44F4(s32 arg0);
 extern void fn_800B36D8(void *arg0, void *arg1);
-extern void fn_800C4664(s32 arg0);
+extern void Heap_AdjustExtent(s32 arg0);
 extern void fn_800B34B0(s32 arg0);
 extern void fn_800B3490(void);
 extern void Sound_LoadPack(void *arg0);
