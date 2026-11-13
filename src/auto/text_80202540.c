@@ -91,7 +91,7 @@ extern s32 fn_80015A14(void);
 #include "common.h"
 #include <dolphin/os.h>
 extern s32 gFallingParticleVelY;
-extern s32 lbl_80368420;
+extern s32 gFallingParticleVelXCenter;
 extern s32 lbl_80368424;
 extern s32 lbl_80368428;
 extern s32 lbl_8036842C;

@@ -529,7 +529,7 @@ void FallingParticle_Spawn(void *arg0) {
     extern u8 gFallingParticleProc[];
     extern u8 gFallingParticleCtrlProc[];
     extern s32 gFallingParticleVelY;
-    extern s32 lbl_80368420;
+    extern s32 gFallingParticleVelXCenter;
     extern s32 lbl_80368424;
     extern s32 lbl_80368428;
     extern s32 lbl_8036842C;
@@ -548,7 +548,7 @@ void FallingParticle_Spawn(void *arg0) {
 
     temp_r23 = Process_Create(gFallingParticleCtrlProc, arg0);
     if ((s32)temp_r23 != 0) {
-        lbl_80368420 = 0x8000;
+        gFallingParticleVelXCenter = 0x8000;
         f1 = lbl_8036BB48;
         lbl_80368428 = 0x4000;
         lbl_80368424 = 0x14000;
@@ -588,7 +588,7 @@ void FallingParticle_Spawn(void *arg0) {
                     }
                 }
                 temp_r22 = lbl_80368428;
-                *(s32 *)((u8 *)var_r24 + 0x3C) = (lbl_80368420 - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
+                *(s32 *)((u8 *)var_r24 + 0x3C) = (gFallingParticleVelXCenter - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
                 var_r25 += 1;
                 *(s32 *)((u8 *)var_r24 + 0x40) = gFallingParticleVelY;
                 r0 = lbl_8036842C;
@@ -2355,7 +2355,7 @@ extern s32 fn_80015A14(void);
 #include "common.h"
 #include <dolphin/os.h>
 extern s32 gFallingParticleVelY;
-extern s32 lbl_80368420;
+extern s32 gFallingParticleVelXCenter;
 extern s32 lbl_80368424;
 extern s32 lbl_80368428;
 extern s32 lbl_8036842C;
