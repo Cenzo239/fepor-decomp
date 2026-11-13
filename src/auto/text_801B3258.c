@@ -8214,7 +8214,7 @@ void fn_801C7FC0(u32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void MonitorWin_Release(Arg801C838C *panel) {
+extern "C" void MonitorWin_Release(MonitorWin *panel) {
     void FileCache_ReleaseSlot(void *);
     struct Obj {
         virtual void destroy(s32) = 0;
