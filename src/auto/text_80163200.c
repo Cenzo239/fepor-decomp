@@ -16226,7 +16226,7 @@ s32 fn_80182AC4(s32 arg0) {
 }
 
 s32 Ai_TryApproachIke(s32 arg0) {
-    void *fn_80017240(s32);
+    void *Unit_FindIke(s32);
     u8 fn_800F5504(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
@@ -16238,7 +16238,7 @@ s32 Ai_TryApproachIke(s32 arg0) {
     s16 sp8;
     s32 temp_r3;
 
-    temp_r3 = *(s32 *)((u8 *)fn_80017240(arg0 + 0x236) + 0x1A0);
+    temp_r3 = *(s32 *)((u8 *)Unit_FindIke(arg0 + 0x236) + 0x1A0);
     if (temp_r3 & 0x98) {
         *(s32 *)(gAiState + 8) = 1;
         return 0;
@@ -16290,10 +16290,10 @@ s32 fn_80182CE4(s32 arg0, s32 arg1) {
 }
 
 s32 Ai_UnitIsIke(s32 arg0) {
-    s32 fn_80017240(void *);
+    s32 Unit_FindIke(void *);
     extern u32 gUiContext[];
 
-    return arg0 == fn_80017240((u8 *)*(void **)gUiContext + 0x236);
+    return arg0 == Unit_FindIke((u8 *)*(void **)gUiContext + 0x236);
 }
 
 void fn_80182EC8(s32 arg0) {

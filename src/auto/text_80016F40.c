@@ -100,7 +100,7 @@ void *fn_80017010(u8 *arg0) {
     return var_r31;
 }
 
-void *fn_80017240(u8 *arg0) {
+void *Unit_FindIke(u8 *arg0) {
     void *Unit_FindByName(char *);
     extern char lbl_80268128[];
 
