@@ -281,7 +281,7 @@ void UnitStatus_Init(void *arg0) {
     u8 Unit_GetSkl(void *);
     u8 Unit_GetSpd(void *);
     u8 Unit_GetLck(void *);
-    u8 fn_8003B4D4(void *);
+    u8 Unit_GetDef(void *);
     u8 fn_8003B490(void *);
     u8 fn_8003A5B4(void *);
     u8 fn_8003A398(void *);
@@ -317,7 +317,7 @@ void UnitStatus_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x20) = Unit_GetSkl(unit);
     *(u8 *)((u8 *)arg0 + 0x21) = Unit_GetSpd(unit);
     *(u8 *)((u8 *)arg0 + 0x22) = Unit_GetLck(unit);
-    *(u8 *)((u8 *)arg0 + 0x23) = fn_8003B4D4(unit);
+    *(u8 *)((u8 *)arg0 + 0x23) = Unit_GetDef(unit);
     *(u8 *)((u8 *)arg0 + 0x24) = fn_8003B490(unit);
     *(u8 *)((u8 *)arg0 + 0x25) = fn_8003A5B4(unit);
     *(u8 *)((u8 *)arg0 + 0x26) = fn_8003A398(unit);
