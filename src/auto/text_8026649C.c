@@ -564,7 +564,7 @@ u32 fn_80266B6C(s32 arg0)
     extern u8 lbl_803669A0[];
     extern u32 OSDisableInterrupts(void);
     extern void OSRestoreInterrupts(u32 level);
-    extern void fn_8020ADD8(void *arg0);
+    extern void OSSleepThread(void *arg0);
 
     u8 *entry;
     u32 interruptState;
@@ -575,7 +575,7 @@ u32 fn_80266B6C(s32 arg0)
     interruptState = OSDisableInterrupts();
 
     do {
-        fn_8020ADD8(entry + 0x24);
+        OSSleepThread(entry + 0x24);
     } while (*(u32 *)(entry + 0x1C) != 0);
 
     result = *(u32 *)(entry + 0x20);

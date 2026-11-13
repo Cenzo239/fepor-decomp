@@ -89,7 +89,7 @@ void fn_80006388(void) {
     void OSDisableScheduler(void);
     void OSEnableScheduler(void);
     void OSRestoreInterrupts(s32);
-    void fn_8020ADD8(void *);
+    void OSSleepThread(void *);
     void fn_8020AEC4(void *);
     extern u8 lbl_802A51C0[];
     extern u8 lbl_80367130;
@@ -203,7 +203,7 @@ loop_cond:
         goto loop_body;
     }
     fn_8020AEC4(&lbl_80367138);
-    fn_8020ADD8(&lbl_80367138);
+    OSSleepThread(&lbl_80367138);
     goto loop_cond;
 }
 

@@ -584,7 +584,7 @@ void FileCache_WorkerThread(void) {
     void fn_8005BFE4(void *, s32);
     void fn_8005D9A8(void *);
     void fn_800C4588(s32);
-    void fn_8020ADD8(u8 *);
+    void OSSleepThread(u8 *);
     extern u8 gFileCacheWorkQueue[];
     extern volatile u8 gFileCacheWorkRead;
     extern volatile u8 gFileCacheWorkWrite;
@@ -637,7 +637,7 @@ check:
     if (gFileCacheWorkRead != gFileCacheWorkWrite) {
         goto loop;
     }
-    fn_8020ADD8(gFileCacheWorkThreadQueue);
+    OSSleepThread(gFileCacheWorkThreadQueue);
     goto check;
 }
 

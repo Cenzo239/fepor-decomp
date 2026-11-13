@@ -491,7 +491,7 @@ s32 fn_80217C64(s32 arg0)
 {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
-    void fn_8020ADD8(void *);
+    void OSSleepThread(void *);
 
     u8 *entry;
     u32 interrupts;
@@ -509,7 +509,7 @@ s32 fn_80217C64(s32 arg0)
         }
 
         if (result == -1) {
-            fn_8020ADD8(entry + 0x8C);
+            OSSleepThread(entry + 0x8C);
         }
     } while (result == -1);
 

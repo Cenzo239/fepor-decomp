@@ -2136,13 +2136,13 @@ void VIWaitForRetrace(void) {
     extern u8 lbl_8036860C;
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
-    void fn_8020ADD8(void *);
+    void OSSleepThread(void *);
     BOOL enabled;
     u32 previous;
 
     enabled = OSDisableInterrupts();
     previous = lbl_80368604;
-    fn_8020ADD8((void *)&lbl_8036860C);
+    OSSleepThread((void *)&lbl_8036860C);
     if (previous != lbl_80368604) {
         OSRestoreInterrupts(enabled);
     }
