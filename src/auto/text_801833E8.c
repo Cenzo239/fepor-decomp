@@ -13510,7 +13510,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
     void *GActor_GetNodeTable(void *);
     void MTXRotDegOrder(void *, void *);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     s32 Str_Cmp(char *, char *);
     s32 GActor_FindNode(void *, char *);
     void fn_8006D378(void *);
@@ -13549,8 +13549,8 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
         (u8 *)*(void **)((u8 *)GActor_GetNodeTable(obj) + 0xC) + *(s32 *)((u8 *)self + 0xF0) * 0xF4,
         sp68);
     PSMTXConcat((u8 *)obj + 0x10, sp68, sp68);
-    fn_80201FF0(sp68, (u8 *)*(void **)((u8 *)self + 0xE0) + 0x10);
-    fn_80201FF0(sp68, (u8 *)*(void **)((u8 *)self + 0xE4) + 0x10);
+    PSMTXCopy(sp68, (u8 *)*(void **)((u8 *)self + 0xE0) + 0x10);
+    PSMTXCopy(sp68, (u8 *)*(void **)((u8 *)self + 0xE4) + 0x10);
 
     i = 0;
     off = 0;

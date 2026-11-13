@@ -6405,7 +6405,7 @@ void fn_80041514(void *arg0, char *arg1)
     void strcat(void *, void *);
     s32 fn_8005C84C(void *);
     void PSMTXRotRad(void *, s32, f32);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void PSMTXIdentity(void *);
     u16 fn_8005C144(void *);
     u32 fn_8000D354(void *);
@@ -6514,7 +6514,7 @@ void fn_80041514(void *arg0, char *arg1)
         M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
         PSMTXRotRad(sp18, 0x58, lbl_80368F18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F1C;
-        fn_80201FF0(sp18, (u8 *)arg0 + 0x70);
+        PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
 
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x122);
@@ -6685,7 +6685,7 @@ void fn_80041514(void *arg0, char *arg1)
         M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
         PSMTXIdentity(sp18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F20;
-        fn_80201FF0(sp18, (u8 *)arg0 + 0x70);
+        PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
         lbl_80366E90 = 0xF;
         fn_8006805C(lbl_80368F24, lbl_80368F28);
     }
@@ -8889,7 +8889,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void Game_Assert(void *, s32, void *);
     void *fn_80067FD0(void);
     void fn_80202C18(void *, void *, void *);
@@ -8978,7 +8978,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
                 PSMTXRotRad(bufC8, 0x58, lbl_80368EEC * M2C_FIELD(e, f32 *, 0x1C));
                 break;
             case 7:
-                fn_80201FF0(e + 0x10, bufF8);
+                PSMTXCopy(e + 0x10, bufF8);
                 goto checks;
             case 8:
                 PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
@@ -12475,7 +12475,7 @@ void MapObj_UpdateMatrix(void *arg0)
     void fn_8004E670(f32 *, void *, s32);
     void fn_8005A1E8(s32, f32 *, f32 *);
     void PSMTXIdentity(void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -12556,7 +12556,7 @@ void MapObj_UpdateMatrix(void *arg0)
             PSMTXConcat(sp2C, sp11C, sp11C);
             cam = fn_80040844();
             if (cam != NULL) {
-                fn_80201FF0((u8 *)cam + 0x70, spBC);
+                PSMTXCopy((u8 *)cam + 0x70, spBC);
                 mode = *(u8 *)((u8 *)cam + 0x68);
                 switch (mode) {
                 case 0:

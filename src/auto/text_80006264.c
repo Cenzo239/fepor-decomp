@@ -2042,7 +2042,7 @@ void fn_80009C20(
     PSMTXConcat(matrix4, result, result);
     PSMTXConcat(matrix0, result, result);
 
-    fn_80201FF0(result, (u8 *)lbl_80367140 + 0x60);
+    PSMTXCopy(result, (u8 *)lbl_80367140 + 0x60);
 
     *(float *)((u8 *)lbl_80367140 + 0x28) = scalar;
     *(u16 *)((u8 *)lbl_80367140 + 0x20) &= ~(1 << 10);
@@ -2052,7 +2052,7 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     extern f32 lbl_80368B94;
     extern u16 lbl_80367140;
     f32 tmp[12];
@@ -2065,7 +2065,7 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         PSMTXTrans(mtx, arg0, arg1, arg2);
         PSMTXConcat(mtx, tmp, mtx);
     }
-    fn_80201FF0(mtx, (*(u8 **)&lbl_80367140) + 0x60);
+    PSMTXCopy(mtx, (*(u8 **)&lbl_80367140) + 0x60);
     *(f32 *)((*(u8 **)&lbl_80367140) + 0x28) = arg2;
     *(u16 *)((*(u8 **)&lbl_80367140) + 0x20) &= ~0x800;
 }
@@ -2081,10 +2081,10 @@ void *fn_80009E44(f32 *arg0) {
 }
 #pragma peephole on
 void fn_80009E64(void *src, f32 farg0) {
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     extern u16 lbl_80367140;
 
-    fn_80201FF0(src, *(u8 **)&lbl_80367140 + 0x60);
+    PSMTXCopy(src, *(u8 **)&lbl_80367140 + 0x60);
     *(f32 *)(*(u8 **)&lbl_80367140 + 0x28) = farg0;
     *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) = (u16)(*(u16 *)(*(u8 **)&lbl_80367140 + 0x20) & ~0x800);
 }

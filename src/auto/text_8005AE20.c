@@ -1684,7 +1684,7 @@ void fn_8005E644(void *arg0) {
     void *GActor_GetNodeTable(void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
 
     u32 color;
     void *p;
@@ -1723,7 +1723,7 @@ void fn_8005E644(void *arg0) {
             i = 0;
             off = i;
             while (i < *(s32 *)((u8 *)info + 8)) {
-                fn_80201FF0((u8 *)*(void **)((u8 *)child + 0x60) + off,
+                PSMTXCopy((u8 *)*(void **)((u8 *)child + 0x60) + off,
                             (u8 *)*(void **)((u8 *)grand + 0x60) + off);
                 off += 0x30;
                 i += 1;
@@ -1732,14 +1732,14 @@ void fn_8005E644(void *arg0) {
                 i = 0;
                 off = i;
                 while (i < *(s32 *)((u8 *)info + 8)) {
-                    fn_80201FF0((u8 *)*(void **)((u8 *)child + 0x64) + off,
+                    PSMTXCopy((u8 *)*(void **)((u8 *)child + 0x64) + off,
                                 (u8 *)*(void **)((u8 *)grand + 0x64) + off);
                     off += 0x30;
                     i += 1;
                 }
                 fn_8006D378(grand);
             }
-            fn_80201FF0((u8 *)child + 0x10, (u8 *)grand + 0x10);
+            PSMTXCopy((u8 *)child + 0x10, (u8 *)grand + 0x10);
             if (*(u32 *)((u8 *)child + 0x54) != 0) {
                 fn_801505A8(child, grand);
             }
@@ -1781,7 +1781,7 @@ void fn_8005E644(void *arg0) {
         i = 0;
         off = i;
         while (i < *(s32 *)((u8 *)info + 8)) {
-            fn_80201FF0((u8 *)*(void **)((u8 *)arg0 + 0x60) + off,
+            PSMTXCopy((u8 *)*(void **)((u8 *)arg0 + 0x60) + off,
                         (u8 *)*(void **)((u8 *)child + 0x60) + off);
             off += 0x30;
             i += 1;
@@ -1790,14 +1790,14 @@ void fn_8005E644(void *arg0) {
             i = 0;
             off = i;
             while (i < *(s32 *)((u8 *)info + 8)) {
-                fn_80201FF0((u8 *)*(void **)((u8 *)arg0 + 0x64) + off,
+                PSMTXCopy((u8 *)*(void **)((u8 *)arg0 + 0x64) + off,
                             (u8 *)*(void **)((u8 *)child + 0x64) + off);
                 off += 0x30;
                 i += 1;
             }
             fn_8006D378(child);
         }
-        fn_80201FF0((u8 *)arg0 + 0x10, (u8 *)child + 0x10);
+        PSMTXCopy((u8 *)arg0 + 0x10, (u8 *)child + 0x10);
         if (*(u32 *)((u8 *)arg0 + 0x54) != 0) {
             fn_801505A8(arg0, child);
         }
@@ -1912,7 +1912,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void fn_800618E4(void *);
     void GActor_Finalize(void *);
     void *GActor_GetNodeTable(void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
     void *GActor_Create(void);
@@ -1978,7 +1978,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
         off = i;
         goto copy60_test;
     copy60_body:
-        fn_80201FF0((u8 *)*(void **)((u8 *)self + 0x60) + off, (u8 *)*(void **)((u8 *)node + 0x60) + off);
+        PSMTXCopy((u8 *)*(void **)((u8 *)self + 0x60) + off, (u8 *)*(void **)((u8 *)node + 0x60) + off);
         off += 0x30;
         i += 1;
     copy60_test:
@@ -1990,7 +1990,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             off = i;
             goto copy64_test;
         copy64_body:
-            fn_80201FF0((u8 *)*(void **)((u8 *)self + 0x64) + off, (u8 *)*(void **)((u8 *)node + 0x64) + off);
+            PSMTXCopy((u8 *)*(void **)((u8 *)self + 0x64) + off, (u8 *)*(void **)((u8 *)node + 0x64) + off);
             off += 0x30;
             i += 1;
         copy64_test:
@@ -1999,7 +1999,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             }
         }
         fn_8006D378(node);
-        fn_80201FF0((u8 *)self + 0x10, (u8 *)node + 0x10);
+        PSMTXCopy((u8 *)self + 0x10, (u8 *)node + 0x10);
         if (*(u32 *)((u8 *)self + 0x54) != 0) {
             fn_801505A8(self, node);
         }
@@ -2030,7 +2030,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
         anim = (void *)off;
         goto copy60b_test;
     copy60b_body:
-        fn_80201FF0((u8 *)*(void **)((u8 *)node + 0x60) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x60) + (s32)anim);
+        PSMTXCopy((u8 *)*(void **)((u8 *)node + 0x60) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x60) + (s32)anim);
         anim = (void *)((s32)anim + 0x30);
         off += 1;
     copy60b_test:
@@ -2042,7 +2042,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             anim = (void *)off;
             goto copy64b_test;
         copy64b_body:
-            fn_80201FF0((u8 *)*(void **)((u8 *)node + 0x64) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x64) + (s32)anim);
+            PSMTXCopy((u8 *)*(void **)((u8 *)node + 0x64) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x64) + (s32)anim);
             anim = (void *)((s32)anim + 0x30);
             off += 1;
         copy64b_test:
@@ -2051,7 +2051,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             }
         }
         fn_8006D378((void *)count);
-        fn_80201FF0((u8 *)node + 0x10, (u8 *)count + 0x10);
+        PSMTXCopy((u8 *)node + 0x10, (u8 *)count + 0x10);
         if (*(u32 *)((u8 *)node + 0x54) != 0) {
             fn_801505A8(node, (void *)count);
         }
@@ -3299,7 +3299,7 @@ void fn_80061A08(void *arg0)
 void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *arg5)
 {
     void PSMTXIdentity(void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -3322,7 +3322,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
 
     if (arg1 & 0x10) {
         if (arg4 != NULL) {
-            fn_80201FF0(arg4, mD8);
+            PSMTXCopy(arg4, mD8);
         } else {
             flags = *(s32 *)((u8 *)arg5 + 0xC);
             if (flags & 1) {
@@ -3638,7 +3638,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
         PSMTXTrans(mA8, arg2[0x18 / 4], arg2[0x1C / 4], arg2[0x20 / 4]);
         PSMTXConcat(mA8, mD8, mD8);
     }
-    fn_80201FF0(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
+    PSMTXCopy(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
 }
 
 void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
@@ -5292,7 +5292,7 @@ s32 fn_80067FDC(void) {
 
 void fn_80067FE8(void *arg0, void *arg1, void *arg2) {
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void fn_80202C18(void *, void *, void *);
     extern void *lbl_803672F8;
     extern f32 lbl_80369228;
@@ -5303,7 +5303,7 @@ void fn_80067FE8(void *arg0, void *arg1, void *arg2) {
     f32 y;
 
     fn_802026E4((u8 *)lbl_803672F8 + 0xA4, arg0, arg1, arg2);
-    fn_80201FF0((u8 *)lbl_803672F8 + 0xA4, buf);
+    PSMTXCopy((u8 *)lbl_803672F8 + 0xA4, buf);
     x = lbl_80369228;
     p = lbl_803672F8;
     y = lbl_80369224;

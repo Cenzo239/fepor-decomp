@@ -131,7 +131,7 @@ void fn_80083F08(void *arg0) {
     void *fn_800A8A88(s32);
     s32 fn_801660A8(void *);
     Color *fn_8018D900(s32);
-    void fn_80201FF0(f32 *, void *);
+    void PSMTXCopy(f32 *, void *);
     void PSMTXConcat(f32 *, f32 *, f32 *);
     void PSMTXRotRad(f32 *, s32, f32);
     void PSMTXTrans(f32 *, f32, f32, f32);
@@ -502,7 +502,7 @@ void fn_80083F08(void *arg0) {
     PSMTXConcat(sp60, sp120, sp120);
     PSMTXConcat(sp30, sp120, sp120);
     PSMTXConcat(spC0, sp120, sp120);
-    fn_80201FF0(sp120, (u8 *)*(void **)((u8 *)arg0 + 0x60) + 0x10);
+    PSMTXCopy(sp120, (u8 *)*(void **)((u8 *)arg0 + 0x60) + 0x10);
     Model_SetAlpha(*(void **)((u8 *)arg0 + 0x60), *(u8 *)((u8 *)arg0 + 8));
     fn_8005F780(*(void **)((u8 *)arg0 + 0x60), 0xFF);
     fn_80060060(*(void **)((u8 *)arg0 + 0x60));

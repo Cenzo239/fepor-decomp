@@ -2265,7 +2265,7 @@ extern "C" void fn_80201778(void *arg0) {
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void fn_80201FF0(void *src, void *dst) {
+void PSMTXCopy(void *src, void *dst) {
     f32 (*s)[4] = src;
     f32 (*d)[4] = dst;
 

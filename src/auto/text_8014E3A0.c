@@ -273,7 +273,7 @@ void fn_8014E864(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80201FF0(void *, void *);
+    void PSMTXCopy(void *, void *);
     void Game_Assert(void *, s32, void *);
     void *fn_80067FDC(void);
     void GXLoadPosMtxImm(void *, s32);
@@ -389,7 +389,7 @@ void fn_8014E864(void *arg0) {
                     PSMTXConcat(buf38, bufF8, bufF8);
                     goto after_mtx;
                 case 7:
-                    fn_80201FF0(mtx, bufF8);
+                    PSMTXCopy(mtx, bufF8);
                     goto after_mtx;
                 case 0:
                 default:
