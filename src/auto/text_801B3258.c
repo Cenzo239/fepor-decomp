@@ -7909,7 +7909,7 @@ void fn_801C77D0(void *arg0) {
     *(void **)((u8 *)arg0 + 0x30) = 0;
 }
 
-void fn_801C7880(void *arg0) {
+void GActor_InitTexWork(void *arg0) {
     void *Heap_Alloc(s32);
     s32 fn_800C45B8(void *, void *, s32);
     void *fn_80222420(s32, s32, s32, s32, s32);
