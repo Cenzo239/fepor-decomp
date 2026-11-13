@@ -14256,7 +14256,7 @@ s32 fn_80262538(s32 arg0) {
 }
 
 void Sound_AramDmaCallback(void *arg0) {
-    extern u8 lbl_80363F28[0x284];
+    extern u8 gSoundAramQueue[0x284];
     extern u8 lbl_803641AC[0x284];
     u8 *base;
     u8 *ptr;
@@ -14265,7 +14265,7 @@ void Sound_AramDmaCallback(void *arg0) {
     if (*(u32 *)((char *)arg0 + 0xC) == 1) {
         base = lbl_803641AC;
     } else {
-        base = lbl_80363F28;
+        base = gSoundAramQueue;
     }
 
     count = 0;
@@ -14289,7 +14289,7 @@ void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 ar
     void OSRestoreInterrupts(BOOL);
     void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
     void Sound_AramDmaCallback(void *);
-    extern u8 lbl_80363F28[];
+    extern u8 gSoundAramQueue[];
     extern u8 lbl_803641AC[];
     typedef struct {
         s32 pad;
@@ -14313,7 +14313,7 @@ void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 ar
     s32 flag;
     s32 next;
 
-    q = arg3 != 0 ? (Queue *)lbl_803641AC : (Queue *)lbl_80363F28;
+    q = arg3 != 0 ? (Queue *)lbl_803641AC : (Queue *)gSoundAramQueue;
 
 start:
     enabled = OSDisableInterrupts();
@@ -14350,20 +14350,20 @@ start:
 }
 
 void fn_802627D4(void) {
-    extern u8 lbl_80363F28[];
+    extern u8 gSoundAramQueue[];
     typedef struct {
         u8 pad[0x280];
         volatile u8 next;
         volatile u8 count;
     } Queue;
-    Queue *q = (Queue *)lbl_80363F28;
+    Queue *q = (Queue *)gSoundAramQueue;
     while (q->count != 0) {
     }
 }
 
 void fn_802627EC(u32 arg0)
 {
-    extern u8 lbl_80363F28[];
+    extern u8 gSoundAramQueue[];
     extern u8 lbl_803641AC[];
 
     extern u32 lbl_80368AF0;
@@ -14401,7 +14401,7 @@ void fn_802627EC(u32 arg0)
 
     DCFlushRange(buffer, 0x500);
 
-    queue = lbl_80363F28;
+    queue = gSoundAramQueue;
 
     *(u8 *)(queue + 0x281) = 0;
     *(u8 *)(queue + 0x280) = 0;
@@ -14501,7 +14501,7 @@ void fn_80262B1C(s32 arg0, s32 arg1) {
 
 u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
 {
-    extern u8 lbl_80363F28[];
+    extern u8 gSoundAramQueue[];
     extern u32 lbl_80368AEC;
     extern u32 lbl_80368AE4;
     extern u32 (*lbl_80368AE8)(void *, u32);
@@ -14548,7 +14548,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
     originalOffset = *(u32 *)(state + 8);
     offset = originalOffset;
 
-    queue = lbl_80363F28;
+    queue = gSoundAramQueue;
 
     if (lbl_80368AE8 == 0) {
         DCFlushRange(data, size);
