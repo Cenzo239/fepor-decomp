@@ -2128,11 +2128,12 @@ void Battle_ClearProcIfFxIdle(s32 arg0) {
     }
 }
 
-void Battle_ClearProcIfFxActive(s32 arg0) {
+/* Clear the process function if any of the six named battle FX slots is active. */
+void Battle_ClearProcIfFxActive(s32 proc) {
     s8 Fx_FindSlotByName(u8 *);
     void Process_ClearFunc(s32);
     extern u8 Battle_str[];
-    u8 flag;
+    u8 active;
 
     if ((s8)Fx_FindSlotByName(Battle_str + 0x1E3) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x1F1) != -1
@@ -2140,12 +2141,12 @@ void Battle_ClearProcIfFxActive(s32 arg0) {
         || (s8)Fx_FindSlotByName(Battle_str + 0x20D) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x21B) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x22B) != -1) {
-        flag = 1;
+        active = 1;
     } else {
-        flag = 0;
+        active = 0;
     }
-    if (flag == 1) {
-        Process_ClearFunc(arg0);
+    if (active == 1) {
+        Process_ClearFunc(proc);
     }
 }
 
