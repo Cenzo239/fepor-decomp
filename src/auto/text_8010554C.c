@@ -3342,7 +3342,7 @@ u8 fn_8010B658(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(s32, s32);
-    void **fn_80037BD0(void *, s8);
+    void **Unit_GetItemSlot(void *, s8);
     s32 Map_CountNeighborUnits(s16, s16, void *);
     void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 gAiState[];
@@ -3405,7 +3405,7 @@ inner:
                         idx = 4;
                         goto slot_cmp;
                     slot_loop:
-                        item = *fn_80037BD0(other, idx);
+                        item = *Unit_GetItemSlot(other, idx);
                         if (item == NULL) {
                             goto slot_done;
                         }
@@ -3775,7 +3775,7 @@ u8 fn_8010BEB8(void *arg0) {
     void fn_8018D7A4(void *, void *);
     void fn_8002F658(void *, s32);
     void *fn_8002F740(void);
-    void **fn_80037BD0(void *, s32);
+    void **Unit_GetItemSlot(void *, s32);
     void *Item_GetByIid(void *);
     s8 fn_8003B2D0(void *);
     s32 fn_80230BCC(s32);
@@ -3835,7 +3835,7 @@ u8 fn_8010BEB8(void *arg0) {
         fn_8002F658(tbl, i);
         grp = fn_8002F740();
         for (slot = 4; slot < 8; slot++) {
-            p = *fn_80037BD0(grp, slot);
+            p = *Unit_GetItemSlot(grp, slot);
             if (p != NULL) {
                 if (p != NULL) {
                     t = *(u8 *)((u8 *)p + 0x12);
@@ -3849,7 +3849,7 @@ u8 fn_8010BEB8(void *arg0) {
                         t = 0xC;
                     }
                     if (t == 0x81) {
-                        cand = fn_80037BD0(grp, slot);
+                        cand = Unit_GetItemSlot(grp, slot);
                         if (bestItem == NULL) {
                             bestUnit = grp;
                             bestSlot = slot;
@@ -3934,7 +3934,7 @@ u8 fn_8010BEB8(void *arg0) {
 #pragma optimization_level 2
 s32 fn_8010C244(void *arg0) {
     void *Item_GetByIid(void *);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     s8 fn_8003B2D0(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     void fn_801025BC(void *, s16 *, s16 *);
@@ -4020,7 +4020,7 @@ after_loop:
         return 0;
     }
     for (idx = 4; idx < 8; idx++) {
-        if (best == fn_80037BD0(arg0, idx)) {
+        if (best == Unit_GetItemSlot(arg0, idx)) {
             break;
         }
     }

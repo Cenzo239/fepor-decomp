@@ -7865,9 +7865,9 @@ extern "C" void fn_80070B3C(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 extern "C" void fn_80070BF4(s32 arg0, void *arg1) {
-    void *fn_80037BD0(s32, u8);
+    void *Unit_GetItemSlot(s32, u8);
     extern s32 gUiContext[];
-    fn_80037BD0(gUiContext[0], *(u8 *)((char *)arg1 + 0x3A));
+    Unit_GetItemSlot(gUiContext[0], *(u8 *)((char *)arg1 + 0x3A));
 }
 
 #pragma cplusplus reset

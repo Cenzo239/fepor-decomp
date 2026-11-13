@@ -63,12 +63,12 @@ extern f32 lbl_8036A9C0;
 extern u8 gUnits[];
 
 static inline u8 IsSlotFilled(void *obj, s16 slot) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     s32 idx = slot;
-    u32 *item = fn_80037BD0(M2C_FIELD(obj, s32 *, 0x58), idx);
+    u32 *item = Unit_GetItemSlot(M2C_FIELD(obj, s32 *, 0x58), idx);
 
     if (M2C_FIELD(obj, s32 *, 0x5C) == 1 && *item == 0) {
-        if (slot == 0 || slot == 4 || *fn_80037BD0(M2C_FIELD(obj, s32 *, 0x58), idx - 1) != 0) {
+        if (slot == 0 || slot == 4 || *Unit_GetItemSlot(M2C_FIELD(obj, s32 *, 0x58), idx - 1) != 0) {
             return 1;
         }
     }
@@ -100,7 +100,7 @@ void fn_80163214(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 }
 
 void fn_801635CC(void *arg0, s32 arg1) {
-    u32 *fn_80037BD0(s32, s16);
+    u32 *Unit_GetItemSlot(s32, s16);
     s16 var_r31;
     s16 var_r3;
     u32 *temp_r29;
@@ -115,8 +115,8 @@ loop_18:
         } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
             var_r0 = 0;
         } else {
-            temp_r29 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
-            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
+            temp_r29 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
+            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
                 var_r0 = 1;
             } else {
                 var_r0 = *temp_r29 != 0U;
@@ -309,7 +309,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void fn_80009BC0(void (*)(void *), s16 *);
     void Prim2D_PrepareTex(void);
     void fn_8013F920(void *);
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
@@ -369,17 +369,17 @@ loop_body:
         ok = 0;
     } else {
         idx = slot;
-        item = fn_80037BD0(self->unk58, idx);
+        item = Unit_GetItemSlot(self->unk58, idx);
         if ((self->unk5C == 1) && (*item == 0U) &&
             ((slot == 0) || (idx == 4) ||
-             (*fn_80037BD0(self->unk58, idx - 1) != 0U))) {
+             (*Unit_GetItemSlot(self->unk58, idx - 1) != 0U))) {
             ok = 1;
         } else {
             ok = *item != 0U;
         }
     }
     if (ok != 0) {
-        item = fn_80037BD0(self->unk58, slot);
+        item = Unit_GetItemSlot(self->unk58, slot);
         if (*item != 0U) {
             self->v13(x, y, 0, item, self->v12(item));
             y += row_h;
@@ -464,7 +464,7 @@ extern "C" void fn_80163E70(void *arg0) {
 #pragma cplusplus reset
 
 void fn_80163E9C(void *arg0) {
-    u32 *fn_80037BD0(s32, s16);
+    u32 *Unit_GetItemSlot(s32, s16);
     void Ui_PlaySeCue(void *, s32);
     extern s32 gUiInputFlags;
     extern void *gPadInput;
@@ -502,8 +502,8 @@ void fn_80163E9C(void *arg0) {
                 var_r0 = 0;
             } else {
                 temp_r26 = var_r31;
-                temp_r27 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
+                temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
+                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
                     var_r0 = 1;
                 } else {
                     var_r0 = *temp_r27 != 0;
@@ -530,8 +530,8 @@ void fn_80163E9C(void *arg0) {
                         var_r0 = 0;
                     } else {
                         temp_r26 = var_r31;
-                        temp_r27 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
+                        temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
+                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
                             var_r0 = 1;
                         } else {
                             var_r0 = *temp_r27 != 0;
@@ -564,8 +564,8 @@ void fn_80163E9C(void *arg0) {
                 var_r0 = 0;
             } else {
                 temp_r26 = var_r31;
-                temp_r27 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
+                temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
+                if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
                     var_r0 = 1;
                 } else {
                     var_r0 = *temp_r27 != 0;
@@ -598,8 +598,8 @@ void fn_80163E9C(void *arg0) {
                         var_r0 = 0;
                     } else {
                         temp_r26 = var_r31;
-                        temp_r27 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
-                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
+                        temp_r27 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)temp_r26);
+                        if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && (*temp_r27 == 0) && ((var_r31 == 0) || ((s16)temp_r26 == 4) || (*Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), (s16)(temp_r26 - 1)) != 0))) {
                             var_r0 = 1;
                         } else {
                             var_r0 = *temp_r27 != 0;
@@ -788,7 +788,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void fn_8013F748(void *, s16 *, s16 *);
     void fn_80009BC0(void (*)(void *), s16 *);
     void fn_8013F920(void *);
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A064(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *, s32, s32);
@@ -869,7 +869,7 @@ loop_body:
     if ((slot >= 4) && (slot <= 7)) {
         y += self->v9();
     }
-    item = fn_80037BD0(self->unk58, slot);
+    item = Unit_GetItemSlot(self->unk58, slot);
     if (*item != 0U) {
         self->v13(x, y, 0, item, self->v12(item));
     }
@@ -932,7 +932,7 @@ s32 fn_801649C8(void *arg0, s32 *arg1) {
 }
 
 void fn_80164A24(void *arg0) {
-    fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58));
+    Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58));
 }
 
 void fn_80164A48(void *arg0) {
@@ -945,14 +945,14 @@ void fn_80164A48(void *arg0) {
 
 #pragma global_optimizer off
 s32 MapCursor_GetUnit(void *arg0) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     s16 slot = *(s16 *)((u8 *)arg0 + 0x4C);
     s32 idx = slot;
 
     if ((idx < 0) || (idx > 7)) {
         return 0;
     }
-    return (s32)fn_80037BD0(*(s32 *)((u8 *)arg0 + 0x58), idx);
+    return (s32)Unit_GetItemSlot(*(s32 *)((u8 *)arg0 + 0x58), idx);
 }
 #pragma global_optimizer on
 void fn_80164BF0(s32 *arg0, void *arg1) {
@@ -992,13 +992,13 @@ void fn_80164BF0(s32 *arg0, void *arg1) {
 }
 
 s16 fn_80164CAC(void *arg0) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     s8 i;
     s32 ret;
 
     i = 4;
     while (i < 8) {
-        if (*fn_80037BD0(*(s32 *)((u8 *)arg0 + 0x58), i) == 0) {
+        if (*Unit_GetItemSlot(*(s32 *)((u8 *)arg0 + 0x58), i) == 0) {
             break;
         }
         i++;
@@ -1011,13 +1011,13 @@ s16 fn_80164CAC(void *arg0) {
 }
 
 s16 fn_80164D24(void *arg0) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     s8 i;
     s32 ret;
 
     i = 0;
     while (i < 4) {
-        if (*fn_80037BD0(*(s32 *)((u8 *)arg0 + 0x58), i) == 0) {
+        if (*Unit_GetItemSlot(*(s32 *)((u8 *)arg0 + 0x58), i) == 0) {
             break;
         }
         i++;
@@ -1030,7 +1030,7 @@ s16 fn_80164D24(void *arg0) {
 }
 
 s16 fn_80164D9C(void *arg0) {
-    u32 *fn_80037BD0(s32, s8);
+    u32 *Unit_GetItemSlot(s32, s8);
     void *self;
     s32 i;
     s8 end;
@@ -1056,7 +1056,7 @@ s16 fn_80164D9C(void *arg0) {
     i = start;
     lim = end;
     while ((s8)i < lim) {
-        if (*fn_80037BD0(*(s32 *)((u8 *)self + 0x58), (s8)i) == 0) {
+        if (*Unit_GetItemSlot(*(s32 *)((u8 *)self + 0x58), (s8)i) == 0) {
             break;
         }
         i += 1;
@@ -6542,7 +6542,7 @@ void fn_8016FF34(void *arg0) {
     void *fn_8000CAA0(void *, void *);
     void *Item_GetFlagsPtr(void *);
     void fn_8001D580(void *);
-    u32 *fn_80037BD0(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
     u8 fn_800C3C1C(void *, void *);
     s16 fn_800C3D48(void *);
     void fn_80164A48(void *);
@@ -6560,7 +6560,7 @@ void fn_8016FF34(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x4C);
     base = (void *)gUiContext[0];
     while (i < 8) {
-        slot = fn_80037BD0(base, i);
+        slot = Unit_GetItemSlot(base, i);
         if (*slot != 0) {
             temp = Item_GetFlagsPtr(slot);
             if ((*(u64 *)temp & 0x200ULL) == 0) {
@@ -8136,7 +8136,7 @@ void fn_801734D8(void *arg0) {
 }
 
 void fn_801735F0(void *arg0) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     void fn_800AAE78(s32, s32, s32, s8);
     void fn_8013FED0(void *);
     s32 *ListWidget_GetSelected(void *);
@@ -8150,7 +8150,7 @@ void fn_801735F0(void *arg0) {
     handle = (s32)gUiContext[1];
     match = *ListWidget_GetSelected(*(void **)((u8 *)arg0 + 0x54));
     for (i = 0; i < 8; i++) {
-        p = fn_80037BD0(handle, i);
+        p = Unit_GetItemSlot(handle, i);
         if (*p != 0 && (u32)p == match) {
             break;
         }
@@ -10521,7 +10521,7 @@ void *fn_80177E74(void) {
 }
 
 s32 fn_80177E84(void) {
-    u32 *fn_80037BD0(u32, s32);
+    u32 *Unit_GetItemSlot(u32, s32);
     u64 *Item_GetFlagsPtr(u32 *);
     u8 fn_80091EF0(u32, u32);
     extern u32 gUiContext[];
@@ -10536,7 +10536,7 @@ s32 fn_80177E84(void) {
     i = 0;
     unit = gUiContext[0];
     do {
-        entry = fn_80037BD0(unit, i);
+        entry = Unit_GetItemSlot(unit, i);
         if (*entry != 0) {
             bits = Item_GetFlagsPtr(entry);
             if ((*(u64 *)bits & 4ULL) == 0) {
@@ -11427,12 +11427,12 @@ void *fn_801795C0(void) {
 }
 
 s32 fn_801795D0(void *arg0) {
-void *Item_GetFlagsPtr(void *); u32 *fn_80037BD0(void *, s32); u8 fn_80093088(void *); s32 fn_800C3D48(void *); u8 Status_Test(void *, s32);
+void *Item_GetFlagsPtr(void *); u32 *Unit_GetItemSlot(void *, s32); u8 fn_80093088(void *); s32 fn_800C3D48(void *); u8 Status_Test(void *, s32);
 extern u32 gUiContext[]; extern u8 lbl_803200AC[];
 s8 i; u8 flag; void *base;
 flag=1; base=(void*)gUiContext[0];
 if(Status_Test((u8*)base+0x1BC,8)) {
-for(i=0;i<8;i++) { u32 *slot=fn_80037BD0(base,i); if(*slot) { if((*(unsigned long long*)Item_GetFlagsPtr(slot)&0x200ULL)==0) {flag=0; break;} } }
+for(i=0;i<8;i++) { u32 *slot=Unit_GetItemSlot(base,i); if(*slot) { if((*(unsigned long long*)Item_GetFlagsPtr(slot)&0x200ULL)==0) {flag=0; break;} } }
 } else flag=fn_80093088(base);
 if(flag) { *((u8*)arg0+4)=0; return 2; }
 if(fn_800C3D48(lbl_803200AC)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
@@ -14554,7 +14554,7 @@ void fn_8017FC38(void *arg0) {
 
 void fn_8017FC70(void *arg0, s32 arg1) {
     void Ui_FindChild(s32, s32);
-    u32 *fn_80037BD0(s32, s16);
+    u32 *Unit_GetItemSlot(s32, s16);
     s16 var_r3;
     s16 var_r31;
     u32 *temp_r29;
@@ -14569,8 +14569,8 @@ loop_18:
         } else if ((var_r31 >= 4) && (var_r31 <= 7) && !(M2C_FIELD(arg0, s32 *, 0x60) & 2)) {
             var_r0 = 0;
         } else {
-            temp_r29 = fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
-            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *fn_80037BD0(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
+            temp_r29 = Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31);
+            if (((s32) M2C_FIELD(arg0, s32 *, 0x5C) == 1) && ((u32) *temp_r29 == 0U) && ((var_r31 == 0) || (var_r31 == 4) || ((u32) *Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58), var_r31 - 1) != 0U))) {
                 var_r0 = 1;
             } else {
                 var_r0 = *temp_r29 != 0U;

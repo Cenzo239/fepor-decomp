@@ -231,7 +231,7 @@ void Battle_SetPhase(void *arg0, u8 arg1) {
 
 s32 fn_8014D2CC(void *arg0) {
     u16 UnitRef_GetValue(void *);
-    u32 *fn_80037BD0(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
     void *next;
     s32 sum;
     u32 *p;
@@ -245,7 +245,7 @@ s32 fn_8014D2CC(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             for (i = 0; i < 8; i++) {
-                p = fn_80037BD0(node, i);
+                p = Unit_GetItemSlot(node, i);
                 if (*p != 0) {
                     sum += (UnitRef_GetValue(p) >> 1) & 0x7FFF;
                 }
@@ -261,7 +261,7 @@ s32 fn_8014D2CC(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             for (i = 0; i < 8; i++) {
-                p = fn_80037BD0(node, i);
+                p = Unit_GetItemSlot(node, i);
                 if (*p != 0) {
                     sum += (UnitRef_GetValue(p) >> 1) & 0x7FFF;
                 }

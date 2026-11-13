@@ -38,7 +38,7 @@ extern u8 lbl_80289B00[16];
 extern void* fn_800980D4(s32 arg0);
 extern void fn_8017E394(void* arg0, void* arg1, void* arg2, s32 arg3);
 
-/* record returned by fn_80037BD0; bit 6 of byte 5 is set/cleared by fn_800946F0 */
+/* record returned by Unit_GetItemSlot; bit 6 of byte 5 is set/cleared by fn_800946F0 */
 typedef struct {
     u32 unk0;
     u8 unk4;
@@ -555,13 +555,13 @@ u8 fn_80092F9C(void *arg0)
 
 s32 fn_80093010(void *arg0, void *arg1)
 {
-    extern void *fn_80037BD0(void *, s32);
+    extern void *Unit_GetItemSlot(void *, s32);
 
     s32 i;
     void *value;
 
     for (i = 0; i < 8; i++) {
-        value = *(void **)fn_80037BD0(arg0, i);
+        value = *(void **)Unit_GetItemSlot(arg0, i);
 
         if (value != 0 && value == arg1) {
             return i;
@@ -1324,7 +1324,7 @@ void fn_800946F0(s32 arg0) {
 
     r30 = 0;
     do {
-        temp_r3 = (Unk80037BD0 *)fn_80037BD0(arg0, r30);
+        temp_r3 = (Unk80037BD0 *)Unit_GetItemSlot(arg0, r30);
         if ((temp_r3 != NULL) && (temp_r3->unk0 != 0U)) {
             temp_r3->unk5_bit6 = 0;
         }
@@ -1334,13 +1334,13 @@ void fn_800946F0(s32 arg0) {
 
 s32 fn_80094768(void *arg0)
 {
-    extern void *fn_80037BD0(void *, s32);
+    extern void *Unit_GetItemSlot(void *, s32);
 
     s32 i;
     u8 *entry;
 
     for (i = 0; i < 8; i++) {
-        entry = (u8 *)fn_80037BD0(arg0, i);
+        entry = (u8 *)Unit_GetItemSlot(arg0, i);
 
         if (entry != 0) {
             if (*(u32 *)entry != 0) {
@@ -1451,9 +1451,9 @@ void fn_800949A4(void *arg0, s8 arg1) {
 
 s32 fn_80094A08(s32 arg0) {
     u8 fn_8001D684();
-    M2C_UNK fn_80037BD0();
+    M2C_UNK Unit_GetItemSlot();
     M2C_UNK fn_800947E0(s32);
-    fn_80037BD0();
+    Unit_GetItemSlot();
     if (fn_8001D684() != 0) {
         fn_800947E0(arg0);
         return 1;

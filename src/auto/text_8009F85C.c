@@ -1691,7 +1691,7 @@ s32 fn_800A1D00(void) {
 
 void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
-    s32 fn_80037BD0(s32, s32);
+    s32 Unit_GetItemSlot(s32, s32);
     s32 UnitRef_GetName(void);
     void sprintf(void *, void *, ...);
     void Prim2D_Begin(void);
@@ -1711,7 +1711,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void **temp_r31;
 
     temp_r30 = arg2;
-    temp_r31 = (void **)fn_80037BD0((s32)fn_800AA794(), *(u8 *)((u8 *)temp_r30 + 0x3A));
+    temp_r31 = (void **)Unit_GetItemSlot((s32)fn_800AA794(), *(u8 *)((u8 *)temp_r30 + 0x3A));
     if (temp_r31 == NULL || *temp_r31 == NULL) {
         return;
     }

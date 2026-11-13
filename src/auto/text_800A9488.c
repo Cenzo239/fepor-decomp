@@ -978,7 +978,7 @@ void fn_800AAC64(void *arg0) {
 
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void *fn_8000CAA0(void *, void *);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
@@ -1048,9 +1048,9 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
                 *(s16 *)(entry + 2) = (s16)(*(s16 *)(entry + 2) + 0x88);
             }
             if (row != 0) {
-                Item_Copy(entry + 4, fn_80037BD0(self->unk34, col));
+                Item_Copy(entry + 4, Unit_GetItemSlot(self->unk34, col));
             } else {
-                Item_Copy(entry + 4, fn_80037BD0(self->unk30, col));
+                Item_Copy(entry + 4, Unit_GetItemSlot(self->unk30, col));
             }
             col += 1;
             entry += 0x10;
@@ -1126,7 +1126,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 #pragma use_lmw_stmw on
 void fn_800AB2A4(void *arg0) {
     void *fn_8000CAA0(void *, void *);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
@@ -1196,9 +1196,9 @@ void fn_800AB2A4(void *arg0) {
                 *(s16 *)(entry + 2) = (s16)(*(s16 *)(entry + 2) + 0x88);
             }
             if (row != 0) {
-                Item_Copy(entry + 4, fn_80037BD0(self->unk34, col));
+                Item_Copy(entry + 4, Unit_GetItemSlot(self->unk34, col));
             } else {
-                Item_Copy(entry + 4, fn_80037BD0(self->unk30, col));
+                Item_Copy(entry + 4, Unit_GetItemSlot(self->unk30, col));
             }
             col += 1;
             entry += 0x10;

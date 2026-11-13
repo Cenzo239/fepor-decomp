@@ -1249,7 +1249,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
 }
 
 void fn_80088300(void *arg0) {
-u32 *fn_80037BD0(void *, s32);
+u32 *Unit_GetItemSlot(void *, s32);
 void fn_8007DAC4(void *, void *);
 void Ui_PlaySeCue(void *, s32);
 void Ui_HideUnitInfoPopup(void *);
@@ -1276,7 +1276,7 @@ type=base[index*20+13];
 if(type>=10 && type<=14) {
 if(*((s16 *)self + (type-10+18))==-1) valid=0; else valid=1;
 } else if(type>=2 && type<=9) {
-if(*fn_80037BD0(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
+if(*Unit_GetItemSlot(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
 } else if(type>=15 && type<=22) {
 if(*((u32 *)self + (type-15+14))==0) valid=0; else valid=1;
 } else valid=1;
@@ -1298,7 +1298,7 @@ type=base[index*20+13];
 if(type>=10 && type<=14) {
 if(*((s16 *)self + (type-10+18))==-1) valid=0; else valid=1;
 } else if(type>=2 && type<=9) {
-if(*fn_80037BD0(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
+if(*Unit_GetItemSlot(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
 } else if(type>=15 && type<=22) {
 if(*((u32 *)self + (type-15+14))==0) valid=0; else valid=1;
 } else valid=1;
@@ -1320,7 +1320,7 @@ type=base[index*20+13];
 if(type>=10 && type<=14) {
 if(*((s16 *)self + (type-10+18))==-1) valid=0; else valid=1;
 } else if(type>=2 && type<=9) {
-if(*fn_80037BD0(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
+if(*Unit_GetItemSlot(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
 } else if(type>=15 && type<=22) {
 if(*((u32 *)self + (type-15+14))==0) valid=0; else valid=1;
 } else valid=1;
@@ -1342,7 +1342,7 @@ type=base[index*20+13];
 if(type>=10 && type<=14) {
 if(*((s16 *)self + (type-10+18))==-1) valid=0; else valid=1;
 } else if(type>=2 && type<=9) {
-if(*fn_80037BD0(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
+if(*Unit_GetItemSlot(M2C_FIELD(self,void **,0x58),type-2)!=0) valid=1; else valid=0;
 } else if(type>=15 && type<=22) {
 if(*((u32 *)self + (type-15+14))==0) valid=0; else valid=1;
 } else valid=1;
@@ -1358,7 +1358,7 @@ Ui_PlaySeCue(gUiStrings+0x19b,100);
 #pragma opt_strength_reduction off
 void fn_800888A4(void *arg0) {
     void Process_Goto(void *, s32);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     void fn_8007DAC4(void *, void *);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -1439,7 +1439,7 @@ void fn_800888A4(void *arg0) {
             if(type>=10 && type<=14) {
                 if (M2C_FIELD((u8 *)self+(type-10)*2, s16 *, 0x24) == -1) valid=0; else valid=1;
             } else if(type>=2 && type<=9) {
-                if (M2C_FIELD(fn_80037BD0(M2C_FIELD(self, void * *, 0x58),type-2), u32 *, 0) != 0) valid=1; else valid=0;
+                if (M2C_FIELD(Unit_GetItemSlot(M2C_FIELD(self, void * *, 0x58),type-2), u32 *, 0) != 0) valid=1; else valid=0;
             } else if(type>=15 && type<=22) {
                 if (M2C_FIELD((u8 *)self+(type-15)*4, u32 *, 0x38) == 0) valid=0; else valid=1;
             } else valid=1;

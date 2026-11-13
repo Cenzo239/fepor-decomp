@@ -2120,7 +2120,7 @@ s32 fn_80037BBC(s32 arg0, s32 arg1) {
     return (arg1 * 8) + arg0 + 0x1CC;
 }
 
-s32 fn_80037BD0(s32 arg0, s32 arg1) {
+s32 Unit_GetItemSlot(s32 arg0, s32 arg1) {
     s32 base = arg0;
     if (arg1 >= 0 && arg1 < 4) return base + (arg1 << 3) + 0x1CC;
     if (arg1 >= 4 && arg1 < 8) return base + ((arg1 - 4) << 3) + 0x1EC;
@@ -4316,7 +4316,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     void Stream_Read(void *, s32, void *);
     void fn_80104134(void *, void *);
     void fn_80105A04(void *, void *);
-    s32 fn_80037BD0(s32, s32);
+    s32 Unit_GetItemSlot(s32, s32);
     void fn_8001C15C(void *, void *);
     void fn_8001D018(void *, void *);
     void fn_80017414(void *, void *);
@@ -4382,7 +4382,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     Stream_Read(src, 8, (u8 *)dst + 0x1B4);
     fn_80105A04((u8 *)dst + 0x1BC, src);
     for (tmp = 0; tmp < 8; tmp++) {
-        fn_8001C15C((void *)fn_80037BD0((s32)dst, tmp), src);
+        fn_8001C15C((void *)Unit_GetItemSlot((s32)dst, tmp), src);
     }
     fn_8001D018((u8 *)dst + 0x20C, src);
     fn_80017414((u8 *)dst + 0x228, src);
@@ -4400,7 +4400,7 @@ void fn_8003CA94(void *arg0, s32 arg1) {
     void fn_8017A430(s32, s32, void *);
     void fn_80104160(void *, s32);
     void fn_80105A30(void *, s32);
-    s32 fn_80037BD0(s32, s32);
+    s32 Unit_GetItemSlot(s32, s32);
     void fn_8001C21C(void *, s32);
     void fn_8001D044(void *, s32);
     void fn_800174A8(void *, s32);
@@ -4455,7 +4455,7 @@ void fn_8003CA94(void *arg0, s32 arg1) {
     fn_8017A430(arg1, 8, (u8 *)arg0 + 0x1B4);
     fn_80105A30((u8 *)arg0 + 0x1BC, arg1);
     for (i = 0; i < 8; i++) {
-        fn_8001C21C((void *)fn_80037BD0((s32)arg0, i), arg1);
+        fn_8001C21C((void *)Unit_GetItemSlot((s32)arg0, i), arg1);
     }
     fn_8001D044((u8 *)arg0 + 0x20C, arg1);
     fn_800174A8((u8 *)arg0 + 0x228, arg1);
@@ -5299,7 +5299,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
     void fn_8003708C(void *, u8 *);
     void fn_80094A54(void *);
     void fn_800946F0(void *);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     u8 fn_80094768(void *);
     void fn_8003BD58(void *);
     void fn_80092438(void *);
@@ -5503,10 +5503,10 @@ void fn_8003EAE8(void *arg0, void *arg1) {
                 if (t & 1) {
                     if (t & 2) {
                         fn_800946F0(self);
-                        p = fn_80037BD0(self, i);
+                        p = Unit_GetItemSlot(self, i);
                         *(u8 *)((u8 *)p + 5) |= 0x40;
                     } else if (fn_80094768(self) == 0) {
-                        p = fn_80037BD0(self, i);
+                        p = Unit_GetItemSlot(self, i);
                         *(u8 *)((u8 *)p + 5) |= 0x40;
                     }
                 }

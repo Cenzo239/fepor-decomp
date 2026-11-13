@@ -137,7 +137,7 @@ void fn_80090874(void *arg0, s32 arg1) {
     var_r29 = 0;
     var_r30 = (u8*)arg0 + 0x1F0;
     do {
-        if (*(u32*)fn_80037BD0(arg0, var_r29) != 0) {
+        if (*(u32*)Unit_GetItemSlot(arg0, var_r29) != 0) {
             *(u8*)var_r30 = fn_8003DAC4(arg1);
         }
         var_r29 += 1;
@@ -180,7 +180,7 @@ void fn_80090990(void *arg0) {
     var_r30 = var_r28;
     
     do {
-        if (*(u32*)fn_80037BD0(arg0, var_r29) != 0) {
+        if (*(u32*)Unit_GetItemSlot(arg0, var_r29) != 0) {
             *var_r30 = fn_80093DA8(arg0);
         }
         var_r29 += 1;

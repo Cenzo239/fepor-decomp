@@ -68,7 +68,7 @@ virtual void v15() = 0;
 virtual void v16() = 0;
 virtual void v17() = 0; };
 u64 *Item_GetFlagsPtr(void *);
-void *fn_80037BD0(void *, s32);
+void *Unit_GetItemSlot(void *, s32);
 void fn_8008D510(void *, bool, s16, s16);
 extern u64 lbl_8036746C;
 extern void *lbl_80367468;
@@ -80,7 +80,7 @@ if(index==4) result=&lbl_8036746C;
 else {
 u64 flags=*Item_GetFlagsPtr(&lbl_8036746C);
 void *base=lbl_80367468;
-result=fn_80037BD0(base, ((flags & 5ULL)?0:4)+index);
+result=Unit_GetItemSlot(base, ((flags & 5ULL)?0:4)+index);
 }
 fn_8008D510(result,((u8 *)arg2)[0x39]==0,*(s16 *)((u8 *)arg2+0x30),*(s16 *)((u8 *)arg2+0x32));
 }
@@ -98,7 +98,7 @@ void *fn_8007486C(void *unused, void *arg1)
 {
   u64 *Item_GetFlagsPtr(void *);
   u64 *new_var;
-  void *fn_80037BD0(void *, s32);
+  void *Unit_GetItemSlot(void *, s32);
   extern u64 lbl_8036746C;
   extern void *lbl_80367468;
   void *dst;
@@ -116,12 +116,12 @@ void *fn_8007486C(void *unused, void *arg1)
   val = *new_var2;
   ;
   addend = ((val & 5ULL) != 0ULL) ? (0) : (4);
-  return fn_80037BD0(lbl_80367468, addend + index);
+  return Unit_GetItemSlot(lbl_80367468, addend + index);
 }
 
 void fn_800748E8(void) {
     u64 *Item_GetFlagsPtr(void *);
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     s32 UnitRef_GetName(void);
     void sprintf(void *, char *, ...);
     void fn_8000D864(s32, void *);
@@ -140,7 +140,7 @@ void fn_800748E8(void) {
     if (index == 4) {
         result = &lbl_8036746C;
     } else {
-        result = fn_80037BD0(lbl_80367468,
+        result = Unit_GetItemSlot(lbl_80367468,
             ((*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL) ? 0 : 4) + index);
     }
     obj = *(void **)result;
@@ -376,14 +376,14 @@ void *fn_80074DDC(void) {
     return &lbl_8026C0B8[0x191];
 }
 
-extern s32 *fn_80037BD0(s32, u8);
+extern s32 *Unit_GetItemSlot(s32, u8);
 extern u8 fn_8001C0C8(void);
 s32 fn_80074DEC(s32 arg0, s32 arg1, s32 arg2) {
     extern u8 gUiContext[24];
-    s32 *fn_80037BD0(s32, u8);
+    s32 *Unit_GetItemSlot(s32, u8);
     u8 fn_8001C0C8(void);
 
-    if ((u32)*fn_80037BD0(*(s32 *)(gUiContext + 4), (u8)arg2) == 0U) {
+    if ((u32)*Unit_GetItemSlot(*(s32 *)(gUiContext + 4), (u8)arg2) == 0U) {
         return 3;
     }
     return (fn_8001C0C8() == 0) ? 2 : 0;
@@ -411,11 +411,11 @@ extern "C" void fn_80074E4C(void *arg0, s32 arg1, void *arg2) {
         virtual void v16() = 0;
         virtual void v17() = 0;
     };
-    s32 fn_80037BD0(s32, u8);
+    s32 Unit_GetItemSlot(s32, u8);
     void fn_8008D510(s32, bool, s16, s16);
     extern s32 gUiContext[];
     ((Obj *)arg0)->v17();
-    fn_8008D510(fn_80037BD0(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
+    fn_8008D510(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 
 extern "C" s32 fn_80074EB0(s32 arg0, s32 arg1, void *arg2) {
@@ -433,7 +433,7 @@ extern "C" s32 fn_80074EB0(s32 arg0, s32 arg1, void *arg2) {
 void fn_80074EDC(s32 arg0, void *arg1) {
     extern s32 gUiContext[];
     
-    fn_80037BD0(gUiContext[1], *(u8*)((char*)arg1 + 0x3A));
+    Unit_GetItemSlot(gUiContext[1], *(u8*)((char*)arg1 + 0x3A));
 }
 
 void fn_80074F0C(void *arg0) {
@@ -507,16 +507,16 @@ void fn_80074F20(void *arg0, void *arg1) {
 void fn_800750D8(s32 arg0, void *arg1) {
     extern s32 gUiContext[];
     
-    fn_80037BD0(gUiContext[1], *(u8*)((char*)arg1 + 0x3A));
+    Unit_GetItemSlot(gUiContext[1], *(u8*)((char*)arg1 + 0x3A));
 }
 
 s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
     extern u8 gUiContext[24];
-    s32 *fn_80037BD0(s32, u8);
+    s32 *Unit_GetItemSlot(s32, u8);
     u8 fn_8003DAC4(s32, s32 *);
     s32 *temp;
 
-    temp = fn_80037BD0(*(s32 *)(gUiContext + 4), (u8)arg2);
+    temp = Unit_GetItemSlot(*(s32 *)(gUiContext + 4), (u8)arg2);
     if ((u32)*temp == 0U) {
         return 3;
     }
@@ -525,7 +525,7 @@ s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
 
 s32 fn_80075178(void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
-    s32 fn_80037BD0(s32, u8);
+    s32 Unit_GetItemSlot(s32, u8);
     u8 fn_8003DBA8(s32, s32, M2C_UNK *);
     M2C_UNK fn_80166AE8(s32, s16, s32, void *);
     extern M2C_UNK lbl_8026C0B8;
@@ -539,7 +539,7 @@ s32 fn_80075178(void *arg1, void *arg2) {
 
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) != 0) {
         var_r27 = NULL;
-        temp_r3 = fn_8003DBA8(M2C_FIELD(&gUiContext, s32 *, 0), fn_80037BD0(M2C_FIELD(&gUiContext, s32 *, 4), M2C_FIELD(arg2, u8 *, 0x3A)), &gUiContext);
+        temp_r3 = fn_8003DBA8(M2C_FIELD(&gUiContext, s32 *, 0), Unit_GetItemSlot(M2C_FIELD(&gUiContext, s32 *, 4), M2C_FIELD(arg2, u8 *, 0x3A)), &gUiContext);
         switch ((s32) temp_r3) {                    /* irregular */
         case 1:
             var_r27 = &lbl_8026C0B8 + 0x1B3;
@@ -584,11 +584,11 @@ extern "C" void fn_80075290(void *arg0, s32 arg1, void *arg2) {
         virtual void v16() = 0;
         virtual void v17() = 0;
     };
-    s32 fn_80037BD0(s32, u8);
+    s32 Unit_GetItemSlot(s32, u8);
     void fn_8008D510(s32, bool, s16, s16);
     extern s32 gUiContext[];
     ((Obj *)arg0)->v17();
-    fn_8008D510(fn_80037BD0(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
+    fn_8008D510(Unit_GetItemSlot(gUiContext[1], *(u8 *)((u8 *)arg2 + 0x3A)), *(u8 *)((u8 *)arg2 + 0x39) == 0, *(s16 *)((u8 *)arg2 + 0x30), *(s16 *)((u8 *)arg2 + 0x32));
 }
 #pragma cplusplus reset
 
@@ -734,13 +734,13 @@ s32 fn_8007565C(void) {
 
 #pragma cplusplus on
 extern "C" s32 fn_80075784(void *arg0, void *arg1, s32 arg2) {
-    void **fn_80037BD0(void *, u8);
+    void **Unit_GetItemSlot(void *, u8);
     u8 fn_800939FC(void *);
     extern void *gUiContext[];
     void **ret;
     u8 val;
 
-    ret = fn_80037BD0(gUiContext[0], (u8)arg2);
+    ret = Unit_GetItemSlot(gUiContext[0], (u8)arg2);
     if (*ret == NULL) {
         return 3;
     }

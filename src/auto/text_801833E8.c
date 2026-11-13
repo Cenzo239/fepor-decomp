@@ -3206,7 +3206,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void fn_8002F658(void *, s32);
     void *fn_8002F740(void);
     u8 fn_8003DC80(void *, void *);
-    void **fn_80037BD0(void *, s32);
+    void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
     s32 Str_Cmp(s32, u32);
@@ -3258,7 +3258,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
             foundDist = -1;
             slot = 0;
             while ((s8)slot < 8) {
-                entry = fn_80037BD0(unit, slot);
+                entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
                     tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
                     if (!fn_8003DAC4(arg0, entry)) {
@@ -3325,7 +3325,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void fn_8002F658(void *, s32);
     void *fn_8002F740(void);
     u8 fn_8003DC80(void *, void *);
-    void **fn_80037BD0(void *, s32);
+    void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
     s32 Str_Cmp(s32);
@@ -3389,7 +3389,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
             slot = 0;
             foundDist = foundSlot;
             while ((s8)slot < 8) {
-                entry = fn_80037BD0(unit, slot);
+                entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
                     tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
                     if (!fn_8003DAC4(arg0, entry)) {

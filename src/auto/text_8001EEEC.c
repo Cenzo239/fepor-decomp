@@ -3596,7 +3596,7 @@ void fn_80026770(void *arg0) {
 
 void fn_800267A0(s32 arg0) {
     void fn_8001C7F0(s32, s32, s32);
-    s32 *fn_80037BD0(s32, s32);
+    s32 *Unit_GetItemSlot(s32, s32);
     extern struct {
         s32 unk0;
         s32 unk4;
@@ -3605,12 +3605,12 @@ void fn_800267A0(s32 arg0) {
         s8 unkA;
         u8 pad[0x18 - 0xB];
     } gUiContext;
-    fn_8001C7F0(gUiContext.unk0, *fn_80037BD0(gUiContext.unk0, gUiContext.unkA), arg0);
+    fn_8001C7F0(gUiContext.unk0, *Unit_GetItemSlot(gUiContext.unk0, gUiContext.unkA), arg0);
 }
 
 void fn_800267F8(s32 arg0) {
     void fn_8001C7F0(s32, s32, s32);
-    s32 *fn_80037BD0(s32, s32);
+    s32 *Unit_GetItemSlot(s32, s32);
     extern struct {
         s32 unk0;
         s32 unk4;
@@ -3619,12 +3619,12 @@ void fn_800267F8(s32 arg0) {
         s8 unkA;
         u8 pad[0x18 - 0xB];
     } gUiContext;
-    fn_8001C7F0(gUiContext.unk0, *fn_80037BD0(gUiContext.unk0, gUiContext.unkA), arg0);
+    fn_8001C7F0(gUiContext.unk0, *Unit_GetItemSlot(gUiContext.unk0, gUiContext.unkA), arg0);
 }
 
 void fn_80026850(s32 arg0) {
     void fn_800913D4(s32, s32, s32);
-    s32 fn_80037BD0(s32, s8);
+    s32 Unit_GetItemSlot(s32, s8);
     extern u8 lbl_802EF4C8[];
     s32 temp_r31;
     s8 temp_r4;
@@ -3633,7 +3633,7 @@ void fn_80026850(s32 arg0) {
     p = lbl_802EF4C8;
     temp_r4 = p[0xA];
     temp_r31 = *(s32 *)p;
-    fn_800913D4(fn_80037BD0(temp_r31, temp_r4), arg0, temp_r31);
+    fn_800913D4(Unit_GetItemSlot(temp_r31, temp_r4), arg0, temp_r31);
 }
 
 s32 fn_800268A8(s32 arg0) {
@@ -3761,7 +3761,7 @@ s32 fn_80026AF4(s32 arg0) {
 s32 fn_80026D24(s32 arg0) {
     void fn_8001C5F8(void *, s32);
     void fn_8001C690(void *, void *);
-    void *fn_80037BD0(s32, s32);
+    void *Unit_GetItemSlot(s32, s32);
     void fn_8007386C(s32, void *, s32);
     void *fn_801A4624(void *);
     s32 fn_801A46BC(void *);
@@ -3786,7 +3786,7 @@ s32 fn_80026D24(s32 arg0) {
     }
     handle = fn_801A46BC(lbl_80330EAC);
     for (i = 0; i < 8; i++) {
-        entry = fn_80037BD0(handle, i);
+        entry = Unit_GetItemSlot(handle, i);
         if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
             fn_8001C690(sp8, entry);
             fn_8007386C(*(s32 *)((u8 *)obj + 0x280), sp8, arg0);
@@ -4058,12 +4058,12 @@ s32 fn_800284B4(void *arg0) {
 
 #pragma global_optimizer off
 void fn_800285C0(void *arg0) {
-    void fn_80037BD0(void *, s32);
+    void Unit_GetItemSlot(void *, s32);
     s32 b;
     void *p;
     b = (s8)*((u8 *)arg0 + 0xA);
     p = *(void **)arg0;
-    fn_80037BD0(p, b);
+    Unit_GetItemSlot(p, b);
 }
 #pragma global_optimizer reset
 void fn_800285EC(void) {

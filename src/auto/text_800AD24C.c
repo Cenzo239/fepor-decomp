@@ -6277,7 +6277,7 @@ s32 fn_800BBE9C(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BBF04(u8 arg0, s32 arg1) {
-    u32 *fn_80037BD0(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
     void fn_800949A4(void *, s8);
     void fn_800C35C4(void *, u32 *);
     u8 fn_8014D8DC(void *);
@@ -6298,7 +6298,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     if (fn_8014D8DC(gBattleState) == 0) {
         return 0;
     }
-    temp_r3 = fn_80037BD0(var_r31, arg1);
+    temp_r3 = Unit_GetItemSlot(var_r31, arg1);
     if (*temp_r3 == 0U) {
         return 0;
     }
@@ -6308,7 +6308,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BBFD0(u8 arg0) {
-    u32 *fn_80037BD0(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
     void fn_800947E0(void *);
     void fn_800C35C4(void *, u32 *);
     void fn_8001D580(u32 *);
@@ -6328,7 +6328,7 @@ s32 fn_800BBFD0(u8 arg0) {
     }
     var_r28 = 0;
     do {
-        temp_r3 = fn_80037BD0(var_r30, var_r28);
+        temp_r3 = Unit_GetItemSlot(var_r30, var_r28);
         if ((temp_r3 != NULL) && (*temp_r3 != 0U)) {
             fn_800C35C4(lbl_803200AC, temp_r3);
             fn_8001D580(temp_r3);
@@ -6341,7 +6341,7 @@ s32 fn_800BBFD0(u8 arg0) {
 
 s32 fn_800BC0A4(u8 arg0, s32 arg1) {
     s32 fn_8001CA2C(void *);
-    u32 *fn_80037BD0(void *, s32);
+    u32 *Unit_GetItemSlot(void *, s32);
     extern u8 gUnits[];
     void *unit;
     u32 *temp;
@@ -6354,7 +6354,7 @@ s32 fn_800BC0A4(u8 arg0, s32 arg1) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    temp = fn_80037BD0(unit, arg1);
+    temp = Unit_GetItemSlot(unit, arg1);
     if (*temp == 0) {
         return 0;
     }
@@ -6362,7 +6362,7 @@ s32 fn_800BC0A4(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BC11C(u8 arg0, s32 arg1) {
-    u8 *fn_80037BD0(void *, s32);
+    u8 *Unit_GetItemSlot(void *, s32);
     extern u8 gUnits[];
     typedef struct {
         u8 pad:1;
@@ -6382,12 +6382,12 @@ s32 fn_800BC11C(u8 arg0, s32 arg1) {
         return 0;
     }
     for (i = 0; i < 8; i++) {
-        temp = fn_80037BD0(var_r31, i);
+        temp = Unit_GetItemSlot(var_r31, i);
         if (*(u32 *)temp != 0U && ((Bit6 *)&temp[5])->flag) {
             return 0;
         }
     }
-    temp = fn_80037BD0(var_r31, arg1);
+    temp = Unit_GetItemSlot(var_r31, arg1);
     if (*(u32 *)temp == 0U) {
         return 0;
     }
@@ -6516,7 +6516,7 @@ s32 fn_800BC458(u8 arg0, s32 arg1) {
 }
 
 u8 fn_800BC4FC(u8 arg0, s32 arg1) {
-    u32 *fn_80037BD0(s32, s32);
+    u32 *Unit_GetItemSlot(s32, s32);
     s32 fn_800939FC(void *, u32);
     extern u8 gUnits[];
     u32 temp_r4;
@@ -6530,7 +6530,7 @@ u8 fn_800BC4FC(u8 arg0, s32 arg1) {
     if ((var_r31 == NULL) || ((u32) M2C_FIELD(var_r31, u32 *, 0x188) == 0U)) {
         return 0U;
     }
-    temp_r4 = *fn_80037BD0((s32) var_r31, arg1);
+    temp_r4 = *Unit_GetItemSlot((s32) var_r31, arg1);
     if (temp_r4 != 0U) {
         return fn_800939FC(var_r31, temp_r4);
     }
@@ -6538,7 +6538,7 @@ u8 fn_800BC4FC(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BC588(u8 arg0, s32 arg1) {
-    u8 *fn_80037BD0(void *, s32);
+    u8 *Unit_GetItemSlot(void *, s32);
     extern u8 gUnits[];
     void *unit;
     u8 *p;
@@ -6551,7 +6551,7 @@ s32 fn_800BC588(u8 arg0, s32 arg1) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    p = fn_80037BD0(unit, arg1);
+    p = Unit_GetItemSlot(unit, arg1);
     return ((p[5] & 0x80) >> 7) != 0;
 }
 
@@ -6593,7 +6593,7 @@ u8 fn_800BC684(u8 arg0) {
 }
 
 s32 fn_800BC6E8(u8 arg0, s32 arg1, s32 arg2) {
-    void *fn_80037BD0(void *, s32);
+    void *Unit_GetItemSlot(void *, s32);
     void fn_8001D780(void *, s32);
     extern u8 gUnits[];
     void *unit;
@@ -6606,7 +6606,7 @@ s32 fn_800BC6E8(u8 arg0, s32 arg1, s32 arg2) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    fn_8001D780(fn_80037BD0(unit, arg1), arg2);
+    fn_8001D780(Unit_GetItemSlot(unit, arg1), arg2);
     return 1;
 }
 
