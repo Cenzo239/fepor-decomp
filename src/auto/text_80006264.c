@@ -1033,13 +1033,13 @@ void Prim2D_SwapUvU(void) {
 
 void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
 {
-    extern u16 lbl_80367140;
+    extern void *lbl_80367140;
     extern f32 lbl_80368B98;
     extern f32 lbl_80368B94;
     void *p;
     f32 t0, t1, t2, t3;
 
-    p = *(u8 **)&lbl_80367140;
+    p = lbl_80367140;
     t0 = a + e;
     t1 = b + f;
     {
@@ -1063,7 +1063,7 @@ void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
         *(f32 *)((u8 *)p + 0x28) = c94;
     }
 
-    p = *(void **)(*(u8 **)&lbl_80367140 + 0xC);
+    p = *(void **)((u8 *)lbl_80367140 + 0xC);
     p = *(void **)((u8 *)p + 4);
 
     *(f32 *)((u8 *)p + 0x18) = c;
@@ -4301,30 +4301,33 @@ s32 fn_8000CD88(s32 arg0) {
 }
 
 s32 Rand_Chance(s32 arg0) {
-    extern u16 lbl_80367150;
-    u16 *st;
+    struct RandSt { u16 a; u16 b; u16 c; };
+    extern struct RandSt lbl_80367150;
+    struct RandSt *st;
     s32 s0;
     s32 s1;
     s32 s2;
     s32 t4;
+    s32 combined;
     u16 t6;
     s32 scaled;
 
     st = &lbl_80367150;
-    s0 = lbl_80367150;
-    s2 = *(st + 2);
-    s1 = *(st + 1);
+    s0 = lbl_80367150.a;
+    s2 = st->c;
+    s1 = st->b;
     t4 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    *(st + 2) = t4;
+    combined = (s1 << 11) + (s0 >> 5);
+    st->c = t4;
+    t6 = (u16)combined;
     if (s1 & 0x8000) {
-        *(st + 2) = t4 + 1;
+        st->c = t4 + 1;
     }
-    t6 ^= *(st + 2);
-    *(st + 2) = *(st + 1);
+    t6 ^= st->c;
+    st->c = st->b;
     scaled = (u16)t6 * 100;
-    *(st + 1) = lbl_80367150;
-    lbl_80367150 = t6;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
     return (scaled / 65536) < arg0;
 }
 
