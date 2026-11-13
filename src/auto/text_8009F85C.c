@@ -2160,7 +2160,7 @@ s32 fn_800A2CC8(void) {
 
 s32 fn_800A2CD0(void *a, void *b, s32 arg) {
     void *Map_GetCursorUnit(void);
-    u8 fn_8003701C(void);
+    u8 Unit_CountSupportPartners(void);
     u32 fn_80037004(void *, u8);
     s32 fn_80036FD0(void *, u8);
     void *obj;
@@ -2173,7 +2173,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
         return 3;
     }
     value = (u8)arg;
-    if ((s32)(u8)fn_8003701C() <= (s32)value) {
+    if ((s32)(u8)Unit_CountSupportPartners() <= (s32)value) {
         return 3;
     }
     if (fn_80037004(obj, value) == 0) {
@@ -2189,7 +2189,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_PrepareTex(void);
     s32 fn_80037004(void *, s32);
-    u8 fn_8003701C(void *);
+    u8 Unit_CountSupportPartners(void *);
     s32 Msg_ResolveName(s32);
     M2C_UNK sprintf(u8 *, void *, ...);
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
@@ -2217,7 +2217,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     obj = Map_GetCursorUnit();
     if (M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) != NULL) {
         idx = M2C_FIELD(arg2, u8 *, 0x3A);
-        if ((u8) fn_8003701C(obj) > idx) {
+        if ((u8) Unit_CountSupportPartners(obj) > idx) {
             Prim2D_Begin();
             Prim2D_AddZ(gItemMenuTextZ);
             Prim2D_SetTex(0, 0x13);

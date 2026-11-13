@@ -1736,7 +1736,7 @@ s32 fn_80037004(void *arg0, s32 idx) {
     return *(s32 *)(b + 8);
 }
 
-u8 fn_8003701C(void *arg0) {
+u8 Unit_CountSupportPartners(void *arg0) {
     void *temp_r3;
 
     temp_r3 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), void **, 0x50);

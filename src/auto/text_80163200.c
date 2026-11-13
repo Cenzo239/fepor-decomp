@@ -14869,7 +14869,7 @@ extern "C" void fn_80180624(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_80037004(void *, u8);
-    u8 fn_8003701C(void *);
+    u8 Unit_CountSupportPartners(void *);
     void fn_80136F2C(void *, void *, s32 *, void **);
     void *Ui_ListGetSelected(void *);
     void fn_8013FCE0(void *, void *, void **, void **);
@@ -14954,7 +14954,7 @@ extern "C" void fn_80180624(void *arg0) {
             }
             i += 1;
         loop_test:
-            if ((u8)i < fn_8003701C(unit)) {
+            if ((u8)i < Unit_CountSupportPartners(unit)) {
                 goto loop;
             }
             sp2C = unit;
@@ -15016,7 +15016,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void *Ui_ListGetSelected(void *);
     void fn_80136F2C(void *, void *, void *, void *);
     void *fn_80037004(void *, u8);
-    u8 fn_8003701C(void *);
+    u8 Unit_CountSupportPartners(void *);
     void fn_8013FCE0(void *, void *, void *, void *);
     void fn_80181DF0(void *, void *);
     extern u8 lbl_802955A8[];
@@ -15172,7 +15172,7 @@ extern "C" void fn_80180AC8(void *arg0) {
             sp20 = *(void **)((u8 *)panel + 0x64);
             fn_80136F2C(&sp1C, (u8 *)panel + 0x5C, &sp20, &sp24);
             i = 0;
-            while (i < fn_8003701C(ret)) {
+            while (i < Unit_CountSupportPartners(ret)) {
                 if (fn_80037004(ret, i) != NULL) {
                     sp28 = fn_80037004(ret, i);
                     spC = link;
@@ -15202,12 +15202,12 @@ extern "C" void fn_80180AC8(void *arg0) {
 s32 fn_80180E2C(s32 arg0) {
     u8 fn_80036B20(s32, s32);
     void *fn_80036FD0(s32, s32);
-    u8 fn_8003701C(void);
+    u8 Unit_CountSupportPartners(void);
     u8 count;
     s32 i;
     void *obj;
 
-    count = fn_8003701C();
+    count = Unit_CountSupportPartners();
     for (i = 0; i < count; i++) {
         obj = fn_80036FD0(arg0, i);
         if (obj != NULL) {
