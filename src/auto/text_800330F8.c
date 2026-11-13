@@ -10226,7 +10226,7 @@ void fn_8004B1B4(u8 *arg0) {
     }
 }
 
-extern s32 lbl_80367308;
+extern s32 gGMaterialCurrent;
 #pragma use_lmw_stmw on
 s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
     s32 GMaterial_GetCurrent(void);

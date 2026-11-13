@@ -6065,8 +6065,8 @@ s32 GMaterial_GetNode(void) {
 }
 
 s32 GMaterial_GetCurrent(void) {
-    extern s32 lbl_80367308;
-    return lbl_80367308;
+    extern s32 gGMaterialCurrent;
+    return gGMaterialCurrent;
 }
 
 void fn_8006A384(s32* arg0) {
@@ -6211,7 +6211,7 @@ void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void GMaterial_A
 void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
 void fn_802245D8(s32,s32,s32,s32);void GXSetZMode(s32,s32,s32);void fn_80067490(s32);
 void Gfx_SetupVtxFormat(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
-extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
+extern u8 lbl_8026B8AC[];extern void *gGMaterialCurrent,*lbl_8036730C;
 u8 *data,*node,*p;
 s32 aux,work,addr1,addr2;
 u32 geometry,last,format;
@@ -6238,7 +6238,7 @@ if(*(u16*)(node+8)&0x80)fn_802245D8(3,0,0,0);
 if(*(u16*)(node+8)&0x100)GXSetZMode(0,3,0);
 if(*(u16*)(node+8)&0x20)fn_80067490(0);
 }
-lbl_80367308=arg0;lbl_8036730C=node;
+gGMaterialCurrent=arg0;lbl_8036730C=node;
 format=*(u32*)(node+0x10)&0xfffffff;
 if(last!=format){
 last=format;

@@ -80,7 +80,7 @@ extern u16* gMap;
 extern u16 lbl_8026A9B0[40];
 extern u16 lbl_802EFFC8[16];
 
-extern s32 lbl_80367308;
+extern s32 gGMaterialCurrent;
 
 extern double lbl_80368FE0;
 extern float lbl_80368FF8;
