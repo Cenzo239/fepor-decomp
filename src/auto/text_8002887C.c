@@ -3758,14 +3758,15 @@ extern "C" void fn_80032564(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void UnitInfo_DrawDual(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
+    /* Draw the selected unit's status panel, the UI-context panel, and an atlas icon. */
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
     extern f32 lbl_80368E34;
     extern u8 gUiContext[];
     struct Obj {
         u8 pad[4];
-        virtual void v0(s32 *, s32 *, s32 *) = 0;
+        virtual void getPos(s32 *, s32 *, s32 *) = 0;
     };
     s32 x;
     s32 y;
@@ -3774,13 +3775,13 @@ extern "C" void UnitInfo_DrawDual(void *arg0, void *arg1) {
     s32 y2;
     s32 x2;
 
-    if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
-        ((Obj *)arg0)->v0(&x, &y, &alpha);
+    if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
+        ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_800900F4(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_800900F4(fn_8002F740(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_PrepareTex();
@@ -3788,7 +3789,7 @@ extern "C" void UnitInfo_DrawDual(void *arg0, void *arg1) {
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
-        ((Obj *)arg0)->v0(&x2, &y2, &alpha2);
+        ((Obj *)win)->getPos(&x2, &y2, &alpha2);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80368E34);
         Prim2D_SetColorByte((u8)alpha2);
