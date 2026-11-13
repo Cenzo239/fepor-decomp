@@ -6594,7 +6594,7 @@ void fn_80170034(void *arg0) {
 extern "C" void fn_80170058(void *arg0) {
     void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
     void fn_80109020(void *);
@@ -6627,7 +6627,7 @@ extern "C" void fn_80170058(void *arg0) {
     tmp = *(s16 *)((u8 *)p + 0xC);
     sp8[0] = 0x260;
     sp8[1] = tmp;
-    fn_80140258(arg0, p, sp8, 1);
+    Ui_SlideWidgetChild(arg0, p, sp8, 1);
 
     p = *(RefObj **)((u8 *)arg0 + 0x54);
     if (p != NULL) {
@@ -7356,7 +7356,7 @@ void fn_80171B18(void *arg0) {
     void fn_8014027C(void *, void *, s16 *, s32);
     s16 fn_80164E78(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_80140210(void *, void *, s32);
     void fn_8013FF00(void *, void *);
 
@@ -7386,7 +7386,7 @@ void fn_80171B18(void *arg0) {
     tmp = *(s16 *)((u8 *)ret + 0xC);
     sp8[0] = 0x260;
     sp8[1] = tmp;
-    fn_80140258(arg0, ret, sp8, 0);
+    Ui_SlideWidgetChild(arg0, ret, sp8, 0);
 
     ret = Ui_FindChild(arg0, 0x106, 0);
     fn_80140210(arg0, ret, 0);
@@ -7613,7 +7613,7 @@ extern "C" void fn_801723E8(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_801378E8(void *, u32);
     void Ui_AddChild(void *, void *);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     extern u16 lbl_8028FDB0[];
     extern u16 lbl_80292230[];
     extern u16 lbl_802919DC[];
@@ -7647,7 +7647,7 @@ extern "C" void fn_801723E8(void *arg0) {
     temp_r7 = *(s16 *)((u8 *)temp_r4 + 0x10) - temp_r8;
     sp8[0] = *(s16 *)((u8 *)temp_r4 + 0xA);
     sp8[1] = -temp_r7;
-    fn_80140258(arg0, temp_r4, sp8, 0);
+    Ui_SlideWidgetChild(arg0, temp_r4, sp8, 0);
     temp_r31 = Heap_Alloc(0x4C);
     if (temp_r31 != NULL) {
         vt = lbl_802919DC;
@@ -8830,7 +8830,7 @@ loop2_cond:
 extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
     void fn_8013AF08(void *, s16);
     void Ui_RemoveChild(void *, void *);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
 
     struct RefObj {
         virtual void destroy(s32);
@@ -8874,7 +8874,7 @@ extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
     tmp = *(s16 *)((u8 *)p50 + 0xC);
     sp8[0] = 0x260;
     sp8[1] = tmp;
-    fn_80140258(h, p50, sp8, 1);
+    Ui_SlideWidgetChild(h, p50, sp8, 1);
 
     p = h->p50;
     if (p != NULL) {
@@ -9524,7 +9524,7 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
     u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void fn_80140210(void *, void *, s32);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     void fn_801694AC(u32, void *);
     void fn_801695BC(u32, void *, s32);
@@ -9583,7 +9583,7 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
             savedY = *(s16 *)((u8 *)portrait + 0xC);
             slidePos[0] = 0x260;
             slidePos[1] = savedY;
-            fn_80140258(panel, portrait, slidePos, 1);
+            Ui_SlideWidgetChild(panel, portrait, slidePos, 1);
             fn_80140210(panel, *(void **)((u8 *)panel + 0x48), 0);
             Process_Goto(panel, 6);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1DD, 0x64);

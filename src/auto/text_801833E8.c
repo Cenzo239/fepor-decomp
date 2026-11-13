@@ -5048,7 +5048,7 @@ extern "C" void fn_80191590(void *arg0) {
     };
     Child *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_8011D79C(s32);
     void fn_80193344(void *);
     void Ui_SetWidgetText(Child *, s32);
@@ -5075,18 +5075,18 @@ extern "C" void fn_80191590(void *arg0) {
     t = c2->unkC;
     sp14[0] = 0x260;
     sp14[1] = t;
-    fn_80140258(self, c2, sp14, 0);
+    Ui_SlideWidgetChild(self, c2, sp14, 0);
     if (c4 != 0) {
         t = c4->unkC;
         sp10[0] = 0x260;
         sp10[1] = t;
-        fn_80140258(self, c4, sp10, 0);
+        Ui_SlideWidgetChild(self, c4, sp10, 0);
     }
     if (c5 != 0) {
         t = c5->unkC;
         spC[0] = 0x260;
         spC[1] = t;
-        fn_80140258(self, c5, spC, 0);
+        Ui_SlideWidgetChild(self, c5, spC, 0);
     }
     {
         Ref *p = self->unk54;
@@ -5103,7 +5103,7 @@ extern "C" void fn_80191590(void *arg0) {
         t = c6->unkC;
         sp8[0] = 0x260;
         sp8[1] = t;
-        fn_80140258(self, c6, sp8, 0);
+        Ui_SlideWidgetChild(self, c6, sp8, 0);
     }
     {
         Ref *p = self->unk58;
@@ -5166,7 +5166,7 @@ void fn_80191938(void *arg0) {
 void fn_801919B8(void *arg0) {
     M2C_UNK fn_8011D79C(s32);
     void *Ui_FindChild(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80140258(void *, void *, s16 *, M2C_UNK, s16);
+    M2C_UNK Ui_SlideWidgetChild(void *, void *, s16 *, M2C_UNK, s16);
     M2C_UNK fn_8014027C(void *, void *, s16 *, M2C_UNK);
     M2C_UNK fn_801402A0(void *, void *, s16 *, M2C_UNK, s16);
     s16 sp12;
@@ -5188,7 +5188,7 @@ void fn_801919B8(void *arg0) {
     temp_r7 = M2C_FIELD(temp_r29, s16 *, 0xC);
     sp10 = 0x260;
     sp12 = temp_r7;
-    fn_80140258(arg0, temp_r29, &sp10, 0, temp_r7);
+    Ui_SlideWidgetChild(arg0, temp_r29, &sp10, 0, temp_r7);
     spC = 0x138;
     spE = 0x74;
     fn_8014027C(arg0, temp_r28, &spC, 0);
@@ -5239,7 +5239,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     s32 Ui_ListGetSelected(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80291A3C[];
@@ -5272,7 +5272,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     temp_r6 = M2C_FIELD(temp_r30, s16 *, 0xC);
     sp10.x = 0x260;
     sp10.y = temp_r6;
-    fn_80140258(arg0, temp_r30, &sp10.x, 0);
+    Ui_SlideWidgetChild(arg0, temp_r30, &sp10.x, 0);
     spC.x = 0x138;
     spC.y = 0x74;
     fn_8014027C(arg0, temp_r28, &spC.x, 0);
@@ -5364,7 +5364,7 @@ extern "C" void fn_80191F2C(void *arg0) {
         Pair(const Pair &o) { *(u32 *)this = *(u32 *)&o; }
         Pair &operator=(const Pair &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
-    void fn_80140258(void *, void *, const Pair &, s32);
+    void Ui_SlideWidgetChild(void *, void *, const Pair &, s32);
     void fn_8014027C(void *, void *, const Pair &, s32);
     struct Ref {
         virtual void destroy(s32) = 0;
@@ -5426,7 +5426,7 @@ extern "C" void fn_80191F2C(void *arg0) {
         if (unit != 0 && Ui_ListGetSelected(list) != 0) {
             ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)Ui_ListGetSelected(list));
         } else if (unit != 0 && Ui_ListGetSelected(list) == 0) {
-            fn_80140258(self, *(void **)((u8 *)self + 0x54),
+            Ui_SlideWidgetChild(self, *(void **)((u8 *)self + 0x54),
                         Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
             if (fn_8014D8DC(gBattleState) != 0) {
                 Ui_AddChild(self, *(void **)((u8 *)self + 0x58));
@@ -5440,7 +5440,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                         Pair(0x138, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
             ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)Ui_ListGetSelected(list));
             if (fn_8014D8DC(gBattleState) != 0) {
-                fn_80140258(self, *(void **)((u8 *)self + 0x58),
+                Ui_SlideWidgetChild(self, *(void **)((u8 *)self + 0x58),
                             Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0xC)), 0);
             }
             fn_8013FF00(self, list);
@@ -5512,9 +5512,9 @@ extern "C" void fn_80191F2C(void *arg0) {
             *(u8 *)((u8 *)self + 0x5D) = 7;
             Process_Goto(self, 0x10);
         } else if (btn & 0x200) {
-            fn_80140258(self, list, Pair(0x260, *(s16 *)((u8 *)list + 0xC)), 0);
+            Ui_SlideWidgetChild(self, list, Pair(0x260, *(s16 *)((u8 *)list + 0xC)), 0);
             if (Ui_FindChild(self, 5, 0) != 0) {
-                fn_80140258(self, *(void **)((u8 *)self + 0x54),
+                Ui_SlideWidgetChild(self, *(void **)((u8 *)self + 0x54),
                             Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 0);
             }
             {
@@ -5529,7 +5529,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                 }
             }
             if (Ui_FindChild(self, 6, 0) != 0) {
-                fn_80140258(self, *(void **)((u8 *)self + 0x58),
+                Ui_SlideWidgetChild(self, *(void **)((u8 *)self + 0x58),
                             Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0xC)), 0);
             }
             {
@@ -5543,7 +5543,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                     *(Ref **)((u8 *)self + 0x58) = (Ref *)0;
                 }
             }
-            fn_80140258(self, child, Pair(0x260, child->unkC), 0);
+            Ui_SlideWidgetChild(self, child, Pair(0x260, child->unkC), 0);
             fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0xC));
             fn_80193344(self);
             Process_Goto(self, 3);
@@ -5876,7 +5876,7 @@ extern "C" void fn_801927DC(void *arg0) {
 
 void fn_80192DB8(void *arg0) {
     void fn_8013F748(void *, void *, void *);
-    void fn_80140258(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void *Ui_FindChild(void *, s32, s32);
     s16 spC[2];
     s16 sp8[2];
@@ -5889,12 +5889,12 @@ void fn_80192DB8(void *arg0) {
     r7 = *(s16 *)((u8 *)r31 + 0xC);
     spC[0] = 0x260;
     spC[1] = r7;
-    fn_80140258(arg0, r31, spC, 0);
+    Ui_SlideWidgetChild(arg0, r31, spC, 0);
     r4 = Ui_FindChild(arg0, 1, 0);
     r7 = *(s16 *)((u8 *)r4 + 0xC);
     sp8[0] = 0x260;
     sp8[1] = r7;
-    fn_80140258(arg0, r4, sp8, 0);
+    Ui_SlideWidgetChild(arg0, r4, sp8, 0);
 }
 
 void fn_80192E54(void *arg0) {
@@ -5982,7 +5982,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
         Pair(const Pair &o) { *(u32 *)this = *(u32 *)&o; }
         Pair &operator=(const Pair &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
-    void fn_80140258(void *, void *, const Pair &, s32);
+    void Ui_SlideWidgetChild(void *, void *, const Pair &, s32);
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -6080,7 +6080,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(u8 *)((u8 *)listWidget + 0x4C) = 0;
-            fn_80140258(self, child, Pair(0x260, child->y), 0);
+            Ui_SlideWidgetChild(self, child, Pair(0x260, child->y), 0);
             Process_Goto(self, 0x11);
             Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x4DE, 0x64);
         }
@@ -6735,7 +6735,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
         Pair(const Pair &o) { *(u32 *)this = *(u32 *)&o; }
         Pair &operator=(const Pair &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
-    void fn_80140258(void *, void *, const Pair &, s32);
+    void Ui_SlideWidgetChild(void *, void *, const Pair &, s32);
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -6832,7 +6832,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(u8 *)((u8 *)listWidget + 0x4C) = 0;
-            fn_80140258(self, child, Pair(0x260, child->y), 0);
+            Ui_SlideWidgetChild(self, child, Pair(0x260, child->y), 0);
             Process_Goto(self, 6);
             Ui_PlaySeCue((u8 *)lbl_8027A360 + 0x1b0, 0x64);
         }
