@@ -1995,7 +1995,8 @@ void fn_801F66D4(void *arg0) {
     }
 }
 
-void BattlePreview_Draw(void *arg0) {
+/* Draw the battle preview overlay: banner quads, title, and detail panel. */
+void BattlePreview_Draw(void *proc) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -2012,11 +2013,11 @@ void BattlePreview_Draw(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     void BattlePreview_DrawDetails(void *, f32, f32);
     extern u8 gBattlePreviewStrings[];
-    void *temp_r31;
-    void *temp_r30;
-    f32 fw;
+    void *title;
+    void *work;
+    f32 titleW;
 
-    temp_r30 = *(void **)((u8 *)arg0 + 0x30);
+    work = *(void **)((u8 *)proc + 0x30);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B910, lbl_8036B910, lbl_8036B914, lbl_8036B918);
     Prim2D_PrepareTex();
@@ -2024,7 +2025,7 @@ void BattlePreview_Draw(void *arg0) {
     Prim2D_AddZ(lbl_8036B91C);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    Prim2D_BindTexture(*(s32 *)((u8 *)temp_r30 + 0x10), 1, 0x11);
+    Prim2D_BindTexture(*(s32 *)((u8 *)work + 0x10), 1, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetQuadMin(lbl_8036B920, lbl_8036B924, lbl_8036B910, lbl_8036B910);
@@ -2042,13 +2043,13 @@ void BattlePreview_Draw(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    temp_r31 = Msg_Expand(gBattlePreviewStrings + 0x6B);
-    fw = (f32)Text_MeasureWidth(temp_r31, -1, lbl_8036B934);
-    fn_8001003C((s32)(lbl_8036B920 - lbl_8036B938 * fw), 0x1E, 2, 0, 0, temp_r31, lbl_8036B934, lbl_8036B910);
+    title = Msg_Expand(gBattlePreviewStrings + 0x6B);
+    titleW = (f32)Text_MeasureWidth(title, -1, lbl_8036B934);
+    fn_8001003C((s32)(lbl_8036B920 - lbl_8036B938 * titleW), 0x1E, 2, 0, 0, title, lbl_8036B934, lbl_8036B910);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B93C);
     Prim2D_PrepareTex();
-    BattlePreview_DrawDetails(temp_r30, lbl_8036B940, lbl_8036B944);
+    BattlePreview_DrawDetails(work, lbl_8036B940, lbl_8036B944);
 }
 
 void BattlePreview_DrawDetails(void *arg0, f32 farg0, f32 farg1) {
