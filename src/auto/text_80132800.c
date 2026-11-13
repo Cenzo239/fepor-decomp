@@ -9583,7 +9583,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
-    void fn_8000770C(f32, f32, f32, f32, f32, f32);
+    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void fn_80007870(f32);
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
@@ -9639,7 +9639,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     f29 = (f32)((temp_r25 / ((Obj *)obj)->v12()) * temp_r26);
     Prim2D_AddPrim(1);
     f31 = (f32)((Obj *)obj)->v15();
-    fn_8000770C((f32)var_r28, (f32)var_r29, f30, f29, (f32)((Obj *)obj)->v14(), f31);
+    Prim2D_SetRectUv((f32)var_r28, (f32)var_r29, f30, f29, (f32)((Obj *)obj)->v14(), f31);
     fn_80007870((f32)var_r30);
     sp8 = *var_r31;
     fn_80007668(&sp8);

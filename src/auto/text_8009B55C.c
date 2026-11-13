@@ -47,7 +47,7 @@ extern f32 lbl_803697E4;
 
 void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     M2C_UNK fn_800075D8();
-    M2C_UNK fn_8000770C(f32, f32, f32, f32, f32, f32);
+    M2C_UNK Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     M2C_UNK Prim2D_BindTexture(s32, M2C_UNK, M2C_UNK);
     extern f32 lbl_803697E4;
     extern f32 lbl_803697F8;
@@ -72,15 +72,15 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         Prim2D_BindTexture(arg0, 8, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        fn_8000770C(lbl_8036987C, lbl_803697FC, lbl_803697E4, lbl_803697E4, lbl_80369860, lbl_8036981C);
+        Prim2D_SetRectUv(lbl_8036987C, lbl_803697FC, lbl_803697E4, lbl_803697E4, lbl_80369860, lbl_8036981C);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
-        fn_8000770C(lbl_80369880, lbl_803697FC, lbl_80369830, lbl_803697E4, lbl_80369884, lbl_8036981C);
+        Prim2D_SetRectUv(lbl_80369880, lbl_803697FC, lbl_80369830, lbl_803697E4, lbl_80369884, lbl_8036981C);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
-        fn_8000770C(lbl_80369888, lbl_803697FC, lbl_80369868, lbl_803697E4, lbl_803697FC, lbl_8036981C);
+        Prim2D_SetRectUv(lbl_80369888, lbl_803697FC, lbl_80369868, lbl_803697E4, lbl_803697FC, lbl_8036981C);
         fn_800075D8();
         Prim2D_EndPrim();
         break;
@@ -90,7 +90,7 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         Prim2D_BindTexture(arg0, 9, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        fn_8000770C(lbl_803697F8, lbl_803697FC, 0.0f, 0.0f, lbl_803697F8, lbl_8036981C);
+        Prim2D_SetRectUv(lbl_803697F8, lbl_803697FC, 0.0f, 0.0f, lbl_803697F8, lbl_8036981C);
         fn_800075D8();
         Prim2D_EndPrim();
         break;
@@ -100,7 +100,7 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         Prim2D_BindTexture(arg0, 0xA, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        fn_8000770C(lbl_80369844, lbl_803697FC, 0.0f, 0.0f, lbl_8036988C, lbl_803697FC);
+        Prim2D_SetRectUv(lbl_80369844, lbl_803697FC, 0.0f, 0.0f, lbl_8036988C, lbl_803697FC);
         fn_800075D8();
         Prim2D_EndPrim();
         break;

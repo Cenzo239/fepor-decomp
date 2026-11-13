@@ -1031,7 +1031,7 @@ void fn_800076EC(void) {
     *(f32 *)(ptr + 0x28) = temp;
 }
 
-void fn_8000770C(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
+void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
 {
     extern u8 *lbl_80367140;
     extern f32 lbl_80368B98;

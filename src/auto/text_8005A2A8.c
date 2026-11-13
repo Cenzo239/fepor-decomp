@@ -80,7 +80,7 @@ s32 fn_8005A310(void *arg0, u8 arg1, u8 arg2) {
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void DCFlushRange(void *, u32);
-extern "C" void fn_8000770C(f32, f32, f32, f32, f32, f32);
+extern "C" void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
 extern "C" void Prim2D_EndPrim(void);
 extern "C" void Prim2D_AddPrim(s32);
 extern "C" void fn_8000A03C(void *, void *, s32, s32);
@@ -178,7 +178,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         Prim2D_AddPrim(1);
         fw = (f32)((Obj *)arg0)->v15();
         w = ((Obj *)arg0)->v14();
-        fn_8000770C((f32)a1, (f32)a2, fx, fy, (f32)w, fw);
+        Prim2D_SetRectUv((f32)a1, (f32)a2, fx, fy, (f32)w, fw);
         Prim2D_EndPrim();
     }
 }
