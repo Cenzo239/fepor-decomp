@@ -2149,7 +2149,7 @@ volatile u32 OS_AIRegs[8] : 0xCC006C00;
 volatile u32 OS_EXIRegs[16] : 0xCC006800;
 
 #pragma peephole off
-u32 fn_80207C34(u32 mask, u32 current) {
+u32 SetInterruptMask(u32 mask, u32 current) {
     u32 reg;
 
     switch (__cntlzw(mask)) {
@@ -2313,7 +2313,7 @@ u32 __OSMaskInterrupts(u32 global) {
     *(u32 *)0x800000C4 = global;
     global |= ie;
     while (mask != 0) {
-        mask = fn_80207C34(mask, global);
+        mask = SetInterruptMask(mask, global);
     }
     OSRestoreInterrupts(enabled);
     return prev;
