@@ -2423,6 +2423,7 @@ s32 fn_800787F8(void) {
 }
 
 s32 Ui_HasWeaponTarget(void) {
+    /* Return 0 if the UI unit has a weapon with map targets, else 3 (menu grayed). */
     void *Item_GetFlagsPtr(void);
     void fn_8002C034(void *, u32);
     u32 *Unit_GetHeldItemSlot(void *, s32);
@@ -2431,19 +2432,19 @@ s32 Ui_HasWeaponTarget(void) {
     extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u32 *entry;
     s32 i;
-    u8 *p;
-    void *tmp;
+    u8 *ctx;
+    void *flags;
 
-    p = gUiContext;
-    if ((s8)p[0x12] != 0) {
+    ctx = gUiContext;
+    if ((s8)ctx[0x12] != 0) {
         return 3;
     }
     i = 0;
     do {
-        entry = Unit_GetHeldItemSlot(*(void **)p, i);
+        entry = Unit_GetHeldItemSlot(*(void **)ctx, i);
         if (*entry != 0) {
-            tmp = Item_GetFlagsPtr();
-            if ((*(u64 *)tmp & 1) != 0
+            flags = Item_GetFlagsPtr();
+            if ((*(u64 *)flags & 1) != 0
                 && fn_8009339C(*(void **)gUiContext, *entry) != 0) {
                 fn_8002C034(*(void **)gUiContext, *entry);
                 if (gTargetList.n != 0) {
