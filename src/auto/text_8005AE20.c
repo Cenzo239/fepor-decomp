@@ -6695,7 +6695,7 @@ int Game_Assert(void *arg0, int arg1, int arg2) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8006DA98(void *arg0)
+void DEMOInitGX(void *arg0)
 {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
