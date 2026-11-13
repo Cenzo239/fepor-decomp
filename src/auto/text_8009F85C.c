@@ -814,11 +814,11 @@ void *fn_800A05EC(void) {
 
 s32 fn_800A05FC(void) {
     void fn_800056A0(s32);
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     extern u16 lbl_8026D8D8[];
 
     fn_800056A0(0);
-    fn_800056CC((const char *)((u8 *)lbl_8026D8D8 + 0x46F));
+    DebugPrint((const char *)((u8 *)lbl_8026D8D8 + 0x46F));
     return 5;
 }
 
@@ -829,14 +829,14 @@ void *fn_800A0638(void) {
 
 s32 fn_800A0648(void) {
     void fn_800056A0(s32);
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     void fn_8000D048(void);
     extern u16 lbl_8026D8D8[];
 
     fn_800056A0(0);
-    fn_800056CC((const char *)((u8 *)lbl_8026D8D8 + 0x496));
+    DebugPrint((const char *)((u8 *)lbl_8026D8D8 + 0x496));
     fn_8000D048();
-    fn_800056CC((const char *)((u8 *)lbl_8026D8D8 + 0x4AD));
+    DebugPrint((const char *)((u8 *)lbl_8026D8D8 + 0x4AD));
     return 5;
 }
 
@@ -860,14 +860,14 @@ void *fn_800A06D8(void) {
 
 s32 fn_800A06E8(void) {
     void fn_800056A0(s32);
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     void fn_8005BCD0(void);
     extern u16 lbl_8026D8D8[];
 
     fn_800056A0(0);
-    fn_800056CC((const char *)((u8 *)lbl_8026D8D8 + 0x4C6));
+    DebugPrint((const char *)((u8 *)lbl_8026D8D8 + 0x4C6));
     fn_8005BCD0();
-    fn_800056CC((const char *)((u8 *)lbl_8026D8D8 + 0x4AD));
+    DebugPrint((const char *)((u8 *)lbl_8026D8D8 + 0x4AD));
     return 5;
 }
 

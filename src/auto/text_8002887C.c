@@ -1999,7 +1999,7 @@ void fn_8002D548(void)
     void fn_80016498(void);
     void fn_80015D54(void);
     void fn_80018F08(void);
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
 
     fn_800C50FC(lbl_80269210 + 0x176, 0x180000);
     fn_80166258(gBattleState[0x10]);
@@ -2016,7 +2016,7 @@ void fn_8002D548(void)
     fn_80016498();
     fn_80015D54();
     fn_80018F08();
-    fn_800056CC((char *)(lbl_80269210 + 0x1BF), fn_800C52C8());
+    DebugPrint((char *)(lbl_80269210 + 0x1BF), fn_800C52C8());
 }
 #pragma global_optimizer reset
 void fn_8002D648(void *arg0) {

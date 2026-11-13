@@ -51,7 +51,7 @@ void fn_8009ECF4(s32 arg0) {
 
 #pragma optimization_level 2
 void fn_8009ED1C(void) {
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     s32 fn_800EB774(void);
     void *fn_801E2324(void *, s32);
     s32 fn_801E2458(void *);
@@ -67,58 +67,58 @@ void fn_8009ED1C(void) {
     s32 i;
 
     if (fn_800EB774() == 0 || fn_800EB774() == -0x42) {
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x198));
+        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
         base = lbl_8026D8D8;
         i = 0;
         do {
-            fn_800056CC((const char *)(base + 0x1C6), i);
+            DebugPrint((const char *)(base + 0x1C6), i);
             obj = Save_GetSmallSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x62);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
             } else if (*((u8 *)obj + 0x60) == 1) {
                 b = *((u8 *)obj + 0x62);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
             } else {
                 b = *((u8 *)obj + 0x62);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
             }
             i += 1;
         } while (i < 6);
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x198));
+        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
         base = lbl_8026D8D8;
         i = 0;
         do {
-            fn_800056CC((const char *)(base + 0x220), i);
+            DebugPrint((const char *)(base + 0x220), i);
             obj = fn_801E2324(&gSaveDataBase, i);
             if (obj == NULL) {
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x227));
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x227));
             } else {
                 b = *((u8 *)obj + 0x62);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
             }
             i += 1;
         } while (i < 5);
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x198));
+        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
         base = lbl_8026D8D8;
         i = 0;
         do {
-            fn_800056CC((const char *)(base + 0x23D), i);
+            DebugPrint((const char *)(base + 0x23D), i);
             obj = Save_GetLargeSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x63);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
             } else if (*((u8 *)obj + 0x60) == 1) {
                 b = *((u8 *)obj + 0x63);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
             } else {
                 b = *((u8 *)obj + 0x63);
-                fn_800056CC((const char *)(lbl_8026D8D8 + 0x244), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(lbl_8026D8D8 + 0x244), b, fn_801E417C(obj), lbl_8026D8D8);
             }
             i += 1;
         } while (i < 2);
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x198));
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&gSaveDataBase), lbl_8026D8D8);
+        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
+        DebugPrint((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&gSaveDataBase), lbl_8026D8D8);
     }
     fn_801E2594(&gSaveDataBase);
 }

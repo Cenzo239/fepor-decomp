@@ -841,10 +841,10 @@ s32 fn_8001462C(void *arg0) {
 
 s32 fn_80014690(void *arg0)
 {
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     extern char lbl_80267FE8[];
 
-    fn_800056CC(
+    DebugPrint(
         lbl_80267FE8,
         arg0,
         *(u32 *)((u8 *)arg0 + 0x14),
@@ -882,7 +882,7 @@ u32 fn_80014790(u32 arg0) {
 #pragma global_optimizer off
 void main(void) {
     void *OSGetTick(void);
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     void fn_800059B4(void);
     void fn_800059FC(s32, s32, s32, s32, s32);
     void fn_80005A84(s32, s32);
@@ -989,7 +989,7 @@ void main(void) {
     fn_800059B4();
     base[0x1320] = 0;
     strcpy(base + 0x1360, lbl_80268000);
-    fn_800056CC(lbl_80268000 + 7,
+    DebugPrint(lbl_80268000 + 7,
                 *(s8 *)0x80000000, *(s8 *)0x80000001, *(s8 *)0x80000002,
                 *(s8 *)0x80000003, *(s8 *)0x80000004, *(s8 *)0x80000005);
     fn_8023A504(0, 2, &sp8);
@@ -2029,7 +2029,7 @@ void fn_80016538(void)
     extern char lbl_802680A8[];
 
     extern s32 fn_80015680(void *);
-    extern void fn_800056CC(const char *, ...);
+    extern void DebugPrint(const char *, ...);
     extern s32 fn_800A8A88(void *);
 
     u8 *node;
@@ -2050,7 +2050,7 @@ void fn_80016538(void)
 
     do {
         value = fn_80015680(slot);
-        fn_800056CC(strings + 0x23, index, value);
+        DebugPrint(strings + 0x23, index, value);
 
         node = *(u8 **)slot;
         while (node != 0) {
@@ -2061,7 +2061,7 @@ void fn_80016538(void)
                 byte0 = *(u8 *)(node + 0x19E);
                 byte2 = *(u8 *)(node + 0x198);
                 result = fn_800A8A88(ptr);
-                fn_800056CC(
+                DebugPrint(
                     strings + 0x3B,
                     byte2,
                     (s8)byte0,
@@ -2070,7 +2070,7 @@ void fn_80016538(void)
                     result
                 );
             } else {
-                fn_800056CC(
+                DebugPrint(
                     lbl_802680A8 + 0x59,
                     *(u8 *)(node + 0x198),
                     (s8)*(u8 *)(node + 0x19E),

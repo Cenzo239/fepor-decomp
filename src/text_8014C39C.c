@@ -242,7 +242,7 @@ void fn_8014C7C0(void *arg0, char *arg1) {
     void fn_80041514(void *, char *);
     void fn_80023D14(void *);
     void fn_800AA15C(void);
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     extern u8 lbl_80277060[];
     extern u8 gBattleMap[];
     char buffer[0x40];
@@ -265,7 +265,7 @@ after_copy:
     fn_80041514(Map_Get(), buffer);
     fn_80023D14(gBattleMap);
     fn_800AA15C();
-    fn_800056CC((char *)lbl_80277060 + 0x15e, str);
+    DebugPrint((char *)lbl_80277060 + 0x15e, str);
 }
 
 void fn_8014CA20(void *arg0, s32 arg1) {

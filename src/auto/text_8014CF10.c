@@ -543,7 +543,7 @@ void fn_8014DEA8(void) {
     void fn_8005B8E8(void);
     void sprintf(char *, char *, ...);
     void fn_8005C7C8(char *);
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     extern s32 gMsgDebugKinds;
     extern s32 gMsgDebugPtrs;
     extern s32 gMsgDebugCount;
@@ -560,7 +560,7 @@ void fn_8014DEA8(void) {
         if (fn_8005B888(i) == 0) {
             sprintf(buffer, (char *)lbl_80277238 + 0x2D, fn_8005B8AC(i));
             fn_8005C7C8(buffer);
-            fn_800056CC((char *)lbl_80277238 + 0x35, buffer);
+            DebugPrint((char *)lbl_80277238 + 0x35, buffer);
         }
     }
     fn_8005B8E8();
@@ -611,7 +611,7 @@ void MsgDebug_Init(void) {
     void sprintf(void *, void *, ...);
     void fn_8003FCCC(void *);
     void fn_8005C4C4(void *, s32);
-    void fn_800056CC(void *, void *, ...);
+    void DebugPrint(void *, void *, ...);
     void *fn_8000D1B4(s32);
     u8 Id_GetKind(void);
     s32 fn_800C42AC(s32);
@@ -643,7 +643,7 @@ void MsgDebug_Init(void) {
             sprintf(&path, lbl_80277238 + 0x2D, fn_8005B8AC(i));
             fn_8003FCCC(&path);
             fn_8005C4C4(&path, 4);
-            fn_800056CC(lbl_80277238 + 0x59, &path);
+            DebugPrint(lbl_80277238 + 0x59, &path);
         }
         i += 1;
     load_check:

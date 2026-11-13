@@ -4414,7 +4414,7 @@ void fn_8000CF4C(u32 arg0) {
 
 void fn_8000D048(void)
 {
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
 
     extern u8 lbl_802ADB20[];
     extern u8 lbl_80267D40[];
@@ -4433,7 +4433,7 @@ void fn_8000D048(void)
         text = *(u8 **)(entry + 8);
 
         if (text != 0) {
-            fn_800056CC(
+            DebugPrint(
                 (const char *)lbl_80267D40,
                 index,
                 *(u32 *)(entry + 0xC),
@@ -4453,12 +4453,12 @@ void fn_8000D048(void)
 
     for (i = 0; i < 0x1FD; i++) {
         if ((i % 18) == 0) {
-            fn_800056CC(
+            DebugPrint(
                 (const char *)(lbl_80267D40 + 0x13)
             );
         }
 
-        fn_800056CC(
+        DebugPrint(
             (const char *)(lbl_80267D40 + 0x15),
             *(u32 *)(table + 0x7FC)
         );
@@ -4466,24 +4466,24 @@ void fn_8000D048(void)
         table += 4;
     }
 
-    fn_800056CC((const char *)(lbl_80267D40 + 0x1A));
+    DebugPrint((const char *)(lbl_80267D40 + 0x1A));
 
-    fn_800056CC(
+    DebugPrint(
         (const char *)(lbl_80267D40 + 0x1D),
         *(u32 *)lbl_802ADB20
     );
 
-    fn_800056CC(
+    DebugPrint(
         (const char *)(lbl_80267D40 + 0x3D),
         total
     );
 
-    fn_800056CC(
+    DebugPrint(
         (const char *)(lbl_80267D40 + 0x59),
         0x28FF0
     );
 
-    fn_800056CC((const char *)(lbl_80267D40 + 0x13));
+    DebugPrint((const char *)(lbl_80267D40 + 0x13));
 }
 
 s32 fn_8000D1B4(s32 arg0) {

@@ -13,7 +13,7 @@ void fn_800056AC(void) {
     *(u8*)&lbl_80367100[0x18/2] = (u8)0;
 }
 
-s32 fn_800056CC(const char *fmt, ...) {
+s32 DebugPrint(const char *fmt, ...) {
     return 0;
 }
 

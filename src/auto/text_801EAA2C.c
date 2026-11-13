@@ -981,7 +981,7 @@ void fn_801EC7B4(void) {
 
 #pragma use_lmw_stmw on
 void fn_801EC7B8(void) {
-    void fn_800056CC(void *, ...);
+    void DebugPrint(void *, ...);
     s32 OSGetTick(void);
     s8 fn_8005BA00(void);
     u32 fn_800C44F4(s8);
@@ -1018,7 +1018,7 @@ void fn_801EC7B8(void) {
     u32 bus;
     u32 dt;
 
-    fn_800056CC(lbl_8027F1D0);
+    DebugPrint(lbl_8027F1D0);
     tick = OSGetTick();
     while (lbl_803683D0 != 0) {}
     half = lbl_803683CC >> 1;
@@ -1203,7 +1203,7 @@ void fn_801EC7B8(void) {
         fn_800C4588(buf0);
         dt = (u32)(OSGetTick() - tick);
         bus = *(u32 *)0x800000F8;
-        fn_800056CC(lbl_8027F1D0 + 0x19, dt / ((bus >> 2) / 4000));
+        DebugPrint(lbl_8027F1D0 + 0x19, dt / ((bus >> 2) / 4000));
         return;
     }
     p = lbl_80332270;

@@ -4184,7 +4184,7 @@ extern "C" s32 fn_800B7DB4(s32 arg0, s32 arg1) {
 #pragma cplusplus reset
 s32 fn_800B7E60(s32 arg0, u32 arg1, s32 arg2) {
     void Fx_StartSlot(s32, void *, s32, s32);
-    void fn_800056CC(void *, ...);
+    void DebugPrint(void *, ...);
     void fn_80146AF0(void);
     extern s32 gUiInputFlags;
     extern u8 lbl_8026ECB8[];
@@ -4194,7 +4194,7 @@ s32 fn_800B7E60(s32 arg0, u32 arg1, s32 arg2) {
     }
     if (!(gUiInputFlags & 3)) {
         Fx_StartSlot((u8)arg0, (void *)arg1, 0x64, arg2);
-        fn_800056CC(lbl_8026ECB8 + 0x9A9, arg1);
+        DebugPrint(lbl_8026ECB8 + 0x9A9, arg1);
     }
     if (arg0 == 0) {
         fn_80146AF0();
@@ -4245,7 +4245,7 @@ s32 fn_800B7FD8(s32 arg0, u32 arg1, s32 arg2) {
     extern s32 gUiInputFlags;
     extern u8 lbl_8026ECB8[];
     void Fx_StartSlot(u8, u32, u8, s32);
-    void fn_800056CC(void *, ...);
+    void DebugPrint(void *, ...);
     void fn_80146AF0(void);
 
     if ((arg1 < 0x80000000U) || (arg1 >= 0x81800000U)) {
@@ -4253,7 +4253,7 @@ s32 fn_800B7FD8(s32 arg0, u32 arg1, s32 arg2) {
     }
     if (!(gUiInputFlags & 3)) {
         Fx_StartSlot((u8)arg0, arg1, (u8)arg2, 1);
-        fn_800056CC(lbl_8026ECB8 + 0x9d4, arg1);
+        DebugPrint(lbl_8026ECB8 + 0x9d4, arg1);
     }
     if (arg0 == 0) {
         fn_80146AF0();
@@ -4265,7 +4265,7 @@ s32 fn_800B8070(s32 arg0, u32 arg1) {
     extern s32 gUiInputFlags;
     extern u8 lbl_8026ECB8[];
     void Fx_StartSlot(u8, u32, u8, s32);
-    void fn_800056CC(void *, ...);
+    void DebugPrint(void *, ...);
     void fn_80146AF0(void);
 
     if ((arg1 < 0x80000000U) || (arg1 >= 0x81800000U)) {
@@ -4273,7 +4273,7 @@ s32 fn_800B8070(s32 arg0, u32 arg1) {
     }
     if (!(gUiInputFlags & 3)) {
         Fx_StartSlot((u8)arg0, arg1, 0x64, 1);
-        fn_800056CC(lbl_8026ECB8 + 0xa00, arg1);
+        DebugPrint(lbl_8026ECB8 + 0xa00, arg1);
     }
     if (arg0 == 0) {
         fn_80146AF0();

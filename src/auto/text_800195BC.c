@@ -1004,7 +1004,7 @@ void fn_8001AC18(void) {
 #pragma global_optimizer off
 void fn_8001B134(void) {
     void fn_8003FCCC();
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     u8 *Hash_Lookup(char *);
     s32 Res_GetByName(char *);
     void fn_8000D3EC(u32, void *);
@@ -1062,29 +1062,29 @@ void fn_8001B134(void) {
         val = (src[0] << 24) + (src[1] << 16) + (src[2] << 8) + src[3];
         src += 4;
     }
-    fn_800056CC(lbl_80268510 + 0xA1, val);
+    DebugPrint(lbl_80268510 + 0xA1, val);
 
     if (src == 0) {
         val = 0;
     } else {
         val = (src[0] << 24) + (src[1] << 16) + (src[2] << 8) + src[3];
     }
-    fn_800056CC(lbl_80268510 + 0xB6, val);
-    fn_800056CC(lbl_80268510 + 0xCB);
-    fn_800056CC(lbl_80268510 + 0xE9);
+    DebugPrint(lbl_80268510 + 0xB6, val);
+    DebugPrint(lbl_80268510 + 0xCB);
+    DebugPrint(lbl_80268510 + 0xE9);
 
     lbl_803671E8 = Hash_Lookup(lbl_80268510 + 0x60) + 4;
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x113);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x113);
     fn_8001AC18();
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x139);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x139);
     fn_8001A5E4();
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x159);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x159);
     fn_80019FC4();
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x17D);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x17D);
 
     p = Hash_Lookup(lbl_80268510 + 0x3E);
     src = p + 4;
@@ -1121,8 +1121,8 @@ void fn_8001B134(void) {
         src = (u8 *)(((u32)src + 0xF) & ~3);
     }
 
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x1AB);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x1AB);
 
     p = Hash_Lookup(lbl_80268510 + 0x53);
     src = p + 4;
@@ -1130,17 +1130,17 @@ void fn_8001B134(void) {
     lbl_803671F0 = src;
     fn_8003B844(src, n);
 
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x1CD);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x1CD);
 
     lbl_8036720C = Hash_Lookup(lbl_80268510 + 0x8) + 4;
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x1F1);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x1F1);
 
     lbl_803671EC = Hash_Lookup(lbl_80268510 + 0x47) + 4;
     fn_8005B820();
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x211);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x211);
 
     p = Hash_Lookup(lbl_80268510 + 0x33);
     src = p + 4;
@@ -1173,8 +1173,8 @@ void fn_8001B134(void) {
         src = (u8 *)(((u32)src + 3) & ~3);
     }
 
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x23B);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x23B);
 
     fn_8017A7D4(&tmp, Hash_Lookup(lbl_80268510 + 0x27));
     lbl_80367208 = fn_8017A950(&tmp);
@@ -1187,18 +1187,18 @@ void fn_8001B134(void) {
         tmp.flag = 0;
     }
 
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x265);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x265);
 
     lbl_80367210 = (void *)Res_GetByName(lbl_80268510 + 0x1D);
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x287);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x287);
 
     lbl_80367214 = Hash_Lookup(lbl_80268510 + 0x13) + 4;
     fn_801B8798();
-    fn_800056CC(lbl_80268510 + 0x10B);
-    fn_800056CC(lbl_80268510 + 0x2A3);
-    fn_800056CC(lbl_80268510 + 0x2CD);
+    DebugPrint(lbl_80268510 + 0x10B);
+    DebugPrint(lbl_80268510 + 0x2A3);
+    DebugPrint(lbl_80268510 + 0x2CD);
 }
 #pragma global_optimizer reset
 f32 fn_8001B84C(u8 **arg0) {
@@ -1220,31 +1220,38 @@ f32 fn_8001B84C(u8 **arg0) {
     return *(f32 *)&value;
 }
 
+#pragma scheduling off
+#pragma global_optimizer off
 u32 Bin_ReadU32(u8 **arg0) {
+    u8 **stream;
     u8 *data;
     u8 *next;
     u32 result;
     u32 b2;
     u32 b0;
     u32 b3;
-    data = *arg0;
-    if (data == 0) return 0;
-    b2 = data[2] << 8;
+
+    stream = arg0;
+    data = *stream;
+    if (data == 0) {
+        return 0;
+    }
+    b2 = data[2];
     next = data + 4;
     result = data[1];
     b0 = data[0];
+    b2 <<= 8;
     result <<= 16;
     b3 = data[3];
     result += b2;
     b0 <<= 24;
     result += b3;
+    *stream = next;
     result = b0 + result;
-    *arg0 = next;
     return result;
 }
-
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma global_optimizer reset
+#pragma scheduling reset
 u32 fn_8001B8E0(u8 **arg0)
 {
     u8 *data;

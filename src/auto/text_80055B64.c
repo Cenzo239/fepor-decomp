@@ -175,7 +175,7 @@ void fn_80055B64(s32 arg0) {
     void *Process_Create(void *, s32);
     s32 fn_801451BC(void);
     u8 fn_80145308(void);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     extern u8 lbl_80285990[];
     extern u8 GActor_str[];
     extern u8 lbl_80285968[];
@@ -183,7 +183,7 @@ void fn_80055B64(s32 arg0) {
 
     if (arg0 == 0 && Process_Find(lbl_80285990) == 0U && fn_80145308() == 0) {
         fn_801451BC();
-        fn_800056CC((const char *)(GActor_str + 0x12E));
+        DebugPrint((const char *)(GActor_str + 0x12E));
         return;
     }
     temp = Process_Create(lbl_80285968, 4);

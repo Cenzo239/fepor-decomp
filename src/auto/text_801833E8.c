@@ -1985,7 +1985,7 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 
 void MoveAnim_AttachClassCue(void *anim) {
     s32 Str_Cmp(void *, void *);
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 MoveAnim_str[];
     void *klass;
@@ -2051,7 +2051,7 @@ void MoveAnim_AttachClassCue(void *anim) {
             x = *(f32 *)((u8 *)unit + 4);
             y = *(f32 *)((u8 *)unit + 8);
             z = *(f32 *)((u8 *)unit + 0xC);
-            fn_800056CC((char *)(MoveAnim_str + 0x4B3), cuePath);
+            DebugPrint((char *)(MoveAnim_str + 0x4B3), cuePath);
             *(s8 *)((u8 *)anim + 0x6A) = SeCue_PlayAt(cuePath, 0x64, x, y, z);
         }
     }
@@ -2851,13 +2851,13 @@ void fn_8018BC28(void) {
 void fn_8018C680(void *arg0)
 {
     void *fn_800A8A88(void *);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     extern u8 MoveAnim_str[];
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
     p = *(void **)((u8 *)p + 0x188);
-    fn_800056CC((char *)(MoveAnim_str + 0x97b), fn_800A8A88(p), MoveAnim_str);
+    DebugPrint((char *)(MoveAnim_str + 0x97b), fn_800A8A88(p), MoveAnim_str);
 }
 
 #pragma opt_strength_reduction off

@@ -29,7 +29,7 @@ void fn_80055CE4(void *arg0)
 {
     extern u8 lbl_8026AD80[];
     extern u32 fn_8005BA10(void *);
-    extern void fn_800056CC(const char *, ...);
+    extern void DebugPrint(const char *, ...);
     extern void Process_ClearFunc(void *);
 
     u8 *obj;
@@ -48,7 +48,7 @@ void fn_80055CE4(void *arg0)
             callback(*(void **)(obj + 0x18));
         }
 
-        fn_800056CC(
+        DebugPrint(
             (const char *)lbl_8026AD80 + 0x91,
             obj + 0x30
         );
@@ -1023,7 +1023,7 @@ void fn_80057EDC(void) {
 
 s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 GActor_FindNode(s32, s32);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     void fn_800056A0(s32);
     void fn_8000A388(void *, void *, s32);
     void *Process_Create(void *, s32);
@@ -1034,7 +1034,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *temp_r31;
 
     if (GActor_FindNode(arg0, arg1) < 0 || GActor_FindNode(arg0, arg2) < 0) {
-        fn_800056CC((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
+        DebugPrint((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
         fn_800056A0(0);
     }
     fn_8000A388(lbl_80285B6C, fn_80057FD4, arg0);

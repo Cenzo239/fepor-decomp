@@ -1664,7 +1664,7 @@ void fn_801F5D08(void *arg0) {
 void fn_801F5D14(void *arg0) {
     s32 fn_802655A8(void *, u8 *);
     void fn_80266840(void *, void *, u8 *);
-    void fn_800056CC(void *, ...);
+    void DebugPrint(void *, ...);
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     extern u16 gCardLinkStr[18];
@@ -1681,7 +1681,7 @@ void fn_801F5D14(void *arg0) {
         return;
     }
     fn_80266840(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x40, (u8 *)arg0 + 0x4B);
-    fn_800056CC((u8 *)gCardLinkStr + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
+    DebugPrint((u8 *)gCardLinkStr + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
     if (*(u32 *)((u8 *)arg0 + 0x40) + 0x10000 != 0xFFFF) {
         Process_Goto(arg0, 3);
         *(u8 *)((u8 *)arg0 + 0x4C) = 3;
@@ -1725,7 +1725,7 @@ void fn_801F5E74(void *arg0) {
     void Process_Goto(void *, s32);
     s32 fn_802655A8(void *, void *);
     s32 fn_80266998(void *, void *, void *);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
     extern s8 *lbl_803683F0;
     s8 *p;
@@ -1749,7 +1749,7 @@ void fn_801F5E74(void *arg0) {
         return;
     }
     p = lbl_803683F0;
-    fn_800056CC((char *)gCardLinkStr + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
+    DebugPrint((char *)gCardLinkStr + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
     Process_ClearFunc(arg0);
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
 }
@@ -1775,7 +1775,7 @@ void fn_801F5FE0(void *arg0) {
     s32 fn_8026569C(void *, void *);
     s32 fn_802655A8(void *, void *);
     s32 fn_80266840(void *, void *, void *);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
     u32 v;
 
@@ -1797,7 +1797,7 @@ void fn_801F5FE0(void *arg0) {
         return;
     }
     v = *(u32 *)((u8 *)arg0 + 0x40);
-    fn_800056CC((char *)gCardLinkStr + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
+    DebugPrint((char *)gCardLinkStr + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
     Process_ClearFunc(arg0);
 }

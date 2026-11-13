@@ -391,7 +391,7 @@ u8 fn_80105E88(s32 arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 /* Load a dispos file and place units / build move paths; mode selects how entries are applied. */
 void Dispos_Apply(void *path, u32 defer, s32 mode) {
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     void *fn_8000CAA0(void *, u32);
     u32 Res_GetByName(void *);
     void fn_80016180(void);
@@ -436,7 +436,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     self = path;
     arg1b = defer;
     mode_local = mode;
-    fn_800056CC((const char *)(gDisposStrings + 0x33), self);
+    DebugPrint((const char *)(gDisposStrings + 0x33), self);
     if (Res_GetByName(self) != 0) {
         nibble = fn_801A1CC8() & 0xF;
         if (gUiInputFlags & 1) {
@@ -1280,7 +1280,7 @@ ok:
 
 #pragma use_lmw_stmw on
 s32 fn_80107874(void *arg0, void *arg1) {
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     void *Hash_Lookup(void *);
     s32 fn_80015680(void *);
     void Bin_ReadU32(u32 *);
@@ -1360,7 +1360,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
             s8 y = sp10[0xC];
             u8 *map = (u8 *)gBattleMap + x + (y << 6);
             if (map[0xD] != 0 || map[0x300D] != 0) {
-                fn_800056CC((const char *)(gDisposStrings + 0x61), x, y, *(void **)sp10);
+                DebugPrint((const char *)(gDisposStrings + 0x61), x, y, *(void **)sp10);
                 continue;
             }
         }
@@ -1382,7 +1382,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
 void Dispos_ParseEntry(u32 *cursor, u32 *out, u8 dispos_id) {
     s32 Bin_ReadU32(u32 *);
     u8 Bin_ReadU8(u32 *);
-    void fn_800056CC(const char *, ...);
+    void DebugPrint(const char *, ...);
     extern u8 gDisposStrings[];
     u32 *p_cursor;
     u32 *parsed;
@@ -1449,7 +1449,7 @@ void Dispos_ParseEntry(u32 *cursor, u32 *out, u8 dispos_id) {
     } while (j < 8);
     *p_cursor = (*p_cursor + 3) & ~3;
     ((u8 *)parsed)[0x67] = id;
-    fn_800056CC((const char *)(gDisposStrings + 0x9A),
+    DebugPrint((const char *)(gDisposStrings + 0x9A),
                 parsed[0],
                 parsed[1],
                 *(s8 *)((u8 *)parsed + 0xD),

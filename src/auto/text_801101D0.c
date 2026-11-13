@@ -5469,7 +5469,7 @@ extern u16 TalkUi_str[];
 extern u16 lbl_8032FE04[];
 extern u16 lbl_8028FE50[];
 void fn_8011D79C(void *arg0) {
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
     void fn_8023440C(void *, const void *, s32);
     extern u16 gUiPanelFlags;
@@ -5486,7 +5486,7 @@ void fn_8011D79C(void *arg0) {
     void *obj;
     u32 flags;
 
-    fn_800056CC((char *)TalkUi_str + 0x35, arg0);
+    DebugPrint((char *)TalkUi_str + 0x35, arg0);
     result = Msg_Expand(arg0);
     fn_8023440C(lbl_8032FE04, arg0, 0x1E);
     obj = Process_Find(lbl_8028FE50);
@@ -5510,7 +5510,7 @@ void fn_8011D79C(void *arg0) {
 
 void fn_8011D87C(void *arg0)
 {
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
     void fn_8023440C(void *, const void *, s32);
     void *Process_Find(void *);
@@ -5520,7 +5520,7 @@ void fn_8011D87C(void *arg0)
     u8 *obj;
     u16 flags;
 
-    fn_800056CC((char *)TalkUi_str + 0x35, arg0);
+    DebugPrint((char *)TalkUi_str + 0x35, arg0);
 
     result = Msg_Expand(arg0);
 

@@ -122,7 +122,7 @@ void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 
 #pragma use_lmw_stmw on
 void fn_801A8268(void *arg0) {
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     s32 fn_800A8A88(void *);
     s32 fn_800A8978(void *);
     s32 fn_8003B2D0(void *);
@@ -151,19 +151,19 @@ void fn_801A8268(void *arg0) {
     void *slot;
 
     p = *(void **)((u8 *)arg0 + 0x188);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x1D),
+    DebugPrint((const char *)(lbl_8027B650 + 0x1D),
                 fn_800A8A88(p), *(void **)p);
     p = *(void **)((u8 *)arg0 + 0x18C);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x29),
+    DebugPrint((const char *)(lbl_8027B650 + 0x29),
                 fn_800A8978(p), *(void **)p);
 
     v1a8 = *(s8 *)((u8 *)arg0 + 0x1A8);
     v19a = *(s8 *)((u8 *)arg0 + 0x19A);
     t = fn_8003B2D0(arg0);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x35),
+    DebugPrint((const char *)(lbl_8027B650 + 0x35),
                 v19a, fn_800386B0(arg0), v1a8, t);
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x49),
+    DebugPrint((const char *)(lbl_8027B650 + 0x49),
                 *(s8 *)((u8 *)arg0 + 0x19E), *(s8 *)((u8 *)arg0 + 0x19F));
 
     a = fn_8003A778(arg0);
@@ -173,16 +173,16 @@ void fn_801A8268(void *arg0) {
     e = fn_8003AF28(arg0);
     f = fn_8003AFA0(arg0);
     g = fn_8003B258(arg0);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x57),
+    DebugPrint((const char *)(lbl_8027B650 + 0x57),
                 g, f, e, d, c, b, a);
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x82),
+    DebugPrint((const char *)(lbl_8027B650 + 0x82),
                 *(s16 *)((u8 *)arg0 + 0x298), *(s16 *)((u8 *)arg0 + 0x29A),
                 *(s16 *)((u8 *)arg0 + 0x29C), *(s16 *)((u8 *)arg0 + 0x29E));
-    fn_800056CC((const char *)(lbl_8027B650 + 0xA3),
+    DebugPrint((const char *)(lbl_8027B650 + 0xA3),
                 *(s16 *)((u8 *)arg0 + 0x2A0), *(s16 *)((u8 *)arg0 + 0x2A4),
                 *(s16 *)((u8 *)arg0 + 0x2A6));
-    fn_800056CC((const char *)(lbl_8027B650 + 0xC0),
+    DebugPrint((const char *)(lbl_8027B650 + 0xC0),
                 *(s16 *)((u8 *)arg0 + 0x2A2), *(s16 *)((u8 *)arg0 + 0x2A8));
 
     flag = *((u8 *)arg0 + 0x2C8);
@@ -209,10 +209,10 @@ void fn_801A8268(void *arg0) {
     } else {
         base = (u8 *)arg0 + 0x284;
     }
-    fn_800056CC((const char *)(lbl_8027B650 + 0xD9),
+    DebugPrint((const char *)(lbl_8027B650 + 0xD9),
                 UnitRef_GetName(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0xEC),
+    DebugPrint((const char *)(lbl_8027B650 + 0xEC),
                 *(s16 *)((u8 *)arg0 + 0x2C2), *(s16 *)((u8 *)arg0 + 0x2C4));
 
     flag = *((u8 *)arg0 + 0x2C8);
@@ -236,14 +236,14 @@ void fn_801A8268(void *arg0) {
     }
     b26 = (u8)tmp;
     ret = UnitRef_GetName(slot);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x100),
+    DebugPrint((const char *)(lbl_8027B650 + 0x100),
                 ret, b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x114),
+    DebugPrint((const char *)(lbl_8027B650 + 0x114),
                 fn_8001D8A8((u8 *)arg0 + 0x2AE));
-    fn_800056CC((const char *)(lbl_8027B650 + 0x121),
+    DebugPrint((const char *)(lbl_8027B650 + 0x121),
                 fn_8001D8A8((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
-    fn_800056CC((const char *)(lbl_8027B650 + 0x12E));
+    DebugPrint((const char *)(lbl_8027B650 + 0x12E));
 }
 void fn_801A859C(void *arg0) {
     s8 temp;
@@ -302,7 +302,7 @@ s32 Unit_ClearEventStatuses(s32 unit) {
 void fn_801A895C(void *arg0, void *arg1) {
     s32 fn_800927EC(void *);
     u8 fn_80092ADC(void *, u8);
-    s32 fn_800056CC(const char *, ...);
+    s32 DebugPrint(const char *, ...);
     extern u8 lbl_8027B650[];
     void *slot;
     void *p;
@@ -321,7 +321,7 @@ void fn_801A895C(void *arg0, void *arg1) {
         return;
     }
     *(u8 *)((u8 *)arg0 + 0x2C6) |= fn_800927EC(arg0);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x16A),
+    DebugPrint((const char *)(lbl_8027B650 + 0x16A),
                 fn_80092ADC(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
 }
 

@@ -1642,7 +1642,7 @@ u32 fn_8005E55C(void) {
 
 #pragma dont_inline on
 void *fn_8005E594(s8 arg0, u32 arg1, char *arg2) {
-    void fn_800056CC(char *, ...);
+    void DebugPrint(char *, ...);
     u32 fn_800C44F4(s32);
     void *fn_800C4604(s32, u32, char *, u32);
     void fn_800C4384(void);
@@ -1656,7 +1656,7 @@ void *fn_8005E594(s8 arg0, u32 arg1, char *arg2) {
     result = (void *)(s32)arg0;
     a2 = arg2;
     a1 = arg1;
-    fn_800056CC((char *)(lbl_8026B330 + 0x230));
+    DebugPrint((char *)(lbl_8026B330 + 0x230));
     fn_8005BC8C((s8)(s32)result);
     if (fn_800C44F4((s32)result) < a1) {
         result = NULL;
