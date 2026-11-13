@@ -5034,6 +5034,7 @@ void fn_8011C674(void *arg0, s32 arg1) {
 }
 
 void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    /* Construct the ztool BgWin window and wire its Terrain/Sky/Obj/Ok/Cancel controls. */
     void String_ConcatCStr(void *, void *, char *);
     void *fn_800D75FC(void *, void *);
     void fn_800D764C(void *, s32, s32, s32, void *, void *);
@@ -5041,14 +5042,15 @@ void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern char BgWin_str[];
     extern u8 BgWin_vtable[];
     extern void BgWin_OnOk(void);
-    String sp78;
-    String sp6C;
-    String sp60;
-    String sp54;
-    String sp48;
-    String sp3C;
-    String sp30;
-    String sp24;
+    extern void BgWin_OnCancel(void);
+    String pathBase;
+    String dbxPath;
+    String winName;
+    String terrainBox;
+    String skyBox;
+    String objBox;
+    String okBtn;
+    String cancelBtn;
     void *sp20;
     void *sp1C;
     void *sp18;
@@ -5060,33 +5062,33 @@ void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *self;
 
     self = arg0;
-    String_Init(&sp78, BgWin_str, &sp20);
-    String_ConcatCStr(&sp6C, &sp78, BgWin_str + 7);
-    String_Init(&sp60, BgWin_str + 0x11, &sp1C);
-    fn_800D764C(self, arg1, arg2, arg3, &sp6C, &sp60);
-    String_Destroy(&sp60, -1);
-    String_Destroy(&sp6C, -1);
-    String_Destroy(&sp78, -1);
+    String_Init(&pathBase, BgWin_str, &sp20);
+    String_ConcatCStr(&dbxPath, &pathBase, BgWin_str + 7);
+    String_Init(&winName, BgWin_str + 0x11, &sp1C);
+    fn_800D764C(self, arg1, arg2, arg3, &dbxPath, &winName);
+    String_Destroy(&winName, -1);
+    String_Destroy(&dbxPath, -1);
+    String_Destroy(&pathBase, -1);
     *(void **)((u8 *)self + 0xC) = BgWin_vtable;
-    String_Init(&sp54, BgWin_str + 0x17, &sp18);
-    *(void **)((u8 *)self + 0x424) = fn_800D75FC(self, &sp54);
-    String_Destroy(&sp54, -1);
-    String_Init(&sp48, BgWin_str + 0x22, &sp14);
-    *(void **)((u8 *)self + 0x428) = fn_800D75FC(self, &sp48);
-    String_Destroy(&sp48, -1);
-    String_Init(&sp3C, BgWin_str + 0x29, &sp10);
-    *(void **)((u8 *)self + 0x42C) = fn_800D75FC(self, &sp3C);
-    String_Destroy(&sp3C, -1);
-    String_Init(&sp30, BgWin_str + 0x30, &spC);
-    temp = fn_800D75FC(self, &sp30);
+    String_Init(&terrainBox, BgWin_str + 0x17, &sp18);
+    *(void **)((u8 *)self + 0x424) = fn_800D75FC(self, &terrainBox);
+    String_Destroy(&terrainBox, -1);
+    String_Init(&skyBox, BgWin_str + 0x22, &sp14);
+    *(void **)((u8 *)self + 0x428) = fn_800D75FC(self, &skyBox);
+    String_Destroy(&skyBox, -1);
+    String_Init(&objBox, BgWin_str + 0x29, &sp10);
+    *(void **)((u8 *)self + 0x42C) = fn_800D75FC(self, &objBox);
+    String_Destroy(&objBox, -1);
+    String_Init(&okBtn, BgWin_str + 0x30, &spC);
+    temp = fn_800D75FC(self, &okBtn);
     *(void **)((u8 *)self + 0x430) = temp;
     *(void **)((u8 *)self + 0x418) = temp;
-    String_Destroy(&sp30, -1);
-    String_Init(&sp24, BgWin_str + 0x36, &sp8);
-    temp = fn_800D75FC(self, &sp24);
+    String_Destroy(&okBtn, -1);
+    String_Init(&cancelBtn, BgWin_str + 0x36, &sp8);
+    temp = fn_800D75FC(self, &cancelBtn);
     *(void **)((u8 *)self + 0x434) = temp;
     *(void **)((u8 *)self + 0x41C) = temp;
-    String_Destroy(&sp24, -1);
+    String_Destroy(&cancelBtn, -1);
     temp = *(void **)((u8 *)self + 0x430);
     *(void **)((u8 *)temp + 0xA4) = (void *)BgWin_OnOk;
     temp = *(void **)((u8 *)self + 0x434);
