@@ -4364,7 +4364,7 @@ void *MTXRotDegOrder(void *node, void *out)
     void PSMTXRotRad(void *, s32, f32);
     int GMaterial_Assert(void *, int, void *);
     extern f32 gMtxZero;
-    extern f32 lbl_8036921C;
+    extern f32 gDegToRad;
     extern u8 lbl_8026B6E8[];
     u8 sp38[0x30];
     s32 order;
@@ -4386,79 +4386,79 @@ void *MTXRotDegOrder(void *node, void *out)
             switch (order) {
             case 1:
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp38, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp38, 0x58, gDegToRad * rx);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 2:
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp38, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp38, 0x59, gDegToRad * ry);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 3:
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp38, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp38, 0x5A, gDegToRad * rz);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 4:
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp38, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp38, 0x58, gDegToRad * rx);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 5:
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp38, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp38, 0x59, gDegToRad * ry);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 6:
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp38, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp38, 0x5A, gDegToRad * rz);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
@@ -8495,5 +8495,5 @@ extern f32 lbl_80369208;
 #include "structs.h"
 
 extern f32 gMtxZero;
-extern f32 lbl_8036921C;
+extern f32 gDegToRad;
 extern u8 lbl_8026B6E8[];
