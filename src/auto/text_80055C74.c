@@ -1199,7 +1199,7 @@ void fn_800581A4(void *arg0) {
 }
 #pragma use_lmw_stmw reset
 
-void fn_800588EC(s32 arg0) {
+void GActor_StopNodeLink(s32 arg0) {
     void Process_Goto(s32, s32);
     Process_Goto(arg0, 0);
 }

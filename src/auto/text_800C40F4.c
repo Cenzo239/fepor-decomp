@@ -12450,12 +12450,12 @@ void fn_800E4C14(void *arg0, f32 farg0) {
 }
 
 void fn_800E4C1C(void *arg0) {
-    void fn_800588EC(void *);
+    void GActor_StopNodeLink(void *);
     void *ptr;
 
     ptr = *(void **)((u8 *)arg0 + 0xe8);
     if (ptr != NULL) {
-        fn_800588EC(ptr);
+        GActor_StopNodeLink(ptr);
         *(void **)((u8 *)arg0 + 0xe8) = NULL;
     }
 }
