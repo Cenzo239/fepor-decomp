@@ -2942,7 +2942,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_GameUnbind(void);
     void ScriptCmd_TutorialCall(void);
     void ScriptCmd_QueryLesson(void);
-    void fn_80127054(void);
+    void ScriptCmd_BeginMapHoldCursor(void);
     void fn_80127028(void);
     void fn_801275BC(void);
     void fn_80126FA0(void);
@@ -2990,7 +2990,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x17F, ScriptCmd_GameUnbind, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x18A, ScriptCmd_TutorialCall, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x197, ScriptCmd_QueryLesson, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x1A3, fn_80127054, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1A3, ScriptCmd_BeginMapHoldCursor, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1B6, fn_80127028, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1C7, fn_801275BC, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CB, fn_80126FA0, 1);
@@ -3356,7 +3356,7 @@ s32 fn_80127028(void) {
     return 0;
 }
 
-s32 fn_80127054(void) {
+s32 ScriptCmd_BeginMapHoldCursor(void) {
     extern u16 lbl_80290510[];
     fn_8000CAF0(lbl_80290510, 4);
     return 0;
