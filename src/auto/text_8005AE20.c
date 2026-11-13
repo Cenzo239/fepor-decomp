@@ -901,6 +901,7 @@ void *fn_8005CEC0(void) {
 }
 #pragma global_optimizer on
 void FileCache_Release(u8 *);
+/* Look up a file-cache entry by path/name and release it. */
 void FileCache_ReleaseByName(char *name) {
     FileCache_Release(FindEntryByName(name));
 }
