@@ -8868,7 +8868,7 @@ void fn_800C14D0(void *arg0) {
 
 void fn_800C15A8(void) {
     s32 fn_80069D58(void);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 fn_80069E18(void);
     s32 GMaterial_AllocTevStage(void);
     void PSMTXIdentity(void *);
@@ -8912,7 +8912,7 @@ void fn_800C15A8(void) {
     PSMTXConcat(sp68, sp8, sp8);
     PSMTXConcat(sp38, sp8, sp8);
     r31 = GMaterial_AllocTevStage();
-    r30 = fn_80069DBC();
+    r30 = GMaterial_AllocTexCoord();
     r29 = fn_80069E18();
     fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
     r28 = fn_80069D58();
@@ -8928,7 +8928,7 @@ void fn_800C15A8(void) {
 #pragma optimization_level 2
 s32 Map_SetupBlendTev(void) {
     s32 fn_80069D58(void);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 fn_80069E18(void);
     s32 GMaterial_AllocTevStage(void);
     void fn_8006A384(void *);
@@ -8980,7 +8980,7 @@ s32 Map_SetupBlendTev(void) {
     PSMTXConcat(sp6C, spC, spC);
     PSMTXConcat(sp3C, spC, spC);
     r31 = GMaterial_AllocTevStage();
-    r30 = fn_80069DBC();
+    r30 = GMaterial_AllocTexCoord();
     r29 = fn_80069E18();
     r28 = fn_80069D58();
     fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);

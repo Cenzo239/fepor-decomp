@@ -16310,7 +16310,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void GMaterial_SetupColor(void *, void *, void *, void *);
     s32 fn_80069CFC(void);
     s32 fn_80069D58(void);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 fn_80069E18(void);
     s32 fn_80069E7C(void);
     s32 GMaterial_AllocTevStage(void);
@@ -16427,7 +16427,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_80222644(spAC, lbl_803678DC, 4, 0x10, 3, 1, 1, 0);
     fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t26 = fn_80069E7C();
-    t28 = fn_80069DBC();
+    t28 = GMaterial_AllocTexCoord();
     t25 = fn_80069D58();
     t29 = fn_80069E18();
     t27 = fn_80069CFC();
@@ -16475,7 +16475,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     if (unk2C != NULL && *(f32 *)((u8 *)unk2C + 0x38) != lbl_80369FB8) {
         fn_80222644(spAC, lbl_803678D0, 0x130, 0xE0, 4, 0, 0, 0);
         fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
-        t26 = fn_80069DBC();
+        t26 = GMaterial_AllocTexCoord();
         t25 = GMaterial_AllocTevStage();
         t28 = fn_80069E18();
         t27 = fn_80069D58();
@@ -16513,7 +16513,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_80222644(spAC, lbl_803678DC, 4, 0x10, 3, 1, 1, 0);
     fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t30 = fn_80069E7C();
-    t29b = fn_80069DBC();
+    t29b = GMaterial_AllocTexCoord();
     t28b = fn_80069D58();
     t27b = fn_80069E18();
     t26b = fn_80069CFC();
@@ -16571,7 +16571,7 @@ s32 fn_800EF1C0(void) {
     void fn_8004D5D4(void *);
     s32 fn_80068548(void);
     s32 fn_80069D58(void);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 fn_80069E18(void);
     s32 GMaterial_AllocTevStage(void);
     void fn_8006A384(void *);
@@ -16603,7 +16603,7 @@ s32 fn_800EF1C0(void) {
     s32 temp_r28;
     s32 temp_r3;
 
-    temp_r30 = fn_80069DBC();
+    temp_r30 = GMaterial_AllocTexCoord();
     temp_r31 = GMaterial_AllocTevStage();
     temp_r29 = fn_80069E18();
     temp_r28 = fn_80069D58();
@@ -16635,7 +16635,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     s32 *fn_80067478(void);
     void *fn_80068548(void);
     s32 fn_80069D58(void);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 fn_80069E18(void);
     s32 GMaterial_AllocTevStage(void);
     void *fn_8006A37C(void *);
@@ -16802,7 +16802,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     PSMTXConcat(sp1F4, sp1C4, sp254);
     t29 = fn_80069D58();
     fn_80224E50(sp254, t29, 0);
-    t24 = fn_80069DBC();
+    t24 = GMaterial_AllocTexCoord();
     t23 = GMaterial_AllocTevStage();
     t25 = fn_80069E18();
     Ui_LoadAtlasTex(path, spE4, idx);
@@ -16855,7 +16855,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     PSMTXConcat(sp194, sp164, sp254);
     t29b = fn_80069D58();
     fn_80224E50(sp254, t29b, 0);
-    t25b = fn_80069DBC();
+    t25b = GMaterial_AllocTexCoord();
     t24b = GMaterial_AllocTevStage();
     t23b = fn_80069E18();
     fn_80222C50(spE4, t23b);
@@ -16898,7 +16898,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
         PSMTXConcat(sp134, sp104, sp254);
         t26c = fn_80069D58();
         fn_80224E50(sp254, t26c, 0);
-        t29c = fn_80069DBC();
+        t29c = GMaterial_AllocTexCoord();
         t25c = GMaterial_AllocTevStage();
         t24c = fn_80069E18();
         Ui_LoadAtlasTex(path, spE4, (u16)(idx + 1));
@@ -16920,7 +16920,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     void fn_8006A384(void *);
     void fn_800690D4(void *, s32, void *);
     void Ui_LoadAtlasTex(s32, void *, u16);
-    s32 fn_80069DBC(void);
+    s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTevStage(void);
     s32 fn_80069E18(void);
     s32 fn_80069D58(void);
@@ -17029,7 +17029,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     GXSetChanMatColor(4, &sp10);
     idx = *(u16 *)(*(u8 **)((u8 *)self + 0x14) + 4);
     Ui_LoadAtlasTex(path, sp54, idx);
-    a = fn_80069DBC();
+    a = GMaterial_AllocTexCoord();
     b = GMaterial_AllocTevStage();
     c = fn_80069E18();
     fn_80222C50(sp54, c);
@@ -17039,7 +17039,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     GXSetTevColorIn(b, 0xF, 8, 0xA, 0xF);
     GXSetTevAlphaOp(b, 0, 0, 0, 1, 1);
     GXSetTevAlphaIn(b, 7, 7, 7, 7);
-    a = fn_80069DBC();
+    a = GMaterial_AllocTexCoord();
     b = GMaterial_AllocTevStage();
     c = fn_80069E18();
     fn_80222C50(sp54, c);
@@ -17051,7 +17051,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     GXSetTevAlphaIn(b, 7, 7, 7, 7);
     tmp = fn_80069D58();
     fn_80224E50(sp104, tmp, 0);
-    a = fn_80069DBC();
+    a = GMaterial_AllocTexCoord();
     fn_802201A8(a, 0, 0, tmp, 0, 0x7D);
     b = GMaterial_AllocTevStage();
     c = fn_80069E18();

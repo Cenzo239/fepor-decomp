@@ -5939,7 +5939,7 @@ u8 fn_80069DB4(void) {
 }
 
 #pragma global_optimizer off
-void *fn_80069DBC(void) {
+void *GMaterial_AllocTexCoord(void) {
     extern u8 lbl_80367302;
     extern u8 gGMaterialAssertMsg[];
     extern void *lbl_80285EE8[];

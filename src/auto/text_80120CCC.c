@@ -162,7 +162,7 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *obj;
 
     obj = Process_Find(lbl_80290200);
-    if (obj != NULL) {
+    if (obj) {
         if (*(void **)((u8 *)obj + 0x44) == arg0) {
             if (*(s16 *)((u8 *)obj + 0x48) == arg1) {
                 if (*(s16 *)((u8 *)obj + 0x4A) == arg2) {
@@ -172,15 +172,15 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
         }
         Process_Unlink(obj);
     }
-    if ((gUiPanelFlags & 0x40) != 0) {
+    if (gUiPanelFlags & 0x40) {
         return;
     }
     obj = fn_8000CAF0(lbl_80290200, arg3);
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
-    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
     *(s16 *)((u8 *)obj + 0x4A) = arg2;
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
 }
 #pragma global_optimizer reset
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
@@ -2632,7 +2632,7 @@ void fn_80125B94(void *arg0)
 s32 fn_80125BB0(void) {
     void *Process_Find(M2C_UNK *, M2C_UNK *);
     s32 fn_80069D58();
-    s32 fn_80069DBC();
+    s32 GMaterial_AllocTexCoord();
     s32 fn_80069E18();
     s32 GMaterial_AllocTevStage();
     M2C_UNK fn_8006A384(M2C_UNK *);
@@ -2686,7 +2686,7 @@ s32 fn_80125BB0(void) {
         return 1;
     }
     fn_8006A384(&sp64);
-    temp_r28 = fn_80069DBC();
+    temp_r28 = GMaterial_AllocTexCoord();
     temp_r29 = GMaterial_AllocTevStage();
     temp_r27 = fn_80069E18();
     temp_r26 = fn_80069D58();
