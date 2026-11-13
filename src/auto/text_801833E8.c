@@ -9250,7 +9250,7 @@ void Event_RunItemCmd(void *cmd) {
     s32 Event_GetCmdFlags(s16);
     void *fn_8009809C(void);
     void fn_800983E0(void *, void *);
-    void fn_80147548(void *, void *, s32);
+    void SeCue_PlayAtPos(void *, void *, s32);
     void fn_8017E0C0(void *, s32, void *);
     void fn_8017E2BC(void);
     void fn_8017F040(void *, s32, void *);
@@ -9304,7 +9304,7 @@ void Event_RunItemCmd(void *cmd) {
         fn_8017F474(unit, cmd);
         fn_800983E0(&sp74, unit);
         sp80 = sp74;
-        fn_80147548(lbl_8027AA38 + 0xF3, &sp80, 0x64);
+        SeCue_PlayAtPos(lbl_8027AA38 + 0xF3, &sp80, 0x64);
         return;
     }
     slot = (s32)*(f32 *)((u8 *)unit + 0xC);
@@ -9312,17 +9312,17 @@ void Event_RunItemCmd(void *cmd) {
         fn_8017F70C(unit, cmd);
         fn_800983E0(&sp5c, unit);
         sp68 = sp5c;
-        fn_80147548(lbl_8027AA38 + 0x101, &sp68, 0x64);
+        SeCue_PlayAtPos(lbl_8027AA38 + 0x101, &sp68, 0x64);
         fn_80025624(gPadInput, 4);
     } else {
         if (fn_80096C18() != 0) {
             fn_800983E0(&sp44, unit);
             sp50 = sp44;
-            fn_80147548(lbl_8027AA38 + 0x114, &sp50, 0x64);
+            SeCue_PlayAtPos(lbl_8027AA38 + 0x114, &sp50, 0x64);
         } else {
             fn_800983E0(&sp2c, unit);
             sp38 = sp2c;
-            fn_80147548(lbl_8027AA38 + 0x12B, &sp38, 0x64);
+            SeCue_PlayAtPos(lbl_8027AA38 + 0x12B, &sp38, 0x64);
         }
         p = *(void **)unit;
         if (p != NULL) {
@@ -9344,7 +9344,7 @@ void Event_RunItemCmd(void *cmd) {
             fn_8017E2BC();
             fn_800983E0(&sp14, unit);
             sp20 = sp14;
-            fn_80147548(lbl_8027AA38 + 0x142, &sp20, 0x64);
+            SeCue_PlayAtPos(lbl_8027AA38 + 0x142, &sp20, 0x64);
         } else {
             fn_8018CFA4(0xF, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 8);
@@ -9772,7 +9772,7 @@ s32 MapSelect_Update(void *arg0) {
     void fn_800983E0(void *, void *);
     void fn_80098524(void *);
     u8 fn_80098568(void *);
-    void fn_80147548(void *, void *, s32);
+    void SeCue_PlayAtPos(void *, void *, s32);
     void fn_8017E0C0(void *, s32, void *, s32);
     void fn_8017F040(void *, s32, void *);
     void fn_80184688(s32, s32, s32, void *);
@@ -9824,13 +9824,13 @@ s32 MapSelect_Update(void *arg0) {
                 *(s32 *)(&sp14) = *(s32 *)(&sp2c);
                 *(s32 *)((u8 *)&sp14 + 4) = *(s32 *)((u8 *)&sp2c + 4);
                 *(s32 *)((u8 *)&sp14 + 8) = *(s32 *)((u8 *)&sp2c + 8);
-                fn_80147548(tmp, &sp14, 0x64);
+                SeCue_PlayAtPos(tmp, &sp14, 0x64);
             } else {
                 tmp = lbl_8027AA38 + 0x1B1;
                 *(s32 *)(&sp8) = *(s32 *)(&sp2c);
                 *(s32 *)((u8 *)&sp8 + 4) = *(s32 *)((u8 *)&sp2c + 4);
                 *(s32 *)((u8 *)&sp8 + 8) = *(s32 *)((u8 *)&sp2c + 8);
-                fn_80147548(tmp, &sp8, 0x64);
+                SeCue_PlayAtPos(tmp, &sp8, 0x64);
             }
             tmp = *(void **)(*(void **)((u8 *)p4c + 0x34));
             if (tmp != NULL) {

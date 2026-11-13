@@ -169,7 +169,7 @@ s32 Event_HandleItemCmd(void *arg0)
     void fn_8005306C(void *);
     void fn_80184688(void *, s32, s32, void *);
     void fn_800983E0(void *, void *);
-    void fn_80147548(void *, void *, s32);
+    void SeCue_PlayAtPos(void *, void *, s32);
     void fn_80025624(s32, s32);
     void fn_8017F70C(void *, void *);
     void fn_8017E0C0(void *, s32, void *);
@@ -281,7 +281,7 @@ s32 Event_HandleItemCmd(void *arg0)
                 sp8[0] = sp14[0];
                 sp8[1] = sp14[1];
                 sp8[2] = sp14[2];
-                fn_80147548(gEventUiSeCues + 0xE3, sp8, 0x64);
+                SeCue_PlayAtPos(gEventUiSeCues + 0xE3, sp8, 0x64);
                 fn_80025624(gPadInput, 4);
                 if (M2C_FIELD(self, u8 *, 0x34) != 2) {
                     fn_8017F70C(M2C_FIELD(self, void **, 0x3C), self);
@@ -321,7 +321,7 @@ s32 Event_HandleItemCmd(void *arg0)
             sp20[0] = sp2C[0];
             sp20[1] = sp2C[1];
             sp20[2] = sp2C[2];
-            fn_80147548(gEventUiSeCues + 0xF6, sp20, 0x64);
+            SeCue_PlayAtPos(gEventUiSeCues + 0xF6, sp20, 0x64);
             fn_800535B0(arg0);
             fn_8005366C(arg0, 0, 0);
         }

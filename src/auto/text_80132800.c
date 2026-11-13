@@ -11078,7 +11078,7 @@ entry->frame=0;
 
 s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
-s32 fn_80147548(void *arg0, f32 *arg1, s32 arg2) {
+s32 SeCue_PlayAtPos(void *arg0, f32 *arg1, s32 arg2) {
     s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
     return SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
 }
