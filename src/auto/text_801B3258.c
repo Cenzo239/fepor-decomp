@@ -9471,7 +9471,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
     void fn_800E8BBC(void *, void *);
     void fn_800E8FAC(void *, s32);
     s32 fn_800E8F00(void *);
-    void fn_800D5D04(void *, void *, s32, s32);
+    void String_Substr(void *, void *, s32, s32);
     void String_ConcatCStr(void *, void *, char *);
     void String_Assign(void *, void *, s32, s32);
     s32 String_Compare(void *, s32, u32, char *, u32);
@@ -9544,7 +9544,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
             arg4 = fn_800E8F00(self->unk6C);
             if (arg4 != 0) {
                 unk0 = self->unk54;
-                fn_800D5D04(&sp20, &self->unk54, unk0 - 2, 2);
+                String_Substr(&sp20, &self->unk54, unk0 - 2, 2);
                 String_ConcatCStr(&sp14, &sp20, lbl_8027DAB0 + 0xC9);
                 String_Assign(&sp44, &sp14, 0, -1);
                 String_Destroy(&sp14, -1);
@@ -9554,7 +9554,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
                     len = strlen((char *)lbl_8027DAB0 + 0xCF);
                     String_AssignCStr(&sp44, &lbl_8027DAB0[0xCF], len);
                 }
-                fn_800D5D04(&sp8, &self->unk54, 5, unk0 - 8);
+                String_Substr(&sp8, &self->unk54, 5, unk0 - 8);
                 String_Assign(&sp38, &sp8, 0, -1);
                 String_Destroy(&sp8, -1);
                 len = strlen((char *)lbl_8027DAB0 + 0xD3);
@@ -9614,7 +9614,7 @@ void fn_800DF7A0(void *);
 void String_Init(void *,void *,void *); void Xml_GetNamedValue(void *,void *,void *);
 u32 strlen(void *); void String_AssignCStr(void *,void *,u32); void String_Destroy(void *,s32);
 s32 String_Compare(void *,s32,u32,void *,u32); u8 *fn_80117CC0(void *,s32);
-void fn_800D5D04(void *,void *,s32,s32); void String_Assign(void *,void *,s32,s32);
+void String_Substr(void *,void *,s32,s32); void String_Assign(void *,void *,s32,s32);
 void *fn_800E7F60(void *,void *); void Xml_AdvanceChild(void *); void Xml_GetChildValue(void *,void *);
 void fn_801CB934(void *,void *,s32,s32);
 extern u8 lbl_80298428[],lbl_8027DAB0[];
@@ -9640,7 +9640,7 @@ String_Init(&s3c,lbl_8027DAB0+0xe5,&a10);
 Xml_GetNamedValue(&p160,arg2,&s3c);arg1=&p160;
 String_AssignCStr(self+0x60,arg1,strlen(arg1));String_Destroy(&s3c,-1);
 if(String_Compare(self+0x60,0,*(u32 *)(self+0x60),lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
-fn_800D5D04(&s30,self+0x54,0,4);String_Assign(self+0x60,&s30,0,-1);String_Destroy(&s30,-1);
+String_Substr(&s30,self+0x54,0,4);String_Assign(self+0x60,&s30,0,-1);String_Destroy(&s30,-1);
 }
 String_Init(&s24,lbl_8027DAB0+0xec,&ac);
 Xml_GetNamedValue(&p140,arg2,&s24);arg1=&p140;

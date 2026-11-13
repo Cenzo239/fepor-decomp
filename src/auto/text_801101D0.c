@@ -1261,7 +1261,7 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
 #pragma use_lmw_stmw on
 void Actor_LoadAnim(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
     void String_Concat(void *, void *, void *);
-    void fn_800D5D04(void *, void *, s32, s32);
+    void String_Substr(void *, void *, s32, s32);
     void fn_800E574C(void *, void *, f32, s32, s32, s32, s32);
     char *fn_800DDB94(void *, void *);
     u8 fn_800E7AD4(void *, void *, void *, u8, u8);
@@ -1327,7 +1327,7 @@ void Actor_LoadAnim(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
             String_Destroy(&sp18, -1);
             String_Destroy(&spC, -1);
         } else {
-            fn_800D5D04(&sp30, &spC, 0, 0xB);
+            String_Substr(&sp30, &spC, 0, 0xB);
             String_Assign(&sp18, &sp30, 0, -1);
             String_Destroy(&sp30, -1);
             String_Assign(&sp24, &sp18, 0, -1);

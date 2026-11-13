@@ -6439,7 +6439,7 @@ M2C_UNK fn_8022CF78(void);
 M2C_UNK fn_80232058(void *, const char *, ...);
 extern char __files[];
 
-void fn_800D5D04(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
+void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     M2C_UNK fn_800D6898(u32 *, u32 *, u32, u32, void *);
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
@@ -9443,7 +9443,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void String_Concat(String *, String *, String *);
     void String_ConcatCStr(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
-    void fn_800D5D04(String *, String *, s32, char *);
+    void String_Substr(String *, String *, s32, char *);
     void fn_800D6878(void *, void *, void *);
     void *fn_800DE73C(void *, String *);
     void fn_800DEF4C(void *, void *, void *);
@@ -9637,7 +9637,7 @@ loop_body:
         String_Destroy(&str24, -1);
         ok = 1;
     } else {
-        fn_800D5D04(&str48, &str108, 0, str24.data);
+        String_Substr(&str48, &str108, 0, str24.data);
         String_Assign(&str30, &str48, 0, -1);
         String_Destroy(&str48, -1);
         match = 0;
