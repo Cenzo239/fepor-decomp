@@ -466,7 +466,7 @@ char *fn_80103FA4(s32 arg0, void *arg1) {
 }
 #pragma global_optimizer reset
 
-s32 fn_80103FF8(s32 arg0, void *arg1) {
+s32 Options_AdjustValuePad(s32 arg0, void *arg1) {
     extern void *gPadInput;
     extern f32 lbl_8036A0F0;
     void *temp_r5;
