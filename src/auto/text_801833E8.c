@@ -634,18 +634,18 @@ void fn_80184618(s32 arg0, u32 arg1) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u8 lbl_80295A40[];
+    extern u8 E_MuFlag_script[];
     u8 sp8[0x34];
     u32 var_r31;
     void *temp_r3;
 
     var_r31 = arg1;
     *(s32 *)(sp8 + 0x30) = arg0;
-    fn_8000A388(lbl_80295A40, MuFade_UnlinkSame, sp8);
+    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = Process_Create(lbl_80295A40, var_r31);
+    temp_r3 = Process_Create(E_MuFlag_script, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
 }
 
@@ -2179,7 +2179,7 @@ void fn_8018A6F4(void *arg0) {
     void fn_8004BE88(void *, s32);
     void fn_8004FC70(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u8 lbl_80295A40[];
+    extern u8 E_MuFlag_script[];
     extern u8 lbl_80295A60[];
     u8 sp40[0x34];
     u8 sp8[0x38];
@@ -2199,11 +2199,11 @@ void fn_8018A6F4(void *arg0) {
     obj = *(void **)((u8 *)self + 0x30);
     var = self;
     *(void **)(sp40 + 0x30) = obj;
-    fn_8000A388(lbl_80295A40, MuFade_UnlinkSame, sp40);
+    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp40);
     if (!self) {
         var = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(lbl_80295A40, (u32)var) + 0x30) = obj;
+    *(void **)((u8 *)Process_Create(E_MuFlag_script, (u32)var) + 0x30) = obj;
 
     obj2 = *(void **)((u8 *)self + 0x30);
     var2 = self;
