@@ -1461,7 +1461,7 @@ void fn_801FFF08(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
-void fn_801FFF30(void) {
+void Save_MigrateLegacy(void) {
     void fn_800C426C(void *);
     void *fn_800C4638(s32, void *, s32);
     void *fn_801E2568(s32 *, s32);
