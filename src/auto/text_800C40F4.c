@@ -15268,7 +15268,7 @@ void fn_800EB568(void) {
     gUiInputFlags |= 0x100;
 }
 
-void fn_800EB578(void) {
+void Card_PrintResult(void) {
     void fn_800056CC(void *, ...);
     extern u8 lbl_80320C20[];
     extern u8 lbl_802725D8[];
