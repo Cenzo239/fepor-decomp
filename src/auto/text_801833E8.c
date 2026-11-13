@@ -5237,7 +5237,7 @@ void fn_80191C7C(void *arg0) {
 extern "C" void fn_80191CFC(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_8011D79C(s32);
-    void fn_80138808(void *, s32);
+    void Ui_SetPortraitUnit(void *, s32);
     s32 Ui_ListGetSelected(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
@@ -5321,7 +5321,7 @@ extern "C" void fn_80191CFC(void *arg0) {
         M2C_FIELD(temp_r31, s16 *, 8) = 4;
         M2C_FIELD(temp_r31, s16 *, 0x24) = 8;
         M2C_FIELD(temp_r31, s32 *, 0x34) |= 0x10;
-        fn_80138808(temp_r31, Ui_ListGetSelected(temp_r30));
+        Ui_SetPortraitUnit(temp_r31, Ui_ListGetSelected(temp_r30));
         Ui_AddChild(arg0, temp_r31);
         temp_r7 = M2C_FIELD(temp_r31, s16 *, 0xC);
         sp8.x = 0x138;

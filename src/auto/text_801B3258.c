@@ -1990,7 +1990,7 @@ void fn_801B9254(void *arg0) {
 void fn_801B9300(void *arg0) {
     void fn_8013AD70(void *, s32);
     s32 Ui_ListGetSelected(void *);
-    void fn_80138808(void *, s32);
+    void Ui_SetPortraitUnit(void *, s32);
     void fn_80137EA0(void *, s32);
     void fn_8017BB94(void *);
     s32 Unit_GetSkillCapacityUsed(s32);
@@ -2012,7 +2012,7 @@ void fn_801B9300(void *arg0) {
     case 4:
         r31 = *(void **)((u8 *)r28 + 0x54);
         r29 = *(void **)((u8 *)r28 + 0x58);
-        fn_80138808(*(void **)((u8 *)r28 + 0x4C), r30);
+        Ui_SetPortraitUnit(*(void **)((u8 *)r28 + 0x4C), r30);
         fn_80137EA0(r31, r30);
         *(s32 *)((u8 *)r29 + 0x3C) = r30;
         break;
@@ -2030,7 +2030,7 @@ void fn_801B9300(void *arg0) {
 void fn_801B93F4(void *arg0) {
     void fn_8013AD70(void *, s32);
     s32 Ui_ListGetSelected(void *);
-    void fn_80138808(void *, s32);
+    void Ui_SetPortraitUnit(void *, s32);
     void fn_80137EA0(void *, s32);
     void fn_8017BB94(void *);
     s32 Unit_GetSkillCapacityUsed(s32);
@@ -2051,7 +2051,7 @@ void fn_801B93F4(void *arg0) {
     case 4:
         r31 = *(void **)((u8 *)r28 + 0x54);
         r29 = *(void **)((u8 *)r28 + 0x58);
-        fn_80138808(*(void **)((u8 *)r28 + 0x4C), r30);
+        Ui_SetPortraitUnit(*(void **)((u8 *)r28 + 0x4C), r30);
         fn_80137EA0(r31, r30);
         *(s32 *)((u8 *)r29 + 0x3C) = r30;
         break;
@@ -3181,7 +3181,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     u8 *Ui_GetColor(s32);
-    void fn_80138808(void *, void *);
+    void Ui_SetPortraitUnit(void *, void *);
     void fn_80137EA0(void *, void *);
     void fn_801BC71C(void);
     void Ui_SetWidgetText(void *, void *);
@@ -3381,7 +3381,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     *(s32 *)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x4C) = 1;
     q = *(void **)((u8 *)self + 0x4C);
     *(u32 *)((u8 *)q + 0x34) |= 0x10;
-    fn_80138808(*(void **)((u8 *)self + 0x4C), Ui_ListGetSelected(*(void **)((u8 *)self + 0x48)));
+    Ui_SetPortraitUnit(*(void **)((u8 *)self + 0x4C), Ui_ListGetSelected(*(void **)((u8 *)self + 0x48)));
     *(f32 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x30) = lbl_8036B2DC;
 
     p = Heap_Alloc(0x4C);
@@ -4086,7 +4086,7 @@ void Ui_InitUnitHirePanel(void *panel) {
 /* Handle unit-hire panel input: A buys if affordable, X/Y open side panels, B backs out. */
 extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  void Process_Goto(void *,s32); void UiCtx_BindUnit(void *,u32);
- u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void fn_80138808(void *,u32);
+ u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void Ui_SetPortraitUnit(void *,u32);
  u32 Ui_ListGetSelected(void *); void Ui_UpdatePanelWidgets(void *);
  void fn_80140210(void *,void *,s32);
  void Ui_PlaySeCue(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
@@ -4113,7 +4113,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  Ui_UpdatePanelWidgets(arg0);
  if(unit!=Ui_ListGetSelected(M2C_FIELD(arg0,void **,0x48))) {
  unit=Ui_ListGetSelected(M2C_FIELD(arg0,void **,0x48));
- fn_80138808(M2C_FIELD(arg0,void **,0x4C),unit);
+ Ui_SetPortraitUnit(M2C_FIELD(arg0,void **,0x4C),unit);
  fn_80137EA0(M2C_FIELD(arg0,void **,0x54),unit);
  M2C_FIELD(M2C_FIELD(arg0,void **,0x58),u32 *,0x3C)=unit;
  }
@@ -4262,7 +4262,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void fn_8013FF00(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     u8 *Ui_GetColor(s32);
-    void fn_80138808(void *, void *);
+    void Ui_SetPortraitUnit(void *, void *);
     void fn_80137EA0(void *, void *);
     void fn_801BC71C(void);
     extern u8 gUiUnitPanelStrings[];
@@ -4439,7 +4439,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     *(s32 *)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x4C) = 1;
     q = *(void **)((u8 *)self + 0x4C);
     *(u32 *)((u8 *)q + 0x34) |= 0x10;
-    fn_80138808(*(void **)((u8 *)self + 0x4C), Ui_ListGetSelected(*(void **)((u8 *)self + 0x48)));
+    Ui_SetPortraitUnit(*(void **)((u8 *)self + 0x4C), Ui_ListGetSelected(*(void **)((u8 *)self + 0x48)));
     Ui_AddChild(self, *(void **)((u8 *)self + 0x4C));
 
     p = Heap_Alloc(0x4C);
@@ -10826,7 +10826,7 @@ s16 NameEntry_MoveCaretRight(void *self, u8 flag) {
     void Ui_PlaySeCue(void *, s32);
     s16 sp8;
     s16 *cap;
-    s32 i;
+    register s32 i;
     u32 *p;
     s16 old;
     s16 lim;

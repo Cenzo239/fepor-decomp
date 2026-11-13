@@ -3526,7 +3526,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
 }
 #pragma cplusplus reset
 
-void fn_80138808(void *arg0, s32 arg1) {
+void Ui_SetPortraitUnit(void *arg0, s32 arg1) {
     void fn_800506E0(void *, s32, void *);
     void GActor_Finalize(void *);
     void fn_800616A0(void *);
