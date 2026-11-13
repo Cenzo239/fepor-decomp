@@ -433,7 +433,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
     OSRestoreInterrupts(enabled);
 }
 
-void fn_80212D78(s32 arg0) {
+void PADSetSpec(s32 arg0) {
     extern s32 __PADSpec;
     extern M2C_UNK SPEC0_MakeStatus;
     extern M2C_UNK SPEC1_MakeStatus;
