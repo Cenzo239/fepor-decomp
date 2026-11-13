@@ -68,7 +68,7 @@ void fn_8008532C(s32 unused, s16 *p) {
     GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
-void fn_80085360(void *arg0) {
+void Ui_DrawUnitInfo(void *arg0) {
     M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
     M2C_UNK Prim2D_EmitQuad();
     M2C_UNK Prim2D_SetQuadMax(f32, f32, f32, f32);
