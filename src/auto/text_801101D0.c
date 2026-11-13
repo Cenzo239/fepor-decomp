@@ -6178,7 +6178,7 @@ got_unit:
 }
 
 #pragma global_optimizer off
-s32 fn_8011FFE0(void *arg0, u32 arg1) {
+s32 TalkUi_LayoutSlot(void *arg0, u32 arg1) {
     s32 fn_801208BC(void *, u32);
     void fn_80108BD0(void *, s32, s32, s32);
     void fn_80122DD0(void *, s16, s16);
