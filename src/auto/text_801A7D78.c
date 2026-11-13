@@ -1193,7 +1193,7 @@ void fn_801AB358(u8 *arg0) {
     bf->mid = 0;
 }
 
-void fn_801AB544(void *arg0) {
+void Options_DrawScrollbar(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
     u16 **fn_8006EDD8(void *, s32);
@@ -1348,7 +1348,7 @@ void fn_801AD0B0(void *arg0) {
     void fn_800075D8(void);
     void Prim2D_EndPrim(void);
     void fn_801ACF4C(void *);
-    void fn_801AB544(void *);
+    void Options_DrawScrollbar(void *);
     extern f32 lbl_8036AF98, lbl_8036AF9C, lbl_8036AFA0, lbl_8036B004;
     extern f32 lbl_8036B030, lbl_8036B034, lbl_8036B038, lbl_8036B03C;
     extern f32 lbl_8036B040, lbl_8036B044, lbl_8036B048, lbl_8036B04C;
@@ -1493,7 +1493,7 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_EndPrim();
 
     fn_801ACF4C(self);
-    fn_801AB544(self);
+    Options_DrawScrollbar(self);
     Prim2D_Begin();
     fn_80009C0C(lbl_8036B080);
     Prim2D_PrepareTex();
