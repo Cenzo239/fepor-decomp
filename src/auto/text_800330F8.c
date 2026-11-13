@@ -9688,7 +9688,7 @@ void Map_DrawRangeTiles(void) {
     void fn_80066D00(s32);
     extern s32 gUiInputFlags;
     extern u32 lbl_80368F80;
-    extern f32 lbl_80368F84;
+    extern f32 gMapColorDrawZero;
     extern f32 lbl_80368F88;
     extern f32 lbl_80368F8C;
     extern f64 lbl_80368F90;
@@ -9727,7 +9727,7 @@ void Map_DrawRangeTiles(void) {
         GXSetTevOrder(0, 0, 0, 4);
         GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-        PSMTXTrans(mtx, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        PSMTXTrans(mtx, gMapColorDrawZero, gMapColorDrawZero, lbl_80368F88);
         PSMTXConcat(Camera_GetViewMtx(), mtx, mtx);
         GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);
@@ -9824,7 +9824,7 @@ void fn_8004A264(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_8006785C(s32, void *, void *);
     void fn_8004A2EC(void *);
-    extern f32 lbl_80368F84;
+    extern f32 gMapColorDrawZero;
     extern f32 lbl_80368F8C;
     extern f32 lbl_80368F98;
     s32 temp_r0;
@@ -9832,7 +9832,7 @@ void fn_8004A264(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x30) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
     temp_r0 = *(s32 *)((u8 *)arg0 + 0x30);
     if (temp_r0 <= 8) {
-        *(f32 *)((u8 *)arg0 + 0x34) = Math_Ease(6, lbl_80368F84, lbl_80368F8C, (f32)temp_r0, lbl_80368F98);
+        *(f32 *)((u8 *)arg0 + 0x34) = Math_Ease(6, gMapColorDrawZero, lbl_80368F8C, (f32)temp_r0, lbl_80368F98);
     }
     fn_8006785C(2, fn_8004A2EC, arg0);
 }
@@ -9861,7 +9861,7 @@ void fn_802245D8(s32, s32, s32, s32);
 void GXBegin(s32, s32, s32);
 f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
 void fn_80066D00(s32);
-extern f32 lbl_80368F84;
+extern f32 gMapColorDrawZero;
 extern f32 lbl_80368F88;
 extern f32 lbl_80368F8C;
 extern f64 lbl_80368F90;
@@ -9901,7 +9901,7 @@ extern u8 lbl_80285828[];
         GXSetNumChans(0);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_8022100C(0);
-        PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        PSMTXTrans(sp8, gMapColorDrawZero, gMapColorDrawZero, lbl_80368F88);
         PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
         GXLoadPosMtxImm(sp8, 0);
         GXSetCurrentMtx(0);
@@ -10051,7 +10051,7 @@ void fn_8004AAA4(void) {
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXLoadPosMtxImm(M2C_UNK *, M2C_UNK);
     M2C_UNK GXSetCurrentMtx(M2C_UNK);
-    extern f32 lbl_80368F84;
+    extern f32 gMapColorDrawZero;
     extern f32 lbl_80368F88;
     M2C_UNK sp8[14];
 
@@ -10068,7 +10068,7 @@ void fn_8004AAA4(void) {
     GXSetNumChans(0);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_8022100C(0);
-    PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+    PSMTXTrans(sp8, gMapColorDrawZero, gMapColorDrawZero, lbl_80368F88);
     PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
     GXLoadPosMtxImm(sp8, 0);
     GXSetCurrentMtx(0);
