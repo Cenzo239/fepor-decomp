@@ -5068,7 +5068,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
     u8 fn_801D2A38(void *);
     s32 fn_801D2AAC(void *);
     s32 fn_801D2C20(void *);
-    extern char lbl_8027CF10[];
+    extern char gUiScrollListStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -5127,10 +5127,10 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if (fn_801D2A38(obj) != 0) {
                 *(Vec2s *)&sp18 = ((Obj *)obj)->v9();
-                fn_80176888(lbl_8027CF10 + 0x54, self, (f32)*(s16 *)&sp18, (f32)*((s16 *)&sp18 + 1));
+                fn_80176888(gUiScrollListStrings + 0x54, self, (f32)*(s16 *)&sp18, (f32)*((s16 *)&sp18 + 1));
             } else {
                 Process_ClearFunc(self);
-                Ui_PlaySeCue(lbl_8027CF10 + 0x66, 0x64);
+                Ui_PlaySeCue(gUiScrollListStrings + 0x66, 0x64);
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
@@ -5140,7 +5140,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 5);
-            Ui_PlaySeCue(lbl_8027CF10 + 0x76, 0x64);
+            Ui_PlaySeCue(gUiScrollListStrings + 0x76, 0x64);
         }
     }
 }
@@ -5151,7 +5151,7 @@ void fn_801C0F54(s32 arg0) {
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, void *);
     void *Msg_Expand(void *);
-    extern char lbl_8027CF10[];
+    extern char gUiScrollListStrings[];
     s32 self;
     void *str;
     void *p;
@@ -5160,8 +5160,8 @@ void fn_801C0F54(s32 arg0) {
     str = (void *)0;
     p = (void *)Ui_FindChild(self, 0x80, 0);
     *(s32 *)((u8 *)p + 0x48) = 1;
-    Ui_SetWidgetText((u32)p, lbl_8027CF10 + 0x86);
-    str = Msg_Expand(lbl_8027CF10 + 0x99);
+    Ui_SetWidgetText((u32)p, gUiScrollListStrings + 0x86);
+    str = Msg_Expand(gUiScrollListStrings + 0x99);
     p = (void *)Ui_FindChild(self, -0x1000, 0);
     if (p != 0) {
         Ui_SetWidgetText((u32)p, str);
@@ -5211,7 +5211,7 @@ void fn_801C10D4(void *arg0) {
 void *Heap_Alloc(u32); void Ui_SetWidgetText(void *,void *); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 s32 Msg_Expand(void *); s32 Ui_FindChild(void *,s32,s32);
-extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C2C[],lbl_80293C00[],lbl_80293C58[],lbl_8027CF10[];
+extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C2C[],lbl_80293C00[],lbl_80293C58[],gUiScrollListStrings[];
 extern f32 lbl_8036B318;
 s32 text;
  void *p;
@@ -5268,7 +5268,7 @@ M2C_FIELD(p,s16 *,0x4E)=0x60;
 M2C_FIELD(p,s16 *,0x52)=0x60;
 M2C_FIELD(p,u8 *,0x4C)=2;
 M2C_FIELD(p,u32 *,0x48)=1;
-Ui_SetWidgetText(p,lbl_8027CF10+0x86);
+Ui_SetWidgetText(p,gUiScrollListStrings+0x86);
 Ui_AddChild(self,p);
 p=Heap_Alloc(0x5C);
 if(p) {M2C_FIELD(p,void **,0)=lbl_8028FDB0;
@@ -5314,11 +5314,11 @@ M2C_FIELD(p,s16 *,82)=48;
 }
 M2C_FIELD(p,s16 *,8)=-0x1000;
 M2C_FIELD(p,u32 *,0x48)=1;
-String_AssignCStr((u8 *)p+0x3C,lbl_8027CF10+0xAA,strlen((char *)lbl_8027CF10+0xAA));
+String_AssignCStr((u8 *)p+0x3C,gUiScrollListStrings+0xAA,strlen((char *)gUiScrollListStrings+0xAA));
 M2C_FIELD(p,u32 *,0x34)|=0x10;
 M2C_FIELD(p,u32 *,0x58)=1;
 Ui_AddChild(arg0,p);
-text=Msg_Expand(lbl_8027CF10+0x99);
+text=Msg_Expand(gUiScrollListStrings+0x99);
 if((obj=(void *)Ui_FindChild(self,-0x1000,0))!=0) Ui_SetWidgetText(obj,(void *)text);
 }
 #pragma cplusplus off
