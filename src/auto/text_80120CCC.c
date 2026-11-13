@@ -3175,7 +3175,7 @@ void fn_80126A98(s32 arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gScriptCmdNames[];
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void fn_8011D650(void *);
     void Process_ClearFunc(s32);
     struct {
@@ -3188,7 +3188,7 @@ void fn_80126A98(s32 arg0) {
     case 0x81:
         bf = (void *)&gBattleState[0x9D];
         bf->mid = 0;
-        fn_8011D79C(gScriptCmdNames + 0x42A);
+        TalkUi_ShowMsg(gScriptCmdNames + 0x42A);
         break;
     case 0x80:
         bf = (void *)&gBattleState[0x9D];

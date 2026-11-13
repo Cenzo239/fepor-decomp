@@ -13484,7 +13484,7 @@ void fn_801D3288(void* unit) {
 }
 
 void fn_801D341C(void) {
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void sprintf(void *, ...);
     extern u8 lbl_803682DC;
     extern void *lbl_803682D8;
@@ -13497,12 +13497,12 @@ void fn_801D341C(void) {
     }
 
     sprintf(lbl_803682D8, &lbl_8027E148[0x54], gBattleState[0x10], &lbl_8027E148);
-    fn_8011D79C(lbl_803682D8);
+    TalkUi_ShowMsg(lbl_803682D8);
 }
 
 void fn_801D3488(s32 arg0) {
     void Process_ClearFunc(s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void sprintf(void *, ...);
     extern u8 lbl_803682D4;
     extern void *lbl_803682D0;
@@ -13515,13 +13515,13 @@ void fn_801D3488(s32 arg0) {
     }
 
     sprintf(lbl_803682D0, &lbl_8027E148[0x76], gBattleState[0x10], &lbl_8027E148);
-    fn_8011D79C(lbl_803682D0);
+    TalkUi_ShowMsg(lbl_803682D0);
     Process_ClearFunc(arg0);
 }
 
 void fn_801D3508(s32 arg0) {
     void Process_ClearFunc(s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void sprintf(void *, ...);
     extern u8 lbl_803682CC;
     extern void *lbl_803682C8;
@@ -13534,7 +13534,7 @@ void fn_801D3508(s32 arg0) {
     }
 
     sprintf(lbl_803682C8, &lbl_8027E148[0x98], gBattleState[0x10], &lbl_8027E148);
-    fn_8011D79C(lbl_803682C8);
+    TalkUi_ShowMsg(lbl_803682C8);
     Process_ClearFunc(arg0);
 }
 

@@ -5707,7 +5707,7 @@ s32 fn_800BAAD4(void) {
     void *Res_GetByName(void);
     void *fn_8000BCA4(void *);
     s32 fn_800A876C(s32);
-    M2C_UNK fn_8011D79C(s32);
+    M2C_UNK TalkUi_ShowMsg(s32);
     M2C_UNK fn_8011D908(s32, s32);
     extern u8 lbl_8026ECB8[];
     extern void *gUiContext[];
@@ -5719,7 +5719,7 @@ s32 fn_800BAAD4(void) {
     obj = fn_800A876C(M2C_FIELD(gUiContext[0], s32 *, 0x188));
     if (Res_GetByName() != NULL) {
         if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
-            fn_8011D79C(obj);
+            TalkUi_ShowMsg(obj);
         } else {
             fn_8011D908(obj, fn_800C0658());
         }
@@ -5862,12 +5862,12 @@ s32 fn_800BAEF8(void) {
 
 s32 fn_800BAF1C(s32 arg0) {
     void *fn_8000BCA4(void *);
-    M2C_UNK fn_8011D79C(s32);
+    M2C_UNK TalkUi_ShowMsg(s32);
     M2C_UNK fn_8011D908(s32, s32);
     extern u8 lbl_8026ECB8[];
 
     if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
-        fn_8011D79C(arg0);
+        TalkUi_ShowMsg(arg0);
         return 1;
     }
     fn_8011D908(arg0, fn_800C0658());

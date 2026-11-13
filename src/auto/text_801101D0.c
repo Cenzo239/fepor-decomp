@@ -5469,7 +5469,7 @@ void fn_8011D6F4(s32 arg0) {
 extern u16 TalkUi_str[];
 extern u16 lbl_8032FE04[];
 extern u16 gUiPanelProc[];
-void fn_8011D79C(void *arg0) {
+void TalkUi_ShowMsg(void *arg0) {
     s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
     void Str_CopyPad(void *, const void *, s32);

@@ -4821,14 +4821,14 @@ void fn_801910B4(void *arg0)
 }
 
 void fn_80191138(void *arg0) {
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, s32);
     void *inner;
     s32 saved;
     void *ret;
 
-    fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x68) + 0x40));
+    TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x68) + 0x40));
     inner = *(void **)((u8 *)arg0 + 0x68);
     saved = *(s32 *)((u8 *)inner + 0x58);
     ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -4906,7 +4906,7 @@ void fn_8019129C(void *arg0) {
 void fn_801912C0(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -4926,7 +4926,7 @@ void fn_801912C0(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x50));
-            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x3C));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x3C));
             Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -4936,7 +4936,7 @@ void fn_801912C0(void *arg0) {
 void fn_80191374(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -4956,7 +4956,7 @@ void fn_80191374(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x50));
-            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x34));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x34));
             Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -4966,7 +4966,7 @@ void fn_80191374(void *arg0) {
 void fn_80191428(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -4986,7 +4986,7 @@ void fn_80191428(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x50));
-            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x2C));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x2C));
             Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -4996,7 +4996,7 @@ void fn_80191428(void *arg0) {
 void fn_801914DC(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -5016,7 +5016,7 @@ void fn_801914DC(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x4C));
-            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x24));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x24));
             Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -5051,7 +5051,7 @@ extern "C" void fn_80191590(void *arg0) {
     Child *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void fn_80193344(void *);
     void Ui_SetWidgetText(Child *, s32);
     void Process_Goto(void *, s32);
@@ -5118,7 +5118,7 @@ extern "C" void fn_80191590(void *arg0) {
             self->unk58 = 0;
         }
     }
-    fn_8011D79C(self->unk68->unk8);
+    TalkUi_ShowMsg(self->unk68->unk8);
     fn_80193344(self);
     c6 = (Child *)self->unk68->unk44;
     {
@@ -5166,7 +5166,7 @@ void fn_80191938(void *arg0) {
 }
 
 void fn_801919B8(void *arg0) {
-    M2C_UNK fn_8011D79C(s32);
+    M2C_UNK TalkUi_ShowMsg(s32);
     void *Ui_FindChild(M2C_UNK, M2C_UNK);
     M2C_UNK Ui_SlideWidgetChild(void *, void *, s16 *, M2C_UNK, s16);
     M2C_UNK Ui_SlideWidgetChildMode1(void *, void *, s16 *, M2C_UNK);
@@ -5206,7 +5206,7 @@ void fn_801919B8(void *arg0) {
     spA = 0xA7;
     fn_801402A0(arg0, temp_r31, &sp8, 0, temp_r7_2);
     M2C_FIELD(temp_r31, s32 *, 0x3C) = 0;
-    fn_8011D79C(M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), s32 *, 0x1C));
+    TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), s32 *, 0x1C));
 }
 
 void fn_80191C7C(void *arg0) {
@@ -5236,7 +5236,7 @@ void fn_80191C7C(void *arg0) {
 #pragma global_optimizer off
 extern "C" void fn_80191CFC(void *arg0) {
     void *Heap_Alloc(s32);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void Ui_SetPortraitUnit(void *, s32);
     s32 Ui_ListGetSelected(void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -5327,7 +5327,7 @@ extern "C" void fn_80191CFC(void *arg0) {
         sp8.x = 0x138;
         sp8.y = temp_r7;
         Ui_SlideWidgetChildMode1(arg0, temp_r31, &sp8.x, 0);
-        fn_8011D79C(M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), s32 *, 0x18));
+        TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x68), s32 *, 0x18));
     }
 }
 
@@ -5338,7 +5338,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     u8 fn_80092F38(void *);
     u8 fn_80092F9C(void *);
     s32 Convoy_FindEmpty(void *);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void *Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void Ui_BringChildToFront(void *, void *);
@@ -5463,7 +5463,7 @@ extern "C" void fn_80191F2C(void *arg0) {
             Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
             bits = Item_GetFlagsPtr(nest);
             if ((*(u64 *)bits & 5ULL) != 0 && (u8)fn_80092F9C(unit) >= 4) {
-                fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
+                TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
                 nest = *(void **)((u8 *)self + 0x68);
                 saved = *(s32 *)((u8 *)nest + 0x54);
                 ret = Ui_FindChild(self, -0x1000, 0);
@@ -5474,7 +5474,7 @@ extern "C" void fn_80191F2C(void *arg0) {
             } else {
                 bits = Item_GetFlagsPtr(nest);
                 if ((*(u64 *)bits & 0x18ULL) != 0 && (u8)fn_80092F38(unit) >= 4) {
-                    fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
+                    TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x28));
                     nest = *(void **)((u8 *)self + 0x68);
                     saved = *(s32 *)((u8 *)nest + 0x54);
                     ret = Ui_FindChild(self, -0x1000, 0);
@@ -5493,7 +5493,7 @@ extern "C" void fn_80191F2C(void *arg0) {
             } else {
                 Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
                 if (Convoy_FindEmpty(gConvoy) < 0) {
-                    fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x38));
+                    TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x38));
                     nest = *(void **)((u8 *)self + 0x68);
                     saved = *(s32 *)((u8 *)nest + 0x54);
                     ret = Ui_FindChild(self, -0x1000, 0);
@@ -5546,7 +5546,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                 }
             }
             Ui_SlideWidgetChild(self, child, Pair(0x260, child->unkC), 0);
-            fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0xC));
+            TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0xC));
             fn_80193344(self);
             Process_Goto(self, 3);
             Ui_PlaySeCue(lbl_80279DF0 + 0x4DE, 0x64);
@@ -5669,7 +5669,7 @@ extern "C" void fn_801927DC(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
     s32 Ui_ListGetSelected(void *);
     u8 fn_8014D8DC(void *);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029625C[], lbl_80296150[];
@@ -5862,7 +5862,7 @@ extern "C" void fn_801927DC(void *arg0) {
             Ui_SlideWidgetChildMode1(self, q, sp8, 0);
         }
     }
-    fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)self + 0x68) + 0x14));
+    TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)self + 0x68) + 0x14));
     q = *(void **)((u8 *)self + 0x68);
     list = *(void **)((u8 *)q + 0x48);
     res = Ui_FindChild(self, -0x1000, 0);
@@ -5901,7 +5901,7 @@ void fn_80192DB8(void *arg0) {
 
 void fn_80192E54(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
     extern u8 gUiContext[];
@@ -5911,7 +5911,7 @@ void fn_80192E54(void *arg0) {
 
     switch ((s32)gUiContext[8]) {
     case 0x80:
-        fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x68) + 0xC));
+        TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x68) + 0xC));
         temp_r6 = *(void **)((u8 *)arg0 + 0x68);
         temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x44);
         result = Ui_FindChild(arg0, -0x1000, 0);
@@ -5958,7 +5958,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     void fn_8000D8BC(s32, s32);
     u32 *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
@@ -6059,7 +6059,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
               scale = *(f32 *)((u8 *)self + 0x64);
               if ((s32)(scale * price) > *(s32 *)((u8 *)gBattleState + 0x18)) {
                   Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x501, 0x64);
-                  fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x20));
+                  TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x20));
                   owner = *(void **)((u8 *)self + 0x68);
                   saved = *(s32 *)((u8 *)owner + 0x54);
                   msg = Ui_FindChild(self, -0x1000, 0);
@@ -6071,7 +6071,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
                   price = (f32)val;
                   scale = *(f32 *)((u8 *)self + 0x64);
                   fn_8000D8BC(0, (s32)(scale * price));
-                  fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x10));
+                  TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x10));
                   Process_ClearFunc(self);
               }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && entry != NULL) {
@@ -6533,14 +6533,14 @@ extern "C" void fn_80193FE0(void *arg0)
 
 #pragma cplusplus reset
 void fn_80194064(void *arg0) {
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, s32);
     void *inner;
     s32 saved;
     void *ret;
 
-    fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0x20));
+    TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0x20));
     inner = *(void **)((u8 *)arg0 + 0x44);
     saved = *(s32 *)((u8 *)inner + 0x34);
     ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -6552,7 +6552,7 @@ void fn_80194064(void *arg0) {
 void fn_801940C0(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
-    void fn_8011D79C(void *);
+    void TalkUi_ShowMsg(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -6572,7 +6572,7 @@ void fn_801940C0(void *arg0) {
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
             Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x40));
-            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x1C));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x1C));
             Ui_PlaySeCue(lbl_8027A360 + 0x17C, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -6591,7 +6591,7 @@ extern "C" void fn_80194178(void *arg0) {
     u32 UnitRef_GetValue(void *);
     void Item_Clear(void *);
     void fn_800947E0(void *);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     u32 Ui_FindChild(void *, s32, s32);
     void fn_80143570(void *);
     void fn_801436AC(void *, void *);
@@ -6656,7 +6656,7 @@ extern "C" void fn_80194178(void *arg0) {
         }
         fn_80143570(temp_r29);
         fn_80143C9C(temp_r29);
-        fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0xC));
+        TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0xC));
         temp_r6 = *(void **)((u8 *)arg0 + 0x44);
         saved = *(s32 *)((u8 *)temp_r6 + 0x24);
         result = Ui_FindChild(arg0, -0x1000, 0);
@@ -6666,7 +6666,7 @@ extern "C" void fn_80194178(void *arg0) {
         Process_Goto(arg0, 3);
         break;
     case 0x80:
-        fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0x10));
+        TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x44) + 0x10));
         temp_r6 = *(void **)((u8 *)arg0 + 0x44);
         saved = *(s32 *)((u8 *)temp_r6 + 0x24);
         result = Ui_FindChild(arg0, -0x1000, 0);
@@ -6712,7 +6712,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     void fn_8000D8BC(s32, s32);
     u32 *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
-    void fn_8011D79C(s32);
+    void TalkUi_ShowMsg(s32);
     void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
@@ -6813,7 +6813,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
             Ui_PlaySeCue((u8 *)lbl_8027A360 + 0x1a0, 0x64);
             bits = Item_GetFlagsPtr(unit);
             if ((*(u64 *)bits & 0x20000000000ULL) != 0) {
-                fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x18));
+                TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x18));
                 nest = *(void **)((u8 *)self + 0x44);
                 saved = *(s32 *)((u8 *)nest + 0x30);
                 ret = Ui_FindChild(self, -0x1000, 0);
@@ -6823,7 +6823,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
                 Process_Goto(self, 5);
             } else {
                 fn_8000D8BC(0, (s32)((UnitRef_GetValue(unit) >> 1) & 0x7FFF));
-                fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x14));
+                TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x14));
                 Process_ClearFunc(self);
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && selected != NULL) {
