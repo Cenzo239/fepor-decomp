@@ -10604,45 +10604,46 @@ void *fn_801780A8(void) {
     return (char *)&gUiMsgStrings + 0x55B;
 }
 
-s32 Ui_ConfirmListCmd83(void *arg0, void *arg1, void *arg2) {
+/* If the list option is disabled (state 2), show a help popup for the selected submenu index; otherwise set UI command 0x83 and advance the list panel. */
+s32 Ui_ConfirmListCmd83(void *menu, void *parent, void *item) {
     void Process_Goto(void *, u8);
     void *Process_Find(void *);
     void Process_DetachChild(void *);
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
-    void *proc;
+    void *popup;
     f32 x;
     f32 y;
 
-    if (M2C_FIELD(arg2, u8 *, 0x39) == 2) {
-        x = M2C_FIELD(arg1, s16 *, 0x30) + M2C_FIELD(arg2, s16 *, 0x30);
-        y = M2C_FIELD(arg1, s16 *, 0x32) + M2C_FIELD(arg2, s16 *, 0x32);
-        switch (M2C_FIELD(arg0, s8 *, 4)) {
+    if (M2C_FIELD(item, u8 *, 0x39) == 2) {
+        x = M2C_FIELD(parent, s16 *, 0x30) + M2C_FIELD(item, s16 *, 0x30);
+        y = M2C_FIELD(parent, s16 *, 0x32) + M2C_FIELD(item, s16 *, 0x32);
+        switch (M2C_FIELD(menu, s8 *, 4)) {
         case 0:
-            proc = Process_CreateChild(gUiMsgPopupProc, arg1);
-            M2C_FIELD(proc, f32 *, 0x30) = x;
-            M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x569;
+            popup = Process_CreateChild(gUiMsgPopupProc, parent);
+            M2C_FIELD(popup, f32 *, 0x30) = x;
+            M2C_FIELD(popup, f32 *, 0x34) = y;
+            M2C_FIELD(popup, void **, 0x54) = (u8 *)gUiMsgStrings + 0x569;
             break;
         case 1:
-            proc = Process_CreateChild(gUiMsgPopupProc, arg1);
-            M2C_FIELD(proc, f32 *, 0x30) = x;
-            M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x57B;
+            popup = Process_CreateChild(gUiMsgPopupProc, parent);
+            M2C_FIELD(popup, f32 *, 0x30) = x;
+            M2C_FIELD(popup, f32 *, 0x34) = y;
+            M2C_FIELD(popup, void **, 0x54) = (u8 *)gUiMsgStrings + 0x57B;
             break;
         case 2:
-            proc = Process_CreateChild(gUiMsgPopupProc, arg1);
-            M2C_FIELD(proc, f32 *, 0x30) = x;
-            M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x224;
+            popup = Process_CreateChild(gUiMsgPopupProc, parent);
+            M2C_FIELD(popup, f32 *, 0x30) = x;
+            M2C_FIELD(popup, f32 *, 0x34) = y;
+            M2C_FIELD(popup, void **, 0x54) = (u8 *)gUiMsgStrings + 0x224;
             break;
         }
         return 0;
     }
-    proc = Process_Find(gUiListPanelProc);
+    popup = Process_Find(gUiListPanelProc);
     ((u8 *)gUiContext)[8] = 0x83;
-    Process_Goto(proc, 0x28);
-    Process_DetachChild(M2C_FIELD(proc, void **, 0x5C));
+    Process_Goto(popup, 0x28);
+    Process_DetachChild(M2C_FIELD(popup, void **, 0x5C));
     return 4;
 }
 
