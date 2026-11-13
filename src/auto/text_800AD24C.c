@@ -830,7 +830,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern s32 gPhaseBannerBlack0;
-    extern s32 lbl_80369C6C;
+    extern s32 gPhaseBannerBlack1;
     extern s32 lbl_80369C70;
     extern s32 lbl_80369C74;
     extern f32 gPhaseBannerZero;
@@ -867,7 +867,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_SetPrimParam(gPhaseBannerPrimParam);
     Prim2D_SetRect(gPhaseBannerZero, gPhaseBannerTopY, gPhaseBannerWidth, gPhaseBannerBarH);
     Prim2D_EmitQuad();
-    sp18 = lbl_80369C6C;
+    sp18 = gPhaseBannerBlack1;
     sp1C = gPhaseBannerBlack0;
     sp20 = lbl_8036C48C;
     sp24 = lbl_8036C488;
