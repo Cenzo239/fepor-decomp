@@ -11972,6 +11972,7 @@ void Sound_ApplyInitFlags(u32 arg0) {
 
 s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize) {
 #pragma dont_inline on
+    /* Initialize the sound driver: clamp voice/studio counts, set up ARAM, mark ready. */
     s32 fn_80261620(u32 *, u8, u8, u32);
     s32 fn_80262AF0(void);
     s32 fn_80262B14(u32);
@@ -11985,8 +11986,8 @@ s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize)
     extern u8 lbl_803689B0;
     u32 rate;
     s32 ret;
-    u8 num;
-    s32 base;
+    u8 voiceCount;
+    s32 aramBase;
 
     gSoundReady = 0;
     if (voices <= 64) {
@@ -12004,13 +12005,13 @@ s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize)
     gSoundData[0x212] = sfx;
     ret = fn_80261620(&rate, gSoundData[0x210], gSoundData[0x213], flags);
     if (ret == 0) {
-        base = fn_80262AF0();
-        num = gSoundData[0x210];
-        fn_80258A98(base, fn_80262B14(aramSize));
+        aramBase = fn_80262AF0();
+        voiceCount = gSoundData[0x210];
+        fn_80258A98(aramBase, fn_80262B14(aramSize));
         fn_80250A74(0, aramSize);
         fn_80247D74();
         lbl_803689B0 = 0;
-        fn_8024ADFC(32000, num);
+        fn_8024ADFC(32000, voiceCount);
         fn_8024BB90();
         fn_80258100();
         Sound_ApplyInitFlags(flags);
