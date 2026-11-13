@@ -4149,7 +4149,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_801BD8B4(void *arg0) {
+extern "C" void Ui_LayoutUnitPanel(void *arg0) {
     f32 fn_8013893C(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
