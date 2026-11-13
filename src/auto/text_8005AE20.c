@@ -159,7 +159,7 @@ void Game_PollSoftReset(void) {
     extern s32 gSoftResetHoldCount;
     extern s8 gSoftResetHoldInited;
     extern u8 gResetSwitchWasHeld;
-    extern s8 lbl_803672E2;
+    extern s8 gResetSwitchTrackInited;
     extern u8 lbl_803672E3;
     extern s8 lbl_803672E4;
     extern u32 gGameFlags;
@@ -171,9 +171,9 @@ void Game_PollSoftReset(void) {
         gSoftResetHoldCount = 0;
         gSoftResetHoldInited = 1;
     }
-    if (lbl_803672E2 == 0) {
+    if (gResetSwitchTrackInited == 0) {
         gResetSwitchWasHeld = 0;
-        lbl_803672E2 = 1;
+        gResetSwitchTrackInited = 1;
     }
     if (lbl_803672E4 == 0) {
         lbl_803672E3 = 0;
