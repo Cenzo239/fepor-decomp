@@ -274,7 +274,7 @@ void fn_8014E864(void *arg0) {
     void fn_802033AC(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     void *fn_80067FDC(void);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -393,7 +393,7 @@ void fn_8014E864(void *arg0) {
                     goto after_mtx;
                 case 0:
                 default:
-                    fn_8006DA64(lbl_80277320, 0xB8, lbl_80277320 + 8);
+                    GMaterial_Assert(lbl_80277320, 0xB8, lbl_80277320 + 8);
                 perm_join:
                     PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));

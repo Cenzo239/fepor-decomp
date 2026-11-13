@@ -8887,7 +8887,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     void fn_802033AC(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     void *fn_80067FD0(void);
     void fn_80202C18(void *, void *, void *);
     void fn_8020310C(void *, void *, void *);
@@ -8988,7 +8988,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
             default:
                 goto checks;
         }
-        fn_8006DA64(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
+        GMaterial_Assert(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
         PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
         PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
         PSMTXConcat(buf68, buf8, bufF8);

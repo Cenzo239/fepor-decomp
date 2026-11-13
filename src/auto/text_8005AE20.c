@@ -1907,7 +1907,7 @@ void fn_8005EBCC(s32 arg0, s32 arg1) {
 #pragma global_optimizer off
 void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void *fn_800C4638(s32, void *, s32);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     void fn_800618E4(void *);
     void fn_8006140C(void *);
     void *fn_80060690(void *);
@@ -1944,7 +1944,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     node = fn_800C4638(0xA0, lbl_8026B590 + 0x27, 0);
     if (node == 0) {
-        fn_8006DA64(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
+        GMaterial_Assert(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
     }
     fn_800618E4(node);
     *(u32 *)node |= 4;
@@ -2012,7 +2012,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     count = (s32)fn_800C4638(0xA0, lbl_8026B590 + 0x27, 0);
     if ((void *)count == 0) {
-        fn_8006DA64(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
+        GMaterial_Assert(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
     }
     fn_800618E4((void *)count);
     *(u32 *)count |= 4;
@@ -2398,7 +2398,7 @@ s32 fn_8005FA14(void *arg0, s32 arg1) {
     extern char lbl_8026B590[];
 
     if (arg0 == NULL) {
-        fn_8006DA64(lbl_8026B590 + 0x28, 0x2D8, lbl_8026B590 + 0x5D);
+        GMaterial_Assert(lbl_8026B590 + 0x28, 0x2D8, lbl_8026B590 + 0x5D);
     }
     if (M2C_FIELD(arg0, void **, 0x74) == NULL) {
         return 0;
@@ -2412,7 +2412,7 @@ s32 fn_8005FA14(void *arg0, s32 arg1) {
 s32 fn_8005FC74(void *arg0, s32 arg1) {
     if (arg0 == NULL) {
         extern char lbl_8026B590[];
-        fn_8006DA64(&lbl_8026B590[0x28], 0x2D8, &lbl_8026B590[0x5D]);
+        GMaterial_Assert(&lbl_8026B590[0x28], 0x2D8, &lbl_8026B590[0x5D]);
     }
     if (*(void **)((u8 *)arg0 + 0x74) == NULL) {
         return 0;
@@ -2784,14 +2784,14 @@ void fn_8006140C(void *arg0) {
 s32 fn_80061824(s32 arg0) {
     extern char lbl_8026B590[];
     if (arg0 == 0) {
-        fn_8006DA64(lbl_8026B590 + 0x28, 0x50, lbl_8026B590 + 0xAB);
+        GMaterial_Assert(lbl_8026B590 + 0x28, 0x50, lbl_8026B590 + 0xAB);
     }
     return fn_800618E4(arg0);
 }
 
 void *fn_80061870(void) {
     void *fn_800C4638(s32, void *, s32);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     void fn_800618E4(void *);
     extern char lbl_8026B590[];
     void *node;
@@ -2800,7 +2800,7 @@ void *fn_80061870(void) {
     str = lbl_8026B590;
     node = fn_800C4638(0xA0, str + 0x27, 0);
     if (node == 0) {
-        fn_8006DA64(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
+        GMaterial_Assert(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
     }
     fn_800618E4(node);
     *(u32 *)node |= 4;
@@ -2934,7 +2934,7 @@ void fn_80061A08(void *arg0)
         slot += 0x10;
     }
     if (n > 4) {
-        fn_8006DA64(lbl_8026B658, 0x524, lbl_8026B658 + 8);
+        GMaterial_Assert(lbl_8026B658, 0x524, lbl_8026B658 + 8);
     }
 
     f31 = lbl_803691E4;
@@ -3102,7 +3102,7 @@ void fn_80061A08(void *arg0)
                     }
                     break;
                 default:
-                    fn_8006DA64(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
+                    GMaterial_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                     break;
                 }
                 fn_802033AC(&sp20, spD0);
@@ -3257,7 +3257,7 @@ void fn_80061A08(void *arg0)
                             }
                             break;
                         default:
-                            fn_8006DA64(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
+                            GMaterial_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                             break;
                         }
                         fn_802033AC(&sp10, sp70);
@@ -3290,7 +3290,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void fn_80202640(void *, f32 *);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     extern f32 lbl_803691E4;
     extern f32 lbl_803691E8;
     extern u8 lbl_8026B658[];
@@ -3397,7 +3397,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
                     }
                     break;
                 default:
-                    fn_8006DA64(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
+                    GMaterial_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                     break;
                 }
             } else if (flags & 2) {
@@ -3495,7 +3495,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
                 }
                 break;
             default:
-                fn_8006DA64(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
+                GMaterial_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                 break;
             }
             PSMTXConcat(mA8, mD8, mD8);
@@ -3587,7 +3587,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
                 }
                 break;
             default:
-                fn_8006DA64(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
+                GMaterial_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                 break;
             }
             PSMTXConcat(mD8, mA8, mD8);
@@ -4362,7 +4362,7 @@ void *fn_800656C8(void *node, void *out)
     void PSMTXConcat(void *, void *, void *);
     u32 fn_80202140(void *, void *);
     void PSMTXRotRad(void *, s32, f32);
-    int fn_8006DA64(void *, int, void *);
+    int GMaterial_Assert(void *, int, void *);
     extern f32 lbl_80369218;
     extern f32 lbl_8036921C;
     extern u8 lbl_8026B6E8[];
@@ -4463,7 +4463,7 @@ void *fn_800656C8(void *node, void *out)
                 }
                 break;
             default:
-                fn_8006DA64(lbl_8026B6E8, 0xED, lbl_8026B6E8 + 8);
+                GMaterial_Assert(lbl_8026B6E8, 0xED, lbl_8026B6E8 + 8);
                 break;
             }
 
@@ -5595,7 +5595,7 @@ void fn_80069010(s32 *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_8006ECCC(void *, void *, u16);
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     void fn_8006EBC4(void *, void *, void *, s32);
     f32 fn_80064164(void **, s16, f32);
     f32 fn_8006469C(void **, s16, f32);
@@ -5648,21 +5648,21 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     pool = gMaterialStageIds;
     fn_8006ECCC(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
     if (lbl_80367301 >= 8) {
-        fn_8006DA64(gGMaterialAssertMsg + 1, 0x4F, gGMaterialAssertMsg + 0xD);
+        GMaterial_Assert(gGMaterialAssertMsg + 1, 0x4F, gGMaterialAssertMsg + 0xD);
     }
     idx = lbl_80367301;
     base = (s32 *)((u8 *)pool + 0x40);
     lbl_80367301 = idx + 1;
     r30 = base[idx];
     if (lbl_80367302 >= 8) {
-        fn_8006DA64(gGMaterialAssertMsg + 1, 0x70, gGMaterialAssertMsg + 0x25);
+        GMaterial_Assert(gGMaterialAssertMsg + 1, 0x70, gGMaterialAssertMsg + 0x25);
     }
     idx = lbl_80367302;
     base = (s32 *)((u8 *)pool + 0x60);
     lbl_80367302 = idx + 1;
     r29 = base[idx];
     if (gMaterialTevStageCount >= 0x10) {
-        fn_8006DA64(gGMaterialAssertMsg + 1, 0x2C, gGMaterialAssertMsg + 0x3F);
+        GMaterial_Assert(gGMaterialAssertMsg + 1, 0x2C, gGMaterialAssertMsg + 0x3F);
     }
     idx = gMaterialTevStageCount;
     base = pool;
@@ -5718,7 +5718,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
             PSMTXConcat(sp64, sp34, sp34);
         }
         if (lbl_80367303 >= 0x3C) {
-            fn_8006DA64(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
+            GMaterial_Assert(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
         }
         idx = lbl_80367303;
         base = (s32 *)((u8 *)pool + 0x80);
@@ -5749,7 +5749,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
 }
 s32 GMaterial_SetupColor(void *arg0,s32 arg1,void *arg2,void *arg3) {
 u8 fn_80064938(s32,s16,void*,f32);void fn_80064BBC(s32,s16,void*,f32);
-void fn_8006DA64(void*,s32,void*);
+void GMaterial_Assert(void*,s32,void*);
 void GXSetTevColor(s32,MaterialColor*);void GXSetChanMatColor(s32,MaterialColor*);
 void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
 void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);
@@ -5772,7 +5772,7 @@ if(((u8*)arg0)[8]<128)color.r=(((u8*)arg0)[8]*color.r)>>7;
 if(((u8*)arg0)[9]<128)color.g=(((u8*)arg0)[9]*color.g)>>7;
 if(((u8*)arg0)[10]<128)color.b=(((u8*)arg0)[10]*color.b)>>7;
 if((*(u32*)((u8*)arg2+0x10)&0x1000)&&(((u8*)arg0)[8]<128||((u8*)arg0)[9]<128||((u8*)arg0)[10]<128)){
-if(gMaterialTevStageCount>=16)fn_8006DA64(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
+if(gMaterialTevStageCount>=16)GMaterial_Assert(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
 c3=*(MaterialColor*)&gTevColorReg2Scratch;
 stage=gMaterialStageIds[gMaterialTevStageCount++];
 c3.r=color.r;c3.g=color.g;c3.b=color.b;c3.a=color.a;
@@ -5788,7 +5788,7 @@ copy4=c4;GXSetChanMatColor(4,&copy4);
 if(((u8*)arg0)[8]>128||((u8*)arg0)[9]>128||((u8*)arg0)[10]>128){
 r=((((u8*)arg0)[8]-128)*255)>>7;g=((((u8*)arg0)[9]-128)*255)>>7;b=((((u8*)arg0)[10]-128)*255)>>7;
 if(r<0)r=0;if(g<0)g=0;if(b<0)b=0;
-if(gMaterialTevStageCount>=16)fn_8006DA64(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
+if(gMaterialTevStageCount>=16)GMaterial_Assert(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
 c2=*(MaterialColor*)&gTevColorReg1Scratch;
 stage=gMaterialStageIds[gMaterialTevStageCount++];
 c2.r=r;c2.g=g;c2.b=b;
@@ -5841,11 +5841,11 @@ void *fn_80069CFC(void) {
     extern u8 lbl_80367304;
     extern u8 gGMaterialAssertMsg[];
     extern void *lbl_80285F30[];
-    void fn_8006DA64(const char *, s32, const char *);
+    void GMaterial_Assert(const char *, s32, const char *);
     void **entry;
     u8 idx;
     if (lbl_80367304 >= 4)
-        fn_8006DA64((const char *)gGMaterialAssertMsg+1,0xB5,(const char *)gGMaterialAssertMsg+0x74);
+        GMaterial_Assert((const char *)gGMaterialAssertMsg+1,0xB5,(const char *)gGMaterialAssertMsg+0x74);
     idx=lbl_80367304;
     entry=&lbl_80285F30[idx];
     lbl_80367304 = ++idx;
@@ -5853,14 +5853,14 @@ void *fn_80069CFC(void) {
 }
 #pragma global_optimizer on
 s32 fn_80069D58(void) {
-    void fn_8006DA64(void *, s32, void *);
+    void GMaterial_Assert(void *, s32, void *);
     extern u8 lbl_80367303;
     extern u8 gGMaterialAssertMsg[];
     extern s32 lbl_80285F08[];
     u8 idx;
     s32 *entry;
     if (lbl_80367303 >= 0x3C) {
-        fn_8006DA64(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
+        GMaterial_Assert(gGMaterialAssertMsg + 1, 0x96, gGMaterialAssertMsg + 0x5B);
     }
     idx = lbl_80367303;
     entry = &lbl_80285F08[idx];
@@ -5878,11 +5878,11 @@ void *fn_80069DBC(void) {
     extern u8 lbl_80367302;
     extern u8 gGMaterialAssertMsg[];
     extern void *lbl_80285EE8[];
-    void fn_8006DA64(const char *, s32, const char *);
+    void GMaterial_Assert(const char *, s32, const char *);
     void **entry;
     u8 idx;
     if (lbl_80367302 >= 8)
-        fn_8006DA64((const char *)gGMaterialAssertMsg+1,0x70,(const char *)gGMaterialAssertMsg+0x25);
+        GMaterial_Assert((const char *)gGMaterialAssertMsg+1,0x70,(const char *)gGMaterialAssertMsg+0x25);
     idx=lbl_80367302;
     entry=&lbl_80285EE8[idx];
     lbl_80367302 = ++idx;
@@ -5893,11 +5893,11 @@ void *fn_80069E18(void) {
     extern u8 lbl_80367301;
     extern u8 gGMaterialAssertMsg[];
     extern void *lbl_80285EC8[];
-    void fn_8006DA64(const char *, s32, const char *);
+    void GMaterial_Assert(const char *, s32, const char *);
     void **entry;
     u8 idx;
     if (lbl_80367301 >= 8)
-        fn_8006DA64((const char *)gGMaterialAssertMsg+1,0x4F,(const char *)gGMaterialAssertMsg+0xD);
+        GMaterial_Assert((const char *)gGMaterialAssertMsg+1,0x4F,(const char *)gGMaterialAssertMsg+0xD);
     idx=lbl_80367301;
     entry=&lbl_80285EC8[idx];
     lbl_80367301 = ++idx;
@@ -5942,11 +5942,11 @@ void *fn_80069EA8(void) {
     extern u8 gMaterialTevStageCount;
     extern u8 gGMaterialAssertMsg[];
     extern u16 gMaterialStageIds[0x20];
-    void fn_8006DA64(const char *, s32, const char *);
+    void GMaterial_Assert(const char *, s32, const char *);
     void **entry;
     u8 idx;
     if (gMaterialTevStageCount >= 0x10)
-        fn_8006DA64((const char *)gGMaterialAssertMsg+1,0x2C,(const char *)gGMaterialAssertMsg+0x3F);
+        GMaterial_Assert((const char *)gGMaterialAssertMsg+1,0x2C,(const char *)gGMaterialAssertMsg+0x3F);
     idx=gMaterialTevStageCount;
     entry=&((void **)gMaterialStageIds)[idx];
     gMaterialTevStageCount = ++idx;
@@ -6139,7 +6139,7 @@ void fn_8006B39C(void) {
 #pragma use_lmw_stmw on
 void fn_8006C2A4(void *arg0,s32 arg1){
 u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006049C(void*);s32 fn_80060520(void*);s32 fn_800604F4(void*);s32 fn_800604C8(void*);
-void fn_80220154(s32,s32,s32);void fn_8006DA64(void*,s32,void*);void fn_8006C748(void*,s32);
+void fn_80220154(s32,s32,s32);void GMaterial_Assert(void*,s32,void*);void fn_8006C748(void*,s32);
 void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
 void fn_802245D8(s32,s32,s32,s32);void fn_80224684(s32,s32,s32);void fn_80067490(s32);
 void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
@@ -6156,7 +6156,7 @@ switch(arg1){
 case 0:node=*(u8**)(data+0x3c);break;
 case 1:node=*(u8**)(data+0x40);break;
 case 2:node=*(u8**)(data+0x44);break;
-default:fn_8006DA64(lbl_8026B8AC+0x27,0x162,lbl_8026B8AC+0x9d);break;
+default:GMaterial_Assert(lbl_8026B8AC+0x27,0x162,lbl_8026B8AC+0x9d);break;
 }
 draw=1;fn_8006C748(arg0,arg1);
 for(p=node;p;p=*(u8**)(p+4))*(s16*)(p+0xe)=-1;
@@ -6620,7 +6620,7 @@ void fn_8006DA5C(s32 *arg0, s32 arg1) {
     *arg0 = arg1;
 }
 
-int fn_8006DA64(void *arg0, int arg1, int arg2) {
+int GMaterial_Assert(void *arg0, int arg1, int arg2) {
     s32 fn_8005B010(void *, s32, void *, ...);
     extern u16 lbl_8026B980[8];
     fn_8005B010(arg0, arg1, lbl_8026B980, arg2);
