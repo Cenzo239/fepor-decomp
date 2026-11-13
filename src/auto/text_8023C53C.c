@@ -5372,30 +5372,30 @@ found4:
 
 s32 SampleKey_Insert(u16 id, s32 data, s16 type) {
  void Audio_Lock(void); void Audio_Unlock(void);
- extern SampleKey lbl_8034F6B8[]; extern u16 lbl_80368A0C;
+ extern SampleKey gSampleKeys[]; extern u16 lbl_80368A0C;
  s32 i; s32 j; u16 count;
  Audio_Lock();
  count=lbl_80368A0C;
- for(i=0;i<(s32)count && lbl_8034F6B8[i].id<id;i++) {}
+ for(i=0;i<(s32)count && gSampleKeys[i].id<id;i++) {}
  if(i<(s32)count) {
-  if(id!=lbl_8034F6B8[i].id) {
+  if(id!=gSampleKeys[i].id) {
    if(count<0x100U) {
-    for(j=(s32)count-1;j>=i;j--) lbl_8034F6B8[j+1]=lbl_8034F6B8[j];
+    for(j=(s32)count-1;j>=i;j--) gSampleKeys[j+1]=gSampleKeys[j];
     lbl_80368A0C++;
     goto insert;
    }
    Audio_Unlock(); return 0;
   }
-  lbl_8034F6B8[i].ref++;
+  gSampleKeys[i].ref++;
   Audio_Unlock(); return 0;
  }
  if(count<0x100U) {lbl_80368A0C++; goto insert;}
  Audio_Unlock(); return 0;
 insert:
- lbl_8034F6B8[i].id=id;
- lbl_8034F6B8[i].data=data;
- lbl_8034F6B8[i].type=type;
- lbl_8034F6B8[i].ref=1;
+ gSampleKeys[i].id=id;
+ gSampleKeys[i].data=data;
+ gSampleKeys[i].type=type;
+ gSampleKeys[i].ref=1;
  Audio_Unlock(); return 1;
 }
 
@@ -5881,7 +5881,7 @@ s32 fn_8025093C(void *arg0, void *arg1) {
 s32 fn_8025094C(u16 arg0, u16 *arg1)
 {
     extern u8 lbl_803596D8[12];
-    extern u16 lbl_8034F6B8[];
+    extern u16 gSampleKeys[];
     extern u16 lbl_80368A0C;
     extern void *lbl_803689D0;
 
@@ -5894,7 +5894,7 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
 
     result = fn_802612A0(
         lbl_803596D8,
-        lbl_8034F6B8,
+        gSampleKeys,
         lbl_80368A0C,
         0xC,
         fn_8025093C
@@ -16692,7 +16692,7 @@ extern u8 lbl_80368AD0;
 extern s32 lbl_80368AF8;
 extern u16 lbl_80368A0C;
 extern u16 lbl_80368AFC;
-extern u16 lbl_8034F6B8[];
+extern u16 gSampleKeys[];
 extern u16 lbl_803596F0[16];
 extern u32* lbl_80368950;
 extern u8* lbl_803688E4;
