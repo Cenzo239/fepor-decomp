@@ -2294,7 +2294,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void *String_CStr(void *);
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void String_Concat(void *, void *, void *);
     void String_ConcatCStr(void *, void *, char *);
     void String_JoinCStr(void *, char *, void *);
@@ -2337,11 +2337,11 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     spBC.data = 0;
     spBC.cap = 0;
     fn_801EF39C(&sp98, self, arg1);
-    fn_800C9B6C(&spB0, &sp98);
+    String_Copy(&spB0, &sp98);
     String_Destroy(&sp98, -1);
     String_JoinCStr(&sp8C, gGActorPathExt + 0x1BB, &spB0);
     String_ConcatCStr(&sp80, &sp8C, gGActorPathExt + 0x1BF);
-    fn_800C9B6C(&spA4, &sp80);
+    String_Copy(&spA4, &sp80);
     String_Destroy(&sp80, -1);
     String_Destroy(&sp8C, -1);
     String_Concat(&sp74, &spA4, &spB0);
@@ -2433,7 +2433,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     void String_Assign(String *, void *, s32, s32);
     void String_Destroy(String *, s32);
     void String_Init(String *, char *, void *);
-    void fn_800C9B6C(String *, void *);
+    void String_Copy(String *, void *);
     void String_Concat(String *, String *, String *);
     void String_ConcatCStr(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
@@ -2464,13 +2464,13 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     sp48.size = 0;
     sp48.data = 0;
     sp48.cap = 0;
-    fn_800C9B6C(&sp3C, row + 0x74);
-    fn_800C9B6C(&sp30, row + 0x5C);
-    fn_800C9B6C(&sp24, row + 0x8C);
+    String_Copy(&sp3C, row + 0x74);
+    String_Copy(&sp30, row + 0x5C);
+    String_Copy(&sp24, row + 0x8C);
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp24) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
     if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
-        fn_800C9B6C(out, &sp48);
+        String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
         String_Destroy(&sp3C, -1);
@@ -2486,7 +2486,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp54) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
     if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
-        fn_800C9B6C(out, &sp48);
+        String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
         String_Destroy(&sp3C, -1);
@@ -2497,7 +2497,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     String_Assign(&sp48, (u8 *)StringMap_FindOrInsert(base + 4, &sp3C) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)gGActorPathExt + 0x221));
     if (fn_800C9400(&sp48, 0, (s32)sp48.size, (char *)((u32)gGActorPathExt + 0x221), n) != 0) {
-        fn_800C9B6C(out, &sp48);
+        String_Copy(out, &sp48);
         String_Destroy(&sp24, -1);
         String_Destroy(&sp30, -1);
         String_Destroy(&sp3C, -1);

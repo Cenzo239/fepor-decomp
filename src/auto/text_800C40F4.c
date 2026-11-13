@@ -251,7 +251,7 @@ static inline u8 GetItemKind(void *item) {
 
 void *fn_80019E04(char *);
 
-/* string object (fn_800C9B6C copies one) */
+/* string object (String_Copy copies one) */
 typedef struct String {
     u32 size;
     u32 cap;
@@ -1861,7 +1861,7 @@ void Xml_GetChildName(String *arg0, void *arg1) {
         name = NULL;
     }
     String_AssignCStr(&tmp, name, strlen(name));
-    fn_800C9B6C(arg0, &tmp);
+    String_Copy(arg0, &tmp);
     String_Destroy(&tmp, -1);
 }
 
@@ -2180,7 +2180,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     return arg0;
 }
 
-fn_800C9B6C(arg0, arg1)
+String_Copy(arg0, arg1)
 void *arg0;
 void *arg1;
 {
@@ -2855,7 +2855,7 @@ void fn_800CAF74(void *arg0) {
     extern u32 lbl_80330EAC[];
     void String_Init(String *, char *, void *);
     String *String_AssignCStr(String *, char *, u32);
-    void fn_800C9B6C(void *, String *);
+    void String_Copy(void *, String *);
     void *String_Destroy(String *, s32);
     void sprintf(char *, char *, ...);
     s32 fn_8001D2C8(void);
@@ -2881,7 +2881,7 @@ void fn_800CAF74(void *arg0) {
             String_AssignCStr(&str, buf, strlen(buf));
         }
     }
-    fn_800C9B6C(self, &str);
+    String_Copy(self, &str);
     String_Destroy(&str, -1);
 }
 
@@ -2889,7 +2889,7 @@ void fn_800CB070(String *arg0) {
     void String_Init(void *, char *, void *);
     void String_AssignCStr(String *, char *, u32);
     void *String_Destroy(void *, s16);
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void sprintf(char *, char *, ...);
     s32 strlen(char *);
     s32 fn_8001D2C8(void);
@@ -2925,7 +2925,7 @@ void fn_800CB070(String *arg0) {
             }
         }
     }
-    fn_800C9B6C(out, &str);
+    String_Copy(out, &str);
     String_Destroy(&str, -1);
 }
 
@@ -3080,13 +3080,13 @@ void fn_800CB5CC(void *arg0, void *arg1)
 }
 
 void String_Concat(void *arg0, void *arg1, s32 arg2) {
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void *fn_800C99A0(void *, s32, s32, s32);
     void *String_Destroy(void *, s32);
     u8 sp[0x10];
 
-    fn_800C9B6C(sp, arg1);
-    fn_800C9B6C(arg0, fn_800C99A0(sp, arg2, 0, -1));
+    String_Copy(sp, arg1);
+    String_Copy(arg0, fn_800C99A0(sp, arg2, 0, -1));
     String_Destroy(sp, -1);
 }
 
@@ -3095,8 +3095,8 @@ void String_ConcatCStr(M2C_UNK *arg0, M2C_UNK *unused, s32 arg2) {
     M2C_UNK sp8;
 
     (void)unused;
-    fn_800C9B6C(&sp8);
-    fn_800C9B6C(arg0, fn_800C992C(&sp8, arg2, strlen(arg2)));
+    String_Copy(&sp8);
+    String_Copy(arg0, fn_800C992C(&sp8, arg2, strlen(arg2)));
     String_Destroy(&sp8, -1);
 }
 
@@ -3270,12 +3270,12 @@ void String_JoinCStr(s32 arg0, char *arg1, s32 arg2) {
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     s32 fn_800C99A0(M2C_UNK *, s32, M2C_UNK, M2C_UNK);
     M2C_UNK String_Init(M2C_UNK *, char *, M2C_UNK *);
-    M2C_UNK fn_800C9B6C(s32, s32);
+    M2C_UNK String_Copy(s32, s32);
     M2C_UNK spC;
     M2C_UNK sp8;
 
     String_Init(&spC, arg1, &sp8);
-    fn_800C9B6C(arg0, fn_800C99A0(&spC, arg2, 0, -1));
+    String_Copy(arg0, fn_800C99A0(&spC, arg2, 0, -1));
     String_Destroy(&spC, -1);
 }
 
@@ -7025,11 +7025,11 @@ s32 fn_800D6F34(void)
 }
 #pragma dont_inline reset
 void fn_800D6FA4(void *arg0) {
-    M2C_UNK fn_800C9B6C(M2C_UNK *);
+    M2C_UNK String_Copy(M2C_UNK *);
     M2C_UNK fn_800DC518(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK sp8;
     
-    fn_800C9B6C(&sp8);
+    String_Copy(&sp8);
     fn_800DC518(M2C_FIELD(arg0, s32 *, 0x424), &sp8, 0);
     String_Destroy(&sp8, -1);
 }
@@ -7125,11 +7125,11 @@ void fn_800D75C4(void *arg0) {
 #pragma optimization_level 2
 s32 fn_800D75FC(void *arg0) {
     s32 fn_800E4454(s32, M2C_UNK *);
-    M2C_UNK fn_800C9B6C(M2C_UNK *);
+    M2C_UNK String_Copy(M2C_UNK *);
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK sp8;
 
-    fn_800C9B6C(&sp8);
+    String_Copy(&sp8);
     arg0 = (void *)fn_800E4454(M2C_FIELD(arg0, s32 *, 0x10), &sp8);
     String_Destroy(&sp8, -1);
     return (s32)arg0;
@@ -7501,14 +7501,14 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
 
 void fn_800D8D94(void *arg0, void *arg1, void *arg2, s32 arg3)
 {
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void fn_800E5270(void *, void *, void *, s32);
     void String_Destroy(void *, s32);
     u32 sp14[3];
     u32 sp8[3];
 
-    fn_800C9B6C(sp14, arg1);
-    fn_800C9B6C(sp8, arg2);
+    String_Copy(sp14, arg1);
+    String_Copy(sp8, arg2);
     fn_800E5270(*(void **)((u8 *)arg0 + 0x10), sp14, sp8, arg3);
     String_Destroy(sp8, -1);
     String_Destroy(sp14, -1);
@@ -7645,7 +7645,7 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
 extern "C" void fn_800D9458(s32 arg0,u32 arg1,s32 arg2) {
 void fn_8005BCAC();void fn_8005C7E8(u32);void *Heap_Alloc(s32);
 char *String_CStr(void *);void String_AssignCStr(void *,void *,u32);void String_Assign(void *,void *,s32,s32);
-void String_Destroy(void *,s32);void String_Init(void *,void *,void *);void fn_800C9B6C(void *,void *);
+void String_Destroy(void *,s32);void String_Init(void *,void *,void *);void String_Copy(void *,void *);
 void String_Concat(void *,void *,void *);void String_ConcatCStr(void *,void *,void *);
 u32 fn_800D9804(void *,void *,void *);void fn_800E4B44(void *);void fn_800E4B84(void *);void fn_800E4BA4(void *,s32);void fn_800E4D24(void *);void fn_800E4E5C(void *);
 void fn_800E78B0(void *,void *);void fn_800E8154(void *,void *);void Actor_LoadXml(void *,void *);void fn_80113030(void *,s32,void *,void *);void fn_801167BC(void *,void *);
@@ -7677,7 +7677,7 @@ String_Assign(s90,s60,0,-1);String_Destroy(s60,-1);String_Destroy(s6c,-1);
 fn_800E8154(M2C_FIELD(((u8 *)arg0),void **,4),s90);
 flag1=0;flag2=0;
 arg1=(s32)Heap_Alloc(0x1d8);
-if(arg1){fn_800C9B6C(s54,((u8 *)arg0)+0x70);flag1=1;String_Init(s48,lbl_802711B0+0x1e4,&a10);flag2=1;arg1=(s32)fn_80117A94((void *)arg1,M2C_FIELD(((u8 *)arg0),void **,4),s48,s54,0,0);}
+if(arg1){String_Copy(s54,((u8 *)arg0)+0x70);flag1=1;String_Init(s48,lbl_802711B0+0x1e4,&a10);flag2=1;arg1=(s32)fn_80117A94((void *)arg1,M2C_FIELD(((u8 *)arg0),void **,4),s48,s54,0,0);}
 M2C_FIELD(((u8 *)arg0),void **,0x10)=(void *)arg1;
 if(flag2)String_Destroy(s48,-1);
 if(flag1)String_Destroy(s54,-1);
@@ -8122,15 +8122,15 @@ void fn_800DA530(void *arg0, void *arg1, s32 arg2)
 {
     extern void *lbl_803678B8;
 
-    extern void fn_800C9B6C(void *, void *);
+    extern void String_Copy(void *, void *);
     extern void fn_800D8D94(void *, void *, void *, s32);
     extern void String_Destroy(void *, s32);
 
     u32 temp1[3];
     u32 temp2[3];
 
-    fn_800C9B6C(temp1, arg0);
-    fn_800C9B6C(temp2, arg1);
+    String_Copy(temp1, arg0);
+    String_Copy(temp2, arg1);
 
     fn_800D8D94(lbl_803678B8, temp1, temp2, arg2);
 
@@ -8169,9 +8169,9 @@ String fn_800DAA60(s32 arg1) {
 }
 
 void fn_800DAA94(void *arg0, u8 *arg1, s32 arg2) {
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
 
-    fn_800C9B6C(arg0, *(u8 **)(arg1 + 0x48) + arg2 * 0xC);
+    String_Copy(arg0, *(u8 **)(arg1 + 0x48) + arg2 * 0xC);
 }
 
 void fn_800DAAC0(s32 arg0, s32 arg1) {
@@ -8184,9 +8184,9 @@ String fn_800DAAF0(s32 arg1) {
 }
 
 void fn_800DAB24(void *arg0, void *arg1, s32 arg2) {
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
 
-    fn_800C9B6C(arg0, *(u8 **)((u8 *)arg1 + 0x3C) + arg2 * 0xC);
+    String_Copy(arg0, *(u8 **)((u8 *)arg1 + 0x3C) + arg2 * 0xC);
 }
 
 void fn_800DB110(void *arg0) {
@@ -10215,16 +10215,16 @@ s32 fn_800DF6B0(void *arg0) {
 }
 
 void fn_800DF6B8(void *arg0, u8 *arg1) {
-    void fn_800C9B6C(void *, u8 *);
-    fn_800C9B6C(arg0, arg1 + 0x1C);
+    void String_Copy(void *, u8 *);
+    String_Copy(arg0, arg1 + 0x1C);
 }
 
 void fn_800DF6DC(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x10);
+    String_Copy(arg0, arg1 + 0x10);
 }
 
 void fn_800DF700(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 4);
+    String_Copy(arg0, arg1 + 4);
 }
 
 void *fn_800DF724(void *arg0, s16 arg1) {
@@ -11609,7 +11609,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     void String_JoinCStr(String *, char *, String *);
     void String_ConcatCStr(String *, String *, char *);
     void String_Assign(String *, String *, s32, s32);
-    void fn_800C9B6C(String *, String *);
+    void String_Copy(String *, String *);
     void fn_800E378C(void *, String *);
     void **fn_8006EDD8(void *, s32);
     u32 strlen(char *);
@@ -11691,7 +11691,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     String_Assign(&str8C, &str2C, 0, -1);
     String_Destroy(&str2C, -1);
     String_Destroy(&str38, -1);
-    fn_800C9B6C(&str20, &str8C);
+    String_Copy(&str20, &str8C);
     fn_800E378C(self, &str20);
     String_Destroy(&str20, -1);
     if (*(u32 *)((u8 *)self + 0x48) != 0) {
@@ -12580,7 +12580,7 @@ s32 fn_800E5070(void *arg0, s32 arg1) {
 }
 
 void fn_800E51A8(void *arg0, void *arg1) {
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void String_Init(void *, void *, void *);
     extern u8 lbl_802720E0[];
     u8 sp8[8];
@@ -12588,7 +12588,7 @@ void fn_800E51A8(void *arg0, void *arg1) {
 
     temp_r6 = M2C_FIELD(arg1, void **, 0x100);
     if ((temp_r6 != NULL) && (M2C_FIELD(temp_r6, s32 *, 0x18) == M2C_FIELD(arg1, s32 *, 0xCC))) {
-        fn_800C9B6C(arg0, temp_r6);
+        String_Copy(arg0, temp_r6);
         return;
     }
     String_Init(arg0, lbl_802720E0 + 5, sp8);
@@ -12638,7 +12638,7 @@ s32 fn_800E5690(void *arg0) {
 }
 
 void fn_800E5698(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0xB0);
+    String_Copy(arg0, arg1 + 0xB0);
 }
 
 s32 fn_800E56BC(void *arg0) {
@@ -12878,7 +12878,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     void String_Assign(String *, String *, s32, s32);
     s32 fn_800C9400(String *, s32, u32, char *, u32);
     char *String_CStr(String *);
-    void fn_800C9B6C(String *, String *);
+    void String_Copy(String *, String *);
     void *fn_800E8008(void *, String *);
     void *fn_800DDC90(void *);
     void fn_800E574C(void *, char *, u8, s32, s32, s32, f32);
@@ -12988,7 +12988,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     self->unkE4 = 0;
     self->unkE8 = 0;
     if (fn_800C9400(&str64, 0, str64.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
-        fn_800C9B6C(&str1C, &str64);
+        String_Copy(&str1C, &str64);
         fn_800E5418(self, &str1C);
         String_Destroy(&str1C, -1);
     }
@@ -13557,7 +13557,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
 #pragma cplusplus reset
 
 void fn_800E788C(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x30);
+    String_Copy(arg0, arg1 + 0x30);
 }
 
 void fn_800E78B0(void *arg0, String *arg1) {

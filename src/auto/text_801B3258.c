@@ -9053,7 +9053,7 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
     void String_AssignCStr(void *, char *, u32);
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     void fn_800C9BC4(void *, void *, s32, void *);
     void fn_800DC454(void *);
     void fn_800DC518(void *, void *, void *);
@@ -9108,7 +9108,7 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
         entry = (struct Entry *)fn_801CAF2C(handle, arg1);
         sprintf(sp38, base + 0x16, arg1, entry->nameId);
         String_AssignCStr(&sp2C, sp38, strlen(sp38));
-        fn_800C9B6C(&sp14, &sp2C);
+        String_Copy(&sp14, &sp2C);
         fn_800DC518(*(void **)((u8 *)self + 0x438), &sp14, entry);
         String_Destroy(&sp14, -1);
         fn_800C9BC4((u8 *)self + 0x424,
@@ -9567,11 +9567,11 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
 #pragma cplusplus reset
 
 void fn_801CB25C(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x60);
+    String_Copy(arg0, arg1 + 0x60);
 }
 
 void fn_801CB280(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x54);
+    String_Copy(arg0, arg1 + 0x54);
 }
 
 void fn_801CB2A4(struct Unit *arg0) {

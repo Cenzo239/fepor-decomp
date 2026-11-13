@@ -8583,7 +8583,7 @@ s32 fn_80199310(void *arg0) {
 }
 
 void fn_80199318(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x118);
+    String_Copy(arg0, arg1 + 0x118);
 }
 
 void fn_8019933C(f32 *arg0, void *arg1)
@@ -13600,7 +13600,7 @@ void fn_80198CA4(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_80198F8C(s32 arg0, s32 arg1) {
-    fn_800C9B6C(arg0, arg1 + 0x138);
+    String_Copy(arg0, arg1 + 0x138);
 }
 
 void fn_80198FB0(void *arg0) {

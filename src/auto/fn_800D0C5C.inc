@@ -85,7 +85,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800E574C(void *, char *, f32, s32, s32, s32, s32);
     void fn_800E7D10(void *, void *);
     void fn_80199318(void *, s32);
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     s32 fn_80113894(void *);
     void fn_800E4BE0(void *, s32, f32, s32);
     s32 fn_80199028(s32);

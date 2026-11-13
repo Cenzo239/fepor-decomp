@@ -82,7 +82,7 @@
     void fn_800E574C(void *, char *, f32, s32, s32, s32, s32);
     void fn_800E7D10(void *, void *);
     void fn_80199318(void *, s32);
-    void fn_800C9B6C(void *, void *);
+    void String_Copy(void *, void *);
     s32 fn_80113894(void *);
     void fn_800E4BE0(void *, s32, f32, s32);
     s32 fn_80199028(s32);
@@ -641,7 +641,7 @@
                 *(s32 *)((u8 *)self + 0x18) = 1;
                 r27 = (*(s32 *)((u8 *)self + 0x21C) == 1);
                 fn_80199318(strT, fn_80116604(*(void **)((u8 *)self + 0x9C)));
-                fn_800C9B6C(strU, strT);
+                String_Copy(strU, strT);
                 String_Destroy(strT, -1);
                 if ((u8)fn_800D3534(strU, lbl_802704F8 + 0x5D4)
                     || (u8)fn_800D3534(strU, lbl_802704F8 + 0x5DD)

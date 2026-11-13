@@ -1810,11 +1810,11 @@ s32 fn_80108694(void) {
 
 void fn_801086CC(void *arg0) {
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
-    M2C_UNK fn_800C9B6C(M2C_UNK *);
+    M2C_UNK String_Copy(M2C_UNK *);
     M2C_UNK fn_800DC518(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK sp8;
 
-    fn_800C9B6C(&sp8);
+    String_Copy(&sp8);
     fn_800DC518(M2C_FIELD(arg0, s32 *, 0x424), &sp8, 0);
     String_Destroy(&sp8, -1);
 }
