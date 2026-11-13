@@ -2019,7 +2019,7 @@ void Battle_LoadMap(void)
     DebugPrint((char *)(Battle_str + 0x1BF), Heap_GetFree());
 }
 #pragma global_optimizer reset
-void fn_8002D648(void *arg0) {
+void Battle_StartMapMain(void *arg0) {
     extern u16 lbl_80284E78[];
     extern u16 lbl_80284E30[];
     extern u8 gBattleState[];
