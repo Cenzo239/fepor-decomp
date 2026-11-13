@@ -1176,7 +1176,8 @@ void *fn_80107468(void *arg0) {
     return *(void **)((char *)temp_r29 + 0x18);
 }
 
-s32 Dispos_ResolveUnit(u8 *arg0) {
+/* Parse a dispos entry and bind it to a map unit (create or pick from list 5). */
+s32 Dispos_ResolveUnit(u8 *entry) {
     void Dispos_ParseEntry(u32 *, u32 *, u8);
     void *Unit_FindByName(void *);
     void Unit_SetMapPos(void *, u8, u8);
@@ -1188,24 +1189,24 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void fn_80050C90(void *);
     extern u8 gDisposStrings[];
     extern struct { u8 pad[0x30]; void *unk30; u8 pad34[8]; void *unk3C; } gUnitLists;
-    u8 sp8[0x68];
+    u8 parsed[0x68];
     void *unit;
     void *obj;
-    void *found;
+    void *named;
     s32 kind;
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        *(s32 *)(sp8 + 0x10 + i * 4) = 0;
-        sp8[0x30 + i] = 0;
-        *(s32 *)(sp8 + 0x48 + i * 4) = 0;
+        *(s32 *)(parsed + 0x10 + i * 4) = 0;
+        parsed[0x30 + i] = 0;
+        *(s32 *)(parsed + 0x48 + i * 4) = 0;
     }
-    obj = *(void **)arg0;
-    Dispos_ParseEntry((u32 *)arg0, (u32 *)sp8, arg0[0x10D]);
-    unit = Unit_FindByName(*(void **)sp8);
+    obj = *(void **)entry;
+    Dispos_ParseEntry((u32 *)entry, (u32 *)parsed, entry[0x10D]);
+    unit = Unit_FindByName(*(void **)parsed);
     if (unit == NULL) {
-        if ((arg0[0x10C] & 2) || (sp8[8] & 8)) {
-            kind = sp8[9];
+        if ((entry[0x10C] & 2) || (parsed[8] & 8)) {
+            kind = parsed[9];
             unit = gUnitLists.unk30;
             if (kind == 4) {
                 goto after_sw;
@@ -1223,7 +1224,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         do_call:
             Unit_MoveToList(unit, kind);
         after_sw:
-            Unit_InitFromDispos(unit, sp8);
+            Unit_InitFromDispos(unit, parsed);
             Unit_MoveToList(unit, 5);
         } else {
             unit = NULL;
@@ -1236,12 +1237,12 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
             unit = NULL;
         } else if (t == 7) {
             Unit_MoveToList(unit, 5);
-            Unit_SetDisposId(unit, sp8[0x67]);
+            Unit_SetDisposId(unit, parsed[0x67]);
         }
     }
 skip_type:
-    found = Unit_FindByName(gDisposStrings + 0x50);
-    if (found != NULL && unit == found) {
+    named = Unit_FindByName(gDisposStrings + 0x50);
+    if (named != NULL && unit == named) {
         Unit_MoveToListHead(unit, 0);
         goto ok;
     }
@@ -1254,7 +1255,7 @@ skip_type:
         goto loop_cmp;
     loop_body:
         var_r4 = *(void **)((u8 *)var_r5 + 0x184);
-        if ((found != var_r5) && !(*(s32 *)((u8 *)var_r5 + 0x1A0) & 0x200000)) {
+        if ((named != var_r5) && !(*(s32 *)((u8 *)var_r5 + 0x1A0) & 0x200000)) {
             unit = var_r5;
             Unit_MoveToList(var_r5, 0);
             goto ok;
@@ -1265,14 +1266,14 @@ skip_type:
             goto loop_body;
         }
     }
-    *(void **)(arg0 + 4) = NULL;
+    *(void **)(entry + 4) = NULL;
     *((u8 *)obj + 0x3C) = 0;
     return 0;
 ok:
-    Unit_SetMapPos(unit, sp8[0xB], sp8[0xC]);
+    Unit_SetMapPos(unit, parsed[0xB], parsed[0xC]);
     fn_80050C90(unit);
     Unit_SetModelAlpha(unit, 0);
-    *(void **)(arg0 + 4) = unit;
+    *(void **)(entry + 4) = unit;
     *((u8 *)obj + 0x3C) = *((u8 *)unit + 0x198);
     return 1;
 }
