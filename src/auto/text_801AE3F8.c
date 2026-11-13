@@ -48,7 +48,7 @@ void fn_801AE498(void) {
 #pragma cplusplus on
 /* Release a UI panel's child refs and destroy the panel base. */
 extern "C" void Ui_DestroyPanel(void *panel) {
-    extern void Ui_DestroyPanelBase(void *, s32);
+    extern void Ui_DtorPanelBase(void *, s32);
     extern u16 gUiPanelFlags;
 
     struct RefObj {
@@ -139,7 +139,7 @@ extern "C" void Ui_DestroyPanel(void *panel) {
             }
             h->child8 = (RefObj *)0;
         }
-        Ui_DestroyPanelBase(h, 0);
+        Ui_DtorPanelBase(h, 0);
     }
 }
 #pragma cplusplus reset

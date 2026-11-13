@@ -2878,7 +2878,7 @@ void *fn_80169804(s32 arg0) {
 }
 
 void fn_80169870(void *arg0) {
-    void Ui_DestroyPanelBase(void *, s32);
+    void Ui_DtorPanelBase(void *, s32);
     void fn_80145520(void);
     void fn_80148980(void *, s32);
     extern u8 gFxChannels[];
@@ -2891,7 +2891,7 @@ void fn_80169870(void *arg0) {
     fn_8003F670(*(s32 *)((u8 *)arg0 + 0x48));
     if (arg0 != NULL) {
         if (arg0 != NULL) {
-            Ui_DestroyPanelBase(arg0, 0);
+            Ui_DtorPanelBase(arg0, 0);
         }
     }
     flags = gUiInputFlags;
@@ -3415,9 +3415,9 @@ void fn_8016A5DC(void *arg0, void *arg1, f32 arg2) {
 }
 
 s32 fn_8016A650(s32 arg0, s16 arg1) {
-    M2C_UNK Ui_DestroyPanelBase(s32, s32);
+    M2C_UNK Ui_DtorPanelBase(s32, s32);
     if (arg0 != 0) {
-        Ui_DestroyPanelBase(arg0, 0);
+        Ui_DtorPanelBase(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
         }
@@ -5780,7 +5780,7 @@ void *fn_8016E9DC(u32 arg0) {
 #pragma cplusplus on
 /* Release a list panel's seven child refs and destroy the panel base. */
 extern "C" void Ui_DestroyListPanel(void *panel) {
-    extern void Ui_DestroyPanelBase(void *, s32);
+    extern void Ui_DtorPanelBase(void *, s32);
 
     struct RefObj {
         virtual void destroy(s32);
@@ -5852,7 +5852,7 @@ extern "C" void Ui_DestroyListPanel(void *panel) {
             }
             h->child6 = (RefObj *)0;
         }
-        Ui_DestroyPanelBase(h, 0);
+        Ui_DtorPanelBase(h, 0);
     }
 }
 #pragma cplusplus reset
@@ -15237,12 +15237,12 @@ extern "C" void fn_80180ED4(void *arg0) {
 }
 
 extern "C" void *fn_80180F24(void *arg0, s16 arg1) {
-    void Ui_DestroyPanelBase(void *, s16);
+    void Ui_DtorPanelBase(void *, s16);
     void Heap_Free(void *);
     extern u8 lbl_80295764[];
     if (arg0 != NULL) {
         *(void **)((char *)arg0 + 0x40) = lbl_80295764;
-        Ui_DestroyPanelBase(arg0, 0);
+        Ui_DtorPanelBase(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
         }

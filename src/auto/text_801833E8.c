@@ -6474,7 +6474,7 @@ void fn_80193F3C(void) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_DestroyPanelBase(void *, s32);
+extern "C" void Ui_DtorPanelBase(void *, s32);
 extern "C" void fn_80193F5C(void *arg0) {
     extern u16 gUiPanelFlags;
     struct Obj {
@@ -6492,7 +6492,7 @@ extern "C" void fn_80193F5C(void *arg0) {
             }
             *(Obj **)((u8 *)arg0 + 0x40) = (Obj *)0;
         }
-        Ui_DestroyPanelBase(arg0, 0);
+        Ui_DtorPanelBase(arg0, 0);
     }
 }
 

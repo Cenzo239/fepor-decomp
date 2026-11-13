@@ -7930,7 +7930,7 @@ void fn_801402E4(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DestroyPanelBase(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelBase(void *arg0, s16 arg1) {
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
@@ -8593,7 +8593,7 @@ void fn_801426B4(void *arg0) {
 }
 
 void fn_801426C0(void *arg0) {
-    void Ui_DestroyPanelBase(void *, s32);
+    void Ui_DtorPanelBase(void *, s32);
     void *var_r4;
 
     if (*(u32 *)((u8 *)arg0 + 0x34) != 0U) {
@@ -8604,7 +8604,7 @@ void fn_801426C0(void *arg0) {
     *(s16 *)((u8 *)var_r4 + 0x8C) = 0;
     *(s16 *)((u8 *)var_r4 + 0x8E) = 0;
     if (arg0 != NULL) {
-        Ui_DestroyPanelBase(arg0, 0);
+        Ui_DtorPanelBase(arg0, 0);
     }
 }
 
