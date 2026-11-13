@@ -803,11 +803,12 @@ void fn_8005C5A8(char *name) {
 }
 
 u16 FileCache_GetFlags(char *name) {
-    u8 *e = FindEntryByName(name);
-    if (e == NULL) {
+    /* Return the named file-cache entry's flags, or 0x8000 if not cached. */
+    u8 *entry = FindEntryByName(name);
+    if (entry == NULL) {
         return 0x8000;
     }
-    return *(u16 *)(e + 0x30);
+    return *(u16 *)(entry + 0x30);
 }
 
 void fn_8005C7A4(s32 arg0) {
