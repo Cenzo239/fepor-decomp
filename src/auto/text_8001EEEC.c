@@ -1938,42 +1938,43 @@ f32 fn_80023430(void *arg0, f32 x, f32 y) {
 extern f32 gMapFlatEdgeEps;
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-void Map_PruneFlatEdges(void *arg0) {
+/* Clear directional edge flags on tiles whose neighbor height samples are nearly coplanar. */
+void Map_PruneFlatEdges(void *map) {
     void *row;
-    void *fp;
+    void *flagCell;
     u16 flags;
-    f32 t;
+    f32 delta;
     register f32 scale;
     int y;
-    void *p9;
-    void *p10;
-    void *p11;
-    void *p12;
-    void *p31;
+    void *hN;
+    void *hS;
+    void *hW;
+    void *hE;
+    void *hSE;
     register int x;
 
-    row = arg0;
+    row = map;
     y = 0;
     goto outer_test;
 outer:
-    p9 = (u8 *)row + 0x10000;
-    p10 = (u8 *)p9 + 0x40D4;
-    p11 = (u8 *)p9 + 0x44D4;
-    p12 = (u8 *)p9 + 0x42CC;
-    p31 = (u8 *)p9 + 0x42DC;
-    p9 = (u8 *)p9 + 0x42D4;
+    hN = (u8 *)row + 0x10000;
+    hS = (u8 *)hN + 0x40D4;
+    hW = (u8 *)hN + 0x44D4;
+    hE = (u8 *)hN + 0x42CC;
+    hSE = (u8 *)hN + 0x42DC;
+    hN = (u8 *)hN + 0x42D4;
     x = 0;
     goto inner_test;
 inner:
-    fp = (u8 *)&gBattleMap + (((s8)x + ((s8)y << 6)) * 2);
-    flags = *(u16 *)((u8 *)fp + 0x408E);
-    fp = (u8 *)fp + 0x408E;
+    flagCell = (u8 *)&gBattleMap + (((s8)x + ((s8)y << 6)) * 2);
+    flags = *(u16 *)((u8 *)flagCell + 0x408E);
+    flagCell = (u8 *)flagCell + 0x408E;
     if (flags & 8) {
-        scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
-        t = scale * (f32)(*(s16 *)p9 - *(s16 *)((u8 *)p10 + 4));
-        if (t * t < gMapFlatEdgeEps) {
-            t = scale * (f32)(*(s16 *)((u8 *)p9 + 2) - *(s16 *)((u8 *)p10 + 6));
-            if (t * t < gMapFlatEdgeEps) {
+        scale = *(f32 *)((u8 *)map + 0x1C2D4);
+        delta = scale * (f32)(*(s16 *)hN - *(s16 *)((u8 *)hS + 4));
+        if (delta * delta < gMapFlatEdgeEps) {
+            delta = scale * (f32)(*(s16 *)((u8 *)hN + 2) - *(s16 *)((u8 *)hS + 6));
+            if (delta * delta < gMapFlatEdgeEps) {
                 goto skip8;
             }
         }
@@ -1981,11 +1982,11 @@ inner:
     }
 skip8:
     if (flags & 4) {
-        scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
-        t = scale * (f32)(*(s16 *)((u8 *)p9 + 4) - *(s16 *)p11);
-        if (t * t < gMapFlatEdgeEps) {
-            t = scale * (f32)(*(s16 *)((u8 *)p9 + 6) - *(s16 *)((u8 *)p11 + 2));
-            if (t * t < gMapFlatEdgeEps) {
+        scale = *(f32 *)((u8 *)map + 0x1C2D4);
+        delta = scale * (f32)(*(s16 *)((u8 *)hN + 4) - *(s16 *)hW);
+        if (delta * delta < gMapFlatEdgeEps) {
+            delta = scale * (f32)(*(s16 *)((u8 *)hN + 6) - *(s16 *)((u8 *)hW + 2));
+            if (delta * delta < gMapFlatEdgeEps) {
                 goto skip4;
             }
         }
@@ -1993,11 +1994,11 @@ skip8:
     }
 skip4:
     if (flags & 1) {
-        scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
-        t = scale * (f32)(*(s16 *)p9 - *(s16 *)((u8 *)p12 + 2));
-        if (t * t < gMapFlatEdgeEps) {
-            t = scale * (f32)(*(s16 *)((u8 *)p9 + 4) - *(s16 *)((u8 *)p12 + 6));
-            if (t * t < gMapFlatEdgeEps) {
+        scale = *(f32 *)((u8 *)map + 0x1C2D4);
+        delta = scale * (f32)(*(s16 *)hN - *(s16 *)((u8 *)hE + 2));
+        if (delta * delta < gMapFlatEdgeEps) {
+            delta = scale * (f32)(*(s16 *)((u8 *)hN + 4) - *(s16 *)((u8 *)hE + 6));
+            if (delta * delta < gMapFlatEdgeEps) {
                 goto skip1;
             }
         }
@@ -2005,24 +2006,24 @@ skip4:
     }
 skip1:
     if (flags & 2) {
-        scale = *(f32 *)((u8 *)arg0 + 0x1C2D4);
-        t = scale * (f32)(*(s16 *)((u8 *)p9 + 2) - *(s16 *)p31);
-        if (t * t < gMapFlatEdgeEps) {
-            t = scale * (f32)(*(s16 *)((u8 *)p9 + 6) - *(s16 *)((u8 *)p31 + 4));
-            if (t * t < gMapFlatEdgeEps) {
+        scale = *(f32 *)((u8 *)map + 0x1C2D4);
+        delta = scale * (f32)(*(s16 *)((u8 *)hN + 2) - *(s16 *)hSE);
+        if (delta * delta < gMapFlatEdgeEps) {
+            delta = scale * (f32)(*(s16 *)((u8 *)hN + 6) - *(s16 *)((u8 *)hSE + 4));
+            if (delta * delta < gMapFlatEdgeEps) {
                 goto skip2;
             }
         }
         flags &= ~0x2;
     }
 skip2:
-    *(u16 *)fp = flags;
+    *(u16 *)flagCell = flags;
     ++x;
-    p9 = (u8 *)p9 + 8;
-    p10 = (u8 *)p10 + 8;
-    p11 = (u8 *)p11 + 8;
-    p12 = (u8 *)p12 + 8;
-    p31 = (u8 *)p31 + 8;
+    hN = (u8 *)hN + 8;
+    hS = (u8 *)hS + 8;
+    hW = (u8 *)hW + 8;
+    hE = (u8 *)hE + 8;
+    hSE = (u8 *)hSE + 8;
 inner_test:
     if (x < gBattleMap.width) {
         goto inner;
