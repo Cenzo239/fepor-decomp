@@ -2345,7 +2345,7 @@ s16 fn_80136474(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_801364A0(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorUnitPanel(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
