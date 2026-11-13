@@ -2309,7 +2309,7 @@ void Battle_AdvancePhase(void) {
     void fn_8003D68C(void *, s32);
     void Unit_SeparateRescue(void *, u8, u8);
     void fn_80104410(void *);
-    void fn_8014D2B0(void *, u8);
+    void Battle_SetPhase(void *, u8);
     void fn_8014DA88(void *, s32);
     void fn_801E3400(void *, u8);
     extern u8 gBattleState[];
@@ -2360,7 +2360,7 @@ void Battle_AdvancePhase(void) {
         fn_8014DA88(gBattleState + 0x3C4, 1);
         *(s16 *)(gBattleState + 0x12) = 1;
         gBattleState[0x11] = 0;
-        fn_8014D2B0(gBattleState, (u8)(gBattleState[0x10] + 1));
+        Battle_SetPhase(gBattleState, (u8)(gBattleState[0x10] + 1));
         gBattleState[0x54] = 4;
         return;
     }
@@ -2419,7 +2419,7 @@ void Battle_AdvancePhase(void) {
     }
     fn_80016C58();
     fn_8014DA88(gBattleState + 0x3C4, 0);
-    fn_8014D2B0(gBattleState, (u8)(gBattleState[0x10] + 1));
+    Battle_SetPhase(gBattleState, (u8)(gBattleState[0x10] + 1));
     gBattleState[0x54] = 4;
     if (gBattleState[0x10] == 0x20) {
         fn_801E3400(lbl_80331FB8, gBattleState[0x51C]);

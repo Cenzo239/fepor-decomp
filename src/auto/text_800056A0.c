@@ -300,7 +300,7 @@ void fn_80005F04(void)
     void fn_801ED3D4(void);
     void fn_80121414(void);
     void fn_801E379C(void *);
-    void fn_8014D2B0(u32);
+    void Battle_SetPhase(u32);
     void fn_8014D41C(void *);
     void fn_801E2594(void *);
     void *fn_8000C0C0(void *);
@@ -336,7 +336,7 @@ void fn_80005F04(void)
         data = gBattleState;
         data[0x9F] |= 8;
 
-        fn_8014D2B0(object[0x64]);
+        Battle_SetPhase(object[0x64]);
         fn_8014D41C(data);
 
     case 4:

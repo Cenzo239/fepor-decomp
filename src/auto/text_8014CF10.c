@@ -219,7 +219,7 @@ void fn_8014D268(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x18) = var_r4;
 }
 
-void fn_8014D2B0(void *arg0, u8 arg1) {
+void Battle_SetPhase(void *arg0, u8 arg1) {
     u8 temp_r5;
 
     temp_r5 = M2C_FIELD(arg0, u8 *, 0x10);

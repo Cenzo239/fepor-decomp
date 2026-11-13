@@ -2946,11 +2946,11 @@ void fn_801F894C(s32 arg0) {
 }
 
 void fn_801F897C(void) {
-    void fn_8014D2B0(void *, s32);
+    void Battle_SetPhase(void *, s32);
     void fn_8002D548(void);
     extern u8 gBattleState[];
 
-    fn_8014D2B0(gBattleState, 0x1F);
+    Battle_SetPhase(gBattleState, 0x1F);
     fn_8002D548();
 }
 

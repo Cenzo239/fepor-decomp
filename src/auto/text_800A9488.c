@@ -402,7 +402,7 @@ s32 fn_800AA078(void *arg0) {
     s32 fn_8000CEE4(s32);
     void fn_80016DE0(void);
     void *fn_80019ED0(s32);
-    void fn_8014D2B0(void *, u8);
+    void Battle_SetPhase(void *, u8);
     void fn_8014D698(void *, u8, s32, s32, s32);
     extern u8 gBattleState[];
     extern u64 lbl_80331FB8[];
@@ -419,7 +419,7 @@ s32 fn_800AA078(void *arg0) {
     {
         u8 *p;
         p = gBattleState;
-        fn_8014D2B0(p, *(u8 *)((u8 *)unit + 0x3C));
+        Battle_SetPhase(p, *(u8 *)((u8 *)unit + 0x3C));
     }
     lbl_80331FB8[1] = 0x0123456789ABCDEFULL;
     fn_80006220(0xA);
