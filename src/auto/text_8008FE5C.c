@@ -88,7 +88,7 @@ void fn_8008FE5C(void* arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+void Ui_DrawCenteredMsgLines(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     void *Msg_Expand(u32);
     void Text_Draw(s16, s16, u8, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);

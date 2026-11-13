@@ -462,7 +462,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     extern void Prim2D_AddZ(f32);
     extern s32 Text_MeasureHeight(s32, f32);
     extern void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    extern void fn_8008FFB0(u32, u32, void *, void *, void *);
+    extern void Ui_DrawCenteredMsgLines(u32, u32, void *, void *, void *);
 
     typedef s16 (*v18_fn)(void *);
     f32 t;
@@ -502,7 +502,7 @@ void fn_80074F20(void *arg0, void *arg1) {
         Prim2D_AddZ(lbl_8036939C);
         Prim2D_PrepareTex();
     }
-    fn_8008FFB0(0x138, 0xa0, (void *)(lbl_8026C0B8 + 0x1a1), (void *)(lbl_8026C0B8 + 0x1a7), (void *)(lbl_8026C0B8 + 0x1ad));
+    Ui_DrawCenteredMsgLines(0x138, 0xa0, (void *)(lbl_8026C0B8 + 0x1a1), (void *)(lbl_8026C0B8 + 0x1a7), (void *)(lbl_8026C0B8 + 0x1ad));
 }
 
 void fn_800750D8(s32 arg0, void *arg1) {
