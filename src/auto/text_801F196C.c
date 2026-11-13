@@ -540,7 +540,7 @@ void fn_801F2E08(void *arg0) {
     u8 fn_801E3570(void *, s32);
     extern void *gPadInput;
     extern char gOptionsStrs[];
-    extern u8 lbl_8029A9E8[];
+    extern u8 gOptionsList1[];
     extern u8 gSystemSave[];
     void *obj;
     s32 pressed;
@@ -569,7 +569,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -618,7 +618,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -730,7 +730,7 @@ void fn_801F3338(void *arg0) {
     u8 fn_8008A59C();
     u8 fn_801E3570(void *, s32);
     extern u8 gOptionsStrs[];
-    extern u8 lbl_8029A9E8[];
+    extern u8 gOptionsList1[];
     extern u8 gSystemSave[];
     extern f32 lbl_8036B850;
     extern f32 lbl_8036B854;
@@ -757,7 +757,7 @@ void fn_801F3338(void *arg0) {
     temp_r27 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
                 Ui_PlaySeCue(gOptionsStrs + 0x121C, 0x64);
                 Process_Goto(arg0, 2);
                 fn_8008A290(3, 0xB4);
@@ -862,7 +862,7 @@ void Options_InitPanel(void *arg0) {
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
     extern char gOptionsStrs[];
-    extern u8 lbl_8029A9E8[];
+    extern u8 gOptionsList1[];
     extern u8 lbl_8029AB60[];
     extern u8 lbl_8029AD68[];
     extern u8 lbl_8029AF18[];
@@ -885,7 +885,7 @@ void Options_InitPanel(void *arg0) {
     p->unk27 = p->unk11;
     switch (p->unk11) {
     case 1:
-        p->unk34 = (struct Entry *)lbl_8029A9E8;
+        p->unk34 = (struct Entry *)gOptionsList1;
         break;
     case 2:
         p->unk34 = (struct Entry *)lbl_8029AB60;
