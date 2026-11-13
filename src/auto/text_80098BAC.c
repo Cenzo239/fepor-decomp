@@ -61,7 +61,7 @@ void fn_80098BD8(void *arg0) {
 
 void fn_80098C04(void *arg0) {
     u32 Map_Get();
-    s32 fn_8004721C(s32, s32, s32, s32, s32);
+    s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     void fn_80096AB8();
     void fn_800979FC();
     void fn_80097AB4();
@@ -96,7 +96,7 @@ void fn_80098C04(void *arg0) {
             p = (s8 *)gUiContext;
             a = p[0xF];
             b = p[0x10];
-            M2C_FIELD(arg0, s32 *, 0x30) = fn_8004721C(temp_r3, a, b, 0x1000, 0x10);
+            M2C_FIELD(arg0, s32 *, 0x30) = Map_FindObjAt(temp_r3, a, b, 0x1000, 0x10);
         } else {
             M2C_FIELD(arg0, s32 *, 0x30) = 0;
         }

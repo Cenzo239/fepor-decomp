@@ -1214,17 +1214,19 @@ void fn_80036150(s32 arg0) {
     void BattleAnim_Queue(s32, s32, s8);
     s32 fn_800386B0(s32);
     u8 fn_8003D094(s32, u8);
-    void fn_8014C5F4(void *, u8);
+    void fn_8014C5F4(void *, s32);
     void fn_800351FC(s32, u8, s32, s32);
     extern u8 gBattleState[];
-    u8 var_r30;
     void *p;
+    u8 var_r30;
+    u16 hp;
 
     if (fn_8003D13C(arg0) != 0) {
         BattleAnim_Queue(arg0 + 0x8A0, 0x25, 0);
         BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
         p = *(void **)(arg0 + 0x28C);
-        var_r30 = fn_8003D094(arg0, (u8)(*(u16 *)((u8 *)p + 0x10) / 20 + 0xA));
+        hp = *(u16 *)((u8 *)p + 0x10);
+        var_r30 = fn_8003D094(arg0, (u8)(hp / 20 + 0xA));
         if (var_r30 > fn_8003D13C(arg0)) {
             var_r30 = fn_8003D13C(arg0);
         }
@@ -8388,7 +8390,7 @@ void fn_80046400(void *arg0, void *arg1, void *arg2) {
 }
 
 s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
-    void *fn_8004721C(void *, s32, s32, u32, s32);
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
     void *fn_80049E1C(void *);
     void **p;
     s32 n;
@@ -8459,13 +8461,13 @@ s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
         n = count + 1;
         nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
     }
 right:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2;
@@ -8505,13 +8507,13 @@ right:
         n = count + 1;
         nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
     }
 up:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
@@ -8551,13 +8553,13 @@ up:
         n = count + 1;
         nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
     }
 down:
     mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
@@ -8597,13 +8599,13 @@ down:
         n = count + 1;
         nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
         mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
         mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, fn_8004721C(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
+        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
     }
 done:
     return count;
@@ -8703,7 +8705,7 @@ s32 fn_80047178(void *arg0, s32 arg1, s32 arg2)
   return 0;
 }
 
-s32 fn_8004721C(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
+s32 Map_FindObjAt(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
     u8 *entry;
     s32 base;
     s32 i;

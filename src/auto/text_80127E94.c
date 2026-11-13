@@ -806,7 +806,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void *Process_Create(void *, s32);
     void fn_8001EEEC(void *);
     void *Map_Get(void);
-    void *fn_8004721C(void *, s32, s32, s32, s32);
+    void *Map_FindObjAt(void *, s32, s32, s32, s32);
     void fn_80049CB4(void *, void *);
     void fn_80049D30(void *);
     void GActor_RequestRes(void *, void *, void *);
@@ -869,7 +869,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     fn_8010FE08(lbl_8032BB58, x, y - 1, 0xA);
     fn_8010FE08(lbl_8032BB58, x, y + 1, 0xA);
     fn_8010FEEC(lbl_8032BB58, x, y, 0x27, 0);
-    obj = fn_8004721C(Map_Get(), x, y, 0x10000, 0);
+    obj = Map_FindObjAt(Map_Get(), x, y, 0x10000, 0);
     if (obj == NULL) {
         fn_800056A0(0);
         return;
@@ -1344,7 +1344,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *Process_Create(void *, s32);
     void Map_Get(void);
     void *fn_80046F14(s32, s32, u32, u32);
-    s32 fn_8004721C(s8, s8, u32, u32);
+    s32 Map_FindObjAt(s8, s8, u32, u32);
     void fn_8014CBD8(void *, f32, f32);
 
     s32 t31;
@@ -1360,7 +1360,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     arg0 = *(s8 *)t30;
     arg1 = *((s8 *)t30 + 1);
     Map_Get();
-    t31 = fn_8004721C((s8)arg0, (s8)arg1, 0x20000, 0);
+    t31 = Map_FindObjAt((s8)arg0, (s8)arg1, 0x20000, 0);
     if (t31 == 0) {
         fn_800056A0(0);
         return;
@@ -1474,7 +1474,7 @@ void fn_8012B394(void) {
 
 void fn_8012B3C0(s32 arg0, s32 arg1, s32 arg2) {
     s32 r = Map_Get();
-    r = fn_8004721C(r, arg0, arg1, 0x4200, 0);
+    r = Map_FindObjAt(r, arg0, arg1, 0x4200, 0);
     if ((u32)r != 0U) {
         fn_800498A4(r, arg2, 0);
     }
