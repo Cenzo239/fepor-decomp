@@ -138,7 +138,7 @@ void fn_80128134(void) {
 }
 
 void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     u32 fn_801090C0(s32);
     extern u8 lbl_802905C0[];
     extern f32 lbl_8036A3C0;
@@ -151,7 +151,7 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
 
     temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        obj = fn_8000CAF0(lbl_802905C0, temp_r3);
+        obj = Process_Create(lbl_802905C0, temp_r3);
         f40 = lbl_8036A3C0;
         f44 = lbl_8036A3C4;
         f3c = (f32)arg2;
@@ -163,7 +163,7 @@ void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80128268(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     u32 fn_801090C0(s32);
     extern u8 lbl_802905C0[];
     extern f32 lbl_8036A3C0;
@@ -172,7 +172,7 @@ void fn_80128268(s32 arg0, s32 arg1, s32 arg2) {
 
     temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        obj = fn_8000CAF0(lbl_802905C0, temp_r3);
+        obj = Process_Create(lbl_802905C0, temp_r3);
         *(s32 *)((u8 *)obj + 0x38) = arg1;
         *(f32 *)((u8 *)obj + 0x3C) = (f32)arg2;
         *(f32 *)((u8 *)obj + 0x40) = lbl_8036A3C0;
@@ -181,7 +181,7 @@ void fn_80128268(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_801282E8(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     u32 fn_801090C0(s32);
     extern u8 lbl_80290598[];
     u32 temp_r3;
@@ -189,14 +189,14 @@ void fn_801282E8(s32 arg0, s32 arg1, s32 arg2) {
 
     temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        temp_r3_2 = fn_8000CAF0(lbl_80290598, temp_r3);
+        temp_r3_2 = Process_Create(lbl_80290598, temp_r3);
         M2C_FIELD(temp_r3_2, s32 *, 0x38) = arg1;
         M2C_FIELD(temp_r3_2, f32 *, 0x3C) = (f32)arg2;
     }
 }
 
 void fn_8012835C(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     u32 fn_801090C0(s32);
     extern u8 lbl_80290598[];
     u32 temp_r3;
@@ -204,7 +204,7 @@ void fn_8012835C(s32 arg0, s32 arg1, s32 arg2) {
 
     temp_r3 = fn_801090C0(arg0);
     if (temp_r3 != 0U) {
-        temp_r3_2 = fn_8000CAF0(lbl_80290598, temp_r3);
+        temp_r3_2 = Process_Create(lbl_80290598, temp_r3);
         M2C_FIELD(temp_r3_2, s32 *, 0x38) = arg1;
         M2C_FIELD(temp_r3_2, f32 *, 0x3C) = (f32)-arg2;
     }
@@ -490,14 +490,14 @@ void fn_8012955C(void) {
 
 void fn_80129588(s32 arg0, u32 arg1) {
     void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80290BA4[];
     void *var_r3;
 
     if (arg1 != 0U) {
         var_r3 = fn_8000CAA0(lbl_80290BA4);
     } else {
-        var_r3 = fn_8000CAF0(lbl_80290BA4, 3);
+        var_r3 = Process_Create(lbl_80290BA4, 3);
     }
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
@@ -518,7 +518,7 @@ void fn_8012961C(void *arg0) {
     void *fn_80046F14(void *, s32, s32, u32, s32);
     u8 fn_80049D6C(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B70[];
     void *self = arg0;
@@ -540,7 +540,7 @@ void fn_8012961C(void *arg0) {
         if (self != NULL) {
             entry = fn_8000CAA0(lbl_80290B70, self);
         } else {
-            entry = fn_8000CAF0(lbl_80290B70, 3);
+            entry = Process_Create(lbl_80290B70, 3);
         }
         *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
     }
@@ -548,14 +548,14 @@ void fn_8012961C(void *arg0) {
 
 void fn_80129708(s32 arg0, u32 arg1) {
     void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80290BA4[];
     void *var_r3;
 
     if (arg1 != 0U) {
         var_r3 = fn_8000CAA0(lbl_80290BA4);
     } else {
-        var_r3 = fn_8000CAF0(lbl_80290BA4, 3);
+        var_r3 = Process_Create(lbl_80290BA4, 3);
     }
     *(s32 *)((char *)var_r3 + 0x30) = arg0;
 }
@@ -576,7 +576,7 @@ void fn_8012979C(void *arg0) {
     void *fn_80046F14(void *, s32, s32, u32, s32);
     u8 fn_80049D58(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B3C[];
     void *self = arg0;
@@ -598,7 +598,7 @@ void fn_8012979C(void *arg0) {
         if (self != NULL) {
             entry = fn_8000CAA0(lbl_80290B3C, self);
         } else {
-            entry = fn_8000CAF0(lbl_80290B3C, 3);
+            entry = Process_Create(lbl_80290B3C, 3);
         }
         *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
     }
@@ -609,7 +609,7 @@ void fn_80129888(void *arg0, void *arg1)
     extern u8 lbl_80290B70[];
 
     extern void *fn_8000CAA0(void *, void *);
-    extern void *fn_8000CAF0(void *, s32);
+    extern void *Process_Create(void *, s32);
     extern void *Map_Get(void);
     extern s32 fn_80046400(void *, void *, void *);
 
@@ -619,7 +619,7 @@ void fn_80129888(void *arg0, void *arg1)
     if (arg1 != 0) {
         entry = (u8 *)fn_8000CAA0(lbl_80290B70, arg1);
     } else {
-        entry = (u8 *)fn_8000CAF0(lbl_80290B70, 3);
+        entry = (u8 *)Process_Create(lbl_80290B70, 3);
     }
 
     result = Map_Get();
@@ -701,7 +701,7 @@ void fn_80129A84(void *arg0, void *arg1)
     extern u8 lbl_80290B3C[];
 
     extern void *fn_8000CAA0(void *, void *);
-    extern void *fn_8000CAF0(void *, s32);
+    extern void *Process_Create(void *, s32);
     extern void *Map_Get(void);
     extern s32 fn_80046400(void *, void *, void *);
 
@@ -711,7 +711,7 @@ void fn_80129A84(void *arg0, void *arg1)
     if (arg1 != 0) {
         entry = (u8 *)fn_8000CAA0(lbl_80290B3C, arg1);
     } else {
-        entry = (u8 *)fn_8000CAF0(lbl_80290B3C, 3);
+        entry = (u8 *)Process_Create(lbl_80290B3C, 3);
     }
 
     result = Map_Get();
@@ -803,7 +803,7 @@ check:
 void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void fn_800056A0(s32);
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_8001EEEC(void *);
     void *Map_Get(void);
     void *fn_8004721C(void *, s32, s32, s32, s32);
@@ -877,7 +877,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     if (a5 != 0) {
         node = fn_8000CAA0(lbl_80290AE0, a5);
     } else {
-        node = fn_8000CAF0(lbl_80290AE0, 3);
+        node = Process_Create(lbl_80290AE0, 3);
     }
     *(void **)((u8 *)node + 0x30) = fn_800C45B8(-0xAC, lbl_80275740 + 0x164, 0);
     f42c = lbl_8036A42C;
@@ -1277,7 +1277,7 @@ s32 fn_8012AA68(void *arg0) {
 void fn_8012ABAC(void *arg0) {
     u8 fn_80049D58(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void *Map_Get(void);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B3C[];
@@ -1291,7 +1291,7 @@ void fn_8012ABAC(void *arg0) {
         if (arg0 != NULL) {
             entry = (u8 *)fn_8000CAA0(lbl_80290B3C, arg0);
         } else {
-            entry = (u8 *)fn_8000CAF0(lbl_80290B3C, 3);
+            entry = (u8 *)Process_Create(lbl_80290B3C, 3);
         }
         result = Map_Get();
         *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
@@ -1300,7 +1300,7 @@ void fn_8012ABAC(void *arg0) {
         if (arg0 != NULL) {
             entry = (u8 *)fn_8000CAA0(lbl_80290B70, arg0);
         } else {
-            entry = (u8 *)fn_8000CAF0(lbl_80290B70, 3);
+            entry = (u8 *)Process_Create(lbl_80290B70, 3);
         }
         result = Map_Get();
         *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
@@ -1341,7 +1341,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
 
     void *fn_800056A0(void *);
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void Map_Get(void);
     void *fn_80046F14(s32, s32, u32, u32);
     s32 fn_8004721C(s8, s8, u32, u32);
@@ -1368,7 +1368,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     if (arg2 != 0) {
         r6 = fn_8000CAA0(lbl_80290A58, arg2);
     } else {
-        r6 = fn_8000CAF0(lbl_80290A58, 3);
+        r6 = Process_Create(lbl_80290A58, 3);
     }
     *(void **)((u8 *)r6 + 0x38) = t30;
     *(s32 *)((u8 *)r6 + 0x3c) = t31;
@@ -1482,9 +1482,9 @@ void fn_8012B3C0(s32 arg0, s32 arg1, s32 arg2) {
 
 extern u8 lbl_80290A40[16];
 void fn_8012B42C(s32 arg0) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_80290A40[16];
-    fn_8000CAF0(lbl_80290A40, arg0);
+    Process_Create(lbl_80290A40, arg0);
 }
 
 void fn_8012B458(void *arg0) {

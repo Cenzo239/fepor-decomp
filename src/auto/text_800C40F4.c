@@ -770,11 +770,11 @@ head=self->owner;block->next=head;block->prev=0;if(head)head->prev=block;self->o
 #pragma global_optimizer on
 void fn_800C5EF8(s32 arg0) {
     void fn_8000CAA0(void *, s32);
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_8028D908[];
     extern u8 lbl_8028D7A4[];
     fn_8000CAA0(lbl_8028D908, arg0);
-    fn_8000CAF0(lbl_8028D7A4, 5);
+    Process_Create(lbl_8028D7A4, 5);
 }
 
 void fn_800C5F34(s32 arg0) {
@@ -6299,7 +6299,7 @@ Process_ClearFunc(lbl_80367888);
 extern "C" void fn_800D5784(s32 arg0) {
     void fn_800056CC(char *, ...);
     s32 fn_8000CAA0(void *, s32);
-    s32 fn_8000CAF0(void *, s32);
+    s32 Process_Create(void *, s32);
     extern char lbl_802704F8[];
     extern u8 lbl_80284668[];
     extern u8 lbl_8028DA48[];
@@ -6320,13 +6320,13 @@ extern "C" void fn_800D5784(s32 arg0) {
         temp = fn_8000CAA0(lbl_80284668, arg0);
     }
     lbl_80367884 = temp;
-    lbl_80367888 = fn_8000CAF0(lbl_8028DA70, arg0);
+    lbl_80367888 = Process_Create(lbl_8028DA70, arg0);
 }
 
 void fn_800D5818(s32 arg0) {
     void fn_800056CC(void *, ...);
     s32 fn_8000CAA0(void *, s32);
-    s32 fn_8000CAF0(void *, s32);
+    s32 Process_Create(void *, s32);
     extern char lbl_802704F8[];
     extern u8 lbl_80284668[];
     extern u8 lbl_8028DA70[];
@@ -6343,7 +6343,7 @@ void fn_800D5818(s32 arg0) {
     lbl_80367878 = 0;
     temp = fn_8000CAA0(lbl_80284668, arg0);
     lbl_80367884 = temp;
-    lbl_80367888 = fn_8000CAF0(lbl_8028DA70, temp);
+    lbl_80367888 = Process_Create(lbl_8028DA70, temp);
 }
 
 #pragma cplusplus reset
@@ -15113,12 +15113,12 @@ void fn_800EB028(s32 arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_800EB210(u32 arg0) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void *fn_8000CAA0(void *, u32);
     extern u8 lbl_8028E308[];
 
     if (arg0 == 0U) {
-        fn_8000CAF0(lbl_8028E308, 2);
+        Process_Create(lbl_8028E308, 2);
         return;
     }
     fn_8000CAA0(lbl_8028E308, arg0);
@@ -16289,12 +16289,12 @@ break;
 }
 }
 s32 fn_800EE490(void) {
-    s32 fn_8000CAF0(void *, s32);
+    s32 Process_Create(void *, s32);
     void fn_800EE124(void);
     extern u8 lbl_8028E558[];
     s32 result;
 
-    result = fn_8000CAF0(lbl_8028E558, 4);
+    result = Process_Create(lbl_8028E558, 4);
     fn_800EE124();
     return result;
 }

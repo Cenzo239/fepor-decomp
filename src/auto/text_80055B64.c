@@ -172,7 +172,7 @@ extern f32 lbl_80368FC4;
 
 void fn_80055B64(s32 arg0) {
     u32 Process_Find(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_801451BC(void);
     u8 fn_80145308(void);
     void fn_800056CC(const char *, ...);
@@ -186,7 +186,7 @@ void fn_80055B64(s32 arg0) {
         fn_800056CC((const char *)(GActor_str + 0x12E));
         return;
     }
-    temp = fn_8000CAF0(lbl_80285968, 4);
+    temp = Process_Create(lbl_80285968, 4);
     *(s32 *)((u8 *)temp + 0x60) = arg0;
 }
 

@@ -1026,7 +1026,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_800056CC(const char *, ...);
     void fn_800056A0(s32);
     void fn_8000A388(void *, void *, s32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_80058A0C(void *, s32, s32, s32);
     void fn_80057FD4(void);
     extern u8 lbl_8026AD80[];
@@ -1038,7 +1038,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         fn_800056A0(0);
     }
     fn_8000A388(lbl_80285B6C, fn_80057FD4, arg0);
-    temp_r31 = fn_8000CAF0(lbl_80285B6C, arg3);
+    temp_r31 = Process_Create(lbl_80285B6C, arg3);
     fn_80058A0C(temp_r31, arg0, arg1, arg2);
     return (s32)temp_r31;
 }
@@ -1294,7 +1294,7 @@ void fn_800590D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_80059138(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80285B08[];
     u32 var_r6;
     void *temp_r3;
@@ -1303,7 +1303,7 @@ void fn_80059138(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     if (var_r6 == 0) {
         var_r6 = 3;
     }
-    temp_r3 = fn_8000CAF0(lbl_80285B08, var_r6);
+    temp_r3 = Process_Create(lbl_80285B08, var_r6);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     *(s32 *)((u8 *)temp_r3 + 0x34) = arg1;
     *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
@@ -1324,9 +1324,9 @@ void fn_800591CC(void *arg0) {
 
 void fn_80059208(s32 arg0, s32 arg1) {
     extern u8 lbl_80285AF0[];
-    void *fn_8000CAF0(u8 *, s32);
+    void *Process_Create(u8 *, s32);
     s32 *obj;
-    obj = (s32 *)fn_8000CAF0(lbl_80285AF0, arg1);
+    obj = (s32 *)Process_Create(lbl_80285AF0, arg1);
     obj[0x30 / 4] = arg0;
 }
 
@@ -1356,6 +1356,7 @@ loop_4:
 f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     f64 fn_80237E90(f32);
     extern f32 lbl_80369108;
+    extern f64 lbl_80369118;
     extern f32 lbl_8036916C;
     extern f32 lbl_80369170;
     extern f32 lbl_80369174;
@@ -1363,9 +1364,8 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     extern f32 lbl_8036917C;
     f32 dx;
     f32 dy;
-    f32 ang;
-    f32 c;
 
+    (void)lbl_80369118;
     dx = farg2 - farg0;
     dy = farg3 - farg1;
     if ((dx < lbl_8036916C) && (dx > lbl_80369170)) {
@@ -1374,13 +1374,12 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
         }
         return lbl_80369174;
     }
-    ang = (f32)fn_80237E90(dx / dy);
-    ang = lbl_80369178 * ang;
+    dx = (f32)fn_80237E90(dx / dy);
+    dx = lbl_80369178 * dx;
     if (dy < lbl_80369108) {
-        ang += lbl_80369174;
+        dx += lbl_80369174;
     }
-    c = lbl_8036917C;
-    return ang - c * (f32)(s32)(ang / c);
+    return dx - lbl_8036917C * (f32)(s32)(dx / lbl_8036917C);
 }
 
 f32 fn_80059500(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)

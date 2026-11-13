@@ -435,8 +435,8 @@ void fn_800AA134(void) {
 
 void fn_800AA15C(void) {
     extern u8 lbl_8028CDF0[];
-    void fn_8000CAF0(void *, s32);
-    fn_8000CAF0(lbl_8028CDF0, 4);
+    void Process_Create(void *, s32);
+    Process_Create(lbl_8028CDF0, 4);
 }
 
 u32 *Process_Find(u32 arg0);

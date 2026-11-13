@@ -8383,7 +8383,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     extern f32 lbl_8036A730;
     extern f32 lbl_8036A740;
     void *fn_8000CAA0(void *, s32, void *);
-    void *fn_8000CAF0(void *, s32, void *);
+    void *Process_Create(void *, s32, void *);
     void *fn_8013FCE0(void *, void *, void **, void **);
     void *fn_80140B04(void *);
     void fn_80142060(void *);
@@ -8395,7 +8395,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     (void)lbl_8036A730;
     (void)lbl_8036A740;
     (void)fn_8000CAA0;
-    (void)fn_8000CAF0;
+    (void)Process_Create;
     (void)fn_8013FCE0;
     (void)fn_80140B04;
     (void)fn_80142060;
@@ -10276,7 +10276,7 @@ return 0;
 
 void fn_801453F0(void) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
     extern f32 lbl_8036A778;
@@ -10293,7 +10293,7 @@ void fn_801453F0(void) {
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x8C), 3);
+    temp_r3 = Process_Create((void *)(base + 0x8C), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
@@ -10303,7 +10303,7 @@ void fn_801453F0(void) {
 
 void fn_80145488(void) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
     extern f32 lbl_8036A778;
@@ -10322,7 +10322,7 @@ void fn_80145488(void) {
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x78), 3);
+    temp_r3 = Process_Create((void *)(base + 0x78), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
@@ -10331,18 +10331,18 @@ void fn_80145488(void) {
 }
 
 void fn_80145520(void) {
-void Process_UnlinkByKey(void *); void *fn_8000CAF0(void *, s32);
+void Process_UnlinkByKey(void *); void *Process_Create(void *, s32);
 extern u8 lbl_80292558[]; extern u8 lbl_80367AEE;
 extern f32 lbl_8036A778; extern f32 lbl_8036A77C;
 s32 base=(s32)lbl_80292558; f32 *p; f32 a,b;
 Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
-p=fn_8000CAF0((void*)(base+0x64),3);
+p=Process_Create((void*)(base+0x64),3);
 b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)lbl_80367AEE;
 }
 
 void fn_801455B8(s32 arg0) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
     extern f32 lbl_8036A778;
@@ -10366,7 +10366,7 @@ void fn_801455B8(s32 arg0) {
         lbl_80367AEE = 0;
         return;
     }
-    temp_r3 = fn_8000CAF0((void *)(base + 0x50), 3);
+    temp_r3 = Process_Create((void *)(base + 0x50), 3);
     *(f32 *)((u8 *)temp_r3 + 0x30) = lbl_8036A778;
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg;
     *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
@@ -10374,7 +10374,7 @@ void fn_801455B8(s32 arg0) {
 
 void fn_80145684(void) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
     extern f32 lbl_8036A778;
@@ -10391,7 +10391,7 @@ void fn_80145684(void) {
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x3C), 3);
+    temp_r3 = Process_Create((void *)(base + 0x3C), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
@@ -10401,7 +10401,7 @@ void fn_80145684(void) {
 
 void fn_8014571C(void) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
     extern f32 lbl_8036A778;
@@ -10418,7 +10418,7 @@ void fn_8014571C(void) {
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = fn_8000CAF0((void *)(base + 0x28), 3);
+    temp_r3 = Process_Create((void *)(base + 0x28), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
@@ -10428,7 +10428,7 @@ void fn_8014571C(void) {
 
 void fn_801457B4(void) {
     void Process_UnlinkByKey(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_8029256C[];
     extern u8 lbl_80367AEC;
@@ -10440,7 +10440,7 @@ void fn_801457B4(void) {
 
     Process_UnlinkByKey(lbl_80292558);
     Process_UnlinkByKey(lbl_8029256C);
-    temp_r3 = fn_8000CAF0(lbl_8029256C, 3);
+    temp_r3 = Process_Create(lbl_8029256C, 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;

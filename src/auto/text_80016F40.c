@@ -305,12 +305,12 @@ void fn_8001779C(s32 arg0) {
 }
 
 void fn_800177E0(s32 arg0) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern char lbl_80268330[];
     void *p;
 
-    p = fn_8000CAF0(lbl_802841B0, arg0);
+    p = Process_Create(lbl_802841B0, arg0);
     M2C_FIELD(p, s32 *, 0x40) = fn_800C4638(0x1400, lbl_80268330 + 0x4E, 0);
     M2C_FIELD(p, u8 *, 0x44) = 0;
     M2C_FIELD(p, u8 *, 0x3C) = 0;

@@ -181,9 +181,9 @@ void fn_80005C40(void) {
 }
 
 void fn_80005C60(void) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_802832FC[];
-    fn_8000CAF0(lbl_802832FC, 3);
+    Process_Create(lbl_802832FC, 3);
 }
 
 void fn_80005C8C(void) {

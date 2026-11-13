@@ -1653,7 +1653,7 @@ extern s32 lbl_8036840C;
 }
 
 void fn_801F5CDC(void) {
-    fn_8000CAF0(&gCardLinkProc, 3);
+    Process_Create(&gCardLinkProc, 3);
 }
 
 void fn_801F5D08(void *arg0) {
@@ -3861,12 +3861,12 @@ void fn_801FA478(void *arg0) {
 void fn_801FA4B8(s32 arg0, s32 arg1) {
     extern u8 lbl_8029B2F4[];
     extern f32 lbl_8036BA00;
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void *temp;
     f32 f;
     s32 zero;
 
-    temp = fn_8000CAF0(lbl_8029B2F4, arg1);
+    temp = Process_Create(lbl_8029B2F4, arg1);
     if (temp != NULL) {
         zero = 0;
         f = lbl_8036BA00;

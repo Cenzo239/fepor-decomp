@@ -16,7 +16,7 @@ typedef struct Self801CAF94 {
     s8 unk79;
 } Self801CAF94;
 
-void *fn_8000CAF0(void *, s32);
+void *Process_Create(void *, s32);
 void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3);
 
 typedef struct ListNode {
@@ -410,7 +410,7 @@ do_call:
 
 s32 fn_801B6164(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297AC8[];
     extern u8 lbl_80330EAC[];
 
@@ -418,7 +418,7 @@ s32 fn_801B6164(u32 arg0) {
         return 0;
     }
     if (arg0 == 0) {
-        fn_8000CAF0(lbl_80297AC8, 3);
+        Process_Create(lbl_80297AC8, 3);
     } else {
         fn_8000CAA0(lbl_80297AC8, arg0);
     }
@@ -427,7 +427,7 @@ s32 fn_801B6164(u32 arg0) {
 
 s32 fn_801B61CC(u32 arg0) {
     void fn_8000CAA0(void *, u32);
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_80297B3C[];
     extern u8 lbl_80330EAC[];
     u32 flags;
@@ -457,7 +457,7 @@ s32 fn_801B61CC(u32 arg0) {
         return 0;
     }
     if (arg0 == 0) {
-        fn_8000CAF0(lbl_80297B3C, 3);
+        Process_Create(lbl_80297B3C, 3);
     } else {
         fn_8000CAA0(lbl_80297B3C, arg0);
     }
@@ -555,7 +555,7 @@ s32 fn_801B6348(void *arg0)
 
 s32 fn_801B6414(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297AC8[];
     extern u8 lbl_80330EAC[];
 
@@ -563,7 +563,7 @@ s32 fn_801B6414(u32 arg0) {
         return 0;
     }
     if (arg0 == 0) {
-        fn_8000CAF0(lbl_80297AC8, 3);
+        Process_Create(lbl_80297AC8, 3);
     } else {
         fn_8000CAA0(lbl_80297AC8, arg0);
     }
@@ -5550,7 +5550,7 @@ void fn_801C19E4(u8 *arg0, u8 *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f64 lbl_8036B330;
     extern f32 lbl_8036B328;
@@ -5558,7 +5558,7 @@ void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 
     union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     s16 v;
 
-    obj = fn_8000CAF0(lbl_80297FF8, arg6);
+    obj = Process_Create(lbl_80297FF8, arg6);
     conv.w.hi = 0x43300000;
     conv.w.lo = (u32)arg5 ^ 0x80000000;
     v = (s16)((f32)(conv.d - lbl_8036B330) / lbl_8036B328);
@@ -5575,14 +5575,14 @@ void fn_801C1A18(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 arg5, s32 
 
 #pragma use_lmw_stmw on
 void fn_801C1AC8(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
     void *obj;
     f32 div;
 
-    obj = fn_8000CAF0(lbl_80297FF8, arg7);
+    obj = Process_Create(lbl_80297FF8, arg7);
     div = lbl_8036B328;
     (void)lbl_8036B330;
     *(s16 *)((u8 *)obj + 0x3C) = arg0;
@@ -5596,13 +5596,13 @@ void fn_801C1AC8(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     *(u8 *)((u8 *)obj + 0x48) = 1;
 }
 void fn_801C1BC0(s8 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
     void *obj;
 
-    obj = fn_8000CAF0(lbl_80297FF8, arg5);
+    obj = Process_Create(lbl_80297FF8, arg5);
     *(s16 *)((u8 *)obj + 0x3C) = arg1;
     *(s16 *)((u8 *)obj + 0x3E) = arg2;
     *(s32 *)((u8 *)obj + 0x44) = arg3;
@@ -5616,7 +5616,7 @@ void fn_801C1BC0(s8 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5) {
 #pragma use_lmw_stmw on
 void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6)
 {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
@@ -5628,7 +5628,7 @@ void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     s16 v1;
     s16 v2;
 
-    obj = fn_8000CAF0(lbl_80297FF8, arg6);
+    obj = Process_Create(lbl_80297FF8, arg6);
     div = lbl_8036B328;
     n1 = -1;
     z = 0;
@@ -5645,7 +5645,7 @@ void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     *(u8 *)((u8 *)obj + 0x48) = z;
 }
 void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_8029801C[];
     extern f32 lbl_8036B328;
     extern f64 lbl_8036B330;
@@ -5654,7 +5654,7 @@ void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     union { f64 d; struct { u32 hi; u32 lo; } w; } conv2;
     s16 v;
 
-    obj = fn_8000CAF0(lbl_8029801C, 3);
+    obj = Process_Create(lbl_8029801C, 3);
     conv.w.hi = 0x43300000;
     conv.w.lo = (u32)arg3 ^ 0x80000000;
     conv2.w.hi = 0x43300000;
@@ -6670,8 +6670,8 @@ extern u8 lbl_8029824C[];
 void fn_801C4440(void){extern u8 lbl_8029824C[];void Process_UnlinkByKey(void*);Process_UnlinkByKey(lbl_8029824C);}
 
 void fn_801C4468(s32 arg0) {
-    void *fn_8000CAF0(void *, s32);
-    M2C_FIELD(fn_8000CAF0(&lbl_8029824C, 4), s32 *, 0x3C) = arg0;
+    void *Process_Create(void *, s32);
+    M2C_FIELD(Process_Create(&lbl_8029824C, 4), s32 *, 0x3C) = arg0;
 }
 
 void fn_801C44A4(void *arg0) {
@@ -7046,7 +7046,7 @@ void fn_801C5B80(void *arg0) {
 }
 void fn_801C6008(s32 arg0) {
     extern u8 lbl_80298224[];
-    M2C_FIELD(fn_8000CAF0(&lbl_80298224, 4), s32 *, 0x30) = arg0;
+    M2C_FIELD(Process_Create(&lbl_80298224, 4), s32 *, 0x30) = arg0;
 }
 
 void fn_801C6044(u8 *arg0) {
@@ -7553,7 +7553,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
 
     extern u8 lbl_802981F4[];
     extern u8 LightFade_script[];
@@ -7571,7 +7571,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
         }
         Process_Goto(entry, 0);
     } else {
-        entry = (u8 *)fn_8000CAF0(lbl_802981F4, arg2);
+        entry = (u8 *)Process_Create(lbl_802981F4, arg2);
     }
 
     {
@@ -7867,7 +7867,7 @@ extern u8 LightFade_script[];
 void fn_801C777C(void){extern u8 LightFade_script[];void Process_UnlinkByKey(void*);Process_UnlinkByKey(LightFade_script);}
 
 void fn_801C77A4(void) {
-    fn_8000CAF0((void*)&LightFade_script, 4);
+    Process_Create((void*)&LightFade_script, 4);
 }
 
 void fn_801C77D0(void *arg0) {
@@ -11537,7 +11537,7 @@ void fn_801CF7F0(void *arg0, void *arg1) {
     s32 Str_Cmp(void *, void *);
     void fn_801CFAB8(void *, u8, void *);
     void fn_8005C8B4(void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_801FC980(void *, f32);
     extern u8 lbl_802997CC[];
     extern u16 lbl_80331D00[];
@@ -11566,7 +11566,7 @@ void fn_801CF7F0(void *arg0, void *arg1) {
             fn_801CFAB8(slot, (u8)i, row);
             fn_8005C8B4(lbl_8027DF20 + 0x13E);
             fn_8005C8B4(slot + 0x12C);
-            *(void **)(slot + 0x150) = fn_8000CAF0(lbl_8029992C, arg1);
+            *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, arg1);
             f = lbl_8036B568;
             *(u8 *)(*(u8 **)(slot + 0x150) + 0x30) = i;
             fn_801FC980(*(void **)(slot + 0x150), f);

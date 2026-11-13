@@ -1480,7 +1480,7 @@ void fn_80088CC4(void *arg0) {
 
 void fn_80088F34(void) {
     void *Process_Find(void *);
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_802899CC[];
     void *p;
 
@@ -1489,7 +1489,7 @@ void fn_80088F34(void) {
         *(u8 *)((u8 *)p + 0x30) = 0x7B;
         return;
     }
-    fn_8000CAF0(lbl_802899CC, 5);
+    Process_Create(lbl_802899CC, 5);
 }
 
 void fn_80088F8C(void *arg0) {
@@ -1612,7 +1612,7 @@ void fn_800892E8(void *arg0) {
     void DCInvalidateRange(void *, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     u8 *obj;
     s32 size;
     void *tmp;
@@ -1626,7 +1626,7 @@ void fn_800892E8(void *arg0) {
     DCInvalidateRange(*(void **)(obj + 0x48), size);
     fn_80222644(obj + 0x4C, *(void **)(obj + 0x48), 0x260, 0x1C0, 4, 0, 0, 0);
     fn_802228D8(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
-    tmp = fn_8000CAF0(lbl_80289998, 6);
+    tmp = Process_Create(lbl_80289998, 6);
     *(void **)((u8 *)tmp + 0x54) = arg0;
     f38 = lbl_803696A8;
     f3c = lbl_803696AC;
@@ -1702,7 +1702,7 @@ s32 fn_800894F8(void) {
 
 s32 fn_80089524(void) {
     extern u16 lbl_802899C0[];
-    fn_8000CAF0(lbl_802899C0, 4);
+    Process_Create(lbl_802899C0, 4);
     return 1;
 }
 
@@ -1726,7 +1726,7 @@ void fn_80089554(void) {
 
 #pragma peephole on
 void fn_800895B8(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
@@ -1736,12 +1736,12 @@ void fn_800895B8(void) {
     void *tmp;
 
     base = lbl_80289950;
-    lbl_803674E0 = fn_8000CAF0(base, 7);
-    lbl_803674E4 = fn_8000CAF0((u8 *)base + 0x58, 7);
-    tmp = fn_8000CAF0((u8 *)base + 0x18, 7);
+    lbl_803674E0 = Process_Create(base, 7);
+    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
+    tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = fn_8000CAF0((u8 *)base + 0x30, 7);
+    tmp = Process_Create((u8 *)base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }

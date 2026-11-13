@@ -933,14 +933,14 @@ void fn_800A57D8(void) {
 
 void fn_800A58F0(s32 arg0) {
     void *fn_8000BCA4(void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     extern u8 lbl_8026E1B0[];
     extern u8 lbl_8028C6A8[];
     void *temp;
 
     temp = fn_8000BCA4(lbl_8026E1B0 + 0x15);
     if (temp != NULL) {
-        temp = fn_8000CAF0(lbl_8028C6A8, temp);
+        temp = Process_Create(lbl_8028C6A8, temp);
         *(s32 *)((u8 *)temp + 0x30) = arg0;
     }
 }
@@ -1074,7 +1074,7 @@ void fn_800A5CF4(void) {
 }
 
 void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
-    void *fn_8000CAF0(void *, M2C_UNK);
+    void *Process_Create(void *, M2C_UNK);
     u16 fn_8005C144();
     s32 fn_800C42AC(M2C_UNK);
     M2C_UNK fn_80147188(M2C_UNK);
@@ -1087,7 +1087,7 @@ void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
     if ((u16) fn_8005C144() == 0x8000) {
         arg0 = lbl_8026E1B0 + 0x4A;
     }
-    temp_r31 = fn_8000CAF0(lbl_8028C678, 5);
+    temp_r31 = Process_Create(lbl_8028C678, 5);
     M2C_FIELD(temp_r31, s32 *, 0x5C) = fn_800C42AC(0x100);
     fn_8023440C(M2C_FIELD(temp_r31, s32 *, 0x5C), arg0, 0xFE);
     M2C_FIELD(temp_r31, s8 *, 0x54) = arg1;
@@ -1546,9 +1546,9 @@ void fn_800A6B1C(void) {
 }
 
 void fn_800A6B44(s32 arg0) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_8028C750[16];
-    fn_8000CAF0(lbl_8028C750, arg0);
+    Process_Create(lbl_8028C750, arg0);
 }
 
 void fn_800A6B70(void *arg0) {
@@ -1891,7 +1891,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     fn_80009B28();
 }
 void fn_800A7C94(void *arg0) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_8006EEFC(void **, s32);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, void *, s32, s32);
@@ -1928,7 +1928,7 @@ void fn_800A7C94(void *arg0) {
     void *r23;
     s16 *r22;
 
-    r25 = fn_8000CAF0(lbl_8028C7F8, arg0);
+    r25 = Process_Create(lbl_8028C7F8, arg0);
     st.spC = lbl_80369B2C;
     st.sp8 = lbl_80369B28;
     fn_8006EEFC((void **)((u8 *)r25 + 0x30), st.spC);
@@ -1970,7 +1970,7 @@ void fn_800A7C94(void *arg0) {
         next_try:
             ;
         }
-        r23 = fn_8000CAF0(lbl_8028C814, r25);
+        r23 = Process_Create(lbl_8028C814, r25);
         *(f32 *)((u8 *)r23 + 0x34) = (f32)r22[0];
         *(f32 *)((u8 *)r23 + 0x38) = (f32)r22[1];
         *(s32 *)((u8 *)r23 + 0x44) = r30;
@@ -1993,7 +1993,7 @@ void fn_800A7EC0(void) {
 
 #pragma use_lmw_stmw on
 void fn_800A7EC4(void *arg0) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_8006EEFC(void *, s32);
     s32 fn_8000CEE4(s32);
     void fn_800C42AC(s32);
@@ -2032,7 +2032,7 @@ void fn_800A7EC4(void *arg0) {
     s32 idx;
     void *obj;
 
-    res = fn_8000CAF0(lbl_8028C7F8, arg0);
+    res = Process_Create(lbl_8028C7F8, arg0);
     sp8 = lbl_80369B28;
     spC = lbl_80369B2C;
     fn_8006EEFC((u8 *)res + 0x30, lbl_80369B28);
@@ -2073,7 +2073,7 @@ recompute:
             scan += 8;
             idx++;
         }
-        obj = fn_8000CAF0(lbl_8028C814, res);
+        obj = Process_Create(lbl_8028C814, res);
         M2C_FIELD(obj, f32 *, 0x34) = (f32) M2C_FIELD(cur, s16 *, 0);
         M2C_FIELD(obj, f32 *, 0x38) = (f32) M2C_FIELD(cur, s16 *, 2);
         M2C_FIELD(obj, u32 *, 0x44) = span;

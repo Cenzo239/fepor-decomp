@@ -59,14 +59,14 @@ s32 fn_8008D988(void) {
 #pragma use_lmw_stmw on
 s32 fn_8008D9B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     void *Process_Find(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80289A8C[];
     void *obj;
 
     if (Process_Find(lbl_80289A8C) != NULL) {
         obj = Process_Find(lbl_80289A8C);
     } else {
-        obj = fn_8000CAF0(lbl_80289A8C, 3);
+        obj = Process_Create(lbl_80289A8C, 3);
     }
     *(s32 *)((u8 *)obj + 0x34) = arg0;
     *(s32 *)((u8 *)obj + 0x38) = arg1;

@@ -71,7 +71,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
     extern char lbl_8027EE08[];
     s32 fn_80015680(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_801403F0(void *);
     void String_Init(void *, char *, void *);
     void String_AssignCStr(void *, char *, s32);
@@ -87,7 +87,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
     if (arg1 != NULL) {
         obj = fn_8000CAA0(lbl_8029A164, arg1);
     } else {
-        obj = fn_8000CAF0(lbl_8029A164, arg1);
+        obj = Process_Create(lbl_8029A164, arg1);
     }
 
     if (obj != NULL) {
@@ -545,7 +545,7 @@ void fn_801EBBB8(void *arg0) {
     s32 fn_80106DC8(void *);
     void fn_8002F728(void *, void *);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void *Heap_Alloc(s32, void *);
     void String_AssignCStr(void *, void *, s32);
     void Ui_AddChild(void *, void *, s32);
@@ -572,7 +572,7 @@ void fn_801EBBB8(void *arg0) {
         p += 2;
     }
 
-    M2C_FIELD(arg0, void **, 0x50) = fn_8000CAF0(lbl_8029A128, arg0);
+    M2C_FIELD(arg0, void **, 0x50) = Process_Create(lbl_8029A128, arg0);
     temp_r4 = M2C_FIELD(arg0, void **, 0x50);
     M2C_FIELD(temp_r4, u8 *, 0x2c) |= 4;
     temp_r3 = (Unk5C *)Heap_Alloc(0x5c, temp_r4);
@@ -2077,7 +2077,7 @@ void fn_801EE76C(void *arg0) {
     void fn_801EF6BC(void *);
     void GActor_LoadResources(void *, s32);
     void GActor_RequestRes(char *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void *fn_80059208(void *, void *);
     void Process_Goto(void *, s32);
     void fn_800E99CC(void *);
@@ -2247,7 +2247,7 @@ use30708:
     fn_801EF6BC(*(void **)((char *)self + 0x48));
     GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
     GActor_RequestRes(gGActorPathExt + 0x1AB);
-    *(void **)((char *)self + 0x44) = fn_8000CAF0(lbl_8029A5BC, self);
+    *(void **)((char *)self + 0x44) = Process_Create(lbl_8029A5BC, self);
     *(void **)((char *)self + 0x40) = fn_80059208((void *)fn_801EEDB4, self);
     *(s16 *)((char *)self + 0x3E) = 0;
     *(s16 *)((char *)self + 0x3C) = 0;

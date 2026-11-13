@@ -3327,7 +3327,7 @@ void fn_80118C84(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
@@ -3571,7 +3571,7 @@ void fn_80118C84(void *arg0) {
                     if (self != NULL)
                         node = fn_8000CAA0(lbl_8028F7B8, self);
                     else
-                        node = fn_8000CAF0(lbl_8028F7B8, 4);
+                        node = Process_Create(lbl_8028F7B8, 4);
                     *(void **)((u8 *)node + 0x30) = other;
                     *((u8 *)node + 0x58) = (u8)sel_x;
                     *((u8 *)node + 0x59) = (u8)sel_y;
@@ -3580,7 +3580,7 @@ void fn_80118C84(void *arg0) {
                     if (self != NULL)
                         node = fn_8000CAA0(lbl_8028F7B8, self);
                     else
-                        node = fn_8000CAF0(lbl_8028F7B8, 4);
+                        node = Process_Create(lbl_8028F7B8, 4);
                     *(void **)((u8 *)node + 0x30) = unit;
                     *((u8 *)node + 0x58) = (u8)cur_x;
                     *((u8 *)node + 0x59) = (u8)cur_y;
@@ -4051,7 +4051,7 @@ void *fn_8011AC78(void *arg0)
     extern u8 lbl_8028F7D8[];
 
     extern void *fn_8000CAA0(void *, void *);
-    extern void *fn_8000CAF0(void *, void *);
+    extern void *Process_Create(void *, void *);
     extern void fn_801403F0(void *);
 
     u8 *result;
@@ -4059,7 +4059,7 @@ void *fn_8011AC78(void *arg0)
     if (arg0 != 0) {
         result = (u8 *)fn_8000CAA0(lbl_8028F814, arg0);
     } else {
-        result = (u8 *)fn_8000CAF0(lbl_8028F814, arg0);
+        result = (u8 *)Process_Create(lbl_8028F814, arg0);
     }
 
     if (result != 0) {
@@ -4067,7 +4067,7 @@ void *fn_8011AC78(void *arg0)
         *(u32 *)(result + 0x40) = 0;
     }
 
-    fn_8000CAF0(lbl_8028F7D8, result);
+    Process_Create(lbl_8028F7D8, result);
 
     return result;
 }

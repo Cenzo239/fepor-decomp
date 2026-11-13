@@ -8378,7 +8378,7 @@ void fn_800C0750(void) {
     void *Process_Find(void *);
     void *fn_8000BCA4(void *);
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_8000BD98(void *);
     void fn_800142D4(void *);
     void fn_80018AF4(void);
@@ -8394,7 +8394,7 @@ void fn_800C0750(void) {
     }
     lbl_80367848 = val;
     if (temp == 0) {
-        fn_8000CAF0(lbl_80284E30, fn_8000CAA0(lbl_80284E78, fn_8000BCA4(lbl_8026FC78 + 0x138)));
+        Process_Create(lbl_80284E30, fn_8000CAA0(lbl_80284E78, fn_8000BCA4(lbl_8026FC78 + 0x138)));
     }
     temp = Process_Find(lbl_80284AC8);
     if (temp != 0) {
@@ -8620,7 +8620,7 @@ void fn_800C0C54(void)
     Process_UnlinkByKey(lbl_8028D5B8);
     return;
   }
-  fn_8000CAF0(lbl_8028D5B8, 7);
+  Process_Create(lbl_8028D5B8, 7);
 }
 
 void fn_800C0CA4(void *arg0) {

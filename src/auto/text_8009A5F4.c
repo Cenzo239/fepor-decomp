@@ -52,9 +52,9 @@ void fn_8009A5F4(void) {
 }
 
 void fn_8009A61C(s32 arg0) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_80289EB8[16];
-    fn_8000CAF0(lbl_80289EB8, arg0);
+    Process_Create(lbl_80289EB8, arg0);
 }
 
 #pragma scheduling off

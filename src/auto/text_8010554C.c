@@ -2116,7 +2116,7 @@ void fn_8010913C(void *arg0) {
 }
 
 void *fn_80109180(s32 arg0, u32 arg1) {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];
     void *tbl;
@@ -2126,7 +2126,7 @@ void *fn_80109180(s32 arg0, u32 arg1) {
     if (arg1 == 0U) {
         arg1 = 3U;
     }
-    result = fn_8000CAF0(tbl, arg1);
+    result = Process_Create(tbl, arg1);
     fn_80109F88(result, arg0);
     return result;
 }
@@ -2454,12 +2454,12 @@ f32 fn_80109BA8(void *arg0) {
 }
 
 void fn_80109BB4(void *arg0, u8 arg1) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     extern u8 lbl_8028F360[];
     void *temp_r3;
     s16 temp_r5;
 
-    temp_r3 = fn_8000CAF0(lbl_8028F360, arg0);
+    temp_r3 = Process_Create(lbl_8028F360, arg0);
     *(void **)((char *)temp_r3 + 0x30) = arg0;
     temp_r5 = (s16)arg1;
     *(u32 *)((char *)temp_r3 + 0x34) = 0;
@@ -2470,11 +2470,11 @@ void fn_80109BB4(void *arg0, u8 arg1) {
 }
 
 void fn_80109C1C(void *arg0, u8 arg1) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     extern u8 lbl_8028F360[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAF0(lbl_8028F360, arg0);
+    temp_r3 = Process_Create(lbl_8028F360, arg0);
     *(void **)((char *)temp_r3 + 0x30) = arg0;
     *(u32 *)((char *)temp_r3 + 0x34) = 0;
     *(u32 *)((char *)temp_r3 + 0x38) = (u32)arg1;
@@ -2483,11 +2483,11 @@ void fn_80109C1C(void *arg0, u8 arg1) {
 }
 
 void fn_80109C80(void *arg0, u8 arg1) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     extern u8 lbl_8028F360[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAF0(lbl_8028F360, arg0);
+    temp_r3 = Process_Create(lbl_8028F360, arg0);
     *(void **)((char *)temp_r3 + 0x30) = arg0;
     *(u32 *)((char *)temp_r3 + 0x34) = 0;
     *(u32 *)((char *)temp_r3 + 0x38) = (u32)arg1;

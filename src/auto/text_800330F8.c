@@ -6056,14 +6056,14 @@ void fn_8003FED8(u8 *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_8003FF90(void *arg0, u32 arg1) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_80040028(void *, void *);
     extern u8 lbl_802857A0[];
 
     if (arg1 == 0) {
         arg1 = 3;
     }
-    fn_80040028(fn_8000CAF0(lbl_802857A0, arg1), arg0);
+    fn_80040028(Process_Create(lbl_802857A0, arg1), arg0);
 }
 
 void fn_8003FFD8(void) {
@@ -9282,7 +9282,7 @@ void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {
 
 void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void Model_SetColor(s32, u8, u8, u8);
     void Model_SetAlpha(s32, u8);
     extern u8 lbl_80285738[];
@@ -9302,7 +9302,7 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     if (arg1 != 0U) {
         var_r3 = fn_8000CAA0(lbl_80285738);
     } else {
-        var_r3 = fn_8000CAF0(lbl_80285738, 3);
+        var_r3 = Process_Create(lbl_80285738, 3);
     }
     b = ((u8 *)arg2)[1];
     a = ((u8 *)arg2)[0];
@@ -9364,14 +9364,14 @@ void fn_800494F0(void *arg0) {
 
 void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
     void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_802856E8[];
     void *var_r3;
 
     if (arg1 != 0U) {
         var_r3 = fn_8000CAA0(lbl_802856E8);
     } else {
-        var_r3 = fn_8000CAF0(lbl_802856E8, 3);
+        var_r3 = Process_Create(lbl_802856E8, 3);
     }
     *(f32 *)((char *)var_r3 + 0x38) = farg0;
     *(s32 *)((char *)var_r3 + 0x3C) = arg2;
@@ -9775,12 +9775,12 @@ void fn_8004A1F0(void) {
 }
 
 void fn_8004A224(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80285858[];
     extern u32 gUiInputFlags;
     void *p;
 
-    p = fn_8000CAF0(lbl_80285858, 4);
+    p = Process_Create(lbl_80285858, 4);
     *(s32 *)((u8 *)p + 0x30) = 0;
     gUiInputFlags |= 0x400;
 }
@@ -12736,7 +12736,7 @@ void fn_80053750(void *arg0, void *arg1) {
 void fn_8005376C(void) {
     u32 Process_Find(u32 *);
     void *Process_UnlinkByKey(u32 *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_801451BC(void);
     u8 fn_80145308(void);
     void fn_800056CC(const char *, ...);
@@ -12752,7 +12752,7 @@ void fn_8005376C(void) {
         fn_800056CC((const char *)((u8 *) &GActor_str + 0x12E));
         return;
     }
-    temp_r3 = fn_8000CAF0(lbl_80285968, 4);
+    temp_r3 = Process_Create(lbl_80285968, 4);
     *(s32 *)((u8 *) temp_r3 + 0x60) = 0;
 }
 #pragma cplusplus reset
@@ -13019,7 +13019,7 @@ void MapObj_InitGraphics(void *arg0) {
  u8 fn_8005C3C4(void *);
  void GActor_Finalize(void *);
  void fn_8005EBCC(void *, u8);
- void *fn_8000CAF0(void *, void *);
+ void *Process_Create(void *, void *);
  void *Heap_Alloc(s32);
  void *Res_GetByName(void *);
  void *fn_80060664(void *);
@@ -13063,7 +13063,7 @@ sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,v
  if(name) {
  parent=arg0;
  if(!arg0) parent=(void *)4;
- child=fn_8000CAF0(lbl_80285990,parent);
+ child=Process_Create(lbl_80285990,parent);
  M2C_FIELD(child,void * *,0x30)=Heap_Alloc(0x60);
  init=M2C_FIELD(child,void * *,0x30);
  zero=lbl_80369084;

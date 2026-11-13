@@ -2025,7 +2025,7 @@ void fn_8002D648(void *arg0) {
     extern u8 gBattleState[];
     extern struct { u32 unk0; u32 unk4; } gSaveDataBase;
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void Process_Goto(void *, s32);
     void fn_80006220(s32);
     void fn_8014C7C0(void *, void *);
@@ -2040,7 +2040,7 @@ void fn_8002D648(void *arg0) {
 
     r = fn_8000CAA0(lbl_80284E78, arg0);
     Process_Goto(r, 4);
-    fn_8000CAF0(lbl_80284E30, r);
+    Process_Create(lbl_80284E30, r);
     fn_80006220(0x10);
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
@@ -2058,12 +2058,12 @@ void fn_8002D72C(void *arg0) {
     extern u16 lbl_80284E5C[];
     extern u16 lbl_80284E78[];
     void *fn_8000CAA0(void *, void *);
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_80006220(s32);
     void *r;
 
     r = fn_8000CAA0(lbl_80284E78, arg0);
-    r = fn_8000CAF0(lbl_80284E30, r);
+    r = Process_Create(lbl_80284E30, r);
     r = fn_8000CAA0(lbl_80284E5C, r);
     fn_80006220(0x10);
 }
@@ -2661,7 +2661,7 @@ void fn_8002EA7C(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
 #pragma cplusplus on
 extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 lbl_80285028[];
     extern s32 lbl_802EF4E0[];
@@ -2695,7 +2695,7 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     if (arg1 != 0U) {
         obj = fn_8000CAA0(lbl_80285028);
     } else {
-        obj = fn_8000CAF0(lbl_80285028, 3);
+        obj = Process_Create(lbl_80285028, 3);
     }
     ((u8 *)obj)[0x48] = (u8)(s32)*(f32 *)(gBattleState + 0x524);
     base = lbl_802EF4E0;

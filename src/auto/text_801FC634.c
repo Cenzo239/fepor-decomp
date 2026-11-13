@@ -51,7 +51,7 @@ static s16 lbl_80339338[8];
 
 void fn_801FC634(u32 arg0, f32 farg0)
 {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_8029B5B0[];
     extern char lbl_80281EC8[];
@@ -65,7 +65,7 @@ void fn_801FC634(u32 arg0, f32 farg0)
     if (arg0 == 0) {
         arg0 = 3;
     }
-    obj = fn_8000CAF0(lbl_8029B5B0, arg0);
+    obj = Process_Create(lbl_8029B5B0, arg0);
     if (f <= gFloatZero) {
         f = lbl_8036BAD8;
     }
@@ -83,7 +83,7 @@ void fn_801FC634(u32 arg0, f32 farg0)
 
 void fn_801FC6E0(u32 arg0, f32 farg0)
 {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_8029B5B0[];
     extern char lbl_80281EC8[];
@@ -97,7 +97,7 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
     if (arg0 == 0) {
         arg0 = 3;
     }
-    obj = fn_8000CAF0(lbl_8029B5B0, arg0);
+    obj = Process_Create(lbl_8029B5B0, arg0);
     if (f <= gFloatZero) {
         f = lbl_8036BAD8;
     }
@@ -132,7 +132,7 @@ void fn_801FC95C(void) {
 
 void fn_801FC980(u32 arg0, f32 farg0)
 {
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_8029B590[];
     extern char lbl_80281EC8[];
@@ -147,7 +147,7 @@ void fn_801FC980(u32 arg0, f32 farg0)
     if (arg0 == 0) {
         arg0 = 3;
     }
-    obj = fn_8000CAF0(lbl_8029B590, arg0);
+    obj = Process_Create(lbl_8029B590, arg0);
     if (f <= gFloatZero) {
         f = lbl_8036BB00;
     }
@@ -181,11 +181,11 @@ void fn_801FCC44(void) {
 }
 
 void fn_801FCC68(s32 arg0) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_801FCCA0(void);
     extern u8 lbl_8029B574[];
 
-    if (fn_8000CAF0(lbl_8029B574, arg0) != NULL) {
+    if (Process_Create(lbl_8029B574, arg0) != NULL) {
         fn_801FCCA0();
     }
 }
@@ -523,7 +523,7 @@ void fn_801FDA40(void) {
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 void FallingParticle_Spawn(void *arg0) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     s32 fn_8000C510(void);
     u32 fn_8000CD60(void);
     extern u8 gFallingParticleProc[];
@@ -546,7 +546,7 @@ void FallingParticle_Spawn(void *arg0) {
     f32 f0;
     f32 f1;
 
-    temp_r23 = fn_8000CAF0(gFallingParticleCtrlProc, arg0);
+    temp_r23 = Process_Create(gFallingParticleCtrlProc, arg0);
     if ((s32)temp_r23 != 0) {
         lbl_80368420 = 0x8000;
         f1 = lbl_8036BB48;
@@ -562,7 +562,7 @@ void FallingParticle_Spawn(void *arg0) {
             if (0x100 - fn_8000C510() < 1) {
                 break;
             }
-            var_r24 = fn_8000CAF0(gFallingParticleProc, temp_r23);
+            var_r24 = Process_Create(gFallingParticleProc, temp_r23);
             var_r25 = 0;
             do {
                 s32 r0;
@@ -753,7 +753,7 @@ s32 fn_801FE32C(void) {
 }
 
 void *fn_801FE360(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern s32 gGameFlags;
     extern u8 lbl_80281F00[];
     void *temp;
@@ -762,11 +762,11 @@ void *fn_801FE360(void) {
         return NULL;
     }
     if (gGameFlags & 0x40) {
-        temp = fn_8000CAF0(lbl_8029B634, 3);
+        temp = Process_Create(lbl_8029B634, 3);
         M2C_FIELD(temp, u8 **, 0x34) = lbl_80281F00 + 0x2F;
         return temp;
     }
-    temp = fn_8000CAF0(lbl_8029B634, 3);
+    temp = Process_Create(lbl_8029B634, 3);
     M2C_FIELD(temp, u8 **, 0x34) = lbl_80281F00 + 0x3E;
     return temp;
 }
@@ -995,14 +995,14 @@ s32 fn_801FEF6C(void) {
 }
 
 void *fn_801FEFA0(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_800C4740(void);
     s32 fn_800C4304(void *);
     extern u8 lbl_8029B5DC[];
     extern char lbl_80281F00[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAF0(lbl_8029B5DC, 3);
+    temp_r31 = Process_Create(lbl_8029B5DC, 3);
     *(s32 *)((u8 *)temp_r31 + 0x34) = fn_800C4740();
     *(s32 *)((u8 *)temp_r31 + 0x38) = fn_800C4304(lbl_80281F00 + 0x75);
     return temp_r31;
@@ -1611,7 +1611,7 @@ void fn_802003FC(void) {
     }
 }
 
-M2C_UNK fn_8000CAF0(s32 *, s32, s16 *, s16 *, s32 *, s32 *);
+M2C_UNK Process_Create(s32 *, s32, s16 *, s16 *, s32 *, s32 *);
 void fn_80200494(void) {
     extern s32 lbl_8029B780[];
     s32 i;
@@ -1622,7 +1622,7 @@ void fn_80200494(void) {
         lbl_80339328[i] = 0;
         lbl_80339338[i] = 0;
     }
-    fn_8000CAF0(lbl_8029B780, 2, lbl_80339338, lbl_80339328, (s32 *)lbl_80339308, (s32 *)lbl_803392E8);
+    Process_Create(lbl_8029B780, 2, lbl_80339338, lbl_80339328, (s32 *)lbl_80339308, (s32 *)lbl_803392E8);
 }
 
 #pragma use_lmw_stmw reset
@@ -1633,7 +1633,7 @@ s32 fn_8020055C(void) {
 }
 
 void *fn_80200590(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern s32 gGameFlags;
     void *temp;
 
@@ -1641,11 +1641,11 @@ void *fn_80200590(void) {
         return NULL;
     }
     if (gGameFlags & 0x100) {
-        temp = fn_8000CAF0(lbl_8029B7FC, 3);
+        temp = Process_Create(lbl_8029B7FC, 3);
         M2C_FIELD(temp, u8 **, 0x34) = lbl_802820B8 + 0x2B;
         return temp;
     }
-    temp = fn_8000CAF0(lbl_8029B7FC, 3);
+    temp = Process_Create(lbl_8029B7FC, 3);
     M2C_FIELD(temp, u8 **, 0x34) = lbl_802820B8 + 0x3F;
     return temp;
 }
@@ -1952,12 +1952,12 @@ s32 fn_8020119C(void) {
 }
 
 void *fn_802011D0(void) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_800C4740(void);
     s32 fn_800C4304(void *);
     void *temp_r31;
 
-    temp_r31 = fn_8000CAF0(lbl_8029B7A4, 3);
+    temp_r31 = Process_Create(lbl_8029B7A4, 3);
     M2C_FIELD(temp_r31, s32 *, 0x34) = fn_800C4740();
     M2C_FIELD(temp_r31, s32 *, 0x38) = fn_800C4304(lbl_802820B8 + 0x79);
     return temp_r31;

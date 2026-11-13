@@ -2181,7 +2181,7 @@ void Ui_HideUnitInfoPopup(void *arg0) {
 
 void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *Process_Find(void *, void *);
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
@@ -2201,7 +2201,7 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
         return;
     }
     
-    fn_8000CAF0(lbl_80293D20, arg1);
+    Process_Create(lbl_80293D20, arg1);
     memset(gUnitInfoPopup, 0, 0x124);
     
     *(f32*)((u8*)arg0 + 0xDC) = farg0;
@@ -2218,7 +2218,7 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
 
 void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *Process_Find(void *);
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
@@ -2243,7 +2243,7 @@ void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
         var_r0 = 1;
     }
     if (var_r0 == 0) {
-        fn_8000CAF0(lbl_80293D20, arg1);
+        Process_Create(lbl_80293D20, arg1);
         memset(gUnitInfoPopup, 0, 0x124);
         *(f32 *)((u8 *)arg0 + 0xDC) = farg0;
         base = lbl_80277A20;
@@ -2811,7 +2811,7 @@ s32 fn_801696E0(void) {
 
 void *fn_80169714(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
-    void fn_8000CAF0(void *, void *);
+    void Process_Create(void *, void *);
     void Process_Goto(void *, s32);
     void fn_801403F0(void);
     extern u16 lbl_80293D50[];
@@ -2827,14 +2827,14 @@ void *fn_80169714(s32 arg0) {
         *(s32 *)((char *)temp_r3 + 0x4C) = 0;
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
     }
-    fn_8000CAF0(lbl_80293D50, temp_r3);
+    Process_Create(lbl_80293D50, temp_r3);
     Process_Goto(temp_r3, 0x8);
     return temp_r3;
 }
 
 void *fn_8016978C(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
-    void fn_8000CAF0(void *, void *);
+    void Process_Create(void *, void *);
     void Process_Goto(void *, s32);
     void fn_801403F0(void);
     extern u16 lbl_80293D50[];
@@ -2850,14 +2850,14 @@ void *fn_8016978C(s32 arg0) {
         *(s32 *)((char *)temp_r3 + 0x4C) = 0;
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
     }
-    fn_8000CAF0(lbl_80293D50, temp_r3);
+    Process_Create(lbl_80293D50, temp_r3);
     Process_Goto(temp_r3, 0x10);
     return temp_r3;
 }
 
 void *fn_80169804(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
-    void fn_8000CAF0(void *, void *);
+    void Process_Create(void *, void *);
     void fn_801403F0(void);
     extern u16 lbl_80293D8C[];
     extern u16 lbl_80293D50[];
@@ -2872,7 +2872,7 @@ void *fn_80169804(s32 arg0) {
         *(s32 *)((char *)temp_r3 + 0x4C) = 0;
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
     }
-    fn_8000CAF0(lbl_80293D50, temp_r3);
+    Process_Create(lbl_80293D50, temp_r3);
     return temp_r3;
 }
 
@@ -4017,9 +4017,9 @@ void fn_8016B68C(void) {
 
 extern u8 lbl_80294514[16];
 void fn_8016B6D4(s32 arg0) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_80294514[16];
-    fn_8000CAF0(lbl_80294514, arg0);
+    Process_Create(lbl_80294514, arg0);
 }
 
 void fn_8016B700(void) {
@@ -5715,7 +5715,7 @@ void fn_8016E1B4(void *arg0) {
 
 void *fn_8016E92C(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     void Process_Goto(void *, s32);
     extern u16 lbl_80294604[];
@@ -5724,7 +5724,7 @@ void *fn_8016E92C(u32 arg0) {
     if (arg0 != 0U) {
         var_r31 = fn_8000CAA0(lbl_80294604, arg0);
     } else {
-        var_r31 = fn_8000CAF0(lbl_80294604, arg0);
+        var_r31 = Process_Create(lbl_80294604, arg0);
     }
     if ((u32)var_r31 != 0U) {
         fn_801403F0(var_r31);
@@ -5747,7 +5747,7 @@ void *fn_8016E92C(u32 arg0) {
 #pragma global_optimizer on
 void *fn_8016E9DC(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     extern u16 lbl_80294604[];
     void *var_r31;
@@ -5755,7 +5755,7 @@ void *fn_8016E9DC(u32 arg0) {
     if (arg0 != 0U) {
         var_r31 = fn_8000CAA0(lbl_80294604, arg0);
     } else {
-        var_r31 = fn_8000CAF0(lbl_80294604, arg0);
+        var_r31 = Process_Create(lbl_80294604, arg0);
     }
     if (var_r31 != NULL) {
         fn_801403F0(var_r31);
@@ -13734,13 +13734,13 @@ void fn_8017E0C0(void *arg0, s32 arg1, s32 arg2) {
     void fn_8017E1B8(void *, u32);
     M2C_UNK fn_8000A388(void *, void *, void *);
     M2C_UNK Process_Goto(void *, M2C_UNK);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 temp_r0;
     s32 temp_r0_2;
     void *temp_r3;
     if (arg0 != NULL) {
         fn_8000A388(lbl_80295580, fn_8017E1B8, arg0);
-        temp_r3 = fn_8000CAF0(lbl_80295580, arg2);
+        temp_r3 = Process_Create(lbl_80295580, arg2);
         M2C_FIELD(temp_r3, void **, 0x30) = arg0;
         M2C_FIELD(temp_r3, f32 *, 0x40) = M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
         M2C_FIELD(temp_r3, f32 *, 0x44) = (f32) arg1 + M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
@@ -13842,11 +13842,11 @@ void fn_8017E35C(void) {
 }
 
 void fn_8017E394(void *arg0, void *arg1, void *arg2, void *arg3) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void fn_8017E5B0(void *, void *, void *, void *);
     extern u8 lbl_80295550[];
 
-    fn_8017E5B0(fn_8000CAF0(lbl_80295550, arg2), arg0, arg1, arg3);
+    fn_8017E5B0(Process_Create(lbl_80295550, arg2), arg0, arg1, arg3);
 }
 
 void fn_8017E3F8(void *arg0) {
@@ -13930,7 +13930,7 @@ void fn_8017E540(u8 *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     s32 fn_8006D948(void *);
     void fn_8009822C(void *, s32);
     extern u8 lbl_802788B8[];
@@ -14038,7 +14038,7 @@ void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
             f32 scale;
             s32 xv;
             s32 zero;
-            obj = fn_8000CAF0(lbl_80295538, arg0);
+            obj = Process_Create(lbl_80295538, arg0);
             scale = lbl_8036AC30;
             xv = *xs;
             zero = 0;
@@ -14261,12 +14261,12 @@ void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
 }
 
 void fn_8017F040(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAF0(u8 *, s32);
+    void *Process_Create(u8 *, s32);
     extern u8 lbl_80295508[];
     void *temp_r3;
 
     if ((arg0 != 0) && (arg1 != 0)) {
-        temp_r3 = fn_8000CAF0(lbl_80295508, arg2);
+        temp_r3 = Process_Create(lbl_80295508, arg2);
         *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
         *(s32 *)((u8 *)temp_r3 + 0x3C) = arg1;
     }
@@ -14330,10 +14330,10 @@ void fn_8017F258(void *arg0) {
 }
 
 void fn_8017F474(s32 arg0) {
-    void *fn_8000CAF0(void *);
+    void *Process_Create(void *);
     extern u8 lbl_802954DC[];
     if (arg0 != 0) {
-        *(s32 *)((u8 *)fn_8000CAF0(lbl_802954DC) + 0x30) = arg0;
+        *(s32 *)((u8 *)Process_Create(lbl_802954DC) + 0x30) = arg0;
     }
 }
 
@@ -14419,9 +14419,9 @@ void fn_8017F650(void *arg0) {
 
 void fn_8017F70C(s32 arg0, s32 arg1) {
     extern u8 lbl_802954B0[];
-    void *fn_8000CAF0(u8 *, s32);
+    void *Process_Create(u8 *, s32);
     s32 *obj;
-    obj = (s32 *)fn_8000CAF0(lbl_802954B0, arg1);
+    obj = (s32 *)Process_Create(lbl_802954B0, arg1);
     obj[0x30 / 4] = arg0;
 }
 
@@ -14514,7 +14514,7 @@ void fn_8017F9A8(void) {
 
 void *fn_8017FB80(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
-    void *fn_8000CAF0(void *, u32);
+    void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     extern u8 lbl_802955A8[];
     extern u8 lbl_80295764[];
@@ -14523,7 +14523,7 @@ void *fn_8017FB80(u32 arg0) {
     if (arg0 != 0U) {
         var_r31 = fn_8000CAA0(lbl_802955A8, arg0);
     } else {
-        var_r31 = fn_8000CAF0(lbl_802955A8, arg0);
+        var_r31 = Process_Create(lbl_802955A8, arg0);
     }
     if (var_r31 != NULL) {
         fn_801403F0(var_r31);

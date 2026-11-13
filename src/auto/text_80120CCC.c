@@ -61,14 +61,14 @@ void fn_80120CFC(u16 *arg0) {
 }
 
 void fn_80120DD4(void *arg0, s32 arg1) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_8029023C[];
     u8 temp_r31;
     u8 *temp_r3;
 
     temp_r31 = ((u8 *)arg0)[0x41];
     if (temp_r31 != (u8)arg1) {
-        temp_r3 = fn_8000CAF0(lbl_8029023C, (s32)arg0);
+        temp_r3 = Process_Create(lbl_8029023C, (s32)arg0);
         *(void **)(temp_r3 + 0x30) = arg0;
         temp_r3[0x36] = 0;
         temp_r3[0x37] = 4;
@@ -152,7 +152,7 @@ void fn_80120F94(void)
 void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *Process_Find(void *);
     void Process_Unlink(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void *fn_8007C378(void *);
     void strcpy(char *, char *);
     u8 Text_MeasureWidth(void *, s32, f32);
@@ -177,7 +177,7 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     if (gUiPanelFlags & 0x40) {
         return;
     }
-    obj = fn_8000CAF0(lbl_80290200, arg3);
+    obj = Process_Create(lbl_80290200, arg3);
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
@@ -1027,9 +1027,9 @@ void fn_8012282C(struct efUnit* arg0)
 
 extern u8 lbl_80290288[16];
 void fn_80122998(s32 arg0) {
-    void fn_8000CAF0(void *, s32);
+    void Process_Create(void *, s32);
     extern u8 lbl_80290288[16];
-    fn_8000CAF0(lbl_80290288, arg0);
+    Process_Create(lbl_80290288, arg0);
 }
 
 u8 fn_801229C4(u8 *arg0) {
@@ -1539,12 +1539,12 @@ void fn_8012391C(void *arg0) {
 }
 
 s32 fn_80123BA8(void) {
-    s32 fn_8000CAF0(void *, s32);
+    s32 Process_Create(void *, s32);
     void fn_80123988(void);
     extern u8 lbl_80290408[];
     s32 result;
 
-    result = fn_8000CAF0(lbl_80290408, 4);
+    result = Process_Create(lbl_80290408, 4);
     fn_80123988();
     return result;
 }
@@ -2204,7 +2204,7 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
 #pragma use_lmw_stmw reset
 
 void fn_80125130(void *arg0) {
-    void *fn_8000CAF0(void *, void *);
+    void *Process_Create(void *, void *);
     void *Map_Get(void);
     void *fn_8006D948(void *);
     void *fn_800C42AC(s32);
@@ -2263,7 +2263,7 @@ void fn_80125130(void *arg0) {
         f0 = lbl_8036A378;
         M2C_FIELD(self, f32 *, 0x3C) = f1;
         M2C_FIELD(self, f32 *, 0x40) = f0;
-        tmp = fn_8000CAF0(lbl_80290388, self);
+        tmp = Process_Create(lbl_80290388, self);
         M2C_FIELD(tmp, u8 *, 0x4C) = 1;
         Fx_AllocSlot(lbl_80274F74 + 0xA6, 0x32, 1);
         break;
@@ -2841,7 +2841,7 @@ void fn_80126074(void *arg0) {
     fn_80088F34();
     lbl_80367A6C = 0x63;
     fn_80024398(lbl_8032FE48, arg0, 0);
-    fn_8000CAF0(lbl_802905F8, arg0);
+    Process_Create(lbl_802905F8, arg0);
 }
 
 void fn_801260D4(void) {
@@ -2853,7 +2853,7 @@ void fn_801260E4(void *arg0) {
     void fn_80013F48(void *);
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_8023440C(void *, void *, s32);
     extern u8 lbl_80320060[];
     extern u8 gScriptCmdNames[];
@@ -2865,7 +2865,7 @@ void fn_801260E4(void *arg0) {
     fn_80013F48(lbl_80320060);
     fn_8000BD98(gScriptCmdNames + 0x15B);
     if (Res_GetByName((void *)(self + 0x30)) != 0) {
-        temp = (s32)fn_8000CAF0(lbl_80290480, 2);
+        temp = (s32)Process_Create(lbl_80290480, 2);
         fn_8023440C((void *)(temp + 0x30), (void *)(self + 0x30), 0x20);
         *(void **)(temp + 0x50) = Res_GetByName((void *)(temp + 0x30));
         *(u8 *)(temp + 0x58) = 1;
@@ -2896,7 +2896,7 @@ void fn_80126204(void) {
     void fn_80013F48(void *);
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_8023440C(void *, void *, s32);
     extern u8 lbl_80320060[];
     extern u8 gScriptCmdNames[];
@@ -2906,7 +2906,7 @@ void fn_80126204(void) {
     fn_80013F48(lbl_80320060);
     fn_8000BD98(gScriptCmdNames + 0x15B);
     if (Res_GetByName(gScriptCmdNames + 0x16A) != 0) {
-        temp = (s32)fn_8000CAF0(lbl_80290480, 2);
+        temp = (s32)Process_Create(lbl_80290480, 2);
         fn_8023440C((void *)(temp + 0x30), gScriptCmdNames + 0x16A, 0x20);
         *(void **)(temp + 0x50) = Res_GetByName((void *)(temp + 0x30));
         *(u8 *)(temp + 0x58) = 1;
@@ -3268,19 +3268,19 @@ s32 ScriptCmd_TutorialUnlock(u8 arg0) {
 
 s32 fn_80126E20(void) {
     extern u16 lbl_80290550[];
-    fn_8000CAF0(lbl_80290550, 3);
+    Process_Create(lbl_80290550, 3);
     return 1;
 }
 
 extern u16 lbl_8029053C[];
 s32 fn_80126E50(void) {
-    fn_8000CAF0(lbl_8029053C, 3);
+    Process_Create(lbl_8029053C, 3);
     return 1;
 }
 
 extern u16 lbl_80290528[];
 s32 fn_80126E80(void) {
-    fn_8000CAF0(lbl_80290528, 3);
+    Process_Create(lbl_80290528, 3);
     return 1;
 }
 
@@ -3350,7 +3350,7 @@ s32 ScriptCmd_EndMapHoldCursor(void) {
 
 s32 ScriptCmd_BeginMapHoldCursor(void) {
     extern u16 lbl_80290510[];
-    fn_8000CAF0(lbl_80290510, 4);
+    Process_Create(lbl_80290510, 4);
     return 0;
 }
 
@@ -3407,12 +3407,12 @@ void fn_80127594(void *arg0) {
 }
 
 s32 ScriptCmd_pa(s32 arg0) {
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     extern u8 lbl_802904C0[32];
     extern void *gPadInput;
     void *temp_r3;
 
-    temp_r3 = fn_8000CAF0(lbl_802904C0, 2);
+    temp_r3 = Process_Create(lbl_802904C0, 2);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     *(u32 *)((u8 *)temp_r3 + 0x34) = 0;
     *(u8 *)((u8 *)temp_r3 + 0x38) = 0x10;
@@ -3591,7 +3591,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
 
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     void fn_8023440C(void *, void *, s32);
 
     void *result;
@@ -3602,7 +3602,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
     if (result == NULL) {
         return 0;
     }
-    obj = (u8 *)fn_8000CAF0(lbl_80290480, 2);
+    obj = (u8 *)Process_Create(lbl_80290480, 2);
     fn_8023440C(obj + 0x30, arg0, 0x20);
     *(void **)(obj + 0x50) = Res_GetByName(obj + 0x30);
     obj[0x58] = 1;
@@ -3639,7 +3639,7 @@ void fn_80127CDC(void) {
     extern u8 gScriptCmdNames[];
     extern u8 lbl_80290608[];
     u32 fn_8000BCA4(void *);
-    void *fn_8000CAF0(void *, s32);
+    void *Process_Create(void *, s32);
     s32 fn_80089634(void);
     s32 fn_8008A56C(void);
     u16 val;
@@ -3653,7 +3653,7 @@ void fn_80127CDC(void) {
         temp_r3 = fn_8008A56C();
         if (!((u16)(temp_r3 | temp_r31) & 0xD) && (gUiInputFlags & 0x10) && !(gUiInputFlags & 4)
             && fn_8000BCA4(gScriptCmdNames + 0x156) == 0) {
-            obj = fn_8000CAF0(lbl_80290608, 2);
+            obj = Process_Create(lbl_80290608, 2);
             ((u8 *)obj)[0x2B] = 0x7B;
         }
     }

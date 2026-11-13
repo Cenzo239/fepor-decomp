@@ -2353,7 +2353,7 @@ void *fn_80024398(void *arg0, void *arg1, u32 arg2) {
             if ((status & 0xFF) == 1 && (s8)object[0x62] < 0) {
                 object[0x62] = object[0x60];
 
-                entry = (u8 *)fn_8000CAF0(lbl_80284588, object);
+                entry = (u8 *)Process_Create(lbl_80284588, object);
 
                 *(void **)(entry + 0x34) = item;
                 entry[0x3A] = (u8)index;

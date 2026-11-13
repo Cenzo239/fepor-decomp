@@ -2843,9 +2843,9 @@ found:
 }
 
 s32 fn_8000AEB4(void *arg0) {
-    s32 fn_8000CAF0(s32, s16);
+    s32 Process_Create(s32, s16);
     s32 temp_r3 = ((s32 *) arg0)[1];
-    fn_8000CAF0(((s32 *) temp_r3)[1], (s16) (((u32) ((s32 *) temp_r3)[0]) >> 16));
+    Process_Create(((s32 *) temp_r3)[1], (s16) (((u32) ((s32 *) temp_r3)[0]) >> 16));
     ((s32 **) arg0)[1] = (s32 *) ((s32 *) arg0)[1] + 2;
     return 1;
 }
@@ -2860,13 +2860,13 @@ s32 fn_8000AF04(void *arg0) {
 
 s32 fn_8000AF4C(void *arg0)
 {
-    extern void fn_8000CAF0(void *, void *);
+    extern void Process_Create(void *, void *);
 
     void *value;
 
     value = *(void **)(*(u8 **)((u8 *)arg0 + 4) + 4);
 
-    fn_8000CAF0(value, arg0);
+    Process_Create(value, arg0);
 
     *(u8 **)((u8 *)arg0 + 4) += 8;
 
@@ -4143,7 +4143,7 @@ void Process_Destroy(Process *proc) {
 
 void fn_8000CA64(u32 unused, u32 arg1) {
     void fn_8000CAA0(void);
-    void fn_8000CAF0(void);
+    void Process_Create(void);
     u32 var_r4;
 
     var_r4 = arg1;
@@ -4154,15 +4154,15 @@ void fn_8000CA64(u32 unused, u32 arg1) {
         fn_8000CAA0();
         return;
     }
-    fn_8000CAF0();
+    Process_Create();
 }
 
 void *fn_8000CAA0(void *arg0, s32 arg1, void *arg2) {
-    void *fn_8000CAF0();
+    void *Process_Create();
     void *temp_r3;
     void *temp_r5;
 
-    temp_r3 = fn_8000CAF0();
+    temp_r3 = Process_Create();
     if ((u32) M2C_FIELD(temp_r3, u32 *, 0) == 0U) {
         return NULL;
     }
@@ -4172,7 +4172,7 @@ void *fn_8000CAA0(void *arg0, s32 arg1, void *arg2) {
     return temp_r3;
 }
 
-void* fn_8000CAF0(u32* arg0, s32 arg1) {
+void* Process_Create(u32* arg0, s32 arg1) {
     return (void*)0x80267CB0;
 }
 
