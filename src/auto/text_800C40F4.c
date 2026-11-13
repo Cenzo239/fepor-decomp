@@ -15021,7 +15021,7 @@ void fn_800EA8F4(s32 arg0) {
     }
 }
 
-void fn_800EAC7C(s32 arg0) {
+void Card_SetNoCopyAttr(s32 arg0) {
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;
