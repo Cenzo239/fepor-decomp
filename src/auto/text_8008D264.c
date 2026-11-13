@@ -47,7 +47,7 @@ typedef struct Vec4 {
     f32 v[4];
 } Vec4;
 
-extern Vec4 lbl_8026CD50;
+extern Vec4 gMsgTipYPos;
 
 #pragma scheduling reset
 
@@ -189,7 +189,7 @@ void MsgTip_Create(void *arg0) {
     temp_r31 = (u8 *)Process_Create(lbl_80289AB8, 3);
     fn_8023440C(temp_r31 + 0x3E, Msg_Expand(arg0), 0x30);
     *(s16 *)(temp_r31 + 0x38) = Text_MeasureWidth(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
-    sp8 = lbl_8026CD50;
+    sp8 = gMsgTipYPos;
     M2C_FIELD(temp_r31, s8 *, 0x3D) = 0;
     while (M2C_FIELD(temp_r31, s8 *, 0x3D) < 4) {
         s32 index = M2C_FIELD(temp_r31, s8 *, 0x3D);
