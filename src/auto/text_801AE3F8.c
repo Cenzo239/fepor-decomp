@@ -329,7 +329,7 @@ void fn_801AEA58(void *arg0) {
     }
 }
 
-void fn_801AEB30(void *arg0) {
+void FShop_OnAnimalHelp(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
     void TalkUi_ShowMsg(void *);
@@ -1325,22 +1325,25 @@ void fn_801B0C70(void *arg0) {
     extern struct unk_struct lbl_80331C6C;
     extern u8 gUiContext[];
     void *obj48;
-    void *temp_r30;
     s32 temp_r31;
+    void *temp_r30;
     s32 flag;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
     fn_8011D650();
     fn_8001BD4C((u8 *)obj48 + 0x60, &lbl_80331C6C);
     flag = *((u8 *)gUiContext + 8);
-    if (flag == 0) {
+    switch (flag) {
+    case 0: {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
         temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
         if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
-            Process_Goto(arg0, 0xE);
         }
-    } else {
+        Process_Goto(arg0, 0xE);
+        break;
+    }
+    default: {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
         temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
         if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
@@ -1350,6 +1353,7 @@ void fn_801B0C70(void *arg0) {
             Process_Goto(arg0, 0x16);
         }
     }
+}
 }
 #pragma opt_common_subs on
 void fn_801B0D6C(void *arg0) {
