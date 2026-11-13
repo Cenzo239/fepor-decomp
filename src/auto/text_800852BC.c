@@ -68,7 +68,8 @@ void fn_8008532C(s32 unused, s16 *p) {
     GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
-void Ui_DrawUnitInfo(void *arg0) {
+/* Draw the unit info panel: child widgets, gradient bar, and status text. */
+void Ui_DrawUnitInfo(void *proc) {
     M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
     M2C_UNK Prim2D_EmitQuad();
     M2C_UNK Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -98,37 +99,37 @@ void Ui_DrawUnitInfo(void *arg0) {
     extern s32 lbl_8036C464;
     extern s32 lbl_8036C468;
     extern s32 lbl_8036C46C;
-    char sp28[128];
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s16 var_r3;
-    void *temp_r31;
+    char text[128];
+    s32 colorB3;
+    s32 colorB2;
+    s32 colorB1;
+    s32 colorB0;
+    s32 colorA3;
+    s32 colorA2;
+    s32 colorA1;
+    s32 colorA0;
+    s16 textX;
+    void *panel;
 
-    if (arg0 != NULL) {
-        temp_r31 = M2C_FIELD(arg0, void **, 0x30);
-        fn_80083F08(temp_r31);
-        fn_80083E70(temp_r31);
+    if (proc != NULL) {
+        panel = *(void **)((u8 *)proc + 0x30);
+        fn_80083F08(panel);
+        fn_80083E70(panel);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_SetTransform(lbl_80369418, lbl_80369418, lbl_80369488, lbl_80369430);
         Prim2D_PrepareTex();
-        strcpy(sp28, (u8 *)gUiStrings + 0x1B5);
-        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1BB));
-        strcat(sp28, (u8 *)gUiStrings + 0x1C3);
-        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1CA));
-        strcat(sp28, (u8 *)gUiStrings + 0x1D1);
-        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1D8));
-        strcat(sp28, (u8 *)gUiStrings + 0x1DF);
-        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1E6));
-        if ((u32) M2C_FIELD(M2C_FIELD(temp_r31, void **, 0x58), u32 *, 0x194) != 0U) {
-            strcat(sp28, (u8 *)gUiStrings + 0x1F0);
-            strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1F7));
+        strcpy(text, (u8 *)gUiStrings + 0x1B5);
+        strcat(text, Msg_Expand((u8 *)gUiStrings + 0x1BB));
+        strcat(text, (u8 *)gUiStrings + 0x1C3);
+        strcat(text, Msg_Expand((u8 *)gUiStrings + 0x1CA));
+        strcat(text, (u8 *)gUiStrings + 0x1D1);
+        strcat(text, Msg_Expand((u8 *)gUiStrings + 0x1D8));
+        strcat(text, (u8 *)gUiStrings + 0x1DF);
+        strcat(text, Msg_Expand((u8 *)gUiStrings + 0x1E6));
+        if (*(u32 *)((u8 *)(*(void **)((u8 *)panel + 0x58)) + 0x194) != 0U) {
+            strcat(text, (u8 *)gUiStrings + 0x1F0);
+            strcat(text, Msg_Expand((u8 *)gUiStrings + 0x1F7));
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x12);
@@ -136,21 +137,21 @@ void Ui_DrawUnitInfo(void *arg0) {
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369418, lbl_8036941C, lbl_80369418, lbl_80369418);
         Prim2D_SetQuadMax(lbl_80369420, lbl_80369424, lbl_80369418, lbl_80369418);
-        sp14 = lbl_80369404;
-        sp10 = lbl_80369400;
-        spC = lbl_8036C464;
-        sp8 = lbl_8036C460;
-        fn_800072B0(&sp8, &spC, &sp10, &sp14, lbl_8036C464, lbl_80369400, lbl_80369404);
+        colorA3 = lbl_80369404;
+        colorA2 = lbl_80369400;
+        colorA1 = lbl_8036C464;
+        colorA0 = lbl_8036C460;
+        fn_800072B0(&colorA0, &colorA1, &colorA2, &colorA3, lbl_8036C464, lbl_80369400, lbl_80369404);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369418, lbl_80369424, lbl_80369418, lbl_80369418);
         Prim2D_SetQuadMax(lbl_80369420, lbl_80369428, lbl_80369418, lbl_80369418);
-        sp24 = lbl_8036C46C;
-        sp20 = lbl_8036C468;
-        sp1C = lbl_8036940C;
-        sp18 = lbl_80369408;
-        fn_800072B0(&sp18, &sp1C, &sp20, &sp24, lbl_8036940C, lbl_8036C468, lbl_8036C46C);
+        colorB3 = lbl_8036C46C;
+        colorB2 = lbl_8036C468;
+        colorB1 = lbl_8036940C;
+        colorB0 = lbl_80369408;
+        fn_800072B0(&colorB0, &colorB1, &colorB2, &colorB3, lbl_8036940C, lbl_8036C468, lbl_8036C46C);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_Begin();
@@ -159,8 +160,8 @@ void Ui_DrawUnitInfo(void *arg0) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        var_r3 = 0x130 - (fn_80010B78(sp28, -1, lbl_80369430) / 2);
-        fn_8001003C(var_r3, 0x197, 1, 1, 0, sp28, lbl_80369430, lbl_80369418);
+        textX = 0x130 - (fn_80010B78(text, -1, lbl_80369430) / 2);
+        fn_8001003C(textX, 0x197, 1, 1, 0, text, lbl_80369430, lbl_80369418);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80369430);
         Prim2D_PrepareTex();
