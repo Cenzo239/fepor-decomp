@@ -1580,6 +1580,25 @@ s32 fn_80232058(void *stream, const char *format, ...)
     return result;
 }
 
+s32 __StringWrite(void *arg0, const void *arg1, s32 arg2) {
+    void *memcpy(void *, const void *, s32);
+    void *self;
+    s32 pos;
+    s32 end;
+    s32 n;
+
+    self = arg0;
+    pos = *(s32 *)((u8 *)arg0 + 8);
+    end = *(s32 *)((u8 *)self + 4);
+    n = end - pos;
+    if ((u32)(pos + arg2) <= (u32)end) {
+        n = arg2;
+    }
+    memcpy(*(char **)self + pos, arg1, n);
+    *(s32 *)((u8 *)self + 8) = *(s32 *)((u8 *)self + 8) + n;
+    return 1;
+}
+
 s32 __FileWrite(s32 arg0, s32 arg1, u32 arg2) {
     u32 fwrite(s32 arg1, s32 arg2, s32 arg0);
     if (arg2 == fwrite(arg1, 1, arg0)) {
