@@ -22,7 +22,7 @@ void String_AssignCStr(void *, char *, u32);
 s32 String_Compare(void *, s32, void *, char *, s32);
 s32 fn_800D5948(void *, char *, s32, s32);
 u8 fn_800E56C4(void *);
-void fn_80113298(void *, void *, s32, s32, s32);
+void Actor_LoadAnim(void *, void *, s32, s32, s32);
 void fn_801134EC(void *, void *, void *);
 void String_Assign(void *, void *, s32, s32);
 void *String_CStr(void *);
@@ -1259,7 +1259,7 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Actor_LoadAnim(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
     void String_Concat(void *, void *, void *);
     void fn_800D5D04(void *, void *, s32, s32);
     void fn_800E574C(void *, void *, f32, s32, s32, s32, s32);
@@ -1644,7 +1644,7 @@ void fn_80113C84(void *self, s32 mode) {
     String_Assign(&sp3C, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
     String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F));
-    fn_80113298(self, String_CStr(&sp3C), *(s32 *)((u8 *)self + 0x188), 0, 1);
+    Actor_LoadAnim(self, String_CStr(&sp3C), *(s32 *)((u8 *)self + 0x188), 0, 1);
     String_Assign((u8 *)self + 0x160, &sp30, 0, -1);
     *(u8 *)(*(u8 **)((u8 *)self + 0x11C) + 0x14D) = 0;
     *(u8 *)((u8 *)self + 0x1A4) = 1;
@@ -1693,7 +1693,7 @@ void fn_80113F88(void *arg0) {
 }
 void fn_80114078(void *arg0) {
  *(u8 *)((u8 *)arg0+0x184)=1;
- fn_80113298(arg0,(u8 *)gActorXmlStrs+0x498,*(s32 *)((u8 *)arg0+0x188)*2,0,1);
+ Actor_LoadAnim(arg0,(u8 *)gActorXmlStrs+0x498,*(s32 *)((u8 *)arg0+0x188)*2,0,1);
  { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x160,text,len); }
  { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x16C,text,len); }
  *(u8 *)((u8 *)arg0+0x1A4)=1;
@@ -1717,7 +1717,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     s32 fn_800DDC04(void *, void *);
     void fn_800DF670(void *);
     void fn_800E4FE8(void *, void *, char *);
-    void fn_80113298(void *, void *, s32, s32, s32);
+    void Actor_LoadAnim(void *, void *, s32, s32, s32);
     void fn_801134EC(void *, void *, void *);
     void SeCue_PlayAt(char *, s32, f32, f32, f32);
     void *fn_801992F8(void *);
@@ -1836,7 +1836,7 @@ do_43f:
                 strlen((char *)&gActorXmlStrs + 0x43F));
 skip_43f:
 
-    fn_80113298(arg0, String_CStr(&sp104), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
+    Actor_LoadAnim(arg0, String_CStr(&sp104), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
 
     {
         s32 n;
@@ -2070,7 +2070,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     void String_Destroy(void *, s32);
     void fn_800E56CC(void *);
     void fn_80111740(void *);
-    void fn_80113298(void *, char *, s32, s32, s32);
+    void Actor_LoadAnim(void *, char *, s32, s32, s32);
     void fn_80203184(f32 *, f32 *, f32 *);
     void fn_802031CC(f32 *, f32 *, f32);
     f32 fn_802032CC(f32 *, f32 *);
@@ -2153,7 +2153,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         && *(u8 *)((u8 *)self + 0x1A4) != 0
         && *(u8 *)((u8 *)self + 0x1A5) == 0) {
         *(u8 *)((u8 *)self + 0x184) = 1;
-        fn_80113298(self, (char *)&gActorXmlStrs + 0x535, *(s32 *)((u8 *)self + 0x188), 0, 1);
+        Actor_LoadAnim(self, (char *)&gActorXmlStrs + 0x535, *(s32 *)((u8 *)self + 0x188), 0, 1);
         *(s32 *)((u8 *)self + 0x140) = 0;
         String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x535, strlen((char *)&gActorXmlStrs + 0x535));
         return 1;
@@ -2170,13 +2170,13 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         String_Destroy(sp84, -1);
         if (ok) {
             *(u8 *)((u8 *)self + 0x184) = 1;
-            fn_80113298(self, (char *)&gActorXmlStrs + 0x53F, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            Actor_LoadAnim(self, (char *)&gActorXmlStrs + 0x53F, *(s32 *)((u8 *)self + 0x18C), 0, 1);
             fn_80111740(self);
         }
     } else if (String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53F, strlen((char *)&gActorXmlStrs + 0x53F)) == 0) {
         if (*(u8 *)((u8 *)self + 0xD0) == 0) {
             *(u8 *)((u8 *)self + 0x184) = 1;
-            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 1, 1);
+            Actor_LoadAnim(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 1, 1);
             String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0xFE, strlen((char *)&gActorXmlStrs + 0xFE));
             doMove = 1;
             ret = 1;
@@ -2184,13 +2184,13 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     } else {
         *(u8 *)((u8 *)self + 0x184) = 1;
         if (*(s32 *)((u8 *)self + 0x19C) == 0) {
-            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            Actor_LoadAnim(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
             String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0xFE, strlen((char *)&gActorXmlStrs + 0xFE));
             fn_80111740(self);
             doMove = 1;
             ret = 0;
         } else {
-            fn_80113298(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
+            Actor_LoadAnim(self, (char *)&gActorXmlStrs + 0xFE, *(s32 *)((u8 *)self + 0x18C), 0, 1);
             String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x1C, strlen((char *)&gActorXmlStrs + 0x1C));
             fn_80111740(self);
             doMove = 0;
@@ -2272,9 +2272,9 @@ void fn_8011631C(void *arg0, s8 arg1)
 
         if (String_Compare(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
                         strlen((char *)&gActorXmlStrs + 0x43f)) == 0) {
-            fn_80113298(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
+            Actor_LoadAnim(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
         } else {
-            fn_80113298(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
+            Actor_LoadAnim(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
             String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x43f,
                         strlen((char *)&gActorXmlStrs + 0x43f));
         }

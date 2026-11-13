@@ -8143,12 +8143,12 @@ void fn_800DA530(void *arg0, void *arg1, s32 arg2)
 void fn_800DA5AC(void *arg0, s32 arg1) {
     extern void *gGame;
     extern void *lbl_803678B8;
-    void fn_80113298(void *, void *, s32, s32, s32);
+    void Actor_LoadAnim(void *, void *, s32, s32, s32);
     void fn_801167BC(void *, s32);
     void *obj;
 
     obj = lbl_803678B8;
-    fn_80113298(*(void **)((u8 *)obj + 0x10), arg0, *(s32 *)((u8 *)gGame + 0x180), arg1, 1);
+    Actor_LoadAnim(*(void **)((u8 *)obj + 0x10), arg0, *(s32 *)((u8 *)gGame + 0x180), arg1, 1);
     fn_801167BC(*(void **)((u8 *)obj + 0x10), 0);
 }
 
