@@ -4093,7 +4093,7 @@ s32 Affinity_FromName(void *name) {
     return 8; /* telius */
 }
 
-void fn_8003BD58(void *arg0) {
+void Unit_ResetHeldFromClass(void *arg0) {
     u8 Status_Test(void *, s32);
     void *Unit_GetHeldItemSlot(void *, s32);
     void Item_Clear(void *);
@@ -5345,7 +5345,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void fn_800946F0(void *);
     void *Unit_GetItemSlot(void *, s32);
     u8 fn_80094768(void *);
-    void fn_8003BD58(void *);
+    void Unit_ResetHeldFromClass(void *);
     void fn_80092438(void *);
     u8 Unit_GetWpnExp(void *, u8);
     void *Unit_GetHeldItemSlot(void *, s32);
@@ -5558,7 +5558,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
         }
         walk = (struct Src *)((u8 *)walk + 4);
     }
-    fn_8003BD58(self);
+    Unit_ResetHeldFromClass(self);
     self->unk20C[0] = *((u8 *)self->unk18C + 0x2C);
     self->unk20C[1] = *((u8 *)self->unk18C + 0x2D);
     self->unk20C[2] = *((u8 *)self->unk18C + 0x2E);
