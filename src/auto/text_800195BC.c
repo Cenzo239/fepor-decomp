@@ -1490,12 +1490,12 @@ s8 fn_8001C084(u8 *arg0) {
     return (s8)result;
 }
 
-extern u8 lbl_80367220;
+extern u8 gItemFlagsDummyReady;
 extern s32 lbl_80367228;
 extern s32 lbl_8036722C;
 s32 fn_8001C0C8(u8 *arg0)
 {
-    extern u8 lbl_80367220;
+    extern u8 gItemFlagsDummyReady;
     extern s32 lbl_8036722C;
     extern s32 lbl_80367228;
 
@@ -1503,10 +1503,10 @@ s32 fn_8001C0C8(u8 *arg0)
     unsigned long long *p;
     u8 other;
 
-    if ((s8)lbl_80367220 == 0) {
+    if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
         lbl_80367228 = 0;
-        lbl_80367220 = 1;
+        gItemFlagsDummyReady = 1;
     }
 
     temp_r7 = *(void **)arg0;
@@ -1876,10 +1876,10 @@ s32 fn_8001CA2C(void *arg0) {
         return 0;
     }
 
-    if ((s8) lbl_80367220 == 0) {
+    if ((s8) gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
         lbl_80367228 = 0;
-        lbl_80367220 = 1;
+        gItemFlagsDummyReady = 1;
     }
 
     temp_r6 = *(void **)arg0;
@@ -1938,16 +1938,16 @@ s32 fn_8001CA2C(void *arg0) {
 
 void *Item_GetFlagsPtr(void *arg0)
 {
-    extern u8 lbl_80367220;
+    extern u8 gItemFlagsDummyReady;
     extern s32 lbl_8036722C;
     extern s32 lbl_80367228;
 
     void *ptr;
 
-    if ((s8)lbl_80367220 == 0) {
+    if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
         lbl_80367228 = 0;
-        lbl_80367220 = 1;
+        gItemFlagsDummyReady = 1;
     }
 
     ptr = *(void **)arg0;
@@ -2306,7 +2306,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
 
 s32 Item_DecUses(void *arg0) {
     void fn_800C3220(void *, s32);
-    extern u8 lbl_80367220;
+    extern u8 gItemFlagsDummyReady;
     extern s32 lbl_80367228;
     extern s32 lbl_8036722C;
     extern u8 lbl_803206EC[];
@@ -2319,10 +2319,10 @@ s32 Item_DecUses(void *arg0) {
     Bit6 *bf;
     s32 mask;
 
-    if ((s8)lbl_80367220 == 0) {
+    if ((s8)gItemFlagsDummyReady == 0) {
         lbl_8036722C = 0;
         lbl_80367228 = 0;
-        lbl_80367220 = 1;
+        gItemFlagsDummyReady = 1;
     }
 
     if (*(void **)arg0 != 0) {
