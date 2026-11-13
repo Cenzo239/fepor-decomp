@@ -3,7 +3,7 @@
 
 typedef struct { f32 x, y; } FPair;
 #include <dolphin/os.h>
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);
@@ -86,7 +86,7 @@ extern void fn_8020C1A4(u8, u32, void *);
 extern u8 lbl_80289EB8[16];
 #include "common.h"
 #include <dolphin/os.h>
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80015A14(void);
 #include "common.h"
 #include <dolphin/os.h>

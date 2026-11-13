@@ -6,7 +6,7 @@ typedef struct { char labels[4][16]; E2C4Info info; } E2C4Labels;
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern void *lbl_8026CC58;
 extern void *lbl_80289998;
 extern f32 gScreenOrigin;

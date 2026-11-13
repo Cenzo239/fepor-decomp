@@ -4,7 +4,7 @@ extern u8 lbl_8026D8D8[];
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern void *lbl_8026CC58;
 extern void *lbl_80289998;
 extern f32 gScreenOrigin;
@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 void fn_8009ECF4(s32 arg0) {
-    fn_801E32C4(&lbl_803682F0, arg0);
+    fn_801E32C4(&gSaveDataBase, arg0);
 }
 
 #pragma optimization_level 2
@@ -60,7 +60,7 @@ void fn_8009ED1C(void) {
     void fn_801E2594(void *);
     void *fn_801E417C(void *);
     u8 fn_801E434C(void *);
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
     void *obj;
     s32 b;
     u8 *base;
@@ -72,7 +72,7 @@ void fn_8009ED1C(void) {
         i = 0;
         do {
             fn_800056CC((const char *)(base + 0x1C6), i);
-            obj = Save_GetSmallSlot(&lbl_803682F0, i);
+            obj = Save_GetSmallSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x62);
                 fn_800056CC((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
@@ -90,7 +90,7 @@ void fn_8009ED1C(void) {
         i = 0;
         do {
             fn_800056CC((const char *)(base + 0x220), i);
-            obj = fn_801E2324(&lbl_803682F0, i);
+            obj = fn_801E2324(&gSaveDataBase, i);
             if (obj == NULL) {
                 fn_800056CC((const char *)(lbl_8026D8D8 + 0x227));
             } else {
@@ -104,7 +104,7 @@ void fn_8009ED1C(void) {
         i = 0;
         do {
             fn_800056CC((const char *)(base + 0x23D), i);
-            obj = Save_GetLargeSlot(&lbl_803682F0, i);
+            obj = Save_GetLargeSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x63);
                 fn_800056CC((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
@@ -118,18 +118,18 @@ void fn_8009ED1C(void) {
             i += 1;
         } while (i < 2);
         fn_800056CC((const char *)(lbl_8026D8D8 + 0x198));
-        fn_800056CC((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&lbl_803682F0), lbl_8026D8D8);
+        fn_800056CC((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&gSaveDataBase), lbl_8026D8D8);
     }
-    fn_801E2594(&lbl_803682F0);
+    fn_801E2594(&gSaveDataBase);
 }
 #pragma optimization_level reset
 void fn_8009F000(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
-    fn_801E3118(&lbl_803682F0, arg0, 0);
+    fn_801E3118(&gSaveDataBase, arg0, 0);
 }
 
 void fn_8009F02C(s32 arg0) {
-    fn_801E323C(&lbl_803682F0, arg0);
+    fn_801E323C(&gSaveDataBase, arg0);
 }
 
 void fn_8009F054(s32 arg0) {

@@ -1,7 +1,7 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
 #include <dolphin/os.h>
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);
@@ -1438,25 +1438,25 @@ void fn_801FFDA8(void) {
 
 void fn_801FFE8C(void) {
     M2C_UNK fn_801E2594(M2C_UNK *);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E2594(&lbl_803682F0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E2594(&gSaveDataBase);
 }
 
 void fn_801FFEB0(s32 arg0) {
     extern s32 gSaveMigrateCount;
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
     s32 Save_GetSmallSlot(s32 *, s32);
     void fn_800E9B80(s32, s32, s32, s32, s32);
     s32 tmp;
 
     if (gSaveMigrateCount != 0) {
-        tmp = Save_GetSmallSlot(&lbl_803682F0, 0);
+        tmp = Save_GetSmallSlot(&gSaveDataBase, 0);
         fn_800E9B80(tmp, 0x24000, 0x2000, 0x2000, arg0);
     }
 }
 
 void fn_801FFF08(s32 arg0) {
-    fn_801E2F9C(&lbl_803682F0, arg0);
+    fn_801E2F9C(&gSaveDataBase, arg0);
 }
 
 #pragma use_lmw_stmw on
@@ -1471,7 +1471,7 @@ void Save_MigrateLegacy(void) {
     void *memcpy(void *, void *, u32);
     void *memset(void *, s32, u32);
     extern u8 lbl_80282008[];
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
     extern s32 gSaveMigrateCount;
 
     s32 count;
@@ -1488,7 +1488,7 @@ void Save_MigrateLegacy(void) {
         count = 0;
         i = 0;
         do {
-            j = (s32)Save_GetSmallSlot(&lbl_803682F0, i);
+            j = (s32)Save_GetSmallSlot(&gSaveDataBase, i);
             if ((void *)j != NULL && Save_IsValid((void *)j) != 0) {
                 switch (*(s32 *)((u8 *)(void *)j + 0x44)) {
                 case 0x20041216:
@@ -1526,7 +1526,7 @@ void Save_MigrateLegacy(void) {
         } while (i < 6);
         j = 0;
         do {
-            slot = Save_GetLargeSlot(&lbl_803682F0, j);
+            slot = Save_GetLargeSlot(&gSaveDataBase, j);
             if (slot != NULL && Save_IsValid(slot) != 0) {
                 switch (*(s32 *)((u8 *)slot + 0x44)) {
                 case 0x20041216:
@@ -2349,7 +2349,7 @@ extern void fn_8020C1A4(u8, u32, void *);
 extern u8 lbl_80289EB8[16];
 #include "common.h"
 #include <dolphin/os.h>
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80015A14(void);
 #include "common.h"
 #include <dolphin/os.h>

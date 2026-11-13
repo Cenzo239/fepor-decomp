@@ -1417,9 +1417,9 @@ void fn_801F5374(void* arg0) {
 
 void fn_801F53E0(void *arg0)
 {
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
 
-    fn_801E2594(&lbl_803682F0);
+    fn_801E2594(&gSaveDataBase);
 
     if (fn_800EB774() == 0) {
         fn_801DDBA8(
@@ -1445,14 +1445,14 @@ void fn_801F53E0(void *arg0)
 
 void fn_801F5484(void *arg0)
 {
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
 
     if (fn_800EB774() == 0) {
-        fn_801DFE60(&lbl_803682F0, arg0);
+        fn_801DFE60(&gSaveDataBase, arg0);
         return;
     }
 
-    fn_801E2594(&lbl_803682F0);
+    fn_801E2594(&gSaveDataBase);
 
     Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 
@@ -1469,8 +1469,8 @@ void fn_801F5484(void *arg0)
 
 void fn_801F5518(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E3118(&lbl_803682F0, arg0, 1);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E3118(&gSaveDataBase, arg0, 1);
 }
 
 /* After a card-link scan: unlock link bonuses from the found game ID, or show an error. */

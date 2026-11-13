@@ -4,7 +4,7 @@
   extern void* lbl_803674E8;
   extern f32 lbl_803696C8;
   
-  extern s32 lbl_803682F0;
+  extern s32 gSaveDataBase;
   extern void *lbl_8026CC58;
   extern void *lbl_80289998;
   extern f32 gScreenOrigin;
@@ -47,8 +47,8 @@
   
   void fn_8009EA14(void) {
       void fn_801E2594(void *);
-      extern s32 lbl_803682F0;
-      fn_801E2594(&lbl_803682F0);
+      extern s32 gSaveDataBase;
+      fn_801E2594(&gSaveDataBase);
   }
   
   void fn_8009EA38(s32 arg0) {
@@ -60,17 +60,17 @@
           fn_800056CC((const char *)(lbl_8026D8D8 + 0x178));
           return;
       }
-      fn_801E047C(&lbl_803682F0, arg0);
+      fn_801E047C(&gSaveDataBase, arg0);
   }
   
   void fn_8009EA90(void) {
       void fn_801E2594(void *);
-      extern s32 lbl_803682F0;
-      fn_801E2594(&lbl_803682F0);
+      extern s32 gSaveDataBase;
+      fn_801E2594(&gSaveDataBase);
   }
 
 void fn_8009EAB4(s32 arg0) {
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
     s32 fn_800056CC(const char *, ...);
     s32 fn_800EB774(void);
     void fn_801E0B48(void *, s8, s8, s32);
@@ -83,18 +83,18 @@ void fn_8009EAB4(s32 arg0) {
     }
     a = (s8)(s32)*(f32 *)(gBattleState + 0x524);
     b = (s8)(s32)*(f32 *)(gBattleState + 0x528);
-    fn_801E0B48(&lbl_803682F0, (s8)(a % 5), (s8)(b % 5), arg0);
+    fn_801E0B48(&gSaveDataBase, (s8)(a % 5), (s8)(b % 5), arg0);
 }
 
   
   void fn_8009EB7C(void) {
       void fn_801E2594(void *);
-      extern s32 lbl_803682F0;
-      fn_801E2594(&lbl_803682F0);
+      extern s32 gSaveDataBase;
+      fn_801E2594(&gSaveDataBase);
   }
 
   void fn_8009EBA0(s32 arg0) {
-      extern s32 lbl_803682F0;
+      extern s32 gSaveDataBase;
       s32 fn_800056CC(const char *, ...);
       s32 fn_800EB774(void);
       void fn_801E1018(void *, u8, s32, s8);
@@ -105,18 +105,18 @@ void fn_8009EAB4(s32 arg0) {
           return;
       }
       v = (s8)(s32)*(f32 *)(gBattleState + 0x524);
-      fn_801E1018(&lbl_803682F0, (u8)(v % 5), arg0, v);
+      fn_801E1018(&gSaveDataBase, (u8)(v % 5), arg0, v);
   }
 
   
   void fn_8009EC38(void) {
       void fn_801E2594(void *);
-      extern s32 lbl_803682F0;
-      fn_801E2594(&lbl_803682F0);
+      extern s32 gSaveDataBase;
+      fn_801E2594(&gSaveDataBase);
   }
   
 void fn_8009EC5C(s32 arg0) {
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
     s32 fn_800056CC(const char *, ...);
     s32 fn_800EB774(void);
     void fn_801E2014(void *, u8, s32, s8);
@@ -127,6 +127,6 @@ void fn_8009EC5C(s32 arg0) {
         return;
     }
     v = (s8)(s32)*(f32 *)(gBattleState + 0x524);
-    fn_801E2014(&lbl_803682F0, (u8)(v % 5), arg0, v);
+    fn_801E2014(&gSaveDataBase, (u8)(v % 5), arg0, v);
 }
 

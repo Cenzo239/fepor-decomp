@@ -242,12 +242,12 @@ void fn_80072B6C(void *arg0)
     void fn_801DDBA8(void *, u8 *, s32, s32, s32);
     s32 Msg_Expand(u8 *);
     void Process_Goto(void *, s32);
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
     s32 r;
 
-    fn_801E2594(&lbl_803682F0);
+    fn_801E2594(&gSaveDataBase);
     r = fn_800EB774();
     switch (r) {
     case -3:
@@ -271,18 +271,18 @@ void fn_80072C64(void *arg0)
 {
     void fn_801E047C(void *, void *);
     void fn_801DDBA8(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
 
-    fn_801E047C(&lbl_803682F0, arg0);
+    fn_801E047C(&gSaveDataBase, arg0);
     fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x14D, 0, 0, 0);
 }
 
 void fn_80072CB0(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E3118(&lbl_803682F0, arg0, 1);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E3118(&gSaveDataBase, arg0, 1);
 }
 
 void fn_80072CDC(void *arg0) {
@@ -426,8 +426,8 @@ void fn_8007303C(s32 arg0) {
 
 void fn_80073164(void) {
     M2C_UNK fn_801E2594(M2C_UNK *);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E2594(&lbl_803682F0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E2594(&gSaveDataBase);
 }
 
 void fn_80073188(void *arg0) {
@@ -435,7 +435,7 @@ void fn_80073188(void *arg0) {
     void fn_801E3118(void *, void *, s32);
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
-    extern M2C_UNK lbl_803682F0;
+    extern M2C_UNK gSaveDataBase;
     memset(lbl_80311D50, 0, 0x1EA);
     lbl_80311D50[1] = 0;
     lbl_80311D50[0] = 0;
@@ -443,7 +443,7 @@ void fn_80073188(void *arg0) {
     M2C_FIELD(arg0, u8 **, 0x34) = lbl_8026BE40 + 0x1A6;
     M2C_FIELD(arg0, u16 *, 0x38) = 0;
     M2C_FIELD(arg0, u16 *, 0x3A) = 0x20;
-    fn_801E3118(&lbl_803682F0, arg0, 1);
+    fn_801E3118(&gSaveDataBase, arg0, 1);
 }
 
 void fn_80073208(void *arg0) {

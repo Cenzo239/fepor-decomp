@@ -2023,7 +2023,7 @@ void fn_8002D648(void *arg0) {
     extern u16 lbl_80284E78[];
     extern u16 lbl_80284E30[];
     extern u8 gBattleState[];
-    extern struct { u32 unk0; u32 unk4; } lbl_803682F0;
+    extern struct { u32 unk0; u32 unk4; } gSaveDataBase;
     void *fn_8000CAA0(void *, void *);
     void *fn_8000CAF0(void *, void *);
     void Process_Goto(void *, s32);
@@ -2043,8 +2043,8 @@ void fn_8002D648(void *arg0) {
     fn_8000CAF0(lbl_80284E30, r);
     fn_80006220(0x10);
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
-    fn_801E379C(lbl_803682F0.unk4);
-    fn_801E2594(&lbl_803682F0);
+    fn_801E379C(gSaveDataBase.unk4);
+    fn_801E2594(&gSaveDataBase);
     fn_8014CBD8(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
     fn_800187F0();
     fn_8014C798(gBattleState);

@@ -17,7 +17,7 @@ typedef struct TRKEventQueue {
 } TRKEventQueue;
 extern TRKEventQueue lbl_8033B048;
 extern u8 lbl_8033B078[];
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);

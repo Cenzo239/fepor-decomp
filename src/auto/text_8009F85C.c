@@ -286,8 +286,8 @@ void *fn_8009FEB8(void) {
 s32 fn_8009FEC8(void) {
     M2C_UNK fn_800EB578();
     M2C_UNK fn_801E25EC(M2C_UNK *);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E25EC(&lbl_803682F0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E25EC(&gSaveDataBase);
     fn_800EB578();
     return 0;
 }

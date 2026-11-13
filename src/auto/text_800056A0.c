@@ -312,7 +312,7 @@ void fn_80005F04(void)
     void fn_800187F0(void);
     void fn_80016DE0(void);
 
-    extern u8 lbl_803682F0;
+    extern u8 gSaveDataBase;
     extern u8 gBattleState[];
     extern u8 lbl_802832FC[];
 
@@ -323,7 +323,7 @@ void fn_80005F04(void)
     s8 x;
     s8 y;
 
-    object = *(u8 **)((u8 *)&lbl_803682F0 + 4);
+    object = *(u8 **)((u8 *)&gSaveDataBase + 4);
 
     fn_801ED3D4();
     fn_80121414();
@@ -340,7 +340,7 @@ void fn_80005F04(void)
         fn_8014D41C(data);
 
     case 4:
-        fn_801E2594(&lbl_803682F0);
+        fn_801E2594(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0xA;
@@ -352,7 +352,7 @@ void fn_80005F04(void)
         fn_8002D548();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&lbl_803682F0);
+        fn_801E2594(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x11;
@@ -362,7 +362,7 @@ void fn_80005F04(void)
         fn_8002D548();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&lbl_803682F0);
+        fn_801E2594(&gSaveDataBase);
 
         if ((u8)fn_8016947C() == 0) {
             fn_80016C58();
@@ -387,14 +387,14 @@ void fn_80005F04(void)
         fn_8002D548();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&lbl_803682F0);
+        fn_801E2594(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x16;
         break;
 
     case 3:
-        fn_801E2594(&lbl_803682F0);
+        fn_801E2594(&gSaveDataBase);
         fn_801E379C(object);
         fn_80016DE0();
 
@@ -423,12 +423,12 @@ void fn_80006118(void)
 {
   void *Process_Find(void *, void *);
   extern u8 lbl_802832FC[];
-  extern u8 lbl_803682F0;
+  extern u8 gSaveDataBase;
   void *temp;
   void *ret;
   if (1)
   {
-    ret = &lbl_803682F0;
+    ret = &gSaveDataBase;
     temp = *((void **) (((u8 *) ret) + 4));
     ret = Process_Find(lbl_802832FC, ret);
     *(((u8 *) temp) + 0x64) = *((u32 *) (((u8 *) ret) + 0x64));
@@ -474,7 +474,7 @@ void fn_80006220(s32 arg0) {
     obj[0x60 / 4] = arg0;
 }
 #include <common.h>
-extern u8 lbl_803682F0[8];
+extern u8 gSaveDataBase[8];
 extern u32 jumptable_80283748[];
 extern u8 gBattleState[1400];
 extern u8 lbl_802832FC[1100];

@@ -2684,14 +2684,14 @@ void fn_800A9274(s32 arg0) {
 
 void fn_800A92A0(void) {
     M2C_UNK fn_801E2594(M2C_UNK *);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E2594(&lbl_803682F0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E2594(&gSaveDataBase);
 }
 
 void fn_800A92C4(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E3118(&lbl_803682F0, arg0, 0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E3118(&gSaveDataBase, arg0, 0);
 }
 
 void fn_800A92F0(void) {

@@ -5,7 +5,7 @@
 #include "structs.h"
 
 extern u16 lbl_80368784;
-extern s32 lbl_803682F0;
+extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);

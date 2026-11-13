@@ -3482,27 +3482,27 @@ s32 fn_800B6F10(void)
 
 void fn_800B6F48(void) {
     M2C_UNK fn_801E2594(M2C_UNK *);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E2594(&lbl_803682F0);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E2594(&gSaveDataBase);
 }
 
 void fn_800B6F6C(void *arg0) {
     s32 fn_800EB774(void);
     void Process_ClearFunc(void *);
     void fn_801E047C(void *, void *);
-    extern s32 lbl_803682F0;
+    extern s32 gSaveDataBase;
 
     if (fn_800EB774() < 0) {
         Process_ClearFunc(arg0);
     } else {
-        fn_801E047C(&lbl_803682F0, arg0);
+        fn_801E047C(&gSaveDataBase, arg0);
     }
 }
 
 void fn_800B6FB8(s32 arg0) {
     M2C_UNK fn_801E3118(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_803682F0;
-    fn_801E3118(&lbl_803682F0, arg0, 1);
+    extern M2C_UNK gSaveDataBase;
+    fn_801E3118(&gSaveDataBase, arg0, 1);
 }
 
 s32 fn_800B6FE4(u32 arg0) {

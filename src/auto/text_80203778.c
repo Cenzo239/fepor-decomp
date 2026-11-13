@@ -16,7 +16,7 @@ extern void PPCMtfpscr(u32);
 
 int OSReport(void *msg, ...);
 
-extern u32 lbl_803682F0;
+extern u32 gSaveDataBase;
 extern void (*lbl_803685E8)(void);;
 extern u16 lbl_8029BBB0[20];
 extern void DMAErrorHandler(void);

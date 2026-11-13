@@ -3,7 +3,7 @@
 #include <dolphin/os.h>
 #include "global.h"
 extern u16 Scb_80339420[];
-extern s32 lbl_803682F0;;
+extern s32 gSaveDataBase;;
 extern s32 fn_80013E50(s32);
 extern s32 fn_80013E60(s32, s32);
 extern s32 fn_80013E74(void*, s32);
@@ -598,7 +598,7 @@ void fn_8020C080(void) {
         lbl_8036864C = NULL;
         lbl_80368650 = NULL;
         lbl_80368654 = NULL;
-        if (lbl_803682F0 == 0x1A83) {
+        if (gSaveDataBase == 0x1A83) {
             var_r3 = 1;
         }
     } else {
