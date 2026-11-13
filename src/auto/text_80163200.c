@@ -5775,7 +5775,7 @@ void *fn_8016E9DC(u32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8016EA78(void *arg0) {
+extern "C" void Ui_DestroyListPanel(void *arg0) {
     extern void Ui_DestroyPanelBase(void *, s32);
 
     struct RefObj {
