@@ -3658,26 +3658,27 @@ void fn_8007ADC8(s32 index) {
     base[index] = NULL;
 }
 
-void Face_EaseTintProc(void *arg0)
+/* Ease the face slot's tint (+0x41) toward the target; clear when the frame count finishes. */
+void Face_EaseTintProc(void *proc)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern void *gFaceSlots[];
-    void *entry;
-    s32 idx;
+    void *face;
+    s32 frame;
 
-    entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x30)];
-    *((s8 *)((u8 *)entry + 0x41)) = (s8)Math_Ease(
-        *(s32 *)((u8 *)arg0 + 0x44),
-        (f32)*(s32 *)((u8 *)arg0 + 0x3c),
-        (f32)*(s32 *)((u8 *)arg0 + 0x40),
-        (f32)*(s32 *)((u8 *)arg0 + 0x34),
-        (f32)*(s32 *)((u8 *)arg0 + 0x38));
-    idx = *(s32 *)((u8 *)arg0 + 0x34);
-    if (idx == *(s32 *)((u8 *)arg0 + 0x38)) {
-        Process_ClearFunc(arg0);
+    face = gFaceSlots[*(s32 *)((u8 *)proc + 0x30)];
+    *((s8 *)((u8 *)face + 0x41)) = (s8)Math_Ease(
+        *(s32 *)((u8 *)proc + 0x44),
+        (f32)*(s32 *)((u8 *)proc + 0x3c),
+        (f32)*(s32 *)((u8 *)proc + 0x40),
+        (f32)*(s32 *)((u8 *)proc + 0x34),
+        (f32)*(s32 *)((u8 *)proc + 0x38));
+    frame = *(s32 *)((u8 *)proc + 0x34);
+    if (frame == *(s32 *)((u8 *)proc + 0x38)) {
+        Process_ClearFunc(proc);
     } else {
-        *(s32 *)((u8 *)arg0 + 0x34) = idx + 1;
+        *(s32 *)((u8 *)proc + 0x34) = frame + 1;
     }
 }
 
