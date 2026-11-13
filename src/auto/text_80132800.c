@@ -9888,7 +9888,7 @@ void *fn_8014488C(void *arg0, s16 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_80144918(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelC(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
