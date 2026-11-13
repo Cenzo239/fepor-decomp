@@ -186,7 +186,7 @@ void fn_80005C60(void) {
     Process_Create(lbl_802832FC, 3);
 }
 
-void fn_80005C8C(void) {
+void Game_InitSystems(void) {
     void fn_800110B8(void);
     void fn_8001B134(void *);
     void Archive_Load(void *);
