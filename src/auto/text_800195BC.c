@@ -2406,37 +2406,38 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     return 1;
 }
 
-void Unit_OrMSfxFlag(u16 *arg0, char *arg1) {
+/* OR one map-move SFX category bit into *flags from the category name (mage, fly, …). */
+void Unit_OrMSfxFlag(u16 *flags, char *name) {
     s32 Str_Cmp(char *, char *);
     extern u8 lbl_80268820[];
 
-    if (arg1 != NULL) {
-        if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x113) == 0) {
-            *arg0 |= 1;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x118) == 0) {
-            *arg0 |= 2;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x11C) == 0) {
-            *arg0 |= 4;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x123) == 0) {
-            *arg0 |= 8;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x129) == 0) {
-            *arg0 |= 0x10;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x12F) == 0) {
-            *arg0 |= 0x20;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x135) == 0) {
-            *arg0 |= 0x40;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x13B) == 0) {
-            *arg0 |= 0x80;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x142) == 0) {
-            *arg0 |= 0x100;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x147) == 0) {
-            *arg0 |= 0x200;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x14D) == 0) {
-            *arg0 |= 0x400;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x152) == 0) {
-            *arg0 |= 0x800;
-        } else if (Str_Cmp(arg1, (char *)lbl_80268820 + 0x157) == 0) {
-            *arg0 |= 0x1000;
+    if (name != NULL) {
+        if (Str_Cmp(name, (char *)lbl_80268820 + 0x113) == 0) {
+            *flags |= MSFX_FLAG_MAGE;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x118) == 0) {
+            *flags |= MSFX_FLAG_FLY;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x11C) == 0) {
+            *flags |= MSFX_FLAG_KNIGHT;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x123) == 0) {
+            *flags |= MSFX_FLAG_ARMOR;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x129) == 0) {
+            *flags |= MSFX_FLAG_ALIZE;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x12F) == 0) {
+            *flags |= MSFX_FLAG_HUMAN;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x135) == 0) {
+            *flags |= MSFX_FLAG_BEAST;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x13B) == 0) {
+            *flags |= MSFX_FLAG_DRAGON;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x142) == 0) {
+            *flags |= MSFX_FLAG_BIRD;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x147) == 0) {
+            *flags |= MSFX_FLAG_FINAL;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x14D) == 0) {
+            *flags |= MSFX_FLAG_HERO;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x152) == 0) {
+            *flags |= MSFX_FLAG_BOSS;
+        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x157) == 0) {
+            *flags |= MSFX_FLAG_DOORBREAK;
         }
     }
 }
