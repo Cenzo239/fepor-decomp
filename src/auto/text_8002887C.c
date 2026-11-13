@@ -950,7 +950,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
-    void *fn_80019E24(s32);
+    void *Item_Get(s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
     void fn_8001EF80(void *, s32, s32, s32);
@@ -997,7 +997,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     fn_8002F728(gTargetList);
     fn_80022FD8(gBattleMap, 6);
 
-    unit = (u8 *)fn_80019E24(source[4]);
+    unit = (u8 *)Item_Get(source[4]);
 
     result = Item_GetMaxRange(unit);
 
@@ -3983,7 +3983,7 @@ void *fn_80032D4C(void) {
 }
 
 void *fn_80032D5C(void) {
-    s32 fn_80019E24(u8);
+    s32 Item_Get(u8);
     void UnitRef_Set(void *, s32);
     void *MapObjEvent_Find(void *, u8, u8, s32);
     extern u8 gUiContext[];
@@ -3995,7 +3995,7 @@ void *fn_80032D5C(void) {
 
     p = gUiContext;
     temp = MapObjEvent_Find(gMapObjEventList, p[0xD], p[0xE], 7);
-    val = fn_80019E24(*(u8 *)((u8 *)temp + 4));
+    val = Item_Get(*(u8 *)((u8 *)temp + 4));
     UnitRef_Set(&lbl_80367278, val);
     return &lbl_80367278;
 }

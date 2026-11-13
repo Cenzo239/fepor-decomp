@@ -18314,7 +18314,7 @@ extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],
 extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
-void *MapObjEvent_Find(void *,s8,s8,s32);void *Item_GetByIid(void *);void *fn_80019E24(u8);
+void *MapObjEvent_Find(void *,s8,s8,s32);void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);void fn_800FDDBC(s8,s8,u8,u8,s32);
 void fn_8001EF80(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *fn_8002F658(void *,s32);
 void fn_8002C6F4(void *,s8,s8);void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
@@ -18344,7 +18344,7 @@ if(!entry||!entry[5]||entry[4]!=*(u16*)((u8*)Item_GetByIid(lbl_80272DB0+0xce)+0x
 candidate=MapObjEvent_Find(gMapObjEventList,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6D8;pred.value=callback;
 fn_8002F728(gTargetList);fn_80022FD8(gBattleMap,6);
-item=fn_80019E24(candidate[4]);iy=candidate[1];kind=item[0x1d];ix=candidate[0];
+item=Item_Get(candidate[4]);iy=candidate[1];kind=item[0x1d];ix=candidate[0];
 fn_800FDDBC((s8)ix,(s8)iy,kind,(u8)Item_GetMaxRange(item),6);
 fn_8001EF80(gBattleMap,candidate[0],candidate[1],candidate[3]);
 fn_8002C47C(&pred,(s8)item[0x1d]);
@@ -18416,7 +18416,7 @@ void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);
 s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);
-void *Item_GetByIid(void *);void *fn_80019E24(u8);
+void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);
 void fn_800FDDBC(s8,s8,u8,u8,s32);void fn_8001EF80(void *,u8,u8,u8);
 void fn_8002C530(void *,s8);void *fn_8002F658(void *,s32);
@@ -18462,7 +18462,7 @@ if(!entry||!entry[5]||entry[4]==M2C_FIELD(Item_GetByIid(lbl_80272DB0+0xCE),u16 *
 candidate=MapObjEvent_Find(gMapObjEventList,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6B8;pred.callback=callback;
 fn_8002F728(gTargetList);fn_80022FD8(gBattleMap,6);
-item=fn_80019E24(candidate[4]);
+item=Item_Get(candidate[4]);
 iy=candidate[1];kind=item[0x1D];ix=candidate[0];
 fn_800FDDBC((s8)ix,(s8)iy,kind,(u8)Item_GetMaxRange(item),6);
 fn_8001EF80(gBattleMap,candidate[0],candidate[1],candidate[3]);

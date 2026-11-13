@@ -352,7 +352,7 @@ void Item_GetByIid(void) {
 }
 
 #pragma dont_inline on
-s32 fn_80019E24(s32 arg0) {
+s32 Item_Get(s32 arg0) {
     extern s32 lbl_803671E4;
     if (arg0 == 0) {
         return 0;
@@ -1535,7 +1535,7 @@ s32 fn_8001C0C8(u8 *arg0)
 void Item_Read(void *arg0, void *arg1) {
     void Icon_FreeSlot(void *, s32);
     u16 Stream_ReadU16(void *);
-    s32 fn_80019E24(s32);
+    s32 Item_Get(s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -1561,7 +1561,7 @@ void Item_Read(void *arg0, void *arg1) {
             bf->rest = 0;
         }
     } else {
-        *(s32 *)arg0 = fn_80019E24(temp);
+        *(s32 *)arg0 = Item_Get(temp);
         *((u16 *)arg0 + 2) = Stream_ReadU16(arg1);
     }
 }

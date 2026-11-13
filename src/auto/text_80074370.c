@@ -1206,7 +1206,7 @@ void fn_80076398(void) {
     fn_8010FA2C();
 }
 #pragma global_optimizer reset
-s32 fn_800763DC(void){void*fn_80019E24(u8);s32 Item_GetMaxRange(void);void fn_8001EF80(void*,u8,u8,u8);void Map_FillAttackRange(void*,u8,u8,u8,s32);void Map_ShowMoveLimitView(void);void fn_80070EE0(void);void*MapObjEvent_Find(void*,u8,u8,s32);extern u8 gBattleMap[],gUiContext[],gMapObjEventList[];u8*p;u8 a,b,c;fn_80070EE0();p=MapObjEvent_Find(gMapObjEventList,gUiContext[13],gUiContext[14],7);a=*((u8*)fn_80019E24(p[4])+29);b=p[1];c=p[0];Map_FillAttackRange(gBattleMap,c,b,a,Item_GetMaxRange());fn_8001EF80(gBattleMap,p[0],p[1],p[3]);Map_ShowMoveLimitView();return 0;}
+s32 fn_800763DC(void){void*Item_Get(u8);s32 Item_GetMaxRange(void);void fn_8001EF80(void*,u8,u8,u8);void Map_FillAttackRange(void*,u8,u8,u8,s32);void Map_ShowMoveLimitView(void);void fn_80070EE0(void);void*MapObjEvent_Find(void*,u8,u8,s32);extern u8 gBattleMap[],gUiContext[],gMapObjEventList[];u8*p;u8 a,b,c;fn_80070EE0();p=MapObjEvent_Find(gMapObjEventList,gUiContext[13],gUiContext[14],7);a=*((u8*)Item_Get(p[4])+29);b=p[1];c=p[0];Map_FillAttackRange(gBattleMap,c,b,a,Item_GetMaxRange());fn_8001EF80(gBattleMap,p[0],p[1],p[3]);Map_ShowMoveLimitView();return 0;}
 
 s32 fn_80076494(void) {
     M2C_UNK Map_HideMoveLimitView();
@@ -2290,7 +2290,7 @@ s32 fn_80078158(void) {
 }
 
 s32 Ui_ShowMapObjAttackRange(void) {
-    void *fn_80019E24(u8);
+    void *Item_Get(u8);
     s32 Item_GetMaxRange(void);
     void fn_8001EF80(void *, u8, u8, u8);
     void Map_FillAttackRange(void *, u8, u8, u8, s32);
@@ -2308,7 +2308,7 @@ s32 Ui_ShowMapObjAttackRange(void) {
     fn_80022DAC(gBattleMap, 8, 0);
     fn_80022FD8(gBattleMap, 6);
     p = MapObjEvent_Find(gMapObjEventList, gUiContext[13], gUiContext[14], 7);
-    a = *((u8 *)fn_80019E24(p[4]) + 29);
+    a = *((u8 *)Item_Get(p[4]) + 29);
     b = p[1];
     c = p[0];
     Map_FillAttackRange(gBattleMap, c, b, a, Item_GetMaxRange());
