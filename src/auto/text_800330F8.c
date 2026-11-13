@@ -4430,7 +4430,7 @@ s32 Unit_Read(void *unit, void *stream) {
     return 1;
 }
 #pragma global_optimizer reset
-void fn_8003CA94(void *arg0, s32 arg1) {
+void Unit_Write(void *arg0, s32 arg1) {
     void Stream_WriteU16(s32, u16);
     void Stream_WriteU8(s32, u8);
     void Stream_Write(s32, s32, void *);

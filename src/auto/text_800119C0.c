@@ -2144,7 +2144,7 @@ void fn_800167E4(void *arg0)
     void Unit_MoveToList(void *, s32);
     void fn_80016F78(void *);
     void Unit_Clear(void *, s32);
-    void fn_8003CA94(void *, void *);
+    void Unit_Write(void *, void *);
     void Array_Destroy(void *, void *, s32, s32);
     void Item_Destroy(void);
 
@@ -2203,12 +2203,12 @@ void fn_800167E4(void *arg0)
         type = unitData[8];
 
         if (type == 0) {
-            fn_8003CA94(temp, arg0);
+            Unit_Write(temp, arg0);
         } else if (type >= 1 && type < 8) {
             if (type >= 5) {
-                fn_8003CA94(unit, arg0);
+                Unit_Write(unit, arg0);
             } else {
-                fn_8003CA94(temp, arg0);
+                Unit_Write(temp, arg0);
             }
         }
 
@@ -2260,12 +2260,12 @@ void *fn_800169A8(void *arg0, s16 arg1)
 
 void fn_80016A3C(s32 arg0) {
     extern void* gUnits;
-    extern void fn_8003CA94(void*, s32);
+    extern void Unit_Write(void*, s32);
 
     void* var_r31 = &gUnits;
     s32 var_r30 = 0;
     do {
-        fn_8003CA94(var_r31, arg0);
+        Unit_Write(var_r31, arg0);
         var_r30 += 1;
         var_r31 = (char*)var_r31 + 0x280;
     } while (var_r30 < 0x9F);
