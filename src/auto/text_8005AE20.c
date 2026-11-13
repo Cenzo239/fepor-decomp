@@ -474,14 +474,15 @@ void fn_8005BA08(s8 arg0) {
     lbl_803672E8 = arg0;
 }
 
+/* Return whether the named file is ready: load-done (0x2000) or absent (0x8000). */
 s32 FileCache_IsReady(char *name) {
-    u8 *e = FindEntryByName(name);
+    u8 *entry = FindEntryByName(name);
     u16 flags;
 
-    if (e == NULL) {
+    if (entry == NULL) {
         flags = 0x8000;
     } else {
-        flags = *(u16 *)(e + 0x30);
+        flags = *(u16 *)(entry + 0x30);
     }
     if (flags & 0x2000) {
         return 1;
