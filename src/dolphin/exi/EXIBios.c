@@ -247,7 +247,7 @@ extern f64 lbl_8036C148;
 void SetExiInterruptMask(s32 arg0, void *arg1) {
     void __OSMaskInterrupts(u32);
     void __OSUnmaskInterrupts(u32);
-    u32 fn_80207BAC(u32);
+    u32 __OSGetInterruptHandler(u32);
     u32 *ecb2 = (u32 *)((u8 *)Ecb_8033E188 + 0x80);
     switch (arg0) {
     case 0:
@@ -265,7 +265,7 @@ void SetExiInterruptMask(s32 arg0, void *arg1) {
         __OSUnmaskInterrupts(0x80000);
         return;
     case 2:
-        if ((fn_80207BAC(0x19) == 0U) || (M2C_FIELD(arg1, s32 *, 0xC) & 0x10)) {
+        if ((__OSGetInterruptHandler(0x19) == 0U) || (M2C_FIELD(arg1, s32 *, 0xC) & 0x10)) {
             __OSMaskInterrupts(0x40);
             return;
         }

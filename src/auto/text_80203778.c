@@ -2140,7 +2140,7 @@ void *__OSSetInterruptHandler(s32 arg0, void *arg1) {
 }
 
 extern void *InterruptHandlerTable_803684C8;
-s32 fn_80207BAC(s16 arg0) {
+s32 __OSGetInterruptHandler(s16 arg0) {
     return ((u32 *)InterruptHandlerTable_803684C8)[arg0];
 }
 
