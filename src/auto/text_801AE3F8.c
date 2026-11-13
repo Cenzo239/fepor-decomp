@@ -2403,7 +2403,7 @@ void fn_801B2E3C(void *arg0) {
 
 void Ui_CreateMainListPanel(void *arg0) {
     void *Heap_Alloc(s32);
-    void *fn_801B31E4(void *, s32, s32, s32, s32, s32);
+    void *Ui_MainListPanel_Ctor(void *, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
     void Ui_AddChild(void *, void *);
     void fn_8011D908(s32, void *);
@@ -2417,7 +2417,7 @@ void Ui_CreateMainListPanel(void *arg0) {
 
     var_r0 = Heap_Alloc(0x4C);
     if (var_r0 != NULL) {
-        var_r0 = fn_801B31E4(var_r0, 0x138, 0x6C, 0x108, 0xD0, 0x226);
+        var_r0 = Ui_MainListPanel_Ctor(var_r0, 0x138, 0x6C, 0x108, 0xD0, 0x226);
     }
     *(void **)((u8 *)arg0 + 0x40) = var_r0;
     temp_r4 = *(void **)((u8 *)arg0 + 0x40);
@@ -2463,7 +2463,7 @@ void *fn_801B3150(void *arg0) {
     return arg0;
 }
 
-void *fn_801B31E4(void *arg0) {
+void *Ui_MainListPanel_Ctor(void *arg0) {
     void fn_80134E48(void *);
 
     fn_80134E48(arg0);
