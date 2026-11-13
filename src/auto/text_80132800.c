@@ -22,11 +22,11 @@ first=*(void **)((u8*)first+4);
 #include "common.h"
 #include "dolphin/os.h"
 
-extern u16 lbl_80331FB8[36]; // 72 bytes 
+extern u16 gSaveExtra[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
 extern f32 lbl_8036A6C4;
 
-extern u16 lbl_80331FB8[36]; // 72 bytes = 36 * 2-byte entries
+extern u16 gSaveExtra[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
 extern f32 lbl_8036A5AC;
 extern f32 lbl_8036A5B8;
@@ -243,20 +243,20 @@ s32 fn_80132A5C(void) {
 }
 
 s32 fn_80132A64(void) {
-    extern u16 lbl_80331FB8[36]; // 72 bytes = 36 * 2-byte entries
+    extern u16 gSaveExtra[36]; // 72 bytes = 36 * 2-byte entries
     
     s32 i;
     
     i = 0;
-    lbl_80331FB8[0x8] |= 1;
-    lbl_80331FB8[0x8] |= 2;
-    lbl_80331FB8[0x8] |= 4;
-    lbl_80331FB8[0x8] |= 8;
-    lbl_80331FB8[0x8] |= 0x10;
-    lbl_80331FB8[0x8] |= 0x20;
+    gSaveExtra[0x8] |= 1;
+    gSaveExtra[0x8] |= 2;
+    gSaveExtra[0x8] |= 4;
+    gSaveExtra[0x8] |= 8;
+    gSaveExtra[0x8] |= 0x10;
+    gSaveExtra[0x8] |= 0x20;
     
     do {
-        fn_801E35BC(lbl_80331FB8, i);
+        fn_801E35BC(gSaveExtra, i);
         i += 1;
     } while (i < 0x80);
     

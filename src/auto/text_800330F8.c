@@ -5301,7 +5301,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
     void fn_8003C4B0(void *, void *);
     void fn_801E35EC(void *, void *);
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
 
     struct Self {
         u8 pad[0x188];
@@ -5574,7 +5574,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
     if (src->unk8 & 0x40) {
         self->unk254 |= 0x20000;
     }
-    fn_801E35EC(lbl_80331FB8, self->unk188);
+    fn_801E35EC(gSaveExtra, self->unk188);
     self->unk1A0 |= 0x80000;
 }
 #pragma use_lmw_stmw reset

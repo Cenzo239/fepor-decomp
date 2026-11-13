@@ -4618,12 +4618,12 @@ void *fn_8011BB24(void) {
 
 u8 fn_8011BB34(void) {
     u8 fn_801E3620(void *);
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
 
     if (((u8 *)gBattleState)[0x10] > 0x1FU) {
         return 2;
     }
-    if (!(gUiInputFlags & 0x10) && fn_801E3620(lbl_80331FB8) == 0) {
+    if (!(gUiInputFlags & 0x10) && fn_801E3620(gSaveExtra) == 0) {
         return 2;
     }
     return (u8)(lbl_80367A48 == 0x87);

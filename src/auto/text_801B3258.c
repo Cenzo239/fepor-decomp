@@ -1611,7 +1611,7 @@ void fn_801B87E8(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void *fn_800C4638(s32, void *, s32);
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern u8 lbl_80297BA8[];
     extern u8 lbl_8027C5E8[];
     void *alloc;
@@ -1625,7 +1625,7 @@ void fn_801B87E8(s32 arg0) {
     fn_801B794C(alloc);
     *(s16 *)(gBattleState + 0x72) = fn_801B7734(alloc);
     *(s32 *)(base + 0x1C) = fn_801B767C(alloc);
-    if (((u32)(gBattleState[0x9E] & 1) != 1) && fn_801E33F4(lbl_80331FB8)) {
+    if (((u32)(gBattleState[0x9E] & 1) != 1) && fn_801E33F4(gSaveExtra)) {
         obj = fn_8000CAA0(lbl_80297BA8, arg0);
         *(void **)((u8 *)obj + 0x30) = fn_800C4638(0x2C, lbl_8027C5E8 + 0x57, 0);
         *(s32 *)((u8 *)obj + 0x34) = 0;
@@ -8621,7 +8621,7 @@ void fn_801C9170(void *arg0) {
     void fn_801E3560(void *, u8, u8, u8);
     extern char lbl_8027D740[];
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern u8 lbl_80366E9C;
     extern void *gPadInput;
     extern s8 lbl_803682B0;
@@ -8694,7 +8694,7 @@ void fn_801C9170(void *arg0) {
     }
 
     if (trig & 0x100) {
-        fn_801E3560(lbl_80331FB8, lbl_803682B0, lbl_803682B1, lbl_80366E9C);
+        fn_801E3560(gSaveExtra, lbl_803682B0, lbl_803682B1, lbl_80366E9C);
         gBattleState[0xA3] = lbl_803682B1;
         gBattleState[0xA2] = lbl_803682B0;
         gBattleState[0xA1] = lbl_80366E9C;
@@ -13737,7 +13737,7 @@ void fn_801D3AE0(s32 arg0) {
 void fn_801D3B14(void *arg0)
 {
     extern s32 gUiInputFlags;
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern u8 lbl_80299CC4[];
     extern s32 lbl_803682E0;
 
@@ -13747,7 +13747,7 @@ void fn_801D3B14(void *arg0)
     u8 *entry;
 
     if (!(gUiInputFlags & 0x10)) {
-        if ((u8)fn_801E3620(lbl_80331FB8) == 0) {
+        if ((u8)fn_801E3620(gSaveExtra) == 0) {
             return;
         }
     }
@@ -13761,9 +13761,9 @@ void fn_801D3B14(void *arg0)
 void fn_801D3B7C(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     extern u8 lbl_80299CC4[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern s32 lbl_803682E0;
-    u8 *p = lbl_80331FB8;
+    u8 *p = gSaveExtra;
     void *ret;
 
     *(s32 *)(p + 0) = -1;
@@ -13893,7 +13893,7 @@ void fn_801D3D3C(void *arg0) {
  extern s32 lbl_803682E8;
  extern u8 lbl_803682F0;
  extern u8 gBattleState[];
- extern u8 lbl_80331FB8[];
+ extern u8 gSaveExtra[];
  extern u8 lbl_8027E258[];
  s32 arr_lo[10];
  s32 arr_hi[10];
@@ -13960,7 +13960,7 @@ void fn_801D3D3C(void *arg0) {
   else if (tmp_u8 == 1) *(s32 *)state = 0x258;
   else if (tmp_u8 == 2) {
    *(u8 *)((u8 *)state + 0x10) = 0;
-   if (fn_801E33F4(lbl_80331FB8)) *(s32 *)state = 0x2bc; else *(s32 *)state = 0x32;
+   if (fn_801E33F4(gSaveExtra)) *(s32 *)state = 0x2bc; else *(s32 *)state = 0x32;
   }
   break;
  case 5:
@@ -14034,7 +14034,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0xb:
-  v = fn_801DE360(lbl_80331FB8); v = ((u8)v == 0); sel = *(s8 *)((u8 *)state + 0x18);
+  v = fn_801DE360(gSaveExtra); v = ((u8)v == 0); sel = *(s8 *)((u8 *)state + 0x18);
   if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
   fn_801E1440(&lbl_803682F0, changed, *(s8 *)((u8 *)state + 0x19) != 0);
   fn_8008A290(3, 0xfa);
@@ -14166,7 +14166,7 @@ void fn_801D3D3C(void *arg0) {
    fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 0);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
-  if (fn_801E33F4(lbl_80331FB8)) {
+  if (fn_801E33F4(gSaveExtra)) {
    fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 6);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
@@ -14271,7 +14271,7 @@ void fn_801D3D3C(void *arg0) {
   sel = *(s8 *)((u8 *)state + 0x14); changed = 0;
   if (flags_a & 0x100) {
    *(u8 *)((u8 *)state + 0x18) = *(u8 *)((u8 *)state + 0x14);
-   if (fn_801E33F4(lbl_80331FB8)) { Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(s32 *)state = 0x75; }
+   if (fn_801E33F4(gSaveExtra)) { Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(s32 *)state = 0x75; }
    else { Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64); *(s32 *)state = 0x77; *(u8 *)((u8 *)state + 0x19) = 0; }
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
@@ -14313,7 +14313,7 @@ void fn_801D3D3C(void *arg0) {
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
   if (flags_a & 0x200) {
-   if (fn_801E33F4(lbl_80331FB8)) *(s32 *)state = 0x73; else *(s32 *)state = 0x69;
+   if (fn_801E33F4(gSaveExtra)) *(s32 *)state = 0x73; else *(s32 *)state = 0x69;
    Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0);
   }
@@ -14339,7 +14339,7 @@ void fn_801D3D3C(void *arg0) {
   break;
  case 0x77:
   fn_801D88B0((u8 *)state + 0x5c, 0);
-  v = fn_801DE360(lbl_80331FB8); v = ((u8)v == 0);
+  v = fn_801DE360(gSaveExtra); v = ((u8)v == 0);
   sel = *(s8 *)((u8 *)state + 0x18);
   if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
   fn_801E1498(&lbl_803682F0, *(s8 *)((u8 *)state + 0x12), changed, *(s8 *)((u8 *)state + 0x19) != 0, arg0);
@@ -14374,7 +14374,7 @@ void fn_801D3D3C(void *arg0) {
      fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
      i25 += 1; p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
-    p24 = (s32 *)lbl_80331FB8; tmp_ptr = (void *)state; changed = 0;
+    p24 = (s32 *)gSaveExtra; tmp_ptr = (void *)state; changed = 0;
     while (changed < 5) {
      fn_801D88B8((u8 *)tmp_ptr + 0x1b4, state, 0);
      if (*(s16 *)((u8 *)tmp_ptr + 0x1b4) & 4) {
@@ -16873,7 +16873,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern s32 lbl_803682F0;
 
     s32 i;
@@ -16952,7 +16952,7 @@ loop:
     slot[0x64] = 0;
     slot[0x65] = 0;
     slot[0x66] = 0;
-    slot[0x63] = lbl_80331FB8[0x47];
+    slot[0x63] = gSaveExtra[0x47];
     *(u32 *)(slot + 0x5C) = *(u32 *)(gBattleState + 0x5C);
     *(u32 *)(slot + 0x58) = *(u32 *)(gBattleState + 0x58);
     slot[0x61] = gBattleState[0x51C];
@@ -17241,15 +17241,15 @@ void fn_801E11AC(void *arg0, s32 arg1, s8 arg2) {
 void fn_801E1440(s32 arg0, s32 arg1, s32 arg2) {
     void fn_8014D698(void *, s32, u8, u8, s32);
     extern u8 gBattleState[];
-    extern s32 lbl_80331FB8[];
+    extern s32 gSaveExtra[];
 
     s32 temp_r2 = arg2;
     u8 temp_r3 = arg1;
     
     fn_8014D698(gBattleState, 0, temp_r3, temp_r2, 1);
-    lbl_80331FB8[0] = -1;
-    lbl_80331FB8[1] = -1;
-    ((u8 *) lbl_80331FB8)[0x44] = 1;
+    gSaveExtra[0] = -1;
+    gSaveExtra[1] = -1;
+    ((u8 *) gSaveExtra)[0x44] = 1;
 }
 
 void fn_801E1498(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
@@ -17303,7 +17303,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern void *lbl_803682F0;
 
     u8 hist[0x28];
@@ -17339,7 +17339,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     other = arg1;
     best = NULL;
     i = 0;
-    lbl_80331FB8[0x47] = (u8)arg2;
+    gSaveExtra[0x47] = (u8)arg2;
     minSize = (u32)-1;
     off = 0x2000;
 
@@ -17385,7 +17385,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     *(s32 *)(best + 0x4C) = 0x4000;
     *(u32 *)(best + 0x40) = 0x4645384AU;
     *(u32 *)(best + 0x44) = 0x20050201U;
-    rec = lbl_80331FB8;
+    rec = gSaveExtra;
     *(u32 *)(best + 0x48) = 0;
     *(u32 *)(best + 0x5C) = 0;
     *(u32 *)(best + 0x58) = 0;
@@ -17538,7 +17538,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     best[0x65] = 3;
     best[0x66] = arg3;
 
-    rec = lbl_80331FB8;
+    rec = gSaveExtra;
     dummy = 0;
     for (ctr = 3; ctr != 0; ctr--) {
         if (rec[0x12] == 0) {
@@ -17662,7 +17662,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
 
     u32 minSize;
     s32 off;
@@ -17688,7 +17688,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     best = NULL;
     other = arg1;
     i = (s32)best;
-    saved47 = lbl_80331FB8[0x47];
+    saved47 = gSaveExtra[0x47];
     minSize = (u32)-1;
 
     for (ctr = 3; ctr != 0; ctr--) {
@@ -17788,11 +17788,11 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
 }
 
 void fn_801E2014(s32 unused, u8 arg1, s32 arg2) {
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern u8 lbl_80299E10[];
     void fn_8000CAA0(void *, s32);
 
-    lbl_80331FB8[0x47] = arg1;
+    gSaveExtra[0x47] = arg1;
     fn_8000CAA0(lbl_80299E10, arg2);
 }
 
@@ -17874,7 +17874,7 @@ void fn_801E21B0(void *arg0) {
     fn_800E9B80(temp_r6, *(s32 *)((u8 *)temp_r6 + 0x4C), temp_r5, temp_r5, arg0);
 }
 
-extern u8 lbl_80331FB8[72];
+extern u8 gSaveExtra[72];
 void fn_801E21EC(void *arg0, s8 arg1) {
     s32 var_ctr;
     void *var_r7;
@@ -17936,7 +17936,7 @@ skip3:
     }
 
     *(void **) ((s32) arg0 + 4) = var_r7;
-    lbl_80331FB8[0x47] = arg1;
+    gSaveExtra[0x47] = arg1;
 }
 
 void* fn_801E2324(u16 arg0) {
@@ -18009,7 +18009,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 fn_80209A0C(void);
     void *memset(void *, s32, u32);
     extern u8 lbl_8027E980[];
-    extern u8 lbl_80331FB8[72];
+    extern u8 gSaveExtra[72];
 
     u8 counts[5];
     s8 best_idx[5];
@@ -18305,10 +18305,10 @@ after_pair:
         }
         x0 = *(u32 *)(best + 0x78);
         x1 = *(u32 *)(best + 0x7C);
-        if (((*(u32 *)(lbl_80331FB8 + 8) ^ x0) | (*(u32 *)(lbl_80331FB8 + 0xC) ^ x1)) == 0) {
+        if (((*(u32 *)(gSaveExtra + 8) ^ x0) | (*(u32 *)(gSaveExtra + 0xC) ^ x1)) == 0) {
             return;
         }
-        if (((*(u32 *)(lbl_80331FB8 + 8) ^ 0x01234567U) | (*(u32 *)(lbl_80331FB8 + 0xC) ^ 0x89ABCDEFU)) == 0) {
+        if (((*(u32 *)(gSaveExtra + 8) ^ 0x01234567U) | (*(u32 *)(gSaveExtra + 0xC) ^ 0x89ABCDEFU)) == 0) {
             return;
         }
         fn_800EB760(-0x40);
@@ -18317,7 +18317,7 @@ after_pair:
 
     if (best != NULL) {
         src = best + 0x70;
-        dst = lbl_80331FB8;
+        dst = gSaveExtra;
         *(u32 *)(dst + 0) = *(u32 *)(src + 0);
         *(u32 *)(dst + 4) = *(u32 *)(src + 4);
         *(u32 *)(dst + 0xC) = *(u32 *)(src + 0xC);
@@ -18329,7 +18329,7 @@ after_pair:
         dst[0x43] = src[0x43];
         dst[0x44] = src[0x44];
         dst[0x47] = src[0x47];
-        dst = lbl_80331FB8;
+        dst = gSaveExtra;
         j = 0;
         for (i = 5; i != 0; i--) {
             u8 *p = src + 0x12 + j;
@@ -18342,7 +18342,7 @@ after_pair:
             dst[0x17] = p[5];
             dst += 6;
         }
-        dst = lbl_80331FB8;
+        dst = gSaveExtra;
         *(u32 *)(dst + 0x3C) = 0;
         *(u32 *)(dst + 0x38) = 0;
         *(u32 *)(dst + 0x34) = 0;
@@ -18354,8 +18354,8 @@ after_pair:
         return;
     }
 
-    *(u32 *)(lbl_80331FB8 + 0) = 0x53595346U;
-    *(u32 *)(lbl_80331FB8 + 4) = 0x20050201U;
+    *(u32 *)(gSaveExtra + 0) = 0x53595346U;
+    *(u32 *)(gSaveExtra + 4) = 0x20050201U;
     spC = 0;
     sp8 = 0;
     fn_8021D614(0, &sp8, 0x20050201U);
@@ -18369,13 +18369,13 @@ after_pair:
     temp_r4_2 = sp8;
     spC = temp_r5_2;
     sp8 = temp_r4_2;
-    *(u32 *)(lbl_80331FB8 + 0xC) = temp_r5_2;
-    *(u32 *)(lbl_80331FB8 + 8) = temp_r4_2;
-    *(u16 *)(lbl_80331FB8 + 0x10) = 0;
-    lbl_80331FB8[0x40] = 0;
-    lbl_80331FB8[0x41] = 0;
-    lbl_80331FB8[0x42] = 0x40;
-    lbl_80331FB8[0x43] = 0;
+    *(u32 *)(gSaveExtra + 0xC) = temp_r5_2;
+    *(u32 *)(gSaveExtra + 8) = temp_r4_2;
+    *(u16 *)(gSaveExtra + 0x10) = 0;
+    gSaveExtra[0x40] = 0;
+    gSaveExtra[0x41] = 0;
+    gSaveExtra[0x42] = 0x40;
+    gSaveExtra[0x43] = 0;
     if (fn_802072A0(0, temp_r4_2, temp_r5_2, temp_r6) == 1) {
         lang = 0;
     } else {
@@ -18401,14 +18401,14 @@ after_pair:
             break;
         }
     }
-    lbl_80331FB8[0x44] = (u8)lang;
-    lbl_80331FB8[0x47] = 0;
-    memset(lbl_80331FB8 + 0x12, 0, 0x1E);
-    memset(lbl_80331FB8 + 0x45, 0, 2);
-    *(u32 *)(lbl_80331FB8 + 0x3C) = 0;
-    *(u32 *)(lbl_80331FB8 + 0x38) = 0;
-    *(u32 *)(lbl_80331FB8 + 0x34) = 0;
-    *(u32 *)(lbl_80331FB8 + 0x30) = 0;
+    gSaveExtra[0x44] = (u8)lang;
+    gSaveExtra[0x47] = 0;
+    memset(gSaveExtra + 0x12, 0, 0x1E);
+    memset(gSaveExtra + 0x45, 0, 2);
+    *(u32 *)(gSaveExtra + 0x3C) = 0;
+    *(u32 *)(gSaveExtra + 0x38) = 0;
+    *(u32 *)(gSaveExtra + 0x34) = 0;
+    *(u32 *)(gSaveExtra + 0x30) = 0;
     fn_800EB760(-0x42);
 }
 #pragma global_optimizer reset
@@ -18719,7 +18719,7 @@ void fn_801E3CA8(void *arg0) {
     void *name;
 
     j = 0;
-    tmpl = lbl_80331FB8;
+    tmpl = gSaveExtra;
     src = tmpl;
     *(u32 *)((u8 *)arg0 + 0x70) = *(u32 *)(tmpl + 0);
     *(u32 *)((u8 *)arg0 + 0x74) = *(u32 *)(tmpl + 4);
@@ -18751,7 +18751,7 @@ void fn_801E3CA8(void *arg0) {
     *(u32 *)(dst + 0x38) = 0;
     *(u32 *)(dst + 0x34) = 0;
     *(u32 *)(dst + 0x30) = 0;
-    src = lbl_80331FB8;
+    src = gSaveExtra;
     *(u32 *)(dst + 0x30) |= *(u32 *)(src + 0x30);
     *(u32 *)(dst + 0x34) |= *(u32 *)(src + 0x34);
     *(u32 *)(dst + 0x38) |= *(u32 *)(src + 0x38);
@@ -18917,7 +18917,7 @@ s32 fn_801E434C(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x44) == 0x20050201;
 }
 extern u8 lbl_80299E10[];
-extern u8 lbl_80331FB8[];
+extern u8 gSaveExtra[];
 #include "global.h"
 extern u16 lbl_802842A4[5];
 extern u16 lbl_802842B8[6];

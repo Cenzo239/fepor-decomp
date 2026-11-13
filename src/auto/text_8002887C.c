@@ -2316,7 +2316,7 @@ void Battle_AdvancePhase(void) {
     extern u8 gUnits[];
     extern u8 gUnitLists[];
     extern u8 lbl_80269210[];
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     u8 factionMaskB[8];
     u8 factionMaskA[8];
 
@@ -2423,7 +2423,7 @@ void Battle_AdvancePhase(void) {
     Battle_SetPhase(gBattleState, (u8)(gBattleState[0x10] + 1));
     gBattleState[0x54] = 4;
     if (gBattleState[0x10] == 0x20) {
-        fn_801E3400(lbl_80331FB8, gBattleState[0x51C]);
+        fn_801E3400(gSaveExtra, gBattleState[0x51C]);
     }
 }
 

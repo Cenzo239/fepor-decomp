@@ -68,9 +68,9 @@ s32 fn_80073474(s32 unused, s32 arg1) {
 
 u8 fn_800734B0(void) {
     u8 fn_801E3620(void *);
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
 
-    if (fn_801E3620(lbl_80331FB8) == 0) {
+    if (fn_801E3620(gSaveExtra) == 0) {
         return 2;
     }
     return 0;
@@ -180,7 +180,7 @@ extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 u8 fn_800736F0(void) {
     u8 fn_801E3620(M2C_UNK *);
-    extern u8 lbl_80331FB8[];
+    extern u8 gSaveExtra[];
     extern s32 gUiInputFlags;
     u8 res;
     s32 ret;
@@ -188,7 +188,7 @@ u8 fn_800736F0(void) {
     if (gUiInputFlags & 0x10) {
         return 0;
     }
-    res = fn_801E3620((M2C_UNK *)lbl_80331FB8);
+    res = fn_801E3620((M2C_UNK *)gSaveExtra);
     ret = 2;
     if (res != 0) {
         ret = 0;
