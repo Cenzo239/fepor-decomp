@@ -257,7 +257,7 @@ void fn_801EB294(void *arg0)
     void Process_Goto(void *, s32);
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
-    void fn_8002833C(u8 *, void *);
+    void UiCtx_BindUnit(u8 *, void *);
     void fn_8004A1F0(void);
     void fn_8004A224(void);
     void fn_800A8400(void);
@@ -376,7 +376,7 @@ void fn_801EB294(void *arg0)
             if (gUiInputFlags & 0x400) {
                 fn_8004A1F0();
             }
-            fn_8002833C(gUiContext, unit);
+            UiCtx_BindUnit(gUiContext, unit);
             Ui_PlaySeCue(lbl_8027EE08 + 0x1c9, 0x64);
             *((u8 *)self + 0x54) = 2;
             Process_Goto(self, 0xA);

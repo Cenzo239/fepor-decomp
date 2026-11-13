@@ -2852,7 +2852,7 @@ void fn_801BB1FC(void *arg0) {
 
 void Ui_HandleUnitManageCursorInput(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8002833C(void *, u32);
+    void UiCtx_BindUnit(void *, u32);
     u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void fn_80140210(void *, void *, s32);
@@ -2896,7 +2896,7 @@ void Ui_HandleUnitManageCursorInput(void *arg0) {
         a = M2C_FIELD(gPadInput, s32 *, 4);
         btn = a & (M2C_FIELD(gPadInput, s32 *, 8) ^ a);
         if ((btn & 0x100) && var_r31) {
-            fn_8002833C(gUiContext, var_r31);
+            UiCtx_BindUnit(gUiContext, var_r31);
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), f32 *, 0x30) = 0.5f;
             obj64 = M2C_FIELD(arg0, void **, 0x64);
             tmp = M2C_FIELD(obj64, s16 *, 0xC);
@@ -4076,7 +4076,7 @@ void Ui_InitUnitHirePanel(void *panel) {
 #pragma cplusplus on
 /* Handle unit-hire panel input: A buys if affordable, X/Y open side panels, B backs out. */
 extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
- void Process_Goto(void *,s32); void fn_8002833C(void *,u32);
+ void Process_Goto(void *,s32); void UiCtx_BindUnit(void *,u32);
  u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void fn_80138808(void *,u32);
  u32 Ui_ListGetSelected(void *); void Ui_UpdatePanelWidgets(void *);
  void fn_80140210(void *,void *,s32);
@@ -4127,7 +4127,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  }
  {
 
- fn_8002833C(gUiContext,unit);
+ UiCtx_BindUnit(gUiContext,unit);
  list=M2C_FIELD(arg0,void **,0x48);
  gUiContext[0x15]=M2C_FIELD(list,s16 *,0x56);
  M2C_FIELD(list,f32 *,0x30)=lbl_8036B2E4;

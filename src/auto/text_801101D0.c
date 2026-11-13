@@ -3102,7 +3102,7 @@ void fn_801186E4(void *arg0)
     void Process_Goto(void *, s32);
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
-    void fn_8002833C(u8 *, void *);
+    void UiCtx_BindUnit(u8 *, void *);
     void fn_8004A1F0(void);
     void fn_8004A224(void);
     void fn_800A8400(void);
@@ -3213,7 +3213,7 @@ void fn_801186E4(void *arg0)
             if (gUiInputFlags & 0x400) {
                 fn_8004A1F0();
             }
-            fn_8002833C(gUiContext, unit);
+            UiCtx_BindUnit(gUiContext, unit);
             Ui_PlaySeCue(lbl_80274508 + 0x201, 0x64);
             *((u8 *)self + 0x48) = 4;
             Process_Goto(self, 0x11);
@@ -3330,7 +3330,7 @@ void fn_80118C84(void *arg0) {
     void *fn_8000CAF0(void *, s32);
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
-    void fn_8002833C(u8 *, void *);
+    void UiCtx_BindUnit(u8 *, void *);
     void *fn_8002F658(void *, s32);
     void fn_8004A1F0(void);
     void fn_8004A224(void);
@@ -3494,7 +3494,7 @@ void fn_80118C84(void *arg0) {
         fn_800A8400();
         if (gUiInputFlags & 0x400)
             fn_8004A1F0();
-        fn_8002833C(gUiContext, unit);
+        UiCtx_BindUnit(gUiContext, unit);
         ef[0xD] = (u8)cur_x;
         ef[0xE] = (u8)cur_y;
         Ui_PlaySeCue(lbl_80274508 + 0x201, 0x64);

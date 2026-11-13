@@ -3967,7 +3967,7 @@ void fn_800281D8(void *arg0) {
     M2C_FIELD(temp_r3, s32 *, 0x1A0) = (s32) (M2C_FIELD(temp_r3, s32 *, 0x1A0) & 0xFFFFFFFE);
 }
 
-void fn_8002833C(void *arg0, void *arg1) {
+void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, void **, 0) = arg1;
     M2C_FIELD(arg0, u8 *, 0xB) = (u8) M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = (u8) M2C_FIELD(arg1, u8 *, 0x19F);

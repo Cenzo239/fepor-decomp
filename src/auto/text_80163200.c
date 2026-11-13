@@ -9516,7 +9516,7 @@ void fn_80175CA0(void) {
 #pragma cplusplus on
 extern "C" void fn_80175E3C(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8002833C(void *, u32);
+    void UiCtx_BindUnit(void *, u32);
     void fn_80138808(void *, u32);
     u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
@@ -9571,7 +9571,7 @@ extern "C" void fn_80175E3C(void *arg0) {
         register btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && (var_r30)) {
-            fn_8002833C(gUiContext, var_r30);
+            UiCtx_BindUnit(gUiContext, var_r30);
             obj4c = *(void **)((u8 *)arg0 + 0x4C);
             *(u8 *)((u8 *)obj4c + (int)0x78) = 1;
             *(u8 *)((u8 *)*(void **)((u8 *)arg0 + (u32)0x4C) + 0x4A) = 0;
