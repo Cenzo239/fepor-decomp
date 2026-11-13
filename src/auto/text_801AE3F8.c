@@ -1191,7 +1191,7 @@ extern "C" void fn_801B0564(void *arg0) {
     extern u8 lbl_80331C38[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern s32 lbl_80368DC4;
+    extern s32 gUnitInfoPopupFlag;
 
     class Pair {
     public:
@@ -1282,7 +1282,7 @@ extern "C" void fn_801B0564(void *arg0) {
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)self + 0x58))->v10();
             fn_8016758C(gUnitInfoPopup, self, ((Obj *)*(void **)((u8 *)self + 0x58))->v9(), (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
-            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | lbl_80368DC4;
+            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xA00) && fn_80166D8C(gUnitInfoPopup) != 0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
@@ -1522,7 +1522,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     extern void *gPadInput;
     extern void *lbl_80368230;
     extern u8 lbl_80368238;
-    extern s32 lbl_80368DC4;
+    extern s32 gUnitInfoPopupFlag;
 
     class Pair {
     public:
@@ -1661,7 +1661,7 @@ extern "C" void fn_801B14DC(void *arg0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)arg0 + 0x48))->v9();
             fn_8016758C(gUnitInfoPopup, arg0, ((Obj *)*(void **)((u8 *)arg0 + 0x48))->v8(),
                         (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
-            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | lbl_80368DC4;
+            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
             return;
         }
         if ((btn & 0xA00) && fn_80166D8C(gUnitInfoPopup) != 0) {
@@ -1979,7 +1979,7 @@ extern "C" void fn_801B224C(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern void *lbl_80368230;
-    extern s32 lbl_80368DC4;
+    extern s32 gUnitInfoPopupFlag;
     extern f32 lbl_8036B0A8;
     extern f64 lbl_8036B0B0;
 
@@ -2079,7 +2079,7 @@ extern "C" void fn_801B224C(void *arg0) {
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)self + 0x44))->v9();
             fn_8016746C(gUnitInfoPopup, self, &lbl_80368230, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
-            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | lbl_80368DC4;
+            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xA00) && fn_80166D8C(gUnitInfoPopup) != 0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
@@ -2177,7 +2177,7 @@ extern "C" void fn_801B27B0(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern s32 lbl_80368DC4;
+    extern s32 gUnitInfoPopupFlag;
 
     class Vec2s {
     public:
@@ -2242,7 +2242,7 @@ extern "C" void fn_801B27B0(void *arg0) {
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
             fn_8016758C(gUnitInfoPopup, self, ((Obj *)obj)->v8(), (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
-            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | lbl_80368DC4;
+            *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && fn_80166D8C(gUnitInfoPopup) != 0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {

@@ -64,7 +64,7 @@ void fn_801E460C(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
-    extern u32 lbl_80368DC4;
+    extern u32 gUnitInfoPopupFlag;
     s16 spC[2];
     s16 sp8[2];
     s16 hold_val;
@@ -122,7 +122,7 @@ void fn_801E460C(void *arg0) {
                 break;
             }
             fn_8016758C(gUnitInfoPopup, arg0, msg, (f32)spC[0], (f32)spC[1]);
-            *(u32 *)gUnitInfoPopup |= lbl_80368DC4;
+            *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
             return;
         }
         if ((pressed & 0xA00) && (fn_80166D8C(gUnitInfoPopup) != 0)) {

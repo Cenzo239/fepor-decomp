@@ -1462,7 +1462,7 @@ void fn_800ABE74(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
-    extern u32 lbl_80368DC4;
+    extern u32 gUnitInfoPopupFlag;
     u32 var_r31;
     void *var_r30;
     s32 var_r29;
@@ -1511,7 +1511,7 @@ void fn_800ABE74(void *arg0) {
             fn_8016746C(gUnitInfoPopup, var_r30, entry + 4,
                         (f32)*(s16 *)entry,
                         (f32)(*(s16 *)(entry + 2) + 0x28));
-            *(u32 *)gUnitInfoPopup |= lbl_80368DC4;
+            *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
         }
     }
 }
@@ -1690,7 +1690,7 @@ void fn_800AC5DC(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
-    extern u32 lbl_80368DC4;
+    extern u32 gUnitInfoPopupFlag;
 
     void *self;
     u32 pressed;
@@ -1738,7 +1738,7 @@ void fn_800AC5DC(void *arg0) {
         fn_8016746C(gUnitInfoPopup, self, entry + 4, (f32)x,
                     (f32)(*(s16 *)(entry + 2) + 0x28));
     }
-    *(u32 *)gUnitInfoPopup |= lbl_80368DC4;
+    *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
 }
 
 void fn_800AC810(void *arg0) {

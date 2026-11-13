@@ -497,7 +497,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     extern u8 lbl_80275AC0[];
     extern u8 gUnitInfoPopup[];
     extern void *gPadInput;
-    extern s32 lbl_80368DC4;
+    extern s32 gUnitInfoPopupFlag;
     extern f32 lbl_8036A4E8;
     extern f32 lbl_8036A4EC;
 
@@ -547,7 +547,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             xpos = *(s16 *)(base + 0x38);
             text = item->v2(col);
             fn_8016758C(gUnitInfoPopup, self, text, (f32)xpos, lbl_8036A4E8);
-            *(s32 *)gUnitInfoPopup |= lbl_80368DC4;
+            *(s32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
         } else {
             fn_801673D0(gUnitInfoPopup);
         }
