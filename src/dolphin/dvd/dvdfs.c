@@ -2066,7 +2066,7 @@ void fn_802100F4(u32 arg0) {
 }
 
 #pragma optimization_level 3
-void fn_802102F8(void){
+void VIInit(void){
 extern u8 lbl_8029D2C8[],lbl_8033A068[];extern s32 lbl_80368600,lbl_80368604,lbl_80368608;extern const char *lbl_80366F90;
 extern s16 lbl_80368626;extern u32 CurrTvMode_8036864C;extern u8 lbl_8036860C[8];
 void OSRegisterVersion(const char*);void *__OSLockSram(void);void __OSUnlockSram(s32);

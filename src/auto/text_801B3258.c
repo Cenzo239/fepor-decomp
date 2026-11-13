@@ -8707,7 +8707,7 @@ void fn_801C9170(void *arg0) {
 }
 
 void fn_801C9460(void) {
-    void fn_802102F8(void);
+    void VIInit(void);
     s32 VIGetTvFormat(void);
     u32 OSGetResetCode(void);
     s32 fn_8006E650(void);
@@ -8729,7 +8729,7 @@ void fn_801C9460(void) {
     s32 sp8;
     s32 fmt;
 
-    fn_802102F8();
+    VIInit();
     fmt = VIGetTvFormat();
     switch (fmt) {
     case 0:
