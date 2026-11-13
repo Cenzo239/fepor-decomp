@@ -202,12 +202,12 @@ s32 TRKMessageSend(void *arg0)
 {
     extern u8 lbl_802822A8[];
 
-    extern s32 fn_8022B078(void *, s32);
+    extern s32 TRK_cc_write(void *, s32);
     extern void MWTRACE(s32, const char *, ...);
 
     s32 result;
 
-    result = fn_8022B078(
+    result = TRK_cc_write(
         (u8 *)arg0 + 0x10,
         *(s32 *)((u8 *)arg0 + 8)
     );
@@ -560,7 +560,7 @@ s32 TRKTargetStopper(void);
 u32 fn_80229030(void);
 s32 fn_80229040(u32, u32, s32);
 s32 fn_802290F8(u32, s32);
-s32 fn_8022B078(s32, s32);
+s32 TRK_cc_write(s32, s32);
 #pragma use_lmw_stmw on
 s32 fn_80227174(void *arg0) {
     void *a = arg0;
@@ -580,7 +580,7 @@ s32 fn_80227174(void *arg0) {
             buf[4] = 0x80;
             *(s32 *)buf = 0x40;
             buf[8] = 0x11;
-            fn_8022B078((s32)(void *)buf, 0x40);
+            TRK_cc_write((s32)(void *)buf, 0x40);
             return 0;
         }
         for (;;) {
@@ -598,7 +598,7 @@ s32 fn_80227174(void *arg0) {
             buf[4] = 0x80;
             *(s32 *)buf = 0x40;
             buf[8] = 0x11;
-            fn_8022B078((s32)(void *)buf, 0x40);
+            TRK_cc_write((s32)(void *)buf, 0x40);
             return 0;
         }
     }
@@ -610,7 +610,7 @@ s32 fn_80227174(void *arg0) {
             buf[4] = 0x80;
             *(s32 *)buf = 0x40;
             buf[8] = 0x16;
-            fn_8022B078((s32)(void *)buf, 0x40);
+            TRK_cc_write((s32)(void *)buf, 0x40);
             return 0;
         }
         {
@@ -619,7 +619,7 @@ s32 fn_80227174(void *arg0) {
             buf[4] = 0x80;
             *(s32 *)buf = 0x40;
             buf[8] = 0x0;
-            fn_8022B078((s32)(void *)buf, 0x40);
+            TRK_cc_write((s32)(void *)buf, 0x40);
             break;
         }
     }
@@ -629,7 +629,7 @@ s32 fn_80227174(void *arg0) {
         buf[4] = 0x80;
         *(s32 *)buf = 0x40;
         buf[8] = 0x12;
-        fn_8022B078((s32)(void *)buf, 0x40);
+        TRK_cc_write((s32)(void *)buf, 0x40);
         return 0;
     }
     }
@@ -654,7 +654,7 @@ s32 fn_80227444(void *arg0) {
     s32 TRKTargetAccessExtended1(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessExtended2(u16, u16, void *, s32 *, s32);
     s32 fn_80226888(void *, void *, s32);
-    s32 fn_8022B078(void *, s32);
+    s32 TRK_cc_write(void *, s32);
     s32 TRKMessageSend(void *);
     void MWTRACE(u8, char *, ...);
     void *memset(void *, s32, s32);
@@ -681,7 +681,7 @@ s32 fn_80227444(void *arg0) {
         reply1[4] = 0x80;
         *(s32 *)reply1 = 0x40;
         reply1[8] = 0x14;
-        fn_8022B078(reply1, 0x40);
+        TRK_cc_write(reply1, 0x40);
         return 0;
     }
 
@@ -747,7 +747,7 @@ s32 fn_80227444(void *arg0) {
         reply3[4] = 0x80;
         *(s32 *)reply3 = 0x40;
         reply3[8] = (u8)err;
-        fn_8022B078(reply3, 0x40);
+        TRK_cc_write(reply3, 0x40);
         return 0;
     }
 
@@ -764,7 +764,7 @@ s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended1(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended2(u16,u16,void*,s32*,s32);
-s32 fn_8022B078(void*,s32);
+s32 TRK_cc_write(void*,s32);
 s32 TRKMessageSend(void*);
 void MWTRACE(u8,char*,...);
 void *memset(void*,s32,s32);
@@ -774,7 +774,7 @@ u8 request[0x40], invalid[0x40], reply[0x40];
 s32 outLen;
 if(*(u16*)((u8*)arg0+0x1c)>*(u16*)((u8*)arg0+0x20)){
 memset(invalid,0,0x40); invalid[4]=0x80; *(s32*)invalid=0x40; invalid[8]=0x14;
-fn_8022B078(invalid,0x40);return 0;
+TRK_cc_write(invalid,0x40);return 0;
 }
 request[4]=0x80; *(s32*)request=0x468;
 TRKResetBuffer(arg0,0);
@@ -803,7 +803,7 @@ case 0x705:code=0x22;break;
 case 0x706:code=0x20;break;
 default:code=3;break;
 }
-memset(reply,0,0x40);reply[4]=0x80;*(s32*)reply=0x40;reply[8]=code;fn_8022B078(reply,0x40);return 0;
+memset(reply,0,0x40);reply[4]=0x80;*(s32*)reply=0x40;reply[8]=code;TRK_cc_write(reply,0x40);return 0;
 }
 MWTRACE(1,strings+0x60);
 result=TRKMessageSend(arg0);MWTRACE(1,strings+0x80,result);return result;
@@ -824,7 +824,7 @@ s32 fn_80227E3C(void) {
 
 s32 fn_80227E44(void) {
     M2C_UNK fn_8022AD08(void);
-    M2C_UNK fn_8022B078(void *, s32);
+    M2C_UNK TRK_cc_write(void *, s32);
     M2C_UNK memset(void *, s32, s32);
     struct {
         u32 unk0;
@@ -838,14 +838,14 @@ s32 fn_80227E44(void) {
     reply.unk4 = 0x80;
     reply.unk0 = 0x40;
     reply.unk8 = 0;
-    fn_8022B078(&reply, 0x40);
+    TRK_cc_write(&reply, 0x40);
     fn_8022AD08();
     return 0;
 }
 
 s32 fn_80227E9C(void) {
     M2C_UNK fn_800053E0(void);
-    M2C_UNK fn_8022B078(void *, s32);
+    M2C_UNK TRK_cc_write(void *, s32);
     M2C_UNK memset(void *, s32, s32);
     struct {
         u32 unk0;
@@ -859,7 +859,7 @@ s32 fn_80227E9C(void) {
     reply.unk4 = 0x80;
     reply.unk0 = 0x40;
     reply.unk8 = 0;
-    fn_8022B078(&reply, 0x40);
+    TRK_cc_write(&reply, 0x40);
     fn_800053E0();
     return 0;
 }
@@ -867,7 +867,7 @@ s32 fn_80227E9C(void) {
 #pragma dont_inline on
 s32 fn_80227EF4(void) {
     M2C_UNK fn_80225F64(void *);
-    M2C_UNK fn_8022B078(void *, s32);
+    M2C_UNK TRK_cc_write(void *, s32);
     M2C_UNK memset(void *, s32, s32);
     extern s32 lbl_8033CA40[];
     u8 event[0xC];
@@ -884,14 +884,14 @@ s32 fn_80227EF4(void) {
     reply.unk4 = 0x80;
     reply.unk0 = 0x40;
     reply.unk8 = 0;
-    fn_8022B078(&reply, 0x40);
+    TRK_cc_write(&reply, 0x40);
     fn_80225F4C(event, 1);
     fn_80225F64(event);
     return 0;
 }
 #pragma dont_inline reset
 s32 fn_80227F6C(void) {
-    M2C_UNK fn_8022B078(void *, s32);
+    M2C_UNK TRK_cc_write(void *, s32);
     M2C_UNK memset(void *, s32, s32);
     extern s32 lbl_8033CA40[];
     struct {
@@ -907,7 +907,7 @@ s32 fn_80227F6C(void) {
     reply.unk4 = 0x80;
     reply.unk0 = 0x40;
     reply.unk8 = 0;
-    fn_8022B078(&reply, 0x40);
+    TRK_cc_write(&reply, 0x40);
     return 0;
 }
 
@@ -1862,7 +1862,7 @@ void ReserveEXI2Port(void) {
     ((void (*)(u8 *))*(u32 **)(gDBCommTable + 0x24))(gDBCommTable);
 }
 
-s32 fn_8022B078(s32 a, s32 b) {
+s32 TRK_cc_write(s32 a, s32 b) {
     extern u8 gDBCommTable[40];
     s32 temp_r3;
 
