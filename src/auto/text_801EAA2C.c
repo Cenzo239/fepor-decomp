@@ -1015,7 +1015,7 @@ void fn_801EC7B8(void) {
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 gAramBase;
-    extern s32 lbl_803683CC;
+    extern s32 gAramHeapSize;
     extern s32 lbl_803683D0;
 
     s32 tick;
@@ -1040,7 +1040,7 @@ void fn_801EC7B8(void) {
     DebugPrint(lbl_8027F1D0);
     tick = OSGetTick();
     while (lbl_803683D0 != 0) {}
-    half = lbl_803683CC >> 1;
+    half = gAramHeapSize >> 1;
     if (fn_800C44F4(fn_8005BA00()) >= (u32)half) {
         buf = fn_800C45B8(-half, lbl_8027F1D0 + 0x18, 0);
         buf0 = buf;
@@ -1192,7 +1192,7 @@ void fn_801EC7B8(void) {
         *(void **)((u8 *)p + 0x5C) = 0;
         *(void **)((u8 *)gAramFreeList + 0x60) = 0;
         *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
-        *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC - used;
+        *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize - used;
         {
             void **rp = arr;
             ctr = 0x40;
@@ -1275,7 +1275,7 @@ void fn_801EC7B8(void) {
     gAramFreeList = p;
     *(void **)((u8 *)p + 0x60) = 0;
     *(void **)((u8 *)gAramFreeList + 0x5C) = 0;
-    *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
+    *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize;
     *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
 }
 
@@ -1312,7 +1312,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_80332270[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    extern s32 lbl_803683CC;
+    extern s32 gAramHeapSize;
     extern s32 lbl_803683D0;
     s32 a4;
     s32 a3;
@@ -1334,7 +1334,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     buf = arg1;
     a3 = arg3;
     a4 = arg4;
-    if (lbl_803683CC < size) {
+    if (gAramHeapSize < size) {
         return 0;
     }
     i = 0xFF;
@@ -1585,7 +1585,7 @@ void fn_801ED52C(s32 arg0) {
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 gAramBase;
-    extern s32 lbl_803683CC;
+    extern s32 gAramHeapSize;
     u8 *var_r4;
     s32 zero;
     register u32 ctr1;
@@ -1627,7 +1627,7 @@ void fn_801ED52C(s32 arg0) {
     ctr2 = 0x20;
     var_r4 = lbl_80332270;
     var_r3 = 0xFF;
-    lbl_803683CC = arg0;
+    gAramHeapSize = arg0;
     gAramUsedList = zero_ptr;
 loop_7:
     if (*(s32 *)(var_r4 + 0x64) != 0) {
@@ -1694,7 +1694,7 @@ found:
     gAramFreeList = var_r4;
     *(s32 *)((u8 *)var_r4 + 0x60) = 0;
     *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
-    *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
+    *(s32 *)((u8 *)gAramFreeList + 0x64) = gAramHeapSize;
     *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
 }
 
