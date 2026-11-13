@@ -2481,7 +2481,7 @@ void fn_801F7880(void* arg0) {
 void fn_801F7A60(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_800075D8(void);
-    void fn_80007698(s32);
+    void Prim2D_SetAlpha(s32);
     void fn_800076AC(u8, u8, u8, s32);
     void fn_80007818(f32, f32, f32, f32);
     void fn_80007838(f32, f32, f32, f32);
@@ -2619,7 +2619,7 @@ void fn_801F7A60(void *arg0) {
         Prim2D_AddPrim(1);
         fn_80007838(lbl_8036B9B4, lbl_8036B9B8, lbl_8036B910, lbl_8036B910);
         fn_80007818(lbl_8036B9BC, lbl_8036B9C0, lbl_8036B9C4, lbl_8036B9C8);
-        fn_80007698(0xFF);
+        Prim2D_SetAlpha(0xFF);
         fn_80007884();
     }
 
@@ -2632,7 +2632,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_AddPrim(1);
     fn_80007838(lbl_8036B9B4, lbl_8036B9B8, lbl_8036B910, lbl_8036B910);
     fn_80007818(lbl_8036B9BC, lbl_8036B9C0, lbl_8036B9C4, lbl_8036B9C8);
-    fn_80007698((u8)*(s16 *)((u8 *)self + 0x8C));
+    Prim2D_SetAlpha((u8)*(s16 *)((u8 *)self + 0x8C));
     fn_80007884();
 
     fn_8007D024(0xB3, 0xFB, lbl_8036B95C, lbl_8036B9B8, lbl_8036B9CC, (f32)(*(u8 *)((u8 *)self + 0x94) * 0x18 + 0x18));

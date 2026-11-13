@@ -2466,7 +2466,7 @@ void fn_800A8BD8(void *arg0) {
 #pragma opt_common_subs off
 void fn_800A8C4C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
-    void fn_80007698(s32);
+    void Prim2D_SetAlpha(s32);
     void fn_800076AC(s32, s32, s32, s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
@@ -2538,7 +2538,7 @@ void fn_800A8C4C(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_80369BD4, lbl_80369BD8, (f32)(u32)st.x, (f32)(u32)st.y);
-        fn_80007698((s32)f31);
+        Prim2D_SetAlpha((s32)f31);
         fn_80007884();
         ctr = *(s32 *)((u8 *)self + 0x34);
         f31 = fn_800067BC(0, lbl_80369BDC, lbl_80369BE0, (f32)(ctr % 180), lbl_80369BE4);

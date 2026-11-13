@@ -370,7 +370,7 @@ void fn_801FCCA0(void *self) {
 
 #pragma use_lmw_stmw on
 void fn_801FD3B4(void *arg0) {
-    void fn_80007698(u8);
+    void Prim2D_SetAlpha(u8);
     void fn_800076AC(s32, s32, s32, s32);
     void fn_80007790(f32, f32, f32, f32);
     void fn_800077B0(f32, f32, f32, f32);
@@ -497,7 +497,7 @@ void fn_801FD3B4(void *arg0) {
                 a = *(s16 *)((u8 *)p + 0xE) - 0x3C;
                 if (a > 0xFF) a = 0xFF;
                 if (a < 0) a = 0;
-                fn_80007698((u8)a);
+                Prim2D_SetAlpha((u8)a);
                 fn_80007884();
             }
         }
@@ -636,7 +636,7 @@ void fn_801FDEB8(void) {
 }
 
 void FallingParticle_Update(void *arg0) {
-    void fn_80007698(u8);
+    void Prim2D_SetAlpha(u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
@@ -669,7 +669,7 @@ void FallingParticle_Update(void *arg0) {
         Prim2D_AddPrim(1);
         t = *(s8 *)((u8 *)self + 0x32);
         Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x34) >> 16), (f32)(*(s32 *)((u8 *)self + 0x38) >> 16), (f32)t, (f32)t);
-        fn_80007698(*(u8 *)((u8 *)self + 0x33));
+        Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x33));
         fn_80007884();
         *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)self + 0x34) + *(s32 *)((u8 *)self + 0x3C);
         *(s32 *)((u8 *)self + 0x38) = *(s32 *)((u8 *)self + 0x38) + *(s32 *)((u8 *)self + 0x40);
@@ -696,7 +696,7 @@ void FallingParticle_Update(void *arg0) {
         Prim2D_AddPrim(1);
         t = *(s8 *)((u8 *)self + 0x46);
         Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x48) >> 16), (f32)(*(s32 *)((u8 *)self + 0x4C) >> 16), (f32)t, (f32)t);
-        fn_80007698(*(u8 *)((u8 *)self + 0x47));
+        Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x47));
         fn_80007884();
         *(s32 *)((u8 *)self + 0x48) = *(s32 *)((u8 *)self + 0x48) + *(s32 *)((u8 *)self + 0x50);
         *(s32 *)((u8 *)self + 0x4C) = *(s32 *)((u8 *)self + 0x4C) + *(s32 *)((u8 *)self + 0x54);
@@ -723,7 +723,7 @@ void FallingParticle_Update(void *arg0) {
         Prim2D_AddPrim(1);
         t = *(s8 *)((u8 *)self + 0x5A);
         Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x5C) >> 16), (f32)(*(s32 *)((u8 *)self + 0x60) >> 16), (f32)t, (f32)t);
-        fn_80007698(*(u8 *)((u8 *)self + 0x5B));
+        Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x5B));
         fn_80007884();
         *(s32 *)((u8 *)self + 0x5C) = *(s32 *)((u8 *)self + 0x5C) + *(s32 *)((u8 *)self + 0x64);
         *(s32 *)((u8 *)self + 0x60) = *(s32 *)((u8 *)self + 0x60) + *(s32 *)((u8 *)self + 0x68);
@@ -1198,7 +1198,7 @@ extern "C" void fn_801FF480(void *arg0) {
 void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void fn_80007668(s32 *);
-    void fn_80007698(s32);
+    void Prim2D_SetAlpha(s32);
     void fn_800076EC(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
@@ -1335,14 +1335,14 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         Prim2D_SetRect((f32)lx, (f32)ty, (f32)sp34, (f32)sp36);
         sp8 = *fn_8018D900(0x18);
         fn_80007668(&sp8);
-        fn_80007698(alpha);
+        Prim2D_SetAlpha(alpha);
         fn_80007884();
         Prim2D_AddPrim(1);
         Prim2D_SetRect((f32)((left + half) - (s16)sp34), (f32)ty, (f32)sp34, (f32)sp36);
         fn_800076EC();
         spC = *fn_8018D900(0x18);
         fn_80007668(&spC);
-        fn_80007698(alpha);
+        Prim2D_SetAlpha(alpha);
         fn_80007884();
         bw = (s16)sp34;
         gap = mid - (bw * 2);
@@ -1357,7 +1357,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
             Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)sp36);
             sp10 = *fn_8018D900(0x18);
             fn_80007668(&sp10);
-            fn_80007698(alpha);
+            Prim2D_SetAlpha(alpha);
             fn_80007884();
         }
         Prim2D_Begin();

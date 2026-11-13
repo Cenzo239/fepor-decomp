@@ -2731,7 +2731,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void fn_80007870(f32);
     s32 *fn_8018D900(u8);
     void fn_80007668(s32 *);
-    void fn_80007698(s32);
+    void Prim2D_SetAlpha(s32);
     void fn_80007220(u8, f32);
     void fn_800071D8(u8, f32);
     void fn_80007124(void *);
@@ -2772,7 +2772,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     fn_80007870((f32)*(s8 *)((u8 *)temp_r29 + 2));
     sp8 = *fn_8018D900(*(u8 *)((u8 *)temp_r29 + 0x12));
     fn_80007668(&sp8);
-    fn_80007698(temp_r30);
+    Prim2D_SetAlpha(temp_r30);
     fn_80007220(*(u8 *)((u8 *)temp_r29 + 0x10), lbl_8036A154);
     fn_800071D8(*(u8 *)((u8 *)temp_r29 + 0x11), lbl_8036A118);
     fn_80007124(temp_r31);
@@ -2876,7 +2876,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_8010A998(void *arg0, u8 arg1) {
-    void fn_80007698(u8);
+    void Prim2D_SetAlpha(u8);
     void fn_80007770(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
     void fn_80007884(void);
@@ -2940,7 +2940,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
         (f32)*(u16 *)((u8 *)arg0 + 0x1E),
         (f32)*(u16 *)((u8 *)arg0 + 0x20),
         (f32)*(u16 *)((u8 *)arg0 + 0x22));
-    fn_80007698(var_r31);
+    Prim2D_SetAlpha(var_r31);
     fn_80007884();
 }
 #pragma cplusplus reset

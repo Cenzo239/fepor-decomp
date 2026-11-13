@@ -978,7 +978,7 @@ void fn_80007668(u8 *src)
   ptr[0xF] = d;
 }
 
-void fn_80007698(u8 arg0) {
+void Prim2D_SetAlpha(u8 arg0) {
     extern void *lbl_80367140;
 
     u8 *ptr;

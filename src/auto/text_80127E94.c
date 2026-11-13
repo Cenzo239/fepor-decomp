@@ -1622,7 +1622,7 @@ void fn_8012B554(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_8012B7DC(void *arg0) {
     void fn_80007124(void *);
-    void fn_80007698(u8);
+    void Prim2D_SetAlpha(u8);
     void fn_800076AC(s32, s32, s32, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
@@ -1768,7 +1768,7 @@ void fn_8012B7DC(void *arg0) {
                     (s32)*(f32 *)((u8 *)cam + 0x40),
                     (s32)*(f32 *)((u8 *)cam + 0x44));
         Prim2D_AddPrim(7);
-        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A49C);
         fn_80007124(buf);
         fn_80007884();
@@ -1776,7 +1776,7 @@ void fn_8012B7DC(void *arg0) {
         sprintf(buf, lbl_802758F8 + 0x39,
                     (s32)(lbl_8036A4A0 * *(f32 *)((u8 *)cam + 0x54)));
         Prim2D_AddPrim(7);
-        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A4A4);
         fn_80007124(buf);
         fn_80007884();
@@ -1784,7 +1784,7 @@ void fn_8012B7DC(void *arg0) {
         sprintf(buf, lbl_802758F8 + 0x45,
                     (s32)*(f32 *)((u8 *)cam + 0x5C));
         Prim2D_AddPrim(7);
-        fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
+        Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         fn_80007858(lbl_8036A49C, lbl_8036A4A8);
         fn_80007124(buf);
         fn_80007884();
