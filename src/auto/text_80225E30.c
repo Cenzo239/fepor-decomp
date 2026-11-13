@@ -757,7 +757,7 @@ s32 fn_80227444(void *arg0) {
     return err;
 }
 
-s32 fn_802276D4(void *arg0) {
+s32 TRKDoReadRegisters(void *arg0) {
 void fn_8022695C(void*,u32);
 s32 fn_80226698(void*,void*,s32);
 s32 fn_80229FA4(u16,u16,void*,s32*,s32);
