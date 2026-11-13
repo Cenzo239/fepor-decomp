@@ -3573,7 +3573,7 @@ extern "C" s32 fn_801BC71C(s32 arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_801BC784(void *arg0) {
+extern "C" void Ui_DetachChildSlots(void *arg0) {
     void Ui_RemoveChild(void *, void *);
     struct Obj {
         virtual void destroy(s32) = 0;
