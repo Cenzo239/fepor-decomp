@@ -19315,8 +19315,8 @@ s32 fn_800F8350(s32 *arg0) {
 }
 
 void fn_800F8364(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19326,7 +19326,7 @@ void fn_800F8364(void *arg0) {
 void fn_800F8390(void *arg0)
 {
     extern u8 *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 lbl_803678F0;
 
     extern void *Res_GetByName(void *);
@@ -19341,7 +19341,7 @@ void fn_800F8390(void *arg0)
 
     count = *(s32 *)(gAiCmd + 0x10);
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
@@ -19354,13 +19354,13 @@ void fn_800F8390(void *arg0)
             index++;
         }
 
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = index;
         } else {
             obj[0x251] = index;
         }
     } else {
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = 0;
         } else {
             obj[0x251] = 0;
@@ -19373,7 +19373,7 @@ void fn_800F8390(void *arg0)
 void fn_800F8464(void *arg0)
 {
     extern u8 *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 lbl_803678F0;
 
     extern void *Res_GetByName(void *);
@@ -19388,7 +19388,7 @@ void fn_800F8464(void *arg0)
 
     count = *(s32 *)(gAiCmd + 0x10);
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
@@ -19401,13 +19401,13 @@ void fn_800F8464(void *arg0)
             index++;
         }
 
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = index;
         } else {
             obj[0x251] = index;
         }
     } else {
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = 0;
         } else {
             obj[0x251] = 0;
@@ -19419,7 +19419,7 @@ void fn_800F8464(void *arg0)
 
 void fn_800F8538(void *arg0) {
     extern u8 *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
     u8 *global;
@@ -19433,7 +19433,7 @@ void fn_800F8538(void *arg0) {
     ret = (s8)Unit_GetMov(arg0);
     index = *(s32 *)(global + 4);
     *(s32 *)&gAiState[(index << 2) + 8] = ret;
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
         (*(u8 *)((u8 *)arg0 + 0x251))++;
@@ -19442,7 +19442,7 @@ void fn_800F8538(void *arg0) {
 
 void fn_800F86D4(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     u8 Status_Test(void *, s32);
     u8 *obj;
@@ -19458,7 +19458,7 @@ void fn_800F86D4(void *arg0) {
         index = *(s32 *)(state + 4);
         *(s32 *)&gAiState[(index << 2) + 8] = 0;
     }
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19467,7 +19467,7 @@ void fn_800F86D4(void *arg0) {
 
 void fn_800F8780(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern f32 lbl_8036A0A0;
     s32 fn_800FFC58(void (*)(void *), void *, s32, f32);
@@ -19493,7 +19493,7 @@ void fn_800F8780(void *arg0) {
                       (f32)*(s32 *)((u8 *)state + 8) / lbl_8036A0A0);
     index = *(s32 *)((u8 *)state + 4);
     *(s32 *)&gAiState[(index << 2) + 8] = ret;
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         ((u8 *)arg0)[0x250]++;
     } else {
         ((u8 *)arg0)[0x251]++;
@@ -19540,8 +19540,8 @@ void fn_800F8FF4(void *arg0) {
 }
 
 void fn_800F9020(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19713,7 +19713,7 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
 void fn_800F94D4(void *arg0) {
     extern u8 gAiState[];
     extern u8 gUiContext[];
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
 
     u8 Ai_TryEscapeMove(void *);
     void fn_8010AD94(void *);
@@ -19737,7 +19737,7 @@ void fn_800F94D4(void *arg0) {
         }
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19747,8 +19747,8 @@ void fn_800F94D4(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_800F9924(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19759,7 +19759,7 @@ void fn_800F9B58(void *arg0) {
     void fn_800FB96C(s32, s8, s8, s32, s8, s8, s32, s32, s32);
     u8 fn_801025BC(void *, s16 *, s16 *);
     extern u8 gAiState[];
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s16 x;
     s16 y;
 
@@ -19767,7 +19767,7 @@ void fn_800F9B58(void *arg0) {
         fn_801025BC(arg0, &x, &y) == 1) {
         fn_800FB96C(1, (s8)x, (s8)y, 0, (s8)x, (s8)y, -1, 0, 0);
     }
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19778,7 +19778,7 @@ void fn_800F9DAC(void *arg0) {
     u8 Ai_FindLowestCostAllyTile(s32, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 gAiState[544];
-extern s32 lbl_803678F4;
+extern s32 gAiCmdIsAlt;
 extern void *gAiCmd;
     void *work = gAiCmd;
     s16 x;
@@ -19788,7 +19788,7 @@ extern void *gAiCmd;
                   Ai_FindLowestCostAllyTile(*(s32 *)((u8 *)work + 0x14), &x, &y)) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
     }
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19796,8 +19796,8 @@ extern void *gAiCmd;
 }
 
 void fn_800F9E64(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19806,7 +19806,7 @@ void fn_800F9E64(void *arg0) {
 
 void fn_800FA0E4(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     u8 fn_800F51A0(void (*)(void *), s32);
     void fn_800F4E3C(void (*)(void *), s32);
@@ -19828,7 +19828,7 @@ void fn_800FA0E4(void *arg0) {
         }
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19837,7 +19837,7 @@ void fn_800FA0E4(void *arg0) {
 
 void fn_800FA1A8(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
 
     s32 fn_8000CEE4(s32);
     u8 fn_800F30E0(u8 (*)(void *), u8);
@@ -19857,7 +19857,7 @@ void fn_800FA1A8(void *arg0) {
                     0x13);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19865,13 +19865,13 @@ void fn_800FA1A8(void *arg0) {
 }
 
 void fn_800FA254(void *arg0) {
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 *gAiCmd;
     u8 fn_800F3BA4(s16 *, u8);
 
     fn_800F3BA4(*(s16 **)(gAiCmd + 0x14), 0x2E);
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         *(u8 *)((u8 *)arg0 + 0x250) += 1;
     } else {
         *(u8 *)((u8 *)arg0 + 0x251) += 1;
@@ -19880,7 +19880,7 @@ void fn_800FA254(void *arg0) {
 
 void fn_800FA2B4(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     u8 fn_800F3F50(s32, s8);
     s32 Ai_UnitIsHostileToActive(void *);
@@ -19900,7 +19900,7 @@ void fn_800FA2B4(void *arg0) {
             0x2E);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19909,7 +19909,7 @@ void fn_800FA2B4(void *arg0) {
 
 void fn_800FA360(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     u8 fn_800F43D8(void (*)(void *), s32);
     void fn_800F4954(void (*)(void *), s32);
@@ -19931,7 +19931,7 @@ void fn_800FA360(void *arg0) {
         }
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19940,7 +19940,7 @@ void fn_800FA360(void *arg0) {
 
 void fn_800FA424(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
     void *Hash_Lookup(void *);
@@ -19967,7 +19967,7 @@ void fn_800FA424(void *arg0) {
         flag[1] &= ~2;
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -19976,7 +19976,7 @@ void fn_800FA424(void *arg0) {
 
 void fn_800FA510(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     void *Hash_Lookup(void *);
     void fn_801AA064(void *, void *, void (*)(void *));
@@ -19998,7 +19998,7 @@ void fn_800FA510(void *arg0) {
         fn_801AA064(obj, tmp, cb);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20006,8 +20006,8 @@ void fn_800FA510(void *arg0) {
 }
 
 void fn_800FA5D4(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -20016,7 +20016,7 @@ void fn_800FA5D4(void *arg0) {
 
 void fn_800FA600(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
     void fn_8018D4CC(void *, void (*)(void *));
@@ -20040,7 +20040,7 @@ void fn_800FA600(void *arg0) {
         flag[1] &= ~2;
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20049,7 +20049,7 @@ void fn_800FA600(void *arg0) {
 
 void fn_800FA6CC(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     void fn_8018D4CC(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
@@ -20068,7 +20068,7 @@ void fn_800FA6CC(void *arg0) {
         fn_8018D4CC(obj, cb);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20077,7 +20077,7 @@ void fn_800FA6CC(void *arg0) {
 
 void fn_800FA778(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
     void fn_8010F7B4(void *, void (*)(void *));
@@ -20101,7 +20101,7 @@ void fn_800FA778(void *arg0) {
         flag[1] &= ~2;
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20110,7 +20110,7 @@ void fn_800FA778(void *arg0) {
 
 void fn_800FA844(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     void fn_8010F7B4(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
@@ -20129,7 +20129,7 @@ void fn_800FA844(void *arg0) {
         fn_8010F7B4(obj, cb);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20139,7 +20139,7 @@ void fn_800FA844(void *arg0) {
 #pragma peephole on
 void fn_800FA8F0(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
 
     s32 fn_8000CEE4(s32);
     u8 fn_800F5504(u8 (*)(void *), u8);
@@ -20156,7 +20156,7 @@ void fn_800FA8F0(void *arg0) {
         fn_800F5504(*(s32 *)(state + 0x10) != 0 ? fn_800FB334 : fn_800FB3AC, 0xF);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20165,7 +20165,7 @@ void fn_800FA8F0(void *arg0) {
 
 void fn_800FA984(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
     void fn_800F5504(void (*)(void *), s32);
@@ -20189,7 +20189,7 @@ void fn_800FA984(void *arg0) {
         flag[1] &= ~2;
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20198,8 +20198,8 @@ void fn_800FA984(void *arg0) {
 
 #pragma peephole reset
 void fn_800FAA50(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -20208,7 +20208,7 @@ void fn_800FAA50(void *arg0) {
 
 void fn_800FAA7C(void *arg0) {
     extern void *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     s32 fn_8000CEE4(s32);
     void fn_800F5504(s32, s32);
     s32 Ai_UnitIsHostileToActive(void *);
@@ -20228,7 +20228,7 @@ void fn_800FAA7C(void *arg0) {
             0xF);
     }
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         obj[0x250]++;
     } else {
         obj[0x251]++;
@@ -20236,12 +20236,12 @@ void fn_800FAA7C(void *arg0) {
 }
 
 void fn_800FAC30(void *arg0) {
-    extern int lbl_803678F4;
+    extern int gAiCmdIsAlt;
     extern u8 gAiState[];
 
     gAiState[0x21C] = 0;
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
         (*(u8 *)((u8 *)arg0 + 0x251))++;
@@ -20259,7 +20259,7 @@ void fn_800FAD94(void) {
 void fn_800FAEA4(void *arg0)
 {
     extern u8 *gAiCmd;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
 
     extern void *Res_GetByName(void *);
 
@@ -20273,7 +20273,7 @@ void fn_800FAEA4(void *arg0)
 
     count = *(s32 *)(gAiCmd + 0x10);
 
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     } else {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
@@ -20286,13 +20286,13 @@ void fn_800FAEA4(void *arg0)
             index++;
         }
 
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = index;
         } else {
             obj[0x251] = index;
         }
     } else {
-        if (!lbl_803678F4) {
+        if (!gAiCmdIsAlt) {
             obj[0x250] = 0;
         } else {
             obj[0x251] = 0;
@@ -20302,7 +20302,7 @@ void fn_800FAEA4(void *arg0)
 
 void fn_800FB074(void *arg0)
 {
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     void *Hash_Lookup(void *);
@@ -20314,7 +20314,7 @@ void fn_800FB074(void *arg0)
     p = gAiCmd;
     cb = (u8 (*)(void *))Hash_Lookup(*(void **)(p + 0x14));
     lbl_803678F0 = cb(*(void **)(p + 0x18));
-    if (lbl_803678F4 == 0) {
+    if (gAiCmdIsAlt == 0) {
         *(u8 *)((u8 *)self + 0x250) += 1;
     } else {
         *(u8 *)((u8 *)self + 0x251) += 1;
@@ -20322,8 +20322,8 @@ void fn_800FB074(void *arg0)
 }
 
 void fn_800FB2DC(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -20331,8 +20331,8 @@ void fn_800FB2DC(void *arg0) {
 }
 
 void fn_800FB308(void *arg0) {
-    extern s32 lbl_803678F4;
-    if ((s32) lbl_803678F4 == 0) {
+    extern s32 gAiCmdIsAlt;
+    if ((s32) gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -20497,7 +20497,7 @@ u8 fn_800FB64C(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
     void *Res_GetByName(void *);
@@ -20516,7 +20516,7 @@ u8 fn_800FB64C(void) {
     gAiCmd = entry;
     off = obj[0x251] * 0x1C;
     lbl_803678F0 = 0;
-    lbl_803678F4 = 1;
+    gAiCmdIsAlt = 1;
     entry += off;
     gAiCmd = entry;
 
@@ -20537,7 +20537,7 @@ u8 fn_800FB6FC(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
     void *Res_GetByName(void *);
@@ -20556,7 +20556,7 @@ u8 fn_800FB6FC(void) {
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F0 = 0;
-    lbl_803678F4 = 0;
+    gAiCmdIsAlt = 0;
     entry += off;
     gAiCmd = entry;
 
@@ -20577,7 +20577,7 @@ u8 fn_800FB7A8(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
     extern u8 lbl_80272FC8[];
@@ -20595,7 +20595,7 @@ u8 fn_800FB7A8(void) {
     entry = lbl_80272FC8;
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
-    lbl_803678F4 = 1;
+    gAiCmdIsAlt = 1;
     lbl_803678F0 = 0;
     entry += off;
     gAiCmd = entry;
@@ -20618,7 +20618,7 @@ u8 fn_800FB868(void) {
     extern u8 lbl_802EF4C8[];
     extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
-    extern s32 lbl_803678F4;
+    extern s32 gAiCmdIsAlt;
     extern u8 lbl_8032B3C0[];
     extern u8 lbl_80273000[];
     extern u8 lbl_80272F90[];
@@ -20637,7 +20637,7 @@ u8 fn_800FB868(void) {
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F0 = 0;
-    lbl_803678F4 = 0;
+    gAiCmdIsAlt = 0;
     entry += off;
     gAiCmd = entry;
 
@@ -23956,7 +23956,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 }
 
 extern s32 gCardWork;
-extern u16 lbl_803678F4;
+extern u16 gAiCmdIsAlt;
 extern u8 gAiState[];
 extern u8 gAiState[544];
 extern u16 *lbl_803678A8;
