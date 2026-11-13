@@ -229,44 +229,45 @@ void Battle_SetPhase(void *arg0, u8 arg1) {
     }
 }
 
-s32 Battle_GetTotalAssets(void *arg0) {
+/* Gold at battle+0x18 plus sell value (half) of items on unit lists 0 and 5. */
+s32 Battle_GetTotalAssets(void *battle) {
     u16 UnitRef_GetValue(void *);
     u32 *Unit_GetItemSlot(void *, s32);
     void *next;
     s32 sum;
-    u32 *p;
+    u32 *slot;
 
-    sum = *(s32 *)((u8 *)arg0 + 0x18);
+    sum = *(s32 *)((u8 *)battle + 0x18);
     {
-        void *node;
+        void *unit;
         s32 i;
 
-        node = *(void **)gUnitLists;
-        while (node != NULL) {
-            next = *(void **)((u8 *)node + 0x184);
+        unit = *(void **)gUnitLists;
+        while (unit != NULL) {
+            next = *(void **)((u8 *)unit + 0x184);
             for (i = 0; i < 8; i++) {
-                p = Unit_GetItemSlot(node, i);
-                if (*p != 0) {
-                    sum += (UnitRef_GetValue(p) >> 1) & 0x7FFF;
+                slot = Unit_GetItemSlot(unit, i);
+                if (*slot != 0) {
+                    sum += (UnitRef_GetValue(slot) >> 1) & 0x7FFF;
                 }
             }
-            node = next;
+            unit = next;
         }
     }
     {
-        void *node;
+        void *unit;
         s32 i;
 
-        node = *(void **)((u8 *)gUnitLists + 0x3C);
-        while (node != NULL) {
-            next = *(void **)((u8 *)node + 0x184);
+        unit = *(void **)((u8 *)gUnitLists + 0x3C);
+        while (unit != NULL) {
+            next = *(void **)((u8 *)unit + 0x184);
             for (i = 0; i < 8; i++) {
-                p = Unit_GetItemSlot(node, i);
-                if (*p != 0) {
-                    sum += (UnitRef_GetValue(p) >> 1) & 0x7FFF;
+                slot = Unit_GetItemSlot(unit, i);
+                if (*slot != 0) {
+                    sum += (UnitRef_GetValue(slot) >> 1) & 0x7FFF;
                 }
             }
-            node = next;
+            unit = next;
         }
     }
     return sum;
