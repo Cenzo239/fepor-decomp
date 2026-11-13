@@ -9220,7 +9220,7 @@ void fn_8019A820(void *arg0) {
     void *fn_80095934(s32, s32, s32);
     u8 fn_80096C18(void);
     s32 Event_GetCmdKind(s16);
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     void *fn_8009809C(void);
     void fn_800983E0(void *, void *);
     void fn_80147548(void *, void *, s32);
@@ -9257,7 +9257,7 @@ void fn_8019A820(void *arg0) {
     s32 v280;
 
     obj = fn_8009809C();
-    sub = fn_800971F8(*(s16 *)((u8 *)arg0 + 0x56));
+    sub = Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x56));
     code = Event_GetCmdKind(*(s16 *)((u8 *)arg0 + 0x56));
     if (code == 0x52) {
         p = *(void **)obj;

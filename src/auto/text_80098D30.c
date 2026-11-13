@@ -121,7 +121,7 @@ void fn_80099094(void *arg0)
 {
   void fn_800975C4(s16);
   s32 Event_GetCmdKind(s16);
-  s32 fn_800971F8(s16);
+  s32 Event_GetCmdFlags(s16);
   void *fn_80095934(void *, s32, s32);
   void *fn_80053C30(void *, void *);
   void fn_800536CC(void *, void *);
@@ -160,7 +160,7 @@ void fn_80099094(void *arg0)
   {
     temp_r30 = Event_GetCmdKind(temp_r29);
     new_var = temp_r30;
-    temp_r3 = fn_80095934(*((void **) (((u8 *) self) + 0x38)), new_var, fn_800971F8(temp_r29));
+    temp_r3 = fn_80095934(*((void **) (((u8 *) self) + 0x38)), new_var, Event_GetCmdFlags(temp_r29));
     if (temp_r3 != NULL)
     {
       temp_r29_2 = fn_80053C30(temp_r3, self);
@@ -207,7 +207,7 @@ void fn_80099094(void *arg0)
 
 void fn_8009933C(void *arg0) {
 s32 fn_80098140(void); u8 fn_8005F7F0(void *); u8 fn_8005F9B8(void *,s32);
-s32 Event_GetCmdKind(s16); s32 fn_800971F8(s16); void fn_800975C4(s16);
+s32 Event_GetCmdKind(s16); s32 Event_GetCmdFlags(s16); void fn_800975C4(s16);
 void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
 void fn_8017DF54(void *,void *,void *);
 void *fn_80095934(void *,s32,s32); void *fn_80053C30(void *,void *);
@@ -227,7 +227,7 @@ unit=(void *)fn_80098140();
 input=(u8 *)unit+0x1c;
 if(fn_8005F7F0(input)) {
 s32 command=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x46));
-s32 flags=fn_800971F8(M2C_FIELD(self,s16 *,0x46));
+s32 flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x46));
 switch(command) {
 case 0x50: case 0x51:
 if(fn_8005F9B8(input,0)) {
@@ -237,14 +237,14 @@ else { if(flags&1) {
 s32 value;
 void *p; s32 amount;
 s16 index=M2C_FIELD(self,s16 *,0x46);
-value=fn_800971F8(index);
+value=Event_GetCmdFlags(index);
 fn_800975C4(index);
 p=fn_800958C4(value);
 if(p) fn_8017DF54(M2C_FIELD(self,void **,0x3c),p,self);
 amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x3c),f32 *,12);
 if(amount==0) {
 s32 kind=Event_GetCmdKind(index);
-p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,fn_800971F8(index));
+p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
 p=fn_80053C30(p,self);
 fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
@@ -272,14 +272,14 @@ fn_80184688(get_280(M2C_FIELD(self,void ***,0x38)),1,32,self);
 s32 value;
 void *p; s32 amount;
 s16 index=M2C_FIELD(self,s16 *,0x46);
-value=fn_800971F8(index);
+value=Event_GetCmdFlags(index);
 fn_800975C4(index);
 p=fn_800958C4(value);
 if(p) fn_8017DF54(M2C_FIELD(self,void **,0x3c),p,self);
 amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x3c),f32 *,12);
 if(amount==0) {
 s32 kind=Event_GetCmdKind(index);
-p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,fn_800971F8(index));
+p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
 p=fn_80053C30(p,self);
 fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
@@ -354,7 +354,7 @@ void fn_80099994(void *arg0) {
     void fn_8004FC70(s32);
     u8 fn_800504FC(s32, s32);
     u8 fn_80096C78(s16);
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     s32 fn_80098140(void);
     s32 fn_80096D64(void);
     void fn_800056A0(s32);
@@ -366,7 +366,7 @@ void fn_80099994(void *arg0) {
     s32 temp_r4;
 
     temp_r29 = fn_80098140();
-    temp_r30 = fn_800971F8(M2C_FIELD(arg0, s16 *, 0x46));
+    temp_r30 = Event_GetCmdFlags(M2C_FIELD(arg0, s16 *, 0x46));
     temp_r3 = fn_80096C78(M2C_FIELD(arg0, s16 *, 0x46));
     M2C_FIELD(arg0, s16 *, 0x44) = -1;
     if ((temp_r30 & 0xFFC00000) && (fn_800504FC(temp_r29, 4) != 0)) {
@@ -402,7 +402,7 @@ void fn_80099994(void *arg0) {
 }
 
 void fn_80099AD0(void *arg0) {
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     void *fn_800980E8(s32);
     void *fn_800958A4(s32);
     void *fn_80095FF8(s32);
@@ -419,7 +419,7 @@ void fn_80099AD0(void *arg0) {
     void *temp_r3;
     void *temp_r4;
 
-    if (fn_800971F8(*(s16 *)((u8 *)arg0 + 0x46)) & 0x40000) {
+    if (Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x46)) & 0x40000) {
         ptrs[0] = fn_800980E8(0);
         ptrs[1] = fn_800958A4(0);
         ptrs[2] = fn_800958A4(1);
@@ -450,7 +450,7 @@ void fn_80099AD0(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80099BF8(void *arg0) {
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     s32 fn_80096EEC(s32 *, s32);
     void *fn_8000CAA0(void *, void *);
     void fn_8000C070(void *, s32);
@@ -463,7 +463,7 @@ void fn_80099BF8(void *arg0) {
     s32 val;
     void *obj;
 
-    flags = fn_800971F8(*(s16 *)((u8 *)arg0 + 0x46));
+    flags = Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x46));
     count = fn_80096EEC(buf, flags);
     chain = arg0;
     for (i = 0; i < count; i++) {
@@ -625,7 +625,7 @@ void fn_80099FAC(s32 arg0) {
 #pragma use_lmw_stmw on
 void fn_8009A0A4(void *arg0, s16 arg1) {
     s32 Event_GetCmdKind(s16);
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     void fn_800983E0(void *, void *);
     u8 fn_80096C18(void);
     void fn_80147548(void *, void *, s32);
@@ -670,7 +670,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     u8 item;
 
     kind = Event_GetCmdKind(arg1);
-    flags = fn_800971F8(arg1);
+    flags = Event_GetCmdFlags(arg1);
     fn_800983E0(&sp78, M2C_FIELD(arg0, void **, 0x3C));
     mode = M2C_FIELD(arg0, u8 *, 0x34);
     pos = sp78;

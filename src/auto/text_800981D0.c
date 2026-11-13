@@ -157,7 +157,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     u8 fn_8005F9B8(void *, s32);
     void fn_80054C14(void *);
     s32 Event_GetCmdKind(s16);
-    s32 fn_800971F8(s16);
+    s32 Event_GetCmdFlags(s16);
     void fn_800975C4(s16);
     s32 fn_800958C4(s32);
     void *fn_80095934(void *, s32, s32);
@@ -219,7 +219,7 @@ s32 Event_HandleItemCmd(void *arg0) {
         return 0;
     }
     kind = Event_GetCmdKind(id);
-    flags = fn_800971F8(id);
+    flags = Event_GetCmdFlags(id);
     switch (kind) {
     case 0x50:
     case 0x51:
@@ -250,7 +250,7 @@ s32 Event_HandleItemCmd(void *arg0) {
             }
         }
         if (fn_8005F9B8(pad, 0) != 0) {
-            flags = fn_800971F8(id);
+            flags = Event_GetCmdFlags(id);
             fn_800975C4(id);
             tmp = (void *)fn_800958C4(flags);
             if (tmp != NULL) {
@@ -260,7 +260,7 @@ s32 Event_HandleItemCmd(void *arg0) {
             kind = (s32)M2C_FIELD(unit, f32 *, 0xC);
             if (kind == 0) {
                 kind = Event_GetCmdKind(id);
-                flags = fn_800971F8(id);
+                flags = Event_GetCmdFlags(id);
                 tmp = fn_80095934(M2C_FIELD(self, void **, 0x38), kind, flags);
                 if (tmp != NULL) {
                     kind = (s32)fn_80053C30(tmp, self);
