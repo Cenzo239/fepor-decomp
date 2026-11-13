@@ -3916,7 +3916,7 @@ s32 fn_8024AD2C(s32 arg0, s32 arg1) {
         fn_80256FF0((u8)arg1);
         break;
     case 2:
-        ret = fn_802581BC(arg1);
+        ret = Sound_AllocStream(arg1);
         break;
     case 3:
         fn_80262510((u8)arg1);
@@ -9546,7 +9546,7 @@ void fn_80258100(void) {
 
 #pragma global_optimizer off
 #pragma inline_depth(0)
-int fn_802581BC(u32 arg0) {
+int Sound_AllocStream(u32 arg0) {
 extern u8 gSoundStreamCtrl[];
 s32 fn_802631AC(u8,s32*);
 void fn_80261AE0(s32,s32,s32);
