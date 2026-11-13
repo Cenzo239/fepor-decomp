@@ -578,6 +578,7 @@ void fn_8005BCF0(void) {
     }
 }
 
+/* Forever drain the FileCache async work ring, sleeping when empty. */
 void FileCache_WorkerThread(void) {
     void DCFlushRange(s32, s32);
     void FileCache_OnCancel(void *, s32);
@@ -589,47 +590,47 @@ void FileCache_WorkerThread(void) {
     extern volatile u8 gFileCacheWorkRead;
     extern volatile u8 gFileCacheWorkWrite;
     extern u8 gFileCacheWorkThreadQueue[8];
-    void *obj;
+    void *entry;
     s32 val;
     u8 type;
 
     goto check;
 loop:
-    obj = gFileCacheWorkQueue + gFileCacheWorkRead * 0xC;
-    type = *(u8 *)obj;
+    entry = gFileCacheWorkQueue + gFileCacheWorkRead * 0xC;
+    type = *(u8 *)entry;
     switch (type) {
     case 0:
-        FileCache_OnLoadDone(*(void **)((u8 *)obj + 4), *(s32 *)((u8 *)obj + 8));
+        FileCache_OnLoadDone(*(void **)((u8 *)entry + 4), *(s32 *)((u8 *)entry + 8));
         break;
     case 1:
-        FileCache_OnCancel(*(void **)((u8 *)obj + 4), *(s32 *)((u8 *)obj + 8));
+        FileCache_OnCancel(*(void **)((u8 *)entry + 4), *(s32 *)((u8 *)entry + 8));
         break;
     case 2:
-        val = *(s32 *)((u8 *)obj + 8);
-        obj = *(void **)((u8 *)obj + 4);
-        if (*(volatile u16 *)((u8 *)obj + 0x30) & 0x400) {
-            if (*(volatile u16 *)((u8 *)obj + 0x30) & 0x2000) {
+        val = *(s32 *)((u8 *)entry + 8);
+        entry = *(void **)((u8 *)entry + 4);
+        if (*(volatile u16 *)((u8 *)entry + 0x30) & 0x400) {
+            if (*(volatile u16 *)((u8 *)entry + 0x30) & 0x2000) {
                 fn_800C4588(val);
             }
         } else {
-            if (*(volatile u16 *)((u8 *)obj + 0x30) & 0x800) {
-                fn_8005D9A8(obj);
+            if (*(volatile u16 *)((u8 *)entry + 0x30) & 0x800) {
+                fn_8005D9A8(entry);
             }
-            *(volatile u16 *)((u8 *)obj + 0x30) |= 0x2000;
+            *(volatile u16 *)((u8 *)entry + 0x30) |= 0x2000;
         }
-        *(volatile u16 *)((u8 *)obj + 0x30) &= ~0x80;
+        *(volatile u16 *)((u8 *)entry + 0x30) &= ~0x80;
         break;
     case 3:
-        val = *(s32 *)((u8 *)obj + 8);
-        obj = *(void **)((u8 *)obj + 4);
-        DCFlushRange(*(s32 *)((u8 *)obj + 0x38), *(s32 *)((u8 *)obj + 0x3C));
-        if (!(*(u16 *)((u8 *)obj + 0x30) & 0x80)) {
+        val = *(s32 *)((u8 *)entry + 8);
+        entry = *(void **)((u8 *)entry + 4);
+        DCFlushRange(*(s32 *)((u8 *)entry + 0x38), *(s32 *)((u8 *)entry + 0x3C));
+        if (!(*(u16 *)((u8 *)entry + 0x30) & 0x80)) {
             fn_800C4588(val);
         }
-        if (*(u16 *)((u8 *)obj + 0x30) & 0x800) {
-            fn_8005D9A8(obj);
+        if (*(u16 *)((u8 *)entry + 0x30) & 0x800) {
+            fn_8005D9A8(entry);
         }
-        *(u16 *)((u8 *)obj + 0x30) |= 0x2000;
+        *(u16 *)((u8 *)entry + 0x30) |= 0x2000;
         break;
     }
     gFileCacheWorkRead = (gFileCacheWorkRead + 1) & 0x3F;
