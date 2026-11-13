@@ -628,22 +628,19 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 }
 
 void fn_80184618(s32 arg0, u32 arg1) {
-    void fn_8000A388(void *, void *, void *);
-    void *Process_Create(void *, u32);
-    void MuFade_UnlinkSame(void *, void *);
-    extern u8 E_MuFlag_script[];
-    u8 sp8[0x34];
-    u32 var_r31;
-    void *temp_r3;
-
-    var_r31 = arg1;
-    *(s32 *)(sp8 + 0x30) = arg0;
-    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp8);
-    if (var_r31 == 0U) {
-        var_r31 = 3U;
-    }
-    temp_r3 = Process_Create(E_MuFlag_script, var_r31);
-    *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
+ void fn_8000A388(void *, void *, void *);
+ void *Process_Create(void *, u32);
+ void MuFade_UnlinkSame(void *, void *);
+ extern u8 E_MuFlag_script[];
+ u8 sp8[0x34];
+ u32 parent=arg1;
+ s32 value=arg0;
+ void *p;
+ *(s32 *)(sp8+0x30)=value;
+ fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp8);
+ if (!parent) parent=3;
+ p=Process_Create(E_MuFlag_script, parent);
+ *(s32 *)((u8 *)p+0x30)=value;
 }
 
 void fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
@@ -2566,14 +2563,13 @@ void fn_8018B31C(void *arg0) {
 #pragma global_optimizer on
 #pragma fp_contract on
 void fn_8018B3AC(void *arg0) {
-    extern f32 lbl_8036ACEC;
-    f32 c;
-
-    c = lbl_8036ACEC;
-    *(f32 *)((u8 *)arg0 + 0x34) = (*(f32 **)((u8 *)arg0 + 0x30))[1];
-    *(f32 *)((u8 *)arg0 + 0x38) = (*(f32 **)((u8 *)arg0 + 0x30))[2];
-    *(f32 *)((u8 *)arg0 + 0x3C) = (*(f32 **)((u8 *)arg0 + 0x30))[3];
-    *(f32 *)((u8 *)arg0 + 0x48) = c;
+ extern f32 lbl_8036ACEC;
+ f32 v; f32 c; f32 *ptr;
+ ptr=*(f32 **)((u8 *)arg0+0x30); v=ptr[1]; c=lbl_8036ACEC;
+ *(f32 *)((u8 *)arg0+0x34)=v;
+ *(f32 *)((u8 *)arg0+0x38)=(*(f32 **)((u8 *)arg0+0x30))[2];
+ *(f32 *)((u8 *)arg0+0x3c)=(*(f32 **)((u8 *)arg0+0x30))[3];
+ *(f32 *)((u8 *)arg0+0x48)=c;
 }
 
 void fn_8018B3DC(void *arg0) {
@@ -7134,18 +7130,23 @@ void fn_801950FC(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x30) = fn_8022C414(fn_800C42AC(0x19290), fn_80196018, 0, 0x3250, 8);
 }
 
-void fn_8019514C(u8 *dst, u8 *src) {
-    s32 a;
-    s32 b;
-
+void fn_8019514C(u8 *dst, u8 *src)
+{
+  u8 a;
+  int new_var;
+  u8 b;
+  new_var = 1;
+  if (new_var)
+  {
     a = src[0];
-    b = src[1];
+    b = src[new_var];
     dst[0] = a;
-    a = src[2];
-    dst[1] = b;
-    b = src[3];
-    dst[2] = a;
-    dst[3] = b;
+  }
+  a = src[2];
+  dst[new_var] = b;
+  b = src[3];
+  dst[2] = a;
+  dst[3] = b;
 }
 
 void fn_80195170(void *arg0, s8 arg1) {
