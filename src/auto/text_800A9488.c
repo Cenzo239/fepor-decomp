@@ -126,6 +126,7 @@ extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void Text_Draw(s32, s32, s32, void *, ...);
 extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
+    /* Draw the options difficulty widget: panel quad, mode name from A6, and language. */
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
@@ -170,17 +171,17 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     s32 sp10;
     s32 spC;
     s32 sp8;
-    u8 var_r3;
-    void *var_r7;
+    u8 lit;
+    void *modeName;
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25(), lbl_80369BB0);
     Prim2D_SetTex(0, 0x12);
-    var_r3 = 0;
+    lit = 0;
     if (((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0) && ((u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0)) {
-        var_r3 = 1;
+        lit = 1;
     }
-    if (var_r3 == 0) {
+    if (lit == 0) {
         Prim2D_SetColorByte(0x80);
     }
     Prim2D_PrepareTex();
@@ -199,22 +200,22 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     Prim2D_PrepareTex();
     switch (gBattleState[0xA6]) {
     case 0:
-        var_r7 = gOptionsStr + 0x150;
+        modeName = gOptionsStr + 0x150;
         break;
     case 1:
-        var_r7 = gOptionsStr + 0x157;
+        modeName = gOptionsStr + 0x157;
         break;
     case 2:
-        var_r7 = gOptionsStr + 0x15C;
+        modeName = gOptionsStr + 0x15C;
         break;
     case 3:
-        var_r7 = gOptionsStr + 0x163;
+        modeName = gOptionsStr + 0x163;
         break;
     default:
-        var_r7 = NULL;
+        modeName = NULL;
         break;
     }
-    Text_Draw(0x160, 0, 1, gOptionsStr + 0x168, var_r7);
+    Text_Draw(0x160, 0, 1, gOptionsStr + 0x168, modeName);
     Text_Draw(0x148, 0x18, 1, gOptionsStr + 0x177, *(void **)(gLanguageNamePtrs + 4));
 }
 #pragma cplusplus reset
