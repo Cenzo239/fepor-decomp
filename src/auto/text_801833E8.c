@@ -2222,7 +2222,7 @@ void fn_8018A7E4(void *arg0) {
 
 #pragma scheduling off
 #pragma global_optimizer off
-void fn_8018A7FC(void *arg0)
+void MuFade_InitScaleOut(void *arg0)
 {
     extern f32 lbl_8036ACEC;
     s32 zero;
