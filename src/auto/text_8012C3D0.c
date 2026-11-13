@@ -440,7 +440,7 @@ void fn_8012CCA4(void *arg0)
     fn_8005C7C8(gUiSelectMenuStrings + 0xC7);
 }
 
-void fn_8012CE34(void *arg0) {
+void Ui_ResetSelectPrompt(void *arg0) {
     s32 Msg_Expand(void *);
     void TextBanner_SetString(s32, s32);
     extern u8 gUiSelectMenuStrings[];
