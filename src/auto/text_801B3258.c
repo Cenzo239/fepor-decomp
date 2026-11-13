@@ -273,6 +273,7 @@ void fn_801B5DB0(void *arg0) {
 }
 
 void UnitStatus_Init(void *arg0) {
+    /* Init unit status display from unit at +0x14: copy stats and resolve portrait sprite. */
     void *memset(void *, s32, s32);
     void fn_8005C8B4(void *);
     u8 Unit_GetHp(void *);
@@ -294,10 +295,10 @@ void UnitStatus_Init(void *arg0) {
     extern u8 gUnitStatusStr[];
     extern f32 lbl_8036B0E0;
 
-    u8 sp8[0x20];
+    u8 growths[0x20];
     void *unit;
-    f32 f;
-    void *str;
+    f32 one;
+    void *classKey;
     u8 b;
 
     unit = *(void **)((u8 *)arg0 + 0x14);
@@ -321,32 +322,32 @@ void UnitStatus_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x24) = Unit_GetRes(unit);
     *(u8 *)((u8 *)arg0 + 0x25) = Unit_GetCon(unit);
     *(u8 *)((u8 *)arg0 + 0x26) = Unit_GetMov(unit);
-    fn_801B6BE4(sp8);
-    b = sp8[0xA];
-    f = (str = gUnitStatusStr, 1.0f);
+    fn_801B6BE4(growths);
+    b = growths[0xA];
+    one = (classKey = gUnitStatusStr, 1.0f);
     *(u8 *)((u8 *)arg0 + 0x27) = b;
-    str = (u8 *)str + 0xF2;
-    *(u8 *)((u8 *)arg0 + 0x28) = sp8[0xB];
-    *(u8 *)((u8 *)arg0 + 0x29) = sp8[0xC];
-    *(u8 *)((u8 *)arg0 + 0x2A) = sp8[0xD];
-    *(u8 *)((u8 *)arg0 + 0x2B) = sp8[0xE];
-    *(u8 *)((u8 *)arg0 + 0x2C) = sp8[0xF];
-    *(u8 *)((u8 *)arg0 + 0x2D) = sp8[0x10];
-    *(u8 *)((u8 *)arg0 + 0x2E) = sp8[0x11];
-    *(u8 *)((u8 *)arg0 + 0x2F) = sp8[0x12];
-    *(u8 *)((u8 *)arg0 + 0x30) = sp8[0x13];
-    *(f32 *)((u8 *)arg0 + 0x34) = f;
-    *(f32 *)((u8 *)arg0 + 0x38) = f;
-    *(f32 *)((u8 *)arg0 + 0x3C) = f;
-    *(f32 *)((u8 *)arg0 + 0x40) = f;
-    *(f32 *)((u8 *)arg0 + 0x44) = f;
-    *(f32 *)((u8 *)arg0 + 0x48) = f;
-    *(f32 *)((u8 *)arg0 + 0x4C) = f;
-    *(f32 *)((u8 *)arg0 + 0x50) = f;
-    *(f32 *)((u8 *)arg0 + 0x54) = f;
-    *(f32 *)((u8 *)arg0 + 0x58) = f;
-    *(f32 *)((u8 *)arg0 + 0x5C) = f;
-    if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), str) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
+    classKey = (u8 *)classKey + 0xF2;
+    *(u8 *)((u8 *)arg0 + 0x28) = growths[0xB];
+    *(u8 *)((u8 *)arg0 + 0x29) = growths[0xC];
+    *(u8 *)((u8 *)arg0 + 0x2A) = growths[0xD];
+    *(u8 *)((u8 *)arg0 + 0x2B) = growths[0xE];
+    *(u8 *)((u8 *)arg0 + 0x2C) = growths[0xF];
+    *(u8 *)((u8 *)arg0 + 0x2D) = growths[0x10];
+    *(u8 *)((u8 *)arg0 + 0x2E) = growths[0x11];
+    *(u8 *)((u8 *)arg0 + 0x2F) = growths[0x12];
+    *(u8 *)((u8 *)arg0 + 0x30) = growths[0x13];
+    *(f32 *)((u8 *)arg0 + 0x34) = one;
+    *(f32 *)((u8 *)arg0 + 0x38) = one;
+    *(f32 *)((u8 *)arg0 + 0x3C) = one;
+    *(f32 *)((u8 *)arg0 + 0x40) = one;
+    *(f32 *)((u8 *)arg0 + 0x44) = one;
+    *(f32 *)((u8 *)arg0 + 0x48) = one;
+    *(f32 *)((u8 *)arg0 + 0x4C) = one;
+    *(f32 *)((u8 *)arg0 + 0x50) = one;
+    *(f32 *)((u8 *)arg0 + 0x54) = one;
+    *(f32 *)((u8 *)arg0 + 0x58) = one;
+    *(f32 *)((u8 *)arg0 + 0x5C) = one;
+    if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), classKey) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
         *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0xFA;
     } else if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), gUnitStatusStr + 0x105) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
         *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0x10E;
