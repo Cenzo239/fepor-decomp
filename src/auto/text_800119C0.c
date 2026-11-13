@@ -748,15 +748,17 @@ s32 fn_80014398(void *arg0) {
 s32 fn_80014400(void *arg0) {
     u32 Res_GetByName(s32);
     void Process_Goto(void *, s32);
-    void *ptr;
     u32 word0;
+    void *next;
+    void *ptr;
     s32 word1;
     s16 hi;
 
     ptr = *(void **)((u8 *)arg0 + 4);
     word0 = *(u32 *)ptr;
+    next = (u8 *)ptr + 8;
     word1 = *(s32 *)((u8 *)ptr + 4);
-    *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
+    *(void **)((u8 *)arg0 + 4) = next;
     hi = (s16)(word0 >> 16);
     if (Res_GetByName(word1) == 0U) {
         Process_Goto(arg0, hi & 0xFF);
@@ -920,7 +922,7 @@ void main(void) {
     void fn_800895B8(void);
     void fn_8009B738(s32, s32);
     void fn_8009B900(s32, s32);
-    void fn_8009CF28(void);
+    void Debug_DrawGuideFrame(void);
     void fn_8009D0E8(s32, s32);
     void fn_8009D95C(s32, s32);
     void fn_8009E588(void);
@@ -1038,7 +1040,7 @@ void main(void) {
                 fn_8009D0E8(0x160, 0x10);
             }
             if (lbl_80367704) {
-                fn_8009CF28();
+                Debug_DrawGuideFrame();
             }
             if (lbl_80367705) {
                 fn_8009B900(0x100, 0x10);

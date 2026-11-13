@@ -156,7 +156,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
     fn_8014BB58(0x10A, 0x40, &c5, (char *)lbl_8026D568 + 0x43);
 }
 
-void fn_8009CF28(void) {
+void Debug_DrawGuideFrame(void) {
     void Prim2D_SetText(u8 *);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_SetPos(f32, f32);
