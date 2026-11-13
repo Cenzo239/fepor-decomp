@@ -282,14 +282,14 @@ void __CARDUnlockedHandler(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 EXILock(s32, s32, void *);
     s32 __CARDRetry(s32);
-    void fn_80216C64();
+    void __CARDLockCallback();
     u8 *card;
     void (*callback)(s32);
 
     card = (u8 *)__CARDBlock + chan * 0x110;
     if (result >= 0) {
         *(void **)(card + 0xDC) = __CARDUnlockedHandler;
-        if (EXILock(chan, 0, fn_80216C64) == 0) {
+        if (EXILock(chan, 0, __CARDLockCallback) == 0) {
             result = 0;
         } else {
             *(void **)(card + 0xDC) = NULL;
@@ -330,7 +330,7 @@ s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
     void OSCancelAlarm(void *);
     void OSSetAlarm(void *, s64, void *);
     void __CARDUnlockedHandler();
-    void fn_80216C64();
+    void __CARDLockCallback();
     void __CARDTimeoutHandler();
     s32 enabled;
     u8 *card;
@@ -348,7 +348,7 @@ s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
             *(void **)(card + 0xCC) = exiCallback;
         }
         *(void **)(card + 0xDC) = __CARDUnlockedHandler;
-        if (!EXILock(chan, 0, fn_80216C64)) {
+        if (!EXILock(chan, 0, __CARDLockCallback)) {
             result = -1;
         } else {
             *(void **)(card + 0xDC) = 0;
