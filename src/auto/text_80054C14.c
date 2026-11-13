@@ -319,7 +319,7 @@ u8 GActor_CheckResources(s32 arg0) {
     u8 fn_8005BA10(void *);
     u8 fn_800B2FF4(s32);
     s32 fn_80055C84(void *);
-    s32 fn_80055AC0(s32 *, s32);
+    s32 GActor_FormatPath(s32 *, s32);
     u8 fn_80055C7C(void *);
     u32 fn_80055C74(void *);
     extern u8 GActor_str[];
@@ -435,7 +435,7 @@ u8 GActor_CheckResources(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80055AC0(node, (s32)sp8);
+    GActor_FormatPath(node, (s32)sp8);
     if ((u8)fn_8005BA10(sp8) == 0) {
         ok = 0;
         goto check7;
@@ -560,7 +560,7 @@ void fn_800558FC(void* arg0)
     }
 }
 
-s32 fn_80055AC0(s32 *arg0, s32 arg1) {
+s32 GActor_FormatPath(s32 *arg0, s32 arg1) {
     void sprintf(s32, void *, void *, ...);
     extern u8 GActor_str[];
 
