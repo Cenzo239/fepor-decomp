@@ -12297,7 +12297,8 @@ void fn_801A0D20(void *arg0) {
     }
 }
 
-s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
+/* Script command: warp unit unitId to (x, y) instantly and ensure MuEventInst is running. */
+s32 ScriptCmd_UnitWarp(u8 unitId, u8 x, u8 y) {
     extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern u8 Proc_MuEventInst[36];
@@ -12310,35 +12311,35 @@ s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
 
-    u8 *var_r31;
-    u8 sp8;
-    u8 sp9;
+    u8 *unit;
+    u8 wx;
+    u8 wy;
 
-    if (arg0 != 0) {
-        var_r31 = gUnits + ((arg0 - 1) * 0x280);
+    if (unitId != 0) {
+        unit = gUnits + ((unitId - 1) * 0x280);
     } else {
-        var_r31 = 0;
+        unit = 0;
     }
 
-    if (var_r31 == 0 || *(u32 *)(var_r31 + 0x188) == 0) {
+    if (unit == 0 || *(u32 *)(unit + 0x188) == 0) {
         return 0;
     }
 
-    sp8 = arg1;
-    sp9 = arg2;
+    wx = x;
+    wy = y;
 
-    Unit_ResolveWarpPos(var_r31, &sp8, &sp9, 0, 0, 0);
-    Unit_SetMapPos(var_r31, sp8, sp9);
+    Unit_ResolveWarpPos(unit, &wx, &wy, 0, 0, 0);
+    Unit_SetMapPos(unit, wx, wy);
     Map_RefreshUnitMap(gBattleMap);
 
-    fn_80050C90(var_r31);
+    fn_80050C90(unit);
 
     if (Process_Find(Proc_MuEventInst) == 0) {
-        u32 var_r3 = fn_80127C48();
-        if (var_r3 == 0) {
-            var_r3 = fn_800C0658();
+        u32 parent = fn_80127C48();
+        if (parent == 0) {
+            parent = fn_800C0658();
         }
-        Process_Create(Proc_MuEventInst, var_r3);
+        Process_Create(Proc_MuEventInst, parent);
     }
 
     return 1;
