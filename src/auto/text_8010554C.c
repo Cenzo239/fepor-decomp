@@ -2216,6 +2216,7 @@ void fn_80109448(void *arg0, s32 arg1) {
     }
 }
 
+#pragma global_optimizer off
 void fn_801097DC(void *arg0) {
     extern f32 lbl_8036A138;
     f32 zero;
@@ -2267,7 +2268,7 @@ void fn_801097DC(void *arg0) {
         break;
     }
 }
-
+#pragma global_optimizer reset
 void fn_80109890(s32 arg0, s32 arg1) {
     void *fn_800B2754(void);
     M2C_UNK fn_800336A0(M2C_UNK *, M2C_UNK *, s32);
