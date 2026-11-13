@@ -12318,13 +12318,13 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 
 u8 fn_800E49D0(void) {
-    u8 *fn_80067440(s32);
+    u8 *Light_GetChannel(s32);
     u8 *p;
     s32 t2;
     s32 t6;
     s32 result;
 
-    p = fn_80067440(0);
+    p = Light_GetChannel(0);
     t2 = p[2];
     t6 = p[6];
     result = (((p[4] + (t6 + p[5])) / 3) * (0xFF - ((p[0] + (t2 + p[1])) / 3))) / 255;
@@ -12720,7 +12720,7 @@ void fn_800E59BC(void *arg0) {
 void fn_800E5A4C(void *arg0) {
     void fn_800609DC(void *);
     void fn_8006CAD4(void *);
-    void *fn_80067440(s32);
+    void *Light_GetChannel(s32);
     void fn_8005F7B0(void *, u8);
     void *e0;
     u8 *p;
@@ -12737,7 +12737,7 @@ void fn_800E5A4C(void *arg0) {
     if (*(void **)((u8 *)arg0 + 0xE4) != NULL) {
         e0 = *(void **)((u8 *)arg0 + 0xE0);
         temp_r31 = ((u8 *)e0)[0xB];
-        p = (u8 *)fn_80067440(0);
+        p = (u8 *)Light_GetChannel(0);
         t2 = p[2];
         t6 = p[6];
         alpha = (((p[4] + (t6 + p[5])) / 3) * (0xFF - ((p[0] + (t2 + p[1])) / 3))) / 255;

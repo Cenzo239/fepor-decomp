@@ -5128,7 +5128,7 @@ void fn_800673E4(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg1 + 0x28) = *(f32 *)((u8 *)arg0 + 0x28);
 }
 
-void *fn_80067440(s32 arg0) {
+void *Light_GetChannel(s32 arg0) {
     extern void *lbl_80366DDC;
     if (lbl_80366DDC == NULL) {
         return NULL;

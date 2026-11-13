@@ -6432,7 +6432,7 @@ void fn_80041514(void *arg0, char *arg1)
     void fn_8014716C(s32);
     void fn_80067460(s32);
     void fn_80066F64(void);
-    void *fn_80067440(s32);
+    void *Light_GetChannel(s32);
     void fn_800673E4(void *);
     void fn_8006720C(void *);
     void fn_800675C8(s32);
@@ -6706,7 +6706,7 @@ void fn_80041514(void *arg0, char *arg1)
     }
     fn_80067460(0);
     fn_80066F64();
-    light = fn_80067440(0);
+    light = Light_GetChannel(0);
     M2C_FIELD(light, f32 *, 0x24) = (f32)(s8)lbl_80367294;
     M2C_FIELD(light, f32 *, 0x28) = (f32)(s8)lbl_80367295;
     ((u8 *)light)[0] = (&lbl_8036729C)[0];
@@ -6715,8 +6715,8 @@ void fn_80041514(void *arg0, char *arg1)
     ((u8 *)light)[4] = (&lbl_80367298)[0];
     ((u8 *)light)[5] = (&lbl_80367298)[1];
     ((u8 *)light)[6] = (&lbl_80367298)[2];
-    tmp = fn_80067440(2);
-    fn_80067440(0);
+    tmp = Light_GetChannel(2);
+    Light_GetChannel(0);
     fn_800673E4(tmp);
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
@@ -8060,7 +8060,7 @@ void fn_80045C68(void *arg0)
 {
     void fn_80067460(s32);
     void fn_80066F64(void);
-    void *fn_80067440(s32);
+    void *Light_GetChannel(s32);
     void fn_800673E4(void *, void *);
     void fn_8006720C(void *);
     extern u8 lbl_80367294;
@@ -8073,7 +8073,7 @@ void fn_80045C68(void *arg0)
     self = arg0;
     fn_80067460(0);
     fn_80066F64();
-    light = fn_80067440(0);
+    light = Light_GetChannel(0);
     *(f32 *)((u8 *)light + 0x24) = (f32)(s8)lbl_80367294;
     *(f32 *)((u8 *)light + 0x28) = (f32)(s8)lbl_80367295;
     ((u8 *)light)[0] = (&lbl_8036729C)[0];
@@ -8082,8 +8082,8 @@ void fn_80045C68(void *arg0)
     ((u8 *)light)[4] = (&lbl_80367298)[0];
     ((u8 *)light)[5] = (&lbl_80367298)[1];
     ((u8 *)light)[6] = (&lbl_80367298)[2];
-    light = fn_80067440(2);
-    fn_800673E4(fn_80067440(0), light);
+    light = Light_GetChannel(2);
+    fn_800673E4(Light_GetChannel(0), light);
     fn_8006720C((u8 *)self + 0x70);
 }
 
@@ -10762,7 +10762,7 @@ void fn_8004C80C(void) {
     void fn_80015320(s32, void *);
     void fn_8004CACC(void *, s32);
     void fn_80066D00(s32);
-    void *fn_80067440(s32);
+    void *Light_GetChannel(s32);
     void *fn_80067FDC(void);
     void fn_8006ECCC(s32, void *, s32);
     void PSMTXConcat(void *, void *, void *);
@@ -10820,7 +10820,7 @@ void fn_8004C80C(void) {
     fn_802245D8(1, 4, 5, 7);
     fn_80223E5C(7, 0, 1, 7, 0);
     fn_802239D0(0, 0);
-    p = (u8 *)fn_80067440(0);
+    p = (u8 *)Light_GetChannel(0);
     t0 = p[0];
     t4 = p[4];
     var_r31 = (((p[6] + (t4 + p[5])) / 3) * (0xFF - ((p[2] + (t0 + p[1])) / 3))) / 255;

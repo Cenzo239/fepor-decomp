@@ -7639,7 +7639,7 @@ void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 void fn_801C6F9C(void) {
     extern u8 lbl_802981D0[];
     void *fn_8000C0C0(void *);
-    s32 fn_80067440(s32);
+    s32 Light_GetChannel(s32);
     void fn_800673E4(s32, s32);
     u8 *fn_800675E0(void);
     void fn_8005F788(u32, s32, s32);
@@ -7656,8 +7656,8 @@ void fn_801C6F9C(void) {
         s32 i;
         u32 *ptr;
 
-        fn_800673E4(fn_80067440(1), fn_80067440(0));
-        fn_800673E4(fn_80067440(3), fn_80067440(2));
+        fn_800673E4(Light_GetChannel(1), Light_GetChannel(0));
+        fn_800673E4(Light_GetChannel(3), Light_GetChannel(2));
         for (i = 0, ptr = (u32 *)data; i < 64; i++, ptr++) {
             if (ptr[3]) {
                 fn_8005F788(ptr[3], 0, 1);
@@ -7690,7 +7690,7 @@ void Light_FadeProcess(void *arg0) {
     void fn_8000C188(void *);
     void Process_Unlink(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    u8 *fn_80067440(s32);
+    u8 *Light_GetChannel(s32);
     u8 *fn_800675E0(void);
     extern u8 lbl_802981D0[];
     extern f64 lbl_8036B440;
@@ -7722,9 +7722,9 @@ void Light_FadeProcess(void *arg0) {
     sp8 = *(u32 *)((u8 *)unit + 0x28C);
     *(s32 *)(self + 0x30) = *(s32 *)(self + 0x30) + 1;
 
-    c1 = fn_80067440(1);
-    c0 = fn_80067440(0);
-    c2 = fn_80067440(2);
+    c1 = Light_GetChannel(1);
+    c0 = Light_GetChannel(0);
+    c2 = Light_GetChannel(2);
 
     t0 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));

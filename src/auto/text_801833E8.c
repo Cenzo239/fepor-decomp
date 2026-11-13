@@ -2998,17 +2998,17 @@ void fn_8018CB7C(void) {
 }
 
 void fn_8018CB9C(void *arg0) {
-    s32 fn_80067440(s32);
+    s32 Light_GetChannel(s32);
     void fn_800673E4(s32, s32);
     void fn_80050BA8(s32, s32, s32);
     s32 t;
     s32 i;
     u8 *p;
 
-    t = fn_80067440(0);
-    fn_800673E4(fn_80067440(1), t);
-    t = fn_80067440(2);
-    fn_800673E4(fn_80067440(3), t);
+    t = Light_GetChannel(0);
+    fn_800673E4(Light_GetChannel(1), t);
+    t = Light_GetChannel(2);
+    fn_800673E4(Light_GetChannel(3), t);
     p = (u8 *)arg0;
     i = 0;
     while (i < *(s32 *)((u8 *)arg0 + 0x44)) {
@@ -3020,10 +3020,10 @@ void fn_8018CB9C(void *arg0) {
 
 void fn_8018CC3C(void *arg0) {
     M2C_UNK fn_800673E4(s32, s32);
-    s32 fn_80067440(M2C_UNK);
+    s32 Light_GetChannel(M2C_UNK);
 
-    fn_800673E4(fn_80067440(0), fn_80067440(1));
-    fn_800673E4(fn_80067440(2), fn_80067440(3));
+    fn_800673E4(Light_GetChannel(0), Light_GetChannel(1));
+    fn_800673E4(Light_GetChannel(2), Light_GetChannel(3));
     M2C_FIELD(arg0, s32 *, 0x30) = 0x64;
     M2C_FIELD(arg0, s32 *, 0x34) = 0x64;
     M2C_FIELD(arg0, s32 *, 0x44) = 0;
@@ -3031,7 +3031,7 @@ void fn_8018CC3C(void *arg0) {
 
 void fn_8018CCB8(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    u8 *fn_80067440(s32);
+    u8 *Light_GetChannel(s32);
     void Process_Unlink(void *);
     void fn_8000C188(void *);
     s32 scale;
@@ -3047,9 +3047,9 @@ void fn_8018CCB8(void *arg0) {
         (f32)*(s32 *)((u8 *)arg0 + 0x38),
         (f32)*(s32 *)((u8 *)arg0 + 0x40),
         (f32)*(s32 *)((u8 *)arg0 + 0x3C));
-    src = fn_80067440(1);
-    dst0 = fn_80067440(0);
-    dst2 = fn_80067440(2);
+    src = Light_GetChannel(1);
+    dst0 = Light_GetChannel(0);
+    dst2 = Light_GetChannel(2);
     scale = *(s32 *)((u8 *)arg0 + 0x30);
 
     v = (src[4] * scale) / 100;
