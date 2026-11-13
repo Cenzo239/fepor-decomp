@@ -1157,7 +1157,7 @@ void Camera_ApplyPadControls(void *arg0) {
 extern u16 lbl_8028DED0[];
 void *fn_80151CE0(void *arg0, s16 arg1) {
     void fn_800DF724(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80293A88[];
 
     if (arg0 != NULL) {
@@ -1167,7 +1167,7 @@ void *fn_80151CE0(void *arg0, s16 arg1) {
             fn_800DF724(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

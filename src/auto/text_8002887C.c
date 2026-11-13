@@ -350,7 +350,7 @@ void *fn_800297C0(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

@@ -336,7 +336,7 @@ void *fn_80056A04(void *arg0, s16 arg1) {
         fn_800C4588(M2C_FIELD(arg0, s32 *, 0x14));
         M2C_FIELD(arg0, s32 *, 0x14) = 0;
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -690,7 +690,7 @@ void fn_80057020(void *arg0) {
 
 void fn_800576D4(void *arg0, u8 arg1) {
     void fn_8006D8E8(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *Heap_Alloc(s32);
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
@@ -703,7 +703,7 @@ void fn_800576D4(void *arg0, u8 arg1) {
     if (temp != NULL) {
         if (temp != NULL) {
             fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-            fn_800C428C(temp);
+            Heap_Free(temp);
         }
         *(void **)((u8 *)arg0 + 0x24) = NULL;
     }
@@ -711,7 +711,7 @@ void fn_800576D4(void *arg0, u8 arg1) {
     if (temp != NULL) {
         if (temp != NULL) {
             fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-            fn_800C428C(temp);
+            Heap_Free(temp);
         }
         *(void **)((u8 *)arg0 + 0x28) = NULL;
     }
@@ -797,7 +797,7 @@ void fn_800578A8(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void *fn_800578F0(void *arg0, s16 arg1) {
     void fn_8006D8E8(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80285BF0[];
     void *temp;
 
@@ -808,18 +808,18 @@ void *fn_800578F0(void *arg0, s16 arg1) {
         if (temp != NULL) {
             if (temp != NULL) {
                 fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-                fn_800C428C(temp);
+                Heap_Free(temp);
             }
         }
         temp = *(void **)((u8 *)arg0 + 0x28);
         if (temp != NULL) {
             if (temp != NULL) {
                 fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-                fn_800C428C(temp);
+                Heap_Free(temp);
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -851,11 +851,11 @@ void *fn_80057998(void *arg0) {
 
 void *fn_80057A10(void *arg0, s16 arg1) {
     M2C_UNK fn_8006D8E8(s32);
-    M2C_UNK fn_800C428C(void *);
+    M2C_UNK Heap_Free(void *);
     if (arg0 != NULL) {
         fn_8006D8E8(M2C_FIELD(arg0, s32 *, 0x30));
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

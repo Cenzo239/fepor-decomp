@@ -1090,7 +1090,7 @@ void fn_801FF33C(void) {
 }
 
 void *fn_801FF340(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_8029B69C[];
     extern void *lbl_80291DA0[];
     extern void *lbl_802920E0[];
@@ -1104,7 +1104,7 @@ void *fn_801FF340(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2043,7 +2043,7 @@ void fn_802015A0(void) {
 }
 
 void *fn_802015A4(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_8029B864[];
     extern void *lbl_80291DA0[];
     extern void *lbl_802920E0[];
@@ -2057,7 +2057,7 @@ void *fn_802015A4(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

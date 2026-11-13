@@ -1415,7 +1415,7 @@ void *fn_80134DA8(void *arg0, s16 arg1) {
     extern u8 lbl_8028FDB0[];
 
     void fn_8001C5F8(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
 
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_80291758;
@@ -1430,7 +1430,7 @@ void *fn_80134DA8(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1487,7 +1487,7 @@ void fn_80134E48(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
 }
 
 void *fn_80134F74(void *arg0, s16 arg1) {
-    M2C_UNK fn_800C428C(void *);
+    M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
     extern u16 lbl_80292230[];
     extern u8 lbl_80291794[];
@@ -1505,7 +1505,7 @@ void *fn_80134F74(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1516,7 +1516,7 @@ s32 fn_80134FF0(void) {
 }
 
 void *fn_80134FF8(void *arg0, s16 arg1) {
-    M2C_UNK fn_800C428C(void *);
+    M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
     extern u16 lbl_80292230[];
     extern u8 lbl_802917D0[];
@@ -1534,7 +1534,7 @@ void *fn_80134FF8(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2307,7 +2307,7 @@ void fn_80136320(s32 *arg0, void *arg1) {
 }
 
 void *fn_801363C4(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_8029186C[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -2321,7 +2321,7 @@ void *fn_801363C4(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2381,7 +2381,7 @@ extern "C" void *fn_801364A0(void *arg0, s16 arg1) {
     } Owner;
     void fn_80136F2C(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_802918A0[];
     extern u8 lbl_80291944[];
     extern u8 lbl_80295478[];
@@ -2418,7 +2418,7 @@ extern "C" void *fn_801364A0(void *arg0, s16 arg1) {
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2450,7 +2450,7 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
     } Owner;
     void fn_80136F2C(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80291944[];
     extern u8 lbl_80295478[];
 
@@ -2483,7 +2483,7 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
         }
         fn_8013F2A4(arg0, 0);
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2657,7 +2657,7 @@ extern "C" void *fn_80136D88(void *arg0, s16 arg1) {
     };
     extern u8 lbl_802918E0[];
     extern u8 lbl_80295478[];
-    extern void fn_800C428C(void *);
+    extern void Heap_Free(void *);
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_802918E0;
         if (arg0 != NULL) {
@@ -2665,7 +2665,7 @@ extern "C" void *fn_80136D88(void *arg0, s16 arg1) {
             ((Obj *)arg0)->v2();
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2680,12 +2680,12 @@ extern "C" void *fn_80136E00(void *arg0, s16 arg1) {
         virtual void v2() = 0;
     };
     extern u8 lbl_80295478[];
-    extern void fn_800C428C(void *);
+    extern void Heap_Free(void *);
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_80295478;
         ((Obj *)arg0)->v2();
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -2762,7 +2762,7 @@ void fn_80136F2C(ListIter *ret, List *list, ListIter *start, ListIter *end)
   {
     node = start->node;
     start->node = node->next;
-    fn_800C428C(node);
+    Heap_Free(node);
     list->size--;
   }
 
@@ -3091,7 +3091,7 @@ void fn_801378E8(void *arg0, s32 arg1) {
 }
 
 void *fn_801378F0(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_802919DC[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -3105,7 +3105,7 @@ void *fn_801378F0(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -3266,7 +3266,7 @@ void fn_80137EA0(void *arg0, s32 arg1) {
 }
 
 void *fn_80137EA8(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_80291A0C[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -3280,7 +3280,7 @@ void *fn_80137EA8(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -3620,7 +3620,7 @@ s32 fn_80138AB8(void *arg0) {
 }
 
 void *fn_80138C3C(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_80291988[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -3634,14 +3634,14 @@ void *fn_80138C3C(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
 }
 
 void *fn_80138CA8(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_802919B0[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -3655,7 +3655,7 @@ void *fn_80138CA8(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -3716,7 +3716,7 @@ void fn_80138D88(void *arg0) {
 
 void *fn_80138DCC(void *arg0, s16 arg1) {
     void fn_800616A0(void *);
-    M2C_UNK fn_800C428C(void *);
+    M2C_UNK Heap_Free(void *);
     extern u16 lbl_8028FDB0[];
     extern u8 lbl_80291A3C[];
     extern u16 lbl_80292230[];
@@ -3733,7 +3733,7 @@ void *fn_80138DCC(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -5033,7 +5033,7 @@ extern "C" void *fn_8013B154(void *arg0, s16 arg1) {
     } Owner;
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80291A74[];
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
@@ -5070,7 +5070,7 @@ extern "C" void *fn_8013B154(void *arg0, s16 arg1) {
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -5167,7 +5167,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
     } Owner;
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80291AC8[];
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
@@ -5204,7 +5204,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -5237,7 +5237,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
     } Owner;
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80291B1C[];
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
@@ -5271,7 +5271,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
             }
             fn_8013F2A4(arg0, 0);
         }
-        if (arg1 > 0) fn_800C428C(arg0);
+        if (arg1 > 0) Heap_Free(arg0);
     }
     return arg0;
 }
@@ -5307,7 +5307,7 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
     } Owner;
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
 
@@ -5340,7 +5340,7 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
         }
         fn_8013F2A4(arg0, 0);
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -5355,7 +5355,7 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
         void *obj;
     };
     void fn_800616A0(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     struct Node *first;
     struct Node *last;
     struct Node *a;
@@ -5379,7 +5379,7 @@ loop:
     }
     node = (struct Node *)*start;
     *start = node->next;
-    fn_800C428C(node);
+    Heap_Free(node);
     (*list)--;
 check:
     node = (struct Node *)*start;
@@ -6602,7 +6602,7 @@ void fn_8013E300(void) {
 }
 
 void *fn_8013E314(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_80291C50[];
     extern void *lbl_80291DA0[];
     extern void *lbl_802920E0[];
@@ -6616,7 +6616,7 @@ void *fn_8013E314(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -6677,7 +6677,7 @@ extern "C" void fn_8013E398(void *arg0) {
 
 #pragma cplusplus reset
 void *fn_8013E3D4(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_80291CF8[];
     extern void *lbl_80291DA0[];
     extern void *lbl_802920E0[];
@@ -6691,7 +6691,7 @@ void *fn_8013E3D4(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -6793,7 +6793,7 @@ void *fn_8013E4E4(void *arg0, s16 arg1) {
             *(u16**)((char*)arg0 + 4) = lbl_802920E0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -6804,7 +6804,7 @@ void *fn_8013E540(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         *(u16**)((char*)arg0 + 4) = lbl_802920E0;
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -7104,7 +7104,7 @@ void *fn_8013E83C(void *arg0, s16 arg1) {
             *(u16**)((char*)arg0 + 4) = lbl_802920E0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -7120,14 +7120,14 @@ void *fn_8013E898(void *arg0, s16 arg1) {
             *(u16**)((char*)arg0 + 4) = lbl_802920E0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
 }
 
 void *fn_8013E8F4(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_80292178[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -7141,7 +7141,7 @@ void *fn_8013E8F4(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -7245,7 +7245,7 @@ extern "C" void fn_8013EF00(void *arg0) {
 #pragma cplusplus reset
 
 void *fn_8013EFCC(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_802921E0[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -7259,7 +7259,7 @@ void *fn_8013EFCC(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -7559,7 +7559,7 @@ void fn_8013FC68(ListIter *ret, List *list, ListIter *it) {
     it->node = next;
     prev->next = next;
     node->next->prev = node->prev;
-    fn_800C428C(node);
+    Heap_Free(node);
     size = list->size;
     next = it->node;
     list->size = --size;
@@ -7569,7 +7569,7 @@ void fn_8013FC68(ListIter *ret, List *list, ListIter *it) {
 #pragma cplusplus on
 extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_80232058(void *, void *, ...);
     void fn_8022CF78(void);
     extern char __files[];
@@ -7585,7 +7585,7 @@ extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
         Holder(void *l, Node *n) : list(l), node(n) {}
         ~Holder() {
             if (node != 0) {
-                fn_800C428C(node);
+                Heap_Free(node);
             }
         }
     };
@@ -7942,7 +7942,7 @@ extern "C" void *Ui_DestroyPanelBase(void *arg0, s16 arg1) {
     } Owner;
     void fn_8013FC68(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
 
     void *found;
     u8 ret[4];
@@ -7976,7 +7976,7 @@ extern "C" void *Ui_DestroyPanelBase(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9690,7 +9690,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
 void *fn_80144584(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void fn_8022C1E8(void *, void *, s32, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_80292358[];
     extern void *lbl_80292488[];
@@ -9703,7 +9703,7 @@ void *fn_80144584(void *arg0, s16 arg1) {
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9713,7 +9713,7 @@ void fn_80144D84(ListIter *ret, List *list, ListIter *start, ListIter *end);
 
 void *fn_80144610(void *arg0, s16 arg1) {
     void fn_80144D84(void *, void *, void *, void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     ListNode *sp10;
     ListNode *spC;
     u8 sp8[4];
@@ -9727,7 +9727,7 @@ void *fn_80144610(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9819,7 +9819,7 @@ void fn_801447A4(void *arg0, s32 arg1) {
 void *fn_801447B4(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void fn_8022C1E8(void *, void *, s32, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_802923E0[];
     extern void *lbl_80292434[];
@@ -9836,7 +9836,7 @@ void *fn_801447B4(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9867,7 +9867,7 @@ extern "C" void fn_8014485C(void *arg0) {
 void *fn_8014488C(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void fn_8022C1E8(void *, void *, s32, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_80292434[];
     extern void *lbl_80292488[];
@@ -9880,7 +9880,7 @@ void *fn_8014488C(void *arg0, s16 arg1) {
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9907,7 +9907,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
         u8 pad8c[0x24];
         void *subB0;
     };
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_802924DC[];
     extern u8 lbl_80295478[];
     extern u8 lbl_80292504[];
@@ -9937,7 +9937,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -9953,12 +9953,12 @@ extern "C" void *fn_80144A0C(void *arg0, s16 arg1) {
         virtual void v2() = 0;
     };
     extern u8 lbl_80292504[];
-    extern void fn_800C428C(void *);
+    extern void Heap_Free(void *);
     if (arg0 != NULL) {
         *(void **)((u8 *)arg0 + 0x44) = lbl_80292504;
         ((Obj *)arg0)->v2();
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -10002,8 +10002,8 @@ void fn_80144B1C(void **arg0, void *arg1) {
 }
 
 void fn_80144B38(void *arg0, void *arg1) {
-    void fn_800C428C(void *);
-    fn_800C428C(arg1);
+    void Heap_Free(void *);
+    Heap_Free(arg1);
 }
 
 void fn_80144B5C(void) {
@@ -10058,7 +10058,7 @@ void fn_80144D84(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     while (start->node != end->node) {
         node = start->node;
         start->node = node->next;
-        fn_800C428C(node);
+        Heap_Free(node);
         list->size--;
     }
     ret->node = end->node;
@@ -10073,7 +10073,7 @@ void fn_80144E34(ListIter *ret, List *list, ListIter *it) {
     it->node = next;
     prev->next = next;
     node->next->prev = node->prev;
-    fn_800C428C(node);
+    Heap_Free(node);
     size = list->size;
     next = it->node;
     list->size = --size;
@@ -10083,7 +10083,7 @@ void fn_80144E34(ListIter *ret, List *list, ListIter *it) {
 #pragma cplusplus on
 extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_80232058(void *, void *, ...);
     void fn_8022CF78(void);
     extern char __files[];
@@ -10099,7 +10099,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
         Holder(void *l, Node *n) : list(l), node(n) {}
         ~Holder() {
             if (node != 0) {
-                fn_800C428C(node);
+                Heap_Free(node);
             }
         }
     };

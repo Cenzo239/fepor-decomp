@@ -4007,7 +4007,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         u32 size;
         Elem *data;
     } Vec;
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *Heap_Alloc(u32);
     void fn_801FB548(Vec *);
     void fn_8022CF78(void);
@@ -4244,7 +4244,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         }
         fn_801FB548(&tmp);
         if (tmp.data != NULL) {
-            fn_800C428C(tmp.data);
+            Heap_Free(tmp.data);
         }
     }
 }
@@ -4259,7 +4259,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
         s32 size;
         Elem *data;
     } Vec;
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *Heap_Alloc(u32);
     void fn_801FB548(Vec *);
     M2C_UNK fn_8022CF78(void);
@@ -4313,22 +4313,22 @@ void fn_801FB048(void *arg0, u32 arg1) {
         }
         fn_801FB548(&tmp);
         if (tmp.data != NULL) {
-            fn_800C428C(tmp.data);
+            Heap_Free(tmp.data);
         }
     }
 }
 
 void *fn_801FB1C0(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_801FB548(void *);
 
     if (arg0 != NULL) {
         fn_801FB548(arg0);
         if (M2C_FIELD(arg0, void **, 8) != NULL) {
-            fn_800C428C(M2C_FIELD(arg0, void **, 8));
+            Heap_Free(M2C_FIELD(arg0, void **, 8));
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -4342,7 +4342,7 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
         void *obj;
     };
     void fn_800616A0(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     struct Node *first;
     struct Node *last;
     struct Node *a;
@@ -4367,7 +4367,7 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
         }
         node = (struct Node *)*start;
         *start = node->next;
-        fn_800C428C(node);
+        Heap_Free(node);
         (*list)--;
     }
     *ret = *end;
@@ -4376,7 +4376,7 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void *Heap_Alloc(u32);
-extern "C" void fn_800C428C(void *);
+extern "C" void Heap_Free(void *);
 extern "C" void fn_800506E0(s32, s32, void *);
 extern "C" void GActor_Finalize(void *);
 extern "C" void fn_800616A0(void *);
@@ -4406,7 +4406,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
         Holder(void *l, Node *n) : list(l), node(n) {}
         ~Holder() {
             if (node != 0) {
-                fn_800C428C(node);
+                Heap_Free(node);
             }
         }
     };
@@ -5005,7 +5005,7 @@ loop_4:
 
 #pragma use_lmw_stmw on
 void fn_801FC038(void *arg0, void *arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_801FC400(void *);
     void fn_801FC404(void *);
     void fn_801FC408(void *, void *, s32);
@@ -5044,7 +5044,7 @@ void fn_801FC038(void *arg0, void *arg1) {
             }
             fn_801FC438(arg0);
             fn_801FC42C(arg0);
-            fn_800C428C(v28);
+            Heap_Free(v28);
         }
         v27 = *(void **)((u8 *)v29 + 4);
         if (v27 != 0) {
@@ -5072,11 +5072,11 @@ void fn_801FC038(void *arg0, void *arg1) {
             }
             fn_801FC438(arg0);
             fn_801FC42C(arg0);
-            fn_800C428C(v27);
+            Heap_Free(v27);
         }
         fn_801FC404(arg0);
         fn_801FC400((u8 *)arg0 + 4);
-        fn_800C428C(v29);
+        Heap_Free(v29);
     }
     v27 = *(void **)((u8 *)arg1 + 4);
     if (v27 != 0) {
@@ -5106,7 +5106,7 @@ void fn_801FC038(void *arg0, void *arg1) {
             }
             fn_801FC438(arg0);
             fn_801FC42C(arg0);
-            fn_800C428C(v28);
+            Heap_Free(v28);
         }
         v28 = *(void **)((u8 *)v27 + 4);
         if (v28 != 0) {
@@ -5134,13 +5134,13 @@ void fn_801FC038(void *arg0, void *arg1) {
             }
             fn_801FC438(arg0);
             fn_801FC42C(arg0);
-            fn_800C428C(v28);
+            Heap_Free(v28);
         }
         fn_801FC404(arg0);
         fn_801FC400((u8 *)arg0 + 4);
-        fn_800C428C(v27);
+        Heap_Free(v27);
     }
-    fn_800C428C(arg1);
+    Heap_Free(arg1);
 }
 #pragma use_lmw_stmw reset
 
@@ -5153,8 +5153,8 @@ void fn_801FC404(void) {
 }
 
 void fn_801FC408(void *arg0, void *arg1) {
-    void fn_800C428C(void *);
-    fn_800C428C(arg1);
+    void Heap_Free(void *);
+    Heap_Free(arg1);
 }
 
 s32 fn_801FC42C(s32 arg0) {

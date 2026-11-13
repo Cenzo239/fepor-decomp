@@ -433,7 +433,7 @@ void *fn_80019F3C(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1301,7 +1301,7 @@ s32 fn_8001B95C(void *arg0) {
 
 extern u8 lbl_802842A4[];
 void *fn_8001B964(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_800C4588(s32);
     extern u8 lbl_802842A4[];
 
@@ -1313,7 +1313,7 @@ void *fn_8001B964(void *arg0, s16 arg1) {
             *(u8 *)((char *)arg0 + 0xC) = 0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1670,7 +1670,7 @@ void *fn_8001C4FC(void *arg0, void *arg1) {
 
 void *fn_8001C5F8(void *arg0, s16 arg1) {
     void fn_800C3220(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u8 lbl_803206EC[];
     typedef struct {
         u8 pad : 1;
@@ -1692,7 +1692,7 @@ void *fn_8001C5F8(void *arg0, s16 arg1) {
             bf->rest = 0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

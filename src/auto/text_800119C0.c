@@ -16,7 +16,7 @@ s32 fn_800119D8(void) {
 
 void *fn_800119E0(void *arg0, s16 arg1) {
     void fn_8006EDA0(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u16 lbl_80283EFC[];
     extern u16 lbl_80283948[];
     struct { void *vt; u32 unk4; } *obj;
@@ -31,7 +31,7 @@ void *fn_800119E0(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(obj);
+            Heap_Free(obj);
         }
     }
     return obj;
@@ -2243,7 +2243,7 @@ void fn_800167E4(void *arg0)
 
 void *fn_800169A8(void *arg0, s16 arg1)
 {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_8022C1E8(void *, void (*)(void), s32, s32);
     void fn_8001C5F8(void);
 
@@ -2270,7 +2270,7 @@ void *fn_800169A8(void *arg0, s16 arg1)
         fn_8022C1E8((u8 *)arg0 + 0x1CC, fn_8001C5F8, 8, 4);
     after:
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

@@ -3155,7 +3155,7 @@ void fn_801F09E8(void) {
 #pragma cplusplus on
 extern "C" void fn_801F0A08(void *arg0) {
     void fn_8005376C(void);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -3163,10 +3163,10 @@ extern "C" void fn_801F0A08(void *arg0) {
     };
     void *temp;
 
-    fn_800C428C(*(void **)((char *)arg0 + 0x38));
-    fn_800C428C(*(void **)((char *)arg0 + 0x3C));
-    fn_800C428C(*(void **)((char *)arg0 + 0x40));
-    fn_800C428C(*(void **)((char *)arg0 + 0x44));
+    Heap_Free(*(void **)((char *)arg0 + 0x38));
+    Heap_Free(*(void **)((char *)arg0 + 0x3C));
+    Heap_Free(*(void **)((char *)arg0 + 0x40));
+    Heap_Free(*(void **)((char *)arg0 + 0x44));
     temp = *(void **)((char *)arg0 + 0x30);
     if (temp != NULL) {
         ((Obj *)temp)->v1(1);

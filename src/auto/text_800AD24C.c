@@ -74,11 +74,11 @@ void fn_800AD24C(void) {
 
 s32 fn_800AD284(s32 arg0, s16 arg1) {
     M2C_UNK fn_8001C5F8(s32, M2C_UNK);
-    M2C_UNK fn_800C428C(s32);
+    M2C_UNK Heap_Free(s32);
     if (arg0 != 0) {
         fn_8001C5F8(arg0 + 4, -1);
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

@@ -1099,7 +1099,7 @@ void fn_80122C84(void *arg0) {
     p = arg0;
     i = 0;
     do {
-        fn_800C428C(*(s32 *)((u8 *)p + 0x30));
+        Heap_Free(*(s32 *)((u8 *)p + 0x30));
         *(s32 *)((u8 *)p + 0x30) = zero;
         i += 1;
         p = (u8 *)p + 4;
@@ -1213,7 +1213,7 @@ extern u16 lbl_8028E090[];
 void *fn_80122E80(void *arg0, s16 arg1) {
     void String_Destroy(void *, s32);
     void fn_800DF724(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_802902E8[];
 
     if (arg0 != NULL) {
@@ -1224,7 +1224,7 @@ void *fn_80122E80(void *arg0, s16 arg1) {
             fn_800DF724(arg0, 0);
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1921,7 +1921,7 @@ void fn_801248E4(void *arg0) {
     extern u8 lbl_80274F74[];
 
     void fn_800C426C(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_801479C4(void *, s32);
     void fn_8006D8E8(void *);
 
@@ -1949,7 +1949,7 @@ void fn_801248E4(void *arg0) {
             *(void **)(data + 4) = NULL;
         }
 
-        fn_800C428C(data);
+        Heap_Free(data);
     }
 
     fn_801479C4(lbl_80274F74 + 0x94, 0xFA);

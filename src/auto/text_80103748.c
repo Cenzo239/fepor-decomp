@@ -1204,7 +1204,7 @@ void *fn_80105284(void *arg0, void *arg1) {
 
 void *fn_80105334(void *arg0, s16 arg1) {
     void fn_8005C7E8(void *);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_800C4588(void *);
     void *p;
 
@@ -1227,7 +1227,7 @@ void *fn_80105334(void *arg0, s16 arg1) {
         M2C_FIELD(arg0, s32 *, 8) = 0;
         M2C_FIELD(arg0, s32 *, 0xC) = 0;
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

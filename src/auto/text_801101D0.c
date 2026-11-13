@@ -2725,7 +2725,7 @@ void *fn_801179DC(void *arg0, s16 arg1) {
     void BinTree_Destroy(void *, void *);
     void String_Destroy(void *, s32);
     void fn_800E5F84(void *, s32);
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern u16 lbl_8028F6C8[];
     u8 *p;
 
@@ -2742,7 +2742,7 @@ void *fn_801179DC(void *arg0, s16 arg1) {
         String_Destroy(p + 0x154, -1);
         fn_800E5F84(arg0, 0);
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -4984,7 +4984,7 @@ block_14:
 }
 
 void *fn_8011C558(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
 
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_80292230;
@@ -4992,7 +4992,7 @@ void *fn_8011C558(void *arg0, s16 arg1) {
             *(void **)arg0 = lbl_8028FDB0;
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -5114,7 +5114,7 @@ void *fn_8011C69C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 void *fn_8011C8DC(void *arg0, s16 arg1) {
 #pragma global_optimizer off
     extern u8 lbl_8028FDD0[];
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *fn_800CA6C8(void *, s16);
     void fn_800E45EC(void *, s16);
     u8 *p;
@@ -5126,13 +5126,13 @@ void *fn_8011C8DC(void *arg0, s16 arg1) {
             if (p + 0xB8)
                 if (p + 0xB8)
                     if (*(void **)(p + 0xC0))
-                        fn_800C428C(*(void **)(p + 0xC0));
+                        Heap_Free(*(void **)(p + 0xC0));
         if (p + 0xAC)
             if (p + 0xAC)
                 fn_800CA6C8(p + 0xAC, 0);
         fn_800E45EC(arg0, 0);
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

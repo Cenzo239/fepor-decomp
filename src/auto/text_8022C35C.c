@@ -3,7 +3,7 @@
 #include "common.h"
 
 void *dtor_8022C35C(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     if (arg0 != (void *)0) {
         u32 count = *(u32 *)((char *)arg0 + 0x10);
         u32 capacity = *(u32 *)((char *)arg0 + 0x8);
@@ -25,7 +25,7 @@ void *dtor_8022C35C(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

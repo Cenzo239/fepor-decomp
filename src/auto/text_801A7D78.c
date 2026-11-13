@@ -4,7 +4,7 @@
 extern u16 lbl_80367218;
 u32 fn_801A7D78(u32 arg0, s16 arg1) {
     M2C_UNK fn_8001C5F8(s32, M2C_UNK);
-    M2C_UNK fn_800C428C(u32);
+    M2C_UNK Heap_Free(u32);
     M2C_UNK fn_801A9EB8(u32);
     M2C_UNK fn_8022C1E8(s32, M2C_UNK (*)(s32, M2C_UNK), M2C_UNK, M2C_UNK);
 
@@ -37,7 +37,7 @@ u32 fn_801A7D78(u32 arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;
@@ -1963,7 +1963,7 @@ s32 fn_801AE24C(void *arg0) {
 }
 
 void *fn_801AE264(void *arg0, s16 arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     extern void *lbl_8029759C[];
     extern void *lbl_80292230[];
     extern void *lbl_8028FDB0[];
@@ -1977,7 +1977,7 @@ void *fn_801AE264(void *arg0, s16 arg1) {
             }
         }
         if (arg1 > 0) {
-            fn_800C428C(arg0);
+            Heap_Free(arg0);
         }
     }
     return arg0;

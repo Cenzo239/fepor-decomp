@@ -420,8 +420,8 @@ s32 fn_8005B8CC(void) {
 
 extern void *lbl_803672F4;
 s32 fn_8005B8E8(void) {
-    void fn_800C428C(void *);
-    fn_800C428C(lbl_803672F4);
+    void Heap_Free(void *);
+    Heap_Free(lbl_803672F4);
     lbl_803672F4 = 0;
     return 1;
 }

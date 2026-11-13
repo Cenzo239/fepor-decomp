@@ -406,7 +406,7 @@ void fn_8012CCA4(void *arg0)
         count = object[0x6D];
 
         for (i = 0; i < count; i++) {
-            fn_800C428C((void *)array[i]);
+            Heap_Free((void *)array[i]);
         }
 
         fn_800C426C(*(void **)(object + 0x38));
@@ -2527,36 +2527,36 @@ void fn_80130920(void) {
 }
 
 void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
-    void Prim2D_Begin(void);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void fn_8000A258(void);
+    void fn_80009D74(f32, f32, f32, f32);
     void fn_80009BC0(void (*)(void), s32);
-    void Prim2D_SetColorByte(s32);
-    void Prim2D_PrepareTex(void);
+    void fn_80009B8C(s32);
+    void fn_8000A248(void);
     void *fn_80105C5C(void *, u8);
     void fn_8005AC24(void *, s32, s32);
     void fn_80130920(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern u8 lbl_802F0350[];
-    s32 base;
+    u8 *base;
     s32 off;
     s32 unit;
     s32 i;
     void *temp;
 
-    Prim2D_Begin();
-    Prim2D_SetTransform(farg0, farg1, lbl_8036A500, lbl_8036A50C);
+    fn_8000A258();
+    fn_80009D74(farg0, farg1, lbl_8036A500, lbl_8036A50C);
     fn_80009BC0(fn_80130920, 0);
-    Prim2D_SetColorByte(0xFF);
-    Prim2D_PrepareTex();
+    fn_80009B8C(0xFF);
+    fn_8000A248();
     unit = (s32)*(void **)arg1;
+    base = lbl_802F0350;
     off = 0x102;
-    base = (s32)lbl_802F0350;
     i = 0;
     do {
         temp = fn_80105C5C((void *)(unit + 0x1BC), (u8)i);
         if (temp != NULL && *(u8 *)((u8 *)temp + 0x19) != 0) {
-            fn_8005AC24((void *)base, off, 0);
+            fn_8005AC24(base, off, 0);
             off += 0x20;
         }
         i += 1;

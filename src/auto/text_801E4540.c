@@ -2813,7 +2813,7 @@ void fn_801E9E30(s32 arg0, s32 arg1)
 }
 
 void fn_801EA018(s32 *arg0, u8 *arg1) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void fn_801EA618(s32 *, s32 *, u8 *);
     void *sp1C;
     void *sp18;
@@ -2914,7 +2914,7 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
             while (var_r29 != &sp18) {
                 temp_r3 = var_r29;
                 var_r29 = *(void **)((u8 *)var_r29 + 4);
-                fn_800C428C(temp_r3);
+                Heap_Free(temp_r3);
                 sp14 -= 1;
             }
         }
@@ -2922,7 +2922,7 @@ void fn_801EA018(s32 *arg0, u8 *arg1) {
 }
 
 void fn_801EA430(void *arg0) {
-    void fn_800C428C(void *);
+    void Heap_Free(void *);
     void *head;
     void *cur;
     void *end;
@@ -2947,7 +2947,7 @@ void fn_801EA430(void *arg0) {
                 while (cur != end) {
                     node = cur;
                     cur = *(void **)((u8 *)cur + 4);
-                    fn_800C428C(node);
+                    Heap_Free(node);
                     *(s32 *)arg0 = *(s32 *)arg0 - 1;
                 }
             }
