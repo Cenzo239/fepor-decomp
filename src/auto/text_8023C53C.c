@@ -3639,26 +3639,27 @@ s32 fn_8024A430(u16 arg0) {
     return 0;
 }
 
-s32 Sound_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
-    s32 temp_r29;
+/* Walk a sound handle's voice chain and set a u8 synth control on each matching voice. */
+s32 Sound_SetParamU8(s32 handle, s32 ctrl, s32 value) {
+    s32 voiceOff;
     s32 ret;
-    s32 var_r3;
-    char *temp_r7;
+    s32 vid;
+    char *voice;
 
     ret = 0;
-    var_r3 = Sound_LookupVid();
-    while ((u32)(var_r3 + 0x10000) != 0xFFFF) {
-        u8 idx = (u8)var_r3;
-        temp_r29 = idx * 0x458;
-        temp_r7 = (char *)gSynthVoices + temp_r29;
-        if ((u32)var_r3 == *(u32 *)(temp_r7 + 0xF4)) {
-            if (*(u64 *)(temp_r7 + 0x114) & 2) {
-                Sound_WriteParamU8(arg1, idx, *(u8 *)(temp_r7 + 0x217), arg2);
+    vid = Sound_LookupVid();
+    while ((u32)(vid + 0x10000) != 0xFFFF) {
+        u8 idx = (u8)vid;
+        voiceOff = idx * 0x458;
+        voice = (char *)gSynthVoices + voiceOff;
+        if ((u32)vid == *(u32 *)(voice + 0xF4)) {
+            if (*(u64 *)(voice + 0x114) & 2) {
+                Sound_WriteParamU8(ctrl, idx, *(u8 *)(voice + 0x217), value);
             } else {
-                Sound_WriteParamU8(arg1, idx, *(u8 *)(temp_r7 + 0x122), arg2);
+                Sound_WriteParamU8(ctrl, idx, *(u8 *)(voice + 0x122), value);
             }
             ret = 1;
-            var_r3 = *(s32 *)((char *)gSynthVoices + temp_r29 + 0xEC);
+            vid = *(s32 *)((char *)gSynthVoices + voiceOff + 0xEC);
         } else {
             return ret;
         }
