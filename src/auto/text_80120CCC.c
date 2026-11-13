@@ -2956,7 +2956,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_Config_TutSet_sfx_vol(void);
     void ScriptCmd_GetTutorial(void);
     void ScriptCmd_CmLoadScript(void);
-    void fn_80013D4C(void);
+    void ScriptCmd_CmFreeScript(void);
     void fn_80013C78(void);
     void fn_80013BD4(void);
     void fn_80127A00(void);
@@ -3004,7 +3004,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x25C, ScriptCmd_Config_TutSet_sfx_vol, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x272, ScriptCmd_GetTutorial, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x27E, ScriptCmd_CmLoadScript, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x28B, fn_80013D4C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x28B, ScriptCmd_CmFreeScript, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x298, fn_80013C78, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2A6, fn_80013BD4, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2B6, fn_80127A00, 0);

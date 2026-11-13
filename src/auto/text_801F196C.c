@@ -28,7 +28,7 @@ extern void* lbl_8029A8C8[];
 extern void fn_80050E80(void);
 extern void fn_8005C7C8(void*);
 extern void fn_8003F670();
-extern void fn_80013D4C(void);
+extern void ScriptCmd_CmFreeScript(void);
 extern void fn_8005BCAC(void);
 extern void fn_800C4B8C(void);
 
@@ -2873,7 +2873,7 @@ s32 fn_801F87C4(void) {
 }
 
 void fn_801F87E0(void) {
-    void fn_80013D4C(void);
+    void ScriptCmd_CmFreeScript(void);
     void fn_8003F670(void *);
     void fn_80050E80(void);
     void fn_8005BCAC(void);
@@ -2896,7 +2896,7 @@ void fn_801F87E0(void) {
         fn_8003F670(p);
         lbl_8036840C = NULL;
     }
-    fn_80013D4C();
+    ScriptCmd_CmFreeScript();
     fn_8005BCAC();
     fn_800C4B8C();
     fn_800C4B8C();

@@ -427,7 +427,7 @@ found:
     return 1;
 }
 
-s32 fn_80013D4C(void)
+s32 ScriptCmd_CmFreeScript(void)
 {
     extern void *lbl_80367190;
     extern u16 lbl_80367196;
