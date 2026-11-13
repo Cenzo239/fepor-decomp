@@ -7262,7 +7262,7 @@ void DEMOInit(void *arg0)
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer2;
     extern void *DemoFrameBuffer1;
-    extern s32 lbl_80367328;
+    extern s32 DemoFrameBufferSize;
     extern u8 lbl_8029DFA8[];
     extern u8 lbl_8029E020[];
     extern u8 lbl_8029E05C[];
@@ -7328,7 +7328,7 @@ void DEMOInit(void *arg0)
     w = (*(u16 *)((u8 *)rm + 4) + 0xF) & 0xFFF0;
     fbSize = w * *(u16 *)((u8 *)rm + 8) * 2;
     DemoFrameBuffer1 = (void *)(((u32)arenaLo + 0x1F) & ~0x1Fu);
-    lbl_80367328 = fbSize;
+    DemoFrameBufferSize = fbSize;
     DemoFrameBuffer2 = (void *)(((u32)DemoFrameBuffer1 + (fbSize + 0x1F)) & ~0x1Fu);
     DemoCurrentBuffer = DemoFrameBuffer2;
     OSSetArenaLo((void *)(((u32)DemoFrameBuffer2 + (fbSize + 0x1F)) & ~0x1Fu));
