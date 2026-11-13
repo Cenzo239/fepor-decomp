@@ -1299,7 +1299,7 @@ void *fn_801ECE40(s32 arg0) {
 #pragma use_lmw_stmw on
 s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *fn_801ED12C(s32);
-    void *fn_801ED6D4(void *, void *);
+    void *AramCache_InsertFree(void *, void *);
     s32 fn_8000D598(s32);
     s32 fn_8005E55C(void);
     void DCFlushRange(s32, s32);
@@ -1367,7 +1367,7 @@ found:
                     temp = *(void **)(node + 0x60);
                 }
                 lbl_803683C0 = temp;
-                lbl_803683C4 = fn_801ED6D4(lbl_803683C4, node);
+                lbl_803683C4 = AramCache_InsertFree(lbl_803683C4, node);
             }
             size += 1;
             node += 0x6C;
@@ -1397,7 +1397,7 @@ found:
 
 void fn_801ED12C(s32 arg0) {
     void fn_801EC7B8(void);
-    void *fn_801ED6D4(void *, void *);
+    void *AramCache_InsertFree(void *, void *);
     extern void *lbl_803683C0;
     extern void *lbl_803683C4;
     extern u8 lbl_80332270[];
@@ -1451,7 +1451,7 @@ reclaim:
     } else {
         lbl_803683C0 = *(void **)((u8 *)node + 0x60);
     }
-    lbl_803683C4 = fn_801ED6D4(lbl_803683C4, node);
+    lbl_803683C4 = AramCache_InsertFree(lbl_803683C4, node);
     goto reclaim;
 
 have:
@@ -1698,7 +1698,7 @@ found:
     *(s32 *)((u8 *)lbl_803683C4 + 0x68) = lbl_803683C8;
 }
 
-void *fn_801ED6D4(void *list, void *cell)
+void *AramCache_InsertFree(void *list, void *cell)
 {
   void *prev;
   void *next;
