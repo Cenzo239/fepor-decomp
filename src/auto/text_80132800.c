@@ -7865,21 +7865,20 @@ void Ui_AddChild(void *arg0, void *arg1) {
         for (;;) {
             node = *(void **)((u8 *)node + 4);
         check:
-            if (node == sentinel) {
-                break;
-            }
-            if (*(void **)((u8 *)node + 8) != arg1) {
-                continue;
+            if (node != sentinel) {
+                if (*(void **)((u8 *)node + 8) != arg1) {
+                    continue;
+                }
             }
             if (node != sentinel) {
                 return;
             }
+            sp10 = sentinel;
+            fn_8013FCE0(&spC, (u8 *)arg0 + 0x34, &sp10, &sp8);
+            if (sp8 != 0) {
+                *(u32 *)((u8 *)sp8 + 4) = *(u32 *)((u8 *)sp8 + 4) + 1;
+            }
             break;
-        }
-        sp10 = sentinel;
-        fn_8013FCE0(&spC, (u8 *)arg0 + 0x34, &sp10, &sp8);
-        if (sp8 != 0) {
-            *(u32 *)((u8 *)sp8 + 4) = *(u32 *)((u8 *)sp8 + 4) + 1;
         }
     }
 }
