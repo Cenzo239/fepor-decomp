@@ -5681,7 +5681,7 @@ void fn_801C1E0C(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     void **fn_8006EDD8(void *, s32);
-    extern void *lbl_803674F4;
+    extern void *gUiAtlas;
     extern u32 lbl_8036B320;
     extern u32 lbl_8036B324;
     extern f32 lbl_8036B338;
@@ -5709,7 +5709,7 @@ void fn_801C1E0C(void *arg0) {
     f32 tw;
 
     self = arg0;
-    mgr = lbl_803674F4;
+    mgr = gUiAtlas;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B338, lbl_8036B338, lbl_8036B33C, lbl_8036B340);
     Prim2D_SetColorByte(*(u8 *)((u8 *)self + 0x32));
@@ -5775,7 +5775,7 @@ void fn_801C2284(void *arg0) {
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
-    extern void *lbl_803674F4;
+    extern void *gUiAtlas;
     extern f32 lbl_8036B338;
     extern f32 lbl_8036B340;
     extern f32 lbl_8036B344;
@@ -5798,7 +5798,7 @@ void fn_801C2284(void *arg0) {
     s16 ty;
 
     self = arg0;
-    mgr = lbl_803674F4;
+    mgr = gUiAtlas;
     tw = (f32)Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x44)), -1, lbl_8036B340);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B338, lbl_8036B338, lbl_8036B35C, lbl_8036B340);
@@ -15378,7 +15378,7 @@ void fn_801DCD3C(u8 *arg0)
     extern f32 lbl_8036B654, lbl_8036B658, lbl_8036B664;
     extern f32 lbl_8036B6A0, lbl_8036B6A4, lbl_8036B6A8, lbl_8036B6AC, lbl_8036B6B0;
     extern s32 lbl_8036B620, lbl_8036B624;
-    extern s32 lbl_803674F4;
+    extern s32 gUiAtlas;
     extern u8 gUiSeCues[];
 
     f32 f30;

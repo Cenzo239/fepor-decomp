@@ -48,10 +48,10 @@ extern f32 lbl_803697E4;
 void fn_8008CD9C(void) {
     void fn_8006EEFC(void *, void *);
     extern u16 lbl_803674F0;
-    extern u16 lbl_803674F4;
+    extern u16 gUiAtlas;
     extern u8 lbl_8026CC88[];
 
     fn_8006EEFC(&lbl_803674F0, &lbl_8026CC88[0x5B]);
-    fn_8006EEFC(&lbl_803674F4, &lbl_8026CC88[0x6C]);
+    fn_8006EEFC(&gUiAtlas, &lbl_8026CC88[0x6C]);
 }
 

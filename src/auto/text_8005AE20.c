@@ -7914,9 +7914,9 @@ s32 fn_80070EE0(void *arg0, s32 unused, s32 arg2) {
 
 void fn_80070F3C(void *arg0) {
     extern s32 gUiContext[];
-    extern s32 lbl_803674F4;
+    extern s32 gUiAtlas;
     *(s32 *)((u8 *)arg0 + 0xC) = gUiContext[0];
-    *(s32 *)((u8 *)arg0 + 8) = lbl_803674F4;
+    *(s32 *)((u8 *)arg0 + 8) = gUiAtlas;
 }
 
 void fn_80071410(s32 unused, void *arg1, f32 f1, f32 f2) {

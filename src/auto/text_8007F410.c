@@ -69,7 +69,7 @@ void fn_8007F410(void *arg0) {
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 gUiStrings[];
     extern u8 gUiIconDrawer[];
-    extern s32 lbl_803674F4;
+    extern s32 gUiAtlas;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
@@ -118,11 +118,11 @@ void fn_8007F410(void *arg0) {
     Prim2D_EmitQuad();
     Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
-    tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
+    tex = *fn_8006EDD8(gUiAtlas, 0x1D);
     sh = lbl_80369430 * tex[0];
     sw = lbl_80369430 * tex[1];
     color = *Ui_GetColor(1);
-    tex = *fn_8006EDD8((id = lbl_803674F4), 0x1D);
+    tex = *fn_8006EDD8((id = gUiAtlas), 0x1D);
     w = tex[1];
     h = tex[0];
     Prim2D_Begin();

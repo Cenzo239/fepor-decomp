@@ -132,7 +132,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Color *Ui_GetColor(s32);
     s32 Str_Cmp(void *, void *);
     extern u8 gUiStrings[];
-    extern s32 lbl_803674F4;
+    extern s32 gUiAtlas;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
@@ -160,11 +160,11 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
 
     x = farg0;
     y = farg1;
-    tex = *fn_8006EDD8(lbl_803674F4, 0x19);
+    tex = *fn_8006EDD8(gUiAtlas, 0x19);
     sh = (f32)(u32)tex[0] * lbl_80369430;
     sw = (f32)(u32)tex[1] * lbl_80369430;
     color = *Ui_GetColor(1);
-    tex = *fn_8006EDD8((id = lbl_803674F4), 0x19);
+    tex = *fn_8006EDD8((id = gUiAtlas), 0x19);
     w = (f32)(u32)tex[1];
     h = (f32)(u32)tex[0];
     Prim2D_Begin();
@@ -374,7 +374,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     s8 fn_8003A778(void *);
     s8 fn_8003B490(void *);
     extern u8 gUiStrings[];
-    extern s32 lbl_803674F4;
+    extern s32 gUiAtlas;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
@@ -421,11 +421,11 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_EmitQuad();
     Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
-    tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
+    tex = *fn_8006EDD8(gUiAtlas, 0x1D);
     sh = lbl_80369430 * tex[0];
     sw = lbl_80369430 * tex[1];
     color = *Ui_GetColor(1);
-    tex = *fn_8006EDD8((id = lbl_803674F4), 0x1D);
+    tex = *fn_8006EDD8((id = gUiAtlas), 0x1D);
     w = tex[1];
     h = tex[0];
     Prim2D_Begin();

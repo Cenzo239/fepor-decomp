@@ -206,7 +206,7 @@ void Ui_DrawTooltip(void *arg0) {
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     extern u32 gUiInputFlags;
-    extern void *lbl_803674F4;
+    extern void *gUiAtlas;
     extern f32 lbl_8036A258;
     extern f32 lbl_8036A268;
     extern f32 lbl_8036A26C;
@@ -241,7 +241,7 @@ void Ui_DrawTooltip(void *arg0) {
         Prim2D_SetTransform(z, z, lbl_8036A26C, lbl_8036A268);
         Prim2D_SetColorByte(M2C_FIELD(self, u8 *, 0x50));
         Prim2D_PrepareTex();
-        Ui_LoadAtlasTex(lbl_803674F4, spC, 0x1E);
+        Ui_LoadAtlasTex(gUiAtlas, spC, 0x1E);
         *(volatile u16 *)(spC + 0x20) = fn_80222A80(spC);
         *(volatile u16 *)(spC + 0x22) = fn_80222A90(spC);
         Prim2D_Begin();
