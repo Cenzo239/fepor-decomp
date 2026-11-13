@@ -15350,7 +15350,7 @@ s32 fn_800EB774(void) {
     return *(u32*)((u8*)lbl_80320C20 + 0xA004);
 }
 
-s32 fn_800EB788(void *arg0) {
+s32 Card_CheckError(void *arg0) {
     extern u16 lbl_80320C20[];
     void Process_Goto(void *, s32);
 

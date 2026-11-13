@@ -16437,7 +16437,7 @@ void fn_801DFB4C(void *arg0) {
 s32 Save_ClearCorruptSlots(s32 arg0) {
     extern void *gSaveDataBase;
     extern u8 lbl_8027E980[];
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
@@ -16455,7 +16455,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
     u8 chkOk;
 
     self = arg0;
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return 0;
     }
 
@@ -16672,11 +16672,11 @@ found_slot:
 void fn_801E00EC(void *arg0, void *arg1) { void fn_8000CAA0(void *); extern u8 lbl_80299F1C[]; (void)arg0; (void)arg1; fn_8000CAA0(lbl_80299F1C); }
 
 void fn_801E0114(s32 arg0) {
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void fn_801E0154(void *, s32);
     extern u32 gSaveDataBase;
 
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return;
     }
 
@@ -17042,11 +17042,11 @@ void fn_801E0B48(s32 unused, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_801E0D30(void *arg0) {
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void fn_801E0D78(void *, void *, s32, s32);
     extern u16 gSaveDataBase;
 
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return;
     }
 
@@ -17175,11 +17175,11 @@ found_slot:
     *(void **)((u8 *)self + 0x54) = best;
 }
 void fn_801E1168(void *arg0) {
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void fn_801E11AC(void *, void *, s32);
     extern u16 gSaveDataBase[4];
 
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return;
     }
 
@@ -17273,11 +17273,11 @@ void fn_801E1498(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4);
 
 void fn_801E14F4(void *arg0) {
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void fn_801E1540(void *, void *, s32, s32, s32);
     extern u16 gSaveDataBase;
 
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return;
     }
 
@@ -17812,11 +17812,11 @@ void fn_801E204C(void *arg0) {
 }
 
 void fn_801E2084(s32 arg0) {
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     void fn_801E1CB4(void *, s32);
     extern u16 gSaveDataBase;
 
-    if (fn_800EB788() != 0) {
+    if (Card_CheckError() != 0) {
         return;
     }
 
@@ -17861,8 +17861,8 @@ void fn_801E20C4(void *arg0) {
 }
 
 void fn_801E218C(void) {
-    u8 fn_800EB788(void);
-    if (fn_800EB788() != 0) {
+    u8 Card_CheckError(void);
+    if (Card_CheckError() != 0) {
         return;
     }
 }
@@ -18479,11 +18479,11 @@ void fn_801E3118(s32 *arg0, s32 arg1, u8 arg2) {
 void fn_801E31C8(void *arg0)
 {
     void fn_801E2620(void *, s32);
-    u8 fn_800EB788(void);
+    u8 Card_CheckError(void);
     extern u8 gSaveDataBase;
     u32 value;
 
-    if ((u8)fn_800EB788() != 0) {
+    if ((u8)Card_CheckError() != 0) {
         return;
     }
 
