@@ -227,22 +227,20 @@ s32 fn_801A30B8(void) {
 }
 
 s32 fn_801A30C0(s32 arg0) {
-    void Unit_SetMapPos(void *, u8, u8);
-    void Battle_SetupPair(void *, void *, void *);
-    void Battle_SelectWeapon(void *, u8);
-    void fn_80036150(void *);
-    void fn_8019BCC0(s32, s32, s32);
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
-    u8 *ctx;
-
-    ctx = gUiContext;
-    Unit_SetMapPos(*(void **)(ctx + 4), ctx[0xF], ctx[0x10]);
-    Battle_SetupPair(gBattle, *(void **)ctx, *(void **)(ctx + 4));
-    Battle_SelectWeapon(gBattle, ctx[0xA]);
-    fn_80036150(gBattle);
-    fn_8019BCC0((s8)ctx[0xF], (s8)ctx[0x10], arg0);
-    return 0;
+ void Unit_SetMapPos(void *,u8,u8);
+ void Battle_SetupPair(void *,void *,void *);
+ void Battle_SelectWeapon(void *,u8);
+ void fn_80036150(void *);
+ void fn_8019BCC0(s32,s32,s32);
+ extern u8 gUiContext[],gBattle[];
+ u8 *ctx=gUiContext; s8 x; s8 y;
+ Unit_SetMapPos(*(void **)(ctx+4),ctx[0xf],ctx[0x10]);
+ Battle_SetupPair(gBattle,*(void **)ctx,*(void **)(ctx+4));
+ Battle_SelectWeapon(gBattle,ctx[0xa]);
+ fn_80036150(gBattle);
+ x=*(s8 *)(ctx+0xf); y=*(s8 *)(ctx+0x10);
+ fn_8019BCC0(x,y,arg0);
+ return 0;
 }
 
 void fn_801A3164(s32 arg0) {
