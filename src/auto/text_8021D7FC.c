@@ -793,7 +793,7 @@ void GXSetCPUFifo(void *fifo) {
     void fn_802037B0(void);
     extern void *__piReg;
     extern void* __GXCurrentCPUFifo;
-    extern void* lbl_80368774;
+    extern void* __GXCurrentGPFifo;
     extern u8 lbl_8036877C;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
@@ -802,7 +802,7 @@ void GXSetCPUFifo(void *fifo) {
 
     enabled = OSDisableInterrupts();
     __GXCurrentCPUFifo = fifo;
-    if (fifo == lbl_80368774) {
+    if (fifo == __GXCurrentGPFifo) {
         M2C_FIELD(__piReg, u32 *, 0xC) = (u32) realFifo->base & 0x3FFFFFFF;
         M2C_FIELD(__piReg, u32 *, 0x10) = (u32) realFifo->top & 0x3FFFFFFF;
         temp_r8 = __rlwimi(0, (u32) realFifo->wrPtr, 0, 6, 26);
@@ -845,7 +845,7 @@ void GXSetGPFifo(void *fifo) {
     extern u16* const __GXData;
     extern u16* __cpReg;
     extern void* __GXCurrentCPUFifo;
-    extern void* lbl_80368774;
+    extern void* __GXCurrentGPFifo;
     extern u8 lbl_8036877C;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
@@ -854,7 +854,7 @@ void GXSetGPFifo(void *fifo) {
     enabled = OSDisableInterrupts();
     fn_8021F314();
     fn_8021F36C(0, 0);
-    lbl_80368774 = realFifo;
+    __GXCurrentGPFifo = realFifo;
 
     __cpReg[16] = (u32)realFifo->base;
     __cpReg[18] = (u32)realFifo->top;
@@ -873,7 +873,7 @@ void GXSetGPFifo(void *fifo) {
 
     fn_802037B0();
 
-    if (__GXCurrentCPUFifo == lbl_80368774) {
+    if (__GXCurrentCPUFifo == __GXCurrentGPFifo) {
         lbl_8036877C = 1;
         fn_8021F36C(1, 0);
         fn_8021F338(1);
@@ -950,7 +950,7 @@ void __GXFifoInit(void)
     extern u32 lbl_80368778;
     extern u32 lbl_80368780;
     extern u32 __GXCurrentCPUFifo;
-    extern u32 lbl_80368774;
+    extern u32 __GXCurrentGPFifo;
 
     __OSSetInterruptHandler(0x11, fn_8021EB88);
     __OSUnmaskInterrupts(0x4000);
@@ -958,7 +958,7 @@ void __GXFifoInit(void)
     lbl_80368778 = fn_80209FD4();
     lbl_80368780 = 0;
     __GXCurrentCPUFifo = 0;
-    lbl_80368774 = 0;
+    __GXCurrentGPFifo = 0;
 }
 
 void fn_8021F2F0(void) {
@@ -1044,8 +1044,8 @@ s32 fn_8021F4CC(void) {
 }
 
 s32 fn_8021F4D4(void) {
-    extern s32 lbl_80368774;
-    return lbl_80368774;
+    extern s32 __GXCurrentGPFifo;
+    return __GXCurrentGPFifo;
 }
 
 s32 fn_8021F4DC(void) {
