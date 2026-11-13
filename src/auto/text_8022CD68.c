@@ -3476,6 +3476,7 @@ void fn_802380D0(void* arg0, s32 arg1, s32 arg2) {
 extern f64 __floor_huge;
 extern f64 __floor_zero;
 f64 floor(f64 x) {
+    /* Round double toward -infinity (fdlibm/MSL floor). */
     s32 i0;
     u32 i1;
     s32 j0;
