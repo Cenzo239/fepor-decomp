@@ -1996,7 +1996,7 @@ void Battle_LoadMap(void)
     void Archive_LoadFlags(void *, s32);
     void Archive_Load(void *);
     void FileCache_Load(void *);
-    void fn_80050F64(void);
+    void Map_InitGfx(void);
     s32 Heap_GetFree(void);
     void Heap_Select(void *);
     void fn_80016498(void);
@@ -2013,7 +2013,7 @@ void Battle_LoadMap(void)
         Archive_Load(Battle_str + 0x17F);
     }
     FileCache_Load(Battle_str + 0x1AF);
-    fn_80050F64();
+    Map_InitGfx();
     Heap_Create(Battle_str + 0x16C, Heap_GetFree());
     Heap_Select(Battle_str + 0x176);
     fn_80016498();

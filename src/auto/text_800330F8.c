@@ -12059,7 +12059,7 @@ void fn_80050E80(void)
 }
 
 #pragma global_optimizer off
-void fn_80050F64(void) {
+void Map_InitGfx(void) {
     void *fn_8006D948(void *);
     void *Heap_Alloc(s32);
     void *fn_800C42AC(s32);

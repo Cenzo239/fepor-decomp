@@ -2930,7 +2930,7 @@ void fn_801F8880(void) {
     void ScriptCmd_CmLoadScript(void *);
     void *Archive_Load(void *);
     void FileCache_Load(void *);
-    void fn_80050F64(void);
+    void Map_InitGfx(void);
     extern u8 StaffRoll_str[];
     extern u8 lbl_8029B41C[];
     extern void *lbl_80368408;
@@ -2944,7 +2944,7 @@ void fn_801F8880(void) {
     lbl_80368408 = Archive_Load(*(void **)(lbl_8029B41C + 4));
     lbl_8036840C = Archive_Load(StaffRoll_str + 0x23F);
     FileCache_Load(StaffRoll_str + 0x1FE);
-    fn_80050F64();
+    Map_InitGfx();
     lbl_80367708 = 0;
 }
 #pragma global_optimizer on
