@@ -7650,7 +7650,7 @@ void LightFade_RestoreLights(void) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
     s32 Light_GetChannel(s32);
-    void fn_800673E4(s32, s32);
+    void Light_CopyChannel(s32, s32);
     u8 *Fog_GetColor(void);
     void fn_8005F788(u32, s32, s32);
     void *p = Process_Find(LightFade_script);
@@ -7666,8 +7666,8 @@ void LightFade_RestoreLights(void) {
         s32 i;
         u32 *ptr;
 
-        fn_800673E4(Light_GetChannel(1), Light_GetChannel(0));
-        fn_800673E4(Light_GetChannel(3), Light_GetChannel(2));
+        Light_CopyChannel(Light_GetChannel(1), Light_GetChannel(0));
+        Light_CopyChannel(Light_GetChannel(3), Light_GetChannel(2));
         for (i = 0, ptr = (u32 *)data; i < 64; i++, ptr++) {
             if (ptr[3]) {
                 fn_8005F788(ptr[3], 0, 1);

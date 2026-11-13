@@ -5121,7 +5121,7 @@ void fn_80067304(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x28) = f24;
 }
 #pragma global_optimizer reset
-void fn_800673E4(void *arg0, void *arg1) {
+void Light_CopyChannel(void *arg0, void *arg1) {
     typedef struct { s32 x; s32 y; } Pair;
     Pair t;
 
@@ -5173,9 +5173,8 @@ void fn_800675C8(void *arg0) {
     extern u8 lbl_80311AF8[];
     extern void *lbl_80366DD4;
 
-    if (arg0 == 0) {
-        arg0 = lbl_80311AF8;
-        lbl_80366DD4 = arg0;
+    if (arg0 == NULL) {
+        lbl_80366DD4 = lbl_80311AF8;
     }
 }
 #pragma peephole on

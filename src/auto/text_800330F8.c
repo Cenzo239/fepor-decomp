@@ -6483,7 +6483,7 @@ void fn_80041514(void *arg0, char *arg1)
     void fn_80067460(s32);
     void fn_80066F64(void);
     void *Light_GetChannel(s32);
-    void fn_800673E4(void *);
+    void Light_CopyChannel(void *);
     void fn_8006720C(void *);
     void fn_800675C8(s32);
     void *Fog_GetColor(void);
@@ -6767,7 +6767,7 @@ void fn_80041514(void *arg0, char *arg1)
     ((u8 *)light)[6] = (&lbl_80367298)[2];
     tmp = Light_GetChannel(2);
     Light_GetChannel(0);
-    fn_800673E4(tmp);
+    Light_CopyChannel(tmp);
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
     fog = Fog_GetColor();
@@ -8111,7 +8111,7 @@ void fn_80045C68(void *arg0)
     void fn_80067460(s32);
     void fn_80066F64(void);
     void *Light_GetChannel(s32);
-    void fn_800673E4(void *, void *);
+    void Light_CopyChannel(void *, void *);
     void fn_8006720C(void *);
     extern u8 lbl_80367294;
     extern u8 lbl_80367295;
@@ -8133,7 +8133,7 @@ void fn_80045C68(void *arg0)
     ((u8 *)light)[5] = (&lbl_80367298)[1];
     ((u8 *)light)[6] = (&lbl_80367298)[2];
     light = Light_GetChannel(2);
-    fn_800673E4(Light_GetChannel(0), light);
+    Light_CopyChannel(Light_GetChannel(0), light);
     fn_8006720C((u8 *)self + 0x70);
 }
 

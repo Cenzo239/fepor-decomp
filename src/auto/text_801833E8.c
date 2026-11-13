@@ -3025,22 +3025,22 @@ void fn_8018CB7C(void) {
 
 void fn_8018CB9C(void *arg0) {
  s32 Light_GetChannel(s32);
- void fn_800673E4(s32,s32);
+ void Light_CopyChannel(s32,s32);
  void fn_80050BA8(s32,s32,s32);
  s32 i; u8 *p; s32 t;
- fn_800673E4(Light_GetChannel(1),Light_GetChannel(0));
- fn_800673E4(Light_GetChannel(3),Light_GetChannel(2));
+ Light_CopyChannel(Light_GetChannel(1),Light_GetChannel(0));
+ Light_CopyChannel(Light_GetChannel(3),Light_GetChannel(2));
  p=(u8 *)arg0;
  for(i=0;i<*(s32 *)((u8 *)arg0+0x44);i++) {
  fn_80050BA8(*(s32 *)(p+0x48),0,0); p+=4; }
 }
 
 void fn_8018CC3C(void *arg0) {
-    M2C_UNK fn_800673E4(s32, s32);
+    M2C_UNK Light_CopyChannel(s32, s32);
     s32 Light_GetChannel(M2C_UNK);
 
-    fn_800673E4(Light_GetChannel(0), Light_GetChannel(1));
-    fn_800673E4(Light_GetChannel(2), Light_GetChannel(3));
+    Light_CopyChannel(Light_GetChannel(0), Light_GetChannel(1));
+    Light_CopyChannel(Light_GetChannel(2), Light_GetChannel(3));
     M2C_FIELD(arg0, s32 *, 0x30) = 0x64;
     M2C_FIELD(arg0, s32 *, 0x34) = 0x64;
     M2C_FIELD(arg0, s32 *, 0x44) = 0;
