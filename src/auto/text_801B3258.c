@@ -15496,12 +15496,13 @@ void fn_801DDAC8(void *arg0) {
 
 extern void *lbl_801D3B14;
 #pragma opt_propagation off
-void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
+void MsgBox_Init(MsgBox *w, s32 msgId, u8 withTitle, u8 withButtons, s16 type) {
+    /* Clear a MsgBox, expand msgId into lines, size the box, then layout it. */
     void *memset(void *, s32, u32);
     void *memcpy(void *, const void *, u32);
     char *Msg_Expand(s32);
     s32 Text_MeasureWidth(char *, s32, f32);
-    M2C_UNK MsgBox_Layout();
+    void MsgBox_Layout(MsgBox *);
     s32 n;
     char *s;
     char *start;
@@ -15522,8 +15523,8 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     w->flags = 0;
     w->timer = 0;
     w->state = 100;
-    w->type = arg4;
-    if (arg3) {
+    w->type = type;
+    if (withButtons) {
         w->flags |= 4;
     } else {
         w->flags &= ~4;
@@ -15532,7 +15533,7 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     if (w->type == 1 || w->type == 2 || w->type == 3) {
         w->width = 400;
     }
-    s = Msg_Expand(arg1);
+    s = Msg_Expand(msgId);
     n = len = 0;
     start = s;
     for (;;) {
@@ -15559,7 +15560,7 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     }
     w->numLines = n;
     w->width += 0x18;
-    t = arg2 ? 20 : 0;
+    t = withTitle ? 20 : 0;
     h = w->numLines * 20;
     h = h + t;
     pad = (w->flags & 4) ? 40 : 0;
@@ -15571,7 +15572,7 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     if (w->type == 3) {
         w->height += 10;
     }
-    if (arg2) {
+    if (withTitle) {
         w->flags |= 2;
     }
     MsgBox_Layout(w);
