@@ -10260,7 +10260,7 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-void fn_801CCEA8(u8 *arg0) {
+void NameGrid_GetCharAtCursor(u8 *arg0) {
     u8 *fn_801CD480(void *, s16, s16);
     s16 x;
     s16 y;
@@ -10996,7 +10996,7 @@ void fn_801CE2DC(void *arg0) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
-void *fn_8013FF94(void *,s32,s32); u32 fn_801CCEA8(void *); void fn_8013FDA0(void *);
+void *fn_8013FF94(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *); void fn_80167190(void *,s32,f32,f32); void fn_8016758C(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void fn_801CDACC(void *,u32); void fn_801CDC54(void *,s32); void fn_801CDD10(void *,s32);
 void Ui_PlaySeCue(void *,s32); void fn_8000C188(void *);
@@ -11013,10 +11013,10 @@ s16 *v;
 a=fn_8013FF94(arg0,0,0);
 b=fn_8013FF94(arg0,1,0);
 c=fn_8013FF94(arg0,2,0);
-unit=fn_801CCEA8(c);
+unit=NameGrid_GetCharAtCursor(c);
 fn_8013FDA0(arg0);
-if(unit!=fn_801CCEA8(c)) {
-unit=fn_801CCEA8(c);
+if(unit!=NameGrid_GetCharAtCursor(c)) {
+unit=NameGrid_GetCharAtCursor(c);
 if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 *(Pair *)&pos1=((Obj *)c)->v16();
 fn_80167190(gUnitInfoPopup,((Obj *)c)->v15(),(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
