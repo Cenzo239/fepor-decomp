@@ -2134,7 +2134,7 @@ ptr[0x34]=color.b[0]; ptr[0x35]=color.b[1]; ptr[0x36]=color.b[2]; ptr[0x37]=colo
 *(u16*)(ptr+0x3C)=0; *(u16*)(ptr+0x3E)=(s32)((f32)arg4/div);
 }
 
-void fn_80089FA8(void *arg0) {
+void Ui_DrawColorFade(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
