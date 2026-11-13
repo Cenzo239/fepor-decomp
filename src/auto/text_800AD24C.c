@@ -5983,7 +5983,7 @@ void fn_800BB0E8(void) {
     void fn_800BC380(void);
     void fn_800BC29C(void);
     void fn_800BC204(void);
-    void fn_800BC11C(void);
+    void Unit_SetItemDroppable(void);
     void fn_800BC0A4(void);
     void fn_800BBFD0(void);
     void fn_800BBF04(void);
@@ -6064,7 +6064,7 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x355, fn_800BC380, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x366, fn_800BC29C, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x378, fn_800BC204, 1);
-    Script_RegisterCommand(lbl_8026F728 + 0x387, fn_800BC11C, 2);
+    Script_RegisterCommand(lbl_8026F728 + 0x387, Unit_SetItemDroppable, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x397, fn_800BC0A4, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x3AC, fn_800BBFD0, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x3BF, fn_800BBFD0, 1);
@@ -6369,7 +6369,7 @@ s32 fn_800BC0A4(u8 arg0, s32 arg1) {
     return fn_8001CA2C(temp);
 }
 
-s32 fn_800BC11C(u8 arg0, s32 arg1) {
+s32 Unit_SetItemDroppable(u8 arg0, s32 arg1) {
     u8 *Unit_GetItemSlot(void *, s32);
     extern u8 gUnits[];
     typedef struct {
