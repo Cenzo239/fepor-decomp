@@ -483,7 +483,7 @@ void fn_801AF020(void *arg0) {
     void fn_800C3C1C(void *, void *);
     void fn_801402A0(void *, void *, s16 *, s32);
     void fn_8011D79C(s32);
-    void fn_801AFD60(void *);
+    void Ui_LayoutUnitPanelList(void *);
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
     void Process_Goto(void *, s32);
@@ -512,7 +512,7 @@ void fn_801AF020(void *arg0) {
         fn_801402A0(arg0, r31, sp, 0);
         *(s32 *)((u8 *)r31 + 0x3C) = 1;
         fn_8011D79C(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x2C));
-        fn_801AFD60(arg0);
+        Ui_LayoutUnitPanelList(arg0);
         obj6c = *(void **)((u8 *)arg0 + 0x6C);
         r31 = *(void **)((u8 *)obj6c + 0x70);
         res = Ui_FindChild(arg0, -0x1000, 0, obj6c);
@@ -940,7 +940,7 @@ void fn_801AF6BC(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801AFD60(void *arg0) {
+extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
     s32 Ui_ListGetSelected(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
