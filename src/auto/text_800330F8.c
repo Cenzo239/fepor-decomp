@@ -9693,7 +9693,7 @@ void Map_DrawRangeTiles(void) {
     extern f32 gMapColorDrawZBias;
     extern f32 lbl_80368F8C;
     extern f64 lbl_80368F90;
-    extern s32 lbl_803674F0;
+    extern s32 gUiRouteAtlas;
     extern u8 gBattleMap[];
     u32 matColor;
     f32 mtx[12];
@@ -9735,7 +9735,7 @@ void Map_DrawRangeTiles(void) {
         fn_802245D8(1, 4, 5, 0);
         GXSetTevSwapMode(0, 0, 3);
         GXSetTevSwapModeTable(3, 0, 1, 2, 0);
-        texId = lbl_803674F0;
+        texId = gUiRouteAtlas;
         p = &texBuf[0][0];
         i = 0;
         do {

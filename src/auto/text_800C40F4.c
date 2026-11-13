@@ -3697,16 +3697,16 @@ extern "C" void fn_800CD5E4(void *arg0) {
         fn_801517C8();
     }
 }
-extern "C" s32 fn_800CD630(void *arg0) {
-    struct Obj {
-        u8 pad[0x10];
-        virtual void v0();
-        virtual void v1();
-        virtual s32 v2(const char *, const char *);
-        virtual void *v3(const char *, const char *);
-    };
+s32 fn_800CD630(void *arg0) {
+    extern char lbl_802704F8[];
+    void *obj;
+    void **vt;
+    s32 (*meth)(void *, char *, char *);
 
-    return ((Obj *)M2C_FIELD(arg0, void **, 4))->v2((char *)lbl_802704F8 + 0x3D0, (char *)lbl_802704F8 + 0x3D7) == 0;
+    obj = *(void **)((u8 *)arg0 + 4);
+    vt = *(void ***)((u8 *)obj + 0x10);
+    meth = (s32 (*)(void *, char *, char *))vt[4];
+    return meth(obj, lbl_802704F8 + 0x3D0, lbl_802704F8 + 0x3D7) == 0;
 }
 #pragma cplusplus reset
 
@@ -17291,10 +17291,10 @@ void fn_800F0C30(s8 arg0, s8 arg1, s8 arg2) {
 void fn_800F0C54(u8 *arg0) {
 void Ui_LoadAtlasTex(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
 void *Camera_GetViewMtx(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
-extern s32 lbl_803674F0; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
+extern s32 gUiRouteAtlas; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018; union { f64 d; struct {u32 hi,lo;} w; } dx,dy; f64 magic;
 f32 one,fx,fy,fx1,fy1,z;
-Ui_LoadAtlasTex(lbl_803674F0,sp8,0);
+Ui_LoadAtlasTex(gUiRouteAtlas,sp8,0);
 GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0);GXSetVtxAttrFmt(0,13,1,1,0);
 GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetNumTexGens(0,3);GXSetTevOrder(0,0,0,255);
 GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);
