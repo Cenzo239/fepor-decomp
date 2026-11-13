@@ -5337,7 +5337,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     u32 *Item_GetFlagsPtr(void *);
     u8 fn_80092F38(void *);
     u8 fn_80092F9C(void *);
-    s32 fn_800C3D48(void *);
+    s32 Convoy_FindEmpty(void *);
     void fn_8011D79C(s32);
     void *Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
@@ -5492,7 +5492,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                 fn_80176888(lbl_80279DF0 + 0x4CC, self, (f32)*(s16 *)&pos, (f32)*((s16 *)&pos + 1));
             } else {
                 Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
-                if (fn_800C3D48(gConvoy) < 0) {
+                if (Convoy_FindEmpty(gConvoy) < 0) {
                     fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x38));
                     nest = *(void **)((u8 *)self + 0x68);
                     saved = *(s32 *)((u8 *)nest + 0x54);
@@ -8574,12 +8574,12 @@ s32 fn_80199114(void *arg0) {
 }
 
 void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
-    void *Heap_Alloc(s32);
-    void String_Init(void *, char *, void *);
-    void String_Destroy(void *, s32);
+    void *fn_800C42D8(s32);
+    void fn_800C9ABC(void *, char *, void *);
+    void fn_800C9A60(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_801518B4(void *, void *);
-    extern u8 gWeaponAttachStr[];
+    extern u8 lbl_8027A858[];
     struct Vec3 { s32 x, y, z; };
     struct Vec3 sp24;
     struct Vec3 sp18;
@@ -8589,17 +8589,17 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     s8 flag;
 
     flag = 0;
-    obj = Heap_Alloc(0xC8);
+    obj = fn_800C42D8(0xC8);
     if (obj != NULL) {
         sp24 = *(struct Vec3 *)arg2;
         sp18 = *(struct Vec3 *)arg1;
-        String_Init(spC, (char *)(gWeaponAttachStr + 0x76), sp8);
+        fn_800C9ABC(spC, (char *)(lbl_8027A858 + 0x76), sp8);
         flag = 1;
         obj = fn_80151D50(obj, *(void **)((u8 *)arg0 + 0xAC), spC, (u8 *)arg0 + 0x12C, &sp18, &sp24, 1);
     }
     *(void **)((u8 *)arg0 + 0x144) = obj;
     if (flag) {
-        String_Destroy(spC, -1);
+        fn_800C9A60(spC, -1);
     }
     (*(void (***)(void *, void *))((u8 *)*(void **)((u8 *)arg0 + 0xAC) + 0x10))[7](
         *(void **)((u8 *)arg0 + 0xAC),

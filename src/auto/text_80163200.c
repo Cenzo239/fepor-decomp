@@ -6551,7 +6551,7 @@ void fn_8016FF34(void *arg0) {
     void Item_Clear(void *);
     u32 *Unit_GetItemSlot(void *, s32);
     u8 fn_800C3C1C(void *, void *);
-    s16 fn_800C3D48(void *);
+    s16 Convoy_FindEmpty(void *);
     void UnitInv_Refresh(void *);
     s16 fn_80164E78(void *, s32);
     extern u8 lbl_80294B10[];
@@ -6571,7 +6571,7 @@ void fn_8016FF34(void *arg0) {
         if (*slot != 0) {
             temp = Item_GetFlagsPtr(slot);
             if ((*(u64 *)temp & 0x200ULL) == 0) {
-                if ((s16)fn_800C3D48(gConvoy) >= 0) {
+                if ((s16)Convoy_FindEmpty(gConvoy) >= 0) {
                     if (fn_800C3C1C(gConvoy, slot) != 0) {
                         Item_Clear(slot);
                     }
@@ -8177,7 +8177,7 @@ void Item_Copy(u32 *, s32);
 void fn_8001C5F8(void *, s32);
 void fn_8001C690(void *, u32 *, u32);
 void Item_Clear(s32);
-s32 fn_800C3D48(void *);
+s32 Convoy_FindEmpty(void *);
 void fn_800C3C1C(void *, void *);
 void Ui_UpdatePanelWidgets(void *);
 void fn_8013FF00(void *, void *);
@@ -8281,7 +8281,7 @@ fn_801436AC(r28, *r27b);
 fn_80143C9C(r28);
 Item_Clear(*r27b);
 if (r25) {
-s32 idx = fn_800C3D48(gConvoy);
+s32 idx = Convoy_FindEmpty(gConvoy);
 fn_800C3C1C(gConvoy, sp28);
 void *slot = gConvoy + (idx << 3);
 fn_801439F0(r28, slot, 0);
@@ -11442,7 +11442,7 @@ void *fn_801795C0(void) {
 }
 
 s32 fn_801795D0(void *arg0) {
-void *Item_GetFlagsPtr(void *); u32 *Unit_GetItemSlot(void *, s32); u8 fn_80093088(void *); s32 fn_800C3D48(void *); u8 Status_Test(void *, s32);
+void *Item_GetFlagsPtr(void *); u32 *Unit_GetItemSlot(void *, s32); u8 fn_80093088(void *); s32 Convoy_FindEmpty(void *); u8 Status_Test(void *, s32);
 extern u32 gUiContext[]; extern u8 gConvoy[];
 s8 i; u8 flag; void *base;
 flag=1; base=(void*)gUiContext[0];
@@ -11450,7 +11450,7 @@ if(Status_Test((u8*)base+0x1BC,8)) {
 for(i=0;i<8;i++) { u32 *slot=Unit_GetItemSlot(base,i); if(*slot) { if((*(unsigned long long*)Item_GetFlagsPtr(slot)&0x200ULL)==0) {flag=0; break;} } }
 } else flag=fn_80093088(base);
 if(flag) { *((u8*)arg0+4)=0; return 2; }
-if(fn_800C3D48(gConvoy)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
+if(Convoy_FindEmpty(gConvoy)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
 }
 
 #pragma cplusplus on

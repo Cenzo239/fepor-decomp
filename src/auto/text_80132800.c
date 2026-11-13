@@ -4038,7 +4038,7 @@ done:
 extern "C" void Prim2D_AddZ(f32);
 extern "C" void Text_Draw(s16, s16, u8, char *, ...);
 extern "C" s32 Text_MeasureHeight(s32, f32);
-extern "C" s32 fn_800C3D48(void *);
+extern "C" s32 Convoy_FindEmpty(void *);
 extern "C" u8 fn_8014D8DC(void *);
 extern "C" void fn_80155F20(s32, s32, s16, s16, s32, s32);
 extern "C" void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
@@ -4084,7 +4084,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
     lineHeight = ((Obj *)arg0)->GetLineHeight();
     y = (lineHeight - Text_MeasureHeight(-1, lbl_8036A674)) >> 1;
     flag = 0;
-    if (!fn_8014D8DC(gBattleState) || fn_800C3D48(gConvoy) < 0) {
+    if (!fn_8014D8DC(gBattleState) || Convoy_FindEmpty(gConvoy) < 0) {
         flag = 1;
     }
     shadow = 6;

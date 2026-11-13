@@ -373,7 +373,7 @@ s32 fn_80103D74(void) {
 
 s32 fn_80103D7C(void) {
     void fn_800C3AB0(void *, void *);
-    s32 fn_800C3D48(void *);
+    s32 Convoy_FindEmpty(void *);
     extern char lbl_802734D0[];
     extern u8 gConvoy[0x640];
     char *str;
@@ -381,7 +381,7 @@ s32 fn_80103D7C(void) {
 
     obj = gConvoy;
     str = lbl_802734D0;
-    while (fn_800C3D48(obj) >= 0) {
+    while (Convoy_FindEmpty(obj) >= 0) {
         fn_800C3AB0(obj, str + 0x1B1);
     }
     return 6;

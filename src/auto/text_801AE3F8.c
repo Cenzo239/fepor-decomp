@@ -733,7 +733,7 @@ void fn_801AF6BC(void *arg0) {
     void fn_8011D79C(void *);
     void Ui_SetWidgetText(void *, void *);
     void Process_Goto(void *, s32);
-    s32 fn_800C3D48(void *);
+    s32 Convoy_FindEmpty(void *);
     void fn_801695BC(void *, void *, s32);
     void fn_801694AC(void *, void *);
     void fn_80176888(void *, void *, f32, f32);
@@ -856,7 +856,7 @@ void fn_801AF6BC(void *arg0) {
                 return;
             }
             Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-            if (fn_800C3D48(gConvoy) < 0) {
+            if (Convoy_FindEmpty(gConvoy) < 0) {
                 fn_8011D79C(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x64));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x7C);
                 tmp = Ui_FindChild(self, -0x1000, 0);
@@ -2300,7 +2300,7 @@ void fn_801B2C58(void *arg0) {
     M2C_UNK Process_Goto(void *, M2C_UNK);
     M2C_UNK fn_800152F8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, void *);
     u8 fn_80092F9C();
-    s32 fn_800C3D48(void *);
+    s32 Convoy_FindEmpty(void *);
     M2C_UNK fn_8011D79C(s32);
     u32 Ui_FindChild(void *, M2C_UNK, M2C_UNK, void *);
     M2C_UNK Ui_SetWidgetText(s32);
@@ -2334,7 +2334,7 @@ void fn_801B2C58(void *arg0) {
             break;
         }
     }
-    if (var_r30 == 0 && fn_800C3D48(gConvoy) >= 0) {
+    if (var_r30 == 0 && Convoy_FindEmpty(gConvoy) >= 0) {
         var_r30 = 1;
     }
     if (var_r30 != 0) {
