@@ -322,7 +322,7 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
 #pragma use_lmw_stmw on
 s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_803123A0[];
-    void fn_800A5334(void *);
+    void Gx_Setup2DState(void *);
     void fn_800A5158(s32, s32, s32, s16, s16, s16, s16, s16, s16);
     void fn_800A57D8(void);
     s32 a1;
@@ -337,7 +337,7 @@ s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     a4 = arg4;
     base = lbl_803123A0;
     if (*(s32 *)(base + 0x158) >= 0) {
-        fn_800A5334(arg0);
+        Gx_Setup2DState(arg0);
         fn_800A5158(
             *(s32 *)(lbl_803123A0 + 0x14C),
             *(s32 *)(lbl_803123A0 + 0x150),
@@ -796,7 +796,7 @@ void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16
     *(s16 *)0xCC008000 = 1;
 }
 
-void fn_800A5334(void *arg0) {
+void Gx_Setup2DState(void *arg0) {
     void fn_80201FC4(void *);
     void fn_80202B3C(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
