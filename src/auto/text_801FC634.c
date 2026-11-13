@@ -1204,7 +1204,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
-    void fn_800076EC(void);
+    void Prim2D_SwapUvU(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -1344,7 +1344,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect((f32)((left + half) - (s16)sp34), (f32)ty, (f32)sp34, (f32)sp36);
-        fn_800076EC();
+        Prim2D_SwapUvU();
         spC = *Ui_GetColor(0x18);
         Prim2D_SetColorPacked(&spC);
         Prim2D_SetAlpha(alpha);

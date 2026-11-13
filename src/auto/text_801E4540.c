@@ -518,7 +518,7 @@ void TabMenu_DrawTab2(void *arg0) {
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_800076EC(void);
+    void Prim2D_SwapUvU(void);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
@@ -612,7 +612,7 @@ void TabMenu_DrawTab2(void *arg0) {
         w = (s16)(rect[2] - rect[0]);
         Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
                     (f32)w, (f32)(s16)(rect[3] - rect[1]));
-        fn_800076EC();
+        Prim2D_SwapUvU();
         x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
@@ -889,7 +889,7 @@ void TabMenu_DrawTab1(void *arg0) {
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_800076EC(void);
+    void Prim2D_SwapUvU(void);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
@@ -983,7 +983,7 @@ void TabMenu_DrawTab1(void *arg0) {
         w = (s16)(rect[2] - rect[0]);
         Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
                     (f32)w, (f32)(s16)(rect[3] - rect[1]));
-        fn_800076EC();
+        Prim2D_SwapUvU();
         x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
@@ -1107,7 +1107,7 @@ void TabMenu_DrawTab0(void *arg0) {
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_800076EC(void);
+    void Prim2D_SwapUvU(void);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
@@ -1198,7 +1198,7 @@ void TabMenu_DrawTab0(void *arg0) {
         w = (s16)(rect[2] - rect[0]);
         Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
                     (f32)w, (f32)(s16)(rect[3] - rect[1]));
-        fn_800076EC();
+        Prim2D_SwapUvU();
         x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);

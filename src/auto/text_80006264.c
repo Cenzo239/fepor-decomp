@@ -1016,7 +1016,7 @@ void fn_800076CC(void) {
  *(f32 *)(ptr + 0x2C) = temp;
 }
 
-void fn_800076EC(void) {
+void Prim2D_SwapUvU(void) {
     extern void *lbl_80367140;
 
     u8 *ptr;

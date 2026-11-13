@@ -1940,7 +1940,7 @@ void fn_8012F5CC(void *arg0) {
 extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     /* Draw the unit-count banner for player (mode 1) or enemy (mode 2) lists. */
     void Prim2D_EmitQuad(void);
-    void fn_800076EC(void);
+    void Prim2D_SwapUvU(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -2005,7 +2005,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_8036A558, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A558, lbl_8036A55C);
-        fn_800076EC();
+        Prim2D_SwapUvU();
         Prim2D_EndPrim();
         count = 0;
         node = *(Node **)gUnitLists;
@@ -2044,7 +2044,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_8036A558, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A558, lbl_8036A55C);
-        fn_800076EC();
+        Prim2D_SwapUvU();
         Prim2D_EndPrim();
         limit = 0;
         node = *(Node **)(gUnitLists + 0x3C);
