@@ -16083,7 +16083,7 @@ s32 fn_8018256C(void) {
     return 1;
 }
 
-s32 fn_80182574(s32 arg0) {
+s32 Ai_TryHandleLowHpHeal(s32 arg0) {
     void fn_8010AC58(s32);
     u8 Ai_TryApproachHealer(s32);
     u8 Ai_TrySelectApproachTile(s32);

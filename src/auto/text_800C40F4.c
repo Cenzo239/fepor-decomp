@@ -20733,7 +20733,7 @@ s32 fn_800FB9F8(void *arg0) {
     void fn_80182A0C(void *);
     void fn_80182704(void *);
     void fn_80182670(void *);
-    void fn_80182574(void *);
+    void Ai_TryHandleLowHpHeal(void *);
     void fn_8018286C(void *);
     u8 v;
 
@@ -20757,7 +20757,7 @@ s32 fn_800FB9F8(void *arg0) {
         fn_80182670(arg0);
         break;
     case 6:
-        fn_80182574(arg0);
+        Ai_TryHandleLowHpHeal(arg0);
         break;
     case 7:
         fn_8018286C(arg0);
