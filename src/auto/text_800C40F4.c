@@ -12787,7 +12787,7 @@ void fn_800E5A4C(void *arg0) {
     }
 }
 
-void fn_800E5CF8(void *arg0) {
+void GActor_ApplyPoseMtx(void *arg0) {
     void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -20620,25 +20620,24 @@ u8 fn_800FB7A8(void) {
 }
 
 u8 fn_800FB868(void) {
-    extern u8 gUiContext[];
+    extern u8 lbl_802EF4C8[];
     extern u8 *lbl_803678F8;
     extern u8 lbl_803678F0;
     extern s32 lbl_803678F4;
-    extern u8 gAiState[];
+    extern u8 lbl_8032B3C0[];
     extern u8 lbl_80273000[];
     extern u8 lbl_80272F90[];
     void *fn_800FB918(void *, void *, s32 *, u8 *);
 
     u8 *obj;
     u8 *entry;
-    u8 *e2;
     s32 val;
     s32 off;
     u8 flag;
     s32 key;
     s32 gap;
 
-    obj = *(u8 **)gUiContext;
+    obj = *(u8 **)lbl_802EF4C8;
     entry = lbl_80272F90;
     lbl_803678F8 = entry;
     off = obj[0x250] * 0x1C;
@@ -20646,14 +20645,13 @@ u8 fn_800FB868(void) {
     lbl_803678F4 = 0;
     entry += off;
     lbl_803678F8 = entry;
-    e2 = lbl_803678F8;
 
-    val = *(s32 *)(e2 + 8);
+    val = *(s32 *)(entry + 8);
     if (val != 0) {
-        *(s16 *)(gAiState + 4) = (s16)val;
+        *(s16 *)(lbl_8032B3C0 + 4) = (s16)val;
     }
 
-    key = *(s32 *)e2;
+    key = *(s32 *)entry;
     flag = *(u8 *)&gap;
     entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
     (*(void (**)(void *, void *))(entry + 4))(obj, entry);
