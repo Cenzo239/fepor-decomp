@@ -9763,7 +9763,8 @@ void fn_8019B8A0(s32 arg0, s32 arg1) {
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
 
-void MapSelect_InitSelectFx(void *arg0) {
+void MapSelect_InitSelectFx(void *cmd) {
+    /* Bind MapSelect_Update effect; for modes 0/1 start blend+transfer on the selected unit. */
     void *Effect_Create(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -9771,24 +9772,24 @@ void MapSelect_InitSelectFx(void *arg0) {
     void Mu_StartBlend(void *, s32, s32, s32);
     void Mu_StartTransfer(void *, s32, s32, s32);
     extern void MapSelect_Update(void);
-    void *temp;
+    void *fx;
     void *unit;
-    void *p;
+    void *node;
     s32 mode;
 
-    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
-    fn_800536D8(temp, *(void **)*(void **)((u8 *)arg0 + 0x34));
-    fn_8005306C(temp);
-    *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = MapSelect_Update;
-    fn_80053658(temp, 0, arg0);
-    p = *(void **)*(void **)((u8 *)arg0 + 0x34);
-    if (p != NULL) {
-        unit = *(void **)((u8 *)p + 0x280);
+    fx = Effect_Create((u8 *)cmd + 0x41, cmd);
+    fn_800536D8(fx, *(void **)*(void **)((u8 *)cmd + 0x34));
+    fn_8005306C(fx);
+    *(void **)((u8 *)*(void **)((u8 *)fx + 0x30) + 0x40) = MapSelect_Update;
+    fn_80053658(fx, 0, cmd);
+    node = *(void **)*(void **)((u8 *)cmd + 0x34);
+    if (node != NULL) {
+        unit = *(void **)((u8 *)node + 0x280);
     } else {
         unit = NULL;
     }
     if (unit != NULL && !(*(u32 *)((u8 *)unit + 0x1A0) & 0x010000DC)) {
-        mode = *(u8 *)((u8 *)arg0 + 0x5C);
+        mode = *(u8 *)((u8 *)cmd + 0x5C);
         switch (mode) {
         case 0:
         case 1:
