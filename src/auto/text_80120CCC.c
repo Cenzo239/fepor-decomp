@@ -2961,7 +2961,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_CmWakeupScripts(void);
     void ScriptCmd_seqini(void);
     void ScriptCmd_bmsini(void);
-    void fn_80126F58(void);
+    void ScriptCmd_ArcLoad(void);
     void fn_80126F34(void);
     void fn_80126EB0(void);
     void fn_80126A60(void);
@@ -3009,7 +3009,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x2A6, ScriptCmd_CmWakeupScripts, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2B6, ScriptCmd_seqini, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2BE, ScriptCmd_bmsini, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x2C6, fn_80126F58, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x2C6, ScriptCmd_ArcLoad, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2CE, fn_80126F34, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2D6, fn_80126EB0, 2);
     Script_RegisterCommand(gScriptCmdNames + 0x2E5, fn_80126A60, 0);
@@ -3317,7 +3317,7 @@ s32 fn_80126F34(void) {
     return 1;
 }
 
-s32 fn_80126F58(void) {
+s32 ScriptCmd_ArcLoad(void) {
     M2C_UNK fn_8003FCCC();
     fn_8003FCCC();
     return 1;
