@@ -9763,7 +9763,7 @@ void fn_8019B8A0(s32 arg0, s32 arg1) {
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
 
-void fn_8019B904(void *arg0) {
+void MapSelect_InitSelectFx(void *arg0) {
     void *Effect_Create(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
