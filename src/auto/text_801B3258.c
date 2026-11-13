@@ -4860,7 +4860,7 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     };
     typedef struct { s16 x; s16 y; } Pair;
     void fn_801BEB9C(void *, Pair *, Pair *, s16);
-    extern u8 lbl_802918A0[];
+    extern u8 gUiUnitPanelVtbl[];
     Pair pC;
     Pair p8;
 
@@ -4869,7 +4869,7 @@ extern "C" void *fn_801BEB24(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     pC.y = arg2;
     p8.x = 0x108;
     fn_801BEB9C(arg0, &pC, &p8, arg4);
-    *(void **)arg0 = lbl_802918A0;
+    *(void **)arg0 = gUiUnitPanelVtbl;
     *(s32 *)((u8 *)arg0 + 0xCC) = 0;
     ((Obj *)arg0)->m28();
     return arg0;
@@ -5632,27 +5632,18 @@ void fn_801C1C64(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     extern f64 lbl_8036B330;
     void *obj;
     f32 div;
-    s8 n1;
-    u8 z;
-    s16 v0;
-    s16 v1;
-    s16 v2;
 
     obj = Process_Create(lbl_80297FF8, arg6);
     div = lbl_8036B328;
-    n1 = -1;
-    z = 0;
-    v0 = (s16)((f32)arg3 / div);
-    v1 = (s16)((f32)arg4 / div);
-    v2 = (s16)((f32)arg5 / div);
+    (void)lbl_8036B330;
     *(s16 *)((u8 *)obj + 0x3C) = arg0;
     *(s16 *)((u8 *)obj + 0x3E) = arg1;
     *(s32 *)((u8 *)obj + 0x44) = arg2;
-    *(s8 *)((u8 *)obj + 0x30) = n1;
-    *(s16 *)((u8 *)obj + 0x36) = v0;
-    *(s16 *)((u8 *)obj + 0x38) = v1;
-    *(s16 *)((u8 *)obj + 0x3A) = v2;
-    *(u8 *)((u8 *)obj + 0x48) = z;
+    *(s8 *)((u8 *)obj + 0x30) = -1;
+    *(s16 *)((u8 *)obj + 0x36) = (s16)((f32)arg3 / div);
+    *(s16 *)((u8 *)obj + 0x38) = (s16)((f32)arg4 / div);
+    *(s16 *)((u8 *)obj + 0x3A) = (s16)((f32)arg5 / div);
+    *(u8 *)((u8 *)obj + 0x48) = 0;
 }
 void fn_801C1D54(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *Process_Create(void *, s32);
