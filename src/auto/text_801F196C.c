@@ -666,7 +666,7 @@ void fn_801F31D0(void *arg0) {
     }
 }
 
-void fn_801F3214(void *arg0) {
+void Options_LoadSelectedEntry(void *arg0) {
     struct Entry {
         s32 unk0;
         char *name;
