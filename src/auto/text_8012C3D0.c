@@ -2127,7 +2127,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
 void fn_8012FF60(void *arg0) {
     void fn_80202300(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_8000A258(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
@@ -2187,9 +2187,9 @@ void fn_8012FF60(void *arg0) {
     fn_80202300(sp74, 0x59, lbl_8036A580);
     fn_80202300(sp44, 0x58, lbl_8036A580);
     PSMTXScale(sp14, lbl_8036A584, lbl_8036A584, lbl_8036A584);
-    fn_80202024(spA4, sp14, sp14);
-    fn_80202024(sp74, sp14, sp14);
-    fn_80202024(sp44, sp14, sp14);
+    PSMTXConcat(spA4, sp14, sp14);
+    PSMTXConcat(sp74, sp14, sp14);
+    PSMTXConcat(sp44, sp14, sp14);
     list = *(void **)((u8 *)self + 0x3C);
     fn_8000A258();
     fn_80009D74(lbl_8036A510, lbl_8036A510, lbl_8036A588, lbl_8036A50C);
@@ -2230,7 +2230,7 @@ void fn_8012FF60(void *arg0) {
                 fn_8005F7E0(obj, 0x80, 0x80, 0x80);
             }
             PSMTXTrans(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
-            fn_80202024(spD4, sp14, (u8 *)obj + 0x10);
+            PSMTXConcat(spD4, sp14, (u8 *)obj + 0x10);
             fn_8005F7B0(obj, 0xFF);
             fn_8005F780(obj, 0xFF);
             fn_80060060(obj);

@@ -3212,7 +3212,7 @@ void fn_801F8E30(void *arg0) {
     void *fn_800A8978(void *);
     void *fn_800A8A88(void *);
     void fn_80109020(void *);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
     void fn_802025E8(void *, void *, f32, f32, f32);
@@ -3349,7 +3349,7 @@ clear:
         if (flag) {
             fn_80202300(sp44, 0x79, lbl_8036BA64);
             fn_80202300(sp14, 0x78, lbl_8036BA68);
-            fn_80202024(sp14, sp44, sp14);
+            PSMTXConcat(sp14, sp44, sp14);
             fn_802025E8(sp14, sp14, lbl_8036BA6C, lbl_8036BA6C, lbl_8036BA6C);
             draw = *(void **)((u8 *)node + 0xC);
             f28 = lbl_8036BA40 + f26;

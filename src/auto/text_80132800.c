@@ -3303,7 +3303,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     u16 fn_8017C3C8(void *);
     void fn_8004BD1C(void *, f32 *, f32, f32);
     void fn_80202300(void *, s32, f32);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_802025E8(void *, void *, f32, f32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
     f32 fn_80138AC0(void *);
@@ -3451,7 +3451,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         fy = fy + sp2C[0];
         fn_80202300(sp38, 0x79, lbl_8036A658);
         fn_80202300(sp68, 0x78, lbl_8036A65C);
-        fn_80202024(sp68, sp38, sp68);
+        PSMTXConcat(sp68, sp38, sp68);
         fn_802025E8(sp68, sp68, lbl_8036A650, lbl_8036A650, lbl_8036A650);
         fn_80202574(sp68, self->unk50 + 0x10, fy, fx, (f32)self->unk22);
         a = fn_80138AC0(self);
@@ -3856,7 +3856,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void fn_8013A5A0(void *, s32);
     void fn_8013F748(void *, s16 *, s16 *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_802025E8(void *, void *, f32, f32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
     void fn_8000A258(void);
@@ -3951,7 +3951,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
 
     fn_80202300(sp1C, 0x79, lbl_8036A67C);
     fn_80202300(sp4C, 0x78, lbl_8036A680);
-    fn_80202024(sp4C, sp1C, sp4C);
+    PSMTXConcat(sp4C, sp1C, sp4C);
     fn_802025E8(sp4C, sp4C, lbl_8036A684, lbl_8036A684, lbl_8036A684);
     fn_8000A258();
     fn_80009D74(lbl_8036A668, lbl_8036A668, lbl_8036A688 + (f32)self->a22, lbl_8036A674, lbl_8036A688);
@@ -10633,7 +10633,6 @@ s32 fn_80146B10(s32 arg0) {
     void *fn_8000D2BC(void *);
     void fn_800056A0(s32);
     extern u8 lbl_80276BC8[];
-    s32 *header;
     s32 *table;
     s32 count;
     s32 lo;
@@ -10642,9 +10641,9 @@ s32 fn_80146B10(s32 arg0) {
     s32 key;
     s32 result;
 
-    header = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x30b);
-    count = *header;
-    table = header + 1;
+    table = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x30b);
+    count = *table;
+    table++;
     lo = 0;
     hi = count - 1;
     while (lo <= hi) {

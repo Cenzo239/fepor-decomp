@@ -132,7 +132,7 @@ void fn_80083F08(void *arg0) {
     s32 fn_801660A8(void *);
     Color *fn_8018D900(s32);
     void fn_80201FF0(f32 *, void *);
-    void fn_80202024(f32 *, f32 *, f32 *);
+    void PSMTXConcat(f32 *, f32 *, f32 *);
     void fn_80202300(f32 *, s32, f32);
     void PSMTXTrans(f32 *, f32, f32, f32);
     void PSMTXScale(f32 *, f32, f32, f32);
@@ -498,10 +498,10 @@ void fn_80083F08(void *arg0) {
     f24v = sp24;
     f23v = sp28;
     PSMTXTrans(spC0, lbl_803695A4 + bx + f24v, lbl_80369660 + by + f23v, lbl_80369664);
-    fn_80202024(sp90, spF0, sp120);
-    fn_80202024(sp60, sp120, sp120);
-    fn_80202024(sp30, sp120, sp120);
-    fn_80202024(spC0, sp120, sp120);
+    PSMTXConcat(sp90, spF0, sp120);
+    PSMTXConcat(sp60, sp120, sp120);
+    PSMTXConcat(sp30, sp120, sp120);
+    PSMTXConcat(spC0, sp120, sp120);
     fn_80201FF0(sp120, (u8 *)*(void **)((u8 *)arg0 + 0x60) + 0x10);
     fn_8005F7B0(*(void **)((u8 *)arg0 + 0x60), *(u8 *)((u8 *)arg0 + 8));
     fn_8005F780(*(void **)((u8 *)arg0 + 0x60), 0xFF);

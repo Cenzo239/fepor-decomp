@@ -1106,7 +1106,7 @@ extern "C" void fn_80018B24(void) {
     f32 fn_80059F64(f32, f32, f32, f32);
     void *fn_80040844(void);
     void fn_80202300(f32 *, s32, f32);
-    void fn_80202024(f32 *, f32 *, f32 *);
+    void PSMTXConcat(f32 *, f32 *, f32 *);
     void fn_802029C4(f32 *, f32 *, f32 *);
     void fn_80067FE8(f32 *, f32 *, f32 *);
     void fn_8006785C(s32, void (*)(void *), void *);
@@ -1210,7 +1210,7 @@ extern "C" void fn_80018B24(void) {
         child = *(void **)r31;
         fn_80202300(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
     }
-    fn_80202024(sp38, sp8, sp38);
+    PSMTXConcat(sp38, sp8, sp38);
     child = *(void **)r31;
     fn_802029C4(sp38, (f32 *)((u8 *)child + 0xD4), (f32 *)((u8 *)child + 0xD4));
     child = *(void **)r31;

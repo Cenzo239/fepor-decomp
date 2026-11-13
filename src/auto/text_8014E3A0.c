@@ -272,7 +272,7 @@ void fn_8014E864(void *arg0) {
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
     void fn_8006DA64(void *, s32, void *);
     void *fn_80067FDC(void);
@@ -384,9 +384,9 @@ void fn_8014E864(void *arg0) {
                     PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));
                     fn_802033AC(mtx, buf68);
-                    fn_80202024(buf68, buf8, bufF8);
-                    fn_80202024(buf68, bufF8, bufF8);
-                    fn_80202024(buf38, bufF8, bufF8);
+                    PSMTXConcat(buf68, buf8, bufF8);
+                    PSMTXConcat(buf68, bufF8, bufF8);
+                    PSMTXConcat(buf38, bufF8, bufF8);
                     goto after_mtx;
                 case 7:
                     fn_80201FF0(mtx, bufF8);
@@ -397,12 +397,12 @@ void fn_8014E864(void *arg0) {
                 perm_join:
                     PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));
-                    fn_80202024(buf68, buf8, bufF8);
-                    fn_80202024(buf98, bufF8, bufF8);
-                    fn_80202024(bufC8, bufF8, bufF8);
-                    fn_80202024(buf38, bufF8, bufF8);
+                    PSMTXConcat(buf68, buf8, bufF8);
+                    PSMTXConcat(buf98, bufF8, bufF8);
+                    PSMTXConcat(bufC8, bufF8, bufF8);
+                    PSMTXConcat(buf38, bufF8, bufF8);
                 after_mtx:
-                    fn_80202024(fn_80067FDC(), bufF8, bufF8);
+                    PSMTXConcat(fn_80067FDC(), bufF8, bufF8);
                     fn_80224D7C(bufF8, 0);
                     fn_80224E1C(0);
 

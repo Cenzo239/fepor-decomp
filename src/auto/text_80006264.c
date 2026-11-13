@@ -803,11 +803,11 @@ void fn_80007370(float arg0, float arg1, float arg2)
     scale = lbl_80368B9C * arg2;
     fn_80202300(matrix2, 0x5A, scale);
 
-    fn_80202024(matrix2, matrix1, matrix2);
+    PSMTXConcat(matrix2, matrix1, matrix2);
 
     PSMTXTrans(matrix1, arg0, arg1, lbl_80368B98);
 
-    fn_80202024(matrix1, matrix2, matrix1);
+    PSMTXConcat(matrix1, matrix2, matrix1);
 
     sine = matrix2[0];
     cosine = matrix2[1];
@@ -2036,10 +2036,10 @@ void fn_80009C20(
     PSMTXTrans(matrix3, -arg3, -arg4, lbl_80368B98);
     PSMTXTrans(matrix4, arg3, arg4, lbl_80368B98);
 
-    fn_80202024(matrix1, matrix3, result);
-    fn_80202024(matrix2, result, result);
-    fn_80202024(matrix4, result, result);
-    fn_80202024(matrix0, result, result);
+    PSMTXConcat(matrix1, matrix3, result);
+    PSMTXConcat(matrix2, result, result);
+    PSMTXConcat(matrix4, result, result);
+    PSMTXConcat(matrix0, result, result);
 
     fn_80201FF0(result, (u8 *)lbl_80367140 + 0x60);
 
@@ -2050,7 +2050,7 @@ void fn_80009C20(
 void fn_80009D74(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
-    void fn_80202024(void *, void *, void *);
+    void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
     extern f32 lbl_80368B94;
     extern u16 lbl_80367140;
@@ -2062,7 +2062,7 @@ void fn_80009D74(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     } else {
         PSMTXScale(tmp, arg3, arg3, lbl_80368B94);
         PSMTXTrans(mtx, arg0, arg1, arg2);
-        fn_80202024(mtx, tmp, mtx);
+        PSMTXConcat(mtx, tmp, mtx);
     }
     fn_80201FF0(mtx, (*(u8 **)&lbl_80367140) + 0x60);
     *(f32 *)((*(u8 **)&lbl_80367140) + 0x28) = arg2;

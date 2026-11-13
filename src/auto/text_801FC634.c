@@ -2274,7 +2274,7 @@ void fn_80201FF0(void *src, void *dst) {
     d[1][3] = s[1][3];
 }
 
-void fn_80202024(f32* mtx, f32* vec, f32* out) {
+void PSMTXConcat(f32* mtx, f32* vec, f32* out) {
     // Matrix (4x3) multiplied by vector (3-element) producing 4-element result
     // Using PowerPC SIMD instructions approach
     
