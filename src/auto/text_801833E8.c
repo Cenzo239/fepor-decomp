@@ -3052,7 +3052,8 @@ void fn_8018CC3C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x44) = 0;
 }
 
-void Light_ScaleProcess(void *arg0) {
+/* Ease light intensity from start to end over duration, scale channels 0/2 from channel 1, then finish the process. */
+void Light_ScaleProcess(void *proc) {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
     void Process_Unlink(void *);
@@ -3063,17 +3064,17 @@ void Light_ScaleProcess(void *arg0) {
     u8 *dst0;
     u8 *dst2;
 
-    *(s32 *)((u8 *)arg0 + 0x3C) = *(s32 *)((u8 *)arg0 + 0x3C) + 1;
-    *(s32 *)((u8 *)arg0 + 0x30) = (s32) Math_EaseOutPow(
+    *(s32 *)((u8 *)proc + 0x3C) = *(s32 *)((u8 *)proc + 0x3C) + 1;
+    *(s32 *)((u8 *)proc + 0x30) = (s32) Math_EaseOutPow(
         2,
-        (f32)*(s32 *)((u8 *)arg0 + 0x34),
-        (f32)*(s32 *)((u8 *)arg0 + 0x38),
-        (f32)*(s32 *)((u8 *)arg0 + 0x40),
-        (f32)*(s32 *)((u8 *)arg0 + 0x3C));
+        (f32)*(s32 *)((u8 *)proc + 0x34),
+        (f32)*(s32 *)((u8 *)proc + 0x38),
+        (f32)*(s32 *)((u8 *)proc + 0x40),
+        (f32)*(s32 *)((u8 *)proc + 0x3C));
     src = Light_GetChannel(1);
     dst0 = Light_GetChannel(0);
     dst2 = Light_GetChannel(2);
-    scale = *(s32 *)((u8 *)arg0 + 0x30);
+    scale = *(s32 *)((u8 *)proc + 0x30);
 
     v = (src[4] * scale) / 100;
     if (v > 0xFF) {
@@ -3117,11 +3118,11 @@ void Light_ScaleProcess(void *arg0) {
     dst0[2] = v;
     dst2[2] = v;
 
-    if (*(s32 *)((u8 *)arg0 + 0x3C) >= *(s32 *)((u8 *)arg0 + 0x40)) {
-        if (*(s32 *)((u8 *)arg0 + 0x30) == 0x64) {
-            Process_Unlink(arg0);
+    if (*(s32 *)((u8 *)proc + 0x3C) >= *(s32 *)((u8 *)proc + 0x40)) {
+        if (*(s32 *)((u8 *)proc + 0x30) == 0x64) {
+            Process_Unlink(proc);
         } else {
-            Process_ClearFunc(arg0);
+            Process_ClearFunc(proc);
         }
     }
 }
