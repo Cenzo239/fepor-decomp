@@ -211,7 +211,7 @@ void fn_800566D4(void *arg0) {
     void fn_80066D00(s32);
     void fn_80067984(s32);
     void fn_80067EDC(s32);
-    void fn_8021F4E4(s32, s32);
+    void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -270,9 +270,9 @@ void fn_800566D4(void *arg0) {
                 fn_802245D8(1, 4, 5, 7);
                 fn_80224684(0, 3, 0);
                 GXClearVtxDesc();
-                fn_8021F4E4(9, 1);
-                fn_8021F4E4(0xB, 1);
-                fn_8021F4E4(0xD, 1);
+                GXSetVtxDesc(9, 1);
+                GXSetVtxDesc(0xB, 1);
+                GXSetVtxDesc(0xD, 1);
                 fn_8021FBF0(0, 9, 1, 4, 0);
                 fn_8021FBF0(0, 0xB, 1, 5, 0);
                 fn_8021FBF0(0, 0xD, 1, 4, 0);
@@ -1403,7 +1403,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_80059C2C(s32, s32, s32, s32, s32);
     void fn_80066D00(s32);
     void PSMTXIdentity(void *);
-    void fn_8021F4E4(s32, s32);
+    void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -1485,8 +1485,8 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_80224E50(sp58, 0x1E, 1);
     fn_80224E50(sp28, 0x21, 1);
     GXClearVtxDesc();
-    fn_8021F4E4(9, 1);
-    fn_8021F4E4(0xD, 1);
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(0xD, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
     fn_8021FBF0(0, 0xD, 1, 4, 0);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1555,7 +1555,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     f32 temp_f2;
 
     GXClearVtxDesc();
-    fn_8021F4E4(9, 1);
+    GXSetVtxDesc(9, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
     fn_80220428(0);
     fn_80222334(1);

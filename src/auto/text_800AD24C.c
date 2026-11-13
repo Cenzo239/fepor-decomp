@@ -8635,7 +8635,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_80222EB4(void);
     void fn_80067EDC(s32);
     void GXClearVtxDesc(void);
-    void fn_8021F4E4(s32, s32);
+    void GXSetVtxDesc(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -8676,8 +8676,8 @@ void fn_800C0CDC(void *arg0) {
     fn_80222EB4();
     fn_80067EDC(0);
     GXClearVtxDesc();
-    fn_8021F4E4(9, 1);
-    fn_8021F4E4(0xD, 1);
+    GXSetVtxDesc(9, 1);
+    GXSetVtxDesc(0xD, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
     fn_8021FBF0(0, 0xD, 1, 4, 0);
     fn_80220428(1);
