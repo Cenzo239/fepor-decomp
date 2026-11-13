@@ -1307,7 +1307,7 @@ void fn_8012ABAC(void *arg0) {
     }
 }
 
-void fn_8012AC88(void *arg0) {
+void Effect_SpawnAtMapTile(void *arg0) {
     f32 Map_SampleHeight(void *, f32, f32);
     void Effect_Create(void *, s32);
     void Effect_SetPos(f32, f32, f32);
