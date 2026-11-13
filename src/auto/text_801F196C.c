@@ -863,7 +863,7 @@ void Options_InitPanel(void *arg0) {
     char *strcat(char *, const char *);
     extern char gOptionsStrs[];
     extern u8 gOptionsList1[];
-    extern u8 lbl_8029AB60[];
+    extern u8 gOptionsList2[];
     extern u8 lbl_8029AD68[];
     extern u8 lbl_8029AF18[];
     struct Work *p;
@@ -888,7 +888,7 @@ void Options_InitPanel(void *arg0) {
         p->unk34 = (struct Entry *)gOptionsList1;
         break;
     case 2:
-        p->unk34 = (struct Entry *)lbl_8029AB60;
+        p->unk34 = (struct Entry *)gOptionsList2;
         break;
     case 3:
         p->unk34 = (struct Entry *)lbl_8029AD68;
