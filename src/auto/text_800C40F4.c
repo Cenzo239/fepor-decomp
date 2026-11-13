@@ -20719,7 +20719,7 @@ s32 fn_800FB9F8(void *arg0) {
     void Unit_IsLowHp(void *);
     u8 fn_80017318(void *);
     void fn_8018256C(void *);
-    void fn_80182B7C(void *);
+    void Ai_TryApproachIke(void *);
     void fn_80182AC4(void *);
     void fn_80182A0C(void *);
     void fn_80182704(void *);
@@ -20733,7 +20733,7 @@ s32 fn_800FB9F8(void *arg0) {
     v = fn_80017318((u8 *)arg0 + 0x236);
     switch (v) {
     case 1:
-        fn_80182B7C(arg0);
+        Ai_TryApproachIke(arg0);
         break;
     case 2:
         fn_80182AC4(arg0);
