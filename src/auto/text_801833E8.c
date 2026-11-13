@@ -13506,7 +13506,7 @@ void fn_80198910(void) {
 #pragma global_optimizer off
 void MoveAnim_SyncWeaponBones(void *arg0) {
     void fn_800608AC(void *);
-    void *fn_800E56BC(void *);
+    void *Unit_GetActor(void *);
     void *fn_80060690(void *);
     void MTXRotDegOrder(void *, void *);
     void PSMTXConcat(void *, void *, void *);
@@ -13538,7 +13538,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
 
     self = arg0;
     fn_800608AC(*(void **)((u8 *)self + 0xE0));
-    obj = fn_800E56BC(*(void **)((u8 *)self + 0xEC));
+    obj = Unit_GetActor(*(void **)((u8 *)self + 0xEC));
     {
         void *t5 = *(void **)((u8 *)obj + 0x40);
         void *t4 = *(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x40);

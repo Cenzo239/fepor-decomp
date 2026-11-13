@@ -3320,7 +3320,7 @@ extern "C" void fn_800CC3D8(void *arg0, s32 arg1) {
     void fn_800E574C(void *, char *, s32, s32, s32, s32, f32);
     void fn_800E4E3C(void *);
     void fn_800E4B64(void *);
-    s32 fn_800E56BC(void *);
+    s32 Unit_GetActor(void *);
     void *fn_80040844(void);
     u32 strlen(const char *);
     extern char lbl_802704F8[];
@@ -3403,7 +3403,7 @@ else {obj=*(void **)((u8 *)lbl_80330EAC+0xCB4);String_AssignCStr(&str80,(char *)
     ((Host *)*(void **)((u8 *)self + 4))->v5(obj);
     self = fn_80040844();
     if (self != NULL) {
-        *(s32 *)((u8 *)self + 0x34) = fn_800E56BC(obj);
+        *(s32 *)((u8 *)self + 0x34) = Unit_GetActor(obj);
     }
     String_Destroy(&str68, -1);
     String_Destroy(&str74, -1);
@@ -3478,7 +3478,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void fn_800E4BA4(void *, s32);
     void fn_800E4D24(void *);
     void fn_800E4E5C(void *);
-    void *fn_800E56BC(void *);
+    void *Unit_GetActor(void *);
     void fn_800E8154(void *, String *);
     void fn_801985F0(void *, void *);
     void fn_801985F8(void *, void *);
@@ -3636,8 +3636,8 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         String_Destroy(&sp88, -1);
     }
 
-    if (arg3 != 0 && fn_800E56BC(obj) != 0) {
-        fn_8008CDE0(fn_800E56BC(obj), arg3);
+    if (arg3 != 0 && Unit_GetActor(obj) != 0) {
+        fn_8008CDE0(Unit_GetActor(obj), arg3);
     }
 
     String_Destroy(&spDC, -1);
@@ -7556,7 +7556,7 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
     void fn_800E574C(void *, char *, s32, s32, s32, s32, f32);
     void fn_800E4E3C(void *);
     void fn_800E4B64(void *);
-    s32 fn_800E56BC(void *);
+    s32 Unit_GetActor(void *);
     void *fn_80040844(void);
     u32 strlen(const char *);
     extern char lbl_802711B0[];
@@ -7637,7 +7637,7 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
     ((Host *)*(void **)((u8 *)self + 4))->v5(obj);
     self = fn_80040844();
     if (self != NULL) {
-        *(s32 *)((u8 *)self + 0x34) = fn_800E56BC(obj);
+        *(s32 *)((u8 *)self + 0x34) = Unit_GetActor(obj);
     }
     String_Destroy(&str68, -1);
     String_Destroy(&str74, -1);
@@ -12674,7 +12674,7 @@ void fn_800E5698(s32 arg0, s32 arg1) {
     String_Copy(arg0, arg1 + 0xB0);
 }
 
-s32 fn_800E56BC(void *arg0) {
+s32 Unit_GetActor(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0xE0);
 }
 
