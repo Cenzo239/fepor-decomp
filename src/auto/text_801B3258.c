@@ -8837,7 +8837,7 @@ s32 fn_801C9734(void) {
     void fn_801CB25C(void *, s32);
     u32 strlen(const char *);
     extern char lbl_8027D8B0[];
-    extern void *lbl_80368278;
+    extern void *gGame;
     extern void *lbl_803682B8;
     struct Str {
         u32 size;
@@ -8867,7 +8867,7 @@ s32 fn_801C9734(void) {
     fn_801CB25C(&sp20, (s32)temp);
     String_Assign(&sp2C, &sp20, 0, -1);
     String_Destroy(&sp20, -1);
-    String_Assign(&sp38, lbl_80368278, 0, -1);
+    String_Assign(&sp38, gGame, 0, -1);
 
     len = strlen(&lbl_8027D8B0[8]);
     fn_800C992C(&sp38, (char *)lbl_8027D8B0 + 8, len);

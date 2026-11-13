@@ -94,7 +94,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800CD5E4(void *);
     extern void *lbl_80367240;
     extern u8 lbl_8036788C;
-    extern void *lbl_80368278;
+    extern void *gGame;
     extern f32 lbl_80369DC8;
     extern f32 lbl_80369E0C;
     extern f32 lbl_80369E10;
