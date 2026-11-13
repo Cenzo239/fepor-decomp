@@ -53,7 +53,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_80114840(void *);
     void fn_801146BC(void *);
     void fn_80114124(void *, s32);
-    s32 fn_80112F44(void *);
+    s32 Actor_IsWaitAnim(void *);
     void fn_80113A24(void *, s32);
     s32 fn_8011390C(void *);
     s32 fn_801138E8(void *);

@@ -50,7 +50,7 @@
     void fn_80114840(void *);
     void fn_801146BC(void *);
     void fn_80114124(void *, s32);
-    s32 fn_80112F44(void *);
+    s32 Actor_IsWaitAnim(void *);
     void fn_80113A24(void *, s32);
     s32 fn_8011390C(void *);
     s32 fn_801138E8(void *);
@@ -366,7 +366,7 @@
                 fn_80114124(*(void **)((u8 *)self + 0xA0), *(s32 *)((u8 *)self + 0x218));
             }
             if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
-                  && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                  && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
                 if (--(*(s32 *)((u8 *)self + 0x10)) <= 0)
                     *(u32 *)((u8 *)self + 0xC) = (*(s32 *)((u8 *)self + 0x21C) == 3) ? 0x28 : 4;
             }
@@ -417,7 +417,7 @@
                 fn_800CAD4C(self, 2, 0);
             }
             if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
-                  && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                  && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
                 if (--(*(s32 *)((u8 *)self + 0x10)) <= 0)
                     *(u32 *)((u8 *)self + 0xC) = (*(s32 *)((u8 *)self + 0x21C) == 3) ? 0x28 : 4;
             }
@@ -479,7 +479,7 @@
                 }
             }
             if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
-                  && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                  && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
                 if ((u8)Actor_HasHeightFlag(*(void **)((u8 *)self + 0x9C)))
                     fn_80112E30(*(void **)((u8 *)self + 0xA0));
                 *(u32 *)((u8 *)self + 0xC) = (*(s32 *)((u8 *)self + 0x21C) == 3) ? 0x28 : 4;
@@ -531,7 +531,7 @@
             }
             if ((u8)fn_800CD630(self)) {
                 if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
-                      && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                      && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
                     if (--(*(s32 *)((u8 *)self + 0x10)) <= 0)
                         *(u32 *)((u8 *)self + 0xC) = (*(s32 *)((u8 *)self + 0x21C) == 3) ? 0x28 : 4;
                 }
@@ -607,7 +607,7 @@
             break;
         case 30:
             if (!((u8)fn_800E5248(*(void **)((u8 *)self + 0x9C), 2) == 0
-                  && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                  && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
                 fn_80113A24(*(void **)((u8 *)self + 0x9C), 0);
                 fn_801165B4(strP, *(void **)((u8 *)self + 0x9C));
                 String_ConcatCStr(strQ, strP, lbl_802704F8 + 0x3C6);
@@ -698,7 +698,7 @@
                 }
                 *(s32 *)((u8 *)self + 0x18) = 0;
             }
-            if ((u8)fn_800CD630(self) && (u8)fn_80112F44(*(void **)((u8 *)self + 0xA0))) {
+            if ((u8)fn_800CD630(self) && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0xA0))) {
                 *(u32 *)((u8 *)self + 0x10) = *(u32 *)((u8 *)gGame + 0x54);
                 (*(u32 *)((u8 *)self + 0xC))++;
             }
@@ -753,8 +753,8 @@
             }
             if (*(s32 *)((u8 *)self + 0x18) != 0) {
                 if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
-                      && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
-                    if ((u8)fn_80112F44(*(void **)((u8 *)self + 0xA0)) != 0) {
+                      && (u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0x9C)) == 0)) {
+                    if ((u8)Actor_IsWaitAnim(*(void **)((u8 *)self + 0xA0)) != 0) {
                         *(u32 *)((u8 *)self + 0x10) = *(u32 *)((u8 *)gGame + 0x54);
                         (*(u32 *)((u8 *)self + 0xC))++;
                     }

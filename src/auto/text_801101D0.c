@@ -1173,7 +1173,7 @@ u8 fn_80112F3C(void *arg0) {
 }
 
 #pragma global_optimizer off
-s32 fn_80112F44(void *arg0) {
+s32 Actor_IsWaitAnim(void *arg0) {
     s32 n;
     extern u16 gActorXmlStrs[];
     s32 strlen(char *);
