@@ -3768,7 +3768,7 @@ s32 fn_80026AF4(s32 arg0) {
 
 s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void Item_Destroy(void *, s32);
-    void fn_8001C690(void *, void *);
+    void Item_Clone(void *, void *);
     void *Unit_GetItemSlot(s32, s32);
     void Unit_OfferItem(s32, void *, s32);
     void *Battle_GetOpponent(void *);
@@ -3796,7 +3796,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     for (i = 0; i < 8; i++) {
         entry = Unit_GetItemSlot(handle, i);
         if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
-            fn_8001C690(sp8, entry);
+            Item_Clone(sp8, entry);
             Unit_OfferItem(*(s32 *)((u8 *)obj + 0x280), sp8, arg0);
             Item_Destroy(sp8, -1);
             return 1;

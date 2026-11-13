@@ -1708,7 +1708,7 @@ void *Item_Destroy(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void *fn_8001C690(void *arg0, void *arg1) {
+void *Item_Clone(void *arg0, void *arg1) {
     s32 fn_800C30CC(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);

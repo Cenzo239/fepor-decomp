@@ -8175,7 +8175,7 @@ void *Process_CreateChild(void *, void *);
 u32 *Item_GetFlagsPtr(u32);
 void Item_Copy(u32 *, s32);
 void Item_Destroy(void *, s32);
-void fn_8001C690(void *, u32 *, u32);
+void Item_Clone(void *, u32 *, u32);
 void Item_Clear(s32);
 s32 Convoy_FindEmpty(void *);
 void fn_800C3C1C(void *, void *);
@@ -8275,7 +8275,7 @@ if (r26b != 0 && r27b != 0) {
 u32 r5 = *r26b;
 register u32 r25;
 r25 = (u32)(-(s32)r5 | r5) >> 31;
-fn_8001C690(sp28, r26b, r5);
+Item_Clone(sp28, r26b, r5);
 Item_Copy(r26b, *r27b);
 fn_801436AC(r28, *r27b);
 fn_80143C9C(r28);

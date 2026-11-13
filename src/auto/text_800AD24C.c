@@ -5544,7 +5544,7 @@ s32 fn_800BA638(s32 arg0) {
 s32 fn_800BA69C(u8 arg0, s32 arg1) {
     void fn_8001C76C(void *);
     void fn_8001D780(void *, s32);
-    void fn_8001C690(void *, void *);
+    void Item_Clone(void *, void *);
     void Item_Destroy(void *, s32);
     s32 fn_800C0658(void);
     void Unit_OfferItem(void *, void *, s32);
@@ -5563,7 +5563,7 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
     }
     fn_8001C76C(sp10);
     fn_8001D780(sp10, arg1);
-    fn_8001C690(sp8, sp10);
+    Item_Clone(sp8, sp10);
     Unit_OfferItem(var_r31, sp8, fn_800C0658());
     Item_Destroy(sp8, -1);
     Item_Destroy(sp10, -1);

@@ -6344,7 +6344,7 @@ void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
 extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
-    void fn_8001C690(void *, void *);
+    void Item_Clone(void *, void *);
     void fprintf(void *, void *, ...);
     void abort(void);
     extern char __files[];
@@ -6378,7 +6378,7 @@ extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
     {
         Holder h(list, node);
         if (&h.node->value[0] != 0) {
-            fn_8001C690(&h.node->value[0], arg3);
+            Item_Clone(&h.node->value[0], arg3);
         }
         pos = *(Node **)arg2;
         n = h.node;
@@ -13458,7 +13458,7 @@ extern u8 lbl_80279DF0[29]; // 29 bytes
 void *Heap_Alloc(s32);
 void fprintf(void*, void*, void*);
 void abort(void);
-void fn_8001C690(void*, s32);
+void Item_Clone(void*, s32);
 
 typedef struct {
     void *unk0;
