@@ -1689,7 +1689,8 @@ s32 fn_800A1D00(void) {
     return 6;
 }
 
-void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
+/* Draw the selected item's name and current/max uses for a unit item-menu row. */
+void ItemMenu_DrawItemText(s32 ctrl, s32 parent, void *item) {
     void *Map_GetCursorUnit(void);
     s32 Unit_GetItemSlot(s32, s32);
     s32 UnitRef_GetName(void);
@@ -1707,12 +1708,12 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gItemMenuTextBuf[];
     extern f32 gItemMenuTextZ;
     extern f32 gItemMenuTextScale;
-    void *temp_r30;
-    void **temp_r31;
+    void *row;
+    void **slot;
 
-    temp_r30 = arg2;
-    temp_r31 = (void **)Unit_GetItemSlot((s32)Map_GetCursorUnit(), *(u8 *)((u8 *)temp_r30 + 0x3A));
-    if (temp_r31 == NULL || *temp_r31 == NULL) {
+    row = item;
+    slot = (void **)Unit_GetItemSlot((s32)Map_GetCursorUnit(), *(u8 *)((u8 *)row + 0x3A));
+    if (slot == NULL || *slot == NULL) {
         return;
     }
     sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6C7, UnitRef_GetName());
@@ -1721,14 +1722,14 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)*(s16 *)((u8 *)temp_r30 + 0x30), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
+    Prim2D_SetPos((f32)*(s16 *)((u8 *)row + 0x30), (f32)*(s16 *)((u8 *)row + 0x32));
     Prim2D_SetText(gItemMenuTextBuf);
     Prim2D_SetScale(gItemMenuTextScale);
     Prim2D_EndPrim();
-    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)temp_r31 + 4),
-        (u8)((*temp_r31 != NULL) ? *(u8 *)((u8 *)*temp_r31 + 0x18) : 0));
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)slot + 4),
+        (u8)((*slot != NULL) ? *(u8 *)((u8 *)*slot + 0x18) : 0));
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)(*(s16 *)((u8 *)temp_r30 + 0x30) + 0x78), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)row + 0x30) + 0x78), (f32)*(s16 *)((u8 *)row + 0x32));
     Prim2D_SetText(gItemMenuTextBuf);
     Prim2D_SetScale(gItemMenuTextScale);
     Prim2D_EndPrim();
