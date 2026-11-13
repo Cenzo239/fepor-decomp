@@ -2304,7 +2304,8 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
     return 0;
 }
 
-s32 Item_DecUses(void *arg0) {
+s32 Item_DecUses(void *item) {
+    /* Decrement item uses unless unbreakable; clear the slot when uses hit 0. */
     void fn_800C3220(void *, s32);
     extern u8 gItemFlagsDummyReady;
     extern s32 gItemFlagsDummy;
@@ -2315,7 +2316,7 @@ s32 Item_DecUses(void *arg0) {
         u8 flag : 1;
         u8 rest : 6;
     } Bit6;
-    unsigned long long *p;
+    unsigned long long *flags;
     Bit6 *bf;
     s32 mask;
 
@@ -2325,24 +2326,24 @@ s32 Item_DecUses(void *arg0) {
         gItemFlagsDummyReady = 1;
     }
 
-    if (*(void **)arg0 != 0) {
-        p = (unsigned long long *)((u8 *)*(void **)arg0 + 0x38);
+    if (*(void **)item != 0) {
+        flags = (unsigned long long *)((u8 *)*(void **)item + 0x38);
     } else {
-        p = (unsigned long long *)&gItemFlagsDummy;
+        flags = (unsigned long long *)&gItemFlagsDummy;
     }
 
-    if ((*p & 0x10000000000ULL) != 0) {
+    if ((*flags & 0x10000000000ULL) != 0) {
         return 0;
     }
 
-    *((u8 *)arg0 + 4) = *((u8 *)arg0 + 4) - 1;
-    if (*((u8 *)arg0 + 4) == 0) {
-        *(void **)arg0 = 0;
-        *((u8 *)arg0 + 4) = 0;
-        bf = (Bit6 *)((u8 *)arg0 + 5);
+    *((u8 *)item + 4) = *((u8 *)item + 4) - 1;
+    if (*((u8 *)item + 4) == 0) {
+        *(void **)item = 0;
+        *((u8 *)item + 4) = 0;
+        bf = (Bit6 *)((u8 *)item + 5);
         bf->pad = 0;
         bf->flag = 0;
-        mask = *((u8 *)arg0 + 5) & 0x3F;
+        mask = *((u8 *)item + 5) & 0x3F;
         if (mask != 0) {
             fn_800C3220(lbl_803206EC, mask);
             bf->rest = 0;
