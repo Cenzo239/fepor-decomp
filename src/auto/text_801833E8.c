@@ -4480,7 +4480,7 @@ extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
     M2C_UNK String_ConcatCStr(M2C_UNK *, M2C_UNK *, void *);
     s32 sprintf(void *, void *, ...);
     s32 strlen(s32);
-    extern u8 lbl_80279D50[];
+    extern u8 gForgeActorStrings[];
     struct { s32 v[15]; } sp48;
     struct { s32 v[3]; } sp3C;
     struct { s32 v[3]; } sp30;
@@ -4507,21 +4507,21 @@ extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
         }
         M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
         M2C_FIELD(arg0, s32 **, 0x40) = GActor_Create();
-        sprintf((M2C_UNK *)&sp48, lbl_80279D50 + 8, lbl_80279D50 + 0x11);
+        sprintf((M2C_UNK *)&sp48, gForgeActorStrings + 8, gForgeActorStrings + 0x11);
         String_Init((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
         temp_r29 = **M2C_FIELD(arg0, s32 ***, 0x3C) + 4;
         fn_800C992C((M2C_UNK *)&sp3C, temp_r29, strlen(temp_r29));
-        String_ConcatCStr((M2C_UNK *)&sp30, (M2C_UNK *)&sp3C, lbl_80279D50 + 0x16);
+        String_ConcatCStr((M2C_UNK *)&sp30, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x16);
         String_CStr((M2C_UNK *)&sp30);
         M2C_FIELD(arg0, u32 *, 0x54) = fn_8005C84C();
         String_Destroy((M2C_UNK *)&sp30, -1);
-        String_ConcatCStr((M2C_UNK *)&sp24, (M2C_UNK *)&sp3C, lbl_80279D50 + 0x1D);
+        String_ConcatCStr((M2C_UNK *)&sp24, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x1D);
         fn_8005F4F4(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&sp24));
         String_Destroy((M2C_UNK *)&sp24, -1);
-        String_ConcatCStr((M2C_UNK *)&sp18, (M2C_UNK *)&sp3C, lbl_80279D50 + 0x22);
+        String_ConcatCStr((M2C_UNK *)&sp18, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x22);
         fn_8005F554(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&sp18));
         String_Destroy((M2C_UNK *)&sp18, -1);
-        String_ConcatCStr((M2C_UNK *)&spC, (M2C_UNK *)&sp3C, lbl_80279D50 + 0x28);
+        String_ConcatCStr((M2C_UNK *)&spC, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x28);
         fn_8005F494(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&spC));
         String_Destroy((M2C_UNK *)&spC, -1);
         *M2C_FIELD(arg0, s32 **, 0x40) = *M2C_FIELD(arg0, s32 **, 0x40) | 0x40000000 | 0x400;
