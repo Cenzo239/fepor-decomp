@@ -321,7 +321,7 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
 #pragma global_optimizer off
 void TabMenu_SetTab(void *arg0, s8 arg1) {
     void *Msg_Expand(void *);
-    void fn_80056AE0(void *, void *);
+    void TextBanner_SetString(void *, void *);
     void fn_80057860(void *, s16);
     void fn_801E4CF8(void *);
     extern u8 gTabMenuStrings[];
@@ -334,10 +334,10 @@ void TabMenu_SetTab(void *arg0, s8 arg1) {
     *(u8 *)((u8 *)arg0 + 0x31) = (u8)zero;
     switch (zero) {
     case 0:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+        TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
         break;
     case 1:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+        TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
         break;
     }
     *(u8 *)((u8 *)arg0 + 0x32) = 0;
@@ -1695,7 +1695,7 @@ void fn_801E80B4(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     u8 fn_801E85A4(void *, s8);
     void *Msg_Expand(void *);
-    void fn_80056AE0(void *, void *);
+    void TextBanner_SetString(void *, void *);
     extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 gTabMenuStrings[];
@@ -1833,10 +1833,10 @@ void fn_801E80B4(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x31) = (u8)zero;
         switch (zero) {
         case 0:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
             break;
         case 1:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
             break;
         }
         if (fn_801E85A4(arg0, (s8)*(u8 *)((u8 *)arg0 + 0x32)) != 0) {
@@ -2172,7 +2172,7 @@ void fn_801E8D34(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     s8 fn_801E8920(void *, u8);
     void *Msg_Expand(void *);
-    void fn_80056AE0(void *, void *);
+    void TextBanner_SetString(void *, void *);
     u8 fn_801E91E8(void *, void *);
     extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -2283,10 +2283,10 @@ void fn_801E8D34(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x31) = 1;
         switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
         case 0:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
             break;
         case 1:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+            TextBanner_SetString(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
             break;
         }
         if ((s8)*(u8 *)((u8 *)arg0 + 0x33) > hi) {
@@ -2577,7 +2577,7 @@ void TabMenu_Init(void *menu) {
     void *Hash_Lookup(void *);
     void *Msg_Expand(void *);
     void *fn_80056A60(void *);
-    void fn_80056AE0(void *, void *);
+    void TextBanner_SetString(void *, void *);
     void ScrollBar_RecreateArrows(void *, s32);
     void fn_80057860(void *, s16);
     void fn_80057880(void *, s32);
@@ -2657,10 +2657,10 @@ skip_sub:
     *(void **)((u8 *)menu + 0x60) = caption;
     switch ((s8)*(u8 *)((u8 *)menu + 0x31)) {
     case 0:
-        fn_80056AE0(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+        TextBanner_SetString(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
         break;
     case 1:
-        fn_80056AE0(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+        TextBanner_SetString(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
         break;
     }
     fn_801E4CF8(menu);

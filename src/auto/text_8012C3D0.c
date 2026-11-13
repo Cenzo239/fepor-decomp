@@ -250,7 +250,7 @@ void fn_8012C7C8(s32 arg0, s32 arg1) {
 void Ui_RefreshSelectPrompt(void *arg0) {
     M2C_UNK Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
-    M2C_UNK fn_80056AE0(s32, s32);
+    M2C_UNK TextBanner_SetString(s32, s32);
     extern u8 gUiContext[];
     extern u8 lbl_80275AC0[];
 
@@ -262,26 +262,26 @@ void Ui_RefreshSelectPrompt(void *arg0) {
         switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 1:
         case 2:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x5A)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x5A)));
             return;
         case 4:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x6B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x6B)));
             return;
         default:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x7B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x7B)));
             return;
         }
     } else {
         switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 1:
         case 2:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x8A)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x8A)));
             return;
         case 4:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x9B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x9B)));
             return;
         default:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0xAB)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0xAB)));
             return;
         }
     }
@@ -441,7 +441,7 @@ void fn_8012CCA4(void *arg0)
 
 void fn_8012CE34(void *arg0) {
     s32 Msg_Expand(void *);
-    void fn_80056AE0(s32, s32);
+    void TextBanner_SetString(s32, s32);
     extern u8 lbl_80275AC0[];
     u8 temp_r0;
 
@@ -451,13 +451,13 @@ void fn_8012CE34(void *arg0) {
         switch (temp_r0) {
         case 1:
         case 2:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
             break;
         case 4:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
             break;
         default:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
             break;
         }
     } else {
@@ -465,13 +465,13 @@ void fn_8012CE34(void *arg0) {
         switch (temp_r0) {
         case 1:
         case 2:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
             break;
         case 4:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
             break;
         default:
-            fn_80056AE0(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
             break;
         }
     }
@@ -690,7 +690,7 @@ s32 fn_8012D554(void) {
 
 void fn_8012D55C(void *arg0) {
     s32 Msg_Expand(void *);
-    M2C_UNK fn_80056AE0(s32, s32);
+    M2C_UNK TextBanner_SetString(s32, s32);
     extern u8 lbl_80275AC0[];
 
     M2C_FIELD(arg0, u8 *, 0x62) = -1;
@@ -701,19 +701,19 @@ void fn_8012D55C(void *arg0) {
     switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 0:
         case 1:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x5A]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x5A]));
             break;
         case 2:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x6B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x6B]));
             break;
         case 3:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
             break;
         case 4:
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
             break;
         default: // All cases 5-39 fall here
-            fn_80056AE0(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0xAB]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0xAB]));
             break;
     }
 }
@@ -722,7 +722,7 @@ void fn_8012D6A4(void *arg0) {
     void Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
     void fn_8004BE88(void *, s32);
-    void fn_80056AE0(void *, s32);
+    void TextBanner_SetString(void *, s32);
     void fn_80057860(void *, s32);
     void fn_80057E6C(void *);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -772,11 +772,11 @@ void fn_8012D6A4(void *arg0) {
         mode = *((u8 *)self + 0x6C);
         if (mode == 1) {
             fn_8011ABC0(self);
-            fn_80056AE0(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
+            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
             Process_Goto(self, 8);
         } else if (mode == 2) {
             fn_801EAA38(self);
-            fn_80056AE0(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
+            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
             Process_Goto(self, 8);
         }
     } else if (pressed & 0x800) {
@@ -1040,7 +1040,7 @@ void fn_8012DFA8(void *arg0) {
     void *fn_8003FCCC(void *);
     void fn_800506E0(void *, s32);
     void *fn_80056A60(void *);
-    void fn_80056AE0(void *, void *);
+    void TextBanner_SetString(void *, void *);
     void ScrollBar_RecreateArrows(void *, s32);
     void fn_80057860(void *, s16);
     void fn_80057880(void *, s32);
@@ -1600,13 +1600,13 @@ void fn_8012DFA8(void *arg0) {
         switch (mode) {
         case 1:
         case 2:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
             break;
         case 4:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
             break;
         default:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
             break;
         }
     } else {
@@ -1614,13 +1614,13 @@ void fn_8012DFA8(void *arg0) {
         switch (mode) {
         case 1:
         case 2:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
             break;
         case 4:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
             break;
         default:
-            fn_80056AE0(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
             break;
         }
     }

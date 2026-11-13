@@ -373,7 +373,7 @@ void *fn_80056A60(void *arg0) {
     return arg0;
 }
 
-void fn_80056AE0(void *arg0, u32 arg1) {
+void TextBanner_SetString(void *arg0, u32 arg1) {
     M2C_UNK strcpy(s32);
     if (arg1 != 0U) {
         strcpy(M2C_FIELD(arg0, s32 *, 0x14));
