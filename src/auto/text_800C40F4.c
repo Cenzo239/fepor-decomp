@@ -14146,14 +14146,15 @@ void fn_800E8BF8(u8 *self, f32 *vec, f32 *vec2, s32 arg3, f32 farg0) {
     void fn_800DF44C(void *, s32, f32, f32, f32);
     void fn_800DF41C(void *, f32 *, f32 *, f32);
     void fn_800DF410(f32 *, f32 *);
-    f32 x;
+    f32 saved;
 
-    x = vec[0];
-    if (lbl_80369F78 != x || lbl_80369F78 != vec[1] || lbl_80369F78 != vec[2]) {
-        fn_800DF44C(self + 0x134, arg3, x, vec[1], vec[2]);
+    saved = farg0;
+    farg0 = vec[0];
+    if (lbl_80369F78 != farg0 || lbl_80369F78 != vec[1] || lbl_80369F78 != vec[2]) {
+        fn_800DF44C(self + 0x134, arg3, farg0, vec[1], vec[2]);
     }
     fn_800DF44C(self + 0x194, arg3, vec2[0], vec2[1], vec2[2]);
-    fn_800DF44C(self + 0x254, arg3, farg0, lbl_80369F78, lbl_80369F78);
+    fn_800DF44C(self + 0x254, arg3, saved, lbl_80369F78, lbl_80369F78);
     fn_800DF41C(self + 0x134, (f32 *)(self + 0xf0), (f32 *)(self + 0xf4), *(f32 *)(self + 0xf8));
     fn_800DF41C(self + 0x194, (f32 *)(self + 0x54), (f32 *)(self + 0x58), *(f32 *)(self + 0x5c));
     fn_800DF410((f32 *)(self + 0x254), (f32 *)(self + 0x104));
@@ -21714,29 +21715,29 @@ void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
     void fn_80022FD8(void *, s32);
     void fn_800227F8(void *, void *);
     void fn_80022748(void *, s32);
-    u8 Status_Test(void *, s32);
-    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
-    extern u8 gBattleMap[];
+    u8 fn_80105BC0(void *, s32);
+    void fn_800213D0(void *, s8, s8, u16, s32, s32);
+    extern u8 lbl_802CA518[];
 
-    void *map;
     s32 flag14;
-    s32 flag15;
+    long flag15;
+    void *map;
 
-    map = gBattleMap;
+    map = lbl_802CA518;
     fn_80022FD8(map, arg4);
-    fn_800227F8(gBattleMap, arg2);
-    fn_80022748(gBattleMap, arg3);
-    if (arg2 != 0) {
-        flag14 = Status_Test((u8 *)arg2 + 0x1C, 0x14) != 0;
+    fn_800227F8(lbl_802CA518, arg2);
+    fn_80022748(lbl_802CA518, arg3);
+    if (arg2) {
+        flag14 = fn_80105BC0((u8 *)arg2 + 0x1C, 0x14) != 0;
     } else {
         flag14 = 1;
     }
-    if (arg2 != 0) {
-        flag15 = Status_Test((u8 *)arg2 + 0x1C, 0x15) != 0;
+    if (arg2) {
+        flag15 = fn_80105BC0((u8 *)arg2 + 0x1C, 0x15) != 0;
     } else {
         flag15 = 0;
     }
-    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)arg5, flag14, flag15);
+    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)arg5, flag14, flag15);
 }
 
 #pragma use_lmw_stmw on
@@ -22124,7 +22125,7 @@ void fn_800FF2EC(void) {
     extern u32 gUiContext[12];
     
     fn_80027038(gUiContext);
-    fn_80027F98(gUiContext, 1);
+    UiCtx_EndMoveSelect(gUiContext, 1);
     
     if (gUiContext[0] != 0) {
         if (((u32 *) gUiContext[0])[0x188 / 4] != 0) {

@@ -193,7 +193,7 @@ void fn_80028C90(s32 arg0) {
 void fn_80028D04(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_80027038(void *);
-    void fn_80027F98(void *, s32);
+    void UiCtx_EndMoveSelect(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -209,7 +209,7 @@ void fn_80028D04(void *arg0) {
     }
 common:
     fn_80027038(gUiContext);
-    fn_80027F98(gUiContext, 1);
+    UiCtx_EndMoveSelect(gUiContext, 1);
     fn_8014CBD8(gBattleState, (f32)(s8)gUiContext[0xD], (f32)(s8)gUiContext[0xE]);
 }
 

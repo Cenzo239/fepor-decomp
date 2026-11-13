@@ -3887,7 +3887,7 @@ void fn_80026FA0(void *arg0) {
     fn_80183EAC(*(s32 *)gUiContext, *(s32 *)(p + 4), x, y, arg0);
 }
 
-void fn_80027F98(void *arg0, u8 arg1) {
+void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     s8 Unit_GetMov(void);
     void fn_800C1060(s32);
     extern u8 gMapBlendMode;

@@ -1521,7 +1521,7 @@ s32 Ui_KillCursorUnit(void) {
     void fn_800A6A3C(void);
     void *Map_GetCursorUnit(void);
     void UiCtx_BeginMoveSelect(void *, void *);
-    void fn_80027F98(void *, s32);
+    void UiCtx_EndMoveSelect(void *, s32);
     void Unit_SetHp(void *, s32);
     void fn_8003E8DC(void *);
     void fn_8002297C(void *);
@@ -1544,7 +1544,7 @@ s32 Ui_KillCursorUnit(void) {
     fn_800A6A3C();
     temp_r30 = Map_GetCursorUnit();
     UiCtx_BeginMoveSelect(gUiContext, temp_r30);
-    fn_80027F98(gUiContext, 1);
+    UiCtx_EndMoveSelect(gUiContext, 1);
     Unit_SetHp(temp_r30, 0);
     cls = *(u8 **)((u8 *)temp_r30 + 0x190);
     if (cls[8] != 0) {
