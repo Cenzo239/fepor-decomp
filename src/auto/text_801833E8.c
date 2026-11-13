@@ -1344,7 +1344,7 @@ void fn_801863F8(void *arg0) {
 }
 
 #pragma opt_strength_reduction off
-void fn_80186BC0(void *arg0) {
+void Event_StartMuBlend(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void *fn_8000CA64(void *, void *);
     u8 fn_8004C0F0(void *);
