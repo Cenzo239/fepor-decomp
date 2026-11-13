@@ -673,9 +673,10 @@ void fn_80150F38(void *arg0) {
     register int off;
     void *self;
     void *work;
-    u32 z1;
+    void *z1;
     register void *z0;
     void *meta;
+    s32 t;
 
     self = arg0;
     work = *(void **)((u8 *)arg0 + 0x54);
@@ -684,13 +685,14 @@ void fn_80150F38(void *arg0) {
         if (*(void **)((u8 *)work + 0x38) != NULL) {
             off = 0;
             i = 0;
-            z0 = (void *)off;
-            z1 = off;
+            t = off;
+            z0 = (void *)t;
+            z1 = (void *)t;
             while (i < (s32)*(u16 *)((u8 *)meta + 6)) {
                 fn_800C4588(*(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off));
                 i += 1;
                 *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = z0;
-                *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = (void *)z1;
+                *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = z1;
                 off += 4;
             }
             fn_800C4588(*(void **)((u8 *)work + 0x38));
@@ -1177,7 +1179,7 @@ void *fn_80151CE0(void *arg0, s16 arg1) {
 typedef struct Vec {
     f32 x, y, z;
 } Vec;
-extern "C" M2C_UNK fn_800C9ABC(M2C_UNK *, const char *, M2C_UNK *);
+extern "C" M2C_UNK String_Init(M2C_UNK *, const char *, M2C_UNK *);
 extern "C" M2C_UNK fn_800C9A60(M2C_UNK *, M2C_UNK);
 extern "C" void fn_800DBE34(void *, s32, M2C_UNK *, s32, M2C_UNK *);
 extern "C" char *fn_800C93EC(void *);
@@ -1209,8 +1211,8 @@ extern "C" void *fn_80151D50(void *arg0, s32 arg1, s32 arg2, void *arg3, f32 *ar
     void *task;
     s32 id;
 
-    fn_800C9ABC(name, "Effect", &alloc1);
-    fn_800C9ABC(kind, "effect", &alloc2);
+    String_Init(name, "Effect", &alloc1);
+    String_Init(kind, "effect", &alloc2);
     fn_800DBE34(arg0, arg1, name, arg2, kind);
     fn_800C9A60(kind, -1);
     fn_800C9A60(name, -1);

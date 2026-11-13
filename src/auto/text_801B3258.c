@@ -9171,7 +9171,7 @@ void fn_801CA1DC(void *arg0, s32 arg1) {
 #pragma cplusplus off
 void *fn_801CA3C8(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     void fn_801C9B08(void);
-    void fn_800C9ABC(void *,char *,void *);
+    void String_Init(void *,char *,void *);
     void fn_800CB90C(void *,void *,char *);
     void fn_800C9A60(void *,s16);
     void fn_800D764C(void *,s32,s32,s32,void *,void *);
@@ -9205,9 +9205,9 @@ void *fn_801CA3C8(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     u8 *self;
     void *temp;
     self=(u8 *)arg0;
-    fn_800C9ABC(spB8,lbl_8027D8B0+0x52,&sp30);
+    String_Init(spB8,lbl_8027D8B0+0x52,&sp30);
     fn_800CB90C(spAC,spB8,lbl_8027D8B0+0x59);
-    fn_800C9ABC(spA0,lbl_8027D8B0+0x67,&sp2C);
+    String_Init(spA0,lbl_8027D8B0+0x67,&sp2C);
     fn_800D764C(self,arg1,arg2,arg3,spAC,spA0);
     fn_800C9A60(spA0,-1);
     fn_800C9A60(spAC,-1);
@@ -9216,33 +9216,33 @@ void *fn_801CA3C8(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     *(u32 *)(self+0x424)=0;
     *(u32 *)(self+0x428)=0;
     *(u32 *)(self+0x42C)=0;
-    fn_800C9ABC(sp94,lbl_8027D8B0+0x71,&sp28);
+    String_Init(sp94,lbl_8027D8B0+0x71,&sp28);
     *(void **)(self+0x430)=fn_800D75FC(self,sp94);
     fn_800C9A60(sp94,-1);
-    fn_800C9ABC(sp88,lbl_8027D8B0+0x7d,&sp24);
+    String_Init(sp88,lbl_8027D8B0+0x7d,&sp24);
     *(void **)(self+0x434)=fn_800D75FC(self,sp88);
     fn_800C9A60(sp88,-1);
-    fn_800C9ABC(sp7C,lbl_8027D8B0+0x87,&sp20);
+    String_Init(sp7C,lbl_8027D8B0+0x87,&sp20);
     *(void **)(self+0x438)=fn_800D75FC(self,sp7C);
     fn_800C9A60(sp7C,-1);
-    fn_800C9ABC(sp70,lbl_8027D8B0+0x91,&sp1C);
+    String_Init(sp70,lbl_8027D8B0+0x91,&sp1C);
     *(void **)(self+0x43c)=fn_800D75FC(self,sp70);
     fn_800C9A60(sp70,-1);
-    fn_800C9ABC(sp64,lbl_8027D8B0+0x98,&sp18);
+    String_Init(sp64,lbl_8027D8B0+0x98,&sp18);
     *(void **)(self+0x440)=fn_800D75FC(self,sp64);
     fn_800C9A60(sp64,-1);
-    fn_800C9ABC(sp58,lbl_8027D8B0+0xa2,&sp14);
+    String_Init(sp58,lbl_8027D8B0+0xa2,&sp14);
     *(void **)(self+0x444)=fn_800D75FC(self,sp58);
     fn_800C9A60(sp58,-1);
-    fn_800C9ABC(sp4C,lbl_8027D8B0+0xab,&sp10);
+    String_Init(sp4C,lbl_8027D8B0+0xab,&sp10);
     *(void **)(self+0x448)=fn_800D75FC(self,sp4C);
     fn_800C9A60(sp4C,-1);
-    fn_800C9ABC(sp40,lbl_8027D8B0+0xb2,&spC);
+    String_Init(sp40,lbl_8027D8B0+0xb2,&spC);
     temp=fn_800D75FC(self,sp40);
     *(void **)(self+0x44C)=temp;
     *(void **)(self+0x418)=temp;
     fn_800C9A60(sp40,-1);
-    fn_800C9ABC(sp34,lbl_8027D8B0+0xb8,&sp8);
+    String_Init(sp34,lbl_8027D8B0+0xb8,&sp8);
     *(void **)(self+0x450)=fn_800D75FC(self,sp34);
     fn_800C9A60(sp34,-1);
     *(void **)(*(u8 **)(self+0x430)+0xFC)=(void *)fn_801C9D58;
@@ -9600,7 +9600,7 @@ void fn_801CB2A4(struct Unit *arg0) {
 #pragma opt_common_subs off
 extern "C" void *fn_801CB41C(void *arg0, void *arg1, void *arg2) {
 void fn_800DF7A0(void *);
-void fn_800C9ABC(void *,void *,void *); void fn_800C8DCC(void *,void *,void *);
+void String_Init(void *,void *,void *); void fn_800C8DCC(void *,void *,void *);
 u32 strlen(void *); void fn_800C96F8(void *,void *,u32); void fn_800C9A60(void *,s32);
 s32 fn_800C9400(void *,s32,u32,void *,u32); u8 *fn_80117CC0(void *,s32);
 void fn_800D5D04(void *,void *,s32,s32); void fn_800C9758(void *,void *,s32,s32);
@@ -9622,20 +9622,20 @@ saved=arg1;
 *(u32 *)(self+0x54)=0; *(u32 *)(self+0x58)=0; *(u32 *)(self+0x5c)=0; *(u32 *)(self+0x58)=0;
 *(u32 *)(self+0x60)=0; *(u32 *)(self+0x64)=0; *(u32 *)(self+0x68)=0; *(u32 *)(self+0x64)=0;
 str.b=0;str.a=0;str.c=0;str.b=0;
-fn_800C9ABC(&s48,lbl_8027DAB0+0xdd,&a14);
+String_Init(&s48,lbl_8027DAB0+0xdd,&a14);
 fn_800C8DCC(&p180,arg2,&s48);arg1=&p180;
 fn_800C96F8(self+0x54,arg1,strlen(arg1));fn_800C9A60(&s48,-1);
-fn_800C9ABC(&s3c,lbl_8027DAB0+0xe5,&a10);
+String_Init(&s3c,lbl_8027DAB0+0xe5,&a10);
 fn_800C8DCC(&p160,arg2,&s3c);arg1=&p160;
 fn_800C96F8(self+0x60,arg1,strlen(arg1));fn_800C9A60(&s3c,-1);
 if(fn_800C9400(self+0x60,0,*(u32 *)(self+0x60),lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
 fn_800D5D04(&s30,self+0x54,0,4);fn_800C9758(self+0x60,&s30,0,-1);fn_800C9A60(&s30,-1);
 }
-fn_800C9ABC(&s24,lbl_8027DAB0+0xec,&ac);
+String_Init(&s24,lbl_8027DAB0+0xec,&ac);
 fn_800C8DCC(&p140,arg2,&s24);arg1=&p140;
 fn_800C96F8(&str,arg1,strlen(arg1));fn_800C9A60(&s24,-1);
 *(void **)(self+0x6c)=fn_800E7F60(saved,&str);
-fn_800C9ABC(&s18,lbl_8027DAB0+0xf3,&a8);
+String_Init(&s18,lbl_8027DAB0+0xf3,&a8);
 fn_800C8DCC(&p120,arg2,&s18);
 *(u32 *)(self+0x70)=*(u32 *)&p120;fn_800C9A60(&s18,-1);
 Xml_AdvanceChild(arg2);

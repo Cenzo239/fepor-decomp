@@ -16,7 +16,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
         virtual void setPos2(f32, f32, f32) = 0;
     };
     s32 fn_800D3590(void *);
-    void fn_800C9ABC(void *, char *, void *);
+    void String_Init(void *, char *, void *);
     void fn_800CF588(void *, void *);
     void fn_800C9A60(void *, s32);
     void fn_800CAE38(void *);

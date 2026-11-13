@@ -1397,7 +1397,7 @@ extern "C" void fn_80123634(void *arg0) {
 #pragma cplusplus reset
 void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void *);
-    void fn_800C9ABC(void *, void *, void *);
+    void String_Init(void *, void *, void *);
     void fn_800C8DCC(void *, void *, void *);
     void fn_800C96F8(void *, void *, u32);
     void fn_800C9A60(void *, s32);
@@ -1479,19 +1479,19 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     sp48.data = 0;
     sp48.cap = 0;
 
-    fn_800C9ABC(&sp3C, lbl_80274DB0 + 0x12, &sp14);
+    String_Init(&sp3C, lbl_80274DB0 + 0x12, &sp14);
     fn_800C8DCC(spC0, path, &sp3C);
     buf = (Obj *)spC0;
     fn_800C96F8(&self->str54, buf, strlen((char *)buf));
     fn_800C9A60(&sp3C, -1);
 
-    fn_800C9ABC(&sp30, lbl_80274DB0 + 0x1A, &sp10);
+    String_Init(&sp30, lbl_80274DB0 + 0x1A, &sp10);
     fn_800C8DCC(spA0, path, &sp30);
     buf = (Obj *)spA0;
     fn_800C96F8(&sp48, buf, strlen((char *)buf));
     fn_800C9A60(&sp30, -1);
 
-    fn_800C9ABC(&sp24, lbl_80274DB0 + 0x1F, &spC);
+    String_Init(&sp24, lbl_80274DB0 + 0x1F, &spC);
     fn_800C8DCC(sp80, path, &sp24);
     self->unk68 = *(s32 *)sp80;
     fn_800C9A60(&sp24, -1);
@@ -1509,7 +1509,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     self->unk8C = t0;
     self->unk90 = 0;
 
-    fn_800C9ABC(&sp18, lbl_80274DB0 + 0x23, &sp8);
+    String_Init(&sp18, lbl_80274DB0 + 0x23, &sp8);
     fn_800C8DCC(sp60, path, &sp18);
     self->unk94 = *(s32 *)sp60;
     fn_800C9A60(&sp18, -1);

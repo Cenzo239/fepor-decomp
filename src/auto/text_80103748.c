@@ -215,7 +215,7 @@ s32 fn_80103A74(void) {
     M2C_UNK fn_800C93EC(M2C_UNK *);
     M2C_UNK fn_800C992C(M2C_UNK *, void *, s32);
     M2C_UNK fn_800C9A60(M2C_UNK *, M2C_UNK);
-    M2C_UNK fn_800C9ABC(M2C_UNK *, void *, M2C_UNK *);
+    M2C_UNK String_Init(M2C_UNK *, void *, M2C_UNK *);
     M2C_UNK fn_801EAABC(M2C_UNK, s32);
     s32 strlen(void *);
     extern u8 lbl_802734D0[];
@@ -226,7 +226,7 @@ s32 fn_80103A74(void) {
     M2C_UNK sp8;
 
     temp_r31 = fn_8000BCA4((char *) &lbl_802734D0 + 0xC4);
-    fn_800C9ABC(&spC, lbl_80330708 + 0x504, &sp8);
+    String_Init(&spC, lbl_80330708 + 0x504, &sp8);
     fn_800C992C(&spC, &lbl_802734D0[0x157], strlen((u8 *)lbl_802734D0 + 0x157));
     fn_800A8400();
     fn_8000C070(temp_r31, 0);

@@ -4437,7 +4437,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
     s32 fn_800C93EC(M2C_UNK *);
     M2C_UNK fn_800C992C(M2C_UNK *, s32, s32);
     M2C_UNK fn_800C9A60(M2C_UNK *, M2C_UNK);
-    M2C_UNK fn_800C9ABC(M2C_UNK *, M2C_UNK *, M2C_UNK *);
+    M2C_UNK String_Init(M2C_UNK *, M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_800CB90C(M2C_UNK *, M2C_UNK *, void *);
     s32 fn_80231D94(void *, void *, ...);
     s32 strlen(s32);
@@ -4469,7 +4469,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
         M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
         M2C_FIELD(arg0, s32 **, 0x40) = fn_80061870();
         fn_80231D94((M2C_UNK *)&sp48, lbl_80279D50 + 8, lbl_80279D50 + 0x11);
-        fn_800C9ABC((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
+        String_Init((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
         temp_r29 = **M2C_FIELD(arg0, s32 ***, 0x3C) + 4;
         fn_800C992C((M2C_UNK *)&sp3C, temp_r29, strlen(temp_r29));
         fn_800CB90C((M2C_UNK *)&sp30, (M2C_UNK *)&sp3C, lbl_80279D50 + 0x16);
@@ -8248,7 +8248,7 @@ if((*(f32 *)(self+0x90))<zero) {
 }
 extern "C" void *fn_80198288(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void *);
-    void fn_800C9ABC(void *, void *, void *);
+    void String_Init(void *, void *, void *);
     void fn_800C8DCC(void *, void *, void *);
     void fn_800C96F8(void *, void *, u32);
     void fn_800C9A60(void *, s32);
@@ -8350,30 +8350,30 @@ extern "C" void *fn_80198288(void *arg0, void *arg1, void *arg2) {
     sp68.data = 0;
     sp68.cap = 0;
 
-    fn_800C9ABC(&sp5C, lbl_8027A780 + 0x2E, &sp1C);
+    String_Init(&sp5C, lbl_8027A780 + 0x2E, &sp1C);
     fn_800C8DCC(sp12C, path, &sp5C);
     buf = (Obj *)sp12C;
     fn_800C96F8(&self->str54, buf, strlen((char *)buf));
     fn_800C9A60(&sp5C, -1);
 
-    fn_800C9ABC(&sp50, lbl_8027A780 + 0x36, &sp18);
+    String_Init(&sp50, lbl_8027A780 + 0x36, &sp18);
     fn_800C8DCC(sp10C, path, &sp50);
     buf = (Obj *)sp10C;
     fn_800C96F8(&sp74, buf, strlen((char *)buf));
     fn_800C9A60(&sp50, -1);
 
-    fn_800C9ABC(&sp44, lbl_8027A780 + 0x3E, &sp14);
+    String_Init(&sp44, lbl_8027A780 + 0x3E, &sp14);
     fn_800C8DCC(spEC, path, &sp44);
     buf = (Obj *)spEC;
     fn_800C96F8(&sp68, buf, strlen((char *)buf));
     fn_800C9A60(&sp44, -1);
 
-    fn_800C9ABC(&sp38, lbl_8027A780 + 0x47, &sp10);
+    String_Init(&sp38, lbl_8027A780 + 0x47, &sp10);
     fn_800C8DCC(spCC, path, &sp38);
     self->unk6C = *(s32 *)spCC;
     fn_800C9A60(&sp38, -1);
 
-    fn_800C9ABC(&sp2C, lbl_8027A780 + 0x4C, &spC);
+    String_Init(&sp2C, lbl_8027A780 + 0x4C, &spC);
     fn_800C8DCC(spAC, path, &sp2C);
     temp = *(s32 *)spAC;
     self->unk78 = temp;
@@ -8384,7 +8384,7 @@ extern "C" void *fn_80198288(void *arg0, void *arg1, void *arg2) {
     self->unk7C = self->unk74;
     self->unk8C = 0;
 
-    fn_800C9ABC(&sp20, lbl_8027A780 + 0x4F, &sp8);
+    String_Init(&sp20, lbl_8027A780 + 0x4F, &sp8);
     fn_800C8DCC(sp8C, path, &sp20);
     temp = *(s32 *)sp8C;
     self->unk84 = temp;
@@ -8518,7 +8518,7 @@ s32 fn_80199114(void *arg0) {
 
 void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
-    void fn_800C9ABC(void *, char *, void *);
+    void String_Init(void *, char *, void *);
     void fn_800C9A60(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_801518B4(void *, void *);
@@ -8536,7 +8536,7 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     if (obj != NULL) {
         sp24 = *(struct Vec3 *)arg2;
         sp18 = *(struct Vec3 *)arg1;
-        fn_800C9ABC(spC, (char *)(lbl_8027A858 + 0x76), sp8);
+        String_Init(spC, (char *)(lbl_8027A858 + 0x76), sp8);
         flag = 1;
         obj = fn_80151D50(obj, *(void **)((u8 *)arg0 + 0xAC), spC, (u8 *)arg0 + 0x12C, &sp18, &sp24, 1);
     }
@@ -8692,7 +8692,7 @@ void* fn_80199508(void* arg0, s16 arg1) {
 void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     void fn_800E6058(void *);
     void fn_800C9758(void *, void *, s32, s32);
-    void fn_800C9ABC(void *, char *, void *);
+    void String_Init(void *, char *, void *);
     void fn_800C8DCC(void *, void *, void *);
     void fn_800C9A60(void *, s32);
     void fn_800C96F8(void *, char *, u32);
@@ -8786,23 +8786,23 @@ void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     self->unk174 = z;
     fn_800C9758(&self->str118, (u8 *)self + 0x10, 0, -1);
 
-    fn_800C9ABC(&sp3C, (char *)(lbl_8027A858 + 0x7B), sp14);
+    String_Init(&sp3C, (char *)(lbl_8027A858 + 0x7B), sp14);
     fn_800C8DCC(spA8, path, &sp3C);
     self->unk124 = *(s32 *)spA8;
     fn_800C9A60(&sp3C, -1);
 
-    fn_800C9ABC(&sp30, (char *)(lbl_8027A858 + 0x80), sp10);
+    String_Init(&sp30, (char *)(lbl_8027A858 + 0x80), sp10);
     fn_800C8DCC(sp88, path, &sp30);
     self->unk128 = *(s32 *)sp88;
     fn_800C9A60(&sp30, -1);
 
-    fn_800C9ABC(&sp24, (char *)(lbl_8027A858 + 0x88), spC);
+    String_Init(&sp24, (char *)(lbl_8027A858 + 0x88), spC);
     fn_800C8DCC(sp68, path, &sp24);
     temp_r29 = sp68;
     fn_800C96F8(&self->str12C, temp_r29, strlen(temp_r29));
     fn_800C9A60(&sp24, -1);
 
-    fn_800C9ABC(&sp18, (char *)(lbl_8027A858 + 0x91), sp8);
+    String_Init(&sp18, (char *)(lbl_8027A858 + 0x91), sp8);
     fn_800C8DCC(sp48, path, &sp18);
     temp_r29 = sp48;
     fn_800C96F8(&self->str138, temp_r29, strlen(temp_r29));
