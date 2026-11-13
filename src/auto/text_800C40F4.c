@@ -22824,26 +22824,22 @@ s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     return dist <= ((s8)fn_8003A398(arg1) + bonus + (s8)fn_8003A398(arg0));
 }
 
-#pragma optimization_level 2
+#pragma global_optimizer off
 s32 fn_80100FD0(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     s32 dy;
     s32 dx;
 
     dy = arg1 - arg3;
-    if (dy >= 0) {
-        goto L1;
+    if (dy < 0) {
+        dy = -dy;
     }
-    dy = -dy;
-L1:
     dx = arg0 - arg2;
-    if (dx >= 0) {
-        goto L2;
+    if (dx < 0) {
+        dx = -dx;
     }
-    dx = -dx;
-L2:
     return (dx + dy) <= arg4;
 }
-#pragma optimization_level 4
+#pragma global_optimizer reset
 void fn_80101014(int arg0, int arg1, void *arg2, int arg3, int arg4, u8 arg5, int arg6, u8 arg7, u8 arg_sp8, int arg_spC) {
 s8 fn_8003A398(void *);
 void fn_800FB96C(u8,s8,s8,s32,s8,s8,s8,s8,u8);
