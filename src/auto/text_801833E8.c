@@ -9060,6 +9060,7 @@ void fn_80199D18(void *arg0) {
 }
 
 void MapSelect_StartMove(void *arg0) {
+    /* Start a map-select cursor slide from (x0,y0) to (x1,y1): length, duration, actor, camera. */
     void fn_80053658(void *, s32, void *);
     void *fn_80053C30(u8 *, void *);
     f32 Math_Angle2D(f32, f32, f32, f32);
@@ -9073,10 +9074,10 @@ void MapSelect_StartMove(void *arg0) {
     extern f32 lbl_8036AF10;
     extern f32 lbl_8036AF14;
     f32 vec[3];
-    f32 temp_f31;
+    f32 angle;
     f32 scale;
-    void *temp_r3;
-    void *temp_r6;
+    void *actor;
+    void *node;
     void *inner;
 
     *(u32 *)&vec[0] = lbl_8027AA2C[0];
@@ -9090,22 +9091,22 @@ void MapSelect_StartMove(void *arg0) {
         *(s16 *)((u8 *)arg0 + 0x4A) = 1;
     }
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
-    temp_f31 = Math_Angle2D(
+    angle = Math_Angle2D(
         (f32)(s8)((u8 *)arg0)[0x3A],
         (f32)(s8)((u8 *)arg0)[0x3B],
         (f32)(s8)((u8 *)arg0)[0x3C],
         (f32)(s8)((u8 *)arg0)[0x3D]);
-    temp_r3 = fn_80053C30(MapSelect_str + 0xD4, arg0);
-    temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
-    *(void **)((u8 *)temp_r6 + 0x3C) = (void *)&MapSelect_SetGhostColor;
-    temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
-    *(void **)((u8 *)temp_r6 + 0x40) = (void *)&MapSelect_UpdateMove;
-    fn_80053658(temp_r3, 0, arg0);
+    actor = fn_80053C30(MapSelect_str + 0xD4, arg0);
+    node = *(void **)((u8 *)actor + 0x30);
+    *(void **)((u8 *)node + 0x3C) = (void *)&MapSelect_SetGhostColor;
+    node = *(void **)((u8 *)actor + 0x30);
+    *(void **)((u8 *)node + 0x40) = (void *)&MapSelect_UpdateMove;
+    fn_80053658(actor, 0, arg0);
     scale = lbl_8036AF14;
-    inner = *(void **)((u8 *)temp_r3 + 0x30);
+    inner = *(void **)((u8 *)actor + 0x30);
     *(s32 *)((u8 *)inner + 8) = *(s32 *)((u8 *)inner + 8) | 0x801;
-    *(f32 *)((u8 *)*(void **)((u8 *)temp_r3 + 0x30) + 0x18) = scale;
-    *(f32 *)((u8 *)*(void **)((u8 *)temp_r3 + 0x30) + 0x24) = temp_f31;
+    *(f32 *)((u8 *)*(void **)((u8 *)actor + 0x30) + 0x18) = scale;
+    *(f32 *)((u8 *)*(void **)((u8 *)actor + 0x30) + 0x24) = angle;
     fn_8014CBD8(gBattleState, (f32)(s8)((u8 *)arg0)[0x3C], (f32)(s8)((u8 *)arg0)[0x3D]);
 }
 
