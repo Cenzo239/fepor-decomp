@@ -296,7 +296,7 @@ static inline const u32 *StrMin(const u32 *a, const u32 *b) {
 
   /* list object helpers (construct, destroy, get item) */
   void ObjList_Init(void *);
-  /* fn_800E0140 declared at definition */
+  /* ObjList_Destroy declared at definition */
   void fn_800E8A88(void *, f32);
 s32 Str_Cmp(); /* strcmp */
 
@@ -10745,7 +10745,7 @@ void *fn_800E00B0(void *arg0, const char *arg1, const char *arg2) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_800E0140(void *arg0, s16 arg1)
+extern "C" void *ObjList_Destroy(void *arg0, s16 arg1)
 {
     struct Obj {
         u8 pad[0x10];
@@ -13448,14 +13448,14 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
 
     ObjList_Init(list);
     if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
-        fn_800E0140(list, -1);
+        ObjList_Destroy(list, -1);
         return;
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         fn_800E8A88((void *)fn_800DFFF4(list, i), farg0);
     }
-    fn_800E0140(list, -1);
+    ObjList_Destroy(list, -1);
 }
 
 u32 field_0x4;
@@ -13572,14 +13572,14 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
 
     ObjList_Init(list);
     if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
-        fn_800E0140(list, -1);
+        ObjList_Destroy(list, -1);
         return;
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         fn_800E8AA0((void *)fn_800DFFF4(list, i), arg2, farg0, lbl_80369F68, arg1);
     }
-    fn_800E0140(list, -1);
+    ObjList_Destroy(list, -1);
 }
 
 #pragma dont_inline reset
@@ -13753,7 +13753,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
             fn_800E9044(item);
         }
     }
-    fn_800E0140(list, -1);
+    ObjList_Destroy(list, -1);
     return 1;
 }
 #pragma dont_inline reset
@@ -13885,11 +13885,11 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
     for (i = 0; i < count; i++) {
         item = fn_800DFFF4(list, i);
         if (fn_800E903C((void *)item)) {
-            fn_800E0140(list, -1);
+            ObjList_Destroy(list, -1);
             return item;
         }
     }
-    fn_800E0140(list, -1);
+    ObjList_Destroy(list, -1);
     return 0;
 }
 
@@ -14015,7 +14015,7 @@ void *fn_800E8488(void *arg0, s16 arg1)
 {
     extern u8 lbl_8028E200[];
     void String_Destroy(void *, s32);
-    void fn_800E0140(void *, s32);
+    void ObjList_Destroy(void *, s32);
     void Heap_Free(void *);
     void *self;
     s16 n;
@@ -14026,7 +14026,7 @@ void *fn_800E8488(void *arg0, s16 arg1)
         *(void **)((u8 *)self + 0x10) = lbl_8028E200;
         String_Destroy((u8 *)self + 0x30, -1);
         String_Destroy((u8 *)self + 0x14, -1);
-        fn_800E0140(self, 0);
+        ObjList_Destroy(self, 0);
         if (n > 0) {
             Heap_Free(self);
         }
