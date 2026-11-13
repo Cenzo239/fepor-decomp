@@ -1753,7 +1753,7 @@ extern "C" void fn_801ADD8C(void *arg0) {
     ((Obj *)arg0)->v6();
 }
 
-extern "C" void fn_801ADDB8(void *arg0) {
+extern "C" void Options_HandleFocusInput(void *arg0) {
     extern u8 lbl_8027BC88[];
     extern void *gPadInput;
     void Ui_PlaySeCue(void *, s32);
