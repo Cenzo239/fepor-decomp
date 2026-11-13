@@ -102,7 +102,7 @@ extern u16 *__peReg;
 extern u16* __peReg;
 
 extern u32 lbl_80368738;
-extern u32 lbl_80368770;
+extern u32 __GXCurrentCPUFifo;
 
 extern s32 jumptable_8029E0B8[];
 

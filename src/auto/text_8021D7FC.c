@@ -792,7 +792,7 @@ void GXSetCPUFifo(void *fifo) {
     void fn_8021F39C(u8, u8);
     void fn_802037B0(void);
     extern void *__piReg;
-    extern void* lbl_80368770;
+    extern void* __GXCurrentCPUFifo;
     extern void* lbl_80368774;
     extern u8 lbl_8036877C;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
@@ -801,7 +801,7 @@ void GXSetCPUFifo(void *fifo) {
     u32 temp_r7;
 
     enabled = OSDisableInterrupts();
-    lbl_80368770 = fifo;
+    __GXCurrentCPUFifo = fifo;
     if (fifo == lbl_80368774) {
         M2C_FIELD(__piReg, u32 *, 0xC) = (u32) realFifo->base & 0x3FFFFFFF;
         M2C_FIELD(__piReg, u32 *, 0x10) = (u32) realFifo->top & 0x3FFFFFFF;
@@ -844,7 +844,7 @@ void GXSetGPFifo(void *fifo) {
     void fn_802037B0(void);
     extern u16* const __GXData;
     extern u16* __cpReg;
-    extern void* lbl_80368770;
+    extern void* __GXCurrentCPUFifo;
     extern void* lbl_80368774;
     extern u8 lbl_8036877C;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
@@ -873,7 +873,7 @@ void GXSetGPFifo(void *fifo) {
 
     fn_802037B0();
 
-    if (lbl_80368770 == lbl_80368774) {
+    if (__GXCurrentCPUFifo == lbl_80368774) {
         lbl_8036877C = 1;
         fn_8021F36C(1, 0);
         fn_8021F338(1);
@@ -949,7 +949,7 @@ void __GXFifoInit(void)
     extern void fn_8021EB88(void);
     extern u32 lbl_80368778;
     extern u32 lbl_80368780;
-    extern u32 lbl_80368770;
+    extern u32 __GXCurrentCPUFifo;
     extern u32 lbl_80368774;
 
     __OSSetInterruptHandler(0x11, fn_8021EB88);
@@ -957,7 +957,7 @@ void __GXFifoInit(void)
 
     lbl_80368778 = fn_80209FD4();
     lbl_80368780 = 0;
-    lbl_80368770 = 0;
+    __GXCurrentCPUFifo = 0;
     lbl_80368774 = 0;
 }
 
@@ -1039,8 +1039,8 @@ void fn_8021F39C(u32 arg0, u8 arg1)
 }
 
 s32 fn_8021F4CC(void) {
-    extern s32 lbl_80368770;
-    return lbl_80368770;
+    extern s32 __GXCurrentCPUFifo;
+    return __GXCurrentCPUFifo;
 }
 
 s32 fn_8021F4D4(void) {
@@ -1677,7 +1677,7 @@ void fn_80221068(void) {
 }
 
 extern u32 lbl_80368738;
-extern u32 lbl_80368770;
+extern u32 __GXCurrentCPUFifo;
 
 extern s32 jumptable_8029E0B8[];
 
