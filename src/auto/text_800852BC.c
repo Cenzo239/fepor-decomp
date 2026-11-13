@@ -81,7 +81,7 @@ void Ui_DrawUnitInfo(void *arg0) {
     M2C_UNK fn_80083F08(void *);
     M2C_UNK strcat(void *, void *);
     M2C_UNK strcpy(void *, void *);
-    extern u8 lbl_8026C86C[];
+    extern u8 gUiStrings[];
     extern s32 lbl_80369400;
     extern s32 lbl_80369404;
     extern s32 lbl_80369408;
@@ -118,17 +118,17 @@ void Ui_DrawUnitInfo(void *arg0) {
         Prim2D_SetColorByte(0xFF);
         Prim2D_SetTransform(lbl_80369418, lbl_80369418, lbl_80369488, lbl_80369430);
         Prim2D_PrepareTex();
-        strcpy(sp28, (u8 *)lbl_8026C86C + 0x1B5);
-        strcat(sp28, Msg_Expand((u8 *)lbl_8026C86C + 0x1BB));
-        strcat(sp28, (u8 *)lbl_8026C86C + 0x1C3);
-        strcat(sp28, Msg_Expand((u8 *)lbl_8026C86C + 0x1CA));
-        strcat(sp28, (u8 *)lbl_8026C86C + 0x1D1);
-        strcat(sp28, Msg_Expand((u8 *)lbl_8026C86C + 0x1D8));
-        strcat(sp28, (u8 *)lbl_8026C86C + 0x1DF);
-        strcat(sp28, Msg_Expand((u8 *)lbl_8026C86C + 0x1E6));
+        strcpy(sp28, (u8 *)gUiStrings + 0x1B5);
+        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1BB));
+        strcat(sp28, (u8 *)gUiStrings + 0x1C3);
+        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1CA));
+        strcat(sp28, (u8 *)gUiStrings + 0x1D1);
+        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1D8));
+        strcat(sp28, (u8 *)gUiStrings + 0x1DF);
+        strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1E6));
         if ((u32) M2C_FIELD(M2C_FIELD(temp_r31, void **, 0x58), u32 *, 0x194) != 0U) {
-            strcat(sp28, (u8 *)lbl_8026C86C + 0x1F0);
-            strcat(sp28, Msg_Expand((u8 *)lbl_8026C86C + 0x1F7));
+            strcat(sp28, (u8 *)gUiStrings + 0x1F0);
+            strcat(sp28, Msg_Expand((u8 *)gUiStrings + 0x1F7));
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x12);
@@ -1168,7 +1168,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void sprintf(char *, char *, ...);
     s32 strlen(char *);
     extern s32 lbl_8026C7DC[];
-    extern u8 lbl_8026C86C[];
+    extern u8 gUiStrings[];
     extern s32 lbl_803674F4;
     extern f64 lbl_80369470;
     extern f32 lbl_803694A4;
@@ -1227,7 +1227,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
-        sprintf(buf, (char *)(lbl_8026C86C + 0x215), abs_val);
+        sprintf(buf, (char *)(gUiStrings + 0x215), abs_val);
         len = strlen(buf);
         y = (s16)(s32)farg1;
         v_base = (s16)(0x10 & ~((s32)(-arg0 & ~arg0) >> 0x1F));
@@ -1252,7 +1252,7 @@ u32 *fn_80037BD0(void *, s32);
 void fn_8007DAC4(void *, void *);
 void Ui_PlaySeCue(void *, s32);
 void Ui_HideUnitInfoPopup(void *);
-extern u8 lbl_8026C86C[];
+extern u8 gUiStrings[];
 extern Menu888Entry lbl_80288FE8[][37];
 extern u8 gUnitInfoPopup[];
 extern void *gPadInput;
@@ -1283,7 +1283,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(gUiStrings+0x19b,100);
 }
 else if (repeat & 0x04000004) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1305,7 +1305,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(gUiStrings+0x19b,100);
 }
 else if (repeat & 0x01000001) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1327,7 +1327,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(gUiStrings+0x19b,100);
 }
 else if (repeat & 0x02000002) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1349,7 +1349,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(gUiStrings+0x19b,100);
 }
 }
 
@@ -1363,7 +1363,7 @@ void fn_800888A4(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_OpenUnitInfoText(void *, void *, void *, f32, f32);
     extern u8 gUnitInfoPopup[];
-    extern u8 lbl_8026C86C[];
+    extern u8 gUiStrings[];
     extern s32 lbl_8026C7D0[];
     extern Menu888Entry lbl_80288FE8[][37];
     extern void *gPadInput;
@@ -1386,37 +1386,37 @@ void fn_800888A4(void *arg0) {
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
         Process_Goto(arg0,3);
-        Ui_PlaySeCue(lbl_8026C86C+0x394,100);
+        Ui_PlaySeCue(gUiStrings+0x394,100);
         return;
     }
     if (repeat & 0x02000002) {
         Process_Goto(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
+        Ui_PlaySeCue(gUiStrings+0x3A4,100);
         return;
     }
     if (repeat & 0x01000001) {
         Process_Goto(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
+        Ui_PlaySeCue(gUiStrings+0x3A4,100);
         return;
     }
     if (repeat & 0x08000008) {
         Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings+0x3C0,100);
         return;
     }
     if (repeat & 0x04000004) {
         Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings+0x3C0,100);
         return;
     }
     if ((repeat & 0x100) && M2C_FIELD(M2C_FIELD(self, void * *, 0x58), u32 *, 0x194) != 0) {
         Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 0;
-        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(gUiStrings+0x3C0,100);
         return;
     }
     if (pressed & 0x800) {
@@ -1445,7 +1445,7 @@ void fn_800888A4(void *arg0) {
             if (!valid) goto next;
         }
         entry=&lbl_80288FE8[M2C_FIELD(self, s8 *, 9)][M2C_FIELD(self, s32 *, 0x1C)];
-        Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,lbl_8026C86C+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
+        Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,gUiStrings+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
         fn_8007DAC4(self,entry);
         return;
     }

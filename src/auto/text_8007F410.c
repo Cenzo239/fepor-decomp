@@ -67,7 +67,7 @@ void fn_8007F410(void *arg0) {
     s32 fn_8003B938(u8);
     s32 fn_80010B78(void *, s32, f32);
     void fn_8005AC24(void *, s32, s32, s32);
-    extern u8 lbl_8026C86C[];
+    extern u8 gUiStrings[];
     extern u8 lbl_802F0308[];
     extern s32 lbl_803674F4;
     extern f32 lbl_80369418;
@@ -107,7 +107,7 @@ void fn_8007F410(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036942C);
     Prim2D_PrepareTex();
-    str = Msg_Expand(lbl_8026C86C + 0x236);
+    str = Msg_Expand(gUiStrings + 0x236);
     Prim2D_Begin();
     fn_8000A174(0, 0x12);
     Prim2D_PrepareTex();
