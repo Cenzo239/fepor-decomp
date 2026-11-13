@@ -3314,7 +3314,7 @@ void fn_8016A400(void *arg0) {
     extern u8 lbl_80294144[];
     extern u8 lbl_80294194[];
     extern s8 sUiMenuVtbl0Ready;
-    extern void *lbl_803680F4;
+    extern void *gUiMenuVtbl0;
     extern s8 lbl_803680F8;
     extern void *lbl_803680FC;
     extern f32 lbl_8036A9C0;
@@ -3338,7 +3338,7 @@ void fn_8016A400(void *arg0) {
 
     if (sUiMenuVtbl0Ready == 0) {
         sUiMenuVtbl0Ready = 1;
-        lbl_803680F4 = lbl_80294194;
+        gUiMenuVtbl0 = lbl_80294194;
     }
     if (lbl_803680F8 == 0) {
         lbl_803680F8 = 1;
@@ -3675,7 +3675,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     extern u8 lbl_80294144[];
     extern u8 lbl_80294194[];
     extern s8 sUiMenuVtbl0Ready;
-    extern void *lbl_803680F4;
+    extern void *gUiMenuVtbl0;
     extern s8 lbl_803680F8;
     extern void *lbl_803680FC;
     void *p;
@@ -3684,7 +3684,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
         return 0;
     }
     if (sUiMenuVtbl0Ready == 0) {
-        lbl_803680F4 = lbl_80294194;
+        gUiMenuVtbl0 = lbl_80294194;
         sUiMenuVtbl0Ready = 1;
     }
     if (lbl_803680F8 == 0) {
