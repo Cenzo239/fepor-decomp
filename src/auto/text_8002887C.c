@@ -2166,7 +2166,7 @@ extern "C" void fn_8002DA30(void)
     void Fx_StartSlot(s32, void *, s32, s32);
     s8 Fx_FindSlotByName(void *);
     s8 fn_80146BE4(void *);
-    void fn_80148888(void *, s32);
+    void Fx_FadeOut(void *, s32);
     void fn_801487D0(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 gBattleState[];
@@ -2267,7 +2267,7 @@ extern "C" void fn_8002DA30(void)
             || fn_80146BE4(Battle_str + 0x279) != -1
             || fn_80146BE4(Battle_str + 0x28A) != -1) {
             if (lbl_80367250 == 0) {
-                fn_80148888(obj, 0xC8);
+                Fx_FadeOut(obj, 0xC8);
                 lbl_80367250 = 1;
             }
         } else if (lbl_80367250 == 1) {

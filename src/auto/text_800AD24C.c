@@ -4133,7 +4133,7 @@ extern "C" s32 fn_800B7D08(s32 arg0, s32 arg1) {
     };
     extern Obj gFxChannels[];
     void fn_80146B00(void);
-    void fn_80148888(void *, s16);
+    void Fx_FadeOut(void *, s16);
     u8 ok;
     Obj *obj;
 
@@ -4145,7 +4145,7 @@ extern "C" s32 fn_800B7D08(s32 arg0, s32 arg1) {
         }
     }
     if (ok) {
-        fn_80148888(obj, (s16)arg1);
+        Fx_FadeOut(obj, (s16)arg1);
     }
     if (arg0 == 0) {
         fn_80146B00();
@@ -9697,7 +9697,7 @@ s32 fn_800C3E54(u32 *arg0) {
 
 #include "common.h"
 extern u8 gFxChannels[];
-extern void fn_80148888(u32*, s16);
+extern void Fx_FadeOut(u32*, s16);
 extern void fn_80146B00(void);
 #include "global.h"
 extern u16 gSoundSys[];
