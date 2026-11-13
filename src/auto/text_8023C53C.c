@@ -10235,7 +10235,7 @@ void fn_80259A5C(void) {
     DCFlushRangeNoSync(lbl_80368A94, 0x100);
 }
 
-s32 fn_80259BE4(s16 *arg0, u16 *arg1, u16 *arg2, u16 arg3, u16 *arg4, u16 arg5) {
+s32 Sound_ApplyParamStep(s16 *arg0, u16 *arg1, u16 *arg2, u16 arg3, u16 *arg4, u16 arg5) {
     s16 diff;
     s16 idx;
 
