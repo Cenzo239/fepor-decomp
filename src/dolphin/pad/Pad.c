@@ -455,6 +455,7 @@ void PADSetSpec(s32 arg0) {
     lbl_80366FB0 = arg0;
 }
 
+/* Decode raw PAD transfer words into a PADStatus using the SPEC0 bit layout. */
 void SPEC0_MakeStatus(s32 chan, PADStatus *status, u32 *data) {
     status->button = 0;
     status->button |= ((data[0] >> 16) & 0x0008) ? 0x0100 : 0;
