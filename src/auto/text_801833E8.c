@@ -1402,7 +1402,7 @@ void Event_StartMuBlend(void *proc) {
 }
 
 void fn_80186E10(void *arg0) {
-    f32 Math_EaseOutPow(s32, void *, f32, f32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void fn_80050C50(void *, f32, f32);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
@@ -1416,15 +1416,18 @@ void fn_80186E10(void *arg0) {
     s32 r30;
     f32 f31;
     f32 tmp;
+    f32 start = lbl_8036AD00;
+    f32 end = lbl_8036ACEC;
+    f32 duration = lbl_8036ACF4;
 
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x44) + lbl_8036ACF8;
     p34 = *(void **)((u8 *)arg0 + 0x34);
     r31 = (u8 *)p34 + 0x1C;
-    r30 = (s32)Math_EaseOutPow(2, p34, lbl_8036AD00, lbl_8036ACEC, lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    r30 = (s32)Math_EaseOutPow(2, start, end, duration, *(f32 *)((u8 *)arg0 + 0x44));
     p30 = *(void **)((u8 *)arg0 + 0x30);
-    f31 = Math_EaseOutPow(2, p30, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)p30 + 4), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)p30 + 4), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     p30 = *(void **)((u8 *)arg0 + 0x30);
-    tmp = Math_EaseOutPow(2, p30, *(f32 *)((u8 *)arg0 + 0x3C), *(f32 *)((u8 *)p30 + 8), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
+    tmp = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x3C), *(f32 *)((u8 *)p30 + 8), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     fn_80050C50(*(void **)((u8 *)arg0 + 0x34), f31, tmp);
     Model_SetAlpha(r31, (u8)r30);
     if (*(f32 *)((u8 *)arg0 + 0x44) == lbl_8036ACF4) {
@@ -2235,7 +2238,7 @@ void fn_8018A7FC(void *arg0)
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
-void fn_8018A824(void *arg0) {
+void MuFade_UpdateScale(void *arg0) {
     void Process_ClearFunc(void *);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f32 lbl_8036AD28;
