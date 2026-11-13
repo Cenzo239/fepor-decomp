@@ -5839,7 +5839,7 @@ s32 fn_80250744(u16 id, void *arg1) {
         u8 unk1C;
     };
     void *fn_802612A0(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
-    extern struct Entry lbl_803596B8;
+    extern struct Entry gAudioGroupLookupKey;
     extern struct Group gAudioGroups[];
     extern u16 gAudioGroupCount;
     extern struct Entry *lbl_803689F0;
@@ -5847,9 +5847,9 @@ s32 fn_80250744(u16 id, void *arg1) {
     struct Info *info = arg1;
     s32 i;
 
-    lbl_803596B8.id = id;
+    gAudioGroupLookupKey.id = id;
     for (i = 0; i < gAudioGroupCount; i++) {
-        if ((lbl_803689F0 = fn_802612A0(&lbl_803596B8, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && lbl_803689F0->ref != 0) {
+        if ((lbl_803689F0 = fn_802612A0(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && lbl_803689F0->ref != 0) {
             lbl_803689EC = &lbl_803689F0->header;
             info->unk0 = lbl_803689EC->unk0;
             info->unk4 = lbl_803689F0->unk8;
