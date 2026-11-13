@@ -342,7 +342,7 @@ s32 fn_801A3390(s32 arg0) {
     return 0;
 }
 
-s32 fn_801A3478(s32 arg0) {
+s32 Battle_StartMapHitAnimB(s32 arg0) {
     void Battle_SetupPair(void *, void *, void *);
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
