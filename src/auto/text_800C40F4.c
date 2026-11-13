@@ -19938,7 +19938,8 @@ void fn_800FA360(void *arg0) {
     }
 }
 
-void Ai_Cmd_TryHashedStatus(void *arg0) {
+void Ai_Cmd_TryHashedStatus(void *unit) {
+    /* AI opcode: on chance, run hashed status action on units matching cmd filter; advance PC. */
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
@@ -19948,29 +19949,29 @@ void Ai_Cmd_TryHashedStatus(void *arg0) {
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
-    u8 *state;
-    u8 *obj;
-    void (*cb)(void *);
-    u8 *flag;
-    void *tmp;
+    u8 *cmd;
+    u8 *self;
+    void (*filter)(void *);
+    u8 *aiFlags;
+    void *entry;
 
-    obj = (u8 *)arg0;
-    state = (u8 *)gAiCmd;
+    self = (u8 *)unit;
+    cmd = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
-        cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
-            : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
-        flag = gAiState;
-        flag[1] |= 2;
-        tmp = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
-        fn_801AA064(obj, tmp, cb);
-        flag[1] &= ~2;
+    if (fn_8000CEE4(0x64) <= *(s32 *)(cmd + 4)) {
+        filter = *(u32 *)(cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
+            : (*(s32 *)(cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
+        aiFlags = gAiState;
+        aiFlags[1] |= 2;
+        entry = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
+        fn_801AA064(self, entry, filter);
+        aiFlags[1] &= ~2;
     }
 
     if (gAiCmdIsAlt == 0) {
-        obj[0x250]++;
+        self[0x250]++;
     } else {
-        obj[0x251]++;
+        self[0x251]++;
     }
 }
 
