@@ -880,7 +880,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void fn_800C8DCC(void *, void *, String *);
     void Xml_AdvanceChild(void *);
     void Xml_Destroy(void *, s32);
-    void *fn_800C91EC(void *, void *, String *);
+    void *Xml_ParseFile(void *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     void String_Destroy(String *, s32);
@@ -970,7 +970,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     if (xml != 0) {
         String_Init(&sp118, (char *)lbl_80273DF8 + 0x38E, &sc48);
         made = 1;
-        xml = fn_800C91EC(xml, path, &sp118);
+        xml = Xml_ParseFile(xml, path, &sp118);
     }
     if (made != 0) {
         String_Destroy(&sp118, -1);

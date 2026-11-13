@@ -2069,7 +2069,7 @@ void fn_801EE76C(void *arg0) {
     void *fn_800C93EC(void *);
     void fn_80041514(void *, void *);
     void fn_800CB90C(void *, void *, char *);
-    void *fn_800C91EC(void *, void *, void *);
+    void *Xml_ParseFile(void *, void *, void *);
     void String_Destroy(void *, s32);
     void fn_800C8DCC(void *, void *, void *);
     void Xml_Destroy(void *, s32);
@@ -2216,7 +2216,7 @@ use30708:
         flag27 = 1;
         fn_800CB90C(&sp3C, &sp24, lbl_8027F26C + 0x1E0);
         flag26 = 1;
-        r29 = fn_800C91EC(r29, &sp3C, &sp30);
+        r29 = Xml_ParseFile(r29, &sp3C, &sp30);
     }
     if (flag26 != 0) {
         String_Destroy(&sp3C, -1);
@@ -2773,7 +2773,7 @@ void fn_801EFDC8(void *arg0) {
     void String_Init(String *, char *, void *);
     void fn_800C992C(String *, char *, s32);
     void *Heap_Alloc(s32);
-    void *fn_800C91EC(void *, String *, String *);
+    void *Xml_ParseFile(void *, String *, String *);
     void String_Destroy(String *, s32);
     void fn_8023440C(void *, char *, s32);
     void fn_800C908C(void *, String *, void *);
@@ -2858,7 +2858,7 @@ void fn_801EFDC8(void *arg0) {
     if (file != NULL) {
         String_Init(&spF8, lbl_8027F26C + 0x1DB, &sp28);
         flag0 = 1;
-        file = fn_800C91EC(file, &path, &spF8);
+        file = Xml_ParseFile(file, &path, &spF8);
     }
     if (flag0 != 0) {
         String_Destroy(&spF8, -1);
@@ -2964,7 +2964,7 @@ void fn_801EFDC8(void *arg0) {
             flag1 = 1;
             fn_800CB90C(&sp8C, &sp98, strBase + 0x250);
             flag2 = 1;
-            file2 = fn_800C91EC(file2, &sp8C, &spA4);
+            file2 = Xml_ParseFile(file2, &sp8C, &spA4);
         }
         if (flag2 != 0) String_Destroy(&sp8C, -1);
         if (flag1 != 0) String_Destroy(&sp98, -1);
@@ -3001,7 +3001,7 @@ void fn_801EFDC8(void *arg0) {
             flag1 = 1;
             fn_800CB90C(&sp5C, &sp68, strBase + 0x263);
             flag2 = 1;
-            file2 = fn_800C91EC(file2, &sp5C, &sp74);
+            file2 = Xml_ParseFile(file2, &sp5C, &sp74);
         }
         if (flag2 != 0) String_Destroy(&sp5C, -1);
         if (flag1 != 0) String_Destroy(&sp68, -1);

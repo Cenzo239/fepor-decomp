@@ -1528,7 +1528,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void fn_800C8DCC(void *, void *, void *);
     void Xml_Destroy(void *, s32);
-    void *fn_800C91EC(void *, void *, void *);
+    void *Xml_ParseFile(void *, void *, void *);
     void *fn_800C93EC(void *);
     void String_Destroy(void *, s16);
     void String_Init(void *, void *, void *);
@@ -1587,7 +1587,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
         a1 = (void *)1;
         fn_800CB90C(&sp2C, a3, lbl_802777C8 + 5);
         flag2 = 1;
-        a2 = fn_800C91EC(a2, &sp2C, &sp20);
+        a2 = Xml_ParseFile(a2, &sp2C, &sp20);
     }
     if (flag2 != 0) {
         String_Destroy(&sp2C, -1);
