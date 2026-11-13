@@ -5492,7 +5492,7 @@ s32 AudioGroup_Register(u32 arg0, void *arg1)
 {
     void fn_80262378(void *, void *, void *);
 
-    extern u8 lbl_803542B8[];
+    extern u8 gAudioGroups[];
     extern u16 lbl_80368A18;
     extern void *lbl_80368A14;
 
@@ -5507,7 +5507,7 @@ s32 AudioGroup_Register(u32 arg0, void *arg1)
     u16 i;
     u8 *stackPtr;
 
-    table = lbl_803542B8;
+    table = gAudioGroups;
     selected = 0;
     selectedTable = 0;
     key = arg0 & 0xFFFF;
@@ -5569,13 +5569,13 @@ s32 AudioGroup_Unregister(u16 id, s32 arg1) {
         u32 unk8;
     };
     void fn_80262430(void *, u32, s32);
-    extern struct Group lbl_803542B8[];
+    extern struct Group gAudioGroups[];
     extern u16 lbl_80368A18;
     struct Entry *e;
     u32 i;
 
     for (i = 0; i < lbl_80368A18; i++) {
-        e = lbl_803542B8[i].entries;
+        e = gAudioGroups[i].entries;
         while (e->id != 0xFFFF) {
             if (e->id == id && e->ref != 0) {
                 e->ref--;
@@ -5840,7 +5840,7 @@ s32 fn_80250744(u16 id, void *arg1) {
     };
     void *fn_802612A0(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
     extern struct Entry lbl_803596B8;
-    extern struct Group lbl_803542B8[];
+    extern struct Group gAudioGroups[];
     extern u16 lbl_80368A18;
     extern struct Entry *lbl_803689F0;
     extern struct Header *lbl_803689EC;
@@ -5849,7 +5849,7 @@ s32 fn_80250744(u16 id, void *arg1) {
 
     lbl_803596B8.id = id;
     for (i = 0; i < lbl_80368A18; i++) {
-        if ((lbl_803689F0 = fn_802612A0(&lbl_803596B8, lbl_803542B8[i].entries, lbl_803542B8[i].count, 0x20, fn_80250734)) != NULL && lbl_803689F0->ref != 0) {
+        if ((lbl_803689F0 = fn_802612A0(&lbl_803596B8, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && lbl_803689F0->ref != 0) {
             lbl_803689EC = &lbl_803689F0->header;
             info->unk0 = lbl_803689EC->unk0;
             info->unk4 = lbl_803689F0->unk8;
@@ -5859,7 +5859,7 @@ s32 fn_80250744(u16 id, void *arg1) {
             info->unk18 = lbl_803689EC->unkC;
             info->unk1C = lbl_803689EC->unk4 >> 24;
             if (lbl_803689F0->unk1C != 0) {
-                info->unk8 = lbl_803689F0->unk1C + (u32)lbl_803542B8[i].entries;
+                info->unk8 = lbl_803689F0->unk1C + (u32)gAudioGroups[i].entries;
             } else {
                 info->unk8 = 0;
             }

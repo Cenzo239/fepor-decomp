@@ -245,7 +245,7 @@ typedef struct {
     u8 unkC[0x14];
 } Entry;
 
-extern struct Entry lbl_803542B8[];
+extern struct Entry gAudioGroups[];
 extern u16 lbl_80368A18;
 extern u32 lbl_80368A14;
 #include "global.h"
