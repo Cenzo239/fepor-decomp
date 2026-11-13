@@ -6121,7 +6121,7 @@ void fn_8013CED0(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
+extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_SetText(s32);
     M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
