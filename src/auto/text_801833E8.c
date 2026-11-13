@@ -7951,7 +7951,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     s32 fn_800E2E58(s32);
     u32 fn_800E2E60(s32);
     s32 fn_800E2E68(s32);
-    M2C_UNK fn_800E35F4(s32, s32, s32 *, s32 *, s32, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK SpriteSheet_DrawUvRect(s32, s32, s32 *, s32 *, s32, M2C_UNK, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036AE88;
     extern f32 lbl_8036AE8C;
     s32 sp4C;
@@ -8032,7 +8032,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
         sp3C = temp_r11 + temp_r24;
         sp8 = 0xFF;
         spC = 0;
-        fn_800E35F4(M2C_FIELD(arg0, s32 *, 0x60), arg1, &sp40, &sp30, M2C_FIELD(arg0, s32 *, 0x44), 0xFF, 0xFF, 0xFF);
+        SpriteSheet_DrawUvRect(M2C_FIELD(arg0, s32 *, 0x60), arg1, &sp40, &sp30, M2C_FIELD(arg0, s32 *, 0x44), 0xFF, 0xFF, 0xFF);
         temp_r4 = M2C_FIELD(arg0, void **, 0x38);
         temp_f2 = M2C_FIELD(temp_r4, f32 *, 0x6C);
         sp20 = sp30;
@@ -8072,7 +8072,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     sp3C = temp_r11_2 + temp_r23;
     sp8 = 0xFF;
     spC = 0;
-    fn_800E35F4(M2C_FIELD(arg0, s32 *, 0x60), arg1, &sp40, &sp30, M2C_FIELD(arg0, s32 *, 0x44), 0xFF, 0xFF, 0xFF);
+    SpriteSheet_DrawUvRect(M2C_FIELD(arg0, s32 *, 0x60), arg1, &sp40, &sp30, M2C_FIELD(arg0, s32 *, 0x44), 0xFF, 0xFF, 0xFF);
     temp_r4_2 = M2C_FIELD(arg0, void **, 0x38);
     temp_f2_2 = M2C_FIELD(temp_r4_2, f32 *, 0x6C);
     sp10 = sp30;
@@ -8110,7 +8110,7 @@ void fn_80197A78(void *arg0, s32 arg1)
     s32 fn_800E2E58(void *);
     s32 fn_800E2E60(void *);
     s32 fn_800E2E68(void *);
-    void fn_800E35F4(void *, s32, s32 *, s32 *, s32, s32, s32, s32, s32, s32);
+    void SpriteSheet_DrawUvRect(void *, s32, s32 *, s32 *, s32, s32, s32, s32, s32, s32);
     void fn_80196AD0(void *);
     void fn_80196F10(void *, s32);
     void fn_801976A4(void *);
@@ -8159,7 +8159,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             rect2[2] = x0 + pad;
             rect2[1] = y0;
             rect2[3] = y0 + d;
-            fn_800E35F4(*(void **)((u8 *)self + 0x60), arg, rect1, rect2,
+            SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1, rect2,
                         *(s32 *)((u8 *)self + 0x44), 0xFF, 0xFF, 0xFF, 0xFF, 0);
             obj38 = *(void **)((u8 *)self + 0x38);
             copy[0] = rect2[0];
@@ -8206,7 +8206,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             rect2b[2] = x0 + (c * rem) / 100;
             rect2b[1] = y0;
             rect2b[3] = y0 + d;
-            fn_800E35F4(*(void **)((u8 *)self + 0x60), arg, rect1b, rect2b,
+            SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1b, rect2b,
                         *(s32 *)((u8 *)self + 0x44), 0xFF, 0xFF, 0xFF, 0xFF, 0);
             obj38 = *(void **)((u8 *)self + 0x38);
             copyb[0] = rect2b[0];

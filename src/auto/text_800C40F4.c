@@ -11574,7 +11574,7 @@ void SpriteSheet_DrawFrame(void *sheet, s32 layer, s32 frame, s32 x, s32 y, s32 
     }
 }
 
-void fn_800E35F4(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9) {
+void SpriteSheet_DrawUvRect(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
