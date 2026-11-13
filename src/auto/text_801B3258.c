@@ -7868,7 +7868,7 @@ void fn_801C77A4(void) {
     Process_Create((void*)&LightFade_script, 4);
 }
 
-void fn_801C77D0(void *arg0) {
+void GActor_FreeTexWork(void *arg0) {
     void fn_8000BF00(void *);
     void fn_80057EDC(void);
     void fn_8005376C(void);
