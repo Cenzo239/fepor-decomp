@@ -142,6 +142,16 @@ void PSMTXScale(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     *(f32 *)((u8 *)arg0 + 0x2C) = (f32)zero;
 }
 
+f32 fn_802025E8(f64 farg0, f64 farg1, f64 farg2) {
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f4, $f4, $f1 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f5, $f5, $f1 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f6, $f6, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f7, $f7, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f8, $f8, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_muls0 $f2, $f2, $f3 */);
+    return (f32) farg0;
+}
+
 void fn_802026E4(f32 *out, f32 *arg1, f32 *arg2, f32 *arg3) {
     f32 sp30;
     f32 sp34;
@@ -535,7 +545,7 @@ f32 Vec_Length(void *arg0) {
     return var_f1;
 }
 
-f32 fn_802032CC(void) {
+f32 PSVECDistance(void) {
     extern f32 lbl_8036BC70;
     extern f32 lbl_8036BC74;
     f32 temp_f0;

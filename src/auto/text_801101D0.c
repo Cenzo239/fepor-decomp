@@ -1126,7 +1126,7 @@ typedef struct Vec3f {
         z = _z;
     }
 } Vec3f;
-extern "C" f32 fn_802032CC(const Vec3f &, const Vec3f &);
+extern "C" f32 PSVECDistance(const Vec3f &, const Vec3f &);
 extern "C" void fn_80112E30(void *arg0) {
     extern f32 lbl_8036A1A8;
     struct Actor {
@@ -1160,7 +1160,7 @@ extern "C" void fn_80112E30(void *arg0) {
         Vec3f a(lbl_8036A184, lbl_8036A184, lbl_8036A184);
         pa = a = self->GetPos(0);
         pb = b = target->GetPos(0);
-        dist = fn_802032CC(pa, pb);
+        dist = PSVECDistance(pa, pb);
     }
     if (dist >= lbl_8036A1A8 + M2C_FIELD(arg0, f32 *, 0x128)) {
         M2C_FIELD(arg0, u8 *, 0x1A4) = 0;
@@ -1374,7 +1374,7 @@ extern "C" void fn_80113658(void *arg0, void *arg1) {
 
     a = ((Actor *)arg0)->GetPos();
     b = ((Actor *)arg1)->GetPos();
-    fn_802032CC(a, b);
+    PSVECDistance(a, b);
 }
 #pragma cplusplus reset
 void fn_801136EC(f32 *arg0, void *arg1) {
@@ -1725,7 +1725,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     s32 fn_80199310(void);
     void fn_80203184(void *, void *, void *);
     void fn_802031CC(void *, void *, f32);
-    extern f32 fn_802032CC(const Vec3f &, const Vec3f &);
+    extern f32 PSVECDistance(const Vec3f &, const Vec3f &);
     extern void *gGame;
 
     struct Actor {
@@ -1880,7 +1880,7 @@ do_dist:
         ((GetPosFn)((void **)*(void **)((u8 *)other + 0x40))[0xE])(&sp80, other, 0);
         sp50 = sp80;
         sp68 = sp80;
-        d = fn_802032CC(sp5C, sp68);
+        d = PSVECDistance(sp5C, sp68);
 after_dist:
 
         scale = *(f32 *)((u8 *)gGame + 0xE0);
@@ -2074,7 +2074,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     void Actor_LoadAnim(void *, char *, s32, s32, s32);
     void fn_80203184(f32 *, f32 *, f32 *);
     void fn_802031CC(f32 *, f32 *, f32);
-    f32 fn_802032CC(f32 *, f32 *);
+    f32 PSVECDistance(f32 *, f32 *);
     extern u16 gActorXmlStrs[];
     extern void *gGame;
     extern f32 lbl_8036A184;
@@ -2140,7 +2140,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         ((GetPosFn)((void **)*(void **)((u8 *)other + 0x40))[0xE])(&sp78, other, 0);
         sp48 = sp78;
         sp60 = sp78;
-        dist = fn_802032CC((f32 *)&sp54, (f32 *)&sp60);
+        dist = PSVECDistance((f32 *)&sp54, (f32 *)&sp60);
     }
     pad = lbl_8036A1D4;
     if (String_Compare((u8 *)self + 0xB0, 0, *(s32 *)((u8 *)self + 0xB0), (char *)&gActorXmlStrs + 0x15F, strlen((char *)&gActorXmlStrs + 0x15F)) == 0) {

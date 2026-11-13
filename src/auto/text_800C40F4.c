@@ -9954,7 +9954,7 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
 }
 
 void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    f32 fn_802032CC(f32 *, f32 *);
+    f32 PSVECDistance(f32 *, f32 *);
     extern f32 lbl_80369EA0;
     f32 sp14[3];
     f32 sp8[3];
@@ -9998,7 +9998,7 @@ void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 f
     sp8[0] = M2C_FIELD(arg0, f32 *, 0xC);
     sp8[1] = M2C_FIELD(arg0, f32 *, 0x10);
     sp8[2] = M2C_FIELD(arg0, f32 *, 0x14);
-    temp_f1 = fn_802032CC(sp8, sp14);
+    temp_f1 = PSVECDistance(sp8, sp14);
     if (lbl_80369EA0 == temp_f1) {
         M2C_FIELD(arg0, s32 *, 0x2C) = 0;
         return;
