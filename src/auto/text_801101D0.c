@@ -878,7 +878,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void fn_800C8CB4(String *, void *);
     void fn_800C8D58(char *, void *);
     void fn_800C8DCC(void *, void *, String *);
-    void fn_800C8EFC(void *);
+    void Xml_AdvanceChild(void *);
     void fn_800C9120(void *, s32);
     void *fn_800C91EC(void *, void *, String *);
     void fn_800C96F8(String *, char *, u32);
@@ -983,7 +983,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
 
     nameBuf = sp31C;
     for (i = 0; i < count; i++) {
-        fn_800C8EFC(xml);
+        Xml_AdvanceChild(xml);
         fn_800C8CB4(&sp100, xml);
         fn_800C9758(&str130, &sp100, 0, -1);
         fn_800C9A60(&sp100, -1);
