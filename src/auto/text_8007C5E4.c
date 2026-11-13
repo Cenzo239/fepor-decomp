@@ -244,7 +244,7 @@ s32 fn_8007CB08(void) {
 void fn_8007CB3C(void *arg0, u8 arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void fn_800075D8(void);
-    void fn_80007818(f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -284,7 +284,7 @@ void fn_8007CB3C(void *arg0, u8 arg1) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, lbl_8036941C, lbl_80369418, lbl_80369418);
-    fn_80007818(lbl_80369420, lbl_80369424, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(lbl_80369420, lbl_80369424, lbl_80369418, lbl_80369418);
     sp14 = lbl_80369404;
     sp10 = lbl_80369400;
     spC = lbl_8036C464;
@@ -294,7 +294,7 @@ void fn_8007CB3C(void *arg0, u8 arg1) {
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, lbl_80369424, lbl_80369418, lbl_80369418);
-    fn_80007818(lbl_80369420, lbl_80369428, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(lbl_80369420, lbl_80369428, lbl_80369418, lbl_80369418);
     sp24 = lbl_8036C46C;
     sp20 = lbl_8036C468;
     sp1C = lbl_8036940C;
@@ -815,7 +815,7 @@ void fn_8007E2C4(void *arg0) {
  void Prim2D_AddPrim(s32);
  void fn_80007870(f32);
  void Prim2D_SetQuadMin(f32,f32,f32,f32);
- void fn_80007818(f32,f32,f32,f32);
+ void Prim2D_SetQuadMax(f32,f32,f32,f32);
  void Prim2D_SetColor(u8,u8,u8,u8);
  void fn_800075D8(void);
  void Prim2D_EndPrim(void);
@@ -857,7 +857,7 @@ void fn_8007E2C4(void *arg0) {
  Prim2D_Begin();Prim2D_BindTexture(obj,0x1A,0x11);Prim2D_PrepareTex();
  Prim2D_AddPrim(1);fn_80007870(lbl_80369418);
  Prim2D_SetQuadMin(x,y,lbl_80369418,lbl_80369418);
- fn_80007818(x+scaledh,y+scaledw,texh,texw);
+ Prim2D_SetQuadMax(x+scaledh,y+scaledw,texh,texw);
  Prim2D_SetColor(((u8 *)&color)[0],((u8 *)&color)[1],((u8 *)&color)[2],0xFF);
  fn_800075D8();Prim2D_EndPrim();
  Prim2D_Begin();fn_80009C0C(lbl_8036942C);Prim2D_PrepareTex();
@@ -992,7 +992,7 @@ void fn_8007EAD8(void *arg0) {
     void Prim2D_BindTexture(s32, s32, s32);
     void fn_80007870(f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void fn_80007818(f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     f32 fn_80037904(void *, s32);
@@ -1093,7 +1093,7 @@ void fn_8007EAD8(void *arg0) {
     fn_80007870(lbl_80369418);
     tx = bx + lbl_803694E8;
     Prim2D_SetQuadMin(tx, by, lbl_80369418, lbl_80369418);
-    fn_80007818(tx + sw, by + sh, tw, th);
+    Prim2D_SetQuadMax(tx + sw, by + sh, tw, th);
     Prim2D_SetColor(((u8 *)&c0)[0], ((u8 *)&c0)[1], ((u8 *)&c0)[2], 0xFF);
     fn_800075D8();
     Prim2D_EndPrim();
@@ -1189,7 +1189,7 @@ void fn_8007EAD8(void *arg0) {
             Prim2D_AddPrim(1);
             fn_80007870(lbl_80369418);
             Prim2D_SetQuadMin(posX, posY, lbl_80369418, lbl_80369418);
-            fn_80007818(posX + sw, posY + sh, tw, th);
+            Prim2D_SetQuadMax(posX + sw, posY + sh, tw, th);
             Prim2D_SetColor(((u8 *)&c3)[0], ((u8 *)&c3)[1], ((u8 *)&c3)[2], 0xFF);
             fn_800075D8();
             Prim2D_EndPrim();
@@ -1213,7 +1213,7 @@ void fn_8007EAD8(void *arg0) {
             Prim2D_AddPrim(1);
             fn_80007870(lbl_80369418);
             Prim2D_SetQuadMin(posX, posY, lbl_80369418, lbl_80369418);
-            fn_80007818(posX + sw, posY + sh, tw, th);
+            Prim2D_SetQuadMax(posX + sw, posY + sh, tw, th);
             Prim2D_SetColor(((u8 *)&c4)[0], ((u8 *)&c4)[1], ((u8 *)&c4)[2], alpha);
             fn_800075D8();
             Prim2D_EndPrim();

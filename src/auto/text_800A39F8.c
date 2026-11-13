@@ -954,7 +954,7 @@ void fn_800A5944(s32 arg0) {
 void fn_800A5968(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_80007818(f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -1001,7 +1001,7 @@ void fn_800A5968(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetQuadMin((f32)M2C_FIELD(arg0, s16 *, 0x40), (f32)M2C_FIELD(arg0, s16 *, 0x42), lbl_80369A5C, lbl_80369A5C);
-    fn_80007818((f32)(M2C_FIELD(arg0, s16 *, 0x40) + 0x1E0), (f32)(M2C_FIELD(arg0, s16 *, 0x42) + 0xA0), lbl_80369A6C, lbl_80369A70);
+    Prim2D_SetQuadMax((f32)(M2C_FIELD(arg0, s16 *, 0x40) + 0x1E0), (f32)(M2C_FIELD(arg0, s16 *, 0x42) + 0xA0), lbl_80369A6C, lbl_80369A70);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, M2C_FIELD(arg0, u8 *, 0x60));
     Prim2D_EndPrim();
 }

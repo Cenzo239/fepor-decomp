@@ -1139,7 +1139,7 @@ void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x28) = constant2;
 }
 
-void fn_80007818(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Prim2D_SetQuadMax(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *lbl_80367140;
     u8 *ptr;
 
