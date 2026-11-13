@@ -156,7 +156,7 @@ void Game_PollSoftReset(void) {
     void fn_8022097C(void);
     extern s32 gUiInputFlags;
     extern void *gPadInput;
-    extern s32 lbl_803672DC;
+    extern s32 gSoftResetHoldCount;
     extern s8 lbl_803672E0;
     extern u8 lbl_803672E1;
     extern s8 lbl_803672E2;
@@ -168,7 +168,7 @@ void Game_PollSoftReset(void) {
     u16 temp_r3;
 
     if (lbl_803672E0 == 0) {
-        lbl_803672DC = 0;
+        gSoftResetHoldCount = 0;
         lbl_803672E0 = 1;
     }
     if (lbl_803672E2 == 0) {
@@ -180,8 +180,8 @@ void Game_PollSoftReset(void) {
         lbl_803672E4 = 1;
     }
     temp_r3 = **(u16 **)gPadInput;
-    temp_r0 = (temp_r3 == 0x1600) ? (lbl_803672DC + 1) : 0;
-    lbl_803672DC = temp_r0;
+    temp_r0 = (temp_r3 == 0x1600) ? (gSoftResetHoldCount + 1) : 0;
+    gSoftResetHoldCount = temp_r0;
     if (temp_r0 >= 0x1E) {
         lbl_803672E3 = 1;
     }
