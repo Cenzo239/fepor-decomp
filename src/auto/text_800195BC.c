@@ -1639,7 +1639,7 @@ s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
     return (s32)(var_f0 * lbl_80368D60);
 }
 
-void *fn_8001C4FC(void *arg0, void *arg1) {
+void *Item_Copy(void *arg0, void *arg1) {
     s32 fn_800C30CC(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);

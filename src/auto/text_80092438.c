@@ -644,23 +644,23 @@ s32 fn_80093088(void *arg0)
 }
 
 void fn_80093154(s32 arg0, s32 arg1, s32 arg2) {
-    M2C_UNK fn_8001C4FC(s32, s32);
+    M2C_UNK Item_Copy(s32, s32);
     s32 self = arg0;
 
     if ((u8)arg1 < 4) {
-        fn_8001C4FC(self + (((u8)arg1) << 3) + 0x1CC, arg2);
+        Item_Copy(self + (((u8)arg1) << 3) + 0x1CC, arg2);
     } else {
-        fn_8001C4FC(self + (((u8)(arg1 - 4)) << 3) + 0x1EC, arg2);
+        Item_Copy(self + (((u8)(arg1 - 4)) << 3) + 0x1EC, arg2);
     }
 }
 
 void fn_800931B0(s32 arg0, u8 arg1, s32 arg2) {
-    M2C_UNK fn_8001C4FC(s32, s32);
-    fn_8001C4FC(arg0 + (arg1 << 3) + 0x1EC, arg2);
+    M2C_UNK Item_Copy(s32, s32);
+    Item_Copy(arg0 + (arg1 << 3) + 0x1EC, arg2);
 }
 
 void fn_800931E4(s32 arg0, u8 arg1, s32 arg2) {
-    fn_8001C4FC(arg0 + (arg1 << 3) + 0x1CC, arg2);
+    Item_Copy(arg0 + (arg1 << 3) + 0x1CC, arg2);
 }
 
 s32 fn_80093218(void *arg1) {
@@ -1391,10 +1391,10 @@ void fn_800947E0(s32 arg0) {
     var_r21 = var_r31;
     var_r19 = 0;
     do {
-        fn_8001C4FC(var_r23, fn_80037BBC(arg0, var_r19));
+        Item_Copy(var_r23, fn_80037BBC(arg0, var_r19));
         fn_80037BBC(arg0, var_r19);
         fn_8001D580();
-        fn_8001C4FC(var_r21, var_r22 + 0x1EC);
+        Item_Copy(var_r21, var_r22 + 0x1EC);
         fn_8001D580(var_r22 + 0x1EC);
         var_r19 += 1;
         var_r22 += 8;
@@ -1407,7 +1407,7 @@ void fn_800947E0(s32 arg0) {
         if ((u32) *var_r20 != 0U) {
             temp_r3 = ((var_r19_2 * 8) & 0x7F8) + 0x1CC;
             var_r19_2 += 1;
-            fn_8001C4FC(arg0 + temp_r3, var_r20);
+            Item_Copy(arg0 + temp_r3, var_r20);
         }
         var_r21_2 += 1;
         var_r20 += 8;
@@ -1418,7 +1418,7 @@ void fn_800947E0(s32 arg0) {
         if ((u32) *var_r31 != 0U) {
             temp_r3_2 = ((var_r21_3 * 8) & 0x7F8) + 0x1EC;
             var_r21_3 += 1;
-            fn_8001C4FC(arg0 + temp_r3_2, var_r31);
+            Item_Copy(arg0 + temp_r3_2, var_r31);
         }
         var_r20_2 += 1;
         var_r31 += 8;

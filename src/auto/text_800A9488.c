@@ -979,7 +979,7 @@ void fn_800AAC64(void *arg0) {
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void *fn_8000CAA0(void *, void *);
     void *fn_80037BD0(void *, s32);
-    void fn_8001C4FC(void *, void *);
+    void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
     void fn_800256A0(void *, s32);
@@ -1048,9 +1048,9 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
                 *(s16 *)(entry + 2) = (s16)(*(s16 *)(entry + 2) + 0x88);
             }
             if (row != 0) {
-                fn_8001C4FC(entry + 4, fn_80037BD0(self->unk34, col));
+                Item_Copy(entry + 4, fn_80037BD0(self->unk34, col));
             } else {
-                fn_8001C4FC(entry + 4, fn_80037BD0(self->unk30, col));
+                Item_Copy(entry + 4, fn_80037BD0(self->unk30, col));
             }
             col += 1;
             entry += 0x10;
@@ -1127,7 +1127,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 void fn_800AB2A4(void *arg0) {
     void *fn_8000CAA0(void *, void *);
     void *fn_80037BD0(void *, s32);
-    void fn_8001C4FC(void *, void *);
+    void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
     void fn_800256A0(void *, s32);
@@ -1196,9 +1196,9 @@ void fn_800AB2A4(void *arg0) {
                 *(s16 *)(entry + 2) = (s16)(*(s16 *)(entry + 2) + 0x88);
             }
             if (row != 0) {
-                fn_8001C4FC(entry + 4, fn_80037BD0(self->unk34, col));
+                Item_Copy(entry + 4, fn_80037BD0(self->unk34, col));
             } else {
-                fn_8001C4FC(entry + 4, fn_80037BD0(self->unk30, col));
+                Item_Copy(entry + 4, fn_80037BD0(self->unk30, col));
             }
             col += 1;
             entry += 0x10;
@@ -1271,7 +1271,7 @@ void fn_800AB73C(void) {
 
 void fn_800AB75C(void *arg0) {
     void fn_8001C76C(void *);
-    void *fn_8001C4FC(void *, void *);
+    void *Item_Copy(void *, void *);
     void *fn_8001C5F8(void *, s32);
     void fn_800ABA3C(void *);
     extern u8 lbl_80312ACC[];
@@ -1293,13 +1293,13 @@ void fn_800AB75C(void *arg0) {
     ((Entry9Bits *)(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                                   + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 9))->flag = 0;
     fn_8001C76C(sp8);
-    fn_8001C4FC(sp8, lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
+    Item_Copy(sp8, lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
                                  + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 4);
-    fn_8001C4FC(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
+    Item_Copy(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
                            + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 4,
                 lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                              + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 4);
-    fn_8001C4FC(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
+    Item_Copy(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                            + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 4, sp8);
     fn_800ABA3C(self);
     var_r8 = (u8 *)(u32)lbl_80312ACC;
@@ -1333,7 +1333,7 @@ void fn_800AB75C(void *arg0) {
 
 #pragma cplusplus on
 #pragma opt_strength_reduction off
-extern "C" void *fn_8001C4FC(void *, void *);
+extern "C" void *Item_Copy(void *, void *);
 extern "C" void fn_8001D580(void *);
 #pragma cplusplus off
 void fn_800ABA3C(void) {
@@ -1360,11 +1360,11 @@ void fn_800ABA3C(void) {
             if (*(u32 *)(check+4)!=0) {
                 u8 *out = (u8 *)a+off;
                 n++; off+=8;
-                fn_8001C4FC(out,p+4);
+                Item_Copy(out,p+4);
             }
             fn_8001D580(p+4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
+        for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
 
     }
@@ -1386,11 +1386,11 @@ void fn_800ABA3C(void) {
             if (*(u32 *)(check+68)!=0) {
                 u8 *out = (u8 *)a+off;
                 n++; off+=8;
-                fn_8001C4FC(out,p+4);
+                Item_Copy(out,p+4);
             }
             fn_8001D580(p+4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
+        for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
 
     }
@@ -1412,11 +1412,11 @@ void fn_800ABA3C(void) {
             if (*(u32 *)(check+132)!=0) {
                 u8 *out = (u8 *)a+off;
                 n++; off+=8;
-                fn_8001C4FC(out,p+4);
+                Item_Copy(out,p+4);
             }
             fn_8001D580(p+4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
+        for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
 
     }
@@ -1438,11 +1438,11 @@ void fn_800ABA3C(void) {
             if (*(u32 *)(check+196)!=0) {
                 u8 *out = (u8 *)a+off;
                 n++; off+=8;
-                fn_8001C4FC(out,p+4);
+                Item_Copy(out,p+4);
             }
             fn_8001D580(p+4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
+        for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
         fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
 
     }

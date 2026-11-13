@@ -2171,7 +2171,7 @@ s32 fn_80037E00(void *arg0) {
 
 #pragma use_lmw_stmw on
 void Unit_Copy(void *arg0, void *arg1) {
-    void fn_8001C4FC(void *, void *);
+    void Item_Copy(void *, void *);
     struct Pair { s32 x; s32 y; };
     void *dst;
     void *src;
@@ -2224,8 +2224,8 @@ void Unit_Copy(void *arg0, void *arg1) {
         *(struct Pair *)((u8 *)dst + 0x1BC) = *(struct Pair *)((u8 *)src + 0x1BC);
         *(struct Pair *)((u8 *)dst + 0x1C4) = *(struct Pair *)((u8 *)src + 0x1C4);
         do {
-            fn_8001C4FC((u8 *)p + 0x1CC, (u8 *)q + 0x1CC);
-            fn_8001C4FC((u8 *)p + 0x1EC, (u8 *)q + 0x1EC);
+            Item_Copy((u8 *)p + 0x1CC, (u8 *)q + 0x1CC);
+            Item_Copy((u8 *)p + 0x1EC, (u8 *)q + 0x1EC);
             i += 1;
             q = (u8 *)q + 8;
             p = (u8 *)p + 8;

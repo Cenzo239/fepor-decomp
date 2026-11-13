@@ -6846,7 +6846,7 @@ extern "C" void fn_80170894(void *arg0) {
     void *fn_8000CAA0(void *, void *);
     void Ui_PlaySeCue(void *, s32);
     s32 fn_80164A24(void *, s16);
-    void fn_8001C4FC(s32, s32);
+    void Item_Copy(s32, s32);
     void fn_80164A48(void *);
     void fn_801436AC(void *, s32);
     void fn_80143C9C(void *);
@@ -6920,7 +6920,7 @@ extern "C" void fn_80170894(void *arg0) {
         }
     }
     Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
-    fn_8001C4FC(fn_80164A24(temp_r30, (s16)var_r27), temp_r29);
+    Item_Copy(fn_80164A24(temp_r30, (s16)var_r27), temp_r29);
     fn_80164A48(temp_r30);
     fn_801436AC(temp_r31, temp_r29);
     fn_80143C9C(temp_r31);
@@ -8165,7 +8165,7 @@ extern "C" void fn_8017369C(void *arg0) {
 void Process_Goto(void *, s32);
 void *fn_8000CAA0(void *, void *);
 u32 *Item_GetFlagsPtr(u32);
-void fn_8001C4FC(u32 *, s32);
+void Item_Copy(u32 *, s32);
 void fn_8001C5F8(void *, s32);
 void fn_8001C690(void *, u32 *, u32);
 void fn_8001D580(s32);
@@ -8268,7 +8268,7 @@ u32 r5 = *r26b;
 register u32 r25;
 r25 = (u32)(-(s32)r5 | r5) >> 31;
 fn_8001C690(sp28, r26b, r5);
-fn_8001C4FC(r26b, *r27b);
+Item_Copy(r26b, *r27b);
 fn_801436AC(r28, *r27b);
 fn_80143C9C(r28);
 fn_8001D580(*r27b);

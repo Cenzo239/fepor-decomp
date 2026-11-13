@@ -722,7 +722,7 @@ void fn_801A949C(void *arg0) {
 
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
-    void fn_8001C4FC(void *, void *);
+    void Item_Copy(void *, void *);
     u8 fn_80094614(void *, void *);
     void fn_8001D580(void *);
     void *fn_80037C20(void *);
@@ -734,8 +734,8 @@ void fn_801A9600(void *arg0, void *arg1) {
     void *r;
 
     *(s8 *)((u8 *)arg0 + 0x294) = -1;
-    fn_8001C4FC((u8 *)arg0 + 0x284, arg1);
-    fn_8001C4FC((u8 *)arg0 + 0x28C, arg1);
+    Item_Copy((u8 *)arg0 + 0x284, arg1);
+    Item_Copy((u8 *)arg0 + 0x28C, arg1);
     *(u8 *)((u8 *)arg0 + 0x2C8) = *(u8 *)((u8 *)arg1 + 4);
     *(u16 *)((u8 *)arg0 + 0x2AE) = 0;
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
@@ -814,7 +814,7 @@ void fn_801A9AF8(void *arg0) {
         M2C_FIELD(p->unk280, u32 *, 0x1A0) |= 0x01000000;
     }
     if (p->unk294 >= 0) {
-        fn_8001C4FC(p->unk284, p->unk28C);
+        Item_Copy(p->unk284, p->unk28C);
         fn_8001D5F4(p->unk284, (u8)p->unk2C8);
         fn_80093154(p->unk280, p->unk294, p->unk284);
         fn_800947E0(p->unk280);
@@ -871,8 +871,8 @@ void *fn_801A9CF4(void *dst, void *src) {
     if (src != dst) {
         Unit_Copy();
         *(u32*)(((char*)dst) + 0x280) = *(u32*)(((char*)src) + 0x280);
-        fn_8001C4FC(((char*)dst) + 0x284, ((char*)src) + 0x284);
-        fn_8001C4FC(((char*)dst) + 0x28C, ((char*)src) + 0x28C);
+        Item_Copy(((char*)dst) + 0x284, ((char*)src) + 0x284);
+        Item_Copy(((char*)dst) + 0x28C, ((char*)src) + 0x28C);
         *(u8*)(((char*)dst) + 0x294) = *(u8*)(((char*)src) + 0x294);
         *(u8*)(((char*)dst) + 0x295) = *(u8*)(((char*)src) + 0x295);
         *(u8*)(((char*)dst) + 0x296) = *(u8*)(((char*)src) + 0x296);

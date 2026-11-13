@@ -867,14 +867,14 @@ s32 fn_80133FA4(void *arg0) {
     return lbl_80291744[M2C_FIELD(arg0, s16 *, 0x3E)];
 }
 
-void fn_8001C4FC(void *);
+void Item_Copy(void *);
 void fn_80133FBC(void *arg0, void *arg1) {
     void *other;
     void *self;
 
     other = arg1;
     self = arg0;
-    fn_8001C4FC((void *)((u8 *)self + 0x60));
+    Item_Copy((void *)((u8 *)self + 0x60));
     M2C_FIELD(self, s8 *, 0x54) = 0;
     M2C_FIELD(self, s8 *, 0x53) = 0;
     M2C_FIELD(self, s8 *, 0x52) = 0;
