@@ -4055,7 +4055,7 @@ void fn_8003B9AC(u32 arg0) {
 }
 
 extern u16 lbl_8026A458[];
-s32 fn_8003BA80(void *arg0) {
+s32 Affinity_FromName(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u16 lbl_8026A458[];
     s32 temp_r3;

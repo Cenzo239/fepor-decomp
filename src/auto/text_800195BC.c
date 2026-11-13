@@ -830,7 +830,7 @@ void fn_8001AC18(void) {
     u16 fn_8000CEE4(s32);
     void fn_8000D3EC(u32, void *);
     void fn_8001CC48(void *, u32);
-    s32 fn_8003BA80(u32);
+    s32 Affinity_FromName(u32);
     void fn_80105DAC(void *, u32);
     void fn_800A8A2C(void *);
     extern char lbl_80268510[];
@@ -902,7 +902,7 @@ void fn_8001AC18(void) {
             v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]);
             ptr += 4;
         }
-        *(u8 *)((u8 *)rec + 0x54) = fn_8003BA80(v);
+        *(u8 *)((u8 *)rec + 0x54) = Affinity_FromName(v);
 
         if (ptr == NULL) {
             v = 0;
