@@ -753,28 +753,29 @@ void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
     return proc;
 }
 
-void *Unit_FadeFacing(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
+void *Unit_FadeFacing(void *unit, s32 frames, s32 priority, f32 angle) {
+    /* Fade unit facing (0x15C) toward angle; snap if frames<=0. */
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
     u8 sp8[0x34];
-    void *temp_r3;
+    void *proc;
 
-    M2C_FIELD(sp8, void **, 0x30) = arg0;
+    M2C_FIELD(sp8, void **, 0x30) = unit;
     fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
-    if (farg0 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
+    if (angle == ((f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
-    if (arg1 <= 0) {
-        M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * farg0);
+    if (frames <= 0) {
+        M2C_FIELD(unit, s16 *, 0x15C) = (s16)(50.0f * angle);
         return NULL;
     }
-    temp_r3 = Process_CreateEx(&E_MuFade_script, arg2);
-    M2C_FIELD(temp_r3, void **, 0x30) = arg0;
-    M2C_FIELD(temp_r3, f32 *, 0x34) = farg0;
-    M2C_FIELD(temp_r3, s32 *, 0x38) = arg1;
-    return temp_r3;
+    proc = Process_CreateEx(&E_MuFade_script, priority);
+    M2C_FIELD(proc, void **, 0x30) = unit;
+    M2C_FIELD(proc, f32 *, 0x34) = angle;
+    M2C_FIELD(proc, s32 *, 0x38) = frames;
+    return proc;
 }
 
 void fn_80184BE8(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
