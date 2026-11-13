@@ -11469,7 +11469,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern u8 gUiPanelCVtbl[];
     extern u8 lbl_80285C18[];
     extern u8 lbl_80285CCC[];
-    extern u8 lbl_80292504[];
+    extern u8 gUiPanelCMidVtbl[];
     extern u8 gEmptyVtbl[];
     extern f32 gF32_1;
     extern f32 lbl_8036AB70;
@@ -11536,7 +11536,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     mid1 = lbl_80285C18;
     *(void **)self = lbl_8028FDB0;
     mid2 = lbl_80285CCC;
-    mid3 = lbl_80292504;
+    mid3 = gUiPanelCMidVtbl;
     *(s32 *)((u8 *)r29 + 4) = z;
     *(void **)r29 = vt30;
     *(s16 *)((u8 *)r29 + 8) = n1;

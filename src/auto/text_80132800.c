@@ -9911,7 +9911,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern u8 gUiPanelCVtbl[];
     extern u8 gEmptyVtbl[];
-    extern u8 lbl_80292504[];
+    extern u8 gUiPanelCMidVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
     Owner *self;
@@ -9928,7 +9928,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
             ((Obj *)&self->sub88)->v2();
         }
         if (&self->sub40[0] != NULL) {
-            *(void **)((u8 *)self + 0x84) = lbl_80292504;
+            *(void **)((u8 *)self + 0x84) = gUiPanelCMidVtbl;
             ((Sub40 *)&self->sub40[0])->v2();
         }
         if (arg0 != NULL) {
@@ -9953,10 +9953,10 @@ extern "C" void *fn_80144A0C(void *arg0, s16 arg1) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern u8 lbl_80292504[];
+    extern u8 gUiPanelCMidVtbl[];
     extern void Heap_Free(void *);
     if (arg0 != NULL) {
-        *(void **)((u8 *)arg0 + 0x44) = lbl_80292504;
+        *(void **)((u8 *)arg0 + 0x44) = gUiPanelCMidVtbl;
         ((Obj *)arg0)->v2();
         if (arg1 > 0) {
             Heap_Free(arg0);
