@@ -2401,7 +2401,7 @@ void fn_801B2E3C(void *arg0) {
     }
 }
 
-void fn_801B2EBC(void *arg0) {
+void Ui_CreateMainListPanel(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801B31E4(void *, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
