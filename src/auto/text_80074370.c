@@ -1113,7 +1113,7 @@ extern "C" void fn_80071410(void *, void *, f32, f32);
 extern "C" void fn_8007149C(void *, void *, f32, f32, s32, s32);
 extern "C" void fn_80071740(void *, f32, f32, s32);
 extern "C" void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-extern "C" void fn_80076174(void *arg0, void *arg1) {
+extern "C" void BattleInfoWin_Draw(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
