@@ -3762,7 +3762,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     M2C_UNK Ui_DrawSlotFrame(s32, s32, u8, M2C_UNK);
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
-    extern f32 lbl_8036A9D8;
+    extern f32 gUiMenuSlotTextZ;
     extern f32 gUiMenuSlotTextScale;
     extern f32 lbl_8036A9E0;
     struct Obj {
@@ -3800,7 +3800,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     var_r29 = arg2;
     ((Obj *)arg0)->v17();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036A9D8);
+    Prim2D_AddZ(gUiMenuSlotTextZ);
     Prim2D_PrepareTex();
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
@@ -3881,7 +3881,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     u32 fn_8017F9D4();
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
-    extern f32 lbl_8036A9D8;
+    extern f32 gUiMenuSlotTextZ;
     extern f32 gUiMenuSlotTextScale;
     extern f32 lbl_8036A9E0;
     struct Obj {
@@ -3919,7 +3919,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     var_r29 = arg2;
     ((Obj *)arg0)->v17();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036A9D8);
+    Prim2D_AddZ(gUiMenuSlotTextZ);
     Prim2D_PrepareTex();
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
@@ -16349,7 +16349,7 @@ extern f32 lbl_8036AB70;
 #include "global.h"
 
 extern f32 lbl_8036A9CC;
-extern f32 lbl_8036A9D8;
+extern f32 gUiMenuSlotTextZ;
 extern f32 gUiMenuSlotTextScale;
 extern f32 lbl_8036A9E0;
 extern f64 lbl_8036A9B8;
