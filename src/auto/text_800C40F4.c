@@ -8348,7 +8348,7 @@ void fn_800DB9D8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
 }
 
 void fn_800DB9E8(f32 *arg0, void *arg1) {
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void fn_8020310C(void *, f32 *, f32 *);
     f32 sp[3];
     f32 z;
@@ -8358,7 +8358,7 @@ void fn_800DB9E8(f32 *arg0, void *arg1) {
     sp[0] = *(f32 *)((u8 *)arg1 + 0x48);
     sp[1] = *(f32 *)((u8 *)arg1 + 0x4C);
     sp[2] = *(f32 *)((u8 *)arg1 + 0x50);
-    fn_8020310C(fn_80067FDC(), sp, sp);
+    fn_8020310C(Camera_GetViewMtx(), sp, sp);
     y = sp[1];
     z = sp[2];
     x = sp[0];
@@ -16310,7 +16310,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
     void *fn_80060664(void);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void *Camera_Get(void);
     void fn_80069010(void *, void *);
     void fn_800690D4(void *, void *, void *);
@@ -16488,7 +16488,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         t28 = GMaterial_AllocTexMap();
         t27 = GMaterial_AllocMtx();
         fn_80202870(sp1EC, lbl_80369FCC, lbl_80369FD0, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
-        fn_80067FDC();
+        Camera_GetViewMtx();
         PSMTXCopy(sp1BC);
         PSMTXConcat(sp1BC, sp22C, sp18C);
         PSMTXConcat(sp1EC, sp18C, sp18C);
@@ -17282,7 +17282,7 @@ void fn_800F0C30(s8 arg0, s8 arg1, s8 arg2) {
 
 void fn_800F0C54(u8 *arg0) {
 void Ui_LoadAtlasTex(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
-void *fn_80067FDC(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
+void *Camera_GetViewMtx(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
 extern s32 lbl_803674F0; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018; union { f64 d; struct {u32 hi,lo;} w; } dx,dy; f64 magic;
 f32 one,fx,fy,fx1,fy1,z;
@@ -17291,7 +17291,7 @@ GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0)
 GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetNumTexGens(0,3);GXSetTevOrder(0,0,0,255);
 GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);
 PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
-PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(fn_80067FDC(),sp28,sp28);
+PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(Camera_GetViewMtx(),sp28,sp28);
 GXLoadPosMtxImm(sp28,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);
 magic=lbl_8036A018; one=lbl_8036A024;
 for(i=0;i<=(s8)arg0[0x100];i++){

@@ -5288,7 +5288,7 @@ void *fn_80067FD0(void) {
     return (u8 *)gCamera + 0x64;
 }
 
-s32 fn_80067FDC(void) {
+s32 Camera_GetViewMtx(void) {
     extern void *gCamera;
     return (s32)((u8 *)gCamera + 0xA4);
 }

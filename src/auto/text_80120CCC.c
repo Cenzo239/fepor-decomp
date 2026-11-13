@@ -1604,7 +1604,7 @@ void fn_80123D1C(void *arg0) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     s32 fn_800067B4(void);
     void *Map_Get(void);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -1672,7 +1672,7 @@ void fn_80123D1C(void *arg0) {
     limit = *(u8 *)((u8 *)arg0 + 0x52);
     PSMTXScale(sp158, (f32)sx, (f32)sx, (f32)sx);
     PSMTXConcat((u8 *)Map_Get() + 0x70, sp158, sp158);
-    PSMTXConcat(fn_80067FDC(), sp158, sp158);
+    PSMTXConcat(Camera_GetViewMtx(), sp158, sp158);
     PSMTXScale(spF8, lbl_8036A310, lbl_8036A314, lbl_8036A310);
     PSMTXTrans(spC8, lbl_8036A30C, lbl_8036A318, lbl_8036A30C);
     PSMTXConcat(spF8, spC8, sp128);
@@ -2352,7 +2352,7 @@ void Fx_DrawParticles(void *arg0) {
     void GXSetZMode(s32, s32, s32);
     void fn_8022100C(s32);
     s32 Map_Get(void);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void PSMTXConcat(void *, void *, void *);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -2392,7 +2392,7 @@ void Fx_DrawParticles(void *arg0) {
     GXSetZMode(1, 3, 0);
     fn_8022100C(2);
     map = Map_Get();
-    PSMTXConcat(fn_80067FDC(), (void *)(u32)(map + 0x70), mtx);
+    PSMTXConcat(Camera_GetViewMtx(), (void *)(u32)(map + 0x70), mtx);
     GXLoadPosMtxImm(mtx, 0);
     GXSetCurrentMtx(0);
     fn_80220FC4(0, 0, 1);

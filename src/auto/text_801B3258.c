@@ -3753,6 +3753,7 @@ void fn_801BCC60(s32 arg0) {
     }
 }
 
+#pragma use_lmw_stmw on
 void fn_801BCCC4(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
@@ -3763,27 +3764,31 @@ void fn_801BCCC4(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
-    void *p;
     void *obj;
-    s32 v;
     s32 saved;
+    s32 v;
     void *base;
+    void *self;
+    void *p;
 
-    p = Ui_FindChild(arg0, 0x80, 0);
+    self = arg0;
+    p = Ui_FindChild(self, 0x80, 0);
     Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x1CE);
-    obj = *(void **)((u8 *)arg0 + 0x5C);
-    base = gBattleState;
-    v = *(s32 *)gUiContext;
-    saved = *(s32 *)((u8 *)base + 0x1C);
-    *(s32 *)((u8 *)base + 0x1C) = saved - fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
-    fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), arg0, 0);
-    *(s16 *)((u8 *)base + 0x70) = 0;
-    p = Ui_FindChild(arg0, -0x1000, 0);
+    {
+        u8 *ctx = gUiContext;
+        obj = *(void **)((u8 *)self + 0x5C);
+        base = gBattleState;
+        v = *(s32 *)ctx;
+        saved = *(s32 *)((u8 *)base + 0x1C);
+        *(s32 *)((u8 *)base + 0x1C) = saved - (s16)fn_8017D52C(obj, *(s16 *)((u8 *)obj + 0x3E));
+    }
+    fn_80034A8C(gBattle, v, (u8)*(s16 *)((u8 *)obj + 0x3E), self, 0);
+    *(s16 *)(gBattleState + 0x70) = 0;
+    p = Ui_FindChild(self, -0x1000, 0);
     if (p != NULL) {
-        Ui_RemoveChild(arg0, p);
+        Ui_RemoveChild(self, p);
     }
 }
-
 void fn_801BCD8C(void *arg0) {
     extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
@@ -7308,7 +7313,7 @@ void fn_801C65E0(void *arg0) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80066D00(s32);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void Ui_LoadAtlasTex(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -7356,7 +7361,7 @@ void fn_801C65E0(void *arg0) {
         PSMTXTrans(mtxA, x, y, z);
         PSMTXRotRad(mtxB, 0x79, lbl_8036B430 * scale);
         PSMTXConcat(mtxA, mtxB, mtxC);
-        PSMTXConcat(fn_80067FDC(), mtxC, mtxC);
+        PSMTXConcat(Camera_GetViewMtx(), mtxC, mtxC);
         GXLoadPosMtxImm(mtxC, 0);
         GXSetCurrentMtx(0);
         Ui_LoadAtlasTex(*(void **)((u8 *)obj + 0x38), tex, 9);

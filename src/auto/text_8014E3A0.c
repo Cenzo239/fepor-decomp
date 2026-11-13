@@ -275,7 +275,7 @@ void fn_8014E864(void *arg0) {
     void PSMTXConcat(void *, void *, void *);
     void PSMTXCopy(void *, void *);
     void Game_Assert(void *, s32, void *);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void fn_801502EC(void *, void *, void *, void *);
@@ -402,7 +402,7 @@ void fn_8014E864(void *arg0) {
                     PSMTXConcat(bufC8, bufF8, bufF8);
                     PSMTXConcat(buf38, bufF8, bufF8);
                 after_mtx:
-                    PSMTXConcat(fn_80067FDC(), bufF8, bufF8);
+                    PSMTXConcat(Camera_GetViewMtx(), bufF8, bufF8);
                     GXLoadPosMtxImm(bufF8, 0);
                     GXSetCurrentMtx(0);
 

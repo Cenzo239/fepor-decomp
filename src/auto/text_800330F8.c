@@ -9502,6 +9502,7 @@ void fn_80049A98(void *arg0) {
                 *(f32 *)((u8 *)arg0 + 0x40));
 }
 
+#pragma global_optimizer off
 void MapObj_FadeIn(void *arg0, u8 arg1)
 {
     void fn_8005FEE8(void *, f32);
@@ -9528,7 +9529,7 @@ void MapObj_FadeIn(void *arg0, u8 arg1)
 
     fn_80016180();
 }
-
+#pragma global_optimizer reset
 void MapObj_FadeOut(void *arg0, u8 arg1) {
     void fn_8005FEE8(void *, f32);
     void fn_80044450(s32, s32);
@@ -9673,7 +9674,7 @@ void Map_DrawRangeTiles(void) {
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void PSMTXConcat(void *, void *, void *);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -9727,7 +9728,7 @@ void Map_DrawRangeTiles(void) {
         GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         PSMTXTrans(mtx, lbl_80368F84, lbl_80368F84, lbl_80368F88);
-        PSMTXConcat(fn_80067FDC(), mtx, mtx);
+        PSMTXConcat(Camera_GetViewMtx(), mtx, mtx);
         GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
@@ -9852,7 +9853,7 @@ void GXSetNumChans(s32);
 void fn_802201A8(s32, s32, s32, s32, s32, s32);
 void fn_8022100C(s32);
 void PSMTXTrans(void *, f32, f32, f32);
-void *fn_80067FDC(void);
+void *Camera_GetViewMtx(void);
 void PSMTXConcat(void *, void *, void *);
 void GXLoadPosMtxImm(void *, s32);
 void GXSetCurrentMtx(s32);
@@ -9901,7 +9902,7 @@ extern u8 lbl_80285828[];
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_8022100C(0);
         PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
-        PSMTXConcat(fn_80067FDC(), sp8, sp8);
+        PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
         GXLoadPosMtxImm(sp8, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 1, 0);
@@ -10033,7 +10034,7 @@ void fn_8004A864(void* arg0, s32 arg1) {
 }
 
 void fn_8004AAA4(void) {
-    M2C_UNK fn_80067FDC();
+    M2C_UNK Camera_GetViewMtx();
     M2C_UNK PSMTXConcat(M2C_UNK, M2C_UNK *, M2C_UNK *);
     M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
     M2C_UNK GXSetVtxDesc(M2C_UNK, M2C_UNK);
@@ -10068,7 +10069,7 @@ void fn_8004AAA4(void) {
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_8022100C(0);
     PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
-    PSMTXConcat(fn_80067FDC(), sp8, sp8);
+    PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
     GXLoadPosMtxImm(sp8, 0);
     GXSetCurrentMtx(0);
     fn_802245D8(1, 4, 1, 0);
@@ -10831,7 +10832,7 @@ void Unit_DrawShadows(void) {
     void Unit_DrawShadow(void *, s32);
     void fn_80066D00(s32);
     void *Light_GetChannel(s32);
-    void *fn_80067FDC(void);
+    void *Camera_GetViewMtx(void);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -10881,7 +10882,7 @@ void Unit_DrawShadows(void) {
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumChans(1);
     PSMTXTrans(mtxTrans, lbl_80368FCC, lbl_80368FCC, gUnitShadowZ);
-    PSMTXConcat(fn_80067FDC(), mtxTrans, mtxOut);
+    PSMTXConcat(Camera_GetViewMtx(), mtxTrans, mtxOut);
     GXLoadPosMtxImm(mtxOut, 0);
     GXSetCurrentMtx(0);
     GXSetZMode(1, 3, 0);

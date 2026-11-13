@@ -7430,7 +7430,7 @@ loop_5:
 #pragma use_lmw_stmw on
 void fn_801959FC(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
-    void fn_80067FDC(void);
+    void Camera_GetViewMtx(void);
     u32 fn_8006D948(void *);
     void PSMTXConcat(void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -7486,7 +7486,7 @@ void fn_801959FC(void *arg0) {
     }
     fn_8022100C(0);
     PSMTXTrans(mtx, lbl_8036AE50, lbl_8036AE50, lbl_8036AE68);
-    fn_80067FDC();
+    Camera_GetViewMtx();
     PSMTXConcat(mtx, mtx);
     GXLoadPosMtxImm(mtx, 0);
     GXSetCurrentMtx(0);
