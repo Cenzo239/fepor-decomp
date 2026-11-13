@@ -1279,7 +1279,7 @@ void fn_801ACF4C(void *arg0) {
     extern u16 lbl_80368224;
     extern f32 lbl_8036AFA0;
     extern f32 lbl_8036B028;
-    extern u8 lbl_802972C0[];
+    extern u8 gOptionsTable[];
     extern f64 lbl_8036AFC0;
     extern f32 lbl_8036B030;
     extern f32 lbl_8036B01C;
@@ -1324,7 +1324,7 @@ void fn_801ACF4C(void *arg0) {
     do {
         temp_r4 = var_r30 - 1;
         temp_r4 = *(u8*)((char*)arg0 + 0x36) + temp_r4;
-        if ((temp_r4 >= 0) && (temp_r4 < *(u8*)((char*)arg0 + 0x31)) && (*(u8*)(lbl_802972C0 + (temp_r4 * 0xC)) == 1)) {
+        if ((temp_r4 >= 0) && (temp_r4 < *(u8*)((char*)arg0 + 0x31)) && (*(u8*)(gOptionsTable + (temp_r4 * 0xC)) == 1)) {
             temp_f3 = *(f32*)((char*)arg0 + 0x38);
             fn_801AB8A8(arg0, lbl_8036B02C, (lbl_8036B030 * temp_f3) + ((lbl_8036B030 * (f32) var_r30) + lbl_8036B01C), temp_f3, lbl_8036B030);
         }
@@ -1536,7 +1536,7 @@ void Options_DrawHeader(void *arg0) {
         u8 pad[8];
         void *ptr;
     } Row;
-    extern Row lbl_802972C0[];
+    extern Row gOptionsTable[];
     Obj *self;
     f32 f30;
     f32 f31;
@@ -1603,7 +1603,7 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    str = fn_8000E0E4(lbl_802972C0[self->unk3C].ptr);
+    str = fn_8000E0E4(gOptionsTable[self->unk3C].ptr);
     fn_8001003C(0x64, 0x3D, 2, 0, 0, str, lbl_8036AF9C, lbl_8036AFA0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B080);
