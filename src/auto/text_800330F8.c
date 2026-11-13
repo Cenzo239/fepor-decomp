@@ -6065,7 +6065,7 @@ void fn_800404DC(void) {
     void fn_80048518(void);
     extern void *gMap;
     extern s32 lbl_803682A4;
-    extern u8 lbl_803672A4;
+    extern u8 sMapUpdateInited;
     extern s32 sMapUpdateCounter;
     extern f64 lbl_80368EF8;
     extern f32 lbl_80368EE4;
@@ -6094,10 +6094,10 @@ void fn_800404DC(void) {
     p0 = gMap;
     if (p0 != 0 && (lbl_803682A4 & 2) == 0) {
         if (*(u32 *)(p0 + 0xC) != 0) {
-            if ((s8)lbl_803672A4 == 0) {
+            if ((s8)sMapUpdateInited == 0) {
                 a = 0;
                 sMapUpdateCounter = a;
-                lbl_803672A4 = 1;
+                sMapUpdateInited = 1;
             }
             if ((sMapUpdateCounter & 1) != 0) {
                 t6 = *(s16 *)(p0 + 6);
@@ -8709,7 +8709,7 @@ void PSMTXTrans(void *, f32, f32, f32);
 void PSMTXScale(void *, f32, f32, f32);
 void fn_80048518(void);
 extern void *gMap;
-extern u8 lbl_803672A4;
+extern u8 sMapUpdateInited;
 extern s32 sMapUpdateCounter;
 extern f64 lbl_80368EF8;
 extern f32 lbl_80368EE4;
@@ -8742,9 +8742,9 @@ extern f32 lbl_80368EF4;
     self = arg0;
     if (*(u32 *)((u8 *)self + 0x64) & 0x40000000) {
         if (*(u32 *)((u8 *)self + 0xC) != 0) {
-            if ((s8)lbl_803672A4 == 0) {
+            if ((s8)sMapUpdateInited == 0) {
                 sMapUpdateCounter = 0;
-                lbl_803672A4 = 1;
+                sMapUpdateInited = 1;
             }
             if ((sMapUpdateCounter & 1) != 0) {
                 t6 = *(s16 *)((u8 *)self + 6);
