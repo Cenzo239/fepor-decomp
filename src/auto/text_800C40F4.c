@@ -7224,7 +7224,7 @@ s32 fn_800D78F4(void) {
     return 0;
 }
 
-void *fn_800D7954(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void *PreviewWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void String_Init(void *, char *, void *);
     void String_ConcatCStr(void *, void *, char *);
     void *fn_800D75FC(void *, void *);
@@ -7819,7 +7819,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     void *fn_800D7060(void *, void *, s32, s32);
     void fn_800D7540(void *);
     void fn_800D7564(void *);
-    void *fn_800D7954(void *, void *, s32, s32);
+    void *PreviewWin_Create(void *, void *, s32, s32);
     void *fn_800D7E24(void *, void *, s32, s32);
     void fn_800D83B0(void *, String *);
     void fn_800D85CC(void *, String *);
@@ -7915,7 +7915,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
 
     tmp = Heap_Alloc(0x440);
     if (tmp != NULL) {
-        tmp = fn_800D7954(tmp, *(void **)((u8 *)self + 4), 0x10, 8);
+        tmp = PreviewWin_Create(tmp, *(void **)((u8 *)self + 4), 0x10, 8);
     }
     lbl_803678A0 = tmp;
     tmp = Heap_Alloc(0x434);
