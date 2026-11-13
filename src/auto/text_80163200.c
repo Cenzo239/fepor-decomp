@@ -3665,7 +3665,8 @@ void *fn_8016AE6C(void) {
     return &lbl_80277BC0[0x101];
 }
 
-s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
+s32 Ui_MenuItemOpenSubmenu(s32 unused, s32 parent, void *item) {
+    /* Menu item action: if enabled, install item vtables once, alloc a config, and open a submenu. */
     M2C_UNK Ui_CreateMenu(void *, s32, s32);
     void *Heap_Alloc(u32);
     extern u8 gUiMenuDrawVtbl[];
@@ -3678,9 +3679,9 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     extern void *gUiMenuVtbl0;
     extern s8 sUiMenuVtbl1Ready;
     extern void *gUiMenuVtbl1;
-    void *p;
+    void *config;
 
-    if (M2C_FIELD(arg2, u8 *, 0x39) == 2) {
+    if (M2C_FIELD(item, u8 *, 0x39) == 2) {
         return 0;
     }
     if (sUiMenuVtbl0Ready == 0) {
@@ -3691,31 +3692,31 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
         gUiMenuVtbl1 = gUiMenuVtbl1Template;
         sUiMenuVtbl1Ready = 1;
     }
-    p = Heap_Alloc(0x20);
-    if (p != NULL) {
-        M2C_FIELD(p, void **, 4) = gUiMenuDrawVtbl;
-        M2C_FIELD(p, void **, 0) = gUiMenuVtblSlotPtrs;
-        M2C_FIELD(p, void **, 4) = lbl_802920E0;
-        M2C_FIELD(p, s16 *, 8) = 0;
-        M2C_FIELD(p, s16 *, 0xA) = 0;
-        M2C_FIELD(p, s16 *, 0xC) = 0x80;
-        M2C_FIELD(p, s16 *, 0xE) = 0;
-        M2C_FIELD(p, s16 *, 0x10) = 2;
-        M2C_FIELD(p, s16 *, 0x12) = 0xC;
-        M2C_FIELD(p, s16 *, 0x14) = 0x10;
-        M2C_FIELD(p, s16 *, 0x16) = 0;
-        M2C_FIELD(p, f32 *, 0x18) = 0.0f;
-        M2C_FIELD(p, s16 *, 0x1C) = 0x20;
-        M2C_FIELD(p, s16 *, 0x1E) = 4;
-        M2C_FIELD(p, void **, 4) = gUiMenuConfigVtbl;
+    config = Heap_Alloc(0x20);
+    if (config != NULL) {
+        M2C_FIELD(config, void **, 4) = gUiMenuDrawVtbl;
+        M2C_FIELD(config, void **, 0) = gUiMenuVtblSlotPtrs;
+        M2C_FIELD(config, void **, 4) = lbl_802920E0;
+        M2C_FIELD(config, s16 *, 8) = 0;
+        M2C_FIELD(config, s16 *, 0xA) = 0;
+        M2C_FIELD(config, s16 *, 0xC) = 0x80;
+        M2C_FIELD(config, s16 *, 0xE) = 0;
+        M2C_FIELD(config, s16 *, 0x10) = 2;
+        M2C_FIELD(config, s16 *, 0x12) = 0xC;
+        M2C_FIELD(config, s16 *, 0x14) = 0x10;
+        M2C_FIELD(config, s16 *, 0x16) = 0;
+        M2C_FIELD(config, f32 *, 0x18) = 0.0f;
+        M2C_FIELD(config, s16 *, 0x1C) = 0x20;
+        M2C_FIELD(config, s16 *, 0x1E) = 4;
+        M2C_FIELD(config, void **, 4) = gUiMenuConfigVtbl;
     }
-    M2C_FIELD(p, s16 *, 8) = 0x9E;
-    M2C_FIELD(p, s16 *, 0xA) = 0xB5;
-    M2C_FIELD(p, s16 *, 0xC) = 0x8A;
-    M2C_FIELD(p, s16 *, 0x14) = 0;
-    M2C_FIELD(p, f32 *, 0x18) = 880.0f;
-    M2C_FIELD(p, s16 *, 0x1E) = 4;
-    Ui_CreateMenu(p, arg1, 0);
+    M2C_FIELD(config, s16 *, 8) = 0x9E;
+    M2C_FIELD(config, s16 *, 0xA) = 0xB5;
+    M2C_FIELD(config, s16 *, 0xC) = 0x8A;
+    M2C_FIELD(config, s16 *, 0x14) = 0;
+    M2C_FIELD(config, f32 *, 0x18) = 880.0f;
+    M2C_FIELD(config, s16 *, 0x1E) = 4;
+    Ui_CreateMenu(config, parent, 0);
     return 4;
 }
 
