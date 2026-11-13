@@ -7070,7 +7070,7 @@ void fn_80194E10(void) {
     Process_UnlinkByKey(&Proc_EventArrowManager);
 }
 
-void *fn_80194F54(s32 arg0) {
+void *EventArrow_Get(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     extern u8 Proc_EventArrowManager[16];
@@ -10859,14 +10859,14 @@ void fn_8019D800(s32 arg0) {
 }
 
 s32 fn_8019D850(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
-    void *fn_80194F54(s32);
+    void *EventArrow_Get(s32);
     void fn_8019514C(void *, void *);
     extern s32 lbl_8036C500;
     void *obj;
     s32 spC;
     s32 sp8;
 
-    obj = fn_80194F54(arg0);
+    obj = EventArrow_Get(arg0);
     sp8 = lbl_8036C500;
     ((u8 *)&sp8)[0] = arg1;
     ((u8 *)&sp8)[1] = arg2;
@@ -10877,12 +10877,12 @@ s32 fn_8019D850(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     return 1;
 }
 
-extern void *fn_80194F54(s32);
+extern void *EventArrow_Get(s32);
 extern void fn_80195170(void *arg0, s8 arg1);
 s32 fn_8019D8CC(s32 arg0, s32 arg1) {
-    void *fn_80194F54(s32);
+    void *EventArrow_Get(s32);
     void fn_80195170(void *, s32);
-    fn_80195170(fn_80194F54(arg0), arg1 != 0);
+    fn_80195170(EventArrow_Get(arg0), arg1 != 0);
     return 1;
 }
 
@@ -10893,21 +10893,21 @@ s32 fn_8019D90C(void) {
 }
 
 s32 fn_8019D930(void) {
-    M2C_UNK fn_80194F54();
+    M2C_UNK EventArrow_Get();
     M2C_UNK fn_80195880();
-    fn_80194F54();
+    EventArrow_Get();
     fn_80195880();
     return 1;
 }
 
 s32 fn_8019D958(s32 arg0, s32 arg1) {
-    void *fn_80194F54(s32);
+    void *EventArrow_Get(s32);
     void fn_8019588C(void *, s32);
     extern f32 lbl_8036AF48;
     f32 temp_f1;
     void *obj;
 
-    obj = fn_80194F54(arg0);
+    obj = EventArrow_Get(arg0);
     temp_f1 = (f32) arg1;
     fn_8019588C(obj, (s32) (temp_f1 / lbl_8036AF48));
     return 1;
