@@ -2234,7 +2234,8 @@ extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
-extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
+extern "C" void Ui_DrawMenuTextItem(void *unused, void *parent, void *item) {
+    /* Draw menu item text via Prim2D: parent x/y/z, item drawer text, yellow if selected, black if type 2. */
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
@@ -2275,19 +2276,20 @@ extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
     extern f32 gUiMenuZBias;
     extern f32 gUiMenuTextScale;
 
+    (void)unused;
     Prim2D_Begin();
-    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - gUiMenuZBias, lbl_80368DA8);
+    Prim2D_SetTransform((f32) M2C_FIELD(parent, s16 *, 0x30), (f32) M2C_FIELD(parent, s16 *, 0x32), M2C_FIELD(parent, Model **, 0x3C)->v25() - gUiMenuZBias, lbl_80368DA8);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
-    M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
+    Prim2D_SetPos((f32) M2C_FIELD(item, s16 *, 0x30), (f32) M2C_FIELD(item, s16 *, 0x32));
+    M2C_FIELD(item, Drawer **, 0x34)->v4(item);
     Prim2D_SetText();
     Prim2D_SetScale(gUiMenuTextScale);
-    if ((u8) M2C_FIELD(arg2, u8 *, 0x38) != 0) {
+    if ((u8) M2C_FIELD(item, u8 *, 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
+    if ((u8) M2C_FIELD(item, u8 *, 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
