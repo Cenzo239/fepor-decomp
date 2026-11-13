@@ -5370,7 +5370,7 @@ found4:
 
 #pragma dont_inline reset
 
-s32 fn_8024F1D8(u16 id, s32 data, s16 type) {
+s32 SampleKey_Insert(u16 id, s32 data, s16 type) {
  void Audio_Lock(void); void Audio_Unlock(void);
  extern SampleKey lbl_8034F6B8[]; extern u16 lbl_80368A0C;
  s32 i; s32 j; u16 count;
@@ -9829,7 +9829,7 @@ void *fn_80258AD8(void) {
 void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void AudioTable_Insert(s32,s32); s32 AudioTable_Remove();
  void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
- s32 fn_8024F1D8(); void fn_8024F420(s32);
+ s32 SampleKey_Insert(); void fn_8024F420(s32);
  s32 fn_8024F5E4(); void fn_8024F7E8(s32);
  void fn_8024FCA8(s32,s32); s32 fn_8024FD80();
  extern s32 *gAudioGroupState;
@@ -9852,8 +9852,8 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  case 3:
   if(remove==0) {
    node=FindAudioResource(data,(u16)(id|0x8000),12);
-   if(node!=NULL) fn_8024F1D8(id|0x8000,(s32)(node+12),(u16)*(u32*)(node+8));
-   else fn_8024F1D8(id|0x8000,0,0);
+   if(node!=NULL) SampleKey_Insert(id|0x8000,(s32)(node+12),(u16)*(u32*)(node+8));
+   else SampleKey_Insert(id|0x8000,0,0);
   } else fn_8024F420(id|0x8000);
   break;
  case 4:
