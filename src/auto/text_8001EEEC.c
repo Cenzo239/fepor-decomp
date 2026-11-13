@@ -2526,7 +2526,7 @@ extern "C" void fn_80024734(void *arg0) {
 extern "C" void fn_80024768(void *arg0) {
 void *fn_8000B908(u8);void Process_ClearFunc(void*);
 void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void Ui_OpenUnitInfoText(void*,void*,void*,f32,f32);
-extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
+extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,gMapUiResult;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 gUnitInfoPopupFlag;
 f32 x,y;
 MenuController24768 *ctrl;
@@ -2543,7 +2543,7 @@ item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));lbl_80367238=*((u8*)i
 item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));lbl_80367239=*((u8*)item+0x3b);
 }
 flags=(*(MenuController24768**)((u8*)arg0+0x3c))->v14(arg0);
-if(*((u8*)arg0+0x2b)!=0x7b)lbl_8036723A=flags;
+if(*((u8*)arg0+0x2b)!=0x7b)gMapUiResult=flags;
 }
 if((flags&4)&&ctrl->v28())Ui_PlaySeCue(ctrl->v28(),100);
 if(flags&8)Ui_PlaySeCue(lbl_80268D90+0x43,100);

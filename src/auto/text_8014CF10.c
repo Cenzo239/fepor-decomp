@@ -568,7 +568,7 @@ void fn_8014DEA8(void) {
 #pragma global_optimizer reset
 void fn_8014DF68(void *arg0)
 {
-    extern u8 lbl_8036723A;
+    extern u8 gMapUiResult;
     extern u8 lbl_80277238[];
     extern s32 gUiInputFlags;
     extern s32 lbl_80367B84;
@@ -578,7 +578,7 @@ void fn_8014DF68(void *arg0)
     extern void fn_800BDBC8(void *, void *);
     extern void fn_8011D908(void *, void *);
 
-    if (lbl_8036723A == 9) {
+    if (gMapUiResult == 9) {
         Process_Goto(arg0, 0x63);
     } else {
         fn_800BDBC8(

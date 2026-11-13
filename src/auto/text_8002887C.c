@@ -3157,7 +3157,7 @@ void MapUi_HandleRangeConfirm(void *arg0) {
     extern f32 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 lbl_802695F0[];
-    extern u8 lbl_8036723A;
+    extern u8 gMapUiResult;
     s32 temp_r3;
     s32 pressed;
     f32 f0;
@@ -3172,14 +3172,14 @@ void MapUi_HandleRangeConfirm(void *arg0) {
         cell = (u16 *)(gBattleMap + 0xC18E);
         if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] != 0) {
             Ui_PlaySeCue(lbl_802695F0 + 0xFC, 0x64);
-            lbl_8036723A = 5;
+            gMapUiResult = 5;
             Process_Goto(arg0, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
         Ui_PlaySeCue(lbl_802695F0 + 0x10C, 0x64);
-        lbl_8036723A = 9;
+        gMapUiResult = 9;
         Process_Goto(arg0, 0x63);
     }
 }
@@ -3286,7 +3286,7 @@ void fn_80031668(void *arg0) {
     extern f32 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 lbl_802695F0[];
-    extern u8 lbl_8036723A;
+    extern u8 gMapUiResult;
     s32 temp_r3;
     s32 pressed;
     f32 f0;
@@ -3301,13 +3301,13 @@ void fn_80031668(void *arg0) {
         cell = (s16 *)(gBattleMap + 0x610e);
         if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] >= 0) {
             Ui_PlaySeCue(lbl_802695F0 + 0xFC, 0x64);
-            lbl_8036723A = 5;
+            gMapUiResult = 5;
             Process_Goto(arg0, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
-        lbl_8036723A = 9;
+        gMapUiResult = 9;
         Process_Goto(arg0, 0x63);
     }
 }

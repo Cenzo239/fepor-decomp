@@ -13,7 +13,7 @@ typedef struct {
     u16 unk4;
 } Entry_80079300;
 extern u8 D_802EF4C8[24];
-extern u8 lbl_8036723A;
+extern u8 gMapUiResult;
 s32 Ui_CreateMenu();
 void fn_8007A524(void *arg0, s32 arg1, s32 arg2);
 
@@ -2712,12 +2712,12 @@ s32 fn_80078F44(void *arg0) {
 
 s32 fn_80078F88(void *arg0)
 {
-    extern u8 lbl_8036723A;
+    extern u8 gMapUiResult;
 
     u8 *data;
     void (*callback)(void *);
 
-    if (lbl_8036723A == 9) {
+    if (gMapUiResult == 9) {
         data = *(u8 **)((u8 *)arg0 + 4);
         callback = *(void (**)(void *))(data + 4);
 
@@ -2747,10 +2747,10 @@ s32 fn_80079004(void *arg0) {
 
 s32 fn_80079018(void *arg0) {
     void Process_Goto(void *, u8);
-    extern u8 lbl_8036723A;
+    extern u8 gMapUiResult;
     u32 *ptr;
 
-    if (lbl_8036723A == 9) {
+    if (gMapUiResult == 9) {
         ptr = *(u32 **)((u8 *)arg0 + 4);
         Process_Goto(arg0, (u8)(*ptr >> 16));
     }

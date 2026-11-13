@@ -168,10 +168,10 @@ void fn_80072954(void *arg0) {
 
 void fn_80072988(void) {
 s32 fn_8000BCA4(void *); void Process_CreateChild(void *,s32); void fn_80023DE8(void);
-extern u8 gUiContext[]; extern u8 lbl_8036723A; extern u8 lbl_8026BE40[]; extern u8 lbl_80286DA8[];
+extern u8 gUiContext[]; extern u8 gMapUiResult; extern u8 lbl_8026BE40[]; extern u8 lbl_80286DA8[];
 s32 temp;
 if(gUiContext[8]==1) {
-switch(lbl_8036723A & 8) {
+switch(gMapUiResult & 8) {
 case 0:
 temp=fn_8000BCA4(lbl_8026BE40+0x101);
 if(temp) {fn_80023DE8(); Process_CreateChild(lbl_80286DA8,temp);}
@@ -479,7 +479,7 @@ void fn_80073208(void *arg0) {
 }
 
 extern u16 gUiContext[12];
-extern u8 lbl_8036723A;
+extern u8 gMapUiResult;
 extern u8 lbl_8026BE40[];
 extern u8 lbl_80286DA8[];
 extern u16 gMsgBox[124];
