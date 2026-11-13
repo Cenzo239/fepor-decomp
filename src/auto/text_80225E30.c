@@ -658,7 +658,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
     s32 TRKMessageSend(void *);
     void MWTRACE(u8, char *, ...);
     void *memset(void *, s32, s32);
-    extern char lbl_80282520[];
+    extern char gTRK_str_SendACK[];
     extern char lbl_80282540[];
 
     s32 err;
@@ -751,7 +751,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
         return 0;
     }
 
-    MWTRACE(1, lbl_80282520);
+    MWTRACE(1, gTRK_str_SendACK);
     err = TRKMessageSend(obj);
     MWTRACE(1, lbl_80282540, err);
     return err;
