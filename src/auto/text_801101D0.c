@@ -6636,7 +6636,7 @@ s32 fn_801208BC(struct Unit* unit) {
 }
 
 #include "common.h"
-extern struct SomeStruct* lbl_80320C20; // example struct
+extern struct SomeStruct* gCardWork; // example struct
 #include "common.h"
 #include "unit.h"
 #include "global.h"
