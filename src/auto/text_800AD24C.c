@@ -1800,7 +1800,7 @@ s32 Sound_LoadPack(s32 arg0) {
     s32 fn_800C4638(s32, void *, s32);
     void fn_800C4588(s32);
     void sprintf(void *, void *, ...);
-    extern u8 Sound_str[], lbl_80319AA8[];
+    extern u8 Sound_str[], gSoundPathBuf[];
     u32 value;
     u32 buffer;
     s32 size;
@@ -1813,9 +1813,9 @@ s32 Sound_LoadPack(s32 arg0) {
     u16 index;
     base = (u8 *)gSoundSys;
     if (*(u32 *)(base + 0xE4) >= 8) return 0;
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, id, Sound_str + 0x2F);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, id, Sound_str + 0x2F);
 
-    buffer = LoadSoundBankB(lbl_80319AA8);
+    buffer = LoadSoundBankB(gSoundPathBuf);
     if (buffer == 0) return 0;
 
     value = *(u32 *)(base + 0xE4);
@@ -1848,9 +1848,9 @@ s32 Sound_LoadPack(s32 arg0) {
         *(u32 *)(node + 0xC) = 0;
         buffer += length;
     }
-    sprintf(lbl_80319AA8, (u8 *)Sound_str + 0x1E, id, (u8 *)Sound_str + 0x35);
+    sprintf(gSoundPathBuf, (u8 *)Sound_str + 0x1E, id, (u8 *)Sound_str + 0x35);
 
-    buffer = LoadSoundBankB(lbl_80319AA8);
+    buffer = LoadSoundBankB(gSoundPathBuf);
     if (buffer == 0) return 0;
 
     {
@@ -1859,9 +1859,9 @@ s32 Sound_LoadPack(s32 arg0) {
         table += slot * 4;
         *(u32 *)(table + 0x80) = buffer;
     }
-    sprintf(lbl_80319AA8, &Sound_str[0x1E], id, &Sound_str[0x3B]);
+    sprintf(gSoundPathBuf, &Sound_str[0x1E], id, &Sound_str[0x3B]);
 
-    buffer = LoadSoundBankB(lbl_80319AA8);
+    buffer = LoadSoundBankB(gSoundPathBuf);
     if (buffer == 0) return 0;
 
     {
@@ -2190,62 +2190,62 @@ stored:
 s32 fn_800B36D8(s32 arg0) {
     void sprintf(void *, void *, ...);
     void strcpy(void *, void *, void *);
-    extern u8 Sound_str[], lbl_80319AA8[], gSoundSys[];
+    extern u8 Sound_str[], gSoundPathBuf[], gSoundSys[];
     u32 buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x6C);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x6C);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x0) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x72);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x72);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x20) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x78);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x78);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x40) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x7E);
-    strcpy(gSoundSys + 0x142, lbl_80319AA8, gSoundSys);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x7E);
+    strcpy(gSoundSys + 0x142, gSoundPathBuf, gSoundSys);
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x84);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x84);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x8) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x8E);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x8E);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x28) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x98);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0x98);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x48) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xA2);
-    strcpy(gSoundSys + 0x342, lbl_80319AA8, gSoundSys);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0xA2);
+    strcpy(gSoundSys + 0x342, gSoundPathBuf, gSoundSys);
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xAC);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0xAC);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x4) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xB8);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0xB8);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x24) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xC4);
-    buf = LoadSoundBankB(lbl_80319AA8);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0xC4);
+    buf = LoadSoundBankB(gSoundPathBuf);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x44) = buf;
 
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xD0);
-    strcpy(gSoundSys + 0x242, lbl_80319AA8, gSoundSys);
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg0, Sound_str + 0xD0);
+    strcpy(gSoundSys + 0x242, gSoundPathBuf, gSoundSys);
     return 1;
 }
 
@@ -10063,7 +10063,7 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
     void fn_8024DA2C(void *);
     extern f32 lbl_80369CB0;
     extern f32 lbl_80369CD4;
-    extern u8 lbl_80319AA8[];
+    extern u8 gSoundPathBuf[];
     extern u8 Sound_str[];
     void fn_800AFF28(s32, u32);
 
@@ -10176,8 +10176,8 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
             *(u16 *)entry = (u16)(*(u16 *)entry | 0x400);
         }
     }
-    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg1, Sound_str + 0x23);
-    buf = lbl_80319AA8;
+    sprintf(gSoundPathBuf, Sound_str + 0x1E, arg1, Sound_str + 0x23);
+    buf = gSoundPathBuf;
     h = fn_800B4A84(buf, 0, 0);
     *(void **)(entry + 0x2C) = h;
     if (h == NULL) {
