@@ -31,7 +31,7 @@ extern f32 lbl_8036A5A8;
 extern f32 lbl_8036A5AC;
 extern f32 lbl_8036A5B8;
 
-extern u8 lbl_803301A8[1344];
+extern u8 gSeCueSlots[1344];
 
 static inline s32 mul_ss(s32 a, s32 b) {
     return a * b;
@@ -10206,7 +10206,7 @@ extern "C" void fn_801451BC(void) {
         u8 pad2[0x23];
     } Entry;
     extern u8 lbl_80276BC8[];
-    extern u8 lbl_803301A8[1344];
+    extern u8 gSeCueSlots[1344];
     void fn_800B3194(void);
 
     Entry *entry;
@@ -10217,7 +10217,7 @@ extern "C" void fn_801451BC(void) {
     s32 i;
 
     str = (s8 *)(lbl_80276BC8 + 0x8a);
-    entry = (Entry *)lbl_803301A8;
+    entry = (Entry *)gSeCueSlots;
     i = 0;
     do {
         if (entry->flags & 1) {
@@ -10228,7 +10228,7 @@ extern "C" void fn_801451BC(void) {
             ca = *a;
             if (ca == 0) {
                 if ((s8)i >= 0) {
-                    Obj *obj = (Obj *)(lbl_803301A8 + (s8)i * 0x30);
+                    Obj *obj = (Obj *)(gSeCueSlots + (s8)i * 0x30);
                     if (*((u8 *)obj + 0xC) & 1) {
                         obj->v2();
                     }
@@ -10267,11 +10267,11 @@ void fn_801452E8(void) {
 }
 
 s32 fn_80145308(void) {
-extern u8 lbl_80276BC8[]; extern u8 lbl_803301A8[1344];
+extern u8 lbl_80276BC8[]; extern u8 gSeCueSlots[1344];
 s8 *str=(s8*)lbl_80276BC8+0x8a;
 Anim *entry;
 s32 i;
-for(i=0,entry=(Anim*)lbl_803301A8;i<28;entry++,i++){
+for(i=0,entry=(Anim*)gSeCueSlots;i<28;entry++,i++){
 if(entry->flags&1){
 s8 *b; s8 *a;
 a=str;
@@ -10748,7 +10748,7 @@ extern "C" s8 fn_80146BE4(void *arg0) {
     Entry *base;
     void *h1;
 
-    base = (Entry *)lbl_803301A8;
+    base = (Entry *)gSeCueSlots;
     i = 0;
     do {
         active = 0;
@@ -11063,18 +11063,18 @@ extern "C" void fn_80147188(s32 arg0) {
 #pragma cplusplus on
 extern "C" void fn_8014746C(s8 arg0, s16 arg1) {
 struct Obj { u8 pad[8]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; };
-extern u8 lbl_803301A8[1344]; extern f32 lbl_8036A7A0;
+extern u8 gSeCueSlots[1344]; extern f32 lbl_8036A7A0;
 Anim *entry; s16 duration; u8 flags; s32 off; u8 *flags_ptr;
 if(arg0<0)return;
 off=arg0*0x30;
-flags_ptr=(u8*)((s32)lbl_803301A8+off);
+flags_ptr=(u8*)((s32)gSeCueSlots+off);
 flags=*(flags_ptr+=0xc);
 if(!(flags&1))return;
-if(arg1<=0){((Obj*)(lbl_803301A8+off))->v2();return;}
+if(arg1<=0){((Obj*)(gSeCueSlots+off))->v2();return;}
 if(!(flags&8)){
 duration=(s16)(s32)((f32)arg1/lbl_8036A7A0);
 if(duration<=0)duration=1;
-entry=(Anim*)((u32)lbl_803301A8+off);
+entry=(Anim*)((u32)gSeCueSlots+off);
 entry->start=entry->cur;
 entry->end=0;
 entry->frames=duration;
@@ -11096,7 +11096,7 @@ s32 fn_80147548(void *arg0, f32 *arg1, s32 arg2) {
 
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_803301A8[1344];
+    extern u8 gSeCueSlots[1344];
     s32 temp_r3;
     u8 *temp_r4;
 
@@ -11104,7 +11104,7 @@ s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     if ((s8)temp_r3 == -1) {
         return -1;
     }
-    temp_r4 = lbl_803301A8 + ((u8)temp_r3 * 0x30);
+    temp_r4 = gSeCueSlots + ((u8)temp_r3 * 0x30);
     *(f32 *)(temp_r4 + 0x1C) = farg0;
     *(f32 *)(temp_r4 + 0x20) = farg1;
     *(f32 *)(temp_r4 + 0x24) = farg2;
@@ -11114,7 +11114,7 @@ s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
 
 s8 Ui_PlaySeCue(void *arg0, int arg1) {
     void *fn_8000D2BC(void *);
-    extern u8 lbl_803301A8[1344];
+    extern u8 gSeCueSlots[1344];
     extern s32 gUiInputFlags;
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
@@ -11130,7 +11130,7 @@ s8 Ui_PlaySeCue(void *arg0, int arg1) {
     s32 tmp;
     u8 val;
 
-    entry = lbl_803301A8;
+    entry = gSeCueSlots;
     for (i = 0; i < 0x1C; i++) {
         if (!(entry[0xC] & 1)) {
             slot = i;
@@ -11146,7 +11146,7 @@ found:
     if (gUiInputFlags & 1) {
         return -1;
     }
-    found = lbl_803301A8 + ((u8)slot * 0x30);
+    found = gSeCueSlots + ((u8)slot * 0x30);
     src = fn_8000D2BC(arg0);
     kind = src[5] & 3;
     switch (kind) {
@@ -12693,7 +12693,7 @@ typedef struct {
 extern u32 lbl_80291A74;
 extern u32 lbl_80291B70;
 extern u32 lbl_80295478;
-extern u8 lbl_803301A8[];
+extern u8 gSeCueSlots[];
 extern u8 lbl_8032FF08[];
 #include "common.h"
 extern u32 lbl_802922F0;

@@ -46,7 +46,7 @@ void *fn_8014A398(void) {
 
 s32 fn_8014A3A8(void) {
     extern M2C_UNK lbl_8032FF08;
-    extern M2C_UNK lbl_803301A8;
+    extern M2C_UNK gSeCueSlots;
     u8 var_r28;
     u8 var_r28_2;
     u8 var_r30;
@@ -69,7 +69,7 @@ s32 fn_8014A3A8(void) {
     var_r28_2 = 0;
     do {
         var_r31 = 0;
-        temp_r29_2 = &lbl_803301A8 + (var_r28_2 * 0x30);
+        temp_r29_2 = &gSeCueSlots + (var_r28_2 * 0x30);
         if ((M2C_FIELD(temp_r29_2, u8 *, 0xC) & 1) && (M2C_FIELD(M2C_FIELD(temp_r29_2, void **, 8), u8 (**)(void *), 8)(temp_r29_2) != 0)) {
             var_r31 = 1;
         }

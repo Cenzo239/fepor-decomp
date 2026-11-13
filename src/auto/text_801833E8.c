@@ -2084,7 +2084,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8014CAD4(void *, f32, f32);
     extern u8 gBattleState[];
-    extern u8 lbl_803301A8[];
+    extern u8 gSeCueSlots[];
     extern void *gPadInput;
     extern f32 lbl_8036AD18, lbl_8036ACF8, lbl_8036AD08, lbl_8036AD1C, lbl_8036ACD8;
     f32 duration;
@@ -2160,7 +2160,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
                                    duration, M2C_FIELD(anim, f32 *, 0x3C)));
         index = M2C_FIELD(anim, u8 *, 0x6A);
         if ((s8)index != -1) {
-            p = lbl_803301A8 + index * 0x30;
+            p = gSeCueSlots + index * 0x30;
             M2C_FIELD(p, f32 *, 0x1C) = x;
             M2C_FIELD(p, f32 *, 0x20) = y;
             M2C_FIELD(p, f32 *, 0x24) = z;

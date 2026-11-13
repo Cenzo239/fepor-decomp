@@ -1209,7 +1209,7 @@ void fn_801B7A74(void *arg0) {
     void fn_80148980(void *, s32);
     void fn_801B7B5C(void *, s32, f32);
     extern void *gPadInput;
-    extern u8 lbl_803301A8[1344];
+    extern u8 gSeCueSlots[1344];
 
     void *self;
     s32 count;
@@ -1235,7 +1235,7 @@ void fn_801B7A74(void *arg0) {
             slot = fn_80146BE4(p);
             if (slot != -1) {
                 idx = slot;
-                fn_80148980(lbl_803301A8 + idx * 0x30, 0x1F4);
+                fn_80148980(gSeCueSlots + idx * 0x30, 0x1F4);
             }
         }
         Process_ClearFunc(arg0);
