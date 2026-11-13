@@ -1253,7 +1253,8 @@ s32 fn_80076574(s32 arg0, s32 arg1, void *arg2) {
     return 5;
 }
 
-s32 Ui_ShowHeldItemRange(s32 arg0, s32 arg1, void *arg2) {
+/* Show the move-limit overlay for the selected held item's attack range; no-op if menu flag +0x39 is set. */
+s32 Ui_ShowHeldItemRange(s32 unused0, s32 unused1, void *menu) {
     void fn_80070EE0(void);
     void *Unit_GetHeldItemSlot(void *, u8);
     s32 Item_GetMaxRange(void);
@@ -1263,37 +1264,37 @@ s32 Ui_ShowHeldItemRange(s32 arg0, s32 arg1, void *arg2) {
     void Map_ShowMoveLimitView(void);
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
-    u8 a;
-    void *p;
-    s32 b;
+    u8 minRange;
+    void *unit;
+    s32 maxRange;
 
     fn_80070EE0();
-    p = arg2;
-    if (*(u8 *)((u8 *)p + 0x39) != 0) {
+    unit = menu;
+    if (*(u8 *)((u8 *)unit + 0x39) != 0) {
         return 0;
     }
     {
-        u8 idx = *(u8 *)((u8 *)p + 0x3A);
-        void *f;
+        u8 slot = *(u8 *)((u8 *)unit + 0x3A);
+        void *item;
         s32 tmp;
-        p = *(void **)gUiContext;
-        f = *(void **)Unit_GetHeldItemSlot(p, idx);
-        if (f != 0) {
-            tmp = ((u8 *)f)[0x1D];
+        unit = *(void **)gUiContext;
+        item = *(void **)Unit_GetHeldItemSlot(unit, slot);
+        if (item != 0) {
+            tmp = ((u8 *)item)[0x1D];
         } else {
             tmp = 0;
         }
-        a = (u8)tmp;
-        if (f != 0) {
-            b = (u8)Item_GetMaxRange();
+        minRange = (u8)tmp;
+        if (item != 0) {
+            maxRange = (u8)Item_GetMaxRange();
         } else {
-            b = 0;
+            maxRange = 0;
         }
     }
     fn_80022DAC(gBattleMap, 5, -1);
     fn_80022DAC(gBattleMap, 8, 0);
     fn_80022FD8(gBattleMap, 6);
-    Map_FillAttackRange(gBattleMap, ((u8 *)p)[0x19E], ((u8 *)p)[0x19F], a, (u8)b);
+    Map_FillAttackRange(gBattleMap, ((u8 *)unit)[0x19E], ((u8 *)unit)[0x19F], minRange, (u8)maxRange);
     Map_ShowMoveLimitView();
     return 0;
 }
