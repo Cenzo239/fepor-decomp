@@ -2031,7 +2031,7 @@ void Ui_ApplyUnitManageFocus(void *panel) {
     Process_Goto(self, *(u8 *)((u8 *)self + 0x44));
 }
 
-void fn_801B93F4(void *arg0) {
+void Ui_SyncUnitManageFocus(void *arg0) {
     void fn_8013AD70(void *, s32);
     s32 Ui_ListGetSelected(void *);
     void Ui_SetPortraitUnit(void *, s32);
