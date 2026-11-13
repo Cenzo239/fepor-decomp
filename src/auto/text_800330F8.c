@@ -155,7 +155,7 @@ extern "C" void Prim2D_SetColorByte(u8);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
-extern "C" s32 fn_8002F740(u32);
+extern "C" s32 UnitRef_GetUnit(u32);
 extern "C" void fn_80090C50(s32);
 extern "C" void fn_80033108(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
@@ -174,7 +174,7 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_80090C50(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();

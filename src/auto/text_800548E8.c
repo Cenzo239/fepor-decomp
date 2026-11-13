@@ -72,7 +72,7 @@ extern "C" void Prim2D_SetColorByte(u8);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
-extern "C" s32 fn_8002F740(u32);
+extern "C" s32 UnitRef_GetUnit(u32);
 extern "C" void fn_80090C50(s32);
 
 #pragma cplusplus reset

@@ -3047,7 +3047,7 @@ void fn_8002F728(void *arg0) {
 }
 
 #pragma dont_inline on
-u32 fn_8002F740(u32 arg0) {
+u32 UnitRef_GetUnit(u32 arg0) {
     extern u8 gUnits[101760];
     u8 id = ((u8 *)arg0)[2];
     if (id != 0) {
@@ -3130,7 +3130,7 @@ void fn_8002F82C(s32 arg0) {
 void fn_8002FA54(void) {
     void fn_8002BD44(void *, s32);
     void fn_8002F658(void *, s32);
-    s32 fn_8002F740(void);
+    s32 UnitRef_GetUnit(void);
     void fn_8014CB14(void *, s32);
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
@@ -3142,7 +3142,7 @@ void fn_8002FA54(void) {
     p = (s32 *)lbl_802EF4E0;
     if (*p != 0) {
         fn_8002F658(p, 0);
-        tmp = fn_8002F740();
+        tmp = UnitRef_GetUnit();
         fn_8014CB14(gBattleState, tmp);
     }
 }
@@ -3679,7 +3679,7 @@ extern "C" void fn_800323BC(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090990((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_80090990((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3706,7 +3706,7 @@ extern "C" void fn_80032488(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090AA4(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
+        fn_80090AA4(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3738,7 +3738,7 @@ extern "C" void UnitInfo_DrawDualSwap(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x118), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_80090C50(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_PrepareTex();
@@ -3777,7 +3777,7 @@ extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_800900F4(fn_8002F740(M2C_FIELD(slot, u32 *, 0x40)));
+        fn_800900F4(UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_PrepareTex();
@@ -3819,7 +3819,7 @@ extern "C" void fn_8003284C(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_80090C50(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_PrepareTex();
@@ -3835,7 +3835,7 @@ extern "C" void fn_8003297C(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
     extern u32 gUiContext[];
-    s32 fn_8002F740(u32);
+    s32 UnitRef_GetUnit(u32);
     s32 fn_8003CFF0(s32, s32);
     void fn_80090480(s32, s32);
     struct Obj {
@@ -3855,8 +3855,8 @@ extern "C" void fn_8003297C(void *arg0, void *arg1) {
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
-        flag = (u8)fn_8003CFF0(saved, fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_80090480(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), flag);
+        flag = (u8)fn_8003CFF0(saved, UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_80090480(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), flag);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3870,7 +3870,7 @@ extern "C" void fn_80032A74(void *arg0, void *arg1) {
     extern f32 lbl_80368E28;
     extern u32 gUiContext[];
     void fn_80090874(s32, s32);
-    s32 fn_8002F740(u32);
+    s32 UnitRef_GetUnit(u32);
     struct Obj {
         u8 pad[4];
         virtual void v0(s32 *, s32 *, s32 *) = 0;
@@ -3887,7 +3887,7 @@ extern "C" void fn_80032A74(void *arg0, void *arg1) {
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
-        fn_80090874(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), saved);
+        fn_80090874(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), saved);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3938,8 +3938,8 @@ extern "C" void fn_80032B90(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        temp_r31 = (void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40));
-        fn_80090688((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), 7, 7 - ((*(u8 *)((u8 *)temp_r31 + 0x1A6) >> 5) & 7));
+        temp_r31 = (void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40));
+        fn_80090688((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), 7, 7 - ((*(u8 *)((u8 *)temp_r31 + 0x1A6) >> 5) & 7));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3966,7 +3966,7 @@ extern "C" void fn_80032C80(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_800907B8((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
+        fn_800907B8((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -4006,9 +4006,9 @@ extern "C" void fn_80032DB4(void *arg0, void *arg1) {
     s32 y;
     s32 z;
 
-    if (arg1 != NULL && M2C_FIELD(arg1, u32 *, 0x40) != 0 && fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)) != 0) {
+    if (arg1 != NULL && M2C_FIELD(arg1, u32 *, 0x40) != 0 && UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &z);
-        fn_8002FC64(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), x, y, z);
+        fn_8002FC64(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), x, y, z);
     }
 }
 #pragma cplusplus reset
@@ -4020,7 +4020,7 @@ void fn_80032F50(void) {
 
 s32 fn_80032F7C(s32 arg0, void *arg1) {
     s32 fn_8002F480(s32, void *);
-    u32 fn_8002F740(void *);
+    u32 UnitRef_GetUnit(void *);
     extern u8 gUiContext[];
     void *temp_r31;
     u8 b0;
@@ -4032,7 +4032,7 @@ s32 fn_80032F7C(s32 arg0, void *arg1) {
     if (temp_r31 == NULL) {
         return 0x10;
     }
-    if (fn_8002F740(temp_r31) != 0U) {
+    if (UnitRef_GetUnit(temp_r31) != 0U) {
         return fn_8002F480(arg0, arg1);
     }
     if (*(u8 *)((u8 *)temp_r31 + 3) != 0) {

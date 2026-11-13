@@ -3779,7 +3779,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_8018D7A4(void *, void *);
     void fn_8002F658(void *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void **Unit_GetItemSlot(void *, s32);
     void *Item_GetByIid(void *);
     s8 Unit_GetMaxHp(void *);
@@ -3838,7 +3838,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     i = 0;
     while (i < *(s32 *)tbl) {
         fn_8002F658(tbl, i);
-        grp = fn_8002F740();
+        grp = UnitRef_GetUnit();
         for (slot = 4; slot < 8; slot++) {
             p = *Unit_GetItemSlot(grp, slot);
             if (p != NULL) {

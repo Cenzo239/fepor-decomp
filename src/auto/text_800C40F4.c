@@ -18227,7 +18227,7 @@ s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);void fn_8002F728(void *);
 s32 fn_80110030(void *);void fn_800FDF38(s16,s16,s32,s32,s32);
 void fn_8002C530(void *,s32);void *fn_8002F658(void *,s32);
-void *fn_8002F740(void *);u8 Allegiance_Compare(void *,void *);
+void *UnitRef_GetUnit(void *);u8 Allegiance_Compare(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
 u8 *ctx;
 struct {void *vtable;s32 callback;} pred;
@@ -18288,7 +18288,7 @@ if(*(s32 *)list){
 u8 bx=(u8)x,by=(u8)y;
 count=0;
 for(index=0;index<*(s32 *)list;index++){
-unit=fn_8002F740(fn_8002F658(list,index));
+unit=UnitRef_GetUnit(fn_8002F658(list,index));
 if(Allegiance_Compare(M2C_FIELD(self,void **,0x190),M2C_FIELD(unit,void **,0x190))==1)count++;else count--;
 }
 if(count>0&&count>best){bestX=bx;bestY=by;best=count;}

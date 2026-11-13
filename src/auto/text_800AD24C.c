@@ -257,7 +257,7 @@ void fn_800AD700(void *arg0) {
 void fn_800AD76C(void *arg0) {
     void fn_801A4BE0(void *);
     void *fn_8002F62C(void *);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_801A7794(void *, void *, void *);
     void fn_80036248(void *);
     extern u8 gBattle[];
@@ -278,7 +278,7 @@ void fn_800AD76C(void *arg0) {
         }
     }
     fn_8002F62C(lbl_802EF4E0);
-    f740 = fn_8002F740();
+    f740 = UnitRef_GetUnit();
     unit = *(void **)((u8 *)arg0 + 0x30);
     fn_801A7794(gBattle, unit, f740);
     if (*(u8 *)((u8 *)arg0 + 0x3B) != 0) {
@@ -293,7 +293,7 @@ void fn_800AD76C(void *arg0) {
 
 void fn_800AD84C(void *arg0) {
 void *fn_8002F62C(void *);
-void *fn_8002F740(void);
+void *UnitRef_GetUnit(void);
 void fn_801A7218(void *, void *, s32);
 void fn_801A4958(void *);
 s8 Unit_GetMaxHp(void *);
@@ -308,7 +308,7 @@ s32 neg;
 void *f740;
 u8 div;
 p=fn_8002F62C(lbl_802EF4E0);
-f740=fn_8002F740();
+f740=UnitRef_GetUnit();
 fn_801A7218(gBattle,f740,-1);
 fn_801A4958(gBattle);
 div=*((u8*)p+3);
@@ -326,7 +326,7 @@ fn_8019B704(arg0,0);
 void fn_800AD92C(s32 arg0) {
     void Process_Goto(s32, s32);
     void *fn_8002F62C(void *);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleState[];
@@ -336,7 +336,7 @@ void fn_800AD92C(s32 arg0) {
         Process_Goto(arg0, 0x63);
         return;
     }
-    temp_r3 = fn_8002F740();
+    temp_r3 = UnitRef_GetUnit();
     fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
 }
 
@@ -401,14 +401,14 @@ void fn_800ADC9C(s32 arg0) {
     extern u8 lbl_802EF4E0[];
     extern u8 gBattle[];
     void *fn_8002F62C(void *);
-    u8 *fn_8002F740(void);
+    u8 *UnitRef_GetUnit(void);
     M2C_UNK fn_8019B6B4(s32, void (*)(void));
     M2C_UNK fn_801A4958(void *);
     M2C_UNK fn_801A75DC(void *, u8 *, s32);
     u8 *p;
 
     fn_8002F62C(lbl_802EF4E0);
-    p = fn_8002F740();
+    p = UnitRef_GetUnit();
     fn_801A75DC(gBattle, p, -1);
     fn_801A4958(gBattle);
     fn_8019B6B4(arg0, fn_800ADD04);
@@ -417,22 +417,22 @@ void fn_800ADC9C(s32 arg0) {
 void fn_800ADD04(void) {
     extern u8 lbl_802EF4E0[];
     void *fn_8002F62C(void *);
-    u8 *fn_8002F740(void);
+    u8 *UnitRef_GetUnit(void);
     M2C_UNK fn_8010455C(void *, u8);
     void *p;
 
     p = fn_8002F62C(lbl_802EF4E0);
-    fn_8010455C(fn_8002F740() + 0x1A4, M2C_FIELD(p, u8 *, 3));
+    fn_8010455C(UnitRef_GetUnit() + 0x1A4, M2C_FIELD(p, u8 *, 3));
 }
 
 extern u8 lbl_802EF4E0[];
 extern void fn_8002F61C(void *);
 extern void *fn_8002F62C(void *);
-extern u8 *fn_8002F740(void);
+extern u8 *UnitRef_GetUnit(void);
 extern void fn_8003E8DC(void);
 void fn_800ADD48(void) {
     fn_8002F62C(lbl_802EF4E0);
-    fn_8002F740();
+    UnitRef_GetUnit();
     fn_8003E8DC();
     fn_8002F61C(lbl_802EF4E0);
 }
@@ -448,7 +448,7 @@ void fn_800ADD84(void) {
 
 void fn_800ADDBC(s32 arg0) {
     void *fn_8002F62C(void *);
-    u8 *fn_8002F740(void);
+    u8 *UnitRef_GetUnit(void);
     void fn_8019B79C(s32, s32);
     void fn_8019B83C(s32, s32);
     void fn_8019B8A0(s32, s32);
@@ -462,7 +462,7 @@ void fn_800ADDBC(s32 arg0) {
     s8 flag;
 
     temp_r30 = fn_8002F62C(lbl_802EF4E0);
-    temp_r29 = fn_8002F740();
+    temp_r29 = UnitRef_GetUnit();
     fn_801A75DC(gBattle, temp_r29, -1);
     fn_801A4958(gBattle);
     flag = *(s8 *)((u8 *)temp_r30 + 1);
@@ -510,25 +510,25 @@ s32 fn_800ADEB0(s32 arg0, s32 arg1, s32 arg2) {
 extern void fn_8003BE50(void);
 void fn_800AE1FC(void) {
     fn_8002F62C(&lbl_802EF4E0);
-    fn_8002F740();
+    UnitRef_GetUnit();
     fn_8003BE50();
     fn_8002F61C(&lbl_802EF4E0);
 }
 
 void fn_800AE238(s32 arg0) {
     void *fn_8002F62C(void *);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_80183BE4(void *, s32);
     extern u8 lbl_802EF4E0[];
 
     fn_8002F62C(lbl_802EF4E0);
-    fn_80183BE4(fn_8002F740(), arg0);
+    fn_80183BE4(UnitRef_GetUnit(), arg0);
 }
 
 void fn_800AE278(s32 arg0) {
     void Process_Goto(s32, s32);
     void *fn_8002F62C(void *);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleState[];
@@ -538,7 +538,7 @@ void fn_800AE278(s32 arg0) {
         Process_Goto(arg0, 0x63);
         return;
     }
-    temp_r3 = fn_8002F740();
+    temp_r3 = UnitRef_GetUnit();
     if ((*(u32 *)((u8 *)temp_r3 + 0x1A0) & 0x010000DC) == 0) {
         fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)temp_r3 + 0x19E), (f32)*(s8 *)((u8 *)temp_r3 + 0x19F));
     }

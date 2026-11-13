@@ -3226,7 +3226,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
     void fn_8002F658(void *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
@@ -3274,7 +3274,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     i = 0;
     while (i < lbl_802EF4E0[0]) {
         fn_8002F658(lbl_802EF4E0, i);
-        unit = fn_8002F740();
+        unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
             foundDist = -1;
@@ -3345,7 +3345,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
     void fn_8002F658(void *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
     u32 *Hash_Lookup(char *);
@@ -3405,7 +3405,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     i = 0;
     while (i < lbl_802EF4E0[0]) {
         fn_8002F658(lbl_802EF4E0, i);
-        unit = fn_8002F740();
+        unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
             slot = 0;
@@ -9995,7 +9995,7 @@ void fn_8019BE54(void *arg0, void *arg1)
 #pragma global_optimizer off
 void fn_8019BEA4(void *arg0) {
     void fn_8002F658(s32 *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_80053658(void *, s32, void *);
     void fn_80053680(void *, void *);
     void *fn_80053C30(u8 *, void *);
@@ -10011,7 +10011,7 @@ void fn_8019BEA4(void *arg0) {
     goto check;
 loop:
     fn_8002F658(table, i);
-    item = fn_8002F740();
+    item = UnitRef_GetUnit();
     obj = fn_80053C30((u8 *)arg0 + 0x41, arg0);
     if (obj != NULL) {
         fn_80053680(obj, item);

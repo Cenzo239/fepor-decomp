@@ -3358,7 +3358,7 @@ void fn_80026194(s32 arg0) {
 
 void fn_80026204(void) {
     void fn_8002F658(s32 *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     extern s32 lbl_802EF4E0[];
     s32 i;
     void *obj;
@@ -3366,7 +3366,7 @@ void fn_80026204(void) {
 
     for (i = 0; i < lbl_802EF4E0[0]; i++) {
         fn_8002F658(lbl_802EF4E0, i);
-        obj = fn_8002F740();
+        obj = UnitRef_GetUnit();
         flags = *(s32 *)((u8 *)obj + 0x1A0);
         *(s32 *)((u8 *)obj + 0x1A0) = flags & ~1;
     }
@@ -3505,7 +3505,7 @@ void fn_80026570(void *arg0) {
     void fn_801A75DC(void *, void *, s32);
     void fn_801A4958(void *);
     void *fn_8002F658(s32 *, s32);
-    void *fn_8002F740(void);
+    void *UnitRef_GetUnit(void);
     void fn_8019C070(void *, void (*)(void));
     void Process_Goto(void *, s32);
     void fn_8002662C(void);
@@ -3524,7 +3524,7 @@ void fn_80026570(void *arg0) {
         return;
     }
     fn_8002F658(p, idx);
-    obj = fn_8002F740();
+    obj = UnitRef_GetUnit();
     fn_801A75DC(gBattle, obj, -1);
     fn_801A4958(gBattle);
     fn_8019C070(arg0, fn_8002662C);
