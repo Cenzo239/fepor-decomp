@@ -2517,7 +2517,7 @@ void fn_801690B0(s32 arg0) {
 
 #pragma cplusplus on
   extern "C" void *fn_8016915C(void *, s16, s16, s16, s16);
-  extern "C" u8 lbl_80291AC8[];
+  extern "C" u8 gUiPanelVtbl[];
   extern "C" void *fn_80169104(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
       struct Obj {
           virtual void m08() = 0;
@@ -2531,7 +2531,7 @@ void fn_801690B0(s32 arg0) {
           virtual void m28() = 0;
       };
       fn_8016915C(arg0, arg1, arg2, arg3, arg4);
-      M2C_FIELD(arg0, void **, 0) = lbl_80291AC8;
+      M2C_FIELD(arg0, void **, 0) = gUiPanelVtbl;
       M2C_FIELD(arg0, s16 *, 0xD4) = 1;
       ((Obj *) arg0)->m28();
       return arg0;

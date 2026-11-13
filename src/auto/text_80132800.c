@@ -5167,7 +5167,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_80291AC8[];
+    extern u8 gUiPanelVtbl[];
     extern u8 lbl_80291B70[];
     extern u8 lbl_80295478[];
 
@@ -5179,7 +5179,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
 
     a0 = (Owner *)arg0;
     if (arg0 != NULL) {
-        a0->vtbl = lbl_80291AC8;
+        a0->vtbl = gUiPanelVtbl;
         if (arg0 != NULL) {
             a0->vtbl = lbl_80291B70;
             if (&a0->subAC != NULL) {

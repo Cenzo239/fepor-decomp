@@ -80,7 +80,7 @@ extern f64 lbl_8036AF78;
 extern "C" void fn_8017A000(void *);
 extern "C" void fn_80193950(void *);
 extern "C" u8 lbl_8029656C[];
-extern "C" u16 lbl_80291AC8[];
+extern "C" u16 gUiPanelVtbl[];
 #pragma cplusplus reset
 
 f32 fn_801833E8(void) {
@@ -6275,7 +6275,7 @@ extern "C" void *fn_80193B60(void *arg0) {
         virtual void m28() = 0;
     };
     fn_8017A000(arg0);
-    *(void **)((u8 *)arg0 + 0x0) = (void *)lbl_80291AC8;
+    *(void **)((u8 *)arg0 + 0x0) = (void *)gUiPanelVtbl;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *) arg0)->m28();
     return arg0;
@@ -13391,7 +13391,7 @@ void fn_801A27F8(void *arg0) {
 extern s32 lbl_8036AF6C;
 extern u8 lbl_80367298;
 #include "common.h"
-extern u16 lbl_80291AC8[];
+extern u16 gUiPanelVtbl[];
 #include "global.h"
 
 extern u32 E_MuBlend_script[];
