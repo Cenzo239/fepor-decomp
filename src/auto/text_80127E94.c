@@ -510,7 +510,7 @@ void fn_801295DC(void *arg0) {
     }
 }
 
-void fn_8012961C(void *arg0) {
+void MapObj_StartLinkedFadeIn(void *arg0) {
     void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_80016180(void);
