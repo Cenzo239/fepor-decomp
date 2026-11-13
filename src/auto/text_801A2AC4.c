@@ -314,7 +314,7 @@ s32 fn_801A32F8(s32 arg0) {
     return 0;
 }
 
-s32 fn_801A3390(s32 arg0) {
+s32 Battle_StartMapHitAnimPlain(s32 arg0) {
     void Battle_SetupPair(void *, void *, void *);
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
@@ -778,7 +778,7 @@ void fn_801A47B0(void *arg0, s32 arg1, s32 arg2) {
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void fn_801A8010(void *);
-    s32 tmp;
+    s8 tmp;
     u8 *obj;
     s32 a2;
     u8 saved;
