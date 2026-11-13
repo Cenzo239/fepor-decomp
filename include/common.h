@@ -21,14 +21,15 @@ typedef unsigned long uintptr_t;
 #define NULL ((void*)0)
 #endif
 
-/* 0x18-byte record used by fn_800C29D0 / fn_800C2ACC / Icon_GetSlot (1-based index) */
+/* 0x18-byte icon slot in gIconSlots (Icon_GetSlot / Icon_AllocSlot; 1-based index) */
 #ifndef UNK800C2ACC_TYPE
 #define UNK800C2ACC_TYPE
-typedef struct Unk800C2ACC {
+typedef struct IconSlot {
     u8 unk0[0x13];
     u8 unk13;
     u8 unk14[4];
-} Unk800C2ACC;
+} IconSlot;
+typedef IconSlot Unk800C2ACC;
 #endif
 
 /* Memory-card linked-game IDs (FourCC) and system-save bonus flags at gSystemSave+0x10 */
