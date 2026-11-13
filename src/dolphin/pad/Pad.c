@@ -253,7 +253,7 @@ void fn_80212108(s32 chan, u32 type) {
     }
 }
 
-void fn_8021250C(s32 chan, u32 type) {
+void PADTypeAndStatusCallback(s32 chan, u32 type) {
     s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback, s64 delay);
     extern void fn_8021203C(void);
     extern u8 Origin[];
@@ -296,7 +296,7 @@ u32 fn_802129C0(PADStatus *status)
   s32 fn_8023BA70(s32, void *);
   void fn_8023C188(s32, void *);
   void fn_8021203C(void);
-  void fn_8021250C(s32, u32);
+  void PADTypeAndStatusCallback(s32, u32);
   s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
   void *memset(void *, s32, u32);
   extern u8 Origin[];
@@ -353,7 +353,7 @@ u32 fn_802129C0(PADStatus *status)
         if (!(lbl_8036867C & bit))
         {
           lbl_8036867C |= bit;
-          fn_8023C188(chan, fn_8021250C);
+          fn_8023C188(chan, PADTypeAndStatusCallback);
         }
       }
       else
