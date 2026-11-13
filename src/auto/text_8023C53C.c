@@ -5755,7 +5755,7 @@ s32 fn_80250698(void *arg0, void *arg1) {
 
 void *fn_802506A8(u32 arg0)
 {
-    void *fn_802612A0(void *, void *, u32, u32, void *);
+    void *Bsearch(void *, void *, u32, u32, void *);
     void fn_80250698(void);
 
     extern u8 gAudioTableRanges[];
@@ -5786,7 +5786,7 @@ void *fn_802506A8(u32 arg0)
 
     lbl_80368A04 = offset;
 
-    result = fn_802612A0(
+    result = Bsearch(
         lbl_803689F8,
         gAudioTableEntries + (offset << 3),
         value,
@@ -5838,7 +5838,7 @@ s32 fn_80250744(u16 id, void *arg1) {
         u32 unk18;
         u8 unk1C;
     };
-    void *fn_802612A0(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
+    void *Bsearch(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
     extern struct Entry gAudioGroupLookupKey;
     extern struct Group gAudioGroups[];
     extern u16 gAudioGroupCount;
@@ -5849,7 +5849,7 @@ s32 fn_80250744(u16 id, void *arg1) {
 
     gAudioGroupLookupKey.id = id;
     for (i = 0; i < gAudioGroupCount; i++) {
-        if ((gAudioGroupFound = fn_802612A0(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, AudioGroup_CompareId)) != NULL && gAudioGroupFound->ref != 0) {
+        if ((gAudioGroupFound = Bsearch(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, AudioGroup_CompareId)) != NULL && gAudioGroupFound->ref != 0) {
             gAudioGroupHeader = &gAudioGroupFound->header;
             info->unk0 = gAudioGroupHeader->unk0;
             info->unk4 = gAudioGroupFound->unk8;
@@ -5879,14 +5879,14 @@ s32 fn_80250884(u16 id) {
         u16 id;
         u16 pad;
     };
-    s32 *fn_802612A0(void *, void *, u16, s32, s32 (*)(void *, void *));
+    s32 *Bsearch(void *, void *, u16, s32, s32 (*)(void *, void *));
     extern struct Key lbl_803689E4;
     extern struct Key gAudioWaveKeys[];
     extern u16 gAudioWaveKeyCount;
     extern s32 *lbl_803689E0;
 
     lbl_803689E4.id = id;
-    if ((lbl_803689E0 = fn_802612A0(&lbl_803689E4, gAudioWaveKeys, gAudioWaveKeyCount, 8, fn_80250874)) != NULL) {
+    if ((lbl_803689E0 = Bsearch(&lbl_803689E4, gAudioWaveKeys, gAudioWaveKeyCount, 8, fn_80250874)) != NULL) {
         return *lbl_803689E0;
     }
     return 0;
@@ -5898,14 +5898,14 @@ s32 fn_802508E0(u16 id) {
         u16 id;
         u16 pad;
     };
-    s32 *fn_802612A0(void *, void *, u16, s32, s32 (*)(void *, void *));
+    s32 *Bsearch(void *, void *, u16, s32, s32 (*)(void *, void *));
     extern struct Key lbl_803689D8;
     extern struct Key lbl_8034EEB8[];
     extern u16 lbl_80368A0E;
     extern s32 *lbl_803689D4;
 
     lbl_803689D8.id = id;
-    if ((lbl_803689D4 = fn_802612A0(&lbl_803689D8, lbl_8034EEB8, lbl_80368A0E, 8, fn_80250874)) != NULL) {
+    if ((lbl_803689D4 = Bsearch(&lbl_803689D8, lbl_8034EEB8, lbl_80368A0E, 8, fn_80250874)) != NULL) {
         return *lbl_803689D4;
     }
     return 0;
@@ -5922,14 +5922,14 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
     extern u16 gSampleKeyCount;
     extern void *lbl_803689D0;
 
-    void *fn_802612A0(void *, void *, s32, s32, s32 (*)(void *, void *));
+    void *Bsearch(void *, void *, s32, s32, s32 (*)(void *, void *));
     s32 fn_8025093C(void *, void *);
 
     u8 *result;
 
     *(u16 *)(lbl_803596D8 + 4) = arg0;
 
-    result = fn_802612A0(
+    result = Bsearch(
         lbl_803596D8,
         gSampleKeys,
         gSampleKeyCount,
@@ -5957,7 +5957,7 @@ int fn_802509D8(int arg0)
     extern u16 lbl_803548B8;
     extern u16 lbl_80368A08;
 
-    void *fn_802612A0(void *, void *, s32, s32, s32 (*)(void *, void *));
+    void *Bsearch(void *, void *, s32, s32, s32 (*)(void *, void *));
     s32 fn_802509C8(u16 *, u16 *);
 
     u8 *entry;
@@ -5970,7 +5970,7 @@ int fn_802509D8(int arg0)
     i = 0;
 
     while (i < lbl_80368A08) {
-        result = fn_802612A0(
+        result = Bsearch(
             &lbl_803596E4,
             *(void **)(entry + 8),
             *(u16 *)(entry + 2),
@@ -13307,7 +13307,7 @@ s16 fn_80261214(s32 arg0) {
     return -(*ptr);
 }
 
-void *fn_802612A0(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, void *)) {
+void *Bsearch(void *key, void *base, s32 count, s32 stride, s32 (*cmp)(void *, void *)) {
     s32 low;
     s32 high;
     s32 mid;
