@@ -5042,7 +5042,7 @@ extern "C" void fn_80191590(void *arg0) {
         Nest *unk68;
     };
     Child *Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     void fn_8011D79C(s32);
     void fn_80193344(void *);
@@ -5066,7 +5066,7 @@ extern "C" void fn_80191590(void *arg0) {
     c4 = Ui_FindChild(self, 4, 0);
     c5 = Ui_FindChild(self, 5, 0);
     c6 = Ui_FindChild(self, 6, 0);
-    fn_8014004C(self, saved);
+    Ui_RemoveChild(self, saved);
     t = c2->unkC;
     sp14[0] = 0x260;
     sp14[1] = t;

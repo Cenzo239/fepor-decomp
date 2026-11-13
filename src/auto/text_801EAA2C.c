@@ -155,7 +155,7 @@ void fn_801EAE68(void *arg0) {
     void fn_8012C788(void *, void *);
     void fn_8000A430(s32);
     s32 Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, s32);
+    void Ui_RemoveChild(void *, s32);
     void fn_801EAB90(void);
     s32 tmp;
 
@@ -163,7 +163,7 @@ void fn_801EAE68(void *arg0) {
     fn_8000A430(*(s32 *)((u8 *)arg0 + 0x50));
     tmp = Ui_FindChild(arg0, -0x1000, 0);
     if (tmp != 0) {
-        fn_8014004C(arg0, tmp);
+        Ui_RemoveChild(arg0, tmp);
     }
 }
 
@@ -240,14 +240,14 @@ void fn_801EB058(s32 arg0) {
 void fn_801EB23C(void *arg0) {
     M2C_UNK fn_8000A430(s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8014004C(void *, s32);
+    M2C_UNK Ui_RemoveChild(void *, s32);
     M2C_UNK fn_8016E9DC(void *);
     s32 tmp;
 
     fn_8000A430(M2C_FIELD(arg0, s32 *, 0x50));
     tmp = Ui_FindChild(arg0, -0x1000, 0);
     if (tmp != 0) {
-        fn_8014004C(arg0, tmp);
+        Ui_RemoveChild(arg0, tmp);
     }
     fn_8016E9DC(arg0);
 }

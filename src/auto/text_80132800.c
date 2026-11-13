@@ -7809,7 +7809,7 @@ extern "C" void *Ui_FindChild(void *arg0, s16 arg1, u8 arg2) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_8014004C(void *arg0, void *arg1) {
+extern "C" void Ui_RemoveChild(void *arg0, void *arg1) {
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;

@@ -2073,7 +2073,7 @@ void fn_801B94DC(void *arg0)
 
 #pragma cplusplus on
 extern "C" void fn_801B9500(void *arg0) {
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
@@ -2081,10 +2081,10 @@ extern "C" void fn_801B9500(void *arg0) {
     Obj *temp;
     s32 refs;
 
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x48));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x64));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x50));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x60));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x48));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x64));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x50));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x60));
 
     temp = M2C_FIELD(arg0, Obj **, 0x48);
     if (temp != NULL) {
@@ -2933,7 +2933,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
     void *Ui_ListGetSelected(void *);
     void fn_8013B064(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     void fn_8017BB94(void *);
@@ -2961,8 +2961,8 @@ extern "C" void fn_801BB7E0(void *arg0) {
     void *p;
     void *q;
 
-    fn_8014004C(self, Ui_FindChild(self, 0x80, 0));
-    fn_8014004C(self, Ui_FindChild(self, 0x81, 0));
+    Ui_RemoveChild(self, Ui_FindChild(self, 0x80, 0));
+    Ui_RemoveChild(self, Ui_FindChild(self, 0x81, 0));
 
     p = Heap_Alloc(0xD8);
     if (p != NULL) {
@@ -3176,7 +3176,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     void fn_8013AD70(void *, s32);
     void fn_8013B064(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     u8 *Ui_GetColor(s32);
@@ -3225,7 +3225,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     saved = *(s32 *)gUiContext;
     tmp = Ui_FindChild(self, -0x1000, 0);
     if (tmp != NULL) {
-        fn_8014004C(self, tmp);
+        Ui_RemoveChild(self, tmp);
     }
 
     p = Heap_Alloc(0xD8);
@@ -3574,7 +3574,7 @@ extern "C" s32 fn_801BC71C(s32 arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801BC784(void *arg0) {
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
@@ -3582,11 +3582,11 @@ extern "C" void fn_801BC784(void *arg0) {
     Obj *temp;
     s32 refs;
 
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x48));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x4C));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x50));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x54));
-    fn_8014004C(arg0, M2C_FIELD(arg0, void **, 0x58));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x48));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x4C));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x50));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x54));
+    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x58));
 
     temp = M2C_FIELD(arg0, Obj **, 0x48);
     if (temp != NULL) {
@@ -3754,7 +3754,7 @@ void fn_801BCCC4(void *arg0) {
     void Ui_SetWidgetText(void *, void *);
     s32 fn_8017D52C(void *, s16);
     void fn_80034A8C(void *, s32, u8, void *, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     extern u8 gUiUnitPanelStrings[];
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -3776,7 +3776,7 @@ void fn_801BCCC4(void *arg0) {
     *(s16 *)((u8 *)base + 0x70) = 0;
     p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
-        fn_8014004C(arg0, p);
+        Ui_RemoveChild(arg0, p);
     }
 }
 
@@ -4251,7 +4251,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *Ui_ListGetSelected(void *);
     void fn_8013B064(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void Ui_AddChild(void *, void *);
     void fn_8013FF00(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
@@ -4285,8 +4285,8 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *q;
     f32 zero;
 
-    fn_8014004C(self, Ui_FindChild(self, 0x80, 0));
-    fn_8014004C(self, Ui_FindChild(self, 0x81, 0));
+    Ui_RemoveChild(self, Ui_FindChild(self, 0x80, 0));
+    Ui_RemoveChild(self, Ui_FindChild(self, 0x81, 0));
 
     p = Heap_Alloc(0xD8);
     if (p != NULL) {

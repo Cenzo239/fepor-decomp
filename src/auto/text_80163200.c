@@ -6596,7 +6596,7 @@ extern "C" void fn_80170058(void *arg0) {
     void fn_8014027C(void *, void *, s16 *, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void fn_80109020(void *);
     extern u16 gUiMsgStrings[];
 
@@ -6639,7 +6639,7 @@ extern "C" void fn_80170058(void *arg0) {
         *(RefObj **)((u8 *)arg0 + 0x54) = (RefObj *)0;
     }
     ret = Ui_FindChild(arg0, 0x109, 0);
-    fn_8014004C(arg0, ret);
+    Ui_RemoveChild(arg0, ret);
     fn_80109020((u8 *)gUiMsgStrings + 0x210);
 }
 
@@ -8829,7 +8829,7 @@ loop2_cond:
 #pragma cplusplus on
 extern "C" void fn_80174B10(void *arg0) {
     void fn_8013AF08(void *, s16);
-    void fn_8014004C(void *, void *);
+    void Ui_RemoveChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
 
     struct RefObj {
@@ -8885,7 +8885,7 @@ extern "C" void fn_80174B10(void *arg0) {
         }
         h->p50 = (RefObj *)0;
     }
-    fn_8014004C(h, h->p54);
+    Ui_RemoveChild(h, h->p54);
     p = h->p54;
     if (p != NULL) {
         refs = p->refCount - 1;
@@ -8895,7 +8895,7 @@ extern "C" void fn_80174B10(void *arg0) {
         }
         h->p54 = (RefObj *)0;
     }
-    fn_8014004C(h, h->p58);
+    Ui_RemoveChild(h, h->p58);
     p = h->p58;
     if (p != NULL) {
         refs = p->refCount - 1;
