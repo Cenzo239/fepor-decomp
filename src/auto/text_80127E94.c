@@ -460,7 +460,7 @@ void fn_80129464(void *arg0) {
     s32 Effect_Create(void *, void *);
     extern u8 lbl_80275740[];
     extern u8 gBattleMap[];
-    extern f32 lbl_8036A410;
+    extern f32 gTileCenter;
 
     f32 f31;
     f32 f30;
@@ -477,9 +477,9 @@ void fn_80129464(void *arg0) {
     fn_800498A4(ptr, self, 0);
     path = Effect_Create(lbl_80275740 + 0x15B, self);
     f31 = (f32)b1;
-    f31 = lbl_8036A410 + f31;
+    f31 = gTileCenter + f31;
     f30 = (f32)b0;
-    f30 = lbl_8036A410 + f30;
+    f30 = gTileCenter + f30;
     Effect_SetPos(path, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
 }
 
@@ -931,7 +931,7 @@ void fn_80129FA4(void *arg0) {
     void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_80275740[];
     extern s32 gPadInput;
-    extern f32 lbl_8036A410;
+    extern f32 gTileCenter;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A430;
     extern f32 lbl_8036A434;
@@ -988,8 +988,8 @@ void fn_80129FA4(void *arg0) {
     ib = (s32)((unk38 + unk2c) / lbl_8036A448);
     if (!(lbl_8036A420 != unk38 && ia == ib)) {
         SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
-            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
-            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
+            gTileCenter + *(f32 *)((u8 *)sub + 0x10),
+            gTileCenter + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
     }
     sub = *(void **)((u8 *)self + 0x30);
@@ -998,18 +998,18 @@ void fn_80129FA4(void *arg0) {
     fn_800498A4(*(void **)(*(void **)((u8 *)self + 0x30)), self, 0, unk38);
     sub = *(void **)((u8 *)self + 0x30);
     SeCue_PlayAt(lbl_80275740 + 0x182, 0x64,
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
+        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
+        gTileCenter + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
     fn_80025624(gPadInput, 8);
     fn_8018CFA4(0x1E, 6, 2, 0, self);
     path = fn_80053AE8(lbl_80275740 + 0x165, self);
     sub = *(void **)((u8 *)self + 0x30);
     Effect_SetPos(path,
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
+        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
+        gTileCenter + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
-    *(f32 *)((u8 *)*(void **)((u8 *)path + 0x30) + 0x18) = lbl_8036A410;
+    *(f32 *)((u8 *)*(void **)((u8 *)path + 0x30) + 0x18) = gTileCenter;
 }
 #pragma use_lmw_stmw reset
 void fn_8012A240(void) {
@@ -1072,7 +1072,7 @@ void fn_8012A530(void *arg0) {
     extern u8 lbl_80275740[];
     extern u16 gUnits[];
     extern u8 gBattleMap[];
-    extern f32 lbl_8036A410;
+    extern f32 gTileCenter;
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A42C;
@@ -1137,7 +1137,7 @@ void fn_8012A530(void *arg0) {
         vz = *(f32 *)&vec[2];
         scale = scale / lbl_8036A454;
         y = *(f32 *)((u8 *)sub + 0x14);
-        c = lbl_8036A410;
+        c = gTileCenter;
         vx = vx * scale;
         oldX = (s32)(c + x);
         oldY = (s32)(c + y);
@@ -1207,8 +1207,8 @@ void fn_8012A530(void *arg0) {
 
     sub = *(void **)((u8 *)self + 0x30);
     z = Map_SampleHeight(gBattleMap,
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
-        lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14));
+        gTileCenter + *(f32 *)((u8 *)sub + 0x10),
+        gTileCenter + *(f32 *)((u8 *)sub + 0x14));
     sub = *(void **)((u8 *)self + 0x30);
     if (*(f32 *)((u8 *)sub + 0x18) < z) {
         *(f32 *)((u8 *)sub + 0x1C) = *(f32 *)((u8 *)sub + 0x1C) * lbl_8036A464;
@@ -1254,8 +1254,8 @@ void fn_8012A530(void *arg0) {
     ib = (s32)((unk38 + *(f32 *)((u8 *)sub + 0x2C)) / lbl_8036A448);
     if (lbl_8036A420 == unk38 || ia != ib) {
         SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
-            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
-            lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
+            gTileCenter + *(f32 *)((u8 *)sub + 0x10),
+            gTileCenter + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
     }
     sub = *(void **)((u8 *)self + 0x30);
@@ -1314,15 +1314,15 @@ void fn_8012AC88(void *arg0) {
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 lbl_80275740[];
     extern u8 gBattleMap[];
-    extern f32 lbl_8036A410;
+    extern f32 gTileCenter;
     u8 *temp_r6;
     f32 temp_f31;
     f32 temp_f30;
     f32 temp_f29;
 
     temp_r6 = *(u8 **)((u8 *)arg0 + 0x30);
-    temp_f30 = lbl_8036A410 + (f32)(s8)temp_r6[0];
-    temp_f31 = lbl_8036A410 + (f32)(s8)temp_r6[1];
+    temp_f30 = gTileCenter + (f32)(s8)temp_r6[0];
+    temp_f31 = gTileCenter + (f32)(s8)temp_r6[1];
     temp_f29 = Map_SampleHeight(gBattleMap, temp_f30, temp_f31);
     Effect_Create(lbl_80275740 + 0x165, 0);
     Effect_SetPos(temp_f30, temp_f31, temp_f29);
@@ -1409,7 +1409,7 @@ void fn_8012AF4C(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
-    extern f32 lbl_8036A410;
+    extern f32 gTileCenter;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A424;
     extern f32 lbl_8036A434;
@@ -1453,7 +1453,7 @@ void fn_8012AF4C(void *arg0) {
     PSMTXConcat(sp38, sp8, sp8);
     PSMTXRotRad(sp68, 0x5A, lbl_8036A434 * scale);
     PSMTXConcat(sp68, sp8, sp8);
-    PSMTXTrans(sp38, lbl_8036A410, lbl_8036A410, lbl_8036A420);
+    PSMTXTrans(sp38, gTileCenter, gTileCenter, lbl_8036A420);
     PSMTXConcat(sp38, sp8, sp8);
     PSMTXTrans(sp38, x, y, z);
     PSMTXConcat(sp38, sp8, (u8 *)node + 0x10);
