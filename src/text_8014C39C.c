@@ -46,7 +46,7 @@ void fn_80105A30(void *, void *);
 void fn_80014F94(void *, void *);
 void fn_80199B88(void *, void *);
 void fn_800BDAF8(void *, void *);
-void fn_8017A480(void *, s32, void *);
+void Stream_WriteStr(void *, s32, void *);
 void fn_8017A3E0(void *, s32, u8);
 #pragma opt_strength_reduction off
 
@@ -93,7 +93,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     void Stream_WriteU16(void *, u16);
     void Stream_WriteS32(void *, s32);
     void Stream_WriteS64(void *, s64);
-    void fn_8017A480(void *, s32, void *);
+    void Stream_WriteStr(void *, s32, void *);
     void fn_8017A3E0(void *, s32, s32);
     void fn_80105A30(void *, void *);
     void fn_80014F94(void *, void *);
@@ -132,7 +132,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     fn_80199B88((u8 *)arg0 + 0x9c, arg1);
     fn_800BDAF8((u8 *)arg0 + 0xb4, arg1);
     Stream_Write(arg1, 0x140, (u8 *)arg0 + 0x3c4);
-    fn_8017A480(arg1, 0x18, (u8 *)arg0 + 0x504);
+    Stream_WriteStr(arg1, 0x18, (u8 *)arg0 + 0x504);
     fn_8017A3E0(arg1, 8, 0);
 }
 

@@ -49,7 +49,7 @@ void fn_80105A30(void *, void *);
 void fn_80014F94(void *, void *);
 void fn_80199B88(void *, void *);
 void fn_800BDAF8(void *, void *);
-void fn_8017A480(void *, s32, void *);
+void Stream_WriteStr(void *, s32, void *);
 void fn_8017A3E0(void *, s32, u8);
 #pragma opt_strength_reduction off
 

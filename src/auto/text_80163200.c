@@ -11893,7 +11893,7 @@ void Stream_Write(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
 }
 
-void fn_8017A480(void *arg0, s32 arg1, s32 arg2) {
+void Stream_WriteStr(void *arg0, s32 arg1, s32 arg2) {
     strcpy(M2C_FIELD(arg0, s32 *, 4), arg2);
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
 }
