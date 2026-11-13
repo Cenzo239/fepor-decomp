@@ -818,8 +818,8 @@ void fn_8005C7C8(void) {
 }
 
 void fn_8005C7E8(void) {
-    M2C_UNK fn_8005D2CC();
-    fn_8005D2CC();
+    M2C_UNK FileCache_ReleaseByKey();
+    FileCache_ReleaseByKey();
 }
 
 void fn_8005C808(void *arg0) {
@@ -899,7 +899,7 @@ void FileCache_ReleaseByName(char *name) {
 }
 
 #pragma global_optimizer off
-void fn_8005D2CC(u32 arg0) {
+void FileCache_ReleaseByKey(u32 arg0) {
     void FileCache_Release(void *);
     extern u8 gFileCache[];
     u8 *e;
@@ -7411,7 +7411,7 @@ void fn_8006ECCC(void *arg0, void *tex, s32 idx) {
     fn_802228D8(tex, *(s32 *)(node + 0x14), *(s32 *)(node + 0x18), 0, node[0x20], 0, (f32)node[0x21], (f32)node[0x22], *(f32 *)(node + 0x1C));
 }
 
-extern void fn_8005D2CC(u32);
+extern void FileCache_ReleaseByKey(u32);
 void fn_8006EDA0(s32 *arg0)
 {
     void fn_8005C7E8();
