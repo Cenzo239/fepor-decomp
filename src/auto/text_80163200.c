@@ -1522,7 +1522,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
+void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     s32 Map_Get(void);
     void fn_80041514(s32, void *);
     void *Heap_Alloc(s32);

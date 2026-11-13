@@ -7835,7 +7835,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     void *fn_80108A18(void *, void *, s32, s32);
     void *BgWin_Create(void *, void *, s32, s32);
     void *fn_801513EC(void *, void *, s32, s32);
-    void *fn_80165C84(void *, void *, String *, String *);
+    void *BattleTerrain_Create(void *, void *, String *, String *);
     void *fn_801BEF90(void *);
     void fn_801C77A4(void);
     u32 strlen(const char *);
@@ -8036,7 +8036,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     if (tmp != NULL) {
         String_Init(&sp2C, lbl_802711B0 + 0x1C5, &scratch8);
         made = 1;
-        tmp = fn_80165C84(tmp, *(void **)((u8 *)self + 4), &sp2C, &sp20);
+        tmp = BattleTerrain_Create(tmp, *(void **)((u8 *)self + 4), &sp2C, &sp20);
     }
     if (made != 0) {
         String_Destroy(&sp2C, -1);
