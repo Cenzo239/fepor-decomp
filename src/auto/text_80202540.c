@@ -96,7 +96,7 @@ extern s32 gFallingParticleVelYCenter;
 extern s32 gFallingParticleVelXRange;
 extern s32 gFallingParticleVelYRange;
 extern u8 gFallingParticleAlphaMin;
-extern u8 lbl_80368431;
+extern u8 gFallingParticleAlphaMax;
 extern f32 gFloatZero;
 extern f32 gFloatOne;
 
