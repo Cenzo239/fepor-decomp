@@ -1774,7 +1774,7 @@ void fn_8012F5A8(s32 unused0, s32 unused1, s32 *arg2, s32 *arg3, s32 *arg4, s32 
 void fn_8012F5CC(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_800076CC(void);
+    void Prim2D_SwapUvV(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -1929,7 +1929,7 @@ void fn_8012F5CC(void *arg0) {
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A510, fKeep, lbl_8036A518);
     if ((s8)self[0x67] < 0) {
-        fn_800076CC();
+        Prim2D_SwapUvV();
     }
     Prim2D_EmitQuad();
     Prim2D_EndPrim();

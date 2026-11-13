@@ -1004,7 +1004,7 @@ void Prim2D_SetColor(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     ptr[0xF] = arg3;
 }
 
-void fn_800076CC(void) {
+void Prim2D_SwapUvV(void) {
  extern void *lbl_80367140;
  u8 *ptr;
  f32 temp;

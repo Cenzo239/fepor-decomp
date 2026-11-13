@@ -2749,7 +2749,7 @@ void fn_80157930(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     void Prim2D_Begin(void);
     void fn_80007358(f32, f32);
     void Prim2D_SetColorPacked(s32 *);
-    void fn_800076CC(void);
+    void Prim2D_SwapUvV(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -2875,7 +2875,7 @@ void fn_80157930(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv((f32)t14, (f32)(s16)(y1 - h), (f32)lbl_80367C50.f0, (f32)p50->f2, (f32)dw, (f32)h);
-        fn_800076CC();
+        Prim2D_SwapUvV();
         Prim2D_EndPrim();
     }
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 5);
@@ -4937,7 +4937,7 @@ void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
-    void fn_800076CC(void);
+    void Prim2D_SwapUvV(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(void *);
@@ -5055,7 +5055,7 @@ void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv((f32)px, (f32)py, (f32)lbl_80367C50[0], (f32)lbl_80367C50[1], (f32)t19, (f32)h);
-        fn_800076CC();
+        Prim2D_SwapUvV();
         Prim2D_EndPrim();
     }
 
@@ -5636,7 +5636,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SwapUvU(void);
-    void fn_800076CC(void);
+    void Prim2D_SwapUvV(void);
     void Prim2D_EmitQuad(void);
     void Prim2D_RotateUvCcw(void);
     void Prim2D_RotateUvCw(void);
@@ -5700,7 +5700,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
                 }
             }
             if (arg7 & 2) {
-                fn_800076CC();
+                Prim2D_SwapUvV();
                 *(s32 *)&tmp2 = *(s32 *)&sp24;
                 if (&sp24 != &sp20) {
                     sp24.r = sp20.r;
@@ -5735,7 +5735,7 @@ void fn_80161E58(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
     void Prim2D_RotateUvCw(void);
     void Prim2D_RotateUvCcw(void);
     void Prim2D_SetColorPacked(s32 *);
-    void fn_800076CC(void);
+    void Prim2D_SwapUvV(void);
     void Prim2D_SwapUvU(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -5755,7 +5755,7 @@ void fn_80161E58(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
         Prim2D_SwapUvU();
     }
     if (arg5 & 2) {
-        fn_800076CC();
+        Prim2D_SwapUvV();
     }
     if (arg5 & 0x100) {
         Prim2D_RotateUvCcw();
