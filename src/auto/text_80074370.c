@@ -316,7 +316,8 @@ void fn_80074C30(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void UiWin_DrawTitleBody(void *arg0, void *arg1) {
+extern "C" void UiWin_DrawTitleBody(void *win, void *state) {
+    /* Draw faded window title and body; optional caption bar when text is tall enough. */
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
@@ -348,22 +349,22 @@ extern "C" void UiWin_DrawTitleBody(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     s32 Text_MeasureHeight(s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    f32 t;
+    f32 fade;
 
-    t = UiWin_GetFade(arg1);
-    *(s16 *)((u8 *)arg1 + 0x30) = 0;
-    *(s16 *)((u8 *)arg1 + 0x32) = 0;
+    fade = UiWin_GetFade(state);
+    *(s16 *)((u8 *)state + 0x30) = 0;
+    *(s16 *)((u8 *)state + 0x32) = 0;
     Prim2D_Begin();
-    Prim2D_SetColorByte((s32)(255.0f * t));
+    Prim2D_SetColorByte((s32)(255.0f * fade));
     Prim2D_PrepareTex();
-    fn_80071740(arg0, 16.0f * t + 16.0f, 35.0f, *(s32 *)((u8 *)arg0 + 0xC));
-    fn_8007149C(arg0, arg1, 16.0f * t + 16.0f, 136.0f, *(s32 *)((u8 *)arg0 + 0xC), 1);
-    if (*(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
+    fn_80071740(win, 16.0f * fade + 16.0f, 35.0f, *(s32 *)((u8 *)win + 0xC));
+    fn_8007149C(win, state, 16.0f * fade + 16.0f, 136.0f, *(s32 *)((u8 *)win + 0xC), 1);
+    if (*(s16 *)((u8 *)state + 0x3A) >= 5) {
         Prim2D_Begin();
         Prim2D_AddZ(-0.1f);
         Prim2D_PrepareTex();
-        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
-                    (s32)(0.9f * ((Obj *)arg0)->v18()), 0x18, 0x19, 0x4B, 1);
+        fn_8008AB7C(((Obj *)win)->v18() / 2 + 0x28, *(s16 *)((u8 *)state + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
+                    (s32)(0.9f * ((Obj *)win)->v18()), 0x18, 0x19, 0x4B, 1);
         Prim2D_Begin();
         Prim2D_AddZ(0.1f);
         Prim2D_PrepareTex();
