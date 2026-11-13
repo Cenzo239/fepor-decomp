@@ -7258,7 +7258,7 @@ void DEMOInit(void *arg0)
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
     extern void *lbl_80367320;
-    extern void *lbl_8036731C;
+    extern void *DefaultFifo;
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer2;
     extern void *DemoFrameBuffer1;
@@ -7336,7 +7336,7 @@ void DEMOInit(void *arg0)
     fn_800C50FC(lbl_8026B990 + 0x16b, 0x533333);
     fn_80210C70(DEMORmode);
     buf = fn_800C4638(0x80000, lbl_8026B990 + 0x170, 0x80000);
-    lbl_8036731C = buf;
+    DefaultFifo = buf;
     lbl_80367320 = GXInit(buf, 0x80000);
     {
         void *rm2 = DEMORmode;
