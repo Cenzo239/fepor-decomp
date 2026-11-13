@@ -4375,7 +4375,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void *fn_800E7F60(void *, void *);
     u8 fn_800E8FB4(void *);
     void fn_800DBBC8(f32 *, void *);
-    void fn_800E8FCC(f32 *, void *);
+    void Camera_GetEyePos(f32 *, void *);
     void fn_800DBB58(f32 *, void *);
     void fn_800DBB74(f32 *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -4527,7 +4527,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
                 f30 = sp3C[1];
                 f31 = sp3C[2];
             } else {
-                fn_800E8FCC(sp30, obj);
+                Camera_GetEyePos(sp30, obj);
                 f29 = sp30[0];
                 f30 = sp30[1];
                 f31 = sp30[2];
@@ -14217,7 +14217,7 @@ void fn_800E8FBC(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0xF8) = farg2;
 }
 
-void fn_800E8FCC(void *arg0, void *arg1) {
+void Camera_GetEyePos(void *arg0, void *arg1) {
     M2C_FIELD(arg0, f32 *, 0) = (f32) M2C_FIELD(arg1, f32 *, 0xF0);
     M2C_FIELD(arg0, f32 *, 4) = (f32) M2C_FIELD(arg1, f32 *, 0xF4);
     M2C_FIELD(arg0, f32 *, 8) = (f32) M2C_FIELD(arg1, f32 *, 0xF8);

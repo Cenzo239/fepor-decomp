@@ -8933,7 +8933,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     s32 fn_8011C984(s32, s32);
     void *fn_801CAF2C(void *, s32);
     void *fn_801CAF8C(void *);
-    void fn_800E8FCC(f32 *, void *);
+    void Camera_GetEyePos(f32 *, void *);
     void fn_800DBB74(f32 *, void *);
     f32 fn_800E9018(void *);
     extern void *gCameraWin;
@@ -8956,7 +8956,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     obj = gCameraWin;
     obj = (void *)fn_8011C984(*(s32 *)((u8 *)obj + 0x430), fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
     result = fn_801CAF2C(obj, index);
-    fn_800E8FCC(sp14, obj = fn_801CAF8C(obj));
+    Camera_GetEyePos(sp14, obj = fn_801CAF8C(obj));
     x1 = sp14[0];
     y1 = sp14[1];
     z1 = sp14[2];
