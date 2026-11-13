@@ -1646,7 +1646,8 @@ s32 fn_8012F26C(void) {
     return 0;
 }
 
-void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
+/* Draw a translucent fill for the unit-list body at (x, y), height = rowCount*24. */
+void Ui_DrawUnitListFill(void *panel, void *tex, f32 x, f32 y) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -1665,13 +1666,13 @@ void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     extern f32 lbl_8036A518;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(farg0, farg1, lbl_8036A500, lbl_8036A50C);
-    Prim2D_BindTexture(arg1, 3, 0x11);
+    Prim2D_SetTransform(x, y, lbl_8036A500, lbl_8036A50C);
+    Prim2D_BindTexture(tex, 3, 0x11);
     Prim2D_SetCallback(Ui_ScissorUnitListRight, 0);
     Prim2D_SetColorByte(0xC0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, (f32)(*(u8 *)((u8 *)arg0 + 0x22) * 0x18), lbl_8036A514, lbl_8036A518);
+    Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, (f32)(*(u8 *)((u8 *)panel + 0x22) * 0x18), lbl_8036A514, lbl_8036A518);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 }
