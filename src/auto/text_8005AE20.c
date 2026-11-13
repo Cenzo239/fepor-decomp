@@ -746,10 +746,11 @@ loop_9:
     return 0x8000 & ((s32) ~((temp_r3 + 1) | (-1 - temp_r3)) >> 0x1F);
 }
 
+/* Return the byte size of the named file-cache entry, or 0 if absent. */
 s32 FileCache_GetSize(char *name) {
-    u8 *e = FindEntryByName(name);
-    if (e != NULL) {
-        return *(s32 *)(e + 0x3C);
+    u8 *entry = FindEntryByName(name);
+    if (entry != NULL) {
+        return *(s32 *)(entry + 0x3C);
     }
     return 0;
 }
