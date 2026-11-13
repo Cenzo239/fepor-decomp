@@ -388,7 +388,7 @@ void TabMenu_Draw(void *arg0) {
     void fn_80009B98(void);
     void fn_801E551C(void);
     extern f32 gTabMenuZero;
-    extern f32 lbl_8036B6F0;
+    extern f32 gTabMenuZ;
     extern f32 gTabMenuOne;
     extern u8 lbl_80332000[];
     extern s16 gTabMenuHeaderRect;
@@ -407,7 +407,7 @@ void TabMenu_Draw(void *arg0) {
     s32 alpha;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(gTabMenuZero, gTabMenuZero, lbl_8036B6F0, gTabMenuOne);
+    Prim2D_SetTransform(gTabMenuZero, gTabMenuZero, gTabMenuZ, gTabMenuOne);
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x64), lbl_80332000, 0);
@@ -1337,7 +1337,7 @@ void fn_801E6CEC(void *arg0) {
     extern u8 lbl_8036B6DA;
     extern f32 gTabMenuOne;
     extern f32 gTabMenuZero;
-    extern f32 lbl_8036B6F0;
+    extern f32 gTabMenuZ;
     extern f32 lbl_8036B70C;
     extern f32 lbl_8036B710;
     extern f32 lbl_8036B71C;
@@ -1364,7 +1364,7 @@ void fn_801E6CEC(void *arg0) {
     s16 xL, xR;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036B70C, lbl_8036B728, lbl_8036B6F0, gTabMenuOne);
+    Prim2D_SetTransform(lbl_8036B70C, lbl_8036B728, gTabMenuZ, gTabMenuOne);
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     *(u16 *)pal = lbl_8036B6D8;
@@ -1440,7 +1440,7 @@ void fn_801E6CEC(void *arg0) {
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv((f32)xR, (f32)y0, (f32)lbl_80368354.x, (f32)lbl_80368354.y, (f32)(s16)(lbl_80368354.x2 - lbl_80368354.x), (f32)(s16)(lbl_80368354.y2 - lbl_80368354.y));
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, lbl_8036B6F0, gTabMenuOne);
+    Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, gTabMenuZ, gTabMenuOne);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036B738);
@@ -1455,7 +1455,7 @@ void fn_801E6CEC(void *arg0) {
     fn_80007358(gTabMenuZero, gTabMenuZero);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    Prim2D_SetTransform(gTabMenuZero, gTabMenuZero, lbl_8036B6F0, gTabMenuOne);
+    Prim2D_SetTransform(gTabMenuZero, gTabMenuZero, gTabMenuZ, gTabMenuOne);
     Prim2D_PrepareTex();
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, lbl_8036B744, gTabMenuOne);
