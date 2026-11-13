@@ -19118,23 +19118,24 @@ typedef struct Param {
     u8 bC[4];
 } Param;
 static const Param sBattleParamAtkInit = {0, {0, 0, 0, 1}, 0, {1}};
-extern "C" s32 Battle_EvalTarget(s32 arg0, void *arg1) {
+extern "C" s32 Battle_EvalTarget(s32 attacker, void *target) {
+    /* Set up gBattle for attacker vs target, then write a combat score into target. */
     extern u8 gUiContext[];
-    Param b;
-    Param a = {0, {0, 0, 0, 1}, 0, {1}};
+    Param atk;
+    Param def = {0, {0, 0, 0, 1}, 0, {1}};
 
-    a.p = M2C_FIELD(arg1, void **, 4);
-    a.b4[0] = M2C_FIELD(a.p, u8 *, 0x19E);
-    a.b4[1] = M2C_FIELD(a.p, u8 *, 0x19F);
-    a.b4[2] = Unit_GetActiveItemSlot(a.p);
-    b = sBattleParamAtkInit;
-    b.p = (void *)arg0;
-    b.b4[0] = M2C_FIELD(arg1, u8 *, 0);
-    b.b4[1] = M2C_FIELD(arg1, u8 *, 1);
-    b.b4[2] = M2C_FIELD(arg1, u16 *, 2);
-    Battle_SetupFromParams(gBattle, &b, &a);
+    def.p = M2C_FIELD(target, void **, 4);
+    def.b4[0] = M2C_FIELD(def.p, u8 *, 0x19E);
+    def.b4[1] = M2C_FIELD(def.p, u8 *, 0x19F);
+    def.b4[2] = Unit_GetActiveItemSlot(def.p);
+    atk = sBattleParamAtkInit;
+    atk.p = (void *)attacker;
+    atk.b4[0] = M2C_FIELD(target, u8 *, 0);
+    atk.b4[1] = M2C_FIELD(target, u8 *, 1);
+    atk.b4[2] = M2C_FIELD(target, u16 *, 2);
+    Battle_SetupFromParams(gBattle, &atk, &def);
     fn_801A6F34(gBattle, gUiContext[8]);
-    Battle_ScoreTarget(arg0, arg1);
+    Battle_ScoreTarget(attacker, target);
     return 1;
 }
 #pragma auto_inline reset
