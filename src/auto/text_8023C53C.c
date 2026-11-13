@@ -10004,79 +10004,80 @@ done:
     return ret;
 }
 
-s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
-extern u8 gSoundVoiceCount, gSoundStudioCount;
-extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *gSoundVoiceParams, *lbl_80368A94;
-extern s32 lbl_80368A68;
-extern u8 gSoundStudios[];
-void *fn_802637D0(u32); void *fn_802637A4(u32);
-s32 fn_80262AD0(void); void fn_80259A94(s32,s32,s32); void fn_80259A5C(void);
-void fn_8020516C(void *,u16);
-void DCFlushRange(void *,u32); void DCFlushRangeNoSync(void *,u32); void DCInvalidateRange(void *,u32);
-u32 i; u32 off; u8 *p; u8 *studio;
-gSoundVoiceCount=arg0; gSoundStudioCount=arg1;
-lbl_80368A68=fn_80262AD0();
-if (!(gSoundAuxBuf=fn_802637D0(0x800))) goto fail;
-if (!(lbl_80368A98=fn_802637D0(0x280))) goto fail;
-memset(lbl_80368A98,0,0x280); DCFlushRange(lbl_80368A98,0x280);
-if (!(gSoundVoices=fn_802637A4(gSoundVoiceCount*0xF8))) goto fail;
-if (!(gSoundVoiceParams=fn_802637D0(gSoundVoiceCount*0x40))) goto fail;
-DCInvalidateRange(gSoundVoiceParams,gSoundVoiceCount*0x40);
-p=gSoundVoiceParams;
-for(i=0,off=0;i<gSoundVoiceCount;off+=0xF8,i++) {
-gSoundVoices[off+240]=0;
-gSoundVoices[off+241]=0;
-gSoundVoices[off+242]=0;
-gSoundVoices[off+232]=255;
-gSoundVoices[off+233]=255;
-gSoundVoices[off+234]=255;
-gSoundVoices[off+235]=255;
-*(void **)(gSoundVoices+off)=fn_802637D0(0xC4);
-memset(*(void **)(gSoundVoices+off),0,0xC4);
-*(void **)(gSoundVoices+off+4)=fn_802637D0(0x80);
-*(u16 *)(*(u8 **)(gSoundVoices+off)+4)=(u32)*(void **)(gSoundVoices+off)>>16;
-*(u16 *)(*(u8 **)(gSoundVoices+off)+6)=(u32)*(void **)(gSoundVoices+off);
-*(u16 *)(*(u8 **)(gSoundVoices+off)+0x4E)=(u32)*(void **)(gSoundVoices+off+4)>>16;
-*(u16 *)(*(u8 **)(gSoundVoices+off)+0x50)=(u32)*(void **)(gSoundVoices+off+4);
-*(u16 *)(*(u8 **)(gSoundVoices+off)+0x38)=(u32)p>>16;
-*(u16 *)(*(u8 **)(gSoundVoices+off)+0x3A)=(u32)p;
-*(u8 **)(gSoundVoices+off+8)=p; p+=0x40;
-*(s32 *)(gSoundVoices+off+0xEC)=-1;
-fn_8020516C(*(void **)(gSoundVoices+off),0xC4);
-*(u32 *)(gSoundVoices+off+36)=0;
-*(u32 *)(gSoundVoices+off+40)=0;
-*(u32 *)(gSoundVoices+off+44)=0;
-*(u32 *)(gSoundVoices+off+48)=0;
-*(u32 *)(gSoundVoices+off+52)=0;
-}
-for(off=0,i=(u32)gSoundStudios;off<gSoundStudioCount;i+=0xBC,off++) {
-((u8 *)i)[0x50]=0;
-if (!(*(void **)i=fn_802637D0(0x36))) return 0;
-if (!(*(void **)(i+0x28)=fn_802637D0(0x3C00))) return 0;
-memset(*(void **)(i+0x28),0,0x3C00);
-DCFlushRangeNoSync(*(void **)(i+0x28),0x3C00);
-*(u8 **)(i+44)=*(u8 **)(i+40)+0x780;
-*(u8 **)(i+48)=*(u8 **)(i+44)+0x780;
-*(u8 **)(i+52)=*(u8 **)(i+48)+0x780;
-*(u8 **)(i+56)=*(u8 **)(i+52)+0x780;
-*(u8 **)(i+60)=*(u8 **)(i+56)+0x780;
-*(u8 **)(i+64)=*(u8 **)(i+60)+0x780;
-*(u8 **)(i+68)=*(u8 **)(i+64)+0x780;
-memset(*(void **)i,0,0x36);
-*(u32 *)(i+12)=0;
-*(u32 *)(i+8)=0;
-*(u32 *)(i+4)=0;
-*(u32 *)(i+24)=0;
-*(u32 *)(i+20)=0;
-*(u32 *)(i+16)=0;
-*(u32 *)(i+36)=0;
-*(u32 *)(i+32)=0;
-*(u32 *)(i+28)=0;
-DCFlushRangeNoSync(*(void **)i,0x36);
-}
-fn_80259A94(0,1,arg2!=0);
-if (!(lbl_80368A94=fn_802637D0(0x100))) return 0;
-fn_80259A5C(); return 1;
+/* Allocate and initialize sound voice slots and studio mix buffers. */
+s32 Sound_InitVoices(u8 voiceCount, u8 studioCount, s32 flag) {
+    extern u8 gSoundVoiceCount, gSoundStudioCount;
+    extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *gSoundVoiceParams, *lbl_80368A94;
+    extern s32 lbl_80368A68;
+    extern u8 gSoundStudios[];
+    void *fn_802637D0(u32); void *fn_802637A4(u32);
+    s32 fn_80262AD0(void); void fn_80259A94(s32, s32, s32); void fn_80259A5C(void);
+    void fn_8020516C(void *, u16);
+    void DCFlushRange(void *, u32); void DCFlushRangeNoSync(void *, u32); void DCInvalidateRange(void *, u32);
+    u32 i; u32 off; u8 *params; u8 *studio;
+    gSoundVoiceCount = voiceCount; gSoundStudioCount = studioCount;
+    lbl_80368A68 = fn_80262AD0();
+    if (!(gSoundAuxBuf = fn_802637D0(0x800))) goto fail;
+    if (!(lbl_80368A98 = fn_802637D0(0x280))) goto fail;
+    memset(lbl_80368A98, 0, 0x280); DCFlushRange(lbl_80368A98, 0x280);
+    if (!(gSoundVoices = fn_802637A4(gSoundVoiceCount * 0xF8))) goto fail;
+    if (!(gSoundVoiceParams = fn_802637D0(gSoundVoiceCount * 0x40))) goto fail;
+    DCInvalidateRange(gSoundVoiceParams, gSoundVoiceCount * 0x40);
+    params = gSoundVoiceParams;
+    for (i = 0, off = 0; i < gSoundVoiceCount; off += 0xF8, i++) {
+        gSoundVoices[off + 240] = 0;
+        gSoundVoices[off + 241] = 0;
+        gSoundVoices[off + 242] = 0;
+        gSoundVoices[off + 232] = 255;
+        gSoundVoices[off + 233] = 255;
+        gSoundVoices[off + 234] = 255;
+        gSoundVoices[off + 235] = 255;
+        *(void **)(gSoundVoices + off) = fn_802637D0(0xC4);
+        memset(*(void **)(gSoundVoices + off), 0, 0xC4);
+        *(void **)(gSoundVoices + off + 4) = fn_802637D0(0x80);
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 4) = (u32)*(void **)(gSoundVoices + off) >> 16;
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 6) = (u32)*(void **)(gSoundVoices + off);
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 0x4E) = (u32)*(void **)(gSoundVoices + off + 4) >> 16;
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 0x50) = (u32)*(void **)(gSoundVoices + off + 4);
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 0x38) = (u32)params >> 16;
+        *(u16 *)(*(u8 **)(gSoundVoices + off) + 0x3A) = (u32)params;
+        *(u8 **)(gSoundVoices + off + 8) = params; params += 0x40;
+        *(s32 *)(gSoundVoices + off + 0xEC) = -1;
+        fn_8020516C(*(void **)(gSoundVoices + off), 0xC4);
+        *(u32 *)(gSoundVoices + off + 36) = 0;
+        *(u32 *)(gSoundVoices + off + 40) = 0;
+        *(u32 *)(gSoundVoices + off + 44) = 0;
+        *(u32 *)(gSoundVoices + off + 48) = 0;
+        *(u32 *)(gSoundVoices + off + 52) = 0;
+    }
+    for (off = 0, i = (u32)gSoundStudios; off < gSoundStudioCount; i += 0xBC, off++) {
+        ((u8 *)i)[0x50] = 0;
+        if (!(*(void **)i = fn_802637D0(0x36))) return 0;
+        if (!(*(void **)(i + 0x28) = fn_802637D0(0x3C00))) return 0;
+        memset(*(void **)(i + 0x28), 0, 0x3C00);
+        DCFlushRangeNoSync(*(void **)(i + 0x28), 0x3C00);
+        *(u8 **)(i + 44) = *(u8 **)(i + 40) + 0x780;
+        *(u8 **)(i + 48) = *(u8 **)(i + 44) + 0x780;
+        *(u8 **)(i + 52) = *(u8 **)(i + 48) + 0x780;
+        *(u8 **)(i + 56) = *(u8 **)(i + 52) + 0x780;
+        *(u8 **)(i + 60) = *(u8 **)(i + 56) + 0x780;
+        *(u8 **)(i + 64) = *(u8 **)(i + 60) + 0x780;
+        *(u8 **)(i + 68) = *(u8 **)(i + 64) + 0x780;
+        memset(*(void **)i, 0, 0x36);
+        *(u32 *)(i + 12) = 0;
+        *(u32 *)(i + 8) = 0;
+        *(u32 *)(i + 4) = 0;
+        *(u32 *)(i + 24) = 0;
+        *(u32 *)(i + 20) = 0;
+        *(u32 *)(i + 16) = 0;
+        *(u32 *)(i + 36) = 0;
+        *(u32 *)(i + 32) = 0;
+        *(u32 *)(i + 28) = 0;
+        DCFlushRangeNoSync(*(void **)i, 0x36);
+    }
+    fn_80259A94(0, 1, flag != 0);
+    if (!(lbl_80368A94 = fn_802637D0(0x100))) return 0;
+    fn_80259A5C(); return 1;
 fail: return 0;
 }
 
