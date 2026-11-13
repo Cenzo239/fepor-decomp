@@ -28,10 +28,4 @@ typedef struct Process {
 #define PROCESS_FLAG_ENDED  0x01
 #define PROCESS_FLAG_LOCKED 0x02
 
-extern Process **gProcessFreeTop;
-
-void Process_Destroy(Process *proc);
-void Process_Free(Process *proc);
-int Process_Unlink(void *proc);
-
 #endif
