@@ -271,7 +271,7 @@ void fn_8014E864(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802033AC(void *, void *);
+    void QUATMtx(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXCopy(void *, void *);
     void Game_Assert(void *, s32, void *);
@@ -383,7 +383,7 @@ void fn_8014E864(void *arg0) {
                 case 8:
                     PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));
-                    fn_802033AC(mtx, buf68);
+                    QUATMtx(mtx, buf68);
                     PSMTXConcat(buf68, buf8, bufF8);
                     PSMTXConcat(buf68, bufF8, bufF8);
                     PSMTXConcat(buf38, bufF8, bufF8);

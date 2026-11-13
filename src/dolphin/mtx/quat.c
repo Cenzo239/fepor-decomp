@@ -45,7 +45,7 @@ void fn_80203320(f32 *arg0, void *arg1, f32 farg0) {
     arg0[3] = c;
 }
 
-void fn_802033AC(Quaternion *r, Mtx m) {
+void QUATMtx(Quaternion *r, Mtx m) {
     f32 tr;
     f32 s;
     s32 i;

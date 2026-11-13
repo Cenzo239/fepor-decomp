@@ -2826,7 +2826,7 @@ void fn_800062CC(void *, void *, s32);
 void fn_800062EC(void *, void *, s32);
 void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
-void fn_802033AC(f32 *, void *);
+void QUATMtx(f32 *, void *);
 void fn_80203604(f32 *, f32 *, f32 *, f32);
 void fn_80061A08(void *arg0)
 {
@@ -3120,7 +3120,7 @@ void fn_80061A08(void *arg0)
                     Game_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                     break;
                 }
-                fn_802033AC(&sp20, spD0);
+                QUATMtx(&sp20, spD0);
             } else if (flags & 2) {
                 sp20 = M2C_FIELD(entry, f32 *, 0xAC);
                 sp24 = M2C_FIELD(entry, f32 *, 0xB0);
@@ -3275,7 +3275,7 @@ void fn_80061A08(void *arg0)
                             Game_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                             break;
                         }
-                        fn_802033AC(&sp10, sp70);
+                        QUATMtx(&sp10, sp70);
                     } else if (flags & 2) {
                         sp10 = sp140[0x1B];
                         sp14 = sp140[0x1C];

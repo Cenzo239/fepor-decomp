@@ -8908,7 +8908,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802033AC(void *, void *);
+    void QUATMtx(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXCopy(void *, void *);
     void Game_Assert(void *, s32, void *);
@@ -9004,7 +9004,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
             case 8:
                 PSMTXScale(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
                 PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
-                fn_802033AC(e + 0x10, buf68);
+                QUATMtx(e + 0x10, buf68);
                 PSMTXConcat(buf68, buf8, bufF8);
                 PSMTXConcat(buf68, bufF8, bufF8);
                 PSMTXConcat(buf38, bufF8, bufF8);
