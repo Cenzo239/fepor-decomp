@@ -2173,7 +2173,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
     }
 }
 
-void fn_8018A6F4(void *arg0) {
+void MoveAnim_StartFlagFoot(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
     void fn_8004BE88(void *, s32);
