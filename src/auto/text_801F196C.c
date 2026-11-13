@@ -3642,7 +3642,7 @@ void *fn_801F9D50(void *arg0)
     extern u8 lbl_8029B32C[];
     extern f32 lbl_8036BA00;
     void *fn_8000CAA0(void *, void *);
-    void fn_801FB048(void *, u32);
+    void StaffRoll_VecReserve(void *, u32);
     struct Entry {
         u8 pad[0x30];
         u32 unk30;
@@ -3664,7 +3664,7 @@ void *fn_801F9D50(void *arg0)
         p[2] = 0;
         tmp->unk3c = lbl_8036BA00;
         tmp->unk4c = 0;
-        fn_801FB048(p, 0x28);
+        StaffRoll_VecReserve(p, 0x28);
     }
     return entry;
 }
@@ -4253,7 +4253,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     }
 }
 #pragma peephole on
-void fn_801FB048(void *arg0, u32 arg1) {
+void StaffRoll_VecReserve(void *arg0, u32 arg1) {
     typedef struct {
         s32 unk0;
         s32 unk4;
