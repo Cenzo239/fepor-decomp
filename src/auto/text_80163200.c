@@ -9517,7 +9517,7 @@ void fn_80175CA0(void) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_HandleUnitSelectCursorInput(void *arg0) {
+extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
     void Process_Goto(void *, s32);
     void UiCtx_BindUnit(void *, u32);
     void fn_80138808(void *, u32);
@@ -9548,22 +9548,23 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *arg0) {
         virtual void v11(u32);
     };
 
-    s16 sp8[2];
+    // Unit list cursor: refresh portrait on change; A bind, Y/X helpers, B cancel.
+    s16 slidePos[2];
     s32 btn;
     register u8 gate;
     register int flags;
-    s16 tmp;
-    unsigned int var_r30;
-    void *obj4c;
-    void *obj44;
+    s16 savedY;
+    unsigned int unit;
+    void *infoPanel;
+    void *portrait;
 
-    var_r30 = Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40));
-    Ui_UpdatePanelWidgets(arg0);
-    if (var_r30 != Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40))) {
-        var_r30 = Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40));
-        obj4c = *(void **)((u8 *)arg0 + 0x4C);
-        ((VObj *)obj4c)->v11(var_r30);
-        fn_80138808(*(void **)((u8 *)arg0 + 0x44), var_r30);
+    unit = Ui_ListGetSelected(*(void **)((u8 *)panel + 0x40));
+    Ui_UpdatePanelWidgets(panel);
+    if (unit != Ui_ListGetSelected(*(void **)((u8 *)panel + 0x40))) {
+        unit = Ui_ListGetSelected(*(void **)((u8 *)panel + 0x40));
+        infoPanel = *(void **)((u8 *)panel + 0x4C);
+        ((VObj *)infoPanel)->v11(unit);
+        fn_80138808(*(void **)((u8 *)panel + 0x44), unit);
     }
     flags = gUiInputFlags;
     gate = 0;
@@ -9573,29 +9574,29 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *arg0) {
     if (!gate) {
         register btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && (var_r30)) {
-            UiCtx_BindUnit(gUiContext, var_r30);
-            obj4c = *(void **)((u8 *)arg0 + 0x4C);
-            *(u8 *)((u8 *)obj4c + (int)0x78) = 1;
-            *(u8 *)((u8 *)*(void **)((u8 *)arg0 + (u32)0x4C) + 0x4A) = 0;
-            obj44 = *(void **)((u8 *)arg0 + 0x44);
-            tmp = *(s16 *)((u8 *)obj44 + 0xC);
-            sp8[0] = 0x260;
-            sp8[1] = tmp;
-            fn_80140258(arg0, obj44, sp8, 1);
-            fn_80140210(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
-            Process_Goto(arg0, 6);
+        if ((btn & 0x100) && (unit)) {
+            UiCtx_BindUnit(gUiContext, unit);
+            infoPanel = *(void **)((u8 *)panel + 0x4C);
+            *(u8 *)((u8 *)infoPanel + (int)0x78) = 1;
+            *(u8 *)((u8 *)*(void **)((u8 *)panel + (u32)0x4C) + 0x4A) = 0;
+            portrait = *(void **)((u8 *)panel + 0x44);
+            savedY = *(s16 *)((u8 *)portrait + 0xC);
+            slidePos[0] = 0x260;
+            slidePos[1] = savedY;
+            fn_80140258(panel, portrait, slidePos, 1);
+            fn_80140210(panel, *(void **)((u8 *)panel + 0x48), 0);
+            Process_Goto(panel, 6);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1DD, 0x64);
-        } else if ((btn & 0x800) && (var_r30)) {
-            fn_801695BC(var_r30, arg0, 0x1000000);
-            *(u8 *)((u8 *)arg0 + 0x65) = 5;
-            Process_Goto(arg0, 0x31);
-        } else if ((btn & 0x400) && (var_r30)) {
-            fn_801694AC(var_r30, arg0);
-            *(u8 *)((u8 *)arg0 + 0x65) = 5;
-            Process_Goto(arg0, 0x32);
+        } else if ((btn & 0x800) && (unit)) {
+            fn_801695BC(unit, panel, 0x1000000);
+            *(u8 *)((u8 *)panel + 0x65) = 5;
+            Process_Goto(panel, 0x31);
+        } else if ((btn & 0x400) && (unit)) {
+            fn_801694AC(unit, panel);
+            *(u8 *)((u8 *)panel + 0x65) = 5;
+            Process_Goto(panel, 0x32);
         } else if (btn & 0x200) {
-            Process_Goto(arg0, 0x35);
+            Process_Goto(panel, 0x35);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
         }
     }
