@@ -5081,42 +5081,43 @@ s32 fn_800B95B4(u32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
+/* Script command: play a colored, scaled effect on a named script object at (x,y). */
+s32 ScriptCmd_PlayEffect(u32 name, s32 slot, s32 x, s32 y, s32 scalePct, u32 rgb) {
     void *ScriptObj_FindByName(u32);
     void fn_801D029C(void *, s32, s32, s32, void *, f32);
     extern s32 gUiInputFlags;
     extern u32 gColorAlphaFF;
     extern f64 lbl_80369CF8;
     extern f32 gPercentToFloat;
-    void *p;
+    void *obj;
     u32 packed;
     u32 tmp;
     u32 color;
     u8 g;
     u8 r;
 
-    if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
+    if ((name < 0x80000000U) || (name >= 0x81800000U)) {
         return 0;
     }
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = ScriptObj_FindByName(arg0);
-    if (p == NULL) {
+    obj = ScriptObj_FindByName(name);
+    if (obj == NULL) {
         return 0;
     }
-    r = (u8)(arg5 >> 16);
-    g = (u8)(arg5 >> 8);
+    r = (u8)(rgb >> 16);
+    g = (u8)(rgb >> 8);
     tmp = gColorAlphaFF;
     ((u8 *)&packed)[0] = r;
     ((u8 *)&packed)[1] = g;
-    ((u8 *)&packed)[2] = (u8)arg5;
+    ((u8 *)&packed)[2] = (u8)rgb;
     ((u8 *)&packed)[3] = ((u8 *)&tmp)[3];
     ((u8 *)&tmp)[0] = r;
     ((u8 *)&tmp)[1] = g;
-    ((u8 *)&tmp)[2] = (u8)arg5;
+    ((u8 *)&tmp)[2] = (u8)rgb;
     color = packed;
-    fn_801D029C(p, arg1, arg2, arg3, &color, gPercentToFloat * (f32)arg4);
+    fn_801D029C(obj, slot, x, y, &color, gPercentToFloat * (f32)scalePct);
     return 1;
 }
 
