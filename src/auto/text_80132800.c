@@ -869,28 +869,24 @@ s32 fn_80133FA4(void *arg0) {
 
 void Item_Copy(void *);
 void fn_80133FBC(void *arg0, void *arg1) {
-    void *other;
-    void *self;
-
-    other = arg1;
-    self = arg0;
-    Item_Copy((void *)((u8 *)self + 0x60));
-    M2C_FIELD(self, s8 *, 0x54) = 0;
-    M2C_FIELD(self, s8 *, 0x53) = 0;
-    M2C_FIELD(self, s8 *, 0x52) = 0;
-    M2C_FIELD(self, s8 *, 0x51) = 0;
-    M2C_FIELD(self, s8 *, 0x51) = fn_8001C084(other);
-    M2C_FIELD(self, s8 *, 0x52) = fn_8001C040(other);
-    M2C_FIELD(self, s8 *, 0x53) = fn_8001BFFC(other);
-    M2C_FIELD(self, s8 *, 0x54) = fn_8001BFB8(other);
-    M2C_FIELD(self, s8 *, 0x55) = 5;
-    M2C_FIELD(self, s8 *, 0x59) = -5;
-    M2C_FIELD(self, s8 *, 0x56) = 5;
-    M2C_FIELD(self, s8 *, 0x5A) = -5;
-    M2C_FIELD(self, s8 *, 0x57) = 3;
-    M2C_FIELD(self, s8 *, 0x5B) = -3;
-    M2C_FIELD(self, s8 *, 0x58) = 5;
-    M2C_FIELD(self, s8 *, 0x5C) = -5;
+ s32 positive=5; s32 negative=-5;
+ Item_Copy((u8 *)arg0+0x60);
+ M2C_FIELD(arg0,s8 *,84)=0;
+ M2C_FIELD(arg0,s8 *,83)=0;
+ M2C_FIELD(arg0,s8 *,82)=0;
+ M2C_FIELD(arg0,s8 *,81)=0;
+ M2C_FIELD(arg0,s8 *,81)=fn_8001C084(arg1);
+ M2C_FIELD(arg0,s8 *,82)=fn_8001C040(arg1);
+ M2C_FIELD(arg0,s8 *,83)=fn_8001BFFC(arg1);
+ M2C_FIELD(arg0,s8 *,84)=fn_8001BFB8(arg1);
+ M2C_FIELD(arg0,s8 *,85)=positive;
+ M2C_FIELD(arg0,s8 *,89)=negative;
+ M2C_FIELD(arg0,s8 *,86)=positive;
+ M2C_FIELD(arg0,s8 *,90)=negative;
+ M2C_FIELD(arg0,s8 *,87)=3;
+ M2C_FIELD(arg0,s8 *,91)=-3;
+ M2C_FIELD(arg0,s8 *,88)=positive;
+ M2C_FIELD(arg0,s8 *,92)=negative;
 }
 
 #pragma use_lmw_stmw on
@@ -1319,7 +1315,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 }
 
 void fn_80134C24(s32 *arg0, void *arg1) {
-    s32 Text_MeasureHeight(M2C_UNK, s32, s16, s32, s16, s16, s16, f32);
+    s32 fn_800102BC(M2C_UNK, s32, s16, s32, s16, s16, s16, f32);
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *);
     extern f32 lbl_8036A5AC;
     s16 sp8;
@@ -1344,7 +1340,7 @@ void fn_80134C24(s32 *arg0, void *arg1) {
     temp_r4 = temp_r29 * (s16) (temp_r7 / temp_r9);
     temp_r5 = temp_r6 + M2C_FIELD(arg1, s16 *, 0x48);
     temp_r27 = temp_r4 + M2C_FIELD(arg1, s16 *, 0x4a);
-    temp_r3 = Text_MeasureHeight(-1, temp_r4, temp_r5, temp_r6, temp_r7, (s16) temp_r8, temp_r9, lbl_8036A5AC);
+    temp_r3 = fn_800102BC(-1, temp_r4, temp_r5, temp_r6, temp_r7, (s16) temp_r8, temp_r9, lbl_8036A5AC);
     sp8 = temp_r5;
     spA = temp_r27 + (s16) ((s32) (temp_r29 - temp_r3) >> 1);
     *arg0 = *fn_8013F748(arg1, (M2C_UNK *)&sp8, &spA);
@@ -7421,7 +7417,7 @@ void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
 }
 
 void fn_8013F920(void *arg0, void *arg1) {
-    void GXSetScissor(s16, s16, s16, s16);
+    void GXSetScissor(u32, u32, u32, u32);
     struct {
         s16 x;
         s16 y;
@@ -7478,7 +7474,7 @@ void fn_8013F920(void *arg0, void *arg1) {
     }
     r.y2 = t;
 
-    GXSetScissor(r.x, r.y, r.x2 - r.x, r.y2 - r.y);
+    GXSetScissor(r.x, r.y, (s16)(r.x2 - r.x), (s16)(r.y2 - r.y));
 }
 
 s32 fn_8013FA10(void) {
