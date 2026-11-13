@@ -1705,7 +1705,7 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_EndPrim(void);
     extern u8 lbl_8026D8D8[];
     extern u8 gItemMenuTextBuf[];
-    extern f32 lbl_80369A04;
+    extern f32 gItemMenuTextZ;
     extern f32 lbl_803699E8;
     void *temp_r30;
     void **temp_r31;
@@ -1717,7 +1717,7 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     }
     sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6C7, UnitRef_GetName());
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_80369A04);
+    Prim2D_AddZ(gItemMenuTextZ);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
@@ -2199,7 +2199,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK strcat(void *, void *);
     extern u8 lbl_8026D8D8[];
     extern s32 lbl_8026D7C8[];
-    extern f32 lbl_80369A04;
+    extern f32 gItemMenuTextZ;
     extern f32 lbl_803699E8;
     void *obj;
     struct UnitEntry *row;
@@ -2214,7 +2214,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
         idx = M2C_FIELD(arg2, u8 *, 0x3A);
         if ((u8) fn_8003701C(obj) > idx) {
             Prim2D_Begin();
-            Prim2D_AddZ(lbl_80369A04);
+            Prim2D_AddZ(gItemMenuTextZ);
             Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
             sprintf(sp18, lbl_8026D8D8 + 0x6C7, fn_800A8A88(fn_80037004(obj, idx)));
