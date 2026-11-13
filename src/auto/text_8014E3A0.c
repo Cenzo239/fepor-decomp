@@ -3896,7 +3896,7 @@ void fn_8015B820(s16 arg0, s16 arg1, s32 arg2) {
     }
 }
 
-void fn_8015B954(s16 arg0, s16 arg1, s32 arg2) {
+void Ui_DrawAtlasRect75(s16 arg0, s16 arg1, s32 arg2) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
     void Prim2D_Begin(void);

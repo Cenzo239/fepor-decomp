@@ -5910,7 +5910,7 @@ struct RefObj {
     virtual ~RefObj();
     s32 refCount;
 };
-extern "C" void fn_8015B954(s32, s32, s32);
+extern "C" void Ui_DrawAtlasRect75(s32, s32, s32);
 extern "C" void fn_8013692C(s32, s32, s32, s32, s32, s32);
 extern "C" void fn_8013CA2C(void *arg0) {
     struct Obj {
@@ -5948,7 +5948,7 @@ extern "C" void fn_8013CA2C(void *arg0) {
         virtual void v30() = 0;
     };
     ((Obj *)arg0)->v30();
-    fn_8015B954(0, 0, 0x10);
+    Ui_DrawAtlasRect75(0, 0, 0x10);
 }
 
 #pragma cplusplus on
