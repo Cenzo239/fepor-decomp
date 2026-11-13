@@ -637,7 +637,7 @@ void fn_80184618(s32 arg0, u32 arg1) {
 void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
-    s32 fn_80052B30(s32);
+    s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 lbl_80295AC0[];
     u8 spC[0x44];
@@ -655,7 +655,7 @@ void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     temp_r3 = Process_Create(lbl_80295AC0, var_r31);
     M2C_FIELD(temp_r3, s32 *, 0x30) = arg0;
     M2C_FIELD(temp_r3, s32 *, 0x40) = arg2;
-    sp8 = fn_80052B30(arg1);
+    sp8 = Mu_GetFlashColor(arg1);
     p = temp_r3;
     p[0x38] = ((u8 *)&sp8)[0];
     p[0x39] = ((u8 *)&sp8)[1];
@@ -801,7 +801,7 @@ void MuFade_UnlinkSame(void *arg0, void *arg1) {
 void fn_801850A8(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    s32 fn_80052B30(s32);
+    s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuFlash_script[];
     u8 spC[0x34];
@@ -815,7 +815,7 @@ void fn_801850A8(void *arg0) {
     temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
     M2C_FIELD(temp_r3, void **, 0x30) = temp_r30;
     M2C_FIELD(temp_r3, s32 *, 0x3C) = 0x10;
-    sp8 = fn_80052B30(0xC);
+    sp8 = Mu_GetFlashColor(0xC);
     M2C_FIELD(temp_r3, u8 *, 0x38) = ((u8 *)&sp8)[0];
     M2C_FIELD(temp_r3, u8 *, 0x39) = ((u8 *)&sp8)[1];
     M2C_FIELD(temp_r3, u8 *, 0x3A) = ((u8 *)&sp8)[2];
@@ -830,7 +830,7 @@ void fn_80185164(void *arg0) {
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    s32 fn_80052B30(s32);
+    s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 MoveAnim_str[];
     extern u8 E_MuFlash_script[];
@@ -851,7 +851,7 @@ void fn_80185164(void *arg0) {
     temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
     *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
     *(s32 *)((u8 *)temp_r3 + 0x3C) = 8;
-    sp8 = fn_80052B30(0xB);
+    sp8 = Mu_GetFlashColor(0xB);
     ((u8 *)temp_r3)[0x38] = ((u8 *)&sp8)[0];
     ((u8 *)temp_r3)[0x39] = ((u8 *)&sp8)[1];
     ((u8 *)temp_r3)[0x3A] = ((u8 *)&sp8)[2];
@@ -1125,7 +1125,7 @@ void fn_80185F40(void *arg0) {
     u8 Pad_IsButton(void *, s32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
-    s32 fn_80052B30(s32);
+    s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     void Process_ClearFunc(void *);
     extern u8 E_MuFlash_script[];
@@ -1143,7 +1143,7 @@ void fn_80185F40(void *arg0) {
     temp_r3 = Process_CreateEx(E_MuFlash_script, 0);
     *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
     *(s32 *)((u8 *)temp_r3 + 0x3C) = 0x10;
-    sp8 = fn_80052B30(0);
+    sp8 = Mu_GetFlashColor(0);
     ((u8 *)temp_r3)[0x38] = ((u8 *)&sp8)[0];
     ((u8 *)temp_r3)[0x39] = ((u8 *)&sp8)[1];
     ((u8 *)temp_r3)[0x3A] = ((u8 *)&sp8)[2];
@@ -1637,7 +1637,7 @@ void fn_801877C4(void *arg0) {
     void fn_8004FE98(void *, s32);
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
-    u32 fn_80052B30(s32);
+    u32 Mu_GetFlashColor(s32);
     void Effect_SetPos(f32, f32, f32);
     void *Effect_Create(void *, void *);
     f32 Math_Angle2D(void *, f32, f32, f32, f32);
@@ -1730,7 +1730,7 @@ void fn_801877C4(void *arg0) {
             tmp = Process_Create(base + 0xC0, (s32)obj);
             *(s32 *)((u8 *)tmp + 0x30) = count;
             *(s32 *)((u8 *)tmp + 0x40) = 2;
-            sp8 = fn_80052B30(1);
+            sp8 = Mu_GetFlashColor(1);
             *(u8 *)((u8 *)tmp + 0x38) = ((u8 *)&sp8)[0];
             *(u8 *)((u8 *)tmp + 0x39) = ((u8 *)&sp8)[1];
             *(u8 *)((u8 *)tmp + 0x3A) = ((u8 *)&sp8)[2];

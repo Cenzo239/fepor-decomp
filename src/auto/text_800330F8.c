@@ -12319,7 +12319,7 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
     (void)lbl_80369050;
 }
 
-s32 fn_80052B30(s32 arg0) {
+s32 Mu_GetFlashColor(s32 arg0) {
     extern s32 gMuFlashPalette[];
     return gMuFlashPalette[arg0];
 }
