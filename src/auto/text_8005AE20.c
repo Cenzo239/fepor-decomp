@@ -5754,7 +5754,7 @@ void fn_80223BB4(s32,MaterialColor*);void fn_8022224C(s32,MaterialColor*);
 void fn_80223F2C(s32,s32,s32,s32);void fn_80223A5C(s32,s32,s32,s32,s32);
 void fn_80223AE4(s32,s32,s32,s32,s32,s32);void fn_80223AA0(s32,s32,s32,s32,s32);void fn_80223B4C(s32,s32,s32,s32,s32,s32);
 extern u8 gMaterialTevStageCount;extern u8 gGMaterialAssertMsg[];extern s32 gMaterialStageIds[16];
-extern f32 lbl_80369288;extern u32 lbl_8036C450,lbl_8036C454,lbl_8036C458;
+extern f32 gInv255f;extern u32 lbl_8036C450,lbl_8036C454,lbl_8036C458;
 MaterialColor color,copy3,c3,copy4,c4,copy2,c2;
 s32 stage,r,g,b;
 s32 alpha;
@@ -5762,9 +5762,9 @@ color.r=((u8*)arg3)[8];color.g=((u8*)arg3)[9];color.b=((u8*)arg3)[10];color.a=((
 if((*(u32*)arg0&0x8020)==0x8000)color.a=((u8*)arg0)[0x84];
 else{
 if(fn_80064938(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58))){
-alpha=(s32)(lbl_80369288*(f32)(((u8*)arg0)[11]*color.a));color.a=alpha;
+alpha=(s32)(gInv255f*(f32)(((u8*)arg0)[11]*color.a));color.a=alpha;
 if(*(u16*)((u8*)arg2+8)&0x80){color.b=alpha;color.g=alpha;color.r=alpha;}
-}else color.a=(s32)(lbl_80369288*(f32)(((u8*)arg0)[11]*color.a));
+}else color.a=(s32)(gInv255f*(f32)(((u8*)arg0)[11]*color.a));
 if(!color.a)return 0;
 }
 fn_80064BBC(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58));
