@@ -9,9 +9,9 @@ struct Unit {
     /* 0xF0 */ u8 unkF0[0x10];
     /* 0x100 */ u8 unk100[0x40];
     /* 0x140 */ u8 unk140[0x50];
-    /* 0x190 */ void* unk190;
+    /* 0x190 */ void* person; /* person data; +0x8 = allegiance */
     /* 0x194 */ u8 unk194[0x14];
-    /* 0x1A8 */ s8 unk1A8;
+    /* 0x1A8 */ s8 hp;
 };
 
 #endif // INCLUDE_UNITS_H
