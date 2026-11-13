@@ -251,15 +251,12 @@ void BattleState_LoadMap(void *arg0, char *arg1) {
     if ((str = arg1) == NULL) {
         void *tmp = fn_80019F04(*(u8 *)((u8 *)arg0 + 0x10));
         str = *(char **)((u8 *)tmp + 4);
-        if (str == NULL) {
-            *((u8 *)arg0 + 0x504) = 0;
-            goto after_copy;
-        }
-        goto copy;
     }
-copy:
-    strcpy((char *)((u8 *)arg0 + 0x504), str);
-after_copy:
+    if (str == NULL) {
+        *((u8 *)arg0 + 0x504) = 0;
+    } else {
+        strcpy((char *)((u8 *)arg0 + 0x504), str);
+    }
     sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
     fn_80041514(Map_Get(), buffer);
