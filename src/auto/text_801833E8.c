@@ -1344,7 +1344,8 @@ void fn_801863F8(void *arg0) {
 }
 
 #pragma opt_strength_reduction off
-void Event_StartMuBlend(void *arg0) {
+/* Clear prior E_MuBlend/E_MuTransfer procs for the unit, scale hit count by class level, then start E_MuBlend mode 0. */
+void Event_StartMuBlend(void *proc) {
     void fn_8000A388(void *, void *, void *);
     void *fn_8000CA64(void *, void *);
     u8 fn_8004C0F0(void *);
@@ -1364,51 +1365,51 @@ void Event_StartMuBlend(void *arg0) {
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036AD08;
     extern f64 lbl_8036ACE0;
-    u8 sp40[0x34];
-    u8 sp8[0x38];
-    void *obj;
-    s32 count;
-    void *tmp;
+    u8 blendKey[0x34];
+    u8 transferKey[0x38];
+    void *unit;
+    s32 hitCount;
+    void *animSrc;
 
-    obj = *(void **)((u8 *)arg0 + 0x34);
-    count = 1;
-    count += 1;
-    if (fn_8004C0F0(obj) != 0) {
-        *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
-        *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
+    unit = *(void **)((u8 *)proc + 0x34);
+    hitCount = 1;
+    hitCount += 1;
+    if (fn_8004C0F0(unit) != 0) {
+        *(void **)(blendKey + 0x30) = unit;
+        fn_8000A388(E_MuBlend_script, fn_80185078, blendKey);
+        *(void **)(transferKey + 0x30) = unit;
+        fn_8000A388(E_MuTransfer_script, fn_80185078, transferKey);
         {
-            u8 lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
-            if ((s32)lvl > 0x14) {
-                if ((s32)lvl > 0x28) {
-                    count <<= 1;
+            u8 level = *(u8 *)((u8 *)fn_800508C4(unit) + 9);
+            if ((s32)level > 0x14) {
+                if ((s32)level > 0x28) {
+                    hitCount <<= 1;
                 } else {
-                    count = (s32)((f32)count + Math_Lerp(lbl_8036ACEC, lbl_8036AD08, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
+                    hitCount = (s32)((f32)hitCount + Math_Lerp(lbl_8036ACEC, lbl_8036AD08, lbl_8036ACF0, (f32)((s32)level - 0x14)));
                 }
             }
         }
-        if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
-            fn_8004FE98(obj, 0);
+        if ((hitCount == 0) || (fn_80060440((u8 *)unit + 0x1C) >= 4)) {
+            fn_8004FE98(unit, 0);
             return;
         }
-        arg0 = fn_8000CA64(E_MuBlend_script, arg0);
-        *(void **)((u8 *)arg0 + 0x30) = obj;
-        *(s32 *)((u8 *)arg0 + 0x34) = (s32)obj + 0x1C;
-        *(s32 *)((u8 *)arg0 + 0x38) = 0;
-        *(s32 *)((u8 *)arg0 + 0x3C) = count;
-        *(s32 *)((u8 *)arg0 + 0x40) = 0;
-        fn_800506E0(*(void **)((u8 *)arg0 + 0x30), 0);
-        tmp = fn_800639B4();
-        count = 0;
-        if (*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x44) != NULL) {
-            void *temp_r4 = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x44);
-            f32 temp_f3 = (f32)*(s32 *)((u8 *)temp_r4 + 0x14);
-            count = (s32)Math_Lerp((f32)*(s32 *)((u8 *)tmp + 0x14), (f32)*(s32 *)((u8 *)tmp + 0x18), (f32)*(s32 *)((u8 *)temp_r4 + 0x18) - temp_f3, *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x58) - temp_f3);
+        proc = fn_8000CA64(E_MuBlend_script, proc);
+        *(void **)((u8 *)proc + 0x30) = unit;
+        *(s32 *)((u8 *)proc + 0x34) = (s32)unit + 0x1C;
+        *(s32 *)((u8 *)proc + 0x38) = 0;
+        *(s32 *)((u8 *)proc + 0x3C) = hitCount;
+        *(s32 *)((u8 *)proc + 0x40) = 0;
+        fn_800506E0(*(void **)((u8 *)proc + 0x30), 0);
+        animSrc = fn_800639B4();
+        hitCount = 0;
+        if (*(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44) != NULL) {
+            void *range = *(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x44);
+            f32 rangeStart = (f32)*(s32 *)((u8 *)range + 0x14);
+            hitCount = (s32)Math_Lerp((f32)*(s32 *)((u8 *)animSrc + 0x14), (f32)*(s32 *)((u8 *)animSrc + 0x18), (f32)*(s32 *)((u8 *)range + 0x18) - rangeStart, *(f32 *)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x58) - rangeStart);
         }
-        fn_8005FC74(*(void **)((u8 *)arg0 + 0x34), tmp, 1);
-        fn_8005FEE8(*(void **)((u8 *)arg0 + 0x34), (f32)count);
-        fn_8004FE90(*(void **)((u8 *)arg0 + 0x30), (u8)*(s32 *)((u8 *)arg0 + 0x38));
+        fn_8005FC74(*(void **)((u8 *)proc + 0x34), animSrc, 1);
+        fn_8005FEE8(*(void **)((u8 *)proc + 0x34), (f32)hitCount);
+        fn_8004FE90(*(void **)((u8 *)proc + 0x30), (u8)*(s32 *)((u8 *)proc + 0x38));
     }
 }
 
