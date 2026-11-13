@@ -9439,7 +9439,7 @@ extern "C" void fn_80144000(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_8014402C(void *arg0, s32 arg1) {
+extern "C" void Ui_HandleWrappedCursorInput(void *arg0, s32 arg1) {
     s32 Ui_PlaySeCue(u8 *, s32);
     extern u8 lbl_80276B3C[];
     extern s32 gUiInputFlags;
