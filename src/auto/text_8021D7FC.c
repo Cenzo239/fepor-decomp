@@ -795,27 +795,28 @@ void GXSetCPUFifo(void *fifo) {
     extern void* __GXCurrentCPUFifo;
     extern void* __GXCurrentGPFifo;
     extern u8 __GXGPFifoAttached;
+    // Bind fifo as the CPU FIFO; if it is also the GP FIFO, link them and enable write interrupts.
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
-    u32 temp_r8;
-    u32 temp_r7;
+    u32 wrPtrPhys;
+    u32 piWpar;
 
     enabled = OSDisableInterrupts();
     __GXCurrentCPUFifo = fifo;
     if (fifo == __GXCurrentGPFifo) {
         M2C_FIELD(__piReg, u32 *, 0xC) = (u32) realFifo->base & 0x3FFFFFFF;
         M2C_FIELD(__piReg, u32 *, 0x10) = (u32) realFifo->top & 0x3FFFFFFF;
-        temp_r8 = __rlwimi(0, (u32) realFifo->wrPtr, 0, 6, 26);
-        temp_r7 = temp_r8;
-        temp_r7 = __rlwimi(temp_r7, 0, 26, 5, 5);
-        M2C_FIELD(__piReg, u32 *, 0x14) = temp_r7;
+        wrPtrPhys = __rlwimi(0, (u32) realFifo->wrPtr, 0, 6, 26);
+        piWpar = wrPtrPhys;
+        piWpar = __rlwimi(piWpar, 0, 26, 5, 5);
+        M2C_FIELD(__piReg, u32 *, 0x14) = piWpar;
         __GXGPFifoAttached = 1;
         __GXWriteFifoIntReset(1, 1);
         __GXWriteFifoIntEnable(1, 0);
         __GXFifoLink(1);
     } else {
-        u32 temp2_r8;
-        u32 temp2_r7;
+        u32 wrPtrPhys2;
+        u32 piWpar2;
 
         if (__GXGPFifoAttached != 0) {
             __GXFifoLink(0);
@@ -824,10 +825,10 @@ void GXSetCPUFifo(void *fifo) {
         __GXWriteFifoIntEnable(0, 0);
         M2C_FIELD(__piReg, u32 *, 0xC) = (u32) realFifo->base & 0x3FFFFFFF;
         M2C_FIELD(__piReg, u32 *, 0x10) = (u32) realFifo->top & 0x3FFFFFFF;
-        temp2_r8 = __rlwimi(0, (u32) realFifo->wrPtr, 0, 6, 26);
-        temp2_r7 = temp2_r8;
-        temp2_r7 = __rlwimi(temp2_r7, 0, 26, 5, 5);
-        M2C_FIELD(__piReg, u32 *, 0x14) = temp2_r7;
+        wrPtrPhys2 = __rlwimi(0, (u32) realFifo->wrPtr, 0, 6, 26);
+        piWpar2 = wrPtrPhys2;
+        piWpar2 = __rlwimi(piWpar2, 0, 26, 5, 5);
+        M2C_FIELD(__piReg, u32 *, 0x14) = piWpar2;
     }
     PPCSync();
     OSRestoreInterrupts(enabled);
