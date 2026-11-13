@@ -13693,19 +13693,19 @@ void fn_80261730(u8 arg0, u16 arg1, void *arg2, u32 arg3,
 #pragma peephole off
 void fn_802618E4(s32 arg0)
 {
-    extern u8 *gSoundVoices;
+    extern u8 *lbl_80368AA0;
     extern u8 lbl_80368AD0;
     u8 *object;
     u8 *q;
     s32 off;
 
     off = arg0 * 0xF8;
-    object = gSoundVoices + off;
+    object = lbl_80368AA0 + off;
 
     if (object[0xF0] == 1) {
         if (lbl_80368AD0 == 0) {
             object[0xF2] = 1;
-            q = gSoundVoices;
+            q = lbl_80368AA0;
             q = q + off;
             q = q + (lbl_80368AD0 << 2);
             *(u32 *)(q + 0x24) |= 0x20;
@@ -13980,22 +13980,28 @@ void fn_80261D90(s32 arg0, u8 arg1, u16 arg2, u16 arg3)
     }
 }
 
+#pragma global_optimizer off
 void fn_80261E10(s32 arg0, u8 arg1) {
-    extern s32 gSoundVoices;
-    s32 temp_r5;
-    s32 *temp_r3;
+    extern u8 *gSoundVoices;
+    u8 *entry;
+    s32 offset;
+    u16 ten;
 
-    if (arg1 != 0) {
-        temp_r5 = arg0 * 0xF8;
-        temp_r3 = (s32 *) (gSoundVoices + temp_r5);
-        temp_r3[0x3D] |= 0x80000000;
+    if (arg1 == 0) {
+        offset = arg0 * 0xF8;
+        ten = 0x10;
+        entry = gSoundVoices + offset;
+        *(u32 *)(entry + 0xF4) |= 0x80000000;
+        entry = gSoundVoices + offset;
+        *(u16 *)(entry + 0xD0) = ten;
+        entry = gSoundVoices + offset;
+        *(u16 *)(entry + 0xD2) = ten;
     } else {
-        temp_r5 = arg0 * 0xF8;
-        temp_r3 = (s32 *) (gSoundVoices + temp_r5);
-        temp_r3[0x3D] &= 0x7FFFFFFF;
+        entry = gSoundVoices + arg0 * 0xF8;
+        *(u32 *)(entry + 0xF4) &= 0x7FFFFFFF;
     }
 }
-
+#pragma global_optimizer reset
 void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
                  f32 arg3, f32 arg4, f32 arg5)
 {
@@ -14204,6 +14210,13 @@ void fn_802622D0(s32 arg0) {
 
 void fn_802622F4(void) {
 
+}
+
+u32 fn_802622F8(u32 arg0) {
+    extern u8 gSoundData[];
+    extern f32 lbl_8036C374;
+
+    return (u32)((lbl_8036C374 * (f32)arg0) / (f32)*(u32 *)gSoundData);
 }
 
 void fn_80262354(void *arg0, void *arg1) {
@@ -15117,9 +15130,10 @@ int Audio_Unlock(void) {
 }
 
 int Audio_Lock(void) {
+    int OSDisableInterrupts(void);
     extern u16 lbl_80368AFC;
-    extern s32 lbl_80368AF8;
-    s32 count;
+    extern int lbl_80368AF8;
+    int count;
 
     count = lbl_80368AFC;
     lbl_80368AFC = count + 1;
@@ -15959,7 +15973,7 @@ s32 fn_80264BA4(void *arg0) {
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
-    if (p != NULL) {
+    if (p) {
         fn_80263800(p);
     }
     fn_80263800(*(void **)((u8 *)arg0 + 0x34));
