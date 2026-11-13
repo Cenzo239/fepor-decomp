@@ -346,7 +346,7 @@ u32 entryToPath(u32 entry, char *path, u32 maxlen) {
     return loc;
 }
 
-BOOL fn_8020C920(s32 entrynum, char *path, u32 maxlen) {
+BOOL DVDConvertEntrynumToPath(s32 entrynum, char *path, u32 maxlen) {
     u32 loc;
 
     loc = entryToPath((u32)entrynum, path, maxlen);
@@ -369,7 +369,7 @@ BOOL fn_8020C920(s32 entrynum, char *path, u32 maxlen) {
 }
 
 BOOL fn_8020CA74(char *path, u32 maxlen) {
-    return fn_8020C920((s32)lbl_80368588, path, maxlen);
+    return DVDConvertEntrynumToPath((s32)lbl_80368588, path, maxlen);
 }
 
 s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
