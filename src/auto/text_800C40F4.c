@@ -13548,7 +13548,7 @@ s32 field_0x194;
 s32 field_0x198;
 s32 field_0x19C;
 s32 field_0x1A0;
-extern "C" void fn_800E8AA0(void *, s32, f32, f32, s32);
+extern "C" void Camera_SetTransition(void *, s32, f32, f32, s32);
 extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     struct Obj {
         u8 pad[0x10];
@@ -13577,7 +13577,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        fn_800E8AA0((void *)ObjList_Get(list, i), arg2, farg0, lbl_80369F68, arg1);
+        Camera_SetTransition((void *)ObjList_Get(list, i), arg2, farg0, lbl_80369F68, arg1);
     }
     ObjList_Destroy(list, -1);
 }
@@ -14083,7 +14083,7 @@ void fn_800E8A88(void *arg0, f32 farg0) {
     M2C_FIELD(arg0, s32 *, 0x120) = 0x3C;
 }
 
-void fn_800E8AA0(void *arg0, s32 arg1, f32 farg0, f32 farg1, s32 arg2) {
+void Camera_SetTransition(void *arg0, s32 arg1, f32 farg0, f32 farg1, s32 arg2) {
     extern f32 lbl_80369F80;
     extern f32 lbl_80369F7C;
     extern f32 lbl_80369F78;
