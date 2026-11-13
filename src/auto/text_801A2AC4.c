@@ -322,7 +322,7 @@ s32 fn_801A3390(s32 arg0) {
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
-    void fn_801A4A24(void *, s32);
+    void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
@@ -333,9 +333,9 @@ s32 fn_801A3390(s32 arg0) {
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
-        fn_801A4A24(gBattle, 1);
+        Battle_SetAttackHit(gBattle, 1);
     } else {
-        fn_801A4A24(gBattle, 0);
+        Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
@@ -348,7 +348,7 @@ s32 fn_801A3478(s32 arg0) {
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
-    void fn_801A4A24(void *, s32);
+    void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
@@ -362,9 +362,9 @@ s32 fn_801A3478(s32 arg0) {
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
-        fn_801A4A24(gBattle, 1);
+        Battle_SetAttackHit(gBattle, 1);
     } else {
-        fn_801A4A24(gBattle, 0);
+        Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
@@ -377,7 +377,7 @@ s32 fn_801A3570(s32 arg0) {
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
-    void fn_801A4A24(void *, s32);
+    void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
@@ -391,9 +391,9 @@ s32 fn_801A3570(s32 arg0) {
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u16 hi:6; u16 mid:3; u16 lo:7; } *)(base + 0x484))->mid = 5;
-        fn_801A4A24(gBattle, 1);
+        Battle_SetAttackHit(gBattle, 1);
     } else {
-        fn_801A4A24(gBattle, 0);
+        Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
@@ -854,7 +854,7 @@ void Battle_SelectWeapon(void *arg0)
     fn_801A8010(obj);
 }
 
-void fn_801A4A24(s32 arg0, u8 arg1) {
+void Battle_SetAttackHit(s32 arg0, u8 arg1) {
     M2C_UNK BattleAnim_Queue(s32, u8, M2C_UNK);
     BattleAnim_Queue(arg0 + 0x8A0, 0x20U, 0);
     BattleAnim_Queue(arg0 + 0x8A0, (arg1 != 0) ? 0x50 : 0x52, 0);
