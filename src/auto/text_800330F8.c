@@ -901,7 +901,7 @@ void fn_80034F40(void *arg0) {
  M2C_FIELD(obj,u8*,0x1BB)=M2C_FIELD(arg0,u8*,0x1BB);
 }
 
-void fn_80034FF0(void *arg0, void *arg1) {
+void Unit_AddGrowthProgress(void *arg0, void *arg1) {
     s16 var_r4;
     s16 var_r5;
     s16 var_r5_2;
@@ -982,7 +982,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     void BattleAnim_Queue(void *, s32);
     void fn_80034130(void *, void *);
     void Unit_CalcLevelUpGrowths(void *, void *);
-    void fn_80034FF0(void *, void *);
+    void Unit_AddGrowthProgress(void *, void *);
     void **fn_80037C20(void *);
     s8 fn_80037CCC(void *);
     u8 fn_800386B0(void *);
@@ -1178,7 +1178,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     fn_800056CC(lbl_8026A120 + 0x1D0);
     fn_800056CC(lbl_8026A120 + 0x1EA);
     fn_800056CC(lbl_8026A120 + 0x213, (s8)((u8 *)arg0)[0x1B4], (s8)((u8 *)arg0)[0x1B5], (s8)((u8 *)arg0)[0x1B6], (s8)((u8 *)arg0)[0x1B7], (s8)((u8 *)arg0)[0x1B8], (s8)((u8 *)arg0)[0x1B9], (s8)((u8 *)arg0)[0x1BA], (s8)((u8 *)arg0)[0x1BB]);
-    fn_80034FF0(arg0, vals);
+    Unit_AddGrowthProgress(arg0, vals);
     fn_800056CC(lbl_8026A120 + 0x23C);
     fn_800056CC(lbl_8026A120 + 0x1EA);
     fn_800056CC(lbl_8026A120 + 0x213, (s8)((u8 *)arg0)[0x1B4], (s8)((u8 *)arg0)[0x1B5], (s8)((u8 *)arg0)[0x1B6], (s8)((u8 *)arg0)[0x1B7], (s8)((u8 *)arg0)[0x1B8], (s8)((u8 *)arg0)[0x1B9], (s8)((u8 *)arg0)[0x1BA], (s8)((u8 *)arg0)[0x1BB]);
