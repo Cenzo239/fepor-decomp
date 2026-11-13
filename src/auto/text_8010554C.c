@@ -5773,7 +5773,7 @@ void *MapObjEvent_Push(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     return temp_r8;
 }
 
-void *fn_8010FF24(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
+void *MapObjEvent_Find(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
     s32 count;
     s32 i;
     char *p;

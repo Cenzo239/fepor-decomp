@@ -914,7 +914,7 @@ void fn_801A4BE0(void *arg0) {
     extern u8 gMapObjEventList[516];
     void fn_801A9AF8(void *);
     void fn_80034F40(void *);
-    void *fn_8010FF24(void *, u8, u8, u8);
+    void *MapObjEvent_Find(void *, u8, u8, u8);
     void fn_8010FE08(void *, u8, u8, u8);
     void *entry;
 
@@ -927,7 +927,7 @@ void fn_801A4BE0(void *arg0) {
         fn_80034F40((s8 *)arg0 + 0x2E0);
     }
     if (M2C_FIELD(arg0, u32 *, 0xCAC) & 0x100) {
-        entry = fn_8010FF24(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
+        entry = MapObjEvent_Find(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
         M2C_FIELD(entry, s8 *, 4) = M2C_FIELD(arg0, s8 *, 0x488);
         if (M2C_FIELD(arg0, s8 *, 0x488) == 0) {
             fn_8010FE08(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);

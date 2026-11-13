@@ -100,7 +100,7 @@ void fn_800727E0(void) {
 
 #pragma global_optimizer off
 void fn_80072810(void) {
-    void fn_8010FF24(void *, u8, u8, s32);
+    void MapObjEvent_Find(void *, u8, u8, s32);
     void fn_8010FA2C(void);
     void UnitRef_GetName(void);
     void fn_80091A1C(void);
@@ -115,7 +115,7 @@ void fn_80072810(void) {
     ptr = *(void **)base;
     a = *((u8 *)ptr + 0x19F);
     b = *((u8 *)ptr + 0x19E);
-    fn_8010FF24(gMapObjEventList, b, a, 7);
+    MapObjEvent_Find(gMapObjEventList, b, a, 7);
     fn_8010FA2C();
     UnitRef_GetName();
     fn_80091A1C();

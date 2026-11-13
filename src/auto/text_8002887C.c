@@ -951,7 +951,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     extern u8 gBattleMap[];
     extern u8 gUnits[];
 
-    void *fn_8010FF24(void *, s32, s32, s32);
+    void *MapObjEvent_Find(void *, s32, s32, s32);
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
     void *fn_80019E24(s32);
@@ -980,7 +980,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     source = (u8 *)arg1;
 
     if (source == 0) {
-        source = (u8 *)fn_8010FF24(
+        source = (u8 *)MapObjEvent_Find(
             gMapObjEventList,
             *((u8 *)arg0 + 0x19E),
             *((u8 *)arg0 + 0x19F),
@@ -1480,7 +1480,7 @@ extern "C" void fn_8002C618(void *arg0, s8 arg1, s8 arg2) {
 #pragma cplusplus reset
 
 void fn_8002C8E0(void) {
-    void *fn_8010FF24(void *, s8, s8, u8);
+    void *MapObjEvent_Find(void *, s8, s8, u8);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
     extern u8 gMapObjEventList[];
     extern u8 lbl_802EF4E0[];
@@ -1488,7 +1488,7 @@ void fn_8002C8E0(void) {
     s8 x;
     s8 y;
 
-    ptr = fn_8010FF24(gMapObjEventList, x, y, 4);
+    ptr = MapObjEvent_Find(gMapObjEventList, x, y, 4);
     if (ptr != NULL) {
         if (*(u8 *)((char *)ptr + 4) != 0) {
             fn_8002F6E8(lbl_802EF4E0, *(u8 *)ptr, *(u8 *)((char *)ptr + 1), 0, 4);
@@ -3982,7 +3982,7 @@ void *fn_80032D4C(void) {
 void *fn_80032D5C(void) {
     s32 fn_80019E24(u8);
     void UnitRef_Set(void *, s32);
-    void *fn_8010FF24(void *, u8, u8, s32);
+    void *MapObjEvent_Find(void *, u8, u8, s32);
     extern u8 gUiContext[];
     extern u8 gMapObjEventList[];
     extern u8 lbl_80367278;
@@ -3991,7 +3991,7 @@ void *fn_80032D5C(void) {
     s32 val;
 
     p = gUiContext;
-    temp = fn_8010FF24(gMapObjEventList, p[0xD], p[0xE], 7);
+    temp = MapObjEvent_Find(gMapObjEventList, p[0xD], p[0xE], 7);
     val = fn_80019E24(*(u8 *)((u8 *)temp + 4));
     UnitRef_Set(&lbl_80367278, val);
     return &lbl_80367278;

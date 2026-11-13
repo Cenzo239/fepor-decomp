@@ -795,7 +795,7 @@ s32 ScriptCmd_GetDiedPlayerCount(void) {
 #pragma use_lmw_stmw on
 s32 ScriptCmd_ShooterBulletCheck(void) {
     void DebugPrint(void *, ...);
-    void *fn_8010FF24(void *, s8, s8, s32);
+    void *MapObjEvent_Find(void *, s8, s8, s32);
     extern u8 gWinCondCmdNames[];
     extern u8 gBattleMap[];
     extern u8 gMapObjEventList[];
@@ -813,7 +813,7 @@ s32 ScriptCmd_ShooterBulletCheck(void) {
     table = gMapObjEventList;
     for (; y <= (s8)map[0xB] - 1; y++) {
         for (x = (s8)map[8]; x <= (s8)map[0xA] - 1; x++) {
-            tmp = fn_8010FF24(table, (s8)x, (s8)y, 7);
+            tmp = MapObjEvent_Find(table, (s8)x, (s8)y, 7);
             if (tmp != NULL) {
                 sum += 5 - ((u8 *)tmp)[5];
             }

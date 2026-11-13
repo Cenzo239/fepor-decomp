@@ -420,7 +420,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *fn_8005B73C(void *);
     void Ui_DrawTerrainInfoDecor(u32, s32, f32, f32);
     void *fn_8010F9BC(void *, s8, s8, s32);
-    void *fn_8010FF24(void *, s8, s8, s32);
+    void *MapObjEvent_Find(void *, s8, s8, s32);
     extern u8 lbl_8026D404[];
     extern u8 gBattleMap[];
     extern u8 gMapObjEventList[];
@@ -486,7 +486,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
 
 case_common:
     str = fn_8005B73C(unit);
-    obj = fn_8010FF24(gMapObjEventList, (s8)x, (s8)y, 4);
+    obj = MapObjEvent_Find(gMapObjEventList, (s8)x, (s8)y, 4);
     if (obj != NULL && *(u8 *)((u8 *)obj + 4) != 0) {
         Ui_DrawTerrainInfoDecor(tex, 2, farg0, farg1);
         Prim2D_Begin();
