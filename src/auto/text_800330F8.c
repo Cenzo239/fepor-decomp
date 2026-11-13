@@ -12458,7 +12458,7 @@ void fn_8005306C(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-static inline void *get_53260_object(void *base) {
+static inline void *MapObj_GetOwner(void *base) {
     void *obj;
     if (*(u32 *)((u8 *)base + 8) & 0x20000000) {
         obj = *(void **)((u8 *)base + 0x34);
@@ -12512,7 +12512,7 @@ void MapObj_UpdateMatrix(void *arg0)
     pos = src;
     node = *(void **)((u8 *)base + 0x5C);
     flags = *(u32 *)((u8 *)base + 0x8);
-    obj = get_53260_object(base);
+    obj = MapObj_GetOwner(base);
     if (obj == NULL) {
         cam = NULL;
     } else {
