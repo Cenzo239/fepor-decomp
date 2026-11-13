@@ -16073,7 +16073,7 @@ s32 fn_80182574(s32 arg0) {
     u8 fn_8010B658(s32);
     u8 Ai_TrySelectApproachTile(s32);
     u8 fn_8010BB74(s32);
-    u8 fn_8010BEB8(s32);
+    u8 Ai_TrySeekHealer(s32);
     u8 Ai_TryUseHealItem(s32);
     u8 Unit_HasLowHpAi(s32);
     u8 Unit_IsLowHp(s32);
@@ -16087,7 +16087,7 @@ s32 fn_80182574(s32 arg0) {
         if (Ai_TryUseHealItem(arg0) != 0) {
             return 1;
         }
-        if (fn_8010BEB8(arg0) != 0) {
+        if (Ai_TrySeekHealer(arg0) != 0) {
             return 1;
         }
         if (fn_8010BB74(arg0) != 0) {

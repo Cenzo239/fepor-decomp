@@ -3772,7 +3772,7 @@ u8 fn_8010BDE0(s32 arg0) {
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma opt_strength_reduction off
-u8 fn_8010BEB8(void *arg0) {
+u8 Ai_TrySeekHealer(void *arg0) {
     u8 fn_80092F38(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
