@@ -613,7 +613,7 @@ void fn_80034130(void *arg0, void *arg1) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
-void fn_80034864(s32 self, void *arg1) {
+void Battle_QueuePromotionGains(s32 self, void *arg1) {
     void fn_801A7794(void *, void *, void *);
     void fn_8003D2C4(void *);
     void fn_801A981C(void *, s32, s32);

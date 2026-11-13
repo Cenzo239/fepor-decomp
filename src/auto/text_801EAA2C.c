@@ -1920,7 +1920,7 @@ void fn_801EDDF0(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801A7FA4(void *);
     void fn_801A9CF4(void *, void *);
-    void fn_80034864(void *, void *);
+    void Battle_QueuePromotionGains(void *, void *);
     void fn_8003D2C4(void *);
     extern u8 lbl_80330EAC[];
     extern u8 gUiContext[];
@@ -1947,7 +1947,7 @@ void fn_801EDDF0(void *arg0) {
         fn_801A9CF4(*(void **)((u8 *)arg0 + 0x50), base_2e0);
     }
     gUiContext[0x14] = 0xFF;
-    fn_80034864(lbl_80330EAC, *(void **)((u8 *)arg0 + 0x30));
+    Battle_QueuePromotionGains(lbl_80330EAC, *(void **)((u8 *)arg0 + 0x30));
     fn_8003D2C4(*(void **)((u8 *)arg0 + 0x30));
 }
 
