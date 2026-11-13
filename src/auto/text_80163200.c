@@ -935,7 +935,7 @@ void UnitInv_GetSlot(void *arg0) {
     Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58));
 }
 
-void fn_80164A48(void *arg0) {
+void UnitInv_Refresh(void *arg0) {
     void fn_800947E0(void *);
     void *x = *(void **)((u8 *)arg0 + 0x58);
     if (x != NULL) {
@@ -6233,7 +6233,7 @@ void fn_8016F694(void *arg0) {
     s8 fn_80037E00(void *);
     void fn_800951D0(void *, s32);
     void fn_80138808(void *, void *);
-    void fn_80164A48(void *);
+    void UnitInv_Refresh(void *);
     s16 fn_80164E78(void *, s16);
     s16 fn_80164FBC(void *, s16);
     void fn_80184C7C(void *, s32, s32, s32);
@@ -6245,7 +6245,7 @@ void fn_8016F694(void *arg0) {
 
     temp_r29 = M2C_FIELD(arg0, void **, 0x4C);
     temp_r30 = M2C_FIELD(temp_r29, s16 *, 0x4C);
-    fn_80164A48(temp_r29);
+    UnitInv_Refresh(temp_r29);
     var_r3 = fn_80164FBC(temp_r29, temp_r30);
     if (var_r3 < 0) {
         var_r3 = fn_80164E78(temp_r29, temp_r30);
@@ -6545,7 +6545,7 @@ void fn_8016FF34(void *arg0) {
     u32 *Unit_GetItemSlot(void *, s32);
     u8 fn_800C3C1C(void *, void *);
     s16 fn_800C3D48(void *);
-    void fn_80164A48(void *);
+    void UnitInv_Refresh(void *);
     s16 fn_80164E78(void *, s32);
     extern u8 lbl_80294B10[];
     extern u32 gUiContext[];
@@ -6575,7 +6575,7 @@ void fn_8016FF34(void *arg0) {
         }
         i += 1;
     }
-    fn_80164A48(obj);
+    UnitInv_Refresh(obj);
     *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(obj, 0);
     gUiContext[1] = 0;
     fn_8000CAA0(lbl_80294B10, arg0);
@@ -6847,7 +6847,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     s32 UnitInv_GetSlot(void *, s16);
     void Item_Copy(s32, s32);
-    void fn_80164A48(void *);
+    void UnitInv_Refresh(void *);
     void fn_801436AC(void *, s32);
     void fn_80143C9C(void *);
     void fn_8001D580(s32);
@@ -6921,7 +6921,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     }
     Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
     Item_Copy(UnitInv_GetSlot(temp_r30, (s16)var_r27), temp_r29);
-    fn_80164A48(temp_r30);
+    UnitInv_Refresh(temp_r30);
     fn_801436AC(temp_r31, temp_r29);
     fn_80143C9C(temp_r31);
     fn_8001D580(temp_r29);
