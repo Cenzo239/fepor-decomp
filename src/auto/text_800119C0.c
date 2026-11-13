@@ -158,55 +158,52 @@ void fn_80013778(void *arg0, u8 *arg1) {
     u8 *inner;
     s32 zero;
     void *ctx;
-    s8 d;
-    s16 lim;
 
     if (arg0 == NULL) {
         arg0 = lbl_803671A4;
     }
 
-    d = (s8)arg1[0xd];
     zero = 0;
     inner = *(u8 **)(arg1 + 8);
-    lim = *(s16 *)(arg1 + 0x12);
-    base = *(s32 *)((u8 *)arg0 + 0x18) - (d * 4);
-    *(s32 *)((u8 *)arg0 + 0x18) = base + (lim * 4);
+    base = *(s32 *)((u8 *)arg0 + 0x18) - ((s8)arg1[0xd] * 4);
+    *(s32 *)((u8 *)arg0 + 0x18) = base + (*(s16 *)(arg1 + 0x12) * 4);
     table = (u8 *)lbl_80367198 + (*(u16 *)(inner + 0x20) * 4);
 
     i = (s8)arg1[0xd];
     p = (s32 *)(base + (i * 4));
-    for (; i < *(s16 *)(arg1 + 0x12); i++) {
+    while (i < *(s16 *)(arg1 + 0x12)) {
         *p = zero;
-        p++;
+        p += 1;
+        i += 1;
     }
 
     lbl_80367180 = arg0;
 
     sp = *(s32 **)((u8 *)arg0 + 0x18);
     val = *(s32 *)((u8 *)arg0 + 0xc);
-    *(s32 **)((u8 *)arg0 + 0x18) = sp + 1;
+    *(s32 **)((u8 *)arg0 + 0x18) = (s32 *)((u8 *)sp + 4);
     *sp = val;
 
     ctx = lbl_80367180;
-    val = *(s32 *)((u8 *)arg0 + 8);
+    val = *(s32 *)((u8 *)arg0 + 0x8);
     sp = *(s32 **)((u8 *)ctx + 0x18);
-    *(s32 **)((u8 *)ctx + 0x18) = sp + 1;
+    *(s32 **)((u8 *)ctx + 0x18) = (s32 *)((u8 *)sp + 4);
     *sp = val;
 
     ctx = lbl_80367180;
     val = *(s32 *)((u8 *)arg0 + 0x10);
     sp = *(s32 **)((u8 *)ctx + 0x18);
-    *(s32 **)((u8 *)ctx + 0x18) = sp + 1;
+    *(s32 **)((u8 *)ctx + 0x18) = (s32 *)((u8 *)sp + 4);
     *sp = val;
 
     ctx = lbl_80367180;
     val = *(s32 *)((u8 *)arg0 + 0x14);
     sp = *(s32 **)((u8 *)ctx + 0x18);
-    *(s32 **)((u8 *)ctx + 0x18) = sp + 1;
+    *(s32 **)((u8 *)ctx + 0x18) = (s32 *)((u8 *)sp + 4);
     *sp = val;
 
     *(s32 *)((u8 *)arg0 + 0xc) = *(s32 *)(arg1 + 4);
-    *(void **)((u8 *)arg0 + 8) = arg1;
+    *(void **)((u8 *)arg0 + 0x8) = arg1;
     *(void **)((u8 *)arg0 + 0x10) = table;
     *(s32 *)((u8 *)arg0 + 0x14) = base;
 }
@@ -900,7 +897,7 @@ void main(void) {
     void fn_800675E8(s32);
     void fn_80067DA4(s32);
     void Camera_ApplyOrtho(s32);
-    void fn_8006E568(s32);
+    void DEMOSetStats(s32);
     void fn_8006E660(void);
     void DEMOBeforeRender(void);
     void fn_80078DF8(void);
@@ -963,7 +960,7 @@ void main(void) {
     fn_802052E8();
     fn_80025BA0();
     Game_InitVideo();
-    fn_8006E568(5);
+    DEMOSetStats(5);
     fn_801FBC48();
     stack = (u32)base + 0x1698;
     fn_8020A558(base + 0x1380, fn_80014790, 0, (void *)(stack + 0x1000), 0x1000, 0x10, 1);

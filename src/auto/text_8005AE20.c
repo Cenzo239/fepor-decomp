@@ -5146,7 +5146,7 @@ void *Light_GetChannel(s32 arg0) {
     return (u8 *)lbl_80366DDC + arg0 * 0x2c;
 }
 
-#pragma peephole off
+#pragma scheduling off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
@@ -5156,7 +5156,7 @@ void fn_80067460(void *arg0) {
         lbl_80366DDC = arg0;
     }
 }
-#pragma peephole on
+#pragma scheduling reset
 s32 fn_80067478(void) {
     extern s32 lbl_80366DDC;
     return lbl_80366DDC;
@@ -5173,10 +5173,10 @@ void fn_800675C8(void *arg0) {
     extern u8 lbl_80311AF8[];
     extern void *lbl_80366DD4;
 
-    if (arg0 != NULL) {
-        return;
+    if (arg0 == 0) {
+        arg0 = lbl_80311AF8;
+        lbl_80366DD4 = arg0;
     }
-    lbl_80366DD4 = lbl_80311AF8;
 }
 #pragma peephole on
 s32 Fog_GetColor(void) {
@@ -6469,8 +6469,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(register s32 arg0) {
-    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(s32 arg0) {
+    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 
@@ -7083,7 +7083,7 @@ extern s32 gDvdCheckSnapshot;
 extern f32 lbl_803692C8;
 extern f64 lbl_803692D0;
 extern f32 lbl_803692CC;
-void fn_8006E568(u32 arg0)
+void DEMOSetStats(u32 arg0)
 {
     void fn_8020FFC4(void (*)(void));
     void fn_80225204(s32, s32);
