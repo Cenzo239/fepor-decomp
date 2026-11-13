@@ -2924,7 +2924,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 fn_8003AEB0(void *);
     s32 Unit_GetSpd(void *);
     s32 fn_8003ACF8(void *);
-    s32 fn_8003B518(void *);
+    s32 Unit_GetLck(void *);
     s32 fn_8003AA40(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003A778(void *);
@@ -2997,7 +2997,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     self->v9(0x8C, 0x22, lbl_802767E0 + 0x6C, Unit_GetSpd(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x50]);
     idx = fn_8003ACF8(unit);
-    self->v9(0x8C, 0x42, lbl_802767E0 + 0x75, fn_8003B518(unit), idx, 0x28);
+    self->v9(0x8C, 0x42, lbl_802767E0 + 0x75, Unit_GetLck(unit), idx, 0x28);
     idx = fn_8003AA40(unit);
     self->v9(0x8C, 0x62, lbl_802767E0 + 0x7D, fn_8003B4D4(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x52]);
@@ -3146,7 +3146,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     s32 fn_8003AEB0(void *);
     s32 Unit_GetSpd(void *);
     s32 fn_8003ACF8(void *);
-    s32 fn_8003B518(void *);
+    s32 Unit_GetLck(void *);
     s32 fn_8003AA40(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003A778(void *);
@@ -3209,7 +3209,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     self->v9(0x8C, 0xA, lbl_802767E0 + 0x6C, Unit_GetSpd(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x50]);
     idx = fn_8003ACF8(unit);
-    self->v9(0x8C, 0x29, lbl_802767E0 + 0x75, fn_8003B518(unit), idx, 0x28);
+    self->v9(0x8C, 0x29, lbl_802767E0 + 0x75, Unit_GetLck(unit), idx, 0x28);
     idx = fn_8003AA40(unit);
     self->v9(0x8C, 0x48, lbl_802767E0 + 0x7D, fn_8003B4D4(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x52]);

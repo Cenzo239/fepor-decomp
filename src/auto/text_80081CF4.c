@@ -368,7 +368,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     s8 fn_8003AEB0(void *);
     s8 Unit_GetSpd(void *);
     s8 fn_8003ACF8(void *);
-    s8 fn_8003B518(void *);
+    s8 Unit_GetLck(void *);
     s8 fn_8003AA40(void *);
     s8 fn_8003B4D4(void *);
     s8 fn_8003A778(void *);
@@ -551,7 +551,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_PrepareTex();
 
     mx = fn_8003ACF8(arg0);
-    cur = fn_8003B518(arg0);
+    cur = Unit_GetLck(arg0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803695CC);
     Prim2D_PrepareTex();

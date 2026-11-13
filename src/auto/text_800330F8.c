@@ -319,7 +319,7 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 Unit_GetMag(void *);
     s32 Unit_GetSkl(void *);
     s32 Unit_GetSpd(void *);
-    s32 fn_8003B518(void *);
+    s32 Unit_GetLck(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B490(void *);
     void BattleAnim_Queue(void *, s32);
@@ -556,7 +556,7 @@ void fn_80034130(void *arg0, void *arg1) {
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DB) = g - excess;
     }
-    stat = fn_8003B518(arg0);
+    stat = Unit_GetLck(arg0);
     g = *(u8 *)((u8 *)arg0 + 0x2DC);
     excess = (s8)(g + (stat - 0x28));
     if (excess >= 0) {
@@ -622,7 +622,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 Unit_GetMag(void *);
     s32 Unit_GetSkl(void *);
     s32 Unit_GetSpd(void *);
-    s32 fn_8003B518(void *);
+    s32 Unit_GetLck(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B490(void *);
     s32 fn_8003A398(void *);
@@ -656,8 +656,8 @@ void fn_80034864(s32 self, void *arg1) {
     d3 = (s8)(t - Unit_GetSkl((void *)self));
     t = Unit_GetSpd((void *)(self + 0x2E0));
     d4 = (s8)(t - Unit_GetSpd((void *)self));
-    t = fn_8003B518((void *)(self + 0x2E0));
-    d5 = (s8)(t - fn_8003B518((void *)self));
+    t = Unit_GetLck((void *)(self + 0x2E0));
+    d5 = (s8)(t - Unit_GetLck((void *)self));
     t = fn_8003B4D4((void *)(self + 0x2E0));
     d6 = (s8)(t - fn_8003B4D4((void *)self));
     t = fn_8003B490((void *)(self + 0x2E0));
@@ -711,7 +711,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     void BattleAnim_Queue(void *, s32, u8);
     s32 fn_8003B490(void *);
     s32 fn_8003B4D4(void *);
-    s32 fn_8003B518(void *);
+    s32 Unit_GetLck(void *);
     s32 Unit_GetSpd(void *);
     s32 Unit_GetSkl(void *);
     s32 Unit_GetMag(void *);
@@ -820,7 +820,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     if (excess >= 0) {
         *(u8 *)((u8 *)self + 0x2DB) = g - excess;
     }
-    stat = fn_8003B518(self);
+    stat = Unit_GetLck(self);
     g = *(u8 *)((u8 *)self + 0x2DC);
     adj = stat - 0x28;
     adj = g + adj;
@@ -3732,7 +3732,7 @@ s8 fn_8003B4D4(void *arg0) {
     return var_r3;
 }
 
-s8 fn_8003B518(void *arg0) {
+s8 Unit_GetLck(void *arg0) {
     s8 var_r3;
 
     var_r3 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x22) + M2C_FIELD(arg0, u8 *, 0x1B0);
