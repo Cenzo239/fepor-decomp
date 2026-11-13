@@ -555,6 +555,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
 }
 
 void Map_UpdateCursorMoveLimit(void) {
+    /* When the unit under the cursor changes, hide or rebuild the move-limit overlay. */
     void Map_HideMoveLimitView(void);
     void Map_ShowMoveLimitView(void);
     void Map_SetupUnitMoveLimit(void *);
@@ -573,11 +574,11 @@ void Map_UpdateCursorMoveLimit(void) {
     struct {
         struct {
             u8 pad[2];
-            s8 unk2;
-            s8 unk3;
-        } *unk0;
-        u32 unk4;
-    } *ctrl;
+            s8 stickX;
+            s8 stickY;
+        } *stick;
+        u32 buttons;
+    } *pad;
 
     if (gCursorHoverUnitInited == 0) {
         gCursorHoverUnit = NULL;
@@ -590,8 +591,8 @@ void Map_UpdateCursorMoveLimit(void) {
     unit = (id != 0) ? &gUnits[(id - 1) * 0x280] : NULL;
 
     if (gCursorHoverUnit != unit) {
-        ctrl = gPadInput;
-        if ((ctrl->unk4 & 0xF) != 0 || ctrl->unk0->unk2 != 0 || ctrl->unk0->unk3 != 0) {
+        pad = gPadInput;
+        if ((pad->buttons & 0xF) != 0 || pad->stick->stickX != 0 || pad->stick->stickY != 0) {
             if (unit == NULL) {
                 Map_HideMoveLimitView();
                 gCursorHoverUnit = NULL;
