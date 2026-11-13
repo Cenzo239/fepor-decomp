@@ -9604,7 +9604,7 @@ else fn_80261AE0(callId,0,0);
 return -1;
 }
 
-void fn_80258530(void *arg0,u32 arg1) {
+void Sound_SeekStreamPos(void *arg0,u32 arg1) {
 extern u8 lbl_8035A6D0[];
 u8 *self=arg0; u32 pos=*(u32 *)(self+4); u32 result; u8 *state;
 if(pos!=arg1) {
@@ -9678,7 +9678,7 @@ break;
 void fn_80258888(void) {
     u32 fn_80261B00(u32);
     u32 fn_80262154(u32, void *);
-    void fn_80258530(void *, u32);
+    void Sound_SeekStreamPos(void *, u32);
     u32 fn_80262510(u8);
     u32 fn_80262538(void);
     void fn_802618E4(u8);
@@ -9716,12 +9716,12 @@ void fn_80258888(void) {
             state = e[0];
             switch (state) {
             case 1:
-                fn_80258530(e, adj);
+                Sound_SeekStreamPos(e, adj);
                 break;
             case 2:
             case 3:
                 if (((*(u16 *)(e + 0x12) << 8) | e[3]) == fn_80262510(e[3])) {
-                    fn_80258530(e, adj);
+                    Sound_SeekStreamPos(e, adj);
                     if (pos >= *(u32 *)(e + 0xC)) {
                         *(u32 *)(e + 8) = *(u32 *)(e + 8) - (pos - *(u32 *)(e + 0xC));
                     } else {
