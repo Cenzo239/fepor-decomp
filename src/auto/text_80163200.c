@@ -12509,7 +12509,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
 s32 fn_80105A5C();
 #pragma cplusplus on
-extern "C" void fn_801547E4(s16, s16, s16, s16, s32, s32, s32, f32);
+extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s16, s16, s32, s32, s32, f32);
 extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -12541,7 +12541,7 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         Ui_PlaySeCue(lbl_80278780 + 0x9E, 0x64);
     }
     ((Obj *)arg0)->v2(arg1);
-    fn_801547E4(
+    Ui_DrawJobPersonalPanel(
         0,
         0,
         M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA),

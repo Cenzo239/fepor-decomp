@@ -2077,7 +2077,7 @@ void fn_801546B0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801547E4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
+void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void fn_8015FC7C(s16, s16, s32, s32, s32, s32);
     s32 fn_80009E44(f32 *);
     void fn_8006ECCC(s32, void *, s32);
