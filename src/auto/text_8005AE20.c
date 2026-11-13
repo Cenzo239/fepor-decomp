@@ -6076,7 +6076,7 @@ void GXClearVtxDesc(void);
 void GXSetVtxDescv(s32 *);
 void GXSetVtxAttrFmtv(s32, s32 *);
 /* Build GX vtx-desc and attr-fmt lists from format flags, then apply them. */
-void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNrmIdx) {
+void Gfx_SetupVtxFormat(s32 format, u8 fracA, u8 fracB, u8 texFrac, u8 useFracA) {
     s32 desc[0x36];
     s32 fmt[0x6C];
     s32 *dp;
@@ -6096,9 +6096,9 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[1] = GX_INDEX16;
         dp += 2;
         fp[0] = GX_VA_POS;
-        fp[1] = GX_DIRECT;
-        fp[2] = GX_INDEX16;
-        ((u8 *)fp)[0xc] = nrmIdx;
+        fp[1] = 1;
+        fp[2] = 3;
+        ((u8 *)fp)[0xc] = fracA;
         fp += 4;
     }
 
@@ -6106,13 +6106,13 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[0] = GX_VA_NRM;
         dp[1] = GX_INDEX16;
         fp[0] = GX_VA_NRM;
-        fp[1] = GX_NONE;
-        if (useNrmIdx != 0) {
-            fp[2] = GX_INDEX16;
-            ((u8 *)fp)[0xc] = nrmIdx;
+        fp[1] = 0;
+        if (useFracA != 0) {
+            fp[2] = 3;
+            ((u8 *)fp)[0xc] = fracA;
         } else {
-            fp[2] = GX_DIRECT;
-            ((u8 *)fp)[0xc] = nrmIdxAlt;
+            fp[2] = 1;
+            ((u8 *)fp)[0xc] = fracB;
         }
         fp += 4;
         dp += 2;
@@ -6122,13 +6122,13 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[0] = GX_VA_NBT;
         dp[1] = GX_INDEX16;
         fp[0] = GX_VA_NBT;
-        fp[1] = GX_DIRECT;
-        if (useNrmIdx != 0) {
-            fp[2] = GX_INDEX16;
-            ((u8 *)fp)[0xc] = nrmIdx;
+        fp[1] = 1;
+        if (useFracA != 0) {
+            fp[2] = 3;
+            ((u8 *)fp)[0xc] = fracA;
         } else {
-            fp[2] = GX_DIRECT;
-            ((u8 *)fp)[0xc] = nrmIdxAlt;
+            fp[2] = 1;
+            ((u8 *)fp)[0xc] = fracB;
         }
         fp += 4;
         dp += 2;
@@ -6136,7 +6136,7 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
 
     if (format & 0x1000) {
         fp[0] = GX_VA_CLR0;
-        fp[1] = GX_DIRECT;
+        fp[1] = 1;
         dp[0] = GX_VA_CLR0;
         dp[1] = GX_INDEX16;
         fp[2] = 5;
@@ -6151,9 +6151,9 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[1] = GX_INDEX16;
         dp += 2;
         fp[0] = GX_VA_TEX0;
-        fp[1] = GX_DIRECT;
-        fp[2] = GX_INDEX16;
-        ((u8 *)fp)[0xc] = texIdx;
+        fp[1] = 1;
+        fp[2] = 3;
+        ((u8 *)fp)[0xc] = texFrac;
         fp += 4;
     }
 
@@ -6162,9 +6162,9 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[1] = GX_INDEX16;
         dp += 2;
         fp[0] = GX_VA_TEX1;
-        fp[1] = GX_DIRECT;
-        fp[2] = GX_INDEX16;
-        ((u8 *)fp)[0xc] = texIdx;
+        fp[1] = 1;
+        fp[2] = 3;
+        ((u8 *)fp)[0xc] = texFrac;
         fp += 4;
     }
 
@@ -6173,9 +6173,9 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[1] = GX_INDEX16;
         dp += 2;
         fp[0] = GX_VA_TEX2;
-        fp[1] = GX_DIRECT;
-        fp[2] = GX_INDEX16;
-        ((u8 *)fp)[0xc] = texIdx;
+        fp[1] = 1;
+        fp[2] = 3;
+        ((u8 *)fp)[0xc] = texFrac;
         fp += 4;
     }
 
@@ -6184,9 +6184,9 @@ void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNr
         dp[1] = GX_INDEX16;
         dp += 2;
         fp[0] = GX_VA_TEX3;
-        fp[1] = GX_DIRECT;
-        fp[2] = GX_INDEX16;
-        ((u8 *)fp)[0xc] = texIdx;
+        fp[1] = 1;
+        fp[2] = 3;
+        ((u8 *)fp)[0xc] = texFrac;
         fp += 4;
     }
 
