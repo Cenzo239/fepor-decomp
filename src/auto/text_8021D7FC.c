@@ -794,7 +794,7 @@ void GXSetCPUFifo(void *fifo) {
     extern void *__piReg;
     extern void* __GXCurrentCPUFifo;
     extern void* __GXCurrentGPFifo;
-    extern u8 lbl_8036877C;
+    extern u8 __GXGPFifoAttached;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
     u32 temp_r8;
@@ -809,7 +809,7 @@ void GXSetCPUFifo(void *fifo) {
         temp_r7 = temp_r8;
         temp_r7 = __rlwimi(temp_r7, 0, 26, 5, 5);
         M2C_FIELD(__piReg, u32 *, 0x14) = temp_r7;
-        lbl_8036877C = 1;
+        __GXGPFifoAttached = 1;
         fn_8021F39C(1, 1);
         fn_8021F36C(1, 0);
         fn_8021F338(1);
@@ -817,9 +817,9 @@ void GXSetCPUFifo(void *fifo) {
         u32 temp2_r8;
         u32 temp2_r7;
 
-        if (lbl_8036877C != 0) {
+        if (__GXGPFifoAttached != 0) {
             fn_8021F338(0);
-            lbl_8036877C = 0;
+            __GXGPFifoAttached = 0;
         }
         fn_8021F36C(0, 0);
         M2C_FIELD(__piReg, u32 *, 0xC) = (u32) realFifo->base & 0x3FFFFFFF;
@@ -846,7 +846,7 @@ void GXSetGPFifo(void *fifo) {
     extern u16* __cpReg;
     extern void* __GXCurrentCPUFifo;
     extern void* __GXCurrentGPFifo;
-    extern u8 lbl_8036877C;
+    extern u8 __GXGPFifoAttached;
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
     s32 enabled;
     u32 reg;
@@ -874,11 +874,11 @@ void GXSetGPFifo(void *fifo) {
     fn_802037B0();
 
     if (__GXCurrentCPUFifo == __GXCurrentGPFifo) {
-        lbl_8036877C = 1;
+        __GXGPFifoAttached = 1;
         fn_8021F36C(1, 0);
         fn_8021F338(1);
     } else {
-        lbl_8036877C = 0;
+        __GXGPFifoAttached = 0;
         fn_8021F36C(0, 0);
         fn_8021F338(0);
     }
