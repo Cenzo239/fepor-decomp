@@ -1919,19 +1919,19 @@ void fn_8002D3A0(void *arg0) {
         u8 mode;
     } BattleState;
     extern BattleState gBattleState;
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     void *str;
 
     str = arg0;
     switch (gBattleState.mode) {
     case 5:
-        str = lbl_80269210 + 0x148;
+        str = Battle_str + 0x148;
         break;
     case 6:
-        str = lbl_80269210 + 0x154;
+        str = Battle_str + 0x154;
         break;
     case 7:
-        str = lbl_80269210 + 0x160;
+        str = Battle_str + 0x160;
         break;
     }
     fn_800C08AC(str, arg0);
@@ -1955,12 +1955,12 @@ void fn_80016498(void);
 void fn_80015D54(void);
 void fn_8002D46C(void)
 {
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     s32 tmp;
 
     tmp = fn_800C52C8();
-    fn_800C50FC(lbl_80269210 + 0x16c, tmp, lbl_80269210);
-    fn_800C469C(lbl_80269210 + 0x176);
+    fn_800C50FC(Battle_str + 0x16c, tmp, Battle_str);
+    fn_800C469C(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
 }
@@ -1968,27 +1968,27 @@ void fn_8002D46C(void)
 #pragma global_optimizer off
 void fn_8002D4B8(void)
 {
-    extern u16 lbl_80269210[];
+    extern u16 Battle_str[];
     u16 fn_8005C144(void *);
     void fn_8005C7C8(void *);
     void fn_80166228(void);
     void fn_800C4B8C(void);
 
-    if (fn_8005C144((u8 *)lbl_80269210 + 0x17F) != 0x8000) {
-        fn_8005C7C8((u8 *)lbl_80269210 + 0x17F);
+    if (fn_8005C144((u8 *)Battle_str + 0x17F) != 0x8000) {
+        fn_8005C7C8((u8 *)Battle_str + 0x17F);
     }
-    if (fn_8005C144((u8 *)lbl_80269210 + 0x198) != 0x8000) {
-        fn_8005C7C8((u8 *)lbl_80269210 + 0x198);
+    if (fn_8005C144((u8 *)Battle_str + 0x198) != 0x8000) {
+        fn_8005C7C8((u8 *)Battle_str + 0x198);
     }
     fn_80166228();
-    fn_8005C7C8((u8 *)lbl_80269210 + 0x1AF);
+    fn_8005C7C8((u8 *)Battle_str + 0x1AF);
     fn_800C4B8C();
     fn_800C4B8C();
 }
 #pragma global_optimizer off
 void Battle_LoadMap(void)
 {
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     extern u8 gBattleState[];
     void fn_800C50FC(void *, s32);
     void fn_80166258(s32);
@@ -2004,22 +2004,22 @@ void Battle_LoadMap(void)
     void fn_80018F08(void);
     void DebugPrint(char *, ...);
 
-    fn_800C50FC(lbl_80269210 + 0x176, 0x180000);
+    fn_800C50FC(Battle_str + 0x176, 0x180000);
     fn_80166258(gBattleState[0x10]);
-    if (fn_8005C144(lbl_80269210 + 0x198) != 0x8000) {
-        fn_8003F87C(lbl_80269210 + 0x198, 8);
+    if (fn_8005C144(Battle_str + 0x198) != 0x8000) {
+        fn_8003F87C(Battle_str + 0x198, 8);
     }
-    if (fn_8005C144(lbl_80269210 + 0x17F) != 0x8000) {
-        fn_8003FCCC(lbl_80269210 + 0x17F);
+    if (fn_8005C144(Battle_str + 0x17F) != 0x8000) {
+        fn_8003FCCC(Battle_str + 0x17F);
     }
-    fn_8005C84C(lbl_80269210 + 0x1AF);
+    fn_8005C84C(Battle_str + 0x1AF);
     fn_80050F64();
-    fn_800C50FC(lbl_80269210 + 0x16C, fn_800C52C8());
-    fn_800C469C(lbl_80269210 + 0x176);
+    fn_800C50FC(Battle_str + 0x16C, fn_800C52C8());
+    fn_800C469C(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
     fn_80018F08();
-    DebugPrint((char *)(lbl_80269210 + 0x1BF), fn_800C52C8());
+    DebugPrint((char *)(Battle_str + 0x1BF), fn_800C52C8());
 }
 #pragma global_optimizer reset
 void fn_8002D648(void *arg0) {
@@ -2108,15 +2108,15 @@ void fn_8002D82C(void) {
 void fn_8002D854(s32 arg0) {
     s8 Fx_FindSlotByName(u8 *);
     void Process_ClearFunc(s32);
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     u8 flag;
 
-    if ((s8)Fx_FindSlotByName(lbl_80269210 + 0x1E3) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x1F1) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x1FF) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x20D) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x21B) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x22B) != -1) {
+    if ((s8)Fx_FindSlotByName(Battle_str + 0x1E3) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x1F1) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x1FF) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x20D) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x21B) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x22B) != -1) {
         flag = 1;
     } else {
         flag = 0;
@@ -2129,15 +2129,15 @@ void fn_8002D854(s32 arg0) {
 void fn_8002D940(s32 arg0) {
     s8 Fx_FindSlotByName(u8 *);
     void Process_ClearFunc(s32);
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     u8 flag;
 
-    if ((s8)Fx_FindSlotByName(lbl_80269210 + 0x1E3) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x1F1) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x1FF) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x20D) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x21B) != -1
-        || (s8)Fx_FindSlotByName(lbl_80269210 + 0x22B) != -1) {
+    if ((s8)Fx_FindSlotByName(Battle_str + 0x1E3) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x1F1) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x1FF) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x20D) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x21B) != -1
+        || (s8)Fx_FindSlotByName(Battle_str + 0x22B) != -1) {
         flag = 1;
     } else {
         flag = 0;
@@ -2168,7 +2168,7 @@ extern "C" void fn_8002DA30(void)
     void fn_801487D0(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 gBattleState[];
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     extern s32 lbl_80367254;
     extern s32 lbl_80367250;
     extern u8 gUnitLists[];
@@ -2197,18 +2197,18 @@ extern "C" void fn_8002DA30(void)
     str = 0;
     ctx = fn_8014D8FC(gBattleState);
     if (fn_80146AE4() != 0) {
-        fn_801481CC(lbl_80269210 + 0x1E3, 0x190);
-        fn_801481CC(lbl_80269210 + 0x1F1, 0x190);
-        fn_801481CC(lbl_80269210 + 0x1FF, 0x190);
-        fn_801481CC(lbl_80269210 + 0x20D, 0x190);
-        fn_801481CC(lbl_80269210 + 0x21B, 0x190);
-        fn_801481CC(lbl_80269210 + 0x22B, 0x190);
+        fn_801481CC(Battle_str + 0x1E3, 0x190);
+        fn_801481CC(Battle_str + 0x1F1, 0x190);
+        fn_801481CC(Battle_str + 0x1FF, 0x190);
+        fn_801481CC(Battle_str + 0x20D, 0x190);
+        fn_801481CC(Battle_str + 0x21B, 0x190);
+        fn_801481CC(Battle_str + 0x22B, 0x190);
         return;
     }
-    if (fn_8000BCA4(lbl_80269210 + 0x23B) != 0) {
+    if (fn_8000BCA4(Battle_str + 0x23B) != 0) {
         timer = 0xA;
         lbl_80367254 = timer;
-        str = lbl_80269210 + 0x246;
+        str = Battle_str + 0x246;
     } else if ((timer = lbl_80367254) > 0) {
         lbl_80367254 = timer - 1;
         return;
@@ -2216,19 +2216,19 @@ extern "C" void fn_8002DA30(void)
         || (slot = *(u8 *)((u8 *)ctx + 0x3C), slot == 1)
         || (slot >= 9 && slot <= 0x1F)
         || slot == 0x33
-        || fn_80234198(fn_8014CA54(gBattleState, 0), lbl_80269210 + 0x251) != 0
-        || fn_80234198(fn_8014CA54(gBattleState, 1), lbl_80269210 + 0x251) != 0
-        || fn_80234198(fn_8014CA54(gBattleState, 0), lbl_80269210 + 0x256) != 0
-        || fn_80234198(fn_8014CA54(gBattleState, 1), lbl_80269210 + 0x256) != 0
-        || fn_80234198(fn_8014CA54(gBattleState, 0), lbl_80269210 + 0x25B) != 0
-        || fn_80234198(fn_8014CA54(gBattleState, 1), lbl_80269210 + 0x25B) != 0) {
+        || fn_80234198(fn_8014CA54(gBattleState, 0), Battle_str + 0x251) != 0
+        || fn_80234198(fn_8014CA54(gBattleState, 1), Battle_str + 0x251) != 0
+        || fn_80234198(fn_8014CA54(gBattleState, 0), Battle_str + 0x256) != 0
+        || fn_80234198(fn_8014CA54(gBattleState, 1), Battle_str + 0x256) != 0
+        || fn_80234198(fn_8014CA54(gBattleState, 0), Battle_str + 0x25B) != 0
+        || fn_80234198(fn_8014CA54(gBattleState, 1), Battle_str + 0x25B) != 0) {
         str = *(void **)((u8 *)ctx + 0x10);
     } else {
-        str = lbl_80269210 + 0x260;
+        str = Battle_str + 0x260;
     }
 
     base = gBattleState;
-    if (fn_800BDD08((u8 *)base + 0xB4, lbl_80269210 + 0x26D, base) == 0) {
+    if (fn_800BDD08((u8 *)base + 0xB4, Battle_str + 0x26D, base) == 0) {
         ok = 0;
         obj = &gFxChannels;
         if (obj->flag & 1) {
@@ -2251,19 +2251,19 @@ extern "C" void fn_8002DA30(void)
     idx = Fx_FindSlotByName(str);
     if (idx != -1) {
         obj = (Obj *)((u8 *)&gFxChannels + (u8)idx * 0x30);
-        if (Fx_FindSlotByName(lbl_80269210 + 0x1E3) != -1
-            || Fx_FindSlotByName(lbl_80269210 + 0x1F1) != -1
-            || Fx_FindSlotByName(lbl_80269210 + 0x1FF) != -1
-            || Fx_FindSlotByName(lbl_80269210 + 0x20D) != -1
-            || Fx_FindSlotByName(lbl_80269210 + 0x21B) != -1
-            || Fx_FindSlotByName(lbl_80269210 + 0x22B) != -1) {
+        if (Fx_FindSlotByName(Battle_str + 0x1E3) != -1
+            || Fx_FindSlotByName(Battle_str + 0x1F1) != -1
+            || Fx_FindSlotByName(Battle_str + 0x1FF) != -1
+            || Fx_FindSlotByName(Battle_str + 0x20D) != -1
+            || Fx_FindSlotByName(Battle_str + 0x21B) != -1
+            || Fx_FindSlotByName(Battle_str + 0x22B) != -1) {
             any = 1;
         } else {
             any = 0;
         }
         if ((u8)any == 1
-            || fn_80146BE4(lbl_80269210 + 0x279) != -1
-            || fn_80146BE4(lbl_80269210 + 0x28A) != -1) {
+            || fn_80146BE4(Battle_str + 0x279) != -1
+            || fn_80146BE4(Battle_str + 0x28A) != -1) {
             if (lbl_80367250 == 0) {
                 fn_80148888(obj, 0xC8);
                 lbl_80367250 = 1;
@@ -2279,14 +2279,14 @@ extern "C" void fn_8002DA30(void)
 #pragma optimization_level reset
 
 void fn_8002DEB4(s32 arg0) {
-    extern u16 lbl_80269210[];
+    extern u16 Battle_str[];
 
-    fn_801481CC((u8 *)lbl_80269210 + 0x1e3, arg0);
-    fn_801481CC((u8 *)lbl_80269210 + 0x1f1, arg0);
-    fn_801481CC((u8 *)lbl_80269210 + 0x1ff, arg0);
-    fn_801481CC((u8 *)lbl_80269210 + 0x20d, arg0);
-    fn_801481CC((u8 *)lbl_80269210 + 0x21b, arg0);
-    fn_801481CC((u8 *)lbl_80269210 + 0x22b, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x1e3, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x1f1, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x1ff, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x20d, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x21b, arg0);
+    fn_801481CC((u8 *)Battle_str + 0x22b, arg0);
 }
 
 void fn_8002DF54(void) {
@@ -2318,7 +2318,7 @@ void Battle_AdvancePhase(void) {
     extern u8 gBattleState[];
     extern u8 gUnits[];
     extern u8 gUnitLists[];
-    extern u8 lbl_80269210[];
+    extern u8 Battle_str[];
     extern u8 gSystemSave[];
     u8 factionMaskB[8];
     u8 factionMaskA[8];
@@ -2382,7 +2382,7 @@ void Battle_AdvancePhase(void) {
             }
             unit = next;
         }
-        unit = Unit_FindByName(lbl_80269210 + 0x29C);
+        unit = Unit_FindByName(Battle_str + 0x29C);
         if (unit != NULL) {
             Unit_MoveToListHead(unit, 0);
         }
@@ -4076,5 +4076,5 @@ extern u32 gMapObjEventList; // size: 0x204
 #include "common.h"
 #include "global.h"
 
-extern u16* lbl_80269210;
+extern u16* Battle_str;
 extern s32* gBattleState;
