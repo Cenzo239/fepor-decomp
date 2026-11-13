@@ -9792,7 +9792,7 @@ void *fn_80258AD8(void) {
     return (u8 *)lbl_8035B220 + 0x60c;
 }
 
-void fn_80258AE8(s32 id, void *data, u8 type, u32 remove) {
+void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void fn_80250128(s32,s32); s32 fn_80250414();
  void fn_8024EE6C(s32,s32); void fn_8024F05C(s32);
  s32 fn_8024F1D8(); void fn_8024F420(s32);
@@ -9846,7 +9846,7 @@ extern u8 gSoundReady;
 extern s32 *gAudioGroupState;
 s32 fn_802622F4(s32);
 u32 fn_8024F964(s32,s32);
-void fn_80258AE8(s32,void *,u8,u32);
+void Sound_SetResource(s32,void *,u8,u32);
 s32 fn_8024FE1C(u16,void *,u16);
 void fn_802624B8(void);
 s16 n;
@@ -9860,23 +9860,23 @@ state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state
 state=(AudioGroupState *)gAudioGroupState; state=(AudioGroupState *)((u8 *)state+state->count*12); state->slots[0].id=arg3;
 p=(u16 *)((u8 *)arg0+*(u32 *)(node+12));
 if(fn_8024F964(arg3,fn_802622F4(arg2))) {
-while(*p!=0xFFFF) { if(*p & 0x8000) { for(i=*p & 0x3FFF;(u16)i<=p[1];i++) fn_80258AE8(i,(void *)arg3,1,0); p+=2; } else { fn_80258AE8(*p++,(void *)arg3,1,0); } }
+while(*p!=0xFFFF) { if(*p & 0x8000) { for(i=*p & 0x3FFF;(u16)i<=p[1];i++) Sound_SetResource(i,(void *)arg3,1,0); p+=2; } else { Sound_SetResource(*p++,(void *)arg3,1,0); } }
 }
 { u32 j; u16 *q;
 q=(u16 *)((u8 *)arg0+*(u32 *)(node+8));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,(void *)arg4,0,0); q+=2; } else { fn_80258AE8(*q++,(void *)arg4,0,0); } }
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,0,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,0,0); } }
 }
 { u32 j; u16 *q;
 q=(u16 *)((u8 *)arg0+*(u32 *)(node+16));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,(void *)arg4,4,0); q+=2; } else { fn_80258AE8(*q++,(void *)arg4,4,0); } }
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,4,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,4,0); } }
 }
 { u32 j; u16 *q;
 q=(u16 *)((u8 *)arg0+*(u32 *)(node+20));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,(void *)arg4,2,0); q+=2; } else { fn_80258AE8(*q++,(void *)arg4,2,0); } }
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,2,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,2,0); } }
 }
 { u32 j; u16 *q;
 q=(u16 *)((u8 *)arg0+*(u32 *)(node+24));
-while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,(void *)arg4,3,0); q+=2; } else { fn_80258AE8(*q++,(void *)arg4,3,0); } }
+while(*q!=0xFFFF) { if(*q & 0x8000) { for(j=*q & 0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,(void *)arg4,3,0); q+=2; } else { Sound_SetResource(*q++,(void *)arg4,3,0); } }
 if(*(u16 *)(node+6)==1) { q=(u16 *)((u8 *)arg0+*(u32 *)(node+28)); fn_8024FE1C(arg1,(u8 *)q+4,*q); }
 }
 fn_802624B8(); (*(s16 *)((u8 *)gAudioGroupState+8))++; return 1;
@@ -9893,7 +9893,7 @@ void fn_8026372C(void); void fn_802636F4(void);
 void fn_8025D9A4(void *,u16); void fn_80245014(u16);
 void fn_802572E8(void *); void fn_80257444(void *);
 void fn_8024FACC(s32); void fn_8024FF5C(u16);
-void fn_80258AE8(s32,void *,u8,u32);
+void Sound_SetResource(s32,void *,u8,u32);
 u8 *node; s32 id; u8 *base; u16 *p; u16 *start; s16 i;
 AudioGroupState *state=(AudioGroupState *)gAudioGroupState;
 s16 n=--state->count;
@@ -9913,16 +9913,16 @@ if(*start!=0xFFFF) {
 p=start; while(*p!=0xFFFF) p++; p--;
 while(p>=start) {
 if(p!=start) {
-if(p[-1]&0x8000) { for(i=(s16)*p;(s16)i>=(p[-1]&0x3FFF);i--) fn_80258AE8((u16)i,0,1,1); p-=2; }
-else {fn_80258AE8(*p,0,1,1);p--;}
-} else {fn_80258AE8(*p,0,1,1);p--;}
+if(p[-1]&0x8000) { for(i=(s16)*p;(s16)i>=(p[-1]&0x3FFF);i--) Sound_SetResource((u16)i,0,1,1); p-=2; }
+else {Sound_SetResource(*p,0,1,1);p--;}
+} else {Sound_SetResource(*p,0,1,1);p--;}
 }
 }
 fn_8024FACC(id);
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+8)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,0,0,1);q+=2;}else fn_80258AE8(*q++,0,0,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+16)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,0,4,1);q+=2;}else fn_80258AE8(*q++,0,4,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+20)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,0,2,1);q+=2;}else fn_80258AE8(*q++,0,2,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+24)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) fn_80258AE8(j,0,3,1);q+=2;}else fn_80258AE8(*q++,0,3,1); } }
+{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+8)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,0,1);q+=2;}else Sound_SetResource(*q++,0,0,1); } }
+{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+16)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,4,1);q+=2;}else Sound_SetResource(*q++,0,4,1); } }
+{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+20)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,2,1);q+=2;}else Sound_SetResource(*q++,0,2,1); } }
+{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+24)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,3,1);q+=2;}else Sound_SetResource(*q++,0,3,1); } }
 if(*(u16 *)(node+6)==1) fn_8024FF5C(*(u16 *)(node+4));return 1;
 }
 #pragma opt_strength_reduction reset
