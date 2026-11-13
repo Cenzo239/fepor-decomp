@@ -2273,7 +2273,7 @@ extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
     };
     extern f32 lbl_80368DA8;
     extern f32 lbl_80368DB8;
-    extern f32 lbl_80368DBC;
+    extern f32 gUiMenuTextScale;
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
@@ -2283,7 +2283,7 @@ extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     Prim2D_SetText();
-    Prim2D_SetScale(lbl_80368DBC);
+    Prim2D_SetScale(gUiMenuTextScale);
     if ((u8) M2C_FIELD(arg2, u8 *, 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
