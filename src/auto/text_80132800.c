@@ -11274,7 +11274,7 @@ s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
     return temp_r3;
 }
 
-s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
+s8 Fx_AllocSlot(void *name, s8 param, s16 duration) {
     void *Hash_Lookup(void *);
     extern u8 gFxSlots[];
     extern u8 lbl_8029275C[];
@@ -11283,16 +11283,17 @@ s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     extern u8 lbl_8029260C[];
     extern f32 lbl_8036A7A0;
     s8 slot;
-    u8 *found;
-    u8 *src;
+    u8 *fx;
+    u8 *def;
     s32 i;
     u8 *entry;
     s32 kind;
     s32 tmp;
     u8 val;
-    s16 n;
+    s16 frames;
     s32 temp;
 
+    /* Find a free FX slot and initialize it from the named definition. */
     entry = gFxSlots;
     for (i = 0; i < 0xA; i++) {
         if (!(entry[0xC] & 1)) {
@@ -11304,60 +11305,60 @@ s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     slot = -1;
 found:
     if (slot >= 0) {
-        found = gFxSlots + ((u8)slot * 0x30);
-        src = Hash_Lookup(arg0);
-        kind = src[5] & 3;
+        fx = gFxSlots + ((u8)slot * 0x30);
+        def = Hash_Lookup(name);
+        kind = def[5] & 3;
         switch (kind) {
         case 0:
-            if (found != NULL) {
-                *(void **)(found + 8) = lbl_8029275C;
-                *(void **)found = src;
-                *(void **)(found + 8) = lbl_802926EC;
+            if (fx != NULL) {
+                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)fx = def;
+                *(void **)(fx + 8) = lbl_802926EC;
             }
             break;
         case 1:
-            if (found != NULL) {
-                *(void **)(found + 8) = lbl_8029275C;
-                *(void **)found = src;
-                *(void **)(found + 8) = lbl_8029267C;
+            if (fx != NULL) {
+                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)fx = def;
+                *(void **)(fx + 8) = lbl_8029267C;
             }
             break;
         case 2:
-            if (found != NULL) {
-                *(void **)(found + 8) = lbl_8029275C;
-                *(void **)found = src;
-                *(void **)(found + 8) = lbl_8029260C;
+            if (fx != NULL) {
+                *(void **)(fx + 8) = lbl_8029275C;
+                *(void **)fx = def;
+                *(void **)(fx + 8) = lbl_8029260C;
             }
             break;
         }
-        found[0xC] = 1;
-        found[0xD] = src[6];
-        found[0xE] = src[7];
-        found[0xF] = 0;
-        if (src[5] & 4) {
+        fx[0xC] = 1;
+        fx[0xD] = def[6];
+        fx[0xE] = def[7];
+        fx[0xF] = 0;
+        if (def[5] & 4) {
             val = 0;
         } else {
-            val = src[0xC];
+            val = def[0xC];
         }
-        found[0x10] = val;
-        if (src[5] & 4) {
+        fx[0x10] = val;
+        if (def[5] & 4) {
             tmp = 0;
         } else {
-            tmp = *(s16 *)(src + 0x10);
+            tmp = *(s16 *)(def + 0x10);
         }
-        *(s16 *)(found + 0x12) = tmp;
-        if (src[5] & 4) {
+        *(s16 *)(fx + 0x12) = tmp;
+        if (def[5] & 4) {
             tmp = 0x3E8;
         } else {
-            tmp = *(u16 *)(src + 0x12);
+            tmp = *(u16 *)(def + 0x12);
         }
-        *(u16 *)(found + 0x14) = tmp;
-        found[0x16] = 0x64;
-        found[0x17] = 0;
-        if (src[5] & 4) {
+        *(u16 *)(fx + 0x14) = tmp;
+        fx[0x16] = 0x64;
+        fx[0x17] = 0;
+        if (def[5] & 4) {
             val = 0;
         } else {
-            val = src[0xF];
+            val = def[0xF];
         }
         tmp = (u8)val + 1;
         if (tmp > 0xFF) {
@@ -11366,19 +11367,19 @@ found:
         if (tmp == 0) {
             tmp = 1;
         }
-        found[0x11] = tmp;
-        found[0x16] = 0;
-        temp = (s32)((f32)arg2 / lbl_8036A7A0);
-        n = (s16)temp;
-        if (n <= 0) {
-            n = 1;
+        fx[0x11] = tmp;
+        fx[0x16] = 0;
+        temp = (s32)((f32)duration / lbl_8036A7A0);
+        frames = (s16)temp;
+        if (frames <= 0) {
+            frames = 1;
         }
-        found[0x28] = found[0x16];
-        found[0x29] = arg1;
-        *(s16 *)(found + 0x2E) = n;
-        *(s16 *)(found + 0x2C) = 0;
-        found[0xE] = 0x40;
-        found[0xF] = 0x40;
+        fx[0x28] = fx[0x16];
+        fx[0x29] = param;
+        *(s16 *)(fx + 0x2E) = frames;
+        *(s16 *)(fx + 0x2C) = 0;
+        fx[0xE] = 0x40;
+        fx[0xF] = 0x40;
     }
     return slot;
 }
