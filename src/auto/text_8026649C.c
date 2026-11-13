@@ -49,13 +49,13 @@ typedef struct VidList {
     u32 root;             /* 0xC */
 } VidList;
 
-extern u32 lbl_80368A48;
+extern u32 vidGenerator;
 
 static u32 GetNewVid(void) {
     u32 vid;
 
     do {
-        vid = lbl_80368A48++;
+        vid = vidGenerator++;
     } while (vid == 0xFFFFFFFF);
     return vid;
 }
