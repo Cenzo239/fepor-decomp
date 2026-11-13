@@ -13486,7 +13486,7 @@ void fn_80198CA4(void *arg0) {
     void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
     s32 fn_802342B8(char *, char *);
-    s32 fn_8006135C(void *, char *);
+    s32 GActor_FindNode(void *, char *);
     void fn_8006D378(void *);
     void fn_800E4A78(void *, void *);
     extern u8 lbl_8027A858[];
@@ -13569,7 +13569,7 @@ void fn_80198CA4(void *arg0) {
                         ent_i + 0x10,
                         (u8 *)*(void **)((u8 *)e0 + 0x64) + j * 0x30);
                     if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(lbl_8027A858 + 0x6A)) == 0) {
-                        found = fn_8006135C(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x38));
+                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x38));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp38);
                             dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;
@@ -13577,7 +13577,7 @@ void fn_80198CA4(void *arg0) {
                         }
                     }
                     if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(lbl_8027A858 + 0x70)) == 0) {
-                        found = fn_8006135C(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x4C));
+                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x4C));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp8);
                             dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;

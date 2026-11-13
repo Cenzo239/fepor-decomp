@@ -6712,7 +6712,7 @@ void fn_801C45A4(void *arg0) {
     void fn_80060060(void *);
     void fn_800606BC(void *);
     void fn_80060F70(void *, s32, void *);
-    s32 fn_8006135C(void *, char *);
+    s32 GActor_FindNode(void *, char *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -6759,7 +6759,7 @@ void fn_801C45A4(void *arg0) {
     self = arg0;
     if (*(u8 *)((u8 *)*(void **)((u8 *)self + 0x3C) + 0xB) == 0xFF
         && (*(s32 *)((u8 *)self + 0x30) % 6) == 0) {
-        id = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0x127);
+        id = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0x127);
         if (id >= 0) {
             fn_80060F70(*(void **)((u8 *)self + 0x3C), id, sp104);
             if (sp104[1] < lbl_8036B40C) {
@@ -6804,11 +6804,11 @@ void fn_801C45A4(void *arg0) {
                     fn_8005FEE8(entry, lbl_8036B424);
                 }
             }
-            id = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xDE);
-            id2 = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xE4);
-            id3 = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xEA);
-            id4 = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF1);
-            id5 = fn_8006135C(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF8);
+            id = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xDE);
+            id2 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xE4);
+            id3 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xEA);
+            id4 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF1);
+            id5 = GActor_FindNode(*(void **)((u8 *)self + 0x3C), (char *)lbl_8027D594 + 0xF8);
             if (id >= 0) {
                 if (id2 < 0) {
                     goto done;
@@ -7112,7 +7112,7 @@ void fn_801C60E8(struct Unit *arg0, s32 arg1, s32 arg2) {
 
 #pragma use_lmw_stmw on
 void fn_801C6234(void *arg0) {
-    s32 fn_8006135C(void *, void *);
+    s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
     void fn_80067708(s32, s32, void (*)(void), s32);
     void PSMTXConcat(void *, void *, void *);
@@ -7160,7 +7160,7 @@ void fn_801C6234(void *arg0) {
         names[2] = *(s32 *)(rodata + 0xBC);
         names[3] = *(s32 *)(rodata + 0xC0);
         do {
-            idx = fn_8006135C(*(void **)((u8 *)self + 0x30), (void *)*namep);
+            idx = GActor_FindNode(*(void **)((u8 *)self + 0x30), (void *)*namep);
             if (0 <= idx) {
                 fn_80060F70(*(void **)((u8 *)self + 0x30), idx, pos);
                 if (*(f32 *)((u8 *)walk + 0x34) > (pos[1] + lbl_8036B448) && pos[1] < lbl_8036B44C) {
@@ -7951,7 +7951,7 @@ void fn_801C7880(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5) {
-    s32 fn_8006135C(void *, void *);
+    s32 GActor_FindNode(void *, void *);
     s32 fn_80060440(void *);
     void fn_8005FA14(void *, s32);
     void fn_800608AC(void *);
@@ -7998,8 +7998,8 @@ void fn_801C797C(void *arg0, void *arg1, void *arg2, s32 arg3, s16 arg4, u8 arg5
     sp2c[1] = ((u32 *)lbl_8027D534)[1];
     sp2c[2] = ((u32 *)lbl_8027D534)[2];
 
-    id1 = fn_8006135C(obj, (u8 *)lbl_8027D594 + 0x127);
-    id2 = fn_8006135C(obj, (u8 *)lbl_8027D594 + 0x1A4);
+    id1 = GActor_FindNode(obj, (u8 *)lbl_8027D594 + 0x127);
+    id2 = GActor_FindNode(obj, (u8 *)lbl_8027D594 + 0x1A4);
 
     if (id1 != -1) {
         kind = fn_80060440(obj);

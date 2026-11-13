@@ -11346,7 +11346,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_8005FEE8(void *, f32);
     void fn_80060638(void *);
     void *fn_80060664(void *);
-    s32 fn_8006135C(void *, void *);
+    s32 GActor_FindNode(void *, void *);
     void fn_8006140C(void *);
     void fn_80061824(void *);
     void fn_800688D4(void *, s32, void *, s32);
@@ -11423,8 +11423,8 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         M2C_FIELD(arg0, s16 *, 0x15E) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x160) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x162) = 0x3C;
-        sp[0] = fn_8006135C(sub, lbl_8026AB18 + 0x8F);
-        sp[1] = fn_8006135C(sub, lbl_8026AB18 + 0x92);
+        sp[0] = GActor_FindNode(sub, lbl_8026AB18 + 0x8F);
+        sp[1] = GActor_FindNode(sub, lbl_8026AB18 + 0x92);
         sub2 = (u8 *)arg0 + 0x1C;
         M2C_FIELD(arg0, u8 *, 0x168) = sp[0];
         M2C_FIELD(arg0, u8 *, 0x169) = sp[1];

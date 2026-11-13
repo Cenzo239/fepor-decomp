@@ -2732,7 +2732,7 @@ u32 fn_80060690(void *arg0) {
     return 0U;
 }
 
-s32 fn_8006135C(void *arg0, void *name) {
+s32 GActor_FindNode(void *arg0, void *name) {
     u8 fn_8006D980(void *, void *);
     void *node;
     void *entry;

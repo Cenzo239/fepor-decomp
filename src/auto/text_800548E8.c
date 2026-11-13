@@ -263,7 +263,7 @@ void fn_800548E8(void *arg0)
     void fn_8004AD20(void *, f32 *);
     u8 Pad_IsButton(void *, s32);
     s32 fn_800558FC(void *);
-    s32 fn_8006135C(void *, char *);
+    s32 GActor_FindNode(void *, char *);
     void fn_80060F70(void *, s32, f32 *);
     f32 fn_80060BA4(void *, s32);
     void fn_80055FB4(f32 *, s32 *, s32, f32);
@@ -336,7 +336,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp6C[2] = *(u32 *)&s.sp24[2];
             s.sp14 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = fn_8006135C(node, lbl_8026AC0C + 0x16A);
+            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
             if (idx >= 0) {
                 fn_80060F70(node, idx, s.sp6C);
                 scale = fn_80060BA4(node, idx);
@@ -360,7 +360,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp60[2] = *(u32 *)&s.sp18[2];
             s.sp10 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = fn_8006135C(node, lbl_8026AC0C + 0x16A);
+            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
             if (idx >= 0) {
                 fn_80060F70(node, idx, s.sp60);
                 scale = fn_80060BA4(node, idx);

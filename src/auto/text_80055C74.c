@@ -1022,7 +1022,7 @@ void fn_80057EDC(void) {
 }
 
 s32 fn_80057F04(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 fn_8006135C(s32, s32);
+    s32 GActor_FindNode(s32, s32);
     void fn_800056CC(const char *, ...);
     void fn_800056A0(s32);
     void fn_8000A388(void *, void *, s32);
@@ -1033,7 +1033,7 @@ s32 fn_80057F04(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern u8 lbl_80285B6C[16];
     void *temp_r31;
 
-    if (fn_8006135C(arg0, arg1) < 0 || fn_8006135C(arg0, arg2) < 0) {
+    if (GActor_FindNode(arg0, arg1) < 0 || GActor_FindNode(arg0, arg2) < 0) {
         fn_800056CC((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
         fn_800056A0(0);
     }

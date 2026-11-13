@@ -12468,7 +12468,7 @@ void fn_800E4E5C(void *arg0) {
 
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
-    s32 fn_8006135C(void *, void *);
+    s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
 
     f32 pos[3];
@@ -12477,7 +12477,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     f32 z;
     s32 index;
 
-    index = fn_8006135C(
+    index = GActor_FindNode(
         *(void **)((u8 *)arg1 + 0xE0),
         arg2
     );
@@ -12505,8 +12505,8 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 }
 
 void fn_800E4F0C(void *arg0) {
-    M2C_UNK fn_8006135C(s32);
-    fn_8006135C(M2C_FIELD(arg0, s32 *, 0xE0));
+    M2C_UNK GActor_FindNode(s32);
+    GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
 }
 
 void fn_800E4F30(void *arg0)
@@ -12553,7 +12553,7 @@ void fn_800E4FE8(void *arg0, void *arg1, s32 arg2) {
     s32 temp_r3;
 
     if (arg1 != NULL) {
-        temp_r3 = fn_8006135C(*(s32 *)((u8 *)arg1 + 0xE0), arg2);
+        temp_r3 = GActor_FindNode(*(s32 *)((u8 *)arg1 + 0xE0), arg2);
         *(void **)((u8 *)arg0 + 0xEC) = arg1;
         *(s32 *)((u8 *)arg0 + 0xF0) = temp_r3;
     }
@@ -16216,7 +16216,7 @@ void *fn_800EE0B0(void *arg0) {
 
 #pragma cplusplus off
 void fn_800EE124(void *arg0) {
-void *fn_80040844(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 fn_8006135C(void *,void *);
+void *fn_80040844(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 GActor_FindNode(void *,void *);
 void fn_800EFEE0();void fn_800EFC2C();s32 fn_800EF1C0();void fn_800EF364();void fn_800EEEF0();void fn_800EE72C();
 extern const f32 lbl_80369FB8;extern void *lbl_803678D0,*lbl_803678D4[2],*lbl_803678DC,*lbl_803678E0;extern u8 lbl_80272C64[];
 u8 *obj;void *res;register u32 size;
@@ -16248,7 +16248,7 @@ size=fn_80222420(0x130,0xE0,4,0,0);lbl_803678D0=fn_800C45B8(size,lbl_80272C64+0x
 size=fn_80222420(4,0x10,3,0,0);lbl_803678D4[0]=fn_800C45B8(size,lbl_80272C64+0x7E,0);lbl_803678D4[1]=fn_800C45B8(size,lbl_80272C64+0x7E,0);
 DCFlushRange(lbl_803678D4[0],size);DCFlushRange(lbl_803678D4[1],size);
 lbl_803678DC=lbl_803678D4[0];lbl_803678E0=lbl_803678D4[1];
-if(fn_8006135C(M2C_FIELD(arg0,void **,0x3C),lbl_80272C64+0x7F)<0)fn_800056A0(0);
+if(GActor_FindNode(M2C_FIELD(arg0,void **,0x3C),lbl_80272C64+0x7F)<0)fn_800056A0(0);
 }
 break;
 }

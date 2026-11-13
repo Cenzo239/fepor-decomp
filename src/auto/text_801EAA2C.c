@@ -2284,7 +2284,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     s32 fn_8005C84C(void);
     void fn_8005F7B0(void *, s32);
     void fn_8005F7E0(void *, s32, s32, s32);
-    void *fn_8006135C(void *, char *);
+    void *GActor_FindNode(void *, char *);
     void fn_8006140C(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
@@ -2411,13 +2411,13 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     if (slot != NULL && (p = *slot, p != NULL)) {
         val = (p != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC;
         if ((u8)val == 3) {
-            *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x213);
+            *(void **)((u8 *)self + 0xA4) = GActor_FindNode(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x213);
         } else {
             goto block_else;
         }
     } else {
 block_else:
-        *(void **)((u8 *)self + 0xA4) = fn_8006135C(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x21A);
+        *(void **)((u8 *)self + 0xA4) = GActor_FindNode(*(void **)((u8 *)self + 0xB8), gGActorPathExt + 0x21A);
     }
     if (*(s32 *)((u8 *)self + 0xAC) == 2) {
         fn_801C4468(*(void **)((u8 *)self + 0xB8));
