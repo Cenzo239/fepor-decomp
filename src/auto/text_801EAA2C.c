@@ -1013,7 +1013,7 @@ void fn_801EC7B8(void) {
     extern u8 lbl_80332270[];
     extern void *lbl_80338E70[];
     extern void *lbl_803683C0;
-    extern void *lbl_803683C4;
+    extern void *gAramFreeList;
     extern s32 lbl_803683C8;
     extern s32 lbl_803683CC;
     extern s32 lbl_803683D0;
@@ -1188,36 +1188,36 @@ void fn_801EC7B8(void) {
             j -= 7;
             if (--ctr == 0) { p = 0; break; }
         }
-        lbl_803683C4 = p;
+        gAramFreeList = p;
         *(void **)((u8 *)p + 0x5C) = 0;
-        *(void **)((u8 *)lbl_803683C4 + 0x60) = 0;
-        *(s32 *)((u8 *)lbl_803683C4 + 0x68) = lbl_803683C8;
-        *(s32 *)((u8 *)lbl_803683C4 + 0x64) = lbl_803683CC - used;
+        *(void **)((u8 *)gAramFreeList + 0x60) = 0;
+        *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
+        *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC - used;
         {
             void **rp = arr;
             ctr = 0x40;
             do {
                 void *n = *rp;
                 if (n == 0) break;
-                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)lbl_803683C4 + 0x64);
+                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)gAramFreeList + 0x64);
                 rp += 1;
                 n = *rp;
                 if (n == 0) break;
-                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)lbl_803683C4 + 0x64);
+                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)gAramFreeList + 0x64);
                 rp += 1;
                 n = *rp;
                 if (n == 0) break;
-                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)lbl_803683C4 + 0x64);
+                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)gAramFreeList + 0x64);
                 rp += 1;
                 n = *rp;
                 if (n == 0) break;
                 rp += 1;
-                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)lbl_803683C4 + 0x64);
+                *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)gAramFreeList + 0x64);
             } while (--ctr != 0);
         }
         lbl_803683D0 += 1;
-        ARQPostRequest(lbl_803683C4, 0, 0, 1, (s32)buf0,
-                    lbl_803683C8 + *(s32 *)((u8 *)lbl_803683C4 + 0x64), used, fn_801ED838);
+        ARQPostRequest(gAramFreeList, 0, 0, 1, (s32)buf0,
+                    lbl_803683C8 + *(s32 *)((u8 *)gAramFreeList + 0x64), used, fn_801ED838);
         while (lbl_803683D0 != 0) {}
         fn_800C4588(buf0);
         dt = (u32)(OSGetTick() - tick);
@@ -1272,11 +1272,11 @@ void fn_801EC7B8(void) {
         j -= 7;
         if (--ctr == 0) { p = 0; break; }
     }
-    lbl_803683C4 = p;
+    gAramFreeList = p;
     *(void **)((u8 *)p + 0x60) = 0;
-    *(void **)((u8 *)lbl_803683C4 + 0x5C) = 0;
-    *(s32 *)((u8 *)lbl_803683C4 + 0x64) = lbl_803683CC;
-    *(s32 *)((u8 *)lbl_803683C4 + 0x68) = lbl_803683C8;
+    *(void **)((u8 *)gAramFreeList + 0x5C) = 0;
+    *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
+    *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
 }
 
 extern void *lbl_803683C0;
@@ -1311,7 +1311,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_8027F1D0[];
     extern u8 lbl_80332270[];
     extern void *lbl_803683C0;
-    extern void *lbl_803683C4;
+    extern void *gAramFreeList;
     extern s32 lbl_803683CC;
     extern s32 lbl_803683D0;
     s32 a4;
@@ -1367,7 +1367,7 @@ found:
                     temp = *(void **)(node + 0x60);
                 }
                 lbl_803683C0 = temp;
-                lbl_803683C4 = AramCache_InsertFree(lbl_803683C4, node);
+                gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
             }
             size += 1;
             node += 0x6C;
@@ -1399,7 +1399,7 @@ void fn_801ED12C(s32 arg0) {
     void fn_801EC7B8(void);
     void *AramCache_InsertFree(void *, void *);
     extern void *lbl_803683C0;
-    extern void *lbl_803683C4;
+    extern void *gAramFreeList;
     extern u8 lbl_80332270[];
     u32 best_size;
     void *best;
@@ -1417,7 +1417,7 @@ void fn_801ED12C(s32 arg0) {
 
     best = 0;
     best_size = 0x80000000u - 1u;
-    cell = lbl_803683C4;
+    cell = gAramFreeList;
     goto test1;
 body1:
     size = *(s32 *)((u8 *)cell + 0x64);
@@ -1436,7 +1436,7 @@ test1:
     }
     fn_801EC7B8();
 reclaim:
-    best = lbl_803683C4;
+    best = gAramFreeList;
     if (*(u32 *)((u8 *)best + 0x64) >= (u32)arg0) {
         goto have;
     }
@@ -1451,7 +1451,7 @@ reclaim:
     } else {
         lbl_803683C0 = *(void **)((u8 *)node + 0x60);
     }
-    lbl_803683C4 = AramCache_InsertFree(lbl_803683C4, node);
+    gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
     goto reclaim;
 
 have:
@@ -1460,7 +1460,7 @@ have:
         goto split;
     }
     next = *(void **)((u8 *)best + 0x60);
-    cell = lbl_803683C4;
+    cell = gAramFreeList;
     if (next != 0) {
         *(void **)((u8 *)next + 0x5C) = *(void **)((u8 *)best + 0x5C);
     }
@@ -1470,7 +1470,7 @@ have:
     } else {
         cell = *(void **)((u8 *)best + 0x60);
     }
-    lbl_803683C4 = cell;
+    gAramFreeList = cell;
     goto insert;
 
 split:
@@ -1535,7 +1535,7 @@ loop_s:
     if (prev != 0) {
         *(void **)((u8 *)prev + 0x60) = cell;
     } else {
-        lbl_803683C4 = cell;
+        gAramFreeList = cell;
     }
 
 insert:
@@ -1583,7 +1583,7 @@ void fn_801ED52C(s32 arg0) {
     s32 fn_80215F38(void);
     extern u8 lbl_80332270[];
     extern void *lbl_803683C0;
-    extern void *lbl_803683C4;
+    extern void *gAramFreeList;
     extern s32 lbl_803683C8;
     extern s32 lbl_803683CC;
     u8 *var_r4;
@@ -1691,11 +1691,11 @@ cont:
     }
     var_r4 = 0;
 found:
-    lbl_803683C4 = var_r4;
+    gAramFreeList = var_r4;
     *(s32 *)((u8 *)var_r4 + 0x60) = 0;
-    *(s32 *)((u8 *)lbl_803683C4 + 0x5C) = 0;
-    *(s32 *)((u8 *)lbl_803683C4 + 0x64) = lbl_803683CC;
-    *(s32 *)((u8 *)lbl_803683C4 + 0x68) = lbl_803683C8;
+    *(s32 *)((u8 *)gAramFreeList + 0x5C) = 0;
+    *(s32 *)((u8 *)gAramFreeList + 0x64) = lbl_803683CC;
+    *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
 }
 
 void *AramCache_InsertFree(void *list, void *cell)
