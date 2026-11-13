@@ -7685,7 +7685,8 @@ u32* fn_801C7080(u32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-void Light_FadeProcess(void *arg0) {
+/* Fade GX light and fog colors toward the linked unit's target colors over time. */
+void Light_FadeProcess(void *proc) {
     void *fn_8000C0C0(void *);
     void fn_8000C188(void *);
     void Process_Unlink(void *);
@@ -7696,18 +7697,18 @@ void Light_FadeProcess(void *arg0) {
     extern f64 lbl_8036B440;
     extern f64 lbl_8036B470;
 
-    u8 *self = (u8 *)arg0;
+    u8 *self = (u8 *)proc;
     void *node;
     void *unit;
     u32 sp10;
     u32 spC;
     u32 sp8;
-    u8 *c1;
-    u8 *c0;
-    u8 *c2;
+    u8 *srcLight;
+    u8 *dst0;
+    u8 *dst2;
     s32 t0, t1, t2;
     s32 v;
-    u8 *out;
+    u8 *fog;
 
     node = fn_8000C0C0(LightFade_script);
     if (node == NULL)
@@ -7715,16 +7716,16 @@ void Light_FadeProcess(void *arg0) {
     else
         unit = *(void **)((u8 *)node + 0x30);
     if (unit == NULL)
-        Process_Unlink(arg0);
+        Process_Unlink(proc);
 
     sp10 = *(u32 *)((u8 *)unit + 0x288);
     spC = *(u32 *)((u8 *)unit + 0x284);
     sp8 = *(u32 *)((u8 *)unit + 0x28C);
     *(s32 *)(self + 0x30) = *(s32 *)(self + 0x30) + 1;
 
-    c1 = Light_GetChannel(1);
-    c0 = Light_GetChannel(0);
-    c2 = Light_GetChannel(2);
+    srcLight = Light_GetChannel(1);
+    dst0 = Light_GetChannel(0);
+    dst2 = Light_GetChannel(2);
 
     t0 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));
@@ -7733,53 +7734,53 @@ void Light_FadeProcess(void *arg0) {
     t2 = (s32)fn_8005A028(2, (f32)*(u8 *)&sp10, (f32)*(u8 *)&spC,
                           (f32)*(s32 *)(self + 0x34), (f32)*(s32 *)(self + 0x30));
 
-    v = (c1[4] * t0) / 128;
+    v = (srcLight[4] * t0) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[4] = (u8)v;
-    c2[4] = (u8)v;
+    dst0[4] = (u8)v;
+    dst2[4] = (u8)v;
 
-    v = (c1[5] * t1) / 128;
+    v = (srcLight[5] * t1) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[5] = (u8)v;
-    c2[5] = (u8)v;
+    dst0[5] = (u8)v;
+    dst2[5] = (u8)v;
 
-    v = (c1[6] * t2) / 128;
+    v = (srcLight[6] * t2) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[6] = (u8)v;
-    c2[6] = (u8)v;
+    dst0[6] = (u8)v;
+    dst2[6] = (u8)v;
 
-    v = (c1[0] * t0) / 128;
+    v = (srcLight[0] * t0) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[0] = (u8)v;
-    c2[0] = (u8)v;
+    dst0[0] = (u8)v;
+    dst2[0] = (u8)v;
 
-    v = (c1[1] * t1) / 128;
+    v = (srcLight[1] * t1) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[1] = (u8)v;
-    c2[1] = (u8)v;
+    dst0[1] = (u8)v;
+    dst2[1] = (u8)v;
 
-    v = (c1[2] * t2) / 128;
+    v = (srcLight[2] * t2) / 128;
     if (v > 0xFF) v = 0xFF;
-    c0[2] = (u8)v;
-    c2[2] = (u8)v;
+    dst0[2] = (u8)v;
+    dst2[2] = (u8)v;
 
-    out = Fog_GetColor();
+    fog = Fog_GetColor();
     v = (((u8 *)&sp8)[0] * t0) / 128;
     if (v > 0xFF) v = 0xFF;
-    out[1] = (u8)v;
+    fog[1] = (u8)v;
     v = (((u8 *)&sp8)[1] * t1) / 128;
     if (v > 0xFF) v = 0xFF;
-    out[2] = (u8)v;
+    fog[2] = (u8)v;
     v = (((u8 *)&sp8)[2] * t2) / 128;
     if (v > 0xFF) v = 0xFF;
-    out[3] = (u8)v;
+    fog[3] = (u8)v;
 
     if (*(s32 *)(self + 0x30) >= *(s32 *)(self + 0x34)) {
         *(s32 *)(self + 0x34) = 0;
         if (t0 == 0x80 && t1 == 0x80 && t2 == 0x80)
-            Process_Unlink(arg0);
+            Process_Unlink(proc);
         else
-            fn_8000C188(arg0);
+            fn_8000C188(proc);
     }
 }
 #pragma use_lmw_stmw reset
