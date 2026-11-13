@@ -5626,7 +5626,7 @@ extern u8 lbl_8032BDDC[];
 M2C_UNK *fn_8010FA2C(void *arg0) {
     s32 fn_80019E24(s32 arg0);
     M2C_UNK *fn_8001C76C(M2C_UNK *);
-    M2C_UNK fn_8001D5F4(M2C_UNK *, u8);
+    M2C_UNK Item_SetUses(M2C_UNK *, u8);
     M2C_UNK UnitRef_Set(M2C_UNK *, s32);
     M2C_UNK *__register_global_object(M2C_UNK *, M2C_UNK *, M2C_UNK *);
 
@@ -5635,7 +5635,7 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
         lbl_803679E0 = 1;
     }
     UnitRef_Set(&lbl_803679E4, fn_80019E24(M2C_FIELD(arg0, u8 *, 4)));
-    fn_8001D5F4(&lbl_803679E4, M2C_FIELD(arg0, u8 *, 5));
+    Item_SetUses(&lbl_803679E4, M2C_FIELD(arg0, u8 *, 5));
     return &lbl_803679E4;
 }
 

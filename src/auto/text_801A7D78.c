@@ -821,7 +821,7 @@ void BattleUnit_Apply(void *arg0) {
     }
     if (p->unk294 >= 0) {
         Item_Copy(p->unk284, p->unk28C);
-        fn_8001D5F4(p->unk284, (u8)p->unk2C8);
+        Item_SetUses(p->unk284, (u8)p->unk2C8);
         fn_80093154(p->unk280, p->unk294, p->unk284);
         fn_800947E0(p->unk280);
         temp_r3 = p->unk280;

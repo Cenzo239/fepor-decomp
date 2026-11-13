@@ -2277,7 +2277,7 @@ void Item_Clear(void *arg0) {
     }
 }
 
-s32 fn_8001D5F4(void *arg0, u8 arg1) {
+s32 Item_SetUses(void *arg0, u8 arg1) {
     void fn_800C3220(void *, s32);
     extern u8 lbl_803206EC[];
     typedef struct {
