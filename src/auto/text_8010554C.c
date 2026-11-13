@@ -1180,7 +1180,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void Dispos_ParseEntry(u32 *, u32 *, u8);
     void *Unit_FindByName(void *);
     void Unit_SetMapPos(void *, u8, u8);
-    void fn_8003D5FC(void *, u8);
+    void Unit_SetDisposId(void *, u8);
     void Unit_MoveToList(void *, s32);
     void Unit_MoveToListHead(void *, s32);
     void Unit_InitFromDispos(void *, void *);
@@ -1236,7 +1236,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
             unit = NULL;
         } else if (t == 7) {
             Unit_MoveToList(unit, 5);
-            fn_8003D5FC(unit, sp8[0x67]);
+            Unit_SetDisposId(unit, sp8[0x67]);
         }
     }
 skip_type:

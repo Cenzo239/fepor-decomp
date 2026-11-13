@@ -6736,7 +6736,7 @@ s32 fn_800BC9D4(u8 arg0, s32 arg1) {
 
 s32 fn_800BCA38(u8 arg0, s32 arg1) {
     void *fn_80016A9C(s32);
-    void fn_8003D5FC(void *, u8);
+    void Unit_SetDisposId(void *, u8);
     void Unit_MoveToList(void *, s32);
     void fn_80050268(void *);
     extern u8 gUnits[];
@@ -6753,7 +6753,7 @@ s32 fn_800BCA38(u8 arg0, s32 arg1) {
     }
     temp_r3 = fn_80016A9C(arg1);
     if (temp_r3 != NULL) {
-        fn_8003D5FC(var_r31, *(u8 *)((u8 *)temp_r3 + 0x199));
+        Unit_SetDisposId(var_r31, *(u8 *)((u8 *)temp_r3 + 0x199));
     }
     Unit_MoveToList(var_r31, arg1);
     fn_80050268(var_r31);
@@ -7303,7 +7303,7 @@ u8 fn_800BD610(s32 arg0) {
 }
 
 s32 fn_800BD638(u8 id,s32 mid,s32 val) {
-extern u16 gUnits[]; void fn_8003868C(void*,s32); void fn_800381EC(void*,s32); void fn_8003D5FC(void*,u8);
+extern u16 gUnits[]; void fn_8003868C(void*,s32); void fn_800381EC(void*,s32); void Unit_SetDisposId(void*,u8);
 u8 *unit;
 if(id!=0) unit=(u8*)gUnits+(id-1)*0x280; else unit=0;
 if(unit==0 || *(u32*)(unit+0x188)==0) return 0;
@@ -7314,7 +7314,7 @@ case 6: fn_8003868C(unit,val); break;
 case 7: unit[0x19C]=val; break;
 case 8: fn_800381EC(unit,val); break;
 case 13: *(s16*)(unit+0x228)=val; break;
-case 0x26: fn_8003D5FC(unit,(u8)val); break;
+case 0x26: Unit_SetDisposId(unit,(u8)val); break;
 }
 return val;
 }

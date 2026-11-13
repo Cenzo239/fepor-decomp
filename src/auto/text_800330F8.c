@@ -4707,7 +4707,7 @@ s32 fn_8003D538(s32 arg0) {
 }
 
 #pragma opt_strength_reduction reset
-void fn_8003D5FC(void *arg0, u8 arg1) {
+void Unit_SetDisposId(void *arg0, u8 arg1) {
     if (arg1 != 0) {
         M2C_FIELD(arg0, u8 *, 0x199) = arg1;
     }
