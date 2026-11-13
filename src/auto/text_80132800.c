@@ -2189,7 +2189,7 @@ void fn_80136168(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5
     void Text_Draw(s16, s16, s32, void *, s32, ...);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorPacked(void *);
-    void fn_80007220(s32, f32);
+    void Prim2D_SetTextScale(s32, f32);
     void fn_80006B18(s16, s16, s32, s32, u8);
     void Prim2D_EndPrim(void);
     void Ui_DrawIcon(void *, s16, s16, u8);
@@ -2210,7 +2210,7 @@ void fn_80136168(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5
     Prim2D_AddPrim(6);
     sp8 = *Ui_GetColor(flag);
     Prim2D_SetColorPacked(&sp8);
-    fn_80007220(1, lbl_8036A5E0);
+    Prim2D_SetTextScale(1, lbl_8036A5E0);
     fn_80006B18((s16)(arg1 + 0x20), (s16)(arg2 + 8), 0, 0, ((u8 *)arg4)[0x1A]);
     Prim2D_EndPrim();
     Ui_DrawIcon(lbl_802F0350, arg1, arg2, ((u8 *)arg4)[0x19]);
@@ -6141,7 +6141,7 @@ void fn_8013CED0(void *arg0, void *arg1) {
 #pragma cplusplus on
 extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_SetText(s32);
-    M2C_UNK fn_80007220(M2C_UNK, f32);
+    M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
@@ -6205,7 +6205,7 @@ extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);
     } else {
-        fn_80007220(1, lbl_8036A6C4);
+        Prim2D_SetTextScale(1, lbl_8036A6C4);
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
@@ -6370,7 +6370,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
 
 void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_SetText();
-    M2C_UNK fn_80007220(M2C_UNK, f32);
+    M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
@@ -6416,7 +6416,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);
     } else {
-        fn_80007220(1, lbl_8036A6C4);
+        Prim2D_SetTextScale(1, lbl_8036A6C4);
     }
     temp_r3_5 = M2C_FIELD(arg2, void ***, 0x34);
     M2C_FIELD(*temp_r3_5, M2C_UNK (**)(void **, void *), 0x18)(temp_r3_5, arg2);

@@ -667,7 +667,7 @@ void fn_800071D8(u32 arg0, f32 arg1)
     *(s16 *)((u8 *)object + 0x26) = value;
 }
 
-void fn_80007220(u32 arg0, f32 arg1)
+void Prim2D_SetTextScale(u32 arg0, f32 arg1)
 {
     extern f32 lbl_80368B90;
     extern void *lbl_80367140;
