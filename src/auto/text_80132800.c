@@ -6138,7 +6138,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     extern f32 lbl_8036A6C0;
     extern f32 lbl_8036A6C4;
     extern f32 gUiMenuSlotPlainTextZ;
-    extern f32 lbl_8036A6EC;
+    extern f32 gUiMenuSlotPlainFrameZ;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -6194,7 +6194,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     Prim2D_SetText(temp_virt2);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036A6EC);
+    Prim2D_AddZ(gUiMenuSlotPlainFrameZ);
     Prim2D_PrepareTex();
     Ui_DrawSlotFrame((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
 }
