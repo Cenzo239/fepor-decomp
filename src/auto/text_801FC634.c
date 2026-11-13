@@ -635,7 +635,9 @@ void fn_801FDEB8(void) {
     FallingParticle_Update();
 }
 
-void FallingParticle_Update(void *arg0) {
+/* Draw and advance up to three falling Prim2D particles; unlink the process when none remain. */
+void FallingParticle_Update(void *proc)
+{
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -649,26 +651,27 @@ void FallingParticle_Update(void *arg0) {
     extern f32 gFloatZero;
     extern f32 gFloatOne;
 
-    s32 count;
-    s32 w;
+    s32 active;
+    s32 z;
     void *self;
-    s8 t;
+    s8 size;
 
-    count = 0;
-    self = arg0;
-    if (*(s16 *)((u8 *)arg0 + 0x30) >= 0) {
-        w = 0x50;
-        count = 1;
+    active = 0;
+    self = proc;
+    if (*(s16 *)((u8 *)proc + 0x30) >= 0) {
+        z = 0x50;
+        active = 1;
         if (*(s8 *)((u8 *)self + 0x32) < 8) {
-            w = 0x6E;
+            z = 0x6E;
         }
         Prim2D_Begin();
-        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
+        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)z, gFloatOne);
         Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        t = *(s8 *)((u8 *)self + 0x32);
-        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x34) >> 16), (f32)(*(s32 *)((u8 *)self + 0x38) >> 16), (f32)t, (f32)t);
+        size = *(s8 *)((u8 *)self + 0x32);
+        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x34) >> 16),
+                       (f32)(*(s32 *)((u8 *)self + 0x38) >> 16), (f32)size, (f32)size);
         Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x33));
         Prim2D_EndPrim();
         *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)self + 0x34) + *(s32 *)((u8 *)self + 0x3C);
@@ -684,18 +687,19 @@ void FallingParticle_Update(void *arg0) {
         }
     }
     if (*(s16 *)((u8 *)self + 0x44) >= 0) {
-        w = 0x50;
-        count += 1;
+        z = 0x50;
+        active += 1;
         if (*(s8 *)((u8 *)self + 0x46) < 8) {
-            w = 0x6E;
+            z = 0x6E;
         }
         Prim2D_Begin();
-        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
+        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)z, gFloatOne);
         Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        t = *(s8 *)((u8 *)self + 0x46);
-        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x48) >> 16), (f32)(*(s32 *)((u8 *)self + 0x4C) >> 16), (f32)t, (f32)t);
+        size = *(s8 *)((u8 *)self + 0x46);
+        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x48) >> 16),
+                       (f32)(*(s32 *)((u8 *)self + 0x4C) >> 16), (f32)size, (f32)size);
         Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x47));
         Prim2D_EndPrim();
         *(s32 *)((u8 *)self + 0x48) = *(s32 *)((u8 *)self + 0x48) + *(s32 *)((u8 *)self + 0x50);
@@ -711,18 +715,19 @@ void FallingParticle_Update(void *arg0) {
         }
     }
     if (*(s16 *)((u8 *)self + 0x58) >= 0) {
-        w = 0x50;
-        count += 1;
+        z = 0x50;
+        active += 1;
         if (*(s8 *)((u8 *)self + 0x5A) < 8) {
-            w = 0x6E;
+            z = 0x6E;
         }
         Prim2D_Begin();
-        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
+        Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)z, gFloatOne);
         Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        t = *(s8 *)((u8 *)self + 0x5A);
-        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x5C) >> 16), (f32)(*(s32 *)((u8 *)self + 0x60) >> 16), (f32)t, (f32)t);
+        size = *(s8 *)((u8 *)self + 0x5A);
+        Prim2D_SetRect((f32)(*(s32 *)((u8 *)self + 0x5C) >> 16),
+                       (f32)(*(s32 *)((u8 *)self + 0x60) >> 16), (f32)size, (f32)size);
         Prim2D_SetAlpha(*(u8 *)((u8 *)self + 0x5B));
         Prim2D_EndPrim();
         *(s32 *)((u8 *)self + 0x5C) = *(s32 *)((u8 *)self + 0x5C) + *(s32 *)((u8 *)self + 0x64);
@@ -737,7 +742,7 @@ void FallingParticle_Update(void *arg0) {
             *(s16 *)((u8 *)self + 0x58) = -1;
         }
     }
-    if (count == 0) {
+    if (active == 0) {
         Process_Unlink(self);
     }
 }
