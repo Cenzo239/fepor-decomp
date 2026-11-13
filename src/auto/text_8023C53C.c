@@ -5667,33 +5667,49 @@ s32 AudioTable_Insert(u16 id, s32 data) {
     return 1;
 }
 #pragma opt_strength_reduction off
+/* Decrement audio table ref for id; remove the entry when the last ref drops. */
 s32 AudioTable_Remove(u16 id) {
- void Audio_Lock(void); void Audio_Unlock(void);
- extern AudioTableRange gAudioTableRanges[];
- extern AudioTableEntry gAudioTableEntries[];
- extern u16 gAudioTableCount;
- s32 total,index,j; u32 bucket; u16 count,start; s32 i; AudioTableRange *range; AudioTableEntry *moving;
- Audio_Lock();
- bucket=(id>>6)&1023;
- count=gAudioTableRanges[bucket].count;
- if(count!=0) {
-  start=gAudioTableRanges[bucket].start;
-  for(i=0;i<(s32)count && id!=gAudioTableEntries[start+i].id;i++) {}
-  if(i<(s32)count) {
-   index=start+i;
-   if(--gAudioTableEntries[index].ref==0) {
-    total=gAudioTableCount;
-    for(j=index+1,moving=&gAudioTableEntries[j];j<total;j++,moving++) moving[-1]=moving[0];
-    for(j=0,range=gAudioTableRanges;j<512;range++,j++) {
-     if((s32)range->start>(s32)start) range->start--;
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern AudioTableRange gAudioTableRanges[];
+    extern AudioTableEntry gAudioTableEntries[];
+    extern u16 gAudioTableCount;
+    s32 total;
+    s32 index;
+    s32 j;
+    u32 bucket;
+    u16 count;
+    u16 start;
+    s32 i;
+    AudioTableRange *range;
+    AudioTableEntry *moving;
+
+    Audio_Lock();
+    bucket = (id >> 6) & 1023;
+    count = gAudioTableRanges[bucket].count;
+    if (count != 0) {
+        start = gAudioTableRanges[bucket].start;
+        for (i = 0; i < (s32)count && id != gAudioTableEntries[start + i].id; i++) {
+        }
+        if (i < (s32)count) {
+            index = start + i;
+            if (--gAudioTableEntries[index].ref == 0) {
+                total = gAudioTableCount;
+                for (j = index + 1, moving = &gAudioTableEntries[j]; j < total; j++, moving++) {
+                    moving[-1] = moving[0];
+                }
+                for (j = 0, range = gAudioTableRanges; j < 512; range++, j++) {
+                    if ((s32)range->start > (s32)start) {
+                        range->start--;
+                    }
+                }
+                gAudioTableRanges[bucket].count--;
+                gAudioTableCount--;
+            }
+        }
     }
-    gAudioTableRanges[bucket].count--;
-    gAudioTableCount--;
-   }
-  }
- }
- Audio_Unlock();
- return 0;
+    Audio_Unlock();
+    return 0;
 }
 #pragma opt_strength_reduction on
 s32 fn_80250698(void *arg0, void *arg1) {
