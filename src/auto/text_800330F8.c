@@ -10033,44 +10033,45 @@ void fn_8004A864(void* arg0, s32 arg1) {
     *ptr = (u8)count;
 }
 
+/* Set up GX for untextured POS+CLR0 map color overlays and load the camera view with a small Z bias. */
 void Map_SetupColorGx(void) {
-    M2C_UNK Camera_GetViewMtx();
-    M2C_UNK PSMTXConcat(M2C_UNK, M2C_UNK *, M2C_UNK *);
-    M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
-    M2C_UNK GXSetVtxDesc(M2C_UNK, M2C_UNK);
-    M2C_UNK GXClearVtxDesc();
-    M2C_UNK GXSetVtxAttrFmt(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetNumChans(M2C_UNK);
-    M2C_UNK fn_8022100C(M2C_UNK);
-    M2C_UNK GXSetCullMode(M2C_UNK);
-    M2C_UNK GXSetBlendMode(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetNumTevStages(M2C_UNK);
-    M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXLoadPosMtxImm(M2C_UNK *, M2C_UNK);
-    M2C_UNK GXSetCurrentMtx(M2C_UNK);
+    void *Camera_GetViewMtx(void);
+    void PSMTXConcat(void *, f32 *, f32 *);
+    void PSMTXTrans(f32 *, f32, f32, f32);
+    void GXSetVtxDesc(s32, s32);
+    void GXClearVtxDesc(void);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void fn_8022100C(s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetNumTexGens(s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXLoadPosMtxImm(f32 *, s32);
+    void GXSetCurrentMtx(s32);
     extern f32 gMapColorDrawZero;
     extern f32 gMapColorDrawZBias;
-    M2C_UNK sp8[14];
+    f32 mtx[14];
 
     GXClearVtxDesc();
-    GXSetVtxDesc(9, 1);
-    GXSetVtxDesc(0xB, 1);
-    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
-    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
+    GXSetVtxAttrFmt(0, GX_VA_POS, 1, 4, 0);
+    GXSetVtxAttrFmt(0, GX_VA_CLR0, 1, 5, 0);
     GXSetCullMode(1);
     GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetNumTexGens(0, 4);
-    GXSetTevOrder(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder(0, GX_VA_NULL, GX_VA_NULL, 4);
     GXSetNumChans(0);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_8022100C(0);
-    PSMTXTrans(sp8, gMapColorDrawZero, gMapColorDrawZero, gMapColorDrawZBias);
-    PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
-    GXLoadPosMtxImm(sp8, 0);
+    PSMTXTrans(mtx, gMapColorDrawZero, gMapColorDrawZero, gMapColorDrawZBias);
+    PSMTXConcat(Camera_GetViewMtx(), mtx, mtx);
+    GXLoadPosMtxImm(mtx, 0);
     GXSetCurrentMtx(0);
     fn_802245D8(1, 4, 1, 0);
 }
