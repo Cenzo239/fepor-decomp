@@ -1491,7 +1491,9 @@ void fn_800B1E44(s32 arg0)
 }
 
 #pragma use_lmw_stmw on
-s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
+/* Play a sound effect: find an SE slot, duck pan/vol if the same id is already playing, start the voice. */
+s32 Sound_PlaySE(u16 soundId, u8 priority, u8 volParam, u8 paramA)
+{
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void *Snd_Start(u16, u8, s32, s32);
@@ -1503,7 +1505,7 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     u8 *base;
     u8 *p;
     s32 i;
-    u8 st;
+    u8 state;
     s32 id;
     u8 *slot;
     s32 idx;
@@ -1520,7 +1522,7 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     if (idx >= 0x28) {
         slot = base;
         for (idx = 0; idx < 40; idx++, slot += 0x14) {
-            if ((s32)*(u16 *)(slot + 2) <= (s32)arg1) {
+            if ((s32)*(u16 *)(slot + 2) <= (s32)priority) {
                 break;
             }
         }
@@ -1529,17 +1531,17 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
         }
     }
 
-    id = arg0;
+    id = soundId;
     pan = 0x2000;
     vol = 0x7F;
     p = base;
     for (i = 0; i < 40; i++, p += 0x14) {
         if (*(u16 *)p != 0 && (s32)*(u16 *)(p + 0x10) == id) {
-            st = *(u8 *)(p + 9);
-            if (st == 0) {
+            state = *(u8 *)(p + 9);
+            if (state == 0) {
                 return -1;
             }
-            if (st < 4) {
+            if (state < 4) {
                 pan -= 0x400;
                 vol -= 0x1E;
             }
@@ -1558,10 +1560,10 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
         *(s32 *)(gSoundSys + 0x128) = OSDisableInterrupts();
     }
     *(u16 *)(sys + 0x124) = *(u16 *)(sys + 0x124) + 1;
-    *(void **)(slot + 0xC) = Snd_Start(arg0, (u8)vol, 0x40, 0);
-    Snd_SetParamU8(*(void **)(slot + 0xC), 7, arg2);
+    *(void **)(slot + 0xC) = Snd_Start(soundId, (u8)vol, 0x40, 0);
+    Snd_SetParamU8(*(void **)(slot + 0xC), 7, volParam);
     Snd_SetParamU16(*(void **)(slot + 0xC), 0x80, (u16)pan);
-    Snd_SetParamU8(*(void **)(slot + 0xC), 0xA, arg3);
+    Snd_SetParamU8(*(void **)(slot + 0xC), 0xA, paramA);
     {
         u16 nest;
         nest = *(u16 *)(sys + 0x124);
@@ -1577,9 +1579,9 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
         return -1;
     }
     *(u16 *)slot = 1;
-    *(u16 *)(slot + 2) = arg1;
-    *(u16 *)(slot + 4) = arg2;
-    *(u16 *)(slot + 6) = arg3;
+    *(u16 *)(slot + 2) = priority;
+    *(u16 *)(slot + 4) = volParam;
+    *(u16 *)(slot + 6) = paramA;
     *(u8 *)(slot + 8) = 0;
     *(u16 *)(slot + 0x10) = (u16)id;
     *(u8 *)(slot + 9) = 0;
