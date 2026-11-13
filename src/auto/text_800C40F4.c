@@ -4949,7 +4949,7 @@ extern "C" void *fn_800D38BC(void *arg0)
     void fn_801168F4(void *, const char *);
     void fn_800CBAF8(s32, void *, u32);
     typedef void *(*ObjectLookupFn)(void *, const char *, const char *);
-    f32 fn_80113650(void *);
+    f32 Actor_GetRadius(void *);
     void Actor_SetRadius(void *, f32);
     char *fn_800A8A88(const char *);
     void fn_800DB1FC(void *, void *);
@@ -5932,8 +5932,8 @@ extern "C" void *fn_800D38BC(void *arg0)
     }
     *(void **)(obj + 0x98) = *(void **)(obj + 0x8C);
 
-    value84 = fn_80113650(*(void **)(obj + 0x84));
-    value88 = fn_80113650(*(void **)(obj + 0x88));
+    value84 = Actor_GetRadius(*(void **)(obj + 0x84));
+    value88 = Actor_GetRadius(*(void **)(obj + 0x88));
     if (value84 > value88) {
         Actor_SetRadius(*(void **)(obj + 0x88), value84);
     } else if (value84 < value88) {
