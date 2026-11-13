@@ -13848,7 +13848,8 @@ void Card_SetNoCopyAttr(s32 proc) {
     }
 }
 
-void Card_CreateSaveFile(s32 arg0) {
+void Card_CreateSaveFile(s32 proc) {
+    /* Create the save CARD file (gCardStrings+0x70, SAVE_CARD_FILE_SIZE); goto error on failure. */
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;
@@ -13870,7 +13871,7 @@ void Card_CreateSaveFile(s32 arg0) {
     u8 skip;
 
     if (gCardWork.result < 0) {
-        Process_Goto(arg0, 0x63);
+        Process_Goto(proc, 0x63);
         gCardWork.busy = 0;
         skip = 1;
     } else {
@@ -13878,10 +13879,10 @@ void Card_CreateSaveFile(s32 arg0) {
     }
     if (skip == 0) {
         gCardWork.busy = 1;
-        gCardWork.result = CARDCreateAsync(gCardWork.chan, gCardStrings + 0x70, 0x26000,
+        gCardWork.result = CARDCreateAsync(gCardWork.chan, gCardStrings + 0x70, SAVE_CARD_FILE_SIZE,
                                           gCardWork.fileInfo, Card_AsyncDone);
         if (gCardWork.result < 0) {
-            Process_Goto(arg0, 0x63);
+            Process_Goto(proc, 0x63);
             gCardWork.busy = 0;
         }
     }
