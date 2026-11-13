@@ -2091,7 +2091,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     void Prim2D_EndPrim(void);
     s32 Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, s32, ...);
-    void fn_8007CF98(s32, f32, f32, f32);
+    void Ui_DrawExpGauge(s32, f32, f32, f32);
     void fn_80009E64(s32, f32);
     extern s32 gUiTexAtlas;
     extern u8 lbl_80330D18[64];
@@ -2146,7 +2146,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     fn_8001003C((s16)(temp_r27 + 0xA), (s16)(temp_r24 + 0xE), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
     str = Msg_Expand(lbl_802774F0 + 0x1EF);
     fn_8001003C((s16)(temp_r27 + 0x8C), (s16)(temp_r24 + 0x2F), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
-    fn_8007CF98(arg4, (f32)(temp_r27 + 8), (f32)(temp_r24 + 0x2E), farg0);
+    Ui_DrawExpGauge(arg4, (f32)(temp_r27 + 8), (f32)(temp_r24 + 0x2E), farg0);
     fn_80009E64(saved, sp10);
 }
 #pragma use_lmw_stmw reset

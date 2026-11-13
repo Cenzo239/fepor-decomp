@@ -324,7 +324,7 @@ void fn_8007CCE8(void) {
     fn_80087F50();
 }
 
-void fn_8007CF98(void) {
+void Ui_DrawExpGauge(void) {
     M2C_UNK fn_8007F844();
     fn_8007F844();
 }
