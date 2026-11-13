@@ -51,8 +51,8 @@ void fn_8008D86C(u8 *arg0) {
 }
 
 s32 fn_8008D988(void) {
-    extern u16 lbl_8026CD60[];
-    fn_8000BD98((u8 *)lbl_8026CD60 + 0xE3);
+    extern u16 gBattleHelpStrings[];
+    fn_8000BD98((u8 *)gBattleHelpStrings + 0xE3);
     return 0;
 }
 

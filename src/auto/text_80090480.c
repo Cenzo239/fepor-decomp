@@ -287,33 +287,33 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
 void StatBonus_ShowHelp(void *arg0, s32 arg1) {
     s32 Msg_Expand(void *);
     void Ui_OpenHelpPopup(s32, void *, s32, s8);
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
     void *msg;
 
     if ((s8)*(u8 *)((u8 *)arg0 + 0x1F) != 0) {
-        msg = lbl_8026CD60 + 0x1BD;
+        msg = gBattleHelpStrings + 0x1BD;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x20) != 0) {
-        msg = lbl_8026CD60 + 0x1C4;
+        msg = gBattleHelpStrings + 0x1C4;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x21) != 0) {
-        msg = lbl_8026CD60 + 0x1CC;
+        msg = gBattleHelpStrings + 0x1CC;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x22) != 0) {
-        msg = lbl_8026CD60 + 0x1D5;
+        msg = gBattleHelpStrings + 0x1D5;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x23) != 0) {
-        msg = lbl_8026CD60 + 0x1DE;
+        msg = gBattleHelpStrings + 0x1DE;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x24) != 0) {
-        msg = lbl_8026CD60 + 0x1E8;
+        msg = gBattleHelpStrings + 0x1E8;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x25) != 0) {
-        msg = lbl_8026CD60 + 0x1F1;
+        msg = gBattleHelpStrings + 0x1F1;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x26) != 0) {
-        msg = lbl_8026CD60 + 0x1F9;
+        msg = gBattleHelpStrings + 0x1F9;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x28) != 0) {
-        msg = lbl_8026CD60 + 0x202;
+        msg = gBattleHelpStrings + 0x202;
     } else if ((s8)*(u8 *)((u8 *)arg0 + 0x27) != 0) {
-        msg = lbl_8026CD60 + 0x20C;
+        msg = gBattleHelpStrings + 0x20C;
     } else {
         msg = arg0;
     }
-    Ui_OpenHelpPopup(Msg_Expand(msg), lbl_8026CD60 + 0x1AC, arg1, 1);
+    Ui_OpenHelpPopup(Msg_Expand(msg), gBattleHelpStrings + 0x1AC, arg1, 1);
 }
 
 void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
@@ -324,7 +324,7 @@ void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     s32 Status_Test(s32, s32);
     void Ui_OpenHelpPopup(s32, s32, s32, s32);
     s32 fn_80231E74(char *, s32, char *, ...);
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
 
     char sp8[0x80];
     s32 temp;
@@ -337,22 +337,22 @@ void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
     } else {
         kind = 0;
     }
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, (temp = UnitRef_GetName(arg0), fn_8001D070(arg0, 0)), temp, kind + 0x60);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, (temp = UnitRef_GetName(arg0), fn_8001D070(arg0, 0)), temp, kind + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910((char *)lbl_8026CD60 + 0x21F, Status_Test(arg2 + 0x1BC, 1)), 0, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x21F, Status_Test(arg2 + 0x1BC, 1)), 0, arg1, 0);
 }
 
 void fn_8009149C(s32 arg0, s32 arg1) {
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
     s32 Msg_Expand(void *);
     void Ui_OpenHelpPopup(s32, void *, s32, s32);
     char sp8[0x80];
 
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x228, arg0);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x228, arg0);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(Msg_Expand((char *)lbl_8026CD60 + 0x22B), lbl_8026CD60 + 0x1AC, arg1, 0);
+    Ui_OpenHelpPopup(Msg_Expand((char *)gBattleHelpStrings + 0x22B), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
 
 void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
@@ -363,7 +363,7 @@ void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
     s32 Status_Test(s32, s32);
     void Ui_OpenHelpPopup(s32, void *, s32, s32);
     s32 fn_80231E74(char *, s32, char *, ...);
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
 
     char sp8[0x80];
     s32 temp;
@@ -384,9 +384,9 @@ void fn_80091518(void **arg0, s32 arg1, s32 arg2) {
         kind = 0;
     }
     temp = UnitRef_GetName(self);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(self, 0), temp, kind + 0x60);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(self, 0), temp, kind + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910((char *)lbl_8026CD60 + 0x25A, Status_Test(dst + 0x1BC, 1), lbl_8026CD60), lbl_8026CD60 + 0x23E, src, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x25A, Status_Test(dst + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x23E, src, 0);
 }
 
 void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
@@ -397,7 +397,7 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
     s32 Status_Test(s32, s32);
     void Ui_OpenHelpPopup(s32, void *, s32, s32);
     s32 fn_80231E74(char *, s32, char *, ...);
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
 
     char sp8[0x80];
     s32 temp;
@@ -411,14 +411,14 @@ void fn_800915E8(void **arg0, s32 arg1, s32 arg2) {
         kind = 0;
     }
     temp = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), temp, kind + 0x60);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), temp, kind + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910((char *)lbl_8026CD60 + 0x265, Status_Test(arg2 + 0x1BC, 1), lbl_8026CD60), lbl_8026CD60 + 0x1AC, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910((char *)gBattleHelpStrings + 0x265, Status_Test(arg2 + 0x1BC, 1), gBattleHelpStrings), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
 
 #pragma optimization_level 2
 void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(u8 *, s32);
@@ -438,14 +438,14 @@ void fn_800916B8(void **arg0, s32 arg1, s32 arg2) {
         type = 0;
     }
     result = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910(lbl_8026CD60 + 0x270, Status_Test(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x23E, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910(gBattleHelpStrings + 0x270, Status_Test(arg2 + 0x1BC, 1)), gBattleHelpStrings + 0x23E, arg1, 0);
 }
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
-    extern u8 lbl_8026CD60[];
+    extern u8 gBattleHelpStrings[];
     s32 fn_80231E74(char *, s32, char *, ...);
     void fn_8000D864(s32, char *);
     s32 fn_8000D910(u8 *, s32);
@@ -465,9 +465,9 @@ void fn_80091788(void **arg0, s32 arg1, s32 arg2) {
         type = 0;
     }
     result = UnitRef_GetName(arg0);
-    fn_80231E74(sp8, 0x80, (char *)lbl_8026CD60 + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
+    fn_80231E74(sp8, 0x80, (char *)gBattleHelpStrings + 0x214, fn_8001D070(arg0, 0), result, type + 0x60);
     fn_8000D864(0, sp8);
-    Ui_OpenHelpPopup(fn_8000D910(lbl_8026CD60 + 0x27B, Status_Test(arg2 + 0x1BC, 1)), lbl_8026CD60 + 0x1AC, arg1, 0);
+    Ui_OpenHelpPopup(fn_8000D910(gBattleHelpStrings + 0x27B, Status_Test(arg2 + 0x1BC, 1)), gBattleHelpStrings + 0x1AC, arg1, 0);
 }
 #pragma global_optimizer on
 #pragma use_lmw_stmw off
