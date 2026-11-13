@@ -1709,14 +1709,14 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 }
 #pragma peephole on
 int OSFontCodeToIndex(u16 encode, u16 code) {
-    extern u16 lbl_8029C2E8[];
+    extern u16 OSFontAnsiIndex[];
     extern u16 lbl_8029C468[];
     int i;
     int j;
 
     if (encode == 1) {
         if (0x20 <= code && code <= 0xDF) {
-            return lbl_8029C2E8[code - 0x20];
+            return OSFontAnsiIndex[code - 0x20];
         } else if (0x889E < code && code <= 0x9872) {
             i = ((code >> 8) - 0x88) * 188;
             j = code & 0xFF;
