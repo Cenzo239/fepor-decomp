@@ -54,13 +54,13 @@ void fn_800062CC(u32 *dst, u32 *src, u32 n) {
 }
 
 void fn_800062EC(u32 *dst, u32 *src, u32 n) {
-    dst--;
-    n >>= 3;
-    src--;
-    do {
-        *++dst = *++src;
-        *++dst = *++src;
-    } while (--n);
+u32 a,b;
+--dst; n>>=3; --src;
+do {
+a=*++src; *++dst=a;
+b=*++src; *++dst=b;
+n--;
+} while(n!=0);
 }
 
 void fn_80006314(void) {
@@ -1839,7 +1839,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80222CF0(s32, s32);
     void fn_80222C50(void *, s32);
-    u32 fn_80222A80(void *);
+    u32 GXGetTexObjWidth(void *);
     u32 fn_80222A90(void *);
     s32 fn_80222AA0(void *);
     void fn_80224E50(void *, s32, s32);
@@ -1882,7 +1882,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         }
         fn_80222C50(arg1, 0);
         temp_f31 = lbl_80368B94 / (f32)(u16)fn_80222A90(arg1);
-        temp_f1 = lbl_80368B94 / (f32)(u16)fn_80222A80(arg1);
+        temp_f1 = lbl_80368B94 / (f32)(u16)GXGetTexObjWidth(arg1);
         PSMTXScale(sp8, temp_f1, temp_f31, lbl_80368B94);
         fn_80224E50(sp8, 0x1E, 1);
         GXSetNumChans(1);
@@ -2142,33 +2142,33 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     extern u16 lbl_80367140;
+    int mask;
+    unsigned long a;
+    int b;
     u32 sp[8];
-    u8 *p;
-    u32 mask;
-    u32 t0;
-    u32 t1;
-    u8 ff;
+    register u8 *p;
+    register u8 ff;
 
     Ui_LoadAtlasTex(arg0, sp, arg1);
-    p = *(u8 **)&lbl_80367140;
     mask = 0xFFFF7B0C;
-    t0 = sp[0];
-    t1 = sp[1];
+    p = *(u8 **)&lbl_80367140;
+    b = sp[1];
+    a = sp[0];
     ff = 0xFF;
-    *(u32 *)(p + 0x34) = t0;
-    *(u32 *)(p + 0x38) = t1;
-    t0 = sp[2];
-    t1 = sp[3];
-    *(u32 *)(p + 0x3C) = t0;
-    *(u32 *)(p + 0x40) = t1;
-    t0 = sp[4];
-    t1 = sp[5];
-    *(u32 *)(p + 0x44) = t0;
-    *(u32 *)(p + 0x48) = t1;
-    t0 = sp[6];
-    t1 = sp[7];
-    *(u32 *)(p + 0x4C) = t0;
-    *(u32 *)(p + 0x50) = t1;
+    *(u32 *)(p + 0x38) = b;
+    *(u32 *)(p + 0x34) = a;
+    a = sp[2];
+    b = sp[3];
+    *(u32 *)(p + 0x3C) = a;
+    *(u32 *)(p + 0x40) = b;
+    a = sp[4];
+    b = sp[5];
+    *(u32 *)(p + 0x44) = a;
+    *(u32 *)(p + 0x48) = b;
+    a = sp[6];
+    b = sp[7];
+    *(u32 *)(p + 0x50) = b;
+    *(u32 *)(p + 0x4C) = a;
     (*(u8 **)&lbl_80367140)[0x22] = ff;
     *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) =
         *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) & mask;
@@ -2251,38 +2251,41 @@ void fn_8000A284(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #pragma global_optimizer off
-void *fn_8000A2A8(u32 arg0) {
-    extern void *(*lbl_80366DA0)(u32);
-    extern u16 lbl_80367140;
-    extern f32 lbl_80368B94;
-    extern f32 lbl_80368B98;
-    extern f32 lbl_80368BB8;
-    u32 n;
-    void *p;
-    f32 f2;
-    f32 f1;
-    f32 f0;
-
-    if (arg0 == 0) {
-        arg0 = 0xFFE0;
-    }
-    n = arg0 & ~7;
-    p = lbl_80366DA0(n);
-    *(void **)&lbl_80367140 = p;
-    f2 = lbl_80368B94;
-    f1 = lbl_80368BB8;
-    *(void **)p = p;
-    f0 = lbl_80368B98;
-    *(u32 *)((u8 *)*(void **)&lbl_80367140 + 4) = n;
-    *(f32 *)((u8 *)*(void **)&lbl_80367140 + 0x98) = f2;
-    *(f32 *)((u8 *)*(void **)&lbl_80367140 + 0x94) = f1;
-    *(f32 *)((u8 *)*(void **)&lbl_80367140 + 0xa0) = f1;
-    *(f32 *)((u8 *)*(void **)&lbl_80367140 + 0x9c) = f0;
-    *(u32 *)((u8 *)*(void **)&lbl_80367140 + 0x10) = 0;
-    *(u32 *)((u8 *)*(void **)&lbl_80367140 + 0x14) = 0;
-    *(u16 *)((u8 *)*(void **)&lbl_80367140 + 0x20) = 0;
-    *((u8 *)*(void **)&lbl_80367140 + 0xa9) = 0xFF;
-    return *(void **)&lbl_80367140;
+void *fn_8000A2A8(u32 arg0)
+{
+  extern void *(*lbl_80366DA0)(u32);
+  extern u16 lbl_80367140;
+  extern f32 lbl_80368B94;
+  extern f32 lbl_80368B98;
+  extern f32 lbl_80368BB8;
+  u32 n;
+  void *p;
+  u8 *new_var;
+  f32 f2;
+  f32 f1;
+  f32 f0;
+  if (arg0 == 0)
+  {
+    arg0 = 0xFFE0;
+  }
+  n = arg0 & (~7);
+  p = lbl_80366DA0(n);
+  *((void **) (&lbl_80367140)) = p;
+  f2 = lbl_80368B94;
+  new_var = ((u8 *) (*((void **) (&lbl_80367140)))) + 4;
+  f1 = lbl_80368BB8;
+  *((void **) p) = p;
+  f0 = lbl_80368B98;
+  *((u32 *) new_var) = n;
+  *((f32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x98)) = f2;
+  *((f32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x94)) = f1;
+  *((f32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0xa0)) = f1;
+  *((f32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x9c)) = f0;
+  *((u32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x10)) = 0;
+  *((u32 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x14)) = 0;
+  *((u16 *) (((u8 *) (*((void **) (&lbl_80367140)))) + 0x20)) = 0;
+  *(((u8 *) (*((void **) (&lbl_80367140)))) + 0xa9) = 0xFF;
+  return *((void **) (&lbl_80367140));
 }
 #pragma global_optimizer reset
 void *fn_800C4638(s32, void *, s32);

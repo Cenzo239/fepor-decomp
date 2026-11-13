@@ -851,7 +851,7 @@ void fn_800C6028(void *arg0) {
     void GXSetChanMatColor(s32, void *);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
-    u16 fn_80222A80(void *);
+    u16 GXGetTexObjWidth(void *);
     u16 fn_80222A90(void *);
     void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
@@ -925,7 +925,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevColor(2, &sp3C);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), spA0, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(spA0, 0);
-        w = fn_80222A80(spA0);
+        w = GXGetTexObjWidth(spA0);
         h = fn_80222A90(spA0);
         GXSetNumChans(1);
         PSMTXScale(sp250, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
@@ -991,7 +991,7 @@ void fn_800C6028(void *arg0) {
         GXSetChanMatColor(0, &sp2C);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp80, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp80, 0);
-        w = fn_80222A80(sp80);
+        w = GXGetTexObjWidth(sp80);
         h = fn_80222A90(sp80);
         GXSetNumChans(1);
         PSMTXScale(sp1E0, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
@@ -1057,7 +1057,7 @@ void fn_800C6028(void *arg0) {
         GXSetChanMatColor(0, &sp20);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp60, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp60, 0);
-        w = fn_80222A80(sp60);
+        w = GXGetTexObjWidth(sp60);
         h = fn_80222A90(sp60);
         GXSetNumChans(1);
         PSMTXScale(sp170, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
@@ -1125,7 +1125,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevColor(2, &sp14);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp40, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp40, 0);
-        w = fn_80222A80(sp40);
+        w = GXGetTexObjWidth(sp40);
         h = fn_80222A90(sp40);
         GXSetNumChans(1);
         PSMTXScale(sp100, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
@@ -1188,7 +1188,7 @@ void fn_800C6E44(void *arg0) {
     void GXSetTevColor(s32, void *);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
-    u16 fn_80222A80(void *);
+    u16 GXGetTexObjWidth(void *);
     u16 fn_80222A90(void *);
     void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
@@ -1249,7 +1249,7 @@ void fn_800C6E44(void *arg0) {
     GXSetTevColor(2, &sp10);
     Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34));
     fn_80222C50(sp20, 0);
-    w = fn_80222A80(sp20);
+    w = GXGetTexObjWidth(sp20);
     h = fn_80222A90(sp20);
     GXSetNumChans(1);
     PSMTXScale(sp70, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
@@ -1296,7 +1296,7 @@ void fn_800C6E44(void *arg0) {
         GXSetTevColor(1, &spC);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34) + 1);
         fn_80222C50(sp20, 0);
-        w = fn_80222A80(sp20);
+        w = GXGetTexObjWidth(sp20);
         h = fn_80222A90(sp20);
         GXSetNumChans(1);
         PSMTXScale(sp40, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
