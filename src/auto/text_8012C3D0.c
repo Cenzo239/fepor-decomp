@@ -1943,6 +1943,7 @@ void fn_8012F5CC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
+    /* Draw the unit-count banner for player (mode 1) or enemy (mode 2) lists. */
     void fn_800075D8(void);
     void fn_800076EC(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
@@ -1988,8 +1989,8 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     };
 
     u8 *self = (u8 *)arg0;
-    s16 b;
-    s16 a;
+    s16 limit;
+    s16 count;
     Node *node;
     Drawer *drawer;
 
@@ -2011,26 +2012,26 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_SetRectUv(lbl_8036A558, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A558, lbl_8036A55C);
         fn_800076EC();
         Prim2D_EndPrim();
-        a = 0;
+        count = 0;
         node = *(Node **)gUnitLists;
         while (node != NULL) {
             s32 flags = node->flags;
             node = node->next;
             if (!(flags & 0x10))
-                a++;
+                count++;
         }
-        b = (s16)lbl_802EF4E0[0];
+        limit = (s16)lbl_802EF4E0[0];
         Prim2D_Begin();
         fn_80009C0C(lbl_8036A560);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        if (a == b) {
+        if (count == limit) {
             fn_8001019C(0x40, 0x10, 2, fn_8000E0E4(lbl_80275AC0 + 0x1C8));
-            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1DA, a, b);
+            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1DA, count, limit);
         } else {
-            fn_8000D8BC(0, b - a);
+            fn_8000D8BC(0, limit - count);
             fn_8001019C(0x40, 0x10, 2, fn_8000E0E4(lbl_80275AC0 + 0x1E7));
-            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1F7, a, b);
+            fn_8001019C(0x140, 0x10, 1, lbl_80275AC0 + 0x1F7, count, limit);
         }
         break;
     case 2:
@@ -2050,26 +2051,26 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_SetRectUv(lbl_8036A558, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A558, lbl_8036A55C);
         fn_800076EC();
         Prim2D_EndPrim();
-        b = 0;
+        limit = 0;
         node = *(Node **)(gUnitLists + 0x3C);
         while (node != NULL) {
             s32 flags = node->flags;
             node = node->next;
             if (flags & 0x400000)
-                b++;
+                limit++;
         }
-        a = (s16)lbl_802EF4E0[0];
+        count = (s16)lbl_802EF4E0[0];
         Prim2D_Begin();
         fn_80009C0C(lbl_8036A560);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        if (b == a) {
+        if (limit == count) {
             fn_8001019C(0x40, 0x10, 2, fn_8000E0E4(lbl_80275AC0 + 0x208));
-            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1DA, b, a);
+            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1DA, limit, count);
         } else {
-            fn_8000D8BC(0, a - b);
+            fn_8000D8BC(0, count - limit);
             fn_8001019C(0x40, 0x10, 2, fn_8000E0E4(lbl_80275AC0 + 0x21E));
-            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1F7, b, a);
+            fn_8001019C(0x128, 0x10, 1, lbl_80275AC0 + 0x1F7, limit, count);
         }
         break;
     default:
