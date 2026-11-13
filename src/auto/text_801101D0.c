@@ -5472,19 +5472,43 @@ void fn_8011D6F4(s32 arg0) {
 extern u16 TalkUi_str[];
 extern u16 lbl_8032FE04[];
 extern u16 lbl_8028FE50[];
-void fn_8011D79C(s32 arg0) {
-    if (arg0 != 0) {
-        u16 *temp_r5 = &TalkUi_str[arg0];
-        s32 temp_r6 = *temp_r5;
-        s32 temp_r7 = *(temp_r5 + 1);
-        u16 *temp_r8 = &lbl_80296128[temp_r6];
-        s32 temp_r9 = *(temp_r8 + 1);
-        
-        if (temp_r9 != 0) {
-            if (temp_r7 == temp_r9) {
-                *(temp_r5 + 2) = *(temp_r8 + 2);
-            }
+void fn_8011D79C(void *arg0) {
+    s32 fn_800056CC(const char *, ...);
+    void *Msg_Expand(void *);
+    void fn_8023440C(void *, const void *, s32);
+    extern u16 lbl_80367A58;
+    extern s32 gUiInputFlags;
+    void *fn_8000C0C0(void *);
+    void fn_80120CCC(u16 *);
+    void fn_8000C5E0(void *);
+    void fn_8000C070(void *, s32);
+    void fn_80120CFC(u16 *);
+    void fn_8011DED8(void *);
+    void Process_Unlink(void *);
+    void fn_80013864(void);
+    void *result;
+    void *obj;
+    u32 flags;
+
+    fn_800056CC((char *)TalkUi_str + 0x35, arg0);
+    result = Msg_Expand(arg0);
+    fn_8023440C(lbl_8032FE04, arg0, 0x1E);
+    obj = fn_8000C0C0(lbl_8028FE50);
+    fn_80120CCC(&lbl_80367A58);
+    fn_8000C5E0(obj);
+    *(void **)((u8 *)obj + 0x30) = result;
+    flags = lbl_80367A58;
+    flags &= ~0x10;
+    lbl_80367A58 = flags;
+    fn_8000C070(obj, 1);
+    fn_80120CFC(&lbl_80367A58);
+    if (gUiInputFlags & 3) {
+        fn_8011DED8(obj);
+        if (!(lbl_80367A58 & 0x10)) {
+            Process_Unlink(obj);
         }
+    } else {
+        fn_80013864();
     }
 }
 
