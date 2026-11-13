@@ -89,7 +89,7 @@ void QUATMtx(Quaternion *qOut, Mtx m) {
 
 void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
     f32 sinf(f32);
-    f32 fn_80238A78(f32);
+    f32 acosf(f32);
     f32 theta;
     f32 sin_th;
     f32 cos_th;
@@ -103,7 +103,7 @@ void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
         tq = -tq;
     }
     if (cos_th <= 0.99999f) {
-        theta = fn_80238A78(cos_th);
+        theta = acosf(cos_th);
         sin_th = sinf(theta);
         tp = sinf((1.0f - t) * theta) / sin_th;
         tq *= sinf(t * theta) / sin_th;

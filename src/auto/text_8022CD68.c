@@ -4179,7 +4179,7 @@ f32 fn_80238A54(void) {
     return (f32) fn_802380D0();
 }
 
-f32 fn_80238A78(void) {
+f32 acosf(void) {
     f64 fn_80238788();
     return (f32) fn_80238788();
 }
