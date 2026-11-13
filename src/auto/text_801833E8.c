@@ -2681,19 +2681,19 @@ void fn_8018B89C(void *arg0) {
     extern f32 lbl_8036ACEC;
     void *self;
     void *p;
+    f64 d;
     f32 scale;
-    f32 t;
     f32 z;
 
     self = arg0;
     *(s32 *)((u8 *)self + 0x40) += 1;
     *(f32 *)((u8 *)self + 0x44) =
         *(f32 *)((u8 *)self + 0x44) + *(f32 *)((u8 *)self + 0x34);
-    t = (f32)fn_80238638(*(f32 *)((u8 *)self + 0x44));
+    d = fn_80238638(*(f32 *)((u8 *)self + 0x44));
     scale = *(f32 *)((u8 *)self + 0x3C);
     p = *(void **)((u8 *)self + 0x30);
     z = lbl_8036ACEC;
-    *(f32 *)((u8 *)p + 0x10) = scale * t;
+    *(f32 *)((u8 *)p + 0x10) = scale * (f32)d;
     *(f32 *)((u8 *)p + 0x14) = z;
     *(f32 *)((u8 *)p + 0x18) = z;
     if (*(s32 *)((u8 *)self + 0x40) >= *(s32 *)((u8 *)self + 0x38)) {
@@ -7669,7 +7669,7 @@ s32 fn_80196388(s32 arg0) {
     void **fn_800285C0(void *);
     void fn_80037040(s32, u8, u8);
     void fn_80094A08(s32, s32);
-    void fn_8009127C(void *, s32, void *);
+    void StatBonus_ShowHelp(void *, s32, void *);
     extern u8 gUiContext[];
     extern u8 gBattle[];
     s32 temp_r31;
@@ -7679,7 +7679,7 @@ s32 fn_80196388(s32 arg0) {
     temp_r30 = *fn_800285C0(gUiContext);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
     fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
-    fn_8009127C(temp_r30, (*(u32 *)(gBattle + 0xCAC) |= 0x2000, arg0), gBattle);
+    StatBonus_ShowHelp(temp_r30, (*(u32 *)(gBattle + 0xCAC) |= 0x2000, arg0), gBattle);
     return 1;
 }
 
@@ -7712,7 +7712,7 @@ s32 fn_801964C8(s32 arg0) {
     s32 *fn_800285C0(void *);
     void fn_8003708C(s32, s32);
     void fn_80094A08(s32, s32);
-    void fn_8009127C(s32, s32, void *);
+    void StatBonus_ShowHelp(s32, s32, void *);
     extern u8 gUiContext[];
     extern u8 gBattle[];
     s32 temp;
@@ -7721,7 +7721,7 @@ s32 fn_801964C8(s32 arg0) {
     fn_8003708C(*(s32 *)gUiContext, temp + 0x1F);
     fn_80094A08(*(s32 *)gUiContext, *(s8 *)&gUiContext[0xA]);
     *(u32 *)(gBattle + 0xCAC) |= 0x2000;
-    fn_8009127C(temp, arg0, gBattle);
+    StatBonus_ShowHelp(temp, arg0, gBattle);
     return 1;
 }
 #pragma opt_common_subs on

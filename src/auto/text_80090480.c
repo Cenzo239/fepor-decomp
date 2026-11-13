@@ -284,7 +284,7 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
     Prim2D_EndPrim();
 }
 
-void fn_8009127C(void *arg0, s32 arg1) {
+void StatBonus_ShowHelp(void *arg0, s32 arg1) {
     s32 Msg_Expand(void *);
     void fn_801B79A0(s32, void *, s32, s8);
     extern u8 lbl_8026CD60[];
