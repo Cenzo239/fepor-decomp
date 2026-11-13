@@ -1152,65 +1152,66 @@ u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
     return result;
 }
 
-int fflush(void *arg0) {
+int fflush(void *file) {
+    /* Flush a FILE's buffer to the device, or flush every open file when file is NULL. */
     s32 __flush_buffer(void *, s32 *);
     s32 __flush_all();
     s32 fn_80231748(void *);
     typedef struct {
         u8 pad[4];
         u16 pre:7;
-        u16 mode:3;
+        u16 ioMode:3;
         u16 rest:6;
-    } S4;
+    } FileWord4;
     typedef struct {
         u8 pad[4];
         u8 pre:2;
-        u8 modeB:3;
+        u8 state:3;
         u8 rest:3;
-    } B4;
+    } FileByte4;
     typedef struct {
         u8 pad[8];
-        u8 mode:3;
+        u8 bufMode:3;
         u8 rest:4;
         u8 flag:1;
-    } B8;
-    S4 *s4 = (S4 *)arg0;
-    B4 *b4 = (B4 *)arg0;
-    B8 *b8 = (B8 *)arg0;
-    s32 var_r30;
+    } FileByte8;
+    FileWord4 *w4 = (FileWord4 *)file;
+    FileByte4 *b4 = (FileByte4 *)file;
+    FileByte8 *b8 = (FileByte8 *)file;
+    s32 pos;
 
-    if (arg0 == NULL) {
+    if (file == NULL) {
         return __flush_all();
     }
-    if (((u8) M2C_FIELD(arg0, u8 *, 0xA) != 0) || (s4->mode == 0)) {
+    if (((u8) M2C_FIELD(file, u8 *, 0xA) != 0) || (w4->ioMode == 0)) {
         return -1;
     }
-    if (b4->modeB == 1) {
+    if (b4->state == 1) {
         return 0;
     }
-    if (b8->mode >= 3U) {
-        b8->mode = 2;
+    if (b8->bufMode >= 3U) {
+        b8->bufMode = 2;
     }
-    if (b8->mode == 2) {
-        M2C_FIELD(arg0, s32 *, 0x28) = 0;
+    if (b8->bufMode == 2) {
+        M2C_FIELD(file, s32 *, 0x28) = 0;
     }
-    if (b8->mode != 1) {
-        b8->mode = 0;
+    if (b8->bufMode != 1) {
+        b8->bufMode = 0;
         return 0;
     }
-    if (s4->mode != 1) {
-        var_r30 = 0;
+    if (w4->ioMode != 1) {
+        pos = 0;
     } else {
-        var_r30 = fn_80231748(arg0);
+        pos = fn_80231748(file);
     }
-    if (__flush_buffer(arg0, 0) != 0) {
-        M2C_FIELD(arg0, u8 *, 0xA) = 1U;
-        M2C_FIELD(arg0, s32 *, 0x28) = 0;
+    if (__flush_buffer(file, 0) != 0) {
+        M2C_FIELD(file, u8 *, 0xA) = 1U;
+        M2C_FIELD(file, s32 *, 0x28) = 0;
         return -1;
     }
-    b8->mode = 0;
-    M2C_FIELD(arg0, s32 *, 0x18) = var_r30;
-    M2C_FIELD(arg0, s32 *, 0x28) = 0;
+    b8->bufMode = 0;
+    M2C_FIELD(file, s32 *, 0x18) = pos;
+    M2C_FIELD(file, s32 *, 0x28) = 0;
     return 0;
 }
 
