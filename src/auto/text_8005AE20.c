@@ -6897,7 +6897,7 @@ void fn_8006DFD8(void) {
     extern void *DemoFrameBuffer2;
     extern void *DemoFrameBuffer1;
     extern u32 lbl_80367330;
-    extern u32 lbl_80367334;
+    extern u32 gDemoStatHangLimit;
     extern u8 GXNtsc480IntDf[];
     extern u8 GXPal528IntDf[];
     extern u8 GXEurgb60Hz480IntDf[];
@@ -6928,7 +6928,7 @@ void fn_8006DFD8(void) {
     lbl_80367330 = 0;
     goto check;
 body:
-    if (lbl_80367330 < lbl_80367334) {
+    if (lbl_80367330 < gDemoStatHangLimit) {
         goto check;
     }
     OSReport(DEMOInit_str + 0xF9);
@@ -7067,18 +7067,18 @@ done:
 
 void fn_8006E478(void) {
 void OSReport(char *, ...); void fn_8006DDDC(void); void OSPanic(char *, int, char *); void fn_8021F168(u8 *, void *, void *, void *, void *); u32 fn_8021F4DC(void);
-extern char DEMOInit_str[]; extern s32 lbl_80367330; extern u32 lbl_80367334,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
+extern char DEMOInit_str[]; extern s32 lbl_80367330; extern u32 gDemoStatHangLimit,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
 u8 sp9; u8 pad[3]; void *sp8; u32 result, count;
 if((s8)lbl_8036733C==0){lbl_80367338=0;lbl_8036733C=1;}
 if((s8)lbl_80367344==0){lbl_80367340=0;lbl_80367344=1;}
 lbl_80367330++;
 fn_8021F168(&sp9,&sp8,&sp8,&sp8,&sp8);
 result=fn_8021F4DC();
-if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(DEMOInit_str+0x126);fn_8006DDDC();OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
+if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=gDemoStatHangLimit){OSReport(DEMOInit_str+0x126);fn_8006DDDC();OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
 }
 
 extern s32 gDemoStatEnable;
-extern u32 lbl_80367334;
+extern u32 gDemoStatHangLimit;
 extern s32 gDvdCheckSnapshot;
 extern f32 lbl_803692C8;
 extern f64 lbl_803692D0;
@@ -7089,12 +7089,12 @@ void DEMOSetStats(u32 arg0)
     void fn_80225204(s32, s32);
     void fn_8006E478(void);
     extern s32 gDemoStatEnable;
-    extern u32 lbl_80367334;
+    extern u32 gDemoStatHangLimit;
     volatile u8 *gx;
 
     if (arg0 != 0) {
         gDemoStatEnable = 1;
-        lbl_80367334 = arg0;
+        gDemoStatHangLimit = arg0;
         fn_8020FFC4(fn_8006E478);
         fn_80225204(0x23, 0x16);
         gx = (volatile u8 *)0xCC008000;
@@ -7108,7 +7108,7 @@ void DEMOSetStats(u32 arg0)
         *(volatile u32 *)gx = 0x84400;
     } else {
         gDemoStatEnable = 0;
-        lbl_80367334 = 0;
+        gDemoStatHangLimit = 0;
         gx = (volatile u8 *)0xCC008000;
         *gx = 0x61;
         *(volatile u32 *)gx = 0x24000000;
