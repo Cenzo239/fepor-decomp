@@ -1972,7 +1972,7 @@ extern "C" void fn_801B224C(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016746C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
     extern u8 lbl_8027BD18[];
     extern u8 lbl_80330708[];
     extern u8 gUnitInfoPopup[];
@@ -2078,7 +2078,7 @@ extern "C" void fn_801B224C(void *arg0) {
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)self + 0x44))->v9();
-            fn_8016746C(gUnitInfoPopup, self, &lbl_80368230, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, &lbl_80368230, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xA00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);

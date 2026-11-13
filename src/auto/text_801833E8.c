@@ -5912,7 +5912,7 @@ extern "C" void fn_80192F70(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016746C(void *, void *, s32, f32, f32);
+    void Ui_OpenUnitInfoPopup(void *, void *, s32, f32, f32);
     extern u8 lbl_80279DF0[];
     extern u8 lbl_80330708[];
     extern u8 gUnitInfoPopup[];
@@ -6021,7 +6021,7 @@ extern "C" void fn_80192F70(void *arg0) {
               }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != NULL) {
             *(Pair *)&pos2 = ((Obj *)obj40)->v13();
-            fn_8016746C(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -6665,7 +6665,7 @@ extern "C" void fn_801943FC(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016746C(void *, void *, s32, f32, f32);
+    void Ui_OpenUnitInfoPopup(void *, void *, s32, f32, f32);
     extern u8 lbl_8027A360[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -6772,7 +6772,7 @@ extern "C" void fn_801943FC(void *arg0) {
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != NULL) {
             *(Pair *)&pos2 = ((Obj *)obj40)->v13();
-            fn_8016746C(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);

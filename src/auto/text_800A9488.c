@@ -1457,7 +1457,7 @@ void fn_800ABE74(void *arg0) {
     void fn_80166AE8(s16, s32, s32, void *, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016746C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
     extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80312ACC[];
@@ -1508,7 +1508,7 @@ void fn_800ABE74(void *arg0) {
         entry = lbl_80312ACC + (((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7)
                               + (((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4);
         if (*(u32 *)(entry + 4) != 0) {
-            fn_8016746C(gUnitInfoPopup, var_r30, entry + 4,
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, var_r30, entry + 4,
                         (f32)*(s16 *)entry,
                         (f32)(*(s16 *)(entry + 2) + 0x28));
             *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
@@ -1684,7 +1684,7 @@ void fn_800AC5DC(void *arg0) {
     void fn_80166AE8(s16, s32, s32, void *, void *);
     void fn_8000C070(void *, s32);
     void fn_801475FC(void *, s32);
-    void fn_8016746C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
 
     extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -1735,7 +1735,7 @@ void fn_800AC5DC(void *arg0) {
         u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)self + 0x3C) << 7)
                                   + ((s8)*(u8 *)((char *)self + 0x3D) << 4);
         s16 x = *(s16 *)entry;
-        fn_8016746C(gUnitInfoPopup, self, entry + 4, (f32)x,
+        Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, entry + 4, (f32)x,
                     (f32)(*(s16 *)(entry + 2) + 0x28));
     }
     *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
