@@ -101,7 +101,7 @@ void *fn_8014A4E8(void) {
 
 void fn_800C426C(s32);
 s32 fn_800C42AC(s32);
-void *fn_8003FCCC(void *);
+void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
 s32 fn_8014A4F8(s32 arg0, s32 arg1)
@@ -109,7 +109,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
     extern u16 gSoundMenuStrings[];
     void fn_800C426C(s32);
     s32 fn_800C42AC(s32);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void Ui_CreateMenu(void *, s32, s32);
     s32 var_r11;
     s32 var_ctr;
@@ -153,7 +153,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
         *(s32 *)(lbl_80367B00 + temp_r0) = 0;
     }
     lbl_80367B04 = 0;
-    var_r3 = fn_8003FCCC((u8 *)gSoundMenuStrings + 0x6b);
+    var_r3 = Archive_Load((u8 *)gSoundMenuStrings + 0x6b);
     goto loop_check;
 loop_body:
     if ((s8)lbl_80367B08 == 0) {
@@ -228,7 +228,7 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
     } while (--ctr != 0);
 
     lbl_80367B04 = 0;
-    node = fn_8003FCCC((u8 *)gSoundMenuStrings + 0x6b);
+    node = Archive_Load((u8 *)gSoundMenuStrings + 0x6b);
     goto check;
 
 loop:

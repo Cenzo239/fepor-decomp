@@ -2928,7 +2928,7 @@ void fn_801F8880(void) {
     s32 Heap_GetFree(void);
     void Heap_Select(void *);
     void ScriptCmd_CmLoadScript(void *);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void FileCache_Load(void *);
     void fn_80050F64(void);
     extern u8 StaffRoll_str[];
@@ -2941,8 +2941,8 @@ void fn_801F8880(void) {
     Heap_Create(StaffRoll_str + 0x220, Heap_GetFree(), StaffRoll_str);
     Heap_Select(StaffRoll_str + 0x215);
     ScriptCmd_CmLoadScript(StaffRoll_str + 0x22C);
-    lbl_80368408 = fn_8003FCCC(*(void **)(lbl_8029B41C + 4));
-    lbl_8036840C = fn_8003FCCC(StaffRoll_str + 0x23F);
+    lbl_80368408 = Archive_Load(*(void **)(lbl_8029B41C + 4));
+    lbl_8036840C = Archive_Load(StaffRoll_str + 0x23F);
     FileCache_Load(StaffRoll_str + 0x1FE);
     fn_80050F64();
     lbl_80367708 = 0;
@@ -3899,13 +3899,13 @@ void fn_801FA508(void *arg0) {
 
 void fn_801FA534(void *arg0)
 {
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     s32 *Hash_Lookup(void *);
     extern u8 lbl_8029B2D8[];
     extern u8 StaffRoll_str[];
     s32 *tmp;
 
-    *(void **)((u8 *)arg0 + 0x30) = fn_8003FCCC(*(void **)(lbl_8029B2D8 + 4));
+    *(void **)((u8 *)arg0 + 0x30) = Archive_Load(*(void **)(lbl_8029B2D8 + 4));
     tmp = Hash_Lookup(StaffRoll_str + 0x373);
     *(s32 *)((u8 *)arg0 + 0x34) = *tmp;
     *(f32 *)((u8 *)arg0 + 0x3C) =

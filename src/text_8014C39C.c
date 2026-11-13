@@ -24,7 +24,7 @@ extern u8 lbl_80367B0D;
 
 void fn_800C426C(s32);
 s32 fn_800C42AC(s32);
-void *fn_8003FCCC(void *);
+void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
 

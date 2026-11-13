@@ -1699,7 +1699,7 @@ void Chapter_LoadScript(void) {
     void *fn_80019F04(void);
     void sprintf(void *, const char *, ...);
     void ScriptCmd_CmLoadScript(void *);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void FileCache_OrFlags(void *, s32);
 
     u8 buffer[0x20];
@@ -1724,7 +1724,7 @@ void Chapter_LoadScript(void) {
             *(u32 *)(obj + 0x0C)
         );
 
-        lbl_803680E8 = fn_8003FCCC(buffer);
+        lbl_803680E8 = Archive_Load(buffer);
     }
 
     FileCache_OrFlags(buffer, 4);
@@ -2484,12 +2484,12 @@ void fn_80168ED4(void *arg0) {
 }
 
 void fn_80168F1C(void *arg0) {
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     M2C_UNK fn_80162018(void *);
     M2C_UNK fn_801620AC();
     fn_80162018(arg0);
     fn_801620AC();
-    M2C_FIELD(arg0, s32 *, 0x44) = fn_8003FCCC();
+    M2C_FIELD(arg0, s32 *, 0x44) = Archive_Load();
 }
 
 void fn_80168F54(s32 arg0) {
@@ -3156,7 +3156,7 @@ void fn_8016A0CC(void *arg0) {
     s32 fn_801620AC(void);
     u8 FileCache_IsReady(void *);
     void fn_80162054(void);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void Process_ClearFunc(void *);
     extern u8 lbl_80277BC0[];
     extern u8 gBattleState[];
@@ -3179,8 +3179,8 @@ void fn_8016A0CC(void *arg0) {
             if (FileCache_IsReady(sp8) == 0) {
             } else {
                 fn_80162054();
-                *(void **)((u8 *)arg0 + 0x44) = fn_8003FCCC((void *)fn_801620AC());
-                *(void **)((u8 *)arg0 + 0x48) = fn_8003FCCC(sp8);
+                *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
+                *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
                 Process_ClearFunc(arg0);
             }
         }
@@ -15383,12 +15383,12 @@ void fn_801812A0(void) {
 #pragma opt_common_subs off
 void fn_801812CC(void *arg0) {
     u8 FileCache_IsReady(void *);
-    s32 fn_8003FCCC(void *);
+    s32 Archive_Load(void *);
     void Process_ClearFunc(void *);
     extern u8 gUiUnitInfoStrings[];
 
     if (FileCache_IsReady(gUiUnitInfoStrings + 0x116)) {
-        M2C_FIELD(arg0, s32 *, 0x44) = fn_8003FCCC(gUiUnitInfoStrings + 0x116);
+        M2C_FIELD(arg0, s32 *, 0x44) = Archive_Load(gUiUnitInfoStrings + 0x116);
         Process_ClearFunc(arg0);
     }
 }

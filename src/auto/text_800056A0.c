@@ -189,7 +189,7 @@ void fn_80005C60(void) {
 void fn_80005C8C(void) {
     void fn_800110B8(void);
     void fn_8001B134(void *);
-    void fn_8003FCCC(void *);
+    void Archive_Load(void *);
     void fn_8005AC88(void *);
     void fn_8005BCAC(void);
     void FileCache_Load(void *);
@@ -234,9 +234,9 @@ void fn_80005C8C(void) {
     fn_8008CD9C();
     fn_8005AC88(gUiIconDrawer);
     fn_8005AC88(lbl_802F0350);
-    fn_8003FCCC(lbl_80267B80 + 0xB2);
-    fn_8003FCCC(lbl_80267B80 + 0xBD);
-    fn_8003FCCC(lbl_80267B80 + 0xD1);
+    Archive_Load(lbl_80267B80 + 0xB2);
+    Archive_Load(lbl_80267B80 + 0xBD);
+    Archive_Load(lbl_80267B80 + 0xD1);
     fn_80147188(0);
     lbl_80367AF6 = 0;
     lbl_80367AEC = 0x64;

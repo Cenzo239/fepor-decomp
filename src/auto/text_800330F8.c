@@ -6013,7 +6013,7 @@ void *fn_8003F87C(s32 arg0, u32 arg1) {
     return (u8 *)result + 0x20;
 }
 
-void fn_8003FCCC(s32 arg0) {
+void Archive_Load(s32 arg0) {
     void fn_8003F87C(s32, s32);
     fn_8003F87C(arg0, 0);
 }
@@ -6547,7 +6547,7 @@ void fn_80041514(void *arg0, char *arg1)
     s32 b;
     void *light;
     void *fog;
-    s32 (*fccc)(void *) = (s32 (*)(void *))fn_8003FCCC;
+    s32 (*fccc)(void *) = (s32 (*)(void *))Archive_Load;
     void *(*f87c)(void *, s32) = (void *(*)(void *, s32))fn_8003F87C;
 
     fn_80041254(arg0);

@@ -6204,7 +6204,7 @@ void fn_801C32D4(s32 arg0) {
 void Ui_InitScrollListPanel(void *arg0) {
     /* Initialize scroll-list panel: clear state, load script, build texture paths, size list. */
     void *memset(void *, int, u32);
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     void fn_80109180(u32, void *);
     u32 fn_801090C0(u32);
     void fn_80147188(s32);
@@ -6240,7 +6240,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     *(s16 *)(panel+342)=392;
     *(s16 *)(panel+344)=240;
     *(s16 *)(panel+350)=0;
-    *(s32 *)(panel+4)=fn_8003FCCC(lbl_8027D030+0x417);
+    *(s32 *)(panel+4)=Archive_Load(lbl_8027D030+0x417);
     entry=*(u8 **)(panel+4);
     *(s32 *)(panel+8)=*(s32 *)entry;
     *(u8 **)(panel+12)=entry+4;
@@ -13644,12 +13644,12 @@ void fn_801D3750(s32 arg0) {
 }
 
 void fn_801D37CC(void *arg0) {
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     M2C_UNK fn_80162054();
     M2C_UNK fn_801620AC();
     extern s32 gUiInputFlags;
     fn_801620AC();
-    M2C_FIELD(arg0, s32 *, 0x44) = fn_8003FCCC();
+    M2C_FIELD(arg0, s32 *, 0x44) = Archive_Load();
     fn_80162054();
     gUiInputFlags &= 0xFFFFFFFC;
 }

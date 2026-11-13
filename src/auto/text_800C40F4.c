@@ -21029,11 +21029,11 @@ void fn_800FC63C(s32 arg0) {
 void fn_800FC678(void) {
     extern u16 lbl_802731D0[29];
     extern s32 lbl_80367900;
-    s32 fn_8003FCCC(void *);
+    s32 Archive_Load(void *);
     void fn_8010F970(void);
     void fn_80129374(void);
 
-    lbl_80367900 = fn_8003FCCC((u8 *)lbl_802731D0 + 0x2D);
+    lbl_80367900 = Archive_Load((u8 *)lbl_802731D0 + 0x2D);
     fn_8010F970();
     fn_80129374();
 }

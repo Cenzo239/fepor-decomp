@@ -1039,7 +1039,7 @@ void fn_8012DFA8(void *arg0) {
     void Process_Goto(void *, s32);
     void *Msg_Expand(void *);
     u8 fn_8001DDBC(void);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void fn_800506E0(void *, s32);
     void *fn_80056A60(void *);
     void TextBanner_SetString(void *, void *);
@@ -1113,7 +1113,7 @@ void fn_8012DFA8(void *arg0) {
     self[0x67] = 1;
     FileCache_Load(gUiSelectMenuStrings + 0xC7);
     *(void **)(self + 0x40) = fn_8006D948(gUiSelectMenuStrings + 0x194);
-    *(void **)(self + 0x30) = fn_8003FCCC(gUiSelectMenuStrings + 0x1A8);
+    *(void **)(self + 0x30) = Archive_Load(gUiSelectMenuStrings + 0x1A8);
     fn_80109180(gUiSelectMenuStrings + 0xBA, self);
     self[0x61] = 0;
     mode = self[0x6C];

@@ -21,28 +21,30 @@ void fn_801E4540(void)
     fn_800C0818(1);
     fn_8008A290(1, 0);
     ptr = (u8 *)Process_CreateChild(lbl_80299FE0, fn_801270A4());
-    if (ptr == 0) {
-        return;
+    if (ptr != 0) {
+        *(u8 *)(ptr + 0x30) = 0;
+        *(u8 *)(ptr + 0x31) = 0;
+        *(u8 *)(ptr + 0x32) = 0;
+        *(u8 *)(ptr + 0x33) = 0;
+        *(u8 *)(ptr + 0x34) = 0;
+        *(u16 *)(ptr + 0x36) = 0;
+        *(u16 *)(ptr + 0x38) = 0;
+        *(u16 *)(ptr + 0x3A) = 8;
+        *(s16 *)(ptr + 0x3C) = -1;
+        *(s16 *)(ptr + 0x3E) = -1;
+        *(u32 *)(ptr + 0x40) = 0;
+        *(u32 *)(ptr + 0x44) = 0;
+        *(u32 *)(ptr + 0x48) = 0;
+        *(u32 *)(ptr + 0x4C) = 0;
+        fn_80142060(ptr + 0x50);
+        {
+            u32 z = 0;
+            *(u32 *)(ptr + 0x5C) = z;
+            *(u32 *)(ptr + 0x60) = z;
+            *(u32 *)(ptr + 0x64) = z;
+        }
+        Process_Goto(ptr, 3);
     }
-    *(u8 *)(ptr + 0x30) = 0;
-    *(u8 *)(ptr + 0x31) = 0;
-    *(u8 *)(ptr + 0x32) = 0;
-    *(u8 *)(ptr + 0x33) = 0;
-    *(u8 *)(ptr + 0x34) = 0;
-    *(u16 *)(ptr + 0x36) = 0;
-    *(u16 *)(ptr + 0x38) = 0;
-    *(u16 *)(ptr + 0x3A) = 8;
-    *(s16 *)(ptr + 0x3C) = -1;
-    *(s16 *)(ptr + 0x3E) = -1;
-    *(u32 *)(ptr + 0x40) = 0;
-    *(u32 *)(ptr + 0x44) = 0;
-    *(u32 *)(ptr + 0x48) = 0;
-    *(u32 *)(ptr + 0x4C) = 0;
-    fn_80142060(ptr + 0x50);
-    *(u32 *)(ptr + 0x5C) = 0;
-    *(u32 *)(ptr + 0x60) = 0;
-    *(u32 *)(ptr + 0x64) = 0;
-    Process_Goto(ptr, 3);
 }
 
 s32 fn_801E45FC(void) {
@@ -2525,11 +2527,9 @@ void fn_801E9864(void *arg0)
     Owner *self;
     s16 *p68;
     void *obj;
-    void (**vtbl)(void *, s32);
     void *sp10;
     void *spC;
     u8 sp8[4];
-    void *end;
 
     self = (Owner *)arg0;
     p68 = &gTabMenuDefaultCursor;
@@ -2546,16 +2546,14 @@ void fn_801E9864(void *arg0)
     fn_8006D8E8(*(void **)((u8 *)arg0 + 0x64));
     obj = *(void **)((u8 *)arg0 + 0x5C);
     if (obj != NULL) {
-        vtbl = *(void (***)(void *, s32))((u8 *)obj + 0x2C);
-        vtbl[8](obj, 1);
+        (*(void (**)(void *, s32))(*(u8 **)((u8 *)obj + 0x2C) + 0x20))(obj, 1);
     }
     fn_80056A04(*(void **)((u8 *)arg0 + 0x60), 1);
     if (arg0 != NULL) {
         if (&self->list != NULL) {
             if (&self->list != NULL) {
                 if (&self->list != NULL) {
-                    end = &self->node;
-                    sp10 = end;
+                    sp10 = &self->node;
                     spC = self->next;
                     fn_80136F2C(sp8, &self->list, &spC, &sp10);
                 }
@@ -2674,7 +2672,7 @@ skip_sub:
 
 void fn_801E9B80(void *arg0) {
     u8 FileCache_IsReady(void *);
-    s32 fn_8003FCCC(void *);
+    s32 Archive_Load(void *);
     s32 fn_8006D948(void *);
     void Process_ClearFunc(void *);
     extern u32 lbl_80299FA8[];
@@ -2692,7 +2690,7 @@ void fn_801E9B80(void *arg0) {
         return;
     }
     if (FileCache_IsReady(&gTabMenuStrings[0x22f]) != 0) {
-        *(s32 *)((u8 *)arg0 + 0x40) = fn_8003FCCC((void *)a[1]);
+        *(s32 *)((u8 *)arg0 + 0x40) = Archive_Load((void *)a[1]);
         *(s32 *)((u8 *)arg0 + 0x64) = fn_8006D948((void *)b[1]);
         Process_ClearFunc(arg0);
     } else {

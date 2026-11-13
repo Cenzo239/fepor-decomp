@@ -3289,7 +3289,7 @@ s32 ScriptCmd_cmb_mess_load(s32 arg0, s32 arg1) {
     s8 fn_8005BA00(void);
     void fn_8005BA08(s8);
     void FileCache_OrFlags(s32, s32);
-    void fn_8003FCCC(s32);
+    void Archive_Load(s32);
     s32 fn_800C4740(void);
     s8 temp_r31;
 
@@ -3297,7 +3297,7 @@ s32 ScriptCmd_cmb_mess_load(s32 arg0, s32 arg1) {
     fn_8005BA08((s8)fn_800C4740());
     ScriptCmd_CmLoadScript(arg0);
     FileCache_OrFlags(arg0, 4);
-    fn_8003FCCC(arg1);
+    Archive_Load(arg1);
     FileCache_OrFlags(arg1, 4);
     fn_8005BA08(temp_r31);
     return 1;
@@ -3310,8 +3310,8 @@ s32 ScriptCmd_ArcFree(void) {
 }
 
 s32 ScriptCmd_ArcLoad(void) {
-    M2C_UNK fn_8003FCCC();
-    fn_8003FCCC();
+    M2C_UNK Archive_Load();
+    Archive_Load();
     return 1;
 }
 

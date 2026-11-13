@@ -1003,7 +1003,7 @@ void fn_8001AC18(void) {
 
 #pragma global_optimizer off
 void fn_8001B134(void) {
-    void fn_8003FCCC();
+    void Archive_Load();
     void DebugPrint(char *, ...);
     u8 *Hash_Lookup(char *);
     s32 Res_GetByName(char *);
@@ -1051,9 +1051,9 @@ void fn_8001B134(void) {
     s32 i;
     s32 val;
 
-    fn_8003FCCC();
-    fn_8003FCCC(lbl_80268510 + 0xCF);
-    fn_8003FCCC(lbl_80268510 + 0xDB);
+    Archive_Load();
+    Archive_Load(lbl_80268510 + 0xCF);
+    Archive_Load(lbl_80268510 + 0xDB);
 
     src = Hash_Lookup(lbl_80268510 + 0x94) + 4;
     if (src == 0) {

@@ -3992,7 +3992,7 @@ void fn_8011A4E4(s32 arg0) {
 }
 
 void fn_8011AB38(void *arg0) {
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     u8 FileCache_IsReady();
     s32 fn_80161FB8();
     M2C_UNK fn_80162054();
@@ -4003,7 +4003,7 @@ void fn_8011AB38(void *arg0) {
         }
         fn_80162054();
         fn_801620AC();
-        M2C_FIELD((short)arg0, s32 *, 0x40) = fn_8003FCCC();
+        M2C_FIELD((short)arg0, s32 *, 0x40) = Archive_Load();
         Process_ClearFunc(arg0);
     }
 }

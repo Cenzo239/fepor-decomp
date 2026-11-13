@@ -1994,7 +1994,7 @@ void Battle_LoadMap(void)
     void Chapter_LoadScript(s32);
     u16 FileCache_Probe(void *);
     void fn_8003F87C(void *, s32);
-    void fn_8003FCCC(void *);
+    void Archive_Load(void *);
     void FileCache_Load(void *);
     void fn_80050F64(void);
     s32 Heap_GetFree(void);
@@ -2010,7 +2010,7 @@ void Battle_LoadMap(void)
         fn_8003F87C(Battle_str + 0x198, 8);
     }
     if (FileCache_Probe(Battle_str + 0x17F) != 0x8000) {
-        fn_8003FCCC(Battle_str + 0x17F);
+        Archive_Load(Battle_str + 0x17F);
     }
     FileCache_Load(Battle_str + 0x1AF);
     fn_80050F64();

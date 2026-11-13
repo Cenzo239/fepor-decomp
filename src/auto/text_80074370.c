@@ -4106,7 +4106,7 @@ void fn_8007C408(void)
     extern s32 lbl_8036747C;
     extern u8 *lbl_80367478;
 
-    extern void *fn_8003FCCC(void *);
+    extern void *Archive_Load(void *);
     extern void fn_8000D3EC(void *, void *);
 
     long offset;
@@ -4114,7 +4114,7 @@ void fn_8007C408(void)
     s32 i;
     register u8 *entry;
 
-    data = (u32 *)fn_8003FCCC(lbl_8026C640 + 0x110);
+    data = (u32 *)Archive_Load(lbl_8026C640 + 0x110);
 
     lbl_8036747C = data[0];
     lbl_80367478 = (u8 *)data[1];

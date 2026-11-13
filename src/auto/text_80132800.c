@@ -289,12 +289,12 @@ void fn_80132B58(void *arg0) {
 }
 
 void fn_80132BA0(void *arg0) {
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     M2C_UNK fn_80162018();
     M2C_UNK fn_801620AC();
     fn_80162018();
     fn_801620AC();
-    M2C_FIELD(arg0, s32 *, 0x48) = fn_8003FCCC();
+    M2C_FIELD(arg0, s32 *, 0x48) = Archive_Load();
 }
 
 void fn_80132BD8(s32 arg0) {
@@ -10815,7 +10815,7 @@ void fn_80146F0C(void)
     void fn_800B34B0(s32);
     void fn_800B3490(void);
     void Sound_LoadPack(void *);
-    void *fn_8003FCCC(void *);
+    void *Archive_Load(void *);
     void fn_8000D3EC(u32, void *);
     u32 fn_802097D4(void);
     void fn_800B28FC(s32);
@@ -10850,7 +10850,7 @@ void fn_80146F0C(void)
 
     Sound_LoadPack(lbl_80276BC8 + 0x326);
 
-    ptr = (u8 *)fn_8003FCCC(lbl_80276BC8 + 0x314);
+    ptr = (u8 *)Archive_Load(lbl_80276BC8 + 0x314);
 
     while (ptr != 0) {
         offset = ptr[4];
@@ -12720,7 +12720,7 @@ extern void fn_800C4664(s32 arg0);
 extern void fn_800B34B0(s32 arg0);
 extern void fn_800B3490(void);
 extern void Sound_LoadPack(void *arg0);
-extern void* fn_8003FCCC(void *arg0);
+extern void* Archive_Load(void *arg0);
 extern s32 fn_8000D3EC(s32 arg0, void *arg1);
 extern s32 fn_802097D4(s32 arg0);
 extern s32 fn_800B28FC(s32 arg0);

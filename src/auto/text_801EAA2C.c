@@ -639,7 +639,7 @@ void fn_801EBBB8(void *arg0) {
 }
 #pragma use_lmw_stmw reset
 void fn_801EBE00(void *arg0) {
-    s32 fn_8003FCCC();
+    s32 Archive_Load();
     u8 FileCache_IsReady();
     s32 fn_80161FB8();
     void fn_80162054();
@@ -650,7 +650,7 @@ void fn_801EBE00(void *arg0) {
         }
         fn_80162054();
         fn_801620AC(arg0);
-        *(s32*)((char*)arg0 + 0x4C) = fn_8003FCCC();
+        *(s32*)((char*)arg0 + 0x4C) = Archive_Load();
         Process_ClearFunc(arg0);
     }
 }

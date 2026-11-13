@@ -798,7 +798,7 @@ void fn_801FE444(void) {
 #pragma opt_common_subs off
 void fn_801FE488(void *arg0) {
     u8 FileCache_IsReady(void *);
-    u32 fn_8003FCCC(void *);
+    u32 Archive_Load(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
@@ -810,7 +810,7 @@ void fn_801FE488(void *arg0) {
     if (lbl_80368438 == 0) {
         fn_8006EEFC(&lbl_80368438, lbl_80281F00 + 0x4D);
     }
-    M2C_FIELD(arg0, u32 *, 0x44) = fn_8003FCCC(lbl_80281F00 + 0x64);
+    M2C_FIELD(arg0, u32 *, 0x44) = Archive_Load(lbl_80281F00 + 0x64);
     Process_ClearFunc(arg0);
 }
 #pragma opt_common_subs reset
@@ -1052,7 +1052,7 @@ void fn_801FF060(void *arg0) {
 #pragma global_optimizer off
 void fn_801FF0F8(void *arg0) {
     u8 FileCache_IsReady(void *);
-    u32 fn_8003FCCC(void *);
+    u32 Archive_Load(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
@@ -1064,7 +1064,7 @@ void fn_801FF0F8(void *arg0) {
     if (lbl_80368438 == 0) {
         fn_8006EEFC(&lbl_80368438, lbl_80281F00 + 0x4D);
     }
-    M2C_FIELD(arg0, u32 *, 0x30) = fn_8003FCCC(lbl_80281F00 + 0x64);
+    M2C_FIELD(arg0, u32 *, 0x30) = Archive_Load(lbl_80281F00 + 0x64);
     Process_ClearFunc(arg0);
 }
 #pragma global_optimizer reset
@@ -1679,7 +1679,7 @@ void fn_80200674(void) {
 #pragma opt_common_subs off
 void fn_802006B8(void *arg0) {
     u8 FileCache_IsReady(void *);
-    u32 fn_8003FCCC(void *);
+    u32 Archive_Load(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
@@ -1689,7 +1689,7 @@ void fn_802006B8(void *arg0) {
     if (lbl_80368448 == 0) {
         fn_8006EEFC(&lbl_80368448, lbl_802820B8 + 0x53);
     }
-    M2C_FIELD(arg0, u32 *, 0x44) = fn_8003FCCC(lbl_802820B8 + 0x68);
+    M2C_FIELD(arg0, u32 *, 0x44) = Archive_Load(lbl_802820B8 + 0x68);
     Process_ClearFunc(arg0);
 }
 #pragma opt_common_subs reset
@@ -2008,7 +2008,7 @@ void fn_80201290(void *arg0) {
 #pragma opt_common_subs off
 void fn_80201328(void *arg0) {
     u8 FileCache_IsReady(void *);
-    u32 fn_8003FCCC(void *);
+    u32 Archive_Load(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
@@ -2018,7 +2018,7 @@ void fn_80201328(void *arg0) {
     if (lbl_80368448 == 0) {
         fn_8006EEFC(&lbl_80368448, lbl_802820B8 + 0x53);
     }
-    M2C_FIELD(arg0, u32 *, 0x30) = fn_8003FCCC(lbl_802820B8 + 0x68);
+    M2C_FIELD(arg0, u32 *, 0x30) = Archive_Load(lbl_802820B8 + 0x68);
     Process_ClearFunc(arg0);
 }
 
