@@ -791,7 +791,7 @@ s32 fn_801A99E8(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 }
 
 #pragma opt_common_subs off
-void fn_801A9AF8(void *arg0) {
+void BattleUnit_Apply(void *arg0) {
     struct Obj {
         u8 pad0[0x1A4];
         u16 unk1A4;

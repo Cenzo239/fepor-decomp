@@ -905,15 +905,15 @@ void fn_801A4B40(u8 *obj, s32 a1) {
 #pragma opt_common_subs reset
 void fn_801A4BE0(void *arg0) {
     extern u8 gMapObjEventList[516];
-    void fn_801A9AF8(void *);
+    void BattleUnit_Apply(void *);
     void fn_80034F40(void *);
     void *MapObjEvent_Find(void *, u8, u8, u8);
     void MapObjEvent_Remove(void *, u8, u8, u8);
     void *entry;
 
-    fn_801A9AF8(arg0);
+    BattleUnit_Apply(arg0);
     if (!(M2C_FIELD(arg0, u32 *, 0xCAC) & 1)) {
-        fn_801A9AF8((s8 *)arg0 + 0x2E0);
+        BattleUnit_Apply((s8 *)arg0 + 0x2E0);
     }
     fn_80034F40(arg0);
     if (!(M2C_FIELD(arg0, u32 *, 0xCAC) & 1)) {
