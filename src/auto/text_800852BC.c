@@ -2855,7 +2855,7 @@ void Ui_DrawRouteTexCw(s32 x, s32 y, u8 flipV) {
     Prim2D_EndPrim();
 }
 
-void fn_8008BD90(s32 arg0, s32 arg1, u8 arg2) {
+void Ui_DrawRouteTex(s32 arg0, s32 arg1, u8 arg2) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);

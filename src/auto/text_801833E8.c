@@ -4666,7 +4666,7 @@ void fn_80190A1C(void *arg0) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    M2C_UNK fn_8008BD90(s16, s16, s32);
+    M2C_UNK Ui_DrawRouteTex(s16, s16, s32);
     M2C_UNK fn_801583D0(M2C_UNK, M2C_UNK, s16, s16, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036AE1C;
     s16 var_r4;
@@ -4684,7 +4684,7 @@ void fn_80190A1C(void *arg0) {
         } else {
             var_r4 = (s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)) - 6;
         }
-        fn_8008BD90((s16) (((s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) >> 1) - 0x10), var_r4, temp_r5 == 1);
+        Ui_DrawRouteTex((s16) (((s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)) >> 1) - 0x10), var_r4, temp_r5 == 1);
     }
 }
 

@@ -3721,7 +3721,7 @@ extern "C" void fn_80032488(void *arg0, void *arg1) {
 #pragma cplusplus on
 extern "C" void UnitInfo_DrawStatus(s32);
 extern "C" void UnitInfo_DrawPair(s32);
-extern "C" void fn_8008BD90(s32, s32, s32);
+extern "C" void Ui_DrawRouteTex(s32, s32, s32);
 extern "C" void Prim2D_AddZ(f32);
 extern "C" void UnitInfo_DrawDualSwap(void *win, void *slot) {
     /* Draw dual unit-info with status below and pair panel above (layout swap of UnitInfo_DrawDual). */
@@ -3751,7 +3751,7 @@ extern "C" void UnitInfo_DrawDualSwap(void *win, void *slot) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80368E34);
         Prim2D_PrepareTex();
-        fn_8008BD90(0x64, 0xD2, 0);
+        Ui_DrawRouteTex(0x64, 0xD2, 0);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -3795,7 +3795,7 @@ extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
         Prim2D_AddZ(lbl_80368E34);
         Prim2D_SetColorByte((u8)alpha2);
         Prim2D_PrepareTex();
-        fn_8008BD90(0x64, 0x6A, 1);
+        Ui_DrawRouteTex(0x64, 0x6A, 1);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
