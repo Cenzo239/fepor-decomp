@@ -3292,7 +3292,7 @@ f64 fn_80235B4C(f64 farg0) {
 }
 
 f64 __ieee754_fmod(f64 x, f64 y) {
-    extern f64 lbl_80282CC0[];
+    extern f64 fmod_Zero[];
     int n, hx, hy, hz, ix, iy, sx, i;
     unsigned lx, ly, lz;
 
@@ -3311,7 +3311,7 @@ f64 __ieee754_fmod(f64 x, f64 y) {
         if ((hx < hy) || (lx < ly))
             return x;
         if (lx == ly)
-            return lbl_80282CC0[(unsigned)sx >> 31];
+            return fmod_Zero[(unsigned)sx >> 31];
     }
 
     if (hx < 0x00100000) {
@@ -3372,7 +3372,7 @@ f64 __ieee754_fmod(f64 x, f64 y) {
             lx = lx + lx;
         } else {
             if ((hz | lz) == 0)
-                return lbl_80282CC0[(unsigned)sx >> 31];
+                return fmod_Zero[(unsigned)sx >> 31];
             hx = hz + hz + (lz >> 31);
             lx = lz + lz;
         }
@@ -3387,7 +3387,7 @@ f64 __ieee754_fmod(f64 x, f64 y) {
     }
 
     if ((hx | lx) == 0)
-        return lbl_80282CC0[(unsigned)sx >> 31];
+        return fmod_Zero[(unsigned)sx >> 31];
     while (hx < 0x00100000) {
         hx = hx + hx + (lx >> 31);
         lx = lx + lx;
