@@ -21964,7 +21964,7 @@ void fn_800FEC0C(void) {
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
-void fn_800FEFD4(s32 *arg0, s32 *arg1, s32 *arg2, u8 (*cmp)(s32, s32)) {
+void Sort_Three(s32 *arg0, s32 *arg1, s32 *arg2, u8 (*cmp)(s32, s32)) {
     s32 *a2;
     s32 *a1;
     s32 *a0;
