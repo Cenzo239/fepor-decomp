@@ -4377,7 +4377,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void fn_800DBBC8(f32 *, void *);
     void Camera_GetEyePos(f32 *, void *);
     void fn_800DBB58(f32 *, void *);
-    void fn_800DBB74(f32 *, void *);
+    void Camera_GetLookAt(f32 *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 fn_800E9018(void *);
@@ -4535,7 +4535,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
             fn_800DBB58(sp24, obj);
             f21 = sp24[0];
             f22 = sp24[2];
-            fn_800DBB74(sp18, obj);
+            Camera_GetLookAt(sp18, obj);
             sp84 = f21;
             f24 = sp18[0];
             sp8C = f22;
@@ -8435,7 +8435,7 @@ void fn_800DBB58(f32 *arg0, u8 *arg1) {
     arg0[2] = value2;
 }
 
-void fn_800DBB74(f32 *arg0, u8 *arg1) {
+void Camera_GetLookAt(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
     f32 value2;
@@ -12551,7 +12551,7 @@ void fn_800E4F0C(void *arg0) {
 void fn_800E4F30(void *arg0)
 {
     void fn_80060F70(void *, s32, f32 *);
-    void fn_800DBB74(f32 *, void *);
+    void Camera_GetLookAt(f32 *, void *);
     f32 out[3];
     f32 pos[3];
     f32 z;
@@ -12574,7 +12574,7 @@ void fn_800E4F30(void *arg0)
         *(f32 *)((u8 *)arg0 + 0x48) = x;
         *(f32 *)((u8 *)arg0 + 0x4C) = y;
         *(f32 *)((u8 *)arg0 + 0x50) = z;
-        fn_800DBB74(out, *(void **)((u8 *)arg0 + 0xEC));
+        Camera_GetLookAt(out, *(void **)((u8 *)arg0 + 0xEC));
         x = out[0];
         y = out[1];
         z = out[2];

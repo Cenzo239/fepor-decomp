@@ -105,7 +105,7 @@ extern "C" void fn_80110228(void *arg0) {
     void String_Init(void *, char *, void *);
     void String_ConcatCStr(void *, void *, char *);
     void String_JoinCStr(void *, void *, void *);
-    void fn_800DBB74(void *, void *);
+    void Camera_GetLookAt(void *, void *);
     void fn_800DB67C(void *, void *, s32);
     s32 fn_800DDAA4(void *, void *);
     void fn_800DF670(void *);
@@ -298,7 +298,7 @@ extern "C" void fn_80110228(void *arg0) {
             *(f32 *)&pos.y = lbl_8036A184;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&tmpVec, self);
+                Camera_GetLookAt(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
                 String_Init(&str240, (char *)gActorXmlStrs + 0x51, &scratch);
@@ -354,7 +354,7 @@ after_2b:
             *(f32 *)&pos.y = lbl_8036A184;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&tmpVec, self);
+                Camera_GetLookAt(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
                 String_Init(&str1F8, (char *)gActorXmlStrs + 0x51, &scratch2);
@@ -414,7 +414,7 @@ after_2c:
             *(f32 *)&pos.y = lbl_8036A184;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&tmpVec, self);
+                Camera_GetLookAt(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
                 String_Init(&str1B0, (char *)gActorXmlStrs + 0x51, &scratch3);
@@ -470,7 +470,7 @@ after_2e:
             *(f32 *)&pos.y = lbl_8036A184;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&tmpVec, self);
+                Camera_GetLookAt(&tmpVec, self);
                 copyA = tmpVec;
                 copyB = pos;
                 String_Init(&str168, (char *)gActorXmlStrs + 0x51, &scratch4);
@@ -676,7 +676,7 @@ after_3c:
             flag = 0;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&w300, self);
+                Camera_GetLookAt(&w300, self);
                 copyA = w300;
                 *(f32 *)&copyB.x = sp378.x;
                 *(f32 *)&copyB.y = sp378.y;
@@ -705,7 +705,7 @@ after_3c:
             flag = 0;
             obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
-                fn_800DBB74(&w2B8, self);
+                Camera_GetLookAt(&w2B8, self);
                 copyA = w2B8;
                 *(f32 *)&copyB.x = sp378.x;
                 *(f32 *)&copyB.y = sp378.y;
@@ -727,7 +727,7 @@ after_3c:
 extern "C" void fn_80111740(void *arg0) {
     s32 strlen(char *);
     void *Heap_Alloc(s32);
-    void fn_800DBB74(void *, void *);
+    void Camera_GetLookAt(void *, void *);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_80151894(void *);
     extern void *gGame;
@@ -848,7 +848,7 @@ extern "C" void fn_80111740(void *arg0) {
         *(f32 *)&pos.y = lbl_8036A184;
         obj = Heap_Alloc(0xC8);
         if (obj != NULL) {
-            fn_800DBB74(&tmpVec, self);
+            Camera_GetLookAt(&tmpVec, self);
             copyA = tmpVec;
             copyB = pos;
             String_Init(&sp48, (char *)gActorXmlStrs + 0x51, &scratch);
@@ -1494,7 +1494,7 @@ extern "C" void fn_80113930(void *arg0) {
         virtual Vec3 GetPos(s32) = 0;
     };
     void fn_800E4E7C(void *, void *, char *);
-    void fn_800DBB74(void *, void *);
+    void Camera_GetLookAt(void *, void *);
     void fn_8019914C(void *, void *, void *, void *);
     void fn_801985C4(void *);
     extern f32 lbl_8036A184;
@@ -1521,7 +1521,7 @@ extern "C" void fn_80113930(void *arg0) {
     a.y = tmpA.y;
     a.z = tmpA.z;
 
-    fn_800DBB74(&tmpB, arg0);
+    Camera_GetLookAt(&tmpB, arg0);
     b.x = tmpB.x;
     b.y = tmpB.y;
     b.z = tmpB.z;
@@ -1931,7 +1931,7 @@ after_dist:
 extern "C" void fn_80114840(void *arg0) {
     void *Heap_Alloc(s32);
     void String_Init(void *, char *, void *);
-    void fn_800DBB74(void *, void *);
+    void Camera_GetLookAt(void *, void *);
     void String_Destroy(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
@@ -2004,7 +2004,7 @@ extern "C" void fn_80114840(void *arg0) {
     *(s32 *)((u8 *)self + 0x140) = 0;
     obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
-        fn_800DBB74(&tmpVec, self);
+        Camera_GetLookAt(&tmpVec, self);
         copyA = tmpVec;
         copyB = pos;
         String_Init(&strB, (char *)gActorXmlStrs + 0x4BE, &scratch);
@@ -2024,7 +2024,7 @@ extern "C" void fn_80114840(void *arg0) {
     flagB = 0;
     obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
-        fn_800DBB74(&tmpVec2, self);
+        Camera_GetLookAt(&tmpVec2, self);
         copyA2 = tmpVec2;
         copyB2 = pos;
         String_Init(&strD, (char *)gActorXmlStrs + 0x4CB, &scratch3);
