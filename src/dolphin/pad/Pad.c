@@ -167,7 +167,7 @@ static void PADDisable(s32 chan) {
     extern u32 lbl_80368678;
     extern u32 lbl_8036867C;
     extern u32 lbl_80368680;
-    extern u32 lbl_80368684;
+    extern u32 __PADFixBits;
     s32 enabled;
     u32 chanBit;
 
@@ -178,7 +178,7 @@ static void PADDisable(s32 chan) {
     lbl_80368678 &= ~chanBit;
     lbl_8036867C &= ~chanBit;
     lbl_80368680 &= ~chanBit;
-    lbl_80368684 &= ~chanBit;
+    __PADFixBits &= ~chanBit;
     fn_80209C10(chan, 0);
     OSRestoreInterrupts(enabled);
 }
@@ -549,7 +549,7 @@ static void ClampU8(u8* p, u8 o) {
 void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     extern u32 lbl_80366FAC;
     extern u32 lbl_8033A1B0[];
-    extern u32 lbl_80368684;
+    extern u32 __PADFixBits;
     extern u8 lbl_8033A1C0[];
     u8* origin;
 
@@ -610,7 +610,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
 
     if (((lbl_8033A1B0[chan] & 0xffff0000) == 0x09000000) &&
         ((status->button & 0x0080) ^ 0x0080)) {
-        lbl_80368684 |= 0x80000000U >> chan;
+        __PADFixBits |= 0x80000000U >> chan;
         status->stickX = 0;
         status->stickY = 0;
         status->substickX = 0;
@@ -618,7 +618,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
         return;
     }
 
-    lbl_80368684 &= ~(0x80000000U >> chan);
+    __PADFixBits &= ~(0x80000000U >> chan);
     origin = &lbl_8033A1C0[chan * 12];
 
     ClampS8(&status->stickX, (s8)origin[2]);
