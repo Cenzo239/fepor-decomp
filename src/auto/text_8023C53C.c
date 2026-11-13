@@ -8056,7 +8056,7 @@ void fn_80255B20(void *arg0) {
     void fn_80257668(void *);
     extern s32 gSynthVoices;
     extern void *vidListFree;
-    extern void *lbl_80368A44;
+    extern void *vidListRoot;
     s32 temp_r3;
     s32 temp_r3_2;
     s32 temp_r4_3;
@@ -8101,7 +8101,7 @@ void fn_80255B20(void *arg0) {
             if (temp_r4 != NULL) {
                 *temp_r4 = *(void **)temp_r3_3;
             } else {
-                lbl_80368A44 = *(void **)temp_r3_3;
+                vidListRoot = *(void **)temp_r3_3;
             }
             temp_r3_4 = *(void **)((u8 *)arg0 + 0xF8);
             temp_r4_2 = *(void **)temp_r3_4;
@@ -8135,7 +8135,7 @@ void fn_80255B20(void *arg0) {
                 if (temp_r4_4 != NULL) {
                     *temp_r4_4 = *(void **)temp_r3_6;
                 } else {
-                    lbl_80368A44 = *(void **)temp_r3_6;
+                    vidListRoot = *(void **)temp_r3_6;
                 }
                 temp_r3_7 = *(void **)((u8 *)arg0 + 0xF8);
                 temp_r4_5 = *(void **)temp_r3_7;
@@ -8160,7 +8160,7 @@ void fn_80255B20(void *arg0) {
             if (temp_r4_6 != NULL) {
                 *temp_r4_6 = *(void **)temp_r3_8;
             } else {
-                lbl_80368A44 = *(void **)temp_r3_8;
+                vidListRoot = *(void **)temp_r3_8;
             }
             temp_r3_9 = *(void **)((u8 *)arg0 + 0xF8);
             temp_r4_7 = *(void **)temp_r3_9;
@@ -8179,7 +8179,7 @@ void fn_80255B20(void *arg0) {
             if (temp_r4_8 != NULL) {
                 *temp_r4_8 = *(void **)temp_r3_10;
             } else {
-                lbl_80368A44 = *(void **)temp_r3_10;
+                vidListRoot = *(void **)temp_r3_10;
             }
             temp_r3_11 = *(void **)((u8 *)arg0 + 0xFC);
             temp_r4_9 = *(void **)temp_r3_11;
@@ -8199,7 +8199,7 @@ void fn_80255B20(void *arg0) {
         if (temp_r4_10 != NULL) {
             *temp_r4_10 = *(void **)temp_r3_8;
         } else {
-            lbl_80368A44 = *(void **)temp_r3_8;
+            vidListRoot = *(void **)temp_r3_8;
         }
         temp_r3_12 = *(void **)((u8 *)arg0 + 0xF8);
         temp_r4_11 = *(void **)temp_r3_12;
@@ -8223,7 +8223,7 @@ s32 fn_80255E88(void *arg0) {
 }
 
 u32 fn_80255E9C(SynthVoice *sv, u32 isMaster) {
-    extern VidList *lbl_80368A44;
+    extern VidList *vidListRoot;
     extern VidList *vidListFree;
     u32 vid;
     VidList *nvl;
@@ -8233,7 +8233,7 @@ u32 fn_80255E9C(SynthVoice *sv, u32 isMaster) {
     vid = GetNewVid();
 restart:
     lvl = NULL;
-    for (vl = lbl_80368A44; vl != NULL; vl = vl->next) {
+    for (vl = vidListRoot; vl != NULL; vl = vl->next) {
         if (vl->vid > vid) {
             break;
         }
@@ -8254,7 +8254,7 @@ restart:
         vidListFree->prev = NULL;
     }
     if (lvl == NULL) {
-        lbl_80368A44 = nvl;
+        vidListRoot = nvl;
     } else {
         lvl->next = nvl;
     }
@@ -8271,11 +8271,11 @@ restart:
 }
 
 s32 fn_80255FB0(u32 arg0) {
-    extern VidList *lbl_80368A44;
+    extern VidList *vidListRoot;
     VidList *vl;
 
     if ((u32)(arg0 + 0x10000) != 0xFFFFU) {
-        vl = lbl_80368A44;
+        vl = vidListRoot;
         goto check;
     loop:
         if (vl->vid != arg0)
@@ -8301,12 +8301,12 @@ s32 fn_80255FB0(u32 arg0) {
 
 int fn_80256000(u32 arg0)
 {
-    extern void *lbl_80368A44;
+    extern void *vidListRoot;
     void *object;
     u32 field;
     u32 value;
 
-    object = lbl_80368A44;
+    object = vidListRoot;
     while (object != 0) {
         field = *(u32 *)((u8 *)object + 0xC);
         goto compare;

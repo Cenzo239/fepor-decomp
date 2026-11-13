@@ -1691,13 +1691,13 @@ void fn_800B2648(s32 arg0) {
     }
 }
 
-extern void *lbl_80368A44;
+extern void *vidListRoot;
 s32 fn_800B26B0(u32 arg0) {
     u32 temp_r0;
     void *var_r4;
     
     if ((u32)(arg0 + 0x10000) != -1U) {
-        var_r4 = lbl_80368A44;
+        var_r4 = vidListRoot;
         if (var_r4 == NULL) {
             return -1;
         }
