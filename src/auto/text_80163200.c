@@ -7399,7 +7399,7 @@ void fn_80171B18(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80171C0C(void *arg0) {
+extern "C" void Ui_ApplyFullHeal(void *arg0) {
     struct Obj {
         virtual void v1() = 0;
         virtual void v0() = 0;
