@@ -13821,18 +13821,18 @@ void fn_801D3C88(void *arg0) {
     void fn_80145828(void);
     s32 fn_80059208(void *, void *);
     void fn_8008A290(s32, s32);
-    extern u8 lbl_8027E258[];
+    extern u8 gUiSeCues[];
     extern s32 lbl_803682E4;
     extern void fn_801D8E80(void);
     void *obj;
 
-    obj = fn_800C4638(0x544, lbl_8027E258 + 0x27b, 0);
+    obj = fn_800C4638(0x544, gUiSeCues + 0x27b, 0);
     *(void **)((u8 *)arg0 + 0x30) = obj;
     *(s32 *)((u8 *)obj + 0xC) = 0;
     *(s32 *)((u8 *)obj + 8) = 0;
     *(u8 *)((u8 *)obj + 0x5A) = 0;
     *(u8 *)((u8 *)obj + 0x10) = *(s32 *)((u8 *)arg0 + 0x34);
-    fn_8006EEFC((u8 *)obj + 8, lbl_8027E258 + 0x27c);
+    fn_8006EEFC((u8 *)obj + 8, gUiSeCues + 0x27c);
     lbl_803682E4 = *(s32 *)((u8 *)obj + 8);
     fn_80162054();
     *(u8 *)((u8 *)obj + 0x5A) = 1;
@@ -13898,7 +13898,7 @@ void fn_801D3D3C(void *arg0) {
  extern u8 gSaveDataBase;
  extern u8 gBattleState[];
  extern u8 gSystemSave[];
- extern u8 lbl_8027E258[];
+ extern u8 gUiSeCues[];
  s32 arr_lo[10];
  s32 arr_hi[10];
  s32 i, j, k, m, n, count;
@@ -13968,32 +13968,32 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 5:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x2a4, 0, 1, 0);
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x2a4, 0, 1, 0);
   *(s32 *)state = 6; break;
  case 6:
   if (*(u8 *)((u8 *)state + 0x10) == 1) { *(s32 *)state = 0x2d; break; }
-  tmp_ptr = Msg_Expand(lbl_8027E258 + 0x2cd);
-  tmp_ptr2 = Msg_Expand(lbl_8027E258 + 0x2c3);
-  sprintf((u8 *)state + 0x1a, lbl_8027E258 + 0x2b2, tmp_ptr2, tmp_ptr);
+  tmp_ptr = Msg_Expand(gUiSeCues + 0x2cd);
+  tmp_ptr2 = Msg_Expand(gUiSeCues + 0x2c3);
+  sprintf((u8 *)state + 0x1a, gUiSeCues + 0x2b2, tmp_ptr2, tmp_ptr);
   *(s32 *)state = 7;
  case 7:
   if (flags_a & 0x100) {
    fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 8;
-   Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
+   Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
  case 8:
-  Ui_OpenConfirmDialog(lbl_8027E258 + 0x2f4, 1, 1, 0, lbl_8027E258 + 0x2d4, 0, arg0);
+  Ui_OpenConfirmDialog(gUiSeCues + 0x2f4, 1, 1, 0, gUiSeCues + 0x2d4, 0, arg0);
   *(s32 *)state = 9; break;
  case 9:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    *(s32 *)state = 0xa;
-   fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(lbl_8027E258 + 0x307), 1, 0, 1);
+   fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
    *(u8 *)((u8 *)state + 0x14) = 0;
    fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
    fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14006,13 +14006,13 @@ void fn_801D3D3C(void *arg0) {
  case 0xa:
   sel = *(s8 *)((u8 *)state + 0x14); changed = 0;
   if (flags_a & 0x100) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64);
+   Ui_PlaySeCue(gUiSeCues + 0x318, 0x64);
    *(u8 *)((u8 *)state + 0x18) = *(u8 *)((u8 *)state + 0x14);
    *(s32 *)state = 0xb; *(u8 *)((u8 *)state + 0x19) = 0;
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
   if (flags_a & 0x200) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64); fn_8008A290(3, 0xfa);
+   Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
    Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase);
   }
@@ -14027,7 +14027,7 @@ void fn_801D3D3C(void *arg0) {
    if (sel != *(s8 *)((u8 *)state + 0x14)) changed = 1;
   }
   if ((u8)changed == 1) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x328, 0x64);
+   Ui_PlaySeCue(gUiSeCues + 0x328, 0x64);
    sel = *(s8 *)((u8 *)state + 0x14);
    if (sel == 0) { x = *(s16 *)((u8 *)state + 0x340); y = *(s16 *)((u8 *)state + 0x33e); }
    else if (sel == 1) { x = *(s16 *)((u8 *)state + 0x344); y = *(s16 *)((u8 *)state + 0x342); }
@@ -14045,102 +14045,102 @@ void fn_801D3D3C(void *arg0) {
   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1a);
   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); break;
  case 0xd:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x344, 0, 1, 0); *(s32 *)state = 6; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x344, 0, 1, 0); *(s32 *)state = 6; break;
  case 0xe:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x351, 0, 1, 0); *(s32 *)state = 6; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x351, 0, 1, 0); *(s32 *)state = 6; break;
  case 0xf:
   if (*(u8 *)((u8 *)state + 0x10) == 1) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x35e, 0, 1, 0); *(s32 *)state = 0x2d;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x35e, 0, 1, 0); *(s32 *)state = 0x2d;
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x36d, 1, 1, 0, lbl_8027E258 + 0x2d4, 1, arg0); *(s32 *)state = 0x10;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x36d, 1, 1, 0, gUiSeCues + 0x2d4, 1, arg0); *(s32 *)state = 0x10;
   }
   break;
  case 0x10:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x37b, 1, 1, 0, lbl_8027E258 + 0x2d4, 0, arg0); *(s32 *)state = 0x11;
+   Ui_OpenConfirmDialog(gUiSeCues + 0x37b, 1, 1, 0, gUiSeCues + 0x2d4, 0, arg0); *(s32 *)state = 0x11;
   } else { *(s32 *)state = 0x14; }
   break;
  case 0x11:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    fn_800E99E4(arg0);
-   fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x38a, 0, 0, 0); *(s32 *)state = 0x12;
+   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x38a, 0, 0, 0); *(s32 *)state = 0x12;
   } else { *(s32 *)state = 0x14; }
   break;
  case 0x12:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x13; fn_801DDDE8(5, arg0); break;
  case 0x13:
   if (fn_800EB774() == 0) {
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x39a, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
+   Ui_OpenConfirmDialog(gUiSeCues + 0x39a, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3ab, 0, 1, 0); *(s32 *)state = 6;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3ab, 0, 1, 0); *(s32 *)state = 6;
   }
   break;
  case 0x14:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3bc, 0, 1, 0); *(s32 *)state = 6; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3bc, 0, 1, 0); *(s32 *)state = 6; break;
  case 0x18:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3cb, 0, 1, 0); *(s32 *)state = 6; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0); *(s32 *)state = 6; break;
  case 0x19:
   if (*(u8 *)((u8 *)state + 0x10) == 1) *(s32 *)state = 0x23;
-  else { Ui_OpenConfirmDialog(lbl_8027E258 + 0x3d5, 1, 0, 0, lbl_8027E258 + 0x2d4, 0, arg0); *(s32 *)state = 0x1a; }
+  else { Ui_OpenConfirmDialog(gUiSeCues + 0x3d5, 1, 0, 0, gUiSeCues + 0x2d4, 0, arg0); *(s32 *)state = 0x1a; }
   break;
  case 0x1a:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    fn_801E323C(&gSaveDataBase, arg0);
-   fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3e3, 0, 0, 0); *(s32 *)state = 0x1b;
+   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3e3, 0, 0, 0); *(s32 *)state = 0x1b;
   } else { *(s32 *)state = 8; }
   break;
  case 0x1b:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x1c; fn_801DDDE8(5, arg0); break;
  case 0x1c:
   if (fn_800EB774() == 0) {
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x3ef, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
+   Ui_OpenConfirmDialog(gUiSeCues + 0x3ef, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   if (fn_800EB774() == -5) fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3cb, 0, 1, 0);
-   else fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x3fd, 0, 1, 0);
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   if (fn_800EB774() == -5) fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0);
+   else fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3fd, 0, 1, 0);
    *(s32 *)state = 6;
   }
   break;
  case 0x1e:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64); fn_801DF5D8(&gSaveDataBase, arg0);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x40b, 0, 1, 0); *(s32 *)state = 0x20; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64); fn_801DF5D8(&gSaveDataBase, arg0);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x40b, 0, 1, 0); *(s32 *)state = 0x20; break;
  case 0x1f: break;
  case 0x20:
   if (flags_a & 0x100) {
    fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0;
-   Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
+   Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
   }
   break;
  case 0x23:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x417, 0, 1, 0); *(s32 *)state = 0x2d; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x417, 0, 1, 0); *(s32 *)state = 0x2d; break;
  case 0x28:
-  Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64); fn_801DE378((u8 *)state + 0x330);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x428, 1, 1, 0); *(s32 *)state = 6; break;
+  Ui_PlaySeCue(gUiSeCues + 0x290, 0x64); fn_801DE378((u8 *)state + 0x330);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x428, 1, 1, 0); *(s32 *)state = 6; break;
  case 0x2d:
   if (*(u8 *)((u8 *)state + 0x10) == 1) {
-   tmp_ptr = Msg_Expand(lbl_8027E258 + 0x43e); tmp_ptr2 = Msg_Expand(lbl_8027E258 + 0x435);
-   sprintf((u8 *)state + 0x1a, lbl_8027E258 + 0x2b2, tmp_ptr2, tmp_ptr);
+   tmp_ptr = Msg_Expand(gUiSeCues + 0x43e); tmp_ptr2 = Msg_Expand(gUiSeCues + 0x435);
+   sprintf((u8 *)state + 0x1a, gUiSeCues + 0x2b2, tmp_ptr2, tmp_ptr);
   } else {
-   tmp_ptr = Msg_Expand(lbl_8027E258 + 0x2cd); tmp_ptr2 = Msg_Expand(lbl_8027E258 + 0x435);
-   sprintf((u8 *)state + 0x1a, lbl_8027E258 + 0x2b2, tmp_ptr2, tmp_ptr);
+   tmp_ptr = Msg_Expand(gUiSeCues + 0x2cd); tmp_ptr2 = Msg_Expand(gUiSeCues + 0x435);
+   sprintf((u8 *)state + 0x1a, gUiSeCues + 0x2b2, tmp_ptr2, tmp_ptr);
   }
   *(s32 *)state = 0x2e;
  case 0x2e:
   if (flags_a & 0x100) {
    fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0;
-   Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
+   Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
  case 0x32:
@@ -14185,8 +14185,8 @@ void fn_801D3D3C(void *arg0) {
   *(s32 *)state = 0x3c;
  }
  case 0x3c:
-  if (flags_a & 0x100) { *(s32 *)state = 0x3de; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); }
-  else if (flags_a & 0x200) { *(s32 *)state = 0x384; Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64); }
+  if (flags_a & 0x100) { *(s32 *)state = 0x3de; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); }
+  else if (flags_a & 0x200) { *(s32 *)state = 0x384; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); }
   else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x11);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x34 + 0x7c); *fl = (s16)(*fl & ~2); }
@@ -14194,7 +14194,7 @@ void fn_801D3D3C(void *arg0) {
    if (*(s8 *)((u8 *)state + 0x11) < 0) *(u8 *)((u8 *)state + 0x11) = *(u8 *)((u8 *)state + 0x15) - 1;
    { s8 idx = *(s8 *)((u8 *)state + 0x11); s16 *fl = (s16 *)((u8 *)state + idx * 0x34 + 0x7c); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x34 + 0x88), *(s16 *)((u8 *)state + idx * 0x34 + 0x8a), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x11)) Ui_PlaySeCue(lbl_8027E258 + 0x446, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x11)) Ui_PlaySeCue(gUiSeCues + 0x446, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x11);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x34 + 0x7c); *fl = (s16)(*fl & ~2); }
@@ -14202,7 +14202,7 @@ void fn_801D3D3C(void *arg0) {
    if (*(s8 *)((u8 *)state + 0x11) > *(s8 *)((u8 *)state + 0x15) - 1) *(u8 *)((u8 *)state + 0x11) = 0;
    { s8 idx = *(s8 *)((u8 *)state + 0x11); s16 *fl = (s16 *)((u8 *)state + idx * 0x34 + 0x7c); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x34 + 0x88), *(s16 *)((u8 *)state + idx * 0x34 + 0x8a), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x11)) Ui_PlaySeCue(lbl_8027E258 + 0x446, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x11)) Ui_PlaySeCue(gUiSeCues + 0x446, 0x64);
   }
   break;
  case 0x64:
@@ -14228,11 +14228,11 @@ void fn_801D3D3C(void *arg0) {
  case 0x6a:
   if (flags_a & 0x100) {
    if (fn_801DC0CC() != 0) {
-    Ui_OpenConfirmDialog(lbl_8027E258 + 0x462, 1, 1, 1, lbl_8027E258 + 0x2d4, 0, arg0);
-    *(s32 *)state = 0x6e; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64);
-   } else { *(s32 *)state = 0x73; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); }
+    Ui_OpenConfirmDialog(gUiSeCues + 0x462, 1, 1, 1, gUiSeCues + 0x2d4, 0, arg0);
+    *(s32 *)state = 0x6e; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64);
+   } else { *(s32 *)state = 0x73; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); }
   } else if (flags_a & 0x200) {
-   *(s32 *)state = 0x3b6; Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14241,7 +14241,7 @@ void fn_801D3D3C(void *arg0) {
    } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4);
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14250,7 +14250,7 @@ void fn_801D3D3C(void *arg0) {
    } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4);
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
   break;
  case 0x6e:
@@ -14260,12 +14260,12 @@ void fn_801D3D3C(void *arg0) {
  case 0x71:
   if (fn_800EB774() == 0) { *(s32 *)state = 0x73; fn_801D8894((u8 *)state + 0x60); }
   else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
   }
   break;
  case 0x73:
-  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(lbl_8027E258 + 0x307), 1, 0, 1);
+  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
   *(u8 *)((u8 *)state + 0x14) = 0;
   fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
   fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14275,12 +14275,12 @@ void fn_801D3D3C(void *arg0) {
   sel = *(s8 *)((u8 *)state + 0x14); changed = 0;
   if (flags_a & 0x100) {
    *(u8 *)((u8 *)state + 0x18) = *(u8 *)((u8 *)state + 0x14);
-   if (fn_801E33F4(gSystemSave)) { Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); *(s32 *)state = 0x75; }
-   else { Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64); *(s32 *)state = 0x77; *(u8 *)((u8 *)state + 0x19) = 0; }
+   if (fn_801E33F4(gSystemSave)) { Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(s32 *)state = 0x75; }
+   else { Ui_PlaySeCue(gUiSeCues + 0x318, 0x64); *(s32 *)state = 0x77; *(u8 *)((u8 *)state + 0x19) = 0; }
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
   if (flags_a & 0x200) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64); *(s32 *)state = 0x69;
+   Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); *(s32 *)state = 0x69;
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0);
   }
   if (flags_b & 0x1000001) {
@@ -14294,7 +14294,7 @@ void fn_801D3D3C(void *arg0) {
    if (sel != *(s8 *)((u8 *)state + 0x14)) changed = 1;
   }
   if ((u8)changed == 1) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x328, 0x64); sel = *(s8 *)((u8 *)state + 0x14);
+   Ui_PlaySeCue(gUiSeCues + 0x328, 0x64); sel = *(s8 *)((u8 *)state + 0x14);
    if (sel == 0) { y = *(s16 *)((u8 *)state + 0x33e); x = *(s16 *)((u8 *)state + 0x340); }
    else if (sel == 1) { y = *(s16 *)((u8 *)state + 0x342); x = *(s16 *)((u8 *)state + 0x344); }
    else if (sel == 2) { y = *(s16 *)((u8 *)state + 0x346); x = *(s16 *)((u8 *)state + 0x348); }
@@ -14304,7 +14304,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0x75:
-  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(lbl_8027E258 + 0x49b), 1, 0, 2);
+  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x49b), 1, 0, 2);
   *(u8 *)((u8 *)state + 0x14) = 0;
   fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
   fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14312,13 +14312,13 @@ void fn_801D3D3C(void *arg0) {
  case 0x76:
   sel = *(s8 *)((u8 *)state + 0x14); changed = 0;
   if (flags_a & 0x100) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64); *(s32 *)state = 0x77;
+   Ui_PlaySeCue(gUiSeCues + 0x318, 0x64); *(s32 *)state = 0x77;
    *(u8 *)((u8 *)state + 0x19) = *(u8 *)((u8 *)state + 0x14);
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
   if (flags_a & 0x200) {
    if (fn_801E33F4(gSystemSave)) *(s32 *)state = 0x73; else *(s32 *)state = 0x69;
-   Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0);
   }
   if (flags_b & 0x1000001) {
@@ -14332,7 +14332,7 @@ void fn_801D3D3C(void *arg0) {
    if (sel != *(s8 *)((u8 *)state + 0x14)) changed = 1;
   }
   if ((u8)changed == 1) {
-   Ui_PlaySeCue(lbl_8027E258 + 0x328, 0x64); sel = *(s8 *)((u8 *)state + 0x14);
+   Ui_PlaySeCue(gUiSeCues + 0x328, 0x64); sel = *(s8 *)((u8 *)state + 0x14);
    if (sel == 0) { y = *(s16 *)((u8 *)state + 0x33e); x = *(s16 *)((u8 *)state + 0x340); }
    else if (sel == 1) { y = *(s16 *)((u8 *)state + 0x342); x = *(s16 *)((u8 *)state + 0x344); }
    else if (sel == 2) { y = *(s16 *)((u8 *)state + 0x346); x = *(s16 *)((u8 *)state + 0x348); }
@@ -14347,7 +14347,7 @@ void fn_801D3D3C(void *arg0) {
   sel = *(s8 *)((u8 *)state + 0x18);
   if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
   fn_801E1498(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12), changed, *(s8 *)((u8 *)state + 0x19) != 0, arg0);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x4ab, 0, 0, 0);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x4ab, 0, 0, 0);
   *(s32 *)state = 0x78; break;
  case 0x78:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x7d; fn_801DDDE8(5, arg0);
@@ -14355,17 +14355,17 @@ void fn_801D3D3C(void *arg0) {
   if (fn_800EB774() == 0) {
    fn_801E21EC(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12)); *(s32 *)state = 0x82;
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x4b5, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x4b5, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
   }
   break;
  case 0x82:
   if (fn_800EB774() == 0) {
-   fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4, (u32)(lbl_8027E258 + 0x4c1));
+   fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4, (u32)(gUiSeCues + 0x4c1));
    *(s32 *)state = 0x87; fn_801DDDE8(0x64, arg0);
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x4d2, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x4d2, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x69;
   }
   break;
  case 0x87:
@@ -14397,11 +14397,11 @@ void fn_801D3D3C(void *arg0) {
  case 0xce:
   if (flags_a & 0x100) {
    if (fn_801DC0CC() != 0) {
-    Ui_OpenConfirmDialog(lbl_8027E258 + 0x462, 1, 1, 1, lbl_8027E258 + 0x318, 0, arg0);
-    *(s32 *)state = 0xd2; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64);
-   } else { *(s32 *)state = 0xd7; Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64); }
+    Ui_OpenConfirmDialog(gUiSeCues + 0x462, 1, 1, 1, gUiSeCues + 0x318, 0, arg0);
+    *(s32 *)state = 0xd2; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64);
+   } else { *(s32 *)state = 0xd7; Ui_PlaySeCue(gUiSeCues + 0x318, 0x64); }
   } else if (flags_a & 0x200) {
-   *(s32 *)state = 0x3b6; Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14410,7 +14410,7 @@ void fn_801D3D3C(void *arg0) {
    } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14419,7 +14419,7 @@ void fn_801D3D3C(void *arg0) {
    } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
   break;
  case 0xd2:
@@ -14429,8 +14429,8 @@ void fn_801D3D3C(void *arg0) {
  case 0xd5:
   if (fn_800EB774() == 0) { *(s32 *)state = 0xd7; fn_801D8894((u8 *)state + 0x60); }
   else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0xcd;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0xcd;
   }
   break;
  case 0xd6: break;
@@ -14442,8 +14442,8 @@ void fn_801D3D3C(void *arg0) {
    fn_8008A290(3, 0xfa); fn_80006220(0x1c);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x4df, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0xcd;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x4df, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0xcd;
   }
   break;
  case 0x12c:
@@ -14467,16 +14467,16 @@ void fn_801D3D3C(void *arg0) {
   *(s32 *)state = 0x132;
  }
  case 0x132:
-  if (flags_a & 0x100) { *(s32 *)state = 0x136; Ui_PlaySeCue(lbl_8027E258 + 0x318, 0x64); }
-  else if (flags_a & 0x200) { *(s32 *)state = 0x3b6; Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64); }
+  if (flags_a & 0x100) { *(s32 *)state = 0x136; Ui_PlaySeCue(gUiSeCues + 0x318, 0x64); }
+  else if (flags_a & 0x200) { *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); }
   break;
  case 0x136:
   fn_801E080C(&gSaveDataBase); *(s32 *)state = 0x13b; fn_801DDDE8(0xa, arg0); break;
  case 0x13b:
   if (fn_800EB774() == 0) *(s32 *)state = 0x140;
   else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x4eb, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x131;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x4eb, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x131;
   }
   break;
  case 0x140:
@@ -14487,8 +14487,8 @@ void fn_801D3D3C(void *arg0) {
    fn_8008A290(3, 0xfa); fn_80006220(0x1d);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
   } else {
-   Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-   Ui_OpenConfirmDialog(lbl_8027E258 + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x131;
+   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+   Ui_OpenConfirmDialog(gUiSeCues + 0x488, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x131;
   }
   break;
  case 0x190:
@@ -14527,9 +14527,9 @@ void fn_801D3D3C(void *arg0) {
    }
    { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   *(s32 *)state = 0x19a; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64);
+   *(s32 *)state = 0x19a; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64);
   } else if (flags_a & 0x200) {
-   *(s32 *)state = 0x3b6; Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14538,7 +14538,7 @@ void fn_801D3D3C(void *arg0) {
    } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14547,14 +14547,14 @@ void fn_801D3D3C(void *arg0) {
    } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
   break;
  case 0x19a:
-  if (flags_a & 0x100) { *(s32 *)state = 0x19f; Ui_PlaySeCue(lbl_8027E258 + 0x2d4, 0x64); }
+  if (flags_a & 0x100) { *(s32 *)state = 0x19f; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); }
   else if (flags_a & 0x200) {
    *(s32 *)state = 0x193; fn_801D8E08((u8 *)state + 0x52e);
-   Ui_PlaySeCue(lbl_8027E258 + 0x2e4, 0x64);
+   Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x13);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14563,7 +14563,7 @@ void fn_801D3D3C(void *arg0) {
    } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4) & 4);
    { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x13);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
@@ -14572,17 +14572,17 @@ void fn_801D3D3C(void *arg0) {
    } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4) & 4);
    { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
-   if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(lbl_8027E258 + 0x473, 0x64);
+   if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
   break;
  case 0x19f:
   fn_801E0B48(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12), *(s8 *)((u8 *)state + 0x13), arg0);
-  fn_801DDBA8((u8 *)state + 0x330, lbl_8027E258 + 0x4fb, 0, 0, 0);
+  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x4fb, 0, 0, 0);
   *(s32 *)state = 0x1a1; break;
     case 0x1a1:
     fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x1a4;
     if (fn_800EB774() == 0) {
-     fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4, (u32)(lbl_8027E258 + 0x4c1));
+     fn_801D8854((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4, (u32)(gUiSeCues + 0x4c1));
      fn_801DDDE8(0x64, arg0);
     } else fn_801DDDE8(5, arg0);
     break;
@@ -14593,8 +14593,8 @@ void fn_801D3D3C(void *arg0) {
       *(s8 *)((u8 *)state + 0x12) = -1; *(s32 *)state = 0x193;
      } else *(s32 *)state = 0x3b6;
     } else {
-     Ui_PlaySeCue(lbl_8027E258 + 0x290, 0x64);
-     Ui_OpenConfirmDialog(lbl_8027E258 + 0x506, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x193;
+     Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
+     Ui_OpenConfirmDialog(gUiSeCues + 0x506, 0, 0, 0, NULL, 1, arg0); *(s32 *)state = 0x193;
     }
     break;
  case 0x1f4: *(s32 *)state = 0x1f4; break;
@@ -14697,7 +14697,7 @@ void fn_801D8C0C(void *arg0, s16 arg1)
 void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
 {
     extern u32 lbl_8027E228[12];
-    extern u8 lbl_8027E258[];
+    extern u8 gUiSeCues[];
     void *Msg_Expand(u32);
     void strcpy(void *, u8 *);
     void strcat(void *, void *);
@@ -14723,7 +14723,7 @@ void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
     *(s16 *)((u8 *)arg0 + 0xa) = arg1;
     *(s16 *)((u8 *)arg0 + 8) = arg2;
     *(s16 *)((u8 *)arg0 + 2) = 0x64;
-    strcpy((u8 *)arg0 + 0x18, lbl_8027E258 + 0x5bb);
+    strcpy((u8 *)arg0 + 0x18, gUiSeCues + 0x5bb);
     idx = *(s16 *)((u8 *)arg0 + 8);
     tmp = Msg_Expand(stack[idx]);
     strcat((u8 *)arg0 + 0x18, tmp);
@@ -15223,7 +15223,7 @@ void Ui_HandleConfirmDialogInput(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
     extern void *gPadInput;
-    extern u8 lbl_8027E258[];
+    extern u8 gUiSeCues[];
     void *self;
     s32 pressed;
     void *state;
@@ -15259,14 +15259,14 @@ void Ui_HandleConfirmDialogInput(void *arg0) {
     if ((s8)*((u8 *)state + 0x14) == 0) {
         Ui_PlaySeCue(*(void **)((u8 *)self + 0x38), 0x64);
     } else {
-        Ui_PlaySeCue(lbl_8027E258 + 0x2E4, 0x64);
+        Ui_PlaySeCue(gUiSeCues + 0x2E4, 0x64);
     }
     Process_ClearFunc(self);
 after_100:
     if ((pressed & 0x200) == 0) {
         goto after_200;
     }
-    Ui_PlaySeCue(lbl_8027E258 + 0x2E4, 0x64);
+    Ui_PlaySeCue(gUiSeCues + 0x2E4, 0x64);
     *((u8 *)state + 0x14) = 1;
     Process_ClearFunc(self);
 after_200:
@@ -15274,7 +15274,7 @@ after_200:
         goto after_01;
     }
     if ((s32)*((u8 *)state + 0x14) == 1) {
-        Ui_PlaySeCue(lbl_8027E258 + 0x328, 0x64);
+        Ui_PlaySeCue(gUiSeCues + 0x328, 0x64);
     }
     {
         s32 zero;
@@ -15306,7 +15306,7 @@ after_01:
         goto done;
     }
     if ((s8)*((u8 *)state + 0x14) == 0) {
-        Ui_PlaySeCue(lbl_8027E258 + 0x328, 0x64);
+        Ui_PlaySeCue(gUiSeCues + 0x328, 0x64);
     }
     {
         s32 v340;
@@ -15345,7 +15345,7 @@ after_01:
 
 not_mode1:
     if (pressed & 0x100) {
-        Ui_PlaySeCue(lbl_8027E258 + 0x2D4, 0x64);
+        Ui_PlaySeCue(gUiSeCues + 0x2D4, 0x64);
         Process_ClearFunc(self);
     }
 done:
@@ -15378,7 +15378,7 @@ void fn_801DCD3C(u8 *arg0)
     extern f32 lbl_8036B6A0, lbl_8036B6A4, lbl_8036B6A8, lbl_8036B6AC, lbl_8036B6B0;
     extern s32 lbl_8036B620, lbl_8036B624;
     extern s32 lbl_803674F4;
-    extern u8 lbl_8027E258[];
+    extern u8 gUiSeCues[];
 
     f32 f30;
     s16 x, y;
@@ -15734,7 +15734,7 @@ void fn_801DE274(void) {
     void sprintf(void *, void *, ...);
     s32 fn_8005C6A0(void *);
     void fn_8006EEFC(void *, void *);
-    extern u8 lbl_8027E258[];
+    extern u8 gUiSeCues[];
     extern u8 lbl_80299A78[];
     char buf[0x40];
     u8 *p;
@@ -15743,7 +15743,7 @@ void fn_801DE274(void) {
     p = lbl_80299A78;
     i = 0;
     do {
-        sprintf(buf, lbl_8027E258 + 0x661, *(s32 *)(p + 4));
+        sprintf(buf, gUiSeCues + 0x661, *(s32 *)(p + 4));
         if (fn_8005C6A0(buf) & 0x2000) {
             fn_8006EEFC(p + 8, buf);
         }
@@ -18941,7 +18941,7 @@ extern f32 lbl_8036B358;
 #include "global.h"
 #include "m2c.h"
 
-extern u8 lbl_8027E258[];
+extern u8 gUiSeCues[];
 extern f32 lbl_8036B630;
 extern f32 lbl_8036B650;
 extern f32 lbl_8036B664;
