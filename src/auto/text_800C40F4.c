@@ -7231,7 +7231,7 @@ void *PreviewWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_800D764C(void *, s32, s32, s32, void *, void *);
     void fn_800E3F54(void *);
     extern char PreviewWin_str[];
-    extern u8 lbl_8028DDD8[];
+    extern u8 PreviewWin_vtable[];
     extern void fn_800D78F4(void);
     extern void fn_800D78C4(void);
     extern void fn_800D7894(void);
@@ -7269,7 +7269,7 @@ void *PreviewWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     String_Destroy(&sp80, -1);
     String_Destroy(&sp8C, -1);
     String_Destroy(&sp98, -1);
-    *(void **)((u8 *)self + 0xC) = lbl_8028DDD8;
+    *(void **)((u8 *)self + 0xC) = PreviewWin_vtable;
     String_Init(&sp74, PreviewWin_str + 0x1B, &sp20);
     *(void **)((u8 *)self + 0x424) = fn_800D75FC(self, &sp74);
     String_Destroy(&sp74, -1);
