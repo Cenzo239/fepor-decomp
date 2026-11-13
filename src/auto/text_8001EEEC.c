@@ -4034,28 +4034,29 @@ void fn_8002846C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x16) = 0;
 }
 
-s32 Unit_GetPhaseActCode(void *arg0) {
+/* Classify whether a unit can act on the current phase; returns reason code 0-6. */
+s32 Unit_GetPhaseActCode(void *unit) {
     extern u8 gBattleState[];
     u8 Allegiance_CompareIds(u8, u8);
-    u8 temp_r30;
+    u8 allegiance;
 
-    if (arg0 == NULL) {
+    if (unit == NULL) {
         return 0;
     }
-    if ((((u16) M2C_FIELD(arg0, u16 *, 0x1A4) >> 7U) & 7) || (M2C_FIELD(arg0, u8 *, 0x1A5) & 7)) {
+    if ((((u16) M2C_FIELD(unit, u16 *, 0x1A4) >> 7U) & 7) || (M2C_FIELD(unit, u8 *, 0x1A5) & 7)) {
         return 1;
     }
-    temp_r30 = M2C_FIELD(M2C_FIELD(arg0, u8 **, 0x190), u8 *, 8);
-    if (Allegiance_CompareIds(temp_r30, gBattleState[0x11]) == 1) {
+    allegiance = M2C_FIELD(M2C_FIELD(unit, u8 **, 0x190), u8 *, 8);
+    if (Allegiance_CompareIds(allegiance, gBattleState[0x11]) == 1) {
         return 2;
     }
-    if ((temp_r30 == 2) && ((gBattleState[0x11] != 2) || (gBattleState[0x16] != 1))) {
+    if ((allegiance == 2) && ((gBattleState[0x11] != 2) || (gBattleState[0x16] != 1))) {
         return 3;
     }
-    if ((temp_r30 == 3) && ((gBattleState[0x11] != 3) || (gBattleState[0x17] != 1))) {
+    if ((allegiance == 3) && ((gBattleState[0x11] != 3) || (gBattleState[0x17] != 1))) {
         return 4;
     }
-    if (M2C_FIELD(arg0, u32 *, 0x1A0) & 1) {
+    if (M2C_FIELD(unit, u32 *, 0x1A0) & 1) {
         return 5;
     }
     return 6;
