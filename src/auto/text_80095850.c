@@ -46,13 +46,13 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 void fn_80095850(void *arg0) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_80018AE4(void);
     void fn_80019384(void *, s32);
     extern f32 lbl_803697C0;
     void *temp;
 
-    temp = fn_80018ADC();
+    temp = Camera_GetActive();
     *(f32 *)((u8 *)temp + 8) = *(f32 *)((u8 *)arg0 + 0x30);
     fn_80019384(temp, *(s32 *)((u8 *)arg0 + 0x60));
     *(f32 *)((u8 *)temp + 0x70) = lbl_803697C0;

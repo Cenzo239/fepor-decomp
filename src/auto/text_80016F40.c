@@ -1076,7 +1076,7 @@ extern "C" void fn_80018AAC(void) {
     ((Cam *)gActiveCam)->v0();
 }
 #pragma cplusplus off
-s32 fn_80018ADC(void) {
+s32 Camera_GetActive(void) {
     extern s32 gActiveCam;
     return gActiveCam;
 }

@@ -3160,12 +3160,12 @@ void fn_8018CF48(s32 arg0) {
 void fn_8018CFA4(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4) {
     u32 Process_Find(void *);
     void *fn_8000CAF0(void *, s32);
-    u32 fn_80018ADC(void);
+    u32 Camera_GetActive(void);
     extern u8 lbl_80296018[];
     s32 var_r0;
     void *temp_r3;
 
-    if (fn_80018ADC() != 0U && (arg3 != 0 || Process_Find(lbl_80296018) == 0U)) {
+    if (Camera_GetActive() != 0U && (arg3 != 0 || Process_Find(lbl_80296018) == 0U)) {
         temp_r3 = fn_8000CAF0(lbl_80296018, arg4);
         var_r0 = 1;
         if (arg1 != 0) {
@@ -3192,9 +3192,9 @@ void fn_8018D218(void *arg0)
 }
 
 void fn_8018D25C(void *arg0) {
-    s32 fn_80018ADC();
+    s32 Camera_GetActive();
     M2C_FIELD(arg0, s32 *, 0x30) = 0;
-    M2C_FIELD(arg0, s32 *, 0x44) = fn_80018ADC();
+    M2C_FIELD(arg0, s32 *, 0x44) = Camera_GetActive();
 }
 
 #pragma use_lmw_stmw on
@@ -9764,7 +9764,7 @@ void fn_8019B904(void *arg0) {
 
 typedef struct { s32 x, y, z; } Word3B9;
 s32 fn_8019B9F0(void *arg0) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_80052CA8(void *);
     void fn_80054C14(void *);
     s32 fn_8005F894(void *, s32);
@@ -9796,7 +9796,7 @@ s32 fn_8019B9F0(void *arg0) {
     p5c = *(void **)((u8 *)tmp + 0x5C);
     if (!(*(u8 *)((u8 *)p4c + 0x40) & 1)) {
         if (fn_8005F894(p5c, 0x12) < 0) {
-            tmp = fn_80018ADC();
+            tmp = Camera_GetActive();
             *(f32 *)((u8 *)tmp + 0x70) = lbl_8036AF40;
             fn_80098524(*(void **)((u8 *)p4c + 0x34));
         }
@@ -10557,7 +10557,7 @@ s32 fn_8019CED0(void *arg0) {
     temp_r29 = M2C_FIELD(temp_r3, s32 *, 0x5C);
     if (!(M2C_FIELD(temp_r31, u8 *, 0x40) & 1)) {
         if (fn_8005F894(temp_r29, 0x12) < 0) {
-            temp_r3_5 = (void *)fn_80018ADC();
+            temp_r3_5 = (void *)Camera_GetActive();
             M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) lbl_8036AF40;
             fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
         }
@@ -10585,7 +10585,7 @@ s32 fn_8019CED0(void *arg0) {
     }
     if (Pad_IsButton(temp_r29, 0x12) != 0) {
         fn_80052CA8(var_r30);
-        temp_r3_5 = (void *)fn_80018ADC();
+        temp_r3_5 = (void *)Camera_GetActive();
         M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) lbl_8036AF40;
         fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
     }
@@ -10784,12 +10784,12 @@ void fn_8019D458(void *arg0) {
 }
 
 void fn_8019D4B4(void *arg0) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_8004BE88(void *, s32);
     extern f32 lbl_8036AF40;
     void *tmp;
 
-    tmp = fn_80018ADC();
+    tmp = Camera_GetActive();
     *(f32 *)((u8 *)tmp + 0x70) = lbl_8036AF40;
     fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
 }
@@ -11832,14 +11832,14 @@ s32 fn_8019FE2C(void) {
 }
 
 s32 fn_8019FE54(void) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_800193CC(void *, f32);
     extern u8 lbl_80330E90[];
     void *p;
     f32 f;
 
     if (lbl_80330E90[0] != 0) {
-        p = fn_80018ADC();
+        p = Camera_GetActive();
         if (p != NULL) {
             f = *(f32 *)(lbl_80330E90 + 4);
             *(f32 *)((u8 *)p + 4) = f;
@@ -11854,7 +11854,7 @@ s32 fn_8019FE54(void) {
 }
 
 s32 fn_8019FEB8(void) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_800193CC(void *, f32);
     extern u32 gUiInputFlags;
     extern u8 lbl_80330E90[];
@@ -11863,7 +11863,7 @@ s32 fn_8019FEB8(void) {
 
     if (gUiInputFlags & 1) {
         if (lbl_80330E90[0] != 0) {
-            p = fn_80018ADC();
+            p = Camera_GetActive();
             if (p != NULL) {
                 f = *(f32 *)(lbl_80330E90 + 4);
                 *(f32 *)((u8 *)p + 4) = f;
@@ -11876,7 +11876,7 @@ s32 fn_8019FEB8(void) {
         }
     } else {
         if (lbl_80330E90[0] != 0) {
-            p = fn_80018ADC();
+            p = Camera_GetActive();
             if (p != NULL) {
                 *(f32 *)((u8 *)p + 4) = *(f32 *)(lbl_80330E90 + 4);
                 *(f32 *)((u8 *)p + 8) = *(f32 *)(lbl_80330E90 + 8);
@@ -11888,9 +11888,9 @@ s32 fn_8019FEB8(void) {
 }
 
 s32 fn_8019FF68(void) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     extern u8 lbl_80330E90[];
-    u8 *p = fn_80018ADC();
+    u8 *p = Camera_GetActive();
 
     if (p != NULL) {
         *(f32 *)(lbl_80330E90 + 4) = *(f32 *)(p + 4);
@@ -11902,7 +11902,7 @@ s32 fn_8019FF68(void) {
 }
 
 s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     void fn_800193CC(void *, f32);
     void fn_800187F0(void);
     void *p;
@@ -11915,7 +11915,7 @@ s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
     a = arg0;
     b = arg1;
     c = arg2;
-    p = fn_80018ADC();
+    p = Camera_GetActive();
     fa = (f32)a;
     *(f32 *)((u8 *)p + 4) = fa;
     fb = (f32)b;
@@ -11928,12 +11928,12 @@ s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_801A0060(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_80018ADC(void);
+    void *Camera_GetActive(void);
     extern f32 lbl_8036AF88;
     void *obj;
     f32 scale;
 
-    obj = fn_80018ADC();
+    obj = Camera_GetActive();
     scale = lbl_8036AF88;
     *(f32 *)((u8 *)obj + 4) = (f32)arg0;
     *(f32 *)((u8 *)obj + 8) = (f32)arg1;
