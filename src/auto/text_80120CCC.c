@@ -2947,7 +2947,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_pa(void);
     void ScriptCmd_tt(void);
     void ScriptCmd_tr(void);
-    void fn_80126944(void);
+    void ScriptCmd_Config_Tutorial(void);
     void fn_8012690C(void);
     void fn_801268D4(void);
     void fn_8012689C(void);
@@ -2995,7 +2995,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x1C7, ScriptCmd_pa, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CB, ScriptCmd_tt, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CF, ScriptCmd_tr, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x1D3, fn_80126944, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1D3, ScriptCmd_Config_Tutorial, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1E3, fn_8012690C, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1FA, fn_801268D4, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x210, fn_8012689C, 1);
@@ -3104,7 +3104,7 @@ void fn_8012690C(s32 arg0) {
     }
 }
 
-void fn_80126944(void) {
+void ScriptCmd_Config_Tutorial(void) {
     struct Work {
         u8 pad0[0x9C];
         u8 a0 : 2;
