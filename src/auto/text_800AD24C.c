@@ -8380,7 +8380,7 @@ void fn_800C0750(void) {
     extern s32 lbl_80367848;
     extern s32 lbl_8036784C;
     extern u8 Proc_BMapMain[];
-    extern u8 lbl_80284E30[];
+    extern u8 Proc_BMapBGMCtrl[];
     extern u8 lbl_80284AC8[];
     extern u8 lbl_8026FC78[];
     extern u8 lbl_80320080[];
@@ -8403,7 +8403,7 @@ void fn_800C0750(void) {
     }
     lbl_80367848 = val;
     if (temp == 0) {
-        Process_Create(lbl_80284E30, Process_CreateChild(Proc_BMapMain, Process_FindByName(lbl_8026FC78 + 0x138)));
+        Process_Create(Proc_BMapBGMCtrl, Process_CreateChild(Proc_BMapMain, Process_FindByName(lbl_8026FC78 + 0x138)));
     }
     temp = Process_Find(lbl_80284AC8);
     if (temp != 0) {

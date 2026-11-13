@@ -2021,7 +2021,7 @@ void Battle_LoadMap(void)
 #pragma global_optimizer reset
 void Battle_StartMapMain(void *arg0) {
     extern u16 Proc_BMapMain[];
-    extern u16 lbl_80284E30[];
+    extern u16 Proc_BMapBGMCtrl[];
     extern u8 gBattleState[];
     extern struct { u32 unk0; u32 unk4; } gSaveDataBase;
     void *Process_CreateChild(void *, void *);
@@ -2040,7 +2040,7 @@ void Battle_StartMapMain(void *arg0) {
 
     r = Process_CreateChild(Proc_BMapMain, arg0);
     Process_Goto(r, 4);
-    Process_Create(lbl_80284E30, r);
+    Process_Create(Proc_BMapBGMCtrl, r);
     fn_80006220(0x10);
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
@@ -2054,7 +2054,7 @@ void Battle_StartMapMain(void *arg0) {
 }
 
 void fn_8002D72C(void *arg0) {
-    extern u16 lbl_80284E30[];
+    extern u16 Proc_BMapBGMCtrl[];
     extern u16 lbl_80284E5C[];
     extern u16 Proc_BMapMain[];
     void *Process_CreateChild(void *, void *);
@@ -2063,7 +2063,7 @@ void fn_8002D72C(void *arg0) {
     void *r;
 
     r = Process_CreateChild(Proc_BMapMain, arg0);
-    r = Process_Create(lbl_80284E30, r);
+    r = Process_Create(Proc_BMapBGMCtrl, r);
     r = Process_CreateChild(lbl_80284E5C, r);
     fn_80006220(0x10);
 }
