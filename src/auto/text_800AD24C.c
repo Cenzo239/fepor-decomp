@@ -548,7 +548,7 @@ s32 fn_800AE328(s32 arg0) {
     void fn_8003DDF8(void *, u8 *, u8 *);
     void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
-    void *fn_801A46BC(void *);
+    void *Battle_GetActiveCombatant(void *);
     extern u8 gBattle[];
     u8 sp9;
     u8 sp8;
@@ -560,7 +560,7 @@ s32 fn_800AE328(s32 arg0) {
     s8 c;
     s8 d;
 
-    temp_r3 = fn_801A46BC(gBattle);
+    temp_r3 = Battle_GetActiveCombatant(gBattle);
     if (temp_r3 == NULL) {
         return 0;
     }
@@ -5670,11 +5670,11 @@ s32 fn_800BA8F8(u8 arg0) {
 s32 fn_800BA96C(void) {
     void *Res_GetByName(void);
     M2C_UNK fn_800A87D4(s32);
-    void *fn_801A46BC(void *);
+    void *Battle_GetActiveCombatant(void *);
     extern u8 gBattle[];
     void *p;
 
-    p = fn_801A46BC(gBattle);
+    p = Battle_GetActiveCombatant(gBattle);
     if (p == NULL) {
         return 0;
     }
@@ -5682,13 +5682,13 @@ s32 fn_800BA96C(void) {
     return Res_GetByName() != NULL;
 }
 
-extern void *fn_801A46BC(u32 *);
+extern void *Battle_GetActiveCombatant(u32 *);
 extern s32 Res_GetByName();
 extern s32 fn_800A87D4(s32);
 s32 fn_800BA9BC(void) {
     void *temp_r3;
     
-    temp_r3 = fn_801A46BC((u32*)0x80330EAC);
+    temp_r3 = Battle_GetActiveCombatant((u32*)0x80330EAC);
     if (temp_r3 == 0) {
         return 0;
     }
@@ -8119,7 +8119,7 @@ s32 fn_800BFECC(void *arg0)
 
     extern void fn_800C273C(void *, u32);
     extern void *Person_GetByPid(void);
-    extern void *fn_801A46BC(void *);
+    extern void *Battle_GetActiveCombatant(void *);
 
     void *value;
     u8 *unit;
@@ -8131,7 +8131,7 @@ s32 fn_800BFECC(void *arg0)
 
     value = Person_GetByPid();
 
-    unit = (u8 *)fn_801A46BC(gBattle);
+    unit = (u8 *)Battle_GetActiveCombatant(gBattle);
 
     if (unit == 0) {
         return 0;

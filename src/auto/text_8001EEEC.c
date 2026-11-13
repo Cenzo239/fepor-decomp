@@ -3649,7 +3649,7 @@ s32 fn_800268A8(s32 arg0) {
     void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
     void *Battle_GetOpponent(void *);
-    void *fn_801A46BC(void *);
+    void *Battle_GetActiveCombatant(void *);
     extern M2C_UNK gBattle[];
     u8 sp9;
     u8 sp8;
@@ -3661,7 +3661,7 @@ s32 fn_800268A8(s32 arg0) {
     s8 idx1;
     s8 idx2;
 
-    temp_r3 = fn_801A46BC(gBattle);
+    temp_r3 = Battle_GetActiveCombatant(gBattle);
     if (temp_r3 == 0) {
         return 0;
     }
@@ -3772,7 +3772,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void *Unit_GetItemSlot(s32, s32);
     void fn_8007386C(s32, void *, s32);
     void *Battle_GetOpponent(void *);
-    s32 fn_801A46BC(void *);
+    s32 Battle_GetActiveCombatant(void *);
     extern u8 gBattle[];
     u8 sp8[8];
     s32 handle;
@@ -3792,7 +3792,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     if (*(u8 *)((u8 *)sub + 8) != 0) {
         return 0;
     }
-    handle = fn_801A46BC(gBattle);
+    handle = Battle_GetActiveCombatant(gBattle);
     for (i = 0; i < 8; i++) {
         entry = Unit_GetItemSlot(handle, i);
         if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
@@ -4116,7 +4116,7 @@ void fn_80028694(void) {
 void fn_800286C8(void *arg0) {
     extern u8 gBattle[];
     void Process_Goto(void *, s32);
-    void *fn_801A46BC(void *);
+    void *Battle_GetActiveCombatant(void *);
     void fn_8004B1B4(s32);
     u32 v;
     void *p;
@@ -4125,7 +4125,7 @@ void fn_800286C8(void *arg0) {
     if ((v & 0x10) && (v & 0x10000000)) {
         Process_Goto(arg0, 0x63);
     }
-    p = fn_801A46BC(gBattle);
+    p = Battle_GetActiveCombatant(gBattle);
     if (p != 0) {
         fn_8004B1B4(*(s32 *)((u8 *)p + 0x280));
     }

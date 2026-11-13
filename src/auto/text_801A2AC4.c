@@ -716,7 +716,7 @@ void *Battle_GetOpponent(void *arg0) {
     return NULL;
 }
 
-void *fn_801A46BC(u8 *arg0) {
+void *Battle_GetActiveCombatant(u8 *arg0) {
     u32 flags = *(u32 *)(arg0 + 0xcac);
 
     if (flags & 0x100) {
