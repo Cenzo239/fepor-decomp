@@ -873,7 +873,7 @@ fail:
 #pragma cplusplus reset
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_80112824(void *arg0, void *arg1) {
+void Actor_LoadXml(void *arg0, void *arg1) {
     void *fn_800C42D8(s32);
     void fn_800C8CB4(String *, void *);
     void fn_800C8D58(char *, void *);

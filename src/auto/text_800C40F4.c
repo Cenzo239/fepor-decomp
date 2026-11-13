@@ -3716,7 +3716,7 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  char *fn_801992F8(u32); s32 strlen(const char *);
  void fn_800E78B0(void *,String *); void fn_800E8154(void *,void *);
  void *fn_80117A94(void *,void *,void *,void *,s32,u8);
- void fn_80112824(void *,void *); void fn_801167BC(void *,u32); void fn_801166C4(void *,u32);
+ void Actor_LoadXml(void *,void *); void fn_801167BC(void *,u32); void fn_801166C4(void *,u32);
  void fn_800DF664(u32); void fn_8011660C(void *,s32); void fn_800E4E5C(void *);
  void fn_800E4D24(void *); void fn_800E4BA4(void *,s32); void fn_800E4B84(void *); void fn_800E4B44(void *);
  extern char lbl_802704F8[]; extern u8 lbl_8036788C;
@@ -3751,7 +3751,7 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  if(made2) fn_800C9A60(&sp2C,-1);
  if(made1) fn_800C9A60(&sp38,-1);
  fn_800CB8A4(&sp20,&sp74,arg2); fn_800CB90C(&sp14,&sp20,lbl_802704F8+0x3DF);
- fn_80112824(result,&sp14); fn_800C9A60(&sp14,-1); fn_800C9A60(&sp20,-1);
+ Actor_LoadXml(result,&sp14); fn_800C9A60(&sp14,-1); fn_800C9A60(&sp20,-1);
  fn_801167BC(result,arg3);
  if(arg4) { fn_801166C4(result,arg4); fn_800DF664(arg4); }
  fn_8011660C(result,M2C_FIELD(self,s32 *,0x228));
@@ -7648,7 +7648,7 @@ char *fn_800C93EC(void *);void fn_800C96F8(void *,void *,u32);void fn_800C9758(v
 void fn_800C9A60(void *,s32);void fn_800C9ABC(void *,void *,void *);void fn_800C9B6C(void *,void *);
 void fn_800CB8A4(void *,void *,void *);void fn_800CB90C(void *,void *,void *);
 u32 fn_800D9804(void *,void *,void *);void fn_800E4B44(void *);void fn_800E4B84(void *);void fn_800E4BA4(void *,s32);void fn_800E4D24(void *);void fn_800E4E5C(void *);
-void fn_800E78B0(void *,void *);void fn_800E8154(void *,void *);void fn_80112824(void *,void *);void fn_80113030(void *,s32,void *,void *);void fn_801167BC(void *,void *);
+void fn_800E78B0(void *,void *);void fn_800E8154(void *,void *);void Actor_LoadXml(void *,void *);void fn_80113030(void *,s32,void *,void *);void fn_801167BC(void *,void *);
 void *fn_80117A94(void *,void *,void *,void *,s32,s32);void *fn_801992F8(void *);u32 strlen(void *);
 extern u8 lbl_802711B0[];extern const f32 lbl_80369E34,lbl_80369E5C;
 struct Parent {u8 pad[16];virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual void v4();virtual void v5(void *);virtual void v6(void *,void *);};
@@ -7682,7 +7682,7 @@ M2C_FIELD(((u8 *)arg0),void **,0x10)=(void *)arg1;
 if(flag2)fn_800C9A60(s48,-1);
 if(flag1)fn_800C9A60(s54,-1);
 fn_800CB8A4(s3c,s78,((u8 *)arg0)+0x70);fn_800CB90C(s30,s3c,lbl_802711B0+0x1eb);
-fn_80112824(M2C_FIELD(((u8 *)arg0),void **,0x10),s30);fn_800C9A60(s30,-1);fn_800C9A60(s3c,-1);
+Actor_LoadXml(M2C_FIELD(((u8 *)arg0),void **,0x10),s30);fn_800C9A60(s30,-1);fn_800C9A60(s3c,-1);
 fn_800C9ABC(s24,lbl_802711B0+0x129,&ac);fn_800C9ABC(s18,lbl_802711B0+0x129,&a8);
 fn_80113030(M2C_FIELD(((u8 *)arg0),void **,0x10),0,s24,s18);fn_800C9A60(s18,-1);fn_800C9A60(s24,-1);
 ((Child *)M2C_FIELD(((u8 *)arg0),void **,0x10))->v9(lbl_80369E34,lbl_80369E5C,lbl_80369E34);
