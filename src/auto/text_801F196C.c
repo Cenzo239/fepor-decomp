@@ -1473,7 +1473,7 @@ void fn_801F5518(s32 arg0) {
     fn_801E3118(&lbl_803682F0, arg0, 1);
 }
 
-void fn_801F5544(void *arg0) {
+void CardLink_ApplyBonus(void *arg0) {
     void *fn_8000C0C0(void *);
     void fn_8000C070(void *, s32);
     void fn_8000BF00(void *);
