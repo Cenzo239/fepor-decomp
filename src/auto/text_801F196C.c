@@ -3883,13 +3883,13 @@ void fn_801FA508(void *arg0) {
 void fn_801FA534(void *arg0)
 {
     void *fn_8003FCCC(void *);
-    s32 *fn_8000D2BC(void *);
+    s32 *Hash_Lookup(void *);
     extern u8 lbl_8029B2D8[];
     extern u8 lbl_80281028[];
     s32 *tmp;
 
     *(void **)((u8 *)arg0 + 0x30) = fn_8003FCCC(*(void **)(lbl_8029B2D8 + 4));
-    tmp = fn_8000D2BC(lbl_80281028 + 0x373);
+    tmp = Hash_Lookup(lbl_80281028 + 0x373);
     *(s32 *)((u8 *)arg0 + 0x34) = *tmp;
     *(f32 *)((u8 *)arg0 + 0x3C) =
         *(f32 *)((u8 *)arg0 + 0x38) + (f32)(u32)(*(s32 *)((u8 *)arg0 + 0x34) * 0x30);
@@ -3907,7 +3907,7 @@ void fn_801FA5DC(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
     void fn_8000C070(void *, s32);
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_8000A174(s32, s32);
     s16 fn_80010B78(void *, s32, f32);
     void fn_8001019C(s32, s32, s32, void *, ...);
@@ -3952,7 +3952,7 @@ void fn_801FA5DC(void *arg0) {
     step = *(f32 *)((u8 *)arg0 + 0x38);
     period = (f32)fn_802387C8(lbl_8036BA28, lbl_8036BA30);
     scroll = (f32)(s32)(period * (step + lbl_8036BA38 / period)) / period;
-    ent = (Entry *)fn_8000D2BC(lbl_80281028 + 0x387);
+    ent = (Entry *)Hash_Lookup(lbl_80281028 + 0x387);
     limit = lbl_8036BA00;
     step = lbl_8036BAAC;
     for (i = 0; i < *(u32 *)((u8 *)arg0 + 0x34); i++) {

@@ -250,7 +250,7 @@ s32 fn_8005B448(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, s32)) {
 
 #pragma global_optimizer off
 s32 fn_8005B4D8(s32 arg0) {
-    s32 fn_8000D2BC(void *);
+    s32 Hash_Lookup(void *);
     void *fn_8000D354(void *);
     s32 fn_8001B894(s32 *);
     void fn_8001B940(s32 *);
@@ -259,7 +259,7 @@ s32 fn_8005B4D8(s32 arg0) {
     s32 i;
 
     if (fn_8000D354(lbl_8026B308 + 8) != 0) {
-        sp8 = fn_8000D2BC(lbl_8026B308 + 8);
+        sp8 = Hash_Lookup(lbl_8026B308 + 8);
         fn_8001B940(&sp8);
         fn_8001B940(&sp8);
         fn_8001B940(&sp8);

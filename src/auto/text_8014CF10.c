@@ -301,7 +301,7 @@ void fn_8014D678(void *arg0) {
 }
 
 void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_80016DE0(void);
     void fn_8003F670(s32);
     s32 fn_8003FCCC(void);
@@ -363,7 +363,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     *(s32 *)((u8 *)arg0 + 0x84) = 0;
     fn_801E45FC();
     temp_r28 = fn_8003FCCC();
-    temp_r3 = fn_8000D2BC(lbl_80277060 + 0x1AF);
+    temp_r3 = Hash_Lookup(lbl_80277060 + 0x1AF);
     var_r29 = (u8 *)temp_r3 + 4;
     count = temp_r3[0];
     var_r30 = var_r29 + var_r27;

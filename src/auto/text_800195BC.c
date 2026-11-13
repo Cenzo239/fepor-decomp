@@ -441,7 +441,7 @@ void *fn_80019F3C(void *arg0, s16 arg1) {
 
 void fn_80019FC4(void)
 {
-    u8 *fn_8000D2BC(char *);
+    u8 *Hash_Lookup(char *);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     s32 fn_8001EB44(u32);
@@ -464,7 +464,7 @@ void fn_80019FC4(void)
     s32 i;
     u8 *records;
 
-    data = fn_8000D2BC(lbl_80268510 + 0x6A);
+    data = Hash_Lookup(lbl_80268510 + 0x6A);
 
     count = (data[0] << 24) +
             (data[1] << 16) +
@@ -732,7 +732,7 @@ void fn_8001A5D0(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_8001A5E4(void) {
-    u8 *fn_8000D2BC(char *);
+    u8 *Hash_Lookup(char *);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     void fn_8001CC48(void *, u32);
@@ -756,7 +756,7 @@ void fn_8001A5E4(void) {
     u8 *data;
     s32 count;
 
-    data = fn_8000D2BC(lbl_80268510 + 0x73);
+    data = Hash_Lookup(lbl_80268510 + 0x73);
     ptr = data + 4;
     count = (data[0] << 24) + ((data[1] << 16) + (data[2] << 8) + data[3]);
     lbl_803671D8 = count;
@@ -824,7 +824,7 @@ void fn_8001A5E4(void) {
 }
 #pragma use_lmw_stmw reset
 void fn_8001AC18(void) {
-    u8 *fn_8000D2BC(char *);
+    u8 *Hash_Lookup(char *);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     u16 fn_8000CEE4(s32);
@@ -846,7 +846,7 @@ void fn_8001AC18(void) {
     u16 h;
     u8 b;
 
-    data = fn_8000D2BC(lbl_80268510 + 0x89);
+    data = Hash_Lookup(lbl_80268510 + 0x89);
     ptr = data + 4;
     count = (data[0] << 24) + ((data[1] << 16) + (data[2] << 8) + data[3]);
     lbl_803671D0 = count;
@@ -1005,7 +1005,7 @@ void fn_8001AC18(void) {
 void fn_8001B134(void) {
     void fn_8003FCCC();
     void fn_800056CC(char *, ...);
-    u8 *fn_8000D2BC(char *);
+    u8 *Hash_Lookup(char *);
     s32 fn_8000D354(char *);
     void fn_8000D3EC(u32, void *);
     void fn_80019FC4(void);
@@ -1055,7 +1055,7 @@ void fn_8001B134(void) {
     fn_8003FCCC(lbl_80268510 + 0xCF);
     fn_8003FCCC(lbl_80268510 + 0xDB);
 
-    src = fn_8000D2BC(lbl_80268510 + 0x94) + 4;
+    src = Hash_Lookup(lbl_80268510 + 0x94) + 4;
     if (src == 0) {
         val = 0;
     } else {
@@ -1073,7 +1073,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0xCB);
     fn_800056CC(lbl_80268510 + 0xE9);
 
-    lbl_803671E8 = fn_8000D2BC(lbl_80268510 + 0x60) + 4;
+    lbl_803671E8 = Hash_Lookup(lbl_80268510 + 0x60) + 4;
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x113);
     fn_8001AC18();
@@ -1086,7 +1086,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x17D);
 
-    p = fn_8000D2BC(lbl_80268510 + 0x3E);
+    p = Hash_Lookup(lbl_80268510 + 0x3E);
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_803671F8 = n;
@@ -1124,7 +1124,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x1AB);
 
-    p = fn_8000D2BC(lbl_80268510 + 0x53);
+    p = Hash_Lookup(lbl_80268510 + 0x53);
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_803671F0 = src;
@@ -1133,16 +1133,16 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x1CD);
 
-    lbl_8036720C = fn_8000D2BC(lbl_80268510 + 0x8) + 4;
+    lbl_8036720C = Hash_Lookup(lbl_80268510 + 0x8) + 4;
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x1F1);
 
-    lbl_803671EC = fn_8000D2BC(lbl_80268510 + 0x47) + 4;
+    lbl_803671EC = Hash_Lookup(lbl_80268510 + 0x47) + 4;
     fn_8005B820();
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x211);
 
-    p = fn_8000D2BC(lbl_80268510 + 0x33);
+    p = Hash_Lookup(lbl_80268510 + 0x33);
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_80367200 = n;
@@ -1176,7 +1176,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x23B);
 
-    fn_8017A7D4(&tmp, fn_8000D2BC(lbl_80268510 + 0x27));
+    fn_8017A7D4(&tmp, Hash_Lookup(lbl_80268510 + 0x27));
     lbl_80367208 = fn_8017A950(&tmp);
     tmp.vt = lbl_802842B8;
     lbl_80367204 = tmp.unk4;
@@ -1194,7 +1194,7 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x287);
 
-    lbl_80367214 = fn_8000D2BC(lbl_80268510 + 0x13) + 4;
+    lbl_80367214 = Hash_Lookup(lbl_80268510 + 0x13) + 4;
     fn_801B8798();
     fn_800056CC(lbl_80268510 + 0x10B);
     fn_800056CC(lbl_80268510 + 0x2A3);

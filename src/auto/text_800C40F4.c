@@ -19943,7 +19943,7 @@ void fn_800FA424(void *arg0) {
     extern s32 lbl_803678F4;
     extern u8 lbl_8032B3C0[];
     s32 fn_8000CEE4(s32);
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_801AA064(void *, void *, void (*)(void *));
     void fn_800FB5C8(void *);
     void fn_800FB548(void *);
@@ -19962,7 +19962,7 @@ void fn_800FA424(void *arg0) {
             : (*(s32 *)(state + 0x10) != 0 ? fn_800FB494 : fn_800FB548);
         flag = lbl_8032B3C0;
         flag[1] |= 2;
-        tmp = fn_8000D2BC(*(void **)((u8 *)lbl_803678F8 + 0x18));
+        tmp = Hash_Lookup(*(void **)((u8 *)lbl_803678F8 + 0x18));
         fn_801AA064(obj, tmp, cb);
         flag[1] &= ~2;
     }
@@ -19978,7 +19978,7 @@ void fn_800FA510(void *arg0) {
     extern void *lbl_803678F8;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_801AA064(void *, void *, void (*)(void *));
     void fn_800FB5C8(void *);
     void fn_800FB548(void *);
@@ -19994,7 +19994,7 @@ void fn_800FA510(void *arg0) {
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? fn_800FB5C8
             : (*(s32 *)(state + 0x10) != 0 ? fn_800FB494 : fn_800FB548);
-        tmp = fn_8000D2BC(*(void **)((u8 *)lbl_803678F8 + 0x18));
+        tmp = Hash_Lookup(*(void **)((u8 *)lbl_803678F8 + 0x18));
         fn_801AA064(obj, tmp, cb);
     }
 
@@ -20305,14 +20305,14 @@ void fn_800FB074(void *arg0)
     extern s32 lbl_803678F4;
     extern u8 *lbl_803678F8;
     extern u8 lbl_803678F0;
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void *self;
     u8 *p;
     u8 (*cb)(void *);
 
     self = arg0;
     p = lbl_803678F8;
-    cb = (u8 (*)(void *))fn_8000D2BC(*(void **)(p + 0x14));
+    cb = (u8 (*)(void *))Hash_Lookup(*(void **)(p + 0x14));
     lbl_803678F0 = cb(*(void **)(p + 0x18));
     if (lbl_803678F4 == 0) {
         *(u8 *)((u8 *)self + 0x250) += 1;

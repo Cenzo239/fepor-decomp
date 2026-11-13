@@ -4528,7 +4528,7 @@ s32 fn_8000D1D0(s8 *str) {
     return 0;
 }
 
-s32 fn_8000D2BC(s8 *str) {
+s32 Hash_Lookup(s8 *str) {
     extern u8 lbl_802ADB20[];
     HashKey key;
     u32 *node;

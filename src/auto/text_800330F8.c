@@ -4202,19 +4202,19 @@ void fn_8003C1B4(s32 arg0) {
 }
 
 void fn_8003C3CC(void *arg0, s32 arg1) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_8017A5EC(s32, u8);
     void fn_8017A574(s32, s32);
     void fn_8017A5C4(s32, u16);
     void *p;
 
-    p = fn_8000D2BC(*(void **)((u8 *)arg0 + 0x238));
+    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x238));
     fn_8017A5EC(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
-    p = fn_8000D2BC(*(void **)((u8 *)arg0 + 0x23C));
+    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x23C));
     fn_8017A5EC(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
-    p = fn_8000D2BC(*(void **)((u8 *)arg0 + 0x240));
+    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x240));
     fn_8017A5EC(arg1, *((u8 *)p + 4));
-    p = fn_8000D2BC(*(void **)((u8 *)arg0 + 0x244));
+    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x244));
     fn_8017A5EC(arg1, *((u8 *)p + 4));
     fn_8017A5EC(arg1, *((u8 *)arg0 + 0x250));
     fn_8017A5EC(arg1, *((u8 *)arg0 + 0x251));
@@ -6409,7 +6409,7 @@ void fn_80041514(void *arg0, char *arg1)
     void PSMTXIdentity(void *);
     u16 fn_8005C144(void *);
     u32 fn_8000D354(void *);
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     f32 fn_8001B84C(void *);
     s32 fn_8001B8E0(void *);
     void *fn_8001B894(void *);
@@ -6544,7 +6544,7 @@ void fn_80041514(void *arg0, char *arg1)
 
         scale = lbl_80368F10;
         if (fn_8000D354(lbl_8026A660 + 0x171) != 0) {
-            cursor = fn_8000D2BC(lbl_8026A660 + 0x171);
+            cursor = Hash_Lookup(lbl_8026A660 + 0x171);
             M2C_FIELD(arg0, s16 *, 0) = *(s16 *)cursor;
             cursor = (u8 *)cursor + 2;
             M2C_FIELD(arg0, s16 *, 2) = *(s16 *)cursor;
@@ -6558,7 +6558,7 @@ void fn_80041514(void *arg0, char *arg1)
         *(f32 *)(gBattleMap + 0x1C2D4) = scale;
 
         if (fn_8000D354(lbl_8026A660 + 0x17D) != 0) {
-            bytes = (u8 *)fn_8000D2BC(lbl_8026A660 + 0x17D);
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x17D);
             ((u8 *)arg0)[0x5C] = bytes[0];
             ((u8 *)arg0)[0x5D] = bytes[1];
             ((u8 *)arg0)[0x5E] = bytes[2];
@@ -6578,7 +6578,7 @@ void fn_80041514(void *arg0, char *arg1)
             M2C_FIELD(arg0, s32 *, 0x64) = 0;
         }
         fn_80040F90(arg0);
-        cursor = fn_8000D2BC(lbl_8026A660 + 0x186);
+        cursor = Hash_Lookup(lbl_8026A660 + 0x186);
         M2C_FIELD(arg0, void **, 0x10) = fn_800C42AC(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
@@ -6623,7 +6623,7 @@ void fn_80041514(void *arg0, char *arg1)
         fn_800C1E24();
 
         if (fn_8000D354(lbl_8026A660 + 0x1B8) != 0) {
-            bytes = (u8 *)fn_8000D2BC(lbl_8026A660 + 0x1B8);
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1B8);
             if ((s8)bytes[0] != 0) {
                 lbl_80367294 = bytes[1];
                 lbl_80367295 = bytes[2];
@@ -6645,7 +6645,7 @@ void fn_80041514(void *arg0, char *arg1)
             (&lbl_80367298)[2] = 0xFF;
         }
         if (fn_8000D354(lbl_8026A660 + 0x1C1) != 0) {
-            bytes = (u8 *)fn_8000D2BC(lbl_8026A660 + 0x1C1);
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1C1);
             b = (s8)bytes[0] != 0;
             lbl_8036728C = (u8)(((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
             lbl_8036728D = bytes[2];
@@ -6657,7 +6657,7 @@ void fn_80041514(void *arg0, char *arg1)
             lbl_8036728C = 0;
         }
         if (fn_8000D354(lbl_8026A660 + 0x1C8) != 0) {
-            bytes = (u8 *)fn_8000D2BC(lbl_8026A660 + 0x1C8);
+            bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1C8);
             ((u8 *)arg0)[0xA3] = bytes[0];
             ((u8 *)arg0)[0xA0] = bytes[1];
             ((u8 *)arg0)[0xA1] = bytes[2];
@@ -7477,7 +7477,7 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
 
 #pragma global_optimizer off
 void fn_80044450(void *arg0, s32 arg1) {
-void *fn_8000D2BC(void *);
+void *Hash_Lookup(void *);
 u32 fn_8000D354(void *);
 void fn_80015DEC(void);
 void fn_80023A4C(void *);
@@ -7522,13 +7522,13 @@ extern u8 gBattleMap[];
     s32 row;
     s32 col;
 
-    tblA = fn_8000D2BC(lbl_8026A660 + 0x289);
-    idxA = fn_8000D2BC(lbl_8026A660 + 0x295);
+    tblA = Hash_Lookup(lbl_8026A660 + 0x289);
+    idxA = Hash_Lookup(lbl_8026A660 + 0x295);
     tblB = tblA;
     idxB = idxA;
     if (fn_8000D354(lbl_8026A660 + 0x2A0) != 0) {
-        tblB = fn_8000D2BC(lbl_8026A660 + 0x2A0);
-        idxB = fn_8000D2BC(lbl_8026A660 + 0x2B0);
+        tblB = Hash_Lookup(lbl_8026A660 + 0x2A0);
+        idxB = Hash_Lookup(lbl_8026A660 + 0x2B0);
     }
     ca = gBattleMap;
     for (row = 0; row < *(s16 *)((u8 *)arg0 + 2); row++) {
@@ -7616,8 +7616,8 @@ extern u8 gBattleMap[];
                 if (fn_8000D354(lbl_8026A660 + 0x26A) == 0) {
                     continue;
                 }
-                tblA = fn_8000D2BC(lbl_8026A660 + 0x26A);
-                idxA = fn_8000D2BC(lbl_8026A660 + 0x27A);
+                tblA = Hash_Lookup(lbl_8026A660 + 0x26A);
+                idxA = Hash_Lookup(lbl_8026A660 + 0x27A);
                 ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
                     rowSl = (s8)yy << 6;
@@ -7661,8 +7661,8 @@ extern u8 gBattleMap[];
                 if (fn_8000D354(lbl_8026A660 + 0x26A) == 0) {
                     continue;
                 }
-                tblA = fn_8000D2BC(lbl_8026A660 + 0x26A);
-                idxA = fn_8000D2BC(lbl_8026A660 + 0x27A);
+                tblA = Hash_Lookup(lbl_8026A660 + 0x26A);
+                idxA = Hash_Lookup(lbl_8026A660 + 0x27A);
                 ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
                     rowSl = (s8)yy << 6;
@@ -7941,7 +7941,7 @@ void fn_80044BE4(void *arg0) {
 }
 
 void fn_80045604(s32 unused) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     u32 fn_8000D354(void *);
     extern u8 lbl_8026A660[];
     extern u8 gBattleMap[];
@@ -7961,7 +7961,7 @@ void fn_80045604(s32 unused) {
     u8 *base;
 
     if (fn_8000D354(lbl_8026A660 + 0x2D3) != 0) {
-        data = fn_8000D2BC(lbl_8026A660 + 0x2D3);
+        data = Hash_Lookup(lbl_8026A660 + 0x2D3);
         count = *data;
         p = (u8 *)data + 2;
         i = 0;
@@ -7978,7 +7978,7 @@ void fn_80045604(s32 unused) {
     }
 
     if (fn_8000D354(lbl_8026A660 + 0x2DB) != 0) {
-        data = fn_8000D2BC(lbl_8026A660 + 0x2DB);
+        data = Hash_Lookup(lbl_8026A660 + 0x2DB);
         count = *data;
         p = (u8 *)data + 2;
         base = gBattleMap;
@@ -8017,7 +8017,7 @@ void fn_80045604(s32 unused) {
     }
 
     if (fn_8000D354(lbl_8026A660 + 0x2E5) != 0) {
-        data = fn_8000D2BC(lbl_8026A660 + 0x2E5);
+        data = Hash_Lookup(lbl_8026A660 + 0x2E5);
         count = *data;
         p = (u8 *)data + 2;
         i = 0;
@@ -8090,7 +8090,7 @@ void fn_80045C68(void *arg0)
 
 #pragma global_optimizer off
 void fn_80045D50(void *arg0, void *arg1) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     f32 fn_8001B84C(u8 **);
     void fn_8004781C(void *);
     void fn_8005FEE8(void *, f32);
@@ -8144,7 +8144,7 @@ void fn_80045D50(void *arg0, void *arg1) {
     f32 temp_f0;
 
     self = arg0;
-    sp8 = fn_8000D2BC(arg1);
+    sp8 = Hash_Lookup(arg1);
     *(void **)((u8 *)self + 0x14) = fn_800C42AC(*(s16 *)((u8 *)self + 6) * 0xB4);
     i = 0;
     ent = *(u8 **)((u8 *)self + 0x14);

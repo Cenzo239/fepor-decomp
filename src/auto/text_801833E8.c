@@ -3205,7 +3205,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void *fn_8002F740(void);
     u8 fn_8003DC80(void *, void *);
     void **fn_80037BD0(void *, s32);
-    u32 *fn_8000D2BC(char *);
+    u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
     s32 fn_802342B8(s32, u32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
@@ -3258,7 +3258,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
             while ((s8)slot < 8) {
                 entry = fn_80037BD0(unit, slot);
                 if (*(u32 *)entry != 0) {
-                    tbl = fn_8000D2BC((char *)((u32)lbl_802798D0 + 0x1D));
+                    tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
                     if (!fn_8003DAC4(arg0, entry)) {
                         dist = -1;
                     } else {
@@ -3324,7 +3324,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void *fn_8002F740(void);
     u8 fn_8003DC80(void *, void *);
     void **fn_80037BD0(void *, s32);
-    u32 *fn_8000D2BC(char *);
+    u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
     s32 fn_802342B8(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
@@ -3389,7 +3389,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
             while ((s8)slot < 8) {
                 entry = fn_80037BD0(unit, slot);
                 if (*(u32 *)entry != 0) {
-                    tbl = fn_8000D2BC((char *)((u32)lbl_802798D0 + 0x1D));
+                    tbl = Hash_Lookup((char *)((u32)lbl_802798D0 + 0x1D));
                     if (!fn_8003DAC4(arg0, entry)) {
                         dist = -1;
                     } else {

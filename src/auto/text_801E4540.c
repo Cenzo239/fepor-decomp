@@ -2572,7 +2572,7 @@ void fn_801E9958(void) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_801E9978(void *arg0) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void *fn_8000E0E4(void *);
     void *fn_80056A60(void *);
     void fn_80056AE0(void *, void *);
@@ -2613,10 +2613,10 @@ void fn_801E9978(void *arg0) {
     s16 t;
     s16 *p68;
 
-    *(void **)((u8 *)arg0 + 0x44) = fn_8000D2BC(lbl_8027EB78 + 0x201);
-    *(void **)((u8 *)arg0 + 0x48) = fn_8000D2BC(lbl_8027EB78 + 0x20D);
-    *(void **)((u8 *)arg0 + 0x4C) = fn_8000D2BC(lbl_8027EB78 + 0x21A);
-    temp_r3 = fn_8000D2BC(lbl_8027EB78 + 0x226);
+    *(void **)((u8 *)arg0 + 0x44) = Hash_Lookup(lbl_8027EB78 + 0x201);
+    *(void **)((u8 *)arg0 + 0x48) = Hash_Lookup(lbl_8027EB78 + 0x20D);
+    *(void **)((u8 *)arg0 + 0x4C) = Hash_Lookup(lbl_8027EB78 + 0x21A);
+    temp_r3 = Hash_Lookup(lbl_8027EB78 + 0x226);
     temp_r28 = temp_r3[0];
     var_r30 = temp_r3 + 1;
     r29 = (u8 *)arg0 + 0x54;

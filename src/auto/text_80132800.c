@@ -10619,7 +10619,7 @@ void fn_80145E9C(void) {
 void *fn_80145EBC(void *arg0) {
     extern u8 lbl_80276BC8[];
 
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     s32 fn_802342B8(void *, void *);
 
     s32 count;
@@ -10627,7 +10627,7 @@ void *fn_80145EBC(void *arg0) {
     s32 index;
     s32 *table;
 
-    table = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x94);
+    table = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x94);
     entry = (u8 *)(table + 1);
     count = *table;
     index = 0;
@@ -10646,7 +10646,7 @@ void *fn_80145EBC(void *arg0) {
 
 s32 fn_80145F58(void *arg0, void **arg1) {
     extern u8 lbl_80276BC8[];
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     s32 fn_802342B8(void *, void *);
 
     s32 count;
@@ -10656,7 +10656,7 @@ s32 fn_80145F58(void *arg0, void **arg1) {
     u8 *table;
 
 #pragma scheduling off
-    table = (u8 *)fn_8000D2BC(lbl_80276BC8 + 0x9D);
+    table = (u8 *)Hash_Lookup(lbl_80276BC8 + 0x9D);
     entry = table + 4;
     count = *(s32 *)table;
 #pragma scheduling reset
@@ -10693,7 +10693,7 @@ void fn_80146B00(void) {
 }
 
 s32 fn_80146B10(s32 arg0) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_800056A0(s32);
     extern u8 lbl_80276BC8[];
     s32 *table;
@@ -10704,7 +10704,7 @@ s32 fn_80146B10(s32 arg0) {
     s32 key;
     s32 result;
 
-    table = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x30b);
+    table = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x30b);
     count = *table;
     table++;
     lo = 0;
@@ -10735,7 +10735,7 @@ s32 fn_80146B10(s32 arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" s8 fn_80146BE4(void *arg0) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     struct Entry {
         void **names;
         u8 pad4[4];
@@ -10757,8 +10757,8 @@ extern "C" s8 fn_80146BE4(void *arg0) {
             active = 1;
         }
         if (active != 0) {
-            h1 = fn_8000D2BC(arg0);
-            if (h1 == fn_8000D2BC(*entry->names)) {
+            h1 = Hash_Lookup(arg0);
+            if (h1 == Hash_Lookup(*entry->names)) {
                 return (s8)i;
             }
         }
@@ -10770,7 +10770,7 @@ extern "C" s8 fn_80146BE4(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" s8 fn_80146C94(void *arg0) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     struct Entry {
         void **names;
         u8 pad4[4];
@@ -10798,8 +10798,8 @@ extern "C" s8 fn_80146C94(void *arg0) {
             active = 1;
         }
         if (active != 0) {
-            h1 = fn_8000D2BC(self);
-            if (h1 == fn_8000D2BC(*entry->names)) {
+            h1 = Hash_Lookup(self);
+            if (h1 == Hash_Lookup(*entry->names)) {
                 return (s8)i;
             }
         }
@@ -11113,7 +11113,7 @@ s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
 }
 
 s8 Ui_PlaySeCue(void *arg0, int arg1) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     extern u8 gSeCueSlots[1344];
     extern s32 gUiInputFlags;
     extern u8 lbl_8029275C[];
@@ -11147,7 +11147,7 @@ found:
         return -1;
     }
     found = gSeCueSlots + ((u8)slot * 0x30);
-    src = fn_8000D2BC(arg0);
+    src = Hash_Lookup(arg0);
     kind = src[5] & 3;
     switch (kind) {
     case 0:
@@ -11275,7 +11275,7 @@ s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
 }
 
 s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     extern u8 gFxSlots[];
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
@@ -11305,7 +11305,7 @@ s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
 found:
     if (slot >= 0) {
         found = gFxSlots + ((u8)slot * 0x30);
-        src = fn_8000D2BC(arg0);
+        src = Hash_Lookup(arg0);
         kind = src[5] & 3;
         switch (kind) {
         case 0:
@@ -11550,7 +11550,7 @@ extern "C" void fn_801480D8(s16 arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" s8 fn_8014832C(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
@@ -11606,8 +11606,8 @@ extern "C" s8 fn_8014832C(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
             active = 1;
         }
         if (active != 0) {
-            h1 = fn_8000D2BC(arg1);
-            if (h1 == fn_8000D2BC(*entry->names)) {
+            h1 = Hash_Lookup(arg1);
+            if (h1 == Hash_Lookup(*entry->names)) {
                 slot = i;
                 goto after_search;
             }
@@ -11628,7 +11628,7 @@ after_search:
         found->v2();
     }
 
-    src = fn_8000D2BC(arg1);
+    src = Hash_Lookup(arg1);
     kind = *((u8 *)src + 5) & 3;
     switch (kind) {
     case 0:

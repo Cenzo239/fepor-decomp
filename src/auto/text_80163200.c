@@ -12013,7 +12013,7 @@ s32 fn_8017A6C4(void *arg0, void *arg1) {
 }
 
 void *fn_8017A764(void *arg0, void *arg1) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
     void *self;
@@ -12028,7 +12028,7 @@ void *fn_8017A764(void *arg0, void *arg1) {
     *(s32 *)((u8 *)self + 8) = zero;
     *(u8 *)((u8 *)self + 0xc) = zero;
     *(void **)((u8 *)self + 0x10) = lbl_802842B8;
-    temp = fn_8000D2BC(arg1);
+    temp = Hash_Lookup(arg1);
     *(void **)((u8 *)self + 4) = temp;
     zero = 0;
     *(void **)((u8 *)self + 0) = temp;

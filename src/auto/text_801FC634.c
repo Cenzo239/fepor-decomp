@@ -1582,8 +1582,8 @@ void fn_802001F8(u32 arg0, s32 arg1) {
 #pragma use_lmw_stmw reset
 
 void fn_80200270(void *arg0) {
-    u32 *fn_8000D2BC(void *);
-    u32 *p = fn_8000D2BC(arg0);
+    u32 *Hash_Lookup(void *);
+    u32 *p = Hash_Lookup(arg0);
     s32 i;
 
     for (i = 0; i < 8; i++) {

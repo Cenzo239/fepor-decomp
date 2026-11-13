@@ -844,7 +844,7 @@ void fn_801069A0(u8 *arg0) {
     u8 fn_80107874(void *, void *);
     void fn_8000C070(void *, s32);
     u8 fn_801A2300(void);
-    u32 fn_8000D2BC(void *);
+    u32 Hash_Lookup(void *);
     u8 fn_8001B940(u32 *);
     u32 fn_8001B894(u32 *);
     void fn_80107B54(u32 *, void *, s32);
@@ -877,7 +877,7 @@ void fn_801069A0(u8 *arg0) {
     var_r30 = 0;
     temp = (s32)(arg0 + 0x30);
     var_r31 = var_r30;
-    sp8 = fn_8000D2BC((void *)temp);
+    sp8 = Hash_Lookup((void *)temp);
     if (sp8 == 0) {
         var_r0 = 0;
         goto after_parse;
@@ -958,7 +958,7 @@ after_parse:
 }
 #pragma use_lmw_stmw reset
 
-u32 fn_8000D2BC();                                  /* extern */
+u32 Hash_Lookup();                                  /* extern */
 u8 fn_8001B940(u32 *);                              /* extern */
 u8 fn_8001B894(u32 *);                              /* extern */
 void fn_80107B54(u32 *, u32 *, u8);                 /* extern */
@@ -1003,7 +1003,7 @@ void fn_80106F68(s8 *arg1, s8 *arg2) {
     var_r27 = 0;
     var_r31 = 0;
     var_r30 = 0;
-    temp_r3 = fn_8000D2BC();
+    temp_r3 = Hash_Lookup();
     sp8 = temp_r3;
     if (temp_r3 == 0) {
         var_r0 = 0;
@@ -1128,7 +1128,7 @@ void fn_801070FC(void) {
     sp47 = 0;
     sp74 = 0;
     
-    temp_r3 = fn_8000D2BC();
+    temp_r3 = Hash_Lookup();
     sp8 = &temp_r3;
     if (temp_r3 == 0) {
         return;
@@ -1280,7 +1280,7 @@ ok:
 #pragma use_lmw_stmw on
 s32 fn_80107874(void *arg0, void *arg1) {
     void fn_800056CC(const char *, ...);
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     s32 fn_80015680(void *);
     void fn_8001B894(u32 *);
     s32 fn_8001B940(u32 *);
@@ -1320,7 +1320,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     if (fn_80015680(gUnitLists) == 0 && fn_80015680(gUnitLists + 0x3C) == 0) {
         flags |= 2;
     }
-    sp8 = (u32)fn_8000D2BC(self);
+    sp8 = (u32)Hash_Lookup(self);
     if (sp8 == 0) {
         spC = 0;
     } else {
@@ -1909,7 +1909,7 @@ extern "C" void fn_801089A8(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 #pragma cplusplus reset
 
 void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void *p;
     s32 a;
     s32 sum;
@@ -1917,7 +1917,7 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
     s32 c;
     s32 d;
 
-    arg0 = fn_8000D2BC(arg0);
+    arg0 = Hash_Lookup(arg0);
     p = *(void **)((u8 *)arg0 + 0x14);
     a = x + 2;
     sum = x + w;
@@ -2029,14 +2029,14 @@ void fn_80108F58(void *arg0) {
 }
 
 void fn_80108FA8(void) {
-    void *fn_8000D2BC(void);
+    void *Hash_Lookup(void);
     void fn_8005C8B4(s32);
     s32 i;
     void *entry;
     void *list;
     s8 *ptr;
 
-    list = fn_8000D2BC();
+    list = Hash_Lookup();
     i = 0;
     entry = list;
     goto check;
@@ -2554,7 +2554,7 @@ void fn_80109EEC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_80109F88(void *arg0, void *arg1) {
-    void *fn_8000D2BC(void *);
+    void *Hash_Lookup(void *);
     void fn_801FDA70(void *);
     void fn_801FCC68(void *);
     void fn_801FC6E0(void *, f32);
@@ -2601,7 +2601,7 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x5C) = one;
     *((u8 *)arg0 + 0x60) = 0xFF;
     *((u8 *)arg0 + 0x61) = 0x80;
-    *(void **)((u8 *)arg0 + 0x30) = fn_8000D2BC(arg1);
+    *(void **)((u8 *)arg0 + 0x30) = Hash_Lookup(arg1);
     var_r31 = 0;
     temp_r30 = *(void **)((u8 *)arg0 + 0x30);
     var_r29 = temp_r30;
