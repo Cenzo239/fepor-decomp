@@ -11547,7 +11547,7 @@ void ScriptObj_Start(void *arg0, void *arg1) {
     extern u16 gScriptObjSlots[];
     extern u8 lbl_8027DF20[];
     extern u8 lbl_8029992C[];
-    extern f32 lbl_8036B568;
+    extern f32 gFloatMinusOne;
     u8 *row;
     u8 *p;
     u8 *slot;
@@ -11571,7 +11571,7 @@ void ScriptObj_Start(void *arg0, void *arg1) {
             fn_8005C8B4(lbl_8027DF20 + 0x13E);
             fn_8005C8B4(slot + 0x12C);
             *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, arg1);
-            f = lbl_8036B568;
+            f = gFloatMinusOne;
             *(u8 *)(*(u8 **)(slot + 0x150) + 0x30) = i;
             FallingParticle_CreateEx(*(void **)(slot + 0x150), f);
             return;
@@ -12155,7 +12155,7 @@ void fn_801D107C(void *arg0) {
     void **fn_8006EDD8(void *, u16);
     void fn_801D0480(void *);
     extern u16 gScriptObjSlots[];
-    extern f32 lbl_8036B568;
+    extern f32 gFloatMinusOne;
     extern f64 lbl_8036B578;
     extern f32 lbl_8036B580;
     extern f64 lbl_8036B5C8;
@@ -12197,7 +12197,7 @@ void fn_801D107C(void *arg0) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B568);
+    Prim2D_AddZ(gFloatMinusOne);
     Prim2D_PrepareTex();
 
     node = *(void **)(*(u8 **)(self + 0x24) + 0xC);
@@ -12216,7 +12216,7 @@ void fn_801D107C(void *arg0) {
     }
 
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B568);
+    Prim2D_AddZ(gFloatMinusOne);
     Prim2D_PrepareTex();
 
     for (i = 0, ent = self; i < 0xA; i += 1, ent += 0xE) {
@@ -12241,7 +12241,7 @@ void fn_801D107C(void *arg0) {
     }
 
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036B568);
+    Prim2D_AddZ(gFloatMinusOne);
     Prim2D_PrepareTex();
 
     if (*(u32 *)(*(u8 **)(self + 0x24) + 8) != 0) {
