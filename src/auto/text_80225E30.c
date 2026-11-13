@@ -438,7 +438,7 @@ s32 fn_8022692C(void *arg0, u32 arg1) {
     return var_r5;
 }
 
-void fn_8022695C(void *arg0, s32 arg1) {
+void TRKResetBuffer(void *arg0, s32 arg1) {
     extern void fn_80003458(void *, s32, s32);
 
     *(u32 *)((u8 *)arg0 + 0x8) = 0;
@@ -648,7 +648,7 @@ s32 fn_80227174(void *arg0) {
 
 s32 fn_80227444(void *arg0) {
     void fn_8022692C(void *, u32);
-    void fn_8022695C(void *, u32);
+    void TRKResetBuffer(void *, u32);
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessExtended1(u16, u16, void *, s32 *, s32);
@@ -705,7 +705,7 @@ s32 fn_80227444(void *arg0) {
         break;
     }
 
-    fn_8022695C(obj, 0);
+    TRKResetBuffer(obj, 0);
 
     if (err == 0) {
         memset(reply2, 0, 0x40);
@@ -758,7 +758,7 @@ s32 fn_80227444(void *arg0) {
 }
 
 s32 TRKDoReadRegisters(void *arg0) {
-void fn_8022695C(void*,u32);
+void TRKResetBuffer(void*,u32);
 s32 fn_80226698(void*,void*,s32);
 s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
@@ -777,7 +777,7 @@ memset(invalid,0,0x40); invalid[4]=0x80; *(s32*)invalid=0x40; invalid[8]=0x14;
 fn_8022B078(invalid,0x40);return 0;
 }
 request[4]=0x80; *(s32*)request=0x468;
-fn_8022695C(arg0,0);
+TRKResetBuffer(arg0,0);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 fn_80226698(arg0,request,0x40);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
