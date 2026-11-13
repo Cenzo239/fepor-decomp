@@ -2305,7 +2305,7 @@ void Battle_AdvancePhase(void) {
     void Allegiance_FillMask(s32, void *);
     void *Unit_FindByName(void *);
     void fn_80016C58(void);
-    void fn_800381EC(void *, s8);
+    void Unit_SetHp(void *, s8);
     s32 Unit_GetMaxHp(void *);
     void fn_8003BBD4(void *, s32);
     void fn_8003C1B4(void *);
@@ -2355,7 +2355,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 *(u32 *)(unit + 0x1A0) = flags & 0xFF88C7FE;
                 fn_80104410(unit + 0x1A4);
-                fn_800381EC(unit, (s8)Unit_GetMaxHp(unit));
+                Unit_SetHp(unit, (s8)Unit_GetMaxHp(unit));
                 fn_8003BBD4(unit, 0);
                 fn_8003C1B4(unit);
             }
@@ -2414,7 +2414,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 *(u32 *)(unit + 0x1A0) = flags & 0xFF88C7FE;
                 fn_80104410(unit + 0x1A4);
-                fn_800381EC(unit, (s8)Unit_GetMaxHp(unit));
+                Unit_SetHp(unit, (s8)Unit_GetMaxHp(unit));
                 fn_8003BBD4(unit, 0);
                 fn_8003C1B4(unit);
             }

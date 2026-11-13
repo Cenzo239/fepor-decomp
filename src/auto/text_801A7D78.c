@@ -812,7 +812,7 @@ void BattleUnit_Apply(void *arg0) {
     void Unit_SetHeldItem(void *, u8, void *);
     void *temp_r3;
 
-    fn_800381EC(p->unk280, p->unk1A8);
+    Unit_SetHp(p->unk280, p->unk1A8);
     temp_r3 = p->unk280;
     M2C_FIELD(temp_r3, u16 *, 0x1A4) = p->unk1A4;
     M2C_FIELD(temp_r3, u16 *, 0x1A6) = p->unk1A6;

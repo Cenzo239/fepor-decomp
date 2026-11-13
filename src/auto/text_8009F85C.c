@@ -1522,7 +1522,7 @@ s32 fn_800A19C0(void) {
     void *Map_GetCursorUnit(void);
     void fn_800283C8(void *, void *);
     void fn_80027F98(void *, s32);
-    void fn_800381EC(void *, s32);
+    void Unit_SetHp(void *, s32);
     void fn_8003E8DC(void *);
     void fn_8002297C(void *);
     void fn_801A75DC(void *, void *, s32);
@@ -1545,7 +1545,7 @@ s32 fn_800A19C0(void) {
     temp_r30 = Map_GetCursorUnit();
     fn_800283C8(gUiContext, temp_r30);
     fn_80027F98(gUiContext, 1);
-    fn_800381EC(temp_r30, 0);
+    Unit_SetHp(temp_r30, 0);
     cls = *(u8 **)((u8 *)temp_r30 + 0x190);
     if (cls[8] != 0) {
         fn_8003E8DC(temp_r30);

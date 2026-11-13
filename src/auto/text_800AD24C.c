@@ -6989,7 +6989,7 @@ s32 fn_800BCF44(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BCF9C(u8 arg0, s32 arg1) {
-    M2C_UNK fn_800381EC(void *, s32);
+    M2C_UNK Unit_SetHp(void *, s32);
     extern u8 gUnits[];
     void *unit;
 
@@ -7001,7 +7001,7 @@ s32 fn_800BCF9C(u8 arg0, s32 arg1) {
     if (unit == NULL) {
         return 0;
     }
-    fn_800381EC(unit, arg1);
+    Unit_SetHp(unit, arg1);
     return 0;
 }
 
@@ -7304,7 +7304,7 @@ u8 fn_800BD610(s32 arg0) {
 }
 
 s32 fn_800BD638(u8 id,s32 mid,s32 val) {
-extern u16 gUnits[]; void fn_8003868C(void*,s32); void fn_800381EC(void*,s32); void Unit_SetDisposId(void*,u8);
+extern u16 gUnits[]; void fn_8003868C(void*,s32); void Unit_SetHp(void*,s32); void Unit_SetDisposId(void*,u8);
 u8 *unit;
 if(id!=0) unit=(u8*)gUnits+(id-1)*0x280; else unit=0;
 if(unit==0 || *(u32*)(unit+0x188)==0) return 0;
@@ -7313,7 +7313,7 @@ case 1: case 2: case 3: case 4: case 5: case 9: case 10: case 11: case 12: case 
 case 0: unit[0x19A]=val; break;
 case 6: fn_8003868C(unit,val); break;
 case 7: unit[0x19C]=val; break;
-case 8: fn_800381EC(unit,val); break;
+case 8: Unit_SetHp(unit,val); break;
 case 13: *(s16*)(unit+0x228)=val; break;
 case 0x26: Unit_SetDisposId(unit,(u8)val); break;
 }

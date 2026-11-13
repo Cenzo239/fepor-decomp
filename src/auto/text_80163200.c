@@ -7415,7 +7415,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     };
     void fn_80027038(void *);
     s32 Unit_GetMaxHp(void *);
-    void fn_800381EC(void *, s32);
+    void Unit_SetHp(void *, s32);
     void fn_80138808(void *, void *);
     void fn_80050C90(void *);
     s16 UnitInv_FindFilledDown(void *, s16);
@@ -7439,7 +7439,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     unit = (void *)gUiContext[0];
     ((Obj *)obj)->v11(unit);
     t = (s8)Unit_GetMaxHp(unit);
-    fn_800381EC(unit, t);
+    Unit_SetHp(unit, t);
     tmp44 = *(void **)((u8 *)self + 0x44);
     if (*(u32 *)(gBattle + 0xcac) & 0x10) {
         fn_80138808(tmp44, unit);

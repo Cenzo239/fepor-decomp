@@ -2357,7 +2357,7 @@ void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
     }
 }
 
-void fn_800381EC(void *arg0, s8 arg1) {
+void Unit_SetHp(void *arg0, s8 arg1) {
     s8 var_r4;
     s8 var_r5;
     s8 var_r9;
@@ -4587,7 +4587,7 @@ u8 fn_8003D094(s32 arg0, u8 arg1) {
 #pragma opt_strength_reduction off
 void Unit_Promote(void *arg0) {
     void *Res_GetByName(void *);
-    void fn_800381EC(void *, s8);
+    void Unit_SetHp(void *, s8);
     void fn_8003868C(void *, s32);
     u8 Status_Test(void *, s32);
     s32 Unit_GetMaxHp(void *);
@@ -4714,7 +4714,7 @@ void Unit_Promote(void *arg0) {
     tmp = self->unk1BB;
     self->unk1BB = (u8)((s32)(((u32)tmp >> 31) + tmp) >> 1);
     self->unk1A0 &= 0xFFFBFFFF;
-    fn_800381EC(self, (s8)Unit_GetMaxHp(self));
+    Unit_SetHp(self, (s8)Unit_GetMaxHp(self));
 }
 
 s32 fn_8003D538(s32 arg0) {
@@ -5357,7 +5357,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void fn_800951D0(void *, s32);
     void fn_80095070(void *, s32);
     s8 Unit_GetMaxHp(void *);
-    void fn_800381EC(void *, s8);
+    void Unit_SetHp(void *, s8);
     u8 fn_80091D74(void *);
     void fn_8003BE50(void *);
     void fn_8004FE58(void *);
@@ -5611,7 +5611,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     fn_80036834(self);
     fn_800951D0(self, -1);
     fn_80095070(self, -1);
-    fn_800381EC(self, Unit_GetMaxHp(self));
+    Unit_SetHp(self, Unit_GetMaxHp(self));
     if (fn_80091D74(self) != 0 && Status_Test(&self->unk1BC, 9) == 0) {
         fn_8003BE50(self);
     }
