@@ -21817,6 +21817,7 @@ s32 fn_800FE8E8(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 Battle_BuildUnitScoreList(void) {
+    /* Score on-map faction units by position, status and inventory; fill the battle priority list and return its count. */
     u8 fn_80017318(void *);
     u8 fn_8001DD54(void *, void *);
     void **fn_80037BBC(void *, s32);
@@ -21832,65 +21833,65 @@ s32 Battle_BuildUnitScoreList(void) {
     extern s32 sUnitScoreFloorSpecial;
     extern s32 sUnitScoreFloorDefault;
     extern u8 lbl_8032B3C0[];
-    s32 sp8;
+    s32 scoreScratch;
     u8 *map;
     s32 i;
-    u32 score;
+    u32 itemScore;
     void *next;
     void *item;
     s32 count;
     void *unit;
-    s32 offset;
-    u8 out;
+    s32 listOff;
+    u8 outOfBounds;
     u8 tx;
     u8 ty;
     u16 dist;
     s32 result;
-    s32 *q;
+    s32 *floorPtr;
     s32 neg;
-    s32 t;
+    s32 move;
 
     count = 0;
-    offset = 0;
+    listOff = 0;
     unit = *(void **)(gUnitLists + gBattleState[0x11] * 0xC);
     map = gBattleMap;
     while (unit != NULL) {
         tx = *(u8 *)((u8 *)unit + 0x19E);
-        out = 0;
+        outOfBounds = 0;
         next = *(void **)((u8 *)unit + 0x184);
         ty = *(u8 *)((u8 *)unit + 0x19F);
         if (((s8)tx < *(s8 *)(map + 8))
             || ((s32)(*(s8 *)(map + 0xA) - 1) < (s8)tx)
             || ((s8)ty < *(s8 *)(map + 9))
             || ((s32)(*(s8 *)(map + 0xB) - 1) < (s8)ty)) {
-            out = 1;
+            outOfBounds = 1;
         }
-        if (out == 0
+        if (outOfBounds == 0
             && ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) == 0
             && (*(u8 *)((u8 *)unit + 0x1A5) & 7) == 0
             && (*(u32 *)((u8 *)unit + 0x1A0) & 0x9D) == 0
             && (fn_80102EA8(unit) == 0 || fn_80017318((u8 *)unit + 0x236) != 0)) {
             dist = fn_800FCF48(*(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F));
-            t = (s8)fn_8003A398(unit);
-            neg = -(t + dist);
-            sp8 = neg;
-            sp8 = neg + ((*(s8 *)((u8 *)unit + 0x248) + 0x80) << 16);
+            move = (s8)fn_8003A398(unit);
+            neg = -(move + dist);
+            scoreScratch = neg;
+            scoreScratch = neg + ((*(s8 *)((u8 *)unit + 0x248) + 0x80) << 16);
             if (Status_Test((void *)((s32)unit + 0x1BC), 0x18) != 0) {
-                result = sp8 + 0x578;
+                result = scoreScratch + 0x578;
             } else if (fn_8010C4B0(unit) != 0
                 && (*(u32 *)((u8 *)unit + 0x254) & 1)
                 && (fn_80102EA8(unit) == 0 || (u8)fn_80017318((u8 *)unit + 0x236) == 6)) {
-                q = &sp8;
-                if (sp8 < sUnitScoreFloorSpecial) {
-                    q = &sUnitScoreFloorSpecial;
+                floorPtr = &scoreScratch;
+                if (scoreScratch < sUnitScoreFloorSpecial) {
+                    floorPtr = &sUnitScoreFloorSpecial;
                 }
-                result = *q;
+                result = *floorPtr;
             } else if (Status_Test((u8 *)unit + 0x1BC, 0x3C) != 0) {
-                result = sp8 + 0x320;
+                result = scoreScratch + 0x320;
             } else {
                 s32 *p;
                 s32 tmp;
-                score = 0x4B0;
+                itemScore = 0x4B0;
                 for (i = 0; i < 4; i++) {
                     if (*fn_80037BBC(unit, i) == NULL) {
                         break;
@@ -21898,27 +21899,27 @@ s32 Battle_BuildUnitScoreList(void) {
                     item = *fn_80037BBC(unit, i);
                     if (fn_800934CC(unit, item) != 0) {
                         if ((*(u64 *)((u8 *)item + 0x38) & 4ULL) != 0) {
-                            if (score > 0xC8) {
-                                score = 0xC8;
+                            if (itemScore > 0xC8) {
+                                itemScore = 0xC8;
                             }
                         } else if ((*(u64 *)((u8 *)item + 0x38) & 3ULL) != 0) {
                             if ((u8)fn_8001DD54(item, unit) > 1) {
-                                if (score > 0x190) {
-                                    score = 0x190;
+                                if (itemScore > 0x190) {
+                                    itemScore = 0x190;
                                 }
-                            } else if (score > 0x258) {
-                                score = 0x258;
+                            } else if (itemScore > 0x258) {
+                                itemScore = 0x258;
                             }
                         }
                     }
                 }
-                sp8 += score;
-                result = *(sp8 < sUnitScoreFloorDefault ? &sUnitScoreFloorDefault : &sp8);
+                scoreScratch += itemScore;
+                result = *(scoreScratch < sUnitScoreFloorDefault ? &sUnitScoreFloorDefault : &scoreScratch);
             }
             *(s32 *)((u8 *)unit + 0x24C) = result;
             count += 1;
-            *(void **)((u8 *)lbl_8032B3C0 + offset + 0x18) = unit;
-            offset += 4;
+            *(void **)((u8 *)lbl_8032B3C0 + listOff + 0x18) = unit;
+            listOff += 4;
         }
         unit = next;
     }
