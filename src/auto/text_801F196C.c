@@ -532,7 +532,7 @@ void fn_801F2DB4(s32 arg0) {
 
 #pragma use_lmw_stmw on
 void fn_801F2E08(void *arg0) {
-    s32 fn_80019E8C(s32);
+    s32 Person_GetByPid(s32);
     void Process_Goto(void *, s32);
     void fn_80057E6C(s32);
     void fn_8008A290(s32, s32);
@@ -570,7 +570,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, Person_GetByPid(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -619,7 +619,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, Person_GetByPid(*(s32 *)(gOptionsList1 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -726,7 +726,7 @@ void fn_801F3214(void *arg0) {
 }
 
 void fn_801F3338(void *arg0) {
-    s32 fn_80019E8C(s32);
+    s32 Person_GetByPid(s32);
     M2C_UNK fn_8008A290(M2C_UNK, M2C_UNK);
     u8 fn_8008A59C();
     u8 fn_801E3570(void *, s32);
@@ -758,7 +758,7 @@ void fn_801F3338(void *arg0) {
     temp_r27 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
-            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(gOptionsList1 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, Person_GetByPid(*(s32 *)(gOptionsList1 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
                 Ui_PlaySeCue(gOptionsStrs + 0x121C, 0x64);
                 Process_Goto(arg0, 2);
                 fn_8008A290(3, 0xB4);
@@ -1079,7 +1079,7 @@ void fn_801F3E60(void *arg0) {
     void *Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_80019E8C(s32);
+    s32 Person_GetByPid(s32);
     void fn_80057020(s32);
     void fn_80057860(s32, s16);
     void fn_80057880(s32, s32);
@@ -1369,7 +1369,7 @@ void fn_801F3E60(void *arg0) {
     Prim2D_PrepareTex();
     (void)c7; (void)c8; (void)f31v; (void)f30v; (void)f29v;
     (void)fn_80009BC0; (void)fn_801F52A8; (void)fn_8015F24C;
-    (void)fn_80152010; (void)fn_801E3570; (void)fn_80019E8C;
+    (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
     (void)fn_800A8A88; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
     (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;
     (void)fn_80238638; (void)OSGetTime; (void)__div2i;

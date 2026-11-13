@@ -2078,7 +2078,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     u8 Id_GetKind(s32);
     s32 Item_GetByIid(s32);
     s32 fn_80019E48(s32);
-    s32 fn_80019E8C(s32);
+    s32 Person_GetByPid(s32);
     s8 fn_80091DE0(void *, s32);
     s32 fn_800C388C(void *, s32);
     extern u8 gUnits[];
@@ -2091,7 +2091,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     switch ((s32)(u8)Id_GetKind(arg1)) {
     case 1:
         temp = M2C_FIELD(arg0, s32 *, 0x188);
-        return temp == fn_80019E8C(arg1);
+        return temp == Person_GetByPid(arg1);
     case 2:
         temp = M2C_FIELD(arg0, s32 *, 0x18C);
         return temp == fn_80019E48(arg1);
@@ -3141,9 +3141,9 @@ void *fn_8003A064(void *arg0) {
  void *value;
  if ((u8)Status_Test((u8*)arg0+0x1BC,2)==0) return fn_800A88E0(M2C_FIELD(arg0,u32*,0x188));
  value=(void*)M2C_FIELD(arg0,void**,0x188);
- if (value==(void*)fn_80019E8C(lbl_8026A3A8+0x75)) return lbl_8026A3A8+0x7D;
+ if (value==(void*)Person_GetByPid(lbl_8026A3A8+0x75)) return lbl_8026A3A8+0x7D;
  value=(void*)M2C_FIELD(arg0,void**,0x188);
- if (value==(void*)fn_80019E8C(lbl_8026A3A8+0x94)) return lbl_8026A3A8+0x88;
+ if (value==(void*)Person_GetByPid(lbl_8026A3A8+0x94)) return lbl_8026A3A8+0x88;
  return fn_800A88E0(M2C_FIELD(arg0,u32*,0x188));
 }
 
@@ -3151,9 +3151,9 @@ void *fn_8003A114(void *arg0) {
  void *value;
  if ((u8)Status_Test((u8*)arg0+0x1BC,2)==0) return M2C_FIELD(M2C_FIELD(arg0,void**,0x188),void**,0xC);
  value=M2C_FIELD(arg0,void**,0x188);
- if (value==(void*)fn_80019E8C(lbl_8026A3A8+0x75)) return lbl_8026A3A8+0x9D;
+ if (value==(void*)Person_GetByPid(lbl_8026A3A8+0x75)) return lbl_8026A3A8+0x9D;
  value=M2C_FIELD(arg0,void**,0x188);
- if (value==(void*)fn_80019E8C(lbl_8026A3A8+0x94)) return lbl_8026A3A8+0xA6;
+ if (value==(void*)Person_GetByPid(lbl_8026A3A8+0x94)) return lbl_8026A3A8+0xA6;
  return M2C_FIELD(M2C_FIELD(arg0,void**,0x188),void**,0xC);
 }
 
@@ -3970,10 +3970,10 @@ void fn_8003B844(void *arg0,s32 arg1) {
  while(i<arg1) {
   entry=outer; j=0;
   while(j<M2C_FIELD(outer,s32*,4)) {
-   if (M2C_FIELD(entry,void**,8)!=0) M2C_FIELD(entry,void**,8)=(void*)fn_80019E8C(M2C_FIELD(entry,void**,8));
+   if (M2C_FIELD(entry,void**,8)!=0) M2C_FIELD(entry,void**,8)=(void*)Person_GetByPid(M2C_FIELD(entry,void**,8));
    entry=(u8*)entry+8; j++;
   }
-  M2C_FIELD(fn_80019E8C(M2C_FIELD(outer,void**,0)),void**,0x50)=outer;
+  M2C_FIELD(Person_GetByPid(M2C_FIELD(outer,void**,0)),void**,0x50)=outer;
   i++;
   outer=(u8*)outer+(M2C_FIELD(outer,s32*,4)*8)+8;
  }

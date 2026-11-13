@@ -6829,10 +6829,10 @@ void fn_800BCC34(s16 arg0) {
 #pragma peephole off
 s32 fn_800BCC44(void) {
     void *fn_80016B7C(void);
-    void fn_80019E8C(void);
+    void Person_GetByPid(void);
     void *temp_r3;
 
-    fn_80019E8C();
+    Person_GetByPid();
     temp_r3 = fn_80016B7C();
     if (temp_r3 == NULL) {
         return 0;
@@ -6950,7 +6950,7 @@ s32 fn_800BCE64(u32 arg0, s32 arg1)
 s32 fn_800BCED4(u32 arg0, void *arg1)
 {
     extern u8 gUnits[];
-    extern void *fn_80019E8C(void *);
+    extern void *Person_GetByPid(void *);
 
     u8 *unit;
     void *value;
@@ -6967,7 +6967,7 @@ s32 fn_800BCED4(u32 arg0, void *arg1)
 
     value = *(void **)(unit + 0x188);
 
-    return (u8)(value == fn_80019E8C(arg1));
+    return (u8)(value == Person_GetByPid(arg1));
 }
 
 s32 fn_800BCF44(u8 arg0, s32 arg1) {
@@ -7736,7 +7736,7 @@ s32 fn_800BE2F4(void) {
 #pragma global_optimizer off
 s32 fn_800BE57C(void *arg0) {
     void fn_800C273C(void *, u32);
-    void *fn_80019E8C(void);
+    void *Person_GetByPid(void);
     void *Person_Get(s32);
     extern s16 lbl_8031FFC0[];
     void *obj;
@@ -7750,9 +7750,9 @@ s32 fn_800BE57C(void *arg0) {
         return 0;
     }
     fn_800C273C(obj, (u16)*(s16 *)((u8 *)obj + 0x14));
-    v1 = fn_80019E8C();
+    v1 = Person_GetByPid();
     fn_800C273C(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
-    v2 = fn_80019E8C();
+    v2 = Person_GetByPid();
     v3 = Person_Get(lbl_8031FFC0[3]);
     v4 = Person_Get(lbl_8031FFC0[4]);
     if (v3 == v1 && v4 == v2) {
@@ -7993,7 +7993,7 @@ s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
 s32 fn_800BF494(void *arg0) {
     void *fn_800C273C(void *, u32);
     u8 fn_800BDD08(void *, void *);
-    void *fn_80019E8C(void);
+    void *Person_GetByPid(void);
     extern u8 gUiContext[24];
     void *v1;
     void *v2;
@@ -8005,9 +8005,9 @@ s32 fn_800BF494(void *arg0) {
         return 0;
     }
     fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14));
-    v1 = fn_80019E8C();
+    v1 = Person_GetByPid();
     fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x16));
-    v2 = fn_80019E8C();
+    v2 = Person_GetByPid();
     a = *(void **)(*(u8 **)gUiContext + 0x188);
     b = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
     if (a == v1 && b == v2) {
@@ -8117,7 +8117,7 @@ s32 fn_800BFECC(void *arg0)
     extern u8 gBattle[];
 
     extern void fn_800C273C(void *, u32);
-    extern void *fn_80019E8C(void);
+    extern void *Person_GetByPid(void);
     extern void *fn_801A46BC(void *);
 
     void *value;
@@ -8128,7 +8128,7 @@ s32 fn_800BFECC(void *arg0)
 
     fn_800C273C(arg0, (u16)index);
 
-    value = fn_80019E8C();
+    value = Person_GetByPid();
 
     unit = (u8 *)fn_801A46BC(gBattle);
 

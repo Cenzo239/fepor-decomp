@@ -374,7 +374,7 @@ s32 Job_Get(s32 arg0) {
     return lbl_803671DC + ((arg0 - 1) * 0x64);
 }
 
-void fn_80019E8C(void) {
+void Person_GetByPid(void) {
     M2C_UNK Res_GetByName();
     Res_GetByName();
 }

@@ -1589,7 +1589,7 @@ s32 fn_801B8550(void *arg0) {
 
 #pragma opt_loop_invariants reset
 void fn_801B8798(void) {
-    u32 fn_80019E8C(u32);
+    u32 Person_GetByPid(u32);
     extern struct {
         u32 unk0;
         u32 unk4;
@@ -1599,8 +1599,8 @@ void fn_801B8798(void) {
     u32 *p;
 
     for (p = (u32 *)lbl_80367214; p[0] != 0; p += 3) {
-        p[0] = fn_80019E8C(p[0]);
-        p[1] = fn_80019E8C(p[1]);
+        p[0] = Person_GetByPid(p[0]);
+        p[1] = Person_GetByPid(p[1]);
     }
 }
 
