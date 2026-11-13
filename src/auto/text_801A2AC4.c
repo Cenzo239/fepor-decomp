@@ -542,7 +542,7 @@ void MapAnim_DispatchByIid(void *iidDef, s32 parent, s32 extra) {
     }
 }
 
-s32 fn_801A3E24(void *arg0) {
+s32 Item_GetHealAmount(void *arg0) {
     void *Item_GetByIid(void *);
     extern u8 gMapAnimStr[];
 
