@@ -5370,33 +5370,49 @@ found4:
 
 #pragma dont_inline reset
 
+/* Insert or bump-ref a sample key in the sorted table; returns 1 if a new entry was added. */
 s32 SampleKey_Insert(u16 id, s32 data, s16 type) {
- void Audio_Lock(void); void Audio_Unlock(void);
- extern SampleKey gSampleKeys[]; extern u16 gSampleKeyCount;
- s32 i; s32 j; u16 count;
- Audio_Lock();
- count=gSampleKeyCount;
- for(i=0;i<(s32)count && gSampleKeys[i].id<id;i++) {}
- if(i<(s32)count) {
-  if(id!=gSampleKeys[i].id) {
-   if(count<0x100U) {
-    for(j=(s32)count-1;j>=i;j--) gSampleKeys[j+1]=gSampleKeys[j];
-    gSampleKeyCount++;
-    goto insert;
-   }
-   Audio_Unlock(); return 0;
-  }
-  gSampleKeys[i].ref++;
-  Audio_Unlock(); return 0;
- }
- if(count<0x100U) {gSampleKeyCount++; goto insert;}
- Audio_Unlock(); return 0;
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern SampleKey gSampleKeys[];
+    extern u16 gSampleKeyCount;
+    s32 i;
+    s32 j;
+    u16 count;
+
+    Audio_Lock();
+    count = gSampleKeyCount;
+    for (i = 0; i < (s32)count && gSampleKeys[i].id < id; i++) {
+    }
+    if (i < (s32)count) {
+        if (id != gSampleKeys[i].id) {
+            if (count < 0x100U) {
+                for (j = (s32)count - 1; j >= i; j--) {
+                    gSampleKeys[j + 1] = gSampleKeys[j];
+                }
+                gSampleKeyCount++;
+                goto insert;
+            }
+            Audio_Unlock();
+            return 0;
+        }
+        gSampleKeys[i].ref++;
+        Audio_Unlock();
+        return 0;
+    }
+    if (count < 0x100U) {
+        gSampleKeyCount++;
+        goto insert;
+    }
+    Audio_Unlock();
+    return 0;
 insert:
- gSampleKeys[i].id=id;
- gSampleKeys[i].data=data;
- gSampleKeys[i].type=type;
- gSampleKeys[i].ref=1;
- Audio_Unlock(); return 1;
+    gSampleKeys[i].id = id;
+    gSampleKeys[i].data = data;
+    gSampleKeys[i].type = type;
+    gSampleKeys[i].ref = 1;
+    Audio_Unlock();
+    return 1;
 }
 
 s32 AudioWave_Insert(u16 id, s32 data) {
