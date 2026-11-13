@@ -2095,7 +2095,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     void fn_80009E64(s32, f32);
     extern s32 gUiTexAtlas;
     extern u8 lbl_80330D18[64];
-    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367CF8;
+    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } gUiJobPersonalIconUv;
     extern f64 lbl_8036A868;
     extern f32 lbl_8036A874;
     extern f32 lbl_8036A880;
@@ -2117,7 +2117,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     saved = fn_80009E44(&sp10);
     fn_8006ECCC(gUiTexAtlas, lbl_80330D18, 0xC);
     color = fn_8018D900(0);
-    rect = (s16 *)&lbl_80367CF8;
+    rect = (s16 *)&gUiJobPersonalIconUv;
     spC[0] = color[0];
     w = (s16)(rect[2] - rect[0]);
     spC[1] = color[1];
@@ -2131,7 +2131,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
             Prim2D_SetRectUv((f32)(s16)(arg0 + 0x90), (f32)(s16)(arg1 + 0x2D),
-                        (f32)lbl_80367CF8.f0, (f32)rect[1], (f32)w, (f32)h);
+                        (f32)gUiJobPersonalIconUv.f0, (f32)rect[1], (f32)w, (f32)h);
             sp8 = *(s32 *)spC;
             Prim2D_SetColorPacked(&sp8);
             Prim2D_EndPrim();

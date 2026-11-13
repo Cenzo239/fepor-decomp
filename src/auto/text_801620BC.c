@@ -47,7 +47,7 @@ void fn_801620BC(void) {
     extern M2C_UNK lbl_80367CE0;
     extern M2C_UNK lbl_80367CE8;
     extern M2C_UNK lbl_80367CF0;
-    extern M2C_UNK lbl_80367CF8;
+    extern M2C_UNK gUiJobPersonalIconUv;
     extern M2C_UNK lbl_80367D00;
     extern M2C_UNK lbl_80367D08;
     extern M2C_UNK lbl_80367D10;
@@ -225,7 +225,7 @@ void fn_801620BC(void) {
     fn_80163214(&lbl_80367CE0, 0, 0, 0x10, 0x10);
     fn_80163214(&lbl_80367CE8, 0, 0, 8, 0x12);
     fn_80163214(&lbl_80367CF0, 0, 0, 0x10, 0x20);
-    fn_80163214(&lbl_80367CF8, 0, 0, 0x90, 4);
+    fn_80163214(&gUiJobPersonalIconUv, 0, 0, 0x90, 4);
     fn_80163214(&lbl_80367D00, 0, 0, 0x18, 8);
     fn_80163214(&lbl_80367D08, 0, 0, 0x18, 8);
     fn_80163214(&lbl_80367D10, 0, 0, 3, 8);
