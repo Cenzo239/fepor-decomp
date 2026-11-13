@@ -4589,18 +4589,19 @@ void fn_8024C5CC(u32 arg0) {
     }
 }
 
-s32 Sound_FindSlotById(u32 arg0)
+/* Find the index of an active sound slot with the given instance id, or -1. */
+s32 Sound_FindSlotById(u32 id)
 {
   extern u8 gSoundSlots[];
   u8 *entry;
   s32 i;
-  u32 new_var;
+  u32 slotId;
   entry = gSoundSlots;
   for (i = 0; i < 64; i++)
   {
     if ((*((u8 *) (entry + 0xC))) != 0)
     {
-      if ((new_var = *((u32 *) (entry + 4))) == arg0)
+      if ((slotId = *((u32 *) (entry + 4))) == id)
       {
         return i;
       }
