@@ -2126,7 +2126,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
 #pragma use_lmw_stmw on
 void fn_8012FF60(void *arg0) {
     void fn_80202300(void *, s32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
     void fn_8000A258(void);
     void fn_80009D74(f32, f32, f32, f32);
@@ -2186,7 +2186,7 @@ void fn_8012FF60(void *arg0) {
     fn_80202300(spA4, 0x58, lbl_8036A57C);
     fn_80202300(sp74, 0x59, lbl_8036A580);
     fn_80202300(sp44, 0x58, lbl_8036A580);
-    fn_802025C0(sp14, lbl_8036A584, lbl_8036A584, lbl_8036A584);
+    PSMTXScale(sp14, lbl_8036A584, lbl_8036A584, lbl_8036A584);
     fn_80202024(spA4, sp14, sp14);
     fn_80202024(sp74, sp14, sp14);
     fn_80202024(sp44, sp14, sp14);

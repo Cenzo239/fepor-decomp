@@ -906,7 +906,7 @@ void fn_80129FA4(void *arg0) {
     void fn_80202024(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_80275740[];
     extern s32 lbl_80367240;
     extern f32 lbl_8036A410;
@@ -950,7 +950,7 @@ void fn_80129FA4(void *arg0) {
     PSMTXTrans(sp68, lbl_8036A440, lbl_8036A444, lbl_8036A440);
     fn_80202024(sp68, sp38, sp98);
     scale = *(f32 *)((u8 *)cam + 0x6C);
-    fn_802025C0(sp8, scale, scale, scale);
+    PSMTXScale(sp8, scale, scale, scale);
     fn_80202024(sp8, sp98, sp98);
     sub = *(void **)((u8 *)self + 0x30);
     PSMTXTrans(sp68,
@@ -1044,7 +1044,7 @@ void fn_8012A530(void *arg0) {
     void fn_80202024(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_80275734[3];
     extern u8 lbl_80275740[];
@@ -1214,7 +1214,7 @@ void fn_8012A530(void *arg0) {
         PSMTXTrans(sp74, lbl_8036A440, lbl_8036A444, lbl_8036A440);
         fn_80202024(sp74, sp44, spA4);
         t = *(f32 *)((u8 *)cam + 0x6C);
-        fn_802025C0(sp14, t, t, t);
+        PSMTXScale(sp14, t, t, t);
         fn_80202024(sp14, spA4, spA4);
         sub = *(void **)((u8 *)self + 0x30);
         PSMTXTrans(sp74,
@@ -1382,7 +1382,7 @@ void fn_8012AF4C(void *arg0) {
     f32 fn_80059F64(f32, f32, f32, f32);
     void fn_8005F7B0(void *, s32);
     void fn_80202024(void *, void *, void *);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_80202300(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     f64 fn_802380D0(f32);
@@ -1424,7 +1424,7 @@ void fn_8012AF4C(void *arg0) {
     x = (lbl_8036A46C * (f32)fn_80238638((f32)*(s32 *)((u8 *)self + 0x40))) + x;
     y = (lbl_8036A46C * (f32)fn_802380D0((f32)*(s32 *)((u8 *)self + 0x40))) + y;
 
-    fn_802025C0(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);
+    PSMTXScale(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);
     fn_80202300(sp68, 0x58, lbl_8036A474);
     fn_80202024(sp68, sp98, sp8);
     PSMTXTrans(sp38, lbl_8036A478, lbl_8036A478, lbl_8036A420);

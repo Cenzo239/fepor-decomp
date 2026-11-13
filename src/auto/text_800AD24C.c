@@ -8642,7 +8642,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_802239D0(s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80202300(void *, s32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
     void fn_80224D7C(void *, s32);
     void fn_80222C50(void *, s32);
@@ -8686,7 +8686,7 @@ void fn_800C0CDC(void *arg0) {
     PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
     PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
     fn_80202300(spC8, 0x5A, lbl_80369D34);
-    fn_802025C0(sp38, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
+    PSMTXScale(sp38, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
     fn_80202024(sp38, sp98, sp8);
     fn_80202024(spC8, sp8, sp8);
     fn_80202024(sp68, sp8, sp8);

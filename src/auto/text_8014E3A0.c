@@ -269,7 +269,7 @@ void fn_8014E864(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void fn_80202300(void *, s32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
     void fn_80202024(void *, void *, void *);
@@ -381,7 +381,7 @@ void fn_8014E864(void *arg0) {
                     fn_80202300(bufC8, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
                     goto perm_join;
                 case 8:
-                    fn_802025C0(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
+                    PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));
                     fn_802033AC(mtx, buf68);
                     fn_80202024(buf68, buf8, bufF8);
@@ -395,7 +395,7 @@ void fn_8014E864(void *arg0) {
                 default:
                     fn_8006DA64(lbl_80277320, 0xB8, lbl_80277320 + 8);
                 perm_join:
-                    fn_802025C0(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
+                    PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));
                     PSMTXTrans(buf38, *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)((u8 *)arg0 + 0x14), *(f32 *)((u8 *)arg0 + 0x18));
                     fn_80202024(buf68, buf8, bufF8);
                     fn_80202024(buf98, bufF8, bufF8);

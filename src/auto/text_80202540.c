@@ -127,7 +127,7 @@ f32 fn_80202574(f64 farg0, f64 farg1, f64 farg2) {
     return (f32) farg0;
 }
 
-void fn_802025C0(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
+void PSMTXScale(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     extern f32 lbl_8036BC3C;
     f64 zero;
 

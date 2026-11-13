@@ -135,7 +135,7 @@ void fn_80083F08(void *arg0) {
     void fn_80202024(f32 *, f32 *, f32 *);
     void fn_80202300(f32 *, s32, f32);
     void PSMTXTrans(f32 *, f32, f32, f32);
-    void fn_802025C0(f32 *, f32, f32, f32);
+    void PSMTXScale(f32 *, f32, f32, f32);
     void fn_802029C4(f32 *, f32 *, f32 *);
     extern u8 lbl_8026C86C[];
     extern u8 lbl_802F0308[];
@@ -491,7 +491,7 @@ void fn_80083F08(void *arg0) {
     fn_8004BD1C(unit, &sp24, lbl_8036943C);
     fn_80202300(sp120, 0x7A, lbl_80369654 * *(f32 *)((u8 *)arg0 + 0x64));
     fn_802029C4(sp120, &sp24, &sp24);
-    fn_802025C0(spF0, lbl_8036943C, lbl_8036943C, lbl_8036943C);
+    PSMTXScale(spF0, lbl_8036943C, lbl_8036943C, lbl_8036943C);
     fn_80202300(sp90, 0x78, lbl_80369658);
     fn_80202300(sp60, 0x79, lbl_80369654 * (lbl_80369518 + *(f32 *)((u8 *)arg0 + 0x64)));
     fn_80202300(sp30, 0x78, lbl_8036965C);

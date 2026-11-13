@@ -6715,7 +6715,7 @@ void fn_801C45A4(void *arg0) {
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_8027D594[];
     extern f32 lbl_8036B40C;
     extern f32 lbl_8036B410;
@@ -6796,7 +6796,7 @@ void fn_801C45A4(void *arg0) {
                     sp5C[1] = lbl_8036B42C;
                     sp5C[2] = sp5C[2] + f30;
                     fn_80202300(mtxA, 0x59, ftmp, sp5C[2], lbl_8036B42C, sp5C[0]);
-                    fn_802025C0(mtxB, f29, f29, f29);
+                    PSMTXScale(mtxB, f29, f29, f29);
                     PSMTXTrans(mtxC, sp5C[0], sp5C[1], sp5C[2]);
                     fn_80202024(mtxB, mtxA, mtxD);
                     fn_80202024(mtxC, mtxD, (u8 *)entry + 0x10);

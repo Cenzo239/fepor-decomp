@@ -1363,7 +1363,7 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
 
 #pragma cplusplus on
 extern "C" void fn_800116F0(void *arg0) {
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80368BDC;
     struct Obj {
@@ -1388,7 +1388,7 @@ extern "C" void fn_800116F0(void *arg0) {
     f32 inv_h;
 
     inv_h = lbl_80368BDC / (f32)((Obj *)arg0)->v10();
-    fn_802025C0(sp8, lbl_80368BDC / (f32)((Obj *)arg0)->v9(), inv_h, lbl_80368BDC);
+    PSMTXScale(sp8, lbl_80368BDC / (f32)((Obj *)arg0)->v9(), inv_h, lbl_80368BDC);
     fn_80224E50(sp8, 0x21, 1);
 }
 #pragma cplusplus reset
