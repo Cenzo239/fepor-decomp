@@ -2151,7 +2151,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gScrollBgZero;
-    extern f32 lbl_80369B64;
+    extern f32 gScrollBgDepth;
     extern f32 lbl_80369B68;
     extern f32 lbl_80369B6C;
     extern f32 lbl_80369B70;
@@ -2164,7 +2164,7 @@ void Bg_DrawScrollLayers(void *arg0) {
 
     M2C_FIELD(arg0, s32 *, 0x34) = (s32) (Game_GetFrameCount() & 0x3FF);
     Prim2D_Begin();
-    Prim2D_SetTransform(gScrollBgZero, gScrollBgZero, lbl_80369B64, lbl_80369B68);
+    Prim2D_SetTransform(gScrollBgZero, gScrollBgZero, gScrollBgDepth, lbl_80369B68);
     Prim2D_BindTexture(M2C_FIELD(arg0, s32 *, 0x30), 0, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
