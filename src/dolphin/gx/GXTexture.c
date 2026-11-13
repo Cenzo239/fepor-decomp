@@ -357,7 +357,7 @@ void fn_80222890(void *obj, void *image_ptr, u16 width, u16 height,
 }
 
 void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
-    extern u8 lbl_80367048[8];
+    extern u8 GX2HWFiltConv[8];
     u8 lbias;
     u8 lmin;
     u8 lmax;
@@ -370,7 +370,7 @@ void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lo
     lbias = (u8)(32.0f * lod_bias);
     t[0] = __rlwimi(t[0], lbias, 9, 15, 22);
     t[0] = __rlwimi(t[0], (mag_filt == 1) ? 1 : 0, 4, 27, 27);
-    t[0] = __rlwimi(t[0], lbl_80367048[min_filt], 5, 24, 26);
+    t[0] = __rlwimi(t[0], GX2HWFiltConv[min_filt], 5, 24, 26);
     t[0] = __rlwimi(t[0], do_edge_lod ? 0 : 1, 8, 23, 23);
     t[0] = __rlwimi(t[0], 0, 17, 14, 14);
     t[0] = __rlwimi(t[0], 0, 18, 13, 13);
@@ -394,10 +394,10 @@ void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lo
 }
 
 void fn_80222A3C(u32 *t, s32 min_filt, s32 mag_filt) {
-    extern u8 lbl_80367048[8];
+    extern u8 GX2HWFiltConv[8];
 
     t[0] = __rlwimi(t[0], (mag_filt == 1) ? 1 : 0, 4, 27, 27);
-    t[0] = __rlwimi(t[0], lbl_80367048[min_filt], 5, 24, 26);
+    t[0] = __rlwimi(t[0], GX2HWFiltConv[min_filt], 5, 24, 26);
 }
 
 s32 fn_80222A74(void *arg0) {
@@ -1201,7 +1201,7 @@ void GXSetTevOrder(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod,
     extern f32 lbl_8036BD3C;
     extern f32 lbl_8036BD40;
     extern f32 lbl_8036BD44;
-    extern u8 lbl_80367048[8];
+    extern u8 GX2HWFiltConv[8];
     extern f32 lbl_8036BD48;
     extern f32 lbl_8036BD4C;
     extern f32 lbl_8036BD28;
@@ -1223,7 +1223,7 @@ void GXSetTevOrder(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod,
     t[0] = __rlwimi(t[0], (mag_filt == 1) ? 1 : 0, 4, 27, 27);
     
     // Set min filter  
-    t[0] = __rlwimi(t[0], lbl_80367048[min_filt], 5, 24, 26);
+    t[0] = __rlwimi(t[0], GX2HWFiltConv[min_filt], 5, 24, 26);
     
     // Set edge LOD bit
     t[0] = __rlwimi(t[0], do_edge_lod ? 0 : 1, 8, 23, 23);
