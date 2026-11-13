@@ -4893,7 +4893,7 @@ s32 Unit_CanReceiveItem(s32 arg0, void *arg1) {
     u8 fn_8001D37C(void *);
     s32 fn_8003B258(void);
     s32 Unit_FindEmptyItemSlot(s32);
-    s32 fn_80095614(s32);
+    s32 Unit_FindEmptyHeldSlot(s32);
     s8 lim;
     u8 code;
 
@@ -4905,7 +4905,7 @@ s32 Unit_CanReceiveItem(s32 arg0, void *arg1) {
             code = 1;
         } else {
             if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
-                if (fn_80095614(arg0) < 0) {
+                if (Unit_FindEmptyHeldSlot(arg0) < 0) {
                     code = 3;
                     goto end;
                 }
@@ -4925,7 +4925,7 @@ s32 fn_8003DBA8(s32 arg0, void *arg1) {
     u8 fn_8001D37C(void *);
     s32 fn_8003B258(void);
     s32 Unit_FindEmptyItemSlot(s32);
-    s32 fn_80095614(s32);
+    s32 Unit_FindEmptyHeldSlot(s32);
     s8 lim;
 
     if (((*(u8 *)((u8 *)arg1 + 5) >> 7) & 1) != 0) {
@@ -4936,7 +4936,7 @@ s32 fn_8003DBA8(s32 arg0, void *arg1) {
         return 1;
     }
     if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
-        if (fn_80095614(arg0) < 0) {
+        if (Unit_FindEmptyHeldSlot(arg0) < 0) {
             return 3;
         }
     } else {

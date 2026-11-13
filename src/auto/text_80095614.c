@@ -45,7 +45,7 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-s32 fn_80095614(s32 arg0) {
+s32 Unit_FindEmptyHeldSlot(s32 arg0) {
     u32 *Unit_GetHeldItemSlot(s32, s32);
     s32 i;
 
