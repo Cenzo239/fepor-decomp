@@ -64,7 +64,7 @@ void fn_8008F4BC(void *arg0) {
     void Prim2D_EndPrim(void);
     void Prim2D_SetColorPacked(s32 *, s32);
     extern f32 lbl_80369754;
-    extern f32 lbl_80369764;
+    extern f32 gZeroF;
     extern f64 lbl_80369770;
     extern f32 lbl_80369778;
     extern f32 lbl_8036977C;
@@ -78,7 +78,7 @@ void fn_8008F4BC(void *arg0) {
     s32 a, b;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_80369764, lbl_80369764, lbl_80369778, lbl_80369754);
+    Prim2D_SetTransform(gZeroF, gZeroF, lbl_80369778, lbl_80369754);
     fn_8000A174(0, 0);
     Prim2D_PrepareTex();
 
@@ -92,7 +92,7 @@ void fn_8008F4BC(void *arg0) {
     cur = t;
     idx = 1;
     count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
+    zero = gZeroF;
     step = (x1 - cur) / (f32)count;
     nstep = -step;
     for (i = 0; i < count; i++) {
@@ -124,7 +124,7 @@ void fn_8008F4BC(void *arg0) {
     idx = 0x11;
     cur = lbl_8036977C + y0;
     count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
+    zero = gZeroF;
     step = (y1 - cur) / (f32)count;
     nstep = -step;
     for (i = 0; i < count; i++) {
@@ -156,7 +156,7 @@ void fn_8008F4BC(void *arg0) {
     cur = x1;
     idx = 1;
     count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
+    zero = gZeroF;
     step = (t - x1) / (f32)count;
     nstep = -step;
     for (i = 0; i < count; i++) {
@@ -188,7 +188,7 @@ void fn_8008F4BC(void *arg0) {
     cur = y1;
     idx = 0x11;
     count = fn_80230BCC(0xF);
-    zero = lbl_80369764;
+    zero = gZeroF;
     step = ((lbl_8036977C + y0) - y1) / (f32)count;
     nstep = -step;
     for (i = 0; i < count; i++) {

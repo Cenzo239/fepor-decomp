@@ -79,7 +79,7 @@ void fn_80091A1C(void *arg0) {
 }
 
 void fn_80091B38(void *arg0) {
-    extern f32 lbl_80369764;
+    extern f32 gZeroF;
     extern f32 lbl_803697A4;
     f32 w;
     f32 z;
@@ -91,7 +91,7 @@ void fn_80091B38(void *arg0) {
     z = *(f32 *)((u8 *)arg0 + 0x30);
     w = lbl_803697A4;
     *(f32 *)((u8 *)arg0 + 0x3C) = z;
-    z = lbl_80369764;
+    z = gZeroF;
     *(f32 *)((u8 *)arg0 + 0x40) = y;
     *(f32 *)((u8 *)arg0 + 0x44) = x;
     y = *(f32 *)((u8 *)arg0 + 0x34);
