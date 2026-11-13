@@ -2583,13 +2583,14 @@ void Battle_ResetAllyTurnVisuals(void)
     extern u8 gBattleMap[];
     extern u8 gBattleState[];
     extern f32 lbl_80368DE8;
-    u8 sp8[8];
+    u8 factionMask[8];
     s32 i;
     u8 *unit;
-    u8 *base;
+    u8 *state;
 
-    Allegiance_FillMask(3, sp8);
-    base = gBattleState;
+    /* Clear ally turn bits, fade on-screen units to 0 alpha, then refresh the map. */
+    Allegiance_FillMask(3, factionMask);
+    state = gBattleState;
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -2598,9 +2599,9 @@ void Battle_ResetAllyTurnVisuals(void)
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0) {
-            if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
+            if (factionMask[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 *(u32 *)(unit + 0x1A0) &= ~1;
-                if (!((base[0x9E] >> 4) & 1)) {
+                if (!((state[0x9E] >> 4) & 1)) {
                     if (Map_IsInViewBounds(gBattleMap, unit[0x19E], unit[0x19F]) != 0) {
                         Unit_FadeAlpha(unit, 0x10, 0, lbl_80368DE8);
                     }
