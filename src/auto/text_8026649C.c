@@ -1,7 +1,7 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
-extern u8 lbl_8034C110[];
+extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 *D_80256B30;
 extern s32 lbl_803687F8;
@@ -183,7 +183,7 @@ static void SelectSource(void *svoice, void *dest, u32 *cstep, u64 tstflag, u32 
 
 extern void func_80013934(s32 arg0);
 
-extern u8 lbl_8034C110[];
+extern u8 gSoundData[];
 
 extern u16 lbl_8035A510[];
 
@@ -720,7 +720,7 @@ void fn_80266E70(u32 arg0) {
 }
 
 void fn_80266F18(void) {
-    lbl_8034C110[0] = 1;
+    gSoundData[0] = 1;
     lbl_8036C368 = 0.0;
 }
 

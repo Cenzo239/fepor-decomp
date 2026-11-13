@@ -32,7 +32,7 @@ extern char lbl_80282AE8[];
 extern char lbl_80282B20[];
 extern void *__stdio_exit;
 extern u8 __close_all[];
-extern u8 lbl_8034C110[];
+extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
 extern s32 lbl_803687F8;

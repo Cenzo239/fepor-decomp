@@ -4,7 +4,7 @@
 extern s32 lbl_80366F28;
 extern char lbl_80282AE8[];
 extern char lbl_80282B20[];
-extern u8 lbl_8034C110[];
+extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 typedef struct EXIControl {
     void (*exiCallback)(s32 chan, void *context);
