@@ -2950,7 +2950,7 @@ void *fn_801317B0(s32 arg0, s32 arg1) {
     }
 }
 
-void fn_80131854(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5)
+void Ui_GetSelectMenuIconRect(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5)
 {
   switch (arg1)
   {
