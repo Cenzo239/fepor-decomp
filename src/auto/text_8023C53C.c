@@ -1857,7 +1857,7 @@ void fn_802450A4(u32 arg0, u16 arg1) {
     lbl_8033F990[id & 0x7FFFFFFF].unkEF8 = arg1;
 }
 
-void fn_80245188(s32 arg0) {
+void Sound_VoiceKeyOff(s32 arg0) {
     extern SynthVoice *lbl_80368970;
     extern SynthVoice *lbl_80368974;
     extern SynthVoice lbl_8033F990[];
@@ -4246,9 +4246,9 @@ void fn_8024B3D8(s32 arg0, s32 arg1) {
 }
 
 void fn_8024B420(s32 arg0) {
-    M2C_UNK fn_80245188(s32);
+    M2C_UNK Sound_VoiceKeyOff(s32);
     Audio_Lock();
-    fn_80245188(arg0);
+    Sound_VoiceKeyOff(arg0);
     Audio_Unlock();
 }
 
