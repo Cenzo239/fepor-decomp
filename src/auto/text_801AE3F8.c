@@ -264,7 +264,7 @@ void fn_801AE980(void *arg0) {
 
 void fn_801AE9A4(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
-    void fn_8013FF00(void *, s32);
+    void Ui_BringChildToFront(void *, s32);
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
@@ -275,7 +275,7 @@ void fn_801AE9A4(void *arg0) {
     u32 a;
     u32 b;
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
     flag = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         flag = 1;
@@ -284,7 +284,7 @@ void fn_801AE9A4(void *arg0) {
         a = *(u32 *)((u8 *)gPadInput + 4);
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
-            fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x54));
+            Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x54));
             fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x68));
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
             Process_ClearFunc(arg0);
@@ -294,7 +294,7 @@ void fn_801AE9A4(void *arg0) {
 
 void fn_801AEA58(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
-    void fn_8013FF00(void *, s32);
+    void Ui_BringChildToFront(void *, s32);
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -308,7 +308,7 @@ void fn_801AEA58(void *arg0) {
     s32 str;
     u32 tmp;
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
     flag = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         flag = 1;
@@ -331,7 +331,7 @@ void fn_801AEA58(void *arg0) {
 
 void fn_801AEB30(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
-    void fn_8013FF00(void *, s32);
+    void Ui_BringChildToFront(void *, s32);
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -345,7 +345,7 @@ void fn_801AEB30(void *arg0) {
     s32 str;
     u32 tmp;
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
     flag = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         flag = 1;
@@ -354,7 +354,7 @@ void fn_801AEB30(void *arg0) {
         a = *(u32 *)((u8 *)gPadInput + 4);
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
-            fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x54));
+            Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x54));
             fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x4C));
             str = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x70);
             tmp = Ui_FindChild(arg0, -0x1000, 0);
@@ -369,7 +369,7 @@ void fn_801AEB30(void *arg0) {
 
 void fn_801AEC14(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
-    void fn_8013FF00(void *, s32);
+    void Ui_BringChildToFront(void *, s32);
     void fn_8011D79C(void *);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -383,7 +383,7 @@ void fn_801AEC14(void *arg0) {
     s32 str;
     u32 tmp;
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
     flag = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         flag = 1;
@@ -392,7 +392,7 @@ void fn_801AEC14(void *arg0) {
         a = *(u32 *)((u8 *)gPadInput + 4);
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
-            fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x54));
+            Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x54));
             fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x44));
             str = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x70);
             tmp = Ui_FindChild(arg0, -0x1000, 0);
@@ -407,7 +407,7 @@ void fn_801AEC14(void *arg0) {
 
 void fn_801AECF8(void *arg0) {
     M2C_UNK fn_8000C188(void *);
-    M2C_UNK fn_8013FF00(void *, s32);
+    M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 fn_8013FF94(void *, s32, s32);
     M2C_UNK fn_801475FC(void *, M2C_UNK);
     extern u8 lbl_8027BD18[];
@@ -420,7 +420,7 @@ void fn_801AECF8(void *arg0) {
     unsigned int mask;
     int flags;
 
-    fn_8013FF00(arg0, fn_8013FF94(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, fn_8013FF94(arg0, -0x1000, 0));
     ptr = lbl_80367240;
     var = 0;
     flags = lbl_80367110;
@@ -431,7 +431,7 @@ void fn_801AECF8(void *arg0) {
         var = 1;
     }
     if (var == 0 && (mask & 0x300)) {
-        fn_8013FF00(arg0, *(s32 *)((char *)arg0 + 0x48));
+        Ui_BringChildToFront(arg0, *(s32 *)((char *)arg0 + 0x48));
         fn_801475FC(&lbl_8027BD18[0x36E], 0x64);
         fn_8000C188(arg0);
     }
@@ -439,7 +439,7 @@ void fn_801AECF8(void *arg0) {
 
 void fn_801AEDA0(void *arg0) {
     s32 Ui_FindChild(void *, s32, s32);
-    void fn_8013FF00(void *, s32);
+    void Ui_BringChildToFront(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
@@ -449,7 +449,7 @@ void fn_801AEDA0(void *arg0) {
     u32 a;
     u32 b;
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
     flag = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         flag = 1;
@@ -458,7 +458,7 @@ void fn_801AEDA0(void *arg0) {
         a = *(u32 *)((u8 *)gPadInput + 4);
         b = *(u32 *)((u8 *)gPadInput + 8);
         if ((a & (b ^ a) & 0x300) != 0) {
-            fn_8013FF00(arg0, Ui_FindChild(arg0, 1, 0));
+            Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 1, 0));
             Ui_PlaySeCue(lbl_8027BD18 + 0x36E, 0x64);
             Process_ClearFunc(arg0);
         }
@@ -724,7 +724,7 @@ void fn_801AF6BC(void *arg0) {
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     u8 fn_8014D8DC(void *);
     void Ui_PlaySeCue(void *, s32);
     u64 *Item_GetFlagsPtr(void *);
@@ -791,7 +791,7 @@ void fn_801AF6BC(void *arg0) {
                 sp20[1] = y;
                 Ui_SlideWidgetChildMode1(self, obj, sp20, 0);
             }
-            fn_8013FF00(self, list);
+            Ui_BringChildToFront(self, list);
         } else {
             Ui_AddChild(self, *(void **)((u8 *)self + 0x60));
             obj = *(void **)((u8 *)self + 0x60);
@@ -809,7 +809,7 @@ void fn_801AF6BC(void *arg0) {
                 sp18[1] = y;
                 Ui_SlideWidgetChild(self, obj, sp18, 0);
             }
-            fn_8013FF00(self, list);
+            Ui_BringChildToFront(self, list);
         }
         sel = (void *)Ui_ListGetSelected(list);
     }
@@ -944,7 +944,7 @@ void fn_801AF6BC(void *arg0) {
 extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
     /* Slide in the unit-panel list view: list, selection detail (or battle alt), and caption. */
     s32 Ui_ListGetSelected(void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
@@ -1032,7 +1032,7 @@ extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
     ((Obj *)child)->v8();
     *(u8 *)((u8 *)child + 0x48) = 0;
     *(u8 *)((u8 *)child + 0x44) = 0;
-    fn_8013FF00(panel, list);
+    Ui_BringChildToFront(panel, list);
     captionSrc = *(void **)((u8 *)panel + 0x6C);
     list = *(void **)((u8 *)captionSrc + 0x70);
     caption = (u32)Ui_FindChild(panel, -0x1000, 0);
@@ -1054,7 +1054,7 @@ void fn_8013AD70(void *,void *);
 u64 *Item_GetFlagsPtr(void *);
 void *fn_80193950(void *,s16,s16,s32);
 void *fn_801938F8(void *,s16,s16,s32);
-void fn_8013FF00(void *,void *);
+void Ui_BringChildToFront(void *,void *);
 s32 Ui_ListGetSelected(void *);
 u8 fn_8014D8DC(void *);
 void fn_8011D79C(void *);
@@ -1139,7 +1139,7 @@ q=panel;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x24)=8;
 *(u32 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x40)=*(u32 *)item;
 *(s32 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x3c)=1;
-fn_8013FF00(self,list);
+Ui_BringChildToFront(self,list);
 if(*(s16 *)((u8 *)list + 0x4e)!=0x7fff){
 Ui_AddChild(self,*(void * *)((u8 *)self + 0x60));
 ((SetupMenuObj *)(*(void * *)((u8 *)self + 0x60)))->v11(Ui_ListGetSelected(list));
@@ -1709,7 +1709,7 @@ void fn_801B1A7C(void *arg0) {
     void Ui_AddChild(void *, void *);
     f32 fn_8013893C(void *);
     void fn_80140234(void *, void *, s32);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void fn_8011D79C(void *);
     void Ui_SetWidgetText(u32, s32);
     extern f32 lbl_8036B0A8;
@@ -1726,7 +1726,7 @@ void fn_801B1A7C(void *arg0) {
     if (lbl_8036B0A8 != fn_8013893C(var_r31)) {
         fn_80140234(arg0, var_r31, 0);
     }
-    fn_8013FF00(arg0, var_r31);
+    Ui_BringChildToFront(arg0, var_r31);
     fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x14));
     switch (*(s32 *)((u8 *)var_r31 + 0x4C)) {
     case 0:
@@ -1968,7 +1968,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void fn_8011D79C(s32);
     void *fn_80134280(void *);
     void Ui_UpdatePanelWidgets(void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_801402C4(void *, void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -2101,7 +2101,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
             }
             panel40 = *(void **)((u8 *)self + 0x40);
             *(f32 *)((u8 *)panel40 + 0x30) = lbl_8036B0A8;
-            fn_8013FF00(self, panel40);
+            Ui_BringChildToFront(self, panel40);
             Process_Goto(self, 3);
             Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
         }

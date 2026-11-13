@@ -2266,7 +2266,7 @@ extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801B9D94(void *arg0) {
     void *Heap_Alloc(s32);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -2397,7 +2397,7 @@ extern "C" void fn_801B9D94(void *arg0) {
         *(s16 *)((u8 *)obj2 + 0x24) = 8;
         Ui_AddChild(arg0, obj2);
     }
-    fn_8013FF00(arg0, child);
+    Ui_BringChildToFront(arg0, child);
     Ui_PlaySeCue(gUiUnitPanelStrings + 0x156, 0x64);
 }
 #pragma cplusplus reset
@@ -2551,7 +2551,7 @@ extern "C" void fn_801BADB0(void *arg0) {
     void *Heap_Alloc(s32);
     s32 Res_GetEntry(u8);
     void fn_8013FCE0(void *, void *, void *, void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -2761,7 +2761,7 @@ extern "C" void fn_801BADB0(void *arg0) {
         *(s16 *)((u8 *)ctx + 0x24) = 8;
         Ui_AddChild(self, ctx);
     }
-    fn_8013FF00(self, *(void **)((u8 *)self + 0x68));
+    Ui_BringChildToFront(self, *(void **)((u8 *)self + 0x68));
     Ui_PlaySeCue(gUiUnitPanelStrings + 0x156, 0x64);
 }
 #pragma global_optimizer reset
@@ -3649,7 +3649,7 @@ void *Heap_Alloc(u32); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 void Unit_SetHp(void *,s8); s32 Unit_GetMaxHp(void *);
 void *Ui_FindChild(void *,s32,s32); u8 Ui_CanAffordNextGoldCost(void *);
-void Ui_PlaySeCue(void *,s32); void Process_Goto(void *,s32); void fn_8013FF00(void *,void *);
+void Ui_PlaySeCue(void *,s32); void Process_Goto(void *,s32); void Ui_BringChildToFront(void *,void *);
 extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],gUiUnitPanelStrings[],gUiContext[];
 class Pair { public: s16 x,y; Pair(s16 a,s16 b):x(a),y(b) {} };
 void Ui_SlideWidgetChild(void *,void *,const Pair &,s32);
@@ -3730,7 +3730,7 @@ Ui_AddChild(self,c); Ui_SlideWidgetChildMode1(self,c,Pair(0x134,M2C_FIELD(c,s16 
 Ui_AddChild(self,M2C_FIELD(self,void **,0x5C));
 temp=M2C_FIELD(self,void **,0x5C);
 Ui_SlideWidgetChildMode1(self,temp,Pair(0x118,M2C_FIELD(temp,s16 *,0xC)),1);
-fn_8013FF00(self,M2C_FIELD(self,void **,0x5C));
+Ui_BringChildToFront(self,M2C_FIELD(self,void **,0x5C));
 #pragma cplusplus off
 }
 #pragma cplusplus off
@@ -3958,7 +3958,7 @@ extern "C" void fn_801BD28C(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SetWidgetText(void *, void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     extern u8 gUiUnitPanelStrings[];
     struct { s16 x; s16 y; } spC;
     struct { s16 x; s16 y; } sp8;
@@ -3982,7 +3982,7 @@ extern "C" void fn_801BD28C(void *arg0) {
         sp8.y = tmp;
         Ui_SlideWidgetChildMode1(arg0, child, &sp8.x, 0);
     }
-    fn_8013FF00(arg0, *(void **)((u8 *)arg0 + 0x5C));
+    Ui_BringChildToFront(arg0, *(void **)((u8 *)arg0 + 0x5C));
     p = Ui_FindChild(arg0, -0x1000, 0);
     if (p != NULL) {
         Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x23B);
@@ -3997,7 +3997,7 @@ void Ui_InitUnitHirePanel(void *panel) {
     void Ui_SetWidgetText(void *, void *);
     void Ui_AddChild(void *, void *);
     void *fn_801BEDC4(void *, s32, s32, s32);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80293C84[];
@@ -4079,7 +4079,7 @@ void Ui_InitUnitHirePanel(void *panel) {
     M2C_FIELD(tmp, u32 *, 0x34) |= 0x10;
     M2C_FIELD(M2C_FIELD(panel, void **, 0x5C), u32 *, 0x40) = gUiContext[0];
     Ui_AddChild(panel, M2C_FIELD(panel, void **, 0x5C));
-    fn_8013FF00(panel, M2C_FIELD(panel, void **, 0x5C));
+    Ui_BringChildToFront(panel, M2C_FIELD(panel, void **, 0x5C));
 }
 
 #pragma cplusplus on
@@ -4162,7 +4162,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
 /* Attach cached unit-panel children, size them for the open layout, and set the caption text. */
 extern "C" void Ui_LayoutUnitPanel(void *arg0) {
     f32 fn_8013893C(void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_80140234(void *, void *, s32);
@@ -4243,7 +4243,7 @@ extern "C" void Ui_LayoutUnitPanel(void *arg0) {
         size4[1] = savedH;
         Ui_SlideWidgetChildMode1(panel, child, size4, 0);
     }
-    fn_8013FF00(panel, child0);
+    Ui_BringChildToFront(panel, child0);
     caption = (u32)Ui_FindChild(panel, -0x1000, 0);
     if (caption != 0U) {
         Ui_SetWidgetText(caption, (s32)(gUiUnitPanelStrings + 0x277));
@@ -4259,7 +4259,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
     void Ui_AddChild(void *, void *);
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     u8 *Ui_GetColor(s32);
     void Ui_SetPortraitUnit(void *, void *);
@@ -4530,7 +4530,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     *(u32 *)((u8 *)q + 0x34) |= 0x10;
     *(void **)((u8 *)*(void **)((u8 *)self + 0x58) + 0x3C) = Ui_ListGetSelected(*(void **)((u8 *)self + 0x48));
     Ui_AddChild(self, *(void **)((u8 *)self + 0x58));
-    fn_8013FF00(self, *(void **)((u8 *)self + 0x48));
+    Ui_BringChildToFront(self, *(void **)((u8 *)self + 0x48));
 }
 #pragma cplusplus reset
 
@@ -11085,7 +11085,7 @@ void fn_801CE744(s32 arg0) {
     void *Ui_FindChild(s32, s32, s32);
     void *fn_8013F6B8(void *, s32 *, s32 *);
     void fn_8013F748(void *, s32 *, s32 *);
-    void fn_8013FF00(s32, void *);
+    void Ui_BringChildToFront(s32, void *);
     void *base;
     void *obj;
     s32 tmp;
@@ -11098,14 +11098,14 @@ void fn_801CE744(s32 arg0) {
     obj = fn_8013F6B8(base, &tmp, &tmp);
     *(s16 *)((u8 *)base + 0x4C) = *(s16 *)obj;
     *(s16 *)((u8 *)base + 0x4E) = *(s16 *)((u8 *)obj + 2);
-    fn_8013FF00(arg0, Ui_FindChild(arg0, 2, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 2, 0));
 }
 
 #pragma cplusplus on
 extern "C" void fn_801CE7F4(void *arg0) {
 void *Ui_FindChild(void *,s32,s32);
 s16 fn_801CF614(void *);
-void fn_8013FF00(void *,void *);
+void Ui_BringChildToFront(void *,void *);
 void Ui_AddChild(void *,void *);
 void fn_80140210(void *,void *,s32);
 void fn_80140234(void *,void *,s32);
@@ -11160,7 +11160,7 @@ if((s16)saved!=*(s16 *)((u8 *)a+0x3c)) {
    idx=fn_801CF614(a);
    addr=(s32)arg0+(idx<<2);
    fn_80140234(arg0,*(void **)(addr+0x48),1);
-   fn_8013FF00(arg0,a);
+   Ui_BringChildToFront(arg0,a);
   }
  }
 }
@@ -11202,10 +11202,10 @@ if(gate==0) {
 #pragma cplusplus reset
 
 void fn_801CEC28(void *arg0) {
-    void fn_8013FF00(void *, void *);
+    void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
 
-    fn_8013FF00(arg0, Ui_FindChild(arg0, 0, 0));
+    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0, 0));
 }
 
 #pragma cplusplus on
@@ -11214,7 +11214,7 @@ extern "C" void fn_801CEC68(void *arg0) {
     void *fn_801CF62C(void *,s16,s16,s16);
     void *fn_801CD0D0(void *,s16,s16,s16,s32);
     void Ui_AddChild(void *,void *);
-    void fn_8013FF00(void *,void *);
+    void Ui_BringChildToFront(void *,void *);
     void fn_80140234(void *,void *,s32);
     void fn_801CDE2C(void *,s32);
     extern u8 gUiContext[];
@@ -11331,7 +11331,7 @@ extern "C" void fn_801CEC68(void *arg0) {
     *(u32 *)(*(u8 **)(self+0x48)+0x34)|=0x10;
     *(s16 *)(*(u8 **)(self+0x48)+0x24)=4;
     Ui_AddChild(self,*(void **)(self+0x48));
-    fn_8013FF00(self,*(void **)(self+0x40));
+    Ui_BringChildToFront(self,*(void **)(self+0x40));
     fn_80140234(self,p,0);
     fn_80140234(self,*(void **)(self+0x40),0);
     fn_80140234(self,*(void **)(self+0x44),0);
