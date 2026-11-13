@@ -14703,7 +14703,6 @@ void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
     void strcpy(void *, u8 *);
     void strcat(void *, void *);
     u32 stack[12];
-    void *tmp;
     s16 idx;
 
     stack[0] = lbl_8027E228[0];
@@ -14726,10 +14725,9 @@ void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
     *(s16 *)((u8 *)arg0 + 2) = 0x64;
     strcpy((u8 *)arg0 + 0x18, gUiSeCues + 0x5bb);
     idx = *(s16 *)((u8 *)arg0 + 8);
-    tmp = Msg_Expand(stack[idx]);
-    strcat((u8 *)arg0 + 0x18, tmp);
+    strcat((u8 *)arg0 + 0x18, Msg_Expand(stack[idx]));
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 void fn_801D8D58(void *arg0) {
     M2C_FIELD(arg0, s16 *, 2) = 0;
     M2C_FIELD(arg0, s16 *, 0) = 0;
