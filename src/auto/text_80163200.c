@@ -15770,7 +15770,7 @@ s32 fn_80181DD8(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_80181DF0(s32 *arg0, void **arg1) {
     void *fn_80016B7C(void *);
-    s32 fn_80036E48(void *, void *);
+    s32 Unit_FindSupportPartnerIndex(void *, void *);
     s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
     void Heap_Free(void *);
@@ -15834,8 +15834,8 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     } else if (unitNode == 0) {
         swap = 1;
     } else {
-        sNode2 = fn_80036E48(*arg1, idNode2);
-        sNode = fn_80036E48(*arg1, idNode);
+        sNode2 = Unit_FindSupportPartnerIndex(*arg1, idNode2);
+        sNode = Unit_FindSupportPartnerIndex(*arg1, idNode);
         sNode = (s8)sNode;
         sNode2 = (s8)sNode2;
         c0 = (u8)Unit_GetSupportRank(*arg1, sNode);
@@ -15918,7 +15918,7 @@ split:
 #pragma use_lmw_stmw on
 void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
     void *fn_80016B7C(void *);
-    s32 fn_80036E48(void *, void *);
+    s32 Unit_FindSupportPartnerIndex(void *, void *);
     s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
     void fn_80182514(s32 *, void **, s32 *);
@@ -15975,8 +15975,8 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
         } else if (unit1 == NULL) {
             take = 1;
         } else {
-            s2 = fn_80036E48(*arg2, id2);
-            s1 = fn_80036E48(*arg2, id1);
+            s2 = Unit_FindSupportPartnerIndex(*arg2, id2);
+            s1 = Unit_FindSupportPartnerIndex(*arg2, id1);
             ss1 = (s8)s1;
             c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
             ss2 = (s8)s2;
@@ -16016,8 +16016,8 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
                 } else if (unit1 == NULL) {
                     take = 1;
                 } else {
-                    s2 = fn_80036E48(*arg2, id2);
-                    s1 = fn_80036E48(*arg2, id1);
+                    s2 = Unit_FindSupportPartnerIndex(*arg2, id2);
+                    s1 = Unit_FindSupportPartnerIndex(*arg2, id1);
                     ss1 = (s8)s1;
                     c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
                     ss2 = (s8)s2;

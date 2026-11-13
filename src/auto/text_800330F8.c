@@ -1609,7 +1609,7 @@ check:
     return -1;
 }
 #pragma global_optimizer on
-s32 fn_80036E48(void *arg0, u32 arg1)
+s32 Unit_FindSupportPartnerIndex(void *arg0, u32 arg1)
 {
     s32 offset;
     s32 index;

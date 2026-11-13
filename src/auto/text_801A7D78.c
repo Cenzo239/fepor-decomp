@@ -401,7 +401,7 @@ void fn_801A8B48(s32 arg0) {
 
 void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
     void Unit_AddAffinityBonuses(void *, s32, void *);
-    void fn_80036E48(void *, s32);
+    void Unit_FindSupportPartnerIndex(void *, s32);
     s32 Unit_GetSupportRank(void *, s32);
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
@@ -430,7 +430,7 @@ void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
         if ((u8)Unit_GetDistance(arg0, unit) > 3) {
             continue;
         }
-        fn_80036E48(unit, *(s32 *)((u8 *)arg0 + 0x188));
+        Unit_FindSupportPartnerIndex(unit, *(s32 *)((u8 *)arg0 + 0x188));
         val = Unit_GetSupportRank(arg0, i);
         Unit_AddAffinityBonuses(arg0, val, arg1);
         Unit_AddAffinityBonuses(unit, val, arg1);
@@ -443,7 +443,7 @@ void fn_801A8DA4(void *arg0) {
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     u8 Unit_GetDistance(void *, void *);
-    M2C_UNK fn_80036E48(void *, s32);
+    M2C_UNK Unit_FindSupportPartnerIndex(void *, s32);
     M2C_UNK Unit_AddAffinityBonuses(void *, s32, M2C_UNK *);
     M2C_UNK AffinityBonuses_Halve(M2C_UNK *);
     
@@ -469,7 +469,7 @@ loop_6:
     if (var_r28 < (s32) Unit_CountSupportPartners(arg0)) {
         temp_r3 = Unit_GetSupportPartner(arg0, var_r28);
         if ((temp_r3 != NULL) && ((u32) M2C_FIELD(arg0, u32 *, 0x190) == (u32) M2C_FIELD(temp_r3, u32 *, 0x190)) && (Unit_GetDistance(arg0, temp_r3) <= 3U)) {
-            fn_80036E48(temp_r3, M2C_FIELD(arg0, s32 *, 0x188));
+            Unit_FindSupportPartnerIndex(temp_r3, M2C_FIELD(arg0, s32 *, 0x188));
             Unit_GetSupportRank(arg0, var_r28);
             Unit_AddAffinityBonuses(arg0, 0, &sp8);
             Unit_AddAffinityBonuses(temp_r3, 0, &sp8);
