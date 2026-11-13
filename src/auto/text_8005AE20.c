@@ -5248,7 +5248,7 @@ void Camera_ApplyOrtho(void *arg0)
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
     extern void *gCamera;
-    extern u8 lbl_803672FC;
+    extern u8 gCameraProjMode;
     extern f32 lbl_80369228;
     extern f32 lbl_80369250;
     extern f32 lbl_8036924C;
@@ -5268,7 +5268,7 @@ void Camera_ApplyOrtho(void *arg0)
     }
     bit = *(u16 *)p & 1;
     negbit = -bit;
-    lbl_803672FC = negbit + 2;
+    gCameraProjMode = negbit + 2;
     z = lbl_80369228;
     C_MTXOrtho(p + 0x24, negbit, z, lbl_80369250, z, lbl_8036924C, z, lbl_80369254);
     *(u16 *)p &= 0xFFFE;
