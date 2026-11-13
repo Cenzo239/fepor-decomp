@@ -14592,12 +14592,12 @@ void fn_800E9A94(void) {
     s32 fn_8021CDC4(s32, void *, void *);
     void fn_800EBF58(void);
     extern u16 gCardWork[];
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
 
     fn_800EBF58();
     *(s32 *)((u8 *)gCardWork + 0xA004) = fn_8021CDC4(
         *(s32 *)((u8 *)gCardWork + 0xA000),
-        lbl_802725D8 + 0x70,
+        gCardStrings + 0x70,
         (u8 *)gCardWork + 0x10000
     );
 }
@@ -14629,13 +14629,13 @@ void fn_800E9B10(void) {
     s32 fn_8021BF10(s32, void *, void *);
     void fn_8021C02C(void *);
     extern struct CardWork gCardWork;
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
     u8 *hi;
     void *temp;
 
     hi = (u8 *)&gCardWork + 0x10000;
     temp = hi - 0x5FE4;
-    gCardWork.result = fn_8021BF10(*(s32 *)(hi - 0x6000), lbl_802725D8 + 0x70, temp);
+    gCardWork.result = fn_8021BF10(*(s32 *)(hi - 0x6000), gCardStrings + 0x70, temp);
     if (gCardWork.result != -4) {
         fn_8021C02C(temp);
     }
@@ -14678,7 +14678,7 @@ void fn_800E9CE4(s32 arg0) {
     s32 fn_8021CAB4(void *, s32, s32, s32, void *);
     extern void fn_800EB80C;
     extern u8 gCardWork[];
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
 
     s32 sp8;
     u32 flag;
@@ -14712,7 +14712,7 @@ void fn_800E9CE4(s32 arg0) {
         if (*(u32 *)(buf + 0x1C00) != *(u32 *)(buf + 0x1C04)) {
             ok = 0;
         } else {
-            table = fn_800C4638(0x400, lbl_802725D8 + 0x97, 0);
+            table = fn_800C4638(0x400, gCardStrings + 0x97, 0);
             {
                 u32 *dp = table;
                 for (i = 0; i < 0x100; i++) {
@@ -14746,7 +14746,7 @@ void fn_800E9CE4(s32 arg0) {
             ok = (*(u32 *)(buf + 0x1C00) == (crc ^ ~0U));
         }
         if (ok == 0) {
-            fn_8006EEFC(&sp8, lbl_802725D8 + 0x98);
+            fn_8006EEFC(&sp8, gCardStrings + 0x98);
             {
                 s32 *row;
                 s32 src;
@@ -14770,7 +14770,7 @@ void fn_800E9CE4(s32 arg0) {
                 fn_800062CC(buf + 0x1A00, *(s32 *)(src + 8), 0x200);
             }
             fn_8006EDA0(&sp8);
-            table = fn_800C4638(0x400, lbl_802725D8 + 0x97, 0);
+            table = fn_800C4638(0x400, gCardStrings + 0x97, 0);
             {
                 u32 *dp = table;
                 for (i = 0; i < 0x100; i++) {
@@ -14896,7 +14896,7 @@ void fn_800EA808(void) {
     void fn_8021B20C(s32);
     void fn_800056CC(void *, ...);
     extern struct CardWork gCardWork;
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
     u32 tickRate;
     u32 conv;
 
@@ -14913,7 +14913,7 @@ void fn_800EA808(void) {
     gCardWork.tick = OSGetTick() - gCardWork.tick;
     tickRate = *(volatile u32 *)0x800000F8;
     conv = (tickRate >> 2) / 1000U;
-    fn_800056CC(lbl_802725D8 + 0xC5, gCardWork.tick / conv);
+    fn_800056CC(gCardStrings + 0xC5, gCardWork.tick / conv);
 }
 
 #pragma use_lmw_stmw on
@@ -14929,7 +14929,7 @@ void fn_800EA8F4(s32 arg0) {
     s32 fn_8021CAB4(void *, s32, s32, s32, void *);
     extern void fn_800EB80C;
     extern u8 gCardWork[];
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
 
     s32 sp8;
     u32 flag;
@@ -14959,7 +14959,7 @@ void fn_800EA8F4(s32 arg0) {
     if ((u8)flag == 0) {
         base2 = &gCardWork[0x10000];
         buf = *(s32 *)(base2 - 0x5FCC);
-        fn_8006EEFC(&sp8, &lbl_802725D8[0x98]);
+        fn_8006EEFC(&sp8, &gCardStrings[0x98]);
 
         {
             s32 *row;
@@ -14985,7 +14985,7 @@ void fn_800EA8F4(s32 arg0) {
         }
 
         fn_8006EDA0(&sp8);
-        table = fn_800C4638(0x400, &lbl_802725D8[0x97], 0);
+        table = fn_800C4638(0x400, &gCardStrings[0x97], 0);
         {
             u32 *dp = table;
             for (i = 0; i < 0x100; i++) {
@@ -15089,7 +15089,7 @@ void fn_800EB028(s32 arg0) {
     void fn_800EB80C(void);
     s32 fn_8021C1B8(s32, char *, u32, void *, void *);
     extern struct CardWork gCardWork;
-    extern char lbl_802725D8[];
+    extern char gCardStrings[];
     u8 skip;
 
     if (gCardWork.result < 0) {
@@ -15101,7 +15101,7 @@ void fn_800EB028(s32 arg0) {
     }
     if (skip == 0) {
         gCardWork.busy = 1;
-        gCardWork.result = fn_8021C1B8(gCardWork.chan, lbl_802725D8 + 0x70, 0x26000,
+        gCardWork.result = fn_8021C1B8(gCardWork.chan, gCardStrings + 0x70, 0x26000,
                                           gCardWork.fileInfo, fn_800EB80C);
         if (gCardWork.result < 0) {
             Process_Goto(arg0, 0x63);
@@ -15254,8 +15254,8 @@ s32 fn_800EB428(s32 arg0) {
 }
 
 s32 fn_800EB520(char *arg0) {
-    extern char lbl_802725D8[];
-    return Str_Cmp(arg0, lbl_802725D8 + 0xE0) != 0;
+    extern char gCardStrings[];
+    return Str_Cmp(arg0, gCardStrings + 0xE0) != 0;
 }
 
 void fn_800EB558(void) {
@@ -15271,7 +15271,7 @@ void fn_800EB568(void) {
 void Card_PrintResult(void) {
     void fn_800056CC(void *, ...);
     extern u8 gCardWork[];
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
     void *var_r4;
     s32 val;
 
@@ -15280,59 +15280,59 @@ void Card_PrintResult(void) {
 
     switch (val) {
     case 1:
-        var_r4 = lbl_802725D8 + 0xE8;
+        var_r4 = gCardStrings + 0xE8;
         break;
     case 0:
-        var_r4 = lbl_802725D8 + 0xF1;
+        var_r4 = gCardStrings + 0xF1;
         break;
     case -1:
-        var_r4 = lbl_802725D8 + 0xFE;
+        var_r4 = gCardStrings + 0xFE;
         break;
     case -2:
-        var_r4 = lbl_802725D8 + 0x10C;
+        var_r4 = gCardStrings + 0x10C;
         break;
     case -3:
-        var_r4 = lbl_802725D8 + 0x129;
+        var_r4 = gCardStrings + 0x129;
         break;
     case -4:
-        var_r4 = lbl_802725D8 + 0x145;
+        var_r4 = gCardStrings + 0x145;
         break;
     case -5:
-        var_r4 = lbl_802725D8 + 0x163;
+        var_r4 = gCardStrings + 0x163;
         break;
     case -6:
-        var_r4 = lbl_802725D8 + 0x17A;
+        var_r4 = gCardStrings + 0x17A;
         break;
     case -7:
-        var_r4 = lbl_802725D8 + 0x198;
+        var_r4 = gCardStrings + 0x198;
         break;
     case -8:
-        var_r4 = lbl_802725D8 + 0x1A9;
+        var_r4 = gCardStrings + 0x1A9;
         break;
     case -9:
-        var_r4 = lbl_802725D8 + 0x1C4;
+        var_r4 = gCardStrings + 0x1C4;
         break;
     case -10:
-        var_r4 = lbl_802725D8 + 0x1D0;
+        var_r4 = gCardStrings + 0x1D0;
         break;
     case -11:
-        var_r4 = lbl_802725D8 + 0x1DA;
+        var_r4 = gCardStrings + 0x1DA;
         break;
     case -12:
-        var_r4 = lbl_802725D8 + 0x1E7;
+        var_r4 = gCardStrings + 0x1E7;
         break;
     case -13:
-        var_r4 = lbl_802725D8 + 0x204;
+        var_r4 = gCardStrings + 0x204;
         break;
     case -14:
-        var_r4 = lbl_802725D8 + 0x232;
+        var_r4 = gCardStrings + 0x232;
         break;
     case -128:
-        var_r4 = lbl_802725D8 + 0x24E;
+        var_r4 = gCardStrings + 0x24E;
         break;
     }
 
-    fn_800056CC(lbl_802725D8 + 0x26B, var_r4);
+    fn_800056CC(gCardStrings + 0x26B, var_r4);
 }
 
 s32 fn_800EB74C(void) {
@@ -15405,7 +15405,7 @@ u8 fn_800EBF58(void) {
     void fn_8021B20C(s32);
     void fn_800056CC(void *, u32, u8, u32);
     extern u8 gCardWork[];
-    extern u8 lbl_802725D8[];
+    extern u8 gCardStrings[];
     s32 spC;
     s32 sp8;
     u32 start;
@@ -15458,7 +15458,7 @@ END:
     tickRate = *(volatile u32 *)0x800000F8;
     conv = (u32)(((u64)0x10624dd3ULL * (tickRate >> 2)) >> 32) >> 6;
     divres = elapsed / conv;
-    fn_800056CC(lbl_802725D8 + 0x293, divres, result, elapsed);
+    fn_800056CC(gCardStrings + 0x293, divres, result, elapsed);
     return result;
 }
 
