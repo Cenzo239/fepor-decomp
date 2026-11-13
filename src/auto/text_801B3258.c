@@ -748,7 +748,7 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
 void Script_RegisterWinCondCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 gWinCondCmdNames[];
-    void fn_801B7818(void);
+    void ScriptCmd_AchieveSet(void);
     void fn_801B7638(void);
     void fn_801B75F4(void);
     void fn_801B7564(void);
@@ -760,7 +760,7 @@ void Script_RegisterWinCondCommands(void) {
     void fn_801B70C8(void);
     void fn_801B7094(void);
 
-    Script_RegisterCommand(gWinCondCmdNames + 0xCE, fn_801B7818, 2);
+    Script_RegisterCommand(gWinCondCmdNames + 0xCE, ScriptCmd_AchieveSet, 2);
     Script_RegisterCommand(gWinCondCmdNames + 0xD9, fn_801B7638, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0xE9, fn_801B75F4, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0xF8, fn_801B7564, 1);
@@ -1117,7 +1117,7 @@ void fn_801B77F0(s32 arg0, s32 arg1) {
 }
 
 #pragma opt_strength_reduction off
-s32 fn_801B7818(s32 arg0, s32 arg1) {
+s32 ScriptCmd_AchieveSet(s32 arg0, s32 arg1) {
     void strcpy(char *, char *);
     extern u8 gBattleState[];
     extern s32 lbl_80368250;
