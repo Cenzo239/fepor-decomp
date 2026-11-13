@@ -272,7 +272,7 @@ void fn_800548E8(void *arg0)
     extern f32 lbl_803690CC;
     extern f32 lbl_8036908C;
     extern s32 lbl_803682A4;
-    extern char lbl_8026AC0C[];
+    extern char GActor_str[];
     struct {
         s32 sp8;
         s32 spC;
@@ -336,7 +336,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp6C[2] = *(u32 *)&s.sp24[2];
             s.sp14 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
+            idx = GActor_FindNode(node, GActor_str + 0x16A);
             if (idx >= 0) {
                 fn_80060F70(node, idx, s.sp6C);
                 scale = fn_80060BA4(node, idx);
@@ -360,7 +360,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp60[2] = *(u32 *)&s.sp18[2];
             s.sp10 = fn_800558FC(*(void **)((u8 *)unit + 0x2C));
             scale = lbl_8036908C;
-            idx = GActor_FindNode(node, lbl_8026AC0C + 0x16A);
+            idx = GActor_FindNode(node, GActor_str + 0x16A);
             if (idx >= 0) {
                 fn_80060F70(node, idx, s.sp60);
                 scale = fn_80060BA4(node, idx);

@@ -177,13 +177,13 @@ void fn_80055B64(s32 arg0) {
     u8 fn_80145308(void);
     void fn_800056CC(const char *, ...);
     extern u8 lbl_80285990[];
-    extern u8 lbl_8026AC0C[];
+    extern u8 GActor_str[];
     extern u8 lbl_80285968[];
     void *temp;
 
     if (arg0 == 0 && fn_8000C0C0(lbl_80285990) == 0U && fn_80145308() == 0) {
         fn_801451BC();
-        fn_800056CC((const char *)(lbl_8026AC0C + 0x12E));
+        fn_800056CC((const char *)(GActor_str + 0x12E));
         return;
     }
     temp = fn_8000CAF0(lbl_80285968, 4);

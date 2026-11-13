@@ -12585,7 +12585,7 @@ void fn_800535B0(void *arg0) {
     s32 fn_8005F8E4(void *, u16 *);
     s8 fn_80146BE4(void *);
     void fn_8014746C(s8, s32);
-    extern u8 lbl_8026AC0C[];
+    extern u8 GActor_str[];
 
     u16 buf[0x40];
     u8 *strBase;
@@ -12604,7 +12604,7 @@ void fn_800535B0(void *arg0) {
         count = fn_8005F8E4(list, buf);
         p = buf;
         i = 0;
-        strBase = lbl_8026AC0C;
+        strBase = GActor_str;
         goto check;
         do {
             unit = fn_8004AF30(*p);
@@ -12708,13 +12708,13 @@ void fn_8005376C(void) {
     void *temp_r3;
 
     extern u32 lbl_80285990[];
-    extern u8 lbl_8026AC0C[];
+    extern u8 GActor_str[];
     extern u8 lbl_80285968[];
 
     fn_8000BF00(lbl_80285990);
     if ((fn_8000C0C0(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
         fn_801451BC();
-        fn_800056CC((const char *)((u8 *) &lbl_8026AC0C + 0x12E));
+        fn_800056CC((const char *)((u8 *) &GActor_str + 0x12E));
         return;
     }
     temp_r3 = fn_8000CAF0(lbl_80285968, 4);
@@ -12757,14 +12757,14 @@ void fn_80053E9C(void *arg0) {
     void sprintf(void *, void *, ...);
     void fn_8005C7C8(void *);
     void fn_800C4588(void *);
-    extern u8 lbl_8026AC0C[];
+    extern u8 GActor_str[];
     char sp8[0x40];
     void *temp;
 
     temp = *(void **)((u8 *)arg0 + 0x5C);
     if (temp != NULL) {
         fn_800616A0(temp);
-        sprintf(sp8, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129,
+        sprintf(sp8, GActor_str + 0x120, GActor_str + 0x129,
                     **(void ***)((u8 *)arg0 + 0x2C));
         fn_8005C7C8(sp8);
     }
@@ -12990,7 +12990,7 @@ void MapObj_InitGraphics(void *arg0) {
  void *fn_80060664(void *);
  u32 fn_800067B4(void);
  void fn_8005FEE8(void *, f32);
- extern u8 lbl_8026AC0C[];
+ extern u8 GActor_str[];
  extern u8 lbl_80285990[];
  extern u32 lbl_80369080;
  extern const f32 lbl_80369084, lbl_80369088, lbl_8036908C;
@@ -13006,7 +13006,7 @@ void MapObj_InitGraphics(void *arg0) {
  u8 mode;
  f32 zero;
  s32 flag;
- sprintf(buf,lbl_8026AC0C+0x120,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0));
+ sprintf(buf,GActor_str+0x120,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0));
  flag=0;
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x100) flag=8;
  fn_8005C82C(buf,flag);
@@ -13016,10 +13016,10 @@ void MapObj_InitGraphics(void *arg0) {
  if (!(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&2)) M2C_FIELD(node,u32 *,0)|=0x40000;
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&4) M2C_FIELD(node,u32 *,0)|=0x180;
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x80) M2C_FIELD(node,u32 *,0)|=0x10000000;
- sprintf(buf,lbl_8026AC0C+330,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F554(node,buf);
-sprintf(buf,lbl_8026AC0C+338,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F4F4(node,buf);
-sprintf(buf,lbl_8026AC0C+345,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
-sprintf(buf,lbl_8026AC0C+353,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) fn_8005F494(node,buf);
+ sprintf(buf,GActor_str+330,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F554(node,buf);
+sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F4F4(node,buf);
+sprintf(buf,GActor_str+345,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
+sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) fn_8005F494(node,buf);
  GActor_Finalize(node);
  base=M2C_FIELD(arg0,void * *,0x30);
  mode=M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,7);
