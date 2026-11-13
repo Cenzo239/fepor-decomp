@@ -11224,7 +11224,8 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
 }
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
-extern "C" void Ui_HandleRowCursorInput(void *unused, void *arg1) {
+/* Move a horizontal UI row cursor with left/right, refresh unit-info text, and focus/unfocus slots. */
+extern "C" void Ui_HandleRowCursorInput(void *unused, void *menu) {
     void *fn_8000B908(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, void *, f32, f32);
@@ -11251,69 +11252,69 @@ extern "C" void Ui_HandleRowCursorInput(void *unused, void *arg1) {
         virtual void v14(void *, void *) = 0;
         virtual void v15(void *, void *) = 0;
     };
-    s32 gate;
+    s32 blocked;
     s32 flags;
-    s32 btn;
-    s32 cur;
+    s32 pressed;
+    s32 buttons;
     void *pad;
-    f32 f31;
-    f32 f30;
-    void *tmp;
-    void *res;
+    f32 infoX;
+    f32 infoY;
+    void *slot;
+    void *infoObj;
     u8 *p;
 
     flags = gUiInputFlags;
-    gate = 0;
+    blocked = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+        blocked = 1;
     }
-    if ((u8)gate == 0) {
-        u8 t62;
-        s32 prev;
+    if ((u8)blocked == 0) {
+        u8 prevCursor;
+        s32 prevButtons;
         pad = gPadInput;
-        t62 = *(u8 *)((u8 *)arg1 + 0x62);
-        cur = *(s32 *)((u8 *)pad + 4);
-        prev = *(s32 *)((u8 *)pad + 8);
-        *(u8 *)((u8 *)arg1 + 0x63) = t62;
-        btn = cur & (prev ^ cur);
-        if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != 0) {
-            if ((btn & 0x01000001) != 0) {
-                *(u8 *)((u8 *)arg1 + 0x62) = *(u8 *)((u8 *)arg1 + 0x62) - 1;
+        prevCursor = *(u8 *)((u8 *)menu + 0x62);
+        buttons = *(s32 *)((u8 *)pad + 4);
+        prevButtons = *(s32 *)((u8 *)pad + 8);
+        *(u8 *)((u8 *)menu + 0x63) = prevCursor;
+        pressed = buttons & (prevButtons ^ buttons);
+        if ((s8)*(u8 *)((u8 *)menu + 0x62) != 0) {
+            if ((pressed & 0x01000001) != 0) {
+                *(u8 *)((u8 *)menu + 0x62) = *(u8 *)((u8 *)menu + 0x62) - 1;
             }
         }
-        if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != ((s8)*(u8 *)((u8 *)arg1 + 0x60) - 1)) {
-            if ((btn & 0x02000002) != 0) {
-                *(u8 *)((u8 *)arg1 + 0x62) = *(u8 *)((u8 *)arg1 + 0x62) + 1;
+        if ((s8)*(u8 *)((u8 *)menu + 0x62) != ((s8)*(u8 *)((u8 *)menu + 0x60) - 1)) {
+            if ((pressed & 0x02000002) != 0) {
+                *(u8 *)((u8 *)menu + 0x62) = *(u8 *)((u8 *)menu + 0x62) + 1;
             }
         }
-        if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
+        if ((s8)*(u8 *)((u8 *)menu + 0x62) != (s8)*(u8 *)((u8 *)menu + 0x63)) {
             if ((u8)Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-                p = (u8 *)arg1;
-                p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
-                f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)tmp + 0x30));
-                p = (u8 *)arg1;
-                p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
-                f30 = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)tmp + 0x32));
-                p = (u8 *)arg1;
-                p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
-                res = (*(Inner **)((u8 *)tmp + 0x34))->v2();
-                if (res != NULL) {
-                    Ui_ShowUnitInfoText(gUnitInfoPopup, res, f31, f30);
+                p = (u8 *)menu;
+                p += (s8)*(u8 *)((u8 *)menu + 0x62);
+                slot = fn_8000B908(p[0x40]);
+                infoX = (f32)(*(s16 *)((u8 *)menu + 0x30) + *(s16 *)((u8 *)slot + 0x30));
+                p = (u8 *)menu;
+                p += (s8)*(u8 *)((u8 *)menu + 0x62);
+                slot = fn_8000B908(p[0x40]);
+                infoY = (f32)(*(s16 *)((u8 *)menu + 0x32) + *(s16 *)((u8 *)slot + 0x32));
+                p = (u8 *)menu;
+                p += (s8)*(u8 *)((u8 *)menu + 0x62);
+                slot = fn_8000B908(p[0x40]);
+                infoObj = (*(Inner **)((u8 *)slot + 0x34))->v2();
+                if (infoObj != NULL) {
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, infoObj, infoX, infoY);
                 }
             }
         }
-        if (*(s8 *)((u8 *)arg1 + 0x62) != *(s8 *)((u8 *)arg1 + 0x63)) {
-            p = (u8 *)arg1;
-            p += *(s8 *)((u8 *)arg1 + 0x63);
-            tmp = fn_8000B908(p[0x40]);
-            (*(Inner **)((u8 *)tmp + 0x34))->v15(arg1, tmp);
-            p = (u8 *)arg1;
-            p += *(s8 *)((u8 *)arg1 + 0x62);
-            tmp = fn_8000B908(p[0x40]);
-            (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
+        if (*(s8 *)((u8 *)menu + 0x62) != *(s8 *)((u8 *)menu + 0x63)) {
+            p = (u8 *)menu;
+            p += *(s8 *)((u8 *)menu + 0x63);
+            slot = fn_8000B908(p[0x40]);
+            (*(Inner **)((u8 *)slot + 0x34))->v15(menu, slot);
+            p = (u8 *)menu;
+            p += *(s8 *)((u8 *)menu + 0x62);
+            slot = fn_8000B908(p[0x40]);
+            (*(Inner **)((u8 *)slot + 0x34))->v14(menu, slot);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x64e, 0x64);
         }
     }
