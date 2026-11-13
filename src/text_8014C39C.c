@@ -87,7 +87,7 @@ extern u8 lbl_8032BB58[];
 #include "global.h"
 extern u8 gBattleState[];
 
-void fn_8014C39C(void *arg0, void *arg1) {
+void BattleState_Write(void *arg0, void *arg1) {
     void fn_8017A430(void *, s32, void *);
     void fn_8017A5EC(void *, u8);
     void fn_8017A5C4(void *, u16);

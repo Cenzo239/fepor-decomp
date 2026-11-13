@@ -16871,7 +16871,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     u32 Crc32_Calc(void *, void *, s32);
     void Crc32_InitTable(void);
     void fn_8010FBA8(void *, void *);
-    void fn_8014C39C(void *, void *);
+    void BattleState_Write(void *, void *);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
     extern u8 lbl_8027E980[];
@@ -16979,7 +16979,7 @@ loop:
     w.cur = p;
     w.size = 0x100000;
     fn_8017A38C(&w, lbl_8027E980 + 0x14F);
-    fn_8014C39C(gBattleState, &w);
+    BattleState_Write(gBattleState, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x154);
     fn_80048C5C(&w);
     fn_8017A38C(&w, lbl_8027E980 + 0x159);
@@ -17300,7 +17300,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_800C4588(void *);
     void Card_RequestWrite(void *, s32, s32, s32, void *);
     void fn_8010FBA8(void *, void *);
-    void fn_8014C39C(void *, void *);
+    void BattleState_Write(void *, void *);
     void fn_8014D698(void *, u8, u8, u8, u8);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
@@ -17619,7 +17619,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     w.cur = p;
     w.size = 0x100000;
     fn_8017A38C(&w, lbl_8027E980 + 0x14F);
-    fn_8014C39C(gBattleState, &w);
+    BattleState_Write(gBattleState, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x154);
     fn_80048C5C(&w);
     fn_8017A38C(&w, lbl_8027E980 + 0x159);
@@ -17660,7 +17660,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
     void fn_8010FBA8(void *, void *);
-    void fn_8014C39C(void *, void *);
+    void BattleState_Write(void *, void *);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
     extern u8 lbl_8027E980[];
@@ -17768,7 +17768,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     w.cur = p;
     w.size = 0x100000;
     fn_8017A38C(&w, lbl_8027E980 + 0x14F);
-    fn_8014C39C(gBattleState, &w);
+    BattleState_Write(gBattleState, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x154);
     fn_80048C5C(&w);
     fn_8017A38C(&w, lbl_8027E980 + 0x159);
