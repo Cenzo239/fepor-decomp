@@ -22046,7 +22046,7 @@ void fn_800FF0D4(s32 *arg0, s32 *arg1, u8 (*arg2)(s32, s32)) {
     }
 }
 
-void fn_800FF178(void) {
+void Ai_SelectBestHeldWeapon(void) {
     extern u8 gUiContext[];
     extern u8 gAiState[];
     void **fn_80037BBC(void *, s32);
