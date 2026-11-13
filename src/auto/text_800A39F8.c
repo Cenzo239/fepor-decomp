@@ -1648,7 +1648,7 @@ void fn_800A6D78(void *arg0) {
     }
 }
 
-void fn_800A6E20(void *arg0) {
+void MapUi_TrackCursorUnit(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
