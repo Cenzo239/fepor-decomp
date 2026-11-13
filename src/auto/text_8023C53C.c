@@ -9491,72 +9491,73 @@ s32 fn_80257D7C(u8 *arg0) {
     return 0;
 }
 
-s32 Sound_TickAdsr(u8 *arg0, s16 *arg1, s16 *arg2) {
+s32 Sound_TickAdsr(u8 *env, s16 *outVol, s16 *outDelta) {
+    /* Advance one ADSR tick; write current volume and per-tick delta. */
     extern u16 gAdsrVolCurve[];
     s32 Sound_SetupAdsrPhase(u8 *);
-    s32 ret;
-    s32 old;
+    s32 done;
+    s32 oldVol;
     s32 delta;
-    s32 x;
-    s32 y;
-    s32 ctr;
-    u8 mode;
+    s32 idx;
+    s32 clipped;
+    s32 ticks;
+    u8 phase;
 
-    ret = 0;
-    switch (arg0[0]) {
+    done = 0;
+    switch (env[0]) {
     case 0:
-        if (arg0[1] != 3) {
-            old = *(s32 *)(arg0 + 8);
-            *(s32 *)(arg0 + 8) = old + *(s32 *)(arg0 + 0x10);
-            *arg1 = (s16)(old >> 16);
-            delta = *(s32 *)(arg0 + 0x10);
+        if (env[1] != 3) {
+            oldVol = *(s32 *)(env + 8);
+            *(s32 *)(env + 8) = oldVol + *(s32 *)(env + 0x10);
+            *outVol = (s16)(oldVol >> 16);
+            delta = *(s32 *)(env + 0x10);
             if (delta >= 0) {
-                *arg2 = (s16)(delta >> 21);
+                *outDelta = (s16)(delta >> 21);
             } else {
-                *arg2 = (s16) -(-delta >> 21);
+                *outDelta = (s16) -(-delta >> 21);
             }
-            ctr = *(s32 *)(arg0 + 4) - 1;
-            *(s32 *)(arg0 + 4) = ctr;
-            if (ctr == 0) {
-                ret = Sound_SetupAdsrPhase(arg0);
+            ticks = *(s32 *)(env + 4) - 1;
+            *(s32 *)(env + 4) = ticks;
+            if (ticks == 0) {
+                done = Sound_SetupAdsrPhase(env);
             }
         } else {
-            *arg1 = (s16)(*(s32 *)(arg0 + 8) >> 16);
-            *arg2 = 0;
+            *outVol = (s16)(*(s32 *)(env + 8) >> 16);
+            *outDelta = 0;
         }
         break;
     case 1:
-        mode = arg0[1];
-        if (mode != 3) {
-            old = *(s32 *)(arg0 + 8);
-            if (arg0[0x26] == 0 && mode == 1) {
-                *(s32 *)(arg0 + 8) = old + *(s32 *)(arg0 + 0x10);
+        phase = env[1];
+        if (phase != 3) {
+            oldVol = *(s32 *)(env + 8);
+            if (env[0x26] == 0 && phase == 1) {
+                *(s32 *)(env + 8) = oldVol + *(s32 *)(env + 0x10);
             } else {
-                *(s32 *)(arg0 + 0xC) = *(s32 *)(arg0 + 0xC) + *(s32 *)(arg0 + 0x10);
-                x = (s32)(*(u32 *)(arg0 + 0xC) + 0x8000) >> 16;
-                y = 0xC1 - x;
-                x = y & ~(y >> 31);
-                *(s32 *)(arg0 + 8) = (s32)gAdsrVolCurve[x] << 16;
+                *(s32 *)(env + 0xC) = *(s32 *)(env + 0xC) + *(s32 *)(env + 0x10);
+                idx = (s32)(*(u32 *)(env + 0xC) + 0x8000) >> 16;
+                clipped = 0xC1 - idx;
+                idx = clipped & ~(clipped >> 31);
+                *(s32 *)(env + 8) = (s32)gAdsrVolCurve[idx] << 16;
             }
-            *arg1 = (s16)(old >> 16);
-            delta = *(s32 *)(arg0 + 8) - old;
+            *outVol = (s16)(oldVol >> 16);
+            delta = *(s32 *)(env + 8) - oldVol;
             if (delta >= 0) {
-                *arg2 = (s16)(delta >> 21);
+                *outDelta = (s16)(delta >> 21);
             } else {
-                *arg2 = (s16) -(-delta >> 21);
+                *outDelta = (s16) -(-delta >> 21);
             }
-            ctr = *(s32 *)(arg0 + 4) - 1;
-            *(s32 *)(arg0 + 4) = ctr;
-            if (ctr == 0) {
-                ret = Sound_SetupAdsrPhase(arg0);
+            ticks = *(s32 *)(env + 4) - 1;
+            *(s32 *)(env + 4) = ticks;
+            if (ticks == 0) {
+                done = Sound_SetupAdsrPhase(env);
             }
         } else {
-            *arg1 = (s16)(*(s32 *)(arg0 + 8) >> 16);
-            *arg2 = 0;
+            *outVol = (s16)(*(s32 *)(env + 8) >> 16);
+            *outDelta = 0;
         }
         break;
     }
-    return ret;
+    return done;
 }
 
 s32 fn_8025807C(s32 arg0, s32 arg1, s32 arg2) {
