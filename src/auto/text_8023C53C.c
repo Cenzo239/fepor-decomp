@@ -3638,7 +3638,7 @@ s32 fn_8024A430(u16 arg0) {
     return 0;
 }
 
-s32 fn_8024A4AC(s32 arg0, s32 arg1, s32 arg2) {
+s32 Sound_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
     s32 temp_r29;
     s32 ret;
     s32 var_r3;
@@ -4342,11 +4342,11 @@ loop_16:
 }
 
 s32 Snd_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
-    s32 fn_8024A4AC(s32, s32, s32);
+    s32 Sound_SetParamU8(s32, s32, s32);
     s32 temp_r31;
 
     Audio_Lock();
-    temp_r31 = fn_8024A4AC(arg0, arg1, arg2);
+    temp_r31 = Sound_SetParamU8(arg0, arg1, arg2);
     Audio_Unlock();
     return temp_r31;
 }
@@ -4406,11 +4406,11 @@ void fn_8024B828(s32 arg0, s32 arg1, s32 arg2) {
         Sound_SetParamU16(arg0, 0x1F, (s32)(16383.0f * (1.0f - (f32)(u32)(arg2 - 0x50) / 15920.0f)));
         Audio_Unlock();
         Audio_Lock();
-        fn_8024A4AC(arg0, 0x4F, 0x7F);
+        Sound_SetParamU8(arg0, 0x4F, 0x7F);
         Audio_Unlock();
     } else {
         Audio_Lock();
-        fn_8024A4AC(arg0, 0x4F, 0);
+        Sound_SetParamU8(arg0, 0x4F, 0);
         Audio_Unlock();
     }
 }
@@ -11351,7 +11351,7 @@ s32 fn_8025DAA0(
 void fn_8025DBF4(void) {
     s32 fn_8024A34C(u16, u8, s32, s32, u8, s32);
     s32 fn_8024A430(u16);
-    void fn_8024A4AC(s32, s32, s32);
+    void Sound_SetParamU8(s32, s32, s32);
     void Sound_SetParamU16(s32, s32, s32);
     void fn_80257224(s32);
     extern u16 lbl_8035BF18[];
@@ -11470,7 +11470,7 @@ void fn_8025DBF4(void) {
                         if ((u8)tmp <= 0x7F) {
                             v = tmp;
                         }
-                        fn_8024A4AC(handle, 7, v);
+                        Sound_SetParamU8(handle, 7, v);
                     } else {
                         v = 0x7F;
                         ft = lbl_8036C314 * fvol;
@@ -11478,7 +11478,7 @@ void fn_8025DBF4(void) {
                         if ((u8)tmp <= 0x7F) {
                             v = tmp;
                         }
-                        fn_8024A4AC(handle, 7, v);
+                        Sound_SetParamU8(handle, 7, v);
                     }
                     v = 0x7F;
                     ft = lbl_8036C318 * (lbl_8036C2E4 + fpan);
@@ -11486,14 +11486,14 @@ void fn_8025DBF4(void) {
                     if ((u8)tmp <= 0x7F) {
                         v = tmp;
                     }
-                    fn_8024A4AC(handle, 0xA, v);
+                    Sound_SetParamU8(handle, 0xA, v);
                     v = 0x7F;
                     ft = lbl_8036C318 * (lbl_8036C2E4 - fspan);
                     tmp = (s32)ft;
                     if ((u8)tmp <= 0x7F) {
                         v = tmp;
                     }
-                    fn_8024A4AC(handle, 0x83, v);
+                    Sound_SetParamU8(handle, 0x83, v);
                     ft = lbl_8036C31C * fvar;
                     if (ft > lbl_8036C310) {
                         v = 0x3FFF;
@@ -11510,9 +11510,9 @@ void fn_8025DBF4(void) {
                                 v = (s32)ft;
                             }
                             Sound_SetParamU16(handle, 0x1F, v);
-                            fn_8024A4AC(handle, 0x4F, 0x7F);
+                            Sound_SetParamU8(handle, 0x4F, 0x7F);
                         } else {
-                            fn_8024A4AC(handle, 0x4F, 0);
+                            Sound_SetParamU8(handle, 0x4F, 0);
                         }
                     }
                     list = *(u8 **)(voice + 8);
@@ -11525,7 +11525,7 @@ void fn_8025DBF4(void) {
                                 if (w < 0x40 || w == 0x80 || w == 0x84) {
                                     Sound_SetParamU16(handle, (u8)w, *(u16 *)(cmd + 2));
                                 } else {
-                                    fn_8024A4AC(handle, (u8)w, cmd[2]);
+                                    Sound_SetParamU8(handle, (u8)w, cmd[2]);
                                 }
                             }
                             cmd += 4;
@@ -11626,7 +11626,7 @@ void fn_8025DBF4(void) {
                     if ((u8)tmp <= 0x7F) {
                         v = tmp;
                     }
-                    fn_8024A4AC(handle, 7, v);
+                    Sound_SetParamU8(handle, 7, v);
                 } else {
                     v = 0x7F;
                     ft = lbl_8036C314 * fvol;
@@ -11634,7 +11634,7 @@ void fn_8025DBF4(void) {
                     if ((u8)tmp <= 0x7F) {
                         v = tmp;
                     }
-                    fn_8024A4AC(handle, 7, v);
+                    Sound_SetParamU8(handle, 7, v);
                 }
                 v = 0x7F;
                 ft = lbl_8036C318 * (lbl_8036C2E4 + fpan);
@@ -11642,14 +11642,14 @@ void fn_8025DBF4(void) {
                 if ((u8)tmp <= 0x7F) {
                     v = tmp;
                 }
-                fn_8024A4AC(handle, 0xA, v);
+                Sound_SetParamU8(handle, 0xA, v);
                 v = 0x7F;
                 ft = lbl_8036C318 * (lbl_8036C2E4 - fspan);
                 tmp = (s32)ft;
                 if ((u8)tmp <= 0x7F) {
                     v = tmp;
                 }
-                fn_8024A4AC(handle, 0x83, v);
+                Sound_SetParamU8(handle, 0x83, v);
                 ft = lbl_8036C31C * fvar;
                 if (ft > lbl_8036C310) {
                     v = 0x3FFF;
@@ -11666,9 +11666,9 @@ void fn_8025DBF4(void) {
                             v = (s32)ft;
                         }
                         Sound_SetParamU16(handle, 0x1F, v);
-                        fn_8024A4AC(handle, 0x4F, 0x7F);
+                        Sound_SetParamU8(handle, 0x4F, 0x7F);
                     } else {
-                        fn_8024A4AC(handle, 0x4F, 0);
+                        Sound_SetParamU8(handle, 0x4F, 0);
                     }
                 }
                 list = *(u8 **)(voice + 8);
@@ -11681,7 +11681,7 @@ void fn_8025DBF4(void) {
                             if (w < 0x40 || w == 0x80 || w == 0x84) {
                                 Sound_SetParamU16(handle, (u8)w, *(u16 *)(cmd + 2));
                             } else {
-                                fn_8024A4AC(handle, (u8)w, cmd[2]);
+                                Sound_SetParamU8(handle, (u8)w, cmd[2]);
                             }
                         }
                         cmd += 4;
@@ -11719,7 +11719,7 @@ void fn_8025E4E8(void) {
     s32 fn_8025DAA0(void *, f32, f32, f32, f32, f32, f32);
     s32 fn_8024A34C(u16, u8, s32, s32, u8, s32);
     s32 fn_8024B7DC(s32);
-    void fn_8024A4AC(s32, u8, u8);
+    void Sound_SetParamU8(s32, u8, u8);
     void Sound_SetParamU16(s32, u8, u16);
     void fn_8025DBF4(void);
     extern s32 lbl_80368ABC;
@@ -11909,24 +11909,24 @@ void fn_8025E4E8(void) {
                             v = 0x7F;
                             t = (s32)(lbl_8036C314 * (*(f32 *)(node + 0x48) * sp1C));
                             if ((u8)t <= 0x7F) v = t;
-                            fn_8024A4AC(handle, 7, (u8)v);
+                            Sound_SetParamU8(handle, 7, (u8)v);
                         } else {
                             v = 0x7F;
                             f1 = lbl_8036C314 * sp1C;
                             t = (s32)f1;
                             if ((u8)t <= 0x7F) v = t;
-                            fn_8024A4AC(handle, 7, (u8)v);
+                            Sound_SetParamU8(handle, 7, (u8)v);
                         }
                         v = 0x7F;
                         f1 = lbl_8036C318 * (lbl_8036C2E4 + sp18);
                         t = (s32)f1;
                         if ((u8)t <= 0x7F) v = t;
-                        fn_8024A4AC(handle, 0xA, (u8)v);
+                        Sound_SetParamU8(handle, 0xA, (u8)v);
                         v = 0x7F;
                         f1 = lbl_8036C318 * (lbl_8036C2E4 - sp10);
                         t = (s32)f1;
                         if ((u8)t <= 0x7F) v = t;
-                        fn_8024A4AC(handle, 0x83, (u8)v);
+                        Sound_SetParamU8(handle, 0x83, (u8)v);
                         f1 = lbl_8036C31C * spC;
                         if (f1 > lbl_8036C310) v = 0x3FFF;
                         else v = (s32)f1;
@@ -11937,9 +11937,9 @@ void fn_8025E4E8(void) {
                                 if (f1 > lbl_8036C310) v = 0x3FFF;
                                 else v = (s32)f1;
                                 Sound_SetParamU16(handle, 0x1F, (u16)v);
-                                fn_8024A4AC(handle, 0x4F, 0x7F);
+                                Sound_SetParamU8(handle, 0x4F, 0x7F);
                             } else {
-                                fn_8024A4AC(handle, 0x4F, 0);
+                                Sound_SetParamU8(handle, 0x4F, 0);
                             }
                         }
                         if (*(u8 **)(node + 8) != NULL) {
@@ -11951,7 +11951,7 @@ void fn_8025E4E8(void) {
                                     if (w < 0x40 || w == 0x80 || w == 0x84) {
                                         Sound_SetParamU16(handle, (u8)w, *(u16 *)(cmd + 2));
                                     } else {
-                                        fn_8024A4AC(handle, (u8)w, cmd[2]);
+                                        Sound_SetParamU8(handle, (u8)w, cmd[2]);
                                     }
                                 }
                                 cmd += 4;
