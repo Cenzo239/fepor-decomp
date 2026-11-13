@@ -10004,7 +10004,7 @@ done:
     return ret;
 }
 
-s32 fn_802596A8(u8 arg0, u8 arg1, s32 arg2) {
+s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
 extern u8 lbl_80368AD2, lbl_80368AD1;
 extern u8 *lbl_80368A88, *lbl_80368A98, *lbl_80368AA0, *lbl_80368A9C, *lbl_80368A94;
 extern s32 lbl_80368A68;
@@ -13376,7 +13376,7 @@ void fn_802614CC(void) {
 s32 fn_80261620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 fn_802636C8(void);
     s32 fn_8026341C(void (*)(void), s32, s32);
-    s32 fn_802596A8(u8, u8, u32);
+    s32 Sound_InitVoices(u8, u8, u32);
     void fn_80262504(void);
     s32 fn_80263534(s32);
     void fn_802636F4(void);
@@ -13403,7 +13403,7 @@ s32 fn_80261620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     t = a3 & 1;
     a1 = (u8)a1;
     a2 = (u8)a2;
-    if ((u32)fn_802596A8(a1, a2, t) == 0) {
+    if ((u32)Sound_InitVoices(a1, a2, t) == 0) {
         goto error;
     }
     if (a3 & 8) {
