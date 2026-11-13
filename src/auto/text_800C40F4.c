@@ -6324,8 +6324,8 @@ extern "C" void fn_800D5784(s32 arg0) {
     lbl_80367888 = Process_Create(lbl_8028DA70, arg0);
 }
 
-void fn_800D5818(s32 arg0) {
-    void DebugPrint(void *, ...);
+extern "C" void fn_800D5818(s32 arg0) {
+    void DebugPrint(char *, ...);
     s32 Process_CreateChild(void *, s32);
     s32 Process_Create(void *, s32);
     extern char lbl_802704F8[];
@@ -6336,15 +6336,13 @@ void fn_800D5818(s32 arg0) {
     extern s32 lbl_80367888;
     extern u8 lbl_8036788C;
     extern u8 lbl_80367878;
-    s32 temp;
 
     DebugPrint(lbl_802704F8 + 0x8BF);
     gGameScene = 0;
     lbl_8036788C = 0;
     lbl_80367878 = 0;
-    temp = Process_CreateChild(lbl_80284668, arg0);
-    lbl_80367884 = temp;
-    lbl_80367888 = Process_Create(lbl_8028DA70, temp);
+    lbl_80367884 = Process_CreateChild(lbl_80284668, arg0);
+    lbl_80367888 = Process_Create(lbl_8028DA70, lbl_80367884);
 }
 
 #pragma cplusplus reset
