@@ -1708,7 +1708,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     }
 }
 #pragma peephole on
-int fn_80206FB8(u16 encode, u16 code) {
+int OSFontCodeToIndex(u16 encode, u16 code) {
     extern u16 lbl_8029C2E8[];
     extern u16 lbl_8029C468[];
     int i;
@@ -1830,7 +1830,7 @@ after:
 u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     s32 fn_802096B0(void *, s32, s32);
     void fn_8020712C(u8 *, u8 *);
-    s32 fn_80206FB8(u16, u16);
+    s32 OSFontCodeToIndex(u16, u16);
     extern u32 lbl_8036BCA0;
     extern u32 lbl_8036BCA4;
     u32 sp1C;
@@ -1902,7 +1902,7 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     if (arg1 == 1) {
         sp1C = lbl_8036BCA0;
         sp20 = lbl_8036BCA4;
-        idx = fn_80206FB8(arg1, 0x54);
+        idx = OSFontCodeToIndex(arg1, 0x54);
         temp_r9 = arg2->columns;
         temp_r8 = temp_r9 * arg2->rows;
         imageOffset = arg2->imageOffset;
@@ -2006,7 +2006,7 @@ do_switch:
 u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     extern s32 lbl_803684B8;
     extern s32 lbl_803684BC;
-    extern s32 fn_80206FB8(u16, u16);
+    extern s32 OSFontCodeToIndex(u16, u16);
 
     u8 *ptr = arg1;
     s32 var_r8;
@@ -2068,7 +2068,7 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     }
 
     *arg2 = var_r8;
-    *arg3 = fn_80206FB8(arg0, var_r4);
+    *arg3 = OSFontCodeToIndex(arg0, var_r4);
     return ptr;
 }
 
