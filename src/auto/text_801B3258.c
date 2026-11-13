@@ -4747,7 +4747,7 @@ u8 fn_801BE808(void)
     return (u8)ret;
 }
 
-s32 fn_801BE854(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_SkillCapacityMenuItem(s32 arg0, void *arg1, void *arg2) {
     void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
