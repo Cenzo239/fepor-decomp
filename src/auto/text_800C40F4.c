@@ -10029,31 +10029,32 @@ extern "C" bool fn_800DF298(void *arg0, const char *arg1) {
 #pragma dont_inline reset
 #pragma cplusplus reset
 
-void Vec3Interp_Update(void *arg0) {
+void Vec3Interp_Update(void *interp) {
+    /* Advance a cubic Vec3 tween by one frame, or snap/stop when finished or already at target. */
     f32 Math_Hermite(f32, f32, f32, f32, f32);
-    f32 temp_f5;
-    s32 temp_r0;
-    f32 temp_f31;
+    f32 duration;
+    s32 remain;
+    f32 t;
 
-    if (M2C_FIELD(arg0, s32 *, 0x2C) > 0) {
-        if ((M2C_FIELD(arg0, f32 *, 0) == M2C_FIELD(arg0, f32 *, 0xC)) && (M2C_FIELD(arg0, f32 *, 4) == M2C_FIELD(arg0, f32 *, 0x10)) && (M2C_FIELD(arg0, f32 *, 8) == M2C_FIELD(arg0, f32 *, 0x14))) {
-            M2C_FIELD(arg0, s32 *, 0x2C) = 0;
+    if (M2C_FIELD(interp, s32 *, 0x2C) > 0) {
+        if ((M2C_FIELD(interp, f32 *, 0) == M2C_FIELD(interp, f32 *, 0xC)) && (M2C_FIELD(interp, f32 *, 4) == M2C_FIELD(interp, f32 *, 0x10)) && (M2C_FIELD(interp, f32 *, 8) == M2C_FIELD(interp, f32 *, 0x14))) {
+            M2C_FIELD(interp, s32 *, 0x2C) = 0;
             return;
         }
-        M2C_FIELD(arg0, s32 *, 0x2C) = (s32) (M2C_FIELD(arg0, s32 *, 0x2C) - 1);
-        temp_r0 = M2C_FIELD(arg0, s32 *, 0x2C);
-        if (0 >= temp_r0) {
-            M2C_FIELD(arg0, s32 *, 0x2C) = 0;
-            M2C_FIELD(arg0, f32 *, 0) = (f32) M2C_FIELD(arg0, f32 *, 0xC);
-            M2C_FIELD(arg0, f32 *, 4) = (f32) M2C_FIELD(arg0, f32 *, 0x10);
-            M2C_FIELD(arg0, f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x14);
+        M2C_FIELD(interp, s32 *, 0x2C) = (s32) (M2C_FIELD(interp, s32 *, 0x2C) - 1);
+        remain = M2C_FIELD(interp, s32 *, 0x2C);
+        if (0 >= remain) {
+            M2C_FIELD(interp, s32 *, 0x2C) = 0;
+            M2C_FIELD(interp, f32 *, 0) = (f32) M2C_FIELD(interp, f32 *, 0xC);
+            M2C_FIELD(interp, f32 *, 4) = (f32) M2C_FIELD(interp, f32 *, 0x10);
+            M2C_FIELD(interp, f32 *, 8) = (f32) M2C_FIELD(interp, f32 *, 0x14);
             return;
         }
-        temp_f5 = M2C_FIELD(arg0, f32 *, 0x18);
-        temp_f31 = (temp_f5 - (f32) temp_r0) / temp_f5;
-        M2C_FIELD(arg0, f32 *, 0) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x3C), M2C_FIELD(arg0, f32 *, 0x48), M2C_FIELD(arg0, f32 *, 0x54), temp_f31);
-        M2C_FIELD(arg0, f32 *, 4) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x34), M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x4C), M2C_FIELD(arg0, f32 *, 0x58), temp_f31);
-        M2C_FIELD(arg0, f32 *, 8) = Math_Hermite(M2C_FIELD(arg0, f32 *, 0x38), M2C_FIELD(arg0, f32 *, 0x44), M2C_FIELD(arg0, f32 *, 0x50), M2C_FIELD(arg0, f32 *, 0x5C), temp_f31);
+        duration = M2C_FIELD(interp, f32 *, 0x18);
+        t = (duration - (f32) remain) / duration;
+        M2C_FIELD(interp, f32 *, 0) = Math_Hermite(M2C_FIELD(interp, f32 *, 0x30), M2C_FIELD(interp, f32 *, 0x3C), M2C_FIELD(interp, f32 *, 0x48), M2C_FIELD(interp, f32 *, 0x54), t);
+        M2C_FIELD(interp, f32 *, 4) = Math_Hermite(M2C_FIELD(interp, f32 *, 0x34), M2C_FIELD(interp, f32 *, 0x40), M2C_FIELD(interp, f32 *, 0x4C), M2C_FIELD(interp, f32 *, 0x58), t);
+        M2C_FIELD(interp, f32 *, 8) = Math_Hermite(M2C_FIELD(interp, f32 *, 0x38), M2C_FIELD(interp, f32 *, 0x44), M2C_FIELD(interp, f32 *, 0x50), M2C_FIELD(interp, f32 *, 0x5C), t);
     }
 }
 
