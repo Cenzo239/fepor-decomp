@@ -803,7 +803,7 @@ void fn_801850A8(void *arg0) {
     void *Process_CreateEx(void *, void *);
     s32 fn_80052B30(s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u8 lbl_80295AE8[];
+    extern u8 E_MuFlash_script[];
     u8 spC[0x34];
     u32 sp8;
     void *temp_r30;
@@ -811,8 +811,8 @@ void fn_801850A8(void *arg0) {
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x30);
     M2C_FIELD(spC, void **, 0x30) = temp_r30;
-    fn_8000A388(lbl_80295AE8, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(lbl_80295AE8, arg0);
+    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
+    temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
     M2C_FIELD(temp_r3, void **, 0x30) = temp_r30;
     M2C_FIELD(temp_r3, s32 *, 0x3C) = 0x10;
     sp8 = fn_80052B30(0xC);
@@ -833,7 +833,7 @@ void fn_80185164(void *arg0) {
     s32 fn_80052B30(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 MoveAnim_str[];
-    extern u8 lbl_80295AE8[];
+    extern u8 E_MuFlash_script[];
     u8 spC[0x34];
     u32 sp8;
     void *temp_r30;
@@ -847,8 +847,8 @@ void fn_80185164(void *arg0) {
                 *(f32 *)((u8 *)temp_r5 + 0xC));
     temp_r30 = *(void **)((u8 *)arg0 + 0x30);
     *(void **)(spC + 0x30) = temp_r30;
-    fn_8000A388(lbl_80295AE8, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(lbl_80295AE8, arg0);
+    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
+    temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
     *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
     *(s32 *)((u8 *)temp_r3 + 0x3C) = 8;
     sp8 = fn_80052B30(0xB);
@@ -1128,7 +1128,7 @@ void fn_80185F40(void *arg0) {
     s32 fn_80052B30(s32);
     void MuFade_UnlinkSame(void *, void *);
     void Process_ClearFunc(void *);
-    extern u8 lbl_80295AE8[];
+    extern u8 E_MuFlash_script[];
     u8 spC[0x44];
     u32 sp8;
     void *temp_r30;
@@ -1139,8 +1139,8 @@ void fn_80185F40(void *arg0) {
     }
     temp_r30 = *(void **)((u8 *)arg0 + 0x30);
     *(void **)(spC + 0x30) = temp_r30;
-    fn_8000A388(lbl_80295AE8, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(lbl_80295AE8, 0);
+    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
+    temp_r3 = Process_CreateEx(E_MuFlash_script, 0);
     *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
     *(s32 *)((u8 *)temp_r3 + 0x3C) = 0x10;
     sp8 = fn_80052B30(0);
@@ -13437,7 +13437,7 @@ typedef struct {
     void *unk0;
     void *unk4;
 } unk_struct_80193CFC;
-extern u8 lbl_80295AE8[0x80];
+extern u8 E_MuFlash_script[0x80];
 #include "global.h"
 extern u16 E_MuFade_script[36];
 extern f32 lbl_8036ACE0;
