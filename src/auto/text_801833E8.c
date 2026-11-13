@@ -752,7 +752,7 @@ void *fn_80184A00(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     return temp_r3;
 }
 
-void *fn_80184AFC(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
+void *Unit_FadeAlpha(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     void fn_80185078(void *, void *);
