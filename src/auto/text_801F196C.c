@@ -1728,7 +1728,7 @@ void CardLink_PollSendKey(void *arg0) {
     s32 fn_80266998(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
-    extern s8 *lbl_803683F0;
+    extern s8 *gCardLinkKey;
     s8 *p;
 
     *(s16 *)((u8 *)arg0 + 0x48) = *(s16 *)((u8 *)arg0 + 0x48) + 1;
@@ -1742,26 +1742,26 @@ void CardLink_PollSendKey(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x20) {
         return;
     }
-    if (fn_80266998(*(void **)((u8 *)arg0 + 0x38), lbl_803683F0, (u8 *)arg0 + 0x4B) != 0) {
+    if (fn_80266998(*(void **)((u8 *)arg0 + 0x38), gCardLinkKey, (u8 *)arg0 + 0x4B) != 0) {
         return;
     }
     fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
     if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x30) {
         return;
     }
-    p = lbl_803683F0;
+    p = gCardLinkKey;
     DebugPrint((char *)gCardLinkStr + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
     Process_ClearFunc(arg0);
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
 }
 #pragma opt_common_subs on
 void fn_801F5F58(void *arg0) {
-    extern s8 *lbl_803683F0;
+    extern s8 *gCardLinkKey;
     u32 v;
     s8 *p;
 
     v = *(u32 *)((u8 *)arg0 + 0x40);
-    p = lbl_803683F0;
+    p = gCardLinkKey;
     if ((v >> 24) == (u32)p[0] && ((v >> 16) & 0xFF) == (u32)p[1] && ((v >> 8) & 0xFF) == (u32)p[2] && (v & 0xFF) == (u32)p[3]) {
         *(u32 *)((u8 *)arg0 + 0x40) = -1;
     } else {
