@@ -2076,77 +2076,96 @@ void fn_80188EF4(void *arg0) {
 }
 
 #pragma global_optimizer off
-void MoveAnim_Update(void *arg0, f32 scaleArg) {
+/* Advance a unit move animation: lerp xyz, optional fast-forward, update camera. */
+void MoveAnim_Update(void *anim, f32 scaleArg) {
     void fn_8000C188(void *);
     void fn_80050BCC(void *, s32);
-    f32 Math_Lerp(f32,f32,f32,f32);
-    void fn_8014CAD4(void *,f32,f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void fn_8014CAD4(void *, f32, f32);
     extern u8 lbl_80330708[];
     extern u8 lbl_803301A8[];
     extern void *gPadInput;
     extern f32 lbl_8036AD18, lbl_8036ACF8, lbl_8036AD08, lbl_8036AD1C, lbl_8036ACD8;
     f32 duration;
- 
- 
- 
- f32 step;
- f32 scale; f64 dy,dx; f32 minimum; f32 distance;
+
+
+
+    f32 step;
+    f32 scale;
+    f64 dy, dx;
+    f32 minimum;
+    f32 distance;
     u8 fast;
     u32 flags;
     u8 index;
     u8 *p;
-    duration=M2C_FIELD(arg0,f32 *,0x38);
-    flags=M2C_FIELD(gPadInput,u32 *,4);
-    if(M2C_FIELD(arg0,u16 *,0x52)&0x80) fast=0;
-    else if((((u32)lbl_80330708[0x9C]>>5U)&1U)==1U) fast=1;
-    else if(lbl_80330708[0x57]>=2 && (flags&0x100)) fast=1;
-    else fast=0;
-    if(fast) {
-        step=duration*lbl_8036AD18;
- if(step<lbl_8036ACF8) step=lbl_8036ACF8;
-        M2C_FIELD(M2C_FIELD(arg0,void **,0x34),f32 *,0x5C)=lbl_8036AD08;
+    duration = M2C_FIELD(anim, f32 *, 0x38);
+    flags = M2C_FIELD(gPadInput, u32 *, 4);
+    if (M2C_FIELD(anim, u16 *, 0x52) & 0x80)
+        fast = 0;
+    else if ((((u32)lbl_80330708[0x9C] >> 5U) & 1U) == 1U)
+        fast = 1;
+    else if (lbl_80330708[0x57] >= 2 && (flags & 0x100))
+        fast = 1;
+    else
+        fast = 0;
+    if (fast) {
+        step = duration * lbl_8036AD18;
+        if (step < lbl_8036ACF8)
+            step = lbl_8036ACF8;
+        M2C_FIELD(M2C_FIELD(anim, void **, 0x34), f32 *, 0x5C) = lbl_8036AD08;
     } else {
-        M2C_FIELD(M2C_FIELD(arg0,void **,0x34),f32 *,0x5C)=step=lbl_8036ACF8;
+        M2C_FIELD(M2C_FIELD(anim, void **, 0x34), f32 *, 0x5C) = step = lbl_8036ACF8;
     }
-    if(M2C_FIELD(arg0,u16 *,0x52)&0x8000) {
-        scaleArg=lbl_8036AD1C*(f32)__fabs(M2C_FIELD(arg0,f32 *,0x48)-M2C_FIELD(arg0,f32 *,0x44));
- if(scaleArg<lbl_8036ACF8) scaleArg=lbl_8036ACF8;
-        duration=(s32)(duration*scaleArg);
+    if (M2C_FIELD(anim, u16 *, 0x52) & 0x8000) {
+        scaleArg = lbl_8036AD1C * (f32)__fabs(M2C_FIELD(anim, f32 *, 0x48) - M2C_FIELD(anim, f32 *, 0x44));
+        if (scaleArg < lbl_8036ACF8)
+            scaleArg = lbl_8036ACF8;
+        duration = (s32)(duration * scaleArg);
     }
-    M2C_FIELD(arg0,f32 *,0x3C)+=step;
-    if(M2C_FIELD(arg0,f32 *,0x3C)>=duration) {
-        M2C_FIELD(arg0,f32 *,0x3C)=duration;
-        M2C_FIELD(arg0,u8 *,0x58)++;
-        fn_8000C188(arg0);
+    M2C_FIELD(anim, f32 *, 0x3C) += step;
+    if (M2C_FIELD(anim, f32 *, 0x3C) >= duration) {
+        M2C_FIELD(anim, f32 *, 0x3C) = duration;
+        M2C_FIELD(anim, u8 *, 0x58)++;
+        fn_8000C188(anim);
     }
     {
-    f32 x=Math_Lerp(lbl_8036ACD8+(f32)(s8)M2C_FIELD(arg0,u8 *,0x40),lbl_8036ACD8+(f32)(s8)M2C_FIELD(arg0,u8 *,0x42),duration,M2C_FIELD(arg0,f32 *,0x3C));
-    f32 y;
-    f32 z;
-    y=Math_Lerp(lbl_8036ACD8+(f32)(s8)M2C_FIELD(arg0,u8 *,0x41),lbl_8036ACD8+(f32)(s8)M2C_FIELD(arg0,u8 *,0x43),duration,M2C_FIELD(arg0,f32 *,0x3C));
-    z=Math_Lerp(M2C_FIELD(arg0,f32 *,0x44),M2C_FIELD(arg0,f32 *,0x48),duration,M2C_FIELD(arg0,f32 *,0x3C));
-    p=M2C_FIELD(arg0,u8 **,0x30);
-    dy=__fabs(y-M2C_FIELD(p,f32 *,8));
- dx=__fabs(x-M2C_FIELD(p,f32 *,4));
- M2C_FIELD(arg0,f32 *,0x4C)=M2C_FIELD(arg0,f32 *,0x4C)+((f32)dx+(f32)dy);
-    M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,4)=x;
-    M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,8)=y;
-    M2C_FIELD(M2C_FIELD(arg0,void **,0x30),f32 *,12)=z;
-    if(M2C_FIELD(arg0,u16 *,0x52)&0x40) {
-        *(f32 *)(lbl_80330708+0x524)=x;
-        *(f32 *)(lbl_80330708+0x528)=y;
-        fn_8014CAD4(lbl_80330708,x,y);
-        *(f32 *)(lbl_80330708+0x534)=x;
-        *(f32 *)(lbl_80330708+0x538)=y;
+        f32 x = Math_Lerp(lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x40),
+                          lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x42),
+                          duration, M2C_FIELD(anim, f32 *, 0x3C));
+        f32 y;
+        f32 z;
+        y = Math_Lerp(lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x41),
+                      lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x43),
+                      duration, M2C_FIELD(anim, f32 *, 0x3C));
+        z = Math_Lerp(M2C_FIELD(anim, f32 *, 0x44), M2C_FIELD(anim, f32 *, 0x48), duration,
+                      M2C_FIELD(anim, f32 *, 0x3C));
+        p = M2C_FIELD(anim, u8 **, 0x30);
+        dy = __fabs(y - M2C_FIELD(p, f32 *, 8));
+        dx = __fabs(x - M2C_FIELD(p, f32 *, 4));
+        M2C_FIELD(anim, f32 *, 0x4C) = M2C_FIELD(anim, f32 *, 0x4C) + ((f32)dx + (f32)dy);
+        M2C_FIELD(M2C_FIELD(anim, void **, 0x30), f32 *, 4) = x;
+        M2C_FIELD(M2C_FIELD(anim, void **, 0x30), f32 *, 8) = y;
+        M2C_FIELD(M2C_FIELD(anim, void **, 0x30), f32 *, 12) = z;
+        if (M2C_FIELD(anim, u16 *, 0x52) & 0x40) {
+            *(f32 *)(lbl_80330708 + 0x524) = x;
+            *(f32 *)(lbl_80330708 + 0x528) = y;
+            fn_8014CAD4(lbl_80330708, x, y);
+            *(f32 *)(lbl_80330708 + 0x534) = x;
+            *(f32 *)(lbl_80330708 + 0x538) = y;
+        }
+        fn_80050BCC(M2C_FIELD(anim, void **, 0x30),
+                    (s32)Math_Lerp((f32)M2C_FIELD(anim, u8 *, 0x50), (f32)M2C_FIELD(anim, u8 *, 0x51),
+                                   duration, M2C_FIELD(anim, f32 *, 0x3C)));
+        index = M2C_FIELD(anim, u8 *, 0x6A);
+        if ((s8)index != -1) {
+            p = lbl_803301A8 + index * 0x30;
+            M2C_FIELD(p, f32 *, 0x1C) = x;
+            M2C_FIELD(p, f32 *, 0x20) = y;
+            M2C_FIELD(p, f32 *, 0x24) = z;
+            p[12] |= 2;
+        }
     }
-    fn_80050BCC(M2C_FIELD(arg0,void **,0x30),(s32)Math_Lerp((f32)M2C_FIELD(arg0,u8 *,0x50),(f32)M2C_FIELD(arg0,u8 *,0x51),duration,M2C_FIELD(arg0,f32 *,0x3C)));
-    index=M2C_FIELD(arg0,u8 *,0x6A);
-    if((s8)index!=-1) {
-        p=lbl_803301A8+index*0x30;
-        M2C_FIELD(p,f32 *,0x1C)=x; M2C_FIELD(p,f32 *,0x20)=y; M2C_FIELD(p,f32 *,0x24)=z;
-        p[12]|=2;
-    }
-}
 }
 
 void fn_8018A6F4(void *arg0) {
