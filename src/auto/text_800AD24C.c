@@ -260,7 +260,7 @@ void Battle_SetupVsCurrentTarget(void *arg0) {
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
     void Battle_SetupPair(void *, void *, void *);
-    void fn_80036248(void *);
+    void Battle_CalcHits(void *);
     extern u8 gBattle[];
     extern u8 gTargetList[];
     void *p;
@@ -285,7 +285,7 @@ void Battle_SetupVsCurrentTarget(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x3B) != 0) {
         gBattle[0x2D6] = 1;
     }
-    fn_80036248(gBattle);
+    Battle_CalcHits(gBattle);
     lim = gBattle[0x2C9];
     if (*(u8 *)((u8 *)arg0 + 0x3A) < lim) {
         *(u8 *)((u8 *)arg0 + 0x3A) = lim;

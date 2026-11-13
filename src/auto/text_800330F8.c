@@ -1235,7 +1235,7 @@ void fn_80036150(s32 arg0) {
     }
 }
 #pragma global_optimizer reset
-void fn_80036248(s32 self) {
+void Battle_CalcHits(s32 self) {
     extern u8 lbl_8026A120[];
     extern u8 gBattleState[];
     void DebugPrint(void *, ...);
