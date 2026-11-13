@@ -3340,7 +3340,7 @@ u8 fn_8010B658(void *arg0) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(s32, s32);
     void **fn_80037BD0(void *, s8);
-    s32 fn_8010067C(s16, s16, void *);
+    s32 Map_CountNeighborUnits(s16, s16, void *);
     void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 gAiState[];
     extern u8 gBattleMap[151280];
@@ -3429,7 +3429,7 @@ inner:
                         }
                     slot_done:
                         if (found >= 0) {
-                            dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
+                            dist = Map_CountNeighborUnits((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                             if (dist <= bestDist) {
                                 u8 bc = bestCost;
                                 cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
@@ -3480,7 +3480,7 @@ u8 Ai_TrySelectApproachTile(void *arg0) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void *Terrain_GetEntry(u8);
     u8 Allegiance_Compare(s32, s32);
-    s32 fn_8010067C(s16, s16, void *);
+    s32 Map_CountNeighborUnits(s16, s16, void *);
     void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 gAiState[];
     extern u8 gBattleMap[151280];
@@ -3572,7 +3572,7 @@ inner:
                 {
                     s32 dist;
                     s16 cost;
-                    dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
+                    dist = Map_CountNeighborUnits((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                     if (dist <= bestDist) {
                         u8 bc = bestCost;
                         cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
@@ -3622,7 +3622,7 @@ u8 fn_8010BB74(void *arg0) {
     s8 fn_8003A398(void *);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void *Terrain_GetEntry(u8);
-    s32 fn_8010067C(s16, s16, void *);
+    s32 Map_CountNeighborUnits(s16, s16, void *);
     void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 gAiState[];
     extern u8 gBattleMap[151280];
@@ -3698,7 +3698,7 @@ inner:
         if ((s8)cell[0xE18E] == 0 && Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0 && cell[0xD] == 0) {
             void *tmp = Terrain_GetEntry(*(row2 + ((s8)x + 0x100D)));
             if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 6) != 0) {
-                s32 dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
+                s32 dist = Map_CountNeighborUnits((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                 if (dist <= bestDist) {
                     s16 cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
                     if (cost < (s32)bestCost) {
