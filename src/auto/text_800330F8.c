@@ -4253,27 +4253,28 @@ void fn_8003C1B4(s32 arg0) {
     }
 }
 
-void Unit_WriteExtra(void *arg0, s32 arg1) {
+/* Write unit aux fields (hash refs at +0x238.., counters, ids) to stream. */
+void Unit_WriteExtra(void *unit, s32 stream) {
     void *Hash_Lookup(void *);
     void Stream_WriteU8(s32, u8);
     void Stream_WriteS32(s32, s32);
     void Stream_WriteU16(s32, u16);
-    void *p;
+    void *entry;
 
-    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x238));
-    Stream_WriteU8(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
-    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x23C));
-    Stream_WriteU8(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
-    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x240));
-    Stream_WriteU8(arg1, *((u8 *)p + 4));
-    p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x244));
-    Stream_WriteU8(arg1, *((u8 *)p + 4));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x250));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x251));
-    Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x254));
-    Stream_WriteU16(arg1, *(u16 *)((u8 *)arg0 + 0x258));
-    Stream_WriteU16(arg1, *(u16 *)((u8 *)arg0 + 0x25A));
-    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x248));
+    entry = Hash_Lookup(*(void **)((u8 *)unit + 0x238));
+    Stream_WriteU8(stream, (u8)*(u32 *)((u8 *)entry + 0x20));
+    entry = Hash_Lookup(*(void **)((u8 *)unit + 0x23C));
+    Stream_WriteU8(stream, (u8)*(u32 *)((u8 *)entry + 0x20));
+    entry = Hash_Lookup(*(void **)((u8 *)unit + 0x240));
+    Stream_WriteU8(stream, *((u8 *)entry + 4));
+    entry = Hash_Lookup(*(void **)((u8 *)unit + 0x244));
+    Stream_WriteU8(stream, *((u8 *)entry + 4));
+    Stream_WriteU8(stream, *((u8 *)unit + 0x250));
+    Stream_WriteU8(stream, *((u8 *)unit + 0x251));
+    Stream_WriteS32(stream, *(s32 *)((u8 *)unit + 0x254));
+    Stream_WriteU16(stream, *(u16 *)((u8 *)unit + 0x258));
+    Stream_WriteU16(stream, *(u16 *)((u8 *)unit + 0x25A));
+    Stream_WriteU8(stream, *((u8 *)unit + 0x248));
 }
 
 void fn_8003C56C(void *arg0, s32 arg1) {
