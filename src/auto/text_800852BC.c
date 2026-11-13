@@ -27,7 +27,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -1449,7 +1449,7 @@ void fn_800888A4(void *arg0) {
         fn_8007DAC4(self,entry);
         return;
     }
-    if(lbl_80330708[0x57]>=2) {
+    if(gBattleState[0x57]>=2) {
         f32 lower = lbl_80369674;
         M2C_FIELD(self, f32 *, 0x64) -= (f32)(s32)(M2C_FIELD(M2C_FIELD(gPadInput, void * *, 0), s8 *, 4)*lbl_80369670);
         if(M2C_FIELD(self, f32 *, 0x64)<0.0f) M2C_FIELD(self, f32 *, 0x64)+=lbl_80369678;

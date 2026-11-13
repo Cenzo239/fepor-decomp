@@ -218,13 +218,13 @@ extern "C" void fn_801AE878(void *arg0) {
     void fn_8013AD70(s32, s32);
     VObj *fn_8013FF94(void *, s32, s32);
     void fn_8000C070(void *, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     s32 temp_r31;
     VObj *temp_r30;
 
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x54);
     temp_r30 = fn_8013FF94(arg0, 0xA, 0);
-    fn_8013AD70(temp_r31, *(s32 *)(lbl_80330708 + 0xB0));
+    fn_8013AD70(temp_r31, *(s32 *)(gBattleState + 0xB0));
     temp_r30->v11(fn_8013AC54(temp_r31));
     fn_8000C070(arg0, *(u8 *)((u8 *)arg0 + 0x68));
 }
@@ -246,13 +246,13 @@ extern "C" void fn_801AE908(void *arg0) {
     s32 fn_8013AC54(s32);
     void fn_8013AD70(s32, s32);
     VObj *fn_8013FF94(void *, s32, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     s32 temp_r31;
     VObj *temp_r30;
 
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x54);
     temp_r30 = fn_8013FF94(arg0, 0xA, 0);
-    fn_8013AD70(temp_r31, *(s32 *)(lbl_80330708 + 0xAC));
+    fn_8013AD70(temp_r31, *(s32 *)(gBattleState + 0xAC));
     temp_r30->v11(fn_8013AC54(temp_r31));
 }
 #pragma cplusplus reset
@@ -474,7 +474,7 @@ void fn_801AEE58(void) {
 
 void fn_801AF020(void *arg0) {
     extern u8 gUiContext[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_803200AC[];
     s32 fn_8013AC54(void *);
     void fn_80094ABC(s32, void *);
@@ -500,10 +500,10 @@ void fn_801AF020(void *arg0) {
         r31 = (void *)(*(s32 *)((u8 *)arg0 + 0x48) + 0x60);
         if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x54) + 0x4E) != 0x7FFF) {
             fn_80094ABC(fn_8013AC54(*(void **)((u8 *)arg0 + 0x54)), r31);
-        } else if (fn_8014D8DC(lbl_80330708) != 0) {
+        } else if (fn_8014D8DC(gBattleState) != 0) {
             fn_800C3C1C(lbl_803200AC, r31);
         }
-        lbl_80330708[0x51] = 1;
+        gBattleState[0x51] = 1;
         break;
     case 0x80:
         sp[0] = *(s16 *)((u8 *)r31 + 0xA);
@@ -738,7 +738,7 @@ void fn_801AF6BC(void *arg0) {
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
     extern u8 lbl_8027BD18[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_803200AC[];
     extern f32 lbl_8036B0AC;
 
@@ -781,7 +781,7 @@ void fn_801AF6BC(void *arg0) {
             sp24[0] = 0x260;
             sp24[1] = y;
             fn_80140258(self, obj, sp24, 1);
-            if (fn_8014D8DC(lbl_80330708) != 0) {
+            if (fn_8014D8DC(gBattleState) != 0) {
                 fn_801400F4(self, *(void **)((u8 *)self + 0x64));
                 obj = *(void **)((u8 *)self + 0x64);
                 y = *(s16 *)((u8 *)obj + 0xC);
@@ -800,7 +800,7 @@ void fn_801AF6BC(void *arg0) {
             obj = *(void **)((u8 *)self + 0x60);
             vt = *(void ***)obj;
             ((VFn2)vt[0x34 / 4])(obj, fn_8013AC54(list));
-            if (fn_8014D8DC(lbl_80330708) != 0) {
+            if (fn_8014D8DC(gBattleState) != 0) {
                 obj = *(void **)((u8 *)self + 0x64);
                 y = *(s16 *)((u8 *)obj + 0xC);
                 sp18[0] = 0x260;
@@ -847,7 +847,7 @@ void fn_801AF6BC(void *arg0) {
             return;
         }
         if ((pressed & 0x100) != 0 && sel == NULL && *(s16 *)((u8 *)list + 0x4E) == 0x7FFF) {
-            if (fn_8014D8DC(lbl_80330708) == 0) {
+            if (fn_8014D8DC(gBattleState) == 0) {
                 vt = *(void ***)list;
                 ((void (*)(s16 *, void *))vt[0x2C / 4])(sp14, list);
                 fn_80176888(lbl_8027BD18 + 0x38E, self, (f32)sp14[0], (f32)sp14[1]);
@@ -948,7 +948,7 @@ extern "C" void fn_801AFD60(void *arg0) {
     void fn_801402A0(void *, void *, s16 *, s32);
     u8 fn_8014D8DC(void *);
     void fn_801658DC(u32, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
 
     struct Obj {
         virtual void v0();
@@ -1003,7 +1003,7 @@ extern "C" void fn_801AFD60(void *arg0) {
             sp10[1] = temp_r7;
             fn_8014027C(var_r30, var_r29, sp10, 0);
         }
-    } else if (fn_8014D8DC(lbl_80330708) != 0) {
+    } else if (fn_8014D8DC(gBattleState) != 0) {
         var_r29 = fn_8013FF94(var_r30, 0xB, 0);
         if (var_r29 == NULL) {
             var_r29 = *(void **)((u8 *)var_r30 + 0x64);
@@ -1056,7 +1056,7 @@ s32 fn_8013AC54(void *);
 u8 fn_8014D8DC(void *);
 void fn_8011D79C(void *);
 void fn_801658DC(void *,void *);
-extern u8 gUnitLists[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
+extern u8 gUnitLists[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],gBattleState[];
 extern const f32 lbl_8036B0A8;
 s16 sp20[2],sp1c[2],sp18[2],sp14[2],sp10[2],spc[2],sp8[2];
 void *list; void *item; void *panel; void *self; void *p; void *q; void *walk; void *res;
@@ -1141,7 +1141,7 @@ if(*(s16 *)((u8 *)list + 0x4e)!=0x7fff){
 fn_801400F4(self,*(void * *)((u8 *)self + 0x60));
 ((SetupMenuObj *)(*(void * *)((u8 *)self + 0x60)))->v11(fn_8013AC54(list));
 q=*(void * *)((u8 *)self + 0x60);if(*(s16 *)((u8 *)q + 0xa)!=0x138){y=*(s16 *)((u8 *)q + 0xc);spc[0]=0x138;spc[1]=y;fn_8014027C(self,q,spc,0);}
-} else if(fn_8014D8DC(lbl_80330708)){
+} else if(fn_8014D8DC(gBattleState)){
 fn_801400F4(self,*(void * *)((u8 *)self + 0x64));
 q=*(void * *)((u8 *)self + 0x64);if(*(s16 *)((u8 *)q + 0xa)!=0x134){y=*(s16 *)((u8 *)q + 0xc);sp8[0]=0x134;sp8[1]=y;fn_8014027C(self,q,sp8,0);}
 }
@@ -1516,7 +1516,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     void Ui_HideUnitInfoPopup(void *);
     void fn_8016758C(void *, void *, s32, f32, f32);
     extern u8 lbl_8027BD18[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -1628,7 +1628,7 @@ extern "C" void fn_801B14DC(void *arg0) {
         }
         if (bit100 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 &&
             *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E) == 4) {
-            if (score > *(s32 *)(lbl_80330708 + 0x18)) {
+            if (score > *(s32 *)(gBattleState + 0x18)) {
                 Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x38));
                 self = (void *)*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x84);
@@ -1975,7 +1975,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
     extern u8 lbl_8027BD18[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -2058,7 +2058,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (child->cost > *(s32 *)(lbl_80330708 + 0x18)) {
+            if (child->cost > *(s32 *)(gBattleState + 0x18)) {
                 Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x6C) + 0x38));
                 owner = *(void **)((u8 *)self + 0x6C);

@@ -1,1 +1,1 @@
-extern u16 lbl_80330708[0x2B4];
+extern u16 gBattleState[0x2B4];

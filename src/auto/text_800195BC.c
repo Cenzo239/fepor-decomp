@@ -185,7 +185,7 @@ extern "C" void fn_800199F8(void *arg0) {
     void fn_8000A274(s32);
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_80268330[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern void *gPadInput;
     extern f32 lbl_80368C88;
     extern f32 lbl_80368CA4;
@@ -223,7 +223,7 @@ extern "C" void fn_800199F8(void *arg0) {
     temp_r5_2 = *(s32 *)((u8 *)gPadInput + 4);
     temp_r3 = temp_r5_2 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5_2);
     var_r30 = temp_r3;
-    if ((lbl_80330708[0x9E] >> 7) & 1) {
+    if ((gBattleState[0x9E] >> 7) & 1) {
         if (temp_r3 & 0x10000000) {
             var_r30 = temp_r3 & 0xEFFFFFFF;
             var_r30 |= 0x20000000;
@@ -259,7 +259,7 @@ extern "C" void fn_800199F8(void *arg0) {
             *(f32 *)((u8 *)arg0 + 4) = lbl_80368C88;
         }
     }
-    if (lbl_80330708[0x9D] & 1) {
+    if (gBattleState[0x9D] & 1) {
         *(f32 *)((u8 *)arg0 + 8) =
             ((f32)(s8)*(u8 *)(*(u8 **)gPadInput + 5) * lbl_80368D0C) + *(f32 *)((u8 *)arg0 + 8);
     } else {

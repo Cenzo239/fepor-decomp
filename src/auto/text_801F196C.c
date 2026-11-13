@@ -2072,7 +2072,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     void fn_8015A2D8(s32, s32, s32, s32, s32, s32);
     s32 *fn_8018D900(s32);
     extern u8 lbl_80280D38[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern f32 lbl_8036B910;
     extern f32 lbl_8036B918;
     extern f32 lbl_8036B91C;
@@ -2154,7 +2154,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     fn_8001003C((s32)(lbl_8036B950 + fx), (s32)(lbl_8036B954 + fy), 1, 1, 0, str, lbl_8036B918, lbl_8036B910);
 
     fn_8001003C((s32)(lbl_8036B958 + fx), (s32)(lbl_8036B95C + fy), 6, 1, 0, lbl_80280D38 + 0x93,
-                *(s16 *)(lbl_80330708 + 0x12), lbl_8036B934, lbl_8036B910);
+                *(s16 *)(gBattleState + 0x12), lbl_8036B934, lbl_8036B910);
 
     f31 = lbl_8036B960 + fx;
     str = fn_8000E0E4(lbl_80280D38 + 0xB4);
@@ -2166,7 +2166,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     f28 = lbl_8036B968 + fy;
     fn_8001003C((s32)f31, (s32)f28, 1, 1, 0, fn_8000E0E4(lbl_80280D38 + 0xC9), lbl_8036B918, lbl_8036B910);
 
-    val = fn_8014C12C(lbl_80330708);
+    val = fn_8014C12C(gBattleState);
     fn_8000E0E4(lbl_80280D38 + 0xC9);
     tw = fn_80010B78((void *)0, -1, lbl_8036B918);
     f27 = lbl_8036B970 + fy;
@@ -2177,7 +2177,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     fn_8001003C((s32)f28, (s32)(lbl_8036B968 + fy), 1, 1, 0, fn_8000E0E4(lbl_80280D38 + 0xE2), lbl_8036B918,
                 lbl_8036B910);
 
-    val = fn_8014C078(lbl_80330708);
+    val = fn_8014C078(gBattleState);
     fn_8000E0E4(lbl_80280D38 + 0xE2);
     tw = fn_80010B78((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
@@ -2186,7 +2186,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     fn_8001003C((s32)f31, (s32)(lbl_8036B978 + fy), 1, 1, 0, fn_8000E0E4(lbl_80280D38 + 0xF9), lbl_8036B918,
                 lbl_8036B910);
 
-    val = fn_8014BEE0(lbl_80330708);
+    val = fn_8014BEE0(gBattleState);
     fn_8000E0E4(lbl_80280D38 + 0xF9);
     tw = fn_80010B78((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)(lbl_8036B97C + fy), 6, 1, 0,
@@ -2197,7 +2197,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     fn_8001003C((s32)f28, (s32)f27, 0x19, 1, 0, fn_8000E0E4(lbl_80280D38 + 0x10E), lbl_8036B934,
                 lbl_8036B910);
 
-    val = fn_8014BC10(lbl_80330708);
+    val = fn_8014BC10(gBattleState);
     fn_8000E0E4(lbl_80280D38 + 0x10E);
     tw = fn_80010B78((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
@@ -2214,7 +2214,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
 
-    switch (lbl_80330708[0x10]) {
+    switch (gBattleState[0x10]) {
     case 0x5B:
         label = fn_8000E0E4(lbl_80280D38 + 0x125);
         break;
@@ -2264,7 +2264,7 @@ void fn_801F7194(void *arg0) {
 }
 
 void fn_801F7200(void *arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80280D38[];
     void fn_80147188(s32);
     void fn_8006EEFC(void *, void *);
@@ -2277,7 +2277,7 @@ void fn_801F7200(void *arg0) {
     fn_80147188(0x3E8);
     obj[0] = 0;
     obj[1] = 0;
-    base = lbl_80330708;
+    base = gBattleState;
     t0 = *(u32 *)(base + 0x60);
     obj[3] = *(u32 *)(base + 0x64);
     obj[2] = t0;
@@ -2868,8 +2868,8 @@ void fn_801F8798(s32 arg0) {
 }
 
 s32 fn_801F87C4(void) {
-    extern u8 lbl_80330708[];
-    return lbl_80330708[0x10] == 0x20;
+    extern u8 gBattleState[];
+    return gBattleState[0x10] == 0x20;
 }
 
 void fn_801F87E0(void) {
@@ -2948,9 +2948,9 @@ void fn_801F894C(s32 arg0) {
 void fn_801F897C(void) {
     void fn_8014D2B0(void *, s32);
     void fn_8002D548(void);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
 
-    fn_8014D2B0(lbl_80330708, 0x1F);
+    fn_8014D2B0(gBattleState, 0x1F);
     fn_8002D548();
 }
 
@@ -3679,7 +3679,7 @@ void fn_801F9E00(void *arg0) {
     void fn_8014DBE0(void *, s32, u8 *, u16 *, s32 *);
     s32 fn_8014DC04(void *);
     void fn_801FAA9C(void *, void *, s32, void *);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80281028[];
     extern f32 lbl_8036BA00;
     extern f32 lbl_8036BA04;
@@ -3720,7 +3720,7 @@ void fn_801F9E00(void *arg0) {
     f32 f;
     s32 count;
 
-    temp_r28 = lbl_80330708 + 0x3C4;
+    temp_r28 = gBattleState + 0x3C4;
     obj = (Obj *)arg0;
     var_r27 = 0;
     packet.kind = 0xFF;
@@ -5265,7 +5265,7 @@ extern u16 lbl_80280B58[18];
 extern u16* lbl_8027F730;
 extern u16* lbl_8029A910;
 extern u8 lbl_8027F710[32];
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 u8 fn_801F19A0(void) {
     s32 fn_8000D354(void *);
@@ -5273,7 +5273,7 @@ u8 fn_801F19A0(void) {
     s8 var_r0;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5300,7 +5300,7 @@ u8 fn_801F1A2C(void) {
     void *temp_r3;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5327,7 +5327,7 @@ u8 fn_801F1AB8(void) {
     s8 var_r0;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5354,7 +5354,7 @@ u8 fn_801F1B44(void) {
     s8 var_r0;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5381,7 +5381,7 @@ u8 fn_801F1BD0(void) {
     void *temp_r3;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5408,7 +5408,7 @@ u8 fn_801F1C5C(void) {
     s8 var_r0;
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5438,7 +5438,7 @@ u8 fn_801F1CE8(void)
 
     temp_r3 = fn_8000D354(lbl_8027F710 + 0x15);
 
-    switch ((s32)lbl_80330708[0xA6]) {
+    switch ((s32)gBattleState[0xA6]) {
     case 3:
         var_r0 = 3;
         break;
@@ -5462,7 +5462,7 @@ u8 fn_801F1CE8(void)
 
 #include "common.h"
 extern u8 lbl_8027F710[];
-extern u8 lbl_80330708[];
+extern u8 gBattleState[];
 #include "global.h"
 #include "unit.h"
 

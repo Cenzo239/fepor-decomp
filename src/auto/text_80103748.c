@@ -36,11 +36,11 @@ void *fn_801037A0(void) {
 
 s32 fn_801037B0(void) {
     void fn_80105D4C(void *, u8);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     void *p;
     s32 i;
 
-    p = lbl_80330708 + 0x74;
+    p = gBattleState + 0x74;
     i = 0;
     do {
         fn_80105D4C(p, (u8)i);
@@ -173,7 +173,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     extern u8 lbl_802734D0[];
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     s32 temp_r31;
     u8 *temp_r5;
     u8 *table;
@@ -187,9 +187,9 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     }
     table = gBattleMap;
     dst = gUiContext;
-    f1 = *(f32 *)(lbl_80330708 + 0x534);
+    f1 = *(f32 *)(gBattleState + 0x534);
     str = lbl_802734D0;
-    f0 = *(f32 *)(lbl_80330708 + 0x538);
+    f0 = *(f32 *)(gBattleState + 0x538);
     temp_r5 = table + (s8)(s32)f1 + (((s32)(s8)(s32)f0) << 6);
     dst[0x14] = temp_r5[0xD];
     temp_r31 = fn_8000BCA4(str + 0xC4);
@@ -219,14 +219,14 @@ s32 fn_80103A74(void) {
     M2C_UNK fn_801EAABC(M2C_UNK, s32);
     s32 strlen(void *);
     extern u8 lbl_802734D0[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
 
     s32 temp_r31;
     M2C_UNK spC;
     M2C_UNK sp8;
 
     temp_r31 = fn_8000BCA4((char *) &lbl_802734D0 + 0xC4);
-    String_Init(&spC, lbl_80330708 + 0x504, &sp8);
+    String_Init(&spC, gBattleState + 0x504, &sp8);
     fn_800C992C(&spC, &lbl_802734D0[0x157], strlen((u8 *)lbl_802734D0 + 0x157));
     fn_800A8400();
     fn_8000C070(temp_r31, 0);
@@ -453,21 +453,15 @@ s32 fn_80103EA4(s32 arg0, void *arg1) {
 
 #pragma global_optimizer off
 char *fn_80103FA4(s32 arg0, void *arg1) {
-    void sprintf(void *, void *, ...);
+    void fn_80231D94(void *, void *, ...);
     extern char lbl_8032BAD8[];
     extern u8 lbl_802734D0[];
     extern f32 lbl_8036A0E8;
-    u8 *fmt;
-    f32 scale;
     void *p;
-    f32 val;
 
-    fmt = lbl_802734D0;
-    scale = lbl_8036A0E8;
     p = *(void **)((u8 *)arg1 + 0x18);
     p = *(void **)((u8 *)p + 0x3c);
-    val = *(f32 *)((u8 *)p + 8);
-    sprintf(lbl_8032BAD8, fmt + 0x1eb, val * scale);
+    fn_80231D94(lbl_8032BAD8, lbl_802734D0 + 0x1eb, *(f32 *)((u8 *)p + 8) * lbl_8036A0E8);
     return lbl_8032BAD8;
 }
 #pragma global_optimizer reset
@@ -944,22 +938,35 @@ void* fn_8010494C(void* arg0) {
 }
 
 u8 *fn_80104970(u8 *arg0) {
-    u8 is_double;
-    u8 b0;
-    u8 b1;
+    u8 flag;
+    u8 c;
 
-    b0 = arg0[0];
-    if ((b0 >= 0x81U && b0 <= 0x9FU) || (b0 >= 0xE0U && b0 <= 0xFCU)) {
-        b1 = arg0[1];
-        if ((b1 >= 0x40U && b1 <= 0x7EU) || (b1 >= 0x80U && b1 <= 0xFCU)) {
-            is_double = 1;
-        } else {
-            is_double = 0;
-        }
-    } else {
-        is_double = 0;
-    }
-    return arg0 + 1 + (is_double != 0);
+    c = arg0[0];
+    if (c < 0x81U)
+        goto fail;
+    if (c <= 0x9FU)
+        goto trail;
+    if (c < 0xE0U)
+        goto fail;
+    if (c > 0xFCU)
+        goto fail;
+trail:
+    c = arg0[1];
+    if (c < 0x40U)
+        goto fail;
+    if (c <= 0x7EU)
+        goto success;
+    if (c < 0x80U)
+        goto fail;
+    if (c > 0xFCU)
+        goto fail;
+success:
+    flag = 1;
+    goto done;
+fail:
+    flag = 0;
+done:
+    return arg0 + 1 + (flag != 0);
 }
 
 #pragma use_lmw_stmw on
@@ -1260,30 +1267,27 @@ s32 fn_801053E4(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
 }
 #pragma use_lmw_stmw on
 s32 fn_80105474(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, u16)) {
-    s32 lo;
-    u8 (*pred)(s32, u16);
-    s32 mid;
-    s32 mid_ptr;
-    s32 count;
     s32 key;
+    s32 count;
+    s32 mid_ptr;
+    s32 mid;
+    u8 (*pred)(s32, u16);
 
-    lo = arg0;
-    count = arg1 - lo;
+    count = (arg1 - arg0) / 16;
     key = *arg2;
     pred = arg3;
-    count /= 16;
     while (count > 0) {
         mid = count / 2;
-        mid_ptr = lo + (mid << 4);
+        mid_ptr = arg0 + (mid << 4);
         if (pred(mid_ptr, (u16)key) != 0) {
-            lo = mid_ptr + 0x10;
+            arg0 = mid_ptr + 0x10;
             count -= mid + 1;
         } else {
             count = mid;
         }
     }
-    return lo;
+    return arg0;
 }
-#pragma use_lmw_stmw reset
+#pragma use_lmw_stmw off
 extern u16 lbl_802734D0;
 extern u32 jumptable_8028F290[];

@@ -309,9 +309,9 @@ void fn_80132C14(s32 arg0) {
     void *fn_8014D8FC(void *);
     M2C_UNK fn_80162054(void);
     M2C_UNK fn_8016A5DC(s32, s32, f32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     fn_80162054();
-    fn_8016A5DC(arg0, M2C_FIELD(fn_8014D8FC(lbl_80330708), s32 *, 0x44), 90.0f);
+    fn_8016A5DC(arg0, M2C_FIELD(fn_8014D8FC(gBattleState), s32 *, 0x44), 90.0f);
 }
 
 #pragma global_optimizer off
@@ -1114,7 +1114,7 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     extern u8 lbl_80276354[360];
     extern u8 lbl_802764BC[];
     extern u8 lbl_80291794[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     void *fn_8000D354(void *);
     void fn_80134E48(void *, s32, s32, s32, s32, s32);
     void sprintf(void *, void *, u8, ...);
@@ -1122,7 +1122,7 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     fn_80134E48(arg0, arg2, arg3, arg4, arg5, arg6);
     *(void **)arg0 = lbl_80291794;
     *(s32 *)((char *)arg0 + 0x4c) = arg1;
-    sprintf(lbl_802764BC + 0x218, lbl_802764BC + 0x228, *(u8 *)((char *)lbl_80330708 + 0x10));
+    sprintf(lbl_802764BC + 0x218, lbl_802764BC + 0x228, *(u8 *)((char *)gBattleState + 0x10));
     *(void **)((char *)arg0 + 0x50) = fn_8000D354(lbl_802764BC + 0x218);
     if (*(void **)((char *)arg0 + 0x50) == NULL) {
         *(void **)((char *)arg0 + 0x50) = lbl_80276354;
@@ -4067,7 +4067,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
     };
     extern u8 lbl_802768A0[];
     extern u8 lbl_803200AC[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern f32 lbl_8036A674;
     extern f32 lbl_8036A6A0;
     u8 color[4];
@@ -4099,7 +4099,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
     lineHeight = ((Obj *)arg0)->GetLineHeight();
     y = (lineHeight - fn_800102BC(-1, lbl_8036A674)) >> 1;
     flag = 0;
-    if (!fn_8014D8DC(lbl_80330708) || fn_800C3D48(lbl_803200AC) < 0) {
+    if (!fn_8014D8DC(gBattleState) || fn_800C3D48(lbl_803200AC) < 0) {
         flag = 1;
     }
     shadow = 6;

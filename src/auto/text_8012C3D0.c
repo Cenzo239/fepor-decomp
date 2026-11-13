@@ -375,7 +375,7 @@ void fn_8012CC0C(void *arg0)
 
 void fn_8012CCA4(void *arg0)
 {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80275AC0[];
 
     u8 *object;
@@ -385,7 +385,7 @@ void fn_8012CCA4(void *arg0)
     s32 count;
 
     object = (u8 *)arg0;
-    global = lbl_80330708;
+    global = gBattleState;
 
     if ((signed char)object[0x62] < 0) {
         *(u32 *)(global + 0xB0) = 0;
@@ -1081,7 +1081,7 @@ void fn_8012DFA8(void *arg0) {
     extern u8 lbl_80291404[];
     extern u8 gUnitLists[];
     extern u8 gUiContext[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80330EAC[];
     extern s16 lbl_8036A4E0;
     extern s16 lbl_8036A4E4;
@@ -1524,11 +1524,11 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 0x1C) = entry;
-        self[0x66] = (s8)(lbl_80330708[0xAA] & 0x7F);
-        if (lbl_80330708[0xAA] & 0x80) {
+        self[0x66] = (s8)(gBattleState[0xAA] & 0x7F);
+        if (gBattleState[0xAA] & 0x80) {
             self[0x67] = (u8)-1;
         }
-        self[0x63] = lbl_80330708[0xA9];
+        self[0x63] = gBattleState[0xA9];
     }
 
     *(s16 *)(self + 0x68) = (s16)(self[0x63] * 0x120);
@@ -1536,14 +1536,14 @@ void fn_8012DFA8(void *arg0) {
     if ((s32)mode >= 3 || (s32)mode < 1) {
         fn_801305F8(self);
     }
-    if (*(void **)(lbl_80330708 + 0xB0) == NULL) {
+    if (*(void **)(gBattleState + 0xB0) == NULL) {
         sel = -1;
     } else {
         sel = 0;
         slot = *(u8 **)(self + 0x3C);
         i = 0;
         while (i < self[0x61]) {
-            if (*(void **)slot == *(void **)(lbl_80330708 + 0xB0)) {
+            if (*(void **)slot == *(void **)(gBattleState + 0xB0)) {
                 break;
             }
             slot += 0x24;

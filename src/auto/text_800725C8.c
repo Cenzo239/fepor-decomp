@@ -155,14 +155,14 @@ void fn_80072900(s32 arg0) {
 }
 
 void fn_8007293C(void) {
-    extern u8 lbl_80330708[];
-    lbl_80330708[0x54] = (u8)(lbl_80330708[0x54] & 0x7F);
+    extern u8 gBattleState[];
+    gBattleState[0x54] = (u8)(gBattleState[0x54] & 0x7F);
 }
 
 void fn_80072954(void *arg0) {
     void fn_801D3B14(void *);
-    extern u8 lbl_80330708[];
-    lbl_80330708[0x54] |= 0x80;
+    extern u8 gBattleState[];
+    gBattleState[0x54] |= 0x80;
     fn_801D3B14(arg0);
 }
 

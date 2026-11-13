@@ -1211,13 +1211,13 @@ void *fn_80014FF8(void *arg0) {
 
 s32 fn_8001512C(u8 *arg0) {
     u8 fn_8014D8BC(void *);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u32 gUnitLists[];
     s32 count;
     void *node;
     s32 kind;
 
-    if ((u8)fn_8014D8BC(lbl_80330708) == 0) {
+    if ((u8)fn_8014D8BC(gBattleState) == 0) {
         return 0;
     }
     kind = arg0[1];
@@ -1289,7 +1289,7 @@ void fn_800152F8(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6, 
 
 #pragma global_optimizer off
 void fn_80015320(u8 arg0, u8 *arg1) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     u8 var_r5;
     u8 r6;
     u8 var_r0;
@@ -1306,7 +1306,7 @@ void fn_80015320(u8 arg0, u8 *arg1) {
     *a++ = var_r5;
     *a++ = var_r5;
     *a = var_r5;
-    r6 = lbl_80330708[0x11];
+    r6 = gBattleState[0x11];
     switch (arg0) {
     case 0:
         arg1[r6] = 1;
@@ -2481,7 +2481,7 @@ extern u16 lbl_80367196;
 extern s32 lbl_803671A8;
 #include "common.h"
 extern u32 gUnitLists[];
-extern u32 lbl_80330708[];
+extern u32 gBattleState[];
 #include "global.h"
 #include "common.h"
 extern s32 lbl_80367184;

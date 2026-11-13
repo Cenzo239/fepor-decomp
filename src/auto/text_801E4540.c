@@ -528,7 +528,7 @@ void TabMenu_DrawTab2(void *arg0) {
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80332000[];
     extern s16 lbl_8036833C;
 
@@ -592,8 +592,8 @@ void TabMenu_DrawTab2(void *arg0) {
     y0 = (s16)(8 - rem);
     y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
-    tbl74 = lbl_80330708 + 0x74;
-    tbl84 = lbl_80330708 + 0x84;
+    tbl74 = gBattleState + 0x74;
+    tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
@@ -899,7 +899,7 @@ void TabMenu_DrawTab1(void *arg0) {
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80332000[];
     extern s16 lbl_8036833C;
 
@@ -963,8 +963,8 @@ void TabMenu_DrawTab1(void *arg0) {
     y0 = (s16)(8 - rem);
     y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
-    tbl74 = lbl_80330708 + 0x74;
-    tbl84 = lbl_80330708 + 0x84;
+    tbl74 = gBattleState + 0x74;
+    tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
@@ -1116,7 +1116,7 @@ void TabMenu_DrawTab0(void *arg0) {
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80332000[];
     extern s16 lbl_8036833C;
 
@@ -1178,8 +1178,8 @@ void TabMenu_DrawTab0(void *arg0) {
     y0 = (s16)(8 - rem);
     y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
-    tbl74 = lbl_80330708 + 0x74;
-    tbl84 = lbl_80330708 + 0x84;
+    tbl74 = gBattleState + 0x74;
+    tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
@@ -2431,7 +2431,7 @@ void fn_801E960C(void *arg0) {
     void fn_80013A6C(void *);
     void fn_800138F4(void);
     void fn_800C08AC(void *, void *);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_8027EB78[];
     void **node;
     s8 idx;
@@ -2451,7 +2451,7 @@ void fn_801E960C(void *arg0) {
             idx += 1;
         }
     }
-    fn_80105D4C(lbl_80330708 + 0x84, *(u8 *)node[2]);
+    fn_80105D4C(gBattleState + 0x84, *(u8 *)node[2]);
     fn_80013A90(lbl_8027EB78 + 0x1C7);
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x10));
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x14));
@@ -2760,15 +2760,15 @@ void fn_801E9D0C(void) {
 
 void fn_801E9D3C(s32 arg0) {
     void fn_8014C718(void *, s32);
-    extern u8 lbl_80330708[16];
-    fn_8014C718(lbl_80330708, arg0);
+    extern u8 gBattleState[16];
+    fn_8014C718(gBattleState, arg0);
 }
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_801E9D68(void) {
     extern u8 lbl_8027EB78[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     void fn_80013A90(void *);
     void fn_800138F4(void);
@@ -2780,7 +2780,7 @@ void fn_801E9D68(void) {
     u32 v8c;
     u32 v88;
 
-    base = lbl_80330708;
+    base = gBattleState;
     v84 = *(u32 *)(base + 0x84);
     v88 = *(u32 *)(base + 0x88);
     v8c = *(u32 *)(base + 0x8C);

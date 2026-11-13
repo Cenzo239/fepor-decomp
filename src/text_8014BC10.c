@@ -81,11 +81,11 @@ extern u8 gUnits[];
 #include "ef.h"
 #include "global.h"
 
-extern u8 lbl_80330708[];
+extern u8 gBattleState[];
 extern u8 lbl_80277060[];
 extern u8 lbl_8032BB58[];
 #include "global.h"
-extern u8 lbl_80330708[];
+extern u8 gBattleState[];
 
 u8 fn_8014BC10(void *arg0) {
     void *fn_80019F04(u8);

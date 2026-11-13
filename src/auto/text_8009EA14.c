@@ -19,7 +19,7 @@
   extern f32 lbl_803693D8;
   extern f32 lbl_803693E4;
   
-  extern u8 lbl_80330708[1400];
+  extern u8 gBattleState[1400];
   
   extern u16 *lbl_803674E0;
   
@@ -81,8 +81,8 @@ void fn_8009EAB4(s32 arg0) {
         fn_800056CC((const char *)(lbl_8026D8D8 + 0x178));
         return;
     }
-    a = (s8)(s32)*(f32 *)(lbl_80330708 + 0x524);
-    b = (s8)(s32)*(f32 *)(lbl_80330708 + 0x528);
+    a = (s8)(s32)*(f32 *)(gBattleState + 0x524);
+    b = (s8)(s32)*(f32 *)(gBattleState + 0x528);
     fn_801E0B48(&lbl_803682F0, (s8)(a % 5), (s8)(b % 5), arg0);
 }
 
@@ -104,7 +104,7 @@ void fn_8009EAB4(s32 arg0) {
           fn_800056CC((const char *)(lbl_8026D8D8 + 0x178));
           return;
       }
-      v = (s8)(s32)*(f32 *)(lbl_80330708 + 0x524);
+      v = (s8)(s32)*(f32 *)(gBattleState + 0x524);
       fn_801E1018(&lbl_803682F0, (u8)(v % 5), arg0, v);
   }
 
@@ -126,7 +126,7 @@ void fn_8009EC5C(s32 arg0) {
         fn_800056CC((const char *)(lbl_8026D8D8 + 0x178));
         return;
     }
-    v = (s8)(s32)*(f32 *)(lbl_80330708 + 0x524);
+    v = (s8)(s32)*(f32 *)(gBattleState + 0x524);
     fn_801E2014(&lbl_803682F0, (u8)(v % 5), arg0, v);
 }
 

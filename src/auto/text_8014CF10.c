@@ -86,11 +86,11 @@ extern u16 gUnits[];
 #include "ef.h"
 #include "global.h"
 
-extern u8 lbl_80330708[];
+extern u8 gBattleState[];
 extern u8 lbl_80277060[];
 extern u8 lbl_8032BB58[];
 #include "global.h"
-extern u8 lbl_80330708[];
+extern u8 gBattleState[];
 
 void fn_8014CF10(Obj *arg0, s8 arg1, s8 arg2) {
     {
@@ -296,8 +296,8 @@ void fn_8014D3B4(void *arg0) {
 void fn_8014D678(void *arg0) {
  *(s32 *)((u8 *)arg0 + 0x64) = 0;
  *(s32 *)((u8 *)arg0 + 0x60) = 0;
- lbl_80330708[0x55] = 0;
- lbl_80330708[0x51] = 0;
+ gBattleState[0x55] = 0;
+ gBattleState[0x51] = 0;
 }
 
 void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
@@ -453,8 +453,8 @@ void fn_8014D8FC(void *arg0) {
 }
 
 s32 fn_8014DA68(void) {
-    extern u8 lbl_80330708[];
-    return ((lbl_80330708[0x9F] >> 7) & 1) ? 1 : 0;
+    extern u8 gBattleState[];
+    return ((gBattleState[0x9F] >> 7) & 1) ? 1 : 0;
 }
 
 void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {
@@ -582,7 +582,7 @@ void fn_8014DF68(void *arg0)
         fn_8000C070(arg0, 0x63);
     } else {
         fn_800BDBC8(
-            (u8 *)lbl_80330708 + 0xB4,
+            (u8 *)gBattleState + 0xB4,
             lbl_80277238 + 0x79
         );
 

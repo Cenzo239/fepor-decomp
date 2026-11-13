@@ -651,7 +651,7 @@ return 1;
 void fn_801A442C(void *arg0) {
     s32 fn_8005B580(s32, u8 *, s32);
     s32 fn_8005B4D8(u8);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_8036728A;
     u8 *self;
     u8 *unit;
@@ -668,7 +668,7 @@ void fn_801A442C(void *arg0) {
     if ((u32)ptr == 0) {
         *(s32 *)(self + 0xCB0) = 0;
     } else {
-        *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, lbl_80330708 + 0x504, 0);
+        *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, gBattleState + 0x504, 0);
     }
     *(s32 *)(self + 0xCB4) = fn_8005B4D8(lbl_8036728A);
     *(s32 *)(self + 0xCB8) = lbl_8036728A;
@@ -936,7 +936,7 @@ void Battle_ResolveRounds(s32 battle) {
     void fn_80034068(s32, s32, s32);
     u8 fn_80105BC0(s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     s32 self;
     u8 eitherDead;
     void *unit;
@@ -1044,7 +1044,7 @@ final:
         unit = *(void **)(self + 0x560);
         *(u16 *)((u8 *)unit + 0x22A) = *(u16 *)((u8 *)unit + 0x22A) + 1;
         unit = *(void **)(self + 0x560);
-        *(u8 *)((u8 *)unit + 0x234) = lbl_80330708[0x10];
+        *(u8 *)((u8 *)unit + 0x234) = gBattleState[0x10];
         return;
     }
     if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -1054,7 +1054,7 @@ final:
         unit = *(void **)(self + 0x280);
         *(u16 *)((u8 *)unit + 0x22A) = *(u16 *)((u8 *)unit + 0x22A) + 1;
         unit = *(void **)(self + 0x280);
-        *(u8 *)((u8 *)unit + 0x234) = lbl_80330708[0x10];
+        *(u8 *)((u8 *)unit + 0x234) = gBattleState[0x10];
     }
 }
 
@@ -1066,7 +1066,7 @@ void fn_801A5008(s32 arg0) {
     void fn_801A601C(s32, s32, s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
     extern u8 lbl_802EFDB8[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     u8 *var_r3;
     u8 *var_r5;
     s32 temp_r0;
@@ -1138,7 +1138,7 @@ void fn_801A5008(s32 arg0) {
             goto block_18;
         }
     }
-    temp_r0 = (s32)((lbl_80330708[0x9C] >> 6) & 3);
+    temp_r0 = (s32)((gBattleState[0x9C] >> 6) & 3);
     if (temp_r0 != 1) {
         if (temp_r0 < 1) {
             if (temp_r0 < 0) {
@@ -1169,7 +1169,7 @@ block_18:
     *(u32 *)(arg0 + 0xCAC) |= 0x80000000;
     return;
 block_19:
-    if ((lbl_80330708[0x9F] >> 4) & 1) {
+    if ((gBattleState[0x9F] >> 4) & 1) {
         *(u32 *)(arg0 + 0xCAC) |= 0x40000000;
     }
     *(u32 *)(arg0 + 0xCAC) &= 0x7FFFFFFF;
@@ -1188,7 +1188,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     void fn_801A6C18(s32, u8, u8);
     void fn_801A8268(s32);
     extern u8 lbl_802EFDB8[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_8036728A;
     f32 sp14[3];
     f32 sp8[3];
@@ -1277,7 +1277,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     if ((u32)ptr == 0) {
         *(s32 *)(self + 0xCB0) = 0;
     } else {
-        *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, lbl_80330708 + 0x504, 0);
+        *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, gBattleState + 0x504, 0);
     }
     *(s32 *)(self + 0xCB4) = fn_8005B4D8(lbl_8036728A);
     *(s32 *)(self + 0xCB8) = lbl_8036728A;
@@ -1296,7 +1296,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
             goto block_26;
         }
     }
-    temp_r0 = (s32)((lbl_80330708[0x9C] >> 6) & 3);
+    temp_r0 = (s32)((gBattleState[0x9C] >> 6) & 3);
     if (temp_r0 != 1) {
         if (temp_r0 < 1) {
             if (temp_r0 >= 0) {
@@ -1327,7 +1327,7 @@ block_26:
     *(u32 *)(self + 0xCAC) |= 0x80000000;
     goto after_blocks;
 block_27:
-    if ((lbl_80330708[0x9F] >> 4) & 1) {
+    if ((gBattleState[0x9F] >> 4) & 1) {
         *(u32 *)(self + 0xCAC) |= 0x40000000;
     }
     *(u32 *)(self + 0xCAC) &= 0x7FFFFFFF;

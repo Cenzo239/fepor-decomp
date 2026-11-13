@@ -19,7 +19,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -311,7 +311,7 @@ void fn_80083F08(void *arg0) {
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 
-    t = fn_80037904(unit, fn_801660A8(lbl_80330708 + 0x3C0));
+    t = fn_80037904(unit, fn_801660A8(gBattleState + 0x3C0));
     if (t >= lbl_803695F8) {
         tex = *fn_8006EDD8(lbl_803674F4, 0x22);
         sh = (f32)tex[0] * lbl_80369430;

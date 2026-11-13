@@ -210,7 +210,7 @@ void fn_80005C8C(void) {
     extern u8 lbl_80267B80[];
     extern u8 lbl_802F0308[];
     extern u8 lbl_802F0350[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80367AEC;
     extern u8 lbl_80367AEE;
     extern u8 lbl_80367AF6;
@@ -242,24 +242,24 @@ void fn_80005C8C(void) {
     lbl_80367AEC = 0x64;
     lbl_80367AEE = 0x64;
     fn_80146AF0();
-    lbl_80330708[0xA1] = 0x40;
+    gBattleState[0xA1] = 0x40;
 }
 
 void fn_80005D88(void) {
-    extern u16 lbl_80330708[];
+    extern u16 gBattleState[];
     void *temp_r31;
 
-    temp_r31 = (u16 *)lbl_80330708 + 0x9C / sizeof(u16);
+    temp_r31 = (u16 *)gBattleState + 0x9C / sizeof(u16);
     fn_801998B0(temp_r31);
     fn_80199818(temp_r31);
 }
 
 void fn_80005DC8(void) {
     unsigned long long fn_80006798(void);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
 
-    *(unsigned long long *)(lbl_80330708 + 0x58) += fn_80006798();
-    *(unsigned long long *)(lbl_80330708 + 0x60) += fn_80006798();
+    *(unsigned long long *)(gBattleState + 0x58) += fn_80006798();
+    *(unsigned long long *)(gBattleState + 0x60) += fn_80006798();
 }
 
 u8 fn_80005E2C(void) {
@@ -281,8 +281,8 @@ u8 fn_80005E2C(void) {
 }
 
 s32 fn_80005E98(void) {
-    extern u8 lbl_80330708[];
-    return lbl_80330708[0x10] == 0x1D;
+    extern u8 gBattleState[];
+    return gBattleState[0x10] == 0x1D;
 }
 
 void fn_80005EB4(void) {
@@ -313,7 +313,7 @@ void fn_80005F04(void)
     void fn_80016DE0(void);
 
     extern u8 lbl_803682F0;
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_802832FC[];
 
     u8 *object;
@@ -333,7 +333,7 @@ void fn_80005F04(void)
 
     switch (type) {
     case 10:
-        data = lbl_80330708;
+        data = gBattleState;
         data[0x9F] |= 8;
 
         fn_8014D2B0(object[0x64]);
@@ -370,7 +370,7 @@ void fn_80005F04(void)
             state = (u8 *)fn_8000C0C0(lbl_802832FC);
             *(s32 *)(state + 0x60) = 0xE;
         } else {
-            data = lbl_80330708;
+            data = gBattleState;
 
             x = (s8)data[0x52];
             y = (s8)data[0x53];
@@ -476,6 +476,6 @@ void fn_80006220(s32 arg0) {
 #include <common.h>
 extern u8 lbl_803682F0[8];
 extern u32 jumptable_80283748[];
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 extern u8 lbl_802832FC[1100];
 extern f64 lbl_80368B60;

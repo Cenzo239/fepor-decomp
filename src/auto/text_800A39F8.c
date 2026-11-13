@@ -1108,7 +1108,7 @@ void fn_800A5DC4(void *arg0)
     void fn_800C426C(void *);
     void *fn_8006E658(void);
     void fn_80221824(u8, void *, s32, void *);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern s32 gGameFlags;
     extern f32 lbl_80369A68;
     extern f32 lbl_80369A80;
@@ -1146,8 +1146,8 @@ void fn_800A5DC4(void *arg0)
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
         var_r7 = 0;
-        temp_r0 = (s32)((f32)(s8)lbl_80330708[0xA1] * lbl_80369A68);
-        temp_r8 = (s8)lbl_80330708[0xA1] - (u16)temp_r0;
+        temp_r0 = (s32)((f32)(s8)gBattleState[0xA1] * lbl_80369A68);
+        temp_r8 = (s8)gBattleState[0xA1] - (u16)temp_r0;
         count = temp_r8 % 4;
         for (var_ctr = 2; var_ctr != 0; var_ctr--) {
             if (var_r7 < count) {
@@ -1229,7 +1229,7 @@ void fn_800A6114(void *arg0)
     void fn_80221824(u8, void *, s32, void *);
     u32 OSGetTick(void);
     extern u8 lbl_8026E1B0[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern s32 gGameFlags;
     extern f32 lbl_80369A68;
     extern f32 lbl_80369A80;
@@ -1261,8 +1261,8 @@ void fn_800A6114(void *arg0)
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
         var_r7 = 0;
-        temp_r0 = (s32)((f32)(s8)lbl_80330708[0xA1] * lbl_80369A90);
-        temp_r8 = (s8)lbl_80330708[0xA1] - (u16)temp_r0;
+        temp_r0 = (s32)((f32)(s8)gBattleState[0xA1] * lbl_80369A90);
+        temp_r8 = (s8)gBattleState[0xA1] - (u16)temp_r0;
         count = temp_r8 % 4;
         for (var_ctr = 2; var_ctr != 0; var_ctr--) {
             if (var_r7 < count) {
@@ -1575,7 +1575,7 @@ void fn_800A6B70(void *arg0) {
 }
 
 void fn_800A6C24(void *arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     void fn_8000C070(void *, s32);
@@ -1584,8 +1584,8 @@ void fn_800A6C24(void *arg0) {
     u8 id;
     void *unit;
 
-    sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
-    sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
+    sx = (s8)*(f32 *)(gBattleState + 0x524);
+    sy = (s8)*(f32 *)(gBattleState + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         unit = gUnits + (id - 1) * 0x280;
@@ -1621,7 +1621,7 @@ void fn_800A6CC4(void *arg0) {
 }
 
 void fn_800A6D78(void *arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     void fn_8000C070(void *, s32);
@@ -1630,8 +1630,8 @@ void fn_800A6D78(void *arg0) {
     u8 id;
     void *unit;
 
-    sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
-    sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
+    sx = (s8)*(f32 *)(gBattleState + 0x524);
+    sy = (s8)*(f32 *)(gBattleState + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         unit = &gUnits[(id - 1) * 0x280];
@@ -1648,7 +1648,7 @@ void fn_800A6D78(void *arg0) {
 }
 
 void fn_800A6E20(void *arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     void fn_8000C070(void *, s32);
@@ -1657,8 +1657,8 @@ void fn_800A6E20(void *arg0) {
     u8 id;
     void *unit;
 
-    sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
-    sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
+    sx = (s8)*(f32 *)(gBattleState + 0x524);
+    sy = (s8)*(f32 *)(gBattleState + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         unit = &gUnits[(id - 1) * 0x280];
@@ -1680,7 +1680,7 @@ void fn_800A6E20(void *arg0) {
 }
 
 void fn_800A6F10(void *arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     s8 sx;
@@ -1688,8 +1688,8 @@ void fn_800A6F10(void *arg0) {
     u8 id;
     void *var;
 
-    sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
-    sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
+    sx = (s8)*(f32 *)(gBattleState + 0x524);
+    sy = (s8)*(f32 *)(gBattleState + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         var = &gUnits[(id - 1) * 0x280];

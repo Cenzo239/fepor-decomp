@@ -19,7 +19,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -220,7 +220,7 @@ extern f32 lbl_80369844;
     u8 temp_r5;
 
     temp_r5 = *(u8 *)((u8 *)arg0 + 0x3D);
-    if ((temp_r5 != 0) && ((u32) *(u32 *)((u8 *)arg0 + 0x38) != 0U) && ((u32) (((u8) lbl_80330708[0x9C] >> 2U) & 1) != 1)) {
+    if ((temp_r5 != 0) && ((u32) *(u32 *)((u8 *)arg0 + 0x38) != 0U) && ((u32) (((u8) gBattleState[0x9C] >> 2U) & 1) != 1)) {
         temp_r0 = (temp_r5 * 2) & 0x1FE;
         var_r31 = temp_r0;
         if (temp_r0 > 0xFF) {
@@ -252,7 +252,7 @@ extern f32 lbl_80369844;
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
         fn_80009B28();
-        if (*(s16 *)(lbl_80330708 + 0x12) != 0) {
+        if (*(s16 *)(gBattleState + 0x12) != 0) {
             temp_f29 = *(f32 *)((u8 *)arg0 + 0x30);
             temp_f31 = lbl_80369820 + *(f32 *)((u8 *)arg0 + 0x34);
             temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
@@ -283,7 +283,7 @@ extern f32 lbl_80369844;
             fn_80009B28();
             temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
             temp_f30 = lbl_80369828 + temp_f2;
-            var_r26 = *(s16 *)(lbl_80330708 + 0x12);
+            var_r26 = *(s16 *)(gBattleState + 0x12);
             temp_f29 = lbl_803697FC + *(f32 *)((u8 *)arg0 + 0x30);
             temp_r25_2 = *(u32 *)((u8 *)arg0 + 0x38);
             Prim2D_Begin();
@@ -349,7 +349,7 @@ s32 fn_8009ADC0(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     temp_r29 = arg1;
     sp9 = 0;
     sp8 = 0;
-    fn_8014C880(lbl_80330708, 0, &sp9, &sp8);
+    fn_8014C880(gBattleState, 0, &sp9, &sp8);
     Prim2D_Begin();
     Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
     Prim2D_BindTexture(saved, 3, 0x11);
@@ -449,8 +449,8 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     Prim2D_SetColorByte((u8)arg2);
     Prim2D_PrepareTex();
 
-    y = (s8)(s32)*(f32 *)(lbl_80330708 + 0x528);
-    x = (s8)(s32)*(f32 *)(lbl_80330708 + 0x524);
+    y = (s8)(s32)*(f32 *)(gBattleState + 0x528);
+    x = (s8)(s32)*(f32 *)(gBattleState + 0x524);
     kind = *(u8 *)(gBattleMap + x + (y << 6) + 0x100D);
     if (kind < 0) {
         goto after_cases;

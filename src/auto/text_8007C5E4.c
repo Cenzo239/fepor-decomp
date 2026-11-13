@@ -779,7 +779,7 @@ block_5:
     }
 }
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 void fn_8007DF6C(void *arg0) {
     void fn_8004BE88(s32, s32);
     void fn_8007B990(void *);
@@ -790,8 +790,8 @@ void fn_8007DF6C(void *arg0) {
 
     temp_r31 = *(void **)((u8 *)arg0 + 0x30);
     fn_8004BE88(*(s32 *)((u8 *)temp_r31 + 0x58), 1);
-    lbl_80330708[0xA8] = *(u8 *)((u8 *)temp_r31 + 0x9);
-    *(s32 *)(lbl_80330708 + 0xAC) = *(s32 *)((u8 *)temp_r31 + 0x58);
+    gBattleState[0xA8] = *(u8 *)((u8 *)temp_r31 + 0x9);
+    *(s32 *)(gBattleState + 0xAC) = *(s32 *)((u8 *)temp_r31 + 0x58);
 
     temp = *(void **)((u8 *)temp_r31 + 0x5C);
     if (temp != NULL) {
@@ -928,8 +928,8 @@ void UnitInfo_DrawNamePlate(void *panel)
     x = lbl_803694C0 + *(f32 *)((u8 *)panel + 0x18);
     y = *(f32 *)((u8 *)panel + 0x14);
     namePtr = (u8 *)*(void **)((u8 *)panel + 0x58) + 0x236;
-    faction0 = fn_8014C5A8(lbl_80330708, 0);
-    faction3 = fn_8014C5A8(lbl_80330708, 3);
+    faction0 = fn_8014C5A8(gBattleState, 0);
+    faction3 = fn_8014C5A8(gBattleState, 3);
     fn_800875B4(0xB3, 0, y, x, lbl_803694C4, lbl_803694C8);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036942C);
@@ -952,7 +952,7 @@ void UnitInfo_DrawNamePlate(void *panel)
         }
     } else {
         kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
-        if (fn_8001512C(fn_8014C5A8(lbl_80330708, kind)) != 0) {
+        if (fn_8001512C(fn_8014C5A8(gBattleState, kind)) != 0) {
             kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
             switch (kind) {
             case 0:
@@ -998,7 +998,7 @@ void fn_8007EAD8(void *arg0) {
     f32 fn_80037904(void *, s32);
     s32 fn_801660A8(void *);
     extern u8 lbl_8026C86C[];
-    extern u8 lbl_80330708[1400];
+    extern u8 gBattleState[1400];
     extern s32 lbl_803674D4;
     extern u8 lbl_803674D8;
     extern s32 lbl_803674F4;
@@ -1131,7 +1131,7 @@ void fn_8007EAD8(void *arg0) {
     k = 0;
     f22b = f29v + barBaseY;
     t = k;
-    table = lbl_80330708 + 0x3C0;
+    table = gBattleState + 0x3C0;
     do {
         n = fn_801660A8(table);
         f23v = fn_80037904(unit, k + (n - 0x14));

@@ -1126,8 +1126,8 @@ void fn_801AADA4(void *arg0) {
 }
 
 void fn_801AB358(u8 *arg0) {
-    extern u8 lbl_80330708[];
-    u8 *src = lbl_80330708;
+    extern u8 gBattleState[];
+    u8 *src = gBattleState;
     struct {
         u8 hi : 6;
         u8 mid : 1;

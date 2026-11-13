@@ -30,7 +30,7 @@ extern u16 lbl_80367A58;
 
 extern s32 gUiInputFlags;
 
-extern s32 lbl_80330708[];
+extern s32 gBattleState[];
 extern f32 lbl_8036A184;
 extern f32 lbl_8036A1BC;
 extern f32 lbl_8036A1B0;
@@ -2852,11 +2852,11 @@ void fn_80117CCC(void) {
     void *fn_80016BDC(void *);
     void fn_8004BE88(void *, s32);
     void fn_800187F0(void);
-    extern s32 lbl_80330708[];
+    extern s32 gBattleState[];
     extern u8 lbl_80274508[];
     void *temp_r3;
 
-    fn_8014C798(lbl_80330708);
+    fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();
     temp_r3 = fn_80016BDC(lbl_80274508 + 0x130);
@@ -2871,10 +2871,10 @@ void fn_80117D20(s32 arg0) {
     void fn_80013A90(void *);
     void fn_800138F4(void);
     void fn_800C08AC(void *, s32);
-    extern s32 lbl_80330708[];
+    extern s32 gBattleState[];
     extern u8 lbl_80274508[];
 
-    fn_8014C7C0(lbl_80330708, 0);
+    fn_8014C7C0(gBattleState, 0);
     fn_80013A90(lbl_80274508 + 0x138);
     fn_800138F4();
     fn_800C08AC(lbl_80274508 + 0x150, arg0);
@@ -3030,10 +3030,10 @@ void fn_80118388(s32 arg0) {
 void fn_801183C0(s32 arg0) {
     void fn_8013FED0(s32);
     void fn_801D3B14(s32);
-    extern s32 lbl_80330708[];
+    extern s32 gBattleState[];
 
     fn_8013FED0(arg0);
-    *((u8 *)lbl_80330708 + 0x54) = 2;
+    *((u8 *)gBattleState + 0x54) = 2;
     fn_801D3B14(arg0);
 }
 
@@ -3360,7 +3360,7 @@ void fn_80118C84(void *arg0) {
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
-    extern s32 lbl_80330708[];
+    extern s32 gBattleState[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
     extern void *lbl_803679F0;
@@ -3392,8 +3392,8 @@ void fn_80118C84(void *arg0) {
     unit = fn_800AA794();
     ef = gUiContext;
     cur_y = (s8)ef[0xE];
-    sel_x = (s32)*(f32 *)((u8 *)lbl_80330708 + 0x524);
-    sel_y = (s32)*(f32 *)((u8 *)lbl_80330708 + 0x528);
+    sel_x = (s32)*(f32 *)((u8 *)gBattleState + 0x524);
+    sel_y = (s32)*(f32 *)((u8 *)gBattleState + 0x528);
     cur_x = (s8)ef[0xD];
     map = gBattleMap + 0xD;
     idx = cur_x + (cur_y << 6);
@@ -3654,7 +3654,7 @@ void fn_80118C84(void *arg0) {
         if (gUiInputFlags & 0x400)
             fn_8004A1F0();
         Ui_PlaySeCue(lbl_80274508 + 0x247, 0x64);
-        fn_8014CBD8(lbl_80330708, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
+        fn_8014CBD8(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
         fn_8000C070(self, 2);
         return;
     } else {
@@ -3663,7 +3663,7 @@ void fn_80118C84(void *arg0) {
             if (gUiInputFlags & 0x400)
                 fn_8004A1F0();
             Ui_PlaySeCue(lbl_80274508 + 0x247, 0x64);
-            fn_8014CBD8(lbl_80330708, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
+            fn_8014CBD8(gBattleState, (f32)(s8)ef[0xD], (f32)(s8)ef[0xE]);
             fn_8000C070(self, 1);
             return;
         }
@@ -3761,7 +3761,7 @@ void fn_80119884(void *arg0) {
     u8 fn_80015648(s32, u8);
     void *fn_8013FF94(void *, s32, s32);
     void fn_801658DC(void *);
-    extern s32 lbl_80330708[];
+    extern s32 gBattleState[];
     extern u8 lbl_80274508[];
     extern u8 lbl_803679F4;
     extern void *lbl_803679F0;
@@ -3770,7 +3770,7 @@ void fn_80119884(void *arg0) {
     u8 *base;
 
     unit = fn_800AA794();
-    base = (u8 *)lbl_80330708;
+    base = (u8 *)gBattleState;
     cx = (s32)*(f32 *)(base + 0x524);
     cy = (s32)*(f32 *)(base + 0x528);
     (void)cx; (void)cy;
@@ -4338,7 +4338,7 @@ void fn_8011B310(void *arg0) {
     register u8 *base;
 
     skip = 0;
-    base = (u8 *)lbl_80330708;
+    base = (u8 *)gBattleState;
     saved_x = (u8)(s32)*(f32 *)(base + 0x524);
     saved_y = (u8)(s32)*(f32 *)(base + 0x528);
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
@@ -4349,22 +4349,22 @@ void fn_8011B310(void *arg0) {
         if (flags & 1) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 4);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(lbl_80330708, (f32)(s8)node[0], (f32)(s8)node[1]);
+            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 8) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 0xC);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(lbl_80330708, (f32)(s8)node[0], (f32)(s8)node[1]);
+            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 2) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 8);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(lbl_80330708, (f32)(s8)node[0], (f32)(s8)node[1]);
+            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if (flags & 4) {
             node = *(u8 **)(*(u8 **)((u8 *)arg0 + 0x30) + 0x10);
             *(void **)((u8 *)arg0 + 0x30) = node;
-            fn_8014CBD8(lbl_80330708, (f32)(s8)node[0], (f32)(s8)node[1]);
+            fn_8014CBD8(gBattleState, (f32)(s8)node[0], (f32)(s8)node[1]);
         }
         if ((flags & 0xF) == 0) {
             fn_800F214C();
@@ -4615,7 +4615,7 @@ u8 fn_8011BB34(void) {
     u8 fn_801E3620(void *);
     extern u8 lbl_80331FB8[];
 
-    if (((u8 *)lbl_80330708)[0x10] > 0x1FU) {
+    if (((u8 *)gBattleState)[0x10] > 0x1FU) {
         return 2;
     }
     if (!(gUiInputFlags & 0x10) && fn_801E3620(lbl_80331FB8) == 0) {
@@ -6350,7 +6350,7 @@ void fn_80120354(void *arg0) {
     flags = gUiInputFlags;
     if (flags & 0x2000) {
         t = 1;
-    } else if ((u32)((((u8 *)lbl_80330708)[0x9c] >> 3) & 3) == 3) {
+    } else if ((u32)((((u8 *)gBattleState)[0x9c] >> 3) & 3) == 3) {
         t = 0xffff;
     } else {
         t = 1;
@@ -6404,7 +6404,7 @@ after_trig:
     if (flags & 0x2000) {
         delay = 5;
     } else {
-        switch ((s32)((((u8 *)lbl_80330708)[0x9c] >> 3) & 3)) {
+        switch ((s32)((((u8 *)gBattleState)[0x9c] >> 3) & 3)) {
         case 0:
             delay = 0xa;
             break;
@@ -6438,7 +6438,7 @@ after_trig:
         }
         if (lbl_80367A60 != fn_80211690() - 1) {
             lbl_80367A60 = fn_80211690();
-            if (!((((u8 *)lbl_80330708)[0x9f] >> 5) & 1)) {
+            if (!((((u8 *)gBattleState)[0x9f] >> 5) & 1)) {
                 switch ((s32)*((u8 *)self + 0x66)) {
                 case 0:
                     break;

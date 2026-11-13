@@ -667,7 +667,7 @@ void fn_80122114(void *arg0, u8 arg1)
 void fn_80122170(void *arg0, void *arg1, u16 arg2) {
     extern u16 lbl_80367A58;
     extern s32 gUiInputFlags;
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_802902D8[];
     void *fn_8000CAA0(void *, void *);
     void *entry;
@@ -681,7 +681,7 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
         switch (flags & 3) {
         case 0:
             if ((flags & 0x2000) ||
-                (nib = (((u8 *)lbl_80330708)[0x9c] >> 3) & 3, nib != 3U)) {
+                (nib = (((u8 *)gBattleState)[0x9c] >> 3) & 3, nib != 3U)) {
                 entry = fn_8000CAA0(lbl_802902D8, arg1);
                 *(u16 *)((char *)entry + 0x28) = a2;
             }
@@ -2899,11 +2899,11 @@ void fn_801261AC(s32 arg0) {
     M2C_UNK fn_8019DB28();
     M2C_UNK strcpy(s32, s32);
     extern u8 lbl_80290480[16];
-    extern u8 lbl_80330708[1400];
+    extern u8 gBattleState[1400];
 
     fn_8019DB28();
     strcpy(arg0 + 0x30, fn_8000C0C0(lbl_80290480) + 0x30);
-    fn_8014C718(lbl_80330708, arg0);
+    fn_8014C718(gBattleState, arg0);
 }
 
 #pragma global_optimizer off
@@ -2934,11 +2934,11 @@ void fn_801262A8(s32 arg0) {
     void fn_8014C718(void *, s32);
     void fn_8019DB28(void);
     extern u8 lbl_80290480[16];
-    extern u8 lbl_80330708[1400];
+    extern u8 gBattleState[1400];
 
     fn_8019DB28();
     fn_8000BF00(lbl_80290480);
-    fn_8014C718(lbl_80330708, arg0);
+    fn_8014C718(gBattleState, arg0);
 }
 
 /* Register tutorial/script command names and their handlers. */
@@ -3043,36 +3043,36 @@ void Script_RegisterCommands(void) {
 }
 
 u8 ScriptCmd_GetTutorial(void) {
-    extern u8 lbl_80330708[];
-    u8 temp = lbl_80330708[0x9D];
+    extern u8 gBattleState[];
+    u8 temp = gBattleState[0x9D];
     temp = (temp >> 1) & 1;
     temp = (temp == 0);
     return temp;
 }
 
 void ScriptCmd_Config_TutSet_sfx_vol(s8 arg0) {
-    extern u8 lbl_80330708[];
-    lbl_80330708[0xA5] = arg0;
-    fn_80199818(&lbl_80330708[0x9C], &lbl_80330708);
+    extern u8 gBattleState[];
+    gBattleState[0xA5] = arg0;
+    fn_80199818(&gBattleState[0x9C], &gBattleState);
 }
 
 u8 ScriptCmd_Config_TutGet_sfx_vol(void) {
-    extern u8 lbl_80330708[];
-    return lbl_80330708[0xA5];
+    extern u8 gBattleState[];
+    return gBattleState[0xA5];
 }
 
 void ScriptCmd_Config_TutSet_XinfoPage(s8 arg0) {
-    extern u8 lbl_80330708[];
-    lbl_80330708[0xA8] = (u8)arg0;
+    extern u8 gBattleState[];
+    gBattleState[0xA8] = (u8)arg0;
 }
 
 void ScriptCmd_Config_TutSet_otheridoshowing(s32 arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     struct {
         u8 pad:1;
         u8 flag:1;
         u8 rest:6;
-    } *p = (void *)(lbl_80330708 + 0x9F);
+    } *p = (void *)(gBattleState + 0x9F);
 
     if (arg0 == 1) {
         p->flag = 1;
@@ -3087,8 +3087,8 @@ void ScriptCmd_Config_TutSet_terInfo(s32 arg0) {
         u8 skip : 5;
         u8 flag : 1;
     };
-    extern struct S lbl_80330708;
-    struct S *p = &lbl_80330708;
+    extern struct S gBattleState;
+    struct S *p = &gBattleState;
     if (arg0 == 1) {
         p->flag = 1;
         return;
@@ -3097,12 +3097,12 @@ void ScriptCmd_Config_TutSet_terInfo(s32 arg0) {
 }
 
 void ScriptCmd_Config_TutSet_unitInfo(s32 arg0) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     struct {
         u8 pad:6;
         u8 flag:1;
         u8 rest:1;
-    } *p = (void *)(lbl_80330708 + 0x9C);
+    } *p = (void *)(gBattleState + 0x9C);
 
     if (arg0 == 1) {
         p->flag = 1;
@@ -3144,33 +3144,33 @@ void ScriptCmd_Config_Tutorial(void) {
         s32 unkAC;
         s32 unkB0;
     };
-    extern struct Work lbl_80330708;
+    extern struct Work gBattleState;
     u8 one = 1;
 
-    lbl_80330708.a0 = one;
-    lbl_80330708.a1 = 0;
-    lbl_80330708.a2 = one;
-    lbl_80330708.a3 = 0;
-    lbl_80330708.a4 = 0;
-    lbl_80330708.a5 = 0;
-    lbl_80330708.b0 = 0;
-    lbl_80330708.b1 = 0;
-    lbl_80330708.b2 = 0;
-    lbl_80330708.b3 = 2;
-    lbl_80330708.b4 = 0;
-    lbl_80330708.b5 = 0;
-    lbl_80330708.c0 = 0;
-    lbl_80330708.c1 = 0;
-    lbl_80330708.c2 = one;
-    lbl_80330708.c3 = one;
-    lbl_80330708.c5 = 0;
-    lbl_80330708.unkA0 = 0x14;
-    lbl_80330708.unkA8 = 0;
-    lbl_80330708.unkAC = 0;
-    lbl_80330708.unkA9 = 0;
-    lbl_80330708.unkAA = 0;
-    lbl_80330708.unkB0 = 0;
-    lbl_80330708.unkA6 = one;
+    gBattleState.a0 = one;
+    gBattleState.a1 = 0;
+    gBattleState.a2 = one;
+    gBattleState.a3 = 0;
+    gBattleState.a4 = 0;
+    gBattleState.a5 = 0;
+    gBattleState.b0 = 0;
+    gBattleState.b1 = 0;
+    gBattleState.b2 = 0;
+    gBattleState.b3 = 2;
+    gBattleState.b4 = 0;
+    gBattleState.b5 = 0;
+    gBattleState.c0 = 0;
+    gBattleState.c1 = 0;
+    gBattleState.c2 = one;
+    gBattleState.c3 = one;
+    gBattleState.c5 = 0;
+    gBattleState.unkA0 = 0x14;
+    gBattleState.unkA8 = 0;
+    gBattleState.unkAC = 0;
+    gBattleState.unkA9 = 0;
+    gBattleState.unkAA = 0;
+    gBattleState.unkB0 = 0;
+    gBattleState.unkA6 = one;
 }
 
 extern u16 lbl_80290564[];
@@ -3188,7 +3188,7 @@ s32 ScriptCmd_TutorialInitialize(void)
 
 void fn_80126A98(s32 arg0) {
     extern u8 gUiContext[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gScriptCmdNames[];
     void fn_8011D79C(void *);
     void fn_8011D650(void *);
@@ -3201,14 +3201,14 @@ void fn_80126A98(s32 arg0) {
 
     switch ((s32)gUiContext[8]) {
     case 0x81:
-        bf = (void *)&lbl_80330708[0x9D];
+        bf = (void *)&gBattleState[0x9D];
         bf->mid = 0;
         fn_8011D79C(gScriptCmdNames + 0x42A);
         break;
     case 0x80:
-        bf = (void *)&lbl_80330708[0x9D];
+        bf = (void *)&gBattleState[0x9D];
         bf->mid = 1;
-        fn_8011D650(lbl_80330708);
+        fn_8011D650(gBattleState);
         break;
     }
     Process_ClearFunc(arg0);
@@ -3254,29 +3254,29 @@ s32 ScriptCmd_TutorialSallyCreate(void) {
 }
 
 s32 fn_80126D40(u8 arg0) {
-    extern u16 lbl_80330708[];
-    u16* ptr = (u16*)((u32)lbl_80330708 + 0x84);
+    extern u16 gBattleState[];
+    u16* ptr = (u16*)((u32)gBattleState + 0x84);
     fn_80105CEC(ptr, arg0);
     return 1;
 }
 
 s32 fn_80126D78(u8 arg0) {
-    extern u16 lbl_80330708[];
-    u16* ptr = (u16*)((u32)lbl_80330708 + 0x84);
+    extern u16 gBattleState[];
+    u16* ptr = (u16*)((u32)gBattleState + 0x84);
     fn_80105D4C(ptr, arg0);
     return 1;
 }
 
 s32 fn_80126DB0(u8 arg0) {
-    extern u16 lbl_80330708[];
-    u16* ptr = (u16*)((u32)lbl_80330708 + 0x74);
+    extern u16 gBattleState[];
+    u16* ptr = (u16*)((u32)gBattleState + 0x74);
     fn_80105CEC(ptr, arg0);
     return 1;
 }
 
 s32 ScriptCmd_TutorialUnlock(u8 arg0) {
-    extern u16 lbl_80330708[];
-    u16* ptr = (u16*)((u32)lbl_80330708 + 0x74);
+    extern u16 gBattleState[];
+    u16* ptr = (u16*)((u32)gBattleState + 0x74);
     fn_80105D4C(ptr, arg0);
     return 1;
 }
@@ -3532,8 +3532,8 @@ s32 ScriptCmd_GameBind(void) {
 
 s32 ScriptCmd_bmsini(void) {
     void fn_8014D55C(void *);
-    extern u8 lbl_80330708[];
-    fn_8014D55C(lbl_80330708);
+    extern u8 gBattleState[];
+    fn_8014D55C(gBattleState);
     return 1;
 }
 

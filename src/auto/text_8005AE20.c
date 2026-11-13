@@ -36,7 +36,7 @@ struct UnkStruct {
     u32 unkC;
 };
 
-extern u16 lbl_80330708[1400];
+extern u16 gBattleState[1400];
 extern f32 lbl_803692E0;
 extern f32 lbl_80369300;
 extern f32 lbl_8036930C;
@@ -5186,14 +5186,14 @@ s32 fn_80067708(s32 arg0) {
         arg0 = -arg0;
     }
 
-    temp_r3 = &lbl_80330708[arg0];
+    temp_r3 = &gBattleState[arg0];
     temp_r5 = *temp_r3;
     
     if (temp_r5 == 0) {
         return 0;
     }
     
-    r3_copy = &lbl_80330708[arg0 - 1];
+    r3_copy = &gBattleState[arg0 - 1];
     r4_copy = *(r3_copy + 1);
     temp_r4 = r4_copy;
     
@@ -5374,7 +5374,7 @@ void fn_800680D0(void *arg0, u8 arg1)
 }
 
 s32 fn_80068124(char *name) {
-    extern u16 lbl_80330708[1400];
+    extern u16 gBattleState[1400];
     u8 *e;
     
     e = FindEntryByName(name);
@@ -7717,8 +7717,8 @@ s32 fn_8006F7F0(s32 arg0) {
     }
     
     for (i = 0; i < 0x100; i++) {
-        if (lbl_80330708[i] == 0) {
-            lbl_80330708[i] = arg0;
+        if (gBattleState[i] == 0) {
+            gBattleState[i] = arg0;
             var_r3 = i;
             break;
         }
@@ -7980,8 +7980,8 @@ void fn_80071B34(void) {
 }
 
 void fn_80071B54(void) {
-    M2C_FIELD(&lbl_80330708, s8 *, 0x51D) = 0xF;
-    fn_8018DBD8(&lbl_80330708);
+    M2C_FIELD(&gBattleState, s8 *, 0x51D) = 0xF;
+    fn_8018DBD8(&gBattleState);
     fn_8018DB10();
 }
 
@@ -8121,7 +8121,7 @@ void fn_80072100(void *arg0, void *arg1) {
     void *temp_r31;
     void *result;
 
-    *(u8 *)((u8 *)lbl_80330708 + 0x51D) = 0xF;
+    *(u8 *)((u8 *)gBattleState + 0x51D) = 0xF;
     temp_r31 = *(void **)((u8 *)arg1 + 0x18);
     result = fn_8000C0C0(lbl_80286860);
     if (temp_r31 == result) {

@@ -540,7 +540,7 @@ void fn_801EBBB8(void *arg0) {
     extern u8 lbl_80293C84[];
     extern u8 lbl_80293C58[];
     extern u8 lbl_802EF4E0[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     void String_CStr(void *, s32);
     s32 fn_80106DC8(void *);
     void fn_8002F728(void *, void *);
@@ -629,10 +629,10 @@ void fn_801EBBB8(void *arg0) {
     if (temp_r3_2 != NULL) {
         M2C_FIELD(temp_r3_2, s32 *, 0x58) = 0;
     }
-    lbl_80330708[0xa9] = 0;
-    lbl_80330708[0xaa] = 0;
-    *(u32 *)((u8 *)lbl_80330708 + 0xb0) = 0;
-    fn_80018B18(lbl_80330708);
+    gBattleState[0xa9] = 0;
+    gBattleState[0xaa] = 0;
+    *(u32 *)((u8 *)gBattleState + 0xb0) = 0;
+    fn_80018B18(gBattleState);
 }
 #pragma use_lmw_stmw reset
 void fn_801EBE00(void *arg0) {
@@ -1966,14 +1966,14 @@ void fn_801EDEE4(void *arg0) {
     void fn_8014C798(void *);
     void fn_8014C7C0(void *, u8 *);
     extern u8 lbl_8029A5FC[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     void *temp_r3;
     u8 var_r0;
     s32 temp_r0;
 
     if (*(u8 *)((u8 *)arg0 + 0x39) != 0) {
-        fn_8014C7C0(lbl_80330708, lbl_80330708 + 0x504);
-        fn_8014C798(lbl_80330708);
+        fn_8014C7C0(gBattleState, gBattleState + 0x504);
+        fn_8014C798(gBattleState);
     }
     temp_r3 = fn_8000C0C0(lbl_8029A5FC);
     if (temp_r3 != NULL) {
@@ -2003,10 +2003,10 @@ void fn_801EDF7C(void *arg0) {
     M2C_UNK fn_800162B8();
     u8 fn_80040824();
     M2C_UNK fn_8014C718(void *, void *);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     M2C_FIELD(arg0, u8 *, 0x39) = fn_80040824();
     if ((u8) M2C_FIELD(arg0, u8 *, 0x39) != 0) {
-        fn_8014C718(lbl_80330708, arg0);
+        fn_8014C718(gBattleState, arg0);
     }
     fn_800162B8();
 }
@@ -2085,7 +2085,7 @@ void fn_801EE76C(void *arg0) {
     s32 strlen(char *);
     extern char gGActorPathExt[];
     extern u8 lbl_8029A5FC[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 lbl_80330EAC[];
     extern u8 lbl_8029A5BC[];
     extern f32 lbl_8036B7B8;
@@ -2189,7 +2189,7 @@ setdone:
         }
     } else {
 use30708:
-        r29 = fn_8014D8FC(lbl_80330708);
+        r29 = fn_8014D8FC(gBattleState);
         path = *(char **)((char *)r29 + 0x4C);
         r29 = *(void **)((char *)r29 + 0x48);
     }

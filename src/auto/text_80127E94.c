@@ -3,7 +3,7 @@
 
 extern u8 lbl_80290AA0[0x40];
 extern u8 lbl_8032BB58[0x200];
-extern u8 lbl_80330708[0x578];
+extern u8 gBattleState[0x578];
 
 extern s32 lbl_80367A88;
 
@@ -1069,7 +1069,7 @@ void fn_8012A530(void *arg0) {
     extern f32 lbl_8036A45C;
     extern f32 lbl_8036A460;
     extern f32 lbl_8036A464;
-    extern u8 lbl_80330708[0x578];
+    extern u8 gBattleState[0x578];
 
     u8 spD4[0x30];
     u8 spA4[0x30];
@@ -1240,7 +1240,7 @@ void fn_8012A530(void *arg0) {
     sub = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)sub + 0x38) = *(f32 *)((u8 *)sub + 0x38) + *(f32 *)((u8 *)sub + 0x2C);
     sub = *(void **)((u8 *)self + 0x30);
-    fn_8014CBD8(lbl_80330708,
+    fn_8014CBD8(gBattleState,
         *(f32 *)((u8 *)sub + 0x10),
         *(f32 *)((u8 *)sub + 0x14));
 }
@@ -1316,7 +1316,7 @@ void fn_8012AD80(void) {
 #pragma use_lmw_stmw on
 void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     extern u8 lbl_80290A58[72];
-    extern u8 lbl_80330708[1400];
+    extern u8 gBattleState[1400];
 
     void *fn_800056A0(void *);
     void *fn_8000CAA0(void *, u32);
@@ -1353,7 +1353,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     *(s32 *)((u8 *)r6 + 0x3c) = t31;
     *(s32 *)((u8 *)r6 + 0x30) = arg0;
     *(s32 *)((u8 *)r6 + 0x34) = arg1;
-    fn_8014CBD8(lbl_80330708, (f32)arg0, (f32)arg1);
+    fn_8014CBD8(gBattleState, (f32)arg0, (f32)arg1);
 }
 #pragma use_lmw_stmw reset
 void fn_8012AEC4(void *arg0) {

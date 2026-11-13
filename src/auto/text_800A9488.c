@@ -20,9 +20,9 @@ typedef struct {
 static inline void *fn_800AA794_helper(void) {
     extern u8 gUnits[101760];
     extern u8 gBattleMap[151280];
-    extern u8 lbl_80330708[1400];
-    s8 sx = *(float *)&lbl_80330708[0x524];
-    s8 sy = *(float *)&lbl_80330708[0x528];
+    extern u8 gBattleState[1400];
+    s8 sx = *(float *)&gBattleState[0x524];
+    s8 sy = *(float *)&gBattleState[0x528];
     u8 id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         return &gUnits[(id - 1) * 0x280];
@@ -98,12 +98,12 @@ s32 fn_800A96D0(void) {
 }
 
 s32 fn_800A96D8(void) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     u8 x;
 
-    x = lbl_80330708[0xA6] + 1;
-    lbl_80330708[0xA6] = x;
-    lbl_80330708[0xA6] = x % 4;
+    x = gBattleState[0xA6] + 1;
+    gBattleState[0xA6] = x;
+    gBattleState[0xA6] = x % 4;
     return 0;
 }
 
@@ -157,7 +157,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     };
     extern u8 lbl_8026E470[];
     extern u8 lbl_802832E0[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern s32 lbl_80369B98;
     extern s32 lbl_80369B9C;
     extern s32 lbl_80369BA0;
@@ -197,7 +197,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    switch (lbl_80330708[0xA6]) {
+    switch (gBattleState[0xA6]) {
     case 0:
         var_r7 = lbl_8026E470 + 0x150;
         break;
@@ -404,21 +404,21 @@ s32 fn_800AA078(void *arg0) {
     void *fn_80019ED0(s32);
     void fn_8014D2B0(void *, u8);
     void fn_8014D698(void *, u8, s32, s32, s32);
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u64 lbl_80331FB8[];
     u8 *s;
     u8 saved;
     void *unit;
 
-    s = lbl_80330708;
+    s = gBattleState;
     saved = s[0xA6];
     fn_80016DE0();
-    fn_8014D698(lbl_80330708, (u8)(fn_8000CEE4(0x1E) + 1), 0, 0, 1);
+    fn_8014D698(gBattleState, (u8)(fn_8000CEE4(0x1E) + 1), 0, 0, 1);
     s[0xA6] = saved;
     unit = fn_80019ED0((s32)*(s8 *)((u8 *)arg0 + 4));
     {
         u8 *p;
-        p = lbl_80330708;
+        p = gBattleState;
         fn_8014D2B0(p, *(u8 *)((u8 *)unit + 0x3C));
     }
     lbl_80331FB8[1] = 0x0123456789ABCDEFULL;
@@ -560,7 +560,7 @@ void fn_800AA3C0(void) {
 
     extern u8 gUnits[101760];
     extern u8 gBattleMap[151280];
-    extern u8 lbl_80330708[1400];
+    extern u8 gBattleState[1400];
     extern void *gPadInput;
     extern void *lbl_80367800;
     extern s8 lbl_80367804;
@@ -583,8 +583,8 @@ void fn_800AA3C0(void) {
         lbl_80367804 = 1;
     }
 
-    sx = *(float *)&lbl_80330708[0x524];
-    sy = *(float *)&lbl_80330708[0x528];
+    sx = *(float *)&gBattleState[0x524];
+    sy = *(float *)&gBattleState[0x528];
     id = gBattleMap[sx + (sy << 6) + 0xD];
     unit = (id != 0) ? &gUnits[(id - 1) * 0x280] : NULL;
 
@@ -595,7 +595,7 @@ void fn_800AA3C0(void) {
                 fn_8004A1F0();
                 lbl_80367800 = NULL;
             }
-        } else if ((u32)(((lbl_80330708[0x9F] >> 6) & 1)) != 1U) {
+        } else if ((u32)(((gBattleState[0x9F] >> 6) & 1)) != 1U) {
             lbl_80367800 = unit;
             if (unit == NULL || *(u8 *)(*(u32 *)((char *)unit + 0x190) + 8) == 0) {
                 fn_8004A1F0();
@@ -740,15 +740,15 @@ s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void *fn_800AA794(void) {
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     s8 sx;
     s8 sy;
     u8 id;
 
-    sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
-    sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
+    sx = (s8)*(f32 *)(gBattleState + 0x524);
+    sy = (s8)*(f32 *)(gBattleState + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         return &gUnits[(id - 1) * 0x280];
@@ -987,7 +987,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     extern u8 lbl_8028CEF8[];
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern void *gPadInput;
     typedef struct {
         u8 pad[0x28];
@@ -1105,7 +1105,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     self->unk3E = 0;
     self->unk3F = 0;
     fn_8018DBD8();
-    lbl_80330708[0x51D] = 0xF;
+    gBattleState[0x51D] = 0xF;
     self->unk42 = 1;
     self->unk45 = arg1;
     if (arg2 >= 0) {
@@ -1135,7 +1135,7 @@ void fn_800AB2A4(void *arg0) {
     extern u8 lbl_8028CE90[];
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     extern void *gPadInput;
     typedef struct {
         u8 pad[0x28];
@@ -1253,7 +1253,7 @@ void fn_800AB2A4(void *arg0) {
     self->unk3E = 0;
     self->unk3F = 0;
     fn_8018DBD8();
-    lbl_80330708[0x51D] = 0xF;
+    gBattleState[0x51D] = 0xF;
     self->unk42 = 1;
     self->unk28 = 4;
     self->unk45 = 0x9A;

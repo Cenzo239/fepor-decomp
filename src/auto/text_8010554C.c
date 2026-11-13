@@ -850,7 +850,7 @@ void fn_801069A0(u8 *arg0) {
     void fn_80107B54(u32 *, void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 lbl_802738F8[];
-    extern u8 lbl_80330708[];
+    extern u8 gBattleState[];
     u32 sp8;
     u32 spC;
     u8 sp10[0x68];
@@ -954,7 +954,7 @@ after_parse:
         var_r27 = (s8)(var_r30 / var_r27);
         var_r26 = (s8)(var_r31 / (s32)(u8)var_r29);
     }
-    fn_8014CBD8(lbl_80330708, (f32)(s8)var_r27, (f32)(s8)var_r26);
+    fn_8014CBD8(gBattleState, (f32)(s8)var_r27, (f32)(s8)var_r26);
 }
 #pragma use_lmw_stmw reset
 

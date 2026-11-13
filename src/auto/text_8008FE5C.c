@@ -19,7 +19,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -72,9 +72,9 @@ void fn_8008FE5C(void* arg0, s32 arg1) {
 
                 if (var_r27 < temp_r5) {
                     temp_r7 = var_r27 - temp_r5;
-                    lbl_80330708[0xA8] = *(u8*)((u8*)temp_r31 + 0x9);
-                    lbl_80330708[0xAC] = temp_r6;
-                    lbl_80330708[0xB0] = var_r26;
+                    gBattleState[0xA8] = *(u8*)((u8*)temp_r31 + 0x9);
+                    gBattleState[0xAC] = temp_r6;
+                    gBattleState[0xB0] = var_r26;
                     temp_r3 = *(s32*)((u8*)arg0 + 0x48);
                 }
             }

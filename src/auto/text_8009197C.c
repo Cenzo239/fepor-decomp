@@ -19,7 +19,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -353,7 +353,7 @@ void fn_8001EDB8(u8 *, s32);
 u8 sp8; s32 result; u8 mask; u8 *p; s32 slot;
 mask=arg1; p=arg0;
 if(fn_80105BC0(p+0x1BC,0x5B)) result=-2;
-else if(fn_80105BC0(p+0x1BC,0x50) && *(s32*)(lbl_80330708+0x18)>=0x32) result=-2;
+else if(fn_80105BC0(p+0x1BC,0x50) && *(s32*)(gBattleState+0x18)>=0x32) result=-2;
 else {
 for(result=0;result<4;result++,p+=8) {
 slot=*(s32*)(p+0x1EC);
@@ -376,7 +376,7 @@ s32 fn_8009226C(u8 *arg0, u8 *arg1) {
     if (fn_80105BC0(arg0 + 0x1BC, 0x5B) != 0) {
         return -2;
     }
-    if (fn_80105BC0(arg0 + 0x1BC, 0x50) != 0 && *(s32 *)(lbl_80330708 + 0x18) >= 0x32) {
+    if (fn_80105BC0(arg0 + 0x1BC, 0x50) != 0 && *(s32 *)(gBattleState + 0x18) >= 0x32) {
         return -2;
     }
     p = arg0;
@@ -407,7 +407,7 @@ void fn_8009233C(u8 *arg0, u8 *arg1) {
         return;
     }
     if (fn_80105BC0(arg1 + 0x1BC, 0x50) != 0) {
-        if (*(s32 *)(lbl_80330708 + 0x18) < 0x32) {
+        if (*(s32 *)(gBattleState + 0x18) < 0x32) {
             flags |= 0x20;
         } else {
             *arg0 = 0x10;

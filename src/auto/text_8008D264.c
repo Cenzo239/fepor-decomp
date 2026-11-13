@@ -19,7 +19,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 
-extern u8 lbl_80330708[1400];
+extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
@@ -89,7 +89,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
         sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, scaled);
         temp_r31 = fn_80010B78(sp8, -1, lbl_8036973C);
         var_r25 = arg1 != 0;
-        temp_r26 = *(s32 *)(lbl_80330708 + 0x18);
+        temp_r26 = *(s32 *)(gBattleState + 0x18);
         scaled = (s32)(farg0 * (f32)(u16)UnitRef_GetValue(arg0));
         if (temp_r26 < scaled) {
             var_r25 = 0;
