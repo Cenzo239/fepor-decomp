@@ -5294,7 +5294,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
 
 s32 fn_800B9B58(u32 arg0, s32 arg1) {
     u32 Sound_FindByName(u32);
-    void fn_80109C80(u32, u8);
+    void Sound_FadeFromZero(u32, u8);
     u32 fn_801CF760(u32);
     void fn_801CFC80(u32, s32);
     s32 fn_80234278(void *, void *, s32);
@@ -5310,7 +5310,7 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
         if (temp == 0U) {
             return 0;
         }
-        fn_80109C80(temp, arg1);
+        Sound_FadeFromZero(temp, arg1);
         return 1;
     }
 

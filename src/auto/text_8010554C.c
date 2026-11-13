@@ -2483,7 +2483,7 @@ void Sound_FadeToVol(void *arg0, u8 arg1) {
     *(u32 *)((char *)temp_r3 + 0x40) = 0;
 }
 
-void fn_80109C80(void *arg0, u8 arg1) {
+void Sound_FadeFromZero(void *arg0, u8 arg1) {
     void *Process_Create(void *, void *);
     extern u8 lbl_8028F360[];
     void *temp_r3;

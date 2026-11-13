@@ -3530,7 +3530,7 @@ void fn_801F99C4(void *arg0) {
     s32 fn_800A8A00(void *);
     void *fn_80109180(void *, void *);
     void fn_80109448(void *, s32, s32, f32, f32, f32);
-    void fn_80109C80(void *, s32);
+    void Sound_FadeFromZero(void *, s32);
     void sprintf(void *, void *, ...);
     extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA18;
@@ -3581,9 +3581,9 @@ void fn_801F99C4(void *arg0) {
     *(f32 *)((u8 *)temp_r3_2 + 0x40) = f2;
     *(f32 *)((u8 *)temp_r3_2 + 0x44) = f2;
     *(f32 *)((u8 *)temp_r3_2 + 0x48) = (f32)temp_r4;
-    fn_80109C80(*(void **)((u8 *)temp_r31 + 0x58), 0x18);
+    Sound_FadeFromZero(*(void **)((u8 *)temp_r31 + 0x58), 0x18);
     fn_80109448(*(void **)((u8 *)temp_r31 + 0x58), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
-    fn_80109C80(*(void **)((u8 *)temp_r31 + 0x5C), 0x18);
+    Sound_FadeFromZero(*(void **)((u8 *)temp_r31 + 0x5C), 0x18);
     fn_80109448(*(void **)((u8 *)temp_r31 + 0x5C), 1, 5, lbl_8036BA88, lbl_8036BA18, lbl_8036BA8C);
     *(u16 *)((u8 *)temp_r29 + 0x28) = 0xF0;
 }

@@ -5961,7 +5961,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     void *Sound_FindByName(void *);
     void *fn_80109180(void *, s32);
     void fn_80109BB4(void *, s32);
-    void fn_80109C80(void *, s32);
+    void Sound_FadeFromZero(void *, s32);
     s8 Fx_FindSlotByName(void *);
     void fn_80147188(s32);
     void Ui_PlaySeCue(void *, s32);
@@ -6075,7 +6075,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 fn_80109BB4(p, 0x40);
                 *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
                 q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
-                fn_80109C80(q, 0x40);
+                Sound_FadeFromZero(q, 0x40);
                 row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
                 y = (f32)row[3];
                 x = (f32)row[2];
@@ -6148,7 +6148,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
         q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
-        fn_80109C80(q, 0x40);
+        Sound_FadeFromZero(q, 0x40);
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
         x = (f32)row[2];
@@ -6171,7 +6171,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
         q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
-        fn_80109C80(q, 0x40);
+        Sound_FadeFromZero(q, 0x40);
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
         x = (f32)row[2];

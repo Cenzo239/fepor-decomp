@@ -816,7 +816,7 @@ void fn_80122314(void *arg0) {
 void fn_80122450(void *arg0) {
     void *Process_CreateChild(void *);
     void *fn_80109180(s32, u32);
-    void fn_80109C80(void *, u8);
+    void Sound_FadeFromZero(void *, u8);
     extern u32 gUiInputFlags;
     extern u8 lbl_802902AC[];
     void *entry;
@@ -836,7 +836,7 @@ void fn_80122450(void *arg0) {
             sub = *(void **)((u8 *)entry + 0x38);
             *(f32 *)((u8 *)sub + 0x40) = (f32)x;
             *(f32 *)((u8 *)sub + 0x44) = (f32)y;
-            fn_80109C80(*(void **)((u8 *)entry + 0x38), 8);
+            Sound_FadeFromZero(*(void **)((u8 *)entry + 0x38), 8);
         }
     }
 }

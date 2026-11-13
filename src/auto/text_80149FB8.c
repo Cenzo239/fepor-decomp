@@ -94,7 +94,7 @@ void SoundMenu_Update(void *arg0) {
     void Text_Draw(s32, s32, s32, void *, ...);
     void *Sound_FindByName(void *);
     void Sound_FadeToVol(void *, s32);
-    void fn_80109C80(void *, s32);
+    void Sound_FadeFromZero(void *, s32);
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7B8, gOneF);
@@ -104,10 +104,10 @@ void SoundMenu_Update(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x30) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
     if (*(s32 *)((u8 *)arg0 + 0x30) == 0xE10) {
         Sound_FadeToVol(Sound_FindByName(gSoundMenuStrings + 0xD), 0xFF);
-        fn_80109C80(Sound_FindByName(gSoundMenuStrings + 0x16), 0xFF);
+        Sound_FadeFromZero(Sound_FindByName(gSoundMenuStrings + 0x16), 0xFF);
     }
     if (*(s32 *)((u8 *)arg0 + 0x30) == 0x1C20) {
-        fn_80109C80(Sound_FindByName(gSoundMenuStrings + 0xD), 0xFF);
+        Sound_FadeFromZero(Sound_FindByName(gSoundMenuStrings + 0xD), 0xFF);
         Sound_FadeToVol(Sound_FindByName(gSoundMenuStrings + 0x16), 0xFF);
         *(s32 *)((u8 *)arg0 + 0x30) = 0;
     }
