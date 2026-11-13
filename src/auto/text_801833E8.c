@@ -2340,81 +2340,82 @@ void fn_8018A91C(void *arg0, f32 angle) {
     *(f32 *)(self+0x4C)=lbl_8036AD38* *(f32 *)(self+0x5C);
     *(f32 *)(self+0x50)=lbl_8036AD38* *(f32 *)(self+0x60);
 }
-void MoveAnim_PollPadNodeLinks(void *arg0) {
+/* Poll pad button IDs 0x14-0x1B to start/stop GActor node-link anims using MoveAnim_str names. */
+void MoveAnim_PollPadNodeLinks(void *self) {
     u32 GActor_CreateNodeLink(s32, void *, void *, void *);
     void GActor_StopNodeLink(s32);
     void GActor_SetNodeLinkParam(void *, void *);
     u8 Pad_IsButton(void *, s32);
     extern u8 MoveAnim_str[];
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s32 temp_r31;
-    temp_r31 = M2C_FIELD(arg0, s32 *, 0x30) + 0x1C;
-    if (Pad_IsButton((void *)temp_r31, 0x14) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    s32 param0x14;
+    s32 param0x15;
+    s32 param0x16;
+    s32 param0x17;
+    s32 param0x18;
+    s32 param0x1A;
+    s32 param0x1B;
+    s32 pad;
+    pad = M2C_FIELD(self, s32 *, 0x30) + 0x1C;
+    if (Pad_IsButton((void *)pad, 0x14) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, arg0);
-        sp20 = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, self);
+        param0x14 = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x14);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x15) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x15) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, arg0);
-        sp1C = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, self);
+        param0x15 = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x15);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x16) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x16) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, arg0);
-        sp18 = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, self);
+        param0x16 = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x16);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x17) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x17) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, arg0);
-        sp14 = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, self);
+        param0x17 = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x17);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x18) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x18) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, arg0);
-        sp10 = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, self);
+        param0x18 = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x18);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x1A) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x1A) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, arg0);
-        spC = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, self);
+        param0x1A = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x1A);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x1B) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
+    if (Pad_IsButton((void *)pad, 0x1B) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, arg0);
-        sp8 = M2C_FIELD(arg0, s32 *, 0x34);
-        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
+        M2C_FIELD(self, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(self, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, self);
+        param0x1B = M2C_FIELD(self, s32 *, 0x34);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(self, u32 *, 0x38), &param0x1B);
     }
-    if (Pad_IsButton((void *)temp_r31, 0x19) != 0) {
-        if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
-            GActor_StopNodeLink(M2C_FIELD(arg0, s32 *, 0x38));
-            M2C_FIELD(arg0, u32 *, 0x38) = 0;
+    if (Pad_IsButton((void *)pad, 0x19) != 0) {
+        if (M2C_FIELD(self, u32 *, 0x38) != 0) {
+            GActor_StopNodeLink(M2C_FIELD(self, s32 *, 0x38));
+            M2C_FIELD(self, u32 *, 0x38) = 0;
         }
     }
 }
