@@ -33,7 +33,7 @@ extern void fn_8005BCAC(void);
 extern void fn_800C4B8C(void);
 
 extern void* gPadInput;
-extern u16 lbl_80280B58[18];
+extern u16 gCardLinkStr[18];
 
 void fn_801F196C(M2C_UNK **arg0) {
     extern u16 lbl_8028459C[];
@@ -1393,7 +1393,7 @@ void fn_801F5308(void* arg0) {
 
     temp_r3 = *(s32*)((u8*)gPadInput + 4);
     if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
-        u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
+        u16* ptr = (u16*)((u8*)&gCardLinkStr + 0x5A);
         Ui_PlaySeCue(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
         *(u16*)((u8*)temp_r4 + 0x2) = 0xC8;
@@ -1407,7 +1407,7 @@ void fn_801F5374(void* arg0) {
 
     temp_r3 = *(s32*)((u8*)gPadInput + 4);
     if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
-        u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
+        u16* ptr = (u16*)((u8*)&gCardLinkStr + 0x5A);
         Ui_PlaySeCue(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
         *(u16*)((u8*)temp_r4 + 0x2) = 0xC8;
@@ -1424,7 +1424,7 @@ void fn_801F53E0(void *arg0)
     if (fn_800EB774() == 0) {
         fn_801DDBA8(
             *(void **)((u8 *)arg0 + 0x50),
-            Msg_Expand((u8 *)lbl_80280B58 + 0x6A),
+            Msg_Expand((u8 *)gCardLinkStr + 0x6A),
             0,
             0,
             0
@@ -1432,11 +1432,11 @@ void fn_801F53E0(void *arg0)
         return;
     }
 
-    Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
+    Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 
     fn_801DDBA8(
         *(void **)((u8 *)arg0 + 0x50),
-        Msg_Expand((u8 *)lbl_80280B58 + 0x8A),
+        Msg_Expand((u8 *)gCardLinkStr + 0x8A),
         0,
         1,
         0
@@ -1454,11 +1454,11 @@ void fn_801F5484(void *arg0)
 
     fn_801E2594(&lbl_803682F0);
 
-    Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
+    Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 
     fn_801DDBA8(
         *(void **)((u8 *)arg0 + 0x50),
-        Msg_Expand((u8 *)lbl_80280B58 + 0x8A),
+        Msg_Expand((u8 *)gCardLinkStr + 0x8A),
         0,
         1,
         0
@@ -1492,8 +1492,8 @@ void CardLink_ApplyBonus(void *arg0) {
         flag = *(u8 *)((u8 *)tmp + 0x4C);
     }
     if (flag == 4) {
-        Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
-        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0x9A), 0, 1, 0);
+        Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
+        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0x9A), 0, 1, 0);
         Process_Goto(arg0, 0x59);
     } else {
         tmp = Process_Find(&gCardLinkProc);
@@ -1504,33 +1504,33 @@ void CardLink_ApplyBonus(void *arg0) {
         }
         switch (code) {
         case 0x4146454A:
-            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0xBB), 0, 0, 0);
+            Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
+            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 8;
             break;
         case 0x4145374A:
         case 0x41453745:
         case 0x41453758:
         case 0x41453759:
-            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0xC8), 0, 0, 0);
+            Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
+            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 0x10;
             break;
         case 0x4245384A:
         case 0x42453845:
         case 0x42453850:
-            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0xD5), 0, 0, 0);
+            Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
+            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 0x20;
             break;
         case 0:
-            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0xE2), 0, 1, 0);
+            Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
+            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xE2), 0, 1, 0);
             Process_Goto(arg0, 0x59);
             break;
         default:
-            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0xF1), 0, 1, 0);
+            Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
+            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xF1), 0, 1, 0);
             Process_Goto(arg0, 0x59);
             break;
         }
@@ -1545,7 +1545,7 @@ void fn_801F5A28(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void Process_UnlinkByKey(void *);
     extern void *gPadInput;
-    extern u16 lbl_80280B58[18];
+    extern u16 gCardLinkStr[18];
     void *tmp;
     s32 var_r0;
     s32 temp_r4_2;
@@ -1566,7 +1566,7 @@ void fn_801F5A28(void *arg0) {
     }
     temp_r4_2 = *(s32 *)((u8 *)gPadInput + 4);
     if ((temp_r4_2 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r4_2) & 0x200) != 0) {
-        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x111, 0x64);
+        Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x111, 0x64);
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         Process_Goto(arg0, 0);
@@ -1581,7 +1581,7 @@ void fn_801F5AEC(void *arg0) {
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
     extern void *gPadInput;
-    extern u16 lbl_80280B58[18];
+    extern u16 gCardLinkStr[18];
     s32 temp_r3;
     s32 pressed;
     void *temp_r5;
@@ -1589,13 +1589,13 @@ void fn_801F5AEC(void *arg0) {
     temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
     pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
-        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x5A, 0x64);
-        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)&lbl_80280B58 + 0x121), 0, 0, 0);
+        Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x5A, 0x64);
+        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)&gCardLinkStr + 0x121), 0, 0, 0);
         Process_ClearFunc(arg0);
         return;
     }
     if (pressed & 0x200) {
-        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x111, 0x64);
+        Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x111, 0x64);
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         Process_Goto(arg0, 0x63);
@@ -1620,15 +1620,15 @@ void fn_801F5C04(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
     void fn_80109180(void *, void *);
     void *memset(void *, s32, s32);
-    extern u16 lbl_80280B58[18];
+    extern u16 gCardLinkStr[18];
     void *temp_r31;
 
-    *(void **)((u8 *)arg0 + 0x50) = fn_800C4638(0x1EA, (u8 *)&lbl_80280B58 + 0x12A, 0);
+    *(void **)((u8 *)arg0 + 0x50) = fn_800C4638(0x1EA, (u8 *)&gCardLinkStr + 0x12A, 0);
     temp_r31 = *(void **)((u8 *)arg0 + 0x50);
     memset(temp_r31, 0, 0x1EA);
     *((s16 *)temp_r31) = (*(((s16 *)temp_r31) + 1) = 0);
     *(((s16 *)temp_r31) + 0xF) = 0;
-    fn_80109180((u8 *)&lbl_80280B58 + 0x12B, arg0);
+    fn_80109180((u8 *)&gCardLinkStr + 0x12B, arg0);
 }
 
 void fn_801F5C88(void *arg0) {
@@ -1664,7 +1664,7 @@ void fn_801F5D14(void *arg0) {
     void fn_800056CC(void *, ...);
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
-    extern u16 lbl_80280B58[18];
+    extern u16 gCardLinkStr[18];
     s32 ret;
 
     ret = fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
@@ -1678,7 +1678,7 @@ void fn_801F5D14(void *arg0) {
         return;
     }
     fn_80266840(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x40, (u8 *)arg0 + 0x4B);
-    fn_800056CC((u8 *)lbl_80280B58 + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
+    fn_800056CC((u8 *)gCardLinkStr + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
     if (*(u32 *)((u8 *)arg0 + 0x40) + 0x10000 != 0xFFFF) {
         Process_Goto(arg0, 3);
         *(u8 *)((u8 *)arg0 + 0x4C) = 3;
@@ -1746,7 +1746,7 @@ void fn_801F5E74(void *arg0) {
         return;
     }
     p = lbl_803683F0;
-    fn_800056CC((char *)lbl_80280B58 + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
+    fn_800056CC((char *)gCardLinkStr + 0x149, (s32)p[0], (s32)p[1], (s32)p[2], (s32)p[3]);
     Process_ClearFunc(arg0);
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
 }
@@ -1794,7 +1794,7 @@ void fn_801F5FE0(void *arg0) {
         return;
     }
     v = *(u32 *)((u8 *)arg0 + 0x40);
-    fn_800056CC((char *)lbl_80280B58 + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
+    fn_800056CC((char *)gCardLinkStr + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
     Process_ClearFunc(arg0);
 }
@@ -1873,7 +1873,7 @@ void fn_801F6170(void *arg0)
 #pragma global_optimizer on
 void fn_801F6260(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x4C) = 0;
-    fn_8005C7C8((u8 *)&lbl_80280B58 + 0x18C);
+    fn_8005C7C8((u8 *)&gCardLinkStr + 0x18C);
 }
 
 extern u8 lbl_8029B198[16];
@@ -5261,7 +5261,7 @@ void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     return node;
 }
 #pragma use_lmw_stmw reset
-extern u16 lbl_80280B58[18];
+extern u16 gCardLinkStr[18];
 extern u16* lbl_8027F730;
 extern u16* lbl_8029A910;
 extern u8 lbl_8027F710[32];
