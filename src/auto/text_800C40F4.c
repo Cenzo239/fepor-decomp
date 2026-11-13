@@ -8523,9 +8523,9 @@ void fn_800DBED4(void) {
 void *fn_800DBED8(void *arg0, s16 arg1) {
     void fn_800DF724(void *, s16);
     void Heap_Free(void *);
-    extern u8 lbl_8028DF20[];
+    extern u8 Layer_vtable[];
     if (arg0 != NULL) {
-        *(void **)((char *)arg0 + 0x40) = lbl_8028DF20;
+        *(void **)((char *)arg0 + 0x40) = Layer_vtable;
         fn_800DF724(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
@@ -8616,7 +8616,7 @@ void* fn_800DC0BC(void* arg0, s32 arg2, s32 arg3) {
 extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
 {
     extern char Layer_str[];
-    extern u8 lbl_8028DF20[];
+    extern u8 Layer_vtable[];
     extern f32 lbl_80369E90;
     extern f32 lbl_80369E94;
     extern void String_Init(void *, char *, void *);
@@ -8638,7 +8638,7 @@ extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
     String_Destroy(str10, -1);
     String_Destroy(str1C, -1);
 
-    *(void **)((u8 *)arg0 + 0x40) = lbl_8028DF20;
+    *(void **)((u8 *)arg0 + 0x40) = Layer_vtable;
     one = lbl_80369E94;
     *(s32 *)((u8 *)arg0 + 0x28) = -0x31;
     zero = lbl_80369E90;
