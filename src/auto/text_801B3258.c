@@ -9055,6 +9055,7 @@ s32 fn_801C9D58(void) {
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
+/* Reload CameraWin anim list for a category and set the camChara side mode. */
 void CameraWin_LoadList(void *arg0, s32 arg1) {
     s32 fn_800C9400(void *, s32, u32, char *, u32);
     void String_AssignCStr(void *, char *, u32);
@@ -9084,11 +9085,11 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
         u8 pad[0x1C];
         s32 nameId;
     };
-    char sp38[0x30];
-    struct Str sp2C;
-    struct Str sp20;
-    struct Str sp14;
-    struct Str sp8;
+    char label[0x30];
+    struct Str tempStr;
+    struct Str pathStr;
+    struct Str listStr;
+    struct Str pathTmp;
     void *self;
     s32 handle;
     s32 count;
@@ -9097,14 +9098,14 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     char *base;
 
     self = arg0;
-    sp2C.cap = 0;
-    sp20.cap = 0;
-    sp2C.size = 0;
-    sp2C.data = 0;
-    sp2C.cap = 0;
-    sp20.size = 0;
-    sp20.data = 0;
-    sp20.cap = 0;
+    tempStr.cap = 0;
+    pathStr.cap = 0;
+    tempStr.size = 0;
+    tempStr.data = 0;
+    tempStr.cap = 0;
+    pathStr.size = 0;
+    pathStr.data = 0;
+    pathStr.cap = 0;
 
     fn_800DC454(*(void **)((u8 *)self + 0x438));
     *(s32 *)((u8 *)self + 0x428) = 0;
@@ -9113,38 +9114,38 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     base = CameraWin_str;
     for (arg1 = 0; arg1 < count; arg1++) {
         entry = (struct Entry *)fn_801CAF2C(handle, arg1);
-        sprintf(sp38, base + 0x16, arg1, entry->nameId);
-        String_AssignCStr(&sp2C, sp38, strlen(sp38));
-        String_Copy(&sp14, &sp2C);
-        fn_800DC518(*(void **)((u8 *)self + 0x438), &sp14, entry);
-        String_Destroy(&sp14, -1);
+        sprintf(label, base + 0x16, arg1, entry->nameId);
+        String_AssignCStr(&tempStr, label, strlen(label));
+        String_Copy(&listStr, &tempStr);
+        fn_800DC518(*(void **)((u8 *)self + 0x438), &listStr, entry);
+        String_Destroy(&listStr, -1);
         fn_800C9BC4((u8 *)self + 0x424,
                     (void *)(*(s32 *)((u8 *)self + 0x42C) + (*(s32 *)((u8 *)self + 0x428) * 4)),
                     1, &entry->nameId);
     }
 
-    fn_800DF6DC(&sp8, fn_801CAF8C(handle));
-    String_Assign(&sp20, &sp8, 0, -1);
-    String_Destroy(&sp8, -1);
+    fn_800DF6DC(&pathTmp, fn_801CAF8C(handle));
+    String_Assign(&pathStr, &pathTmp, 0, -1);
+    String_Destroy(&pathTmp, -1);
 
     len = strlen((char *)((u8 *)CameraWin_str + 0x21));
-    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x21), len) == 0) {
+    if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x21), len) == 0) {
         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 0);
     } else {
         len = strlen((char *)((u8 *)CameraWin_str + 0x2C));
-        if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x2C), len) == 0) {
+        if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x2C), len) == 0) {
             fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 1);
         } else {
             len = strlen((char *)((u8 *)CameraWin_str + 0x37));
-            if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x37), len) == 0) {
+            if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x37), len) == 0) {
                 fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 2);
             } else {
                 len = strlen((char *)((u8 *)CameraWin_str + 0x42));
-                if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x42), len) == 0) {
+                if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x42), len) == 0) {
                     fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 3);
                 } else {
                     len = strlen((char *)((u8 *)CameraWin_str + 0x4D));
-                    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x4D), len) == 0) {
+                    if (fn_800C9400(&pathStr, 0, pathStr.size, (char *)((u32)CameraWin_str + 0x4D), len) == 0) {
                         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 4);
                     }
                 }
@@ -9153,8 +9154,8 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     }
 
     fn_801CADBC(handle, 0);
-    String_Destroy(&sp20, -1);
-    String_Destroy(&sp2C, -1);
+    String_Destroy(&pathStr, -1);
+    String_Destroy(&tempStr, -1);
 }
 #pragma global_optimizer reset
 #pragma optimization_level reset
