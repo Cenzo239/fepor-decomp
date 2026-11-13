@@ -12466,7 +12466,7 @@ static inline void *get_53260_object(void *base) {
     }
     return *(void **)((u8 *)base + 0x30);
 }
-void fn_80053260(void *arg0)
+void MapObj_UpdateMatrix(void *arg0)
 {
     void *fn_80040844(void);
     void Map_BuildSlopeMatrix(void *, void *, f32, f32);
@@ -12800,7 +12800,7 @@ void fn_80053F68(void *arg0) {
     void fn_800609DC(void *);
     void fn_8006CAD4(void *);
     void fn_8000C188(void *);
-    void fn_80053260(void *);
+    void MapObj_UpdateMatrix(void *);
     void fn_800548E8(void *);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
@@ -12915,7 +12915,7 @@ void fn_80053F68(void *arg0) {
 
         cb = *(u8 (**)(void *))((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x40);
         if (cb == 0 || cb(arg0) != 1) {
-            fn_80053260(arg0);
+            MapObj_UpdateMatrix(arg0);
         }
 
         fn_800609DC(gfx);
