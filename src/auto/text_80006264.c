@@ -2322,8 +2322,8 @@ void fn_8000A430(void *arg0) {
 }
 
 void fn_8000A440(s32 arg0, s32 arg1) {
-    extern s32 lbl_802ADAFC[];
-    lbl_802ADAFC[arg0] = arg1;
+    extern s32 gProcessOpcodeTables[];
+    gProcessOpcodeTables[arg0] = arg1;
 }
 
 void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
@@ -3348,9 +3348,9 @@ s32 fn_8000B82C(void) {
 
 extern void *(*lbl_80366DA0)(s32);
 extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
-extern u32 lbl_802ADAFC[9];
+extern u32 gProcessOpcodeTables[9];
 void Process_RunScript(void *arg0) {
-    extern u32 lbl_802ADAFC[9];
+    extern u32 gProcessOpcodeTables[9];
     u8 *self;
     u32 *table;
     u32 x;
@@ -3358,7 +3358,7 @@ void Process_RunScript(void *arg0) {
 
     self = (u8 *)arg0;
     if (*(u32 *)self != 0 && self[0x2D] == 0 && self[0x2E] == 0 && *(void **)(self + 0x10) == NULL) {
-        table = lbl_802ADAFC;
+        table = gProcessOpcodeTables;
         for (;;) {
             x = **(u32 **)(self + 4);
             y = table[(x >> 8) & 7];
@@ -3760,7 +3760,7 @@ void fn_8000C194(s32 arg0) {
 void Process_RunScript(void *);
 void Process_ClearFunc(void *);
 void Process_Update(void *arg0) {
-    extern u32 lbl_802ADAFC[9];
+    extern u32 gProcessOpcodeTables[9];
     u8 *self;
     u8 *node;
     u8 *child;
@@ -3818,7 +3818,7 @@ done1:
                     if (*(u32 *)self != 0 && self[0x2D] == 0 && self[0x2E] == 0 && *(void **)(self + 0x10) == NULL) {
                         for (;;) {
                             x = **(u32 **)(self + 4);
-                            y = lbl_802ADAFC[(x >> 8) & 7];
+                            y = gProcessOpcodeTables[(x >> 8) & 7];
                             if (((u8 (*)(void *))(*(u32 *)(y + ((x & 0xFF) << 2))))(self)
                                 && *(u32 *)self != 0 && self[0x2D] == 0) {
                                 if (self[0x2E] == 0) {

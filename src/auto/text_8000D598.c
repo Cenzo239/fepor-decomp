@@ -17,7 +17,7 @@ extern u16 lbl_80367140;
 
 extern void *(*lbl_80366DA0)(s32);
 extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
-extern u32 lbl_802ADAFC[9];
+extern u32 gProcessOpcodeTables[9];
 
 extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
