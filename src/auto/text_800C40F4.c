@@ -9953,57 +9953,58 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
     *(u32 *)((u8 *)arg0 + 0xC) = (u32)ptr;
 }
 
-void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+void Vec3Interp_Set(void *interp, s32 duration, f32 x, f32 y, f32 z, f32 cx, f32 cy, f32 cz) {
+    /* Set cubic Vec3 tween target; duration 0 snaps. Else shift history, store controls, set speed from distance. */
     f32 PSVECDistance(f32 *, f32 *);
     extern f32 gVec3InterpZero;
-    f32 sp14[3];
-    f32 sp8[3];
-    f32 temp_f1;
+    f32 cur[3];
+    f32 dst[3];
+    f32 dist;
 
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, f32 *, 0x30) = farg0;
-        M2C_FIELD(arg0, f32 *, 0x34) = farg1;
-        M2C_FIELD(arg0, f32 *, 0x38) = farg2;
-        M2C_FIELD(arg0, f32 *, 0x3C) = farg0;
-        M2C_FIELD(arg0, f32 *, 0x40) = farg1;
-        M2C_FIELD(arg0, f32 *, 0x44) = farg2;
+    if (duration == 0) {
+        M2C_FIELD(interp, f32 *, 0x30) = x;
+        M2C_FIELD(interp, f32 *, 0x34) = y;
+        M2C_FIELD(interp, f32 *, 0x38) = z;
+        M2C_FIELD(interp, f32 *, 0x3C) = x;
+        M2C_FIELD(interp, f32 *, 0x40) = y;
+        M2C_FIELD(interp, f32 *, 0x44) = z;
     } else {
-        M2C_FIELD(arg0, f32 *, 0x30) = (f32) M2C_FIELD(arg0, f32 *, 0x3C);
-        M2C_FIELD(arg0, f32 *, 0x34) = (f32) M2C_FIELD(arg0, f32 *, 0x40);
-        M2C_FIELD(arg0, f32 *, 0x38) = (f32) M2C_FIELD(arg0, f32 *, 0x44);
-        M2C_FIELD(arg0, f32 *, 0x3C) = (f32) M2C_FIELD(arg0, f32 *, 0);
-        M2C_FIELD(arg0, f32 *, 0x40) = (f32) M2C_FIELD(arg0, f32 *, 4);
-        M2C_FIELD(arg0, f32 *, 0x44) = (f32) M2C_FIELD(arg0, f32 *, 8);
+        M2C_FIELD(interp, f32 *, 0x30) = (f32) M2C_FIELD(interp, f32 *, 0x3C);
+        M2C_FIELD(interp, f32 *, 0x34) = (f32) M2C_FIELD(interp, f32 *, 0x40);
+        M2C_FIELD(interp, f32 *, 0x38) = (f32) M2C_FIELD(interp, f32 *, 0x44);
+        M2C_FIELD(interp, f32 *, 0x3C) = (f32) M2C_FIELD(interp, f32 *, 0);
+        M2C_FIELD(interp, f32 *, 0x40) = (f32) M2C_FIELD(interp, f32 *, 4);
+        M2C_FIELD(interp, f32 *, 0x44) = (f32) M2C_FIELD(interp, f32 *, 8);
     }
-    M2C_FIELD(arg0, f32 *, 0x48) = farg0;
-    M2C_FIELD(arg0, f32 *, 0x4C) = farg1;
-    M2C_FIELD(arg0, f32 *, 0x50) = farg2;
-    M2C_FIELD(arg0, f32 *, 0x54) = farg3;
-    M2C_FIELD(arg0, f32 *, 0x58) = farg4;
-    M2C_FIELD(arg0, f32 *, 0x5C) = farg5;
-    M2C_FIELD(arg0, f32 *, 0xC) = farg0;
-    M2C_FIELD(arg0, f32 *, 0x10) = farg1;
-    M2C_FIELD(arg0, f32 *, 0x14) = farg2;
-    M2C_FIELD(arg0, s32 *, 0x2C) = arg1;
-    M2C_FIELD(arg0, f32 *, 0x18) = (f32) arg1;
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, f32 *, 0) = (f32) M2C_FIELD(arg0, f32 *, 0xC);
-        M2C_FIELD(arg0, f32 *, 4) = (f32) M2C_FIELD(arg0, f32 *, 0x10);
-        M2C_FIELD(arg0, f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x14);
+    M2C_FIELD(interp, f32 *, 0x48) = x;
+    M2C_FIELD(interp, f32 *, 0x4C) = y;
+    M2C_FIELD(interp, f32 *, 0x50) = z;
+    M2C_FIELD(interp, f32 *, 0x54) = cx;
+    M2C_FIELD(interp, f32 *, 0x58) = cy;
+    M2C_FIELD(interp, f32 *, 0x5C) = cz;
+    M2C_FIELD(interp, f32 *, 0xC) = x;
+    M2C_FIELD(interp, f32 *, 0x10) = y;
+    M2C_FIELD(interp, f32 *, 0x14) = z;
+    M2C_FIELD(interp, s32 *, 0x2C) = duration;
+    M2C_FIELD(interp, f32 *, 0x18) = (f32) duration;
+    if (duration == 0) {
+        M2C_FIELD(interp, f32 *, 0) = (f32) M2C_FIELD(interp, f32 *, 0xC);
+        M2C_FIELD(interp, f32 *, 4) = (f32) M2C_FIELD(interp, f32 *, 0x10);
+        M2C_FIELD(interp, f32 *, 8) = (f32) M2C_FIELD(interp, f32 *, 0x14);
         return;
     }
-    sp14[0] = M2C_FIELD(arg0, f32 *, 0);
-    sp14[1] = M2C_FIELD(arg0, f32 *, 4);
-    sp14[2] = M2C_FIELD(arg0, f32 *, 8);
-    sp8[0] = M2C_FIELD(arg0, f32 *, 0xC);
-    sp8[1] = M2C_FIELD(arg0, f32 *, 0x10);
-    sp8[2] = M2C_FIELD(arg0, f32 *, 0x14);
-    temp_f1 = PSVECDistance(sp8, sp14);
-    if (gVec3InterpZero == temp_f1) {
-        M2C_FIELD(arg0, s32 *, 0x2C) = 0;
+    cur[0] = M2C_FIELD(interp, f32 *, 0);
+    cur[1] = M2C_FIELD(interp, f32 *, 4);
+    cur[2] = M2C_FIELD(interp, f32 *, 8);
+    dst[0] = M2C_FIELD(interp, f32 *, 0xC);
+    dst[1] = M2C_FIELD(interp, f32 *, 0x10);
+    dst[2] = M2C_FIELD(interp, f32 *, 0x14);
+    dist = PSVECDistance(dst, cur);
+    if (gVec3InterpZero == dist) {
+        M2C_FIELD(interp, s32 *, 0x2C) = 0;
         return;
     }
-    M2C_FIELD(arg0, f32 *, 0x1C) = (f32) (temp_f1 / M2C_FIELD(arg0, f32 *, 0x18));
+    M2C_FIELD(interp, f32 *, 0x1C) = (f32) (dist / M2C_FIELD(interp, f32 *, 0x18));
 }
 
 s32 fn_800DF258(void *arg0, const char *arg1)
