@@ -25,7 +25,7 @@ typedef struct SpriteSheet {
     s32 texAttr;   /* +0x6C */
 } SpriteSheet;
 
-/* UI text label drawn by Ui_DrawTextLabel (-1=left, 0=center, 1=right) */
+/* UI text label (-1=left, 0=center, 1=right align) */
 typedef struct UiTextLabel {
     u8 pad00[2];
     s8 primParam;    /* +0x02 */
