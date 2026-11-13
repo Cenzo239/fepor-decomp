@@ -13082,7 +13082,7 @@ void fn_80054808(void *arg0) {
 
 void fn_80054850(void *arg0) {
     s64 OSGetTime(void);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_800555EC(s32, s32);
     u8 GActor_CheckResources(s32);
     s32 temp_r31;
@@ -13095,7 +13095,7 @@ void fn_80054850(void *arg0) {
     flags = *(u32 *)((u8 *)temp_r3 + 8);
     temp_r31 = **(s32 **)((u8 *)temp_r3 + 0x2C);
     if ((flags >> 28) & 1) {
-        fn_8000C070(arg0, 0);
+        Process_Goto(arg0, 0);
         return;
     }
     var_r4 = 0;
@@ -13104,7 +13104,7 @@ void fn_80054850(void *arg0) {
     }
     fn_800555EC(temp_r31, var_r4);
     if (GActor_CheckResources(temp_r31) != 0) {
-        fn_8000C070(arg0, 0);
+        Process_Goto(arg0, 0);
     }
 }
 

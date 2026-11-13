@@ -2499,7 +2499,7 @@ void fn_80168F54(s32 arg0) {
 }
 
 void fn_801690B0(s32 arg0) {
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8013FDA0(s32);
     extern void *gPadInput;
     s32 *p;
@@ -2508,7 +2508,7 @@ void fn_801690B0(s32 arg0) {
     p = gPadInput;
     temp = p[2];
     if (temp & (temp ^ p[1]) & 0x200) {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
     }
     fn_8013FDA0(arg0);
 }
@@ -2811,7 +2811,7 @@ s32 fn_801696E0(void) {
 void *fn_80169714(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_8000CAF0(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_801403F0(void);
     extern u16 lbl_80293D50[];
     extern u16 lbl_80293D8C[];
@@ -2827,14 +2827,14 @@ void *fn_80169714(s32 arg0) {
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
     }
     fn_8000CAF0(lbl_80293D50, temp_r3);
-    fn_8000C070(temp_r3, 0x8);
+    Process_Goto(temp_r3, 0x8);
     return temp_r3;
 }
 
 void *fn_8016978C(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_8000CAF0(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_801403F0(void);
     extern u16 lbl_80293D50[];
     extern u16 lbl_80293D8C[];
@@ -2850,7 +2850,7 @@ void *fn_8016978C(s32 arg0) {
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
     }
     fn_8000CAF0(lbl_80293D50, temp_r3);
-    fn_8000C070(temp_r3, 0x10);
+    Process_Goto(temp_r3, 0x10);
     return temp_r3;
 }
 
@@ -3081,7 +3081,7 @@ void fn_80169EB4(void *arg0) {
 }
 
 void fn_80169F30(void *arg0) {
-    M2C_UNK fn_8000C070(void *, s32);
+    M2C_UNK Process_Goto(void *, s32);
     M2C_UNK fn_8000A420(void *);
     M2C_UNK Ui_FindChild(void *, s32, s32);
     M2C_UNK Ui_SetWidgetText(u32, void *);
@@ -3090,7 +3090,7 @@ void fn_80169F30(void *arg0) {
     u32 temp;
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
-        fn_8000C070(arg0, 0x11);
+        Process_Goto(arg0, 0x11);
         return;
     case 0x80:
         fn_8000A420((void *)M2C_FIELD(arg0, s32 *, 0x4C));
@@ -3492,7 +3492,7 @@ void *fn_8016A824(void) {
 
 s32 fn_8016A834(s32 unused, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80293D8C[];
     extern u32 gUiContext[];
     void *temp;
@@ -3500,7 +3500,7 @@ s32 fn_8016A834(s32 unused, s32 arg1) {
     ((u8 *)gUiContext)[8] = 0x81;
     temp = Process_Find(lbl_80293D8C);
     *(s32 *)((u8 *)temp + 0x50) = arg1;
-    fn_8000C070(temp, 5);
+    Process_Goto(temp, 5);
     return 4;
 }
 
@@ -3516,7 +3516,7 @@ void *fn_8016A8B4(void) {
 
 s32 fn_8016A8C4(s32 unused, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80293D8C[];
     extern u32 gUiContext[];
     void *temp;
@@ -3524,7 +3524,7 @@ s32 fn_8016A8C4(s32 unused, s32 arg1) {
     ((u8 *)gUiContext)[8] = 0x80;
     temp = Process_Find(lbl_80293D8C);
     *(s32 *)((u8 *)temp + 0x50) = arg1;
-    fn_8000C070(temp, 5);
+    Process_Goto(temp, 5);
     return 4;
 }
 
@@ -3552,13 +3552,13 @@ void *fn_8016A918(void *arg0, s16 arg1) {
 s32 fn_8016A984(void) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     s32 Process_Find(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80293D8C[];
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         return 0x40;
     }
-    fn_8000C070(Process_Find(lbl_80293D8C), 0xC);
+    Process_Goto(Process_Find(lbl_80293D8C), 0xC);
     return 8;
 }
 
@@ -3574,13 +3574,13 @@ void *fn_8016ABDC(void) {
 
 s32 fn_8016ABEC(s32 unused, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80293D8C[];
     void *temp;
 
     temp = Process_Find(lbl_80293D8C);
     *(s32 *)((u8 *)temp + 0x50) = arg1;
-    fn_8000C070(temp, 0xC);
+    Process_Goto(temp, 0xC);
     return 4;
 }
 
@@ -3607,7 +3607,7 @@ u8 fn_8016AC6C(void) {
 }
 
 s32 fn_8016ACA8(void *arg1, void *arg2) {
-    M2C_UNK fn_8000C070(M2C_UNK);
+    M2C_UNK Process_Goto(M2C_UNK);
     void *Process_Find(M2C_UNK *);
     M2C_UNK fn_80176888(void *, void *, s16, f32, f32);
     extern u16 lbl_80277BC0[];
@@ -3623,7 +3623,7 @@ s32 fn_8016ACA8(void *arg1, void *arg2) {
         return 0;
     }
     M2C_FIELD(Process_Find((void *) lbl_80293D8C), void **, 0x50) = arg1;
-    fn_8000C070(0xB);
+    Process_Goto(0xB);
     return 4;
 }
 
@@ -3639,7 +3639,7 @@ void *fn_8016ADD8(void) {
 
 s32 fn_8016ADE8(s32 arg0, s32 arg1, void *arg2) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80293D8C[];
     void *temp;
 
@@ -3648,7 +3648,7 @@ s32 fn_8016ADE8(s32 arg0, s32 arg1, void *arg2) {
     }
     temp = Process_Find(lbl_80293D8C);
     *(s32 *)((u8 *)temp + 0x50) = arg1;
-    fn_8000C070(temp, 0xD);
+    Process_Goto(temp, 0xD);
     return 4;
 }
 
@@ -3830,7 +3830,7 @@ extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
 }
 #pragma cplusplus reset
 s32 fn_8016B25C(void *arg0, void *arg1, void *arg2) {
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     void *Process_Find(void *);
     void fn_80176888(s32, s32, f32, f32);
     extern u8 lbl_80277BC0[];
@@ -3848,7 +3848,7 @@ s32 fn_8016B25C(void *arg0, void *arg1, void *arg2) {
     {
         void *temp = Process_Find(lbl_80293D8C);
         *(void **)((u8 *)temp + 0x50) = arg1;
-        fn_8000C070(temp, 0xA);
+        Process_Goto(temp, 0xA);
     }
     return 4;
 }
@@ -3950,7 +3950,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
 
 #pragma cplusplus reset
 s32 fn_8016B538(void *arg0, void *arg1, void *arg2) {
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     void *Process_Find(void *);
     void fn_80176888(s32, s32, f32, f32);
     extern u8 lbl_80277BC0[];
@@ -3967,7 +3967,7 @@ s32 fn_8016B538(void *arg0, void *arg1, void *arg2) {
     {
         void *temp = Process_Find(lbl_80293D8C);
         *(void **)((u8 *)temp + 0x50) = arg1;
-        fn_8000C070(temp, 9);
+        Process_Goto(temp, 9);
     }
     return 4;
 }
@@ -4188,7 +4188,7 @@ void fn_8016BADC(void *arg0) {
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 void fn_8016BBB8(void *self) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *fn_8003A114(void *);
     void fn_8007B990(void *);
     void *fn_8007BA4C(void *, s32);
@@ -4280,7 +4280,7 @@ void fn_8016BBB8(void *self) {
             Ui_PlaySeCue((u8 *)lbl_80277EA0 + 0x8A, 0x64);
             *(u32 *)((u8 *)self + 0x30) &= ~0x10u;
         } else if (mask & 0x200) {
-            fn_8000C070(self, 1);
+            Process_Goto(self, 1);
             Ui_PlaySeCue((u8 *)lbl_80277EA0 + 0xA7, 0x64);
         }
         break;
@@ -5716,7 +5716,7 @@ void *fn_8016E92C(u32 arg0) {
     void *fn_8000CAA0(void *, u32);
     void *fn_8000CAF0(void *, u32);
     void fn_801403F0(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u16 lbl_80294604[];
     void *var_r31;
 
@@ -5739,7 +5739,7 @@ void *fn_8016E92C(u32 arg0) {
         *(s8 *)((u8 *)var_r31 + 0x64) = -1;
     }
     *(s8 *)((u8 *)var_r31 + 0x64) = 6;
-    fn_8000C070(var_r31, 0x1D);
+    Process_Goto(var_r31, 0x1D);
     return var_r31;
 }
 
@@ -5938,7 +5938,7 @@ void fn_8016EEA8(void *arg0) {
     u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     void fn_8003C15C(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80183BE4(void *, void *);
     extern u32 gUiContext[];
     void *obj;
@@ -5955,7 +5955,7 @@ void fn_8016EEA8(void *arg0) {
     switch ((s32)flags) {
     case 3:
         fn_8003C15C(obj);
-        fn_8000C070(arg0, 0x35);
+        Process_Goto(arg0, 0x35);
         break;
     case 0:
     case 1:
@@ -5971,7 +5971,7 @@ extern "C" void fn_8016EF58(void *arg0) {
     void fn_8013AD70(void *, s32);
     void *fn_8013AC54(void *);
     void fn_80138808(void *, void *);
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     extern u8 gBattleState[];
     struct Obj {
         virtual void v0() = 0;
@@ -6000,7 +6000,7 @@ extern "C" void fn_8016EF58(void *arg0) {
         fn_80138808(*(void **)((u8 *)arg0 + 0x44), fn_8013AC54(inner));
         break;
     }
-    fn_8000C070(arg0, *(u8 *)((u8 *)arg0 + 0x65));
+    Process_Goto(arg0, *(u8 *)((u8 *)arg0 + 0x65));
 }
 extern "C" void fn_8016F014(void *arg0) {
     void fn_8013AD70(void *, s32);
@@ -6038,8 +6038,8 @@ extern "C" void fn_8016F014(void *arg0) {
 #pragma cplusplus reset
 
 void fn_8016F0C4(void *arg0) {
-    M2C_UNK fn_8000C070(void *, u8);
-    fn_8000C070(arg0, *(u8 *)((char *)arg0 + 0x65));
+    M2C_UNK Process_Goto(void *, u8);
+    Process_Goto(arg0, *(u8 *)((char *)arg0 + 0x65));
 }
 
 void fn_8016F0E8(void *arg0) {
@@ -6229,7 +6229,7 @@ void fn_8016F628(void *arg0) {
 
 #pragma cplusplus on
 void fn_8016F694(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s8 fn_80037E00(void *);
     void fn_800951D0(void *, s32);
     void fn_80138808(void *, void *);
@@ -6252,7 +6252,7 @@ void fn_8016F694(void *arg0) {
     }
     if (var_r3 >= 0) {
         M2C_FIELD(temp_r29, s16 *, 0x4C) = var_r3;
-        fn_8000C070(arg0, 0x2B);
+        Process_Goto(arg0, 0x2B);
         return;
     }
     if ((s8) fn_80037E00(M2C_FIELD(gUiContext, void **, 0)) < 0) {
@@ -6268,11 +6268,11 @@ void fn_8016F694(void *arg0) {
             fn_80138808(temp_r3, temp_r4);
         }
     }
-    fn_8000C070(arg0, 0x2C);
+    Process_Goto(arg0, 0x2C);
 }
 #pragma cplusplus reset
 void fn_8016F790(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000CAA0(void *, void *);
     void *fn_8001CB64(void *);
     void fn_8001D580(void *);
@@ -6310,7 +6310,7 @@ void fn_8016F790(void *arg0) {
         }
         break;
     case 0x80:
-        fn_8000C070(arg0, 0x2B);
+        Process_Goto(arg0, 0x2B);
         break;
     }
     ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -6322,7 +6322,7 @@ void fn_8016F790(void *arg0) {
 #pragma cplusplus on
 extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     /* Handle map-cursor pad input: A act/help, Y unit info, B cancel. */
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
@@ -6438,7 +6438,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
             obj = *(void **)((u8 *)self + 0x44);
             if (obj && *(void **)((u8 *)obj + 0x3C))
                 fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
-            fn_8000C070(self, 0x2C);
+            Process_Goto(self, 0x2C);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -6676,7 +6676,7 @@ extern "C" void fn_80170160(void *arg0) {
 #pragma use_lmw_stmw on
 /* Tick map-cursor unit-info: follow the hovered unit and handle A/B/X popup input. */
 extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
@@ -6769,7 +6769,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            fn_8000C070(self, 0x27);
+            Process_Goto(self, 0x27);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -6853,7 +6853,7 @@ extern "C" void fn_80170894(void *arg0) {
     void fn_8001D580(s32);
     s16 fn_80164FBC(void *, s16);
     s16 fn_80164E78(void *, s16);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80294580[];
     extern u16 gUiMsgStrings[];
 
@@ -6932,14 +6932,14 @@ extern "C" void fn_80170894(void *arg0) {
     if (var_r3 >= 0) {
         *(s16 *)((u8 *)temp_r30 + 0x4c) = var_r3;
     } else {
-        fn_8000C070(var_r28, 0x24);
+        Process_Goto(var_r28, 0x24);
     }
 }
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80170AD0(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
     u32 Ui_FindChild(void *, s32, s32);
@@ -7034,7 +7034,7 @@ extern "C" void fn_80170AD0(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            fn_8000C070(self, 0x24);
+            Process_Goto(self, 0x24);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -7411,7 +7411,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     void fn_80050C90(void *);
     s16 fn_80164FBC(void *, s16);
     s16 fn_80164E78(void *, s16);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u32 gUiContext[];
     extern u8 lbl_80330EAC[];
 
@@ -7442,15 +7442,15 @@ extern "C" void fn_80171C0C(void *arg0) {
     }
     if (0 <= var_r3) {
         *(s16 *)((u8 *)obj + 0x4C) = var_r3;
-        fn_8000C070(self, 0x1A);
+        Process_Goto(self, 0x1A);
         return;
     }
-    fn_8000C070(self, 0x1C);
+    Process_Goto(self, 0x1C);
 }
 #pragma cplusplus reset
 
 void fn_80171D04(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_800271C8(void *, void *);
     u32 MapCursor_GetUnit(void *);
     u32 Ui_FindChild(void *, s32, s32);
@@ -7474,7 +7474,7 @@ void fn_80171D04(void *arg0) {
         }
         break;
     case 0x80:
-        fn_8000C070(arg0, 0x1A);
+        Process_Goto(arg0, 0x1A);
         break;
     }
     ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -7486,7 +7486,7 @@ void fn_80171D04(void *arg0) {
 #pragma cplusplus on
 extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     /* Handle map-cursor unit-select pad input: A tip/reject, Y unit info, B cancel. */
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
@@ -7586,7 +7586,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            fn_8000C070(self, 0x1c);
+            Process_Goto(self, 0x1c);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -7889,7 +7889,7 @@ void fn_80172C9C(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_80172DA4(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
     void fn_80094CDC(void *, s16);
@@ -7993,7 +7993,7 @@ extern "C" void fn_80172DA4(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            fn_8000C070(self, 0x15);
+            Process_Goto(self, 0x15);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -8070,7 +8070,7 @@ u8 fn_80173220(u32 *arg0, void *arg1) {
 void fn_80173440(void *arg0) {
     M2C_UNK fn_80184C7C(void *, s32, s32, s32);
     M2C_UNK fn_80138808(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *temp_r31;
     void *temp_r3;
     void *temp_r4;
@@ -8091,7 +8091,7 @@ void fn_80173440(void *arg0) {
             fn_80138808(temp_r3, temp_r4);
         }
     }
-    fn_8000C070(temp_r31, 0xF);
+    Process_Goto(temp_r31, 0xF);
 }
 
 void fn_801734D8(void *arg0) {
@@ -8161,7 +8161,7 @@ void fn_801735F0(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_8017369C(void *arg0) {
-void fn_8000C070(void *, s32);
+void Process_Goto(void *, s32);
 void *fn_8000CAA0(void *, void *);
 u32 *fn_8001CB64(u32);
 void fn_8001C4FC(u32 *, s32);
@@ -8305,7 +8305,7 @@ fn_8013FF00(self, obj54);
 *(u8 *)((u8 *)obj4c + 0x4B) = 0;
 *(u8 *)((u8 *)obj4c + 0x48) = 0;
 *(u8 *)((u8 *)obj54 + 0x4C) = 1;
-fn_8000C070(self, 0xF);
+Process_Goto(self, 0xF);
 Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1DD, 0x64);
 }
 }
@@ -8332,7 +8332,7 @@ fn_8013FF00(self, obj54);
 *(u8 *)((u8 *)obj4c + 0x4B) = 0;
 *(u8 *)((u8 *)obj4c + 0x48) = 0;
 *(u8 *)((u8 *)obj54 + 0x4C) = 1;
-fn_8000C070(self, 0xF);
+Process_Goto(self, 0xF);
 Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 }
 }
@@ -8385,7 +8385,7 @@ void fn_80173C24(void *arg0) {
 #pragma cplusplus on
 extern "C" void Ui_HandleListCursorInput(void *arg0) {
     /* Handle list-cursor input: A select, Y info, X back, B cancel. */
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s8 fn_80037E00(u32);
     void fn_800951D0(u32, s32);
     void fn_80138808(void *, void *);
@@ -8490,7 +8490,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 *((u8 *)listWidget + 0x4d) = 1;
                 *(s16 *)((u8 *)listWidget + 0x7a) = fn_80143C58(listWidget);
                 *((u8 *)listWidget + 0x4c) = 0;
-                fn_8000C070(arg0, 0x10);
+                Process_Goto(arg0, 0x10);
             } else {
                 if (fn_80037E00(gUiContext[0]) < 0) {
                     fn_800951D0(gUiContext[0], -1);
@@ -8503,7 +8503,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                     fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
                 }
                 gUiContext[1] = *(u32 *)((u8 *)entry + 4);
-                fn_8000C070(arg0, 0x11);
+                Process_Goto(arg0, 0x11);
             }
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && entry != NULL) {
@@ -8521,7 +8521,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
             if (obj && *(void **)((u8 *)obj + 0x3C)) {
                 fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
             }
-            fn_8000C070(arg0, 0xa);
+            Process_Goto(arg0, 0xa);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -8536,7 +8536,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
             if (obj && *(void **)((u8 *)obj + 0x3C)) {
                 fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
             }
-            fn_8000C070(arg0, 0x12);
+            Process_Goto(arg0, 0x12);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -8904,7 +8904,7 @@ extern "C" void fn_80174B10(void *arg0) {
 extern "C" void fn_80174C5C(void *arg0) {
     M2C_UNK fn_80184C7C(void *, s32, s32, s32);
     M2C_UNK fn_80138808(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *temp_r31;
     void *temp_r3;
     void *temp_r4;
@@ -8925,7 +8925,7 @@ extern "C" void fn_80174C5C(void *arg0) {
             fn_80138808(temp_r3, temp_r4);
         }
     }
-    fn_8000C070(temp_r31, 0xB);
+    Process_Goto(temp_r31, 0xB);
 }
 
 #pragma cplusplus reset
@@ -8941,7 +8941,7 @@ void fn_80174E0C(s32 arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80174E4C(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *, void *);
     void *fn_8000CAA0(void *, void *);
     u8 fn_80093088(u32);
@@ -9027,12 +9027,12 @@ extern "C" void fn_80174E4C(void *arg0) {
         } else if ((btn & 0x800) && var_r30) {
             fn_801695BC(var_r30, self, 0x1000000);
             *(u8 *)((u8 *)self + 0x65) = 0xb;
-            fn_8000C070(self, 0x31);
+            Process_Goto(self, 0x31);
         } else if ((btn & 0x400) && var_r30) {
-            fn_8000C070(self, 0xe);
+            Process_Goto(self, 0xe);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if (btn & 0x200) {
-            fn_8000C070(self, 0xc);
+            Process_Goto(self, 0xc);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
@@ -9511,7 +9511,7 @@ void fn_80175CA0(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80175E3C(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8002833C(void *, u32);
     void fn_80138808(void *, u32);
     u32 fn_8013AC54(void *);
@@ -9577,18 +9577,18 @@ extern "C" void fn_80175E3C(void *arg0) {
             sp8[1] = tmp;
             fn_80140258(arg0, obj44, sp8, 1);
             fn_80140210(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
-            fn_8000C070(arg0, 6);
+            Process_Goto(arg0, 6);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1DD, 0x64);
         } else if ((btn & 0x800) && (var_r30)) {
             fn_801695BC(var_r30, arg0, 0x1000000);
             *(u8 *)((u8 *)arg0 + 0x65) = 5;
-            fn_8000C070(arg0, 0x31);
+            Process_Goto(arg0, 0x31);
         } else if ((btn & 0x400) && (var_r30)) {
             fn_801694AC(var_r30, arg0);
             *(u8 *)((u8 *)arg0 + 0x65) = 5;
-            fn_8000C070(arg0, 0x32);
+            Process_Goto(arg0, 0x32);
         } else if (btn & 0x200) {
-            fn_8000C070(arg0, 0x35);
+            Process_Goto(arg0, 0x35);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
         }
     }
@@ -10143,7 +10143,7 @@ void *fn_80177430(void) {
 
 s32 fn_80177440(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
@@ -10152,7 +10152,7 @@ s32 fn_80177440(s32 arg0, s32 arg1) {
     temp = Process_Find(lbl_80294604);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x8A;
-    fn_8000C070(temp, 0x2F);
+    Process_Goto(temp, 0x2F);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
@@ -10169,7 +10169,7 @@ void *fn_801774D4(void) {
 
 s32 fn_801774E4(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
@@ -10178,7 +10178,7 @@ s32 fn_801774E4(s32 arg0, s32 arg1) {
     temp = Process_Find(lbl_80294604);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x89;
-    fn_8000C070(temp, 0x2E);
+    Process_Goto(temp, 0x2E);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
@@ -10195,7 +10195,7 @@ void *fn_80177578(void) {
 
 s32 fn_80177588(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
@@ -10204,7 +10204,7 @@ s32 fn_80177588(s32 arg0, s32 arg1) {
     temp = Process_Find(lbl_80294604);
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x88;
-    fn_8000C070(temp, 0x2D);
+    Process_Goto(temp, 0x2D);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
@@ -10480,7 +10480,7 @@ u8 fn_80177CB4(void) {
 s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
     extern u8 lbl_80294580[];
     extern u16 gUiMsgStrings[];
@@ -10502,7 +10502,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     }
     temp = Process_Find(lbl_80294604);
     *((u8 *)gUiContext + 8) = 0x85;
-    fn_8000C070(temp, 0x16);
+    Process_Goto(temp, 0x16);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
@@ -10558,7 +10558,7 @@ s32 fn_80177E84(void) {
 s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     void *Process_Find(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
     extern u8 lbl_80294580[];
     extern u16 gUiMsgStrings[];
@@ -10580,7 +10580,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     }
     temp = Process_Find(lbl_80294604);
     *((u8 *)gUiContext + 8) = 0x84;
-    fn_8000C070(temp, 0x13);
+    Process_Goto(temp, 0x13);
     fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
@@ -10595,7 +10595,7 @@ void *fn_801780A8(void) {
 }
 
 s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     void *Process_Find(void *);
     void fn_8000C5B8(void *);
     void *fn_8000CAA0(void *, void *);
@@ -10631,7 +10631,7 @@ s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
     }
     proc = Process_Find(lbl_80294604);
     ((u8 *)gUiContext)[8] = 0x83;
-    fn_8000C070(proc, 0x28);
+    Process_Goto(proc, 0x28);
     fn_8000C5B8(M2C_FIELD(proc, void **, 0x5C));
     return 4;
 }
@@ -12092,26 +12092,26 @@ u8 fn_8017A9DC(void *arg0) {
 
 void fn_8017A9F0(s32 arg0, s32 arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     extern u8 lbl_80295370[];
     void *proc;
 
     proc = fn_8000CAA0(lbl_80295370, arg2);
     M2C_FIELD(proc, s32 *, 0x30) = arg0;
     M2C_FIELD(proc, s32 *, 0x38) = arg1;
-    fn_8000C070(proc, 3);
+    Process_Goto(proc, 3);
 }
 
 void fn_8017AA48(s32 arg0, s32 arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     extern u8 lbl_80295370[];
     void *proc;
 
     proc = fn_8000CAA0(lbl_80295370, arg2);
     M2C_FIELD(proc, s32 *, 0x30) = arg0;
     M2C_FIELD(proc, s32 *, 0x38) = arg1;
-    fn_8000C070(proc, 0);
+    Process_Goto(proc, 0);
 }
 
 #pragma cplusplus on
@@ -13738,7 +13738,7 @@ s32 fn_8017E08C(void) {
 void fn_8017E0C0(void *arg0, s32 arg1, s32 arg2) {
     void fn_8017E1B8(void *, u32);
     M2C_UNK fn_8000A388(void *, void *, void *);
-    M2C_UNK fn_8000C070(void *, M2C_UNK);
+    M2C_UNK Process_Goto(void *, M2C_UNK);
     void *fn_8000CAF0(void *, s32);
     s32 temp_r0;
     s32 temp_r0_2;
@@ -13756,7 +13756,7 @@ void fn_8017E0C0(void *arg0, s32 arg1, s32 arg2) {
             M2C_FIELD(temp_r3, s32 *, 0x38) = temp_r0 * 4;
         }
         if (M2C_FIELD(temp_r3, s32 *, 0x38) == 0) {
-            fn_8000C070(temp_r3, 0x63);
+            Process_Goto(temp_r3, 0x63);
         }
         temp_r0_2 = M2C_FIELD(temp_r3, s32 *, 0x38);
         if (temp_r0_2 < 0) {
@@ -13836,13 +13836,13 @@ s32 fn_8017E328(void) {
 
 void fn_8017E35C(void) {
     u32 Process_Find(void *);
-    void fn_8000C070(u32, s32);
+    void Process_Goto(u32, s32);
     extern u8 lbl_80295550[];
     u32 temp;
 
     temp = Process_Find(lbl_80295550);
     if (temp != 0) {
-        fn_8000C070(temp, 0);
+        Process_Goto(temp, 0);
     }
 }
 
@@ -14632,13 +14632,13 @@ void fn_8017FD84(void *arg0) {
 
 void fn_8017FE84(void *arg0) {
     void Ui_FindChild(void *, s32, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
 
     Ui_FindChild(arg0, 0x81, 0);
     Ui_FindChild(arg0, 0x82, 0);
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x80:
-        fn_8000C070(arg0, 5);
+        Process_Goto(arg0, 5);
         break;
     case 0x81:
         break;
@@ -14654,7 +14654,7 @@ void fn_8017FEF8(s32 arg0) {
 #pragma cplusplus on
 extern "C" void fn_80180084(void *arg0)
 {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *fn_80016B7C(u32);
     s8 fn_80036DE0(s32, void *);
     u8 fn_80036F5C(s32, s8);
@@ -14783,7 +14783,7 @@ extern "C" void fn_80180084(void *arg0)
             } else if (((Obj *)unit)->v10(nodeVal) == 0) {
                 fn_80176888(gUiUnitInfoStrings + 0x73, self, fx, fy);
             } else {
-                fn_8000C070(self, 7);
+                Process_Goto(self, 7);
                 Ui_PlaySeCue(gUiUnitInfoStrings + 0x84, 0x64);
             }
         } else if ((btn & 0x800) && nodeVal != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
@@ -14801,7 +14801,7 @@ extern "C" void fn_80180084(void *arg0)
             *(s16 *)((u8 *)sub + 0x52) = a;
             *(s16 *)((u8 *)sub + 0x54) = *((s16 *)&p50 + 1);
             *(s16 *)&p50 = a;
-            fn_8000C070(self, 3);
+            Process_Goto(self, 3);
             Ui_PlaySeCue(gUiUnitInfoStrings + 0x94, 0x64);
         }
     }
@@ -14843,7 +14843,7 @@ void fn_80180620(void) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80180624(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_80037004(void *, u8);
     u8 fn_8003701C(void *);
@@ -14971,12 +14971,12 @@ extern "C" void fn_80180624(void *arg0) {
             }
         } else if ((btn & 0x800) && unit != 0) {
             fn_801695BC(unit, arg0, 0x1000000);
-            fn_8000C070(arg0, 8);
+            Process_Goto(arg0, 8);
         } else if ((btn & 0x400) && unit != 0) {
             fn_801694AC(unit, arg0);
-            fn_8000C070(arg0, 9);
+            Process_Goto(arg0, 9);
         } else if (btn & 0x200) {
-            fn_8000C070(arg0, 0xA);
+            Process_Goto(arg0, 0xA);
             Ui_PlaySeCue(gUiUnitInfoStrings + 0x94, 0x64);
         }
     }

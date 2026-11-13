@@ -60,7 +60,7 @@ s32 fn_80103818(void) {
 
 s32 fn_80103820(void) {
     s32 fn_8000BCA4(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_80024398(void *, s32, s32);
     void fn_800A8400(void);
     extern u8 lbl_802734D0[];
@@ -83,7 +83,7 @@ s32 fn_80103820(void) {
 
     temp_r31 = fn_8000BCA4((u8 *)lbl_802734D0 + 0xC4);
     fn_800A8400();
-    fn_8000C070(temp_r31, 0);
+    Process_Goto(temp_r31, 0);
     if ((s8)lbl_80367964 == 0) {
         p = lbl_8028EE28;
         lbl_80367964 = 1;
@@ -167,7 +167,7 @@ s32 fn_80103998(void) {
 
 s32 fn_801039A0(void *, void *, void *arg2) {
     s32 fn_8000BCA4(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_800A8400(void);
     void fn_80168E90(s32);
     extern u8 lbl_802734D0[];
@@ -194,7 +194,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     dst[0x14] = temp_r5[0xD];
     temp_r31 = fn_8000BCA4(str + 0xC4);
     fn_800A8400();
-    fn_8000C070(temp_r31, 0);
+    Process_Goto(temp_r31, 0);
     fn_80168E90(temp_r31);
     return 6;
 }
@@ -210,7 +210,7 @@ s32 fn_80103A6C(void) {
 
 s32 fn_80103A74(void) {
     s32 fn_8000BCA4(void *);
-    M2C_UNK fn_8000C070(s32, M2C_UNK);
+    M2C_UNK Process_Goto(s32, M2C_UNK);
     M2C_UNK fn_800A8400();
     M2C_UNK String_CStr(M2C_UNK *);
     M2C_UNK fn_800C992C(M2C_UNK *, void *, s32);
@@ -229,7 +229,7 @@ s32 fn_80103A74(void) {
     String_Init(&spC, gBattleState + 0x504, &sp8);
     fn_800C992C(&spC, &lbl_802734D0[0x157], strlen((u8 *)lbl_802734D0 + 0x157));
     fn_800A8400();
-    fn_8000C070(temp_r31, 0);
+    Process_Goto(temp_r31, 0);
     fn_801EAABC(String_CStr(&spC), temp_r31);
     String_Destroy(&spC, -1);
     return 6;
@@ -247,13 +247,13 @@ s32 fn_80103B30(void) {
 s32 fn_80103B38(void) {
     s32 fn_8000BCA4(void *);
     void fn_800A8400(void);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8011AC78(s32);
     extern char lbl_802734D0[];
 
     s32 temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
     fn_800A8400();
-    fn_8000C070(temp_r31, 0);
+    Process_Goto(temp_r31, 0);
     fn_8011AC78(temp_r31);
     return 6;
 }
@@ -269,7 +269,7 @@ s32 fn_80103B9C(void) {
 
 s32 fn_80103BA4(void) {
     s32 fn_8000BCA4(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8000CAA0(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
@@ -279,7 +279,7 @@ s32 fn_80103BA4(void) {
     temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
-        fn_8000C070(temp_r31, 0);
+        Process_Goto(temp_r31, 0);
     }
     fn_8000CAA0(&lbl_8028EB50, temp_r31);
     return 6;
@@ -296,7 +296,7 @@ s32 fn_80103C14(void) {
 
 s32 fn_80103C1C(void) {
     s32 fn_8000BCA4(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8000CAA0(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
@@ -306,7 +306,7 @@ s32 fn_80103C1C(void) {
     temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
-        fn_8000C070(temp_r31, 0);
+        Process_Goto(temp_r31, 0);
     }
     fn_8000CAA0(&lbl_8028EB10, temp_r31);
     return 6;
@@ -323,7 +323,7 @@ s32 fn_80103C8C(void) {
 
 s32 fn_80103C94(void) {
     s32 fn_8000BCA4(void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8000CAA0(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
@@ -333,7 +333,7 @@ s32 fn_80103C94(void) {
     temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
-        fn_8000C070(temp_r31, 0);
+        Process_Goto(temp_r31, 0);
     }
     fn_8000CAA0(&lbl_8028EAE8, temp_r31);
     return 6;
@@ -351,13 +351,13 @@ s32 fn_80103D04(void) {
 s32 fn_80103D0C(void) {
     s32 fn_8000BCA4(void *);
     void fn_800A8400(void);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_80132B00(s32, s32);
     extern char lbl_802734D0[];
 
     s32 temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
     fn_800A8400();
-    fn_8000C070(temp_r31, 0);
+    Process_Goto(temp_r31, 0);
     fn_80132B00(temp_r31, 1);
     return 6;
 }

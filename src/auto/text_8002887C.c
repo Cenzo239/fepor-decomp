@@ -103,7 +103,7 @@ void fn_800289D0(void *arg0) {
     } else {
         switch (val) {
             case 35:
-                fn_8000C070(0x09, 0); // arg0, not 6
+                Process_Goto(0x09, 0); // arg0, not 6
                 return;
             case 40:
             case 6:
@@ -130,7 +130,7 @@ void fn_80028B4C(s32 arg0) {
 }
 
 void fn_80028B94(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u8 fn_800281F4(void *);
     void fn_800281D8(void *);
     void fn_800AA4F8(void *);
@@ -152,7 +152,7 @@ void fn_80028B94(void *arg0) {
     case 0x1B:
     case 0x1C:
     case 0x28:
-        fn_8000C070(arg0, 6);
+        Process_Goto(arg0, 6);
         return;
     }
 
@@ -165,7 +165,7 @@ void fn_80028B94(void *arg0) {
             ((u8 *)unit)[0x19F],
             (s8)gUiContext[0x11]
         );
-        fn_8000C070(arg0, 3);
+        Process_Goto(arg0, 3);
     }
 }
 
@@ -190,7 +190,7 @@ void fn_80028C90(s32 arg0) {
 }
 
 void fn_80028D04(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80027038(void *);
     void fn_80027F98(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
@@ -201,7 +201,7 @@ void fn_80028D04(void *arg0) {
     val = gUiContext[8];
     if (val < 0x34) {
         if (val >= 0x32) {
-            fn_8000C070(arg0, 6);
+            Process_Goto(arg0, 6);
             return;
         }
         goto common;
@@ -228,7 +228,7 @@ void fn_80028DBC(s32 arg0) {
                     s32 temp_r31 = *(s32*)ptr;
                     fn_8002807C(ptr);
                     fn_800AA4F8(temp_r31);
-                    fn_8000C070(arg0, 3);
+                    Process_Goto(arg0, 3);
                     return;
                 }
                 break;
@@ -241,7 +241,7 @@ void fn_80028DBC(s32 arg0) {
     } else {
         switch (val) {
             case 35:
-                fn_8000C070(6);
+                Process_Goto(6);
                 return;
             case 40:
             case 6:
@@ -2026,7 +2026,7 @@ void fn_8002D648(void *arg0) {
     extern struct { u32 unk0; u32 unk4; } lbl_803682F0;
     void *fn_8000CAA0(void *, void *);
     void *fn_8000CAF0(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80006220(s32);
     void fn_8014C7C0(void *, void *);
     void fn_801E379C(u32);
@@ -2039,7 +2039,7 @@ void fn_8002D648(void *arg0) {
     void *r;
 
     r = fn_8000CAA0(lbl_80284E78, arg0);
-    fn_8000C070(r, 4);
+    Process_Goto(r, 4);
     fn_8000CAF0(lbl_80284E30, r);
     fn_80006220(0x10);
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
@@ -2071,9 +2071,9 @@ void fn_8002D72C(void *arg0) {
 extern u16 lbl_80284E78[216];
 void fn_8002D780(s32 arg0) {
     void *Process_Find(void *);
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
 
-    fn_8000C070(Process_Find(lbl_80284E78), (u8)arg0);
+    Process_Goto(Process_Find(lbl_80284E78), (u8)arg0);
 }
 
 void fn_8002D7BC(s32 arg0) {
@@ -2482,7 +2482,7 @@ void fn_8002E510(void) {
 
 void fn_8002E5B4(s32 arg0) {
     u8 Map_IsInViewBounds(void *, s8, s8);
-    void fn_8000C070(s32, M2C_UNK);
+    void Process_Goto(s32, M2C_UNK);
     extern struct {
         void *head;
         s32 unk4;
@@ -2501,7 +2501,7 @@ void fn_8002E5B4(s32 arg0) {
         }
         p = next;
     }
-    fn_8000C070(arg0, 5);
+    Process_Goto(arg0, 5);
 }
 
 void fn_8002E648(void) {
@@ -3147,7 +3147,7 @@ void fn_8002FA54(void) {
 
 void fn_8002FAB0(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern void *gPadInput;
     extern f32 gBattleState[];
     extern u8 gBattleMap[];
@@ -3168,14 +3168,14 @@ void fn_8002FAB0(void *arg0) {
         if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] != 0) {
             Ui_PlaySeCue(lbl_802695F0 + 0xFC, 0x64);
             lbl_8036723A = 5;
-            fn_8000C070(arg0, 0x63);
+            Process_Goto(arg0, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
         Ui_PlaySeCue(lbl_802695F0 + 0x10C, 0x64);
         lbl_8036723A = 9;
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
     }
 }
 
@@ -3276,7 +3276,7 @@ void fn_800315F8(void) {
 
 void fn_80031668(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern void *gPadInput;
     extern f32 gBattleState[];
     extern u8 gBattleMap[];
@@ -3297,13 +3297,13 @@ void fn_80031668(void *arg0) {
         if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] >= 0) {
             Ui_PlaySeCue(lbl_802695F0 + 0xFC, 0x64);
             lbl_8036723A = 5;
-            fn_8000C070(arg0, 0x63);
+            Process_Goto(arg0, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
         lbl_8036723A = 9;
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
     }
 }
 

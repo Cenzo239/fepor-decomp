@@ -3710,7 +3710,7 @@ void fn_8000C068(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = arg1;
 }
 
-void fn_8000C070(void *arg0, u32 arg1)
+void Process_Goto(void *arg0, u32 arg1)
 {
     u32 node;
     u32 *ptr;

@@ -136,9 +136,9 @@ s32 fn_801EAB90(s32 unused, void *obj) {
 }
 
 void fn_801EAC14(void *arg0) {
-    M2C_UNK fn_8000C070(void *, u8);
+    M2C_UNK Process_Goto(void *, u8);
     fn_8013FEC0();
-    fn_8000C070(arg0, M2C_FIELD(arg0, u8 *, 0x54));
+    Process_Goto(arg0, M2C_FIELD(arg0, u8 *, 0x54));
 }
 
 void fn_801EAC4C(s32 arg0) {
@@ -169,16 +169,16 @@ void fn_801EAE68(void *arg0) {
 
 void fn_801EAEC8(void *arg0) {
     void fn_80018AE4(void);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 gUiContext[];
 
     fn_80018AE4();
     switch ((s32)gUiContext[8]) {
     case 0x81:
-        fn_8000C070(arg0, 0xB);
+        Process_Goto(arg0, 0xB);
         return;
     case 0x80:
-        fn_8000C070(arg0, *(u8 *)((u8 *)arg0 + 0x54));
+        Process_Goto(arg0, *(u8 *)((u8 *)arg0 + 0x54));
         return;
     }
 }
@@ -254,7 +254,7 @@ void fn_801EB23C(void *arg0) {
 
 void fn_801EB294(void *arg0)
 {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
     void fn_8002833C(u8 *, void *);
@@ -379,7 +379,7 @@ void fn_801EB294(void *arg0)
             fn_8002833C(gUiContext, unit);
             Ui_PlaySeCue(lbl_8027EE08 + 0x1c9, 0x64);
             *((u8 *)self + 0x54) = 2;
-            fn_8000C070(self, 0xA);
+            Process_Goto(self, 0xA);
             return;
         }
         if (buttons & 0x100) {
@@ -427,7 +427,7 @@ void fn_801EB294(void *arg0)
                     fn_8004A1F0();
                 }
                 Ui_PlaySeCue(lbl_8027EE08 + 0x20f, 0x64);
-                fn_8000C070(self, 1);
+                Process_Goto(self, 1);
                 return;
             }
             if (buttons & 0x1000) {
@@ -435,7 +435,7 @@ void fn_801EB294(void *arg0)
                     fn_8004A1F0();
                 }
                 *((u8 *)self + 0x54) = 2;
-                fn_8000C070(self, 5);
+                Process_Goto(self, 5);
             }
         }
     }
@@ -1882,11 +1882,11 @@ void fn_801EDAC8(void *arg0) {
     switch ((s32) temp_r0) {                        /* irregular */
     case 2:
         fn_80169714(M2C_FIELD(arg0, s32 *, 0x18));
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     case 3:
         fn_8016978C(M2C_FIELD(arg0, s32 *, 0x18));
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     }
 }
@@ -1911,7 +1911,7 @@ void fn_801EDB70(void *arg0) {
     temp_r0 = *(u8 *)((char *)arg0 + 0x38);
     switch ((s32)temp_r0) {
     case 1:
-        fn_8000C070(arg0, 0xA);
+        Process_Goto(arg0, 0xA);
         break;
     }
 }
@@ -2079,7 +2079,7 @@ void fn_801EE76C(void *arg0) {
     void fn_800558D8(char *);
     void *fn_8000CAF0(void *, void *);
     void *fn_80059208(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_800E99CC(void *);
     void fn_801EEDB4(void);
     s32 strlen(char *);
@@ -2252,7 +2252,7 @@ use30708:
     *(s16 *)((char *)self + 0x3E) = 0;
     *(s16 *)((char *)self + 0x3C) = 0;
     r29 = *(void **)((char *)self + 0x44);
-    fn_8000C070(r29, 0xA);
+    Process_Goto(r29, 0xA);
     *(s16 *)((char *)r29 + 0x48) = 0;
 }
 void fn_801EEBC0(void* arg0) {

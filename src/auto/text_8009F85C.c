@@ -1516,7 +1516,7 @@ void *fn_800A19B0(void) {
 
 s32 fn_800A19C0(void) {
     void *fn_8000BCA4(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_800A6A3C(void);
     void *fn_800AA794(void);
     void fn_800283C8(void *, void *);
@@ -1539,7 +1539,7 @@ s32 fn_800A19C0(void) {
     if (temp_r31 == NULL) {
         return 0x10;
     }
-    fn_8000C070(temp_r31, 9);
+    Process_Goto(temp_r31, 9);
     fn_800A6A3C();
     temp_r30 = fn_800AA794();
     fn_800283C8(gUiContext, temp_r30);

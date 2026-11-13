@@ -1064,7 +1064,7 @@ void fn_800A5CBC(void) {
     extern u16 lbl_8028C678[];
     u32 temp_r3 = Process_Find(&lbl_8028C678[0]);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 0x63);
+        Process_Goto(temp_r3, 0x63);
     }
 }
 
@@ -1515,28 +1515,28 @@ s32 fn_800A69D8(s32 *arg0, s32 *arg1) {
 void fn_800A6A3C(void) {
     u32 temp_r3 = Process_Find(lbl_8028C750);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 7);
+        Process_Goto(temp_r3, 7);
     }
 }
 
 void fn_800A6A74(void) {
     u32 temp_r3 = Process_Find(lbl_8028C750);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 6);
+        Process_Goto(temp_r3, 6);
     }
 }
 
 void fn_800A6AAC(void) {
     u32 temp_r3 = Process_Find(lbl_8028C750);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 5);
+        Process_Goto(temp_r3, 5);
     }
 }
 
 void fn_800A6AE4(void) {
     u32 temp_r3 = Process_Find(lbl_8028C750);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 4);
+        Process_Goto(temp_r3, 4);
     }
 }
 
@@ -1578,7 +1578,7 @@ void fn_800A6C24(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s8 sx;
     s8 sy;
     u8 id;
@@ -1596,7 +1596,7 @@ void fn_800A6C24(void *arg0) {
     *(void **)((u8 *)arg0 + 0x30) = unit;
 
     if (*(void **)((u8 *)arg0 + 0x30) == NULL) {
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
     }
 }
 
@@ -1624,7 +1624,7 @@ void fn_800A6D78(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s8 sx;
     s8 sy;
     u8 id;
@@ -1643,7 +1643,7 @@ void fn_800A6D78(void *arg0) {
     *(s16 *)((u8 *)arg0 + 0x36) = -1;
 
     if (*(void **)((u8 *)arg0 + 0x30) == NULL) {
-        fn_8000C070(arg0, 6);
+        Process_Goto(arg0, 6);
     }
 }
 
@@ -1651,7 +1651,7 @@ void fn_800A6E20(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s8 sx;
     s8 sy;
     u8 id;
@@ -1668,14 +1668,14 @@ void fn_800A6E20(void *arg0) {
 
     if (unit != NULL) {
         if (*(void **)((u8 *)arg0 + 0x30) == NULL) {
-            fn_8000C070(arg0, 2);
+            Process_Goto(arg0, 2);
         }
         if (*(void **)((u8 *)arg0 + 0x30) != unit) {
             *(s16 *)((u8 *)arg0 + 0x36) = -1;
         }
         *(void **)((u8 *)arg0 + 0x30) = unit;
     } else if (*(void **)((u8 *)arg0 + 0x30) != NULL) {
-        fn_8000C070(arg0, 3);
+        Process_Goto(arg0, 3);
     }
 }
 
@@ -2420,7 +2420,7 @@ void fn_800A8B18(void *arg0) {
     void fn_8005C84C(void *);
     void fn_8006EEFC(void *, void *);
     s32 fn_80005E2C(s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_8026E470[];
     extern u8 lbl_803677FC;
     void *self;
@@ -2432,7 +2432,7 @@ void fn_800A8B18(void *arg0) {
     ((u8 *)self)[0x38] = 0;
     if (lbl_803677FC == 0) {
         if (fn_80005E2C(0) == 0) {
-            fn_8000C070(self, 1);
+            Process_Goto(self, 1);
             lbl_803677FC = 1;
         }
     }
@@ -2450,7 +2450,7 @@ void fn_800A8BA0(void) {
 void fn_800A8BD8(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void fn_801481CC(void *, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 *gPadInput;
     extern u8 lbl_8026E470[];
 
@@ -2458,7 +2458,7 @@ void fn_800A8BD8(void *arg0) {
         Ui_PlaySeCue((u8 *)&lbl_8026E470 + 0x82, 0x64);
         fn_801481CC((u8 *)&lbl_8026E470 + 0x73, 0x1F4);
         ((u8 *)arg0)[0x38] = 1;
-        fn_8000C070(arg0, 2);
+        Process_Goto(arg0, 2);
     }
 }
 
@@ -2576,7 +2576,7 @@ fn_80148618(lbl_8026E470+0x73,500);
 #pragma optimization_level reset
 #pragma opt_common_subs reset
 void fn_800A8FE8(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     u8 fn_800A5C88(void);
     extern void *gPadInput;
@@ -2588,7 +2588,7 @@ void fn_800A8FE8(void *arg0) {
         return;
     }
     if (fn_800A5C88() == 0) {
-        fn_8000C070(arg0, 0);
+        Process_Goto(arg0, 0);
     }
 }
 

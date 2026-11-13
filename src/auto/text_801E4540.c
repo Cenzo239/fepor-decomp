@@ -14,7 +14,7 @@ void fn_801E4540(void)
     s32 fn_801270A4(void);
     void *fn_8000CAA0(void *, s32);
     void fn_80142060(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80299FE0[];
     u8 *ptr;
 
@@ -42,7 +42,7 @@ void fn_801E4540(void)
     *(u32 *)(ptr + 0x5C) = 0;
     *(u32 *)(ptr + 0x60) = 0;
     *(u32 *)(ptr + 0x64) = 0;
-    fn_8000C070(ptr, 3);
+    Process_Goto(ptr, 3);
 }
 
 s32 fn_801E45FC(void) {
@@ -52,7 +52,7 @@ s32 fn_801E45FC(void) {
 
 void TabMenu_HandleInput(void *arg0) {
     /* Handle tab-menu pad input: L/R change tab, A advance in mode 1, X info, B back; tick active mode. */
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
@@ -86,7 +86,7 @@ void TabMenu_HandleInput(void *arg0) {
         if ((pressed & 0x100) != 0) {
             mode = *(u8 *)((u8 *)arg0 + 0x31);
             if (mode == 1 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-                fn_8000C070(arg0, 2);
+                Process_Goto(arg0, 2);
                 return;
             }
         }
@@ -131,7 +131,7 @@ void TabMenu_HandleInput(void *arg0) {
             return;
         }
         if ((pressed & 0x200) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
-            fn_8000C070(arg0, 5);
+            Process_Goto(arg0, 5);
             Ui_PlaySeCue(gTabMenuStrings + 0x172, 0x64);
             return;
         }
@@ -1687,7 +1687,7 @@ void fn_801E80B4(void *arg0) {
     u8 fn_801E8B38(void *, void *, s8);
     s32 fn_80230BCC(s32);
     void Process_ClearFunc(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80057860(void *, s16);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_801E4900(s16 *, void *);
@@ -1774,7 +1774,7 @@ void fn_801E80B4(void *arg0) {
                         Process_ClearFunc(arg0);
                     }
                 }
-                fn_8000C070(arg0, 4);
+                Process_Goto(arg0, 4);
             } else if ((s8)*p33 < old33) {
                 *(s16 *)((u8 *)arg0 + 0x36) = 0;
                 *(s16 *)((u8 *)arg0 + 0x38) = 0;
@@ -1858,7 +1858,7 @@ void fn_801E80B4(void *arg0) {
                     Process_ClearFunc(arg0);
                 }
             }
-            fn_8000C070(arg0, 4);
+            Process_Goto(arg0, 4);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             fn_801E4900(sp10, arg0);
@@ -2163,7 +2163,7 @@ void fn_801E8D34(void *arg0) {
     u8 fn_801E85A4(void *, s32);
     s32 fn_80230BCC(s32);
     void Process_ClearFunc(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80057860(void *, s16);
     s8 fn_801E4A60(void *, u8);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -2247,7 +2247,7 @@ void fn_801E8D34(void *arg0) {
                         Process_ClearFunc(arg0);
                     }
                 }
-                fn_8000C070(arg0, 4);
+                Process_Goto(arg0, 4);
             } else if ((s8)*(u8 *)((u8 *)arg0 + 0x32) < old32) {
                 *(u8 *)((u8 *)arg0 + 0x33) = 0;
                 *(s16 *)((u8 *)arg0 + 0x36) = 0;
@@ -2314,7 +2314,7 @@ void fn_801E8D34(void *arg0) {
                     Process_ClearFunc(arg0);
                 }
             }
-            fn_8000C070(arg0, 4);
+            Process_Goto(arg0, 4);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
             fn_801E4900(sp8, arg0);

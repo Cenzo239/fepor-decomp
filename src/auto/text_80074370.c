@@ -2744,20 +2744,20 @@ s32 fn_80079004(void *arg0) {
 }
 
 s32 fn_80079018(void *arg0) {
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     extern u8 lbl_8036723A;
     u32 *ptr;
 
     if (lbl_8036723A == 9) {
         ptr = *(u32 **)((u8 *)arg0 + 4);
-        fn_8000C070(arg0, (u8)(*ptr >> 16));
+        Process_Goto(arg0, (u8)(*ptr >> 16));
     }
     *(u8 **)((u8 *)arg0 + 4) = *(u8 **)((u8 *)arg0 + 4) + 4;
     return 1;
 }
 
 s32 fn_8007906C(void *arg0) {
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     extern u8 gUiContext[];
     u32 *ptr;
     u32 val;
@@ -2765,7 +2765,7 @@ s32 fn_8007906C(void *arg0) {
     ptr = *(u32 **)((u8 *)arg0 + 4);
     val = *ptr;
     if ((val >> 24) == gUiContext[8]) {
-        fn_8000C070(arg0, (u8)(val >> 16));
+        Process_Goto(arg0, (u8)(val >> 16));
     }
     *(u8 **)((u8 *)arg0 + 4) = *(u8 **)((u8 *)arg0 + 4) + 4;
     return 1;
@@ -2953,7 +2953,7 @@ void fn_80079B9C(void *arg1, void *arg2) {
 }
 
 void fn_80079CD8(void *arg0) {
-    M2C_UNK fn_8000C070(void *, s32);
+    M2C_UNK Process_Goto(void *, s32);
     u32 fn_8000CD60();
     void fn_8007A524(void *, s32, s32);
     s32 var_r31 = 0;
@@ -2978,7 +2978,7 @@ void fn_80079CD8(void *arg0) {
             }
         }
     } else {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
         temp_r3 = fn_8000CD60() >> 0x10U;
         temp_r0_2 = M2C_FIELD(arg0, s16 *, 0x34);
@@ -3015,7 +3015,7 @@ void fn_80079E08(void *arg0) {
 }
 
 void fn_80079E14(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u32 fn_8000CD60();
     void fn_8007A524(void *, s32, s32);
     s32 var_r31;
@@ -3049,7 +3049,7 @@ void fn_80079E14(void *arg0) {
         var_r31 = 1;
         break;
     case 18:
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
         temp_r3 = fn_8000CD60() >> 0x10U;
         switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
@@ -3085,7 +3085,7 @@ void fn_80079F44(void *arg0) {
 }
 
 void fn_80079F50(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u32 fn_8000CD60();
     void fn_8007A524(void *, s32, s32);
     s32 var_r0;
@@ -3094,7 +3094,7 @@ void fn_80079F50(void *arg0) {
     fn_8007A524(arg0, 0, 7);
     fn_8007A524(arg0, 0, 0xA);
     if ((s16) M2C_FIELD(arg0, s16 *, 0x36) != 5) {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         temp_r3 = fn_8000CD60() >> 0x10U;
         switch ((s16) M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
@@ -3146,7 +3146,7 @@ void fn_8007A024(void *arg0) {
         } else if (temp_r0 < 0xB) {
             var_r31 = 1;
         }
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         fn_8007A524(arg0, var_r31, 7);
         fn_8007A524(arg0, var_r31, 0xA);
         M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
@@ -3155,7 +3155,7 @@ void fn_8007A024(void *arg0) {
     fn_8007A524(arg0, 1, 7);
     fn_8007A524(arg0, 1, 0xA);
     if ((s16)M2C_FIELD(arg0, s16 *, 0x36) != 4) {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         temp_r3 = fn_8000CD60();
         temp_r3_hi = temp_r3 >> 0x10U;
         switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
@@ -3217,7 +3217,7 @@ H:
     r31 = 1;
     goto B;
 B:
-    fn_8000C070(arg0, 1);
+    Process_Goto(arg0, 1);
     fn_8007A524(arg0, r31, 7);
     fn_8007A524(arg0, r31, 10);
     *(s16 *)((u8 *)arg0 + 0x38) = *(s16 *)((u8 *)arg0 + 0x38) + 1;
@@ -3226,7 +3226,7 @@ A:
     fn_8007A524(arg0, 2, 7);
     fn_8007A524(arg0, 2, 10);
     if (*(s16 *)((u8 *)arg0 + 0x36) != 3) {
-        fn_8000C070(arg0, 2);
+        Process_Goto(arg0, 2);
     }
 }
 
@@ -3235,7 +3235,7 @@ void fn_8007A2A0(void *arg0) {
 }
 
 void fn_8007A2AC(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8007A524(void *, s32, s32);
     s32 var_r31;
 
@@ -3259,7 +3259,7 @@ void fn_8007A2AC(void *arg0) {
     case 9:
         break;
     case 10:
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         break;
     default:
         break;
@@ -3271,7 +3271,7 @@ void fn_8007A2AC(void *arg0) {
 }
 
 void fn_8007A368(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u32 fn_8000CD60(void);
     void fn_8007A524(void *, s32, s32);
     s16 unk36;
@@ -3285,7 +3285,7 @@ void fn_8007A368(void *arg0) {
     fn_8007A524(arg0, 0, 0xA);
     unk36 = *(s16 *)((u8 *)arg0 + 0x36);
     if (unk36 != 1) {
-        fn_8000C070(arg0, (u8)unk36);
+        Process_Goto(arg0, (u8)unk36);
         return;
     }
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= 0) {
@@ -3316,7 +3316,7 @@ void fn_8007A368(void *arg0) {
     }
     *(s32 *)((u8 *)arg0 + 0x3C) = val;
     *(s16 *)((u8 *)arg0 + 0x38) = 0;
-    fn_8000C070(arg0, 2);
+    Process_Goto(arg0, 2);
 }
 
 #pragma dont_inline on

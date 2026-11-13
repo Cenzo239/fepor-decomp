@@ -1356,7 +1356,7 @@ Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
 #pragma optimization_level 3
 #pragma opt_strength_reduction off
 void fn_800888A4(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *fn_80037BD0(void *, s32);
     void fn_8007DAC4(void *, void *);
     void Ui_PlaySeCue(void *, s32);
@@ -1385,36 +1385,36 @@ void fn_800888A4(void *arg0) {
     pressed = buttons & (M2C_FIELD(gPadInput, u32 *, 8) ^ buttons);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
-        fn_8000C070(arg0,3);
+        Process_Goto(arg0,3);
         Ui_PlaySeCue(lbl_8026C86C+0x394,100);
         return;
     }
     if (repeat & 0x02000002) {
-        fn_8000C070(arg0,1);
+        Process_Goto(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = 1;
         Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
         return;
     }
     if (repeat & 0x01000001) {
-        fn_8000C070(arg0,1);
+        Process_Goto(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = -1;
         Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
         return;
     }
     if (repeat & 0x08000008) {
-        fn_8000C070(arg0,2);
+        Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = -1;
         Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;
     }
     if (repeat & 0x04000004) {
-        fn_8000C070(arg0,2);
+        Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 1;
         Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;
     }
     if ((repeat & 0x100) && M2C_FIELD(M2C_FIELD(self, void * *, 0x58), u32 *, 0x194) != 0) {
-        fn_8000C070(arg0,2);
+        Process_Goto(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 0;
         Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;

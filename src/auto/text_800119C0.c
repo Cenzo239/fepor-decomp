@@ -748,7 +748,7 @@ s32 fn_80014398(void *arg0) {
 
 s32 fn_80014400(void *arg0) {
     u32 fn_8000D354(s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *ptr;
     u32 word0;
     s32 word1;
@@ -760,14 +760,14 @@ s32 fn_80014400(void *arg0) {
     *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
     hi = (s16)(word0 >> 16);
     if (fn_8000D354(word1) == 0U) {
-        fn_8000C070(arg0, hi & 0xFF);
+        Process_Goto(arg0, hi & 0xFF);
     }
     return 1;
 }
 
 s32 fn_80014468(void *arg0) {
     u32 fn_8000D354(s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *ptr;
     s16 hi;
     s32 word1;
@@ -777,7 +777,7 @@ s32 fn_80014468(void *arg0) {
     word1 = *(s32 *)((u8 *)ptr + 4);
     *(void **)((u8 *)arg0 + 4) = (u8 *)ptr + 8;
     if (fn_8000D354(word1) != 0U) {
-        fn_8000C070(arg0, hi & 0xFF);
+        Process_Goto(arg0, hi & 0xFF);
     }
     return 1;
 }

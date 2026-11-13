@@ -1200,8 +1200,8 @@ void fn_800581A4(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_800588EC(s32 arg0) {
-    void fn_8000C070(s32, s32);
-    fn_8000C070(arg0, 0);
+    void Process_Goto(s32, s32);
+    Process_Goto(arg0, 0);
 }
 
 void fn_80058910(void *arg0, u8 arg1) {
@@ -1301,11 +1301,11 @@ void fn_800591A0(void *arg0) {
 }
 
 void fn_800591CC(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
 
     *(s32 *)((u8 *)arg0 + 0x38) = *(s32 *)((u8 *)arg0 + 0x38) - 1;
     if (*(s32 *)((u8 *)arg0 + 0x38) <= 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
     }
 }
 

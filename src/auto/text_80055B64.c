@@ -204,10 +204,10 @@ void fn_80055BE0(s32 arg0) {
 }
 
 void fn_80055C34(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
 
     *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) - 1;
     if (*(s32 *)((u8 *)arg0 + 0x60) >= 0) {
-        fn_8000C070(arg0, 0);
+        Process_Goto(arg0, 0);
     }
 }

@@ -253,14 +253,14 @@ void fn_8012C7C8(s32 arg0, s32 arg1) {
 }
 
 void fn_8012C808(void *arg0) {
-    M2C_UNK fn_8000C070(void *, s32);
+    M2C_UNK Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
     M2C_UNK fn_80056AE0(s32, s32);
     extern u8 gUiContext[];
     extern u8 lbl_80275AC0[];
 
     if ((u8)gUiContext[8] == 0x81) {
-        fn_8000C070(arg0, 0);
+        Process_Goto(arg0, 0);
     }
 
     if ((s8)M2C_FIELD(arg0, u8 *, 0x62) < 0) {
@@ -484,7 +484,7 @@ void fn_8012CE34(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_8012CF7C(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_80057E6C(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
@@ -587,9 +587,9 @@ extern "C" void fn_8012CF7C(void *arg0) {
                 if (*((u8 *)self + 0x64) == 0x10) {
                     *((u8 *)self + 0x64) = 0;
                     if ((s8)*((u8 *)self + 0x62) < 0) {
-                        fn_8000C070(self, 6);
+                        Process_Goto(self, 6);
                     } else {
-                        fn_8000C070(self, 1);
+                        Process_Goto(self, 1);
                     }
                 }
                 flag = 1;
@@ -597,7 +597,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             if (flag != 0) {
                 Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
                 fn_80057E6C(*(void **)((u8 *)self + 0x44));
-                fn_8000C070(self, 4);
+                Process_Goto(self, 4);
             }
         } else {
             *((u8 *)self + 0x65) = *((u8 *)self + 0x65) - 1;
@@ -640,9 +640,9 @@ extern "C" void fn_8012CF7C(void *arg0) {
                 if (*((u8 *)self + 0x64) == 0x10) {
                     *((u8 *)self + 0x64) = 0;
                     if ((s8)*((u8 *)self + 0x62) < 0) {
-                        fn_8000C070(self, 6);
+                        Process_Goto(self, 6);
                     } else {
-                        fn_8000C070(self, 1);
+                        Process_Goto(self, 1);
                     }
                 }
                 flag = 1;
@@ -650,7 +650,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             if (flag != 0) {
                 Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
                 fn_80057E6C(*(void **)((u8 *)self + 0x48));
-                fn_8000C070(self, 5);
+                Process_Goto(self, 5);
             }
         } else {
             *((u8 *)self + 0x65) = col + 1;
@@ -683,7 +683,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else {
-            fn_8000C070(self, 0);
+            Process_Goto(self, 0);
         }
     }
 }
@@ -724,7 +724,7 @@ void fn_8012D55C(void *arg0) {
 }
 
 void fn_8012D6A4(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
     void fn_8004BE88(void *, s32);
     void fn_80056AE0(void *, s32);
@@ -778,14 +778,14 @@ void fn_8012D6A4(void *arg0) {
         if (mode == 1) {
             fn_8011ABC0(self);
             fn_80056AE0(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
-            fn_8000C070(self, 8);
+            Process_Goto(self, 8);
         } else if (mode == 2) {
             fn_801EAA38(self);
             fn_80056AE0(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
-            fn_8000C070(self, 8);
+            Process_Goto(self, 8);
         }
     } else if (pressed & 0x800) {
-        fn_8000C070(self, 7);
+        Process_Goto(self, 7);
     } else if (trig & 0x01000001) {
         if (*((u8 *)self + 0x64) == 0) {
             if (*((u8 *)self + 0x63) == 0) {
@@ -815,9 +815,9 @@ void fn_8012D6A4(void *arg0) {
             if (*((u8 *)self + 0x64) == 0x10) {
                 *((u8 *)self + 0x64) = 0;
                 if ((s8)*((u8 *)self + 0x62) < 0) {
-                    fn_8000C070(self, 6);
+                    Process_Goto(self, 6);
                 } else {
-                    fn_8000C070(self, 1);
+                    Process_Goto(self, 1);
                 }
             }
             flag = 1;
@@ -825,7 +825,7 @@ void fn_8012D6A4(void *arg0) {
         if (flag != 0) {
             Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
             fn_80057E6C(*(void **)((u8 *)self + 0x44));
-            fn_8000C070(self, 4);
+            Process_Goto(self, 4);
         }
     } else if (trig & 0x02000002) {
         if (*((u8 *)self + 0x64) == 0) {
@@ -850,9 +850,9 @@ void fn_8012D6A4(void *arg0) {
             if (*((u8 *)self + 0x64) == 0x10) {
                 *((u8 *)self + 0x64) = 0;
                 if ((s8)*((u8 *)self + 0x62) < 0) {
-                    fn_8000C070(self, 6);
+                    Process_Goto(self, 6);
                 } else {
-                    fn_8000C070(self, 1);
+                    Process_Goto(self, 1);
                 }
             }
             flag = 1;
@@ -860,13 +860,13 @@ void fn_8012D6A4(void *arg0) {
         if (flag != 0) {
             Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
             fn_80057E6C(*(void **)((u8 *)self + 0x48));
-            fn_8000C070(self, 5);
+            Process_Goto(self, 5);
         }
     } else if (trig & 0x08000008) {
         mode = *((u8 *)self + 0x62);
         if ((s8)mode == 0) {
             if (pressed & 0x08000008) {
-                fn_8000C070(self, 6);
+                Process_Goto(self, 6);
                 Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
             }
         } else {
@@ -878,7 +878,7 @@ void fn_8012D6A4(void *arg0) {
                 if ((s8)mode - (pos / 32) == 0) {
                     *(s16 *)((u8 *)self + 0x6A) = (s16)(pos - *((u8 *)self + 0x6F));
                     fn_80057860(*(void **)((u8 *)self + 0x4C), *(s16 *)((u8 *)self + 0x6A));
-                    fn_8000C070(self, 2);
+                    Process_Goto(self, 2);
                 }
             }
         }
@@ -900,13 +900,13 @@ void fn_8012D6A4(void *arg0) {
                 if ((s8)mode - (pos / 32) == 8) {
                     *(s16 *)((u8 *)self + 0x6A) = (s16)(pos + *((u8 *)self + 0x6F));
                     fn_80057860(*(void **)((u8 *)self + 0x4C), *(s16 *)((u8 *)self + 0x6A));
-                    fn_8000C070(self, 3);
+                    Process_Goto(self, 3);
                 }
             }
         }
     } else if (pressed & 0x200) {
         Ui_PlaySeCue(lbl_80275AC0 + 0x166, 0x64);
-        fn_8000C070(self, 0);
+        Process_Goto(self, 0);
     } else if (pressed & 0x100) {
         mode = *((u8 *)self + 0x62);
         cb = *(u8 (**)(void *))((u8 *)self + 0x54);
@@ -919,13 +919,13 @@ void fn_8012D6A4(void *arg0) {
             }
         } else {
             fn_8004BE88(item, 1);
-            fn_8000C070(self, 0);
+            Process_Goto(self, 0);
         }
     }
 }
 
 s32 fn_8012DC74(void *arg0) {
-    M2C_UNK fn_8000C070(void *, M2C_UNK);
+    M2C_UNK Process_Goto(void *, M2C_UNK);
     f32 fn_8005A028(M2C_UNK, s32, u8, f32, f32, f32, f32);
     extern f32 lbl_8036A4EC;
     u32 temp_r5;
@@ -949,9 +949,9 @@ block_4:
     if ((u8) M2C_FIELD(arg0, u8 *, 0x64) == 0x10) {
         M2C_FIELD(arg0, u8 *, 0x64) = 0U;
         if ((s8) M2C_FIELD(arg0, u8 *, 0x62) < 0) {
-            fn_8000C070(arg0, 6);
+            Process_Goto(arg0, 6);
         } else {
-            fn_8000C070(arg0, 1);
+            Process_Goto(arg0, 1);
         }
     }
     return 1;
@@ -1001,9 +1001,9 @@ s32 fn_8012DD94(void *arg0)
         state[0x64] = 0;
 
         if ((signed char)state[0x62] < 0) {
-            fn_8000C070(state, 6);
+            Process_Goto(state, 6);
         } else {
-            fn_8000C070(state, 1);
+            Process_Goto(state, 1);
         }
     }
 
@@ -1039,7 +1039,7 @@ void fn_8012DF40(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_8012DFA8(void *arg0) {
     typedef struct { s16 a; s16 b; } S16Pair;
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *Msg_Expand(void *);
     u8 fn_8001DDBC(void);
     void *fn_8003FCCC(void *);
@@ -1159,7 +1159,7 @@ void fn_8012DFA8(void *arg0) {
         break;
     }
     if (self[0x61] == 0) {
-        fn_8000C070(self, 0);
+        Process_Goto(self, 0);
         return;
     }
     *(void **)(self + 0x3C) = fn_800C42AC(self[0x61] * 0x24);

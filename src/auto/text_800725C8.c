@@ -241,7 +241,7 @@ void fn_80072B6C(void *arg0)
     s32 fn_800EB774(void);
     void fn_801DDBA8(void *, u8 *, s32, s32, s32);
     s32 Msg_Expand(u8 *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_803682F0;
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
@@ -253,12 +253,12 @@ void fn_80072B6C(void *arg0)
     case -3:
         fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x12D, 0, 1, 0);
         *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
-        fn_8000C070(arg0, 0xA);
+        Process_Goto(arg0, 0xA);
         return;
     default:
         fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x141, 0, 1, 0);
         *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
-        fn_8000C070(arg0, 0xA);
+        Process_Goto(arg0, 0xA);
         return;
     case 0:
     case -66:
@@ -342,7 +342,7 @@ void fn_80072ED4(void *arg0) {
 }
 
 void fn_80072F28(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s32 Msg_Expand(u8 *);
     s32 fn_800EB74C(void);
     s32 fn_8021A8C8(s32, s32, s32);
@@ -358,7 +358,7 @@ void fn_80072F28(void *arg0) {
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
         lbl_80311D50[1] = 0xC8;
-        fn_8000C070(arg0, 9);
+        Process_Goto(arg0, 9);
         return;
     }
     var_r3 = fn_8021A8C8(fn_800EB74C(), 0, 0);
@@ -371,13 +371,13 @@ void fn_80072F28(void *arg0) {
             switch (var_r3) {
             case 0:
             case -66:
-                fn_8000C070(arg0, 0);
+                Process_Goto(arg0, 0);
                 return;
             case -3:
-                fn_8000C070(arg0, 2);
+                Process_Goto(arg0, 2);
                 return;
             case -2:
-                fn_8000C070(arg0, 3);
+                Process_Goto(arg0, 3);
                 break;
             }
         }
@@ -385,7 +385,7 @@ void fn_80072F28(void *arg0) {
 }
 
 void fn_8007303C(s32 arg0) {
-    M2C_UNK fn_8000C070(s32, M2C_UNK);
+    M2C_UNK Process_Goto(s32, M2C_UNK);
     s32 fn_800EB774();
     s32 temp_r3;
 
@@ -393,33 +393,33 @@ void fn_8007303C(s32 arg0) {
     switch (temp_r3) {                              /* irregular */
     case 0:
     case -66:
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         return;
     case -3:
-        fn_8000C070(arg0, 2);
+        Process_Goto(arg0, 2);
         return;
     case -2:
-        fn_8000C070(arg0, 3);
+        Process_Goto(arg0, 3);
         return;
     case -6:
     case -13:
-        fn_8000C070(arg0, 4);
+        Process_Goto(arg0, 4);
         return;
     case -5:
-        fn_8000C070(arg0, 5);
+        Process_Goto(arg0, 5);
         return;
     case -65:
-        fn_8000C070(arg0, 6);
+        Process_Goto(arg0, 6);
         return;
     case -128:
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
         return;
     case -4:
     case -64:
-        fn_8000C070(arg0, 8);
+        Process_Goto(arg0, 8);
         return;
     default:
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
         return;
     }
 }

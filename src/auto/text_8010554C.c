@@ -842,7 +842,7 @@ after_sw:
 void fn_801069A0(u8 *arg0) {
     void *fn_800C45B8(s32, void *, s32);
     u8 fn_80107874(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     u8 fn_801A2300(void);
     u32 Hash_Lookup(void *);
     u8 fn_8001B940(u32 *);
@@ -868,7 +868,7 @@ void fn_801069A0(u8 *arg0) {
     arg0[0x62] = 0;
     arg0[0x61] = 0;
     if (arg0[0x63] == 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     }
     if (fn_801A2300() == 0) {
@@ -5725,26 +5725,20 @@ void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
 #pragma global_optimizer reset
 void fn_8010FE08(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
     s32 n;
-    s32 i;
-    s32 j;
     u8 *walk;
-    u8 *dst;
-    u8 *src;
+    s32 i;
 
 restart:
     n = *(s32 *)((u8 *)arg0 + 0x200);
     walk = (u8 *)arg0;
     i = 0;
-    if (n <= 0) {
-        return;
-    }
-    {
-        s32 ctr = n;
+    if (n > 0) {
         do {
             if (arg1 == (s8)walk[0] && arg2 == (s8)walk[1] && (arg3 == 0 || arg3 == walk[2])) {
-                dst = (u8 *)arg0 + (i << 3);
-                j = i;
+                u8 *dst = (u8 *)arg0 + (i << 3);
+                s32 j = i;
                 while (j < *(s32 *)((u8 *)arg0 + 0x200) - 1) {
+                    u8 *src;
                     j = j + 1;
                     src = (u8 *)arg0 + (j << 3);
                     dst[0] = src[0];
@@ -5755,14 +5749,14 @@ restart:
                     dst[5] = src[5];
                     dst[6] = src[6];
                     dst[7] = src[7];
-                    dst += 8;
+                    dst = dst + 8;
                 }
                 *(s32 *)((u8 *)arg0 + 0x200) = *(s32 *)((u8 *)arg0 + 0x200) - 1;
                 goto restart;
             }
-            walk += 8;
-            i += 1;
-        } while (--ctr != 0);
+            walk = walk + 8;
+            i = i + 1;
+        } while (--n != 0);
     }
 }
 

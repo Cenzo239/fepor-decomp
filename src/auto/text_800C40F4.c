@@ -14582,7 +14582,7 @@ void fn_800E9A10(s32 arg0) {
     lbl_80320C20.busy = 1;
     lbl_80320C20.result = fn_8021BA54(lbl_80320C20.chan, fn_800EB80C);
     if (lbl_80320C20.result < 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         lbl_80320C20.busy = 0;
     }
 }
@@ -14666,7 +14666,7 @@ void fn_800E9B80(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void fn_800E9CE4(s32 arg0) {
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
     s32 *fn_8006EDD8(s32, s32);
     void fn_8006EDA0(void *);
@@ -14696,7 +14696,7 @@ void fn_800E9CE4(s32 arg0) {
     self = arg0;
     base = lbl_80320C20 + 0x10000;
     if (*(s32 *)(base - 0x5FFC) < 0) {
-        fn_8000C070(self, 0x63);
+        Process_Goto(self, 0x63);
         {
             u8 *b = lbl_80320C20 + 0x10000;
             b[-0x5FE6] = 0;
@@ -14806,7 +14806,7 @@ void fn_800E9CE4(s32 arg0) {
                 b[-0x5FE6] = 1;
                 *(s32 *)(base - 0x5FFC) = fn_8021CAB4(b - 0x5FE4, buf, 0x2000, 0, &fn_800EB80C);
                 if (*(s32 *)(base - 0x5FFC) < 0) {
-                    fn_8000C070(self, 0x63);
+                    Process_Goto(self, 0x63);
                     b[-0x5FE6] = 0;
                 }
             }
@@ -14917,7 +14917,7 @@ void fn_800EA808(void) {
 
 #pragma use_lmw_stmw on
 void fn_800EA8F4(s32 arg0) {
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
     s32 *fn_8006EDD8(s32, s32);
     void fn_8006EDA0(void *);
@@ -14946,7 +14946,7 @@ void fn_800EA8F4(s32 arg0) {
     self = arg0;
     base = lbl_80320C20 + 0x10000;
     if (*(s32 *)(base - 0x5FFC) < 0) {
-        fn_8000C070(self, 0x63);
+        Process_Goto(self, 0x63);
         {
             u8 *b = &lbl_80320C20[0x10000];
             b[-0x5FE6] = 0;
@@ -15020,7 +15020,7 @@ void fn_800EA8F4(s32 arg0) {
         *(base2 - 0x5FE6) = 1;
         *(s32 *)(base - 0x5FFC) = fn_8021CAB4(base2 - 0x5FE4, buf, 0x2000, 0, &fn_800EB80C);
         if (*(s32 *)(base - 0x5FFC) < 0) {
-            fn_8000C070(self, 0x63);
+            Process_Goto(self, 0x63);
             *(base2 - 0x5FE6) = 0;
         }
     }
@@ -15042,7 +15042,7 @@ void fn_800EAC7C(s32 arg0) {
         u8 fileInfo[0x14];
     };
     void fn_800EB80C(void);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     s32 fn_8021D6D8(s32, s32, u8 *);
     s32 fn_8021D718(s32, s32, u8, void *);
     extern struct CardWork lbl_80320C20;
@@ -15051,7 +15051,7 @@ void fn_800EAC7C(s32 arg0) {
     s32 temp;
 
     if (lbl_80320C20.result < 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         lbl_80320C20.busy = 0;
         skip = 1;
     } else {
@@ -15064,7 +15064,7 @@ void fn_800EAC7C(s32 arg0) {
         lbl_80320C20.busy = 1;
         lbl_80320C20.result = fn_8021D718(lbl_80320C20.chan, temp, sp8, fn_800EB80C);
         if (lbl_80320C20.result < 0) {
-            fn_8000C070(arg0, 0x63);
+            Process_Goto(arg0, 0x63);
             lbl_80320C20.busy = 0;
         }
     }
@@ -15092,7 +15092,7 @@ void fn_800EB028(s32 arg0) {
     u8 skip;
 
     if (lbl_80320C20.result < 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         lbl_80320C20.busy = 0;
         skip = 1;
     } else {
@@ -15103,7 +15103,7 @@ void fn_800EB028(s32 arg0) {
         lbl_80320C20.result = fn_8021C1B8(lbl_80320C20.chan, lbl_802725D8 + 0x70, 0x26000,
                                           lbl_80320C20.fileInfo, fn_800EB80C);
         if (lbl_80320C20.result < 0) {
-            fn_8000C070(arg0, 0x63);
+            Process_Goto(arg0, 0x63);
             lbl_80320C20.busy = 0;
         }
     }
@@ -15164,7 +15164,7 @@ void fn_800EB2DC(s32 arg0) {
         lbl_80320C20.busy = 1;
         lbl_80320C20.result = fn_8021A7D4(lbl_80320C20.chan, fn_800EB80C);
         if (lbl_80320C20.result < 0) {
-            fn_8000C070(arg0, 0x50);
+            Process_Goto(arg0, 0x50);
         }
         break;
     }
@@ -15193,12 +15193,12 @@ void fn_800EB374(s32 arg0) {
         ok = 1;
     }
     if (!ok) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     }
     if (lbl_80320C20.sectorSize != 0x2000) {
         lbl_80320C20.result = -0x41;
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     }
     lbl_80320C20.busy = 1;
@@ -15219,7 +15219,7 @@ s32 fn_800EB428(s32 arg0) {
         u8 busy;
     };
     s32 fn_8021A8C8(s32, s32, void *);
-    void fn_8000C070(s32, s32);
+    void Process_Goto(s32, s32);
     extern struct CardWork lbl_80320C20;
     u8 flag;
     u8 ok;
@@ -15242,7 +15242,7 @@ s32 fn_800EB428(s32 arg0) {
         ok = 1;
     }
     if (ok == 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return 1;
     }
     ret = 0;
@@ -15352,10 +15352,10 @@ s32 fn_800EB774(void) {
 
 s32 fn_800EB788(void *arg0) {
     extern u16 lbl_80320C20[];
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
 
     if (*(s32 *)((u8 *)lbl_80320C20 + 0xA004) < 0) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         *((u8 *)lbl_80320C20 + 0xA01A) = 0;
         return 1;
     }
@@ -22318,7 +22318,7 @@ done:
 }
 
 void fn_800FF9A8(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 lbl_80367289;
     extern u8 gBattleState[];
@@ -22338,7 +22338,7 @@ void fn_800FF9A8(void *arg0) {
             f32 f1 = *(f32 *)((u8 *)arg0 + 0x30);
             f32 f0 = *(f32 *)((u8 *)arg0 + 0x34);
             if (*(u8 *)(gBattleMap + (s8)(s32)f1 + ((s8)(s32)f0 << 6) + 0x200D) == 0) {
-                fn_8000C070(arg0, 0x63);
+                Process_Goto(arg0, 0x63);
                 return;
             }
         }

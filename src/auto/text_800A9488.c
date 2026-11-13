@@ -983,7 +983,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
     void fn_800256A0(void *, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_8028CEF8[];
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
@@ -1119,7 +1119,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
         }
         self->unk3C = arg2;
         self->unk3D = arg3;
-        fn_8000C070(self, 1);
+        Process_Goto(self, 1);
     }
 }
 
@@ -1131,7 +1131,7 @@ void fn_800AB2A4(void *arg0) {
     void fn_80091CD8(void *);
     void fn_8018DBD8(void);
     void fn_800256A0(void *, s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_8028CE90[];
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
@@ -1261,7 +1261,7 @@ void fn_800AB2A4(void *arg0) {
         fn_800256A0(gPadInput, 0x100);
         self->unk3C = 0;
         self->unk3D = *((u8 *)gUiContext + 0xA);
-        fn_8000C070(self, 3);
+        Process_Goto(self, 3);
     }
 }
 void fn_800AB73C(void) {
@@ -1449,7 +1449,7 @@ void fn_800ABA3C(void) {
 }
 void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     s32 Msg_Expand(void *);
     u64 *fn_8001CB64(void *);
@@ -1502,7 +1502,7 @@ void fn_800ABE74(void *arg0) {
     } else if (var_r31 & 0x200) {
         *(u8 *)((u8 *)var_r30 + 0x3C) = *(u8 *)((u8 *)var_r30 + 0x3E);
         *(u8 *)((u8 *)var_r30 + 0x3D) = *(u8 *)((u8 *)var_r30 + 0x3F);
-        fn_8000C070(var_r30, 0);
+        Process_Goto(var_r30, 0);
         Ui_PlaySeCue(lbl_8026E858 + 0xFF, 0x64);
     } else if (var_r31 & 0x800) {
         entry = lbl_80312ACC + (((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7)
@@ -1682,7 +1682,7 @@ void fn_800AC5DC(void *arg0) {
     u64 *fn_8001CB64(void *);
     s32 Msg_Expand(void *);
     void fn_80166AE8(s16, s32, s32, void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
 
@@ -1725,11 +1725,11 @@ void fn_800AC5DC(void *arg0) {
                         *(s16 *)(entry + pressed + 2) + 0x28,
                         str, self, entry);
         } else {
-            fn_8000C070(self, 1);
+            Process_Goto(self, 1);
             Ui_PlaySeCue(lbl_8026E858 + 0xEF, 0x64);
         }
     } else if (pressed & 0x200) {
-        fn_8000C070(self, 2);
+        Process_Goto(self, 2);
         Ui_PlaySeCue(lbl_8026E858 + 0xFF, 0x64);
     } else if (pressed & 0x800) {
         u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)self + 0x3C) << 7)

@@ -3501,7 +3501,7 @@ void fn_80026570(void *arg0) {
     void *fn_8002F658(s32 *, s32);
     void *fn_8002F740(void);
     void fn_8019C070(void *, void (*)(void));
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8002662C(void);
     extern s32 lbl_802EF4E0[];
     extern u8 gUiContext[];
@@ -3523,7 +3523,7 @@ void fn_80026570(void *arg0) {
     fn_801A4958(lbl_80330EAC);
     fn_8019C070(arg0, fn_8002662C);
     *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
-    fn_8000C070(arg0, 0);
+    Process_Goto(arg0, 0);
 }
 
 void fn_8002662C(void) {
@@ -4105,7 +4105,7 @@ void fn_80028694(void) {
 
 void fn_800286C8(void *arg0) {
     extern u8 lbl_80330EAC[];
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void *fn_801A46BC(void *);
     void fn_8004B1B4(s32);
     u32 v;
@@ -4113,7 +4113,7 @@ void fn_800286C8(void *arg0) {
 
     v = *(u32 *)(lbl_80330EAC + 0xcac);
     if ((v & 0x10) && (v & 0x10000000)) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
     }
     p = fn_801A46BC(lbl_80330EAC);
     if (p != 0) {

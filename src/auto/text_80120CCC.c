@@ -2841,9 +2841,9 @@ void fn_8012601C(void *arg0) {
 }
 
 void fn_80126050(void *arg0) {
-    M2C_UNK fn_8000C070(void *, u8);
+    M2C_UNK Process_Goto(void *, u8);
     extern u8 lbl_80367A6C;
-    fn_8000C070(arg0, lbl_80367A6C);
+    Process_Goto(arg0, lbl_80367A6C);
 }
 
 void fn_80126074(void *arg0) {
@@ -3539,7 +3539,7 @@ s32 ScriptCmd_bmsini(void) {
 
 s32 ScriptCmd_seqini(void) {
     void *fn_8000BCA4(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_8000BD98(void *);
     void fn_8008D988(void);
     void fn_8004A1F0(void);
@@ -3557,7 +3557,7 @@ s32 ScriptCmd_seqini(void) {
     gUiInputFlags = flags;
     obj = fn_8000BCA4(obj);
     if (obj != NULL) {
-        fn_8000C070(obj, 4);
+        Process_Goto(obj, 4);
     }
     fn_8000BD98((u8 *)gScriptCmdNames + 0x472);
     fn_8000BD98((u8 *)gScriptCmdNames + 0x50c);

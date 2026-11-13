@@ -358,7 +358,7 @@ void fn_80099994(void *arg0) {
     s32 fn_80098140(void);
     s32 fn_80096D64(void);
     void fn_800056A0(s32);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     s32 temp_r29;
     s32 temp_r30;
     s32 temp_r3_2;
@@ -395,7 +395,7 @@ void fn_80099994(void *arg0) {
     temp_r4 = M2C_FIELD(arg0, s16 *, 0x44);
     if ((s16)temp_r4 < 0) {
         fn_800056A0(0);
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
         return;
     }
     fn_8004FC70(temp_r29);
@@ -453,7 +453,7 @@ void fn_80099BF8(void *arg0) {
     s32 Event_GetCmdFlags(s16);
     s32 fn_80096EEC(s32 *, s32);
     void *fn_8000CAA0(void *, void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern u8 lbl_80289C38[];
     s32 buf[19];
     s32 flags;
@@ -475,7 +475,7 @@ void fn_80099BF8(void *arg0) {
         }
     }
     if (flags & 2) {
-        fn_8000C070(arg0, 6);
+        Process_Goto(arg0, 6);
     }
 }
 #pragma use_lmw_stmw off
@@ -510,43 +510,43 @@ void fn_80099D2C(void *arg0) {
     *(u8 *)((char *)arg0 + 0x42) = (u8)(*(u8 *)((char *)arg0 + 0x42) + 1);
     if ((s8)*(u8 *)((char *)arg0 + 0x42) >= 0xA) {
         fn_800056A0(0);
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
         return;
     }
     if ((s8)*(u8 *)((char *)arg0 + 0x43) != 0) {
         fn_800056A0(0);
     }
     if ((s8)*(u8 *)((char *)arg0 + 0x41) > 0) {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         return;
     }
-    fn_8000C070(arg0, 0);
+    Process_Goto(arg0, 0);
 }
 
 void fn_80099DC4(s32 arg0) {
-    M2C_UNK fn_8000C070(s32, M2C_UNK);
+    M2C_UNK Process_Goto(s32, M2C_UNK);
     s32 fn_80096D64();
     s32 temp_r3;
 
     temp_r3 = fn_80096D64();
     switch (temp_r3) {
     case 0:
-        fn_8000C070(arg0, 3);
+        Process_Goto(arg0, 3);
         return;
     case 1:
-        fn_8000C070(arg0, 2);
+        Process_Goto(arg0, 2);
         return;
     case 2:
-        fn_8000C070(arg0, 4);
+        Process_Goto(arg0, 4);
         return;
     case 3:
-        fn_8000C070(arg0, 5);
+        Process_Goto(arg0, 5);
         return;
     }
 }
 
 void fn_80099E54(void *arg0) {
-    M2C_UNK fn_8000C070(void *, M2C_UNK);
+    M2C_UNK Process_Goto(void *, M2C_UNK);
     s32 Event_GetCmdKind(s16);
     s8 fn_80097168(s16);
     s16 fn_80097740();
@@ -556,7 +556,7 @@ void fn_80099E54(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x3C) = fn_8009809C();
     M2C_FIELD(arg0, s8 *, 0x43) = 0;
     if (Event_GetCmdKind(M2C_FIELD(arg0, s16 *, 0x46)) == 0) {
-        fn_8000C070(arg0, 7);
+        Process_Goto(arg0, 7);
         return;
     }
     M2C_FIELD(arg0, s8 *, 0x41) = fn_80097168(M2C_FIELD(arg0, s16 *, 0x46));
@@ -777,49 +777,49 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
 void fn_8009A514(void) {
     u32 temp_r3 = Process_Find(lbl_80289EB8);
     if (temp_r3 != 0) {
-        fn_8000C070(temp_r3, 4);
+        Process_Goto(temp_r3, 4);
     }
 }
 
 void fn_8009A54C(void) {
     extern u8 lbl_80289EB8[16];
     extern void *Process_Find(void *);
-    extern void fn_8000C070(void *, int);
+    extern void Process_Goto(void *, int);
 
     void *result;
 
     result = Process_Find(lbl_80289EB8);
 
     if (result != 0) {
-        fn_8000C070(result, 3);
+        Process_Goto(result, 3);
     }
 }
 
 void fn_8009A584(void) {
     extern u8 lbl_80289EB8[16];
     extern void *Process_Find(void *);
-    extern void fn_8000C070(void *, int);
+    extern void Process_Goto(void *, int);
 
     void *result;
 
     result = Process_Find(lbl_80289EB8);
 
     if (result != 0) {
-        fn_8000C070(result, 2);
+        Process_Goto(result, 2);
     }
 }
 
 void fn_8009A5BC(void) {
     extern u8 lbl_80289EB8[16];
     extern void *Process_Find(void *);
-    extern void fn_8000C070(void *, int);
+    extern void Process_Goto(void *, int);
 
     void *result;
 
     result = Process_Find(lbl_80289EB8);
 
     if (result != 0) {
-        fn_8000C070(result, 1);
+        Process_Goto(result, 1);
     }
 }
 

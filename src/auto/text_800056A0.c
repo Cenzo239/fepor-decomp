@@ -449,14 +449,14 @@ void fn_80006160(s32 arg0)
 void fn_80006198(void) {
     extern u16 lbl_802832FC[];
     void *Process_Find(u16 *);
-    void fn_8000C070(void *, u8);
+    void Process_Goto(void *, u8);
     void *arg0 = Process_Find(lbl_802832FC);
-    fn_8000C070(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
+    Process_Goto(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
 }
 
 void fn_800061CC(void *arg0) {
-    void fn_8000C070(void *, u8);
-    fn_8000C070(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
+    void Process_Goto(void *, u8);
+    Process_Goto(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
 }
 
 s32 fn_800061F4(void) {

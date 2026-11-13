@@ -574,12 +574,12 @@ void fn_8014DF68(void *arg0)
     extern s32 lbl_80367B84;
     extern void **gMsgDebugPtrs;
 
-    extern void fn_8000C070(void *, s32);
+    extern void Process_Goto(void *, s32);
     extern void fn_800BDBC8(void *, void *);
     extern void fn_8011D908(void *, void *);
 
     if (lbl_8036723A == 9) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
     } else {
         fn_800BDBC8(
             (u8 *)gBattleState + 0xB4,

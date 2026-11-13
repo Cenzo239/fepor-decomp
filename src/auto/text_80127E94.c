@@ -308,22 +308,22 @@ void fn_80128618(void *arg0) {
 }
 
 void fn_80128630(void *arg0) {
-    u32 OSGetTick(void);
     f64 fn_80238638(f32);
+    u32 OSGetTick(void);
     extern f32 lbl_8036A3F0;
     void *obj;
     u32 ms;
     u32 rem;
     s32 period;
-    f32 wave;
-    f32 scale;
-    f32 y;
     f32 x;
+    register f32 scale;
+    f32 y;
+    register f32 wave;
 
     obj = *(void **)((u8 *)arg0 + 0x18);
     ms = OSGetTick() / ((*(u32 *)0x800000F8 >> 2) / 1000);
     period = *(s32 *)((u8 *)arg0 + 0x38);
-    rem = ms % (u32)period;
+    rem = ms % period;
     wave = (f32)fn_80238638(((f32)rem / (f32)period) * lbl_8036A3F0);
     scale = *(f32 *)((u8 *)arg0 + 0x3C);
     y = *(f32 *)((u8 *)arg0 + 0x34);
@@ -1025,7 +1025,7 @@ void fn_8012A240(void) {
 }
 
 void fn_8012A45C(void *arg0) {
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     void fn_80183E3C(s32, void *, void *, s32, s32, s32);
     s32 fn_8012AA68(void *);
     void *sub;
@@ -1034,7 +1034,7 @@ void fn_8012A45C(void *arg0) {
     sub = *(void **)((u8 *)arg0 + 0x30);
     id = *(u32 *)((u8 *)sub + 4);
     if (id == 0) {
-        fn_8000C070(arg0, 1);
+        Process_Goto(arg0, 1);
         return;
     }
     fn_80183E3C(id, (void *)fn_8012AA68, arg0,
@@ -1276,8 +1276,8 @@ void fn_8012A530(void *arg0) {
 #pragma use_lmw_stmw reset
 
 s32 fn_8012AA68(void *arg0) {
-    void fn_8000C070(void *, s32);
-    fn_8000C070(arg0, 1);
+    void Process_Goto(void *, s32);
+    Process_Goto(arg0, 1);
     return 1;
 }
 
@@ -2020,7 +2020,7 @@ void fn_8012C21C(void *arg0) {
 
 void fn_8012C2CC(void *arg0) {
     void fn_80109020(void *);
-    void fn_8000C070(void *, s32);
+    void Process_Goto(void *, s32);
     extern s32 lbl_80367A88;
     s32 temp_r0;
     void **table;
@@ -2030,7 +2030,7 @@ void fn_8012C2CC(void *arg0) {
     lbl_80367A88 = 0;
     temp_r0 = *(s32 *)((u8 *)arg0 + 0x34);
     if (temp_r0 == 0x270F) {
-        fn_8000C070(arg0, 0x63);
+        Process_Goto(arg0, 0x63);
         return;
     }
     *(s32 *)((u8 *)arg0 + 0x30) = temp_r0;
