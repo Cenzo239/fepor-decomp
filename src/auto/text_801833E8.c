@@ -564,38 +564,39 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
-void *MoveAnim_BindPath(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
+/* Find or create a MoveAnim for unit and append the given path steps. */
+void *MoveAnim_BindPath(void *unit, u8 *path, u16 flagsIn, void *parent) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void fn_80050BCC(void *,s32); void MoveAnim_BuildPathHeights(void *);
 extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
-u8 *obj; s32 i; u8 *p; s32 count; s32 temp; u8 flags;
-search[12]=arg0; search[13]=0;
+u8 *anim; s32 i; u8 *p; s32 count; s32 tile; u8 flags;
+search[12]=unit; search[13]=0;
 fn_8000A388(gMoveAnimClass,MoveAnim_MatchUnit,search);
-obj=search[13];
-if(obj==0) {
-obj=fn_8000CAA0(gMoveAnimClass,arg3);
-*(void **)(obj+0x30)=arg0;
-*(u16 *)(obj+0x52)=arg2;
-*(void **)(obj+0x54)=fn_800C45B8(-128,MoveAnim_str+0x1A9,0);
-obj[0x59]=0;obj[0x5A]=16;*(s8 *)(obj+0x6A)=-1;
-*(void **)(obj+0x6C)=fn_800C45B8(-1536,MoveAnim_str+0x1A9,0);
-if(*(u16 *)(obj+0x52)&16) fn_80050BCC(arg0,0);
-if((*(u8 **)((u8 *)arg0+0x18C))[0x42]==9) *(u16 *)(obj+0x52)|=0x8000;
-temp=(s32)*(f32 *)((u8 *)arg0+4); obj[0x40]=temp;obj[0x42]=temp;
-temp=(s32)*(f32 *)((u8 *)arg0+8); obj[0x41]=temp;obj[0x43]=temp;
+anim=search[13];
+if(anim==0) {
+anim=fn_8000CAA0(gMoveAnimClass,parent);
+*(void **)(anim+0x30)=unit;
+*(u16 *)(anim+0x52)=flagsIn;
+*(void **)(anim+0x54)=fn_800C45B8(-128,MoveAnim_str+0x1A9,0);
+anim[0x59]=0;anim[0x5A]=16;*(s8 *)(anim+0x6A)=-1;
+*(void **)(anim+0x6C)=fn_800C45B8(-1536,MoveAnim_str+0x1A9,0);
+if(*(u16 *)(anim+0x52)&16) fn_80050BCC(unit,0);
+if((*(u8 **)((u8 *)unit+0x18C))[0x42]==9) *(u16 *)(anim+0x52)|=0x8000;
+tile=(s32)*(f32 *)((u8 *)unit+4); anim[0x40]=tile;anim[0x42]=tile;
+tile=(s32)*(f32 *)((u8 *)unit+8); anim[0x41]=tile;anim[0x43]=tile;
 }
-p=arg1;
-if(arg1==0) count=0;
-else {u8 *q;count=0;q=arg1;for(;;) {if(*q==16) break; count++;q++;}}
+p=path;
+if(path==0) count=0;
+else {u8 *q;count=0;q=path;for(;;) {if(*q==16) break; count++;q++;}}
 for(i=0;i<count;i++) {
-(*(u8 **)(obj+0x54))[i+obj[0x59]]=*p;obj[0x5A]=*p++;
+(*(u8 **)(anim+0x54))[i+anim[0x59]]=*p;anim[0x5A]=*p++;
 }
-(*(u8 **)(obj+0x54))[i+obj[0x59]]=16;
-flags=*(u16 *)(obj+0x52)&15;
-if(flags) obj[0x5A]=flags;
-obj[0x59]+=count;MoveAnim_BuildPathHeights(obj);return obj;
+(*(u8 **)(anim+0x54))[i+anim[0x59]]=16;
+flags=*(u16 *)(anim+0x52)&15;
+if(flags) anim[0x5A]=flags;
+anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
 #pragma opt_common_subs reset
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
