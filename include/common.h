@@ -44,6 +44,25 @@ typedef struct Unk800C2ACC {
 #define LINK_BONUS_FLAG_POKEMON 0x10
 #define LINK_BONUS_FLAG_FE8     0x20
 
+/* Dolphin CARD API result codes */
+#define CARD_RESULT_UNLOCKED    1
+#define CARD_RESULT_READY       0
+#define CARD_RESULT_BUSY       -1
+#define CARD_RESULT_WRONGDEVICE -2
+#define CARD_RESULT_NOCARD     -3
+#define CARD_RESULT_NOFILE     -4
+#define CARD_RESULT_IOERROR    -5
+#define CARD_RESULT_BROKEN     -6
+#define CARD_RESULT_EXIST      -7
+#define CARD_RESULT_NOENT      -8
+#define CARD_RESULT_INSSPACE   -9
+#define CARD_RESULT_NOPERM     -10
+#define CARD_RESULT_LIMIT      -11
+#define CARD_RESULT_NAMETOOLONG -12
+#define CARD_RESULT_CANCELED   -13
+#define CARD_RESULT_ENCODING   -14
+#define CARD_RESULT_FATAL_ERROR -128
+
 /* Save-file version stamps (YYYYMMDD as hex) */
 #define SAVE_VER_20041216 0x20041216
 #define SAVE_VER_20050201 0x20050201
