@@ -2074,18 +2074,18 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(u16 *)((*(u8 **)&lbl_80367140) + 0x20) &= ~0x800;
 }
 
-#pragma peephole off
+#pragma scheduling off
 void *Prim2D_PushZ(f32 *arg0)
 {
     extern u16 lbl_80367140;
 
-    if (arg0 == NULL) {
-        return arg0;
+    if (arg0 != NULL) {
+        *arg0 = *(f32 *)(*(u8 **)&lbl_80367140 + 0x28);
+        arg0 = (f32 *)(*(u8 **)&lbl_80367140 + 0x60);
     }
-    *arg0 = *(f32 *)(*(u8 **)&lbl_80367140 + 0x28);
-    return *(u8 **)&lbl_80367140 + 0x60;
+    return arg0;
 }
-#pragma peephole on
+#pragma scheduling reset
 void Prim2D_PopZ(void *src, f32 farg0) {
     void PSMTXCopy(void *, void *);
     extern u16 lbl_80367140;
@@ -4136,7 +4136,7 @@ void Process_Destroy(Process *proc) {
     }
 }
 
-void fn_8000CA64(u32 unused, u32 arg1) {
+void Process_CreateEx(u32 unused, u32 arg1) {
     void Process_CreateChild(void);
     void Process_Create(void);
     u32 var_r4;

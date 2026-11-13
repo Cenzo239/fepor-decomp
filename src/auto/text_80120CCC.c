@@ -719,7 +719,7 @@ void fn_80122238(void *arg0)
 {
     extern s32 gUiInputFlags;
     extern u8 lbl_802902C4[];
-    extern void *fn_8000CA64(void *);
+    extern void *Process_CreateEx(void *);
 
     u8 *obj;
     u8 *entry;
@@ -730,7 +730,7 @@ void fn_80122238(void *arg0)
     if (gUiInputFlags & 3) {
         obj[0x68] = 0;
     } else {
-        entry = (u8 *)fn_8000CA64(lbl_802902C4);
+        entry = (u8 *)Process_CreateEx(lbl_802902C4);
 
         *(void **)(entry + 0x30) = obj;
 
@@ -747,7 +747,7 @@ void fn_801222A4(void *arg0)
 {
     extern s32 gUiInputFlags;
     extern u8 lbl_802902C4[];
-    extern void *fn_8000CA64(void *);
+    extern void *Process_CreateEx(void *);
 
     u8 *obj;
     u8 *entry;
@@ -758,7 +758,7 @@ void fn_801222A4(void *arg0)
     if (gUiInputFlags & 3) {
         obj[0x68] = 0xFF;
     } else {
-        entry = (u8 *)fn_8000CA64(lbl_802902C4);
+        entry = (u8 *)Process_CreateEx(lbl_802902C4);
 
         *(void **)(entry + 0x30) = obj;
 

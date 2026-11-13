@@ -8783,8 +8783,8 @@ void fn_800C1060(s32 arg0) {
     extern u16 lbl_8028D588[24];
     
     if (fn_80040824() != 0) {
-        fn_8000CA64(lbl_8028D560, arg0);
-        fn_8000CA64(lbl_8028D588, arg0);
+        Process_CreateEx(lbl_8028D560, arg0);
+        Process_CreateEx(lbl_8028D588, arg0);
     }
 }
 

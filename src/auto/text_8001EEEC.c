@@ -2324,7 +2324,7 @@ void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     s32 height;
     s32 status;
 
-    object = (u8 *)fn_8000CA64(lbl_80284548);
+    object = (u8 *)Process_CreateEx(lbl_80284548);
 
     if ((arg2 & 0xFF) != 0) {
         object[0x2B] = (u8)arg2;

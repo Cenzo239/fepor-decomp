@@ -203,7 +203,7 @@ s32 fn_8014C6E0(void) {
 
 void fn_8014C718(void *arg0, u32 arg1) {
     u8 fn_80040824(void);
-    void *fn_8000CA64(void *, u32);
+    void *Process_CreateEx(void *, u32);
     extern u8 lbl_80293760[];
     if (fn_80040824() != 0) {
         if (arg1 == 0) {
@@ -211,7 +211,7 @@ void fn_8014C718(void *arg0, u32 arg1) {
             Map_Get();
             fn_80040854();
         } else {
-            fn_8000CA64(lbl_80293760, arg1);
+            Process_CreateEx(lbl_80293760, arg1);
         }
     }
 }

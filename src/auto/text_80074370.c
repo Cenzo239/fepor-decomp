@@ -2778,13 +2778,13 @@ s32 fn_800790CC(void) {
 }
 
 void fn_800790D4(s32 arg0, s32 arg1) {
-    void *fn_8000CA64(void *, s32);
+    void *Process_CreateEx(void *, s32);
     void fn_8000C068(void *, s32);
     extern u8 lbl_80288CAC[];
     extern void fn_80079138(void);
     void *temp_r3;
 
-    temp_r3 = fn_8000CA64(lbl_80288CAC, arg1);
+    temp_r3 = Process_CreateEx(lbl_80288CAC, arg1);
     *(s32 *)((char *)temp_r3 + 0x30) = arg0;
     *(s32 *)((char *)temp_r3 + 0x34) = 0;
     *(s32 *)((char *)temp_r3 + 0x38) = 8;
@@ -2810,11 +2810,11 @@ void fn_80079138(void *arg0) {
 }
 
 void fn_80079198(s32 arg0, s32 arg1) {
-    void *fn_8000CA64(void *, s32);
+    void *Process_CreateEx(void *, s32);
     extern u8 lbl_80288CAC[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CA64(lbl_80288CAC, arg1);
+    temp_r3 = Process_CreateEx(lbl_80288CAC, arg1);
     *(s32 *)((char *)temp_r3 + 0x30) = arg0;
     *(s32 *)((char *)temp_r3 + 0x34) = 0;
     *(s32 *)((char *)temp_r3 + 0x38) = 8;
@@ -2824,11 +2824,11 @@ void fn_80079198(s32 arg0, s32 arg1) {
 }
 
 void fn_800791F0(s32 arg0, s32 arg1) {
-    void *fn_8000CA64(void *, s32);
+    void *Process_CreateEx(void *, s32);
     extern u8 lbl_80288CAC[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CA64(lbl_80288CAC, arg1);
+    temp_r3 = Process_CreateEx(lbl_80288CAC, arg1);
     *(s32 *)((char *)temp_r3 + 0x30) = arg0;
     *(s32 *)((char *)temp_r3 + 0x34) = 0;
     *(s32 *)((char *)temp_r3 + 0x38) = 8;

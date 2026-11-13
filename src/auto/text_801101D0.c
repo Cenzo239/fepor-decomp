@@ -5539,7 +5539,7 @@ void fn_8011D87C(void *arg0)
 
 void UiPanel_Create(void *arg0, void *arg1) {
     void UiPanel_ClearFlags(void *);
-    void *fn_8000CA64(void *, void *);
+    void *Process_CreateEx(void *, void *);
     void fn_8012205C(void *);
     void fn_80120CFC(void *);
     void fn_8011DED8(void *);
@@ -5552,7 +5552,7 @@ void UiPanel_Create(void *arg0, void *arg1) {
     u8 *e;
 
     UiPanel_ClearFlags(&gUiPanelFlags);
-    e = (u8 *)fn_8000CA64(gUiPanelProc, arg1);
+    e = (u8 *)Process_CreateEx(gUiPanelProc, arg1);
     *(s32 *)(e + 0x34) = 0;
     *(s32 *)(e + 0x38) = 0;
     *(s32 *)(e + 0x3C) = 0;
