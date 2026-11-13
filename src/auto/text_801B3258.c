@@ -2132,11 +2132,11 @@ extern "C" void Ui_ReleaseUnitManageWidgets(void *panel) {
 }
 
 extern "C" void fn_801B9654(void *arg0) {
-    void *Ui_FindChild(void *, s32, s32);
+    void *fn_8013FF94(void *, s32, s32);
     void fn_8017BB94(void *);
     u32 fn_8017BC94(void *);
-    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
-    void Process_Goto(void *, s32);
+    void fn_80140258(void *, void *, s16 *, s32);
+    void fn_8000C070(void *, s32);
     extern f32 lbl_8036B2D8;
     struct { s16 x; s16 y; } spC;
     struct { s16 x; s16 y; } sp8;
@@ -2145,25 +2145,23 @@ extern "C" void fn_801B9654(void *arg0) {
     void *obj108;
     s16 tmp;
     f32 f;
-    s32 one;
 
     list = *(void **)((u8 *)arg0 + 0x60);
-    obj82 = Ui_FindChild(arg0, 0x82, 0);
-    obj108 = Ui_FindChild(arg0, 0x108, 0);
+    obj82 = fn_8013FF94(arg0, 0x82, 0);
+    obj108 = fn_8013FF94(arg0, 0x108, 0);
     fn_8017BB94(list);
     if (fn_8017BC94(list) == 0) {
         spC.x = *(s16 *)((u8 *)obj82 + 0xA);
         spC.y = -0x3A;
-        Ui_SlideWidgetChild(arg0, obj82, &spC.x, 0);
+        fn_80140258(arg0, obj82, &spC.x, 0);
         tmp = *(s16 *)((u8 *)obj108 + 0xC);
         sp8.x = 0x260;
         sp8.y = tmp;
-        Ui_SlideWidgetChild(arg0, obj108, &sp8.x, 1);
-        Process_Goto(arg0, 0x11);
+        fn_80140258(arg0, obj108, &sp8.x, 1);
+        fn_8000C070(arg0, 0x11);
     } else {
-        one = 1;
         f = lbl_8036B2D8;
-        *(u8 *)((u8 *)list + 0x3C) = one;
+        *(u8 *)((u8 *)list + 0x3C) = 1;
         *(f32 *)((u8 *)obj82 + 0x30) = f;
         *(f32 *)((u8 *)obj108 + 0x30) = f;
     }
@@ -4752,13 +4750,13 @@ s32 Ui_SkillCapacityMenuItem(s32 arg0, void *arg1, void *arg2) {
     void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
+    f32 x;
+    f32 y;
 
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        Ui_CreateMsgPopup(
-            gUiUnitPanelStrings + 0x2AB,
-            arg1,
-            (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30)),
-            (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32)));
+        x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
+        y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
+        Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2AB, arg1, x, y);
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x83;
@@ -10530,26 +10528,14 @@ lookup_idx:
 #pragma global_optimizer on
 s32 fn_801CD508(s32 arg0) {
     extern u8 *lbl_802984C0[];
-    s32 count;
-    u8 **table;
-
-    count = 0;
-    table = (u8 **)count;
-
-    if (arg0 == 0) {
-        goto init_table;
+    s32 count = 0;
+    u8 **table = 0;
+    u8 **p;
+    switch (arg0) {
+    case 0: table = lbl_802984C0; break;
     }
-    goto search;
-
-init_table:
-    table = lbl_802984C0;
-    goto search;
-
-search:
-    while ((s32)**table != 0xA) {
-        table += 1;
-        count += 1;
-    }
+    p = table;
+    while ((s32)**p != 10) { ++p; ++count; }
     return count;
 }
 
@@ -11912,11 +11898,16 @@ void fn_801D041C(void *arg0, u8 arg1) {
 }
 
 void fn_801D0444(u8 *arg0, s32 arg1) {
+    s32 off;
+    s16 z;
+
     if (arg1 >= 3) {
         return;
     }
-    arg0 += arg1 * 2;
-    *(s16 *)(arg0 + 0xe) = 0;
+    off = arg1 << 1;
+    z = 0;
+    arg0 += off;
+    *(s16 *)(arg0 + 0xe) = z;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
