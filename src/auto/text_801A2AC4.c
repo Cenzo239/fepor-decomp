@@ -675,7 +675,7 @@ s32 fn_801A44AC(void *arg0, s32 arg1) {
     return 0;
 }
 
-void *fn_801A4624(void *arg0) {
+void *Battle_GetOpponent(void *arg0) {
     u8 *obj;
     u8 *selected;
     u32 flags;

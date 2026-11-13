@@ -3648,7 +3648,7 @@ s32 fn_800268A8(s32 arg0) {
     void *fn_8003DDF8(void *, u8 *, u8 *, void *, u8);
     void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
-    void *fn_801A4624(void *);
+    void *Battle_GetOpponent(void *);
     void *fn_801A46BC(void *);
     extern M2C_UNK gBattle[];
     u8 sp9;
@@ -3668,7 +3668,7 @@ s32 fn_800268A8(s32 arg0) {
     if (!(M2C_FIELD(temp_r3, s32 *, 0x1A0) & 2)) {
         return 0;
     }
-    temp_r3_2 = fn_801A4624(gBattle);
+    temp_r3_2 = Battle_GetOpponent(gBattle);
     temp_r7 = M2C_FIELD(temp_r3_2, u8 *, 0x198);
     idx1 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19E);
     idx2 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19F);
@@ -3771,7 +3771,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void fn_8001C690(void *, void *);
     void *Unit_GetItemSlot(s32, s32);
     void fn_8007386C(s32, void *, s32);
-    void *fn_801A4624(void *);
+    void *Battle_GetOpponent(void *);
     s32 fn_801A46BC(void *);
     extern u8 gBattle[];
     u8 sp8[8];
@@ -3784,7 +3784,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     if (*(u32 *)(gBattle + 0xCAC) & 0x100) {
         return 0;
     }
-    obj = fn_801A4624(gBattle);
+    obj = Battle_GetOpponent(gBattle);
     if (obj == NULL) {
         return 0;
     }
