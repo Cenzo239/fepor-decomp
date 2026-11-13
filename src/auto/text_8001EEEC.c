@@ -3766,7 +3766,7 @@ s32 fn_80026AF4(s32 arg0) {
     return 1;
 }
 
-s32 fn_80026D24(s32 arg0) {
+s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void fn_8001C5F8(void *, s32);
     void fn_8001C690(void *, void *);
     void *Unit_GetItemSlot(s32, s32);
