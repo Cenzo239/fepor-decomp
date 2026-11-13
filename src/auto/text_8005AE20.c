@@ -7225,6 +7225,7 @@ void fn_8006E748(void)
 #pragma global_optimizer on
 void DEMOInit(void *arg0)
 {
+    /* Init OS/DVD/VI/PAD, pick render mode, allocate XFBs, and start GX. */
     void OSInit(void);
     void DVDInit(void);
     void VIInit(void);
