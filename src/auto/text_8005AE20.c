@@ -7635,7 +7635,7 @@ extern "C"
 void fn_8006F710(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     f32 fn_80023EE0(void *);
     void fn_80009B8C(s32);
     void fn_80009B80(u8);
@@ -7674,7 +7674,7 @@ void fn_8006F710(void *arg0, void *arg1) {
     s32 val;
 
     Prim2D_Begin();
-    fn_80009D74((f32)M2C_FIELD(arg1, s16 *, 0x30), (f32)M2C_FIELD(arg1, s16 *, 0x32),
+    Prim2D_SetTransform((f32)M2C_FIELD(arg1, s16 *, 0x30), (f32)M2C_FIELD(arg1, s16 *, 0x32),
                 M2C_FIELD(arg1, Model **, 0x3C)->v25(), lbl_803692E0);
     fn_80009B8C((s32)(lbl_803692F8 * fn_80023EE0(arg1)));
     flag = 0;
@@ -7916,7 +7916,7 @@ void fn_80071410(s32 unused, void *arg1, f32 f1, f32 f2) {
 #pragma cplusplus on
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" M2C_UNK Prim2D_PrepareTex();
-extern "C" void fn_80009D74(f32, f32, f32, f32);
+extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void fn_8008B464(s32, s32, s32);
 extern "C" void fn_80071740(void *arg0, s32 arg1, f32 x, f32 y) {
     struct Obj {
@@ -7950,7 +7950,7 @@ extern "C" void fn_80071740(void *arg0, s32 arg1, f32 x, f32 y) {
     };
 
     Prim2D_Begin();
-    fn_80009D74(0.0f, 0.0f, ((Obj *)arg0)->v25(), 1.0f);
+    Prim2D_SetTransform(0.0f, 0.0f, ((Obj *)arg0)->v25(), 1.0f);
     Prim2D_PrepareTex();
     fn_8008B464(arg1, (s32)x, (s32)y);
 }

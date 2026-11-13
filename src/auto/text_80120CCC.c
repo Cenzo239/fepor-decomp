@@ -193,7 +193,7 @@ void fn_801210CC(void *arg0) {
     void fn_80007898(s32);
     void fn_80009B8C(u8);
     void fn_80009C0C(f32);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -234,7 +234,7 @@ void fn_801210CC(void *arg0) {
             (f32)M2C_FIELD(self, u8 *, 0x4F));
         Prim2D_Begin();
         z = lbl_8036A258;
-        fn_80009D74(z, z, lbl_8036A26C, lbl_8036A268);
+        Prim2D_SetTransform(z, z, lbl_8036A26C, lbl_8036A268);
         fn_80009B8C(M2C_FIELD(self, u8 *, 0x50));
         Prim2D_PrepareTex();
         fn_8006ECCC(lbl_803674F4, spC, 0x1E);
@@ -2471,7 +2471,7 @@ void fn_80125624(void *arg0) {
     u8 fn_800AA188(void);
     Cam *fn_80068548(void);
     void fn_8005A1E8(s32, Vec *, Vec *);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_80009F90(s32, s32, s32);
     void fn_801258E4(void *);
     void fn_80007340(void (*)(void *), void *);
@@ -2508,7 +2508,7 @@ void fn_80125624(void *arg0) {
         scale *= 1.5f;
     }
     Prim2D_Begin();
-    fn_80009D74(0.0f, 0.0f, 800.0f, 1.0f);
+    Prim2D_SetTransform(0.0f, 0.0f, 800.0f, 1.0f);
     fn_80009F90(obj->unk6C, 6, 0x411);
     Prim2D_PrepareTex();
     fn_80007898(0xB);
@@ -3693,7 +3693,7 @@ extern void fn_80007898(s32);
 extern void fn_80009B8C(u8);
 extern void fn_80009B98(void);
 extern void fn_80009BC0(void *, s32);
-extern void fn_80009D74(f32, f32, f32, f32);
+extern void Prim2D_SetTransform(f32, f32, f32, f32);
 extern void fn_8000A174(s32, s32);
 extern void Prim2D_PrepareTex(void);
 extern void Prim2D_Begin(void);

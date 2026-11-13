@@ -2047,7 +2047,7 @@ void fn_80009C20(
     *(u16 *)((u8 *)lbl_80367140 + 0x20) &= ~(1 << 10);
 }
 
-void fn_80009D74(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -2455,7 +2455,7 @@ void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
 
 void fn_8000A860(void) {
     void Prim2D_Begin(void);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
     void fn_8014BB58(s32, s32, s32 *, s32);
     void fn_8000A454(u32, s32 *, s32 *, s32);
@@ -2476,7 +2476,7 @@ void fn_8000A860(void) {
     sp10 = 1;
     spC = 0;
     Prim2D_Begin();
-    fn_80009D74(lbl_80368BCC, lbl_80368BCC, lbl_80368BD0, lbl_80368BD4);
+    Prim2D_SetTransform(lbl_80368BCC, lbl_80368BCC, lbl_80368BD0, lbl_80368BD4);
     Prim2D_PrepareTex();
 
     pADA = lbl_802ADADC;

@@ -3861,7 +3861,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void fn_80202574(void *, void *, f32, f32, f32);
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
-    void fn_80009D74(f32, f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_80009B8C(s32);
     void fn_80009BC0(void (*)(void *), s16 *);
@@ -3954,7 +3954,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     PSMTXConcat(sp4C, sp1C, sp4C);
     fn_802025E8(sp4C, sp4C, lbl_8036A684, lbl_8036A684, lbl_8036A684);
     Prim2D_Begin();
-    fn_80009D74(lbl_8036A668, lbl_8036A668, lbl_8036A688 + (f32)self->a22, lbl_8036A674, lbl_8036A688);
+    Prim2D_SetTransform(lbl_8036A668, lbl_8036A668, lbl_8036A688 + (f32)self->a22, lbl_8036A674, lbl_8036A688);
     fn_8000A174(0, 0x410);
     fn_80009B8C(0xFF);
     if ((s16)self->a5c != 0) {

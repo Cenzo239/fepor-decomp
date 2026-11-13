@@ -68,7 +68,7 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     switch (arg1) {
     case 0:
         Prim2D_Begin();
-        fn_80009D74(farg0, farg1, lbl_80369808, lbl_8036980C);
+        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         fn_80009F90(arg0, 8, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
@@ -86,7 +86,7 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         break;
     case 1:
         Prim2D_Begin();
-        fn_80009D74(farg0, farg1, lbl_80369808, lbl_8036980C);
+        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         fn_80009F90(arg0, 9, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
@@ -96,7 +96,7 @@ void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
         break;
     case 2:
         Prim2D_Begin();
-        fn_80009D74(farg0, farg1, lbl_80369808, lbl_8036980C);
+        Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         fn_80009F90(arg0, 0xA, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
@@ -123,7 +123,7 @@ void fn_8009B738(void* arg0, void* arg1) {
 void fn_8009B900(s32 arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8014BB58(s32, s32, void *, char *);
     extern f32 lbl_803698FC;
     extern f32 lbl_80369900;
@@ -138,7 +138,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
     s32 c0, c1, c2, c3, c4, c5;
 
     Prim2D_Begin();
-    fn_80009D74((f32)arg0, (f32)arg1, lbl_803698FC, lbl_80369900);
+    Prim2D_SetTransform((f32)arg0, (f32)arg1, lbl_803698FC, lbl_80369900);
     Prim2D_PrepareTex();
 
     c0 = lbl_803698B8;
@@ -160,7 +160,7 @@ void fn_8009CF28(void) {
     void fn_80007790(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
     void fn_80007898(s32);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -187,7 +187,7 @@ void fn_8009CF28(void) {
     extern f32 lbl_80369968;
 
     Prim2D_Begin();
-    fn_80009D74(lbl_803698FC, lbl_803698FC, lbl_803698FC, lbl_80369900);
+    Prim2D_SetTransform(lbl_803698FC, lbl_803698FC, lbl_803698FC, lbl_80369900);
     fn_8000A174(0, 0);
     Prim2D_PrepareTex();
     fn_80007898(4);
@@ -242,7 +242,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void fn_80007858(f32, f32);
     void fn_80007884(void);
     void fn_80007898(s32);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -271,7 +271,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     x = arg0;
     y = arg1;
     Prim2D_Begin();
-    fn_80009D74((f32)x, (f32)(y + 0x28), lbl_803698FC, lbl_80369900);
+    Prim2D_SetTransform((f32)x, (f32)(y + 0x28), lbl_803698FC, lbl_80369900);
     fn_8000A174(0, 0x10);
     Prim2D_PrepareTex();
     fn_80007898(4);
@@ -361,7 +361,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     fn_80007884();
 
     Prim2D_Begin();
-    fn_80009D74((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
+    Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
     fn_8000A174(0, 0x23);
     Prim2D_PrepareTex();
 
@@ -453,7 +453,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     for (i = 0; i < 8; i++) {
         if (*(u32 *)((u8 *)tbl + 0x24 + i * 4) != 0) {
             Prim2D_Begin();
-            fn_80009D74((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
+            Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
             Prim2D_PrepareTex();
             fn_80007898(0xA);
             fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));
@@ -465,7 +465,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     for (i = 0; i < 4; i++) {
         if (*(u32 *)((u8 *)tbl + 0x64 + i * 4) != 0) {
             Prim2D_Begin();
-            fn_80009D74((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
+            Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
             Prim2D_PrepareTex();
             fn_80007898(0xA);
             fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));

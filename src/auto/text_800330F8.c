@@ -152,7 +152,7 @@ void *fn_800330F8(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80009B8C(u8);
-extern "C" void fn_80009D74(f32, f32, f32, f32);
+extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_8002F740(u32);
@@ -171,7 +171,7 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         Prim2D_PrepareTex();
         fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
@@ -11156,7 +11156,7 @@ void fn_8004DDB8(s32 arg0) {
     void fn_80007898(s32);
     void fn_80009B28(void);
     void fn_80009B8C(s32);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -11180,7 +11180,7 @@ void fn_8004DDB8(s32 arg0) {
         p[3] = c;
         lbl_803672BD = flag;
         Prim2D_Begin();
-        fn_80009D74(lbl_80368FCC, lbl_80368FCC, (f32)arg0, lbl_80368FC0);
+        Prim2D_SetTransform(lbl_80368FCC, lbl_80368FCC, (f32)arg0, lbl_80368FC0);
         fn_8000A174(0, 0x410);
         fn_80009B8C(0xFF);
         Prim2D_PrepareTex();
@@ -12799,7 +12799,7 @@ void fn_80053F68(void *arg0) {
     void fn_8000C188(void *);
     void fn_80053260(void *);
     void fn_800548E8(void *);
-    void fn_80009D74(f32, f32, f32, f32);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_80009B8C(u8);
     void Prim2D_PrepareTex(void);
@@ -12924,7 +12924,7 @@ void fn_80053F68(void *arg0) {
         } else {
             Prim2D_Begin();
             inner = *(void **)((u8 *)arg0 + 0x30);
-            fn_80009D74(lbl_80369084, lbl_80369084,
+            Prim2D_SetTransform(lbl_80369084, lbl_80369084,
                         (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);
             fn_8000A174(0, 0x410);
             fn_80009B8C(0xFF);
