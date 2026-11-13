@@ -9535,6 +9535,7 @@ extern "C" void fn_8014413C(void *arg0) {
 }
 
 extern "C" void Ui_DrawMenuSlots(void *arg0) {
+    /* Update the menu, then draw its 11 slots; cursor item is white, others grey. */
     extern f32 lbl_8036A75C;
     typedef struct {
         u8 r, g, b, a;
@@ -9579,14 +9580,14 @@ extern "C" void Ui_DrawMenuSlots(void *arg0) {
     Menu *self = (Menu *)arg0;
     Color white;
     Color grey;
-    f32 x;
-    f32 alpha;
+    f32 y;
+    f32 shade;
     f32 step;
     s32 i;
 
     self->Update();
-    alpha = 1.0f;
-    x = lbl_8036A75C;
+    shade = 1.0f;
+    y = lbl_8036A75C;
     step = (f32)(s16)(self->bottom - self->top) / 11.0f;
     white.r = 0xFF;
     white.g = 0xFF;
@@ -9598,12 +9599,12 @@ extern "C" void Ui_DrawMenuSlots(void *arg0) {
     grey.a = 0xFF;
     for (i = 0; i < 11; i++) {
         if (i == self->cursor) {
-            self->drawer.Draw(x, lbl_8036A75C, 0, &white, self->unk34, i);
+            self->drawer.Draw(y, lbl_8036A75C, 0, &white, self->unk34, i);
         } else {
-            self->drawer.Draw(x, lbl_8036A75C, alpha, &grey, self->unk34, i);
+            self->drawer.Draw(y, lbl_8036A75C, shade, &grey, self->unk34, i);
         }
-        x += step;
-        alpha += 1.0f;
+        y += step;
+        shade += 1.0f;
     }
 }
 
