@@ -781,6 +781,7 @@ done:
     return *(u16 *)(found + 0x32);
 }
 
+/* Return 1 if a file-cache entry with this name exists, else 0. */
 s32 FileCache_Exists(char *name) {
     if (FindEntryByName(name) == NULL) {
         return 0;
