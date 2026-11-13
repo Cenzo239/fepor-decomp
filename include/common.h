@@ -77,6 +77,7 @@ typedef IconSlot Unk800C2ACC;
 #define SAVE_CHECKSUM_UNINIT   0x12345678U /* checksum not yet written */
 #define SAVE_SLOT_PAYLOAD_OFF  0x70
 #define SAVE_SLOT_BLOCK_SIZE   0x2000
+#define SAVE_CARD_FILE_SIZE    0x26000 /* full CARD create size */
 
 /* ID string prefix kinds (Id_GetKind: PID_/JID_/IID_/…) */
 enum IdKind {
