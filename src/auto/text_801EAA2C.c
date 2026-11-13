@@ -1012,7 +1012,7 @@ void fn_801EC7B8(void) {
     extern u8 lbl_8027F1D0[];
     extern u8 lbl_80332270[];
     extern void *lbl_80338E70[];
-    extern void *lbl_803683C0;
+    extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 lbl_803683C8;
     extern s32 lbl_803683CC;
@@ -1045,14 +1045,14 @@ void fn_801EC7B8(void) {
         buf = fn_800C45B8(-half, lbl_8027F1D0 + 0x18, 0);
         buf0 = buf;
         used = 0;
-        for (node = lbl_803683C0; node != 0; node = *(void **)((u8 *)node + 0x60)) {
+        for (node = gAramUsedList; node != 0; node = *(void **)((u8 *)node + 0x60)) {
             *(u8 *)((u8 *)node + 0x53) = (u8)(*(u8 *)((u8 *)node + 0x53) & 0xFE);
         }
         arr = lbl_80338E70;
         i = 0;
         slot = lbl_80338E70;
         for (;;) {
-            node = lbl_803683C0;
+            node = gAramUsedList;
             bestPri = (u32)-1;
             best = 0;
             while (node != 0) {
@@ -1126,7 +1126,7 @@ void fn_801EC7B8(void) {
                 j += 1;
             } while (--ctr != 0);
         }
-        lbl_803683C0 = lbl_80338E70[0];
+        gAramUsedList = lbl_80338E70[0];
         p = lbl_80332270;
         zero = 0;
         ctr = 0x40;
@@ -1247,7 +1247,7 @@ void fn_801EC7B8(void) {
         p[0x347] = (u8)zero;
         p += 0x360;
     } while (--ctr != 0);
-    lbl_803683C0 = 0;
+    gAramUsedList = 0;
     p = lbl_80332270;
     ctr = 0x20;
     j = 0xFF;
@@ -1279,14 +1279,14 @@ void fn_801EC7B8(void) {
     *(s32 *)((u8 *)gAramFreeList + 0x68) = lbl_803683C8;
 }
 
-extern void *lbl_803683C0;
+extern void *gAramUsedList;
 void *fn_801ECE40(s32 arg0) {
-    extern void *lbl_803683C0;
+    extern void *gAramUsedList;
     void *node;
     u32 id;
 
     id = fn_8000D598();
-    for (node = lbl_803683C0; node != NULL; node = *(void **)((u8 *)node + 0x60)) {
+    for (node = gAramUsedList; node != NULL; node = *(void **)((u8 *)node + 0x60)) {
         if (*(s32 *)((u8 *)node + 0x64) != 0 &&
             *(u32 *)((u8 *)node + 0x54) == id &&
             Str_Cmp((u8 *)node + 0x28, arg0) == 0) {
@@ -1310,7 +1310,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
     extern u8 lbl_80332270[];
-    extern void *lbl_803683C0;
+    extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 lbl_803683CC;
     extern s32 lbl_803683D0;
@@ -1356,7 +1356,7 @@ found:
         do {
             if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
                 next = *(void **)(node + 0x60);
-                temp = lbl_803683C0;
+                temp = gAramUsedList;
                 if (next != 0) {
                     *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
                 }
@@ -1366,7 +1366,7 @@ found:
                 } else {
                     temp = *(void **)(node + 0x60);
                 }
-                lbl_803683C0 = temp;
+                gAramUsedList = temp;
                 gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
             }
             size += 1;
@@ -1398,7 +1398,7 @@ found:
 void fn_801ED12C(s32 arg0) {
     void fn_801EC7B8(void);
     void *AramCache_InsertFree(void *, void *);
-    extern void *lbl_803683C0;
+    extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern u8 lbl_80332270[];
     u32 best_size;
@@ -1440,7 +1440,7 @@ reclaim:
     if (*(u32 *)((u8 *)best + 0x64) >= (u32)arg0) {
         goto have;
     }
-    node = lbl_803683C0;
+    node = gAramUsedList;
     next = *(void **)((u8 *)node + 0x60);
     if (next != 0) {
         *(void **)((u8 *)next + 0x5C) = *(void **)((u8 *)node + 0x5C);
@@ -1449,7 +1449,7 @@ reclaim:
     if (prev != 0) {
         *(void **)((u8 *)prev + 0x60) = *(void **)((u8 *)node + 0x60);
     } else {
-        lbl_803683C0 = *(void **)((u8 *)node + 0x60);
+        gAramUsedList = *(void **)((u8 *)node + 0x60);
     }
     gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
     goto reclaim;
@@ -1539,7 +1539,7 @@ loop_s:
     }
 
 insert:
-    alloc_list = lbl_803683C0;
+    alloc_list = gAramUsedList;
     insert_prev = 0;
     iter = alloc_list;
     goto ins_t;
@@ -1574,7 +1574,7 @@ ins_d:
     if (insert_prev == 0) {
         alloc_list = best;
     }
-    lbl_803683C0 = alloc_list;
+    gAramUsedList = alloc_list;
 }
 
 void fn_801ED52C(s32 arg0) {
@@ -1582,7 +1582,7 @@ void fn_801ED52C(s32 arg0) {
     void fn_80215D2C(void);
     s32 fn_80215F38(void);
     extern u8 lbl_80332270[];
-    extern void *lbl_803683C0;
+    extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 lbl_803683C8;
     extern s32 lbl_803683CC;
@@ -1628,7 +1628,7 @@ void fn_801ED52C(s32 arg0) {
     var_r4 = lbl_80332270;
     var_r3 = 0xFF;
     lbl_803683CC = arg0;
-    lbl_803683C0 = zero_ptr;
+    gAramUsedList = zero_ptr;
 loop_7:
     if (*(s32 *)(var_r4 + 0x64) != 0) {
         goto try1;
