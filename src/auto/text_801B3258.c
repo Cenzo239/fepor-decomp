@@ -2200,6 +2200,7 @@ void fn_801B97C8(s32 arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+/* Handle unit select-list input: A picks the unit, X opens info, B hides/backs out. */
 extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  void fn_8000C070(void *,s32); void Process_ClearFunc(void *);
  s32 fn_80105814(void *); void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
@@ -2211,15 +2212,15 @@ extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
  void fn_80140258(void *,void *,const Pair &,s32);
  struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual Pair v9(); };
- void *list,*obj,*unit,*self,*temp;
+ void *list,*slot,*unit,*self,*temp;
  register int btn;
- s32 a;
+ s32 held;
  u8 gate;
  s32 flags;
  u32 pos1,pos2;
  self=arg0;
  list=M2C_FIELD(self,void **,0x60);
- obj=Ui_FindChild(self,0x108,0);
+ slot=Ui_FindChild(self,0x108,0);
  unit=fn_8017B908(list);
  fn_8013FDA0(self);
  if(unit!=fn_8017B908(list)) {
@@ -2231,12 +2232,12 @@ extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  } else Ui_HideUnitInfoPopup(gUnitInfoPopup);
  }
  }
- M2C_FIELD(obj,void **,0x3C)=unit;
+ M2C_FIELD(slot,void **,0x3C)=unit;
  gate=0; flags=gUiInputFlags;
  if((flags&0x10)&&!(flags&0x20)) gate=1;
  if(!gate) {
- a=M2C_FIELD(gPadInput,s32 *,4);
- btn=a&(M2C_FIELD(gPadInput,s32 *,8)^a);
+ held=M2C_FIELD(gPadInput,s32 *,4);
+ btn=held&(M2C_FIELD(gPadInput,s32 *,8)^held);
  if((btn&0x100)&&unit&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
  gUiContext[0x14]=M2C_FIELD(unit,u8 *,0x18);
  Ui_PlaySeCue(gUiUnitPanelStrings+0x10C,100); Process_ClearFunc(self);
@@ -2247,7 +2248,7 @@ extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  } else if((btn&0xA00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
  Ui_HideUnitInfoPopup(gUnitInfoPopup);
  } else if((btn&0x200)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
- fn_80140258(self,obj,Pair(0x260,M2C_FIELD(obj,s16 *,0xC)),1);
+ fn_80140258(self,slot,Pair(0x260,M2C_FIELD(slot,s16 *,0xC)),1);
  temp=Ui_FindChild(self,0x82,0);
  fn_80140258(self,temp,Pair(M2C_FIELD(temp,s16 *,0xA),-0x3A),0);
  Ui_PlaySeCue(gUiUnitPanelStrings+0x11C,100);
