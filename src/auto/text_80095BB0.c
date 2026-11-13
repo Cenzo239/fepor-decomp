@@ -249,7 +249,7 @@ void fn_80096418(s16 arg0) {
     void *Item_GetFlagsPtr(void *);
     void fn_8004FC70(s32, s32);
     void *fn_80055204(void *, s32);
-    void fn_800558D8(void *);
+    void GActor_RequestRes(void *);
     u32 fn_80095FF8(s32);
     s32 fn_80096EEC(s32 *, u32);
     void fn_800973F0(u32 *, s32);
@@ -327,7 +327,7 @@ void fn_80096418(s16 arg0) {
     n = fn_80096EEC(buf, flaga);
     p = buf;
     for (i = 0; i < n; i++) {
-        fn_800558D8((void *)fn_80095FF8(*p));
+        GActor_RequestRes((void *)fn_80095FF8(*p));
         p++;
     }
     saved2 = *idx;

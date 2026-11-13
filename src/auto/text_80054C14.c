@@ -510,7 +510,7 @@ check2:
 success1:
     return 1;
 }
-void fn_800558D8(s32 arg0) {
+void GActor_RequestRes(s32 arg0) {
     void fn_800555EC(s32, s32);
     fn_800555EC(arg0, 0);
 }

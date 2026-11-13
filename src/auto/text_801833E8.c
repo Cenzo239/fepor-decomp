@@ -1088,13 +1088,13 @@ void fn_80185A64(void *arg0) {
     void fn_8004F5EC(void *, s32);
     u8 fn_800504FC(void *, s32);
     void fn_8004FC70(void *, s32);
-    void fn_800558D8(void *);
+    void GActor_RequestRes(void *);
     extern u8 MoveAnim_str[];
     void *obj;
     u8 *flags;
 
     if (*((u8 *)arg0 + 0x3C) != 0) {
-        fn_800558D8(MoveAnim_str + 0x1C1);
+        GActor_RequestRes(MoveAnim_str + 0x1C1);
         obj = *(void **)((u8 *)arg0 + 0x30);
         if (fn_800504FC(obj, 0xA) != 0) {
             fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
@@ -1259,14 +1259,14 @@ void fn_80186318(void *arg0) {
 
 void fn_801863BC(void *arg0) {
     extern u16 MoveAnim_str[];
-    void fn_800558D8(void *);
+    void GActor_RequestRes(void *);
     void *var_r3;
 
     var_r3 = (u8 *)MoveAnim_str + 0x357;
     if (*(u16 *)((u8 *)arg0 + 0x38) & 0x20) {
         var_r3 = (u8 *)MoveAnim_str + 0x34C;
     }
-    fn_800558D8(var_r3);
+    GActor_RequestRes(var_r3);
 }
 
 void fn_801863F8(void *arg0) {
@@ -1786,7 +1786,7 @@ void fn_80187D70(void *arg0) {
     f32 fn_8004BE18(void *);
     f32 fn_8004BDA8(void *, f32, f32);
     void fn_8004FC70(void *, s32);
-    void fn_800558D8(void *);
+    void GActor_RequestRes(void *);
     s32 fn_80230BCC(s32);
     void fn_80185078(void *, void *);
     extern u16 lbl_80295A78[36];
@@ -1844,7 +1844,7 @@ void fn_80187D70(void *arg0) {
         base = MoveAnim_str;
         msg = base + 0x371;
     }
-    fn_800558D8(msg);
+    GActor_RequestRes(msg);
 }
 
 #pragma opt_strength_reduction off
@@ -8578,19 +8578,19 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
 void fn_80199240(void *arg0) {
     s32 String_Compare(void *, s32, u32, char *, s32);
     void *String_CStr(void *);
-    void fn_800558D8(void);
+    void GActor_RequestRes(void);
     extern u8 gWeaponAttachStr[];
     s32 len;
 
     len = strlen((char *)(gWeaponAttachStr + 0x7A));
     if (String_Compare((u8 *)arg0 + 0x12C, 0, *(u32 *)((u8 *)arg0 + 0x12C), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x12C);
-        fn_800558D8();
+        GActor_RequestRes();
     }
     len = strlen((char *)(gWeaponAttachStr + 0x7A));
     if (String_Compare((u8 *)arg0 + 0x138, 0, *(u32 *)((u8 *)arg0 + 0x138), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x138);
-        fn_800558D8();
+        GActor_RequestRes();
     }
 }
 #pragma global_optimizer reset
@@ -8722,7 +8722,7 @@ void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(void *, char *, u32);
     s32 String_Compare(void *, s32, u32, char *, u32);
     void String_CStr(void *);
-    void fn_800558D8(void);
+    void GActor_RequestRes(void);
     u32 strlen(char *);
     extern u8 gWeaponAttachStr[];
 
@@ -8841,13 +8841,13 @@ void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
     p = (u8 *)self + 0x12C;
     if (String_Compare(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x12C);
-        fn_800558D8();
+        GActor_RequestRes();
     }
     len = strlen((char *)((u8 *)gWeaponAttachStr + 0x7A));
     p = (u8 *)self + 0x138;
     if (String_Compare(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x138);
-        fn_800558D8();
+        GActor_RequestRes();
     }
     return self;
 }
@@ -10616,7 +10616,7 @@ void fn_8019D0F4(void *arg0)
 {
     extern void *fn_80055204(void *, s32);
     extern void strcpy(void *, void *);
-    extern void fn_800558D8(void *);
+    extern void GActor_RequestRes(void *);
 
     u8 *obj;
     void *result;
@@ -10632,7 +10632,7 @@ void fn_8019D0F4(void *arg0)
         strcpy(obj + 0x41, result);
     }
 
-    fn_800558D8(obj + 0x41);
+    GActor_RequestRes(obj + 0x41);
 }
 
 void fn_8019D150(void *arg0) {
@@ -11255,7 +11255,7 @@ void fn_8019E7C0(void *arg0)
 s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     void *fn_8000CAA0(void *, s32);
     void fn_80013864(void);
-    void fn_800558D8(s32);
+    void GActor_RequestRes(s32);
     s32 fn_800C0658(void);
     void strcpy(void *, s32);
     extern u8 lbl_80297040[];
@@ -11269,7 +11269,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     strcpy((u8 *)obj + 0x30, arg0);
     *(s32 *)((u8 *)obj + 0x50) = arg1;
     *(s32 *)((u8 *)obj + 0x54) = arg2;
-    fn_800558D8(arg0);
+    GActor_RequestRes(arg0);
     fn_80013864();
     return 1;
 }

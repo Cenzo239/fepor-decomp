@@ -2076,7 +2076,7 @@ void fn_801EE76C(void *arg0) {
     void GActor_LoadByName(void *, char *);
     void fn_801EF6BC(void *);
     void GActor_LoadResources(void *, s32);
-    void fn_800558D8(char *);
+    void GActor_RequestRes(char *);
     void *fn_8000CAF0(void *, void *);
     void *fn_80059208(void *, void *);
     void Process_Goto(void *, s32);
@@ -2246,7 +2246,7 @@ use30708:
     GActor_LoadByName(*(void **)((char *)self + 0x48), path);
     fn_801EF6BC(*(void **)((char *)self + 0x48));
     GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
-    fn_800558D8(gGActorPathExt + 0x1AB);
+    GActor_RequestRes(gGActorPathExt + 0x1AB);
     *(void **)((char *)self + 0x44) = fn_8000CAF0(lbl_8029A5BC, self);
     *(void **)((char *)self + 0x40) = fn_80059208((void *)fn_801EEDB4, self);
     *(s16 *)((char *)self + 0x3E) = 0;

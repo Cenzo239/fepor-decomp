@@ -3792,7 +3792,7 @@ void fn_800CDFFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 extern "C" void fn_800CE214(void *self, void *stat) {
-    void fn_800558D8(char *);
+    void GActor_RequestRes(char *);
     void fn_800D5DB0(void *, void *, s32, void *);
     s32 fn_8011654C(void *);
     s32 fn_80116580(void *);
@@ -3844,8 +3844,8 @@ extern "C" void fn_800CE214(void *self, void *stat) {
             } else {
                 *(s32 *)((u8 *)stat + 0x24) = (s8)*(s16 *)((u8 *)stream + idx4 + 6);
                 if (*(s32 *)((u8 *)stat + 0x24) == 0) {
-                    fn_800558D8(lbl_802704F8 + 0x46F);
-                    fn_800558D8(lbl_802704F8 + 0x47C);
+                    GActor_RequestRes(lbl_802704F8 + 0x46F);
+                    GActor_RequestRes(lbl_802704F8 + 0x47C);
                 }
             }
             break;
@@ -3855,8 +3855,8 @@ extern "C" void fn_800CE214(void *self, void *stat) {
             } else {
                 *(s32 *)((u8 *)stat + 0x24) = (s8)*(s16 *)((u8 *)stream + idx4 + 6);
                 if (*(s32 *)((u8 *)stat + 0x24) == 0) {
-                    fn_800558D8(lbl_802704F8 + 0x46F);
-                    fn_800558D8(lbl_802704F8 + 0x47C);
+                    GActor_RequestRes(lbl_802704F8 + 0x46F);
+                    GActor_RequestRes(lbl_802704F8 + 0x47C);
                 }
             }
             break;
@@ -3866,11 +3866,11 @@ extern "C" void fn_800CE214(void *self, void *stat) {
         case 0x51:
             *(s32 *)((u8 *)stat + 0x18) = 1;
             *(s32 *)((u8 *)stat + 0x1C) = 1;
-            fn_800558D8(lbl_802704F8 + 0x48B);
+            GActor_RequestRes(lbl_802704F8 + 0x48B);
             break;
         case 0x52:
             *(s32 *)((u8 *)stat + 0x1C) = 2;
-            fn_800558D8(lbl_802704F8 + 0x499);
+            GActor_RequestRes(lbl_802704F8 + 0x499);
             break;
         case 0x53:
             ok = 0;
@@ -3966,7 +3966,7 @@ extern "C" void fn_800CE214(void *self, void *stat) {
         code2 = *(u8 *)((u8 *)stream + off);
         if ((s32)code2 == 0xB || (s32)code2 == 0x17) {
             *(s32 *)((u8 *)stat + 0x1C) = 3;
-            fn_800558D8(lbl_802704F8 + 0x4A2);
+            GActor_RequestRes(lbl_802704F8 + 0x4A2);
             if ((s32)code2 == 0xB) {
                 ((u8 *)self)[0x72] = ((u8 *)self)[0x70];
             } else {
@@ -4959,7 +4959,7 @@ extern "C" void *GameScene_Create(void *arg0)
     void fn_80033418(void *);
     void fn_800555EC(char *, s32);
     s32 fn_80165B0C(void *);
-    void fn_800558D8(char *);
+    void GActor_RequestRes(char *);
 
     struct {
         String constructed;
@@ -6057,23 +6057,23 @@ extern "C" void *GameScene_Create(void *arg0)
         s32 mode = fn_80165B0C(*(void **)(obj + 0x80));
 
         if (mode == 1) {
-            fn_800558D8(lbl_802704F8 + 0x212);
-            fn_800558D8(lbl_802704F8 + 0x222);
-            fn_800558D8(lbl_802704F8 + 0x233);
-            fn_800558D8(lbl_802704F8 + 0x244);
-            fn_800558D8(lbl_802704F8 + 0x255);
+            GActor_RequestRes(lbl_802704F8 + 0x212);
+            GActor_RequestRes(lbl_802704F8 + 0x222);
+            GActor_RequestRes(lbl_802704F8 + 0x233);
+            GActor_RequestRes(lbl_802704F8 + 0x244);
+            GActor_RequestRes(lbl_802704F8 + 0x255);
         } else if (mode == 2) {
-            fn_800558D8(lbl_802704F8 + 0x266);
-            fn_800558D8(lbl_802704F8 + 0x277);
-            fn_800558D8(lbl_802704F8 + 0x288);
-            fn_800558D8(lbl_802704F8 + 0x299);
-            fn_800558D8(lbl_802704F8 + 0x2AA);
+            GActor_RequestRes(lbl_802704F8 + 0x266);
+            GActor_RequestRes(lbl_802704F8 + 0x277);
+            GActor_RequestRes(lbl_802704F8 + 0x288);
+            GActor_RequestRes(lbl_802704F8 + 0x299);
+            GActor_RequestRes(lbl_802704F8 + 0x2AA);
         } else if (mode == 3) {
-            fn_800558D8(lbl_802704F8 + 0x2BB);
-            fn_800558D8(lbl_802704F8 + 0x2CB);
-            fn_800558D8(lbl_802704F8 + 0x2DC);
-            fn_800558D8(lbl_802704F8 + 0x2ED);
-            fn_800558D8(lbl_802704F8 + 0x2FE);
+            GActor_RequestRes(lbl_802704F8 + 0x2BB);
+            GActor_RequestRes(lbl_802704F8 + 0x2CB);
+            GActor_RequestRes(lbl_802704F8 + 0x2DC);
+            GActor_RequestRes(lbl_802704F8 + 0x2ED);
+            GActor_RequestRes(lbl_802704F8 + 0x2FE);
         }
     }
 

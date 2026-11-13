@@ -236,8 +236,8 @@ void fn_801B3D68(void *arg0) {
 
 void fn_801B4810(void) {
     extern u16 lbl_8027C128[];
-    fn_800558D8((u8 *)lbl_8027C128 + 0xb1);
-    fn_800558D8((u8 *)lbl_8027C128 + 0x95);
+    GActor_RequestRes((u8 *)lbl_8027C128 + 0xb1);
+    GActor_RequestRes((u8 *)lbl_8027C128 + 0x95);
 }
 
 void fn_801B484C(void *arg0, f32 f1, f32 f2, f32 f3, f32 f4) {

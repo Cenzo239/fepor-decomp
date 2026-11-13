@@ -485,7 +485,7 @@ void fn_80129464(void *arg0) {
 
 void fn_8012955C(void) {
     extern u16 lbl_80275740[];
-    fn_800558D8((u8 *)lbl_80275740 + 0x15B);
+    GActor_RequestRes((u8 *)lbl_80275740 + 0x15B);
 }
 
 void fn_80129588(s32 arg0, u32 arg1) {
@@ -812,7 +812,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void *fn_8004721C(void *, s32, s32, s32, s32);
     void fn_80049CB4(void *, void *);
     void fn_80049D30(void *);
-    void fn_800558D8(void *, void *, void *);
+    void GActor_RequestRes(void *, void *, void *);
     void *fn_800C45B8(s32, void *, s32);
     void fn_8010FE08(void *, s8, s8, s32);
     void fn_8010FEEC(void *, s8, s8, s32, s32);
@@ -906,7 +906,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
         void *child = *(void **)*(void **)((u8 *)node + 0x30);
         *(u8 *)((u8 *)child + 2) = (u8)(*(u8 *)((u8 *)child + 2) & 0xFE);
         *(s32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 4) = *(s32 *)gUiContext;
-        fn_800558D8(lbl_80275740 + 0x165, *(void **)((u8 *)node + 0x30), child);
+        GActor_RequestRes(lbl_80275740 + 0x165, *(void **)((u8 *)node + 0x30), child);
     }
 }
 void fn_80129F68(void *arg0) {
@@ -1334,7 +1334,7 @@ void fn_8012AC88(void *arg0) {
 
 void fn_8012AD80(void) {
     extern u16 lbl_80275740[];
-    fn_800558D8((u8 *)lbl_80275740 + 0x165);
+    GActor_RequestRes((u8 *)lbl_80275740 + 0x165);
 }
 
 #pragma use_lmw_stmw on
@@ -1472,7 +1472,7 @@ void fn_8012AF4C(void *arg0) {
 
 void fn_8012B394(void) {
     extern u16 lbl_80275740[];
-    fn_800558D8((u8 *)lbl_80275740 + 0x1a7);
+    GActor_RequestRes((u8 *)lbl_80275740 + 0x1a7);
 }
 
 void fn_8012B3C0(s32 arg0, s32 arg1, s32 arg2) {
