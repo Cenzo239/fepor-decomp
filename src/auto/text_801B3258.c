@@ -8931,7 +8931,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     void *fn_800DC3B0(void *);
     s32 fn_8011C9E4(s32);
     s32 fn_8011C984(s32, s32);
-    void *fn_801CAF2C(void *, s32);
+    void *CameraAnim_GetKeyframe(void *, s32);
     void *fn_801CAF8C(void *);
     void Camera_GetEyePos(f32 *, void *);
     void Camera_GetLookAt(f32 *, void *);
@@ -8955,7 +8955,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     index = (s32)fn_800DC3B0(*(void **)((u8 *)gCameraWin + 0x438));
     obj = gCameraWin;
     obj = (void *)fn_8011C984(*(s32 *)((u8 *)obj + 0x430), fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
-    result = fn_801CAF2C(obj, index);
+    result = CameraAnim_GetKeyframe(obj, index);
     Camera_GetEyePos(sp14, obj = fn_801CAF8C(obj));
     x1 = sp14[0];
     y1 = sp14[1];
@@ -9080,7 +9080,7 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     s32 fn_8011C984(s32, s32);
     void fn_8011C9A8(s32, s32);
     void fn_801CADBC(s32, s32);
-    void *fn_801CAF2C(s32, s32);
+    void *CameraAnim_GetKeyframe(s32, s32);
     s32 fn_801CAF50(void);
     s32 fn_801CAF8C(s32);
     void sprintf(char *, char *, ...);
@@ -9124,7 +9124,7 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     count = fn_801CAF50();
     base = CameraWin_str;
     for (arg1 = 0; arg1 < count; arg1++) {
-        entry = (struct Entry *)fn_801CAF2C(handle, arg1);
+        entry = (struct Entry *)CameraAnim_GetKeyframe(handle, arg1);
         sprintf(label, base + 0x16, arg1, entry->nameId);
         String_AssignCStr(&tempStr, label, strlen(label));
         String_Copy(&listStr, &tempStr);
@@ -9451,7 +9451,7 @@ void fn_801CACE4(void *arg0, s32 arg1) {
 
 void fn_801CAD38(void *p,s32 n,s32 v){void fn_801CB934(void*,void*,s32,s32);s32 x=n+1; if(x<*(s32*)((u8*)p+0x70))fn_801CB934((u8*)p+0x48,(u8*)(*(u32*)((u8*)p+0x50)+(x<<5)),1,v);else fn_801CB934((u8*)p+0x48,(u8*)(*(u32*)((u8*)p+0x50)+(*(s32*)((u8*)p+0x4c)<<5)),1,v);(*(s32*)((u8*)p+0x70))++;}
 
-s32 fn_801CAF2C(void *arg0, s32 arg1) {
+s32 CameraAnim_GetKeyframe(void *arg0, s32 arg1) {
     if (arg1 < (s32) M2C_FIELD(arg0, s32 *, 0x70)) {
         return M2C_FIELD(arg0, s32 *, 0x50) + (arg1 << 5);
     }
