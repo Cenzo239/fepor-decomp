@@ -275,7 +275,7 @@ void fn_801B5DB0(void *arg0) {
 void UnitStatus_Init(void *arg0) {
     void *memset(void *, s32, s32);
     void fn_8005C8B4(void *);
-    u8 fn_8003B658(void *);
+    u8 Unit_GetHp(void *);
     u8 fn_8003B614(void *);
     u8 fn_8003B5D0(void *);
     u8 fn_8003B58C(void *);
@@ -311,7 +311,7 @@ void UnitStatus_Init(void *arg0) {
     memset((u8 *)arg0 + 0x64, 0, 0xA0);
     fn_8005C8B4(lbl_8027C128 + 0xE1);
     *(u8 *)((u8 *)arg0 + 0x1C) = *(u8 *)((u8 *)unit + 0x19A);
-    *(u8 *)((u8 *)arg0 + 0x1D) = fn_8003B658(unit);
+    *(u8 *)((u8 *)arg0 + 0x1D) = Unit_GetHp(unit);
     *(u8 *)((u8 *)arg0 + 0x1E) = fn_8003B614(unit);
     *(u8 *)((u8 *)arg0 + 0x1F) = fn_8003B5D0(unit);
     *(u8 *)((u8 *)arg0 + 0x20) = fn_8003B58C(unit);

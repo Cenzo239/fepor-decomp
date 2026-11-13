@@ -314,7 +314,7 @@ void fn_80034130(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     void *fn_80037C20(void *);
     u8 fn_8000CE68(s16);
-    s32 fn_8003B658(void *);
+    s32 Unit_GetHp(void *);
     s32 fn_8003B614(void *);
     s32 fn_8003B5D0(void *);
     s32 fn_8003B58C(void *);
@@ -521,7 +521,7 @@ void fn_80034130(void *arg0, void *arg1) {
     }
     *(u8 *)((u8 *)arg0 + 0x2DE) = g;
 
-    stat = fn_8003B658(arg0);
+    stat = Unit_GetHp(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2D7);
     excess = (s8)((g + stat) - cap[0x4C]);
@@ -617,7 +617,7 @@ void fn_80034864(s32 self, void *arg1) {
     void fn_801A7794(void *, void *, void *);
     void fn_8003D2C4(void *);
     void fn_801A981C(void *, s32, s32);
-    s32 fn_8003B658(void *);
+    s32 Unit_GetHp(void *);
     s32 fn_8003B614(void *);
     s32 fn_8003B5D0(void *);
     s32 fn_8003B58C(void *);
@@ -646,8 +646,8 @@ void fn_80034864(s32 self, void *arg1) {
     *(u32 *)(self + 0xCAC) |= 0x2000;
     fn_801A981C((void *)self, 0, -1);
     fn_801A981C((void *)(self + 0x2E0), 0, -1);
-    t = fn_8003B658((void *)(self + 0x2E0));
-    d0 = (s8)(t - fn_8003B658((void *)self));
+    t = Unit_GetHp((void *)(self + 0x2E0));
+    d0 = (s8)(t - Unit_GetHp((void *)self));
     t = fn_8003B614((void *)(self + 0x2E0));
     d1 = (s8)(t - fn_8003B614((void *)self));
     t = fn_8003B5D0((void *)(self + 0x2E0));
@@ -716,7 +716,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     s32 fn_8003B58C(void *);
     s32 fn_8003B5D0(void *);
     s32 fn_8003B614(void *);
-    s32 fn_8003B658(void *);
+    s32 Unit_GetHp(void *);
     u8 Status_Test(void *, s32);
     void *self;
     void *out;
@@ -780,7 +780,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
             *(u8 *)((u8 *)self + 0x2DE) = *(u8 *)((u8 *)self + 0x2DE) + 1;
         }
     }
-    stat = fn_8003B658(self);
+    stat = Unit_GetHp(self);
     firstClass = *(u8 **)((u8 *)self + 0x18C);
     first = *(u8 *)((u8 *)self + 0x2D7);
     stat = first + stat;
@@ -3822,7 +3822,7 @@ s8 fn_8003B614(void *arg0) {
     return var;
 }
 
-s8 fn_8003B658(void *arg0) {
+s8 Unit_GetHp(void *arg0) {
     void *p18c;
     s8 lim;
     u8 t;

@@ -2912,7 +2912,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void fn_8013F920(void *);
     s32 fn_8003B2D0(void *);
-    s32 fn_8003B658(void *);
+    s32 Unit_GetHp(void *);
     s32 fn_8003B258(void *);
     s32 fn_8003B614(void *);
     s32 fn_8003AFA0(void *);
@@ -2978,7 +2978,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
 
     unit = self->unk44;
     idx = fn_8003B2D0(unit);
-    self->v9(0xC, 0x22, lbl_802767E0 + 0x48, fn_8003B658(unit), idx,
+    self->v9(0xC, 0x22, lbl_802767E0 + 0x48, Unit_GetHp(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4C]);
     idx = fn_8003B258(unit);
     self->v9(0xC, 0x42, lbl_802767E0 + 0x4E, fn_8003B614(unit), idx,
@@ -11078,11 +11078,16 @@ entry->frame=0;
 
 s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
+#pragma scheduling off
 s32 SeCue_PlayAtPos(void *arg0, f32 *arg1, s32 arg2) {
     s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
-    return SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
+    f32 x, y, z;
+    x = arg1[0];
+    y = arg1[1];
+    z = arg1[2];
+    return SeCue_PlayAt(arg0, x, y, z, arg2);
 }
-
+#pragma scheduling reset
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
     extern u8 gSeCueSlots[1344];
