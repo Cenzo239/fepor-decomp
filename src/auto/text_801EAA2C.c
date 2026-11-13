@@ -2295,7 +2295,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
     void fn_800C9B6C(void *, void *);
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     void fn_800CB90C(void *, void *, char *);
     void fn_800CBF24(void *, char *, void *);
     s32 fn_800E49D0(void);
@@ -2344,7 +2344,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     fn_800C9B6C(&spA4, &sp80);
     String_Destroy(&sp80, -1);
     String_Destroy(&sp8C, -1);
-    fn_800CB8A4(&sp74, &spA4, &spB0);
+    String_Concat(&sp74, &spA4, &spB0);
     fn_800CB90C(&sp68, &sp74, gGActorPathExt + 0x1C1);
     String_Assign(&spBC, &sp68, 0, -1);
     String_Destroy(&sp68, -1);
@@ -2354,7 +2354,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     *(void **)((u8 *)self + 0xB8) = GActor_Create();
     row = (u8 *)self + arg1 * 0xC;
     path44 = row + 0x44;
-    fn_800CB8A4(&sp5C, &spA4, path44);
+    String_Concat(&sp5C, &spA4, path44);
     fn_800CB90C(&sp50, &sp5C, gGActorPathExt + 0x208);
     String_Assign(&spBC, &sp50, 0, -1);
     String_Destroy(&sp50, -1);
@@ -2363,7 +2363,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     tmp = (void *)fn_8006CE14();
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
-    fn_800CB8A4(&sp44, &spA4, path44);
+    String_Concat(&sp44, &spA4, path44);
     fn_800CB90C(&sp38, &sp44, gGActorPathExt + 0x20C);
     String_Assign(&spBC, &sp38, 0, -1);
     String_Destroy(&sp38, -1);
@@ -2372,7 +2372,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     tmp = (void *)fn_80065EE8();
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
-    fn_800CB8A4(&sp2C, &spA4, row + 0x14);
+    String_Concat(&sp2C, &spA4, row + 0x14);
     fn_800CB90C(&sp20, &sp2C, gGActorPathExt + 0x1C9);
     String_Assign(&spBC, &sp20, 0, -1);
     String_Destroy(&sp20, -1);
@@ -2381,7 +2381,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     tmp = (void *)fn_8006D948();
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
-    fn_800CB8A4(&sp14, &spA4, row + 0x2C);
+    String_Concat(&sp14, &spA4, row + 0x2C);
     fn_800CB90C(&sp8, &sp14, gGActorPathExt + 0x20F);
     String_Assign(&spBC, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
@@ -2434,7 +2434,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     void String_Destroy(String *, s32);
     void String_Init(String *, char *, void *);
     void fn_800C9B6C(String *, void *);
-    void fn_800CB8A4(String *, String *, String *);
+    void String_Concat(String *, String *, String *);
     void fn_800CB90C(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
     s32 strlen(char *);
@@ -2479,7 +2479,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
         return;
     }
     fn_800CB90C(&sp18, &sp3C, (char *)((u8 *)gGActorPathExt + 0x222));
-    fn_800CB8A4(&spC, &sp18, &sp30);
+    String_Concat(&spC, &sp18, &sp30);
     String_Assign(&sp54, &spC, 0, -1);
     String_Destroy(&spC, -1);
     String_Destroy(&sp18, -1);
@@ -2530,7 +2530,7 @@ void fn_801EF6BC(void *arg0) {
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
     void String_Init(void *, char *, void *);
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     void fn_800CB90C(void *, void *, char *);
     s32 fn_800E49D0(void);
     void fn_801C6E60(void *);
@@ -2589,9 +2589,9 @@ void fn_801EF6BC(void *arg0) {
         p = *(Named **)*(void **)slot;
     }
     String_AssignCStr(&spD8, p->name, strlen(p->name));
-    fn_800CB8A4(&spC0, &spCC, &spD8);
+    String_Concat(&spC0, &spCC, &spD8);
     fn_800CB90C(&spB4, &spC0, gGActorPathExt + 0x1BF);
-    fn_800CB8A4(&spA8, &spB4, &spD8);
+    String_Concat(&spA8, &spB4, &spD8);
     fn_800CB90C(&sp9C, &spA8, gGActorPathExt + 0x229);
     String_Assign(&spE4, &sp9C, 0, -1);
     String_Destroy(&sp9C, -1);
@@ -2603,9 +2603,9 @@ void fn_801EF6BC(void *arg0) {
         String_CStr(&spE4);
         *(s32 *)((u8 *)self + 0xC0) = fn_8005C84C();
         *(void **)((u8 *)self + 0xC4) = GActor_Create();
-        fn_800CB8A4(&sp90, &spCC, &spD8);
+        String_Concat(&sp90, &spCC, &spD8);
         fn_800CB90C(&sp84, &sp90, (char *)((u32)gGActorPathExt + 0x1BF));
-        fn_800CB8A4(&sp78, &sp84, &spD8);
+        String_Concat(&sp78, &sp84, &spD8);
         fn_800CB90C(&sp6C, &sp78, gGActorPathExt + 0x208);
         String_Assign(&spE4, &sp6C, 0, -1);
         String_Destroy(&sp6C, -1);
@@ -2616,9 +2616,9 @@ void fn_801EF6BC(void *arg0) {
         tmp = (void *)fn_8006CE14();
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
-        fn_800CB8A4(&sp60, &spCC, &spD8);
+        String_Concat(&sp60, &spCC, &spD8);
         fn_800CB90C(&sp54, &sp60, (char *)((u8 *)gGActorPathExt + 0x1BF));
-        fn_800CB8A4(&sp48, &sp54, &spD8);
+        String_Concat(&sp48, &sp54, &spD8);
         fn_800CB90C(&sp3C, &sp48, gGActorPathExt + 0x20C);
         String_Assign(&spE4, &sp3C, 0, -1);
         String_Destroy(&sp3C, -1);
@@ -2629,9 +2629,9 @@ void fn_801EF6BC(void *arg0) {
         tmp = (void *)fn_80065EE8();
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
-        fn_800CB8A4(&sp30, &spCC, &spD8);
+        String_Concat(&sp30, &spCC, &spD8);
         fn_800CB90C(&sp24, &sp30, (char *)(gGActorPathExt + 0x1BF));
-        fn_800CB8A4(&sp18, &sp24, &spD8);
+        String_Concat(&sp18, &sp24, &spD8);
         fn_800CB90C(&spC, &sp18, gGActorPathExt + 0x1C9);
         String_Assign(&spE4, &spC, 0, -1);
         String_Destroy(&spC, -1);
@@ -2790,7 +2790,7 @@ void fn_801EFDC8(void *arg0) {
     void Xml_Destroy(void *, s32);
     char *fn_80050AB8(void *);
     void fn_801EF39C(String *, void *, s32);
-    void fn_800CB8A4(String *, String *, String *);
+    void String_Concat(String *, String *, String *);
     void fn_800CB90C(String *, String *, char *);
     s32 fn_800C9400(String *, s32, void *, char *, s32);
     void fn_800D6878(void *, void *, void *);
@@ -2960,7 +2960,7 @@ void fn_801EFDC8(void *arg0) {
         if (file2 != NULL) {
             String_Init(&spA4, gGActorPathExt + 0x1DB, &sp1C);
             flag0 = 1;
-            fn_800CB8A4(&sp98, &str13c, &str148);
+            String_Concat(&sp98, &str13c, &str148);
             flag1 = 1;
             fn_800CB90C(&sp8C, &sp98, strBase + 0x250);
             flag2 = 1;
@@ -2997,7 +2997,7 @@ void fn_801EFDC8(void *arg0) {
         if (file2 != NULL) {
             String_Init(&sp74, gGActorPathExt + 0x1DB, &sp18);
             flag0 = 1;
-            fn_800CB8A4(&sp68, &str13c, &str148);
+            String_Concat(&sp68, &str13c, &str148);
             flag1 = 1;
             fn_800CB90C(&sp5C, &sp68, strBase + 0x263);
             flag2 = 1;

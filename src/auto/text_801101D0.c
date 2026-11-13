@@ -1265,7 +1265,7 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
 
 #pragma use_lmw_stmw on
 void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     void fn_800D5D04(void *, void *, s32, s32);
     void fn_800E574C(void *, void *, f32, s32, s32, s32, s32);
     char *fn_800DDB94(void *, void *);
@@ -1298,7 +1298,7 @@ void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
     sp54.cap = 0;
     String_AssignCStr((u8 *)self + 0x178, path, strlen(path));
     String_Init(&sp48, path, &sp8);
-    fn_800CB8A4(&sp3C, (u8 *)self + 0x154, &sp48);
+    String_Concat(&sp3C, (u8 *)self + 0x154, &sp48);
     String_Assign(&sp54, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
     String_Destroy(&sp48, -1);
@@ -1600,7 +1600,7 @@ extern "C" void fn_80113BA0(void *arg0) {
 void fn_80113C84(void *self, s32 mode) {
     s32 strlen(char *);
     s32 fn_800DDC04(void *, void *);
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     String sp3C;
     String sp30;
     String sp24;
@@ -1638,7 +1638,7 @@ void fn_80113C84(void *self, s32 mode) {
 
     if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478)) == 0) {
         String_Init(&spC, String_CStr(&sp3C), &sp8);
-        fn_800CB8A4(&sp18, (u8 *)self + 0x154, &spC);
+        String_Concat(&sp18, (u8 *)self + 0x154, &spC);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &sp18) != 0;
         String_Destroy(&sp18, -1);
         String_Destroy(&spC, -1);
@@ -1720,7 +1720,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
     void String_Init(void *, char *, void *);
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     void fn_800CB90C(void *, void *, char *);
     void fn_800CBF24(void *, void *, void *);
     void *String_CStr(void *);
@@ -1834,7 +1834,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
 
     if (arg1 != 0) {
         String_Init(&sp8C, (char *)&gActorXmlStrs + 0x49D, &scratch2);
-        fn_800CB8A4(&sp98, (u8 *)arg0 + 0x154, &sp8C);
+        String_Concat(&sp98, (u8 *)arg0 + 0x154, &sp8C);
         t = fn_800DDC04(*(void **)((u8 *)arg0 + 0xDC), &sp98) != 0 ? 1 : 0;
         String_Destroy(&sp98, -1);
         String_Destroy(&sp8C, -1);
@@ -2077,7 +2077,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     void String_AssignCStr(void *, char *, s32);
     s32 fn_800C9400(void *, s32, s32, char *, s32);
     void String_Init(void *, char *, void *);
-    void fn_800CB8A4(void *, void *, void *);
+    void String_Concat(void *, void *, void *);
     s32 fn_800DDC04(void *, void *);
     void String_Destroy(void *, s32);
     void fn_800E56CC(void *);
@@ -2176,7 +2176,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     if (fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53A, strlen((char *)&gActorXmlStrs + 0x53A)) == 0
         || fn_800C9400((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F)) == 0) {
         String_Init(sp84, (char *)&gActorXmlStrs + 0x53F, sp8);
-        fn_800CB8A4(sp90, (u8 *)self + 0x154, sp84);
+        String_Concat(sp90, (u8 *)self + 0x154, sp84);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), sp90) != 0;
         String_Destroy(sp90, -1);
         String_Destroy(sp84, -1);
