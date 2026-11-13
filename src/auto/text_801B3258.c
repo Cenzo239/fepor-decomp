@@ -12798,7 +12798,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     void fn_8004BD1C(void *, f32 *, f32);
     u8 fn_800BE890(void *);
     void Model_SetColor(void *, s32, s32, s32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
@@ -12975,7 +12975,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
                 *(u32 *)spr |= 0x20000u;
             }
             Model_SetColor(spr, 0x80, 0x80, 0x80);
-            fn_8005F7B0(spr, 0xFF);
+            Model_SetAlpha(spr, 0xFF);
             fn_8005F780(spr, 0xFF);
             fn_80060060(spr);
             fn_800609DC(spr);

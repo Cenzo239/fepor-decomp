@@ -2141,7 +2141,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     void fn_8004BD1C(void *, f32 *, f32);
     void Model_SetColor(void *, s32, s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
@@ -2232,7 +2232,7 @@ void Ui_DrawUnitListModels(void *arg0) {
             }
             PSMTXTrans(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
             PSMTXConcat(spD4, sp14, (u8 *)obj + 0x10);
-            fn_8005F7B0(obj, 0xFF);
+            Model_SetAlpha(obj, 0xFF);
             fn_8005F780(obj, 0xFF);
             fn_80060060(obj);
             fn_800609DC(obj);

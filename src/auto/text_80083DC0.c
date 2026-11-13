@@ -120,7 +120,7 @@ void fn_80083F08(void *arg0) {
     void fn_8004DDB8(s32);
     void fn_8005AC24(void *, s32, s32);
     void fn_8005F780(void *, s32);
-    void fn_8005F7B0(void *, u8);
+    void Model_SetAlpha(void *, u8);
     void fn_80060060(void *);
     void fn_800609DC(void *);
     u16 **fn_8006EDD8(s32, s32);
@@ -503,7 +503,7 @@ void fn_80083F08(void *arg0) {
     PSMTXConcat(sp30, sp120, sp120);
     PSMTXConcat(spC0, sp120, sp120);
     fn_80201FF0(sp120, (u8 *)*(void **)((u8 *)arg0 + 0x60) + 0x10);
-    fn_8005F7B0(*(void **)((u8 *)arg0 + 0x60), *(u8 *)((u8 *)arg0 + 8));
+    Model_SetAlpha(*(void **)((u8 *)arg0 + 0x60), *(u8 *)((u8 *)arg0 + 8));
     fn_8005F780(*(void **)((u8 *)arg0 + 0x60), 0xFF);
     fn_80060060(*(void **)((u8 *)arg0 + 0x60));
     fn_800609DC(*(void **)((u8 *)arg0 + 0x60));

@@ -3342,7 +3342,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     f32 fn_80138AC0(void *);
     s32 fn_80138908(void *);
     void Model_SetColor(void *, u8, u8, u8);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
@@ -3517,7 +3517,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
             pb = &c8;
         }
         Model_SetColor(self->unk50, (u8)*pr, (u8)*pg, (u8)*pb);
-        fn_8005F7B0(self->unk50, fn_80138908(self));
+        Model_SetAlpha(self->unk50, fn_80138908(self));
         fn_8005F780(self->unk50, 0xFF);
         fn_80060060(self->unk50);
         fn_800609DC(self->unk50);
@@ -3905,7 +3905,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void fn_80009C0C(f32);
     void fn_8004BD1C(void *, f32 *, s16, f32);
     void Model_SetColor(void *, s32, s32, s32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
@@ -4024,7 +4024,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
             } else {
                 Model_SetColor(spr, 0x40, 0x40, 0x40);
             }
-            fn_8005F7B0(spr, 0xFF);
+            Model_SetAlpha(spr, 0xFF);
             fn_8005F780(spr, 0xFF);
             fn_80060060(spr);
             fn_800609DC(spr);

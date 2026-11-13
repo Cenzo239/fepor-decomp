@@ -663,7 +663,7 @@ void fn_801298FC(void *arg0) {
 
 void fn_80129984(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_8000C188(void *);
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
@@ -678,7 +678,7 @@ void fn_80129984(void *arg0) {
     i = 0;
     while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
         node = *(u8 **)(p + 0x30) + 0x14;
-        fn_8005F7B0(node, (s32)Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
+        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
         p += 4;
         i += 1;
     }
@@ -1359,16 +1359,16 @@ void fn_8012AEC4(void *arg0) {
     u8 fn_80040824(void);
     void *fn_80040844(void);
     void fn_80044450(void *, s32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void fn_80049D08(void *);
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x38);
-    fn_8005F7B0((u8 *)p + 0x14, 0);
+    Model_SetAlpha((u8 *)p + 0x14, 0);
     p = *(void **)((u8 *)arg0 + 0x38);
     *(u8 *)((u8 *)p + 2) |= 1;
     p = *(void **)((u8 *)arg0 + 0x3C);
-    fn_8005F7B0((u8 *)p + 0x14, 0xFF);
+    Model_SetAlpha((u8 *)p + 0x14, 0xFF);
     p = *(void **)((u8 *)arg0 + 0x3C);
     *(u8 *)((u8 *)p + 2) &= ~1;
     fn_80049D08(*(void **)((u8 *)arg0 + 0x3C));
@@ -1380,7 +1380,7 @@ void fn_8012AEC4(void *arg0) {
 void fn_8012AF4C(void *arg0) {
     void fn_8000C188(void *);
     f32 Math_Lerp(f32, f32, f32, f32);
-    void fn_8005F7B0(void *, s32);
+    void Model_SetAlpha(void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
@@ -1436,9 +1436,9 @@ void fn_8012AF4C(void *arg0) {
     PSMTXTrans(sp38, x, y, z);
     PSMTXConcat(sp38, sp8, (u8 *)node + 0x10);
 
-    fn_8005F7B0(node, Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    Model_SetAlpha(node, Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
     node = (u8 *)*(void **)((u8 *)self + 0x3C) + 0x14;
-    fn_8005F7B0(node, Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    Model_SetAlpha(node, Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
 
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
         fn_8000C188(self);
