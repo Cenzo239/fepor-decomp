@@ -7246,16 +7246,17 @@ u8 fn_800BD470(u8 arg0) {
     return 0U;
 }
 
-u8 ScriptCmd_UnitGetByPos(s32 arg0, s32 arg1) {
+u8 ScriptCmd_UnitGetByPos(s32 mapX, s32 mapY) {
+    /* Return the unit index at (mapX, mapY), or 0 if none among allegiances 0-3. */
     void Allegiance_FillMask(s32, void *);
     extern u16 gUnits[];
-    u8 sp8[8];
+    u8 allegMask[8];
     u8 *found;
     u8 *unit;
     s32 i;
 
     found = NULL;
-    Allegiance_FillMask(3, sp8);
+    Allegiance_FillMask(3, allegMask);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = (u8 *)gUnits + ((u8)i - 1) * 0x280;
@@ -7263,10 +7264,10 @@ u8 ScriptCmd_UnitGetByPos(s32 arg0, s32 arg1) {
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0) {
-            if (sp8[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
+            if (allegMask[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
                 if (!(*(u32 *)(unit + 0x1A0) & 0x1C)) {
-                    if (arg0 == (s8)*(u8 *)(unit + 0x19E)) {
-                        if (arg1 == (s8)*(u8 *)(unit + 0x19F)) {
+                    if (mapX == (s8)*(u8 *)(unit + 0x19E)) {
+                        if (mapY == (s8)*(u8 *)(unit + 0x19F)) {
                             found = unit;
                         }
                     }
