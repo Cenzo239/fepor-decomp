@@ -7083,7 +7083,8 @@ extern s32 gDvdCheckSnapshot;
 extern f32 lbl_803692C8;
 extern f64 lbl_803692D0;
 extern f32 lbl_803692CC;
-void DEMOSetStats(u32 arg0)
+/* Enable DEMO GP hang stats (non-zero limit) or disable them (0); program GX FIFO for the overlay. */
+void DEMOSetStats(u32 hangLimit)
 {
     void fn_8020FFC4(void (*)(void));
     void fn_80225204(s32, s32);
@@ -7092,9 +7093,9 @@ void DEMOSetStats(u32 arg0)
     extern u32 gDemoStatHangLimit;
     volatile u8 *gx;
 
-    if (arg0 != 0) {
+    if (hangLimit != 0) {
         gDemoStatEnable = 1;
-        gDemoStatHangLimit = arg0;
+        gDemoStatHangLimit = hangLimit;
         fn_8020FFC4(fn_8006E478);
         fn_80225204(0x23, 0x16);
         gx = (volatile u8 *)0xCC008000;
