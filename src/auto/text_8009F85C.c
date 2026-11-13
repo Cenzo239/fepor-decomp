@@ -1913,7 +1913,7 @@ s32 fn_800A2624(void *arg0)
 }
 
 char *fn_800A2660(void *arg0) {
-    void *fn_80019E68(s16);
+    void *Job_Get(s16);
     s32 fn_800A8978(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026D8D8[];
@@ -1921,7 +1921,7 @@ char *fn_800A2660(void *arg0) {
     void *temp_r31;
     s32 temp_r6;
 
-    temp_r31 = fn_80019E68(*(s16 *)((u8 *)arg0 + 4));
+    temp_r31 = Job_Get(*(s16 *)((u8 *)arg0 + 4));
     temp_r6 = fn_800A8978();
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
     return lbl_80312270;
@@ -1965,12 +1965,12 @@ s32 fn_800A26D0(void *arg0)
 }
 
 s32 fn_800A2748(void *arg0) {
-    s32 fn_80019E68(s16);
+    s32 Job_Get(s16);
     s32 fn_8003C6BC(s32, s32, s32);
 
     s32 temp_r31 = fn_800AA794();
     s16 temp_r5 = M2C_FIELD(arg0, s16 *, 4);
-    s32 temp_r3 = fn_80019E68(temp_r5);
+    s32 temp_r3 = Job_Get(temp_r5);
     fn_8003C6BC(temp_r31, 0, temp_r3);
     return 0;
 }

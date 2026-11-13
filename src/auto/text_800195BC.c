@@ -366,7 +366,7 @@ void fn_80019E48(void) {
     Res_GetByName();
 }
 
-s32 fn_80019E68(s32 arg0) {
+s32 Job_Get(s32 arg0) {
     extern s32 lbl_803671DC;
     if (arg0 == 0) {
         return 0;
