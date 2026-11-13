@@ -1611,7 +1611,7 @@ void fn_801AD704(void *arg0) {
 
 void fn_801ADA50(void *arg0) {
     void Prim2D_Begin(void);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
     void fn_801AD704(void *);
@@ -1678,7 +1678,7 @@ void fn_801ADA50(void *arg0) {
             self->unk40 = f1 - lim;
         }
         Prim2D_Begin();
-        fn_80009B8C(0xFF);
+        Prim2D_SetColorByte(0xFF);
         Prim2D_SetTransform(lbl_8036AFA0, lbl_8036AFA0, lbl_8036AFFC, lbl_8036AF9C);
         Prim2D_PrepareTex();
         fn_801AD704(self);
@@ -1726,7 +1726,7 @@ void fn_801ADA50(void *arg0) {
         fn_80057AE0(self->unk54);
         fn_80057AE0(self->unk58);
         Prim2D_Begin();
-        fn_80009B8C(0xFF);
+        Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
     }
 }

@@ -1711,7 +1711,7 @@ void fn_80200750(void *arg0) {
 void fn_802007E0(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_SetAlphaByte(s32);
     void fn_80009C0C(f32);
     M2C_UNK fn_80200A7C(M2C_UNK, M2C_UNK, s16, s16, s32 *);
@@ -1767,7 +1767,7 @@ void fn_802007E0(void *arg0) {
         break;
     }
     
-    fn_80009B8C((s32) (lbl_8036BBE4 * var_f1));
+    Prim2D_SetColorByte((s32) (lbl_8036BBE4 * var_f1));
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     

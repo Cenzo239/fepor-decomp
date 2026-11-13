@@ -341,7 +341,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
     };
     f32 fn_80023EE0(void *);
     void Prim2D_Begin(void);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
     void fn_80071740(void *, f32, f32, s32);
     void fn_8007149C(void *, void *, f32, f32, s32, s32);
@@ -354,7 +354,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
-    fn_80009B8C((s32)(255.0f * t));
+    Prim2D_SetColorByte((s32)(255.0f * t));
     Prim2D_PrepareTex();
     fn_80071740(arg0, 16.0f * t + 16.0f, 35.0f, *(s32 *)((u8 *)arg0 + 0xC));
     fn_8007149C(arg0, arg1, 16.0f * t + 16.0f, 136.0f, *(s32 *)((u8 *)arg0 + 0xC), 1);
@@ -454,7 +454,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     extern u8 lbl_8026C0B8[];
     extern f32 fn_80023EE0(void *);
     extern void Prim2D_Begin(void);
-    extern void fn_80009B8C(s32);
+    extern void Prim2D_SetColorByte(s32);
     extern void Prim2D_PrepareTex(void);
     extern void fn_80071740(void *, f32, f32, s32);
     extern void fn_8007149C(void *, void *, f32, f32, s32, s32);
@@ -480,7 +480,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
-    fn_80009B8C((s32)(lbl_80369378 * t));
+    Prim2D_SetColorByte((s32)(lbl_80369378 * t));
     Prim2D_PrepareTex();
     fn_80071740(arg0, lbl_8036937C * t + lbl_8036937C, lbl_80369380, *(s32 *)((u8 *)arg0 + 0xC));
     fn_8007149C(arg0, arg1, lbl_8036937C * t + lbl_8036937C, lbl_80369384, *(s32 *)((u8 *)arg0 + 0xC), 0);
@@ -1102,7 +1102,7 @@ s32 fn_80076148(s32 arg0, s32 arg1, void *arg2) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80009B8C(s32);
+extern "C" void Prim2D_SetColorByte(s32);
 extern "C" void fn_80009C0C(f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
@@ -1143,7 +1143,7 @@ extern "C" void fn_80076174(void *arg0, void *arg1) {
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
-    fn_80009B8C((s32)(255.0f * t));
+    Prim2D_SetColorByte((s32)(255.0f * t));
     Prim2D_PrepareTex();
     fn_80071740(arg0, 16.0f * t + 16.0f, 35.0f, *(s32 *)((u8 *)arg0 + 0xC));
     fn_8007149C(arg0, arg1, 16.0f * t + 16.0f, 136.0f, *(s32 *)((u8 *)arg0 + 0xC), 1);

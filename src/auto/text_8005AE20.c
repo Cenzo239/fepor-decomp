@@ -7637,7 +7637,7 @@ void fn_8006F710(void *arg0, void *arg1) {
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     f32 fn_80023EE0(void *);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_SetAlphaByte(u8);
     struct Model {
         u8 pad[4];
@@ -7676,7 +7676,7 @@ void fn_8006F710(void *arg0, void *arg1) {
     Prim2D_Begin();
     Prim2D_SetTransform((f32)M2C_FIELD(arg1, s16 *, 0x30), (f32)M2C_FIELD(arg1, s16 *, 0x32),
                 M2C_FIELD(arg1, Model **, 0x3C)->v25(), lbl_803692E0);
-    fn_80009B8C((s32)(lbl_803692F8 * fn_80023EE0(arg1)));
+    Prim2D_SetColorByte((s32)(lbl_803692F8 * fn_80023EE0(arg1)));
     flag = 0;
     if ((u8)M2C_FIELD(arg1, u8 *, 0x2D) == 0 && (u8)M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
         flag = 1;

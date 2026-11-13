@@ -2734,7 +2734,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -2789,7 +2789,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {
-        fn_80009B8C(0x50);
+        Prim2D_SetColorByte(0x50);
     }
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);

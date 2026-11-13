@@ -389,7 +389,7 @@ void fn_80056B0C(void *arg0) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B28(void);
-    void fn_80009B8C(u8);
+    void Prim2D_SetColorByte(u8);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -440,7 +440,7 @@ void fn_80056B0C(void *arg0) {
     u8 temp_r0;
 
     Prim2D_Begin();
-    fn_80009B8C(*(u8 *)((u8 *)arg0 + 3));
+    Prim2D_SetColorByte(*(u8 *)((u8 *)arg0 + 3));
     Prim2D_SetTransform(lbl_80369108, *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C + *(f32 *)((u8 *)arg0 + 0x10), lbl_8036912C);
     fn_8000A174(0, 0x12);
     Prim2D_PrepareTex();

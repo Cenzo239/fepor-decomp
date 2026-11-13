@@ -372,7 +372,7 @@ void fn_801E4CF8(void *arg0) {
 void TabMenu_Draw(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
     void fn_8006ECCC(s32, void *, s32);
     void fn_8000A174(void *, s32);
@@ -408,7 +408,7 @@ void TabMenu_Draw(void *arg0) {
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B6EC, lbl_8036B6EC, lbl_8036B6F0, lbl_8036B6E8);
-    fn_80009B8C(0xFF);
+    Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x64), lbl_80332000, 0);
     Prim2D_Begin();
@@ -1316,7 +1316,7 @@ void fn_801E6CEC(void *arg0) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void fn_80009C0C(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(void *, s32);
@@ -1365,7 +1365,7 @@ void fn_801E6CEC(void *arg0) {
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B728, lbl_8036B6F0, lbl_8036B6E8);
-    fn_80009B8C(0xFF);
+    Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     *(u16 *)pal = lbl_8036B6D8;
     pal[2] = lbl_8036B6DA;
@@ -1545,7 +1545,7 @@ void fn_801E6CEC(void *arg0) {
 #pragma peephole on
 void fn_801E7D18(void *arg0) {
     f32 fn_800067BC(s32, u8, f32, f32, f32, f32);
-    void fn_80009B8C(s32);
+    void Prim2D_SetColorByte(s32);
     void fn_80009C20( f32, f32, f32, f32, f32, f32, f32, f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -1584,7 +1584,7 @@ void fn_801E7D18(void *arg0) {
     self = arg0;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B6EC, lbl_8036B6EC, lbl_8036B758, lbl_8036B6E8);
-    fn_80009B8C(0xFF);
+    Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 
     mode = (s8)*(u8 *)((u8 *)self + 0x31);
@@ -1632,11 +1632,11 @@ void fn_801E7D18(void *arg0) {
     Prim2D_Begin();
     xpos = (s16)((row << 5) + 0x62);
     fn_80009C20(lbl_8036B760, (f32)xpos, lbl_8036B764, lbl_8036B768, lbl_8036B76C, scale, scale, lbl_8036B6EC);
-    fn_80009B8C((s32)(lbl_8036B770 * fade));
+    Prim2D_SetColorByte((s32)(lbl_8036B770 * fade));
     Prim2D_PrepareTex();
     fn_8008AB7C(0xC4, 0x10, 0x188, 0x18, 0x19, 0x4B, 1);
     Prim2D_Begin();
-    fn_80009B8C(0xFF);
+    Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 }
 

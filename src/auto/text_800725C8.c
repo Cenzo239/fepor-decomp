@@ -447,7 +447,7 @@ void fn_80073188(void *arg0) {
 }
 
 void fn_80073208(void *arg0) {
-    M2C_UNK fn_80009B8C(u8);
+    M2C_UNK Prim2D_SetColorByte(u8);
     M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
@@ -471,7 +471,7 @@ void fn_80073208(void *arg0) {
         M2C_FIELD(arg0, s16 *, 0x38) = 0;
     }
     Prim2D_Begin();
-    fn_80009B8C((u8) M2C_FIELD(arg0, s16 *, 0x38));
+    Prim2D_SetColorByte((u8) M2C_FIELD(arg0, s16 *, 0x38));
     Prim2D_PrepareTex();
     fn_8007CB3C(M2C_FIELD(arg0, s32 *, 0x34), 0);
 }

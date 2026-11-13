@@ -1968,7 +1968,7 @@ void Prim2D_SetAlphaByte(s8 arg0) {
 }
 
 extern u16 lbl_80367140;
-void fn_80009B8C(s8 arg0) {
+void Prim2D_SetColorByte(s8 arg0) {
     *(u8 *)(*(u8 **)&lbl_80367140 + 0x23) = (u8)arg0;
 }
 

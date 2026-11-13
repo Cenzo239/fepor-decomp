@@ -68,7 +68,7 @@ extern f32 lbl_80368E24;
 extern f32 lbl_80368E28;
 
 #pragma cplusplus on
-extern "C" void fn_80009B8C(u8);
+extern "C" void Prim2D_SetColorByte(u8);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
