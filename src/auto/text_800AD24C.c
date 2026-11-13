@@ -1494,7 +1494,7 @@ void fn_800B1E44(s32 arg0)
 s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
-    void *fn_8024B754(u16, u8, s32, s32);
+    void *Snd_Start(u16, u8, s32, s32);
     void fn_8024B654(void *, s32, u8);
     void fn_8024B6B4(void *, s32, u16);
     extern u8 gSoundSys[];
@@ -1558,7 +1558,7 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
         *(s32 *)(gSoundSys + 0x128) = OSDisableInterrupts();
     }
     *(u16 *)(sys + 0x124) = *(u16 *)(sys + 0x124) + 1;
-    *(void **)(slot + 0xC) = fn_8024B754(arg0, (u8)vol, 0x40, 0);
+    *(void **)(slot + 0xC) = Snd_Start(arg0, (u8)vol, 0x40, 0);
     fn_8024B654(*(void **)(slot + 0xC), 7, arg2);
     fn_8024B6B4(*(void **)(slot + 0xC), 0x80, (u16)pan);
     fn_8024B654(*(void **)(slot + 0xC), 0xA, arg3);

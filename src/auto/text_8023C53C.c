@@ -4327,7 +4327,7 @@ s32 fn_8024B714(s32 arg0) {
     return temp_r31;
 }
 
-s32 fn_8024B754(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 Snd_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 fn_8024A34C(s32, s32, s32, s32, s32, u8);
     void fn_8026372C(void);
     void fn_802636F4(void);
