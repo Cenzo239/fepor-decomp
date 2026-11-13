@@ -11537,7 +11537,8 @@ void *ScriptObj_FindByName(void *arg0) {
     return NULL;
 }
 
-void ScriptObj_Start(void *arg0, void *arg1) {
+/* Look up a named RID effect, claim a free script-object slot, and spawn its falling-particle process. */
+void ScriptObj_Start(void *name, void *parent) {
     s32 Str_Cmp(void *, void *);
     void fn_801CFAB8(void *, u8, void *);
     void fn_8005C8B4(void *);
@@ -11548,32 +11549,32 @@ void ScriptObj_Start(void *arg0, void *arg1) {
     extern u8 lbl_8027DF20[];
     extern u8 lbl_8029992C[];
     extern f32 gFloatMinusOne;
-    u8 *row;
+    u8 *def;
     u8 *p;
     u8 *slot;
     s32 i;
     s32 ctr;
-    f32 f;
+    f32 scale;
 
-    row = gScriptObjDefs;
+    def = gScriptObjDefs;
     for (;;) {
-        if (Str_Cmp(arg0, *(void **)row) == 0) {
+        if (Str_Cmp(name, *(void **)def) == 0) {
             break;
         }
-        row += 0x10;
+        def += 0x10;
     }
     p = (u8 *)gScriptObjSlots;
     i = 0;
     for (ctr = 2; ctr != 0; ctr--) {
         if ((*(s32 *)(p + 8) & 1) == 0) {
             slot = (u8 *)gScriptObjSlots + i * 0x15C;
-            fn_801CFAB8(slot, (u8)i, row);
+            fn_801CFAB8(slot, (u8)i, def);
             fn_8005C8B4(lbl_8027DF20 + 0x13E);
             fn_8005C8B4(slot + 0x12C);
-            *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, arg1);
-            f = gFloatMinusOne;
+            *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, parent);
+            scale = gFloatMinusOne;
             *(u8 *)(*(u8 **)(slot + 0x150) + 0x30) = i;
-            FallingParticle_CreateEx(*(void **)(slot + 0x150), f);
+            FallingParticle_CreateEx(*(void **)(slot + 0x150), scale);
             return;
         }
         p += 0x15C;
