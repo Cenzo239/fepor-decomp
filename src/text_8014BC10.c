@@ -76,7 +76,7 @@ void Ui_PlaySeCue(s32, s32); /* extern */
 extern void* fn_80019F04();
 #include "common.h"
 extern u8 gUnitLists[];
-extern u8 lbl_802B14E4[];
+extern u8 gUnits[];
 #include "common.h"
 #include "ef.h"
 #include "global.h"
@@ -91,7 +91,7 @@ u8 fn_8014BC10(void *arg0) {
     void *fn_80019F04(u8);
     void fn_80015320(s32, void *);
     extern u8 gUnitLists[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     s32 score;
     void *self;
     s32 n;
@@ -170,7 +170,7 @@ u8 fn_8014BC10(void *arg0) {
         s32 ctr;
         n = 0;
         fn_80015320(4, flags);
-        base = lbl_802B14E4;
+        base = gUnits;
         flagp = flags;
         i = 1;
         for (ctr = 0x35; ctr != 0; ctr--) {

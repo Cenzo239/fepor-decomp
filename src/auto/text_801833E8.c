@@ -2252,7 +2252,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     f32 fn_80023430(void *,f32,f32);
     extern u8 lbl_80278D70[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern const f32 lbl_8036ACD8,lbl_8036ACEC,lbl_8036AD2C,lbl_8036AD30,lbl_8036AD34,lbl_8036AD38;
     f32 matrix[12];
     u32 angles[4];
@@ -2294,7 +2294,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
                 *(f32 *)(self+0x60)*=lbl_8036AD34;
             } else {
                 id=*(u8 *)(gBattleMap+(s8)plusX+((s8)plusY<<6)+0xD);
-                if(id) unit=lbl_802B14E4+(id-1)*0x280;
+                if(id) unit=gUnits+(id-1)*0x280;
                 else unit=0;
                 if(unit) {
                     *(f32 *)(self+0x5C)*=lbl_8036AD34;
@@ -6056,7 +6056,7 @@ void fn_80193668(void *arg0) {
     extern u8 lbl_80293C84[];
     extern u8 lbl_80293C58[];
     extern u8 lbl_80279DF0[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_803200AC[];
     extern f32 lbl_8036AE20;
     extern f32 lbl_8036AE30;
@@ -6129,7 +6129,7 @@ void fn_80193668(void *arg0) {
     fn_80015320(4, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -11117,10 +11117,10 @@ void fn_8019E5B0(void) {
 }
 
 s32 fn_8019E5D4(u8 arg0, s32 arg1) {
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 *var_r3;
     if (arg0 != 0) {
-        var_r3 = &lbl_802B14E4[(arg0 - 1) * 0x280];
+        var_r3 = &gUnits[(arg0 - 1) * 0x280];
     } else {
         var_r3 = NULL;
     }
@@ -12090,11 +12090,11 @@ s32 fn_801A05F4(u8 arg0, u8 arg1) {
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
     u8 fn_80105BC0(void *, s32);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void *unit;
 
     if (arg0 != 0) {
-        unit = lbl_802B14E4 + (arg0 - 1) * 0x280;
+        unit = gUnits + (arg0 - 1) * 0x280;
     } else {
         unit = NULL;
     }
@@ -12120,7 +12120,7 @@ void fn_801A06CC(void) {
 
 s32 fn_801A087C(u8 arg0) {
     extern u32 gUiInputFlags;
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80296FA8[];
     void *fn_8000C0C0(u8 *);
     void *fn_8000CAF0(u8 *, s32);
@@ -12136,7 +12136,7 @@ s32 fn_801A087C(u8 arg0) {
         return 0;
     }
     if (arg0 != 0) {
-        obj = lbl_802B14E4 + ((arg0 - 1) * 0x280);
+        obj = gUnits + ((arg0 - 1) * 0x280);
     } else {
         obj = NULL;
     }
@@ -12159,7 +12159,7 @@ s32 fn_801A087C(u8 arg0) {
 
 s32 fn_801A094C(u8 arg0) {
     extern u32 gUiInputFlags;
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80296FA8[];
     void *fn_8000C0C0(u8 *);
     void *fn_8000CAF0(u8 *, s32);
@@ -12175,7 +12175,7 @@ s32 fn_801A094C(u8 arg0) {
         return 0;
     }
     if (arg0 != 0) {
-        obj = lbl_802B14E4 + ((arg0 - 1) * 0x280);
+        obj = gUnits + ((arg0 - 1) * 0x280);
     } else {
         obj = NULL;
     }
@@ -12258,7 +12258,7 @@ void fn_801A0D20(void *arg0) {
 }
 
 s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern u8 lbl_80296FA8[36];
     void *fn_8000C0C0(u8 *);
@@ -12275,7 +12275,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
     u8 sp9;
 
     if (arg0 != 0) {
-        var_r31 = lbl_802B14E4 + ((arg0 - 1) * 0x280);
+        var_r31 = gUnits + ((arg0 - 1) * 0x280);
     } else {
         var_r31 = 0;
     }
@@ -12305,7 +12305,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
 }
 
 s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80296F90[];
     extern u8 lbl_80296FA8[];
     extern u8 gBattleMap[];
@@ -12335,7 +12335,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     s32 sw;
 
     if (arg0 != 0) {
-        var_r31 = lbl_802B14E4 + ((arg0 - 1) * 0x280);
+        var_r31 = gUnits + ((arg0 - 1) * 0x280);
     } else {
         var_r31 = NULL;
     }

@@ -233,7 +233,7 @@ extern s8 lbl_803678BC;
 extern s8 lbl_803678BD;
 extern s8 lbl_803678BF;
 extern s32 lbl_8028D788[];
-extern u8 lbl_802B14E4[]; /* unit table, 0x280 bytes per unit */
+extern u8 gUnits[]; /* unit table, 0x280 bytes per unit */
 extern u32 lbl_80330EAC[];
 
 extern u16 lbl_8028E090[];
@@ -17929,7 +17929,7 @@ weapon=(void **)fn_80037D54(arg0); if (!weapon || !*weapon) return 0;
 fn_80015320(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
-unit=(u8)id ? lbl_802B14E4+((u8)id-1)*0x280:0;
+unit=(u8)id ? gUnits+((u8)id-1)*0x280:0;
 if (!M2C_FIELD(unit,u32*,0x188) || !flags[M2C_FIELD(M2C_FIELD(unit,u8**,0x190),u8*,8)]) continue;
 a=unit[0x19E]; b=M2C_FIELD(arg0,u8*,0x19E);
 dy=fn_80230BCC((s8)M2C_FIELD(arg0,u8*,0x19F)-(s8)unit[0x19F]);
@@ -17977,7 +17977,7 @@ result.item=M2C_FIELD(weapon.ptr,u16 *,14);
 fn_80015320(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
-u8 *unit=(u8)id?lbl_802B14E4+((u8)id-1)*0x280:0;
+u8 *unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
 if(!M2C_FIELD(unit,u32 *,0x188)||!flags[M2C_FIELD(M2C_FIELD(unit,u8 **,0x190),u8 *,8)]||!arg0(unit))continue;
 a=unit[0x19E];b=self[0x19E];
 dy=fn_80230BCC((s8)self[0x19F]-(s8)unit[0x19F]);
@@ -18319,7 +18319,7 @@ point=fn_8002F658(list,index);result.pos.x=point[0];result.pos.y=point[1];
 ix=(s8)result.pos.x;iy=(s8)result.pos.y;
 eval.vtable=(void**)lbl_80284E20;id=gBattleMap[(s8)ix+((s8)iy<<6)+0xd];
 eval.vtable=(void**)lbl_8028E6C8;eval.entry=entry;eval.unit=self;eval.pos=&result.pos;result.score=0;
-if(id){void *unit=0;if(id)unit=lbl_802B14E4+(id-1)*0x280;((void(*)(void*,void*))eval.vtable[2])(&eval,unit);}
+if(id){void *unit=0;if(id)unit=gUnits+(id-1)*0x280;((void(*)(void*,void*))eval.vtable[2])(&eval,unit);}
 fn_8002C6F4(&eval,(s8)ix,(s8)iy);
 if(result.score>score){bestToX=result.pos.x;score=result.score;bestToY=result.pos.y;bestX=(s16)x;bestItem=result.pos.id;bestY=(s16)y;}
 }
@@ -18373,7 +18373,7 @@ void fn_800F488C(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
 u8 fn_800F4954(s32 arg0,u8 arg1){
-extern u8 gUiContext[],gBattleMap[],lbl_8032B3C0[],lbl_8032BB58[],lbl_802EF4E0[],lbl_802B14E4[],lbl_80284E20[],lbl_8028E6B8[];
+extern u8 gUiContext[],gBattleMap[],lbl_8032B3C0[],lbl_8032BB58[],lbl_802EF4E0[],gUnits[],lbl_80284E20[],lbl_8028E6B8[];
 extern char lbl_80272DB0[];
 u8 fn_80105BC0(void *,s32);
 void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
@@ -18436,7 +18436,7 @@ if(*(s32 *)list){
 result.x=x;result.y=y;result.item=entry[4];
 for(index=0;index<*(s32 *)list;index++){
 id=M2C_FIELD(fn_8002F658(list,index),u8 *,2);
-result.unit=id?lbl_802B14E4+(id-1)*0x280:0;
+result.unit=id?gUnits+(id-1)*0x280:0;
 if(fn_800F7E78(self,&result)&&result.score>score){
 bestX=result.x;score=result.score;bestY=result.y;bestItem=result.item;best=result.unit;
 }
@@ -18483,7 +18483,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     extern u8 lbl_8032B3C0[];
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern char lbl_80272DB0[];
     int fn_80230BCC(int);
     void fn_80022DAC(void *, s32, s32);
@@ -18544,7 +18544,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
         result.item = (u16)i;
         fn_80015320(1, flags);
         for (j = 1; j <= 0x9F; j++) {
-            unit = (u8)j ? lbl_802B14E4 + ((u8)j - 1) * 0x280 : 0;
+            unit = (u8)j ? gUnits + ((u8)j - 1) * 0x280 : 0;
             if (!*(u32 *)(unit + 0x188)) {
                 continue;
             }
@@ -18647,7 +18647,7 @@ void fn_800F5938(void *arg0, s32 arg1) {
 extern "C" void fn_800F59D8(void *arg0, s8 arg1, s8 arg2) {
     void fn_8002C6F4(void *, s8, s8);
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     struct Obj {
         virtual void v0(void *) = 0;
     };
@@ -18658,7 +18658,7 @@ extern "C" void fn_800F59D8(void *arg0, s8 arg1, s8 arg2) {
     *((u8 *)arg0 + 9) = arg2;
     temp = gBattleMap[arg1 + (arg2 << 6) + 0xD];
     if (temp != 0) {
-        unit = (temp != 0) ? &lbl_802B14E4[(temp - 1) * 0x280] : NULL;
+        unit = (temp != 0) ? &gUnits[(temp - 1) * 0x280] : NULL;
         ((Obj *)arg0)->v0(unit);
     }
     fn_8002C6F4(arg0, arg1, arg2);
@@ -18689,7 +18689,7 @@ void *fn_8000D354(void *);s32 fn_800F6F94(void *,s32);
 s8 fn_8003B2D0(void *);s8 fn_800386E0(void *);
 u8 fn_80015610(void *,void *);
 extern u32 lbl_80330EAC[];
-extern u8 lbl_80272F44[],gBattleMap[],lbl_802B14E4[],lbl_80330708[];
+extern u8 lbl_80272F44[],gBattleMap[],gUnits[],lbl_80330708[];
 extern f32 lbl_8036A068,lbl_8036A06C;
 f32 maxhp,amount;
 s32 x,y;
@@ -18718,7 +18718,7 @@ if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)g
 if(!outside){
 id=gBattleMap[(s8)x+((s8)y<<6)+0xD];
 if(id){
-if(id)other=lbl_802B14E4+(id-1)*0x280;else other=0;
+if(id)other=gUnits+(id-1)*0x280;else other=0;
 if(relation_is_one(M2C_FIELD(M2C_FIELD(lbl_80330EAC,void **,0x280),void **,0x190),M2C_FIELD(other,void **,0x190))==0)total+=(s8)p[2];
 }
 }
@@ -19132,7 +19132,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     u32 fn_800FCF48(s8, s8, void *);
     extern u8 gBattleMap[];
     extern u8 lbl_80272E98[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     s32 dist;
     u8 *unit;
     s32 acc;
@@ -19207,7 +19207,7 @@ fail:
         if (bad == 0) {
             t = M2C_FIELD(gBattleMap + (s8) x + ((s8) y << 6), u8 *, 0xD);
             if (t != 0) {
-                e = (t != 0) ? lbl_802B14E4 + (t - 1) * 0x280 : NULL;
+                e = (t != 0) ? gUnits + (t - 1) * 0x280 : NULL;
                 match = fn_80015610(M2C_FIELD(arg0, void **, 0x190), M2C_FIELD(e, void **, 0x190)) == 1;
                 if (match == 1) {
                     acc -= cur[2];
@@ -21018,7 +21018,7 @@ void fn_800FC6B0(void *arg0) {
     void fn_80205198(void *, s32);
     extern u8 gBattleMap[];
     extern u8 lbl_80273230[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
 
     u8 sp9;
     u8 sp8;
@@ -21068,7 +21068,7 @@ void fn_800FC6B0(void *arg0) {
             if (t == 0) {
                 unit = NULL;
             } else {
-                unit = lbl_802B14E4 + (t - 1) * 0x280;
+                unit = gUnits + (t - 1) * 0x280;
             }
             if (relation_is_one(*(void **)((u8 *)unit + 0x190), faction) == 0) {
                 continue;
@@ -21322,7 +21322,7 @@ void fn_800FD774(void *arg0) {
     extern u8 gBattleMap[];
     extern u8 lbl_8032B5E0[];
     extern u32 lbl_80330EAC[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u32 lbl_80273220[];
     extern u32 lbl_80273210[];
     extern u16 lbl_80366E70;
@@ -21375,7 +21375,7 @@ void fn_800FD774(void *arg0) {
             id = row[x + 0xD];
             if (id != 0) {
                 if (id != 0) {
-                    unit = lbl_802B14E4 + (id - 1) * 0x280;
+                    unit = gUnits + (id - 1) * 0x280;
                 } else {
                     unit = NULL;
                 }
@@ -22448,7 +22448,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE398(void *, s32, s32, void *);
     u8 fn_800FE84C(s8, s8);
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern s16 lbl_802732A0[];
     extern u8 lbl_80284E20[];
     extern u8 lbl_8028EA98[];
@@ -22521,7 +22521,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
                 && fn_800FE84C(x, y) == 0) {
                 if (keep_bit != 0 && (cell = maprow[(s32)x + 0xD], cell != 0)) {
                     if (cell != 0)
-                        unit = lbl_802B14E4 + (cell - 1) * 0x280;
+                        unit = gUnits + (cell - 1) * 0x280;
                     else
                         unit = NULL;
                     if (fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1)
@@ -22542,7 +22542,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
                             cell = map[nx + (ny << 6) + 0xD];
                             if (cell != 0) {
                                 if (cell != 0)
-                                    unit = lbl_802B14E4 + (cell - 1) * 0x280;
+                                    unit = gUnits + (cell - 1) * 0x280;
                                 else
                                     unit = NULL;
                                 if (fn_800FB5C8(unit) != 0)
@@ -23317,7 +23317,7 @@ s32 fn_8010207C(s32 arg0, s16 *outX, s16 *outY) {
                 continue;
             }
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = NULL;
             }
@@ -23493,7 +23493,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
         s16 costMap[3][64 * 64];
         s8 fogMap[64][64];
     } gBattleMap;
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern s16 lbl_802732A0[];
 
     s16 x16;
@@ -23541,7 +23541,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                 id = rowUnit[x8 + 0xD];
                 if (id) {
                     if (id != 0) {
-                        unit = lbl_802B14E4 + (id - 1) * 0x280;
+                        unit = gUnits + (id - 1) * 0x280;
                     } else {
                         unit = NULL;
                     }
@@ -23569,7 +23569,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                         if (nid != 0) {
                             void *nunit;
                             if (nid != 0) {
-                                nunit = lbl_802B14E4 + (nid - 1) * 0x280;
+                                nunit = gUnits + (nid - 1) * 0x280;
                             } else {
                                 nunit = NULL;
                             }
@@ -23620,7 +23620,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
         s16 costMap[3][64 * 64];
         s8 fogMap[64][64];
     } gBattleMap;
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern s16 lbl_802732A0[];
     extern void *lbl_80284E20;
     extern void *lbl_8028EA88;
@@ -23672,7 +23672,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                 id = gBattleMap.unitMap[0][(s8)y][(s8)x];
                 if (id != 0) {
                     if (id != 0) {
-                        unit = lbl_802B14E4 + (id - 1) * 0x280;
+                        unit = gUnits + (id - 1) * 0x280;
                     } else {
                         unit = NULL;
                     }
@@ -23695,7 +23695,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                         id = gBattleMap.unitMap[0][(s8)ny][(s8)nx];
                         if (id != 0) {
                             if (id != 0) {
-                                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                                unit = gUnits + (id - 1) * 0x280;
                             } else {
                                 unit = NULL;
                             }
@@ -23797,42 +23797,28 @@ void fn_80102F18(void *arg0, s32 arg1, s32 arg2) {
 void fn_80103200(void *arg0, s8 arg1, s8 arg2) {
     void fn_8002C6F4(void);
     extern u8 gBattleMap[];
-    s8 x;
     u8 *base;
-    u8 *p;
+    u8 *row;
+    s32 x;
     s32 yoff;
-    u8 v;
-    void *unit;
+    u8 id;
 
-    x = arg1;
     base = gBattleMap;
-    p = base + 0x10000;
-    yoff = (s8)arg2 << 6;
-    p = p + x;
-    p = p + yoff;
-    if ((s8)p[-0x1E72] != 0) {
-        return;
-    }
-    unit = *(void **)((u8 *)arg0 + 4);
-    if (*(s32 *)((u8 *)unit + 0x254) & 0x20000) {
-        p = base + x;
-        p = p + yoff;
-        if (p[0x300D] & 2) {
-            return;
+    x = arg1;
+    row = base + 0x10000;
+    row += x;
+    yoff = arg2 << 6;
+    if ((s8)row[yoff - 0x1E72] == 0) {
+        if ((*(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 0x254) & 0x20000) == 0 ||
+            (*(base + x + yoff + 0x300D) & 2) == 0) {
+            *((s8 *)arg0 + 0xC) = arg1;
+            *((s8 *)arg0 + 0xD) = arg2;
+            id = *(base + x + yoff + 0xD);
+            if (id == 0 || id == *((u8 *)*(void **)((u8 *)arg0 + 4) + 0x198)) {
+                fn_8002C6F4();
+            }
         }
     }
-    *((s8 *)arg0 + 0xC) = arg1;
-    p = base + x;
-    p = p + yoff;
-    *((s8 *)arg0 + 0xD) = arg2;
-    v = p[0xD];
-    if (v != 0) {
-        unit = *(void **)((u8 *)arg0 + 4);
-        if (v != *((u8 *)unit + 0x198)) {
-            return;
-        }
-    }
-    fn_8002C6F4();
 }
 
 void fn_8010329C(void *arg0, void *arg1) {

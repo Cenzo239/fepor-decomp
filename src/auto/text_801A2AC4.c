@@ -199,7 +199,7 @@ void fn_801A2FE0(void) {
     s32 fn_8003B2D0(void *);
     void fn_800381EC(void *, s8);
     void fn_80104480(void *);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80330EAC[];
     u8 sp8[8];
     void *unit;
@@ -208,7 +208,7 @@ void fn_801A2FE0(void) {
     fn_80015320(2, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }

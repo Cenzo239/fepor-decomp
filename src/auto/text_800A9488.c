@@ -18,14 +18,14 @@ typedef struct {
 } Entry9Bits;
 
 static inline void *fn_800AA794_helper(void) {
-    extern u8 lbl_802B14E4[101760];
+    extern u8 gUnits[101760];
     extern u8 gBattleMap[151280];
     extern u8 lbl_80330708[1400];
     s8 sx = *(float *)&lbl_80330708[0x524];
     s8 sy = *(float *)&lbl_80330708[0x528];
     u8 id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        return &lbl_802B14E4[(id - 1) * 0x280];
+        return &gUnits[(id - 1) * 0x280];
     }
     return NULL;
 }
@@ -525,7 +525,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
         s16 costMap[0x4040];
         s8 fogMap[64];
     } gBattleMap;
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern void *gUiContext[];
     s16 val;
     u8 id;
@@ -543,7 +543,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
     }
     id = gBattleMap.unitMap[arg0 + arg1 * 64];
     if (id != 0) {
-        unit = lbl_802B14E4 + (id - 1) * 0x280;
+        unit = gUnits + (id - 1) * 0x280;
     } else {
         unit = NULL;
     }
@@ -558,7 +558,7 @@ void fn_800AA3C0(void) {
     void fn_8004A224(void);
     void fn_800AACDC(void *);
 
-    extern u8 lbl_802B14E4[101760];
+    extern u8 gUnits[101760];
     extern u8 gBattleMap[151280];
     extern u8 lbl_80330708[1400];
     extern void *gPadInput;
@@ -586,7 +586,7 @@ void fn_800AA3C0(void) {
     sx = *(float *)&lbl_80330708[0x524];
     sy = *(float *)&lbl_80330708[0x528];
     id = gBattleMap[sx + (sy << 6) + 0xD];
-    unit = (id != 0) ? &lbl_802B14E4[(id - 1) * 0x280] : NULL;
+    unit = (id != 0) ? &gUnits[(id - 1) * 0x280] : NULL;
 
     if (lbl_80367800 != unit) {
         ctrl = gPadInput;
@@ -742,7 +742,7 @@ s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
 void *fn_800AA794(void) {
     extern u8 lbl_80330708[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     s8 sx;
     s8 sy;
     u8 id;
@@ -751,7 +751,7 @@ void *fn_800AA794(void) {
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        return &lbl_802B14E4[(id - 1) * 0x280];
+        return &gUnits[(id - 1) * 0x280];
     }
     return NULL;
 }

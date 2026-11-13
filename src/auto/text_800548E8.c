@@ -202,7 +202,7 @@ extern u32 jumptable_802855E4[];
 extern s32* lbl_803672B0;
 extern f32 lbl_80368FCC;
 extern f32 lbl_80368FF0;
-extern u16* lbl_802B14E4;
+extern u16* gUnits;
 #include "common.h"
 
 typedef struct {

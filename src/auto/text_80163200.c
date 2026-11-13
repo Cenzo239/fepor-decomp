@@ -60,7 +60,7 @@ extern f32 lbl_8036ABBC;
 extern f32 lbl_8036ABA0;
 extern f32 lbl_8036A9C0;
 
-extern u8 lbl_802B14E4[];
+extern u8 gUnits[];
 
 static inline u8 IsSlotFilled(void *obj, s16 slot) {
     u32 *fn_80037BD0(s32, s32);
@@ -4492,7 +4492,7 @@ void fn_8016C3C8(void *arg0) {
     void strcpy(void *, void *);
     void *memset(void *, s32, s32);
     extern u8 lbl_80277EA0[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern f32 lbl_8036AA48;
     extern f32 lbl_8036AA94;
@@ -4586,7 +4586,7 @@ void fn_8016C3C8(void *arg0) {
     i = 1;
     do {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((i - 1) * 0x280);
+            unit = gUnits + ((i - 1) * 0x280);
         } else {
             unit = NULL;
         }
@@ -5328,7 +5328,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     scale = scale * lbl_8036AAC0;
     do {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((i - 1) * 0x280);
+            unit = gUnits + ((i - 1) * 0x280);
         } else {
             unit = NULL;
         }

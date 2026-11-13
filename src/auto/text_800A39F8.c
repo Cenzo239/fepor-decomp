@@ -1577,7 +1577,7 @@ void fn_800A6B70(void *arg0) {
 void fn_800A6C24(void *arg0) {
     extern u8 lbl_80330708[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void fn_8000C070(void *, s32);
     s8 sx;
     s8 sy;
@@ -1588,7 +1588,7 @@ void fn_800A6C24(void *arg0) {
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        unit = lbl_802B14E4 + (id - 1) * 0x280;
+        unit = gUnits + (id - 1) * 0x280;
     } else {
         unit = NULL;
     }
@@ -1623,7 +1623,7 @@ void fn_800A6CC4(void *arg0) {
 void fn_800A6D78(void *arg0) {
     extern u8 lbl_80330708[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void fn_8000C070(void *, s32);
     s8 sx;
     s8 sy;
@@ -1634,7 +1634,7 @@ void fn_800A6D78(void *arg0) {
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        unit = &lbl_802B14E4[(id - 1) * 0x280];
+        unit = &gUnits[(id - 1) * 0x280];
     } else {
         unit = NULL;
     }
@@ -1650,7 +1650,7 @@ void fn_800A6D78(void *arg0) {
 void fn_800A6E20(void *arg0) {
     extern u8 lbl_80330708[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void fn_8000C070(void *, s32);
     s8 sx;
     s8 sy;
@@ -1661,7 +1661,7 @@ void fn_800A6E20(void *arg0) {
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        unit = &lbl_802B14E4[(id - 1) * 0x280];
+        unit = &gUnits[(id - 1) * 0x280];
     } else {
         unit = NULL;
     }
@@ -1682,7 +1682,7 @@ void fn_800A6E20(void *arg0) {
 void fn_800A6F10(void *arg0) {
     extern u8 lbl_80330708[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     s8 sx;
     s8 sy;
     u8 id;
@@ -1692,7 +1692,7 @@ void fn_800A6F10(void *arg0) {
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
     id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
-        var = &lbl_802B14E4[(id - 1) * 0x280];
+        var = &gUnits[(id - 1) * 0x280];
     } else {
         var = NULL;
     }

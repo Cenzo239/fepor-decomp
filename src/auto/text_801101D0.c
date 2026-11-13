@@ -2318,21 +2318,23 @@ s32 fn_80116580(void *arg0) {
     return -1;
 }
 
-#pragma optimization_level 2
+#pragma use_lmw_stmw on
 void fn_801165B4(void *arg0, void *arg1) {
     void fn_80199318(void *, void *);
     void String_Init(void *, char *, void *);
     u8 sp8[0x14];
+    void *self;
     void *temp_r4;
 
+    self = arg0;
     temp_r4 = *(void **)((u8 *)arg1 + 0x11C);
     if (temp_r4 != NULL) {
-        fn_80199318(arg0, temp_r4);
+        fn_80199318(self, temp_r4);
         return;
     }
-    String_Init(arg0, (char *)gActorXmlStrs + 0x1C, sp8);
+    String_Init(self, (char *)gActorXmlStrs + 0x1C, sp8);
 }
-#pragma optimization_level reset
+#pragma use_lmw_stmw off
 s32 fn_80116604(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x11C);
 }
@@ -3353,7 +3355,7 @@ void fn_80118C84(void *arg0) {
     void fn_801658DC(void *, u8 *);
     extern u8 lbl_80274508[];
     extern u8 lbl_8028F7B8[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
@@ -3397,7 +3399,7 @@ void fn_80118C84(void *arg0) {
     idx = cur_x + (cur_y << 6);
     id = map[idx];
     if (id != 0) {
-        other = &lbl_802B14E4[(id - 1) * 0x280];
+        other = &gUnits[(id - 1) * 0x280];
     } else {
         other = NULL;
     }
@@ -3416,7 +3418,7 @@ void fn_80118C84(void *arg0) {
             found = 0;
             id = map[(s8)sel_x + ((s8)sel_y << 6)];
             if (id != 0) {
-                p = &lbl_802B14E4[(id - 1) * 0x280];
+                p = &gUnits[(id - 1) * 0x280];
                 if (*(u32 *)((u8 *)p + 0x1A0) & 0x20000) {
                     found = 0;
                 } else {
@@ -3516,7 +3518,7 @@ void fn_80118C84(void *arg0) {
             found = 0;
             id = map[(s8)sel_x + ((s8)sel_y << 6)];
             if (id != 0) {
-                p = &lbl_802B14E4[(id - 1) * 0x280];
+                p = &gUnits[(id - 1) * 0x280];
                 if (*(u32 *)((u8 *)p + 0x1A0) & 0x20000) {
                     found = 0;
                 } else {
@@ -3551,7 +3553,7 @@ void fn_80118C84(void *arg0) {
             found = 0;
             id = map[(s8)sel_x + ((s8)sel_y << 6)];
             if (id != 0) {
-                p = &lbl_802B14E4[(id - 1) * 0x280];
+                p = &gUnits[(id - 1) * 0x280];
                 if (*(u32 *)((u8 *)p + 0x1A0) & 0x20000) {
                     found = 0;
                 } else {
@@ -3573,7 +3575,7 @@ void fn_80118C84(void *arg0) {
                     fn_8004A1F0();
                 id = map[idx];
                 if (id != 0)
-                    other = &lbl_802B14E4[(id - 1) * 0x280];
+                    other = &gUnits[(id - 1) * 0x280];
                 else
                     other = NULL;
                 if (other != NULL) {
@@ -3605,7 +3607,7 @@ void fn_80118C84(void *arg0) {
             found = 0;
             id = map[(s8)sel_x + ((s8)sel_y << 6)];
             if (id != 0) {
-                p = &lbl_802B14E4[(id - 1) * 0x280];
+                p = &gUnits[(id - 1) * 0x280];
                 if (*(u32 *)((u8 *)p + 0x1A0) & 0x20000) {
                     found = 0;
                 } else {
@@ -3710,7 +3712,7 @@ void fn_80119768(void) {
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern s32 lbl_8036A1E0;
     extern s32 lbl_8036A1E4;
     s32 spC;
@@ -3735,7 +3737,7 @@ void fn_80119768(void) {
             goto sound;
         }
         if (id != 0) {
-            unit = &lbl_802B14E4[(id - 1) * 0x280];
+            unit = &gUnits[(id - 1) * 0x280];
         } else {
             unit = NULL;
         }
@@ -5253,30 +5255,32 @@ void fn_8011CB2C(void *arg0) {
 }
 
 void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
+    s32 t48;
+    u8 flag;
+    s32 t4c;
     s32 x;
-    s32 flag;
+    s32 t64;
     s32 y;
-    s32 v64;
-    s32 v60;
-    s32 vc8;
+    s32 t60;
+    s32 tc8;
 
-    x = *(s32 *)((u8 *)arg0 + 0x48);
+    t48 = *(s32 *)((u8 *)arg0 + 0x48);
     flag = 0;
-    y = *(s32 *)((u8 *)arg0 + 0x4C);
-    x = arg1 - x;
-    v64 = *(s32 *)((u8 *)arg0 + 0x64);
-    y = arg2 - y;
-    v60 = *(s32 *)((u8 *)arg0 + 0x60);
-    vc8 = *(s32 *)((u8 *)arg0 + 0xC8);
+    t4c = *(s32 *)((u8 *)arg0 + 0x4C);
+    x = arg1 - t48;
+    t64 = *(s32 *)((u8 *)arg0 + 0x64);
+    y = arg2 - t4c;
+    t60 = *(s32 *)((u8 *)arg0 + 0x60);
+    tc8 = *(s32 *)((u8 *)arg0 + 0xC8);
     *(s32 *)((u8 *)arg0 + 0xCC) = flag;
-    *(s32 *)((u8 *)arg0 + 0xD0) = vc8;
-    *(s32 *)((u8 *)arg0 + 0xD4) = v60;
-    *(s32 *)((u8 *)arg0 + 0xD8) = v64;
+    *(s32 *)((u8 *)arg0 + 0xD0) = tc8;
+    *(s32 *)((u8 *)arg0 + 0xD4) = t60;
+    *(s32 *)((u8 *)arg0 + 0xD8) = t64;
     if (x >= *(s32 *)((u8 *)arg0 + 0xCC) && x <= *(s32 *)((u8 *)arg0 + 0xD4) &&
         y >= *(s32 *)((u8 *)arg0 + 0xD0) && y <= *(s32 *)((u8 *)arg0 + 0xD8)) {
         flag = 1;
     }
-    if ((u8)flag != 0) {
+    if (flag != 0) {
         *(s32 *)((u8 *)arg0 + 0xEC) = (y / 16) - 1;
         if (*(u32 *)((u8 *)arg0 + 0xEC) >= *(u32 *)((u8 *)arg0 + 0xB0)) {
             *(s32 *)((u8 *)arg0 + 0xEC) = *(s32 *)((u8 *)arg0 + 0xB0) - 1;

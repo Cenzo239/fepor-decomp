@@ -3030,7 +3030,7 @@ void fn_801F8A98(void *arg0) {
     void sprintf(void *, void *, ...);
     void *memset(void *, s32, u32);
     u32 fn_801F8D38(void **, void **);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80281028[];
     extern void *lbl_8029B378[];
     extern f32 lbl_8036BA00;
@@ -3064,7 +3064,7 @@ void fn_801F8A98(void *arg0) {
     base = (u8 *)self + 0x34;
     do {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }

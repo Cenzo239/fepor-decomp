@@ -1926,7 +1926,7 @@ void fn_8003712C(void *arg0) {
 
 void *fn_80037710(u8 *arg0) {
     void fn_80015320(s32, void *);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 sp8[8];
     u8 *sub;
     u8 *unit;
@@ -1937,7 +1937,7 @@ void *fn_80037710(u8 *arg0) {
     fn_80015320(5, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -2031,7 +2031,7 @@ s32 fn_80037960(void *arg0, s32 arg1) {
     s32 fn_80019E8C(s32);
     s8 fn_80091DE0(void *, s32);
     s32 fn_800C388C(void *, s32);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_803200AC[];
     u8 sp8[8];
     s32 temp;
@@ -2053,7 +2053,7 @@ s32 fn_80037960(void *arg0, s32 arg1) {
         i = 1;
         do {
             if ((u8)i != 0) {
-                unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+                unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
                 unit = NULL;
             }
@@ -4307,7 +4307,7 @@ s32 fn_8003C830(void *arg0, void *arg1) {
     void fn_8004BC48(void *, void *);
     void fn_8003B69C(s32);
     extern u8 gUnitLists[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void *src;
     void *dst;
     u32 first;
@@ -4330,21 +4330,21 @@ s32 fn_8003C830(void *arg0, void *arg1) {
     fn_8003B6C4(dst, (s32)(gUnitLists + id * 0xC));
     id = fn_8017A9DC(src);
     if (id != 0) {
-        p = lbl_802B14E4 + (id - 1) * 0x280;
+        p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
     *(void **)((u8 *)dst + 0x180) = p;
     id = fn_8017A9DC(src);
     if (id != 0) {
-        p = lbl_802B14E4 + (id - 1) * 0x280;
+        p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
     *(void **)((u8 *)dst + 0x184) = p;
     id = fn_8017A9DC(src);
     if (id != 0) {
-        p = lbl_802B14E4 + (id - 1) * 0x280;
+        p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
@@ -10783,7 +10783,7 @@ void fn_8004C80C(void) {
     void fn_80224684(s32, s32, s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern s32 lbl_803672B0;
     extern f32 lbl_80368FCC;
     extern f32 lbl_80368FF0;
@@ -10835,7 +10835,7 @@ void fn_8004C80C(void) {
     var_r30 = 1;
     do {
         if ((u8)var_r30 != 0) {
-            unit = lbl_802B14E4 + ((u8)var_r30 - 1) * 0x280;
+            unit = gUnits + ((u8)var_r30 - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -12013,7 +12013,7 @@ void fn_80050F64(void) {
     extern void *lbl_803672B4;
     extern void *lbl_803672B8;
     extern u8 lbl_802EFFE8[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern f32 lbl_80368FCC;
     extern u8 lbl_803672BC;
 
@@ -12119,7 +12119,7 @@ void fn_80050F64(void) {
         void *unit;
         do {
             if ((u8)id != 0) {
-                unit = lbl_802B14E4 + ((u8)id - 1) * 0x280;
+                unit = gUnits + ((u8)id - 1) * 0x280;
             } else {
                 unit = NULL;
             }
@@ -13141,7 +13141,7 @@ extern u32 jumptable_802855E4[];
 extern s32* lbl_803672B0;
 extern f32 lbl_80368FCC;
 extern f32 lbl_80368FF0;
-extern u16* lbl_802B14E4;
+extern u16* gUnits;
 #include "common.h"
 
 typedef struct {

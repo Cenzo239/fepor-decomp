@@ -2301,7 +2301,7 @@ void fn_801B2C58(void *arg0) {
     M2C_UNK fn_8011D79C(s32);
     u32 fn_8013FF94(void *, M2C_UNK, M2C_UNK, void *);
     M2C_UNK fn_801658DC(s32);
-    extern u8 lbl_802B14E4[101760];
+    extern u8 gUnits[101760];
     extern u8 lbl_803200AC[1600];
     u8 sp10[16];
     int var_r29;
@@ -2316,7 +2316,7 @@ void fn_801B2C58(void *arg0) {
     var_r29 = 1;
     for (;;) {
         if (var_r29 & 0xFF) {
-            var_r3 = lbl_802B14E4 + ((var_r29 - 1) * 0x280);
+            var_r3 = gUnits + ((var_r29 - 1) * 0x280);
         } else {
             var_r3 = 0;
         }

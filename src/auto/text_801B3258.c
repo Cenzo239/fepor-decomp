@@ -823,7 +823,7 @@ s32 fn_801B7188(void) {
     void fn_800056CC(const char *, ...);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 buf[8];
     u8 *unit;
     s32 count;
@@ -834,7 +834,7 @@ s32 fn_801B7188(void) {
     fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -851,7 +851,7 @@ s32 fn_801B7260(void) {
     void fn_800056CC(const char *, ...);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 buf[8];
     u8 *unit;
     s32 i;
@@ -860,7 +860,7 @@ s32 fn_801B7260(void) {
     fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -15865,7 +15865,7 @@ void fn_801DE474(void *arg0, void *arg1)
     extern f32 lbl_80367098[];
     extern u8 lbl_8027E8D0[];
     extern u8 lbl_80330708[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gUnitLists[];
 
     typedef void (*V0)(void *);
@@ -16075,7 +16075,7 @@ void fn_801DE474(void *arg0, void *arg1)
     fn_800152F8(1, 0, 0, 0, 0, 1, 1, 0);
     row_y = (s16)(ybase + gap);
     for (i = 1; i <= 0x9F; i++) {
-        unit = lbl_802B14E4 + (i - 1) * 0x280;
+        unit = gUnits + (i - 1) * 0x280;
         if (M2C_FIELD(unit, u32 *, 0x188) != 0
             && flags8[M2C_FIELD(*(void **)((u8 *)unit + 0x190), u8 *, 8)] != 0
             && (M2C_FIELD(unit, u32 *, 0x1A0) & 0x80000)) {

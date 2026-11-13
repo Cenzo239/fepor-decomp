@@ -714,7 +714,7 @@ void fn_8002011C(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 }
 
 s16 fn_8002134C(u8 *map, s8 x, s8 y) {
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 *cell;
     u8 *hi;
     u8 tid;
@@ -729,7 +729,7 @@ s16 fn_8002134C(u8 *map, s8 x, s8 y) {
     uid = cell[0xD];
     val = (s16)*(u16 *)(hi + (tid << 1) + 0x4214);
     if (uid != 0) {
-        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
         cls = *(u8 **)(unit + 0x190);
         if ((map + 0x20000)[cls[8] + 0x4EE4] != 0) {
             return 0x7FFE;
@@ -741,7 +741,7 @@ s16 fn_8002134C(u8 *map, s8 x, s8 y) {
 void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
 {
     void fn_80022DAC(void *, s32, s32);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 *ed8;
     u8 *edc;
     u8 slot;
@@ -826,7 +826,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c20_s;
@@ -860,7 +860,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c20_w;
@@ -894,7 +894,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c20_e;
@@ -928,7 +928,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             break;
@@ -959,7 +959,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c8_w;
@@ -993,7 +993,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c8_e;
@@ -1027,7 +1027,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             break;
@@ -1058,7 +1058,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c4_w;
@@ -1092,7 +1092,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c4_e;
@@ -1126,7 +1126,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             break;
@@ -1157,7 +1157,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c1_s;
@@ -1191,7 +1191,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c1_w;
@@ -1225,7 +1225,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             break;
@@ -1256,7 +1256,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c2_s;
@@ -1290,7 +1290,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             goto c2_e;
@@ -1324,7 +1324,7 @@ void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                     uid = cell[0xD];
                     neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
                     if (uid != 0) {
-                        unit = (uid != 0) ? lbl_802B14E4 + (uid - 1) * 0x280 : NULL;
+                        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
                         if (((u8 *)map + 0x20000)[0x4EE4 + cls[8]] != 0) {
                             break;
@@ -1504,7 +1504,7 @@ void fn_8002297C(void *arg0)
     void fn_80022DAC(void *, s32, u8);
     s8 fn_8003A1C4(void *);
     void fn_8010FAA8(void);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80330708[];
     extern u8 lbl_80367289;
 
@@ -1544,7 +1544,7 @@ void fn_8002297C(void *arg0)
     unit = 0;
     for (i = 0x9F; i >= 1; i--) {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -1585,7 +1585,7 @@ void fn_8002297C(void *arg0)
         for (i = 0x9F; i > 0; i--) {
             s32 idx;
             if ((u8)i != 0) {
-                unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+                unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -1618,7 +1618,7 @@ void fn_8002297C(void *arg0)
         for (i = 0x9F; i > 0; i--) {
             s32 idx;
             if ((u8)i != 0) {
-                unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+                unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -3171,18 +3171,18 @@ void fn_80025BA0(void) {
 void fn_80025C5C(void *arg0, s32 arg1) {
     u8 fn_8017A9DC(s32);
     void fn_8017A810(s32, s32, void *);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 id;
 
     id = fn_8017A9DC(arg1);
     if (id != 0) {
-        *(void **)arg0 = (id != 0) ? lbl_802B14E4 + (id - 1) * 0x280 : NULL;
+        *(void **)arg0 = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
         *(void **)arg0 = NULL;
     }
     id = fn_8017A9DC(arg1);
     if (id != 0) {
-        *(void **)((char *)arg0 + 0x4) = (id != 0) ? lbl_802B14E4 + (id - 1) * 0x280 : NULL;
+        *(void **)((char *)arg0 + 0x4) = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
         *(void **)((char *)arg0 + 0x4) = NULL;
     }
@@ -3239,7 +3239,7 @@ void fn_80025DCC(void *arg0, s32 arg1) {
 s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
     void *fn_8000CAA0(void *, s32);
     extern u8 lbl_802848DC[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void *obj;
     void *unit;
     u8 id;
@@ -3250,7 +3250,7 @@ s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
     obj = fn_8000CAA0(lbl_802848DC, arg2);
     id = gBattleMap.unitMap[arg0 + arg1 * 64];
     if (id != 0) {
-        unit = lbl_802B14E4 + (id - 1) * 0x280;
+        unit = gUnits + (id - 1) * 0x280;
     } else {
         unit = NULL;
     }

@@ -8,9 +8,9 @@ extern u8 lbl_802841B0[16];
 
 
 void fn_80016F40(void) {
-    extern u16 lbl_802B14E4[];
+    extern u16 gUnits[];
     extern void fn_800169A8(void);
-    fn_8022C1E8(lbl_802B14E4, fn_800169A8, 0x280, 0x9F);
+    fn_8022C1E8(gUnits, fn_800169A8, 0x280, 0x9F);
 }
 
 void *fn_80016F78(void *arg0) {

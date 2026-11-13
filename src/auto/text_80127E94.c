@@ -1048,7 +1048,7 @@ void fn_8012A530(void *arg0) {
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_80275734[3];
     extern u8 lbl_80275740[];
-    extern u16 lbl_802B14E4[];
+    extern u16 gUnits[];
     extern u8 gBattleMap[];
     extern f32 lbl_8036A410;
     extern f64 lbl_8036A418;
@@ -1171,7 +1171,7 @@ void fn_8012A530(void *arg0) {
         } else {
             id = *(u8 *)(gBattleMap + ((s8)newY << 6) + (s8)newX + 0xD);
             if (id != 0) {
-                unit = (u8 *)lbl_802B14E4 + (id - 1) * 0x280;
+                unit = (u8 *)gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }

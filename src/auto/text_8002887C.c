@@ -407,7 +407,7 @@ void fn_800299B8(void *arg0) {
     extern u8 lbl_80284DE0[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -438,7 +438,7 @@ void fn_800299B8(void *arg0) {
     if ((f & 8) != 0) {
         id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -449,7 +449,7 @@ void fn_800299B8(void *arg0) {
     if ((*flags & 2) != 0) {
         id = gBattleMap[(s8)(x + 1) + (s32)yOff + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -460,7 +460,7 @@ void fn_800299B8(void *arg0) {
     if ((*flags & 4) != 0) {
         id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -471,7 +471,7 @@ void fn_800299B8(void *arg0) {
     if ((*flags & 1) != 0) {
         id = gBattleMap[(s8)(x - 1) + (s32)yOff + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -488,7 +488,7 @@ void fn_80029C08(void *arg0) {
     extern u8 lbl_80284E00[];
     extern u8 lbl_80284DF0[];
     extern u8 lbl_802EF4E0[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gBattleMap[];
     struct Visitor {
         virtual void apply(void *unit) = 0;
@@ -521,7 +521,7 @@ void fn_80029C08(void *arg0) {
     if (f & 8) {
         id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
         if (id) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -532,7 +532,7 @@ void fn_80029C08(void *arg0) {
     if (*flags & 2) {
         id = gBattleMap[(s8)(x + 1) + yOff + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -543,7 +543,7 @@ void fn_80029C08(void *arg0) {
     if (*flags & 4) {
         id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
         if (id) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -554,7 +554,7 @@ void fn_80029C08(void *arg0) {
     if (*flags & 1) {
         id = gBattleMap[(s8)(x - 1) + yOff + 0xD];
         if (id) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -635,7 +635,7 @@ void fn_8002B520(void *arg0)
     extern u8 lbl_80284E20[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
 
     void fn_8002F728(void *);
 
@@ -672,7 +672,7 @@ void fn_8002B520(void *arg0)
         index = entry[0xD];
 
         if (index != 0) {
-            data = lbl_802B14E4 + (index - 1) * 0x280;
+            data = gUnits + (index - 1) * 0x280;
 
             vtable = object[0];
             ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
@@ -687,7 +687,7 @@ void fn_8002B520(void *arg0)
         index = entry[0xD];
 
         if (index != 0) {
-            data = lbl_802B14E4 + (index - 1) * 0x280;
+            data = gUnits + (index - 1) * 0x280;
 
             vtable = object[0];
             ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
@@ -702,7 +702,7 @@ void fn_8002B520(void *arg0)
         index = entry[0xD];
 
         if (index != 0) {
-            data = lbl_802B14E4 + (index - 1) * 0x280;
+            data = gUnits + (index - 1) * 0x280;
 
             vtable = object[0];
             ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
@@ -717,7 +717,7 @@ void fn_8002B520(void *arg0)
         index = entry[0xD];
 
         if (index != 0) {
-            data = lbl_802B14E4 + (index - 1) * 0x280;
+            data = gUnits + (index - 1) * 0x280;
 
             vtable = object[0];
             ((void (*)(void *, void *))(*(void **)((u8 *)vtable + 8)))(
@@ -776,7 +776,7 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
     extern u8 lbl_80284E20[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -809,7 +809,7 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
         if ((f & 8) != 0) {
             id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
             if (id) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -820,7 +820,7 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
         if ((*flags & 2) != 0) {
             id = gBattleMap[(s8)(x + 1) + (s32)yOff + 0xD];
             if (id) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -831,7 +831,7 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
         if ((*flags & 4) != 0) {
             id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -842,7 +842,7 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
         if ((*flags & 1) != 0) {
             id = gBattleMap[(s8)(x - 1) + (s32)yOff + 0xD];
             if (id) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -860,7 +860,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
     extern u8 lbl_80284CF0[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -897,7 +897,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
         if ((f & 8) != 0) {
             id = row[((s8)(y - 1) << 6) + 0xD];
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -908,7 +908,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
         if ((*(u16 *)flags & 2) != 0) {
             id = gBattleMap[(s8)(x + 1) + (s32)yOff + 0xD];
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -919,7 +919,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
         if ((*(u16 *)flags & 4) != 0) {
             id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -930,7 +930,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
         if ((*(u16 *)flags & 1) != 0) {
             id = gBattleMap[(s8)(x - 1) + (s32)yOff + 0xD];
             if (id != 0) {
-                unit = lbl_802B14E4 + (id - 1) * 0x280;
+                unit = gUnits + (id - 1) * 0x280;
             } else {
                 unit = 0;
             }
@@ -949,7 +949,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     extern u8 lbl_80284CD0[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
 
     void *fn_8010FF24(void *, s32, s32, s32);
     void fn_8002F728(void *);
@@ -1042,7 +1042,7 @@ void fn_8002BD44(void *arg0, void *arg1)
                     if (count == 1) {
                         entry = 0;
                     } else {
-                        entry = lbl_802B14E4 + (count - 1) * 0x280;
+                        entry = gUnits + (count - 1) * 0x280;
                     }
 
                     vtable = localObject[0];
@@ -1151,7 +1151,7 @@ void fn_8002C034(void *arg0, void *arg1)
     extern u8 lbl_80284CE0[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
 
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
@@ -1209,7 +1209,7 @@ void fn_8002C034(void *arg0, void *arg1)
                     if (count == 1) {
                         entry = 0;
                     } else {
-                        entry = lbl_802B14E4 + (count - 1) * 0x280;
+                        entry = gUnits + (count - 1) * 0x280;
                     }
 
                     ((void (*)(void *, void *))
@@ -1239,7 +1239,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     extern u8 lbl_80284CB0[];
     extern u8 lbl_802EF4E0[];
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
@@ -1268,7 +1268,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     if ((f & 8) != 0) {
         id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -1279,7 +1279,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     if ((*flags & 2) != 0) {
         id = gBattleMap[(s8)(x + 1) + (y << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -1290,7 +1290,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     if ((*flags & 4) != 0) {
         id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -1301,7 +1301,7 @@ extern "C" void fn_8002C194(void *arg0, s8 arg1) {
     if ((*flags & 1) != 0) {
         id = gBattleMap[(s8)(x - 1) + (y << 6) + 0xD];
         if (id != 0) {
-            unit = lbl_802B14E4 + (id - 1) * 0x280;
+            unit = gUnits + (id - 1) * 0x280;
         } else {
             unit = 0;
         }
@@ -1403,7 +1403,7 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
         virtual void v2(void *) = 0;
     };
     extern u8 gBattleMap[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     void *self;
     s32 x;
     s32 y;
@@ -1437,7 +1437,7 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
                 id = cell[0xD];
                 if (id != 0) {
                     if (id != 0) {
-                        unit = lbl_802B14E4 + (id - 1) * 0x280;
+                        unit = gUnits + (id - 1) * 0x280;
                     } else {
                         unit = 0;
                     }
@@ -2313,7 +2313,7 @@ void fn_8002E0D0(void) {
     void fn_8014DA88(void *, s32);
     void fn_801E3400(void *, u8);
     extern u8 lbl_80330708[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gUnitLists[];
     extern u8 lbl_80269210[];
     extern u8 lbl_80331FB8[];
@@ -2334,7 +2334,7 @@ void fn_8002E0D0(void) {
         i = 1;
         do {
             if ((u8)i != 0) {
-                unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+                unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
                 unit = NULL;
             }
@@ -2393,7 +2393,7 @@ void fn_8002E0D0(void) {
         i = 1;
         do {
             if ((u8)i != 0) {
-                unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+                unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
                 unit = NULL;
             }
@@ -2575,7 +2575,7 @@ void fn_8002E780(void)
     u8 Map_IsInViewBounds(void *, u8, u8);
     void fn_8002297C(void *);
     void fn_80184AFC(u8 *, s32, s32, f32);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern u8 lbl_80330708[];
     extern f32 lbl_80368DE8;
@@ -2589,7 +2589,7 @@ void fn_8002E780(void)
     i = 1;
     do {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -2613,7 +2613,7 @@ void fn_8002E880(void) {
     void fn_80015320(s32, u8 *);
     void fn_8003B69C(void *);
     void fn_8010FBD4(void *);
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     extern u8 lbl_80330708[];
     extern u8 lbl_8032BB58[];
     u8 sp8[8];
@@ -2624,7 +2624,7 @@ void fn_8002E880(void) {
     i = 1;
     do {
         if ((u8)i != 0) {
-            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
+            unit = gUnits + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
@@ -2924,7 +2924,7 @@ s32 fn_8002F468(void) {
 
 s32 fn_8002F480(void *arg0, void *arg1) {
     extern u8 gUiContext[];
-    extern u8 lbl_802B14E4[];
+    extern u8 gUnits[];
     u8 *p = *(u8 **)((u8 *)arg1 + 0x40);
     u8 b0;
     u8 b1;
@@ -2939,7 +2939,7 @@ s32 fn_8002F480(void *arg0, void *arg1) {
     gUiContext[0x10] = b1;
     id = p[2];
     if (id != 0) {
-        *(void **)(gUiContext + 4) = (id != 0) ? lbl_802B14E4 + (id - 1) * 0x280 : NULL;
+        *(void **)(gUiContext + 4) = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     }
     return 5;
 }
@@ -3045,10 +3045,10 @@ void fn_8002F728(void *arg0) {
 
 #pragma dont_inline on
 u32 fn_8002F740(u32 arg0) {
-    extern u8 lbl_802B14E4[101760];
+    extern u8 gUnits[101760];
     u8 id = ((u8 *)arg0)[2];
     if (id != 0) {
-        return (u32)&lbl_802B14E4[(id - 1) * 0x280];
+        return (u32)&gUnits[(id - 1) * 0x280];
     }
     return 0;
 }
@@ -4064,7 +4064,7 @@ extern u16 lbl_80284E00[8];
 extern u16 lbl_80284E20[8];
 extern u32 lbl_802EF4E0[502];
 extern u8 gBattleMap[151280];
-extern u8 lbl_802B14E4[101760];
+extern u8 gUnits[101760];
 extern u32 lbl_8032BB58; // size: 0x204
 
 #include "common.h"
