@@ -546,14 +546,14 @@ void fn_8014DEA8(void) {
     void fn_800056CC(char *, ...);
     extern s32 gMsgDebugKinds;
     extern s32 gMsgDebugPtrs;
-    extern s32 lbl_80367B78;
+    extern s32 gMsgDebugCount;
     extern u8 lbl_80277238[];
     char buffer[0x20];
     s32 i;
 
     fn_800C426C(gMsgDebugKinds);
     fn_800C426C(gMsgDebugPtrs);
-    lbl_80367B78 = 0;
+    gMsgDebugCount = 0;
     gMsgDebugPtrs = 0;
     fn_8005B918((char *)lbl_80277238 + 0x28);
     for (i = 0; i < fn_8005B8CC(); i++) {
@@ -618,7 +618,7 @@ void MsgDebug_Init(void) {
     char *fn_8000E0E4(void *);
     s32 strlen(char *);
     extern u8 lbl_80277238[];
-    extern s32 lbl_80367B78;
+    extern s32 gMsgDebugCount;
     extern u32 *gMsgDebugPtrs;
     extern u8 *gMsgDebugKinds;
     extern s32 lbl_80367B7C;
@@ -649,27 +649,27 @@ void MsgDebug_Init(void) {
         ;
     } while (i < fn_8005B8CC());
     fn_8005B8E8();
-    lbl_80367B78 = 0;
+    gMsgDebugCount = 0;
     i = 0;
     do {
         fn_8000D1B4(i);
         if (fn_80019CC0() == 5) {
-            lbl_80367B78 += 1;
+            gMsgDebugCount += 1;
         }
         i += 1;
     } while (i < 0x2800);
-    gMsgDebugPtrs = (u32 *)fn_800C42AC(lbl_80367B78 << 2);
-    gMsgDebugKinds = (u8 *)fn_800C42AC(lbl_80367B78);
-    lbl_80367B78 = 0;
+    gMsgDebugPtrs = (u32 *)fn_800C42AC(gMsgDebugCount << 2);
+    gMsgDebugKinds = (u8 *)fn_800C42AC(gMsgDebugCount);
+    gMsgDebugCount = 0;
     j = 0;
     do {
         fn_8000D1B4(j);
         if (fn_80019CC0() == 5) {
             val = (u32)fn_8000D1B4(j);
             arr = gMsgDebugPtrs;
-            idx = lbl_80367B78 << 2;
+            idx = gMsgDebugCount << 2;
             *(u32 *)((u8 *)arr + idx) = val;
-            val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
+            val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
             if (val == 0) {
                 flag = 0;
             } else {
@@ -683,10 +683,10 @@ void MsgDebug_Init(void) {
                 }
             }
             if (flag == 0) {
-                gMsgDebugKinds[lbl_80367B78] = 0;
+                gMsgDebugKinds[gMsgDebugCount] = 0;
             } else {
-                gMsgDebugKinds[lbl_80367B78] = 1;
-                val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
+                gMsgDebugKinds[gMsgDebugCount] = 1;
+                val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
                 if (val == 0) {
                     flag = 0;
                 } else {
@@ -701,9 +701,9 @@ void MsgDebug_Init(void) {
                     }
                 }
                 if (flag != 0) {
-                    gMsgDebugKinds[lbl_80367B78] = 2;
+                    gMsgDebugKinds[gMsgDebugCount] = 2;
                 } else {
-                    val = *(u32 *)((u8 *)gMsgDebugPtrs + (lbl_80367B78 << 2));
+                    val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
                     if (val == 0) {
                         flag = 0;
                     } else {
@@ -723,15 +723,15 @@ void MsgDebug_Init(void) {
                         ;
                     }
                     if (flag != 0) {
-                        gMsgDebugKinds[lbl_80367B78] = 4;
+                        gMsgDebugKinds[gMsgDebugCount] = 4;
                     }
                 }
             }
-            lbl_80367B78 += 1;
+            gMsgDebugCount += 1;
         }
         j += 1;
     } while (j < 0x2800);
     lbl_80367B7C = 0;
-    lbl_80367B80 = (lbl_80367B78 + 0x17) / 24;
+    lbl_80367B80 = (gMsgDebugCount + 0x17) / 24;
 }
 #pragma global_optimizer reset
