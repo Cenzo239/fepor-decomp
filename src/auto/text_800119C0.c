@@ -1409,7 +1409,7 @@ void Allegiance_FillMask(u8 mode, u8 *mask) {
     }
 }
 
-char *fn_80015574(s32 arg0)
+char *Allegiance_GetNameStr(s32 arg0)
 {
     extern u8 gMsgCommonStr[];
     char *base;
