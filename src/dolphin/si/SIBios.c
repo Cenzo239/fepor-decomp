@@ -32,7 +32,7 @@ extern u16 lbl_8035BF18[];
 extern u32 lbl_8035C918[];
 
 u32 fn_8026367C(void);
-u16 fn_8025FC64(u8 arg0, u8 arg1, u8 arg2);
+u16 Sound_GetChanParam(u8 arg0, u8 arg1, u8 arg2);
 s32 fn_8022C568(f32 arg0);
 void fn_80261934(u8 arg0, void *arg1, s32 arg2);
 void fn_8026146C(s32 *);

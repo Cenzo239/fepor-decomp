@@ -94,7 +94,7 @@ extern u16 lbl_8035BF18[];
 extern u32 lbl_8035C918[];
 
 u32 fn_8026367C(void);
-u16 fn_8025FC64(u8 arg0, u8 arg1, u8 arg2);
+u16 Sound_GetChanParam(u8 arg0, u8 arg1, u8 arg2);
 s32 fn_8022C568(f32 arg0);
 void fn_80261934(u8 arg0, void *arg1, s32 arg2);
 void fn_8026146C(s32 *);
@@ -2775,7 +2775,7 @@ if(sample!=65535 && entry[2]<=low && entry[3]>=low) {
 value=low+(s8)entry[4];
 if(value>127) note=127; else note=value & ~(value>>31);
 if(!(sample&0xC000)) {
-if(fn_8025FC64(0x41,channel,a8)>0x1F80U) {
+if(Sound_GetChanParam(0x41,channel,a8)>0x1F80U) {
 result=fn_8024800C(note&127,channel,a8,0,&status);
 valid=status==0;
 } else { result=-1; valid=1; }
@@ -2822,7 +2822,7 @@ return first;
 #pragma global_optimizer off
 s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pan, s32 arg7, u8 a8, u8 a9, u16 a10, u16 a11, s32 a12, u8 a13, u8 a14, s32 a15) {
     s32 fn_802508E0(u16);
-    u16 fn_8025FC64(u8, s32, u8);
+    u16 Sound_GetChanParam(u8, s32, u8);
     s32 fn_8024800C(s32, s32, u8, s32, s32 *);
     s32 fn_802482AC(u16, s16, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
     s32 fn_802555A0(u16, u8, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
@@ -2884,7 +2884,7 @@ s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pa
                     v = v & ~(v >> 31);
                 volume = v;
                 if (flags == 0) {
-                    if (fn_8025FC64(0x41, arg7, a8) > 0x1F80U) {
+                    if (Sound_GetChanParam(0x41, arg7, a8) > 0x1F80U) {
                         result = fn_8024800C(key & 127, arg7, a8, a12, &status);
                         valid = status == 0;
                     } else {
@@ -2914,7 +2914,7 @@ void fn_80248D28(s32 arg0)
     s32 fn_8025807C(s32, s32, s32);
     s32 fn_80260764(void *);
     s32 fn_802607F4(void *);
-    u16 fn_8025FC64(s32, u8);
+    u16 Sound_GetChanParam(s32, u8);
     s32 fn_8025785C(u8, s32);
     s32 fn_80257820(u16);
     u16 fn_802607AC(void *);
@@ -3073,7 +3073,7 @@ void fn_80248D28(s32 arg0)
         }
 
         if (voice[0x121] != 0xFF) {
-            w = fn_8025FC64(0x41, voice[0x122]);
+            w = Sound_GetChanParam(0x41, voice[0x122]);
             if (w != *(u16 *)(voice + 0x134) ||
                 (*(u64 *)(voice + 0x114) & 0x21000ULL) == 0x20000ULL) {
                 if (w <= 0x1F80U) {
@@ -6449,11 +6449,11 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     } params;
     f32 vol;
 
-    vol = lbl_8029FF7C[fn_8025FC64(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk0 = lbl_8029F1CC[fn_8025FC64(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk4 = lbl_8029F1CC[fn_8025FC64(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    vol = lbl_8029FF7C[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unk0 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unk4 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk8 = 0xC1 - lbl_8029FB7C[fn_8022C568(lbl_8036C260 * vol)];
-    params.unkA = lbl_8029F1CC[fn_8025FC64(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unkA = lbl_8029F1CC[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unkC = 0x80000000;
     params.unk10 = 0x80000000;
     fn_80261934(sv->unkF4, &params, 2);
@@ -12198,7 +12198,7 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
     fn_80260174(arg0, arg1, 0xFF);
 }
 
-u16 fn_8025FC64(u8 arg0,u8 arg1,u8 arg2) {
+u16 Sound_GetChanParam(u8 arg0,u8 arg1,u8 arg2) {
 extern u8 lbl_8035D318[];
 if(arg1!=255) {
 if(arg2!=255) {if(arg0<0x40U){u32 index=arg0&31;return (((lbl_8035D318+arg2*0x860+arg1*0x86)[index]<<7)|(lbl_8035D318+arg2*0x860+arg1*0x86)[index+0x20]);}
@@ -12361,7 +12361,7 @@ u8 fn_802601B0(u8 arg0, u8 arg1) {
 #pragma global_optimizer off
 u16 fn_802601EC(void *arg0, void *arg1, u8 arg2, u8 arg3) {
     s16 fn_802537F8(void *, s32, u8);
-    u16 fn_8025FC64(u8, u8, u8);
+    u16 Sound_GetChanParam(u8, u8, u8);
     extern s32 lbl_803689B8;
     extern s32 lbl_803689BC;
 
@@ -12415,7 +12415,7 @@ u16 fn_802601EC(void *arg0, void *arg1, u8 arg2, u8 arg3) {
                 }
                 break;
             default:
-                val = (u16)fn_8025FC64(op, a2, a3) - 0x2000;
+                val = (u16)Sound_GetChanParam(op, a2, a3) - 0x2000;
                 break;
             }
 
@@ -12529,7 +12529,7 @@ apply_signed:
                 goto unsigned_mul;
             default:
                 r5 = a3;
-                r5 = (u16)fn_8025FC64(op, a2, (u8)r5);
+                r5 = (u16)Sound_GetChanParam(op, a2, (u8)r5);
                 break;
             }
 
