@@ -246,7 +246,7 @@ typedef struct {
 } Entry;
 
 extern struct Entry gAudioGroups[];
-extern u16 lbl_80368A18;
+extern u16 gAudioGroupCount;
 extern u32 lbl_80368A14;
 #include "global.h"
 #include "structs.h"

@@ -5493,7 +5493,7 @@ s32 AudioGroup_Register(u32 arg0, void *arg1)
     void fn_80262378(void *, void *, void *);
 
     extern u8 gAudioGroups[];
-    extern u16 lbl_80368A18;
+    extern u16 gAudioGroupCount;
     extern void *lbl_80368A14;
 
     u8 *table;
@@ -5511,7 +5511,7 @@ s32 AudioGroup_Register(u32 arg0, void *arg1)
     selected = 0;
     selectedTable = 0;
     key = arg0 & 0xFFFF;
-    count = lbl_80368A18;
+    count = gAudioGroupCount;
     base = (u8 *)lbl_80368A14;
 
     for (i = 0; i < count; i++) {
@@ -5570,11 +5570,11 @@ s32 AudioGroup_Unregister(u16 id, s32 arg1) {
     };
     void fn_80262430(void *, u32, s32);
     extern struct Group gAudioGroups[];
-    extern u16 lbl_80368A18;
+    extern u16 gAudioGroupCount;
     struct Entry *e;
     u32 i;
 
-    for (i = 0; i < lbl_80368A18; i++) {
+    for (i = 0; i < gAudioGroupCount; i++) {
         e = gAudioGroups[i].entries;
         while (e->id != 0xFFFF) {
             if (e->id == id && e->ref != 0) {
@@ -5841,14 +5841,14 @@ s32 fn_80250744(u16 id, void *arg1) {
     void *fn_802612A0(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
     extern struct Entry lbl_803596B8;
     extern struct Group gAudioGroups[];
-    extern u16 lbl_80368A18;
+    extern u16 gAudioGroupCount;
     extern struct Entry *lbl_803689F0;
     extern struct Header *lbl_803689EC;
     struct Info *info = arg1;
     s32 i;
 
     lbl_803596B8.id = id;
-    for (i = 0; i < lbl_80368A18; i++) {
+    for (i = 0; i < gAudioGroupCount; i++) {
         if ((lbl_803689F0 = fn_802612A0(&lbl_803596B8, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && lbl_803689F0->ref != 0) {
             lbl_803689EC = &lbl_803689F0->header;
             info->unk0 = lbl_803689EC->unk0;
@@ -5991,7 +5991,7 @@ int fn_802509D8(int arg0)
 
 void fn_80250A74(s32 arg0, s32 arg1) {
     void fn_80262354(void);
-    extern u16 lbl_80368A18;
+    extern u16 gAudioGroupCount;
     extern u16 gAudioWaveKeyCount;
     extern u16 lbl_80368A0E;
     extern u16 gSampleKeyCount;
@@ -6000,7 +6000,7 @@ void fn_80250A74(s32 arg0, s32 arg1) {
     extern u16 gAudioTableRanges[];
     s32 i;
 
-    lbl_80368A18 = 0;
+    gAudioGroupCount = 0;
     gAudioWaveKeyCount = 0;
     lbl_80368A0E = 0;
     gSampleKeyCount = 0;
