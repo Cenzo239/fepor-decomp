@@ -1949,7 +1949,7 @@ void fn_8002D44C(void) {
 }
 
 s32 fn_800C52C8(void);
-void fn_800C50FC(void *, s32, void *);
+void Heap_Create(void *, s32, void *);
 void fn_800C469C(void *);
 void fn_80016498(void);
 void fn_80015D54(void);
@@ -1959,7 +1959,7 @@ void fn_8002D46C(void)
     s32 tmp;
 
     tmp = fn_800C52C8();
-    fn_800C50FC(Battle_str + 0x16c, tmp, Battle_str);
+    Heap_Create(Battle_str + 0x16c, tmp, Battle_str);
     fn_800C469C(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
@@ -1990,7 +1990,7 @@ void Battle_LoadMap(void)
 {
     extern u8 Battle_str[];
     extern u8 gBattleState[];
-    void fn_800C50FC(void *, s32);
+    void Heap_Create(void *, s32);
     void fn_80166258(s32);
     u16 fn_8005C144(void *);
     void fn_8003F87C(void *, s32);
@@ -2004,7 +2004,7 @@ void Battle_LoadMap(void)
     void fn_80018F08(void);
     void DebugPrint(char *, ...);
 
-    fn_800C50FC(Battle_str + 0x176, 0x180000);
+    Heap_Create(Battle_str + 0x176, 0x180000);
     fn_80166258(gBattleState[0x10]);
     if (fn_8005C144(Battle_str + 0x198) != 0x8000) {
         fn_8003F87C(Battle_str + 0x198, 8);
@@ -2014,7 +2014,7 @@ void Battle_LoadMap(void)
     }
     fn_8005C84C(Battle_str + 0x1AF);
     fn_80050F64();
-    fn_800C50FC(Battle_str + 0x16C, fn_800C52C8());
+    Heap_Create(Battle_str + 0x16C, fn_800C52C8());
     fn_800C469C(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();

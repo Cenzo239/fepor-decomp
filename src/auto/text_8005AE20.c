@@ -7247,7 +7247,7 @@ void DEMOInit(void *arg0)
     void *OSGetArenaHi(void);
     void OSSetArenaLo(void *);
     void fn_800C5300(void);
-    void fn_800C50FC(void *, s32);
+    void Heap_Create(void *, s32);
     void VIConfigure(void *);
     void *fn_800C4638(s32, void *, s32);
     void *GXInit(void *, s32);
@@ -7343,7 +7343,7 @@ void DEMOInit(void *arg0)
     DemoCurrentBuffer = DemoFrameBuffer2;
     OSSetArenaLo((void *)(((u32)DemoFrameBuffer2 + (fbSize + 0x1F)) & ~0x1Fu));
     fn_800C5300();
-    fn_800C50FC(DEMOInit_str + 0x16b, 0x533333);
+    Heap_Create(DEMOInit_str + 0x16b, 0x533333);
     VIConfigure(DEMORmode);
     buf = fn_800C4638(0x80000, DEMOInit_str + 0x170, 0x80000);
     DefaultFifo = buf;

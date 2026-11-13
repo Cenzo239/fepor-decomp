@@ -292,7 +292,7 @@ void fn_80005EB4(void) {
 
 void fn_80005ED4(void) {
     extern u16 lbl_80267B80[];
-    fn_800C50FC((u8 *)lbl_80267B80 + 0xDF, 0xB00000);
+    Heap_Create((u8 *)lbl_80267B80 + 0xDF, 0xB00000);
 }
 
 void fn_80005F04(void)

@@ -4111,7 +4111,7 @@ void fn_80028674(void) {
 
 void fn_80028694(void) {
     extern u16 lbl_80268E40[];
-    fn_800C50FC(&lbl_80268E40[0x212 / sizeof(u16)], fn_800C52C8(), lbl_80268E40);
+    Heap_Create(&lbl_80268E40[0x212 / sizeof(u16)], fn_800C52C8(), lbl_80268E40);
 }
 
 void fn_800286C8(void *arg0) {

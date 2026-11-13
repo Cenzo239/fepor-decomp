@@ -2924,7 +2924,7 @@ void fn_801F8850(s32 arg0) {
 
 #pragma global_optimizer off
 void fn_801F8880(void) {
-    void fn_800C50FC();
+    void Heap_Create();
     s32 fn_800C52C8(void);
     void fn_800C469C(void *);
     void ScriptCmd_CmLoadScript(void *);
@@ -2937,8 +2937,8 @@ void fn_801F8880(void) {
     extern void *lbl_8036840C;
     extern u8 lbl_80367708;
 
-    fn_800C50FC(StaffRoll_str + 0x215, 0x180000);
-    fn_800C50FC(StaffRoll_str + 0x220, fn_800C52C8(), StaffRoll_str);
+    Heap_Create(StaffRoll_str + 0x215, 0x180000);
+    Heap_Create(StaffRoll_str + 0x220, fn_800C52C8(), StaffRoll_str);
     fn_800C469C(StaffRoll_str + 0x215);
     ScriptCmd_CmLoadScript(StaffRoll_str + 0x22C);
     lbl_80368408 = fn_8003FCCC(*(void **)(lbl_8029B41C + 4));

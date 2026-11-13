@@ -800,7 +800,7 @@ s32 fn_8001451C(void *arg0) {
 }
 
 s32 fn_80014558(void *arg0) {
-    s32 fn_800C50FC(void *, void *);
+    s32 Heap_Create(void *, void *);
     void *temp;
     void *a;
     void *b;
@@ -809,7 +809,7 @@ s32 fn_80014558(void *arg0) {
     b = *(void **)((u8 *)temp + 8);
     a = *(void **)((u8 *)temp + 4);
     *(void **)((u8 *)arg0 + 4) = (void *) ((u8 *)temp + 0xC);
-    fn_800C50FC(a, b);
+    Heap_Create(a, b);
     return 1;
 }
 
