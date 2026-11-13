@@ -279,6 +279,7 @@ s32 __CARDRetry(s32 chan) {
 }
 
 void __CARDUnlockedHandler(s32 chan, s32 result) {
+    /* On EXI unlock: retry the pending CARD cmd, or fire tx/exi callbacks on failure. */
     extern u16 __CARDBlock[];
     s32 EXILock(s32, s32, void *);
     s32 __CARDRetry(s32);
