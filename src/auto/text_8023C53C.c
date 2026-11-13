@@ -92,7 +92,7 @@ extern s32 lbl_803687F8;
 extern f32 lbl_8036C374;
 extern s32 lbl_80368A28;
 extern s32 lbl_80368A2C;
-extern s32 lbl_80368A30;
+extern s32 gSynthSchedList;
 extern s32 lbl_80368A34;
 extern u32* lbl_80368A38;
 extern void (*lbl_80368B34)(s16);
@@ -7592,7 +7592,7 @@ void fn_80254F00(u32 arg0)
     u32 scheduledHigh;
     u32 scheduledLow;
 
-    current = (u8 *)lbl_80368A30;
+    current = (u8 *)gSynthSchedList;
 
     while (current != 0) {
         scheduledHigh = *(u32 *)(current + 0x98);
@@ -7719,7 +7719,7 @@ void fn_802551F0(void *arg0, u32 arg1) {
 
 void fn_802552F8(void *arg0)
 {
-    extern s32 lbl_80368A30;
+    extern s32 gSynthSchedList;
 
     u8 *voice;
     u8 *current;
@@ -7731,7 +7731,7 @@ void fn_802552F8(void *arg0)
     u32 voiceLow;
 
     voice = (u8 *)arg0;
-    current = (u8 *)lbl_80368A30;
+    current = (u8 *)gSynthSchedList;
     previous = 0;
 
     while (current != 0) {
@@ -7751,7 +7751,7 @@ void fn_802552F8(void *arg0)
 
     if (current == 0) {
         if (previous == 0) {
-            lbl_80368A30 = (s32)voice;
+            gSynthSchedList = (s32)voice;
             *(u8 **)(voice + 0x44) = 0;
             *(u8 **)(voice + 0x48) = 0;
         } else {
@@ -7768,7 +7768,7 @@ void fn_802552F8(void *arg0)
         if (oldPrevious != 0) {
             *(u8 **)(oldPrevious + 0x44) = voice;
         } else {
-            lbl_80368A30 = (s32)voice;
+            gSynthSchedList = (s32)voice;
         }
 
         *(u8 **)(current + 0x48) = voice;
@@ -7788,7 +7788,7 @@ void Sound_DeactivateSynthVoice(void *arg0) {
             if (pair != 0xFFFFFFFFFFFFFFFFULL) {
                 prev = *(void **)((u8 *)arg0 + 0x48);
                 if (prev == NULL) {
-                    lbl_80368A30 = (s32)*(void **)((u8 *)arg0 + 0x44);
+                    gSynthSchedList = (s32)*(void **)((u8 *)arg0 + 0x44);
                 } else {
                     *(void **)((u8 *)prev + 0x44) = *(void **)((u8 *)arg0 + 0x44);
                 }
@@ -7886,7 +7886,7 @@ s32 fn_802555A0(
             prev = *(u8 **)(voice + 0x48);
             next = *(u8 **)(voice + 0x44);
             if (prev == 0) {
-                lbl_80368A30 = (s32)next;
+                gSynthSchedList = (s32)next;
             } else {
                 *(u8 **)(prev + 0x44) = next;
             }
@@ -7968,7 +7968,7 @@ s32 fn_802555A0(
                 prev = *(u8 **)(voice + 0x48);
                 next = *(u8 **)(voice + 0x44);
                 if (prev == 0) {
-                    lbl_80368A30 = (s32)next;
+                    gSynthSchedList = (s32)next;
                 } else {
                     *(u8 **)(prev + 0x44) = next;
                 }
@@ -8010,7 +8010,7 @@ void fn_802559D8(void) {
     s32 i;
     
     lbl_80368A34 = 0;
-    lbl_80368A30 = 0; 
+    gSynthSchedList = 0; 
     lbl_80368A2C = 0;
     lbl_80368A28 = 0;
     count = 0U;

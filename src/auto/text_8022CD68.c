@@ -39,7 +39,7 @@ extern s32 lbl_803687F8;
 extern f32 lbl_8036C374;
 extern s32 lbl_80368A28;
 extern s32 lbl_80368A2C;
-extern s32 lbl_80368A30;
+extern s32 gSynthSchedList;
 extern s32 lbl_80368A34;
 extern u32* lbl_80368A38;
 extern void (*lbl_80368B34)(s16);
