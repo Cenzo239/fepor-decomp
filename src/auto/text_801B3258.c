@@ -11537,7 +11537,7 @@ void *ScriptObj_FindByName(void *arg0) {
     return NULL;
 }
 
-void fn_801CF7F0(void *arg0, void *arg1) {
+void ScriptObj_Start(void *arg0, void *arg1) {
     s32 Str_Cmp(void *, void *);
     void fn_801CFAB8(void *, u8, void *);
     void fn_8005C8B4(void *);

@@ -5496,7 +5496,7 @@ s32 fn_800BA4A8(u32 arg0) {
 
 s32 fn_800BA528(u32 arg0) {
     void fn_80109180(u32, s32);
-    void fn_801CF7F0(u32, s32);
+    void ScriptObj_Start(u32, s32);
     s32 Str_NCmp(void *, void *, s32);
     extern u16 lbl_8026ECB8[];
 
@@ -5507,7 +5507,7 @@ s32 fn_800BA528(u32 arg0) {
     if (Str_NCmp((void *)arg0, (u8 *)lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109180(arg0, 0);
     } else {
-        fn_801CF7F0(arg0, 0);
+        ScriptObj_Start(arg0, 0);
     }
 
     return 0;
@@ -5516,7 +5516,7 @@ s32 fn_800BA528(u32 arg0) {
 s32 fn_800BA5AC(u32 arg0) {
     s32 Str_NCmp(void *, void *, s32);
     void fn_80109180(u32, s32);
-    void fn_801CF7F0(u32, s32);
+    void ScriptObj_Start(u32, s32);
     s32 fn_800C0658(void);
     extern u8 lbl_8026ECB8[];
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -5525,7 +5525,7 @@ s32 fn_800BA5AC(u32 arg0) {
     if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109180(arg0, fn_800C0658());
     } else {
-        fn_801CF7F0(arg0, fn_800C0658());
+        ScriptObj_Start(arg0, fn_800C0658());
     }
     return 0;
 }
