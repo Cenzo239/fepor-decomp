@@ -143,7 +143,7 @@ void fn_8009A864(void *arg0) {
 
 void fn_8009A890(void *arg0) {
     M2C_UNK fn_80055C8C(void *, void *, void *);
-    M2C_UNK fn_80059208(void *, void *);
+    M2C_UNK Process_AttachFunc(void *, void *);
     void fn_8009A934(void *);
     void fn_8009A970(void *);
     extern u8 lbl_8026D404[];
@@ -165,7 +165,7 @@ void fn_8009A890(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x58) = 0;
     M2C_FIELD(arg0, s32 *, 0x38) = 0;
     fn_80055C8C(lbl_8026D404 + 0xD8, fn_8009A934, arg0);
-    fn_80059208(fn_8009A970, arg0);
+    Process_AttachFunc(fn_8009A970, arg0);
 }
 
 void fn_8009A934(void *arg0) {

@@ -1004,7 +1004,7 @@ void fn_80185830(void *arg0) {
     u8 fn_800504FC(void *, s32);
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005FC74(void *, void *, s32);
     void fn_8005FEE8(void *, f32);
@@ -1074,7 +1074,7 @@ void fn_80185830(void *arg0) {
                     fn_8004FE90(*(void **)((u8 *)tmp + 0x30), (u8)*(s32 *)((u8 *)tmp + 0x38));
                 }
             }
-            fn_80059208(fn_80185AF4, self);
+            Process_AttachFunc(fn_80185AF4, self);
         } else {
             Process_Goto(self, 0);
         }
@@ -3719,14 +3719,14 @@ void fn_8018DD3C(void *arg0) {
     u16 fn_8005C6A0(char *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     void fn_8018DE24(void *);
     extern u8 lbl_80279B1C[];
 
     if (fn_8005C6A0((char *)lbl_80279B1C + 0x105) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x34, (char *)lbl_80279B1C + 0x105);
         Process_ClearFunc(arg0);
-        fn_80059208(fn_8018DE24, arg0);
+        Process_AttachFunc(fn_8018DE24, arg0);
     }
 }
 #pragma global_optimizer on

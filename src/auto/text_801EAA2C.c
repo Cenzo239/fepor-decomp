@@ -2078,7 +2078,7 @@ void fn_801EE76C(void *arg0) {
     void GActor_LoadResources(void *, s32);
     void GActor_RequestRes(char *);
     void *Process_Create(void *, void *);
-    void *fn_80059208(void *, void *);
+    void *Process_AttachFunc(void *, void *);
     void Process_Goto(void *, s32);
     void fn_800E99CC(void *);
     void fn_801EEDB4(void);
@@ -2248,7 +2248,7 @@ use30708:
     GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
     GActor_RequestRes(gGActorPathExt + 0x1AB);
     *(void **)((char *)self + 0x44) = Process_Create(lbl_8029A5BC, self);
-    *(void **)((char *)self + 0x40) = fn_80059208((void *)fn_801EEDB4, self);
+    *(void **)((char *)self + 0x40) = Process_AttachFunc((void *)fn_801EEDB4, self);
     *(s16 *)((char *)self + 0x3E) = 0;
     *(s16 *)((char *)self + 0x3C) = 0;
     r29 = *(void **)((char *)self + 0x44);

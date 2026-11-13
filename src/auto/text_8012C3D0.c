@@ -1050,7 +1050,7 @@ void fn_8012DFA8(void *arg0) {
     void *fn_80057998(void *);
     void *fn_80057A64(void *, s32);
     void fn_80057E98(void *, s32, s32);
-    void *fn_80059208(void *, void *);
+    void *Process_AttachFunc(void *, void *);
     void fn_8005C84C(void *);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
@@ -1624,7 +1624,7 @@ void fn_8012DFA8(void *arg0) {
             break;
         }
     }
-    *(void **)(self + 0x34) = fn_80059208(&fn_8012F360, self);
+    *(void **)(self + 0x34) = Process_AttachFunc(&fn_8012F360, self);
     gUiContext[8] = 0x80;
 }
 #pragma global_optimizer off

@@ -1322,7 +1322,7 @@ void fn_800591CC(void *arg0) {
     }
 }
 
-void fn_80059208(s32 arg0, s32 arg1) {
+void Process_AttachFunc(s32 arg0, s32 arg1) {
     extern u8 lbl_80285AF0[];
     void *Process_Create(u8 *, s32);
     s32 *obj;

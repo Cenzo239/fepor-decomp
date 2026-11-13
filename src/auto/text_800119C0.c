@@ -711,14 +711,14 @@ void fn_800142E4(void) {
 }
 
 s32 fn_80014310(void *arg0) {
-    void *fn_80059208(void *, void *);
+    void *Process_AttachFunc(void *, void *);
     void *temp;
     void *val;
 
     temp = *(void **)((u8 *)arg0 + 4);
     val = *(void **)((u8 *)temp + 4);
     *(void **)((u8 *)arg0 + 4) = (void *) ((u8 *)temp + 8);
-    fn_80059208(val, arg0);
+    Process_AttachFunc(val, arg0);
     return 1;
 }
 

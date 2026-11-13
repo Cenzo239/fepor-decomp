@@ -2252,7 +2252,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 }
 
 void fn_801F7194(void *arg0) {
-    s32 fn_80059208(void (*)(void *), void *);
+    s32 Process_AttachFunc(void (*)(void *), void *);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
     void Process_ClearFunc(void *);
@@ -2261,7 +2261,7 @@ void fn_801F7194(void *arg0) {
     extern u8 lbl_80280D38[];
     if ((fn_8005C6A0(lbl_80280D38 + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
         fn_80162054();
-        M2C_FIELD(arg0, s32 *, 0x34) = fn_80059208(fn_801F676C, arg0);
+        M2C_FIELD(arg0, s32 *, 0x34) = Process_AttachFunc(fn_801F676C, arg0);
         Process_ClearFunc(arg0);
     }
 }

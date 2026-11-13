@@ -672,7 +672,7 @@ void Battle_InitPhaseBanner(void *proc) {
     void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80053C30(void *, void *);
     void fn_80053658(void *, s32, void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     extern u8 gBattleState[];
     extern u8 lbl_8026EAA0[];
     extern u8 gFxChannels[];
@@ -750,7 +750,7 @@ void Battle_InitPhaseBanner(void *proc) {
     *(s16 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) = 0x63;
     fn_80053658(*(void **)((u8 *)proc + 0x4C), 0, proc);
     *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) + 0x44) = Battle_ClearPhaseBannerChild;
-    fn_80059208(Battle_DrawPhaseBanner, proc);
+    Process_AttachFunc(Battle_DrawPhaseBanner, proc);
 }
 
 void Battle_ClearPhaseBannerChild(void *arg0) {

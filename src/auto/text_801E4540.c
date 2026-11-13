@@ -2583,7 +2583,7 @@ void TabMenu_Init(void *arg0) {
     void fn_800578A0(void *, f32);
     void fn_800578A8(void *, s32, s32, s32);
     void *fn_80057998(void *);
-    void fn_80059208(void (*)(void), void *);
+    void Process_AttachFunc(void (*)(void), void *);
     void *Heap_Alloc(s32);
     void fn_8013FCE0(void *, void *, void **, void **);
     void fn_801E4CF8(void *);
@@ -2667,8 +2667,8 @@ skip_sub:
     t = *(s16 *)((u8 *)arg0 + 0x36);
     fn_80057860(*(void **)((u8 *)arg0 + 0x5C), t);
     fn_800578A0(*(void **)((u8 *)arg0 + 0x5C), lbl_8036B714);
-    fn_80059208(TabMenu_Draw, arg0);
-    fn_80059208(fn_801E7D18, arg0);
+    Process_AttachFunc(TabMenu_Draw, arg0);
+    Process_AttachFunc(fn_801E7D18, arg0);
 }
 
 void fn_801E9B80(void *arg0) {

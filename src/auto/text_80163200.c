@@ -4087,7 +4087,7 @@ void fn_8016B800(void *arg0) {
 }
 
 void fn_8016B9EC(void *arg0) {
-    s32 fn_80059208(void *, void *);
+    s32 Process_AttachFunc(void *, void *);
     u16 fn_8005C6A0(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
@@ -4096,7 +4096,7 @@ void fn_8016B9EC(void *arg0) {
 
     if (fn_8005C6A0(&lbl_80277EA0[0x78]) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x38, (void *)((s32)lbl_80277EA0 + 0x78));
-        *(s32 *)((char *)arg0 + 0x60) = fn_80059208(fn_8016E0E4, arg0);
+        *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(fn_8016E0E4, arg0);
         Process_ClearFunc(arg0);
     }
 }
@@ -4383,7 +4383,7 @@ void fn_8016BBB8(void *self) {
 }
 
 void fn_8016C168(void *arg0) {
-    s32 fn_80059208(void *, void *);
+    s32 Process_AttachFunc(void *, void *);
     u16 fn_8005C6A0(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
@@ -4393,7 +4393,7 @@ void fn_8016C168(void *arg0) {
 
     if (fn_8005C6A0(&lbl_80277EA0[0x78]) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x38, (void *)((s32)lbl_80277EA0 + 0x78));
-        *(s32 *)((char *)arg0 + 0x60) = fn_80059208(fn_8016E1B4, arg0);
+        *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(fn_8016E1B4, arg0);
         Ui_PlaySeCue((void *)((s32)lbl_80277EA0 + 0xD2), 0x64);
         Process_ClearFunc(arg0);
     }
@@ -14315,14 +14315,14 @@ void fn_8017F1D4(void *arg0) {
 
 void fn_8017F1F8(void *arg0) {
  s32 fn_8006D948(void *);
- void fn_80059208(void *,void *);
+ void Process_AttachFunc(void *,void *);
  void fn_8017F258(void);
  extern u8 lbl_802788B8[];
  *(s32*)((u8*)arg0+0x38)=0;
  *(f32*)((u8*)arg0+0x40)=0.0f;
  *(s32*)((u8*)arg0+0x44)=0;
  *(s32*)((u8*)arg0+0x34)=fn_8006D948(lbl_802788B8+0x122);
- fn_80059208(fn_8017F258,arg0);
+ Process_AttachFunc(fn_8017F258,arg0);
 }
 
 void fn_8017F258(void *arg0) {
@@ -14372,7 +14372,7 @@ void fn_8017F5C8(void *arg0) {
 
 void fn_8017F5EC(void *arg0) {
     s32 fn_8006D948(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     extern u16 lbl_802788B8[];
     extern f32 lbl_8036AC88;
     
@@ -14380,7 +14380,7 @@ void fn_8017F5EC(void *arg0) {
     *(u16 *)((u8 *)arg0 + 0x40) = 0xFF;
     *(s32 *)((u8 *)arg0 + 0x34) = fn_8006D948((u8 *)lbl_802788B8 + 0x122);
     *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036AC88;
-    fn_80059208((void *)0x8017F650, arg0);
+    Process_AttachFunc((void *)0x8017F650, arg0);
 }
 
 void fn_8017F650(void *arg0) {
@@ -14463,14 +14463,14 @@ void fn_8017F86C(void *arg0) {
 void fn_8017F890(void *arg0)
 {
     s32 fn_8006D948(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     void fn_8017F8EC(void);
     extern u8 lbl_802788B8[];
 
     *(s32 *)((char *)arg0 + 0x3C) = 0;
     *(s32 *)((char *)arg0 + 0x40) = 0xFF;
     *(s32 *)((char *)arg0 + 0x34) = fn_8006D948(lbl_802788B8 + 0x122);
-    fn_80059208(fn_8017F8EC, arg0);
+    Process_AttachFunc(fn_8017F8EC, arg0);
 }
 
 void fn_8017F8EC(void *arg0) {

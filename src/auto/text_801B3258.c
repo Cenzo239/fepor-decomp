@@ -661,12 +661,12 @@ void fn_801B6700(void *arg0) {
 
 void fn_801B6784(void *arg0) {
     s32 fn_8006D948(void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     void fn_801B69FC(void);
     extern u8 lbl_8027C248[];
 
     M2C_FIELD(arg0, s32 *, 0x40) = fn_8006D948(lbl_8027C248 + 0x114);
-    fn_80059208(fn_801B69FC, arg0);
+    Process_AttachFunc(fn_801B69FC, arg0);
 }
 
 s32 fn_801B67D0(struct efUnit* arg0) {
@@ -1941,7 +1941,7 @@ void fn_801B8B94(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801B91D8(void *arg0) {
-    s32 fn_80059208(void *, void *);
+    s32 Process_AttachFunc(void *, void *);
     s32 fn_8005C6A0(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
@@ -1952,7 +1952,7 @@ void fn_801B91D8(void *arg0) {
     temp_r31 = *(void **)((char *)arg0 + 0x30);
     if (fn_8005C6A0(lbl_8027C5E8 + 0x9C) & 0x2000) {
         fn_8006EEFC((char *)temp_r31 + 8, lbl_8027C5E8 + 0x9C);
-        *(s32 *)((char *)arg0 + 0x34) = fn_80059208(fn_801B8B94, arg0);
+        *(s32 *)((char *)arg0 + 0x34) = Process_AttachFunc(fn_801B8B94, arg0);
         Process_ClearFunc(arg0);
     }
 }
@@ -13821,7 +13821,7 @@ void fn_801D3C88(void *arg0) {
     void fn_8006EEFC(void *, void *);
     void fn_80162054(void);
     void fn_80145828(void);
-    s32 fn_80059208(void *, void *);
+    s32 Process_AttachFunc(void *, void *);
     void fn_8008A290(s32, s32);
     extern u8 gUiSeCues[];
     extern s32 lbl_803682E4;
@@ -13839,7 +13839,7 @@ void fn_801D3C88(void *arg0) {
     fn_80162054();
     *(u8 *)((u8 *)obj + 0x5A) = 1;
     fn_80145828();
-    *(s32 *)((u8 *)obj + 0xC) = fn_80059208(fn_801D8E80, arg0);
+    *(s32 *)((u8 *)obj + 0xC) = Process_AttachFunc(fn_801D8E80, arg0);
     fn_8008A290(2, 0xfa);
 }
 #pragma opt_common_subs reset

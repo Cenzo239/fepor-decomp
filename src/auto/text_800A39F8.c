@@ -1727,7 +1727,7 @@ void fn_800A6FD4(void *arg0) {
 
 void fn_800A7014(void *arg0) {
     void fn_80055C8C(void *, void *, void *);
-    void fn_80059208(void *, void *);
+    void Process_AttachFunc(void *, void *);
     extern u8 lbl_8026E378[];
     void fn_800A70A0(void);
     void fn_800A70DC(void);
@@ -1743,7 +1743,7 @@ void fn_800A7014(void *arg0) {
     *(s16 *)((u8 *)arg0 + 0x46) = -1;
     *(s32 *)((u8 *)arg0 + 0x40) = 0;
     fn_80055C8C(lbl_8026E378 + 0x28, fn_800A70A0, arg0);
-    fn_80059208(fn_800A70DC, arg0);
+    Process_AttachFunc(fn_800A70DC, arg0);
 }
 
 void fn_800A70A0(void *arg0) {
