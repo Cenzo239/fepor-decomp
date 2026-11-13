@@ -649,7 +649,7 @@ s32 fn_80227174(void *arg0) {
 s32 fn_80227444(void *arg0) {
     void fn_8022692C(void *, u32);
     void fn_8022695C(void *, u32);
-    s32 fn_80229FA4(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
     s32 fn_80229A98(u16, u16, void *, s32 *, s32);
     s32 fn_80229928(u16, u16, void *, s32 *, s32);
     s32 fn_802294F0(u16, u16, void *, s32 *, s32);
@@ -689,7 +689,7 @@ s32 fn_80227444(void *arg0) {
 
     switch (err) {
     case 0:
-        err = fn_80229FA4(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessDefault(start, end, obj, &outLen, 0);
         break;
     case 1:
         err = fn_80229A98(start, end, obj, &outLen, 0);
@@ -760,7 +760,7 @@ s32 fn_80227444(void *arg0) {
 s32 TRKDoReadRegisters(void *arg0) {
 void fn_8022695C(void*,u32);
 s32 fn_80226698(void*,void*,s32);
-s32 fn_80229FA4(u16,u16,void*,s32*,s32);
+s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
 s32 fn_80229A98(u16,u16,void*,s32*,s32);
 s32 fn_80229928(u16,u16,void*,s32*,s32);
 s32 fn_802294F0(u16,u16,void*,s32*,s32);
@@ -781,7 +781,7 @@ fn_8022695C(arg0,0);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 fn_80226698(arg0,request,0x40);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-err=fn_80229FA4(0,0x24,arg0,&outLen,1);
+err=TRKTargetAccessDefault(0,0x24,arg0,&outLen,1);
 MWTRACE(4,strings+0xc0,err);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 if(!err) err=fn_80229A98(0,0x21,arg0,&outLen,1);
@@ -1489,7 +1489,7 @@ extern u8 lbl_8033CFB4[];
     return err + (s32)(st.gap[0] & 0);
 }
 #pragma optimization_level reset
-s32 fn_80229FA4(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
+s32 TRKTargetAccessDefault(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
 {
   u32 *new_var3;
   s32 new_var;
