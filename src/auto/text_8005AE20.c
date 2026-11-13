@@ -514,7 +514,7 @@ void fn_8005BCF0(void) {
     void OSInitThreadQueue(u8 *queue);
     s32 fn_8020A558(u8 *a, void *b, s32 c, u8 *d, s32 e, s32 f, s32 g);
     s32 fn_8020A9E0(u8 *a);
-    extern void fn_8005BE48(void);
+    extern void FileCache_WorkerThread(void);
     s32 i;
     u8 (*e)[0x3E0];
 
@@ -572,13 +572,13 @@ void fn_8005BCF0(void) {
         lbl_803672EB = 0;
         lbl_803672EA = 0;
         OSInitThreadQueue(lbl_803672EC);
-        fn_8020A558(lbl_8030F7E0, &fn_8005BE48, 0, lbl_8030FAF8 + 0x2000, 0x2000, 0x10, 1);
+        fn_8020A558(lbl_8030F7E0, &FileCache_WorkerThread, 0, lbl_8030FAF8 + 0x2000, 0x2000, 0x10, 1);
         fn_8020A9E0(lbl_8030F7E0);
         lbl_803672E9 = 1;
     }
 }
 
-void fn_8005BE48(void) {
+void FileCache_WorkerThread(void) {
     void DCFlushRange(s32, s32);
     void fn_8005BF8C(void *, s32);
     void fn_8005BFE4(void *, s32);
