@@ -1498,7 +1498,7 @@ void fn_800227F8(void* arg0, s32 arg1)
     return;
 }
 
-void fn_8002297C(void *arg0)
+void Map_RefreshUnitMap(void *arg0)
 {
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_8001F140(void *);
@@ -2058,8 +2058,8 @@ void fn_80023D14(void *arg0) {
 #pragma use_lmw_stmw reset
 #pragma global_optimizer on
 void fn_80023DC0(void) {
-    void fn_8002297C(void *);
-    fn_8002297C(&gBattleMap);
+    void Map_RefreshUnitMap(void *);
+    Map_RefreshUnitMap(&gBattleMap);
 }
 
 void fn_80023DE8(void) {
@@ -3899,7 +3899,7 @@ void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
         *(u8 *)((u8 *)arg0 + 9) = *(u8 *)((u8 *)arg0 + 8);
     }
     *(u8 *)((u8 *)arg0 + 0x12) = 0;
-    fn_8002297C(&gBattleMap);
+    Map_RefreshUnitMap(&gBattleMap);
     var_r4 = 1;
     temp_r0 = gMapBlendMode - 1;
     if (((u32)((var_r4 | ~temp_r0) - ((u32)(var_r4 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
@@ -3925,7 +3925,7 @@ void fn_8002807C(void *arg0) {
     M2C_UNK fn_80050C90(s32);
     Unit_SetMapPos(M2C_FIELD(arg0, s32 *, 0), M2C_FIELD(arg0, u8 *, 0xB), M2C_FIELD(arg0, u8 *, 0xC));
     fn_80050C90(M2C_FIELD(arg0, s32 *, 0));
-    fn_8002297C(&gBattleMap);
+    Map_RefreshUnitMap(&gBattleMap);
 }
 
 void fn_800280C8(void *arg0, s32 arg1, s32 arg2) {

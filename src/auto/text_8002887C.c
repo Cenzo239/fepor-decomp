@@ -2082,14 +2082,14 @@ void fn_8002D780(s32 arg0) {
 }
 
 void fn_8002D7BC(s32 arg0) {
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_800C1060(s32);
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
     s32 temp;
     u8 var_r4;
 
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     var_r4 = 1;
     temp = (u8)(gMapBlendMode - 1);
     if (((u32)((1 | ~temp) - ((u32)(1 - temp) >> 1)) >> 31) == 0) {
@@ -2578,7 +2578,7 @@ void Battle_ResetAllyTurnVisuals(void)
 {
     void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void Unit_FadeAlpha(u8 *, s32, s32, f32);
     extern u8 gUnits[];
     extern u8 gBattleMap[];
@@ -2612,7 +2612,7 @@ void Battle_ResetAllyTurnVisuals(void)
         }
         i += 1;
     } while (i <= 0x9F);
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
 }
 
 void fn_8002E880(void) {

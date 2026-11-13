@@ -1524,7 +1524,7 @@ s32 Ui_KillCursorUnit(void) {
     void UiCtx_EndMoveSelect(void *, s32);
     void Unit_SetHp(void *, s32);
     void Unit_OnZeroHp(void *);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_801A75DC(void *, void *, s32);
     void Battle_QueueDeathAnim(void *);
     void fn_8019B704(void *, s32);
@@ -1549,7 +1549,7 @@ s32 Ui_KillCursorUnit(void) {
     cls = *(u8 **)((u8 *)temp_r30 + 0x190);
     if (cls[8] != 0) {
         Unit_OnZeroHp(temp_r30);
-        fn_8002297C(gBattleMap);
+        Map_RefreshUnitMap(gBattleMap);
         return 6;
     }
     Unit_OnZeroHp(temp_r30);

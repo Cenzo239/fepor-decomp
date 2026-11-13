@@ -10527,7 +10527,7 @@ s32 fn_8019CC04(void *arg0) {
 }
 
 s32 fn_8019CC80(void *arg0) {
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_80054C14(void *);
     u8 Pad_IsButton(void *, s32);
     void fn_800C1060(void *);
@@ -10547,7 +10547,7 @@ s32 fn_8019CC80(void *arg0) {
         if (temp_r4_2 != NULL) {
             base = (u8 *)temp_r4_2;
             ((struct { u8 pad:3; u8 mid:3; u8 lo:2; } *)(base + 0x1A6))->mid = 4;
-            fn_8002297C(gBattleMap);
+            Map_RefreshUnitMap(gBattleMap);
             fn_800C1060(temp_r31);
         }
         if (*(void **)((u8 *)temp_r31 + 0x58) != NULL) {
@@ -12072,7 +12072,7 @@ s32 fn_801A0208(s32 arg0, s32 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
 
 s32 fn_801A0258(void) {
     void fn_80048A70(void);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void Map_Get(void);
     void fn_80040DA4(void);
     void fn_80016180(void);
@@ -12080,7 +12080,7 @@ s32 fn_801A0258(void) {
     extern u8 gBattleMap[];
 
     fn_80048A70();
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     Map_Get();
     fn_80040DA4();
     fn_80016180();
@@ -12334,7 +12334,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
     s32 Unit_SetMapPos(void *, u8, u8);
     s32 fn_80050C90(void *);
     s32 fn_80107D64(void *, u8 *, u8 *, s32, s32, s32);
-    s32 fn_8002297C(u8 *);
+    s32 Map_RefreshUnitMap(u8 *);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
 
@@ -12357,7 +12357,7 @@ s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
 
     fn_80107D64(var_r31, &sp8, &sp9, 0, 0, 0);
     Unit_SetMapPos(var_r31, sp8, sp9);
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
 
     fn_80050C90(var_r31);
 
@@ -12380,7 +12380,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     extern s32 gUiInputFlags;
     void *Process_Find(u8 *);
     void *Process_Create(u8 *, s32);
-    void fn_8002297C(u8 *);
+    void Map_RefreshUnitMap(u8 *);
     void Unit_SetMapPos(void *, u8, u8);
     void fn_8004FE98(void *, s32);
     void fn_80050C90(void *);
@@ -12478,7 +12478,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
             MoveAnim_BindPath(var_r31, temp_r28, temp_r0, var_r6);
         }
     }
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     return 1;
 }
 

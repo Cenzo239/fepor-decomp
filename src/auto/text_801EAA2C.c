@@ -274,7 +274,7 @@ void fn_801EB294(void *arg0)
 {
     void Process_Goto(void *, s32);
     u8 Allegiance_CompareIds(s32, u8);
-    void fn_8002297C(u8 *);
+    void Map_RefreshUnitMap(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void Map_HideMoveLimitView(void);
     void Map_ShowMoveLimitView(void);
@@ -405,7 +405,7 @@ void fn_801EB294(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1d9, 0x64);
                 }
@@ -417,7 +417,7 @@ void fn_801EB294(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
                 }
@@ -435,7 +435,7 @@ void fn_801EB294(void *arg0)
                 }
                 if (flag != 0) {
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                 }
             }
         } else {
@@ -505,7 +505,7 @@ void fn_801EBB00(void *arg0) {
     void String_CStr(void *);
     void fn_80106BCC(void);
     void fn_800A8400(void);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_80161F7C(void);
     void fn_8003F670(void *);
     void fn_80018AE4(void);
@@ -530,7 +530,7 @@ void fn_801EBB00(void *arg0) {
     String_CStr((u8 *)arg0 + 0x40);
     fn_80106BCC();
     fn_800A8400();
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     fn_80161F7C();
     fn_8003F670(*(void **)((u8 *)arg0 + 0x4C));
     goto end;

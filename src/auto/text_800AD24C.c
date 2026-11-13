@@ -3621,14 +3621,14 @@ s32 fn_800B7210(void)
     void fn_800162B8(void);
     void fn_801A7CDC(void *);
     void fn_80016DE0(void);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     extern u8 gBattle[];
     extern u8 gBattleMap[];
 
     fn_800162B8();
     fn_801A7CDC(gBattle);
     fn_80016DE0();
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     return 1;
 }
 
@@ -3661,7 +3661,7 @@ s32 fn_800B727C(void) {
 s32 fn_800B72CC(void) {
     void fn_800162B8(void);
     void fn_80016DE0(void);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_800BDED8(void *);
     void fn_800C32A4(void *);
     void fn_800C341C(void *);
@@ -3683,12 +3683,12 @@ s32 fn_800B72CC(void) {
     fn_800162B8();
     fn_801A7CDC(gBattle);
     fn_80016DE0();
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     fn_800BDED8(gBattleState + 0xB4);
     fn_8010FF90(gMapObjEventList);
     fn_800C341C(gConvoy);
     fn_800C32A4(gIconSlots);
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     return 1;
 }
 
@@ -5583,7 +5583,7 @@ s32 fn_800BA75C(s8 arg0, s8 arg1, s8 arg2) {
 
 s32 fn_800BA784(void) {
     M2C_UNK Allegiance_FillMask(M2C_UNK, M2C_UNK *);
-    M2C_UNK fn_8002297C(M2C_UNK *);
+    M2C_UNK Map_RefreshUnitMap(M2C_UNK *);
     M2C_UNK fn_8003DFB8();
     M2C_UNK Unit_SeparateRescue(u8, u8);
     M2C_UNK fn_800C1060();
@@ -5644,14 +5644,14 @@ loop_13:
         var_r29 += 1;
     } while ((s32) var_r29 <= 0x9F);
     
-    fn_8002297C(&gBattleMap);
+    Map_RefreshUnitMap(&gBattleMap);
     fn_800C0658();
     fn_800C1060();
     return 1;
 }
 
 s32 fn_800BA8F8(u8 arg0) {
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     M2C_UNK fn_8003DFB8(void *);
     M2C_UNK fn_801A251C(void);
     extern u8 gUnits[];
@@ -5667,7 +5667,7 @@ s32 fn_800BA8F8(u8 arg0) {
         return 0;
     }
     fn_8003DFB8(unit);
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     fn_801A251C();
     return 1;
 }
@@ -7098,7 +7098,7 @@ s32 fn_800BD10C(u8 arg0) {
 s32 fn_800BD1A4(u8 arg0, u8 arg1) {
     void Unit_SetMapPos(void *, s8, u8);
     void fn_8003EA84(void *, void *);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     extern u8 gBattleMap[];
     void *var_r31;
     void *var_r30;
@@ -7121,7 +7121,7 @@ s32 fn_800BD1A4(u8 arg0, u8 arg1) {
     }
     Unit_SetMapPos(var_r30, (s8)(*(u8 *)((u8 *)var_r31 + 0x19E) + 1), *(u8 *)((u8 *)var_r31 + 0x19F));
     fn_8003EA84(var_r31, var_r30);
-    fn_8002297C(&gBattleMap);
+    Map_RefreshUnitMap(&gBattleMap);
     return 1;
 }
 

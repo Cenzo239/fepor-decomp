@@ -398,7 +398,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void fn_80016180(void);
     void fn_800163F8(void);
     void *Unit_FindByName(void *);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void Unit_SetMapPos(void *, u8, u8);
     void fn_8004FE98(void *, s32);
     void fn_800C1BDC(void);
@@ -592,7 +592,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                 }
             }
             fn_800C4588(base);
-            fn_8002297C(gBattleMap);
+            Map_RefreshUnitMap(gBattleMap);
             fn_800163F8();
             fn_80016180();
             fn_800C1BDC();
@@ -606,13 +606,13 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
 }
 #pragma use_lmw_stmw reset
 
-extern void fn_8002297C(void* arg0);
+extern void Map_RefreshUnitMap(void* arg0);
 extern s32 fn_80183AB4(s32 arg0, s8 arg1, s8 arg2, void* arg3);
 extern s32 MoveAnim_BindPath(void* arg0, u16 arg1, void* arg2);
 void fn_801065A8(void *arg0) {
     void fn_80183AB4(void *, s32, s32, s32, void *);
     void MoveAnim_BindPath(void *, void *, u16, void *);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     extern u8 gBattleMap[];
     u16 flags;
     void *entry;
@@ -649,7 +649,7 @@ void fn_801065A8(void *arg0) {
         entry = (u8 *)entry + 0x110;
     }
 
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     *(u8 *)((u8 *)self + 0x61) = 1;
 }
 

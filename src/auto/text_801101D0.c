@@ -3101,7 +3101,7 @@ void fn_801186E4(void *arg0)
 {
     void Process_Goto(void *, s32);
     u8 Allegiance_CompareIds(s32, u8);
-    void fn_8002297C(u8 *);
+    void Map_RefreshUnitMap(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void Map_HideMoveLimitView(void);
     void Map_ShowMoveLimitView(void);
@@ -3224,7 +3224,7 @@ void fn_801186E4(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_80274508 + 0x211, 0x64);
                 }
@@ -3236,7 +3236,7 @@ void fn_801186E4(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
                 }
@@ -3253,7 +3253,7 @@ void fn_801186E4(void *arg0)
                 }
                 if (flag != 0) {
                     Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                 }
             }
         } else {
@@ -3303,7 +3303,7 @@ void fn_80118B7C(void *arg0) {
 
 void fn_80118C1C(void) {
     void fn_800A6AE4(void);
-    void fn_8002297C(void *);
+    void Map_RefreshUnitMap(void *);
     void fn_800C1060(s32);
     extern u8 gBattleMap[];
     extern u8 gMapBlendMode;
@@ -3311,7 +3311,7 @@ void fn_80118C1C(void) {
     u8 temp;
 
     fn_800A6AE4();
-    fn_8002297C(gBattleMap);
+    Map_RefreshUnitMap(gBattleMap);
     flag = 1;
     temp = (u8)(gMapBlendMode - 1);
     if (((u32)((flag | ~temp) - ((u32)(flag - temp) >> 1)) >> 31) == 0) {
@@ -3329,7 +3329,7 @@ void fn_80118C84(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
     u8 Allegiance_CompareIds(s32, u8);
-    void fn_8002297C(u8 *);
+    void Map_RefreshUnitMap(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void *fn_8002F658(void *, s32);
     void Map_HideMoveLimitView(void);
@@ -3528,7 +3528,7 @@ void fn_80118C84(void *arg0) {
                     flags = *(u32 *)((u8 *)unit + 0x1A0);
                     if (!(flags & 0x800)) {
                         *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
-                        fn_8002297C(gBattleMap);
+                        Map_RefreshUnitMap(gBattleMap);
                         Map_SetupUnitMoveLimit(unit);
                         Ui_PlaySeCue(lbl_80274508 + 0x211, 0x64);
                     }
@@ -3616,7 +3616,7 @@ void fn_80118C84(void *arg0) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
-                    fn_8002297C(gBattleMap);
+                    Map_RefreshUnitMap(gBattleMap);
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
                 }
@@ -3636,7 +3636,7 @@ void fn_80118C84(void *arg0) {
             }
             if (flag != 0) {
                 Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
-                fn_8002297C(gBattleMap);
+                Map_RefreshUnitMap(gBattleMap);
                 return;
             }
         }
