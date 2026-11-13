@@ -8352,45 +8352,46 @@ Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void Ui_FocusInvForListItem(void *arg0) {
+/* Bring the unit inventory forward for taking the selected list item, limiting slots by item flags. */
+void Ui_FocusInvForListItem(void *panel) {
     void Ui_BringChildToFront(void *, void *);
     s32 *ListWidget_GetSelected(void *);
     u64 *Item_GetFlagsPtr(s32);
     s16 UnitInv_FindEmpty(void *);
     s16 UnitInv_FindFilledUp(void *, s32);
 
-    void *obj54;
-    void *obj4c;
-    s16 var_r3;
-    u32 sp8;
-    s16 t;
+    void *list;
+    void *inv;
+    s16 slot;
+    u32 pos;
+    s16 x;
 
-    obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    obj54 = *(void **)((u8 *)arg0 + 0x54);
-    Ui_BringChildToFront(arg0, obj4c);
-    *(s32 *)((u8 *)obj4c + 0x5C) = 1;
-    if ((*(u64 *)Item_GetFlagsPtr(*ListWidget_GetSelected(obj54)) & 5ULL) != 0) {
-        *(s32 *)((u8 *)obj4c + 0x60) = 1;
-        *(u8 *)((u8 *)obj4c + 0x4B) = 1;
+    inv = *(void **)((u8 *)panel + 0x4C);
+    list = *(void **)((u8 *)panel + 0x54);
+    Ui_BringChildToFront(panel, inv);
+    *(s32 *)((u8 *)inv + 0x5C) = 1;
+    if ((*(u64 *)Item_GetFlagsPtr(*ListWidget_GetSelected(list)) & 5ULL) != 0) {
+        *(s32 *)((u8 *)inv + 0x60) = 1;
+        *(u8 *)((u8 *)inv + 0x4B) = 1;
     } else {
-        *(s32 *)((u8 *)obj4c + 0x60) = 2;
-        *(u8 *)((u8 *)obj4c + 0x4B) = 1;
+        *(s32 *)((u8 *)inv + 0x60) = 2;
+        *(u8 *)((u8 *)inv + 0x4B) = 1;
     }
-    var_r3 = UnitInv_FindEmpty(obj4c);
-    if (var_r3 >= 0) {
-        *(s16 *)((u8 *)obj4c + 0x4C) = var_r3;
+    slot = UnitInv_FindEmpty(inv);
+    if (slot >= 0) {
+        *(s16 *)((u8 *)inv + 0x4C) = slot;
     } else {
-        *(s16 *)((u8 *)obj4c + 0x4C) = UnitInv_FindFilledUp(obj4c, 0);
+        *(s16 *)((u8 *)inv + 0x4C) = UnitInv_FindFilledUp(inv, 0);
     }
-    sp8 = *(u32 *)((u8 *)obj54 + 0x7C);
+    pos = *(u32 *)((u8 *)list + 0x7C);
     {
-        s16 t6 = *(s16 *)&sp8;
-        t = t6 + (*(s16 *)((u8 *)obj54 + 0xA) - *(s16 *)((u8 *)obj4c + 0xA));
-        *(s16 *)((u8 *)obj4c + 0x50) = t;
-        *(s16 *)&sp8 = t;
-        *(s16 *)((u8 *)obj4c + 0x52) = *((s16 *)&sp8 + 1);
+        s16 t6 = *(s16 *)&pos;
+        x = t6 + (*(s16 *)((u8 *)list + 0xA) - *(s16 *)((u8 *)inv + 0xA));
+        *(s16 *)((u8 *)inv + 0x50) = x;
+        *(s16 *)&pos = x;
+        *(s16 *)((u8 *)inv + 0x52) = *((s16 *)&pos + 1);
     }
-    *(u8 *)((u8 *)obj4c + 0x48) = 1;
+    *(u8 *)((u8 *)inv + 0x48) = 1;
 }
 
 #pragma use_lmw_stmw on
