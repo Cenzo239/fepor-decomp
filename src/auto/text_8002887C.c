@@ -2580,7 +2580,7 @@ void Battle_ResetAllyTurnVisuals(void)
     void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
     void Map_RefreshUnitMap(void *);
-    void Unit_FadeAlpha(u8 *, s32, s32, f32);
+    void Unit_FadeFacing(u8 *, s32, s32, f32);
     extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern u8 gBattleState[];
@@ -2605,7 +2605,7 @@ void Battle_ResetAllyTurnVisuals(void)
                 *(u32 *)(unit + 0x1A0) &= ~1;
                 if (!((state[0x9E] >> 4) & 1)) {
                     if (Map_IsInViewBounds(gBattleMap, unit[0x19E], unit[0x19F]) != 0) {
-                        Unit_FadeAlpha(unit, 0x10, 0, lbl_80368DE8);
+                        Unit_FadeFacing(unit, 0x10, 0, lbl_80368DE8);
                     }
                 }
                 *(u32 *)(unit + 0x1A0) &= ~0x800;

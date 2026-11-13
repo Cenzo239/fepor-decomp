@@ -753,7 +753,7 @@ void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
     return proc;
 }
 
-void *Unit_FadeAlpha(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
+void *Unit_FadeFacing(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
