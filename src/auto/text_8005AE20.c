@@ -7215,22 +7215,23 @@ void DEMOBeforeRender(void)
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
-    void *rm;
+    void *rmode;
     u16 w;
     u16 h;
-    u32 flag;
+    u32 field;
 
+    /* Snapshot DVD check, optionally arm DEMO stats, set viewport, start GX frame. */
     gDvdCheckSnapshot = fn_80211690();
     if (gDemoStatEnable != 0) {
         fn_802208BC(0xFEEB);
         fn_80225BF4();
     }
-    rm = DEMORmode;
-    if (*((u8 *)rm + 0x18) != 0) {
-        flag = fn_8021173C();
-        fn_80224F94(flag, lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
+    rmode = DEMORmode;
+    if (*((u8 *)rmode + 0x18) != 0) {
+        field = fn_8021173C();
+        fn_80224F94(field, lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rmode + 4), (f32)*(u16 *)((u8 *)rmode + 6), lbl_803692C8, lbl_803692CC);
     } else {
-        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
+        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rmode + 4), (f32)*(u16 *)((u8 *)rmode + 6), lbl_803692C8, lbl_803692CC);
     }
     fn_80220198();
     fn_80222EB4();
