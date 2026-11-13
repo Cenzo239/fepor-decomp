@@ -355,7 +355,7 @@ u32 fn_80013B60(void *arg0) {
     return **(u32 **)((u8 *)p + 0x28);
 }
 
-void fn_80013BD4(void) {
+void ScriptCmd_CmWakeupScripts(void) {
     extern void *lbl_80367190;
     void fn_8000D3EC(void *, void *);
 

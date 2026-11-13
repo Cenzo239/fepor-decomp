@@ -2958,7 +2958,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_CmLoadScript(void);
     void ScriptCmd_CmFreeScript(void);
     void ScriptCmd_CmSleepScript(void);
-    void fn_80013BD4(void);
+    void ScriptCmd_CmWakeupScripts(void);
     void fn_80127A00(void);
     void fn_801279D4(void);
     void fn_80126F58(void);
@@ -3006,7 +3006,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x27E, ScriptCmd_CmLoadScript, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x28B, ScriptCmd_CmFreeScript, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x298, ScriptCmd_CmSleepScript, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x2A6, fn_80013BD4, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2A6, ScriptCmd_CmWakeupScripts, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2B6, fn_80127A00, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2BE, fn_801279D4, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2C6, fn_80126F58, 1);
