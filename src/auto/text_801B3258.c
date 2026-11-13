@@ -2765,7 +2765,7 @@ extern "C" void fn_801BADB0(void *arg0) {
 #pragma global_optimizer reset
 #pragma cplusplus reset
 
-void fn_801BB1FC(void *arg0) {
+void Ui_LayoutUnitManagePanel(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
