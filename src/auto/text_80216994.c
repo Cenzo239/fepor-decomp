@@ -2837,7 +2837,7 @@ s32 fn_80217BD0(void *arg0, s32 arg1);
 int fn_8021791C(s32 chan, u32 addr, void *callback);
 void fn_8021CA04(s32 chan, s32 result);
 #pragma dont_inline on
-void fn_8021C894(s32 chan, s32 result) {
+void __CARDWriteCallback(s32 chan, s32 result) {
     u8 *card;
     void (*callback)(s32, s32);
     u16 *fat;
