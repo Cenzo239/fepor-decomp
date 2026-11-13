@@ -8975,7 +8975,7 @@ s32 fn_801C9A90(void) {
     s32 fn_800DC3B0(s32);
     s32 fn_8011C984(s32, s32);
     s32 fn_8011C9E4(s32);
-    void fn_801C9EE0(void *, s32);
+    void CameraWin_LoadList(void *, s32);
     void fn_801CACE4(void *, s32);
     extern void *lbl_803682B8;
     s32 temp_r30;
@@ -8984,7 +8984,7 @@ s32 fn_801C9A90(void) {
     temp_r30 = fn_800DC3B0(M2C_FIELD(lbl_803682B8, s32 *, 0x438));
     temp_r31 = lbl_803682B8;
     fn_801CACE4((void *)fn_8011C984(M2C_FIELD(temp_r31, s32 *, 0x430), fn_8011C9E4(M2C_FIELD(temp_r31, s32 *, 0x430))), temp_r30);
-    fn_801C9EE0(lbl_803682B8, fn_8011C9E4(M2C_FIELD(lbl_803682B8, s32 *, 0x430)));
+    CameraWin_LoadList(lbl_803682B8, fn_8011C9E4(M2C_FIELD(lbl_803682B8, s32 *, 0x430)));
     return 0;
 }
 
@@ -9044,18 +9044,18 @@ s32 fn_801C9CBC(void) {
 
 s32 fn_801C9D58(void) {
     s32 fn_8011C9E4(s32);
-    void fn_801C9EE0(void *, s32);
+    void CameraWin_LoadList(void *, s32);
     extern void *lbl_803682B8;
 
     s32 temp_r3 = fn_8011C9E4(*(s32 *)((char *)lbl_803682B8 + 0x430));
-    fn_801C9EE0(lbl_803682B8, temp_r3);
+    CameraWin_LoadList(lbl_803682B8, temp_r3);
     return 0;
 }
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
-void fn_801C9EE0(void *arg0, s32 arg1) {
+void CameraWin_LoadList(void *arg0, s32 arg1) {
     s32 fn_800C9400(void *, s32, u32, char *, u32);
     void String_AssignCStr(void *, char *, u32);
     void String_Assign(void *, void *, s32, s32);
@@ -9161,8 +9161,8 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw reset
 
 void fn_801CA1B8(s32 arg0) {
-    void fn_801C9EE0(s32, s32);
-    fn_801C9EE0(arg0, 0);
+    void CameraWin_LoadList(s32, s32);
+    CameraWin_LoadList(arg0, 0);
 }
 
 void fn_801CA1DC(void *arg0, s32 arg1) {
