@@ -2303,7 +2303,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
 s32 fn_80246EBC(u8 arg0,u32 arg1){
 StreamQueueNode *fn_80246288(StreamQueueNode*,u8,u32*);void fn_80247F1C(s32,u8,s32);
 extern u32 lbl_80368960;extern f32 lbl_8036C1B0,lbl_8036C1B4,lbl_8036C1B8;extern f64 lbl_8036C1C0;
-f64 fn_802387A8(f64,f64);f64 fn_802381A4(f64);
+f64 fn_802387A8(f64,f64);f64 floor(f64);
 u32 changed=0;s32 off=arg0*0x38;StreamTempo *tempo=(StreamTempo*)((u8*)lbl_80368968+off+0x1508);
 StreamTempo *t;StreamQueueNode *node;u32 time;s32 i,j;u32 *event;f32 f;
 goto check;
@@ -2330,7 +2330,7 @@ t->cursor+=2;
 t=(StreamTempo*)((u8*)lbl_80368968+off+0x1508);
 f=lbl_8036C1B0*((f32)t->value*(f32)arg1)*(lbl_8036C1B4*(f32)t->scale);
 t->timing[t->active*2]=__cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8*f,lbl_8036C1C0));
-t->timing[t->active*2+1]=(s32)(f32)fn_802381A4(f);
+t->timing[t->active*2+1]=(s32)(f32)floor(f);
 }
 tempo->count++;
 if(!lbl_80368968->voices){
@@ -2365,7 +2365,7 @@ void fn_80247358(u32 arg0) {
     s32 fn_8024B7DC(s32);
     void fn_8025FA50(s32, u8, u8, s32);
     f64 fn_802387A8(f64, f64);
-    f64 fn_802381A4(f64);
+    f64 floor(f64);
     SynthVoice *sv;
     SynthVoice *svNext;
     StreamTempo *t;
@@ -2427,7 +2427,7 @@ outer:
         t = (StreamTempo *)((u8 *)lbl_80368968 + 0x1508);
         f = lbl_8036C1B0 * ((f32)t->value * (f32)arg0) * (lbl_8036C1B4 * (f32)t->scale);
         t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8 * f, lbl_8036C1C0));
-        t->timing[t->active * 2 + 1] = (s32)(f32)fn_802381A4(f);
+        t->timing[t->active * 2 + 1] = (s32)(f32)floor(f);
         result = (u32)fn_80246EBC(0, arg0);
         for (i = 0; i < 2; i++) {
             node = *(VidList **)((u8 *)lbl_80368968 + 0xE64 + i * 4);
@@ -2532,7 +2532,7 @@ outer:
             t = (StreamTempo *)((u8 *)lbl_80368968 + (u32)ch * 0x38 + 0x1508);
             f27 = f28 * ((f32)t->value * (f32)arg0) * (f30 * (f32)t->scale);
             t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(f31 * f27, lbl_8036C1C0));
-            t->timing[t->active * 2 + 1] = (s32)(f32)fn_802381A4(f27);
+            t->timing[t->active * 2 + 1] = (s32)(f32)floor(f27);
             result |= (u32)fn_80246EBC(ch, arg0);
         }
         for (i = 0; i < 2; i++) {

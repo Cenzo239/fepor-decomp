@@ -3475,7 +3475,7 @@ void fn_802380D0(void* arg0, s32 arg1, s32 arg2) {
 
 extern f64 lbl_8036C138;
 extern f64 lbl_8036C140;
-f64 fn_802381A4(f64 x) {
+f64 floor(f64 x) {
     s32 i0;
     u32 i1;
     s32 j0;
@@ -3688,7 +3688,7 @@ f64 fn_80236C94(f64 farg0, f64 farg1) {
 }
 
 s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
-    f64 fn_802381A4(f64);
+    f64 floor(f64);
     f64 fn_80238378(s32, f64);
     extern s32 lbl_80282E88[];
     extern f64 lbl_80282E98[];
@@ -3767,7 +3767,7 @@ s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
             /* finish residual */
         }
         y = fn_80238378(expn, 1.0);
-        y = y - lbl_8036C070 * fn_802381A4(lbl_8036C078 * y);
+        y = y - lbl_8036C070 * floor(lbl_8036C078 * y);
         expn = (s32)y;
         z = y - (f64)expn;
         sign = 0;
