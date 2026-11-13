@@ -4463,7 +4463,7 @@ extern "C" void fn_80190590(void *arg0) {
         0xB3, 0x10);
 }
 
-extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
+extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
     M2C_UNK fn_8005C7E8(s32);
     u32 fn_8005C84C();
     M2C_UNK fn_8005F494(s32 *, s32);

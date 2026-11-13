@@ -1408,7 +1408,7 @@ void fn_801B0F60(void *arg0) {
 
 void fn_801B1130(void *arg0)
 {
-    extern void fn_801905FC(void *, void *);
+    extern void Forge_BindWeaponActor(void *, void *);
 
     u8 *obj;
     u8 *data;
@@ -1424,7 +1424,7 @@ void fn_801B1130(void *arg0)
 
     if (*(s16 *)(state + 0x3E) != 4) {
         target = *(u8 **)(obj + 0x50);
-        fn_801905FC(target, data + 0x60);
+        Forge_BindWeaponActor(target, data + 0x60);
     }
 
     target = *(u8 **)(obj + 0x4C);
@@ -1818,7 +1818,7 @@ void fn_801B1ED4(void *arg0) {
     u32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
     M2C_UNK Ui_AddChild(void *, void *);
     M2C_UNK fn_8014027C(void *, s16 *, M2C_UNK, s16);
-    M2C_UNK fn_801905FC(void *, M2C_UNK *);
+    M2C_UNK Forge_BindWeaponActor(void *, M2C_UNK *);
     extern M2C_UNK lbl_8028FDB0;
     extern M2C_UNK lbl_80292230;
     extern M2C_UNK lbl_80296228;
@@ -1942,7 +1942,7 @@ void fn_801B1ED4(void *arg0) {
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s16 *, 8) = 5;
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s16 *, 0x24) = 8;
         }
-        fn_801905FC(M2C_FIELD(arg0, void **, 0x50), &gUnitRef);
+        Forge_BindWeaponActor(M2C_FIELD(arg0, void **, 0x50), &gUnitRef);
         if (Ui_FindChild(arg0, 5, 0) == 0U) {
             Ui_AddChild(arg0, M2C_FIELD(arg0, void **, 0x50));
         }
