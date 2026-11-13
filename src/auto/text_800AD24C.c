@@ -9597,7 +9597,7 @@ void fn_800C3864(s32 arg0, s32 arg1) {
 }
 
 extern struct Unit;
-s32 fn_800C388C(s32 *arg0, s32 arg1) {
+s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     s32 temp_r3;
     s32 i;
     s32 j;
