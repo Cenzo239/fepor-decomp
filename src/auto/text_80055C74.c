@@ -1217,7 +1217,7 @@ void fn_80058910(void *arg0, u8 arg1) {
 }
 
 #pragma scheduling off
-void fn_80058970(void *arg0, void *arg1) {
+void GActor_SetNodeLinkParam(void *arg0, void *arg1) {
     M2C_FIELD(arg0, u8 *, 0x38) = (u8) M2C_FIELD(arg1, u8 *, 0);
     M2C_FIELD(arg0, u8 *, 0x39) = (u8) M2C_FIELD(arg1, u8 *, 1);
     M2C_FIELD(arg0, u8 *, 0x3A) = (u8) M2C_FIELD(arg1, u8 *, 2);

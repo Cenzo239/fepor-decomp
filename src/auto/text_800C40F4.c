@@ -12474,7 +12474,7 @@ u32 fn_800E4C5C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     }
     *(u32 *)((char *)arg0 + 0xE8) = GActor_CreateNodeLink(*(s32 *)((char *)arg0 + 0xE0), arg1, arg2, 4);
     sp8 = lbl_80369F38;
-    fn_80058970(*(u32 *)((char *)arg0 + 0xE8), &sp8);
+    GActor_SetNodeLinkParam(*(u32 *)((char *)arg0 + 0xE8), &sp8);
     if (arg3 != 0) {
         fn_80058910(*(u32 *)((char *)arg0 + 0xE8), 1);
     }
@@ -12723,7 +12723,7 @@ u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     lbl_80369F38 = r5;
     
     // Call with r5 and address of global
-    fn_80058970(r5, &lbl_80369F38);
+    GActor_SetNodeLinkParam(r5, &lbl_80369F38);
     
     // Conditional call
     if (arg3 != 0) {

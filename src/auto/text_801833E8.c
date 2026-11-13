@@ -2343,7 +2343,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
 void MoveAnim_PollPadNodeLinks(void *arg0) {
     u32 GActor_CreateNodeLink(s32, void *, void *, void *);
     void GActor_StopNodeLink(s32);
-    void fn_80058970(void *, void *);
+    void GActor_SetNodeLinkParam(void *, void *);
     u8 Pad_IsButton(void *, s32);
     extern u8 MoveAnim_str[];
     s32 sp20;
@@ -2361,7 +2361,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, arg0);
         sp20 = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
     }
     if (Pad_IsButton((void *)temp_r31, 0x15) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2369,7 +2369,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, arg0);
         sp1C = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
     }
     if (Pad_IsButton((void *)temp_r31, 0x16) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2377,7 +2377,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, arg0);
         sp18 = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
     }
     if (Pad_IsButton((void *)temp_r31, 0x17) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2385,7 +2385,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, arg0);
         sp14 = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
     }
     if (Pad_IsButton((void *)temp_r31, 0x18) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2393,7 +2393,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, arg0);
         sp10 = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
     }
     if (Pad_IsButton((void *)temp_r31, 0x1A) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2401,7 +2401,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, arg0);
         spC = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
     }
     if (Pad_IsButton((void *)temp_r31, 0x1B) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -2409,7 +2409,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         }
         M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, arg0);
         sp8 = M2C_FIELD(arg0, s32 *, 0x34);
-        fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
+        GActor_SetNodeLinkParam((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
     }
     if (Pad_IsButton((void *)temp_r31, 0x19) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
@@ -13631,7 +13631,7 @@ void fn_80198F8C(s32 arg0, s32 arg1) {
 void fn_80198FB0(void *arg0) {
     u32 fn_800E4C5C(void *, u32, u32, u8);
     s32 fn_8001B9F4(void *);
-    void fn_80058970(void *, void *);
+    void GActor_SetNodeLinkParam(void *, void *);
     extern u32 lbl_802967E0[];
     extern u32 lbl_80296810[];
     s32 sp8;
@@ -13644,7 +13644,7 @@ void fn_80198FB0(void *arg0) {
     p = *(void **)((u8 *)arg0 + 0x148);
     if (p != NULL) {
         sp8 = fn_8001B9F4(p);
-        fn_80058970((void *)result, &sp8);
+        GActor_SetNodeLinkParam((void *)result, &sp8);
     }
 }
 
