@@ -457,7 +457,7 @@ void __GXInitGX(void) {
     extern u8 *__GXData;
     extern u8 lbl_8029DBA0[];
     extern GXRenderModeObj GXNtsc480IntDf;
-    extern GXRenderModeObj lbl_8029E020;
+    extern GXRenderModeObj GXPal528IntDf;
     extern GXRenderModeObj lbl_8029E05C;
     extern GXRenderModeObj lbl_8029DFE4;
     extern s32 lbl_8036BCB4;
@@ -492,7 +492,7 @@ void __GXInitGX(void) {
         rmode = &GXNtsc480IntDf;
         break;
     case 1:
-        rmode = &lbl_8029E020;
+        rmode = &GXPal528IntDf;
         break;
     case 5:
         rmode = &lbl_8029E05C;
