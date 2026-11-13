@@ -3905,19 +3905,19 @@ void fn_8015B954(s16 arg0, s16 arg1, s32 arg2) {
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     extern s32 gUiTexAtlas;
-    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367BD0;
+    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } gUiAtlasRect75;
     s16 temp_r31;
     s16 temp_r30;
 
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, 0x75);
-    temp_r31 = (s16)(lbl_80367BD0.f6 - lbl_80367BD0.f2);
-    temp_r30 = (s16)(lbl_80367BD0.f4 - lbl_80367BD0.f0);
+    temp_r31 = (s16)(gUiAtlasRect75.f6 - gUiAtlasRect75.f2);
+    temp_r30 = (s16)(gUiAtlasRect75.f4 - gUiAtlasRect75.f0);
     if (temp_r30 != 0 && temp_r31 != 0) {
         Prim2D_Begin();
         Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg2 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)arg0, (f32)arg1, (f32)lbl_80367BD0.f0, (f32)lbl_80367BD0.f2, (f32)temp_r30, (f32)temp_r31);
+        Prim2D_SetRectUv((f32)arg0, (f32)arg1, (f32)gUiAtlasRect75.f0, (f32)gUiAtlasRect75.f2, (f32)temp_r30, (f32)temp_r31);
         Prim2D_EndPrim();
     }
 }

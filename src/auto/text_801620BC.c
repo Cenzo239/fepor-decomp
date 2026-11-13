@@ -10,7 +10,7 @@ void fn_801620BC(void) {
     extern M2C_UNK lbl_80367BB8;
     extern M2C_UNK lbl_80367BC0;
     extern M2C_UNK lbl_80367BC8;
-    extern M2C_UNK lbl_80367BD0;
+    extern M2C_UNK gUiAtlasRect75;
     extern M2C_UNK lbl_80367BD8;
     extern M2C_UNK lbl_80367BE0;
     extern M2C_UNK lbl_80367BE8;
@@ -188,7 +188,7 @@ void fn_801620BC(void) {
     fn_80163214(&lbl_80367BB8, 0x15E, 0x2A, 0x266, 0x7F);
     fn_80163214(&lbl_80367BC0, 0x15E, 0x80, 0x266, 0x9A);
     fn_80163214(&lbl_80367BC8, 0x15E, 0x80, 0x266, 0x9A);
-    fn_80163214(&lbl_80367BD0, 0, 0, 0x160, 0x88);
+    fn_80163214(&gUiAtlasRect75, 0, 0, 0x160, 0x88);
     fn_80163214(&lbl_80367BD8, 0, 0, 0x110, 0x80);
     fn_80163214(&lbl_80367BE0, 0, 0, 0x160, 0x88);
     fn_80163214(&lbl_80367BE8, 0, 0, 0x110, 0x80);
