@@ -6651,7 +6651,7 @@ void fn_80194374(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801943FC(void *arg0) {
+extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     void fn_8000D8BC(s32, s32);
