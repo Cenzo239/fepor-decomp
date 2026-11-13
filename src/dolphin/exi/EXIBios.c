@@ -757,6 +757,7 @@ void EXIIntrruptHandler(s16 interrupt, OSContext *context)
 void OSClearContext(void *);
 void OSSetCurrentContext(void *);
 #pragma scheduling off
+/* EXI transfer-complete IRQ: finish DMA/imm transfer and invoke the channel's tcCallback. */
 void TCIntrruptHandler(s16 interrupt, OSContext *context)
 {
     s32 chan;
