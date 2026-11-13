@@ -13136,13 +13136,13 @@ void fn_801A251C(void) {
 
 void fn_801A2570(void) {
     void fn_800C1060(void);
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     s32 var_r5;
     s32 temp_r0;
     s32 t;
 
     var_r5 = 1;
-    temp_r0 = (u8)(lbl_80367289 - 1);
+    temp_r0 = (u8)(gMapBlendMode - 1);
     t = ~temp_r0;
     t = var_r5 | t;
     if (((u32)(t - ((u32)(var_r5 - temp_r0) >> 1)) >> 31) == 0) {

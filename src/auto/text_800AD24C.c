@@ -8945,7 +8945,7 @@ s32 fn_800C1730(void) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     extern s32 lbl_8036785C;
     extern s32 lbl_80369D20;
     extern f32 lbl_80369D28;
@@ -8966,7 +8966,7 @@ s32 fn_800C1730(void) {
     f32 t1;
     f32 t2;
 
-    if ((s32)lbl_80367289 == 0) {
+    if ((s32)gMapBlendMode == 0) {
         return 0;
     }
     t5 = lbl_80369D4C;
@@ -8986,7 +8986,7 @@ s32 fn_800C1730(void) {
     fn_80224E50(spC, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
     GXSetTevOrder(r31, r30, r29, 4);
-    switch ((s32)lbl_80367289) {
+    switch ((s32)gMapBlendMode) {
     case 1:
         GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
         GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
@@ -9013,9 +9013,9 @@ void fn_800C1984(void) {
     void fn_800462FC(s32, s32, void *);
     void fn_80046360(s32, s32, void *, s32, s32, s32);
     void fn_800C1730(void);
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
 
-    if (lbl_80367289 == 0) {
+    if (gMapBlendMode == 0) {
         fn_800462FC(fn_80040844(), 0, fn_800C1730);
         return;
     }

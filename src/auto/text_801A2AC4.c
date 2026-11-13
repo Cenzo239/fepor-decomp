@@ -118,12 +118,12 @@ s32 fn_801A2C30(s32 arg0) {
   s32 fn_801A2CC0(void) {
     s32 fn_801044E0(s32);
     extern s32 gUiContext;
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     u8 temp_r0;
     u8 var_r4;
 
     var_r4 = 1;
-    temp_r0 = lbl_80367289 - 1;
+    temp_r0 = gMapBlendMode - 1;
     if (((u32) ((1 | ~temp_r0) - ((u32) (1 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
         var_r4 = 0;
     }

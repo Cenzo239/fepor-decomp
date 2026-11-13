@@ -162,7 +162,7 @@ void fn_8001F140(void *arg0) {
     void fn_80022DAC(void *, s32, s32);
     void fn_800AACDC(void *);
     extern u8 gUnitLists[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
 
     void *node;
     void *next;
@@ -313,7 +313,7 @@ void fn_8001F140(void *arg0) {
     }
 
     a = 1;
-    b = lbl_80367289;
+    b = gMapBlendMode;
     b = (u8)(b - 1);
     x = ~b;
     y = a - b;
@@ -1506,7 +1506,7 @@ void fn_8002297C(void *arg0)
     void fn_8010FAA8(void);
     extern u8 gUnits[];
     extern u8 gBattleState[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
 
     u8 buf1[8];
     u8 buf2[8];
@@ -1530,7 +1530,7 @@ void fn_8002297C(void *arg0)
 #pragma optimization_level 1
     f = 1;
     self = arg0;
-    t = (u8)(lbl_80367289 - 1);
+    t = (u8)(gMapBlendMode - 1);
     if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
         f = 0;
     }
@@ -3881,7 +3881,7 @@ void fn_80026FA0(void *arg0) {
 void fn_80027F98(void *arg0, u8 arg1) {
     s8 fn_8003A398(void);
     void fn_800C1060(s32);
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     u8 temp_r0;
     u8 var_r4;
     void *p;
@@ -3892,7 +3892,7 @@ void fn_80027F98(void *arg0, u8 arg1) {
     *(u8 *)((u8 *)arg0 + 0x12) = 0;
     fn_8002297C(&gBattleMap);
     var_r4 = 1;
-    temp_r0 = lbl_80367289 - 1;
+    temp_r0 = gMapBlendMode - 1;
     if (((u32)((var_r4 | ~temp_r0) - ((u32)(var_r4 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
         var_r4 = 0;
     }
@@ -4053,15 +4053,16 @@ s32 fn_800284B4(void *arg0) {
     return 6;
 }
 
+#pragma global_optimizer off
 void fn_800285C0(void *arg0) {
+    void fn_80037BD0(void *, s32);
+    s32 b;
     void *p;
-    s8 b;
-    void fn_80037BD0(void *, s8);
     b = (s8)*((u8 *)arg0 + 0xA);
     p = *(void **)arg0;
     fn_80037BD0(p, b);
 }
-
+#pragma global_optimizer reset
 void fn_800285EC(void) {
     extern u8 lbl_80367707;
     extern u8 lbl_80330EAC[];

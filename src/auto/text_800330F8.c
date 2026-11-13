@@ -6297,7 +6297,7 @@ u8 fn_80040B1C(void *arg0, s32 arg1, s32 arg2) {
 
 void Map_DecodeHeaderFlags(void *arg0) {
     extern u8 gBattleState[];
-    extern s8 lbl_80367289;
+    extern s8 gMapBlendMode;
     extern s8 lbl_8036728A;
 
     s32 temp_r4;
@@ -6311,28 +6311,28 @@ void Map_DecodeHeaderFlags(void *arg0) {
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
             var_r5 = 0;
         }
-        lbl_80367289 = var_r5;
+        gMapBlendMode = var_r5;
         break;
     case 0xC0000:
         var_r5 = 2;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
             var_r5 = 0;
         }
-        lbl_80367289 = var_r5;
+        gMapBlendMode = var_r5;
         break;
     case 0x40000:
         var_r5 = 3;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
             var_r5 = 0;
         }
-        lbl_80367289 = var_r5;
+        gMapBlendMode = var_r5;
         break;
     default:
         var_r5 = 0;
         if (*(u8 *)((char *)gBattleState + 0xA6) != 1) {
             var_r5 = 0;
         }
-        lbl_80367289 = var_r5;
+        gMapBlendMode = var_r5;
         break;
     }
     temp_r3 = *(s32 *)((char *)arg0 + 0x64) & 0x01F00000;
@@ -6462,7 +6462,7 @@ void fn_80041514(void *arg0, char *arg1)
     extern u8 lbl_8036728E;
     extern s8 lbl_80366E90;
     extern u8 lbl_80367AF6;
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
 
     s64 t0;
     u8 sp18[0x30];
@@ -6699,7 +6699,7 @@ void fn_80041514(void *arg0, char *arg1)
     if (M2C_FIELD(arg0, s32 *, 0x68) == 0) {
         fn_800C1BDC();
         fn_800C1984();
-        if ((u8)(lbl_80367289 - 1) >= 1) {
+        if ((u8)(gMapBlendMode - 1) >= 1) {
             fn_8014716C(1);
         } else {
             fn_8014716C(0);
@@ -9220,14 +9220,14 @@ void fn_80048A3C(s8 arg0, s8 arg1, s8 arg2, u8 *arg3) {
 
 void fn_80048A70(s8 arg0) {
     extern u8 gBattleState[];
-    extern s8 lbl_80367289;
+    extern s8 gMapBlendMode;
     s8 var_r3;
 
     var_r3 = arg0;
     if ((u8) gBattleState[0xA6] != 1) {
         var_r3 = 0;
     }
-    lbl_80367289 = var_r3;
+    gMapBlendMode = var_r3;
 }
 
 void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {

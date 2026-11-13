@@ -1400,13 +1400,13 @@ s32 fn_800A6630(s32 arg0) {
 s32 fn_800A66B4(void) {
     s32 fn_801044E0(s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     u32 c;
     u32 t;
     u32 v;
 
     c = 1;
-    t = (u8)(lbl_80367289 - 1);
+    t = (u8)(gMapBlendMode - 1);
     v = (c | ~t) - ((1 - t) >> 1);
     if ((v >> 31) == 0) {
         c = 0;

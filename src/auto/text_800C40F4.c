@@ -22263,13 +22263,13 @@ void fn_800FF75C(void *arg0) {
     extern M2C_UNK gBattleMap;
     extern M2C_UNK gUiContext;
     extern M2C_UNK gBattleState;
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     u8 temp_r0;
     u8 var_r7;
 
     var_r7 = 1;
     M2C_FIELD(arg0, s8 *, 0x34) = 1;
-    temp_r0 = lbl_80367289 - 1;
+    temp_r0 = gMapBlendMode - 1;
     if (((u32) ((1 | ~temp_r0) - ((u32) (1 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
         var_r7 = 0;
     }
@@ -22320,7 +22320,7 @@ done:
 void fn_800FF9A8(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     s32 f;
@@ -22328,7 +22328,7 @@ void fn_800FF9A8(void *arg0) {
 
 #pragma optimization_level 1
     f = 1;
-    t = (u8)(lbl_80367289 - 1);
+    t = (u8)(gMapBlendMode - 1);
     if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
         f = 0;
     }
@@ -22349,7 +22349,7 @@ void fn_800FF9A8(void *arg0) {
 #pragma optimization_level 1
 void fn_800FFA78(void *arg0) {
     void fn_801848D8(void *, s32, s32, s32);
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
@@ -22363,7 +22363,7 @@ void fn_800FFA78(void *arg0) {
 
     f = 1;
     saved = *(void **)gUiContext;
-    t = (u8)(lbl_80367289 - 1);
+    t = (u8)(gMapBlendMode - 1);
     if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
         f = 0;
     }

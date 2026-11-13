@@ -2080,13 +2080,13 @@ void fn_8002D7BC(s32 arg0) {
     void fn_8002297C(void *);
     void fn_800C1060(s32);
     extern u8 gBattleMap[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     s32 temp;
     u8 var_r4;
 
     fn_8002297C(gBattleMap);
     var_r4 = 1;
-    temp = (u8)(lbl_80367289 - 1);
+    temp = (u8)(gMapBlendMode - 1);
     if (((u32)((1 | ~temp) - ((u32)(1 - temp) >> 1)) >> 31) == 0) {
         var_r4 = 0;
     }

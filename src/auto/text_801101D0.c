@@ -1480,8 +1480,6 @@ void fn_8011390C(void *arg0) {
 extern "C" void fn_80113930(void *arg0) {
     struct Vec3 {
         f32 x, y, z;
-        Vec3() {}
-        Vec3(f32 _x, f32 _y, f32 _z) { x = _x; y = _y; z = _z; }
     };
     struct Actor {
         u8 pad0[0x40];
@@ -1504,7 +1502,7 @@ extern "C" void fn_80113930(void *arg0) {
     void fn_8019914C(void *, void *, void *, void *);
     void fn_801985C4(void *);
     extern f32 lbl_8036A184;
-    f32 zero = lbl_8036A184;
+    extern u16 gActorXmlStrs[];
     Vec3 a;
     Vec3 b;
     Vec3 c;
@@ -1512,15 +1510,15 @@ extern "C" void fn_80113930(void *arg0) {
     Vec3 tmpB;
     Actor *other;
 
-    a.z = zero;
-    a.y = zero;
-    a.x = zero;
-    b.z = zero;
-    b.y = zero;
-    b.x = zero;
-    c.z = zero;
-    c.y = zero;
-    c.x = zero;
+    a.z = lbl_8036A184;
+    a.y = lbl_8036A184;
+    a.x = lbl_8036A184;
+    b.z = lbl_8036A184;
+    b.y = lbl_8036A184;
+    b.x = lbl_8036A184;
+    c.z = lbl_8036A184;
+    c.y = lbl_8036A184;
+    c.x = lbl_8036A184;
 
     fn_800E4E7C(&tmpA, arg0, (char *)gActorXmlStrs + 0x464);
     a.x = tmpA.x;
@@ -3317,14 +3315,14 @@ void fn_80118C1C(void) {
     void fn_8002297C(void *);
     void fn_800C1060(s32);
     extern u8 gBattleMap[];
-    extern u8 lbl_80367289;
+    extern u8 gMapBlendMode;
     u8 flag;
     u8 temp;
 
     fn_800A6AE4();
     fn_8002297C(gBattleMap);
     flag = 1;
-    temp = (u8)(lbl_80367289 - 1);
+    temp = (u8)(gMapBlendMode - 1);
     if (((u32)((flag | ~temp) - ((u32)(flag - temp) >> 1)) >> 31) == 0) {
         flag = 0;
     }
