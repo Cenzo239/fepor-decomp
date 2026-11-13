@@ -2997,105 +2997,106 @@ void fn_800256A0(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x10) = (s32) (M2C_FIELD(arg0, s32 *, 0x10) & temp_r4);
 }
 
-void Pad_UpdateButtons(void *arg0) {
-    u32 temp_r4;
-    void *temp_r3;
-    void *temp_r4_10;
-    void *temp_r4_2;
-    void *temp_r4_3;
-    void *temp_r4_4;
-    void *temp_r4_5;
-    void *temp_r4_6;
-    void *temp_r4_7;
-    void *temp_r4_8;
-    void *temp_r4_9;
+void Pad_UpdateButtons(void *pad) {
+    /* Copy PAD buttons, OR stick/C-stick dir flags past ±0x23, then apply disable mask. */
+    u32 disableMask;
+    void *status;
+    void *status2;
+    void *status3;
+    void *status4;
+    void *status5;
+    void *status6;
+    void *status7;
+    void *status8;
+    void *status9;
+    void *status10;
 
-    M2C_FIELD(arg0, s32 *, 4) = (s32) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u16 *, 0);
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 2) < -0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x01000000);
+    *(s32 *)((u8 *)pad + 4) = (s32)*(u16 *)(*(void **)pad);
+    if ((s8)*((u8 *)*(void **)pad + 2) < -0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x01000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 2) > 0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x02000000);
+    if ((s8)*((u8 *)*(void **)pad + 2) > 0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x02000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 3) < -0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x04000000);
+    if ((s8)*((u8 *)*(void **)pad + 3) < -0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x04000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 3) > 0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x08000000);
+    if ((s8)*((u8 *)*(void **)pad + 3) > 0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x08000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 4) < -0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x10000000);
+    if ((s8)*((u8 *)*(void **)pad + 4) < -0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x10000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 4) > 0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x20000000);
+    if ((s8)*((u8 *)*(void **)pad + 4) > 0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x20000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 5) < -0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x40000000);
+    if ((s8)*((u8 *)*(void **)pad + 5) < -0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x40000000);
     }
-    if ((s8) M2C_FIELD(M2C_FIELD(arg0, void **, 0), u8 *, 5) > 0x23) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) | 0x80000000);
+    if ((s8)*((u8 *)*(void **)pad + 5) > 0x23) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) | 0x80000000);
     }
-    temp_r4 = M2C_FIELD(arg0, u32 *, 0x18);
-    if (temp_r4 != 0) {
-        M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) & ~temp_r4);
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x01000000) {
-            temp_r4_2 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_2, u8 *, 2) < 0) {
-                M2C_FIELD(temp_r4_2, u8 *, 2) = 0U;
+    disableMask = *(u32 *)((u8 *)pad + 0x18);
+    if (disableMask != 0) {
+        *(s32 *)((u8 *)pad + 4) = (s32)(*(s32 *)((u8 *)pad + 4) & ~disableMask);
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x01000000) {
+            status2 = *(void **)pad;
+            if ((s8)*((u8 *)status2 + 2) < 0) {
+                *((u8 *)status2 + 2) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x02000000) {
-            temp_r4_3 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_3, u8 *, 2) > 0) {
-                M2C_FIELD(temp_r4_3, u8 *, 2) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x02000000) {
+            status3 = *(void **)pad;
+            if ((s8)*((u8 *)status3 + 2) > 0) {
+                *((u8 *)status3 + 2) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x04000000) {
-            temp_r4_4 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_4, u8 *, 3) < 0) {
-                M2C_FIELD(temp_r4_4, u8 *, 3) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x04000000) {
+            status4 = *(void **)pad;
+            if ((s8)*((u8 *)status4 + 3) < 0) {
+                *((u8 *)status4 + 3) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x08000000) {
-            temp_r4_5 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_5, u8 *, 3) > 0) {
-                M2C_FIELD(temp_r4_5, u8 *, 3) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x08000000) {
+            status5 = *(void **)pad;
+            if ((s8)*((u8 *)status5 + 3) > 0) {
+                *((u8 *)status5 + 3) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x10000000) {
-            temp_r4_6 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_6, u8 *, 4) < 0) {
-                M2C_FIELD(temp_r4_6, u8 *, 4) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x10000000) {
+            status6 = *(void **)pad;
+            if ((s8)*((u8 *)status6 + 4) < 0) {
+                *((u8 *)status6 + 4) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x20000000) {
-            temp_r4_7 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_7, u8 *, 4) > 0) {
-                M2C_FIELD(temp_r4_7, u8 *, 4) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x20000000) {
+            status7 = *(void **)pad;
+            if ((s8)*((u8 *)status7 + 4) > 0) {
+                *((u8 *)status7 + 4) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x40000000) {
-            temp_r4_8 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_8, u8 *, 5) < 0) {
-                M2C_FIELD(temp_r4_8, u8 *, 5) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x40000000) {
+            status8 = *(void **)pad;
+            if ((s8)*((u8 *)status8 + 5) < 0) {
+                *((u8 *)status8 + 5) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x80000000) {
-            temp_r4_9 = M2C_FIELD(arg0, void **, 0);
-            if ((s8) M2C_FIELD(temp_r4_9, u8 *, 5) > 0) {
-                M2C_FIELD(temp_r4_9, u8 *, 5) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x80000000) {
+            status9 = *(void **)pad;
+            if ((s8)*((u8 *)status9 + 5) > 0) {
+                *((u8 *)status9 + 5) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x40) {
-            temp_r4_10 = M2C_FIELD(arg0, void **, 0);
-            if ((u8) M2C_FIELD(temp_r4_10, u8 *, 6) != 0) {
-                M2C_FIELD(temp_r4_10, u8 *, 6) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x40) {
+            status10 = *(void **)pad;
+            if ((u8)*((u8 *)status10 + 6) != 0) {
+                *((u8 *)status10 + 6) = 0U;
             }
         }
-        if (M2C_FIELD(arg0, u32 *, 0x18) & 0x20) {
-            temp_r3 = M2C_FIELD(arg0, void **, 0);
-            if ((u8) M2C_FIELD(temp_r3, u8 *, 7) != 0) {
-                M2C_FIELD(temp_r3, u8 *, 7) = 0U;
+        if (*(u32 *)((u8 *)pad + 0x18) & 0x20) {
+            status = *(void **)pad;
+            if ((u8)*((u8 *)status + 7) != 0) {
+                *((u8 *)status + 7) = 0U;
             }
         }
     }
