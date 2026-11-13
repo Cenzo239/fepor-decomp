@@ -1712,7 +1712,7 @@ void fn_802007E0(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_80009B8C(s32);
-    void fn_80009B80(s32);
+    void Prim2D_SetAlphaByte(s32);
     void fn_80009C0C(f32);
     M2C_UNK fn_80200A7C(M2C_UNK, M2C_UNK, s16, s16, s32 *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
@@ -1768,7 +1768,7 @@ void fn_802007E0(void *arg0) {
     }
     
     fn_80009B8C((s32) (lbl_8036BBE4 * var_f1));
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     
     sp8 = lbl_8036BBD4;
@@ -2129,7 +2129,7 @@ void fn_802016EC(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_80201778(void *arg0) {
-    void fn_80009B80(s32);
+    void Prim2D_SetAlphaByte(s32);
     void fn_80009C0C(f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -2259,7 +2259,7 @@ extern "C" void fn_80201778(void *arg0) {
     }
     Prim2D_Begin();
     fn_80009C0C(lbl_8036BC14);
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 #pragma use_lmw_stmw reset

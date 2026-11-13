@@ -150,7 +150,7 @@ void fn_80163728(void *arg0, void *arg1) {
     void Prim2D_PrepareTex(void);
     s32 fn_800102BC(s32, f32);
     void fn_8008BF68(s16, s32, u8);
-    void fn_80009B80(s32);
+    void Prim2D_SetAlphaByte(s32);
     void **vt0 = (void **)M2C_FIELD(arg0, u32 *, 0x00);
     s16 temp_r31;
     s16 var_r29;
@@ -251,11 +251,11 @@ void fn_80163728(void *arg0, void *arg1) {
         temp_r25_2_final = (s16)((s32)(temp_r25 - temp_r25_2) >> 1);
 
         Prim2D_Begin();
-        fn_80009B80(0x40);
+        Prim2D_SetAlphaByte(0x40);
         Prim2D_PrepareTex();
         fn_8008BF68(var_r28, temp_r24_2 + temp_r25_2_final, 0);
         Prim2D_Begin();
-        fn_80009B80(0x80);
+        Prim2D_SetAlphaByte(0x80);
         Prim2D_PrepareTex();
     }
 }
@@ -643,7 +643,7 @@ void fn_80164350(void *arg0, void *arg1) {
     void Prim2D_PrepareTex(void);
     s32 fn_800102BC(s32, f32);
     void fn_8008BF68(s16, s32, u8);
-    void fn_80009B80(s32);
+    void Prim2D_SetAlphaByte(s32);
     s16 temp_r24;
     s16 temp_r27;
     s16 var_r28;
@@ -717,11 +717,11 @@ void fn_80164350(void *arg0, void *arg1) {
             var_r24 = (s16)((s32)var_r24 + (s32)(s16)((s16 (*)(void *))((void **)M2C_FIELD(arg0, void **, 0x00))[11])(arg0));
         }
         Prim2D_Begin();
-        fn_80009B80(0x40);
+        Prim2D_SetAlphaByte(0x40);
         Prim2D_PrepareTex();
         fn_8008BF68(var_r28, (s32)(s16)var_r24 + (s32)(s16)temp_r26_2, 0);
         Prim2D_Begin();
-        fn_80009B80(0x80);
+        Prim2D_SetAlphaByte(0x80);
         Prim2D_PrepareTex();
     }
 }
@@ -9785,7 +9785,7 @@ void *fn_801769C0(void *arg0, s16 arg1) {
 #pragma cplusplus on
 extern "C" void fn_8015AD7C(s32, s32, s32, s16, s32, s32);
 extern "C" void fn_80161AA8(s32, s32, s16, s32, s32, void *);
-extern "C" s32 fn_80009B80(u8);
+extern "C" s32 Prim2D_SetAlphaByte(u8);
 extern "C" void fn_80176A3C(void *arg0, s32 arg1) {
     struct Obj {
         u8 pad[4];
@@ -9838,7 +9838,7 @@ extern "C" void fn_80176A3C(void *arg0, s32 arg1) {
     }
     fn_8015AD7C(0, 0, ((Obj *)arg0)->v18(), y, 0xE6, 0x10);
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     y = y - ((Obj *)arg0)->v20() - 8;
     h = ((Obj *)arg0)->v18() - 0x10;
@@ -9852,7 +9852,7 @@ extern "C" void fn_80176A3C(void *arg0, s32 arg1) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     void fn_80009C0C(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -9946,7 +9946,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     if (*((u8 *)arg1 + 0x2D) == 0 && *((u8 *)arg1 + 0x2E) == 0) {
         flag = true;
     }
-    fn_80009B80(flag ? 0x80 : 0x40);
+    Prim2D_SetAlphaByte(flag ? 0x80 : 0x40);
     Prim2D_PrepareTex();
     {
         s32 flag2 = 0;
@@ -9972,7 +9972,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     fn_80009C0C(lbl_8036AB84);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 #pragma use_lmw_stmw reset
@@ -10059,7 +10059,7 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
     fn_80007124(temp_r31);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 
@@ -10236,7 +10236,7 @@ extern "C" void fn_80177854(void *arg0, void *arg1, void *arg2) {
     void fn_80007858(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     s32 fn_800102BC(s32, f32);
@@ -10357,7 +10357,7 @@ extern "C" void fn_80177854(void *arg0, void *arg1, void *arg2) {
     }
 
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -10985,7 +10985,7 @@ extern "C" void fn_80178B98(void *arg0, void *arg1) {
 #pragma cplusplus reset
 extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_80009B8C(u8);
-extern "C" M2C_UNK fn_80009B80(u8);
+extern "C" M2C_UNK Prim2D_SetAlphaByte(u8);
 extern "C" void fn_80178C5C(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
@@ -11026,7 +11026,7 @@ extern "C" void fn_80178C5C(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
         flag = true;
     }
-    fn_80009B80(flag ? 0x80 : 0x40);
+    Prim2D_SetAlphaByte(flag ? 0x80 : 0x40);
     Prim2D_PrepareTex();
 }
 
@@ -11068,21 +11068,21 @@ extern "C" void fn_80178D88(void *arg0) {
     };
     void Prim2D_Begin(void);
     void fn_80009C0C(f32);
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     void Prim2D_PrepareTex(void);
     extern f32 lbl_8036AB80;
 
     ((Obj *)arg0)->v30();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036AB80);
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_80178DCC(void *arg0, void *arg1) {
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     void fn_80009C0C(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -11178,7 +11178,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
         flag = true;
     }
-    fn_80009B80(flag ? 0x80 : 0x40);
+    Prim2D_SetAlphaByte(flag ? 0x80 : 0x40);
     Prim2D_PrepareTex();
     flag2 = 0;
     if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
@@ -11203,7 +11203,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     fn_80009C0C(lbl_8036AB84);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 #pragma use_lmw_stmw reset
@@ -11356,10 +11356,10 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
 }
 
 void fn_801793B4(void) {
-    M2C_UNK fn_80009B80(M2C_UNK);
+    M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 

@@ -378,7 +378,7 @@ void TabMenu_Draw(void *arg0) {
     void fn_8000A174(void *, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     void fn_80056B0C(s32);
     void fn_801E6CEC(void *);
     void fn_80009BC0(void *, s32);
@@ -426,7 +426,7 @@ void TabMenu_Draw(void *arg0) {
     if ((s8)*(u8 *)((u8 *)arg0 + 0x30) == 0) {
         alpha = 0x80;
     }
-    fn_80009B80((u8)alpha);
+    Prim2D_SetAlphaByte((u8)alpha);
     Prim2D_PrepareTex();
     fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x64), lbl_80332000, 4);
     Prim2D_Begin();
@@ -444,7 +444,7 @@ void TabMenu_Draw(void *arg0) {
     if ((s32)*(u8 *)((u8 *)arg0 + 0x30) == 1) {
         alpha = 0x80;
     }
-    fn_80009B80((u8)alpha);
+    Prim2D_SetAlphaByte((u8)alpha);
     Prim2D_PrepareTex();
     fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x64), lbl_80332000, 5);
     Prim2D_Begin();
@@ -461,7 +461,7 @@ void TabMenu_Draw(void *arg0) {
     if ((s32)*(u8 *)((u8 *)arg0 + 0x30) == 2) {
         alpha = 0x80;
     }
-    fn_80009B80((u8)alpha);
+    Prim2D_SetAlphaByte((u8)alpha);
     Prim2D_PrepareTex();
     fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x64), lbl_80332000, 6);
     Prim2D_Begin();
@@ -474,7 +474,7 @@ void TabMenu_Draw(void *arg0) {
     t4 = *(s16 *)(rect + 4);
     Prim2D_SetRectUv(lbl_8036B708, lbl_8036B700, (f32)gTabMenuTabRect, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
     Prim2D_Begin();
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     fn_80056B0C(*(s32 *)((u8 *)arg0 + 0x60));
     fn_801E6CEC(arg0);

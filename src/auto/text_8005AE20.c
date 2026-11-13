@@ -7638,7 +7638,7 @@ void fn_8006F710(void *arg0, void *arg1) {
     void Prim2D_SetTransform(f32, f32, f32, f32);
     f32 fn_80023EE0(void *);
     void fn_80009B8C(s32);
-    void fn_80009B80(u8);
+    void Prim2D_SetAlphaByte(u8);
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
@@ -7685,7 +7685,7 @@ void fn_8006F710(void *arg0, void *arg1) {
     if ((u8)flag != 0) {
         val = 0x80;
     }
-    fn_80009B80((u8)val);
+    Prim2D_SetAlphaByte((u8)val);
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset

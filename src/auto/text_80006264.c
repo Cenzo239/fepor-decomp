@@ -1962,7 +1962,7 @@ void fn_80009B28(void) {
     *(u8 *)(*(u8 **)&lbl_80367140 + 0xa8) = 2;
 }
 
-void fn_80009B80(s8 arg0) {
+void Prim2D_SetAlphaByte(s8 arg0) {
     extern void *lbl_80367140;
     M2C_FIELD(lbl_80367140, s8 *, 0x24) = arg0;
 }

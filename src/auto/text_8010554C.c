@@ -2153,7 +2153,7 @@ check:
     }
 }
 #pragma cplusplus reset
-void fn_80009B80(s8 arg0);
+void Prim2D_SetAlphaByte(s8 arg0);
 void fn_80009B8C(s8 arg0);
 void fn_80009C20(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8);
 void fn_80109244(struct Arg0 *arg0) {
@@ -2171,7 +2171,7 @@ void fn_80109244(struct Arg0 *arg0) {
     outer = a0->unk30;
     fn_80009C20(outer, a0->unk40, a0->unk44, a0->unk48 + (f32)outer->unk6, a0->unk4C, a0->unk50, a0->unk54, a0->unk58, arg0->unk5C);
     fn_80009B8C(a0->unk60);
-    fn_80009B80(a0->unk61);
+    Prim2D_SetAlphaByte(a0->unk61);
     Prim2D_PrepareTex();
     if (outer->unk5 == 0) {
         i = outer->unk4 - 1;
@@ -2191,7 +2191,7 @@ void fn_80109244(struct Arg0 *arg0) {
     }
     Prim2D_Begin();
     fn_80009B8C(0xFF);
-    fn_80009B80(0x80);
+    Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
 
