@@ -2091,7 +2091,7 @@ void fn_80016538(void)
 void fn_80016628(s32 arg0) {
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_800158A0(M2C_UNK *);
-    M2C_UNK fn_8003B6F0(M2C_UNK *, s32);
+    M2C_UNK Unit_Clear(M2C_UNK *, s32);
     u8 Unit_Read(M2C_UNK *, s32);
     extern M2C_UNK gUnits;
     extern M2C_UNK gUnitLists;
@@ -2118,7 +2118,7 @@ void fn_80016628(s32 arg0) {
     var_r31 = &gUnits;
     var_r28 = &gUnits;
     do {
-        fn_8003B6F0(var_r28, var_r29 + 1);
+        Unit_Clear(var_r28, var_r29 + 1);
         fn_80015718(temp_r27, var_r28);
         var_r29 += 1;
         var_r28 += 0x280;
@@ -2160,7 +2160,7 @@ void fn_800167E4(void *arg0)
     s32 Status_Test(void *, s32);
     void Unit_MoveToList(void *, s32);
     void fn_80016F78(void *);
-    void fn_8003B6F0(void *, s32);
+    void Unit_Clear(void *, s32);
     void fn_8003CA94(void *, void *);
     void Array_Destroy(void *, void *, s32, s32);
     void fn_8001C5F8(void);
@@ -2211,7 +2211,7 @@ void fn_800167E4(void *arg0)
     }
 
     fn_80016F78(temp);
-    fn_8003B6F0(temp, -1);
+    Unit_Clear(temp, -1);
 
     unit = base;
 
@@ -2446,7 +2446,7 @@ s32 fn_80016C58(s32 arg0)
 
 void fn_80016DE0(void) {
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
-    M2C_UNK fn_8003B6F0(M2C_UNK *, s32);
+    M2C_UNK Unit_Clear(M2C_UNK *, s32);
     extern M2C_UNK gUnits;
     extern M2C_UNK gUnitLists;
     M2C_UNK *temp_r30;
@@ -2465,7 +2465,7 @@ void fn_80016DE0(void) {
     var_r29 = 0;
     var_r31 = &gUnits;
     do {
-        fn_8003B6F0(var_r31, var_r29 + 1);
+        Unit_Clear(var_r31, var_r29 + 1);
         fn_80015718(temp_r30, var_r31);
         var_r29 += 1;
         var_r31 += 0x280;

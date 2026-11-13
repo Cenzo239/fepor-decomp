@@ -929,10 +929,10 @@ void *BattleUnit_Copy(void *dst, void *src) {
 }
 
 void BattleUnit_Reset(void *arg0) {
-    void fn_8003B6F0(void *, s32);
+    void Unit_Clear(void *, s32);
     void fn_8001D580(void *);
 
-    fn_8003B6F0(arg0, 0);
+    Unit_Clear(arg0, 0);
     *(u32*)(((char*)arg0) + 0x280) = 0;
     fn_8001D580(((char*)arg0) + 0x284);
     fn_8001D580(((char*)arg0) + 0x28C);
