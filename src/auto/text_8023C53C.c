@@ -10006,7 +10006,7 @@ done:
 
 s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
 extern u8 gSoundVoiceCount, gSoundStudioCount;
-extern u8 *lbl_80368A88, *lbl_80368A98, *gSoundVoices, *lbl_80368A9C, *lbl_80368A94;
+extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *lbl_80368A9C, *lbl_80368A94;
 extern s32 lbl_80368A68;
 extern u8 lbl_8035B838[];
 void *fn_802637D0(u32); void *fn_802637A4(u32);
@@ -10016,7 +10016,7 @@ void DCFlushRange(void *,u32); void DCFlushRangeNoSync(void *,u32); void DCInval
 u32 i; u32 off; u8 *p; u8 *studio;
 gSoundVoiceCount=arg0; gSoundStudioCount=arg1;
 lbl_80368A68=fn_80262AD0();
-if (!(lbl_80368A88=fn_802637D0(0x800))) goto fail;
+if (!(gSoundAuxBuf=fn_802637D0(0x800))) goto fail;
 if (!(lbl_80368A98=fn_802637D0(0x280))) goto fail;
 memset(lbl_80368A98,0,0x280); DCFlushRange(lbl_80368A98,0x280);
 if (!(gSoundVoices=fn_802637A4(gSoundVoiceCount*0xF8))) goto fail;
@@ -10468,7 +10468,7 @@ void fn_8025A3A4(void *arg0, u32 arg1) {
     void fn_8025C99C(void *, s32);
     void fn_8025CA80(void *);
     void fn_8020516C(void *, u16);
-    extern u8 *lbl_80368A88;
+    extern u8 *gSoundAuxBuf;
     extern u32 lbl_80368A6C;
     extern u8 *lbl_80368A80;
     extern u8 *lbl_80368A78;
@@ -10492,7 +10492,7 @@ void fn_8025A3A4(void *arg0, u32 arg1) {
     u32 len;
 
     saved = arg0;
-    aux = lbl_80368A88;
+    aux = gSoundAuxBuf;
     lbl_80368A6C = 0;
     lbl_80368A80 = aux;
     lbl_80368A78 = aux;
@@ -14927,7 +14927,7 @@ s32 fn_80263534(void)
 
 void fn_80263608(s32 arg0)
 {
-    extern u32 lbl_80368A88;
+    extern u32 gSoundAuxBuf;
     extern u16 lbl_80368A84;
     extern u32 lbl_80368B18;
 
@@ -14943,7 +14943,7 @@ void fn_80263608(s32 arg0)
     fn_8025A3A4(arg0, value);
 
     value = 0;
-    value = lbl_80368A88;
+    value = gSoundAuxBuf;
     lbl_80368B18 = 0;
 
     fn_802037B0();
