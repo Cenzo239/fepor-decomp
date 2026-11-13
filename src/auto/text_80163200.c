@@ -12857,7 +12857,7 @@ s32 fn_8017BC94(void *arg0) {
     return count;
 }
 
-s32 fn_8017BD58(void *arg0) {
+s32 Unit_CountExtraSkills(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
     u8 *temp_r31;

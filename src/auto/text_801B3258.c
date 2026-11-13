@@ -4773,7 +4773,7 @@ s32 fn_801BE92C(void *arg0) {
     void *Res_GetEntry(u8);
     u8 fn_801058C4(void *, void *);
     void Ui_FindChild(void *, s32, s32);
-    u32 fn_8017BD58(void);
+    u32 Unit_CountExtraSkills(void);
     s32 Unit_GetSkillCapacityUsed(void *);
     extern u8 gUiUnitPanelClass[];
     extern u32 gUiContext[];
@@ -4789,7 +4789,7 @@ s32 fn_801BE92C(void *arg0) {
     ret = Process_Find(gUiUnitPanelClass);
     temp_r31 = (void *)gUiContext[0];
     Ui_FindChild(ret, 0x106, 0);
-    if (fn_8017BD58() >= 5U) {
+    if (Unit_CountExtraSkills() >= 5U) {
         *((s8 *)arg0 + 4) = -1;
         return 2;
     }
