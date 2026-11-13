@@ -8644,28 +8644,60 @@ void fn_80142814(s32 arg0, s16 arg1, s16 arg2, s32 arg3, s32 *arg4, s32 arg5) {
     UnitRef_DrawSell(*arg4, arg5, arg1, arg2);
 }
 
-s32 Item_GetUiKind(s32 unused, void **arg1) {
-void *Item_GetFlagsPtr(void **);
-s32 result=12;
-void *p=*arg1;
-u8 kind;
-if(p)kind=*(u8*)((u8*)p+0x12);else kind=12;
-switch(kind){
-case 0:result=0;break;
-case 1:result=1;break;
-case 2:result=2;break;
-case 3:result=3;break;
-case 4:result=4;break;
-case 5:result=5;break;
-case 6:result=6;break;
-case 7:
-if((*(u64*)Item_GetFlagsPtr(arg1)&3ULL)!=0){result=7;break;}
-case 8:result=8;break;
-case 9:result=9;break;
-case 10:result=10;break;
-case 11:case 12:result=12;break;
-}
-return result;
+s32 Item_GetUiKind(s32 unused, void **itemRef) {
+    /* Return the item's kind for UI; kind 7 keeps 7 only when flags & 3, else becomes 8. */
+    void *Item_GetFlagsPtr(void **);
+    s32 result = 12;
+    void *item = *itemRef;
+    u8 kind;
+
+    if (item) {
+        kind = *(u8 *)((u8 *)item + 0x12);
+    } else {
+        kind = 12;
+    }
+    switch (kind) {
+    case 0:
+        result = 0;
+        break;
+    case 1:
+        result = 1;
+        break;
+    case 2:
+        result = 2;
+        break;
+    case 3:
+        result = 3;
+        break;
+    case 4:
+        result = 4;
+        break;
+    case 5:
+        result = 5;
+        break;
+    case 6:
+        result = 6;
+        break;
+    case 7:
+        if ((*(u64 *)Item_GetFlagsPtr(itemRef) & 3ULL) != 0) {
+            result = 7;
+            break;
+        }
+    case 8:
+        result = 8;
+        break;
+    case 9:
+        result = 9;
+        break;
+    case 10:
+        result = 10;
+        break;
+    case 11:
+    case 12:
+        result = 12;
+        break;
+    }
+    return result;
 }
 
 #pragma cplusplus on
