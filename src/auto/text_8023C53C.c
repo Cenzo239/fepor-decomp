@@ -10005,7 +10005,7 @@ done:
 }
 
 s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
-extern u8 lbl_80368AD2, lbl_80368AD1;
+extern u8 gSoundVoiceCount, lbl_80368AD1;
 extern u8 *lbl_80368A88, *lbl_80368A98, *lbl_80368AA0, *lbl_80368A9C, *lbl_80368A94;
 extern s32 lbl_80368A68;
 extern u8 lbl_8035B838[];
@@ -10014,16 +10014,16 @@ s32 fn_80262AD0(void); void fn_80259A94(s32,s32,s32); void fn_80259A5C(void);
 void fn_8020516C(void *,u16);
 void DCFlushRange(void *,u32); void DCFlushRangeNoSync(void *,u32); void DCInvalidateRange(void *,u32);
 u32 i; u32 off; u8 *p; u8 *studio;
-lbl_80368AD2=arg0; lbl_80368AD1=arg1;
+gSoundVoiceCount=arg0; lbl_80368AD1=arg1;
 lbl_80368A68=fn_80262AD0();
 if (!(lbl_80368A88=fn_802637D0(0x800))) goto fail;
 if (!(lbl_80368A98=fn_802637D0(0x280))) goto fail;
 memset(lbl_80368A98,0,0x280); DCFlushRange(lbl_80368A98,0x280);
-if (!(lbl_80368AA0=fn_802637A4(lbl_80368AD2*0xF8))) goto fail;
-if (!(lbl_80368A9C=fn_802637D0(lbl_80368AD2*0x40))) goto fail;
-DCInvalidateRange(lbl_80368A9C,lbl_80368AD2*0x40);
+if (!(lbl_80368AA0=fn_802637A4(gSoundVoiceCount*0xF8))) goto fail;
+if (!(lbl_80368A9C=fn_802637D0(gSoundVoiceCount*0x40))) goto fail;
+DCInvalidateRange(lbl_80368A9C,gSoundVoiceCount*0x40);
 p=lbl_80368A9C;
-for(i=0,off=0;i<lbl_80368AD2;off+=0xF8,i++) {
+for(i=0,off=0;i<gSoundVoiceCount;off+=0xF8,i++) {
 lbl_80368AA0[off+240]=0;
 lbl_80368AA0[off+241]=0;
 lbl_80368AA0[off+242]=0;
@@ -13290,7 +13290,7 @@ u32 fn_802614C4(u32 arg0) {
 
 void fn_802614CC(void) {
     extern u8 lbl_80368978;
-    extern u8 lbl_80368AD2;
+    extern u8 gSoundVoiceCount;
     extern u8 lbl_80368AD3;
     extern u8 lbl_80368AD4;
     extern u32 lbl_80368AA0;
@@ -13332,7 +13332,7 @@ void fn_802614CC(void) {
         lbl_80368AD4 = ad4 ^ 1;
         lbl_80368AD3 = (u8)(next % 3);
 
-        while (i < lbl_80368AD2) {
+        while (i < gSoundVoiceCount) {
             off = i * 0xF8 + 0x24;
             *(u32 *)((u8 *)lbl_80368AA0 + off) = zero;
             *(u32 *)((u8 *)lbl_80368AA0 + off + 4) = zero;
