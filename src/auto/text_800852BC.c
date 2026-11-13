@@ -2499,7 +2499,8 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     Prim2D_SetQuadMax((f32)half, (f32)bottom, (f32)(u32)sp.w, (f32)(u32)sp.h);
     Prim2D_EmitQuad(); col2 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
 }
-u16 Ui_DrawMsgPanelAlt(s32 arg0, s32 arg1) {
+u16 Ui_DrawMsgPanelAlt(s32 x, s32 y) {
+    /* Draw UI atlas tile 0x38 as a 2D rect at (x, y); return its width. */
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2517,13 +2518,13 @@ u16 Ui_DrawMsgPanelAlt(s32 arg0, s32 arg1) {
     extern f32 lbl_80369708;
     struct {
         u8 buf[0x20];
-        u16 x;
-        u16 y;
+        u16 w;
+        u16 h;
     } sp;
 
     Ui_LoadAtlasTex(gUiAtlas, sp.buf, 0x38);
-    sp.x = GXGetTexObjWidth(sp.buf);
-    sp.y = GXGetTexObjHeight(sp.buf);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
@@ -2531,12 +2532,12 @@ u16 Ui_DrawMsgPanelAlt(s32 arg0, s32 arg1) {
     Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.x, (f32)sp.y);
+    Prim2D_SetRect((f32)x, (f32)y, (f32)sp.w, (f32)sp.h);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369708);
     Prim2D_PrepareTex();
-    return sp.x;
+    return sp.w;
 }
 
 u16 fn_8008B09C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
