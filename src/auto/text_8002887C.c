@@ -3976,7 +3976,7 @@ void *fn_80032D4C(void) {
 
 void *fn_80032D5C(void) {
     s32 fn_80019E24(u8);
-    void fn_8001D818(void *, s32);
+    void UnitRef_Set(void *, s32);
     void *fn_8010FF24(void *, u8, u8, s32);
     extern u8 gUiContext[];
     extern u8 lbl_8032BB58[];
@@ -3988,7 +3988,7 @@ void *fn_80032D5C(void) {
     p = gUiContext;
     temp = fn_8010FF24(lbl_8032BB58, p[0xD], p[0xE], 7);
     val = fn_80019E24(*(u8 *)((u8 *)temp + 4));
-    fn_8001D818(&lbl_80367278, val);
+    UnitRef_Set(&lbl_80367278, val);
     return &lbl_80367278;
 }
 
@@ -4051,10 +4051,10 @@ void fn_80033024(void) {
 
 M2C_UNK *fn_80033044(void) {
     s32 fn_80019E04(void *);
-    M2C_UNK fn_8001D818(M2C_UNK *, s32);
+    M2C_UNK UnitRef_Set(M2C_UNK *, s32);
     extern u8 lbl_802695F0[];
     extern M2C_UNK lbl_80367278;
-    fn_8001D818(&lbl_80367278, fn_80019E04(lbl_802695F0 + 0xE5));
+    UnitRef_Set(&lbl_80367278, fn_80019E04(lbl_802695F0 + 0xE5));
     return &lbl_80367278;
 }
 

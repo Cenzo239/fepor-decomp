@@ -2371,7 +2371,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
     return 1;
 }
 
-s32 fn_8001D818(void *arg0, void *arg1) {
+s32 UnitRef_Set(void *arg0, void *arg1) {
     void fn_800C3220(void *, s32);
     extern u8 lbl_803206EC[];
     typedef struct {

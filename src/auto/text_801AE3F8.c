@@ -1960,7 +1960,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     u16 fn_8001D2A4(void *);
-    void fn_8001D818(void *, void *);
+    void UnitRef_Set(void *, void *);
     void fn_8011D79C(s32);
     void *fn_80134280(void *);
     void fn_8013FDA0(void *);
@@ -2037,7 +2037,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     if (cur != fn_80134280(*(void **)((u8 *)arg0 + 0x44))) {
         cur = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
         if (gUnitRef != cur) {
-            fn_8001D818(&gUnitRef, cur);
+            UnitRef_Set(&gUnitRef, cur);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)arg0 + 0x44))->v9();
@@ -2045,7 +2045,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
         }
     }
     if (gUnitRef != cur) {
-        fn_8001D818(&gUnitRef, cur);
+        UnitRef_Set(&gUnitRef, cur);
     }
     child->unk3C = fn_8001D2A4(&gUnitRef);
     flags = gUiInputFlags;
