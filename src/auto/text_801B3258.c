@@ -14697,7 +14697,7 @@ void fn_801D8C0C(void *arg0, s16 arg1)
 #pragma opt_common_subs off
 void FileMenu_InitEntry(void *arg0, s16 arg1, s16 arg2)
 {
-    extern u32 lbl_8027E228[12];
+    extern u32 gFileMenuMsgKeys[12];
     extern u8 gUiSeCues[];
     void *Msg_Expand(u32);
     void strcpy(void *, u8 *);
@@ -14705,18 +14705,18 @@ void FileMenu_InitEntry(void *arg0, s16 arg1, s16 arg2)
     u32 stack[12];
     s16 idx;
 
-    stack[0] = lbl_8027E228[0];
-    stack[1] = lbl_8027E228[1];
-    stack[2] = lbl_8027E228[2];
-    stack[3] = lbl_8027E228[3];
-    stack[4] = lbl_8027E228[4];
-    stack[5] = lbl_8027E228[5];
-    stack[6] = lbl_8027E228[6];
-    stack[7] = lbl_8027E228[7];
-    stack[8] = lbl_8027E228[8];
-    stack[9] = lbl_8027E228[9];
-    stack[10] = lbl_8027E228[10];
-    stack[11] = lbl_8027E228[11];
+    stack[0] = gFileMenuMsgKeys[0];
+    stack[1] = gFileMenuMsgKeys[1];
+    stack[2] = gFileMenuMsgKeys[2];
+    stack[3] = gFileMenuMsgKeys[3];
+    stack[4] = gFileMenuMsgKeys[4];
+    stack[5] = gFileMenuMsgKeys[5];
+    stack[6] = gFileMenuMsgKeys[6];
+    stack[7] = gFileMenuMsgKeys[7];
+    stack[8] = gFileMenuMsgKeys[8];
+    stack[9] = gFileMenuMsgKeys[9];
+    stack[10] = gFileMenuMsgKeys[10];
+    stack[11] = gFileMenuMsgKeys[11];
     memset(arg0, 0, 0x34);
     *(s16 *)((u8 *)arg0 + 2) = 0;
     *(s16 *)((u8 *)arg0 + 0) = 0;
