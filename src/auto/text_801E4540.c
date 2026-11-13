@@ -395,7 +395,7 @@ void TabMenu_Draw(void *arg0) {
     extern f64 lbl_8036B6E0;
     extern f32 lbl_8036B6F4;
     extern f32 lbl_8036B6F8;
-    extern s16 lbl_8036830C;
+    extern s16 gTabMenuTabRect;
     extern f32 lbl_8036B6FC;
     extern f32 lbl_8036B700;
     extern f32 lbl_8036B704;
@@ -433,12 +433,12 @@ void TabMenu_Draw(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    rect = (u8 *)&lbl_8036830C;
+    rect = (u8 *)&gTabMenuTabRect;
     t2 = *(s16 *)(rect + 2);
     t6 = *(s16 *)(rect + 6);
-    t0 = lbl_8036830C;
+    t0 = gTabMenuTabRect;
     t4 = *(s16 *)(rect + 4);
-    fn_8000770C(lbl_8036B6FC, lbl_8036B700, (f32)lbl_8036830C, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
+    fn_8000770C(lbl_8036B6FC, lbl_8036B700, (f32)gTabMenuTabRect, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
     Prim2D_Begin();
     alpha = 0x40;
     if ((s32)*(u8 *)((u8 *)arg0 + 0x30) == 1) {
@@ -453,9 +453,9 @@ void TabMenu_Draw(void *arg0) {
     Prim2D_AddPrim(1);
     t2 = *(s16 *)(rect + 2);
     t6 = *(s16 *)(rect + 6);
-    t0 = lbl_8036830C;
+    t0 = gTabMenuTabRect;
     t4 = *(s16 *)(rect + 4);
-    fn_8000770C(lbl_8036B704, lbl_8036B700, (f32)lbl_8036830C, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
+    fn_8000770C(lbl_8036B704, lbl_8036B700, (f32)gTabMenuTabRect, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
     Prim2D_Begin();
     alpha = 0x40;
     if ((s32)*(u8 *)((u8 *)arg0 + 0x30) == 2) {
@@ -470,9 +470,9 @@ void TabMenu_Draw(void *arg0) {
     Prim2D_AddPrim(1);
     t2 = *(s16 *)(rect + 2);
     t6 = *(s16 *)(rect + 6);
-    t0 = lbl_8036830C;
+    t0 = gTabMenuTabRect;
     t4 = *(s16 *)(rect + 4);
-    fn_8000770C(lbl_8036B708, lbl_8036B700, (f32)lbl_8036830C, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
+    fn_8000770C(lbl_8036B708, lbl_8036B700, (f32)gTabMenuTabRect, (f32)*(s16 *)(rect + 2), (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
     Prim2D_Begin();
     fn_80009B80(0x80);
     Prim2D_PrepareTex();

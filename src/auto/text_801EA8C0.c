@@ -6,7 +6,7 @@
 extern u16 gTabMenuHeaderRect;
 extern u16 lbl_80368304;
 extern u16 lbl_8036831C;
-extern u16 lbl_8036830C;
+extern u16 gTabMenuTabRect;
 extern u16 lbl_80368314;
 extern u16 lbl_80368324;
 extern u16 lbl_8036832C;
