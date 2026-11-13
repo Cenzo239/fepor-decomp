@@ -971,7 +971,7 @@ void fn_8001885C(void) {
 }
 
 s32 Camera_HasMoved(u8 arg0) {
-    extern f32 lbl_80368CB0;
+    extern f32 gCamEyeMoveThreshLoose;
     f32 var_f2;
     u8 r;
     void *p;
@@ -1006,7 +1006,7 @@ s32 Camera_HasMoved(u8 arg0) {
     if (q == NULL) {
         r = 0;
     } else {
-        var_f2 = lbl_80368CB0;
+        var_f2 = gCamEyeMoveThreshLoose;
         if (arg0 != 0) {
             var_f2 = lbl_80368C8C;
         }
