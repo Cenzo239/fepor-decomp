@@ -328,7 +328,7 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
     return result;
 }
 #pragma use_lmw_stmw reset
-s32 fn_80226698(void *arg0, u8 *arg1, s32 arg2) {
+s32 TRKAppendBuffer(void *arg0, u8 *arg1, s32 arg2) {
     s32 var_r0;
     s32 var_r7;
     s32 var_r9;
@@ -759,7 +759,7 @@ s32 fn_80227444(void *arg0) {
 
 s32 TRKDoReadRegisters(void *arg0) {
 void TRKResetBuffer(void*,u32);
-s32 fn_80226698(void*,void*,s32);
+s32 TRKAppendBuffer(void*,void*,s32);
 s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended1(u16,u16,void*,s32*,s32);
@@ -779,7 +779,7 @@ fn_8022B078(invalid,0x40);return 0;
 request[4]=0x80; *(s32*)request=0x468;
 TRKResetBuffer(arg0,0);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-fn_80226698(arg0,request,0x40);
+TRKAppendBuffer(arg0,request,0x40);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 err=TRKTargetAccessDefault(0,0x24,arg0,&outLen,1);
 MWTRACE(4,strings+0xc0,err);
@@ -968,7 +968,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     void *TRKGetBuffer(s32);
     s32 fn_802262E8(s32);
     s32 fn_8022641C(void *, u8 *, u32);
-    s32 fn_80226698(s32, void *, u32);
+    s32 TRKAppendBuffer(s32, void *, u32);
     void fn_8022692C(void *, u32);
     void fn_8022699C(s32);
     s32 fn_80226A2C(s32 *, s32 *);
@@ -1019,9 +1019,9 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
         *(u32 *)(msg + 8) = arg0;
         *(u16 *)(msg + 0xC) = (u16)var_r31;
         fn_80226A2C(&spC, &sp8);
-        var_r21 = fn_80226698(sp8, msg, 0x40U);
+        var_r21 = TRKAppendBuffer(sp8, msg, 0x40U);
         if ((arg5 == 0) && (var_r21 == 0)) {
-            var_r21 = fn_80226698(sp8, arg1 + var_r30, var_r31);
+            var_r21 = TRKAppendBuffer(sp8, arg1 + var_r30, var_r31);
         }
         if (var_r21 == 0) {
             if (arg4 != 0) {
@@ -1295,7 +1295,7 @@ s32 fn_802290F8(u32 count, s32 stepOver) {
 void fn_802291A4(void *b) {
     void *memset(void *, int, u32);
     s32 fn_8022A098(u32 *, u32);
-    s32 fn_80226698(void *, void *, u32);
+    s32 TRKAppendBuffer(void *, void *, u32);
     extern u8 gTRKExceptionStatus_8029E574[];
     struct {
         u32 size;
@@ -1314,7 +1314,7 @@ void fn_802291A4(void *b) {
     fn_8022A098(&instruction, *(u32 *)gTRKExceptionStatus_8029E574);
     msg.instruction = instruction;
     msg.exceptionID = *(u16 *)(gTRKExceptionStatus_8029E574 + 8);
-    fn_80226698(b, &msg, sizeof(msg));
+    TRKAppendBuffer(b, &msg, sizeof(msg));
 }
 
 #pragma use_lmw_stmw on
