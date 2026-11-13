@@ -931,7 +931,7 @@ void fn_801A4BE0(void *arg0) {
     }
 }
 
-void fn_801A4C8C(s32 arg0) {
+void Battle_ResolveRounds(s32 arg0) {
     void fn_80034068(s32, s32, s32);
     u8 fn_80105BC0(s32, s32);
     void fn_801A64F8(s32, s32, s32);
@@ -1181,7 +1181,7 @@ void fn_801A5268(s32 arg0, u8 arg1) {
     void fn_8004E670(f32 *, void *, s32);
     s32 fn_8005B4D8(u8);
     s32 fn_8005B580(s32, u8 *, s32);
-    void fn_801A4C8C(s32);
+    void Battle_ResolveRounds(s32);
     void fn_801A601C(s32, s32, s32, s32);
     void fn_801A6C18(s32, u8, u8);
     void fn_801A8268(s32);
@@ -1221,7 +1221,7 @@ void fn_801A5268(s32 arg0, u8 arg1) {
     fn_80034068(self + 0x8A0, 0x54, 0);
     fn_801A8268(self);
     fn_801A8268(self + 0x2E0);
-    fn_801A4C8C(self);
+    Battle_ResolveRounds(self);
 
     temp_r0 = 0;
     r31[0x61] = (u8)temp_r0;
