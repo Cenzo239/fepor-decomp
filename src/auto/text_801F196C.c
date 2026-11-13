@@ -522,11 +522,11 @@ void fn_801F2DB4(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029AF78[];
-    extern u8 lbl_8027F868[];
+    extern u8 gOptionsStrs[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_8029AF78, arg0);
-    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0xE8, lbl_8027F868 + 0x11BC, 0);
+    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0xE8, gOptionsStrs + 0x11BC, 0);
 }
 
 #pragma use_lmw_stmw on
@@ -539,7 +539,7 @@ void fn_801F2E08(void *arg0) {
     void Ui_PlaySeCue(char *, s32);
     u8 fn_801E3570(void *, s32);
     extern void *gPadInput;
-    extern char lbl_8027F868[];
+    extern char gOptionsStrs[];
     extern u8 lbl_8029A9E8[];
     extern u8 gSystemSave[];
     void *obj;
@@ -555,7 +555,7 @@ void fn_801F2E08(void *arg0) {
     stick = *(s32 *)((u8 *)gPadInput + 0xC);
     pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (((pressed & 0x100) && (fn_8008A59C() == 0)) || ((pressed & 0x200) && (fn_8008A59C() == 0))) {
-        Ui_PlaySeCue(lbl_8027F868 + 0x11BD, 0x64);
+        Ui_PlaySeCue(gOptionsStrs + 0x11BD, 0x64);
         Process_Goto(arg0, 1);
         fn_8008A290(3, 0xB4);
         return;
@@ -605,7 +605,7 @@ void fn_801F2E08(void *arg0) {
         *(s16 *)((u8 *)obj + 0x16) = 0;
         *(s16 *)((u8 *)obj + 0x12) = (s16)((tmp % 3) * 0xA0 + 0x45);
         *(s16 *)((u8 *)obj + 0x14) = (s16)((tmp / 3) * 0x1C + 0x9C);
-        Ui_PlaySeCue(lbl_8027F868 + 0x11CD, 0x64);
+        Ui_PlaySeCue(gOptionsStrs + 0x11CD, 0x64);
         Process_Goto(arg0, 3);
         return;
     }
@@ -654,7 +654,7 @@ void fn_801F2E08(void *arg0) {
         *(s16 *)((u8 *)obj + 0x16) = 0;
         *(s16 *)((u8 *)obj + 0x12) = (s16)((tmp % 3) * 0xA0 + 0x45);
         *(s16 *)((u8 *)obj + 0x14) = (s16)((tmp / 3) * 0x1C + 0x9C);
-        Ui_PlaySeCue(lbl_8027F868 + 0x11CD, 0x64);
+        Ui_PlaySeCue(gOptionsStrs + 0x11CD, 0x64);
         Process_Goto(arg0, 3);
     }
 }
@@ -696,7 +696,7 @@ void fn_801F3214(void *arg0) {
     void fn_8006EEFC(void *, char *);
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
-    extern char lbl_8027F868[];
+    extern char gOptionsStrs[];
     char buf[64];
     struct Work *p;
 
@@ -708,17 +708,17 @@ void fn_801F3214(void *arg0) {
     p->unk28 = 0;
     fn_80057E64(p->unkDC, 1);
     fn_80057E64(p->unkE0, 1);
-    strcpy(p->unk54, lbl_8027F868 + 0x11E9);
-    strcat(p->unk54, Msg_Expand(lbl_8027F868 + 0x11EF));
-    strcat(p->unk54, lbl_8027F868 + 0x11FA);
-    strcat(p->unk54, Msg_Expand(lbl_8027F868 + 0x1209));
+    strcpy(p->unk54, gOptionsStrs + 0x11E9);
+    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x11EF));
+    strcat(p->unk54, gOptionsStrs + 0x11FA);
+    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1209));
     if (p->unk4 != NULL) {
         if (p->unk4 != NULL) {
             fn_8006EDA0(&p->unk4);
             p->unk4 = NULL;
         }
     }
-    strcpy(buf, lbl_8027F868 + 0x1214);
+    strcpy(buf, gOptionsStrs + 0x1214);
     strcat(buf, p->unk34[p->unkE].name);
     fn_8006EEFC(&p->unk4, buf);
     strcpy(p->unkB4, buf);
@@ -729,7 +729,7 @@ void fn_801F3338(void *arg0) {
     M2C_UNK fn_8008A290(M2C_UNK, M2C_UNK);
     u8 fn_8008A59C();
     u8 fn_801E3570(void *, s32);
-    extern u8 lbl_8027F868[];
+    extern u8 gOptionsStrs[];
     extern u8 lbl_8029A9E8[];
     extern u8 gSystemSave[];
     extern f32 lbl_8036B850;
@@ -758,7 +758,7 @@ void fn_801F3338(void *arg0) {
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
             if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
-                Ui_PlaySeCue(lbl_8027F868 + 0x121C, 0x64);
+                Ui_PlaySeCue(gOptionsStrs + 0x121C, 0x64);
                 Process_Goto(arg0, 2);
                 fn_8008A290(3, 0xB4);
                 return;
@@ -766,7 +766,7 @@ void fn_801F3338(void *arg0) {
         }
     }
     if ((temp_r27 & 0x200) && (fn_8008A59C() == 0)) {
-        Ui_PlaySeCue(lbl_8027F868 + 0x11BD, 0x64);
+        Ui_PlaySeCue(gOptionsStrs + 0x11BD, 0x64);
         Process_Goto(arg0, 0);
         fn_8008A290(3, 0xB4);
         return;
@@ -818,7 +818,7 @@ void fn_801F3338(void *arg0) {
         temp_r5_3 = temp_r6 * 0x1C;
         M2C_FIELD(temp_r30, s16 *, 0x1C) = (s16)((((temp_r7 - temp_r5_2) % 3) * 0xA0) + 0x45);
         M2C_FIELD(temp_r30, s16 *, 0x1E) = (s16)(temp_r5_3 + 0x9C);
-        Ui_PlaySeCue(lbl_8027F868 + 0x122C, 0x64);
+        Ui_PlaySeCue(gOptionsStrs + 0x122C, 0x64);
     }
 }
 
@@ -861,7 +861,7 @@ void Options_InitPanel(void *arg0) {
     void fn_8006EDA0(void *);
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
-    extern char lbl_8027F868[];
+    extern char gOptionsStrs[];
     extern u8 lbl_8029A9E8[];
     extern u8 lbl_8029AB60[];
     extern u8 lbl_8029AD68[];
@@ -881,7 +881,7 @@ void Options_InitPanel(void *arg0) {
     p->unk28 = 1;
     fn_80057E64(p->unkDC, 0);
     fn_80057E64(p->unkE0, 0);
-    strcpy(p->unk3C, lbl_8027F868 + 0x1248);
+    strcpy(p->unk3C, gOptionsStrs + 0x1248);
     p->unk27 = p->unk11;
     switch (p->unk11) {
     case 1:
@@ -917,12 +917,12 @@ void Options_InitPanel(void *arg0) {
     remainder = diff % 3;
     p->unk12 = (s16)(remainder * 0xA0 + 0x45);
     p->unk14 = (s16)(quotient * 0x1C + 0x9C);
-    strcpy(p->unk54, lbl_8027F868 + 0x1259);
-    strcat(p->unk54, Msg_Expand(lbl_8027F868 + 0x11EF));
-    strcat(p->unk54, lbl_8027F868 + 0x125F);
-    strcat(p->unk54, Msg_Expand(lbl_8027F868 + 0x1267));
-    strcat(p->unk54, lbl_8027F868 + 0x1272);
-    strcat(p->unk54, Msg_Expand(lbl_8027F868 + 0x1209));
+    strcpy(p->unk54, gOptionsStrs + 0x1259);
+    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x11EF));
+    strcat(p->unk54, gOptionsStrs + 0x125F);
+    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1267));
+    strcat(p->unk54, gOptionsStrs + 0x1272);
+    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1209));
     if (p->unk4 != NULL) {
         if (p->unk4 != NULL) {
             fn_8006EDA0(&p->unk4);
@@ -1040,13 +1040,13 @@ extern "C" void fn_801F3C1C(void *arg0) {
 #pragma cplusplus reset
 
 void fn_801F3CB0(s32 arg0) {
-    extern u8 lbl_8027F868[];
+    extern u8 gOptionsStrs[];
     s32 fn_8005C6A0(void *);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(lbl_8027F868 + 0x1293) & 0x2000) {
+    if (fn_8005C6A0(gOptionsStrs + 0x1293) & 0x2000) {
         if (fn_80161FB8() != 0) {
             fn_80162054();
             Process_ClearFunc(arg0);
@@ -1100,7 +1100,7 @@ void fn_801F3E60(void *arg0) {
     f64 fn_80238638(f32);
     extern s32 OSGetTime(void);
     extern void __div2i(s32, s32);
-    extern u8 lbl_8027F868[];
+    extern u8 gOptionsStrs[];
     extern u8 gSystemSave[];
     extern s8 lbl_803683E0;
     extern s16 lbl_803683E4[4];
@@ -1297,10 +1297,10 @@ void fn_801F3E60(void *arg0) {
         y = 0x78;
         for (i = 0; i < 4; i++) {
             switch (slot[2 + i]) {
-            case 1: label = Msg_Expand(lbl_8027F868 + 0x12A9); break;
-            case 2: label = Msg_Expand(lbl_8027F868 + 0x12B2); break;
-            case 3: label = Msg_Expand(lbl_8027F868 + 0x12BB); break;
-            case 4: label = Msg_Expand(lbl_8027F868 + 0x12C4); break;
+            case 1: label = Msg_Expand(gOptionsStrs + 0x12A9); break;
+            case 2: label = Msg_Expand(gOptionsStrs + 0x12B2); break;
+            case 3: label = Msg_Expand(gOptionsStrs + 0x12BB); break;
+            case 4: label = Msg_Expand(gOptionsStrs + 0x12C4); break;
             default: label = NULL; break;
             }
             if (label != NULL) {
