@@ -7830,7 +7830,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     void *fn_800E8504(void *, s32, String *);
     void *fn_800ECF40(void *, void *, s32, s32);
     void *Win3_Create(void *, void *, s32, s32);
-    void *fn_80103428(void *, void *, s32, s32);
+    void *TagWin_Create(void *, void *, s32, s32);
     void *fn_80108788(void *, void *, s32, s32);
     void *fn_80108A18(void *, void *, s32, s32);
     void *BgWin_Create(void *, void *, s32, s32);
@@ -7936,7 +7936,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     gWin3 = tmp;
     tmp = Heap_Alloc(0x430);
     if (tmp != NULL) {
-        tmp = fn_80103428(tmp, *(void **)((u8 *)self + 4), 0xC8, 0x64);
+        tmp = TagWin_Create(tmp, *(void **)((u8 *)self + 4), 0xC8, 0x64);
     }
     lbl_80367918 = tmp;
     tmp = Heap_Alloc(0x490);
@@ -23878,7 +23878,7 @@ s32 fn_801032F8(void) {
     return 0;
 }
 
-void *fn_80103428(void *arg0, s32 arg1, s32 arg2, s32 arg3)
+void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     extern u8 lbl_80273420[];
     extern u8 lbl_8028EAC8[];
