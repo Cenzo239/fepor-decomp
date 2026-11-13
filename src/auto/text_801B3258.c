@@ -16398,7 +16398,7 @@ void fn_801DF7C8(void *arg0) {
 
 void fn_801DFB4C(void *arg0) {
     extern void *gSaveDataBase;
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
 
     void DebugPrint(const char *, ...);
     void fn_800C4588(void *);
@@ -16412,7 +16412,7 @@ void fn_801DFB4C(void *arg0) {
 
     if (gSaveDataBase != (int)NULL) {
         DebugPrint(
-            (char *)(lbl_8027E980 + 0x122)
+            (char *)(gSaveStrings + 0x122)
         );
 
         fn_800C4588(gSaveDataBase);
@@ -16420,13 +16420,13 @@ void fn_801DFB4C(void *arg0) {
     }
 
     DebugPrint(
-        (char *)(lbl_8027E980 + 0x137)
+        (char *)(gSaveStrings + 0x137)
     );
 
     ptr = fn_800C4604(
         0,
         -0x26000,
-        lbl_8027E980 + 0x14E,
+        gSaveStrings + 0x14E,
         0
     );
 
@@ -16440,7 +16440,7 @@ void fn_801DFB4C(void *arg0) {
 /* Clear first corrupt chapter/suspend save slot (bad CRC) and request a card rewrite; return 1 if cleared. */
 s32 Save_ClearCorruptSlots(s32 proc) {
     extern void *gSaveDataBase;
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     u8 Card_CheckError(void);
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -16480,7 +16480,7 @@ s32 Save_ClearCorruptSlots(s32 proc) {
             } else if (*(u8 *)(slot + 0x60) == 1) {
                 checksumOk = 1;
             } else {
-                crcTable = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
                 Crc32_InitTable();
                 checksum = Crc32_Calc(crcTable, slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)(slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
                 fn_800C4588(crcTable);
@@ -16517,7 +16517,7 @@ s32 Save_ClearCorruptSlots(s32 proc) {
             } else if (*(u8 *)(slot + 0x60) == 1) {
                 checksumOk = 1;
             } else {
-                crcTable = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
                 Crc32_InitTable();
                 checksum = Crc32_Calc(crcTable, slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)(slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
                 fn_800C4588(crcTable);
@@ -16698,7 +16698,7 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     extern void *gSaveDataBase;
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
 
     u8 *base;
     u8 *src;
@@ -16825,7 +16825,7 @@ loop2:
     } else if (*(u8 *)(dst + 0x60) == 1) {
         chkOk = 1;
     } else {
-        buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+        buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
         Crc32_InitTable();
         sum = Crc32_Calc(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
         fn_800C4588(buf);
@@ -16874,7 +16874,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void BattleState_Write(void *, void *);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
@@ -16919,7 +16919,7 @@ loop:
         } else if (slot[0x60] == 1) {
             chkOk = 1;
         } else {
-            buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+            buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
             Crc32_InitTable();
             sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
             fn_800C4588(buf);
@@ -16978,21 +16978,21 @@ loop:
     w.start = p;
     w.cur = p;
     w.size = 0x100000;
-    fn_8017A38C(&w, lbl_8027E980 + 0x14F);
+    fn_8017A38C(&w, gSaveStrings + 0x14F);
     BattleState_Write(gBattleState, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x154);
+    fn_8017A38C(&w, gSaveStrings + 0x154);
     fn_80048C5C(&w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x159);
+    fn_8017A38C(&w, gSaveStrings + 0x159);
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
         fn_80016A3C(&w);
     }
-    fn_8017A38C(&w, lbl_8027E980 + 0x15E);
+    fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x163);
+    fn_8017A38C(&w, gSaveStrings + 0x163);
     fn_800C2980(gIconSlots, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x168);
+    fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
@@ -17304,7 +17304,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_8014D698(void *, u8, u8, u8, u8);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
@@ -17618,21 +17618,21 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     w.start = p;
     w.cur = p;
     w.size = 0x100000;
-    fn_8017A38C(&w, lbl_8027E980 + 0x14F);
+    fn_8017A38C(&w, gSaveStrings + 0x14F);
     BattleState_Write(gBattleState, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x154);
+    fn_8017A38C(&w, gSaveStrings + 0x154);
     fn_80048C5C(&w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x159);
+    fn_8017A38C(&w, gSaveStrings + 0x159);
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
         fn_80016A3C(&w);
     }
-    fn_8017A38C(&w, lbl_8027E980 + 0x15E);
+    fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x163);
+    fn_8017A38C(&w, gSaveStrings + 0x163);
     fn_800C2980(gIconSlots, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x168);
+    fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
@@ -17663,7 +17663,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     void BattleState_Write(void *, void *);
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
@@ -17767,21 +17767,21 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     w.start = p;
     w.cur = p;
     w.size = 0x100000;
-    fn_8017A38C(&w, lbl_8027E980 + 0x14F);
+    fn_8017A38C(&w, gSaveStrings + 0x14F);
     BattleState_Write(gBattleState, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x154);
+    fn_8017A38C(&w, gSaveStrings + 0x154);
     fn_80048C5C(&w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x159);
+    fn_8017A38C(&w, gSaveStrings + 0x159);
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
         fn_80016A3C(&w);
     }
-    fn_8017A38C(&w, lbl_8027E980 + 0x15E);
+    fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x163);
+    fn_8017A38C(&w, gSaveStrings + 0x163);
     fn_800C2980(gIconSlots, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x168);
+    fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
@@ -17829,7 +17829,7 @@ void fn_801E2084(s32 arg0) {
 
 void fn_801E20C4(void *arg0) {
     extern void *gSaveDataBase;
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern s32 gUiInputFlags;
     extern u8 lbl_80299DE8[];
 
@@ -17846,13 +17846,13 @@ void fn_801E20C4(void *arg0) {
     arg = arg0;
 
     if (gSaveDataBase != (int)NULL) {
-        DebugPrint((char *)(lbl_8027E980 + 0x122));
+        DebugPrint((char *)(gSaveStrings + 0x122));
         fn_800C4588(gSaveDataBase);
         gSaveDataBase = NULL;
     }
 
-    DebugPrint((char *)(lbl_8027E980 + 0x16D));
-    ptr = fn_800C4604(0, -0x26000, lbl_8027E980 + 0x14E, 0);
+    DebugPrint((char *)(gSaveStrings + 0x16D));
+    ptr = fn_800C4604(0, -0x26000, gSaveStrings + 0x14E, 0);
     gSaveDataBase = ptr;
 
     if (gUiInputFlags & 0x10) {
@@ -17984,20 +17984,20 @@ s32 Save_GetSmallSlot(s32 *arg0, s32 arg1) {
 }
 
 void SaveData_Release(u32 *arg0) {
-    extern u16 lbl_8027E980[];
+    extern u16 gSaveStrings[];
     void DebugPrint(char *, ...);
 
     if (*arg0 != 0U) {
-        DebugPrint((char *)((u8 *)lbl_8027E980 + 0x122));
+        DebugPrint((char *)((u8 *)gSaveStrings + 0x122));
         fn_800C4588(*arg0);
         *arg0 = 0U;
     }
 }
 
 void fn_801E25EC(void) {
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     void DebugPrint(char *, ...);
-    DebugPrint((char *)(lbl_8027E980 + 0x181));
+    DebugPrint((char *)(gSaveStrings + 0x181));
     fn_800E9A94();
 }
 
@@ -18016,7 +18016,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u16 fn_802072A0(u32, s32, s32, s32);
     u8 fn_80209A0C(void);
     void *memset(void *, s32, u32);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 gSystemSave[72];
 
     u8 counts[5];
@@ -18092,7 +18092,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
             } else if (blk[0x60] == 1) {
                 ok2 = 1;
             } else {
-                buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
                 Crc32_InitTable();
                 hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
                 fn_800C4588(buf);
@@ -18194,7 +18194,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
                 } else if (blk[0x60] == 1) {
                     ok2 = 1;
                 } else {
-                    buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
                     Crc32_InitTable();
                     hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
                     fn_800C4588(buf);
@@ -18423,13 +18423,13 @@ after_pair:
 #pragma use_lmw_stmw reset
 
 void fn_801E2F9C(s32 *arg0, s32 arg1) {
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     void DebugPrint(char *, ...);
     s32 fn_800C4604(s32, s32, void *, s32);
     void fn_800EA540(s32, s32);
 
-    DebugPrint((char *)(lbl_8027E980 + 0x137));
-    *arg0 = fn_800C4604(0, 0xFFFDA000, lbl_8027E980 + 0x14E, 0);
+    DebugPrint((char *)(gSaveStrings + 0x137));
+    *arg0 = fn_800C4604(0, 0xFFFDA000, gSaveStrings + 0x14E, 0);
     fn_800EA540(*arg0, arg1);
 }
 
@@ -18464,13 +18464,13 @@ void fn_801E3118(s32 *arg0, s32 arg1, u8 arg2) {
     s32 fn_800C4604(s32, s32, void *, s32);
     void fn_801E3014(s32 *);
     void *Process_CreateChild(void *, s32);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 lbl_80299DE8[];
     extern s32 gUiInputFlags;
     void *p;
 
-    DebugPrint((char *)(lbl_8027E980 + 0x16D));
-    *arg0 = fn_800C4604(0, 0xFFFDA000, lbl_8027E980 + 0x14E, 0);
+    DebugPrint((char *)(gSaveStrings + 0x16D));
+    *arg0 = fn_800C4604(0, 0xFFFDA000, gSaveStrings + 0x14E, 0);
     if (gUiInputFlags & 0x10) {
         fn_801E3014(arg0);
     } else {
@@ -18502,13 +18502,13 @@ void fn_801E3214(void *arg0) {
 
 void fn_801E323C(void *arg0, void *arg1)
 {
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     extern u8 lbl_80299DC8[];
     void DebugPrint(char *, ...);
     void *Process_CreateChild(void *, void *);
     void *obj;
 
-    DebugPrint((char *)(lbl_8027E980 + 0x197));
+    DebugPrint((char *)(gSaveStrings + 0x197));
     obj = Process_CreateChild(lbl_80299DC8, arg1);
     *(s32 *)((u8 *)obj + 0x54) = *(s32 *)arg0;
 }
@@ -18519,11 +18519,11 @@ void fn_801E329C(void *arg0) {
 }
 
 void fn_801E32C4(s32 unused, s32 arg1) {
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     void DebugPrint(char *, ...);
     void fn_800E9AE4(s32);
 
-    DebugPrint((char *)(lbl_8027E980 + 0x1AD));
+    DebugPrint((char *)(gSaveStrings + 0x1AD));
     fn_800E9AE4(arg1);
 }
 
@@ -18705,7 +18705,7 @@ void fn_801E3CA8(void *arg0) {
     s32 strlen(void *);
     void *memcpy(void *, void *, s32);
     extern void *gSaveDataBase;
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     u8 sp58[0x28];
     struct {
         s32 sec, min, hour, mday, mon, year;
@@ -18813,7 +18813,7 @@ void fn_801E3CA8(void *arg0) {
         p[0] = 0x20; p[1] = 0x20; p[2] = 0x20; p[3] = 0x20;
         p[4] = 0x20; p[5] = 0x20; p[6] = 0x20; p[7] = 0x20;
     }
-    name = Msg_Expand(lbl_8027E980 + 0x1C7);
+    name = Msg_Expand(gSaveStrings + 0x1C7);
     i = 0;
     for (ctr = 3; ctr != 0; ctr--) {
         if (tmpl[0x12] == 0) break;
@@ -18841,14 +18841,14 @@ void fn_801E3CA8(void *arg0) {
     fn_8020B294(OSGetTime(), &cal);
     sp10 = 0;
     cal.mon += 1;
-    fn_80231E74(sp58, 0x20, lbl_8027E980 + 0x1D0, cal.mon, cal.mday, cal.year % 100, cal.hour, cal.min, &sp10);
+    fn_80231E74(sp58, 0x20, gSaveStrings + 0x1D0, cal.mon, cal.mday, cal.year % 100, cal.hour, cal.min, &sp10);
     memcpy(arg0, name, strlen(name));
     memcpy((u8 *)arg0 + 0x20, sp58, strlen(sp58));
-    buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
     Crc32_InitTable();
     *(u32 *)((u8 *)arg0 + 0x50) = Crc32_Calc(buf, dst, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
     fn_800C4588(buf);
-    DebugPrint(lbl_8027E980 + 0x1E9, *(s32 *)((u8 *)arg0 + 0x50));
+    DebugPrint(gSaveStrings + 0x1E9, *(s32 *)((u8 *)arg0 + 0x50));
 }
 u32 fn_801E417C(void *arg0) {
     u32 size = *(u32 *)((u8 *)arg0 + 0x48);
@@ -18864,7 +18864,7 @@ s32 Save_BumpVersionChecksum(void *arg0) {
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     void DebugPrint(char *, ...);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     void *buf;
     u8 *p;
     u32 ver;
@@ -18880,11 +18880,11 @@ s32 Save_BumpVersionChecksum(void *arg0) {
             *(u32 *)(p + 4) = ver;
         }
     }
-    buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
     Crc32_InitTable();
     *(u32 *)((u8 *)arg0 + 0x50) = Crc32_Calc(buf, p, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
     fn_800C4588(buf);
-    DebugPrint((char *)(lbl_8027E980 + 0x1E9), *(u32 *)((u8 *)arg0 + 0x50));
+    DebugPrint((char *)(gSaveStrings + 0x1E9), *(u32 *)((u8 *)arg0 + 0x50));
     return 1;
 }
 
@@ -18893,7 +18893,7 @@ s32 Save_IsValid(void *arg0) {
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
-    extern u8 lbl_8027E980[];
+    extern u8 gSaveStrings[];
     u32 sum;
     void *buf;
     u8 ok;
@@ -18906,7 +18906,7 @@ s32 Save_IsValid(void *arg0) {
     } else if (*(u8 *)((u8 *)arg0 + 0x60) == 1) {
         ok = 1;
     } else {
-        buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+        buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
         Crc32_InitTable();
         sum = Crc32_Calc(buf, (u8 *)arg0 + 0x70, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
         fn_800C4588(buf);
