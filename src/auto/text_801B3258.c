@@ -756,7 +756,7 @@ void Script_RegisterWinCondCommands(void) {
     void ScriptCmd_EnemySelfDefenceCheck(void);
     void ScriptCmd_EnemyTigerCheck(void);
     void ScriptCmd_PlayerEscapeCheck(void);
-    void fn_801B7188(void);
+    void ScriptCmd_PlayerEscapeCount(void);
     void fn_801B70C8(void);
     void fn_801B7094(void);
 
@@ -768,7 +768,7 @@ void Script_RegisterWinCondCommands(void) {
     Script_RegisterCommand(gWinCondCmdNames + 0x11B, ScriptCmd_EnemySelfDefenceCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x131, ScriptCmd_EnemyTigerCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x141, ScriptCmd_PlayerEscapeCheck, 0);
-    Script_RegisterCommand(gWinCondCmdNames + 0x153, fn_801B7188, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x153, ScriptCmd_PlayerEscapeCount, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x165, fn_801B70C8, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x178, fn_801B7094, 0);
 }
@@ -821,7 +821,7 @@ s32 fn_801B70C8(void) {
     return sum;
 }
 
-s32 fn_801B7188(void) {
+s32 ScriptCmd_PlayerEscapeCount(void) {
     void DebugPrint(const char *, ...);
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 gWinCondCmdNames[];
