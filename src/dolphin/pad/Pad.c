@@ -185,7 +185,7 @@ static void PADDisable(s32 chan) {
 
 void fn_80211F78(s32 arg0, s32 arg1) {
     extern s32 lbl_80366FA4;
-    extern s32 lbl_80366FAC;
+    extern s32 PADSpec;
     extern s32 lbl_8036866C;
     extern s32 lbl_80368670;
     extern char Origin[];
@@ -204,7 +204,7 @@ void fn_80211F78(s32 arg0, s32 arg1) {
         r31 = lbl_80366FA4;
         lbl_8036866C |= 0x80000000U >> r31;
         fn_8023BA70(r31, buf);
-        fn_8023B804(r31, lbl_80366FAC | 0x400000);
+        fn_8023B804(r31, PADSpec | 0x400000);
         fn_8023B894(lbl_8036866C);
     }
     lbl_80366FA4 = __cntlzw(lbl_80368670);
@@ -224,7 +224,7 @@ void fn_80212108(s32 chan, u32 type) {
     extern void fn_802121E0(s32, u32);
     extern u8 Origin[];
     extern s32 lbl_80366FA4;
-    extern u32 lbl_80366FAC;
+    extern u32 PADSpec;
     extern u32 lbl_8036866C;
     extern u32 lbl_80368670;
     extern u32 lbl_80368678;
@@ -240,7 +240,7 @@ void fn_80212108(s32 chan, u32 type) {
         chanBit = lbl_80366FA4;
         lbl_8036866C |= bitConst >> chanBit;
         fn_8023BA70(chanBit, &sr);
-        fn_8023B804(chanBit, lbl_80366FAC | 0x400000);
+        fn_8023B804(chanBit, PADSpec | 0x400000);
         fn_8023B894(lbl_8036866C);
         lbl_80368678 |= bitConst >> lbl_80366FA4;
     }
@@ -413,7 +413,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
     void fn_8023B818(void);
     extern s32 lbl_8036866C;
     extern u32 lbl_80366FB0;
-    extern u32 lbl_80366FAC;
+    extern u32 PADSpec;
     s32 enabled;
     u32 var_r30;
     s32 pad;
@@ -427,7 +427,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
         if (*(u8 *)0x800030E3 & 0x20) {
             var_r30 = 0;
         }
-        fn_8023B804(arg0, lbl_80366FAC | 0x400000 | (var_r30 & 3));
+        fn_8023B804(arg0, PADSpec | 0x400000 | (var_r30 & 3));
         fn_8023B818();
     }
     OSRestoreInterrupts(enabled);
@@ -547,7 +547,7 @@ static void ClampU8(u8* p, u8 o) {
 }
 
 void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
-    extern u32 lbl_80366FAC;
+    extern u32 PADSpec;
     extern u32 lbl_8033A1B0[];
     extern u32 __PADFixBits;
     extern u8 Origin[];
@@ -557,7 +557,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     status->stickX = (s8)(data[0] >> 8);
     status->stickY = (s8)(data[0] >> 0);
 
-    switch (lbl_80366FAC & 0x700) {
+    switch (PADSpec & 0x700) {
     case 0x000:
     case 0x500:
     case 0x600:
