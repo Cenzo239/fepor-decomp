@@ -2226,19 +2226,24 @@ void fn_8018A7E4(void *arg0) {
     *(f32 *)(ptr + 0x18) = value;
 }
 
+#pragma scheduling off
+#pragma global_optimizer off
 void fn_8018A7FC(void *arg0)
 {
     extern f32 lbl_8036ACEC;
+    s32 zero;
     f32 z;
 
+    zero = 0;
     z = lbl_8036ACEC;
-    *(s32 *)((u8 *)arg0 + 0x34) = 0;
+    *(s32 *)((u8 *)arg0 + 0x34) = zero;
     *(f32 *)((u8 *)arg0 + 0x54) = *(f32 *)((u8 *)arg0 + 0x4C);
     *(f32 *)((u8 *)arg0 + 0x58) = *(f32 *)((u8 *)arg0 + 0x50);
     *(f32 *)((u8 *)arg0 + 0x4C) = z;
     *(f32 *)((u8 *)arg0 + 0x50) = z;
 }
-
+#pragma scheduling reset
+#pragma global_optimizer reset
 void fn_8018A824(void *arg0) {
     void Process_ClearFunc(void *);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -2978,20 +2983,25 @@ void fn_8018CA68(u32 arg0) {
     void *Process_Find(void *);
     void fn_80050BA8(u32, s32, s32);
     extern u8 LightScale_script[];
-    void *temp_r3;
-    s32 temp_r6;
-    u8 *p;
+    struct Rec {
+        u8 pad[0x48];
+        u32 val;
+    };
+    void *proc;
+    s32 idx;
+    struct Rec *p;
 
-    temp_r3 = Process_Find(LightScale_script);
-    if ((temp_r3 != NULL) && (arg0 != 0U)) {
-        p = (u8 *)temp_r3 + (*(s32 *)((u8 *)temp_r3 + 0x44) << 2);
-        *(u32 *)(p + 0x48) = arg0;
-        temp_r6 = *(s32 *)((u8 *)temp_r3 + 0x44);
-        *(s32 *)((u8 *)temp_r3 + 0x44) = temp_r6 + 1;
+    proc = Process_Find(LightScale_script);
+    if ((proc != NULL) && (arg0 != 0U)) {
+        idx = *(s32 *)((u8 *)proc + 0x44);
+        p = (struct Rec *)((u8 *)proc + (idx << 2));
+        p->val = arg0;
+        idx = *(s32 *)((u8 *)proc + 0x44);
+        *(s32 *)((u8 *)proc + 0x44) = idx + 1;
         fn_80050BA8(arg0, 1, 1);
     }
 }
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction reset
 void fn_8018CAD8(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_Find(void *);
     void *fn_8000CAF0(void *, s32);
@@ -4302,24 +4312,25 @@ void *fn_8018FFB4(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma global_optimizer off
 void fn_80190020(void *arg0) {
     s16 t0, t1, t2, t3, w, h;
-    M2C_FIELD(arg0, s16 *, 0x44) = 8;
-    M2C_FIELD(arg0, s16 *, 0x46) = 0;
-    t0 = M2C_FIELD(arg0, s16 *, 0xC);
-    t1 = M2C_FIELD(arg0, s16 *, 0x10);
-    t2 = M2C_FIELD(arg0, s16 *, 0xA);
-    t3 = M2C_FIELD(arg0, s16 *, 0xE);
+    *(s16 *)((u8 *)arg0 + 0x44) = 8;
+    *(s16 *)((u8 *)arg0 + 0x46) = 0;
+    t0 = *(s16 *)((u8 *)arg0 + 0xC);
+    t1 = *(s16 *)((u8 *)arg0 + 0x10);
+    t2 = *(s16 *)((u8 *)arg0 + 0xA);
+    t3 = *(s16 *)((u8 *)arg0 + 0xE);
     h = (s16)(t1 - t0);
-    M2C_FIELD(arg0, s16 *, 0x12) = 0x1C;
+    *(s16 *)((u8 *)arg0 + 0x12) = 0x1C;
     w = (s16)(t3 - t2);
     h -= 0x14;
-    M2C_FIELD(arg0, s16 *, 0x14) = 0x14;
+    *(s16 *)((u8 *)arg0 + 0x14) = 0x14;
     w -= 0x1C;
-    M2C_FIELD(arg0, s16 *, 0x16) = w;
-    M2C_FIELD(arg0, s16 *, 0x18) = h;
+    *(s16 *)((u8 *)arg0 + 0x16) = w;
+    *(s16 *)((u8 *)arg0 + 0x18) = h;
 }
-
+#pragma global_optimizer reset
 void *fn_80190074(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *lbl_80296194[];
@@ -5528,7 +5539,7 @@ extern "C" void fn_80191F2C(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_801925A0(void *arg0) {
+extern "C" void Ui_LayoutUnitList(void *arg0) {
     s32 Ui_ListGetSelected(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -11949,24 +11960,24 @@ s32 fn_801A0060(s32 arg0, s32 arg1, s32 arg2) {
 s32 fn_801A0100(u8 arg0, u8 arg1, u8 arg2) {
     extern s32 lbl_8036AF6C;
     extern u8 lbl_80367298;
-    void Map_Get(void);
+    void fn_80040844(void);
     void fn_80045C68(void);
     void fn_80013864(void);
     s32 value;
     s32 copy;
-    u8 *p;
+    u8 *dst;
 
     value = lbl_8036AF6C;
     ((u8 *)&value)[0] = arg0;
     ((u8 *)&value)[1] = arg1;
     ((u8 *)&value)[2] = arg2;
     copy = value;
-    p = (u8 *)&copy;
-    (&lbl_80367298)[0] = p[0];
-    (&lbl_80367298)[1] = p[1];
-    (&lbl_80367298)[2] = p[2];
-    (&lbl_80367298)[3] = p[3];
-    Map_Get();
+    dst = &lbl_80367298;
+    dst[0] = ((u8 *)&copy)[0];
+    dst[1] = ((u8 *)&copy)[1];
+    dst[2] = ((u8 *)&copy)[2];
+    dst[3] = ((u8 *)&copy)[3];
+    fn_80040844();
     fn_80045C68();
     fn_80013864();
     return 1;
