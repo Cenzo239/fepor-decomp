@@ -64,7 +64,7 @@ extern s32 fn_80010710(u8* arg0);
   extern s32 lbl_8028D544[];
   extern s32 lbl_80319A68[];
   void fn_800AE904(void *);
-  void fn_800AEA74(void *);
+  void Battle_DrawPhaseBanner(void *);
 
 void fn_800AD24C(void) {
     extern u16 lbl_80312ACC[];
@@ -748,7 +748,7 @@ void Battle_InitPhaseBanner(void *arg0) {
     *(s16 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) = 0x63;
     fn_80053658(*(void **)((u8 *)arg0 + 0x4C), 0, arg0);
     *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x44) = fn_800AE904;
-    fn_80059208(fn_800AEA74, arg0);
+    fn_80059208(Battle_DrawPhaseBanner, arg0);
 }
 
 void fn_800AE904(void *arg0) {
@@ -814,7 +814,7 @@ void fn_800AE9CC(void) {
     fn_800555EC(var_r3, 0);
 }
 
-void fn_800AEA74(void *arg0) {
+void Battle_DrawPhaseBanner(void *arg0) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
