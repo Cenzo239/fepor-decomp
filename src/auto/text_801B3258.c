@@ -6192,7 +6192,7 @@ void fn_801C32D4(s32 arg0) {
 }
 
 #pragma opt_common_subs off
-void fn_801C332C(void *arg0) {
+void Ui_InitScrollListPanel(void *arg0) {
 void *memset(void *, int, u32);
 s32 fn_8003FCCC();
 void fn_80109180(u32, void *);
