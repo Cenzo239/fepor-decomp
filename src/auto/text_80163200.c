@@ -2902,7 +2902,7 @@ void fn_80169870(void *arg0) {
 }
 
 void fn_801698EC(void *arg0) {
-    M2C_UNK fn_8000C5B8();
+    M2C_UNK Process_DetachChild();
     s32 fn_80024398(void *, void *, s32);
     void *fn_80169948();
     extern f32 lbl_8036A9C0;
@@ -2913,7 +2913,7 @@ void fn_801698EC(void *arg0) {
     M2C_FIELD(temp_r3, f32 *, 0x18) = lbl_8036A9C0;
     M2C_FIELD(temp_r3, s16 *, 0x1E) = 0;
     temp_r31 = fn_80024398(temp_r3, arg0, 0);
-    fn_8000C5B8();
+    Process_DetachChild();
     M2C_FIELD(arg0, s32 *, 0x4C) = temp_r31;
 }
 
@@ -3105,7 +3105,7 @@ void fn_80169F30(void *arg0) {
 }
 
 void fn_80169FC0(void *arg0) {
-    void fn_8000C5B8(void);
+    void Process_DetachChild(void);
     void *fn_80024398(void *, void *, s32);
     void *fn_80169948(void);
     extern f32 lbl_8036A9C0;
@@ -3116,7 +3116,7 @@ void fn_80169FC0(void *arg0) {
     M2C_FIELD(temp_r3, f32 *, 0x18) = lbl_8036A9C0;
     M2C_FIELD(temp_r3, s16 *, 0x1E) = 0;
     temp_r31 = fn_80024398(temp_r3, arg0, 0);
-    fn_8000C5B8();
+    Process_DetachChild();
     M2C_FIELD(temp_r31, u8 *, 0x61) = 0;
     M2C_FIELD(arg0, void **, 0x4C) = temp_r31;
     M2C_FIELD(arg0, void **, 0x50) = temp_r31;
@@ -3304,7 +3304,7 @@ void fn_8016A400(void *arg0) {
 
     void *fn_80169948();
     s32 fn_80024398(void *, void *, s32);
-    M2C_UNK fn_8000C5B8();
+    M2C_UNK Process_DetachChild();
     void *Heap_Alloc(s32);
 
     extern u8 lbl_802845E8[];
@@ -3330,7 +3330,7 @@ void fn_8016A400(void *arg0) {
     M2C_FIELD(config, f32 *, 0x18) = lbl_8036A9C0;
     M2C_FIELD(config, s16 *, 0x1E) = 0;
     parent = (void *)fn_80024398(config, arg0, 0);
-    fn_8000C5B8(parent);
+    Process_DetachChild(parent);
 
     M2C_FIELD(parent, u8 *, 0x62) = 1;
     M2C_FIELD(parent, u8 *, 0x61) = 0;
@@ -10153,7 +10153,7 @@ void *fn_80177430(void) {
 s32 fn_80177440(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000C5B8(s32);
+    void Process_DetachChild(s32);
     extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
@@ -10162,7 +10162,7 @@ s32 fn_80177440(s32 arg0, s32 arg1) {
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x8A;
     Process_Goto(temp, 0x2F);
-    fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
+    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
 
@@ -10179,7 +10179,7 @@ void *fn_801774D4(void) {
 s32 fn_801774E4(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000C5B8(s32);
+    void Process_DetachChild(s32);
     extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
@@ -10188,7 +10188,7 @@ s32 fn_801774E4(s32 arg0, s32 arg1) {
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x89;
     Process_Goto(temp, 0x2E);
-    fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
+    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
 
@@ -10205,7 +10205,7 @@ void *fn_80177578(void) {
 s32 fn_80177588(s32 arg0, s32 arg1) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000C5B8(s32);
+    void Process_DetachChild(s32);
     extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
     void *temp;
@@ -10214,7 +10214,7 @@ s32 fn_80177588(s32 arg0, s32 arg1) {
     *(s32 *)((u8 *)temp + 0x60) = arg1;
     *((u8 *)gUiContext + 8) = 0x88;
     Process_Goto(temp, 0x2D);
-    fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
+    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
 
@@ -10491,7 +10491,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000C5B8(s32);
+    void Process_DetachChild(s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u16 gUiListPanelProc[];
@@ -10513,7 +10513,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     temp = Process_Find(gUiListPanelProc);
     *((u8 *)gUiContext + 8) = 0x85;
     Process_Goto(temp, 0x16);
-    fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
+    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
 
@@ -10569,7 +10569,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000C5B8(s32);
+    void Process_DetachChild(s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u16 gUiListPanelProc[];
@@ -10591,7 +10591,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     temp = Process_Find(gUiListPanelProc);
     *((u8 *)gUiContext + 8) = 0x84;
     Process_Goto(temp, 0x13);
-    fn_8000C5B8(*(s32 *)((u8 *)temp + 0x5C));
+    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
     return 4;
 }
 
@@ -10607,7 +10607,7 @@ void *fn_801780A8(void) {
 s32 Ui_ConfirmListCmd83(void *arg0, void *arg1, void *arg2) {
     void Process_Goto(void *, u8);
     void *Process_Find(void *);
-    void fn_8000C5B8(void *);
+    void Process_DetachChild(void *);
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     void *proc;
@@ -10642,7 +10642,7 @@ s32 Ui_ConfirmListCmd83(void *arg0, void *arg1, void *arg2) {
     proc = Process_Find(gUiListPanelProc);
     ((u8 *)gUiContext)[8] = 0x83;
     Process_Goto(proc, 0x28);
-    fn_8000C5B8(M2C_FIELD(proc, void **, 0x5C));
+    Process_DetachChild(M2C_FIELD(proc, void **, 0x5C));
     return 4;
 }
 
@@ -11355,7 +11355,7 @@ u8 fn_80179284(void) {
 
 s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
-    void fn_8000C5B8(void *);
+    void Process_DetachChild(void *);
     void fn_8000A430(void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
@@ -11374,7 +11374,7 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x80;
-    fn_8000C5B8(arg1);
+    Process_DetachChild(arg1);
     fn_8000A430(arg1);
     return 4;
 }

@@ -3942,7 +3942,7 @@ void *fn_8000C540(void) {
     return NULL;
 }
 
-void fn_8000C5B8(void *arg0) {
+void Process_DetachChild(void *arg0) {
     u8 temp_r4;
     void *temp_r4_2;
 
