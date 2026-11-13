@@ -2076,7 +2076,7 @@ void fn_80188EF4(void *arg0) {
 }
 
 #pragma global_optimizer off
-void fn_8018931C(void *arg0, f32 scaleArg) {
+void MoveAnim_Update(void *arg0, f32 scaleArg) {
     void fn_8000C188(void *);
     void fn_80050BCC(void *, s32);
     f32 fn_80059F64(f32,f32,f32,f32);
