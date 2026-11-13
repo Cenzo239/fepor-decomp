@@ -437,7 +437,7 @@ void fn_80212D78(s32 arg0) {
     extern s32 __PADSpec;
     extern M2C_UNK fn_80212DD8;
     extern M2C_UNK fn_80212F4C;
-    extern M2C_UNK fn_802130C0;
+    extern M2C_UNK PADMakeStatus;
     extern s32 lbl_80366FB0;
     extern M2C_UNK *lbl_80366FB4;
     __PADSpec = 0;
@@ -449,7 +449,7 @@ void fn_80212D78(s32 arg0) {
         lbl_80366FB4 = &fn_80212F4C;
         break;
     default:
-        lbl_80366FB4 = &fn_802130C0;
+        lbl_80366FB4 = &PADMakeStatus;
         break;
     }
     lbl_80366FB0 = arg0;
@@ -546,7 +546,7 @@ static void ClampU8(u8* p, u8 o) {
     *p = s;
 }
 
-void fn_802130C0(s32 chan, PADStatus* status, u32* data) {
+void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     extern u32 lbl_80366FAC;
     extern u32 lbl_8033A1B0[];
     extern u32 lbl_80368684;
