@@ -1690,7 +1690,7 @@ void fn_801E80B4(void *arg0) {
     void fn_80057860(void *, s16);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_801E4900(s16 *, void *);
-    void fn_80167190(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     u8 fn_801E85A4(void *, s8);
     void *Msg_Expand(void *);
@@ -1795,7 +1795,7 @@ void fn_801E80B4(void *arg0) {
                 str = lbl_8027EB78 + 0x166;
                 break;
             }
-            fn_80167190(gUnitInfoPopup, str, (f32)sp1C[0], (f32)sp1C[1]);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, str, (f32)sp1C[0], (f32)sp1C[1]);
         }
         Ui_PlaySeCue(lbl_8027EB78 + 0x199, 0x64);
         return;
@@ -1871,7 +1871,7 @@ void fn_801E80B4(void *arg0) {
                 str = lbl_8027EB78 + 0x166;
                 break;
             }
-            fn_80167190(gUnitInfoPopup, str, (f32)sp18[0], (f32)sp18[1]);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, str, (f32)sp18[0], (f32)sp18[1]);
         }
         Ui_PlaySeCue(lbl_8027EB78 + 0x13F, 0x64);
     }
@@ -2167,7 +2167,7 @@ void fn_801E8D34(void *arg0) {
     s8 fn_801E4A60(void *, u8);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_801E4900(s16 *, void *);
-    void fn_80167190(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     s8 fn_801E8920(void *, u8);
     void *Msg_Expand(void *);
@@ -2270,7 +2270,7 @@ void fn_801E8D34(void *arg0) {
                 str = lbl_8027EB78 + 0x166;
                 break;
             }
-            fn_80167190(gUnitInfoPopup, str, (f32)sp14[0], (f32)sp14[1]);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, str, (f32)sp14[0], (f32)sp14[1]);
         }
         Ui_PlaySeCue(lbl_8027EB78 + 0x1AB, 0x64);
         return;
@@ -2327,7 +2327,7 @@ void fn_801E8D34(void *arg0) {
                 str = lbl_8027EB78 + 0x166;
                 break;
             }
-            fn_80167190(gUnitInfoPopup, str, (f32)sp10[0], (f32)sp10[1]);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, str, (f32)sp10[0], (f32)sp10[1]);
         }
         Ui_PlaySeCue(lbl_8027EB78 + 0x13F, 0x64);
     }

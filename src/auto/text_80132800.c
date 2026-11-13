@@ -5577,7 +5577,7 @@ s32 fn_8013C3AC(void) {
 extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void *fn_8000B908(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80167190(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -5652,7 +5652,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
                 tmp = fn_8000B908(p[0x40]);
                 res = (*(Inner **)((u8 *)tmp + 0x34))->v2();
                 if (res != NULL) {
-                    fn_80167190(gUnitInfoPopup, res, f31, f30);
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, res, f31, f30);
                 }
             }
         }
@@ -6236,7 +6236,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void fn_80167190(void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, f32, f32);
     extern s32 gUiInputFlags;
     extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -6345,7 +6345,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 inner = *(Inner **)((u8 *)item + 0x34);
                 obj = inner->v2();
                 if (obj != NULL) {
-                    fn_80167190(gUnitInfoPopup, fx, fy);
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, fx, fy);
                 } else {
                     item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
                     inner = *(Inner **)((u8 *)item + 0x34);

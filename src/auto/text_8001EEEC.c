@@ -2631,7 +2631,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void fn_80167190(void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, f32, f32);
     extern u8 lbl_80268D90[];
     extern u8 gUnitInfoPopup[];
     struct Obj {
@@ -2713,7 +2713,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
             node = (Node *)fn_8000B908(p[0x40]);
             ret = node->obj->v2();
             if (ret != NULL) {
-                fn_80167190(gUnitInfoPopup, f31, f30);
+                Ui_ShowUnitInfoText(gUnitInfoPopup, f31, f30);
             } else {
                 p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
                 node2 = (Node *)fn_8000B908(p[0x40]);

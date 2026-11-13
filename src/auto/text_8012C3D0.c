@@ -491,7 +491,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     void fn_801305F8(void *);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80167190(void *, s32, f32, f32);
+    void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void fn_8016758C(void *, void *, s32, f32, f32);
     extern u8 lbl_80275AC0[];
@@ -612,7 +612,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             base += col * 2;
             xpos = *(s16 *)(base + 0x38);
             text = item->v2(col);
-            fn_80167190(gUnitInfoPopup, text, (f32)xpos, lbl_8036A4E8);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, text, (f32)xpos, lbl_8036A4E8);
         }
     } else if (trig & 0x02000002) {
         idx = *((u8 *)self + 0x63);
@@ -665,7 +665,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             base += col * 2;
             xpos = *(s16 *)(base + 0x38);
             text = item->v2(col);
-            fn_80167190(gUnitInfoPopup, text, (f32)xpos, lbl_8036A4E8);
+            Ui_ShowUnitInfoText(gUnitInfoPopup, text, (f32)xpos, lbl_8036A4E8);
         }
     } else if (pressed & 0x100) {
         sel = (s8)*((u8 *)self + 0x65) + *((u8 *)self + 0x63) * 0xA;

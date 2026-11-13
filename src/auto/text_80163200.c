@@ -2019,7 +2019,7 @@ after_type:
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
-void fn_80167190(void *arg0, void *arg1, f32 farg0, f32 farg1) {
+void Ui_ShowUnitInfoText(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     u8 *Msg_Expand(void *);
     s32 fn_80010B78(void *, s32, f32);
     void *memcpy(void *, void *, u32);
@@ -2220,7 +2220,7 @@ void fn_8016758C(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_8000CAF0(void *, s32);
     void fn_8005C8B4(void *);
     void Ui_PlaySeCue(void *, s32);
-    void fn_80167190(void *, s32, f32, f32);
+    void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void *memset(void *, int, s32);
 
     extern u8 lbl_80293D20[];
@@ -2254,7 +2254,7 @@ void fn_8016758C(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
         *(f32 *)((u8 *)arg0 + 0x110) = f0;
         fn_8005C8B4(base + 0x42);
         Ui_PlaySeCue(base + 0x52, 0x64);
-        fn_80167190(arg0, arg2, farg0, farg1);
+        Ui_ShowUnitInfoText(arg0, arg2, farg0, farg1);
     }
 }
 
@@ -11224,7 +11224,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
 extern "C" void fn_80178FFC(void *unused, void *arg1) {
     void *fn_8000B908(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80167190(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -11298,7 +11298,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
                 tmp = fn_8000B908(p[0x40]);
                 res = (*(Inner **)((u8 *)tmp + 0x34))->v2();
                 if (res != NULL) {
-                    fn_80167190(gUnitInfoPopup, res, f31, f30);
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, res, f31, f30);
                 }
             }
         }
@@ -14662,7 +14662,7 @@ extern "C" void fn_80180084(void *arg0)
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80167190(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
     void fn_80176888(void *, void *, f32, f32);
@@ -14757,7 +14757,7 @@ extern "C" void fn_80180084(void *arg0)
             nodeVal = *(void **)(base + 8);
             if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 *(Vec2s *)&sp10 = ((Obj *)unit)->v9();
-                fn_80167190(gUnitInfoPopup, gUiUnitInfoStrings + 0x3E, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
+                Ui_ShowUnitInfoText(gUnitInfoPopup, gUiUnitInfoStrings + 0x3E, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
             }
         }
     }
