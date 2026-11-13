@@ -615,7 +615,7 @@ void Map_UpdateCursorMoveLimit(void) {
 void MapUi_ShowUnitRanges(void *unit) {
     void UiCtx_RefreshRangeSelect(void *);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void fn_800227F8(void *, s32);
     void fn_80022748(void *, s32);
     void Map_FloodMoveRange(void *, u8, u8, u8, s32, s32);
@@ -633,7 +633,7 @@ void MapUi_ShowUnitRanges(void *unit) {
         UiCtx_RefreshRangeSelect(gUiContext);
         mov = gUiContext[0x11];
         fn_80022DAC(gBattleMap, 8, 0);
-        fn_80022FD8(gBattleMap, 5);
+        Map_SelectRangeBuffer(gBattleMap, 5);
         fn_800227F8(gBattleMap, *(s32 *)((u8 *)unit + 0x18C));
         fn_80022748(gBattleMap, *(s32 *)((u8 *)unit + 0x190));
         Map_FloodMoveRange(gBattleMap, ((u8 *)unit)[0x19E], ((u8 *)unit)[0x19F], mov, 0, 0);
@@ -764,14 +764,14 @@ void *Map_GetCursorUnit(void) {
 void fn_800AA80C(void *arg0) {
     u8 Status_Test(void *, s32);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void Map_FillAttackRange(void *, u8, u8, s32, s32);
     extern u8 gBattleMap[];
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 0x43) != 0) {
         fn_80022DAC(gBattleMap, 5, -1);
         fn_80022DAC(gBattleMap, 8, 0);
-        fn_80022FD8(gBattleMap, 6);
+        Map_SelectRangeBuffer(gBattleMap, 6);
         Map_FillAttackRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
     }
 }
@@ -920,7 +920,7 @@ void fn_800AAB3C(void *arg0) {
     u8 Item_GetMaxRange(void);
     void Map_FillAttackRange(void *, u8, u8, u8);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     extern u16 gBattleMap;
@@ -936,7 +936,7 @@ void fn_800AAB3C(void *arg0) {
 
     fn_80022DAC(&gBattleMap, 5, -1);
     fn_80022DAC(&gBattleMap, 8, 0);
-    fn_80022FD8(&gBattleMap, 6);
+    Map_SelectRangeBuffer(&gBattleMap, 6);
     var_r29 = 0x64;
     var_r28 = 0;
     var_r27 = 0;
@@ -975,7 +975,7 @@ loop_1:
 void fn_800AAC64(void *arg0) {
     extern u8 gBattleMap[];
     
-    fn_80022FD8(gBattleMap, 5);
+    Map_SelectRangeBuffer(gBattleMap, 5);
     fn_800227F8(gBattleMap, *(s32*)((char*)arg0 + 0x18C));
     fn_80022748(gBattleMap, 0);
     Map_FloodMoveRange(gBattleMap, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);

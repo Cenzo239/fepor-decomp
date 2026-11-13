@@ -1259,7 +1259,7 @@ s32 Ui_ShowHeldItemRange(s32 unused0, s32 unused1, void *menu) {
     void *Unit_GetHeldItemSlot(void *, u8);
     s32 Item_GetMaxRange(void);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, u8);
+    void Map_SelectRangeBuffer(void *, u8);
     void Map_FillAttackRange(void *, u8, u8, u8, u8);
     void Map_ShowMoveLimitView(void);
     extern u8 gUiContext[];
@@ -1293,7 +1293,7 @@ s32 Ui_ShowHeldItemRange(s32 unused0, s32 unused1, void *menu) {
     }
     fn_80022DAC(gBattleMap, 5, -1);
     fn_80022DAC(gBattleMap, 8, 0);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     Map_FillAttackRange(gBattleMap, ((u8 *)unit)[0x19E], ((u8 *)unit)[0x19F], minRange, (u8)maxRange);
     Map_ShowMoveLimitView();
     return 0;
@@ -2295,7 +2295,7 @@ s32 Ui_ShowMapObjAttackRange(void) {
     void fn_8001EF80(void *, u8, u8, u8);
     void Map_FillAttackRange(void *, u8, u8, u8, s32);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void Map_ShowMoveLimitView(void);
     void *MapObjEvent_Find(void *, u8, u8, s32);
     extern u8 gBattleMap[];
@@ -2306,7 +2306,7 @@ s32 Ui_ShowMapObjAttackRange(void) {
 
     fn_80022DAC(gBattleMap, 5, -1);
     fn_80022DAC(gBattleMap, 8, 0);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     p = MapObjEvent_Find(gMapObjEventList, gUiContext[13], gUiContext[14], 7);
     a = *((u8 *)Item_Get(p[4]) + 29);
     b = p[1];

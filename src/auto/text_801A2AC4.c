@@ -569,7 +569,7 @@ s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
 u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
 u8 fn_8001F85C(void *,u8,u8,u8,u8); void **fn_80037D54(void *);
-void fn_80022FD8(void *,s32); void fn_80022DAC(void *,s32,s32);
+void Map_SelectRangeBuffer(void *,s32); void fn_80022DAC(void *,s32,s32);
 u8 fn_8001DD54(void *,void *); void Map_FillAttackRange(void *,u8,u8,u8,u8);
 void *members[3]; s32 cross[3]; s32 out;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
@@ -614,7 +614,7 @@ item=fn_80037D54(unit);
 if(!item || !(data=*item)) return 0;
 if(data) type=M2C_FIELD(data,u8 *,0x12); else type=12;
 if(type!=3) return 0;
-fn_80022FD8(gBattleMap,6); fn_80022DAC(gBattleMap,8,0);
+Map_SelectRangeBuffer(gBattleMap,6); fn_80022DAC(gBattleMap,8,0);
 {u8 range; u8 reach;
 if(*item) range=fn_8001DD54(*item,*walk); else range=0;
 data=*item;
@@ -2381,7 +2381,7 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
     void Map_FillAttackRange(void *, u8, u8, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void fn_800340F0(s32);
     void Unit_SetMapPos(s32, s8, s8);
     void *fn_801A7FF4(s32);
@@ -2450,7 +2450,7 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     fn_801A9CB8(self + 0x2E0, *(void **)sp8);
     Unit_SetMapPos(self, (s8)((u8 *)sp18)[4], (s8)((u8 *)sp18)[5]);
     Unit_SetMapPos(self + 0x2E0, (s8)((u8 *)sp8)[4], (s8)((u8 *)sp8)[5]);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     Map_FillAttackRange(gBattleMap, *(u8 *)(self + 0x19E), *(u8 *)(self + 0x19F), 0x64, 0xF);
     temp_r30 = *(void **)((u8 *)sp18 + 8);
     *(s32 *)(self + 0xCA8) = ((s16 *)*(void **)(gBattleMap + 0x14190))[(s8)*(u8 *)(self + 0x47E) + ((s8)*(u8 *)(self + 0x47F) << 6)];
@@ -2495,7 +2495,7 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
     void Map_FillAttackRange(void *, u8, u8, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void fn_800340F0(s32);
     void Unit_SetMapPos(s32, s8, s8);
     void *fn_801A7FF4(s32);
@@ -2536,7 +2536,7 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     fn_801A9CB8(var_r29 + 0x2E0, *(void **)var_r31);
     Unit_SetMapPos(var_r29, (s8)((u8 *)var_r30)[4], (s8)((u8 *)var_r30)[5]);
     Unit_SetMapPos(var_r29 + 0x2E0, (s8)((u8 *)var_r31)[4], (s8)((u8 *)var_r31)[5]);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
     Map_FillAttackRange(gBattleMap, *(u8 *)(var_r29 + 0x19E), *(u8 *)(var_r29 + 0x19F), 0x64, 0xF);
     temp_r28 = *(void **)((u8 *)var_r30 + 8);
     *(s32 *)(var_r29 + 0xCA8) = ((s16 *)*(void **)(gBattleMap + 0x14190))[(s8)*(u8 *)(var_r29 + 0x47E) + ((s8)*(u8 *)(var_r29 + 0x47F) << 6)];

@@ -18005,7 +18005,7 @@ s32 score; u8 *best; u8 bx,by;u16 item; s32 id; u8 b; s32 a=(s32)gBattleMap; u8 
 score=(s32)0x80000000; best=0;
 ctx[8]=arg2; self=*(u8 **)ctx;
 if((gAiState[1]&2)||(M2C_FIELD(self,u32 *,0x254)&0x3000000)){
-fn_80022DAC((void *)a,5,-1);fn_80022FD8((void *)a,5);
+fn_80022DAC((void *)a,5,-1);Map_SelectRangeBuffer((void *)a,5);
 M2C_FIELD(a,u16 **,0x14190)[(s8)self[0x19E]+((s8)self[0x19F]<<6)]=0;
 }else Map_BuildUnitMoveRange(self,5,-1);
 fn_8001C76C(&weapon);fn_8001D780(&weapon,arg1);
@@ -18035,7 +18035,7 @@ a=gAiState[0x21C];Item_Destroy(&weapon,-1);return a;
 #pragma use_lmw_stmw on
 u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s8 Unit_GetMov(void *);
     void fn_800FB96C(s8, s8, s8, s32, s8, s8, s8, s8, u8);
     void Map_BuildUnitMoveRange(void *, s32, s32);
@@ -18085,7 +18085,7 @@ u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
 
     if (!(gAiState[1] & 2) && (*(u32 *)(unit + 0x254) & 0x03000000)) {
         fn_80022DAC(map, 5, -1);
-        fn_80022FD8(map, 5);
+        Map_SelectRangeBuffer(map, 5);
         {
             s16 *tbl = *(s16 **)(map + 0x14190);
             tbl[(s8)unit[0x19E] + ((s8)unit[0x19F] << 6)] = 0;
@@ -18219,7 +18219,7 @@ after_search:
 #pragma opt_loop_invariants off
 u8 fn_800F3F50(s32 arg0,s8 arg1){
 extern u8 gAiState[],gBattleMap[],gUiContext[],gMapObjEventList[],lbl_80284E20[],lbl_8028E6E8[],gTargetList[];
-void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);void Map_BuildUnitMoveRange(void *,s32,s32);
+void fn_80022DAC(void *,s32,s32);void Map_SelectRangeBuffer(void *,s32);void Map_BuildUnitMoveRange(void *,s32,s32);
 s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);void fn_8002F728(void *);
 s32 fn_80110030(void *);void fn_800FDF38(s16,s16,s32,s32,s32);
@@ -18252,7 +18252,7 @@ flags=gAiState[1];
 ctx[8]=arg1;
 self=*(u8 **)ctx;
 if((flags&2)||(*(u32 *)(self+0x254)&0x03000000)){
-fn_80022DAC(map,5,-1);fn_80022FD8(map,5);
+fn_80022DAC(map,5,-1);Map_SelectRangeBuffer(map,5);
 (*(u16 **)(map+0x14190))[(s8)self[0x19E]+((s8)self[0x19F]<<6)]=0;
 }else Map_BuildUnitMoveRange(self,5,-1);
 cx=(s8)self[0x19E];cy=(s8)self[0x19F];best=(s32)0x80000000;
@@ -18277,7 +18277,7 @@ switch((s32)mode){case 1:dx=-1;break;case 2:dx=1;break;default:dx=0;break;}
 destX=candidateX+dx;
 switch((s32)mode){case 4:dy=1;break;case 8:dy=-1;break;default:dy=0;break;}
 fn_8002F728(gTargetList);
-fn_80022FD8(gBattleMap,6);fn_80022DAC(gBattleMap,6,-1);
+Map_SelectRangeBuffer(gBattleMap,6);fn_80022DAC(gBattleMap,6,-1);
 fn_800FDF38(destX,(s16)(destY+dy),fn_80110030(entry),6,255);
 fn_8002C530(&pred,0);
 list=gTargetList;
@@ -18312,7 +18312,7 @@ return gAiState[0x21C];
 u8 fn_800F43D8(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],lbl_8028E6C8[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
-u8 Status_Test(void *,s32);void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
+u8 Status_Test(void *,s32);void fn_80022DAC(void *,s32,s32);void Map_SelectRangeBuffer(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);void fn_800FDDBC(s8,s8,u8,u8,s32);
@@ -18325,7 +18325,7 @@ s32 index,score,x,y,ymin; s32 cx,cy,r;u8 ix,iy,kind,id;u8 *self,*entry,*candidat
 callback=arg0;ctx=gUiContext;map=gBattleMap;self=*(u8**)ctx;ctx[8]=arg1;
 if(!Status_Test(self+0x1bc,0x4f))return 0;
 if((gAiState[1]&2)||(*(u32*)(self+0x254)&0x03000000)){
-fn_80022DAC(map,5,-1);fn_80022FD8(map,5);(*(u16**)(map+0x14190))[*(s8*)(self+0x19e)+(*(s8*)(self+0x19f)<<6)]=0;
+fn_80022DAC(map,5,-1);Map_SelectRangeBuffer(map,5);(*(u16**)(map+0x14190))[*(s8*)(self+0x19e)+(*(s8*)(self+0x19f)<<6)]=0;
 }else Map_BuildUnitMoveRange(self,5,-1);
 cx=*(s8*)(self+0x19e);cy=*(s8*)(self+0x19f);score=(s32)0x80000000;
 r=Unit_GetMov(self);
@@ -18343,7 +18343,7 @@ entry=MapObjEvent_Find(gMapObjEventList,(s8)x,(s8)y,7);
 if(!entry||!entry[5]||entry[4]!=*(u16*)((u8*)Item_GetByIid(lbl_80272DB0+0xce)+0xe))continue;
 candidate=MapObjEvent_Find(gMapObjEventList,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6D8;pred.value=callback;
-fn_8002F728(gTargetList);fn_80022FD8(gBattleMap,6);
+fn_8002F728(gTargetList);Map_SelectRangeBuffer(gBattleMap,6);
 item=Item_Get(candidate[4]);iy=candidate[1];kind=item[0x1d];ix=candidate[0];
 fn_800FDDBC((s8)ix,(s8)iy,kind,(u8)Item_GetMaxRange(item),6);
 fn_8001EF80(gBattleMap,candidate[0],candidate[1],candidate[3]);
@@ -18412,7 +18412,7 @@ u8 fn_800F4954(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],gUnits[],lbl_80284E20[],lbl_8028E6B8[];
 extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);
-void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
+void fn_80022DAC(void *,s32,s32);void Map_SelectRangeBuffer(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);
 s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);
@@ -18441,7 +18441,7 @@ self=*(u8 **)ctx;
 ctx[8]=arg1;
 if(!Status_Test(self+0x1BC,0x4F))return 0;
 if((gAiState[1]&2)||(*(u32 *)(self+0x254)&0x03000000)){
-fn_80022DAC(map,5,-1);fn_80022FD8(map,5);
+fn_80022DAC(map,5,-1);Map_SelectRangeBuffer(map,5);
 (*(u16 **)(map+0x14190))[(s8)self[0x19E]+((s8)self[0x19F]<<6)]=0;
 }else Map_BuildUnitMoveRange(self,5,-1);
 cx=(s8)self[0x19E];cy=(s8)self[0x19F];score=(s32)0x80000000;best=0;
@@ -18461,7 +18461,7 @@ entry=MapObjEvent_Find(gMapObjEventList,(s8)x,(s8)y,7);
 if(!entry||!entry[5]||entry[4]==M2C_FIELD(Item_GetByIid(lbl_80272DB0+0xCE),u16 *,0xE))continue;
 candidate=MapObjEvent_Find(gMapObjEventList,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6B8;pred.callback=callback;
-fn_8002F728(gTargetList);fn_80022FD8(gBattleMap,6);
+fn_8002F728(gTargetList);Map_SelectRangeBuffer(gBattleMap,6);
 item=Item_Get(candidate[4]);
 iy=candidate[1];kind=item[0x1D];ix=candidate[0];
 fn_800FDDBC((s8)ix,(s8)iy,kind,(u8)Item_GetMaxRange(item),6);
@@ -18523,7 +18523,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     extern char lbl_80272DB0[];
     int fn_80230BCC(int);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
@@ -18563,7 +18563,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     self = *(u8 **)ctx;
     if ((gAiState[1] & 2) || (*(u32 *)(self + 0x254) & 0x03000000)) {
         fn_80022DAC((void *)map0, 5, -1);
-        fn_80022FD8((void *)map0, 5);
+        Map_SelectRangeBuffer((void *)map0, 5);
         (*(u16 **)(map0 + 0x14190))[(s8)self[0x19E] + ((s8)self[0x19F] << 6)] = 0;
     } else {
         Map_BuildUnitMoveRange(self, 5, -1);
@@ -21041,7 +21041,7 @@ void fn_800FC6B0(void *arg0) {
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
@@ -21178,7 +21178,7 @@ void fn_800FC6B0(void *arg0) {
             if (bestLo != NULL) {
                 t14 = Status_Test((u8 *)unit + 0x1BC, 0x14) != 0;
                 t15 = Status_Test((u8 *)unit + 0x1BC, 0x15) != 0;
-                fn_80022FD8(map, 5);
+                Map_SelectRangeBuffer(map, 5);
                 fn_800227F8(map, *(void **)((u8 *)unit + 0x18C));
                 fn_80022748(map, *(void **)((u8 *)unit + 0x190));
                 if (*(u32 *)((u8 *)unit + 0x254) & 0x20000) {
@@ -21246,7 +21246,7 @@ void fn_800FC6B0(void *arg0) {
             if (bestHi != NULL) {
                 t14 = Status_Test((u8 *)unit + 0x1BC, 0x14) != 0;
                 t15 = Status_Test((u8 *)unit + 0x1BC, 0x15) != 0;
-                fn_80022FD8(map, 5);
+                Map_SelectRangeBuffer(map, 5);
                 fn_800227F8(map, *(void **)((u8 *)unit + 0x18C));
                 fn_80022748(map, *(void **)((u8 *)unit + 0x190));
                 if (*(u32 *)((u8 *)unit + 0x254) & 0x20000) {
@@ -21610,7 +21610,7 @@ void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s8 fn_8003A398(void *);
     u8 fn_80105BC0(void *, s32);
     extern u8 lbl_802CA518[];
@@ -21622,7 +21622,7 @@ void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
     map = lbl_802CA518;
     t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
     t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
-    fn_80022FD8(lbl_802CA518, arg1);
+    Map_SelectRangeBuffer(lbl_802CA518, arg1);
     fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
     fn_80022748(lbl_802CA518, 0);
     if (*(u32 *)(unit + 0x254) & 0x20000) {
@@ -21642,7 +21642,7 @@ void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
     void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s8 Unit_GetMov(void *);
     u8 Status_Test(void *, s32);
     extern u8 gBattleMap[];
@@ -21655,7 +21655,7 @@ void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
     mode = arg3;
     t14 = Status_Test(unit + 0x1BC, 0x14) != 0;
     arg3 = Status_Test(unit + 0x1BC, 0x15) != 0;
-    fn_80022FD8(gBattleMap, mode);
+    Map_SelectRangeBuffer(gBattleMap, mode);
     fn_800227F8(gBattleMap, *(void **)(unit + 0x18C));
     fn_80022748(gBattleMap, *(void **)(unit + 0x190));
     if (*(u32 *)(unit + 0x254) & 0x20000) {
@@ -21677,7 +21677,7 @@ void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s8 fn_8003A398(void *);
     u8 fn_80105BC0(void *, s32);
     extern u8 lbl_802CA518[];
@@ -21689,7 +21689,7 @@ void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
     map = lbl_802CA518;
     t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
     t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
-    fn_80022FD8(lbl_802CA518, arg3);
+    Map_SelectRangeBuffer(lbl_802CA518, arg3);
     fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
     fn_80022748(lbl_802CA518, 0);
     if (*(u32 *)(unit + 0x254) & 0x20000) {
@@ -21707,7 +21707,7 @@ void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
 #pragma use_lmw_stmw reset
 
 void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void fn_800227F8(void *, void *);
     void fn_80022748(void *, s32);
     u8 fn_80105BC0(void *, s32);
@@ -21719,7 +21719,7 @@ void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *map;
 
     map = lbl_802CA518;
-    fn_80022FD8(map, arg4);
+    Map_SelectRangeBuffer(map, arg4);
     fn_800227F8(lbl_802CA518, arg2);
     fn_80022748(lbl_802CA518, arg3);
     if (arg2) {
@@ -21740,7 +21740,7 @@ void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
     void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227F8(void *, void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     u8 Status_Test(void *, s32);
     extern u8 gBattleMap[];
     u32 flags;
@@ -21756,7 +21756,7 @@ void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
     obj = arg2;
     flags = arg4;
     map = gBattleMap;
-    fn_80022FD8(map, arg3);
+    Map_SelectRangeBuffer(map, arg3);
     fn_800227F8(map, obj);
     fn_80022748(map, 0);
     if (obj != NULL) {
@@ -22752,7 +22752,7 @@ void fn_80100D18(void *arg0, void **arg1, s16 arg2) {
     M2C_UNK Map_FillAttackRange(M2C_UNK *, s8, s8, u8, u8);
     M2C_UNK fn_80022DAC(M2C_UNK *, M2C_UNK, s16);
     M2C_UNK fn_80022FCC(M2C_UNK *, s32);
-    M2C_UNK fn_80022FD8(M2C_UNK *, M2C_UNK);
+    M2C_UNK Map_SelectRangeBuffer(M2C_UNK *, M2C_UNK);
     s8 Unit_GetMov(void *);
     u8 Map_IsAiTerrainBlocked(s8);
     extern M2C_UNK gBattleMap;
@@ -22826,7 +22826,7 @@ loop_22:
         var_r21 += 1;
         goto loop_24;
     }
-    fn_80022FD8(&gBattleMap, 5);
+    Map_SelectRangeBuffer(&gBattleMap, 5);
 }
 
 s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
@@ -23381,7 +23381,7 @@ s32 fn_80102360(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     /* Condition check and calls */
     if ((*(u8 *)0x8032B3C0 & 2) || (*(u32 *)((char *)arg0 + 0x254) & 0x03000000)) {
         fn_80022DAC(0x802CA518, 5, -1);
-        fn_80022FD8(0x802CA518, 5);
+        Map_SelectRangeBuffer(0x802CA518, 5);
     } else {
         Map_BuildUnitMoveRange(arg0, 5, arg3);
     }
@@ -23414,7 +23414,7 @@ s32 fn_80102360(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
 #pragma use_lmw_stmw on
 s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     void fn_80022DAC(void *, s32, s32);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s8 Unit_GetMov(void *);
     u16 fn_800FCF48(s8, s8);
     void Map_BuildUnitMoveRange(void *, s32, s32);
@@ -23440,7 +23440,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     best = 0xffff;
     if ((gAiState[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
         fn_80022DAC(base, 5, -1);
-        fn_80022FD8(base, 5);
+        Map_SelectRangeBuffer(base, 5);
         {
             s16 *tbl = *(s16 **)(base + 0x14190);
             s32 idx = (s8)*(u8 *)((u8 *)arg0 + 0x19e) + ((s8)*(u8 *)((u8 *)arg0 + 0x19f) << 6);

@@ -1745,7 +1745,7 @@ void fn_80022FCC(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x14190) = arg1;
 }
 
-void fn_80022FD8(void *arg0, s32 arg1) {
+void Map_SelectRangeBuffer(void *arg0, s32 arg1) {
     if (arg1 != 6) {
         if (arg1 >= 6) {
             return;

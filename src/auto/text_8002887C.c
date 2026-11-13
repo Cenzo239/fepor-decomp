@@ -949,7 +949,7 @@ void fn_8002BD44(void *arg0, void *arg1)
 
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void fn_8002F728(void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     void *Item_Get(s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
@@ -995,7 +995,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     localObject[0] = lbl_80284CD0;
 
     fn_8002F728(gTargetList);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
 
     unit = (u8 *)Item_Get(source[4]);
 
@@ -1071,7 +1071,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
     extern u8 gBattleMap[];
 
     void fn_8002F728(void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
 
@@ -1096,7 +1096,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
     localObject[1] = arg0;
 
     fn_8002F728(gTargetList);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
 
     threshold = *(u8 *)((u8 *)arg1 + 0x1D);
 
@@ -1150,7 +1150,7 @@ void fn_8002C034(void *arg0, void *arg1)
     extern u8 gUnits[];
 
     void fn_8002F728(void *);
-    void fn_80022FD8(void *, s32);
+    void Map_SelectRangeBuffer(void *, s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
 
@@ -1171,7 +1171,7 @@ void fn_8002C034(void *arg0, void *arg1)
     object[0] = lbl_80284CE0;
 
     fn_8002F728(gTargetList);
-    fn_80022FD8(gBattleMap, 6);
+    Map_SelectRangeBuffer(gBattleMap, 6);
 
     value = *(u8 *)((u8 *)arg1 + 0x1D);
 
