@@ -10795,7 +10795,7 @@ void Unit_DrawShadows(void) {
     extern u8 gUnits[];
     extern s32 gUnitShadowMat;
     extern f32 lbl_80368FCC;
-    extern f32 lbl_80368FF0;
+    extern f32 gUnitShadowZ;
     u8 sp60[0x30];
     u8 sp30[0x30];
     u8 sp10[0x20];
@@ -10821,7 +10821,7 @@ void Unit_DrawShadows(void) {
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumChans(1);
-    PSMTXTrans(sp30, lbl_80368FCC, lbl_80368FCC, lbl_80368FF0);
+    PSMTXTrans(sp30, lbl_80368FCC, lbl_80368FCC, gUnitShadowZ);
     PSMTXConcat(fn_80067FDC(), sp30, sp60);
     GXLoadPosMtxImm(sp60, 0);
     GXSetCurrentMtx(0);
@@ -13150,7 +13150,7 @@ extern u32 jumptable_802855E4[];
 #include "global.h"
 extern s32* gUnitShadowMat;
 extern f32 lbl_80368FCC;
-extern f32 lbl_80368FF0;
+extern f32 gUnitShadowZ;
 extern u16* gUnits;
 #include "common.h"
 

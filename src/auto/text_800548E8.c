@@ -201,7 +201,7 @@ extern u32 jumptable_802855E4[];
 #include "global.h"
 extern s32* gUnitShadowMat;
 extern f32 lbl_80368FCC;
-extern f32 lbl_80368FF0;
+extern f32 gUnitShadowZ;
 extern u16* gUnits;
 #include "common.h"
 
