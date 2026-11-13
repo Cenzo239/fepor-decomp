@@ -5304,7 +5304,7 @@ void fn_8011CC04(u8 *arg0) {
 #pragma global_optimizer reset
 void fn_8011D014(void *arg0) {
     void Win_UpdatePos(void *);
-    void fn_800E7C88(void *);
+    void Win_SetDirty(void *);
     extern void *gPadInput;
     void *obj;
     u32 buttons;
@@ -5333,7 +5333,7 @@ void fn_8011D014(void *arg0) {
         } else if (M2C_FIELD(arg0, s32 *, 0xEC) < M2C_FIELD(arg0, s32 *, 0xF4)) {
             M2C_FIELD(arg0, s32 *, 0xF4) = M2C_FIELD(arg0, s32 *, 0xEC);
         }
-        fn_800E7C88(obj);
+        Win_SetDirty(obj);
     }
 }
 

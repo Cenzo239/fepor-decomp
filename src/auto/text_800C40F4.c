@@ -9168,7 +9168,7 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
 
 void ListWin_HandleInput(void *list) {
     void Win_UpdatePos(void *);
-    void fn_800E7C88(void *);
+    void Win_SetDirty(void *);
     extern u8 *gPadInput;
     void *owner;
     s32 keys;
@@ -9193,7 +9193,7 @@ void ListWin_HandleInput(void *list) {
                 / M2C_FIELD(list, s32 *, 0xB0);
             if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
                 M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
-            fn_800E7C88(owner);
+            Win_SetDirty(owner);
         } else if (keys & 4) {
             if (M2C_FIELD(list, u32 *, 0xB0)) {
                 M2C_FIELD(list, s32 *, 0x110) += 1;
@@ -9208,7 +9208,7 @@ void ListWin_HandleInput(void *list) {
             }
             if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
                 M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
-            fn_800E7C88(owner);
+            Win_SetDirty(owner);
         } else if (keys & 1) {
             M2C_FIELD(list, s32 *, 0x110) -= 10;
             if (M2C_FIELD(list, s32 *, 0x110) < 0)
@@ -9223,7 +9223,7 @@ void ListWin_HandleInput(void *list) {
                 / M2C_FIELD(list, s32 *, 0xB0);
             if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
                 M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
-            fn_800E7C88(owner);
+            Win_SetDirty(owner);
         } else if (keys & 2) {
             if (M2C_FIELD(list, u32 *, 0xB0)) {
                 M2C_FIELD(list, s32 *, 0x110) += 10;
@@ -9238,7 +9238,7 @@ void ListWin_HandleInput(void *list) {
             }
             if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
                 M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
-            fn_800E7C88(owner);
+            Win_SetDirty(owner);
         }
     }
     M2C_FIELD(list, s32 *, 0x10C) = M2C_FIELD(list, s32 *, 0x64) / 16;
@@ -13774,7 +13774,7 @@ u8 fn_800E7C80(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0x2C);
 }
 
-void fn_800E7C88(void *arg0) {
+void Win_SetDirty(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x2C) = 1;
 }
 
