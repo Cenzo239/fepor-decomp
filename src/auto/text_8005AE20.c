@@ -6064,7 +6064,7 @@ s32 fn_8006A374(void) {
     return lbl_8036730C;
 }
 
-s32 fn_8006A37C(void) {
+s32 GMaterial_GetCurrent(void) {
     extern s32 lbl_80367308;
     return lbl_80367308;
 }

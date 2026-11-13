@@ -10229,7 +10229,7 @@ void fn_8004B1B4(u8 *arg0) {
 extern s32 lbl_80367308;
 #pragma use_lmw_stmw on
 s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
-    s32 fn_8006A37C(void);
+    s32 GMaterial_GetCurrent(void);
     s32 fn_8006A374(void);
     s32 GMaterial_AllocTevStage(void);
     s32 GMaterial_AllocTexMap(void);
@@ -10256,7 +10256,7 @@ s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
     s32 t26;
     s32 t25;
 
-    t30 = fn_8006A37C();
+    t30 = GMaterial_GetCurrent();
     t29 = fn_8006A374();
     t28 = *(s32 *)((u8 *)t30 + 0x90);
     t27 = GMaterial_AllocTevStage();
