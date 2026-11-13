@@ -1957,6 +1957,7 @@ void fn_801B1ED4(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
+    /* Handle unit-panel cursor input: A buy/confirm (funds check), Y unit info, B cancel. */
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     u16 UnitRef_GetValue(void *);
@@ -2006,24 +2007,24 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
         virtual Pair v9() = 0;
     };
     struct RefObj {
-        virtual void v0(s32) = 0;
+        virtual void destroy(s32) = 0;
     };
     struct Child {
         u8 pad[0x3C];
-        s32 unk3C;
+        s32 cost;
     };
 
-    void *obj40;
-    void *cur;
+    void *panel40;
+    void *unit;
     Child *child;
     void *self;
     register int btn;
-    register u8 gate;
+    register u8 blocked;
     register int flags;
-    void *nest;
+    void *owner;
     s32 saved;
-    void *ret;
-    void *obj44;
+    void *msg;
+    void *panel44;
     void *tmp;
     u32 pos1;
     u32 pos2;
@@ -2032,48 +2033,48 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     child = (Child *)fn_8013FF94(arg0, 2, 0);
     tmp = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
     *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x3C) = 1;
-    cur = tmp;
+    unit = tmp;
     fn_8013FDA0(arg0);
-    if (cur != fn_80134280(*(void **)((u8 *)arg0 + 0x44))) {
-        cur = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
-        if (gUnitRef != cur) {
-            UnitRef_Set(&gUnitRef, cur);
+    if (unit != fn_80134280(*(void **)((u8 *)arg0 + 0x44))) {
+        unit = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
+        if (gUnitRef != unit) {
+            UnitRef_Set(&gUnitRef, unit);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)arg0 + 0x44))->v9();
             Ui_ShowUnitInfoPopup(gUnitInfoPopup, &gUnitRef, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
         }
     }
-    if (gUnitRef != cur) {
-        UnitRef_Set(&gUnitRef, cur);
+    if (gUnitRef != unit) {
+        UnitRef_Set(&gUnitRef, unit);
     }
-    child->unk3C = UnitRef_GetValue(&gUnitRef);
+    child->cost = UnitRef_GetValue(&gUnitRef);
     flags = gUiInputFlags;
-    gate = 0;
+    blocked = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+        blocked = 1;
     }
-    if (!gate) {
+    if (!blocked) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (child->unk3C > *(s32 *)(lbl_80330708 + 0x18)) {
+            if (child->cost > *(s32 *)(lbl_80330708 + 0x18)) {
                 Ui_PlaySeCue(lbl_8027BD18 + 0x3B0, 0x64);
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x6C) + 0x38));
-                nest = *(void **)((u8 *)self + 0x6C);
-                saved = *(s32 *)((u8 *)nest + 0x84);
-                ret = fn_8013FF94(self, -0x1000, 0);
-                if (ret != NULL) {
-                    fn_801658DC(ret, saved);
+                owner = *(void **)((u8 *)self + 0x6C);
+                saved = *(s32 *)((u8 *)owner + 0x84);
+                msg = fn_8013FF94(self, -0x1000, 0);
+                if (msg != NULL) {
+                    fn_801658DC(msg, saved);
                 }
                 fn_8000C070(self, 0x1C);
             } else {
                 Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-                obj40 = *(void **)((u8 *)self + 0x40);
-                fn_80140258(self, obj40, Pair(0x260, *(s16 *)((u8 *)obj40 + 0xC)), 0);
-                obj44 = *(void **)((u8 *)self + 0x44);
-                *(s16 *)((u8 *)obj44 + 0x24) = 8;
-                fn_80140258(self, obj44, Pair(0x260, *(s16 *)((u8 *)obj44 + 0xC)), 0);
+                panel40 = *(void **)((u8 *)self + 0x40);
+                fn_80140258(self, panel40, Pair(0x260, *(s16 *)((u8 *)panel40 + 0xC)), 0);
+                panel44 = *(void **)((u8 *)self + 0x44);
+                *(s16 *)((u8 *)panel44 + 0x24) = 8;
+                fn_80140258(self, panel44, Pair(0x260, *(s16 *)((u8 *)panel44 + 0xC)), 0);
                 fn_8000C188(self);
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
@@ -2083,21 +2084,21 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
         } else if ((btn & 0xA00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            obj44 = *(void **)((u8 *)self + 0x44);
-            *(s16 *)((u8 *)obj44 + 0x24) = 4;
+            panel44 = *(void **)((u8 *)self + 0x44);
+            *(s16 *)((u8 *)panel44 + 0x24) = 4;
             fn_801402C4(self, *(void **)((u8 *)self + 0x44), 0, 1);
-            obj44 = *(void **)((u8 *)self + 0x44);
-            if (obj44 != NULL) {
-                s32 n = *(s32 *)((u8 *)obj44 + 4) - 1;
-                *(s32 *)((u8 *)obj44 + 4) = n;
-                if (n == 0 && obj44 != NULL) {
-                    ((RefObj *)obj44)->v0(1);
+            panel44 = *(void **)((u8 *)self + 0x44);
+            if (panel44 != NULL) {
+                s32 n = *(s32 *)((u8 *)panel44 + 4) - 1;
+                *(s32 *)((u8 *)panel44 + 4) = n;
+                if (n == 0 && panel44 != NULL) {
+                    ((RefObj *)panel44)->destroy(1);
                 }
                 *(void **)((u8 *)self + 0x44) = NULL;
             }
-            obj40 = *(void **)((u8 *)self + 0x40);
-            *(f32 *)((u8 *)obj40 + 0x30) = lbl_8036B0A8;
-            fn_8013FF00(self, obj40);
+            panel40 = *(void **)((u8 *)self + 0x40);
+            *(f32 *)((u8 *)panel40 + 0x30) = lbl_8036B0A8;
+            fn_8013FF00(self, panel40);
             fn_8000C070(self, 3);
             Ui_PlaySeCue(lbl_8027BD18 + 0x3A0, 0x64);
         }
