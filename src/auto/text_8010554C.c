@@ -2094,17 +2094,17 @@ s32 Sound_FindByName(s8 *arg0)
     void fn_8011D484(s8 *);
     void fn_8010913C(void);
     void fn_8000BF6C(void *, void (*)(void));
-    void *tbl;
+    s32 ret;
 
     if (arg0[0] == 0x54 && arg0[1] == 0x42 && arg0[2] == 0x47 && arg0[3] == 0) {
         fn_8011D484(arg0);
     } else {
         lbl_803679DC = 0;
-        tbl = lbl_8028F390;
         lbl_803679D8 = arg0;
-        fn_8000BF6C(tbl, fn_8010913C);
+        fn_8000BF6C(lbl_8028F390, fn_8010913C);
     }
-    return lbl_803679DC;
+    ret = lbl_803679DC;
+    return ret;
 }
 
 void fn_8010913C(void *arg0) {
@@ -4466,7 +4466,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void fn_80100D18(void *, void *, s32);
     u8 fn_801044FC(void *);
-    void fn_801A49AC(void *, s8);
+    void Battle_SelectWeapon(void *, s8);
     void Battle_SetupFromParams(void *, void *, void *);
     extern u8 gAiState[];
     extern u8 gBattleMap[];
@@ -4649,7 +4649,7 @@ ok_done:
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
             Battle_SetupFromParams(gBattle, &sp28, &sp18);
-            fn_801A49AC(gBattle, (s8)slot);
+            Battle_SelectWeapon(gBattle, (s8)slot);
 
             ciff = Unit_CalcHitRate(arg0, unit);
             if (ciff < 5) {
@@ -4692,7 +4692,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void fn_80100D18(void *, void *, s32);
-    void fn_801A49AC(void *, s8);
+    void Battle_SelectWeapon(void *, s8);
     void Battle_SetupFromParams(void *, void *, void *);
     extern u8 gAiState[];
     extern u8 gBattleMap[];
@@ -4879,7 +4879,7 @@ ok_done:
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
             Battle_SetupFromParams(gBattle, &sp28, &sp18);
-            fn_801A49AC(gBattle, (s8)slot);
+            Battle_SelectWeapon(gBattle, (s8)slot);
 
             ciff = Unit_CalcHitRate(arg0, unit);
             if (ciff < 5) {
