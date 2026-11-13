@@ -11933,7 +11933,7 @@ void fn_8017A4CC(void *arg0, s32 arg1, u8 arg2, u8 arg3) {
     *temp_r4_8 = arg3;
 }
 
-void fn_8017A574(void *arg0, u32 arg1) {
+void Stream_WriteS32(void *arg0, u32 arg1) {
     u8** r5_ptr = (u8**)((char*)arg0 + 4);
     u8* r5_val = *r5_ptr;
     *r5_ptr = r5_val + 1;

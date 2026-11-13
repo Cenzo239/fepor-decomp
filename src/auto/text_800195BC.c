@@ -1560,13 +1560,13 @@ void Item_Read(void *arg0, void *arg1) {
 }
 
 void fn_8001C21C(void *arg0, s32 arg1) {
-    M2C_UNK fn_8017A574(s32, M2C_UNK);
+    M2C_UNK Stream_WriteS32(s32, M2C_UNK);
     M2C_UNK Stream_WriteU16(s32, u16);
     void *temp_r3;
 
     temp_r3 = M2C_FIELD(arg0, void **, 0);
     if (temp_r3 == NULL) {
-        fn_8017A574(arg1, 0);
+        Stream_WriteS32(arg1, 0);
         return;
     }
     Stream_WriteU16(arg1, M2C_FIELD(temp_r3, u16 *, 0xE));
