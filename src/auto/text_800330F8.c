@@ -3982,7 +3982,7 @@ void fn_8003B844(void *arg0,s32 arg1) {
  }
 }
 
-void fn_8003B8D4(void *arg0) {
+void AffinityBonuses_Halve(void *arg0) {
     M2C_FIELD(arg0, u8 *, 4) = (u8) ((s8) M2C_FIELD(arg0, u8 *, 4) >> 1);
     M2C_FIELD(arg0, u8 *, 5) = (u8) ((s8) M2C_FIELD(arg0, u8 *, 5) >> 1);
     M2C_FIELD(arg0, u8 *, 6) = (u8) ((s8) M2C_FIELD(arg0, u8 *, 6) >> 1);

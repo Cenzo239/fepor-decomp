@@ -406,7 +406,7 @@ void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     u8 Unit_GetDistance(void *, void *);
-    void fn_8003B8D4(void *);
+    void AffinityBonuses_Halve(void *);
     s32 i;
     void *unit;
     s32 val;
@@ -435,7 +435,7 @@ void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
         Unit_AddAffinityBonuses(arg0, val, arg1);
         Unit_AddAffinityBonuses(unit, val, arg1);
     }
-    fn_8003B8D4(arg1);
+    AffinityBonuses_Halve(arg1);
 }
 
 void fn_801A8DA4(void *arg0) {
@@ -445,7 +445,7 @@ void fn_801A8DA4(void *arg0) {
     u8 Unit_GetDistance(void *, void *);
     M2C_UNK fn_80036E48(void *, s32);
     M2C_UNK Unit_AddAffinityBonuses(void *, s32, M2C_UNK *);
-    M2C_UNK fn_8003B8D4(M2C_UNK *);
+    M2C_UNK AffinityBonuses_Halve(M2C_UNK *);
     
     s32 var_r28;
     void *temp_r3;
@@ -477,7 +477,7 @@ loop_6:
         var_r28 += 1;
         goto loop_6;
     }
-    fn_8003B8D4(&sp8);
+    AffinityBonuses_Halve(&sp8);
     M2C_FIELD(arg0, s16 *, 0x298) = (s16) (M2C_FIELD(arg0, s16 *, 0x298) + (s8) spC);
     M2C_FIELD(arg0, s16 *, 0x29A) = (s16) (M2C_FIELD(arg0, s16 *, 0x29A) + (s8) spD);
     M2C_FIELD(arg0, s16 *, 0x29E) = (s16) (M2C_FIELD(arg0, s16 *, 0x29E) + (s8) spE);
