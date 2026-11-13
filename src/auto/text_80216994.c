@@ -3346,7 +3346,7 @@ s32 Card_GetFileAttr(s32 arg0, s32 arg1, u8 *arg2) {
     return result;
 }
 
-s32 fn_8021D718(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 Card_SetFileAttr(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 fn_8021D2D4(s32, s32, void *);
     s32 fn_8021D378(s32, s32, void *, s32);
     extern u8 lbl_80366FF2;

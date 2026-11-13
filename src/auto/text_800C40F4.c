@@ -15039,7 +15039,7 @@ void fn_800EAC7C(s32 arg0) {
     void fn_800EB80C(void);
     void Process_Goto(s32, s32);
     s32 Card_GetFileAttr(s32, s32, u8 *);
-    s32 fn_8021D718(s32, s32, u8, void *);
+    s32 Card_SetFileAttr(s32, s32, u8, void *);
     extern struct CardWork gCardWork;
     u8 sp8;
     u8 skip;
@@ -15057,7 +15057,7 @@ void fn_800EAC7C(s32 arg0) {
         Card_GetFileAttr(gCardWork.chan, temp, &sp8);
         sp8 |= 8;
         gCardWork.busy = 1;
-        gCardWork.result = fn_8021D718(gCardWork.chan, temp, sp8, fn_800EB80C);
+        gCardWork.result = Card_SetFileAttr(gCardWork.chan, temp, sp8, fn_800EB80C);
         if (gCardWork.result < 0) {
             Process_Goto(arg0, 0x63);
             gCardWork.busy = 0;
