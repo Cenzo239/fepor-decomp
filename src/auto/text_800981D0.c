@@ -152,7 +152,7 @@ void fn_80098524(void **arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_80098670(void *arg0) {
+s32 Event_HandleItemCmd(void *arg0) {
     u8 fn_8005F7F0(void *);
     u8 fn_8005F9B8(void *, s32);
     void fn_80054C14(void *);
