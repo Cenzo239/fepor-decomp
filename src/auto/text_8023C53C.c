@@ -93,7 +93,7 @@ extern f32 lbl_8036C374;
 extern s32 lbl_80368A28;
 extern s32 lbl_80368A2C;
 extern s32 gSynthSchedList;
-extern s32 lbl_80368A34;
+extern s32 gSynthIdleList;
 extern u32* lbl_80368A38;
 extern void (*lbl_80368B34)(s16);
 extern f32 lbl_8034C324[];
@@ -7617,7 +7617,7 @@ void fn_80254F00(u32 arg0)
         current = next;
     }
 
-    voice = (u8 *)lbl_80368A34;
+    voice = (u8 *)gSynthIdleList;
 
     while (voice != 0) {
         nextVoice = *(u8 **)(voice + 0x3C);
@@ -7803,13 +7803,13 @@ void Sound_DeactivateSynthVoice(void *arg0) {
             *(u64 *)((u8 *)arg0 + 0xA0) = *(u64 *)&lbl_80368A28;
             *(u64 *)((u8 *)arg0 + 0x114) &= ~0x40004ULL;
         }
-        head = lbl_80368A34;
+        head = gSynthIdleList;
         *(s32 *)((u8 *)arg0 + 0x3C) = head;
         if ((u32)head != 0) {
-            *(void **)((u8 *)lbl_80368A34 + 0x40) = arg0;
+            *(void **)((u8 *)gSynthIdleList + 0x40) = arg0;
         }
         *(s32 *)((u8 *)arg0 + 0x40) = 0;
-        lbl_80368A34 = (s32)arg0;
+        gSynthIdleList = (s32)arg0;
         *(s32 *)((u8 *)arg0 + 0x4C) = 0;
     }
 }
@@ -7868,7 +7868,7 @@ s32 fn_802555A0(
         prev = *(u8 **)(voice + 0x40);
         next = *(u8 **)(voice + 0x3C);
         if (prev == 0) {
-            lbl_80368A34 = (s32)next;
+            gSynthIdleList = (s32)next;
         } else {
             *(u8 **)(prev + 0x3C) = next;
         }
@@ -7985,13 +7985,13 @@ s32 fn_802555A0(
             *(u32 *)(voice + 0x118) &= 0xFFFBFFFB;
             *(u32 *)(voice + 0x114) = 0;
 
-            next = (u8 *)lbl_80368A34;
+            next = (u8 *)gSynthIdleList;
             *(u8 **)(voice + 0x3C) = next;
             if (next != 0) {
                 *(u8 **)(next + 0x40) = voice;
             }
             *(u32 *)(voice + 0x40) = 0;
-            lbl_80368A34 = (s32)voice;
+            gSynthIdleList = (s32)voice;
             *(u32 *)(voice + 0x4C) = 0;
         }
         return result;
@@ -8009,7 +8009,7 @@ void fn_802559D8(void) {
     u32 count;
     s32 i;
     
-    lbl_80368A34 = 0;
+    gSynthIdleList = 0;
     gSynthSchedList = 0; 
     lbl_80368A2C = 0;
     lbl_80368A28 = 0;
