@@ -83,12 +83,12 @@ u16 *fn_801A7FF4(void *arg0) {
 }
 
 void fn_801A8010(void *arg0) {
-    u64 *Item_GetFlagsPtr(void *);
+    u64 *fn_8001CB64(void *);
     u8 fn_8001DDE8(s32);
     extern u16 lbl_80367218;
-    u64 *p;
     void *base;
     s8 flag;
+    u64 bits;
 
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
     if (flag > 0) {
@@ -97,8 +97,8 @@ void fn_801A8010(void *arg0) {
         } else {
             base = (u8 *)arg0 + 0x284;
         }
-        p = Item_GetFlagsPtr(base);
-        if ((*p & 0x100ULL) == 0) {
+        bits = *fn_8001CB64(base);
+        if ((bits & 0x100ULL) == 0) {
             if (*(u8 *)((u8 *)arg0 + 0x295) == 0x52) {
                 if (*(s8 *)((u8 *)arg0 + 0x2C8) <= 0) {
                     base = &lbl_80367218;
@@ -1029,6 +1029,7 @@ void fn_801AA03C(s32 unused, s32 arg1) {
     fn_800F5504(arg1, 0x15);
 }
 
+#pragma optimization_level 2
 u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
     u8 Status_Test(void *, s32);
     extern s32 lbl_80297278[];
@@ -1061,7 +1062,7 @@ found:
     ((void (*)(void *, void *))entry[1])(arg0, arg2);
     return gAiState[0x21C];
 }
-
+#pragma optimization_level reset
 extern u8 lbl_802973C8[16];
 void fn_801AA120(s32 arg0) {
     void Process_CreateChild(void *, s32);
@@ -1340,7 +1341,7 @@ void fn_801ACF4C(void *arg0) {
         var_r30 += 1;
     } while (var_r30 < 0xA);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 

@@ -1977,7 +1977,7 @@ void Prim2D_SetColorByte(s8 arg0) {
     *(u8 *)(*(u8 **)&lbl_80367140 + 0x23) = (u8)arg0;
 }
 
-void fn_80009B98(void) {
+void Prim2D_ClearCallbacks(void) {
     extern u16 lbl_80367140;
 
     *(u32 *)(*(u8 **)&lbl_80367140 + 0x2c) = 0;

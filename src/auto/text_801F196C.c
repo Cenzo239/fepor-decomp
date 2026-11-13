@@ -1068,7 +1068,7 @@ void fn_801F3E60(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_SetColorByte(s32);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_80009BC0(void (*)(s32, s16 *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);

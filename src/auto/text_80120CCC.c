@@ -3682,7 +3682,7 @@ extern void Prim2D_SetPos(f32, f32);
 extern void Prim2D_EndPrim(void);
 extern void Prim2D_AddPrim(s32);
 extern void Prim2D_SetColorByte(u8);
-extern void fn_80009B98(void);
+extern void Prim2D_ClearCallbacks(void);
 extern void fn_80009BC0(void *, s32);
 extern void Prim2D_SetTransform(f32, f32, f32, f32);
 extern void Prim2D_SetTex(s32, s32);

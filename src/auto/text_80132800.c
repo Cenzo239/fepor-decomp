@@ -1591,7 +1591,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     s32 String_CStr(s32 *);
     void Text_Draw(s16, s16, s32, void *, s32, ...);
     void String_Destroy(s32 *, s32);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_8013F920(void *);
     extern f32 lbl_8036A5D8;
     extern f32 lbl_8036A5DC;
@@ -1681,7 +1681,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
         }
     }
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 
@@ -2062,7 +2062,7 @@ extern "C" void fn_80135CE8(void *arg0, s32 arg1) {
     typedef void (Sub::*PTMF)(s32);
     struct Pair { PTMF ptmf; s32 arg; };
     void fn_8013F748(void *,s16 *,s16 *);
-    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void fn_80009B98(void);
+    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void Prim2D_ClearCallbacks(void);
     void Prim2D_AddZ(f32); void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *),s16 *);
     extern f32 lbl_8036A5D8,lbl_8036A5E4,lbl_8036A5E8,lbl_8036A5F4;
@@ -2135,7 +2135,7 @@ extern "C" void fn_80135CE8(void *arg0, s32 arg1) {
         }
     }
 done:
-    Prim2D_Begin(); fn_80009B98(); Prim2D_PrepareTex();
+    Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
     Prim2D_Begin(); Prim2D_AddZ(lbl_8036A5F4); Prim2D_PrepareTex();
     s32 rm1=(s16)rows-1;
     s16 pages=(rm1+((Obj *)self)->a68)/(u32)(s16)rows;
@@ -2935,7 +2935,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void fn_8007B990(void *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A61C;
     extern f32 lbl_8036A624;
     extern u8 lbl_802767E0[192];
@@ -3031,7 +3031,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -3155,7 +3155,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void fn_8007B990(void *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A61C;
     extern f32 lbl_8036A624;
     extern u8 lbl_802767E0[192];
@@ -3240,7 +3240,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -3333,7 +3333,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void fn_800609DC(void *);
     void fn_8004DDB8(s32);
     void Prim2D_SetColorByte(void);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void Prim2D_AddPrim(s32);
     void fn_80007340(void *, void *);
     void Prim2D_EndPrim(void);
@@ -3448,7 +3448,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 
     if (self->unk40 & 0x10000) {
@@ -3755,7 +3755,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
     void Prim2D_PrepareTex(void);
     s32 Text_MeasureHeight(s32, f32);
     void fn_8008BF68(s16, s32, u8);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void Prim2D_SetAlphaByte(s32);
     extern f32 lbl_8036A668;
     extern f32 lbl_8036A66C;
@@ -3836,7 +3836,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
     }
     ((Obj *)self)->v18(other);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
@@ -3895,7 +3895,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8004DDB8(s32);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A67C, lbl_8036A680, lbl_8036A684;
     extern f32 lbl_8036A668, lbl_8036A688, lbl_8036A674, lbl_8036A68C;
     extern void fn_80069F04;
@@ -4025,7 +4025,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
 done:
     fn_8004DDB8(self->a22 - 1);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -4188,7 +4188,7 @@ extern "C" void fn_80139B3C(void *self, void *other) {
     extern void Prim2D_PrepareTex(void);
     extern s32 Text_MeasureHeight(s32, f32);
     extern void fn_8008BF68(s16, s32, u8);
-    extern void fn_80009B98(void);
+    extern void Prim2D_ClearCallbacks(void);
     extern void Prim2D_SetAlphaByte(s32);
     extern f32 lbl_8036A670;
     extern f32 lbl_8036A674;
@@ -4272,7 +4272,7 @@ extern "C" void fn_80139B3C(void *self, void *other) {
     }
     ((Obj *)self)->v18(other);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
@@ -4521,7 +4521,7 @@ extern "C" void fn_8013A39C(void *self, void *other) {
     extern void Prim2D_PrepareTex(void);
     extern s32 Text_MeasureHeight(s32, f32);
     extern void fn_8008BF68(s16, s32, u8);
-    extern void fn_80009B98(void);
+    extern void Prim2D_ClearCallbacks(void);
     extern void Prim2D_SetAlphaByte(s32);
     extern f32 lbl_8036A670;
     extern f32 lbl_8036A674;
@@ -4590,7 +4590,7 @@ extern "C" void fn_8013A39C(void *self, void *other) {
     }
     ((Obj *)self)->v18(other);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
@@ -4623,7 +4623,7 @@ extern "C" void fn_8013A5A0(void *arg0, s32 arg1) {
     typedef void (Sub::*PTMF)(s32);
     struct Pair { PTMF ptmf; s32 arg; };
     void fn_8013F748(void *,s16 *,s16 *);
-    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void fn_80009B98(void);
+    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void Prim2D_ClearCallbacks(void);
     void Prim2D_AddZ(f32); void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *),s16 *);
     extern f32 lbl_8036A668,lbl_8036A6AC,lbl_8036A670;
@@ -4702,7 +4702,7 @@ extern "C" void fn_8013A5A0(void *arg0, s32 arg1) {
         }
     }
 done:
-    Prim2D_Begin(); fn_80009B98(); Prim2D_PrepareTex();
+    Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
     Prim2D_Begin(); Prim2D_AddZ(lbl_8036A670); Prim2D_PrepareTex();
     s32 rm1=(s16)rows-1;
     s16 pages=(rm1+((Obj *)self)->a70)/(u32)(s16)rows;
@@ -7658,7 +7658,7 @@ extern "C" void fn_8013FE0C(void *arg0) {
     };
     extern u8 lbl_80367AD8;
     void Prim2D_Begin(void);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
@@ -7675,7 +7675,7 @@ extern "C" void fn_8013FE0C(void *arg0) {
         }
     }
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_SetColorByte(0xFF);
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
@@ -8860,7 +8860,7 @@ void fn_8013F748(void *,s16 *,s16 *);
 void fn_8013F920(void *);
 void Prim2D_Begin(void); void Prim2D_PrepareTex(void);
 void fn_80009BC0(void (*)(void *),s16 *);
-void Prim2D_AddZ(f32); void fn_80009B98(void);
+void Prim2D_AddZ(f32); void Prim2D_ClearCallbacks(void);
 void Prim2D_SetTex(s32,s32);
 void *Msg_Expand(void *);
 s32 Text_MeasureWidth(void *,s32,f32);
@@ -8983,7 +8983,7 @@ if (M2C_FIELD(self, s32 *, 0x11c) == 2) cy += *(s16 *)(*(u8 **)(sprite + 0x34) +
 fn_8007B4D8(cx, cy, 0x7f, sprite); fn_8007B990(sprite);
 }
 }
-Prim2D_Begin(); fn_80009B98(); Prim2D_PrepareTex();
+Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
 {
 u8 *child = M2C_FIELD(self, u8 **, 0x48);
 *(s16 *)(child + 0x3c) = count << 5;

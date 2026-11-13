@@ -388,7 +388,7 @@ void TabMenu_Draw(void *menu)
     void TabMenu_DrawTab0(void *);
     void TabMenu_DrawTab1(void *);
     void TabMenu_DrawTab2(void *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_801E551C(void);
     extern f32 gTabMenuZero;
     extern f32 gTabMenuZ;
@@ -500,7 +500,7 @@ void TabMenu_Draw(void *menu)
         break;
     }
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 void fn_801E551C(void) {

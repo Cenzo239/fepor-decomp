@@ -314,7 +314,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void fn_8007B990(void *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A894;
     s16 row_h;
@@ -414,7 +414,7 @@ loop_test:
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -793,7 +793,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *, s32, s32);
     void fn_8007B990(void *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A8A0;
     extern f32 lbl_8036A8A4;
@@ -900,7 +900,7 @@ loop_test:
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -12273,7 +12273,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 extern "C" void fn_8017AF30(void *arg0, void *arg1) {
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_80009BC0(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -12494,7 +12494,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
 #pragma global_optimizer on

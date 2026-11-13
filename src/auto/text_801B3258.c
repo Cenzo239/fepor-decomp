@@ -6300,7 +6300,7 @@ void fn_801C36E8(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetColorByte(u8);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_80009BC0(void (*)(s32, s16 *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_BindTexture(void *, s32, s32);
@@ -6541,7 +6541,7 @@ void fn_801C36E8(void *arg0) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B3BC);
@@ -6591,7 +6591,7 @@ void fn_801C36E8(void *arg0) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B3BC);
@@ -10115,7 +10115,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *), s16 *);
     void Prim2D_SetTex(s32, u16);
@@ -10248,7 +10248,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
     self->unk68 = (u8)(self->v13() > 0);
     {
@@ -12791,7 +12791,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     typedef void (Sub::*PTMF)(s32);
     struct Pair { PTMF ptmf; s32 arg; };
     void fn_8013F748(void *, s16 *, s16 *);
-    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void fn_80009B98(void);
+    void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void Prim2D_ClearCallbacks(void);
     void Prim2D_AddZ(f32); void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *), s16 *);
     void PSMTXRotRad(void *, s32, f32);
@@ -12918,7 +12918,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     }
 
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
     self->v5(arg);
 
@@ -12997,7 +12997,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
 
     fn_8004DDB8(self->a22 - 1);
     Prim2D_Begin();
-    fn_80009B98();
+    Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
     self->v5(arg);
     Prim2D_Begin();
@@ -15858,7 +15858,7 @@ void fn_801DE474(void *arg0, void *arg1)
     void Prim2D_PrepareTex(void);
     void Prim2D_AddZ(f32);
     void fn_80009BC0(void (*)(void *), s16 *);
-    void fn_80009B98(void);
+    void Prim2D_ClearCallbacks(void);
     void Prim2D_SetTex(s32, u16);
     void fn_8013F920(void *);
     s16 Text_MeasureHeight(s32, f32);
@@ -16208,7 +16208,7 @@ void fn_801DE474(void *arg0, void *arg1)
         Prim2D_AddZ(lbl_8036B6D0);
         Prim2D_PrepareTex();
         Prim2D_Begin();
-        fn_80009B98();
+        Prim2D_ClearCallbacks();
         Prim2D_PrepareTex();
 
         flag = 0;
