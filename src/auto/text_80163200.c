@@ -11013,7 +11013,7 @@ extern "C" void fn_80178B98(void *arg0, void *arg1) {
 extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK Prim2D_SetColorByte(u8);
 extern "C" M2C_UNK Prim2D_SetAlphaByte(u8);
-extern "C" void fn_80178C5C(void *arg0, void *arg1) {
+extern "C" void UiObj_PrepareDraw(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
