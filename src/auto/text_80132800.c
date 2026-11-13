@@ -5012,7 +5012,7 @@ void fn_8013B120(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_8013B154(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelB(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
