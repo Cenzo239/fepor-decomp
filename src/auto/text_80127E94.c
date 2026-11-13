@@ -1307,7 +1307,8 @@ void fn_8012ABAC(void *arg0) {
     }
 }
 
-void Effect_SpawnAtMapTile(void *arg0) {
+/* Spawn map effect and SE at the tile stored in the process userdata. */
+void Effect_SpawnAtMapTile(void *proc) {
     f32 Map_SampleHeight(void *, f32, f32);
     void Effect_Create(void *, s32);
     void Effect_SetPos(f32, f32, f32);
@@ -1315,18 +1316,18 @@ void Effect_SpawnAtMapTile(void *arg0) {
     extern u8 lbl_80275740[];
     extern u8 gBattleMap[];
     extern f32 gTileCenter;
-    u8 *temp_r6;
-    f32 temp_f31;
-    f32 temp_f30;
-    f32 temp_f29;
+    u8 *tile;
+    f32 y;
+    f32 x;
+    f32 z;
 
-    temp_r6 = *(u8 **)((u8 *)arg0 + 0x30);
-    temp_f30 = gTileCenter + (f32)(s8)temp_r6[0];
-    temp_f31 = gTileCenter + (f32)(s8)temp_r6[1];
-    temp_f29 = Map_SampleHeight(gBattleMap, temp_f30, temp_f31);
+    tile = *(u8 **)((u8 *)proc + 0x30);
+    x = gTileCenter + (f32)(s8)tile[0];
+    y = gTileCenter + (f32)(s8)tile[1];
+    z = Map_SampleHeight(gBattleMap, x, y);
     Effect_Create(lbl_80275740 + 0x165, 0);
-    Effect_SetPos(temp_f30, temp_f31, temp_f29);
-    SeCue_PlayAt(lbl_80275740 + 0x196, 0x64, temp_f30, temp_f31, temp_f29);
+    Effect_SetPos(x, y, z);
+    SeCue_PlayAt(lbl_80275740 + 0x196, 0x64, x, y, z);
 }
 
 void fn_8012AD80(void) {
