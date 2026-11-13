@@ -8696,10 +8696,10 @@ void fn_801994B8(void *arg0, s32 arg1) {
     fn_800E5DEC(arg0, arg1);
 }
 
-extern u16 lbl_80296840[];
+extern u16 gWeaponAttachVtable[];
 void* fn_80199508(void* arg0, s16 arg1) {
     if (arg0 != NULL) {
-        M2C_FIELD(arg0, void**, 0x40) = lbl_80296840;
+        M2C_FIELD(arg0, void**, 0x40) = gWeaponAttachVtable;
         String_Destroy((u8*)arg0 + 0x138, -1);
         String_Destroy((u8*)arg0 + 0x12C, -1);
         String_Destroy((u8*)arg0 + 0x118, -1);
@@ -8783,7 +8783,7 @@ void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
     self = (Obj *)arg0;
     fn_800E6058(self);
     z = 0.0f;
-    self->vtable = lbl_80296840;
+    self->vtable = gWeaponAttachVtable;
     self->str118.size = 0;
     self->str118.cap = 0;
     self->str118.data = NULL;
