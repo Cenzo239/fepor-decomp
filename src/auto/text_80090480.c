@@ -226,7 +226,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     extern f32 lbl_80369764;
     extern f32 gUnitInfoPanelW;
     extern f32 gUnitInfoPanelH;
-    extern f32 lbl_8036979C;
+    extern f32 gUnitInfoPanelOuterW;
     extern f32 lbl_803697A0;
     u8 sp18[4];
     s32 sp14;
@@ -266,11 +266,11 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)(arg0 - 3), (f32)arg1, lbl_8036979C, lbl_80369764);
+    Prim2D_SetRect((f32)(arg0 - 3), (f32)arg1, gUnitInfoPanelOuterW, lbl_80369764);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)(arg0 - 3), (f32)(arg1 + 0x62), lbl_8036979C, lbl_80369764);
+    Prim2D_SetRect((f32)(arg0 - 3), (f32)(arg1 + 0x62), gUnitInfoPanelOuterW, lbl_80369764);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
