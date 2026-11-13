@@ -8926,7 +8926,7 @@ void fn_800C15A8(void) {
 }
 
 #pragma optimization_level 2
-s32 fn_800C1730(void) {
+s32 Map_SetupBlendTev(void) {
     s32 fn_80069D58(void);
     s32 fn_80069DBC(void);
     s32 fn_80069E18(void);
@@ -9013,14 +9013,14 @@ void fn_800C1984(void) {
     s32 Map_Get(void);
     void fn_800462FC(s32, s32, void *);
     void fn_80046360(s32, s32, void *, s32, s32, s32);
-    void fn_800C1730(void);
+    void Map_SetupBlendTev(void);
     extern u8 gMapBlendMode;
 
     if (gMapBlendMode == 0) {
-        fn_800462FC(Map_Get(), 0, fn_800C1730);
+        fn_800462FC(Map_Get(), 0, Map_SetupBlendTev);
         return;
     }
-    fn_80046360(Map_Get(), 0, fn_800C1730, 0, 0, 0x8000);
+    fn_80046360(Map_Get(), 0, Map_SetupBlendTev, 0, 0, 0x8000);
 }
 
 void fn_800C1E24(void) {
