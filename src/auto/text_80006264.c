@@ -3894,34 +3894,34 @@ done2:
 }
 
 s32 fn_8000C510(void) {
-    extern void *lbl_80367148;
+    extern void *gProcessFreeTop;
     extern u8 lbl_802AD6D8[];
 
-    return ((s32)lbl_80367148 - (s32)lbl_802AD6D8) / 4;
+    return ((s32)gProcessFreeTop - (s32)lbl_802AD6D8) / 4;
 }
 
 void Process_Free(s32 arg0) {
-    extern s32 *lbl_80367148;
+    extern s32 *gProcessFreeTop;
     s32 *temp_r4;
 
-    temp_r4 = lbl_80367148 - 1;
-    lbl_80367148 = temp_r4;
+    temp_r4 = gProcessFreeTop - 1;
+    gProcessFreeTop = temp_r4;
     *temp_r4 = arg0;
 }
 
 void *fn_8000C540(void) {
     void Process_Unlink(void *);
-    extern void **lbl_80367148;
+    extern void **gProcessFreeTop;
     extern u8 lbl_802A66D8[];
     void **p;
     void *result;
     u8 *entry;
     s32 i;
 
-    p = lbl_80367148;
+    p = gProcessFreeTop;
     result = *p;
     if (result != NULL) {
-        lbl_80367148 = p + 1;
+        gProcessFreeTop = p + 1;
         return result;
     }
     entry = lbl_802A66D8;
@@ -3996,7 +3996,7 @@ int Process_Unlink(void *arg0) {
 
 void Process_Destroy(void *arg0) {
     void Process_Free(void *);
-    extern void **lbl_80367148;
+    extern void **gProcessFreeTop;
     typedef struct Node {
         void *unk0;
         u8 pad04[4];
@@ -4065,8 +4065,8 @@ void Process_Destroy(void *arg0) {
             if (n->cb != NULL) {
                 n->cb(n);
             }
-            p = (void **)((u8 *)lbl_80367148 - 4);
-            lbl_80367148 = p;
+            p = (void **)((u8 *)gProcessFreeTop - 4);
+            gProcessFreeTop = p;
             *p = n;
             n->unk0 = NULL;
             n->unk10 = NULL;
@@ -4124,8 +4124,8 @@ void Process_Destroy(void *arg0) {
             if (n->cb != NULL) {
                 n->cb(n);
             }
-            p = (void **)((u8 *)lbl_80367148 - 4);
-            lbl_80367148 = p;
+            p = (void **)((u8 *)gProcessFreeTop - 4);
+            gProcessFreeTop = p;
             *p = n;
             n->unk0 = NULL;
             n->unk10 = NULL;
@@ -4139,8 +4139,8 @@ void Process_Destroy(void *arg0) {
         if (self->cb != NULL) {
             self->cb(self);
         }
-        p = (void **)((u8 *)lbl_80367148 - 4);
-        lbl_80367148 = p;
+        p = (void **)((u8 *)gProcessFreeTop - 4);
+        gProcessFreeTop = p;
         *p = self;
         self->unk0 = NULL;
         self->unk10 = NULL;
@@ -4192,7 +4192,7 @@ extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
     extern u8 lbl_802A66D8[];
     extern u8 lbl_80283828[];
-    extern void *lbl_80367148;
+    extern void *gProcessFreeTop;
     u8 *base;
     u8 *p;
     u8 **q;
@@ -4230,7 +4230,7 @@ void fn_8000CC88(void) {
     }
     *(u32 *)(base + 0x7424) = zero;
     *(u32 *)(base + 0x7400) = zero;
-    lbl_80367148 = base + 0x7000;
+    gProcessFreeTop = base + 0x7000;
     *(u32 *)(base + 0x7428) = zero;
     *(u32 *)(base + 0x742C) = zero;
     *(u32 *)(base + 0x7430) = zero;
