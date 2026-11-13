@@ -4073,7 +4073,7 @@ void fn_801BD37C(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801BD5A0(void *arg0) {
+extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  void fn_8000C070(void *,s32); void fn_8002833C(void *,u32);
  u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void fn_80138808(void *,u32);
  u32 fn_8013AC54(void *); void fn_8013FDA0(void *);
