@@ -597,27 +597,28 @@ void fn_80099F20(void *arg0) {
     }
 }
 
-void Event_FaceTalkUnits(s32 arg0) {
+/* Face event-slot units toward each other and play their talk MU blend anims. */
+void Event_FaceTalkUnits(s32 parent) {
     u32 Event_GetSlotUnit(s32);
     void Unit_FaceToward(u32, u32, s32, s32);
     void Mu_StartBlend(u32, s32, s32, s32);
-    s32 temp_r28;
-    u32 temp_r31;
-    u32 temp_r30;
-    u32 temp_r29;
+    s32 proc;
+    u32 unit0;
+    u32 unit1;
+    u32 unit2;
 
-    temp_r28 = arg0;
-    temp_r31 = Event_GetSlotUnit(0);
-    temp_r30 = Event_GetSlotUnit(1);
-    temp_r29 = Event_GetSlotUnit(2);
-    Mu_StartBlend(temp_r31, 8, 0x10, temp_r28);
-    if (temp_r30 != 0U) {
-        Unit_FaceToward(temp_r31, temp_r30, 0x18, temp_r28);
-        Unit_FaceToward(temp_r30, temp_r31, 0x18, temp_r28);
-        Mu_StartBlend(temp_r30, 8, 0x10, temp_r28);
-        if (temp_r29 != 0U) {
-            Unit_FaceToward(temp_r29, temp_r30, 0x18, temp_r28);
-            Mu_StartBlend(temp_r29, 8, 0x10, temp_r28);
+    proc = parent;
+    unit0 = Event_GetSlotUnit(0);
+    unit1 = Event_GetSlotUnit(1);
+    unit2 = Event_GetSlotUnit(2);
+    Mu_StartBlend(unit0, 8, 0x10, proc);
+    if (unit1 != 0U) {
+        Unit_FaceToward(unit0, unit1, 0x18, proc);
+        Unit_FaceToward(unit1, unit0, 0x18, proc);
+        Mu_StartBlend(unit1, 8, 0x10, proc);
+        if (unit2 != 0U) {
+            Unit_FaceToward(unit2, unit1, 0x18, proc);
+            Mu_StartBlend(unit2, 8, 0x10, proc);
         }
     }
 }
