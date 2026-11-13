@@ -7077,7 +7077,7 @@ result=fn_8021F4DC();
 if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(DEMOInit_str+0x126);fn_8006DDDC();OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
 }
 
-extern s32 lbl_8036732C;
+extern s32 gDemoStatEnable;
 extern u32 lbl_80367334;
 extern s32 gDvdCheckSnapshot;
 extern f32 lbl_803692C8;
@@ -7088,12 +7088,12 @@ void fn_8006E568(u32 arg0)
     void fn_8020FFC4(void (*)(void));
     void fn_80225204(s32, s32);
     void fn_8006E478(void);
-    extern s32 lbl_8036732C;
+    extern s32 gDemoStatEnable;
     extern u32 lbl_80367334;
     volatile u8 *gx;
 
     if (arg0 != 0) {
-        lbl_8036732C = 1;
+        gDemoStatEnable = 1;
         lbl_80367334 = arg0;
         fn_8020FFC4(fn_8006E478);
         fn_80225204(0x23, 0x16);
@@ -7107,7 +7107,7 @@ void fn_8006E568(u32 arg0)
         *(volatile u16 *)gx = 0x1006;
         *(volatile u32 *)gx = 0x84400;
     } else {
-        lbl_8036732C = 0;
+        gDemoStatEnable = 0;
         lbl_80367334 = 0;
         gx = (volatile u8 *)0xCC008000;
         *gx = 0x61;
@@ -7134,7 +7134,7 @@ s32 fn_8006E658(void) {
 
 void fn_8006E660(void)
 {
-    extern s32 lbl_8036732C;
+    extern s32 gDemoStatEnable;
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer1;
     extern void *DemoFrameBuffer2;
@@ -7157,7 +7157,7 @@ void fn_8006E660(void)
     void *cur;
     void *ten;
 
-    if (lbl_8036732C != 0) {
+    if (gDemoStatEnable != 0) {
         fn_8006DFD8();
     } else {
         GXSetZMode(1, 3, 1);
@@ -7209,7 +7209,7 @@ void DEMOBeforeRender(void)
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80220198(void);
     void fn_80222EB4(void);
-    extern s32 lbl_8036732C;
+    extern s32 gDemoStatEnable;
     extern s32 gDvdCheckSnapshot;
     extern void *DEMORmode;
     extern f32 lbl_803692C8;
@@ -7221,7 +7221,7 @@ void DEMOBeforeRender(void)
     u32 flag;
 
     gDvdCheckSnapshot = fn_80211690();
-    if (lbl_8036732C != 0) {
+    if (gDemoStatEnable != 0) {
         fn_802208BC(0xFEEB);
         fn_80225BF4();
     }
