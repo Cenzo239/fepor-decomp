@@ -6732,7 +6732,7 @@ void fn_8006DA98(void *arg0)
     extern u8 GXNtsc480IntDf[];
     extern u8 GXPal528IntDf[];
     extern u8 GXEurgb60Hz480IntDf[];
-    extern u8 lbl_8029DFE4[];
+    extern u8 GXMpal480IntDf[];
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
@@ -6784,7 +6784,7 @@ void fn_8006DA98(void *arg0)
             DEMORmode = GXEurgb60Hz480IntDf;
             break;
         case 2:
-            DEMORmode = lbl_8029DFE4;
+            DEMORmode = GXMpal480IntDf;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
@@ -6888,7 +6888,7 @@ void fn_8006DFD8(void) {
     extern u8 GXNtsc480IntDf[];
     extern u8 GXPal528IntDf[];
     extern u8 GXEurgb60Hz480IntDf[];
-    extern u8 lbl_8029DFE4[];
+    extern u8 GXMpal480IntDf[];
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
@@ -6960,7 +6960,7 @@ body:
             DEMORmode = GXEurgb60Hz480IntDf;
             break;
         case 2:
-            DEMORmode = lbl_8029DFE4;
+            DEMORmode = GXMpal480IntDf;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
@@ -7266,7 +7266,7 @@ void DEMOInit(void *arg0)
     extern u8 GXNtsc480IntDf[];
     extern u8 GXPal528IntDf[];
     extern u8 GXEurgb60Hz480IntDf[];
-    extern u8 lbl_8029DFE4[];
+    extern u8 GXMpal480IntDf[];
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
@@ -7313,7 +7313,7 @@ void DEMOInit(void *arg0)
             DEMORmode = GXEurgb60Hz480IntDf;
             break;
         case 2:
-            DEMORmode = lbl_8029DFE4;
+            DEMORmode = GXMpal480IntDf;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);

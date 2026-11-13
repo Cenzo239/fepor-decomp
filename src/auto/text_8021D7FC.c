@@ -459,7 +459,7 @@ void __GXInitGX(void) {
     extern GXRenderModeObj GXNtsc480IntDf;
     extern GXRenderModeObj GXPal528IntDf;
     extern GXRenderModeObj GXEurgb60Hz480IntDf;
-    extern GXRenderModeObj lbl_8029DFE4;
+    extern GXRenderModeObj GXMpal480IntDf;
     extern s32 lbl_8036BCB4;
     extern s32 lbl_8036BCB8;
     extern s32 lbl_8036BCBC;
@@ -498,7 +498,7 @@ void __GXInitGX(void) {
         rmode = &GXEurgb60Hz480IntDf;
         break;
     case 2:
-        rmode = &lbl_8029DFE4;
+        rmode = &GXMpal480IntDf;
         break;
     default:
         rmode = &GXNtsc480IntDf;
