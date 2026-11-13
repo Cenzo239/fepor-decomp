@@ -1722,7 +1722,7 @@ void fn_801F5DD0(void *arg0)
 }
 
 #pragma opt_common_subs off
-void fn_801F5E74(void *arg0) {
+void CardLink_PollSendKey(void *arg0) {
     void Process_Goto(void *, s32);
     s32 fn_802655A8(void *, void *);
     s32 fn_80266998(void *, void *, void *);
