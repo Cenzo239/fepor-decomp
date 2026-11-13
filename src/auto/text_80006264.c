@@ -1184,7 +1184,7 @@ void fn_80007858(f32 arg0, f32 arg1) {
     *(f32 *)(ptr + 0x14) = arg1;
 }
 
-void fn_80007870(f32 arg0) {
+void Prim2D_SetPrimParam(f32 arg0) {
     extern void *lbl_80367140;
     u8 *ptr;
 

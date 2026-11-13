@@ -1651,7 +1651,7 @@ void fn_8012B7DC(void *arg0) {
     void Prim2D_SetColor(s32, s32, s32, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -1988,7 +1988,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_8036A4B8, lbl_8036A498, lbl_8036A4BC, lbl_8036A4C0);
         Prim2D_SetColor(0, 0, 0, 0xB4);
-        fn_80007870(lbl_8036A4C4);
+        Prim2D_SetPrimParam(lbl_8036A4C4);
         Prim2D_EndPrim();
     }
 }

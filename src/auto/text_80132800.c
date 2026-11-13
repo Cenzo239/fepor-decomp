@@ -9638,7 +9638,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
     extern s32 lbl_80276B10[];
@@ -9694,7 +9694,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     Prim2D_AddPrim(1);
     f31 = (f32)((Obj *)obj)->v15();
     Prim2D_SetRectUv((f32)var_r28, (f32)var_r29, f30, f29, (f32)((Obj *)obj)->v14(), f31);
-    fn_80007870((f32)var_r30);
+    Prim2D_SetPrimParam((f32)var_r30);
     sp8 = *var_r31;
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();

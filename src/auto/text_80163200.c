@@ -5244,7 +5244,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
@@ -5305,7 +5305,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_SetTex(sp2C, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    fn_80007870(lbl_8036AA34);
+    Prim2D_SetPrimParam(lbl_8036AA34);
     Prim2D_SetQuadMin(farg0, farg1, lbl_8036AA34, lbl_8036AA34);
     {
         f32 a = lbl_8036AA64;
@@ -13652,7 +13652,7 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
@@ -13688,7 +13688,7 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
     temp_f29 = (f32)obj->m18();
     temp_f28 = (f32)obj->m1C();
     Prim2D_AddPrim(2);
-    fn_80007870(farg2);
+    Prim2D_SetPrimParam(farg2);
     Prim2D_SetRect(farg0, farg1, temp_f31, temp_f30);
     Prim2D_SetUvRect((f32)arg2 * temp_f29, lbl_8036AC08, temp_f29, temp_f28);
     Prim2D_EmitQuad();

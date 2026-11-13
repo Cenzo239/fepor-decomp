@@ -818,7 +818,7 @@ void fn_800AEA74(void *arg0) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B28(void);
@@ -862,7 +862,7 @@ void fn_800AEA74(void *arg0) {
     Prim2D_SetColorByte((u8)temp_r31);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
-    fn_80007870(lbl_80369C94);
+    Prim2D_SetPrimParam(lbl_80369C94);
     Prim2D_SetRect(lbl_80369C7C, lbl_80369C98, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp18 = lbl_80369C6C;
@@ -872,7 +872,7 @@ void fn_800AEA74(void *arg0) {
     fn_800072B0(&sp24, &sp20, &sp1C, &sp18);
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
-    fn_80007870(lbl_80369C94);
+    Prim2D_SetPrimParam(lbl_80369C94);
     Prim2D_SetRect(lbl_80369C7C, lbl_80369CA4, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp8 = lbl_8036C494;

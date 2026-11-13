@@ -813,7 +813,7 @@ void fn_8007E2C4(void *arg0) {
  void Prim2D_BindTexture(void *,s32,s32);
  void Prim2D_PrepareTex(void);
  void Prim2D_AddPrim(s32);
- void fn_80007870(f32);
+ void Prim2D_SetPrimParam(f32);
  void Prim2D_SetQuadMin(f32,f32,f32,f32);
  void Prim2D_SetQuadMax(f32,f32,f32,f32);
  void Prim2D_SetColor(u8,u8,u8,u8);
@@ -855,7 +855,7 @@ void fn_8007E2C4(void *arg0) {
  dim=*fn_8006EDD8(obj,0x1A);
  texh=(f32)dim[1]; texw=(f32)dim[0];
  Prim2D_Begin();Prim2D_BindTexture(obj,0x1A,0x11);Prim2D_PrepareTex();
- Prim2D_AddPrim(1);fn_80007870(lbl_80369418);
+ Prim2D_AddPrim(1);Prim2D_SetPrimParam(lbl_80369418);
  Prim2D_SetQuadMin(x,y,lbl_80369418,lbl_80369418);
  Prim2D_SetQuadMax(x+scaledh,y+scaledw,texh,texw);
  Prim2D_SetColor(((u8 *)&color)[0],((u8 *)&color)[1],((u8 *)&color)[2],0xFF);
@@ -990,7 +990,7 @@ void fn_8007EAD8(void *arg0) {
     u16 **fn_8006EDD8(s32, s32);
     Color *Ui_GetColor(s32);
     void Prim2D_BindTexture(s32, s32, s32);
-    void fn_80007870(f32);
+    void Prim2D_SetPrimParam(f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
@@ -1090,7 +1090,7 @@ void fn_8007EAD8(void *arg0) {
     Prim2D_BindTexture(id, 0x1D, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_SetPrimParam(lbl_80369418);
     tx = bx + lbl_803694E8;
     Prim2D_SetQuadMin(tx, by, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(tx + sw, by + sh, tw, th);
@@ -1187,7 +1187,7 @@ void fn_8007EAD8(void *arg0) {
             Prim2D_BindTexture(id, 0x28, 0x11);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            fn_80007870(lbl_80369418);
+            Prim2D_SetPrimParam(lbl_80369418);
             Prim2D_SetQuadMin(posX, posY, lbl_80369418, lbl_80369418);
             Prim2D_SetQuadMax(posX + sw, posY + sh, tw, th);
             Prim2D_SetColor(((u8 *)&c3)[0], ((u8 *)&c3)[1], ((u8 *)&c3)[2], 0xFF);
@@ -1211,7 +1211,7 @@ void fn_8007EAD8(void *arg0) {
             Prim2D_BindTexture(id, 0x28, 0x11);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            fn_80007870(lbl_80369418);
+            Prim2D_SetPrimParam(lbl_80369418);
             Prim2D_SetQuadMin(posX, posY, lbl_80369418, lbl_80369418);
             Prim2D_SetQuadMax(posX + sw, posY + sh, tw, th);
             Prim2D_SetColor(((u8 *)&c4)[0], ((u8 *)&c4)[1], ((u8 *)&c4)[2], alpha);
