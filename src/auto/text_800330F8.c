@@ -4093,7 +4093,8 @@ s32 Affinity_FromName(void *name) {
     return 8; /* telius */
 }
 
-void Unit_ResetHeldFromClass(void *arg0) {
+/* If the unit has status flag 8, clear held items and equip the class default weapon. */
+void Unit_ResetHeldFromClass(void *unit) {
     u8 Status_Test(void *, s32);
     void *Unit_GetHeldItemSlot(void *, s32);
     void Item_Clear(void *);
@@ -4105,41 +4106,41 @@ void Unit_ResetHeldFromClass(void *arg0) {
     };
 
     s32 i;
-    u32 val;
+    u32 iid;
     void *cls;
-    void *obj;
+    void *parent;
     void *slot;
 
-    if ((u8)Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
+    if ((u8)Status_Test((u8 *)unit + 0x1BC, 8) != 0) {
         for (i = 0; i < 4; i++) {
-            Item_Clear(Unit_GetHeldItemSlot(arg0, i));
+            Item_Clear(Unit_GetHeldItemSlot(unit, i));
         }
 
-        cls = *(void **)((u8 *)arg0 + 0x18C);
-        val = 0;
+        cls = *(void **)((u8 *)unit + 0x18C);
+        iid = 0;
         if (*(u32 *)((u8 *)cls + 0x14) != 0) {
-            val = *(u32 *)((u8 *)cls + 0x14);
+            iid = *(u32 *)((u8 *)cls + 0x14);
         }
-        if (val == 0) {
-            obj = *(void **)((u8 *)cls + 0xC);
-            if (obj != 0) {
-                obj = Res_GetByName(obj);
+        if (iid == 0) {
+            parent = *(void **)((u8 *)cls + 0xC);
+            if (parent != 0) {
+                parent = Res_GetByName(parent);
             } else {
-                obj = 0;
+                parent = 0;
             }
-            if (*(u32 *)((u8 *)obj + 0x14) != 0) {
-                obj = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
-                if (obj != 0) {
-                    obj = Res_GetByName(obj);
+            if (*(u32 *)((u8 *)parent + 0x14) != 0) {
+                parent = *(void **)((u8 *)*(void **)((u8 *)unit + 0x18C) + 0xC);
+                if (parent != 0) {
+                    parent = Res_GetByName(parent);
                 } else {
-                    obj = 0;
+                    parent = 0;
                 }
-                val = *(u32 *)((u8 *)obj + 0x14);
+                iid = *(u32 *)((u8 *)parent + 0x14);
             }
         }
-        if (val != 0) {
-            fn_80094A54(arg0, (void *)val);
-            slot = Unit_GetHeldItemSlot(arg0, 0);
+        if (iid != 0) {
+            fn_80094A54(unit, (void *)iid);
+            slot = Unit_GetHeldItemSlot(unit, 0);
             ((struct Bit7 *)((u8 *)slot + 5))->flag = 1;
         }
     }
