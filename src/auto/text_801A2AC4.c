@@ -320,7 +320,7 @@ s32 fn_801A3390(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
-    u8 fn_8000CE68(s32);
+    u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
@@ -331,7 +331,7 @@ s32 fn_801A3390(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         fn_801A4A24(gBattle, 1);
     } else {
@@ -346,7 +346,7 @@ s32 fn_801A3478(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
-    u8 fn_8000CE68(s32);
+    u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
@@ -358,7 +358,7 @@ s32 fn_801A3478(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
@@ -375,7 +375,7 @@ s32 fn_801A3570(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
-    u8 fn_8000CE68(s32);
+    u8 Rand_Chance(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
     void fn_80036150(void *);
@@ -387,7 +387,7 @@ s32 fn_801A3570(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u16 hi:6; u16 mid:3; u16 lo:7; } *)(base + 0x484))->mid = 5;
@@ -1344,7 +1344,7 @@ after_blocks:
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
-    u8 fn_8000CE68(s32);
+    u8 Rand_Chance(s32);
     u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001DDC4(u8);
     void BattleAnim_Queue(void *, s32, s32);
@@ -1424,7 +1424,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(chance);
+                ok = Rand_Chance(chance);
             }
             if (ok != 0) {
                 goto block_luna;
@@ -1443,7 +1443,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_colossus;
@@ -1465,7 +1465,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
             ok = 0;
         } else {
-            ok = fn_8000CE68(half);
+            ok = Rand_Chance(half);
         }
         if (ok != 0) {
             p = *fn_801A7FF4(arg1);
@@ -1495,7 +1495,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
                 if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                     ok = 0;
                 } else {
-                    ok = fn_8000CE68(half);
+                    ok = Rand_Chance(half);
                 }
                 if (ok != 0) {
                     goto block_adept;
@@ -1517,7 +1517,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_guard;
@@ -1539,7 +1539,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(chance);
+                ok = Rand_Chance(chance);
             }
             if (ok != 0 && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0
                 && fn_8003C7D0(arg2) == 0) {
@@ -1561,7 +1561,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(chance);
+                ok = Rand_Chance(chance);
             }
             if (ok != 0) {
                 goto block_cancel;
@@ -1596,7 +1596,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_resolve;
@@ -1632,7 +1632,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_nihil;
@@ -1650,7 +1650,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
             ok = 0;
         } else {
-            ok = fn_8000CE68(chance);
+            ok = Rand_Chance(chance);
         }
         if (ok != 0 && fn_8003C7D0(arg2) == 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3D, 0);
@@ -1665,7 +1665,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_wrath;
@@ -1690,7 +1690,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
                 ok = 0;
             } else {
-                ok = fn_8000CE68(half);
+                ok = Rand_Chance(half);
             }
             if (ok != 0) {
                 goto block_vantage;
@@ -1906,7 +1906,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
 }
 
 void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
-    u8 fn_8000CE68(s32);
+    u8 Rand_Chance(s32);
     u64 *Item_GetFlagsPtr(void *);
     void BattleHit_SetBraveFlags(void *, s32);
     void fn_8003333C(void *, s32);
@@ -1980,7 +1980,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 if (*(u32 *)(g + 0xCAC) & 0x4000) {
                     ok = 0;
                 } else {
-                    ok = fn_8000CE68((s32)half / 2);
+                    ok = Rand_Chance((s32)half / 2);
                 }
                 if (ok != 0 && (s32)lv >= idx + 5) {
                     fn_8003333C(gBattleHitTbl, idx);
@@ -2001,7 +2001,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                     if (*(u32 *)(g + 0xCAC) & 0x4000) {
                         ok = 0;
                     } else {
-                        ok = fn_8000CE68((s32)half);
+                        ok = Rand_Chance((s32)half);
                     }
                     if (ok != 0 && (s32)lv >= idx + 2) {
                         fn_800333DC(gBattleHitTbl, idx);
@@ -2019,7 +2019,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 if (*(u32 *)(g + 0xCAC) & 0x4000) {
                     ok = 0;
                 } else {
-                    ok = fn_8000CE68((s32)half);
+                    ok = Rand_Chance((s32)half);
                 }
                 if (ok != 0 && (s32)lv >= lim * 2) {
                     BattleHit_SetBraveFlags(gBattleHitTbl, lim);

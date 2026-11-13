@@ -315,7 +315,7 @@ void fn_80034120(void *arg0) {
 void fn_80034130(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     void *fn_80037C20(void *);
-    u8 fn_8000CE68(s16);
+    u8 Rand_Chance(s16);
     s32 Unit_GetHp(void *);
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
@@ -382,10 +382,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2D7) = g;
@@ -401,10 +401,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2D8) = g;
@@ -420,10 +420,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2D9) = g;
@@ -439,10 +439,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2DA) = g;
@@ -458,10 +458,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2DB) = g;
@@ -477,10 +477,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2DC) = g;
@@ -496,10 +496,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2DD) = g;
@@ -515,10 +515,10 @@ void fn_80034130(void *arg0, void *arg1) {
         g += 1;
     }
     if (flag != 0) {
-        if (fn_8000CE68(v) != 0 || fn_8000CE68(v) != 0) {
+        if (Rand_Chance(v) != 0 || Rand_Chance(v) != 0) {
             g += 1;
         }
-    } else if (fn_8000CE68(v) != 0) {
+    } else if (Rand_Chance(v) != 0) {
         g += 1;
     }
     *(u8 *)((u8 *)arg0 + 0x2DE) = g;

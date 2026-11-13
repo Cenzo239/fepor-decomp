@@ -24,7 +24,7 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     return 0;
 }
 
-void fn_80006298(u32 *dst, u32 val, u32 n) {
+void fn_80006298(register u32 *dst, register u32 val, register u32 n) {
     n >>= 2;
     dst--;
     do {
@@ -4300,7 +4300,7 @@ s32 fn_8000CD88(s32 arg0) {
     return sum < arg0;
 }
 
-s32 fn_8000CE68(s32 arg0) {
+s32 Rand_Chance(s32 arg0) {
     extern u16 lbl_80367150;
     u16 *st;
     s32 s0;

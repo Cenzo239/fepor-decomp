@@ -328,10 +328,10 @@ void fn_801A895C(void *arg0, void *arg1) {
 extern u8 gBattleHitTbl[104];
 extern u16 gBattle[1634];
 u8 fn_8000CD88(s16);
-u8 fn_8000CE68(s16);
+u8 Rand_Chance(s16);
 s32 fn_801A8A28(void *arg0) {
     u8 fn_8000CD88(s16);
-    u8 fn_8000CE68(s16);
+    u8 Rand_Chance(s16);
     extern u8 gBattleHitTbl[104];
     extern u16 gBattle[1634];
     u8 flags;
@@ -360,7 +360,7 @@ s32 fn_801A8A28(void *arg0) {
         return 0x52;
     }
 
-    return (fn_8000CE68(*(s16 *)((u8 *)arg0 + 0x2A8)) != 0) + 0x50;
+    return (Rand_Chance(*(s16 *)((u8 *)arg0 + 0x2A8)) != 0) + 0x50;
 }
 
 void fn_801A8AF4(void *arg0) {
