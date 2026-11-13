@@ -1515,7 +1515,7 @@ void *fn_800A19B0(void) {
     return (u16*)((char*)lbl_8026D8D8 + 0x667);
 }
 
-s32 fn_800A19C0(void) {
+s32 Ui_KillCursorUnit(void) {
     void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
     void fn_800A6A3C(void);
