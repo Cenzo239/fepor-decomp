@@ -6059,7 +6059,7 @@ break;
 }
 }
 #pragma opt_common_subs reset
-s32 fn_8006A374(void) {
+s32 GMaterial_GetNode(void) {
     extern s32 lbl_8036730C;
     return lbl_8036730C;
 }

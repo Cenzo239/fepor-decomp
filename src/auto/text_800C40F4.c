@@ -16317,7 +16317,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     s32 GMaterial_AllocTexMap(void);
     s32 fn_80069E7C(void);
     s32 GMaterial_AllocTevStage(void);
-    void *fn_8006A374(void);
+    void *GMaterial_GetNode(void);
     void *GMaterial_GetCurrent(void *);
     void fn_8006A384(void *);
     void PSMTXCopy(void *);
@@ -16404,7 +16404,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     arg1s = arg1;
     r24 = GMaterial_GetCurrent(self);
     r25v = fn_80060664();
-    r26 = fn_8006A374();
+    r26 = GMaterial_GetNode();
     r27 = *(void **)((u8 *)self + 0x14);
     fn_8006A384(sp22C);
     fn_80069010(r24, r26);
@@ -16919,7 +16919,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
 s32 fn_800EFEE0(void *arg0, s32 arg1) {
     void *Map_Get(void);
     void *GMaterial_GetCurrent(void);
-    s32 fn_8006A374(void);
+    s32 GMaterial_GetNode(void);
     void fn_8006A384(void *);
     void fn_800690D4(void *, s32, void *);
     void Ui_LoadAtlasTex(s32, void *, u16);
@@ -16982,7 +16982,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     tbl = lbl_80272C00;
     cam = Map_Get();
     col = GMaterial_GetCurrent();
-    col_arg = fn_8006A374();
+    col_arg = GMaterial_GetNode();
     fn_8006A384(spD4);
     fy = (f32)(s32)(0x40 - *(u8 *)((u8 *)cam + 0x5D));
     fx = (f32)(s32)(0x40 - *(u8 *)((u8 *)cam + 0x5C));
