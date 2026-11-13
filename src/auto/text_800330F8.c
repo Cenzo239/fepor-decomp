@@ -4313,7 +4313,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     s32 fn_80019EAC(u16);
     s32 fn_80019E68(u16);
     void fn_8003B6C4(void *, s32);
-    void fn_8017A810(void *, s32, void *);
+    void Stream_Read(void *, s32, void *);
     void fn_80104134(void *, void *);
     void fn_80105A04(void *, void *);
     s32 fn_80037BD0(s32, s32);
@@ -4373,20 +4373,20 @@ s32 Unit_Read(void *arg0, void *arg1) {
     *((u8 *)dst + 0x19D) = Stream_ReadU8(src);
     *((u8 *)dst + 0x19E) = Stream_ReadU8(src);
     *((u8 *)dst + 0x19F) = Stream_ReadU8(src);
-    fn_8017A810(src, 4, (u8 *)dst + 0x1A0);
+    Stream_Read(src, 4, (u8 *)dst + 0x1A0);
     fn_80104134((u8 *)dst + 0x1A4, src);
     *((u8 *)dst + 0x1A8) = Stream_ReadU8(src);
     *((u8 *)dst + 0x1A9) = Stream_ReadU8(src);
     *((u8 *)dst + 0x1AA) = Stream_ReadU8(src);
-    fn_8017A810(src, 8, (u8 *)dst + 0x1AB);
-    fn_8017A810(src, 8, (u8 *)dst + 0x1B4);
+    Stream_Read(src, 8, (u8 *)dst + 0x1AB);
+    Stream_Read(src, 8, (u8 *)dst + 0x1B4);
     fn_80105A04((u8 *)dst + 0x1BC, src);
     for (tmp = 0; tmp < 8; tmp++) {
         fn_8001C15C((void *)fn_80037BD0((s32)dst, tmp), src);
     }
     fn_8001D018((u8 *)dst + 0x20C, src);
     fn_80017414((u8 *)dst + 0x228, src);
-    fn_8017A810(src, 0xA, (u8 *)dst + 0x214);
+    Stream_Read(src, 0xA, (u8 *)dst + 0x214);
     fn_8003C21C(dst, src);
     fn_8004BC48(dst, src);
     *(s32 *)((u8 *)src + 4) = *(s32 *)((u8 *)src + 4) + 2;

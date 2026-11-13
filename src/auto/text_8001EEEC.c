@@ -3171,7 +3171,7 @@ void fn_80025BA0(void) {
 
 void fn_80025C5C(void *arg0, s32 arg1) {
     u8 Stream_ReadU8(s32);
-    void fn_8017A810(s32, s32, void *);
+    void Stream_Read(s32, s32, void *);
     extern u8 gUnits[];
     u8 id;
 
@@ -3198,10 +3198,10 @@ void fn_80025C5C(void *arg0, s32 arg1) {
     *(u8 *)((char *)arg0 + 0x10) = Stream_ReadU8(arg1);
     *(u8 *)((char *)arg0 + 0x11) = Stream_ReadU8(arg1);
     *(u8 *)((char *)arg0 + 0x12) = Stream_ReadU8(arg1);
-    fn_8017A810(arg1, 1, (void *)((char *)arg0 + 0x13));
+    Stream_Read(arg1, 1, (void *)((char *)arg0 + 0x13));
     *(u8 *)((char *)arg0 + 0x14) = Stream_ReadU8(arg1);
     *(u8 *)((char *)arg0 + 0x15) = Stream_ReadU8(arg1);
-    fn_8017A810(arg1, 1, (void *)((char *)arg0 + 0x16));
+    Stream_Read(arg1, 1, (void *)((char *)arg0 + 0x16));
 }
 
 void fn_80025DCC(void *arg0, s32 arg1) {

@@ -2108,8 +2108,8 @@ u32 fn_8001CFA8(u8 arg0) {
 }
 #pragma peephole reset
 void fn_8001D018(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8017A810(s32, M2C_UNK, s32);
-    fn_8017A810(arg1, 8, arg0);
+    M2C_UNK Stream_Read(s32, M2C_UNK, s32);
+    Stream_Read(arg1, 8, arg0);
 }
 
 void fn_8001D044(s32 arg0, s32 arg1) {

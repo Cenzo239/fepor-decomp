@@ -12050,7 +12050,7 @@ void fn_8017A7D4(void *arg0, s32 arg1) {
  *((u8*)arg0+12)=0;
 }
 
-void fn_8017A810(void *arg0, s32 arg1, s32 arg2) {
+void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     M2C_UNK memcpy(s32, s32, s32);
     memcpy(arg2, M2C_FIELD(arg0, s32 *, 4), arg1);
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);

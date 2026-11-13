@@ -9182,11 +9182,11 @@ void fn_800C28EC(void) {
 }
 
 void fn_800C2930(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8017A810(s32, s32, s32);
+    M2C_UNK Stream_Read(s32, s32, s32);
     M2C_UNK fn_801A7CDC(void *);
     extern u8 lbl_80330EAC[];
     fn_801A7CDC(lbl_80330EAC);
-    fn_8017A810(arg1, 0x480, arg0);
+    Stream_Read(arg1, 0x480, arg0);
 }
 
 void fn_800C2980(s32 arg0, s32 arg1) {
