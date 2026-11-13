@@ -917,25 +917,26 @@ done:
     FileCache_Release(found);
 }
 #pragma global_optimizer reset
-void FileCache_Release(u8 *arg0) {
+/* Drop one ref on a file-cache entry; when the count hits zero, cancel loads, wait, and free it. */
+void FileCache_Release(u8 *entry) {
     s64 OSGetTime(void);
     void fn_8003FED8(void *);
     void fn_800C4588(void *);
     void OS_YieldThread(void);
     extern u8 gFileCache[];
 
-    *(u16 *)(arg0 + 0x32) = *(u16 *)(arg0 + 0x32) - 1;
-    *(u32 *)(arg0 + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
-    if (*(u16 *)(arg0 + 0x32) != 0) {
+    *(u16 *)(entry + 0x32) = *(u16 *)(entry + 0x32) - 1;
+    *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
+    if (*(u16 *)(entry + 0x32) != 0) {
         return;
     }
 
-    if (*(volatile u16 *)(arg0 + 0x30) & 0x800) {
-        if (*(volatile u16 *)(arg0 + 0x30) & 0x2000) {
+    if (*(volatile u16 *)(entry + 0x30) & 0x800) {
+        if (*(volatile u16 *)(entry + 0x30) & 0x2000) {
             s32 i;
             u8 *item;
             u8 *list;
-            list = *(u8 **)(arg0 + 0x38);
+            list = *(u8 **)(entry + 0x38);
             i = 0;
             item = list + 8;
             goto check1;
@@ -973,36 +974,36 @@ void FileCache_Release(u8 *arg0) {
                 goto body1;
             }
         }
-    } else if (*(volatile u16 *)(arg0 + 0x30) & 1) {
-        fn_8003FED8(*(void **)(arg0 + 0x38));
-        *(u16 *)(arg0 + 0x30) &= 0xFFFE;
+    } else if (*(volatile u16 *)(entry + 0x30) & 1) {
+        fn_8003FED8(*(void **)(entry + 0x38));
+        *(u16 *)(entry + 0x30) &= 0xFFFE;
     }
 
-    if (*(volatile u16 *)(arg0 + 0x30) & 4) {
+    if (*(volatile u16 *)(entry + 0x30) & 4) {
         goto spin1_check;
     spin1_body:
         OS_YieldThread();
     spin1_check:
-        if (*(volatile u16 *)(arg0 + 0x30) & 0x80) {
+        if (*(volatile u16 *)(entry + 0x30) & 0x80) {
             goto spin1_body;
         }
-        if (!(*(volatile u16 *)(arg0 + 0x30) & 0x1000)) goto spin2_check;
+        if (!(*(volatile u16 *)(entry + 0x30) & 0x1000)) goto spin2_check;
         else return;
 
         goto spin2_check;
     spin2_body:
         OS_YieldThread();
     spin2_check:
-        if (*(volatile u16 *)(arg0 + 0x30) & 0x80) {
+        if (*(volatile u16 *)(entry + 0x30) & 0x80) {
             goto spin2_body;
         }
 
-        if (*(volatile u16 *)(arg0 + 0x30) & 0x800) {
-            if (*(volatile u16 *)(arg0 + 0x30) & 0x2000) {
+        if (*(volatile u16 *)(entry + 0x30) & 0x800) {
+            if (*(volatile u16 *)(entry + 0x30) & 0x2000) {
                 s32 i;
             u8 *item;
             u8 *list;
-            list = *(u8 **)(arg0 + 0x38);
+            list = *(u8 **)(entry + 0x38);
                 i = 0;
                 item = list + 8;
                 goto check2;
@@ -1040,17 +1041,17 @@ void FileCache_Release(u8 *arg0) {
                     goto body2;
                 }
             }
-        } else if (*(volatile u16 *)(arg0 + 0x30) & 1) {
-            fn_8003FED8(*(void **)(arg0 + 0x38));
-            *(u16 *)(arg0 + 0x30) &= 0xFFFE;
+        } else if (*(volatile u16 *)(entry + 0x30) & 1) {
+            fn_8003FED8(*(void **)(entry + 0x38));
+            *(u16 *)(entry + 0x30) &= 0xFFFE;
         }
 
-        if (*(volatile u16 *)(arg0 + 0x30) & 0x800) {
-            if (*(volatile u16 *)(arg0 + 0x30) & 0x2000) {
+        if (*(volatile u16 *)(entry + 0x30) & 0x800) {
+            if (*(volatile u16 *)(entry + 0x30) & 0x2000) {
                 s32 i;
             u8 *item;
             u8 *list;
-            list = *(u8 **)(arg0 + 0x38);
+            list = *(u8 **)(entry + 0x38);
                 i = 0;
                 item = list + 8;
                 goto check3;
@@ -1092,13 +1093,13 @@ void FileCache_Release(u8 *arg0) {
             }
         }
 
-        fn_800C4588(*(void **)(arg0 + 0x38));
-        arg0[0] = 0;
-        *(u32 *)(arg0 + 0x2C) = 0;
-        *(u16 *)(arg0 + 0x30) = 0;
-        *(u16 *)(arg0 + 0x32) = 0;
-        *(u32 *)(arg0 + 0x38) = 0;
-        *(u32 *)(arg0 + 0x3C) = 0;
+        fn_800C4588(*(void **)(entry + 0x38));
+        entry[0] = 0;
+        *(u32 *)(entry + 0x2C) = 0;
+        *(u16 *)(entry + 0x30) = 0;
+        *(u16 *)(entry + 0x32) = 0;
+        *(u32 *)(entry + 0x38) = 0;
+        *(u32 *)(entry + 0x3C) = 0;
     }
 }
 
