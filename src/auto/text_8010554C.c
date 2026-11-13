@@ -389,7 +389,8 @@ u8 fn_80105E88(s32 arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
+/* Load a dispos file and place units / build move paths; mode selects how entries are applied. */
+void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void fn_800056CC(const char *, ...);
     void *fn_8000CAA0(void *, u32);
     u32 fn_8000D354(void *);
@@ -417,7 +418,7 @@ void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
     u8 sp8[0x68];
     void *self;
     u32 arg1b;
-    s32 mode;
+    s32 mode_local;
     s32 nibble;
     void *base;
     s32 count;
@@ -432,9 +433,9 @@ void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
     u8 last;
     void *tmp;
 
-    self = arg0;
-    arg1b = arg1;
-    mode = arg2;
+    self = path;
+    arg1b = defer;
+    mode_local = mode;
     fn_800056CC((const char *)(lbl_802738F8 + 0x33), self);
     if (fn_8000D354(self) != 0) {
         nibble = fn_801A1CC8() & 0xF;
@@ -448,21 +449,21 @@ void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
                 entry = (u8 *)base;
                 i = 0;
                 while (i < count) {
-                    if (mode == 2) {
+                    if (mode_local == 2) {
                         goto case2;
                     }
-                    if (mode >= 2) {
+                    if (mode_local >= 2) {
                         goto check4;
                     }
-                    if (mode == 0) {
+                    if (mode_local == 0) {
                         goto case0;
                     }
-                    if (mode >= 0) {
+                    if (mode_local >= 0) {
                         goto case1;
                     }
                     goto after_sw;
                 check4:
-                    if (mode >= 4) {
+                    if (mode_local >= 4) {
                         goto after_sw;
                     }
                 case0:
@@ -597,7 +598,7 @@ void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
         } else {
             tmp = fn_8000CAA0(lbl_8028F2E0, arg1b);
             strcpy((u8 *)tmp + 0x30, self);
-            *(u8 *)((u8 *)tmp + 0x60) = (u8)mode;
+            *(u8 *)((u8 *)tmp + 0x60) = (u8)mode_local;
             *(u8 *)((u8 *)tmp + 0x64) = (u8)nibble;
         }
     }
