@@ -12543,7 +12543,7 @@ s32 fn_801A17CC(s32 arg0) {
 
 s32 fn_801A1884(char *arg0) {
     void strcpy(char *, char *);
-    void fn_802343E0(char *, char *);
+    void strcat(char *, char *);
     void fn_80105F0C(char *, s32, s32);
     extern u16 lbl_80330708[];
     extern u8 lbl_8027AD98[];
@@ -12552,14 +12552,14 @@ s32 fn_801A1884(char *arg0) {
     strcpy(sp8, arg0);
     switch (((u8 *)lbl_80330708)[0xA6]) {
     case 0:
-        fn_802343E0(sp8, (char *)(lbl_8027AD98 + 0x5C6));
+        strcat(sp8, (char *)(lbl_8027AD98 + 0x5C6));
         break;
     case 1:
-        fn_802343E0(sp8, (char *)(lbl_8027AD98 + 0x5C9));
+        strcat(sp8, (char *)(lbl_8027AD98 + 0x5C9));
         break;
     case 2:
     case 3:
-        fn_802343E0(sp8, (char *)(lbl_8027AD98 + 0x5CC));
+        strcat(sp8, (char *)(lbl_8027AD98 + 0x5CC));
         break;
     }
     fn_80105F0C(sp8, 0, 0);

@@ -6204,7 +6204,7 @@ void fn_80057898(void *, s32);
 void fn_80057880(void *, s32);
 void fn_800576D4(void *, s32);
 void strcpy(char *, char *);
-void fn_802343E0(char *, char *);
+void strcat(char *, char *);
 char *fn_8000E0E4(char *);
 void fn_8006EEFC(void *, char *);
 void fn_80162018(void);
@@ -6252,21 +6252,21 @@ fn_80057898(*(void **)(p+56),64);
 fn_80057880(*(void **)(p+56),7);
 fn_800576D4(*(void **)(p+56),1);
 strcpy((char *)p+60,lbl_8027D030+0x425);
-fn_802343E0((char *)p+60,fn_8000E0E4(lbl_8027D030+1067));
-fn_802343E0((char *)p+60,lbl_8027D030+1078);
-fn_802343E0((char *)p+60,fn_8000E0E4(lbl_8027D030+1085));
-fn_802343E0((char *)p+60,lbl_8027D030+1094);
-fn_802343E0((char *)p+60,fn_8000E0E4(lbl_8027D030+1101));
-fn_802343E0((char *)p+60,lbl_8027D030+1109);
-fn_802343E0((char *)p+60,fn_8000E0E4(lbl_8027D030+1116));
+strcat((char *)p+60,fn_8000E0E4(lbl_8027D030+1067));
+strcat((char *)p+60,lbl_8027D030+1078);
+strcat((char *)p+60,fn_8000E0E4(lbl_8027D030+1085));
+strcat((char *)p+60,lbl_8027D030+1094);
+strcat((char *)p+60,fn_8000E0E4(lbl_8027D030+1101));
+strcat((char *)p+60,lbl_8027D030+1109);
+strcat((char *)p+60,fn_8000E0E4(lbl_8027D030+1116));
 strcpy((char *)p+188,lbl_8027D030+0x425);
-fn_802343E0((char *)p+188,fn_8000E0E4(lbl_8027D030+1067));
-fn_802343E0((char *)p+188,lbl_8027D030+1078);
-fn_802343E0((char *)p+188,fn_8000E0E4(lbl_8027D030+1085));
-fn_802343E0((char *)p+188,lbl_8027D030+1094);
-fn_802343E0((char *)p+188,fn_8000E0E4(lbl_8027D030+1125));
-fn_802343E0((char *)p+188,lbl_8027D030+1109);
-fn_802343E0((char *)p+188,fn_8000E0E4(lbl_8027D030+1116));
+strcat((char *)p+188,fn_8000E0E4(lbl_8027D030+1067));
+strcat((char *)p+188,lbl_8027D030+1078);
+strcat((char *)p+188,fn_8000E0E4(lbl_8027D030+1085));
+strcat((char *)p+188,lbl_8027D030+1094);
+strcat((char *)p+188,fn_8000E0E4(lbl_8027D030+1125));
+strcat((char *)p+188,lbl_8027D030+1109);
+strcat((char *)p+188,fn_8000E0E4(lbl_8027D030+1116));
 fn_8006EEFC(p,lbl_8027D030+0x402);
 fn_80162018();
 *(s16 *)(p+0x148)=4;
@@ -6301,7 +6301,7 @@ void fn_801C36E8(void *arg0) {
     void fn_800075D8(void);
     void Prim2D_EndPrim(void);
     void strcpy(char *, char *);
-    void fn_802343E0(char *, char *);
+    void strcat(char *, char *);
     void fn_8015E848(s16, s16, s16, s16, s32 *, s32);
     void fn_80152010(s16, s16, s32, s32, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
@@ -6512,7 +6512,7 @@ void fn_801C36E8(void *arg0) {
         fn_80009C0C(lbl_8036B384);
         Prim2D_PrepareTex();
         strcpy(buf, lbl_8027D030 + 0x47E);
-        fn_802343E0(buf, lbl_80298040[*(s32 *)((u8 *)self + 0x28)]);
+        strcat(buf, lbl_80298040[*(s32 *)((u8 *)self + 0x28)]);
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
@@ -6560,7 +6560,7 @@ void fn_801C36E8(void *arg0) {
         idx = *(s32 *)((u8 *)self + 0x13C) + (i - 1);
         if (idx >= 0 && idx < 0x40) {
             strcpy(buf, lbl_8027D030 + 0x47E);
-            fn_802343E0(buf, lbl_80298040[idx]);
+            strcat(buf, lbl_80298040[idx]);
             x = (s16)(*(s16 *)((u8 *)self + 0x152) + 0x1C);
             y = (s16)((lbl_8036B3C0 * *(f32 *)((u8 *)self + 0x140)) + (f32)(*(s16 *)((u8 *)self + 0x154) + ((i - 1) * 0x1C) + 0x16));
             fn_8001003C(x, y, 1, 1, 0, lbl_8027D030 + 0x483, lbl_8036B388, lbl_8036B374, idx + 1);
@@ -10864,7 +10864,7 @@ s16 NameEntry_MoveCaretLeft(void *self, u8 flag) {
 
 void fn_801CDDC8(void *arg0, char *arg1) {
     s32 strlen(char *);
-    void fn_802343E0(char *, char *);
+    void strcat(char *, char *);
 
     char *var_r31;
 
@@ -10872,7 +10872,7 @@ void fn_801CDDC8(void *arg0, char *arg1) {
     *arg1 = 0;
     while (*(u32 *)var_r31 != 0) {
         strlen(var_r31);
-        fn_802343E0(arg1, var_r31);
+        strcat(arg1, var_r31);
         var_r31 += 4;
     }
 }
@@ -14689,7 +14689,7 @@ void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
     extern u8 lbl_8027E258[];
     void *fn_8000E0E4(u32);
     void strcpy(void *, u8 *);
-    void fn_802343E0(void *, void *);
+    void strcat(void *, void *);
     u32 stack[12];
     void *tmp;
     s16 idx;
@@ -14715,7 +14715,7 @@ void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
     strcpy((u8 *)arg0 + 0x18, lbl_8027E258 + 0x5bb);
     idx = *(s16 *)((u8 *)arg0 + 8);
     tmp = fn_8000E0E4(stack[idx]);
-    fn_802343E0((u8 *)arg0 + 0x18, tmp);
+    strcat((u8 *)arg0 + 0x18, tmp);
 }
 #pragma opt_common_subs on
 void fn_801D8D58(void *arg0) {

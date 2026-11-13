@@ -1618,7 +1618,7 @@ void fn_801ADA50(void *arg0) {
     void fn_801AD0B0(void *);
     void *fn_8000E0E4(void *);
     void strcpy(void *, void *);
-    void fn_802343E0(void *, void *);
+    void strcat(void *, void *);
     void fn_8007CB3C(void *, s32);
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_80009C0C(f32);
@@ -1684,10 +1684,10 @@ void fn_801ADA50(void *arg0) {
         fn_801AD704(self);
         fn_801AD0B0(self);
         strcpy(sp8, fn_8000E0E4(lbl_8027B838 + 0x336));
-        fn_802343E0(sp8, lbl_8027B838 + 0x346);
-        fn_802343E0(sp8, fn_8000E0E4(lbl_8027B838 + 0x349));
-        fn_802343E0(sp8, lbl_8027B838 + 0x346);
-        fn_802343E0(sp8, fn_8000E0E4(lbl_8027B838 + 0x35C));
+        strcat(sp8, lbl_8027B838 + 0x346);
+        strcat(sp8, fn_8000E0E4(lbl_8027B838 + 0x349));
+        strcat(sp8, lbl_8027B838 + 0x346);
+        strcat(sp8, fn_8000E0E4(lbl_8027B838 + 0x35C));
         fn_8007CB3C(sp8, 0);
         if (self->unk3D != 0) {
             self->unk3D -= 1;

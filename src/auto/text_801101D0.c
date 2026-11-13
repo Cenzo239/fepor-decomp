@@ -5355,14 +5355,14 @@ void fn_8011D2AC(void *arg0, void *arg1) {
 
 void fn_8011D428(void *arg0) {
     void *fn_8007C3BC(void *);
-    char *fn_802343E0(char *, s32);
+    char *strcat(char *, s32);
     char *strcpy(char *, char *);
     void fn_8005C8B4(char *);
     extern u8 lbl_80274BB0[];
     char sp8[0x40];
 
     strcpy(sp8, (char *)lbl_80274BB0 + 0x2F);
-    fn_802343E0(sp8, *(s32 *)((char *)fn_8007C3BC((u8 *)arg0 + 0x30) + 8));
+    strcat(sp8, *(s32 *)((char *)fn_8007C3BC((u8 *)arg0 + 0x30) + 8));
     fn_8005C8B4(sp8);
 }
 
@@ -6017,7 +6017,7 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     void fn_800791F0(void *, void *);
     void fn_80120F94(void);
     void strcpy(void *, void *);
-    void fn_802343E0(void *, void *);
+    void strcat(void *, void *);
     s32 fn_8005C144(void *);
     void *fn_8000CAA0(void *, void *);
     void fn_8023440C(void *, void *, s32);
@@ -6122,7 +6122,7 @@ got_unit:
         } while (i < 4);
     } else {
         strcpy(sp, (u8 *)lbl_80274BB0 + 0x2F);
-        fn_802343E0(sp, *(void **)((u8 *)fn_8007C3BC(unit) + 8));
+        strcat(sp, *(void **)((u8 *)fn_8007C3BC(unit) + 8));
         if (fn_8005C144(sp) & 0x2000) {
             p = self;
             i = 0;

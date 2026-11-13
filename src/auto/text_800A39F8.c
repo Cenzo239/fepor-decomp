@@ -2,7 +2,7 @@
 #include "common.h"
 extern u8 lbl_8028C750[16];
 extern u16 lbl_8026E408[];
-extern void fn_802343E0(void *, s32);
+extern void strcat(void *, s32);
 extern void strcpy(void *, void *, void *);
 extern u8 lbl_80312A80[0x30];
 
@@ -1022,7 +1022,7 @@ void fn_800A5C00(void *arg0)
 
     extern void strcpy(void *, const char *);
     extern s32 sprintf(char *, const char *, ...);
-    extern void fn_802343E0(void *, const char *);
+    extern void strcat(void *, const char *);
     extern void fn_8005C8B4(void *);
 
     u8 *obj;
@@ -1043,9 +1043,9 @@ void fn_800A5C00(void *arg0)
         *(u32 *)(obj + 0x30)
     );
 
-    fn_802343E0(obj + 0x44, buffer);
+    strcat(obj + 0x44, buffer);
 
-    fn_802343E0(
+    strcat(
         obj + 0x44,
         (const char *)lbl_8026E1B0 + 0x45
     );
@@ -2278,37 +2278,37 @@ void fn_800A8524(void *arg0, void *arg1)
 
 u8 *fn_800A8704(void *arg0) {
     void strcpy(void *, void *);
-    void fn_802343E0(void *, char *);
+    void strcat(void *, char *);
     char *strchr(const char *, int);
     char *temp;
 
     strcpy(lbl_80312A80, (u8 *)lbl_8026E408 + 0x26);
     temp = strchr(*(char **)arg0, 0x5F);
-    fn_802343E0(lbl_80312A80, temp + 1);
+    strcat(lbl_80312A80, temp + 1);
     return lbl_80312A80;
 }
 
 u8 *fn_800A876C(void *arg0) {
     void strcpy(void *, void *);
-    void fn_802343E0(void *, char *);
+    void strcat(void *, char *);
     char *strchr(const char *, int);
     char *temp;
 
     strcpy(lbl_80312A80, (u8 *)lbl_8026E408 + 0x2C);
     temp = strchr(*(char **)arg0, 0x5F);
-    fn_802343E0(lbl_80312A80, temp + 1);
+    strcat(lbl_80312A80, temp + 1);
     return lbl_80312A80;
 }
 
 u8 *fn_800A87D4(void *arg0) {
     void strcpy(void *, void *);
-    void fn_802343E0(void *, char *);
+    void strcat(void *, char *);
     char *strchr(const char *, int);
     char *temp;
 
     strcpy(lbl_80312A80, (u8 *)lbl_8026E408 + 0x32);
     temp = strchr(*(char **)arg0, 0x5F);
-    fn_802343E0(lbl_80312A80, temp + 1);
+    strcat(lbl_80312A80, temp + 1);
     return lbl_80312A80;
 }
 
@@ -2350,10 +2350,10 @@ s32 fn_800A886C(u8 *arg0) {
 
 u8 *fn_800A88E0(void *arg0) {
     void strcpy(void *, void *);
-    void fn_802343E0(void *, s32);
+    void strcat(void *, s32);
 
     strcpy(lbl_80312A80, (u8 *)lbl_8026E408 + 0x58);
-    fn_802343E0(lbl_80312A80, *(s32 *)((char *)arg0 + 0xC) + 4);
+    strcat(lbl_80312A80, *(s32 *)((char *)arg0 + 0xC) + 4);
     return lbl_80312A80;
 }
 

@@ -1215,7 +1215,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     s32 *fn_8018D900(u8);
     void *fn_80234198(void *, void *);
-    void fn_802343E0(void *, void *);
+    void strcat(void *, void *);
     char *strcpy(char *, char *);
     s32 strlen(char *);
     extern u8 lbl_80277720[];
@@ -1258,7 +1258,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
             p = fn_80234198(sp1C, (u8 *)lbl_80277720 + 0x1d);
             if (p != NULL) {
                 *(u8 *)((u8 *)p + 5) = 0;
-                fn_802343E0(sp1C, fn_8000E0E4((u8 *)lbl_80277720 + 0x22));
+                strcat(sp1C, fn_8000E0E4((u8 *)lbl_80277720 + 0x22));
                 goto do_set;
             }
         } else {
@@ -5495,7 +5495,7 @@ void fn_8016E1B4(void *arg0) {
     void fn_8016DBA4(void *, f32, f32);
     u32 *fn_8018D900(s32);
     void fn_801DDE88(s32, s32, s32);
-    void fn_802343E0(void *, void *);
+    void strcat(void *, void *);
     void strcpy(void *, void *);
     extern u8 lbl_80277EA0[];
     extern u8 lbl_80330708[];
@@ -5649,15 +5649,15 @@ void fn_8016E1B4(void *arg0) {
     if (mode < 2) {
         if (mode >= 0) {
             strcpy(spC, (u8 *)lbl_80277EA0 + 0x177);
-            fn_802343E0(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x17D));
-            fn_802343E0(spC, (u8 *)lbl_80277EA0 + 0x187);
-            fn_802343E0(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x18F));
+            strcat(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x17D));
+            strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
+            strcat(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x18F));
         }
     } else if (mode < 4) {
         strcpy(spC, (u8 *)lbl_80277EA0 + 0x198);
-        fn_802343E0(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x19E));
-        fn_802343E0(spC, (u8 *)lbl_80277EA0 + 0x187);
-        fn_802343E0(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x1A5));
+        strcat(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x19E));
+        strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
+        strcat(spC, fn_8000E0E4((u8 *)lbl_80277EA0 + 0x1A5));
     }
     fn_8007CB3C(spC, 0);
     mode = *(u8 *)((u8 *)self + 0x35);

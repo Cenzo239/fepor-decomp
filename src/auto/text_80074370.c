@@ -4131,25 +4131,25 @@ void fn_8007C408(void)
 
 void fn_8007C484(void *arg0) {
     void strcpy(void *, void *);
-    void fn_802343E0(void *, s32);
+    void strcat(void *, s32);
     void fn_8005BA10(void *);
     extern u16 lbl_8026C640[];
     char sp8[0x40];
 
     strcpy(sp8, (u8 *)lbl_8026C640 + 0x122);
-    fn_802343E0(sp8, *(s32 *)((char *)arg0 + 8));
+    strcat(sp8, *(s32 *)((char *)arg0 + 8));
     fn_8005BA10(sp8);
 }
 
 void fn_8007C4D4(void *arg0, s32 arg1) {
     void strcpy(void *, void *, void *);
-    void fn_802343E0(void *, s32);
+    void strcat(void *, s32);
     void fn_8005C870(void *, s32);
     extern u16 lbl_8026C640[];
     char sp8[0x40];
 
     strcpy(sp8, (u8 *)lbl_8026C640 + 0x122, lbl_8026C640);
-    fn_802343E0(sp8, *(s32 *)((char *)arg0 + 8));
+    strcat(sp8, *(s32 *)((char *)arg0 + 8));
     fn_8005C870(sp8, arg1);
 }
 

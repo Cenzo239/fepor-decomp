@@ -2196,7 +2196,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     s32 fn_80036F5C(void *, s32);
     u8 fn_80036FC4(void *, s32);
     u8 fn_80036B20(void *, s32);
-    M2C_UNK fn_802343E0(void *, void *);
+    M2C_UNK strcat(void *, void *);
     extern u8 lbl_8026D8D8[];
     extern s32 lbl_8026D7C8[];
     extern f32 lbl_80369A04;
@@ -2235,7 +2235,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             vals[3] = lbl_8026D7C8[3];
             sprintf(sp18, lbl_8026D8D8 + 0x704, vals[(u8) temp], (u8) fn_80036FC4(obj, idx), row->unk4, row->unk5, row2->unk6);
             if (fn_80036B20(obj, idx)) {
-                fn_802343E0(sp18, lbl_8026D8D8 + 0x719);
+                strcat(sp18, lbl_8026D8D8 + 0x719);
             }
             Prim2D_AddPrim(5);
             fn_80007858((f32) (M2C_FIELD(arg2, s16 *, 0x30) + 0x5A), (f32) M2C_FIELD(arg2, s16 *, 0x32));

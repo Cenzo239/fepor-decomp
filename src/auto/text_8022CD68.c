@@ -2594,7 +2594,7 @@ bytecopy:
     return 0;
 }
 
-void fn_802343E0(u8 *dest, u8 *src) {
+void strcat(u8 *dest, u8 *src) {
     u8 *d;
 
     src--;
