@@ -6674,7 +6674,7 @@ extern "C" void fn_80170160(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801703FC(void *arg0) {
+extern "C" void MapCursor_UpdateUnitInfo(void *arg0) {
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
