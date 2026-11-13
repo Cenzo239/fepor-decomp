@@ -11284,7 +11284,7 @@ void fn_8004DF20(void *arg0) {
     }
 }
 
-void fn_8004DF58(void *arg0)
+void Unit_UpdateVisual(void *arg0)
 {
     void fn_800609DC(void *);
     extern u8 gBattleState[];
