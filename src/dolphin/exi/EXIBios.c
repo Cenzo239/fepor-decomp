@@ -551,6 +551,23 @@ BOOL __EXIProbe(s32 chan) {
 
     return rc;
 }
+
+s32 fn_80239488(s32 chan) {
+    EXIControl *exi;
+    s32 err;
+    u32 id;
+
+    exi = &Ecb_8033E188[chan];
+    err = __EXIProbe(chan);
+    if (err != 0 && exi->idTime == 0) {
+        if (EXIGetID(chan, 0, &id) != 0) {
+            return 1;
+        }
+        return 0;
+    }
+    return err;
+}
+
 #pragma scheduling reset
 s32 fn_80239508(s32 arg0) {
     s32 temp_r4;
