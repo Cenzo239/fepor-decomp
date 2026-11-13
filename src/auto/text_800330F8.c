@@ -613,7 +613,8 @@ void fn_80034130(void *arg0, void *arg1) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
-void Battle_QueuePromotionGains(s32 self, void *arg1) {
+/* Promote the foe copy, then queue battle anims for each stat gain vs the base unit. */
+void Battle_QueuePromotionGains(s32 battle, void *unit) {
     void fn_801A7794(void *, void *, void *);
     void Unit_Promote(void *);
     void fn_801A981C(void *, s32, s32);
@@ -629,55 +630,55 @@ void Battle_QueuePromotionGains(s32 self, void *arg1) {
     s32 Unit_GetCon(void *);
     void BattleAnim_Queue(void *, s32, s8);
     void fn_801A442C(void *);
-    s8 d0;
-    s8 d1;
-    s8 d2;
-    s8 d3;
-    s8 d4;
-    s8 d5;
-    s8 d6;
-    s8 d7;
-    s8 d8;
-    s8 d9;
+    s8 dHp;
+    s8 dStr;
+    s8 dMag;
+    s8 dSkl;
+    s8 dSpd;
+    s8 dLck;
+    s8 dDef;
+    s8 dRes;
+    s8 dMov;
+    s8 dCon;
     s32 t;
 
-    fn_801A7794((void *)self, arg1, arg1);
-    Unit_Promote((void *)(self + 0x2E0));
-    *(u32 *)(self + 0xCAC) |= 0x2000;
-    fn_801A981C((void *)self, 0, -1);
-    fn_801A981C((void *)(self + 0x2E0), 0, -1);
-    t = Unit_GetHp((void *)(self + 0x2E0));
-    d0 = (s8)(t - Unit_GetHp((void *)self));
-    t = Unit_GetStr((void *)(self + 0x2E0));
-    d1 = (s8)(t - Unit_GetStr((void *)self));
-    t = Unit_GetMag((void *)(self + 0x2E0));
-    d2 = (s8)(t - Unit_GetMag((void *)self));
-    t = Unit_GetSkl((void *)(self + 0x2E0));
-    d3 = (s8)(t - Unit_GetSkl((void *)self));
-    t = Unit_GetSpd((void *)(self + 0x2E0));
-    d4 = (s8)(t - Unit_GetSpd((void *)self));
-    t = Unit_GetLck((void *)(self + 0x2E0));
-    d5 = (s8)(t - Unit_GetLck((void *)self));
-    t = Unit_GetDef((void *)(self + 0x2E0));
-    d6 = (s8)(t - Unit_GetDef((void *)self));
-    t = Unit_GetRes((void *)(self + 0x2E0));
-    d7 = (s8)(t - Unit_GetRes((void *)self));
-    t = Unit_GetMov((void *)(self + 0x2E0));
-    d8 = (s8)(t - Unit_GetMov((void *)self));
-    t = Unit_GetCon((void *)(self + 0x2E0));
-    d9 = (s8)(t - Unit_GetCon((void *)self));
-    t = self + 0x8A0;
-    BattleAnim_Queue((void *)t, 0x2A, d0);
-    BattleAnim_Queue((void *)t, 0x2B, d1);
-    BattleAnim_Queue((void *)t, 0x2C, d2);
-    BattleAnim_Queue((void *)t, 0x2D, d3);
-    BattleAnim_Queue((void *)t, 0x2E, d4);
-    BattleAnim_Queue((void *)t, 0x2F, d5);
-    BattleAnim_Queue((void *)t, 0x30, d6);
-    BattleAnim_Queue((void *)t, 0x31, d7);
-    BattleAnim_Queue((void *)t, 0x32, d8);
-    BattleAnim_Queue((void *)t, 0x33, d9);
-    fn_801A442C((void *)self);
+    fn_801A7794((void *)battle, unit, unit);
+    Unit_Promote((void *)(battle + 0x2E0));
+    *(u32 *)(battle + 0xCAC) |= 0x2000;
+    fn_801A981C((void *)battle, 0, -1);
+    fn_801A981C((void *)(battle + 0x2E0), 0, -1);
+    t = Unit_GetHp((void *)(battle + 0x2E0));
+    dHp = (s8)(t - Unit_GetHp((void *)battle));
+    t = Unit_GetStr((void *)(battle + 0x2E0));
+    dStr = (s8)(t - Unit_GetStr((void *)battle));
+    t = Unit_GetMag((void *)(battle + 0x2E0));
+    dMag = (s8)(t - Unit_GetMag((void *)battle));
+    t = Unit_GetSkl((void *)(battle + 0x2E0));
+    dSkl = (s8)(t - Unit_GetSkl((void *)battle));
+    t = Unit_GetSpd((void *)(battle + 0x2E0));
+    dSpd = (s8)(t - Unit_GetSpd((void *)battle));
+    t = Unit_GetLck((void *)(battle + 0x2E0));
+    dLck = (s8)(t - Unit_GetLck((void *)battle));
+    t = Unit_GetDef((void *)(battle + 0x2E0));
+    dDef = (s8)(t - Unit_GetDef((void *)battle));
+    t = Unit_GetRes((void *)(battle + 0x2E0));
+    dRes = (s8)(t - Unit_GetRes((void *)battle));
+    t = Unit_GetMov((void *)(battle + 0x2E0));
+    dMov = (s8)(t - Unit_GetMov((void *)battle));
+    t = Unit_GetCon((void *)(battle + 0x2E0));
+    dCon = (s8)(t - Unit_GetCon((void *)battle));
+    t = battle + 0x8A0;
+    BattleAnim_Queue((void *)t, 0x2A, dHp);
+    BattleAnim_Queue((void *)t, 0x2B, dStr);
+    BattleAnim_Queue((void *)t, 0x2C, dMag);
+    BattleAnim_Queue((void *)t, 0x2D, dSkl);
+    BattleAnim_Queue((void *)t, 0x2E, dSpd);
+    BattleAnim_Queue((void *)t, 0x2F, dLck);
+    BattleAnim_Queue((void *)t, 0x30, dDef);
+    BattleAnim_Queue((void *)t, 0x31, dRes);
+    BattleAnim_Queue((void *)t, 0x32, dMov);
+    BattleAnim_Queue((void *)t, 0x33, dCon);
+    fn_801A442C((void *)battle);
 }
 #pragma use_lmw_stmw reset
 
