@@ -8348,7 +8348,7 @@ void fn_800C068C(void) {
     void fn_80018AE4(void);
     extern u8 gUiContext[24];
     extern s32 gUiInputFlags;
-    extern u8 lbl_80284E78[];
+    extern u8 Proc_BMapMain[];
     extern u32 lbl_80367848;
     extern u32 lbl_8036784C;
     extern u8 lbl_80284AC8[];
@@ -8360,11 +8360,11 @@ void fn_800C068C(void) {
     fn_8002846C(gUiContext);
     fn_80127AC4();
     gUiInputFlags &= ~0x890;
-    obj = Process_Find(lbl_80284E78);
+    obj = Process_Find(Proc_BMapMain);
     if (lbl_80367848 != 0) {
         *(u32 *)((u8 *)obj + 4) = lbl_80367848;
     } else {
-        Process_UnlinkByKey(lbl_80284E78);
+        Process_UnlinkByKey(Proc_BMapMain);
     }
     if (lbl_8036784C != 0) {
         obj2 = Process_CreateChild(lbl_80284AC8, obj);
@@ -8379,7 +8379,7 @@ void fn_800C0750(void) {
     extern s32 gUiInputFlags;
     extern s32 lbl_80367848;
     extern s32 lbl_8036784C;
-    extern u8 lbl_80284E78[];
+    extern u8 Proc_BMapMain[];
     extern u8 lbl_80284E30[];
     extern u8 lbl_80284AC8[];
     extern u8 lbl_8026FC78[];
@@ -8395,7 +8395,7 @@ void fn_800C0750(void) {
     s32 val;
 
     gUiInputFlags |= 0x10;
-    temp = Process_Find(lbl_80284E78);
+    temp = Process_Find(Proc_BMapMain);
     if (temp != 0) {
         val = *(s32 *)((u8 *)temp + 4);
     } else {
@@ -8403,7 +8403,7 @@ void fn_800C0750(void) {
     }
     lbl_80367848 = val;
     if (temp == 0) {
-        Process_Create(lbl_80284E30, Process_CreateChild(lbl_80284E78, Process_FindByName(lbl_8026FC78 + 0x138)));
+        Process_Create(lbl_80284E30, Process_CreateChild(Proc_BMapMain, Process_FindByName(lbl_8026FC78 + 0x138)));
     }
     temp = Process_Find(lbl_80284AC8);
     if (temp != 0) {

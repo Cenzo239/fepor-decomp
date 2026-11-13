@@ -2020,7 +2020,7 @@ void Battle_LoadMap(void)
 }
 #pragma global_optimizer reset
 void Battle_StartMapMain(void *arg0) {
-    extern u16 lbl_80284E78[];
+    extern u16 Proc_BMapMain[];
     extern u16 lbl_80284E30[];
     extern u8 gBattleState[];
     extern struct { u32 unk0; u32 unk4; } gSaveDataBase;
@@ -2038,7 +2038,7 @@ void Battle_StartMapMain(void *arg0) {
     void fn_80016180(void);
     void *r;
 
-    r = Process_CreateChild(lbl_80284E78, arg0);
+    r = Process_CreateChild(Proc_BMapMain, arg0);
     Process_Goto(r, 4);
     Process_Create(lbl_80284E30, r);
     fn_80006220(0x10);
@@ -2056,24 +2056,24 @@ void Battle_StartMapMain(void *arg0) {
 void fn_8002D72C(void *arg0) {
     extern u16 lbl_80284E30[];
     extern u16 lbl_80284E5C[];
-    extern u16 lbl_80284E78[];
+    extern u16 Proc_BMapMain[];
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
     void fn_80006220(s32);
     void *r;
 
-    r = Process_CreateChild(lbl_80284E78, arg0);
+    r = Process_CreateChild(Proc_BMapMain, arg0);
     r = Process_Create(lbl_80284E30, r);
     r = Process_CreateChild(lbl_80284E5C, r);
     fn_80006220(0x10);
 }
 
-extern u16 lbl_80284E78[216];
+extern u16 Proc_BMapMain[216];
 void fn_8002D780(s32 arg0) {
     void *Process_Find(void *);
     void Process_Goto(void *, u8);
 
-    Process_Goto(Process_Find(lbl_80284E78), (u8)arg0);
+    Process_Goto(Process_Find(Proc_BMapMain), (u8)arg0);
 }
 
 void fn_8002D7BC(s32 arg0) {
