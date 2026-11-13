@@ -268,7 +268,7 @@ void fn_80105A30(s32 arg0, s32 arg1) {
     Stream_Write(arg1, 0x10, arg0);
 }
 
-s32 fn_80105A5C(s32 *arg0) {
+s32 Status_SumBonus(s32 *arg0) {
     s32 total = 0;
     u8 i;
 

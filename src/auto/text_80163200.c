@@ -12503,7 +12503,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
 #pragma cplusplus reset
 
-s32 fn_80105A5C();
+s32 Status_SumBonus();
 #pragma cplusplus on
 extern "C" void Ui_DrawJobPersonalPanel(s16, s16, s16, s16, s32, s32, s32, f32);
 extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
@@ -12520,8 +12520,8 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     f32 cur;
 
     unit = M2C_FIELD(arg0, u8 **, 0x4C);
-    num = fn_80105A5C(unit + 0x1BC);
-    target = num - fn_80105A5C(M2C_FIELD(unit, u8 **, 0x18C) + 0x1C);
+    num = Status_SumBonus(unit + 0x1BC);
+    target = num - Status_SumBonus(M2C_FIELD(unit, u8 **, 0x18C) + 0x1C);
     cur = M2C_FIELD(arg0, f32 *, 0x50);
     if (target < cur) {
         M2C_FIELD(arg0, f32 *, 0x50) = cur - lbl_8036ABA8;
@@ -13063,11 +13063,11 @@ void fn_8017C338(void *arg0) {
 }
 
 s32 fn_8017C3C8(u8 *arg0) {
-    s32 fn_80105A5C(void *);
+    s32 Status_SumBonus(void *);
     s32 num;
 
-    num = fn_80105A5C(arg0 + 0x1BC);
-    return num - fn_80105A5C(M2C_FIELD(arg0, u8 **, 0x18C) + 0x1C);
+    num = Status_SumBonus(arg0 + 0x1BC);
+    return num - Status_SumBonus(M2C_FIELD(arg0, u8 **, 0x18C) + 0x1C);
 }
 
 void *fn_8017C40C(void *arg0, s16 arg1) {

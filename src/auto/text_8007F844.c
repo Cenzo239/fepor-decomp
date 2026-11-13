@@ -265,7 +265,7 @@ void fn_8007FF58(void *arg0) {
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void Ui_DrawIcon(void *, s32, s32, s32);
-    s32 fn_80105A5C(void *);
+    s32 Status_SumBonus(void *);
     void *fn_8010586C(void *);
     void fn_8007F844(u8, f32, f32, f32);
     extern u8 gUiStrings[];
@@ -392,8 +392,8 @@ void fn_8007FF58(void *arg0) {
     Prim2D_PrepareTex();
 
     unit = *(void **)((u8 *)obj58 + 0x18C);
-    a = fn_80105A5C((u8 *)obj58 + 0x1BC);
-    b = fn_80105A5C((u8 *)unit + 0x1C);
+    a = Status_SumBonus((u8 *)obj58 + 0x1BC);
+    b = Status_SumBonus((u8 *)unit + 0x1C);
     fn_8007F844(*(u8 *)((u8 *)unit + 0x40), lbl_803694D0 + x, lbl_8036956C + y, (f32)(a - b));
 
     Prim2D_Begin();
