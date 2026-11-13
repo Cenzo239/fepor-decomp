@@ -481,7 +481,7 @@ s32 __CARDPutControlBlock(void *arg0, s32 arg1) {
 }
 
 extern u16 __CARDBlock[];
-s32 fn_80217C34(s32 arg0) {
+s32 CARDGetResultCode(s32 arg0) {
     extern u16 __CARDBlock[];
     if (arg0 < 0 || arg0 >= 2) {
         return -0x80;

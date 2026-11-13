@@ -13593,9 +13593,9 @@ void fn_800E9CE4(s32 arg0) {
 
 void fn_800EA27C(void) {
     extern u16 gCardWork[];
-    s32 fn_80217C34(s32 arg);
+    s32 CARDGetResultCode(s32 arg);
     
-    u32 tmp = fn_80217C34(*(u32*)(gCardWork + 0xA000));
+    u32 tmp = CARDGetResultCode(*(u32*)(gCardWork + 0xA000));
     *(u32*)(gCardWork + 0xA004) = tmp;
     *(u8*)(gCardWork + 0xA01A) = 0;
 }
@@ -14151,10 +14151,10 @@ void fn_800EB7E4(void) {
 }
 
 void Card_AsyncDone(void) {
-    s32 fn_80217C34(s32);
+    s32 CARDGetResultCode(s32);
     extern u8 gCardWork[];
 
-    *(u32 *)(gCardWork + 0xA004) = fn_80217C34(*(s32 *)(gCardWork + 0xA000));
+    *(u32 *)(gCardWork + 0xA004) = CARDGetResultCode(*(s32 *)(gCardWork + 0xA000));
     gCardWork[0xA01A] = 0;
 }
 
@@ -14183,7 +14183,7 @@ u8 fn_800EBF58(void) {
     void PADInit(void);
     s32 CARDProbeEx(s32, void *, void *);
     s32 fn_8021AFD0(s32, void *, s32, s32);
-    s32 fn_80217C34(s32);
+    s32 CARDGetResultCode(s32);
     s32 fn_8021A7D4(s32, s32);
     void fn_8021B20C(s32);
     void DebugPrint(void *, u32, u8, u32);
@@ -14208,7 +14208,7 @@ u8 fn_800EBF58(void) {
 L_AFD0:
     r = fn_8021AFD0(0, gCardWork, 0, 0);
     if (r < 0) goto END;
-    r = fn_80217C34(0);
+    r = CARDGetResultCode(0);
     if (r == -1) goto L_A7D4;
     if (r == 0) goto L_second;
     if (r >= 0) goto END;
@@ -14220,7 +14220,7 @@ L_A7D4:
     fn_8021B20C(0);
     goto END;
 L_second:
-    r = fn_80217C34(0);
+    r = CARDGetResultCode(0);
     if (r == -1) goto L_second2;
     if (r == -6) goto L_B20C;
     if (r >= 0) goto L_check0;
