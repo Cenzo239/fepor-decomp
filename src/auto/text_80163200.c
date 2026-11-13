@@ -10534,7 +10534,7 @@ void *fn_80177E74(void) {
     return (u8 *)gUiMsgStrings + 0x538;
 }
 
-s32 fn_80177E84(void) {
+s32 Ui_HasUsableItem(void) {
     u32 *Unit_GetItemSlot(u32, s32);
     u64 *Item_GetFlagsPtr(u32 *);
     u8 fn_80091EF0(u32, u32);
