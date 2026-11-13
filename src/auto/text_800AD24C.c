@@ -1791,7 +1791,7 @@ void fn_800B28FC(s32 arg0) {
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-s32 fn_800B2928(s32 arg0) {
+s32 Sound_LoadPack(s32 arg0) {
     s32 fn_800B4A84(void *, s32, s32);
     s32 fn_800B49C8(void *);
     void fn_800B49D0(void *);
