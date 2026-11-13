@@ -11847,25 +11847,26 @@ s32 fn_8019FCD0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return 1;
 }
 
-s32 ScriptCmd_CamPathAddScaled(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 ScriptCmd_CamPathAddScaled(s32 id, s32 x, s32 y, s32 z) {
+    /* Add a CamPath point; divide map coords by E_EventState scale and center by +0.5. */
     void *Process_Find(void *);
     void CamPath_AddPoint(s32, s32, f32, f32, f32);
     extern u8 E_EventState_script[];
-    void *temp;
+    void *state;
     s32 scale;
     f32 fscale;
 
-    temp = Process_Find(E_EventState_script);
-    if (temp != NULL) {
-        scale = *(s32 *)((u8 *)temp + 0x3C);
+    state = Process_Find(E_EventState_script);
+    if (state != NULL) {
+        scale = *(s32 *)((u8 *)state + 0x3C);
     } else {
         scale = 1;
     }
     fscale = (f32)scale;
-    CamPath_AddPoint(0, arg0,
-                0.5f + (f32)arg1 / fscale,
-                0.5f + (f32)arg2 / fscale,
-                (f32)arg3 / fscale);
+    CamPath_AddPoint(0, id,
+                0.5f + (f32)x / fscale,
+                0.5f + (f32)y / fscale,
+                (f32)z / fscale);
     return 1;
 }
 
