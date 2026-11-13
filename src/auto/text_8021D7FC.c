@@ -695,7 +695,7 @@ void fn_8021EB88(s32 arg0, void *arg1)
 
     void fn_8020A9E0(u32);
     void fn_8020AC68(u32);
-    void fn_8021F39C(u32, u8);
+    void __GXWriteFifoIntReset(u32, u8);
     void __GXWriteFifoIntEnable(u32, u8);
 
     u8 context[0x2C8];
@@ -710,7 +710,7 @@ void fn_8021EB88(s32 arg0, void *arg1)
         if (status & 2) {
             fn_8020A9E0(lbl_80368778);
             lbl_80368780 = 0;
-            fn_8021F39C(1, 1);
+            __GXWriteFifoIntReset(1, 1);
             __GXWriteFifoIntEnable(1, 0);
         }
     }
@@ -721,7 +721,7 @@ void fn_8021EB88(s32 arg0, void *arg1)
         if (status & 1) {
             lbl_80368788++;
             __GXWriteFifoIntEnable(0, 1);
-            fn_8021F39C(1, 0);
+            __GXWriteFifoIntReset(1, 0);
             lbl_80368780 = 1;
             fn_8020AC68(lbl_80368778);
         }
@@ -789,7 +789,7 @@ void GXSetCPUFifo(void *fifo) {
     void OSRestoreInterrupts(s32);
     void __GXWriteFifoIntEnable(u8, u8);
     void __GXFifoLink(u8);
-    void fn_8021F39C(u8, u8);
+    void __GXWriteFifoIntReset(u8, u8);
     void fn_802037B0(void);
     extern void *__piReg;
     extern void* __GXCurrentCPUFifo;
@@ -810,7 +810,7 @@ void GXSetCPUFifo(void *fifo) {
         temp_r7 = __rlwimi(temp_r7, 0, 26, 5, 5);
         M2C_FIELD(__piReg, u32 *, 0x14) = temp_r7;
         __GXGPFifoAttached = 1;
-        fn_8021F39C(1, 1);
+        __GXWriteFifoIntReset(1, 1);
         __GXWriteFifoIntEnable(1, 0);
         __GXFifoLink(1);
     } else {
@@ -839,7 +839,7 @@ void GXSetGPFifo(void *fifo) {
     void __GXFifoReadDisable(void);
     void __GXWriteFifoIntEnable(u8, u8);
     void __GXFifoLink(u8);
-    void fn_8021F39C(u8, u8);
+    void __GXWriteFifoIntReset(u8, u8);
     void fn_8021F2F0(void);
     void fn_802037B0(void);
     extern u16* const __GXData;
@@ -889,7 +889,7 @@ void GXSetGPFifo(void *fifo) {
     __cpReg[1] = reg;
     __cpReg[1] = M2C_FIELD(__GXData, u32 *, 0x8);
 
-    fn_8021F39C(1, 1);
+    __GXWriteFifoIntReset(1, 1);
     fn_8021F2F0();
     OSRestoreInterrupts(enabled);
 }
@@ -1019,7 +1019,7 @@ void __GXWriteFifoIntEnable(u32 arg0, u8 arg1) {
     *(u16 *)(__cpReg + 2) = (u16)__GXData[2];
 }
 
-void fn_8021F39C(u32 arg0, u8 arg1)
+void __GXWriteFifoIntReset(u32 arg0, u8 arg1)
 {
     extern u8 *__GXData;
     extern u8 *__cpReg;
