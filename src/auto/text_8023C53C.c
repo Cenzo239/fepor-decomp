@@ -14132,7 +14132,7 @@ u32 fn_80262154(u32 arg0)
 
 void fn_80262200(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void fn_80205110(s32, s32);
-    void fn_802625F8(s32, s32, s32, s32, s32, s32);
+    void Sound_QueueAramDma(s32, s32, s32, s32, s32, s32);
     s32 fn_802631AC(s32, s32 *);
     s32 sp8;
     s32 fnResult;
@@ -14146,7 +14146,7 @@ void fn_80262200(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     off = arg0 + aligned;
     arg2 = (arg2 + 0x1F) & ~0x1F;
     fn_80205110(off, arg2);
-    fn_802625F8(off, fnResult + aligned, arg2, 1, arg4, arg5);
+    Sound_QueueAramDma(off, fnResult + aligned, arg2, 1, arg4, arg5);
 }
 
 u32 fn_80262290(s32 arg0) {
@@ -14284,7 +14284,7 @@ void fn_80262558(void *arg0) {
     *(u8 *)(base + 0x281) -= 1;
 }
 
-void fn_802625F8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
     void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
