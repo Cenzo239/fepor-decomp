@@ -154,7 +154,7 @@ extern u16 lbl_80368A08;
 
 u16 Sound_GetChanParam(u8 arg0, u8 arg1, u8 arg2);
 s32 __cvt_fp2unsigned(f32 arg0);
-void fn_80261934(u8 arg0, void *arg1, s32 arg2);
+void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2);
 
 void fn_8026146C(s32 *);
 void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5);
