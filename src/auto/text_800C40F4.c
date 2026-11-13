@@ -4827,7 +4827,7 @@ s32 fn_800D3590(void *arg0) {
 
 #pragma cplusplus on
 #pragma inline_depth(0)
-extern "C" void *fn_800D35A4(u8 *p, s16 arg1) {
+extern "C" void *GameScene_Destroy(u8 *p, s16 arg1) {
 extern u8 lbl_80367878; extern u8 *gGame;
 void *fn_800D6314(void *,s16); void fn_801C777C(); void fn_8005C7E8(void *); void fn_80040854(int); void fn_8004084C(void *); void fn_800D6374(void *,void *); void fn_800C428C(void *);
 struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(int); };
@@ -6178,7 +6178,7 @@ void *fn_800E7EA0(void *);
 void *fn_800E7DA4(void *, void *);
 void fn_800DBBC8(f32 *, f32 *);
 void fn_800C428C(void *);
-void *fn_800D35A4(void *, s16);
+void *GameScene_Destroy(void *, s16);
 void Process_ClearFunc(void *);
 extern char lbl_802704F8[];
 extern void *lbl_80367880;
@@ -6286,7 +6286,7 @@ fn_800C428C(lbl_8036787C);
 lbl_8036787C = NULL;
 }
 if (lbl_80367880 != NULL) {
-fn_800D35A4(lbl_80367880, 1);
+GameScene_Destroy(lbl_80367880, 1);
 lbl_80367880 = NULL;
 }
 Process_ClearFunc(self);
