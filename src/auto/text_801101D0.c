@@ -4435,7 +4435,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 Text_MeasureHeight(M2C_UNK, f32, f32);
-    M2C_UNK fn_80071D28();
+    M2C_UNK Ui_DrawObjRouteIcon();
     M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036A1E8;
     extern f32 lbl_8036A234;
@@ -4446,7 +4446,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     s32 temp_r29;
     s32 temp_r30;
 
-    fn_80071D28();
+    Ui_DrawObjRouteIcon();
     M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(void *, void *), 0x7C)(arg0, arg1);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A234);

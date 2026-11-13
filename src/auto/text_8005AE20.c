@@ -8024,7 +8024,7 @@ void fn_80071CE8(void *arg0, void *arg1) {
     }
 }
 
-void fn_80071D28(void *unused, void *unit) {
+void Ui_DrawObjRouteIcon(void *unused, void *unit) {
     void *fn_8000B908(s32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
