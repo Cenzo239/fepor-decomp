@@ -1605,7 +1605,8 @@ void fn_801B8798(void) {
     }
 }
 
-void Battle_ApplyAchieveBonuses(s32 arg0) {
+/* Apply chapter achievement gold to funds; open bonus tally UI when unlocked. */
+void Battle_ApplyAchieveBonuses(s32 parent) {
     void *Heap_Alloc(s32);
     void AchieveList_SetBaseGold(void *, s32);
     void AchieveList_Build(void *);
@@ -1618,24 +1619,24 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     extern u8 gSystemSave[];
     extern u8 lbl_80297BA8[];
     extern u8 lbl_8027C5E8[];
-    void *alloc;
-    void *obj;
-    void *sub;
-    u8 *base;
+    void *list;
+    void *proc;
+    void *work;
+    u8 *battle;
 
-    alloc = Heap_Alloc(0x22C);
-    base = gBattleState;
-    AchieveList_SetBaseGold(alloc, *(s32 *)(base + 0x1C));
-    AchieveList_Build(alloc);
-    *(s16 *)(gBattleState + 0x72) = AchieveList_SumBonuses(alloc);
-    *(s32 *)(base + 0x1C) = AchieveList_GetTotalGold(alloc);
+    list = Heap_Alloc(0x22C);
+    battle = gBattleState;
+    AchieveList_SetBaseGold(list, *(s32 *)(battle + 0x1C));
+    AchieveList_Build(list);
+    *(s16 *)(gBattleState + 0x72) = AchieveList_SumBonuses(list);
+    *(s32 *)(battle + 0x1C) = AchieveList_GetTotalGold(list);
     if (((u32)(gBattleState[0x9E] & 1) != 1) && SystemSave_TestFlag0(gSystemSave)) {
-        obj = Process_CreateChild(lbl_80297BA8, arg0);
-        *(void **)((u8 *)obj + 0x30) = fn_800C4638(0x2C, lbl_8027C5E8 + 0x57, 0);
-        *(s32 *)((u8 *)obj + 0x34) = 0;
-        sub = *(void **)((u8 *)obj + 0x30);
-        *(s32 *)((u8 *)sub + 8) = 0;
-        *(void **)((u8 *)sub + 0xC) = alloc;
+        proc = Process_CreateChild(lbl_80297BA8, parent);
+        *(void **)((u8 *)proc + 0x30) = fn_800C4638(0x2C, lbl_8027C5E8 + 0x57, 0);
+        *(s32 *)((u8 *)proc + 0x34) = 0;
+        work = *(void **)((u8 *)proc + 0x30);
+        *(s32 *)((u8 *)work + 8) = 0;
+        *(void **)((u8 *)work + 0xC) = list;
     }
 }
 
