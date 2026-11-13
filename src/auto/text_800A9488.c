@@ -233,7 +233,8 @@ s32 fn_800A9B0C(void) {
 }
 
 #pragma cplusplus on
-extern "C" void Options_DrawTextItem(void *arg0, void *arg1, void *arg2) {
+extern "C" void Options_DrawTextItem(void *unused, void *parent, void *item) {
+    /* Draw options-menu item text in black via Prim2D under the parent transform. */
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
@@ -284,15 +285,16 @@ extern "C" void Options_DrawTextItem(void *arg0, void *arg1, void *arg2) {
     extern f32 gOptionsZBias;
     extern f32 gOptionsTextScale;
 
+    (void)unused;
     Prim2D_Begin();
-    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32),
-        M2C_FIELD(arg1, Model **, 0x3C)->v25() - gOptionsZBias, gOptionsIdentityScale);
+    Prim2D_SetTransform((f32) M2C_FIELD(parent, s16 *, 0x30), (f32) M2C_FIELD(parent, s16 *, 0x32),
+        M2C_FIELD(parent, Model **, 0x3C)->v25() - gOptionsZBias, gOptionsIdentityScale);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
+    Prim2D_SetPos((f32) M2C_FIELD(item, s16 *, 0x30), (f32) M2C_FIELD(item, s16 *, 0x32));
     Prim2D_SetColor(0, 0, 0, 0xFF);
-    M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
+    M2C_FIELD(item, Drawer **, 0x34)->v4(item);
     Prim2D_SetText();
     Prim2D_SetScale(gOptionsTextScale);
     Prim2D_EndPrim();
