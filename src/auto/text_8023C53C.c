@@ -63,7 +63,7 @@ typedef struct SynthFreeNode { u8 prev, next; u16 active; } SynthFreeNode;
 
 extern u16 lbl_80366F28;
 extern char lbl_80282AE8[];
-extern u8 lbl_80368978;
+extern u8 gSoundReady;
 extern u8 lbl_803689B0;
 extern u8 lbl_8034C110[]; char lbl_80282B20[];
 extern u8 lbl_8034C110[];
@@ -3877,11 +3877,11 @@ void fn_8024AD04(u8 arg0, u8 arg1) {
         u8 unk2D;
         u8 pad2[0x30 - 0x2E];
     } Entry;
-    extern u8 lbl_80368978;
+    extern u8 gSoundReady;
     extern f32 lbl_8034C324[];
     Entry *tbl;
 
-    if (lbl_80368978 != 0) {
+    if (gSoundReady != 0) {
         tbl = (Entry *)lbl_8034C324;
         tbl[arg0].unk2D = arg1;
     }
@@ -9842,7 +9842,7 @@ void fn_80258D74(void) {
 }
 
 s32 Sound_PushGroup(void *arg0, u16 arg1, s32 arg2, s32 arg3, s32 arg4) {
-extern u8 lbl_80368978;
+extern u8 gSoundReady;
 extern s32 *lbl_80368A5C;
 s32 fn_802622F4(s32);
 u32 fn_8024F964(s32,s32);
@@ -9852,7 +9852,7 @@ void fn_802624B8(void);
 s16 n;
 AudioGroupState *state;
 u32 i; u16 *p; u8 *node;
-if(lbl_80368978 && (state=(AudioGroupState *)lbl_80368A5C, n=state->count)<128) {
+if(gSoundReady && (state=(AudioGroupState *)lbl_80368A5C, n=state->count)<128) {
 for(node=arg0; *(u32 *)node != 0xFFFFFFFF; node=(u8 *)arg0+*(u32 *)node) {
 if(*(u16 *)(node+4)==arg1) {
 state=(AudioGroupState *)((u8 *)state+n*12); state->slots[0].node=node;
@@ -11047,7 +11047,7 @@ void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *ar
 void fn_8025D9A4(u16 *arg0, u32 arg1)
 {
     extern s32 lbl_80368ABC;
-    extern u8 lbl_80368978;
+    extern u8 gSoundReady;
 
     void fn_8026372C(void);
     void fn_802636F4(void);
@@ -11067,7 +11067,7 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
 
         for (i = 0; i < arg1; i++) {
             if (*(u16 *)(current + 0x40) == arg0[i * 5]) {
-                if (lbl_80368978 != 0) {
+                if (gSoundReady != 0) {
                     fn_8026372C();
 
                     flags = *(u32 *)(current + 0xC);
@@ -11861,14 +11861,14 @@ s32 fn_8025EC48(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize
     void fn_8024ADFC(u32, u8);
     void fn_8024BB90(void);
     void fn_80258100(void);
-    extern u8 lbl_80368978;
+    extern u8 gSoundReady;
     extern u8 lbl_803689B0;
     u32 rate;
     s32 ret;
     u8 num;
     s32 base;
 
-    lbl_80368978 = 0;
+    gSoundReady = 0;
     if (voices <= 64) {
         lbl_8034C110[0x210] = voices;
     } else {
@@ -11895,15 +11895,15 @@ s32 fn_8025EC48(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize
         fn_80258100();
         fn_8025EC10(flags);
         ret = 0;
-        lbl_80368978 = 1;
+        gSoundReady = 1;
     }
     return ret;
 }
 
 u8 fn_8025ED80(void) {
 #pragma dont_inline reset
-    extern u8 lbl_80368978;
-    return lbl_80368978;
+    extern u8 gSoundReady;
+    return gSoundReady;
 }
 
 void fn_8025ED88(f32 *arg0, f32 *arg1, f32 *arg2) {
@@ -13149,7 +13149,7 @@ s32 fn_80261014(u32 *arg0, u8 arg1, u8 arg2, u32 arg3) {
     
     *arg0 = 0x7D00; // 32000
     
-    lbl_80368978 = 0;
+    gSoundReady = 0;
     lbl_803689B0 = 0; 
     
     return 1;
@@ -13301,7 +13301,7 @@ u32 fn_802614C4(u32 arg0) {
 }
 
 void fn_802614CC(void) {
-    extern u8 lbl_80368978;
+    extern u8 gSoundReady;
     extern u8 gSoundVoiceCount;
     extern u8 lbl_80368AD3;
     extern u8 lbl_80368AD4;
@@ -13326,7 +13326,7 @@ void fn_802614CC(void) {
     s32 j;
     u32 off;
 
-    if (lbl_80368978 != 0) {
+    if (gSoundReady != 0) {
         fn_8024C5C8();
         fn_80263764();
         fn_80263504();
