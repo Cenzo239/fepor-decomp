@@ -10900,7 +10900,7 @@ s32 fn_8014716C(u8 arg0) {
 #pragma cplusplus on
 extern "C" void fn_80147188(s32 arg0) {
     void fn_800B3194(void);
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     extern u8 lbl_80276BC8[];
 
     struct Entry {
@@ -10943,7 +10943,7 @@ extern "C" void fn_80147188(s32 arg0) {
             if ((s16)arg_save <= 0) {
                 p->v2();
             } else if (!(p->flags & 8)) {
-                temp = (s32)((f32)ext / lbl_8036A7A0);
+                temp = (s32)((f32)ext / gMsPerFrame);
                 {
                     s16 n = (s16)temp;
                     if (n <= 0) {
@@ -10968,7 +10968,7 @@ extern "C" void fn_80147188(s32 arg0) {
             if ((s16)arg_save <= 0) {
                 p->v2();
             } else if (!(p->flags & 8)) {
-                temp = (s32)((f32)ext / lbl_8036A7A0);
+                temp = (s32)((f32)ext / gMsPerFrame);
                 {
                     s16 n = (s16)temp;
                     if (n <= 0) {
@@ -10996,7 +10996,7 @@ extern "C" void fn_80147188(s32 arg0) {
                 if ((s16)arg_save <= 0) {
                     w->v2();
                 } else if (!(w->flags & 8)) {
-                    temp = (s32)((f32)ext / lbl_8036A7A0);
+                    temp = (s32)((f32)ext / gMsPerFrame);
                     {
                         s16 n = (s16)temp;
                         if (n <= 0) {
@@ -11060,7 +11060,7 @@ extern "C" void fn_80147188(s32 arg0) {
 #pragma cplusplus on
 extern "C" void fn_8014746C(s8 arg0, s16 arg1) {
 struct Obj { u8 pad[8]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; };
-extern u8 gSeCueSlots[1344]; extern f32 lbl_8036A7A0;
+extern u8 gSeCueSlots[1344]; extern f32 gMsPerFrame;
 Anim *entry; s16 duration; u8 flags; s32 off; u8 *flags_ptr;
 if(arg0<0)return;
 off=arg0*0x30;
@@ -11069,7 +11069,7 @@ flags=*(flags_ptr+=0xc);
 if(!(flags&1))return;
 if(arg1<=0){((Obj*)(gSeCueSlots+off))->v2();return;}
 if(!(flags&8)){
-duration=(s16)(s32)((f32)arg1/lbl_8036A7A0);
+duration=(s16)(s32)((f32)arg1/gMsPerFrame);
 if(duration<=0)duration=1;
 entry=(Anim*)((u32)gSeCueSlots+off);
 entry->start=entry->cur;
@@ -11223,7 +11223,7 @@ extern "C" void fn_801478D0(s32 arg0) {
         virtual void v2() = 0;
     };
     extern u8 gFxSlots[];
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s16 a;
     u8 *entry;
     s32 i;
@@ -11239,7 +11239,7 @@ extern "C" void fn_801478D0(s32 arg0) {
             if ((s16)arg0 <= 0) {
                 ((Obj *)entry)->v2();
             } else if (!(flags & 8)) {
-                temp = (s32)((f32)a / lbl_8036A7A0);
+                temp = (s32)((f32)a / gMsPerFrame);
                 var_r5 = (s16)temp;
                 if (var_r5 <= 0) {
                     var_r5 = 1;
@@ -11278,7 +11278,7 @@ s8 Fx_AllocSlot(void *name, s8 param, s16 duration) {
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s8 slot;
     u8 *fx;
     u8 *def;
@@ -11366,7 +11366,7 @@ found:
         }
         fx[0x11] = tmp;
         fx[0x16] = 0;
-        temp = (s32)((f32)duration / lbl_8036A7A0);
+        temp = (s32)((f32)duration / gMsPerFrame);
         frames = (s16)temp;
         if (frames <= 0) {
             frames = 1;
@@ -11414,7 +11414,7 @@ extern "C" void fn_80147EBC(s16 arg0) {
         virtual u8 v25() = 0;
     };
     extern Obj gFxChannels[];
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 a;
     s16 val;
     Obj *p;
@@ -11427,7 +11427,7 @@ extern "C" void fn_80147EBC(s16 arg0) {
     i = 0;
     do {
         if ((*(u8 *)((u8 *)p + 0xC) & 1) && p->v25() != 0) {
-            temp = (s32)((f32)a / lbl_8036A7A0);
+            temp = (s32)((f32)a / gMsPerFrame);
             val = (s16)temp;
             if (val <= 0) {
                 val = 1;
@@ -11460,7 +11460,7 @@ void fn_80147FA8(s16 arg0) {
         s16 unk_2C;      /* +0x2C */
         s16 unk_2E;      /* +0x2E */
     } gFxChannels;
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 var_r31;
     struct Unk30 *var_r30;
     s32 var_r29;
@@ -11479,7 +11479,7 @@ void fn_80147FA8(s16 arg0) {
                     ((void (*)(M2C_UNK *))var_r30->vtbl[0x14 / 4])((M2C_UNK *)var_r30);
                 }
             } else {
-                temp = (s32) ((f32) var_r31 / lbl_8036A7A0);
+                temp = (s32) ((f32) var_r31 / gMsPerFrame);
                 var_r4 = (s16) temp;
                 if (var_r4 <= 0) {
                     var_r4 = 1;
@@ -11507,7 +11507,7 @@ extern "C" void fn_801480D8(s16 arg0) {
         virtual void v2() = 0;
     };
     extern Obj gFxChannels[];
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s16 raw;
     s32 a;
     unsigned int temp;
@@ -11526,7 +11526,7 @@ extern "C" void fn_801480D8(s16 arg0) {
             if (0 >= raw) {
                 p->v2();
             } else if (!(flags & 8)) {
-                temp = (s32)((f32)a / lbl_8036A7A0);
+                temp = (s32)((f32)a / gMsPerFrame);
                 val = (s16)temp;
                 if (0 >= val) {
                     val = 1;
@@ -11553,7 +11553,7 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
 
     struct Entry {
         void **names;
@@ -11689,7 +11689,7 @@ after_search:
     }
     found->unk_11 = tmp;
     found->unk_16 = 0;
-    temp = (s32)((f32)arg3 / lbl_8036A7A0);
+    temp = (s32)((f32)arg3 / gMsPerFrame);
     n = (s16)temp;
     if (n <= 0) {
         n = 1;
@@ -11704,13 +11704,13 @@ after_search:
 #pragma use_lmw_stmw reset
 
 void fn_8014876C(void *arg0, s8 arg1, s32 arg2) {
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 temp;
     s16 var_r6;
     s16 a2;
 
     a2 = (s16)arg2;
-    temp = (s32)((f32)a2 / lbl_8036A7A0);
+    temp = (s32)((f32)a2 / gMsPerFrame);
     var_r6 = (s16)temp;
     if (var_r6 <= 0) {
         var_r6 = 1;
@@ -11753,13 +11753,13 @@ extern "C" void fn_801487D0(void *arg0, s16 arg1) {
         virtual void v24() = 0;
         virtual u8 v25() = 0;
     };
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 temp;
     s16 var_r31;
     u8 t;
 
     if (((Obj *)arg0)->v25() != 0) {
-        temp = (s32)((f32)arg1 / lbl_8036A7A0);
+        temp = (s32)((f32)arg1 / gMsPerFrame);
         var_r31 = (s16)temp;
         if (var_r31 <= 0) {
             var_r31 = 1;
@@ -11803,7 +11803,7 @@ extern "C" void fn_80148888(void *arg0, s16 arg1) {
         virtual void v24() = 0;
         virtual u8 v25() = 0;
     };
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 temp;
     s16 var_r4;
 
@@ -11816,7 +11816,7 @@ extern "C" void fn_80148888(void *arg0, s16 arg1) {
             return;
         }
         if (!(M2C_FIELD(arg0, u8 *, 0xC) & 4)) {
-            temp = (s32)((f32)arg1 / lbl_8036A7A0);
+            temp = (s32)((f32)arg1 / gMsPerFrame);
             var_r4 = (s16)temp;
             if (var_r4 <= 0) {
                 var_r4 = 1;
@@ -11837,7 +11837,7 @@ extern "C" void fn_80148980(void *arg0, s16 arg1) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern f32 lbl_8036A7A0;
+    extern f32 gMsPerFrame;
     s32 temp;
     s16 var_r5;
 
@@ -11846,7 +11846,7 @@ extern "C" void fn_80148980(void *arg0, s16 arg1) {
         return;
     }
     if (!(M2C_FIELD(arg0, u8 *, 0xC) & 8)) {
-        temp = (s32)((f32)arg1 / lbl_8036A7A0);
+        temp = (s32)((f32)arg1 / gMsPerFrame);
         var_r5 = (s16)temp;
         if (var_r5 <= 0) {
             var_r5 = 1;
