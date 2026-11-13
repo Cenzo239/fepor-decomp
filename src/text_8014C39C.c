@@ -87,7 +87,8 @@ extern u8 lbl_8032BB58[];
 #include "global.h"
 extern u8 gBattleState[];
 
-void BattleState_Write(void *arg0, void *arg1) {
+/* Serialize battle-state fields into a write stream (save / chapter transfer). */
+void BattleState_Write(void *state, void *stream) {
     void Stream_Write(void *, s32, void *);
     void Stream_WriteU8(void *, u8);
     void Stream_WriteU16(void *, u16);
@@ -101,39 +102,39 @@ void BattleState_Write(void *arg0, void *arg1) {
     void fn_800BDAF8(void *, void *);
     s32 i;
 
-    Stream_Write(arg1, 0x10, arg0);
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x10));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x11));
-    Stream_WriteU16(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x12));
+    Stream_Write(stream, 0x10, state);
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x10));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x11));
+    Stream_WriteU16(stream, (u16)*(s16 *)((u8 *)state + 0x12));
     for (i = 0; i < 4; i++) {
-        Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x14 + i));
+        Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x14 + i));
     }
-    Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x18));
-    Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x1c));
-    Stream_Write(arg1, 0x30, (u8 *)arg0 + 0x20);
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x50));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x51));
-    Stream_WriteU8(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x524));
-    Stream_WriteU8(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x528));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x54));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x55));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x56));
-    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x57));
-    Stream_WriteS64(arg1, *(s64 *)((u8 *)arg0 + 0x58));
-    Stream_WriteS64(arg1, *(s64 *)((u8 *)arg0 + 0x60));
-    Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x68));
-    Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x6c));
-    Stream_WriteU16(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x70));
-    Stream_WriteU16(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x72));
-    fn_80105A30((u8 *)arg0 + 0x74, arg1);
-    fn_80105A30((u8 *)arg0 + 0x84, arg1);
-    fn_80014F94((u8 *)arg0 + 0x94, arg1);
-    fn_80014F94((u8 *)arg0 + 0x98, arg1);
-    fn_80199B88((u8 *)arg0 + 0x9c, arg1);
-    fn_800BDAF8((u8 *)arg0 + 0xb4, arg1);
-    Stream_Write(arg1, 0x140, (u8 *)arg0 + 0x3c4);
-    Stream_WriteStr(arg1, 0x18, (u8 *)arg0 + 0x504);
-    Stream_WritePad(arg1, 8, 0);
+    Stream_WriteS32(stream, *(s32 *)((u8 *)state + 0x18));
+    Stream_WriteS32(stream, *(s32 *)((u8 *)state + 0x1c));
+    Stream_Write(stream, 0x30, (u8 *)state + 0x20);
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x50));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x51));
+    Stream_WriteU8(stream, (u8)(s32)*(f32 *)((u8 *)state + 0x524));
+    Stream_WriteU8(stream, (u8)(s32)*(f32 *)((u8 *)state + 0x528));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x54));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x55));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x56));
+    Stream_WriteU8(stream, *(u8 *)((u8 *)state + 0x57));
+    Stream_WriteS64(stream, *(s64 *)((u8 *)state + 0x58));
+    Stream_WriteS64(stream, *(s64 *)((u8 *)state + 0x60));
+    Stream_WriteS32(stream, *(s32 *)((u8 *)state + 0x68));
+    Stream_WriteS32(stream, *(s32 *)((u8 *)state + 0x6c));
+    Stream_WriteU16(stream, (u16)*(s16 *)((u8 *)state + 0x70));
+    Stream_WriteU16(stream, (u16)*(s16 *)((u8 *)state + 0x72));
+    fn_80105A30((u8 *)state + 0x74, stream);
+    fn_80105A30((u8 *)state + 0x84, stream);
+    fn_80014F94((u8 *)state + 0x94, stream);
+    fn_80014F94((u8 *)state + 0x98, stream);
+    fn_80199B88((u8 *)state + 0x9c, stream);
+    fn_800BDAF8((u8 *)state + 0xb4, stream);
+    Stream_Write(stream, 0x140, (u8 *)state + 0x3c4);
+    Stream_WriteStr(stream, 0x18, (u8 *)state + 0x504);
+    Stream_WritePad(stream, 8, 0);
 }
 
 s32* fn_8014C5A8(s32 arg0, u8 arg1) {
