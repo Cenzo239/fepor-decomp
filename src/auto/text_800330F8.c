@@ -699,7 +699,7 @@ u8 fn_80034A8C(s32 arg0, u8 arg1) {
     return temp_r31;
 }
 
-void fn_80034BA8(void *arg0, void *arg1) {
+void Unit_CalcLevelUpGrowths(void *arg0, void *arg1) {
     void fn_80034068(void *, s32, u8);
     s32 fn_8003B490(void *);
     s32 fn_8003B4D4(void *);
@@ -972,7 +972,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     void fn_800056CC(void *, ...);
     void fn_80034068(void *, s32);
     void fn_80034130(void *, void *);
-    void fn_80034BA8(void *, void *);
+    void Unit_CalcLevelUpGrowths(void *, void *);
     void fn_80034FF0(void *, void *);
     void **fn_80037C20(void *);
     s8 fn_80037CCC(void *);
@@ -1187,7 +1187,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
             *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
         } else {
             fn_80034068(arg3, 0x29);
-            fn_80034BA8(arg0, arg3);
+            Unit_CalcLevelUpGrowths(arg0, arg3);
         }
     }
     ((u8 *)arg0)[0x19B] = exp;
