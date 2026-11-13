@@ -269,7 +269,7 @@ after_copy:
 
 void fn_8014CA20(void *arg0, s32 arg1) {
     void *base = arg0;
-    fn_8000E0E4((u8 *)base + (arg1 + 2) * 0xC + 0x20, base);
+    Msg_Expand((u8 *)base + (arg1 + 2) * 0xC + 0x20, base);
 }
 
 s32 fn_8014CA54(s32 arg0, s32 arg1) {
@@ -277,10 +277,10 @@ s32 fn_8014CA54(s32 arg0, s32 arg1) {
 }
 
 void fn_8014CA68(s32 arg0, s32 arg1) {
- void fn_8000E0E4(s32, s32);
+ void Msg_Expand(s32, s32);
  s32 t=arg1*12;
  u8 *p=(u8*)(t+0x20);
- fn_8000E0E4((s32)&p[arg0],t);
+ Msg_Expand((s32)&p[arg0],t);
 }
 
 void fn_8014CA98(s32 arg0, s32 arg1, u32 arg2) {

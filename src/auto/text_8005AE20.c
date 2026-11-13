@@ -273,8 +273,8 @@ s32 fn_8005B4D8(s32 arg0) {
 }
 #pragma global_optimizer on
 void fn_8005B73C(void *arg0) {
-    M2C_UNK fn_8000E0E4(s32);
-    fn_8000E0E4(M2C_FIELD(arg0, s32 *, 4));
+    M2C_UNK Msg_Expand(s32);
+    Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
 
 s32 fn_8005B760(s32 arg0) {
@@ -8143,7 +8143,7 @@ u32 fn_80072160(void) {
 }
 
 void fn_80072170(void *arg0) {
-    fn_8000E0E4(M2C_FIELD(arg0, s32 *, 4));
+    Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
 
 s32 fn_80072194(void) {
@@ -8163,7 +8163,7 @@ s32 fn_800721AC(void) {
 }
 
 void fn_800721B4(void *arg0) {
-    fn_8000E0E4(M2C_FIELD(arg0, s32 *, 0xC));
+    Msg_Expand(M2C_FIELD(arg0, s32 *, 0xC));
 }
 
 s32 fn_800721D8(void) {
@@ -8392,7 +8392,7 @@ s32 fn_800723DC(void) {
 }
 
 void fn_800723E4(void *arg0) {
-    fn_8000E0E4(M2C_FIELD(arg0, s32 *, 4));
+    Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
 extern void *lbl_803672F8;
 extern s32 *jumptable_80285D18;

@@ -173,7 +173,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
 }
 void fn_8008D6D8(void *arg0) {
     M2C_UNK fn_8000CAF0(void *, s32);
-    M2C_UNK fn_8000E0E4(void *);
+    M2C_UNK Msg_Expand(void *);
     M2C_UNK fn_8023440C(void *, s32, s32);
     s32 fn_80010B78(void *, s32, f32);
     M2C_UNK Process_Unlink(void *);
@@ -185,7 +185,7 @@ void fn_8008D6D8(void *arg0) {
     Vec4 sp8;
 
     temp_r31 = (u8 *)fn_8000CAF0(lbl_80289AB8, 3);
-    fn_8023440C(temp_r31 + 0x3E, fn_8000E0E4(arg0), 0x30);
+    fn_8023440C(temp_r31 + 0x3E, Msg_Expand(arg0), 0x30);
     *(s16 *)(temp_r31 + 0x38) = fn_80010B78(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
     sp8 = lbl_8026CD50;
     M2C_FIELD(temp_r31, s8 *, 0x3D) = 0;

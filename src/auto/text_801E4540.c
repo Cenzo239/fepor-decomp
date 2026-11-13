@@ -319,7 +319,7 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
 
 #pragma global_optimizer off
 void fn_801E4C48(void *arg0, s8 arg1) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_80056AE0(void *, void *);
     void fn_80057860(void *, s16);
     void fn_801E4CF8(void *);
@@ -333,10 +333,10 @@ void fn_801E4C48(void *arg0, s8 arg1) {
     *(u8 *)((u8 *)arg0 + 0x31) = (u8)zero;
     switch (zero) {
     case 0:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x182));
+        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x182));
         break;
     case 1:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x18D));
+        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x18D));
         break;
     }
     *(u8 *)((u8 *)arg0 + 0x32) = 0;
@@ -521,7 +521,7 @@ void TabMenu_DrawTab2(void *arg0) {
     void fn_80007790(f32, f32, f32, f32);
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
     s32 fn_80010B78(void *, s32, f32);
     u8 Status_Test(void *, u8);
@@ -639,7 +639,7 @@ void TabMenu_DrawTab2(void *arg0) {
         Prim2D_EndPrim();
     } else {
         if (fn_801E4A60(self, data[4]) == row) {
-            str = fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x4C))[(s8)data[4]]);
+            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x4C))[(s8)data[4]]);
             sel = 0;
             t = (s8)*(u8 *)((u8 *)self + 0x33);
             cur = *(struct Node **)((u8 *)self + 0x58);
@@ -691,12 +691,12 @@ void TabMenu_DrawTab2(void *arg0) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, fn_8000E0E4(*(void **)(data + 0xC)),
+        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
                     gTabMenuOne, gTabMenuZero);
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        str2 = fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+        str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
         {
             s16 x = (s16)(((0x58 - fn_80010B78(str2, -1, gTabMenuOne)) >> 1) + 0x140);
             fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
@@ -705,7 +705,7 @@ void TabMenu_DrawTab2(void *arg0) {
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         fn_8001003C(0x1A0, y1, mark, 1, 0,
-                    fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
+                    Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
                     gTabMenuOne, gTabMenuZero);
     }
 
@@ -892,7 +892,7 @@ void TabMenu_DrawTab1(void *arg0) {
     void fn_80007790(f32, f32, f32, f32);
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
     s32 fn_80010B78(void *, s32, f32);
     u8 Status_Test(void *, u8);
@@ -1010,7 +1010,7 @@ void TabMenu_DrawTab1(void *arg0) {
         Prim2D_EndPrim();
     } else {
         if (fn_801E4A60(self, data[1]) == row) {
-            str = fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]);
+            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]);
             sel = 0;
             t = (s8)*(u8 *)((u8 *)self + 0x33);
             cur = *(struct Node **)((u8 *)self + 0x58);
@@ -1062,12 +1062,12 @@ void TabMenu_DrawTab1(void *arg0) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, fn_8000E0E4(*(void **)(data + 0xC)),
+        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
                     gTabMenuOne, gTabMenuZero);
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        str2 = fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+        str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
         {
             s16 x = (s16)(((0x58 - fn_80010B78(str2, -1, gTabMenuOne)) >> 1) + 0x140);
             fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
@@ -1110,7 +1110,7 @@ void TabMenu_DrawTab0(void *arg0) {
     void fn_80007790(f32, f32, f32, f32);
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
@@ -1225,7 +1225,7 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_EndPrim();
     } else {
         if (fn_801E4A60(self, data[2]) == row) {
-            str = fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
             sel = 0;
             t = (s8)*(u8 *)((u8 *)self + 0x33);
             cur = *(struct Node **)((u8 *)self + 0x58);
@@ -1278,13 +1278,13 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, fn_8000E0E4(*(void **)(data + 0xC)),
+        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
                     gTabMenuOne, gTabMenuZero);
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
         fn_8001003C(0x148, y1, mark, 1, 0,
-                    fn_8000E0E4(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
+                    Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
                     gTabMenuOne, gTabMenuZero);
     }
 
@@ -1693,7 +1693,7 @@ void fn_801E80B4(void *arg0) {
     void fn_80167190(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     u8 fn_801E85A4(void *, s8);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_80056AE0(void *, void *);
     extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -1832,10 +1832,10 @@ void fn_801E80B4(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x31) = (u8)zero;
         switch (zero) {
         case 0:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x182));
+            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x182));
             break;
         case 1:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x18D));
+            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x18D));
             break;
         }
         if (fn_801E85A4(arg0, (s8)*(u8 *)((u8 *)arg0 + 0x32)) != 0) {
@@ -2170,7 +2170,7 @@ void fn_801E8D34(void *arg0) {
     void fn_80167190(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     s8 fn_801E8920(void *, u8);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_80056AE0(void *, void *);
     u8 fn_801E91E8(void *, void *);
     extern u32 *gPadInput;
@@ -2282,10 +2282,10 @@ void fn_801E8D34(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x31) = 1;
         switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
         case 0:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x182));
+            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x182));
             break;
         case 1:
-            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x18D));
+            fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x18D));
             break;
         }
         if ((s8)*(u8 *)((u8 *)arg0 + 0x33) > hi) {
@@ -2573,7 +2573,7 @@ void fn_801E9958(void) {
 #pragma global_optimizer off
 void fn_801E9978(void *arg0) {
     void *Hash_Lookup(void *);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void *fn_80056A60(void *);
     void fn_80056AE0(void *, void *);
     void fn_800576D4(void *, s32);
@@ -2655,10 +2655,10 @@ skip_sub:
     *(void **)((u8 *)arg0 + 0x60) = var_r0;
     switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
     case 0:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x182));
+        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x182));
         break;
     case 1:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), fn_8000E0E4(lbl_8027EB78 + 0x18D));
+        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(lbl_8027EB78 + 0x18D));
         break;
     }
     fn_801E4CF8(arg0);

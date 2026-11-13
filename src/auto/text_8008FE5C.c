@@ -89,7 +89,7 @@ void fn_8008FE5C(void* arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
-    void *fn_8000E0E4(u32);
+    void *Msg_Expand(u32);
     void fn_8001019C(s16, s16, u8, void *, ...);
     s32 fn_80010B78(void *, s32, f32);
     s32 fn_8008B1B0();
@@ -106,17 +106,17 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
     if (arg2 != 0U) {
-        temp_r27 = fn_8000E0E4(arg2);
+        temp_r27 = Msg_Expand(arg2);
         temp_r4 = temp_r28 - fn_80010B78(temp_r27, -1, lbl_80369754);
         fn_8001019C((s16) (arg0 + temp_r4 / 2), (s16) (arg1 + 0x1E), 2, temp_r27);
     }
     if (arg3 != 0U) {
-        temp_r27_2 = fn_8000E0E4(arg3);
+        temp_r27_2 = Msg_Expand(arg3);
         temp_r4_2 = temp_r28 - fn_80010B78(temp_r27_2, -1, lbl_80369754);
         fn_8001019C((s16) (arg0 + temp_r4_2 / 2), (s16) (arg1 + 0x3C), 8, temp_r27_2);
     }
     if (arg4 != 0U) {
-        arg4 = (u32) fn_8000E0E4(arg4);
+        arg4 = (u32) Msg_Expand(arg4);
         temp_r4_3 = temp_r28 - fn_80010B78((void *) arg4, -1, lbl_80369754);
         fn_8001019C((s16) (arg0 + temp_r4_3 / 2), (s16) (arg1 + 0x54), 8, (void *) arg4);
     }
@@ -132,7 +132,7 @@ void fn_800900F4(u8 *arg0) {
     void fn_8008CD34(void);
     s8 fn_8003B2D0(void *);
     s8 fn_8003A1E0(void *);
-    void *fn_8000E0E4(char *);
+    void *Msg_Expand(char *);
     void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
@@ -164,12 +164,12 @@ void fn_800900F4(u8 *arg0) {
     fn_8008CD34();
     b = self[0x1A8];
     t = fn_8003B2D0(self);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x111);
+    p = Msg_Expand(lbl_8026CD60 + 0x111);
     fn_8001003C(0x10, 0x2C, 1, 1, 0, lbl_8026CD60 + 0xFA, p, (s8)b, lbl_80369754, lbl_80369764, (s8)t);
     t = fn_8003A1E0(self);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x126);
+    p = Msg_Expand(lbl_8026CD60 + 0x126);
     fn_8001003C(0x86, 0x2C, 1, 1, 0, lbl_8026CD60 + 0x117, p, (s8)t, lbl_80369754, lbl_80369764);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x135);
+    p = Msg_Expand(lbl_8026CD60 + 0x135);
     fn_8001003C(0x10, 0x48, 1, 1, 0, lbl_8026CD60 + 0x12D, p, lbl_80369754, lbl_80369764);
     b = 0;
     t = (s32)lbl_802F0308;
@@ -188,12 +188,12 @@ void fn_800900F4(u8 *arg0) {
     fn_8001019C((s16)(b - 0xF), 0x6C, 1, lbl_8026CD60 + 0x13D);
     b = self[0x1A8];
     t = fn_8003B2D0(self);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x111);
+    p = Msg_Expand(lbl_8026CD60 + 0x111);
     fn_8001003C(0x10, 0x90, 1, 1, 0, lbl_8026CD60 + 0xFA, p, (s8)b, lbl_80369754, lbl_80369764, (s8)t);
     t = fn_8003A1E0(self);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x126);
+    p = Msg_Expand(lbl_8026CD60 + 0x126);
     fn_8001003C(0x86, 0x90, 1, 1, 0, lbl_8026CD60 + 0x117, p, (s8)t, lbl_80369754, lbl_80369764);
-    p = fn_8000E0E4(lbl_8026CD60 + 0x135);
+    p = Msg_Expand(lbl_8026CD60 + 0x135);
     fn_8001003C(0x10, 0xAC, 1, 1, 0, lbl_8026CD60 + 0x12D, p, lbl_80369754, lbl_80369764);
     b = 0;
     t = (s32)lbl_802F0308;

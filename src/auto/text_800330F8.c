@@ -3963,7 +3963,7 @@ s32 fn_8003B938(u8 arg0) {
 
 extern s32 gGameState;
 void fn_8003B9AC(u32 arg0) {
-    void fn_8000E0E4(void *);
+    void Msg_Expand(void *);
     extern u16 lbl_8026A458[];
     u8 *s;
 
@@ -3997,7 +3997,7 @@ void fn_8003B9AC(u32 arg0) {
         s = (u8 *)lbl_8026A458 + 0x43;
         break;
     }
-    fn_8000E0E4(s);
+    Msg_Expand(s);
 }
 
 extern u16 lbl_8026A458[];

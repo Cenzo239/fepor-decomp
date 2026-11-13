@@ -814,7 +814,7 @@ void fn_801FE488(void *arg0) {
 }
 #pragma opt_common_subs reset
 void fn_801FE520(void *arg0) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     s32 fn_80010B78(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     extern f32 lbl_8036BB58;
@@ -823,7 +823,7 @@ void fn_801FE520(void *arg0) {
     s16 th;
 
     self = arg0;
-    tw = (s16)fn_80010B78(fn_8000E0E4(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BB58);
+    tw = (s16)fn_80010B78(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BB58);
     th = (s16)fn_800102BC(-1, lbl_8036BB58);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);
@@ -1690,7 +1690,7 @@ void fn_802006B8(void *arg0) {
 }
 #pragma opt_common_subs reset
 void fn_80200750(void *arg0) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     s32 fn_80010B78(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     extern f32 lbl_8036BBD8;
@@ -1699,7 +1699,7 @@ void fn_80200750(void *arg0) {
     s16 th;
 
     self = arg0;
-    tw = (s16)fn_80010B78(fn_8000E0E4(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BBD8);
+    tw = (s16)fn_80010B78(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BBD8);
     th = (s16)fn_800102BC(-1, lbl_8036BBD8);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);
@@ -1781,7 +1781,7 @@ void fn_802007E0(void *arg0) {
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
     
-    fn_8001003C(0x10, 0x20, 1, 1, 0, (void *) fn_8000E0E4(M2C_FIELD(arg0, s32 *, 0x34)), lbl_8036BBD8, lbl_8036BBE0);
+    fn_8001003C(0x10, 0x20, 1, 1, 0, (void *) Msg_Expand(M2C_FIELD(arg0, s32 *, 0x34)), lbl_8036BBD8, lbl_8036BBE0);
     
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036BBEC);

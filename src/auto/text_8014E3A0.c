@@ -75,7 +75,7 @@ s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
     extern u32 gMsgDebugCount;
     extern s32 lbl_80367B84;
     extern u32 gMsgDebugPtrs;
-    char *fn_8000E0E4(void *);
+    char *Msg_Expand(void *);
     s32 index;
     char *str;
     u8 flag;
@@ -89,7 +89,7 @@ s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
     if (*(void **)(gMsgDebugPtrs + index * 4) == NULL) {
         flag = 0;
     } else {
-        str = fn_8000E0E4(*(void **)(gMsgDebugPtrs + index * 4));
+        str = Msg_Expand(*(void **)(gMsgDebugPtrs + index * 4));
         if (str[0] != '$') {
             flag = 0;
         } else if (str[1] != 'R') {
@@ -118,7 +118,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     void fn_8000727C(f32);
     void fn_80007290(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     extern s32 gMsgDebugPage;
     extern u32 gMsgDebugCount;
     extern u8 *gMsgDebugKinds;
@@ -190,7 +190,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
         u8 *lim;
         u8 var_r5;
         dst = (char *)lbl_80330C80;
-        src = (u8 *)fn_8000E0E4(str);
+        src = (u8 *)Msg_Expand(str);
         lim = lbl_80330C80 + 0x46;
         goto loop_cmp;
     loop_body:
@@ -1931,7 +1931,7 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
 void fn_80154370(s16 arg0, s16 arg1) {
     void fn_8015FC7C(void);
     s32 fn_80009E44(f32 *);
-    s32 fn_8000E0E4(void *);
+    s32 Msg_Expand(void *);
     s32 fn_80010B78(s32, s32, f32);
     s32 fn_80010770(s32, s32, f32);
     void Prim2D_Begin(void);
@@ -1977,7 +1977,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     temp_r24 = arg1;
     fn_8015FC7C();
     temp_r22 = fn_80009E44(&sp10);
-    temp_r21 = fn_8000E0E4(lbl_802774F0 + 0x1DA);
+    temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
     temp_r30 = fn_80010B78(temp_r21, -1, lbl_8036A874);
     temp_r31 = fn_80010770(temp_r21, -1, lbl_8036A874);
     Prim2D_Begin();
@@ -2088,7 +2088,7 @@ void fn_801547E4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
-    s32 fn_8000E0E4(void *);
+    s32 Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, s32, ...);
     void fn_8007CF98(s32, f32, f32, f32);
     void fn_80009E64(s32, f32);
@@ -2141,9 +2141,9 @@ void fn_801547E4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     Prim2D_PrepareTex();
     temp_r27 = (s16)arg0;
     temp_r24 = (s16)arg1;
-    str = fn_8000E0E4(lbl_802774F0 + 0x1E8);
+    str = Msg_Expand(lbl_802774F0 + 0x1E8);
     fn_8001003C((s16)(temp_r27 + 0xA), (s16)(temp_r24 + 0xE), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
-    str = fn_8000E0E4(lbl_802774F0 + 0x1EF);
+    str = Msg_Expand(lbl_802774F0 + 0x1EF);
     fn_8001003C((s16)(temp_r27 + 0x8C), (s16)(temp_r24 + 0x2F), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
     fn_8007CF98(arg4, (f32)(temp_r27 + 8), (f32)(temp_r24 + 0x2E), farg0);
     fn_80009E64(saved, sp10);
@@ -2669,7 +2669,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_8000E0E4(void *);
+    s32 Msg_Expand(void *);
     void fn_8001019C(s16, s16, s32, s32, ...);
     s32 fn_800102BC(s32, f32);
     void fn_8006ECCC(s32, void *, s32);
@@ -2725,7 +2725,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     Prim2D_PrepareTex();
     x = (s16)(rect[3] - rect[1]);
     x = (s16)((x - fn_800102BC(-1, lbl_8036A874)) >> 1);
-    str = fn_8000E0E4(lbl_802774F0 + 0x1f6);
+    str = Msg_Expand(lbl_802774F0 + 0x1f6);
     x = y + x;
     fn_8001019C((s16)(flags + 0x40), (s16)x, 0xF, str);
     Prim2D_AddPrim(6);

@@ -33,7 +33,7 @@ void *fn_80016F78(void *arg0) {
 }
 
 void *fn_80017010(u8 *arg0) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     extern u8 lbl_80268128[];
     u8 *temp_r3;
     void *var_r31 = lbl_80268128 + 0x1D;
@@ -95,7 +95,7 @@ void *fn_80017010(u8 *arg0) {
         break;
     }
     if (var_r31 != NULL) {
-        var_r31 = fn_8000E0E4(var_r31);
+        var_r31 = Msg_Expand(var_r31);
     }
     return var_r31;
 }
@@ -275,7 +275,7 @@ void fn_80017570(s32 arg0)
             break;
     }
     
-    fn_8000E0E4();
+    Msg_Expand();
 }
 
 s32 fn_8001772C(void) {

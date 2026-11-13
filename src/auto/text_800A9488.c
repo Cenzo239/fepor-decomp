@@ -614,7 +614,7 @@ void fn_800AA4F8(void *arg0) {
     void fn_800227F8(void *, s32);
     void fn_80022748(void *, s32);
     void fn_800213D0(void *, u8, u8, u8, s32, s32);
-    void fn_8000E0E4(void *);
+    void Msg_Expand(void *);
     void fn_80091A1C(void);
     void fn_800283C8(void *, void *);
     void fn_800AACDC(void *);
@@ -632,12 +632,12 @@ void fn_800AA4F8(void *arg0) {
         fn_800227F8(gBattleMap, *(s32 *)((u8 *)arg0 + 0x18C));
         fn_80022748(gBattleMap, *(s32 *)((u8 *)arg0 + 0x190));
         fn_800213D0(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
-        fn_8000E0E4(lbl_8026E770 + 0xCE);
+        Msg_Expand(lbl_8026E770 + 0xCE);
         fn_80091A1C();
     } else {
         fn_800283C8(gUiContext, arg0);
         fn_800AACDC(arg0);
-        fn_8000E0E4(lbl_8026E770 + 0xD9);
+        Msg_Expand(lbl_8026E770 + 0xD9);
         fn_80091A1C();
     }
     fn_8004A224();
@@ -1451,7 +1451,7 @@ void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
-    s32 fn_8000E0E4(void *);
+    s32 Msg_Expand(void *);
     u64 *fn_8001CB64(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_80166AE8(s16, s32, s32, void *, void *);
@@ -1490,7 +1490,7 @@ void fn_800ABE74(void *arg0) {
         if ((u8)var_r31 != 0) {
             var_r31 = ((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4;
             var_r29 = ((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7;
-            str = fn_8000E0E4(lbl_8026E858 + 0xE7);
+            str = Msg_Expand(lbl_8026E858 + 0xE7);
             entry = lbl_80312ACC + var_r29;
             fn_80166AE8(*(s16 *)((u8 *)entry + var_r31),
                         *(s16 *)((u8 *)entry + var_r31 + 2) + 0x28,
@@ -1680,7 +1680,7 @@ void fn_800AC5DC(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
     u64 *fn_8001CB64(void *);
-    s32 fn_8000E0E4(void *);
+    s32 Msg_Expand(void *);
     void fn_80166AE8(s16, s32, s32, void *, void *);
     void fn_8000C070(void *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -1719,7 +1719,7 @@ void fn_800AC5DC(void *arg0) {
             u8 *entry;
             pressed = (s8)*(u8 *)((char *)self + 0x3D) << 4;
             off_c = (s8)*(u8 *)((char *)self + 0x3C) << 7;
-            str = fn_8000E0E4(lbl_8026E858 + 0xE7);
+            str = Msg_Expand(lbl_8026E858 + 0xE7);
             entry = lbl_80312ACC + off_c;
             fn_80166AE8(*(s16 *)(entry + pressed),
                         *(s16 *)(entry + pressed + 2) + 0x28,

@@ -203,7 +203,7 @@ s32 fn_80105710(void *arg0) {
 
 void *fn_801057BC(void *arg0) {
     extern u8 lbl_802738A8[];
-    void *fn_8000E0E4(u32);
+    void *Msg_Expand(u32);
     u8 *base;
     void *result;
     u32 value;
@@ -213,7 +213,7 @@ void *fn_801057BC(void *arg0) {
     if (value == 0) {
         return base;
     }
-    result = fn_8000E0E4(value);
+    result = Msg_Expand(value);
     if (result != NULL) {
         return result;
     }
@@ -222,7 +222,7 @@ void *fn_801057BC(void *arg0) {
 
 void *fn_80105814(void *arg0) {
     extern u8 lbl_802738A8[];
-    void *fn_8000E0E4(u32);
+    void *Msg_Expand(u32);
     u8 *base;
     void *result;
     u32 value;
@@ -232,7 +232,7 @@ void *fn_80105814(void *arg0) {
     if (value == 0) {
         return base;
     }
-    result = fn_8000E0E4(value);
+    result = Msg_Expand(value);
     if (result != NULL) {
         return result;
     }
@@ -241,7 +241,7 @@ void *fn_80105814(void *arg0) {
 
 void *fn_8010586C(void *arg0) {
     extern u8 lbl_802738A8[];
-    void *fn_8000E0E4(u32);
+    void *Msg_Expand(u32);
     u8 *base;
     void *result;
     u32 value;
@@ -251,7 +251,7 @@ void *fn_8010586C(void *arg0) {
     if (value == 0) {
         return base;
     }
-    result = fn_8000E0E4(value);
+    result = Msg_Expand(value);
     if (result != NULL) {
         return result;
     }
@@ -2740,7 +2740,7 @@ void fn_8010A4D4(void *arg0) {
 }
 
 void fn_8010A53C(void *arg0, s32 arg1) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     s32 fn_80010B78(void *, s32, f32);
     void Prim2D_Begin(void);
     void fn_8000A174(s32, s32);
@@ -2768,7 +2768,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
 
     temp_r29 = arg0;
     var_f31 = lbl_8036A130;
-    temp_r31 = fn_8000E0E4(*(void **)((u8 *)arg0 + 8));
+    temp_r31 = Msg_Expand(*(void **)((u8 *)arg0 + 8));
     temp_r30 = arg1;
     temp_r0 = *(s8 *)((u8 *)temp_r29 + 0x14);
     switch (temp_r0) {

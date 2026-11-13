@@ -2120,7 +2120,7 @@ u16 UnitRef_GetValue(void* arg0) {
 void *fn_8001D2C8(void *arg0) {
     u8 *fn_800C2E3C(u8 *, s32);
     void *fn_8000D354(void *);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     extern u8 lbl_803206EC[];
     u8 flag;
     void *inner;
@@ -2138,7 +2138,7 @@ void *fn_8001D2C8(void *arg0) {
     if (flag == 0) {
         inner = *(void **)arg0;
         if (fn_8000D354(*(void **)((u8 *)inner + 4)) != NULL) {
-            return fn_8000E0E4(*(void **)((u8 *)inner + 4));
+            return Msg_Expand(*(void **)((u8 *)inner + 4));
         }
         return *(void **)inner;
     }
@@ -2718,7 +2718,7 @@ s32 fn_8001EB44(const char *arg0)
 }
 
 void *fn_8001ED1C(void *arg0) {
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     extern u8 lbl_80268820[];
     void *v;
 
@@ -2726,13 +2726,13 @@ void *fn_8001ED1C(void *arg0) {
     if (v == NULL) {
         return lbl_80268820 + 0x4BE;
     }
-    return fn_8000E0E4(v);
+    return Msg_Expand(v);
 }
 
 s32 fn_8001ED58(void *arg0) {
-    s32 fn_8000E0E4(s32);
+    s32 Msg_Expand(s32);
     if (fn_8000D354(M2C_FIELD(arg0, s32 *, 4)) != 0U) {
-        return fn_8000E0E4(M2C_FIELD(arg0, s32 *, 4));
+        return Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
     }
     return M2C_FIELD(arg0, s32 *, 0);
 }

@@ -615,7 +615,7 @@ void MsgDebug_Init(void) {
     void *fn_8000D1B4(s32);
     u8 Id_GetKind(void);
     s32 fn_800C42AC(s32);
-    char *fn_8000E0E4(void *);
+    char *Msg_Expand(void *);
     s32 strlen(char *);
     extern u8 lbl_80277238[];
     extern s32 gMsgDebugCount;
@@ -674,7 +674,7 @@ void MsgDebug_Init(void) {
             if (msg == 0) {
                 isRuby = 0;
             } else {
-                text = fn_8000E0E4((void *)msg);
+                text = Msg_Expand((void *)msg);
                 if ((s32)text[0] != 0x24) {
                     isRuby = 0;
                 } else if ((s32)text[1] != 0x52) {
@@ -691,7 +691,7 @@ void MsgDebug_Init(void) {
                 if (msg == 0) {
                     isRuby = 0;
                 } else {
-                    text = fn_8000E0E4((void *)msg);
+                    text = Msg_Expand((void *)msg);
                     scan = (char *)strlen(text);
                     scan = (char *)((s32)scan - 5);
                     scan = (char *)((s32)text + (s32)scan);
@@ -708,7 +708,7 @@ void MsgDebug_Init(void) {
                     if (msg == 0) {
                         isRuby = 0;
                     } else {
-                        scan = fn_8000E0E4((void *)msg);
+                        scan = Msg_Expand((void *)msg);
                         goto ub_scan;
                         do {
                             if ((s8)ch == 0x24 && (s32)scan[1] == 0x55 && (s32)scan[2] == 0x42 && (s32)scan[3] == 0x24 && (s32)scan[4] == 0x48) {

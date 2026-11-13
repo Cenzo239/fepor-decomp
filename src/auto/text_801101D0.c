@@ -2967,13 +2967,13 @@ void fn_801181F8(s32 arg0) {
 }
 
 void fn_8011824C(s32 arg0) {
-    void fn_8000E0E4(void *);
+    void Msg_Expand(void *);
     void fn_80024398(void *, s32, s32);
     void *fn_8013BFFC(void);
     extern char lbl_80274508[];
     void *tmp;
 
-    fn_8000E0E4(lbl_80274508 + 0x162);
+    Msg_Expand(lbl_80274508 + 0x162);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
     fn_80024398(tmp, arg0, 0);
@@ -2996,7 +2996,7 @@ void fn_8011829C(void *arg0) {
 }
 
 void fn_80118308(s32 arg0) {
-    void fn_8000E0E4(void *);
+    void Msg_Expand(void *);
     void fn_80018AF4(void);
     void fn_80024398(void *, s32, s32);
     void fn_8011A2FC(void);
@@ -3009,7 +3009,7 @@ void fn_80118308(s32 arg0) {
 
     fn_8011A2FC();
     fn_80018AF4();
-    fn_8000E0E4(lbl_80274508 + 0x17C);
+    Msg_Expand(lbl_80274508 + 0x17C);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
     fn_80024398(tmp, arg0, 0);
@@ -4029,13 +4029,13 @@ void fn_8011AB98(void) {
 }
 
 void fn_8011ABC0(s32 arg0) {
-    void fn_8000E0E4(void *);
+    void Msg_Expand(void *);
     void fn_80024398(void *, s32, s32);
     void *fn_8013BFFC(void);
     extern char lbl_80274508[];
     void *tmp;
 
-    fn_8000E0E4(lbl_80274508 + 0x17c);
+    Msg_Expand(lbl_80274508 + 0x17c);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
     fn_80024398(tmp, arg0, 0);
@@ -4577,7 +4577,7 @@ extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
 #pragma cplusplus reset
 void fn_8011B978(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x357);
+    Msg_Expand((u8 *)lbl_80274508 + 0x357);
 }
 
 void *fn_8011B9A4(void) {
@@ -4603,7 +4603,7 @@ s32 fn_8011B9C8(s32 unused, u8 *arg1) {
 
 void fn_8011BAF8(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x385);
+    Msg_Expand((u8 *)lbl_80274508 + 0x385);
 }
 
 void *fn_8011BB24(void) {
@@ -4675,9 +4675,9 @@ void fn_8011BBA4(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
 
 void fn_8011BD08(void) {
     extern u8 lbl_80274508[];
-    extern void fn_8000E0E4(void *);
+    extern void Msg_Expand(void *);
 
-    fn_8000E0E4(lbl_80274508 + 0x3BE);
+    Msg_Expand(lbl_80274508 + 0x3BE);
 }
 
 void *fn_8011BD34(void) {
@@ -4698,7 +4698,7 @@ s32 fn_8011BD58(void) {
 
 void fn_8011BD70(void) {
     extern u8 lbl_80274508[];
-    fn_8000E0E4(&lbl_80274508[0x3CF]);
+    Msg_Expand(&lbl_80274508[0x3CF]);
 }
 
 void *fn_8011BD9C(void) {
@@ -4722,7 +4722,7 @@ s32 fn_8011BDC0(void) {
 
 void fn_8011BDD8(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x3E1);
+    Msg_Expand((u8 *)lbl_80274508 + 0x3E1);
 }
 
 void *fn_8011BE04(void) {
@@ -4748,7 +4748,7 @@ s32 fn_8011BE60(void) {
 
 void fn_8011BE78(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x402);
+    Msg_Expand((u8 *)lbl_80274508 + 0x402);
 }
 
 void *fn_8011BEA4(void) {
@@ -4771,7 +4771,7 @@ s32 fn_8011BEC8(void) {
 
 void fn_8011BEE0(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x41D);
+    Msg_Expand((u8 *)lbl_80274508 + 0x41D);
 }
 
 void *fn_8011BF0C(void) {
@@ -4794,7 +4794,7 @@ s32 fn_8011BF30(void) {
 
 void fn_8011BF48(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x435);
+    Msg_Expand((u8 *)lbl_80274508 + 0x435);
 }
 
 void *fn_8011BF74(void) {
@@ -4817,7 +4817,7 @@ s32 fn_8011BF98(void) {
 
 void fn_8011BFB0(void) {
     extern u16 lbl_80274508[];
-    fn_8000E0E4((u8 *)lbl_80274508 + 0x44F);
+    Msg_Expand((u8 *)lbl_80274508 + 0x44F);
 }
 
 void *fn_8011BFDC(void) {
@@ -5491,7 +5491,7 @@ void fn_8011D79C(s32 arg0) {
 void fn_8011D87C(void *arg0)
 {
     s32 fn_800056CC(const char *, ...);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_8023440C(void *, const void *, s32);
     void *fn_8000C0C0(void *);
     void fn_8000C070(void *, u8);
@@ -5502,7 +5502,7 @@ void fn_8011D87C(void *arg0)
 
     fn_800056CC((char *)TalkUi_str + 0x35, arg0);
 
-    result = fn_8000E0E4(arg0);
+    result = Msg_Expand(arg0);
 
     fn_8023440C(lbl_8032FE04, arg0, 0x1E);
 

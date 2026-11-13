@@ -4804,7 +4804,7 @@ s32 fn_800B8EBC(void) {
 }
 
 s32 fn_800B8ED0(u32 arg0) {
-    char *fn_8000E0E4(void);
+    char *Msg_Expand(void);
     char *strchr(char *, s32);
     void *fn_8000BCA4(void *);
     void fn_80070018(void *, u32, s32, s32);
@@ -4818,7 +4818,7 @@ s32 fn_800B8ED0(u32 arg0) {
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    if (strchr(fn_8000E0E4(), 0xA) == NULL) {
+    if (strchr(Msg_Expand(), 0xA) == NULL) {
         fn_80070018(fn_8000BCA4(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     } else {
         fn_8006FBE4(fn_8000BCA4(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);

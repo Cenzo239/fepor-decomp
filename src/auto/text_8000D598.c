@@ -508,7 +508,7 @@ copy_body3:
     return resolved;
 }
 
-u8 *fn_8000E0E4(u8 *arg0) {
+u8 *Msg_Expand(u8 *arg0) {
     u8 *fn_8000D354();
     M2C_UNK strcpy(u8 *, void *);
     extern u8 lbl_802AEB10;

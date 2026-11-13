@@ -87,7 +87,7 @@ void fn_8007278C(void) {
         fn_80091A1C();
         return;
     }
-    fn_8000E0E4(lbl_8026BC88 + 0x1A5);
+    Msg_Expand(lbl_8026BC88 + 0x1A5);
     fn_80091A1C();
 }
 
@@ -227,12 +227,12 @@ void fn_80072AD4(void *arg0) {
 
 void fn_80072B04(void *arg0) {
     void fn_801DDBA8(void *, u8 *, s32, s32, s32);
-    s32 fn_8000E0E4(u8 *);
+    s32 Msg_Expand(u8 *);
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
     fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x11A, 0, 0, 0);
     M2C_FIELD(arg0, s16 *, 0x28) = 0x258;
-    M2C_FIELD(arg0, s32 *, 0x34) = fn_8000E0E4(lbl_8026BE40 + 0x127);
+    M2C_FIELD(arg0, s32 *, 0x34) = Msg_Expand(lbl_8026BE40 + 0x127);
 }
 
 void fn_80072B6C(void *arg0)
@@ -240,7 +240,7 @@ void fn_80072B6C(void *arg0)
     void fn_801E2594(void *);
     s32 fn_800EB774(void);
     void fn_801DDBA8(void *, u8 *, s32, s32, s32);
-    s32 fn_8000E0E4(u8 *);
+    s32 Msg_Expand(u8 *);
     void fn_8000C070(void *, s32);
     extern u8 lbl_803682F0;
     extern u8 lbl_8026BE40[];
@@ -252,12 +252,12 @@ void fn_80072B6C(void *arg0)
     switch (r) {
     case -3:
         fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x12D, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = fn_8000E0E4(lbl_8026BE40 + 0x13B);
+        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
         fn_8000C070(arg0, 0xA);
         return;
     default:
         fn_801DDBA8(lbl_80311D50, lbl_8026BE40 + 0x141, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = fn_8000E0E4(lbl_8026BE40 + 0x13B);
+        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
         fn_8000C070(arg0, 0xA);
         return;
     case 0:
@@ -343,7 +343,7 @@ void fn_80072ED4(void *arg0) {
 
 void fn_80072F28(void *arg0) {
     void fn_8000C070(void *, s32);
-    s32 fn_8000E0E4(u8 *);
+    s32 Msg_Expand(u8 *);
     s32 fn_800EB74C(void);
     s32 fn_8021A8C8(s32, s32, s32);
     extern u8 lbl_8026BE40[];
@@ -353,7 +353,7 @@ void fn_80072F28(void *arg0) {
     s32 prev;
     s32 var_r3;
 
-    *(s32 *)((u8 *)arg0 + 0x34) = fn_8000E0E4(lbl_8026BE40 + 0x13B);
+    *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {

@@ -35,7 +35,7 @@ s32 fn_80127EC0(void) {
 
 void fn_80127EF4(void) {
     extern u16 gScriptCmdNames[];
-    fn_8000E0E4(&gScriptCmdNames[0x580 / sizeof(u16)]);
+    Msg_Expand(&gScriptCmdNames[0x580 / sizeof(u16)]);
 }
 
 #pragma cplusplus on
@@ -129,12 +129,12 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
 
 void fn_80128108(void) {
     extern u16 gScriptCmdNames[];
-    fn_8000E0E4((u8 *)gScriptCmdNames + 0x5C4);
+    Msg_Expand((u8 *)gScriptCmdNames + 0x5C4);
 }
 
 void fn_80128134(void) {
     extern u16 gScriptCmdNames[];
-    fn_8000E0E4((u8 *)gScriptCmdNames + 0x5CD);
+    Msg_Expand((u8 *)gScriptCmdNames + 0x5CD);
 }
 
 void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {

@@ -405,7 +405,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000E0E4(void *);
+    void *Msg_Expand(void *);
     void fn_8001019C(s16, s32, s32, ...);
     s32 fn_80010B78(void *, s32, f32);
     void *fn_80019DBC(s32);
@@ -507,10 +507,10 @@ case_2b:
             *(u16 *)((u8 *)self + 0x44) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0xFB) + 0xE);
             *(u16 *)((u8 *)self + 0x46) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0x108) + 0xE);
             *(u16 *)((u8 *)self + 0x48) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0x117) + 0xE);
-            *(void **)((u8 *)self + 0x4C) = fn_8000E0E4(lbl_8026D404 + 0x122);
-            *(void **)((u8 *)self + 0x50) = fn_8000E0E4(lbl_8026D404 + 0x12E);
-            *(void **)((u8 *)self + 0x54) = fn_8000E0E4(lbl_8026D404 + 0x13A);
-            *(void **)((u8 *)self + 0x58) = fn_8000E0E4(lbl_8026D404 + 0x146);
+            *(void **)((u8 *)self + 0x4C) = Msg_Expand(lbl_8026D404 + 0x122);
+            *(void **)((u8 *)self + 0x50) = Msg_Expand(lbl_8026D404 + 0x12E);
+            *(void **)((u8 *)self + 0x54) = Msg_Expand(lbl_8026D404 + 0x13A);
+            *(void **)((u8 *)self + 0x58) = Msg_Expand(lbl_8026D404 + 0x146);
         }
         walk = self;
         for (i = 0; i < 4; i++) {
