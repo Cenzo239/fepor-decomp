@@ -92,7 +92,7 @@ extern s32 gFallingParticleVelY;
 extern s32 gFallingParticleVelXCenter;
 extern s32 gFallingParticleVelYCenter;
 extern s32 gFallingParticleVelXRange;
-extern s32 lbl_8036842C;
+extern s32 gFallingParticleVelYRange;
 extern u8 lbl_80368430;
 extern u8 lbl_80368431;
 extern f32 gFloatZero;

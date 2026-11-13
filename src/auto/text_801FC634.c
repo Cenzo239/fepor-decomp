@@ -532,7 +532,7 @@ void FallingParticle_Spawn(void *arg0) {
     extern s32 gFallingParticleVelXCenter;
     extern s32 gFallingParticleVelYCenter;
     extern s32 gFallingParticleVelXRange;
-    extern s32 lbl_8036842C;
+    extern s32 gFallingParticleVelYRange;
     extern u8 lbl_80368430;
     extern u8 lbl_80368431;
     extern f32 gFloatZero;
@@ -553,7 +553,7 @@ void FallingParticle_Spawn(void *arg0) {
         gFallingParticleVelXRange = 0x4000;
         gFallingParticleVelYCenter = 0x14000;
         f0 = gFloatZero;
-        lbl_8036842C = 0xC000;
+        gFallingParticleVelYRange = 0xC000;
         lbl_80368430 = 0x40;
         lbl_80368431 = 0xC0;
         *(f32 *)((u8 *)temp_r23 + 0x30) = f1;
@@ -576,7 +576,7 @@ void FallingParticle_Spawn(void *arg0) {
                 *(s32 *)((u8 *)var_r24 + 0x38) -= 0xC80000;
                 *(s16 *)((u8 *)var_r24 + 0x30) = (s16)((Rand_Next() % 300U) + 0x12C);
                 if (var_r25 == 0) {
-                    temp_r22 = lbl_8036842C;
+                    temp_r22 = gFallingParticleVelYRange;
                     temp = (gFallingParticleVelYCenter - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
                     gFallingParticleVelY = temp;
                     if (temp <= 0) {
@@ -591,7 +591,7 @@ void FallingParticle_Spawn(void *arg0) {
                 *(s32 *)((u8 *)var_r24 + 0x3C) = (gFallingParticleVelXCenter - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
                 var_r25 += 1;
                 *(s32 *)((u8 *)var_r24 + 0x40) = gFallingParticleVelY;
-                r0 = lbl_8036842C;
+                r0 = gFallingParticleVelYRange;
                 r5 = gFallingParticleVelYCenter;
                 r3 = *(s32 *)((u8 *)var_r24 + 0x40);
                 r4 = r5 - r0;
@@ -2358,7 +2358,7 @@ extern s32 gFallingParticleVelY;
 extern s32 gFallingParticleVelXCenter;
 extern s32 gFallingParticleVelYCenter;
 extern s32 gFallingParticleVelXRange;
-extern s32 lbl_8036842C;
+extern s32 gFallingParticleVelYRange;
 extern u8 lbl_80368430;
 extern u8 lbl_80368431;
 extern f32 gFloatZero;
