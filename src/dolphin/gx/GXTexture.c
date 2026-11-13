@@ -1006,7 +1006,7 @@ u16* fn_80223B4C(s32 arg0) {
     return __GXData + 0x388 + (arg0 * 0x10);
 }
 
-void fn_80223BB4(s32 arg0, u32 *arg1) {
+void GXSetTevColor(s32 arg0, u32 *arg1) {
     s32 r6;
     u32 r8;
     
