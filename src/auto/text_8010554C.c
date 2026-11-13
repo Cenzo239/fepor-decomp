@@ -609,7 +609,8 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
 extern void Map_RefreshUnitMap(void* arg0);
 extern s32 fn_80183AB4(s32 arg0, s8 arg1, s8 arg2, void* arg3);
 extern s32 MoveAnim_BindPath(void* arg0, u16 arg1, void* arg2);
-void Dispos_StartMoveAnims(void *arg0) {
+/* Bind move or warp anims for each dispos entry, then refresh the unit map. */
+void Dispos_StartMoveAnims(void *proc) {
     void fn_80183AB4(void *, s32, s32, s32, void *);
     void MoveAnim_BindPath(void *, void *, u16, void *);
     void Map_RefreshUnitMap(void *);
@@ -618,17 +619,17 @@ void Dispos_StartMoveAnims(void *arg0) {
     void *entry;
     s32 count;
     void *self;
-    s32 state;
-    void *p;
-    u32 t;
+    s32 mode;
+    void *unit;
+    u32 flagByte;
 
-    self = arg0;
-    state = *(u8 *)((u8 *)arg0 + 0x60);
-    t = *(u8 *)((u8 *)arg0 + 0x64);
+    self = proc;
+    mode = *(u8 *)((u8 *)proc + 0x60);
+    flagByte = *(u8 *)((u8 *)proc + 0x64);
     entry = *(void **)((u8 *)self + 0x68);
-    flags = t | 0x80;
+    flags = flagByte | 0x80;
 
-    switch (state) {
+    switch (mode) {
     case 0:
     case 1:
         flags |= 0x10;
@@ -637,12 +638,12 @@ void Dispos_StartMoveAnims(void *arg0) {
 
     count = 0;
     while (count < *(u8 *)((u8 *)self + 0x63)) {
-        p = *(void **)((u8 *)entry + 4);
-        if (p != NULL) {
+        unit = *(void **)((u8 *)entry + 4);
+        if (unit != NULL) {
             if (*(u8 *)((u8 *)self + 0x60) == 3) {
-                fn_80183AB4(p, 1, *(s8 *)((u8 *)entry + 0xA), *(s8 *)((u8 *)entry + 0xB), self);
+                fn_80183AB4(unit, 1, *(s8 *)((u8 *)entry + 0xA), *(s8 *)((u8 *)entry + 0xB), self);
             } else {
-                MoveAnim_BindPath(p, (u8 *)entry + 0xC, flags, self);
+                MoveAnim_BindPath(unit, (u8 *)entry + 0xC, flags, self);
             }
         }
         count++;
