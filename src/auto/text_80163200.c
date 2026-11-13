@@ -23,7 +23,7 @@ M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)
 }
 #pragma opt_common_subs on
 extern u32 gUiContext[];
-extern u16 lbl_80278080[];
+extern u16 gUiMsgStrings[];
 extern u16 lbl_80294604[];
 
 typedef struct Unk8016F694_Inner {
@@ -1769,11 +1769,11 @@ void fn_801669B0(void* arg0, s32 arg1) {
     
     // Load various data from globals
     temp_r3 = gUiContext[arg1];
-    temp_r4 = *(u32*)&lbl_80278080[temp_r3 * 2 + 0x10];
+    temp_r4 = *(u32*)&gUiMsgStrings[temp_r3 * 2 + 0x10];
     temp_r5 = *(u32*)&lbl_80294604[temp_r3 * 2 + 0x10];
     temp_r6 = *(u16*)&lbl_80330708[arg1 * 2];
     temp_r7 = *((u16 *)&lbl_803680E8 + arg1 * 2);
-    temp_r8 = *(u16*)&lbl_80278080[temp_r3 * 2 + 0x12];
+    temp_r8 = *(u16*)&gUiMsgStrings[temp_r3 * 2 + 0x12];
     
     // Store values to arg0
     *(u32*)arg0 = temp_r4;
@@ -6141,8 +6141,8 @@ void fn_8016F404(void *arg0) {
 
     fn_8000A408(*(s32 *)((u8 *)arg0 + 0x5C));
     fn_8013FED0(arg0);
-    temp_r31 = (u8 *)lbl_80278080 + 0x14A;
-    sprintf(temp_r31, (u8 *)lbl_80278080 + 0x15A, lbl_80330708[0x10]);
+    temp_r31 = (u8 *)gUiMsgStrings + 0x14A;
+    sprintf(temp_r31, (u8 *)gUiMsgStrings + 0x15A, lbl_80330708[0x10]);
     temp_r0 = fn_8000D354(temp_r31);
     fn_80190C24(arg0, temp_r0);
 }
@@ -6178,7 +6178,7 @@ void fn_8016F55C(void *arg0) {
     void sprintf(void *, void *, ...);
     s32 fn_8000D354(void *);
     void fn_80190D9C(void *, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 lbl_80330708[];
     s32 base;
     void *fmt;
@@ -6186,7 +6186,7 @@ void fn_8016F55C(void *arg0) {
 
     fn_8000A408(*(void **)((u8 *)arg0 + 0x5C));
     fn_8013FED0(arg0);
-    base = (s32)lbl_80278080;
+    base = (s32)gUiMsgStrings;
     fmt = (void *)(base + 0x16C);
     sprintf(fmt, (void *)(base + 0x17C), lbl_80330708[0x10]);
     tmp = fn_8000D354(fmt);
@@ -6269,7 +6269,7 @@ void fn_8016F790(void *arg0) {
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(u32, s32);
     typedef struct { u8 hi : 1; u8 lo : 7; } Bit7;
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern u8 lbl_80294AE8[];
     void *temp_r28;
@@ -6304,7 +6304,7 @@ void fn_8016F790(void *arg0) {
     }
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x18E));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x18E));
     }
 }
 
@@ -6330,7 +6330,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void fn_80166DD0(void *, u32, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -6401,15 +6401,15 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
                 obj = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
-                *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x1A7;
+                *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x1A7;
             } else {
-                obj=fn_8013BE3C((u8 *)lbl_80278080+0x1B4);
+                obj=fn_8013BE3C((u8 *)gUiMsgStrings+0x1B4);
  *(u8 *)((u8 *)obj+0x24)=1;
  fn_80024398(obj,self,0);
  obj=fn_8013FF94(self,-0x1000,0);
- if(obj)fn_801658DC(obj,(u8 *)lbl_80278080+0x1CA);
+ if(obj)fn_801658DC(obj,(u8 *)gUiMsgStrings+0x1CA);
  fn_8000C188(self);
- fn_801475FC((u8 *)lbl_80278080+0x1DD,0x64);
+ fn_801475FC((u8 *)gUiMsgStrings+0x1DD,0x64);
             }
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0 && var_r30 != 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
@@ -6423,7 +6423,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
  obj=*(void **)((u8 *)self+0x44);
  if(obj&&*(void **)((u8 *)obj+0x3C))fn_80138808(obj,*(void **)((u8 *)obj+0x3C));
  fn_8000C070(self,0x2C);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -6435,7 +6435,7 @@ extern "C" void fn_8016FD08(void *arg0) {
     void fn_801658DC(u32, s32);
     void fn_8016FDA4(void);
     extern u32 gUiContext[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     void *obj;
     u32 ret;
     s32 val;
@@ -6449,7 +6449,7 @@ extern "C" void fn_8016FD08(void *arg0) {
     fn_8013FF00(arg0, obj);
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x18E));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x18E));
     }
 }
 
@@ -6490,7 +6490,7 @@ void fn_8016FE60(void *arg0) {
     void fn_801658DC(s32, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     s32 saved;
@@ -6507,7 +6507,7 @@ void fn_8016FE60(void *arg0) {
     fn_8013FF00(arg0, M2C_FIELD(arg0, s32 *, 0x40));
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x1FD));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x1FD));
     }
     p = M2C_FIELD(gUiContext, void **, 0);
     if (p != NULL) {
@@ -6578,7 +6578,7 @@ extern "C" void fn_80170058(void *arg0) {
     void *fn_8013FF94(void *, s32, s32);
     void fn_8014004C(void *, void *);
     void fn_80109020(void *);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
 
     struct RefObj {
         virtual void destroy(s32);
@@ -6620,7 +6620,7 @@ extern "C" void fn_80170058(void *arg0) {
     }
     ret = fn_8013FF94(arg0, 0x109, 0);
     fn_8014004C(arg0, ret);
-    fn_80109020((u8 *)lbl_80278080 + 0x210);
+    fn_80109020((u8 *)gUiMsgStrings + 0x210);
 }
 
 extern "C" void fn_80170160(void *arg0) {
@@ -6670,7 +6670,7 @@ extern "C" void fn_801703FC(void *arg0) {
     void fn_80166DD0(void *, u32, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -6741,7 +6741,7 @@ extern "C" void fn_801703FC(void *arg0) {
                 obj = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
-                *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x236;
+                *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x236;
             } else {
                 fn_8000C188(self);
             }
@@ -6753,7 +6753,7 @@ extern "C" void fn_801703FC(void *arg0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x27);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -6766,13 +6766,13 @@ void fn_8017073C(void *arg0) {
     M2C_UNK fn_8013FF00(void *, s32);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(s32, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     u32 ret;
 
     fn_8013FF00(arg0, M2C_FIELD(arg0, s32 *, 0x4C));
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x248));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x248));
     }
 }
 
@@ -6838,7 +6838,7 @@ extern "C" void fn_80170894(void *arg0) {
     s16 fn_80164E78(void *, s16);
     void fn_8000C070(void *, s32);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
 
     class Vec2s {
     public:
@@ -6888,7 +6888,7 @@ extern "C" void fn_80170894(void *arg0) {
             proc = fn_8000CAA0(lbl_80294580, var_r28);
             *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
             *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
-            *(void **)((u8 *)proc + 0x54) = (u8 *)lbl_80278080 + 0x260;
+            *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
             return;
         }
     } else {
@@ -6898,11 +6898,11 @@ extern "C" void fn_80170894(void *arg0) {
             proc = fn_8000CAA0(lbl_80294580, var_r28);
             *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
             *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
-            *(void **)((u8 *)proc + 0x54) = (u8 *)lbl_80278080 + 0x260;
+            *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
             return;
         }
     }
-    fn_801475FC((u8 *)lbl_80278080 + 0x1dd, 0x64);
+    fn_801475FC((u8 *)gUiMsgStrings + 0x1dd, 0x64);
     fn_8001C4FC(fn_80164A24(temp_r30, (s16)var_r27), temp_r29);
     fn_80164A48(temp_r30);
     fn_801436AC(temp_r31, temp_r29);
@@ -6933,7 +6933,7 @@ extern "C" void fn_80170AD0(void *arg0) {
     void fn_80166DD0(void *, s32, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, s32, f32, f32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -6980,12 +6980,12 @@ extern "C" void fn_80170AD0(void *arg0) {
     if (var_r30 != NULL) {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
-            fn_801658DC(ret, (u8 *)lbl_80278080 + 0x272);
+            fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x272);
         }
     } else {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
-            fn_801658DC(ret, (u8 *)lbl_80278080 + 0x28a);
+            fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x28a);
         }
     }
     fn_8013FDA0(arg0);
@@ -7018,7 +7018,7 @@ extern "C" void fn_80170AD0(void *arg0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x24);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -7032,13 +7032,13 @@ void fn_80170DB0(void *arg0) {
     void fn_8013FF00(void *, s32);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(s32, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     u32 ret;
 
     fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x54));
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x272));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x272));
     }
 }
 
@@ -7053,7 +7053,7 @@ void fn_80170E18(void *arg0) {
     void fn_80023FF4(void *);
     void fn_801658DC(s32, s32);
     u32 fn_8013FF94(void *, s32, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     void *obj;
     s32 saved;
     void *obj2;
@@ -7070,7 +7070,7 @@ void fn_80170E18(void *arg0) {
     fn_8000A420(obj2);
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x2A3));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x2A3));
     }
 }
 
@@ -7146,7 +7146,7 @@ extern "C" void fn_80171374(void *arg0) {
     u8 *fn_8018D900(s32);
     extern void fn_801723A0();
     extern u8 lbl_802CA264[], lbl_8028FDB0[], lbl_80292230[], lbl_80292178[], lbl_80291A3C[], lbl_802919DC[], lbl_80293C84[], lbl_80293C2C[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern f32 lbl_8036AB6C, lbl_8036AB70, lbl_8036AB78;
     struct Obj {
@@ -7258,7 +7258,7 @@ extern "C" void fn_80171374(void *arg0) {
         M2C_FIELD(q, u8 *, 0x3F) = col[3];
     }
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), f32 *, 0x2C) = lbl_8036AB70;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), void **, 0x40) = (u8 *)lbl_80278080 + 0x2BB;
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), void **, 0x40) = (u8 *)gUiMsgStrings + 0x2BB;
 
     p = Heap_Alloc(0x54);
     if (p) {
@@ -7318,11 +7318,11 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(p, s32 *, 0x48) = 0;
     M2C_FIELD(p, s16 *, 0x24) = 4;
     fn_801400F4(arg0, p);
-    fn_801658DC(p, (u8 *)lbl_80278080 + 0x2D2);
+    fn_801658DC(p, (u8 *)gUiMsgStrings + 0x2D2);
     fn_8013FF00(arg0, M2C_FIELD(arg0, void **, 0x4C));
     {
         void *r = fn_8013FF94(arg0, -0x1000, 0);
-        if (r) fn_801658DC(r, (u8 *)lbl_80278080 + 0x2E7);
+        if (r) fn_801658DC(r, (u8 *)gUiMsgStrings + 0x2E7);
     }
 }
 #pragma cplusplus reset
@@ -7438,7 +7438,7 @@ void fn_80171D04(void *arg0) {
     u32 fn_80164BB0(void *);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(s32, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *temp_r30;
     s16 temp_r0;
@@ -7462,7 +7462,7 @@ void fn_80171D04(void *arg0) {
     }
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x2E7));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x2E7));
     }
 }
 
@@ -7483,7 +7483,7 @@ extern "C" void fn_80171F00(void *arg0) {
     void fn_80166DD0(void *, u32, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -7541,7 +7541,7 @@ extern "C" void fn_80171F00(void *arg0) {
             }
         }
     }
-    fn_801658DC(text, (u8 *)lbl_80278080 + 0x2ff);
+    fn_801658DC(text, (u8 *)gUiMsgStrings + 0x2ff);
     flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
@@ -7556,9 +7556,9 @@ extern "C" void fn_80171F00(void *arg0) {
                 obj = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
-                *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x316;
+                *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x316;
             } else {
-                fn_801475FC((u8 *)lbl_80278080 + 0x1dd, 0x64);
+                fn_801475FC((u8 *)gUiMsgStrings + 0x1dd, 0x64);
                 fn_8000C188(self);
             }
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0 && var_r30 != 0) {
@@ -7569,7 +7569,7 @@ extern "C" void fn_80171F00(void *arg0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x1c);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -7728,7 +7728,7 @@ void fn_80172694(void *arg0) {
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
     s16 fn_80164E78(void *, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     s32 saved;
     void *obj;
@@ -7766,7 +7766,7 @@ void fn_80172694(void *arg0) {
     }
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x1FD));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x1FD));
     }
 }
 
@@ -7777,7 +7777,7 @@ void fn_80172B74(void *arg0) {
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(u32, void *);
     extern void fn_80172C68(void);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *self;
     void *obj;
@@ -7800,7 +7800,7 @@ void fn_80172B74(void *arg0) {
     fn_8013FF00(self, obj);
     ret = fn_8013FF94(self, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (u8 *)lbl_80278080 + 0x343);
+        fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x343);
     }
 }
 
@@ -7826,7 +7826,7 @@ void fn_80172C9C(void *arg0) {
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
     s16 fn_80164E78(void *, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     s32 saved;
     void *obj;
@@ -7864,7 +7864,7 @@ void fn_80172C9C(void *arg0) {
     }
     ret = fn_8013FF94(arg0, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (s32)((u8 *)lbl_80278080 + 0x1FD));
+        fn_801658DC(ret, (s32)((u8 *)gUiMsgStrings + 0x1FD));
     }
 }
 
@@ -7882,7 +7882,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     void fn_80166DD0(void *, u32, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, u32, f32, f32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 lbl_80294AE8[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
@@ -7950,9 +7950,9 @@ extern "C" void fn_80172DA4(void *arg0) {
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r29 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             if (((Obj *)obj4c)->v12(var_r29, (item = *(void **)gUiContext, (void *)gUiContext)) == 0) {
-                fn_801475FC((u8 *)lbl_80278080 + 0x322, 0x64);
+                fn_801475FC((u8 *)gUiMsgStrings + 0x322, 0x64);
             } else {
-                fn_801475FC((u8 *)lbl_80278080 + 0x35e, 0x64);
+                fn_801475FC((u8 *)gUiMsgStrings + 0x35e, 0x64);
                 fn_80094CDC(item, *(s16 *)((u8 *)obj4c + 0x4C));
                 bits = fn_8001CB64(var_r29);
                 if ((*(u64 *)bits & 0x5ULL) != 0) {
@@ -7976,7 +7976,7 @@ extern "C" void fn_80172DA4(void *arg0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
             fn_8000C070(self, 0x15);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -7988,7 +7988,7 @@ extern "C" void fn_8017312C(void *arg0) {
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(u32, void *);
     u8 fn_80173220(u32 *, void *);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *self;
     void *obj;
@@ -8015,7 +8015,7 @@ extern "C" void fn_8017312C(void *arg0) {
     fn_8013FF00(self, obj);
     ret = fn_8013FF94(self, -0x1000, 0);
     if (ret != 0) {
-        fn_801658DC(ret, (u8 *)lbl_80278080 + 0x370);
+        fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x370);
     }
 }
 
@@ -8167,7 +8167,7 @@ u8 fn_80166D8C(void *);
 void fn_80166DD0(void *, u32, f32, f32);
 void fn_801673D0(void *);
 void fn_8016746C(void *, void *, u32, f32, f32);
-extern u16 lbl_80278080[];
+extern u16 gUiMsgStrings[];
 extern u8 gUnitInfoPopup[];
 extern u32 gUiInputFlags;
 extern void *gPadInput;
@@ -8238,7 +8238,7 @@ if ((*(u64 *)bits & 0x200ULL) != 0) {
 obj = fn_8000CAA0(lbl_80294580, self);
 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
-*(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x236;
+*(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x236;
 } else {
 void *r28 = *(void **)((u8 *)self + 0x54);
 void *r26a = *(void **)((u8 *)self + 0x4C);
@@ -8270,7 +8270,7 @@ ok = 1;
 ok = 0;
 }
 if (ok == 0) {
-fn_801475FC((u8 *)lbl_80278080 + 0x322, 0x64);
+fn_801475FC((u8 *)gUiMsgStrings + 0x322, 0x64);
 } else {
 *(u8 *)((u8 *)obj54 + 0x4D) = 0;
 sp1C = *(u32 *)((u8 *)obj4c + 0x50);
@@ -8288,7 +8288,7 @@ fn_8013FF00(self, obj54);
 *(u8 *)((u8 *)obj4c + 0x48) = 0;
 *(u8 *)((u8 *)obj54 + 0x4C) = 1;
 fn_8000C070(self, 0xF);
-fn_801475FC((u8 *)lbl_80278080 + 0x1DD, 0x64);
+fn_801475FC((u8 *)gUiMsgStrings + 0x1DD, 0x64);
 }
 }
 } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0 && var_r27 != 0 && *(u32 *)var_r27 != 0) {
@@ -8315,7 +8315,7 @@ fn_8013FF00(self, obj54);
 *(u8 *)((u8 *)obj4c + 0x48) = 0;
 *(u8 *)((u8 *)obj54 + 0x4C) = 1;
 fn_8000C070(self, 0xF);
-fn_801475FC((u8 *)lbl_80278080 + 0x1ED, 0x64);
+fn_801475FC((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 }
 }
 }
@@ -8382,7 +8382,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, s32, f32, f32);
     void fn_80184C7C(u32, s32, s32, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -8433,12 +8433,12 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     if (entry != NULL) {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
-            fn_801658DC(ret, (u8 *)lbl_80278080 + 0x38a);
+            fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x38a);
         }
     } else {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
-            fn_801658DC(ret, (u8 *)lbl_80278080 + 0x3a4);
+            fn_801658DC(ret, (u8 *)gUiMsgStrings + 0x3a4);
         }
     }
     fn_8013FDA0(arg0);
@@ -8487,7 +8487,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 gUiContext[1] = *(u32 *)((u8 *)entry + 4);
                 fn_8000C070(arg0, 0x11);
             }
-            fn_801475FC((u8 *)lbl_80278080 + 0x1dd, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1dd, 0x64);
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0 && entry != NULL) {
             *(Vec2s *)&sp10 = ((Obj *)listWidget)->v13();
             fn_8016746C(gUnitInfoPopup, self, *entry, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
@@ -8504,7 +8504,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
             }
             fn_8000C070(arg0, 0xa);
-            fn_801475FC((u8 *)lbl_80278080 + 0x3bf, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if ((btn & 0xa00) && fn_80166D8C(gUnitInfoPopup) != 0) {
             fn_801673D0(gUnitInfoPopup);
         } else if ((btn & 0x200) && fn_80166D8C(gUnitInfoPopup) == 0) {
@@ -8519,7 +8519,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
             }
             fn_8000C070(arg0, 0x12);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -8931,7 +8931,7 @@ extern "C" void fn_80174E4C(void *arg0) {
     void fn_8013FDA0(void *);
     void fn_801475FC(void *, s32);
     void fn_801695BC(u32, void *, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u8 lbl_80294580[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
@@ -8994,17 +8994,17 @@ extern "C" void fn_80174E4C(void *arg0) {
                 proc = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
                 *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
-                *(void **)((u8 *)proc + 0x54) = (u8 *)lbl_80278080 + 0x3db;
+                *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3db;
             } else if (fn_80093088(gUiContext[0]) && fn_80093088(var_r30)) {
                 *(Vec2s *)&sp10 = ((VObj *)obj40)->v9();
                 proc = fn_8000CAA0(lbl_80294580, self);
                 *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
                 *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
-                *(void **)((u8 *)proc + 0x54) = (u8 *)lbl_80278080 + 0x3e9;
+                *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3e9;
             } else {
                 gUiContext[1] = var_r30;
                 fn_8000C188(self, gUiContext);
-                fn_801475FC((u8 *)lbl_80278080 + 0x1dd, 0x64);
+                fn_801475FC((u8 *)gUiMsgStrings + 0x1dd, 0x64);
             }
         } else if ((btn & 0x800) && var_r30) {
             fn_801695BC(var_r30, self, 0x1000000);
@@ -9012,10 +9012,10 @@ extern "C" void fn_80174E4C(void *arg0) {
             fn_8000C070(self, 0x31);
         } else if ((btn & 0x400) && var_r30) {
             fn_8000C070(self, 0xe);
-            fn_801475FC((u8 *)lbl_80278080 + 0x3bf, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if (btn & 0x200) {
             fn_8000C070(self, 0xc);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ed, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
 }
@@ -9361,7 +9361,7 @@ void fn_80175954(void *arg0) {
 void *fn_80024398(void *, void *, s32);
 u8 fn_8011AC10(void); u32 fn_8013FF94(void *, s32, s32);
 void fn_801658DC(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
-extern u16 lbl_80278080[]; extern f32 lbl_8036AB78; extern f32 lbl_8036AB7C;
+extern u16 gUiMsgStrings[]; extern f32 lbl_8036AB78; extern f32 lbl_8036AB7C;
 struct Params { u8 pad[8]; s16 x,y,z; u8 padE[6]; s16 a; u8 pad16[2]; f32 scale; u8 pad1c[2]; s16 mode; };
 void *self; struct Params *obj; u32 ret;
 f32 value=lbl_8036AB78;
@@ -9379,7 +9379,7 @@ obj->scale=value;
 obj->mode=4;
 *(void**)((u8*)self+0x5c)=fn_80024398(obj,self,0);
 ret=fn_8013FF94(self,-0x1000,0);
-if(ret) fn_801658DC(ret,(u8*)lbl_80278080+0x1fd);
+if(ret) fn_801658DC(ret,(u8*)gUiMsgStrings+0x1fd);
 }
 
 void *fn_80175C34(void *arg0, s16 arg1) {
@@ -9503,7 +9503,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_801694AC(u32, void *);
     void fn_801695BC(u32, void *, s32);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -9560,7 +9560,7 @@ extern "C" void fn_80175E3C(void *arg0) {
             fn_80140258(arg0, obj44, sp8, 1);
             fn_80140210(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
             fn_8000C070(arg0, 6);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1DD, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1DD, 0x64);
         } else if ((btn & 0x800) && (var_r30)) {
             fn_801695BC(var_r30, arg0, 0x1000000);
             *(u8 *)((u8 *)arg0 + 0x65) = 5;
@@ -9571,7 +9571,7 @@ extern "C" void fn_80175E3C(void *arg0) {
             fn_8000C070(arg0, 0x32);
         } else if (btn & 0x200) {
             fn_8000C070(arg0, 0x35);
-            fn_801475FC((u8 *)lbl_80278080 + 0x1ED, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x1ED, 0x64);
         }
     }
 }
@@ -9590,7 +9590,7 @@ extern "C" void fn_801761F8(void *arg0) {
  void fn_8013FF00(void *,void *);
  u8 *fn_8018D900(s32);
  extern u8 lbl_802CA264[],lbl_8028FDB0[],lbl_80292230[],lbl_80292178[],lbl_80291A3C[];
- extern u16 lbl_80278080[];
+ extern u16 gUiMsgStrings[];
  extern f32 lbl_8036AB6C;
  struct Obj {
  virtual void v0() = 0;
@@ -9665,7 +9665,7 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
  first=color[0]; col[0]=first;col[1]=color[1];col[2]=color[2];col[3]=color[3];
  q=M2C_FIELD(arg0,void * *,0x48);
  if((u8 *)q+0x3C!=col){M2C_FIELD(q,u8 *,0x3C)=first;M2C_FIELD(q,u8 *,0x3D)=col[1];M2C_FIELD(q,u8 *,0x3E)=col[2];M2C_FIELD(q,u8 *,0x3F)=col[3];}
- M2C_FIELD(M2C_FIELD(arg0,void * *,0x48),void * *,0x40)=(u8 *)lbl_80278080+0x2BB;
+ M2C_FIELD(M2C_FIELD(arg0,void * *,0x48),void * *,0x40)=(u8 *)gUiMsgStrings+0x2BB;
  fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x48));
  p=Heap_Alloc(0x54);
  if(p) {
@@ -10000,13 +10000,13 @@ void fn_80176E24(s32 arg0, void *arg1) {
 }
 
 void fn_80176E78(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x431);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x431);
 }
 
 void *fn_80176EA4(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x43a;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x43a;
 }
 
 void fn_80177028(void **arg0, void *arg1, void *arg2) {
@@ -10065,13 +10065,13 @@ void fn_801771FC(void) {
     void fn_801658DC(u32, u8 *);
 
     extern u16 lbl_80294604[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
 
     fn_8013E300();
     {
         u32 r = fn_8013FF94(fn_8000C0C0(lbl_80294604), -0x1000, 0);
         if (r != 0) {
-            fn_801658DC(r, (u8 *)lbl_80278080 + 0x457);
+            fn_801658DC(r, (u8 *)gUiMsgStrings + 0x457);
         }
     }
 }
@@ -10083,24 +10083,24 @@ void fn_8017724C(void) {
     void fn_801658DC(u32, u8 *);
 
     extern u16 lbl_80294604[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
 
     fn_8013E2C8();
     {
         u32 r = fn_8013FF94(fn_8000C0C0(lbl_80294604), -0x1000, 0);
         if (r != 0) {
-            fn_801658DC(r, (u8 *)lbl_80278080 + 0x1FD);
+            fn_801658DC(r, (u8 *)gUiMsgStrings + 0x1FD);
         }
     }
 }
 
 void fn_8017729C(void) {
-    fn_8000E0E4(&lbl_80278080[0x235]);
+    fn_8000E0E4(&gUiMsgStrings[0x235]);
 }
 
-extern u16 lbl_80278080[257];
+extern u16 gUiMsgStrings[257];
 void *fn_801772C8(void) {
-    return &lbl_80278080[0x23A];
+    return &gUiMsgStrings[0x23A];
 }
 
 u8 fn_801772D8(void) {
@@ -10114,13 +10114,13 @@ u8 fn_801772D8(void) {
 }
 
 void fn_80177404(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x491);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x491);
 }
 
 void *fn_80177430(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x49b;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x49b;
 }
 
 s32 fn_80177440(s32 arg0, s32 arg1) {
@@ -10140,13 +10140,13 @@ s32 fn_80177440(s32 arg0, s32 arg1) {
 }
 
 void fn_801774A8(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x4a5);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x4a5);
 }
 
 void *fn_801774D4(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x4af;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x4af;
 }
 
 s32 fn_801774E4(s32 arg0, s32 arg1) {
@@ -10166,13 +10166,13 @@ s32 fn_801774E4(s32 arg0, s32 arg1) {
 }
 
 void fn_8017754C(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x4b9);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x4b9);
 }
 
 void *fn_80177578(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x4c3;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x4c3;
 }
 
 s32 fn_80177588(s32 arg0, s32 arg1) {
@@ -10192,18 +10192,18 @@ s32 fn_80177588(s32 arg0, s32 arg1) {
 }
 
 void fn_801775F0(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x4cd);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x4cd);
 }
 
 void *fn_8017761C(void) {
-    return (u8 *)lbl_80278080 + 0x4d7;
+    return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
 s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -10215,7 +10215,7 @@ s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x4E0;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x4E0;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x87;
@@ -10357,13 +10357,13 @@ extern "C" void fn_80177854(void *arg0, void *arg1, void *arg2) {
 }
 #pragma cplusplus reset
 void fn_80177AD4(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x4ed);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x4ed);
 }
 
 void *fn_80177B00(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x4f6;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x4f6;
 }
 
 u8 fn_80177B10(void) {
@@ -10402,7 +10402,7 @@ u8 fn_80177B10(void) {
 s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -10414,7 +10414,7 @@ s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x4FE;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x4FE;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x86;
@@ -10422,15 +10422,15 @@ s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
 }
 
 void fn_80177C78(void) {
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     void fn_8000E0E4(u8 *);
 
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x50A);
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x50A);
 }
 
 void *fn_80177CA4(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x516;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x516;
 }
 
 u8 fn_80177CB4(void) {
@@ -10465,7 +10465,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     void fn_8000C070(void *, s32);
     void fn_8000C5B8(s32);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
     void *obj;
@@ -10479,7 +10479,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x51E;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x51E;
         return 0;
     }
     temp = fn_8000C0C0(lbl_80294604);
@@ -10490,13 +10490,13 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
 }
 
 void fn_80177E48(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x52d);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x52d);
 }
 
 void *fn_80177E74(void) {
-    extern u16 lbl_80278080[];
-    return (u8 *)lbl_80278080 + 0x538;
+    extern u16 gUiMsgStrings[];
+    return (u8 *)gUiMsgStrings + 0x538;
 }
 
 s32 fn_80177E84(void) {
@@ -10543,7 +10543,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     void fn_8000C070(void *, s32);
     void fn_8000C5B8(s32);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
     void *obj;
@@ -10557,7 +10557,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x53F;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x53F;
         return 0;
     }
     temp = fn_8000C0C0(lbl_80294604);
@@ -10568,12 +10568,12 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
 }
 
 void fn_8017807C(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x54d);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x54d);
 }
 
 void *fn_801780A8(void) {
-    return (char *)&lbl_80278080 + 0x55B;
+    return (char *)&gUiMsgStrings + 0x55B;
 }
 
 s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
@@ -10594,19 +10594,19 @@ s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
             proc = fn_8000CAA0(lbl_80294580, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)lbl_80278080 + 0x569;
+            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x569;
             break;
         case 1:
             proc = fn_8000CAA0(lbl_80294580, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)lbl_80278080 + 0x57B;
+            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x57B;
             break;
         case 2:
             proc = fn_8000CAA0(lbl_80294580, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
-            M2C_FIELD(proc, void **, 0x54) = (u8 *)lbl_80278080 + 0x224;
+            M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x224;
             break;
         }
         return 0;
@@ -10619,12 +10619,12 @@ s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
 }
 
 void fn_80178350(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x58d);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x58d);
 }
 
 void *fn_8017837C(void) {
-    return (char *)&lbl_80278080 + 0x596;
+    return (char *)&gUiMsgStrings + 0x596;
 }
 
 #pragma opt_strength_reduction off
@@ -10640,7 +10640,7 @@ s32 fn_8017838C(void) {
 s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -10652,7 +10652,7 @@ s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x569;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x569;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x82;
@@ -10661,12 +10661,12 @@ s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
 
 #pragma opt_strength_reduction reset
 void fn_8017849C(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4((u8 *)lbl_80278080 + 0x59e);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4((u8 *)gUiMsgStrings + 0x59e);
 }
 
 void *fn_801784C8(void) {
-    return (char *)&lbl_80278080 + 0x5A7;
+    return (char *)&gUiMsgStrings + 0x5A7;
 }
 
 #pragma scheduling off
@@ -10695,7 +10695,7 @@ s32 fn_801784D8(void) {
 s32 fn_80178558(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -10707,19 +10707,19 @@ s32 fn_80178558(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x5B2;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x5B2;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x81;
     return 6;
 }
 void fn_80178628(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4(&lbl_80278080[0x5C0 / sizeof(u16)]);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4(&gUiMsgStrings[0x5C0 / sizeof(u16)]);
 }
 
 void *fn_80178654(void) {
-    return (char *)&lbl_80278080 + 0x5CB;
+    return (char *)&gUiMsgStrings + 0x5CB;
 }
 
 s32 fn_80178664(void) {
@@ -10729,7 +10729,7 @@ s32 fn_80178664(void) {
 s32 fn_8017866C(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -10741,7 +10741,7 @@ s32 fn_8017866C(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x5D6;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x5D6;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x80;
@@ -10782,7 +10782,7 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
     s32 fn_80010B78(void *, s32, s16, f32);
     s32 fn_800102BC(s32, f32);
     void fn_8001019C(s16, s16, s32, ...);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern f32 lbl_8036AB80;
     extern f32 lbl_8036AB6C;
     void *str;
@@ -10798,10 +10798,10 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
     fn_8000A174(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 3));
     Prim2D_PrepareTex();
     if (*(u32 *)((u8 *)arg0 + 0x40) == 0) {
-        str = (u8 *)lbl_80278080 + 0x5F9;
+        str = (u8 *)gUiMsgStrings + 0x5F9;
     } else {
         p = *(void **)((u8 *)arg0 + 0x44);
-        str = (p != NULL) ? fn_800A8A88(*(s32 *)((u8 *)p + 0x188)) : fn_8000E0E4((u8 *)lbl_80278080 + 0x58D);
+        str = (p != NULL) ? fn_800A8A88(*(s32 *)((u8 *)p + 0x188)) : fn_8000E0E4((u8 *)gUiMsgStrings + 0x58D);
     }
     w = *(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12);
     x = (s16)((w - fn_80010B78(str, -1, *(s16 *)((u8 *)arg0 + 0x12), lbl_8036AB6C)) >> 1);
@@ -10827,7 +10827,7 @@ extern "C" void fn_801788A0(void *arg0) {
     void *fn_8000E0E4(void *);
     void fn_8001019C(s16, s16, s32, void *, ...);
     s32 fn_800C3E54(void *);
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern f32 lbl_8036AB80;
     extern u8 lbl_803200AC[];
 
@@ -10842,11 +10842,11 @@ extern "C" void fn_801788A0(void *arg0) {
     Prim2D_PrepareTex();
     x = *(s16 *)((u8 *)arg0 + 0x3C);
     y = *(s16 *)((u8 *)arg0 + 0x3E);
-    fn_8001019C((s16)x, (s16)y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x618));
+    fn_8001019C((s16)x, (s16)y, 0xF, fn_8000E0E4((u8 *)gUiMsgStrings + 0x618));
     result = fn_800C3E54(lbl_803200AC);
     x = (s16)x;
-    fn_8001019C((s16)(x + 0x40), (s16)y, 1, (u8 *)lbl_80278080 + 0x62D, result, 0xC8);
-    fn_8001019C((s16)(x + 0xA0), (s16)y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x63E));
+    fn_8001019C((s16)(x + 0x40), (s16)y, 1, (u8 *)gUiMsgStrings + 0x62D, result, 0xC8);
+    fn_8001019C((s16)(x + 0xA0), (s16)y, 0xF, fn_8000E0E4((u8 *)gUiMsgStrings + 0x63E));
 }
 extern "C" void fn_8017899C(void *arg0) {
     void fn_8015BA88(s32, s32, s16, s16, s32, s32);
@@ -11211,7 +11211,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     struct Inner {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -11293,7 +11293,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
             p += *(s8 *)((u8 *)arg1 + 0x62);
             tmp = fn_8000B908(p[0x40]);
             (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
-            fn_801475FC((u8 *)lbl_80278080 + 0x64e, 0x64);
+            fn_801475FC((u8 *)gUiMsgStrings + 0x64e, 0x64);
         }
     }
 }
@@ -11307,12 +11307,12 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
 #pragma cplusplus reset
 
 void fn_80179248(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4(&lbl_80278080[0x66A / sizeof(u16)]);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4(&gUiMsgStrings[0x66A / sizeof(u16)]);
 }
 
 void *fn_80179274(void) {
-    return (char *)&lbl_80278080 + 0x674;
+    return (char *)&gUiMsgStrings + 0x674;
 }
 
 u8 fn_80179284(void) {
@@ -11329,7 +11329,7 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
     void fn_8000C5B8(void *);
     void fn_8000A430(void *);
     extern u8 lbl_80294580[];
-    extern u16 lbl_80278080[];
+    extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
     f32 x;
@@ -11341,7 +11341,7 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
         obj = fn_8000CAA0(lbl_80294580, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)lbl_80278080 + 0x67e;
+        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x67e;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x80;
@@ -11397,12 +11397,12 @@ void fn_801793EC(void **arg0, void *arg2) {
 }
 
 void fn_80179594(void) {
-    extern u16 lbl_80278080[];
-    fn_8000E0E4(&lbl_80278080[0x690 / sizeof(u16)]);
+    extern u16 gUiMsgStrings[];
+    fn_8000E0E4(&gUiMsgStrings[0x690 / sizeof(u16)]);
 }
 
 void *fn_801795C0(void) {
-    return (char *)&lbl_80278080 + 0x69A;
+    return (char *)&gUiMsgStrings + 0x69A;
 }
 
 s32 fn_801795D0(void *arg0) {
@@ -16244,7 +16244,7 @@ s32 fn_80182CE4(s32 arg0, s32 arg1) {
         case 0:
             return gUiContext[arg0];
         case 1:
-            return lbl_80278080[arg0];
+            return gUiMsgStrings[arg0];
         case 2:
             return lbl_80294604[arg0];
         case 3:
@@ -16308,7 +16308,7 @@ void fn_801832F8(s32 arg0) {
 
 #include "common.h"
 extern u32 gUiContext[];
-extern u16 lbl_80278080[];
+extern u16 gUiMsgStrings[];
 extern u16 lbl_80294550[];
 extern f32 lbl_8036AB94;
 extern u16 lbl_80277EA0;
