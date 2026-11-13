@@ -1344,7 +1344,7 @@ void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 #pragma use_lmw_stmw reset
 
-void fn_80113648(void *arg0, f32 farg0) {
+void Actor_SetRadius(void *arg0, f32 farg0) {
     M2C_FIELD(arg0, f32 *, 0x128) = farg0;
 }
 

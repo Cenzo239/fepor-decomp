@@ -4950,7 +4950,7 @@ extern "C" void *fn_800D38BC(void *arg0)
     void fn_800CBAF8(s32, void *, u32);
     typedef void *(*ObjectLookupFn)(void *, const char *, const char *);
     f32 fn_80113650(void *);
-    void fn_80113648(void *, f32);
+    void Actor_SetRadius(void *, f32);
     char *fn_800A8A88(const char *);
     void fn_800DB1FC(void *, void *);
     void fn_800CB070(String *);
@@ -5935,9 +5935,9 @@ extern "C" void *fn_800D38BC(void *arg0)
     value84 = fn_80113650(*(void **)(obj + 0x84));
     value88 = fn_80113650(*(void **)(obj + 0x88));
     if (value84 > value88) {
-        fn_80113648(*(void **)(obj + 0x88), value84);
+        Actor_SetRadius(*(void **)(obj + 0x88), value84);
     } else if (value84 < value88) {
-        fn_80113648(*(void **)(obj + 0x84), value88);
+        Actor_SetRadius(*(void **)(obj + 0x84), value88);
     }
 
     /* Next target block: virtual lookups for the ordered object names. */
