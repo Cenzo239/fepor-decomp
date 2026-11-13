@@ -1,5 +1,6 @@
 /* Functions from 0x80006264 to 0x80011968, found by decomp-toolkit. */
 #include "common.h"
+#include "process.h"
 
 typedef struct {
     void *unk0;
@@ -3994,159 +3995,144 @@ int Process_Unlink(void *arg0) {
     }
 }
 
-void Process_Destroy(void *arg0) {
+/* Recursively destroy a process tree (next and child), run destructors, and return nodes to the freelist. */
+void Process_Destroy(Process *proc) {
     void Process_Free(void *);
     extern void **gProcessFreeTop;
-    typedef struct Node {
-        void *unk0;
-        u8 pad04[4];
-        void (*cb)(struct Node *);
-        u8 pad0C[4];
-        void *unk10;
-        u8 pad14[4];
-        struct Node *unk18;
-        struct Node *unk1C;
-        u8 pad20[4];
-        struct Node *unk24;
-        u8 pad28[4];
-        u8 flags;
-        u8 pad2D;
-    } Node;
-    Node *self = (Node *)arg0;
-    Node *n;
-    Node *c;
-    void **p;
+    Process *node;
+    Process *child;
+    void **slot;
 
-    n = self->unk24;
-    if (n != NULL) {
-        c = n->unk24;
-        if (c != NULL) {
-            if (c->unk24 != NULL) {
-                Process_Destroy(c->unk24);
+    node = proc->next;
+    if (node != NULL) {
+        child = node->next;
+        if (child != NULL) {
+            if (child->next != NULL) {
+                Process_Destroy(child->next);
             }
-            if (c->unk1C != NULL) {
-                Process_Destroy(c->unk1C);
+            if (child->child != NULL) {
+                Process_Destroy(child->child);
             }
-            if ((c->flags & 1) == 0) {
-                if (c->cb != NULL) {
-                    c->cb(c);
+            if ((child->flags & PROCESS_FLAG_ENDED) == 0) {
+                if (child->destructor != NULL) {
+                    child->destructor(child);
                 }
-                Process_Free(c);
-                c->unk0 = NULL;
-                c->unk10 = NULL;
-                c->flags |= 1;
-                if (c->flags & 2) {
-                    c->unk18->pad2D -= 1;
-                }
-            }
-        }
-        c = n->unk1C;
-        if (c != NULL) {
-            if (c->unk24 != NULL) {
-                Process_Destroy(c->unk24);
-            }
-            if (c->unk1C != NULL) {
-                Process_Destroy(c->unk1C);
-            }
-            if ((c->flags & 1) == 0) {
-                if (c->cb != NULL) {
-                    c->cb(c);
-                }
-                Process_Free(c);
-                c->unk0 = NULL;
-                c->unk10 = NULL;
-                c->flags |= 1;
-                if (c->flags & 2) {
-                    c->unk18->pad2D -= 1;
+                Process_Free(child);
+                child->code = NULL;
+                child->func = NULL;
+                child->flags |= PROCESS_FLAG_ENDED;
+                if (child->flags & PROCESS_FLAG_LOCKED) {
+                    child->parent->lock_cnt -= 1;
                 }
             }
         }
-        if ((n->flags & 1) == 0) {
-            if (n->cb != NULL) {
-                n->cb(n);
+        child = node->child;
+        if (child != NULL) {
+            if (child->next != NULL) {
+                Process_Destroy(child->next);
             }
-            p = (void **)((u8 *)gProcessFreeTop - 4);
-            gProcessFreeTop = p;
-            *p = n;
-            n->unk0 = NULL;
-            n->unk10 = NULL;
-            n->flags |= 1;
-            if (n->flags & 2) {
-                n->unk18->pad2D -= 1;
+            if (child->child != NULL) {
+                Process_Destroy(child->child);
             }
-        }
-    }
-    n = self->unk1C;
-    if (n != NULL) {
-        c = n->unk24;
-        if (c != NULL) {
-            if (c->unk24 != NULL) {
-                Process_Destroy(c->unk24);
-            }
-            if (c->unk1C != NULL) {
-                Process_Destroy(c->unk1C);
-            }
-            if ((c->flags & 1) == 0) {
-                if (c->cb != NULL) {
-                    c->cb(c);
+            if ((child->flags & PROCESS_FLAG_ENDED) == 0) {
+                if (child->destructor != NULL) {
+                    child->destructor(child);
                 }
-                Process_Free(c);
-                c->unk0 = NULL;
-                c->unk10 = NULL;
-                c->flags |= 1;
-                if (c->flags & 2) {
-                    c->unk18->pad2D -= 1;
+                Process_Free(child);
+                child->code = NULL;
+                child->func = NULL;
+                child->flags |= PROCESS_FLAG_ENDED;
+                if (child->flags & PROCESS_FLAG_LOCKED) {
+                    child->parent->lock_cnt -= 1;
                 }
             }
         }
-        c = n->unk1C;
-        if (c != NULL) {
-            if (c->unk24 != NULL) {
-                Process_Destroy(c->unk24);
+        if ((node->flags & PROCESS_FLAG_ENDED) == 0) {
+            if (node->destructor != NULL) {
+                node->destructor(node);
             }
-            if (c->unk1C != NULL) {
-                Process_Destroy(c->unk1C);
-            }
-            if ((c->flags & 1) == 0) {
-                if (c->cb != NULL) {
-                    c->cb(c);
-                }
-                Process_Free(c);
-                c->unk0 = NULL;
-                c->unk10 = NULL;
-                c->flags |= 1;
-                if (c->flags & 2) {
-                    c->unk18->pad2D -= 1;
-                }
-            }
-        }
-        if ((n->flags & 1) == 0) {
-            if (n->cb != NULL) {
-                n->cb(n);
-            }
-            p = (void **)((u8 *)gProcessFreeTop - 4);
-            gProcessFreeTop = p;
-            *p = n;
-            n->unk0 = NULL;
-            n->unk10 = NULL;
-            n->flags |= 1;
-            if (n->flags & 2) {
-                n->unk18->pad2D -= 1;
+            slot = (void **)((u8 *)gProcessFreeTop - 4);
+            gProcessFreeTop = slot;
+            *slot = node;
+            node->code = NULL;
+            node->func = NULL;
+            node->flags |= PROCESS_FLAG_ENDED;
+            if (node->flags & PROCESS_FLAG_LOCKED) {
+                node->parent->lock_cnt -= 1;
             }
         }
     }
-    if ((self->flags & 1) == 0) {
-        if (self->cb != NULL) {
-            self->cb(self);
+    node = proc->child;
+    if (node != NULL) {
+        child = node->next;
+        if (child != NULL) {
+            if (child->next != NULL) {
+                Process_Destroy(child->next);
+            }
+            if (child->child != NULL) {
+                Process_Destroy(child->child);
+            }
+            if ((child->flags & PROCESS_FLAG_ENDED) == 0) {
+                if (child->destructor != NULL) {
+                    child->destructor(child);
+                }
+                Process_Free(child);
+                child->code = NULL;
+                child->func = NULL;
+                child->flags |= PROCESS_FLAG_ENDED;
+                if (child->flags & PROCESS_FLAG_LOCKED) {
+                    child->parent->lock_cnt -= 1;
+                }
+            }
         }
-        p = (void **)((u8 *)gProcessFreeTop - 4);
-        gProcessFreeTop = p;
-        *p = self;
-        self->unk0 = NULL;
-        self->unk10 = NULL;
-        self->flags |= 1;
-        if (self->flags & 2) {
-            self->unk18->pad2D -= 1;
+        child = node->child;
+        if (child != NULL) {
+            if (child->next != NULL) {
+                Process_Destroy(child->next);
+            }
+            if (child->child != NULL) {
+                Process_Destroy(child->child);
+            }
+            if ((child->flags & PROCESS_FLAG_ENDED) == 0) {
+                if (child->destructor != NULL) {
+                    child->destructor(child);
+                }
+                Process_Free(child);
+                child->code = NULL;
+                child->func = NULL;
+                child->flags |= PROCESS_FLAG_ENDED;
+                if (child->flags & PROCESS_FLAG_LOCKED) {
+                    child->parent->lock_cnt -= 1;
+                }
+            }
+        }
+        if ((node->flags & PROCESS_FLAG_ENDED) == 0) {
+            if (node->destructor != NULL) {
+                node->destructor(node);
+            }
+            slot = (void **)((u8 *)gProcessFreeTop - 4);
+            gProcessFreeTop = slot;
+            *slot = node;
+            node->code = NULL;
+            node->func = NULL;
+            node->flags |= PROCESS_FLAG_ENDED;
+            if (node->flags & PROCESS_FLAG_LOCKED) {
+                node->parent->lock_cnt -= 1;
+            }
+        }
+    }
+    if ((proc->flags & PROCESS_FLAG_ENDED) == 0) {
+        if (proc->destructor != NULL) {
+            proc->destructor(proc);
+        }
+        slot = (void **)((u8 *)gProcessFreeTop - 4);
+        gProcessFreeTop = slot;
+        *slot = proc;
+        proc->code = NULL;
+        proc->func = NULL;
+        proc->flags |= PROCESS_FLAG_ENDED;
+        if (proc->flags & PROCESS_FLAG_LOCKED) {
+            proc->parent->lock_cnt -= 1;
         }
     }
 }
