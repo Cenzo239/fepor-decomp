@@ -3291,6 +3291,7 @@ f64 fn_80235B4C(f64 farg0) {
     return lbl_8036BEA0 * (sp10 + (Nz / Dz * h + (-((sp10 * sp10) - z) / (h + sp10))));
 }
 
+/* IEEE754 double remainder: return x - n*y for integer n, same sign as x. */
 f64 __ieee754_fmod(f64 x, f64 y) {
     extern f64 fmod_Zero[];
     int n, hx, hy, hz, ix, iy, sx, i;
