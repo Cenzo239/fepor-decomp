@@ -2871,7 +2871,7 @@ idx=*(u16*)((u8*)node+0x1a); if(idx==65535)idx=0;
 fn_80009EB0(fn_802002F0(arg0),idx,0,arg1); fn_80200270(arg0);
 }
 
-void fn_8007947C(void *arg0) {
+void Face_DebugScaleProc(void *arg0) {
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
     void Prim2D_SetPos(f32, f32);
