@@ -182,7 +182,7 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 
-void fn_800331D4(u8 *arg0, s32 arg1) {
+void BattleHit_SetBraveFlags(u8 *arg0, s32 arg1) {
     s32 count;
     s32 i;
 

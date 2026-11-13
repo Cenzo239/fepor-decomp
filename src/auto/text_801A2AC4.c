@@ -1913,7 +1913,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
 void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 fn_8000CE68(s32);
     u64 *Item_GetFlagsPtr(void *);
-    void fn_800331D4(void *, s32);
+    void BattleHit_SetBraveFlags(void *, s32);
     void fn_8003333C(void *, s32);
     void fn_800333DC(void *, s32);
     void fn_80033E70(void *);
@@ -2017,7 +2017,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             if (add > 0) {
                 lim += add;
             } else if ((*(u16 *)(tbl + 0x20 + (tbl[0x60] << 1)) & 8) != 0) {
-                fn_800331D4(lbl_802EFDB8, lim);
+                BattleHit_SetBraveFlags(lbl_802EFDB8, lim);
                 lim *= 2;
             } else if (Status_Test((u8 *)unit + 0x1BC, 0x32) != 0) {
                 half = fn_8003AF28(unit);
@@ -2027,7 +2027,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                     ok = fn_8000CE68((s32)half);
                 }
                 if (ok != 0 && (s32)lv >= lim * 2) {
-                    fn_800331D4(lbl_802EFDB8, lim);
+                    BattleHit_SetBraveFlags(lbl_802EFDB8, lim);
                     lim *= 2;
                 }
             }
