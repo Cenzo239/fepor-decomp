@@ -3747,7 +3747,7 @@ u8 fn_8016B000(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
+extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_SetText(s32);
     M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
