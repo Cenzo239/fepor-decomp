@@ -1708,37 +1708,38 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     }
 }
 #pragma peephole on
+/* Map a character code to an OS font sheet glyph index (SJIS if encode==1). */
 int OSFontCodeToIndex(u16 encode, u16 code) {
     extern u16 OSFontAnsiIndex[];
     extern u16 OSFontSjisIndex[];
-    int i;
-    int j;
+    int row;
+    int col;
 
     if (encode == 1) {
         if (0x20 <= code && code <= 0xDF) {
             return OSFontAnsiIndex[code - 0x20];
         } else if (0x889E < code && code <= 0x9872) {
-            i = ((code >> 8) - 0x88) * 188;
-            j = code & 0xFF;
-            if (!IsSjisTrailByte(j)) {
+            row = ((code >> 8) - 0x88) * 188;
+            col = code & 0xFF;
+            if (!IsSjisTrailByte(col)) {
                 return 0;
             }
-            j -= 0x40;
-            if (0x40 <= j) {
-                j--;
+            col -= 0x40;
+            if (0x40 <= col) {
+                col--;
             }
-            return i + j + 0x2BE;
+            return row + col + 0x2BE;
         } else if (0x8140 <= code && code < 0x879E) {
-            i = ((code >> 8) - 0x81) * 188;
-            j = code & 0xFF;
-            if (!IsSjisTrailByte(j)) {
+            row = ((code >> 8) - 0x81) * 188;
+            col = code & 0xFF;
+            if (!IsSjisTrailByte(col)) {
                 return 0;
             }
-            j -= 0x40;
-            if (0x40 <= j) {
-                j--;
+            col -= 0x40;
+            if (0x40 <= col) {
+                col--;
             }
-            return OSFontSjisIndex[i + j];
+            return OSFontSjisIndex[row + col];
         }
     } else if (0x20 < code && code <= 0xFF) {
         return code - 0x20;
