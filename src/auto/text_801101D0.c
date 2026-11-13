@@ -4987,7 +4987,7 @@ void *fn_8011C558(void *arg0, s16 arg1) {
     return arg0;
 }
 
-s32 fn_8011C5B4(void) {
+s32 BgWin_OnCancel(void) {
     M2C_UNK fn_800D758C(s32);
     extern s32 gBgWin;
     fn_800D758C(gBgWin);
@@ -5090,7 +5090,7 @@ void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     temp = *(void **)((u8 *)self + 0x430);
     *(void **)((u8 *)temp + 0xA4) = (void *)BgWin_OnOk;
     temp = *(void **)((u8 *)self + 0x434);
-    *(void **)((u8 *)temp + 0xA4) = (void *)fn_8011C5B4;
+    *(void **)((u8 *)temp + 0xA4) = (void *)BgWin_OnCancel;
     *(void **)((u8 *)self + 0x14) = *(void **)((u8 *)self + 0x424);
     *(void **)((u8 *)self + 0x54) = *(void **)((u8 *)self + 0x428);
     *(void **)((u8 *)self + 0x94) = *(void **)((u8 *)self + 0x42C);
