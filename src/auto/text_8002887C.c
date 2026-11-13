@@ -1948,7 +1948,7 @@ void fn_8002D44C(void) {
     fn_800C4B8C();
 }
 
-s32 fn_800C52C8(void);
+s32 Heap_GetFree(void);
 void Heap_Create(void *, s32, void *);
 void Heap_Select(void *);
 void fn_80016498(void);
@@ -1958,7 +1958,7 @@ void fn_8002D46C(void)
     extern u8 Battle_str[];
     s32 tmp;
 
-    tmp = fn_800C52C8();
+    tmp = Heap_GetFree();
     Heap_Create(Battle_str + 0x16c, tmp, Battle_str);
     Heap_Select(Battle_str + 0x176);
     fn_80016498();
@@ -1997,7 +1997,7 @@ void Battle_LoadMap(void)
     void fn_8003FCCC(void *);
     void fn_8005C84C(void *);
     void fn_80050F64(void);
-    s32 fn_800C52C8(void);
+    s32 Heap_GetFree(void);
     void Heap_Select(void *);
     void fn_80016498(void);
     void fn_80015D54(void);
@@ -2014,12 +2014,12 @@ void Battle_LoadMap(void)
     }
     fn_8005C84C(Battle_str + 0x1AF);
     fn_80050F64();
-    Heap_Create(Battle_str + 0x16C, fn_800C52C8());
+    Heap_Create(Battle_str + 0x16C, Heap_GetFree());
     Heap_Select(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
     fn_80018F08();
-    DebugPrint((char *)(Battle_str + 0x1BF), fn_800C52C8());
+    DebugPrint((char *)(Battle_str + 0x1BF), Heap_GetFree());
 }
 #pragma global_optimizer reset
 void fn_8002D648(void *arg0) {
