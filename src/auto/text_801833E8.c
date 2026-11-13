@@ -2238,31 +2238,32 @@ void MuFade_InitScaleOut(void *arg0)
 }
 #pragma scheduling reset
 #pragma global_optimizer reset
-void MuFade_UpdateScale(void *arg0) {
+void MuFade_UpdateScale(void *proc) {
+    /* Ease the map-unit scale XY toward proc targets over 10 frames, then clear the process. */
     void Process_ClearFunc(void *);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f32 fMuFadeScaleFrames;
     extern f32 lbl_8036ACEC;
-    f32 f31;
-    f32 f1;
+    f32 scaleX;
+    f32 scaleY;
     f32 z;
-    void *p;
+    void *mu;
 
-    if (*(u8 *)((u8 *)arg0 + 0x64)) {
-        *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
+    if (*(u8 *)((u8 *)proc + 0x64)) {
+        *(s32 *)((u8 *)proc + 0x34) = *(s32 *)((u8 *)proc + 0x34) + 1;
     }
-*(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
-    if (*(s32 *)((u8 *)arg0 + 0x34) >= 0xA) {
-        *(s32 *)((u8 *)arg0 + 0x34) = 0xA;
-        Process_ClearFunc(arg0);
+*(s32 *)((u8 *)proc + 0x34) = *(s32 *)((u8 *)proc + 0x34) + 1;
+    if (*(s32 *)((u8 *)proc + 0x34) >= 0xA) {
+        *(s32 *)((u8 *)proc + 0x34) = 0xA;
+        Process_ClearFunc(proc);
     }
-    f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x54), *(f32 *)((u8 *)arg0 + 0x4C), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)arg0 + 0x34));
-    f1 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x58), *(f32 *)((u8 *)arg0 + 0x50), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)arg0 + 0x34));
-    p = *(void **)((u8 *)arg0 + 0x30);
+    scaleX = Math_EaseOutPow(2, *(f32 *)((u8 *)proc + 0x54), *(f32 *)((u8 *)proc + 0x4C), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)proc + 0x34));
+    scaleY = Math_EaseOutPow(2, *(f32 *)((u8 *)proc + 0x58), *(f32 *)((u8 *)proc + 0x50), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)proc + 0x34));
+    mu = *(void **)((u8 *)proc + 0x30);
     z = lbl_8036ACEC;
-    *(f32 *)((u8 *)p + 0x10) = f31;
-    *(f32 *)((u8 *)p + 0x14) = f1;
-    *(f32 *)((u8 *)p + 0x18) = z;
+    *(f32 *)((u8 *)mu + 0x10) = scaleX;
+    *(f32 *)((u8 *)mu + 0x14) = scaleY;
+    *(f32 *)((u8 *)mu + 0x18) = z;
 }
 
 #pragma cplusplus off
