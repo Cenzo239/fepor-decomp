@@ -152,7 +152,9 @@ void fn_80098524(void **arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 Event_HandleItemCmd(void *arg0) {
+/* Handle pad input for event-script item commands (opcodes 0x50-0x52): confirm give/take/trade. */
+s32 Event_HandleItemCmd(void *arg0)
+{
     u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
     void fn_80054C14(void *);
