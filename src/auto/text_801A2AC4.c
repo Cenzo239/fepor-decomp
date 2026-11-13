@@ -1176,7 +1176,7 @@ block_19:
 }
 
 #pragma opt_strength_reduction off
-void fn_801A5268(s32 arg0, u8 arg1) {
+void Battle_Execute(s32 arg0, u8 arg1) {
     u64 *fn_8001CB64(s32);
     void fn_80034068(s32, s32, s32);
     void fn_8004E670(f32 *, void *, s32);

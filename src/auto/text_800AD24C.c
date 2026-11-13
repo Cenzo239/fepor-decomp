@@ -4396,7 +4396,7 @@ s32 fn_800B83A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
     void fn_8000CAA0(void *, s32);
     void fn_80033418(void *);
-    void fn_801A5268(void *, s32);
+    void Battle_Execute(void *, s32);
     void fn_801A7794(void *, void *, void *);
     s32 fn_800C0658(void);
     void fn_80013864(void);
@@ -4417,7 +4417,7 @@ s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
         var_r5 = NULL;
     }
     fn_801A7794(lbl_80330EAC, var_r6, var_r5);
-    fn_801A5268(lbl_80330EAC, 0xF);
+    Battle_Execute(lbl_80330EAC, 0xF);
     fn_80033418(lbl_80330EAC + 0x8A0);
     if (arg2 != 0) {
         *(u32 *)(lbl_80330EAC + 0xCAC) = *(u32 *)(lbl_80330EAC + 0xCAC) | 0x80000000;
