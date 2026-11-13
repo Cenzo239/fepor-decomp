@@ -9733,7 +9733,7 @@ void fn_8019B904(void *arg0) {
     void fn_80053658(void *, s32, void *);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
-    extern void fn_8019B9F0(void);
+    extern void MapSelect_Update(void);
     void *temp;
     void *unit;
     void *p;
@@ -9742,7 +9742,7 @@ void fn_8019B904(void *arg0) {
     temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
     fn_800536D8(temp, *(void **)*(void **)((u8 *)arg0 + 0x34));
     fn_8005306C(temp);
-    *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = fn_8019B9F0;
+    *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = MapSelect_Update;
     fn_80053658(temp, 0, arg0);
     p = *(void **)*(void **)((u8 *)arg0 + 0x34);
     if (p != NULL) {
@@ -9763,7 +9763,7 @@ void fn_8019B904(void *arg0) {
 }
 
 typedef struct { s32 x, y, z; } Word3B9;
-s32 fn_8019B9F0(void *arg0) {
+s32 MapSelect_Update(void *arg0) {
     void *Camera_GetActive(void);
     void fn_80052CA8(void *);
     void fn_80054C14(void *);
