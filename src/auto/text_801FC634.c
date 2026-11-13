@@ -114,10 +114,10 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
 }
 
 void fn_801FC790(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     void Process_ClearFunc(void *);
     
-    if (!fn_8005BA10(lbl_802820B8 + 0x53)) {
+    if (!FileCache_IsReady(lbl_802820B8 + 0x53)) {
         return;
     }
     M2C_FIELD(arg0, u32 *, 0x30) = 0;
@@ -797,14 +797,14 @@ void fn_801FE444(void) {
 
 #pragma opt_common_subs off
 void fn_801FE488(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     u32 fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
     extern u32 lbl_80368438;
 
-    if (!fn_8005BA10(lbl_80281F00 + 0x4D) || !fn_8005BA10(lbl_80281F00 + 0x64)) {
+    if (!FileCache_IsReady(lbl_80281F00 + 0x4D) || !FileCache_IsReady(lbl_80281F00 + 0x64)) {
         return;
     }
     if (lbl_80368438 == 0) {
@@ -1051,14 +1051,14 @@ void fn_801FF060(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801FF0F8(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     u32 fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_80281F00[];
     extern u32 lbl_80368438;
 
-    if (!fn_8005BA10(lbl_80281F00 + 0x4D) || !fn_8005BA10(lbl_80281F00 + 0x64)) {
+    if (!FileCache_IsReady(lbl_80281F00 + 0x4D) || !FileCache_IsReady(lbl_80281F00 + 0x64)) {
         return;
     }
     if (lbl_80368438 == 0) {
@@ -1678,12 +1678,12 @@ void fn_80200674(void) {
 
 #pragma opt_common_subs off
 void fn_802006B8(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     u32 fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
-    if (!fn_8005BA10(lbl_802820B8 + 0x53) || !fn_8005BA10(lbl_802820B8 + 0x68)) {
+    if (!FileCache_IsReady(lbl_802820B8 + 0x53) || !FileCache_IsReady(lbl_802820B8 + 0x68)) {
         return;
     }
     if (lbl_80368448 == 0) {
@@ -2007,12 +2007,12 @@ void fn_80201290(void *arg0) {
 
 #pragma opt_common_subs off
 void fn_80201328(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     u32 fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
     void fn_8006EEFC(void *, void *);
 
-    if (!fn_8005BA10(lbl_802820B8 + 0x53) || !fn_8005BA10(lbl_802820B8 + 0x68)) {
+    if (!FileCache_IsReady(lbl_802820B8 + 0x53) || !FileCache_IsReady(lbl_802820B8 + 0x68)) {
         return;
     }
     if (lbl_80368448 == 0) {

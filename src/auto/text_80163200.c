@@ -3154,7 +3154,7 @@ void fn_8016A0CC(void *arg0) {
     char *strcpy(char *, char *);
     s32 fn_80161FB8(void);
     s32 fn_801620AC(void);
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     void fn_80162054(void);
     void *fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
@@ -3175,8 +3175,8 @@ void fn_8016A0CC(void *arg0) {
         break;
     }
     if (fn_80161FB8() != 0) {
-        if (fn_8005BA10((void *)fn_801620AC()) != 0) {
-            if (fn_8005BA10(sp8) == 0) {
+        if (FileCache_IsReady((void *)fn_801620AC()) != 0) {
+            if (FileCache_IsReady(sp8) == 0) {
             } else {
                 fn_80162054();
                 *(void **)((u8 *)arg0 + 0x44) = fn_8003FCCC((void *)fn_801620AC());
@@ -15379,12 +15379,12 @@ void fn_801812A0(void) {
 
 #pragma opt_common_subs off
 void fn_801812CC(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     s32 fn_8003FCCC(void *);
     void Process_ClearFunc(void *);
     extern u8 gUiUnitInfoStrings[];
 
-    if (fn_8005BA10(gUiUnitInfoStrings + 0x116)) {
+    if (FileCache_IsReady(gUiUnitInfoStrings + 0x116)) {
         M2C_FIELD(arg0, s32 *, 0x44) = fn_8003FCCC(gUiUnitInfoStrings + 0x116);
         Process_ClearFunc(arg0);
     }

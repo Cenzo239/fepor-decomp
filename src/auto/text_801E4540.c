@@ -2673,7 +2673,7 @@ skip_sub:
 }
 
 void fn_801E9B80(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     s32 fn_8003FCCC(void *);
     s32 fn_8006D948(void *);
     void Process_ClearFunc(void *);
@@ -2684,14 +2684,14 @@ void fn_801E9B80(void *arg0) {
     u32 *b;
 
     a = lbl_80299FA8;
-    if (fn_8005BA10((void *)a[1]) == 0) {
+    if (FileCache_IsReady((void *)a[1]) == 0) {
         return;
     }
     b = lbl_80299FC4;
-    if (fn_8005BA10((void *)b[1]) == 0) {
+    if (FileCache_IsReady((void *)b[1]) == 0) {
         return;
     }
-    if (fn_8005BA10(&gTabMenuStrings[0x22f]) != 0) {
+    if (FileCache_IsReady(&gTabMenuStrings[0x22f]) != 0) {
         *(s32 *)((u8 *)arg0 + 0x40) = fn_8003FCCC((void *)a[1]);
         *(s32 *)((u8 *)arg0 + 0x64) = fn_8006D948((void *)b[1]);
         Process_ClearFunc(arg0);

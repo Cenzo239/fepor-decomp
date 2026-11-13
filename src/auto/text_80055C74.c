@@ -28,7 +28,7 @@ void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
 void fn_80055CE4(void *arg0)
 {
     extern u8 lbl_8026AD80[];
-    extern u32 fn_8005BA10(void *);
+    extern u32 FileCache_IsReady(void *);
     extern void DebugPrint(const char *, ...);
     extern void Process_ClearFunc(void *);
 
@@ -41,7 +41,7 @@ void fn_80055CE4(void *arg0)
     count = *(u16 *)(obj + 0x68);
     *(u16 *)(obj + 0x68) = count + 1;
 
-    if (count > 0x2A30 || (u8)fn_8005BA10(obj + 0x30) != 0) {
+    if (count > 0x2A30 || (u8)FileCache_IsReady(obj + 0x30) != 0) {
         callback = *(void (**)(void *))(obj + 0x6C);
 
         if (callback != 0) {

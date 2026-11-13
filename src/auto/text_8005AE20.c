@@ -474,7 +474,7 @@ void fn_8005BA08(s8 arg0) {
     lbl_803672E8 = arg0;
 }
 
-s32 fn_8005BA10(char *name) {
+s32 FileCache_IsReady(char *name) {
     u8 *e = FindEntryByName(name);
     u16 flags;
 

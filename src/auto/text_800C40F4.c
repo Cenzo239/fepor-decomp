@@ -1347,10 +1347,10 @@ void fn_800C755C(void)
 }
 
 void fn_800C77B8(s32 arg0) {
-    u8 fn_8005BA10(s32);
+    u8 FileCache_IsReady(s32);
     void Process_ClearFunc(s32);
 
-    if (fn_8005BA10(lbl_8028D788[1])) {
+    if (FileCache_IsReady(lbl_8028D788[1])) {
         Process_ClearFunc(arg0);
     }
 }

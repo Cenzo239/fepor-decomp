@@ -11533,7 +11533,7 @@ s32 fn_8004F128(void *arg0) {
  extern u8 lbl_8026AB18[];
  extern void *lbl_80366DC8;
 
- u8 fn_8005BA10(void *);
+ u8 FileCache_IsReady(void *);
  void *res;
  s32 id;
  void *obj=arg0;
@@ -11542,7 +11542,7 @@ s32 fn_8004F128(void *arg0) {
  if(!(flags&1)) return 1;
  id=get_4F128_id(arg0);
  res=get_4F128_resource(obj,id);
- if(!fn_8005BA10(fn_8004B158(res))) return 0;
+ if(!FileCache_IsReady(fn_8004B158(res))) return 0;
  if(!fn_8004AF74(res,M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8))) {
  res=get_4F128_resource(arg0,get_4F128_id(arg0));
  switch(M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8)) {
@@ -11553,7 +11553,7 @@ case 3: res=fn_8004B078(res,3);break;
 default: res=fn_8004B078(res,0);break;
  }
  if(!res||fn_8005C144(res)==0x8000U) res=lbl_80366DC8;
- if(res!=lbl_80366DC8&&!fn_8005BA10(res))return 0;
+ if(res!=lbl_80366DC8&&!FileCache_IsReady(res))return 0;
  }
  return 1;
 }

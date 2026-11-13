@@ -8257,9 +8257,9 @@ void fn_801C8490(void) {
 }
 
 void fn_801C84BC(s32 arg0) {
-    u8 fn_8005BA10(s32);
+    u8 FileCache_IsReady(s32);
     extern s32 lbl_802983A4[];
-    if (fn_8005BA10(lbl_802983A4[1])) {
+    if (FileCache_IsReady(lbl_802983A4[1])) {
         Process_ClearFunc(arg0);
     }
 }
@@ -10283,13 +10283,9 @@ extern "C" void fn_801CCE7C(void *arg0) {
 }
 #pragma cplusplus reset
 
-void NameGrid_GetCharAtCursor(u8 *arg0) {
-    u8 *fn_801CD480(void *, s16, s16);
-    s16 x;
-    s16 y;
-    x = *(s16 *)(arg0 + 0x48);
-    y = *(s16 *)(arg0 + 0x4a);
-    fn_801CD480(*(void **)(arg0 + 0x3c), x, y);
+void *NameGrid_GetCharAtCursor(s16 *arg0) {
+    void *fn_801CD480(void *, s16, s16);
+    return fn_801CD480(*(void **)(arg0 + 0x1e), arg0[0x24], arg0[0x25]);
 }
 
 #pragma cplusplus on

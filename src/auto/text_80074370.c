@@ -4135,13 +4135,13 @@ void fn_8007C408(void)
 void fn_8007C484(void *arg0) {
     void strcpy(void *, void *);
     void strcat(void *, s32);
-    void fn_8005BA10(void *);
+    void FileCache_IsReady(void *);
     extern u16 lbl_8026C640[];
     char sp8[0x40];
 
     strcpy(sp8, (u8 *)lbl_8026C640 + 0x122);
     strcat(sp8, *(s32 *)((char *)arg0 + 8));
-    fn_8005BA10(sp8);
+    FileCache_IsReady(sp8);
 }
 
 void fn_8007C4D4(void *arg0, s32 arg1) {

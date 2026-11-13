@@ -3993,11 +3993,11 @@ void fn_8011A4E4(s32 arg0) {
 
 void fn_8011AB38(void *arg0) {
     s32 fn_8003FCCC();
-    u8 fn_8005BA10();
+    u8 FileCache_IsReady();
     s32 fn_80161FB8();
     M2C_UNK fn_80162054();
     fn_801620AC();
-    if (fn_8005BA10() != 0) {
+    if (FileCache_IsReady() != 0) {
         if (fn_80161FB8() == 0) {
             return;
         }

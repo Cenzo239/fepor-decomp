@@ -317,7 +317,7 @@ void *fn_80055204(void *arg0, s32 arg1) {
 u8 GActor_CheckResources(s32 name) {
     void *Res_GetByName(s32);
     void sprintf(void *, void *, void *, ...);
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     u8 fn_800B2FF4(s32);
     s32 fn_80055C84(void *);
     s32 GActor_FormatPath(s32 *, s32);
@@ -337,7 +337,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(name);
     sprintf(path0, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(path0) == 0) {
+    if ((u8)FileCache_IsReady(path0) == 0) {
         return 0;
     }
     v = *(u8 *)((u8 *)node + 5);
@@ -352,7 +352,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path1, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(path1) == 0) {
+    if ((u8)FileCache_IsReady(path1) == 0) {
         ok = 0;
         goto check2;
     }
@@ -369,7 +369,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path2, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(path2) == 0) {
+    if ((u8)FileCache_IsReady(path2) == 0) {
         ok = 0;
         goto check3;
     }
@@ -386,7 +386,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path3, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(path3) == 0) {
+    if ((u8)FileCache_IsReady(path3) == 0) {
         ok = 0;
         goto check4;
     }
@@ -403,7 +403,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path4, GActor_str + 0x120, GActor_str + 0x129, *(s32 *)node);
-    if ((u8)fn_8005BA10(path4) == 0) {
+    if ((u8)FileCache_IsReady(path4) == 0) {
         ok = 0;
         goto check5;
     }
@@ -420,7 +420,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     sprintf(path5, GActor_str + 0x120, GActor_str + 0x129, fn_80055C84(node));
-    if ((u8)fn_8005BA10(path5) == 0) {
+    if ((u8)FileCache_IsReady(path5) == 0) {
         ok = 0;
         goto check6;
     }
@@ -437,7 +437,7 @@ u8 GActor_CheckResources(s32 name) {
 
     node = Res_GetByName(*(s32 *)((u8 *)node + 8));
     GActor_FormatPath(node, (s32)path6);
-    if ((u8)fn_8005BA10(path6) == 0) {
+    if ((u8)FileCache_IsReady(path6) == 0) {
         ok = 0;
         goto check7;
     }

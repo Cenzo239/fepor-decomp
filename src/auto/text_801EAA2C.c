@@ -637,11 +637,11 @@ void fn_801EBBB8(void *arg0) {
 #pragma use_lmw_stmw reset
 void fn_801EBE00(void *arg0) {
     s32 fn_8003FCCC();
-    u8 fn_8005BA10();
+    u8 FileCache_IsReady();
     s32 fn_80161FB8();
     void fn_80162054();
     fn_801620AC(arg0);
-    if (fn_8005BA10() != 0) {
+    if (FileCache_IsReady() != 0) {
         if (fn_80161FB8() == 0) {
             return;
         }

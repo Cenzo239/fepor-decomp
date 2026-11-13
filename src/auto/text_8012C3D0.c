@@ -1631,13 +1631,13 @@ void fn_8012DFA8(void *arg0) {
 }
 #pragma global_optimizer off
 void fn_8012EF04(void *arg0) {
-    u8 fn_8005BA10(void *);
+    u8 FileCache_IsReady(void *);
     void fn_8005C8B4(void *);
     void Process_ClearFunc(void *);
     extern u8 gUiSelectMenuStrings[];
 
     fn_8005C8B4(gUiSelectMenuStrings + 0xC7);
-    if (fn_8005BA10(gUiSelectMenuStrings + 0xC7)) {
+    if (FileCache_IsReady(gUiSelectMenuStrings + 0xC7)) {
         Process_ClearFunc(arg0);
     }
 }
