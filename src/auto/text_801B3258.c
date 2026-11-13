@@ -1123,8 +1123,8 @@ s32 ScriptCmd_AchieveSet(s32 arg0, s32 arg1) {
     extern u8 gBattleState[];
     extern s32 lbl_80368250;
     extern s32 lbl_80368254;
-    s32 base;
     s32 var_r31;
+    u8 *p;
     u8 v;
 
     var_r31 = arg1;
@@ -1136,8 +1136,9 @@ s32 ScriptCmd_AchieveSet(s32 arg0, s32 arg1) {
     if (v == 3) {
         var_r31 += var_r31 / 2;
     }
-    base = lbl_80368254 + (lbl_80368250 << 2);
-    *(s32 *)(base + 0x200) = var_r31;
+    p = (u8 *)lbl_80368254;
+    p += lbl_80368250 << 2;
+    *(s32 *)(p + 0x200) = var_r31;
     return 1;
 }
 #pragma opt_strength_reduction reset
