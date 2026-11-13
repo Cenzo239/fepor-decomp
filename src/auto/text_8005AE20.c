@@ -580,7 +580,7 @@ void fn_8005BCF0(void) {
 
 void FileCache_WorkerThread(void) {
     void DCFlushRange(s32, s32);
-    void fn_8005BF8C(void *, s32);
+    void FileCache_OnCancel(void *, s32);
     void FileCache_OnLoadDone(void *, s32);
     void fn_8005D9A8(void *);
     void fn_800C4588(s32);
@@ -602,7 +602,7 @@ loop:
         FileCache_OnLoadDone(*(void **)((u8 *)obj + 4), *(s32 *)((u8 *)obj + 8));
         break;
     case 1:
-        fn_8005BF8C(*(void **)((u8 *)obj + 4), *(s32 *)((u8 *)obj + 8));
+        FileCache_OnCancel(*(void **)((u8 *)obj + 4), *(s32 *)((u8 *)obj + 8));
         break;
     case 2:
         val = *(s32 *)((u8 *)obj + 8);
@@ -641,7 +641,7 @@ check:
     goto check;
 }
 
-void fn_8005BF8C(void *arg0, s32 arg1) {
+void FileCache_OnCancel(void *arg0, s32 arg1) {
     void fn_8005D9A8(void *);
     void fn_8005DE84(void *);
 
