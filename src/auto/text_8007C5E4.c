@@ -416,6 +416,7 @@ void fn_8007D0C0(void *arg0) {
 
 #pragma use_lmw_stmw on
 void UnitInfo_AdvanceCursor(void *arg0) {
+    /* Advance unit-info cursor to next/prev on-screen unit and rebuild its actor/status icons. */
     u8 Map_IsInViewBounds(void *, u8, u8);
     void *fn_8003A114(void *);
     void fn_800506E0(void *, s32, void *);
@@ -430,168 +431,168 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
     extern u8 lbl_80330EAC[];
-    void *obj;
-    void *node;
-    void *link;
+    void *info;
+    void *unit;
+    void *listHead;
     void *tmp;
     s32 flags;
-    s32 idx;
-    s32 val;
-    u8 kind;
+    s32 iconSlot;
+    s32 animId;
+    u8 army;
 
-    obj = *(void **)((u8 *)arg0 + 0x30);
-    if (*(s32 *)((u8 *)obj + 0x20) == 1) {
+    info = *(void **)((u8 *)arg0 + 0x30);
+    if (*(s32 *)((u8 *)info + 0x20) == 1) {
         do {
-            node = *(void **)((u8 *)obj + 0x58);
-            tmp = *(void **)((u8 *)node + 0x184);
+            unit = *(void **)((u8 *)info + 0x58);
+            tmp = *(void **)((u8 *)unit + 0x184);
             if (tmp != NULL) {
-                *(void **)((u8 *)obj + 0x58) = tmp;
-            } else if (*(u32 *)obj & 0x01000000) {
-                link = *(void **)((u8 *)node + 0x190);
-                kind = *(u8 *)((u8 *)link + 8);
-                switch (kind) {
+                *(void **)((u8 *)info + 0x58) = tmp;
+            } else if (*(u32 *)info & 0x01000000) {
+                listHead = *(void **)((u8 *)unit + 0x190);
+                army = *(u8 *)((u8 *)listHead + 8);
+                switch (army) {
                 case 0:
                     tmp = *(void **)(gUnitLists + 0x3C);
                     if (tmp != NULL) {
-                        *(void **)((u8 *)obj + 0x58) = tmp;
+                        *(void **)((u8 *)info + 0x58) = tmp;
                     } else {
-                        *(void **)((u8 *)obj + 0x58) = *(void **)link;
+                        *(void **)((u8 *)info + 0x58) = *(void **)listHead;
                     }
                     break;
                 case 5:
                     tmp = *(void **)gUnitLists;
                     if (tmp != NULL) {
-                        *(void **)((u8 *)obj + 0x58) = tmp;
+                        *(void **)((u8 *)info + 0x58) = tmp;
                     } else {
-                        *(void **)((u8 *)obj + 0x58) = *(void **)link;
+                        *(void **)((u8 *)info + 0x58) = *(void **)listHead;
                     }
                     break;
                 default:
-                    *(void **)((u8 *)obj + 0x58) = *(void **)link;
+                    *(void **)((u8 *)info + 0x58) = *(void **)listHead;
                     break;
                 }
             } else {
-                link = *(void **)((u8 *)node + 0x190);
-                *(void **)((u8 *)obj + 0x58) = *(void **)link;
+                listHead = *(void **)((u8 *)unit + 0x190);
+                *(void **)((u8 *)info + 0x58) = *(void **)listHead;
             }
-            node = *(void **)((u8 *)obj + 0x58);
-            flags = *(s32 *)((u8 *)node + 0x1A0);
+            unit = *(void **)((u8 *)info + 0x58);
+            flags = *(s32 *)((u8 *)unit + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
-                if (!(*(u32 *)obj & 0x01000000)) {
+                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) == 0) {
+                if (!(*(u32 *)info & 0x01000000)) {
                     continue;
                 }
             }
             break;
         } while (1);
-    } else if (*(s32 *)((u8 *)obj + 0x20) == -1) {
+    } else if (*(s32 *)((u8 *)info + 0x20) == -1) {
         do {
-            node = *(void **)((u8 *)obj + 0x58);
-            tmp = *(void **)((u8 *)node + 0x180);
+            unit = *(void **)((u8 *)info + 0x58);
+            tmp = *(void **)((u8 *)unit + 0x180);
             if (tmp != NULL) {
-                *(void **)((u8 *)obj + 0x58) = tmp;
-            } else if (*(u32 *)obj & 0x01000000) {
-                link = *(void **)((u8 *)node + 0x190);
-                kind = *(u8 *)((u8 *)link + 8);
-                switch (kind) {
+                *(void **)((u8 *)info + 0x58) = tmp;
+            } else if (*(u32 *)info & 0x01000000) {
+                listHead = *(void **)((u8 *)unit + 0x190);
+                army = *(u8 *)((u8 *)listHead + 8);
+                switch (army) {
                 case 0:
                     tmp = *(void **)(gUnitLists + 0x40);
                     if (tmp != NULL) {
-                        *(void **)((u8 *)obj + 0x58) = tmp;
+                        *(void **)((u8 *)info + 0x58) = tmp;
                     } else {
-                        *(void **)((u8 *)obj + 0x58) = *(void **)((u8 *)link + 4);
+                        *(void **)((u8 *)info + 0x58) = *(void **)((u8 *)listHead + 4);
                     }
                     break;
                 case 5:
                     tmp = *(void **)(gUnitLists + 4);
                     if (tmp != NULL) {
-                        *(void **)((u8 *)obj + 0x58) = tmp;
+                        *(void **)((u8 *)info + 0x58) = tmp;
                     } else {
-                        *(void **)((u8 *)obj + 0x58) = *(void **)((u8 *)link + 4);
+                        *(void **)((u8 *)info + 0x58) = *(void **)((u8 *)listHead + 4);
                     }
                     break;
                 default:
-                    *(void **)((u8 *)obj + 0x58) = *(void **)((u8 *)link + 4);
+                    *(void **)((u8 *)info + 0x58) = *(void **)((u8 *)listHead + 4);
                     break;
                 }
             } else {
-                link = *(void **)((u8 *)node + 0x190);
-                *(void **)((u8 *)obj + 0x58) = *(void **)((u8 *)link + 4);
+                listHead = *(void **)((u8 *)unit + 0x190);
+                *(void **)((u8 *)info + 0x58) = *(void **)((u8 *)listHead + 4);
             }
-            node = *(void **)((u8 *)obj + 0x58);
-            flags = *(s32 *)((u8 *)node + 0x1A0);
+            unit = *(void **)((u8 *)info + 0x58);
+            flags = *(s32 *)((u8 *)unit + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
-                if (!(*(u32 *)obj & 0x01000000)) {
+                Map_IsInViewBounds(gBattleMap, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) == 0) {
+                if (!(*(u32 *)info & 0x01000000)) {
                     continue;
                 }
             }
             break;
         } while (1);
     } else {
-        node = *(void **)((u8 *)obj + 0x58);
-        *(void **)((u8 *)obj + 0x58) = *(void **)((u8 *)node + 0x194);
+        unit = *(void **)((u8 *)info + 0x58);
+        *(void **)((u8 *)info + 0x58) = *(void **)((u8 *)unit + 0x194);
     }
 
-    tmp = *(void **)((u8 *)obj + 0x5C);
+    tmp = *(void **)((u8 *)info + 0x5C);
     if (tmp != NULL) {
         fn_8007B990(tmp);
     }
-    *(void **)((u8 *)obj + 0x5C) = fn_8007BA4C(fn_8003A114(*(void **)((u8 *)obj + 0x58)), 0);
+    *(void **)((u8 *)info + 0x5C) = fn_8007BA4C(fn_8003A114(*(void **)((u8 *)info + 0x58)), 0);
 
-    tmp = *(void **)((u8 *)obj + 0x60);
+    tmp = *(void **)((u8 *)info + 0x60);
     if (tmp != NULL) {
         fn_800616A0(tmp);
     }
-    *(void **)((u8 *)obj + 0x60) = GActor_Create();
-    node = *(void **)((u8 *)obj + 0x58);
-    tmp = *(void **)((u8 *)obj + 0x60);
-    *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
-    tmp = *(void **)((u8 *)obj + 0x60);
+    *(void **)((u8 *)info + 0x60) = GActor_Create();
+    unit = *(void **)((u8 *)info + 0x58);
+    tmp = *(void **)((u8 *)info + 0x60);
+    *(void **)((u8 *)tmp + 4) = (u8 *)unit + 0x1C;
+    tmp = *(void **)((u8 *)info + 0x60);
     *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-    fn_800506E0(*(void **)((u8 *)obj + 0x58), 0, node);
-    val = fn_800639B4();
-    *(s32 *)((u8 *)*(void **)((u8 *)obj + 0x60) + 0x44) = val;
-    GActor_Finalize(*(void **)((u8 *)obj + 0x60));
-    fn_801A7218(lbl_80330EAC, *(void **)((u8 *)obj + 0x58), -1);
+    fn_800506E0(*(void **)((u8 *)info + 0x58), 0, unit);
+    animId = fn_800639B4();
+    *(s32 *)((u8 *)*(void **)((u8 *)info + 0x60) + 0x44) = animId;
+    GActor_Finalize(*(void **)((u8 *)info + 0x60));
+    fn_801A7218(lbl_80330EAC, *(void **)((u8 *)info + 0x58), -1);
 
-    node = *(void **)((u8 *)obj + 0x58);
-    idx = 0;
-    *(s16 *)((u8 *)obj + 0x24) = -1;
-    *(s16 *)((u8 *)obj + 0x26) = -1;
-    *(s16 *)((u8 *)obj + 0x28) = -1;
-    *(s16 *)((u8 *)obj + 0x2A) = -1;
-    *(s16 *)((u8 *)obj + 0x2C) = -1;
-    if ((*(u8 *)((u8 *)node + 0x1A4) >> 5) & 7) {
-        idx = 1;
-        *(s16 *)((u8 *)obj + 0x24) = 0x1B;
-        *(s16 *)((u8 *)obj + 0x2E) = (*(u8 *)((u8 *)node + 0x1A4) >> 5) & 7;
+    unit = *(void **)((u8 *)info + 0x58);
+    iconSlot = 0;
+    *(s16 *)((u8 *)info + 0x24) = -1;
+    *(s16 *)((u8 *)info + 0x26) = -1;
+    *(s16 *)((u8 *)info + 0x28) = -1;
+    *(s16 *)((u8 *)info + 0x2A) = -1;
+    *(s16 *)((u8 *)info + 0x2C) = -1;
+    if ((*(u8 *)((u8 *)unit + 0x1A4) >> 5) & 7) {
+        iconSlot = 1;
+        *(s16 *)((u8 *)info + 0x24) = 0x1B;
+        *(s16 *)((u8 *)info + 0x2E) = (*(u8 *)((u8 *)unit + 0x1A4) >> 5) & 7;
     }
-    if ((*(u16 *)((u8 *)node + 0x1A4) >> 7) & 7) {
-        tmp = (u8 *)obj + (idx * 2);
-        idx += 1;
+    if ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) {
+        tmp = (u8 *)info + (iconSlot * 2);
+        iconSlot += 1;
         *(s16 *)((u8 *)tmp + 0x24) = 0x1C;
-        *(s16 *)((u8 *)tmp + 0x2E) = (*(u16 *)((u8 *)node + 0x1A4) >> 7) & 7;
+        *(s16 *)((u8 *)tmp + 0x2E) = (*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7;
     }
-    if ((*(u8 *)((u8 *)node + 0x1A5) >> 4) & 7) {
-        tmp = (u8 *)obj + (idx * 2);
-        idx += 1;
+    if ((*(u8 *)((u8 *)unit + 0x1A5) >> 4) & 7) {
+        tmp = (u8 *)info + (iconSlot * 2);
+        iconSlot += 1;
         *(s16 *)((u8 *)tmp + 0x24) = 0x1D;
-        *(s16 *)((u8 *)tmp + 0x2E) = (*(u8 *)((u8 *)node + 0x1A5) >> 4) & 7;
+        *(s16 *)((u8 *)tmp + 0x2E) = (*(u8 *)((u8 *)unit + 0x1A5) >> 4) & 7;
     }
-    if ((*(u8 *)((u8 *)node + 0x1A4) >> 2) & 7) {
-        tmp = (u8 *)obj + (idx * 2);
-        idx += 1;
+    if ((*(u8 *)((u8 *)unit + 0x1A4) >> 2) & 7) {
+        tmp = (u8 *)info + (iconSlot * 2);
+        iconSlot += 1;
         *(s16 *)((u8 *)tmp + 0x24) = 0x1E;
-        *(s16 *)((u8 *)tmp + 0x2E) = (*(u8 *)((u8 *)node + 0x1A4) >> 2) & 7;
+        *(s16 *)((u8 *)tmp + 0x2E) = (*(u8 *)((u8 *)unit + 0x1A4) >> 2) & 7;
     }
-    if (*(u8 *)((u8 *)node + 0x1A5) & 7) {
-        tmp = (u8 *)obj + (idx * 2);
+    if (*(u8 *)((u8 *)unit + 0x1A5) & 7) {
+        tmp = (u8 *)info + (iconSlot * 2);
         *(s16 *)((u8 *)tmp + 0x24) = 0x1F;
-        *(s16 *)((u8 *)tmp + 0x2E) = *(u8 *)((u8 *)node + 0x1A5) & 7;
+        *(s16 *)((u8 *)tmp + 0x2E) = *(u8 *)((u8 *)unit + 0x1A5) & 7;
     }
-    fn_8007DD78(obj);
-    *(s16 *)((u8 *)obj + 6) = 7;
+    fn_8007DD78(info);
+    *(s16 *)((u8 *)info + 6) = 7;
 }
 #pragma use_lmw_stmw reset
 
