@@ -4334,10 +4334,10 @@ s32 fn_800B81C0(void) {
 
 void fn_800B8208(s32 arg0) {
     extern u8 lbl_8026ECB8[];
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void Process_ClearFunc(s32);
 
-    if (fn_8000BCA4(lbl_8026ECB8 + 0xA29) == 0U) {
+    if (Process_FindByName(lbl_8026ECB8 + 0xA29) == 0U) {
         Process_ClearFunc(arg0);
     }
 }
@@ -4531,11 +4531,11 @@ return flags;
 }
 
 s32 fn_800B870C(u32 arg0) {
-    s32 fn_8000BCA4();
+    s32 Process_FindByName();
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    return fn_8000BCA4();
+    return Process_FindByName();
 }
 
 s32 fn_800B874C(u32 arg0) {
@@ -4811,7 +4811,7 @@ s32 fn_800B8EBC(void) {
 s32 fn_800B8ED0(u32 arg0) {
     char *Msg_Expand(void);
     char *strchr(char *, s32);
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void fn_80070018(void *, u32, s32, s32);
     void fn_8006FBE4(void *, u32, s32, s32);
     void fn_80013864(void);
@@ -4824,9 +4824,9 @@ s32 fn_800B8ED0(u32 arg0) {
         return 0;
     }
     if (strchr(Msg_Expand(), 0xA) == NULL) {
-        fn_80070018(fn_8000BCA4(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        fn_80070018(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     } else {
-        fn_8006FBE4(fn_8000BCA4(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        fn_8006FBE4(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     }
     fn_80013864();
     fn_80013874(lbl_80320060);
@@ -5710,7 +5710,7 @@ s32 fn_800BA9BC(void) {
 
 s32 fn_800BAAD4(void) {
     void *Res_GetByName(void);
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     s32 fn_800A876C(s32);
     M2C_UNK TalkUi_ShowMsg(s32);
     M2C_UNK fn_8011D908(s32, s32);
@@ -5723,7 +5723,7 @@ s32 fn_800BAAD4(void) {
     }
     obj = fn_800A876C(M2C_FIELD(gUiContext[0], s32 *, 0x188));
     if (Res_GetByName() != NULL) {
-        if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
+        if (Process_FindByName(lbl_8026ECB8 + 0xA50) != NULL) {
             TalkUi_ShowMsg(obj);
         } else {
             fn_8011D908(obj, fn_800C0658());
@@ -5845,13 +5845,13 @@ s32 fn_800BAE4C(s32 arg0, s32 arg1) {
 }
 
 s32 fn_800BAEAC(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     extern u16 gUiPanelFlags;
     extern u8 lbl_8026ECB8[];
     void *p;
     s32 flags;
 
-    p = fn_8000BCA4(lbl_8026ECB8 + 0xA50);
+    p = Process_FindByName(lbl_8026ECB8 + 0xA50);
     if (p == NULL) {
         return 0;
     }
@@ -5866,12 +5866,12 @@ s32 fn_800BAEF8(void) {
 }
 
 s32 fn_800BAF1C(s32 arg0) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     M2C_UNK TalkUi_ShowMsg(s32);
     M2C_UNK fn_8011D908(s32, s32);
     extern u8 lbl_8026ECB8[];
 
-    if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
+    if (Process_FindByName(lbl_8026ECB8 + 0xA50) != NULL) {
         TalkUi_ShowMsg(arg0);
         return 1;
     }
@@ -5880,12 +5880,12 @@ s32 fn_800BAF1C(s32 arg0) {
 }
 
 s32 fn_800BAF80(s32 arg0) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     M2C_UNK fn_8011D6F4(s32);
     M2C_UNK UiPanel_Create(s32, s32);
     extern u8 lbl_8026ECB8[];
 
-    if (fn_8000BCA4(lbl_8026ECB8 + 0xA50) != NULL) {
+    if (Process_FindByName(lbl_8026ECB8 + 0xA50) != NULL) {
         fn_8011D6F4(arg0);
         return 1;
     }
@@ -8382,7 +8382,7 @@ void fn_800C0750(void) {
     extern u8 lbl_8026FC78[];
     extern u8 lbl_80320080[];
     void *Process_Find(void *);
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
     void fn_8000BD98(void *);
@@ -8400,7 +8400,7 @@ void fn_800C0750(void) {
     }
     lbl_80367848 = val;
     if (temp == 0) {
-        Process_Create(lbl_80284E30, Process_CreateChild(lbl_80284E78, fn_8000BCA4(lbl_8026FC78 + 0x138)));
+        Process_Create(lbl_80284E30, Process_CreateChild(lbl_80284E78, Process_FindByName(lbl_8026FC78 + 0x138)));
     }
     temp = Process_Find(lbl_80284AC8);
     if (temp != 0) {

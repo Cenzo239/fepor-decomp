@@ -933,13 +933,13 @@ void Gx_SetupSimpleTev(void) {
 }
 
 void fn_800A58F0(s32 arg0) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void *Process_Create(void *, void *);
     extern u8 lbl_8026E1B0[];
     extern u8 lbl_8028C6A8[];
     void *temp;
 
-    temp = fn_8000BCA4(lbl_8026E1B0 + 0x15);
+    temp = Process_FindByName(lbl_8026E1B0 + 0x15);
     if (temp != NULL) {
         temp = Process_Create(lbl_8028C6A8, temp);
         *(s32 *)((u8 *)temp + 0x30) = arg0;
@@ -2187,8 +2187,8 @@ void Bg_DrawScrollLayers(void *self) {
 
 s32 fn_800A83C8(void) {
     extern u16 lbl_8026E3C0[8];
-    s32 fn_8000BCA4(void *);
-    return fn_8000BCA4((u8 *)lbl_8026E3C0 + 0x39) != 0;
+    s32 Process_FindByName(void *);
+    return Process_FindByName((u8 *)lbl_8026E3C0 + 0x39) != 0;
 }
 
 void fn_800A8400(void) {

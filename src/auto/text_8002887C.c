@@ -2156,7 +2156,7 @@ extern "C" void fn_8002DA30(void)
     void *fn_8014D8FC(void *);
     u8 fn_80146AE4(void);
     void fn_801481CC(void *, s32);
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     s32 fn_80015680(void *);
     void *fn_8014CA54(void *, s32);
     void *fn_80234198(void *, void *);
@@ -2207,7 +2207,7 @@ extern "C" void fn_8002DA30(void)
         fn_801481CC(Battle_str + 0x22B, 0x190);
         return;
     }
-    if (fn_8000BCA4(Battle_str + 0x23B) != 0) {
+    if (Process_FindByName(Battle_str + 0x23B) != 0) {
         timer = 0xA;
         lbl_80367254 = timer;
         str = Battle_str + 0x246;

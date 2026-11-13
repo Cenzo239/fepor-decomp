@@ -2724,11 +2724,11 @@ void fn_801694E4(void) {
 
 void fn_80169514(void) {
     extern u8 lbl_80277BC0[];
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void fn_8000A408(void);
     void fn_8013FEF0(void);
     fn_8013FEF0();
-    if (fn_8000BCA4(lbl_80277BC0 + 0xBE) != 0) {
+    if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
         fn_8000A408();
     }
 }
@@ -2742,11 +2742,11 @@ void fn_80169550(void *arg0) {
 
 void fn_80169580(void) {
     extern u8 lbl_80277BC0[];
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void fn_8000A3F8(void);
     void fn_8013FEE0(void);
     fn_8013FEE0();
-    if (fn_8000BCA4(lbl_80277BC0 + 0xBE) != 0) {
+    if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
         fn_8000A3F8();
     }
 }
@@ -2763,11 +2763,11 @@ void fn_801695BC(s32 arg0, s32 arg1, s32 arg2) {
 
 void fn_80169604(void) {
     extern u8 lbl_80277BC0[];
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void fn_8000A3F8(void);
     void fn_8013FEE0(void);
     fn_8013FEE0();
-    if (fn_8000BCA4(lbl_80277BC0 + 0xBE) != 0) {
+    if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
         fn_8000A3F8();
     }
 }
@@ -2777,14 +2777,14 @@ void fn_80169640(void) {
 }
 
 void fn_80169644(void *arg0) {
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void fn_8000A408(void);
     void fn_8007D064(s32, void *, s32);
     void fn_8013FEF0(void);
     extern u8 lbl_80277BC0[];
 
     fn_8013FEF0();
-    if (fn_8000BCA4(lbl_80277BC0 + 0xBE) != 0) {
+    if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
         fn_8000A408();
     }
     fn_8007D064(*(s32 *)((u8 *)arg0 + 0x30), arg0, *(s32 *)((u8 *)arg0 + 0x34));
@@ -3985,34 +3985,34 @@ void fn_8016B5E8(void) {
 }
 
 void fn_8016B60C(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     extern u16 lbl_80277EA0[40];
     void *temp_r3;
 
-    temp_r3 = fn_8000BCA4((u8 *)lbl_80277EA0 + 0x59);
+    temp_r3 = Process_FindByName((u8 *)lbl_80277EA0 + 0x59);
     if (temp_r3 != NULL) {
         *(u32 *)((u8 *)temp_r3 + 0x30) = *(u32 *)((u8 *)temp_r3 + 0x30) | 4;
     }
 }
 
 void fn_8016B64C(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     extern u16 lbl_80277EA0[40];
     void *temp_r3;
 
-    temp_r3 = fn_8000BCA4((u8 *)lbl_80277EA0 + 0x59);
+    temp_r3 = Process_FindByName((u8 *)lbl_80277EA0 + 0x59);
     if (temp_r3 != NULL) {
         *(u32 *)((u8 *)temp_r3 + 0x30) = *(u32 *)((u8 *)temp_r3 + 0x30) | 1;
     }
 }
 
 void fn_8016B68C(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     extern u16 lbl_80277EA0[40]; // 80 bytes / 2 bytes per u16 = 40
 
     void *temp_r3;
 
-    temp_r3 = fn_8000BCA4((u8 *)lbl_80277EA0 + 0x59); // Direct offset calculation
+    temp_r3 = Process_FindByName((u8 *)lbl_80277EA0 + 0x59); // Direct offset calculation
     if (temp_r3 != NULL) {
         *(u8 *)((u8 *)temp_r3 + 0x35) = 0xA;
         *(u32 *)((u8 *)temp_r3 + 0x30) &= 0xFFFFFFEF;
@@ -4415,7 +4415,7 @@ void fn_8016C1EC(void *arg0) {
     void fn_8014D8FC(void *);
     void fn_8016C3C8(void *);
     void fn_801DE0EC(s32 *, void *);
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     extern u8 gBattleState[];
     extern u8 lbl_80277EA0[];
     extern s32 lbl_8036AA2C;
@@ -4478,7 +4478,7 @@ void fn_8016C1EC(void *arg0) {
     *((u8 *)arg0 + 0x5B) = 0xA;
     fn_8016C3C8(arg0);
     fn_8005C8B4(lbl_80277EA0 + 0x78);
-    if (fn_8000BCA4(lbl_80277EA0 + 0xED) != 0) {
+    if (Process_FindByName(lbl_80277EA0 + 0xED) != 0) {
         fn_801DE0EC((sp[0] = 0x3E7, sp), arg0);
         fn_80145828();
     }
@@ -5485,7 +5485,7 @@ void fn_8016E1B4(void *arg0) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void **fn_8006EDD8(void *, s32);
@@ -5578,7 +5578,7 @@ void fn_8016E1B4(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AAB8);
     Prim2D_PrepareTex();
-    if (fn_8000BCA4(lbl_80277EA0 + 0xED) != 0) {
+    if (Process_FindByName(lbl_80277EA0 + 0xED) != 0) {
         fn_801DDE88(0x38, 0x29, 0x3E7);
     } else {
         fn_801DDE88(0x38, 0x29, *(u8 *)((u8 *)info + 0x3C));

@@ -1835,13 +1835,13 @@ void fn_801ED970(void *arg0, void *arg1)
     extern u8 lbl_8029A5FC[];
     extern u8 lbl_80366F00;
 
-    extern void *fn_8000BCA4(void *);
+    extern void *Process_FindByName(void *);
     extern void *Process_CreateChild(void *, void *);
 
     u8 *entry;
     void *value;
 
-    value = fn_8000BCA4(gGActorPathExt + 0x186);
+    value = Process_FindByName(gGActorPathExt + 0x186);
 
     entry = (u8 *)Process_CreateChild(lbl_8029A5FC, value);
 
@@ -1857,13 +1857,13 @@ void fn_801ED9DC(void *arg0, void *arg1)
     extern u8 lbl_8029A5FC[];
     extern u8 lbl_80366F00;
 
-    extern void *fn_8000BCA4(void *);
+    extern void *Process_FindByName(void *);
     extern void *Process_CreateChild(void *, void *);
 
     u8 *entry;
     void *value;
 
-    value = fn_8000BCA4(gGActorPathExt + 0x186);
+    value = Process_FindByName(gGActorPathExt + 0x186);
 
     entry = (u8 *)Process_CreateChild(lbl_8029A5FC, value);
 

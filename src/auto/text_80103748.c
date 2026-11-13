@@ -60,7 +60,7 @@ s32 fn_80103818(void) {
 
 /* Init unit-action menu configs if needed, then open the menu on the map UI process. */
 s32 Ui_OpenUnitActionMenu(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void Ui_CreateMenu(void *, s32, s32);
     void fn_800A8400(void);
@@ -82,7 +82,7 @@ s32 Ui_OpenUnitActionMenu(void) {
     s32 proc;
     u8 *entry;
 
-    proc = fn_8000BCA4((u8 *)lbl_802734D0 + 0xC4);
+    proc = Process_FindByName((u8 *)lbl_802734D0 + 0xC4);
     fn_800A8400();
     Process_Goto(proc, 0);
     if ((s8)lbl_80367964 == 0) {
@@ -167,7 +167,7 @@ s32 fn_80103998(void) {
 }
 
 s32 fn_801039A0(void *, void *, void *arg2) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void fn_800A8400(void);
     void fn_80168E90(s32);
@@ -193,7 +193,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     f0 = *(f32 *)(gBattleState + 0x538);
     temp_r5 = table + (s8)(s32)f1 + (((s32)(s8)(s32)f0) << 6);
     dst[0x14] = temp_r5[0xD];
-    temp_r31 = fn_8000BCA4(str + 0xC4);
+    temp_r31 = Process_FindByName(str + 0xC4);
     fn_800A8400();
     Process_Goto(temp_r31, 0);
     fn_80168E90(temp_r31);
@@ -210,7 +210,7 @@ s32 fn_80103A6C(void) {
 }
 
 s32 fn_80103A74(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     M2C_UNK Process_Goto(s32, M2C_UNK);
     M2C_UNK fn_800A8400();
     M2C_UNK String_CStr(M2C_UNK *);
@@ -226,7 +226,7 @@ s32 fn_80103A74(void) {
     M2C_UNK spC;
     M2C_UNK sp8;
 
-    temp_r31 = fn_8000BCA4((char *) &lbl_802734D0 + 0xC4);
+    temp_r31 = Process_FindByName((char *) &lbl_802734D0 + 0xC4);
     String_Init(&spC, gBattleState + 0x504, &sp8);
     fn_800C992C(&spC, &lbl_802734D0[0x157], strlen((u8 *)lbl_802734D0 + 0x157));
     fn_800A8400();
@@ -246,13 +246,13 @@ s32 fn_80103B30(void) {
 }
 
 s32 fn_80103B38(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void fn_800A8400(void);
     void Process_Goto(s32, s32);
     void fn_8011AC78(s32);
     extern char lbl_802734D0[];
 
-    s32 temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
+    s32 temp_r31 = Process_FindByName(lbl_802734D0 + 0xC4);
     fn_800A8400();
     Process_Goto(temp_r31, 0);
     fn_8011AC78(temp_r31);
@@ -269,7 +269,7 @@ s32 fn_80103B9C(void) {
 }
 
 s32 fn_80103BA4(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
@@ -277,7 +277,7 @@ s32 fn_80103BA4(void) {
     extern struct { u8 pad[0x100]; } lbl_8028EB50;
     s32 temp_r31;
 
-    temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
+    temp_r31 = Process_FindByName(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
@@ -296,7 +296,7 @@ s32 fn_80103C14(void) {
 }
 
 s32 fn_80103C1C(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
@@ -304,7 +304,7 @@ s32 fn_80103C1C(void) {
     extern struct { u8 pad[0x100]; } lbl_8028EB10;
     s32 temp_r31;
 
-    temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
+    temp_r31 = Process_FindByName(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
@@ -323,7 +323,7 @@ s32 fn_80103C8C(void) {
 }
 
 s32 fn_80103C94(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
     void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
@@ -331,7 +331,7 @@ s32 fn_80103C94(void) {
     extern struct { u8 pad[0x100]; } lbl_8028EAE8;
     s32 temp_r31;
 
-    temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
+    temp_r31 = Process_FindByName(lbl_802734D0 + 0xC4);
     if (temp_r31 != 0) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
@@ -350,13 +350,13 @@ s32 fn_80103D04(void) {
 }
 
 s32 fn_80103D0C(void) {
-    s32 fn_8000BCA4(void *);
+    s32 Process_FindByName(void *);
     void fn_800A8400(void);
     void Process_Goto(s32, s32);
     void fn_80132B00(s32, s32);
     extern char lbl_802734D0[];
 
-    s32 temp_r31 = fn_8000BCA4(lbl_802734D0 + 0xC4);
+    s32 temp_r31 = Process_FindByName(lbl_802734D0 + 0xC4);
     fn_800A8400();
     Process_Goto(temp_r31, 0);
     fn_80132B00(temp_r31, 1);

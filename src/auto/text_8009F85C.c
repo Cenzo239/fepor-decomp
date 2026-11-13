@@ -506,7 +506,7 @@ void *fn_800A0250(void) {
 }
 
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
-    void fn_8000BCA4(void *);
+    void Process_FindByName(void *);
     void fn_8018DC98(void);
     void fn_8018DCC0(void);
     extern u8 lbl_80366E24;
@@ -521,7 +521,7 @@ s32 fn_800A0260(s32 a, s32 b, void *arg2) {
         *(u8 *)((char *)arg2 + 0x39) = x;
     }
     if (lbl_80366E24 != 0) {
-        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
+        Process_FindByName(lbl_8026D8D8 + 0x3D0);
         fn_8018DCC0();
     } else {
         fn_8018DC98();
@@ -1516,7 +1516,7 @@ void *fn_800A19B0(void) {
 }
 
 s32 fn_800A19C0(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
     void fn_800A6A3C(void);
     void *Map_GetCursorUnit(void);
@@ -1536,7 +1536,7 @@ s32 fn_800A19C0(void) {
     void *temp_r30;
     u8 *cls;
 
-    temp_r31 = fn_8000BCA4(lbl_8026D8D8 + 0x531);
+    temp_r31 = Process_FindByName(lbl_8026D8D8 + 0x531);
     if (temp_r31 == NULL) {
         return 0x10;
     }

@@ -24,14 +24,15 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     return 0;
 }
 
-void fn_80006298(register u32 *dst, register u32 val, register u32 n) {
+#pragma optimization_level 3
+void fn_80006298(u32 *dst, u32 val, u32 n) {
     n >>= 2;
     dst--;
     do {
         *++dst = val;
     } while (--n);
 }
-
+#pragma optimization_level reset
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
     u32 count;
 
@@ -2074,18 +2075,20 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(u16 *)((*(u8 **)&lbl_80367140) + 0x20) &= ~0x800;
 }
 
-#pragma scheduling off
+#pragma peephole off
 void *Prim2D_PushZ(f32 *arg0)
 {
     extern u16 lbl_80367140;
 
-    if (arg0 != NULL) {
-        *arg0 = *(f32 *)(*(u8 **)&lbl_80367140 + 0x28);
-        arg0 = (f32 *)(*(u8 **)&lbl_80367140 + 0x60);
+    if (arg0 == NULL) {
+        goto done;
     }
+    *arg0 = *(f32 *)(*(u8 **)&lbl_80367140 + 0x28);
+    arg0 = (f32 *)(*(u8 **)&lbl_80367140 + 0x60);
+done:
     return arg0;
 }
-#pragma scheduling reset
+#pragma peephole on
 void Prim2D_PopZ(void *src, f32 farg0) {
     void PSMTXCopy(void *, void *);
     extern u16 lbl_80367140;
@@ -3514,7 +3517,7 @@ void fn_8000B9A4(void *arg0, void (*arg1)(void *)) {
     }
 }
 
-void *fn_8000BCA4(u8 *arg0) {
+void *Process_FindByName(u8 *arg0) {
     extern u8 lbl_802A66D8[];
     u8 *entry;
     u8 *a;

@@ -23,7 +23,7 @@ void UiPanel_ClearFlags(void *arg0) {
 }
 
 void fn_80120CFC(u16 *arg0) {
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void *Process_Find(void *);
     extern void *gPadInput;
     extern u8 lbl_80274CE0[];
@@ -37,7 +37,7 @@ void fn_80120CFC(u16 *arg0) {
     if (!(*arg0 & 8)) {
         buttons = *(s32 *)((u8 *)gPadInput + 4);
         if ((buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x200) &&
-            fn_8000BCA4(lbl_80274CE0 + 0x34) == 0) {
+            Process_FindByName(lbl_80274CE0 + 0x34) == 0) {
             if (gUiInputFlags & 3) {
                 flag = 0;
             } else {
@@ -3220,7 +3220,7 @@ s32 ScriptCmd_TutorialBasesDelete(void) {
 
 s32 ScriptCmd_TutorialBasesCreate(void) {
     extern u16 gScriptCmdNames[103];
-    fn_8000BCA4((u16*)((u8*)&gScriptCmdNames + 0x467));
+    Process_FindByName((u16*)((u8*)&gScriptCmdNames + 0x467));
     fn_80169804();
     return 1;
 }
@@ -3233,7 +3233,7 @@ s32 ScriptCmd_TutorialSallyDelete(void) {
 
 s32 ScriptCmd_TutorialSallyCreate(void) {
     extern u16 gScriptCmdNames[103];
-    fn_8000BCA4((u16*)((u8*)&gScriptCmdNames + 0x467));
+    Process_FindByName((u16*)((u8*)&gScriptCmdNames + 0x467));
     fn_8011AC78();
     return 1;
 }
@@ -3322,12 +3322,12 @@ s32 ScriptCmd_tr(void) {
 }
 
 s32 ScriptCmd_tt(s32 arg0) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void fn_8011D87C(s32);
     void fn_8011D908(s32, s32);
     extern u8 gScriptCmdNames[];
 
-    if (fn_8000BCA4(gScriptCmdNames + 0x472) != NULL) {
+    if (Process_FindByName(gScriptCmdNames + 0x472) != NULL) {
         fn_8011D87C(arg0);
         return 1;
     }
@@ -3360,7 +3360,7 @@ void fn_80127084(void) {
 }
 
 void *fn_801270A4(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void fn_8000B950(void *, void (*)(void *));
     void fn_80127150(void *);
     extern u8 gScriptCmdNames[];
@@ -3368,13 +3368,13 @@ void *fn_801270A4(void) {
     void *var;
 
     lbl_80367A68 = 0;
-    var = fn_8000BCA4(gScriptCmdNames + 0x467);
+    var = Process_FindByName(gScriptCmdNames + 0x467);
     if (var == NULL) {
-        var = fn_8000BCA4(gScriptCmdNames + 0x15B);
+        var = Process_FindByName(gScriptCmdNames + 0x15B);
         if (var == NULL) {
-            var = fn_8000BCA4(gScriptCmdNames + 0x479);
+            var = Process_FindByName(gScriptCmdNames + 0x479);
             if (var == NULL) {
-                var = fn_8000BCA4(gScriptCmdNames + 0x484);
+                var = Process_FindByName(gScriptCmdNames + 0x484);
             }
         }
     }
@@ -3490,7 +3490,7 @@ s32 ScriptCmd_GameUnbind(void) {
 }
 
 s32 ScriptCmd_GameBind(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void fn_8000B950(void *, void (*)(void *));
     void *Process_CreateChild(void *, void *);
     void fn_80127150(void *);
@@ -3500,13 +3500,13 @@ s32 ScriptCmd_GameBind(void) {
     void *var;
 
     lbl_80367A68 = 0;
-    var = fn_8000BCA4(gScriptCmdNames + 0x467);
+    var = Process_FindByName(gScriptCmdNames + 0x467);
     if (var == NULL) {
-        var = fn_8000BCA4(gScriptCmdNames + 0x15B);
+        var = Process_FindByName(gScriptCmdNames + 0x15B);
         if (var == NULL) {
-            var = fn_8000BCA4(gScriptCmdNames + 0x479);
+            var = Process_FindByName(gScriptCmdNames + 0x479);
             if (var == NULL) {
-                var = fn_8000BCA4(gScriptCmdNames + 0x484);
+                var = Process_FindByName(gScriptCmdNames + 0x484);
             }
         }
     }
@@ -3523,7 +3523,7 @@ s32 ScriptCmd_bmsini(void) {
 }
 
 s32 ScriptCmd_seqini(void) {
-    void *fn_8000BCA4(void *);
+    void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
     void fn_8000BD98(void *);
     void fn_8008D988(void);
@@ -3540,7 +3540,7 @@ s32 ScriptCmd_seqini(void) {
     gUiInputFlags = flags;
     flags &= ~0x20;
     gUiInputFlags = flags;
-    obj = fn_8000BCA4(obj);
+    obj = Process_FindByName(obj);
     if (obj != NULL) {
         Process_Goto(obj, 4);
     }
@@ -3638,7 +3638,7 @@ void fn_80127CDC(void) {
     extern s32 gUiInputFlags;
     extern u8 gScriptCmdNames[];
     extern u8 lbl_80290608[];
-    u32 fn_8000BCA4(void *);
+    u32 Process_FindByName(void *);
     void *Process_Create(void *, s32);
     s32 fn_80089634(void);
     s32 fn_8008A56C(void);
@@ -3652,7 +3652,7 @@ void fn_80127CDC(void) {
         temp_r31 = fn_80089634();
         temp_r3 = fn_8008A56C();
         if (!((u16)(temp_r3 | temp_r31) & 0xD) && (gUiInputFlags & 0x10) && !(gUiInputFlags & 4)
-            && fn_8000BCA4(gScriptCmdNames + 0x156) == 0) {
+            && Process_FindByName(gScriptCmdNames + 0x156) == 0) {
             obj = Process_Create(lbl_80290608, 2);
             ((u8 *)obj)[0x2B] = 0x7B;
         }
