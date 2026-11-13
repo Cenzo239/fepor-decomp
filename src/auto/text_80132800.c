@@ -2928,7 +2928,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 fn_8003AA40(void *);
     s32 Unit_GetDef(void *);
     s32 fn_8003A778(void *);
-    s32 fn_8003B490(void *);
+    s32 Unit_GetRes(void *);
     s32 fn_8003A5B4(void *);
     s32 fn_800388C8(void *);
     void *fn_8003A114(void *);
@@ -3002,7 +3002,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     self->v9(0x8C, 0x62, lbl_802767E0 + 0x7D, Unit_GetDef(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x52]);
     idx = fn_8003A778(unit);
-    self->v9(0x8C, 0x82, lbl_802767E0 + 0x84, fn_8003B490(unit), idx,
+    self->v9(0x8C, 0x82, lbl_802767E0 + 0x84, Unit_GetRes(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x53]);
     idx = fn_8003A5B4(unit);
     pair[0] = fn_8003A5B4(unit);
@@ -3150,7 +3150,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     s32 fn_8003AA40(void *);
     s32 Unit_GetDef(void *);
     s32 fn_8003A778(void *);
-    s32 fn_8003B490(void *);
+    s32 Unit_GetRes(void *);
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
@@ -3214,7 +3214,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     self->v9(0x8C, 0x48, lbl_802767E0 + 0x7D, Unit_GetDef(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x52]);
     idx = fn_8003A778(unit);
-    self->v9(0x8C, 0x67, lbl_802767E0 + 0x84, fn_8003B490(unit), idx,
+    self->v9(0x8C, 0x67, lbl_802767E0 + 0x84, Unit_GetRes(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x53]);
 
     if (self->unk48 != 0) {

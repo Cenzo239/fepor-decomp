@@ -372,7 +372,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     s8 fn_8003AA40(void *);
     s8 Unit_GetDef(void *);
     s8 fn_8003A778(void *);
-    s8 fn_8003B490(void *);
+    s8 Unit_GetRes(void *);
     extern u8 gUiStrings[];
     extern s32 gUiAtlas;
     extern f32 lbl_80369418;
@@ -593,7 +593,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
 
     lim = (s8)M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), s8 *, 0x53);
     mx = fn_8003A778(arg0);
-    cur = fn_8003B490(arg0);
+    cur = Unit_GetRes(arg0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803695CC);
     Prim2D_PrepareTex();

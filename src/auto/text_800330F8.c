@@ -321,7 +321,7 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 Unit_GetSpd(void *);
     s32 Unit_GetLck(void *);
     s32 Unit_GetDef(void *);
-    s32 fn_8003B490(void *);
+    s32 Unit_GetRes(void *);
     void BattleAnim_Queue(void *, s32);
 
     struct { s16 v[8]; } gr;
@@ -569,7 +569,7 @@ void fn_80034130(void *arg0, void *arg1) {
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DD) = g - excess;
     }
-    stat = fn_8003B490(arg0);
+    stat = Unit_GetRes(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DE);
     excess = (s8)((g + stat) - cap[0x53]);
@@ -624,7 +624,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 Unit_GetSpd(void *);
     s32 Unit_GetLck(void *);
     s32 Unit_GetDef(void *);
-    s32 fn_8003B490(void *);
+    s32 Unit_GetRes(void *);
     s32 fn_8003A398(void *);
     s32 fn_8003A5B4(void *);
     void BattleAnim_Queue(void *, s32, s8);
@@ -660,8 +660,8 @@ void fn_80034864(s32 self, void *arg1) {
     d5 = (s8)(t - Unit_GetLck((void *)self));
     t = Unit_GetDef((void *)(self + 0x2E0));
     d6 = (s8)(t - Unit_GetDef((void *)self));
-    t = fn_8003B490((void *)(self + 0x2E0));
-    d7 = (s8)(t - fn_8003B490((void *)self));
+    t = Unit_GetRes((void *)(self + 0x2E0));
+    d7 = (s8)(t - Unit_GetRes((void *)self));
     t = fn_8003A398((void *)(self + 0x2E0));
     d8 = (s8)(t - fn_8003A398((void *)self));
     t = fn_8003A5B4((void *)(self + 0x2E0));
@@ -709,7 +709,7 @@ u8 fn_80034A8C(s32 arg0, u8 arg1) {
 /* Roll level-up growths from rates, clamp to class caps, and queue non-zero gains. */
 void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     void BattleAnim_Queue(void *, s32, u8);
-    s32 fn_8003B490(void *);
+    s32 Unit_GetRes(void *);
     s32 Unit_GetDef(void *);
     s32 Unit_GetLck(void *);
     s32 Unit_GetSpd(void *);
@@ -836,7 +836,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     if (excess >= 0) {
         *(u8 *)((u8 *)self + 0x2DD) = g - excess;
     }
-    stat = fn_8003B490(self);
+    stat = Unit_GetRes(self);
     cls = *(void **)((u8 *)self + 0x18C);
     g = *(u8 *)((u8 *)self + 0x2DE);
     stat = g + stat;
@@ -3694,7 +3694,7 @@ s8 fn_8003B2D0(void *arg0)
 }
 
 #pragma opt_peephole off
-s8 fn_8003B490(void *arg0) {
+s8 Unit_GetRes(void *arg0) {
     void *temp_r4;
     s8 temp_r6_2;
     u8 temp_r5;
