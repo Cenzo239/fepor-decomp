@@ -1196,7 +1196,7 @@ void fn_80007884(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_80007898(u8 arg0) {
+void Prim2D_AddPrim(u8 arg0) {
     extern void *lbl_80367140;
     extern f32 lbl_80368B98;
     extern f32 lbl_80368B94;

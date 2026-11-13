@@ -2228,7 +2228,7 @@ extern "C" M2C_UNK fn_8000727C(f32);
 extern "C" M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK fn_80007858(f32, f32);
 extern "C" M2C_UNK fn_80007884();
-extern "C" M2C_UNK fn_80007898(M2C_UNK);
+extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
@@ -2278,7 +2278,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    fn_80007898(5);
+    Prim2D_AddPrim(5);
     fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     fn_80007124();
@@ -2733,7 +2733,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_800075D8(void);
     void fn_800077D8(f32, f32, f32, f32);
     void fn_80007884(void);
-    void fn_80007898(s32);
+    void Prim2D_AddPrim(s32);
     void fn_80009B8C(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
@@ -2792,7 +2792,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
         fn_80009B8C(0x50);
     }
     Prim2D_PrepareTex();
-    fn_80007898(3);
+    Prim2D_AddPrim(3);
     fn_800077D8(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
     fn_800075D8();
     sp8 = lbl_80368D9C;

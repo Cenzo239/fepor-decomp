@@ -190,7 +190,7 @@ void fn_801210CC(void *arg0) {
     void fn_800077D8(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
     void fn_80007884(void);
-    void fn_80007898(s32);
+    void Prim2D_AddPrim(s32);
     void fn_80009B8C(u8);
     void fn_80009C0C(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -243,7 +243,7 @@ void fn_801210CC(void *arg0) {
         Prim2D_Begin();
         fn_8000A174(spC, 0x10);
         Prim2D_PrepareTex();
-        fn_80007898(1);
+        Prim2D_AddPrim(1);
         w = *(u16 *)(spC + 0x20);
         fn_800077D8(
             (f32)(s32)(x - (s32)((w >> 1) & 0x7FFF)),
@@ -255,7 +255,7 @@ void fn_801210CC(void *arg0) {
         fn_8000A174((void *)0, 0x13);
         fn_80009C0C(lbl_8036A270);
         Prim2D_PrepareTex();
-        fn_80007898(6);
+        Prim2D_AddPrim(6);
         fn_80007858(
             (f32)(s32)(x - (s32)((u32)M2C_FIELD(self, u8 *, 0x51) >> 1)),
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC));
@@ -2476,7 +2476,7 @@ void fn_80125624(void *arg0) {
     void fn_801258E4(void *);
     void fn_80007340(void (*)(void *), void *);
     void fn_80007884(void);
-    void fn_80007898(s32);
+    void Prim2D_AddPrim(s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     Obj *obj = arg0;
@@ -2511,7 +2511,7 @@ void fn_80125624(void *arg0) {
     Prim2D_SetTransform(0.0f, 0.0f, 800.0f, 1.0f);
     Prim2D_BindTexture(obj->unk6C, 6, 0x411);
     Prim2D_PrepareTex();
-    fn_80007898(0xB);
+    Prim2D_AddPrim(0xB);
     fn_80007340(fn_801258E4, obj);
     fn_80007884();
 }
@@ -3689,7 +3689,7 @@ extern void fn_800076AC(s32, s32, s32, s32);
 extern void fn_80007790(f32, f32, f32, f32);
 extern void fn_80007858(f32, f32);
 extern void fn_80007884(void);
-extern void fn_80007898(s32);
+extern void Prim2D_AddPrim(s32);
 extern void fn_80009B8C(u8);
 extern void fn_80009B98(void);
 extern void fn_80009BC0(void *, s32);

@@ -82,7 +82,7 @@ s32 fn_8005A310(void *arg0, u8 arg1, u8 arg2) {
 extern "C" void DCFlushRange(void *, u32);
 extern "C" void fn_8000770C(f32, f32, f32, f32, f32, f32);
 extern "C" void fn_80007884(void);
-extern "C" void fn_80007898(s32);
+extern "C" void Prim2D_AddPrim(s32);
 extern "C" void fn_8000A03C(void *, void *, s32, s32);
 extern "C" void fn_8000A174(void *, s32);
 extern "C" void Prim2D_PrepareTex(void);
@@ -175,7 +175,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         h = ((Obj *)arg0)->v15();
         cols = ((Obj *)arg0)->v12();
         fy = (f32)(((a3 - 1) / cols) * h);
-        fn_80007898(1);
+        Prim2D_AddPrim(1);
         fw = (f32)((Obj *)arg0)->v15();
         w = ((Obj *)arg0)->v14();
         fn_8000770C((f32)a1, (f32)a2, fx, fy, (f32)w, fw);

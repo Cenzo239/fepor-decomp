@@ -67,7 +67,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     void fn_80007290(s32, s32, s32, s32);
     void fn_80007858(f32, f32);
     void fn_80007884(void);
-    void fn_80007898(s32);
+    void Prim2D_AddPrim(s32);
     s32 fn_8001CDE4(u8);
     void fn_80024214(s32, s32, void *);
     s32 fn_80092ADC(void *, u8);
@@ -82,7 +82,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     name = fn_8001CDE4(temp);
     sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
     fn_80024214(arg0, arg1, arg2);
-    fn_80007898(5);
+    Prim2D_AddPrim(5);
     fn_80007858((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x40), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     fn_80007124(sp8);
     fn_8000727C(lbl_803699E8);
@@ -1698,7 +1698,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void fn_80009C0C(f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
-    void fn_80007898(s32);
+    void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
     void fn_80007124(void *);
     void fn_8000727C(f32);
@@ -1720,14 +1720,14 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     fn_80009C0C(lbl_80369A04);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    fn_80007898(5);
+    Prim2D_AddPrim(5);
     fn_80007858((f32)*(s16 *)((u8 *)temp_r30 + 0x30), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
     fn_80007124(lbl_80312270);
     fn_8000727C(lbl_803699E8);
     fn_80007884();
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)temp_r31 + 4),
         (u8)((*temp_r31 != NULL) ? *(u8 *)((u8 *)*temp_r31 + 0x18) : 0));
-    fn_80007898(5);
+    Prim2D_AddPrim(5);
     fn_80007858((f32)(*(s16 *)((u8 *)temp_r30 + 0x30) + 0x78), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
     fn_80007124(lbl_80312270);
     fn_8000727C(lbl_803699E8);
@@ -1847,7 +1847,7 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     }
     else if (temp_r0 == 0x26) {
         temp_r3 = 5;
-        // function call to fn_80007898
+        // function call to Prim2D_AddPrim
     }
     else if (temp_r0 == 0x27) { 
         temp_r4 = *(s16*)((char*)arg4 + 0x30); 
@@ -2121,7 +2121,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80007858(f32, f32);
     M2C_UNK fn_80007884(void);
-    M2C_UNK fn_80007898(M2C_UNK);
+    M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK fn_80024214(s32, s32, void *);
     s32 fn_80104338(void *, u8);
     M2C_UNK sprintf(u8 *, void *, ...);
@@ -2131,7 +2131,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
 
     sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)fn_800AA794() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
     fn_80024214(arg0, arg1, arg2);
-    fn_80007898(5);
+    Prim2D_AddPrim(5);
     fn_80007858((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     fn_80007124(sp8);
     fn_8000727C(lbl_803699E8);
@@ -2187,7 +2187,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     u8 fn_8003701C(void *);
     s32 fn_800A8A88(s32);
     M2C_UNK sprintf(u8 *, void *, ...);
-    M2C_UNK fn_80007898(M2C_UNK);
+    M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK fn_80007858(f32, f32);
     M2C_UNK fn_80007124(void *);
     M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -2218,7 +2218,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             fn_8000A174(0, 0x13);
             Prim2D_PrepareTex();
             sprintf(sp18, lbl_8026D8D8 + 0x6C7, fn_800A8A88(fn_80037004(obj, idx)));
-            fn_80007898(5);
+            Prim2D_AddPrim(5);
             fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
             fn_80007124(sp18);
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
@@ -2237,7 +2237,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             if (fn_80036B20(obj, idx)) {
                 fn_802343E0(sp18, lbl_8026D8D8 + 0x719);
             }
-            fn_80007898(5);
+            Prim2D_AddPrim(5);
             fn_80007858((f32) (M2C_FIELD(arg2, s16 *, 0x30) + 0x5A), (f32) M2C_FIELD(arg2, s16 *, 0x32));
             fn_80007124(sp18);
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
