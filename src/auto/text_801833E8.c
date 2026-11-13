@@ -496,7 +496,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
     void fn_8018851C(void *);
     u8 *BattleMap_GetPath(void *);
     extern u8 gMoveAnimClass[];
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     extern u8 gBattleMap[];
     void *search[14];
     u8 *anim;
@@ -516,11 +516,11 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
         anim = fn_8000CAA0(gMoveAnimClass, parent);
         *(void **)(anim + 0x30) = unit;
         *(u16 *)(anim + 0x52) = 0x40;
-        *(void **)(anim + 0x54) = fn_800C45B8(-128, (void *)((u32)lbl_80278E24 + 0x1A9), 0);
+        *(void **)(anim + 0x54) = fn_800C45B8(-128, (void *)((u32)MoveAnim_str + 0x1A9), 0);
         anim[0x59] = 0;
         anim[0x5A] = 16;
         *(s8 *)(anim + 0x6A) = -1;
-        *(void **)(anim + 0x6C) = fn_800C45B8(-1536, (char *)((u8 *)lbl_80278E24 + 0x1A9), 0);
+        *(void **)(anim + 0x6C) = fn_800C45B8(-1536, (char *)((u8 *)MoveAnim_str + 0x1A9), 0);
         if (*(u16 *)(anim + 0x52) & 16) {
             fn_80050BCC(unit, 0);
         }
@@ -568,7 +568,7 @@ void *fn_80184264(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void fn_80050BCC(void *,s32); void fn_8018851C(void *);
-extern u8 gMoveAnimClass[],lbl_80278E24[];
+extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
 u8 *obj; s32 i; u8 *p; s32 count; s32 temp; u8 flags;
 search[12]=arg0; search[13]=0;
@@ -578,9 +578,9 @@ if(obj==0) {
 obj=fn_8000CAA0(gMoveAnimClass,arg3);
 *(void **)(obj+0x30)=arg0;
 *(u16 *)(obj+0x52)=arg2;
-*(void **)(obj+0x54)=fn_800C45B8(-128,lbl_80278E24+0x1A9,0);
+*(void **)(obj+0x54)=fn_800C45B8(-128,MoveAnim_str+0x1A9,0);
 obj[0x59]=0;obj[0x5A]=16;*(s8 *)(obj+0x6A)=-1;
-*(void **)(obj+0x6C)=fn_800C45B8(-1536,lbl_80278E24+0x1A9,0);
+*(void **)(obj+0x6C)=fn_800C45B8(-1536,MoveAnim_str+0x1A9,0);
 if(*(u16 *)(obj+0x52)&16) fn_80050BCC(arg0,0);
 if((*(u8 **)((u8 *)arg0+0x18C))[0x42]==9) *(u16 *)(obj+0x52)|=0x8000;
 temp=(s32)*(f32 *)((u8 *)arg0+4); obj[0x40]=temp;obj[0x42]=temp;
@@ -843,7 +843,7 @@ void fn_80185164(void *arg0) {
     void *fn_8000CA64(void *, void *);
     s32 fn_80052B30(s32);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     extern u8 lbl_80295AE8[];
     u8 spC[0x34];
     u32 sp8;
@@ -852,7 +852,7 @@ void fn_80185164(void *arg0) {
     void *temp_r5;
 
     temp_r5 = *(void **)((u8 *)arg0 + 0x30);
-    SeCue_PlayAt(lbl_80278E24 + 0x1AA, 0x64,
+    SeCue_PlayAt(MoveAnim_str + 0x1AA, 0x64,
                 *(f32 *)((u8 *)temp_r5 + 4),
                 *(f32 *)((u8 *)temp_r5 + 8),
                 *(f32 *)((u8 *)temp_r5 + 0xC));
@@ -1088,12 +1088,12 @@ void fn_80185A64(void *arg0) {
     u8 fn_800504FC(void *, s32);
     void fn_8004FC70(void *, s32);
     void fn_800558D8(void *);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     void *obj;
     u8 *flags;
 
     if (*((u8 *)arg0 + 0x3C) != 0) {
-        fn_800558D8(lbl_80278E24 + 0x1C1);
+        fn_800558D8(MoveAnim_str + 0x1C1);
         obj = *(void **)((u8 *)arg0 + 0x30);
         if (fn_800504FC(obj, 0xA) != 0) {
             fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 0xA);
@@ -1233,7 +1233,7 @@ void fn_80186260(void *arg0) {
 void fn_80186318(void *arg0) {
     s32 fn_80053C30(void *, void *);
     void fn_800536B0(s32, f32, f32, f32);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     f32 temp_f31;
     f32 temp_f30;
     f32 temp_f29;
@@ -1242,7 +1242,7 @@ void fn_80186318(void *arg0) {
     u8 *var_r3;
     u32 bit;
 
-    base = lbl_80278E24;
+    base = MoveAnim_str;
     temp_r5 = M2C_FIELD(arg0, void **, 0x30);
     var_r3 = base + 0x357;
     bit = M2C_FIELD(arg0, u16 *, 0x38) & 0x20;
@@ -1257,13 +1257,13 @@ void fn_80186318(void *arg0) {
 }
 
 void fn_801863BC(void *arg0) {
-    extern u16 lbl_80278E24[];
+    extern u16 MoveAnim_str[];
     void fn_800558D8(void *);
     void *var_r3;
 
-    var_r3 = (u8 *)lbl_80278E24 + 0x357;
+    var_r3 = (u8 *)MoveAnim_str + 0x357;
     if (*(u16 *)((u8 *)arg0 + 0x38) & 0x20) {
-        var_r3 = (u8 *)lbl_80278E24 + 0x34C;
+        var_r3 = (u8 *)MoveAnim_str + 0x34C;
     }
     fn_800558D8(var_r3);
 }
@@ -1658,7 +1658,7 @@ void fn_801877C4(void *arg0) {
     void fn_80185078(void *, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     s32 fn_80230BCC(s32);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     extern u8 lbl_80295A00[];
     extern u8 gBattleMap[];
     extern void *gPadInput;
@@ -1754,9 +1754,9 @@ void fn_801877C4(void *arg0) {
         }
         count = fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3A) - (s32)*(s8 *)((u8 *)arg0 + 0x38));
         count += fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3B) - (s32)*(s8 *)((u8 *)arg0 + 0x39));
-        msg = lbl_80278E24 + 0x371;
+        msg = MoveAnim_str + 0x371;
         if (count >= 2) {
-            msg = lbl_80278E24 + 0x360;
+            msg = MoveAnim_str + 0x360;
         }
         base = fn_80053C30(msg, arg0);
         fn_800536B0(f31, f30, f29);
@@ -1766,7 +1766,7 @@ void fn_801877C4(void *arg0) {
             cb(*(s32 *)((u8 *)arg0 + 0x44));
             *(u8 *)((u8 *)arg0 + 0x49) = 1;
         }
-        SeCue_PlayAt(lbl_80278E24 + 0x37C, 0x64, f31, f30, f29);
+        SeCue_PlayAt(MoveAnim_str + 0x37C, 0x64, f31, f30, f29);
         fn_8018CFA4(0xF, 6, 2, 0, arg0);
         fn_80025624(gPadInput, 8);
         Process_ClearFunc(arg0);
@@ -1789,7 +1789,7 @@ void fn_80187D70(void *arg0) {
     s32 fn_80230BCC(s32);
     void fn_80185078(void *, void *);
     extern u16 lbl_80295A78[36];
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACD8;
 
@@ -1837,10 +1837,10 @@ void fn_80187D70(void *arg0) {
     }
     sum = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
     if ((sum = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39)) + sum, sum >= 2)) {
-        base = lbl_80278E24;
+        base = MoveAnim_str;
         msg = base + 0x360;
     } else {
-        base = lbl_80278E24;
+        base = MoveAnim_str;
         msg = base + 0x371;
     }
     fn_800558D8(msg);
@@ -1985,7 +1985,7 @@ void MoveAnim_AttachClassCue(void *arg0) {
     s32 fn_802342B8(void *, void *);
     s32 fn_800056CC(const char *, ...);
     s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     void *ent;
     void *str;
     void *parent;
@@ -1997,58 +1997,58 @@ void MoveAnim_AttachClassCue(void *arg0) {
     parent = *(void **)((u8 *)arg0 + 0x30);
     ent = *(void **)((u8 *)parent + 0x18C);
     if (*(u8 *)((u8 *)ent + 0x42) == 9) {
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x3AB) == 0) {
-            str = lbl_80278E24 + 0x393;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3AB) == 0) {
+            str = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x3BF) == 0) {
-            str = lbl_80278E24 + 0x393;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3BF) == 0) {
+            str = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x3D2) == 0) {
-            str = lbl_80278E24 + 0x393;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3D2) == 0) {
+            str = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x3FF) == 0) {
-            str = lbl_80278E24 + 0x3E7;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x3FF) == 0) {
+            str = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x410) == 0) {
-            str = lbl_80278E24 + 0x3E7;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x410) == 0) {
+            str = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x423) == 0) {
-            str = lbl_80278E24 + 0x3E7;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x423) == 0) {
+            str = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x434) == 0) {
-            str = lbl_80278E24 + 0x3E7;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x434) == 0) {
+            str = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x312) == 0) {
-            str = lbl_80278E24 + 0x447;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x312) == 0) {
+            str = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x332) == 0) {
-            str = lbl_80278E24 + 0x447;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x332) == 0) {
+            str = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x33E) == 0) {
-            str = lbl_80278E24 + 0x447;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x33E) == 0) {
+            str = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x2E7) == 0) {
-            str = lbl_80278E24 + 0x45F;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2E7) == 0) {
+            str = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x305) == 0) {
-            str = lbl_80278E24 + 0x45F;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x305) == 0) {
+            str = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x2BC) == 0) {
-            str = lbl_80278E24 + 0x477;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2BC) == 0) {
+            str = MoveAnim_str + 0x477;
         }
-        if (fn_802342B8(*(void **)ent, lbl_80278E24 + 0x2DA) == 0) {
-            str = lbl_80278E24 + 0x477;
+        if (fn_802342B8(*(void **)ent, MoveAnim_str + 0x2DA) == 0) {
+            str = MoveAnim_str + 0x477;
         }
         parent = *(void **)((u8 *)arg0 + 0x30);
-        if (fn_802342B8(**(void ***)((u8 *)parent + 0x188), lbl_80278E24 + 0x4A7) == 0) {
-            str = lbl_80278E24 + 0x48F;
+        if (fn_802342B8(**(void ***)((u8 *)parent + 0x188), MoveAnim_str + 0x4A7) == 0) {
+            str = MoveAnim_str + 0x48F;
         }
         if (str != NULL) {
             parent = *(void **)((u8 *)arg0 + 0x30);
             f31 = *(f32 *)((u8 *)parent + 4);
             f30 = *(f32 *)((u8 *)parent + 8);
             f29 = *(f32 *)((u8 *)parent + 0xC);
-            fn_800056CC((char *)(lbl_80278E24 + 0x4B3), str);
+            fn_800056CC((char *)(MoveAnim_str + 0x4B3), str);
             *(s8 *)((u8 *)arg0 + 0x6A) = SeCue_PlayAt(str, 0x64, f31, f30, f29);
         }
     }
@@ -2343,7 +2343,7 @@ void fn_8018AD1C(void *arg0) {
     void fn_800588EC(s32);
     void fn_80058970(void *, void *);
     u8 Pad_IsButton(void *, s32);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     s32 sp20;
     s32 sp1C;
     s32 sp18;
@@ -2357,7 +2357,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4D3, lbl_80278E24 + 0x4D7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, arg0);
         sp20 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
     }
@@ -2365,7 +2365,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4DB, lbl_80278E24 + 0x4DF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, arg0);
         sp1C = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
     }
@@ -2373,7 +2373,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4E3, lbl_80278E24 + 0x4E7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, arg0);
         sp18 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
     }
@@ -2381,7 +2381,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4EB, lbl_80278E24 + 0x4EF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, arg0);
         sp14 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
     }
@@ -2389,7 +2389,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4F3, lbl_80278E24 + 0x4F7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, arg0);
         sp10 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
     }
@@ -2397,7 +2397,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x4FB, lbl_80278E24 + 0x4FF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, arg0);
         spC = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
     }
@@ -2405,7 +2405,7 @@ void fn_8018AD1C(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, lbl_80278E24 + 0x503, lbl_80278E24 + 0x507, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, arg0);
         sp8 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
     }
@@ -2843,12 +2843,12 @@ void fn_8018C680(void *arg0)
 {
     void *fn_800A8A88(void *);
     void fn_800056CC(const char *, ...);
-    extern u8 lbl_80278E24[];
+    extern u8 MoveAnim_str[];
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x30);
     p = *(void **)((u8 *)p + 0x188);
-    fn_800056CC((char *)(lbl_80278E24 + 0x97b), fn_800A8A88(p), lbl_80278E24);
+    fn_800056CC((char *)(MoveAnim_str + 0x97b), fn_800A8A88(p), MoveAnim_str);
 }
 
 #pragma opt_strength_reduction off
