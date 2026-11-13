@@ -405,7 +405,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void *fn_800C45B8(s32, void *, s32);
     void *fn_80107468(void *);
     s32 fn_80107874(void *, void *);
-    void fn_80107B54(void *, u32 *, u8);
+    void Dispos_ParseEntry(void *, u32 *, u8);
     u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
     void fn_80184750(void *, s32, s32, s32);
     s32 fn_801A1CC8(void);
@@ -521,7 +521,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                         *(s32 *)(sp8 + 0x2C) = 0;
                         sp8[0x37] = 0;
                         *(s32 *)(sp8 + 0x64) = 0;
-                        fn_80107B54(entry, buf, entry[0x10D]);
+                        Dispos_ParseEntry(entry, buf, entry[0x10D]);
                     }
                     unit = 0;
                     {
@@ -691,7 +691,7 @@ void fn_80106728(u8 *arg0) {
     void fn_8003816C(void *, u8, u8);
     void fn_8004F5EC(void *, s32);
     void *fn_80107468(void *);
-    void fn_80107B54(void *, u32 *, u8);
+    void Dispos_ParseEntry(void *, u32 *, u8);
     u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
     extern u16 gUnits[];
     u8 sp8[0x68];
@@ -789,7 +789,7 @@ case2:
         *(s32 *)(sp8 + 0x2C) = 0;
         sp8[0x37] = 0;
         *(s32 *)(sp8 + 0x64) = 0;
-        fn_80107B54(entry, buf, entry[0x10D]);
+        Dispos_ParseEntry(entry, buf, entry[0x10D]);
     }
     unit = 0;
     {
@@ -847,7 +847,7 @@ void fn_801069A0(u8 *arg0) {
     u32 Hash_Lookup(void *);
     u8 fn_8001B940(u32 *);
     u32 fn_8001B894(u32 *);
-    void fn_80107B54(u32 *, void *, s32);
+    void Dispos_ParseEntry(u32 *, void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
@@ -943,7 +943,7 @@ after_parse:
         *(s32 *)(sp10 + 0x64) = var_r26;
         goto loop_cmp;
     loop_body:
-        fn_80107B54(&spC, sp10, var_r28);
+        Dispos_ParseEntry(&spC, sp10, var_r28);
         var_r26 += 1;
         var_r30 += (s8)sp10[0xD];
         var_r31 += (s8)sp10[0xE];
@@ -961,7 +961,7 @@ after_parse:
 u32 Hash_Lookup();                                  /* extern */
 u8 fn_8001B940(u32 *);                              /* extern */
 u8 fn_8001B894(u32 *);                              /* extern */
-void fn_80107B54(u32 *, u32 *, u8);                 /* extern */
+void Dispos_ParseEntry(u32 *, u32 *, u8);                 /* extern */
 void fn_80106F68(s8 *arg1, s8 *arg2) {
     u32 temp_r3;
     u8 temp_r3_2;
@@ -1056,7 +1056,7 @@ void fn_80106F68(s8 *arg1, s8 *arg2) {
         sp74 = 0;
 loop_15:
         if (var_r25 < (s32) var_r27) {
-            fn_80107B54(&spC, sp10, var_r26);
+            Dispos_ParseEntry(&spC, sp10, var_r26);
             var_r25 += 1;
             var_r31 += (s8) *(((u8*)sp10)+0x1D);
             var_r30 += (s8) *(((u8*)sp10)+0x1E);
@@ -1177,7 +1177,7 @@ void *fn_80107468(void *arg0) {
 }
 
 s32 Dispos_ResolveUnit(u8 *arg0) {
-    void fn_80107B54(u32 *, u32 *, u8);
+    void Dispos_ParseEntry(u32 *, u32 *, u8);
     void *Unit_FindByName(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_8003D5FC(void *, u8);
@@ -1201,7 +1201,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         *(s32 *)(sp8 + 0x48 + i * 4) = 0;
     }
     obj = *(void **)arg0;
-    fn_80107B54((u32 *)arg0, (u32 *)sp8, arg0[0x10D]);
+    Dispos_ParseEntry((u32 *)arg0, (u32 *)sp8, arg0[0x10D]);
     unit = Unit_FindByName(*(void **)sp8);
     if (unit == NULL) {
         if ((arg0[0x10C] & 2) || (sp8[8] & 8)) {
@@ -1284,7 +1284,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     s32 fn_80015680(void *);
     void fn_8001B894(u32 *);
     s32 fn_8001B940(u32 *);
-    void fn_80107B54(u32 *, void *, u8);
+    void Dispos_ParseEntry(u32 *, void *, u8);
     void *fn_80234198(void *, void *);
     extern u8 gDisposStrings[];
     extern u8 gUnitLists[];
@@ -1353,7 +1353,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
         *(u32 *)out = spC;
         ((u8 *)out)[0x10C] = flags;
         ((u8 *)out)[0x10D] = (u8)b;
-        fn_80107B54(&spC, sp10, ((u8 *)out)[0x10D]);
+        Dispos_ParseEntry(&spC, sp10, ((u8 *)out)[0x10D]);
         if (a == 0) {
             s8 x = sp10[0xB];
             s8 y = sp10[0xC];
@@ -1377,7 +1377,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     return count;
 }
 #pragma use_lmw_stmw on
-void fn_80107B54(u32 *arg0, u32 *arg1, u8 arg2) {
+void Dispos_ParseEntry(u32 *arg0, u32 *arg1, u8 arg2) {
     s32 fn_8001B894(u32 *);
     u8 fn_8001B940(u32 *);
     void fn_800056CC(const char *, ...);
@@ -2206,7 +2206,7 @@ void fn_80109448(void *arg0, s32 arg1) {
         temp_r5 = ((s32)*(u32*)((char *)arg0 + 0x38)) >> 0x18;
         while (temp_r5 < 0x10) {
             if (*(u32 *)((char *)temp_r3 + (temp_r5 * 0x4)) != 0) {
-                fn_80107B54(arg0, *(void **)((char *)temp_r3 + (temp_r5 * 0x4)), arg1);
+                Dispos_ParseEntry(arg0, *(void **)((char *)temp_r3 + (temp_r5 * 0x4)), arg1);
             }
             temp_r5 += 1;
             if (temp_r5 >= 0x10) {
