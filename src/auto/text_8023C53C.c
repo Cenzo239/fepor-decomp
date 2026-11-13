@@ -7316,23 +7316,23 @@ void fn_80253694(unsigned char arg0, unsigned char arg1, unsigned char arg2, int
     return;
 }
 
-s16 fn_802537F8(s32 arg0, u32 arg1, s32 arg2) {
-    u16 fn_80260F18(s32);
-    extern u16 lbl_8034CB74[];
-    u16 var_r0;
-    u32 temp_r0;
+s16 fn_802537F8(SynthVmState *arg0, u32 arg1, s32 arg2) {
+    u16 fn_80260F18(SynthVmState *, s32);
+    extern s32 lbl_8034CB74[];
+    s32 val;
+    u8 idx;
 
-    if (arg1 != 0U) {
-        var_r0 = fn_80260F18(arg2);
+    if (arg1 != 0) {
+        val = (u16)fn_80260F18(arg0, arg2);
     } else {
-        temp_r0 = arg2 & 0x1F;
-        if (temp_r0 < 0x10U) {
-            var_r0 = *(u16*) (arg0 + ((temp_r0 * 4) & 0x3FC) + 0xAC);
+        idx = (u8)(arg2 & 0x1F);
+        if (idx < 16) {
+            val = arg0->regs[idx];
         } else {
-            var_r0 = *(u16*) (lbl_8034CB74 + ((temp_r0 * 4) & 0x3FC) - 0x40);
+            val = lbl_8034CB74[idx - 16];
         }
     }
-    return (s16) var_r0;
+    return (s16)val;
 }
 
 void fn_80253860(SynthVmState *arg0, u32 *arg1, u8 op) {
@@ -16226,6 +16226,22 @@ int fn_80265544(int arg0, int arg1, u32 arg2) {
     *(int *)(entry + 0x14) = arg1;
     *(u32 *)(entry + 0x1C) = arg2;
     return fn_80266CFC(arg0, 1, 3, (void *)fn_80265430);
+}
+
+s32 fn_80265638(s32 arg0, s32 arg1, u32 arg2) {
+    extern u8 lbl_803669A0[];
+    extern int fn_80266CFC(int, int, int, void *);
+    void fn_80265430(void);
+    u8 *entry;
+
+    entry = lbl_803669A0 + (arg0 << 8);
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        return 2;
+    }
+    *entry = 0xFF;
+    *(s32 *)(entry + 0x14) = arg1;
+    *(u32 *)(entry + 0x1C) = arg2;
+    return fn_80266CFC(arg0, 1, 3, fn_80265430);
 }
 
 #pragma scheduling off
