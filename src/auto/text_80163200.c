@@ -1069,7 +1069,7 @@ s16 fn_80164D9C(void *arg0) {
 }
 
 #pragma scheduling reset
-s16 fn_80164FBC(void *arg0, s16 arg1) {
+s16 UnitInv_FindFilledDown(void *arg0, s16 arg1) {
     for (; arg1 >= 0; arg1--) {
         if (IsSlotAvailable(arg0, arg1)) {
             break;
@@ -6240,7 +6240,7 @@ void fn_8016F694(void *arg0) {
     void fn_80138808(void *, void *);
     void UnitInv_Refresh(void *);
     s16 fn_80164E78(void *, s16);
-    s16 fn_80164FBC(void *, s16);
+    s16 UnitInv_FindFilledDown(void *, s16);
     void fn_80184C7C(void *, s32, s32, s32);
     void *temp_r29;
     s16 temp_r30;
@@ -6251,7 +6251,7 @@ void fn_8016F694(void *arg0) {
     temp_r29 = M2C_FIELD(arg0, void **, 0x4C);
     temp_r30 = M2C_FIELD(temp_r29, s16 *, 0x4C);
     UnitInv_Refresh(temp_r29);
-    var_r3 = fn_80164FBC(temp_r29, temp_r30);
+    var_r3 = UnitInv_FindFilledDown(temp_r29, temp_r30);
     if (var_r3 < 0) {
         var_r3 = fn_80164E78(temp_r29, temp_r30);
     }
@@ -6858,7 +6858,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     void fn_801436AC(void *, s32);
     void fn_80143C9C(void *);
     void Item_Clear(s32);
-    s16 fn_80164FBC(void *, s16);
+    s16 UnitInv_FindFilledDown(void *, s16);
     s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
     extern u8 gUiMsgPopupProc[];
@@ -6932,7 +6932,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     fn_801436AC(list, item);
     fn_80143C9C(list);
     Item_Clear(item);
-    next = fn_80164FBC(inv, *(s16 *)((u8 *)inv + 0x4c));
+    next = UnitInv_FindFilledDown(inv, *(s16 *)((u8 *)inv + 0x4c));
     if (next < 0) {
         next = fn_80164E78(inv, *(s16 *)((u8 *)inv + 0x4c));
     }
@@ -7417,7 +7417,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     void fn_800381EC(void *, s32);
     void fn_80138808(void *, void *);
     void fn_80050C90(void *);
-    s16 fn_80164FBC(void *, s16);
+    s16 UnitInv_FindFilledDown(void *, s16);
     s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
     extern u32 gUiContext[];
@@ -7444,7 +7444,7 @@ extern "C" void fn_80171C0C(void *arg0) {
         fn_80138808(tmp44, unit);
         fn_80050C90(unit);
     }
-    var_r3 = fn_80164FBC(obj, saved);
+    var_r3 = UnitInv_FindFilledDown(obj, saved);
     if (0 > var_r3) {
         var_r3 = fn_80164E78(obj, saved);
     }
