@@ -445,7 +445,7 @@ void fn_80019FC4(void)
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     s32 fn_8001EB44(u32);
-    s32 fn_8001E7C0(u32);
+    s32 Item_GetKindFromIid(u32);
     s32 fn_8001CE78(u32);
     void fn_8001DE1C(void *, u32);
     void fn_8001DA94(void *, u32);
@@ -550,7 +550,7 @@ void fn_80019FC4(void)
 
         entry[0x13] = fn_8001EB44(value);
 
-        entry[0x14] = fn_8001E7C0(*(u32 *)(entry + 0x0));
+        entry[0x14] = Item_GetKindFromIid(*(u32 *)(entry + 0x0));
 
         if (data != 0) {
             value = (data[0] << 24) +
@@ -2588,7 +2588,7 @@ void fn_8001E71C(void *arg0) {
     }
 }
 
-s32 fn_8001E7C0(void *arg0) {
+s32 Item_GetKindFromIid(void *arg0) {
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_80268820[];
 
