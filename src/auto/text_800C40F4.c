@@ -22046,6 +22046,7 @@ void fn_800FF0D4(s32 *arg0, s32 *arg1, u8 (*arg2)(s32, s32)) {
     }
 }
 
+/* If auto-equip is allowed, pick the highest-scored usable held weapon with range > 1. */
 void Ai_SelectBestHeldWeapon(void) {
     extern u8 gUiContext[];
     extern u8 gAiState[];
@@ -22055,71 +22056,71 @@ void Ai_SelectBestHeldWeapon(void) {
     s32 fn_8009339C(void *, void *);
     void fn_800951D0(void *, s32);
     void *unit;
-    s8 best;
+    s8 bestSlot;
     s8 bestScore;
     s8 i;
-    void **item;
-    void *obj;
-    u8 flag;
-    u8 v;
-    u8 w;
-    s32 val;
+    void **slot;
+    void *item;
+    u8 doSelect;
+    u8 kind;
+    u8 range;
+    s32 cmd;
 
     unit = *(void **)gUiContext;
     if ((s8)gUiContext[0x12] != 0) {
-        flag = 0;
+        doSelect = 0;
     } else if (gAiState[1] & 4) {
-        flag = 0;
+        doSelect = 0;
     } else if (*(s32 *)((u8 *)unit + 0x1A0) & 0x18) {
-        flag = 0;
+        doSelect = 0;
     } else {
-        val = gUiContext[8];
-        if (val < 0x15) {
-            if (val == 0xF) {
+        cmd = gUiContext[8];
+        if (cmd < 0x15) {
+            if (cmd == 0xF) {
                 goto L_zero;
             }
             goto L_one;
         }
-        if (val < 0x17) {
+        if (cmd < 0x17) {
 L_zero:
-            flag = 0;
+            doSelect = 0;
         } else {
 L_one:
-            flag = 1;
+            doSelect = 1;
         }
     }
 
-    if (flag != 0) {
-        best = -1;
+    if (doSelect != 0) {
+        bestSlot = -1;
         bestScore = -0x80;
         for (i = 0; i < 4; i++) {
-            item = Unit_GetHeldItemSlot(unit, i);
-            if (*item == NULL) {
+            slot = Unit_GetHeldItemSlot(unit, i);
+            if (*slot == NULL) {
                 break;
             }
-            if ((u8)fn_8009339C(unit, *item) != 0) {
-                obj = *item;
-                if (obj != NULL) {
-                    v = *(u8 *)((u8 *)obj + 0x1D);
+            if ((u8)fn_8009339C(unit, *slot) != 0) {
+                item = *slot;
+                if (item != NULL) {
+                    kind = *(u8 *)((u8 *)item + 0x1D);
                 } else {
-                    v = 0;
+                    kind = 0;
                 }
-                if (v <= 1) {
-                    if (obj != NULL) {
-                        w = fn_8001DD54(obj, unit);
+                if (kind <= 1) {
+                    if (item != NULL) {
+                        range = fn_8001DD54(item, unit);
                     } else {
-                        w = 0;
+                        range = 0;
                     }
-                    if (w > 1) {
-                        if (bestScore < (s32)(u8)fn_8001D500(item)) {
-                            bestScore = fn_8001D500(item);
-                            best = i;
+                    if (range > 1) {
+                        if (bestScore < (s32)(u8)fn_8001D500(slot)) {
+                            bestScore = fn_8001D500(slot);
+                            bestSlot = i;
                         }
                     }
                 }
             }
         }
-        fn_800951D0(unit, best);
+        fn_800951D0(unit, bestSlot);
     }
 }
 
