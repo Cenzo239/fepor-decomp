@@ -840,7 +840,7 @@ void GXSetGPFifo(void *fifo) {
     void __GXWriteFifoIntEnable(u8, u8);
     void __GXFifoLink(u8);
     void __GXWriteFifoIntReset(u8, u8);
-    void fn_8021F2F0(void);
+    void __GXFifoReadEnable(void);
     void fn_802037B0(void);
     extern u16* const __GXData;
     extern u16* __cpReg;
@@ -890,7 +890,7 @@ void GXSetGPFifo(void *fifo) {
     __cpReg[1] = M2C_FIELD(__GXData, u32 *, 0x8);
 
     __GXWriteFifoIntReset(1, 1);
-    fn_8021F2F0();
+    __GXFifoReadEnable();
     OSRestoreInterrupts(enabled);
 }
 
@@ -961,7 +961,7 @@ void __GXFifoInit(void)
     __GXCurrentGPFifo = 0;
 }
 
-void fn_8021F2F0(void) {
+void __GXFifoReadEnable(void) {
     extern u8 *__GXData;
     extern u8 *__cpReg;
     u32 value;
