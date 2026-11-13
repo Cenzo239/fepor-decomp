@@ -13384,7 +13384,7 @@ void fn_801D2E9C(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_801D2ED0(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorScrollListPanel(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
