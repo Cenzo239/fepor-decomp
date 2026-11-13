@@ -4888,7 +4888,8 @@ void fn_8003D70C(s32 arg0) {
     *(u8 *)(arg0 + 0x1B2) = *(u8 *)(arg0 + 0x1B2) + (s7 * factor) / 10000;
 }
 
-s32 Unit_CanReceiveItem(s32 arg0, void *arg1) {
+s32 Unit_CanReceiveItem(s32 unit, void *item) {
+    /* True if item is free, under CON wt limit, and unit has an empty item/held slot. */
     u64 *Item_GetFlagsPtr(void *);
     u8 Item_GetWt(void *);
     s32 fn_8003B258(void);
@@ -4897,19 +4898,19 @@ s32 Unit_CanReceiveItem(s32 arg0, void *arg1) {
     s8 lim;
     u8 code;
 
-    if (((*(u8 *)((u8 *)arg1 + 5) >> 7) & 1) != 0) {
+    if (((*(u8 *)((u8 *)item + 5) >> 7) & 1) != 0) {
         code = 2;
     } else {
         lim = (s8)fn_8003B258();
-        if ((s32)Item_GetWt(arg1) >= (s32)lim) {
+        if ((s32)Item_GetWt(item) >= (s32)lim) {
             code = 1;
         } else {
-            if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
-                if (Unit_FindEmptyHeldSlot(arg0) < 0) {
+            if ((*Item_GetFlagsPtr(item) & 5ULL) != 0) {
+                if (Unit_FindEmptyHeldSlot(unit) < 0) {
                     code = 3;
                     goto end;
                 }
-            } else if (Unit_FindEmptyItemSlot(arg0) < 0) {
+            } else if (Unit_FindEmptyItemSlot(unit) < 0) {
                 code = 3;
                 goto end;
             }
