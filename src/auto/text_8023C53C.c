@@ -5807,44 +5807,45 @@ s32 AudioGroup_CompareId(u16 *arg0, u16 *arg1) {
     return *arg0 - *arg1;
 }
 
-s32 AudioGroup_Lookup(u16 id, void *arg1) {
-    struct Header {
+/* Look up an audio group entry by id across gAudioGroups and fill out. */
+s32 AudioGroup_Lookup(u16 id, void *out) {
+    struct AudioGroupHeader {
         u32 unk0;
-        u32 unk4;
+        u32 sizeAndFmt;
         u32 unk8;
         u32 unkC;
     };
-    struct Entry {
+    struct AudioGroupEntry {
         u16 id;
         u16 ref;
         u32 unk4;
-        u32 unk8;
-        struct Header header;
-        u32 unk1C;
+        u32 data;
+        struct AudioGroupHeader header;
+        u32 relOff;
     };
-    struct Group {
-        struct Entry *entries;
+    struct AudioGroup {
+        struct AudioGroupEntry *entries;
         u32 unk4;
         u16 count;
         u16 pad;
     };
-    struct Info {
+    struct AudioGroupInfo {
         u32 unk0;
-        u32 unk4;
-        u32 unk8;
+        u32 data;
+        u32 extra;
         u32 unkC;
-        u32 unk10;
+        u32 size;
         u32 unk14;
         u32 unk18;
-        u8 unk1C;
+        u8 fmt;
     };
     void *Bsearch(void *, void *, u16, s32, s32 (*)(u16 *, u16 *));
-    extern struct Entry gAudioGroupLookupKey;
-    extern struct Group gAudioGroups[];
+    extern struct AudioGroupEntry gAudioGroupLookupKey;
+    extern struct AudioGroup gAudioGroups[];
     extern u16 gAudioGroupCount;
-    extern struct Entry *gAudioGroupFound;
-    extern struct Header *gAudioGroupHeader;
-    struct Info *info = arg1;
+    extern struct AudioGroupEntry *gAudioGroupFound;
+    extern struct AudioGroupHeader *gAudioGroupHeader;
+    struct AudioGroupInfo *info = out;
     s32 i;
 
     gAudioGroupLookupKey.id = id;
@@ -5852,16 +5853,16 @@ s32 AudioGroup_Lookup(u16 id, void *arg1) {
         if ((gAudioGroupFound = Bsearch(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, AudioGroup_CompareId)) != NULL && gAudioGroupFound->ref != 0) {
             gAudioGroupHeader = &gAudioGroupFound->header;
             info->unk0 = gAudioGroupHeader->unk0;
-            info->unk4 = gAudioGroupFound->unk8;
+            info->data = gAudioGroupFound->data;
             info->unkC = 0;
             info->unk14 = gAudioGroupHeader->unk8;
-            info->unk10 = gAudioGroupHeader->unk4 & 0xFFFFFF;
+            info->size = gAudioGroupHeader->sizeAndFmt & 0xFFFFFF;
             info->unk18 = gAudioGroupHeader->unkC;
-            info->unk1C = gAudioGroupHeader->unk4 >> 24;
-            if (gAudioGroupFound->unk1C != 0) {
-                info->unk8 = gAudioGroupFound->unk1C + (u32)gAudioGroups[i].entries;
+            info->fmt = gAudioGroupHeader->sizeAndFmt >> 24;
+            if (gAudioGroupFound->relOff != 0) {
+                info->extra = gAudioGroupFound->relOff + (u32)gAudioGroups[i].entries;
             } else {
-                info->unk8 = 0;
+                info->extra = 0;
             }
             return 0;
         }
