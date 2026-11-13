@@ -11276,7 +11276,8 @@ void *fn_800E26CC(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void Win_DrawColorRect(void *arg0) {
+void Win_DrawColorRect(void *win) {
+    /* Draw the window's axis-aligned fill rect; alpha = base alpha * parent fade. */
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_EndPrim();
@@ -11287,29 +11288,29 @@ void Win_DrawColorRect(void *arg0) {
     M2C_UNK Prim2D_Begin();
     extern f32 gWinDrawZero;
     extern f32 gWinDrawOne;
-    M2C_UNK var_r30;
-    s32 temp_r29;
-    s32 temp_r28;
-    s32 temp_r27;
-    s32 temp_r26;
-    unsigned int temp_r25;
+    M2C_UNK texMode;
+    s32 w;
+    s32 h;
+    s32 x;
+    s32 y;
+    unsigned int alpha;
 
-    var_r30 = 0x10;
-    temp_r27 = M2C_FIELD(arg0, s32 *, 0x54);
-    temp_r26 = M2C_FIELD(arg0, s32 *, 0x58);
-    temp_r29 = M2C_FIELD(arg0, s32 *, 0x5C) - temp_r27;
-    temp_r28 = M2C_FIELD(arg0, s32 *, 0x60) - temp_r26;
-    temp_r25 = (s32) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x6C) * (f32) M2C_FIELD(arg0, u8 *, 0x53));
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x64) != 0) {
-        var_r30 = 0x800;
+    texMode = 0x10;
+    x = M2C_FIELD(win, s32 *, 0x54);
+    y = M2C_FIELD(win, s32 *, 0x58);
+    w = M2C_FIELD(win, s32 *, 0x5C) - x;
+    h = M2C_FIELD(win, s32 *, 0x60) - y;
+    alpha = (s32) (M2C_FIELD(M2C_FIELD(win, void **, 0x38), f32 *, 0x6C) * (f32) M2C_FIELD(win, u8 *, 0x53));
+    if ((u8) M2C_FIELD(win, u8 *, 0x64) != 0) {
+        texMode = 0x800;
     }
     Prim2D_Begin();
-    Prim2D_SetTransform(gWinDrawZero, gWinDrawZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), gWinDrawOne);
-    Prim2D_SetTex(0, var_r30);
+    Prim2D_SetTransform(gWinDrawZero, gWinDrawZero, (f32) M2C_FIELD(win, s32 *, 0x44), gWinDrawOne);
+    Prim2D_SetTex(0, texMode);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32) temp_r27, (f32) temp_r26, (f32) temp_r29, (f32) temp_r28);
-    Prim2D_SetColor(M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51), M2C_FIELD(arg0, u8 *, 0x52), (u8) temp_r25);
+    Prim2D_SetRect((f32) x, (f32) y, (f32) w, (f32) h);
+    Prim2D_SetColor(M2C_FIELD(win, u8 *, 0x50), M2C_FIELD(win, u8 *, 0x51), M2C_FIELD(win, u8 *, 0x52), (u8) alpha);
     Prim2D_EndPrim();
 }
 
