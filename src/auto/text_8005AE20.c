@@ -688,7 +688,7 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     return Str_Cmp(sp18, sp8) == 0;
 }
 
-u16 fn_8005C144(u8 *arg0) {
+u16 FileCache_Probe(u8 *arg0) {
     s32 fn_8020C3E0(u8 *);
     s32 Str_Cmp(u8 *, M2C_UNK *);
     extern M2C_UNK gFileCache;

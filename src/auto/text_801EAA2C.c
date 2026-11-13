@@ -2521,7 +2521,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
 
 void fn_801EF6BC(void *arg0) {
     typedef struct { u32 unk0; char name[4]; } Named;
-    u16 fn_8005C144(void);
+    u16 FileCache_Probe(void);
     s32 FileCache_Load(void);
     void Model_SetAlpha(void *, s32);
     void Model_SetColor(void *, s32, s32, s32);
@@ -2605,7 +2605,7 @@ void fn_801EF6BC(void *arg0) {
     String_Destroy(&spB4, -1);
     String_Destroy(&spC0, -1);
     String_CStr(&spE4);
-    if ((u16)fn_8005C144() != 0x8000) {
+    if ((u16)FileCache_Probe() != 0x8000) {
         String_CStr(&spE4);
         *(s32 *)((u8 *)self + 0xC0) = FileCache_Load();
         *(void **)((u8 *)self + 0xC4) = GActor_Create();

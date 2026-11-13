@@ -3104,7 +3104,7 @@ void String_ConcatCStr(M2C_UNK *arg0, M2C_UNK *unused, s32 arg2) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
-    u16 fn_8005C144(void);
+    u16 FileCache_Probe(void);
     void *Heap_Alloc(u32);
     void Xml_GetChildValue(char *, void *);
     char *Xml_GetNamedValue(char *, void *, String *);
@@ -3206,7 +3206,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
 
     String_Assign((String *)(self + 0x198), &sp94, 0, -1);
     String_CStr(&sp94);
-    if ((u16)fn_8005C144() == 0x8000) {
+    if ((u16)FileCache_Probe() == 0x8000) {
         String_Destroy(&sp88, -1);
         String_Destroy(&sp94, -1);
         return;
@@ -3459,7 +3459,7 @@ Xml_Destroy(f,1);String_Destroy(&sp60,-1);String_Destroy(&sp6C,-1);
 #pragma global_optimizer off
 extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void DebugPrint(const char *, ...);
-    u16 fn_8005C144(void);
+    u16 FileCache_Probe(void);
     void *fn_8005C82C(s32);
     void fn_8008CDE0(void *, void *);
     char *String_CStr(String *);
@@ -3538,7 +3538,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     String_Destroy(&spD0, -1);
     fn_800C992C(&spDC, lbl_802704F8 + 0x1D1, strlen(lbl_802704F8 + 0x1D1));
     String_CStr(&spDC);
-    if ((u16)fn_8005C144() == 0x8000) {
+    if ((u16)FileCache_Probe() == 0x8000) {
         DebugPrint(lbl_802704F8 + 0x372, String_CStr(&spDC));
         String_Destroy(&spDC, -1);
         return 0;
@@ -3572,7 +3572,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
             String_Destroy(&sp64, -1);
             String_Destroy(&sp58, -1);
             String_CStr(&sp4C);
-            if ((u16)fn_8005C144() != 0x8000) {
+            if ((u16)FileCache_Probe() != 0x8000) {
                 String_CStr(&sp4C);
                 loaded = fn_8005C82C(8);
                 String_Destroy(&sp4C, -1);
@@ -7700,7 +7700,7 @@ String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 
 #pragma use_lmw_stmw on
 s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
-    u16 fn_8005C144(void);
+    u16 FileCache_Probe(void);
     s32 FileCache_Load(void);
     char *String_CStr(String *);
     void String_AssignCStr(String *, char *, u32);
@@ -7754,7 +7754,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&a, -1);
     }
     String_CStr(&name);
-    if ((u16)fn_8005C144() != 0x8000) {
+    if ((u16)FileCache_Probe() != 0x8000) {
         String_CStr(&name);
         ret = FileCache_Load();
         String_Destroy(&name, -1);
@@ -7779,7 +7779,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&a, -1);
     }
     String_CStr(&name);
-    if ((u16)fn_8005C144() != 0x8000) {
+    if ((u16)FileCache_Probe() != 0x8000) {
         String_CStr(&name);
         ret = FileCache_Load();
         String_Destroy(&name, -1);
@@ -9422,7 +9422,7 @@ void fn_800DDD08(void* arg0) {
 
 void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void DebugPrint(char *, char *, ...);
-    u16 fn_8005C144(void);
+    u16 FileCache_Probe(void);
     s32 FileCache_Load(void);
     s32 fn_800639B4(char *);
     s32 fn_80065EE8(void);
@@ -9565,7 +9565,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_Destroy(&strC0, -1);
     String_Destroy(&strCC, -1);
     String_CStr(&str114);
-    if ((u16)fn_8005C144() != 0x8000) {
+    if ((u16)FileCache_Probe() != 0x8000) {
         String_CStr(&str114);
         *(s32 *)((u8 *)self + 0x48) = FileCache_Load();
     } else {
@@ -9657,7 +9657,7 @@ loop_body:
 
     if (ok != 0) {
         String_CStr(&str120);
-        if ((u16)fn_8005C144() != 0x8000) {
+        if ((u16)FileCache_Probe() != 0x8000) {
             name = String_CStr(&str120);
             entry = fn_800DE73C((u8 *)self + 0x58, &str108);
             *(s32 *)((u8 *)entry + 0xC) = fn_800639B4(name);

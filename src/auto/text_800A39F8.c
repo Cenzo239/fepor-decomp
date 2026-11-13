@@ -1076,7 +1076,7 @@ void fn_800A5CF4(void) {
 
 void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
     void *Process_Create(void *, M2C_UNK);
-    u16 fn_8005C144();
+    u16 FileCache_Probe();
     s32 fn_800C42AC(M2C_UNK);
     M2C_UNK fn_80147188(M2C_UNK);
     M2C_UNK fn_801C9724();
@@ -1085,7 +1085,7 @@ void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
     extern u8 lbl_8028C678[];
     void *temp_r31;
 
-    if ((u16) fn_8005C144() == 0x8000) {
+    if ((u16) FileCache_Probe() == 0x8000) {
         arg0 = lbl_8026E1B0 + 0x4A;
     }
     temp_r31 = Process_Create(lbl_8028C678, 5);

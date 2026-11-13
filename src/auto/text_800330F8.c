@@ -17,7 +17,7 @@ static inline void *get_4F128_resource(void *arg0,s32 value) {
  void *fn_8004B078(void *,s32);
  void *fn_8004B158(void *);
  s32 fn_8004B1A0(s32);
- u16 fn_8005C144(void *);
+ u16 FileCache_Probe(void *);
  void fn_8005C870(void *,u16);
  u8 Status_Test(void *,s32);
  void sprintf(void *,void *,...);
@@ -47,7 +47,7 @@ static inline void *get_4F128_resource(void *arg0,s32 value) {
  resolved=Res_GetByName(buf);
  if(!resolved) {fn_800056A0(0);return Res_GetByName(lbl_8026AB18+0x53);}
  sprintf(buf,lbl_8026AB18+0x64,fn_8004B158(resolved));
- if(fn_8005C144(buf)==0x8000U) {
+ if(FileCache_Probe(buf)==0x8000U) {
  DebugPrint(lbl_8026AB18+0x67,buf);
  return Res_GetByName(lbl_8026AB18+0x53);
  }
@@ -6473,7 +6473,7 @@ void fn_80041514(void *arg0, char *arg1)
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXCopy(void *, void *);
     void PSMTXIdentity(void *);
-    u16 fn_8005C144(void *);
+    u16 FileCache_Probe(void *);
     u32 Res_GetByName(void *);
     void *Hash_Lookup(void *);
     f32 fn_8001B84C(void *);
@@ -6584,27 +6584,27 @@ void fn_80041514(void *arg0, char *arg1)
 
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x122);
-        if (fn_8005C144(lbl_802EFE20) != 0x8000) {
+        if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
             M2C_FIELD(arg0, void **, 0x18) = f87c(lbl_802EFE20, 8);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x12D);
-        if (fn_8005C144(lbl_802EFE20) != 0x8000) {
+        if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x1C) = fccc(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x13A);
-        if (fn_8005C144(lbl_802EFE20) != 0x8000) {
+        if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x20) = fccc(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x147);
-        if (fn_8005C144(lbl_802EFE20) != 0x8000) {
+        if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x24) = fccc(lbl_802EFE20);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x154);
-        if (fn_8005C144(lbl_802EFE20) != 0x8000) {
+        if (FileCache_Probe(lbl_802EFE20) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x28) = fccc(lbl_802EFE20);
         }
 
@@ -11411,7 +11411,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void *fn_8004B158(void *);
     s32 fn_8004B1A0(s32);
     void fn_8004FE98(void *, s32);
-    u16 fn_8005C144(void *);
+    u16 FileCache_Probe(void *);
     void *fn_8005C82C(void *, u16);
     void fn_8005F434(void *, void *, u16);
     void GActor_LoadG(void *, s32);
@@ -11465,7 +11465,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         case 3: res = fn_8004B078(res, 3); break;
         default: res = fn_8004B078(res, 0); break;
         }
-        if (!res || fn_8005C144(res) == 0x8000U) {
+        if (!res || FileCache_Probe(res) == 0x8000U) {
             res = lbl_80366DC8;
         }
         fn_8005F434(sub, res, (u16)arg1);
@@ -11527,7 +11527,7 @@ s32 fn_8004F128(void *arg0) {
  void *fn_8004B078(void *,s32);
  void *fn_8004B158(void *);
  s32 fn_8004B1A0(s32);
- u16 fn_8005C144(void *);
+ u16 FileCache_Probe(void *);
  void fn_8005C870(void *,u16);
  u8 Status_Test(void *,s32);
  void sprintf(void *,void *,...);
@@ -11553,7 +11553,7 @@ case 2: res=fn_8004B078(res,2);break;
 case 3: res=fn_8004B078(res,3);break;
 default: res=fn_8004B078(res,0);break;
  }
- if(!res||fn_8005C144(res)==0x8000U) res=lbl_80366DC8;
+ if(!res||FileCache_Probe(res)==0x8000U) res=lbl_80366DC8;
  if(res!=lbl_80366DC8&&!FileCache_IsReady(res))return 0;
  }
  return 1;
@@ -11576,7 +11576,7 @@ static inline void *get_4F5EC_resource(void *arg0) {
  void *fn_8004B078(void *,s32);
  void *fn_8004B158(void *);
  s32 fn_8004B1A0(s32);
- u16 fn_8005C144(void *);
+ u16 FileCache_Probe(void *);
  void fn_8005C870(void *,u16);
  u8 Status_Test(void *,s32);
  void sprintf(void *,void *,...);
@@ -11608,7 +11608,7 @@ static inline void *get_4F5EC_resource(void *arg0) {
  fn_800056A0(0);return Res_GetByName(lbl_8026AB18+0x53);
  }
  sprintf(buf,lbl_8026AB18+0x64,fn_8004B158(resolved));
- if(fn_8005C144(buf)==0x8000U) {
+ if(FileCache_Probe(buf)==0x8000U) {
  DebugPrint(lbl_8026AB18+0x67,buf);
  return Res_GetByName(lbl_8026AB18+0x53);
  }
@@ -11625,7 +11625,7 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  void *fn_8004B078(void *,s32);
  void *fn_8004B158(void *);
  s32 fn_8004B1A0(s32);
- u16 fn_8005C144(void *);
+ u16 FileCache_Probe(void *);
  void fn_8005C870(void *,u16);
  u8 Status_Test(void *,s32);
  void sprintf(void *,void *,...);
@@ -11649,7 +11649,7 @@ case 2: res=fn_8004B078(res,2);break;
 case 3: res=fn_8004B078(res,3);break;
 default: res=fn_8004B078(res,0);break;
  }
- if(!res||fn_8005C144(res)==0x8000U) res=lbl_80366DC8;
+ if(!res||FileCache_Probe(res)==0x8000U) res=lbl_80366DC8;
  if(res!=lbl_80366DC8) fn_8005C870(res,arg1);
  }
  M2C_FIELD(arg0,u8 *,3)|=1;
@@ -11752,7 +11752,7 @@ void fn_8004FE98(s32 arg0, s8 arg1) {
                 var_r3_2 = Res_GetByName((s32)(lbl_8026AB18 + 0x53));
             } else {
                 sprintf(sp28, (char *)(lbl_8026AB18 + 0x64), fn_8004B158((void *)arg0));
-                if ((u16)fn_8005C144(sp28) == 0x8000U) {
+                if ((u16)FileCache_Probe(sp28) == 0x8000U) {
                     DebugPrint((char *)(lbl_8026AB18 + 0x67), sp28);
                     var_r3_2 = Res_GetByName((s32)(lbl_8026AB18 + 0x53));
                 } else {
@@ -11798,7 +11798,7 @@ void fn_8004FE98(s32 arg0, s8 arg1) {
                 var_r3_5 = Res_GetByName((s32)(lbl_8026AB18 + 0x53));
             } else {
                 sprintf(sp8, (char *)(lbl_8026AB18 + 0x64), fn_8004B158((void *)arg0));
-                if ((u16)fn_8005C144(sp8) == 0x8000U) {
+                if ((u16)FileCache_Probe(sp8) == 0x8000U) {
                     DebugPrint((char *)(lbl_8026AB18 + 0x67), sp8);
                     var_r3_5 = Res_GetByName((s32)(lbl_8026AB18 + 0x53));
                 } else {

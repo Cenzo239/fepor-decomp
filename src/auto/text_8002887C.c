@@ -1969,15 +1969,15 @@ void fn_8002D46C(void)
 void fn_8002D4B8(void)
 {
     extern u16 Battle_str[];
-    u16 fn_8005C144(void *);
+    u16 FileCache_Probe(void *);
     void fn_8005C7C8(void *);
     void fn_80166228(void);
     void fn_800C4B8C(void);
 
-    if (fn_8005C144((u8 *)Battle_str + 0x17F) != 0x8000) {
+    if (FileCache_Probe((u8 *)Battle_str + 0x17F) != 0x8000) {
         fn_8005C7C8((u8 *)Battle_str + 0x17F);
     }
-    if (fn_8005C144((u8 *)Battle_str + 0x198) != 0x8000) {
+    if (FileCache_Probe((u8 *)Battle_str + 0x198) != 0x8000) {
         fn_8005C7C8((u8 *)Battle_str + 0x198);
     }
     fn_80166228();
@@ -1992,7 +1992,7 @@ void Battle_LoadMap(void)
     extern u8 gBattleState[];
     void Heap_Create(void *, s32);
     void Chapter_LoadScript(s32);
-    u16 fn_8005C144(void *);
+    u16 FileCache_Probe(void *);
     void fn_8003F87C(void *, s32);
     void fn_8003FCCC(void *);
     void FileCache_Load(void *);
@@ -2006,10 +2006,10 @@ void Battle_LoadMap(void)
 
     Heap_Create(Battle_str + 0x176, 0x180000);
     Chapter_LoadScript(gBattleState[0x10]);
-    if (fn_8005C144(Battle_str + 0x198) != 0x8000) {
+    if (FileCache_Probe(Battle_str + 0x198) != 0x8000) {
         fn_8003F87C(Battle_str + 0x198, 8);
     }
-    if (fn_8005C144(Battle_str + 0x17F) != 0x8000) {
+    if (FileCache_Probe(Battle_str + 0x17F) != 0x8000) {
         fn_8003FCCC(Battle_str + 0x17F);
     }
     FileCache_Load(Battle_str + 0x1AF);

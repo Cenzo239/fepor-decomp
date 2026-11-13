@@ -6043,7 +6043,7 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     void fn_80120F94(void);
     void strcpy(void *, void *);
     void strcat(void *, void *);
-    s32 fn_8005C144(void *);
+    s32 FileCache_Probe(void *);
     void *Process_CreateChild(void *, void *);
     void Str_CopyPad(void *, void *, s32);
     extern u16 TalkUi_str[];
@@ -6148,7 +6148,7 @@ got_unit:
     } else {
         strcpy(sp, (u8 *)TalkUi_str + 0x2F);
         strcat(sp, *(void **)((u8 *)fn_8007C3BC(unit) + 8));
-        if (fn_8005C144(sp) & 0x2000) {
+        if (FileCache_Probe(sp) & 0x2000) {
             p = self;
             i = 0;
             do {
