@@ -11779,7 +11779,8 @@ extern "C" void Fx_FadeIn(void *arg0, s16 arg1) {
     }
 }
 
-extern "C" void Fx_FadeOut(void *arg0, s16 arg1) {
+/* Fade an FX channel's alpha to 0 over durationMs, or finish immediately if durationMs <= 0. */
+extern "C" void Fx_FadeOut(void *channel, s16 durationMs) {
     struct Obj {
         u8 pad[8];
         virtual void v0() = 0;
@@ -11810,29 +11811,29 @@ extern "C" void Fx_FadeOut(void *arg0, s16 arg1) {
         virtual u8 v25() = 0;
     };
     extern f32 gMsPerFrame;
-    s32 temp;
-    s16 var_r4;
+    s32 frames;
+    s16 duration;
 
-    if (((Obj *)arg0)->v25() == 0) {
-        if (arg1 <= 0) {
-            if (!(M2C_FIELD(arg0, u8 *, 0xC) & 4)) {
-                M2C_FIELD(arg0, u8 *, 0x2A) = M2C_FIELD(arg0, u8 *, 0x16);
+    if (((Obj *)channel)->v25() == 0) {
+        if (durationMs <= 0) {
+            if (!(M2C_FIELD(channel, u8 *, 0xC) & 4)) {
+                M2C_FIELD(channel, u8 *, 0x2A) = M2C_FIELD(channel, u8 *, 0x16);
             }
-            ((Obj *)arg0)->v3();
+            ((Obj *)channel)->v3();
             return;
         }
-        if (!(M2C_FIELD(arg0, u8 *, 0xC) & 4)) {
-            temp = (s32)((f32)arg1 / gMsPerFrame);
-            var_r4 = (s16)temp;
-            if (var_r4 <= 0) {
-                var_r4 = 1;
+        if (!(M2C_FIELD(channel, u8 *, 0xC) & 4)) {
+            frames = (s32)((f32)durationMs / gMsPerFrame);
+            duration = (s16)frames;
+            if (duration <= 0) {
+                duration = 1;
             }
-            M2C_FIELD(arg0, u8 *, 0x2A) = M2C_FIELD(arg0, u8 *, 0x16);
-            M2C_FIELD(arg0, u8 *, 0x28) = M2C_FIELD(arg0, u8 *, 0x16);
-            M2C_FIELD(arg0, u8 *, 0x29) = 0;
-            M2C_FIELD(arg0, s16 *, 0x2E) = var_r4;
-            M2C_FIELD(arg0, s16 *, 0x2C) = 0;
-            M2C_FIELD(arg0, u8 *, 0xC) = (u8)(M2C_FIELD(arg0, u8 *, 0xC) | 4);
+            M2C_FIELD(channel, u8 *, 0x2A) = M2C_FIELD(channel, u8 *, 0x16);
+            M2C_FIELD(channel, u8 *, 0x28) = M2C_FIELD(channel, u8 *, 0x16);
+            M2C_FIELD(channel, u8 *, 0x29) = 0;
+            M2C_FIELD(channel, s16 *, 0x2E) = duration;
+            M2C_FIELD(channel, s16 *, 0x2C) = 0;
+            M2C_FIELD(channel, u8 *, 0xC) = (u8)(M2C_FIELD(channel, u8 *, 0xC) | 4);
         }
     }
 }
