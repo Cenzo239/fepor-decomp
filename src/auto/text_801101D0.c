@@ -5537,7 +5537,7 @@ void fn_8011D87C(void *arg0)
     Process_Goto(obj, 1);
 }
 
-void fn_8011DA48(void *arg0, void *arg1) {
+void UiPanel_Create(void *arg0, void *arg1) {
     void fn_80120CE0(void *);
     void *fn_8000CA64(void *, void *);
     void fn_8012205C(void *);
