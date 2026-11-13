@@ -473,7 +473,7 @@ void fn_801AEE58(void) {
     return;
 }
 
-void Ui_HandleUnitPanelListMode(void *arg0) {
+void Ui_HandleUnitPanelListMode(void *panel) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gConvoy[];
@@ -488,38 +488,39 @@ void Ui_HandleUnitPanelListMode(void *arg0) {
     void Ui_SetWidgetText(u32, s32);
     void Process_Goto(void *, s32);
 
-    void *r31;
-    void *obj6c;
-    u32 res;
-    s16 sp[2];
+    void *widget;
+    void *captionSrc;
+    u32 caption;
+    s16 pos[2];
     u8 mode;
 
+    // Mode 0x81: give list/convoy item to the unit; mode 0x80: open the unit-panel list view.
     mode = gUiContext[8];
-    r31 = *(void **)((u8 *)arg0 + 0x64);
+    widget = *(void **)((u8 *)panel + 0x64);
     switch (mode) {
     case 0x81:
-        r31 = (void *)(*(s32 *)((u8 *)arg0 + 0x48) + 0x60);
-        if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x54) + 0x4E) != 0x7FFF) {
-            fn_80094ABC(Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x54)), r31);
+        widget = (void *)(*(s32 *)((u8 *)panel + 0x48) + 0x60);
+        if (*(s16 *)((u8 *)*(void **)((u8 *)panel + 0x54) + 0x4E) != 0x7FFF) {
+            fn_80094ABC(Ui_ListGetSelected(*(void **)((u8 *)panel + 0x54)), widget);
         } else if (fn_8014D8DC(gBattleState) != 0) {
-            fn_800C3C1C(gConvoy, r31);
+            fn_800C3C1C(gConvoy, widget);
         }
         gBattleState[0x51] = 1;
         break;
     case 0x80:
-        sp[0] = *(s16 *)((u8 *)r31 + 0xA);
-        sp[1] = 0x108;
-        fn_801402A0(arg0, r31, sp, 0);
-        *(s32 *)((u8 *)r31 + 0x3C) = 1;
-        fn_8011D79C(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x2C));
-        Ui_LayoutUnitPanelList(arg0);
-        obj6c = *(void **)((u8 *)arg0 + 0x6C);
-        r31 = *(void **)((u8 *)obj6c + 0x70);
-        res = Ui_FindChild(arg0, -0x1000, 0, obj6c);
-        if (res != 0U) {
-            Ui_SetWidgetText(res, (s32)r31);
+        pos[0] = *(s16 *)((u8 *)widget + 0xA);
+        pos[1] = 0x108;
+        fn_801402A0(panel, widget, pos, 0);
+        *(s32 *)((u8 *)widget + 0x3C) = 1;
+        fn_8011D79C(*(s32 *)((u8 *)*(void **)((u8 *)panel + 0x6C) + 0x2C));
+        Ui_LayoutUnitPanelList(panel);
+        captionSrc = *(void **)((u8 *)panel + 0x6C);
+        widget = *(void **)((u8 *)captionSrc + 0x70);
+        caption = Ui_FindChild(panel, -0x1000, 0, captionSrc);
+        if (caption != 0U) {
+            Ui_SetWidgetText(caption, (s32)widget);
         }
-        Process_Goto(arg0, 0x18);
+        Process_Goto(panel, 0x18);
         break;
     }
 }
