@@ -1010,7 +1010,7 @@ s16 fn_80164CAC(void *arg0) {
     return ret;
 }
 
-s16 fn_80164D24(void *arg0) {
+s16 UnitInv_FindEmptyLow(void *arg0) {
     u32 *Unit_GetItemSlot(s32, s32);
     s8 i;
     s32 ret;
@@ -6841,7 +6841,7 @@ void fn_801707D4(void *arg0) {
 extern "C" void Ui_ConfirmItemTake(void *arg0) {
     s32 *ListWidget_GetSelected(void *);
     u32 *Item_GetFlagsPtr(s32);
-    s32 fn_80164D24(void *);
+    s32 UnitInv_FindEmptyLow(void *);
     s32 fn_80164CAC(void *);
     void *fn_8000CAA0(void *, void *);
     void Ui_PlaySeCue(void *, s32);
@@ -6899,7 +6899,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     temp_r29 = *ListWidget_GetSelected(temp_r31);
     bits = Item_GetFlagsPtr(temp_r29);
     if ((*(u64 *)bits & 5ULL) != 0) {
-        var_r27 = fn_80164D24(temp_r30);
+        var_r27 = UnitInv_FindEmptyLow(temp_r30);
         if (!(*(u32 *)((u8 *)temp_r30 + 0x60) & 1) || ((s16)var_r27 < 0)) {
             *(Vec2s *)&sp14 = ((Obj *)temp_r31)->v13();
             proc = fn_8000CAA0(gUiMsgPopupProc, var_r28);
