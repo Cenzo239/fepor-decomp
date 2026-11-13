@@ -55,7 +55,7 @@ void fn_801E460C(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016758C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoText(void *, void *, void *, f32, f32);
     void fn_801E4900(s16 *, void *);
     void fn_801E4C48(void *, s8);
     void fn_801E80B4(void *);
@@ -121,7 +121,7 @@ void fn_801E460C(void *arg0) {
                 msg = lbl_8027EB78 + 0x166;
                 break;
             }
-            fn_8016758C(gUnitInfoPopup, arg0, msg, (f32)spC[0], (f32)spC[1]);
+            Ui_OpenUnitInfoText(gUnitInfoPopup, arg0, msg, (f32)spC[0], (f32)spC[1]);
             *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
             return;
         }

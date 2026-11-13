@@ -1361,7 +1361,7 @@ void fn_800888A4(void *arg0) {
     void fn_8007DAC4(void *, void *);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_8016758C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoText(void *, void *, void *, f32, f32);
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_8026C86C[];
     extern s32 lbl_8026C7D0[];
@@ -1445,7 +1445,7 @@ void fn_800888A4(void *arg0) {
             if (!valid) goto next;
         }
         entry=&lbl_80288FE8[M2C_FIELD(self, s8 *, 9)][M2C_FIELD(self, s32 *, 0x1C)];
-        fn_8016758C(gUnitInfoPopup,arg0,lbl_8026C86C+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
+        Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,lbl_8026C86C+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
         fn_8007DAC4(self,entry);
         return;
     }

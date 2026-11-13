@@ -2522,7 +2522,7 @@ extern "C" void fn_80024734(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_80024768(void *arg0) {
 void *fn_8000B908(u8);void Process_ClearFunc(void*);
-void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void fn_8016758C(void*,void*,void*,f32,f32);
+void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void Ui_OpenUnitInfoText(void*,void*,void*,f32,f32);
 extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 gUnitInfoPopupFlag;
 f32 x,y;
@@ -2565,7 +2565,7 @@ item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 y=(f32)(*(s16*)((u8*)arg0+0x32)+*(s16*)((u8*)item+0x32));
 item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 q=(*(MenuItem24768**)((u8*)item+0x34))->v2();
-if(q)fn_8016758C(gUnitInfoPopup,arg0,q,x,y);
+if(q)Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,q,x,y);
 else {
 item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);

@@ -2205,7 +2205,7 @@ extern "C" void fn_801B9978(void *arg0) {
  s32 fn_80105814(void *); void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
  void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
  void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
- void fn_8016758C(void *,void *,s32,f32,f32); void *fn_8017B908(void *);
+ void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32); void *fn_8017B908(void *);
  extern u8 lbl_8027C698[],gUiContext[],gUnitInfoPopup[];
  extern u32 gUiInputFlags; extern void *gPadInput; extern s32 gUnitInfoPopupFlag;
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
@@ -2242,7 +2242,7 @@ extern "C" void fn_801B9978(void *arg0) {
  Ui_PlaySeCue(lbl_8027C698+0x10C,100); Process_ClearFunc(self);
  } else if((btn&0x800)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)&&unit) {
  *(Pair *)&pos2=((Obj *)list)->v9();
- fn_8016758C(gUnitInfoPopup,self,fn_80105814(unit),(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
+ Ui_OpenUnitInfoText(gUnitInfoPopup,self,fn_80105814(unit),(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
  *(s32 *)gUnitInfoPopup|=gUnitInfoPopupFlag;
  } else if((btn&0xA00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
  Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -2442,7 +2442,7 @@ s32 fn_80105814(void *); u8 Status_Test(void *,u8); void *fn_801362C8(void *);
 void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
-void fn_8016758C(void *,void *,s32,f32,f32);
+void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
 void fn_80176888(void *,void *,f32,f32); s32 fn_8017C3C8(void *);
 extern u8 lbl_8027C698[],gUiContext[],gUnitInfoPopup[];
 extern u32 gUiInputFlags; extern void *gPadInput; extern s32 gUnitInfoPopupFlag;
@@ -2493,7 +2493,7 @@ Ui_PlaySeCue(lbl_8027C698+0x10c,100); Process_ClearFunc(self); return;
 }
 if((btn&0x800)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)&&unit) {
 *(Pair *)&pos4=((Obj *)M2C_FIELD(self,void **,0x68))->v9();
-fn_8016758C(gUnitInfoPopup,self,fn_80105814(unit),(f32)*(s16 *)&pos4,(f32)*((s16 *)&pos4+1));
+Ui_OpenUnitInfoText(gUnitInfoPopup,self,fn_80105814(unit),(f32)*(s16 *)&pos4,(f32)*((s16 *)&pos4+1));
 *(s32 *)gUnitInfoPopup|=gUnitInfoPopupFlag; return;
 }
 if((btn&0xa00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {Ui_HideUnitInfoPopup(gUnitInfoPopup);return;}
@@ -3856,7 +3856,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     void Ui_SetWidgetText(void *, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016758C(void *, void *, s32, f32, f32);
+    void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
     extern u8 lbl_8027C698[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
@@ -3916,7 +3916,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)*(void **)((u8 *)arg0 + 0x5C))->v9();
             s32 text = (s32)(lbl_8027C698 + 0x215);
-            fn_8016758C(gUnitInfoPopup, arg0, text, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+            Ui_OpenUnitInfoText(gUnitInfoPopup, arg0, text, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -5061,7 +5061,7 @@ extern "C" void fn_801C0C58(void *arg0) {
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016758C(void *, void *, s32, f32, f32);
+    void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
     void fn_80176888(void *, void *, f32, f32);
     u8 fn_801D2A38(void *);
     s32 fn_801D2AAC(void *);
@@ -5132,7 +5132,7 @@ extern "C" void fn_801C0C58(void *arg0) {
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
-            fn_8016758C(gUnitInfoPopup, self, fn_801D2C20(obj), (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+            Ui_OpenUnitInfoText(gUnitInfoPopup, self, fn_801D2C20(obj), (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -11002,7 +11002,7 @@ void fn_801CE2DC(void *arg0) {
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
 /* Handle name-entry input: A insert char, L/R move caret, Start confirm, Y info, B back. */
 void *Ui_FindChild(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
-u8 Ui_IsUnitInfoPopupOpen(void *); void Ui_ShowUnitInfoText(void *,s32,f32,f32); void fn_8016758C(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
+u8 Ui_IsUnitInfoPopupOpen(void *); void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void NameEntry_InsertChar(void *,u32); void NameEntry_MoveCaretRight(void *,s32); void NameEntry_MoveCaretLeft(void *,s32);
 void Ui_PlaySeCue(void *,s32); void Process_ClearFunc(void *);
 void fn_8013F748(void *,void *,void *); s16 *fn_8013F6B8(void *,void *,void *);
@@ -11044,7 +11044,7 @@ M2C_FIELD(field,s16 *,0x3e)=xy[0];M2C_FIELD(field,s16 *,0x40)=xy[1];
 Process_ClearFunc(arg0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
 } else if((btn&0x800)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 *(Pair *)&pos3=((Obj *)grid)->v16();
-fn_8016758C(gUnitInfoPopup,arg0,((Obj *)grid)->v15(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
+Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,((Obj *)grid)->v15(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
 *(s32 *)gUnitInfoPopup|=gUnitInfoPopupFlag;
 } else if((btn&0xa00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -11089,7 +11089,7 @@ void fn_80140210(void *,void *,s32);
 void fn_80140234(void *,void *,s32);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32);
-void fn_8016758C(void *,void *,s32,f32,f32);
+void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
 void Ui_HideUnitInfoPopup(void *);
 void fn_801CDB74(void *);
 void fn_801CDDC8(void *,s32);
@@ -11166,7 +11166,7 @@ if(gate==0) {
   Ui_PlaySeCue(lbl_8027DE48+0x1e,0x64);
  } else if((btn&0x800)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
   *(Pair *)&pos3=((Obj *)a)->v9();
-  fn_8016758C(gUnitInfoPopup,arg0,((Obj *)a)->v8(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
+  Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,((Obj *)a)->v8(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
   *(s32 *)gUnitInfoPopup|=gUnitInfoPopupFlag;
  } else if((btn&0xa00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
   Ui_HideUnitInfoPopup(gUnitInfoPopup);

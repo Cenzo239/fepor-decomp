@@ -2215,7 +2215,7 @@ void Ui_OpenUnitInfoPopup(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) 
     Ui_ShowUnitInfoPopup(arg0, arg2, farg0, farg1);
 }
 
-void fn_8016758C(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
+void Ui_OpenUnitInfoText(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *fn_8000C0C0(void *);
     void fn_8000CAF0(void *, s32);
     void fn_8005C8B4(void *);
@@ -9757,11 +9757,11 @@ void fn_801768E4(s32 arg0) {
 void fn_80176968(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u32 gUnitInfoPopupFlag;
-    void fn_8016758C(void *, void *, f32, f32, s32);
+    void Ui_OpenUnitInfoText(void *, void *, f32, f32, s32);
     u8 *p;
     int t;
 
-    fn_8016758C(gUnitInfoPopup, arg0,
+    Ui_OpenUnitInfoText(gUnitInfoPopup, arg0,
                 *(f32 *)((u8 *)arg0 + 0x30), *(f32 *)((u8 *)arg0 + 0x34),
                 *(s32 *)((u8 *)arg0 + 0x54));
     p = gUnitInfoPopup;
@@ -14664,7 +14664,7 @@ extern "C" void fn_80180084(void *arg0)
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
-    void fn_8016758C(void *, void *, void *, f32, f32);
+    void Ui_OpenUnitInfoText(void *, void *, void *, f32, f32);
     void fn_80176888(void *, void *, f32, f32);
     extern char gUiUnitInfoStrings[];
     extern u8 gUnitInfoPopup[];
@@ -14788,7 +14788,7 @@ extern "C" void fn_80180084(void *arg0)
             }
         } else if ((btn & 0x800) && nodeVal != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Vec2s *)&sp8 = ((Obj *)unit)->v9();
-            fn_8016758C(gUnitInfoPopup, self, gUiUnitInfoStrings + 0x3E, (f32)*(s16 *)&sp8, (f32)*((s16 *)&sp8 + 1));
+            Ui_OpenUnitInfoText(gUnitInfoPopup, self, gUiUnitInfoStrings + 0x3E, (f32)*(s16 *)&sp8, (f32)*((s16 *)&sp8 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
