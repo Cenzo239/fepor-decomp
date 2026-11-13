@@ -1286,7 +1286,7 @@ u16 fn_8001B91C(u8 **arg0) {
     return (u16)hi;
 }
 
-u8 fn_8001B940(u8 **arg0) {
+u8 Bin_ReadU8(u8 **arg0) {
     u8 *temp_r4;
 
     temp_r4 = *arg0;
