@@ -2041,9 +2041,10 @@ void fn_80108FA8(void) {
     goto check;
 loop:
     ptr = *(s8 **)((char *)entry + 0x14);
-    if (*ptr != 1) {
-    } else {
+    switch (*ptr) {
+    case 1:
         fn_8005C8B4(*(s32 *)(ptr + 8));
+        break;
     }
     entry = (char *)entry + 4;
     i += 1;
