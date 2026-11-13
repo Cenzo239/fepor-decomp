@@ -16072,7 +16072,7 @@ s32 fn_80182574(s32 arg0) {
     void fn_8010AC58(s32);
     u8 Ai_TryApproachHealer(s32);
     u8 Ai_TrySelectApproachTile(s32);
-    u8 fn_8010BB74(s32);
+    u8 Ai_TrySeekHealTerrain(s32);
     u8 Ai_TrySeekHealer(s32);
     u8 Ai_TryUseHealItem(s32);
     u8 Unit_HasLowHpAi(s32);
@@ -16090,7 +16090,7 @@ s32 fn_80182574(s32 arg0) {
         if (Ai_TrySeekHealer(arg0) != 0) {
             return 1;
         }
-        if (fn_8010BB74(arg0) != 0) {
+        if (Ai_TrySeekHealTerrain(arg0) != 0) {
             fn_8010AC58(arg0);
         } else if (Ai_TrySelectApproachTile(arg0) != 0) {
             fn_8010AC58(arg0);

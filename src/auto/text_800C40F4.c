@@ -20824,7 +20824,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
     u8 Ai_TrySeekHealer(void *);
     u8 fn_8010BDE0(void *);
     void fn_8010AD94(void *);
-    u8 fn_8010BB74(void *);
+    u8 Ai_TrySeekHealTerrain(void *);
     u8 Ai_TrySelectApproachTile(void *);
     u8 Ai_TryApproachHealer(void *);
     void fn_8010AC58(void *);
@@ -20849,7 +20849,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
             }
             goto block_23;
         }
-        if (fn_8010BB74(arg0) != 0) {
+        if (Ai_TrySeekHealTerrain(arg0) != 0) {
             fn_8010AC58(arg0);
         } else if (Ai_TrySelectApproachTile(arg0) != 0) {
             fn_8010AC58(arg0);

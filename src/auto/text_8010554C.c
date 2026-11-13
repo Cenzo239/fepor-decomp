@@ -3626,7 +3626,7 @@ outer_cmp:
     return gAiState[0x21C];
 }
 #pragma use_lmw_stmw on
-u8 fn_8010BB74(void *arg0) {
+u8 Ai_TrySeekHealTerrain(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     s8 Unit_GetMov(void *);
     u8 Map_IsAiTerrainBlocked(s8, s8);
