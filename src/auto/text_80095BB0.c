@@ -650,7 +650,7 @@ s32 fn_80096EEC(s32 *arg0, u32 arg1) {
     return var_r5;
 }
 
-s32 fn_800970C8(s32 arg0) {
+s32 Event_GetCmdKind(s32 arg0) {
     typedef struct {
         u8 pad[0x8A0];
         s16 idx;
