@@ -9830,7 +9830,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void AudioTable_Insert(s32,s32); s32 AudioTable_Remove();
  void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
  s32 SampleKey_Insert(); void SampleKey_Remove(s32);
- s32 AudioWave_Insert(); void fn_8024F7E8(s32);
+ s32 AudioWave_Insert(); void AudioWave_Remove(s32);
  void fn_8024FCA8(s32,s32); s32 fn_8024FD80();
  extern s32 *gAudioGroupState;
  u8 *node;
@@ -9861,7 +9861,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
    node=FindAudioResource(data,(u16)(id),4);
    if(node!=NULL) AudioWave_Insert(id,(s32)(node+8));
    else AudioWave_Insert(id,0);
-  } else fn_8024F7E8(id);
+  } else AudioWave_Remove(id);
   break;
  case 1:
   if(remove==0) fn_8024FCA8(id,(s32)((u8*)gAudioGroupState+0x60C));
