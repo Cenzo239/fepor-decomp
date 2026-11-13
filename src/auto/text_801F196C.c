@@ -3031,7 +3031,7 @@ void fn_801F8A98(void *arg0) {
     void fn_80108FA8(void *);
     void *fn_80109180(void *, void *);
     void fn_801FA8B4(void *, void *);
-    void fn_801FB2EC(void *, void *, void *, void *);
+    void StaffRoll_ListInsertActor(void *, void *, void *, void *);
     void sprintf(void *, void *, ...);
     void *memset(void *, s32, u32);
     u32 fn_801F8D38(void **, void **);
@@ -3089,7 +3089,7 @@ void fn_801F8A98(void *arg0) {
                 *(s32 *)((u8 *)pair.obj + 0x44) = fn_800639B4();
                 GActor_Finalize(pair.obj);
                 sp14 = base;
-                fn_801FB2EC(&sp10, (u8 *)self + 0x30, &sp14, &pair.owner);
+                StaffRoll_ListInsertActor(&sp10, (u8 *)self + 0x30, &sp14, &pair.owner);
                 if (pair.obj != (void *)0) {
                     fn_800616A0(pair.obj);
                 }
@@ -4390,7 +4390,7 @@ extern "C" void *GActor_Create(void);
 extern "C" s32 fn_800639B4(void);
 extern "C" M2C_UNK abort(void);
 extern "C" M2C_UNK fprintf(void *, const char *, ...);
-extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
+extern "C" void StaffRoll_ListInsertActor(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
     struct Obj {
         u32 flags;
         s32 unk4;
