@@ -238,9 +238,9 @@ void fn_80005C8C(void) {
     Archive_Load(lbl_80267B80 + 0xBD);
     Archive_Load(lbl_80267B80 + 0xD1);
     fn_80147188(0);
-    lbl_80367AF6 = 0;
     lbl_80367AEC = 0x64;
     lbl_80367AEE = 0x64;
+    lbl_80367AF6 = 0;
     fn_80146AF0();
     gBattleState[0xA1] = 0x40;
 }
