@@ -11526,7 +11526,8 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 }
 
 #pragma use_lmw_stmw on
-void SpriteSheet_DrawFrame(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
+/* Draw one frame cell from a sprite sheet at (x,y) with color and z-angle. */
+void SpriteSheet_DrawFrame(void *sheet, s32 layer, s32 frame, s32 x, s32 y, s32 angle, s32 r, s32 g, s32 b, s32 a, s32 texParam) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
@@ -11548,27 +11549,27 @@ void SpriteSheet_DrawFrame(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s
     s32 v0;
     s32 u0;
 
-    w = M2C_FIELD(arg0, s32 *, 0x54);
-    h = M2C_FIELD(arg0, s32 *, 0x58);
-    x2 = arg3 + w;
-    y2 = arg4 + h;
-    if (arg2 >= M2C_FIELD(arg0, s32 *, 0x60)) {
-        arg2 = M2C_FIELD(arg0, s32 *, 0x60) - 1;
+    w = M2C_FIELD(sheet, s32 *, 0x54);
+    h = M2C_FIELD(sheet, s32 *, 0x58);
+    x2 = x + w;
+    y2 = y + h;
+    if (frame >= M2C_FIELD(sheet, s32 *, 0x60)) {
+        frame = M2C_FIELD(sheet, s32 *, 0x60) - 1;
     }
-    cols = M2C_FIELD(arg0, s32 *, 0x5C);
-    u0 = M2C_FIELD(arg0, s32 *, 0x64) + w * (arg2 % cols);
-    v0 = M2C_FIELD(arg0, s32 *, 0x68) + h * (arg2 / cols);
+    cols = M2C_FIELD(sheet, s32 *, 0x5C);
+    u0 = M2C_FIELD(sheet, s32 *, 0x64) + w * (frame % cols);
+    v0 = M2C_FIELD(sheet, s32 *, 0x68) + h * (frame / cols);
     u1 = u0 + w;
     v1 = v0 + h;
-    if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
+    if (M2C_FIELD(sheet, u32 *, 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, gPrim2DOne);
-        Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg10, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) angle, gPrim2DOne);
+        Prim2D_BindTexture(M2C_FIELD(sheet, u32 *, 0x48), texParam, (u16) M2C_FIELD(sheet, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRect((f32) arg3, (f32) arg4, (f32) (x2 - arg3), (f32) (y2 - arg4));
+        Prim2D_SetRect((f32) x, (f32) y, (f32) (x2 - x), (f32) (y2 - y));
         Prim2D_SetUvCorners((f32) u0, (f32) v0, (f32) u1, (f32) v1);
-        Prim2D_SetColor((u8) arg6, (u8) arg7, (u8) arg8, (u8) arg9);
+        Prim2D_SetColor((u8) r, (u8) g, (u8) b, (u8) a);
         Prim2D_EndPrim();
     }
 }
