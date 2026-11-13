@@ -155,8 +155,8 @@ s32 fn_80017318(u8 *arg0) {
 }
 
 void fn_800173B4(u8 *arg0, void *arg1) {
-    u8 fn_80105BC0(void *, M2C_UNK);
-    if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0)) {
+    u8 Status_Test(void *, M2C_UNK);
+    if (Status_Test((u8 *)arg1 + 0x1BC, 0)) {
         *arg0 = 1;
         return;
     }

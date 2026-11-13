@@ -1720,14 +1720,14 @@ extern "C" void fn_8013547C(void *arg0) {
 #pragma cplusplus reset
 
 s32 fn_80135664(void *arg0, void *arg1) {
-    u8 fn_80105BC0(s32, u8);
+    u8 Status_Test(s32, u8);
     u8 (*temp_r12)(void *, s32);
 
     temp_r12 = M2C_FIELD(arg0, u8 (**)(void *, s32), 0x74);
     if (temp_r12 != NULL) {
         return temp_r12(arg1, M2C_FIELD(arg0, s32 *, 0x78)) != 0;
     }
-    return fn_80105BC0(M2C_FIELD(arg0, s32 *, 0xCC) + 0x1BC, M2C_FIELD(arg1, u8 *, 0x18)) == 0;
+    return Status_Test(M2C_FIELD(arg0, s32 *, 0xCC) + 0x1BC, M2C_FIELD(arg1, u8 *, 0x18)) == 0;
 }
 
 void fn_801356D0(void **arg0, s32 arg1) {
@@ -2802,7 +2802,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void fn_80092ADC(s32, u8);
     u8 *fn_8001CDE4(void);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void *fn_8000E0E4(void *);
     u8 fn_8005A310(void *, u8, s32);
     void fn_8001E5D0(u8, s32);
@@ -2859,7 +2859,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
             slot = row[slot_ext + 4];
             x = row[slot_ext];
             if ((s8)idx == 7) {
-                if (fn_80105BC0((u8 *)unit + 0x1BC, 0x23) != 0) {
+                if (Status_Test((u8 *)unit + 0x1BC, 0x23) != 0) {
                     unit = 0x53;
                     fn_8000E0E4(&lbl_802767E0[0x3B + (idx - 7)]);
                     goto after_icon;

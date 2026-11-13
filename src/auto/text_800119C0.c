@@ -2158,7 +2158,7 @@ void fn_800167E4(void *arg0)
     extern u8 gUnits[];
 
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
-    s32 fn_80105BC0(void *, s32);
+    s32 Status_Test(void *, s32);
     void fn_8003D60C(void *, s32);
     void fn_80016F78(void *);
     void fn_8003B6F0(void *, s32);
@@ -2200,7 +2200,7 @@ void fn_800167E4(void *arg0)
             type = unitData[8];
 
             if (flags[type] != 0) {
-                if ((u8)fn_80105BC0(unit + 0x1BC, 0x59) != 0) {
+                if ((u8)Status_Test(unit + 0x1BC, 0x59) != 0) {
                     savedUnits[savedCount] = unit;
                     savedIds[savedCount] = type;
                     savedCount++;

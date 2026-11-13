@@ -1488,7 +1488,7 @@ void *fn_800A1910(void) {
 
 s32 fn_800A1920(s32 unused, s32 arg1) {
     void *fn_800AA794(void);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8003BD58(void *);
     void *fn_800241C8(s32);
     void fn_801B79A0(void *, s32, s32, s32);
@@ -1500,7 +1500,7 @@ s32 fn_800A1920(s32 unused, s32 arg1) {
     if (temp_r31 == NULL) {
         return 0x10;
     }
-    if (fn_80105BC0((u8 *)temp_r31 + 0x1BC, 8) == 0) {
+    if (Status_Test((u8 *)temp_r31 + 0x1BC, 8) == 0) {
         return 0x10;
     }
     fn_8003BD58(temp_r31);
@@ -2087,14 +2087,14 @@ s32 fn_800A2974(void) {
 
 s32 fn_800A29E8(void) {
     M2C_UNK fn_80019DF0(u8);
-    u8 fn_80105BC0(s32, u8);
+    u8 Status_Test(s32, u8);
     M2C_UNK fn_80105D4C(s32, u8);
     extern u8 lbl_80366E08;
     s32 temp_r31;
 
     temp_r31 = fn_800AA794();
     fn_80019DF0(lbl_80366E08);
-    if (fn_80105BC0(temp_r31 + 0x1BC, lbl_80366E08) == 0) {
+    if (Status_Test(temp_r31 + 0x1BC, lbl_80366E08) == 0) {
         fn_80105D4C(temp_r31 + 0x1BC, lbl_80366E08);
     }
     return 5;

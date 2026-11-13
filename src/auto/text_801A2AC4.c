@@ -570,17 +570,17 @@ s32 fn_801A3E24(void *arg0) {
 
 s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
-u8 fn_80105BC0(void *,s32); u8 fn_80038128(void *,void *);
+u8 Status_Test(void *,s32); u8 fn_80038128(void *,void *);
 u8 fn_8001F85C(void *,u8,u8,u8,u8); void **fn_80037D54(void *);
 void fn_80022FD8(void *,s32); void fn_80022DAC(void *,s32,s32);
 u8 fn_8001DD54(void *,void *); void fn_8002011C(void *,u8,u8,u8,u8);
 void *members[3]; s32 cross[3]; s32 out;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
-if(fn_80105BC0((u8 *)self+0x1bc,84)) {
+if(Status_Test((u8 *)self+0x1bc,84)) {
 void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
-if(fn_80105BC0((u8 *)node+0x1bc,84) && count<3) members[count++]=node;
+if(Status_Test((u8 *)node+0x1bc,84) && count<3) members[count++]=node;
 node=next;
 }
 if(count<3) return 0;
@@ -590,7 +590,7 @@ void *unit=*walk; void **item; void *data; u8 type;
 if(M2C_FIELD(unit,u32 *,0x1a0)&0x010000dc) return 0;
 if((M2C_FIELD(unit,u16 *,0x1a4)>>7)&7) return 0;
 if(M2C_FIELD(unit,u8 *,0x1a5)&7) return 0;
-if(!fn_80105BC0((u8 *)unit+0x1bc,2)) return 0;
+if(!Status_Test((u8 *)unit+0x1bc,2)) return 0;
 if(fn_80038128(*walk,(u8 *)self+0x2e0)!=1) return 0;
 unit=*walk;
 if(!fn_8001F85C(gBattleMap,M2C_FIELD(unit,u8 *,0x19e),M2C_FIELD(unit,u8 *,0x19f),M2C_FIELD(self,u8 *,0x47e),M2C_FIELD(self,u8 *,0x47f))) return 0;
@@ -599,11 +599,11 @@ if(!item || !(data=*item)) return 0;
 if(data) type=M2C_FIELD(data,u8 *,0x1d); else type=0;
 if(type>1) return 0;
 }}
-else if(fn_80105BC0((u8 *)self+0x1bc,85)) {
+else if(Status_Test((u8 *)self+0x1bc,85)) {
 void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
-if(fn_80105BC0((u8 *)node+0x1bc,85) && count<3) members[count++]=node;
+if(Status_Test((u8 *)node+0x1bc,85) && count<3) members[count++]=node;
 node=next;
 }
 if(count<3) return 0;
@@ -934,7 +934,7 @@ void fn_801A4BE0(void *arg0) {
 /* Decide attack order (Vantage skill 0x29, doubles) and run rounds; award kill counts on death. */
 void Battle_ResolveRounds(s32 battle) {
     void fn_80034068(s32, s32, s32);
-    u8 fn_80105BC0(s32, s32);
+    u8 Status_Test(s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
     extern u8 gBattleState[];
     s32 self;
@@ -946,7 +946,7 @@ void Battle_ResolveRounds(s32 battle) {
         fn_80034068(self + 0x8A0, 0x17, 0);
         return;
     }
-    if (fn_80105BC0(self + 0x49C, 0x29) != 0) {
+    if (Status_Test(self + 0x49C, 0x29) != 0) {
         *(u8 *)(self + 0xCA4) = 1;
         fn_80034068(self + 0x8A0, 0x21, 0);
         Battle_PerformAttacks(self, self + 0x2E0, self);
@@ -1359,7 +1359,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     s8 fn_8003B258(void *);
     s8 fn_8003B2D0(void *);
     u8 fn_8003C7D0(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void **fn_801A7FF4(void *);
     void fn_801A8010(void *);
     extern u8 lbl_802EFDB8[];
@@ -1380,14 +1380,14 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     u32 *w;
 
     if (arg3 == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x10) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x10) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
             half = fn_8003B2D0(arg1);
             if ((s8)hp <= half / 2) {
                 fn_80034068((u8 *)arg0 + 0x8A0, 0x3C, 0);
             }
         }
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x2B) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x2B) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
             half = fn_8003B2D0(arg1);
             if ((s8)hp <= half / 2) {
@@ -1416,7 +1416,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x10) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x33) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x33) != 0) {
             if (*(u8 *)((u8 *)arg1 + 0x295) != 0x51) {
                 chance = 0;
             } else if (fn_8003C7D0(arg2) != 0) {
@@ -1440,7 +1440,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 4) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x30) != 0
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x30) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
             half = fn_8003AF28(arg1);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1463,7 +1463,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         fn_80034068((u8 *)arg0 + 0x8A0, 0x3F, 0);
     }
 
-    if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x5A) != 0) {
+    if (Status_Test((u8 *)arg1 + 0x1BC, 0x5A) != 0) {
         half = fn_8003AF28(arg1);
         if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
             ok = 0;
@@ -1490,10 +1490,10 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x20) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x38) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x38) != 0) {
             tmp_s8 = fn_8003A5B4(arg2);
             if (fn_8003A5B4(arg1) > tmp_s8 && fn_8003B258(arg1) >= 4
-                && fn_80105BC0((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
+                && Status_Test((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
                 half = fn_8003AF28(arg1);
                 if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
                     ok = 0;
@@ -1515,7 +1515,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x2000) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x34) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x34) != 0) {
             half = fn_8003AF28(arg1);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
                 ok = 0;
@@ -1536,7 +1536,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x800) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x39) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x39) != 0) {
             half = fn_8003AF28(arg1);
             chance = half / 2;
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1557,8 +1557,8 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x1000) == 0) {
-        if (fn_80105BC0((u8 *)arg2 + 0x1BC, 0x37) != 0
-            && fn_80105BC0((u8 *)arg1 + 0x1BC, 0x5F) == 0) {
+        if (Status_Test((u8 *)arg2 + 0x1BC, 0x37) != 0
+            && Status_Test((u8 *)arg1 + 0x1BC, 0x5F) == 0) {
             half = fn_8003AF28(arg2);
             chance = half / 2;
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1586,14 +1586,14 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if (w != NULL && *w != 0) {
         bits = fn_8001CB64(w);
         if ((*bits & 0x20000ULL) != 0
-            && fn_80105BC0((u8 *)arg1 + 0x1BC, 8) != 0) {
+            && Status_Test((u8 *)arg1 + 0x1BC, 8) != 0) {
             tmp_s16 = *(s16 *)((u8 *)arg1 + 0x2AA);
             *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)(tmp_s16 / 2);
         }
     }
 
     if ((fl[tbl[0x60]] & 0x200) == 0) {
-        if (fn_80105BC0((u8 *)arg2 + 0x1BC, 0x2E) != 0
+        if (Status_Test((u8 *)arg2 + 0x1BC, 0x2E) != 0
             && ((s8)*(u8 *)((u8 *)arg2 + 0x1A8) - *(s16 *)((u8 *)arg1 + 0x2AA)) <= 0) {
             half = fn_8003ACF8(arg2);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1612,7 +1612,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)((s8)hp / 2);
     }
 
-    if (fn_80105BC0((u8 *)arg2 + 0x1BC, 0x53) != 0) {
+    if (Status_Test((u8 *)arg2 + 0x1BC, 0x53) != 0) {
         *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
         *(u8 *)((u8 *)arg1 + 0x295) = 0x50;
     }
@@ -1630,7 +1630,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x80) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x2C) != 0) {
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x2C) != 0) {
             half = fn_8003AF28(arg1);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
                 ok = 0;
@@ -1647,7 +1647,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(u8 *)((u8 *)arg1 + 0x2CB) = 1;
     }
 
-    if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x35) != 0) {
+    if (Status_Test((u8 *)arg1 + 0x1BC, 0x35) != 0) {
         half = fn_8003AF28(arg1);
         chance = half / 2;
         if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1663,7 +1663,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x100) == 0) {
-        if (fn_80105BC0((u8 *)arg2 + 0x1BC, 0x2D) != 0) {
+        if (Status_Test((u8 *)arg2 + 0x1BC, 0x2D) != 0) {
             half = fn_8003AF28(arg2);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
                 ok = 0;
@@ -1687,7 +1687,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 2) == 0) {
-        if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x2F) != 0
+        if (Status_Test((u8 *)arg1 + 0x1BC, 0x2F) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
             half = fn_8003AF28(arg1);
             if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
@@ -1716,7 +1716,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     void fn_80033E90(s32, s32);
     void fn_80034068(s32, s32, s32);
     s32 fn_8003B2D0(s32);
-    u8 fn_80105BC0(s32, s32);
+    u8 Status_Test(s32, s32);
     void fn_801A859C(s32);
     void fn_801A8AF4(s32);
     void fn_801A8B48(s32, s32);
@@ -1814,7 +1814,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     if (!(*(u32 *)(self + 0xCAC) & 1)) {
         fn_801A8F80(u2, u1);
     }
-    if (fn_80105BC0(u1 + 0x1BC, 0x41) == 0) {
+    if (Status_Test(u1 + 0x1BC, 0x41) == 0) {
         fn_801A8DA4(u1);
         if (!(*(u32 *)(self + 0xCAC) & 1)) {
             fn_801A8DA4(u2);
@@ -1921,7 +1921,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void fn_800381EC(void *, s32);
     s8 fn_8003AF28(void *);
     s8 fn_8003B2D0(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_801A55D4(void *, void *, void *, s32);
     void fn_801A601C(void *, void *, void *, s32);
     void *fn_801A7FF4(void *);
@@ -1961,7 +1961,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     if (*(u32 *)fn_801A7FF4(unit) != 0
         && ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) == 0
         && (*(u8 *)((u8 *)unit + 0x1A5) & 7) == 0
-        && fn_80105BC0((u8 *)unit + 0x1BC, 0x60) == 0) {
+        && Status_Test((u8 *)unit + 0x1BC, 0x60) == 0) {
         lim = 1;
         if ((*fn_8001CB64(fn_801A7FF4(unit)) & 0x20ULL) != 0) {
             lim = 2;
@@ -1978,7 +1978,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             if ((*(u16 *)(tbl + 0x20 + ((tbl[0x60] + idx) << 1)) & 1) != 0) {
                 fn_8003333C(lbl_802EFDB8, idx);
                 add += 4;
-            } else if (fn_80105BC0((u8 *)unit + 0x1BC, 0x31) != 0) {
+            } else if (Status_Test((u8 *)unit + 0x1BC, 0x31) != 0) {
                 half = fn_8003AF28(unit);
                 if (*(u32 *)(g + 0xCAC) & 0x4000) {
                     ok = 0;
@@ -1999,7 +1999,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 if ((*(u16 *)(tbl + 0x20 + ((tbl[0x60] + idx) << 1)) & 0x4000) != 0) {
                     fn_800333DC(lbl_802EFDB8, idx);
                     add += 1;
-                } else if (fn_80105BC0((u8 *)unit + 0x1BC, 0x4C) != 0) {
+                } else if (Status_Test((u8 *)unit + 0x1BC, 0x4C) != 0) {
                     half = fn_8003AF28(unit);
                     if (*(u32 *)(g + 0xCAC) & 0x4000) {
                         ok = 0;
@@ -2017,7 +2017,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             } else if ((*(u16 *)(tbl + 0x20 + (tbl[0x60] << 1)) & 8) != 0) {
                 fn_800331D4(lbl_802EFDB8, lim);
                 lim *= 2;
-            } else if (fn_80105BC0((u8 *)unit + 0x1BC, 0x32) != 0) {
+            } else if (Status_Test((u8 *)unit + 0x1BC, 0x32) != 0) {
                 half = fn_8003AF28(unit);
                 if (*(u32 *)(g + 0xCAC) & 0x4000) {
                     ok = 0;
@@ -2035,7 +2035,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
         *(s16 *)((u8 *)unit + 0x2CE) = 0;
         for (i = 0; i < lim; ) {
             fn_801A601C(self, unit, foe, 0);
-            if (fn_80105BC0((u8 *)unit + 0x1BC, 0x2B) != 0) {
+            if (Status_Test((u8 *)unit + 0x1BC, 0x2B) != 0) {
                 hp = *(u8 *)((u8 *)unit + 0x1A8);
                 if ((s8)hp <= (s32)fn_8003B2D0(unit) / 2) {
                     *(s16 *)((u8 *)unit + 0x2A8) = (s16)(*(s16 *)((u8 *)unit + 0x2A8) + 0x32);
@@ -2175,7 +2175,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
     void fn_80034068(s32, s32, s32);
-    u8 fn_80105BC0(s32, s32);
+    u8 Status_Test(s32, s32);
     void fn_80105CEC(s32, s32);
     void fn_80105D4C(s32, s32);
     u8 fn_801A3F14(s32);
@@ -2193,21 +2193,21 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
     a2 = arg2;
     a1 = arg1;
     fn_80033E90(self + 0x8A0, 0x56);
-    if (fn_80105BC0(self + 0x1BC, 0x17) != 0) {
+    if (Status_Test(self + 0x1BC, 0x17) != 0) {
         fn_801A8688(self);
     }
     unit49c = self + 0x49C;
-    if (fn_80105BC0(unit49c, 0x17) != 0) {
+    if (Status_Test(unit49c, 0x17) != 0) {
         fn_801A8688(self + 0x2E0);
     }
     if (*(u32 *)(self + 0xCAC) & 0x200) {
         fn_801A8688(self);
         fn_801A8688(self + 0x2E0);
     }
-    if (fn_80105BC0(self + 0x1BC, 0x2A) != 0 && fn_801A8688(self + 0x2E0) != 0) {
+    if (Status_Test(self + 0x1BC, 0x2A) != 0 && fn_801A8688(self + 0x2E0) != 0) {
         fn_80034068(self + 0x8A0, 0x16, 0);
     }
-    if (fn_80105BC0(unit49c, 0x2A) != 0 && fn_801A8688(self) != 0) {
+    if (Status_Test(unit49c, 0x2A) != 0 && fn_801A8688(self) != 0) {
         fn_80034068(self + 0x8A0, 0xA, 0);
     }
     if (a1 == 0xF) {
@@ -2220,14 +2220,14 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
         *(u8 *)(self + 0x2CA) = t;
     }
     fn_80105CEC(unit49c, 0x3F);
-    if (a1 == 0x15 && fn_80105BC0(self + 0x1BC, 0x3F) != 0) {
+    if (a1 == 0x15 && Status_Test(self + 0x1BC, 0x3F) != 0) {
         fn_80034068(self + 0x8A0, 0x3B, 0);
     }
-    if (fn_80105BC0(self + 0x1BC, 0x41) != 0 || fn_80105BC0(unit49c, 0x41) != 0) {
-        if (fn_80105BC0(self + 0x1BC, 0x41) != 0) {
+    if (Status_Test(self + 0x1BC, 0x41) != 0 || Status_Test(unit49c, 0x41) != 0) {
+        if (Status_Test(self + 0x1BC, 0x41) != 0) {
             fn_80034068(self + 0x8A0, 0xC, 0);
         }
-        if (fn_80105BC0(unit49c, 0x41) != 0) {
+        if (Status_Test(unit49c, 0x41) != 0) {
             fn_80034068(self + 0x8A0, 0x18, 0);
         }
         fn_801A8688(self);
@@ -2238,7 +2238,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
         fn_80105D4C(unit49c, 0x41);
         fn_80034068(self + 0x8A0, 0x35, 0);
     }
-    if (fn_80105BC0(unit49c, 0x29) != 0 && *(u32 *)fn_801A7FF4(self + 0x2E0) != 0) {
+    if (Status_Test(unit49c, 0x29) != 0 && *(u32 *)fn_801A7FF4(self + 0x2E0) != 0) {
         fn_80034068(self + 0x8A0, 0x36, 0);
     }
     if (*(s32 *)(self + 0xCA8) >= 2) {

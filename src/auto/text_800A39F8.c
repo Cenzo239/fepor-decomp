@@ -1374,11 +1374,11 @@ void fn_800A65A4(s32 arg0) {
 }
 
 s32 fn_800A65D4(s32 arg0) {
-    u8 fn_80105BC0(s32, M2C_UNK);
-    if (fn_80105BC0(arg0 + 0x1BC, 8) == 0) {
+    u8 Status_Test(s32, M2C_UNK);
+    if (Status_Test(arg0 + 0x1BC, 8) == 0) {
         return 0;
     }
-    return fn_80105BC0(arg0 + 0x1BC, 9) == 0;
+    return Status_Test(arg0 + 0x1BC, 9) == 0;
 }
 
 s32 fn_800A6630(s32 arg0) {
@@ -1794,7 +1794,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *fn_8000D354(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     extern u32 lbl_80369A98;
     extern u32 lbl_80369A9C;
     extern u32 lbl_80369AA0;
@@ -1837,7 +1837,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_SetColor(0x80, 0x40, 0x40, 0xFF);
     Prim2D_EndPrim();
     var_r26 = 3;
-    if (fn_80105BC0((u8 *)*(void **)((u8 *)obj + 0x30) + 0x1BC, 9) != 0) {
+    if (Status_Test((u8 *)*(void **)((u8 *)obj + 0x30) + 0x1BC, 9) != 0) {
         var_r26 = 4;
     } else {
         if (*(void **)((u8 *)var_r30 + 0xC) != NULL) {

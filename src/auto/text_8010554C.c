@@ -155,7 +155,7 @@ s32 fn_8010568C(s32 arg0) {
     void fn_8001EDA0(u8 *);
     void fn_8001EDB8(u8 *);
     void fn_8002A784(s32, u8 *);
-    u8 fn_80105BC0(s32, s32);
+    u8 Status_Test(s32, s32);
     extern s32 lbl_802EF4E0[];
     u32 sp10;
     u32 spC;
@@ -163,7 +163,7 @@ s32 fn_8010568C(s32 arg0) {
 
     fn_8001EDB8((u8 *)&spC);
     *(u8 *)&sp10 = *(u8 *)&spC;
-    if (fn_80105BC0(arg0 + 0x1BC, 0x3C) != 0) {
+    if (Status_Test(arg0 + 0x1BC, 0x3C) != 0) {
         fn_8001EDA0((u8 *)&sp10);
     }
     *(u8 *)&sp8 = *(u8 *)&sp10;
@@ -280,7 +280,7 @@ s32 fn_80105A5C(s32 *arg0) {
     return total;
 }
 
-s32 fn_80105BC0(void *arg0, u8 arg1) {
+s32 Status_Test(void *arg0, u8 arg1) {
     s32 fn_80019DF0(u8);
     u32 *p = arg0;
     s32 n = arg1;
@@ -3188,7 +3188,7 @@ u8 fn_8010B30C(void *arg0, s8 arg1, s16 arg2) {
     u8 fn_8003863C(void *);
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
     u8 fn_800FE84C(s8, s8);
-    u8 fn_80105BC0(void *, u8);
+    u8 Status_Test(void *, u8);
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
     extern s32 lbl_8036A158;
@@ -3219,7 +3219,7 @@ u8 fn_8010B30C(void *arg0, s8 arg1, s16 arg2) {
     scan = &lbl_8036A158;
     goto scan_cmp;
 scan_loop:
-    if (fn_80105BC0((u8 *)arg0 + 0x1BC, (u8)*scan) != 0) {
+    if (Status_Test((u8 *)arg0 + 0x1BC, (u8)*scan) != 0) {
         found = 1;
     } else {
         scan += 1;
@@ -3278,7 +3278,7 @@ inner:
                     ent = lbl_80273B30;
                     goto tab_cmp;
 tab_loop:
-                    if (fn_80105BC0((u8 *)arg0 + 0x1BC, (u8)ent[0]) == 0
+                    if (Status_Test((u8 *)arg0 + 0x1BC, (u8)ent[0]) == 0
                         || ((u8 (*)(void *, void *))ent[1])(arg0, unit) == 0) {
                         ent += 2;
                         pri += 1;
@@ -3327,8 +3327,8 @@ outer_cmp:
 #pragma use_lmw_stmw reset
 
 s32 fn_8010B60C(void *arg0, void *arg1) {
-    u8 fn_80105BC0(void *, s32);
-    if (fn_80105BC0((u8 *)arg1 + 0x1BC, 0x18) != 0) {
+    u8 Status_Test(void *, s32);
+    if (Status_Test((u8 *)arg1 + 0x1BC, 0x18) != 0) {
         return 0;
     }
     return *(u32 *)((u8 *)arg1 + 0x1A0) & 1;

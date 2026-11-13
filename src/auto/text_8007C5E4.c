@@ -895,7 +895,7 @@ void UnitInfo_DrawNamePlate(void *panel)
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void fn_8000A174(s32, s32);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     u8 fn_8001512C(void *);
     void *fn_8000E0E4(void *);
     void strcpy(void *, void *);
@@ -937,7 +937,7 @@ void UnitInfo_DrawNamePlate(void *panel)
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    if (fn_80105BC0((u8 *)*(void **)((u8 *)panel + 0x58) + 0x1BC, 0) != 0) {
+    if (Status_Test((u8 *)*(void **)((u8 *)panel + 0x58) + 0x1BC, 0) != 0) {
         if (fn_8001512C(faction0) != 0) {
             strcpy(buf, fn_8000E0E4(lbl_8026C86C + 0x218));
             strcat(buf, lbl_8026C86C + 0x221);

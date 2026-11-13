@@ -896,7 +896,7 @@ void fn_80185280(void *arg0) {
     s32 fn_80060440(void *);
     void *fn_80060664(void *);
     void *fn_800639B4(void);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80185078(void *, void *);
     extern u8 lbl_80295A00[];
     extern u8 lbl_80295A20[];
@@ -942,7 +942,7 @@ void fn_80185280(void *arg0) {
             fn_8004FE90(*(void **)((u8 *)tmp + 0x30), (u8)*(s32 *)((u8 *)tmp + 0x38));
         }
     }
-    if (fn_80105BC0((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
+    if (Status_Test((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
         fn_8000C070(arg0, 0xA);
         return;
     }
@@ -3198,7 +3198,7 @@ void fn_8018D25C(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 u8 fn_8018D294(void *arg0, s32 arg1) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
     void fn_8002F658(void *, s32);
@@ -3238,7 +3238,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void *unit;
 
     bestDist = 0x7FFFFFFF;
-    if (!fn_80105BC0((u8 *)arg0 + 0x1BC, 0x3C)) {
+    if (!Status_Test((u8 *)arg0 + 0x1BC, 0x3C)) {
         return 0;
     }
     obj.vtbl = lbl_80284E20;
@@ -3314,7 +3314,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 u8 fn_8018D4CC(void *arg0, s32 arg1) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800FE2A0(void *, s32, s32);
@@ -3358,7 +3358,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void *base;
 
     base = gBattleMap;
-    if (!fn_80105BC0((u8 *)arg0 + 0x1BC, 0x3C)) {
+    if (!Status_Test((u8 *)arg0 + 0x1BC, 0x3C)) {
         return 0;
     }
     if ((lbl_8032B3C0[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
@@ -3369,7 +3369,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
         fn_800FE2A0(arg0, 5, -1);
     }
     bestDist = 0x7FFFFFFF;
-    if (!fn_80105BC0((u8 *)arg0 + 0x1BC, 0x3C)) {
+    if (!Status_Test((u8 *)arg0 + 0x1BC, 0x3C)) {
         return 0;
     }
     obj.vtbl = lbl_80284E20;
@@ -6401,7 +6401,7 @@ void fn_80193E5C(void) {
 }
 
 void fn_80193E88(void *arg0) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     void fn_8003C15C(void *);
     void fn_8000C070(void *, s32);
@@ -6412,7 +6412,7 @@ void fn_80193E88(void *arg0) {
 
     flags = 0;
     obj = *(void **)(gUiContext + 4);
-    if (fn_80105BC0((u8 *)obj + 0x1BC, 9) != 0) {
+    if (Status_Test((u8 *)obj + 0x1BC, 9) != 0) {
         flags |= 1;
     }
     if (fn_80091D74(obj) != 0) {
@@ -12112,7 +12112,7 @@ s32 fn_801A05F4(u8 arg0, u8 arg1) {
     void fn_8003BE50(void *);
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     extern u8 gUnits[];
     void *unit;
 
@@ -12124,10 +12124,10 @@ s32 fn_801A05F4(u8 arg0, u8 arg1) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    if (arg1 != 0 && fn_80105BC0((u8 *)unit + 0x1BC, 9) != 0) {
+    if (arg1 != 0 && Status_Test((u8 *)unit + 0x1BC, 9) != 0) {
         return 0;
     }
-    if (arg1 == 0 && fn_80105BC0((u8 *)unit + 0x1BC, 9) == 0) {
+    if (arg1 == 0 && Status_Test((u8 *)unit + 0x1BC, 9) == 0) {
         return 0;
     }
     fn_8003BE50(unit);

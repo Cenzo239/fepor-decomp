@@ -1487,7 +1487,7 @@ void fn_800227F8(void* arg0, s32 arg1)
             
             // Set some more values
             r4 = 0x4;
-            fn_80105BC0(arg1, r4);
+            Status_Test(arg1, r4);
             
             // Set a value in the end
             *(u8*)(r31 + 0x4eea) = (u8)((0 - *(u8*)(arg1 + 0x1c)) & 0xFF);

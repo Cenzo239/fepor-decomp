@@ -524,7 +524,7 @@ void TabMenu_DrawTab2(void *arg0) {
     void *fn_8000E0E4(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
     s32 fn_80010B78(void *, s32, f32);
-    u8 fn_80105BC0(void *, u8);
+    u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
@@ -682,9 +682,9 @@ void TabMenu_DrawTab2(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (fn_80105BC0(tbl74, data[0]) != 0) {
+        if (Status_Test(tbl74, data[0]) != 0) {
             mark = 0x14;
-            if (fn_80105BC0(tbl84, data[0]) != 0) {
+            if (Status_Test(tbl84, data[0]) != 0) {
                 mark = 1;
             }
         }
@@ -895,7 +895,7 @@ void TabMenu_DrawTab1(void *arg0) {
     void *fn_8000E0E4(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
     s32 fn_80010B78(void *, s32, f32);
-    u8 fn_80105BC0(void *, u8);
+    u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
@@ -1053,9 +1053,9 @@ void TabMenu_DrawTab1(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (fn_80105BC0(tbl74, data[0]) != 0) {
+        if (Status_Test(tbl74, data[0]) != 0) {
             mark = 0x14;
-            if (fn_80105BC0(tbl84, data[0]) != 0) {
+            if (Status_Test(tbl84, data[0]) != 0) {
                 mark = 1;
             }
         }
@@ -1112,7 +1112,7 @@ void TabMenu_DrawTab0(void *arg0) {
     void Prim2D_EndPrim(void);
     void *fn_8000E0E4(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
-    u8 fn_80105BC0(void *, u8);
+    u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
@@ -1268,9 +1268,9 @@ void TabMenu_DrawTab0(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (fn_80105BC0(tbl74, data[0]) != 0) {
+        if (Status_Test(tbl74, data[0]) != 0) {
             mark = 0x14;
-            if (fn_80105BC0(tbl84, data[0]) != 0) {
+            if (Status_Test(tbl84, data[0]) != 0) {
                 mark = 1;
             }
             mark = mark;

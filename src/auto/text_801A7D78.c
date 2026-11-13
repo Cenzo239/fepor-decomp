@@ -269,8 +269,8 @@ void fn_801A85F4(s32 arg0) {
 }
 
 s32 fn_801A8688(s32 arg0) {
-    u8 fn_80105BC0(s32, M2C_UNK);
-    if ((fn_80105BC0(arg0 + 0x1BC, 0x29) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x41) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x4C) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x31) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x2F) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x30) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x32) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x3F) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x10) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x35) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x2B) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x2C) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x2E) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x33) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x38) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x34) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x39) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x36) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x42) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x5A) == 0) && (fn_80105BC0(arg0 + 0x1BC, 0x2D) == 0)) {
+    u8 Status_Test(s32, M2C_UNK);
+    if ((Status_Test(arg0 + 0x1BC, 0x29) == 0) && (Status_Test(arg0 + 0x1BC, 0x41) == 0) && (Status_Test(arg0 + 0x1BC, 0x4C) == 0) && (Status_Test(arg0 + 0x1BC, 0x31) == 0) && (Status_Test(arg0 + 0x1BC, 0x2F) == 0) && (Status_Test(arg0 + 0x1BC, 0x30) == 0) && (Status_Test(arg0 + 0x1BC, 0x32) == 0) && (Status_Test(arg0 + 0x1BC, 0x3F) == 0) && (Status_Test(arg0 + 0x1BC, 0x10) == 0) && (Status_Test(arg0 + 0x1BC, 0x35) == 0) && (Status_Test(arg0 + 0x1BC, 0x2B) == 0) && (Status_Test(arg0 + 0x1BC, 0x2C) == 0) && (Status_Test(arg0 + 0x1BC, 0x2E) == 0) && (Status_Test(arg0 + 0x1BC, 0x33) == 0) && (Status_Test(arg0 + 0x1BC, 0x38) == 0) && (Status_Test(arg0 + 0x1BC, 0x34) == 0) && (Status_Test(arg0 + 0x1BC, 0x39) == 0) && (Status_Test(arg0 + 0x1BC, 0x36) == 0) && (Status_Test(arg0 + 0x1BC, 0x42) == 0) && (Status_Test(arg0 + 0x1BC, 0x5A) == 0) && (Status_Test(arg0 + 0x1BC, 0x2D) == 0)) {
         return 0;
     }
     fn_80105CEC(arg0 + 0x1BC, 0x29);
@@ -512,7 +512,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     s8 fn_8003B258(void *);
     u8 fn_80092DC4(void *, void *);
     void fn_801A80D8(void *, s32 *, s32 *, s32 *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s8 fn_801B8674(void *);
     s8 fn_801F19A0(void);
     extern u16 lbl_80367218;
@@ -668,7 +668,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
         (s16)(*(s16 *)((u8 *)self + 0x2A4) +
               fn_801B8674(*(void **)((u8 *)self + 0x280)));
 
-    if ((u8)fn_80105BC0((u8 *)self + 0x1BC, 0x61) != 0) {
+    if ((u8)Status_Test((u8 *)self + 0x1BC, 0x61) != 0) {
         *(s16 *)((u8 *)self + 0x2A4) =
             (s16)(*(s16 *)((u8 *)self + 0x2A4) + fn_801F19A0());
     }
@@ -685,12 +685,12 @@ void fn_801A8F80(void *arg0, void *arg1) {
 
     *(s16 *)((u8 *)self + 0x2A6) = (s16)fn_8003ACF8(self);
 
-    if ((u8)fn_80105BC0((u8 *)self + 0x1BC, 0x41) == 0) {
-        if ((u8)fn_80105BC0((u8 *)self + 0x1BC, 0x52) != 0) {
+    if ((u8)Status_Test((u8 *)self + 0x1BC, 0x41) == 0) {
+        if ((u8)Status_Test((u8 *)self + 0x1BC, 0x52) != 0) {
             *(s16 *)((u8 *)self + 0x2A0) =
                 (s16)(*(s16 *)((u8 *)self + 0x2A0) + 0x14);
         }
-        if ((u8)fn_80105BC0((u8 *)self + 0x1BC, 0x51) != 0) {
+        if ((u8)Status_Test((u8 *)self + 0x1BC, 0x51) != 0) {
             *(s16 *)((u8 *)self + 0x29E) =
                 (s16)(*(s16 *)((u8 *)self + 0x29E) + 0x14);
         }
@@ -801,7 +801,7 @@ void fn_801A9AF8(void *arg0) {
         u8 pad295[0x2C8 - 0x295];
         s8 unk2C8;
     } *p = arg0;
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80093154(void *, u8, void *);
     void *temp_r3;
 
@@ -809,7 +809,7 @@ void fn_801A9AF8(void *arg0) {
     temp_r3 = p->unk280;
     M2C_FIELD(temp_r3, u16 *, 0x1A4) = p->unk1A4;
     M2C_FIELD(temp_r3, u16 *, 0x1A6) = p->unk1A6;
-    if (p->unk1A8 == 0 && fn_80105BC0(p->unk1BC, 0x5C) == 0) {
+    if (p->unk1A8 == 0 && Status_Test(p->unk1BC, 0x5C) == 0) {
         M2C_FIELD(p->unk280, u32 *, 0x1A0) |= 0x01000000;
     }
     if (p->unk294 >= 0) {
@@ -1022,7 +1022,7 @@ void fn_801AA03C(s32 unused, s32 arg1) {
 }
 
 u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     extern s32 lbl_80297278[];
     extern u8 lbl_8032B3C0[];
     s32 *entry;
@@ -1030,7 +1030,7 @@ u8 fn_801AA064(void *arg0, void *arg1, void *arg2) {
     u8 key;
 
     key = *(u8 *)((u8 *)arg1 + 0x18);
-    if (fn_80105BC0((u8 *)arg0 + 0x1BC, key) != 0) {
+    if (Status_Test((u8 *)arg0 + 0x1BC, key) != 0) {
         entry = lbl_80297278;
         goto check;
         do {

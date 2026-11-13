@@ -176,12 +176,12 @@ s32 fn_80074A30(void) {
 }
 
 s32 fn_80074A38(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80029C08(void *);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x18) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x18) == 0) {
         return 3;
     }
     fn_80029C08(*(u8 **)gUiContext);
@@ -291,7 +291,7 @@ extern "C" s32 fn_80074BA4(void *arg0) {
         virtual s32 v18() = 0;
         virtual s32 v19() = 0;
     };
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_800299B8(void *);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
@@ -302,7 +302,7 @@ extern "C" s32 fn_80074BA4(void *arg0) {
     base = gUiContext;
     p = *(void **)base;
     slot = (u8 *)p + 0x1BC;
-    if (fn_80105BC0(slot, ((Obj *)arg0)->v19()) == 0) {
+    if (Status_Test(slot, ((Obj *)arg0)->v19()) == 0) {
         return 3;
     }
     fn_800299B8(*(void **)gUiContext);
@@ -1357,7 +1357,7 @@ void fn_80076840(void) {
 }
 
 s32 fn_8007686C(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_80019E04(u8 *);
     void fn_8002C034(void *, s32);
     extern u8 gUiContext[];
@@ -1368,7 +1368,7 @@ s32 fn_8007686C(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x43) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x43) == 0) {
         return 3;
     }
     temp = *(void **)gUiContext;
@@ -1413,7 +1413,7 @@ void fn_800769C0(void) {
 }
 
 s32 fn_800769EC(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80029E4C(void);
     extern u8 gUiContext[];
     extern s32 lbl_802EF4E0[];
@@ -1421,7 +1421,7 @@ s32 fn_800769EC(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x46) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x46) == 0) {
         return 3;
     }
     if (*(u32 *)(*(u8 **)gUiContext + 0x1A0) & 0x1000) {
@@ -1495,7 +1495,7 @@ void fn_80076B68(void) {
 }
 
 s32 fn_80076B94(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_80019E04(u8 *);
     void fn_8002AD04(void *, s32);
     extern u8 gUiContext[];
@@ -1506,7 +1506,7 @@ s32 fn_80076B94(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x4A) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x4A) == 0) {
         return 3;
     }
     temp = *(void **)gUiContext;
@@ -1532,7 +1532,7 @@ void fn_80076C7C(void) {
 }
 
 s32 fn_80076CA8(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_80019E04(u8 *);
     void fn_8002AB9C(void *, s32);
     extern u8 gUiContext[];
@@ -1543,7 +1543,7 @@ s32 fn_80076CA8(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x49) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x49) == 0) {
         return 3;
     }
     temp = *(void **)gUiContext;
@@ -1568,7 +1568,7 @@ void fn_80076D90(void) {
 }
 
 s32 fn_80076DBC(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80029C08(void *);
     extern u8 gUiContext[];
     extern s32 lbl_802EF4E0[];
@@ -1576,7 +1576,7 @@ s32 fn_80076DBC(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x18) != 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x18) != 0) {
         fn_80029C08(*(u8 **)gUiContext);
         if (lbl_802EF4E0[0] != 0) {
             return 0;
@@ -1586,10 +1586,10 @@ s32 fn_80076DBC(void) {
 }
 
 s32 fn_80076E38(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     extern u8 gUiContext[];
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 9) != 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 9) != 0) {
         u8 *p = gUiContext;
         p[8] = 0x2B;
     } else {
@@ -1637,11 +1637,11 @@ s32 fn_80076F80(void) {
     extern u8 gUiContext[];
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_80015680(u8 *);
     u8 fn_8014D8BC(u8 *);
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
     }
     if (fn_80015680(gUnitLists + 0x24) == 0) {
@@ -1682,11 +1682,11 @@ s32 fn_800770CC(void) {
     extern u8 gUiContext[];
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_80015680(u8 *);
     u8 fn_8014D8BC(u32 *);
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
     }
     if (fn_80015680(gUnitLists) <= 1) {
@@ -1726,12 +1726,12 @@ void fn_800771E8(void) {
 }
 
 s32 fn_80077214(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     s32 fn_800AA288(s32);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x48) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x48) == 0) {
         return 3;
     }
     if (gBattleState[0x50] >= 2) {
@@ -1762,7 +1762,7 @@ void fn_80077318(void) {
 }
 
 s32 fn_80077344(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8002AE6C(void *);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
@@ -1770,7 +1770,7 @@ s32 fn_80077344(void) {
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x3C) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x3C) == 0) {
         return 3;
     }
     fn_8002AE6C(*(void **)gUiContext);
@@ -2133,10 +2133,10 @@ s32 fn_80077D98(void) {
 void fn_80077DA0(void) {
     extern u32 gUiContext[];
     extern u8 lbl_8026C0B8[];
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     u8 *fn_8000E0E4(u8 *);
 
-    if (fn_80105BC0((void *)(gUiContext[0] + 0x1BC), 0x16) != 0) {
+    if (Status_Test((void *)(gUiContext[0] + 0x1BC), 0x16) != 0) {
         fn_8000E0E4(lbl_8026C0B8 + 0x44D);
     } else {
         fn_8000E0E4(lbl_8026C0B8 + 0x459);
@@ -2146,10 +2146,10 @@ void fn_80077DA0(void) {
 void fn_80077E00(void) {
     extern u32 gUiContext[];
     extern u8 lbl_8026C0B8[];
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     u8 *fn_8000E0E4(u8 *);
 
-    if (fn_80105BC0((void *)(gUiContext[0] + 0x1BC), 0x16) != 0) {
+    if (Status_Test((void *)(gUiContext[0] + 0x1BC), 0x16) != 0) {
         fn_8000E0E4(lbl_8026C0B8 + 0x464);
     } else {
         fn_8000E0E4(lbl_8026C0B8 + 0x46E);
@@ -2200,12 +2200,12 @@ void fn_80077F2C(void) {
 }
 
 s32 fn_80077F58(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8002BAFC(void *, s32);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x45) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x45) == 0) {
         return 3;
     }
     if ((s8)gUiContext[0x12] != 0) {
@@ -2238,13 +2238,13 @@ void fn_80078034(void) {
 }
 
 s32 fn_80078060(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8002BAFC(void *, s32);
     extern u8 gUiContext[];
     extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
     u8 *p;
 
-    if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0x44) == 0) {
+    if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x44) == 0) {
         return 3;
     }
     p = gUiContext;
@@ -2273,11 +2273,11 @@ void fn_8007812C(void) {
 
 s32 fn_80078158(void) {
     extern u8 gUiContext[], lbl_8032BB58[], lbl_802EF4E0[];
-    u8 fn_80105BC0(void *, s32); void *fn_8010FF24(void *, s32, s32, s32); void fn_8002BD44(void *, void *);
+    u8 Status_Test(void *, s32); void *fn_8010FF24(void *, s32, s32, s32); void fn_8002BD44(void *, void *);
     void *obj; void *entry;
     if (*(s8 *)(gUiContext + 0x12)) return 3;
     obj = *(void **)gUiContext;
-    if (!fn_80105BC0((u8 *)obj + 0x1BC, 0x4F)) return 3;
+    if (!Status_Test((u8 *)obj + 0x1BC, 0x4F)) return 3;
     entry = fn_8010FF24(lbl_8032BB58, *(u8 *)((u8 *)obj + 0x19E), *(u8 *)((u8 *)obj + 0x19F), 7);
     if (!entry) return 3;
     fn_8002BD44(*(void **)gUiContext, entry);

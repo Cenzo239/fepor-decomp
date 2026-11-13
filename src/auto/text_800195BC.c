@@ -737,7 +737,7 @@ void fn_8001A5E4(void) {
     void *fn_8022C414(void *, void *, s32, s32, s32);
     void fn_8001CC48(void *, u32);
     void fn_80105DAC(void *, u32);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80105D4C(void *, s32);
     void fn_8001DA94(void *, u32);
     u32 fn_80234198(u32, char *);
@@ -793,7 +793,7 @@ void fn_8001A5E4(void) {
         fn_80105DAC(rec + 0x1C, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
         fn_80105DAC(rec + 0x1C, v);
-        if (fn_80105BC0(rec + 0x1C, 3) == 0) {
+        if (Status_Test(rec + 0x1C, 3) == 0) {
             fn_80105D4C(rec + 0x1C, 0x44);
         }
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }

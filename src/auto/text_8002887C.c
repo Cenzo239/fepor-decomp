@@ -1877,16 +1877,16 @@ void fn_8002D24C(void *arg0, void *arg1) {
 #pragma optimization_level 2
 void fn_8002D2B4(void *arg0, void *arg1) {
     u8 fn_80015610(s32, s32);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8002F6E8(void *, u8, u8, u8, u8);
     extern u8 lbl_802EF4E0[];
     u8 a, b, c;
 
     if (fn_80015610(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 0x190), *(s32 *)((u8 *)arg1 + 0x190)) != 1)
         return;
-    if (fn_80105BC0((u8 *)arg1 + 0x1bc, 6) != 0)
+    if (Status_Test((u8 *)arg1 + 0x1bc, 6) != 0)
         return;
-    if (fn_80105BC0((u8 *)arg1 + 0x1bc, 7) != 0)
+    if (Status_Test((u8 *)arg1 + 0x1bc, 7) != 0)
         return;
     a = *(u8 *)((u8 *)arg1 + 0x19e);
     b = *(u8 *)((u8 *)arg1 + 0x19f);
@@ -2437,7 +2437,7 @@ void fn_8002E408(s32 arg0) {
 }
 
 void fn_8002E444(void) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_8014CBD8(void *, f32, f32);
     extern struct {
         void *head;
@@ -2449,7 +2449,7 @@ void fn_8002E444(void) {
 
     if (gBattleState[0x11] == 0 && !((gBattleState[0x9E] >> 6) & 1)) {
         for (p = gUnitLists[gBattleState[0x11]].head; p != NULL; p = *(void **)((u8 *)p + 0x184)) {
-            if (fn_80105BC0((u8 *)p + 0x1BC, 0)) {
+            if (Status_Test((u8 *)p + 0x1BC, 0)) {
                 break;
             }
         }
@@ -2460,7 +2460,7 @@ void fn_8002E444(void) {
 }
 
 void fn_8002E510(void) {
-    u8 fn_80105BC0(void *, M2C_UNK);
+    u8 Status_Test(void *, M2C_UNK);
     void fn_8014CBD8(void *, f32, f32);
     extern struct {
         void *head;
@@ -2471,7 +2471,7 @@ void fn_8002E510(void) {
     void *p;
 
     for (p = gUnitLists[0].head; p != NULL; p = M2C_FIELD(p, void **, 0x184)) {
-        if (fn_80105BC0((u8 *)p + 0x1BC, 0)) {
+        if (Status_Test((u8 *)p + 0x1BC, 0)) {
             break;
         }
     }

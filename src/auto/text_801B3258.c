@@ -2438,7 +2438,7 @@ extern "C" void fn_801BA3E8(void *arg0) {
 extern "C" void Ui_HandleUnitCursorInput(void *arg0) {
 /* Handle map-cursor input over a unit: select/deploy with A, info with X, cancel with B. */
 void fn_8000C070(void *,s32); void Process_ClearFunc(void *);
-s32 fn_80105814(void *); u8 fn_80105BC0(void *,u8); void *fn_801362C8(void *);
+s32 fn_80105814(void *); u8 Status_Test(void *,u8); void *fn_801362C8(void *);
 void fn_8013FDA0(void *); void *fn_8013FF94(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void fn_80167190(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
@@ -2474,7 +2474,7 @@ btn=a&changed;
 if((btn&0x100)&&unit&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 s32 remaining=M2C_FIELD(M2C_FIELD(owner,void **,0x18c),u8 *,0x40);
 remaining-=fn_8017C3C8(owner);
-if(fn_80105BC0((u8 *)owner+0x1bc,M2C_FIELD(unit,u8 *,0x18))) {
+if(Status_Test((u8 *)owner+0x1bc,M2C_FIELD(unit,u8 *,0x18))) {
 *(Pair *)&pos2=((Obj *)M2C_FIELD(self,void **,0x68))->v9();
 fn_80176888(lbl_8027C698+0x17a,self,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
 return;
@@ -18618,14 +18618,14 @@ void fn_801E3560(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 }
 
 s32 fn_801E3570(s32 arg0, void *arg1) {
-    u8 fn_80105BC0(s32, u8);
+    u8 Status_Test(s32, u8);
     u16 temp_r0;
 
     temp_r0 = M2C_FIELD(arg1, u16 *, 0x18);
     if (temp_r0 >= 0x80U) {
         return 0;
     }
-    return fn_80105BC0(arg0 + 0x30, (u8) temp_r0) != 0;
+    return Status_Test(arg0 + 0x30, (u8) temp_r0) != 0;
 }
 
 void fn_801E35BC(s32 arg0, s32 arg1) {

@@ -757,13 +757,13 @@ void *fn_800AA794(void) {
 }
 
 void fn_800AA80C(void *arg0) {
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_8002011C(void *, u8, u8, s32, s32);
     extern u8 gBattleMap[];
 
-    if (fn_80105BC0((u8 *)arg0 + 0x1BC, 0x43) != 0) {
+    if (Status_Test((u8 *)arg0 + 0x1BC, 0x43) != 0) {
         fn_80022DAC(gBattleMap, 5, -1);
         fn_80022DAC(gBattleMap, 8, 0);
         fn_80022FD8(gBattleMap, 6);
@@ -778,7 +778,7 @@ void fn_800AA89C(void *arg0) {
     void fn_8002011C(u8 *, s8, s8, u8, u8);
     void **fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     extern u8 gBattleMap[151280];
 
     u8 saved;
@@ -873,7 +873,7 @@ slot_cmp:
         goto slot_loop;
     }
 slots_done:
-    if (fn_80105BC0((u8 *)self + 0x1BC, 0x43) != 0) {
+    if (Status_Test((u8 *)self + 0x1BC, 0x43) != 0) {
         u8 *map2 = gBattleMap;
         y = 0;
         yOff = 0;

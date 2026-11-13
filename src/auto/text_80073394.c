@@ -348,13 +348,13 @@ void fn_80073CA4(void) {
 void fn_80073CE4(s32 arg0) {
     void Process_Unlink(s32);
     void fn_8003C15C(void *);
-    u8 fn_80105BC0(void *, s32);
+    u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     void fn_80183BE4(void *, s32);
     extern u8 gUiContext[24];
     u8 flags;
     flags = 0;
-    if (fn_80105BC0((u8 *)*(void **)gUiContext + 0x1BC, 9) != 0) flags |= 1;
+    if (Status_Test((u8 *)*(void **)gUiContext + 0x1BC, 9) != 0) flags |= 1;
     if (fn_80091D74(*(void **)gUiContext) != 0) flags |= 2;
     switch ((s32)flags) {
     case 3:
