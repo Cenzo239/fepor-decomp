@@ -9411,7 +9411,7 @@ void fn_80049A3C(void *arg0)
 
 void fn_80049A98(void *arg0) {
     void fn_8004AE28(void *, f32, f32, f32);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_80060060(void *);
     void fn_8000C188(void *);
     void *p;
@@ -9423,7 +9423,7 @@ void fn_80049A98(void *arg0) {
         fn_8000C188(arg0);
         return;
     }
-    if (fn_8005F9B8(p, 8) != 0) {
+    if (Pad_IsButton(p, 8) != 0) {
         *(u8 *)((u8 *)arg0 + 0x48) = 1;
         fn_8000C188(arg0);
         return;

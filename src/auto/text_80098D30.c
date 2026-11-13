@@ -206,7 +206,7 @@ void fn_80099094(void *arg0)
 }
 
 void fn_8009933C(void *arg0) {
-s32 fn_80098140(void); u8 fn_8005F7F0(void *); u8 fn_8005F9B8(void *,s32);
+s32 fn_80098140(void); u8 fn_8005F7F0(void *); u8 Pad_IsButton(void *,s32);
 s32 Event_GetCmdKind(s16); s32 Event_GetCmdFlags(s16); void Event_AdvanceCmd(s16);
 void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
 void fn_8017DF54(void *,void *,void *);
@@ -230,7 +230,7 @@ s32 command=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x46));
 s32 flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x46));
 switch(command) {
 case 0x50: case 0x51:
-if(fn_8005F9B8(input,0)) {
+if(Pad_IsButton(input,0)) {
 if(M2C_FIELD(self,s8 *,0x41)<=0) fn_8009A0A4(self,M2C_FIELD(self,s16 *,0x46));
 else { if(flags&1) {
 
@@ -302,7 +302,7 @@ M2C_FIELD(self,u8 *,0x41)--;
 }
 break;
 case 0x52:
-if(fn_8005F9B8(input,1)) {
+if(Pad_IsButton(input,1)) {
 Event_AdvanceCmd(M2C_FIELD(self,s16 *,0x46));
 if(M2C_FIELD(self,u8 *,0x34)!=1) {
 fn_80184C7C(get_280(M2C_FIELD(self,void ***,0x3c)),7,2,0);
@@ -317,8 +317,8 @@ M2C_FIELD(self,u8 *,0x41)--;
 {u8 advance;
 if(input) {
 s8 old=M2C_FIELD(self,s8 *,0x43);
-if(fn_8005F9B8(input,1)) M2C_FIELD(self,u8 *,0x43)--;
-if(fn_8005F9B8(input,0)) M2C_FIELD(self,u8 *,0x43)++;
+if(Pad_IsButton(input,1)) M2C_FIELD(self,u8 *,0x43)--;
+if(Pad_IsButton(input,0)) M2C_FIELD(self,u8 *,0x43)++;
 if(old!=M2C_FIELD(self,s8 *,0x43) && M2C_FIELD(self,s8 *,0x43)==0 && M2C_FIELD(self,s8 *,0x41)>0) advance=1; else goto noAdvance;
 } else if(M2C_FIELD(self,s8 *,0x41)>0) advance=1; else {noAdvance: advance=0;}
 if(advance) {

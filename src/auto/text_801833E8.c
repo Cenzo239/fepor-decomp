@@ -1132,7 +1132,7 @@ s32 fn_80185B94(void *arg0) {
 }
 
 void fn_80185F40(void *arg0) {
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_8000A388(void *, void *, void *);
     void *fn_8000CA64(void *, s32);
     s32 fn_80052B30(s32);
@@ -1144,7 +1144,7 @@ void fn_80185F40(void *arg0) {
     void *temp_r30;
     void *temp_r3;
 
-    if ((u8)fn_8005F9B8(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x30) + 0x5C), 0) == 0) {
+    if ((u8)Pad_IsButton(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x30) + 0x5C), 0) == 0) {
         return;
     }
     temp_r30 = *(void **)((u8 *)arg0 + 0x30);
@@ -1648,7 +1648,7 @@ void fn_801877C4(void *arg0) {
     void *fn_80053C30(void *, void *);
     f32 fn_80059440(void *, f32, f32, f32, f32);
     f32 fn_80059F64(f32, f32, f32, f32);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_8005FC74(void *, void *, s32);
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(void *);
@@ -1686,7 +1686,7 @@ void fn_801877C4(void *arg0) {
 
     base = lbl_80295A00;
     z = 0x40;
-    if (fn_8005F9B8((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C, 0) != 0) {
+    if (Pad_IsButton((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C, 0) != 0) {
         pos = *(void **)((u8 *)arg0 + 0x34);
         if (pos != 0) {
             f31 = *(f32 *)((u8 *)pos + 4);
@@ -2322,7 +2322,7 @@ void fn_8018AD1C(void *arg0) {
     u32 fn_80057F04(s32, void *, void *, void *);
     void fn_800588EC(s32);
     void fn_80058970(void *, void *);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     extern u8 lbl_80278E24[];
     s32 sp20;
     s32 sp1C;
@@ -2333,7 +2333,7 @@ void fn_8018AD1C(void *arg0) {
     s32 sp8;
     s32 temp_r31;
     temp_r31 = M2C_FIELD(arg0, s32 *, 0x30) + 0x1C;
-    if (fn_8005F9B8((void *)temp_r31, 0x14) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x14) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2341,7 +2341,7 @@ void fn_8018AD1C(void *arg0) {
         sp20 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x15) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x15) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2349,7 +2349,7 @@ void fn_8018AD1C(void *arg0) {
         sp1C = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x16) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x16) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2357,7 +2357,7 @@ void fn_8018AD1C(void *arg0) {
         sp18 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x17) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x17) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2365,7 +2365,7 @@ void fn_8018AD1C(void *arg0) {
         sp14 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x18) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x18) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2373,7 +2373,7 @@ void fn_8018AD1C(void *arg0) {
         sp10 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x1A) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x1A) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2381,7 +2381,7 @@ void fn_8018AD1C(void *arg0) {
         spC = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x1B) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x1B) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
@@ -2389,7 +2389,7 @@ void fn_8018AD1C(void *arg0) {
         sp8 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
     }
-    if (fn_8005F9B8((void *)temp_r31, 0x19) != 0) {
+    if (Pad_IsButton((void *)temp_r31, 0x19) != 0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
             M2C_FIELD(arg0, u32 *, 0x38) = 0;
@@ -9066,12 +9066,12 @@ void fn_80199DE8(void *arg0) {
 }
 
 void fn_8019A01C(void *arg0) {
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_8000C188(void *);
     u32 *flags;
 
     flags = (u32 *)(*(u8 **)((u8 *)arg0 + 0x34) + 0x14);
-    if (fn_8005F9B8(flags, 0x12)) {
+    if (Pad_IsButton(flags, 0x12)) {
         fn_8000C188(arg0);
     } else if (*flags & 0x10) {
         fn_8000C188(arg0);
@@ -9469,11 +9469,11 @@ s32 fn_8019B25C(void *arg0) {
 }
 
 void fn_8019B29C(void *arg0) {
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     u32 *flags;
 
     flags = (u32 *) (M2C_FIELD(arg0, u8 **, 0x5C) + 0x14);
-    if (fn_8005F9B8(flags, 0x12) || (*flags & 0x10)) {
+    if (Pad_IsButton(flags, 0x12) || (*flags & 0x10)) {
         fn_8000C188(arg0);
     }
 }
@@ -9741,7 +9741,7 @@ s32 fn_8019B9F0(void *arg0) {
     void fn_80052CA8(void *);
     void fn_80054C14(void *);
     s32 fn_8005F894(void *, s32);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_800983E0(void *, void *);
     void fn_80098524(void *);
     u8 fn_80098568(void *);
@@ -9775,7 +9775,7 @@ s32 fn_8019B9F0(void *arg0) {
         }
         *(u8 *)((u8 *)p4c + 0x40) = (u8)(*(u8 *)((u8 *)p4c + 0x40) | 1);
     }
-    if (fn_8005F9B8(p5c, 0) != 0) {
+    if (Pad_IsButton(p5c, 0) != 0) {
         fn_800983E0(&sp20, *(void **)((u8 *)p4c + 0x34));
         tmp = *(void **)((u8 *)p4c + 0x34);
         a = *(s32 *)(&sp20);
@@ -9832,7 +9832,7 @@ s32 fn_8019B9F0(void *arg0) {
             }
         }
     }
-    if (fn_8005F9B8(p5c, 0x12) != 0) {
+    if (Pad_IsButton(p5c, 0x12) != 0) {
         fn_80052CA8(arg0);
         fn_80098524(*(void **)((u8 *)p4c + 0x34));
     }
@@ -9969,7 +9969,7 @@ check:
 #pragma global_optimizer on
 s32 fn_8019BF5C(void *arg0) {
     void fn_80054C14(void *);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_80184688(s32, s32, s32, void *);
     void *temp_r4;
     void *temp_r31;
@@ -9981,7 +9981,7 @@ s32 fn_8019BF5C(void *arg0) {
     temp_r3 = *(void **)((u8 *)temp_r4 + 0x5C);
     temp_r31 = *(void **)((u8 *)temp_r4 + 0x4C);
     temp_r30 = *(s32 *)((u8 *)temp_r4 + 0x50);
-    if (temp_r3 != NULL && fn_8005F9B8(temp_r3, 0) != 0) {
+    if (temp_r3 != NULL && Pad_IsButton(temp_r3, 0) != 0) {
         fn_80184688(temp_r30, 1, 0x20, temp_r31);
         if (*(void **)((u8 *)temp_r31 + 0x58) != NULL) {
             temp_r3_flags = *(u8 *)((u8 *)temp_r31 + 0x40);
@@ -10441,7 +10441,7 @@ void fn_8019CB5C(void *arg0) {
 }
 
 s32 fn_8019CC04(void *arg0) {
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void *temp_r4;
     void *temp_r31;
     void *temp_r3;
@@ -10450,7 +10450,7 @@ s32 fn_8019CC04(void *arg0) {
     temp_r4 = *(void **)((u8 *)arg0 + 0x30);
     temp_r3 = *(void **)((u8 *)temp_r4 + 0x5C);
     temp_r31 = *(void **)((u8 *)temp_r4 + 0x4C);
-    if (temp_r3 != NULL && fn_8005F9B8(temp_r3, 0) != 0) {
+    if (temp_r3 != NULL && Pad_IsButton(temp_r3, 0) != 0) {
         if (*(void **)((u8 *)temp_r31 + 0x58) != NULL) {
             temp_r3_flags = *(u8 *)((u8 *)temp_r31 + 0x40);
             if (!(temp_r3_flags & 4)) {
@@ -10465,7 +10465,7 @@ s32 fn_8019CC04(void *arg0) {
 s32 fn_8019CC80(void *arg0) {
     void fn_8002297C(void *);
     void fn_80054C14(void *);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_800C1060(void *);
     extern u8 lbl_802CA518[];
     void *temp_r4;
@@ -10478,7 +10478,7 @@ s32 fn_8019CC80(void *arg0) {
     temp_r4 = *(void **)((u8 *)arg0 + 0x30);
     temp_r3 = *(void **)((u8 *)temp_r4 + 0x5C);
     temp_r31 = *(void **)((u8 *)temp_r4 + 0x4C);
-    if (temp_r3 != NULL && fn_8005F9B8(temp_r3, 0) != 0) {
+    if (temp_r3 != NULL && Pad_IsButton(temp_r3, 0) != 0) {
         temp_r4_2 = *(void **)((u8 *)temp_r31 + 0x38);
         if (temp_r4_2 != NULL) {
             base = (u8 *)temp_r4_2;
@@ -10507,7 +10507,7 @@ s32 fn_8019CED0(void *arg0) {
     M2C_UNK fn_80052CA8(void *);
     M2C_UNK fn_80054C14(void *);
     s32 fn_8005F894(s32, M2C_UNK);
-    u8 fn_8005F9B8(s32, M2C_UNK);
+    u8 Pad_IsButton(s32, M2C_UNK);
     M2C_UNK fn_80098524(void *);
     M2C_UNK fn_8017E0C0(void *, s32, void *);
     M2C_UNK fn_8017F040(void *, s32, void *);
@@ -10536,7 +10536,7 @@ s32 fn_8019CED0(void *arg0) {
         }
         M2C_FIELD(temp_r31, u8 *, 0x40) = (u8) (M2C_FIELD(temp_r31, u8 *, 0x40) | 1);
     }
-    if (fn_8005F9B8(temp_r29, 0) != 0) {
+    if (Pad_IsButton(temp_r29, 0) != 0) {
         temp_r3_2 = M2C_FIELD(temp_r31, void **, 0x34);
         temp_r28 = (s32) M2C_FIELD(temp_r3_2, f32 *, 0xC);
         fn_8017E0C0(temp_r3_2, temp_r28, temp_r31);
@@ -10556,7 +10556,7 @@ s32 fn_8019CED0(void *arg0) {
             }
         }
     }
-    if (fn_8005F9B8(temp_r29, 0x12) != 0) {
+    if (Pad_IsButton(temp_r29, 0x12) != 0) {
         fn_80052CA8(var_r30);
         temp_r3_5 = (void *)fn_80018ADC();
         M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) lbl_8036AF40;
@@ -10715,7 +10715,7 @@ void fn_8019D360(void *arg0) {
 }
 
 void fn_8019D388(void *arg0) {
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     u8 fn_8004BF80(void *);
     void fn_800056A0(s32);
     void fn_8000C188(void *);
@@ -10726,7 +10726,7 @@ void fn_8019D388(void *arg0) {
     p31 = (u32 *)((u8 *)obj + 0x1C);
 
     if (*(u8 *)((u8 *)arg0 + 0x34) == 0) {
-        if (fn_8005F9B8(p31, 2)) {
+        if (Pad_IsButton(p31, 2)) {
             *p31 |= 0x80;
             *(u8 *)((u8 *)arg0 + 0x34) = 1;
         }
@@ -10741,7 +10741,7 @@ void fn_8019D388(void *arg0) {
     }
 
     if (*(u8 *)((u8 *)arg0 + 0x34) == 1) {
-        if (fn_8005F9B8(p31, 8)) {
+        if (Pad_IsButton(p31, 8)) {
             *p31 |= 0x40;
         }
     }

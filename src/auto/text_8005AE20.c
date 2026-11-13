@@ -2377,7 +2377,7 @@ void fn_8005F8E4(void *arg0) {
 u16 fn_8005F92C(void *arg0,u16 *arg1){ s32 i; u16 v; u16 *p; for(i=0;i<4;i++){v=((u16*)arg0)[0x3e+i]; if(v!=0xffff){for(p=arg1;*p!=0xffff;p++){if(*p==v)return v;}}} return 0xffff;}
 
 #pragma peephole off
-s32 fn_8005F9B8(void *arg0, u16 arg1) {
+s32 Pad_IsButton(void *arg0, u16 arg1) {
     if ((u16) M2C_FIELD(arg0, u16 *, 0x7C) == arg1) {
         return 1;
     }

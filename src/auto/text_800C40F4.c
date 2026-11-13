@@ -12604,7 +12604,7 @@ void fn_800E5200(void *arg0, u16 arg1, s32 arg2) {
 
 void fn_800E5248(void *arg0, u16 arg1) {
     s32 temp = *(s32 *)((u8 *)arg0 + 0xE0);
-    fn_8005F9B8(temp, arg1);
+    Pad_IsButton(temp, arg1);
 }
 
 void fn_800E5600(void *arg0, s32 arg1, u8 arg2) {

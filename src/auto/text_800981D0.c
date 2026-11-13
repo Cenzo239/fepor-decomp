@@ -154,7 +154,7 @@ void fn_80098524(void **arg0) {
 #pragma use_lmw_stmw on
 s32 Event_HandleItemCmd(void *arg0) {
     u8 fn_8005F7F0(void *);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     void fn_80054C14(void *);
     s32 Event_GetCmdKind(s16);
     s32 Event_GetCmdFlags(s16);
@@ -204,7 +204,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     }
     fn_80054C14(arg0);
     self = M2C_FIELD(arg0, void **, 0x18);
-    if (fn_8005F9B8(pad, 0x37) != 0) {
+    if (Pad_IsButton(pad, 0x37) != 0) {
         tmp = M2C_FIELD(M2C_FIELD(self, void **, 0x38), void **, 0);
         if (tmp != NULL) {
             p280 = M2C_FIELD(tmp, void **, 0x280);
@@ -225,7 +225,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     case 0x51:
         if (flags & 4) {
             if (flags & 1) {
-                if (fn_8005F9B8(pad, 0x31) != 0) {
+                if (Pad_IsButton(pad, 0x31) != 0) {
                     unit = M2C_FIELD(self, void **, 0x38);
                     kind = (s32)M2C_FIELD(unit, f32 *, 0xC);
                     if (kind != 0) {
@@ -243,13 +243,13 @@ s32 Event_HandleItemCmd(void *arg0) {
                     }
                     return 0;
                 }
-            } else if (fn_8005F9B8(pad, 8) != 0) {
+            } else if (Pad_IsButton(pad, 8) != 0) {
                 fn_800535B0(arg0);
                 fn_8005366C(arg0, 0, 0);
                 return 0;
             }
         }
-        if (fn_8005F9B8(pad, 0) != 0) {
+        if (Pad_IsButton(pad, 0) != 0) {
             flags = Event_GetCmdFlags(id);
             Event_AdvanceCmd(id);
             tmp = (void *)fn_800958C4(flags);
@@ -294,7 +294,7 @@ s32 Event_HandleItemCmd(void *arg0) {
         }
         break;
     case 0x52:
-        if (fn_8005F9B8(pad, 1) != 0) {
+        if (Pad_IsButton(pad, 1) != 0) {
             Event_AdvanceCmd(id);
             if (M2C_FIELD(self, u8 *, 0x34) != 1) {
                 tmp = M2C_FIELD(M2C_FIELD(self, void **, 0x3C), void **, 0);

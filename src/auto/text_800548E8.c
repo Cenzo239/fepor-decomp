@@ -261,7 +261,7 @@ void fn_800548E8(void *arg0)
     u8 fn_8005F7F0(void *);
     void fn_8004AE28(void *, f32, f32, f32);
     void fn_8004AD20(void *, f32 *);
-    u8 fn_8005F9B8(void *, s32);
+    u8 Pad_IsButton(void *, s32);
     s32 fn_800558FC(void *);
     s32 fn_8006135C(void *, char *);
     void fn_80060F70(void *, s32, f32 *);
@@ -323,7 +323,7 @@ void fn_800548E8(void *arg0)
             }
         }
     after_pos:
-        if (fn_8005F9B8(node, 0x28) != 0) {
+        if (Pad_IsButton(node, 0x28) != 0) {
             unit = *(void **)((u8 *)arg0 + 0x30);
             fv2 = *(f32 *)((u8 *)unit + 0xC);
             fv1 = *(f32 *)((u8 *)unit + 0x10);
@@ -347,7 +347,7 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp48[2] = *(u32 *)&s.sp6C[2];
             fn_80055FB4(s.sp48, &s.spC, 0, scale);
         }
-        if (fn_8005F9B8(node, 0x29) != 0) {
+        if (Pad_IsButton(node, 0x29) != 0) {
             unit = *(void **)((u8 *)arg0 + 0x30);
             fv2 = *(f32 *)((u8 *)unit + 0xC);
             fv1 = *(f32 *)((u8 *)unit + 0x10);
@@ -372,16 +372,16 @@ void fn_800548E8(void *arg0)
             *(u32 *)&s.sp3C[2] = *(u32 *)&s.sp60[2];
             *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48) = fn_80055DC0(s.sp3C, &s.sp8, 0, scale);
         }
-        if (fn_8005F9B8(node, 0x2A) != 0) {
+        if (Pad_IsButton(node, 0x2A) != 0) {
             fn_80055D9C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48));
             *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x48) = NULL;
         }
-        if (fn_8005F9B8(node, 0x1C) != 0) {
+        if (Pad_IsButton(node, 0x1C) != 0) {
             lbl_803682A4 |= 1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) |= 0x40000000;
         }
-        if (fn_8005F9B8(node, 0x1D) != 0) {
+        if (Pad_IsButton(node, 0x1D) != 0) {
             lbl_803682A4 &= ~1;
             unit = *(void **)((u8 *)arg0 + 0x30);
             *(u32 *)((u8 *)unit + 8) &= 0xBFFFFFFF;

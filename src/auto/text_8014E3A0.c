@@ -993,12 +993,12 @@ void fn_801518B4(void *arg0, void *arg1) {
 
 s32 fn_801518D0(void *arg0, s32 arg1) {
     void *fn_800536FC(u16);
-    s32 fn_8005F9B8(void *, s32);
+    s32 Pad_IsButton(void *, s32);
 
     *(void **)((u8 *)arg0 + 0xB0) = fn_800536FC((u16)*(u32 *)((u8 *)arg0 + 0xAC));
     if (*(void **)((u8 *)arg0 + 0xB0) != NULL) {
         if (*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0xB0) + 0x30) + 0x5C) != NULL) {
-            return fn_8005F9B8(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0xB0) + 0x30) + 0x5C), arg1);
+            return Pad_IsButton(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0xB0) + 0x30) + 0x5C), arg1);
         }
         return 0;
     }
@@ -1036,7 +1036,7 @@ s32 fn_801519C0(void *arg0) {
 
 void fn_801519EC(void *arg0) {
     void *fn_800536FC(u16);
-    s32 fn_8005F9B8(void *, s32);
+    s32 Pad_IsButton(void *, s32);
     void fn_800E76E0(void *, f32);
     void fn_800E77A0(void *, s32, s32, f32);
     extern void *gGame;
@@ -1050,7 +1050,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 9);
+            var = Pad_IsButton(temp, 9);
         } else {
             var = 0;
         }
@@ -1065,7 +1065,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0xA);
+            var = Pad_IsButton(temp, 0xA);
         } else {
             var = 0;
         }
@@ -1080,7 +1080,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0xB);
+            var = Pad_IsButton(temp, 0xB);
         } else {
             var = 0;
         }
@@ -1095,7 +1095,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0x1E);
+            var = Pad_IsButton(temp, 0x1E);
         } else {
             var = 0;
         }
@@ -1110,7 +1110,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0x1F);
+            var = Pad_IsButton(temp, 0x1F);
         } else {
             var = 0;
         }
@@ -1125,7 +1125,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0x20);
+            var = Pad_IsButton(temp, 0x20);
         } else {
             var = 0;
         }
@@ -1140,7 +1140,7 @@ void fn_801519EC(void *arg0) {
     if (temp != NULL) {
         temp = *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x5C);
         if (temp != NULL) {
-            var = fn_8005F9B8(temp, 0x21);
+            var = Pad_IsButton(temp, 0x21);
         } else {
             var = 0;
         }
