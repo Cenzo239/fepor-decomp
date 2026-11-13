@@ -133,7 +133,7 @@ void fn_80099094(void *arg0)
   void SeCue_PlayAtPos(void *, void *, s32);
   void fn_80025624(s32, s32);
   void fn_8017F70C(void *, void *);
-  void fn_8017E0C0(void *, s32, void *);
+  void FloatAnim_Start(void *, s32, void *);
   void fn_8017F040(void *, s32, void *);
   void Mu_StartBlend(void *, s32, s32, s32);
   void fn_80184BE8(void *, s32, s32, s32);
@@ -196,7 +196,7 @@ void fn_80099094(void *arg0)
     fn_8018CFA4(0xF, 6, 2, 0, self);
     temp_r3 = Effect_Create(gEventUiSeCues + 0x119, self);
     Effect_SetPos(temp_r3, *((f32 *) (&sp20[0])), *((f32 *) (&sp20[1])), *((f32 *) (&sp20[2])));
-    fn_8017E0C0(*((void **) (((u8 *) self) + 0x38)), new_var, self);
+    FloatAnim_Start(*((void **) (((u8 *) self) + 0x38)), new_var, self);
     if ((*((u8 *) (((u8 *) self) + 0x34))) != 2)
     {
       fn_8017F040(*((void **) (((u8 *) self) + 0x38)), new_var, self);
@@ -214,7 +214,7 @@ void *fn_80095934(void *,s32,s32); void *Effect_Create(void *,void *);
 void fn_800536CC(void *,void *); void fn_800536D8(void *,void *); void fn_8005306C(void *);
 void fn_80184688(void *,s32,s32,void *); void fn_800983E0(void *,void *);
 void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
-void fn_8017F70C(void *,void *); void fn_8017E0C0(void *,s32,void *); void fn_8017F040(void *,s32,void *);
+void fn_8017F70C(void *,void *); void FloatAnim_Start(void *,s32,void *); void fn_8017F040(void *,s32,void *);
 void Mu_StartBlend(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
 u8 fn_8004BF80(void *); void Process_ClearFunc(void *);
@@ -259,12 +259,12 @@ fn_80025624(gPadInput,4);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F70C(M2C_FIELD(self,void **,0x3c),self);
 } else {
 fn_8009A0A4(self,index);
-fn_8017E0C0(M2C_FIELD(self,void **,0x3c),amount,self);
+FloatAnim_Start(M2C_FIELD(self,void **,0x3c),amount,self);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F040(M2C_FIELD(self,void **,0x3c),amount,self);
 }
 amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x38),f32 *,12);
 if(amount) {
-fn_8017E0C0(M2C_FIELD(self,void **,0x38),amount,self);
+FloatAnim_Start(M2C_FIELD(self,void **,0x38),amount,self);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F040(M2C_FIELD(self,void **,0x38),amount,self);
 fn_80184688(get_280(M2C_FIELD(self,void ***,0x38)),1,32,self);
 }
@@ -294,7 +294,7 @@ fn_80025624(gPadInput,4);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F70C(M2C_FIELD(self,void **,0x3c),self);
 } else {
 fn_8009A0A4(self,index);
-fn_8017E0C0(M2C_FIELD(self,void **,0x3c),amount,self);
+FloatAnim_Start(M2C_FIELD(self,void **,0x3c),amount,self);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F040(M2C_FIELD(self,void **,0x3c),amount,self);
 }}
 M2C_FIELD(self,u8 *,0x41)--;

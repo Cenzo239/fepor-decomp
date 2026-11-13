@@ -13750,7 +13750,7 @@ s32 fn_8017E08C(void) {
 }
 
 #pragma opt_strength_reduction off
-void fn_8017E0C0(void *arg0, s32 arg1, s32 arg2) {
+void FloatAnim_Start(void *arg0, s32 arg1, s32 arg2) {
     void fn_8017E1B8(void *, u32);
     M2C_UNK fn_8000A388(void *, void *, void *);
     M2C_UNK Process_Goto(void *, M2C_UNK);

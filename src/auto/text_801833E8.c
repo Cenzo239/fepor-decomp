@@ -9286,7 +9286,7 @@ void Event_RunItemCmd(void *cmd) {
     void *fn_8009809C(void);
     void fn_800983E0(void *, void *);
     void SeCue_PlayAtPos(void *, void *, s32);
-    void fn_8017E0C0(void *, s32, void *);
+    void FloatAnim_Start(void *, s32, void *);
     void fn_8017E2BC(void);
     void fn_8017F040(void *, s32, void *);
     void fn_8017F474(void *, void *);
@@ -9384,7 +9384,7 @@ void Event_RunItemCmd(void *cmd) {
             fn_8018CFA4(0xF, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 8);
         }
-        fn_8017E0C0(unit, slot, cmd);
+        FloatAnim_Start(unit, slot, cmd);
         fn_8017F040(unit, slot, cmd);
     }
     p = *(void **)unit;
@@ -9809,7 +9809,7 @@ s32 MapSelect_Update(void *proc) {
     void fn_80098524(void *);
     u8 fn_80098568(void *);
     void SeCue_PlayAtPos(void *, void *, s32);
-    void fn_8017E0C0(void *, s32, void *, s32);
+    void FloatAnim_Start(void *, s32, void *, s32);
     void fn_8017F040(void *, s32, void *);
     void fn_80184688(s32, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
@@ -9849,7 +9849,7 @@ s32 MapSelect_Update(void *proc) {
         *(s32 *)(&posCopy) = posX;
         *(s32 *)((u8 *)&posCopy + 4) = posY;
         *(s32 *)((u8 *)&posCopy + 8) = *(s32 *)((u8 *)&pos + 8);
-        fn_8017E0C0(tmp, height, cmd, posX);
+        FloatAnim_Start(tmp, height, cmd, posX);
         fn_8017F040(*(void **)((u8 *)cmd + 0x34), height, cmd);
         mode = *(u8 *)((u8 *)cmd + 0x5C);
         switch (mode) {
@@ -10574,7 +10574,7 @@ s32 MapSelect_UpdateTarget(void *proc) {
     s32 fn_8005F894(s32, M2C_UNK);
     u8 Pad_IsButton(s32, M2C_UNK);
     M2C_UNK fn_80098524(void *);
-    M2C_UNK fn_8017E0C0(void *, s32, void *);
+    M2C_UNK FloatAnim_Start(void *, s32, void *);
     M2C_UNK fn_8017F040(void *, s32, void *);
     M2C_UNK fn_80184688(s32, M2C_UNK, M2C_UNK, void *);
     extern f32 gMapSelectCamZoom;
@@ -10604,7 +10604,7 @@ s32 MapSelect_UpdateTarget(void *proc) {
     if (Pad_IsButton(pad, 0) != 0) {
         cursor = M2C_FIELD(cmd, void **, 0x34);
         height = (s32) M2C_FIELD(cursor, f32 *, 0xC);
-        fn_8017E0C0(cursor, height, cmd);
+        FloatAnim_Start(cursor, height, cmd);
         fn_8017F040(M2C_FIELD(cmd, void **, 0x34), height, cmd);
         unit = M2C_FIELD(M2C_FIELD(cmd, void **, 0x34), void **, 0);
         if (unit != NULL) {

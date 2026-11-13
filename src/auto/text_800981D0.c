@@ -172,7 +172,7 @@ s32 Event_HandleItemCmd(void *arg0)
     void SeCue_PlayAtPos(void *, void *, s32);
     void fn_80025624(s32, s32);
     void fn_8017F70C(void *, void *);
-    void fn_8017E0C0(void *, s32, void *);
+    void FloatAnim_Start(void *, s32, void *);
     void fn_8017F040(void *, s32, void *);
     void fn_8017DF54(void *, void *, void *);
     void fn_8009A0A4(void *, s16);
@@ -231,7 +231,7 @@ s32 Event_HandleItemCmd(void *arg0)
                     unit = M2C_FIELD(self, void **, 0x38);
                     kind = (s32)M2C_FIELD(unit, f32 *, 0xC);
                     if (kind != 0) {
-                        fn_8017E0C0(unit, kind, self);
+                        FloatAnim_Start(unit, kind, self);
                         if (M2C_FIELD(self, u8 *, 0x34) != 2) {
                             fn_8017F040(M2C_FIELD(self, void **, 0x38), kind, self);
                         }
@@ -288,7 +288,7 @@ s32 Event_HandleItemCmd(void *arg0)
                 }
             } else {
                 fn_8009A0A4(self, id);
-                fn_8017E0C0(M2C_FIELD(self, void **, 0x3C), kind, self);
+                FloatAnim_Start(M2C_FIELD(self, void **, 0x3C), kind, self);
                 if (M2C_FIELD(self, u8 *, 0x34) != 2) {
                     fn_8017F040(M2C_FIELD(self, void **, 0x3C), kind, self);
                 }
