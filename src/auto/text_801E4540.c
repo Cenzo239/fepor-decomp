@@ -2517,7 +2517,7 @@ void fn_801E9864(void *arg0)
     extern u8 gTabMenuDefaultFade;
     extern s16 gTabMenuDefaultUnk36;
     extern s16 gTabMenuDefaultScroll;
-    extern s16 lbl_80368368;
+    extern s16 gTabMenuDefaultCursor;
     void fn_8003F670(void *);
     void fn_8006D8E8(void *);
     void fn_80056A04(void *, s32);
@@ -2532,7 +2532,7 @@ void fn_801E9864(void *arg0)
     void *end;
 
     self = (Owner *)arg0;
-    p68 = &lbl_80368368;
+    p68 = &gTabMenuDefaultCursor;
     gTabMenuDefaultTab = *(u8 *)((u8 *)arg0 + 0x30);
     gTabMenuDefaultMode = *(u8 *)((u8 *)arg0 + 0x31);
     gTabMenuDefaultUnk32 = *(u8 *)((u8 *)arg0 + 0x32);
@@ -2540,7 +2540,7 @@ void fn_801E9864(void *arg0)
     gTabMenuDefaultFade = *(u8 *)((u8 *)arg0 + 0x34);
     gTabMenuDefaultUnk36 = *(s16 *)((u8 *)arg0 + 0x36);
     gTabMenuDefaultScroll = *(s16 *)((u8 *)arg0 + 0x38);
-    lbl_80368368 = *(s16 *)((u8 *)arg0 + 0x3C);
+    gTabMenuDefaultCursor = *(s16 *)((u8 *)arg0 + 0x3C);
     p68[1] = *(s16 *)((u8 *)arg0 + 0x3E);
     fn_8003F670(*(void **)((u8 *)arg0 + 0x40));
     fn_8006D8E8(*(void **)((u8 *)arg0 + 0x64));
@@ -2598,7 +2598,7 @@ void TabMenu_Init(void *arg0) {
     extern u8 gTabMenuDefaultFade;
     extern s16 gTabMenuDefaultUnk36;
     extern s16 gTabMenuDefaultScroll;
-    extern s16 lbl_80368368;
+    extern s16 gTabMenuDefaultCursor;
     extern f32 lbl_8036B714;
 
     void *sp10;
@@ -2634,7 +2634,7 @@ void TabMenu_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x34) = gTabMenuDefaultFade;
     *(s16 *)((u8 *)arg0 + 0x36) = gTabMenuDefaultUnk36;
     *(s16 *)((u8 *)arg0 + 0x38) = gTabMenuDefaultScroll;
-    p68 = &lbl_80368368;
+    p68 = &gTabMenuDefaultCursor;
     *(s16 *)((u8 *)arg0 + 0x3C) = p68[0];
     *(s16 *)((u8 *)arg0 + 0x3E) = p68[1];
     temp_r3_2 = Heap_Alloc(0x30);
