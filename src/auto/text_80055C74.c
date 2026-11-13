@@ -213,7 +213,7 @@ void fn_800566D4(void *arg0) {
     void fn_80067EDC(s32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802209FC(void);
@@ -273,9 +273,9 @@ void fn_800566D4(void *arg0) {
                 GXSetVtxDesc(9, 1);
                 GXSetVtxDesc(0xB, 1);
                 GXSetVtxDesc(0xD, 1);
-                fn_8021FBF0(0, 9, 1, 4, 0);
-                fn_8021FBF0(0, 0xB, 1, 5, 0);
-                fn_8021FBF0(0, 0xD, 1, 4, 0);
+                GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+                GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+                GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
                 GXBegin(0x80, 0, 4);
                 fzero = lbl_80369108;
                 fz1 = lbl_80369138;
@@ -1405,7 +1405,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void PSMTXIdentity(void *);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
@@ -1487,8 +1487,8 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(0, 9, 1, 4, 0);
-    fn_8021FBF0(0, 0xD, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
     fn_802201A8(1, 1, 4, 0x21, 0, 0x7D);
     fn_80223E5C(6, 1, 0, 3, 0xFF);
@@ -1556,7 +1556,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
-    fn_8021FBF0(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
     fn_80220428(0);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);

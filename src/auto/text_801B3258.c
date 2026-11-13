@@ -7305,7 +7305,7 @@ void fn_801C65E0(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
@@ -7355,9 +7355,9 @@ void fn_801C65E0(void *arg0) {
         GXSetVtxDesc(9, 1);
         GXSetVtxDesc(0xB, 1);
         GXSetVtxDesc(0xD, 1);
-        fn_8021FBF0(0, 9, 1, 4, 0);
-        fn_8021FBF0(0, 0xB, 1, 5, 0);
-        fn_8021FBF0(0, 0xD, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+        GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
         fn_8022100C(2);
         fn_80222334(1);
         fn_80222370(4, 0, 1, 1, 0, 0, 2);

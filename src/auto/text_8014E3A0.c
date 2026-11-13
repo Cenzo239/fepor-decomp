@@ -282,7 +282,7 @@ void fn_8014E864(void *arg0) {
     void fn_8014EFB8(void *, void *, void *, void *, void *);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -416,8 +416,8 @@ void fn_8014E864(void *arg0) {
                         GXClearVtxDesc();
                         GXSetVtxDesc(9, 1);
                         GXSetVtxDesc(11, 1);
-                        fn_8021FBF0(0, 9, 1, 4, 0);
-                        fn_8021FBF0(0, 11, 1, 5, 0);
+                        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+                        GXSetVtxAttrFmt(0, 11, 1, 5, 0);
                         fn_80220428(0);
                         GXSetNumTevStages(1);
                         GXSetTevOrder(0, 0xFF, 0xFF, 4);
@@ -504,7 +504,7 @@ void fn_8014EFB8(void) {
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetVtxDesc(s32, s32);
     void fn_8006ECCC(void *, void *, u16);
     void fn_80222C50(void *, s32);
@@ -535,11 +535,11 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
-    fn_8021FBF0(0, 9, 1, 4, 0);
-    fn_8021FBF0(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
     if (*(u8 *)((u8 *)var_r29 + 6) != 0) {
         GXSetVtxDesc(0xD, 1);
-        fn_8021FBF0(0, 0xD, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
         fn_8006ECCC(var_r28, sp8, *(u16 *)(*(u8 **)((u8 *)var_r29 + 0x14) + 4));
         fn_80222C50(sp8, 0);
         fn_80220428(1);

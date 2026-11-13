@@ -802,7 +802,7 @@ void Gx_Setup2DState(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80221A2C(s32);
     void fn_80222334(s32);
@@ -860,8 +860,8 @@ void Gx_Setup2DState(void *arg0) {
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(7, 9, 1, 3, 0);
-    fn_8021FBF0(7, 0xD, 1, 2, 0);
+    GXSetVtxAttrFmt(7, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(7, 0xD, 1, 2, 0);
     GXSetNumTevStages(4);
     GXSetTevOrder(0, 1, 1, 0xFF);
     GXSetTevColorIn(0, 0xF, 8, 0xE, 2);

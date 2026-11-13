@@ -1509,7 +1509,7 @@ void fn_80088FFC(void *arg0) {
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
@@ -1543,11 +1543,11 @@ void fn_80088FFC(void *arg0) {
     GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
-    fn_8021FBF0(0, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 3, 0);
     GXSetVtxDesc(0xB, 1);
-    fn_8021FBF0(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(0, 0xD, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
     GXSetTevColorIn(0, 0xF, 0xA, 8, 0xF);
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(0, 7, 7, 7, 5);
@@ -1767,7 +1767,7 @@ void fn_80089680(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
@@ -1831,7 +1831,7 @@ void fn_80089680(void *arg0) {
         GXSetChanMatColor(4, &sp8);
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
-        fn_8021FBF0(0, 9, 1, 3, 0);
+        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
         GXSetNumTevStages(1);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
@@ -1922,7 +1922,7 @@ void fn_80089A28(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
     void fn_80222334(s32);
@@ -2015,8 +2015,8 @@ void fn_80089A28(void *arg0) {
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
-    fn_8021FBF0(0, 9, 1, 3, 0);
-    fn_8021FBF0(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
     fn_80220428(0);
     fn_802239D0(0, 4);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
@@ -2140,7 +2140,7 @@ void Ui_DrawColorFade(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
@@ -2211,7 +2211,7 @@ void Ui_DrawColorFade(void *arg0) {
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
-        fn_8021FBF0(0, 9, 1, 3, 0);
+        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
         fn_80220428(0);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
@@ -2300,7 +2300,7 @@ void fn_8008A5AC(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void GXBegin(s32, s32, s32);
@@ -2369,10 +2369,10 @@ void fn_8008A5AC(void *arg0) {
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
-        fn_8021FBF0(0, 9, 1, 3, 0);
+        GXSetVtxAttrFmt(0, 9, 1, 3, 0);
         if (*(u8 *)((u8 *)arg0 + 0x30) == 7) {
             GXSetVtxDesc(0xD, 1);
-            fn_8021FBF0(0, 0xD, 1, 3, 0);
+            GXSetVtxAttrFmt(0, 0xD, 1, 3, 0);
             GXSetTevColorIn(0, 0xF, 0xA, 8, 0xF);
             GXSetTevColorOp(0, 0, 0, 0, 1, 0);
             GXSetTevAlphaIn(0, 7, 7, 7, 5);

@@ -4600,7 +4600,7 @@ void fn_801FB580(u32 *arg0, void **arg1, void *arg2)
 void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
@@ -4657,8 +4657,8 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(0, 9, 1, 3, 0);
-    fn_8021FBF0(0, 0xD, 1, 0, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 0, 0);
     fn_80222334(1);
     fn_80222370(4, 0, 0, 0, 0, 0, 2);
     color = *var_r21;

@@ -1626,7 +1626,7 @@ void fn_80123D1C(void *arg0) {
     void GXSetCurrentMtx(s32);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
@@ -1696,9 +1696,9 @@ void fn_80123D1C(void *arg0) {
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(0, 9, 1, 3, 0);
-    fn_8021FBF0(0, 0xB, 1, 5, 0);
-    fn_8021FBF0(0, 0xD, 1, 0, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 0, 0);
     fn_80220428(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222C50(sp18, 0);
@@ -1753,7 +1753,7 @@ void fn_80123D1C(void *arg0) {
 
     GXClearVtxDesc();
     GXSetVtxDesc(9, 3);
-    fn_8021FBF0(0, 9, 1, 3, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 3, 0);
     fn_80220154(9, *(s32 *)((u8 *)arg0 + 0x60), 6);
     fn_80222334(1);
     a2 = (u8)(((s32)fade << 5) / 100);
@@ -2352,7 +2352,7 @@ void fn_80125388(void *arg0) {
     void fn_80222C50(void *, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
-    void fn_8021FBF0(s32, s32, s32, s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222334(s32);
@@ -2390,9 +2390,9 @@ void fn_80125388(void *arg0) {
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
     GXSetVtxDesc(0xD, 1);
-    fn_8021FBF0(0, 9, 1, 4, 0);
-    fn_8021FBF0(0, 0xB, 1, 5, 0);
-    fn_8021FBF0(0, 0xD, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+    GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+    GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
     fn_80220428(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222334(1);
