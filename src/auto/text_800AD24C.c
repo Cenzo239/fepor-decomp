@@ -664,7 +664,7 @@ void fn_800AE5A8(void *arg0) {
     }
 }
 
-void fn_800AE694(void *arg0) {
+void Battle_InitPhaseBanner(void *arg0) {
     void *fn_8014D8FC(void *);
     s8 Fx_FindSlotByName(void *);
     void Fx_StartSlot(s32, void *, s32, s32);
