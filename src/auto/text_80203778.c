@@ -2149,6 +2149,7 @@ volatile u32 OS_AIRegs[8] : 0xCC006C00;
 volatile u32 OS_EXIRegs[16] : 0xCC006800;
 
 #pragma peephole off
+/* Program hardware IRQ enables from OS interrupt mask bits; return remaining mask. */
 u32 SetInterruptMask(u32 mask, u32 current) {
     u32 reg;
 
