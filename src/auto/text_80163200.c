@@ -6276,7 +6276,8 @@ void fn_8016F694(void *arg0) {
     Process_Goto(arg0, 0x2C);
 }
 #pragma cplusplus reset
-void Ui_ConfirmItemDiscard(void *arg0) {
+void Ui_ConfirmItemDiscard(void *proc) {
+    /* Confirm discarding the inventory cursor item, or cancel back to the prior UI state. */
     void Process_Goto(void *, s32);
     void Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
@@ -6288,39 +6289,39 @@ void Ui_ConfirmItemDiscard(void *arg0) {
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern u8 gUiAmulMetamorDescProc[];
-    void *temp_r28;
-    void *temp_r31;
-    void *temp_r3;
-    u32 ret;
-    s16 temp_r0;
+    void *cursor;
+    void *item;
+    void *flags;
+    u32 widget;
+    s16 slot;
 
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
-        temp_r28 = M2C_FIELD(arg0, void **, 0x4C);
-        temp_r31 = (void *)MapCursor_GetItem(temp_r28);
-        if (temp_r31 != NULL) {
+        cursor = M2C_FIELD(proc, void **, 0x4C);
+        item = (void *)MapCursor_GetItem(cursor);
+        if (item != NULL) {
             ((u8 *)gUiContext)[8] = 5;
             gUiContext[1] = gUiContext[0];
-            temp_r0 = M2C_FIELD(temp_r28, s16 *, 0x4C);
-            ((u8 *)gUiContext)[0xA] = (u8)temp_r0;
-            if ((((u8 *)temp_r31)[5] >> 7) & 1) {
-                temp_r3 = Item_GetFlagsPtr(temp_r31);
-                if ((*(long long *)temp_r3 & 0x100000000LL) != 0
+            slot = M2C_FIELD(cursor, s16 *, 0x4C);
+            ((u8 *)gUiContext)[0xA] = (u8)slot;
+            if ((((u8 *)item)[5] >> 7) & 1) {
+                flags = Item_GetFlagsPtr(item);
+                if ((*(long long *)flags & 0x100000000LL) != 0
                     && (*(s32 *)((u8 *)*(void **)gUiContext + 0x1A0) & 0x800000)) {
-                    ((Bit7 *)((u8 *)temp_r31 + 5))->hi = 0;
-                    Process_CreateChild(gUiAmulMetamorDescProc, arg0);
+                    ((Bit7 *)((u8 *)item + 5))->hi = 0;
+                    Process_CreateChild(gUiAmulMetamorDescProc, proc);
                 }
             }
-            Item_Clear(temp_r31);
+            Item_Clear(item);
         }
         break;
     case 0x80:
-        Process_Goto(arg0, 0x2B);
+        Process_Goto(proc, 0x2B);
         break;
     }
-    ret = Ui_FindChild(arg0, -0x1000, 0);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, (s32)((u8 *)gUiMsgStrings + 0x18E));
+    widget = Ui_FindChild(proc, -0x1000, 0);
+    if (widget != 0) {
+        Ui_SetWidgetText(widget, (s32)((u8 *)gUiMsgStrings + 0x18E));
     }
 }
 
