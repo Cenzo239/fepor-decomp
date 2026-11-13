@@ -16254,7 +16254,7 @@ void *fn_800EE0B0(void *arg0) {
 #pragma cplusplus off
 void fn_800EE124(void *arg0) {
 void *Map_Get(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 GActor_FindNode(void *,void *);
-void fn_800EFEE0();void fn_800EFC2C();s32 fn_800EF1C0();void fn_800EF364();void fn_800EEEF0();void fn_800EE72C();
+void fn_800EFEE0();void fn_800EFC2C();s32 Map_SetupProjTexTev();void fn_800EF364();void fn_800EEEF0();void fn_800EE72C();
 extern const f32 lbl_80369FB8;extern void *lbl_803678D0,*lbl_803678D4[2],*lbl_803678DC,*lbl_803678E0;extern u8 lbl_80272C64[];
 u8 *obj;void *res;register u32 size;
 
@@ -16267,7 +16267,7 @@ case 0:
 fn_80046360(obj,lbl_80272C64+0x29,fn_800EFEE0,0,0,0x4000);
 fn_80046360(obj,lbl_80272C64+0x32,fn_800EFEE0,0,0,0x4000);
 if(M2C_FIELD(obj,u32 *,0x64)&4)fn_80046360(obj,0,fn_800EFC2C,0x110,0,0x8000);
-if(M2C_FIELD(obj,u32 *,0x64)&0x10)fn_80046360(obj,0,(void (*)())fn_800EF1C0,0x2000,0,0x8000);
+if(M2C_FIELD(obj,u32 *,0x64)&0x10)fn_80046360(obj,0,(void (*)())Map_SetupProjTexTev,0x2000,0,0x8000);
 if(M2C_FIELD(obj,u32 *,0x64)&0x20)fn_80046360(obj,lbl_80272C64+0x3B,fn_800EF364,0,0,0x4000);
 break;
 case 1:
@@ -16570,7 +16570,7 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32* arg3)
     *(arg3 + 2) = arg2;
 }
 
-s32 fn_800EF1C0(void) {
+s32 Map_SetupProjTexTev(void) {
     void fn_8004D5D4(void *);
     s32 fn_80068548(void);
     s32 GMaterial_AllocMtx(void);
