@@ -2290,7 +2290,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     void fn_801A96FC(void *, s8);
     void fn_801A981C(void *, s32, s8);
     void fn_801A9CB8(void *, void *);
-    void fn_801A9EB8(void *);
+    void BattleUnit_Reset(void *);
     extern u32 lbl_8027B640[];
     s32 neg1;
     void *var_r31;
@@ -2310,9 +2310,9 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     ((u8 *)&sp[1])[0] = *(u8 *)((u8 *)arg1 + 0x19E);
     ((u8 *)&sp[1])[1] = *(u8 *)((u8 *)arg1 + 0x19F);
     ((s8 *)&sp[1])[2] = neg1;
-    fn_801A9EB8(var_r30);
-    fn_801A9EB8((void *)((s32)var_r30 + 0x2E0));
-    fn_801A9EB8((u8 *)var_r30 + 0x5C0);
+    BattleUnit_Reset(var_r30);
+    BattleUnit_Reset((void *)((s32)var_r30 + 0x2E0));
+    BattleUnit_Reset((u8 *)var_r30 + 0x5C0);
     fn_800340F0((char *)var_r30 + 0x8A0);
     *(s32 *)((char *)var_r30 + 0xCA8) = 0;
     *(s32 *)((char *)var_r30 + 0xCAC) = 0;
@@ -2393,7 +2393,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
     void fn_801A981C(s32, s32, s8);
     void fn_801A99E8(s32, s32);
     void fn_801A9CB8(s32, void *);
-    void fn_801A9EB8(s32);
+    void BattleUnit_Reset(s32);
     extern u8 gBattleMap[];
     extern u32 lbl_8027B630[];
     extern u32 lbl_8027B620[];
@@ -2438,9 +2438,9 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
     ((u8 *)sp18)[4] = c;
     ((u8 *)sp18)[5] = d;
 
-    fn_801A9EB8(self);
-    fn_801A9EB8(self + 0x2E0);
-    fn_801A9EB8(self + 0x5C0);
+    BattleUnit_Reset(self);
+    BattleUnit_Reset(self + 0x2E0);
+    BattleUnit_Reset(self + 0x5C0);
     fn_800340F0(self + 0x8A0);
     *(s32 *)(self + 0xCA8) = 0;
     *(s32 *)(self + 0xCAC) = 0;
@@ -2507,7 +2507,7 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
     void fn_801A981C(s32, s32, s8);
     void fn_801A99E8(s32, s32);
     void fn_801A9CB8(s32, void *);
-    void fn_801A9EB8(s32);
+    void BattleUnit_Reset(s32);
     extern u8 gBattleMap[];
     void *var_r31;
     void *var_r30;
@@ -2520,9 +2520,9 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
     var_r31 = arg2;
     var_r30 = arg1;
     var_r29 = arg0;
-    fn_801A9EB8(var_r29);
-    fn_801A9EB8(var_r29 + 0x2E0);
-    fn_801A9EB8(var_r29 + 0x5C0);
+    BattleUnit_Reset(var_r29);
+    BattleUnit_Reset(var_r29 + 0x2E0);
+    BattleUnit_Reset(var_r29 + 0x5C0);
     fn_800340F0(var_r29 + 0x8A0);
     z = 0;
     a = *(void **)var_r30;
@@ -2580,9 +2580,9 @@ void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
 #pragma use_lmw_stmw reset
 void fn_801A7CDC(void *arg0)
 {
-    fn_801A9EB8(arg0);
-    fn_801A9EB8((char *)arg0 + 0x2E0);
-    fn_801A9EB8((char *)arg0 + 0x5C0);
+    BattleUnit_Reset(arg0);
+    BattleUnit_Reset((char *)arg0 + 0x2E0);
+    BattleUnit_Reset((char *)arg0 + 0x5C0);
     fn_800340F0((char *)arg0 + 0x8A0);
     *(s32 *)((char *)arg0 + 0xCA8) = 0;
     *(s32 *)((char *)arg0 + 0xCAC) = 0;

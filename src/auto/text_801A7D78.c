@@ -5,12 +5,12 @@ extern u16 lbl_80367218;
 u32 Battle_Destroy(u32 arg0, s16 arg1) {
     M2C_UNK fn_8001C5F8(s32, M2C_UNK);
     M2C_UNK Heap_Free(u32);
-    M2C_UNK fn_801A9EB8(u32);
+    M2C_UNK BattleUnit_Reset(u32);
     M2C_UNK Array_Destroy(s32, M2C_UNK (*)(s32, M2C_UNK), M2C_UNK, M2C_UNK);
 
     if (arg0 != 0U) {
         if ((arg0 + 0x5C0) != 0) {
-            fn_801A9EB8(arg0 + 0x5C0);
+            BattleUnit_Reset(arg0 + 0x5C0);
             fn_8001C5F8(arg0 + 0x84C, -1);
             fn_8001C5F8(arg0 + 0x844, -1);
             if (((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0)) {
@@ -19,7 +19,7 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
             }
         }
         if ((arg0 + 0x2E0) != 0) {
-            fn_801A9EB8(arg0 + 0x2E0);
+            BattleUnit_Reset(arg0 + 0x2E0);
             fn_8001C5F8(arg0 + 0x56C, -1);
             fn_8001C5F8(arg0 + 0x564, -1);
             if (((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0)) {
@@ -28,7 +28,7 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
             }
         }
         if (arg0 != 0U) {
-            fn_801A9EB8(arg0);
+            BattleUnit_Reset(arg0);
             fn_8001C5F8(arg0 + 0x28C, -1);
             fn_8001C5F8(arg0 + 0x284, -1);
             if ((arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U)) {
@@ -55,7 +55,7 @@ int fn_801A7FA4(void *arg0)
 {
     void fn_80016F78(void *);
     void fn_8001C76C(void *);
-    void fn_801A9EB8(void *);
+    void BattleUnit_Reset(void *);
 
     u8 *ptr;
 
@@ -68,7 +68,7 @@ int fn_801A7FA4(void *arg0)
 
     *(u16 *)(ptr + 0x2AE) = 0;
 
-    fn_801A9EB8(arg0);
+    BattleUnit_Reset(arg0);
 
     return (int)arg0;
 }
@@ -926,7 +926,7 @@ void *fn_801A9CF4(void *dst, void *src) {
     return dst;
 }
 
-void fn_801A9EB8(void *arg0) {
+void BattleUnit_Reset(void *arg0) {
     void fn_8003B6F0(void *, s32);
     void fn_8001D580(void *);
 
