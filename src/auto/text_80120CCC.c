@@ -2315,25 +2315,26 @@ void fn_80125130(void *arg0) {
     M2C_FIELD(self, u8 *, 0x4D) = 0x64;
 }
 
+/* Set up GX point sprites and draw each particle in the FX list (pos + alpha). */
 void Fx_DrawParticles(void *arg0) {
-    typedef struct Node {
-        struct Node *next;   // 0x00
+    typedef struct Particle {
+        struct Particle *next;   // 0x00
         u8 pad0[0x08];
-        u8 unkC;             // 0x0C
+        u8 alpha;                // 0x0C
         u8 pad1[0x07];
-        f32 unk14;           // 0.14
-        f32 unk18;           // 0x18
-        f32 unk1C;           // 0x1C
-    } Node;
-    typedef struct ListCtrl {
+        f32 x;                   // 0x14
+        f32 y;                   // 0x18
+        f32 z;                   // 0x1C
+    } Particle;
+    typedef struct ParticleList {
         u8 pad[0x0C];
-        Node *head;          // 0x0C
-    } ListCtrl;
-    typedef struct Arg0 {
+        Particle *head;          // 0x0C
+    } ParticleList;
+    typedef struct FxParticleSys {
         u8 pad0[0x54];
-        s32 unk54;           // 0x54
-        ListCtrl *unk58;     // 0x58
-    } Arg0;
+        s32 atlas;               // 0x54
+        ParticleList *list;      // 0x58
+    } FxParticleSys;
     extern f32 lbl_8036A30C;
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
@@ -2359,20 +2360,20 @@ void Fx_DrawParticles(void *arg0) {
     void fn_80220F84(s32, s32);
     void GXBegin(s32, s32, s32);
     void fn_80066D00(s32);
-    Arg0 *a = (Arg0 *)arg0;
-    u8 sp8[0x20];
-    u8 sp28[0x30];
-    s32 temp_r31;
-    f32 temp_f31;
-    Node *var_r30;
-    f32 vf0;
-    f32 vf1;
-    f32 vf2;
-    u8 uc;
-    ListCtrl *lc;
+    FxParticleSys *fx = (FxParticleSys *)arg0;
+    u8 texBuf[0x20];
+    u8 mtx[0x30];
+    s32 map;
+    f32 uv0;
+    Particle *p;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+    u8 alpha;
+    ParticleList *list;
 
-    Ui_LoadAtlasTex(a->unk54, sp8, 7);
-    fn_80222C50(sp8, 0);
+    Ui_LoadAtlasTex(fx->atlas, texBuf, 7);
+    fn_80222C50(texBuf, 0);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
@@ -2390,39 +2391,39 @@ void Fx_DrawParticles(void *arg0) {
     fn_802245D8(1, 4, 5, 0);
     GXSetZMode(1, 3, 0);
     fn_8022100C(2);
-    temp_r31 = Map_Get();
-    PSMTXConcat(fn_80067FDC(), (void *)(u32)(temp_r31 + 0x70), sp28);
-    GXLoadPosMtxImm(sp28, 0);
+    map = Map_Get();
+    PSMTXConcat(fn_80067FDC(), (void *)(u32)(map + 0x70), mtx);
+    GXLoadPosMtxImm(mtx, 0);
     GXSetCurrentMtx(0);
     fn_80220FC4(0, 0, 1);
     fn_80220F84(0x30, 5);
-    temp_f31 = lbl_8036A30C;
-    var_r30 = NULL;
+    uv0 = lbl_8036A30C;
+    p = NULL;
     goto loop_test;
 loop_body:
     GXBegin(0xB8, 0, 1);
-    vf2 = var_r30->unk1C;
-    vf1 = var_r30->unk18;
-    vf0 = var_r30->unk14;
-    GXRegs_8036A30C[-0x2000] = vf0;
-    GXRegs_8036A30C[-0x2000] = vf1;
-    GXRegs_8036A30C[-0x2000] = vf2;
-    uc = var_r30->unkC;
+    vz = p->z;
+    vy = p->y;
+    vx = p->x;
+    GXRegs_8036A30C[-0x2000] = vx;
+    GXRegs_8036A30C[-0x2000] = vy;
+    GXRegs_8036A30C[-0x2000] = vz;
+    alpha = p->alpha;
     *(volatile u8 *)&GXRegs_8036A30C[-0x2000] = 0xFF;
     *(volatile u8 *)&GXRegs_8036A30C[-0x2000] = 0xFF;
     *(volatile u8 *)&GXRegs_8036A30C[-0x2000] = 0xFF;
-    *(volatile u8 *)&GXRegs_8036A30C[-0x2000] = uc;
-    GXRegs_8036A30C[-0x2000] = temp_f31;
-    GXRegs_8036A30C[-0x2000] = temp_f31;
+    *(volatile u8 *)&GXRegs_8036A30C[-0x2000] = alpha;
+    GXRegs_8036A30C[-0x2000] = uv0;
+    GXRegs_8036A30C[-0x2000] = uv0;
     goto loop_test;
 loop_test:
-    lc = a->unk58;
-    if (var_r30 == NULL) {
-        var_r30 = lc->head;
+    list = fx->list;
+    if (p == NULL) {
+        p = list->head;
     } else {
-        var_r30 = var_r30->next;
+        p = p->next;
     }
-    if (var_r30 != NULL) {
+    if (p != NULL) {
         goto loop_body;
     }
     fn_80220FC4(0, 0, 0);
