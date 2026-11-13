@@ -623,29 +623,30 @@ void MsgDebug_Init(void) {
     extern u8 *gMsgDebugKinds;
     extern s32 gMsgDebugPage;
     extern s32 gMsgDebugPageCount;
-    char sp8[0x18];
+    char path[0x18];
     s32 i;
-    s32 j;
-    char *s;
-    char *p;
-    u8 flag;
-    u8 c;
-    u32 *arr;
-    u32 idx;
-    u32 val;
+    s32 entryIdx;
+    char *text;
+    char *scan;
+    u8 isRuby;
+    u8 ch;
+    u32 *ptrs;
+    u32 off;
+    u32 msg;
 
+    /* Scan disc files, then build the message-debug list and classify $R / $UB$H markup. */
     fn_8005B918(lbl_80277238 + 0x28);
     i = 0;
-    goto loop_check;
+    goto load_check;
     do {
         if (fn_8005B888(i) == 0) {
-            sprintf(&sp8, lbl_80277238 + 0x2D, fn_8005B8AC(i));
-            fn_8003FCCC(&sp8);
-            fn_8005C4C4(&sp8, 4);
-            fn_800056CC(lbl_80277238 + 0x59, &sp8);
+            sprintf(&path, lbl_80277238 + 0x2D, fn_8005B8AC(i));
+            fn_8003FCCC(&path);
+            fn_8005C4C4(&path, 4);
+            fn_800056CC(lbl_80277238 + 0x59, &path);
         }
         i += 1;
-    loop_check:
+    load_check:
         ;
     } while (i < fn_8005B8CC());
     fn_8005B8E8();
@@ -661,76 +662,76 @@ void MsgDebug_Init(void) {
     gMsgDebugPtrs = (u32 *)fn_800C42AC(gMsgDebugCount << 2);
     gMsgDebugKinds = (u8 *)fn_800C42AC(gMsgDebugCount);
     gMsgDebugCount = 0;
-    j = 0;
+    entryIdx = 0;
     do {
-        fn_8000D1B4(j);
+        fn_8000D1B4(entryIdx);
         if (Id_GetKind() == 5) {
-            val = (u32)fn_8000D1B4(j);
-            arr = gMsgDebugPtrs;
-            idx = gMsgDebugCount << 2;
-            *(u32 *)((u8 *)arr + idx) = val;
-            val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
-            if (val == 0) {
-                flag = 0;
+            msg = (u32)fn_8000D1B4(entryIdx);
+            ptrs = gMsgDebugPtrs;
+            off = gMsgDebugCount << 2;
+            *(u32 *)((u8 *)ptrs + off) = msg;
+            msg = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
+            if (msg == 0) {
+                isRuby = 0;
             } else {
-                s = fn_8000E0E4((void *)val);
-                if ((s32)s[0] != 0x24) {
-                    flag = 0;
-                } else if ((s32)s[1] != 0x52) {
-                    flag = 0;
+                text = fn_8000E0E4((void *)msg);
+                if ((s32)text[0] != 0x24) {
+                    isRuby = 0;
+                } else if ((s32)text[1] != 0x52) {
+                    isRuby = 0;
                 } else {
-                    flag = 1;
+                    isRuby = 1;
                 }
             }
-            if (flag == 0) {
+            if (isRuby == 0) {
                 gMsgDebugKinds[gMsgDebugCount] = 0;
             } else {
                 gMsgDebugKinds[gMsgDebugCount] = 1;
-                val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
-                if (val == 0) {
-                    flag = 0;
+                msg = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
+                if (msg == 0) {
+                    isRuby = 0;
                 } else {
-                    s = fn_8000E0E4((void *)val);
-                    p = (char *)strlen(s);
-                    p = (char *)((s32)p - 5);
-                    p = (char *)((s32)s + (s32)p);
-                    if ((s32)p[0] == 0x24 && (s32)p[1] == 0x55 && (s32)p[2] == 0x42 && (s32)p[3] == 0x24 && (s32)p[4] == 0x48) {
-                        flag = 1;
+                    text = fn_8000E0E4((void *)msg);
+                    scan = (char *)strlen(text);
+                    scan = (char *)((s32)scan - 5);
+                    scan = (char *)((s32)text + (s32)scan);
+                    if ((s32)scan[0] == 0x24 && (s32)scan[1] == 0x55 && (s32)scan[2] == 0x42 && (s32)scan[3] == 0x24 && (s32)scan[4] == 0x48) {
+                        isRuby = 1;
                     } else {
-                        flag = 0;
+                        isRuby = 0;
                     }
                 }
-                if (flag != 0) {
+                if (isRuby != 0) {
                     gMsgDebugKinds[gMsgDebugCount] = 2;
                 } else {
-                    val = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
-                    if (val == 0) {
-                        flag = 0;
+                    msg = *(u32 *)((u8 *)gMsgDebugPtrs + (gMsgDebugCount << 2));
+                    if (msg == 0) {
+                        isRuby = 0;
                     } else {
-                        p = fn_8000E0E4((void *)val);
-                        goto scan;
+                        scan = fn_8000E0E4((void *)msg);
+                        goto ub_scan;
                         do {
-                            if ((s8)c == 0x24 && (s32)p[1] == 0x55 && (s32)p[2] == 0x42 && (s32)p[3] == 0x24 && (s32)p[4] == 0x48) {
-                                flag = 1;
-                                goto scan_done;
+                            if ((s8)ch == 0x24 && (s32)scan[1] == 0x55 && (s32)scan[2] == 0x42 && (s32)scan[3] == 0x24 && (s32)scan[4] == 0x48) {
+                                isRuby = 1;
+                                goto ub_done;
                             }
-                            p += 1;
-                        scan:
-                            c = *p;
-                        } while ((s8)c != 0);
-                        flag = 0;
-                    scan_done:
+                            scan += 1;
+                        ub_scan:
+                            ch = *scan;
+                        } while ((s8)ch != 0);
+                        isRuby = 0;
+                    ub_done:
                         ;
                     }
-                    if (flag != 0) {
+                    if (isRuby != 0) {
                         gMsgDebugKinds[gMsgDebugCount] = 4;
                     }
                 }
             }
             gMsgDebugCount += 1;
         }
-        j += 1;
-    } while (j < 0x2800);
+        entryIdx += 1;
+    } while (entryIdx < 0x2800);
     gMsgDebugPage = 0;
     gMsgDebugPageCount = (gMsgDebugCount + 0x17) / 24;
 }
