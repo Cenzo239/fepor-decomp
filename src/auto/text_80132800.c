@@ -8644,7 +8644,7 @@ void fn_80142814(s32 arg0, s16 arg1, s16 arg2, s32 arg3, s32 *arg4, s32 arg5) {
     UnitRef_DrawSell(*arg4, arg5, arg1, arg2);
 }
 
-s32 fn_8014284C(s32 unused, void **arg1) {
+s32 Item_GetUiKind(s32 unused, void **arg1) {
 void *Item_GetFlagsPtr(void **);
 s32 result=12;
 void *p=*arg1;
