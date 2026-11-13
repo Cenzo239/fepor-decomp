@@ -17,7 +17,7 @@ extern s32 lbl_803693C4;
 extern f64 lbl_803693C8;
 extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
-extern f32 lbl_803693E4;
+extern f32 gFaceDbgTextScale;
 
 extern u8 gBattleState[1400];
 
