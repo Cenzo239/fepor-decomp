@@ -482,6 +482,26 @@ BOOL EXIClearInterrupts(s32 chan, BOOL exi, BOOL tc, BOOL ext) {
     return prev;
 }
 
+#pragma scheduling off
+#pragma use_lmw_stmw on
+s32 fn_80239298(s32 chan, void *callback)
+{
+    EXIControl *exi;
+    void *old;
+    BOOL enabled;
+
+    exi = &Ecb_8033E188[chan];
+    enabled = OSDisableInterrupts();
+    old = (void *)exi->exiCallback;
+    exi->exiCallback = (void (*)(s32, void *))callback;
+    if (chan != 2) {
+        SetExiInterruptMask(chan, exi);
+    } else {
+        SetExiInterruptMask(0, Ecb_8033E188);
+    }
+    OSRestoreInterrupts(enabled);
+    return (s32)old;
+}
 BOOL OSDisableInterrupts(void);
 BOOL OSRestoreInterrupts(BOOL level);
 s64 OSGetTime(void);
