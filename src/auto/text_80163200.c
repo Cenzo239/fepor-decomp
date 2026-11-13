@@ -6218,7 +6218,7 @@ void fn_8016F5DC(void *arg0) {
 }
 
 void fn_8016F628(void *arg0) {
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     void *temp_r31;
     s32 zero;
 
@@ -6229,7 +6229,7 @@ void fn_8016F628(void *arg0) {
     *(u8 *)((u8 *)temp_r31 + 0x4B) = zero;
     *(s32 *)((u8 *)temp_r31 + 0x70) = zero;
     *(s32 *)((u8 *)temp_r31 + 0x74) = zero;
-    *(s16 *)((u8 *)temp_r31 + 0x4C) = fn_80164E78(temp_r31, 0);
+    *(s16 *)((u8 *)temp_r31 + 0x4C) = UnitInv_FindFilledUp(temp_r31, 0);
     fn_8013FF00(arg0, temp_r31);
 }
 
@@ -6240,7 +6240,7 @@ void fn_8016F694(void *arg0) {
     void fn_800951D0(void *, s32);
     void fn_80138808(void *, void *);
     void UnitInv_Refresh(void *);
-    s16 fn_80164E78(void *, s16);
+    s16 UnitInv_FindFilledUp(void *, s16);
     s16 UnitInv_FindFilledDown(void *, s16);
     void fn_80184C7C(void *, s32, s32, s32);
     void *temp_r29;
@@ -6254,7 +6254,7 @@ void fn_8016F694(void *arg0) {
     UnitInv_Refresh(temp_r29);
     var_r3 = UnitInv_FindFilledDown(temp_r29, temp_r30);
     if (var_r3 < 0) {
-        var_r3 = fn_80164E78(temp_r29, temp_r30);
+        var_r3 = UnitInv_FindFilledUp(temp_r29, temp_r30);
     }
     if (var_r3 >= 0) {
         M2C_FIELD(temp_r29, s16 *, 0x4C) = var_r3;
@@ -6452,7 +6452,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
 }
 
 extern "C" void fn_8016FD08(void *arg0) {
-    s16 fn_80164E78(void *, s32, s32);
+    s16 UnitInv_FindFilledUp(void *, s32, s32);
     void fn_8013FF00(void *, void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -6468,7 +6468,7 @@ extern "C" void fn_8016FD08(void *arg0) {
     val = gUiContext[0];
     *(void **)((u8 *)obj + 0x70) = (void *)fn_8016FDA4;
     *(s32 *)((u8 *)obj + 0x74) = val;
-    *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(obj, 0, val);
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(obj, 0, val);
     fn_8013FF00(arg0, obj);
     ret = Ui_FindChild(arg0, -0x1000, 0);
     if (ret != 0) {
@@ -6553,7 +6553,7 @@ void fn_8016FF34(void *arg0) {
     u8 fn_800C3C1C(void *, void *);
     s16 Convoy_FindEmpty(void *);
     void UnitInv_Refresh(void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     extern u8 lbl_80294B10[];
     extern u32 gUiContext[];
     extern u8 gConvoy[];
@@ -6583,7 +6583,7 @@ void fn_8016FF34(void *arg0) {
         i += 1;
     }
     UnitInv_Refresh(obj);
-    *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(obj, 0);
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(obj, 0);
     gUiContext[1] = 0;
     Process_CreateChild(lbl_80294B10, arg0);
 }
@@ -6652,7 +6652,7 @@ extern "C" void fn_80170160(void *arg0) {
     void fn_800951D0(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     extern u32 gUiContext[];
     void *temp_r31;
     void *temp_r3;
@@ -6677,7 +6677,7 @@ extern "C" void fn_80170160(void *arg0) {
     *(u8 *)((u8 *)temp_r31 + 0x48) = 0;
     *(s32 *)((u8 *)temp_r31 + 0x60) = 3;
     *(u8 *)((u8 *)temp_r31 + 0x4B) = 0;
-    *(s16 *)((u8 *)temp_r31 + 0x4C) = fn_80164E78(temp_r31, 0);
+    *(s16 *)((u8 *)temp_r31 + 0x4C) = UnitInv_FindFilledUp(temp_r31, 0);
 }
 
 #pragma cplusplus on
@@ -6802,12 +6802,12 @@ void fn_8017073C(void *arg0) {
 }
 
 void fn_80170794(void *arg0) {
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     void *temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, void **, 0x4C);
     M2C_FIELD(temp_r31, s8 *, 0x48) = 1;
-    M2C_FIELD(temp_r31, s16 *, 0x4C) = fn_80164E78(temp_r31, 0);
+    M2C_FIELD(temp_r31, s16 *, 0x4C) = UnitInv_FindFilledUp(temp_r31, 0);
 }
 
 void fn_801707D4(void *arg0) {
@@ -6815,7 +6815,7 @@ void fn_801707D4(void *arg0) {
     void fn_800951D0(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     extern u32 gUiContext[];
     void *self;
     void *temp;
@@ -6841,7 +6841,7 @@ void fn_801707D4(void *arg0) {
     self = *(void **)((u8 *)self + 0x4C);
     *(s32 *)((u8 *)self + 0x60) = 3;
     *(u8 *)((u8 *)self + 0x4B) = 0;
-    *(s16 *)((u8 *)self + 0x4C) = fn_80164E78(self, 0);
+    *(s16 *)((u8 *)self + 0x4C) = UnitInv_FindFilledUp(self, 0);
 }
 
 #pragma use_lmw_stmw on
@@ -6861,7 +6861,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     void fn_80143C9C(void *);
     void Item_Clear(s32);
     s16 UnitInv_FindFilledDown(void *, s16);
-    s16 fn_80164E78(void *, s16);
+    s16 UnitInv_FindFilledUp(void *, s16);
     void Process_Goto(void *, s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
@@ -6936,7 +6936,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     Item_Clear(item);
     next = UnitInv_FindFilledDown(inv, *(s16 *)((u8 *)inv + 0x4c));
     if (next < 0) {
-        next = fn_80164E78(inv, *(s16 *)((u8 *)inv + 0x4c));
+        next = UnitInv_FindFilledUp(inv, *(s16 *)((u8 *)inv + 0x4c));
     }
     if (next >= 0) {
         *(s16 *)((u8 *)inv + 0x4c) = next;
@@ -7358,7 +7358,7 @@ extern "C" void fn_80171374(void *arg0) {
 void fn_80171B18(void *arg0) {
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_80140210(void *, void *, s32);
@@ -7384,7 +7384,7 @@ void fn_80171B18(void *arg0) {
     *((u8 *)obj4c + 0x4B) = 0;
     *(s32 *)((u8 *)obj4c + 0x70) = 0;
     *(s32 *)((u8 *)obj4c + 0x74) = 0;
-    *(s16 *)((u8 *)obj4c + 0x4C) = fn_80164E78(obj4c, 0);
+    *(s16 *)((u8 *)obj4c + 0x4C) = UnitInv_FindFilledUp(obj4c, 0);
 
     ret = Ui_FindChild(arg0, 0x107, 0);
     tmp = *(s16 *)((u8 *)ret + 0xC);
@@ -7420,7 +7420,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     void fn_80138808(void *, void *);
     void fn_80050C90(void *);
     s16 UnitInv_FindFilledDown(void *, s16);
-    s16 fn_80164E78(void *, s16);
+    s16 UnitInv_FindFilledUp(void *, s16);
     void Process_Goto(void *, s32);
     extern u32 gUiContext[];
     extern u8 gBattle[];
@@ -7448,7 +7448,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     }
     var_r3 = UnitInv_FindFilledDown(obj, saved);
     if (0 > var_r3) {
-        var_r3 = fn_80164E78(obj, saved);
+        var_r3 = UnitInv_FindFilledUp(obj, saved);
     }
     if (0 <= var_r3) {
         *(s16 *)((u8 *)obj + 0x4C) = var_r3;
@@ -7755,7 +7755,7 @@ void Ui_RestoreUnitListPanel(void *arg0) {
     void Ui_SetWidgetText(s32, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     s32 saved;
@@ -7779,7 +7779,7 @@ void Ui_RestoreUnitListPanel(void *arg0) {
     M2C_FIELD(obj, s8 *, 0x4B) = zero;
     M2C_FIELD(obj, s32 *, 0x70) = zero;
     M2C_FIELD(obj, s32 *, 0x74) = zero;
-    M2C_FIELD(obj, s16 *, 0x4C) = fn_80164E78(obj, 0);
+    M2C_FIELD(obj, s16 *, 0x4C) = UnitInv_FindFilledUp(obj, 0);
     fn_8013FF00(arg0, saved);
     p = M2C_FIELD(gUiContext, void **, 0);
     if (p != NULL) {
@@ -7800,7 +7800,7 @@ void Ui_RestoreUnitListPanel(void *arg0) {
 
 void fn_80172B74(void *arg0) {
     u8 Status_Test(void *, s32);
-    s16 fn_80164E78(void *, s32, void *);
+    s16 UnitInv_FindFilledUp(void *, s32, void *);
     void fn_8013FF00(void *, void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, void *);
@@ -7820,7 +7820,7 @@ void fn_80172B74(void *arg0) {
         *(s32 *)((u8 *)obj + 0x60) = 2;
         *(u8 *)((u8 *)obj + 0x4B) = 1;
     }
-    *(s16 *)((u8 *)obj + 0x4C) = fn_80164E78(
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(
         obj, 0,
         (p = *(void **)gUiContext,
          *(void **)((u8 *)obj + 0x70) = (void *)fn_80172C68,
@@ -7853,7 +7853,7 @@ void fn_80172C9C(void *arg0) {
     void Ui_SetWidgetText(s32, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void fn_80138808(void *, void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     s32 saved;
@@ -7877,7 +7877,7 @@ void fn_80172C9C(void *arg0) {
     M2C_FIELD(obj, s8 *, 0x4B) = zero;
     M2C_FIELD(obj, s32 *, 0x70) = zero;
     M2C_FIELD(obj, s32 *, 0x74) = zero;
-    M2C_FIELD(obj, s16 *, 0x4C) = fn_80164E78(obj, 0);
+    M2C_FIELD(obj, s16 *, 0x4C) = UnitInv_FindFilledUp(obj, 0);
     fn_8013FF00(arg0, saved);
     p = M2C_FIELD(gUiContext, void **, 0);
     if (p != NULL) {
@@ -8011,7 +8011,7 @@ extern "C" void fn_80172DA4(void *arg0) {
 
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
-    s16 fn_80164E78(void *, s32, void *);
+    s16 UnitInv_FindFilledUp(void *, s32, void *);
     void fn_8013FF00(void *, void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, void *);
@@ -8038,7 +8038,7 @@ extern "C" void fn_8017312C(void *arg0) {
     p = *(void **)p;
     *(void **)((u8 *)obj + 0x70) = cb;
     *(void **)((u8 *)obj + 0x74) = p;
-    index = fn_80164E78(obj, 0, p);
+    index = UnitInv_FindFilledUp(obj, 0, p);
     *(s16 *)((u8 *)obj + 0x4C) = index;
     fn_8013FF00(self, obj);
     ret = Ui_FindChild(self, -0x1000, 0);
@@ -8355,7 +8355,7 @@ void fn_80173C24(void *arg0) {
     s32 *ListWidget_GetSelected(void *);
     u64 *Item_GetFlagsPtr(s32);
     s16 fn_80164D9C(void *);
-    s16 fn_80164E78(void *, s32);
+    s16 UnitInv_FindFilledUp(void *, s32);
 
     void *obj54;
     void *obj4c;
@@ -8378,7 +8378,7 @@ void fn_80173C24(void *arg0) {
     if (var_r3 >= 0) {
         *(s16 *)((u8 *)obj4c + 0x4C) = var_r3;
     } else {
-        *(s16 *)((u8 *)obj4c + 0x4C) = fn_80164E78(obj4c, 0);
+        *(s16 *)((u8 *)obj4c + 0x4C) = UnitInv_FindFilledUp(obj4c, 0);
     }
     sp8 = *(u32 *)((u8 *)obj54 + 0x7C);
     {
