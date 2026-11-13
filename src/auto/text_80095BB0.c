@@ -779,7 +779,7 @@ void fn_800973F0(void *arg0, s32 arg1)
     }
 }
 
-void fn_800975C4(void *arg0) {
+void Event_AdvanceCmd(void *arg0) {
     if (arg0 == NULL) {
         return;
     }

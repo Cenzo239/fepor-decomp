@@ -158,7 +158,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     void fn_80054C14(void *);
     s32 Event_GetCmdKind(s16);
     s32 Event_GetCmdFlags(s16);
-    void fn_800975C4(s16);
+    void Event_AdvanceCmd(s16);
     s32 fn_800958C4(s32);
     void *fn_80095934(void *, s32, s32);
     void *fn_80053C30(void *, void *);
@@ -251,7 +251,7 @@ s32 Event_HandleItemCmd(void *arg0) {
         }
         if (fn_8005F9B8(pad, 0) != 0) {
             flags = Event_GetCmdFlags(id);
-            fn_800975C4(id);
+            Event_AdvanceCmd(id);
             tmp = (void *)fn_800958C4(flags);
             if (tmp != NULL) {
                 fn_8017DF54(M2C_FIELD(self, void **, 0x3C), tmp, self);
@@ -295,7 +295,7 @@ s32 Event_HandleItemCmd(void *arg0) {
         break;
     case 0x52:
         if (fn_8005F9B8(pad, 1) != 0) {
-            fn_800975C4(id);
+            Event_AdvanceCmd(id);
             if (M2C_FIELD(self, u8 *, 0x34) != 1) {
                 tmp = M2C_FIELD(M2C_FIELD(self, void **, 0x3C), void **, 0);
                 if (tmp != NULL) {
