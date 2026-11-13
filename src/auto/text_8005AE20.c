@@ -5141,8 +5141,11 @@ void *Light_GetChannel(s32 arg0) {
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
+    void *p;
+
     if (arg0 == NULL) {
-        lbl_80366DDC = lbl_80311B04;
+        p = lbl_80311B04;
+        lbl_80366DDC = p;
     }
 }
 #pragma peephole on
@@ -6204,7 +6207,7 @@ void fn_8006B39C(void) {
 #pragma use_lmw_stmw on
 void fn_8006C2A4(void *arg0,s32 arg1){
 u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006049C(void*);s32 fn_80060520(void*);s32 fn_800604F4(void*);s32 fn_800604C8(void*);
-void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void fn_8006C748(void*,s32);
+void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void GMaterial_ApplyRenderState(void*,s32);
 void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
 void fn_802245D8(s32,s32,s32,s32);void GXSetZMode(s32,s32,s32);void fn_80067490(s32);
 void Gfx_SetupVtxFormat(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
@@ -6223,7 +6226,7 @@ case 1:node=*(u8**)(data+0x40);break;
 case 2:node=*(u8**)(data+0x44);break;
 default:Game_Assert(lbl_8026B8AC+0x27,0x162,lbl_8026B8AC+0x9d);break;
 }
-draw=1;fn_8006C748(arg0,arg1);
+draw=1;GMaterial_ApplyRenderState(arg0,arg1);
 for(p=node;p;p=*(u8**)(p+4))*(s16*)(p+0xe)=-1;
 for(;node;node=*(u8**)(node+4)){
 if(!(*(u16*)(node+8)&0x400)&&(!(*(u32*)arg0&0x400000)||(*(u16*)(node+8)&0x8000))){
@@ -6259,7 +6262,7 @@ if(format&0x800)fn_80220154(25,addr2,3);else fn_80220154(10,addr2,3);
 if((*(u32*)arg0&0xc00000)||!(*(u16*)(node+8)&4))draw=fn_80068D84(arg0,aux,node,*(s32*)(data+0x34)+(*(s16*)(node+0xa)<<5));
 if(draw)fn_80224A68(*(s32*)(node+0x14),*(s32*)(node+0x18));
 if(!(*(u16*)(node+8)&0x1e0))reset=0;else {fn_80066D00(-1);reset=1;}
-if(reset)fn_8006C748(arg0,arg1);
+if(reset)GMaterial_ApplyRenderState(arg0,arg1);
 fn_80069C98();
 }
 }
@@ -6281,7 +6284,7 @@ void fn_8006C6F8(void *arg0) {
     }
 }
 
-void fn_8006C748(void *arg0, s32 arg1) {
+void GMaterial_ApplyRenderState(void *arg0, s32 arg1) {
     M2C_UNK fn_80067490(M2C_UNK);
     M2C_UNK fn_80223E5C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);

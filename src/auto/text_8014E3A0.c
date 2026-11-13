@@ -262,7 +262,7 @@ void fn_8014E864(void *arg0) {
     void *fn_80060638(void *);
     void *fn_80060664(void *);
     void *fn_8006060C(void *);
-    void fn_8006C748(void *, s32);
+    void GMaterial_ApplyRenderState(void *, s32);
     void fn_8006C6F8(void *, s32);
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
@@ -319,7 +319,7 @@ void fn_8014E864(void *arg0) {
     mesh = *(void **)((u8 *)obj54 + 0x34);
     entry = (u8 *)mesh + 8;
     unk22 = fn_8006060C(arg0);
-    fn_8006C748(arg0, 2);
+    GMaterial_ApplyRenderState(arg0, 2);
     mtx = (u8 *)arg0 + 0x10;
     i = 0;
     off = 0;
