@@ -7355,7 +7355,8 @@ extern "C" void fn_80171374(void *arg0) {
 #pragma cplusplus reset
 #pragma opt_common_subs on
 
-void Ui_RestoreUnitListAfterDetail(void *arg0) {
+/* Slide the unit list back on, reset the inventory panel, slide detail widget 0x107 off, dismiss 0x106, and raise the inventory. */
+void Ui_RestoreUnitListAfterDetail(void *panel) {
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     s16 UnitInv_FindFilledUp(void *, s32);
@@ -7364,38 +7365,38 @@ void Ui_RestoreUnitListAfterDetail(void *arg0) {
     void fn_80140210(void *, void *, s32);
     void Ui_BringChildToFront(void *, void *);
 
-    void *obj40;
-    void *obj4c;
-    void *ret;
-    s16 spC[2];
-    s16 sp8[2];
-    s16 tmp;
+    void *unitList;
+    void *inv;
+    void *child;
+    s16 listPos[2];
+    s16 slidePos[2];
+    s16 savedY;
 
-    obj40 = *(void **)((u8 *)arg0 + 0x40);
-    Ui_AddChild(arg0, obj40);
-    spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
-    spC[1] = 0x10;
-    Ui_SlideWidgetChildMode1(arg0, obj40, spC, 0);
+    unitList = *(void **)((u8 *)panel + 0x40);
+    Ui_AddChild(panel, unitList);
+    listPos[0] = *(s16 *)((u8 *)unitList + 0xA);
+    listPos[1] = 0x10;
+    Ui_SlideWidgetChildMode1(panel, unitList, listPos, 0);
 
-    obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    *((u8 *)obj4c + 0x48) = 0;
-    *(s32 *)((u8 *)obj4c + 0x60) = 3;
-    *((u8 *)obj4c + 0x4B) = 0;
-    *((u8 *)obj4c + 0x4B) = 0;
-    *(s32 *)((u8 *)obj4c + 0x70) = 0;
-    *(s32 *)((u8 *)obj4c + 0x74) = 0;
-    *(s16 *)((u8 *)obj4c + 0x4C) = UnitInv_FindFilledUp(obj4c, 0);
+    inv = *(void **)((u8 *)panel + 0x4C);
+    *((u8 *)inv + 0x48) = 0;
+    *(s32 *)((u8 *)inv + 0x60) = 3;
+    *((u8 *)inv + 0x4B) = 0;
+    *((u8 *)inv + 0x4B) = 0;
+    *(s32 *)((u8 *)inv + 0x70) = 0;
+    *(s32 *)((u8 *)inv + 0x74) = 0;
+    *(s16 *)((u8 *)inv + 0x4C) = UnitInv_FindFilledUp(inv, 0);
 
-    ret = Ui_FindChild(arg0, 0x107, 0);
-    tmp = *(s16 *)((u8 *)ret + 0xC);
-    sp8[0] = 0x260;
-    sp8[1] = tmp;
-    Ui_SlideWidgetChild(arg0, ret, sp8, 0);
+    child = Ui_FindChild(panel, 0x107, 0);
+    savedY = *(s16 *)((u8 *)child + 0xC);
+    slidePos[0] = 0x260;
+    slidePos[1] = savedY;
+    Ui_SlideWidgetChild(panel, child, slidePos, 0);
 
-    ret = Ui_FindChild(arg0, 0x106, 0);
-    fn_80140210(arg0, ret, 0);
+    child = Ui_FindChild(panel, 0x106, 0);
+    fn_80140210(panel, child, 0);
 
-    Ui_BringChildToFront(arg0, obj4c);
+    Ui_BringChildToFront(panel, inv);
 }
 
 #pragma cplusplus on
