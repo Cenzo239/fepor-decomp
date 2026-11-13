@@ -12434,7 +12434,7 @@ s32 fn_801A1604(s32 arg0) {
     void *fn_8000CAF0(void *, s32);
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C0658(void);
-    void fn_80105F0C(s32, void *, s32);
+    void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
@@ -12454,7 +12454,7 @@ s32 fn_801A1604(s32 arg0) {
         }
         var_r4 = fn_8000CAF0(lbl_80296FA8, var_r3);
     }
-    fn_80105F0C(arg0, var_r4, 3);
+    Dispos_Apply(arg0, var_r4, 3);
     temp = fn_8000C0C0(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
@@ -12464,7 +12464,7 @@ s32 fn_801A1604(s32 arg0) {
 }
 
 s32 fn_801A16BC(void *arg0) {
-    fn_80105F0C(arg0, 0, 2);
+    Dispos_Apply(arg0, 0, 2);
     return 1;
 }
 
@@ -12473,7 +12473,7 @@ s32 fn_801A16E8(s32 arg0) {
     void *fn_8000CAF0(void *, s32);
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C0658(void);
-    void fn_80105F0C(s32, void *, s32);
+    void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
@@ -12493,7 +12493,7 @@ s32 fn_801A16E8(s32 arg0) {
         }
         var_r4 = fn_8000CAF0(lbl_80296FA8, var_r3);
     }
-    fn_80105F0C(arg0, var_r4, 2);
+    Dispos_Apply(arg0, var_r4, 2);
     temp = fn_8000C0C0(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
@@ -12503,7 +12503,7 @@ s32 fn_801A16E8(s32 arg0) {
 }
 
 s32 fn_801A17A0(void *arg0) {
-    fn_80105F0C(arg0, 0, 1);
+    Dispos_Apply(arg0, 0, 1);
     return 1;
 }
 
@@ -12512,7 +12512,7 @@ s32 fn_801A17CC(s32 arg0) {
     void *fn_8000CAF0(void *, s32);
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C0658(void);
-    void fn_80105F0C(s32, void *, s32);
+    void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
@@ -12532,7 +12532,7 @@ s32 fn_801A17CC(s32 arg0) {
         }
         var_r4 = fn_8000CAF0(lbl_80296FA8, var_r3);
     }
-    fn_80105F0C(arg0, var_r4, 1);
+    Dispos_Apply(arg0, var_r4, 1);
     temp = fn_8000C0C0(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
@@ -12544,7 +12544,7 @@ s32 fn_801A17CC(s32 arg0) {
 s32 fn_801A1884(char *arg0) {
     void strcpy(char *, char *);
     void strcat(char *, char *);
-    void fn_80105F0C(char *, s32, s32);
+    void Dispos_Apply(char *, s32, s32);
     extern u16 lbl_80330708[];
     extern u8 lbl_8027AD98[];
     char sp8[0x28];
@@ -12562,19 +12562,19 @@ s32 fn_801A1884(char *arg0) {
         strcat(sp8, (char *)(lbl_8027AD98 + 0x5CC));
         break;
     }
-    fn_80105F0C(sp8, 0, 0);
+    Dispos_Apply(sp8, 0, 0);
     return 1;
 }
 
 s32 fn_801A1934(void *arg0) {
-    fn_80105F0C(arg0, 0, 0);
+    Dispos_Apply(arg0, 0, 0);
     return 1;
 }
 
 s32 fn_801A1960(s32 arg0) {
     void *fn_8000C0C0(void *);
     void *fn_8000CAF0(void *, s32);
-    void fn_80105F0C(s32, void *, s32);
+    void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
     extern u8 lbl_80296FA8[];
@@ -12592,7 +12592,7 @@ s32 fn_801A1960(s32 arg0) {
         }
         var_r4 = fn_8000CAF0(lbl_80296FA8, var_r3);
     }
-    fn_80105F0C(arg0, var_r4, 0);
+    Dispos_Apply(arg0, var_r4, 0);
     return 1;
 }
 
@@ -12601,7 +12601,7 @@ s32 fn_801A19D8(s32 arg0) {
     void *fn_8000CAF0(void *, s32);
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C0658(void);
-    void fn_80105F0C(s32, void *, s32);
+    void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
@@ -12621,7 +12621,7 @@ s32 fn_801A19D8(s32 arg0) {
         }
         var_r4 = fn_8000CAF0(lbl_80296FA8, var_r3);
     }
-    fn_80105F0C(arg0, var_r4, 0);
+    Dispos_Apply(arg0, var_r4, 0);
     temp = fn_8000C0C0(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();

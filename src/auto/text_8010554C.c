@@ -389,7 +389,7 @@ u8 fn_80105E88(s32 arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
+void Dispos_Apply(void *arg0, u32 arg1, s32 arg2) {
     void fn_800056CC(const char *, ...);
     void *fn_8000CAA0(void *, u32);
     u32 fn_8000D354(void *);
