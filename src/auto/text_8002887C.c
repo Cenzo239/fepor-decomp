@@ -129,7 +129,7 @@ void fn_80028B4C(s32 arg0) {
     }
 }
 
-void fn_80028B94(void *arg0) {
+void MapUi_HandleUnitSelect(void *arg0) {
     void Process_Goto(void *, s32);
     u8 fn_800281F4(void *);
     void fn_800281D8(void *);
