@@ -7867,7 +7867,7 @@ void fn_801968CC(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x8C) = 3;
 }
 
-void fn_801968FC(void *arg0, s32 arg1, u8 arg2, void *arg3) {
+void Ui_Meter_ApplyDelta(void *arg0, s32 arg1, u8 arg2, void *arg3) {
     void fn_80122F04(void *, void *);
     void fn_80123034(void *, void *, f32, f32, s32);
     void fn_801232F4(void *, void *, f32, f32);
@@ -13148,22 +13148,27 @@ void fn_801A24C4(void *arg0) {
     }
 }
 
+#pragma optimization_level 1
 void fn_801A251C(void) {
     void *Process_Find(u8 *);
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
     extern u8 lbl_80296FA8[];
+    void *temp;
+    u32 var_r3;
 
-    if (Process_Find(lbl_80296FA8) == 0) {
-        u32 var_r3 = fn_80127C48();
+    temp = Process_Find(lbl_80296FA8);
+    if (temp != NULL) {
+    } else {
+        var_r3 = fn_80127C48();
         if (var_r3 == 0) {
             var_r3 = fn_800C0658();
         }
         Process_Create(lbl_80296FA8, var_r3);
     }
 }
-
+#pragma optimization_level reset
 void fn_801A2570(void) {
     void fn_800C1060(void);
     extern u8 gMapBlendMode;
