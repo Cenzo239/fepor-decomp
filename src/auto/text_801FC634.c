@@ -1446,12 +1446,12 @@ void fn_801FFEB0(s32 arg0) {
     extern s32 gSaveMigrateCount;
     extern s32 gSaveDataBase;
     s32 Save_GetSmallSlot(s32 *, s32);
-    void fn_800E9B80(s32, s32, s32, s32, s32);
+    void Card_RequestWrite(s32, s32, s32, s32, s32);
     s32 tmp;
 
     if (gSaveMigrateCount != 0) {
         tmp = Save_GetSmallSlot(&gSaveDataBase, 0);
-        fn_800E9B80(tmp, 0x24000, 0x2000, 0x2000, arg0);
+        Card_RequestWrite(tmp, 0x24000, 0x2000, 0x2000, arg0);
     }
 }
 

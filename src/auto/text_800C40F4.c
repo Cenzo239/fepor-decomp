@@ -14640,7 +14640,7 @@ void fn_800E9B10(void) {
     }
 }
 #pragma global_optimizer reset
-void fn_800E9B80(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Card_RequestWrite(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;

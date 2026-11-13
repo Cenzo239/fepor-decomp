@@ -16442,7 +16442,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
     void *memset(void *, s32, s32);
 
     void *buf;
@@ -16488,7 +16488,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
             }
             if (chkOk == 0) {
                 memset(slot, 0, 0x2000);
-                fn_800E9B80(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
+                Card_RequestWrite(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
                 return 1;
             }
         }
@@ -16525,7 +16525,7 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
             }
             if (chkOk == 0) {
                 memset(slot, 0, 0x2000);
-                fn_800E9B80(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
+                Card_RequestWrite(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
                 return 1;
             }
         }
@@ -16554,7 +16554,7 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
 void fn_801DFE60(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
     extern void *gSaveDataBase;
 
     u32 minSize;
@@ -16666,7 +16666,7 @@ found_slot:
     fn_800062CC(best, found, *(s32 *)(found + 0x4C));
     fn_801E3CA8(best);
     diff = (s32)best - (s32)gSaveDataBase;
-    fn_800E9B80(best, *(s32 *)(best + 0x4C), diff, diff, self);
+    Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
 }
   extern u8 lbl_80299F1C[];
 void fn_801E00EC(void *arg0, void *arg1) { void fn_8000CAA0(void *); extern u8 lbl_80299F1C[]; (void)arg0; (void)arg1; fn_8000CAA0(lbl_80299F1C); }
@@ -16688,7 +16688,7 @@ void fn_801E0114(s32 arg0) {
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     void Crc32_InitTable(void);
@@ -16849,7 +16849,7 @@ do_copy:
     fn_800062CC(dst, src, *(s32 *)(src + 0x4C));
     fn_801E3CA8(dst);
     *(u8 *)(dst + 0x60) = 1;
-    fn_800E9B80(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
+    Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
 }
 
 #pragma use_lmw_stmw on
@@ -16863,7 +16863,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
     u32 Crc32_Calc(void *, void *, s32);
     void Crc32_InitTable(void);
     void fn_8010FBA8(void *, void *);
@@ -16999,7 +16999,7 @@ loop:
     }
     fn_801E3CA8(slot);
     arg0[1] = slot;
-    fn_800E9B80(slot, *(s32 *)(slot + 0x4C), (s32)slot - gSaveDataBase, (s32)slot - gSaveDataBase, arg1);
+    Card_RequestWrite(slot, *(s32 *)(slot + 0x4C), (s32)slot - gSaveDataBase, (s32)slot - gSaveDataBase, arg1);
 }
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
@@ -17057,7 +17057,7 @@ void fn_801E0D30(void *arg0) {
 void fn_801E0D78(void **arg0, void *arg1, s32 arg2, s32 arg3) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
-    void fn_800E9B80(void *, s32, s32, s32, void *);
+    void Card_RequestWrite(void *, s32, s32, s32, void *);
     extern void *gSaveDataBase;
 
     s32 i;
@@ -17171,7 +17171,7 @@ found_slot:
     *(u8 *)(best + 0x62) = (u8)val;
     fn_801E3CA8(best);
     diff = (s32)best - (s32)gSaveDataBase;
-    fn_800E9B80(best, *(s32 *)(best + 0x4C), diff, diff, self);
+    Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
     *(void **)((u8 *)self + 0x54) = best;
 }
 void fn_801E1168(void *arg0) {
@@ -17189,7 +17189,7 @@ void fn_801E1168(void *arg0) {
 void fn_801E11AC(void *arg0, s32 arg1, s8 arg2) {
     void fn_800062CC(void *, s32);
     void fn_801E3CA8(void *);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
+    void Card_RequestWrite(void *, s32, s32, s32, s32);
     extern u8 *gSaveDataBase;
     u8 *var_r4;
     u8 *var_r31;
@@ -17239,7 +17239,7 @@ void fn_801E11AC(void *arg0, s32 arg1, s8 arg2) {
     *(u8 *)(var_r31 + 0x62) = arg2;
     fn_801E3CA8(var_r31);
     *(u8 *)(var_r31 + 0x60) = 1;
-    fn_800E9B80(var_r31, 0x2000, var_r31 - gSaveDataBase, -1, arg1);
+    Card_RequestWrite(var_r31, 0x2000, var_r31 - gSaveDataBase, -1, arg1);
 }
 
 void fn_801E1440(s32 arg0, s32 arg1, s32 arg2) {
@@ -17294,7 +17294,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_800C2980(void *, void *);
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
-    void fn_800E9B80(void *, s32, s32, s32, void *);
+    void Card_RequestWrite(void *, s32, s32, s32, void *);
     void fn_8010FBA8(void *, void *);
     void fn_8014C39C(void *, void *);
     void fn_8014D698(void *, u8, u8, u8, u8);
@@ -17640,7 +17640,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     fn_801E3CA8(best);
     arg0[1] = best;
     diff = (s32)best - (s32)gSaveDataBase;
-    fn_800E9B80(best, *(s32 *)(best + 0x4C), diff, diff, other);
+    Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, other);
 }
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
@@ -17868,14 +17868,14 @@ void fn_801E218C(void) {
 }
 
 void fn_801E21B0(void *arg0) {
-    void fn_800E9B80(void *, s32, s32, s32, void *);
+    void Card_RequestWrite(void *, s32, s32, s32, void *);
     extern s32 gSaveDataBase;
     void *temp_r6;
     s32 temp_r5;
 
     temp_r6 = *(void **)((u8 *)arg0 + 0x54);
     temp_r5 = (s32)temp_r6 - gSaveDataBase;
-    fn_800E9B80(temp_r6, *(s32 *)((u8 *)temp_r6 + 0x4C), temp_r5, temp_r5, arg0);
+    Card_RequestWrite(temp_r6, *(s32 *)((u8 *)temp_r6 + 0x4C), temp_r5, temp_r5, arg0);
 }
 
 extern u8 gSystemSave[72];
