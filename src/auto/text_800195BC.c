@@ -2023,25 +2023,26 @@ void fn_8001CC48(u8 *dst, u8 *src) {
     }
 }
 
-s32 WpnRank_GetNext(u8 arg0) {
-    u8 var_r0;
+/* Returns the next weapon-rank exp threshold above the current value (E→D→C→B→A→S). */
+s32 WpnRank_GetNext(u8 exp) {
+    u8 rank;
 
-    if (arg0 >= 0xFBU) {
-        var_r0 = 0xFB;
-    } else if (arg0 >= 0xB5U) {
-        var_r0 = 0xB5;
-    } else if (arg0 >= 0x79U) {
-        var_r0 = 0x79;
-    } else if (arg0 >= 0x47U) {
-        var_r0 = 0x47;
-    } else if (arg0 >= 0x1FU) {
-        var_r0 = 0x1F;
-    } else if (arg0 >= 1U) {
-        var_r0 = 1;
+    if (exp >= 0xFBU) {
+        rank = 0xFB;
+    } else if (exp >= 0xB5U) {
+        rank = 0xB5;
+    } else if (exp >= 0x79U) {
+        rank = 0x79;
+    } else if (exp >= 0x47U) {
+        rank = 0x47;
+    } else if (exp >= 0x1FU) {
+        rank = 0x1F;
+    } else if (exp >= 1U) {
+        rank = 1;
     } else {
-        var_r0 = 0;
+        rank = 0;
     }
-    switch ((s32) var_r0) {                         /* irregular */
+    switch ((s32) rank) {                         /* irregular */
     case 0x0:
         return 0;
     case 0xFB:
