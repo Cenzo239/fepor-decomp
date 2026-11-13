@@ -7646,6 +7646,7 @@ s32 fn_801C6E60(s32 arg0) {
 
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
+/* Copy LightFade source channels onto display lights, release extras, restore fog color. */
 void LightFade_RestoreLights(void) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
@@ -7653,16 +7654,16 @@ void LightFade_RestoreLights(void) {
     void Light_CopyChannel(s32, s32);
     u8 *Fog_GetColor(void);
     void fn_8005F788(u32, s32, s32);
-    void *p = Process_Find(LightFade_script);
+    void *proc = Process_Find(LightFade_script);
     u8 *work;
-    if (p == NULL) {
+    if (proc == NULL) {
         work = 0;
     } else {
-        work = *(u8 **)((u8 *)p + 0x30);
+        work = *(u8 **)((u8 *)proc + 0x30);
     }
     if (work) {
         u8 *data = work + 0x284;
-        u8 *out;
+        u8 *fog;
         s32 i;
         u32 *ptr;
 
@@ -7673,10 +7674,10 @@ void LightFade_RestoreLights(void) {
                 fn_8005F788(ptr[3], 0, 1);
             }
         }
-        out = Fog_GetColor();
-        out[1] = data[8];
-        out[2] = data[9];
-        out[3] = data[10];
+        fog = Fog_GetColor();
+        fog[1] = data[8];
+        fog[2] = data[9];
+        fog[3] = data[10];
     }
 }
 
