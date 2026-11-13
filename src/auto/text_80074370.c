@@ -3658,7 +3658,7 @@ void fn_8007ADC8(s32 index) {
     base[index] = NULL;
 }
 
-void fn_8007AE18(void *arg0)
+void Face_EaseTintProc(void *arg0)
 {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
