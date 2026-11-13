@@ -11933,26 +11933,12 @@ void Stream_WriteS64(void *arg0, s32 arg1, u8 arg2, u8 arg3) {
     *temp_r4_8 = arg3;
 }
 
-void Stream_WriteS32(void *arg0, u32 arg1) {
-    u8** r5_ptr = (u8**)((char*)arg0 + 4);
-    u8* r5_val = *r5_ptr;
-    *r5_ptr = r5_val + 1;
-    *r5_val = (u8)(arg1 >> 24);
-
-    r5_ptr = (u8**)((char*)arg0 + 4);
-    r5_val = *r5_ptr;
-    *r5_ptr = r5_val + 1;
-    *r5_val = (u8)(arg1 >> 16);
-
-    r5_ptr = (u8**)((char*)arg0 + 4);
-    r5_val = *r5_ptr;
-    *r5_ptr = r5_val + 1;
-    *r5_val = (u8)(arg1 >> 8);
-
-    r5_ptr = (u8**)((char*)arg0 + 4);
-    r5_val = *r5_ptr;
-    *r5_ptr = r5_val + 1;
-    *r5_val = (u8)arg1;
+void Stream_WriteS32(u8 **arg0, u32 arg1) {
+    u8 **pp = &arg0[1];
+    *(*pp)++ = (u8)(arg1 >> 24);
+    *(*pp)++ = (u8)(arg1 >> 16);
+    *(*pp)++ = (u8)(arg1 >> 8);
+    *(*pp)++ = (u8)arg1;
 }
 
 void Stream_WriteU16(u8 **arg0, u16 arg1) {
