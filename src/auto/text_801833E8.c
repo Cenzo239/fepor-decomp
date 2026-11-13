@@ -8546,7 +8546,7 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     void String_Destroy(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_801518B4(void *, void *);
-    extern u8 lbl_8027A858[];
+    extern u8 gWeaponAttachStr[];
     struct Vec3 { s32 x, y, z; };
     struct Vec3 sp24;
     struct Vec3 sp18;
@@ -8560,7 +8560,7 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     if (obj != NULL) {
         sp24 = *(struct Vec3 *)arg2;
         sp18 = *(struct Vec3 *)arg1;
-        String_Init(spC, (char *)(lbl_8027A858 + 0x76), sp8);
+        String_Init(spC, (char *)(gWeaponAttachStr + 0x76), sp8);
         flag = 1;
         obj = fn_80151D50(obj, *(void **)((u8 *)arg0 + 0xAC), spC, (u8 *)arg0 + 0x12C, &sp18, &sp24, 1);
     }
@@ -8579,16 +8579,16 @@ void fn_80199240(void *arg0) {
     s32 fn_800C9400(void *, s32, u32, char *, s32);
     void *String_CStr(void *);
     void fn_800558D8(void);
-    extern u8 lbl_8027A858[];
+    extern u8 gWeaponAttachStr[];
     s32 len;
 
-    len = strlen((char *)(lbl_8027A858 + 0x7A));
-    if (fn_800C9400((u8 *)arg0 + 0x12C, 0, *(u32 *)((u8 *)arg0 + 0x12C), (char *)(lbl_8027A858 + 0x7A), len) != 0) {
+    len = strlen((char *)(gWeaponAttachStr + 0x7A));
+    if (fn_800C9400((u8 *)arg0 + 0x12C, 0, *(u32 *)((u8 *)arg0 + 0x12C), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x12C);
         fn_800558D8();
     }
-    len = strlen((char *)(lbl_8027A858 + 0x7A));
-    if (fn_800C9400((u8 *)arg0 + 0x138, 0, *(u32 *)((u8 *)arg0 + 0x138), (char *)(lbl_8027A858 + 0x7A), len) != 0) {
+    len = strlen((char *)(gWeaponAttachStr + 0x7A));
+    if (fn_800C9400((u8 *)arg0 + 0x138, 0, *(u32 *)((u8 *)arg0 + 0x138), (char *)(gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)arg0 + 0x138);
         fn_800558D8();
     }
@@ -8724,7 +8724,7 @@ void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     void String_CStr(void *);
     void fn_800558D8(void);
     u32 strlen(char *);
-    extern u8 lbl_8027A858[];
+    extern u8 gWeaponAttachStr[];
 
     typedef struct {
         u32 size;
@@ -8810,23 +8810,23 @@ void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     self->unk174 = z;
     String_Assign(&self->str118, (u8 *)self + 0x10, 0, -1);
 
-    String_Init(&sp3C, (char *)(lbl_8027A858 + 0x7B), sp14);
+    String_Init(&sp3C, (char *)(gWeaponAttachStr + 0x7B), sp14);
     Xml_GetNamedValue(spA8, path, &sp3C);
     self->unk124 = *(s32 *)spA8;
     String_Destroy(&sp3C, -1);
 
-    String_Init(&sp30, (char *)(lbl_8027A858 + 0x80), sp10);
+    String_Init(&sp30, (char *)(gWeaponAttachStr + 0x80), sp10);
     Xml_GetNamedValue(sp88, path, &sp30);
     self->unk128 = *(s32 *)sp88;
     String_Destroy(&sp30, -1);
 
-    String_Init(&sp24, (char *)(lbl_8027A858 + 0x88), spC);
+    String_Init(&sp24, (char *)(gWeaponAttachStr + 0x88), spC);
     Xml_GetNamedValue(sp68, path, &sp24);
     temp_r29 = sp68;
     String_AssignCStr(&self->str12C, temp_r29, strlen(temp_r29));
     String_Destroy(&sp24, -1);
 
-    String_Init(&sp18, (char *)(lbl_8027A858 + 0x91), sp8);
+    String_Init(&sp18, (char *)(gWeaponAttachStr + 0x91), sp8);
     Xml_GetNamedValue(sp48, path, &sp18);
     temp_r29 = sp48;
     String_AssignCStr(&self->str138, temp_r29, strlen(temp_r29));
@@ -8837,15 +8837,15 @@ void *fn_80199590(void *arg0, void *arg1, void *arg2) {
     self->unk14D = 0;
     self->unk148 = 0;
 
-    len = strlen((char *)((u8 *)lbl_8027A858 + 0x7A));
+    len = strlen((char *)((u8 *)gWeaponAttachStr + 0x7A));
     p = (u8 *)self + 0x12C;
-    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)lbl_8027A858 + 0x7A), len) != 0) {
+    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x12C);
         fn_800558D8();
     }
-    len = strlen((char *)((u8 *)lbl_8027A858 + 0x7A));
+    len = strlen((char *)((u8 *)gWeaponAttachStr + 0x7A));
     p = (u8 *)self + 0x138;
-    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)lbl_8027A858 + 0x7A), len) != 0) {
+    if (fn_800C9400(p, 0, *(u32 *)p, (char *)((u32)gWeaponAttachStr + 0x7A), len) != 0) {
         String_CStr((u8 *)self + 0x138);
         fn_800558D8();
     }
@@ -13515,7 +13515,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
     s32 GActor_FindNode(void *, char *);
     void fn_8006D378(void *);
     void fn_800E4A78(void *, void *);
-    extern u8 lbl_8027A858[];
+    extern u8 gWeaponAttachStr[];
 
     f32 sp68[3][4];
     f32 sp38[3][4];
@@ -13594,16 +13594,16 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
                         (u8 *)*(void **)((u8 *)obj + 0x60) + off,
                         ent_i + 0x10,
                         (u8 *)*(void **)((u8 *)e0 + 0x64) + j * 0x30);
-                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(lbl_8027A858 + 0x6A)) == 0) {
-                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x38));
+                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x6A)) == 0) {
+                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x38));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp38);
                             dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;
                             PSMTXConcat(sp38, dst, dst);
                         }
                     }
-                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(lbl_8027A858 + 0x70)) == 0) {
-                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(lbl_8027A858 + 0x4C));
+                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x70)) == 0) {
+                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x4C));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp8);
                             dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;
