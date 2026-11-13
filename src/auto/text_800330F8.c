@@ -10033,7 +10033,7 @@ void fn_8004A864(void* arg0, s32 arg1) {
     *ptr = (u8)count;
 }
 
-void fn_8004AAA4(void) {
+void Map_SetupColorGx(void) {
     M2C_UNK Camera_GetViewMtx();
     M2C_UNK PSMTXConcat(M2C_UNK, M2C_UNK *, M2C_UNK *);
     M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);

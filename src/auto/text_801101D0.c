@@ -3696,7 +3696,7 @@ void fn_80119738(void *arg0) {
 void fn_80119768(void) {
     void *fn_8002F658(s32 *, s32);
     M2C_UNK fn_8004A864(s32 *);
-    M2C_UNK fn_8004AAA4();
+    M2C_UNK Map_SetupColorGx();
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
@@ -3714,7 +3714,7 @@ void fn_80119768(void) {
     u8 id;
     void *unit;
 
-    fn_8004AAA4();
+    Map_SetupColorGx();
     i = 0;
     t28 = (s8) gUiContext[0xD];
     t29 = (s8) gUiContext[0xE];
