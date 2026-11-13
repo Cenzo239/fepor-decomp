@@ -7409,7 +7409,7 @@ void fn_801959FC(void *arg0) {
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void GXSetChanMatColor(s32, void *);
     void fn_80222334(s32);
@@ -7483,7 +7483,7 @@ void fn_801959FC(void *arg0) {
     if (len > 0) {
         alpha = (u8)(s32)(((f32)a0 * Math_Lerp(lbl_8036AE6C, lbl_8036AE50, lbl_8036AE70, (f32)len)) / lbl_8036AE6C);
     }
-    fn_80220DEC(0x98, 0, (*(s16 *)((u8 *)self + 0xA) << 1) & 0xFFFE);
+    GXBegin(0x98, 0, (*(s16 *)((u8 *)self + 0xA) << 1) & 0xFFFE);
     f30 = lbl_8036AE80;
     f31 = lbl_8036AE60;
     f29 = lbl_8036AE74;
@@ -7512,7 +7512,7 @@ void fn_801959FC(void *arg0) {
         pos += 3;
     }
     last = (f32 *)((u8 *)self + (*(s16 *)((u8 *)self + 0xA) - 1) * 0xC);
-    fn_80220DEC(0x90, 0, 9);
+    GXBegin(0x90, 0, 9);
     {
         f32 *p = (f32 *)((u8 *)last + 0x220);
         f32 *v = (f32 *)((u8 *)last + 0x1A38);
@@ -13259,7 +13259,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80220428(M2C_UNK);
     M2C_UNK fn_802209FC();
-    M2C_UNK fn_80220DEC(M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXBegin(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8022124C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802212FC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80221BA8(u32, M2C_UNK);
@@ -13314,7 +13314,7 @@ void fn_801A27F8(void *arg0) {
         fn_8021FBF0(0, 9, 1, 4, 0);
         fn_8021FBF0(0, 0xD, 1, 4, 0);
         fn_80067490(0);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         *(f32 *)0xCC008000 = 0.0f;
         *(f32 *)0xCC008000 = 0.0f;
         *(f32 *)0xCC008000 = 0.0f;

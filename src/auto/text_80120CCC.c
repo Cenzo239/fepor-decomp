@@ -1638,7 +1638,7 @@ void fn_80123D1C(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void fn_8022100C(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80220154(s32, s32, s32);
     void GXSetChanMatColor(s32, void *);
     void fn_80222164(s32, void *);
@@ -1710,7 +1710,7 @@ void fn_80123D1C(void *arg0) {
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
     fn_8022100C(0);
-    fn_80220DEC(0x80, 0, (s32)((count << 5) & 0xFFE0));
+    GXBegin(0x80, 0, (s32)((count << 5) & 0xFFE0));
 
     fifo_s = (volatile s16 *)0xCC008000;
     fifo_b = (volatile u8 *)0xCC008000;
@@ -1794,7 +1794,7 @@ void fn_80123D1C(void *arg0) {
             PSMTXConcat(sp158, sp128, sp128);
             GXLoadPosMtxImm(sp128, 0);
             GXSetCurrentMtx(0);
-            fn_80220DEC(0xA8, 0, (s32)(u16)(n * 2));
+            GXBegin(0xA8, 0, (s32)(u16)(n * 2));
             rem = (s16)(n * 2 - 1);
             tot = rem + 1;
             if (rem >= 0) {
@@ -2370,7 +2370,7 @@ void fn_80125388(void *arg0) {
     void GXSetCurrentMtx(s32);
     void fn_80220FC4(s32, s32, s32);
     void fn_80220F84(s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80066D00(s32);
     Arg0 *a = (Arg0 *)arg0;
     u8 sp8[0x20];
@@ -2413,7 +2413,7 @@ void fn_80125388(void *arg0) {
     var_r30 = NULL;
     goto loop_test;
 loop_body:
-    fn_80220DEC(0xB8, 0, 1);
+    GXBegin(0xB8, 0, 1);
     vf2 = var_r30->unk1C;
     vf1 = var_r30->unk18;
     vf0 = var_r30->unk14;

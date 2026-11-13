@@ -4617,7 +4617,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     u32 fn_801FB9CC(void *, u16);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     extern f32 lbl_8036BAB8;
     extern f64 lbl_8036BAC0;
     extern u32 lbl_80368410[2];
@@ -4721,7 +4721,7 @@ loop_body:
     }
     fn_80222644(tex, found, 0x18, 0x18, 0, 0, 0, 0);
     fn_80222C50(tex, 0);
-    fn_80220DEC(0x80, 0, 4);
+    GXBegin(0x80, 0, 4);
     wg = (volatile u8 *)0xCC010000;
     temp_r6 = (s16)var_r25 + (s16)var_r27;
     *(volatile s16 *)(wg - 0x8000) = (s16)var_r25;

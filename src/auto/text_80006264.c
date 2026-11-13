@@ -530,7 +530,7 @@ loop_5:
     var_f25 = *(f32 *)((u8 *)arg0 + 0x20);
     var_f28 -= temp_f0_4;
     
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
 
     *(f32 *)0xCC008000 = var_f26;
     *(f32 *)0xCC008000 = var_f31;
@@ -1582,7 +1582,7 @@ void fn_80008C24(void *arg0, void *arg1, u8 *arg2, f32 farg0, f32 farg1, f32 far
     void *fn_801047DC(u8 *);
     u8 *fn_801049E0(u8 *, s32 *, s32 *, s32 *, s32 *, s32 *, u8, u8, f32);
     void PSMTXScale(void *, u16, f32, f32, f32);
-    void fn_80220DEC(u32, u32, u32);
+    void GXBegin(u32, u32, u32);
     void fn_80222644(void *, s32, u16, u16, u16, u32, u32, u32);
     void fn_80222C50(void *, u32);
     void fn_80224E50(void *, u16, u32);
@@ -1655,7 +1655,7 @@ loop_2:
         fn_80222644(&sp1C, sp18, *(u16 *)((char *)temp_r3 + 0x1E), *(u16 *)((char *)temp_r3 + 0x20), *(u16 *)((char *)temp_r3 + 0x18), 0, 0, 0);
         fn_80222C50(&sp1C, 0);
         temp_f24_2 = (farg3 * (temp_f18 * (temp_f27 - (f32) spC))) + temp_f24;
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         *(f32 *)0xCC008000 = temp_f24_2;
         temp_r6 = *(u8 *)((char *)arg0 + 0);
         *(f32 *)0xCC008000 = temp_f23;
@@ -1712,7 +1712,7 @@ loop_2:
 
 #pragma use_lmw_stmw on
 void fn_80009008(void *list, s32 a, s32 b) {
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80008C24(void *, void *, void *, f32, f32, f32, f32);
     void fn_8014B388(void *, void *, f32, f32, f32);
     void fn_8000E684(s16, s16, s32, void *, void *, void *, f32, f32, f32, f32, f32);
@@ -1745,7 +1745,7 @@ void fn_80009008(void *list, s32 a, s32 b) {
         if (type <= 11) {
             switch (type) {
             case 1:
-                fn_80220DEC(0x98, 0, 4);
+                GXBegin(0x98, 0, 4);
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;
@@ -1764,7 +1764,7 @@ void fn_80009008(void *list, s32 a, s32 b) {
                 *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x28); *(volatile f32 *)0xCC008000 = *(f32 *)(node + 0x2C);
                 break;
             case 4:
-                fn_80220DEC(0xA8, 0, 2);
+                GXBegin(0xA8, 0, 2);
                 fz = *(f32 *)(node + 0x8); fy = *(f32 *)(node + 0x14); fx = *(f32 *)(node + 0x10);
                 *(volatile f32 *)0xCC008000 = fx; *(volatile f32 *)0xCC008000 = fy; *(volatile f32 *)0xCC008000 = fz;
                 *(volatile u8 *)0xCC008000 = cr; *(volatile u8 *)0xCC008000 = cg; *(volatile u8 *)0xCC008000 = cb; *(volatile u8 *)0xCC008000 = ca;

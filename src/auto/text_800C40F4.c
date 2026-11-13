@@ -862,7 +862,7 @@ void fn_800C6028(void *arg0) {
     void fn_80224DCC(void *, s32);
     void GXSetCurrentMtx(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     extern f32 lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C;
     extern f32 lbl_80369DA0, lbl_80369DA4, lbl_80369DA8;
     extern u32 lbl_8036C498, lbl_8036C49C, lbl_8036C4A0, lbl_8036C4A4;
@@ -936,7 +936,7 @@ void fn_800C6028(void *arg0) {
         fn_80224DCC(sp250, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         fifo = (volatile s16 *)0xCC008000;
         fifo[0] = 0x75;
         fifo[0] = 0x9A;
@@ -1002,7 +1002,7 @@ void fn_800C6028(void *arg0) {
         fn_80224DCC(sp1E0, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         fifo = (volatile s16 *)0xCC008000;
         fifo[0] = 0xB4;
         fifo[0] = 0x96;
@@ -1068,7 +1068,7 @@ void fn_800C6028(void *arg0) {
         fn_80224DCC(sp170, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         fifo = (volatile s16 *)0xCC008000;
         fifo[0] = 0;
         fifo[0] = 0xB0;
@@ -1136,7 +1136,7 @@ void fn_800C6028(void *arg0) {
         fn_80224DCC(sp100, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         fifo = (volatile s16 *)0xCC008000;
         fifo[0] = 0;
         fifo[0] = 0;
@@ -1199,7 +1199,7 @@ void fn_800C6E44(void *arg0) {
     void fn_80224DCC(void *, s32);
     void GXSetCurrentMtx(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     extern f32 lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C;
     extern f32 lbl_80369DA0, lbl_80369DA4, lbl_80369DA8;
     extern f32 lbl_80369DB8, lbl_80369DBC;
@@ -1260,7 +1260,7 @@ void fn_800C6E44(void *arg0) {
     fn_80224DCC(sp70, 0);
     GXSetCurrentMtx(0);
     fn_802245D8(1, 4, 5, 0);
-    fn_80220DEC(0x80, 0, 4);
+    GXBegin(0x80, 0, 4);
     fifo = (volatile s16 *)0xCC008000;
     fifo[0] = 0;
     fifo[0] = 0;
@@ -1302,7 +1302,7 @@ void fn_800C6E44(void *arg0) {
         PSMTXScale(sp40, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp40, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
-        fn_80220DEC(0x80, 0, 4);
+        GXBegin(0x80, 0, 4);
         fifo = (volatile s16 *)0xCC008000;
         fifo[0] = 0;
         fifo[0] = 0x167;
@@ -17287,7 +17287,7 @@ GXLoadPosMtxImm(sp28,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);
 magic=lbl_8036A018; one=lbl_8036A024;
 for(i=0;i<=(s8)arg0[0x100];i++){
 p=arg0+i; x=p[0];y=p[0x40]; dx.w.hi=0x43300000; dx.w.lo=(s32)(s8)x^0x80000000; dy.w.hi=0x43300000; dy.w.lo=(s32)(s8)y^0x80000000; fx=dx.d-magic;fy=dy.d-magic;fx1=one+fx;fy1=one+fy;
-fn_80220DEC(0x98,0,4);
+GXBegin(0x98,0,4);
 z=Map_GetTileCornerHeight(gBattleMap,x,y,0);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=0;

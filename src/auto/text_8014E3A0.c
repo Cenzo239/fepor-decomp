@@ -289,7 +289,7 @@ void fn_8014E864(void *arg0) {
     void fn_802239D0(s32, s32);
     void fn_8022100C(s32);
     void fn_80220F44(s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
 
     u8 bufF8[0x30];
     u8 bufC8[0x30];
@@ -433,7 +433,7 @@ void fn_8014E864(void *arg0) {
                             vp = (u8 *)base;
                             base = (u8 *)base + 0x2C;
                             if (vp[0x28] != 0) {
-                                fn_80220DEC(0xA8, 0, 2);
+                                GXBegin(0xA8, 0, 2);
                                 *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 0);
                                 *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 4);
                                 *(volatile f32 *)0xCC008000 = *(f32 *)(vp + 8);
@@ -514,7 +514,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void fn_80220FC4(s32, s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80220F84(s32, s32);
     extern f32 lbl_8036A820;
     extern f32 lbl_8036A838;
@@ -556,7 +556,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
             var_r31 = (u8 *)var_r31 + 0x2C;
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r28 + 0x1C)), 5);
-                fn_80220DEC(0xB8, 0, 1);
+                GXBegin(0xB8, 0, 1);
                 f3 = *(f32 *)((u8 *)var_r28 + 8);
                 f2 = *(f32 *)((u8 *)var_r28 + 4);
                 f1 = *(f32 *)((u8 *)var_r28 + 0);
@@ -592,7 +592,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
             var_r31 = (u8 *)var_r31 + 0x2C;
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r29 + 0x1C)), 5);
-                fn_80220DEC(0xB8, 0, 1);
+                GXBegin(0xB8, 0, 1);
                 f2 = *(f32 *)((u8 *)var_r29 + 8);
                 f1 = *(f32 *)((u8 *)var_r29 + 4);
                 f0 = *(f32 *)((u8 *)var_r29 + 0);

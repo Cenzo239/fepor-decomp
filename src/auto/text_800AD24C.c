@@ -8649,7 +8649,7 @@ void fn_800C0CDC(void *arg0) {
     void PSMTXConcat(void *, void *, void *);
     void GXLoadPosMtxImm(void *, s32);
     void fn_80222C50(void *, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     extern f32 lbl_80369D24;
     extern f32 lbl_80369D28;
     extern f32 lbl_80369D2C;
@@ -8695,7 +8695,7 @@ void fn_800C0CDC(void *arg0) {
     PSMTXConcat(sp68, sp8, sp8);
     GXLoadPosMtxImm(sp8, 0);
     fn_80222C50((u8 *)temp_r31 + 0x30, 0);
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
     vals[0] = lbl_80369D28;
     wgpipe = (volatile f32 *)0xCC008000;
     vals[1] = lbl_80369D40;

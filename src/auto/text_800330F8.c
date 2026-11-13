@@ -7729,7 +7729,7 @@ void fn_80044BE4(void *arg0) {
     void DCFlushRange(void *, u32);
     void *fn_802248D8(void *, u32);
     s32 fn_802249A4(void *);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_800056CC(void *, s32);
     void *memcpy(void *, void *, s32);
     extern u8 lbl_8026A660[];
@@ -7840,7 +7840,7 @@ void fn_80044BE4(void *arg0) {
                     goto case_7;
                 } else if (tile >= 7) {
                 } else if (tile >= 6) {
-                    fn_80220DEC(0xB0, 0, 3);
+                    GXBegin(0xB0, 0, 3);
                     a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                     wgpipe[0] = (f32)(x + 1);
                     wgpipe[0] = (f32)y;
@@ -7856,7 +7856,7 @@ void fn_80044BE4(void *arg0) {
                 }
                 goto next2;
             case_7:
-                fn_80220DEC(0xB0, 0, 4);
+                GXBegin(0xB0, 0, 4);
                 a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
@@ -7875,7 +7875,7 @@ void fn_80044BE4(void *arg0) {
                 wgpipe[0] = a;
                 goto next2;
             case_e:
-                fn_80220DEC(0xB0, 0, 4);
+                GXBegin(0xB0, 0, 4);
                 a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
@@ -7894,7 +7894,7 @@ void fn_80044BE4(void *arg0) {
                 wgpipe[0] = a;
                 goto next2;
             case_f:
-                fn_80220DEC(0xB0, 0, 5);
+                GXBegin(0xB0, 0, 5);
                 a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
@@ -9617,7 +9617,7 @@ void Map_DrawRangeTiles(void) {
     void fn_80223DDC(s32, s32, s32, s32, s32);
     void fn_8006ECCC(s32, void *, s32);
     void fn_80222C50(void *, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
     void fn_80066D00(s32);
     extern s32 gUiInputFlags;
@@ -9692,7 +9692,7 @@ void Map_DrawRangeTiles(void) {
                     fy = (f32)y;
                     fx1 = lbl_80368F8C + fx;
                     fy1 = lbl_80368F8C + fy;
-                    fn_80220DEC(0x98, 0, 4);
+                    GXBegin(0x98, 0, 4);
                     z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                     *(f32 *)0xCC008000 = fx;
                     *(f32 *)0xCC008000 = fy;
@@ -9792,7 +9792,7 @@ void PSMTXConcat(void *, void *, void *);
 void GXLoadPosMtxImm(void *, s32);
 void GXSetCurrentMtx(s32);
 void fn_802245D8(s32, s32, s32, s32);
-void fn_80220DEC(s32, s32, s32);
+void GXBegin(s32, s32, s32);
 f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
 void fn_80066D00(s32);
 extern f32 lbl_80368F84;
@@ -9864,7 +9864,7 @@ extern u8 lbl_80285828[];
                         f25v = (f32)x;
                         f27v = f25v + margin;
                         f28v = (f32)y1;
-                        fn_80220DEC(0x98, 0, 4);
+                        GXBegin(0x98, 0, 4);
                         z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = f26v;
@@ -9903,7 +9903,7 @@ extern u8 lbl_80285828[];
                         f28v = (f32)x;
                         f26v = f28v + margin;
                         f25v = (f32)y1;
-                        fn_80220DEC(0x98, 0, 4);
+                        GXBegin(0x98, 0, 4);
                         z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = f27v;
@@ -11091,7 +11091,7 @@ void fn_8004DAFC(void *arg0, f32 farg0) {
     fn_800680AC(0, 0, 0xA0, 0x78);
     fn_80067EDC(0);
     temp_r31 = *(u8 *)((u8 *)arg0 + 0x27);
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
 
     var_f28 = *(f32 *)((u8 *)arg0 + 0x170);
     var_f29 = *(f32 *)((u8 *)arg0 + 0x174);
@@ -12227,7 +12227,7 @@ void fn_80051538(s32 *arg0) {
 }
 
 void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
     extern s32 gBattleMap[];
     extern f32 lbl_8036904C;
@@ -12248,7 +12248,7 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
     if (arg1 != 0 && *(((u8 *)gBattleMap) + x + (y << 6) + 0x100D) == 0x1A) {
         return;
     }
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
     z = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
     r = ((u8 *)&color)[0];
     g = ((u8 *)&color)[1];

@@ -217,7 +217,7 @@ void fn_800566D4(void *arg0) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802209FC(void);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
     void fn_80221BA8(void *, s32);
@@ -276,7 +276,7 @@ void fn_800566D4(void *arg0) {
                 fn_8021FBF0(0, 9, 1, 4, 0);
                 fn_8021FBF0(0, 0xB, 1, 5, 0);
                 fn_8021FBF0(0, 0xD, 1, 4, 0);
-                fn_80220DEC(0x80, 0, 4);
+                GXBegin(0x80, 0, 4);
                 fzero = lbl_80369108;
                 fz1 = lbl_80369138;
                 endArg = -1;
@@ -1408,7 +1408,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
@@ -1494,7 +1494,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_80223E5C(6, 1, 0, 3, 0xFF);
     fn_80224684(0, 3, 0);
     fn_802245D8(1, 6, 7, 0);
-    fn_80220DEC(0x80, 0, 4);
+    GXBegin(0x80, 0, 4);
 
     x1 = a0 + a2;
     y1 = a1 + a3;
@@ -1565,7 +1565,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_802239D0(0, 4);
     fn_80224684(0, 3, 0);
     fn_802245D8(1, 0, 7, 0);
-    fn_80220DEC(0x80, 0, 4);
+    GXBegin(0x80, 0, 4);
 
     temp_r0 = arg0 + arg2;
     temp_r3 = arg1 + arg3;

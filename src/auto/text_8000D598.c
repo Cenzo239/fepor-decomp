@@ -1253,7 +1253,7 @@ s32 fn_800113BC(void) {
 #pragma cplusplus on
 extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z) {
     f64 fn_802387C8(f64, f64);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     extern f64 lbl_80368C38;
     extern f64 lbl_80368C40;
     extern f32 lbl_80368BF0;
@@ -1312,7 +1312,7 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
     f27 = (f32)(rem * t);
     f26 = (f32)((Obj *)obj)->v13();
     f25 = (f32)((Obj *)obj)->v14();
-    fn_80220DEC(0x80, 0, 4);
+    GXBegin(0x80, 0, 4);
     wg = (u8 *)0xCC010000;
     r = color[wg - (u8 *)0xCC010000];
     *(volatile f32 *)(wg - 0x8000) = f30;

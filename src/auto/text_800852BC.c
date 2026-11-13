@@ -1523,7 +1523,7 @@ void fn_80088FFC(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_8022097C(void);
     void Process_Unlink(void *);
     extern f32 gScreenOrigin;
@@ -1562,7 +1562,7 @@ void fn_80088FFC(void *arg0) {
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
     alpha = (u8)*(u16 *)((u8 *)arg0 + 0x34);
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
     *(volatile s16 *)0xCC008000 = 0;
     *(volatile s16 *)0xCC008000 = 0;
     *(volatile s16 *)0xCC008000 = 0x3DD;
@@ -1769,7 +1769,7 @@ void fn_80089680(void *arg0) {
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -1840,7 +1840,7 @@ void fn_80089680(void *arg0) {
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_802245D8(1, 4, 5, 0);
         fn_80224684(0, 3, 0);
-        fn_80220DEC(0x98, 0, 4);
+        GXBegin(0x98, 0, 4);
         *(volatile s16 *)0xCC008000 = 0;
         *(volatile s16 *)0xCC008000 = 0;
         *(volatile s16 *)0xCC008000 = 0;
@@ -1924,7 +1924,7 @@ void fn_80089A28(void *arg0) {
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
@@ -2042,7 +2042,7 @@ void fn_80089A28(void *arg0) {
     zero = 0;
     height = 0x1C0;
 
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
     xv[0] = (s32)f31;
     xv[1] = (s32)(lbl_803696D4 + f31);
     xv[2] = (s32)f31;
@@ -2076,7 +2076,7 @@ void fn_80089A28(void *arg0) {
     *(volatile u8 *)0xCC008000 = 0;
     *(volatile u8 *)0xCC008000 = (u8)a1;
 
-    fn_80220DEC(0x98, 0, 4);
+    GXBegin(0x98, 0, 4);
     xv[0] = (s32)f30;
     xv[1] = (s32)(lbl_803696B4 + f30);
     xv[2] = (s32)f30;
@@ -2142,7 +2142,7 @@ void Ui_DrawColorFade(void *arg0) {
     void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -2222,7 +2222,7 @@ void Ui_DrawColorFade(void *arg0) {
         GXSetChanMatColor(4, &sp8);
         fn_802245D8(1, 4, 5, 0);
         fn_80224684(1, 3, 0);
-        fn_80220DEC(0x98, 0, 4);
+        GXBegin(0x98, 0, 4);
         *(volatile s16 *)0xCC008000 = 0;
         *(volatile s16 *)0xCC008000 = 0;
         *(volatile s16 *)0xCC008000 = 0;
@@ -2303,7 +2303,7 @@ void fn_8008A5AC(void *arg0) {
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -2394,7 +2394,7 @@ void fn_8008A5AC(void *arg0) {
         fn_802245D8(1, 4, 5, 0);
         fn_80224684(1, 3, 0);
         if (*(u8 *)((u8 *)arg0 + 0x30) != 7) {
-            fn_80220DEC(0x98, 0, 4);
+            GXBegin(0x98, 0, 4);
             *(volatile s16 *)0xCC008000 = 0;
             *(volatile s16 *)0xCC008000 = 0;
             *(volatile s16 *)0xCC008000 = 0;
@@ -2408,7 +2408,7 @@ void fn_8008A5AC(void *arg0) {
             *(volatile s16 *)0xCC008000 = 0x1C0;
             *(volatile s16 *)0xCC008000 = 0;
         } else {
-            fn_80220DEC(0x98, 0, 4);
+            GXBegin(0x98, 0, 4);
             *(volatile s16 *)0xCC008000 = 0;
             *(volatile s16 *)0xCC008000 = 0;
             *(volatile s16 *)0xCC008000 = 0;

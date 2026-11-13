@@ -7308,7 +7308,7 @@ void fn_801C65E0(void *arg0) {
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -7372,7 +7372,7 @@ void fn_801C65E0(void *arg0) {
         if (t < 0x3C) {
             alpha = (s32)Math_Lerp(lbl_8036B424, lbl_8036B45C, lbl_8036B460, (f32)t);
         }
-        fn_80220DEC(0x98, 0, 4);
+        GXBegin(0x98, 0, 4);
         c = 0xFF;
         {
             f64 f3 = lbl_8036B434;
@@ -11925,7 +11925,7 @@ void fn_801D0480(void *arg0) {
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80220DEC(s32, s32, s32);
+    void GXBegin(s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -12087,7 +12087,7 @@ void fn_801D0480(void *arg0) {
                 if (*(u16 *)seg & 0x10) {
                     dist += (px - lx) * (px - lx) + (py - ly) * (py - ly);
                 }
-                fn_80220DEC(0x98, 0, 4);
+                GXBegin(0x98, 0, 4);
                 *(f32 *)0xCC008000 = px - half;
                 *(f32 *)0xCC008000 = py - half;
                 *(f32 *)0xCC008000 = lbl_8036B580;
