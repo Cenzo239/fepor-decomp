@@ -1173,7 +1173,8 @@ u8 fn_80112F3C(void *arg0) {
 }
 
 #pragma global_optimizer off
-s32 Actor_IsWaitAnim(void *arg0) {
+s32 Actor_IsWaitAnim(void *actor) {
+    /* True if the actor's current anim path is Wait, contains Wait, or contains the +0x444 name while idle. */
     s32 n;
     extern u16 gActorXmlStrs[];
     s32 strlen(char *);
@@ -1182,13 +1183,13 @@ s32 Actor_IsWaitAnim(void *arg0) {
     u8 Actor_IsBusy(void *);
 
     n = strlen((char *)gActorXmlStrs + 0x43F);
-    if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
+    if (String_Compare((u8 *)actor + 0x178, 0, (void *)*(s32 *)((u8 *)actor + 0x178),
                       (char *)gActorXmlStrs + 0x43F, n) == 0 ||
-        (u32)(String_Find((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
+        (u32)(String_Find((u8 *)actor + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
                          strlen((char *)gActorXmlStrs + 0x43F)) + 0x10000) != 0xFFFF ||
-        ((u32)(String_Find((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
+        ((u32)(String_Find((u8 *)actor + 0x178, (char *)gActorXmlStrs + 0x444, 0,
                           strlen((char *)gActorXmlStrs + 0x444)) + 0x10000) != 0xFFFF &&
-         Actor_IsBusy(arg0) == 0)) {
+         Actor_IsBusy(actor) == 0)) {
         return 1;
     }
     return 0;
