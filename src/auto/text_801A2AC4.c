@@ -915,7 +915,7 @@ void fn_801A4BE0(void *arg0) {
     void fn_801A9AF8(void *);
     void fn_80034F40(void *);
     void *MapObjEvent_Find(void *, u8, u8, u8);
-    void fn_8010FE08(void *, u8, u8, u8);
+    void MapObjEvent_Remove(void *, u8, u8, u8);
     void *entry;
 
     fn_801A9AF8(arg0);
@@ -930,7 +930,7 @@ void fn_801A4BE0(void *arg0) {
         entry = MapObjEvent_Find(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
         M2C_FIELD(entry, s8 *, 4) = M2C_FIELD(arg0, s8 *, 0x488);
         if (M2C_FIELD(arg0, s8 *, 0x488) == 0) {
-            fn_8010FE08(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
+            MapObjEvent_Remove(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
         }
     }
 }

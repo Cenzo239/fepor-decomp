@@ -5723,7 +5723,7 @@ void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
     *(u8 *)(temp_r8 + 0x7) = zero;
 }
 #pragma global_optimizer reset
-void fn_8010FE08(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
+void MapObjEvent_Remove(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
     s32 n;
     u8 *walk;
     s32 i;

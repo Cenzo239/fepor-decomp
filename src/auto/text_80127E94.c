@@ -811,7 +811,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void fn_80049D30(void *);
     void GActor_RequestRes(void *, void *, void *);
     void *fn_800C45B8(s32, void *, s32);
-    void fn_8010FE08(void *, s8, s8, s32);
+    void MapObjEvent_Remove(void *, s8, s8, s32);
     void MapObjEvent_Push(void *, s8, s8, s32, s32);
     void PSMTXIdentity(void *);
     void strcpy(void *, s32);
@@ -864,10 +864,10 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
         break;
     }
     y = arg1 + dy;
-    fn_8010FE08(gMapObjEventList, x - 1, y, 0xA);
-    fn_8010FE08(gMapObjEventList, x + 1, y, 0xA);
-    fn_8010FE08(gMapObjEventList, x, y - 1, 0xA);
-    fn_8010FE08(gMapObjEventList, x, y + 1, 0xA);
+    MapObjEvent_Remove(gMapObjEventList, x - 1, y, 0xA);
+    MapObjEvent_Remove(gMapObjEventList, x + 1, y, 0xA);
+    MapObjEvent_Remove(gMapObjEventList, x, y - 1, 0xA);
+    MapObjEvent_Remove(gMapObjEventList, x, y + 1, 0xA);
     MapObjEvent_Push(gMapObjEventList, x, y, 0x27, 0);
     obj = Map_FindObjAt(Map_Get(), x, y, 0x10000, 0);
     if (obj == NULL) {
