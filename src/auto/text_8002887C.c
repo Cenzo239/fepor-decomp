@@ -191,26 +191,21 @@ void fn_80028C90(s32 arg0) {
 }
 
 void fn_80028D04(void *arg0) {
-    void Process_Goto(void *, s32);
-    void fn_80027038(void *);
-    void UiCtx_EndMoveSelect(void *, s32);
-    void fn_8014CBD8(void *, f32, f32);
-    extern u8 gUiContext[];
-    extern u8 gBattleState[];
-    s32 val;
-
-    val = gUiContext[8];
-    if (val < 0x34) {
-        if (val >= 0x32) {
-            Process_Goto(arg0, 6);
-            return;
-        }
-        goto common;
-    }
-common:
-    fn_80027038(gUiContext);
-    UiCtx_EndMoveSelect(gUiContext, 1);
-    fn_8014CBD8(gBattleState, (f32)(s8)gUiContext[0xD], (f32)(s8)gUiContext[0xE]);
+void Process_Goto(void *,s32);
+void fn_80027038(void *);
+void UiCtx_EndMoveSelect(void *,s32);
+void fn_8014CBD8(void *,f32,f32);
+extern u8 gUiContext[], gBattleState[];
+switch(gUiContext[8]) {
+case 0x32: case 0x33:
+Process_Goto(arg0,6);
+break;
+default:
+fn_80027038(gUiContext);
+UiCtx_EndMoveSelect(gUiContext,1);
+fn_8014CBD8(gBattleState,(f32)(s8)gUiContext[0xD],(f32)(s8)gUiContext[0xE]);
+break;
+}
 }
 
 void fn_80028DBC(s32 arg0) {
