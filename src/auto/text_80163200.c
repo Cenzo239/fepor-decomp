@@ -308,7 +308,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void Prim2D_AddZ(f32);
     void fn_80009BC0(void (*)(void *), s16 *);
     void Prim2D_PrepareTex(void);
-    void fn_8013F920(void *);
+    void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
@@ -354,7 +354,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A890);
-    fn_80009BC0(fn_8013F920, &self->unk68);
+    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk68);
     Prim2D_PrepareTex();
 
     row_h = self->unk54;
@@ -787,7 +787,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void Prim2D_EndPrim(void);
     void fn_8013F748(void *, s16 *, s16 *);
     void fn_80009BC0(void (*)(void *), s16 *);
-    void fn_8013F920(void *);
+    void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A064(void *);
     void *fn_8007BA4C(void *, s32);
@@ -855,7 +855,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A890);
-    fn_80009BC0(fn_8013F920, &self->unk68);
+    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk68);
     Prim2D_PrepareTex();
 
     row_h = self->unk54;
@@ -12296,7 +12296,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
     void fn_8013F748(void *, s16 *, s16 *);
-    void fn_8013F920(void *);
+    void Prim2D_ScissorFromRect(void *);
     extern f32 lbl_8036AB9C;
     extern f32 lbl_8036ABA0;
     extern f32 lbl_8036ABA4;
@@ -12383,7 +12383,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AB9C);
-    fn_80009BC0(fn_8013F920, &self->unk44);
+    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk44);
     Prim2D_PrepareTex();
 
     flag = 0;
