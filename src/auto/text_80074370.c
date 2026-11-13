@@ -2289,6 +2289,7 @@ s32 fn_80078158(void) {
     return 0;
 }
 
+/* Show move-limit overlay for the type-7 map-obj event at the UI cursor. */
 s32 Ui_ShowMapObjAttackRange(void) {
     void *Item_Get(u8);
     s32 Item_GetMaxRange(void);
@@ -2301,18 +2302,18 @@ s32 Ui_ShowMapObjAttackRange(void) {
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
     extern u8 gMapObjEventList[];
-    u8 *p;
-    u8 a, b, c;
+    u8 *event;
+    u8 minRange, y, x;
 
     Map_FillLayer(gBattleMap, 5, -1);
     Map_FillLayer(gBattleMap, 8, 0);
     Map_SelectRangeBuffer(gBattleMap, 6);
-    p = MapObjEvent_Find(gMapObjEventList, gUiContext[13], gUiContext[14], 7);
-    a = *((u8 *)Item_Get(p[4]) + 29);
-    b = p[1];
-    c = p[0];
-    Map_FillAttackRange(gBattleMap, c, b, a, Item_GetMaxRange());
-    Map_ClipRangeByFacing(gBattleMap, p[0], p[1], p[3]);
+    event = MapObjEvent_Find(gMapObjEventList, gUiContext[13], gUiContext[14], 7);
+    minRange = *((u8 *)Item_Get(event[4]) + 29);
+    y = event[1];
+    x = event[0];
+    Map_FillAttackRange(gBattleMap, x, y, minRange, Item_GetMaxRange());
+    Map_ClipRangeByFacing(gBattleMap, event[0], event[1], event[3]);
     Map_ShowMoveLimitView();
     return 0;
 }
