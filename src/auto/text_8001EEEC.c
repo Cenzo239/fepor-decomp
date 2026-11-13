@@ -4034,7 +4034,7 @@ void fn_8002846C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x16) = 0;
 }
 
-s32 fn_800284B4(void *arg0) {
+s32 Unit_GetPhaseActCode(void *arg0) {
     extern u8 gBattleState[];
     u8 Allegiance_CompareIds(u8, u8);
     u8 temp_r30;
