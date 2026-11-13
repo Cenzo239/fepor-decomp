@@ -1810,7 +1810,7 @@ void fn_80123D1C(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_80124424(void *self) {
     s32 fn_800067B4(void);
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     f32 fn_800233D0(void *, s8, s8, u8);
     extern u8 gBattleMap[];
     extern f32 lbl_8036A328;
@@ -1833,8 +1833,8 @@ void fn_80124424(void *self) {
         if (flag != 0) {
             i = 0;
             while (i < *(u16 *)((u8 *)self + 0x54)) {
-                pts[0] = (s16)((fn_8000CD60() % rangeX) - 0x800);
-                pts[1] = (s16)((fn_8000CD60() % rangeY) - 0x800);
+                pts[0] = (s16)((Rand_Next() % rangeX) - 0x800);
+                pts[1] = (s16)((Rand_Next() % rangeY) - 0x800);
                 pts[2] = 0;
                 pts = (s16 *)((u8 *)pts + 6);
                 i++;
@@ -1843,8 +1843,8 @@ void fn_80124424(void *self) {
             scale = lbl_8036A328;
             i = 0;
             while (i < *(u16 *)((u8 *)self + 0x54)) {
-                pts[0] = (s16)((fn_8000CD60() % rangeX) - 0x800);
-                pts[1] = (s16)((fn_8000CD60() % rangeY) - 0x800);
+                pts[0] = (s16)((Rand_Next() % rangeX) - 0x800);
+                pts[1] = (s16)((Rand_Next() % rangeY) - 0x800);
                 pts[2] = (s16)(scale * fn_800233D0(gBattleMap, (s8)(pts[0] >> 8), (s8)(pts[1] >> 8), 0));
                 pts = (s16 *)((u8 *)pts + 6);
                 i++;
@@ -1862,7 +1862,7 @@ void fn_80124424(void *self) {
             if (!(*(f32 *)((u8 *)pairs + rangeX + 4) >= scale)) {
                 *(f32 *)((u8 *)pairs + rangeX + 4) = (f32)((s32)rangeY / (s32)*((u8 *)self + 0x52));
                 {
-                    u32 rnd = fn_8000CD60();
+                    u32 rnd = Rand_Next();
                     pairs = *(f32 **)((u8 *)self + 0x64);
                     *(f32 *)((u8 *)pairs + rangeX) = (f32)(u32)(rnd % 0x168U);
                 }
@@ -1892,7 +1892,7 @@ void fn_80124424(void *self) {
                 pairs = (f32 *)((u8 *)pairs + (j << 3));
                 pairs[1] = lbl_8036A32C;
                 {
-                    u32 rnd = fn_8000CD60();
+                    u32 rnd = Rand_Next();
                     pairs = *(f32 **)((u8 *)self + 0x64);
                     *(f32 *)((u8 *)pairs + (j << 3)) = (f32)(u32)(rnd % 0x168U);
                 }
@@ -2135,7 +2135,7 @@ void fn_8012497C(void *arg0) {
 }
 #pragma peephole reset
 void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     extern f32 lbl_8036A35C;
     extern f32 lbl_8036A360;
     extern f32 lbl_8036A30C;
@@ -2170,7 +2170,7 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
     if (node == NULL) {
         return;
     }
-    rnd = fn_8000CD60();
+    rnd = Rand_Next();
     rnd = (rnd % 200) + 0xC8;
     scale = (s16)((*(u8 *)((u8 *)arg0 + 0x4D) * rnd) / 100);
     __builtin_mtspr(917, 0x00070007);
@@ -2180,14 +2180,14 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
     spC = (s16)dx;
     spA = (s16)dy;
     sp8 = (s16)dz;
-    spC = (s16)(fn_8000CD60() % (u32)(spC * 10));
-    spA = (s16)(fn_8000CD60() % (u32)(spA * 10));
-    sp8 = (s16)(fn_8000CD60() % (u32)(sp8 * 10));
+    spC = (s16)(Rand_Next() % (u32)(spC * 10));
+    spA = (s16)(Rand_Next() % (u32)(spA * 10));
+    sp8 = (s16)(Rand_Next() % (u32)(sp8 * 10));
     px = lbl_8036A35C * (f32)spC + arg1[0];
     pz = lbl_8036A35C * (f32)sp8 + arg1[2];
     py = lbl_8036A35C * (f32)spA + arg1[1];
-    spC = (s16)(fn_8000CD60() % 100);
-    sp8 = (s16)(fn_8000CD60() % 100);
+    spC = (s16)(Rand_Next() % 100);
+    sp8 = (s16)(Rand_Next() % 100);
     *(f32 *)((u8 *)node + 0x14) = px;
     ax = lbl_8036A360 * (f32)spC;
     *(f32 *)((u8 *)node + 0x18) = pz;

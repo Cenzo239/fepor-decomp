@@ -4239,7 +4239,7 @@ void fn_8000CC88(void) {
     *(u32 *)(base + 0x7420) = zero;
 }
 
-u32 fn_8000CD60(void) {
+u32 Rand_Next(void) {
     extern u32 lbl_80367158;
     u32 temp;
     u32 other;

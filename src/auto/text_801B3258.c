@@ -6715,7 +6715,7 @@ void fn_801C4564(void) { M2C_UNK fn_801C45A4(); fn_801C45A4(); }
 void fn_801C4584(void){ void fn_801C5B80(void); fn_801C5B80(); /*try*/ }
 
 void fn_801C45A4(void *arg0) {
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005FEE8(void *, f32);
     void fn_80060060(void *);
@@ -6798,10 +6798,10 @@ void fn_801C45A4(void *arg0) {
                     sp5C[0] = spBC[0];
                     sp5C[1] = spBC[1];
                     sp5C[2] = spBC[2];
-                    f31 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(fn_8000CD60() % 1000));
-                    f30 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(fn_8000CD60() % 1000));
-                    f29 = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(fn_8000CD60() % 1000));
-                    ftmp = lbl_8036B430 * Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(fn_8000CD60() % 1000));
+                    f31 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
+                    f30 = Math_Lerp(lbl_8036B410, lbl_8036B414, lbl_8036B418, (f32)(Rand_Next() % 1000));
+                    f29 = Math_Lerp(lbl_8036B41C, lbl_8036B420, lbl_8036B418, (f32)(Rand_Next() % 1000));
+                    ftmp = lbl_8036B430 * Math_Lerp(lbl_8036B424, lbl_8036B428, lbl_8036B418, (f32)(Rand_Next() % 1000));
                     sp5C[0] = sp5C[0] + f31;
                     sp5C[1] = lbl_8036B42C;
                     sp5C[2] = sp5C[2] + f30;

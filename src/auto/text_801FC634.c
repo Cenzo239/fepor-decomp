@@ -194,7 +194,7 @@ void fn_801FCC68(s32 arg0) {
 void fn_801FCCA0(void *self) {
     typedef struct { f32 x, y; u8 ang, spd, pad, rnd; s16 life, age; } Part;
     void *fn_800C42AC(s32);
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
     f64 fn_80237E90(f32);
@@ -321,12 +321,12 @@ void fn_801FCCA0(void *self) {
                 }
             }
             if (p == NULL) break;
-            life = (s16)((fn_8000CD60() % 0xC8) + 0x190);
+            life = (s16)((Rand_Next() % 0xC8) + 0x190);
             p->x = *(f32 *)(b + 0x34);
             p->y = *(f32 *)(b + 0x38);
             p->ang = (u8)(s32)f23;
-            p->spd = (u8)(b[0x4C] + (fn_8000CD60() % b[0x4D]));
-            p->rnd = (u8)fn_8000CD60();
+            p->spd = (u8)(b[0x4C] + (Rand_Next() % b[0x4D]));
+            p->rnd = (u8)Rand_Next();
             p->life = life;
             p->age = 0;
         }
@@ -359,7 +359,7 @@ void fn_801FCCA0(void *self) {
                 dy = (f32)p->spd * t * lbl_8036BB34;
                 p->x += dx;
                 p->y += dy;
-                p->ang = (u8)(p->ang + (s8)((s32)(fn_8000CD60() % 9) - 4));
+                p->ang = (u8)(p->ang + (s8)((s32)(Rand_Next() % 9) - 4));
                 if (p->x < lbl_8036BB38 || p->x > lbl_8036BAE4) p->life = 0;
                 if (p->y < lbl_8036BB38 || p->y > lbl_8036BB04) p->life = 0;
             }
@@ -382,7 +382,7 @@ void fn_801FD3B4(void *arg0) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     f64 fn_80237E90(f32);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
@@ -432,14 +432,14 @@ void fn_801FD3B4(void *arg0) {
         if (slot == NULL) {
             break;
         }
-        r = fn_8000CD60();
+        r = Rand_Next();
         life16 = (s16)((r % 200) + 0x190);
-        r = fn_8000CD60();
+        r = Rand_Next();
         *(f32 *)slot = *(f32 *)((u8 *)arg0 + 0x34);
         *(f32 *)((u8 *)slot + 4) = *(f32 *)((u8 *)arg0 + 0x38);
         *((u8 *)slot + 8) = (u8)(s32)life;
         *((u8 *)slot + 9) = (u8)((s8)*((u8 *)arg0 + 0x4C) + (r % (u8)(s8)*((u8 *)arg0 + 0x4D)));
-        *((u8 *)slot + 0xB) = (u8)fn_8000CD60();
+        *((u8 *)slot + 0xB) = (u8)Rand_Next();
         *(s16 *)((u8 *)slot + 0xC) = life16;
         *(s16 *)((u8 *)slot + 0xE) = 0;
     }
@@ -472,7 +472,7 @@ void fn_801FD3B4(void *arg0) {
             fy = (f32)fn_80238638(lbl_8036BB20 * (f32)*((u8 *)p + 8));
             *(f32 *)p += (f32)*((u8 *)p + 9) * fx * lbl_8036BB34;
             *(f32 *)((u8 *)p + 4) += (f32)*((u8 *)p + 9) * fy * lbl_8036BB34;
-            *((u8 *)p + 8) = (u8)(*((u8 *)p + 8) + (s8)((fn_8000CD60() % 9) - 4));
+            *((u8 *)p + 8) = (u8)(*((u8 *)p + 8) + (s8)((Rand_Next() % 9) - 4));
             if (*(f32 *)p < lbl_8036BB38 || *(f32 *)p > lbl_8036BAE4) {
                 *(s16 *)((u8 *)p + 0xC) = 0;
             }
@@ -525,7 +525,7 @@ void fn_801FDA40(void) {
 void FallingParticle_Spawn(void *arg0) {
     void *Process_Create(void *, void *);
     s32 fn_8000C510(void);
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     extern u8 gFallingParticleProc[];
     extern u8 gFallingParticleCtrlProc[];
     extern s32 lbl_8036841C;
@@ -571,13 +571,13 @@ void FallingParticle_Spawn(void *arg0) {
                 s32 r5;
                 s32 r6;
 
-                *(s32 *)((u8 *)var_r24 + 0x34) = (s32)(fn_8000CD60() % 39780352U);
-                *(s32 *)((u8 *)var_r24 + 0x38) = (s32)(fn_8000CD60() % 32768000U);
+                *(s32 *)((u8 *)var_r24 + 0x34) = (s32)(Rand_Next() % 39780352U);
+                *(s32 *)((u8 *)var_r24 + 0x38) = (s32)(Rand_Next() % 32768000U);
                 *(s32 *)((u8 *)var_r24 + 0x38) -= 0xC80000;
-                *(s16 *)((u8 *)var_r24 + 0x30) = (s16)((fn_8000CD60() % 300U) + 0x12C);
+                *(s16 *)((u8 *)var_r24 + 0x30) = (s16)((Rand_Next() % 300U) + 0x12C);
                 if (var_r25 == 0) {
                     temp_r22 = lbl_8036842C;
-                    temp = (lbl_80368424 - temp_r22) + (s32)(fn_8000CD60() % (u32)(temp_r22 * 2));
+                    temp = (lbl_80368424 - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
                     lbl_8036841C = temp;
                     if (temp <= 0) {
                         temp = -temp;
@@ -588,7 +588,7 @@ void FallingParticle_Spawn(void *arg0) {
                     }
                 }
                 temp_r22 = lbl_80368428;
-                *(s32 *)((u8 *)var_r24 + 0x3C) = (lbl_80368420 - temp_r22) + (s32)(fn_8000CD60() % (u32)(temp_r22 * 2));
+                *(s32 *)((u8 *)var_r24 + 0x3C) = (lbl_80368420 - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
                 var_r25 += 1;
                 *(s32 *)((u8 *)var_r24 + 0x40) = lbl_8036841C;
                 r0 = lbl_8036842C;

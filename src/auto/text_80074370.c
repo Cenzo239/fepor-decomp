@@ -2954,7 +2954,7 @@ void fn_80079B9C(void *arg1, void *arg2) {
 
 void fn_80079CD8(void *arg0) {
     M2C_UNK Process_Goto(void *, s32);
-    u32 fn_8000CD60();
+    u32 Rand_Next();
     void fn_8007A524(void *, s32, s32);
     s32 var_r31 = 0;
     s32 temp_r0 = M2C_FIELD(arg0, s16 *, 0x38);
@@ -2980,7 +2980,7 @@ void fn_80079CD8(void *arg0) {
     } else {
         Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
-        temp_r3 = fn_8000CD60() >> 0x10U;
+        temp_r3 = Rand_Next() >> 0x10U;
         temp_r0_2 = M2C_FIELD(arg0, s16 *, 0x34);
         switch (temp_r0_2) {
         case 3:
@@ -3016,7 +3016,7 @@ void fn_80079E08(void *arg0) {
 
 void fn_80079E14(void *arg0) {
     void Process_Goto(void *, s32);
-    u32 fn_8000CD60();
+    u32 Rand_Next();
     void fn_8007A524(void *, s32, s32);
     s32 var_r31;
     s32 var_r0;
@@ -3051,7 +3051,7 @@ void fn_80079E14(void *arg0) {
     case 18:
         Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
-        temp_r3 = fn_8000CD60() >> 0x10U;
+        temp_r3 = Rand_Next() >> 0x10U;
         switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
             var_r0 = ((s32)temp_r3 >> 7) + 0x12C;
@@ -3086,7 +3086,7 @@ void fn_80079F44(void *arg0) {
 
 void fn_80079F50(void *arg0) {
     void Process_Goto(void *, s32);
-    u32 fn_8000CD60();
+    u32 Rand_Next();
     void fn_8007A524(void *, s32, s32);
     s32 var_r0;
     u32 temp_r3;
@@ -3095,7 +3095,7 @@ void fn_80079F50(void *arg0) {
     fn_8007A524(arg0, 0, 0xA);
     if ((s16) M2C_FIELD(arg0, s16 *, 0x36) != 5) {
         Process_Goto(arg0, 1);
-        temp_r3 = fn_8000CD60() >> 0x10U;
+        temp_r3 = Rand_Next() >> 0x10U;
         switch ((s16) M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
             var_r0 = ((s32) temp_r3 >> 7) + 0x12C;
@@ -3156,7 +3156,7 @@ void fn_8007A024(void *arg0) {
     fn_8007A524(arg0, 1, 0xA);
     if ((s16)M2C_FIELD(arg0, s16 *, 0x36) != 4) {
         Process_Goto(arg0, 1);
-        temp_r3 = fn_8000CD60();
+        temp_r3 = Rand_Next();
         temp_r3_hi = temp_r3 >> 0x10U;
         switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
@@ -3272,7 +3272,7 @@ void fn_8007A2AC(void *arg0) {
 
 void fn_8007A368(void *arg0) {
     void Process_Goto(void *, s32);
-    u32 fn_8000CD60(void);
+    u32 Rand_Next(void);
     void fn_8007A524(void *, s32, s32);
     s16 unk36;
     s16 unk34;
@@ -3291,7 +3291,7 @@ void fn_8007A368(void *arg0) {
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= 0) {
         return;
     }
-    rnd = fn_8000CD60();
+    rnd = Rand_Next();
     unk34 = *(s16 *)((u8 *)arg0 + 0x34);
     rnd >>= 16;
     switch (unk34) {
@@ -3321,7 +3321,7 @@ void fn_8007A368(void *arg0) {
 
 #pragma dont_inline on
 void fn_8007A46C(void *p) {
-    u32 fn_8000CD60(s32);
+    u32 Rand_Next(s32);
     s32 x;
     s32 t;
     s32 v;
@@ -3329,7 +3329,7 @@ void fn_8007A46C(void *p) {
     x = *(s32 *)((u8 *)p + 0x18);
     *(s32 *)((u8 *)p + 0x30) = x;
     *(s16 *)((u8 *)p + 0x34) = 1;
-    t = fn_8000CD60(x) >> 16;
+    t = Rand_Next(x) >> 16;
     switch (*(s16 *)((u8 *)p + 0x34)) {
     case 3:
         v = (t >> 7) + 0x12c;
