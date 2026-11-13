@@ -2078,7 +2078,8 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
 }
 #pragma cplusplus reset
 
-void Ui_DrawUnitListPanel(void *arg0, void *arg1, f32 farg0, f32 farg1) {
+/* Draw the unit-list panel frame and scrolled body at (x, y). */
+void Ui_DrawUnitListPanel(void *panel, void *tex, f32 x, f32 y) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -2104,19 +2105,19 @@ void Ui_DrawUnitListPanel(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     Prim2D_Begin();
-    Prim2D_SetTransform(farg0, farg1, lbl_8036A554, lbl_8036A50C);
-    Prim2D_BindTexture(arg1, 0, 0x11);
+    Prim2D_SetTransform(x, y, lbl_8036A554, lbl_8036A50C);
+    Prim2D_BindTexture(tex, 0, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A56C, lbl_8036A570);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036A550 + farg0, lbl_8036A550 + farg1, lbl_8036A500, lbl_8036A50C);
-    Prim2D_BindTexture(arg1, 0x11, 0x11);
+    Prim2D_SetTransform(lbl_8036A550 + x, lbl_8036A550 + y, lbl_8036A500, lbl_8036A50C);
+    Prim2D_BindTexture(tex, 0x11, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, (f32)(*(u8 *)((u8 *)arg0 + 0x22) << 5), lbl_8036A574, lbl_8036A578);
+    Prim2D_SetRectUv(lbl_8036A510, lbl_8036A510, lbl_8036A510, (f32)(*(u8 *)((u8 *)panel + 0x22) << 5), lbl_8036A574, lbl_8036A578);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
 }
