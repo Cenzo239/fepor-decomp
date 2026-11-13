@@ -51,7 +51,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     s32 UnitRef_GetName(void *);
@@ -85,7 +85,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         } else {
             sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, (s32)((UnitRef_GetValue(arg0) >> 1) & 0x7FFF));
         }
-        width = fn_80010B78(sp8, -1, lbl_8036973C);
+        width = Text_MeasureWidth(sp8, -1, lbl_8036973C);
         fn_8001019C((s16)(arg2 + (0x10E - width)), (s16)arg3, arg1 != 0, sp8);
         {
             s32 cond = arg1;

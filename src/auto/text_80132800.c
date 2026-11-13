@@ -3331,7 +3331,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void fn_8001019C(s32, s32, s32, void *, ...);
     s32 fn_8001059C(void *, s32, f32);
     void *Msg_Expand(void *);
-    s32 fn_80010B78(s32, f32);
+    s32 Text_MeasureWidth(s32, f32);
     void *fn_800A8A88(void *);
     void *fn_800A8978(void *);
     u8 fn_800386B0(void *);
@@ -3422,7 +3422,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     }
     if (self->unk40 & 8) {
         str = Msg_Expand(lbl_802767E0 + 0x97);
-        tw = fn_80010B78(-1, lbl_8036A620);
+        tw = Text_MeasureWidth(-1, lbl_8036A620);
         fn_8001019C((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
         fn_8001019C((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (s8)((u8 *)unit)[0x19A]);
@@ -3430,7 +3430,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     }
     if (self->unk40 & 0x10) {
         str = Msg_Expand(lbl_802767E0 + 0x9E);
-        tw = fn_80010B78(-1, lbl_8036A620);
+        tw = Text_MeasureWidth(-1, lbl_8036A620);
         fn_8001019C((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
         if (fn_800386B0(unit) != 0xFF) {
@@ -3448,7 +3448,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     }
     if (flags & 0x20) {
         str = Msg_Expand(lbl_802767E0 + 0xAA);
-        tw = fn_80010B78(-1, lbl_8036A620);
+        tw = Text_MeasureWidth(-1, lbl_8036A620);
         fn_8001019C((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
         fn_8001019C((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (s8)((u8 *)unit)[0x1A8]);
@@ -3457,7 +3457,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     }
     if (self->unk40 & 0x40) {
         str = Msg_Expand(lbl_802767E0 + 0xB6);
-        tw = fn_80010B78(-1, lbl_8036A620);
+        tw = Text_MeasureWidth(-1, lbl_8036A620);
         fn_8001019C((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
         fn_8001019C((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (u16)fn_8017C3C8(unit));
@@ -5741,7 +5741,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     };
     void *fn_8000B908(u8);
     s32 fn_800102BC(s32, f32);
-    s32 fn_80010B78(s32, s32, f32);
+    s32 Text_MeasureWidth(s32, s32, f32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -5774,7 +5774,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     y = *(s16 *)((u8 *)item + 0x32);
     w = (s16)fn_800102BC(-1, lbl_8036A6C0);
     v = ((Inner *)*(void **)((u8 *)item + 0x34))->v1();
-    halfW = (s16)fn_80010B78(v, -1, lbl_8036A6C0);
+    halfW = (s16)Text_MeasureWidth(v, -1, lbl_8036A6C0);
     x = (s16)(x - (halfW / 2));
     t38 = *(s16 *)(a1 + 0x38);
     if (t38 < 0 || *(s16 *)(a1 + 0x3a) < 0) {
@@ -5861,7 +5861,7 @@ extern "C" void fn_8013C814(void *arg0) {
     void Prim2D_AddZ(f32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     void Prim2D_AddPrim(s32);
     void fn_80007858(f32, f32);
@@ -5899,7 +5899,7 @@ extern "C" void fn_8013C814(void *arg0) {
             ptr = &lbl_80276908[0x72];
         }
         half = (s16)self->v18() / 2;
-        f31 = (f32)(half - (fn_80010B78(ptr, -1, lbl_8036A6C0) / 2));
+        f31 = (f32)(half - (Text_MeasureWidth(ptr, -1, lbl_8036A6C0) / 2));
         half = ((s16)self->v38() - fn_800102BC(-1, lbl_8036A6C0)) / 2;
         v36v = (void *)(s32)(s16)self->v36();
         f30 = (f32)(half + ((s16)(s32)v36v - (s16)self->v38()));
@@ -6155,7 +6155,7 @@ extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 fn_800102BC(M2C_UNK, f32);
-    s32 fn_80010B78(s32, M2C_UNK, f32);
+    s32 Text_MeasureWidth(s32, M2C_UNK, f32);
     M2C_UNK fn_801533F8(s32, s32, u8, M2C_UNK);
     s32 *fn_8018D900(M2C_UNK);
     extern f32 lbl_8036A6C0;
@@ -6200,7 +6200,7 @@ extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
     Prim2D_PrepareTex();
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
-    temp_r31 = (0x9A - fn_80010B78(temp_virt, -1, lbl_8036A6C0)) >> 1;
+    temp_r31 = (0x9A - Text_MeasureWidth(temp_virt, -1, lbl_8036A6C0)) >> 1;
     temp_r30 = (0x24 - fn_800102BC(-1, lbl_8036A6C0)) >> 1;
     temp_f31 = (f32)M2C_FIELD(var_r29, s16 *, 0x30);
     temp_f30 = (f32)M2C_FIELD(var_r29, s16 *, 0x32);
@@ -8885,7 +8885,7 @@ void fn_80009BC0(void (*)(void *),s16 *);
 void Prim2D_AddZ(f32); void fn_80009B98(void);
 void fn_8000A174(s32,s32);
 void *Msg_Expand(void *);
-s32 fn_80010B78(void *,s32,f32);
+s32 Text_MeasureWidth(void *,s32,f32);
 void fn_8001019C(s16,s16,s32,void *,...);
 void *fn_8003A064(void *); void *fn_8003A114(void *);
 void *fn_8007BA4C(void *,s32);
@@ -8983,7 +8983,7 @@ selected = node + 8;
 if (selected == 0) {
 void *text = Msg_Expand(lbl_80276B3C + 0x39);
 s16 width = M2C_FIELD(self, s16 *, 0x16) - M2C_FIELD(self, s16 *, 0x12);
-s16 left = (width - fn_80010B78(text, -1, lbl_8036A758)) >> 1;
+s16 left = (width - Text_MeasureWidth(text, -1, lbl_8036A758)) >> 1;
 Prim2D_Begin(); fn_8000A174(0, 0x13); Prim2D_PrepareTex();
 fn_8001019C((s16)(left + M2C_FIELD(self, s16 *, 0x8c)), y, 0, text);
 }

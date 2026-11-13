@@ -815,7 +815,7 @@ void fn_801FE488(void *arg0) {
 #pragma opt_common_subs reset
 void fn_801FE520(void *arg0) {
     void *Msg_Expand(void *);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     extern f32 lbl_8036BB58;
     void *self;
@@ -823,7 +823,7 @@ void fn_801FE520(void *arg0) {
     s16 th;
 
     self = arg0;
-    tw = (s16)fn_80010B78(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BB58);
+    tw = (s16)Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BB58);
     th = (s16)fn_800102BC(-1, lbl_8036BB58);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);
@@ -1214,7 +1214,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void *fn_8000B908(u8);
     s16 fn_800102BC(s32, f32);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     void fn_8006ECCC(void *, void *, s32);
     s32 *fn_8018D900(s32);
     u16 fn_80222A80(void *);
@@ -1266,7 +1266,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     wpad = fn_800102BC(-1, lbl_8036BB58);
     vt = *(void ***)((u8 *)glyph + 0x34);
     str = ((void *(*)(void *))vt[3])(vt);
-    tw = fn_80010B78(str, -1, lbl_8036BB58);
+    tw = Text_MeasureWidth(str, -1, lbl_8036BB58);
     ax = (s16)(gx - ((s32)(((u32)tw >> 31) + tw) >> 1));
     if (*(s16 *)((u8 *)arg1 + 0x38) < 0 || *(s16 *)((u8 *)arg1 + 0x3A) < 0) {
         *(s16 *)((u8 *)arg1 + 0x38) = ax;
@@ -1692,7 +1692,7 @@ void fn_802006B8(void *arg0) {
 #pragma opt_common_subs reset
 void fn_80200750(void *arg0) {
     void *Msg_Expand(void *);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     extern f32 lbl_8036BBD8;
     void *self;
@@ -1700,7 +1700,7 @@ void fn_80200750(void *arg0) {
     s16 th;
 
     self = arg0;
-    tw = (s16)fn_80010B78(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BBD8);
+    tw = (s16)Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BBD8);
     th = (s16)fn_800102BC(-1, lbl_8036BBD8);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);

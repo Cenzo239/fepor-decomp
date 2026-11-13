@@ -3286,7 +3286,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void fn_8000D864(s32, void *);
     void *Msg_Expand(void *);
     void fn_8001019C(s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8015A2D8(s32, s32, s32, s32, s32, s32);
     void strcpy(void *, void *);
     extern f32 lbl_8036B7B8;
@@ -3384,7 +3384,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     Prim2D_AddZ(lbl_8036B800);
     Prim2D_PrepareTex();
     str = ((Obj *)arg0)->v0();
-    tmp = (f32)fn_80010B78(str, -1, lbl_8036B7C8);
+    tmp = (f32)Text_MeasureWidth(str, -1, lbl_8036B7C8);
     f31 = ((f32)(s16)((Obj *)arg0)->v18() - tmp) * lbl_8036B7EC;
     str = ((Obj *)arg0)->v0();
     fn_8001019C((s32)f31, 0x18, 1, str);
@@ -3394,7 +3394,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     fn_8000D864(0, Msg_Expand(lbl_8029A734[*(u8 *)((u8 *)item + 0x3A)]));
     strcpy(sp8, Msg_Expand(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();
-    f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - fn_80010B78(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
+    f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - Text_MeasureWidth(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
     fn_8001019C((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);
     if (f30) {
         /* keep y in f31-phys so text/half prefer f30 */

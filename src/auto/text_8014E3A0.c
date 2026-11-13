@@ -1933,7 +1933,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     void fn_8015FC7C(void);
     s32 fn_80009E44(f32 *);
     s32 Msg_Expand(void *);
-    s32 fn_80010B78(s32, s32, f32);
+    s32 Text_MeasureWidth(s32, s32, f32);
     s32 fn_80010770(s32, s32, f32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -1979,7 +1979,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     fn_8015FC7C();
     temp_r22 = fn_80009E44(&sp10);
     temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
-    temp_r30 = fn_80010B78(temp_r21, -1, lbl_8036A874);
+    temp_r30 = Text_MeasureWidth(temp_r21, -1, lbl_8036A874);
     temp_r31 = fn_80010770(temp_r21, -1, lbl_8036A874);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A87C);

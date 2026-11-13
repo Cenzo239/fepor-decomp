@@ -427,7 +427,7 @@ format_done:
     text = *(void **)((u8 *)lbl_80367140 + 0xC);
     textBuffer = *(void **)((u8 *)text + 4);
 
-    width = fn_80010B78(buffer, -1, *(float *)((u8 *)textBuffer + 0x1C));
+    width = Text_MeasureWidth(buffer, -1, *(float *)((u8 *)textBuffer + 0x1C));
 
     x = arg0;
 

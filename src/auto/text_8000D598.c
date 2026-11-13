@@ -1094,7 +1094,7 @@ s32 fn_80010770(u8 *str, s32 idx, f32 scale) {
     return result;
 }
 
-s32 fn_80010B78(void) {
+s32 Text_MeasureWidth(void) {
     s32 r31, r30, r29, r28, r27;
     
     r31 = 0;

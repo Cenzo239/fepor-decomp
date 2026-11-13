@@ -110,7 +110,7 @@ void fn_80083F08(void *arg0) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     f32 fn_80037904(void *, s32);
     u8 fn_800386B0(void *);
     s8 fn_8003A1E0(void *);
@@ -420,7 +420,7 @@ void fn_80083F08(void *arg0) {
     Prim2D_PrepareTex();
 
     fn_800A8A88(nameId);
-    w = (f32)fn_80010B78(fn_800A8A88(nameId), -1, lbl_80369430);
+    w = (f32)Text_MeasureWidth(fn_800A8A88(nameId), -1, lbl_80369430);
     fn_8001003C((s32)((lbl_8036961C + bx) - (lbl_80369514 * w)), (s32)(by - lbl_8036949C), 1, 0, 0, fn_800A8A88(nameId), lbl_80369430, lbl_80369418);
 
     if (classId != 0) {
@@ -454,7 +454,7 @@ void fn_80083F08(void *arg0) {
     child = *(void **)((u8 *)unit + 0x194);
     if (child != NULL) {
         fn_800A8A88(*(s32 *)((u8 *)child + 0x188));
-        w = (f32)fn_80010B78(fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), -1, lbl_80369430);
+        w = (f32)Text_MeasureWidth(fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), -1, lbl_80369430);
         fn_8001003C((s32)((lbl_80369428 + bx) - (lbl_80369514 * w)), (s32)f23v, 2, 0, 0, fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), lbl_80369430, lbl_80369418);
     }
 

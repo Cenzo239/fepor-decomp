@@ -65,7 +65,7 @@ void fn_8007F410(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void *fn_8003B9AC(u8);
     s32 fn_8003B938(u8);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8005AC24(void *, s32, s32, s32);
     extern u8 gUiStrings[];
     extern u8 lbl_802F0308[];
@@ -154,7 +154,7 @@ void fn_8007F410(void *arg0) {
     fn_8001003C(nx, lbl_803694D0 + y, 4, 1, 0, obj, lbl_80369430, lbl_80369418);
     id = fn_8003B938(pid);
     obj = fn_8003B9AC(pid);
-    width = fn_80010B78(obj, -1, lbl_80369430);
+    width = Text_MeasureWidth(obj, -1, lbl_80369430);
     fn_8005AC24(lbl_802F0308, lbl_80369500 + (nx + width), by, id);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);

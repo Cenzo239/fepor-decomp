@@ -524,7 +524,7 @@ void TabMenu_DrawTab2(void *arg0) {
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
@@ -699,7 +699,7 @@ void TabMenu_DrawTab2(void *arg0) {
         Prim2D_PrepareTex();
         str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
         {
-            s16 x = (s16)(((0x58 - fn_80010B78(str2, -1, gTabMenuOne)) >> 1) + 0x140);
+            s16 x = (s16)(((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
             fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
         }
         Prim2D_Begin();
@@ -732,7 +732,7 @@ void TabMenu_DrawTab2(void *arg0) {
     }
 }
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     void Prim2D_Begin(void);
     void fn_8000A174(s32, s32);
@@ -774,7 +774,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     s16 px;
     s32 py;
 
-    tw = (s16)fn_80010B78(arg6, -1, gTabMenuOne);
+    tw = (s16)Text_MeasureWidth(arg6, -1, gTabMenuOne);
     th = fn_800102BC(-1, gTabMenuOne);
     x = arg1;
     y = arg2;
@@ -895,7 +895,7 @@ void TabMenu_DrawTab1(void *arg0) {
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
     void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
@@ -1070,7 +1070,7 @@ void TabMenu_DrawTab1(void *arg0) {
         Prim2D_PrepareTex();
         str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
         {
-            s16 x = (s16)(((0x58 - fn_80010B78(str2, -1, gTabMenuOne)) >> 1) + 0x140);
+            s16 x = (s16)(((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
             fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
         }
     }

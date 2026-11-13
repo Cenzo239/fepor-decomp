@@ -396,7 +396,7 @@ void fn_80056B0C(void *arg0) {
     void Prim2D_Begin(void);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     s32 fn_80010770(u8 *, s32, f32);
-    s32 fn_80010B78(u8 *, s32, f32);
+    s32 Text_MeasureWidth(u8 *, s32, f32);
     extern s32 lbl_803690D8;
     extern s32 lbl_803690DC;
     extern s32 lbl_803690E0;
@@ -520,7 +520,7 @@ void fn_80056B0C(void *arg0) {
         Prim2D_SetTransform(*(f32 *)((u8 *)arg0 + 8), *(f32 *)((u8 *)arg0 + 0xC), *(f32 *)((u8 *)arg0 + 0x10), lbl_8036912C);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        temp_r30 = fn_80010B78(*(u8 **)((u8 *)arg0 + 0x14), -1, lbl_8036912C);
+        temp_r30 = Text_MeasureWidth(*(u8 **)((u8 *)arg0 + 0x14), -1, lbl_8036912C);
         temp_r3_2 = fn_80010770(*(u8 **)((u8 *)arg0 + 0x14), -1, lbl_8036912C);
         temp_r5 = 0x260 - temp_r30;
         temp_r4 = (u32)temp_r5 >> 0x1FU;

@@ -154,7 +154,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *fn_8000CAF0(void *, s32);
     void *fn_8007C378(void *);
     void strcpy(void *, void *);
-    u8 fn_80010B78(void *, s32, f32);
+    u8 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80290200[];
     extern u16 lbl_80367A58;
     extern f32 lbl_8036A268;
@@ -179,7 +179,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
         strcpy((u8 *)obj + 0x30, fn_8007C378(arg0));
         *(s16 *)((u8 *)obj + 0x48) = arg1;
         *(s16 *)((u8 *)obj + 0x4A) = arg2;
-        *(u8 *)((u8 *)obj + 0x51) = fn_80010B78((u8 *)obj + 0x30, -1, lbl_8036A268);
+        *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
     }
 }
 

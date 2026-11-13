@@ -9413,7 +9413,7 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     extern f32 lbl_80369D60;
     extern char lbl_80270088[];
     extern char lbl_80320B6C[];
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 sprintf(char *, const char *, ...);
     f32 scale;
     s32 offset;
@@ -9425,7 +9425,7 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     offset = offset + 1;
     text = (char *)offset;
     text += (u32)arg0;
-    width = (s16)fn_80010B78(text, -1, scale);
+    width = (s16)Text_MeasureWidth(text, -1, scale);
 
     if (width < 0x70) {
         return text;

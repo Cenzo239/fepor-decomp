@@ -59,7 +59,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     s32 UnitRef_GetName(void *);
@@ -88,7 +88,7 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
         Prim2D_PrepareTex();
         price = (s32)(priceScale * (f32)(u16)UnitRef_GetValue(ref));
         sprintf(priceBuf, (u8 *)lbl_8026CD08 + 0x2F, price);
-        priceWidth = fn_80010B78(priceBuf, -1, lbl_8036973C);
+        priceWidth = Text_MeasureWidth(priceBuf, -1, lbl_8036973C);
         canAfford = enabled != 0;
         gold = *(s32 *)(gBattleState + 0x18);
         price = (s32)(priceScale * (f32)(u16)UnitRef_GetValue(ref));
@@ -176,7 +176,7 @@ void fn_8008D6D8(void *arg0) {
     M2C_UNK fn_8000CAF0(void *, s32);
     M2C_UNK Msg_Expand(void *);
     M2C_UNK fn_8023440C(void *, s32, s32);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     M2C_UNK Process_Unlink(void *);
     extern u8 lbl_80289AB8[];
     extern f32 lbl_80369754;
@@ -187,7 +187,7 @@ void fn_8008D6D8(void *arg0) {
 
     temp_r31 = (u8 *)fn_8000CAF0(lbl_80289AB8, 3);
     fn_8023440C(temp_r31 + 0x3E, Msg_Expand(arg0), 0x30);
-    *(s16 *)(temp_r31 + 0x38) = fn_80010B78(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
+    *(s16 *)(temp_r31 + 0x38) = Text_MeasureWidth(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
     sp8 = lbl_8026CD50;
     M2C_FIELD(temp_r31, s8 *, 0x3D) = 0;
     while (M2C_FIELD(temp_r31, s8 *, 0x3D) < 4) {

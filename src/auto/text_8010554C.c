@@ -2741,7 +2741,7 @@ void fn_8010A4D4(void *arg0) {
 
 void fn_8010A53C(void *arg0, s32 arg1) {
     void *Msg_Expand(void *);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void Prim2D_Begin(void);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -2776,11 +2776,11 @@ void fn_8010A53C(void *arg0, s32 arg1) {
         var_f31 = (f32)*(s16 *)((u8 *)temp_r29 + 0xC);
         break;
     case 0:
-        temp = fn_80010B78(temp_r31, -1, lbl_8036A118);
+        temp = Text_MeasureWidth(temp_r31, -1, lbl_8036A118);
         var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - (temp / 2));
         break;
     case 1:
-        var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - fn_80010B78(temp_r31, -1, lbl_8036A118));
+        var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - Text_MeasureWidth(temp_r31, -1, lbl_8036A118));
         break;
     }
     Prim2D_Begin();

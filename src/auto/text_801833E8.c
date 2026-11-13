@@ -4015,7 +4015,7 @@ void fn_8018EFE0(void *arg0, s16 arg1) {
     void *Msg_Expand(void *);
     void fn_8001019C(s16, s16, s32, ...);
     s32 fn_800102BC(s32, f32);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80279C40[];
     extern f32 lbl_8036ADF0;
     void *str;
@@ -4024,7 +4024,7 @@ void fn_8018EFE0(void *arg0, s16 arg1) {
     s16 t;
 
     str = Msg_Expand(lbl_80279C40 + 0xA0);
-    h = fn_80010B78(str, -1, lbl_8036ADF0);
+    h = Text_MeasureWidth(str, -1, lbl_8036ADF0);
     t = *(s16 *)((u8 *)arg0 + 0x12);
     y = (s16)(((s16)(*(s16 *)((u8 *)arg0 + 0x16) - t) - h) >> 1);
     fn_8001019C(y, (s16)(arg1 + (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1)), 2, str);
@@ -4141,7 +4141,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     void *Msg_Expand(void *);
     void fn_8001019C(s16, s16, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80104E58(void);
     s32 *fn_8018D900(s32);
     extern u8 lbl_80279C40[];
@@ -4189,7 +4189,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         Prim2D_EndPrim();
     } else {
         arg1 = (s32)(lbl_80279C40 + 0xE4);
-        fn_8001019C((s16)(y - (s16)fn_80010B78((void *)arg1, -1, lbl_8036ADF0)), x, 0, (void *)arg1);
+        fn_8001019C((s16)(y - (s16)Text_MeasureWidth((void *)arg1, -1, lbl_8036ADF0)), x, 0, (void *)arg1);
         fn_8001019C(h, (s16)((arg1 = (s16)x) + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0xED));
         fn_8001019C(y2, (s16)(arg1 + 0x20), 0xF, Msg_Expand((u8 *)lbl_80279C40 + 209));
         Prim2D_AddPrim(6);

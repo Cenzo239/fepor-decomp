@@ -224,7 +224,7 @@ void fn_801F230C(void *arg0) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void **fn_8006EDD8(s32, s32);
     void fn_8007CB3C(void *, s32);
     void fn_8008BF68(s16, s16, s32);
@@ -471,7 +471,7 @@ void fn_801F230C(void *arg0) {
             fn_8000A174(0, 0x13);
             Prim2D_PrepareTex();
             Msg_Expand(*(void **)(ep + 4));
-            tw = (u16)fn_80010B78((void *)0, -1, lbl_8036B814);
+            tw = (u16)Text_MeasureWidth((void *)0, -1, lbl_8036B814);
             fn_8001003C(
                 (s16)((*(s16 *)((u8 *)p + 0x1A) + 0x3C) - ((tw >> 1) & 0x7FFF)),
                 *(s16 *)((u8 *)p + 0x1C), 1, 1, 0,
@@ -1076,7 +1076,7 @@ void fn_801F3E60(void *arg0) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80019E8C(s32);
     void fn_80057020(s32);
     void fn_80057860(s32, s16);
@@ -1329,7 +1329,7 @@ void fn_801F3E60(void *arg0) {
                 Prim2D_AddZ(lbl_8036B850);
                 Prim2D_PrepareTex();
                 str = Msg_Expand(label);
-                w = fn_80010B78(str, -1, lbl_8036B854);
+                w = Text_MeasureWidth(str, -1, lbl_8036B854);
                 fn_8001003C((s16)(0xB0 - (w / 2)), (s16)(y + 7), 1, 1, 0, str, lbl_8036B854, lbl_8036B858);
                 Prim2D_Begin();
                 Prim2D_SetAlphaByte(0x80);
@@ -2007,7 +2007,7 @@ void fn_801F676C(void *arg0) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void fn_801F690C(void *, f32, f32);
     extern u8 lbl_80280D38[];
     void *temp_r31;
@@ -2041,7 +2041,7 @@ void fn_801F676C(void *arg0) {
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
     temp_r31 = Msg_Expand(lbl_80280D38 + 0x6B);
-    fw = (f32)fn_80010B78(temp_r31, -1, lbl_8036B934);
+    fw = (f32)Text_MeasureWidth(temp_r31, -1, lbl_8036B934);
     fn_8001003C((s32)(lbl_8036B920 - lbl_8036B938 * fw), 0x1E, 2, 0, 0, temp_r31, lbl_8036B934, lbl_8036B910);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B93C);
@@ -2064,7 +2064,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void **fn_8006EDD8(s32, s32);
     u8 fn_8014BC10(void *);
     u8 fn_8014BEE0(void *);
@@ -2169,7 +2169,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 
     val = fn_8014C12C(gBattleState);
     Msg_Expand(lbl_80280D38 + 0xC9);
-    tw = fn_80010B78((void *)0, -1, lbl_8036B918);
+    tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     f27 = lbl_8036B970 + fy;
     fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
@@ -2180,7 +2180,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 
     val = fn_8014C078(gBattleState);
     Msg_Expand(lbl_80280D38 + 0xE2);
-    tw = fn_80010B78((void *)0, -1, lbl_8036B918);
+    tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
 
@@ -2189,7 +2189,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 
     val = fn_8014BEE0(gBattleState);
     Msg_Expand(lbl_80280D38 + 0xF9);
-    tw = fn_80010B78((void *)0, -1, lbl_8036B918);
+    tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)(lbl_8036B97C + fy), 6, 1, 0,
                 lbl_80280D38 + 0xDF, val, lbl_8036B934, lbl_8036B910);
 
@@ -2200,7 +2200,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 
     val = fn_8014BC10(gBattleState);
     Msg_Expand(lbl_80280D38 + 0x10E);
-    tw = fn_80010B78((void *)0, -1, lbl_8036B918);
+    tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
 
@@ -2238,7 +2238,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
         label = 0;
         break;
     }
-    tw = fn_80010B78(label, -1, lbl_8036B918);
+    tw = Text_MeasureWidth(label, -1, lbl_8036B918);
     {
         f32 x = lbl_8036B990 + fx;
         x = x - (f32)(((s32)tw + ((u32)(s32)tw >> 31)) >> 1);
@@ -2497,7 +2497,7 @@ void fn_801F7A60(void *arg0) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80019F04(s32);
     void **fn_8006EDD8(void *, s32);
     void fn_8007CB3C(void *, s32);
@@ -2811,7 +2811,7 @@ void fn_801F7A60(void *arg0) {
         Prim2D_PrepareTex();
 
         str = Msg_Expand(*(void **)((u8 *)self + 0x98 + *(s16 *)((u8 *)self + 6) * 4));
-        tw = fn_80010B78(str, -1, lbl_8036B918);
+        tw = Text_MeasureWidth(str, -1, lbl_8036B918);
         fn_8001003C((s16)(-6 - (tw / 2)), -0x68, 2, 0, 0, str, lbl_8036B918, lbl_8036B910);
 
         item = fn_80019F04(*(s32 *)((u8 *)self + 0xC8) + *(s16 *)((u8 *)self + 6) + 0x5B);
@@ -2828,7 +2828,7 @@ void fn_801F7A60(void *arg0) {
         maxw = 0;
         i = 0;
         while (i < *(u8 *)((u8 *)self + 0x95)) {
-            tw = fn_80010B78((u8 *)p + 0xCE, -1, lbl_8036B918);
+            tw = Text_MeasureWidth((u8 *)p + 0xCE, -1, lbl_8036B918);
             if ((s16)tw > maxw) {
                 maxw = (s16)tw;
             }
@@ -3399,7 +3399,7 @@ void fn_801F94D8(void *arg0) {
     void fn_8000A174(s32, s32);
     void Prim2D_AddZ(f32);
     void *Msg_Expand(void *);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, f32, f32, ...);
     void *fn_800A8978(void *);
     f32 fn_801099A0(void *, s32);
@@ -3469,7 +3469,7 @@ void fn_801F94D8(void *arg0) {
             f31 = fn_801099A0(entry, 1);
             f30 = lbl_8036BA78;
             str = fn_800A8978(*(void **)((u8 *)var_r31[2] + 0x18C));
-            w = fn_80010B78(str, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(str, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA7C + f31), 1, 1, 0, str, lbl_8036BA20, lbl_8036BA18);
             obj = var_r31[2];
@@ -3479,7 +3479,7 @@ void fn_801F94D8(void *arg0) {
             fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
             sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
-            w = fn_80010B78(sp8, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA80 + f31), 1, 1, 0, sp8, lbl_8036BA20, lbl_8036BA18);
         }
@@ -3497,7 +3497,7 @@ void fn_801F94D8(void *arg0) {
             f31 = fn_801099A0(entry, 1);
             f30 = lbl_8036BA78;
             str = fn_800A8978(*(void **)((u8 *)((void **)other)[2] + 0x18C));
-            w = fn_80010B78(str, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(str, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA7C + f31), 1, 1, 0, str, lbl_8036BA20, lbl_8036BA18);
             obj = ((void **)other)[2];
@@ -3507,7 +3507,7 @@ void fn_801F94D8(void *arg0) {
             fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
             sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
-            w = fn_80010B78(sp8, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA80 + f31), 1, 1, 0, sp8, lbl_8036BA20, lbl_8036BA18);
         }
@@ -3784,7 +3784,7 @@ void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
 void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte(s32); void Prim2D_PrepareTex(void);
 void Process_Goto(void*,s32); void fn_80109020(void*);
 void fn_8000A174(s32,s32); void *Msg_Expand(void*);
-s32 fn_800102BC(s32,f32); s16 fn_80010B78(void*,s32,f32);
+s32 fn_800102BC(s32,f32); s16 Text_MeasureWidth(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
 void sprintf(void*,void*,...); f64 fmod(f64,f64);
 extern s32 gUiInputFlags;
@@ -3830,7 +3830,7 @@ sprintf(a,StaffRoll_str+0x32c,*ent);
 sprintf(b,StaffRoll_str+0x33d,*ent);
 Prim2D_Begin();fn_8000A174(0,19);Prim2D_PrepareTex();
 str=Msg_Expand(a);
-fn_8001003C((s32)((f32)(128-(fn_80010B78(str,-1,lbl_8036BA20)>>1))-lbl_8036BA98),(s32)y,1,1,0,str,lbl_8036BA20,lbl_8036BA18);
+fn_8001003C((s32)((f32)(128-(Text_MeasureWidth(str,-1,lbl_8036BA20)>>1))-lbl_8036BA98),(s32)y,1,1,0,str,lbl_8036BA20,lbl_8036BA18);
 fn_8001003C((s32)(lbl_8036BA9C+lbl_8036BA98),(s32)y,1,1,0,Msg_Expand(b),lbl_8036BA20,lbl_8036BA18);
 x=lbl_8036BAA0;
 x=x+lbl_8036BA98;
@@ -3910,7 +3910,7 @@ void StaffRoll_Draw(void *arg0) {
     void Process_Goto(void *, s32);
     void *Hash_Lookup(void *);
     void fn_8000A174(s32, s32);
-    s16 fn_80010B78(void *, s32, f32);
+    s16 Text_MeasureWidth(void *, s32, f32);
     void fn_8001019C(s32, s32, s32, void *, ...);
     f64 fmod(f64, f64);
     extern s32 gUiInputFlags;
@@ -3968,15 +3968,15 @@ void StaffRoll_Draw(void *arg0) {
             fn_8000A174(0, 0x13);
             Prim2D_PrepareTex();
             if ((u32)ent->str0 != 0U) {
-                w = fn_80010B78(ent->str0, -1, lbl_8036BA20);
+                w = Text_MeasureWidth(ent->str0, -1, lbl_8036BA20);
                 fn_8001019C((s32)(f32)(0x120 - w), (s32)scroll, 1, ent->str0);
             }
             if ((u32)ent->str4 != 0U) {
-                w = fn_80010B78(ent->str4, -1, lbl_8036BA20);
+                w = Text_MeasureWidth(ent->str4, -1, lbl_8036BA20);
                 fn_8001019C((s32)(f32)(0x130 - (w >> 1)), (s32)scroll, 1, ent->str4);
             }
             if ((u32)ent->str8 != 0U) {
-                fn_80010B78(ent->str8, -1, lbl_8036BA20);
+                Text_MeasureWidth(ent->str8, -1, lbl_8036BA20);
                 fn_8001019C((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(StaffRoll_str + 0x39A), ent->str8);
             }
         }

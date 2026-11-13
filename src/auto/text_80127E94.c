@@ -97,7 +97,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     s32 fn_800102BC(M2C_UNK, f32);
-    s32 fn_80010B78(M2C_UNK, f32);
+    s32 Text_MeasureWidth(M2C_UNK, f32);
     extern f32 lbl_8036A404;
     s16 temp_r28;
     s16 temp_r29;
@@ -114,7 +114,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     temp_r28 = M2C_FIELD(arg2, s16 *, 0x32) + temp_r4;
     temp_r29_2 = M2C_FIELD(M2C_FIELD(temp_r5, void **, 4), s16 (**)(void *, s32, void *), 0x50)(temp_r5, temp_r4, temp_r5);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    temp_r5_2 = temp_r29_2 - fn_80010B78(-1, lbl_8036A404);
+    temp_r5_2 = temp_r29_2 - Text_MeasureWidth(-1, lbl_8036A404);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **, void *, u32), 0x4C)(arg0, arg1, temp_r5_2);
     Prim2D_AddPrim(6);
     fn_80007858((f32) ((s32) ((temp_r5_2 >> 0x1FU) + temp_r5_2) >> 1), (f32) temp_r28);

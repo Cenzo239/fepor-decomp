@@ -407,7 +407,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void fn_8001019C(s16, s32, s32, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void *fn_80019DBC(s32);
     void *Item_GetByIid(void *);
     void fn_8005926C(s32, s32, s32, s32, s32, s32, s32, s32);
@@ -547,7 +547,7 @@ after_cases:
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        w = 0x90 - fn_80010B78(str, -1, lbl_8036980C);
+        w = 0x90 - Text_MeasureWidth(str, -1, lbl_8036980C);
         w = ((s32)((u32)w >> 31) + w) >> 1;
         fn_8001019C((s16)w, -1, 1, str);
     }

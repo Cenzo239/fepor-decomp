@@ -77,7 +77,7 @@ void Ui_DrawUnitInfo(void *proc) {
     M2C_UNK Prim2D_SetColorByte(M2C_UNK);
     void *Msg_Expand(void *);
     void fn_8001003C(s16, s32, s32, s32, s32, void *, ...);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     M2C_UNK fn_80083E70(void *);
     M2C_UNK fn_80083F08(void *);
     M2C_UNK strcat(void *, void *);
@@ -160,7 +160,7 @@ void Ui_DrawUnitInfo(void *proc) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        textX = 0x130 - (fn_80010B78(text, -1, lbl_80369430) / 2);
+        textX = 0x130 - (Text_MeasureWidth(text, -1, lbl_80369430) / 2);
         fn_8001003C(textX, 0x197, 1, 1, 0, text, lbl_80369430, lbl_80369418);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80369430);
@@ -2672,7 +2672,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void fn_80009B98(void);
     void *fn_800A8A88(void *);
     void *fn_800A8978(void *);
-    s32 fn_80010B78(void *, s32, f32);
+    s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void *Msg_Expand(void *);
     u8 fn_800386B0(void *);
@@ -2758,14 +2758,14 @@ void fn_8008B464(void *self, s32 x, s32 y) {
 
     {
         void *str = fn_800A8A88(name);
-        width = (f32)fn_80010B78(str, -1, lbl_80369704);
+        width = (f32)Text_MeasureWidth(str, -1, lbl_80369704);
         str = fn_800A8A88(name);
         fn_8001003C((s16)(s32)(lbl_80369718 + (f32)x - lbl_80369700 * width),
                     (s16)(y - 0xB), 1, 0, 0, str, lbl_80369704, lbl_803696E0);
     }
     {
         void *str = fn_800A8978(cls);
-        width = (f32)fn_80010B78(str, -1, lbl_80369704);
+        width = (f32)Text_MeasureWidth(str, -1, lbl_80369704);
         str = fn_800A8978(cls);
         fn_8001003C((s16)(s32)(lbl_8036971C + (f32)x - lbl_80369700 * width),
                     (s16)(y + 0xF), 2, 0, 0, str, lbl_80369704, lbl_803696E0);
