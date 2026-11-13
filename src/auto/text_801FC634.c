@@ -1464,7 +1464,7 @@ void fn_801FFF08(s32 arg0) {
 void Save_MigrateLegacy(void) {
     void fn_800C426C(void *);
     void *fn_800C4638(s32, void *, s32);
-    void *fn_801E2568(s32 *, s32);
+    void *Save_GetLargeSlot(s32 *, s32);
     void *Save_GetSmallSlot(s32 *, s32);
     void Save_BumpVersionChecksum(void *);
     u8 Save_IsValid(void *);
@@ -1526,7 +1526,7 @@ void Save_MigrateLegacy(void) {
         } while (i < 6);
         j = 0;
         do {
-            slot = fn_801E2568(&lbl_803682F0, j);
+            slot = Save_GetLargeSlot(&lbl_803682F0, j);
             if (slot != NULL && Save_IsValid(slot) != 0) {
                 switch (*(s32 *)((u8 *)slot + 0x44)) {
                 case 0x20041216:

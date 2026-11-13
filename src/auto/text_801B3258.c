@@ -17968,7 +17968,7 @@ void fn_801E2458(void* unit)
     }
 }
 
-s32 fn_801E2568(s32 *arg0, s32 arg1) {
+s32 Save_GetLargeSlot(s32 *arg0, s32 arg1) {
     return ((arg1 * 0x6000) + 0x20000 + *arg0) - 0x6000;
 }
 
