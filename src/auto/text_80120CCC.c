@@ -2840,7 +2840,7 @@ void fn_80126074(void *arg0) {
     ((s32*)arg0)[0x1B] = gUiInputFlags;
     fn_80088F34();
     lbl_80367A6C = 0x63;
-    fn_80024398(lbl_8032FE48, arg0, 0);
+    Ui_CreateMenu(lbl_8032FE48, arg0, 0);
     Process_Create(lbl_802905F8, arg0);
 }
 

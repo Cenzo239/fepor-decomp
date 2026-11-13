@@ -21,11 +21,11 @@ void *fn_80103750(void) {
 
 s32 fn_80103760(void *arg0, s32 arg1) {
     void fn_80016358(void *);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     extern u8 lbl_803679B4[8];
 
     fn_80016358(arg0);
-    fn_80024398(lbl_803679B4, arg1, 0);
+    Ui_CreateMenu(lbl_803679B4, arg1, 0);
     return 4;
 }
 
@@ -61,7 +61,7 @@ s32 fn_80103818(void) {
 s32 fn_80103820(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     void fn_800A8400(void);
     extern u8 lbl_802734D0[];
     extern u8 lbl_802845E8[];
@@ -105,7 +105,7 @@ s32 fn_80103820(void) {
         lbl_80367980[1] = lbl_8028ED04;
         lbl_8036797C = 1;
     }
-    fn_80024398(lbl_80367980, temp_r31, 0);
+    Ui_CreateMenu(lbl_80367980, temp_r31, 0);
     return 6;
 }
 

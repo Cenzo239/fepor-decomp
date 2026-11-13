@@ -2306,7 +2306,7 @@ s32 fn_80024390(void) {
     return 0;
 }
 
-void *fn_80024398(void *arg0, void *arg1, u32 arg2) {
+void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     extern u8 lbl_80284548[];
     extern u8 lbl_80284588[];
 

@@ -2776,7 +2776,7 @@ void Ui_LayoutUnitManagePanel(void *panel) {
     void fn_8014027C(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
     void *Heap_Alloc(u32);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     void Ui_SetWidgetText(void *, void *);
     extern u8 lbl_8028459C[];
     extern u8 lbl_80292090[];
@@ -2848,7 +2848,7 @@ void Ui_LayoutUnitManagePanel(void *panel) {
     M2C_FIELD(help, s16 *, 0x14) = 0x1C;
     M2C_FIELD(help, f32 *, 0x18) = 200.0f;
     M2C_FIELD(help, s16 *, 0x1E) = 4;
-    fn_80024398(help, panel, 0);
+    Ui_CreateMenu(help, panel, 0);
     help = Ui_FindChild(panel, -0x1000, 0);
     if (help != NULL) {
         Ui_SetWidgetText(help, gUiUnitPanelStrings + 0x142);

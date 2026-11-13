@@ -62,7 +62,7 @@ void fn_8014A084(s32 arg0) {
 void fn_8014A0D4(void *arg0) {
     void *fn_80109180(void *, void *);
     void fn_800AA1CC(void);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     void fn_80146B00(void);
     extern u8 gSoundMenuStrings[];
     extern s8 lbl_80367700;
@@ -78,7 +78,7 @@ void fn_8014A0D4(void *arg0) {
     lbl_80367705 = 1;
     lbl_80367700 = 0;
     lbl_80367701 = 0;
-    fn_80024398(&lbl_80367B60, arg0, 0);
+    Ui_CreateMenu(&lbl_80367B60, arg0, 0);
     fn_80146B00();
     *(s32 *)((u8 *)arg0 + 0x30) = 0;
 }

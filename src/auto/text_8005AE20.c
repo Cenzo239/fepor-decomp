@@ -5141,13 +5141,14 @@ void *Light_GetChannel(s32 arg0) {
 #pragma peephole off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
-    extern void *lbl_80366DDC;
+    extern u8 *lbl_80366DDC;
     void *p;
 
-    if (arg0 == NULL) {
-        p = lbl_80311B04;
-        lbl_80366DDC = p;
+    if (arg0 != NULL) {
+        return;
     }
+    p = lbl_80311B04;
+    lbl_80366DDC = p;
 }
 #pragma peephole on
 s32 fn_80067478(void) {
@@ -6461,8 +6462,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(s32 arg0) {
-    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(register s32 arg0) {
+    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 
@@ -7444,7 +7445,7 @@ s32 fn_8006F014(void) {
 void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3)
 {
     void *fn_800C0658(void);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     extern u8 lbl_80311CA8[];
     u8 *base;
     u8 *entries;
@@ -7470,14 +7471,14 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3)
     *(void **)(entries + 0x1C) = arg3;
     *(void **)(table + 0x10) = (void *)0;
 
-    fn_80024398(base + 0x94, fn_800C0658(), 0);
+    Ui_CreateMenu(base + 0x94, fn_800C0658(), 0);
 }
 #pragma opt_strength_reduction on
 #pragma global_optimizer on
 void fn_8006F09C(void *arg0, void *arg1, void *arg2)
 {
     void *fn_800C0658(void);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     extern u8 lbl_80311CA8[];
     u8 *base;
     u8 *entries;
@@ -7501,13 +7502,13 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2)
     *(u32 *)(table + 0xC) = 0;
 
     result = fn_800C0658();
-    fn_80024398(base + 0x80, result, 0);
+    Ui_CreateMenu(base + 0x80, result, 0);
 }
 #pragma global_optimizer off
 void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     struct Row { s32 a; s32 b; s32 c; s32 d; };
     struct Ent { void *a; void *b; void *c; };
     u8 *base;
@@ -7524,7 +7525,7 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
     table->d = arg1;
     entries->c = 0;
 
-    fn_80024398(base + 0x80, fn_800C0658(), 0);
+    Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 #pragma global_optimizer reset
 s32 fn_8006F2B8(s32 arg0, s32 arg1) {
@@ -7651,7 +7652,7 @@ void fn_8006F6A4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     if (arg3 != 0U) {
         lbl_80367358[1] = arg3;
     }
-    fn_80024398(lbl_80311CE0, arg0, 0);
+    Ui_CreateMenu(lbl_80311CE0, arg0, 0);
 }
 
 #pragma cplusplus on
@@ -7749,7 +7750,7 @@ void fn_8006FBE4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     if (arg3 != 0U) {
         lbl_80367358[1] = arg3;
     }
-    fn_80024398(lbl_80311CB8, arg0, 0);
+    Ui_CreateMenu(lbl_80311CB8, arg0, 0);
 }
 
 void fn_80070018(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
@@ -7768,7 +7769,7 @@ void fn_80070018(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     if (arg3 != 0U) {
         lbl_80367358[1] = arg3;
     }
-    fn_80024398(lbl_80311CA8, arg0, 0);
+    Ui_CreateMenu(lbl_80311CA8, arg0, 0);
 }
 
 extern u8 lbl_80366DE9;

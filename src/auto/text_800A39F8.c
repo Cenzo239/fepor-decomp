@@ -14,8 +14,8 @@ void *fn_800A39F8(void) {
 }
 
 s32 fn_800A3A04(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803677A4, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803677A4, arg1, 0);
     return 0;
 }
 
@@ -2677,9 +2677,9 @@ void fn_800A9174(void) {
 }
 
 void fn_800A9274(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK lbl_803677EC;
-    fn_80024398(&lbl_803677EC, arg0, 0);
+    Ui_CreateMenu(&lbl_803677EC, arg0, 0);
 }
 
 void fn_800A92A0(void) {

@@ -35,7 +35,7 @@ void *fn_800733FC(void) {
 
 s32 fn_8007340C(s32 arg0, s32 arg1) {
     void *fn_800241C8(s32);
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     M2C_UNK fn_8018DC18(void *);
     extern u8 gUiContext[];
     extern M2C_UNK lbl_80367390;
@@ -44,7 +44,7 @@ s32 fn_8007340C(s32 arg0, s32 arg1) {
     temp_r31 = M2C_FIELD(fn_800241C8(arg1), s32 *, 0x18);
     gUiContext[8] = 0;
     fn_8018DC18(gUiContext);
-    fn_80024398(&lbl_80367390, temp_r31, 0);
+    Ui_CreateMenu(&lbl_80367390, temp_r31, 0);
     return 5;
 }
 
@@ -288,7 +288,7 @@ void fn_80073B74(s32 arg0)
     extern u8 lbl_80312000[];
 
     fn_80091CD8(lbl_80367468);
-    fn_80024398(lbl_80312000, arg0, 0);
+    Ui_CreateMenu(lbl_80312000, arg0, 0);
 }
 
 void fn_80073BB8(void *arg0) {
@@ -309,30 +309,30 @@ extern s32 lbl_8036746C;
 extern s32 lbl_80312000;
 extern u8 gUiContext[24];
 void fn_80073BE4(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
 
-    fn_80024398((M2C_UNK *)lbl_80311FD8, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311FD8, arg0, 0);
 }
 
 void fn_80073C14(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311FC8[];
 
-    fn_80024398((M2C_UNK *)lbl_80311FC8, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311FC8, arg0, 0);
 }
 
 void fn_80073C44(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311FBC[];
 
-    fn_80024398((M2C_UNK *)lbl_80311FBC, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311FBC, arg0, 0);
 }
 
 void fn_80073C74(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311F70[];
 
-    fn_80024398((M2C_UNK *)lbl_80311F70, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311F70, arg0, 0);
 }
 
 void fn_80073CA4(void) {
@@ -371,33 +371,33 @@ void fn_80073CE4(s32 arg0) {
 }
 
 void fn_80073DA4(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311F60[];
 
-    fn_80024398((M2C_UNK *)lbl_80311F60, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311F60, arg0, 0);
 }
 
 void fn_80073DD4(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311F50[];
 
-    fn_80024398((M2C_UNK *)lbl_80311F50, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311F50, arg0, 0);
 }
 
 void fn_80073E04(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_80311F40[];
 
-    fn_80024398((M2C_UNK *)lbl_80311F40, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_80311F40, arg0, 0);
 }
 
 void fn_80073E34(s32 arg0) {
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     extern u8 lbl_80367414;
     u8 *p;
 
     p = gUiContext;
     p[8] = 0;
-    fn_80024398(&lbl_80367414, arg0, 0);
+    Ui_CreateMenu(&lbl_80367414, arg0, 0);
 }
 

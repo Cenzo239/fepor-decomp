@@ -101,9 +101,9 @@ void *fn_80132810(void) {
 }
 
 s32 fn_80132820(s32 arg0, s32 arg1) {
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     extern u8 lbl_80367AC4;
-    fn_80024398(&lbl_80367AC4, arg1, 0);
+    Ui_CreateMenu(&lbl_80367AC4, arg1, 0);
     return 4;
 }
 

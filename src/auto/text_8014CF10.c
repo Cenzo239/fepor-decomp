@@ -25,7 +25,7 @@ extern u8 lbl_80367B0D;
 void fn_800C426C(s32);
 s32 fn_800C42AC(s32);
 void *fn_8003FCCC(void *);
-void fn_80024398(void *, s32, s32);
+void Ui_CreateMenu(void *, s32, s32);
 
 extern s32 lbl_80367B00;
 extern u8 lbl_80367B0D;
@@ -596,9 +596,9 @@ void fn_8014DF68(void *arg0)
 }
 
 void fn_8014DFE8(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK lbl_80367B94;
-    fn_80024398(&lbl_80367B94, arg0, 0);
+    Ui_CreateMenu(&lbl_80367B94, arg0, 0);
 }
 
 #pragma global_optimizer off

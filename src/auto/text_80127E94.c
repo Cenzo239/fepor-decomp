@@ -1657,7 +1657,7 @@ void fn_8012B7DC(void *arg0) {
     void Process_ClearFunc(void *);
     s32 fn_8000CEE4(s32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     void fn_8007ADC8(s32);
     void *fn_8007BD30(s32, void *, s32, s32, s32, s32, void *);
     void **fn_8007C3F8(void);
@@ -1945,7 +1945,7 @@ void fn_8012B7DC(void *arg0) {
             buttons = *(s32 *)((u8 *)pad + 4);
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x100) {
-                fn_80024398(&lbl_80367A9C, arg0, 0);
+                Ui_CreateMenu(&lbl_80367A9C, arg0, 0);
                 return;
             }
         }

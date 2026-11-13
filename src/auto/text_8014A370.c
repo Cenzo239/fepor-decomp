@@ -102,7 +102,7 @@ void *fn_8014A4E8(void) {
 void fn_800C426C(s32);
 s32 fn_800C42AC(s32);
 void *fn_8003FCCC(void *);
-void fn_80024398(void *, s32, s32);
+void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
 s32 fn_8014A4F8(s32 arg0, s32 arg1)
 {
@@ -110,7 +110,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
     void fn_800C426C(s32);
     s32 fn_800C42AC(s32);
     void *fn_8003FCCC(void *);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     s32 var_r11;
     s32 var_ctr;
     s32 temp_r9, temp_r8, temp_r7, temp_r6, temp_r5, temp_r4, temp_r0, temp_r11;
@@ -181,7 +181,7 @@ loop_check:
     }
     lbl_80367B0D = var_r5;
     lbl_80367B0E = (lbl_80367B04 + 0x17) / 24;
-    fn_80024398(&lbl_80367B44, arg1, 0);
+    Ui_CreateMenu(&lbl_80367B44, arg1, 0);
     return 0;
 }
 void *fn_8014A6FC(void) {
@@ -264,7 +264,7 @@ check:
     }
     lbl_80367B0D = flag;
     lbl_80367B0E = (lbl_80367B04 + 0x17) / 24;
-    fn_80024398(&lbl_80367B44, arg1, 0);
+    Ui_CreateMenu(&lbl_80367B44, arg1, 0);
     return 0;
 }
 

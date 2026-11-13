@@ -14,8 +14,8 @@ void *fn_8009F86C(void) {
 }
 
 s32 fn_8009F87C(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_80367788, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_80367788, arg1, 0);
     return 0;
 }
 
@@ -131,7 +131,7 @@ return 0;
 }
 
 s32 fn_8009FB4C(s32 arg0, s32 arg1, void *arg2) {
-void *Map_GetCursorUnit(void); void *fn_80105C5C(s32,u8); void fn_80024398(void*,s32,s32); extern u8 lbl_803675E4;
+void *Map_GetCursorUnit(void); void *fn_80105C5C(s32,u8); void Ui_CreateMenu(void*,s32,s32); extern u8 lbl_803675E4;
 s32 src; s32 idx; s32 count; s32 target; void *entry;
 Map_GetCursorUnit(); target=*((u8*)arg2+0x3A); src=(s32)Map_GetCursorUnit();
 idx=0;
@@ -141,7 +141,7 @@ if(entry!=0) { if(count==target) goto after; count++; }
 }
 entry=0;
 after:
-if(entry==0) fn_80024398(&lbl_803675E4,arg1,0);
+if(entry==0) Ui_CreateMenu(&lbl_803675E4,arg1,0);
 return 0;
 }
 
@@ -346,8 +346,8 @@ void *fn_8009FFE0(void) {
 
 extern s32 lbl_8036773C;
 s32 fn_8009FFF0(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_8036773C, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_8036773C, arg1, 0);
     return 0;
 }
 
@@ -358,8 +358,8 @@ void *fn_800A001C(void) {
 
 extern s32 lbl_80367550;
 s32 fn_800A002C(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_80367550, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_80367550, arg1, 0);
     return 0;
 }
 
@@ -370,8 +370,8 @@ void *fn_800A0058(void) {
 
 extern s32 lbl_8036757C;
 s32 fn_800A0068(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_8036757C, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_8036757C, arg1, 0);
     return 0;
 }
 
@@ -382,8 +382,8 @@ void *fn_800A0094(void) {
 
 extern s32 lbl_803676D4;
 s32 fn_800A00A4(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803676D4, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803676D4, arg1, 0);
     return 0;
 }
 
@@ -394,8 +394,8 @@ void *fn_800A00D0(void) {
 
 extern s32 lbl_803676F8;
 s32 fn_800A00E0(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803676F8, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803676F8, arg1, 0);
     return 0;
 }
 
@@ -1045,8 +1045,8 @@ void *fn_800A0B34(void) {
 
 extern s32 lbl_803676A4;
 s32 fn_800A0B44(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803676A4, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803676A4, arg1, 0);
     return 0;
 }
 
@@ -1114,12 +1114,12 @@ void *fn_800A0C44(void *unused, void *arg1) {
 }
 
 extern s32 lbl_80367670;
-extern void *fn_80024398(void *, s32, s32);
+extern void *Ui_CreateMenu(void *, s32, s32);
 s32 fn_800A0D08(s32 arg0, s32 arg1, void *arg2) {
     if (*(u8 *)((char *)arg2 + 0x39) != 0) {
         return 0;
     }
-    fn_80024398(&lbl_80367670, arg1, 0);
+    Ui_CreateMenu(&lbl_80367670, arg1, 0);
     return 0;
 }
 
@@ -1169,7 +1169,7 @@ s32 fn_800A0DE4(s32 arg0, s32 arg1, void *arg2) {
     if (*(u8 *)((char *)arg2 + 0x39) != 0) {
         return 0;
     }
-    fn_80024398(&lbl_80367660, arg1, 0);
+    Ui_CreateMenu(&lbl_80367660, arg1, 0);
     return 0;
 }
 
@@ -1570,8 +1570,8 @@ void *fn_800A1AC0(void) {
 
 extern s32 lbl_80367628;
 s32 fn_800A1AD0(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_80367628, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_80367628, arg1, 0);
     return 0;
 }
 
@@ -1582,8 +1582,8 @@ void *fn_800A1AFC(void) {
 
 extern s32 lbl_80367618;
 s32 fn_800A1B0C(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_80367618, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_80367618, arg1, 0);
     return 0;
 }
 
@@ -1594,8 +1594,8 @@ void *fn_800A1B38(void) {
 
 extern s32 lbl_8036760C;
 s32 fn_800A1B48(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_8036760C, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_8036760C, arg1, 0);
     return 0;
 }
 
@@ -1606,8 +1606,8 @@ void *fn_800A1B74(void) {
 
 extern s32 lbl_803675FC;
 s32 fn_800A1B84(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803675FC, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803675FC, arg1, 0);
     return 0;
 }
 
@@ -1618,8 +1618,8 @@ void *fn_800A1BB0(void) {
 
 extern s32 lbl_803675EC;
 s32 fn_800A1BC0(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803675EC, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803675EC, arg1, 0);
     return 0;
 }
 
@@ -1630,8 +1630,8 @@ void *fn_800A1BEC(void) {
 
 extern s32 lbl_803675D8;
 s32 fn_800A1BFC(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803675D8, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803675D8, arg1, 0);
     return 0;
 }
 
@@ -1642,8 +1642,8 @@ void *fn_800A1C28(void) {
 
 extern s32 lbl_803675D0;
 s32 fn_800A1C38(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_803675D0, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_803675D0, arg1, 0);
     return 0;
 }
 
@@ -1657,7 +1657,7 @@ s32 fn_800A1C74(s32 arg0, s32 arg1, void *arg2) {
     if (*(u8 *)((char *)arg2 + 0x39) != 0) {
         return 0x10;
     }
-    fn_80024398(&lbl_80367588, arg1, 0);
+    Ui_CreateMenu(&lbl_80367588, arg1, 0);
     return 0;
 }
 
@@ -2313,7 +2313,7 @@ s32 fn_800A31D0(s32 arg0, s32 arg1) {
     extern M2C_UNK lbl_80367564;
     lbl_80367558 = 0;
     lbl_80367559 = 5;
-    fn_80024398(&lbl_80367564, arg1, 0);
+    Ui_CreateMenu(&lbl_80367564, arg1, 0);
     return 0;
 }
 
@@ -2395,8 +2395,8 @@ void *fn_800A355C(void) {
 
 extern s32 lbl_80367528;
 s32 fn_800A356C(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
-    fn_80024398(&lbl_80367528, arg1, 0);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
+    Ui_CreateMenu(&lbl_80367528, arg1, 0);
     return 0;
 }
 

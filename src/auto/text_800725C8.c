@@ -144,14 +144,14 @@ void fn_800728C8(void) {
 }
 
 void fn_80072900(s32 arg0) {
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     extern u8 gUiContext[24];
     extern u8 lbl_8036737C;
     u8 *p;
 
     p = gUiContext;
     p[8] = 0;
-    fn_80024398(&lbl_8036737C, arg0, 0);
+    Ui_CreateMenu(&lbl_8036737C, arg0, 0);
 }
 
 void fn_8007293C(void) {

@@ -25,7 +25,7 @@ extern u8 lbl_80367B0D;
 void fn_800C426C(s32);
 s32 fn_800C42AC(s32);
 void *fn_8003FCCC(void *);
-void fn_80024398(void *, s32, s32);
+void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
 
 extern s32 lbl_80367B00;
@@ -135,7 +135,7 @@ s32 fn_8014A98C(s32 arg0, s32 arg1, void *arg2)
 #pragma cplusplus on
 extern "C" s32 fn_8014AA18(void *arg0, void *arg1, void *arg2) {
     void *Hash_Lookup(s32);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     extern s32 lbl_80367B10;
     extern void *lbl_80367B14;
     extern u8 lbl_80367B34;
@@ -162,7 +162,7 @@ extern "C" s32 fn_8014AA18(void *arg0, void *arg1, void *arg2) {
     entry = ((s32 *)lbl_80367B00)[index];
     lbl_80367B14 = Hash_Lookup(entry);
     ((Obj *)arg0)->v9(arg1, arg2);
-    fn_80024398(&lbl_80367B34, arg1, 0);
+    Ui_CreateMenu(&lbl_80367B34, arg1, 0);
     return 0;
 }
 #pragma cplusplus reset

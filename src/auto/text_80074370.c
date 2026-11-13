@@ -14,7 +14,7 @@ typedef struct {
 } Entry_80079300;
 extern u8 D_802EF4C8[24];
 extern u8 lbl_8036723A;
-s32 fn_80024398();
+s32 Ui_CreateMenu();
 void fn_8007A524(void *arg0, s32 arg1, s32 arg2);
 
 void fn_80074370(void *arg0) {
@@ -43,7 +43,7 @@ s32 fn_80074758(s32 arg0, s32 arg1, void *arg2) {
         return 0x10;
     }
     gUiContext[0xA] = *((u8 *) arg2 + 0x3A);
-    fn_80024398(lbl_80311FF4, arg1, 0);
+    Ui_CreateMenu(lbl_80311FF4, arg1, 0);
     return 4;
 }
 
@@ -756,12 +756,12 @@ extern "C" s32 fn_80075814(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiContext[];
     extern u8 lbl_8036743C[8];
     void fn_80091CD8(s32);
-    void *fn_80024398(void *, s32, s32);
+    void *Ui_CreateMenu(void *, s32, s32);
     void *tmp;
 
     gUiContext[0xA] = *((u8 *)arg2 + 0x3A);
     fn_80091CD8(*(s32 *)gUiContext);
-    tmp = fn_80024398(lbl_8036743C, arg1, 0);
+    tmp = Ui_CreateMenu(lbl_8036743C, arg1, 0);
     *(s16 *)((u8 *)tmp + 0x30) = 0x180;
     *(s16 *)((u8 *)tmp + 0x32) = 0x46;
     return 4;
@@ -826,7 +826,7 @@ extern "C" s32 fn_80075930(void *arg0, void *arg1, void *arg2) {
     extern u8 lbl_80311F80[];
     s32 Msg_Expand(void *);
     void fn_80166AE8(s32, s32, s32, void *);
-    s32 fn_80024398(void *, void *, s32);
+    s32 Ui_CreateMenu(void *, void *, s32);
     s32 y;
     s32 a;
     s32 str;
@@ -845,7 +845,7 @@ extern "C" s32 fn_80075930(void *arg0, void *arg1, void *arg2) {
         fn_80166AE8(b + x, a + y, str, arg1);
         return 0;
     }
-    fn_80024398(lbl_80311F80, arg1, 0);
+    Ui_CreateMenu(lbl_80311F80, arg1, 0);
     return 4;
 }
 #pragma global_optimizer reset
@@ -1749,7 +1749,7 @@ s32 fn_800772AC(s32 arg0, s32 arg1) {
     extern u8 gUiContext[];
     extern u8 lbl_80311FB0[];
     gUiContext[8] = 0x20;
-    fn_80024398(lbl_80311FB0, arg1, 0);
+    Ui_CreateMenu(lbl_80311FB0, arg1, 0);
     return 4;
 }
 
@@ -1813,7 +1813,7 @@ s32 fn_8007749C(s32 arg0, s32 arg1) {
     extern u8 gUiContext[];
     extern u8 lbl_80311FA4[];
     gUiContext[8] = 0xE;
-    fn_80024398(lbl_80311FA4, arg1, 0);
+    Ui_CreateMenu(lbl_80311FA4, arg1, 0);
     return 4;
 }
 
@@ -2603,7 +2603,7 @@ s32 fn_80078C28(s32 arg0, s32 arg1) {
     extern u8 gUiContext[];
     extern u8 lbl_80311F98[];
     gUiContext[8] = 0x29;
-    fn_80024398(lbl_80311F98, arg1, 0);
+    Ui_CreateMenu(lbl_80311F98, arg1, 0);
     return 4;
 }
 
@@ -2639,7 +2639,7 @@ s32 fn_80078D48(s32 arg0, s32 arg1) {
     extern u8 gUiContext[];
     extern u8 lbl_80311F8C[];
     gUiContext[8] = 0xD;
-    fn_80024398(lbl_80311F8C, arg1, 0);
+    Ui_CreateMenu(lbl_80311F8C, arg1, 0);
     return 4;
 }
 

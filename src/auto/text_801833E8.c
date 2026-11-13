@@ -5141,7 +5141,7 @@ void fn_80191794(void* arg0) {
 }
 
 void fn_80191938(void *arg0) {
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
@@ -5154,7 +5154,7 @@ void fn_80191938(void *arg0) {
     *(s16 *)((u8 *)temp_r3 + 8) = 0x178;
     *(s16 *)((u8 *)temp_r3 + 0xA) = 0x3C;
     *(u8 *)((u8 *)temp_r3 + 0x24) = 1;
-    fn_80024398(temp_r3, arg0, 0);
+    Ui_CreateMenu(temp_r3, arg0, 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x68);
     temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x4C);
     res = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
@@ -5208,7 +5208,7 @@ void fn_801919B8(void *arg0) {
 }
 
 void fn_80191C7C(void *arg0) {
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
@@ -5221,7 +5221,7 @@ void fn_80191C7C(void *arg0) {
     *(s16 *)((u8 *)temp_r3 + 8) = 0x178;
     *(s16 *)((u8 *)temp_r3 + 0xA) = 0x3C;
     *(u8 *)((u8 *)temp_r3 + 0x24) = 1;
-    fn_80024398(temp_r3, arg0, 0);
+    Ui_CreateMenu(temp_r3, arg0, 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x68);
     temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x4C);
     res = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
@@ -5926,7 +5926,7 @@ void fn_80192E54(void *arg0) {
 void fn_80192EE8(void *arg0) {
     extern u8 lbl_80279DF0[];
     void *fn_8013BC10(void *, void *);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
     void *temp_r3;
@@ -5938,7 +5938,7 @@ void fn_80192EE8(void *arg0) {
     *(s16 *)((u8 *)temp_r3 + 8) = 0x178;
     *(s16 *)((u8 *)temp_r3 + 0xA) = 0x3C;
     *(s8 *)((u8 *)temp_r3 + 0x24) = 1;
-    fn_80024398(temp_r3, arg0, 0);
+    Ui_CreateMenu(temp_r3, arg0, 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x68);
     temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x4C);
     result = Ui_FindChild(arg0, -0x1000, 0);
@@ -6680,7 +6680,7 @@ extern "C" void fn_80194178(void *arg0) {
 void fn_80194374(void *arg0) {
     extern u8 lbl_8027A360[];
     void *fn_8013BC10(void *, void *);
-    void fn_80024398(void *, void *, s32);
+    void Ui_CreateMenu(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
     void *temp_r3;
@@ -6692,7 +6692,7 @@ void fn_80194374(void *arg0) {
     *(s16 *)((u8 *)temp_r3 + 8) = 0x178;
     *(s16 *)((u8 *)temp_r3 + 0xA) = 0x3C;
     *(s8 *)((u8 *)temp_r3 + 0x24) = 1;
-    fn_80024398(temp_r3, arg0, 0);
+    Ui_CreateMenu(temp_r3, arg0, 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x44);
     temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x28);
     result = Ui_FindChild(arg0, -0x1000, 0);

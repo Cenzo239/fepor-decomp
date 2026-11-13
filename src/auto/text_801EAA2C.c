@@ -50,7 +50,7 @@ void fn_801EAA2C(s8 *arg0) {
 
 void fn_801EAA38(s32 arg0) {
     void Msg_Expand(void *);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     void *fn_8013BFFC(void);
     extern char lbl_8027EE08[];
     void *tmp;
@@ -58,7 +58,7 @@ void fn_801EAA38(s32 arg0) {
     Msg_Expand(lbl_8027EE08 + 0x12b);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
-    fn_80024398(tmp, arg0, 0);
+    Ui_CreateMenu(tmp, arg0, 0);
 }
 
 extern u16 lbl_8029A164[10];
@@ -186,7 +186,7 @@ void fn_801EAEC8(void *arg0) {
 void fn_801EAF34(s32 arg0) {
     void Msg_Expand(void *);
     void fn_80018AF4(void);
-    void fn_80024398(void *, s32, s32);
+    void Ui_CreateMenu(void *, s32, s32);
     void *fn_8013BFFC(void);
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, void *);
@@ -200,7 +200,7 @@ void fn_801EAF34(s32 arg0) {
     Msg_Expand(lbl_8027EE08 + 0x12B);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
-    fn_80024398(tmp, arg0, 0);
+    Ui_CreateMenu(tmp, arg0, 0);
     result = Ui_FindChild(arg0, -0x1000, 0);
     if (result != 0) {
         Ui_SetWidgetText(result, lbl_8027EE08 + 0x148);
@@ -1803,10 +1803,10 @@ void fn_801ED8CC(void *arg0)
 }
 
 void fn_801ED940(s32 arg0) {
-    M2C_UNK fn_80024398(M2C_UNK *, s32, M2C_UNK);
+    M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
     extern u8 lbl_803392B8[];
 
-    fn_80024398((M2C_UNK *)lbl_803392B8, arg0, 0);
+    Ui_CreateMenu((M2C_UNK *)lbl_803392B8, arg0, 0);
 }
 
 void fn_801ED970(void *arg0, void *arg1)
