@@ -757,7 +757,7 @@ void Script_RegisterWinCondCommands(void) {
     void ScriptCmd_EnemyTigerCheck(void);
     void ScriptCmd_PlayerEscapeCheck(void);
     void ScriptCmd_PlayerEscapeCount(void);
-    void fn_801B70C8(void);
+    void ScriptCmd_ShooterBulletCheck(void);
     void fn_801B7094(void);
 
     Script_RegisterCommand(gWinCondCmdNames + 0xCE, ScriptCmd_AchieveSet, 2);
@@ -769,7 +769,7 @@ void Script_RegisterWinCondCommands(void) {
     Script_RegisterCommand(gWinCondCmdNames + 0x131, ScriptCmd_EnemyTigerCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x141, ScriptCmd_PlayerEscapeCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x153, ScriptCmd_PlayerEscapeCount, 0);
-    Script_RegisterCommand(gWinCondCmdNames + 0x165, fn_801B70C8, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x165, ScriptCmd_ShooterBulletCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x178, fn_801B7094, 0);
 }
 
@@ -792,7 +792,7 @@ s32 fn_801B7094(void) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_801B70C8(void) {
+s32 ScriptCmd_ShooterBulletCheck(void) {
     void DebugPrint(void *, ...);
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 gWinCondCmdNames[];
