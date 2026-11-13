@@ -75,7 +75,7 @@ void Ui_PlaySeCue(s32, s32); /* extern */
 
 extern void* fn_80019F04();
 #include "common.h"
-extern u8 lbl_802CA264[];
+extern u8 gUnitLists[];
 extern u8 lbl_802B14E4[];
 #include "common.h"
 #include "ef.h"
@@ -90,7 +90,7 @@ extern u8 lbl_80330708[];
 u8 fn_8014BC10(void *arg0) {
     void *fn_80019F04(u8);
     void fn_80015320(s32, void *);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802B14E4[];
     s32 score;
     void *self;
@@ -137,7 +137,7 @@ u8 fn_8014BC10(void *arg0) {
         g2 = 0x2D;
     } else {
         n = 0;
-        p = *(void **)(lbl_802CA264 + 0x48);
+        p = *(void **)(gUnitLists + 0x48);
         while (p != NULL) {
             u32 flags1a0 = *(u32 *)((u8 *)p + 0x1A0);
             p = *(void **)((u8 *)p + 0x184);
@@ -226,7 +226,7 @@ u8 fn_8014BC10(void *arg0) {
 
 unsigned int fn_8014C078(void *arg0) {
     void *fn_80019F04(u8);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     u8 id;
     s32 n;
     void *p;
@@ -238,7 +238,7 @@ unsigned int fn_8014C078(void *arg0) {
         return 0x2D;
     }
     n = 0;
-    p = *(void **)(lbl_802CA264 + 0x48);
+    p = *(void **)(gUnitLists + 0x48);
     while (p != NULL) {
         u32 flags1a0 = *(u32 *)((u8 *)p + 0x1A0);
         p = *(void **)((u8 *)p + 0x184);

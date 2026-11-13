@@ -161,7 +161,7 @@ void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
     void fn_80022DAC(void *, s32, s32);
     void fn_800AACDC(void *);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_80367289;
 
     void *node;
@@ -207,7 +207,7 @@ void fn_8001F140(void *arg0) {
 
     OSGetTick();
     fn_80022DAC(arg0, 9, 0);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    node = *(void **)(gUnitLists + 0xC);
     while (node != NULL) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
         next = *(void **)((u8 *)node + 0x184);

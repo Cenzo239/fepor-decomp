@@ -569,7 +569,7 @@ s32 fn_801A3E24(void *arg0) {
 }
 
 s32 fn_801A3F14(void *self) {
-extern void *lbl_802CA264[25]; extern u8 lbl_802CA518[];
+extern void *gUnitLists[25]; extern u8 lbl_802CA518[];
 u8 fn_80105BC0(void *,s32); u8 fn_80038128(void *,void *);
 u8 fn_8001F85C(void *,u8,u8,u8,u8); void **fn_80037D54(void *);
 void fn_80022FD8(void *,s32); void fn_80022DAC(void *,s32,s32);
@@ -577,7 +577,7 @@ u8 fn_8001DD54(void *,void *); void fn_8002011C(void *,u8,u8,u8,u8);
 void *members[3]; s32 cross[3]; s32 out;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
 if(fn_80105BC0((u8 *)self+0x1bc,84)) {
-void *node=lbl_802CA264[0]; s32 count=0; s32 i; void **walk;
+void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
 if(fn_80105BC0((u8 *)node+0x1bc,84) && count<3) members[count++]=node;
@@ -600,7 +600,7 @@ if(data) type=M2C_FIELD(data,u8 *,0x1d); else type=0;
 if(type>1) return 0;
 }}
 else if(fn_80105BC0((u8 *)self+0x1bc,85)) {
-void *node=lbl_802CA264[0]; s32 count=0; s32 i; void **walk;
+void *node=gUnitLists[0]; s32 count=0; s32 i; void **walk;
 while(node) {
 void *next=M2C_FIELD(node,void **,0x184);
 if(fn_80105BC0((u8 *)node+0x1bc,85) && count<3) members[count++]=node;

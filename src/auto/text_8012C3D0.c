@@ -1079,7 +1079,7 @@ void fn_8012DFA8(void *arg0) {
     extern u8 lbl_802913BC[];
     extern u8 lbl_802913E0[];
     extern u8 lbl_80291404[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 gUiContext[];
     extern u8 lbl_80330708[];
     extern u8 lbl_80330EAC[];
@@ -1122,33 +1122,33 @@ void fn_8012DFA8(void *arg0) {
     mode = self[0x6C];
     switch (mode) {
     case 1:
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             self[0x61]++;
         }
         break;
     case 2:
-        node = *(void **)(lbl_802CA264 + 0x3C);
+        node = *(void **)(gUnitLists + 0x3C);
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             self[0x61]++;
         }
         break;
     case 3:
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             self[0x61]++;
         }
-        node = *(void **)(lbl_802CA264 + 0x3C);
+        node = *(void **)(gUnitLists + 0x3C);
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             self[0x61]++;
         }
         break;
     default:
-        node = *(void **)(lbl_802CA264 + self[0x60] * 0xC);
+        node = *(void **)(gUnitLists + self[0x60] * 0xC);
         while (node != NULL) {
             flags = *(s32 *)((u8 *)node + 0x1A0);
             node = *(void **)((u8 *)node + 0x184);
@@ -1168,7 +1168,7 @@ void fn_8012DFA8(void *arg0) {
     switch (mode) {
     case 1:
         mask = 0x010000DC;
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & mask)) {
@@ -1184,7 +1184,7 @@ void fn_8012DFA8(void *arg0) {
             }
             node = next;
         }
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & mask) {
@@ -1202,7 +1202,7 @@ void fn_8012DFA8(void *arg0) {
         }
         break;
     case 2:
-        node = *(void **)(lbl_802CA264 + 0x3C);
+        node = *(void **)(gUnitLists + 0x3C);
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & 0x400000) {
@@ -1218,7 +1218,7 @@ void fn_8012DFA8(void *arg0) {
             }
             node = next;
         }
-        node = *(void **)(lbl_802CA264 + 0x3C);
+        node = *(void **)(gUnitLists + 0x3C);
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & 0x400000)) {
@@ -1236,7 +1236,7 @@ void fn_8012DFA8(void *arg0) {
         }
         break;
     case 3:
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
@@ -1250,7 +1250,7 @@ void fn_8012DFA8(void *arg0) {
             slot += 0x24;
             node = next;
         }
-        node = *(void **)(lbl_802CA264 + 0x3C);
+        node = *(void **)(gUnitLists + 0x3C);
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
@@ -1266,7 +1266,7 @@ void fn_8012DFA8(void *arg0) {
         }
         break;
     default:
-        node = *(void **)(lbl_802CA264 + self[0x60] * 0xC);
+        node = *(void **)(gUnitLists + self[0x60] * 0xC);
         while (node != NULL) {
             flags = *(s32 *)((u8 *)node + 0x1A0);
             next = *(void **)((u8 *)node + 0x184);
@@ -1969,7 +1969,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     extern f32 lbl_8036A564;
     extern f32 lbl_8036A568;
     extern u8 lbl_80275AC0[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern s32 lbl_802EF4E0[];
 
     struct Node {
@@ -2012,7 +2012,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         fn_800076EC();
         Prim2D_EndPrim();
         a = 0;
-        node = *(Node **)lbl_802CA264;
+        node = *(Node **)gUnitLists;
         while (node != NULL) {
             s32 flags = node->flags;
             node = node->next;
@@ -2051,7 +2051,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         fn_800076EC();
         Prim2D_EndPrim();
         b = 0;
-        node = *(Node **)(lbl_802CA264 + 0x3C);
+        node = *(Node **)(gUnitLists + 0x3C);
         while (node != NULL) {
             s32 flags = node->flags;
             node = node->next;

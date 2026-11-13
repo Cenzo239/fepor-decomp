@@ -2168,7 +2168,7 @@ extern "C" void fn_8002DA30(void)
     extern u8 lbl_80269210[];
     extern s32 lbl_80367254;
     extern s32 lbl_80367250;
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     struct Obj {
         void *unk0;
@@ -2209,7 +2209,7 @@ extern "C" void fn_8002DA30(void)
     } else if ((timer = lbl_80367254) > 0) {
         lbl_80367254 = timer - 1;
         return;
-    } else if (fn_80015680(lbl_802CA264 + 0xC) >= 1
+    } else if (fn_80015680(gUnitLists + 0xC) >= 1
         || (slot = *(u8 *)((u8 *)ctx + 0x3C), slot == 1)
         || (slot >= 9 && slot <= 0x1F)
         || slot == 0x33
@@ -2314,7 +2314,7 @@ void fn_8002E0D0(void) {
     void fn_801E3400(void *, u8);
     extern u8 lbl_80330708[];
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_80269210[];
     extern u8 lbl_80331FB8[];
     u8 sp10[8];
@@ -2369,7 +2369,7 @@ void fn_8002E0D0(void) {
         void *linked;
         u32 flags;
 
-        p = *(void **)(lbl_802CA264 + 0x40);
+        p = *(void **)(gUnitLists + 0x40);
         while (p != NULL) {
             flags = *(u32 *)((u8 *)p + 0x1A0);
             linked = *(void **)((u8 *)p + 0x180);
@@ -2442,12 +2442,12 @@ void fn_8002E444(void) {
         void *head;
         s32 unk4;
         s32 unk8;
-    } lbl_802CA264[];
+    } gUnitLists[];
     extern u8 lbl_80330708[];
     void *p;
 
     if (lbl_80330708[0x11] == 0 && !((lbl_80330708[0x9E] >> 6) & 1)) {
-        for (p = lbl_802CA264[lbl_80330708[0x11]].head; p != NULL; p = *(void **)((u8 *)p + 0x184)) {
+        for (p = gUnitLists[lbl_80330708[0x11]].head; p != NULL; p = *(void **)((u8 *)p + 0x184)) {
             if (fn_80105BC0((u8 *)p + 0x1BC, 0)) {
                 break;
             }
@@ -2465,11 +2465,11 @@ void fn_8002E510(void) {
         void *head;
         s32 unk4;
         s32 unk8;
-    } lbl_802CA264[];
+    } gUnitLists[];
     extern u8 lbl_80330708[];
     void *p;
 
-    for (p = lbl_802CA264[0].head; p != NULL; p = M2C_FIELD(p, void **, 0x184)) {
+    for (p = gUnitLists[0].head; p != NULL; p = M2C_FIELD(p, void **, 0x184)) {
         if (fn_80105BC0((u8 *)p + 0x1BC, 0)) {
             break;
         }
@@ -2486,13 +2486,13 @@ void fn_8002E5B4(s32 arg0) {
         void *head;
         s32 unk4;
         s32 unk8;
-    } lbl_802CA264[];
+    } gUnitLists[];
     extern u8 lbl_80330708[];
     extern u8 lbl_802CA518[];
     void *p;
     void *next;
 
-    p = lbl_802CA264[lbl_80330708[0x11]].head;
+    p = gUnitLists[lbl_80330708[0x11]].head;
     while (p != NULL) {
         next = M2C_FIELD(p, void **, 0x184);
         if (fn_8001F4CC(lbl_802CA518, M2C_FIELD(p, s8 *, 0x19E), M2C_FIELD(p, s8 *, 0x19F))) {

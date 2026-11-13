@@ -1186,7 +1186,7 @@ s32 fn_8010764C(u8 *arg0) {
     void fn_80050BCC(void *, s32);
     void fn_80050C90(void *);
     extern u8 lbl_802738F8[];
-    extern struct { u8 pad[0x30]; void *unk30; u8 pad34[8]; void *unk3C; } lbl_802CA264;
+    extern struct { u8 pad[0x30]; void *unk30; u8 pad34[8]; void *unk3C; } gUnitLists;
     u8 sp8[0x68];
     void *unit;
     void *obj;
@@ -1205,7 +1205,7 @@ s32 fn_8010764C(u8 *arg0) {
     if (unit == NULL) {
         if ((arg0[0x10C] & 2) || (sp8[8] & 8)) {
             kind = sp8[9];
-            unit = lbl_802CA264.unk30;
+            unit = gUnitLists.unk30;
             if (kind == 4) {
                 goto after_sw;
             } else if (kind >= 4) {
@@ -1248,7 +1248,7 @@ skip_type:
         void *var_r4;
         void *var_r5;
 
-        var_r4 = &lbl_802CA264;
+        var_r4 = &gUnitLists;
         var_r5 = *(void **)((u8 *)var_r4 + 0x3C);
         goto loop_cmp;
     loop_body:
@@ -1286,7 +1286,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     void fn_80107B54(u32 *, void *, u8);
     void *fn_80234198(void *, void *);
     extern u8 lbl_802738F8[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern s32 lbl_802CA518[];
     u32 spC;
     u32 sp8;
@@ -1316,7 +1316,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     if (fn_80234198(self, lbl_802738F8 + 0x58) != 0) {
         flags |= 1;
     }
-    if (fn_80015680(lbl_802CA264) == 0 && fn_80015680(lbl_802CA264 + 0x3C) == 0) {
+    if (fn_80015680(gUnitLists) == 0 && fn_80015680(gUnitLists + 0x3C) == 0) {
         flags |= 2;
     }
     sp8 = (u32)fn_8000D2BC(self);

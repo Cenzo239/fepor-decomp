@@ -4305,7 +4305,7 @@ s32 fn_8003C830(void *arg0, void *arg1) {
     void fn_8003C21C(void *, void *);
     void fn_8004BC48(void *, void *);
     void fn_8003B69C(s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802B14E4[];
     void *src;
     void *dst;
@@ -4326,7 +4326,7 @@ s32 fn_8003C830(void *arg0, void *arg1) {
     *(s32 *)((u8 *)dst + 0x188) = tmp;
     *(s32 *)((u8 *)dst + 0x18C) = t2;
     id = fn_8017A9DC(src);
-    fn_8003B6C4(dst, (s32)(lbl_802CA264 + id * 0xC));
+    fn_8003B6C4(dst, (s32)(gUnitLists + id * 0xC));
     id = fn_8017A9DC(src);
     if (id != 0) {
         p = lbl_802B14E4 + (id - 1) * 0x280;
@@ -4696,7 +4696,7 @@ void fn_8003D60C(void *arg0, s32 arg1) {
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *, s32);
     void fn_800946F0(void *);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     s32 off;
 
     switch (arg1) {
@@ -4706,14 +4706,14 @@ void fn_8003D60C(void *arg0, s32 arg1) {
         fn_800946F0(arg0);
         fn_800156A0(*(void **)((u8 *)arg0 + 0x190), arg0);
         off = arg1 * 0xC;
-        fn_80015718(lbl_802CA264 + off, arg0, off);
+        fn_80015718(gUnitLists + off, arg0, off);
         break;
     }
 }
 
 void fn_8003D68C(void *arg0, s32 arg1)
 {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     extern void fn_800946F0(void *);
     extern void fn_800156A0(void *, void *);
@@ -4740,7 +4740,7 @@ void fn_8003D68C(void *arg0, s32 arg1)
     fn_800156A0(*(void **)(obj + 0x190), obj);
 
     fn_800157DC(
-        lbl_802CA264 + index * 0xC,
+        gUnitLists + index * 0xC,
         obj
     );
 }
@@ -4966,7 +4966,7 @@ void fn_8003DFB8(void *arg0) {
     u8 fn_8003F214(void *);
     s32 *fn_8003F21C(void *);
     void fn_8004EA60(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     void *self = arg0;
     void *partner = *(void **)((u8 *)self + 0x194);
@@ -5072,7 +5072,7 @@ void fn_8003DFB8(void *arg0) {
         } else {
             fn_800156A0(partner);
             fn_8003B6F0(partner, -1);
-            fn_80015718(lbl_802CA264 + 0x30, partner);
+            fn_80015718(gUnitLists + 0x30, partner);
         }
     } else if (flags & 4) {
         other = *(void **)((u8 *)partner + 0x194);
@@ -5166,7 +5166,7 @@ void fn_8003DFB8(void *arg0) {
         } else {
             fn_800156A0(partner);
             fn_8003B6F0(partner, -1);
-            fn_80015718(lbl_802CA264 + 0x30, partner);
+            fn_80015718(gUnitLists + 0x30, partner);
         }
     }
 
@@ -5179,7 +5179,7 @@ finish:
     } else {
         fn_800156A0(self);
         fn_8003B6F0(self, -1);
-        fn_80015718(lbl_802CA264 + 0x30, self);
+        fn_80015718(gUnitLists + 0x30, self);
     }
 }
 #pragma use_lmw_stmw reset
@@ -5579,8 +5579,8 @@ void fn_8003EAE8(void *arg0, void *arg1) {
 #pragma use_lmw_stmw reset
 
 void *fn_8003F1AC(s32 arg0) {
-    extern u8 lbl_802CA264[];
-    return lbl_802CA264 + arg0 * 0xC;
+    extern u8 gUnitLists[];
+    return gUnitLists + arg0 * 0xC;
 }
 
 u8 fn_8003F1C0(void *arg0) {

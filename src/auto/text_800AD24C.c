@@ -581,11 +581,11 @@ s32 fn_800AE328(s32 arg0) {
 void fn_800AE3DC(s32 arg0) {
     void fn_8000CAA0(void *, s32);
     extern u8 lbl_80330708[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_8028D138[];
     u8 *entry;
 
-    entry = *(u8 **)(lbl_802CA264 + lbl_80330708[0x11] * 0xC);
+    entry = *(u8 **)(gUnitLists + lbl_80330708[0x11] * 0xC);
     while (entry != 0) {
         u32 flags = *(u32 *)(entry + 0x1A0);
         entry = *(u8 **)(entry + 0x184);
@@ -3518,12 +3518,12 @@ s32 fn_800B6FE4(u32 arg0) {
 s32 fn_800B7044(s32 arg0)
 {
     void fn_8004EA60(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     u8 *entry;
     u8 *next;
 
-    entry = *(u8 **)(lbl_802CA264 + arg0 * 0xC);
+    entry = *(u8 **)(gUnitLists + arg0 * 0xC);
 
     while (entry != 0) {
         next = *(u8 **)(entry + 0x184);
@@ -3539,12 +3539,12 @@ s32 fn_800B7044(s32 arg0)
 s32 fn_800B7098(s32 arg0)
 {
     void fn_8004EB14(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     u8 *entry;
     u8 *next;
 
-    entry = *(u8 **)(lbl_802CA264 + arg0 * 0xC);
+    entry = *(u8 **)(gUnitLists + arg0 * 0xC);
 
     while (entry != 0) {
         next = *(u8 **)(entry + 0x184);
@@ -3560,12 +3560,12 @@ s32 fn_800B7098(s32 arg0)
 s32 fn_800B70EC(s32 arg0)
 {
     void fn_8004F5EC(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     u8 *entry;
     u8 *next;
 
-    entry = *(u8 **)(lbl_802CA264 + arg0 * 0xC);
+    entry = *(u8 **)(gUnitLists + arg0 * 0xC);
 
     while (entry != 0) {
         next = *(u8 **)(entry + 0x184);
@@ -5579,7 +5579,7 @@ s32 fn_800BA784(void) {
     M2C_UNK fn_8003EA24(u8, u8);
     M2C_UNK fn_800C1060();
     extern M2C_UNK lbl_802B14E4;
-    extern M2C_UNK lbl_802CA264;
+    extern M2C_UNK gUnitLists;
     extern M2C_UNK lbl_802CA518;
     
     s32 sp10;
@@ -5612,7 +5612,7 @@ s32 fn_800BA784(void) {
         var_r31 += 1;
     } while ((s32) var_r31 <= 0x9F);
     
-    var_r3_2 = M2C_FIELD(&lbl_802CA264, void **, 4);
+    var_r3_2 = M2C_FIELD(&gUnitLists, void **, 4);
 loop_13:
     if (var_r3_2 != NULL) {
         temp_r30_2 = M2C_FIELD(var_r3_2, void **, 0x180);
@@ -7283,16 +7283,16 @@ u8 fn_800BD5AC(void) {
 
 void fn_800BD5E0(s32 arg0) {
     void fn_80015680(void *);
-    extern u8 lbl_802CA264[];
-    fn_80015680(&lbl_802CA264[arg0 * 0xC]);
+    extern u8 gUnitLists[];
+    fn_80015680(&gUnitLists[arg0 * 0xC]);
 }
 
-extern u16 lbl_802CA264[50];
+extern u16 gUnitLists[50];
 u8 fn_800BD610(s32 arg0) {
-    extern u16 lbl_802CA264[50];
+    extern u16 gUnitLists[50];
     void *temp_r3;
 
-    temp_r3 = *(void **)((u8 *)lbl_802CA264 + (arg0 * 0xC));
+    temp_r3 = *(void **)((u8 *)gUnitLists + (arg0 * 0xC));
     if (temp_r3 == NULL) {
         return 0U;
     }

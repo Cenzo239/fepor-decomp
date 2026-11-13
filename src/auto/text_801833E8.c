@@ -4033,7 +4033,7 @@ extern "C" void fn_8018F338(void *arg0) {
 #pragma cplusplus on
 extern "C" s32 fn_8018F374(void *arg0) {
     void *fn_80105710(void *);
-    extern u32 lbl_802CA264[];
+    extern u32 gUnitLists[];
     typedef struct Entry {
         void *ptr;
         u8 unk4;
@@ -4061,7 +4061,7 @@ after_load:
         return -1;
     }
     target = fn_80105710(*(void **)((u8 *)arg0 + 0x3C));
-    unit = *(u8 **)((u8 *)lbl_802CA264 + 0);
+    unit = *(u8 **)((u8 *)gUnitLists + 0);
     goto loop1_test;
 loop1_body:
     next = *(u8 **)(unit + 0x184);
@@ -4071,7 +4071,7 @@ loop1_test:
     if (unit != NULL) {
         goto loop1_body;
     }
-    unit = *(u8 **)((u8 *)lbl_802CA264 + 0x3C);
+    unit = *(u8 **)((u8 *)gUnitLists + 0x3C);
     goto loop2_test;
 loop2_body:
     next = *(u8 **)(unit + 0x184);
@@ -4223,13 +4223,13 @@ extern "C" void fn_8018FC1C(void *arg0) {
 #pragma use_lmw_stmw on
 extern "C" s32 fn_8018FC58(void *arg0) {
 void **fn_80037BBC(void *,s32);
-extern u32 lbl_802CA264[]; extern u32 lbl_803200AC[];
+extern u32 gUnitLists[]; extern u32 lbl_803200AC[];
 u8 *self=(u8 *)arg0; s32 total;
 {
 u8 *unit; u8 *target=*(u8 **)(self+0x3C); u8 *next; s32 count,i; u8 *entry; void *item;
 total=0;
 if(target==0) return 0;
-for(unit=*(u8 **)((u8 *)lbl_802CA264+0);unit;unit=next) {
+for(unit=*(u8 **)((u8 *)gUnitLists+0);unit;unit=next) {
 next=*(u8 **)(unit+0x184);
 total+=CountUnitItemReferences(unit,target);
 }
@@ -4237,7 +4237,7 @@ total+=CountUnitItemReferences(unit,target);
 {
 u8 *target=*(u8 **)(self+0x3C); u8 *unit; u8 *next; s32 count,i; u8 *entry; void *item;
 
-for(unit=*(u8 **)((u8 *)lbl_802CA264+60);unit;unit=next) {
+for(unit=*(u8 **)((u8 *)gUnitLists+60);unit;unit=next) {
 next=*(u8 **)(unit+0x184);
 total+=CountUnitItemReferences(unit,target);
 }
@@ -5619,7 +5619,7 @@ extern "C" void fn_801927DC(void *arg0) {
     void *fn_8013FF94(void *, s32, s32);
     void fn_801658DC(void *, void *);
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029625C[], lbl_80296150[];
-    extern u8 lbl_802CA264[], gUiContext[], lbl_80330708[];
+    extern u8 gUnitLists[], gUiContext[], lbl_80330708[];
     extern f32 lbl_8036AE20;
 
     struct Obj {
@@ -5714,9 +5714,9 @@ extern "C" void fn_801927DC(void *arg0) {
         *(s16 *)((u8 *)list + 0x64) = 2;
         ((Obj *)list)->v12(4);
         *(s16 *)((u8 *)list + 0x58) = 2;
-        for (walk = *(void **)lbl_802CA264; walk; walk = *(void **)((u8 *)walk + 0x184))
+        for (walk = *(void **)gUnitLists; walk; walk = *(void **)((u8 *)walk + 0x184))
             fn_8013B064(list, walk);
-        for (walk = *(void **)(lbl_802CA264 + 0x3C); walk; walk = *(void **)((u8 *)walk + 0x184))
+        for (walk = *(void **)(gUnitLists + 0x3C); walk; walk = *(void **)((u8 *)walk + 0x184))
             fn_8013B064(list, walk);
         q = *(void **)gUiContext;
         if (q != NULL)
@@ -6890,7 +6890,7 @@ extern "C" void fn_80194988(void *arg0) {
     void fn_8011D908(s32, void *);
     void *fn_8013FF94(void *, s32, s32);
     void fn_801658DC(u32, s32);
-    extern struct { void *head; s32 unk4; s32 unk8; } lbl_802CA264[];
+    extern struct { void *head; s32 unk4; s32 unk8; } gUnitLists[];
     extern u8 lbl_80330708[];
     extern u32 lbl_803200AC[];
 
@@ -6947,7 +6947,7 @@ extern "C" void fn_80194988(void *arg0) {
     panel->f8A = 0xA;
 
     dst = *(void **)((u8 *)self + 0x40);
-    unit = lbl_802CA264[0].head;
+    unit = gUnitLists[0].head;
     goto loop1_cond;
 loop1_body:
     for (i = 0; i < 4; i++) {
@@ -6974,7 +6974,7 @@ loop1_cond:
     }
 
     dst = *(void **)((u8 *)self + 0x40);
-    unit = *(void **)((u8 *)lbl_802CA264 + 0x3C);
+    unit = *(void **)((u8 *)gUnitLists + 0x3C);
     goto loop2_cond;
 loop2_body:
     for (i = 0; i < 4; i++) {

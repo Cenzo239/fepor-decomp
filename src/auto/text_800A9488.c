@@ -644,13 +644,13 @@ void fn_800AA4F8(void *arg0) {
 }
 
 void *fn_800AA5F0(void *arg0) {
-    extern void *lbl_802CA264;
+    extern void *gUnitLists;
     u32 var_r0;
     void *var_r3;
     void *var_r4;
     void *var_r5;
 
-    var_r4 = *(void **)lbl_802CA264;
+    var_r4 = *(void **)gUnitLists;
     if (var_r4 == NULL) {
         return NULL;
     }

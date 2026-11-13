@@ -21795,7 +21795,7 @@ s32 fn_800FE904(void) {
     u8 fn_80105BC0(void *, s32);
     u8 fn_8010C4B0(void *);
     extern u8 lbl_80330708[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern s32 lbl_80366E78;
     extern s32 lbl_80366E7C;
@@ -21820,7 +21820,7 @@ s32 fn_800FE904(void) {
 
     count = 0;
     offset = 0;
-    unit = *(void **)(lbl_802CA264 + lbl_80330708[0x11] * 0xC);
+    unit = *(void **)(gUnitLists + lbl_80330708[0x11] * 0xC);
     map = lbl_802CA518;
     while (unit != NULL) {
         tx = *(u8 *)((u8 *)unit + 0x19E);
@@ -21895,7 +21895,7 @@ s32 fn_800FE904(void) {
 
 void fn_800FEC0C(void) {
     extern u8 lbl_80330708[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_8032B3C0[];
 
     void fn_800FC6B0(void *);
@@ -21906,7 +21906,7 @@ void fn_800FEC0C(void) {
     void **table;
     s32 count;
 
-    fn_800FC6B0(lbl_802CA264 + lbl_80330708[0x11] * 12);
+    fn_800FC6B0(gUnitLists + lbl_80330708[0x11] * 12);
 
     count = fn_800FE904();
     table = (void **)(lbl_8032B3C0 + 0x18);

@@ -772,13 +772,13 @@ void fn_801B6F44(void) {
 }
 
 s32 fn_801B7094(void) {
-    extern u16 lbl_802CA264[50];
+    extern u16 gUnitLists[50];
     s32 count;
     s32 flags;
     void *p;
 
     count = 0;
-    p = M2C_FIELD(lbl_802CA264, void **, 0x48);
+    p = M2C_FIELD(gUnitLists, void **, 0x48);
     while (p != NULL) {
         flags = M2C_FIELD(p, s32 *, 0x1A0);
         p = M2C_FIELD(p, void **, 0x184);
@@ -878,7 +878,7 @@ s32 fn_801B7330(void) {
     void fn_800056CC(void *, ...);
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     u8 *base;
     void *next;
     s32 count;
@@ -886,7 +886,7 @@ s32 fn_801B7330(void) {
 
     count = 0;
     fn_800056CC(lbl_8027C370 + 0x1A9);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    node = *(void **)(gUnitLists + 0xC);
     base = lbl_8027C370;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
@@ -903,7 +903,7 @@ s32 fn_801B73DC(void) {
     void fn_800056CC(void *, ...);
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     u8 *base;
     void *next;
     s32 count;
@@ -911,7 +911,7 @@ s32 fn_801B73DC(void) {
 
     count = 0;
     fn_800056CC(lbl_8027C370 + 0x1C0);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    node = *(void **)(gUnitLists + 0xC);
     base = lbl_8027C370;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
@@ -928,7 +928,7 @@ s32 fn_801B7488(void) {
     void fn_800056CC(void *, ...);
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     u8 *base;
     void *next;
     void *entry;
@@ -937,7 +937,7 @@ s32 fn_801B7488(void) {
 
     count = 0;
     fn_800056CC(lbl_8027C370 + 0x1E8);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    node = *(void **)(gUnitLists + 0xC);
     base = lbl_8027C370;
     while (node != NULL) {
         entry = *(void **)((u8 *)node + 0x18C);
@@ -957,14 +957,14 @@ s32 fn_801B7564(void *arg0) {
     void fn_800056CC(void *, ...);
     s32 fn_802342B8(void *, void *);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     void *next;
     s32 count;
     void *node;
 
     count = 0;
     fn_800056CC(lbl_8027C370 + 0x21C);
-    node = *(void **)(lbl_802CA264 + 0xC);
+    node = *(void **)(gUnitLists + 0xC);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (fn_802342B8(*(void **)(*(void **)((u8 *)node + 0x188)), arg0) == 0) {
@@ -979,20 +979,20 @@ s32 fn_801B75F4(void)
 {
     void fn_800056CC(const char *, ...);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     fn_800056CC((char *)lbl_8027C370 + 0x225);
-    return *(s32 *)(lbl_802CA264 + 0xC) == 0;
+    return *(s32 *)(gUnitLists + 0xC) == 0;
 }
 
 s32 fn_801B7638(void)
 {
     void fn_800056CC(const char *, ...);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     fn_800056CC((char *)lbl_8027C370 + 0x22e);
-    return *(s32 *)(lbl_802CA264 + 0x48) == 0;
+    return *(s32 *)(gUnitLists + 0x48) == 0;
 }
 
 s32 fn_801B767C(void *arg0) {
@@ -2939,7 +2939,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
     extern u8 lbl_80292178[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80295404[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2E0;
 
@@ -2976,7 +2976,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
 
     {
         void *hold = *(void **)((u8 *)self + 0x48);
-        void *entry = *(void **)lbl_802CA264;
+        void *entry = *(void **)gUnitLists;
         while (entry != NULL) {
             fn_8013B064(hold, entry);
             entry = *(void **)((u8 *)entry + 0x184);
@@ -2984,7 +2984,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
     }
     {
         void *hold2 = *(void **)((u8 *)self + 0x48);
-        void *entry2 = *(void **)(lbl_802CA264 + 0x3C);
+        void *entry2 = *(void **)(gUnitLists + 0x3C);
         while (entry2 != NULL) {
             fn_8013B064(hold2, entry2);
             entry2 = *(void **)((u8 *)entry2 + 0x184);
@@ -3189,7 +3189,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     extern u8 lbl_80293C00[];
     extern u8 lbl_80293C2C[];
     extern u8 lbl_80293C84[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 gUiContext[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2DC;
@@ -3239,13 +3239,13 @@ extern "C" void fn_801BBDA0(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x58) = 3;
 
     hold = *(void **)((u8 *)self + 0x48);
-    entry = *(void **)lbl_802CA264;
+    entry = *(void **)gUnitLists;
     while (entry != NULL) {
         fn_8013B064(hold, entry);
         entry = *(void **)((u8 *)entry + 0x184);
     }
     hold = *(void **)((u8 *)self + 0x48);
-    entry = *(void **)(lbl_802CA264 + 0x3C);
+    entry = *(void **)(gUnitLists + 0x3C);
     while (entry != NULL) {
         fn_8013B064(hold, entry);
         entry = *(void **)((u8 *)entry + 0x184);
@@ -4258,7 +4258,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     extern u8 lbl_80291A3C[];
     extern u8 lbl_80292178[];
     extern u8 lbl_80292230[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2E0;
 
@@ -4297,13 +4297,13 @@ extern "C" void fn_801BDAF8(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x58) = 3;
 
     hold = *(void **)((u8 *)self + 0x48);
-    entry = *(void **)lbl_802CA264;
+    entry = *(void **)gUnitLists;
     while (entry != NULL) {
         fn_8013B064(hold, entry);
         entry = *(void **)((u8 *)entry + 0x184);
     }
     hold = *(void **)((u8 *)self + 0x48);
-    entry = *(void **)(lbl_802CA264 + 0x3C);
+    entry = *(void **)(gUnitLists + 0x3C);
     while (entry != NULL) {
         fn_8013B064(hold, entry);
         entry = *(void **)((u8 *)entry + 0x184);
@@ -13530,11 +13530,11 @@ void fn_801D3508(s32 arg0) {
 
 void fn_801D3588(s32 arg0) {
     void fn_8000C070(s32, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     u8 *node;
     u32 flags;
 
-    node = *(u8 **)(lbl_802CA264 + 0x48);
+    node = *(u8 **)(gUnitLists + 0x48);
     while (node != NULL) {
         flags = *(u32 *)(node + 0x1A0);
         node = *(u8 **)(node + 0x184);
@@ -15862,7 +15862,7 @@ void fn_801DE474(void *arg0, void *arg1)
     extern u8 lbl_8027E8D0[];
     extern u8 lbl_80330708[];
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
 
     typedef void (*V0)(void *);
     typedef void (*V1)(void *, void *);
@@ -16129,7 +16129,7 @@ void fn_801DE474(void *arg0, void *arg1)
 
     row_y = (s16)(ybase + gap);
     x_cur = 0x80;
-    node = *(void **)(lbl_802CA264 + 0x48);
+    node = *(void **)(gUnitLists + 0x48);
     x_prev = 0;
     y_prev = 0;
     any = 0;
@@ -18918,7 +18918,7 @@ extern s16 *lbl_8027C698;
 extern void *lbl_803682B8;
 extern u8 lbl_802986A8[];
 extern u16 lbl_8027C370[];
-extern u16 lbl_802CA264[];
+extern u16 gUnitLists[];
 #include "global.h"
 
 extern s32 gUiInputFlags;

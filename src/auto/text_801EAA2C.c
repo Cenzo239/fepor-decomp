@@ -67,7 +67,7 @@ s32 fn_801EAA88(void) {
 }
 
 void *fn_801EAABC(char *arg0, void *arg1) {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern char lbl_8027EE08[];
     s32 fn_80015680(void *);
     void *fn_8000CAA0(void *, void *);
@@ -80,7 +80,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
     s32 len;
     s32 sp8;
 
-    if (fn_80015680(lbl_802CA264 + 0x3C) == 0) {
+    if (fn_80015680(gUnitLists + 0x3C) == 0) {
         return NULL;
     }
 
@@ -102,7 +102,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
 }
 
 s32 fn_801EAB90(s32 unused, void *obj) {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern s32 lbl_802EF4E0[];
     u32 flags;
     void *node;
@@ -120,7 +120,7 @@ s32 fn_801EAB90(s32 unused, void *obj) {
         return 0;
     }
     count = 0;
-    node = *(void **)(lbl_802CA264 + 0x3C);
+    node = *(void **)(gUnitLists + 0x3C);
     while (node != NULL) {
         nf = *(u32 *)((u8 *)node + 0x1A0);
         node = *(void **)((u8 *)node + 0x184);
@@ -267,7 +267,7 @@ void fn_801EB294(void *arg0)
     void Ui_PlaySeCue(u8 *, s32);
     void fn_801658DC(u32, u8 *);
     extern u8 lbl_8027EE08[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern u8 gUiContext[];
     extern s32 gUiInputFlags;
@@ -310,7 +310,7 @@ void fn_801EB294(void *arg0)
         }
     } else {
         flag = 0;
-        iter = *(void **)(lbl_802CA264 + 0xC);
+        iter = *(void **)(gUnitLists + 0xC);
         while (iter != NULL) {
             flags = *(u32 *)((u8 *)iter + 0x1A0);
             iter = *(void **)((u8 *)iter + 0x184);
@@ -405,7 +405,7 @@ void fn_801EB294(void *arg0)
                 }
             } else if (unit == NULL) {
                 flag = 0;
-                iter = *(void **)(lbl_802CA264 + 0xC);
+                iter = *(void **)(gUnitLists + 0xC);
                 while (iter != NULL) {
                     flags = *(u32 *)((u8 *)iter + 0x1A0);
                     next = *(void **)((u8 *)iter + 0x184);
@@ -494,14 +494,14 @@ void fn_801EBB00(void *arg0) {
     void fn_80018B04(void);
     void String_Destroy(void *, s32);
     void fn_80140304(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_803671C0;
     void *iter;
     void *next;
     u32 flags;
 
-    iter = *(void **)(lbl_802CA264 + 0xC);
+    iter = *(void **)(gUnitLists + 0xC);
     while (iter != NULL) {
         flags = *(u32 *)((u8 *)iter + 0x1A0);
         next = *(void **)((u8 *)iter + 0x184);
@@ -663,7 +663,7 @@ void fn_801EBE60(void) {
 
 void fn_801EBE88(void)
 {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     void fn_8001594C(void *, s32);
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
@@ -673,7 +673,7 @@ void fn_801EBE88(void)
     void *next;
 
     fn_8001594C(sp, 5);
-    head = (void **)(lbl_802CA264 + 0x3c);
+    head = (void **)(gUnitLists + 0x3c);
     node = *head;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);

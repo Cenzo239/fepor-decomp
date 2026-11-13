@@ -1212,7 +1212,7 @@ void *fn_80014FF8(void *arg0) {
 s32 fn_8001512C(u8 *arg0) {
     u8 fn_8014D8BC(void *);
     extern u8 lbl_80330708[];
-    extern u32 lbl_802CA264[];
+    extern u32 gUnitLists[];
     s32 count;
     void *node;
     s32 kind;
@@ -1224,7 +1224,7 @@ s32 fn_8001512C(u8 *arg0) {
     switch (kind) {
     case 0:
         count = 0;
-        node = (void *)lbl_802CA264[kind * 3];
+        node = (void *)gUnitLists[kind * 3];
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             count += 1;
@@ -1232,7 +1232,7 @@ s32 fn_8001512C(u8 *arg0) {
         return count > 1;
     case 3:
         count = 0;
-        node = (void *)lbl_802CA264[kind * 3];
+        node = (void *)gUnitLists[kind * 3];
         while (node != NULL) {
             node = *(void **)((u8 *)node + 0x184);
             count += 1;
@@ -1949,23 +1949,23 @@ void fn_80016180(void)
 
 void fn_8001621C(void) {
     void fn_8004EA60(void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     void *node;
     void *next;
 
-    node = *(void **)(lbl_802CA264 + 0x3C);
+    node = *(void **)(gUnitLists + 0x3C);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         fn_8004EA60(node, 0);
         node = next;
     }
-    node = *(void **)(lbl_802CA264 + 0x48);
+    node = *(void **)(gUnitLists + 0x48);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         fn_8004EA60(node, 0);
         node = next;
     }
-    node = *(void **)(lbl_802CA264 + 0x54);
+    node = *(void **)(gUnitLists + 0x54);
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         fn_8004EA60(node, 0);
@@ -2028,7 +2028,7 @@ void fn_80016498(void)
 #pragma use_lmw_stmw on
 void fn_80016538(void)
 {
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern char lbl_802680A8[];
 
     extern s32 fn_80015680(void *);
@@ -2047,7 +2047,7 @@ void fn_80016538(void)
     s32 result;
     void *ptr;
 
-    slot = lbl_802CA264;
+    slot = gUnitLists;
     index = 0;
     strings = lbl_802680A8;
 
@@ -2095,7 +2095,7 @@ void fn_80016628(s32 arg0) {
     M2C_UNK fn_8003B6F0(M2C_UNK *, s32);
     u8 fn_8003C830(M2C_UNK *, s32);
     extern M2C_UNK lbl_802B14E4;
-    extern M2C_UNK lbl_802CA264;
+    extern M2C_UNK gUnitLists;
     M2C_UNK *temp_r27;
     M2C_UNK *var_r28;
     M2C_UNK *var_r28_2;
@@ -2106,15 +2106,15 @@ void fn_80016628(s32 arg0) {
     s32 var_r29;
     s32 var_r29_2;
 
-    fn_8001594C(&lbl_802CA264, 0);
-    fn_8001594C(&lbl_802CA264 + 0xC, 1);
-    fn_8001594C(&lbl_802CA264 + 0x18, 2);
-    fn_8001594C(&lbl_802CA264 + 0x24, 3);
-    temp_r27 = &lbl_802CA264 + 0x30;
+    fn_8001594C(&gUnitLists, 0);
+    fn_8001594C(&gUnitLists + 0xC, 1);
+    fn_8001594C(&gUnitLists + 0x18, 2);
+    fn_8001594C(&gUnitLists + 0x24, 3);
+    temp_r27 = &gUnitLists + 0x30;
     fn_8001594C(temp_r27, 4);
-    fn_8001594C(&lbl_802CA264 + 0x3C, 5);
-    fn_8001594C(&lbl_802CA264 + 0x48, 6);
-    fn_8001594C(&lbl_802CA264 + 0x54, 7);
+    fn_8001594C(&gUnitLists + 0x3C, 5);
+    fn_8001594C(&gUnitLists + 0x48, 6);
+    fn_8001594C(&gUnitLists + 0x54, 7);
     var_r29 = 0;
     var_r31 = &lbl_802B14E4;
     var_r28 = &lbl_802B14E4;
@@ -2135,7 +2135,7 @@ void fn_80016628(s32 arg0) {
         var_r28_2 += 0x280;
     } while (var_r29_2 < 0x9F);
     var_r27 = 0;
-    var_r28_3 = &lbl_802CA264;
+    var_r28_3 = &gUnitLists;
     do {
         if (var_r27 != 4) {
             fn_800158A0(var_r28_3);
@@ -2146,7 +2146,7 @@ void fn_80016628(s32 arg0) {
     var_r27_2 = 0;
     do {
         if (((u32) M2C_FIELD(var_r31, u32 *, 0x180) == 0U) && ((u32) M2C_FIELD(var_r31, u32 *, 0x184) == 0U)) {
-            fn_80015718(&lbl_802CA264 + (M2C_FIELD(M2C_FIELD(var_r31, void **, 0x190), u8 *, 8) * 0xC), var_r31);
+            fn_80015718(&gUnitLists + (M2C_FIELD(M2C_FIELD(var_r31, void **, 0x190), u8 *, 8) * 0xC), var_r31);
         }
         var_r27_2 += 1;
         var_r31 += 0x280;
@@ -2291,10 +2291,10 @@ void fn_80016A3C(s32 arg0) {
 
 s32 fn_80016A9C(s32 arg0) {
     s32 fn_80037710(s32);
-    extern u32 lbl_802CA264[];
+    extern u32 gUnitLists[];
     u32 v;
 
-    v = lbl_802CA264[arg0 * 3];
+    v = gUnitLists[arg0 * 3];
     if (v != 0U) {
         return fn_80037710(v);
     }
@@ -2449,20 +2449,20 @@ void fn_80016DE0(void) {
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_8003B6F0(M2C_UNK *, s32);
     extern M2C_UNK lbl_802B14E4;
-    extern M2C_UNK lbl_802CA264;
+    extern M2C_UNK gUnitLists;
     M2C_UNK *temp_r30;
     M2C_UNK *var_r31;
     s32 var_r29;
 
-    fn_8001594C(&lbl_802CA264, 0);
-    fn_8001594C(&lbl_802CA264 + 0xC, 1);
-    fn_8001594C(&lbl_802CA264 + 0x18, 2);
-    fn_8001594C(&lbl_802CA264 + 0x24, 3);
-    temp_r30 = &lbl_802CA264 + 0x30;
+    fn_8001594C(&gUnitLists, 0);
+    fn_8001594C(&gUnitLists + 0xC, 1);
+    fn_8001594C(&gUnitLists + 0x18, 2);
+    fn_8001594C(&gUnitLists + 0x24, 3);
+    temp_r30 = &gUnitLists + 0x30;
     fn_8001594C(temp_r30, 4);
-    fn_8001594C(&lbl_802CA264 + 0x3C, 5);
-    fn_8001594C(&lbl_802CA264 + 0x48, 6);
-    fn_8001594C(&lbl_802CA264 + 0x54, 7);
+    fn_8001594C(&gUnitLists + 0x3C, 5);
+    fn_8001594C(&gUnitLists + 0x48, 6);
+    fn_8001594C(&gUnitLists + 0x54, 7);
     var_r29 = 0;
     var_r31 = &lbl_802B14E4;
     do {
@@ -2480,7 +2480,7 @@ extern void* lbl_80367190;
 extern u16 lbl_80367196;
 extern s32 lbl_803671A8;
 #include "common.h"
-extern u32 lbl_802CA264[];
+extern u32 gUnitLists[];
 extern u32 lbl_80330708[];
 #include "global.h"
 #include "common.h"

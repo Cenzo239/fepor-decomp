@@ -427,7 +427,7 @@ void fn_8007D270(void *arg0) {
     void *fn_8007BA4C(void *, s32);
     void fn_8007DD78(void *);
     void fn_801A7218(void *, void *, s32);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_80330EAC[];
     void *obj;
@@ -451,7 +451,7 @@ void fn_8007D270(void *arg0) {
                 kind = *(u8 *)((u8 *)link + 8);
                 switch (kind) {
                 case 0:
-                    tmp = *(void **)(lbl_802CA264 + 0x3C);
+                    tmp = *(void **)(gUnitLists + 0x3C);
                     if (tmp != NULL) {
                         *(void **)((u8 *)obj + 0x58) = tmp;
                     } else {
@@ -459,7 +459,7 @@ void fn_8007D270(void *arg0) {
                     }
                     break;
                 case 5:
-                    tmp = *(void **)lbl_802CA264;
+                    tmp = *(void **)gUnitLists;
                     if (tmp != NULL) {
                         *(void **)((u8 *)obj + 0x58) = tmp;
                     } else {
@@ -495,7 +495,7 @@ void fn_8007D270(void *arg0) {
                 kind = *(u8 *)((u8 *)link + 8);
                 switch (kind) {
                 case 0:
-                    tmp = *(void **)(lbl_802CA264 + 0x40);
+                    tmp = *(void **)(gUnitLists + 0x40);
                     if (tmp != NULL) {
                         *(void **)((u8 *)obj + 0x58) = tmp;
                     } else {
@@ -503,7 +503,7 @@ void fn_8007D270(void *arg0) {
                     }
                     break;
                 case 5:
-                    tmp = *(void **)(lbl_802CA264 + 4);
+                    tmp = *(void **)(gUnitLists + 4);
                     if (tmp != NULL) {
                         *(void **)((u8 *)obj + 0x58) = tmp;
                     } else {

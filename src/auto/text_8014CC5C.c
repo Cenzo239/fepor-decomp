@@ -80,7 +80,7 @@ void Ui_PlaySeCue(s32, s32); /* extern */
 
 extern void* fn_80019F04();
 #include "common.h"
-extern u16 lbl_802CA264[50];
+extern u16 gUnitLists[50];
 extern u16 lbl_802B14E4[];
 #include "common.h"
 #include "ef.h"

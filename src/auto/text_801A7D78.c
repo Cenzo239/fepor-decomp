@@ -836,7 +836,7 @@ void fn_801A9C0C(void *arg0) {
     M2C_UNK fn_80050E14(u16, void *);
     M2C_UNK fn_800A89C0(void *);
     M2C_UNK fn_800A8A2C(void *);
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_80331B70[];
     extern u8 lbl_80331BD4[];
     extern s8 lbl_80368218;
@@ -857,7 +857,7 @@ void fn_801A9C0C(void *arg0) {
     fn_80050E14(temp_r3, lbl_80331BD4);
     *(void **)((u8 *)arg0 + 0x188) = lbl_80331B70;
     *(void **)((u8 *)arg0 + 0x18C) = lbl_80331BD4;
-    *(void **)((u8 *)arg0 + 0x190) = lbl_802CA264;
+    *(void **)((u8 *)arg0 + 0x190) = gUnitLists;
 }
 
 void fn_801A9CB8(void *arg0, s32 arg1) {

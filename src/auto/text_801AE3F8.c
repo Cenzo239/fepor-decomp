@@ -1056,7 +1056,7 @@ s32 fn_8013AC54(void *);
 u8 fn_8014D8DC(void *);
 void fn_8011D79C(void *);
 void fn_801658DC(void *,void *);
-extern u8 lbl_802CA264[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
+extern u8 gUnitLists[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
 extern const f32 lbl_8036B0A8;
 s16 sp20[2],sp1c[2],sp18[2],sp14[2],sp10[2],spc[2],sp8[2];
 void *list; void *item; void *panel; void *self; void *p; void *q; void *walk; void *res;
@@ -1089,8 +1089,8 @@ if (!q) {
  *(s16 *)((u8 *)list + 0x8)=8;*(s16 *)((u8 *)list + 0x24)=8;*(s16 *)((u8 *)list + 0x5a)=0x1a;*(s16 *)((u8 *)list + 0x64)=2;
  ((SetupMenuObj *)list)->v12(4);
  *(s16 *)((u8 *)list + 0x58)=2;
- for(walk=*(void **)lbl_802CA264;walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
- for(walk=*(void **)(lbl_802CA264+0x3c);walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
+ for(walk=*(void **)gUnitLists;walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
+ for(walk=*(void **)(gUnitLists+0x3c);walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
  q=*(void **)gUiContext;if(q) fn_8013AD70(list,q);
 }
 *(u8 *)((u8 *)list + 0x4c)=0;fn_801400F4(self,list);

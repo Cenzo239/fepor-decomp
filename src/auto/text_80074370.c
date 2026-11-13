@@ -1635,7 +1635,7 @@ void fn_80076F54(void) {
 
 s32 fn_80076F80(void) {
     extern u8 gUiContext[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_80330708[];
     u8 fn_80105BC0(void *, s32);
     s32 fn_80015680(u8 *);
@@ -1644,7 +1644,7 @@ s32 fn_80076F80(void) {
     if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
     }
-    if (fn_80015680(lbl_802CA264 + 0x24) == 0) {
+    if (fn_80015680(gUnitLists + 0x24) == 0) {
         return 3;
     }
     return (fn_8014D8BC(lbl_80330708) == 0) ? 3 : 0;
@@ -1680,7 +1680,7 @@ void fn_800770A0(void) {
 
 s32 fn_800770CC(void) {
     extern u8 gUiContext[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_80330708[];
     u8 fn_80105BC0(void *, s32);
     s32 fn_80015680(u8 *);
@@ -1689,7 +1689,7 @@ s32 fn_800770CC(void) {
     if (fn_80105BC0(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
     }
-    if (fn_80015680(lbl_802CA264) <= 1) {
+    if (fn_80015680(gUnitLists) <= 1) {
         return 3;
     }
     return (fn_8014D8BC((u32 *)lbl_80330708) == 0) ? 3 : 0;

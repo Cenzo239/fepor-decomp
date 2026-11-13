@@ -80,7 +80,7 @@ void Ui_PlaySeCue(s32, s32); /* extern */
 
 extern void* fn_80019F04();
 #include "common.h"
-extern u16 lbl_802CA264[50];
+extern u16 gUnitLists[50];
 extern u16 lbl_802B14E4[];
 #include "common.h"
 #include "ef.h"
@@ -241,7 +241,7 @@ s32 fn_8014D2CC(void *arg0) {
         void *node;
         s32 i;
 
-        node = *(void **)lbl_802CA264;
+        node = *(void **)gUnitLists;
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             for (i = 0; i < 8; i++) {
@@ -257,7 +257,7 @@ s32 fn_8014D2CC(void *arg0) {
         void *node;
         s32 i;
 
-        node = *(void **)((u8 *)lbl_802CA264 + 0x3C);
+        node = *(void **)((u8 *)gUnitLists + 0x3C);
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             for (i = 0; i < 8; i++) {

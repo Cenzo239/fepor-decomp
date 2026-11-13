@@ -3121,7 +3121,7 @@ void fn_801186E4(void *arg0)
     void Ui_PlaySeCue(u8 *, s32);
     void fn_801658DC(u32, u8 *);
     extern u8 lbl_80274508[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern u8 gUiContext[];
     extern s32 gUiInputFlags;
@@ -3161,7 +3161,7 @@ void fn_801186E4(void *arg0)
         }
     } else {
         flag = 0;
-        iter = *(void **)(lbl_802CA264 + 0xC);
+        iter = *(void **)(gUnitLists + 0xC);
         while (iter != NULL) {
             flags = *(u32 *)((u8 *)iter + 0x1A0);
             iter = *(void **)((u8 *)iter + 0x184);
@@ -3251,7 +3251,7 @@ void fn_801186E4(void *arg0)
                 }
             } else if (unit == NULL) {
                 flag = 0;
-                iter = *(void **)(lbl_802CA264 + 0xC);
+                iter = *(void **)(gUnitLists + 0xC);
                 while (iter != NULL) {
                     flags = *(u32 *)((u8 *)iter + 0x1A0);
                     if (flags & 0x800) {
@@ -3354,7 +3354,7 @@ void fn_80118C84(void *arg0) {
     extern u8 lbl_80274508[];
     extern u8 lbl_8028F7B8[];
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA264[];
+    extern u8 gUnitLists[];
     extern u8 lbl_802CA518[];
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
@@ -3448,7 +3448,7 @@ void fn_80118C84(void *arg0) {
         }
     } else {
         flag = 0;
-        iter = *(void **)(lbl_802CA264 + 0xC);
+        iter = *(void **)(gUnitLists + 0xC);
         while (iter != NULL) {
             flags = *(u32 *)((u8 *)iter + 0x1A0);
             iter = *(void **)((u8 *)iter + 0x184);
@@ -3634,7 +3634,7 @@ void fn_80118C84(void *arg0) {
         }
         if (unit == NULL) {
             flag = 0;
-            iter = *(void **)(lbl_802CA264 + 0xC);
+            iter = *(void **)(gUnitLists + 0xC);
             while (iter != NULL) {
                 flags = *(u32 *)((u8 *)iter + 0x1A0);
                 if (flags & 0x800) {
@@ -5284,12 +5284,11 @@ void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 
+#pragma global_optimizer off
 void fn_8011CC04(u8 *arg0) {
     s32 a;
     s32 b;
-    s32 t1;
-    s32 t2;
-    s32 t3;
+    s32 shifted;
 
     arg0[0xF0] = 1;
     a = *(s32 *)(arg0 + 0xB0);
@@ -5297,12 +5296,10 @@ void fn_8011CC04(u8 *arg0) {
     if (a > b) {
         a = b;
     }
-    t1 = a * 0x10;
-    t2 = *(s32 *)(arg0 + 0xC8);
-    t3 = t1 + 2;
-    *(s32 *)(arg0 + 0x64) = t2 + t3;
+    shifted = a << 4;
+    *(s32 *)(arg0 + 0x64) = *(s32 *)(arg0 + 0xC8) + shifted + 2;
 }
-
+#pragma global_optimizer reset
 void fn_8011D014(void *arg0) {
     void fn_800E43EC(void *);
     void fn_800E7C88(void *);
@@ -6619,7 +6616,7 @@ extern struct SomeStruct* lbl_80320C20; // example struct
 
 extern u16 lbl_8028F6C8[];
 extern u16 lbl_80296128[];
-extern void *lbl_802CA264;
+extern void *gUnitLists;
 extern u16 lbl_802EF4E0[];
 
 s32 fn_80120C2C(void) {
