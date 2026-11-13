@@ -2828,7 +2828,7 @@ void fn_800062EC(void *, void *, s32);
 void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
 void QUATMtx(f32 *, void *);
-void fn_80203604(f32 *, f32 *, f32 *, f32);
+void QUATSlerp(f32 *, f32 *, f32 *, f32);
 void fn_80061A08(void *arg0)
 {
     f32 sp258[4];
@@ -3283,7 +3283,7 @@ void fn_80061A08(void *arg0)
                         sp18 = sp140[0x1D];
                         sp1C = sp140[0x1E];
                     }
-                    fn_80203604(&sp20, &sp10, &sp20, w);
+                    QUATSlerp(&sp20, &sp10, &sp20, w);
                 }
             }
         }

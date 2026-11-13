@@ -87,7 +87,7 @@ void QUATMtx(Quaternion *qOut, Mtx m) {
     }
 }
 
-void fn_80203604(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
+void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
     f32 fn_80238A30(f32);
     f32 fn_80238A78(f32);
     f32 theta;

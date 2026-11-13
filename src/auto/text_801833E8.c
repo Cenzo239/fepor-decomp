@@ -2274,7 +2274,7 @@ void fn_8018A824(void *arg0) {
 #pragma cplusplus off
 void fn_8018A91C(void *arg0, f32 angle) {
     void fn_80203320(void *,void *,f32);
-    void fn_80203604(void *,void *,void *,f32);
+    void QUATSlerp(void *,void *,void *,f32);
     void fn_80202640(void *,void *);
     void fn_802029C4(void *,void *,void *);
     f32 fn_80023430(void *,f32,f32);
@@ -2306,7 +2306,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     axis[0]=*(u32 *)(data+0x9C);axis[1]=*(u32 *)(data+0xA0);axis[2]=*(u32 *)(data+0xA4);
     fn_80203320(q1,axis,lbl_8036AD30*angle);
     fn_80203320(q2,axis,lbl_8036AD30*angle2);
-    fn_80203604(q1,q2,qout,lbl_8036ACD8);
+    QUATSlerp(q1,q2,qout,lbl_8036ACD8);
     fn_80202640(matrix,qout);
     vec[0]=*(u32 *)(data+0xA8);vec[1]=*(u32 *)(data+0xAC);vec[2]=*(u32 *)(data+0xB0);
     fn_802029C4(matrix,vec,vec);
