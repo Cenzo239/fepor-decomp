@@ -3734,7 +3734,7 @@ void fn_8018DE24(void *arg0) {
     void fn_80009B8C(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_80009EB0(s32, s32, s32, s32);
-    void fn_80009F90(s32, s32, s32);
+    void Prim2D_BindTexture(s32, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void **fn_8006EDD8(s32, s32);
@@ -3828,7 +3828,7 @@ void fn_8018DE24(void *arg0) {
             if (*(u32 *)((u8 *)p + 4) != 0) {
                 fn_80009EB0(*(s32 *)(self + 0x34), 0, 0, 0x11);
             } else {
-                fn_80009F90(*(s32 *)(self + 0x34), 0, 0x11);
+                Prim2D_BindTexture(*(s32 *)(self + 0x34), 0, 0x11);
             }
             Prim2D_PrepareTex();
             fn_80007898(1);

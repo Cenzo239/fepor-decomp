@@ -2472,7 +2472,7 @@ void fn_80125624(void *arg0) {
     Cam *fn_80068548(void);
     void fn_8005A1E8(s32, Vec *, Vec *);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009F90(s32, s32, s32);
+    void Prim2D_BindTexture(s32, s32, s32);
     void fn_801258E4(void *);
     void fn_80007340(void (*)(void *), void *);
     void fn_80007884(void);
@@ -2509,7 +2509,7 @@ void fn_80125624(void *arg0) {
     }
     Prim2D_Begin();
     Prim2D_SetTransform(0.0f, 0.0f, 800.0f, 1.0f);
-    fn_80009F90(obj->unk6C, 6, 0x411);
+    Prim2D_BindTexture(obj->unk6C, 6, 0x411);
     Prim2D_PrepareTex();
     fn_80007898(0xB);
     fn_80007340(fn_801258E4, obj);

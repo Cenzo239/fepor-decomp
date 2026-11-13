@@ -378,7 +378,7 @@ void fn_801FD3B4(void *arg0) {
     void fn_80007884(void);
     void fn_80007898(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009F90(void *, s32, s32);
+    void Prim2D_BindTexture(void *, s32, s32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -484,7 +484,7 @@ void fn_801FD3B4(void *arg0) {
                 s16 a;
                 Prim2D_Begin();
                 Prim2D_SetTransform(gFloatZero, gFloatZero, lbl_8036BAD8, gFloatOne);
-                fn_80009F90(gFallingParticleTex, 0xA, 0x20);
+                Prim2D_BindTexture(gFallingParticleTex, 0xA, 0x20);
                 Prim2D_PrepareTex();
                 fn_80007898(1);
                 rad = *(s16 *)((u8 *)p + 0xC);
@@ -641,7 +641,7 @@ void FallingParticle_Update(void *arg0) {
     void fn_80007884(void);
     void fn_80007898(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009F90(s32, s32, s32);
+    void Prim2D_BindTexture(s32, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8000C60C(void *);
@@ -664,7 +664,7 @@ void FallingParticle_Update(void *arg0) {
         }
         Prim2D_Begin();
         Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
-        fn_80009F90(gFallingParticleTex, 7, 0x10);
+        Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         fn_80007898(1);
         t = *(s8 *)((u8 *)self + 0x32);
@@ -691,7 +691,7 @@ void FallingParticle_Update(void *arg0) {
         }
         Prim2D_Begin();
         Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
-        fn_80009F90(gFallingParticleTex, 7, 0x10);
+        Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         fn_80007898(1);
         t = *(s8 *)((u8 *)self + 0x46);
@@ -718,7 +718,7 @@ void FallingParticle_Update(void *arg0) {
         }
         Prim2D_Begin();
         Prim2D_SetTransform(gFloatZero, gFloatZero, (f32)w, gFloatOne);
-        fn_80009F90(gFallingParticleTex, 7, 0x10);
+        Prim2D_BindTexture(gFallingParticleTex, 7, 0x10);
         Prim2D_PrepareTex();
         fn_80007898(1);
         t = *(s8 *)((u8 *)self + 0x5A);

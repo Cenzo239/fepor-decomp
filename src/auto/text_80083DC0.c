@@ -104,7 +104,7 @@ void fn_80083F08(void *arg0) {
     void fn_80009BC0(void (*)(s32, s16 *), s16 *);
     void fn_80009C0C(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_80009F90(s32, s32, s32);
+    void Prim2D_BindTexture(s32, s32, s32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -245,7 +245,7 @@ void fn_80083F08(void *arg0) {
         tw = (f32)tex[1];
         th = (f32)tex[0];
         Prim2D_Begin();
-        fn_80009F90(id, 0x1C, 0x11);
+        Prim2D_BindTexture(id, 0x1C, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
         fn_80007870(lbl_80369418);
@@ -269,7 +269,7 @@ void fn_80083F08(void *arg0) {
     tw = (f32)tex[1];
     th = (f32)tex[0];
     Prim2D_Begin();
-    fn_80009F90(id, 0x15, 0x11);
+    Prim2D_BindTexture(id, 0x15, 0x11);
     Prim2D_PrepareTex();
     fn_80007898(1);
     fn_80007870(lbl_80369418);
@@ -300,7 +300,7 @@ void fn_80083F08(void *arg0) {
     tw = (f32)tex[1];
     th = (f32)tex[0];
     Prim2D_Begin();
-    fn_80009F90(id, 0x1E, 0x11);
+    Prim2D_BindTexture(id, 0x1E, 0x11);
     Prim2D_PrepareTex();
     fn_80007898(1);
     fn_80007870(lbl_80369418);
@@ -322,7 +322,7 @@ void fn_80083F08(void *arg0) {
         tw = (f32)tex[1];
         th = (f32)tex[0];
         Prim2D_Begin();
-        fn_80009F90(id, 0x22, 0x11);
+        Prim2D_BindTexture(id, 0x22, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
         fn_80007870(lbl_80369418);
@@ -343,7 +343,7 @@ void fn_80083F08(void *arg0) {
         tw = (f32)tex[1];
         th = (f32)tex[0];
         Prim2D_Begin();
-        fn_80009F90(id, 0x22, 0x11);
+        Prim2D_BindTexture(id, 0x22, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
         fn_80007870(lbl_80369418);
@@ -364,7 +364,7 @@ void fn_80083F08(void *arg0) {
         tw = (f32)tex[1];
         th = (f32)tex[0];
         Prim2D_Begin();
-        fn_80009F90(id, 0x23, 0x11);
+        Prim2D_BindTexture(id, 0x23, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
         fn_80007870(lbl_80369418);
@@ -385,7 +385,7 @@ void fn_80083F08(void *arg0) {
         tw = (f32)tex[1];
         th = (f32)tex[0];
         Prim2D_Begin();
-        fn_80009F90(id, 0x23, 0x11);
+        Prim2D_BindTexture(id, 0x23, 0x11);
         Prim2D_PrepareTex();
         fn_80007898(1);
         fn_80007870(lbl_80369418);

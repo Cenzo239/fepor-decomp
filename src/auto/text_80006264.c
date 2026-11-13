@@ -2132,7 +2132,7 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | flags;
 }
 
-void fn_80009F90(void *arg0, s32 arg1, u16 flags) {
+void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     void fn_8006ECCC(void *, void *, s32);
     extern u16 lbl_80367140;
     u32 sp[8];
