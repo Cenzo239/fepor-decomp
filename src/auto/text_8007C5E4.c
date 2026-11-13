@@ -886,7 +886,7 @@ fn_8001003C((s16)(right-width/2),(s16)(bottom),k2,0,0,labels.labels[0],lbl_80369
 }
 
 #pragma use_lmw_stmw on
-void fn_8007E764(void *arg0)
+void UnitInfo_DrawNamePlate(void *arg0)
 {
     void *fn_8014C5A8(void *, s32);
     void fn_800875B4(s32, s32, f32, f32, f32, f32);

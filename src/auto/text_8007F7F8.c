@@ -46,12 +46,12 @@ extern f32 lbl_803697E4;
 void fn_8007F7F8(s32 arg0) {
     void fn_8007DFE0(s32);
     void fn_8007E2C4(s32);
-    void fn_8007E764(s32);
+    void UnitInfo_DrawNamePlate(s32);
     void fn_8007EAD8(s32);
     void fn_8007F410(void);
     fn_8007F410();
     fn_8007EAD8(arg0);
-    fn_8007E764(arg0);
+    UnitInfo_DrawNamePlate(arg0);
     fn_8007E2C4(arg0);
     fn_8007DFE0(arg0);
 }
