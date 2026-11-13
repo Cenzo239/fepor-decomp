@@ -931,7 +931,7 @@ s32 fn_801649C8(void *arg0, s32 *arg1) {
     return fn_80093DA8(M2C_FIELD(arg0, s32 *, 0x58), *arg1);
 }
 
-void fn_80164A24(void *arg0) {
+void UnitInv_GetSlot(void *arg0) {
     Unit_GetItemSlot(M2C_FIELD(arg0, s32 *, 0x58));
 }
 
@@ -6845,7 +6845,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     s32 UnitInv_FindEmptyHigh(void *);
     void *fn_8000CAA0(void *, void *);
     void Ui_PlaySeCue(void *, s32);
-    s32 fn_80164A24(void *, s16);
+    s32 UnitInv_GetSlot(void *, s16);
     void Item_Copy(s32, s32);
     void fn_80164A48(void *);
     void fn_801436AC(void *, s32);
@@ -6920,7 +6920,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
         }
     }
     Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
-    Item_Copy(fn_80164A24(temp_r30, (s16)var_r27), temp_r29);
+    Item_Copy(UnitInv_GetSlot(temp_r30, (s16)var_r27), temp_r29);
     fn_80164A48(temp_r30);
     fn_801436AC(temp_r31, temp_r29);
     fn_80143C9C(temp_r31);
