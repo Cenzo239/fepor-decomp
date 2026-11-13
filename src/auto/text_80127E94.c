@@ -791,7 +791,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void *fn_800C45B8(s32, void *, s32);
     void fn_8010FE08(void *, s8, s8, s32);
     void fn_8010FEEC(void *, s8, s8, s32, s32);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void fn_80234450(void *, s32);
     extern u8 lbl_80275740[];
     extern u8 lbl_80290AE0[];
@@ -871,7 +871,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x38) = f420;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x2C) = f430;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x30) = f420;
-    fn_80201FC4((u8 *)*(void **)((u8 *)node + 0x30) + 0x3C);
+    PSMTXIdentity((u8 *)*(void **)((u8 *)node + 0x30) + 0x3C);
     fn_80234450((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C, a3);
     fn_8001EEEC((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C);
     fn_80049D30(*(void **)*(void **)((u8 *)node + 0x30));
@@ -902,7 +902,7 @@ void fn_80129FA4(void *arg0) {
     void *fn_80053AE8(void *, void *);
     void fn_80147578(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -937,7 +937,7 @@ void fn_80129FA4(void *arg0) {
     sub = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)sub + 0x2C) = lbl_8036A420;
     sub = *(void **)((u8 *)self + 0x30);
-    fn_80201FC4((u8 *)sub + 0x3C);
+    PSMTXIdentity((u8 *)sub + 0x3C);
     cam = fn_80040844();
     sub = *(void **)((u8 *)self + 0x30);
     child = *(void **)sub;

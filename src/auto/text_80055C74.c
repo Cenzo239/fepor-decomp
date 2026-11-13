@@ -1389,7 +1389,7 @@ f32 fn_80059500(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void fn_80059C2C(s32, s32, s32, s32, s32);
     void fn_80066D00(s32);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -1450,10 +1450,10 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_802228D8(sp8, 1, 1, 0, 0, 0, f0, f0, f0);
     fn_80222C50(sp8, 0);
     fn_80222C50(sp8, 1);
-    fn_80201FC4(sp58);
+    PSMTXIdentity(sp58);
     scale = lbl_80369128 * (f32)a4;
     *(f32 *)(sp58 + 0xC) = scale / (f32)a2;
-    fn_80201FC4(sp28);
+    PSMTXIdentity(sp28);
     *(f32 *)(sp28 + 0x1C) = scale / (f32)a3;
     fn_80220428(2);
     fn_802240C8(2);

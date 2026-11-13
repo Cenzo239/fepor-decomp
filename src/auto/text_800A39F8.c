@@ -797,7 +797,7 @@ void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16
 }
 
 void Gx_Setup2DState(void *arg0) {
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
@@ -845,7 +845,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_80224C4C(sp4C, 1);
     fn_80224FEC(0.0f, 0.0f, (f32)temp_r31, (f32)temp_r30, 0.9f, 0.9f);
     fn_80225058(0, 0, temp_r31, temp_r30);
-    fn_80201FC4(sp1C);
+    PSMTXIdentity(sp1C);
     fn_80224D7C(sp1C, 0);
     fn_80224E1C(0);
     fn_80224684(1, 3, 1);

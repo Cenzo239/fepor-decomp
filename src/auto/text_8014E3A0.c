@@ -708,7 +708,7 @@ void fn_80150F38(void *arg0) {
 void fn_80150FEC(void *arg0) {
     void *fn_80060664(void *);
     void *fn_800C4638(s32, u8 *, s32);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     extern u8 lbl_80277320[];
     extern f64 lbl_8036A828;
     extern f32 lbl_8036A81C;
@@ -796,7 +796,7 @@ void fn_80150FEC(void *arg0) {
         off += 4;
     }
     *(void **)((u8 *)obj + 0x34) = hdr;
-    fn_80201FC4(obj);
+    PSMTXIdentity(obj);
     base = fn_80060664(arg0);
     if (base == NULL) {
         return;

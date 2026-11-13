@@ -6404,7 +6404,7 @@ void fn_80041514(void *arg0, char *arg1)
     s32 fn_8005C84C(void *);
     void PSMTXRotRad(void *, s32, f32);
     void fn_80201FF0(void *, void *);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     u16 fn_8005C144(void *);
     u32 fn_8000D354(void *);
     void *fn_8000D2BC(void *);
@@ -6681,7 +6681,7 @@ void fn_80041514(void *arg0, char *arg1)
         fn_80234450(lbl_802EFE20, arg1);
         fn_802343E0(lbl_802EFE20, lbl_8026A660 + 0x169);
         M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
-        fn_80201FC4(sp18);
+        PSMTXIdentity(sp18);
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F20;
         fn_80201FF0(sp18, (u8 *)arg0 + 0x70);
         lbl_80366E90 = 0xF;
@@ -12469,7 +12469,7 @@ void fn_80053260(void *arg0)
     void fn_80043F9C(void *, void *, f32, f32);
     void fn_8004E670(f32 *, void *, s32);
     void fn_8005A1E8(s32, f32 *, f32 *);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void fn_80201FF0(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -12515,7 +12515,7 @@ void fn_80053260(void *arg0)
     } else {
         cam = *(void **)((u8 *)obj + 0x280);
     }
-    fn_80201FC4(sp11C);
+    PSMTXIdentity(sp11C);
     PSMTXRotRad(spBC, 0x58, lbl_803690A0);
     base = *(void **)((u8 *)arg0 + 0x30);
     if (*(u32 *)((u8 *)base + 0x8) & 8) {

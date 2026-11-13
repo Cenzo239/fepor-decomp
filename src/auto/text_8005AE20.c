@@ -3027,7 +3027,7 @@ void fn_80061A08(void *arg0)
                 fy = M2C_FIELD(entry, f32 *, 0x50);
                 fx = M2C_FIELD(entry, f32 *, 0x4C);
                 rot = M2C_FIELD(entry, u16 *, 0xEE);
-                fn_80201FC4(spD0);
+                PSMTXIdentity(spD0);
                 switch (rot) {
                 case 1:
                     if (lbl_803691E4 != fx)
@@ -3179,7 +3179,7 @@ void fn_80061A08(void *arg0)
                     flags = M2C_FIELD(curObj, s32 *, 0xC);
                     if (flags & 1) {
                         rot = M2C_FIELD(entry, u16 *, 0xEE);
-                        fn_80201FC4(sp70);
+                        PSMTXIdentity(sp70);
                         fx = sp140[3];
                         fy = sp140[4];
                         fz = sp140[5];
@@ -3283,7 +3283,7 @@ void fn_80061A08(void *arg0)
 
 void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *arg5)
 {
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void fn_80201FF0(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -3316,7 +3316,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
                 ry = arg2[4];
                 rx = arg2[3];
                 order = *(u16 *)((u8 *)arg0 + 0xEE);
-                fn_80201FC4(mD8);
+                PSMTXIdentity(mD8);
                 switch (order) {
                 case 1:
                     if (lbl_803691E4 != rx) {
@@ -3414,7 +3414,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             ry2 = arg2[0x28 / 4];
             rx2 = arg2[0x24 / 4];
             order = *(u16 *)((u8 *)arg0 + 0xEE);
-            fn_80201FC4(mA8);
+            PSMTXIdentity(mA8);
             switch (order) {
             case 1:
                 if (lbl_803691E4 != rx2) {
@@ -3506,7 +3506,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             ry3 = arg2[0x64 / 4];
             rx3 = arg2[0x60 / 4];
             order = *(u16 *)((u8 *)arg0 + 0xEE);
-            fn_80201FC4(mA8);
+            PSMTXIdentity(mA8);
             switch (order) {
             case 1:
                 if (lbl_803691E4 != rx3) {
@@ -3603,7 +3603,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             }
         }
     } else {
-        fn_80201FC4(mD8);
+        PSMTXIdentity(mD8);
     }
     if (arg1 & 8) {
         PSMTXScale(m108, arg2[0], arg2[1], arg2[2]);
@@ -4358,7 +4358,7 @@ void *fn_80065634(void ***arg0, s32 arg1) {
 #pragma optimization_level 2
 void *fn_800656C8(void *node, void *out)
 {
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
     u32 fn_80202140(void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -4373,7 +4373,7 @@ void *fn_800656C8(void *node, void *out)
     u8 sp8[0x30];
     f32 rz;
 
-    fn_80201FC4(out);
+    PSMTXIdentity(out);
 
     while (node != NULL) {
         if (*(u32 *)((u8 *)node + 0xC) & 0x40) {
@@ -4381,7 +4381,7 @@ void *fn_800656C8(void *node, void *out)
             ry = *(f32 *)((u8 *)node + 0x68);
             rz = *(f32 *)((u8 *)node + 0x6C);
             order = *(u16 *)((u8 *)node + 0xEE);
-            fn_80201FC4(sp38);
+            PSMTXIdentity(sp38);
 
             switch (order) {
             case 1:
@@ -5215,7 +5215,7 @@ loop_2:
 void fn_80067EDC(void *arg0)
 {
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80225058(u16, u16, u16, u16);
@@ -5246,10 +5246,10 @@ void fn_80067EDC(void *arg0)
     z = lbl_80369228;
     C_MTXOrtho(p + 0x24, negbit, z, lbl_80369250, z, lbl_8036924C, z, lbl_80369254);
     *(u16 *)p &= 0xFFFE;
-    fn_80201FC4(mtx);
+    PSMTXIdentity(mtx);
     fn_80224D7C(mtx, 0);
     fn_80224E1C(0);
-    fn_80201FC4(p + 0xA4);
+    PSMTXIdentity(p + 0xA4);
     if (p == NULL) {
         p = lbl_803672F8;
     }
@@ -5602,7 +5602,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     f32 fn_80064400(void **, s16, f32);
     f32 fn_80063EC8(void **, s16, f32);
     f32 fn_80063C2C(void **, s16, f32);
-    void fn_80201FC4(void *);
+    void PSMTXIdentity(void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -5697,7 +5697,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
                 }
             }
         }
-        fn_80201FC4(sp34);
+        PSMTXIdentity(sp34);
         if (lbl_80369270 != f31) {
             PSMTXTrans(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
             PSMTXRotRad(sp94, 0x7A, lbl_80369278 * -f31);

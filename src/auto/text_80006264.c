@@ -1560,13 +1560,13 @@ void fn_80007B04(void)
 void fn_80008B94(void)
 {
     extern u8 *lbl_80367140;
-    extern void fn_80201FC4(void *);
+    extern void PSMTXIdentity(void *);
 
     *(s32 *)(lbl_80367140 + 8) = *(s32 *)lbl_80367140 + 0xAC;
     *(s32 *)(lbl_80367140 + 0xC) = 0;
     *(s16 *)(lbl_80367140 + 0x92) = 0;
     *(s16 *)(lbl_80367140 + 0x90) = 0;
-    fn_80201FC4(lbl_80367140 + 0x60);
+    PSMTXIdentity(lbl_80367140 + 0x60);
     *(s32 *)(lbl_80367140 + 0x2C) = 0;
     *(s32 *)(lbl_80367140 + 0x30) = 0;
     lbl_80367140[0x23] = 0xFF;
