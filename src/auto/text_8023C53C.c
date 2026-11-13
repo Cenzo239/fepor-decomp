@@ -1857,7 +1857,8 @@ void fn_802450A4(u32 arg0, u16 arg1) {
     gSynthVoicePool[id & 0x7FFFFFFF].unkEF8 = arg1;
 }
 
-void Sound_VoiceKeyOff(s32 arg0) {
+/* Key off a synth voice by vid: demote active to keyed list, or clear deferred key-off flag. */
+void Sound_VoiceKeyOff(s32 vidArg) {
     extern SynthVoice *gActiveVoices;
     extern SynthVoice *gKeyedVoices;
     extern SynthVoice gSynthVoicePool[];
@@ -1866,16 +1867,16 @@ void Sound_VoiceKeyOff(s32 arg0) {
     SynthVoice *p;
     SynthVoice *sv;
 
-    vid = arg0 & 0x7FFFFFFF;
+    vid = vidArg & 0x7FFFFFFF;
     for (p = gKeyedVoices; p != NULL; p = p->next) {
         if (p->vid == vid) {
-            id = p->id | (arg0 & 0x80000000);
+            id = p->id | (vidArg & 0x80000000);
             goto found;
         }
     }
     for (p = gActiveVoices; p != NULL; p = p->next) {
         if (p->vid == vid) {
-            id = p->id | (arg0 & 0x80000000);
+            id = p->id | (vidArg & 0x80000000);
             goto found;
         }
     }
