@@ -386,7 +386,7 @@ void __GXInitGX(void) {
     void GXClearVtxDesc(void);
     void fn_80220198(void);
     void fn_80220154(s32, void *, s32);
-    void fn_8021FE4C(s32, void *);
+    void GXSetVtxAttrFmtv(s32, void *);
     void fn_80220F44(s32, s32);
     void fn_80220F84(s32, s32);
     void fn_80220FC4(s32, s32, s32);
@@ -529,7 +529,7 @@ void __GXInitGX(void) {
 
     i = 0;
     do {
-        fn_8021FE4C(i, base + 0x80);
+        GXSetVtxAttrFmtv(i, base + 0x80);
         i += 1;
     } while (i < 8);
 
@@ -1203,7 +1203,7 @@ void GXClearVtxDesc(void) {
     temp_r4[0x5AC/4] |= 0x8;
 }
 
-s32 fn_8021FE4C(s32 arg0)
+s32 GXSetVtxAttrFmtv(s32 arg0)
 {
     if (arg0 < 0) {
         arg0 = 0;

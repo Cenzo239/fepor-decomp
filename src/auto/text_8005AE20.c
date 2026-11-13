@@ -6074,7 +6074,7 @@ void fn_8006A384(s32* arg0) {
 void GXSetCullMode(s32);
 void GXClearVtxDesc(void);
 void GXSetVtxDescv(s32 *);
-void fn_8021FE4C(s32, s32 *);
+void GXSetVtxAttrFmtv(s32, s32 *);
 void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     s32 sp8[0x36];
     s32 spE0[0x6C];
@@ -6193,7 +6193,7 @@ void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     var_r30[0] = 0xFF;
     GXClearVtxDesc();
     GXSetVtxDescv(sp8);
-    fn_8021FE4C(0, spE0);
+    GXSetVtxAttrFmtv(0, spE0);
 }
 
 void fn_8006B39C(void) {
