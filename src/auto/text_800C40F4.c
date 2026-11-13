@@ -7827,7 +7827,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     void fn_800E8154(void *, String *);
     void *fn_800E8504(void *, s32, String *);
     void *fn_800ECF40(void *, void *, s32, s32);
-    void *fn_800EDAD0(void *, void *, s32, s32);
+    void *Win3_Create(void *, void *, s32, s32);
     void *fn_80103428(void *, void *, s32, s32);
     void *fn_80108788(void *, void *, s32, s32);
     void *fn_80108A18(void *, void *, s32, s32);
@@ -7929,7 +7929,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     lbl_803678A8 = tmp;
     tmp = Heap_Alloc(0x454);
     if (tmp != NULL) {
-        tmp = fn_800EDAD0(tmp, *(void **)((u8 *)self + 4), 0xC8, 0x154);
+        tmp = Win3_Create(tmp, *(void **)((u8 *)self + 4), 0xC8, 0x154);
     }
     lbl_803678C8 = tmp;
     tmp = Heap_Alloc(0x430);
@@ -16056,7 +16056,7 @@ s32 fn_800ED92C(void) {
     return 0;
 }
 
-void *fn_800EDAD0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void *Win3_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 void String_Init(void *, char *, void *);
 void String_ConcatCStr(void *,void *,char *);
 void *fn_800D75FC(void *,void *);
