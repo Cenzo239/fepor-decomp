@@ -2950,7 +2950,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_Config_Tutorial(void);
     void ScriptCmd_Config_TutSet_unitInfo(void);
     void ScriptCmd_Config_TutSet_terInfo(void);
-    void fn_8012689C(void);
+    void ScriptCmd_Config_TutSet_otheridoshowing(void);
     void fn_8012688C(void);
     void fn_8012687C(void);
     void fn_8012684C(void);
@@ -2998,7 +2998,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x1D3, ScriptCmd_Config_Tutorial, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1E3, ScriptCmd_Config_TutSet_unitInfo, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1FA, ScriptCmd_Config_TutSet_terInfo, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x210, fn_8012689C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x210, ScriptCmd_Config_TutSet_otheridoshowing, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x22E, fn_8012688C, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x246, fn_8012687C, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x25C, fn_8012684C, 1);
@@ -3059,7 +3059,7 @@ void fn_8012688C(s8 arg0) {
     lbl_80330708[0xA8] = (u8)arg0;
 }
 
-void fn_8012689C(s32 arg0) {
+void ScriptCmd_Config_TutSet_otheridoshowing(s32 arg0) {
     extern u8 lbl_80330708[];
     struct {
         u8 pad:1;
