@@ -1919,7 +1919,7 @@ void fn_801EDB70(void *arg0) {
 void fn_801EDDF0(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801A7FA4(void *);
-    void fn_801A9CF4(void *, void *);
+    void BattleUnit_Copy(void *, void *);
     void Battle_QueuePromotionGains(void *, void *);
     void Unit_Promote(void *);
     extern u8 gBattle[];
@@ -1934,7 +1934,7 @@ void fn_801EDDF0(void *arg0) {
             temp = fn_801A7FA4(temp);
         }
         *(void **)((u8 *)arg0 + 0x4C) = temp;
-        fn_801A9CF4(*(void **)((u8 *)arg0 + 0x4C), gBattle);
+        BattleUnit_Copy(*(void **)((u8 *)arg0 + 0x4C), gBattle);
     }
     base = gBattle;
     base_2e0 = base + 0x2E0;
@@ -1944,7 +1944,7 @@ void fn_801EDDF0(void *arg0) {
             temp = fn_801A7FA4(temp);
         }
         *(void **)((u8 *)arg0 + 0x50) = temp;
-        fn_801A9CF4(*(void **)((u8 *)arg0 + 0x50), base_2e0);
+        BattleUnit_Copy(*(void **)((u8 *)arg0 + 0x50), base_2e0);
     }
     gUiContext[0x14] = 0xFF;
     Battle_QueuePromotionGains(gBattle, *(void **)((u8 *)arg0 + 0x30));

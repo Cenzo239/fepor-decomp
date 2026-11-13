@@ -873,7 +873,7 @@ void fn_801A9CB8(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x280) = arg1;
 }
 
-void *fn_801A9CF4(void *dst, void *src) {
+void *BattleUnit_Copy(void *dst, void *src) {
     if (src != dst) {
         Unit_Copy();
         *(u32*)(((char*)dst) + 0x280) = *(u32*)(((char*)src) + 0x280);
