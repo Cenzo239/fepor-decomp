@@ -7833,7 +7833,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     void *fn_80103428(void *, void *, s32, s32);
     void *fn_80108788(void *, void *, s32, s32);
     void *fn_80108A18(void *, void *, s32, s32);
-    void *fn_8011C69C(void *, void *, s32, s32);
+    void *BgWin_Create(void *, void *, s32, s32);
     void *fn_801513EC(void *, void *, s32, s32);
     void *fn_80165C84(void *, void *, String *, String *);
     void *fn_801BEF90(void *);
@@ -7956,7 +7956,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     lbl_803679D0 = tmp;
     tmp = Heap_Alloc(0x438);
     if (tmp != NULL) {
-        tmp = fn_8011C69C(tmp, *(void **)((u8 *)self + 4), 0x28, 0x50);
+        tmp = BgWin_Create(tmp, *(void **)((u8 *)self + 4), 0x28, 0x50);
     }
     lbl_80367A50 = tmp;
     tmp = Heap_Alloc(0x430);

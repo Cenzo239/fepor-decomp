@@ -5033,7 +5033,7 @@ void fn_8011C674(void *arg0, s32 arg1) {
     fn_8011CAAC(*(s32 *)((u8 *)arg0 + 0x424), arg1, 0);
 }
 
-void *fn_8011C69C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void String_ConcatCStr(void *, void *, char *);
     void *fn_800D75FC(void *, void *);
     void fn_800D764C(void *, s32, s32, s32, void *, void *);
