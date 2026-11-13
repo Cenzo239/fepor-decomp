@@ -9801,20 +9801,20 @@ void Map_DrawRangeTiles(void) {
 #pragma global_optimizer reset
 
 void fn_8004A1F0(void) {
-    extern u8 lbl_80285858[];
+    extern u8 gMoveLimitViewProc[];
     extern u32 gUiInputFlags;
     void Process_UnlinkByKey(void *);
-    Process_UnlinkByKey(lbl_80285858);
+    Process_UnlinkByKey(gMoveLimitViewProc);
     gUiInputFlags &= ~0x400u;
 }
 
 void fn_8004A224(void) {
     void *Process_Create(void *, s32);
-    extern u8 lbl_80285858[];
+    extern u8 gMoveLimitViewProc[];
     extern u32 gUiInputFlags;
     void *p;
 
-    p = Process_Create(lbl_80285858, 4);
+    p = Process_Create(gMoveLimitViewProc, 4);
     *(s32 *)((u8 *)p + 0x30) = 0;
     gUiInputFlags |= 0x400;
 }
