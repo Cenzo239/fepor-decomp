@@ -28,14 +28,14 @@ extern "C" void fn_80127E94(void *arg0) {
 }
 #pragma cplusplus reset
 s32 fn_80127EC0(void) {
-    extern u16 lbl_80275048[];
-    fn_801475FC((u16 *)((u8 *)lbl_80275048 + 0x521), 0x64);
+    extern u16 gScriptCmdNames[];
+    fn_801475FC((u16 *)((u8 *)gScriptCmdNames + 0x521), 0x64);
     return 9;
 }
 
 void fn_80127EF4(void) {
-    extern u16 lbl_80275048[];
-    fn_8000E0E4(&lbl_80275048[0x580 / sizeof(u16)]);
+    extern u16 gScriptCmdNames[];
+    fn_8000E0E4(&gScriptCmdNames[0x580 / sizeof(u16)]);
 }
 
 #pragma cplusplus on
@@ -128,13 +128,13 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
 }
 
 void fn_80128108(void) {
-    extern u16 lbl_80275048[];
-    fn_8000E0E4((u8 *)lbl_80275048 + 0x5C4);
+    extern u16 gScriptCmdNames[];
+    fn_8000E0E4((u8 *)gScriptCmdNames + 0x5C4);
 }
 
 void fn_80128134(void) {
-    extern u16 lbl_80275048[];
-    fn_8000E0E4((u8 *)lbl_80275048 + 0x5CD);
+    extern u16 gScriptCmdNames[];
+    fn_8000E0E4((u8 *)gScriptCmdNames + 0x5CD);
 }
 
 void fn_80128160(s32 arg0, s32 arg1, s32 arg2) {

@@ -2865,14 +2865,14 @@ void fn_801260E4(void *arg0) {
     void *fn_8000CAF0(void *, s32);
     void fn_8023440C(void *, void *, s32);
     extern u8 lbl_80320060[];
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern u8 lbl_80290480[];
     s32 self;
     s32 temp;
 
     self = (s32)arg0;
     fn_80013F48(lbl_80320060);
-    fn_8000BD98(lbl_80275048 + 0x15B);
+    fn_8000BD98(gScriptCmdNames + 0x15B);
     if (fn_8000D354((void *)(self + 0x30)) != 0) {
         temp = (s32)fn_8000CAF0(lbl_80290480, 2);
         fn_8023440C((void *)(temp + 0x30), (void *)(self + 0x30), 0x20);
@@ -2908,15 +2908,15 @@ void fn_80126204(void) {
     void *fn_8000CAF0(void *, s32);
     void fn_8023440C(void *, void *, s32);
     extern u8 lbl_80320060[];
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern u8 lbl_80290480[16];
     s32 temp;
 
     fn_80013F48(lbl_80320060);
-    fn_8000BD98(lbl_80275048 + 0x15B);
-    if (fn_8000D354(lbl_80275048 + 0x16A) != 0) {
+    fn_8000BD98(gScriptCmdNames + 0x15B);
+    if (fn_8000D354(gScriptCmdNames + 0x16A) != 0) {
         temp = (s32)fn_8000CAF0(lbl_80290480, 2);
-        fn_8023440C((void *)(temp + 0x30), lbl_80275048 + 0x16A, 0x20);
+        fn_8023440C((void *)(temp + 0x30), gScriptCmdNames + 0x16A, 0x20);
         *(void **)(temp + 0x50) = fn_8000D354((void *)(temp + 0x30));
         *(u8 *)(temp + 0x58) = 1;
         *(void **)(temp + 0x54) = lbl_80320060;
@@ -2937,7 +2937,7 @@ void fn_801262A8(s32 arg0) {
 
 void Script_RegisterCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     void fn_80127918(void);
     void fn_801278EC(void);
     void fn_80127BA8(void);
@@ -2986,53 +2986,53 @@ void Script_RegisterCommands(void) {
     void fn_801281E4(void);
     void fn_80128160(void);
 
-    Script_RegisterCommand(lbl_80275048 + 0x176, fn_80127918, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x17F, fn_801278EC, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x18A, fn_80127BA8, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x197, fn_80127B50, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x1A3, fn_80127054, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x1B6, fn_80127028, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x1C7, fn_801275BC, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x1CB, fn_80126FA0, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x1CF, fn_80126F7C, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x1D3, fn_80126944, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x1E3, fn_8012690C, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x1FA, fn_801268D4, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x210, fn_8012689C, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x22E, fn_8012688C, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x246, fn_8012687C, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x25C, fn_8012684C, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x272, fn_80126830, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x27E, fn_80013E24, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x28B, fn_80013D4C, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x298, fn_80013C78, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x2A6, fn_80013BD4, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x2B6, fn_80127A00, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x2BE, fn_801279D4, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x2C6, fn_80126F58, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x2CE, fn_80126F34, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x2D6, fn_80126EB0, 2);
-    Script_RegisterCommand(lbl_80275048 + 0x2E5, fn_80126A60, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x2F8, fn_80126D0C, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x30C, fn_80126CE8, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x320, fn_80126CB4, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x334, fn_80126C90, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x348, fn_80126DE8, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x357, fn_80126DB0, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x364, fn_80126D78, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x372, fn_80126D40, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x381, fn_80126E80, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x389, fn_80126E50, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x390, fn_80126E20, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x398, fn_80127000, 1);
-    Script_RegisterCommand(lbl_80275048 + 0x3A0, fn_8008F400, 4);
-    Script_RegisterCommand(lbl_80275048 + 0x3B2, fn_8008D9B8, 7);
-    Script_RegisterCommand(lbl_80275048 + 0x3C5, fn_8008D988, 0);
-    Script_RegisterCommand(lbl_80275048 + 0x3D7, fn_8012835C, 3);
-    Script_RegisterCommand(lbl_80275048 + 0x3E7, fn_801282E8, 3);
-    Script_RegisterCommand(lbl_80275048 + 0x3F7, fn_80128268, 3);
-    Script_RegisterCommand(lbl_80275048 + 0x408, fn_801281E4, 3);
-    Script_RegisterCommand(lbl_80275048 + 0x419, fn_80128160, 3);
+    Script_RegisterCommand(gScriptCmdNames + 0x176, fn_80127918, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x17F, fn_801278EC, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x18A, fn_80127BA8, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x197, fn_80127B50, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x1A3, fn_80127054, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1B6, fn_80127028, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1C7, fn_801275BC, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x1CB, fn_80126FA0, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x1CF, fn_80126F7C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1D3, fn_80126944, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1E3, fn_8012690C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x1FA, fn_801268D4, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x210, fn_8012689C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x22E, fn_8012688C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x246, fn_8012687C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x25C, fn_8012684C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x272, fn_80126830, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x27E, fn_80013E24, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x28B, fn_80013D4C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x298, fn_80013C78, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x2A6, fn_80013BD4, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2B6, fn_80127A00, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2BE, fn_801279D4, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2C6, fn_80126F58, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x2CE, fn_80126F34, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x2D6, fn_80126EB0, 2);
+    Script_RegisterCommand(gScriptCmdNames + 0x2E5, fn_80126A60, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2F8, fn_80126D0C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x30C, fn_80126CE8, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x320, fn_80126CB4, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x334, fn_80126C90, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x348, fn_80126DE8, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x357, fn_80126DB0, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x364, fn_80126D78, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x372, fn_80126D40, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x381, fn_80126E80, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x389, fn_80126E50, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x390, fn_80126E20, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x398, fn_80127000, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x3A0, fn_8008F400, 4);
+    Script_RegisterCommand(gScriptCmdNames + 0x3B2, fn_8008D9B8, 7);
+    Script_RegisterCommand(gScriptCmdNames + 0x3C5, fn_8008D988, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x3D7, fn_8012835C, 3);
+    Script_RegisterCommand(gScriptCmdNames + 0x3E7, fn_801282E8, 3);
+    Script_RegisterCommand(gScriptCmdNames + 0x3F7, fn_80128268, 3);
+    Script_RegisterCommand(gScriptCmdNames + 0x408, fn_801281E4, 3);
+    Script_RegisterCommand(gScriptCmdNames + 0x419, fn_80128160, 3);
 }
 
 u8 fn_80126830(void) {
@@ -3182,7 +3182,7 @@ s32 fn_80126A60(void)
 void fn_80126A98(s32 arg0) {
     extern u8 lbl_802EF4C8[];
     extern u8 lbl_80330708[];
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     void fn_8011D79C(void *);
     void fn_8011D650(void *);
     void fn_8000C188(s32);
@@ -3196,7 +3196,7 @@ void fn_80126A98(s32 arg0) {
     case 0x81:
         bf = (void *)&lbl_80330708[0x9D];
         bf->mid = 0;
-        fn_8011D79C(lbl_80275048 + 0x42A);
+        fn_8011D79C(gScriptCmdNames + 0x42A);
         break;
     case 0x80:
         bf = (void *)&lbl_80330708[0x9D];
@@ -3214,10 +3214,10 @@ void fn_80126C44(void) {
 
 void fn_80126C54(void *arg0) {
     void fn_8011D908(void *, void *);
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern s32 lbl_80367110;
     lbl_80367110 |= 0x800;
-    fn_8011D908(lbl_80275048 + 0x44e, arg0);
+    fn_8011D908(gScriptCmdNames + 0x44e, arg0);
 }
 
 s32 fn_80126C90(void) {
@@ -3227,8 +3227,8 @@ s32 fn_80126C90(void) {
 }
 
 s32 fn_80126CB4(void) {
-    extern u16 lbl_80275048[103];
-    fn_8000BCA4((u16*)((u8*)&lbl_80275048 + 0x467));
+    extern u16 gScriptCmdNames[103];
+    fn_8000BCA4((u16*)((u8*)&gScriptCmdNames + 0x467));
     fn_80169804();
     return 1;
 }
@@ -3240,8 +3240,8 @@ s32 fn_80126CE8(void) {
 }
 
 s32 fn_80126D0C(void) {
-    extern u16 lbl_80275048[103];
-    fn_8000BCA4((u16*)((u8*)&lbl_80275048 + 0x467));
+    extern u16 gScriptCmdNames[103];
+    fn_8000BCA4((u16*)((u8*)&gScriptCmdNames + 0x467));
     fn_8011AC78();
     return 1;
 }
@@ -3333,9 +3333,9 @@ s32 fn_80126FA0(s32 arg0) {
     void *fn_8000BCA4(void *);
     void fn_8011D87C(s32);
     void fn_8011D908(s32, s32);
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
 
-    if (fn_8000BCA4(lbl_80275048 + 0x472) != NULL) {
+    if (fn_8000BCA4(gScriptCmdNames + 0x472) != NULL) {
         fn_8011D87C(arg0);
         return 1;
     }
@@ -3371,18 +3371,18 @@ void *fn_801270A4(void) {
     void *fn_8000BCA4(void *);
     void fn_8000B950(void *, void (*)(void *));
     void fn_80127150(void *);
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern void *lbl_80367A68;
     void *var;
 
     lbl_80367A68 = 0;
-    var = fn_8000BCA4(lbl_80275048 + 0x467);
+    var = fn_8000BCA4(gScriptCmdNames + 0x467);
     if (var == NULL) {
-        var = fn_8000BCA4(lbl_80275048 + 0x15B);
+        var = fn_8000BCA4(gScriptCmdNames + 0x15B);
         if (var == NULL) {
-            var = fn_8000BCA4(lbl_80275048 + 0x479);
+            var = fn_8000BCA4(gScriptCmdNames + 0x479);
             if (var == NULL) {
-                var = fn_8000BCA4(lbl_80275048 + 0x484);
+                var = fn_8000BCA4(gScriptCmdNames + 0x484);
             }
         }
     }
@@ -3404,9 +3404,9 @@ void fn_80127170(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_80109180(void *, void *);
     extern u8 lbl_80290504[];
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
 
-    fn_80109180(lbl_80275048 + 0x493, fn_8000CAA0(lbl_80290504, arg0));
+    fn_80109180(gScriptCmdNames + 0x493, fn_8000CAA0(lbl_80290504, arg0));
 }
 
 void fn_80127594(void *arg0) {
@@ -3502,19 +3502,19 @@ s32 fn_80127918(void) {
     void fn_8000B950(void *, void (*)(void *));
     void *fn_8000CAA0(void *, void *);
     void fn_80127150(void *);
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern void *lbl_80367A68;
     extern u8 lbl_802904AC[];
     void *var;
 
     lbl_80367A68 = 0;
-    var = fn_8000BCA4(lbl_80275048 + 0x467);
+    var = fn_8000BCA4(gScriptCmdNames + 0x467);
     if (var == NULL) {
-        var = fn_8000BCA4(lbl_80275048 + 0x15B);
+        var = fn_8000BCA4(gScriptCmdNames + 0x15B);
         if (var == NULL) {
-            var = fn_8000BCA4(lbl_80275048 + 0x479);
+            var = fn_8000BCA4(gScriptCmdNames + 0x479);
             if (var == NULL) {
-                var = fn_8000BCA4(lbl_80275048 + 0x484);
+                var = fn_8000BCA4(gScriptCmdNames + 0x484);
             }
         }
     }
@@ -3538,12 +3538,12 @@ s32 fn_80127A00(void) {
     void fn_8004A1F0(void);
     void fn_80091858(void);
     void fn_800162B8(void);
-    extern u16 lbl_80275048[];
+    extern u16 gScriptCmdNames[];
     extern volatile u32 lbl_80367110;
     void *obj;
     u32 flags;
 
-    obj = (u8 *)lbl_80275048 + 0x479;
+    obj = (u8 *)gScriptCmdNames + 0x479;
     flags = lbl_80367110 | 0x890;
     lbl_80367110 = flags;
     flags &= ~0x20;
@@ -3552,12 +3552,12 @@ s32 fn_80127A00(void) {
     if (obj != NULL) {
         fn_8000C070(obj, 4);
     }
-    fn_8000BD98((u8 *)lbl_80275048 + 0x472);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x50c);
-    fn_8000BD98((u8 *)lbl_80275048 + 0xe0);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x467);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x15b);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x513);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x472);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x50c);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0xe0);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x467);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     fn_8004A1F0();
     fn_80091858();
@@ -3566,14 +3566,14 @@ s32 fn_80127A00(void) {
 }
 
 void fn_80127AC4(void) {
-    extern u16 lbl_80275048[];
+    extern u16 gScriptCmdNames[];
 
-    fn_8000BD98((u8 *)lbl_80275048 + 0x472);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x50c);
-    fn_8000BD98((u8 *)lbl_80275048 + 0xe0);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x467);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x15b);
-    fn_8000BD98((u8 *)lbl_80275048 + 0x513);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x472);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x50c);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0xe0);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x467);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
+    fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     fn_8004A1F0();
     fn_80091858();
@@ -3593,7 +3593,7 @@ u8 fn_80127B50(s32 arg0) {
 }
 
 s32 fn_80127BA8(void *arg0) {
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern u8 lbl_80290480[16];
     extern u8 lbl_80320060[];
 
@@ -3605,7 +3605,7 @@ s32 fn_80127BA8(void *arg0) {
     void *result;
     u8 *obj;
 
-    fn_8000BD98(lbl_80275048 + 0x15B);
+    fn_8000BD98(gScriptCmdNames + 0x15B);
     result = fn_8000D354(arg0);
     if (result == NULL) {
         return 0;
@@ -3644,7 +3644,7 @@ void fn_80127C78(void *arg0) {
 void fn_80127CDC(void) {
     extern void *lbl_80367240;
     extern s32 lbl_80367110;
-    extern u8 lbl_80275048[];
+    extern u8 gScriptCmdNames[];
     extern u8 lbl_80290608[];
     u32 fn_8000BCA4(void *);
     void *fn_8000CAF0(void *, s32);
@@ -3660,7 +3660,7 @@ void fn_80127CDC(void) {
         temp_r31 = fn_80089634();
         temp_r3 = fn_8008A56C();
         if (!((u16)(temp_r3 | temp_r31) & 0xD) && (lbl_80367110 & 0x10) && !(lbl_80367110 & 4)
-            && fn_8000BCA4(lbl_80275048 + 0x156) == 0) {
+            && fn_8000BCA4(gScriptCmdNames + 0x156) == 0) {
             obj = fn_8000CAF0(lbl_80290608, 2);
             ((u8 *)obj)[0x2B] = 0x7B;
         }
