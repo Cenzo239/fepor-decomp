@@ -18888,29 +18888,32 @@ s32 Save_BumpVersionChecksum(void *arg0) {
     return 1;
 }
 
-s32 Save_IsValid(void *arg0) {
+s32 Save_IsValid(void *slot) {
+    /* True if slot magic is FE8J and checksum is uninit, skipped, or matches CRC32 of the payload. */
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     extern u8 gSaveStrings[];
     u32 sum;
-    void *buf;
+    void *crcTable;
     u8 ok;
 
-    if ((u32)(*(u32 *)((u8 *)arg0 + 0x40) + 0xB9BB0000) != 0x384AU) {
+    /* *(u32*)(slot+0x40) + 0xB9BB0000 == 0x384A  iff  magic == SAVE_SLOT_MAGIC */
+    if ((u32)(*(u32 *)((u8 *)slot + 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
     }
-    if ((u32)(*(u32 *)((u8 *)arg0 + 0x50) + 0xEDCC0000) == 0x5678U) {
+    /* *(u32*)(slot+0x50) + 0xEDCC0000 == 0x5678  iff  checksum == SAVE_CHECKSUM_UNINIT */
+    if ((u32)(*(u32 *)((u8 *)slot + 0x50) + 0xEDCC0000) == 0x5678U) {
         ok = 1;
-    } else if (*(u8 *)((u8 *)arg0 + 0x60) == 1) {
+    } else if (*(u8 *)((u8 *)slot + 0x60) == 1) {
         ok = 1;
     } else {
-        buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+        crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
         Crc32_InitTable();
-        sum = Crc32_Calc(buf, (u8 *)arg0 + 0x70, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
-        fn_800C4588(buf);
-        if (*(u32 *)((u8 *)arg0 + 0x50) != sum) {
+        sum = Crc32_Calc(crcTable, (u8 *)slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)((u8 *)slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
+        fn_800C4588(crcTable);
+        if (*(u32 *)((u8 *)slot + 0x50) != sum) {
             ok = 0;
         } else {
             ok = 1;
