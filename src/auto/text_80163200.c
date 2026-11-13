@@ -1522,6 +1522,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+/* Construct a BattleTerrain: base strings, load map path, parse param.dbx room/foot fields. */
 void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     s32 Map_Get(void);
     void fn_80041514(s32, void *);
@@ -1544,70 +1545,70 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
         char *data;
     } String;
 
-    u8 spB4[0x20];
-    u8 sp94[0x20];
-    u8 sp74[0x20];
-    String sp68;
-    String sp5C;
-    String sp50;
-    String sp44;
-    String sp38;
-    String sp2C;
-    String sp20;
-    u8 sp1C[4];
-    u8 sp18[4];
-    u8 sp14[4];
-    u8 sp10[4];
-    u8 spC[4];
-    u8 sp8[4];
-    void *a3;
-    void *a1;
-    s8 flag2;
+    u8 foot_sound_val[0x20];
+    u8 foot_effect_val[0x20];
+    u8 room_flag_val[0x20];
+    String name_bt;
+    String name_default;
+    String tag_foot_sound;
+    String tag_foot_effect;
+    String tag_room_flag;
+    String path_dbx;
+    String xml_type;
+    u8 scratch_bt[4];
+    u8 scratch_def[4];
+    u8 scratch_fs[4];
+    u8 scratch_fe[4];
+    u8 scratch_rf[4];
+    u8 scratch_type[4];
+    void *path;
+    void *host;
+    s8 destroyed_path;
     void *self;
-    void *a2;
+    void *xml;
 
     self = arg0;
-    a1 = arg1;
-    a2 = arg2;
-    a3 = arg3;
-    String_Init(&sp68, BattleTerrain_Str + 0x35, &sp1C);
-    String_Init(&sp5C, BattleTerrain_Str + 0x43, &sp18);
-    fn_800DFAE0(self, a1, &sp68, a2, &sp5C);
-    String_Destroy(&sp5C, -1);
-    String_Destroy(&sp68, -1);
+    host = arg1;
+    xml = arg2;
+    path = arg3;
+    String_Init(&name_bt, BattleTerrain_Str + 0x35, &scratch_bt);
+    String_Init(&name_default, BattleTerrain_Str + 0x43, &scratch_def);
+    fn_800DFAE0(self, host, &name_bt, xml, &name_default);
+    String_Destroy(&name_default, -1);
+    String_Destroy(&name_bt, -1);
     *(void **)((u8 *)self + 0x40) = BattleTerrain_Vtbl;
-    a2 = String_CStr(a3);
-    fn_80041514(Map_Get(), a2);
-    a1 = (void *)0;
+    xml = String_CStr(path);
+    fn_80041514(Map_Get(), xml);
+    host = (void *)0;
     gBattleTerrainReady = 1;
-    flag2 = 0;
-    a2 = Heap_Alloc(0x60);
-    if ((s32)a2 != 0) {
-        String_Init(&sp20, BattleTerrain_Str, &sp8);
-        a1 = (void *)1;
-        String_ConcatCStr(&sp2C, a3, BattleTerrain_Str + 5);
-        flag2 = 1;
-        a2 = Xml_ParseFile(a2, &sp2C, &sp20);
+    destroyed_path = 0;
+    xml = Heap_Alloc(0x60);
+    if ((s32)xml != 0) {
+        String_Init(&xml_type, BattleTerrain_Str, &scratch_type);
+        host = (void *)1;
+        String_ConcatCStr(&path_dbx, path, BattleTerrain_Str + 5);
+        destroyed_path = 1;
+        xml = Xml_ParseFile(xml, &path_dbx, &xml_type);
     }
-    if (flag2 != 0) {
-        String_Destroy(&sp2C, -1);
+    if (destroyed_path != 0) {
+        String_Destroy(&path_dbx, -1);
     }
-    if ((s8)(s32)a1 != 0) {
-        String_Destroy(&sp20, -1);
+    if ((s8)(s32)host != 0) {
+        String_Destroy(&xml_type, -1);
     }
-    String_Init(&sp38, BattleTerrain_Str + 0xF, &spC);
-    Xml_GetNamedValue(&sp74, a2, &sp38);
-    *(void **)((u8 *)self + 0x48) = *(void **)sp74;
-    String_Destroy(&sp38, -1);
-    String_Init(&sp44, BattleTerrain_Str + 0x18, &sp10);
-    Xml_GetNamedValue(&sp94, a2, &sp44);
-    *(void **)((u8 *)self + 0x4C) = *(void **)sp94;
-    String_Destroy(&sp44, -1);
-    String_Init(&sp50, BattleTerrain_Str + 0x23, &sp14);
-    Xml_GetNamedValue(&spB4, a2, &sp50);
-    *(void **)((u8 *)self + 0x50) = *(void **)spB4;
-    String_Destroy(&sp50, -1);
-    Xml_Destroy(a2, 1);
+    String_Init(&tag_room_flag, BattleTerrain_Str + 0xF, &scratch_rf);
+    Xml_GetNamedValue(&room_flag_val, xml, &tag_room_flag);
+    *(void **)((u8 *)self + 0x48) = *(void **)room_flag_val;
+    String_Destroy(&tag_room_flag, -1);
+    String_Init(&tag_foot_effect, BattleTerrain_Str + 0x18, &scratch_fe);
+    Xml_GetNamedValue(&foot_effect_val, xml, &tag_foot_effect);
+    *(void **)((u8 *)self + 0x4C) = *(void **)foot_effect_val;
+    String_Destroy(&tag_foot_effect, -1);
+    String_Init(&tag_foot_sound, BattleTerrain_Str + 0x23, &scratch_fs);
+    Xml_GetNamedValue(&foot_sound_val, xml, &tag_foot_sound);
+    *(void **)((u8 *)self + 0x50) = *(void **)foot_sound_val;
+    String_Destroy(&tag_foot_sound, -1);
+    Xml_Destroy(xml, 1);
     return self;
 }
 #pragma global_optimizer reset
