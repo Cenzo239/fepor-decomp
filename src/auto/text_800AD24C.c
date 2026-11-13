@@ -602,11 +602,11 @@ void fn_800AE444(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32);
     extern f32 lbl_80369C78;
-    extern f32 lbl_80369C7C;
+    extern f32 gPhaseBannerZero;
     extern f32 lbl_80369C80;
     M2C_FIELD(arg0, s32 *, 0x30) = (s32) (M2C_FIELD(arg0, s32 *, 0x30) - 1);
-    M2C_FIELD(arg0, f32 *, 0x38) = Math_EaseOutPow(2, lbl_80369C78, lbl_80369C7C, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(lbl_80369C7C, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, f32 *, 0x38) = Math_EaseOutPow(2, lbl_80369C78, gPhaseBannerZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32) M2C_FIELD(arg0, s32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x30));
     if ((s32) M2C_FIELD(arg0, s32 *, 0x30) <= 0) {
         Process_ClearFunc(arg0);
     }
@@ -651,15 +651,15 @@ void fn_800AE5A8(void *arg0) {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern f64 lbl_80369C88;
-    extern f32 lbl_80369C7C;
+    extern f32 gPhaseBannerZero;
     extern f32 lbl_80369C80;
     extern f32 lbl_80369C90;
     void *self;
 
     self = arg0;
     *(s32 *)((u8 *)self + 0x30) = *(s32 *)((u8 *)self + 0x30) + 1;
-    *(f32 *)((u8 *)self + 0x38) = Math_EaseOutPow(2, lbl_80369C90, lbl_80369C7C, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
-    *(s32 *)((u8 *)self + 0x34) = (s32)Math_Lerp(lbl_80369C7C, lbl_80369C80, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
+    *(f32 *)((u8 *)self + 0x38) = Math_EaseOutPow(2, lbl_80369C90, gPhaseBannerZero, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
+    *(s32 *)((u8 *)self + 0x34) = (s32)Math_Lerp(gPhaseBannerZero, lbl_80369C80, (f32)*(s32 *)((u8 *)self + 0x44), (f32)*(s32 *)((u8 *)self + 0x30));
     if (*(s32 *)((u8 *)self + 0x30) >= *(s32 *)((u8 *)self + 0x44)) {
         Process_ClearFunc(self);
     }
@@ -676,7 +676,7 @@ void Battle_InitPhaseBanner(void *proc) {
     extern u8 gBattleState[];
     extern u8 lbl_8026EAA0[];
     extern u8 gFxChannels[];
-    extern f32 lbl_80369C7C;
+    extern f32 gPhaseBannerZero;
 
     void *chapter;
     void *fxName;
@@ -833,7 +833,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     extern s32 lbl_80369C6C;
     extern s32 lbl_80369C70;
     extern s32 lbl_80369C74;
-    extern f32 lbl_80369C7C;
+    extern f32 gPhaseBannerZero;
     extern f32 lbl_80369C94;
     extern f32 lbl_80369C98;
     extern f32 lbl_80369C9C;
@@ -856,7 +856,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x34);
     Prim2D_Begin();
     {
-        f32 z = lbl_80369C7C;
+        f32 z = gPhaseBannerZero;
         f32 o = 1.0f;
         Prim2D_SetTransform(z, z, o, o);
     }
@@ -865,7 +865,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(lbl_80369C94);
-    Prim2D_SetRect(lbl_80369C7C, lbl_80369C98, lbl_80369C9C, lbl_80369CA0);
+    Prim2D_SetRect(gPhaseBannerZero, lbl_80369C98, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp18 = lbl_80369C6C;
     sp1C = lbl_80369C68;
@@ -875,7 +875,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(lbl_80369C94);
-    Prim2D_SetRect(lbl_80369C7C, lbl_80369CA4, lbl_80369C9C, lbl_80369CA0);
+    Prim2D_SetRect(gPhaseBannerZero, lbl_80369CA4, lbl_80369C9C, lbl_80369CA0);
     Prim2D_EmitQuad();
     sp8 = lbl_8036C494;
     spC = lbl_8036C490;
