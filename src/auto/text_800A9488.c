@@ -1922,7 +1922,7 @@ void fn_800ACD18(void *arg0)
     void fn_8008B464(s32, s32, s32);
     void fn_8008BBF8(s32, s32, s32, s32, s32, u8);
     void Ui_DrawRouteIcon(s16, s16);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     void UnitRef_Draw(void *, s32, s32, s16);
     s32 fn_80093DA8(s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -2090,7 +2090,7 @@ void fn_800ACD18(void *arg0)
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80369C54);
         Prim2D_PrepareTex();
-        fn_8008BF68(*(s16 *)((u8 *)arg0 + 0x38), *(s16 *)((u8 *)arg0 + 0x3A), Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0);
+        Ui_DrawRouteIconEx(*(s16 *)((u8 *)arg0 + 0x38), *(s16 *)((u8 *)arg0 + 0x3A), Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_80369C58);
         Prim2D_PrepareTex();

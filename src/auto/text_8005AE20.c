@@ -8029,7 +8029,7 @@ void fn_80071D28(void *unused, void *unit) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    void fn_8008BF68(s32, s32, s32);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
     extern f32 lbl_803692F0;
     u8 *addr;
     void *p;
@@ -8064,7 +8064,7 @@ void fn_80071D28(void *unused, void *unit) {
     if (((u8 *)unit)[0x2D] == 0 && ((u8 *)unit)[0x2E] == 0) {
         flag = 1;
     }
-    fn_8008BF68(*(s16 *)((u8 *)unit + 0x38), *(s16 *)((u8 *)unit + 0x3A), flag);
+    Ui_DrawRouteIconEx(*(s16 *)((u8 *)unit + 0x38), *(s16 *)((u8 *)unit + 0x3A), flag);
 }
 
 void fn_80071E0C(void *arg0, void *arg1) {

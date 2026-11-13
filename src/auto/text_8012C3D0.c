@@ -2278,7 +2278,7 @@ void fn_801302F4(void *arg0) {
     void Prim2D_SetColorByte(s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void Prim2D_SetTex(s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     void Prim2D_ResetState(void);
     void fn_80057E64(void *, s32);
     void fn_80057AE0(void *);
@@ -2360,7 +2360,7 @@ void fn_801302F4(void *arg0) {
     Prim2D_SetTex(0, 0x11);
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
-    fn_8008BF68(x, y, 1);
+    Ui_DrawRouteIconEx(x, y, 1);
     Prim2D_ResetState();
     if (*(u8 *)((u8 *)arg0 + 0x63) != 0) {
         fn_80057E64(*(void **)((u8 *)arg0 + 0x44), 1);

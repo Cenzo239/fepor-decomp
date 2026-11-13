@@ -149,7 +149,7 @@ void fn_80163728(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     s32 Text_MeasureHeight(s32, f32);
-    void fn_8008BF68(s16, s32, u8);
+    void Ui_DrawRouteIconEx(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
     void **vt0 = (void **)M2C_FIELD(arg0, u32 *, 0x00);
     s16 temp_r31;
@@ -218,7 +218,7 @@ void fn_80163728(void *arg0, void *arg1) {
 
             temp_r24 = M2C_FIELD(arg0, s16 *, 0x54);
             temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
-            fn_8008BF68(M2C_FIELD(arg0, s16 *, 0x50),
+            Ui_DrawRouteIconEx(M2C_FIELD(arg0, s16 *, 0x50),
                        (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + ((temp_r24 - temp_r25_2) >> 1))),
                        var_r30);
 
@@ -253,7 +253,7 @@ void fn_80163728(void *arg0, void *arg1) {
         Prim2D_Begin();
         Prim2D_SetAlphaByte(0x40);
         Prim2D_PrepareTex();
-        fn_8008BF68(var_r28, temp_r24_2 + temp_r25_2_final, 0);
+        Ui_DrawRouteIconEx(var_r28, temp_r24_2 + temp_r25_2_final, 0);
         Prim2D_Begin();
         Prim2D_SetAlphaByte(0x80);
         Prim2D_PrepareTex();
@@ -642,7 +642,7 @@ void fn_80164350(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     s32 Text_MeasureHeight(s32, f32);
-    void fn_8008BF68(s16, s32, u8);
+    void Ui_DrawRouteIconEx(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
     s16 temp_r24;
     s16 temp_r27;
@@ -692,7 +692,7 @@ void fn_80164350(void *arg0, void *arg1) {
             Prim2D_Begin();
             Prim2D_AddZ(lbl_8036A89C);
             Prim2D_PrepareTex();
-            fn_8008BF68(M2C_FIELD(arg0, s16 *, 0x50),
+            Ui_DrawRouteIconEx(M2C_FIELD(arg0, s16 *, 0x50),
                         (s32)(s16)M2C_FIELD(arg0, s16 *, 0x52) + ((s32)(s16)M2C_FIELD(arg0, s16 *, 0x64) - (s32)var_r3) >> 1,
                         var_r30);
             Prim2D_Begin();
@@ -719,7 +719,7 @@ void fn_80164350(void *arg0, void *arg1) {
         Prim2D_Begin();
         Prim2D_SetAlphaByte(0x40);
         Prim2D_PrepareTex();
-        fn_8008BF68(var_r28, (s32)(s16)var_r24 + (s32)(s16)temp_r26_2, 0);
+        Ui_DrawRouteIconEx(var_r28, (s32)(s16)var_r24 + (s32)(s16)temp_r26_2, 0);
         Prim2D_Begin();
         Prim2D_SetAlphaByte(0x80);
         Prim2D_PrepareTex();
@@ -2268,7 +2268,7 @@ void fn_801676AC(void *arg0, s32 arg1) {
     void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
-    void fn_8008BF68(s32, s32, s32);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
     u8 *Ui_GetColor(s32);
     void **fn_8006EDD8(void *, s32);
     void Prim2D_BindTexture(void *, s32, s32);
@@ -2336,7 +2336,7 @@ void fn_801676AC(void *arg0, s32 arg1) {
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_8036A92C, lbl_8036A92C, lbl_8036A974, lbl_8036A944);
         Prim2D_PrepareTex();
-        fn_8008BF68((s32)(lbl_8036A978 + *(f32 *)((u8 *)self + 0xDC) - lbl_8036A970), (s32)(lbl_8036A974 + *(f32 *)((u8 *)self + 0xE0)), 1);
+        Ui_DrawRouteIconEx((s32)(lbl_8036A978 + *(f32 *)((u8 *)self + 0xDC) - lbl_8036A970), (s32)(lbl_8036A974 + *(f32 *)((u8 *)self + 0xE0)), 1);
     }
 
     f27 = lbl_8036A944;
@@ -5493,7 +5493,7 @@ void fn_8016E1B4(void *arg0) {
     void fn_8007CD08(void *, s32, f32, f32, f32);
     void fn_8007D024(s32, s32, f32, f32, f32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8008BF68(s32, s32, s32);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
     void *fn_8014D8FC(void *);
     void fn_8016CD1C(void *, f32, f32);
     void fn_8016D5A8(void *, f32, f32);
@@ -5690,7 +5690,7 @@ void fn_8016E1B4(void *arg0) {
             }
             x = *(s16 *)((u8 *)self + 0x48) + 0x14;
             y = *(s16 *)((u8 *)self + 0x4A) + 3;
-            fn_8008BF68(x, y, 1);
+            Ui_DrawRouteIconEx(x, y, 1);
         }
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AA50);
@@ -9890,7 +9890,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     void Prim2D_Begin(void);
     void *fn_8000B908(u8);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     extern f32 gF32_Neg1;
     extern f32 lbl_8036AB74;
     extern f32 lbl_8036AB84;
@@ -9985,7 +9985,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
         if (*((u8 *)arg1 + 0x2D) == 0 && *((u8 *)arg1 + 0x2E) == 0) {
             flag2 = 1;
         }
-        fn_8008BF68(*(s16 *)((u8 *)arg1 + 0x38), *(s16 *)((u8 *)arg1 + 0x3A), flag2);
+        Ui_DrawRouteIconEx(*(s16 *)((u8 *)arg1 + 0x38), *(s16 *)((u8 *)arg1 + 0x3A), flag2);
     }
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AB74);
@@ -11129,7 +11129,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     s32 fn_80010770(void *, s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     extern f32 gF32_1;
     extern f32 lbl_8036AB74;
     extern f32 gF32_Neg1;
@@ -11223,7 +11223,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
         flag2 = 1;
     }
-    fn_8008BF68(*(s16 *)((u8 *)a1 + 0x38), *(s16 *)((u8 *)a1 + 0x3A), flag2);
+    Ui_DrawRouteIconEx(*(s16 *)((u8 *)a1 + 0x38), *(s16 *)((u8 *)a1 + 0x3A), flag2);
     {
         s32 w = ((Obj *)a0)->v35();
         s32 h = ((Obj *)a0)->v20();
@@ -12150,7 +12150,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     s32 Text_MeasureHeight(s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, u8);
-    void fn_8008BF68(s16, s32, u8);
+    void Ui_DrawRouteIconEx(s16, s32, u8);
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
     extern f32 lbl_8036AB90;
@@ -12271,7 +12271,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                 Prim2D_Begin();
                 Prim2D_AddZ(lbl_8036AB90);
                 Prim2D_PrepareTex();
-                fn_8008BF68(*(s16 *)((u8 *)self + 0x40),
+                Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 0x40),
                             *(s16 *)((u8 *)self + 0x42) + (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1),
                             flag);
                 Prim2D_Begin();

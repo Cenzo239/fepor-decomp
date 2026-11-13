@@ -1561,7 +1561,7 @@ void TabMenu_DrawHud(void *arg0) {
     void Prim2D_Begin(void);
     s32 Text_MeasureHeight(s32, s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     void fn_801E7FC0(void *);
     extern f64 lbl_8036B6E0;
     extern f32 gTabMenuOne;
@@ -1621,7 +1621,7 @@ void TabMenu_DrawHud(void *arg0) {
         if (*(u8 *)((u8 *)self + 0x2D) == 0 && *(u8 *)((u8 *)self + 0x2E) == 0) {
             flag = 1;
         }
-        fn_8008BF68(drawX, drawY, flag);
+        Ui_DrawRouteIconEx(drawX, drawY, flag);
         break;
     }
 
@@ -1651,7 +1651,7 @@ void TabMenu_DrawHud(void *arg0) {
 
 void fn_801E7FC0(void *arg0) {
     s32 Text_MeasureHeight(s32, s32, f32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     s32 fn_801E4A60(void *, s8);
     extern f32 gTabMenuOne;
     void *self;
@@ -1682,7 +1682,7 @@ void fn_801E7FC0(void *arg0) {
     if (*(u8 *)((u8 *)self + 0x2D) == 0 && *(u8 *)((u8 *)self + 0x2E) == 0) {
         flag = 1;
     }
-    fn_8008BF68(x, y, flag);
+    Ui_DrawRouteIconEx(x, y, flag);
 }
 
 void fn_801E80B4(void *arg0) {

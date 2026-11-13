@@ -228,7 +228,7 @@ void fn_801F230C(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     void **fn_8006EDD8(s32, s32);
     void Ui_DrawCaptionBar(void *, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     s32 *Ui_GetColor(s32);
     extern u8 gCardLinkStrings[];
     extern void *lbl_8029A8C8[];
@@ -508,7 +508,7 @@ void fn_801F230C(void *arg0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036B838);
         Prim2D_PrepareTex();
-        fn_8008BF68(*(s16 *)((u8 *)obj + 8), *(s16 *)((u8 *)obj + 0xA), 1);
+        Ui_DrawRouteIconEx(*(s16 *)((u8 *)obj + 8), *(s16 *)((u8 *)obj + 0xA), 1);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036B83C);
         Prim2D_PrepareTex();
@@ -1091,7 +1091,7 @@ void fn_801F3E60(void *arg0) {
     u16 **fn_8006EDD8(s32, s32);
     void Ui_DrawCaptionBar(void *, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     void *Msg_ResolveName(s32);
     void fn_80152010(s16, s16, s32, s32, s32);
     void fn_8015F24C(s32, s32, s32, s32, s32);
@@ -1372,7 +1372,7 @@ void fn_801F3E60(void *arg0) {
     (void)Prim2D_SetCallback; (void)fn_801F52A8; (void)fn_8015F24C;
     (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
     (void)Msg_ResolveName; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
-    (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;
+    (void)Ui_DrawRouteIconEx; (void)fn_8022C9FC; (void)fn_8022CB78;
     (void)fn_80238638; (void)OSGetTime; (void)__div2i;
     (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
 }
@@ -2518,7 +2518,7 @@ void fn_801F7A60(void *arg0) {
     void Ui_DrawCaptionBar(void *, s32);
     void fn_8007D024(s32, s32, f32, f32, f32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8008BF68(s16, s16, s32);
+    void Ui_DrawRouteIconEx(s16, s16, s32);
     void *fn_8016614C(s32, s32);
     s32 *Ui_GetColor(s32);
     extern u8 gBattlePreviewStrings[];
@@ -2678,7 +2678,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_PrepareTex();
 
     if (*(u8 *)((u8 *)self + 4) != 0) {
-        fn_8008BF68(*(s16 *)((u8 *)self + 8), *(s16 *)((u8 *)self + 0xA), *(u8 *)((u8 *)self + 5));
+        Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 8), *(s16 *)((u8 *)self + 0xA), *(u8 *)((u8 *)self + 5));
         fn_8008AB7C(*(s16 *)((u8 *)self + 8) + 0x50, *(s16 *)((u8 *)self + 0xA) + 0xE, 0xA0, 0x17, 0x19, 0x64, *(u8 *)((u8 *)self + 5));
     }
 
@@ -2794,7 +2794,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_PrepareTex();
 
     if (*(u8 *)((u8 *)self + 0x16) != 0) {
-        fn_8008BF68(*(s16 *)((u8 *)self + 0x1A), *(s16 *)((u8 *)self + 0x1C), *(u8 *)((u8 *)self + 0x17));
+        Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 0x1A), *(s16 *)((u8 *)self + 0x1C), *(u8 *)((u8 *)self + 0x17));
         fn_8008AB7C(*(s16 *)((u8 *)self + 0x1A) + 0x1C, *(s16 *)((u8 *)self + 0x1C) + 0xC, 0x50, 0x18, 0x19, 0x4B, *(u8 *)((u8 *)self + 0x17));
     }
 

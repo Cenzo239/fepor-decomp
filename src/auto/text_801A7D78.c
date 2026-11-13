@@ -1637,7 +1637,7 @@ void fn_801ADA50(void *arg0) {
     void Ui_DrawCaptionBar(void *, s32);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_AddZ(f32);
-    void fn_8008BF68(s32, s32, s32);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_80057E64(void *, s32);
     void fn_80057AE0(void *);
@@ -1717,7 +1717,7 @@ void fn_801ADA50(void *arg0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AFAC);
         Prim2D_PrepareTex();
-        fn_8008BF68(self->unk44 + 0x1C, self->unk46 + 3, 1);
+        Ui_DrawRouteIconEx(self->unk44 + 0x1C, self->unk46 + 3, 1);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AFB0);
         Prim2D_PrepareTex();

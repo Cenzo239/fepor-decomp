@@ -2921,7 +2921,7 @@ void Ui_DrawRouteIcon(s32 x, s32 y) {
     Prim2D_EndPrim();
 }
 
-void fn_8008BF68(s32 arg0, s32 arg1, u8 arg2) {
+void Ui_DrawRouteIconEx(s32 arg0, s32 arg1, u8 arg2) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
