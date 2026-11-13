@@ -487,7 +487,7 @@ void fn_80183EAC(s32 arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
     *((u8 *)temp_r3 + 0x49) = 0;
 }
 
-void *fn_80183F30(void *arg0, void *arg1) {
+void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     void fn_8000A388(void *, void *, void *);
     void fn_80185060(void *, void *);
     void *fn_8000CAA0(void *, void *);
