@@ -9828,7 +9828,7 @@ void *fn_80258AD8(void) {
 
 void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void AudioTable_Insert(s32,s32); s32 AudioTable_Remove();
- void AudioBank_Insert(s32,s32); void fn_8024F05C(s32);
+ void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
  s32 fn_8024F1D8(); void fn_8024F420(s32);
  s32 fn_8024F5E4(); void fn_8024F7E8(s32);
  void fn_8024FCA8(s32,s32); s32 fn_8024FD80();
@@ -9847,7 +9847,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
    node=FindAudioResource(data,(u16)(id|0x4000),8);
    if(node!=NULL) AudioBank_Insert(id|0x4000,(s32)(node+8));
    else AudioBank_Insert(id|0x4000,0);
-  } else fn_8024F05C(id|0x4000);
+  } else AudioBank_Remove(id|0x4000);
   break;
  case 3:
   if(remove==0) {
