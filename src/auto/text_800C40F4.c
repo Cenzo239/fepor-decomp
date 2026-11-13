@@ -15268,71 +15268,72 @@ void fn_800EB568(void) {
     gUiInputFlags |= 0x100;
 }
 
+/* Debug-print the current memory-card result code as a name string. */
 void Card_PrintResult(void) {
     void DebugPrint(void *, ...);
     extern u8 gCardWork[];
     extern u8 gCardStrings[];
-    void *var_r4;
-    s32 val;
+    void *msg;
+    s32 result;
 
-    var_r4 = NULL;
-    val = *(s32 *)(gCardWork + 0xA004);
+    msg = NULL;
+    result = *(s32 *)(gCardWork + 0xA004);
 
-    switch (val) {
-    case 1:
-        var_r4 = gCardStrings + 0xE8;
+    switch (result) {
+    case CARD_RESULT_UNLOCKED:
+        msg = gCardStrings + 0xE8;
         break;
-    case 0:
-        var_r4 = gCardStrings + 0xF1;
+    case CARD_RESULT_READY:
+        msg = gCardStrings + 0xF1;
         break;
-    case -1:
-        var_r4 = gCardStrings + 0xFE;
+    case CARD_RESULT_BUSY:
+        msg = gCardStrings + 0xFE;
         break;
-    case -2:
-        var_r4 = gCardStrings + 0x10C;
+    case CARD_RESULT_WRONGDEVICE:
+        msg = gCardStrings + 0x10C;
         break;
-    case -3:
-        var_r4 = gCardStrings + 0x129;
+    case CARD_RESULT_NOCARD:
+        msg = gCardStrings + 0x129;
         break;
-    case -4:
-        var_r4 = gCardStrings + 0x145;
+    case CARD_RESULT_NOFILE:
+        msg = gCardStrings + 0x145;
         break;
-    case -5:
-        var_r4 = gCardStrings + 0x163;
+    case CARD_RESULT_IOERROR:
+        msg = gCardStrings + 0x163;
         break;
-    case -6:
-        var_r4 = gCardStrings + 0x17A;
+    case CARD_RESULT_BROKEN:
+        msg = gCardStrings + 0x17A;
         break;
-    case -7:
-        var_r4 = gCardStrings + 0x198;
+    case CARD_RESULT_EXIST:
+        msg = gCardStrings + 0x198;
         break;
-    case -8:
-        var_r4 = gCardStrings + 0x1A9;
+    case CARD_RESULT_NOENT:
+        msg = gCardStrings + 0x1A9;
         break;
-    case -9:
-        var_r4 = gCardStrings + 0x1C4;
+    case CARD_RESULT_INSSPACE:
+        msg = gCardStrings + 0x1C4;
         break;
-    case -10:
-        var_r4 = gCardStrings + 0x1D0;
+    case CARD_RESULT_NOPERM:
+        msg = gCardStrings + 0x1D0;
         break;
-    case -11:
-        var_r4 = gCardStrings + 0x1DA;
+    case CARD_RESULT_LIMIT:
+        msg = gCardStrings + 0x1DA;
         break;
-    case -12:
-        var_r4 = gCardStrings + 0x1E7;
+    case CARD_RESULT_NAMETOOLONG:
+        msg = gCardStrings + 0x1E7;
         break;
-    case -13:
-        var_r4 = gCardStrings + 0x204;
+    case CARD_RESULT_CANCELED:
+        msg = gCardStrings + 0x204;
         break;
-    case -14:
-        var_r4 = gCardStrings + 0x232;
+    case CARD_RESULT_ENCODING:
+        msg = gCardStrings + 0x232;
         break;
-    case -128:
-        var_r4 = gCardStrings + 0x24E;
+    case CARD_RESULT_FATAL_ERROR:
+        msg = gCardStrings + 0x24E;
         break;
     }
 
-    DebugPrint(gCardStrings + 0x26B, var_r4);
+    DebugPrint(gCardStrings + 0x26B, msg);
 }
 
 s32 fn_800EB74C(void) {
