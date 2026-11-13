@@ -1041,7 +1041,7 @@ void fn_8012DFA8(void *arg0) {
     void fn_800506E0(void *, s32);
     void *fn_80056A60(void *);
     void fn_80056AE0(void *, void *);
-    void fn_800576D4(void *, s32);
+    void ScrollBar_RecreateArrows(void *, s32);
     void fn_80057860(void *, s16);
     void fn_80057880(void *, s32);
     void fn_80057898(void *, s32);
@@ -1589,7 +1589,7 @@ void fn_8012DFA8(void *arg0) {
     fn_80057880(*(void **)(self + 0x4C), 0x120);
     fn_80057860(*(void **)(self + 0x4C), *(s16 *)(self + 0x6A));
     fn_800578A0(*(void **)(self + 0x4C), lbl_8036A500);
-    fn_800576D4(*(void **)(self + 0x4C), 1);
+    ScrollBar_RecreateArrows(*(void **)(self + 0x4C), 1);
     tmp = Heap_Alloc(0x18);
     if (tmp != NULL) {
         tmp = fn_80056A60(tmp);

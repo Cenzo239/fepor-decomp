@@ -2578,7 +2578,7 @@ void TabMenu_Init(void *menu) {
     void *Msg_Expand(void *);
     void *fn_80056A60(void *);
     void fn_80056AE0(void *, void *);
-    void fn_800576D4(void *, s32);
+    void ScrollBar_RecreateArrows(void *, s32);
     void fn_80057860(void *, s16);
     void fn_80057880(void *, s32);
     void fn_800578A0(void *, f32);
@@ -2647,7 +2647,7 @@ void TabMenu_Init(void *menu) {
 skip_obj:
     *(void **)((u8 *)menu + 0x5C) = textBox;
     fn_800578A8(*(void **)((u8 *)menu + 0x5C), 0x22A, 0x6A, 0x110);
-    fn_800576D4(*(void **)((u8 *)menu + 0x5C), 1);
+    ScrollBar_RecreateArrows(*(void **)((u8 *)menu + 0x5C), 1);
     caption = Heap_Alloc(0x18);
     if (caption == 0) {
         goto skip_sub;

@@ -688,7 +688,7 @@ void fn_80057020(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x20) = *(s32 *)((u8 *)arg0 + 0x1C);
 }
 
-void fn_800576D4(void *arg0, u8 arg1) {
+void ScrollBar_RecreateArrows(void *arg0, u8 arg1) {
     void fn_8006D8E8(void *);
     void Heap_Free(void *);
     void *Heap_Alloc(s32);

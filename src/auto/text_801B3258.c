@@ -6214,7 +6214,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     void fn_80057998(void *);
     void fn_80057898(void *, s32);
     void fn_80057880(void *, s32);
-    void fn_800576D4(void *, s32);
+    void ScrollBar_RecreateArrows(void *, s32);
     void strcpy(char *, char *);
     void strcat(char *, char *);
     char *Msg_Expand(char *);
@@ -6262,7 +6262,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     *(u8 **)(panel+56)=entry;
     fn_80057898(*(void **)(panel+56),64);
     fn_80057880(*(void **)(panel+56),7);
-    fn_800576D4(*(void **)(panel+56),1);
+    ScrollBar_RecreateArrows(*(void **)(panel+56),1);
     strcpy((char *)panel+60,lbl_8027D030+0x425);
     strcat((char *)panel+60,Msg_Expand(lbl_8027D030+1067));
     strcat((char *)panel+60,lbl_8027D030+1078);
