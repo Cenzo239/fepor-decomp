@@ -813,8 +813,8 @@ void fn_8005C7A4(s32 arg0) {
 }
 
 void fn_8005C7C8(void) {
-    M2C_UNK fn_8005D1DC();
-    fn_8005D1DC();
+    M2C_UNK FileCache_ReleaseByName();
+    FileCache_ReleaseByName();
 }
 
 void fn_8005C7E8(void) {
@@ -894,7 +894,7 @@ void *fn_8005CEC0(void) {
 }
 #pragma global_optimizer on
 void FileCache_Release(u8 *);
-void fn_8005D1DC(char *name) {
+void FileCache_ReleaseByName(char *name) {
     FileCache_Release(FindEntryByName(name));
 }
 
