@@ -8858,51 +8858,52 @@ s32 CameraWin_OnCancel(void) {
         u32 cap;
         char *data;
     };
-    struct Str sp38;
-    struct Str sp2C;
-    struct Str sp20;
-    struct Str sp14;
-    struct Str sp8;
-    void *temp;
+    // Build {gGame}xcam/[dir/]name.dbx from the anime box and write it out.
+    struct Str path;
+    struct Str dirName;
+    struct Str dirTmp;
+    struct Str dirSlash;
+    struct Str baseName;
+    void *win;
     u32 len;
 
-    sp38.cap = 0;
-    temp = gCameraWin;
-    sp2C.cap = 0;
-    sp38.size = 0;
-    sp38.data = 0;
-    sp38.cap = 0;
-    sp2C.size = 0;
-    sp2C.data = 0;
-    sp2C.cap = 0;
+    path.cap = 0;
+    win = gCameraWin;
+    dirName.cap = 0;
+    path.size = 0;
+    path.data = 0;
+    path.cap = 0;
+    dirName.size = 0;
+    dirName.data = 0;
+    dirName.cap = 0;
 
-    temp = (void *)fn_8011C984(*(s32 *)((u8 *)temp + 0x430), fn_8011C9E4(*(s32 *)((u8 *)temp + 0x430)));
+    win = (void *)fn_8011C984(*(s32 *)((u8 *)win + 0x430), fn_8011C9E4(*(s32 *)((u8 *)win + 0x430)));
 
-    fn_801CB25C(&sp20, (s32)temp);
-    String_Assign(&sp2C, &sp20, 0, -1);
-    String_Destroy(&sp20, -1);
-    String_Assign(&sp38, gGame, 0, -1);
+    fn_801CB25C(&dirTmp, (s32)win);
+    String_Assign(&dirName, &dirTmp, 0, -1);
+    String_Destroy(&dirTmp, -1);
+    String_Assign(&path, gGame, 0, -1);
 
     len = strlen(&CameraWin_str[8]);
-    fn_800C992C(&sp38, (char *)CameraWin_str + 8, len);
+    fn_800C992C(&path, (char *)CameraWin_str + 8, len);
 
     len = strlen((char *)CameraWin_str + 0xE);
-    if (String_Compare(&sp2C, 0, sp2C.size, &CameraWin_str[0xE], len) != 0) {
-        String_ConcatCStr(&sp14, &sp2C, (char *)CameraWin_str + 0xF);
-        fn_800C99A0(&sp38, &sp14, 0, -1);
-        String_Destroy(&sp14, -1);
+    if (String_Compare(&dirName, 0, dirName.size, &CameraWin_str[0xE], len) != 0) {
+        String_ConcatCStr(&dirSlash, &dirName, (char *)CameraWin_str + 0xF);
+        fn_800C99A0(&path, &dirSlash, 0, -1);
+        String_Destroy(&dirSlash, -1);
     }
 
-    fn_800DF6DC(&sp8, (s32)temp);
-    fn_800C99A0(&sp38, &sp8, 0, -1);
-    String_Destroy(&sp8, -1);
+    fn_800DF6DC(&baseName, (s32)win);
+    fn_800C99A0(&path, &baseName, 0, -1);
+    String_Destroy(&baseName, -1);
 
     len = strlen(&CameraWin_str[0x11]);
-    fn_800C992C(&sp38, (char *)CameraWin_str + 0x11, len);
+    fn_800C992C(&path, (char *)CameraWin_str + 0x11, len);
 
-    fn_801CA814((s32)temp, &sp38);
-    String_Destroy(&sp2C, -1);
-    String_Destroy(&sp38, -1);
+    fn_801CA814((s32)win, &path);
+    String_Destroy(&dirName, -1);
+    String_Destroy(&path, -1);
     return 0;
 }
 
