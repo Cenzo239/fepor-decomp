@@ -182,13 +182,14 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 
-void BattleHit_SetBraveFlags(u8 *arg0, s32 arg1) {
-    s32 count;
+/* Set brave-weapon flag (bit 3) on count*2 hit-table entries from the current cursor. */
+void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
+    s32 n;
     s32 i;
 
-    count = arg1 * 2;
-    for (i = 0; i < count; i++) {
-        ((u16 *)arg0)[arg0[0x60] + i + 0x10] |= 8;
+    n = count * 2;
+    for (i = 0; i < n; i++) {
+        ((u16 *)hitTbl)[hitTbl[0x60] + i + 0x10] |= 8;
     }
 }
 
