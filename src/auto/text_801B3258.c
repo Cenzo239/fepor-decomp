@@ -3956,38 +3956,39 @@ extern "C" void fn_801BCFF4(void *arg0) {
     (void)pad;
 }
 
-extern "C" void Ui_LayoutUnitHirePanel(void *arg0) {
+extern "C" void Ui_LayoutUnitHirePanel(void *panel) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SetWidgetText(void *, void *);
     void Ui_BringChildToFront(void *, void *);
     extern u8 gUiUnitPanelStrings[];
-    struct { s16 x; s16 y; } spC;
-    struct { s16 x; s16 y; } sp8;
-    void *obj;
-    void *child;
-    void *p;
-    s16 tmp;
+    struct { s16 x; s16 y; } captionPos;
+    struct { s16 x; s16 y; } listPos;
+    void *caption;
+    void *list;
+    void *help;
+    s16 savedY;
 
-    obj = Ui_FindChild(arg0, 0x80, 0);
-    if (*(s16 *)((u8 *)obj + 0xC) < 0x28) {
-        spC.x = *(s16 *)((u8 *)obj + 0xA);
-        spC.y = 0x28;
-        Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);
+    /* Slide hire caption/list into place, set hire strings, raise list and help text. */
+    caption = Ui_FindChild(panel, 0x80, 0);
+    if (*(s16 *)((u8 *)caption + 0xC) < 0x28) {
+        captionPos.x = *(s16 *)((u8 *)caption + 0xA);
+        captionPos.y = 0x28;
+        Ui_SlideWidgetChildMode1(panel, caption, &captionPos.x, 0);
     }
-    *(s32 *)((u8 *)obj + 0x48) = 1;
-    Ui_SetWidgetText(obj, gUiUnitPanelStrings + 0x227);
-    child = *(void **)((u8 *)arg0 + 0x5C);
-    if (*(s16 *)((u8 *)child + 0xA) != 0x118) {
-        tmp = *(s16 *)((u8 *)child + 0xC);
-        sp8.x = 0x118;
-        sp8.y = tmp;
-        Ui_SlideWidgetChildMode1(arg0, child, &sp8.x, 0);
+    *(s32 *)((u8 *)caption + 0x48) = 1;
+    Ui_SetWidgetText(caption, gUiUnitPanelStrings + 0x227);
+    list = *(void **)((u8 *)panel + 0x5C);
+    if (*(s16 *)((u8 *)list + 0xA) != 0x118) {
+        savedY = *(s16 *)((u8 *)list + 0xC);
+        listPos.x = 0x118;
+        listPos.y = savedY;
+        Ui_SlideWidgetChildMode1(panel, list, &listPos.x, 0);
     }
-    Ui_BringChildToFront(arg0, *(void **)((u8 *)arg0 + 0x5C));
-    p = Ui_FindChild(arg0, -0x1000, 0);
-    if (p != NULL) {
-        Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x23B);
+    Ui_BringChildToFront(panel, *(void **)((u8 *)panel + 0x5C));
+    help = Ui_FindChild(panel, -0x1000, 0);
+    if (help != NULL) {
+        Ui_SetWidgetText(help, gUiUnitPanelStrings + 0x23B);
     }
 }
 
