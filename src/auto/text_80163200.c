@@ -7845,7 +7845,8 @@ s32 fn_80172C68(void *arg0) {
     return ((struct { u8 hi:1; u8 lo:7; } *)((u8 *)arg0 + 5))->hi != 0;
 }
 
-void Ui_ExitSubmenuToUnitList(void *arg0) {
+void Ui_ExitSubmenuToUnitList(void *panel) {
+    /* Same as Ui_RestoreUnitListPanel: refresh sub-menu, reset inventory, refocus unit list/portrait/caption. */
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
     void fn_8000C5E0(void *);
@@ -7859,41 +7860,41 @@ void Ui_ExitSubmenuToUnitList(void *arg0) {
     extern u32 gUiContext[];
     s32 saved;
     void *obj;
-    void *p;
-    void *q;
-    u32 ret;
+    void *unit;
+    void *portrait;
+    u32 caption;
     s32 zero;
 
-    obj = M2C_FIELD(arg0, void **, 0x5C);
+    obj = M2C_FIELD(panel, void **, 0x5C);
     fn_8000A420(obj);
     saved = M2C_FIELD(obj, s8 *, 0x62);
     fn_80023FF4(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
-    obj = M2C_FIELD(arg0, void **, 0x4C);
+    fn_8000C5E0(M2C_FIELD(panel, void **, 0x5C));
+    obj = M2C_FIELD(panel, void **, 0x4C);
     zero = 0;
-    saved = M2C_FIELD(arg0, s32 *, 0x40);
+    saved = M2C_FIELD(panel, s32 *, 0x40);
     M2C_FIELD(obj, s8 *, 0x48) = zero;
     M2C_FIELD(obj, s32 *, 0x60) = 3;
     M2C_FIELD(obj, s8 *, 0x4B) = zero;
     M2C_FIELD(obj, s32 *, 0x70) = zero;
     M2C_FIELD(obj, s32 *, 0x74) = zero;
     M2C_FIELD(obj, s16 *, 0x4C) = UnitInv_FindFilledUp(obj, 0);
-    Ui_BringChildToFront(arg0, saved);
-    p = M2C_FIELD(gUiContext, void **, 0);
-    if (p != NULL) {
-        fn_80184C7C(p, 0, 4, 0);
+    Ui_BringChildToFront(panel, saved);
+    unit = M2C_FIELD(gUiContext, void **, 0);
+    if (unit != NULL) {
+        fn_80184C7C(unit, 0, 4, 0);
     }
-    p = M2C_FIELD(arg0, void **, 0x44);
-    if (p != NULL) {
-        q = M2C_FIELD(p, void **, 0x3C);
-        if (q != NULL) {
-            Ui_SetPortraitUnit(p, q);
+    portrait = M2C_FIELD(panel, void **, 0x44);
+    if (portrait != NULL) {
+        unit = M2C_FIELD(portrait, void **, 0x3C);
+        if (unit != NULL) {
+            Ui_SetPortraitUnit(portrait, unit);
         }
     }
-    ret = Ui_FindChild(arg0, -0x1000, 0);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, (s32)((u8 *)gUiMsgStrings + 0x1FD));
+    caption = Ui_FindChild(panel, -0x1000, 0);
+    if (caption != 0) {
+        Ui_SetWidgetText(caption, (s32)((u8 *)gUiMsgStrings + 0x1FD));
     }
 }
 
