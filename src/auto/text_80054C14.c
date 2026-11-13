@@ -313,7 +313,7 @@ void *fn_80055204(void *arg0, s32 arg1) {
 }
 
 #pragma global_optimizer off
-u8 fn_80055248(s32 arg0) {
+u8 GActor_CheckResources(s32 arg0) {
     void *fn_8000D354(s32);
     void sprintf(void *, void *, void *, ...);
     u8 fn_8005BA10(void *);
@@ -448,7 +448,7 @@ u8 fn_80055248(s32 arg0) {
         }
     }
     if (fn_80055C74(node) != 0) {
-        if ((u8)fn_80055248(fn_80055C74(node)) == 0) {
+        if ((u8)GActor_CheckResources(fn_80055C74(node)) == 0) {
             ok = 0;
             goto check7;
         }

@@ -756,7 +756,7 @@ void fn_800AE904(void *arg0) {
 }
 
 void fn_800AE918(s32 arg0) {
-    u8 fn_80055248(void *);
+    u8 GActor_CheckResources(void *);
     void fn_8000C188(s32);
     extern u8 lbl_80330708[];
     extern u8 lbl_8026EAA0[];
@@ -779,7 +779,7 @@ void fn_800AE918(s32 arg0) {
         var_r3 = NULL;
         break;
     }
-    if (fn_80055248(var_r3) != 0) {
+    if (GActor_CheckResources(var_r3) != 0) {
         fn_8000C188(arg0);
     }
 }
