@@ -7164,7 +7164,7 @@ void fn_80252D84(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x3B0, arg1, 0x80000000, 0x800);
 }
 
-void fn_80252E88(void *arg0, u32 *arg1) {
+void Sound_SelectSource2(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x26C, arg1, 0x4000000, 4);
 }
 
