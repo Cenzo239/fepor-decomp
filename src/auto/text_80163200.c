@@ -1482,7 +1482,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(void *, void *, s32);
     void fn_800DF7A0(void *, void *, void *);
     s32 strlen(char *);
-    extern u8 lbl_802777C8[];
+    extern u8 BattleTerrain_Str[];
     extern void *lbl_80293CB0[];
     extern s8 lbl_803680E0;
 
@@ -1508,7 +1508,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     sp18.size = 0;
     sp18.data = 0;
     sp18.cap = 0;
-    String_Init(&spC, lbl_802777C8 + 0x2D, sp8);
+    String_Init(&spC, BattleTerrain_Str + 0x2D, sp8);
     Xml_GetNamedValue(sp24, a2, &spC);
     a2 = sp24;
     String_AssignCStr(&sp18, a2, strlen((char *)a2));
@@ -1534,7 +1534,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     void String_Init(void *, void *, void *);
     void String_ConcatCStr(void *, void *, void *);
     void fn_800DFAE0(void *, void *, void *, void *, void *);
-    extern u8 lbl_802777C8[];
+    extern u8 BattleTerrain_Str[];
     extern void *lbl_80293CB0[];
     extern s8 lbl_803680E0;
 
@@ -1570,8 +1570,8 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     a1 = arg1;
     a2 = arg2;
     a3 = arg3;
-    String_Init(&sp68, lbl_802777C8 + 0x35, &sp1C);
-    String_Init(&sp5C, lbl_802777C8 + 0x43, &sp18);
+    String_Init(&sp68, BattleTerrain_Str + 0x35, &sp1C);
+    String_Init(&sp5C, BattleTerrain_Str + 0x43, &sp18);
     fn_800DFAE0(self, a1, &sp68, a2, &sp5C);
     String_Destroy(&sp5C, -1);
     String_Destroy(&sp68, -1);
@@ -1583,9 +1583,9 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     flag2 = 0;
     a2 = Heap_Alloc(0x60);
     if ((s32)a2 != 0) {
-        String_Init(&sp20, lbl_802777C8, &sp8);
+        String_Init(&sp20, BattleTerrain_Str, &sp8);
         a1 = (void *)1;
-        String_ConcatCStr(&sp2C, a3, lbl_802777C8 + 5);
+        String_ConcatCStr(&sp2C, a3, BattleTerrain_Str + 5);
         flag2 = 1;
         a2 = Xml_ParseFile(a2, &sp2C, &sp20);
     }
@@ -1595,15 +1595,15 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     if ((s8)(s32)a1 != 0) {
         String_Destroy(&sp20, -1);
     }
-    String_Init(&sp38, lbl_802777C8 + 0xF, &spC);
+    String_Init(&sp38, BattleTerrain_Str + 0xF, &spC);
     Xml_GetNamedValue(&sp74, a2, &sp38);
     *(void **)((u8 *)self + 0x48) = *(void **)sp74;
     String_Destroy(&sp38, -1);
-    String_Init(&sp44, lbl_802777C8 + 0x18, &sp10);
+    String_Init(&sp44, BattleTerrain_Str + 0x18, &sp10);
     Xml_GetNamedValue(&sp94, a2, &sp44);
     *(void **)((u8 *)self + 0x4C) = *(void **)sp94;
     String_Destroy(&sp44, -1);
-    String_Init(&sp50, lbl_802777C8 + 0x23, &sp14);
+    String_Init(&sp50, BattleTerrain_Str + 0x23, &sp14);
     Xml_GetNamedValue(&spB4, a2, &sp50);
     *(void **)((u8 *)self + 0x50) = *(void **)spB4;
     String_Destroy(&sp50, -1);
