@@ -9597,7 +9597,7 @@ void fn_80049E24(void) {
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8022224C(s32, void *);
+    void GXSetChanMatColor(s32, void *);
     void fn_802240C8(s32);
     void fn_802239D0(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -9651,7 +9651,7 @@ void fn_80049E24(void) {
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         sp8 = lbl_80368F80;
-        fn_8022224C(4, &sp8);
+        GXSetChanMatColor(4, &sp8);
         fn_802240C8(1);
         fn_802239D0(0, 0);
         GXSetTevOrder(0, 0, 0, 4);

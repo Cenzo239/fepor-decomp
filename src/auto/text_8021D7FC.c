@@ -404,7 +404,7 @@ void __GXInitGX(void) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222164(s32, void *);
-    void fn_8022224C(s32, void *);
+    void GXSetChanMatColor(s32, void *);
     void fn_80222EB4(void);
     void fn_80222EFC(void *);
     void fn_80222F10(void *);
@@ -576,12 +576,12 @@ void __GXInitGX(void) {
     sp18 = sp24;
     fn_80222164(4, &sp18);
     sp14 = sp20;
-    fn_8022224C(4, &sp14);
+    GXSetChanMatColor(4, &sp14);
     fn_80222370(5, 0, 0, 1, 0, 0, 2);
     sp10 = sp24;
     fn_80222164(5, &sp10);
     spC = sp20;
-    fn_8022224C(5, &spC);
+    GXSetChanMatColor(5, &spC);
 
     fn_80222EB4();
     fn_80222EFC(fn_8021D7FC);

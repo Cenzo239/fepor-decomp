@@ -1770,7 +1770,7 @@ void fn_80089680(void *arg0) {
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
-    void fn_8022224C(s32, s32 *);
+    void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
@@ -1828,7 +1828,7 @@ void fn_80089680(void *arg0) {
         GXSetCurrentMtx(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
-        fn_8022224C(4, &sp8);
+        GXSetChanMatColor(4, &sp8);
         fn_8021FBB8();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -2143,7 +2143,7 @@ void fn_80089FA8(void *arg0) {
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
-    void fn_8022224C(s32, s32 *);
+    void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
@@ -2219,7 +2219,7 @@ void fn_80089FA8(void *arg0) {
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         sp8 = *(s32 *)((u8 *)arg0 + 0x34);
-        fn_8022224C(4, &sp8);
+        GXSetChanMatColor(4, &sp8);
         fn_802245D8(1, 4, 5, 0);
         fn_80224684(1, 3, 0);
         fn_80220DEC(0x98, 0, 4);
@@ -2304,7 +2304,7 @@ void fn_8008A5AC(void *arg0) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
-    void fn_8022224C(s32, s32 *);
+    void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
@@ -2390,7 +2390,7 @@ void fn_8008A5AC(void *arg0) {
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
-        fn_8022224C(4, &sp8);
+        GXSetChanMatColor(4, &sp8);
         fn_802245D8(1, 4, 5, 0);
         fn_80224684(1, 3, 0);
         if (*(u8 *)((u8 *)arg0 + 0x30) != 7) {

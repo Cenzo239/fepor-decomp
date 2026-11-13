@@ -1635,7 +1635,7 @@ void fn_80123D1C(void *arg0) {
     void fn_8022100C(s32);
     void fn_80220DEC(s32, s32, s32);
     void fn_80220154(s32, s32, s32);
-    void fn_8022224C(s32, void *);
+    void GXSetChanMatColor(s32, void *);
     void fn_80222164(s32, void *);
     void fn_80220F44(s32, s32);
     extern u32 lbl_8036A300;
@@ -1755,7 +1755,7 @@ void fn_80123D1C(void *arg0) {
     sp10 = lbl_8036A300;
     ((u8 *)&sp10)[3] = a2;
     sp14 = sp10;
-    fn_8022224C(4, &sp14);
+    GXSetChanMatColor(4, &sp14);
     sp8 = lbl_8036A304;
     ((u8 *)&sp8)[3] = a2;
     spC = sp8;

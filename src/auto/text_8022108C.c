@@ -832,7 +832,7 @@ void fn_802220E8(void *arg0, u32 arg1)
     *(u16 *)((u8 *)__GXData + 2) = 1;
 }
 
-void fn_8022224C(s32 arg0, void *arg1) {
+void GXSetChanMatColor(s32 arg0, void *arg1) {
     switch (arg0) {
         case 0:
             *(u32 *)0xCC008000 = (*(u8 *)arg1 & 0xFF) | 0x10000000;

@@ -7386,7 +7386,7 @@ void fn_801959FC(void *arg0) {
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
     void fn_8022100C(s32);
-    void fn_8022224C(s32, void *);
+    void GXSetChanMatColor(s32, void *);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
@@ -7437,7 +7437,7 @@ void fn_801959FC(void *arg0) {
     GXLoadPosMtxImm(mtx, 0);
     GXSetCurrentMtx(0);
     color = lbl_8036AE48;
-    fn_8022224C(4, &color);
+    GXSetChanMatColor(4, &color);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_80222334(1);
     fn_802240C8(1);
