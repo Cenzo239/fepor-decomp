@@ -4309,7 +4309,7 @@ s32 fn_8003C7D0(s32 arg0) {
 #pragma global_optimizer off
 s32 Unit_Read(void *arg0, void *arg1) {
     u16 Stream_ReadU16(void *);
-    u8 fn_8017A9DC(void *);
+    u8 Stream_ReadU8(void *);
     s32 fn_80019EAC(u16);
     s32 fn_80019E68(u16);
     void fn_8003B6C4(void *, s32);
@@ -4343,41 +4343,41 @@ s32 Unit_Read(void *arg0, void *arg1) {
     t2 = fn_80019E68((u16)Stream_ReadU16(src));
     *(s32 *)((u8 *)dst + 0x188) = tmp;
     *(s32 *)((u8 *)dst + 0x18C) = t2;
-    id = fn_8017A9DC(src);
+    id = Stream_ReadU8(src);
     fn_8003B6C4(dst, (s32)(gUnitLists + id * 0xC));
-    id = fn_8017A9DC(src);
+    id = Stream_ReadU8(src);
     if (id != 0) {
         p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
     *(void **)((u8 *)dst + 0x180) = p;
-    id = fn_8017A9DC(src);
+    id = Stream_ReadU8(src);
     if (id != 0) {
         p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
     *(void **)((u8 *)dst + 0x184) = p;
-    id = fn_8017A9DC(src);
+    id = Stream_ReadU8(src);
     if (id != 0) {
         p = gUnits + (id - 1) * 0x280;
     } else {
         p = NULL;
     }
     *(void **)((u8 *)dst + 0x194) = p;
-    *((u8 *)dst + 0x199) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19A) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19B) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19C) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19D) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19E) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x19F) = fn_8017A9DC(src);
+    *((u8 *)dst + 0x199) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19A) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19B) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19C) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19D) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19E) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x19F) = Stream_ReadU8(src);
     fn_8017A810(src, 4, (u8 *)dst + 0x1A0);
     fn_80104134((u8 *)dst + 0x1A4, src);
-    *((u8 *)dst + 0x1A8) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x1A9) = fn_8017A9DC(src);
-    *((u8 *)dst + 0x1AA) = fn_8017A9DC(src);
+    *((u8 *)dst + 0x1A8) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x1A9) = Stream_ReadU8(src);
+    *((u8 *)dst + 0x1AA) = Stream_ReadU8(src);
     fn_8017A810(src, 8, (u8 *)dst + 0x1AB);
     fn_8017A810(src, 8, (u8 *)dst + 0x1B4);
     fn_80105A04((u8 *)dst + 0x1BC, src);
@@ -10475,7 +10475,7 @@ s32 fn_8004BAC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void fn_8004BC48(void *arg0, s32 arg1) {
     s16 Stream_ReadU16(s32);
-    M2C_UNK fn_8017A9DC(s32);
+    M2C_UNK Stream_ReadU8(s32);
     extern f32 lbl_80368FCC;
     M2C_FIELD(arg0, s8 *, 3) = 0;
     M2C_FIELD(arg0, s16 *, 0x15C) = 0;
@@ -10488,8 +10488,8 @@ void fn_8004BC48(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, f32 *, 0x178) = (f32) lbl_80368FCC;
     M2C_FIELD(arg0, s32 *, 0x17C) = 0;
     M2C_FIELD(arg0, s16 *, 0x15C) = Stream_ReadU16(arg1);
-    fn_8017A9DC(arg1);
-    fn_8017A9DC(arg1);
+    Stream_ReadU8(arg1);
+    Stream_ReadU8(arg1);
 }
 
 void fn_8004BCCC(void *arg0, s32 arg1) {

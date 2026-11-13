@@ -1392,17 +1392,17 @@ void fn_80022748(u8 *map, u8 *arg1) {
 
 #pragma scheduling off
 void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) {
-    s32 base;
-    s16 val;
-
-    base = arg0 + 0x10000;
-    arg0 = arg1 << 1;
-    val = arg2;
-    base += arg0;
-    *(s16 *)(base + 0x4214) = val;
-    if (arg2 < 0) {
-        *(s16 *)(base + 0x4214) = 0x7FFE;
-    }
+s32 base;
+s32 off;
+s16 val;
+s32 negative;
+base=arg0+0x10000;
+off=arg1<<1;
+val=arg2;
+negative=arg2<0;
+base+=off;
+*(s16 *)(base+0x4214)=val;
+if(negative) *(s16 *)(base+0x4214)=0x7ffe;
 }
 #pragma scheduling on
 void fn_800227F8(void* arg0, s32 arg1)
@@ -3170,37 +3170,37 @@ void fn_80025BA0(void) {
 }
 
 void fn_80025C5C(void *arg0, s32 arg1) {
-    u8 fn_8017A9DC(s32);
+    u8 Stream_ReadU8(s32);
     void fn_8017A810(s32, s32, void *);
     extern u8 gUnits[];
     u8 id;
 
-    id = fn_8017A9DC(arg1);
+    id = Stream_ReadU8(arg1);
     if (id != 0) {
         *(void **)arg0 = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
         *(void **)arg0 = NULL;
     }
-    id = fn_8017A9DC(arg1);
+    id = Stream_ReadU8(arg1);
     if (id != 0) {
         *(void **)((char *)arg0 + 0x4) = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
         *(void **)((char *)arg0 + 0x4) = NULL;
     }
-    *(u8 *)((char *)arg0 + 0x8) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0x9) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xA) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xB) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xC) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xD) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xE) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0xF) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0x10) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0x11) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0x12) = fn_8017A9DC(arg1);
+    *(u8 *)((char *)arg0 + 0x8) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0x9) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xA) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xB) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xC) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xD) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xE) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0xF) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0x10) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0x11) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0x12) = Stream_ReadU8(arg1);
     fn_8017A810(arg1, 1, (void *)((char *)arg0 + 0x13));
-    *(u8 *)((char *)arg0 + 0x14) = fn_8017A9DC(arg1);
-    *(u8 *)((char *)arg0 + 0x15) = fn_8017A9DC(arg1);
+    *(u8 *)((char *)arg0 + 0x14) = Stream_ReadU8(arg1);
+    *(u8 *)((char *)arg0 + 0x15) = Stream_ReadU8(arg1);
     fn_8017A810(arg1, 1, (void *)((char *)arg0 + 0x16));
 }
 

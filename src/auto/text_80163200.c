@@ -12085,7 +12085,7 @@ s32 Stream_ReadU16(void *arg0) {
     return (hi << 8) + lo;
 }
 
-u8 fn_8017A9DC(void *arg0) {
+u8 Stream_ReadU8(void *arg0) {
     u8 *temp_r4;
 
     temp_r4 = *(u8 **)((char *)arg0 + 4);

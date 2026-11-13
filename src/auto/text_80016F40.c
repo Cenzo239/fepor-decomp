@@ -165,15 +165,15 @@ void fn_800173B4(u8 *arg0, void *arg1) {
 
 void fn_80017414(void *arg0, s32 arg1) {
     s16 Stream_ReadU16(s32);
-    s8 fn_8017A9DC(s32);
+    s8 Stream_ReadU8(s32);
     M2C_FIELD(arg0, s16 *, 0) = Stream_ReadU16(arg1);
     M2C_FIELD(arg0, s16 *, 2) = Stream_ReadU16(arg1);
     M2C_FIELD(arg0, s16 *, 4) = Stream_ReadU16(arg1);
     M2C_FIELD(arg0, s16 *, 6) = Stream_ReadU16(arg1);
     M2C_FIELD(arg0, s16 *, 8) = Stream_ReadU16(arg1);
     M2C_FIELD(arg0, s16 *, 0xA) = Stream_ReadU16(arg1);
-    M2C_FIELD(arg0, s8 *, 0xC) = fn_8017A9DC(arg1);
-    M2C_FIELD(arg0, s8 *, 0xD) = fn_8017A9DC(arg1);
+    M2C_FIELD(arg0, s8 *, 0xC) = Stream_ReadU8(arg1);
+    M2C_FIELD(arg0, s8 *, 0xD) = Stream_ReadU8(arg1);
 }
 
 void fn_800174A8(void *arg0, s32 arg1) {

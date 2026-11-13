@@ -7320,7 +7320,7 @@ return val;
 
 void fn_800BDA9C(u8 *arg0, void *arg1)
 {
-    extern u8 fn_8017A9DC(void *);
+    extern u8 Stream_ReadU8(void *);
     u8 *a0;
     void *a1;
     s32 i;
@@ -7329,7 +7329,7 @@ void fn_800BDA9C(u8 *arg0, void *arg1)
     a1 = arg1;
     i = 0;
     do {
-        a0[i + 0x300] = fn_8017A9DC(a1);
+        a0[i + 0x300] = Stream_ReadU8(a1);
         i++;
     } while (i < 12);
 }

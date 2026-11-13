@@ -8930,7 +8930,7 @@ void fn_801998B0(void *arg0) {
 void fn_80199A60(void *arg0, s32 arg1) {
     void fn_80145E9C(s32);
     void fn_8017A810(s32, s32, void *);
-    u8 fn_8017A9DC(s32);
+    u8 Stream_ReadU8(s32);
     void fn_801C7C18(u8, u8, u8);
     u32 fn_802097D4(void);
     extern u8 lbl_80367AE8;
@@ -8939,17 +8939,17 @@ void fn_80199A60(void *arg0, s32 arg1) {
     u8 *p2;
 
     fn_8017A810(arg1, 4, arg0);
-    *(u8 *)((u8 *)arg0 + 4) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 5) = fn_8017A9DC(arg1);
+    *(u8 *)((u8 *)arg0 + 4) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 5) = Stream_ReadU8(arg1);
     if ((s8)*(u8 *)((u8 *)arg0 + 5) == 0) {
         *(u8 *)((u8 *)arg0 + 5) = 0x40;
     }
-    *(u8 *)((u8 *)arg0 + 6) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 7) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 8) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 9) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 0xA) = fn_8017A9DC(arg1);
-    *(u8 *)((u8 *)arg0 + 0xB) = fn_8017A9DC(arg1);
+    *(u8 *)((u8 *)arg0 + 6) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 7) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 8) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 9) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 0xA) = Stream_ReadU8(arg1);
+    *(u8 *)((u8 *)arg0 + 0xB) = Stream_ReadU8(arg1);
     lbl_80367AE8 = *(u8 *)((u8 *)arg0 + 8);
     lbl_80367AEA = *(u8 *)((u8 *)arg0 + 9);
     if (fn_802097D4() == 1) {
