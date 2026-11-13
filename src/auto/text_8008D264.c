@@ -52,7 +52,8 @@ extern Vec4 lbl_8026CD50;
 #pragma scheduling reset
 
 #pragma use_lmw_stmw on
-void UnitRef_DrawScaled(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
+/* Draw an item/unit-ref row: scaled price (dimmed if unaffordable), name, uses, and icon. */
+void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
     void fn_8005AC24(void *, s32, s32, s32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -67,60 +68,60 @@ void UnitRef_DrawScaled(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     extern u8 lbl_802F0308[];
     extern f32 lbl_8036973C;
     extern f64 lbl_80369740;
-    char sp8[0x10];
-    s16 temp_r31;
-    u8 var_r26;
-    u32 var_r3;
+    char priceBuf[0x10];
+    s16 priceWidth;
+    u8 nameColor;
+    u32 usesColor;
     s32 var_color;
     u8 var_r4;
     u8 var_r0;
     void *temp_r3;
-    s32 temp_r26;
-    u8 var_r25;
-    struct { unsigned b:8; } t;
+    s32 gold;
+    u8 canAfford;
+    struct { unsigned b:8; } enabledBit;
     u64 flags;
-    s32 scaled;
+    s32 price;
 
-    if (*(void **)arg0 != NULL) {
+    if (*(void **)ref != NULL) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        scaled = (s32)(farg0 * (f32)(u16)UnitRef_GetValue(arg0));
-        sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, scaled);
-        temp_r31 = fn_80010B78(sp8, -1, lbl_8036973C);
-        var_r25 = arg1 != 0;
-        temp_r26 = *(s32 *)(gBattleState + 0x18);
-        scaled = (s32)(farg0 * (f32)(u16)UnitRef_GetValue(arg0));
-        if (temp_r26 < scaled) {
-            var_r25 = 0;
+        price = (s32)(priceScale * (f32)(u16)UnitRef_GetValue(ref));
+        sprintf(priceBuf, (u8 *)lbl_8026CD08 + 0x2F, price);
+        priceWidth = fn_80010B78(priceBuf, -1, lbl_8036973C);
+        canAfford = enabled != 0;
+        gold = *(s32 *)(gBattleState + 0x18);
+        price = (s32)(priceScale * (f32)(u16)UnitRef_GetValue(ref));
+        if (gold < price) {
+            canAfford = 0;
         }
-        fn_8001019C((s16)(arg2 + (0x10E - temp_r31)), (s16)arg3, var_r25, sp8);
+        fn_8001019C((s16)(x + (0x10E - priceWidth)), (s16)y, canAfford, priceBuf);
         {
-            s32 cond = arg1;
-            t.b = cond != 0;
+            s32 cond = enabled;
+            enabledBit.b = cond != 0;
             var_color = 0;
             if (cond != 0) {
                 var_color = 4;
             }
         }
-        var_r3 = (u8)var_color;
-        var_r26 = t.b;
-        if (t.b == 1 && (*(u8 *)((u8 *)arg0 + 5) & 0x3F)) {
-            var_r26 = 4;
+        usesColor = (u8)var_color;
+        nameColor = enabledBit.b;
+        if (enabledBit.b == 1 && (*(u8 *)((u8 *)ref + 5) & 0x3F)) {
+            nameColor = 4;
         }
-        if ((*(u8 *)((u8 *)arg0 + 5) >> 6) & 1) {
-            var_r26 = 3;
+        if ((*(u8 *)((u8 *)ref + 5) >> 6) & 1) {
+            nameColor = 3;
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(arg0));
-        flags = *(u64 *)Item_GetFlagsPtr(arg0);
+        fn_8001019C((s16)(x + 0x18), (s16)y, nameColor, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(ref));
+        flags = *(u64 *)Item_GetFlagsPtr(ref);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
-            fn_8001019C((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)arg0 + 4));
-            fn_8001019C((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
+            fn_8001019C((s16)(x + 0xA2), (s16)y, enabledBit.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)ref + 4));
+            fn_8001019C((s16)(x + 0xBC), (s16)y, usesColor, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x18) : 0));
         }
-        fn_8005AC24(lbl_802F0308, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
+        fn_8005AC24(lbl_802F0308, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
 void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
