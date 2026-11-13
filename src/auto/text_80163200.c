@@ -16232,7 +16232,7 @@ s32 fn_80182B7C(s32 arg0) {
     u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
-    extern u8 fn_80182E80[];
+    extern u8 Ai_UnitIsIke[];
     extern u8 gAiState[];
     s16 spA;
     s16 sp8;
@@ -16247,9 +16247,9 @@ s32 fn_80182B7C(s32 arg0) {
         *(s32 *)(gAiState + 8) = 4;
         return 0;
     }
-    if ((fn_8010F52C(arg0, fn_80182E80) == 0) && (fn_8018D4CC(arg0, fn_80182E80) == 0) &&
-        (fn_800F5504(fn_80182E80, 0xF) == 0) &&
-        (fn_80101F0C(fn_80182E80, arg0, &spA, &sp8) != 0)) {
+    if ((fn_8010F52C(arg0, Ai_UnitIsIke) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsIke) == 0) &&
+        (fn_800F5504(Ai_UnitIsIke, 0xF) == 0) &&
+        (fn_80101F0C(Ai_UnitIsIke, arg0, &spA, &sp8) != 0)) {
         Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
@@ -16289,7 +16289,7 @@ s32 fn_80182CE4(s32 arg0, s32 arg1) {
     }
 }
 
-s32 fn_80182E80(s32 arg0) {
+s32 Ai_UnitIsIke(s32 arg0) {
     s32 fn_80017240(void *);
     extern u32 gUiContext[];
 
