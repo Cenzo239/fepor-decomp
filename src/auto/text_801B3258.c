@@ -1611,7 +1611,7 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     void AchieveList_Build(void *);
     s32 AchieveList_SumBonuses(void *);
     s32 AchieveList_GetTotalGold(void *);
-    u8 fn_801E33F4(void *);
+    u8 SystemSave_TestFlag0(void *);
     void *Process_CreateChild(void *, s32);
     void *fn_800C4638(s32, void *, s32);
     extern u8 gBattleState[];
@@ -1629,7 +1629,7 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     AchieveList_Build(alloc);
     *(s16 *)(gBattleState + 0x72) = AchieveList_SumBonuses(alloc);
     *(s32 *)(base + 0x1C) = AchieveList_GetTotalGold(alloc);
-    if (((u32)(gBattleState[0x9E] & 1) != 1) && fn_801E33F4(gSystemSave)) {
+    if (((u32)(gBattleState[0x9E] & 1) != 1) && SystemSave_TestFlag0(gSystemSave)) {
         obj = Process_CreateChild(lbl_80297BA8, arg0);
         *(void **)((u8 *)obj + 0x30) = fn_800C4638(0x2C, lbl_8027C5E8 + 0x57, 0);
         *(s32 *)((u8 *)obj + 0x34) = 0;
@@ -13856,7 +13856,7 @@ void fn_801D3D3C(void *arg0) {
  u8 fn_801DE368(void *);
  void fn_801DE0EC(s32 *, void *);
  u8 fn_801DE3D0(void *);
- u8 fn_801E33F4(void *);
+ u8 SystemSave_TestFlag0(void *);
  void Ui_PlaySeCue(void *, s32);
  void MsgBox_Init(void *, void *, u8, u8, s16);
  void *Msg_Expand(void *);
@@ -13968,7 +13968,7 @@ void fn_801D3D3C(void *arg0) {
   else if (tmp_u8 == 1) *(s32 *)state = 0x258;
   else if (tmp_u8 == 2) {
    *(u8 *)((u8 *)state + 0x10) = 0;
-   if (fn_801E33F4(gSystemSave)) *(s32 *)state = 0x2bc; else *(s32 *)state = 0x32;
+   if (SystemSave_TestFlag0(gSystemSave)) *(s32 *)state = 0x2bc; else *(s32 *)state = 0x32;
   }
   break;
  case 5:
@@ -14174,7 +14174,7 @@ void fn_801D3D3C(void *arg0) {
    FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 0);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
-  if (fn_801E33F4(gSystemSave)) {
+  if (SystemSave_TestFlag0(gSystemSave)) {
    FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 6);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
@@ -14279,7 +14279,7 @@ void fn_801D3D3C(void *arg0) {
   sel = *(s8 *)((u8 *)state + 0x14); changed = 0;
   if (flags_a & 0x100) {
    *(u8 *)((u8 *)state + 0x18) = *(u8 *)((u8 *)state + 0x14);
-   if (fn_801E33F4(gSystemSave)) { Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(s32 *)state = 0x75; }
+   if (SystemSave_TestFlag0(gSystemSave)) { Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(s32 *)state = 0x75; }
    else { Ui_PlaySeCue(gUiSeCues + 0x318, 0x64); *(s32 *)state = 0x77; *(u8 *)((u8 *)state + 0x19) = 0; }
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
@@ -14321,7 +14321,7 @@ void fn_801D3D3C(void *arg0) {
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0); break;
   }
   if (flags_a & 0x200) {
-   if (fn_801E33F4(gSystemSave)) *(s32 *)state = 0x73; else *(s32 *)state = 0x69;
+   if (SystemSave_TestFlag0(gSystemSave)) *(s32 *)state = 0x73; else *(s32 *)state = 0x69;
    Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
    fn_801DE3C4((u8 *)state + 0x330); fn_801D8E08((u8 *)state + 0x52e); fn_801DDDE8(5, arg0);
   }
@@ -18593,7 +18593,7 @@ end:
 }
 #pragma opt_strength_reduction on
 #pragma global_optimizer on
-s32 fn_801E33F4(void *arg0) {
+s32 SystemSave_TestFlag0(void *arg0) {
     return M2C_FIELD(arg0, u16 *, 0x10) & 1;
 }
 
