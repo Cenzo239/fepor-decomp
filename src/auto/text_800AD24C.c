@@ -5087,7 +5087,7 @@ s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 a
     extern s32 gUiInputFlags;
     extern u32 lbl_80369CF0;
     extern f64 lbl_80369CF8;
-    extern f32 lbl_80369D00;
+    extern f32 gPercentToFloat;
     void *p;
     u32 packed;
     u32 tmp;
@@ -5116,7 +5116,7 @@ s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 a
     ((u8 *)&tmp)[1] = g;
     ((u8 *)&tmp)[2] = (u8)arg5;
     color = packed;
-    fn_801D029C(p, arg1, arg2, arg3, &color, lbl_80369D00 * (f32)arg4);
+    fn_801D029C(p, arg1, arg2, arg3, &color, gPercentToFloat * (f32)arg4);
     return 1;
 }
 
@@ -5398,7 +5398,7 @@ s32 fn_800BA230(u32 arg0, s32 arg1) {
 s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     u32 Sound_FindByName(void);
     void fn_80109448(u32, s32, s32, f32, f32, f32);
-    extern f32 lbl_80369D00;
+    extern f32 gPercentToFloat;
     extern f64 lbl_80369CF8;
     u32 tmp;
     f32 var_f1;
@@ -5417,9 +5417,9 @@ s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     case 5:
     case 6:
     case 7:
-        var_f2 *= lbl_80369D00;
+        var_f2 *= gPercentToFloat;
         if (arg3 != 123456789) {
-            var_f1 *= lbl_80369D00;
+            var_f1 *= gPercentToFloat;
         }
         break;
     }
@@ -5430,7 +5430,7 @@ s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 s32 fn_800BA38C(u32 arg0, s32 arg1, s32 arg2) {
     u32 Sound_FindByName(void);
     void fn_80109A54(u32, u8, f32);
-    extern f32 lbl_80369D00;
+    extern f32 gPercentToFloat;
     u32 tmp;
     f32 var_f1;
 
@@ -5446,7 +5446,7 @@ s32 fn_800BA38C(u32 arg0, s32 arg1, s32 arg2) {
     case 5:
     case 6:
     case 7:
-        var_f1 *= lbl_80369D00;
+        var_f1 *= gPercentToFloat;
         break;
     }
     fn_80109A54(tmp, (u8) arg1, var_f1);
