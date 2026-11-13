@@ -213,6 +213,7 @@ void __CARDTimeoutHandler(void *alarm, void *context) {
 }
 
 s32 __CARDRetry(s32 chan) {
+    /* Select the card, send the pending cmd (and read addr), then EXIDma or finish. */
     extern u16 __CARDBlock[];
     s32 EXISelect(s32, s32, s32);
     s32 EXIUnlock(s32);
@@ -224,7 +225,7 @@ s32 __CARDRetry(s32 chan) {
     void __CARDTimeoutHandler();
     void __CARDTxHandler();
     u8 *card;
-    s32 size;
+    s32 dmaSize;
 
     card = (u8 *)__CARDBlock + chan * 0x110;
     if (EXISelect(chan, 0, 4) == 0) {
@@ -265,11 +266,11 @@ s32 __CARDRetry(s32 chan) {
         return 0;
     }
     if (card[0x94] == 0x52) {
-        size = 0x200;
+        dmaSize = 0x200;
     } else {
-        size = *(u16 *)(card + 0xA);
+        dmaSize = *(u16 *)(card + 0xA);
     }
-    if (EXIDma(chan, *(s32 *)(card + 0xB4), size, *(s32 *)(card + 0xA4), __CARDTxHandler) == 0) {
+    if (EXIDma(chan, *(s32 *)(card + 0xB4), dmaSize, *(s32 *)(card + 0xA4), __CARDTxHandler) == 0) {
         EXIDeselect(chan);
         EXIUnlock(chan);
         return -3;
