@@ -279,7 +279,7 @@ void UnitStatus_Init(void *arg0) {
     u8 Unit_GetStr(void *);
     u8 Unit_GetMag(void *);
     u8 Unit_GetSkl(void *);
-    u8 fn_8003B548(void *);
+    u8 Unit_GetSpd(void *);
     u8 fn_8003B518(void *);
     u8 fn_8003B4D4(void *);
     u8 fn_8003B490(void *);
@@ -315,7 +315,7 @@ void UnitStatus_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x1E) = Unit_GetStr(unit);
     *(u8 *)((u8 *)arg0 + 0x1F) = Unit_GetMag(unit);
     *(u8 *)((u8 *)arg0 + 0x20) = Unit_GetSkl(unit);
-    *(u8 *)((u8 *)arg0 + 0x21) = fn_8003B548(unit);
+    *(u8 *)((u8 *)arg0 + 0x21) = Unit_GetSpd(unit);
     *(u8 *)((u8 *)arg0 + 0x22) = fn_8003B518(unit);
     *(u8 *)((u8 *)arg0 + 0x23) = fn_8003B4D4(unit);
     *(u8 *)((u8 *)arg0 + 0x24) = fn_8003B490(unit);

@@ -318,7 +318,7 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
     s32 Unit_GetSkl(void *);
-    s32 fn_8003B548(void *);
+    s32 Unit_GetSpd(void *);
     s32 fn_8003B518(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B490(void *);
@@ -549,7 +549,7 @@ void fn_80034130(void *arg0, void *arg1) {
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2DA) = g - excess;
     }
-    stat = fn_8003B548(arg0);
+    stat = Unit_GetSpd(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DB);
     excess = (s8)((g + stat) - cap[0x50]);
@@ -621,7 +621,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
     s32 Unit_GetSkl(void *);
-    s32 fn_8003B548(void *);
+    s32 Unit_GetSpd(void *);
     s32 fn_8003B518(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B490(void *);
@@ -654,8 +654,8 @@ void fn_80034864(s32 self, void *arg1) {
     d2 = (s8)(t - Unit_GetMag((void *)self));
     t = Unit_GetSkl((void *)(self + 0x2E0));
     d3 = (s8)(t - Unit_GetSkl((void *)self));
-    t = fn_8003B548((void *)(self + 0x2E0));
-    d4 = (s8)(t - fn_8003B548((void *)self));
+    t = Unit_GetSpd((void *)(self + 0x2E0));
+    d4 = (s8)(t - Unit_GetSpd((void *)self));
     t = fn_8003B518((void *)(self + 0x2E0));
     d5 = (s8)(t - fn_8003B518((void *)self));
     t = fn_8003B4D4((void *)(self + 0x2E0));
@@ -712,7 +712,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     s32 fn_8003B490(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B518(void *);
-    s32 fn_8003B548(void *);
+    s32 Unit_GetSpd(void *);
     s32 Unit_GetSkl(void *);
     s32 Unit_GetMag(void *);
     s32 Unit_GetStr(void *);
@@ -812,7 +812,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     if (excess >= 0) {
         *(u8 *)((u8 *)self + 0x2DA) = g - excess;
     }
-    stat = fn_8003B548(self);
+    stat = Unit_GetSpd(self);
     cls = *(void **)((u8 *)self + 0x18C);
     g = *(u8 *)((u8 *)self + 0x2DB);
     stat = g + stat;
@@ -3745,7 +3745,7 @@ s8 fn_8003B518(void *arg0) {
     return var_r3;
 }
 
-s8 fn_8003B548(void *arg0) {
+s8 Unit_GetSpd(void *arg0) {
     void *p18c;
     s8 lim;
     u8 t;

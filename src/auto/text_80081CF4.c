@@ -366,7 +366,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     s8 fn_8003AF28(void *);
     s8 Unit_GetSkl(void *);
     s8 fn_8003AEB0(void *);
-    s8 fn_8003B548(void *);
+    s8 Unit_GetSpd(void *);
     s8 fn_8003ACF8(void *);
     s8 fn_8003B518(void *);
     s8 fn_8003AA40(void *);
@@ -527,7 +527,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
 
     lim = (s8)M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), s8 *, 0x50);
     mx = fn_8003AEB0(arg0);
-    cur = fn_8003B548(arg0);
+    cur = Unit_GetSpd(arg0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803695CC);
     Prim2D_PrepareTex();
