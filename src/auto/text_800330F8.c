@@ -699,7 +699,8 @@ u8 fn_80034A8C(s32 arg0, u8 arg1) {
     return temp_r31;
 }
 
-void Unit_CalcLevelUpGrowths(void *arg0, void *arg1) {
+/* Roll level-up growths from rates, clamp to class caps, and queue non-zero gains. */
+void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     void fn_80034068(void *, s32, u8);
     s32 fn_8003B490(void *);
     s32 fn_8003B4D4(void *);
@@ -723,8 +724,8 @@ void Unit_CalcLevelUpGrowths(void *arg0, void *arg1) {
     u32 first;
     u8 *firstClass;
 
-    self = arg0;
-    out = arg1;
+    self = unit;
+    out = gains;
     *(u8 *)((u8 *)self + 0x2DE) = 0;
     *(u8 *)((u8 *)self + 0x2DD) = 0;
     *(u8 *)((u8 *)self + 0x2DC) = 0;
