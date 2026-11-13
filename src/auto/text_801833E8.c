@@ -11315,7 +11315,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     void fn_80044450(s32, s32);
     void fn_800056A0(s8);
     void fn_80016180(void);
@@ -11339,7 +11339,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
             fn_800056A0(0);
         } else {
             fn_8010FE08(gMapObjEventList, (s8) arg0, (s8) arg1, 0x22);
-            count = fn_80046400((void *) Map_Get(), temp1, sp8);
+            count = Map_CollectLinkedObjs((void *) Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11455,7 +11455,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     void fn_80044450(s32, s32);
     void fn_800056A0(s8);
     void fn_80016180(void);
@@ -11479,7 +11479,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
             fn_800056A0(0);
         } else {
             fn_8010FE08(gMapObjEventList, (s8) x, (s8) y, 0x22);
-            count = fn_80046400((void *) Map_Get(), obj, linked);
+            count = Map_CollectLinkedObjs((void *) Map_Get(), obj, linked);
             p = linked;
             i = 0;
             while (i < count) {
@@ -11510,7 +11510,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     void fn_80044450(s32, s32);
     void fn_800056A0(s8);
     void fn_80016180(void);
@@ -11530,7 +11530,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
             return 0;
         }
         fn_8010FE08(gMapObjEventList, (s8)arg0, (s8)arg1, 0x22);
-        count = fn_80046400((void *)Map_Get(), temp1, sp8);
+        count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
     i = 0;
@@ -11551,7 +11551,7 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     void fn_80044450(s32, s32);
     void fn_800056A0(s8);
     void fn_80016180(void);
@@ -11571,7 +11571,7 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
             return 0;
         }
         MapObjEvent_Push(gMapObjEventList, (s8)arg0, (s8)arg1, 0x22, 0);
-        count = fn_80046400((void *)Map_Get(), temp1, sp8);
+        count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
     i = 0;
@@ -11654,7 +11654,7 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void fn_80049B1C(void *, s32);
     void *fn_80046F14(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, s32 *);
+    s32 Map_CollectLinkedObjs(void *, void *, s32 *);
     u8 fn_80049D58(void *);
     void fn_80049BD4(void *, s32);
     void fn_80044450(s32, s32);
@@ -11684,7 +11684,7 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
     {
         void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
         if (temp1 != NULL) {
-            count = fn_80046400((void *)Map_Get(), temp1, sp8);
+            count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11710,7 +11710,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void MapObj_FadeOut(void *, s32);
     void *fn_80046F14(void *, s32, s32, u32, s32);
-    s32 fn_80046400(void *, void *, s32 *);
+    s32 Map_CollectLinkedObjs(void *, void *, s32 *);
     u8 MapObj_IsHidden(void *);
     void MapObj_Hide(void *, s32);
     void fn_80044450(s32, s32);
@@ -11740,7 +11740,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     {
         void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
         if (temp1 != NULL) {
-            count = fn_80046400((void *)Map_Get(), temp1, sp8);
+            count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {

@@ -6803,7 +6803,7 @@ void fn_80041514(void *arg0, char *arg1)
 void fn_80042558(void *arg0) {
     void fn_8005FEE8(void *, f32);
     void MapObj_FadeOut(void *, s32);
-    s32 fn_80046400(void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *);
     void MapObj_Hide(void *, s32);
     extern u8 gMapObjEventList[];
     extern f32 lbl_80368F2C;
@@ -6913,7 +6913,7 @@ void fn_80042558(void *arg0) {
                 if (found == NULL) {
                     break;
                 }
-                fn_80046400(arg0, list);
+                Map_CollectLinkedObjs(arg0, list);
                 break;
             case 3:
                 found = NULL;
@@ -6945,7 +6945,7 @@ void fn_80042558(void *arg0) {
                 if (found == NULL) {
                     break;
                 }
-                count = fn_80046400(arg0, list);
+                count = Map_CollectLinkedObjs(arg0, list);
                 for (k = 0; k < count; k++) {
                     MapObj_Hide((void *) list[k], 0);
                 }
@@ -8412,7 +8412,7 @@ void *fn_80046360(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4, s32 arg5) 
     return result;
 }
 
-void fn_80046400(void *arg0, void *arg1, void *arg2) {
+void Map_CollectLinkedObjs(void *arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80046424(void *, void *, void *, M2C_UNK);
     fn_80046424(arg0, arg1, arg2, 0);
 }

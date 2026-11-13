@@ -519,7 +519,7 @@ void fn_8012961C(void *arg0) {
     u8 MapObj_IsHidden(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     extern u8 lbl_80290B70[];
     void *self = arg0;
     void *temp;
@@ -542,7 +542,7 @@ void fn_8012961C(void *arg0) {
         } else {
             entry = Process_Create(lbl_80290B70, 3);
         }
-        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
+        *(s32 *)((u8 *)entry + 0x50) = Map_CollectLinkedObjs(Map_Get(), temp, (u8 *)entry + 0x30);
     }
 }
 
@@ -577,7 +577,7 @@ void fn_8012979C(void *arg0) {
     u8 fn_80049D58(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     extern u8 lbl_80290B3C[];
     void *self = arg0;
     void *temp;
@@ -600,7 +600,7 @@ void fn_8012979C(void *arg0) {
         } else {
             entry = Process_Create(lbl_80290B3C, 3);
         }
-        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
+        *(s32 *)((u8 *)entry + 0x50) = Map_CollectLinkedObjs(Map_Get(), temp, (u8 *)entry + 0x30);
     }
 }
 
@@ -611,7 +611,7 @@ void fn_80129888(void *arg0, void *arg1)
     extern void *Process_CreateChild(void *, void *);
     extern void *Process_Create(void *, s32);
     extern void *Map_Get(void);
-    extern s32 fn_80046400(void *, void *, void *);
+    extern s32 Map_CollectLinkedObjs(void *, void *, void *);
 
     u8 *entry;
     void *result;
@@ -625,7 +625,7 @@ void fn_80129888(void *arg0, void *arg1)
     result = Map_Get();
 
     *(s32 *)(entry + 0x50) =
-        fn_80046400(result, arg0, entry + 0x30);
+        Map_CollectLinkedObjs(result, arg0, entry + 0x30);
 }
 
 void fn_801298FC(void *arg0) {
@@ -703,7 +703,7 @@ void fn_80129A84(void *arg0, void *arg1)
     extern void *Process_CreateChild(void *, void *);
     extern void *Process_Create(void *, s32);
     extern void *Map_Get(void);
-    extern s32 fn_80046400(void *, void *, void *);
+    extern s32 Map_CollectLinkedObjs(void *, void *, void *);
 
     u8 *entry;
     void *result;
@@ -717,7 +717,7 @@ void fn_80129A84(void *arg0, void *arg1)
     result = Map_Get();
 
     *(s32 *)(entry + 0x50) =
-        fn_80046400(result, arg0, entry + 0x30);
+        Map_CollectLinkedObjs(result, arg0, entry + 0x30);
 }
 
 void fn_80129AF8(void *arg0) {
@@ -1279,7 +1279,7 @@ void fn_8012ABAC(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
     void *Map_Get(void);
-    s32 fn_80046400(void *, void *, void *);
+    s32 Map_CollectLinkedObjs(void *, void *, void *);
     extern u8 lbl_80290B3C[];
     extern u8 lbl_80290B70[];
     void *saved;
@@ -1294,7 +1294,7 @@ void fn_8012ABAC(void *arg0) {
             entry = (u8 *)Process_Create(lbl_80290B3C, 3);
         }
         result = Map_Get();
-        *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
+        *(s32 *)(entry + 0x50) = Map_CollectLinkedObjs(result, saved, entry + 0x30);
     } else {
         saved = *(void **)((u8 *)arg0 + 0x30);
         if (arg0 != NULL) {
@@ -1303,7 +1303,7 @@ void fn_8012ABAC(void *arg0) {
             entry = (u8 *)Process_Create(lbl_80290B70, 3);
         }
         result = Map_Get();
-        *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
+        *(s32 *)(entry + 0x50) = Map_CollectLinkedObjs(result, saved, entry + 0x30);
     }
 }
 
