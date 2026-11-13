@@ -9059,7 +9059,7 @@ void fn_80199D18(void *arg0) {
     }
 }
 
-void fn_80199DE8(void *arg0) {
+void MapSelect_StartMove(void *arg0) {
     void fn_80053658(void *, s32, void *);
     void *fn_80053C30(u8 *, void *);
     f32 fn_80059440(f32, f32, f32, f32);
