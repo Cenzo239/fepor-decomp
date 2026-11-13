@@ -521,13 +521,12 @@ void fn_8012961C(void *arg0) {
     void *fn_8000CAF0(void *, s32);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B70[];
+    void *self = arg0;
     void *temp;
     s32 y;
-    void *entry;
-    void *self;
     void *cam;
+    void *entry;
 
-    self = arg0;
     temp = *(void **)((u8 *)arg0 + 0x30);
     ((u8 *)temp)[2] &= ~2;
     fn_80044450(fn_80040844(), 1);
@@ -535,18 +534,15 @@ void fn_8012961C(void *arg0) {
     fn_800498A4(*(void **)((u8 *)self + 0x30), self, 1);
 
     temp = *(void **)((u8 *)self + 0x30);
-    y = (s8)((u8 *)temp)[1];
+    y = *(s8 *)((u8 *)temp + 1);
     cam = fn_80040844();
-    temp = fn_80046F14(cam, (s8)((u8 *)temp)[0], y, 0x800, 0);
-    if (temp != NULL) {
-        if ((u8)fn_80049D6C(temp) != 0) {
-            if (self != NULL) {
-                entry = fn_8000CAA0(lbl_80290B70, self);
-            } else {
-                entry = fn_8000CAF0(lbl_80290B70, 3);
-            }
-            *(s32 *)((u8 *)entry + 0x50) = fn_80046400(fn_80040844(), temp, (u8 *)entry + 0x30);
+    if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0)) != NULL && fn_80049D6C(temp)) {
+        if (self != NULL) {
+            entry = fn_8000CAA0(lbl_80290B70, self);
+        } else {
+            entry = fn_8000CAF0(lbl_80290B70, 3);
         }
+        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(fn_80040844(), temp, (u8 *)entry + 0x30);
     }
 }
 
