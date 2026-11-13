@@ -435,7 +435,7 @@ void fn_80212CC0(s32 arg0, u32 arg1) {
 
 void fn_80212D78(s32 arg0) {
     extern s32 __PADSpec;
-    extern M2C_UNK fn_80212DD8;
+    extern M2C_UNK SPEC0_MakeStatus;
     extern M2C_UNK fn_80212F4C;
     extern M2C_UNK PADMakeStatus;
     extern s32 lbl_80366FB0;
@@ -443,7 +443,7 @@ void fn_80212D78(s32 arg0) {
     __PADSpec = 0;
     switch (arg0) {                                 /* irregular */
     case 0:
-        lbl_80366FB4 = &fn_80212DD8;
+        lbl_80366FB4 = &SPEC0_MakeStatus;
         break;
     case 1:
         lbl_80366FB4 = &fn_80212F4C;
@@ -455,7 +455,7 @@ void fn_80212D78(s32 arg0) {
     lbl_80366FB0 = arg0;
 }
 
-void fn_80212DD8(s32 chan, PADStatus *status, u32 *data) {
+void SPEC0_MakeStatus(s32 chan, PADStatus *status, u32 *data) {
     status->button = 0;
     status->button |= ((data[0] >> 16) & 0x0008) ? 0x0100 : 0;
     status->button |= ((data[0] >> 16) & 0x0020) ? 0x0200 : 0;
