@@ -45,7 +45,8 @@ void fn_80203320(f32 *arg0, void *arg1, f32 farg0) {
     arg0[3] = c;
 }
 
-void QUATMtx(Quaternion *r, Mtx m) {
+/* Convert a 3x4 rotation matrix into a unit quaternion. */
+void QUATMtx(Quaternion *qOut, Mtx m) {
     f32 tr;
     f32 s;
     s32 i;
@@ -57,11 +58,11 @@ void QUATMtx(Quaternion *r, Mtx m) {
     tr = m[0][0] + m[1][1] + m[2][2];
     if (tr > 0.0f) {
         s = (f32) sqrtf(tr + 1.0f);
-        r->w = s * 0.5f;
+        qOut->w = s * 0.5f;
         s = 0.5f / s;
-        r->x = (m[2][1] - m[1][2]) * s;
-        r->y = (m[0][2] - m[2][0]) * s;
-        r->z = (m[1][0] - m[0][1]) * s;
+        qOut->x = (m[2][1] - m[1][2]) * s;
+        qOut->y = (m[0][2] - m[2][0]) * s;
+        qOut->z = (m[1][0] - m[0][1]) * s;
     } else {
         i = 0;
         if (m[1][1] > m[0][0]) {
@@ -77,12 +78,12 @@ void QUATMtx(Quaternion *r, Mtx m) {
         if (s != 0.0f) {
             s = 0.5f / s;
         }
-        r->w = (m[k][j] - m[j][k]) * s;
+        qOut->w = (m[k][j] - m[j][k]) * s;
         q[j] = (m[i][j] + m[j][i]) * s;
         q[k] = (m[i][k] + m[k][i]) * s;
-        r->x = q[0];
-        r->y = q[1];
-        r->z = q[2];
+        qOut->x = q[0];
+        qOut->y = q[1];
+        qOut->z = q[2];
     }
 }
 
