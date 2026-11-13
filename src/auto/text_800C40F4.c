@@ -15512,7 +15512,7 @@ s32 fn_800EC0A4(s32 arg0, s32 arg1, s32 arg2) {
     return var_r9 ^ -1;
 }
 
-void fn_800EC1F8(u32 *arg0) {
+void Crc32_InitTable(u32 *arg0) {
     u32 i;
     u32 j;
     u32 c;
