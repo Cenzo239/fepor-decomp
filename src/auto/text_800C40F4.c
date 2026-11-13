@@ -13549,7 +13549,7 @@ s32 field_0x198;
 s32 field_0x19C;
 s32 field_0x1A0;
 extern "C" void Camera_SetTransition(void *, s32, f32, f32, s32);
-extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
+extern "C" void UiObj_SetCamerasTransition(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;

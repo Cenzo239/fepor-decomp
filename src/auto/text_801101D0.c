@@ -114,7 +114,7 @@ extern "C" void fn_80110228(void *arg0) {
     s32 fn_800E5200(void *, s32, s32, f32);
     u8 fn_800E5248(void *, s32);
     void fn_800E76E0(void *, f32);
-    void fn_800E77A0(void *, s32, s32, f32);
+    void UiObj_SetCamerasTransition(void *, s32, s32, f32);
     void fn_80111740(void *);
     void fn_80151894(void *);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
@@ -242,22 +242,22 @@ extern "C" void fn_80110228(void *arg0) {
     sp378.x = lbl_8036A184;
 
     if ((u8)fn_800E5248(self, 9) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x98));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x98));
     }
     if ((u8)fn_800E5248(self, 0xA) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x9C));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0x9C));
     }
     if ((u8)fn_800E5248(self, 0xB) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0xA0));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, 0x3C, *(f32 *)((u8 *)gGame + 0xA0));
     }
     if ((u8)fn_800E5248(self, 0x1E) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0x98));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0x98));
     }
     if ((u8)fn_800E5248(self, 0x1F) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0x9C));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0x9C));
     }
     if ((u8)fn_800E5248(self, 0x20) != 0) {
-        fn_800E77A0(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0xA0));
+        UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0xA0));
     }
     if ((u8)fn_800E5248(self, 0x21) != 0) {
         fn_800E76E0(*(void **)((u8 *)self + 0xAC), *(f32 *)((u8 *)gGame + 0x98));
