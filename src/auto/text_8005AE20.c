@@ -160,7 +160,7 @@ void Game_PollSoftReset(void) {
     extern s8 gSoftResetHoldInited;
     extern u8 gResetSwitchWasHeld;
     extern s8 gResetSwitchTrackInited;
-    extern u8 lbl_803672E3;
+    extern u8 gSoftResetRequested;
     extern s8 lbl_803672E4;
     extern u32 gGameFlags;
     s32 temp_r0;
@@ -176,20 +176,20 @@ void Game_PollSoftReset(void) {
         gResetSwitchTrackInited = 1;
     }
     if (lbl_803672E4 == 0) {
-        lbl_803672E3 = 0;
+        gSoftResetRequested = 0;
         lbl_803672E4 = 1;
     }
     temp_r3 = **(u16 **)gPadInput;
     temp_r0 = (temp_r3 == 0x1600) ? (gSoftResetHoldCount + 1) : 0;
     gSoftResetHoldCount = temp_r0;
     if (temp_r0 >= 0x1E) {
-        lbl_803672E3 = 1;
+        gSoftResetRequested = 1;
     }
     if (gResetSwitchWasHeld != 0 && fn_80208D18() == 0) {
-        lbl_803672E3 = 1;
+        gSoftResetRequested = 1;
     }
     gResetSwitchWasHeld = fn_80208D18() != 0;
-    if (!(gUiInputFlags & 0x100) && lbl_803672E3 != 0) {
+    if (!(gUiInputFlags & 0x100) && gSoftResetRequested != 0) {
         fn_80211614(1);
         VIFlush();
         VIWaitForRetrace();
