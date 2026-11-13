@@ -609,7 +609,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
 extern void Map_RefreshUnitMap(void* arg0);
 extern s32 fn_80183AB4(s32 arg0, s8 arg1, s8 arg2, void* arg3);
 extern s32 MoveAnim_BindPath(void* arg0, u16 arg1, void* arg2);
-void fn_801065A8(void *arg0) {
+void Dispos_StartMoveAnims(void *arg0) {
     void fn_80183AB4(void *, s32, s32, s32, void *);
     void MoveAnim_BindPath(void *, void *, u16, void *);
     void Map_RefreshUnitMap(void *);
