@@ -9265,100 +9265,101 @@ void fn_80257940(s32 arg0) {
     fn_8022C568(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
 }
 
-s32 Sound_SetupAdsrPhase(u8 *arg0) {
+/* Set volume and per-step delta for the voice's current ADSR phase; return 1 when finished. */
+s32 Sound_SetupAdsrPhase(u8 *env) {
     extern u16 gAdsrVolCurve[];
-    s32 ret;
+    s32 done;
     u32 tmp;
     s32 x;
     s32 y;
 
-    ret = 0;
-    switch (arg0[0]) {
+    done = 0;
+    switch (env[0]) {
     case 0:
-        switch (arg0[1]) {
+        switch (env[1]) {
         case 0:
-            tmp = *(u32 *)(arg0 + 0x14);
-            *(u32 *)(arg0 + 4) = tmp;
+            tmp = *(u32 *)(env + 0x14);
+            *(u32 *)(env + 4) = tmp;
             if (tmp != 0) {
-                arg0[1] = 1;
-                *(u32 *)(arg0 + 8) = 0;
-                *(u32 *)(arg0 + 0x10) = 0x7FFF0000U / *(u32 *)(arg0 + 0x14);
+                env[1] = 1;
+                *(u32 *)(env + 8) = 0;
+                *(u32 *)(env + 0x10) = 0x7FFF0000U / *(u32 *)(env + 0x14);
                 break;
             }
         case 1:
-            tmp = *(u32 *)(arg0 + 0x18);
-            *(u32 *)(arg0 + 4) = tmp;
+            tmp = *(u32 *)(env + 0x18);
+            *(u32 *)(env + 4) = tmp;
             if (tmp != 0) {
-                arg0[1] = 2;
-                *(u32 *)(arg0 + 8) = 0x7FFF0000;
-                *(u32 *)(arg0 + 0x10) =
-                    (u32)(-(s32)((0x7FFF0000U - ((u32)*(u16 *)(arg0 + 0x1C) << 16)) /
-                                 *(u32 *)(arg0 + 0x18)));
+                env[1] = 2;
+                *(u32 *)(env + 8) = 0x7FFF0000;
+                *(u32 *)(env + 0x10) =
+                    (u32)(-(s32)((0x7FFF0000U - ((u32)*(u16 *)(env + 0x1C) << 16)) /
+                                 *(u32 *)(env + 0x18)));
                 break;
             }
         case 2:
-            if (*(u16 *)(arg0 + 0x1C) != 0) {
-                arg0[1] = 3;
-                *(u32 *)(arg0 + 8) = (u32)*(u16 *)(arg0 + 0x1C) << 16;
-                *(u32 *)(arg0 + 0x10) = 0;
+            if (*(u16 *)(env + 0x1C) != 0) {
+                env[1] = 3;
+                *(u32 *)(env + 8) = (u32)*(u16 *)(env + 0x1C) << 16;
+                *(u32 *)(env + 0x10) = 0;
                 break;
             }
         case 4:
-            ret = 1;
-            *(u32 *)(arg0 + 8) = 0;
+            done = 1;
+            *(u32 *)(env + 8) = 0;
             break;
         }
         break;
     case 1:
-        switch (arg0[1]) {
+        switch (env[1]) {
         case 0:
-            tmp = *(u32 *)(arg0 + 0x14);
-            *(u32 *)(arg0 + 4) = tmp;
+            tmp = *(u32 *)(env + 0x14);
+            *(u32 *)(env + 4) = tmp;
             if (tmp != 0) {
-                arg0[1] = 1;
-                if (arg0[0x26] == 0) {
-                    *(u32 *)(arg0 + 8) = 0;
-                    *(u32 *)(arg0 + 0x10) = 0x7FFF0000U / *(u32 *)(arg0 + 4);
+                env[1] = 1;
+                if (env[0x26] == 0) {
+                    *(u32 *)(env + 8) = 0;
+                    *(u32 *)(env + 0x10) = 0x7FFF0000U / *(u32 *)(env + 4);
                 } else {
-                    *(u32 *)(arg0 + 0xC) = 0;
-                    *(u32 *)(arg0 + 8) = 0;
-                    *(u32 *)(arg0 + 0x10) = 0xC10000U / *(u32 *)(arg0 + 4);
+                    *(u32 *)(env + 0xC) = 0;
+                    *(u32 *)(env + 8) = 0;
+                    *(u32 *)(env + 0x10) = 0xC10000U / *(u32 *)(env + 4);
                 }
                 break;
             }
         case 1:
-            *(u32 *)(arg0 + 4) =
-                (*(u32 *)(arg0 + 0x18) *
-                 (((0xC1U - *(u16 *)(arg0 + 0x1C)) << 16) / 193U)) >>
+            *(u32 *)(env + 4) =
+                (*(u32 *)(env + 0x18) *
+                 (((0xC1U - *(u16 *)(env + 0x1C)) << 16) / 193U)) >>
                 16;
-            if (*(u32 *)(arg0 + 4) != 0) {
-                arg0[1] = 2;
-                *(u32 *)(arg0 + 8) = 0x7FFF0000;
-                *(u32 *)(arg0 + 0xC) = 0xC10000;
-                *(u32 *)(arg0 + 0x10) =
-                    (u32)(-(s32)(((0xC1U - *(u16 *)(arg0 + 0x1C)) << 16) /
-                                 *(u32 *)(arg0 + 4)));
+            if (*(u32 *)(env + 4) != 0) {
+                env[1] = 2;
+                *(u32 *)(env + 8) = 0x7FFF0000;
+                *(u32 *)(env + 0xC) = 0xC10000;
+                *(u32 *)(env + 0x10) =
+                    (u32)(-(s32)(((0xC1U - *(u16 *)(env + 0x1C)) << 16) /
+                                 *(u32 *)(env + 4)));
                 break;
             }
         case 2:
-            if (*(u16 *)(arg0 + 0x1C) != 0) {
-                arg0[1] = 3;
-                *(u32 *)(arg0 + 0xC) = (u32)*(u16 *)(arg0 + 0x1C) << 16;
-                x = (s32)(*(u32 *)(arg0 + 0xC) + 0x8000) >> 16;
+            if (*(u16 *)(env + 0x1C) != 0) {
+                env[1] = 3;
+                *(u32 *)(env + 0xC) = (u32)*(u16 *)(env + 0x1C) << 16;
+                x = (s32)(*(u32 *)(env + 0xC) + 0x8000) >> 16;
                 y = 0xC1 - x;
                 x = y & ~(y >> 31);
-                *(u32 *)(arg0 + 8) = (u32)gAdsrVolCurve[x] << 16;
-                *(u32 *)(arg0 + 0x10) = 0;
+                *(u32 *)(env + 8) = (u32)gAdsrVolCurve[x] << 16;
+                *(u32 *)(env + 0x10) = 0;
                 break;
             }
         case 4:
-            ret = 1;
-            *(u32 *)(arg0 + 8) = 0;
+            done = 1;
+            *(u32 *)(env + 8) = 0;
             break;
         }
         break;
     }
-    return ret;
+    return done;
 }
 
 void fn_80257C04(void *arg0) {
