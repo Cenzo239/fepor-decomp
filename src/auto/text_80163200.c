@@ -8941,7 +8941,7 @@ void fn_80174E0C(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void fn_80174E4C(void *arg0) {
+extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *, void *);
     void *fn_8000CAA0(void *, void *);
