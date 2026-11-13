@@ -34,7 +34,7 @@
     void fn_800CF27C(void *, s32, s32);
     s32 fn_80115AF0(void *);
     s32 fn_80115C0C(void *, s32);
-    s32 fn_80113878(void *);
+    s32 Actor_HasHeightFlag(void *);
     void fn_800CF500(void *, void *, void *);
     s32 fn_800E56C4(void *);
     void fn_80115264(void *, s32, s32);
@@ -306,7 +306,7 @@
         case 9:
             if ((u8)fn_80115AF0(*(void **)((u8 *)self + 0x9C)) == 0
                 && (u8)fn_80115C0C(*(void **)((u8 *)self + 0x9C), 0) != 0) {
-                if ((u8)fn_80113878(*(void **)((u8 *)self + 0x9C))) {
+                if ((u8)Actor_HasHeightFlag(*(void **)((u8 *)self + 0x9C))) {
                     *(s32 *)((u8 *)self + 0x10) = 2;
                     r30 = 1;
                     (*(u32 *)((u8 *)self + 0xC))++;
@@ -480,7 +480,7 @@
             }
             if (!((u8)fn_800E56C4(*(void **)((u8 *)self + 0x9C)) != 0
                   && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
-                if ((u8)fn_80113878(*(void **)((u8 *)self + 0x9C)))
+                if ((u8)Actor_HasHeightFlag(*(void **)((u8 *)self + 0x9C)))
                     fn_80112E30(*(void **)((u8 *)self + 0xA0));
                 *(u32 *)((u8 *)self + 0xC) = (*(s32 *)((u8 *)self + 0x21C) == 3) ? 0x28 : 4;
             }

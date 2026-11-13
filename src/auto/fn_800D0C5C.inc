@@ -37,7 +37,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800CF27C(void *, s32, s32);
     s32 fn_80115AF0(void *);
     s32 fn_80115C0C(void *, s32);
-    s32 fn_80113878(void *);
+    s32 Actor_HasHeightFlag(void *);
     void fn_800CF500(void *, void *, void *);
     s32 fn_800E56C4(void *);
     void fn_80115264(void *, s32, s32);
