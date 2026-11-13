@@ -4169,7 +4169,7 @@ f32 fn_80238A0C(void) {
     return (f32) fn_80238710();
 }
 
-f32 fn_80238A30(void) {
+f32 sinf(void) {
     f64 fn_80238638();
     return (f32) fn_80238638();
 }

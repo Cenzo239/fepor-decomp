@@ -27,7 +27,7 @@ static inline float sqrtf(float x) {
 
 void fn_80203320(f32 *arg0, void *arg1, f32 farg0) {
     void fn_802031E8(void *, f32 *);
-    f32 fn_80238A30(f32);
+    f32 sinf(f32);
     f32 fn_80238A54(f32);
     extern f32 lbl_8036BC94;
     f32 nAxis[3];
@@ -37,7 +37,7 @@ void fn_80203320(f32 *arg0, void *arg1, f32 farg0) {
 
     fn_802031E8(arg1, nAxis);
     half = lbl_8036BC94 * farg0;
-    s = fn_80238A30(half);
+    s = sinf(half);
     c = fn_80238A54(half);
     arg0[0] = s * nAxis[0];
     arg0[1] = s * nAxis[1];
@@ -88,7 +88,7 @@ void QUATMtx(Quaternion *qOut, Mtx m) {
 }
 
 void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
-    f32 fn_80238A30(f32);
+    f32 sinf(f32);
     f32 fn_80238A78(f32);
     f32 theta;
     f32 sin_th;
@@ -104,9 +104,9 @@ void QUATSlerp(Quaternion *p, Quaternion *q, Quaternion *r, f32 t) {
     }
     if (cos_th <= 0.99999f) {
         theta = fn_80238A78(cos_th);
-        sin_th = fn_80238A30(theta);
-        tp = fn_80238A30((1.0f - t) * theta) / sin_th;
-        tq *= fn_80238A30(t * theta) / sin_th;
+        sin_th = sinf(theta);
+        tp = sinf((1.0f - t) * theta) / sin_th;
+        tq *= sinf(t * theta) / sin_th;
     } else {
         tp = 1.0f - t;
         tq *= t;
