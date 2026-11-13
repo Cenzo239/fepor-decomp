@@ -691,7 +691,7 @@ void fn_80057020(void *arg0) {
 void fn_800576D4(void *arg0, u8 arg1) {
     void fn_8006D8E8(void *);
     void fn_800C428C(void *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern f32 lbl_80369108;
@@ -716,7 +716,7 @@ void fn_800576D4(void *arg0, u8 arg1) {
         *(void **)((u8 *)arg0 + 0x28) = NULL;
     }
     if (arg1 != 0) {
-        temp = fn_800C42D8(0x58);
+        temp = Heap_Alloc(0x58);
         if (temp != NULL) {
             *(s32 *)((u8 *)temp + 0x44) = 8;
             zero = 0;
@@ -733,7 +733,7 @@ void fn_800576D4(void *arg0, u8 arg1) {
             *(u8 *)((u8 *)temp + 0x34) = zero;
         }
         *(void **)((u8 *)arg0 + 0x24) = temp;
-        temp = fn_800C42D8(0x58);
+        temp = Heap_Alloc(0x58);
         if (temp != NULL) {
             *(s32 *)((u8 *)temp + 0x44) = 4;
             zero = 0;

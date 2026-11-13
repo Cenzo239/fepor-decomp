@@ -374,7 +374,7 @@ void fn_801217AC(void) {
     void fn_800578A0(void *, f32);
     void fn_800578A8(void *, s32, s32, s32);
     void *fn_80057998(void *);
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     extern u8 lbl_8032BDE8[];
     extern f32 lbl_8036A278;
     void *obj;
@@ -394,7 +394,7 @@ void fn_801217AC(void) {
         *(s16 *)&lbl_8032BDE8[0x400E] = 0;
     }
     if (*(s16 *)&lbl_8032BDE8[0x400E] != 0) {
-        obj = fn_800C42D8(0x30);
+        obj = Heap_Alloc(0x30);
         if (obj != NULL) {
             obj = fn_80057998(obj);
         }
@@ -1102,7 +1102,7 @@ void fn_80122C84(void *arg0) {
 }
 
 void *fn_80122CE0(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *self;
     void *walk;
     s32 zero;
@@ -1138,7 +1138,7 @@ void *fn_80122CE0(void *arg0) {
     *(u8 *)((u8 *)self + 0x69) = 0xFF;
 
     do {
-        p = fn_800C42D8(0x44);
+        p = Heap_Alloc(0x44);
         if (p == NULL) {
             break;
         }
@@ -2216,7 +2216,7 @@ void fn_80125130(void *arg0) {
     void *fn_80040844(void);
     void *fn_8006D948(void *);
     void *fn_800C42AC(s32);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_80147B9C(void *, s32, s32);
     void fn_8012600C(void *, s32);
     void fn_802031CC(void *, void *, f32);
@@ -2284,7 +2284,7 @@ void fn_80125130(void *arg0) {
     M2C_FIELD(self, u8 *, 0x49) = 0xC0;
     M2C_FIELD(self, void **, 0x54) = fn_8006D948(lbl_80274F74 + 0x84);
 
-    obj = fn_800C42D8(0x1C);
+    obj = Heap_Alloc(0x1C);
     if (obj != NULL) {
         M2C_FIELD(obj, s32 *, 0) = 0;
         M2C_FIELD(obj, s32 *, 4) = 0;

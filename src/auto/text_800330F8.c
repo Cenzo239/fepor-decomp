@@ -9252,10 +9252,10 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     void fn_8005F7B0(s32, u8);
     extern u8 lbl_80285738[];
     s32 sp8;
-    s32 temp_r31;
+    u8 b;
     void *var_r3;
     u8 a;
-    u8 b;
+    s32 temp_r31;
 
     if (arg3 == 0) {
         temp_r31 = arg0 + 0x14;
@@ -11986,7 +11986,7 @@ void fn_80050E80(void)
 #pragma global_optimizer off
 void fn_80050F64(void) {
     void *fn_8006D948(void *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void (*)(void *, s32), void *, s32, s32);
     void DCFlushRange(void *, u32);
@@ -12020,7 +12020,7 @@ void fn_80050F64(void) {
     s32 c;
 
     lbl_803672B0 = fn_8006D948(lbl_8026AB18 + 0x95);
-    a = (s32)fn_800C42D8(0x1C);
+    a = (s32)Heap_Alloc(0x1C);
     if (a) {
         *(s32 *)(a + 0) = 0;
         *(s32 *)(a + 4) = 0;
@@ -12981,7 +12981,7 @@ void fn_80054394(void *arg0) {
  void fn_8006140C(void *);
  void fn_8005EBCC(void *, u8);
  void *fn_8000CAF0(void *, void *);
- void *fn_800C42D8(s32);
+ void *Heap_Alloc(s32);
  void *fn_8000D354(void *);
  void *fn_80060664(void *);
  u32 fn_800067B4(void);
@@ -13025,7 +13025,7 @@ fn_80231D94(buf,lbl_8026AC0C+353,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIEL
  parent=arg0;
  if(!arg0) parent=(void *)4;
  child=fn_8000CAF0(lbl_80285990,parent);
- M2C_FIELD(child,void * *,0x30)=fn_800C42D8(0x60);
+ M2C_FIELD(child,void * *,0x30)=Heap_Alloc(0x60);
  init=M2C_FIELD(child,void * *,0x30);
  zero=lbl_80369084;
  M2C_FIELD(init,f32 *,0xC)=zero; M2C_FIELD(init,f32 *,0x10)=zero; M2C_FIELD(init,f32 *,0x14)=zero;

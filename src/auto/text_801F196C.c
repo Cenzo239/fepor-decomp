@@ -4007,7 +4007,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         Elem *data;
     } Vec;
     void fn_800C428C(void *);
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void fn_801FB548(Vec *);
     void fn_8022CF78(void);
     void fn_80232058(void *, const char *, ...);
@@ -4196,7 +4196,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
                 cap = 0x1FFFFFFFU;
             }
         }
-        p = (Elem *)fn_800C42D8(cap * 8);
+        p = (Elem *)Heap_Alloc(cap * 8);
         if (p == NULL) {
             char *files = __files;
             char *msg = lbl_80281028;
@@ -4259,7 +4259,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
         Elem *data;
     } Vec;
     void fn_800C428C(void *);
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void fn_801FB548(Vec *);
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
@@ -4283,7 +4283,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
         tmp.cap = 0;
         tmp.size = 0;
         tmp.data = NULL;
-        p = fn_800C42D8(arg1 * 8);
+        p = Heap_Alloc(arg1 * 8);
         if (p == NULL) {
             fn_80232058(__files + 0xA0, lbl_80281028 + 0x3BE);
             fn_8022CF78();
@@ -4374,7 +4374,7 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void *fn_800C42D8(u32);
+extern "C" void *Heap_Alloc(u32);
 extern "C" void fn_800C428C(void *);
 extern "C" void fn_800506E0(s32, s32, void *);
 extern "C" void fn_8006140C(void *);
@@ -4420,7 +4420,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
     Node *n;
 
     list = arg1 + 1;
-    node = (Node *)fn_800C42D8(0x10);
+    node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fn_80232058(__files + 0xA0, lbl_80281028 + 0x3BE);
         fn_8022CF78();
@@ -5223,7 +5223,7 @@ void fn_801FC4F8(s32 arg0, s32 arg1, s32 arg2) {
 
 #pragma use_lmw_stmw on
 void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void fn_800D6C1C(void *, void *);
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
@@ -5236,7 +5236,7 @@ void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
         fn_80232058(__files + 0xA0, lbl_80281420 + 0xA6E);
         fn_8022CF78();
     }
-    node = fn_800C42D8(0x10);
+    node = Heap_Alloc(0x10);
     if (node == NULL) {
         fn_80232058(__files + 0xA0, lbl_80281420 + 0xA89);
         fn_8022CF78();

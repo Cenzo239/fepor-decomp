@@ -1525,7 +1525,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
 void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     s32 fn_80040844(void);
     void fn_80041514(s32, void *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C8DCC(void *, void *, void *);
     void Xml_Destroy(void *, s32);
     void *fn_800C91EC(void *, void *, void *);
@@ -1581,7 +1581,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     a1 = (void *)0;
     lbl_803680E0 = 1;
     flag2 = 0;
-    a2 = fn_800C42D8(0x60);
+    a2 = Heap_Alloc(0x60);
     if ((s32)a2 != 0) {
         fn_800C9ABC(&sp20, lbl_802777C8, &sp8);
         a1 = (void *)1;
@@ -3192,7 +3192,7 @@ void fn_8016A1BC(void *arg0) {
     void fn_80109020(u32);
     void fn_80109180(void *, void *);
     void fn_80109A54(s32, f32);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C96F8(void *, void *, s32);
     void fn_801400F4(void *, void *, s32);
     u32 fn_8013FF94(void *, s32, s32);
@@ -3214,7 +3214,7 @@ void fn_8016A1BC(void *arg0) {
         fn_80109180(temp_r31, p);
         fn_80109A54(2, lbl_8036A9C8);
     }
-    temp_r3 = fn_800C42D8(0x5C);
+    temp_r3 = Heap_Alloc(0x5C);
     if (temp_r3 != NULL) {
         M2C_FIELD(temp_r3, u32 *, 0x00) = (u32)lbl_8028FDB0;
         M2C_FIELD(temp_r3, s32 *, 0x04) = 0;
@@ -3296,7 +3296,7 @@ void fn_8016A400(void *arg0) {
     void *fn_80169948();
     s32 fn_80024398(void *, void *, s32);
     M2C_UNK fn_8000C5B8();
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
 
     extern u8 lbl_802845E8[];
     extern u16 lbl_802920E0[76];
@@ -3336,7 +3336,7 @@ void fn_8016A400(void *arg0) {
         lbl_803680FC = lbl_80294144;
     }
 
-    config = fn_800C42D8(0x20);
+    config = Heap_Alloc(0x20);
     init = (volatile Config *)config;
     if (config != NULL) {
         init->table = lbl_802845E8;
@@ -3658,7 +3658,7 @@ void *fn_8016AE6C(void) {
 
 s32 fn_8016AE7C(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK fn_80024398(void *, s32, s32);
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     extern u8 lbl_802845E8[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80293D64[];
@@ -3682,7 +3682,7 @@ s32 fn_8016AE7C(s32 arg0, s32 arg1, void *arg2) {
         lbl_803680FC = lbl_80294144;
         lbl_803680F8 = 1;
     }
-    p = fn_800C42D8(0x20);
+    p = Heap_Alloc(0x20);
     if (p != NULL) {
         M2C_FIELD(p, void **, 4) = lbl_802845E8;
         M2C_FIELD(p, void **, 0) = lbl_80293D64;
@@ -7133,7 +7133,7 @@ void fn_80171218(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 #pragma cplusplus on
 extern "C" void fn_80171374(void *arg0) {
 #pragma opt_common_subs off
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     void *fn_80179DEC(void *, s16, s16, s32);
     u8 fn_801EAA88(void);
@@ -7177,7 +7177,7 @@ extern "C" void fn_80171374(void *arg0) {
     s32 ctx;
 
     ctx = lbl_802EF4C8[0];
-    p = fn_800C42D8(0xD8);
+    p = Heap_Alloc(0xD8);
     if (p) p = fn_80179F8C(p, 0x38, -0x7C, 0x1F0, 0x7C, 0x226);
     M2C_FIELD(arg0, void **, 0x40) = p;
     q = M2C_FIELD(arg0, void **, 0x40);
@@ -7208,7 +7208,7 @@ extern "C" void fn_80171374(void *arg0) {
     fn_8013AD70(M2C_FIELD(arg0, void **, 0x40), ctx);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), f32 *, 0x30) = lbl_8036AB78;
 
-    p = fn_800C42D8(0x7C);
+    p = Heap_Alloc(0x7C);
     if (p) p = fn_80179DEC(p, 0x20, 0x84, 0x1F4);
     M2C_FIELD(arg0, void **, 0x4C) = p;
     q = M2C_FIELD(arg0, void **, 0x4C);
@@ -7227,7 +7227,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 0x4C) = *(u8 *)((u8 *)lbl_802EF4C8 + 0x15);
     fn_801400F4(arg0, M2C_FIELD(arg0, void **, 0x4C));
 
-    p = fn_800C42D8(0x50);
+    p = Heap_Alloc(0x50);
     if (p) {
         init_761F8_base(p, 0x130, 0x94, 0x118, 0x40, 0x1FE);
         M2C_FIELD(p, void **, 0) = lbl_80292178;
@@ -7263,7 +7263,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), f32 *, 0x2C) = lbl_8036AB70;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), void **, 0x40) = (u8 *)lbl_80278080 + 0x2BB;
 
-    p = fn_800C42D8(0x54);
+    p = Heap_Alloc(0x54);
     if (p) {
         init_761F8_base(p, 0x260, 0x12C, 0x108, 0x55, 0x1F4);
         M2C_FIELD(p, void **, 0) = lbl_80291A3C;
@@ -7283,7 +7283,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(q, u32 *, 0x34) |= 0x10;
     fn_80138808(M2C_FIELD(arg0, void **, 0x44), fn_8013AC54(M2C_FIELD(arg0, void **, 0x40)));
 
-    p = fn_800C42D8(0x4C);
+    p = Heap_Alloc(0x4C);
     if (p) {
         init_761F8_base(p, 0x138, 0x6C, 0x108, 0xD0, 0x1F4);
         M2C_FIELD(p, void **, 0) = lbl_802919DC;
@@ -7298,7 +7298,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(p, s16 *, 0x24) = 4;
     fn_801400F4(arg0, p);
 
-    p = fn_800C42D8(0x58);
+    p = Heap_Alloc(0x58);
     if (p) {
         init_761F8_base(p, 0, 0x28, 0x260, 0x3A, 0x226);
         M2C_FIELD(p, void **, 0) = lbl_80293C84;
@@ -7589,7 +7589,7 @@ u8 fn_801723A0(u32 *arg0, s32 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_801723E8(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_801378E8(void *, u32);
     void fn_801400F4(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
@@ -7627,7 +7627,7 @@ extern "C" void fn_801723E8(void *arg0) {
     sp8[0] = *(s16 *)((u8 *)temp_r4 + 0xA);
     sp8[1] = -temp_r7;
     fn_80140258(arg0, temp_r4, sp8, 0);
-    temp_r31 = fn_800C42D8(0x4C);
+    temp_r31 = Heap_Alloc(0x4C);
     if (temp_r31 != NULL) {
         vt = lbl_802919DC;
         *(void **)temp_r31 = lbl_8028FDB0;
@@ -7667,7 +7667,7 @@ extern "C" void fn_801723E8(void *arg0) {
     *(u8 *)((u8 *)temp_r31 + 0x48) = 0;
     *(s16 *)((u8 *)temp_r31 + 0x24) = 4;
     fn_801400F4(self, temp_r31);
-    temp_r4 = fn_800C42D8(0x58);
+    temp_r4 = Heap_Alloc(0x58);
     if (temp_r4 != NULL) {
         vt = lbl_80293C2C;
         *(void **)temp_r4 = lbl_8028FDB0;
@@ -8535,7 +8535,7 @@ void fn_80174204(void) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801743B4(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_80179DEC(void *, s16, s16, s32);
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
@@ -8627,7 +8627,7 @@ extern "C" void fn_801743B4(void *arg0) {
         }
     }
 
-    p = fn_800C42D8(0x7C);
+    p = Heap_Alloc(0x7C);
     if (p != NULL) {
         p = fn_80179DEC(p, 0x260, 0x84, 0x1F4);
     }
@@ -8641,7 +8641,7 @@ extern "C" void fn_801743B4(void *arg0) {
     ((Obj *)*(void **)((u8 *)self + 0x50))->v11(fn_8013AC54(inner));
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
 
-    p = fn_800C42D8(0x12C);
+    p = Heap_Alloc(0x12C);
     if (p != NULL) {
         p = fn_80179800(p, 0x260, 0x84, 0x108, 0x110, 0x1F4);
     }
@@ -8781,7 +8781,7 @@ loop2_cond:
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
     fn_801400F4(self, *(void **)((u8 *)self + 0x54));
 
-    p = fn_800C42D8(0x48);
+    p = Heap_Alloc(0x48);
     if (p != NULL) {
         p = fn_80174998(p, 0x260, 0x4C, 0x1F4);
     }
@@ -9051,7 +9051,7 @@ void fn_80175124(void *arg0, s32 arg1) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void fn_801752EC(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_80179DEC(void *, s16, s16, s32);
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
@@ -9144,7 +9144,7 @@ extern "C" void fn_801752EC(void *arg0) {
         }
     }
 
-    p = fn_800C42D8(0x7C);
+    p = Heap_Alloc(0x7C);
     if (p != NULL) {
         p = fn_80179DEC(p, 0x260, 0x84, 0x1F4);
     }
@@ -9159,7 +9159,7 @@ extern "C" void fn_801752EC(void *arg0) {
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
     fn_801400F4(self, *(void **)((u8 *)self + 0x50));
 
-    p = fn_800C42D8(0x12C);
+    p = Heap_Alloc(0x12C);
     if (p != NULL) {
         p = fn_80179800(p, 0x260, 0x84, 0x108, 0x110, 0x1F4);
     }
@@ -9318,7 +9318,7 @@ loop2_cond:
     }
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
 
-    p = fn_800C42D8(0x48);
+    p = Heap_Alloc(0x48);
     if (p != NULL) {
         p = fn_80174998(p, 0x260, 0x4C, 0x1F4);
     }
@@ -9435,7 +9435,7 @@ void fn_80175CA0(void) {
     extern void* lbl_80295070;
     extern void* lbl_802950C0;
     
-    void *fn_800C42D8(u32 arg);
+    void *Heap_Alloc(u32 arg);
     void *temp_r3;
 
     if ((s8) lbl_8036816C == 0) {
@@ -9471,7 +9471,7 @@ void fn_80175CA0(void) {
         lbl_8036819C = (u32)&lbl_80294F30;
     }
     
-    temp_r3 = fn_800C42D8(0x24);
+    temp_r3 = Heap_Alloc(0x24);
     if (temp_r3 != NULL) {
         *(void**)((char*)temp_r3 + 4) = &lbl_802845E8;
         *(void***)((char*)temp_r3 + 0) = &lbl_802945C0;
@@ -9581,7 +9581,7 @@ extern "C" void fn_80175E3C(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801761F8(void *arg0) {
 #pragma opt_common_subs off
- void *fn_800C42D8(s32);
+ void *Heap_Alloc(s32);
  void *fn_80179F8C(void *,s16,s16,s16,s16,s32);
  void *fn_80179DEC(void *,s16,s16,s32);
  u8 fn_801EAA88(void);
@@ -9617,7 +9617,7 @@ virtual void v12(s32) = 0;
  u8 *color;
  u8 first;
  f32 zero;
- p=fn_800C42D8(0xD8);
+ p=Heap_Alloc(0xD8);
  if(p)p=fn_80179F8C(p,0x38,0x10,0x1F0,0x7C,0x226);
  M2C_FIELD(arg0,void * *,0x40)=p;
  q=M2C_FIELD(arg0,void * *,0x40);
@@ -9638,7 +9638,7 @@ hold2=M2C_FIELD(arg0,void * *,0x40);
  while(entry2){fn_8013B064(hold2,entry2);entry2=M2C_FIELD(entry2,void * *,0x184);}
  }
 fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x40));
- p=fn_800C42D8(0x7C);
+ p=Heap_Alloc(0x7C);
  if(p)p=fn_80179DEC(p,0x20,0x84,0x1F4);
  M2C_FIELD(arg0,void * *,0x4C)=p;
  q=M2C_FIELD(arg0,void * *,0x4C);
@@ -9648,7 +9648,7 @@ fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x40));
  ((Obj *)M2C_FIELD(arg0,void * *,0x4C))->v11(fn_8013AC54(M2C_FIELD(arg0,void * *,0x40)));
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),u8 *,0x48)=0;
  fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x4C));
- p=fn_800C42D8(0x50);
+ p=Heap_Alloc(0x50);
  if(p) {
  init_761F8_base(p,0x130,0x94,0x118,0x40,0x1FE);
  M2C_FIELD(p,void * *,0)=lbl_80292178;M2C_FIELD(p,u8 *,60)=0xFF;
@@ -9669,7 +9669,7 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
  if((u8 *)q+0x3C!=col){M2C_FIELD(q,u8 *,0x3C)=first;M2C_FIELD(q,u8 *,0x3D)=col[1];M2C_FIELD(q,u8 *,0x3E)=col[2];M2C_FIELD(q,u8 *,0x3F)=col[3];}
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x48),void * *,0x40)=(u8 *)lbl_80278080+0x2BB;
  fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x48));
- p=fn_800C42D8(0x54);
+ p=Heap_Alloc(0x54);
  if(p) {
  init_761F8_base(p,0x138,0x12C,0x108,0x55,0x1F4);
  M2C_FIELD(p,void * *,0)=lbl_80291A3C;M2C_FIELD(p,s32 *,0x3C)=0;M2C_FIELD(p,s32 *,0x40)=0x1003C;M2C_FIELD(p,s32 *,0x4C)=0;M2C_FIELD(p,s32 *,0x50)=0;((Obj *)p)->v8();
@@ -14967,7 +14967,7 @@ extern "C" void fn_80180624(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80180AC8(void *arg0) {
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void *fn_80181D88(void *, s32, s32, s32, s32);
     void fn_8013B064(void *, void *);
     void fn_801400F4(void *, void *);
@@ -15021,7 +15021,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void *sp2C;
 
     base = lbl_802955A8;
-    obj = fn_800C42D8(0xD4);
+    obj = Heap_Alloc(0xD4);
     if (obj != NULL) {
         obj = fn_80181D88(obj, 0x20, 0x6C, 0x120, 0x1F4);
     }
@@ -15075,7 +15075,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     *(u32 *)((u8 *)obj + 0x80) = 0;
     fn_801400F4(arg0, obj);
 
-    pm0 = (s32)fn_800C42D8(0x70);
+    pm0 = (s32)Heap_Alloc(0x70);
     if ((void *)pm0 != NULL) {
         void *panel = (void *)pm0;
         void *r12;
@@ -15211,7 +15211,7 @@ extern "C" void *fn_80180F24(void *arg0, s16 arg1) {
 
 #pragma cplusplus reset
 void fn_80180F84(void *arg0) {
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void fn_801658DC(void *, void *);
     void fn_801400F4(void *, void *);
     void *fn_8000E0E4(void *);
@@ -15229,7 +15229,7 @@ void fn_80180F84(void *arg0) {
     void *q;
     void *found;
 
-    p = fn_800C42D8(0x60);
+    p = Heap_Alloc(0x60);
     if (p != NULL) {
         M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
         M2C_FIELD(p, u32 *, 4) = 0;
@@ -15283,7 +15283,7 @@ void fn_80180F84(void *arg0) {
     fn_801658DC(p, lbl_802789F0 + 0x104);
     fn_801400F4(arg0, p);
 
-    q = fn_800C42D8(0x5C);
+    q = Heap_Alloc(0x5C);
     if (q != NULL) {
         M2C_FIELD(q, void **, 0) = lbl_8028FDB0;
         M2C_FIELD(q, u32 *, 4) = 0;

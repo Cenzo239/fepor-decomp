@@ -1063,7 +1063,7 @@ void fn_8012DFA8(void *arg0) {
     void *fn_8006D948(void *);
     void fn_800C1F1C(void *, void *);
     void *fn_800C42AC(s32);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_80109180(void *, void *);
     void fn_801305F8(void *);
     void fn_801A7218(void *, void *, s32);
@@ -1328,7 +1328,7 @@ void fn_8012DFA8(void *arg0) {
     if (self[0x6C] == 4) {
         self[0x6D] = 1;
         *(void **)(self + 0x38) = fn_800C42AC(4);
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_802913E0;
@@ -1352,7 +1352,7 @@ void fn_8012DFA8(void *arg0) {
     } else {
         self[0x6D] = 8;
         *(void **)(self + 0x38) = fn_800C42AC(0x20);
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_802913BC;
@@ -1374,7 +1374,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 0) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_80291318;
@@ -1398,7 +1398,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 4) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_802912F4;
@@ -1419,7 +1419,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 8) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_8029127C;
@@ -1442,7 +1442,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 0xC) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_80291258;
@@ -1461,7 +1461,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 0x10) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_802911A4;
@@ -1486,7 +1486,7 @@ void fn_8012DFA8(void *arg0) {
             }
         }
         *(void **)(*(u8 **)(self + 0x38) + 0x14) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_80291180;
@@ -1506,7 +1506,7 @@ void fn_8012DFA8(void *arg0) {
             ((u8 *)entry)[0x21] = 2;
         }
         *(void **)(*(u8 **)(self + 0x38) + 0x18) = entry;
-        entry = fn_800C42D8(0x50);
+        entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
             *(void **)((u8 *)entry + 0x4C) = lbl_8029115C;
@@ -1572,19 +1572,19 @@ void fn_8012DFA8(void *arg0) {
     *(s16 *)(self + 0x5C) = rect.b;
     *(s16 *)(self + 0x5E) = y;
 
-    tmp = fn_800C42D8(0x58);
+    tmp = Heap_Alloc(0x58);
     if (tmp != NULL) {
         tmp = fn_80057A64(tmp, 1);
     }
     *(void **)(self + 0x44) = tmp;
     fn_80057E98(*(void **)(self + 0x44), 0x32, 0x4C);
-    tmp = fn_800C42D8(0x58);
+    tmp = Heap_Alloc(0x58);
     if (tmp != NULL) {
         tmp = fn_80057A64(tmp, 2);
     }
     *(void **)(self + 0x48) = tmp;
     fn_80057E98(*(void **)(self + 0x48), 0x230, 0x4C);
-    tmp = fn_800C42D8(0x30);
+    tmp = Heap_Alloc(0x30);
     if (tmp != NULL) {
         tmp = fn_80057998(tmp);
     }
@@ -1595,7 +1595,7 @@ void fn_8012DFA8(void *arg0) {
     fn_80057860(*(void **)(self + 0x4C), *(s16 *)(self + 0x6A));
     fn_800578A0(*(void **)(self + 0x4C), lbl_8036A500);
     fn_800576D4(*(void **)(self + 0x4C), 1);
-    tmp = fn_800C42D8(0x18);
+    tmp = Heap_Alloc(0x18);
     if (tmp != NULL) {
         tmp = fn_80056A60(tmp);
     }

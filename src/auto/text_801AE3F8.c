@@ -615,7 +615,7 @@ void fn_801AF40C(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801AF48C(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_8011D79C(s32);
     void fn_80138808(void *, s32);
     s32 fn_8013AC54(void *);
@@ -666,7 +666,7 @@ extern "C" void fn_801AF48C(void *arg0) {
     ((Obj *)temp_r28)->v8();
     *(u8 *)((u8 *)temp_r28 + 0x48) = 1;
     *(u8 *)((u8 *)temp_r28 + 0x44) = 2;
-    temp_r31 = fn_800C42D8(0x54);
+    temp_r31 = Heap_Alloc(0x54);
     if (temp_r31 != NULL) {
         s32 flag;
         *(void **)temp_r31 = lbl_8028FDB0;
@@ -1044,7 +1044,7 @@ void *fn_8013FF94(void *,s32,s32);
 void fn_801400F4(void *,void *);
 void fn_8014027C(void *,void *,s16 *,s32);
 void fn_801402A0(void *,void *,s16 *,s32);
-void *fn_800C42D8(s32);
+void *Heap_Alloc(s32);
 void *fn_80193B60(void *,s16 *,s16 *,s32);
 void fn_8013B064(void *,void *);
 void fn_8013AD70(void *,void *);
@@ -1081,7 +1081,7 @@ if (!panel) {
 q=*(void * *)((u8 *)self + 0x54);
 list=q;
 if (!q) {
- p=fn_800C42D8(0xd8);
+ p=Heap_Alloc(0xd8);
  if(p) {sp18[0]=0x128;sp18[1]=0x9a;sp14[0]=0x260;sp14[1]=0x6c;p=fn_80193B60(p,sp14,sp18,0x1f4);}
  *(void * *)((u8 *)self + 0x54)=p;
  q=*(void * *)((u8 *)self + 0x54); if(q) *(s32 *)((u8 *)q + 0x4)+=1;
@@ -1096,13 +1096,13 @@ if (!q) {
 *(u8 *)((u8 *)list + 0x4c)=0;fn_801400F4(self,list);
 if(*(s16 *)((u8 *)list + 0xa)!=0x118){y=*(s16 *)((u8 *)list + 0xc);sp10[0]=0x118;sp10[1]=y;fn_8014027C(self,list,sp10,0);}
 if((*fn_8001CB64(item)&5ULL)!=0) {
- p=fn_800C42D8(0x78);if(p)p=fn_80193950(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;
-} else {p=fn_800C42D8(0x78);if(p)p=fn_801938F8(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;}
+ p=Heap_Alloc(0x78);if(p)p=fn_80193950(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;
+} else {p=Heap_Alloc(0x78);if(p)p=fn_801938F8(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;}
 q=*(void * *)((u8 *)self + 0x60);if(q)*(s32 *)((u8 *)q + 0x4)+=1;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x8)=0xa;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x24)=8;
 *(u8 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x48)=0;
-panel=fn_800C42D8(0x48);
+panel=Heap_Alloc(0x48);
 if(panel) {
 q=panel;
 *(void * *)((u8 *)q + 0x0)=lbl_8028FDB0;
@@ -1746,7 +1746,7 @@ void fn_801B1A7C(void *arg0) {
 }
 
 void fn_801B1B7C(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_801B3150(void *, s32, s32, s32, s32, s32);
     void fn_80133FBC(void *, void *);
     void fn_801400F4(void *, void *);
@@ -1760,7 +1760,7 @@ void fn_801B1B7C(void *arg0) {
     s32 temp_r31;
     u32 ret;
 
-    var_r0 = fn_800C42D8(0x68);
+    var_r0 = Heap_Alloc(0x68);
     if (var_r0 != NULL) {
         var_r0 = fn_801B3150(var_r0, 0x138, 0xA8, 0x108, 0x78, 0x190);
     }
@@ -1811,7 +1811,7 @@ void fn_801B1E54(void *arg0) {
 }
 
 void fn_801B1ED4(void *arg0) {
-    void *fn_800C42D8(M2C_UNK);
+    void *Heap_Alloc(M2C_UNK);
     M2C_UNK fn_8011D79C(s32);
     u32 fn_8013FF94(void *, M2C_UNK, M2C_UNK);
     M2C_UNK fn_801400F4(void *, void *);
@@ -1837,7 +1837,7 @@ void fn_801B1ED4(void *arg0) {
     void *temp_r4_4;
 
     if ((void *) M2C_FIELD(arg0, void **, 0x4C) == NULL) {
-        temp_r3 = fn_800C42D8(0x50);
+        temp_r3 = Heap_Alloc(0x50);
         if (temp_r3 != NULL) {
             M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_8028FDB0;
             M2C_FIELD(temp_r3, s32 *, 4) = 0;
@@ -1898,7 +1898,7 @@ void fn_801B1ED4(void *arg0) {
     }
     if ((s16) M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), s16 *, 0x3E) != 4) {
         if ((void *) M2C_FIELD(arg0, void **, 0x50) == NULL) {
-            temp_r3_2 = fn_800C42D8(0x58);
+            temp_r3_2 = Heap_Alloc(0x58);
             if (temp_r3_2 != NULL) {
                 M2C_FIELD(temp_r3_2, M2C_UNK **, 0) = &lbl_8028FDB0;
                 M2C_FIELD(temp_r3_2, s32 *, 4) = 0;
@@ -2123,7 +2123,7 @@ void fn_801B2644(void *arg0) {
 }
 
 void fn_801B26A0(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_801343F8(void *, s32, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
     void fn_801400F4(void *, void *);
@@ -2137,7 +2137,7 @@ void fn_801B26A0(void *arg0) {
     temp_r30 = *(void **)((u8 *)arg0 + 0x40);
     temp_r29 = *(s16 *)((u8 *)temp_r30 + 0xA) - 0x20;
     temp_r28 = *(s16 *)((u8 *)temp_r30 + 0xC) + 0x20;
-    var_r0 = fn_800C42D8(0x54);
+    var_r0 = Heap_Alloc(0x54);
     if (var_r0 != NULL) {
         var_r0 = fn_801343F8(var_r0, *(s16 *)((u8 *)temp_r30 + 0x3E), temp_r29, temp_r28, 0x108, 0xD0, 0x1F4);
     }
@@ -2396,7 +2396,7 @@ void fn_801B2E3C(void *arg0) {
 }
 
 void fn_801B2EBC(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_801B31E4(void *, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
     void fn_801400F4(void *, void *);
@@ -2409,7 +2409,7 @@ void fn_801B2EBC(void *arg0) {
     s32 temp_r31;
     u32 ret;
 
-    var_r0 = fn_800C42D8(0x4C);
+    var_r0 = Heap_Alloc(0x4C);
     if (var_r0 != NULL) {
         var_r0 = fn_801B31E4(var_r0, 0x138, 0x6C, 0x108, 0xD0, 0x226);
     }

@@ -2672,15 +2672,16 @@ void fn_8018B89C(void *arg0) {
     }
 }
 
-#pragma peephole off
+#pragma scheduling off
 void fn_8018B920(void *arg0) {
     extern f32 lbl_8036ACEC;
-    s32 z = 0;
-    f32 f = lbl_8036ACEC;
-    *(s32 *)((char *)arg0 + 0x40) = z;
-    *(f32 *)((char *)arg0 + 0x44) = f;
+    struct { s32 a; f32 b; } *p;
+
+    p = (void *)((u8 *)arg0 + 0x40);
+    p->a = 0;
+    p->b = lbl_8036ACEC;
 }
-#pragma peephole on
+#pragma scheduling reset
 void fn_8018B934(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
@@ -5182,7 +5183,7 @@ void fn_80191C7C(void *arg0) {
 #pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void fn_80191CFC(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_8011D79C(s32);
     void fn_80138808(void *, s32);
     s32 fn_8013AC54(void *);
@@ -5232,7 +5233,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     ((Obj *)temp_r28)->v8();
     M2C_FIELD(temp_r28, u8 *, 0x48) = 1;
     M2C_FIELD(temp_r28, u8 *, 0x44) = 2;
-    temp_r31 = fn_800C42D8(0x54);
+    temp_r31 = Heap_Alloc(0x54);
     if (temp_r31 != NULL) {
         M2C_FIELD(temp_r31, void **, 0) = lbl_8028FDB0;
         M2C_FIELD(temp_r31, s32 *, 4) = 0;
@@ -5602,7 +5603,7 @@ extern "C" void fn_801925A0(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_801927DC(void *arg0) {
     void **fn_80143A84(void *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_801400F4(void *, void *);
     void fn_801402A0(void *, void *, s16 *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
@@ -5641,7 +5642,7 @@ extern "C" void fn_801927DC(void *arg0) {
     void *res;
     s16 x, y;
 
-    panel = fn_800C42D8(0x50);
+    panel = Heap_Alloc(0x50);
     if (panel != NULL) {
         x = *(s16 *)((u8 *)self + 0x5E);
         y = *(s16 *)((u8 *)self + 0x60);
@@ -5696,7 +5697,7 @@ extern "C" void fn_801927DC(void *arg0) {
     q = *(void **)((u8 *)self + 0x50);
     list = q;
     if (q == NULL) {
-        p = fn_800C42D8(0xD8);
+        p = Heap_Alloc(0xD8);
         if (p != NULL) {
             sp18[0] = 0x128; sp18[1] = 0x9A;
             sp14[0] = 0x260; sp14[1] = 0x6C;
@@ -5731,12 +5732,12 @@ extern "C" void fn_801927DC(void *arg0) {
     }
 
     if ((*fn_8001CB64(unit) & 5ULL) != 0) {
-        p = fn_800C42D8(0x78);
+        p = Heap_Alloc(0x78);
         if (p != NULL)
             p = fn_80193950(p, 0x260, 0x108, 0x1F4);
         *(void **)((u8 *)self + 0x54) = p;
     } else {
-        p = fn_800C42D8(0x78);
+        p = Heap_Alloc(0x78);
         if (p != NULL)
             p = fn_801938F8(p, 0x260, 0x108, 0x1F4);
         *(void **)((u8 *)self + 0x54) = p;
@@ -5748,7 +5749,7 @@ extern "C" void fn_801927DC(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x24) = 8;
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x48) = 0;
 
-    panel = fn_800C42D8(0x48);
+    panel = Heap_Alloc(0x48);
     if (panel != NULL) {
         *(void **)panel = lbl_8028FDB0;
         *(s32 *)((u8 *)panel + 4) = 0;
@@ -6041,7 +6042,7 @@ void fn_80193540(void* unit) {
 }
 
 void fn_80193668(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C96F8(void *, char *, u32);
     void fn_801400F4(void *, void *);
     void *fn_8013FF94(void *, s32, s32);
@@ -6068,7 +6069,7 @@ void fn_80193668(void *arg0) {
     void *self;
 
     self = arg0;
-    obj = fn_800C42D8(0x5C);
+    obj = Heap_Alloc(0x5C);
     if (obj != NULL) {
         *(void **)obj = lbl_8028FDB0;
         *(s32 *)((u8 *)obj + 4) = 0;
@@ -6287,7 +6288,7 @@ void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
 
 #pragma cplusplus on
 extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C428C(void *);
     void fn_8001C690(void *, void *);
     void fn_80232058(void *, void *, ...);
@@ -6315,7 +6316,7 @@ extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *list;
 
     list = (s32 *)arg1 + 1;
-    node = (Node *)fn_800C42D8(0x10);
+    node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fn_80232058(__files + 0xA0, lbl_80279DF0 + 0x51F, __files);
         fn_8022CF78();
@@ -6792,7 +6793,7 @@ extern "C" void fn_8019477C(void *arg0) {
     void *fn_8013FF94(void *, s32, s32);
     void fn_801400F4(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
-    void *fn_800C42D8(u32);
+    void *Heap_Alloc(u32);
     void *fn_80143A84(void *);
     void fn_8013FF00(void *, void *);
     void fn_801658DC(void *, void *);
@@ -6830,7 +6831,7 @@ extern "C" void fn_8019477C(void *arg0) {
         fn_8014027C(arg0, obj, &spC.x, 0);
     }
     if (fn_8013FF94(arg0, 1, 0) == NULL) {
-        p = fn_800C42D8(0x44);
+        p = Heap_Alloc(0x44);
         if (p != NULL) {
             M2C_FIELD(p, void **, 0) = lbl_8028FDB0;
             M2C_FIELD(p, void **, 0) = lbl_80292230;
@@ -6880,7 +6881,7 @@ extern "C" void fn_8019477C(void *arg0) {
     }
 }
 extern "C" void fn_80194988(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_80194DA0(void *, s32, s32, s32, s32, s32);
     void **fn_80037BBC(void *, s32);
     void fn_801439F0(void *, void *, void *);
@@ -6930,7 +6931,7 @@ extern "C" void fn_80194988(void *arg0) {
     Panel *panel;
 
     self = arg0;
-    obj = fn_800C42D8(0x12C);
+    obj = Heap_Alloc(0x12C);
     if (obj != NULL) {
         obj = fn_80194DA0(obj, 0x108, 0x84, 0x138, 0xC4, 0x1F4);
     }
@@ -8516,7 +8517,7 @@ s32 fn_80199114(void *arg0) {
 }
 
 void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C9ABC(void *, char *, void *);
     void fn_800C9A60(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
@@ -8531,7 +8532,7 @@ void fn_8019914C(void *arg0, void *arg1, void *arg2, void *arg3) {
     s8 flag;
 
     flag = 0;
-    obj = fn_800C42D8(0xC8);
+    obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
         sp24 = *(struct Vec3 *)arg2;
         sp18 = *(struct Vec3 *)arg1;
@@ -13383,7 +13384,7 @@ extern u16 lbl_80296F90[];
 extern u16 __files[160]; // 320 bytes, 160 elements
 extern u8 lbl_80279DF0[29]; // 29 bytes
 
-void *fn_800C42D8(s32);
+void *Heap_Alloc(s32);
 void fn_80232058(void*, void*, void*);
 void fn_8022CF78(void);
 void fn_8001C690(void*, s32);

@@ -96,7 +96,7 @@ u8 fn_80110220(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_80110228(void *arg0) {
     s32 strlen(char *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     s32 fn_800C9400(void *, s32, void *, char *, s32);
     void fn_800C96F8(void *, char *, u32);
     void fn_800C9758(void *, void *, s32, s32);
@@ -295,7 +295,7 @@ extern "C" void fn_80110228(void *arg0) {
             *(f32 *)&pos.x = got.x;
             *(f32 *)&pos.z = got.z;
             *(f32 *)&pos.y = lbl_8036A184;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
@@ -351,7 +351,7 @@ after_2b:
             *(f32 *)&pos.x = got.x;
             *(f32 *)&pos.z = got.z;
             *(f32 *)&pos.y = lbl_8036A184;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
@@ -411,7 +411,7 @@ after_2c:
             *(f32 *)&pos.x = got.x;
             *(f32 *)&pos.z = got.z;
             *(f32 *)&pos.y = lbl_8036A184;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
@@ -467,7 +467,7 @@ after_2e:
             *(f32 *)&pos.x = got.x;
             *(f32 *)&pos.z = got.z;
             *(f32 *)&pos.y = lbl_8036A184;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&tmpVec, self);
                 copyA = tmpVec;
@@ -673,7 +673,7 @@ after_3c:
                 sp378 = sp318;
             }
             flag = 0;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&w300, self);
                 copyA = w300;
@@ -702,7 +702,7 @@ after_3c:
                 sp378 = sp2D0;
             }
             flag = 0;
-            obj = fn_800C42D8(0xC8);
+            obj = Heap_Alloc(0xC8);
             if (obj != NULL) {
                 fn_800DBB74(&w2B8, self);
                 copyA = w2B8;
@@ -725,7 +725,7 @@ after_3c:
 #pragma cplusplus on
 extern "C" void fn_80111740(void *arg0) {
     s32 strlen(char *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800DBB74(void *, void *);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
     void fn_80151894(void *);
@@ -845,7 +845,7 @@ extern "C" void fn_80111740(void *arg0) {
         *(f32 *)&pos.x = got.x;
         *(f32 *)&pos.z = got.z;
         *(f32 *)&pos.y = lbl_8036A184;
-        obj = fn_800C42D8(0xC8);
+        obj = Heap_Alloc(0xC8);
         if (obj != NULL) {
             fn_800DBB74(&tmpVec, self);
             copyA = tmpVec;
@@ -874,7 +874,7 @@ fail:
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void Actor_LoadXml(void *arg0, void *arg1) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void Xml_GetChildName(String *, void *);
     void Xml_GetChildValue(char *, void *);
     void fn_800C8DCC(void *, void *, String *);
@@ -966,7 +966,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     str124.data = 0;
     str124.cap = 0;
 
-    xml = fn_800C42D8(0x60);
+    xml = Heap_Alloc(0x60);
     if (xml != 0) {
         fn_800C9ABC(&sp118, (char *)lbl_80273DF8 + 0x38E, &sc48);
         made = 1;
@@ -1938,7 +1938,7 @@ after_dist:
 
 #pragma cplusplus on
 extern "C" void fn_80114840(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800C9ABC(void *, char *, void *);
     void fn_800DBB74(void *, void *);
     void fn_800C9A60(void *, s32);
@@ -2011,7 +2011,7 @@ extern "C" void fn_80114840(void *arg0) {
     *(f32 *)&pos.z = got.z;
     *(f32 *)&pos.y = lbl_8036A1C8 + *(f32 *)((u8 *)self + 0x4C);
     *(s32 *)((u8 *)self + 0x140) = 0;
-    obj = fn_800C42D8(0xC8);
+    obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
         fn_800DBB74(&tmpVec, self);
         copyA = tmpVec;
@@ -2031,7 +2031,7 @@ extern "C" void fn_80114840(void *arg0) {
     }
     flagA = 0;
     flagB = 0;
-    obj = fn_800C42D8(0xC8);
+    obj = Heap_Alloc(0xC8);
     if (obj != NULL) {
         fn_800DBB74(&tmpVec2, self);
         copyA2 = tmpVec2;
@@ -3830,8 +3830,8 @@ void fn_8011A2FC(s32 arg0) {
     
     // Check if return value is zero
     if (temp_r3 == 0) {
-        // Call fn_800C42D8 with parameter 0x3C
-        temp_r31 = fn_800C42D8(0x3C);
+        // Call Heap_Alloc with parameter 0x3C
+        temp_r31 = Heap_Alloc(0x3C);
         
         // Check if the return value is not null
         if (temp_r31 != 0) {

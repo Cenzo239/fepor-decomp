@@ -2577,7 +2577,7 @@ void fn_801E9978(void *arg0) {
     void fn_800578A8(void *, s32, s32, s32);
     void *fn_80057998(void *);
     void fn_80059208(void (*)(void), void *);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_8013FCE0(void *, void *, void **, void **);
     void fn_801E4CF8(void *);
     void fn_801E50E4(void);
@@ -2630,7 +2630,7 @@ void fn_801E9978(void *arg0) {
     p68 = &lbl_80368368;
     *(s16 *)((u8 *)arg0 + 0x3C) = p68[0];
     *(s16 *)((u8 *)arg0 + 0x3E) = p68[1];
-    temp_r3_2 = fn_800C42D8(0x30);
+    temp_r3_2 = Heap_Alloc(0x30);
     if (temp_r3_2 == 0) {
         goto skip_obj;
     }
@@ -2640,7 +2640,7 @@ skip_obj:
     *(void **)((u8 *)arg0 + 0x5C) = temp_r3_2;
     fn_800578A8(*(void **)((u8 *)arg0 + 0x5C), 0x22A, 0x6A, 0x110);
     fn_800576D4(*(void **)((u8 *)arg0 + 0x5C), 1);
-    var_r0 = fn_800C42D8(0x18);
+    var_r0 = Heap_Alloc(0x18);
     if (var_r0 == 0) {
         goto skip_sub;
     }

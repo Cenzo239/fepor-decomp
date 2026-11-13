@@ -546,7 +546,7 @@ void fn_801EBBB8(void *arg0) {
     void fn_8002F728(void *, void *);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
     void *fn_8000CAF0(void *, void *);
-    void *fn_800C42D8(s32, void *);
+    void *Heap_Alloc(s32, void *);
     void fn_800C96F8(void *, void *, s32);
     void fn_801400F4(void *, void *, s32);
     void *fn_8013FF94(void *, s32, s32);
@@ -575,7 +575,7 @@ void fn_801EBBB8(void *arg0) {
     M2C_FIELD(arg0, void **, 0x50) = fn_8000CAF0(lbl_8029A128, arg0);
     temp_r4 = M2C_FIELD(arg0, void **, 0x50);
     M2C_FIELD(temp_r4, u8 *, 0x2c) |= 4;
-    temp_r3 = (Unk5C *)fn_800C42D8(0x5c, temp_r4);
+    temp_r3 = (Unk5C *)Heap_Alloc(0x5c, temp_r4);
     if (temp_r3 != NULL) {
         temp_r3->unk0 = lbl_8028FDB0;
         temp_r3->unk4 = NULL;
@@ -1917,7 +1917,7 @@ void fn_801EDB70(void *arg0) {
 }
 
 void fn_801EDDF0(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_801A7FA4(void *);
     void fn_801A9CF4(void *, void *);
     void fn_80034864(void *, void *);
@@ -1929,7 +1929,7 @@ void fn_801EDDF0(void *arg0) {
     u8 *base_2e0;
 
     if (*(u32 *)(lbl_80330EAC + 0x188) != 0) {
-        temp = fn_800C42D8(0x2E0);
+        temp = Heap_Alloc(0x2E0);
         if (temp != NULL) {
             temp = fn_801A7FA4(temp);
         }
@@ -1939,7 +1939,7 @@ void fn_801EDDF0(void *arg0) {
     base = lbl_80330EAC;
     base_2e0 = base + 0x2E0;
     if (base_2e0 != NULL && *(u32 *)(base + 0x468) != 0) {
-        temp = fn_800C42D8(0x2E0);
+        temp = Heap_Alloc(0x2E0);
         if (temp != NULL) {
             temp = fn_801A7FA4(temp);
         }
@@ -2052,7 +2052,7 @@ void fn_801EE098(void) {
 
 #pragma use_lmw_stmw on
 void fn_801EE76C(void *arg0) {
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void fn_800D6878(void *, void *, void *);
     void fn_8022C260(void *, void *, void *, s32, s32);
     void *fn_80068548(void);
@@ -2126,7 +2126,7 @@ void fn_801EE76C(void *arg0) {
     void *self;
 
     self = arg0;
-    obj = fn_800C42D8(0xD8);
+    obj = Heap_Alloc(0xD8);
     r29 = obj;
     path = (char *)obj;
     if (obj != NULL) {
@@ -2210,7 +2210,7 @@ use30708:
 
     flag27 = 0;
     flag26 = 0;
-    r29 = fn_800C42D8(0x60);
+    r29 = Heap_Alloc(0x60);
     if (r29 != NULL) {
         fn_800C9ABC(&sp30, lbl_8027F26C + 0x1DB, &sp14);
         flag27 = 1;
@@ -2772,7 +2772,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_800D58C0(void);
     void fn_800C9ABC(String *, char *, void *);
     void fn_800C992C(String *, char *, s32);
-    void *fn_800C42D8(s32);
+    void *Heap_Alloc(s32);
     void *fn_800C91EC(void *, String *, String *);
     void fn_800C9A60(String *, s32);
     void fn_8023440C(void *, char *, s32);
@@ -2854,7 +2854,7 @@ void fn_801EFDC8(void *arg0) {
     strBase = lbl_8027F26C;
     fn_800C992C(&path, strBase + 0x234, strlen(strBase + 0x234));
     flag0 = 0;
-    file = fn_800C42D8(0x60);
+    file = Heap_Alloc(0x60);
     if (file != NULL) {
         fn_800C9ABC(&spF8, lbl_8027F26C + 0x1DB, &sp28);
         flag0 = 1;
@@ -2956,7 +2956,7 @@ void fn_801EFDC8(void *arg0) {
         flag0 = 0;
         flag1 = 0;
         flag2 = 0;
-        file2 = fn_800C42D8(0x60);
+        file2 = Heap_Alloc(0x60);
         if (file2 != NULL) {
             fn_800C9ABC(&spA4, lbl_8027F26C + 0x1DB, &sp1C);
             flag0 = 1;
@@ -2993,7 +2993,7 @@ void fn_801EFDC8(void *arg0) {
         flag0 = 0;
         flag1 = 0;
         flag2 = 0;
-        file2 = fn_800C42D8(0x60);
+        file2 = Heap_Alloc(0x60);
         if (file2 != NULL) {
             fn_800C9ABC(&sp74, lbl_8027F26C + 0x1DB, &sp18);
             flag0 = 1;
