@@ -1640,7 +1640,8 @@ s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
     return (s32)(var_f0 * lbl_80368D60);
 }
 
-void *Item_Copy(void *arg0, void *arg1) {
+void *Item_Copy(void *dstItem, void *srcItem) {
+    /* Copy item fields and share/clone the icon slot referenced by the 6-bit index. */
     s32 Icon_GetSlot(void *, s32);
     s32 Icon_CopySlot(void *, s32, s32);
     s32 Icon_AllocSlot(void *);
@@ -1656,11 +1657,11 @@ void *Item_Copy(void *arg0, void *arg1) {
     s32 mask;
     s32 temp;
 
-    dst = (Bit6 *)((u8 *)arg0 + 5);
-    src = (Bit6 *)((u8 *)arg1 + 5);
-    if (arg0 != arg1) {
-        *(s32 *)arg0 = *(s32 *)arg1;
-        *((u8 *)arg0 + 4) = *((u8 *)arg1 + 4);
+    dst = (Bit6 *)((u8 *)dstItem + 5);
+    src = (Bit6 *)((u8 *)srcItem + 5);
+    if (dstItem != srcItem) {
+        *(s32 *)dstItem = *(s32 *)srcItem;
+        *((u8 *)dstItem + 4) = *((u8 *)srcItem + 4);
         dst->pad = src->pad;
         dst->flag = src->flag;
         mask = src->rest;
@@ -1675,7 +1676,7 @@ void *Item_Copy(void *arg0, void *arg1) {
             dst->rest = 0;
         }
     }
-    return arg0;
+    return dstItem;
 }
 
 void *Item_Destroy(void *arg0, s16 arg1) {
