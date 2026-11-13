@@ -1355,7 +1355,7 @@ void fn_80007B04(void)
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -1403,7 +1403,7 @@ void fn_80007B04(void)
     GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
     GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
     GXSetCullMode(1);
-    fn_80222370(4, 0, 0, 1, 0, 0, 2);
+    GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
     GXSetNumTevStages(1);
 
     mgr = lbl_80367140;
@@ -1542,7 +1542,7 @@ void fn_80007B04(void)
                 GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
                 GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
                 GXSetCullMode(1);
-                fn_80222370(4, 0, 0, 1, 0, 0, 2);
+                GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
                 GXSetNumTevStages(1);
             }
         }

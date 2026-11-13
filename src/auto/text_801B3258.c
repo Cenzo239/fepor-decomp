@@ -7311,7 +7311,7 @@ void fn_801C65E0(void *arg0) {
     void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetNumTexGens(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -7360,7 +7360,7 @@ void fn_801C65E0(void *arg0) {
         GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
         fn_8022100C(2);
         GXSetCullMode(1);
-        fn_80222370(4, 0, 1, 1, 0, 0, 2);
+        GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
         GXSetNumChans(1);
         GXSetNumTevStages(1);
         GXSetTevOrder(0, 0, 0, 4);

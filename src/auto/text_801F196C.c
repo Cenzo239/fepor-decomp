@@ -4602,7 +4602,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -4660,7 +4660,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     GXSetVtxAttrFmt(0, 9, 1, 3, 0);
     GXSetVtxAttrFmt(0, 0xD, 1, 0, 0);
     GXSetCullMode(1);
-    fn_80222370(4, 0, 0, 0, 0, 0, 2);
+    GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
     color = *var_r21;
     GXSetChanMatColor(4, &color);
     GXSetNumTevStages(1);

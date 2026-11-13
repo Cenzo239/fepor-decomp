@@ -402,7 +402,7 @@ void __GXInitGX(void) {
     void GXSetScissor(s32, s32, u16, u16);
     void fn_80225118(s32, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222164(s32, void *);
     void GXSetChanMatColor(s32, void *);
     void fn_80222EB4(void);
@@ -572,12 +572,12 @@ void __GXInitGX(void) {
     fn_80225118(0, 0);
     GXSetCullMode(0);
 
-    fn_80222370(4, 0, 0, 1, 0, 0, 2);
+    GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
     sp18 = sp24;
     fn_80222164(4, &sp18);
     sp14 = sp20;
     GXSetChanMatColor(4, &sp14);
-    fn_80222370(5, 0, 0, 1, 0, 0, 2);
+    GXSetBlendMode(5, 0, 0, 1, 0, 0, 2);
     sp10 = sp24;
     fn_80222164(5, &sp10);
     spC = sp20;

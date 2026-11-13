@@ -265,7 +265,7 @@ void fn_8014E864(void *arg0) {
     void fn_8006C748(void *, s32);
     void fn_8006C6F8(void *, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void PSMTXRotRad(void *, s32, f32);
@@ -333,8 +333,8 @@ void fn_8014E864(void *arg0) {
                 vtx = *(void **)(*(u8 **)((u8 *)obj54 + 0x38) + off);
                 base = (u8 *)*(void **)((u8 *)unk31 + 0x34) + (*(s16 *)(entry + 0xA) << 5);
                 GXSetCullMode(1);
-                fn_80222370(0, 0, 0, 1, 0, 0, 2);
-                fn_80222370(2, 0, 1, 1, 0, 0, 2);
+                GXSetBlendMode(0, 0, 0, 1, 0, 0, 2);
+                GXSetBlendMode(2, 0, 1, 1, 0, 0, 2);
                 fn_802245D8(1, 4, 5, 0);
                 if (*(u16 *)(entry + 6) & 0x1000) {
                     fn_802245D8(1, 4, 1, 0);
@@ -346,7 +346,7 @@ void fn_8014E864(void *arg0) {
                     fn_80224684(0, 3, 0);
                 }
                 if (*(u16 *)(entry + 6) & 0x8000) {
-                    fn_80222370(0, 1, 0, 1, 1, 0, 2);
+                    GXSetBlendMode(0, 1, 0, 1, 1, 0, 2);
                 }
 
                 switch (*(u32 *)((u8 *)arg0 + 0xC)) {

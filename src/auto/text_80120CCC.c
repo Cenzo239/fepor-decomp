@@ -1631,7 +1631,7 @@ void fn_80123D1C(void *arg0) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
@@ -1703,7 +1703,7 @@ void fn_80123D1C(void *arg0) {
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222C50(sp18, 0);
     GXSetCullMode(1);
-    fn_80222370(4, 0, 1, 1, 0, 0, 2);
+    GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumTexGens(0, 0);
@@ -1765,7 +1765,7 @@ void fn_80123D1C(void *arg0) {
     ((u8 *)&sp8)[3] = a2;
     spC = sp8;
     fn_80222164(4, &spC);
-    fn_80222370(4, 0, 0, 0, 0, 0, 2);
+    GXSetBlendMode(4, 0, 0, 0, 0, 0, 2);
     GXSetNumChans(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0xFF, 4);
@@ -2356,7 +2356,7 @@ void fn_80125388(void *arg0) {
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetCullMode(s32);
-    void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
@@ -2396,7 +2396,7 @@ void fn_80125388(void *arg0) {
     GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     GXSetCullMode(1);
-    fn_80222370(4, 0, 1, 1, 0, 0, 2);
+    GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumTexGens(0, 0);
