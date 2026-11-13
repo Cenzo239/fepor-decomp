@@ -10992,7 +10992,7 @@ void fn_8019DB68(void) {
     void fn_801A14D8(void);
     void fn_801A0400(void);
     void fn_801A0374(void);
-    void fn_8019F7CC(void);
+    void Map_HideObjAt(void);
     void fn_8019F688(void);
     void fn_8019F4A8(void);
     void fn_8019F2D0(void);
@@ -11079,7 +11079,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x2D6, fn_801A14D8, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x2E6, fn_801A0400, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x2EE, fn_801A0374, 0);
-    Script_RegisterCommand(lbl_8027AD98 + 0x2F8, fn_8019F7CC, 2);
+    Script_RegisterCommand(lbl_8027AD98 + 0x2F8, Map_HideObjAt, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x308, fn_8019F688, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x319, fn_8019F4A8, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x322, fn_8019F2D0, 2);
@@ -11702,7 +11702,7 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
     return 1;
 }
 #pragma use_lmw_stmw on
-s32 fn_8019F7CC(s32 arg0, s32 arg1) {
+s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
