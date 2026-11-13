@@ -2241,7 +2241,7 @@ void MuFade_InitScaleOut(void *arg0)
 void MuFade_UpdateScale(void *arg0) {
     void Process_ClearFunc(void *);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    extern f32 lbl_8036AD28;
+    extern f32 fMuFadeScaleFrames;
     extern f32 lbl_8036ACEC;
     f32 f31;
     f32 f1;
@@ -2256,8 +2256,8 @@ void MuFade_UpdateScale(void *arg0) {
         *(s32 *)((u8 *)arg0 + 0x34) = 0xA;
         Process_ClearFunc(arg0);
     }
-    f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x54), *(f32 *)((u8 *)arg0 + 0x4C), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
-    f1 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x58), *(f32 *)((u8 *)arg0 + 0x50), lbl_8036AD28, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+    f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x54), *(f32 *)((u8 *)arg0 + 0x4C), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+    f1 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x58), *(f32 *)((u8 *)arg0 + 0x50), fMuFadeScaleFrames, (f32)*(s32 *)((u8 *)arg0 + 0x34));
     p = *(void **)((u8 *)arg0 + 0x30);
     z = lbl_8036ACEC;
     *(f32 *)((u8 *)p + 0x10) = f31;
