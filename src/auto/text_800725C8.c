@@ -235,7 +235,7 @@ void fn_80072B04(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x34) = Msg_Expand(lbl_8026BE40 + 0x127);
 }
 
-void fn_80072B6C(void *arg0)
+void Card_ShowResultMsg(void *arg0)
 {
     void fn_801E2594(void *);
     s32 Card_GetResult(void);
