@@ -48,6 +48,12 @@ typedef struct Unk800C2ACC {
 #define SAVE_VER_20041216 0x20041216
 #define SAVE_VER_20050201 0x20050201
 
+/* Chapter/suspend save slot header (at slot+0x40) */
+#define SAVE_SLOT_MAGIC        0x4645384AU /* "FE8J" */
+#define SAVE_CHECKSUM_UNINIT   0x12345678U /* checksum not yet written */
+#define SAVE_SLOT_PAYLOAD_OFF  0x70
+#define SAVE_SLOT_BLOCK_SIZE   0x2000
+
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
