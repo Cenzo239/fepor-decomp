@@ -6116,7 +6116,7 @@ s32 fn_800BB9E8(u8 arg0) {
 }
 
 s32 fn_800BBB58(s32 arg0, s32 arg1) {
-    u32 fn_80016BDC(s32);
+    u32 Unit_FindByName(s32);
     s8 fn_80036DE0(u32, u32);
     void fn_80036FC4(u32, s8);
     u8 fn_80036F5C(u32, s8);
@@ -6125,8 +6125,8 @@ s32 fn_800BBB58(s32 arg0, s32 arg1) {
     u32 temp_r29;
     s8 temp_r3;
 
-    temp_r30 = fn_80016BDC(arg0);
-    temp_r29 = fn_80016BDC(arg1);
+    temp_r30 = Unit_FindByName(arg0);
+    temp_r29 = Unit_FindByName(arg1);
     if (temp_r30 == 0 || temp_r29 == 0) {
         return -1;
     }
@@ -7274,10 +7274,10 @@ u8 fn_800BD4C0(s32 arg0, s32 arg1) {
 }
 
 u8 fn_800BD5AC(void) {
-    void *fn_80016BDC();
+    void *Unit_FindByName();
     void *temp_r3;
 
-    temp_r3 = fn_80016BDC();
+    temp_r3 = Unit_FindByName();
     if (temp_r3 == NULL) {
         return 0U;
     }

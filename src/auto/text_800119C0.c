@@ -2349,7 +2349,7 @@ void *fn_80016B7C(u32 arg0) {
     return NULL;
 }
 
-void *fn_80016BDC(void) {
+void *Unit_FindByName(void) {
     u32 Res_GetByName(void);
     extern u8 gUnits[];
     u8 *p;

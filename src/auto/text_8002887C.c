@@ -2300,7 +2300,7 @@ void fn_8002DF54(void) {
 void Battle_AdvancePhase(void) {
     void fn_80006220(s32);
     void Allegiance_FillMask(s32, void *);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void fn_80016C58(void);
     void fn_800381EC(void *, s8);
     s32 fn_8003B2D0(void *);
@@ -2379,7 +2379,7 @@ void Battle_AdvancePhase(void) {
             }
             unit = next;
         }
-        unit = fn_80016BDC(lbl_80269210 + 0x29C);
+        unit = Unit_FindByName(lbl_80269210 + 0x29C);
         if (unit != NULL) {
             fn_8003D68C(unit, 0);
         }

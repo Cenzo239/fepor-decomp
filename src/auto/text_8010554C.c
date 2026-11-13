@@ -396,7 +396,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     u32 Res_GetByName(void *);
     void fn_80016180(void);
     void fn_800163F8(void);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void fn_8002297C(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_8004FE98(void *, s32);
@@ -531,7 +531,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
                                 unit = (u8 *)gUnits + (id - 1) * 0x280;
                             }
                         } else if (!(entry[0x10C] & 1) && *(u32 *)sp8 != 0) {
-                            unit = fn_80016BDC(*(void **)sp8);
+                            unit = Unit_FindByName(*(void **)sp8);
                             if (unit != 0) {
                                 *(u8 *)((u8 *)obj + 0x3C) = *(u8 *)((u8 *)unit + 0x198);
                             }
@@ -687,7 +687,7 @@ void fn_8010671C(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_80106728(u8 *arg0) {
     void Process_ClearFunc(void);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_8004F5EC(void *, s32);
     void *fn_80107468(void *);
@@ -799,7 +799,7 @@ case2:
                 unit = (u8 *)gUnits + (id - 1) * 0x280;
             }
         } else if (!(entry[0x10C] & 1) && *(u32 *)sp8 != 0) {
-            unit = fn_80016BDC(*(void **)sp8);
+            unit = Unit_FindByName(*(void **)sp8);
             if (unit != 0) {
                 *(u8 *)((u8 *)obj + 0x3C) = *(u8 *)((u8 *)unit + 0x198);
             }
@@ -1158,12 +1158,12 @@ void fn_801070FC(void) {
     return;
 }
 
-extern void *fn_80016BDC(char *);
+extern void *Unit_FindByName(char *);
 void *fn_80107468(void *arg0) {
     void *temp_r31;
     void *temp_r29;
     
-    temp_r31 = fn_80016BDC("unit");
+    temp_r31 = Unit_FindByName("unit");
     if (temp_r31 == NULL) {
         return NULL;
     }
@@ -1178,7 +1178,7 @@ void *fn_80107468(void *arg0) {
 
 s32 Dispos_ResolveUnit(u8 *arg0) {
     void fn_80107B54(u32 *, u32 *, u8);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_8003D5FC(void *, u8);
     void fn_8003D60C(void *, s32);
@@ -1202,7 +1202,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     }
     obj = *(void **)arg0;
     fn_80107B54((u32 *)arg0, (u32 *)sp8, arg0[0x10D]);
-    unit = fn_80016BDC(*(void **)sp8);
+    unit = Unit_FindByName(*(void **)sp8);
     if (unit == NULL) {
         if ((arg0[0x10C] & 2) || (sp8[8] & 8)) {
             kind = sp8[9];
@@ -1240,7 +1240,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         }
     }
 skip_type:
-    found = fn_80016BDC(lbl_802738F8 + 0x50);
+    found = Unit_FindByName(lbl_802738F8 + 0x50);
     if (found != NULL && unit == found) {
         fn_8003D68C(unit, 0);
         goto ok;

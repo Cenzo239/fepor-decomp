@@ -22739,11 +22739,11 @@ void fn_801007A0(void *arg0) {
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 s32 fn_80100CC8(void) {
-    void *fn_80016BDC();
+    void *Unit_FindByName();
     s32 temp_r3;
     void *temp_r3_2;
 
-    temp_r3_2 = fn_80016BDC();
+    temp_r3_2 = Unit_FindByName();
     if (temp_r3_2 == NULL) {
         return 0;
     }

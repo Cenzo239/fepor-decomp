@@ -101,13 +101,13 @@ void *fn_80017010(u8 *arg0) {
 }
 
 void *fn_80017240(u8 *arg0) {
-    void *fn_80016BDC(char *);
+    void *Unit_FindByName(char *);
     extern char lbl_80268128[];
 
     if (fn_8014C5A8(gBattleState, *arg0) == NULL) {
         return NULL;
     }
-    return fn_80016BDC(lbl_80268128 + 0x4C);
+    return Unit_FindByName(lbl_80268128 + 0x4C);
 }
 
 s32 fn_80017290(u8 *arg0) {

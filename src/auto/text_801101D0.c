@@ -2838,7 +2838,7 @@ void fn_80117CCC(void) {
     void fn_8014C798(void *);
     void fn_800163F8(void);
     void fn_80016180(void);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void fn_8004BE88(void *, s32);
     void fn_800187F0(void);
     extern s32 gBattleState[];
@@ -2848,7 +2848,7 @@ void fn_80117CCC(void) {
     fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();
-    temp_r3 = fn_80016BDC(lbl_80274508 + 0x130);
+    temp_r3 = Unit_FindByName(lbl_80274508 + 0x130);
     if (temp_r3 != 0) {
         fn_8004BE88(temp_r3, 0);
         fn_800187F0();
@@ -6033,7 +6033,7 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     s32 Str_Cmp(s32, void *);
     void *fn_8003A114(void *);
     void *fn_8003A064(void *);
-    void *fn_80016BDC(void *);
+    void *Unit_FindByName(void *);
     void **fn_8007C3BC(void *);
     void *fn_8007BC3C(void *, s32, s32, u16, void *);
     u8 fn_80109B24(void *);
@@ -6074,25 +6074,25 @@ void fn_8011FB58(void *arg0, s32 arg1) {
         goto got_unit;
     }
     if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x9F) == 0) {
-        tmp = fn_80016BDC((u8 *)TalkUi_str + 0xA7);
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
         if (tmp != NULL) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
     } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
-        tmp = fn_80016BDC((u8 *)TalkUi_str + 0xA7);
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);
             goto got_unit;
         }
     } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
-        tmp = fn_80016BDC((u8 *)TalkUi_str + 0xC2);
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
     } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
-        tmp = fn_80016BDC((u8 *)TalkUi_str + 0xC2);
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);
             goto got_unit;

@@ -13221,7 +13221,7 @@ extern "C" void fn_801D2C30(void *arg0) {
     u8 fn_800BE800(s32);
     s32 fn_800BE728(s32);
     u8 Id_GetKind(void);
-    u32 fn_80016BDC(s32);
+    u32 Unit_FindByName(s32);
     void fn_800616A0(void *);
     void *GActor_Create(void);
     void fn_800506E0(u32, s32, void *);
@@ -13299,7 +13299,7 @@ extern "C" void fn_801D2C30(void *arg0) {
             } else {
                 switch (kind) {
                 case 1:
-                    unit = fn_80016BDC(item);
+                    unit = Unit_FindByName(item);
                     break;
                 }
             }
