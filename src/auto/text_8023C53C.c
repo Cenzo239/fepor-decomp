@@ -5843,21 +5843,21 @@ s32 fn_80250744(u16 id, void *arg1) {
     extern struct Group gAudioGroups[];
     extern u16 gAudioGroupCount;
     extern struct Entry *gAudioGroupFound;
-    extern struct Header *lbl_803689EC;
+    extern struct Header *gAudioGroupHeader;
     struct Info *info = arg1;
     s32 i;
 
     gAudioGroupLookupKey.id = id;
     for (i = 0; i < gAudioGroupCount; i++) {
         if ((gAudioGroupFound = fn_802612A0(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && gAudioGroupFound->ref != 0) {
-            lbl_803689EC = &gAudioGroupFound->header;
-            info->unk0 = lbl_803689EC->unk0;
+            gAudioGroupHeader = &gAudioGroupFound->header;
+            info->unk0 = gAudioGroupHeader->unk0;
             info->unk4 = gAudioGroupFound->unk8;
             info->unkC = 0;
-            info->unk14 = lbl_803689EC->unk8;
-            info->unk10 = lbl_803689EC->unk4 & 0xFFFFFF;
-            info->unk18 = lbl_803689EC->unkC;
-            info->unk1C = lbl_803689EC->unk4 >> 24;
+            info->unk14 = gAudioGroupHeader->unk8;
+            info->unk10 = gAudioGroupHeader->unk4 & 0xFFFFFF;
+            info->unk18 = gAudioGroupHeader->unkC;
+            info->unk1C = gAudioGroupHeader->unk4 >> 24;
             if (gAudioGroupFound->unk1C != 0) {
                 info->unk8 = gAudioGroupFound->unk1C + (u32)gAudioGroups[i].entries;
             } else {
