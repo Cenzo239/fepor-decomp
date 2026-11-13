@@ -644,7 +644,7 @@ void FallingParticle_Update(void *arg0) {
     void Prim2D_BindTexture(s32, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     extern s32 gFallingParticleTex;
     extern f32 gFloatZero;
     extern f32 gFloatOne;
@@ -738,7 +738,7 @@ void FallingParticle_Update(void *arg0) {
         }
     }
     if (count == 0) {
-        fn_8000C60C(self);
+        Process_Unlink(self);
     }
 }
 

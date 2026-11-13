@@ -2278,14 +2278,14 @@ void *fn_800A3128(void) {
 }
 
 s32 fn_800A3138(s32 unused, s32 arg1) {
-    void fn_8000C60C(void);
+    void Process_Unlink(void);
     void *fn_800241C8(s32);
     void fn_800C28A0(s32);
     s32 temp_r31;
 
     temp_r31 = M2C_FIELD(fn_800241C8(arg1), s32 *, 0x18);
     fn_800241C8(arg1);
-    fn_8000C60C();
+    Process_Unlink();
     fn_800C28A0(temp_r31);
     return 5;
 }

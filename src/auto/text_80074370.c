@@ -2794,14 +2794,14 @@ void fn_800790D4(s32 arg0, s32 arg1) {
 
 void fn_80079138(void *arg0) {
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *temp_r3;
 
     temp_r3 = M2C_FIELD(arg0, void **, 0x30);
     if (temp_r3 != NULL) {
         s32 index = *(u8 *)((u8 *)temp_r3 + 0x40);
         if (lbl_80312040[index] != NULL) {
-            fn_8000C60C(lbl_80312040[index]);
+            Process_Unlink(lbl_80312040[index]);
         }
         lbl_80312040[index] = NULL;
     }
@@ -2880,7 +2880,7 @@ void fn_8007947C(void *arg0) {
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_8000C188(void *);
     void fn_8007B4D8(s32, s32, s32, void *);
     void sprintf(void *, void *, ...);
@@ -2936,7 +2936,7 @@ void fn_8007947C(void *arg0) {
             index = *(u8 *)((u8 *)temp_r3 + 0x40);
             entry = lbl_80312040[index];
             if (entry != NULL) {
-                fn_8000C60C(entry);
+                Process_Unlink(entry);
             }
             lbl_80312040[index] = NULL;
         }
@@ -3625,12 +3625,12 @@ void fn_8007AD30(void *arg0, s32 arg1) {
 
 void fn_8007AD6C(void *arg0) {
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
 
     if (arg0 != NULL) {
         s32 index = *(u8 *)((u8 *)arg0 + 0x40);
         if (lbl_80312040[index] != NULL) {
-            fn_8000C60C(lbl_80312040[index]);
+            Process_Unlink(lbl_80312040[index]);
         }
         lbl_80312040[index] = NULL;
     }
@@ -3638,7 +3638,7 @@ void fn_8007AD6C(void *arg0) {
 
 void fn_8007ADC8(s32 index) {
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void **base;
     void *p;
 
@@ -3647,7 +3647,7 @@ void fn_8007ADC8(s32 index) {
     if (p == NULL) {
         return;
     }
-    fn_8000C60C(p);
+    Process_Unlink(p);
     base[index] = NULL;
 }
 
@@ -3942,12 +3942,12 @@ void fn_8007B4D8(s32 arg0,s32 arg1,u32 a2,void *a3) {
 #pragma global_optimizer reset
 void fn_8007B990(void *arg0) {
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
 
     if (arg0 != NULL) {
         s32 index = *(u8 *)((u8 *)arg0 + 0x40);
         if (lbl_80312040[index] != NULL) {
-            fn_8000C60C(lbl_80312040[index]);
+            Process_Unlink(lbl_80312040[index]);
         }
         lbl_80312040[index] = NULL;
     }
@@ -3955,12 +3955,12 @@ void fn_8007B990(void *arg0) {
 
 void fn_8007B9EC(void *arg0) {
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *obj = *(void **)((u8 *)arg0 + 0x54);
     if (obj != NULL) {
         s32 index = *(u8 *)((u8 *)obj + 0x40);
         if (lbl_80312040[index] != NULL) {
-            fn_8000C60C(lbl_80312040[index]);
+            Process_Unlink(lbl_80312040[index]);
         }
         lbl_80312040[index] = NULL;
     }

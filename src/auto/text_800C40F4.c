@@ -17048,19 +17048,19 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
 }
 
 void fn_800F0774(void) {
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     extern void *lbl_803678E8;
     extern void *lbl_803678EC;
     void *ptr;
 
     ptr = lbl_803678E8;
     if (ptr != NULL) {
-        fn_8000C60C(ptr);
+        Process_Unlink(ptr);
         lbl_803678E8 = NULL;
     }
     ptr = lbl_803678EC;
     if (ptr != NULL) {
-        fn_8000C60C(ptr);
+        Process_Unlink(ptr);
         lbl_803678EC = NULL;
     }
 }

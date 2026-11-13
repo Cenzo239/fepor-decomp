@@ -2780,14 +2780,14 @@ void fn_80169644(void *arg0) {
 void fn_8016969C(void) {
     void *fn_8000C0C0(void *);
     void fn_800AA208(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     extern u8 lbl_80293D8C[];
     void *temp_r31;
 
     temp_r31 = fn_8000C0C0(lbl_80293D8C);
     if (temp_r31 != NULL) {
         fn_800AA208();
-        fn_8000C60C(temp_r31);
+        Process_Unlink(temp_r31);
     }
 }
 
@@ -4118,7 +4118,7 @@ void fn_8016BADC(void *arg0) {
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_800C4588(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_8006EDA0(void *);
     void fn_801DE074(void);
     void fn_801457B4(void);
@@ -4162,7 +4162,7 @@ void fn_8016BADC(void *arg0) {
             next = *(void **)((char *)node + 0x38);
             fn_800C4588(node);
         }
-        fn_8000C60C(obj->unk60);
+        Process_Unlink(obj->unk60);
         if (obj->unk38 != NULL) {
             fn_8006EDA0(&obj->unk38);
         }
@@ -5241,7 +5241,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *fn_8000E0E4(void *);
     void fn_80015320(s32, void *);
     s32 fn_800377D8(void *);
@@ -5379,7 +5379,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
                                 *(u32 *)((u8 *)gfx + 8) |= 4;
                             }
                         } else if (*(void **)((u8 *)node + 0x30) != NULL) {
-                            fn_8000C60C(*(void **)((u8 *)node + 0x30));
+                            Process_Unlink(*(void **)((u8 *)node + 0x30));
                             *(void **)((u8 *)node + 0x30) = NULL;
                         }
                     } else {
@@ -13750,7 +13750,7 @@ void fn_8017E0C0(void *arg0, s32 arg1, s32 arg2) {
 #pragma opt_strength_reduction reset
 void fn_8017E1B8(void *arg0, u32 arg1) {
     if (*(u32 *)((u8 *)arg0 + 0x30) == arg1) {
-        fn_8000C60C();
+        Process_Unlink();
     }
 }
 
@@ -13895,7 +13895,7 @@ void fn_8017E49C(void *arg0) {
 }
 
 void fn_8017E540(u8 *arg0) {
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_8006D8E8(void *);
     s32 i;
     u8 *p;
@@ -13906,7 +13906,7 @@ void fn_8017E540(u8 *arg0) {
     do {
         tmp = *(void **)(p + 0x38);
         if (tmp != NULL) {
-            fn_8000C60C(tmp);
+            Process_Unlink(tmp);
         }
         i += 1;
         p += 4;

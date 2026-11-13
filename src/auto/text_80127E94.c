@@ -1466,10 +1466,10 @@ void fn_8012B42C(s32 arg0) {
 }
 
 void fn_8012B458(void *arg0) {
-    M2C_UNK fn_8000C60C(s32);
+    M2C_UNK Process_Unlink(s32);
     extern s32 lbl_80367110;
     if (lbl_80367110 & 1) {
-        fn_8000C60C(M2C_FIELD(arg0, s32 *, 0x18));
+        Process_Unlink(M2C_FIELD(arg0, s32 *, 0x18));
     }
 }
 

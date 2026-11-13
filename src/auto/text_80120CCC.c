@@ -99,7 +99,7 @@ void fn_80120F0C(void) {
     extern u8 lbl_80290200[];
 
     void *fn_8000C0C0(void *);
-    void fn_8000C60C(void);
+    void Process_Unlink(void);
     void fn_8000C188(void);
 
     u16 a;
@@ -115,7 +115,7 @@ void fn_80120F0C(void) {
     if (!(a & 0x40)) {
         if (fn_8000C0C0(lbl_80290200) != NULL) {
             if (lbl_80367110 & 3) {
-                fn_8000C60C();
+                Process_Unlink();
             } else {
                 fn_8000C188();
             }
@@ -129,7 +129,7 @@ void fn_80120F0C(void) {
 void fn_80120F94(void)
 {
     void *fn_8000C0C0(void *);
-    void fn_8000C60C(void);
+    void Process_Unlink(void);
     void fn_8000C188(void);
     extern u16 lbl_80367A58;
     extern u32 lbl_80367110;
@@ -140,7 +140,7 @@ void fn_80120F94(void)
         p = fn_8000C0C0(lbl_80290200);
         if (p != NULL) {
             if ((lbl_80367110 & 3) != 0) {
-                fn_8000C60C();
+                Process_Unlink();
             } else {
                 fn_8000C188();
             }
@@ -150,7 +150,7 @@ void fn_80120F94(void)
 
 void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *fn_8000C0C0(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *fn_8000CAF0(void *, s32);
     void *fn_8007C378(void *);
     void fn_80234450(void *, void *);
@@ -167,7 +167,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
                 *(s16 *)((u8 *)obj + 0x4A) == arg2) {
                 return;
             }
-            fn_8000C60C(obj);
+            Process_Unlink(obj);
         }
     }
     if (lbl_80367A58 & 0x40) {
@@ -1528,7 +1528,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
 
 void fn_8012391C(void *arg0) {
     void *fn_8000C0C0(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80123988(void *);
     extern u8 lbl_80290408[];
     extern u8 lbl_8036728A;
@@ -1539,7 +1539,7 @@ void fn_8012391C(void *arg0) {
     if (temp_r3 == NULL || *(s32 *)((u8 *)temp_r3 + 0x34) != lbl_8036728A) {
         ptr = *(void **)((u8 *)arg0 + 0x30);
         if (ptr != NULL) {
-            fn_8000C60C(ptr);
+            Process_Unlink(ptr);
         }
         *(void **)((u8 *)arg0 + 0x30) = NULL;
         fn_80123988(arg0);
@@ -1562,12 +1562,12 @@ void fn_80123BE8(void) {
 }
 
 void fn_80123BEC(void *arg0) {
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *ptr;
 
     ptr = *(void **)((u8 *)arg0 + 0x30);
     if (ptr != NULL) {
-        fn_8000C60C(ptr);
+        Process_Unlink(ptr);
     }
     *(void **)((u8 *)arg0 + 0x30) = NULL;
 }

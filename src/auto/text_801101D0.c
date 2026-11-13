@@ -4047,10 +4047,10 @@ s32 fn_8011AC10(void) {
 
 void fn_8011AC44(void) {
     u32 fn_8000C0C0(void *);
-    void fn_8000C60C(void);
+    void Process_Unlink(void);
     extern u8 lbl_8028F814[];
     if (fn_8000C0C0(lbl_8028F814) != 0U) {
-        fn_8000C60C();
+        Process_Unlink();
     }
 }
 
@@ -5408,7 +5408,7 @@ void fn_8011D650(void) {
     void fn_8000C070(void *, s32);
     void fn_80120CFC(u16 *);
     void fn_8011DED8(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80013864(void);
     void *obj;
     u32 flags;
@@ -5425,7 +5425,7 @@ void fn_8011D650(void) {
     if (lbl_80367110 & 3) {
         fn_8011DED8(obj);
         if (!(lbl_80367A58 & 0x10)) {
-            fn_8000C60C(obj);
+            Process_Unlink(obj);
         }
     } else {
         fn_80013864();
@@ -5442,7 +5442,7 @@ void fn_8011D6F4(s32 arg0) {
     void fn_8000C070(void *, s32);
     void fn_80120CFC(u16 *);
     void fn_8011DED8(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80013864(void);
     void *obj;
     u32 flags;
@@ -5459,7 +5459,7 @@ void fn_8011D6F4(s32 arg0) {
     if (lbl_80367110 & 3) {
         fn_8011DED8(obj);
         if (!(lbl_80367A58 & 0x10)) {
-            fn_8000C60C(obj);
+            Process_Unlink(obj);
         }
     } else {
         fn_80013864();
@@ -5519,7 +5519,7 @@ void fn_8011DA48(void *arg0, void *arg1) {
     void fn_8012205C(void *);
     void fn_80120CFC(void *);
     void fn_8011DED8(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80013864(void);
     extern u16 lbl_80367A58;
     extern u16 lbl_8028FE50[];
@@ -5555,7 +5555,7 @@ void fn_8011DA48(void *arg0, void *arg1) {
     if (lbl_80367110 & 1) {
         fn_8011DED8(e);
         if (!(lbl_80367A58 & 0x10)) {
-            fn_8000C60C(e);
+            Process_Unlink(e);
         }
     } else {
         fn_80013864();
@@ -5697,7 +5697,7 @@ void fn_8011DDCC(void* arg0) {
     
     // Check and process unk58 - at offset 0x58 
     if (*(s32*)((char*)arg0 + 0x58) != 0) {
-        fn_8000C60C();
+        Process_Unlink();
         *(s32*)((char*)arg0 + 0x58) = 0;
     }
     
@@ -5717,7 +5717,7 @@ void fn_8011DDCC(void* arg0) {
 
 void fn_8011DED8(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_800790D4(void *, void *);
     void fn_8007AD6C(void *);
     void fn_80089650(s32, s32);
@@ -5780,7 +5780,7 @@ void fn_8011DED8(void *arg0) {
             lbl_80367A5C = 0;
         }
         if (*(void **)((u8 *)self + 0x58) != NULL) {
-            fn_8000C60C(*(void **)((u8 *)self + 0x58));
+            Process_Unlink(*(void **)((u8 *)self + 0x58));
             *(s32 *)((u8 *)self + 0x58) = 0;
         }
         fn_80120F0C();

@@ -90,7 +90,7 @@ void fn_800289D0(void *arg0) {
                     s32 temp_r31 = *(s32*)ptr;
                     fn_8002807C(ptr);
                     fn_800AA4F8(temp_r31);
-                    fn_8000C60C(0x1C); // arg0, not 0
+                    Process_Unlink(0x1C); // arg0, not 0
                     return;
                 }
                 break;
@@ -120,12 +120,12 @@ void fn_800289D0(void *arg0) {
 
 void fn_80028B4C(s32 arg0) {
     void fn_8018DC18(void);
-    void fn_8000C60C(s32);
+    void Process_Unlink(s32);
     extern u8 gUiContext[];
 
     if (gUiContext[8] == 0x35) {
         fn_8018DC18();
-        fn_8000C60C(arg0);
+        Process_Unlink(arg0);
     }
 }
 
@@ -170,7 +170,7 @@ void fn_80028B94(void *arg0) {
 }
 
 void fn_80028C90(s32 arg0) {
-    void fn_8000C60C(s32);
+    void Process_Unlink(s32);
     u32 fn_800AA5F0(s32);
     void fn_8018DC18(void);
     extern u8 gUiContext[];
@@ -184,7 +184,7 @@ void fn_80028C90(s32 arg0) {
     if (bit != 1) {
         if (fn_800AA5F0(0) == 0) {
             fn_8018DC18();
-            fn_8000C60C(arg0);
+            Process_Unlink(arg0);
         }
     }
 }

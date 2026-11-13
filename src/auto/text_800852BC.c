@@ -1525,7 +1525,7 @@ void fn_80088FFC(void *arg0) {
     void fn_80224684(s32, s32, s32);
     void fn_80220DEC(s32, s32, s32);
     void fn_8022097C(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     extern f32 lbl_80369690;
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
@@ -1601,7 +1601,7 @@ void fn_80088FFC(void *arg0) {
     *(volatile s16 *)0xCC008000 = 1;
     if (*(u8 *)((u8 *)arg0 + 0x30) == 0x7B) {
         fn_8022097C();
-        fn_8000C60C(arg0);
+        Process_Unlink(arg0);
     }
 }
 

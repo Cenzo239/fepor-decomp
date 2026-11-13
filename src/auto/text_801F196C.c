@@ -1943,7 +1943,7 @@ void fn_801F661C(s32 arg0) {
 void fn_801F6670(void *arg0)
 {
     void fn_80161F7C(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_8006EDA0(void *);
     void fn_800C4588(void *);
     struct {
@@ -1953,7 +1953,7 @@ void fn_801F6670(void *arg0)
 
     fn_80161F7C();
     if (*(void **)((u8 *)arg0 + 0x34) != NULL) {
-        fn_8000C60C(*(void **)((u8 *)arg0 + 0x34));
+        Process_Unlink(*(void **)((u8 *)arg0 + 0x34));
     }
     if (work->unk10 != NULL) {
         fn_8006EDA0(&work->unk10);
@@ -3602,7 +3602,7 @@ void fn_801F9BD8(void *arg0) {
 
 void fn_801F9C8C(void *arg0) {
     void fn_8000C070(void *, s32);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     s32 v;
 
     v = *(u8 *)((u8 *)arg0 + 0x54) - 1;
@@ -3613,7 +3613,7 @@ void fn_801F9C8C(void *arg0) {
         arg0 = (u8 *)arg0 + ((v & 1) << 3);
         arg0 = *(void **)((u8 *)arg0 + 0x58);
         if (arg0 != NULL) {
-            fn_8000C60C(arg0);
+            Process_Unlink(arg0);
         }
     }
 }

@@ -340,7 +340,7 @@ void fn_8012CA40(s32 arg0) {
 void fn_8012CC0C(void *arg0)
 {
     extern u8 lbl_80275AC0[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80109020(void *);
     void fn_8007D064(void *, void *, s32);
 
@@ -351,7 +351,7 @@ void fn_8012CC0C(void *arg0)
 
     object = *(u8 **)((u8 *)arg0 + 0x18);
 
-    fn_8000C60C(*(void **)(object + 0x34));
+    Process_Unlink(*(void **)(object + 0x34));
     fn_80109020(lbl_80275AC0 + 0xBA);
 
     *(u32 *)(object + 0x34) = 0;
@@ -436,7 +436,7 @@ void fn_8012CCA4(void *arg0)
 
     fn_80057A10(*(void **)(object + 0x44), 1);
     fn_80057A10(*(void **)(object + 0x48), 1);
-    fn_8000C60C(*(void **)(object + 0x34));
+    Process_Unlink(*(void **)(object + 0x34));
 
     fn_80109020(lbl_80275AC0 + 0xBA);
     fn_8003F670(*(void **)(object + 0x30));

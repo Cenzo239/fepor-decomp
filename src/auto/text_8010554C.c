@@ -2059,7 +2059,7 @@ void fn_80109020(u8 *arg0) {
     extern void *lbl_803679DC;
     void fn_8000BF00(void *);
     void fn_8000BF6C(void *, void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *fn_8011D484(void);
     void fn_8010913C(void);
     void *var_r3;
@@ -2077,7 +2077,7 @@ void fn_80109020(u8 *arg0) {
         var_r3 = lbl_803679DC;
     }
     if (var_r3 != NULL) {
-        fn_8000C60C(var_r3);
+        Process_Unlink(var_r3);
     }
 }
 

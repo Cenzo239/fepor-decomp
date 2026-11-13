@@ -16,7 +16,7 @@ extern f32 lbl_803696AC;
 s32 fn_8007C5E4(void) {
     extern void *lbl_80367488;
     extern void *lbl_80312040[];
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void *obj;
     s32 index;
 
@@ -25,7 +25,7 @@ s32 fn_8007C5E4(void) {
         if (obj != NULL) {
             index = *(u8 *)((u8 *)obj + 0x40);
             if (lbl_80312040[index] != NULL) {
-                fn_8000C60C(lbl_80312040[index]);
+                Process_Unlink(lbl_80312040[index]);
             }
             lbl_80312040[index] = NULL;
         }

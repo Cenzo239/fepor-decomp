@@ -176,7 +176,7 @@ void fn_8008D6D8(void *arg0) {
     M2C_UNK fn_8000E0E4(void *);
     M2C_UNK fn_8023440C(void *, s32, s32);
     s32 fn_80010B78(void *, s32, f32);
-    M2C_UNK fn_8000C60C(void *);
+    M2C_UNK Process_Unlink(void *);
     extern u8 lbl_80289AB8[];
     extern f32 lbl_80369754;
     extern u8 lbl_803674FC[4];
@@ -198,7 +198,7 @@ void fn_8008D6D8(void *arg0) {
         M2C_FIELD(temp_r31, s8 *, 0x3D)++;
     }
     if (M2C_FIELD(temp_r31, s8 *, 0x3D) == 4) {
-        fn_8000C60C(temp_r31);
+        Process_Unlink(temp_r31);
     } else {
         *(f32 *)(temp_r31 + 0x30) = lbl_80369758;
         *(f32 *)(temp_r31 + 0x34) = sp8.v[M2C_FIELD(temp_r31, s8 *, 0x3D)];

@@ -93,7 +93,7 @@ s32 fn_800AD2DC(s32 arg0) {
 #pragma optimization_level 2
 s32 fn_800AD310(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_80015320(s32, void *);
     s32 fn_80019E04(void *);
     void fn_8002AB9C(void *, s32);
@@ -175,7 +175,7 @@ s32 fn_800AD310(s32 arg0) {
         var_r29 += 1;
     } while (var_r29 <= 0x9F);
     if (*(s16 *)((u8 *)temp_r3 + 0x6C) == 0) {
-        fn_8000C60C(temp_r3);
+        Process_Unlink(temp_r3);
         return 0;
     }
     return 1;
@@ -8409,7 +8409,7 @@ void fn_800C0818(u8 flag) {
     extern u8 lbl_8026FC78[];
     extern s32 lbl_80367110;
     void *fn_8000C0C0(void *);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_800BDBC8(void *, void *);
     void fn_80089650(s32, s32);
     void fn_8008A290(s32, s32);
@@ -8424,7 +8424,7 @@ void fn_800C0818(u8 flag) {
             fn_80089650(0, 0);
             fn_8008A290(0, 0);
         }
-        fn_8000C60C(obj);
+        Process_Unlink(obj);
     }
 }
 

@@ -346,7 +346,7 @@ void fn_80073CA4(void) {
 }
 
 void fn_80073CE4(s32 arg0) {
-    void fn_8000C60C(s32);
+    void Process_Unlink(s32);
     void fn_8003C15C(void *);
     u8 fn_80105BC0(void *, s32);
     u8 fn_80091D74(void *);
@@ -359,7 +359,7 @@ void fn_80073CE4(s32 arg0) {
     switch ((s32)flags) {
     case 3:
         fn_8003C15C(*(void **)gUiContext);
-        fn_8000C60C(arg0);
+        Process_Unlink(arg0);
         break;
     case 0:
     case 1:

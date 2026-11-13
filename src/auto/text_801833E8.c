@@ -803,9 +803,9 @@ void fn_80185060(void *arg0, void *arg1) {
 
 #pragma inline
 void fn_80185078(void *arg0, void *arg1) {
-    M2C_UNK fn_8000C60C(void *);
+    M2C_UNK Process_Unlink(void *);
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) == (u32) M2C_FIELD(arg1, u32 *, 0x30)) {
-        fn_8000C60C(arg0);
+        Process_Unlink(arg0);
     }
 }
 void fn_801850A8(void *arg0) {
@@ -3032,7 +3032,7 @@ void fn_8018CC3C(void *arg0) {
 void fn_8018CCB8(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     u8 *fn_80067440(s32);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     void fn_8000C188(void *);
     s32 scale;
     s32 v;
@@ -3096,7 +3096,7 @@ void fn_8018CCB8(void *arg0) {
 
     if (*(s32 *)((u8 *)arg0 + 0x3C) >= *(s32 *)((u8 *)arg0 + 0x40)) {
         if (*(s32 *)((u8 *)arg0 + 0x30) == 0x64) {
-            fn_8000C60C(arg0);
+            Process_Unlink(arg0);
         } else {
             fn_8000C188(arg0);
         }
@@ -10661,13 +10661,13 @@ void fn_8019D1DC(void *arg0) {
 s32 fn_8019D268(void) {
     void *fn_8000C0C0(void *);
     u8 fn_800537E8(void);
-    void fn_8000C60C(void *);
+    void Process_Unlink(void *);
     extern u8 lbl_802968E8[];
     void *temp_r3;
 
     temp_r3 = fn_8000C0C0(lbl_802968E8);
     if (temp_r3 != NULL && fn_800537E8() == 0) {
-        fn_8000C60C(temp_r3);
+        Process_Unlink(temp_r3);
         return 0;
     }
     return 1;
@@ -12216,9 +12216,9 @@ s32 fn_801A0B20(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 }
 
 void fn_801A0C3C(void *arg0, u32 arg1) {
-    M2C_UNK fn_8000C60C();
+    M2C_UNK Process_Unlink();
     if ((u32) M2C_FIELD(arg0, u32 *, 0x54) == arg1) {
-        fn_8000C60C();
+        Process_Unlink();
     }
 }
 
@@ -13133,7 +13133,7 @@ void fn_801A25C4(void) {
     M2C_UNK fn_800C1BDC();
     extern s32 lbl_80367110;
     if (lbl_80367110 & 1) {
-        fn_8000C60C();
+        Process_Unlink();
         fn_800C1BDC();
         fn_80016180();
         fn_8005376C();
