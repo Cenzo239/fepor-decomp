@@ -9639,11 +9639,12 @@ s32 fn_800C39A4(s32 arg0, s32 arg1, s32 arg2)
     return ((u16*)0x80317338)[arg0];
 }
 
-s32 Convoy_FindEmpty(void *arg0) {
+/* Return index of first empty convoy item slot, or -1 if full. */
+s32 Convoy_FindEmpty(void *convoy) {
     s32 i;
 
     for (i = 0; i < 200; i++) {
-        if (*(void **)((char *)arg0 + i * 8) == NULL) {
+        if (*(void **)((char *)convoy + i * 8) == NULL) {
             return i;
         }
     }
