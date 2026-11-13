@@ -389,7 +389,7 @@ s32 fn_80103D7C(void) {
 
 #pragma global_optimizer off
 char *fn_80103DDC(void *arg0, void *arg1) {
-    void sprintf(void *, void *, ...);
+    void fn_80231D94(void *, void *, ...);
     extern char lbl_8032BB18[];
     extern u8 lbl_802734D0[];
     s32 a;
@@ -399,7 +399,7 @@ char *fn_80103DDC(void *arg0, void *arg1) {
     a = *(s32 *)((char *)arg0 + 4);
     c = *(s32 *)((char *)*(void **)((char *)arg1 + 0x18) + 0x3c);
     row = (u8 *)(c + a);
-    sprintf(lbl_8032BB18, lbl_802734D0 + 0x1bf, a, row[0x14]);
+    fn_80231D94(lbl_8032BB18, lbl_802734D0 + 0x1bf, a, row[0x14]);
     return lbl_8032BB18;
 }
 #pragma global_optimizer reset
@@ -418,7 +418,7 @@ s32 fn_80103E48(void) {
 
 #pragma global_optimizer off
 char *fn_80103E50(s32 arg0, void *arg1) {
-    void sprintf(void *, void *, ...);
+    void fn_80231D94(void *, void *, ...);
     extern char lbl_8032BAF8[];
     extern u8 lbl_802734D0[];
     extern f32 lbl_8036A0D8;
@@ -426,7 +426,7 @@ char *fn_80103E50(s32 arg0, void *arg1) {
 
     p = *(void **)((u8 *)arg1 + 0x18);
     p = *(void **)((u8 *)p + 0x3c);
-    sprintf(lbl_8032BAF8, lbl_802734D0 + 0x1dc, lbl_8036A0D8 * *(f32 *)((u8 *)p + 0xc));
+    fn_80231D94(lbl_8032BAF8, lbl_802734D0 + 0x1dc, lbl_8036A0D8 * *(f32 *)((u8 *)p + 0xc));
     return lbl_8032BAF8;
 }
 #pragma global_optimizer reset
@@ -1242,28 +1242,10 @@ void fn_801053CC(void *arg0) {
 
 #pragma use_lmw_stmw on
 s32 fn_801053E4(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
-    s32 count;
-    s32 mid_ptr;
-    s32 mid;
-    s32 lo;
-    u8 (*pred)(s32, u16);
-    u16 *key_ptr;
-
-    lo = arg0;
-    key_ptr = arg2;
-    pred = arg3;
-    count = (arg1 - lo) / 16;
-    while (count > 0) {
-        mid = count / 2;
-        mid_ptr = lo + mid * 16;
-        if (pred(mid_ptr, *key_ptr) != 0) {
-            lo = mid_ptr + 0x10;
-            count -= mid + 1;
-        } else {
-            count = mid;
-        }
-    }
-    return lo;
+ s32 count; s32 mid_ptr; s32 mid;
+ count = (arg1-arg0)/16;
+ while(count>0) { mid=count/2; mid_ptr=arg0+mid*16; if(arg3(mid_ptr,*arg2)!=0) {arg0=mid_ptr+16; count-=mid+1;} else {count=mid;} }
+ return arg0;
 }
 #pragma use_lmw_stmw on
 s32 fn_80105474(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, u16)) {
