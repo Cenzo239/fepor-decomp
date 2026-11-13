@@ -1467,7 +1467,7 @@ void Save_MigrateLegacy(void) {
     void *fn_801E2568(s32 *, s32);
     void *fn_801E2580(s32 *, s32);
     void Save_BumpVersionChecksum(void *);
-    u8 fn_801E4268(void *);
+    u8 Save_IsValid(void *);
     void *memcpy(void *, void *, u32);
     void *memset(void *, s32, u32);
     extern u8 lbl_80282008[];
@@ -1489,7 +1489,7 @@ void Save_MigrateLegacy(void) {
         i = 0;
         do {
             j = (s32)fn_801E2580(&lbl_803682F0, i);
-            if ((void *)j != NULL && fn_801E4268((void *)j) != 0) {
+            if ((void *)j != NULL && Save_IsValid((void *)j) != 0) {
                 switch (*(s32 *)((u8 *)(void *)j + 0x44)) {
                 case 0x20041216:
                     ok = 0;
@@ -1527,7 +1527,7 @@ void Save_MigrateLegacy(void) {
         j = 0;
         do {
             slot = fn_801E2568(&lbl_803682F0, j);
-            if (slot != NULL && fn_801E4268(slot) != 0) {
+            if (slot != NULL && Save_IsValid(slot) != 0) {
                 switch (*(s32 *)((u8 *)slot + 0x44)) {
                 case 0x20041216:
                     ok2 = 0;
