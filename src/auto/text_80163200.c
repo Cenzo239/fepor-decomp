@@ -8827,7 +8827,8 @@ loop2_cond:
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
+extern "C" void Ui_ReleaseUnitTradeWidgets(void *panel) {
+    /* Restore unit-list cursor, slide unit-item panel off-screen, then release trade item/help widgets. */
     void Ui_ListSetCursor(void *, s16);
     void Ui_RemoveChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -8837,73 +8838,73 @@ extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
         s32 refCount;
     };
 
-    struct Inner {
+    struct ListWidget {
         u8 pad[0x4D];
-        u8 f4d;
+        u8 active;
         u8 pad4e[2];
-        s16 f50;
+        s16 savedCursor;
         u8 pad52[0x2A];
-        s32 f7c;
-        s32 f80;
+        s32 selectCb;
+        s32 selectCbArg;
     };
 
-    struct Holder {
+    struct TradePanel {
         u8 pad[0x40];
-        Inner *p40;
+        ListWidget *list;
         u8 pad44[0xC];
-        RefObj *p50;
-        RefObj *p54;
-        RefObj *p58;
+        RefObj *unitItemPanel;
+        RefObj *itemList;
+        RefObj *itemHelp;
     };
 
-    Holder *h;
-    Inner *inner;
-    RefObj *p;
-    RefObj *p50;
-    s16 sp8[2];
-    s16 tmp;
+    TradePanel *self;
+    ListWidget *list;
+    RefObj *child;
+    RefObj *unitItemPanel;
+    s16 slidePos[2];
+    s16 savedY;
     s32 refs;
 
-    h = (Holder *)arg0;
-    inner = h->p40;
-    Ui_ListSetCursor(inner, inner->f50);
-    inner->f4d = 0;
-    inner->f7c = 0;
-    inner->f80 = 0;
-    p50 = h->p50;
-    tmp = *(s16 *)((u8 *)p50 + 0xC);
-    sp8[0] = 0x260;
-    sp8[1] = tmp;
-    Ui_SlideWidgetChild(h, p50, sp8, 1);
+    self = (TradePanel *)panel;
+    list = self->list;
+    Ui_ListSetCursor(list, list->savedCursor);
+    list->active = 0;
+    list->selectCb = 0;
+    list->selectCbArg = 0;
+    unitItemPanel = self->unitItemPanel;
+    savedY = *(s16 *)((u8 *)unitItemPanel + 0xC);
+    slidePos[0] = 0x260;
+    slidePos[1] = savedY;
+    Ui_SlideWidgetChild(self, unitItemPanel, slidePos, 1);
 
-    p = h->p50;
-    if (p != NULL) {
-        refs = p->refCount - 1;
-        p->refCount = refs;
-        if (refs == 0 && p != NULL) {
-            p->destroy(1);
+    child = self->unitItemPanel;
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        h->p50 = (RefObj *)0;
+        self->unitItemPanel = (RefObj *)0;
     }
-    Ui_RemoveChild(h, h->p54);
-    p = h->p54;
-    if (p != NULL) {
-        refs = p->refCount - 1;
-        p->refCount = refs;
-        if (refs == 0 && p != NULL) {
-            p->destroy(1);
+    Ui_RemoveChild(self, self->itemList);
+    child = self->itemList;
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        h->p54 = (RefObj *)0;
+        self->itemList = (RefObj *)0;
     }
-    Ui_RemoveChild(h, h->p58);
-    p = h->p58;
-    if (p != NULL) {
-        refs = p->refCount - 1;
-        p->refCount = refs;
-        if (refs == 0 && p != NULL) {
-            p->destroy(1);
+    Ui_RemoveChild(self, self->itemHelp);
+    child = self->itemHelp;
+    if (child != NULL) {
+        refs = child->refCount - 1;
+        child->refCount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        h->p58 = (RefObj *)0;
+        self->itemHelp = (RefObj *)0;
     }
 }
 
