@@ -415,7 +415,7 @@ void fn_8007D0C0(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8007D270(void *arg0) {
+void UnitInfo_AdvanceCursor(void *arg0) {
     u8 fn_8001F4CC(void *, u8, u8);
     void *fn_8003A114(void *);
     void fn_800506E0(void *, s32, void *);
