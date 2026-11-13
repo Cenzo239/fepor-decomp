@@ -94,7 +94,7 @@ void fn_8007278C(void) {
 void fn_800727E0(void) {
     extern u16 gUiContext[12];
     fn_800285C0(gUiContext);
-    fn_8001D2C8();
+    UnitRef_GetName();
     fn_80091A1C();
 }
 
@@ -102,7 +102,7 @@ void fn_800727E0(void) {
 void fn_80072810(void) {
     void fn_8010FF24(void *, u8, u8, s32);
     void fn_8010FA2C(void);
-    void fn_8001D2C8(void);
+    void UnitRef_GetName(void);
     void fn_80091A1C(void);
     extern u8 gUiContext[];
     extern u8 lbl_8032BB58[];
@@ -117,17 +117,17 @@ void fn_80072810(void) {
     b = *((u8 *)ptr + 0x19E);
     fn_8010FF24(lbl_8032BB58, b, a, 7);
     fn_8010FA2C();
-    fn_8001D2C8();
+    UnitRef_GetName();
     fn_80091A1C();
 }
 #pragma global_optimizer on
 void fn_8007285C(void) {
-    void fn_8001D2C8(void);
+    void UnitRef_GetName(void);
     void fn_80037D54(void *);
     void fn_80091A1C(void);
     extern u8 gUiContext[];
     fn_80037D54(*(void **)gUiContext);
-    fn_8001D2C8();
+    UnitRef_GetName();
     fn_80091A1C();
 }
 

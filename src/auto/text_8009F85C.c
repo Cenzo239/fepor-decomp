@@ -1692,7 +1692,7 @@ s32 fn_800A1D00(void) {
 void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
     s32 fn_80037BD0(s32, s32);
-    s32 fn_8001D2C8(void);
+    s32 UnitRef_GetName(void);
     void sprintf(void *, void *, ...);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -1715,7 +1715,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     if (temp_r31 == NULL || *temp_r31 == NULL) {
         return;
     }
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6C7, fn_8001D2C8());
+    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6C7, UnitRef_GetName());
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369A04);
     fn_8000A174(0, 0x13);

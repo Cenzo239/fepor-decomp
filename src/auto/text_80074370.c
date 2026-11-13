@@ -122,7 +122,7 @@ void *fn_8007486C(void *unused, void *arg1)
 void fn_800748E8(void) {
     u64 *fn_8001CB64(void *);
     void *fn_80037BD0(void *, s32);
-    s32 fn_8001D2C8(void);
+    s32 UnitRef_GetName(void);
     void sprintf(void *, char *, ...);
     void fn_8000D864(s32, void *);
     void Msg_Expand(char *);
@@ -149,7 +149,7 @@ void fn_800748E8(void) {
     } else {
         value = 0;
     }
-    sprintf(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)value + 0x60, fn_8001D2C8());
+    sprintf(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)value + 0x60, UnitRef_GetName());
     fn_8000D864(0, lbl_80312010);
     Msg_Expand(lbl_8026C0B8 + 0x12B);
 }

@@ -1314,7 +1314,7 @@ extern "C" void fn_801B0564(void *arg0) {
 void fn_801B0C70(void *arg0) {
     void fn_8011D650(void);
     void fn_8001BD4C(void *, void *);
-    s32 fn_8001D2C8(void *);
+    s32 UnitRef_GetName(void *);
     s32 fn_8001ED58(void *);
     s32 Str_Cmp(s32, s32);
     void fn_8001BCF4(void *);
@@ -1332,14 +1332,14 @@ void fn_801B0C70(void *arg0) {
     flag = *((u8 *)gUiContext + 8);
     if (flag == 0) {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
-        temp_r31 = fn_8001D2C8((u8 *)obj48 + 0x60);
+        temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
         if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
             Process_Goto(arg0, 0xE);
         }
     } else {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
-        temp_r31 = fn_8001D2C8((u8 *)obj48 + 0x60);
+        temp_r31 = UnitRef_GetName((u8 *)obj48 + 0x60);
         if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
         }
@@ -1350,7 +1350,7 @@ void fn_801B0C70(void *arg0) {
 }
 #pragma opt_common_subs on
 void fn_801B0D6C(void *arg0) {
-    s32 fn_8001D2C8(void *);
+    s32 UnitRef_GetName(void *);
     s32 fn_8001ED58(void);
     void fn_8023440C(void *, s32, s32);
     void fn_801CE11C(void *, s32, s32, void *);
@@ -1365,7 +1365,7 @@ void fn_801B0D6C(void *arg0) {
     u32 res;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
-    fn_8023440C(&lbl_80331C6C, fn_8001D2C8((u8 *)obj48 + 0x60), 0x14);
+    fn_8023440C(&lbl_80331C6C, UnitRef_GetName((u8 *)obj48 + 0x60), 0x14);
     b = 0;
     ((u8 *)&lbl_80331C6C)[0x14] = b;
     p60 = *(void **)((u8 *)obj48 + 0x60);

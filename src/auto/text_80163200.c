@@ -4834,7 +4834,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 fn_80010B78(void *, s32, f32);
-    s32 fn_8001D2C8(void);
+    s32 UnitRef_GetName(void);
     void **fn_80037D54(void *);
     s8 fn_8003A1E0(void *);
     s8 fn_8003A398(void *);
@@ -4989,7 +4989,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
                 } else {
                     rank = 0;
                 }
-                sprintf(buf, lbl_80277EA0 + 0x125, rank + 0x60, fn_8001D2C8());
+                sprintf(buf, lbl_80277EA0 + 0x125, rank + 0x60, UnitRef_GetName());
                 fn_8001003C((s32)(lbl_8036AA5C + fx), (s32)(lbl_8036AA78 + fy), 1, 1, 0, buf, lbl_8036AAB4, lbl_8036AA34);
             }
             f30 = lbl_8036AAC8 + fx;

@@ -1251,25 +1251,34 @@ u32 fn_8001B894(u8 **arg0)
     return (b0 << 24) + mid;
 }
 
-u32 fn_8001B8E0(u8 **arg0) {
+#pragma scheduling off
+#pragma global_optimizer off
+u32 fn_8001B8E0(u8 **arg0)
+{
     u8 *data;
-    u32 b0;
-    u32 b1;
+    u8 *next;
     u32 b2;
+    u32 result;
+    u32 b0;
     u32 b3;
-    u32 value;
 
     data = *arg0;
     b2 = data[2];
-    b1 = data[1];
+    next = data + 4;
+    result = data[1];
     b0 = data[0];
+    b2 <<= 8;
+    result <<= 16;
     b3 = data[3];
-    value = (b1 << 16) + (b2 << 8);
-    value = value + b3;
-    *arg0 = data + 4;
-    return (b0 << 24) + value;
+    result = result + b2;
+    b0 <<= 24;
+    result = result + b3;
+    *arg0 = next;
+    result = b0 + result;
+    return result;
 }
-
+#pragma global_optimizer reset
+#pragma scheduling reset
 u16 fn_8001B91C(u8 **arg0) {
     u8 *p;
     u32 result;
@@ -2117,7 +2126,7 @@ u16 UnitRef_GetValue(void* arg0) {
     return (u16)(var_r5 * *(u8*)((char*)arg0 + 4));
 }
 
-void *fn_8001D2C8(void *arg0) {
+void *UnitRef_GetName(void *arg0) {
     u8 *fn_800C2E3C(u8 *, s32);
     void *Res_GetByName(void *);
     void *Msg_Expand(void *);

@@ -133,7 +133,7 @@ void fn_801A8268(void *arg0) {
     s32 fn_8003AF28(void *);
     s32 fn_8003AFA0(void *);
     s32 fn_8003B258(void *);
-    s32 fn_8001D2C8(void *);
+    s32 UnitRef_GetName(void *);
     s32 fn_8001D8A8(void *);
     extern u8 lbl_8027B650[];
     extern u16 lbl_80367218;
@@ -209,7 +209,7 @@ void fn_801A8268(void *arg0) {
         base = (u8 *)arg0 + 0x284;
     }
     fn_800056CC((const char *)(lbl_8027B650 + 0xD9),
-                fn_8001D2C8(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
+                UnitRef_GetName(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
     fn_800056CC((const char *)(lbl_8027B650 + 0xEC),
                 *(s16 *)((u8 *)arg0 + 0x2C2), *(s16 *)((u8 *)arg0 + 0x2C4));
@@ -234,7 +234,7 @@ void fn_801A8268(void *arg0) {
         tmp = 0;
     }
     b26 = (u8)tmp;
-    ret = fn_8001D2C8(slot);
+    ret = UnitRef_GetName(slot);
     fn_800056CC((const char *)(lbl_8027B650 + 0x100),
                 ret, b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 

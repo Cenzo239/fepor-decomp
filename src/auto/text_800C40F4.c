@@ -2858,7 +2858,7 @@ void fn_800CAF74(void *arg0) {
     void String_Copy(void *, String *);
     void *String_Destroy(String *, s32);
     void sprintf(char *, char *, ...);
-    s32 fn_8001D2C8(void);
+    s32 UnitRef_GetName(void);
     u32 strlen(char *);
     char buf[0x40];
     String str;
@@ -2877,7 +2877,7 @@ void fn_800CAF74(void *arg0) {
         obj = *(void **)((u8 *)lbl_80330EAC + 0x56C);
         if (obj != 0) {
             ch = obj != 0 ? ((u8 *)obj)[0x15] : 0;
-            sprintf(buf, lbl_802704F8 + 0x1B1, (u8)ch + 0x60, fn_8001D2C8());
+            sprintf(buf, lbl_802704F8 + 0x1B1, (u8)ch + 0x60, UnitRef_GetName());
             String_AssignCStr(&str, buf, strlen(buf));
         }
     }
@@ -2892,7 +2892,7 @@ void fn_800CB070(String *arg0) {
     void String_Copy(void *, void *);
     void sprintf(char *, char *, ...);
     s32 strlen(char *);
-    s32 fn_8001D2C8(void);
+    s32 UnitRef_GetName(void);
     extern char lbl_802704F8[];
     extern u8 lbl_80367878;
     extern void *lbl_8036787C;
@@ -2920,7 +2920,7 @@ void fn_800CB070(String *arg0) {
                 } else {
                     tmp = 0;
                 }
-                sprintf(buf, lbl_802704F8 + 0x1B1, (u8)tmp + 0x60, fn_8001D2C8());
+                sprintf(buf, lbl_802704F8 + 0x1B1, (u8)tmp + 0x60, UnitRef_GetName());
                 String_AssignCStr(&str, buf, strlen(buf));
             }
         }
