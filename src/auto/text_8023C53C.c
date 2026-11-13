@@ -10006,7 +10006,7 @@ done:
 
 s32 Sound_InitVoices(u8 arg0, u8 arg1, s32 arg2) {
 extern u8 gSoundVoiceCount, gSoundStudioCount;
-extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *lbl_80368A9C, *lbl_80368A94;
+extern u8 *gSoundAuxBuf, *lbl_80368A98, *gSoundVoices, *gSoundVoiceParams, *lbl_80368A94;
 extern s32 lbl_80368A68;
 extern u8 gSoundStudios[];
 void *fn_802637D0(u32); void *fn_802637A4(u32);
@@ -10020,9 +10020,9 @@ if (!(gSoundAuxBuf=fn_802637D0(0x800))) goto fail;
 if (!(lbl_80368A98=fn_802637D0(0x280))) goto fail;
 memset(lbl_80368A98,0,0x280); DCFlushRange(lbl_80368A98,0x280);
 if (!(gSoundVoices=fn_802637A4(gSoundVoiceCount*0xF8))) goto fail;
-if (!(lbl_80368A9C=fn_802637D0(gSoundVoiceCount*0x40))) goto fail;
-DCInvalidateRange(lbl_80368A9C,gSoundVoiceCount*0x40);
-p=lbl_80368A9C;
+if (!(gSoundVoiceParams=fn_802637D0(gSoundVoiceCount*0x40))) goto fail;
+DCInvalidateRange(gSoundVoiceParams,gSoundVoiceCount*0x40);
+p=gSoundVoiceParams;
 for(i=0,off=0;i<gSoundVoiceCount;off+=0xF8,i++) {
 gSoundVoices[off+240]=0;
 gSoundVoices[off+241]=0;
