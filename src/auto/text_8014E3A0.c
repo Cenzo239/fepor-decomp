@@ -2170,7 +2170,7 @@ void Ui_DrawPanelDecor(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 a
     void fn_80009E64(s32, f32);
     extern s32 gUiTexAtlas;
     extern u8 lbl_80330D18[64];
-    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367F18;
+    extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } gUiPanelDecorUvA;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367F10;
     extern f64 lbl_8036A868;
     extern f32 lbl_8036A878;
@@ -2190,21 +2190,21 @@ void Ui_DrawPanelDecor(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 a
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
-    rect = (s16 *)&lbl_80367F18;
+    rect = (s16 *)&gUiPanelDecorUvA;
     a2 = arg2;
     a0 = arg0;
-    x = (s16)(a0 + ((a2 >> 2) - ((s16)(rect[2] - lbl_80367F18.f0) >> 1)));
+    x = (s16)(a0 + ((a2 >> 2) - ((s16)(rect[2] - gUiPanelDecorUvA.f0) >> 1)));
     y = (s16)((f32)arg1 + (lbl_8036A884 * (f32)arg3 - (f32)((s16)(rect[3] - rect[1]) >> 1)));
     fn_8006ECCC(gUiTexAtlas, lbl_80330D18, 0x81);
     h = (s16)(rect[3] - rect[1]);
-    w = (s16)(rect[2] - lbl_80367F18.f0);
+    w = (s16)(rect[2] - gUiPanelDecorUvA.f0);
     if (w) {
         if (h) {
             Prim2D_Begin();
             fn_8000A174(lbl_80330D18, (u16)(arg5 | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)x, (f32)y, (f32)lbl_80367F18.f0, (f32)rect[1], (f32)w, (f32)h);
+            Prim2D_SetRectUv((f32)x, (f32)y, (f32)gUiPanelDecorUvA.f0, (f32)rect[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
