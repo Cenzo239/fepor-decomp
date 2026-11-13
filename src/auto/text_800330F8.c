@@ -10278,7 +10278,7 @@ void fn_8004B588(u8 *arg0)
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80051564(void *, s32, f32, f32);
     extern u8 lbl_8026AA98[];
-    extern s32 lbl_803672B0;
+    extern s32 gUnitShadowMat;
     extern u32 lbl_80368FB4;
     extern f32 lbl_80368FBC;
     extern f32 lbl_80368FC4;
@@ -10326,12 +10326,12 @@ void fn_8004B588(u8 *arg0)
         if (arg0[1] > 0x78U) {
             alpha = (s32)Math_Lerp(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32)(s32)(arg0[1] - 0x78));
         }
-        fn_8006ECCC(lbl_803672B0, sp4C, 3);
+        fn_8006ECCC(gUnitShadowMat, sp4C, 3);
         break;
     case 1:
         alpha = (s32)fn_8005A028(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32)arg0[1]);
         scale = fn_8005A028(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32)arg0[1]);
-        fn_8006ECCC(lbl_803672B0, sp4C, 4);
+        fn_8006ECCC(gUnitShadowMat, sp4C, 4);
         break;
     }
     fn_80222C50(sp4C, 0);
@@ -10793,7 +10793,7 @@ void Unit_DrawShadows(void) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     extern u8 gUnits[];
-    extern s32 lbl_803672B0;
+    extern s32 gUnitShadowMat;
     extern f32 lbl_80368FCC;
     extern f32 lbl_80368FF0;
     u8 sp60[0x30];
@@ -10808,7 +10808,7 @@ void Unit_DrawShadows(void) {
     void *unit;
     s32 flag;
 
-    fn_8006ECCC(lbl_803672B0, sp10, 0);
+    fn_8006ECCC(gUnitShadowMat, sp10, 0);
     fn_80222C50(sp10, 0);
     fn_8022100C(2);
     GXClearVtxDesc();
@@ -11950,7 +11950,7 @@ void fn_80050E80(void)
     extern void *lbl_803672B8;
     extern void *lbl_803672B4;
     extern void *lbl_803672CC;
-    extern void *lbl_803672B0;
+    extern void *gUnitShadowMat;
     void *p;
     s32 i;
     void *a;
@@ -11991,7 +11991,7 @@ void fn_80050E80(void)
         }
         Heap_Free(p);
     }
-    b = lbl_803672B0;
+    b = gUnitShadowMat;
     lbl_803672CC = 0;
     fn_8006D8E8(b);
 }
@@ -12017,7 +12017,7 @@ void fn_80050F64(void) {
     void fn_80052B44(void *);
     void fn_8004DE78(void);
     extern u8 lbl_8026AB18[];
-    extern void *lbl_803672B0;
+    extern void *gUnitShadowMat;
     extern void *lbl_803672CC;
     extern void *lbl_803672B4;
     extern void *lbl_803672B8;
@@ -12032,7 +12032,7 @@ void fn_80050F64(void) {
     s32 b;
     s32 c;
 
-    lbl_803672B0 = fn_8006D948(lbl_8026AB18 + 0x95);
+    gUnitShadowMat = fn_8006D948(lbl_8026AB18 + 0x95);
     a = (s32)Heap_Alloc(0x1C);
     if (a) {
         *(s32 *)(a + 0) = 0;
@@ -13148,7 +13148,7 @@ extern u32* lbl_803672CC;
 extern u32 jumptable_8028561C[];
 extern u32 jumptable_802855E4[];
 #include "global.h"
-extern s32* lbl_803672B0;
+extern s32* gUnitShadowMat;
 extern f32 lbl_80368FCC;
 extern f32 lbl_80368FF0;
 extern u16* gUnits;
