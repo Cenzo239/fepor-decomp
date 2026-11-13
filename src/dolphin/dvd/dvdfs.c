@@ -2123,7 +2123,7 @@ lbl_80368614=0;lbl_80368618=0;__OSSetInterruptHandler(24,fn_8020FD50);__OSUnmask
 }
 }
 #pragma peephole off
-void fn_802107A8(void) {
+void VIWaitForRetrace(void) {
     extern u32 lbl_80368604;
     extern u8 lbl_8036860C;
     BOOL OSDisableInterrupts(void);

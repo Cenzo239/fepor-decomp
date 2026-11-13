@@ -1110,7 +1110,7 @@ void fn_80014EA8(void) {
         fn_8020AC68(lbl_803671B4);
         fn_80146D44();
         fn_8020A9E0(lbl_803671B4);
-        fn_802107A8();
+        VIWaitForRetrace();
     }
 }
 

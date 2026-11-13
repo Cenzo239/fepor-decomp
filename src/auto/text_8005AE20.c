@@ -150,7 +150,7 @@ void fn_8005AE78(void) {
     u8 fn_80014E70(void);
     void fn_800B46D8(void);
     s32 fn_80208D18(void);
-    void fn_802107A8(void);
+    void VIWaitForRetrace(void);
     void VIFlush(void);
     void fn_80211614(s32);
     void fn_8022097C(void);
@@ -192,12 +192,12 @@ void fn_8005AE78(void) {
     if (!(gUiInputFlags & 0x100) && lbl_803672E3 != 0) {
         fn_80211614(1);
         VIFlush();
-        fn_802107A8();
-        fn_802107A8();
+        VIWaitForRetrace();
+        VIWaitForRetrace();
         fn_8022097C();
-        fn_802107A8();
-        fn_802107A8();
-        fn_802107A8();
+        VIWaitForRetrace();
+        VIWaitForRetrace();
+        VIWaitForRetrace();
         var_r31 = 0;
         if (lbl_803682A4 & 0x90000) {
             if (!(lbl_803682A4 & 0x10)) {
@@ -6721,7 +6721,7 @@ void fn_8006DA98(void *arg0)
     void VIConfigure(void *);
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
-    void fn_802107A8(void);
+    void VIWaitForRetrace(void);
     extern char lbl_8026B990[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
@@ -6829,9 +6829,9 @@ void fn_8006DA98(void *arg0)
     VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     VIFlush();
-    fn_802107A8();
+    VIWaitForRetrace();
     if (*(u32 *)DEMORmode & 1) {
-        fn_802107A8();
+        VIWaitForRetrace();
     }
     fn_800C4588(buf);
 }
@@ -6865,7 +6865,7 @@ void fn_8006DFD8(void) {
     void VIConfigure(void *);
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
-    void fn_802107A8(void);
+    void VIWaitForRetrace(void);
     void fn_80224684(s32, s32, s32);
     void fn_8022462C(s32);
     void fn_802208BC(s32);
@@ -7005,9 +7005,9 @@ body:
     VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     VIFlush();
-    fn_802107A8();
+    VIWaitForRetrace();
     if (*(u32 *)DEMORmode & 1) {
-        fn_802107A8();
+        VIWaitForRetrace();
     }
     fn_800C4588(buf);
     fn_80225204(0x23, 0x16);
@@ -7040,11 +7040,11 @@ done:
     VIFlush();
     if (lbl_803682A4 & 1) {
         if (!(lbl_803682A4 & 4)) {
-            fn_802107A8();
+            VIWaitForRetrace();
         }
         lbl_803682A4 &= ~4;
     }
-    fn_802107A8();
+    VIWaitForRetrace();
     if (DemoCurrentBuffer == DemoFrameBuffer1) {
         DemoCurrentBuffer = DemoFrameBuffer2;
     }
@@ -7139,7 +7139,7 @@ void fn_8006E660(void)
     void VISetNextFrameBuffer(void *);
     void fn_80211614(s32);
     void VIFlush(void);
-    void fn_802107A8(void);
+    void VIWaitForRetrace(void);
 
     void *cur;
     void *ten;
@@ -7170,11 +7170,11 @@ void fn_8006E660(void)
 
         if (lbl_803682A4 & 1) {
             if (!(lbl_803682A4 & 4)) {
-                fn_802107A8();
+                VIWaitForRetrace();
             }
             lbl_803682A4 &= ~4;
         }
-        fn_802107A8();
+        VIWaitForRetrace();
 
         ten = DemoFrameBuffer1;
         cur = DemoCurrentBuffer;
@@ -7253,7 +7253,7 @@ void DEMOInit(void *arg0)
     void fn_80221A2C(s32);
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
-    void fn_802107A8(void);
+    void VIWaitForRetrace(void);
     extern char lbl_8026B990[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
@@ -7372,9 +7372,9 @@ void DEMOInit(void *arg0)
     VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     VIFlush();
-    fn_802107A8();
+    VIWaitForRetrace();
     if (*(u32 *)DEMORmode & 1) {
-        fn_802107A8();
+        VIWaitForRetrace();
     }
 }
 
