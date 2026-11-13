@@ -356,7 +356,8 @@ void CamPath_Apply(void *, f32);
 f32 Math_Lerp(f32, f32, f32, f32);
 f32 Math_EaseInPow(s32, f32, f32, f32, f32);
 f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-void CamPath_Update(void *arg0) {
+/* Advance a camera-path process: tick/skip timer, ease progress, apply to camera. */
+void CamPath_Update(void *proc) {
     void Process_ClearFunc(void *);
     void CamPath_Apply(void *, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -365,47 +366,47 @@ void CamPath_Update(void *arg0) {
     extern s32 gUiInputFlags;
     extern f32 lbl_80368C88;
 
-    s32 mode;
-    s32 lim;
-    f32 f1;
+    s32 ease_mode;
+    s32 duration;
+    f32 t;
 
-    *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
+    *(s32 *)((u8 *)proc + 0x34) = *(s32 *)((u8 *)proc + 0x34) + 1;
     if ((gUiInputFlags & 1) != 0) {
-        *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x38);
+        *(s32 *)((u8 *)proc + 0x34) = *(s32 *)((u8 *)proc + 0x38);
     }
-    if (*(s32 *)((u8 *)arg0 + 0x34) >= *(s32 *)((u8 *)arg0 + 0x38)) {
-        *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x38);
-        Process_ClearFunc(arg0);
-        *((u8 *)arg0 + 0x3c) = 1;
+    if (*(s32 *)((u8 *)proc + 0x34) >= *(s32 *)((u8 *)proc + 0x38)) {
+        *(s32 *)((u8 *)proc + 0x34) = *(s32 *)((u8 *)proc + 0x38);
+        Process_ClearFunc(proc);
+        *((u8 *)proc + 0x3c) = 1;
     }
-    f1 = lbl_80368C88;
-    mode = *(s32 *)((u8 *)arg0 + 0x30);
-    switch (mode) {
+    t = lbl_80368C88;
+    ease_mode = *(s32 *)((u8 *)proc + 0x30);
+    switch (ease_mode) {
     case 0:
-        lim = *(s32 *)((u8 *)arg0 + 0x38);
-        f1 = Math_Lerp(f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        duration = *(s32 *)((u8 *)proc + 0x38);
+        t = Math_Lerp(t, (f32)duration, (f32)duration, (f32)*(s32 *)((u8 *)proc + 0x34));
         break;
     case 1:
-        lim = *(s32 *)((u8 *)arg0 + 0x38);
-        f1 = Math_EaseInPow(2, f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        duration = *(s32 *)((u8 *)proc + 0x38);
+        t = Math_EaseInPow(2, t, (f32)duration, (f32)duration, (f32)*(s32 *)((u8 *)proc + 0x34));
         break;
     case 2:
-        lim = *(s32 *)((u8 *)arg0 + 0x38);
-        f1 = Math_EaseOutPow(2, f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        duration = *(s32 *)((u8 *)proc + 0x38);
+        t = Math_EaseOutPow(2, t, (f32)duration, (f32)duration, (f32)*(s32 *)((u8 *)proc + 0x34));
         break;
     case 3: {
         s32 half;
-        lim = *(s32 *)((u8 *)arg0 + 0x38);
-        half = lim / 2;
-        if (*(s32 *)((u8 *)arg0 + 0x34) < half) {
-            f1 = Math_EaseInPow(2, f1, (f32)half, (f32)half, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        duration = *(s32 *)((u8 *)proc + 0x38);
+        half = duration / 2;
+        if (*(s32 *)((u8 *)proc + 0x34) < half) {
+            t = Math_EaseInPow(2, t, (f32)half, (f32)half, (f32)*(s32 *)((u8 *)proc + 0x34));
         } else {
-            f1 = Math_EaseOutPow(2, (f32)half, (f32)lim, (f32)half, (f32)(*(s32 *)((u8 *)arg0 + 0x34) - half));
+            t = Math_EaseOutPow(2, (f32)half, (f32)duration, (f32)half, (f32)(*(s32 *)((u8 *)proc + 0x34) - half));
         }
         break;
     }
     }
-    CamPath_Apply(arg0, f1);
+    CamPath_Apply(proc, t);
 }
 
 void fn_80017BFC(void) {
