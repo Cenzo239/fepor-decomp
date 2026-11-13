@@ -9808,7 +9808,7 @@ void Map_HideMoveLimitView(void) {
     gUiInputFlags &= ~0x400u;
 }
 
-void fn_8004A224(void) {
+void Map_ShowMoveLimitView(void) {
     void *Process_Create(void *, s32);
     extern u8 gMoveLimitViewProc[];
     extern u32 gUiInputFlags;

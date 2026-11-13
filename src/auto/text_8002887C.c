@@ -2958,7 +2958,7 @@ void fn_8002F4EC(void *arg0, void *arg1) {
 
 void fn_8002F564(void) {
     void fn_80022DAC(void *, s32, s32);
-    void fn_8004A224(void);
+    void Map_ShowMoveLimitView(void);
     extern u8 lbl_802CA518[];
     extern s32 lbl_802EF4E0[];
     s32 *p;
@@ -2990,7 +2990,7 @@ void fn_8002F564(void) {
             *(u16 *)(lbl_802CA518 + ((x + (y << 6)) * 2) + 0xC18E) = 1;
         } while (--n != 0);
     }
-    fn_8004A224();
+    Map_ShowMoveLimitView();
 }
 
 void fn_8002F61C(void *arg0) {
@@ -3099,7 +3099,7 @@ void fn_8002F788(s32 arg0) {
 }
 
 void fn_8002F82C(s32 arg0) {
-    void fn_8004A224(void);
+    void Map_ShowMoveLimitView(void);
     void Process_CreateChild(void *, s32);
     void fn_8002BD44(void *, s32);
     void fn_8002EB54(void *, s32);
@@ -3113,7 +3113,7 @@ void fn_8002F82C(s32 arg0) {
     void **p = gUiContext;
 
     if (((u8 *)p)[8] == 0x31) {
-        fn_8004A224();
+        Map_ShowMoveLimitView();
         Process_CreateChild(lbl_802850C0, arg0);
         return;
     }
@@ -3258,7 +3258,7 @@ void fn_80031598(s32 arg0) {
 
     u8 val2 = (u8)fn_8001DD04(*(s32 *)gUiContext);
     fn_8003CE88(*(s32 *)(gUiContext + 4), val2);
-    fn_8004A224();
+    Map_ShowMoveLimitView();
     Process_CreateChild(lbl_80285088, arg0);
 }
 
@@ -4050,8 +4050,8 @@ s32 fn_80032F7C(s32 arg0, void *arg1) {
 }
 
 void fn_80033024(void) {
-    M2C_UNK fn_8004A224();
-    fn_8004A224();
+    M2C_UNK Map_ShowMoveLimitView();
+    Map_ShowMoveLimitView();
 }
 
 M2C_UNK *fn_80033044(void) {

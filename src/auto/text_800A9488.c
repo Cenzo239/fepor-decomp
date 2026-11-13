@@ -556,7 +556,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
 
 void Map_UpdateCursorMoveLimit(void) {
     void Map_HideMoveLimitView(void);
-    void fn_8004A224(void);
+    void Map_ShowMoveLimitView(void);
     void fn_800AACDC(void *);
 
     extern u8 gUnits[101760];
@@ -602,7 +602,7 @@ void Map_UpdateCursorMoveLimit(void) {
                 Map_HideMoveLimitView();
             } else {
                 fn_800AACDC(unit);
-                fn_8004A224();
+                Map_ShowMoveLimitView();
             }
         }
     }
@@ -619,7 +619,7 @@ void fn_800AA4F8(void *arg0) {
     void fn_80091A1C(void);
     void fn_800283C8(void *, void *);
     void fn_800AACDC(void *);
-    void fn_8004A224(void);
+    void Map_ShowMoveLimitView(void);
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
     extern u8 lbl_8026E770[];
@@ -641,7 +641,7 @@ void fn_800AA4F8(void *arg0) {
         Msg_Expand(lbl_8026E770 + 0xD9);
         fn_80091A1C();
     }
-    fn_8004A224();
+    Map_ShowMoveLimitView();
 }
 
 void *fn_800AA5F0(void *arg0) {

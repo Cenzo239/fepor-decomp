@@ -259,7 +259,7 @@ void fn_801EB294(void *arg0)
     void fn_8002297C(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void Map_HideMoveLimitView(void);
-    void fn_8004A224(void);
+    void Map_ShowMoveLimitView(void);
     void fn_800A8400(void);
     void *Map_GetCursorUnit(void);
     void fn_800AACDC(void *);
@@ -356,7 +356,7 @@ void fn_801EB294(void *arg0)
                 }
             } else {
                 fn_800AACDC(unit2);
-                fn_8004A224();
+                Map_ShowMoveLimitView();
             }
         }
     }
