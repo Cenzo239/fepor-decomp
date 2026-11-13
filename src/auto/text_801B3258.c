@@ -4884,7 +4884,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     extern void *lbl_80292230[];
     extern void *lbl_80292208[];
     extern void *gUiUnitPanelMidVtbl[];
-    extern void *lbl_80295478[];
+    extern void *gEmptyVtbl[];
     extern f32 lbl_8036B2D8;
     extern f32 lbl_8036B2E0;
     struct Obj {
@@ -4966,7 +4966,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0x5E) = 0;
     fn_80142060((u8 *)self + 0x68);
     *(s32 *)((u8 *)self + 0x74) = 0;
-    *(void **)((u8 *)self + 0x7C) = lbl_80295478;
+    *(void **)((u8 *)self + 0x7C) = gEmptyVtbl;
     {
         Sub *sub;
         f32 f1;
@@ -4989,7 +4989,7 @@ extern "C" void *fn_801BEB9C(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
         *(f32 *)((u8 *)self + 0xA0) = f0;
         sub->v1();
     }
-    *(void **)((u8 *)self + 0xA4) = lbl_80295478;
+    *(void **)((u8 *)self + 0xA4) = gEmptyVtbl;
     {
         Sub *sub;
         f32 f1;
@@ -5378,7 +5378,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern void *lbl_80292230[];
     extern void *lbl_80292208[];
     extern void *lbl_8029998C[];
-    extern void *lbl_80295478[];
+    extern void *gEmptyVtbl[];
     extern f32 lbl_8036B318;
     extern f32 lbl_8036B31C;
     struct Work {
@@ -5443,7 +5443,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0x60) = 0x40;
     *(s16 *)((u8 *)self + 0x62) = 8;
     fn_801C18E4((u8 *)self + 0x6C);
-    *(void **)((u8 *)self + 0x78) = lbl_80295478;
+    *(void **)((u8 *)self + 0x78) = gEmptyVtbl;
     *(s32 *)((u8 *)self + 0x7C) = 0;
     *(s32 *)((u8 *)self + 0x80) = 2;
     *(u8 *)((u8 *)self + 0x84) = 1;
@@ -5458,7 +5458,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(u8 *)((u8 *)self + 0x9B) = 0xFF;
     *(f32 *)((u8 *)self + 0x9C) = lbl_8036B31C;
     ((Sub *)((u8 *)self + 0x78))->v1();
-    *(void **)((u8 *)self + 0xA0) = lbl_80295478;
+    *(void **)((u8 *)self + 0xA0) = gEmptyVtbl;
     *(s32 *)((u8 *)self + 0xA4) = 0;
     *(s32 *)((u8 *)self + 0xA8) = 3;
     *(u8 *)((u8 *)self + 0xAC) = 1;
@@ -10401,7 +10401,7 @@ extern "C" void *fn_801CD318(void *arg0, s16 arg1) {
     };
     void Heap_Free(void *);
     extern u8 lbl_80298448[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
     Owner *self;
@@ -10410,11 +10410,11 @@ extern "C" void *fn_801CD318(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         self->vtbl = lbl_80298448;
         if (&self->sub84 != NULL) {
-            self->sub84 = lbl_80295478;
+            self->sub84 = gEmptyVtbl;
             ((Obj *)&self->sub84)->v2();
         }
         if (&self->sub5c != NULL) {
-            self->sub5c = lbl_80295478;
+            self->sub5c = gEmptyVtbl;
             ((Obj *)&self->sub5c)->v2();
         }
         if (arg0 != NULL) {
@@ -13410,7 +13410,7 @@ extern "C" void *fn_801D2ED0(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 lbl_8029998C[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     DtorNode *sp10;
     DtorNode *spC;
@@ -13422,11 +13422,11 @@ extern "C" void *fn_801D2ED0(void *arg0, s16 arg1) {
     if (arg0) {
         a0->vtbl = lbl_8029998C;
         if (&a0->subA0) {
-            a0->subA0 = lbl_80295478;
+            a0->subA0 = gEmptyVtbl;
             ((Obj *)&a0->subA0)->v2();
         }
         if (&a0->sub78) {
-            a0->sub78 = lbl_80295478;
+            a0->sub78 = gEmptyVtbl;
             ((Obj *)&a0->sub78)->v2();
         }
         if (&a0->list) {
@@ -16282,7 +16282,7 @@ extern "C" void *fn_801DF50C(void *arg0, s16 arg1) {
     };
     void Heap_Free(void *);
     extern u8 lbl_80299D90[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
     Owner *self;
@@ -16291,11 +16291,11 @@ extern "C" void *fn_801DF50C(void *arg0, s16 arg1) {
     if (arg0) {
         self->vtbl = lbl_80299D90;
         if (&self->sub78) {
-            self->sub78 = lbl_80295478;
+            self->sub78 = gEmptyVtbl;
             ((Obj *)&self->sub78)->v2();
         }
         if (&self->sub50) {
-            self->sub50 = lbl_80295478;
+            self->sub50 = gEmptyVtbl;
             ((Obj *)&self->sub50)->v2();
         }
         if (arg0) {

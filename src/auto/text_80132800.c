@@ -2370,7 +2370,7 @@ extern "C" void *Ui_DtorUnitPanel(void *self, s16 doFree) {
     void Heap_Free(void *);
     extern u8 gUiUnitPanelVtbl[];
     extern u8 gUiUnitPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     ListNode *sp10;
     ListNode *spC;
@@ -2384,11 +2384,11 @@ extern "C" void *Ui_DtorUnitPanel(void *self, s16 doFree) {
         if (self != NULL) {
             owner->vtbl = gUiUnitPanelMidVtbl;
             if (&owner->subA4 != NULL) {
-                owner->subA4 = lbl_80295478;
+                owner->subA4 = gEmptyVtbl;
                 ((Obj *)&owner->subA4)->v2();
             }
             if (&owner->sub7C != NULL) {
-                owner->sub7C = lbl_80295478;
+                owner->sub7C = gEmptyVtbl;
                 ((Obj *)&owner->sub7C)->v2();
             }
             if (&owner->list != NULL) {
@@ -2438,7 +2438,7 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiUnitPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     ListNode *sp10;
     ListNode *spC;
@@ -2450,11 +2450,11 @@ extern "C" void *fn_8013670C(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = gUiUnitPanelMidVtbl;
         if (&a0->subA4 != NULL) {
-            a0->subA4 = lbl_80295478;
+            a0->subA4 = gEmptyVtbl;
             ((Obj *)&a0->subA4)->v2();
         }
         if (&a0->sub7C != NULL) {
-            a0->sub7C = lbl_80295478;
+            a0->sub7C = gEmptyVtbl;
             ((Obj *)&a0->sub7C)->v2();
         }
         if (&a0->list != NULL) {
@@ -2486,7 +2486,7 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80291914[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern u8 lbl_802918E0[];
     extern f32 lbl_8036A5DC;
     extern f32 lbl_8036A5E4;
@@ -2539,7 +2539,7 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     *(s16 *)((u8 *)temp_r30 + 0x40) = (s16)temp_r28;
     *(s32 *)((u8 *)temp_r30 + 0x44) = temp_r31;
     *(s32 *)((u8 *)temp_r30 + 0x48) = temp_r28;
-    *(void **)temp_r29 = lbl_80295478;
+    *(void **)temp_r29 = gEmptyVtbl;
     *(s32 *)((u8 *)temp_r30 + 0x50) = temp_r28;
     if (temp_r31 == 0) {
         flag = temp_r28;
@@ -2564,7 +2564,7 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     temp_r27 = (u8 *)temp_r30 + 0x74;
     *(u8 *)((u8 *)temp_r29 + 0xD) = 0;
     flag = 3;
-    *(void **)temp_r27 = lbl_80295478;
+    *(void **)temp_r27 = gEmptyVtbl;
     *(s32 *)((u8 *)temp_r30 + 0x78) = 0;
     if (temp_r31 == 0) {
         flag = 1;
@@ -2642,12 +2642,12 @@ extern "C" void *fn_80136D88(void *arg0, s16 arg1) {
         virtual void v2() = 0;
     };
     extern u8 lbl_802918E0[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern void Heap_Free(void *);
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_802918E0;
         if (arg0 != NULL) {
-            *(void **)arg0 = lbl_80295478;
+            *(void **)arg0 = gEmptyVtbl;
             ((Obj *)arg0)->v2();
         }
         if (arg1 > 0) {
@@ -2665,10 +2665,10 @@ extern "C" void *fn_80136E00(void *arg0, s16 arg1) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern void Heap_Free(void *);
     if (arg0 != NULL) {
-        *(void **)arg0 = lbl_80295478;
+        *(void **)arg0 = gEmptyVtbl;
         ((Obj *)arg0)->v2();
         if (arg1 > 0) {
             Heap_Free(arg0);
@@ -5036,7 +5036,7 @@ extern "C" void *Ui_DtorPanelB(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern u8 gUiPanelBVtbl[];
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     ListNode *sp10;
     ListNode *spC;
@@ -5050,11 +5050,11 @@ extern "C" void *Ui_DtorPanelB(void *arg0, s16 arg1) {
         if (arg0 != NULL) {
             a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
-                a0->subAC = lbl_80295478;
+                a0->subAC = gEmptyVtbl;
                 ((Obj *)&a0->subAC)->v2();
             }
             if (&a0->sub84 != NULL) {
-                a0->sub84 = lbl_80295478;
+                a0->sub84 = gEmptyVtbl;
                 ((Obj *)&a0->sub84)->v2();
             }
             if (&a0->list != NULL) {
@@ -5171,7 +5171,7 @@ extern "C" void *Ui_DtorPanel(void *self, s16 doFree) {
     void Heap_Free(void *);
     extern u8 gUiPanelVtbl[];
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     ListNode *sp10;
     ListNode *spC;
@@ -5185,11 +5185,11 @@ extern "C" void *Ui_DtorPanel(void *self, s16 doFree) {
         if (self != NULL) {
             owner->vtbl = gUiPanelMidVtbl;
             if (&owner->subAC != NULL) {
-                owner->subAC = lbl_80295478;
+                owner->subAC = gEmptyVtbl;
                 ((Obj *)&owner->subAC)->v2();
             }
             if (&owner->sub84 != NULL) {
-                owner->sub84 = lbl_80295478;
+                owner->sub84 = gEmptyVtbl;
                 ((Obj *)&owner->sub84)->v2();
             }
             if (&owner->list != NULL) {
@@ -5242,7 +5242,7 @@ extern "C" void *Ui_DtorPanelEx(void *self, s16 doFree) {
     void Heap_Free(void *);
     extern u8 gUiPanelExVtbl[];
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     ListNode *sp10;
     ListNode *spC;
     u8 sp8[4];
@@ -5254,11 +5254,11 @@ extern "C" void *Ui_DtorPanelEx(void *self, s16 doFree) {
         if (self != NULL) {
             owner->vtbl = gUiPanelMidVtbl;
             if (&owner->subAC != NULL) {
-                owner->subAC = lbl_80295478;
+                owner->subAC = gEmptyVtbl;
                 ((Obj *)&owner->subAC)->v2();
             }
             if (&owner->sub84 != NULL) {
-                owner->sub84 = lbl_80295478;
+                owner->sub84 = gEmptyVtbl;
                 ((Obj *)&owner->sub84)->v2();
             }
             if (&owner->list != NULL) {
@@ -5311,7 +5311,7 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
 
     ListNode *sp10;
     ListNode *spC;
@@ -5323,11 +5323,11 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = gUiPanelMidVtbl;
         if (&a0->subAC != NULL) {
-            a0->subAC = lbl_80295478;
+            a0->subAC = gEmptyVtbl;
             ((Obj *)&a0->subAC)->v2();
         }
         if (&a0->sub84 != NULL) {
-            a0->sub84 = lbl_80295478;
+            a0->sub84 = gEmptyVtbl;
             ((Obj *)&a0->sub84)->v2();
         }
         if (&a0->list != NULL) {
@@ -9909,7 +9909,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
     };
     void Heap_Free(void *);
     extern u8 lbl_802924DC[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern u8 lbl_80292504[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
@@ -9919,11 +9919,11 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         self->vtbl = lbl_802924DC;
         if (&self->subB0 != NULL) {
-            self->subB0 = lbl_80295478;
+            self->subB0 = gEmptyVtbl;
             ((Obj *)&self->subB0)->v2();
         }
         if (&self->sub88 != NULL) {
-            self->sub88 = lbl_80295478;
+            self->sub88 = gEmptyVtbl;
             ((Obj *)&self->sub88)->v2();
         }
         if (&self->sub40[0] != NULL) {
@@ -12695,7 +12695,7 @@ typedef struct {
 } Struct8013FC68_Args;
 extern u32 gUiPanelBVtbl;
 extern u32 gUiPanelMidVtbl;
-extern u32 lbl_80295478;
+extern u32 gEmptyVtbl;
 extern u8 gSeCueSlots[];
 extern u8 gFxChannels[];
 #include "common.h"
@@ -12709,7 +12709,7 @@ extern s32 gUnknown_0x8013C030;
 #include "global.h"
 #include "unit.h"
 extern u32 lbl_802918E0;
-extern u32 lbl_80295478;
+extern u32 gEmptyVtbl;
 
 extern s32 fn_800B503C(void);
 extern s32 fn_800B412C(void);

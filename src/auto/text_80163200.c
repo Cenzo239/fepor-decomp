@@ -2545,7 +2545,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern f32 lbl_8036A9AC;
     extern f32 lbl_8036A9B0;
     struct Obj {
@@ -2625,7 +2625,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     *(s16 *)((u8 *)r31 + 0x64) = 0;
     fn_8013BBF8((u8 *)r31 + 0x70);
     *(s32 *)((u8 *)r31 + 0x7C) = 0;
-    *(void **)((u8 *)r31 + 0x84) = lbl_80295478;
+    *(void **)((u8 *)r31 + 0x84) = gEmptyVtbl;
     {
         f32 f1 = lbl_8036A9AC;
         f32 f0 = lbl_8036A9B0;
@@ -2644,7 +2644,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         *(f32 *)((u8 *)r31 + 0xA8) = f0;
         ((Sub *)((u8 *)r31 + 0x84))->v1();
     }
-    *(void **)((u8 *)r31 + 0xAC) = lbl_80295478;
+    *(void **)((u8 *)r31 + 0xAC) = gEmptyVtbl;
     {
         f32 f1 = lbl_8036A9AC;
         f32 f0 = lbl_8036A9B0;
@@ -11466,7 +11466,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern u8 lbl_80285C18[];
     extern u8 lbl_80285CCC[];
     extern u8 lbl_80292504[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern f32 gF32_1;
     extern f32 lbl_8036AB70;
     struct Sub {
@@ -11567,7 +11567,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     {
         f32 f1;
         f32 f0;
-        void *vt = lbl_80295478;
+        void *vt = gEmptyVtbl;
         *(void **)((u8 *)self + 0x88) = vt;
         f1 = gF32_1;
         *(s32 *)((u8 *)self + 0x8C) = 0;
@@ -11589,7 +11589,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     {
         f32 f1;
         f32 f0;
-        void *vt = lbl_80295478;
+        void *vt = gEmptyVtbl;
         *(void **)((u8 *)self + 0xB0) = vt;
         f1 = gF32_1;
         *(s32 *)((u8 *)self + 0xB4) = 0;
@@ -11693,7 +11693,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
     extern u8 gUiPanelMidVtbl[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern f32 gF32_1;
     extern f32 lbl_8036AB70;
     struct Obj {
@@ -11772,7 +11772,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0x64) = 0;
     fn_8013BBF8((u8 *)self + 0x70);
     *(s32 *)((u8 *)self + 0x7C) = 0;
-    *(void **)((u8 *)self + 0x84) = lbl_80295478;
+    *(void **)((u8 *)self + 0x84) = gEmptyVtbl;
     {
         f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
@@ -11791,7 +11791,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
         *(f32 *)((u8 *)self + 0xA8) = f0;
         ((Sub *)((u8 *)self + 0x84))->v1();
     }
-    *(void **)((u8 *)self + 0xAC) = lbl_80295478;
+    *(void **)((u8 *)self + 0xAC) = gEmptyVtbl;
     {
         f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
@@ -13621,7 +13621,7 @@ extern "C" void *fn_8017D800(void *arg0, s16 arg1) {
     };
     void Heap_Free(void *);
     extern u8 lbl_80295448[];
-    extern u8 lbl_80295478[];
+    extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
     Owner *self;
@@ -13630,11 +13630,11 @@ extern "C" void *fn_8017D800(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         self->vtbl = lbl_80295448;
         if (&self->sub6c != NULL) {
-            self->sub6c = lbl_80295478;
+            self->sub6c = gEmptyVtbl;
             ((Obj *)&self->sub6c)->v2();
         }
         if (&self->sub44 != NULL) {
-            self->sub44 = lbl_80295478;
+            self->sub44 = gEmptyVtbl;
             ((Obj *)&self->sub44)->v2();
         }
         if (arg0 != NULL) {
