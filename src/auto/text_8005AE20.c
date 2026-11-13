@@ -6724,7 +6724,7 @@ void fn_8006DA98(void *arg0)
     void fn_802107A8(void);
     extern char lbl_8026B990[];
     extern u8 lbl_80311C68[];
-    extern void *lbl_80367324;
+    extern void *DEMORmode;
     extern void *lbl_80367320;
     extern void *lbl_80367318;
     extern void *lbl_80367314;
@@ -6771,66 +6771,66 @@ void fn_8006DA98(void *arg0)
         *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)arg0 + 0x22);
         *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)arg0 + 0x2a);
         fn_8022C1B8(dst + 0x32, (u8 *)arg0 + 0x32, 7);
-        lbl_80367324 = lbl_80311C68;
+        DEMORmode = lbl_80311C68;
     } else {
         switch (VIGetTvFormat()) {
         case 0:
-            lbl_80367324 = lbl_8029DFA8;
+            DEMORmode = lbl_8029DFA8;
             break;
         case 1:
-            lbl_80367324 = lbl_8029E020;
+            DEMORmode = lbl_8029E020;
             break;
         case 5:
-            lbl_80367324 = lbl_8029E05C;
+            DEMORmode = lbl_8029E05C;
             break;
         case 2:
-            lbl_80367324 = lbl_8029DFE4;
+            DEMORmode = lbl_8029DFE4;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(lbl_80367324, lbl_80311C68, 0, 0x10);
-        lbl_80367324 = lbl_80311C68;
+        fn_8022108C(DEMORmode, lbl_80311C68, 0, 0x10);
+        DEMORmode = lbl_80311C68;
     }
     lbl_80367320 = GXInit(b, c);
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         u16 w = *(u16 *)((u8 *)rm + 4);
         u16 h = *(u16 *)((u8 *)rm + 6);
         GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
     }
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         GXSetScissor(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_802214A8(*(u16 *)((u8 *)rm + 6), *(u16 *)((u8 *)rm + 8));
     }
     xfbHeight = (u16)fn_802216E0();
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_802211D0(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
-    fn_802212C8(*(u16 *)((u8 *)lbl_80367324 + 4), xfbHeight);
+    fn_802212C8(*(u16 *)((u8 *)DEMORmode + 4), xfbHeight);
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_80221824(*((u8 *)rm + 0x19), (u8 *)rm + 0x1a, 1, (u8 *)rm + 0x32);
     }
-    if (*((u8 *)lbl_80367324 + 0x19) != 0) {
+    if (*((u8 *)DEMORmode + 0x19) != 0) {
         fn_802246EC(2, 0);
     } else {
         fn_802246EC(1, 0);
     }
     fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
-    fn_80210C70(lbl_80367324);
+    fn_80210C70(DEMORmode);
     fn_802115A8(lbl_80367310);
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
-    if (*(u32 *)lbl_80367324 & 1) {
+    if (*(u32 *)DEMORmode & 1) {
         fn_802107A8();
     }
     fn_800C4588(buf);
@@ -6878,7 +6878,7 @@ void fn_8006DFD8(void) {
     void fn_80225204(s32, s32);
     extern char lbl_8026B990[];
     extern u8 lbl_80311C68[];
-    extern void *lbl_80367324;
+    extern void *DEMORmode;
     extern void *lbl_80367320;
     extern void *lbl_80367318;
     extern void *lbl_80367314;
@@ -6921,7 +6921,7 @@ body:
     OSReport(lbl_8026B990 + 0xF9);
     timed_out = 1;
     fn_8006DDDC();
-    src = lbl_80367324;
+    src = DEMORmode;
     buf = fn_800C4638(0x10000, lbl_8026B990, 0);
     a = fn_8021F4CC();
     b = fn_8021F250();
@@ -6947,66 +6947,66 @@ body:
         *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)src + 0x22);
         *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)src + 0x2a);
         fn_8022C1B8(dst + 0x32, (u8 *)src + 0x32, 7);
-        lbl_80367324 = lbl_80311C68;
+        DEMORmode = lbl_80311C68;
     } else {
         switch (VIGetTvFormat()) {
         case 0:
-            lbl_80367324 = lbl_8029DFA8;
+            DEMORmode = lbl_8029DFA8;
             break;
         case 1:
-            lbl_80367324 = lbl_8029E020;
+            DEMORmode = lbl_8029E020;
             break;
         case 5:
-            lbl_80367324 = lbl_8029E05C;
+            DEMORmode = lbl_8029E05C;
             break;
         case 2:
-            lbl_80367324 = lbl_8029DFE4;
+            DEMORmode = lbl_8029DFE4;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(lbl_80367324, lbl_80311C68, 0, 0x10);
-        lbl_80367324 = lbl_80311C68;
+        fn_8022108C(DEMORmode, lbl_80311C68, 0, 0x10);
+        DEMORmode = lbl_80311C68;
     }
     lbl_80367320 = GXInit(b, c);
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         u16 w = *(u16 *)((u8 *)rm + 4);
         u16 h = *(u16 *)((u8 *)rm + 6);
         GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
     }
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         GXSetScissor(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_802214A8(*(u16 *)((u8 *)rm + 6), *(u16 *)((u8 *)rm + 8));
     }
     xfbHeight = (u16)fn_802216E0();
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_802211D0(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
-    fn_802212C8(*(u16 *)((u8 *)lbl_80367324 + 4), xfbHeight);
+    fn_802212C8(*(u16 *)((u8 *)DEMORmode + 4), xfbHeight);
     {
-        void *rm = lbl_80367324;
+        void *rm = DEMORmode;
         fn_80221824(*((u8 *)rm + 0x19), (u8 *)rm + 0x1a, 1, (u8 *)rm + 0x32);
     }
-    if (*((u8 *)lbl_80367324 + 0x19) != 0) {
+    if (*((u8 *)DEMORmode + 0x19) != 0) {
         fn_802246EC(2, 0);
     } else {
         fn_802246EC(1, 0);
     }
     fn_80221A40(lbl_80367318, 1);
     fn_80221A2C(0);
-    fn_80210C70(lbl_80367324);
+    fn_80210C70(DEMORmode);
     fn_802115A8(lbl_80367310);
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
-    if (*(u32 *)lbl_80367324 & 1) {
+    if (*(u32 *)DEMORmode & 1) {
         fn_802107A8();
     }
     fn_800C4588(buf);
@@ -7115,8 +7115,8 @@ s32 fn_8006E650(void) {
 }
 
 s32 fn_8006E658(void) {
-    extern s32 lbl_80367324;
-    return lbl_80367324;
+    extern s32 DEMORmode;
+    return DEMORmode;
 }
 
 void fn_8006E660(void)
@@ -7198,7 +7198,7 @@ void fn_8006E748(void)
     void fn_80222EB4(void);
     extern s32 lbl_8036732C;
     extern s32 lbl_803682A0;
-    extern void *lbl_80367324;
+    extern void *DEMORmode;
     extern f32 lbl_803692C8;
     extern f32 lbl_803692CC;
     extern f64 lbl_803692D0;
@@ -7212,7 +7212,7 @@ void fn_8006E748(void)
         fn_802208BC(0xFEEB);
         fn_80225BF4();
     }
-    rm = lbl_80367324;
+    rm = DEMORmode;
     if (*((u8 *)rm + 0x18) != 0) {
         flag = fn_8021173C();
         fn_80224F94(flag, lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
@@ -7256,7 +7256,7 @@ void DEMOInit(void *arg0)
     void fn_802107A8(void);
     extern char lbl_8026B990[];
     extern u8 lbl_80311C68[];
-    extern void *lbl_80367324;
+    extern void *DEMORmode;
     extern void *lbl_80367320;
     extern void *lbl_8036731C;
     extern void *lbl_80367318;
@@ -7300,31 +7300,31 @@ void DEMOInit(void *arg0)
         *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)arg0 + 0x22);
         *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)arg0 + 0x2a);
         fn_8022C1B8(dst + 0x32, (u8 *)arg0 + 0x32, 7);
-        lbl_80367324 = lbl_80311C68;
+        DEMORmode = lbl_80311C68;
     } else {
         switch (VIGetTvFormat()) {
         case 0:
-            lbl_80367324 = lbl_8029DFA8;
+            DEMORmode = lbl_8029DFA8;
             break;
         case 1:
-            lbl_80367324 = lbl_8029E020;
+            DEMORmode = lbl_8029E020;
             break;
         case 5:
-            lbl_80367324 = lbl_8029E05C;
+            DEMORmode = lbl_8029E05C;
             break;
         case 2:
-            lbl_80367324 = lbl_8029DFE4;
+            DEMORmode = lbl_8029DFE4;
             break;
         default:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(lbl_80367324, lbl_80311C68, 0, 0x10);
-        lbl_80367324 = lbl_80311C68;
+        fn_8022108C(DEMORmode, lbl_80311C68, 0, 0x10);
+        DEMORmode = lbl_80311C68;
     }
     arenaLo = OSGetArenaLo();
     OSGetArenaHi();
-    rm = lbl_80367324;
+    rm = DEMORmode;
     w = (*(u16 *)((u8 *)rm + 4) + 0xF) & 0xFFF0;
     fbSize = w * *(u16 *)((u8 *)rm + 8) * 2;
     lbl_80367310 = (void *)(((u32)arenaLo + 0x1F) & ~0x1Fu);
@@ -7334,35 +7334,35 @@ void DEMOInit(void *arg0)
     OSSetArenaLo((void *)(((u32)lbl_80367314 + (fbSize + 0x1F)) & ~0x1Fu));
     fn_800C5300();
     fn_800C50FC(lbl_8026B990 + 0x16b, 0x533333);
-    fn_80210C70(lbl_80367324);
+    fn_80210C70(DEMORmode);
     buf = fn_800C4638(0x80000, lbl_8026B990 + 0x170, 0x80000);
     lbl_8036731C = buf;
     lbl_80367320 = GXInit(buf, 0x80000);
     {
-        void *rm2 = lbl_80367324;
+        void *rm2 = DEMORmode;
         u16 w2 = *(u16 *)((u8 *)rm2 + 4);
         u16 h2 = *(u16 *)((u8 *)rm2 + 6);
         GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w2, (f32)h2, lbl_803692C8, lbl_803692CC);
     }
     {
-        void *rm2 = lbl_80367324;
+        void *rm2 = DEMORmode;
         GXSetScissor(0, 0, *(u16 *)((u8 *)rm2 + 4), *(u16 *)((u8 *)rm2 + 6));
     }
     {
-        void *rm2 = lbl_80367324;
+        void *rm2 = DEMORmode;
         fn_802214A8(*(u16 *)((u8 *)rm2 + 6), *(u16 *)((u8 *)rm2 + 8));
     }
     xfbHeight = (u16)fn_802216E0();
     {
-        void *rm2 = lbl_80367324;
+        void *rm2 = DEMORmode;
         fn_802211D0(0, 0, *(u16 *)((u8 *)rm2 + 4), *(u16 *)((u8 *)rm2 + 6));
     }
-    fn_802212C8(*(u16 *)((u8 *)lbl_80367324 + 4), xfbHeight);
+    fn_802212C8(*(u16 *)((u8 *)DEMORmode + 4), xfbHeight);
     {
-        void *rm2 = lbl_80367324;
+        void *rm2 = DEMORmode;
         fn_80221824(*((u8 *)rm2 + 0x19), (u8 *)rm2 + 0x1a, 1, (u8 *)rm2 + 0x32);
     }
-    if (*((u8 *)lbl_80367324 + 0x19) != 0) {
+    if (*((u8 *)DEMORmode + 0x19) != 0) {
         fn_802246EC(2, 0);
     } else {
         fn_802246EC(1, 0);
@@ -7373,7 +7373,7 @@ void DEMOInit(void *arg0)
     lbl_80367318 = lbl_80367314;
     fn_80211478();
     fn_802107A8();
-    if (*(u32 *)lbl_80367324 & 1) {
+    if (*(u32 *)DEMORmode & 1) {
         fn_802107A8();
     }
 }
