@@ -174,11 +174,11 @@ void fn_801B3258(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void *fn_800C4638(s32, void *, s32);
     extern u8 lbl_802979C8[];
-    extern u8 lbl_8027C128[];
+    extern u8 gUnitStatusStr[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_802979C8, arg1);
-    *(void **)((u8 *)temp_r31 + 0x30) = fn_800C4638(0x114, lbl_8027C128 + 0x68, 0);
+    *(void **)((u8 *)temp_r31 + 0x30) = fn_800C4638(0x114, gUnitStatusStr + 0x68, 0);
     *(s32 *)((u8 *)*(void **)((u8 *)temp_r31 + 0x30) + 0x14) = arg0;
     *(s32 *)((u8 *)*(void **)((u8 *)temp_r31 + 0x30) + 0x10) = 1;
 }
@@ -187,11 +187,11 @@ void fn_801B32C8(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void *fn_800C4638(s32, void *, s32);
     extern u8 lbl_80297984[];
-    extern u8 lbl_8027C128[];
+    extern u8 gUnitStatusStr[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_80297984, arg1);
-    *(void **)((u8 *)temp_r31 + 0x30) = fn_800C4638(0x114, lbl_8027C128 + 0x68, 0);
+    *(void **)((u8 *)temp_r31 + 0x30) = fn_800C4638(0x114, gUnitStatusStr + 0x68, 0);
     *(s32 *)((u8 *)*(void **)((u8 *)temp_r31 + 0x30) + 0x14) = arg0;
     *(s32 *)((u8 *)*(void **)((u8 *)temp_r31 + 0x30) + 0x10) = 0;
 }
@@ -235,9 +235,9 @@ void fn_801B3D68(void *arg0) {
 }
 
 void fn_801B4810(void) {
-    extern u16 lbl_8027C128[];
-    GActor_RequestRes((u8 *)lbl_8027C128 + 0xb1);
-    GActor_RequestRes((u8 *)lbl_8027C128 + 0x95);
+    extern u16 gUnitStatusStr[];
+    GActor_RequestRes((u8 *)gUnitStatusStr + 0xb1);
+    GActor_RequestRes((u8 *)gUnitStatusStr + 0x95);
 }
 
 void fn_801B484C(void *arg0, f32 f1, f32 f2, f32 f3, f32 f4) {
@@ -260,13 +260,13 @@ void fn_801B5DB0(void *arg0) {
     void fn_8006EEFC(void *, void *);
     s32 fn_8007C3BC(s32);
     u8 fn_8007C484(s32);
-    extern u8 lbl_8027C128[];
+    extern u8 gUnitStatusStr[];
     u8 *temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, u8 **, 0x30);
-    if (fn_8005C6A0(lbl_8027C128 + 0xE1) & 0x2000) {
+    if (fn_8005C6A0(gUnitStatusStr + 0xE1) & 0x2000) {
         if (fn_8007C484(fn_8007C3BC(M2C_FIELD(temp_r31, s32 *, 0x110)))) {
-            fn_8006EEFC(temp_r31 + 0x18, lbl_8027C128 + 0xE1);
+            fn_8006EEFC(temp_r31 + 0x18, gUnitStatusStr + 0xE1);
             Process_ClearFunc(arg0);
         }
     }
@@ -291,7 +291,7 @@ void UnitStatus_Init(void *arg0) {
     void *fn_8007C3BC(void *);
     void fn_8007C4D4(void *, s32);
     u8 fn_80028640(void);
-    extern u8 lbl_8027C128[];
+    extern u8 gUnitStatusStr[];
     extern f32 lbl_8036B0E0;
 
     u8 sp8[0x20];
@@ -309,7 +309,7 @@ void UnitStatus_Init(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x104) = 1.0f;
     *(s32 *)((u8 *)arg0 + 0x60) = 0;
     memset((u8 *)arg0 + 0x64, 0, 0xA0);
-    fn_8005C8B4(lbl_8027C128 + 0xE1);
+    fn_8005C8B4(gUnitStatusStr + 0xE1);
     *(u8 *)((u8 *)arg0 + 0x1C) = *(u8 *)((u8 *)unit + 0x19A);
     *(u8 *)((u8 *)arg0 + 0x1D) = Unit_GetHp(unit);
     *(u8 *)((u8 *)arg0 + 0x1E) = Unit_GetStr(unit);
@@ -323,7 +323,7 @@ void UnitStatus_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x26) = Unit_GetMov(unit);
     fn_801B6BE4(sp8);
     b = sp8[0xA];
-    f = (str = lbl_8027C128, 1.0f);
+    f = (str = gUnitStatusStr, 1.0f);
     *(u8 *)((u8 *)arg0 + 0x27) = b;
     str = (u8 *)str + 0xF2;
     *(u8 *)((u8 *)arg0 + 0x28) = sp8[0xB];
@@ -347,9 +347,9 @@ void UnitStatus_Init(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x58) = f;
     *(f32 *)((u8 *)arg0 + 0x5C) = f;
     if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), str) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
-        *(void **)((u8 *)arg0 + 0x110) = lbl_8027C128 + 0xFA;
-    } else if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), lbl_8027C128 + 0x105) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
-        *(void **)((u8 *)arg0 + 0x110) = lbl_8027C128 + 0x10E;
+        *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0xFA;
+    } else if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), gUnitStatusStr + 0x105) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
+        *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0x10E;
     } else {
         *(void **)((u8 *)arg0 + 0x110) = fn_8003A064(*(void **)((u8 *)arg0 + 0x14));
     }
@@ -17014,12 +17014,12 @@ void fn_801E080C(struct Unit *unit) {
     void *fn_8000CAA0(void *, void *);
     void *fn_800C4638(s32, void *, s32);
     extern u16 lbl_802979C8[];
-    extern u8 lbl_8027C128[];
+    extern u8 gUnitStatusStr[];
 
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_802979C8, 0);
-    M2C_FIELD(temp_r31, void **, 0x30) = fn_800C4638(0x114, lbl_8027C128 + 0x68, 0);
+    M2C_FIELD(temp_r31, void **, 0x30) = fn_800C4638(0x114, gUnitStatusStr + 0x68, 0);
     M2C_FIELD(M2C_FIELD(temp_r31, void **, 0x30), s32 *, 0x14) = unit->unk0;
     M2C_FIELD(M2C_FIELD(temp_r31, void **, 0x30), s32 *, 0x10) = 1;
 }
