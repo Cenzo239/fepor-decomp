@@ -165,7 +165,7 @@ static void PADDisable(s32 chan) {
     u32 fn_8023B930(u32 poll);
     extern u32 EnabledBits;
     extern u32 WaitingBits;
-    extern u32 lbl_8036867C;
+    extern u32 CheckingBits;
     extern u32 lbl_80368680;
     extern u32 __PADFixBits;
     s32 enabled;
@@ -176,7 +176,7 @@ static void PADDisable(s32 chan) {
     fn_8023B930(chanBit);
     EnabledBits &= ~chanBit;
     WaitingBits &= ~chanBit;
-    lbl_8036867C &= ~chanBit;
+    CheckingBits &= ~chanBit;
     lbl_80368680 &= ~chanBit;
     __PADFixBits &= ~chanBit;
     fn_80209C10(chan, 0);
@@ -260,7 +260,7 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     extern u32 cmdGetOrigin;
     extern u32 EnabledBits;
     extern u32 WaitingBits;
-    extern u32 lbl_8036867C;
+    extern u32 CheckingBits;
     u32 error;
     u32 chanBit;
 
@@ -273,7 +273,7 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     type &= ~0xFF;
 
     WaitingBits &= ~chanBit;
-    lbl_8036867C &= ~chanBit;
+    CheckingBits &= ~chanBit;
 
     if (!(error & 0xF) && (type & 0x80000000) && (type & 0x00100000) && (type & 0x40000000) &&
         !(type & 0x04000000) && !(type & 0x00080000) && !(type & 0x00040000)) {
@@ -305,7 +305,7 @@ u32 fn_802129C0(PADStatus *status)
   extern u32 EnabledBits;
   extern u32 lbl_80368670;
   extern u32 WaitingBits;
-  extern u32 lbl_8036867C;
+  extern u32 CheckingBits;
   extern u32 lbl_80368680;
   extern void (*lbl_80366FB4)(s32, PADStatus *, u32 *);
   u64 response;
@@ -350,9 +350,9 @@ u32 fn_802129C0(PADStatus *status)
       {
         status->err = 0;
         memset(status, 0, 10);
-        if (!(lbl_8036867C & bit))
+        if (!(CheckingBits & bit))
         {
-          lbl_8036867C |= bit;
+          CheckingBits |= bit;
           fn_8023C188(chan, PADTypeAndStatusCallback);
         }
       }
