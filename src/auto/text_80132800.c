@@ -11132,7 +11132,7 @@ s8 Ui_PlaySeCue(void *arg0, int arg1) {
     extern s32 gUiInputFlags;
     extern u8 gSeCueVtblBase[];
     extern u8 gSeCueVtbl0[];
-    extern u8 lbl_8029267C[];
+    extern u8 gSeCueVtbl1[];
     extern u8 lbl_8029260C[];
 
     s8 slot;
@@ -11175,7 +11175,7 @@ found:
         if (found != NULL) {
             *(void **)(found + 8) = gSeCueVtblBase;
             *(void **)found = src;
-            *(void **)(found + 8) = lbl_8029267C;
+            *(void **)(found + 8) = gSeCueVtbl1;
         }
         break;
     case 2:
@@ -11293,7 +11293,7 @@ s8 Fx_AllocSlot(void *name, s8 param, s16 duration) {
     extern u8 gFxSlots[];
     extern u8 gSeCueVtblBase[];
     extern u8 gSeCueVtbl0[];
-    extern u8 lbl_8029267C[];
+    extern u8 gSeCueVtbl1[];
     extern u8 lbl_8029260C[];
     extern f32 gMsPerFrame;
     s8 slot;
@@ -11334,7 +11334,7 @@ found:
             if (fx != NULL) {
                 *(void **)(fx + 8) = gSeCueVtblBase;
                 *(void **)fx = def;
-                *(void **)(fx + 8) = lbl_8029267C;
+                *(void **)(fx + 8) = gSeCueVtbl1;
             }
             break;
         case 2:
@@ -11569,7 +11569,7 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     void *Hash_Lookup(void *);
     extern u8 gSeCueVtblBase[];
     extern u8 gSeCueVtbl0[];
-    extern u8 lbl_8029267C[];
+    extern u8 gSeCueVtbl1[];
     extern u8 lbl_8029260C[];
     extern f32 gMsPerFrame;
 
@@ -11658,7 +11658,7 @@ after_search:
         if (slot != NULL) {
             *(void **)((u8 *)slot + 8) = gSeCueVtblBase;
             slot->names = (void **)def;
-            *(void **)((u8 *)slot + 8) = lbl_8029267C;
+            *(void **)((u8 *)slot + 8) = gSeCueVtbl1;
         }
         break;
     case 2:
