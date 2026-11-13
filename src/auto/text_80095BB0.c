@@ -111,97 +111,98 @@ char *Event_GetCmdFlagName(s32 flag)
     }
 }
 
-u32 Event_GetCmdFlagRes(s32 arg0) {
+/* Look up the resource pointer for a single event command flag bit. */
+u32 Event_GetCmdFlagRes(s32 flag) {
     void *Res_GetEntry(u8);
     void fn_800056A0(s32);
-    u32 var_r3;
-    u8 var_r5;
+    u32 res;
+    u8 entryId;
 
-    var_r5 = 0xFF;
-    switch (arg0) { /* irregular */
+    entryId = 0xFF;
+    switch (flag) { /* irregular */
     case 0x8000000:
-        var_r5 = 0x31;
+        entryId = 0x31;
         break;
     case 0x20000000:
-        var_r5 = 0x30;
+        entryId = 0x30;
         break;
     case 0x10000000:
-        var_r5 = 0x2F;
+        entryId = 0x2F;
         break;
     case 0x40000000:
-        var_r5 = 0x38;
+        entryId = 0x38;
         break;
     case 0x80000000:
-        var_r5 = 0x39;
+        entryId = 0x39;
         break;
     case 0x2000000:
-        var_r5 = 0x35;
+        entryId = 0x35;
         break;
     case 0x4000000:
-        var_r5 = 0x4C;
+        entryId = 0x4C;
         break;
     case 0x1000000:
-        var_r5 = 0x33;
+        entryId = 0x33;
         break;
     case 0x800000:
-        var_r5 = 0x5A;
+        entryId = 0x5A;
         break;
     case 0x400:
-        var_r5 = 0x32;
+        entryId = 0x32;
         break;
     case 0x2000:
-        var_r5 = 0x2A;
+        entryId = 0x2A;
         break;
     case 0x4000:
-        var_r5 = 0x2A;
+        entryId = 0x2A;
         break;
     case 0x1000:
-        var_r5 = 0x29;
+        entryId = 0x29;
         break;
     case 0x100:
-        var_r5 = 0x2B;
+        entryId = 0x2B;
         break;
     case 0x200:
-        var_r5 = 0x10;
+        entryId = 0x10;
         break;
     case 0x800:
-        var_r5 = 0x3F;
+        entryId = 0x3F;
         break;
     case 0x8000:
-        var_r5 = 0x41;
+        entryId = 0x41;
         break;
     case 0x10000:
-        var_r5 = 0x41;
+        entryId = 0x41;
         break;
     case 0x2:
-        var_r5 = 0x37;
+        entryId = 0x37;
         break;
     case 0x8:
-        var_r5 = 0x34;
+        entryId = 0x34;
         break;
     case 0x80:
-        var_r5 = 0x2E;
+        entryId = 0x2E;
         break;
     case 0x10:
-        var_r5 = 0x2C;
+        entryId = 0x2C;
         break;
     case 0x20:
-        var_r5 = 0x2D;
+        entryId = 0x2D;
         break;
     case 0x40000:
-        var_r5 = 0x54;
+        entryId = 0x54;
         break;
     }
-    if (var_r5 == 0xFF) {
+    if (entryId == 0xFF) {
         fn_800056A0(0);
         return 0U;
     }
-    var_r3 = *(u32 *)((u8 *)Res_GetEntry(var_r5) + 0x14);
-    if (var_r3 == 0U) {
+    res = *(u32 *)((u8 *)Res_GetEntry(entryId) + 0x14);
+    if (res == 0U) {
         fn_800056A0(0);
         return 0U;
     }
-    return var_r3;
+    return res;
 }
 
 s32 fn_80096264(u8 arg0) {
