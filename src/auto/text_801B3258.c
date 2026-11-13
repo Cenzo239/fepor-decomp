@@ -1055,7 +1055,7 @@ skip_loop1:
     return *(s32 *)((char *)arg0 + 0x228) + var_r6;
 }
 
-s32 fn_801B7734(void *arg0) {
+s32 AchieveList_SumBonuses(void *arg0) {
     s32 n;
     s32 sum;
     s32 i;
@@ -1609,7 +1609,7 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     void *Heap_Alloc(s32);
     void AchieveList_SetBaseGold(void *, s32);
     void AchieveList_Build(void *);
-    s32 fn_801B7734(void *);
+    s32 AchieveList_SumBonuses(void *);
     s32 fn_801B767C(void *);
     u8 fn_801E33F4(void *);
     void *Process_CreateChild(void *, s32);
@@ -1627,7 +1627,7 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     base = gBattleState;
     AchieveList_SetBaseGold(alloc, *(s32 *)(base + 0x1C));
     AchieveList_Build(alloc);
-    *(s16 *)(gBattleState + 0x72) = fn_801B7734(alloc);
+    *(s16 *)(gBattleState + 0x72) = AchieveList_SumBonuses(alloc);
     *(s32 *)(base + 0x1C) = fn_801B767C(alloc);
     if (((u32)(gBattleState[0x9E] & 1) != 1) && fn_801E33F4(gSystemSave)) {
         obj = Process_CreateChild(lbl_80297BA8, arg0);
@@ -1665,7 +1665,7 @@ void fn_801B893C(void *arg0) {
     void Process_ClearFunc(void);
     void Ui_PlaySeCue(void *, s32);
     s32 fn_801B767C(void *);
-    s32 fn_801B7734(void *);
+    s32 AchieveList_SumBonuses(void *);
     extern u8 lbl_8027C5E8[];
     extern void *gPadInput;
     extern s32 lbl_80368258;
@@ -1721,7 +1721,7 @@ void fn_801B893C(void *arg0) {
             if (i < *(s32 *)((u8 *)data + 0x224)) {
                 goto loop_body;
             }
-            *(s32 *)((u8 *)st + 0x24) = fn_801B7734(data);
+            *(s32 *)((u8 *)st + 0x24) = AchieveList_SumBonuses(data);
             *(s32 *)((u8 *)st + 0x28) = fn_801B767C(data);
             *(s32 *)st = 6;
             break;
@@ -1748,8 +1748,8 @@ void fn_801B893C(void *arg0) {
             }
             *(s32 *)((u8 *)slot + 0x10) = cur + 7;
             *(s32 *)((u8 *)st + 0x24) = *(s32 *)((u8 *)st + 0x24) + 7;
-            if (*(s32 *)((u8 *)st + 0x24) > fn_801B7734(data)) {
-                *(s32 *)((u8 *)st + 0x24) = fn_801B7734(data);
+            if (*(s32 *)((u8 *)st + 0x24) > AchieveList_SumBonuses(data)) {
+                *(s32 *)((u8 *)st + 0x24) = AchieveList_SumBonuses(data);
             }
             *(s32 *)((u8 *)st + 0x28) = *(s32 *)((u8 *)st + 0x28) + 7;
             if (*(s32 *)((u8 *)st + 0x28) > fn_801B767C(data)) {
@@ -1964,7 +1964,7 @@ void fn_801B9254(void *arg0) {
     M2C_UNK fn_8005C8B4(void *);
     M2C_UNK fn_80147188(M2C_UNK);
     s32 fn_801B767C(void *);
-    s32 fn_801B7734(void *);
+    s32 AchieveList_SumBonuses(void *);
     extern u8 lbl_8027C5E8[];
     s32 temp_r31;
     void *temp_r30;
@@ -1984,7 +1984,7 @@ void fn_801B9254(void *arg0) {
     *(s32 *)((u8 *)temp_r30 + 0x20) = 0;
     *(s32 *)((u8 *)temp_r30 + 0x24) = 0;
     temp_r31 = fn_801B767C(*(void **)((u8 *)temp_r30 + 0xC));
-    *(s32 *)((u8 *)temp_r30 + 0x28) = temp_r31 - fn_801B7734(*(void **)((u8 *)temp_r30 + 0xC));
+    *(s32 *)((u8 *)temp_r30 + 0x28) = temp_r31 - AchieveList_SumBonuses(*(void **)((u8 *)temp_r30 + 0xC));
     fn_8005C8B4(lbl_8027C5E8 + 0x9C);
 }
 
