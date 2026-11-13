@@ -11,7 +11,7 @@ typedef struct {
     s32 unkC;
 } Struct_8014589C;
 
-/* 2D sprite sheet / atlas used by Sprite_DrawFrame and siblings */
+/* 2D sprite sheet / atlas for Prim2D cell draws */
 typedef struct SpriteSheet {
     u8 pad00[0x48];
     u32 texture;   /* +0x48 */
