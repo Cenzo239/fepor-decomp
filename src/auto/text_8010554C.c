@@ -3341,7 +3341,7 @@ u8 fn_8010B658(void *arg0) {
     u8 Allegiance_Compare(s32, s32);
     void **fn_80037BD0(void *, s8);
     s32 fn_8010067C(s16, s16, void *);
-    void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
@@ -3469,7 +3469,7 @@ outer_cmp:
         p = (u8 *)((s32)p + (by << 6));
         tile = p[0xD];
         if (tile != v) {
-            fn_801014BC(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
+            Ai_SetUnitMoveTo(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
         }
     }
     return lbl_8032B3C0[0x21C];
@@ -3481,7 +3481,7 @@ u8 Ai_TrySelectApproachTile(void *arg0) {
     void *Terrain_GetEntry(u8);
     u8 Allegiance_Compare(s32, s32);
     s32 fn_8010067C(s16, s16, void *);
-    void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
@@ -3611,7 +3611,7 @@ outer_cmp:
         p = (u8 *)((s32)p + (by << 6));
         tile = p[0xD];
         if (tile != v) {
-            fn_801014BC(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
+            Ai_SetUnitMoveTo(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
         }
     }
     return lbl_8032B3C0[0x21C];
@@ -3623,7 +3623,7 @@ u8 fn_8010BB74(void *arg0) {
     u8 fn_800FE84C(s8, s8);
     void *Terrain_GetEntry(u8);
     s32 fn_8010067C(s16, s16, void *);
-    void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
     extern u8 Ai_UnitIsHostileToActive[];
@@ -3734,7 +3734,7 @@ outer_cmp:
         p = (u8 *)((s32)p + (by2 << 6));
         tile = p[0xD];
         if (tile != v) {
-            fn_801014BC(self, best1, best2, 1, 0xFFFF, 0, 0, -1);
+            Ai_SetUnitMoveTo(self, best1, best2, 1, 0xFFFF, 0, 0, -1);
         }
     }
     return lbl_8032B3C0[0x21C];
@@ -3749,7 +3749,7 @@ u8 fn_8010BDE0(s32 arg0) {
     s16 sp8;
 
     if (fn_80102334(arg0, 0, &spA, &sp8) != 0) {
-        fn_801014BC(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
         if ((lbl_8032B3C0[0x21C] != 0)) {
             if ((spA == (s8) gUiContext[0xD]) && (sp8 == (s8) gUiContext[0xE])) {
                 fn_800FB9C0(0x2C, 0, (s8) spA, (s8) sp8, -1, 0, 0);

@@ -19779,7 +19779,7 @@ void fn_800F9B58(void *arg0) {
 
 void fn_800F9DAC(void *arg0) {
     u8 fn_8010207C(s32, s16 *, s16 *);
-    void fn_801014BC(void *, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 lbl_8032B3C0[544];
 extern s32 lbl_803678F4;
 extern void *lbl_803678F8;
@@ -19789,7 +19789,7 @@ extern void *lbl_803678F8;
 
     if (!(lbl_8032B3C0[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
         fn_8010207C(M2C_FIELD(work, s32 *, 0x14), &x, &y) != 0) {
-        fn_801014BC(arg0, x, y, 1, M2C_FIELD(lbl_8032B3C0, u16 *, 4), 1, 0, -1);
+        Ai_SetUnitMoveTo(arg0, x, y, 1, M2C_FIELD(lbl_8032B3C0, u16 *, 4), 1, 0, -1);
     }
     if (lbl_803678F4 == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
@@ -20871,7 +20871,7 @@ void fn_800FBF70(s32 arg0) {
     u8 fn_80102360(void *, s16 *, s16 *, u8);
     void fn_800281D8(void *);
     void fn_80028160(void *);
-    void fn_801014BC(void *, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_800FF918(s32);
     void Process_ClearFunc(s32);
     extern u8 gUiContext[];
@@ -20891,7 +20891,7 @@ void fn_800FBF70(s32 arg0) {
         g[0x21C] = 0;
         fn_800281D8(ctx);
         fn_80028160(ctx);
-        fn_801014BC(unit, spA, sp8, 1, 0xFFFF, 0, 0, -1);
+        Ai_SetUnitMoveTo(unit, spA, sp8, 1, 0xFFFF, 0, 0, -1);
         if (g[0x21C] != 0) {
             fn_800FF918(saved);
         }
@@ -23017,7 +23017,7 @@ void fn_80101448(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_80101530(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
-void fn_801014BC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+void Ai_SetUnitMoveTo(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     fn_800FE2A0((void *)arg0, 5, arg7);
     fn_80101960(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }

@@ -16128,7 +16128,7 @@ s32 fn_80182704(void *arg0) {
     s8 fn_80017290(u8 *);
     s8 fn_800172D4(u8 *);
     u8 fn_800BE968(u8, u8, u8);
-    void fn_801014BC(void *, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_80101448(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
     struct Obj *p = arg0;
@@ -16140,7 +16140,7 @@ s32 fn_80182704(void *arg0) {
     if ((lbl_8032B3C0[1] & 2) || (p->unk254 & 0x03000000)) {
         return 0;
     }
-    fn_801014BC(p, temp_r3, temp_r30, 1, 0xFFFF, 1, 0, -1);
+    Ai_SetUnitMoveTo(p, temp_r3, temp_r30, 1, 0xFFFF, 1, 0, -1);
     if (lbl_8032B3C0[0x21C] == 0) {
         fn_80101448(p, temp_r3, temp_r30, 1, 0xFFFF, 1, 0, -1);
     }
@@ -16182,7 +16182,7 @@ s32 fn_8018286C(s32 arg0, s32 arg1) {
 
 s32 fn_80182A0C(s32 arg0) {
     u8 fn_800F5504(u8 *, s32);
-    void fn_801014BC(s32, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
@@ -16191,14 +16191,14 @@ s32 fn_80182A0C(s32 arg0) {
     s16 sp8;
 
     if ((fn_8010F52C(arg0, fn_80182C84) == 0) && (fn_8018D4CC(arg0, fn_80182C84) == 0) && (fn_800F5504(fn_80182C84, 0xF) == 0) && (fn_80101F0C(fn_80182C84, arg0, &spA, &sp8) != 0)) {
-        fn_801014BC(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
 }
 
 s32 fn_80182AC4(s32 arg0) {
     u8 fn_800F5504(u8 *, s32);
-    void fn_801014BC(s32, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
@@ -16208,7 +16208,7 @@ s32 fn_80182AC4(s32 arg0) {
     s16 sp8;
 
     if ((fn_8010F52C(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_800F5504(fn_80182CE4, 0xF) == 0) && (fn_80101F0C(fn_80182CE4, arg0, &spA, &sp8) != 0)) {
-        fn_801014BC(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
 }
@@ -16216,7 +16216,7 @@ s32 fn_80182AC4(s32 arg0) {
 s32 fn_80182B7C(s32 arg0) {
     void *fn_80017240(s32);
     u8 fn_800F5504(u8 *, s32);
-    void fn_801014BC(s32, s16, s16, s32, u16, s32, s32, s32);
+    void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
     u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
@@ -16238,7 +16238,7 @@ s32 fn_80182B7C(s32 arg0) {
     if ((fn_8010F52C(arg0, fn_80182E80) == 0) && (fn_8018D4CC(arg0, fn_80182E80) == 0) &&
         (fn_800F5504(fn_80182E80, 0xF) == 0) &&
         (fn_80101F0C(fn_80182E80, arg0, &spA, &sp8) != 0)) {
-        fn_801014BC(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
 }
