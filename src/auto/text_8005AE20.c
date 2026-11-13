@@ -5754,7 +5754,7 @@ void GXSetTevColor(s32,MaterialColor*);void GXSetChanMatColor(s32,MaterialColor*
 void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
 void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);
 extern u8 gMaterialTevStageCount;extern u8 gGMaterialAssertMsg[];extern s32 gMaterialStageIds[16];
-extern f32 gInv255f;extern u32 gTevColorReg2Scratch,gChanMatColorScratch,lbl_8036C458;
+extern f32 gInv255f;extern u32 gTevColorReg2Scratch,gChanMatColorScratch,gTevColorReg1Scratch;
 MaterialColor color,copy3,c3,copy4,c4,copy2,c2;
 s32 stage,r,g,b;
 s32 alpha;
@@ -5789,7 +5789,7 @@ if(((u8*)arg0)[8]>128||((u8*)arg0)[9]>128||((u8*)arg0)[10]>128){
 r=((((u8*)arg0)[8]-128)*255)>>7;g=((((u8*)arg0)[9]-128)*255)>>7;b=((((u8*)arg0)[10]-128)*255)>>7;
 if(r<0)r=0;if(g<0)g=0;if(b<0)b=0;
 if(gMaterialTevStageCount>=16)fn_8006DA64(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
-c2=*(MaterialColor*)&lbl_8036C458;
+c2=*(MaterialColor*)&gTevColorReg1Scratch;
 stage=gMaterialStageIds[gMaterialTevStageCount++];
 c2.r=r;c2.g=g;c2.b=b;
 copy2=c2;GXSetTevColor(2,&copy2);
