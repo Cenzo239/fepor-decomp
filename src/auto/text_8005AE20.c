@@ -5747,59 +5747,108 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     GXSetTevOrder(r28, r29, r30, 4);
     fn_802239D0(r28, 0);
 }
-s32 GMaterial_SetupColor(void *arg0,s32 arg1,void *arg2,void *arg3) {
-u8 GMaterial_EvalAlphaAnim(s32,s16,void*,f32);void GMaterial_EvalColorAnim(s32,s16,void*,f32);
-void GMaterial_Assert(void*,s32,void*);
-void GXSetTevColor(s32,MaterialColor*);void GXSetChanMatColor(s32,MaterialColor*);
-void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
-void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);
-extern u8 gMaterialTevStageCount;extern u8 gGMaterialAssertMsg[];extern s32 gMaterialStageIds[16];
-extern f32 gInv255f;extern u32 gTevColorReg2Scratch,gChanMatColorScratch,gTevColorReg1Scratch;
-MaterialColor color,copy3,c3,copy4,c4,copy2,c2;
-s32 stage,r,g,b;
-s32 alpha;
-color.r=((u8*)arg3)[8];color.g=((u8*)arg3)[9];color.b=((u8*)arg3)[10];color.a=((u8*)arg3)[11];
-if((*(u32*)arg0&0x8020)==0x8000)color.a=((u8*)arg0)[0x84];
-else{
-if(GMaterial_EvalAlphaAnim(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58))){
-alpha=(s32)(gInv255f*(f32)(((u8*)arg0)[11]*color.a));color.a=alpha;
-if(*(u16*)((u8*)arg2+8)&0x80){color.b=alpha;color.g=alpha;color.r=alpha;}
-}else color.a=(s32)(gInv255f*(f32)(((u8*)arg0)[11]*color.a));
-if(!color.a)return 0;
-}
-GMaterial_EvalColorAnim(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58));
-if(((u8*)arg0)[8]<128)color.r=(((u8*)arg0)[8]*color.r)>>7;
-if(((u8*)arg0)[9]<128)color.g=(((u8*)arg0)[9]*color.g)>>7;
-if(((u8*)arg0)[10]<128)color.b=(((u8*)arg0)[10]*color.b)>>7;
-if((*(u32*)((u8*)arg2+0x10)&0x1000)&&(((u8*)arg0)[8]<128||((u8*)arg0)[9]<128||((u8*)arg0)[10]<128)){
-if(gMaterialTevStageCount>=16)GMaterial_Assert(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
-c3=*(MaterialColor*)&gTevColorReg2Scratch;
-stage=gMaterialStageIds[gMaterialTevStageCount++];
-c3.r=color.r;c3.g=color.g;c3.b=color.b;c3.a=color.a;
-copy3=c3;GXSetTevColor(3,&copy3);
-GXSetTevOrder(stage,255,255,255);
-GXSetTevColorIn(stage,15,0,6,15);
-GXSetTevColorOp(stage,0,0,0,1,0);
-GXSetTevAlphaIn(stage,7,7,7,0);
-GXSetTevAlphaOp(stage,0,0,0,1,0);
-}
-c4=*(MaterialColor*)&gChanMatColorScratch;c4.r=color.r;c4.g=color.g;c4.b=color.b;c4.a=color.a;
-copy4=c4;GXSetChanMatColor(4,&copy4);
-if(((u8*)arg0)[8]>128||((u8*)arg0)[9]>128||((u8*)arg0)[10]>128){
-r=((((u8*)arg0)[8]-128)*255)>>7;g=((((u8*)arg0)[9]-128)*255)>>7;b=((((u8*)arg0)[10]-128)*255)>>7;
-if(r<0)r=0;if(g<0)g=0;if(b<0)b=0;
-if(gMaterialTevStageCount>=16)GMaterial_Assert(gGMaterialAssertMsg+1,44,gGMaterialAssertMsg+0x3f);
-c2=*(MaterialColor*)&gTevColorReg1Scratch;
-stage=gMaterialStageIds[gMaterialTevStageCount++];
-c2.r=r;c2.g=g;c2.b=b;
-copy2=c2;GXSetTevColor(2,&copy2);
-GXSetTevOrder(stage,255,255,255);
-GXSetTevColorIn(stage,15,12,4,0);
-GXSetTevColorOp(stage,0,0,0,1,0);
-GXSetTevAlphaIn(stage,7,7,7,0);
-GXSetTevAlphaOp(stage,0,0,0,1,0);
-}
-return 1;
+/* Compute material color/alpha and bind it to GX channel + optional TEV stages. */
+s32 GMaterial_SetupColor(void *mat, s32 animCtx, void *matParam, void *obj)
+{
+    u8 GMaterial_EvalAlphaAnim(s32, s16, void *, f32);
+    void GMaterial_EvalColorAnim(s32, s16, void *, f32);
+    void GMaterial_Assert(void *, s32, void *);
+    void GXSetTevColor(s32, MaterialColor *);
+    void GXSetChanMatColor(s32, MaterialColor *);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
+    extern u8 gMaterialTevStageCount;
+    extern u8 gGMaterialAssertMsg[];
+    extern s32 gMaterialStageIds[16];
+    extern f32 gInv255f;
+    extern u32 gTevColorReg2Scratch, gChanMatColorScratch, gTevColorReg1Scratch;
+    MaterialColor color, copy3, c3, copy4, c4, copy2, c2;
+    s32 stage, r, g, b;
+    s32 alpha;
+
+    color.r = ((u8 *)obj)[8];
+    color.g = ((u8 *)obj)[9];
+    color.b = ((u8 *)obj)[10];
+    color.a = ((u8 *)obj)[11];
+    if ((*(u32 *)mat & 0x8020) == 0x8000)
+        color.a = ((u8 *)mat)[0x84];
+    else {
+        if (GMaterial_EvalAlphaAnim(animCtx, *(s16 *)((u8 *)matParam + 10), &color,
+                                    *(f32 *)((u8 *)mat + 0x58))) {
+            alpha = (s32)(gInv255f * (f32)(((u8 *)mat)[11] * color.a));
+            color.a = alpha;
+            if (*(u16 *)((u8 *)matParam + 8) & 0x80) {
+                color.b = alpha;
+                color.g = alpha;
+                color.r = alpha;
+            }
+        } else
+            color.a = (s32)(gInv255f * (f32)(((u8 *)mat)[11] * color.a));
+        if (!color.a)
+            return 0;
+    }
+    GMaterial_EvalColorAnim(animCtx, *(s16 *)((u8 *)matParam + 10), &color,
+                            *(f32 *)((u8 *)mat + 0x58));
+    if (((u8 *)mat)[8] < 128)
+        color.r = (((u8 *)mat)[8] * color.r) >> 7;
+    if (((u8 *)mat)[9] < 128)
+        color.g = (((u8 *)mat)[9] * color.g) >> 7;
+    if (((u8 *)mat)[10] < 128)
+        color.b = (((u8 *)mat)[10] * color.b) >> 7;
+    if ((*(u32 *)((u8 *)matParam + 0x10) & 0x1000)
+        && (((u8 *)mat)[8] < 128 || ((u8 *)mat)[9] < 128 || ((u8 *)mat)[10] < 128)) {
+        if (gMaterialTevStageCount >= 16)
+            GMaterial_Assert(gGMaterialAssertMsg + 1, 44, gGMaterialAssertMsg + 0x3f);
+        c3 = *(MaterialColor *)&gTevColorReg2Scratch;
+        stage = gMaterialStageIds[gMaterialTevStageCount++];
+        c3.r = color.r;
+        c3.g = color.g;
+        c3.b = color.b;
+        c3.a = color.a;
+        copy3 = c3;
+        GXSetTevColor(3, &copy3);
+        GXSetTevOrder(stage, 255, 255, 255);
+        GXSetTevColorIn(stage, 15, 0, 6, 15);
+        GXSetTevColorOp(stage, 0, 0, 0, 1, 0);
+        GXSetTevAlphaIn(stage, 7, 7, 7, 0);
+        GXSetTevAlphaOp(stage, 0, 0, 0, 1, 0);
+    }
+    c4 = *(MaterialColor *)&gChanMatColorScratch;
+    c4.r = color.r;
+    c4.g = color.g;
+    c4.b = color.b;
+    c4.a = color.a;
+    copy4 = c4;
+    GXSetChanMatColor(4, &copy4);
+    if (((u8 *)mat)[8] > 128 || ((u8 *)mat)[9] > 128 || ((u8 *)mat)[10] > 128) {
+        r = ((((u8 *)mat)[8] - 128) * 255) >> 7;
+        g = ((((u8 *)mat)[9] - 128) * 255) >> 7;
+        b = ((((u8 *)mat)[10] - 128) * 255) >> 7;
+        if (r < 0)
+            r = 0;
+        if (g < 0)
+            g = 0;
+        if (b < 0)
+            b = 0;
+        if (gMaterialTevStageCount >= 16)
+            GMaterial_Assert(gGMaterialAssertMsg + 1, 44, gGMaterialAssertMsg + 0x3f);
+        c2 = *(MaterialColor *)&gTevColorReg1Scratch;
+        stage = gMaterialStageIds[gMaterialTevStageCount++];
+        c2.r = r;
+        c2.g = g;
+        c2.b = b;
+        copy2 = c2;
+        GXSetTevColor(2, &copy2);
+        GXSetTevOrder(stage, 255, 255, 255);
+        GXSetTevColorIn(stage, 15, 12, 4, 0);
+        GXSetTevColorOp(stage, 0, 0, 0, 1, 0);
+        GXSetTevAlphaIn(stage, 7, 7, 7, 0);
+        GXSetTevAlphaOp(stage, 0, 0, 0, 1, 0);
+    }
+    return 1;
 }
 
 void fn_80069C7C(void) {
