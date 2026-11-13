@@ -527,41 +527,26 @@ s32 fn_80013F6C(void *arg0, s32 arg1) {
 }
 
 s32 fn_80014000(s32 arg0, s32 arg1) {
-    void *fn_800C4638(s32, void *, s32);
-    extern u8 lbl_80267E28[];
-    extern s16 lbl_80367194;
-    extern s32 lbl_803671A8;
-    extern s32 lbl_80367190;
-    extern s16 lbl_80367196;
-    extern void *lbl_80367198;
-    extern s16 lbl_8036719C;
-    extern s16 lbl_8036719E;
-    extern void *lbl_803671A0;
-    s32 a;
-    s32 b;
-    void *temp;
-
-    a = arg0;
-    b = arg1;
-    lbl_80367194 = a;
-    lbl_803671A8 = 0;
-    lbl_80367190 = 0;
-    lbl_80367196 = 0;
-    temp = fn_800C4638(a << 2, lbl_80267E28, 0);
-    lbl_80367198 = temp;
-    if (temp == 0) {
-        lbl_803671A8 = 4;
-        return 0;
-    }
-    lbl_8036719C = b;
-    lbl_8036719E = 0;
-    temp = fn_800C4638(b << 4, lbl_80267E28, 0);
-    lbl_803671A0 = temp;
-    if (temp == 0) {
-        lbl_803671A8 = 4;
-        return 0;
-    }
-    return 1;
+void *fn_800C4638(s32, void *, s32);
+extern u8 lbl_80267E28[];
+extern s16 lbl_80367194, lbl_80367196, lbl_8036719C, lbl_8036719E;
+extern s32 lbl_803671A8, lbl_80367190;
+extern void *lbl_80367198, *lbl_803671A0;
+void *temp;
+s32 size=arg0<<2;
+lbl_803671A8=0;
+lbl_80367190=0;
+lbl_80367194=arg0;
+lbl_80367196=0;
+temp=fn_800C4638(size,lbl_80267E28,0);
+lbl_80367198=temp;
+if(!temp) {lbl_803671A8=4;return 0;}
+lbl_8036719C=arg1;
+lbl_8036719E=0;
+temp=fn_800C4638(arg1<<4,lbl_80267E28,0);
+lbl_803671A0=temp;
+if(!temp) {lbl_803671A8=4;return 0;}
+return 1;
 }
 
 void fn_800140B4(void *arg0, u8 arg1) {
