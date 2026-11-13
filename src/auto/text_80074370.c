@@ -2894,7 +2894,7 @@ void Face_DebugScaleProc(void *arg0) {
     extern f32 gFaceDbgTextX;
     extern f32 gFaceDbgPosY;
     extern f32 gFaceDbgTextScale;
-    extern f32 lbl_803693E8;
+    extern f32 gFaceDbgPosX;
     char sp8[0x100];
     s32 buttons;
     s32 prev;
@@ -2927,7 +2927,7 @@ void Face_DebugScaleProc(void *arg0) {
     Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_803693D4, *(f32 *)((u8 *)arg0 + 0x34));
     Prim2D_PrepareTex();
     temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
-    fn_8007B4D8((s32)(gFaceDbgPosY / temp_f2), (s32)(lbl_803693E8 / temp_f2), 0xFF,
+    fn_8007B4D8((s32)(gFaceDbgPosY / temp_f2), (s32)(gFaceDbgPosX / temp_f2), 0xFF,
                 *(void **)((u8 *)arg0 + 0x30));
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
