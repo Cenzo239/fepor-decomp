@@ -3,7 +3,7 @@
 #include "common.h"
 #include "common.h"
 
-extern u16 lbl_803682FC;
+extern u16 gTabMenuHeaderRect;
 extern u16 lbl_80368304;
 extern u16 lbl_8036831C;
 extern u16 lbl_8036830C;

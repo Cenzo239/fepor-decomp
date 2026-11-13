@@ -391,7 +391,7 @@ void TabMenu_Draw(void *arg0) {
     extern f32 lbl_8036B6F0;
     extern f32 lbl_8036B6E8;
     extern u8 lbl_80332000[];
-    extern s16 lbl_803682FC;
+    extern s16 gTabMenuHeaderRect;
     extern f64 lbl_8036B6E0;
     extern f32 lbl_8036B6F4;
     extern f32 lbl_8036B6F8;
@@ -415,12 +415,12 @@ void TabMenu_Draw(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    p = &lbl_803682FC;
+    p = &gTabMenuHeaderRect;
     t2 = p[1];
     t6 = p[3];
-    t0 = lbl_803682FC;
+    t0 = gTabMenuHeaderRect;
     t4 = p[2];
-    fn_8000770C(lbl_8036B6F4, lbl_8036B6F8, (f32)lbl_803682FC, (f32)p[1], (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
+    fn_8000770C(lbl_8036B6F4, lbl_8036B6F8, (f32)gTabMenuHeaderRect, (f32)p[1], (f32)(s16)(t4 - t0), (f32)(s16)(t6 - t2));
     Prim2D_Begin();
     alpha = 0x40;
     if ((s8)*(u8 *)((u8 *)arg0 + 0x30) == 0) {
