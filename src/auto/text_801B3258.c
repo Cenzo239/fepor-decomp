@@ -4535,7 +4535,7 @@ extern "C" void fn_801BE1EC(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_801BE21C(void *arg0, s16 arg1) {
+extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
     void fn_80140304(void *, s32);
     void fn_800C428C(void *);
     extern void lbl_80297E78;
