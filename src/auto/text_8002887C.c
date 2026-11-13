@@ -2102,11 +2102,12 @@ void fn_8002D82C(void) {
     lbl_80367254 = 0;
 }
 
-void Battle_ClearProcIfFxIdle(s32 arg0) {
+/* Clear the process callback once none of the battle FX name slots are active. */
+void Battle_ClearProcIfFxIdle(s32 proc) {
     s8 Fx_FindSlotByName(u8 *);
     void Process_ClearFunc(s32);
     extern u8 Battle_str[];
-    u8 flag;
+    u8 fxBusy;
 
     if ((s8)Fx_FindSlotByName(Battle_str + 0x1E3) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x1F1) != -1
@@ -2114,12 +2115,12 @@ void Battle_ClearProcIfFxIdle(s32 arg0) {
         || (s8)Fx_FindSlotByName(Battle_str + 0x20D) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x21B) != -1
         || (s8)Fx_FindSlotByName(Battle_str + 0x22B) != -1) {
-        flag = 1;
+        fxBusy = 1;
     } else {
-        flag = 0;
+        fxBusy = 0;
     }
-    if (flag == 0) {
-        Process_ClearFunc(arg0);
+    if (fxBusy == 0) {
+        Process_ClearFunc(proc);
     }
 }
 
