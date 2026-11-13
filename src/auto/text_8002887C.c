@@ -2001,7 +2001,7 @@ void Battle_LoadMap(void)
     void Heap_Select(void *);
     void fn_80016498(void);
     void fn_80015D54(void);
-    void fn_80018F08(void);
+    void Camera_InitSlots(void);
     void DebugPrint(char *, ...);
 
     Heap_Create(Battle_str + 0x176, 0x180000);
@@ -2018,7 +2018,7 @@ void Battle_LoadMap(void)
     Heap_Select(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
-    fn_80018F08();
+    Camera_InitSlots();
     DebugPrint((char *)(Battle_str + 0x1BF), Heap_GetFree());
 }
 #pragma global_optimizer reset

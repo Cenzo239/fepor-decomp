@@ -1302,7 +1302,7 @@ extern "C" void fn_80018EC0(void)
 #pragma cplusplus on
 #pragma optimization_level 2
 #pragma peephole off
-extern "C" void fn_80018F08(void) {
+extern "C" void Camera_InitSlots(void) {
     s32 Camera_Get(void);
     extern u8 lbl_802CA2C8[];
     extern u8 lbl_803671C1;
