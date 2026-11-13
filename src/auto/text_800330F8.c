@@ -8065,10 +8065,10 @@ void fn_80045C68(void *arg0)
     extern u8 lbl_80367295;
     extern u8 lbl_8036729C;
     extern u8 lbl_80367298;
-    u8 *self;
     void *light;
+    void *self;
 
-    self = (u8 *)arg0 + 0x70;
+    self = arg0;
     fn_80067460(0);
     fn_80066F64();
     light = fn_80067440(0);
@@ -8082,7 +8082,7 @@ void fn_80045C68(void *arg0)
     ((u8 *)light)[6] = (&lbl_80367298)[2];
     light = fn_80067440(2);
     fn_800673E4(fn_80067440(0), light);
-    fn_8006720C(self);
+    fn_8006720C((u8 *)self + 0x70);
 }
 
 #pragma global_optimizer off
@@ -11820,6 +11820,7 @@ void *fn_80050AB8(void *arg0) {
     void *base;
     s32 idx;
     void *r;
+    u32 tmp;
 
     r = *(void **)((u8 *)arg0 + 0x18C);
     base = r;
@@ -11842,9 +11843,9 @@ void *fn_80050AB8(void *arg0) {
     }
     result = *(void **)((u8 *)arg0 + 0x188);
     result = (void *)((u8 *)result + (idx * 4));
-    r = *(void **)((u8 *)result + 0x5C);
-    result = r;
-    if (r == 0) {
+    tmp = *(u32 *)((u8 *)result + 0x5C);
+    result = (void *)tmp;
+    if (tmp == 0) {
         result = *(void **)((u8 *)base + 0x18);
     }
     if (result == 0) {
