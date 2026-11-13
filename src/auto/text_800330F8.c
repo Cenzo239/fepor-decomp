@@ -4131,6 +4131,7 @@ s32 fn_8003BF5C(void *arg0) {
     u8 fn_80091D74(void *);
     s32 adj;
     u8 temp;
+    u8 flag;
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 8) == 0) {
         return 0;
@@ -4141,8 +4142,9 @@ s32 fn_8003BF5C(void *arg0) {
     if (fn_80091D74(arg0) != 0) {
         return 0;
     }
+    flag = Status_Test((u8 *)arg0 + 0x1BC, 9);
     adj = 4;
-    if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
+    if (flag != 0) {
         adj = -3;
     }
     *((u8 *)arg0 + 0x19C) = (u8)(*((u8 *)arg0 + 0x19C) + adj);
