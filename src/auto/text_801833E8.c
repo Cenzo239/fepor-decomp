@@ -11842,14 +11842,14 @@ s32 fn_8019FCAC(void) {
 }
 
 s32 fn_8019FCD0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    M2C_UNK fn_80017840(M2C_UNK, s32, f32, f32, f32);
-    fn_80017840(1, arg0, (f32) arg1, (f32) arg2, (f32) arg3);
+    M2C_UNK CamPath_AddPoint(M2C_UNK, s32, f32, f32, f32);
+    CamPath_AddPoint(1, arg0, (f32) arg1, (f32) arg2, (f32) arg3);
     return 1;
 }
 
 s32 fn_8019FD40(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_Find(void *);
-    void fn_80017840(s32, s32, f32, f32, f32);
+    void CamPath_AddPoint(s32, s32, f32, f32, f32);
     extern u8 E_EventState_script[];
     void *temp;
     s32 scale;
@@ -11862,7 +11862,7 @@ s32 fn_8019FD40(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         scale = 1;
     }
     fscale = (f32)scale;
-    fn_80017840(0, arg0,
+    CamPath_AddPoint(0, arg0,
                 0.5f + (f32)arg1 / fscale,
                 0.5f + (f32)arg2 / fscale,
                 (f32)arg3 / fscale);

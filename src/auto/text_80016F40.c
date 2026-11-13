@@ -316,7 +316,7 @@ void fn_800177E0(s32 arg0) {
     M2C_FIELD(p, u8 *, 0x3C) = 0;
 }
 
-s32 fn_80017840(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
+s32 CamPath_AddPoint(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 {
     s32 sp0;
     s32 v5;
