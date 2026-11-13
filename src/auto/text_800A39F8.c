@@ -2154,7 +2154,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     extern f32 gScrollBgDepth;
     extern f32 gScrollBgOne;
     extern f32 gScrollBgWidth;
-    extern f32 lbl_80369B70;
+    extern f32 gScrollBgHeight;
     extern f32 lbl_80369B74;
     extern f32 lbl_80369B78;
     extern f32 lbl_80369B7C;
@@ -2168,7 +2168,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     Prim2D_BindTexture(M2C_FIELD(arg0, s32 *, 0x30), 0, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, lbl_80369B70);
+    Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, gScrollBgHeight);
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x34);
     temp_f2 = lbl_80369B74 * (f32) temp_r3;
     Prim2D_SetUvCorners(temp_r3, gScrollBgZero, temp_f2, gScrollBgOne, lbl_80369B78 + temp_f2);
@@ -2178,7 +2178,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     Prim2D_BindTexture(M2C_FIELD(arg0, s32 *, 0x30), 1, 0x30);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, lbl_80369B70);
+    Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, gScrollBgHeight);
     Prim2D_SetColor(0x32, 0x32, 0x32, 0);
     Prim2D_SetPrimParam(lbl_80369B80);
     Prim2D_EndPrim();
