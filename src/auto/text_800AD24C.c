@@ -664,7 +664,8 @@ void fn_800AE5A8(void *arg0) {
     }
 }
 
-void Battle_InitPhaseBanner(void *arg0) {
+/* Set up the phase-change banner: ambient FX for this army, banner widget, and draw callback. */
+void Battle_InitPhaseBanner(void *proc) {
     void *fn_8014D8FC(void *);
     s8 Fx_FindSlotByName(void *);
     void Fx_StartSlot(s32, void *, s32, s32);
@@ -676,51 +677,51 @@ void Battle_InitPhaseBanner(void *arg0) {
     extern u8 gFxChannels[];
     extern f32 lbl_80369C7C;
 
-    void *temp_r30;
-    void *var_r29;
-    void *var_r3;
-    u8 temp_r0;
-    u8 var_r6;
-    s32 var_ctr;
+    void *chapter;
+    void *fxName;
+    void *bannerName;
+    u8 chapterId;
+    u8 slot;
+    s32 remaining;
     f32 f0;
 
-    temp_r30 = fn_8014D8FC(gBattleState);
-    *(s32 *)((u8 *)arg0 + 0x30) = 0;
-    *(s32 *)((u8 *)arg0 + 0x34) = 0;
-    *(f32 *)((u8 *)arg0 + 0x38) = 0.0f;
-    *(f32 *)((u8 *)arg0 + 0x3C) = 0.0f;
-    *(s32 *)((u8 *)arg0 + 0x44) = 0xF;
-    *(s32 *)((u8 *)arg0 + 0x48) = 0x1E;
-    var_r29 = NULL;
+    chapter = fn_8014D8FC(gBattleState);
+    *(s32 *)((u8 *)proc + 0x30) = 0;
+    *(s32 *)((u8 *)proc + 0x34) = 0;
+    *(f32 *)((u8 *)proc + 0x38) = 0.0f;
+    *(f32 *)((u8 *)proc + 0x3C) = 0.0f;
+    *(s32 *)((u8 *)proc + 0x44) = 0xF;
+    *(s32 *)((u8 *)proc + 0x48) = 0x1E;
+    fxName = NULL;
     if ((s8)Fx_FindSlotByName(lbl_8026EAA0 + 0x2B) == -1) {
         switch (gBattleState[0x11]) {
         case 0:
-            temp_r0 = *((u8 *)temp_r30 + 0x3C);
-            if ((s32)temp_r0 <= 0x12 || (s32)temp_r0 >= 0x32) {
-                var_r29 = lbl_8026EAA0 + 0x38;
+            chapterId = *((u8 *)chapter + 0x3C);
+            if ((s32)chapterId <= 0x12 || (s32)chapterId >= 0x32) {
+                fxName = lbl_8026EAA0 + 0x38;
             } else {
-                var_r29 = lbl_8026EAA0 + 0x46;
+                fxName = lbl_8026EAA0 + 0x46;
             }
             break;
         case 1:
-            temp_r0 = *((u8 *)temp_r30 + 0x3C);
-            if ((s32)temp_r0 <= 0x12 || (s32)temp_r0 >= 0x32) {
-                var_r29 = lbl_8026EAA0 + 0x54;
+            chapterId = *((u8 *)chapter + 0x3C);
+            if ((s32)chapterId <= 0x12 || (s32)chapterId >= 0x32) {
+                fxName = lbl_8026EAA0 + 0x54;
             } else {
-                var_r29 = lbl_8026EAA0 + 0x62;
+                fxName = lbl_8026EAA0 + 0x62;
             }
             break;
         case 2:
-            var_r29 = lbl_8026EAA0 + 0x70;
+            fxName = lbl_8026EAA0 + 0x70;
             break;
         case 3:
-            var_r29 = lbl_8026EAA0 + 0x80;
+            fxName = lbl_8026EAA0 + 0x80;
             break;
         }
-        if (var_r29 != NULL) {
-            for (var_r6 = 1, var_ctr = 3; var_ctr != 0; var_ctr--, var_r6++) {
-                if (!(gFxChannels[var_r6 * 0x30 + 0xC] & 1)) {
-                    Fx_StartSlot(var_r6, var_r29, 0x64, 1);
+        if (fxName != NULL) {
+            for (slot = 1, remaining = 3; remaining != 0; remaining--, slot++) {
+                if (!(gFxChannels[slot * 0x30 + 0xC] & 1)) {
+                    Fx_StartSlot(slot, fxName, 0x64, 1);
                     break;
                 }
             }
@@ -728,27 +729,27 @@ void Battle_InitPhaseBanner(void *arg0) {
     }
     switch (gBattleState[0x11]) {
     case 0:
-        var_r3 = lbl_8026EAA0 + 0x90;
+        bannerName = lbl_8026EAA0 + 0x90;
         break;
     case 1:
-        var_r3 = lbl_8026EAA0 + 0xA0;
+        bannerName = lbl_8026EAA0 + 0xA0;
         break;
     case 2:
-        var_r3 = lbl_8026EAA0 + 0xAF;
+        bannerName = lbl_8026EAA0 + 0xAF;
         break;
     case 3:
-        var_r3 = lbl_8026EAA0 + 0xBE;
+        bannerName = lbl_8026EAA0 + 0xBE;
         break;
     default:
-        var_r3 = NULL;
+        bannerName = NULL;
         break;
     }
-    *(void **)((u8 *)arg0 + 0x4C) = fn_80053C30(var_r3, arg0);
-    *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x1C) = 0.0f;
-    *(s16 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) = 0x63;
-    fn_80053658(*(void **)((u8 *)arg0 + 0x4C), 0, arg0);
-    *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x44) = Battle_ClearPhaseBannerChild;
-    fn_80059208(Battle_DrawPhaseBanner, arg0);
+    *(void **)((u8 *)proc + 0x4C) = fn_80053C30(bannerName, proc);
+    *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) + 0x1C) = 0.0f;
+    *(s16 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) = 0x63;
+    fn_80053658(*(void **)((u8 *)proc + 0x4C), 0, proc);
+    *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) + 0x44) = Battle_ClearPhaseBannerChild;
+    fn_80059208(Battle_DrawPhaseBanner, proc);
 }
 
 void Battle_ClearPhaseBannerChild(void *arg0) {
