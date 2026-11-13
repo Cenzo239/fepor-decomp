@@ -3473,7 +3473,7 @@ void fn_802380D0(void* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-extern f64 lbl_8036C138;
+extern f64 __floor_huge;
 extern f64 lbl_8036C140;
 f64 floor(f64 x) {
     s32 i0;
@@ -3487,7 +3487,7 @@ f64 floor(f64 x) {
     j0 = ((i0 >> 20) & 0x7ff) - 0x3ff;
     if (j0 < 20) {
         if (j0 < 0) {
-            if (lbl_8036C138 + x > lbl_8036C140) {
+            if (__floor_huge + x > lbl_8036C140) {
                 if (i0 >= 0) {
                     i1 = 0;
                     i0 = 0;
@@ -3501,7 +3501,7 @@ f64 floor(f64 x) {
             if (((i0 & i) | i1) == 0) {
                 return x;
             }
-            if (lbl_8036C138 + x > lbl_8036C140) {
+            if (__floor_huge + x > lbl_8036C140) {
                 if (i0 < 0) {
                     i0 += 0x00100000 >> j0;
                 }
@@ -3519,7 +3519,7 @@ f64 floor(f64 x) {
         if ((i1 & i) == 0) {
             return x;
         }
-        if (lbl_8036C138 + x > lbl_8036C140) {
+        if (__floor_huge + x > lbl_8036C140) {
             if (i0 < 0) {
                 if (j0 == 20) {
                     i0 += 1;

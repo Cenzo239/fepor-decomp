@@ -238,7 +238,7 @@ static void CompleteTransfer(s32 chan)
     }
 }
 
-extern f64 lbl_8036C138;
+extern f64 __floor_huge;
 extern f64 lbl_8036C140;
 
 extern f64 lbl_8036C148;
@@ -1232,5 +1232,29 @@ block_42:
             }
         }
     }
+}
+
+s32 fn_8023A964(void) {
+    u32 fn_80203AAC(void);
+    extern u32 lbl_80368808;
+    extern u32 lbl_8036880C;
+    extern u32 lbl_80368810;
+    extern u32 lbl_80368814;
+    u32 magic;
+    s32 zero;
+
+    if ((u32)(lbl_80368814 + 0x5A010000) == 0x5AU) {
+        return 0;
+    }
+    if ((fn_80203AAC() & 0x10000000) == 0) {
+        lbl_80368810 = 0;
+        return 2;
+    }
+    magic = 0xA5FF005A;
+    zero = 0;
+    lbl_80368810 = magic;
+    lbl_80368808 = zero;
+    lbl_8036880C = 1;
+    return zero;
 }
 
