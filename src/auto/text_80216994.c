@@ -2837,6 +2837,7 @@ s32 __CARDPutControlBlock(void *arg0, s32 arg1);
 int __CARDEraseSector(s32 chan, u32 addr, void *callback);
 void __CARDEraseCallback(s32 chan, s32 result);
 #pragma dont_inline on
+/* Continue a CARD file write: on success update dir time or erase/write next FAT block. */
 void __CARDWriteCallback(s32 chan, s32 result) {
     u8 *card;
     void (*callback)(s32, s32);
@@ -2851,7 +2852,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
 
     fileInfo = *(u8 **)(card + 0xC0);
     if (*(s32 *)(fileInfo + 0xC) < 0) {
-        result = -14;
+        result = CARD_RESULT_ENCODING;
         goto error;
     }
 
@@ -2867,7 +2868,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
         *(s32 *)(fileInfo + 0x8) += *(s32 *)(card + 0xC);
         *(u16 *)(fileInfo + 0x10) = fat[*(u16 *)(fileInfo + 0x10)];
         if (*(u16 *)(fileInfo + 0x10) < 5 || *(u16 *)(fileInfo + 0x10) >= *(u16 *)(card + 0x10)) {
-            result = -6;
+            result = CARD_RESULT_BROKEN;
             goto error;
         }
         result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * (u32)*(u16 *)(fileInfo + 0x10), __CARDEraseCallback);
