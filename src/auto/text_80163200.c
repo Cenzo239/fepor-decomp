@@ -1697,12 +1697,12 @@ void Chapter_LoadScript(void) {
     extern u8 lbl_802778A8[];
 
     void *fn_80019F04(void);
-    void sprintf(void *, const char *, ...);
-    void ScriptCmd_CmLoadScript(void *);
-    void *Archive_Load(void *);
-    void FileCache_OrFlags(void *, s32);
+    void sprintf(char *, const char *, ...);
+    void ScriptCmd_CmLoadScript(char *);
+    void *Archive_Load(char *);
+    void FileCache_OrFlags(char *, s32);
 
-    u8 buffer[0x20];
+    char buffer[0x20];
     u8 *obj;
 
     obj = (u8 *)fn_80019F04();
@@ -1715,8 +1715,8 @@ void Chapter_LoadScript(void) {
 
     ScriptCmd_CmLoadScript(buffer);
 
-    if (*(u32 *)(obj + 0x0C) == 0) {
-        lbl_803680E8 = NULL;
+    if (*(u32 *)(obj + 0x0C) == 0U) {
+        lbl_803680E8 = (void *)0;
     } else {
         sprintf(
             buffer,
@@ -15747,10 +15747,10 @@ extern "C" void *fn_80181D88(void *arg0) {
         virtual void m28() = 0;
     };
     void fn_8016915C(void *);
-    extern u8 lbl_80291A74[];
+    extern u8 gUiPanelBVtbl[];
 
     fn_8016915C(arg0);
-    *(void **)arg0 = lbl_80291A74;
+    *(void **)arg0 = gUiPanelBVtbl;
     ((Obj *)arg0)->m28();
     return arg0;
 }

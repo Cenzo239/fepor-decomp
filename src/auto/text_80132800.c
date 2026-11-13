@@ -5034,7 +5034,7 @@ extern "C" void *Ui_DtorPanelB(void *arg0, s16 arg1) {
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_80291A74[];
+    extern u8 gUiPanelBVtbl[];
     extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
@@ -5046,7 +5046,7 @@ extern "C" void *Ui_DtorPanelB(void *arg0, s16 arg1) {
 
     a0 = (Owner *)arg0;
     if (arg0 != NULL) {
-        a0->vtbl = lbl_80291A74;
+        a0->vtbl = gUiPanelBVtbl;
         if (arg0 != NULL) {
             a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
@@ -12693,7 +12693,7 @@ typedef struct {
     s32 unk34;
     s32 unk3C;
 } Struct8013FC68_Args;
-extern u32 lbl_80291A74;
+extern u32 gUiPanelBVtbl;
 extern u32 gUiPanelMidVtbl;
 extern u32 lbl_80295478;
 extern u8 gSeCueSlots[];
