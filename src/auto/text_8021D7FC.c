@@ -411,7 +411,7 @@ void __GXInitGX(void) {
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802239D0(s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void fn_80223EA0(s32, s32, s32);
@@ -614,7 +614,7 @@ void __GXInitGX(void) {
     GXSetTevOrder(0xE, 0xFF, 0xFF, 0xFF);
     GXSetTevOrder(0xF, 0xFF, 0xFF, 0xFF);
 
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     fn_802239D0(0, 3);
     fn_80223E5C(7, 0, 0, 7, 0);
     fn_80223EA0(0, 0x11, 0);

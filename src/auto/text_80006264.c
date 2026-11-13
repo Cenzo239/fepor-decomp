@@ -1356,7 +1356,7 @@ void fn_80007B04(void)
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80224684(s32, s32, s32);
@@ -1404,7 +1404,7 @@ void fn_80007B04(void)
     fn_8021FBF0(0, 0xD, 1, 4, 0);
     fn_80222334(1);
     fn_80222370(4, 0, 0, 1, 0, 0, 2);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
 
     mgr = lbl_80367140;
     f3 = lbl_80368BA0;
@@ -1543,7 +1543,7 @@ void fn_80007B04(void)
                 fn_8021FBF0(0, 0xD, 1, 4, 0);
                 fn_80222334(1);
                 fn_80222370(4, 0, 0, 1, 0, 0, 2);
-                fn_802240C8(1);
+                GXSetNumTevStages(1);
             }
         }
         walk++;

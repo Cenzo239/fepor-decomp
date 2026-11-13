@@ -1259,7 +1259,7 @@ void GXSetTevOrder(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod,
     t[1] = __rlwimi(t[1], lmax_s >> 3, 8, 16, 23);
 }
 
-void fn_802240C8(u8 arg0) {
+void GXSetNumTevStages(u8 arg0) {
     u32 temp = (u32)arg0;
     __GXData[0x81] = (__GXData[0x81] & ~0x3C00) | (((temp - 1) << 0xA) & 0x3C00);
     __GXData[0x16B] = __GXData[0x16B] | 4;

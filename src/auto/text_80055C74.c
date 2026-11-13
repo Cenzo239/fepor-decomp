@@ -232,7 +232,7 @@ void fn_800566D4(void *arg0) {
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     extern f32 lbl_80369108;
@@ -256,7 +256,7 @@ void fn_800566D4(void *arg0) {
                 fn_80067EDC(0);
                 fn_80222334(1);
                 fn_80222370(4, 0, 1, 1, 0, 0, 2);
-                fn_802240C8(1);
+                GXSetNumTevStages(1);
                 GXSetTevColorIn(0, 0xF, 0xF, 0xF, 8);
                 GXSetTevColorOp(0, 0, 0, 0, 1, 0);
                 GXSetTevAlphaIn(0, 7, 7, 7, 5);
@@ -1420,7 +1420,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
@@ -1469,7 +1469,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     PSMTXIdentity(sp28);
     *(f32 *)(sp28 + 0x1C) = scale / (f32)a3;
     fn_80220428(2);
-    fn_802240C8(2);
+    GXSetNumTevStages(2);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetTevOrder(0, 0, 0, 4);
@@ -1560,7 +1560,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_80220428(0);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     fn_802239D0(0, 4);
     fn_80224684(0, 3, 0);

@@ -1518,7 +1518,7 @@ void fn_80088FFC(void *arg0) {
     void fn_80222C50(void *, s32);
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -1556,7 +1556,7 @@ void fn_80088FFC(void *arg0) {
     fn_80222C50((u8 *)arg0 + 0x4C, 0);
     fn_80220428(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_802245D8(1, 4, 5, 0);
@@ -1775,7 +1775,7 @@ void fn_80089680(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
@@ -1832,7 +1832,7 @@ void fn_80089680(void *arg0) {
         GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
-        fn_802240C8(1);
+        GXSetNumTevStages(1);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         fn_80220428(0);
@@ -1929,7 +1929,7 @@ void fn_80089A28(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
@@ -2020,7 +2020,7 @@ void fn_80089A28(void *arg0) {
     fn_80220428(0);
     fn_802239D0(0, 4);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_802245D8(1, 4, 5, 0);
@@ -2148,7 +2148,7 @@ void Ui_DrawColorFade(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
@@ -2215,7 +2215,7 @@ void Ui_DrawColorFade(void *arg0) {
         fn_80220428(0);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
-        fn_802240C8(1);
+        GXSetNumTevStages(1);
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         sp8 = *(s32 *)((u8 *)arg0 + 0x34);
@@ -2314,7 +2314,7 @@ void fn_8008A5AC(void *arg0) {
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
@@ -2386,7 +2386,7 @@ void fn_8008A5AC(void *arg0) {
             GXSetTevOrder(0, 0xFF, 0xFF, 4);
             fn_80220428(0);
         }
-        fn_802240C8(1);
+        GXSetNumTevStages(1);
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);

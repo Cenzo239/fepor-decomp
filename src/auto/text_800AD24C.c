@@ -8640,7 +8640,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222334(s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -8683,7 +8683,7 @@ void fn_800C0CDC(void *arg0) {
     fn_80220428(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222334(0);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
     fn_802239D0(0, 3);
     PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);

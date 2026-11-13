@@ -818,7 +818,7 @@ void Gx_Setup2DState(void *arg0) {
     void fn_80223D38(s32, s32);
     void fn_80223D94(s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
@@ -862,7 +862,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_8021F4E4(0xD, 1);
     fn_8021FBF0(7, 9, 1, 3, 0);
     fn_8021FBF0(7, 0xD, 1, 2, 0);
-    fn_802240C8(4);
+    GXSetNumTevStages(4);
     GXSetTevOrder(0, 1, 1, 0xFF);
     GXSetTevColorIn(0, 0xF, 8, 0xE, 2);
     GXSetTevColorOp(0, 0, 0, 0, 0, 0);
@@ -911,14 +911,14 @@ void fn_800A57D8(void) {
     M2C_UNK fn_80223D94(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223DDC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802240C8(M2C_UNK);
+    M2C_UNK GXSetNumTevStages(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
     fn_80224684(1, 7, 1);
     fn_802245D8(0, 1, 0, 0xF);
     fn_80220428(1);
     fn_80222334(0);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
     fn_802239D0(0, 3);
     fn_80223D94(0, 0, 0);

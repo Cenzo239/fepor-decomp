@@ -1632,7 +1632,7 @@ void fn_80123D1C(void *arg0) {
     void fn_80222C50(void *, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -1704,7 +1704,7 @@ void fn_80123D1C(void *arg0) {
     fn_80222C50(sp18, 0);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     fn_802239D0(0, 0);
     fn_802245D8(1, 4, 5, 0);
@@ -1767,7 +1767,7 @@ void fn_80123D1C(void *arg0) {
     fn_80222164(4, &spC);
     fn_80222370(4, 0, 0, 0, 0, 0, 2);
     fn_80220428(0);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0xFF, 4);
     fn_802239D0(0, 4);
 
@@ -2357,7 +2357,7 @@ void fn_80125388(void *arg0) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-    void fn_802240C8(s32);
+    void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -2397,7 +2397,7 @@ void fn_80125388(void *arg0) {
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
-    fn_802240C8(1);
+    GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     fn_802239D0(0, 0);
     fn_802245D8(1, 4, 5, 0);
