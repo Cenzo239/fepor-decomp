@@ -1284,124 +1284,125 @@ void fn_800152F8(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6, 
 }
 
 #pragma global_optimizer off
-void Allegiance_FillMask(u8 arg0, u8 *arg1) {
+/* Clear an 8-byte allegiance mask, then set bits by mode vs the current phase allegiance (0=self, 1=hostile/rel==1, 2=non-hostile, 3=0-3, 4=0+5, 5=all). */
+void Allegiance_FillMask(u8 mode, u8 *mask) {
     extern u8 gBattleState[];
-    u8 var_r5;
-    u8 r6;
-    u8 var_r0;
-    u8 var_r0_2;
-    u8 *a;
+    u8 zero;
+    u8 phaseAllegiance;
+    u8 rel2;
+    u8 rel3;
+    u8 *p;
 
-    var_r5 = 0;
-    a = arg1;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a++ = var_r5;
-    *a = var_r5;
-    r6 = gBattleState[0x11];
-    switch (arg0) {
+    zero = 0;
+    p = mask;
+    *p++ = zero;
+    *p++ = zero;
+    *p++ = zero;
+    *p++ = zero;
+    *p++ = zero;
+    *p++ = zero;
+    *p++ = zero;
+    *p = zero;
+    phaseAllegiance = gBattleState[0x11];
+    switch (mode) {
     case 0:
-        arg1[r6] = 1;
+        mask[phaseAllegiance] = 1;
         return;
     case 1:
-        if (r6 == 0) {
-            var_r5 = var_r5;
+        if (phaseAllegiance == 0) {
+            zero = zero;
             goto case1_after;
         }
-        if (r6 == 1) {
-            var_r5 = 1;
+        if (phaseAllegiance == 1) {
+            zero = 1;
             goto case1_after;
         }
-        var_r5 = 2;
+        zero = 2;
     case1_after:
-        if ((u8)var_r5 == 1) {
-            arg1[0] = 1;
+        if ((u8)zero == 1) {
+            mask[0] = 1;
         }
-        if ((u32)(((u32)(1 - r6) | (u32)(r6 - 1)) >> 31) == 1) {
-            arg1[1] = 1;
+        if ((u32)(((u32)(1 - phaseAllegiance) | (u32)(phaseAllegiance - 1)) >> 31) == 1) {
+            mask[1] = 1;
         }
-        if (r6 == 2) {
-            var_r0 = 0;
-        } else if (r6 == 1) {
-            var_r0 = 1;
+        if (phaseAllegiance == 2) {
+            rel2 = 0;
+        } else if (phaseAllegiance == 1) {
+            rel2 = 1;
         } else {
-            var_r0 = 2;
+            rel2 = 2;
         }
-        if ((u8)var_r0 == 1) {
-            arg1[2] = 1;
+        if ((u8)rel2 == 1) {
+            mask[2] = 1;
         }
-        if (r6 == 3) {
-            var_r0_2 = 0;
-        } else if (r6 == 1) {
-            var_r0_2 = 1;
+        if (phaseAllegiance == 3) {
+            rel3 = 0;
+        } else if (phaseAllegiance == 1) {
+            rel3 = 1;
         } else {
-            var_r0_2 = 2;
+            rel3 = 2;
         }
-        if ((u8)var_r0_2 == 1) {
-            arg1[3] = 1;
+        if ((u8)rel3 == 1) {
+            mask[3] = 1;
         }
         return;
     case 2:
-        if (r6 == 0) {
-            var_r5 = var_r5;
+        if (phaseAllegiance == 0) {
+            zero = zero;
             goto case2_after;
         }
-        if (r6 == 1) {
-            var_r5 = 1;
+        if (phaseAllegiance == 1) {
+            zero = 1;
             goto case2_after;
         }
-        var_r5 = 2;
+        zero = 2;
     case2_after:
-        if ((u8)var_r5 != 1) {
-            arg1[0] = 1;
+        if ((u8)zero != 1) {
+            mask[0] = 1;
         }
-        if ((u32)(((u32)(1 - r6) | (u32)(r6 - 1)) >> 31) != 1) {
-            arg1[1] = 1;
+        if ((u32)(((u32)(1 - phaseAllegiance) | (u32)(phaseAllegiance - 1)) >> 31) != 1) {
+            mask[1] = 1;
         }
-        if (r6 == 2) {
-            var_r0 = 0;
-        } else if (r6 == 1) {
-            var_r0 = 1;
+        if (phaseAllegiance == 2) {
+            rel2 = 0;
+        } else if (phaseAllegiance == 1) {
+            rel2 = 1;
         } else {
-            var_r0 = 2;
+            rel2 = 2;
         }
-        if ((u8)var_r0 != 1) {
-            arg1[2] = 1;
+        if ((u8)rel2 != 1) {
+            mask[2] = 1;
         }
-        if (r6 == 3) {
-            var_r0_2 = 0;
-        } else if (r6 == 1) {
-            var_r0_2 = 1;
+        if (phaseAllegiance == 3) {
+            rel3 = 0;
+        } else if (phaseAllegiance == 1) {
+            rel3 = 1;
         } else {
-            var_r0_2 = 2;
+            rel3 = 2;
         }
-        if ((u8)var_r0_2 != 1) {
-            arg1[3] = 1;
+        if ((u8)rel3 != 1) {
+            mask[3] = 1;
         }
         return;
     case 3:
-        arg1[0] = 1;
-        arg1[1] = 1;
-        arg1[2] = 1;
-        arg1[3] = 1;
+        mask[0] = 1;
+        mask[1] = 1;
+        mask[2] = 1;
+        mask[3] = 1;
         return;
     case 4:
-        arg1[0] = 1;
-        arg1[5] = 1;
+        mask[0] = 1;
+        mask[5] = 1;
         return;
     case 5:
-        arg1[0] = 1;
-        arg1[1] = 1;
-        arg1[2] = 1;
-        arg1[3] = 1;
-        arg1[4] = 1;
-        arg1[5] = 1;
-        arg1[6] = 1;
-        arg1[7] = 1;
+        mask[0] = 1;
+        mask[1] = 1;
+        mask[2] = 1;
+        mask[3] = 1;
+        mask[4] = 1;
+        mask[5] = 1;
+        mask[6] = 1;
+        mask[7] = 1;
         return;
     }
 }
