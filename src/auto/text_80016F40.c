@@ -356,7 +356,7 @@ void fn_80017C1C(void *, f32);
 f32 Math_Lerp(f32, f32, f32, f32);
 f32 fn_80059F78(s32, f32, f32, f32, f32);
 f32 fn_8005A028(s32, f32, f32, f32, f32);
-void fn_80017998(void *arg0) {
+void CamPath_Update(void *arg0) {
     void Process_ClearFunc(void *);
     void fn_80017C1C(void *, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
