@@ -13557,7 +13557,7 @@ s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
     return var_r31;
 }
 
-u32 fn_8017D6D8(void *arg0) {
+u32 Ui_CanAffordNextGoldCost(void *arg0) {
     f32 fn_80037818(s32, u8);
     u8 fn_8003D13C(s32);
     u8 Status_Test(s32, s32);
@@ -14821,17 +14821,21 @@ extern "C" void fn_8018054C(void *arg0) {
     void *a;
     void *b;
     void *tmp;
+    void *self;
+    s32 one;
 
-    a = Ui_FindChild(arg0, 0x81, 0);
-    b = Ui_FindChild(arg0, 0x82, 0);
-    *(u8 *)((u8 *)a + 0x4C) = 1;
-    *(u8 *)((u8 *)b + 0x4C) = 1;
-    a = Ui_FindChild(arg0, 0x80, 0);
+    self = arg0;
+    a = Ui_FindChild(self, 0x81, 0);
+    b = Ui_FindChild(self, 0x82, 0);
+    one = 1;
+    *(u8 *)((u8 *)a + 0x4C) = one;
+    *(u8 *)((u8 *)b + 0x4C) = one;
+    a = Ui_FindChild(self, 0x80, 0);
     Ui_SetWidgetText(a, gUiUnitInfoStrings + 0xA4);
-    *(s32 *)((u8 *)a + 0x48) = 1;
-    fn_8013FF00(arg0, b);
+    *(s32 *)((u8 *)a + 0x48) = one;
+    fn_8013FF00(self, b);
     a = Msg_Expand(gUiUnitInfoStrings + 0xBA);
-    tmp = Ui_FindChild(arg0, -0x1000, 0);
+    tmp = Ui_FindChild(self, -0x1000, 0);
     if (tmp != NULL) {
         Ui_SetWidgetText(tmp, a);
     }

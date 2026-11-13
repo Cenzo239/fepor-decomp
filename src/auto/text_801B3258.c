@@ -1209,13 +1209,12 @@ void fn_801B7A34(void *arg0) {
 }
 
 void fn_801B7A74(void *arg0) {
-    void Process_ClearFunc(void *);
+    void fn_8000C188(void *);
     s8 fn_80146BE4(void *);
     void fn_80148980(void *, s32);
     void fn_801B7B5C(void *, s32, f32);
-    extern void *gPadInput;
-    extern u8 gSeCueSlots[1344];
-    extern f64 lbl_8036B208;
+    extern void *lbl_80367240;
+    extern u8 lbl_803301A8[1344];
 
     void *self;
     void *pad;
@@ -1227,7 +1226,7 @@ void fn_801B7A74(void *arg0) {
     s8 slot;
 
     self = *(void **)((u8 *)arg0 + 0x30);
-    pad = gPadInput;
+    pad = lbl_80367240;
     count = *(s32 *)((u8 *)self + 4);
     buttons = *(s32 *)((u8 *)pad + 4);
     prev = *(s32 *)((u8 *)pad + 8);
@@ -1239,10 +1238,10 @@ void fn_801B7A74(void *arg0) {
         if (p != NULL) {
             slot = fn_80146BE4(p);
             if (slot != -1) {
-                fn_80148980(&gSeCueSlots[(u8)slot * 0x30], 0x1F4);
+                fn_80148980(lbl_803301A8 + (u8)slot * 0x30, 0x1F4);
             }
         }
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
     fn_801B7B5C(self, *(s32 *)((u8 *)self + 0x194), (f32)(*(s32 *)((u8 *)self + 0xC) + 0x34));
 }
@@ -3649,7 +3648,7 @@ extern "C" void Ui_InitUnitPanel(void *arg0) {
 void *Heap_Alloc(u32); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 void fn_800381EC(void *,s8); s32 Unit_GetMaxHp(void *);
-void *Ui_FindChild(void *,s32,s32); u8 fn_8017D6D8(void *);
+void *Ui_FindChild(void *,s32,s32); u8 Ui_CanAffordNextGoldCost(void *);
 void Ui_PlaySeCue(void *,s32); void Process_Goto(void *,s32); void fn_8013FF00(void *,void *);
 extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],gUiUnitPanelStrings[],gUiContext[];
 class Pair { public: s16 x,y; Pair(s16 a,s16 b):x(a),y(b) {} };
@@ -3714,7 +3713,7 @@ M2C_FIELD(p,u32 *,0x58)=1;
 Ui_AddChild(self,p);
 fn_800381EC(unit,(s8)Unit_GetMaxHp(unit));
 M2C_FIELD(M2C_FIELD(self,void **,0x5C),s16 *,0x3E)=0;
-if(!fn_8017D6D8(M2C_FIELD(self,void **,0x5C))) {
+if(!Ui_CanAffordNextGoldCost(M2C_FIELD(self,void **,0x5C))) {
 temp=Ui_FindChild(self,0x80,0);
 Ui_SlideWidgetChild(self,temp,Pair(M2C_FIELD(temp,s16 *,0xA),-0x3A),0);
 ref=M2C_FIELD(self,Obj **,0x5C);
