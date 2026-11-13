@@ -326,10 +326,7 @@ s32 fn_8018394C(void) {
     return 2;
 }
 
-s32 fn_80183954(void) {
-    extern u8 lbl_803681F0;
-    return lbl_803681F0 != 0x32 ? 3 : 0;
-}
+s32 fn_80183954(void) { extern u8 lbl_803681F0; return lbl_803681F0 == 0x32 ? 0 : 3; }
 
 s32 fn_80183974(void) {
     u32 Process_Find(void *);
