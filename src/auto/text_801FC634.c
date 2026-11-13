@@ -2136,7 +2136,7 @@ extern "C" void fn_80201778(void *arg0) {
     void Prim2D_Begin(void);
     void fn_8001019C(s32, s32, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
-    char *fn_800C93EC(void *);
+    char *String_CStr(void *);
     void fn_800C9874(void *, u32, char);
     void String_Destroy(void *, s16);
     u8 *fn_80104970(u8 *);
@@ -2242,7 +2242,7 @@ extern "C" void fn_80201778(void *arg0) {
             {
                 s32 x = (s32)var_f31;
                 s32 y = (s32)var_f30;
-                fn_8001019C(x, y, 1, var_r31 + 0xB6, fn_800C93EC(&sp8));
+                fn_8001019C(x, y, 1, var_r31 + 0xB6, String_CStr(&sp8));
             }
             if (*var_r29 == 0xA) {
                 var_f30 += (f32)fn_800102BC(-1, lbl_8036BBD8);

@@ -1208,7 +1208,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     void *fn_8000E0E4(void *);
     s32 fn_800102BC(s32, f32);
     s32 fn_80010B78(void *, s32, f32);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void String_AssignCStr(void *, void *, s32);
     void String_Destroy(void *, s32);
     void String_Init(void *, void *, void *);
@@ -1251,10 +1251,10 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     char *s;
     void *str;
 
-    String_Init(sp10, fn_800C93EC((u8 *)arg0 + 0x3c), sp8);
+    String_Init(sp10, String_CStr((u8 *)arg0 + 0x3c), sp8);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         if (*(s16 *)(gUnitInfoPopup + 0xd8) == 0) {
-            fn_80234450(sp1C, (char *)fn_800C93EC(sp10));
+            fn_80234450(sp1C, (char *)String_CStr(sp10));
             p = fn_80234198(sp1C, (u8 *)lbl_80277720 + 0x1d);
             if (p != NULL) {
                 *(u8 *)((u8 *)p + 5) = 0;
@@ -1275,18 +1275,18 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     Prim2D_PrepareTex();
     avail = (s16)((*(s16 *)((u8 *)arg0 + 0xe) - *(s16 *)((u8 *)arg0 + 0xa))
                   - (*(s16 *)((u8 *)arg0 + 0x4e) + *(s16 *)((u8 *)arg0 + 0x52)));
-    if (fn_800C93EC((u8 *)arg0 + 0x3c) != NULL) {
+    if (String_CStr((u8 *)arg0 + 0x3c) != NULL) {
         switch (*(s32 *)((u8 *)arg0 + 0x48)) {
         case 0:
             x = *(s16 *)((u8 *)arg0 + 0x4e);
             break;
         case 1:
-            str = fn_800C93EC((u8 *)arg0 + 0x3c);
+            str = String_CStr((u8 *)arg0 + 0x3c);
             t = *(s16 *)((u8 *)arg0 + 0x4e);
             x = (s16)(t + ((avail - fn_80010B78(str, -1, lbl_8036A8B8)) >> 1));
             break;
         case 2:
-            str = fn_800C93EC((u8 *)arg0 + 0x3c);
+            str = String_CStr((u8 *)arg0 + 0x3c);
             w = *(s16 *)((u8 *)arg0 + 0xe) - *(s16 *)((u8 *)arg0 + 0xa);
             r = *(s16 *)((u8 *)arg0 + 0x52);
             x = (s16)(w - (r + fn_80010B78(str, -1, lbl_8036A8B8)));
@@ -1299,11 +1299,11 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
         fn_80007858((f32)x, (f32)y);
         spC = *fn_8018D900(*(u8 *)((u8 *)arg0 + 0x4c));
         fn_80007668(&spC);
-        fn_800C93EC((u8 *)arg0 + 0x3c);
+        String_CStr((u8 *)arg0 + 0x3c);
         fn_80007124();
         Prim2D_EndPrim();
     }
-    s = (char *)fn_800C93EC(sp10);
+    s = (char *)String_CStr(sp10);
     String_AssignCStr((u8 *)arg0 + 0x3c, s, strlen(s));
     String_Destroy(sp10, -1);
 }
@@ -1476,7 +1476,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     s32 fn_80040844(void);
     void fn_80041514(s32, void *);
     void Xml_GetNamedValue(void *, void *, void *);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void String_Destroy(void *, s16);
     void String_Init(void *, void *, void *);
     void String_AssignCStr(void *, void *, s32);
@@ -1513,7 +1513,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     a2 = sp24;
     String_AssignCStr(&sp18, a2, strlen((char *)a2));
     String_Destroy(&spC, -1);
-    temp = fn_800C93EC(&sp18);
+    temp = String_CStr(&sp18);
     fn_80041514(fn_80040844(), temp);
     lbl_803680E0 = 1;
     String_Destroy(&sp18, -1);
@@ -1529,7 +1529,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     void Xml_GetNamedValue(void *, void *, void *);
     void Xml_Destroy(void *, s32);
     void *Xml_ParseFile(void *, void *, void *);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void String_Destroy(void *, s16);
     void String_Init(void *, void *, void *);
     void fn_800CB90C(void *, void *, void *);
@@ -1576,7 +1576,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     String_Destroy(&sp5C, -1);
     String_Destroy(&sp68, -1);
     *(void **)((u8 *)self + 0x40) = lbl_80293CB0;
-    a2 = fn_800C93EC(a3);
+    a2 = String_CStr(a3);
     fn_80041514(fn_80040844(), a2);
     a1 = (void *)0;
     lbl_803680E0 = 1;
@@ -2137,30 +2137,41 @@ void Ui_HideUnitInfoPopup(void *arg0) {
     extern f32 lbl_8036A940;
     extern f32 lbl_8036A92C;
     s32 flags;
+    s32 mask;
     s32 eight;
+    s32 cue;
     u8 *base;
     f32 f3;
     f32 f2;
     f32 f0;
+    f32 t;
 
     flags = *(s32 *)arg0;
     if (!(flags & 1)) {
+        mask = lbl_8036A938;
         f3 = lbl_8036A93C;
         eight = 8;
-        *(s32 *)arg0 = flags | lbl_8036A938;
+        *(s32 *)arg0 = flags | mask;
         f2 = lbl_8036A940;
         base = lbl_80277A20;
         f0 = lbl_8036A92C;
-        *(f32 *)((u8 *)arg0 + 0xFC) = *(f32 *)((u8 *)arg0 + 0xF4);
-        *(f32 *)((u8 *)arg0 + 0x100) = *(f32 *)((u8 *)arg0 + 0xF8);
-        *(f32 *)((u8 *)arg0 + 0x104) = f3 + *(f32 *)((u8 *)arg0 + 0xDC);
-        *(f32 *)((u8 *)arg0 + 0x108) = f2 + *(f32 *)((u8 *)arg0 + 0xE0);
-        *(f32 *)((u8 *)arg0 + 0x114) = *(f32 *)((u8 *)arg0 + 0x10C);
-        *(f32 *)((u8 *)arg0 + 0x118) = *(f32 *)((u8 *)arg0 + 0x110);
+        cue = 0x64;
+        t = *(f32 *)((u8 *)arg0 + 0xF4);
+        *(f32 *)((u8 *)arg0 + 0xFC) = t;
+        t = *(f32 *)((u8 *)arg0 + 0xF8);
+        *(f32 *)((u8 *)arg0 + 0x100) = t;
+        t = *(f32 *)((u8 *)arg0 + 0xDC);
+        *(f32 *)((u8 *)arg0 + 0x104) = f3 + t;
+        t = *(f32 *)((u8 *)arg0 + 0xE0);
+        *(f32 *)((u8 *)arg0 + 0x108) = f2 + t;
+        t = *(f32 *)((u8 *)arg0 + 0x10C);
+        *(f32 *)((u8 *)arg0 + 0x114) = t;
+        t = *(f32 *)((u8 *)arg0 + 0x110);
+        *(f32 *)((u8 *)arg0 + 0x118) = t;
         *(f32 *)((u8 *)arg0 + 0x11C) = f0;
         *(f32 *)((u8 *)arg0 + 0x120) = f0;
         *(s32 *)((u8 *)arg0 + 0xCC) = eight;
-        Ui_PlaySeCue(base + 0x6C, 0x64);
+        Ui_PlaySeCue(base + 0x6C, cue);
     }
 }
 #pragma dont_inline reset
@@ -14585,10 +14596,10 @@ void fn_8017FD84(void *arg0) {
     void *obj81;
     void *unit;
     void *other;
-    void *obj82;
-    void *self;
-    s32 index;
+    register void *obj82;
     void *node;
+    s32 index;
+    void *self;
 
     self = arg0;
     fn_8013FEF0();

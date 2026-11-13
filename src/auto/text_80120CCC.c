@@ -1228,7 +1228,7 @@ void *fn_80122E80(void *arg0, s16 arg1) {
 void fn_80122F04(void *arg0, void *arg1) {
     M2C_UNK fn_800536B0(s32, f32, f32, f32);
     void *fn_8005397C(M2C_UNK);
-    M2C_UNK fn_800C93EC(s32);
+    M2C_UNK String_CStr(s32);
     extern f32 lbl_8036A2C0;
     extern f32 lbl_8036A2C4;
     f32 temp_f30;
@@ -1244,7 +1244,7 @@ void fn_80122F04(void *arg0, void *arg1) {
     var_r26 = 0;
 loop_2:
     if (var_r29 < (s32) M2C_FIELD(arg1, s32 *, 4)) {
-        fn_800C93EC(M2C_FIELD(arg1, s32 *, 8) + var_r26);
+        String_CStr(M2C_FIELD(arg1, s32 *, 8) + var_r26);
         temp_r30 = fn_8005397C(4);
         temp_r5 = M2C_FIELD(arg0, s32 *, 0x4C) + 0xC;
         fn_800536B0(temp_r5, (f32) M2C_FIELD(arg0, s32 *, 0x48), (f32) temp_r5, (f32) (M2C_FIELD(arg0, s32 *, 0x44) + 1));
@@ -1262,7 +1262,7 @@ loop_2:
 void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_800536B0(void *, f32, f32, f32);
     void *fn_8005397C(void *, s32);
-    void *fn_800C93EC(s32);
+    void *String_CStr(s32);
     extern f32 lbl_8036A2D0;
     extern f32 lbl_8036A2D4;
     extern f32 lbl_8036A2D8;
@@ -1306,7 +1306,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     off = 0;
     f31 = lbl_8036A2C4;
     while (i < M2C_FIELD(list, s32 *, 4)) {
-        obj = fn_8005397C(fn_800C93EC(M2C_FIELD(list, s32 *, 8) + off), 4);
+        obj = fn_8005397C(String_CStr(M2C_FIELD(list, s32 *, 8) + off), 4);
         fn_800536B0(obj,
                     (f32)M2C_FIELD(self, s32 *, 0x48),
                     (f32)M2C_FIELD(self, s32 *, 0x4C),

@@ -1182,7 +1182,7 @@ typedef struct Vec {
 extern "C" M2C_UNK String_Init(M2C_UNK *, const char *, M2C_UNK *);
 extern "C" M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
 extern "C" void fn_800DBE34(void *, s32, M2C_UNK *, s32, M2C_UNK *);
-extern "C" char *fn_800C93EC(void *);
+extern "C" char *String_CStr(void *);
 extern "C" void *fn_80053C30(char *, s32);
 extern "C" void fn_80053658(void *, s32, void *);
 extern "C" s32 fn_8015160C(void *);
@@ -1221,7 +1221,7 @@ extern "C" void *fn_80151D50(void *arg0, s32 arg1, s32 arg2, void *arg3, f32 *ar
     M2C_FIELD(arg0, f32 *, 0xB8) = 0.0f;
     M2C_FIELD(arg0, f32 *, 0xB4) = 0.0f;
     M2C_FIELD(arg0, u8 *, 0xC4) = 0;
-    task = fn_80053C30(fn_800C93EC(arg3), 4);
+    task = fn_80053C30(String_CStr(arg3), 4);
     if (task != NULL) {
         id = ++lbl_80367BA8;
         M2C_FIELD(arg0, s32 *, 0xAC) = id;

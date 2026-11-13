@@ -1575,7 +1575,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     u8 *fn_801057BC(s32);
     u8 *fn_80104970(u8 *);
     void fn_800C9874(s32 *, s32, s8);
-    s32 fn_800C93EC(s32 *);
+    s32 String_CStr(s32 *);
     void fn_8001019C(s16, s16, s32, void *, s32, ...);
     void String_Destroy(s32 *, s32);
     void fn_80009B98(void);
@@ -1653,7 +1653,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
                 p += 1;
             } while (p != end);
         }
-        fn_8001019C(ax, ay, 1, lbl_80276720 + 0x1D, fn_800C93EC(buf));
+        fn_8001019C(ax, ay, 1, lbl_80276720 + 0x1D, String_CStr(buf));
         ch = *p;
         if ((s32)ch == 0xA) {
             ay += 0x1A;

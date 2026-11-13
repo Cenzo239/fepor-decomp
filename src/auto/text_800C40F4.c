@@ -1569,7 +1569,7 @@ void fn_800C7F10(void* arg0, void* arg1) {
 
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
-    M2C_UNK *fn_800C93EC(void *);
+    M2C_UNK *String_CStr(void *);
     void fn_8023440C(char *, const char *, s32);
     s32 fn_802355BC(char *);
     f64 fn_80234524(char *);
@@ -1640,7 +1640,7 @@ void fn_800C8328(void *unused, void *dest, s32 index, String *str)
     return;
 
 case_str:
-    src = (char *)fn_800C93EC(s);
+    src = (char *)String_CStr(s);
     sp118.d[3] = 0;
     sp118.d[2] = 0;
     sp118.d[1] = 0;
@@ -1749,7 +1749,7 @@ case_int:
             }
         }
 
-        src = (char *)fn_800C93EC(s);
+        src = (char *)String_CStr(s);
         val = fn_802355BC(src);
         sp238 = *dv;
         ((s16 *)sp238.d)[idx] = (s16)val;
@@ -1759,7 +1759,7 @@ case_int:
     }
 
     if (idx > 4) {
-        src = (char *)fn_800C93EC(s);
+        src = (char *)String_CStr(s);
         val = fn_802355BC(src);
         sp1F8 = *dv;
         ((s16 *)sp1F8.d)[idx] = (s16)val;
@@ -1769,7 +1769,7 @@ case_int:
     }
 
     if (idx != 0) {
-        src = (char *)fn_800C93EC(s);
+        src = (char *)String_CStr(s);
         val = fn_802355BC(src);
         sp1B8 = *dv;
         sp1B8.d[idx] = (u32)val;
@@ -1778,7 +1778,7 @@ case_int:
         return;
     }
 
-    src = (char *)fn_800C93EC(s);
+    src = (char *)String_CStr(s);
     val = fn_802355BC(src);
     dv->d[0] = (u32)val;
     dv->d[1] = 0;
@@ -1804,7 +1804,7 @@ case_int:
 
 case_float:
     if (idx != 0) {
-        src = (char *)fn_800C93EC(s);
+        src = (char *)String_CStr(s);
         fval = (f32)fn_80234524(src);
         sp158 = *dv;
         ((f32 *)sp158.d)[idx] = fval;
@@ -1813,7 +1813,7 @@ case_float:
         return;
     }
 
-    src = (char *)fn_800C93EC(s);
+    src = (char *)String_CStr(s);
     fval = (f32)fn_80234524(src);
     {
         u32 slot = 0;
@@ -1904,14 +1904,14 @@ void fn_800C8F48(void *arg0) {
 }
 
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
-    M2C_UNK *fn_800C93EC(void *);
+    M2C_UNK *String_CStr(void *);
     char *fn_80234450(char *, const char *);
     void fn_800C802C(void *, s32);
     unsigned long b;
     s32 *dst;
     long a;
 
-    fn_80234450((char *)arg0 + 0x28, (char *)fn_800C93EC(arg1));
+    fn_80234450((char *)arg0 + 0x28, (char *)String_CStr(arg1));
     dst = (s32 *)((char *)arg0 + 0x40);
     b = arg2[1];
     a = arg2[0];
@@ -1998,7 +1998,7 @@ void Xml_ParseFile(void* arg0, void* arg1) {
     }
 }
 
-M2C_UNK *fn_800C93EC(void *arg0) {
+M2C_UNK *String_CStr(void *arg0) {
     extern M2C_UNK lbl_80369DC0;
     M2C_UNK *temp_r3;
 
@@ -2729,7 +2729,7 @@ void fn_800CA990(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 void fn_800CAC7C(void *arg0) {
     void fn_800CA91C(void *);
     void fn_800CA18C(void *, void *, s32, void *);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void fn_800056CC(char *, ...);
 
     s32 i;
@@ -2753,7 +2753,7 @@ void fn_800CAC7C(void *arg0) {
                 1,
                 *(u8 **)((u8 *)arg0 + 0x1C4) + mul
             );
-            fn_800056CC(lbl_802704F8 + 0x19B, fn_800C93EC(*(u8 **)((u8 *)arg0 + 0x1C4) + mul));
+            fn_800056CC(lbl_802704F8 + 0x19B, String_CStr(*(u8 **)((u8 *)arg0 + 0x1C4) + mul));
         }
         p = (u8 *)p + 4;
         i += 1;
@@ -3112,7 +3112,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     void fn_800C8F70(void *, s32);
     void Xml_Destroy(void *, s32);
     void *Xml_ParseFile(void *, String *, String *);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     s32 fn_800C9400(void *, s32, u32, void *, s32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -3205,7 +3205,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     }
 
     String_Assign((String *)(self + 0x198), &sp94, 0, -1);
-    fn_800C93EC(&sp94);
+    String_CStr(&sp94);
     if ((u16)fn_8005C144() == 0x8000) {
         String_Destroy(&sp88, -1);
         String_Destroy(&sp94, -1);
@@ -3251,7 +3251,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
         fn_800C992C(&sp10, base + 0x1D1, strlen(base + 0x1D1));
         fn_800E8154(*(void **)(self + 4), &sp10);
 
-        vret = ((Obj *)*(void **)(self + 4))->v2(base + 0x1DF, fn_800C93EC(&sp94));
+        vret = ((Obj *)*(void **)(self + 4))->v2(base + 0x1DF, String_CStr(&sp94));
         if (vret != 0) {
             fn_801CA1DC(lbl_803682B8, vret);
         }
@@ -3462,7 +3462,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     u16 fn_8005C144(void);
     void *fn_8005C82C(s32);
     void fn_8008CDE0(void *, void *);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     s32 fn_800C9400(String *, s32, u32, char *, u32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -3537,9 +3537,9 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     fn_800C99A0(&spDC, &spD0, 0, -1);
     String_Destroy(&spD0, -1);
     fn_800C992C(&spDC, lbl_802704F8 + 0x1D1, strlen(lbl_802704F8 + 0x1D1));
-    fn_800C93EC(&spDC);
+    String_CStr(&spDC);
     if ((u16)fn_8005C144() == 0x8000) {
-        fn_800056CC(lbl_802704F8 + 0x372, fn_800C93EC(&spDC));
+        fn_800056CC(lbl_802704F8 + 0x372, String_CStr(&spDC));
         String_Destroy(&spDC, -1);
         return 0;
     }
@@ -3571,13 +3571,13 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
             String_Assign(&sp4C, &sp64, 0, -1);
             String_Destroy(&sp64, -1);
             String_Destroy(&sp58, -1);
-            fn_800C93EC(&sp4C);
+            String_CStr(&sp4C);
             if ((u16)fn_8005C144() != 0x8000) {
-                fn_800C93EC(&sp4C);
+                String_CStr(&sp4C);
                 loaded = fn_8005C82C(8);
                 String_Destroy(&sp4C, -1);
             } else {
-                fn_800056CC(lbl_802704F8 + 0x3AF, fn_800C93EC(&sp4C));
+                fn_800056CC(lbl_802704F8 + 0x3AF, String_CStr(&sp4C));
                 String_Destroy(&sp4C, -1);
                 loaded = 0;
             }
@@ -3601,7 +3601,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         fn_800C99A0(&sp34, &spA0, 0, -1);
         fn_800C992C(&sp34, lbl_802704F8 + 0x1D1, strlen(lbl_802704F8 + 0x1D1));
         fn_800E8154(*(void **)((u8 *)self + 4), &sp34);
-        vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, fn_800C93EC(&spA0));
+        vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, String_CStr(&spA0));
         if (vret != 0) {
             fn_801CA1DC(lbl_803682B8, vret);
         }
@@ -3626,7 +3626,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         fn_800C99A0(&sp1C, &sp7C, 0, -1);
         fn_800C992C(&sp1C, lbl_802704F8 + 0x1D1, strlen(lbl_802704F8 + 0x1D1));
         fn_800E8154(*(void **)((u8 *)self + 4), &sp1C);
-        vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, fn_800C93EC(&sp7C));
+        vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, String_CStr(&sp7C));
         if (vret != 0) {
             fn_801CA1DC(lbl_803682B8, vret);
         }
@@ -3712,7 +3712,7 @@ extern "C" s32 fn_800CD630(void *arg0) {
 #pragma use_lmw_stmw on
 extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 arg5,u8 arg6) {
  void String_Init(void *,void *,void *); void fn_800CB8A4(void *,void *,s32); void fn_800CB90C(void *,void *,void *);
- void *Heap_Alloc(u32); void *fn_800C93EC(s32); void *String_AssignCStr(void *,void *,s32);
+ void *Heap_Alloc(u32); void *String_CStr(s32); void *String_AssignCStr(void *,void *,s32);
  char *fn_801992F8(u32); s32 strlen(const char *);
  void fn_800E78B0(void *,String *); void fn_800E8154(void *,void *);
  void *fn_80117A94(void *,void *,void *,void *,s32,u8);
@@ -3744,7 +3744,7 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  made1=0; made2=0;
  result=Heap_Alloc(0x1D8);
  if(result) {
- String_Init(&sp38,fn_800C93EC(arg2),&spC); made1=1;
+ String_Init(&sp38,String_CStr(arg2),&spC); made1=1;
  String_Init(&sp2C,arg1,&sp8); made2=1;
  result=fn_80117A94(result,M2C_FIELD(self,void **,4),&sp2C,&sp38,arg5,arg6);
  }
@@ -4897,7 +4897,7 @@ extern "C" void *fn_800D38BC(void *arg0)
     extern f32 lbl_80369DC8;
 
     void *fn_800C992C(void *, const char *, u32);
-    M2C_UNK *fn_800C93EC(void *);
+    M2C_UNK *String_CStr(void *);
     s32 fn_8005C82C(s32);
     u32 strlen(const char *);
 
@@ -5202,7 +5202,7 @@ extern "C" void *fn_800D38BC(void *arg0)
         length
     );
 
-    fn_800C93EC(&secondString);
+    String_CStr(&secondString);
 
     p[0] = fn_8005C82C(8);
 
@@ -5435,7 +5435,7 @@ extern "C" void *fn_800D38BC(void *arg0)
 
     fn_800CCB9C(
         obj,
-        (char *)fn_800C93EC(&workingString)
+        (char *)String_CStr(&workingString)
     );
 
     fn_800CB90C(
@@ -5455,7 +5455,7 @@ extern "C" void *fn_800D38BC(void *arg0)
 
     fn_800CC9D8(
         obj,
-        (char *)fn_800C93EC(&workingString)
+        (char *)String_CStr(&workingString)
     );
 
     fn_800CB90C(
@@ -5475,7 +5475,7 @@ extern "C" void *fn_800D38BC(void *arg0)
 
     fn_800CC10C(
         obj,
-        (char *)fn_800C93EC(&workingString)
+        (char *)String_CStr(&workingString)
     );
 
     /* Existing four string pairs. */
@@ -5641,7 +5641,7 @@ extern "C" void *fn_800D38BC(void *arg0)
 
     if (lbl_80367878 != 0) {
         configuration = (u8 *)lbl_8036787C;
-        configurationText = (char *)fn_800C93EC(
+        configurationText = (char *)String_CStr(
             *(u8 **)(obj + 0x1D0) +
             (*(u32 *)(configuration + 0x438) * 0xC)
         );
@@ -6367,7 +6367,7 @@ void fn_800D58C0(void **arg0)
 {
     extern char lbl_802704F8[];
     s32 strlen(char *);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void *fn_8005C82C(void *, s32);
     void *out;
     u32 str[3];
@@ -6376,7 +6376,7 @@ void fn_800D58C0(void **arg0)
     out = arg0;
     String_Init(str, lbl_802704F8 + 0x1B0, &scratch);
     fn_800C992C(str, lbl_802704F8 + 0x66B, strlen(lbl_802704F8 + 0x66B));
-    *(void **)out = fn_8005C82C(fn_800C93EC(str), 8);
+    *(void **)out = fn_8005C82C(String_CStr(str), 8);
     String_Destroy(str, -1);
 }
 #pragma global_optimizer reset
@@ -7644,7 +7644,7 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
 #pragma opt_common_subs off
 extern "C" void fn_800D9458(s32 arg0,u32 arg1,s32 arg2) {
 void fn_8005BCAC();void fn_8005C7E8(u32);void *Heap_Alloc(s32);
-char *fn_800C93EC(void *);void String_AssignCStr(void *,void *,u32);void String_Assign(void *,void *,s32,s32);
+char *String_CStr(void *);void String_AssignCStr(void *,void *,u32);void String_Assign(void *,void *,s32,s32);
 void String_Destroy(void *,s32);void String_Init(void *,void *,void *);void fn_800C9B6C(void *,void *);
 void fn_800CB8A4(void *,void *,void *);void fn_800CB90C(void *,void *,void *);
 u32 fn_800D9804(void *,void *,void *);void fn_800E4B44(void *);void fn_800E4B84(void *);void fn_800E4BA4(void *,s32);void fn_800E4D24(void *);void fn_800E4E5C(void *);
@@ -7660,7 +7660,7 @@ register s8 flag1,flag2;
 s90[1]=0;s84[1]=0;s90[0]=0;s90[2]=0;s90[1]=0;s84[0]=0;s84[2]=0;s84[1]=0;
 ((u8 *)arg0)[0x88]=arg2;
 ((Parent *)M2C_FIELD(((u8 *)arg0),void **,4))->v6(lbl_802711B0+0x18f,lbl_802711B0+0x1e4);
-((Parent *)M2C_FIELD(((u8 *)arg0),void **,4))->v6(lbl_802711B0+0x19a,fn_800C93EC(((u8 *)arg0)+0x70));
+((Parent *)M2C_FIELD(((u8 *)arg0),void **,4))->v6(lbl_802711B0+0x19a,String_CStr(((u8 *)arg0)+0x70));
 M2C_FIELD(((u8 *)arg0),void **,0x10)=0;
 String_Assign(((u8 *)arg0)+0x70,M2C_FIELD(((u8 *)arg0),u8 **,0x3c)+arg1*12,0,-1);
 if(M2C_FIELD(((u8 *)arg0),void **,0x18)){
@@ -7701,7 +7701,7 @@ String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     u16 fn_8005C144(void);
     s32 fn_8005C84C(void);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     void String_Destroy(String *, s32);
@@ -7752,9 +7752,9 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    fn_800C93EC(&name);
+    String_CStr(&name);
     if ((u16)fn_8005C144() != 0x8000) {
-        fn_800C93EC(&name);
+        String_CStr(&name);
         ret = fn_8005C84C();
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
@@ -7777,9 +7777,9 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    fn_800C93EC(&name);
+    String_CStr(&name);
     if ((u16)fn_8005C144() != 0x8000) {
-        fn_800C93EC(&name);
+        String_CStr(&name);
         ret = fn_8005C84C();
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
@@ -8710,7 +8710,7 @@ s32 fn_800DC3B8(s32 arg0) {
 void *fn_800DC3C0(void *arg0)
 {
     extern u8 lbl_80271730[];
-    extern void *fn_800C93EC(void *);
+    extern void *String_CStr(void *);
 
     u32 index;
     u32 count;
@@ -8721,7 +8721,7 @@ void *fn_800DC3C0(void *arg0)
 
     if (index < count) {
         base = *(u8 **)((u8 *)arg0 + 0xB4);
-        return fn_800C93EC(base + index * 0xC);
+        return String_CStr(base + index * 0xC);
     }
 
     return lbl_80271730;
@@ -8959,7 +8959,7 @@ void fn_800DC7C4(void *arg0, s32 arg1, s32 arg2) {
 #pragma use_lmw_stmw on
 extern "C" void fn_800DC9E0(void *arg0, s32 arg1) {
 struct Host {u8 pad[0x40];virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual void v4();virtual void v5();virtual void v6(s32,s32,String *,s32,s32,f32);virtual void v7(void *,s32,s32,s32,s32);};
-void *fn_800C93EC(s32);void String_Init(String *,void *,void *);
+void *String_CStr(s32);void String_Init(String *,void *,void *);
 s32 fn_800E7FB4(s32,void *);
 void fn_800E3040(s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32,s32);
 extern u8 lbl_80271730[];extern f32 lbl_80369E98;
@@ -9016,7 +9016,7 @@ extern u8 lbl_80271730[];extern f32 lbl_80369E98;
     var_r25 = M2C_FIELD(arg0,s32 *,0x4C) + M2C_FIELD(arg0,s32 *,0x6C);
 for (;var_r29 < ((temp_r3=M2C_FIELD(arg0,s32 *,0x108))+M2C_FIELD(arg0,s32 *,0x10C));var_r29++,var_r31+=0xC) {
         if (var_r29 < (s32) M2C_FIELD(arg0,s32 *,0xB0)) {
-            String_Init(&sp74, fn_800C93EC(M2C_FIELD(arg0,s32 *,0xB4) + var_r31), &sp2C);
+            String_Init(&sp74, String_CStr(M2C_FIELD(arg0,s32 *,0xB4) + var_r31), &sp2C);
             ((Host *)arg0)->v6(temp_r24,var_r25,&sp74,1,0xFF,lbl_80369E98);
             String_Destroy(&sp74, -1);
             var_r25 += 0x10;
@@ -9258,7 +9258,7 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
     void fn_800CB90C(String *, void *, char *);
     void String_Assign(String *, String *, s32, s32);
     void String_Destroy(String *, s32);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     void *fn_800DE73C(void *, void *);
     s32 fn_800639B4(char *);
     extern char lbl_80271860[];
@@ -9276,7 +9276,7 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
     fn_800CB90C(&tmp, arg2, lbl_80271860 + 1);
     String_Assign(&out, &tmp, 0, -1);
     String_Destroy(&tmp, -1);
-    str = fn_800C93EC(&out);
+    str = String_CStr(&out);
     obj = fn_800DE73C((u8 *)arg0 + 0x58, arg1);
     *(s32 *)((u8 *)obj + 0xC) = fn_800639B4(str);
     String_Destroy(&out, -1);
@@ -9286,7 +9286,7 @@ void *fn_800DDB94(void *arg0)
 {
     extern void *StringMap_FindOrInsert(void *);
     extern void String_Assign(void *, void *, s32, s32);
-    extern void *fn_800C93EC(void *);
+    extern void *String_CStr(void *);
     extern void String_Destroy(void *, s32);
 
     u32 temp[3];
@@ -9307,7 +9307,7 @@ void *fn_800DDB94(void *arg0)
         -1
     );
 
-    result = fn_800C93EC(temp);
+    result = String_CStr(temp);
 
     String_Destroy(temp, -1);
 
@@ -9400,7 +9400,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void Xml_GetChildValue(char *, void *);
     char *Xml_GetNamedValue(char *, void *, String *);
     u8 Xml_AdvanceChild(void *);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     s32 fn_800C9400(String *, s32, u32, char *, s32);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -9532,9 +9532,9 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_Assign(&str114, &strC0, 0, -1);
     String_Destroy(&strC0, -1);
     String_Destroy(&strCC, -1);
-    fn_800C93EC(&str114);
+    String_CStr(&str114);
     if ((u16)fn_8005C144() != 0x8000) {
-        fn_800C93EC(&str114);
+        String_CStr(&str114);
         *(s32 *)((u8 *)self + 0x48) = fn_8005C84C();
     } else {
         *(s32 *)((u8 *)self + 0x48) = 0;
@@ -9545,7 +9545,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_Assign(&str114, &strA8, 0, -1);
     String_Destroy(&strA8, -1);
     String_Destroy(&strB4, -1);
-    fn_800C93EC(&str114);
+    String_CStr(&str114);
     *(s32 *)((u8 *)self + 0x4C) = fn_80065EE8();
 
     fn_800CB8A4(&str9C, &str144, &str12C);
@@ -9553,7 +9553,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_Assign(&str114, &str90, 0, -1);
     String_Destroy(&str90, -1);
     String_Destroy(&str9C, -1);
-    fn_800C93EC(&str114);
+    String_CStr(&str114);
     *(s32 *)((u8 *)self + 0x50) = fn_8006CE14();
 
     if (flag_word != 0) {
@@ -9564,7 +9564,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
         String_Assign(&str114, &str78, 0, -1);
         String_Destroy(&str78, -1);
         String_Destroy(&str84, -1);
-        fn_800C93EC(&str114);
+        String_CStr(&str114);
         *(s32 *)((u8 *)self + 0x54) = fn_8006D948();
     }
 
@@ -9624,13 +9624,13 @@ loop_body:
     }
 
     if (ok != 0) {
-        fn_800C93EC(&str120);
+        String_CStr(&str120);
         if ((u16)fn_8005C144() != 0x8000) {
-            name = fn_800C93EC(&str120);
+            name = String_CStr(&str120);
             entry = fn_800DE73C((u8 *)self + 0x58, &str108);
             *(s32 *)((u8 *)entry + 0xC) = fn_800639B4(name);
         } else {
-            fn_800056CC(lbl_80271860 + 0x2F, fn_800C93EC(&str120));
+            fn_800056CC(lbl_80271860 + 0x2F, String_CStr(&str120));
         }
         Xml_GetChildValue(buf15C, iter);
         name = (char *)((u8 *)StringMap_FindOrInsert((u8 *)self + 0x68, &str108) + 0xC);
@@ -9975,13 +9975,13 @@ void fn_800DF110(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg
 
 s32 fn_800DF258(void *arg0, const char *arg1)
 {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     s32 fn_802342B8(const char *, const char *);
 
     void *str;
     s32 result;
 
-    str = fn_800C93EC((u8 *)arg0 + 0x10);
+    str = String_CStr((u8 *)arg0 + 0x10);
     result = fn_802342B8((const char *)str, arg1);
 
     return result == 0;
@@ -9990,7 +9990,7 @@ s32 fn_800DF258(void *arg0, const char *arg1)
 #pragma cplusplus on
 #pragma dont_inline on
 extern "C" bool fn_800DF298(void *arg0, const char *arg1) {
-    return fn_802342B8((char *)fn_800C93EC((s8 *)arg0 + 4), arg1) == 0;
+    return fn_802342B8((char *)String_CStr((s8 *)arg0 + 4), arg1) == 0;
 }
 #pragma dont_inline reset
 #pragma cplusplus reset
@@ -10276,7 +10276,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     s32 fn_800C9400(String *, u32, u32, char *, u32);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     s32 fn_800DC018(void *);
     u32 strlen(const char *);
     extern void *lbl_8028DFC8[];
@@ -10365,7 +10365,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     self->unk34 = 0;
     self->unk30 = 0;
     self->unk3C = 1;
-    self->unk38 = self->obj->v2(lbl_80271A30 + 0x1F, fn_800C93EC(&self->s2));
+    self->unk38 = self->obj->v2(lbl_80271A30 + 0x1F, String_CStr(&self->s2));
     if (self->unk38 != NULL) {
         self->unk28 = fn_800DC018(self->unk38);
     } else {
@@ -10425,7 +10425,7 @@ extern "C" void *fn_800DFAE0(void *arg0, void *arg1, const String *arg2, const S
     self->unk28 = 0;
     self->unk2C = 1;
     self->unk3C = 1;
-    self->unk38 = self->obj->v2(lbl_80271A30 + 0x1F, fn_800C93EC(&self->s2));
+    self->unk38 = self->obj->v2(lbl_80271A30 + 0x1F, String_CStr(&self->s2));
     if (self->unk38 != NULL) {
         self->unk28 = fn_800DC018(self->unk38);
     } else {
@@ -11575,10 +11575,10 @@ void fn_800E35F4(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5,
 
 #pragma dont_inline on
 s32 fn_800E378C(u8 *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void fn_8006EEFC(void *, void *);
 
-    fn_8006EEFC(arg0 + 0x48, fn_800C93EC(arg1));
+    fn_8006EEFC(arg0 + 0x48, String_CStr(arg1));
     return 1;
 }
 #pragma dont_inline reset
@@ -12000,7 +12000,7 @@ extern "C" void fn_800E4330(void *arg0, void *arg1) {
         virtual void v2(void *) = 0;
         virtual void v3(void *) = 0;
     };
-    char *fn_800C93EC(void *);
+    char *String_CStr(void *);
     u8 fn_800DF6A8(void *);
     extern char lbl_80271FC0[];
     void *res;
@@ -12009,7 +12009,7 @@ extern "C" void fn_800E4330(void *arg0, void *arg1) {
     if (*(u8 *)((u8 *)arg0 + 0x3C) != 0) {
         res = ((Obj10 *)*(void **)arg0)->v2(
             lbl_80271FC0,
-            fn_800C93EC((u8 *)arg0 + 0x1C)
+            String_CStr((u8 *)arg0 + 0x1C)
         );
         if (res != 0 && (u8)fn_800DF6A8(res) != 0 &&
             *(u8 *)((u8 *)arg0 + 0x2C) != 0) {
@@ -12194,7 +12194,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
     s32 fn_800C9400(String *, u32, u32, char *, u32);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     void *Heap_Alloc(s32);
     void fn_800E01C8(void *);
     void fn_800DF6B8(String *, void *);
@@ -12265,8 +12265,8 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
         String_AssignCStr(&str50, base + 0x1A, strlen(base + 0x1A));
     }
     if (fn_800C9400(&str44, 0, str44.size, base + 0x19, strlen(base + 0x19)) != 0) {
-        p2 = fn_800C93EC(&str44);
-        obj = ((Obj10 *)cb)->v2(fn_800C93EC(&str50), p2);
+        p2 = String_CStr(&str44);
+        obj = ((Obj10 *)cb)->v2(String_CStr(&str50), p2);
         *(void **)((u8 *)self + 0x54) = obj;
         cb = *(void **)((u8 *)self + 0x54);
         if (*(void **)((u8 *)cb + 0xA0) == NULL) {
@@ -12877,7 +12877,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     void String_Destroy(String *, s32);
     void String_Assign(String *, String *, s32, s32);
     s32 fn_800C9400(String *, s32, u32, char *, u32);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     void fn_800C9B6C(String *, String *);
     void *fn_800E8008(void *, String *);
     void *fn_800DDC90(void *);
@@ -12980,7 +12980,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     if (self->unkDC != NULL) {
         self->unkE0 = (u32 *)fn_800DDC90(self->unkDC);
         if (fn_800C9400(&str70, 0, str70.size, &lbl_802720E0[5], strlen((char *)lbl_802720E0 + 5)) != 0) {
-            fn_800E574C(self, fn_800C93EC(&str70), self->unkD1, 1, 0, 0xA, lbl_80369F58);
+            fn_800E574C(self, String_CStr(&str70), self->unkD1, 1, 0, 0xA, lbl_80369F58);
         }
     } else {
         self->unkE0 = NULL;
@@ -13657,7 +13657,7 @@ extern "C" void fn_800E7A38(void *arg0, s32 arg1) {
 
 #pragma cplusplus on
 extern "C" s32 fn_800E7AD4(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13668,7 +13668,7 @@ extern "C" s32 fn_800E7AD4(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4)
     extern char lbl_80272230[];
     void *result;
 
-    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x1D, fn_800C93EC(arg1));
+    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x1D, String_CStr(arg1));
     if (result != NULL && *(u8 *)((u8 *)arg0 + 0x3D) != 0) {
         fn_801CAF94(result, arg2, arg3, arg4, 0);
         return 1;
@@ -13741,7 +13741,7 @@ void fn_800E7C88(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_800E7C94(void *arg0, void *arg1, s32 arg2, f32 arg3) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13751,7 +13751,7 @@ extern "C" void fn_800E7C94(void *arg0, void *arg1, s32 arg2, f32 arg3) {
     extern char lbl_80272230[];
     void *result;
 
-    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x6, fn_800C93EC(arg1));
+    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x6, String_CStr(arg1));
     if (result != NULL) {
         *(f32 *)((u8 *)result + 0x70) = arg3;
         *(s32 *)((u8 *)result + 0x74) = arg2;
@@ -13775,7 +13775,7 @@ extern "C" void fn_800E7D10(void *arg0, String *arg1) {
     void *found;
 
     String_Init(&tmp, lbl_80272230 + 6, &alloc);
-    found = ((Obj *)arg0)->v2(fn_800C93EC(&tmp), fn_800C93EC(arg1));
+    found = ((Obj *)arg0)->v2(String_CStr(&tmp), String_CStr(arg1));
     if (found != NULL) {
         fn_800DF664(found);
     }
@@ -13786,7 +13786,7 @@ extern "C" void fn_800E7D10(void *arg0, String *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_800E7DA4(void *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13795,11 +13795,11 @@ extern "C" void fn_800E7DA4(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x2E, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v2(lbl_80272230 + 0x2E, String_CStr(arg1));
 }
 #pragma cplusplus on
 extern "C" void fn_800E7DF8(void *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13808,11 +13808,11 @@ extern "C" void fn_800E7DF8(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x3C, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v2(lbl_80272230 + 0x3C, String_CStr(arg1));
 }
 #pragma cplusplus reset
 extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13821,7 +13821,7 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x6, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v2(lbl_80272230 + 0x6, String_CStr(arg1));
 }
 #pragma cplusplus reset
 
@@ -13865,7 +13865,7 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
 }
 
 extern "C" void fn_800E7F60(void *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13874,7 +13874,7 @@ extern "C" void fn_800E7F60(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x16, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v2(lbl_80272230 + 0x16, String_CStr(arg1));
 }
 
 #pragma dont_inline reset
@@ -13891,11 +13891,11 @@ extern "C" void fn_800E7FB4(void *arg0, String *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x34, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v2(lbl_80272230 + 0x34, String_CStr(arg1));
 }
 
 extern "C" void fn_800E8008(void *arg0, void *arg1) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -13905,14 +13905,14 @@ extern "C" void fn_800E8008(void *arg0, void *arg1) {
     };
     extern char lbl_80272230[];
 
-    ((Obj *)arg0)->v3(lbl_80272230 + 0x10, fn_800C93EC(arg1));
+    ((Obj *)arg0)->v3(lbl_80272230 + 0x10, String_CStr(arg1));
 }
 
 #pragma dont_inline reset
 #pragma cplusplus reset
 #pragma cplusplus on
 extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void fn_800DF664(void *);
     struct Obj {
         u8 pad[0x10];
@@ -13923,8 +13923,8 @@ extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
     void *found;
     void *p2;
 
-    p2 = fn_800C93EC(arg2);
-    found = ((Obj *)arg0)->v2(fn_800C93EC(arg1), p2);
+    p2 = String_CStr(arg2);
+    found = ((Obj *)arg0)->v2(String_CStr(arg1), p2);
     if (found != NULL) {
         fn_800DF664(found);
     }
@@ -13934,7 +13934,7 @@ extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
 
 void *fn_800E80D8(void *arg0, void *arg1, void *arg2)
 {
-    extern void *fn_800C93EC(void *);
+    extern void *String_CStr(void *);
     extern void fn_800DF670(void *);
 
     u8 *obj;
@@ -13945,8 +13945,8 @@ void *fn_800E80D8(void *arg0, void *arg1, void *arg2)
 
     obj = (u8 *)arg0;
 
-    value2 = fn_800C93EC(arg2);
-    value1 = fn_800C93EC(arg1);
+    value2 = String_CStr(arg2);
+    value1 = String_CStr(arg1);
 
     callback = *(void *(**)(void *, void *, void *))(
         *(u8 **)(obj + 0x10) + 0x10
@@ -14133,7 +14133,7 @@ void fn_800E8BF8(u8 *self, f32 *vec, f32 *vec2, s32 arg3, f32 farg0) {
 
 #pragma cplusplus on
 #pragma dont_inline on
-extern "C" M2C_UNK *fn_800C93EC(void *);
+extern "C" M2C_UNK *String_CStr(void *);
 extern "C" s32 fn_800E8F00(void *arg0) {
     struct Obj {
         u8 pad[0x10];
@@ -14157,7 +14157,7 @@ extern "C" s32 fn_800E8F00(void *arg0) {
     tmp.data = 0;
     tmp.cap = 0;
     String_Assign(&tmp, &self->strs[self->index], 0, -1);
-    result = self->obj->v2(fn_800C93EC(&self->name), fn_800C93EC(&tmp));
+    result = self->obj->v2(String_CStr(&self->name), String_CStr(&tmp));
     String_Destroy(&tmp, -1);
     return result;
 }
@@ -14229,7 +14229,7 @@ void fn_800E9050(void *arg0) {
 #pragma opt_common_subs off
 extern "C" void fn_800E905C(void *arg0) {
 void PSMTXRotRad(void *,s32,f32);void fn_802029C4(void *,void *,void *);void fn_80203184(void *,void *,void *);
-void String_Destroy(void *,s16);void String_Assign(void *,void *,s32,s32);void *fn_800C93EC(void *);
+void String_Destroy(void *,s16);void String_Assign(void *,void *,s32,s32);void *String_CStr(void *);
 s32 fn_800C9400(void *,s32,u32,void *,u32);u32 strlen(void *);void fn_80067FE8(void *,void *,void *);
 extern u8 lbl_80272470[];extern const f32 lbl_80369F78,lbl_80369F84,lbl_80369F88,lbl_80369F8C;
 struct V3 {f32 x,y,z; V3() {} V3(const V3 &v):x(v.x),y(v.y),z(v.z) {} };
@@ -14254,8 +14254,8 @@ M2C_FIELD(self,f32 *,0xe4)=dir.x;M2C_FIELD((unsigned)self,f32 *,0xe8)=dir.y;M2C_
 }else{
 if(fn_800C9400(self+0xb0,0,M2C_FIELD(self,u32 *,0xb0),lbl_80272470,strlen(lbl_80272470)) && fn_800C9400(self+0xbc,0,M2C_FIELD(self,u32 *,0xbc),lbl_80272470,strlen(lbl_80272470))){
 String_Assign(str,(self+0xbc)+M2C_FIELD(self,s32 *,0xe0)*12,0,-1);
-name=fn_800C93EC(str);
-M2C_FIELD(self,void **,0x12c)=((Parent *)M2C_FIELD(self,void **,0))->v2(fn_800C93EC(self+0xb0),name);
+name=String_CStr(str);
+M2C_FIELD(self,void **,0x12c)=((Parent *)M2C_FIELD(self,void **,0))->v2(String_CStr(self+0xb0),name);
 if(M2C_FIELD(self,void **,0x12c)){
 const V3 &v=((Child *)M2C_FIELD(self,void **,0x12c))->v13();
 M2C_FIELD(self,f32 *,0xe4)=v.x;M2C_FIELD(self,f32 *,0xe8)=v.y;M2C_FIELD(self,f32 *,0xec)=v.z;
@@ -15510,7 +15510,7 @@ s32 fn_800EC2E0(void) {
     void fn_80034068(void *, u8, s8);
     void fn_800340F0(void *);
     void *Heap_Alloc(s32);
-    char *fn_800C93EC(String *);
+    char *String_CStr(String *);
     void String_AssignCStr(String *, char *, s32);
     void String_Assign(String *, String *, s32, s32);
     void String_Destroy(String *, s16);
@@ -15560,17 +15560,17 @@ s32 fn_800EC2E0(void) {
     t44 = fn_800DAAF0(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x424)));
     String_Assign(&work, &t44, 0, -1);
     String_Destroy(&t44, -1);
-    fn_80234450(obj, fn_800C93EC(&work));
+    fn_80234450(obj, String_CStr(&work));
     t38 = fn_800DAA60(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x43C)));
     String_Assign(&work, &t38, 0, -1);
     String_Destroy(&t38, -1);
-    fn_80234450((u8 *)obj + 0x40, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x40, String_CStr(&work));
     s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x424));
     String_AssignCStr(&work, s, strlen(s));
-    fn_80234450((u8 *)obj + 0x80, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x80, String_CStr(&work));
     s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x43C));
     String_AssignCStr(&work, s, strlen(s));
-    fn_80234450((u8 *)obj + 0x100, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x100, String_CStr(&work));
     *(s32 *)((u8 *)obj + 0x164) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x430));
     *(s32 *)((u8 *)obj + 0x140) = 0x4C;
     *(s32 *)((u8 *)obj + 0x144) = fn_8000CEE4(0xA) + 7;
@@ -15581,17 +15581,17 @@ s32 fn_800EC2E0(void) {
     t2c = fn_800DAAF0(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x428)));
     String_Assign(&work, &t2c, 0, -1);
     String_Destroy(&t2c, -1);
-    fn_80234450((u8 *)obj + 0x168, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x168, String_CStr(&work));
     t20 = fn_800DAA60(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x440)));
     String_Assign(&work, &t20, 0, -1);
     String_Destroy(&t20, -1);
-    fn_80234450((u8 *)obj + 0x1A8, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x1A8, String_CStr(&work));
     s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x428));
     String_AssignCStr(&work, s, strlen(s));
-    fn_80234450((u8 *)obj + 0x1E8, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x1E8, String_CStr(&work));
     s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x440));
     String_AssignCStr(&work, s, strlen(s));
-    fn_80234450((u8 *)obj + 0x268, fn_800C93EC(&work));
+    fn_80234450((u8 *)obj + 0x268, String_CStr(&work));
     *(s32 *)((u8 *)obj + 0x2CC) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x434));
     *(s32 *)((u8 *)obj + 0x2A8) = 0x28;
     *(s32 *)((u8 *)obj + 0x2AC) = fn_8000CEE4(0xA) + 3;
@@ -15603,17 +15603,17 @@ s32 fn_800EC2E0(void) {
         t14 = fn_800DAAF0(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x42C)));
         String_Assign(&work, &t14, 0, -1);
         String_Destroy(&t14, -1);
-        fn_80234450((u8 *)obj + 0x2D0, fn_800C93EC(&work));
+        fn_80234450((u8 *)obj + 0x2D0, String_CStr(&work));
         t8 = fn_800DAA60(fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x444)));
         String_Assign(&work, &t8, 0, -1);
         String_Destroy(&t8, -1);
-        fn_80234450((u8 *)obj + 0x310, fn_800C93EC(&work));
+        fn_80234450((u8 *)obj + 0x310, String_CStr(&work));
         s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x42C));
         String_AssignCStr(&work, s, strlen(s));
-        fn_80234450((u8 *)obj + 0x350, fn_800C93EC(&work));
+        fn_80234450((u8 *)obj + 0x350, String_CStr(&work));
         s = fn_8011C9F4(*(void **)((u8 *)lbl_803678C0 + 0x444));
         String_AssignCStr(&work, s, strlen(s));
-        fn_80234450((u8 *)obj + 0x3D0, fn_800C93EC(&work));
+        fn_80234450((u8 *)obj + 0x3D0, String_CStr(&work));
         *(s32 *)((u8 *)obj + 0x434) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x438));
         *(s32 *)((u8 *)obj + 0x410) = 0x28;
         *(s32 *)((u8 *)obj + 0x414) = fn_8000CEE4(0xA) + 3;

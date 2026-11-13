@@ -25,7 +25,7 @@ u8 fn_800E56C4(void *);
 void fn_80113298(void *, void *, s32, s32, s32);
 void fn_801134EC(void *, void *, void *);
 void String_Assign(void *, void *, s32, s32);
-void *fn_800C93EC(void *);
+void *String_CStr(void *);
 extern u16 lbl_80367A58;
 
 extern s32 gUiInputFlags;
@@ -1208,7 +1208,7 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     void fn_800CBF24(void *, char *, void *);
     void fn_800CB90C(void *, void *, char *);
     void fn_800C99A0(void *, void *, s32, s32);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     void fn_800E5044(void *, void *);
     extern char *lbl_8028F6B8[];
     String sp48;
@@ -1258,7 +1258,7 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     fn_800CB90C(&spC, &sp3C, (char *)((u8 *)gActorXmlStrs + 0x456));
     fn_800C99A0(&sp48, &spC, 0, -1);
     String_Destroy(&spC, -1);
-    fn_800E5044(self, fn_800C93EC(&sp48));
+    fn_800E5044(self, String_CStr(&sp48));
     String_Destroy(&sp3C, -1);
     String_Destroy(&sp48, -1);
 }
@@ -1302,7 +1302,7 @@ void fn_80113298(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4) {
     String_Assign(&sp54, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
     String_Destroy(&sp48, -1);
-    cstr = fn_800C93EC(&sp54);
+    cstr = String_CStr(&sp54);
     fn_800E574C(self, cstr, lbl_8036A18C, a3, a4, *(u8 *)((u8 *)self + 0x184), a2);
     spC.cap = 0;
     sp18.cap = 0;
@@ -1637,7 +1637,7 @@ void fn_80113C84(void *self, s32 mode) {
     }
 
     if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)&gActorXmlStrs + 0x478, strlen((char *)&gActorXmlStrs + 0x478)) == 0) {
-        String_Init(&spC, fn_800C93EC(&sp3C), &sp8);
+        String_Init(&spC, String_CStr(&sp3C), &sp8);
         fn_800CB8A4(&sp18, (u8 *)self + 0x154, &spC);
         ok = fn_800DDC04(*(void **)((u8 *)self + 0xDC), &sp18) != 0;
         String_Destroy(&sp18, -1);
@@ -1652,7 +1652,7 @@ void fn_80113C84(void *self, s32 mode) {
     String_Assign(&sp3C, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
     String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F));
-    fn_80113298(self, fn_800C93EC(&sp3C), *(s32 *)((u8 *)self + 0x188), 0, 1);
+    fn_80113298(self, String_CStr(&sp3C), *(s32 *)((u8 *)self + 0x188), 0, 1);
     String_Assign((u8 *)self + 0x160, &sp30, 0, -1);
     *(u8 *)(*(u8 **)((u8 *)self + 0x11C) + 0x14D) = 0;
     *(u8 *)((u8 *)self + 0x1A4) = 1;
@@ -1723,7 +1723,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     void fn_800CB8A4(void *, void *, void *);
     void fn_800CB90C(void *, void *, char *);
     void fn_800CBF24(void *, void *, void *);
-    void *fn_800C93EC(void *);
+    void *String_CStr(void *);
     s32 fn_800C9400(void *, s32, void *, char *, s32);
     s32 fn_800DDAA4(void *, void *);
     s32 fn_800DDC04(void *, void *);
@@ -1848,7 +1848,7 @@ do_43f:
                 strlen((char *)&gActorXmlStrs + 0x43F));
 skip_43f:
 
-    fn_80113298(arg0, fn_800C93EC(&sp104), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
+    fn_80113298(arg0, String_CStr(&sp104), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
 
     {
         s32 n;
@@ -2284,9 +2284,9 @@ void fn_8011631C(void *arg0, s8 arg1)
 
         if (fn_800C9400(&sp24, 0, (void *)sp24.size, (char *)&gActorXmlStrs + 0x43f,
                         strlen((char *)&gActorXmlStrs + 0x43f)) == 0) {
-            fn_80113298(arg0, fn_800C93EC(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
+            fn_80113298(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x190), 1, 1);
         } else {
-            fn_80113298(arg0, fn_800C93EC(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
+            fn_80113298(arg0, String_CStr(&sp24), *(s32 *)((u8 *)arg0 + 0x188), 0, 1);
             String_AssignCStr((u8 *)arg0 + 0x16C, (char *)&gActorXmlStrs + 0x43f,
                         strlen((char *)&gActorXmlStrs + 0x43f));
         }
@@ -5178,7 +5178,7 @@ M2C_UNK *fn_8011C9F4(void *arg0) {
 
     temp_r4 = M2C_FIELD(arg0, u32 *, 0xEC);
     if (temp_r4 < (u32) M2C_FIELD(arg0, u32 *, 0xB0)) {
-        return (M2C_UNK *)fn_800C93EC((void *)(M2C_FIELD(arg0, s32 *, 0xB4) + (temp_r4 * 0xC)));
+        return (M2C_UNK *)String_CStr((void *)(M2C_FIELD(arg0, s32 *, 0xB4) + (temp_r4 * 0xC)));
     }
     return (M2C_UNK *)lbl_80274A88;
 }
