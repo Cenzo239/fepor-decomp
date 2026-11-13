@@ -493,7 +493,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
     void *fn_8000CAA0(void *, void *);
     void *fn_800C45B8(s32, void *, s32);
     void fn_80050BCC(void *, s32);
-    void fn_8018851C(void *);
+    void MoveAnim_BuildPathHeights(void *);
     u8 *BattleMap_GetPath(void *);
     extern u8 gMoveAnimClass[];
     extern u8 MoveAnim_str[];
@@ -558,7 +558,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
         anim[0x5A] = flags;
     }
     anim[0x59] += count;
-    fn_8018851C(anim);
+    MoveAnim_BuildPathHeights(anim);
     return anim;
 }
 
@@ -567,7 +567,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 void *MoveAnim_BindPath(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
-void fn_80050BCC(void *,s32); void fn_8018851C(void *);
+void fn_80050BCC(void *,s32); void MoveAnim_BuildPathHeights(void *);
 extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
 u8 *obj; s32 i; u8 *p; s32 count; s32 temp; u8 flags;
@@ -595,7 +595,7 @@ for(i=0;i<count;i++) {
 (*(u8 **)(obj+0x54))[i+obj[0x59]]=16;
 flags=*(u16 *)(obj+0x52)&15;
 if(flags) obj[0x5A]=flags;
-obj[0x59]+=count;fn_8018851C(obj);return obj;
+obj[0x59]+=count;MoveAnim_BuildPathHeights(obj);return obj;
 }
 #pragma opt_common_subs reset
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
@@ -1941,7 +1941,7 @@ void fn_8018820C(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8018851C(void *arg0) {
+void MoveAnim_BuildPathHeights(void *arg0) {
 f32 fn_80023430(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
 extern u8 gBattleMap[]; extern f32 lbl_8036ACD8,lbl_8036ACEC;
 u8 *self=arg0;
