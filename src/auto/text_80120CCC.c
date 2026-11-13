@@ -2963,7 +2963,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_bmsini(void);
     void ScriptCmd_ArcLoad(void);
     void ScriptCmd_ArcFree(void);
-    void fn_80126EB0(void);
+    void ScriptCmd_cmb_mess_load(void);
     void fn_80126A60(void);
     void fn_80126D0C(void);
     void fn_80126CE8(void);
@@ -3011,7 +3011,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x2BE, ScriptCmd_bmsini, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2C6, ScriptCmd_ArcLoad, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2CE, ScriptCmd_ArcFree, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x2D6, fn_80126EB0, 2);
+    Script_RegisterCommand(gScriptCmdNames + 0x2D6, ScriptCmd_cmb_mess_load, 2);
     Script_RegisterCommand(gScriptCmdNames + 0x2E5, fn_80126A60, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2F8, fn_80126D0C, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x30C, fn_80126CE8, 0);
@@ -3292,7 +3292,7 @@ s32 fn_80126E80(void) {
     return 1;
 }
 
-s32 fn_80126EB0(s32 arg0, s32 arg1) {
+s32 ScriptCmd_cmb_mess_load(s32 arg0, s32 arg1) {
     void ScriptCmd_CmLoadScript(s32);
     s8 fn_8005BA00(void);
     void fn_8005BA08(s8);
