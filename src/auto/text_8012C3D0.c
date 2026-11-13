@@ -1694,7 +1694,7 @@ extern "C" void fn_8012F360(void *arg0) {
     void Prim2D_Begin(void);
     void fn_8012EF5C(void *, void *, s32);
     void fn_8012F5CC(void *);
-    void fn_8012FA3C(void *);
+    void Ui_DrawUnitCountBanner(void *);
     void fn_8012FF60(void *);
     void fn_801302F4(void *);
     extern f32 lbl_8036A500;
@@ -1721,7 +1721,7 @@ extern "C" void fn_8012F360(void *arg0) {
 
     fn_8012FF60(arg0);
     var_r30 = arg0;
-    fn_8012FA3C(var_r30);
+    Ui_DrawUnitCountBanner(var_r30);
     fn_8012F5CC(var_r30);
     Prim2D_Begin();
     Prim2D_SetTransform(414.0f, 34.0f, lbl_8036A500, lbl_8036A50C);
@@ -1942,7 +1942,7 @@ void fn_8012F5CC(void *arg0) {
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
-extern "C" void fn_8012FA3C(void *arg0) {
+extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     void fn_800075D8(void);
     void fn_800076EC(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
