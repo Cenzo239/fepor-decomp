@@ -858,7 +858,7 @@ void fn_800C6028(void *arg0) {
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void PSMTXIdentity(void *);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224DCC(void *, s32);
     void fn_80224E1C(s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -932,7 +932,7 @@ void fn_800C6028(void *arg0) {
         fn_80224E50(sp250, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         PSMTXIdentity(sp250);
-        fn_80224D7C(sp250, 0);
+        GXLoadPosMtxImm(sp250, 0);
         fn_80224DCC(sp250, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 5, 0);
@@ -998,7 +998,7 @@ void fn_800C6028(void *arg0) {
         fn_80224E50(sp1E0, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         PSMTXIdentity(sp1E0);
-        fn_80224D7C(sp1E0, 0);
+        GXLoadPosMtxImm(sp1E0, 0);
         fn_80224DCC(sp1E0, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 5, 0);
@@ -1064,7 +1064,7 @@ void fn_800C6028(void *arg0) {
         fn_80224E50(sp170, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         PSMTXIdentity(sp170);
-        fn_80224D7C(sp170, 0);
+        GXLoadPosMtxImm(sp170, 0);
         fn_80224DCC(sp170, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 5, 0);
@@ -1132,7 +1132,7 @@ void fn_800C6028(void *arg0) {
         fn_80224E50(sp100, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         PSMTXIdentity(sp100);
-        fn_80224D7C(sp100, 0);
+        GXLoadPosMtxImm(sp100, 0);
         fn_80224DCC(sp100, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 5, 0);
@@ -1195,7 +1195,7 @@ void fn_800C6E44(void *arg0) {
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void PSMTXIdentity(void *);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224DCC(void *, s32);
     void fn_80224E1C(s32);
     void fn_802245D8(s32, s32, s32, s32);
@@ -1256,7 +1256,7 @@ void fn_800C6E44(void *arg0) {
     fn_80224E50(sp70, 0x1E, 1);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
     PSMTXIdentity(sp70);
-    fn_80224D7C(sp70, 0);
+    GXLoadPosMtxImm(sp70, 0);
     fn_80224DCC(sp70, 0);
     fn_80224E1C(0);
     fn_802245D8(1, 4, 5, 0);
@@ -17249,7 +17249,7 @@ fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);fn_802240C8(1);fn_802239D0(0,3);fn_802
 fn_80220428(1);fn_802201A8(0,1,4,30,0,125);
 PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
 PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(fn_80067FDC(),sp28,sp28);
-fn_80224D7C(sp28,0);fn_80224E1C(0);fn_802245D8(1,4,5,0);
+GXLoadPosMtxImm(sp28,0);fn_80224E1C(0);fn_802245D8(1,4,5,0);
 magic=lbl_8036A018; one=lbl_8036A024;
 for(i=0;i<=(s8)arg0[0x100];i++){
 p=arg0+i; x=p[0];y=p[0x40]; dx.w.hi=0x43300000; dx.w.lo=(s32)(s8)x^0x80000000; dy.w.hi=0x43300000; dy.w.lo=(s32)(s8)y^0x80000000; fx=dx.d-magic;fy=dy.d-magic;fx1=one+fx;fy1=one+fy;

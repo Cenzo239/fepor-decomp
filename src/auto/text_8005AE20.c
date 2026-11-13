@@ -5216,7 +5216,7 @@ void fn_80067EDC(void *arg0)
 {
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void PSMTXIdentity(void *);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetScissor(u16, u16, u16, u16);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -5247,7 +5247,7 @@ void fn_80067EDC(void *arg0)
     C_MTXOrtho(p + 0x24, negbit, z, lbl_80369250, z, lbl_8036924C, z, lbl_80369254);
     *(u16 *)p &= 0xFFFE;
     PSMTXIdentity(mtx);
-    fn_80224D7C(mtx, 0);
+    GXLoadPosMtxImm(mtx, 0);
     fn_80224E1C(0);
     PSMTXIdentity(p + 0xA4);
     if (p == NULL) {

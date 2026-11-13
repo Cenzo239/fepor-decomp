@@ -8644,7 +8644,7 @@ void fn_800C0CDC(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80222C50(void *, s32);
     void fn_80220DEC(s32, s32, s32);
     extern f32 lbl_80369D24;
@@ -8690,7 +8690,7 @@ void fn_800C0CDC(void *arg0) {
     PSMTXConcat(sp38, sp98, sp8);
     PSMTXConcat(spC8, sp8, sp8);
     PSMTXConcat(sp68, sp8, sp8);
-    fn_80224D7C(sp8, 0);
+    GXLoadPosMtxImm(sp8, 0);
     fn_80222C50((u8 *)temp_r31 + 0x30, 0);
     fn_80220DEC(0x98, 0, 4);
     vals[0] = lbl_80369D28;

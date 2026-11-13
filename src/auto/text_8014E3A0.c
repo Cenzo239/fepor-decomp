@@ -276,7 +276,7 @@ void fn_8014E864(void *arg0) {
     void fn_80201FF0(void *, void *);
     void fn_8006DA64(void *, s32, void *);
     void *fn_80067FDC(void);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void fn_801502EC(void *, void *, void *, void *);
     void fn_8014EFB8(void *, void *, void *, void *, void *);
@@ -403,7 +403,7 @@ void fn_8014E864(void *arg0) {
                     PSMTXConcat(buf38, bufF8, bufF8);
                 after_mtx:
                     PSMTXConcat(fn_80067FDC(), bufF8, bufF8);
-                    fn_80224D7C(bufF8, 0);
+                    GXLoadPosMtxImm(bufF8, 0);
                     fn_80224E1C(0);
 
                     mode = *(u16 *)(entry + 6) & 7;

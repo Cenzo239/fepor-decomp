@@ -9606,7 +9606,7 @@ void fn_80049E24(void) {
     void PSMTXTrans(void *, f32, f32, f32);
     void *fn_80067FDC(void);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80223D94(s32, s32, s32);
@@ -9659,7 +9659,7 @@ void fn_80049E24(void) {
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         PSMTXTrans(spC, lbl_80368F84, lbl_80368F84, lbl_80368F88);
         PSMTXConcat(fn_80067FDC(), spC, spC);
-        fn_80224D7C(spC, 0);
+        GXLoadPosMtxImm(spC, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 5, 0);
         fn_80223D94(0, 0, 3);
@@ -9785,7 +9785,7 @@ void fn_8022100C(s32);
 void PSMTXTrans(void *, f32, f32, f32);
 void *fn_80067FDC(void);
 void PSMTXConcat(void *, void *, void *);
-void fn_80224D7C(void *, s32);
+void GXLoadPosMtxImm(void *, s32);
 void fn_80224E1C(s32);
 void fn_802245D8(s32, s32, s32, s32);
 void fn_80220DEC(s32, s32, s32);
@@ -9833,7 +9833,7 @@ extern u8 lbl_80285828[];
         fn_8022100C(0);
         PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
         PSMTXConcat(fn_80067FDC(), sp8, sp8);
-        fn_80224D7C(sp8, 0);
+        GXLoadPosMtxImm(sp8, 0);
         fn_80224E1C(0);
         fn_802245D8(1, 4, 1, 0);
         ca = lbl_802CA518;
@@ -9979,7 +9979,7 @@ void fn_8004AAA4(void) {
     M2C_UNK fn_80223F2C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802240C8(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80224D7C(M2C_UNK *, M2C_UNK);
+    M2C_UNK GXLoadPosMtxImm(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_80224E1C(M2C_UNK);
     extern f32 lbl_80368F84;
     extern f32 lbl_80368F88;
@@ -10000,7 +10000,7 @@ void fn_8004AAA4(void) {
     fn_8022100C(0);
     PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
     PSMTXConcat(fn_80067FDC(), sp8, sp8);
-    fn_80224D7C(sp8, 0);
+    GXLoadPosMtxImm(sp8, 0);
     fn_80224E1C(0);
     fn_802245D8(1, 4, 1, 0);
 }
@@ -10778,7 +10778,7 @@ void fn_8004C80C(void) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     extern u8 lbl_802B14E4[];
     extern s32 lbl_803672B0;
@@ -10811,7 +10811,7 @@ void fn_8004C80C(void) {
     fn_80220428(1);
     PSMTXTrans(sp30, lbl_80368FCC, lbl_80368FCC, lbl_80368FF0);
     PSMTXConcat(fn_80067FDC(), sp30, sp60);
-    fn_80224D7C(sp60, 0);
+    GXLoadPosMtxImm(sp60, 0);
     fn_80224E1C(0);
     fn_80224684(1, 3, 0);
     fn_802245D8(1, 4, 5, 7);

@@ -1363,7 +1363,7 @@ void fn_80007B04(void)
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void GXSetScissor(u32, u32, u32);
     void fn_80009728(void *, void *, u8);
-    void fn_80224D7C(void *, s16);
+    void GXLoadPosMtxImm(void *, s16);
     void fn_80224E1C(s16);
     void fn_80009008(s32, u8, u8);
     extern void *lbl_80367140;
@@ -1478,11 +1478,11 @@ void fn_80007B04(void)
                     void *e = *p;
                     if (M2C_FIELD(e, u16 *, 0x10) & 0x400) {
                         M2C_FIELD(e, s16 *, 0xC) = lbl_802837B0[n];
-                        fn_80224D7C((u8 *)*p + 0x50, lbl_802837B0[n]);
+                        GXLoadPosMtxImm((u8 *)*p + 0x50, lbl_802837B0[n]);
                         break;
                     }
                     M2C_FIELD(e, s16 *, 0xC) = *tbl;
-                    fn_80224D7C((u8 *)*p + 0x50, *tbl);
+                    GXLoadPosMtxImm((u8 *)*p + 0x50, *tbl);
                     p++;
                     tbl++;
                     n++;

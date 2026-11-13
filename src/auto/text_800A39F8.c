@@ -821,7 +821,7 @@ void Gx_Setup2DState(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetScissor(s32, s32, s32, s32);
@@ -846,7 +846,7 @@ void Gx_Setup2DState(void *arg0) {
     GXSetViewport(0.0f, 0.0f, (f32)temp_r31, (f32)temp_r30, 0.9f, 0.9f);
     GXSetScissor(0, 0, temp_r31, temp_r30);
     PSMTXIdentity(sp1C);
-    fn_80224D7C(sp1C, 0);
+    GXLoadPosMtxImm(sp1C, 0);
     fn_80224E1C(0);
     fn_80224684(1, 3, 1);
     fn_802245D8(0, 1, 0, 0);

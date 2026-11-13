@@ -390,7 +390,7 @@ void __GXInitGX(void) {
     void fn_80220F44(s32, s32);
     void fn_80220F84(s32, s32);
     void fn_80220FC4(s32, s32, s32);
-    void fn_80224D7C(f32 *, s32);
+    void GXLoadPosMtxImm(f32 *, s32);
     void fn_80224DCC(f32 *, s32);
     void fn_80224E1C(s32);
     void fn_80224E50(f32 *, s32, s32);
@@ -557,7 +557,7 @@ void __GXInitGX(void) {
     mtx[2][2] = lbl_8036BCC0;
     mtx[2][3] = 0.0f;
 
-    fn_80224D7C(&mtx[0][0], 0);
+    GXLoadPosMtxImm(&mtx[0][0], 0);
     fn_80224DCC(&mtx[0][0], 0);
     fn_80224E1C(0);
     fn_80224E50(&mtx[0][0], 0x3C, 0);

@@ -1504,7 +1504,7 @@ void fn_80088FFC(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_8021FBB8(void);
@@ -1538,7 +1538,7 @@ void fn_80088FFC(void *arg0) {
     C_MTXOrtho(&sp8[0], lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
     GXSetProjection(&sp8[0], 1);
     PSMTXTrans(&sp8[0], lbl_80369690, lbl_80369690, lbl_803696A0);
-    fn_80224D7C(&sp8[0], 0);
+    GXLoadPosMtxImm(&sp8[0], 0);
     fn_80224E1C(0);
     GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
     fn_8021FBB8();
@@ -1779,7 +1779,7 @@ void fn_80089680(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern f32 lbl_80369694;
@@ -1824,7 +1824,7 @@ void fn_80089680(void *arg0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
-        fn_80224D7C(spC, 0);
+        GXLoadPosMtxImm(spC, 0);
         fn_80224E1C(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
@@ -1933,7 +1933,7 @@ void fn_80089A28(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
@@ -2009,7 +2009,7 @@ void fn_80089A28(void *arg0) {
     C_MTXOrtho(sp8, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
     GXSetProjection(sp8, 1);
     PSMTXTrans(sp8, lbl_80369690, lbl_80369690, lbl_803696A0);
-    fn_80224D7C(sp8, 0);
+    GXLoadPosMtxImm(sp8, 0);
     fn_80224E1C(0);
     GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
     fn_8021FBB8();
@@ -2152,7 +2152,7 @@ void fn_80089FA8(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
@@ -2206,7 +2206,7 @@ void fn_80089FA8(void *arg0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
-        fn_80224D7C(spC, 0);
+        GXLoadPosMtxImm(spC, 0);
         fn_80224E1C(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         fn_8021FBB8();
@@ -2318,7 +2318,7 @@ void fn_8008A5AC(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
-    void fn_80224D7C(void *, s32);
+    void GXLoadPosMtxImm(void *, s32);
     void fn_80224E1C(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
@@ -2364,7 +2364,7 @@ void fn_8008A5AC(void *arg0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
-        fn_80224D7C(spC, 0);
+        GXLoadPosMtxImm(spC, 0);
         fn_80224E1C(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         fn_8021FBB8();
