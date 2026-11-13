@@ -3763,7 +3763,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
     extern f32 lbl_8036A9D8;
-    extern f32 lbl_8036A9DC;
+    extern f32 gUiMenuSlotTextScale;
     extern f32 lbl_8036A9E0;
     struct Obj {
         virtual void v0() = 0;
@@ -3816,9 +3816,9 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     } else if ((u8)M2C_FIELD(arg0, u8 *, 0x4) != 0) {
         sp8 = *Ui_GetColor(0x13);
         Prim2D_SetColorPacked(&sp8);
-        Prim2D_SetTextScale(1, lbl_8036A9DC);
+        Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     } else {
-        Prim2D_SetTextScale(1, lbl_8036A9DC);
+        Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
@@ -3882,7 +3882,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
     extern f32 lbl_8036A9D8;
-    extern f32 lbl_8036A9DC;
+    extern f32 gUiMenuSlotTextScale;
     extern f32 lbl_8036A9E0;
     struct Obj {
         virtual void v0() = 0;
@@ -3935,9 +3935,9 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     } else if ((u8)fn_8017F9D4() != 0) {
         sp8 = *Ui_GetColor(0x13);
         Prim2D_SetColorPacked(&sp8);
-        Prim2D_SetTextScale(1, lbl_8036A9DC);
+        Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     } else {
-        Prim2D_SetTextScale(1, lbl_8036A9DC);
+        Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
@@ -16350,7 +16350,7 @@ extern f32 lbl_8036AB70;
 
 extern f32 lbl_8036A9CC;
 extern f32 lbl_8036A9D8;
-extern f32 lbl_8036A9DC;
+extern f32 gUiMenuSlotTextScale;
 extern f32 lbl_8036A9E0;
 extern f64 lbl_8036A9B8;
 extern u16 lbl_80293BB8;
