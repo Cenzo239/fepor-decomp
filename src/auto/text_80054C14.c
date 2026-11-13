@@ -73,7 +73,7 @@ extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 UnitRef_GetUnit(u32);
-extern "C" void fn_80090C50(s32);
+extern "C" void UnitInfo_DrawStatus(s32);
 
 #pragma cplusplus reset
 
