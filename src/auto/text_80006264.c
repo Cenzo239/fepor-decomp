@@ -1830,7 +1830,7 @@ void fn_80009008(void *list, s32 a, s32 b) {
 
 void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void PSMTXScale(void *, f32, f32, f32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80222CF0(s32, s32);
@@ -1860,7 +1860,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     switch (arg0 & 3) {
     case 2:
         var_r30 = 0;
-        fn_80220428(0);
+        GXSetNumChans(0);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         break;
     case 0:
@@ -1868,7 +1868,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
             fn_80222CF0(arg2, arg3);
         }
         fn_80222C50(arg1, 0);
-        fn_80220428(1);
+        GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         GXSetTevOrder(0, 0, 0, 4);
         break;
@@ -1881,12 +1881,12 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         temp_f1 = lbl_80368B94 / (f32)(u16)fn_80222A80(arg1);
         PSMTXScale(sp8, temp_f1, temp_f31, lbl_80368B94);
         fn_80224E50(sp8, 0x1E, 1);
-        fn_80220428(1);
+        GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         GXSetTevOrder(0, 0, 0, 4);
         break;
     case 3:
-        fn_80220428(1);
+        GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
         GXSetTevOrder(0, 0, 0, 4);
         break;

@@ -283,7 +283,7 @@ void fn_8014E864(void *arg0) {
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
@@ -418,7 +418,7 @@ void fn_8014E864(void *arg0) {
                         GXSetVtxDesc(11, 1);
                         GXSetVtxAttrFmt(0, 9, 1, 4, 0);
                         GXSetVtxAttrFmt(0, 11, 1, 5, 0);
-                        fn_80220428(0);
+                        GXSetNumChans(0);
                         GXSetNumTevStages(1);
                         GXSetTevOrder(0, 0xFF, 0xFF, 4);
                         fn_802239D0(0, 4);
@@ -508,7 +508,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void GXSetVtxDesc(s32, s32);
     void fn_8006ECCC(void *, void *, u16);
     void fn_80222C50(void *, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXSetNumTevStages(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -542,7 +542,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
         fn_8006ECCC(var_r28, sp8, *(u16 *)(*(u8 **)((u8 *)var_r29 + 0x14) + 4));
         fn_80222C50(sp8, 0);
-        fn_80220428(1);
+        GXSetNumChans(1);
         GXSetNumTevStages(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         GXSetTevOrder(0, 0, 0, 4);
@@ -580,7 +580,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
             ;
         } while (ctr < (s32)*(u16 *)((u8 *)var_r30 + 0x1E));
     } else {
-        fn_80220428(0);
+        GXSetNumChans(0);
         GXSetNumTevStages(1);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         fn_802239D0(0, 4);

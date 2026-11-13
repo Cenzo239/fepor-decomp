@@ -7408,7 +7408,7 @@ void fn_801959FC(void *arg0) {
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void GXSetChanMatColor(s32, void *);
@@ -7468,7 +7468,7 @@ void fn_801959FC(void *arg0) {
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     fn_802239D0(0, 4);
-    fn_80220428(0);
+    GXSetNumChans(0);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xB, 1);
@@ -13257,7 +13257,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK GXClearVtxDesc();
     M2C_UNK GXSetVtxAttrFmt(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80220428(M2C_UNK);
+    M2C_UNK GXSetNumChans(M2C_UNK);
     M2C_UNK fn_802209FC();
     M2C_UNK GXBegin(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8022124C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13294,7 +13294,7 @@ void fn_801A27F8(void *arg0) {
         fn_802228D8(spC, 1, 1, 0, 0, 0, 0.0f, 0.0f, 0.0f);
         fn_80222334(1);
         fn_80222370(4, 0, 1, 1, 0, 0, 2);
-        fn_80220428(1);
+        GXSetNumChans(1);
         fn_80222C50(spC, 0);
         GXSetTevOrder(0, 0, 0, 4);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);

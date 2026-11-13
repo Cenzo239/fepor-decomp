@@ -4610,7 +4610,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     u16 fn_802072A0(void);
     void *fn_801FBF98(void *, void *, u16 *, u32 (*)(void *, u16));
@@ -4669,7 +4669,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(0, 7, 4, 5, 7);
     GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-    fn_80220428(1);
+    GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
 
     var_r22 = var_r20;

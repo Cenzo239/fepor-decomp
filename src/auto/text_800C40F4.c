@@ -853,7 +853,7 @@ void fn_800C6028(void *arg0) {
     void fn_80222C50(void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -927,7 +927,7 @@ void fn_800C6028(void *arg0) {
         fn_80222C50(spA0, 0);
         w = fn_80222A80(spA0);
         h = fn_80222A90(spA0);
-        fn_80220428(1);
+        GXSetNumChans(1);
         PSMTXScale(sp250, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp250, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -993,7 +993,7 @@ void fn_800C6028(void *arg0) {
         fn_80222C50(sp80, 0);
         w = fn_80222A80(sp80);
         h = fn_80222A90(sp80);
-        fn_80220428(1);
+        GXSetNumChans(1);
         PSMTXScale(sp1E0, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp1E0, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1059,7 +1059,7 @@ void fn_800C6028(void *arg0) {
         fn_80222C50(sp60, 0);
         w = fn_80222A80(sp60);
         h = fn_80222A90(sp60);
-        fn_80220428(1);
+        GXSetNumChans(1);
         PSMTXScale(sp170, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp170, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1127,7 +1127,7 @@ void fn_800C6028(void *arg0) {
         fn_80222C50(sp40, 0);
         w = fn_80222A80(sp40);
         h = fn_80222A90(sp40);
-        fn_80220428(1);
+        GXSetNumChans(1);
         PSMTXScale(sp100, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp100, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1190,7 +1190,7 @@ void fn_800C6E44(void *arg0) {
     void fn_80222C50(void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void PSMTXScale(void *, f32, f32);
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -1251,7 +1251,7 @@ void fn_800C6E44(void *arg0) {
     fn_80222C50(sp20, 0);
     w = fn_80222A80(sp20);
     h = fn_80222A90(sp20);
-    fn_80220428(1);
+    GXSetNumChans(1);
     PSMTXScale(sp70, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
     fn_80224E50(sp70, 0x1E, 1);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1298,7 +1298,7 @@ void fn_800C6E44(void *arg0) {
         fn_80222C50(sp20, 0);
         w = fn_80222A80(sp20);
         h = fn_80222A90(sp20);
-        fn_80220428(1);
+        GXSetNumChans(1);
         PSMTXScale(sp40, lbl_80369D9C / (f32)(u16)w, lbl_80369D9C / (f32)(u16)h);
         fn_80224E50(sp40, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -17280,7 +17280,7 @@ f32 one,fx,fy,fx1,fy1,z;
 fn_8006ECCC(lbl_803674F0,sp8,0);
 GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0);GXSetVtxAttrFmt(0,13,1,1,0);
 fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);GXSetNumTevStages(1);fn_802239D0(0,3);GXSetTevOrder(0,0,0,255);
-fn_80220428(1);fn_802201A8(0,1,4,30,0,125);
+GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);
 PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
 PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(fn_80067FDC(),sp28,sp28);
 GXLoadPosMtxImm(sp28,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);

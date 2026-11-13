@@ -1516,7 +1516,7 @@ void fn_80088FFC(void *arg0) {
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_80222334(s32);
@@ -1554,7 +1554,7 @@ void fn_80088FFC(void *arg0) {
     GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
     GXSetTevOrder(0, 0, 0, 4);
     fn_80222C50((u8 *)arg0 + 0x4C, 0);
-    fn_80220428(1);
+    GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     GXSetNumTevStages(1);
     fn_80222334(1);
@@ -1768,7 +1768,7 @@ void fn_80089680(void *arg0) {
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
@@ -1835,7 +1835,7 @@ void fn_80089680(void *arg0) {
         GXSetNumTevStages(1);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
-        fn_80220428(0);
+        GXSetNumChans(0);
         fn_80222334(1);
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_802245D8(1, 4, 5, 0);
@@ -1923,7 +1923,7 @@ void fn_80089A28(void *arg0) {
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -2017,7 +2017,7 @@ void fn_80089A28(void *arg0) {
     GXSetVtxDesc(0xB, 1);
     GXSetVtxAttrFmt(0, 9, 1, 3, 0);
     GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
-    fn_80220428(0);
+    GXSetNumChans(0);
     fn_802239D0(0, 4);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     GXSetNumTevStages(1);
@@ -2141,7 +2141,7 @@ void Ui_DrawColorFade(void *arg0) {
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
@@ -2212,7 +2212,7 @@ void Ui_DrawColorFade(void *arg0) {
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
         GXSetVtxAttrFmt(0, 9, 1, 3, 0);
-        fn_80220428(0);
+        GXSetNumChans(0);
         fn_802239D0(0, 4);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         GXSetNumTevStages(1);
@@ -2302,7 +2302,7 @@ void fn_8008A5AC(void *arg0) {
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void GXSetChanMatColor(s32, s32 *);
     void fn_80222334(s32);
@@ -2379,12 +2379,12 @@ void fn_8008A5AC(void *arg0) {
             GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
             GXSetTevOrder(0, 0, 0, 4);
             fn_80222C50((u8 *)arg0 + 0x4C, 0);
-            fn_80220428(1);
+            GXSetNumChans(1);
             fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         } else {
             fn_802239D0(0, 4);
             GXSetTevOrder(0, 0xFF, 0xFF, 4);
-            fn_80220428(0);
+            GXSetNumChans(0);
         }
         GXSetNumTevStages(1);
         fn_80222334(1);

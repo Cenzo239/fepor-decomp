@@ -382,7 +382,7 @@ void __GXInitGX(void) {
     s32 VIGetTvFormat(void);
     void fn_802217AC(void *, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXClearVtxDesc(void);
     void fn_80220198(void);
     void fn_80220154(s32, void *, s32);
@@ -517,7 +517,7 @@ void __GXInitGX(void) {
     fn_802201A8(6, 1, 0xA, 0x3C, 0, 0x7D);
     fn_802201A8(7, 1, 0xB, 0x3C, 0, 0x7D);
 
-    fn_80220428(1);
+    GXSetNumChans(1);
     GXClearVtxDesc();
     fn_80220198();
 
@@ -1292,7 +1292,7 @@ void fn_802201A8(void) {
     osSync();
 }
 
-void fn_80220428(u32 arg0) {
+void GXSetNumChans(u32 arg0) {
     extern unsigned short *__GXData;
     register unsigned short *gx_data = __GXData;
     register volatile u32 *fifo = (volatile u32 *)0xCC008000;

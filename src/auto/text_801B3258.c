@@ -7307,7 +7307,7 @@ void fn_801C65E0(void *arg0) {
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void fn_80222334(s32);
@@ -7361,7 +7361,7 @@ void fn_801C65E0(void *arg0) {
         fn_8022100C(2);
         fn_80222334(1);
         fn_80222370(4, 0, 1, 1, 0, 0, 2);
-        fn_80220428(1);
+        GXSetNumChans(1);
         GXSetNumTevStages(1);
         GXSetTevOrder(0, 0, 0, 4);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);

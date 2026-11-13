@@ -215,7 +215,7 @@ void fn_800566D4(void *arg0) {
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void fn_802209FC(void);
     void GXBegin(s32, s32, s32);
     void fn_8022124C(s32, s32, s32, s32);
@@ -261,7 +261,7 @@ void fn_800566D4(void *arg0) {
                 GXSetTevColorOp(0, 0, 0, 0, 1, 0);
                 GXSetTevAlphaIn(0, 7, 7, 7, 5);
                 GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-                fn_80220428(1);
+                GXSetNumChans(1);
                 GXSetTevOrder(0, 0, 0, 4);
                 fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
                 fn_80222644(sp8, tex, 0x260, 0x1C0, 4, 0, 0, 0);
@@ -1407,7 +1407,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -1468,7 +1468,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     *(f32 *)(sp58 + 0xC) = scale / (f32)a2;
     PSMTXIdentity(sp28);
     *(f32 *)(sp28 + 0x1C) = scale / (f32)a3;
-    fn_80220428(2);
+    GXSetNumChans(2);
     GXSetNumTevStages(2);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
@@ -1557,7 +1557,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
-    fn_80220428(0);
+    GXSetNumChans(0);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);

@@ -8637,7 +8637,7 @@ void fn_800C0CDC(void *arg0) {
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
-    void fn_80220428(s32);
+    void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void GXSetNumTevStages(s32);
@@ -8680,7 +8680,7 @@ void fn_800C0CDC(void *arg0) {
     GXSetVtxDesc(0xD, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
     GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
-    fn_80220428(1);
+    GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222334(0);
     GXSetNumTevStages(1);
