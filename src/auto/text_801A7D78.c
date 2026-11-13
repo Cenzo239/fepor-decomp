@@ -2,45 +2,46 @@
 #include "common.h"
 
 extern u16 lbl_80367218;
-u32 Battle_Destroy(u32 arg0, s16 arg1) {
-    M2C_UNK fn_8001C5F8(s32, M2C_UNK);
-    M2C_UNK Heap_Free(u32);
-    M2C_UNK BattleUnit_Reset(u32);
-    M2C_UNK Array_Destroy(s32, M2C_UNK (*)(s32, M2C_UNK), M2C_UNK, M2C_UNK);
+u32 Battle_Destroy(u32 battle, s16 doFree) {
+    void *fn_8001C5F8(s32, s32);
+    void Heap_Free(u32);
+    void BattleUnit_Reset(u32);
+    void Array_Destroy(s32, void *(*)(s32, s32), s32, s32);
 
-    if (arg0 != 0U) {
-        if ((arg0 + 0x5C0) != 0) {
-            BattleUnit_Reset(arg0 + 0x5C0);
-            fn_8001C5F8(arg0 + 0x84C, -1);
-            fn_8001C5F8(arg0 + 0x844, -1);
-            if (((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0)) {
-                Array_Destroy(arg0 + 0x7AC, fn_8001C5F8, 8, 4);
-                Array_Destroy(arg0 + 0x78C, fn_8001C5F8, 8, 4);
+    // Destroy the three combatant slots in a battle object; free if doFree > 0.
+    if (battle != 0U) {
+        if ((battle + 0x5C0) != 0) {
+            BattleUnit_Reset(battle + 0x5C0);
+            fn_8001C5F8(battle + 0x84C, -1);
+            fn_8001C5F8(battle + 0x844, -1);
+            if (((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0)) {
+                Array_Destroy(battle + 0x7AC, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x78C, fn_8001C5F8, 8, 4);
             }
         }
-        if ((arg0 + 0x2E0) != 0) {
-            BattleUnit_Reset(arg0 + 0x2E0);
-            fn_8001C5F8(arg0 + 0x56C, -1);
-            fn_8001C5F8(arg0 + 0x564, -1);
-            if (((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0)) {
-                Array_Destroy(arg0 + 0x4CC, fn_8001C5F8, 8, 4);
-                Array_Destroy(arg0 + 0x4AC, fn_8001C5F8, 8, 4);
+        if ((battle + 0x2E0) != 0) {
+            BattleUnit_Reset(battle + 0x2E0);
+            fn_8001C5F8(battle + 0x56C, -1);
+            fn_8001C5F8(battle + 0x564, -1);
+            if (((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0)) {
+                Array_Destroy(battle + 0x4CC, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x4AC, fn_8001C5F8, 8, 4);
             }
         }
-        if (arg0 != 0U) {
-            BattleUnit_Reset(arg0);
-            fn_8001C5F8(arg0 + 0x28C, -1);
-            fn_8001C5F8(arg0 + 0x284, -1);
-            if ((arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U)) {
-                Array_Destroy(arg0 + 0x1EC, fn_8001C5F8, 8, 4);
-                Array_Destroy(arg0 + 0x1CC, fn_8001C5F8, 8, 4);
+        if (battle != 0U) {
+            BattleUnit_Reset(battle);
+            fn_8001C5F8(battle + 0x28C, -1);
+            fn_8001C5F8(battle + 0x284, -1);
+            if ((battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U)) {
+                Array_Destroy(battle + 0x1EC, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x1CC, fn_8001C5F8, 8, 4);
             }
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(battle);
         }
     }
-    return arg0;
+    return battle;
 }
 
 void *fn_801A7F5C(void *arg0) {
