@@ -6617,11 +6617,11 @@ f32 fn_8006D828(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_8006D8E8(s32 arg0) {
-    M2C_UNK fn_8006EDA0(s32 *);
+    M2C_UNK FileCache_ReleaseSlot(s32 *);
     s32 sp8;
 
     sp8 = arg0;
-    fn_8006EDA0(&sp8);
+    FileCache_ReleaseSlot(&sp8);
 }
 
 s32 fn_8006D910(s32 arg0, s32 arg1) {
@@ -7421,7 +7421,7 @@ void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
 }
 #pragma global_optimizer reset
 extern void FileCache_ReleaseByKey(u32);
-void fn_8006EDA0(s32 *arg0)
+void FileCache_ReleaseSlot(s32 *arg0)
 {
     void fn_8005C7E8();
     fn_8005C7E8(*arg0);

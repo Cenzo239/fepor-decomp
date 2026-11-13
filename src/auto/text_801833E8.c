@@ -3719,10 +3719,10 @@ void fn_8018DCC0(s32 arg0) {
 
 void fn_8018DD0C(void *arg0)
 {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
 
     if (*(void **)((u8 *)arg0 + 0x34) != NULL) {
-        fn_8006EDA0((u8 *)arg0 + 0x34);
+        FileCache_ReleaseSlot((u8 *)arg0 + 0x34);
     }
 }
 

@@ -1328,7 +1328,7 @@ void fn_800C6E44(void *arg0) {
 }
 
 void fn_800C73F0(s32 arg0) {
-    fn_8006EDA0(arg0 + 0x30);
+    FileCache_ReleaseSlot(arg0 + 0x30);
 }
 
 void fn_800C7414(void)
@@ -11623,14 +11623,14 @@ s32 fn_800E378C(u8 *arg0, void *arg1) {
 #pragma dont_inline reset
 extern Struct_8014589C D_8014589C;
 void *fn_800E37CC(void *arg0, s16 arg1) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_800DF724(void *, s32);
     void Heap_Free(void *);
     extern void *lbl_8028E0C8[];
 
     if (arg0 != NULL) {
         M2C_FIELD(arg0, void ***, 0x40) = lbl_8028E0C8;
-        fn_8006EDA0((s8 *)arg0 + 0x48);
+        FileCache_ReleaseSlot((s8 *)arg0 + 0x48);
         fn_800DF724(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
@@ -14675,7 +14675,7 @@ void fn_800E9CE4(s32 arg0) {
     void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
     s32 *fn_8006EDD8(s32, s32);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_800062CC(s32, s32, u32);
     void fn_80006298(s32, s32, s32);
     u32 *fn_800C4638(s32, void *, s32);
@@ -14774,7 +14774,7 @@ void fn_800E9CE4(s32 arg0) {
                 src = row[1];
                 fn_800062CC(buf + 0x1A00, *(s32 *)(src + 8), 0x200);
             }
-            fn_8006EDA0(&sp8);
+            FileCache_ReleaseSlot(&sp8);
             table = fn_800C4638(0x400, gCardStrings + 0x97, 0);
             {
                 u32 *dp = table;
@@ -14926,7 +14926,7 @@ void fn_800EA8F4(s32 arg0) {
     void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
     s32 *fn_8006EDD8(s32, s32);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_800062CC(s32, s32, u32);
     void fn_80006298(s32, s32, s32);
     u32 *fn_800C4638(s32, void *, s32);
@@ -14989,7 +14989,7 @@ void fn_800EA8F4(s32 arg0) {
             fn_800062CC(buf + 0x1A00, *(s32 *)(src + 8), 0x200);
         }
 
-        fn_8006EDA0(&sp8);
+        FileCache_ReleaseSlot(&sp8);
         table = fn_800C4638(0x400, &gCardStrings[0x97], 0);
         {
             u32 *dp = table;

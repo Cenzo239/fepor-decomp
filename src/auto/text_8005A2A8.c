@@ -205,9 +205,9 @@ extern "C" void Ui_DrawIcon(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 #pragma cplusplus reset
 void fn_8005AC5C(u32 *arg0) {
-    M2C_UNK fn_8006EDA0();
+    M2C_UNK FileCache_ReleaseSlot();
     if ((u32) *arg0 != 0U) {
-        fn_8006EDA0();
+        FileCache_ReleaseSlot();
     }
 }
 

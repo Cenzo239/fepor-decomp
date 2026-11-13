@@ -2973,7 +2973,7 @@ extern "C" void Sprite_Draw(void *sprite, u8 alpha) {
 #pragma cplusplus reset
 void fn_8010AB78(void *arg0) {
     if (*(u8*)((char*)arg0 + 0x10) & 0x80) {
-        fn_8006EDA0((char*)arg0 + 0xC);
+        FileCache_ReleaseSlot((char*)arg0 + 0xC);
         *(u8*)((char*)arg0 + 0x10) = *(u8*)((char*)arg0 + 0x10) & 0x7F;
     }
 }

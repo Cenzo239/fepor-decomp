@@ -94,12 +94,12 @@ void fn_801F1E78(void *arg0) {
 }
 
 void fn_801F1E8C(void *arg0) {
-    M2C_UNK fn_8006EDA0(s32);
+    M2C_UNK FileCache_ReleaseSlot(s32);
     M2C_UNK fn_800C4588(s32);
     s32 temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, s32 *, 0x30);
-    fn_8006EDA0(temp_r31 + 0x4C);
+    FileCache_ReleaseSlot(temp_r31 + 0x4C);
     fn_800C4588(temp_r31);
 }
 
@@ -693,7 +693,7 @@ void Options_LoadSelectedEntry(void *proc) {
     };
     void fn_80057E64(s32, s32);
     char *Msg_Expand(char *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_8006EEFC(void *, char *);
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
@@ -716,7 +716,7 @@ void Options_LoadSelectedEntry(void *proc) {
     strcat(work->caption, Msg_Expand(gOptionsStrs + 0x1209));
     if (work->asset != NULL) {
         if (work->asset != NULL) {
-            fn_8006EDA0(&work->asset);
+            FileCache_ReleaseSlot(&work->asset);
             work->asset = NULL;
         }
     }
@@ -861,7 +861,7 @@ void Options_InitPanel(void *proc) {
     };
     void fn_80057E64(s32, s32);
     char *Msg_Expand(char *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     char *strcpy(char *, const char *);
     char *strcat(char *, const char *);
     extern char gOptionsStrs[];
@@ -928,7 +928,7 @@ void Options_InitPanel(void *proc) {
     strcat(p->header, Msg_Expand(gOptionsStrs + 0x1209));
     if (p->tex != NULL) {
         if (p->tex != NULL) {
-            fn_8006EDA0(&p->tex);
+            FileCache_ReleaseSlot(&p->tex);
             p->tex = NULL;
         }
     }
@@ -1006,7 +1006,7 @@ void fn_801F3890(void) {
 
 #pragma cplusplus on
 extern "C" void fn_801F3C1C(void *arg0) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_80161F7C(void);
     void fn_80057A10(void *, s32);
     void fn_800C4588(void *);
@@ -1026,11 +1026,11 @@ extern "C" void fn_801F3C1C(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (*(u32 *)((u8 *)obj + 4) != 0) {
         if (*(u32 *)((u8 *)obj + 4) != 0) {
-            fn_8006EDA0((u8 *)obj + 4);
+            FileCache_ReleaseSlot((u8 *)obj + 4);
             *(u32 *)((u8 *)obj + 4) = 0;
         }
     }
-    fn_8006EDA0(obj);
+    FileCache_ReleaseSlot(obj);
     fn_80161F7C();
     fn_80057A10(*(void **)((u8 *)obj + 0xDC), 1);
     fn_80057A10(*(void **)((u8 *)obj + 0xE0), 1);
@@ -1778,29 +1778,33 @@ void fn_801F5FE0(void *arg0) {
     s32 fn_80266840(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
+    u8 *self;
     u32 v;
+    char *fmt;
 
-    *(s16 *)((u8 *)arg0 + 0x48) = *(s16 *)((u8 *)arg0 + 0x48) + 1;
-    if (*(s16 *)((u8 *)arg0 + 0x48) > 0xF0) {
-        Process_Goto(arg0, 2);
+    self = (u8 *)arg0;
+    *(s16 *)(self + 0x48) = *(s16 *)(self + 0x48) + 1;
+    if (*(s16 *)(self + 0x48) > 0xF0) {
+        Process_Goto(self, 2);
         return;
     }
-    if (fn_8026569C(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0) {
+    if (fn_8026569C(*(void **)(self + 0x38), self + 0x4B) != 0) {
         return;
     }
-    if (fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0) {
+    if (fn_802655A8(*(void **)(self + 0x38), self + 0x4B) != 0) {
         return;
     }
-    if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x28) {
+    if (*(u8 *)(self + 0x4B) != 0x28) {
         return;
     }
-    if (fn_80266840(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x40, (u8 *)arg0 + 0x4B) != 0) {
+    if (fn_80266840(*(void **)(self + 0x38), self + 0x40, self + 0x4B) != 0) {
         return;
     }
-    v = *(u32 *)((u8 *)arg0 + 0x40);
-    DebugPrint((char *)gCardLinkStr + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
-    *(s16 *)((u8 *)arg0 + 0x48) = 0;
-    Process_ClearFunc(arg0);
+    v = *(u32 *)(self + 0x40);
+    fmt = (char *)gCardLinkStr;
+    DebugPrint(fmt + 0x164, (s32)(v >> 24), (s32)((v >> 16) & 0xFF), (s32)((v >> 8) & 0xFF), (s32)(v & 0xFF));
+    *(s16 *)(self + 0x48) = 0;
+    Process_ClearFunc(self);
 }
 #pragma global_optimizer on
 #pragma opt_common_subs on
@@ -1948,7 +1952,7 @@ void fn_801F6670(void *arg0)
 {
     void fn_80161F7C(void);
     void Process_Unlink(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_800C4588(void *);
     struct {
         u8 pad[0x10];
@@ -1960,7 +1964,7 @@ void fn_801F6670(void *arg0)
         Process_Unlink(*(void **)((u8 *)arg0 + 0x34));
     }
     if (work->unk10 != NULL) {
-        fn_8006EDA0(&work->unk10);
+        FileCache_ReleaseSlot(&work->unk10);
     }
     fn_800C4588(work);
 }
@@ -2294,7 +2298,7 @@ void fn_801F726C(void *arg0) {
     s32 temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, s32 *, 0x30);
-    fn_8006EDA0(temp_r31);
+    FileCache_ReleaseSlot(temp_r31);
     fn_800C4588(temp_r31);
 }
 
@@ -2990,7 +2994,7 @@ void fn_801F8A18(void *arg0) {
         u8 pad[0x30];
         struct List list;
     };
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_801FB220(void *, struct List *, struct Node **, struct Node **);
     struct Node *sp10;
     struct Node *spC;
@@ -3000,7 +3004,7 @@ void fn_801F8A18(void *arg0) {
 
     self = (struct Obj *)arg0;
     if (*(u32 *)((u8 *)arg0 + 0x50) != 0) {
-        fn_8006EDA0((u8 *)self + 0x50);
+        FileCache_ReleaseSlot((u8 *)self + 0x50);
     }
     if (self != NULL) {
         if (&self->list != NULL) {

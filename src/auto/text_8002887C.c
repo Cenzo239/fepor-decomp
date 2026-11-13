@@ -3211,7 +3211,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_8005C8B4(void *);
     u8 FileCache_IsReady(void *);
     void fn_8006EEFC(s32 *, void *);
-    void fn_8006EDA0(s32 *);
+    void FileCache_ReleaseSlot(s32 *);
     extern u8 gBattleState[];
     extern u8 lbl_802695F0[];
     s32 sp6C;
@@ -3226,7 +3226,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             (void)arg2;
             (void)arg3;
             (void)sp6C;
-                          fn_8006EDA0(&sp68);
+                          FileCache_ReleaseSlot(&sp68);
           }
       }
   }

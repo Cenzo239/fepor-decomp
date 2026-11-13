@@ -947,8 +947,8 @@ void fn_800A58F0(s32 arg0) {
 }
 
 void fn_800A5944(s32 arg0) {
-    M2C_UNK fn_8006EDA0(s32);
-    fn_8006EDA0(arg0 + 0x34);
+    M2C_UNK FileCache_ReleaseSlot(s32);
+    FileCache_ReleaseSlot(arg0 + 0x34);
 }
 
 #pragma optimization_level 2
@@ -2135,7 +2135,7 @@ void fn_800A80F0(void *arg0) {
 }
 
 void fn_800A828C(s32 arg0) {
-    fn_8006EDA0(arg0 + 0x30);
+    FileCache_ReleaseSlot(arg0 + 0x30);
 }
 
 /* Draw a frame-scrolled background layer, then a gray tint overlay. */
@@ -2414,7 +2414,7 @@ s32 fn_800A8A88(void *arg0) {
 
 void fn_800A8AE4(s32 arg0) {
     extern u16 gOptionsStr[];
-    fn_8006EDA0(arg0 + 0x30);
+    FileCache_ReleaseSlot(arg0 + 0x30);
     fn_8005C7C8(&gOptionsStr[0x58 / sizeof(u16)]);
 }
 

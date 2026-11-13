@@ -125,9 +125,9 @@ void fn_801FC790(void *arg0) {
 }
 
 void fn_801FC95C(void) {
-    M2C_UNK fn_8006EDA0(M2C_UNK *);
+    M2C_UNK FileCache_ReleaseSlot(M2C_UNK *);
     extern M2C_UNK gFallingParticleTex;
-    fn_8006EDA0(&gFallingParticleTex);
+    FileCache_ReleaseSlot(&gFallingParticleTex);
 }
 
 void fn_801FC980(u32 arg0, f32 farg0)
@@ -175,9 +175,9 @@ void fn_801FC980(u32 arg0, f32 farg0)
 }
 
 void fn_801FCC44(void) {
-    M2C_UNK fn_8006EDA0(M2C_UNK *);
+    M2C_UNK FileCache_ReleaseSlot(M2C_UNK *);
     extern M2C_UNK gFallingParticleTex;
-    fn_8006EDA0(&gFallingParticleTex);
+    FileCache_ReleaseSlot(&gFallingParticleTex);
 }
 
 void fn_801FCC68(s32 arg0) {
@@ -508,7 +508,7 @@ void fn_801FD3B4(void *arg0) {
 void fn_801FDA08(void *arg0) {
     extern u8 gFallingParticleTex;
 
-    fn_8006EDA0(&gFallingParticleTex);
+    FileCache_ReleaseSlot(&gFallingParticleTex);
     fn_800C426C(*(void **)((u8 *)arg0 + 0x30));
 }
 
@@ -619,9 +619,9 @@ void FallingParticle_Spawn(void *parent) {
 #pragma global_optimizer reset
 
 void fn_801FDE64(void) {
-    M2C_UNK fn_8006EDA0(M2C_UNK *);
+    M2C_UNK FileCache_ReleaseSlot(M2C_UNK *);
     extern M2C_UNK gFallingParticleTex;
-    fn_8006EDA0(&gFallingParticleTex);
+    FileCache_ReleaseSlot(&gFallingParticleTex);
 }
 
 void fn_801FDE88(void) {
@@ -776,7 +776,7 @@ void fn_801FE3DC(void *arg0) {
     void fn_8003F670(u32);
     extern u32 lbl_80368438;
     if (lbl_80368438 != 0) {
-        fn_8006EDA0(&lbl_80368438);
+        FileCache_ReleaseSlot(&lbl_80368438);
     }
     if (M2C_FIELD(arg0, u32 *, 0x44) != 0) {
         fn_8003F670(M2C_FIELD(arg0, u32 *, 0x44));
@@ -1013,7 +1013,7 @@ void fn_801FEFF8(void *arg0) {
     void fn_8003F670(u32);
     extern u32 lbl_80368438;
     if (lbl_80368438 != 0) {
-        fn_8006EDA0(&lbl_80368438);
+        FileCache_ReleaseSlot(&lbl_80368438);
     }
     if (M2C_FIELD(arg0, u32 *, 0x30) != 0) {
         fn_8003F670(M2C_FIELD(arg0, u32 *, 0x30));
@@ -1573,12 +1573,12 @@ void Save_MigrateLegacy(void) {
 
 #pragma use_lmw_stmw on
 void fn_802001F8(u32 arg0, s32 arg1) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     s32 i;
 
     for (i = 0; i < 8; i++) {
         if (lbl_803392E8[i] >= arg0 && arg0 + arg1 > lbl_803392E8[i]) {
-            fn_8006EDA0(&lbl_803392E8[i]);
+            FileCache_ReleaseSlot(&lbl_803392E8[i]);
             lbl_80339308[i] = 0;
         }
     }
@@ -1601,13 +1601,13 @@ void fn_80200270(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_802003FC(void) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     s32 i;
 
     for (i = 0; i < 8; i++) {
         if (lbl_803392E8[i] != 0 && lbl_80339338[i] == 0) {
             if (--lbl_80339328[i] == 0) {
-                fn_8006EDA0(&lbl_803392E8[i]);
+                FileCache_ReleaseSlot(&lbl_803392E8[i]);
                 lbl_80339308[i] = 0;
             }
         }
@@ -1657,7 +1657,7 @@ void fn_8020060C(void *arg0) {
     void fn_8003F670(u32);
     extern u32 lbl_80368448;
     if (lbl_80368448 != 0) {
-        fn_8006EDA0(&lbl_80368448);
+        FileCache_ReleaseSlot(&lbl_80368448);
     }
     if (M2C_FIELD(arg0, u32 *, 0x44) != 0) {
         fn_8003F670(M2C_FIELD(arg0, u32 *, 0x44));
@@ -1970,7 +1970,7 @@ void fn_80201228(void *arg0) {
     void fn_8003F670(u32);
     extern u32 lbl_80368448;
     if (lbl_80368448 != 0) {
-        fn_8006EDA0(&lbl_80368448);
+        FileCache_ReleaseSlot(&lbl_80368448);
     }
     if (M2C_FIELD(arg0, u32 *, 0x30) != 0) {
         fn_8003F670(M2C_FIELD(arg0, u32 *, 0x30));

@@ -1091,7 +1091,7 @@ void fn_801AA1B0(void *arg0) {
     M2C_UNK fn_80057A10(s32, M2C_UNK);
     M2C_UNK fn_801AB004(void *);
     M2C_UNK Process_Unlink(s32);
-    M2C_UNK fn_8006EDA0(void *);
+    M2C_UNK FileCache_ReleaseSlot(void *);
     struct Obj {
         u8 pad[0x50];
         u32 field50;
@@ -1104,7 +1104,7 @@ void fn_801AA1B0(void *arg0) {
         fn_801AB004(arg0);
         Process_Unlink(*(s32 *)((u8 *)arg0 + 0x6C));
         if (obj->field50 != 0) {
-            fn_8006EDA0(&obj->field50);
+            FileCache_ReleaseSlot(&obj->field50);
         }
         *(u8 *)((u8 *)arg0 + 0x69) = 1;
     }

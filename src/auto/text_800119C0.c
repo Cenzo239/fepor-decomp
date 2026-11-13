@@ -15,7 +15,7 @@ s32 fn_800119D8(void) {
 }
 
 void *fn_800119E0(void *arg0, s16 arg1) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void Heap_Free(void *);
     extern u16 lbl_80283EFC[];
     extern u16 lbl_80283948[];
@@ -27,7 +27,7 @@ void *fn_800119E0(void *arg0, s16 arg1) {
         if (obj != NULL) {
             obj->vt = lbl_80283948;
             if (obj->unk4 != 0) {
-                fn_8006EDA0(&obj->unk4);
+                FileCache_ReleaseSlot(&obj->unk4);
             }
         }
         if (arg1 > 0) {

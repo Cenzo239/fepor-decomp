@@ -1641,7 +1641,7 @@ void fn_801B87E8(s32 arg0) {
 void fn_801B88D4(void *arg0) {
     void Heap_Free(s32);
     void Process_Unlink(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_800C4588(void *);
     struct {
         u8 pad[8];
@@ -1654,7 +1654,7 @@ void fn_801B88D4(void *arg0) {
         Process_Unlink(M2C_FIELD(arg0, void **, 0x34));
     }
     if (work->unk8 != NULL) {
-        fn_8006EDA0(&work->unk8);
+        FileCache_ReleaseSlot(&work->unk8);
     }
     fn_800C4588(work);
 }
@@ -5929,7 +5929,7 @@ void fn_801C29E8(s32 arg0) {
 extern "C" void fn_801C2A3C(void *arg0) {
     void *fn_801090C0(void *);
     void Process_Unlink(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_80161F7C(void);
     void fn_8003F670(void *);
     void fn_800C4588(void *);
@@ -5957,7 +5957,7 @@ extern "C" void fn_801C2A3C(void *arg0) {
     if (p != NULL) {
         p->v6(1);
     }
-    fn_8006EDA0(obj);
+    FileCache_ReleaseSlot(obj);
     fn_80161F7C();
     fn_8003F670(*(void **)((u8 *)obj + 4));
     fn_800C4588(obj);
@@ -8214,14 +8214,14 @@ void fn_801C7FC0(u32 arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801C838C(Arg801C838C *arg0) {
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     struct Obj {
         virtual void v0(s32) = 0;
     };
     Obj *temp;
 
     if (arg0->field30 != 0) {
-        fn_8006EDA0(&arg0->field30);
+        FileCache_ReleaseSlot(&arg0->field30);
     }
     if (arg0 != NULL) {
         temp = M2C_FIELD(arg0, Obj **, 0x40);
@@ -11597,8 +11597,8 @@ void fn_801CF8E4(void *arg0)
     record = (u8 *)lbl_80331D00 +
         (*(u8 *)((u8 *)arg0 + 0x30) * 0x15C);
 
-    fn_8006EDA0(record);
-    fn_8006EDA0((u8 *)record + 4);
+    FileCache_ReleaseSlot(record);
+    FileCache_ReleaseSlot((u8 *)record + 4);
 }
 
 void fn_801CF92C(void *arg0)
@@ -13789,7 +13789,7 @@ void fn_801D3B7C(s32 arg0) {
 void fn_801D3BD0(void *arg0) {
     void Process_UnlinkByKey(void*);
     void Process_Unlink(void);
-    void fn_8006EDA0(void*);
+    void FileCache_ReleaseSlot(void*);
     void fn_800C4588(void*);
     void fn_801457B4(void);
     void fn_80161F7C(void);
@@ -13802,7 +13802,7 @@ void fn_801D3BD0(void *arg0) {
     i = 0;
     do {
         if (*(u32*)(lbl_80299A78 + i * 0xc + 8) != 0) {
-            fn_8006EDA0(lbl_80299A78 + i * 0xc + 8);
+            FileCache_ReleaseSlot(lbl_80299A78 + i * 0xc + 8);
         }
         *(u32*)(lbl_80299A78 + i * 0xc + 8) = 0;
         i++;
@@ -13814,7 +13814,7 @@ void fn_801D3BD0(void *arg0) {
         Process_Unlink();
     }
     if (*(u32*)((u8*)obj + 0x8) != 0) {
-        fn_8006EDA0((u8*)obj + 0x8);
+        FileCache_ReleaseSlot((u8*)obj + 0x8);
     }
     fn_800C4588(obj);
     *(u32*)((u8*)arg0 + 0x30) = 0;
@@ -15730,7 +15730,7 @@ loop_1:
 
 void fn_801DE074(void) {
     void Process_UnlinkByKey(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     extern u8 lbl_80299C58[];
     extern u8 lbl_80299A78[];
     s32 i;
@@ -15738,7 +15738,7 @@ void fn_801DE074(void) {
     i = 0;
     do {
         if (*(u32 *)(lbl_80299A78 + i * 0xC + 8) != 0) {
-            fn_8006EDA0(lbl_80299A78 + i * 0xC + 8);
+            FileCache_ReleaseSlot(lbl_80299A78 + i * 0xC + 8);
         }
         *(u32 *)(lbl_80299A78 + i * 0xC + 8) = 0;
         i++;

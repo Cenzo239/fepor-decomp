@@ -5770,7 +5770,7 @@ void Ui_DrawRect(s16 x, s16 y, s32 texFlags, s16 *uvRect, s32 *color, s32 uvFlag
 }
 
 void fn_80161F7C(void) {
-    M2C_UNK fn_8006EDA0(M2C_UNK *);
+    M2C_UNK FileCache_ReleaseSlot(M2C_UNK *);
     extern M2C_UNK gUiTexAtlas;
     extern M2C_UNK lbl_803680CC;
     extern s32 lbl_803680D0;
@@ -5779,8 +5779,8 @@ void fn_80161F7C(void) {
     temp_r0 = lbl_803680D0 - 1;
     lbl_803680D0 = temp_r0;
     if (temp_r0 == 0) {
-        fn_8006EDA0(&gUiTexAtlas);
-        fn_8006EDA0(&lbl_803680CC);
+        FileCache_ReleaseSlot(&gUiTexAtlas);
+        FileCache_ReleaseSlot(&lbl_803680CC);
     }
 }
 

@@ -4051,11 +4051,11 @@ void fn_8016B75C(void) {
 }
 
 extern void fn_8005376C(void);
-extern void fn_8006EDA0(void *);
+extern void FileCache_ReleaseSlot(void *);
 extern void fn_800C4588(void);
 void fn_8016B79C(void *arg0) {
     void fn_800C4588(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_8005376C(void);
     struct {
         u8 pad[0x38];
@@ -4073,7 +4073,7 @@ void fn_8016B79C(void *arg0) {
         var_r3 = temp_r31;
     }
     if (r30->unk38 != NULL) {
-        fn_8006EDA0(&r30->unk38);
+        FileCache_ReleaseSlot(&r30->unk38);
     }
     fn_8005376C();
 }
@@ -4135,7 +4135,7 @@ void fn_8016BADC(void *arg0) {
     void *fn_8007BA4C(void *, s32);
     void fn_800C4588(void *);
     void Process_Unlink(void *);
-    void fn_8006EDA0(void *);
+    void FileCache_ReleaseSlot(void *);
     void fn_801DE074(void);
     void fn_801457B4(void);
     void fn_8005376C(void);
@@ -4180,7 +4180,7 @@ void fn_8016BADC(void *arg0) {
         }
         Process_Unlink(obj->unk60);
         if (obj->unk38 != NULL) {
-            fn_8006EDA0(&obj->unk38);
+            FileCache_ReleaseSlot(&obj->unk38);
         }
         fn_801DE074();
         fn_801457B4();
