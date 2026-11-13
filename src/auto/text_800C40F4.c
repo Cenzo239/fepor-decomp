@@ -10683,7 +10683,7 @@ void fn_800DFFB8(void *arg0, s32 arg1) {
     fn_800C9BC4(arg0, (u8 *)*(void **)((u8 *)arg0 + 8) + (*(s32 *)((u8 *)arg0 + 4) << 2), 1, &sp8);
 }
 
-s32 fn_800DFFF4(void *arg0, s32 arg1) {
+s32 ObjList_Get(void *arg0, s32 arg1) {
     s32 temp_r0;
     s32 temp_r3;
 
@@ -13453,7 +13453,7 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        fn_800E8A88((void *)fn_800DFFF4(list, i), farg0);
+        fn_800E8A88((void *)ObjList_Get(list, i), farg0);
     }
     ObjList_Destroy(list, -1);
 }
@@ -13577,7 +13577,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        fn_800E8AA0((void *)fn_800DFFF4(list, i), arg2, farg0, lbl_80369F68, arg1);
+        fn_800E8AA0((void *)ObjList_Get(list, i), arg2, farg0, lbl_80369F68, arg1);
     }
     ObjList_Destroy(list, -1);
 }
@@ -13740,7 +13740,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     key = *(u32 *)arg1;
     for (i = 0; i < count; i++) {
-        item = (void *)fn_800DFFF4(list, i);
+        item = (void *)ObjList_Get(list, i);
         fn_800DF6DC(str, item);
         match = 0;
         if (*(u32 *)str == key && String_Compare(str, 0, *(u32 *)str, *(char **)((u8 *)arg1 + 8), key) == 0) {
@@ -13857,7 +13857,7 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
 #pragma cplusplus on
 #pragma dont_inline on
   extern "C" void ObjList_Init(void *);
-  extern "C" s32 fn_800DFFF4(void *, s32);
+  extern "C" s32 ObjList_Get(void *, s32);
 extern "C" u8 fn_800E903C(void *);
 extern "C" s32 fn_800E7EA0(void *arg0) {
     struct Obj {
@@ -13883,7 +13883,7 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
     ObjList_Init(list);
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        item = fn_800DFFF4(list, i);
+        item = ObjList_Get(list, i);
         if (fn_800E903C((void *)item)) {
             ObjList_Destroy(list, -1);
             return item;
