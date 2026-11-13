@@ -1137,11 +1137,11 @@ void fn_80014F30(void *arg0, s32 arg1) {
 }
 
 void fn_80014F94(void *arg0, s32 arg1) {
-    M2C_UNK fn_8017A5EC(s32, u8);
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 0));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 1));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 2));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 3));
+    M2C_UNK Stream_WriteU8(s32, u8);
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 0));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 1));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 2));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 3));
 }
 
 void *fn_80014FF8(void *arg0) {

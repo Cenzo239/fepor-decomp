@@ -38,7 +38,7 @@ extern u8 lbl_80367B0D;
 extern u16 *g_AccessoryArray;
 
 void fn_8017A430(void *, s32, void *);
-void fn_8017A5EC(void *, u8);
+void Stream_WriteU8(void *, u8);
 void fn_8017A574(void *, s32);
 void fn_8017A5C4(void *, u16);
 void fn_8017A4CC(void *, s32, s32);
@@ -89,7 +89,7 @@ extern u8 gBattleState[];
 
 void BattleState_Write(void *arg0, void *arg1) {
     void fn_8017A430(void *, s32, void *);
-    void fn_8017A5EC(void *, u8);
+    void Stream_WriteU8(void *, u8);
     void fn_8017A5C4(void *, u16);
     void fn_8017A574(void *, s32);
     void fn_8017A4CC(void *, s64);
@@ -102,23 +102,23 @@ void BattleState_Write(void *arg0, void *arg1) {
     s32 i;
 
     fn_8017A430(arg1, 0x10, arg0);
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x10));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x11));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x10));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x11));
     fn_8017A5C4(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x12));
     for (i = 0; i < 4; i++) {
-        fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x14 + i));
+        Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x14 + i));
     }
     fn_8017A574(arg1, *(s32 *)((u8 *)arg0 + 0x18));
     fn_8017A574(arg1, *(s32 *)((u8 *)arg0 + 0x1c));
     fn_8017A430(arg1, 0x30, (u8 *)arg0 + 0x20);
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x50));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x51));
-    fn_8017A5EC(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x524));
-    fn_8017A5EC(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x528));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x54));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x55));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x56));
-    fn_8017A5EC(arg1, *(u8 *)((u8 *)arg0 + 0x57));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x50));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x51));
+    Stream_WriteU8(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x524));
+    Stream_WriteU8(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x528));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x54));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x55));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x56));
+    Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x57));
     fn_8017A4CC(arg1, *(s64 *)((u8 *)arg0 + 0x58));
     fn_8017A4CC(arg1, *(s64 *)((u8 *)arg0 + 0x60));
     fn_8017A574(arg1, *(s32 *)((u8 *)arg0 + 0x68));

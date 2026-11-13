@@ -3210,30 +3210,30 @@ void fn_80025DCC(void *arg0, s32 arg1) {
 
     temp_r3 = *(void **)arg0;
     if (temp_r3 != NULL) {
-        fn_8017A5EC(arg1, *(u8 *)((char *)temp_r3 + 0x198));
+        Stream_WriteU8(arg1, *(u8 *)((char *)temp_r3 + 0x198));
     } else {
-        fn_8017A5EC(arg1, 0U);
+        Stream_WriteU8(arg1, 0U);
     }
     temp_r3_2 = *(void **)((char *)arg0 + 0x4);
     if (temp_r3_2 != NULL) {
-        fn_8017A5EC(arg1, *(u8 *)((char *)temp_r3_2 + 0x198));
+        Stream_WriteU8(arg1, *(u8 *)((char *)temp_r3_2 + 0x198));
     } else {
-        fn_8017A5EC(arg1, 0U);
+        Stream_WriteU8(arg1, 0U);
     }
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x8));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x9));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xA));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xB));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xC));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xD));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xE));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0xF));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x10));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x11));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x12));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x8));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x9));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xA));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xB));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xC));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xD));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xE));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xF));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x10));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x11));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x12));
     fn_8017A430(arg1, 1, (void *)((char *)arg0 + 0x13));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x14));
-    fn_8017A5EC(arg1, *(u8 *)((char *)arg0 + 0x15));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x14));
+    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x15));
     fn_8017A430(arg1, 1, (void *)((char *)arg0 + 0x16));
 }
 

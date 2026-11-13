@@ -4225,25 +4225,25 @@ void fn_8003C1B4(s32 arg0) {
 
 void fn_8003C3CC(void *arg0, s32 arg1) {
     void *Hash_Lookup(void *);
-    void fn_8017A5EC(s32, u8);
+    void Stream_WriteU8(s32, u8);
     void fn_8017A574(s32, s32);
     void fn_8017A5C4(s32, u16);
     void *p;
 
     p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x238));
-    fn_8017A5EC(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
+    Stream_WriteU8(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
     p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x23C));
-    fn_8017A5EC(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
+    Stream_WriteU8(arg1, (u8)*(u32 *)((u8 *)p + 0x20));
     p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x240));
-    fn_8017A5EC(arg1, *((u8 *)p + 4));
+    Stream_WriteU8(arg1, *((u8 *)p + 4));
     p = Hash_Lookup(*(void **)((u8 *)arg0 + 0x244));
-    fn_8017A5EC(arg1, *((u8 *)p + 4));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x250));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x251));
+    Stream_WriteU8(arg1, *((u8 *)p + 4));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x250));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x251));
     fn_8017A574(arg1, *(s32 *)((u8 *)arg0 + 0x254));
     fn_8017A5C4(arg1, *(u16 *)((u8 *)arg0 + 0x258));
     fn_8017A5C4(arg1, *(u16 *)((u8 *)arg0 + 0x25A));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x248));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x248));
 }
 
 void fn_8003C56C(void *arg0, s32 arg1) {
@@ -4402,7 +4402,7 @@ s32 Unit_Read(void *unit, void *stream) {
 #pragma global_optimizer reset
 void fn_8003CA94(void *arg0, s32 arg1) {
     void fn_8017A5C4(s32, u16);
-    void fn_8017A5EC(s32, u8);
+    void Stream_WriteU8(s32, u8);
     void fn_8017A430(s32, s32, void *);
     void fn_80104160(void *, s32);
     void fn_80105A30(void *, s32);
@@ -4423,40 +4423,40 @@ void fn_8003CA94(void *arg0, s32 arg1) {
     }
     fn_8017A5C4(arg1, *(u16 *)((u8 *)p + 0x18));
     fn_8017A5C4(arg1, *(u16 *)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x38));
-    fn_8017A5EC(arg1, *((u8 *)*(void **)((u8 *)arg0 + 0x190) + 8));
+    Stream_WriteU8(arg1, *((u8 *)*(void **)((u8 *)arg0 + 0x190) + 8));
     p = *(void **)((u8 *)arg0 + 0x180);
     if (p != NULL) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
-    fn_8017A5EC(arg1, (u8)tmp);
+    Stream_WriteU8(arg1, (u8)tmp);
     p = *(void **)((u8 *)arg0 + 0x184);
     if (p != NULL) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
-    fn_8017A5EC(arg1, (u8)tmp);
+    Stream_WriteU8(arg1, (u8)tmp);
     p = *(void **)((u8 *)arg0 + 0x194);
     if (p != NULL) {
         tmp = *((u8 *)p + 0x198);
     } else {
         tmp = 0;
     }
-    fn_8017A5EC(arg1, (u8)tmp);
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x199));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19A));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19B));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19C));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19D));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19E));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x19F));
+    Stream_WriteU8(arg1, (u8)tmp);
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x199));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19A));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19B));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19C));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19D));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19E));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19F));
     fn_8017A430(arg1, 4, (u8 *)arg0 + 0x1A0);
     fn_80104160((u8 *)arg0 + 0x1A4, arg1);
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x1A8));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x1A9));
-    fn_8017A5EC(arg1, *((u8 *)arg0 + 0x1AA));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A8));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A9));
+    Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1AA));
     fn_8017A430(arg1, 8, (u8 *)arg0 + 0x1AB);
     fn_8017A430(arg1, 8, (u8 *)arg0 + 0x1B4);
     fn_80105A30((u8 *)arg0 + 0x1BC, arg1);
@@ -10505,10 +10505,10 @@ void fn_8004BC48(void *arg0, s32 arg1) {
 
 void fn_8004BCCC(void *arg0, s32 arg1) {
     M2C_UNK fn_8017A5C4(s32, u16);
-    M2C_UNK fn_8017A5EC(s32, M2C_UNK);
+    M2C_UNK Stream_WriteU8(s32, M2C_UNK);
     fn_8017A5C4(arg1, (u16) M2C_FIELD(arg0, s16 *, 0x15C));
-    fn_8017A5EC(arg1, 0);
-    fn_8017A5EC(arg1, 0);
+    Stream_WriteU8(arg1, 0);
+    Stream_WriteU8(arg1, 0);
 }
 
 #pragma global_optimizer off

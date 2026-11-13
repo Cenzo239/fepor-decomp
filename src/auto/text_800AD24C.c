@@ -7337,7 +7337,7 @@ void fn_800BDA9C(u8 *arg0, void *arg1)
 
 void fn_800BDAF8(u8 *arg0, void *arg1)
 {
-    extern void fn_8017A5EC(void *, s32);
+    extern void Stream_WriteU8(void *, s32);
     u8 *a0;
     void *a1;
     s32 i;
@@ -7346,7 +7346,7 @@ void fn_800BDAF8(u8 *arg0, void *arg1)
     a1 = arg1;
     i = 0;
     do {
-        fn_8017A5EC(a1, a0[i + 0x300]);
+        Stream_WriteU8(a1, a0[i + 0x300]);
         i++;
     } while (i < 12);
 }

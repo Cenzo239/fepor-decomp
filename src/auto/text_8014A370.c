@@ -290,7 +290,7 @@ extern u8 lbl_80367B0D;
 extern u16 *g_AccessoryArray;
 
 void fn_8017A430(void *, s32, void *);
-void fn_8017A5EC(void *, u8);
+void Stream_WriteU8(void *, u8);
 void fn_8017A574(void *, s32);
 void fn_8017A5C4(void *, u16);
 void fn_8017A4CC(void *, s32, s32);

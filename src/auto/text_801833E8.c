@@ -8987,16 +8987,16 @@ void fn_80199A60(void *arg0, s32 arg1) {
 
 void fn_80199B88(void *arg0, s32 arg1) {
     M2C_UNK fn_8017A430(s32, M2C_UNK, void *);
-    M2C_UNK fn_8017A5EC(s32, u8);
+    M2C_UNK Stream_WriteU8(s32, u8);
     fn_8017A430(arg1, 4, arg0);
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 4));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 5));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 6));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 7));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 8));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 9));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 0xA));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 0xB));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 4));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 5));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 6));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 7));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 8));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 9));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 0xA));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 0xB));
 }
 
 void fn_80199C2C(void) {

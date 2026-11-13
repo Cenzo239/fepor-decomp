@@ -11961,7 +11961,7 @@ void fn_8017A5C4(u8 **arg0, u16 arg1) {
     *(*pp)++ = (u8)arg1;
 }
 
-void fn_8017A5EC(void *arg0, s8 arg1) {
+void Stream_WriteU8(void *arg0, s8 arg1) {
     s8 **pp = (s8 **)((u8 *)arg0 + 4);
     *(*pp)++ = arg1;
 }

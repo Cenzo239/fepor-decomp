@@ -178,15 +178,15 @@ void fn_80017414(void *arg0, s32 arg1) {
 
 void fn_800174A8(void *arg0, s32 arg1) {
     M2C_UNK fn_8017A5C4(s32, u16);
-    M2C_UNK fn_8017A5EC(s32, u8);
+    M2C_UNK Stream_WriteU8(s32, u8);
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 0));
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 2));
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 4));
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 6));
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 8));
     fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 0xA));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 0xC));
-    fn_8017A5EC(arg1, M2C_FIELD(arg0, u8 *, 0xD));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 0xC));
+    Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 0xD));
 }
 
 void fn_8001753C(s16 *arg0) {
