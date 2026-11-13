@@ -1755,7 +1755,8 @@ void Ui_ShowConfirmChild(void *panel) {
     }
 }
 
-void Ui_CreateConfirmChild(void *arg0) {
+/* Create the confirm child at self+0x48 (id 6), bind gUnitRef's item, slide it in, and set help text. */
+void Ui_CreateConfirmChild(void *self) {
     void *Heap_Alloc(s32);
     void *Ui_ConfirmChild_Ctor(void *, s32, s32, s32, s32, s32);
     void Ui_ConfirmChild_BindItem(void *, void *);
@@ -1764,32 +1765,32 @@ void Ui_CreateConfirmChild(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
     extern u8 gUnitRef;
-    void *var_r0;
-    void *temp_r4;
-    void *temp_r6;
-    s32 temp_r31;
-    u32 ret;
+    void *child;
+    void *tmp;
+    void *msgTable;
+    s32 text;
+    u32 widget;
 
-    var_r0 = Heap_Alloc(0x68);
-    if (var_r0 != NULL) {
-        var_r0 = Ui_ConfirmChild_Ctor(var_r0, 0x138, 0xA8, 0x108, 0x78, 0x190);
+    child = Heap_Alloc(0x68);
+    if (child != NULL) {
+        child = Ui_ConfirmChild_Ctor(child, 0x138, 0xA8, 0x108, 0x78, 0x190);
     }
-    *(void **)((u8 *)arg0 + 0x48) = var_r0;
-    temp_r4 = *(void **)((u8 *)arg0 + 0x48);
-    if (temp_r4 != NULL) {
-        *(s32 *)((u8 *)temp_r4 + 4) = *(s32 *)((u8 *)temp_r4 + 4) + 1;
+    *(void **)((u8 *)self + 0x48) = child;
+    tmp = *(void **)((u8 *)self + 0x48);
+    if (tmp != NULL) {
+        *(s32 *)((u8 *)tmp + 4) = *(s32 *)((u8 *)tmp + 4) + 1;
     }
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 8) = 6;
-    *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3C) = 0;
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x24) = 8;
-    Ui_ConfirmChild_BindItem(*(void **)((u8 *)arg0 + 0x48), &gUnitRef);
-    Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x48));
-    fn_80140234(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
-    temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
-    temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x74);
-    ret = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, temp_r31);
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 8) = 6;
+    *(u8 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x3C) = 0;
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x24) = 8;
+    Ui_ConfirmChild_BindItem(*(void **)((u8 *)self + 0x48), &gUnitRef);
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x48));
+    fn_80140234(self, *(void **)((u8 *)self + 0x48), 0);
+    msgTable = *(void **)((u8 *)self + 0x6C);
+    text = *(s32 *)((u8 *)msgTable + 0x74);
+    widget = Ui_FindChild(self, -0x1000, 0, msgTable);
+    if (widget != 0) {
+        Ui_SetWidgetText(widget, text);
     }
 }
 
