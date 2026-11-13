@@ -260,7 +260,7 @@ void fn_80033E90(void *arg0) {
     *(s16 *)((u8 *)self + 2) = *(s16 *)self;
 }
 
-void fn_80034068(s16 *arg0, s32 arg1, s8 arg2) {
+void BattleAnim_Queue(s16 *arg0, s32 arg1, s8 arg2) {
     s8 fn_80033F18(s16 *, s32);
     u8 *entry;
     s8 ret;
@@ -315,7 +315,7 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 fn_8003B518(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B490(void *);
-    void fn_80034068(void *, s32);
+    void BattleAnim_Queue(void *, s32);
 
     struct { s16 v[8]; } gr;
     u8 flag;
@@ -572,35 +572,35 @@ void fn_80034130(void *arg0, void *arg1) {
 
     g = *(u8 *)((u8 *)arg0 + 0x2D7);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2A);
+        BattleAnim_Queue(arg1, 0x2A);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2D8);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2B);
+        BattleAnim_Queue(arg1, 0x2B);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2D9);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2C);
+        BattleAnim_Queue(arg1, 0x2C);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DA);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2D);
+        BattleAnim_Queue(arg1, 0x2D);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DB);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2E);
+        BattleAnim_Queue(arg1, 0x2E);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DC);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x2F);
+        BattleAnim_Queue(arg1, 0x2F);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DD);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x30);
+        BattleAnim_Queue(arg1, 0x30);
     }
     g = *(u8 *)((u8 *)arg0 + 0x2DE);
     if ((s8)g != 0) {
-        fn_80034068(arg1, 0x31);
+        BattleAnim_Queue(arg1, 0x31);
     }
 }
 #pragma use_lmw_stmw reset
@@ -620,7 +620,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 fn_8003B490(void *);
     s32 fn_8003A398(void *);
     s32 fn_8003A5B4(void *);
-    void fn_80034068(void *, s32, s8);
+    void BattleAnim_Queue(void *, s32, s8);
     void fn_801A442C(void *);
     s8 d0;
     s8 d1;
@@ -660,16 +660,16 @@ void fn_80034864(s32 self, void *arg1) {
     t = fn_8003A5B4((void *)(self + 0x2E0));
     d9 = (s8)(t - fn_8003A5B4((void *)self));
     t = self + 0x8A0;
-    fn_80034068((void *)t, 0x2A, d0);
-    fn_80034068((void *)t, 0x2B, d1);
-    fn_80034068((void *)t, 0x2C, d2);
-    fn_80034068((void *)t, 0x2D, d3);
-    fn_80034068((void *)t, 0x2E, d4);
-    fn_80034068((void *)t, 0x2F, d5);
-    fn_80034068((void *)t, 0x30, d6);
-    fn_80034068((void *)t, 0x31, d7);
-    fn_80034068((void *)t, 0x32, d8);
-    fn_80034068((void *)t, 0x33, d9);
+    BattleAnim_Queue((void *)t, 0x2A, d0);
+    BattleAnim_Queue((void *)t, 0x2B, d1);
+    BattleAnim_Queue((void *)t, 0x2C, d2);
+    BattleAnim_Queue((void *)t, 0x2D, d3);
+    BattleAnim_Queue((void *)t, 0x2E, d4);
+    BattleAnim_Queue((void *)t, 0x2F, d5);
+    BattleAnim_Queue((void *)t, 0x30, d6);
+    BattleAnim_Queue((void *)t, 0x31, d7);
+    BattleAnim_Queue((void *)t, 0x32, d8);
+    BattleAnim_Queue((void *)t, 0x33, d9);
     fn_801A442C((void *)self);
 }
 #pragma use_lmw_stmw reset
@@ -701,7 +701,7 @@ u8 fn_80034A8C(s32 arg0, u8 arg1) {
 
 /* Roll level-up growths from rates, clamp to class caps, and queue non-zero gains. */
 void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
-    void fn_80034068(void *, s32, u8);
+    void BattleAnim_Queue(void *, s32, u8);
     s32 fn_8003B490(void *);
     s32 fn_8003B4D4(void *);
     s32 fn_8003B518(void *);
@@ -839,35 +839,35 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     }
     g = *(u8 *)((u8 *)self + 0x2D7);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2A, g);
+        BattleAnim_Queue(out, 0x2A, g);
     }
     g = *(u8 *)((u8 *)self + 0x2D8);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2B, g);
+        BattleAnim_Queue(out, 0x2B, g);
     }
     g = *(u8 *)((u8 *)self + 0x2D9);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2C, g);
+        BattleAnim_Queue(out, 0x2C, g);
     }
     g = *(u8 *)((u8 *)self + 0x2DA);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2D, g);
+        BattleAnim_Queue(out, 0x2D, g);
     }
     g = *(u8 *)((u8 *)self + 0x2DB);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2E, g);
+        BattleAnim_Queue(out, 0x2E, g);
     }
     g = *(u8 *)((u8 *)self + 0x2DC);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x2F, g);
+        BattleAnim_Queue(out, 0x2F, g);
     }
     g = *(u8 *)((u8 *)self + 0x2DD);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x30, g);
+        BattleAnim_Queue(out, 0x30, g);
     }
     g = *(u8 *)((u8 *)self + 0x2DE);
     if ((s8)g != 0) {
-        fn_80034068(out, 0x31, g);
+        BattleAnim_Queue(out, 0x31, g);
     }
 }
 
@@ -971,7 +971,7 @@ void fn_80034FF0(void *arg0, void *arg1) {
 
 void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     void fn_800056CC(void *, ...);
-    void fn_80034068(void *, s32);
+    void BattleAnim_Queue(void *, s32);
     void fn_80034130(void *, void *);
     void Unit_CalcLevelUpGrowths(void *, void *);
     void fn_80034FF0(void *, void *);
@@ -1009,7 +1009,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
                 *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
                 *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
             } else {
-                fn_80034068(arg3, 0x29);
+                BattleAnim_Queue(arg3, 0x29);
                 fn_80034130(arg0, arg3);
             }
         }
@@ -1187,7 +1187,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
             *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
             *(u32 *)(lbl_80330EAC + 0xCAC) |= 0x10;
         } else {
-            fn_80034068(arg3, 0x29);
+            BattleAnim_Queue(arg3, 0x29);
             Unit_CalcLevelUpGrowths(arg0, arg3);
         }
     }
@@ -1200,7 +1200,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
 #pragma global_optimizer off
 void fn_80036150(s32 arg0) {
     u8 fn_8003D13C(s32);
-    void fn_80034068(s32, s32, s8);
+    void BattleAnim_Queue(s32, s32, s8);
     s32 fn_800386B0(s32);
     u8 fn_8003D094(s32, u8);
     void fn_8014C5F4(void *, u8);
@@ -1210,14 +1210,14 @@ void fn_80036150(s32 arg0) {
     void *p;
 
     if (fn_8003D13C(arg0) != 0) {
-        fn_80034068(arg0 + 0x8A0, 0x25, 0);
-        fn_80034068(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
+        BattleAnim_Queue(arg0 + 0x8A0, 0x25, 0);
+        BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
         p = *(void **)(arg0 + 0x28C);
         var_r30 = fn_8003D094(arg0, (u8)(*(u16 *)((u8 *)p + 0x10) / 20 + 0xA));
         if (var_r30 > fn_8003D13C(arg0)) {
             var_r30 = fn_8003D13C(arg0);
         }
-        fn_80034068(arg0 + 0x8A0, 0x28, (s8)var_r30);
+        BattleAnim_Queue(arg0 + 0x8A0, 0x28, (s8)var_r30);
         *(u8 *)(arg0 + 0x2C9) = var_r30;
         fn_8014C5F4(gBattleState, var_r30);
         fn_800351FC(arg0, var_r30, 0, arg0 + 0x8A0);
@@ -1228,7 +1228,7 @@ void fn_80036248(s32 self) {
     extern u8 lbl_8026A120[];
     extern u8 gBattleState[];
     void fn_800056CC(void *, ...);
-    void fn_80034068(void *, s32, s8);
+    void BattleAnim_Queue(void *, s32, s8);
     void fn_800351FC(void *, u8, void *, void *);
     u8 fn_80038570(void *);
     u8 fn_800385E4(void *);
@@ -1253,7 +1253,7 @@ void fn_80036248(s32 self) {
             if ((u8)Status_Test((void *)(self + 0x49C), 7) != 0) {
                 hit = 0;
             } else {
-                fn_80034068((void *)out, 0x27, (s8)fn_800386B0((void *)self));
+                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)self));
                 if (*(u8 *)(self + 0x2D6) == 0) {
                     u = 1;
                 } else {
@@ -1282,7 +1282,7 @@ void fn_80036248(s32 self) {
                 if ((u8)hit > (u8)fn_8003D13C((void *)self)) {
                     hit = fn_8003D13C((void *)self);
                 }
-                fn_80034068((void *)out, 0x28, (s8)hit);
+                BattleAnim_Queue((void *)out, 0x28, (s8)hit);
                 out = (u8)hit;
                 *(u8 *)(self + 0x2C9) = hit;
                 fn_8014C5F4(gBattleState, out);
@@ -1308,7 +1308,7 @@ void fn_80036248(s32 self) {
                 fn_800056CC(lbl_8026A120 + 0x256, (u8)out, (u8)u, (u8)v);
             }
             if ((u8)hit != 0) {
-                fn_80034068((void *)(self + 0x8A0), 0x25, 0);
+                BattleAnim_Queue((void *)(self + 0x8A0), 0x25, 0);
                 fn_800351FC((void *)self, hit, (void *)(self + 0x2E0), (void *)(self + 0x8A0));
             } else {
                 return;
@@ -1319,7 +1319,7 @@ void fn_80036248(s32 self) {
             if ((u8)Status_Test((void *)(self + 0x1BC), 7) != 0) {
                 hit = 0;
             } else {
-                fn_80034068((void *)out, 0x27, (s8)fn_800386B0((void *)(self + 0x2E0)));
+                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)(self + 0x2E0)));
                 if (*(u8 *)(self + 0x5B6) == 0) {
                     u = 1;
                 } else {
@@ -1348,7 +1348,7 @@ void fn_80036248(s32 self) {
                 if ((u8)hit > (u8)fn_8003D13C((void *)(self + 0x2E0))) {
                     hit = fn_8003D13C((void *)(self + 0x2E0));
                 }
-                fn_80034068((void *)out, 0x28, (s8)hit);
+                BattleAnim_Queue((void *)out, 0x28, (s8)hit);
                 out = (u8)hit;
                 *(u8 *)(self + 0x5A9) = hit;
                 fn_8014C5F4(gBattleState, out);
@@ -1374,7 +1374,7 @@ void fn_80036248(s32 self) {
                 fn_800056CC(lbl_8026A120 + 0x256, (u8)out, (u8)u, (u8)v);
             }
             if ((u8)hit != 0) {
-                fn_80034068((void *)(self + 0x8A0), 0x26, 0);
+                BattleAnim_Queue((void *)(self + 0x8A0), 0x26, 0);
                 fn_800351FC((void *)(self + 0x2E0), hit, (void *)self, (void *)(self + 0x8A0));
             }
         }

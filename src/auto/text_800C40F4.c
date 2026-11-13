@@ -15537,7 +15537,7 @@ s32 fn_800EC2B8(void) {
 #pragma global_optimizer off
 s32 fn_800EC2E0(void) {
     s32 fn_8000CEE4(s32);
-    void fn_80034068(void *, u8, s8);
+    void BattleAnim_Queue(void *, u8, s8);
     void fn_800340F0(void *);
     void *Heap_Alloc(s32);
     char *String_CStr(String *);
@@ -15672,7 +15672,7 @@ s32 fn_800EC2E0(void) {
         *(s32 *)((u8 *)obj + 0x440) = 0;
     }
     n = fn_800DC44C(*(void **)((u8 *)lbl_803678C0 + 0x478));
-    fn_80034068((u8 *)obj + 0x454, 0x54, 0);
+    BattleAnim_Queue((u8 *)obj + 0x454, 0x54, 0);
     prev = -1;
     for (i = 0; i < n; i++) {
         packed = (u32)fn_800DC38C(*(void **)((u8 *)lbl_803678C0 + 0x478), i);
@@ -15694,60 +15694,60 @@ s32 fn_800EC2E0(void) {
         default: cost = 0x50; break;
         }
         switch (kind) {
-        case 0: fn_80034068((u8 *)obj + 0x454, 0x20, 0); break;
-        case 1: fn_80034068((u8 *)obj + 0x454, 0x21, 0); break;
-        case 2: fn_80034068((u8 *)obj + 0x454, 0x22, 0); break;
+        case 0: BattleAnim_Queue((u8 *)obj + 0x454, 0x20, 0); break;
+        case 1: BattleAnim_Queue((u8 *)obj + 0x454, 0x21, 0); break;
+        case 2: BattleAnim_Queue((u8 *)obj + 0x454, 0x22, 0); break;
         }
         if (kind == prev) {
-            fn_80034068((u8 *)obj + 0x454, 0x23, 0);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x23, 0);
         }
         if (a > 0 && b == 0) {
-            fn_80034068((u8 *)obj + 0x454, 0x56, 1);
-            fn_80034068((u8 *)obj + 0x454, (u8)(a + 0x34), 1);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x56, 1);
+            BattleAnim_Queue((u8 *)obj + 0x454, (u8)(a + 0x34), 1);
         } else if (a > 0 && b > 0) {
-            fn_80034068((u8 *)obj + 0x454, 0x56, 2);
-            fn_80034068((u8 *)obj + 0x454, (u8)(a + 0x34), 1);
-            fn_80034068((u8 *)obj + 0x454, (u8)(b + 0x34), 1);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x56, 2);
+            BattleAnim_Queue((u8 *)obj + 0x454, (u8)(a + 0x34), 1);
+            BattleAnim_Queue((u8 *)obj + 0x454, (u8)(b + 0x34), 1);
         }
         switch (kind) {
         case 0:
-            fn_80034068((u8 *)obj + 0x454, 0x57, 2);
-            fn_80034068((u8 *)obj + 0x454, 0x15, (s8)-cost);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x57, 2);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x15, (s8)-cost);
             break;
         case 1:
-            fn_80034068((u8 *)obj + 0x454, 0x57, 2);
-            fn_80034068((u8 *)obj + 0x454, 9, (s8)-cost);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x57, 2);
+            BattleAnim_Queue((u8 *)obj + 0x454, 9, (s8)-cost);
             break;
         case 2:
-            fn_80034068((u8 *)obj + 0x454, 0x57, 2);
-            fn_80034068((u8 *)obj + 0x454, 0x15, (s8)-cost);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x57, 2);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x15, (s8)-cost);
             break;
         }
         switch (mode) {
-        case 0: fn_80034068((u8 *)obj + 0x454, 0x50, 0); break;
-        case 1: fn_80034068((u8 *)obj + 0x454, 0x51, 0); break;
-        case 2: fn_80034068((u8 *)obj + 0x454, 0x52, 0); break;
+        case 0: BattleAnim_Queue((u8 *)obj + 0x454, 0x50, 0); break;
+        case 1: BattleAnim_Queue((u8 *)obj + 0x454, 0x51, 0); break;
+        case 2: BattleAnim_Queue((u8 *)obj + 0x454, 0x52, 0); break;
         case 3:
-            fn_80034068((u8 *)obj + 0x454, 0x50, 0);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x50, 0);
             switch (kind) {
-            case 0: fn_80034068((u8 *)obj + 0x454, 0x17, 0); break;
-            case 1: fn_80034068((u8 *)obj + 0x454, 0xB, 0); break;
-            case 2: fn_80034068((u8 *)obj + 0x454, 0x17, 0); break;
+            case 0: BattleAnim_Queue((u8 *)obj + 0x454, 0x17, 0); break;
+            case 1: BattleAnim_Queue((u8 *)obj + 0x454, 0xB, 0); break;
+            case 2: BattleAnim_Queue((u8 *)obj + 0x454, 0x17, 0); break;
             }
             break;
         case 4:
-            fn_80034068((u8 *)obj + 0x454, 0x51, 0);
+            BattleAnim_Queue((u8 *)obj + 0x454, 0x51, 0);
             switch (kind) {
-            case 0: fn_80034068((u8 *)obj + 0x454, 0x17, 0); break;
-            case 1: fn_80034068((u8 *)obj + 0x454, 0xB, 0); break;
-            case 2: fn_80034068((u8 *)obj + 0x454, 0x17, 0); break;
+            case 0: BattleAnim_Queue((u8 *)obj + 0x454, 0x17, 0); break;
+            case 1: BattleAnim_Queue((u8 *)obj + 0x454, 0xB, 0); break;
+            case 2: BattleAnim_Queue((u8 *)obj + 0x454, 0x17, 0); break;
             }
             break;
-        case 5: fn_80034068((u8 *)obj + 0x454, 0x50, 0); break;
+        case 5: BattleAnim_Queue((u8 *)obj + 0x454, 0x50, 0); break;
         }
         prev = kind;
     }
-    fn_80034068((u8 *)obj + 0x454, 0, 0);
+    BattleAnim_Queue((u8 *)obj + 0x454, 0, 0);
     *(s32 *)((u8 *)obj + 0x444) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x464));
     flag = *(s32 *)((u8 *)obj + 0x444) == 2;
     if (fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x468)) == 0) {
