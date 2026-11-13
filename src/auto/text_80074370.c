@@ -1253,7 +1253,7 @@ s32 fn_80076574(s32 arg0, s32 arg1, void *arg2) {
     return 5;
 }
 
-s32 fn_800765BC(s32 arg0, s32 arg1, void *arg2) {
+s32 Ui_ShowHeldItemRange(s32 arg0, s32 arg1, void *arg2) {
     void fn_80070EE0(void);
     void *Unit_GetHeldItemSlot(void *, u8);
     s32 fn_8001DDBC(void);
