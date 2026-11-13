@@ -8827,7 +8827,7 @@ loop2_cond:
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_80174B10(void *arg0) {
+extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
     void fn_8013AF08(void *, s16);
     void Ui_RemoveChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
