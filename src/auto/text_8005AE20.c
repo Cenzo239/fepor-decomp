@@ -5917,7 +5917,7 @@ void *fn_80069CFC(void) {
     return *entry;
 }
 #pragma global_optimizer on
-s32 fn_80069D58(void) {
+s32 GMaterial_AllocMtx(void) {
     void Game_Assert(void *, s32, void *);
     extern u8 lbl_80367303;
     extern u8 gGMaterialAssertMsg[];

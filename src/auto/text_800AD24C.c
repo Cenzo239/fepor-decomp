@@ -8867,7 +8867,7 @@ void fn_800C14D0(void *arg0) {
 }
 
 void fn_800C15A8(void) {
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
     s32 GMaterial_AllocTevStage(void);
@@ -8915,7 +8915,7 @@ void fn_800C15A8(void) {
     r30 = GMaterial_AllocTexCoord();
     r29 = GMaterial_AllocTexMap();
     fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
-    r28 = fn_80069D58();
+    r28 = GMaterial_AllocMtx();
     fn_80224E50(sp8, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
     GXSetTevOrder(r31, r30, r29, 0xFF);
@@ -8927,7 +8927,7 @@ void fn_800C15A8(void) {
 
 #pragma optimization_level 2
 s32 Map_SetupBlendTev(void) {
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
     s32 GMaterial_AllocTevStage(void);
@@ -8982,7 +8982,7 @@ s32 Map_SetupBlendTev(void) {
     r31 = GMaterial_AllocTevStage();
     r30 = GMaterial_AllocTexCoord();
     r29 = GMaterial_AllocTexMap();
-    r28 = fn_80069D58();
+    r28 = GMaterial_AllocMtx();
     fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
     fn_80224E50(spC, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);

@@ -16309,7 +16309,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void fn_80069354(void *, void *, void *, void *, s32);
     void GMaterial_SetupColor(void *, void *, void *, void *);
     s32 fn_80069CFC(void);
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
     s32 fn_80069E7C(void);
@@ -16428,7 +16428,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t26 = fn_80069E7C();
     t28 = GMaterial_AllocTexCoord();
-    t25 = fn_80069D58();
+    t25 = GMaterial_AllocMtx();
     t29 = GMaterial_AllocTexMap();
     t27 = fn_80069CFC();
     sp94[1] = lbl_80369FB8;
@@ -16478,7 +16478,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         t26 = GMaterial_AllocTexCoord();
         t25 = GMaterial_AllocTevStage();
         t28 = GMaterial_AllocTexMap();
-        t27 = fn_80069D58();
+        t27 = GMaterial_AllocMtx();
         fn_80202870(sp1EC, lbl_80369FCC, lbl_80369FD0, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
         fn_80067FDC();
         PSMTXCopy(sp1BC);
@@ -16514,7 +16514,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t30 = fn_80069E7C();
     t29b = GMaterial_AllocTexCoord();
-    t28b = fn_80069D58();
+    t28b = GMaterial_AllocMtx();
     t27b = GMaterial_AllocTexMap();
     t26b = fn_80069CFC();
     sp94[1] = lbl_80369FB8;
@@ -16570,7 +16570,7 @@ void fn_800EEEF0(s32 arg0, s32 arg1, s32 arg2, s32* arg3)
 s32 fn_800EF1C0(void) {
     void fn_8004D5D4(void *);
     s32 fn_80068548(void);
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
     s32 GMaterial_AllocTevStage(void);
@@ -16606,7 +16606,7 @@ s32 fn_800EF1C0(void) {
     temp_r30 = GMaterial_AllocTexCoord();
     temp_r31 = GMaterial_AllocTevStage();
     temp_r29 = GMaterial_AllocTexMap();
-    temp_r28 = fn_80069D58();
+    temp_r28 = GMaterial_AllocMtx();
     temp_r3 = fn_80068548();
     fn_802026E4(sp58, (void *)(temp_r3 + 0xD4), (void *)(temp_r3 + 0xEC), (void *)(temp_r3 + 0xE0));
     fn_80202870(sp88, lbl_80369FCC, lbl_80369FD0, lbl_80369FC8, lbl_80369FE0, lbl_80369FC8, lbl_80369FC8);
@@ -16634,7 +16634,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     f32 fn_8006469C(void *, s32, f32);
     s32 *fn_80067478(void);
     void *fn_80068548(void);
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTexMap(void);
     s32 GMaterial_AllocTevStage(void);
@@ -16800,7 +16800,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     C_MTXLightOrtho(sp1F4, negFec, lbl_80369FEC, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp1C4, sp224, sp1C4);
     PSMTXConcat(sp1F4, sp1C4, sp254);
-    t29 = fn_80069D58();
+    t29 = GMaterial_AllocMtx();
     fn_80224E50(sp254, t29, 0);
     t24 = GMaterial_AllocTexCoord();
     t23 = GMaterial_AllocTevStage();
@@ -16853,7 +16853,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     C_MTXLightOrtho(sp194, lbl_80369FEC, negFec, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp164, sp224, sp164);
     PSMTXConcat(sp194, sp164, sp254);
-    t29b = fn_80069D58();
+    t29b = GMaterial_AllocMtx();
     fn_80224E50(sp254, t29b, 0);
     t25b = GMaterial_AllocTexCoord();
     t24b = GMaterial_AllocTevStage();
@@ -16896,7 +16896,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
         C_MTXLightOrtho(sp134, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
         PSMTXConcat(sp104, sp224, sp104);
         PSMTXConcat(sp134, sp104, sp254);
-        t26c = fn_80069D58();
+        t26c = GMaterial_AllocMtx();
         fn_80224E50(sp254, t26c, 0);
         t29c = GMaterial_AllocTexCoord();
         t25c = GMaterial_AllocTevStage();
@@ -16923,7 +16923,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     s32 GMaterial_AllocTexCoord(void);
     s32 GMaterial_AllocTevStage(void);
     s32 GMaterial_AllocTexMap(void);
-    s32 fn_80069D58(void);
+    s32 GMaterial_AllocMtx(void);
     void fn_802029C4(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
     void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
@@ -17049,7 +17049,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     GXSetTevColorIn(b, 0xF, 8, 0xA, 0xF);
     GXSetTevAlphaOp(b, 0, 0, 0, 1, 2);
     GXSetTevAlphaIn(b, 7, 7, 7, 7);
-    tmp = fn_80069D58();
+    tmp = GMaterial_AllocMtx();
     fn_80224E50(sp104, tmp, 0);
     a = GMaterial_AllocTexCoord();
     fn_802201A8(a, 0, 0, tmp, 0, 0x7D);
