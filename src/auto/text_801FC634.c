@@ -533,7 +533,7 @@ void FallingParticle_Spawn(void *arg0) {
     extern s32 gFallingParticleVelYCenter;
     extern s32 gFallingParticleVelXRange;
     extern s32 gFallingParticleVelYRange;
-    extern u8 lbl_80368430;
+    extern u8 gFallingParticleAlphaMin;
     extern u8 lbl_80368431;
     extern f32 gFloatZero;
     extern f32 lbl_8036BB48;
@@ -554,7 +554,7 @@ void FallingParticle_Spawn(void *arg0) {
         gFallingParticleVelYCenter = 0x14000;
         f0 = gFloatZero;
         gFallingParticleVelYRange = 0xC000;
-        lbl_80368430 = 0x40;
+        gFallingParticleAlphaMin = 0x40;
         lbl_80368431 = 0xC0;
         *(f32 *)((u8 *)temp_r23 + 0x30) = f1;
         *(f32 *)((u8 *)temp_r23 + 0x34) = f0;
@@ -602,7 +602,7 @@ void FallingParticle_Spawn(void *arg0) {
                 *(u8 *)((u8 *)var_r24 + 0x32) = (u8)(r3 / r5);
                 *(u8 *)((u8 *)var_r24 + 0x32) = (u8)(*(u8 *)((u8 *)var_r24 + 0x32) + 2);
                 r3 = *(s32 *)((u8 *)var_r24 + 0x40);
-                r6 = lbl_80368430;
+                r6 = gFallingParticleAlphaMin;
                 r0 = lbl_80368431;
                 r3 = r3 - r4;
                 r0 = r0 - r6;
@@ -2359,7 +2359,7 @@ extern s32 gFallingParticleVelXCenter;
 extern s32 gFallingParticleVelYCenter;
 extern s32 gFallingParticleVelXRange;
 extern s32 gFallingParticleVelYRange;
-extern u8 lbl_80368430;
+extern u8 gFallingParticleAlphaMin;
 extern u8 lbl_80368431;
 extern f32 gFloatZero;
 extern f32 gFloatOne;
