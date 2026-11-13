@@ -1378,81 +1378,82 @@ s32 fn_80107874(void *arg0, void *arg1) {
     return count;
 }
 #pragma use_lmw_stmw on
-void Dispos_ParseEntry(u32 *arg0, u32 *arg1, u8 arg2) {
+/* Parse one dispos unit record from a BE binary cursor into a 0x68-byte buffer. */
+void Dispos_ParseEntry(u32 *cursor, u32 *out, u8 dispos_id) {
     s32 Bin_ReadU32(u32 *);
     u8 Bin_ReadU8(u32 *);
     void fn_800056CC(const char *, ...);
     extern u8 gDisposStrings[];
-    u32 *var_r27;
-    u32 *var_r28;
-    u8 var_r29;
+    u32 *p_cursor;
+    u32 *parsed;
+    u8 id;
     s32 j;
     u32 *q;
     s32 i;
     s32 temp;
     s32 off;
 
-    var_r27 = arg0;
-    var_r28 = arg1;
-    var_r29 = arg2;
-    var_r28[0] = Bin_ReadU32(var_r27);
-    var_r28[1] = Bin_ReadU32(var_r27);
-    Bin_ReadU32(var_r27);
+    p_cursor = cursor;
+    parsed = out;
+    id = dispos_id;
+    parsed[0] = Bin_ReadU32(p_cursor);
+    parsed[1] = Bin_ReadU32(p_cursor);
+    Bin_ReadU32(p_cursor);
     j = 0;
-    q = var_r28;
+    q = parsed;
     do {
-        temp = Bin_ReadU32(var_r27);
+        temp = Bin_ReadU32(p_cursor);
         j += 1;
         *(u32 *)((u8 *)q + 0x10) = temp;
         q += 1;
     } while (j < 8);
     q = 0;
-    j = (s32)var_r28;
+    j = (s32)parsed;
     do {
-        temp = Bin_ReadU32(var_r27);
+        temp = Bin_ReadU32(p_cursor);
         q = (u32 *)((s32)q + 1);
         *(u32 *)((u8 *)j + 0x48) = temp;
         j = j + 4;
     } while ((s32)q < 5);
-    Bin_ReadU8(var_r27);
-    Bin_ReadU8(var_r27);
-    Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x5C] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x5D] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x5E] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x5F] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x60] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x61] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x62] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x63] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x64] = Bin_ReadU8(var_r27);
-    *(u32 *)((u8 *)var_r28 + 0x38) = Bin_ReadU32(var_r27);
-    *(u32 *)((u8 *)var_r28 + 0x3C) = Bin_ReadU32(var_r27);
-    *(u32 *)((u8 *)var_r28 + 0x40) = Bin_ReadU32(var_r27);
-    *(u32 *)((u8 *)var_r28 + 0x44) = Bin_ReadU32(var_r27);
-    ((u8 *)var_r28)[0x65] = 0;
-    ((u8 *)var_r28)[0xB] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0xC] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0xD] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0xE] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0xA] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x9] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x8] = Bin_ReadU8(var_r27);
-    ((u8 *)var_r28)[0x66] = Bin_ReadU8(var_r27);
+    Bin_ReadU8(p_cursor);
+    Bin_ReadU8(p_cursor);
+    Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x5C] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x5D] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x5E] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x5F] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x60] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x61] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x62] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x63] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x64] = Bin_ReadU8(p_cursor);
+    *(u32 *)((u8 *)parsed + 0x38) = Bin_ReadU32(p_cursor);
+    *(u32 *)((u8 *)parsed + 0x3C) = Bin_ReadU32(p_cursor);
+    *(u32 *)((u8 *)parsed + 0x40) = Bin_ReadU32(p_cursor);
+    *(u32 *)((u8 *)parsed + 0x44) = Bin_ReadU32(p_cursor);
+    ((u8 *)parsed)[0x65] = 0;
+    ((u8 *)parsed)[0xB] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0xC] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0xD] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0xE] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0xA] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x9] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x8] = Bin_ReadU8(p_cursor);
+    ((u8 *)parsed)[0x66] = Bin_ReadU8(p_cursor);
     j = 0;
     do {
-        temp = Bin_ReadU8(var_r27);
+        temp = Bin_ReadU8(p_cursor);
         off = j + 0x30;
         j += 1;
-        ((u8 *)var_r28)[off] = temp;
+        ((u8 *)parsed)[off] = temp;
     } while (j < 8);
-    *var_r27 = (*var_r27 + 3) & ~3;
-    ((u8 *)var_r28)[0x67] = var_r29;
+    *p_cursor = (*p_cursor + 3) & ~3;
+    ((u8 *)parsed)[0x67] = id;
     fn_800056CC((const char *)(gDisposStrings + 0x9A),
-                var_r28[0],
-                var_r28[1],
-                *(s8 *)((u8 *)var_r28 + 0xD),
-                *(s8 *)((u8 *)var_r28 + 0xE));
+                parsed[0],
+                parsed[1],
+                *(s8 *)((u8 *)parsed + 0xD),
+                *(s8 *)((u8 *)parsed + 0xE));
 }
 
 s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
