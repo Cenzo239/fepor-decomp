@@ -9341,13 +9341,13 @@ void fn_800DDC2C(void *arg0, void *arg1) {
 
 void *fn_800DDC90(void *arg0) {
     M2C_UNK fn_8006140C(void *);
-    void *fn_80061870();
+    void *GActor_Create();
     u32 temp_r0;
     u32 temp_r0_2;
     u32 temp_r0_3;
     void *temp_r3;
 
-    temp_r3 = fn_80061870();
+    temp_r3 = GActor_Create();
     if (temp_r3 != NULL) {
         temp_r0 = M2C_FIELD(arg0, u32 *, 0x4C);
         if (temp_r0 != 0U) {

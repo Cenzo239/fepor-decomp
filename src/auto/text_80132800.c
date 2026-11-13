@@ -3512,7 +3512,7 @@ void fn_80138808(void *arg0, s32 arg1) {
     void fn_800506E0(void *, s32, void *);
     void fn_8006140C(void *);
     void fn_800616A0(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
 
     void *tmp;
@@ -3524,7 +3524,7 @@ void fn_80138808(void *arg0, s32 arg1) {
     if (tmp != NULL) {
         fn_800616A0(tmp);
     }
-    *(void **)((u8 *)arg0 + 0x50) = fn_80061870();
+    *(void **)((u8 *)arg0 + 0x50) = GActor_Create();
     tmp = *(void **)((u8 *)arg0 + 0x50);
     *(s32 *)((u8 *)tmp + 4) = saved + 0x1C;
     tmp = *(void **)((u8 *)arg0 + 0x50);
@@ -4947,7 +4947,7 @@ void fn_8013B064(void *arg0, void *arg1) {
     void fn_800506E0(void *, s32, void *);
     void fn_8006140C(void *);
     void fn_800616A0(void);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     void fn_8013BAD4(void *, void *, void *, void *);
     void *self;
@@ -4965,7 +4965,7 @@ void fn_8013B064(void *arg0, void *arg1) {
     do {
         fn_800616A0();
     body:
-        sp14 = fn_80061870();
+        sp14 = GActor_Create();
         *(s32 *)((u8 *)sp14 + 4) = (s32)other + 0x1C;
         *(u32 *)sp14 = *(u32 *)sp14 | 0x50028400;
         fn_800506E0(other, 0, sp14);

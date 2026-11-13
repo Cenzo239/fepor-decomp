@@ -4431,7 +4431,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
     M2C_UNK fn_8005F554(s32 *, s32);
     M2C_UNK fn_8006140C(s32 *);
     M2C_UNK fn_800616A0(s32 *);
-    s32 *fn_80061870();
+    s32 *GActor_Create();
     M2C_UNK fn_8008CDE0(s32 *, s32 **);
     s32 fn_800C93EC(M2C_UNK *);
     M2C_UNK fn_800C992C(M2C_UNK *, s32, s32);
@@ -4466,7 +4466,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
             return;
         }
         M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
-        M2C_FIELD(arg0, s32 **, 0x40) = fn_80061870();
+        M2C_FIELD(arg0, s32 **, 0x40) = GActor_Create();
         sprintf((M2C_UNK *)&sp48, lbl_80279D50 + 8, lbl_80279D50 + 0x11);
         String_Init((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
         temp_r29 = **M2C_FIELD(arg0, s32 ***, 0x3C) + 4;

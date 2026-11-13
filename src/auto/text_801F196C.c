@@ -3019,7 +3019,7 @@ void fn_801F8A98(void *arg0) {
     void fn_800506E0(void *, s32, void *);
     void fn_800616A0(void *);
     void fn_8006140C(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     void fn_8006EEFC(void *, void *);
     void *fn_800A8A00(void *);
@@ -3076,7 +3076,7 @@ void fn_801F8A98(void *arg0) {
                 if (pair.obj != (void *)0) {
                     fn_800616A0(pair.obj);
                 }
-                pair.obj = fn_80061870();
+                pair.obj = GActor_Create();
                 p = (u32 *)pair.obj;
                 *(void **)((u8 *)pair.obj + 4) = (u8 *)unit + 0x1C;
                 *p |= 0x50028400;
@@ -4379,7 +4379,7 @@ extern "C" void fn_800C428C(void *);
 extern "C" void fn_800506E0(s32, s32, void *);
 extern "C" void fn_8006140C(void *);
 extern "C" void fn_800616A0(void *);
-extern "C" void *fn_80061870(void);
+extern "C" void *GActor_Create(void);
 extern "C" s32 fn_800639B4(void);
 extern "C" M2C_UNK fn_8022CF78(void);
 extern "C" M2C_UNK fn_80232058(void *, const char *, ...);
@@ -4435,7 +4435,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
             if (value->obj != 0) {
                 fn_800616A0(value->obj);
             }
-            value->obj = (Obj *)fn_80061870();
+            value->obj = (Obj *)GActor_Create();
             value->obj->unk4 = owner + 0x1C;
             obj = value->obj;
             obj->flags |= 0x50028400;

@@ -12974,7 +12974,7 @@ void MapObj_InitGraphics(void *arg0) {
 #pragma opt_common_subs off
  void sprintf(void *, void *, ...);
  void fn_8005C82C(void *, s32);
- void *fn_80061870(void);
+ void *GActor_Create(void);
  void fn_8005F554(void *, void *);
  void fn_8005F4F4(void *, void *);
  void fn_8005F5B4(void *, void *);
@@ -13008,7 +13008,7 @@ void MapObj_InitGraphics(void *arg0) {
  flag=0;
  if (M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x100) flag=8;
  fn_8005C82C(buf,flag);
- node=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x5C)=fn_80061870();
+ node=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x5C)=GActor_Create();
  M2C_FIELD(node,u8 *,0x87)=M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u8 *,5);
  if (!(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&1)) M2C_FIELD(node,u32 *,0)|=0x400;
  if (!(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&2)) M2C_FIELD(node,u32 *,0)|=0x40000;

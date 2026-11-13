@@ -1058,7 +1058,7 @@ void fn_8012DFA8(void *arg0) {
     void *fn_80059208(void *, void *);
     void fn_8005C84C(void *);
     void fn_8006140C(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     void *fn_8006D948(void *);
     void fn_800C1F1C(void *, void *);
@@ -1173,7 +1173,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & mask)) {
                 *(void **)slot = node;
-                tmp = fn_80061870();
+                tmp = GActor_Create();
                 *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
@@ -1189,7 +1189,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & mask) {
                 *(void **)slot = node;
-                tmp = fn_80061870();
+                tmp = GActor_Create();
                 *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
@@ -1207,7 +1207,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & 0x400000) {
                 *(void **)slot = node;
-                tmp = fn_80061870();
+                tmp = GActor_Create();
                 *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
@@ -1223,7 +1223,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & 0x400000)) {
                 *(void **)slot = node;
-                tmp = fn_80061870();
+                tmp = GActor_Create();
                 *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
@@ -1240,7 +1240,7 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            tmp = fn_80061870();
+            tmp = GActor_Create();
             *(void **)(slot + 4) = tmp;
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
@@ -1254,7 +1254,7 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            tmp = fn_80061870();
+            tmp = GActor_Create();
             *(void **)(slot + 4) = tmp;
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
@@ -1272,7 +1272,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(flags & 8) && !(flags & 0x10)) {
                 *(void **)slot = node;
-                tmp = fn_80061870();
+                tmp = GActor_Create();
                 *(void **)(slot + 4) = tmp;
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);

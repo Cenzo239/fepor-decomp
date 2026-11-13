@@ -2286,7 +2286,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void fn_8005F7E0(void *, s32, s32, s32);
     void *fn_8006135C(void *, char *);
     void fn_8006140C(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
@@ -2351,7 +2351,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     String_Destroy(&sp74, -1);
     fn_800C93EC(&spBC);
     *(s32 *)((u8 *)self + 0xB4) = fn_8005C84C();
-    *(void **)((u8 *)self + 0xB8) = fn_80061870();
+    *(void **)((u8 *)self + 0xB8) = GActor_Create();
     row = (u8 *)self + arg1 * 0xC;
     path44 = row + 0x44;
     fn_800CB8A4(&sp5C, &spA4, path44);
@@ -2398,7 +2398,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0xB8) + 0x84) = 0xFF;
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0xB8) + 0x87) = 4;
     path44 = *(void **)((u8 *)self + 0xB8);
-    *(void **)((u8 *)self + 0xBC) = fn_80061870();
+    *(void **)((u8 *)self + 0xBC) = GActor_Create();
     obj = *(void **)((u8 *)self + 0xBC);
     *(void **)((u8 *)obj + 4) = path44;
     fn_8005F7E0(*(void **)((u8 *)self + 0xBC), 0, 0, 0);
@@ -2520,7 +2520,7 @@ void fn_801EF6BC(void *arg0) {
     void fn_8005F7B0(void *, s32);
     void fn_8005F7E0(void *, s32, s32, s32);
     void fn_8006140C(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
     s32 fn_8006D948(void);
@@ -2602,7 +2602,7 @@ void fn_801EF6BC(void *arg0) {
     if ((u16)fn_8005C144() != 0x8000) {
         fn_800C93EC(&spE4);
         *(s32 *)((u8 *)self + 0xC0) = fn_8005C84C();
-        *(void **)((u8 *)self + 0xC4) = fn_80061870();
+        *(void **)((u8 *)self + 0xC4) = GActor_Create();
         fn_800CB8A4(&sp90, &spCC, &spD8);
         fn_800CB90C(&sp84, &sp90, (char *)((u32)lbl_8027F26C + 0x1BF));
         fn_800CB8A4(&sp78, &sp84, &spD8);
@@ -2651,7 +2651,7 @@ void fn_801EF6BC(void *arg0) {
         *(u8 *)((u8 *)*(void **)((u8 *)self + 0xC4) + 0x87) = 4;
         fn_8008CDE0(*(void **)((u8 *)self + 0xC4), slot);
         slot = *(void **)((u8 *)self + 0xC4);
-        *(void **)((u8 *)self + 0xC8) = fn_80061870();
+        *(void **)((u8 *)self + 0xC8) = GActor_Create();
         obj = *(void **)((u8 *)self + 0xC8);
         *(void **)((u8 *)obj + 4) = slot;
         fn_8005F7E0(*(void **)((u8 *)self + 0xC8), 0, 0, 0);
@@ -2674,7 +2674,7 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     void *fn_80040844(void *);
     s32 fn_8005C84C(void);
     void fn_8006140C(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
@@ -2725,7 +2725,7 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     String_Destroy(&sp3C, -1);
     fn_800C93EC(&sp54);
     *(s32 *)((u8 *)self + 0xCC) = fn_8005C84C();
-    *(void **)((u8 *)self + 0xD0) = fn_80061870();
+    *(void **)((u8 *)self + 0xD0) = GActor_Create();
     fn_800CB90C(&sp30, &sp48, lbl_8027F26C + 0x208);
     String_Assign(&sp54, &sp30, 0, -1);
     String_Destroy(&sp30, -1);

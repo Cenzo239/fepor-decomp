@@ -421,7 +421,7 @@ void fn_8007D270(void *arg0) {
     void fn_800506E0(void *, s32, void *);
     void fn_8006140C(void *);
     void fn_800616A0(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     s32 fn_800639B4(void);
     void fn_8007B990(void *);
     void *fn_8007BA4C(void *, s32);
@@ -543,7 +543,7 @@ void fn_8007D270(void *arg0) {
     if (tmp != NULL) {
         fn_800616A0(tmp);
     }
-    *(void **)((u8 *)obj + 0x60) = fn_80061870();
+    *(void **)((u8 *)obj + 0x60) = GActor_Create();
     node = *(void **)((u8 *)obj + 0x58);
     tmp = *(void **)((u8 *)obj + 0x60);
     *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;

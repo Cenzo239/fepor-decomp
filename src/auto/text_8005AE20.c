@@ -1914,7 +1914,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void fn_80201FF0(void *, void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     void fn_8005F12C(void *, void *);
     s32 fn_8005F230(void *);
     void *fn_8005F410(void *);
@@ -2059,7 +2059,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     i = (s32)self - 1;
     if (i - 1 >= 0) {
-        off = (s32)fn_80061870();
+        off = (s32)GActor_Create();
         *(u32 *)off |= *(u32 *)count | flags;
         *(void **)((u8 *)off + 4) = (void *)count;
         *(u32 *)((u8 *)off + 0x90) = *(u32 *)((u8 *)count + 0x90);
@@ -2789,7 +2789,7 @@ s32 fn_80061824(s32 arg0) {
     return fn_800618E4(arg0);
 }
 
-void *fn_80061870(void) {
+void *GActor_Create(void) {
     void *fn_800C4638(s32, void *, s32);
     void Game_Assert(void *, s32, void *);
     void fn_800618E4(void *);

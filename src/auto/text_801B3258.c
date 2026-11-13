@@ -6871,7 +6871,7 @@ void fn_801C5B80(void *arg0) {
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void (*)(void *), void *, s32, s32);
     void DCFlushRange(void *, u32);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     void sprintf(void *, void *, ...);
     void fn_8005F554(void *, void *);
     void fn_8005F4F4(void *, void *);
@@ -7002,7 +7002,7 @@ void fn_801C5B80(void *arg0) {
     *(s32 *)((u8 *)ctrl + 0x10) = 0;
     *(s32 *)((u8 *)self + 0x30) = 0;
     *(s32 *)((u8 *)self + 0x34) = 0;
-    *(void **)((u8 *)self + 0x40) = fn_80061870();
+    *(void **)((u8 *)self + 0x40) = GActor_Create();
 
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x194);
@@ -13210,7 +13210,7 @@ extern "C" void fn_801D2C30(void *arg0) {
     u8 fn_80019CC0(void);
     u32 fn_80016BDC(s32);
     void fn_800616A0(void *);
-    void *fn_80061870(void);
+    void *GActor_Create(void);
     void fn_800506E0(u32, s32, void *);
     s32 fn_800639B4(void);
     void fn_8006140C(void *);
@@ -13295,7 +13295,7 @@ extern "C" void fn_801D2C30(void *arg0) {
                 if (row.node != 0) {
                     fn_800616A0(row.node);
                 }
-                row.node = fn_80061870();
+                row.node = GActor_Create();
                 *(s32 *)((u8 *)row.node + 4) = (s32)(unit + 0x1C);
                 p = (u32 *)row.node;
                 *p = *p | 0x50028400;
