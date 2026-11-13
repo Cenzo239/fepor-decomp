@@ -5731,7 +5731,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
         }
     }
 }
-void fn_80161E58(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
+void Ui_DrawRect(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
     void Prim2D_RotateUvCw(void);
     void Prim2D_RotateUvCcw(void);
     void Prim2D_SetColorPacked(s32 *);
