@@ -2257,25 +2257,23 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
     fn_80033E70(self + 0x8A0);
 }
 
-void fn_801A6F34(void *arg0, void *arg1)
+void fn_801A6F34(u8 *arg0, void *arg1)
 {
     extern void fn_801A601C(void *, void *, void *, s32);
     extern void Battle_ProcessStatusAnims(void *, void *, s32);
     extern void BattleAnim_Queue(void *, s32, s32);
 
-    u8 *obj;
+    void *b;
+    u8 *a;
 
-    obj = (u8 *)arg0;
+    b = arg1;
+    a = arg0;
 
-    fn_801A601C(obj, obj, obj + 0x2E0, 0);
-
-    Battle_ProcessStatusAnims(obj, arg1, 1);
-
-    obj[0xCA4] = 0;
-
-    fn_801A601C(obj, obj, obj + 0x2E0, 0);
-
-    BattleAnim_Queue(obj + 0x8A0, 0x54, 0);
+    fn_801A601C(a, a, a + 0x2E0, 0);
+    Battle_ProcessStatusAnims(a, b, 1);
+    a[0xCA4] = 0;
+    fn_801A601C(a, a, a + 0x2E0, 0);
+    BattleAnim_Queue(a + 0x8A0, 0x54, 0);
 }
 
 #pragma opt_strength_reduction off
