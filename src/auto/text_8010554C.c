@@ -4455,7 +4455,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s8 Unit_GetActiveItemSlot(void *);
     u8 fn_8003863C(void *);
     s8 Unit_GetMov(void *);
-    s8 fn_8003CFF0(void *, void *);
+    s8 Unit_CalcHitRate(void *, void *);
     u8 fn_800934CC(void *);
     s32 fn_800F7838(void *, s8, s8);
     s32 fn_800F7994(void *, s8, s8);
@@ -4651,7 +4651,7 @@ ok_done:
             Battle_SetupFromParams(gBattle, &sp28, &sp18);
             fn_801A49AC(gBattle, (s8)slot);
 
-            ciff = fn_8003CFF0(arg0, unit);
+            ciff = Unit_CalcHitRate(arg0, unit);
             if (ciff < 5) {
                 continue;
             }
@@ -4681,7 +4681,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s8 Unit_GetActiveItemSlot(void *);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
-    s8 fn_8003CFF0(void *, void *);
+    s8 Unit_CalcHitRate(void *, void *);
     u8 fn_800934CC(void *, void *);
     u64 *Item_GetFlagsPtr(void *);
     s32 fn_800F7838(void *, s8, s8);
@@ -4881,7 +4881,7 @@ ok_done:
             Battle_SetupFromParams(gBattle, &sp28, &sp18);
             fn_801A49AC(gBattle, (s8)slot);
 
-            ciff = fn_8003CFF0(arg0, unit);
+            ciff = Unit_CalcHitRate(arg0, unit);
             if (ciff < 5) {
                 continue;
             }

@@ -319,7 +319,7 @@ s32 fn_801A32F8(s32 arg0) {
 s32 fn_801A3390(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
-    u8 fn_8003CFF0(void *, void *);
+    u8 Unit_CalcHitRate(void *, void *);
     u8 fn_8000CE68(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
@@ -331,7 +331,7 @@ s32 fn_801A3390(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         fn_801A4A24(gBattle, 1);
     } else {
@@ -345,7 +345,7 @@ s32 fn_801A3390(s32 arg0) {
 s32 fn_801A3478(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
-    u8 fn_8003CFF0(void *, void *);
+    u8 Unit_CalcHitRate(void *, void *);
     u8 fn_8000CE68(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
@@ -358,7 +358,7 @@ s32 fn_801A3478(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
@@ -374,7 +374,7 @@ s32 fn_801A3478(s32 arg0) {
 s32 fn_801A3570(s32 arg0) {
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
-    u8 fn_8003CFF0(void *, void *);
+    u8 Unit_CalcHitRate(void *, void *);
     u8 fn_8000CE68(s32);
     u8 fn_8003C7D0(void *);
     void fn_801A4A24(void *, s32);
@@ -387,7 +387,7 @@ s32 fn_801A3570(s32 arg0) {
 
     fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+    if (fn_8000CE68(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u16 hi:6; u16 mid:3; u16 lo:7; } *)(base + 0x484))->mid = 5;

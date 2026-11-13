@@ -1784,7 +1784,7 @@ void fn_8002CF50(void *arg0, void *arg1) {
 void fn_8002CFB0(void *arg0, void *arg1) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8002F6E8(void *, u8, u8, u8, int);
-    int fn_8003CFF0(void *, void *);
+    int Unit_CalcHitRate(void *, void *);
     extern u8 lbl_802EF4E0[];
     void *self;
     void *other;
@@ -1798,7 +1798,7 @@ void fn_8002CFB0(void *arg0, void *arg1) {
         v198 = *(u8 *)((u8 *)other + 0x198);
         v19f = *(u8 *)((u8 *)other + 0x19F);
         v19e = *(u8 *)((u8 *)other + 0x19E);
-        fn_8002F6E8(lbl_802EF4E0, v19e, v19f, v198, fn_8003CFF0(*(void **)((u8 *)self + 4), other));
+        fn_8002F6E8(lbl_802EF4E0, v19e, v19f, v198, Unit_CalcHitRate(*(void **)((u8 *)self + 4), other));
     }
 }
 
@@ -3841,7 +3841,7 @@ extern "C" void UnitInfo_DrawCombat(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawDepth;
     extern u32 gUiContext[];
     s32 UnitRef_GetUnit(u32);
-    s32 fn_8003CFF0(s32, s32);
+    s32 Unit_CalcHitRate(s32, s32);
     void UnitInfo_DrawCombatStats(s32, s32);
     struct Obj {
         u8 pad[4];
@@ -3860,7 +3860,7 @@ extern "C" void UnitInfo_DrawCombat(void *arg0, void *arg1) {
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
-        flag = (u8)fn_8003CFF0(saved, UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        flag = (u8)Unit_CalcHitRate(saved, UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         UnitInfo_DrawCombatStats(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), flag);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);

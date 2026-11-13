@@ -4537,7 +4537,7 @@ void* fn_8003CE88(void* arg0, s32 arg1, void* arg2) {
     return arg2;
 }
 
-u8 fn_8003CFF0(void *arg0, void *arg1) {
+u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003AFA0(void *);
     s32 fn_8003A778(void *);
     s32 fn_8003AF28(void *);
