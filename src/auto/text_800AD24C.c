@@ -91,7 +91,8 @@ s32 fn_800AD2DC(s32 arg0) {
 }
 
 #pragma optimization_level 2
-s32 Event_StartBless(s32 arg0) {
+/* Collect same-allegiance units with Live/Rest statuses into an E_Bless process; return 0 if none. */
+s32 Event_StartBless(s32 parent) {
     void *fn_8000CAA0(void *, s32);
     void Process_Unlink(void *);
     void Allegiance_FillMask(s32, void *);
@@ -103,79 +104,79 @@ s32 Event_StartBless(s32 arg0) {
     extern u8 E_Bless_script[];
     extern u8 gUnits[];
     extern u8 lbl_802EF4E0[];
-    u8 sp8;
-    s16 temp_r0;
-    void *var_r31;
-    void *temp_r3;
-    s32 var_r29;
+    u8 allegMask;
+    s16 count;
+    void *unit;
+    void *proc;
+    s32 i;
 
-    temp_r3 = fn_8000CAA0(E_Bless_script, arg0);
-    *(s16 *)((u8 *)temp_r3 + 0x6C) = 0;
-    *(s16 *)((u8 *)temp_r3 + 0x6E) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x30) = 0;
-    *((u8 *)temp_r3 + 0x60) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x34) = 0;
-    *((u8 *)temp_r3 + 0x61) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x38) = 0;
-    *((u8 *)temp_r3 + 0x62) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x3C) = 0;
-    *((u8 *)temp_r3 + 0x63) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x40) = 0;
-    *((u8 *)temp_r3 + 0x64) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x44) = 0;
-    *((u8 *)temp_r3 + 0x65) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x48) = 0;
-    *((u8 *)temp_r3 + 0x66) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x4C) = 0;
-    *((u8 *)temp_r3 + 0x67) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x50) = 0;
-    *((u8 *)temp_r3 + 0x68) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x54) = 0;
-    *((u8 *)temp_r3 + 0x69) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x58) = 0;
-    *((u8 *)temp_r3 + 0x6A) = 0;
-    *(s32 *)((u8 *)temp_r3 + 0x5C) = 0;
-    *((u8 *)temp_r3 + 0x6B) = 0;
-    Allegiance_FillMask(0, &sp8);
-    var_r29 = 1;
+    proc = fn_8000CAA0(E_Bless_script, parent);
+    *(s16 *)((u8 *)proc + 0x6C) = 0;
+    *(s16 *)((u8 *)proc + 0x6E) = 0;
+    *(s32 *)((u8 *)proc + 0x30) = 0;
+    *((u8 *)proc + 0x60) = 0;
+    *(s32 *)((u8 *)proc + 0x34) = 0;
+    *((u8 *)proc + 0x61) = 0;
+    *(s32 *)((u8 *)proc + 0x38) = 0;
+    *((u8 *)proc + 0x62) = 0;
+    *(s32 *)((u8 *)proc + 0x3C) = 0;
+    *((u8 *)proc + 0x63) = 0;
+    *(s32 *)((u8 *)proc + 0x40) = 0;
+    *((u8 *)proc + 0x64) = 0;
+    *(s32 *)((u8 *)proc + 0x44) = 0;
+    *((u8 *)proc + 0x65) = 0;
+    *(s32 *)((u8 *)proc + 0x48) = 0;
+    *((u8 *)proc + 0x66) = 0;
+    *(s32 *)((u8 *)proc + 0x4C) = 0;
+    *((u8 *)proc + 0x67) = 0;
+    *(s32 *)((u8 *)proc + 0x50) = 0;
+    *((u8 *)proc + 0x68) = 0;
+    *(s32 *)((u8 *)proc + 0x54) = 0;
+    *((u8 *)proc + 0x69) = 0;
+    *(s32 *)((u8 *)proc + 0x58) = 0;
+    *((u8 *)proc + 0x6A) = 0;
+    *(s32 *)((u8 *)proc + 0x5C) = 0;
+    *((u8 *)proc + 0x6B) = 0;
+    Allegiance_FillMask(0, &allegMask);
+    i = 1;
     do {
-        if ((u8)var_r29 != 0) {
-            var_r31 = gUnits + (((u8)var_r29 - 1) * 0x280);
+        if ((u8)i != 0) {
+            unit = gUnits + (((u8)i - 1) * 0x280);
         } else {
-            var_r31 = NULL;
+            unit = NULL;
         }
-        if (*(u32 *)((u8 *)var_r31 + 0x188) != 0
-            && *((u8 *)&sp8 + *((u8 *)*(void **)((u8 *)var_r31 + 0x190) + 8)) != 0
-            && !(*(u32 *)((u8 *)var_r31 + 0x1A0) & 4)
-            && !((*(u16 *)((u8 *)var_r31 + 0x1A4) >> 7) & 7)
-            && !(*((u8 *)var_r31 + 0x1A5) & 7)) {
-            if (Status_Test((u8 *)var_r31 + 0x1BC, 0x4A) != 0) {
-                fn_8002AD04(var_r31, Item_GetByIid(lbl_8026E988 + 0x101));
+        if (*(u32 *)((u8 *)unit + 0x188) != 0
+            && *((u8 *)&allegMask + *((u8 *)*(void **)((u8 *)unit + 0x190) + 8)) != 0
+            && !(*(u32 *)((u8 *)unit + 0x1A0) & 4)
+            && !((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7)
+            && !(*((u8 *)unit + 0x1A5) & 7)) {
+            if (Status_Test((u8 *)unit + 0x1BC, 0x4A) != 0) {
+                fn_8002AD04(unit, Item_GetByIid(lbl_8026E988 + 0x101));
                 if (*(s32 *)lbl_802EF4E0 != 0) {
-                    temp_r0 = *(s16 *)((u8 *)temp_r3 + 0x6C);
-                    if (temp_r0 != 0xB) {
-                        *(void **)((u8 *)temp_r3 + (temp_r0 * 4) + 0x30) = var_r31;
-                        *((u8 *)temp_r3 + *(s16 *)((u8 *)temp_r3 + 0x6C) + 0x60) = 1;
-                        *(s16 *)((u8 *)temp_r3 + 0x6C) = (s16)(*(s16 *)((u8 *)temp_r3 + 0x6C) + 1);
+                    count = *(s16 *)((u8 *)proc + 0x6C);
+                    if (count != 0xB) {
+                        *(void **)((u8 *)proc + (count * 4) + 0x30) = unit;
+                        *((u8 *)proc + *(s16 *)((u8 *)proc + 0x6C) + 0x60) = 1;
+                        *(s16 *)((u8 *)proc + 0x6C) = (s16)(*(s16 *)((u8 *)proc + 0x6C) + 1);
                     }
                 }
             }
-            if (Status_Test((void *)((u32)var_r31 + 0x1BC), 0x49) != 0) {
-                fn_8002AB9C(var_r31, Item_GetByIid(lbl_8026E988 + 0x10A));
+            if (Status_Test((void *)((u32)unit + 0x1BC), 0x49) != 0) {
+                fn_8002AB9C(unit, Item_GetByIid(lbl_8026E988 + 0x10A));
                 if (*(s32 *)lbl_802EF4E0 != 0) {
-                    temp_r0 = *(s16 *)((u8 *)temp_r3 + 0x6C);
-                    if (temp_r0 != 0xB) {
-                        *(void **)((u8 *)temp_r3 + (temp_r0 * 4) + 0x30) = var_r31;
-                        *((u8 *)temp_r3 + *(s16 *)((u8 *)temp_r3 + 0x6C) + 0x60) = 2;
-                        *(s16 *)((u8 *)temp_r3 + 0x6C) = (s16)(*(s16 *)((u8 *)temp_r3 + 0x6C) + 1);
+                    count = *(s16 *)((u8 *)proc + 0x6C);
+                    if (count != 0xB) {
+                        *(void **)((u8 *)proc + (count * 4) + 0x30) = unit;
+                        *((u8 *)proc + *(s16 *)((u8 *)proc + 0x6C) + 0x60) = 2;
+                        *(s16 *)((u8 *)proc + 0x6C) = (s16)(*(s16 *)((u8 *)proc + 0x6C) + 1);
                     }
                 }
             }
         }
-        var_r29 += 1;
-    } while (var_r29 <= 0x9F);
-    if (*(s16 *)((u8 *)temp_r3 + 0x6C) == 0) {
-        Process_Unlink(temp_r3);
+        i += 1;
+    } while (i <= 0x9F);
+    if (*(s16 *)((u8 *)proc + 0x6C) == 0) {
+        Process_Unlink(proc);
         return 0;
     }
     return 1;
