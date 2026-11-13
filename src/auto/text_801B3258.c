@@ -3741,14 +3741,14 @@ Ui_BringChildToFront(self,M2C_FIELD(self,void **,0x5C));
 
 #pragma cplusplus reset
 void fn_801BCC60(s32 arg0) {
-    void fn_801A4BE0(void *);
+    void Battle_Apply(void *);
     void fn_801ED970(s32, s32);
     extern u8 gUiContext[];
     extern u8 gBattle[];
     s32 saved;
 
     saved = *(s32 *)gUiContext;
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
     if (*(u32 *)(gBattle + 0xCAC) & 0x10) {
         fn_801ED970(saved, arg0);
     }

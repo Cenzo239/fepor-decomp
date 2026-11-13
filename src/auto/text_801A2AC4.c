@@ -905,7 +905,7 @@ void fn_801A4B40(u8 *obj, s32 a1) {
     BattleAnim_Queue(o + 0x8A0, 0x50, 0);
 }
 #pragma opt_common_subs reset
-void fn_801A4BE0(void *arg0) {
+void Battle_Apply(void *arg0) {
     extern u8 gMapObjEventList[516];
     void BattleUnit_Apply(void *);
     void fn_80034F40(void *);

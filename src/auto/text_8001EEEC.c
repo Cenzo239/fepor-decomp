@@ -3215,7 +3215,7 @@ void fn_80025FA4(void *arg0) {
 
 void fn_80025FC8(void) {
     extern void* gBattle[];
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
 }
 
 void fn_80025FF0(void *arg0) {
@@ -3268,11 +3268,11 @@ s32 fn_8002609C(s32 arg0)
 
 void fn_80026130(void) {
     extern u8 gBattle[];
-    void fn_801A4BE0(void *);
+    void Battle_Apply(void *);
     void fn_80050C90(void *);
     u32 tmp;
 
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
     if (*(u32 *)(gBattle + 0xcac) & 0x10) {
         tmp = *(u32 *)(gBattle + 0x280);
         if (tmp != 0) {
@@ -3458,7 +3458,7 @@ void fn_8002666C(void *arg0) {
 void fn_80026678(void *arg0) {
     void fn_800949A4(s32, u8);
     void fn_80094ABC(s32, void *, s32, void *);
-    void fn_801A4BE0(void *);
+    void Battle_Apply(void *);
     extern u8 lbl_802EF4C8[];
     extern u8 gBattle[];
     struct { u8 hi:1; u8 flag:1; u8 lo:6; } *bf;
@@ -3475,7 +3475,7 @@ void fn_80026678(void *arg0) {
     bf->flag = zero;
     fn_80094ABC(a0, temp_r4, zero, lbl_802EF4C8);
     fn_800949A4(temp_r31, lbl_802EF4C8[0xA]);
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
 }
 
 void fn_800266E4(s32 arg0) {

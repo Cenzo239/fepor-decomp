@@ -220,10 +220,10 @@ void fn_800AD64C(s32 arg0) {
 
 #pragma optimization_level reset
 void fn_800AD678(void) {
-    void fn_801A4BE0(void *);
+    void Battle_Apply(void *);
     extern u8 gBattle[];
     *(s32 *)(gBattle + 0xCAC) |= 1;
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
 }
 
 void fn_800AD6AC(void *arg0) {
@@ -256,7 +256,7 @@ void fn_800AD700(void *arg0) {
 }
 
 void Battle_SetupVsCurrentTarget(void *arg0) {
-    void fn_801A4BE0(void *);
+    void Battle_Apply(void *);
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
     void Battle_SetupPair(void *, void *, void *);
@@ -268,7 +268,7 @@ void Battle_SetupVsCurrentTarget(void *arg0) {
     void *f740;
     u8 lim;
 
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
     if ((s8)gBattle[0x1A8] == 0) {
         p = *(void **)(gBattle + 0x190);
         if (*(u8 *)((u8 *)p + 8) == 1) {
@@ -440,10 +440,10 @@ void fn_800ADD48(void) {
 
 void fn_800ADD84(void) {
     M2C_UNK fn_80033418(void *);
-    M2C_UNK fn_801A4BE0(void *);
+    M2C_UNK Battle_Apply(void *);
     extern u8 gBattle[];
 
-    fn_801A4BE0(gBattle);
+    Battle_Apply(gBattle);
     fn_80033418(gBattle + 0x8A0);
 }
 
