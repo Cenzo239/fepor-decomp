@@ -1067,7 +1067,7 @@ void fn_801A5008(s32 arg0) {
     s32 Unit_GetMaxHp(s32);
     void fn_801A601C(s32, s32, s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     extern u8 gBattleState[];
     u8 *var_r3;
     u8 *var_r5;
@@ -1084,7 +1084,7 @@ void fn_801A5008(s32 arg0) {
     BattleAnim_Queue(arg0 + 0x8A0, 0x20, 0);
     Battle_PerformAttacks(arg0, arg0, arg0 + 0x2E0);
 
-    var_r3 = lbl_802EFDB8;
+    var_r3 = gBattleHitTbl;
     temp_r0 = 0;
     var_r3[0x61] = (u8)temp_r0;
     var_r5 = var_r3;
@@ -1189,7 +1189,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     void fn_801A601C(s32, s32, s32, s32);
     void Battle_ProcessStatusAnims(s32, u8, u8);
     void fn_801A8268(s32);
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     extern u8 gBattleState[];
     extern u8 gBattleSkyIndex;
     f32 sp14[3];
@@ -1208,7 +1208,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     void *leftUnit;
     void *rightUnit;
 
-    hitTbl = lbl_802EFDB8;
+    hitTbl = gBattleHitTbl;
     self = battle;
     *(u32 *)(self + 0xCAC) |= 2;
     if (hitTbl[0x61] != 0) {
@@ -1229,7 +1229,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
 
     temp_r0 = 0;
     hitTbl[0x61] = (u8)temp_r0;
-    var_r3 = lbl_802EFDB8;
+    var_r3 = gBattleHitTbl;
     var_r5 = var_r3;
     var_r3[0x60] = (u8)temp_r0;
     for (i = 0; i < 2; i++) {
@@ -1364,7 +1364,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     u8 Status_Test(void *, s32);
     void **fn_801A7FF4(void *);
     void fn_801A8010(void *);
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
 
     u8 *tbl;
@@ -1396,13 +1396,13 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
                 BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3E, 0);
             }
         }
-        tbl = lbl_802EFDB8;
+        tbl = gBattleHitTbl;
         if ((*(u16 *)(tbl + 0x20 + (tbl[0x60] << 1)) & 8) != 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3A, 0);
         }
     }
 
-    tbl = lbl_802EFDB8;
+    tbl = gBattleHitTbl;
     fl = (u16 *)(tbl + 0x20);
     if ((fl[tbl[0x60]] & 1) != 0) {
         tmp_s16 = *(s16 *)((u8 *)arg1 + 0x2AA) + 1;
@@ -1930,7 +1930,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void fn_801A8010(void *);
     void fn_801A895C(void *, void *);
     u8 fn_801A8A28(void *);
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
 
     s32 i;
@@ -1973,12 +1973,12 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
         if (*(u32 *)fn_801A7FF4(unit) != 0) {
             lv = ((u8 *)fn_801A7FF4(unit))[4];
         }
-        tbl = lbl_802EFDB8;
+        tbl = gBattleHitTbl;
         g = (u8 *)gBattle;
         for (i = 0; i < lim; i++) {
             idx = i + add;
             if ((*(u16 *)(tbl + 0x20 + ((tbl[0x60] + idx) << 1)) & 1) != 0) {
-                fn_8003333C(lbl_802EFDB8, idx);
+                fn_8003333C(gBattleHitTbl, idx);
                 add += 4;
             } else if (Status_Test((u8 *)unit + 0x1BC, 0x31) != 0) {
                 half = fn_8003AF28(unit);
@@ -1988,7 +1988,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                     ok = fn_8000CE68((s32)half / 2);
                 }
                 if (ok != 0 && (s32)lv >= idx + 5) {
-                    fn_8003333C(lbl_802EFDB8, idx);
+                    fn_8003333C(gBattleHitTbl, idx);
                     add += 4;
                 }
             }
@@ -1999,7 +1999,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             for (i = 0; i < lim; i++) {
                 idx = i + add;
                 if ((*(u16 *)(tbl + 0x20 + ((tbl[0x60] + idx) << 1)) & 0x4000) != 0) {
-                    fn_800333DC(lbl_802EFDB8, idx);
+                    fn_800333DC(gBattleHitTbl, idx);
                     add += 1;
                 } else if (Status_Test((u8 *)unit + 0x1BC, 0x4C) != 0) {
                     half = fn_8003AF28(unit);
@@ -2009,7 +2009,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                         ok = fn_8000CE68((s32)half);
                     }
                     if (ok != 0 && (s32)lv >= idx + 2) {
-                        fn_800333DC(lbl_802EFDB8, idx);
+                        fn_800333DC(gBattleHitTbl, idx);
                         add += 1;
                     }
                 }
@@ -2017,7 +2017,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             if (add > 0) {
                 lim += add;
             } else if ((*(u16 *)(tbl + 0x20 + (tbl[0x60] << 1)) & 8) != 0) {
-                BattleHit_SetBraveFlags(lbl_802EFDB8, lim);
+                BattleHit_SetBraveFlags(gBattleHitTbl, lim);
                 lim *= 2;
             } else if (Status_Test((u8 *)unit + 0x1BC, 0x32) != 0) {
                 half = fn_8003AF28(unit);
@@ -2027,7 +2027,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                     ok = fn_8000CE68((s32)half);
                 }
                 if (ok != 0 && (s32)lv >= lim * 2) {
-                    BattleHit_SetBraveFlags(lbl_802EFDB8, lim);
+                    BattleHit_SetBraveFlags(gBattleHitTbl, lim);
                     lim *= 2;
                 }
             }
@@ -2102,7 +2102,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             BattleAnim_Queue((u8 *)self + 0x8A0, kind, 0);
             fn_801A8010(unit);
             fn_80033E70((u8 *)self + 0x8A0);
-            fn_80034120(lbl_802EFDB8);
+            fn_80034120(gBattleHitTbl);
             if ((s8)*(u8 *)((u8 *)self + 0x1A8) == 0) {
                 ok = 1;
             } else if ((s8)*(u8 *)((u8 *)self + 0x488) == 0) {

@@ -325,19 +325,19 @@ void fn_801A895C(void *arg0, void *arg1) {
                 fn_80092ADC(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
 }
 
-extern u8 lbl_802EFDB8[104];
+extern u8 gBattleHitTbl[104];
 extern u16 gBattle[1634];
 u8 fn_8000CD88(s16);
 u8 fn_8000CE68(s16);
 s32 fn_801A8A28(void *arg0) {
     u8 fn_8000CD88(s16);
     u8 fn_8000CE68(s16);
-    extern u8 lbl_802EFDB8[104];
+    extern u8 gBattleHitTbl[104];
     extern u16 gBattle[1634];
     u8 flags;
     u8 *base;
 
-    base = lbl_802EFDB8;
+    base = gBattleHitTbl;
     flags = base[base[0x60]];
 
     if (flags & 1) {

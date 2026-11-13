@@ -4432,20 +4432,20 @@ s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
 }
 
 s32 fn_800B850C(s32 arg0, s8 arg1, s16 arg2) {
-    extern u8 lbl_802EFDB8[];
-    lbl_802EFDB8[0x61] = 1;
-    lbl_802EFDB8[arg0] = arg1;
-    *(s16 *)(lbl_802EFDB8 + 0x20 + arg0 * 2) = arg2;
+    extern u8 gBattleHitTbl[];
+    gBattleHitTbl[0x61] = 1;
+    gBattleHitTbl[arg0] = arg1;
+    *(s16 *)(gBattleHitTbl + 0x20 + arg0 * 2) = arg2;
     return 1;
 }
 
 s32 fn_800B8534(void) {
-    extern u8 lbl_802EFDB8[];
+    extern u8 gBattleHitTbl[];
     u8 *p;
     u8 *q;
     s32 i;
 
-    p = lbl_802EFDB8;
+    p = gBattleHitTbl;
     p[0x61] = 0;
     q = p;
     p[0x60] = 0;
