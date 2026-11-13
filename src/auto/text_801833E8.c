@@ -7065,20 +7065,20 @@ void *fn_80194DA0(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return arg0;
 }
 
-extern u8 lbl_802966D8[16];
+extern u8 Proc_EventArrowManager[16];
 void fn_80194E10(void) {
-    Process_UnlinkByKey(&lbl_802966D8);
+    Process_UnlinkByKey(&Proc_EventArrowManager);
 }
 
 void *fn_80194F54(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_802966D8[16];
+    extern u8 Proc_EventArrowManager[16];
     void *obj;
 
-    obj = Process_Find(lbl_802966D8);
+    obj = Process_Find(Proc_EventArrowManager);
     if (obj == NULL) {
-        obj = Process_Create(lbl_802966D8, 3);
+        obj = Process_Create(Proc_EventArrowManager, 3);
     }
     return (void *)(*(s32 *)((u8 *)obj + 0x30) + arg0 * 0x3250);
 }
