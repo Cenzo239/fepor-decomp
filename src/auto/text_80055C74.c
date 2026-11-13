@@ -1547,12 +1547,13 @@ void fn_800599D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     fn_80222EB4();
 }
 
-void Gfx_FillRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 temp_r0;
-    s32 temp_r3;
-    f32 temp_f1;
-    f32 temp_f2;
+void Gfx_FillRect(s32 x, s32 y, s32 w, s32 h) {
+    s32 x1;
+    s32 y1;
+    f32 left;
+    f32 right;
 
+    // Fill an axis-aligned screen rect with a solid untextured GX quad.
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
@@ -1566,24 +1567,24 @@ void Gfx_FillRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_802245D8(1, 0, 7, 0);
     GXBegin(0x80, 0, 4);
 
-    temp_r0 = arg0 + arg2;
-    temp_r3 = arg1 + arg3;
+    x1 = x + w;
+    y1 = y + h;
 
-    *(f32 *)0xCC008000 = (f32) arg0;
-    *(f32 *)0xCC008000 = (f32) arg1;
+    *(f32 *)0xCC008000 = (f32) x;
+    *(f32 *)0xCC008000 = (f32) y;
     *(f32 *)0xCC008000 = 0.0f;
-    *(f32 *)0xCC008000 = (f32) temp_r0;
-    *(f32 *)0xCC008000 = (f32) arg1;
+    *(f32 *)0xCC008000 = (f32) x1;
+    *(f32 *)0xCC008000 = (f32) y;
 
-    temp_f2 = (f32) temp_r0;
+    right = (f32) x1;
     *(f32 *)0xCC008000 = 0.0f;
-    *(f32 *)0xCC008000 = temp_f2;
-    *(f32 *)0xCC008000 = (f32) temp_r3;
+    *(f32 *)0xCC008000 = right;
+    *(f32 *)0xCC008000 = (f32) y1;
 
-    temp_f1 = (f32) arg0;
+    left = (f32) x;
     *(f32 *)0xCC008000 = 0.0f;
-    *(f32 *)0xCC008000 = temp_f1;
-    *(f32 *)0xCC008000 = (f32) temp_r3;
+    *(f32 *)0xCC008000 = left;
+    *(f32 *)0xCC008000 = (f32) y1;
 
     *(f32 *)0xCC008000 = 0.0f;
 
