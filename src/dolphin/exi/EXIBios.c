@@ -239,7 +239,7 @@ static void CompleteTransfer(s32 chan)
 }
 
 extern f64 __floor_huge;
-extern f64 lbl_8036C140;
+extern f64 __floor_zero;
 
 extern f64 lbl_8036C148;
 
