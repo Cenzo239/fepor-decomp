@@ -14695,37 +14695,38 @@ void fn_801D8C0C(void *arg0, s16 arg1)
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-void FileMenu_InitEntry(void *arg0, s16 arg1, s16 arg2)
+/* Clear a file-menu entry and build its label from gFileMenuMsgKeys[type] via Msg_Expand. */
+void FileMenu_InitEntry(void *entry, s16 slot, s16 type)
 {
     extern u32 gFileMenuMsgKeys[12];
     extern u8 gUiSeCues[];
     void *Msg_Expand(u32);
     void strcpy(void *, u8 *);
     void strcat(void *, void *);
-    u32 stack[12];
+    u32 msgKeys[12];
     s16 idx;
 
-    stack[0] = gFileMenuMsgKeys[0];
-    stack[1] = gFileMenuMsgKeys[1];
-    stack[2] = gFileMenuMsgKeys[2];
-    stack[3] = gFileMenuMsgKeys[3];
-    stack[4] = gFileMenuMsgKeys[4];
-    stack[5] = gFileMenuMsgKeys[5];
-    stack[6] = gFileMenuMsgKeys[6];
-    stack[7] = gFileMenuMsgKeys[7];
-    stack[8] = gFileMenuMsgKeys[8];
-    stack[9] = gFileMenuMsgKeys[9];
-    stack[10] = gFileMenuMsgKeys[10];
-    stack[11] = gFileMenuMsgKeys[11];
-    memset(arg0, 0, 0x34);
-    *(s16 *)((u8 *)arg0 + 2) = 0;
-    *(s16 *)((u8 *)arg0 + 0) = 0;
-    *(s16 *)((u8 *)arg0 + 0xa) = arg1;
-    *(s16 *)((u8 *)arg0 + 8) = arg2;
-    *(s16 *)((u8 *)arg0 + 2) = 0x64;
-    strcpy((u8 *)arg0 + 0x18, gUiSeCues + 0x5bb);
-    idx = *(s16 *)((u8 *)arg0 + 8);
-    strcat((u8 *)arg0 + 0x18, Msg_Expand(stack[idx]));
+    msgKeys[0] = gFileMenuMsgKeys[0];
+    msgKeys[1] = gFileMenuMsgKeys[1];
+    msgKeys[2] = gFileMenuMsgKeys[2];
+    msgKeys[3] = gFileMenuMsgKeys[3];
+    msgKeys[4] = gFileMenuMsgKeys[4];
+    msgKeys[5] = gFileMenuMsgKeys[5];
+    msgKeys[6] = gFileMenuMsgKeys[6];
+    msgKeys[7] = gFileMenuMsgKeys[7];
+    msgKeys[8] = gFileMenuMsgKeys[8];
+    msgKeys[9] = gFileMenuMsgKeys[9];
+    msgKeys[10] = gFileMenuMsgKeys[10];
+    msgKeys[11] = gFileMenuMsgKeys[11];
+    memset(entry, 0, 0x34);
+    *(s16 *)((u8 *)entry + 2) = 0;
+    *(s16 *)((u8 *)entry + 0) = 0;
+    *(s16 *)((u8 *)entry + 0xa) = slot;
+    *(s16 *)((u8 *)entry + 8) = type;
+    *(s16 *)((u8 *)entry + 2) = 0x64;
+    strcpy((u8 *)entry + 0x18, gUiSeCues + 0x5bb);
+    idx = *(s16 *)((u8 *)entry + 8);
+    strcat((u8 *)entry + 0x18, Msg_Expand(msgKeys[idx]));
 }
 #pragma opt_common_subs reset
 void fn_801D8D58(void *arg0) {
