@@ -153,7 +153,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void Process_Unlink(void *);
     void *fn_8000CAF0(void *, s32);
     void *fn_8007C378(void *);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     u8 fn_80010B78(void *, s32, f32);
     extern u8 lbl_80290200[];
     extern u16 lbl_80367A58;
@@ -176,7 +176,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     {
         void *obj = fn_8000CAF0(lbl_80290200, arg3);
         *(void **)((u8 *)obj + 0x44) = arg0;
-        fn_80234450((u8 *)obj + 0x30, fn_8007C378(arg0));
+        strcpy((u8 *)obj + 0x30, fn_8007C378(arg0));
         *(s16 *)((u8 *)obj + 0x48) = arg1;
         *(s16 *)((u8 *)obj + 0x4A) = arg2;
         *(u8 *)((u8 *)obj + 0x51) = fn_80010B78((u8 *)obj + 0x30, -1, lbl_8036A268);
@@ -1058,23 +1058,22 @@ void fn_801229F8(void *arg0) {
 }
 
 void fn_80122A2C(void *arg0, u8 arg1) {
+    u8 z;
     s32 index;
     s32 count;
-    void *row;
-    u8 *dst;
-    u8 z;
+    void **slot;
+    u8 *buf;
 
     z = 0;
     index = (s8)*(u8 *)((u8 *)arg0 + 0x47);
     count = (s8)*(u8 *)((u8 *)arg0 + 0x45);
     index %= count;
     arg0 = (u8 *)arg0 + (index << 2);
-    row = *(void **)((u8 *)arg0 + 0x30);
-    dst = *(u8 **)((u8 *)row + 0x40);
-    *(u8 **)((u8 *)row + 0x40) = dst + 1;
-    *dst = arg1;
-    dst = *(u8 **)((u8 *)row + 0x40);
-    *dst = z;
+    slot = *(void ***)((u8 *)arg0 + 0x30);
+    buf = *(u8 **)((u8 *)slot + 0x40);
+    *(u8 **)((u8 *)slot + 0x40) = buf + 1;
+    *buf = arg1;
+    *(*(u8 **)((u8 *)slot + 0x40)) = z;
 }
 
 void fn_80122A74(s32 unused, s16 *p) {
@@ -2891,12 +2890,12 @@ void fn_801261AC(s32 arg0) {
     s32 fn_8000C0C0(void *);
     M2C_UNK fn_8014C718(void *, s32);
     M2C_UNK fn_8019DB28();
-    M2C_UNK fn_80234450(s32, s32);
+    M2C_UNK strcpy(s32, s32);
     extern u8 lbl_80290480[16];
     extern u8 lbl_80330708[1400];
 
     fn_8019DB28();
-    fn_80234450(arg0 + 0x30, fn_8000C0C0(lbl_80290480) + 0x30);
+    strcpy(arg0 + 0x30, fn_8000C0C0(lbl_80290480) + 0x30);
     fn_8014C718(lbl_80330708, arg0);
 }
 

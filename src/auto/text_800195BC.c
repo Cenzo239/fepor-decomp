@@ -1765,7 +1765,7 @@ void *fn_8001C76C(void *arg0) {
 }
 
 void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     void fn_802343E0(void *, void *);
     u32 fn_8000D354(void *);
     extern void *lbl_80367230;
@@ -1775,7 +1775,7 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
-        fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
+        strcpy(lbl_802CA4FC, *(s32 *)arg1);
         fn_802343E0(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
     if (fn_8000D354(lbl_802CA4FC) == 0) {
@@ -1785,7 +1785,7 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 }
 
 s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     void fn_802343E0(void *, void *);
     u32 fn_8000D354(void *);
     extern void *lbl_80367230;
@@ -1796,7 +1796,7 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
-        fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
+        strcpy(lbl_802CA4FC, *(s32 *)arg1);
         fn_802343E0(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
     ret = fn_8000D354(lbl_802CA4FC);
@@ -1812,7 +1812,7 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
 }
 
 u32 fn_8001C914(void *arg0, void *arg1) {
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     void fn_802343E0(void *, void *);
     void *fn_8000D354(void *);
     extern void *lbl_80367230;
@@ -1822,7 +1822,7 @@ u32 fn_8001C914(void *arg0, void *arg1) {
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
-        fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
+        strcpy(lbl_802CA4FC, *(s32 *)arg1);
         fn_802343E0(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
     obj = fn_8000D354(lbl_802CA4FC);
@@ -1836,7 +1836,7 @@ u32 fn_8001C914(void *arg0, void *arg1) {
 }
 
 u32 fn_8001C9BC(void *arg0) {
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     void fn_802343E0(void *, void *);
     u32 fn_8000D354(void *);
     extern void *lbl_80367230;
@@ -1846,7 +1846,7 @@ u32 fn_8001C9BC(void *arg0) {
 
     if (lbl_80367230 != arg0) {
         lbl_80367230 = arg0;
-        fn_80234450(lbl_802CA4FC, *(s32 *)arg0);
+        strcpy(lbl_802CA4FC, *(s32 *)arg0);
         fn_802343E0(lbl_802CA4FC, lbl_80268820 + 0x3C);
     }
     ret = fn_8000D354(lbl_802CA4FC);

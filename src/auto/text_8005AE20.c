@@ -662,7 +662,7 @@ void fn_8005BFE4(void *arg0) {
 
 s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     void *fn_80234200(void *, s32);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     void fn_80238ADC(void *);
     s32 fn_802342B8(void *, void *);
     char sp18[0x10];
@@ -678,9 +678,9 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     if (temp_r3 == 0) {
         return (s8)*var_r31 == 0;
     }
-    fn_80234450(sp18, (u8 *)temp_r3 + 1);
+    strcpy(sp18, (u8 *)temp_r3 + 1);
     fn_80238ADC(sp18);
-    fn_80234450(sp8, var_r31);
+    strcpy(sp8, var_r31);
     fn_80238ADC(sp8);
     return fn_802342B8(sp18, sp8) == 0;
 }
@@ -2755,14 +2755,16 @@ s32 GActor_FindNode(void *arg0, void *name) {
     goto check;
 body:
     node = *(void **)((u8 *)cur + 0x40);
-    if (node == NULL) {
-        cur = *(void **)((u8 *)cur + 4);
-    check:
-        if (cur != NULL) {
-            goto body;
-        }
-        node = NULL;
+    if (node != NULL) {
+        goto search;
     }
+    cur = *(void **)((u8 *)cur + 4);
+check:
+    if (cur != NULL) {
+        goto body;
+    }
+    node = NULL;
+search:
     entry = *(void **)((u8 *)node + 0xC);
     i = 0;
     goto inner_check;

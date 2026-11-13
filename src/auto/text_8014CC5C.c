@@ -56,7 +56,7 @@ void fn_8017A3E0(void *, s32, u8);
 #pragma opt_strength_reduction reset
 extern u16 lbl_80367B68;
 
-void fn_80234450(s32, u32);
+void strcpy(s32, u32);
 
 #pragma opt_strength_reduction off
 

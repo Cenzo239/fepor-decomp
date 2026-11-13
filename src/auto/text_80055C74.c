@@ -14,7 +14,7 @@ s32 fn_80055C84(s32 *arg0) {
 }
 
 void *fn_8000CAA0(void *, s32, void *);             /* extern */
-s32 fn_80234450(void *, s32);                       /* extern */
+s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
 void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
     void *fn_8000CAA0(void *, s32);
@@ -22,7 +22,7 @@ void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
 
     temp_r3 = fn_8000CAA0(lbl_80285BD0, arg2);
     *(s32 *)((char *)temp_r3 + 0x6C) = arg1;
-    fn_80234450((char *)temp_r3 + 0x30, arg0);
+    strcpy((char *)temp_r3 + 0x30, arg0);
 }
 
 void fn_80055CE4(void *arg0)
@@ -374,9 +374,9 @@ void *fn_80056A60(void *arg0) {
 }
 
 void fn_80056AE0(void *arg0, u32 arg1) {
-    M2C_UNK fn_80234450(s32);
+    M2C_UNK strcpy(s32);
     if (arg1 != 0U) {
-        fn_80234450(M2C_FIELD(arg0, s32 *, 0x14));
+        strcpy(M2C_FIELD(arg0, s32 *, 0x14));
     }
 }
 

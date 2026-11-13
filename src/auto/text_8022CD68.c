@@ -1611,7 +1611,7 @@ char *float2str(char *buffer, void *format, f64 value)
 {
     void fn_8022E660(void *, void *);
     void fn_80233174(void *, s32);
-    void fn_80234450(char *, const char *);
+    void strcpy(char *, const char *);
     extern u8 lbl_8029E8A8[];
     extern f64 lbl_8036BE00;
 
@@ -1670,16 +1670,16 @@ char *float2str(char *buffer, void *format, f64 value)
         if (value < lbl_8036BE00) {
             out = buffer - 5;
             if (lbl_8029E8A8[fmt->conv] & 0x80) {
-                fn_80234450(out, double2hex_strpool + 1);
+                strcpy(out, double2hex_strpool + 1);
             } else {
-                fn_80234450(out, double2hex_strpool + 6);
+                strcpy(out, double2hex_strpool + 6);
             }
         } else {
             out = buffer - 4;
             if (lbl_8029E8A8[fmt->conv] & 0x80) {
-                fn_80234450(out, double2hex_strpool + 0xB);
+                strcpy(out, double2hex_strpool + 0xB);
             } else {
-                fn_80234450(out, double2hex_strpool + 0xF);
+                strcpy(out, double2hex_strpool + 0xF);
             }
         }
         return out;
@@ -1687,16 +1687,16 @@ char *float2str(char *buffer, void *format, f64 value)
         if ((s8)dec.sign != 0) {
             out = buffer - 5;
             if (lbl_8029E8A8[fmt->conv] & 0x80) {
-                fn_80234450(out, double2hex_strpool + 0x13);
+                strcpy(out, double2hex_strpool + 0x13);
             } else {
-                fn_80234450(out, double2hex_strpool + 0x18);
+                strcpy(out, double2hex_strpool + 0x18);
             }
         } else {
             out = buffer - 4;
             if (lbl_8029E8A8[fmt->conv] & 0x80) {
-                fn_80234450(out, double2hex_strpool + 0x1D);
+                strcpy(out, double2hex_strpool + 0x1D);
             } else {
-                fn_80234450(out, double2hex_strpool + 0x21);
+                strcpy(out, double2hex_strpool + 0x21);
             }
         }
         return out;
@@ -1953,7 +1953,7 @@ block_3:
 
 char *double2hex(char *buffer, void *format, f64 value) {
     void fn_8022E660(void *, void *);
-    void fn_80234450(char *, const char *);
+    void strcpy(char *, const char *);
     char *long2str_802338EC(s32, char *, void *);
 
     typedef struct {
@@ -2004,16 +2004,16 @@ char *double2hex(char *buffer, void *format, f64 value) {
         if (*(s16 *)&sp18 & 0x8000) {
             out = buffer - 5;
             if (fmt->conv == 'A') {
-                fn_80234450(out, double2hex_strpool + 1);
+                strcpy(out, double2hex_strpool + 1);
             } else {
-                fn_80234450(out, double2hex_strpool + 6);
+                strcpy(out, double2hex_strpool + 6);
             }
         } else {
             out = buffer - 4;
             if (fmt->conv == 'A') {
-                fn_80234450(out, double2hex_strpool + 0xB);
+                strcpy(out, double2hex_strpool + 0xB);
             } else {
-                fn_80234450(out, double2hex_strpool + 0xF);
+                strcpy(out, double2hex_strpool + 0xF);
             }
         }
         return out;
@@ -2023,16 +2023,16 @@ char *double2hex(char *buffer, void *format, f64 value) {
         if (*(u8 *)&sp8 & 0x80) {
             out = buffer - 5;
             if (fmt->conv == 'A') {
-                fn_80234450(out, double2hex_strpool + 0x13);
+                strcpy(out, double2hex_strpool + 0x13);
             } else {
-                fn_80234450(out, double2hex_strpool + 0x18);
+                strcpy(out, double2hex_strpool + 0x18);
             }
         } else {
             out = buffer - 4;
             if (fmt->conv == 'A') {
-                fn_80234450(out, double2hex_strpool + 0x1D);
+                strcpy(out, double2hex_strpool + 0x1D);
             } else {
-                fn_80234450(out, double2hex_strpool + 0x21);
+                strcpy(out, double2hex_strpool + 0x21);
             }
         }
         return out;
@@ -2626,7 +2626,7 @@ void fn_8023440C(char *dest, const char *src, s32 count)
     }
 }
 
-void fn_80234450(s32 arg0, s32 arg1) {
+void strcpy(s32 arg0, s32 arg1) {
     u32 r3_r4_diff;
     u32 temp_r5;
     u32 var_ctr;

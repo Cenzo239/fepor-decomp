@@ -317,7 +317,7 @@ void fn_80132C14(s32 arg0) {
 #pragma global_optimizer off
 void fn_80132C5C(void *arg0) {
     void fn_8016E9DC(void *);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     void fn_801CE070(void *, void *, void *);
     extern u8 lbl_8032FE80[];
     extern u8 lbl_802762DC[];
@@ -327,7 +327,7 @@ void fn_80132C5C(void *arg0) {
         fn_8016E9DC(arg0);
         break;
     case 1:
-        fn_80234450(lbl_8032FE80, lbl_802762DC + 0x2C);
+        strcpy(lbl_8032FE80, lbl_802762DC + 0x2C);
         fn_801CE070(lbl_8032FE80, lbl_802762DC + 0x2C, arg0);
         break;
     }
@@ -2298,33 +2298,34 @@ void *fn_801363C4(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma global_optimizer off
 void fn_80136430(void *arg0) {
-    s16 r8;
-    s16 r7;
-    s16 r6;
-    s16 r5;
-    s16 r4;
-    s16 r0;
+    s16 t;
+    s16 dx;
+    s16 dy;
+    s16 vE;
+    s16 vA;
+    s16 v10;
+    s16 twelve;
+    s16 vC;
+    s16 five;
 
-    r8 = *(s16*) ((u8*) arg0 + 0xC);
-    r4 = 5;
-    r7 = *(s16*) ((u8*) arg0 + 0x10);
-    r0 = 0xC;
-    r6 = *(s16*) ((u8*) arg0 + 0xA);
-    r5 = *(s16*) ((u8*) arg0 + 0xE);
-
-    r7 = r8 - r7;
-    r7 = (s16) r7;
-    *(s16*) ((u8*) arg0 + 0x12) = r4;
-    r4 = r6 - r5;
-    r4 = (s16) r4;
-    r5 = r7 - 0xC;
-    *(s16*) ((u8*) arg0 + 0x14) = r0;
-    r4 = r4 - 0x5;
-    *(s16*) ((u8*) arg0 + 0x16) = r4;
-    *(s16*) ((u8*) arg0 + 0x18) = r5;
+    vC = *(s16 *)((u8 *)arg0 + 0xC);
+    five = 5;
+    v10 = *(s16 *)((u8 *)arg0 + 0x10);
+    twelve = 0xC;
+    vA = *(s16 *)((u8 *)arg0 + 0xA);
+    vE = *(s16 *)((u8 *)arg0 + 0xE);
+    dy = (s16)(v10 - vC);
+    *(s16 *)((u8 *)arg0 + 0x12) = five;
+    dx = (s16)(vE - vA);
+    t = dy - 0xC;
+    *(s16 *)((u8 *)arg0 + 0x14) = twelve;
+    dx = dx - 5;
+    *(s16 *)((u8 *)arg0 + 0x16) = dx;
+    *(s16 *)((u8 *)arg0 + 0x18) = t;
 }
-
+#pragma global_optimizer reset
 s16 fn_80136474(void *arg0) {
     return (s16) ((s32) ((s16) (M2C_FIELD(arg0, s16 *, 0x18) - M2C_FIELD(arg0, s16 *, 0x14)) - (M2C_FIELD(arg0, s16 *, 0x5E) * 2)) / 32);
 }

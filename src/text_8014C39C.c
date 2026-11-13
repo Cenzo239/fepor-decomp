@@ -53,7 +53,7 @@ void fn_8017A3E0(void *, s32, u8);
 #pragma opt_strength_reduction reset
 extern u16 lbl_80367B68;
 
-void fn_80234450(s32, u32);
+void strcpy(s32, u32);
 
 #pragma opt_strength_reduction off
 
@@ -233,7 +233,7 @@ void fn_8014C798(void) {
 
 void fn_8014C7C0(void *arg0, char *arg1) {
     void *fn_80019F04(u8);
-    void fn_80234450(char *, char *);
+    void strcpy(char *, char *);
     void sprintf(char *, char *, ...);
     void *fn_800408A8(s32);
     void fn_8004084C(void *);
@@ -257,7 +257,7 @@ void fn_8014C7C0(void *arg0, char *arg1) {
         goto copy;
     }
 copy:
-    fn_80234450((char *)((u8 *)arg0 + 0x504), str);
+    strcpy((char *)((u8 *)arg0 + 0x504), str);
 after_copy:
     sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
@@ -284,9 +284,9 @@ void fn_8014CA68(s32 arg0, s32 arg1) {
 }
 
 void fn_8014CA98(s32 arg0, s32 arg1, u32 arg2) {
-    M2C_UNK fn_80234450(s32, u32);
+    M2C_UNK strcpy(s32, u32);
     if (arg2 != 0U) {
-        fn_80234450(arg0 + ((arg1 * 0xC) + 0x20), arg2);
+        strcpy(arg0 + ((arg1 * 0xC) + 0x20), arg2);
     }
 }
 

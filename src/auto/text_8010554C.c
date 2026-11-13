@@ -408,7 +408,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
     u8 *fn_80107D64(void *, u8 *, u8 *, s32, s32, void *);
     void fn_80184750(void *, s32, s32, s32);
     s32 fn_801A1CC8(void);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     extern u8 lbl_802738F8[];
     extern u8 lbl_8028F2E0[];
     extern u16 lbl_802B14E4[];
@@ -596,7 +596,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
             fn_800C1BDC();
         } else {
             tmp = fn_8000CAA0(lbl_8028F2E0, arg1b);
-            fn_80234450((u8 *)tmp + 0x30, self);
+            strcpy((u8 *)tmp + 0x30, self);
             *(u8 *)((u8 *)tmp + 0x60) = (u8)mode;
             *(u8 *)((u8 *)tmp + 0x64) = (u8)nibble;
         }
@@ -5681,26 +5681,29 @@ void fn_8010FD70(void *arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     *(u8*)(temp_r9 + 0x7) = arg4;
 }
 
-void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *src) {
-    char *entry;
-    u16 half;
-    u8 byte;
+#pragma global_optimizer off
+void fn_8010FDB8(void *arg0, s8 arg1, s8 arg2, s8 arg3, void *arg4) {
+    char *temp_r8;
+    u16 temp_r9;
+    u8 temp_r10;
+    s8 zero;
 
-    half = *(u16 *)((char *)src + 0xE);
-    entry = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
-    byte = *(u8 *)((char *)src + 0x18);
-    *(u8 *)(entry + 0) = arg1;
-    *(u8 *)(entry + 1) = arg2;
-    *(u8 *)(entry + 2) = 7;
-    *(u8 *)(entry + 3) = arg3;
-    *(u8 *)(entry + 0xA) = 0;
+    temp_r8 = (char *)arg0 + (*(s32 *)((char *)arg0 + 0x200) << 3);
+    temp_r9 = *(u16 *)((char *)arg4 + 0xE);
+    temp_r10 = *(u8 *)((char *)arg4 + 0x18);
+    zero = 0;
+    *(u8 *)(temp_r8 + 0x0) = arg1;
+    *(u8 *)(temp_r8 + 0x1) = arg2;
+    *(u8 *)(temp_r8 + 0x2) = 7;
+    *(u8 *)(temp_r8 + 0x3) = arg3;
+    *(u8 *)(temp_r8 + 0xA) = zero;
     *(s32 *)((char *)arg0 + 0x200) = *(s32 *)((char *)arg0 + 0x200) + 1;
-    *(u8 *)(entry + 4) = half;
-    *(u8 *)(entry + 5) = byte;
-    *(u8 *)(entry + 6) = 0;
-    *(u8 *)(entry + 7) = 0;
+    *(u8 *)(temp_r8 + 0x4) = temp_r9;
+    *(u8 *)(temp_r8 + 0x5) = temp_r10;
+    *(u8 *)(temp_r8 + 0x6) = zero;
+    *(u8 *)(temp_r8 + 0x7) = zero;
 }
-
+#pragma global_optimizer reset
 void fn_8010FE08(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
     s32 n;
     s32 i;

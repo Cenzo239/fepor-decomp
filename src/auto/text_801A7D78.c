@@ -1617,7 +1617,7 @@ void fn_801ADA50(void *arg0) {
     void fn_801AD704(void *);
     void fn_801AD0B0(void *);
     void *fn_8000E0E4(void *);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     void fn_802343E0(void *, void *);
     void fn_8007CB3C(void *, s32);
     f32 fn_800067BC(s32, f32, f32, f32, f32);
@@ -1683,7 +1683,7 @@ void fn_801ADA50(void *arg0) {
         Prim2D_PrepareTex();
         fn_801AD704(self);
         fn_801AD0B0(self);
-        fn_80234450(sp8, fn_8000E0E4(lbl_8027B838 + 0x336));
+        strcpy(sp8, fn_8000E0E4(lbl_8027B838 + 0x336));
         fn_802343E0(sp8, lbl_8027B838 + 0x346);
         fn_802343E0(sp8, fn_8000E0E4(lbl_8027B838 + 0x349));
         fn_802343E0(sp8, lbl_8027B838 + 0x346);

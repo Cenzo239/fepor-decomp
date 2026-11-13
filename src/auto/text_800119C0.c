@@ -947,7 +947,7 @@ void main(void) {
     void fn_8020A558(void *, void *, s32, void *, s32, s32, s32);
     void fn_8020A9E0(void *);
     void fn_80224658(s32);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     void fn_8023A504(s32, s32, void *);
     extern u8 lbl_802AEE40[];
     extern char lbl_80268000[];
@@ -989,7 +989,7 @@ void main(void) {
     fn_800059FC(0x10, 0x20, 0x240, 0x1A0, 0x10);
     fn_800059B4();
     base[0x1320] = 0;
-    fn_80234450(base + 0x1360, lbl_80268000);
+    strcpy(base + 0x1360, lbl_80268000);
     fn_800056CC(lbl_80268000 + 7,
                 *(s8 *)0x80000000, *(s8 *)0x80000001, *(s8 *)0x80000002,
                 *(s8 *)0x80000003, *(s8 *)0x80000004, *(s8 *)0x80000005);

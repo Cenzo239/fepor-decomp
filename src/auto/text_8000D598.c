@@ -157,7 +157,7 @@ void fn_8000D5C8(void) {
 }
 
 void fn_8000D864(s32 arg0, char *arg1) {
-    void fn_80234450(char *, char *);
+    void strcpy(char *, char *);
     s32 strlen(char *);
     extern u8 lbl_802AED10[];
     u8 *temp_r31;
@@ -166,7 +166,7 @@ void fn_8000D864(s32 arg0, char *arg1) {
     temp_r31 = lbl_802AED10 + (arg0 * 0x44);
     temp_r30 = arg1;
     *(s32 *)temp_r31 = strlen(temp_r30);
-    fn_80234450((char *)(temp_r31 + 4), temp_r30);
+    strcpy((char *)(temp_r31 + 4), temp_r30);
 }
 
 void *fn_8000D8BC(s32 arg0, char *arg1) {
@@ -184,7 +184,7 @@ void *fn_8000D8BC(s32 arg0, char *arg1) {
 u8 *fn_8000D910(u8 *arg0, u8 arg1) {
     u8 *fn_8000D354(u8 *);
     void fn_80231E74(u8 *, s32, void *, u8 *, ...);
-    void fn_80234450(u8 *, void *);
+    void strcpy(u8 *, void *);
     extern u8 lbl_80267DC0[];
     extern u8 lbl_802AEB10[];
     extern u8 lbl_802AED10[];
@@ -266,7 +266,7 @@ count_body:
                         c1 = src[1];
                         src += 3;
                         entry = lbl_802AED10 + (((s8)c1 - 0x30) * 0x44);
-                        fn_80234450(dst, entry + 4);
+                        strcpy(dst, entry + 4);
                         dst += *(s32 *)entry;
                         break;
                     default:
@@ -369,7 +369,7 @@ count_body2:
                         c1 = src[1];
                         src += 3;
                         entry = lbl_802AED10 + (((s8)c1 - 0x30) * 0x44);
-                        fn_80234450(dst, entry + 4);
+                        strcpy(dst, entry + 4);
                         dst += *(s32 *)entry;
                         break;
                     default:
@@ -470,7 +470,7 @@ count_body3:
                     c1 = src[1];
                     src += 3;
                     entry = lbl_802AED10 + (((s8)c1 - 0x30) * 0x44);
-                    fn_80234450(dst, entry + 4);
+                    strcpy(dst, entry + 4);
                     dst += *(s32 *)entry;
                     break;
                 default:
@@ -510,7 +510,7 @@ copy_body3:
 
 u8 *fn_8000E0E4(u8 *arg0) {
     u8 *fn_8000D354();
-    M2C_UNK fn_80234450(u8 *, void *);
+    M2C_UNK strcpy(u8 *, void *);
     extern u8 lbl_802AEB10;
     extern M2C_UNK lbl_802AED10;
     extern u8 *lbl_80366DA8;
@@ -603,7 +603,7 @@ loop_50:
                     temp_r4 = M2C_FIELD(var_r29, u8 *, 1);
                     var_r29 += 3;
                     temp_r28 = &lbl_802AED10 + (((s8) temp_r4 - 0x30) * 0x44);
-                    fn_80234450(var_r30, temp_r28 + 4);
+                    strcpy(var_r30, temp_r28 + 4);
                     var_r30 = &var_r30[*temp_r28];
                     break;
                 default:                            /* switch 2 */

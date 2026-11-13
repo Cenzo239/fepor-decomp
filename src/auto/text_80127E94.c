@@ -792,7 +792,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void fn_8010FE08(void *, s8, s8, s32);
     void fn_8010FEEC(void *, s8, s8, s32, s32);
     void PSMTXIdentity(void *);
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     extern u8 lbl_80275740[];
     extern u8 lbl_80290AE0[];
     extern u8 gUiContext[];
@@ -872,7 +872,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x2C) = f430;
     *(f32 *)((u8 *)*(void **)((u8 *)node + 0x30) + 0x30) = f420;
     PSMTXIdentity((u8 *)*(void **)((u8 *)node + 0x30) + 0x3C);
-    fn_80234450((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C, a3);
+    strcpy((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C, a3);
     fn_8001EEEC((u8 *)*(void **)((u8 *)node + 0x30) + 0x6C);
     fn_80049D30(*(void **)*(void **)((u8 *)node + 0x30));
     sp8 = lbl_8036A408;

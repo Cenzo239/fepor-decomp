@@ -2189,7 +2189,7 @@ stored:
 #pragma global_optimizer off
 s32 fn_800B36D8(s32 arg0) {
     void sprintf(void *, void *, ...);
-    void fn_80234450(void *, void *, void *);
+    void strcpy(void *, void *, void *);
     extern u8 lbl_8026EB70[], lbl_80319AA8[], gSoundSys[];
     u32 buf;
 
@@ -2209,7 +2209,7 @@ s32 fn_800B36D8(s32 arg0) {
     *(u32 *)(gSoundSys + 0x40) = buf;
 
     sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x7E);
-    fn_80234450(gSoundSys + 0x142, lbl_80319AA8, gSoundSys);
+    strcpy(gSoundSys + 0x142, lbl_80319AA8, gSoundSys);
 
     sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x84);
     buf = LoadSoundBankB(lbl_80319AA8);
@@ -2227,7 +2227,7 @@ s32 fn_800B36D8(s32 arg0) {
     *(u32 *)(gSoundSys + 0x48) = buf;
 
     sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xA2);
-    fn_80234450(gSoundSys + 0x342, lbl_80319AA8, gSoundSys);
+    strcpy(gSoundSys + 0x342, lbl_80319AA8, gSoundSys);
 
     sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xAC);
     buf = LoadSoundBankB(lbl_80319AA8);
@@ -2245,7 +2245,7 @@ s32 fn_800B36D8(s32 arg0) {
     *(u32 *)(gSoundSys + 0x44) = buf;
 
     sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xD0);
-    fn_80234450(gSoundSys + 0x242, lbl_80319AA8, gSoundSys);
+    strcpy(gSoundSys + 0x242, lbl_80319AA8, gSoundSys);
     return 1;
 }
 

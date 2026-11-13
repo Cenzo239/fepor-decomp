@@ -1287,7 +1287,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void fn_80215D9C(void *, s32, s32, s32, s32, s32, s32, void *);
     void *fn_80234200(s32, s32);
     s32 fn_802342B8(void *);
-    void fn_80234450(void *, s32, s32);
+    void strcpy(void *, s32, s32);
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
     extern u8 lbl_80332270[];
@@ -1364,7 +1364,7 @@ found:
     {
         s32 id = lbl_803683D0;
         lbl_803683D0 = id + 1;
-        fn_80234450((u8 *)cell + 0x28, path, id);
+        strcpy((u8 *)cell + 0x28, path, id);
     }
     *(s32 *)((u8 *)cell + 0x24) = a4;
     *(s32 *)((u8 *)cell + 0x20) = a3;
@@ -3287,7 +3287,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void fn_8001019C(s32, s32, s32, void *, ...);
     s32 fn_80010B78(void *, s32, f32);
     void fn_8015A2D8(s32, s32, s32, s32, s32, s32);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     extern f32 lbl_8036B7B8;
     extern f32 lbl_8036B7C8;
     extern f32 lbl_8036B7E8;
@@ -3391,7 +3391,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     row = (struct Row *)((u8 *)row + *(s8 *)((u8 *)arg1 + 0x62));
     item = fn_8000B908(row->id);
     fn_8000D864(0, fn_8000E0E4(lbl_8029A734[*(u8 *)((u8 *)item + 0x3A)]));
-    fn_80234450(sp8, fn_8000E0E4(gGActorPathExt + 0x42D));
+    strcpy(sp8, fn_8000E0E4(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();
     f31 = (f32)((s32)(((u32)(t = (s16)(s32)arg1 - fn_80010B78(sp8, -1, lbl_8036B7C8)) >> 31) + t) >> 1);
     fn_8001019C((s32)f31, (s32)(f32)((s16)((Obj *)arg0)->v17() + 0x14), 7, sp8);

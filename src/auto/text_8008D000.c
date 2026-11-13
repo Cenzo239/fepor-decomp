@@ -57,7 +57,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     s32 fn_8001D2C8(void *);
     void fn_8005AC24(void *, s32, s32, s32);
     void sprintf(void *, void *, s32, ...);
-    void fn_80234450(void *, void *);
+    void strcpy(void *, void *);
     extern u16 lbl_8026CD08[];
     extern u8 lbl_802F0308[];
     extern f32 lbl_8036973C;
@@ -81,7 +81,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         temp_r3 = fn_8001CB64(arg0);
         flags = *(u64 *)temp_r3;
         if (flags & (0x200ULL << 32)) {
-            fn_80234450(sp8, (u8 *)lbl_8026CD08 + 0x26);
+            strcpy(sp8, (u8 *)lbl_8026CD08 + 0x26);
         } else {
             sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, (s32)((UnitRef_GetValue(arg0) >> 1) & 0x7FFF));
         }

@@ -10590,7 +10590,7 @@ void fn_8019D068(s32 arg0)
 void fn_8019D0F4(void *arg0)
 {
     extern void *fn_80055204(void *, s32);
-    extern void fn_80234450(void *, void *);
+    extern void strcpy(void *, void *);
     extern void fn_800558D8(void *);
 
     u8 *obj;
@@ -10604,7 +10604,7 @@ void fn_8019D0F4(void *arg0)
             0
         );
 
-        fn_80234450(obj + 0x41, result);
+        strcpy(obj + 0x41, result);
     }
 
     fn_800558D8(obj + 0x41);
@@ -11232,7 +11232,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     void fn_80013864(void);
     void fn_800558D8(s32);
     s32 fn_800C0658(void);
-    void fn_80234450(void *, s32);
+    void strcpy(void *, s32);
     extern u8 lbl_80297040[];
     extern s32 gUiInputFlags;
     void *obj;
@@ -11241,7 +11241,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
         return 0;
     }
     obj = fn_8000CAA0(lbl_80297040, fn_800C0658());
-    fn_80234450((u8 *)obj + 0x30, arg0);
+    strcpy((u8 *)obj + 0x30, arg0);
     *(s32 *)((u8 *)obj + 0x50) = arg1;
     *(s32 *)((u8 *)obj + 0x54) = arg2;
     fn_800558D8(arg0);
@@ -12542,14 +12542,14 @@ s32 fn_801A17CC(s32 arg0) {
 }
 
 s32 fn_801A1884(char *arg0) {
-    void fn_80234450(char *, char *);
+    void strcpy(char *, char *);
     void fn_802343E0(char *, char *);
     void fn_80105F0C(char *, s32, s32);
     extern u16 lbl_80330708[];
     extern u8 lbl_8027AD98[];
     char sp8[0x28];
 
-    fn_80234450(sp8, arg0);
+    strcpy(sp8, arg0);
     switch (((u8 *)lbl_80330708)[0xA6]) {
     case 0:
         fn_802343E0(sp8, (char *)(lbl_8027AD98 + 0x5C6));
