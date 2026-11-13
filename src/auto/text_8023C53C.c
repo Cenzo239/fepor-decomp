@@ -2711,51 +2711,72 @@ void fn_80247F94(void *arg0) {
 }
 
 #pragma global_optimizer on
-s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 arg3, s32 *status) {
- void fn_80255B20(void*); s32 fn_80255E9C(void*,s32);
- void fn_80257614(void*); void fn_80260174(u8,u8,u8); u32 Sound_IsHwVoiceActive(u32);
- s32 offset; u32 keyValue; u32 i; u32 result; s32 previous; u8 *voice; u8 *last; s32 found;
- u64 flags;
- keyValue=key;
- voice=(u8*)gSynthVoices;
- found=0; result=-1; i=0; offset=0;
- for(;i<lbl_8034C110[0x210];offset+=0x458,i++,voice+=0x458) {
-  if(voice[0x11C]==0 && (u32)(*(s32*)(voice+0xF4)+0x10000)!=0xFFFF && voice[0x121]==group && voice[0x122]==channel) {
-   flags=*(u64*)(voice+0x114);
-   if((flags&2ULL)!=0) found=1;
-   if((flags&0x10ULL)!=0 && (flags&0x10000000008ULL)!=8ULL && Sound_IsHwVoiceActive(i)!=0) {
-    if(result==0xFFFFFFFF && (*(u64*)(voice+0x114)&0x20002ULL)==0x20002ULL) {
-     *status=1; return -1;
+s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status) {
+    /* Find active synth voices on group/channel and retune them to key; return new VID or -1. */
+    void fn_80255B20(void *);
+    s32 fn_80255E9C(void *, s32);
+    void fn_80257614(void *);
+    void fn_80260174(u8, u8, u8);
+    u32 Sound_IsHwVoiceActive(u32);
+    s32 offset;
+    u32 keyValue;
+    u32 i;
+    u32 result;
+    s32 previous;
+    u8 *voice;
+    u8 *last;
+    s32 found;
+    u64 flags;
+
+    keyValue = key;
+    voice = (u8 *)gSynthVoices;
+    found = 0;
+    result = -1;
+    i = 0;
+    offset = 0;
+    for (; i < lbl_8034C110[0x210]; offset += 0x458, i++, voice += 0x458) {
+        if (voice[0x11C] == 0 && (u32)(*(s32 *)(voice + 0xF4) + 0x10000) != 0xFFFF && voice[0x121] == group &&
+            voice[0x122] == channel) {
+            flags = *(u64 *)(voice + 0x114);
+            if ((flags & 2ULL) != 0) {
+                found = 1;
+            }
+            if ((flags & 0x10ULL) != 0 && (flags & 0x10000000008ULL) != 8ULL && Sound_IsHwVoiceActive(i) != 0) {
+                if (result == 0xFFFFFFFF && (*(u64 *)(voice + 0x114) & 0x20002ULL) == 0x20002ULL) {
+                    *status = 1;
+                    return -1;
+                }
+                *(s32 *)(voice + 0x13C) = (*(u16 *)(voice + 0x12E) << 16) + (((s8)voice[0x130] << 16) / 100);
+                last = voice;
+                voice[0x132] = *(u16 *)(voice + 0x12E);
+                *(u16 *)(voice + 0x12E) = keyValue + ((u8)*(u16 *)(voice + 0x12E) - voice[0x131]);
+                voice[0x131] = key;
+                voice[0x130] = 0;
+                *(s32 *)(voice + 0x140) = 0;
+                *(u64 *)(voice + 0x114) |= 0x20000ULL;
+                fn_80255B20((u8 *)gSynthVoices + offset);
+                if (result == 0xFFFFFFFF) {
+                    *(s32 *)(voice + 0xEC) = -1;
+                    *(s32 *)(voice + 0xF0) = -1;
+                    result = fn_80255E9C((u8 *)gSynthVoices + offset, isMaster);
+                    previous = *(s32 *)(voice + 0xF4);
+                } else {
+                    ((SynthStateLink *)gSynthVoices)[(u8)previous].next = *(s32 *)(voice + 0xF4);
+                    *(s32 *)(voice + 0xF0) = previous;
+                    previous = *(s32 *)(voice + 0xF4);
+                    fn_80255E9C((u8 *)gSynthVoices + offset, 0);
+                }
+            }
+        }
     }
-    *(s32*)(voice+0x13C)=(*(u16*)(voice+0x12E)<<16)+(((s8)voice[0x130]<<16)/100);
-    last=voice;
-    voice[0x132]=*(u16*)(voice+0x12E);
-    *(u16*)(voice+0x12E)=keyValue+((u8)*(u16*)(voice+0x12E)-voice[0x131]);
-    voice[0x131]=key;
-    voice[0x130]=0;
-    *(s32*)(voice+0x140)=0;
-    *(u64*)(voice+0x114)|=0x20000ULL;
-    fn_80255B20((u8*)gSynthVoices+offset);
-    if(result==0xFFFFFFFF) {
-     *(s32*)(voice+0xEC)=-1;
-     *(s32*)(voice+0xF0)=-1;
-     result=fn_80255E9C((u8*)gSynthVoices+offset,arg3);
-     previous=*(s32*)(voice+0xF4);
+    if (result != 0xFFFFFFFF) {
+        fn_80257614(last);
+        fn_80260174(last[0x121], last[0x122], (u8)*(u16 *)(last + 0x12E));
+        *status = 0;
     } else {
-     ((SynthStateLink*)gSynthVoices)[(u8)previous].next=*(s32*)(voice+0xF4);
-     *(s32*)(voice+0xF0)=previous;
-     previous=*(s32*)(voice+0xF4);
-     fn_80255E9C((u8*)gSynthVoices+offset,0);
+        *status = found;
     }
-   }
-  }
- }
- if(result!=0xFFFFFFFF) {
-  fn_80257614(last);
-  fn_80260174(last[0x121],last[0x122],(u8)*(u16*)(last+0x12E));
-  *status=0;
- } else *status=found;
- return result;
+    return result;
 }
 
 s32 fn_802482AC(u16 id, s16 volume, s32 arg2, s32 arg3, u8 key, u8 velocity, u8 pan, u8 channel, u8 a8, u8 a9, u16 a10, u16 a11, u32 a12, u8 a13, u8 a14, s32 a15) {
