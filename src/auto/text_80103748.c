@@ -430,23 +430,24 @@ char *fn_80103E50(s32 arg0, void *arg1) {
     return lbl_8032BAF8;
 }
 #pragma global_optimizer reset
-s32 Options_AdjustRatioPad(s32 arg0, void *arg1) {
+s32 Options_AdjustRatioPad(s32 unused, void *menu) {
     extern void *gPadInput;
-    u16 temp_r5;
-    void *temp_r6;
+    u16 fill;
+    void *state;
 
-    temp_r6 = M2C_FIELD(arg1, void **, 0x3C);
-    temp_r5 = M2C_FIELD(temp_r6, u16 *, 0x10);
-    if ((temp_r5 != 0) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) < 0xFCU) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
-        M2C_FIELD(temp_r6, u16 *, 0x10) = (u16) (temp_r5 - 1);
-        M2C_FIELD(temp_r6, u16 *, 0x12) = (u16) (M2C_FIELD(temp_r6, u16 *, 0x12) + 1);
-        M2C_FIELD(temp_r6, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(temp_r6, u16 *, 0x10) / M2C_FIELD(temp_r6, f32 *, 8));
-        M2C_FIELD(temp_r6, s8 *, 0x1B) = 1;
-    } else if ((temp_r5 < 0xC0U) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) != 0) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
-        M2C_FIELD(temp_r6, u16 *, 0x10) += 1;
-        M2C_FIELD(temp_r6, u16 *, 0x12) -= 1;
-        M2C_FIELD(temp_r6, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(temp_r6, u16 *, 0x10) / M2C_FIELD(temp_r6, f32 *, 8));
-        M2C_FIELD(temp_r6, s8 *, 0x1B) = 1;
+    /* Left/right pad nudges the option fill count and refreshes fill/scale ratio. */
+    state = M2C_FIELD(menu, void **, 0x3C);
+    fill = M2C_FIELD(state, u16 *, 0x10);
+    if ((fill != 0) && ((u16) M2C_FIELD(state, u16 *, 0x12) < 0xFCU) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
+        M2C_FIELD(state, u16 *, 0x10) = (u16) (fill - 1);
+        M2C_FIELD(state, u16 *, 0x12) = (u16) (M2C_FIELD(state, u16 *, 0x12) + 1);
+        M2C_FIELD(state, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(state, u16 *, 0x10) / M2C_FIELD(state, f32 *, 8));
+        M2C_FIELD(state, s8 *, 0x1B) = 1;
+    } else if ((fill < 0xC0U) && ((u16) M2C_FIELD(state, u16 *, 0x12) != 0) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
+        M2C_FIELD(state, u16 *, 0x10) += 1;
+        M2C_FIELD(state, u16 *, 0x12) -= 1;
+        M2C_FIELD(state, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(state, u16 *, 0x10) / M2C_FIELD(state, f32 *, 8));
+        M2C_FIELD(state, s8 *, 0x1B) = 1;
     }
     return 0;
 }
