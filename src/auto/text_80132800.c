@@ -5034,7 +5034,7 @@ extern "C" void *fn_8013B154(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 lbl_80291A74[];
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
     ListNode *sp10;
@@ -5047,7 +5047,7 @@ extern "C" void *fn_8013B154(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = lbl_80291A74;
         if (arg0 != NULL) {
-            a0->vtbl = lbl_80291B70;
+            a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
                 a0->subAC = lbl_80295478;
                 ((Obj *)&a0->subAC)->v2();
@@ -5168,7 +5168,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiPanelVtbl[];
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
     ListNode *sp10;
@@ -5181,7 +5181,7 @@ extern "C" void *fn_8013B364(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = gUiPanelVtbl;
         if (arg0 != NULL) {
-            a0->vtbl = lbl_80291B70;
+            a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
                 a0->subAC = lbl_80295478;
                 ((Obj *)&a0->subAC)->v2();
@@ -5238,7 +5238,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 lbl_80291B1C[];
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
     ListNode *sp10;
     ListNode *spC;
@@ -5249,7 +5249,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
     if (arg0 != NULL) {
         a0->vtbl = lbl_80291B1C;
         if (arg0 != NULL) {
-            a0->vtbl = lbl_80291B70;
+            a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
                 a0->subAC = lbl_80295478;
                 ((Obj *)&a0->subAC)->v2();
@@ -5307,7 +5307,7 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
 
     ListNode *sp10;
@@ -5318,7 +5318,7 @@ extern "C" void *fn_8013B7E8(void *arg0, s16 arg1) {
 
     a0 = (Owner *)arg0;
     if (arg0 != NULL) {
-        a0->vtbl = lbl_80291B70;
+        a0->vtbl = gUiPanelMidVtbl;
         if (&a0->subAC != NULL) {
             a0->subAC = lbl_80295478;
             ((Obj *)&a0->subAC)->v2();
@@ -12691,7 +12691,7 @@ typedef struct {
     s32 unk3C;
 } Struct8013FC68_Args;
 extern u32 lbl_80291A74;
-extern u32 lbl_80291B70;
+extern u32 gUiPanelMidVtbl;
 extern u32 lbl_80295478;
 extern u8 gSeCueSlots[];
 extern u8 gFxChannels[];

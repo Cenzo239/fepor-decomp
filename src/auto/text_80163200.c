@@ -2544,7 +2544,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
     extern f32 lbl_8036A9AC;
     extern f32 lbl_8036A9B0;
@@ -2609,7 +2609,7 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     *(s32 *)((u8 *)r31 + 0x38) = z;
     *(void **)r31 = lbl_80292208;
     fn_80142060((u8 *)r30 + 0x3C);
-    *(void **)r31 = lbl_80291B70;
+    *(void **)r31 = gUiPanelMidVtbl;
     *(s32 *)((u8 *)r31 + 0x48) = 0;
     *(u8 *)((u8 *)r31 + 0x4C) = 1;
     *(u8 *)((u8 *)r31 + 0x4D) = 0;
@@ -11691,7 +11691,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
-    extern u8 lbl_80291B70[];
+    extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
     extern f32 gF32_1;
     extern f32 lbl_8036AB70;
@@ -11755,7 +11755,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
         fn_80142060((u8 *)tmp + 0x3C);
     }
     (void)keep1;
-    *(void **)self = lbl_80291B70;
+    *(void **)self = gUiPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
     *(u8 *)((u8 *)self + 0x4D) = 0;
