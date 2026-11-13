@@ -5423,7 +5423,7 @@ s32 AudioWave_Insert(u16 id, s32 data) {
     };
     void Audio_Lock(void);
     void Audio_Unlock(void);
-    extern struct Key lbl_803502B8[];
+    extern struct Key gAudioWaveKeys[];
     extern u16 lbl_80368A10;
 
     s32 i;
@@ -5432,14 +5432,14 @@ s32 AudioWave_Insert(u16 id, s32 data) {
 
     Audio_Lock();
     count = lbl_80368A10;
-    for (i = 0; i < (s32)count && lbl_803502B8[i].id < id; i++) {
+    for (i = 0; i < (s32)count && gAudioWaveKeys[i].id < id; i++) {
     }
 
     if (i < (s32)count) {
-        if (id != lbl_803502B8[i].id) {
+        if (id != gAudioWaveKeys[i].id) {
             if (count < 0x800U) {
                 for (j = (s32)count - 1; j >= i; j--) {
-                    lbl_803502B8[j + 1] = lbl_803502B8[j];
+                    gAudioWaveKeys[j + 1] = gAudioWaveKeys[j];
                 }
                 lbl_80368A10++;
                 goto insert;
@@ -5448,7 +5448,7 @@ s32 AudioWave_Insert(u16 id, s32 data) {
             return 0;
         }
         Audio_Unlock();
-        lbl_803502B8[i].ref++;
+        gAudioWaveKeys[i].ref++;
         return 0;
     }
 
@@ -5460,9 +5460,9 @@ s32 AudioWave_Insert(u16 id, s32 data) {
     return 0;
 
 insert:
-    lbl_803502B8[i].id = id;
-    lbl_803502B8[i].data = data;
-    lbl_803502B8[i].ref = 1;
+    gAudioWaveKeys[i].id = id;
+    gAudioWaveKeys[i].data = data;
+    gAudioWaveKeys[i].ref = 1;
     Audio_Unlock();
     return 1;
 }
@@ -5860,12 +5860,12 @@ s32 fn_80250884(u16 id) {
     };
     s32 *fn_802612A0(void *, void *, u16, s32, s32 (*)(void *, void *));
     extern struct Key lbl_803689E4;
-    extern struct Key lbl_803502B8[];
+    extern struct Key gAudioWaveKeys[];
     extern u16 lbl_80368A10;
     extern s32 *lbl_803689E0;
 
     lbl_803689E4.id = id;
-    if ((lbl_803689E0 = fn_802612A0(&lbl_803689E4, lbl_803502B8, lbl_80368A10, 8, fn_80250874)) != NULL) {
+    if ((lbl_803689E0 = fn_802612A0(&lbl_803689E4, gAudioWaveKeys, lbl_80368A10, 8, fn_80250874)) != NULL) {
         return *lbl_803689E0;
     }
     return 0;
