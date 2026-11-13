@@ -6706,7 +6706,7 @@ void fn_8006DA98(void *arg0)
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
     void fn_8020602C(void *, s32, void *, ...);
-    void fn_8022108C(void *, void *, s32, s32);
+    void GXAdjustForOverscan(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetScissor(s32, s32, u16, u16);
@@ -6790,7 +6790,7 @@ void fn_8006DA98(void *arg0)
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(DEMORmode, DEMORmodeObj, 0, 0x10);
+        GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
         DEMORmode = DEMORmodeObj;
     }
     DefaultFifoObj = GXInit(b, c);
@@ -6850,7 +6850,7 @@ void fn_8006DFD8(void) {
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
     void fn_8020602C(void *, s32, void *, ...);
-    void fn_8022108C(void *, void *, s32, s32);
+    void GXAdjustForOverscan(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetScissor(s32, s32, u16, u16);
@@ -6966,7 +6966,7 @@ body:
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(DEMORmode, DEMORmodeObj, 0, 0x10);
+        GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
         DEMORmode = DEMORmodeObj;
     }
     DefaultFifoObj = GXInit(b, c);
@@ -7232,7 +7232,7 @@ void DEMOInit(void *arg0)
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
     void fn_8020602C(void *, s32, void *, ...);
-    void fn_8022108C(void *, void *, s32, s32);
+    void GXAdjustForOverscan(void *, void *, s32, s32);
     void *OSGetArenaLo(void);
     void *OSGetArenaHi(void);
     void OSSetArenaLo(void *);
@@ -7319,7 +7319,7 @@ void DEMOInit(void *arg0)
             fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
             break;
         }
-        fn_8022108C(DEMORmode, DEMORmodeObj, 0, 0x10);
+        GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
         DEMORmode = DEMORmodeObj;
     }
     arenaLo = OSGetArenaLo();
