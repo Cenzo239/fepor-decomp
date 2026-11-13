@@ -3900,7 +3900,7 @@ s32 fn_8000C510(void) {
     return ((s32)lbl_80367148 - (s32)lbl_802AD6D8) / 4;
 }
 
-void fn_8000C52C(s32 arg0) {
+void Process_Free(s32 arg0) {
     extern s32 *lbl_80367148;
     s32 *temp_r4;
 
@@ -3995,7 +3995,7 @@ int Process_Unlink(void *arg0) {
 }
 
 void Process_Destroy(void *arg0) {
-    void fn_8000C52C(void *);
+    void Process_Free(void *);
     extern void **lbl_80367148;
     typedef struct Node {
         void *unk0;
@@ -4031,7 +4031,7 @@ void Process_Destroy(void *arg0) {
                 if (c->cb != NULL) {
                     c->cb(c);
                 }
-                fn_8000C52C(c);
+                Process_Free(c);
                 c->unk0 = NULL;
                 c->unk10 = NULL;
                 c->flags |= 1;
@@ -4052,7 +4052,7 @@ void Process_Destroy(void *arg0) {
                 if (c->cb != NULL) {
                     c->cb(c);
                 }
-                fn_8000C52C(c);
+                Process_Free(c);
                 c->unk0 = NULL;
                 c->unk10 = NULL;
                 c->flags |= 1;
@@ -4090,7 +4090,7 @@ void Process_Destroy(void *arg0) {
                 if (c->cb != NULL) {
                     c->cb(c);
                 }
-                fn_8000C52C(c);
+                Process_Free(c);
                 c->unk0 = NULL;
                 c->unk10 = NULL;
                 c->flags |= 1;
@@ -4111,7 +4111,7 @@ void Process_Destroy(void *arg0) {
                 if (c->cb != NULL) {
                     c->cb(c);
                 }
-                fn_8000C52C(c);
+                Process_Free(c);
                 c->unk0 = NULL;
                 c->unk10 = NULL;
                 c->flags |= 1;
