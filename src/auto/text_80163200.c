@@ -5862,7 +5862,7 @@ void fn_8016EC70(void) {
 }
 
 void fn_8016EC74(void *arg0) {
-    M2C_UNK fn_80184C7C(void *, s32, s32, s32);
+    M2C_UNK Mu_StartBlend(void *, s32, s32, s32);
     M2C_UNK Ui_SetPortraitUnit(void *, void *);
     void *temp_r31;
     void *temp_r3;
@@ -5871,7 +5871,7 @@ void fn_8016EC74(void *arg0) {
     temp_r31 = M2C_FIELD(arg0, void **, 0x18);
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(temp_r31, void **, 0x44);
     if (temp_r3 != NULL) {
@@ -5915,7 +5915,7 @@ void fn_8016ED6C(s32 arg0) {
 }
 
 void fn_8016EE14(void *arg0) {
-    M2C_UNK fn_80184C7C(void *, s32, s32, s32);
+    M2C_UNK Mu_StartBlend(void *, s32, s32, s32);
     M2C_UNK Ui_SetPortraitUnit(void *, void *);
     void *temp_r31;
     void *temp_r3;
@@ -5924,7 +5924,7 @@ void fn_8016EE14(void *arg0) {
     temp_r31 = M2C_FIELD(arg0, void **, 0x18);
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(temp_r31, void **, 0x44);
     if (temp_r3 != NULL) {
@@ -6102,7 +6102,7 @@ void fn_8016F220(void *arg0)
 
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
 
     temp_r3 = M2C_FIELD(arg0, void **, 0x44);
@@ -6242,7 +6242,7 @@ void fn_8016F694(void *arg0) {
     void UnitInv_Refresh(void *);
     s16 UnitInv_FindFilledUp(void *, s16);
     s16 UnitInv_FindFilledDown(void *, s16);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void *temp_r29;
     s16 temp_r30;
     s16 var_r3;
@@ -6265,7 +6265,7 @@ void fn_8016F694(void *arg0) {
         fn_800951D0(M2C_FIELD(gUiContext, void **, 0), -1);
     }
     if (M2C_FIELD(gUiContext, void **, 0) != NULL) {
-        fn_80184C7C(M2C_FIELD(gUiContext, void **, 0), 0, 4, 0);
+        Mu_StartBlend(M2C_FIELD(gUiContext, void **, 0), 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(arg0, void **, 0x44);
     if (temp_r3 != NULL) {
@@ -6340,7 +6340,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void Ui_SetWidgetText(void *, void *);
     s8 Unit_GetActiveItemSlot(u32);
     void fn_800951D0(u32, s32);
-    void fn_80184C7C(u32, s32, s32, s32);
+    void Mu_StartBlend(u32, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     extern u32 gUiContext[];
     void fn_801475FC(void *, s32);
@@ -6441,7 +6441,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
             if (Unit_GetActiveItemSlot(gUiContext[0]) < 0)
                 fn_800951D0(gUiContext[0], -1);
             if (gUiContext[0])
-                fn_80184C7C(gUiContext[0], 0, 4, 0);
+                Mu_StartBlend(gUiContext[0], 0, 4, 0);
             obj = *(void **)((u8 *)self + 0x44);
             if (obj && *(void **)((u8 *)obj + 0x3C))
                 Ui_SetPortraitUnit(obj, *(void **)((u8 *)obj + 0x3C));
@@ -6511,7 +6511,7 @@ void fn_8016FE60(void *arg0) {
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
@@ -6534,7 +6534,7 @@ void fn_8016FE60(void *arg0) {
     }
     p = M2C_FIELD(gUiContext, void **, 0);
     if (p != NULL) {
-        fn_80184C7C(p, 0, 4, 0);
+        Mu_StartBlend(p, 0, 4, 0);
     }
     p = M2C_FIELD(arg0, void **, 0x44);
     if (p != NULL) {
@@ -6650,7 +6650,7 @@ extern "C" void Ui_RestoreUnitListAfterItem(void *panel) {
 extern "C" void fn_80170160(void *arg0) {
     s8 Unit_GetActiveItemSlot(void *);
     void fn_800951D0(void *, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     s16 UnitInv_FindFilledUp(void *, s32);
     extern u32 gUiContext[];
@@ -6664,7 +6664,7 @@ extern "C" void fn_80170160(void *arg0) {
     }
     temp_r3 = (void *)gUiContext[0];
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = *(void **)((u8 *)temp_r31 + 0x44);
     if (temp_r3 != NULL) {
@@ -6813,7 +6813,7 @@ void fn_80170794(void *arg0) {
 void fn_801707D4(void *arg0) {
     s8 Unit_GetActiveItemSlot(void *);
     void fn_800951D0(void *, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     s16 UnitInv_FindFilledUp(void *, s32);
     extern u32 gUiContext[];
@@ -6827,7 +6827,7 @@ void fn_801707D4(void *arg0) {
     }
     temp = (void *)gUiContext[0];
     if (temp != NULL) {
-        fn_80184C7C(temp, 0, 4, 0);
+        Mu_StartBlend(temp, 0, 4, 0);
     }
     temp = *(void **)((u8 *)self + 0x44);
     if (temp != NULL) {
@@ -7754,7 +7754,7 @@ void Ui_RestoreUnitListPanel(void *panel) {
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     s16 UnitInv_FindFilledUp(void *, s32);
     extern u16 gUiMsgStrings[];
@@ -7784,7 +7784,7 @@ void Ui_RestoreUnitListPanel(void *panel) {
     Ui_BringChildToFront(panel, saved);
     unit = M2C_FIELD(gUiContext, void **, 0);
     if (unit != NULL) {
-        fn_80184C7C(unit, 0, 4, 0);
+        Mu_StartBlend(unit, 0, 4, 0);
     }
     portrait = M2C_FIELD(panel, void **, 0x44);
     if (portrait != NULL) {
@@ -7853,7 +7853,7 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     s16 UnitInv_FindFilledUp(void *, s32);
     extern u16 gUiMsgStrings[];
@@ -7883,7 +7883,7 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
     Ui_BringChildToFront(panel, saved);
     unit = M2C_FIELD(gUiContext, void **, 0);
     if (unit != NULL) {
-        fn_80184C7C(unit, 0, 4, 0);
+        Mu_StartBlend(unit, 0, 4, 0);
     }
     portrait = M2C_FIELD(panel, void **, 0x44);
     if (portrait != NULL) {
@@ -8080,7 +8080,7 @@ u8 fn_80173220(u32 *arg0, void *arg1) {
 }
 
 void fn_80173440(void *arg0) {
-    M2C_UNK fn_80184C7C(void *, s32, s32, s32);
+    M2C_UNK Mu_StartBlend(void *, s32, s32, s32);
     M2C_UNK Ui_SetPortraitUnit(void *, void *);
     void Process_Goto(void *, s32);
     void *temp_r31;
@@ -8090,11 +8090,11 @@ void fn_80173440(void *arg0) {
     temp_r31 = arg0;
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(gUiContext, void **, 4);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(temp_r31, void **, 0x44);
     if (temp_r3 != NULL) {
@@ -8411,7 +8411,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     void Ui_ShowUnitInfoPopup(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoPopup(void *, void *, s32, f32, f32);
-    void fn_80184C7C(u32, s32, s32, s32);
+    void Mu_StartBlend(u32, s32, s32, s32);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
@@ -8508,7 +8508,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                     fn_800951D0(gUiContext[0], -1);
                 }
                 if (gUiContext[0]) {
-                    fn_80184C7C(gUiContext[0], 0, 4, 0);
+                    Mu_StartBlend(gUiContext[0], 0, 4, 0);
                 }
                 obj = *(void **)((u8 *)self + 0x44);
                 if (obj && *(void **)((u8 *)obj + 0x3C)) {
@@ -8527,7 +8527,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 fn_800951D0(gUiContext[0], -1);
             }
             if (gUiContext[0]) {
-                fn_80184C7C(gUiContext[0], 0, 4, 0);
+                Mu_StartBlend(gUiContext[0], 0, 4, 0);
             }
             obj = *(void **)((u8 *)self + 0x44);
             if (obj && *(void **)((u8 *)obj + 0x3C)) {
@@ -8542,7 +8542,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 fn_800951D0(gUiContext[0], -1);
             }
             if (gUiContext[0]) {
-                fn_80184C7C(gUiContext[0], 0, 4, 0);
+                Mu_StartBlend(gUiContext[0], 0, 4, 0);
             }
             obj = *(void **)((u8 *)self + 0x44);
             if (obj && *(void **)((u8 *)obj + 0x3C)) {
@@ -8915,7 +8915,7 @@ extern "C" void Ui_ReleaseUnitTradeWidgets(void *panel) {
 }
 
 extern "C" void fn_80174C5C(void *arg0) {
-    M2C_UNK fn_80184C7C(void *, s32, s32, s32);
+    M2C_UNK Mu_StartBlend(void *, s32, s32, s32);
     M2C_UNK Ui_SetPortraitUnit(void *, void *);
     void Process_Goto(void *, s32);
     void *temp_r31;
@@ -8925,11 +8925,11 @@ extern "C" void fn_80174C5C(void *arg0) {
     temp_r31 = arg0;
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(gUiContext, void **, 4);
     if (temp_r3 != NULL) {
-        fn_80184C7C(temp_r3, 0, 4, 0);
+        Mu_StartBlend(temp_r3, 0, 4, 0);
     }
     temp_r3 = M2C_FIELD(temp_r31, void **, 0x44);
     if (temp_r3 != NULL) {

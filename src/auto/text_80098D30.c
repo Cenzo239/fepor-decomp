@@ -77,7 +77,7 @@ void fn_80098DA4(void) {
     void fn_800980D4(s32);
     s32 Event_GetSlotUnit(s32);
     u8 fn_80098568(void);
-    void fn_80184C7C(s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
     s32 i;
     s32 temp;
 
@@ -87,7 +87,7 @@ void fn_80098DA4(void) {
         if (temp != 0) {
             fn_800980D4(i);
             if (fn_80098568() == 0) {
-                fn_80184C7C(temp, 0, 0x18, 0);
+                Mu_StartBlend(temp, 0, 0x18, 0);
             }
         }
     }
@@ -135,7 +135,7 @@ void fn_80099094(void *arg0)
   void fn_8017F70C(void *, void *);
   void fn_8017E0C0(void *, s32, void *);
   void fn_8017F040(void *, s32, void *);
-  void fn_80184C7C(void *, s32, s32, s32);
+  void Mu_StartBlend(void *, s32, s32, s32);
   void fn_80184BE8(void *, s32, s32, s32);
   void fn_8018CFA4(s32, s32, s32, s32, void *);
   void Effect_SetPos(void *, f32, f32, f32);
@@ -189,7 +189,7 @@ void fn_80099094(void *arg0)
     var_r0 = get_280((void **) (*((void **) (((u8 *) self) + 0x38))));
     if (var_r0 != NULL)
     {
-      fn_80184C7C(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 9, 2, 0);
+      Mu_StartBlend(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 9, 2, 0);
       fn_80184BE8(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 8, 8, 0);
       fn_80184688(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 1, 2, self);
     }
@@ -215,7 +215,7 @@ void fn_800536CC(void *,void *); void fn_800536D8(void *,void *); void fn_800530
 void fn_80184688(void *,s32,s32,void *); void fn_800983E0(void *,void *);
 void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
 void fn_8017F70C(void *,void *); void fn_8017E0C0(void *,s32,void *); void fn_8017F040(void *,s32,void *);
-void fn_80184C7C(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
+void Mu_StartBlend(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
 u8 fn_8004BF80(void *); void Process_ClearFunc(void *);
 extern u8 gEventUiSeCues[]; extern void *gPadInput;
@@ -305,7 +305,7 @@ case 0x52:
 if(Pad_IsButton(input,1)) {
 Event_AdvanceCmd(M2C_FIELD(self,s16 *,0x46));
 if(M2C_FIELD(self,u8 *,0x34)!=1) {
-fn_80184C7C(get_280(M2C_FIELD(self,void ***,0x3c)),7,2,0);
+Mu_StartBlend(get_280(M2C_FIELD(self,void ***,0x3c)),7,2,0);
 fn_80184BE8(get_280(M2C_FIELD(self,void ***,0x3c)),8,8,0);
 }
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F474(M2C_FIELD(self,void **,0x3c),self);
@@ -329,7 +329,7 @@ M2C_FIELD(self,u8 *,0x43)=0;
 }
 }
 }
-if(fn_8004BF80(unit)) {fn_80184C7C(unit,8,4,0); Process_ClearFunc(self);}
+if(fn_8004BF80(unit)) {Mu_StartBlend(unit,8,4,0); Process_ClearFunc(self);}
 }
 
 void fn_8009991C(void *arg0) {
@@ -337,7 +337,7 @@ void fn_8009991C(void *arg0) {
     void *fn_800984FC(void **);
     s32 fn_8001B9F4(void);
     void fn_80184578(s32, s32 *, void *);
-    void fn_80184C7C(s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
 
     s32 unit;
     s32 sp8;
@@ -347,7 +347,7 @@ void fn_8009991C(void *arg0) {
         sp8 = fn_8001B9F4();
         fn_80184578(unit, &sp8, arg0);
     }
-    fn_80184C7C(unit, *(s16 *)((u8 *)arg0 + 0x44), 8, 0);
+    Mu_StartBlend(unit, *(s16 *)((u8 *)arg0 + 0x44), 8, 0);
 }
 
 void fn_80099994(void *arg0) {
@@ -600,7 +600,7 @@ void fn_80099F20(void *arg0) {
 void fn_80099FAC(s32 arg0) {
     u32 Event_GetSlotUnit(s32);
     void Unit_FaceToward(u32, u32, s32, s32);
-    void fn_80184C7C(u32, s32, s32, s32);
+    void Mu_StartBlend(u32, s32, s32, s32);
     s32 temp_r28;
     u32 temp_r31;
     u32 temp_r30;
@@ -610,14 +610,14 @@ void fn_80099FAC(s32 arg0) {
     temp_r31 = Event_GetSlotUnit(0);
     temp_r30 = Event_GetSlotUnit(1);
     temp_r29 = Event_GetSlotUnit(2);
-    fn_80184C7C(temp_r31, 8, 0x10, temp_r28);
+    Mu_StartBlend(temp_r31, 8, 0x10, temp_r28);
     if (temp_r30 != 0U) {
         Unit_FaceToward(temp_r31, temp_r30, 0x18, temp_r28);
         Unit_FaceToward(temp_r30, temp_r31, 0x18, temp_r28);
-        fn_80184C7C(temp_r30, 8, 0x10, temp_r28);
+        Mu_StartBlend(temp_r30, 8, 0x10, temp_r28);
         if (temp_r29 != 0U) {
             Unit_FaceToward(temp_r29, temp_r30, 0x18, temp_r28);
-            fn_80184C7C(temp_r29, 8, 0x10, temp_r28);
+            Mu_StartBlend(temp_r29, 8, 0x10, temp_r28);
         }
     }
 }
@@ -631,7 +631,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void SeCue_PlayAtPos(void *, void *, s32);
     void fn_80048E08(void *, void *, void *, s32);
     void **fn_800984FC(void **);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
     void fn_80184688(void *, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
@@ -737,7 +737,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
             } else {
                 temp_r3_3 = NULL;
             }
-            fn_80184C7C(temp_r3_3, 9, 2, 0);
+            Mu_StartBlend(temp_r3_3, 9, 2, 0);
             fn_80184BE8(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
             fn_80184688(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
         }

@@ -132,15 +132,15 @@ void fn_8007285C(void) {
 }
 
 void fn_80072890(void) {
-    void fn_80184C7C(s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
     extern u8 gUiContext[24];
-    fn_80184C7C(*(s32 *)(gUiContext + 4), 0, 4, 0);
+    Mu_StartBlend(*(s32 *)(gUiContext + 4), 0, 4, 0);
 }
 
 void fn_800728C8(void) {
-    void fn_80184C7C(s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
     extern u8 gUiContext[24];
-    fn_80184C7C(*(s32 *)gUiContext, 0, 4, 0);
+    Mu_StartBlend(*(s32 *)gUiContext, 0, 4, 0);
 }
 
 void fn_80072900(s32 arg0) {

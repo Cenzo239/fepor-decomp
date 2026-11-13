@@ -176,7 +176,7 @@ s32 Event_HandleItemCmd(void *arg0)
     void fn_8017F040(void *, s32, void *);
     void fn_8017DF54(void *, void *, void *);
     void fn_8009A0A4(void *, s16);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
     void fn_8017F474(void *, void *);
     void fn_800535B0(void *);
@@ -305,7 +305,7 @@ s32 Event_HandleItemCmd(void *arg0)
                 } else {
                     p280 = NULL;
                 }
-                fn_80184C7C(p280, 7, 2, 0);
+                Mu_StartBlend(p280, 7, 2, 0);
                 tmp = M2C_FIELD(M2C_FIELD(self, void **, 0x3C), void **, 0);
                 if (tmp != NULL) {
                     p280 = M2C_FIELD(tmp, void **, 0x280);

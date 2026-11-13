@@ -1722,7 +1722,7 @@ after:
 void fn_80015C18(void)
 {
     void Allegiance_FillMask(s32, u8 *);
-    void fn_80184C7C(u8 *, s32, s32, s32);
+    void Mu_StartBlend(u8 *, s32, s32, s32);
     extern u8 gUnits[];
     u8 sp8[8];
     s32 i;
@@ -1739,7 +1739,7 @@ void fn_80015C18(void)
         if (*(u32 *)(unit + 0x188) != 0) {
             if (sp8[(*(u8 **)(unit + 0x190))[8]] != 0) {
                 if (unit[2] != 0) {
-                    fn_80184C7C(unit, 0, 8, 0);
+                    Mu_StartBlend(unit, 0, 8, 0);
                 }
             }
         }

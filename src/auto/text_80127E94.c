@@ -1062,7 +1062,7 @@ void fn_8012A530(void *arg0) {
     void fn_8014CBD8(void *, f32, f32);
     void fn_80184688(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void PSMTXConcat(void *, void *, void *);
     void fn_802024D0(void *, void *, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -1198,7 +1198,7 @@ void fn_8012A530(void *arg0) {
                 unit = 0;
             }
             if (unit != 0) {
-                fn_80184C7C(unit, 9, 8, 0);
+                Mu_StartBlend(unit, 9, 8, 0);
                 fn_80184BE8(unit, 0, 8, 0);
                 fn_80184688(unit, 1, 2, 0);
             }

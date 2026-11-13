@@ -6601,7 +6601,7 @@ extern "C" void fn_80194178(void *arg0) {
     void fn_80143C9C(void *);
     void fn_8014D268(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     extern u8 lbl_802966B0[];
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -6651,7 +6651,7 @@ extern "C" void fn_80194178(void *arg0) {
         if (temp_r30 != NULL) {
             fn_800947E0(temp_r30);
             fn_80143784(temp_r29, temp_r30);
-            fn_80184C7C(temp_r30, 0, 2, 0);
+            Mu_StartBlend(temp_r30, 0, 2, 0);
         } else {
             fn_801436AC(temp_r29, temp_r31);
         }
@@ -9293,7 +9293,7 @@ void Event_RunItemCmd(void *cmd) {
     void fn_8017F70C(void *, void *);
     void fn_80184688(s32, s32, s32, void *);
     void fn_80184BE8(s32, s32, s32, s32);
-    void fn_80184C7C(s32, s32, s32, s32);
+    void Mu_StartBlend(s32, s32, s32, s32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     extern u8 MapSelect_str[];
     extern void *gPadInput;
@@ -9328,7 +9328,7 @@ void Event_RunItemCmd(void *cmd) {
         } else {
             actor = 0;
         }
-        fn_80184C7C(actor, 7, 2, 0);
+        Mu_StartBlend(actor, 7, 2, 0);
         p = *(void **)unit;
         if (p != NULL) {
             actor = *(s32 *)((u8 *)p + 0x280);
@@ -9365,7 +9365,7 @@ void Event_RunItemCmd(void *cmd) {
         } else {
             actor = 0;
         }
-        fn_80184C7C(actor, 9, 2, 0);
+        Mu_StartBlend(actor, 9, 2, 0);
         p = *(void **)unit;
         if (p != NULL) {
             actor = *(s32 *)((u8 *)p + 0x280);
@@ -9766,7 +9766,7 @@ void fn_8019B904(void *arg0) {
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
     void fn_80053658(void *, s32, void *);
-    void fn_80184C7C(void *, s32, s32, s32);
+    void Mu_StartBlend(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
     extern void MapSelect_Update(void);
     void *temp;
@@ -9790,7 +9790,7 @@ void fn_8019B904(void *arg0) {
         switch (mode) {
         case 0:
         case 1:
-            fn_80184C7C(unit, 9, 0x10, 0);
+            Mu_StartBlend(unit, 9, 0x10, 0);
             fn_80184BE8(unit, 8, 0x10, 0);
             break;
         }
@@ -10698,7 +10698,7 @@ void fn_8019D150(void *arg0) {
     } else {
         var_r3_2 = 0;
     }
-    fn_80184C7C(var_r3_2, 0, 0x18, 0);
+    Mu_StartBlend(var_r3_2, 0, 0x18, 0);
 }
 
 void fn_8019D1DC(void *arg0) {
@@ -10815,8 +10815,8 @@ void fn_8019D388(void *arg0) {
 void fn_8019D458(void *arg0) {
     M2C_UNK fn_80184618(s32, void *);
     M2C_UNK fn_80184BE8(s32, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80184C7C(s32, M2C_UNK, M2C_UNK, M2C_UNK);
-    fn_80184C7C(M2C_FIELD(arg0, s32 *, 0x30), 5, 0x10, 0);
+    M2C_UNK Mu_StartBlend(s32, M2C_UNK, M2C_UNK, M2C_UNK);
+    Mu_StartBlend(M2C_FIELD(arg0, s32 *, 0x30), 5, 0x10, 0);
     fn_80184BE8(M2C_FIELD(arg0, s32 *, 0x30), 0, 0x10, 0);
     fn_80184618(M2C_FIELD(arg0, s32 *, 0x30), arg0);
 }
@@ -12304,7 +12304,7 @@ void fn_801A0CA8(void *arg0) {
     temp_r31 = M2C_FIELD(arg0, s32 *, 0x54);
     fn_8004FC70(temp_r31, M2C_FIELD(arg0, s32 *, 0x60));
     if (fn_8004FA88(temp_r31, M2C_FIELD(arg0, s32 *, 0x60)) != 0) {
-        fn_80184C7C(temp_r31, M2C_FIELD(arg0, s32 *, 0x60), M2C_FIELD(arg0, s32 *, 0x64), arg0);
+        Mu_StartBlend(temp_r31, M2C_FIELD(arg0, s32 *, 0x60), M2C_FIELD(arg0, s32 *, 0x64), arg0);
         M2C_FIELD(arg0, s32 *, 0x60) = -1;
         Process_ClearFunc(arg0);
     }
