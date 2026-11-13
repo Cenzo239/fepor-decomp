@@ -372,7 +372,7 @@ void fn_801FCCA0(void *self) {
 void fn_801FD3B4(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_80007790(f32, f32, f32, f32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -492,7 +492,7 @@ void fn_801FD3B4(void *arg0) {
                     rad = (s16)*((u8 *)p + 9);
                 }
                 sz = (f32)rad * lbl_8036BB08 + gFloatTwo;
-                fn_80007790(*(f32 *)p - sz, *(f32 *)((u8 *)p + 4) - sz, *(f32 *)p + sz, *(f32 *)((u8 *)p + 4) + sz);
+                Prim2D_SetPosCorners(*(f32 *)p - sz, *(f32 *)((u8 *)p + 4) - sz, *(f32 *)p + sz, *(f32 *)((u8 *)p + 4) + sz);
                 Prim2D_SetUvRect(gFloatZero, gFloatZero, gFloatOne, gFloatOne);
                 a = *(s16 *)((u8 *)p + 0xE) - 0x3C;
                 if (a > 0xFF) a = 0xFF;

@@ -2808,7 +2808,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetUvCorners(f32, f32, f32, f32);
-    void fn_80007790(f32, f32, f32, f32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009EB0(s32, u8, u8, s32);
@@ -2878,7 +2878,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     p[2] = ((u8 *)arg0)[0x32];
     p[3] = (u8)((alpha * ((u8 *)arg0)[0x33]) >> 8);
     Prim2D_AddPrim(3);
-    fn_80007790(
+    Prim2D_SetPosCorners(
         (f32)*(s16 *)((u8 *)arg0 + 0x14),
         (f32)*(s16 *)((u8 *)arg0 + 0x16),
         (f32)*(s16 *)((u8 *)arg0 + 0x18),
@@ -2902,7 +2902,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
 extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetUvCorners(f32, f32, f32, f32);
-    void fn_80007790(f32, f32, f32, f32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009EB0(s32, u8, u8, s32);
@@ -2954,7 +2954,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
         var_r31 = *(u8 *)((u8 *)arg0 + 0x13);
     }
     Prim2D_AddPrim(1);
-    fn_80007790(
+    Prim2D_SetPosCorners(
         (f32)*(s16 *)((u8 *)arg0 + 0x14),
         (f32)*(s16 *)((u8 *)arg0 + 0x16),
         (f32)*(s16 *)((u8 *)arg0 + 0x18),

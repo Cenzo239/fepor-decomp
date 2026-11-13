@@ -157,7 +157,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
 
 void fn_8009CF28(void) {
     void Prim2D_SetText(u8 *);
-    void fn_80007790(f32, f32, f32, f32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -191,28 +191,28 @@ void fn_8009CF28(void) {
     Prim2D_SetTex(0, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369930, lbl_80369934, lbl_80369938, lbl_80369934);
+    Prim2D_SetPosCorners(lbl_80369930, lbl_80369934, lbl_80369938, lbl_80369934);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369938, lbl_80369934, lbl_80369938, lbl_8036993C);
+    Prim2D_SetPosCorners(lbl_80369938, lbl_80369934, lbl_80369938, lbl_8036993C);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369938, lbl_8036993C, lbl_80369930, lbl_8036993C);
+    Prim2D_SetPosCorners(lbl_80369938, lbl_8036993C, lbl_80369930, lbl_8036993C);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369930, lbl_80369934, lbl_80369930, lbl_8036993C);
+    Prim2D_SetPosCorners(lbl_80369930, lbl_80369934, lbl_80369930, lbl_8036993C);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369940, lbl_80369944, lbl_80369948, lbl_80369944);
+    Prim2D_SetPosCorners(lbl_80369940, lbl_80369944, lbl_80369948, lbl_80369944);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_8036992C, lbl_8036994C, lbl_8036992C, lbl_80369950);
+    Prim2D_SetPosCorners(lbl_8036992C, lbl_8036994C, lbl_8036992C, lbl_80369950);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_80369954, lbl_80369944, lbl_80369958, lbl_80369944);
+    Prim2D_SetPosCorners(lbl_80369954, lbl_80369944, lbl_80369958, lbl_80369944);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_8036995C, lbl_80369960, lbl_8036995C, lbl_80369964);
+    Prim2D_SetPosCorners(lbl_8036995C, lbl_80369960, lbl_8036995C, lbl_80369964);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTex(0, 3);
@@ -237,7 +237,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void fn_800072B0(u32 *, u32 *, u32 *, u32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_80007790(f32, f32, f32, f32);
+    void Prim2D_SetPosCorners(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
@@ -275,10 +275,10 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetTex(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_803698FC, lbl_8036996C, lbl_803699D0, lbl_8036996C);
+    Prim2D_SetPosCorners(lbl_803698FC, lbl_8036996C, lbl_803699D0, lbl_8036996C);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    fn_80007790(lbl_803698FC, lbl_803698FC, lbl_803698FC, lbl_803699D4);
+    Prim2D_SetPosCorners(lbl_803698FC, lbl_803698FC, lbl_803698FC, lbl_803699D4);
     Prim2D_EndPrim();
 
     tbl = lbl_80312100;
