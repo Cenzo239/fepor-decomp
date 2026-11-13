@@ -334,7 +334,7 @@ void Status_Set(s32 *arg0, u8 arg1) {
     *p &= ~(1 << n);
 }
 
-void fn_80105D4C(s32 *arg0, u8 arg1) {
+void Status_Clear(s32 *arg0, u8 arg1) {
     u32 *p = (u32 *)arg0;
     s32 n = arg1;
 

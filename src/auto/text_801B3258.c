@@ -18629,19 +18629,19 @@ s32 fn_801E3570(s32 arg0, void *arg1) {
 }
 
 void fn_801E35BC(s32 arg0, s32 arg1) {
-    M2C_UNK fn_80105D4C(s32, u8);
+    M2C_UNK Status_Clear(s32, u8);
     if (arg1 < 0x80) {
-        fn_80105D4C(arg0 + 0x30, (u8) arg1);
+        Status_Clear(arg0 + 0x30, (u8) arg1);
     }
 }
 
 void fn_801E35EC(s32 arg0, void *arg1) {
-    s32 fn_80105D4C(s32, u8);
+    s32 Status_Clear(s32, u8);
     u16 temp_r0 = *(u16 *)((u8 *)arg1 + 0x18);
     if (temp_r0 < 0x80U) {
         s32 a = arg0 + 0x30;
         u8 b = (u8)temp_r0;
-        fn_80105D4C(a, b);
+        Status_Clear(a, b);
     }
 }
 

@@ -2177,7 +2177,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
     void fn_80034068(s32, s32, s32);
     u8 Status_Test(s32, s32);
     void Status_Set(s32, s32);
-    void fn_80105D4C(s32, s32);
+    void Status_Clear(s32, s32);
     u8 fn_801A3F14(s32);
     void *fn_801A7FF4(s32);
     void fn_801A85F4(s32);
@@ -2234,8 +2234,8 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
         fn_801A8688(self + 0x2E0);
         fn_801A949C(self);
         fn_801A949C(self + 0x2E0);
-        fn_80105D4C(self + 0x1BC, 0x41);
-        fn_80105D4C(unit49c, 0x41);
+        Status_Clear(self + 0x1BC, 0x41);
+        Status_Clear(unit49c, 0x41);
         fn_80034068(self + 0x8A0, 0x35, 0);
     }
     if (Status_Test(unit49c, 0x29) != 0 && *(u32 *)fn_801A7FF4(self + 0x2E0) != 0) {

@@ -8,7 +8,7 @@ extern f64 lbl_8036A100;
 extern f32 lbl_8036A0F8;
 extern u16 lbl_80366E80;
 
-void fn_80105D4C(void *, u8);
+void Status_Clear(void *, u8);
 
 s32 fn_80103748(void) {
     return 0x21;
@@ -35,7 +35,7 @@ void *fn_801037A0(void) {
 }
 
 s32 fn_801037B0(void) {
-    void fn_80105D4C(void *, u8);
+    void Status_Clear(void *, u8);
     extern u8 gBattleState[];
     void *p;
     s32 i;
@@ -43,7 +43,7 @@ s32 fn_801037B0(void) {
     p = gBattleState + 0x74;
     i = 0;
     do {
-        fn_80105D4C(p, (u8)i);
+        Status_Clear(p, (u8)i);
         i += 1;
     } while (i < 0x40);
     return 6;

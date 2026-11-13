@@ -2426,7 +2426,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
 }
 
 void fn_801E960C(void *arg0) {
-    void fn_80105D4C(void *, u8);
+    void Status_Clear(void *, u8);
     void fn_80013A90(void *);
     void fn_80013A6C(void *);
     void fn_800138F4(void);
@@ -2451,7 +2451,7 @@ void fn_801E960C(void *arg0) {
             idx += 1;
         }
     }
-    fn_80105D4C(gBattleState + 0x84, *(u8 *)node[2]);
+    Status_Clear(gBattleState + 0x84, *(u8 *)node[2]);
     fn_80013A90(lbl_8027EB78 + 0x1C7);
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x10));
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x14));

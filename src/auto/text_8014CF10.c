@@ -309,7 +309,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void fn_800BE068(void *);
     void fn_800C32A4(void *);
     void fn_800C341C(void *);
-    void fn_80105D4C(void *, u8);
+    void Status_Clear(void *, u8);
     void fn_8010FF90(void *);
     void fn_801998B0(void *);
     void fn_801A7CDC(void *);
@@ -369,10 +369,10 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     var_r30 = var_r29 + var_r27;
     for (i = 0; i < count; i++) {
         if (var_r30[5] & 2) {
-            fn_80105D4C((u8 *)arg0 + 0x74, var_r29[0]);
+            Status_Clear((u8 *)arg0 + 0x74, var_r29[0]);
         }
         if (var_r30[5] & 1) {
-            fn_80105D4C((u8 *)arg0 + 0x84, var_r29[0]);
+            Status_Clear((u8 *)arg0 + 0x84, var_r29[0]);
         }
         var_r30 += 0x18;
         var_r29 += 0x18;
