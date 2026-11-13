@@ -8723,7 +8723,7 @@ void Game_InitVideo(void) {
     extern s32 gGameFlags;
     extern void *gGameRenderMode;
     extern void *gGameRenderModeProg;
-    extern u8 lbl_80298278[];
+    extern u8 GameNtsc480IntDf[];
     extern u8 lbl_802982B4[];
     extern u8 lbl_802982F0[];
     extern u8 lbl_8029832C[];
@@ -8738,7 +8738,7 @@ void Game_InitVideo(void) {
     fmt = VIGetTvFormat();
     switch (fmt) {
     case 0:
-        gGameRenderMode = lbl_80298278;
+        gGameRenderMode = GameNtsc480IntDf;
         gGameRenderModeProg = lbl_802982B4;
         gGameFlags |= 0x10000;
         break;
