@@ -1653,7 +1653,8 @@ void fn_801533F8(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
-void Ui_DrawAtlasLCorner(s16 arg0, s16 arg1, s32 arg2) {
+/* Draw UI atlas tile 0x4A as an L-corner: horizontal arm, then vertical with UVs swapped. */
+void Ui_DrawAtlasLCorner(s16 x, s16 y, s32 texFlags) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
     void Prim2D_Begin(void);
@@ -1665,17 +1666,17 @@ void Ui_DrawAtlasLCorner(s16 arg0, s16 arg1, s32 arg2) {
     extern s32 gUiTexAtlas;
     extern u8 gUiTexScratch[64];
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } gUiAtlasRect4A;
-    s16 var_r26;
-    s16 var_r27;
-    s32 var_r28;
+    s16 drawX;
+    s16 drawY;
+    s32 flags;
     s16 *rect;
     s16 w;
     s16 h;
     s32 raw;
 
-    var_r26 = arg0;
-    var_r27 = arg1;
-    var_r28 = arg2;
+    drawX = x;
+    drawY = y;
+    flags = texFlags;
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, 0x4A);
     rect = (s16 *)&gUiAtlasRect4A;
     h = (s16)(rect[3] - rect[1]);
@@ -1683,24 +1684,24 @@ void Ui_DrawAtlasLCorner(s16 arg0, s16 arg1, s32 arg2) {
     if (w != 0) {
         if (h != 0) {
             Prim2D_Begin();
-            Prim2D_SetTex((void *)&gUiTexScratch, (u16)(var_r28 | 1));
+            Prim2D_SetTex((void *)&gUiTexScratch, (u16)(flags | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)var_r26, (f32)var_r27, (f32)gUiAtlasRect4A.f0, (f32)rect[1], (f32)w, (f32)h);
+            Prim2D_SetRectUv((f32)drawX, (f32)drawY, (f32)gUiAtlasRect4A.f0, (f32)rect[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
     raw = rect[2] - gUiAtlasRect4A.f0;
-    var_r26 = (s16)(var_r26 + (s16)raw);
+    drawX = (s16)(drawX + (s16)raw);
     w = (s16)(rect[3] - rect[1]);
     h = (s16)raw;
     if (h != 0) {
         if (w != 0) {
             Prim2D_Begin();
-            Prim2D_SetTex((void *)&gUiTexScratch, (u16)(var_r28 | 1));
+            Prim2D_SetTex((void *)&gUiTexScratch, (u16)(flags | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)var_r26, (f32)var_r27, (f32)gUiAtlasRect4A.f0, (f32)rect[1], (f32)h, (f32)w);
+            Prim2D_SetRectUv((f32)drawX, (f32)drawY, (f32)gUiAtlasRect4A.f0, (f32)rect[1], (f32)h, (f32)w);
             Prim2D_SwapUvU();
             Prim2D_EndPrim();
         }
