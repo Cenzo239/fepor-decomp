@@ -164,7 +164,7 @@ static void PADDisable(s32 chan) {
     void fn_80209C10(s32 chan, u16 id);
     u32 fn_8023B930(u32 poll);
     extern u32 EnabledBits;
-    extern u32 lbl_80368678;
+    extern u32 WaitingBits;
     extern u32 lbl_8036867C;
     extern u32 lbl_80368680;
     extern u32 __PADFixBits;
@@ -175,7 +175,7 @@ static void PADDisable(s32 chan) {
     chanBit = 0x80000000 >> chan;
     fn_8023B930(chanBit);
     EnabledBits &= ~chanBit;
-    lbl_80368678 &= ~chanBit;
+    WaitingBits &= ~chanBit;
     lbl_8036867C &= ~chanBit;
     lbl_80368680 &= ~chanBit;
     __PADFixBits &= ~chanBit;
@@ -227,7 +227,7 @@ void fn_80212108(s32 chan, u32 type) {
     extern u32 PADSpec;
     extern u32 EnabledBits;
     extern u32 lbl_80368670;
-    extern u32 lbl_80368678;
+    extern u32 WaitingBits;
     u32 sr;
     u32 pad[4];
     s32 chanBit;
@@ -242,7 +242,7 @@ void fn_80212108(s32 chan, u32 type) {
         fn_8023BA70(chanBit, &sr);
         fn_8023B804(chanBit, PADSpec | 0x400000);
         fn_8023B894(EnabledBits);
-        lbl_80368678 |= bitConst >> lbl_80366FA4;
+        WaitingBits |= bitConst >> lbl_80366FA4;
     }
     bit = lbl_80368670;
     lbl_80366FA4 = __cntlzw(bit);
@@ -259,7 +259,7 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     extern u8 Origin[];
     extern u32 cmdGetOrigin;
     extern u32 EnabledBits;
-    extern u32 lbl_80368678;
+    extern u32 WaitingBits;
     extern u32 lbl_8036867C;
     u32 error;
     u32 chanBit;
@@ -272,7 +272,7 @@ void PADTypeAndStatusCallback(s32 chan, u32 type) {
     error = type & 0xFF;
     type &= ~0xFF;
 
-    lbl_80368678 &= ~chanBit;
+    WaitingBits &= ~chanBit;
     lbl_8036867C &= ~chanBit;
 
     if (!(error & 0xF) && (type & 0x80000000) && (type & 0x00100000) && (type & 0x40000000) &&
@@ -304,7 +304,7 @@ u32 fn_802129C0(PADStatus *status)
   extern u16 cmdGetOrigin;
   extern u32 EnabledBits;
   extern u32 lbl_80368670;
-  extern u32 lbl_80368678;
+  extern u32 WaitingBits;
   extern u32 lbl_8036867C;
   extern u32 lbl_80368680;
   extern void (*lbl_80366FB4)(s32, PADStatus *, u32 *);
@@ -346,7 +346,7 @@ u32 fn_802129C0(PADStatus *status)
     else if (fn_8023B788(chan) & 8)
     {
       fn_8023BA70(chan, (u32 *) (&response));
-      if (lbl_80368678 & bit)
+      if (WaitingBits & bit)
       {
         status->err = 0;
         memset(status, 0, 10);
