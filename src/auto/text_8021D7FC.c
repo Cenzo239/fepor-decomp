@@ -410,7 +410,7 @@ void __GXInitGX(void) {
     void fn_80222F10(void *);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802239D0(s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
@@ -597,22 +597,22 @@ void __GXInitGX(void) {
     fn_80222C50(texObj, 6);
     fn_80222C50(texObj, 7);
 
-    fn_80223F2C(0, 0, 0, 4);
-    fn_80223F2C(1, 1, 1, 4);
-    fn_80223F2C(2, 2, 2, 4);
-    fn_80223F2C(3, 3, 3, 4);
-    fn_80223F2C(4, 4, 4, 4);
-    fn_80223F2C(5, 5, 5, 4);
-    fn_80223F2C(6, 6, 6, 4);
-    fn_80223F2C(7, 7, 7, 4);
-    fn_80223F2C(8, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(9, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xA, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xB, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xC, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xD, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xE, 0xFF, 0xFF, 0xFF);
-    fn_80223F2C(0xF, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0, 0, 0, 4);
+    GXSetTevOrder(1, 1, 1, 4);
+    GXSetTevOrder(2, 2, 2, 4);
+    GXSetTevOrder(3, 3, 3, 4);
+    GXSetTevOrder(4, 4, 4, 4);
+    GXSetTevOrder(5, 5, 5, 4);
+    GXSetTevOrder(6, 6, 6, 4);
+    GXSetTevOrder(7, 7, 7, 4);
+    GXSetTevOrder(8, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(9, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xA, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xB, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xC, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xD, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xE, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(0xF, 0xFF, 0xFF, 0xFF);
 
     fn_802240C8(1);
     fn_802239D0(0, 3);

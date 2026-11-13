@@ -5617,7 +5617,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
     void fn_80222CF0(void *, s32);
     void fn_80222C50(void *, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     extern u8 gGMaterialAssertMsg[];
     extern s32 gMaterialStageIds[];
@@ -5744,14 +5744,14 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
         }
     }
     fn_80222C50(sp14, r30);
-    fn_80223F2C(r28, r29, r30, 4);
+    GXSetTevOrder(r28, r29, r30, 4);
     fn_802239D0(r28, 0);
 }
 s32 GMaterial_SetupColor(void *arg0,s32 arg1,void *arg2,void *arg3) {
 u8 fn_80064938(s32,s16,void*,f32);void fn_80064BBC(s32,s16,void*,f32);
 void fn_8006DA64(void*,s32,void*);
 void GXSetTevColor(s32,MaterialColor*);void fn_8022224C(s32,MaterialColor*);
-void fn_80223F2C(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
+void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
 void GXSetTevColorOp(s32,s32,s32,s32,s32,s32);void GXSetTevAlphaIn(s32,s32,s32,s32,s32);void GXSetTevAlphaOp(s32,s32,s32,s32,s32,s32);
 extern u8 gMaterialTevStageCount;extern u8 gGMaterialAssertMsg[];extern s32 gMaterialStageIds[16];
 extern f32 gInv255f;extern u32 lbl_8036C450,lbl_8036C454,lbl_8036C458;
@@ -5777,7 +5777,7 @@ c3=*(MaterialColor*)&lbl_8036C450;
 stage=gMaterialStageIds[gMaterialTevStageCount++];
 c3.r=color.r;c3.g=color.g;c3.b=color.b;c3.a=color.a;
 copy3=c3;GXSetTevColor(3,&copy3);
-fn_80223F2C(stage,255,255,255);
+GXSetTevOrder(stage,255,255,255);
 GXSetTevColorIn(stage,15,0,6,15);
 GXSetTevColorOp(stage,0,0,0,1,0);
 GXSetTevAlphaIn(stage,7,7,7,0);
@@ -5793,7 +5793,7 @@ c2=*(MaterialColor*)&lbl_8036C458;
 stage=gMaterialStageIds[gMaterialTevStageCount++];
 c2.r=r;c2.g=g;c2.b=b;
 copy2=c2;GXSetTevColor(2,&copy2);
-fn_80223F2C(stage,255,255,255);
+GXSetTevOrder(stage,255,255,255);
 GXSetTevColorIn(stage,15,12,4,0);
 GXSetTevColorOp(stage,0,0,0,1,0);
 GXSetTevAlphaIn(stage,7,7,7,0);

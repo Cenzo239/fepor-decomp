@@ -1628,7 +1628,7 @@ void fn_80123D1C(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802240C8(s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -1700,7 +1700,7 @@ void fn_80123D1C(void *arg0) {
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0, 4);
+    GXSetTevOrder(0, 0, 0, 4);
     fn_802239D0(0, 0);
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
@@ -1763,7 +1763,7 @@ void fn_80123D1C(void *arg0) {
     fn_80222370(4, 0, 0, 0, 0, 0, 2);
     fn_80220428(0);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0xFF, 4);
+    GXSetTevOrder(0, 0, 0xFF, 4);
     fn_802239D0(0, 4);
 
     {
@@ -2353,7 +2353,7 @@ void fn_80125388(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802240C8(s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -2393,7 +2393,7 @@ void fn_80125388(void *arg0) {
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0, 4);
+    GXSetTevOrder(0, 0, 0, 4);
     fn_802239D0(0, 0);
     fn_802245D8(1, 4, 5, 0);
     fn_80224684(1, 3, 0);
@@ -2661,7 +2661,7 @@ s32 fn_80125BB0(void) {
     M2C_UNK GXSetTevAlphaIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevColorOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetTevAlphaOp(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223F2C(s32, s32, s32, M2C_UNK);
+    M2C_UNK GXSetTevOrder(s32, s32, s32, M2C_UNK);
     M2C_UNK fn_80224E50(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK lbl_80274EE0;
     extern M2C_UNK lbl_80290328;
@@ -2735,7 +2735,7 @@ s32 fn_80125BB0(void) {
     fn_8006ECCC(M2C_FIELD(temp_r3, s32 *, 0x54), &sp44, 5);
     fn_80222C50(&sp44, temp_r27);
     fn_802201A8(temp_r28, 0, 0, temp_r26, 0, 0x7D);
-    fn_80223F2C(temp_r29, temp_r28, temp_r27, 4);
+    GXSetTevOrder(temp_r29, temp_r28, temp_r27, 4);
     GXSetTevColorIn(temp_r29, 0xF, 0, 8, 0xF);
     GXSetTevColorOp(temp_r29, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(temp_r29, 7, 7, 7, 0);

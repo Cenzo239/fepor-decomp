@@ -7390,7 +7390,7 @@ void fn_801959FC(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -7441,7 +7441,7 @@ void fn_801959FC(void *arg0) {
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_80222334(1);
     fn_802240C8(1);
-    fn_80223F2C(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder(0, 0xFF, 0xFF, 4);
     fn_802239D0(0, 4);
     fn_80220428(0);
     fn_8021FBB8();
@@ -13249,7 +13249,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK GXSetTevAlphaOp(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223C78(M2C_UNK, s32 *);
     M2C_UNK fn_80223CDC(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223F2C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802240C8(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13270,7 +13270,7 @@ void fn_801A27F8(void *arg0) {
         fn_80222370(4, 0, 1, 1, 0, 0, 2);
         fn_80220428(1);
         fn_80222C50(spC, 0);
-        fn_80223F2C(0, 0, 0, 4);
+        GXSetTevOrder(0, 0, 0, 4);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_802240C8(1);
         sp8 = lbl_8036AF60;

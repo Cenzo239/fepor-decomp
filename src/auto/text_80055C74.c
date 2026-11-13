@@ -231,7 +231,7 @@ void fn_800566D4(void *arg0) {
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -262,7 +262,7 @@ void fn_800566D4(void *arg0) {
                 GXSetTevAlphaIn(0, 7, 7, 7, 5);
                 GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
                 fn_80220428(1);
-                fn_80223F2C(0, 0, 0, 4);
+                GXSetTevOrder(0, 0, 0, 4);
                 fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
                 fn_80222644(sp8, tex, 0x260, 0x1C0, 4, 0, 0, 0);
                 fn_802228D8(sp8, 1, 1, 0, 0, 0, lbl_80369108, lbl_80369108, lbl_80369108);
@@ -1406,7 +1406,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -1459,12 +1459,12 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_802240C8(2);
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
-    fn_80223F2C(0, 0, 0, 4);
+    GXSetTevOrder(0, 0, 0, 4);
     GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xF);
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(0, 4, 7, 7, 7);
     GXSetTevAlphaOp(0, 0, 0, 0, 0, 0);
-    fn_80223F2C(1, 1, 1, 0xFF);
+    GXSetTevOrder(1, 1, 1, 0xFF);
     GXSetTevColorIn(1, 0xF, 0xF, 0xF, 0);
     GXSetTevColorOp(1, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(1, 4, 7, 7, 0);
@@ -1548,7 +1548,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_80222334(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     fn_802240C8(1);
-    fn_80223F2C(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder(0, 0xFF, 0xFF, 4);
     fn_802239D0(0, 4);
     fn_80224684(0, 3, 0);
     fn_802245D8(1, 0, 7, 0);

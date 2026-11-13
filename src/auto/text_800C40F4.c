@@ -842,7 +842,7 @@ void fn_800C6028(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802240C8(s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
@@ -914,7 +914,7 @@ void fn_800C6028(void *arg0) {
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_80222370(5, 0, 0, 0, 0, 0, 2);
         fn_802240C8(1);
-        fn_80223F2C(0, 0, 0, 0xFF);
+        GXSetTevOrder(0, 0, 0, 0xFF);
         GXSetTevColorIn(0, 2, 4, 8, 0xF);
         GXSetTevAlphaIn(0, 4, 7, 7, 7);
         GXSetTevColorOp(0, 0, 0, 0, 1, 0);
@@ -982,7 +982,7 @@ void fn_800C6028(void *arg0) {
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_80222370(5, 0, 0, 0, 0, 0, 2);
         fn_802240C8(1);
-        fn_80223F2C(0, 0, 0, 4);
+        GXSetTevOrder(0, 0, 0, 4);
         GXSetTevColorIn(0, 0xA, 0xF, 0xF, 0xF);
         GXSetTevAlphaIn(0, 4, 7, 7, 7);
         GXSetTevColorOp(0, 0, 0, 0, 1, 0);
@@ -1048,7 +1048,7 @@ void fn_800C6028(void *arg0) {
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_80222370(5, 0, 0, 0, 0, 0, 2);
         fn_802240C8(1);
-        fn_80223F2C(0, 0, 0, 4);
+        GXSetTevOrder(0, 0, 0, 4);
         GXSetTevColorIn(0, 0xA, 0xF, 0xF, 0xF);
         GXSetTevAlphaIn(0, 4, 7, 7, 7);
         GXSetTevColorOp(0, 0, 0, 0, 1, 0);
@@ -1114,7 +1114,7 @@ void fn_800C6028(void *arg0) {
         fn_80222370(4, 0, 0, 0, 0, 0, 2);
         fn_80222370(5, 0, 0, 0, 0, 0, 2);
         fn_802240C8(1);
-        fn_80223F2C(0, 0, 0, 0xFF);
+        GXSetTevOrder(0, 0, 0, 0xFF);
         GXSetTevColorIn(0, 2, 4, 8, 0xF);
         GXSetTevAlphaIn(0, 4, 7, 7, 7);
         GXSetTevColorOp(0, 0, 0, 0, 1, 0);
@@ -1180,7 +1180,7 @@ void fn_800C6E44(void *arg0) {
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802240C8(s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
@@ -1238,7 +1238,7 @@ void fn_800C6E44(void *arg0) {
     fn_80222370(4, 0, 0, 0, 0, 0, 2);
     fn_80222370(5, 0, 0, 0, 0, 0, 2);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0, 0xFF);
+    GXSetTevOrder(0, 0, 0, 0xFF);
     GXSetTevColorIn(0, 2, 4, 8, 0xF);
     GXSetTevAlphaIn(0, 4, 7, 7, 7);
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
@@ -16307,7 +16307,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void fn_80223C78(s32, void *);
     void fn_80223CDC(s32, s32);
     void fn_80223D38(s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_80272C00[];
     extern void *lbl_803678D0;
@@ -16453,7 +16453,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         fn_80224E50(sp18C, t27, 0);
         fn_802201A8(t26, 0, 0, t27, 0, 0x7D);
         fn_80222C50(spAC, t28);
-        fn_80223F2C(t25, t26, t28, 4);
+        GXSetTevOrder(t25, t26, t28, 4);
         tmpf = fn_80059F64(lbl_80369FA4, lbl_80369FA8, lbl_80369FC4, scaleY);
         alpha = (s32)(tmpf * *(f32 *)((u8 *)unk2C + 0x38));
         if (alpha < 0) {
@@ -16552,7 +16552,7 @@ s32 fn_800EF1C0(void) {
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223D38(s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80369FC8;
     extern f32 lbl_80369FCC;
@@ -16583,7 +16583,7 @@ s32 fn_800EF1C0(void) {
     fn_80222C50(sp8, temp_r29);
     fn_80224E50(spB8, temp_r28, 0);
     fn_802201A8(temp_r30, 0, 0, temp_r28, 0, 0x7D);
-    fn_80223F2C(temp_r31, temp_r30, temp_r29, 4);
+    GXSetTevOrder(temp_r31, temp_r30, temp_r29, 4);
     GXSetTevColorIn(temp_r31, 0xF, 0xF, 0xF, 0);
     GXSetTevColorOp(temp_r31, 1, 0, 0, 1, 0);
     fn_80223D38(temp_r31, 2);
@@ -16624,7 +16624,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223C78(s32, void *);
     void fn_80223D38(s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_80272C00[];
     extern f32 lbl_80369FA4;
@@ -16774,7 +16774,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     fn_8006ECCC(path, spE4, idx);
     fn_80222C50(spE4, t25);
     fn_802201A8(t24, 0, 0, t29, 0, 0x7D);
-    fn_80223F2C(t23, t24, t25, 4);
+    GXSetTevOrder(t23, t24, t25, 4);
     vf4 = *(f32 *)((u8 *)fn_80068548() + 0x100);
     if (vf4 < lbl_80369FB8) {
         vf4 = lbl_80369FB8;
@@ -16826,7 +16826,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     t23b = fn_80069E18();
     fn_80222C50(spE4, t23b);
     fn_802201A8(t25b, 0, 0, t29b, 0, 0x7D);
-    fn_80223F2C(t24b, t25b, t23b, 4);
+    GXSetTevOrder(t24b, t25b, t23b, 4);
     GXSetTevColorIn(t24b, 0xF, 8, 0xA, 0);
     GXSetTevColorOp(t24b, 0, 0, 3, 1, 0);
     GXSetTevAlphaIn(t24b, 7, 7, 7, 0);
@@ -16870,7 +16870,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
         fn_8006ECCC(path, spE4, (u16)(idx + 1));
         fn_80222C50(spE4, t24c);
         fn_802201A8(t29c, 0, 0, t26c, 0, 0x7D);
-        fn_80223F2C(t25c, t29c, t24c, 4);
+        GXSetTevOrder(t25c, t29c, t24c, 4);
         GXSetTevColorIn(t25c, 0xF, 8, 0xD, 0);
         GXSetTevColorOp(t25c, 0, 0, 0, 1, 0);
         GXSetTevAlphaIn(t25c, 7, 4, 6, 0);
@@ -16896,7 +16896,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     void PSMTXConcat(void *, void *, void *);
     void fn_8022224C(s32, void *);
     void fn_80222C50(void *, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -16999,7 +16999,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     b = fn_80069EA8();
     c = fn_80069E18();
     fn_80222C50(sp54, c);
-    fn_80223F2C(b, a, c, 4);
+    GXSetTevOrder(b, a, c, 4);
     fn_802201A8(a, 0, 4, 0x3C, 0, 0x7D);
     GXSetTevColorOp(b, 0, 0, 0, 1, 1);
     GXSetTevColorIn(b, 0xF, 8, 0xA, 0xF);
@@ -17009,7 +17009,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     b = fn_80069EA8();
     c = fn_80069E18();
     fn_80222C50(sp54, c);
-    fn_80223F2C(b, a, c, 4);
+    GXSetTevOrder(b, a, c, 4);
     fn_802201A8(a, 0, 5, 0x3C, 0, 0x7D);
     GXSetTevColorOp(b, 0, 0, 0, 1, 2);
     GXSetTevColorIn(b, 0xF, 8, 0xA, 0xF);
@@ -17023,7 +17023,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     c = fn_80069E18();
     fn_8006ECCC(path, sp54, (u16)(idx + 1));
     fn_80222C50(sp54, c);
-    fn_80223F2C(b, a, c, 4);
+    GXSetTevOrder(b, a, c, 4);
     GXSetTevColorOp(b, 0, 0, 0, 1, 0);
     GXSetTevColorIn(b, 2, 4, 8, 0xF);
     GXSetTevAlphaOp(b, 0, 0, 0, 1, 0);
@@ -17037,7 +17037,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
         ((u8 *)&sp8)[3] = color[3];
         spC = sp8;
         GXSetTevColor(3, &spC);
-        fn_80223F2C(b, 0xFF, 0xFF, 0xFF);
+        GXSetTevOrder(b, 0xFF, 0xFF, 0xFF);
         GXSetTevColorIn(b, 0xF, 0, 6, 0xF);
         GXSetTevColorOp(b, 0, 0, 0, 1, 0);
         GXSetTevAlphaIn(b, 7, 7, 7, 0);
@@ -17245,7 +17245,7 @@ f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018
 f32 one,fx,fy,fx1,fy1,z;
 fn_8006ECCC(lbl_803674F0,sp8,0);
 fn_8021FBB8();fn_8021F4E4(9,1);fn_8021F4E4(13,1);fn_8021FBF0(0,9,1,4,0);fn_8021FBF0(0,13,1,1,0);
-fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);fn_802240C8(1);fn_802239D0(0,3);fn_80223F2C(0,0,0,255);
+fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);fn_802240C8(1);fn_802239D0(0,3);GXSetTevOrder(0,0,0,255);
 fn_80220428(1);fn_802201A8(0,1,4,30,0,125);
 PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
 PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(fn_80067FDC(),sp28,sp28);

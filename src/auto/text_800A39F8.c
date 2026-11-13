@@ -817,7 +817,7 @@ void Gx_Setup2DState(void *arg0) {
     void fn_80223CDC(s32, s32);
     void fn_80223D38(s32, s32);
     void fn_80223D94(s32, s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -863,7 +863,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_8021FBF0(7, 9, 1, 3, 0);
     fn_8021FBF0(7, 0xD, 1, 2, 0);
     fn_802240C8(4);
-    fn_80223F2C(0, 1, 1, 0xFF);
+    GXSetTevOrder(0, 1, 1, 0xFF);
     GXSetTevColorIn(0, 0xF, 8, 0xE, 2);
     GXSetTevColorOp(0, 0, 0, 0, 0, 0);
     GXSetTevAlphaIn(0, 7, 4, 6, 1);
@@ -871,7 +871,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_80223CDC(0, 0xC);
     fn_80223D38(0, 0x1C);
     fn_80223D94(0, 0, 0);
-    fn_80223F2C(1, 1, 2, 0xFF);
+    GXSetTevOrder(1, 1, 2, 0xFF);
     GXSetTevColorIn(1, 0xF, 8, 0xE, 0);
     GXSetTevColorOp(1, 0, 0, 1, 0, 0);
     GXSetTevAlphaIn(1, 7, 4, 6, 0);
@@ -879,13 +879,13 @@ void Gx_Setup2DState(void *arg0) {
     fn_80223CDC(1, 0xD);
     fn_80223D38(1, 0x1D);
     fn_80223D94(1, 0, 0);
-    fn_80223F2C(2, 0, 0, 0xFF);
+    GXSetTevOrder(2, 0, 0, 0xFF);
     GXSetTevColorIn(2, 0xF, 8, 0xC, 0);
     GXSetTevColorOp(2, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(2, 4, 7, 7, 0);
     GXSetTevAlphaOp(2, 0, 0, 0, 1, 0);
     fn_80223D94(2, 0, 0);
-    fn_80223F2C(3, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder(3, 0xFF, 0xFF, 0xFF);
     GXSetTevColorIn(3, 1, 0, 0xE, 0xF);
     GXSetTevColorOp(3, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(3, 7, 7, 7, 7);
@@ -910,7 +910,7 @@ void fn_800A57D8(void) {
     M2C_UNK fn_802239D0(M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223D94(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223DDC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223F2C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802240C8(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
@@ -919,7 +919,7 @@ void fn_800A57D8(void) {
     fn_80220428(1);
     fn_80222334(0);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0, 0xFF);
+    GXSetTevOrder(0, 0, 0, 0xFF);
     fn_802239D0(0, 3);
     fn_80223D94(0, 0, 0);
     fn_80223D94(1, 0, 0);

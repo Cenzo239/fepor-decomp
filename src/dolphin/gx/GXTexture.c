@@ -1195,7 +1195,7 @@ void fn_80223EA0(s32 arg0, s32 arg1, s32 arg2) {
     *(u16 *)__GXData = 0x0;
 }
 
-void fn_80223F2C(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
+void GXSetTevOrder(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
     extern f32 lbl_8036BD38;
     extern f32 lbl_8036BD3C;
     extern f32 lbl_8036BD40;

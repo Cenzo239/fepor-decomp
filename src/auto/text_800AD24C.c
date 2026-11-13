@@ -8638,7 +8638,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222334(s32);
     void fn_802240C8(s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
@@ -8681,7 +8681,7 @@ void fn_800C0CDC(void *arg0) {
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222334(0);
     fn_802240C8(1);
-    fn_80223F2C(0, 0, 0, 0xFF);
+    GXSetTevOrder(0, 0, 0, 0xFF);
     fn_802239D0(0, 3);
     PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
     PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
@@ -8877,7 +8877,7 @@ void fn_800C15A8(void) {
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
     extern s32 lbl_8036785C;
@@ -8914,7 +8914,7 @@ void fn_800C15A8(void) {
     r28 = fn_80069D58();
     fn_80224E50(sp8, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
-    fn_80223F2C(r31, r30, r29, 0xFF);
+    GXSetTevOrder(r31, r30, r29, 0xFF);
     GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
     GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(r31, 7, 7, 7, 0);
@@ -8939,7 +8939,7 @@ s32 fn_800C1730(void) {
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void fn_80223C78(s32, s32 *);
     void fn_80223CDC(s32, s32);
-    void fn_80223F2C(s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
     extern u8 lbl_80367289;
@@ -8982,7 +8982,7 @@ s32 fn_800C1730(void) {
     fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
     fn_80224E50(spC, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
-    fn_80223F2C(r31, r30, r29, 4);
+    GXSetTevOrder(r31, r30, r29, 4);
     switch ((s32)lbl_80367289) {
     case 1:
         GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);

@@ -1421,14 +1421,14 @@ void fn_8001185C(void) {
     GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn(0, 7, 4, 5, 7);
     GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
-    fn_80223F2C(0, 0, 0, 4);
+    GXSetTevOrder(0, 0, 0, 4);
 }
 
 void fn_80011910(void) {
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802239D0(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223F2C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     fn_802201A8(0, 1, 4, 0x21, 0, 0x7D);
     fn_802239D0(0, 0);
-    fn_80223F2C(0, 0, 1, 4);
+    GXSetTevOrder(0, 0, 1, 4);
 }
