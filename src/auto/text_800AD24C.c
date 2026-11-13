@@ -5266,7 +5266,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
     void Sound_FadeToVol(u32, u8);
     u32 fn_801CF760(u32);
     void fn_801CFC4C(u32, s32);
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
     u32 temp;
 
@@ -5274,7 +5274,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
         return 0;
     }
 
-    if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         temp = Sound_FindByName(arg0);
         if (temp == 0U) {
             return 0;
@@ -5297,7 +5297,7 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
     void Sound_FadeFromZero(u32, u8);
     u32 fn_801CF760(u32);
     void fn_801CFC80(u32, s32);
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
     u32 temp;
 
@@ -5305,7 +5305,7 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
         return 0;
     }
 
-    if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         temp = Sound_FindByName(arg0);
         if (temp == 0U) {
             return 0;
@@ -5351,14 +5351,14 @@ s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
 s32 ScriptCmd_SetPos(u32 arg0, s32 arg1, s32 arg2) {
     void *Sound_FindByName(u32);
     void *fn_801CF760(u32);
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
 
-    if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         void *temp_r3 = Sound_FindByName(arg0);
         if (temp_r3 == NULL) {
             return 0;
@@ -5473,14 +5473,14 @@ s32 fn_800BA4A8(u32 arg0) {
     void fn_80109020(u32);
     void fn_801CF760(u32);
     void fn_801CFA44(void);
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
 
-    if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109020(arg0);
     } else {
         fn_801CF760(arg0);
@@ -5493,14 +5493,14 @@ s32 fn_800BA4A8(u32 arg0) {
 s32 fn_800BA528(u32 arg0) {
     void fn_80109180(u32, s32);
     void fn_801CF7F0(u32, s32);
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     extern u16 lbl_8026ECB8[];
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
 
-    if (fn_80234278((void *)arg0, (u8 *)lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, (u8 *)lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109180(arg0, 0);
     } else {
         fn_801CF7F0(arg0, 0);
@@ -5510,7 +5510,7 @@ s32 fn_800BA528(u32 arg0) {
 }
 
 s32 fn_800BA5AC(u32 arg0) {
-    s32 fn_80234278(void *, void *, s32);
+    s32 Str_NCmp(void *, void *, s32);
     void fn_80109180(u32, s32);
     void fn_801CF7F0(u32, s32);
     s32 fn_800C0658(void);
@@ -5518,7 +5518,7 @@ s32 fn_800BA5AC(u32 arg0) {
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
+    if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109180(arg0, fn_800C0658());
     } else {
         fn_801CF7F0(arg0, fn_800C0658());

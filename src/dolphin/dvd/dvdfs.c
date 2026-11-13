@@ -1819,16 +1819,16 @@ void __DVDStoreErrorCode(u32 arg0) {
 
 s32 fn_8020F9E8(u8 *arg0, u8 *arg1)
 {
-    s32 fn_80234278(u8 *, u8 *, u32);
+    s32 Str_NCmp(u8 *, u8 *, u32);
 
     if ((s8)arg0[0] != 0 && (s8)arg1[0] != 0) {
-        if (fn_80234278(arg0, arg1, 4) != 0) {
+        if (Str_NCmp(arg0, arg1, 4) != 0) {
             return 0;
         }
     }
 
     if ((s8)arg0[4] != 0 && (s8)arg1[4] != 0) {
-        if (fn_80234278(arg0 + 4, arg1 + 4, 2) != 0) {
+        if (Str_NCmp(arg0 + 4, arg1 + 4, 2) != 0) {
             return 0;
         }
     }

@@ -1560,7 +1560,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_8021382C(s32);
     void fn_80213AEC(s32);
     void fn_80213B18(s32);
-    s32 fn_80234278(u32, void *, s32);
+    s32 Str_NCmp(u32, void *, s32);
     void *memcpy(void *, void *, u32);
     int OSReport(void *msg, ...);
     extern s32 __OSIsGcam;
@@ -1644,7 +1644,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     }
     ICInvalidateRange((void *)0x81200000, (*(s32 *)(temp_r30 + 0x14) + 0x1F) & ~0x1F);
 
-    if (fn_80234278(temp_r30, lbl_8029C2D8, 0xA) > 0)
+    if (Str_NCmp(temp_r30, lbl_8029C2D8, 0xA) > 0)
         var_r0 = 1;
     else
         var_r0 = 0;

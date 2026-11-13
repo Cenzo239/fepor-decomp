@@ -2500,7 +2500,7 @@ loop_2:
     return var_r3;
 }
 
-s32 fn_80234278(u8 *arg0, u8 *arg1, u32 arg2) {
+s32 Str_NCmp(u8 *arg0, u8 *arg1, u32 arg2) {
     register u8 *s1 = arg0 - 1;
     register u8 *s2 = arg1 - 1;
     register u32 c1;
