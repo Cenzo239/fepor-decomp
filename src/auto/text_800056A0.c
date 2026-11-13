@@ -209,7 +209,7 @@ void Game_InitSystems(void) {
     void fn_80200494(void);
     extern u8 Game_str[];
     extern u8 gUiIconDrawer[];
-    extern u8 lbl_802F0350[];
+    extern u8 gItemIconDrawer[];
     extern u8 gBattleState[];
     extern u8 lbl_80367AEC;
     extern u8 lbl_80367AEE;
@@ -233,7 +233,7 @@ void Game_InitSystems(void) {
     fn_800110B8();
     fn_8008CD9C();
     Ui_InitIconDrawer(gUiIconDrawer);
-    Ui_InitIconDrawer(lbl_802F0350);
+    Ui_InitIconDrawer(gItemIconDrawer);
     Archive_Load(Game_str + 0xB2);
     Archive_Load(Game_str + 0xBD);
     Archive_Load(Game_str + 0xD1);

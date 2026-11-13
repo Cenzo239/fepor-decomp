@@ -12576,7 +12576,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     s32 fn_8010586C(void *);
     s32 *Ui_GetColor(s32);
     extern u8 lbl_80278780[];
-    extern u8 lbl_802F0350[];
+    extern u8 gItemIconDrawer[];
     extern f32 lbl_8036AB94;
     extern f32 lbl_8036ABB8;
     
@@ -12599,7 +12599,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     Prim2D_SetTextScale(1, lbl_8036ABB8);
     fn_80006B18(temp_arg1 + 0x8C, temp_arg2 + off, 0, 0, M2C_FIELD(arg4, u8 *, 0x1A));
     Prim2D_EndPrim();
-    Ui_DrawIcon(lbl_802F0350, temp_arg1, temp_arg2, M2C_FIELD(arg4, u8 *, 0x19));
+    Ui_DrawIcon(gItemIconDrawer, temp_arg1, temp_arg2, M2C_FIELD(arg4, u8 *, 0x19));
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
@@ -12615,7 +12615,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     extern u8 lbl_80278780[];
-    extern u8 lbl_802F0350[];
+    extern u8 gItemIconDrawer[];
     extern f32 lbl_8036AB94;
     void *self;
     void *unit;
@@ -12643,7 +12643,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     a1 = (s16)a1;
     a2 = (s16)a2;
     Text_Draw((s16)(a1 + 0x20), (s16)(a2 + color), flag, lbl_80278780 + 0xB3, ret);
-    Ui_DrawIcon(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    Ui_DrawIcon(gItemIconDrawer, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
@@ -12660,7 +12660,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     extern u8 lbl_80278780[];
-    extern u8 lbl_802F0350[];
+    extern u8 gItemIconDrawer[];
     extern f32 lbl_8036AB94;
     u8 flag;
     s32 a2;
@@ -12689,7 +12689,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
         a1 = (s16)a1;
         a2 = (s16)a2;
         Text_Draw((s16)(a1 + 0x20), (s16)(a2 + off), flag, lbl_80278780 + 0xB3, ret);
-        Ui_DrawIcon(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+        Ui_DrawIcon(gItemIconDrawer, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
     }
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);

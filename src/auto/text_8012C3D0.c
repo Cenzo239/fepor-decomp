@@ -2535,7 +2535,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     void fn_80130920(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
-    extern u8 lbl_802F0350[];
+    extern u8 gItemIconDrawer[];
     u8 *base;
     s32 off;
     s32 unit;
@@ -2548,7 +2548,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     fn_80009B8C(0xFF);
     fn_8000A248();
     unit = (s32)*(void **)arg1;
-    base = lbl_802F0350;
+    base = gItemIconDrawer;
     off = 0x102;
     i = 0;
     do {

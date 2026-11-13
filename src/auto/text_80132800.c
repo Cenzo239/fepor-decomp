@@ -2185,7 +2185,7 @@ void Prim2D_AddPrim(s32); void Prim2D_SetColorPacked(void *);
 void Prim2D_SetTextScale(s32,f32); void fn_80006B18(s32,s32,s32,s32,u8);
 void Prim2D_EndPrim(void); void Ui_DrawIcon(void *,s16,s16,u8);
 s32 fn_8010586C(void *); s32 *Ui_GetColor(s32);
-extern u8 lbl_80276720[],lbl_802F0350[]; extern f32 lbl_8036A5E0;
+extern u8 lbl_80276720[],gItemIconDrawer[]; extern f32 lbl_8036A5E0;
 s32 sp8; s32 y,tx,x,name; s32 flag;
 flag=arg5!=0;
 Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)arg0+0x34)|0x13)); Prim2D_PrepareTex();
@@ -2195,7 +2195,7 @@ Text_Draw(tx,y+4,flag,lbl_80276720+0x1d,name);
 Prim2D_AddPrim(6); sp8=*Ui_GetColor(flag); Prim2D_SetColorPacked(&sp8);
 Prim2D_SetTextScale(1,lbl_8036A5E0);
 fn_80006B18(tx,y+8,0,0,((u8 *)arg4)[0x1a]);
-Prim2D_EndPrim(); Ui_DrawIcon(lbl_802F0350,x,y,((u8 *)arg4)[0x19]);
+Prim2D_EndPrim(); Ui_DrawIcon(gItemIconDrawer,x,y,((u8 *)arg4)[0x19]);
 }
 
 s32 fn_80136268(void *arg0, void *arg1) {
