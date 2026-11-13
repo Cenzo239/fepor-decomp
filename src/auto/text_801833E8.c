@@ -2227,12 +2227,15 @@ void MuFade_InitScaleOut(void *arg0)
     extern f32 lbl_8036ACEC;
     s32 zero;
     f32 z;
+    f32 t;
 
     zero = 0;
     z = lbl_8036ACEC;
     *(s32 *)((u8 *)arg0 + 0x34) = zero;
-    *(f32 *)((u8 *)arg0 + 0x54) = *(f32 *)((u8 *)arg0 + 0x4C);
-    *(f32 *)((u8 *)arg0 + 0x58) = *(f32 *)((u8 *)arg0 + 0x50);
+    t = *(f32 *)((u8 *)arg0 + 0x4C);
+    *(f32 *)((u8 *)arg0 + 0x54) = t;
+    t = *(f32 *)((u8 *)arg0 + 0x50);
+    *(f32 *)((u8 *)arg0 + 0x58) = t;
     *(f32 *)((u8 *)arg0 + 0x4C) = z;
     *(f32 *)((u8 *)arg0 + 0x50) = z;
 }
