@@ -662,7 +662,7 @@ void fn_801298FC(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80129984(void *arg0) {
+void ModelList_FadeInProcess(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Model_SetAlpha(void *, s32);
     void Process_ClearFunc(void *);
