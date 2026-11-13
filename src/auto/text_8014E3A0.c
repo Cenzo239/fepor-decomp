@@ -5600,7 +5600,7 @@ void fn_80161778(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80161AA8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
+void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);

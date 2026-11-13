@@ -4041,7 +4041,7 @@ extern "C" s32 Text_MeasureHeight(s32, f32);
 extern "C" s32 fn_800C3D48(void *);
 extern "C" u8 fn_8014D8DC(void *);
 extern "C" void fn_80155F20(s32, s32, s16, s16, s32, s32);
-extern "C" void fn_80161AA8(s16, s16, s16, s16, s32, u8 *);
+extern "C" void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
 extern "C" void fn_80139884(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -4074,7 +4074,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
     color[1] = 0xFF;
     color[2] = 0xFF;
     color[3] = 0x33;
-    fn_80161AA8(margin, height, margin + (s16) (width - margin * 2), height, 0x10, color);
+    Ui_DrawLine(margin, height, margin + (s16) (width - margin * 2), height, 0x10, color);
     Prim2D_Begin();
     Prim2D_SetTex(0, M2C_FIELD(arg0, s32 *, 0x34) | 0x13);
     Prim2D_PrepareTex();

@@ -9805,7 +9805,7 @@ void *fn_801769C0(void *arg0, s16 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_8015AD7C(s32, s32, s32, s16, s32, s32);
-extern "C" void fn_80161AA8(s32, s32, s16, s32, s32, void *);
+extern "C" void Ui_DrawLine(s32, s32, s16, s32, s32, void *);
 extern "C" s32 Prim2D_SetAlphaByte(u8);
 extern "C" void Ui_DrawListPanel(void *arg0, s32 arg1) {
     struct Obj {
@@ -9867,7 +9867,7 @@ extern "C" void Ui_DrawListPanel(void *arg0, s32 arg1) {
     col.g = 0xFF;
     col.b = 0xFF;
     col.a = 0x33;
-    fn_80161AA8(8, y, h + 8, y, 0x10, &col);
+    Ui_DrawLine(8, y, h + 8, y, 0x10, &col);
 }
 
 #pragma cplusplus on

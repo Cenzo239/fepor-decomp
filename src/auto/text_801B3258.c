@@ -9957,7 +9957,7 @@ extern "C" void fn_801CC5C4(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    void fn_80161AA8(s16, s16, s16, s16, s32, u8 *);
+    void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
     extern f32 lbl_8036B4C8;
 
     struct Obj {
@@ -10042,14 +10042,14 @@ extern "C" void fn_801CC5C4(void *arg0, void *arg1) {
                 alpha = 0xFF;
             }
             color[3] = alpha;
-            fn_80161AA8((s16)x1, (s16)(y1 - 1), (s16)x2, (s16)(y1 - 1), *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)x1, (s16)y2, (s16)x2, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)(x1 - 1), (s16)y1, (s16)(x1 - 1), (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)x2, (s16)y1, (s16)x2, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)x1, (s16)y1, (s16)x2, (s16)y1, *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)x1, (s16)(y2 - 1), (s16)x2, (s16)(y2 - 1), *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)x1, (s16)y1, (s16)x1, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
-            fn_80161AA8((s16)(x2 - 1), (s16)y1, (s16)(x2 - 1), (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x1, (s16)(y1 - 1), (s16)x2, (s16)(y1 - 1), *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x1, (s16)y2, (s16)x2, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)(x1 - 1), (s16)y1, (s16)(x1 - 1), (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x2, (s16)y1, (s16)x2, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x1, (s16)y1, (s16)x2, (s16)y1, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x1, (s16)(y2 - 1), (s16)x2, (s16)(y2 - 1), *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)x1, (s16)y1, (s16)x1, (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
+            Ui_DrawLine((s16)(x2 - 1), (s16)y1, (s16)(x2 - 1), (s16)y2, *(s32 *)((u8 *)self + 0x34), color);
         }
     }
 }
@@ -10697,17 +10697,17 @@ void fn_801CD764(void *arg0) {
     sp9 = 0x2F;
     spA = 0x12;
     spB = 0xFF;
-    fn_80161AA8(temp_r30, temp_r6, temp_r4_2, temp_r6, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
-    fn_80161AA8(temp_r30, temp_r8, temp_r4_2, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r30, temp_r6, temp_r4_2, temp_r6, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r30, temp_r8, temp_r4_2, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
     temp_r0 = temp_r30 - 1;
-    fn_80161AA8(temp_r0, temp_r29, temp_r0, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
-    fn_80161AA8(temp_r4_2, temp_r29, temp_r4_2, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
-    fn_80161AA8(temp_r30, temp_r29, temp_r4_2, temp_r29, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r0, temp_r29, temp_r0, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r4_2, temp_r29, temp_r4_2, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r30, temp_r29, temp_r4_2, temp_r29, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
     temp_r0_2 = temp_r8 - 1;
-    fn_80161AA8(temp_r30, temp_r0_2, temp_r4_2, temp_r0_2, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
-    fn_80161AA8(temp_r30, temp_r29, temp_r30, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r30, temp_r0_2, temp_r4_2, temp_r0_2, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r30, temp_r29, temp_r30, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
     temp_r0_3 = temp_r4_2 - 1;
-    fn_80161AA8(temp_r0_3, temp_r29, temp_r0_3, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
+    Ui_DrawLine(temp_r0_3, temp_r29, temp_r0_3, temp_r8, M2C_FIELD(arg0, s32 *, 0x34), &sp8);
 }
 
 extern struct efUnit* gEfUnitArray;
@@ -16250,7 +16250,7 @@ void fn_801DF4A4(void *arg0, s32 arg1) {
     struct Color {
         u8 r, g, b, a;
     };
-    void fn_80161AA8(s32, s32, s16, s32, s32, struct Color *);
+    void Ui_DrawLine(s32, s32, s16, s32, s32, struct Color *);
     s16 *arg0_s16;
     s16 h;
     struct Color col;
@@ -16261,7 +16261,7 @@ void fn_801DF4A4(void *arg0, s32 arg1) {
     col.g = 0x78;
     col.b = 0x50;
     col.a = 0xE6;
-    fn_80161AA8(0x10, arg1, h - 0x10, arg1, 0x10, &col);
+    Ui_DrawLine(0x10, arg1, h - 0x10, arg1, 0x10, &col);
 }
 
 #pragma cplusplus on
