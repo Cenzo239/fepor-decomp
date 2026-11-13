@@ -9065,7 +9065,7 @@ void MapSelect_StartMove(void *arg0) {
     f32 Math_Angle2D(f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     f32 Vec_Length(f32 *);
-    extern void fn_8019A364(void);
+    extern void MapSelect_UpdateMove(void);
     extern void fn_8019A7A8(void);
     extern u32 lbl_8027AA2C[3];
     extern u8 MapSelect_str[];
@@ -9099,7 +9099,7 @@ void MapSelect_StartMove(void *arg0) {
     temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
     *(void **)((u8 *)temp_r6 + 0x3C) = (void *)&fn_8019A7A8;
     temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
-    *(void **)((u8 *)temp_r6 + 0x40) = (void *)&fn_8019A364;
+    *(void **)((u8 *)temp_r6 + 0x40) = (void *)&MapSelect_UpdateMove;
     fn_80053658(temp_r3, 0, arg0);
     scale = lbl_8036AF14;
     inner = *(void **)((u8 *)temp_r3 + 0x30);
@@ -9129,7 +9129,7 @@ void fn_8019A088(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_8019A364(void *arg0)
+s32 MapSelect_UpdateMove(void *arg0)
 {
     void fn_80025624(s32, s32);
     void fn_800536B0(void *, f32, f32, f32);
