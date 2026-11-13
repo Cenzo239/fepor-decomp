@@ -2871,7 +2871,7 @@ idx=*(u16*)((u8*)node+0x1a); if(idx==65535)idx=0;
 fn_80009EB0(fn_802002F0(arg0),idx,0,arg1); fn_80200270(arg0);
 }
 
-void Face_DebugScaleProc(void *arg0) {
+void Face_DebugScaleProc(void *proc) {
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
     void Prim2D_SetPos(f32, f32);
@@ -2895,53 +2895,54 @@ void Face_DebugScaleProc(void *arg0) {
     extern f32 gFaceDbgPosY;
     extern f32 gFaceDbgTextScale;
     extern f32 gFaceDbgPosX;
-    char sp8[0x100];
+    // Adjust face draw scale with up/down, overlay the value, draw the face; B clears the slot.
+    char buf[0x100];
     s32 buttons;
     s32 prev;
-    f32 temp_f2;
-    void *temp_r3;
+    f32 scale;
+    void *face;
     s32 index;
-    void *entry;
+    void *slot;
 
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x08000008) {
-        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) + gFaceDbgScaleStep;
+        *(f32 *)((u8 *)proc + 0x34) = *(f32 *)((u8 *)proc + 0x34) + gFaceDbgScaleStep;
     }
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x04000004) {
-        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) - gFaceDbgScaleStep;
+        *(f32 *)((u8 *)proc + 0x34) = *(f32 *)((u8 *)proc + 0x34) - gFaceDbgScaleStep;
     }
-    sprintf(sp8, lbl_8026C640 + 0xF9, *(f32 *)((u8 *)arg0 + 0x34));
+    sprintf(buf, lbl_8026C640 + 0xF9, *(f32 *)((u8 *)proc + 0x34));
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_803693D4, lbl_803693D8);
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     Prim2D_SetPos(gFaceDbgTextX, gFaceDbgPosY);
-    Prim2D_SetText(sp8);
+    Prim2D_SetText(buf);
     Prim2D_SetScale(gFaceDbgTextScale);
     Prim2D_EndPrim();
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_803693D4, *(f32 *)((u8 *)arg0 + 0x34));
+    Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_803693D4, *(f32 *)((u8 *)proc + 0x34));
     Prim2D_PrepareTex();
-    temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
-    fn_8007B4D8((s32)(gFaceDbgPosY / temp_f2), (s32)(gFaceDbgPosX / temp_f2), 0xFF,
-                *(void **)((u8 *)arg0 + 0x30));
+    scale = *(f32 *)((u8 *)proc + 0x34);
+    fn_8007B4D8((s32)(gFaceDbgPosY / scale), (s32)(gFaceDbgPosX / scale), 0xFF,
+                *(void **)((u8 *)proc + 0x30));
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
-        temp_r3 = *(void **)((u8 *)arg0 + 0x30);
-        if (temp_r3 != NULL) {
-            index = *(u8 *)((u8 *)temp_r3 + 0x40);
-            entry = gFaceSlots[index];
-            if (entry != NULL) {
-                Process_Unlink(entry);
+        face = *(void **)((u8 *)proc + 0x30);
+        if (face != NULL) {
+            index = *(u8 *)((u8 *)face + 0x40);
+            slot = gFaceSlots[index];
+            if (slot != NULL) {
+                Process_Unlink(slot);
             }
             gFaceSlots[index] = NULL;
         }
-        Process_ClearFunc(arg0);
+        Process_ClearFunc(proc);
     }
 }
 
