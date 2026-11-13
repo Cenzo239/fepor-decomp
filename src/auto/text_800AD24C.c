@@ -58,7 +58,7 @@ typedef struct {
     u8 kinds[0xC];
     s16 count;
     s16 cursor;
-} UnkAD554;
+} EventBlessProc;
 extern s32 fn_80010710(u8* arg0);
   extern s32 gUnitRef;
   extern s32 lbl_8028D544[];
@@ -182,7 +182,7 @@ s32 Event_StartBless(s32 parent) {
     return 1;
 }
 
-void Event_BlessNextUnit(UnkAD554 *arg0) {
+void Event_BlessNextUnit(EventBlessProc *arg0) {
     void Process_Goto(void *, s32);
     void UiCtx_BeginMoveSelect(void *, void *);
     void fn_8002629C(void *, void *);
