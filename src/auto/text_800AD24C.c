@@ -666,7 +666,7 @@ void fn_800AE5A8(void *arg0) {
 
 void fn_800AE694(void *arg0) {
     void *fn_8014D8FC(void *);
-    s8 fn_80146C94(void *);
+    s8 Fx_FindSlotByName(void *);
     void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80053C30(void *, void *);
     void fn_80053658(void *, s32, void *);
@@ -692,7 +692,7 @@ void fn_800AE694(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x44) = 0xF;
     *(s32 *)((u8 *)arg0 + 0x48) = 0x1E;
     var_r29 = NULL;
-    if ((s8)fn_80146C94(lbl_8026EAA0 + 0x2B) == -1) {
+    if ((s8)Fx_FindSlotByName(lbl_8026EAA0 + 0x2B) == -1) {
         switch (gBattleState[0x11]) {
         case 0:
             temp_r0 = *((u8 *)temp_r30 + 0x3C);

@@ -10772,7 +10772,7 @@ extern "C" s8 fn_80146BE4(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" s8 fn_80146C94(void *arg0) {
+extern "C" s8 Fx_FindSlotByName(void *arg0) {
     void *Hash_Lookup(void *);
     struct Entry {
         void **names;

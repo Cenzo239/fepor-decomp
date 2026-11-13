@@ -5958,7 +5958,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     void *fn_80109180(void *, s32);
     void fn_80109BB4(void *, s32);
     void fn_80109C80(void *, s32);
-    s8 fn_80146C94(void *);
+    s8 Fx_FindSlotByName(void *);
     void fn_80147188(s32);
     void Ui_PlaySeCue(void *, s32);
     void Fx_StartSlot(s32, void *, s32, s32);
@@ -6079,7 +6079,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 *(f32 *)((u8 *)q + 0x40) = x;
                 *(f32 *)((u8 *)q + 0x44) = y;
                 *(f32 *)((u8 *)q + 0x48) = lbl_8036B380;
-                if (fn_80146C94(lbl_80298040[*(s32 *)((u8 *)st + 0x24)]) == -1) {
+                if (Fx_FindSlotByName(lbl_80298040[*(s32 *)((u8 *)st + 0x24)]) == -1) {
                     flag = 0;
                     if ((gFxChannels[0xC] & 1) && ((Obj *)gFxChannels)->v2() != 0)
                         flag = 1;
