@@ -255,7 +255,8 @@ void fn_800AD700(void *arg0) {
     BattleState_SetCamPos(gBattleState, (f32)u->y, (f32)u->x);
 }
 
-void Battle_SetupVsCurrentTarget(void *arg0) {
+/* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */
+void Battle_SetupVsCurrentTarget(void *proc) {
     void Battle_Apply(void *);
     void *TargetList_GetCurrent(void *);
     void *UnitRef_GetUnit(void);
@@ -263,32 +264,32 @@ void Battle_SetupVsCurrentTarget(void *arg0) {
     void Battle_CalcHits(void *);
     extern u8 gBattle[];
     extern u8 gTargetList[];
-    void *p;
+    void *faction;
     void *unit;
-    void *f740;
-    u8 lim;
+    void *target;
+    u8 hits;
 
     Battle_Apply(gBattle);
     if ((s8)gBattle[0x1A8] == 0) {
-        p = *(void **)(gBattle + 0x190);
-        if (*(u8 *)((u8 *)p + 8) == 1) {
-            unit = *(void **)((u8 *)arg0 + 0x30);
+        faction = *(void **)(gBattle + 0x190);
+        if (*(u8 *)((u8 *)faction + 8) == 1) {
+            unit = *(void **)((u8 *)proc + 0x30);
             *(u16 *)((u8 *)unit + 0x22A) = *(u16 *)((u8 *)unit + 0x22A) + 1;
-            unit = *(void **)((u8 *)arg0 + 0x30);
+            unit = *(void **)((u8 *)proc + 0x30);
             *(u16 *)((u8 *)unit + 0x22C) = *(u16 *)((u8 *)unit + 0x22C) + 1;
         }
     }
     TargetList_GetCurrent(gTargetList);
-    f740 = UnitRef_GetUnit();
-    unit = *(void **)((u8 *)arg0 + 0x30);
-    Battle_SetupPair(gBattle, unit, f740);
-    if (*(u8 *)((u8 *)arg0 + 0x3B) != 0) {
+    target = UnitRef_GetUnit();
+    unit = *(void **)((u8 *)proc + 0x30);
+    Battle_SetupPair(gBattle, unit, target);
+    if (*(u8 *)((u8 *)proc + 0x3B) != 0) {
         gBattle[0x2D6] = 1;
     }
     Battle_CalcHits(gBattle);
-    lim = gBattle[0x2C9];
-    if (*(u8 *)((u8 *)arg0 + 0x3A) < lim) {
-        *(u8 *)((u8 *)arg0 + 0x3A) = lim;
+    hits = gBattle[0x2C9];
+    if (*(u8 *)((u8 *)proc + 0x3A) < hits) {
+        *(u8 *)((u8 *)proc + 0x3A) = hits;
     }
 }
 
