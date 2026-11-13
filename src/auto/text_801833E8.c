@@ -2207,7 +2207,7 @@ void MoveAnim_StartFlagFoot(void *anim) {
 }
 
 #pragma global_optimizer reset
-void fn_8018A7E4(void *arg0) {
+void MuFade_ZeroScale(void *arg0) {
     extern f32 lbl_8036ACEC;
     u8 *ptr;
     f32 value;
