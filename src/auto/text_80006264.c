@@ -880,7 +880,7 @@ void Prim2D_RotateUvCw(void)
     *(f32 *)((u8 *)object + 0x3C) = y;
 }
 
-void fn_80007588(void)
+void Prim2D_RotateUvCcw(void)
 {
     extern void *lbl_80367140;
 

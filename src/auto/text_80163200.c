@@ -13647,7 +13647,7 @@ extern "C" void *fn_8017D800(void *arg0, s16 arg1) {
 #pragma cplusplus on
 extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1, f32 farg2) {
     void Prim2D_RotateUvCw(void);
-    void fn_80007588(void);
+    void Prim2D_RotateUvCcw(void);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColorPacked(s32 *);
     void fn_800077B0(f32, f32, f32, f32);
@@ -13697,7 +13697,7 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
     temp_r0 = *(s32 *)((u8 *)arg0 + 8);
     switch (temp_r0) {
     case 3:
-        fn_80007588();
+        Prim2D_RotateUvCcw();
         break;
     case 1:
         Prim2D_RotateUvCw();
