@@ -836,7 +836,7 @@ void GXSetCPUFifo(void *fifo) {
 void GXSetGPFifo(void *fifo) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
-    void fn_8021F314(void);
+    void __GXFifoReadDisable(void);
     void fn_8021F36C(u8, u8);
     void fn_8021F338(u8);
     void fn_8021F39C(u8, u8);
@@ -852,7 +852,7 @@ void GXSetGPFifo(void *fifo) {
     u32 reg;
 
     enabled = OSDisableInterrupts();
-    fn_8021F314();
+    __GXFifoReadDisable();
     fn_8021F36C(0, 0);
     __GXCurrentGPFifo = realFifo;
 
@@ -974,7 +974,7 @@ void fn_8021F2F0(void) {
     *(u16 *)(__cpReg + 0x2) = (u16)value;
 }
 
-void fn_8021F314(void) {
+void __GXFifoReadDisable(void) {
     extern u8 *__GXData;
     extern u8 *__cpReg;
     volatile u32 *ptr;
