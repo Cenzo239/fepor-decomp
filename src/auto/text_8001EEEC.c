@@ -2773,7 +2773,7 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
         virtual f32 v25() = 0;
     };
     extern s32 gUiMenuDimColorTL;
-    extern s32 lbl_80368D94;
+    extern s32 gUiMenuDimColorTR;
     extern s32 lbl_80368D98;
     extern s32 lbl_80368D9C;
     extern f32 lbl_80368DA8;
@@ -2801,7 +2801,7 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
     Prim2D_EmitQuad();
     sp8 = lbl_80368D9C;
     spC = lbl_80368D98;
-    sp10 = lbl_80368D94;
+    sp10 = gUiMenuDimColorTR;
     sp14 = gUiMenuDimColorTL;
     Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
     Prim2D_EndPrim();
