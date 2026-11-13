@@ -3150,7 +3150,7 @@ void fn_8002FA54(void) {
     }
 }
 
-void fn_8002FAB0(void *arg0) {
+void MapUi_HandleRangeConfirm(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void Process_Goto(void *, s32);
     extern void *gPadInput;
