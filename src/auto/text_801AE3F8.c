@@ -16,7 +16,7 @@ void *fn_801AE3F8(u32 arg0) {
     void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     extern u8 lbl_802975D0[];
-    extern u8 lbl_80297890[];
+    extern u8 gFShopMsgTable[];
     void *var_r31;
 
     if (arg0 != 0U) {
@@ -35,7 +35,7 @@ void *fn_801AE3F8(u32 arg0) {
         *(s32 *)((u8 *)var_r31 + 0x58) = 0;
         *(s32 *)((u8 *)var_r31 + 0x60) = 0;
         *(s32 *)((u8 *)var_r31 + 0x64) = 0;
-        *(u8 **)((u8 *)var_r31 + 0x6C) = lbl_80297890;
+        *(u8 **)((u8 *)var_r31 + 0x6C) = gFShopMsgTable;
     }
     return var_r31;
 }
@@ -2276,7 +2276,7 @@ void *fn_801B2A80(u32 arg0) {
     void *Process_Create(void *, u32, void *);
     void fn_801403F0(void *);
     extern u8 lbl_802975D0[];
-    extern u8 lbl_80297890[];
+    extern u8 gFShopMsgTable[];
     
     void *var_r31;
     
@@ -2297,7 +2297,7 @@ void *fn_801B2A80(u32 arg0) {
         *(s32 *)((u8 *)var_r31 + 0x58) = 0;
         *(s32 *)((u8 *)var_r31 + 0x60) = 0;
         *(s32 *)((u8 *)var_r31 + 0x64) = 0;
-        *(u8 **)((u8 *)var_r31 + 0x6C) = lbl_80297890;
+        *(u8 **)((u8 *)var_r31 + 0x6C) = gFShopMsgTable;
     }
     return var_r31;
 }
