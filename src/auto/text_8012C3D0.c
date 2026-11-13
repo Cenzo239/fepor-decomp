@@ -1646,7 +1646,7 @@ s32 fn_8012F26C(void) {
     return 0;
 }
 
-void fn_8012F274(void *arg0, void *arg1, f32 farg0, f32 farg1) {
+void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
