@@ -8874,7 +8874,7 @@ void fn_800C15A8(void) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void fn_80223AA0(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
     void fn_80223F2C(s32, s32, s32, s32);
@@ -8917,7 +8917,7 @@ void fn_800C15A8(void) {
     fn_80223F2C(r31, r30, r29, 0xFF);
     GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
     GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
-    fn_80223AA0(r31, 7, 7, 7, 0);
+    GXSetTevAlphaIn(r31, 7, 7, 7, 0);
     fn_80223B4C(r31, 0, 0, 0, 1, 0);
 }
 
@@ -8934,7 +8934,7 @@ s32 fn_800C1730(void) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void fn_80223AA0(s32, s32, s32, s32, s32);
+    void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
     void fn_80223C78(s32, s32 *);
@@ -9000,7 +9000,7 @@ s32 fn_800C1730(void) {
         GXSetTevColorOp(r31, 0, 0, 3, 1, 0);
         break;
     }
-    fn_80223AA0(r31, 7, 7, 7, 0);
+    GXSetTevAlphaIn(r31, 7, 7, 7, 0);
     fn_80223B4C(r31, 0, 0, 0, 1, 0);
     return 1;
 }

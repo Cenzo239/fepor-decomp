@@ -965,7 +965,7 @@ void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(u16 *)__GXData = 0;
 }
 
-u16 fn_80223AA0(u16 arg0) {
+u16 GXSetTevAlphaIn(u16 arg0) {
     return __GXData[0x388 + arg0 * 0x10];
 }
 
