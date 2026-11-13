@@ -10244,7 +10244,7 @@ s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void fn_80177854(void *arg0, void *arg1, void *arg2) {
+extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     void fn_80007124(s32);
     void fn_80007220(s32, f32);
     void Prim2D_SetColorPacked(s32 *);
