@@ -2317,9 +2317,10 @@ void Battle_AdvancePhase(void) {
     extern u8 gUnitLists[];
     extern u8 lbl_80269210[];
     extern u8 lbl_80331FB8[];
-    u8 sp10[8];
-    u8 sp8[8];
+    u8 factionMaskB[8];
+    u8 factionMaskA[8];
 
+    /* Advance battle phase: clear turn state on active units, then bump phase. */
     if ((gBattleState[0x9F] >> 3) & 1) {
         fn_80006220(0x20);
         return;
@@ -2327,10 +2328,10 @@ void Battle_AdvancePhase(void) {
     if (gBattleState[0x10] == 0x1C) {
         s32 i;
         u8 *unit;
-        void *linked;
+        void *partner;
         u32 flags;
 
-        fn_80015320(4, sp8);
+        fn_80015320(4, factionMaskA);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -2339,13 +2340,13 @@ void Battle_AdvancePhase(void) {
                 unit = NULL;
             }
             if (*(u32 *)(unit + 0x188) != 0
-                && sp8[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
+                && factionMaskA[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
                 flags = *(u32 *)(unit + 0x1A0);
                 if ((flags & 2) && !(flags & 0x100000)) {
-                    linked = *(void **)(unit + 0x194);
+                    partner = *(void **)(unit + 0x194);
                     Unit_SeparateRescue(unit, unit[0x19E], unit[0x19F]);
-                    if (linked != NULL) {
-                        *(u32 *)((u8 *)linked + 0x1A0) &= ~1;
+                    if (partner != NULL) {
+                        *(u32 *)((u8 *)partner + 0x1A0) &= ~1;
                     }
                 }
                 flags = *(u32 *)(unit + 0x1A0);
@@ -2365,31 +2366,31 @@ void Battle_AdvancePhase(void) {
         return;
     }
     {
-        void *p;
-        void *linked;
+        void *unit;
+        void *next;
         u32 flags;
 
-        p = *(void **)(gUnitLists + 0x40);
-        while (p != NULL) {
-            flags = *(u32 *)((u8 *)p + 0x1A0);
-            linked = *(void **)((u8 *)p + 0x180);
+        unit = *(void **)(gUnitLists + 0x40);
+        while (unit != NULL) {
+            flags = *(u32 *)((u8 *)unit + 0x1A0);
+            next = *(void **)((u8 *)unit + 0x180);
             if ((flags & 0x4000) && (flags & 0x10000)) {
-                fn_8003D68C(p, 0);
+                fn_8003D68C(unit, 0);
             }
-            p = linked;
+            unit = next;
         }
-        p = fn_80016BDC(lbl_80269210 + 0x29C);
-        if (p != NULL) {
-            fn_8003D68C(p, 0);
+        unit = fn_80016BDC(lbl_80269210 + 0x29C);
+        if (unit != NULL) {
+            fn_8003D68C(unit, 0);
         }
     }
     {
         s32 i;
         u8 *unit;
-        void *linked;
+        void *partner;
         u32 flags;
 
-        fn_80015320(4, sp10);
+        fn_80015320(4, factionMaskB);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -2398,13 +2399,13 @@ void Battle_AdvancePhase(void) {
                 unit = NULL;
             }
             if (*(u32 *)(unit + 0x188) != 0
-                && sp10[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
+                && factionMaskB[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0) {
                 flags = *(u32 *)(unit + 0x1A0);
                 if ((flags & 2) && !(flags & 0x100000)) {
-                    linked = *(void **)(unit + 0x194);
+                    partner = *(void **)(unit + 0x194);
                     Unit_SeparateRescue(unit, unit[0x19E], unit[0x19F]);
-                    if (linked != NULL) {
-                        *(u32 *)((u8 *)linked + 0x1A0) &= ~1;
+                    if (partner != NULL) {
+                        *(u32 *)((u8 *)partner + 0x1A0) &= ~1;
                     }
                 }
                 flags = *(u32 *)(unit + 0x1A0);
