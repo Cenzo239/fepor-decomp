@@ -21816,7 +21816,7 @@ s32 fn_800FE8E8(void *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-s32 fn_800FE904(void) {
+s32 Battle_BuildUnitScoreList(void) {
     u8 fn_80017318(void *);
     u8 fn_8001DD54(void *, void *);
     void **fn_80037BBC(void *, s32);
@@ -21931,7 +21931,7 @@ void fn_800FEC0C(void) {
     extern u8 lbl_8032B3C0[];
 
     void fn_800FC6B0(void *);
-    s32 fn_800FE904(void);
+    s32 Battle_BuildUnitScoreList(void);
     s32 fn_800FE8E8(void *, void *);
     void fn_800FEC9C(void *, void *, void *);
 
@@ -21940,7 +21940,7 @@ void fn_800FEC0C(void) {
 
     fn_800FC6B0(gUnitLists + gBattleState[0x11] * 12);
 
-    count = fn_800FE904();
+    count = Battle_BuildUnitScoreList();
     table = (void **)(lbl_8032B3C0 + 0x18);
 
     fn_800FEC9C(table, table + count, fn_800FE8E8);
