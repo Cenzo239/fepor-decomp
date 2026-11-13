@@ -4842,7 +4842,7 @@ void fn_801FBC84(void) {
     void *fn_800C4604(s32, s32, char *, s32);
     void fn_800DE9FC(void *);
     void fn_801FC038(void *, void *);
-    void fn_801FC43C(void *, void *, u16 *);
+    void Tree_InsertKey(void *, void *, u16 *);
     void fn_801FC4F8(void *, void *, void *);
     u16 fn_802072A0(void);
     void fn_80207628(s32, s32);
@@ -4907,7 +4907,7 @@ char_body:
         tmp_ch = (s8)str[0];
         str += 1;
         sp12 = tmp_ch;
-        fn_801FC43C(sp30, &tree, (u16 *)&sp12);
+        Tree_InsertKey(sp30, &tree, (u16 *)&sp12);
         goto char_cond;
     }
     temp_r0 = str[0];
@@ -4922,9 +4922,9 @@ char_body:
         tmp_ch = (s8)str[0];
         str += 1;
         sp10 = tmp_ch;
-        fn_801FC43C(sp28, &tree, (u16 *)&sp10);
+        Tree_InsertKey(sp28, &tree, (u16 *)&sp10);
     } else {
-        fn_801FC43C(sp20, &tree, (u16 *)str);
+        Tree_InsertKey(sp20, &tree, (u16 *)str);
         str += 2;
     }
 char_cond:
@@ -5179,7 +5179,7 @@ void fn_801FC438(void) {
 void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4);
 
 #pragma opt_common_subs off
-void fn_801FC43C(void *arg0, void *arg1, u16 *arg2) {
+void Tree_InsertKey(void *arg0, void *arg1, u16 *arg2) {
     extern u8 lbl_80366F08;
     extern u8 lbl_80366F09;
     void *key;
