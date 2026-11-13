@@ -4538,7 +4538,7 @@ extern "C" void fn_801BE1EC(void *arg0) {
 extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
     void fn_80140304(void *, s32);
     void fn_800C428C(void *);
-    extern void lbl_80297E78;
+    extern void gUiPanelBaseVt;
 
     struct RefObj {
         virtual void destroy(s32);
@@ -4568,7 +4568,7 @@ extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
     doFree = arg1;
     if (arg0 != NULL) {
         h = (Holder *)arg0;
-        h->vt = &lbl_80297E78;
+        h->vt = &gUiPanelBaseVt;
         p = h->p48;
         if (p != NULL) {
             if (--p->refCount == 0 && p != NULL) {
@@ -4654,7 +4654,7 @@ void *fn_801BE6A8(s32 arg0) {
     void fn_801403F0(void);
     void Process_Goto(void *, s32);
     extern u8 lbl_80297C14[];
-    extern u8 lbl_80297E78[];
+    extern u8 gUiPanelBaseVt[];
     extern u8 gUiContext[];
     extern u8 lbl_80368274;
     void *temp_r3;
@@ -4663,7 +4663,7 @@ void *fn_801BE6A8(s32 arg0) {
     temp_r3 = fn_8000CAA0(lbl_80297C14, arg0);
     if (temp_r3 != NULL) {
         fn_801403F0();
-        *(void **)((char *)temp_r3 + 0x40) = lbl_80297E78;
+        *(void **)((char *)temp_r3 + 0x40) = gUiPanelBaseVt;
         *(s32 *)((char *)temp_r3 + 0x48) = 0;
         *(s32 *)((char *)temp_r3 + 0x4C) = 0;
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
@@ -4684,14 +4684,14 @@ void *fn_801BE748(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_801403F0(void);
     extern u8 lbl_80297C14[];
-    extern u8 lbl_80297E78[];
+    extern u8 gUiPanelBaseVt[];
     extern u8 lbl_80368274;
     void *temp_r3;
 
     temp_r3 = fn_8000CAA0(lbl_80297C14, arg0);
     if (temp_r3 != NULL) {
         fn_801403F0();
-        *(void **)((char *)temp_r3 + 0x40) = lbl_80297E78;
+        *(void **)((char *)temp_r3 + 0x40) = gUiPanelBaseVt;
         *(s32 *)((char *)temp_r3 + 0x48) = 0;
         *(s32 *)((char *)temp_r3 + 0x4C) = 0;
         *(s32 *)((char *)temp_r3 + 0x50) = 0;
