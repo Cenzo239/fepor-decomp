@@ -13,7 +13,7 @@ static inline u32 LoadSoundBankB(void *path) {
     void fn_800B49D0(void *);
     s32 fn_800C4638(s32, void *, s32);
     void fn_800C4588(s32);
-    extern u8 lbl_8026EB70[];
+    extern u8 Sound_str[];
     s32 handle;
     s32 size;
     u32 buffer;
@@ -23,7 +23,7 @@ static inline u32 LoadSoundBankB(void *path) {
     value = fn_800B49C8((void *)handle);
     if (value == 0) return 0;
     size = (value + 31) & ~31;
-    buffer = fn_800C4638(size, lbl_8026EB70 + 0x2E, 0);
+    buffer = fn_800C4638(size, Sound_str + 0x2E, 0);
     if (buffer == 0) return 0;
     if (fn_800B4A14((void *)handle, buffer, size, 0) <= 0) {
         fn_800C4588(buffer);
@@ -1800,7 +1800,7 @@ s32 Sound_LoadPack(s32 arg0) {
     s32 fn_800C4638(s32, void *, s32);
     void fn_800C4588(s32);
     void sprintf(void *, void *, ...);
-    extern u8 lbl_8026EB70[], lbl_80319AA8[];
+    extern u8 Sound_str[], lbl_80319AA8[];
     u32 value;
     u32 buffer;
     s32 size;
@@ -1813,14 +1813,14 @@ s32 Sound_LoadPack(s32 arg0) {
     u16 index;
     base = (u8 *)gSoundSys;
     if (*(u32 *)(base + 0xE4) >= 8) return 0;
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, id, lbl_8026EB70 + 0x2F);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, id, Sound_str + 0x2F);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
 
     value = *(u32 *)(base + 0xE4);
     loopBase = (u8 *)gSoundSys;
-    names = lbl_8026EB70;
+    names = Sound_str;
     p = loopBase + value*4;
     *(u32 *)(p + 0x60) = buffer;
     for (;;) {
@@ -1848,7 +1848,7 @@ s32 Sound_LoadPack(s32 arg0) {
         *(u32 *)(node + 0xC) = 0;
         buffer += length;
     }
-    sprintf(lbl_80319AA8, (u8 *)lbl_8026EB70 + 0x1E, id, (u8 *)lbl_8026EB70 + 0x35);
+    sprintf(lbl_80319AA8, (u8 *)Sound_str + 0x1E, id, (u8 *)Sound_str + 0x35);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
@@ -1859,7 +1859,7 @@ s32 Sound_LoadPack(s32 arg0) {
         table += slot * 4;
         *(u32 *)(table + 0x80) = buffer;
     }
-    sprintf(lbl_80319AA8, &lbl_8026EB70[0x1E], id, &lbl_8026EB70[0x3B]);
+    sprintf(lbl_80319AA8, &Sound_str[0x1E], id, &Sound_str[0x3B]);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
@@ -2108,7 +2108,7 @@ s32 fn_800B34B0(u8 *arg0) {
     extern u8 gSoundSys[];
     extern void *lbl_80367814;
     extern s32 lbl_8036780C;
-    extern u8 lbl_8026EB70[];
+    extern u8 Sound_str[];
     u8 *base;
     s32 handle;
     u32 buffer;
@@ -2131,7 +2131,7 @@ s32 fn_800B34B0(u8 *arg0) {
             buffer = 0;
         } else {
             size = (value + 0x1F) & 0xFFFFFFE0;
-            buffer = fn_800C4638(size, lbl_8026EB70 + 0x2E, 0);
+            buffer = fn_800C4638(size, Sound_str + 0x2E, 0);
             if (buffer == 0) {
                 buffer = 0;
             } else {
@@ -2190,61 +2190,61 @@ stored:
 s32 fn_800B36D8(s32 arg0) {
     void sprintf(void *, void *, ...);
     void strcpy(void *, void *, void *);
-    extern u8 lbl_8026EB70[], lbl_80319AA8[], gSoundSys[];
+    extern u8 Sound_str[], lbl_80319AA8[], gSoundSys[];
     u32 buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x6C);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x6C);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x0) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x72);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x72);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x20) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x78);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x78);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x40) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x7E);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x7E);
     strcpy(gSoundSys + 0x142, lbl_80319AA8, gSoundSys);
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x84);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x84);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x8) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x8E);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x8E);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x28) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x98);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0x98);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x48) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xA2);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xA2);
     strcpy(gSoundSys + 0x342, lbl_80319AA8, gSoundSys);
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xAC);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xAC);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x4) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xB8);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xB8);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x24) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xC4);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xC4);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(gSoundSys + 0x44) = buf;
 
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xD0);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg0, Sound_str + 0xD0);
     strcpy(gSoundSys + 0x242, lbl_80319AA8, gSoundSys);
     return 1;
 }
@@ -2308,7 +2308,7 @@ void fn_800B4080(void) {
 
 void fn_800B412C(void) {
 void fn_800B47F0(void);
-extern u8 lbl_80312BD0[], lbl_8026EB70[];
+extern u8 lbl_80312BD0[], Sound_str[];
 extern s32 lbl_80369CA8,lbl_80369CAC;
 extern f32 lbl_80369CB0,lbl_80369CD8,lbl_80369CDC,lbl_80369CE0,lbl_80369CE4,lbl_80369CE8,lbl_80369CEC;
 void fn_802141EC(void *,s32); void fn_80215D2C(void); void fn_80213B44(s32); void fn_80214184(s32);
@@ -2345,21 +2345,21 @@ fn_8024B8EC(127,0,255); M2C_FIELD(base,s32 *,0x4898)=1; fn_8024B94C(1);
 M2C_FIELD(base,s32 *,0x4e40)=fn_8021371C(fn_800AEB90);
 M2C_FIELD(base,u32 *,0x4bb8)=fn_80213800()|0x80000000;
 {u32 size=fn_8021381C(); p=base+0x4768; M2C_FIELD(p,u32 *,0x454)=size;
-if(size>640) {OSReport(lbl_8026EB70); for(;;) {} }}
-M2C_FIELD(p,s16 *,1100)=0;M2C_FIELD(p,s32 *,9948)=0;M2C_FIELD(p,s16 *,288)=10;M2C_FIELD(p,s16 *,290)=500;M2C_FIELD(p,s32 *,224)=0;M2C_FIELD(p,s32 *,228)=0;M2C_FIELD(p,s16 *,300)=0;M2C_FIELD(p,s16 *,316)=0;M2C_FIELD(p,s32 *,232)=0;M2C_FIELD(p,s32 *,1092)=0;M2C_FIELD(base,void **,0x4bb0)=fn_800C4638(0x20000,lbl_8026EB70+46,0);
+if(size>640) {OSReport(Sound_str); for(;;) {} }}
+M2C_FIELD(p,s16 *,1100)=0;M2C_FIELD(p,s32 *,9948)=0;M2C_FIELD(p,s16 *,288)=10;M2C_FIELD(p,s16 *,290)=500;M2C_FIELD(p,s32 *,224)=0;M2C_FIELD(p,s32 *,228)=0;M2C_FIELD(p,s16 *,300)=0;M2C_FIELD(p,s16 *,316)=0;M2C_FIELD(p,s32 *,232)=0;M2C_FIELD(p,s32 *,1092)=0;M2C_FIELD(base,void **,0x4bb0)=fn_800C4638(0x20000,Sound_str+46,0);
 M2C_FIELD(base,s32 *,0x4854)=0;
-p=fn_800C4638(128,lbl_8026EB70+46,0); M2C_FIELD(base,void **,0x4858)=p;
+p=fn_800C4638(128,Sound_str+46,0); M2C_FIELD(base,void **,0x4858)=p;
 if(!p) for(;;) {}
 for(i=0;i<8;i++){M2C_FIELD(p,s32 *,i*16)=-1; M2C_FIELD(p,s32 *,i*16+8)=0;}
-p=fn_800C4638(800,lbl_8026EB70+46,0); M2C_FIELD(base,void **,0x485c)=p;
+p=fn_800C4638(800,Sound_str+46,0); M2C_FIELD(base,void **,0x485c)=p;
 if(!p) for(;;) {}
 for(i=0;i<40;i++,p+=20){M2C_FIELD(p,s16 *,0)=0;M2C_FIELD(p,s32 *,12)=-1;M2C_FIELD(p,s16 *,2)=0;M2C_FIELD(p,s16 *,4)=127;M2C_FIELD(p,s16 *,6)=64;}
-p=fn_800C4638(0x3b4,lbl_8026EB70+46,0); M2C_FIELD(base,void **,0x4860)=p;
+p=fn_800C4638(0x3b4,Sound_str+46,0); M2C_FIELD(base,void **,0x4860)=p;
 if(!p) for(;;) {}
 stream=p;
 for(i=0;i<3;i++,stream+=0x13c) {
 M2C_FIELD(stream,s16 *,0)=0;
-p=fn_800C4638(0x8000,lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,88)=p;p=fn_800C4638(0x8000,lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,92)=p;p=fn_800C4638(fn_8024CE1C(0xe00,0),lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,84)=p;p=fn_800C4638(0x8000,lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,224)=p;p=fn_800C4638(0x8000,lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,228)=p;p=fn_800C4638(fn_8024CE1C(0xe00,0),lbl_8026EB70+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,220)=p;} p=base+0x4768;
+p=fn_800C4638(0x8000,Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,88)=p;p=fn_800C4638(0x8000,Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,92)=p;p=fn_800C4638(fn_8024CE1C(0xe00,0),Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,84)=p;p=fn_800C4638(0x8000,Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,224)=p;p=fn_800C4638(0x8000,Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,228)=p;p=fn_800C4638(fn_8024CE1C(0xe00,0),Sound_str+46,0); if(!p) for(;;) {} M2C_FIELD(stream,void **,220)=p;} p=base+0x4768;
 M2C_FIELD(p,void **,0x100)=fn_80263C94; M2C_FIELD(p,void **,0x104)=base+0x20;
 M2C_FIELD(p,u8 *,0x108)=255; M2C_FIELD(p,s32 *,0x10c)=0;
 M2C_FIELD(p,void **,0x110)=fn_80264F74; M2C_FIELD(p,void **,0x114)=base+0x354;
@@ -2392,8 +2392,8 @@ void fn_800B47A0(void) {
 
 void *fn_800C4638(s32, void *, s32);
 void fn_800B47C0(s32 arg0) {
-    extern u8 lbl_8026EB70[];
-    fn_800C4638(arg0, lbl_8026EB70 + 0x2E, 0);
+    extern u8 Sound_str[];
+    fn_800C4638(arg0, Sound_str + 0x2E, 0);
 }
 
 void fn_800B47F0(void) {
@@ -10064,7 +10064,7 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
     extern f32 lbl_80369CB0;
     extern f32 lbl_80369CD4;
     extern u8 lbl_80319AA8[];
-    extern u8 lbl_8026EB70[];
+    extern u8 Sound_str[];
     void fn_800AFF28(s32, u32);
 
     u8 *buf;
@@ -10176,7 +10176,7 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
             *(u16 *)entry = (u16)(*(u16 *)entry | 0x400);
         }
     }
-    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg1, lbl_8026EB70 + 0x23);
+    sprintf(lbl_80319AA8, Sound_str + 0x1E, arg1, Sound_str + 0x23);
     buf = lbl_80319AA8;
     h = fn_800B4A84(buf, 0, 0);
     *(void **)(entry + 0x2C) = h;
