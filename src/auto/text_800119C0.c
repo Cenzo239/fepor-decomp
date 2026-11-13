@@ -1148,7 +1148,7 @@ void fn_80014F94(void *arg0, s32 arg1) {
 
 void *Msg_ExpandMmTag(void *arg0) {
     void *Msg_Expand(void *);
-    extern u8 lbl_80268018[];
+    extern u8 gMsgCommonStr[];
     u8 temp_r0;
     u8 temp_r0_2;
     u8 var_r4;
@@ -1163,47 +1163,47 @@ void *Msg_ExpandMmTag(void *arg0) {
         var_r4 = 0;
         break;
     default:
-        return &lbl_80268018[0x1D];
+        return &gMsgCommonStr[0x1D];
     }
     temp_r0_2 = *(u8 *)arg0;
     switch ((s32) temp_r0_2) {
     case 0:
         if (var_r4 != 0) {
-            var_r3 = &lbl_80268018[0x1D];
+            var_r3 = &gMsgCommonStr[0x1D];
         } else {
-            var_r3 = &lbl_80268018[0x22];
+            var_r3 = &gMsgCommonStr[0x22];
         }
         return Msg_Expand(var_r3);
     case 1:
         if (var_r4 != 0) {
-            var_r3 = &lbl_80268018[0x28];
+            var_r3 = &gMsgCommonStr[0x28];
         } else {
-            var_r3 = &lbl_80268018[0x2E];
+            var_r3 = &gMsgCommonStr[0x2E];
         }
         return Msg_Expand(var_r3);
     case 2:
         if (var_r4 != 0) {
-            var_r3 = &lbl_80268018[0x34];
+            var_r3 = &gMsgCommonStr[0x34];
         } else {
-            var_r3 = &lbl_80268018[0x3A];
+            var_r3 = &gMsgCommonStr[0x3A];
         }
         return Msg_Expand(var_r3);
     case 3:
         if (var_r4 != 0) {
-            var_r3 = &lbl_80268018[0x40];
+            var_r3 = &gMsgCommonStr[0x40];
         } else {
-            var_r3 = &lbl_80268018[0x46];
+            var_r3 = &gMsgCommonStr[0x46];
         }
         return Msg_Expand(var_r3);
     case 4:
         if (var_r4 != 0) {
-            var_r3 = &lbl_80268018[0x4C];
+            var_r3 = &gMsgCommonStr[0x4C];
         } else {
-            var_r3 = &lbl_80268018[0x52];
+            var_r3 = &gMsgCommonStr[0x52];
         }
         return Msg_Expand(var_r3);
     default:
-        return &lbl_80268018[0x1D];
+        return &gMsgCommonStr[0x1D];
     }
 }
 
@@ -1411,26 +1411,26 @@ void Allegiance_FillMask(u8 mode, u8 *mask) {
 
 char *fn_80015574(s32 arg0)
 {
-    extern u8 lbl_80268018[];
+    extern u8 gMsgCommonStr[];
     char *base;
     char *result;
 
     switch ((u32)arg0) {
     case 0:
-        return (char *)lbl_80268018 + 0x58;
+        return (char *)gMsgCommonStr + 0x58;
     case 1:
-        return (char *)lbl_80268018 + 0x5F;
+        return (char *)gMsgCommonStr + 0x5F;
     case 2:
-        return (char *)lbl_80268018 + 0x65;
+        return (char *)gMsgCommonStr + 0x65;
     case 3:
-        return (char *)lbl_80268018 + 0x6B;
+        return (char *)gMsgCommonStr + 0x6B;
     case 5:
-        return (char *)lbl_80268018 + 0x73;
+        return (char *)gMsgCommonStr + 0x73;
     case 6:
-        return (char *)lbl_80268018 + 0x7A;
+        return (char *)gMsgCommonStr + 0x7A;
     case 4:
     default:
-        base = (char *)lbl_80268018;
+        base = (char *)gMsgCommonStr;
         result = base + 0x83;
         if (arg0 >= 0) {
             return result;
