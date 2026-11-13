@@ -19724,7 +19724,7 @@ void fn_800F94D4(void *arg0) {
     extern u8 gUiContext[];
     extern s32 lbl_803678F4;
 
-    u8 fn_8010BDE0(void *);
+    u8 Ai_TryEscapeMove(void *);
     void fn_8010AD94(void *);
 
     u8 *obj;
@@ -19738,7 +19738,7 @@ void fn_800F94D4(void *arg0) {
         if ((flags & 0x3000000) == 0) {
             *(u32 *)(obj + 0x254) = flags | 8;
 
-            if (fn_8010BDE0(arg0) != 0) {
+            if (Ai_TryEscapeMove(arg0) != 0) {
                 if (gUiContext[8] == 1) {
                     fn_8010AD94(arg0);
                 }
@@ -20822,7 +20822,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
     u8 Unit_IsLowHp(void *);
     u8 Ai_TryUseHealItem(void *);
     u8 Ai_TrySeekHealer(void *);
-    u8 fn_8010BDE0(void *);
+    u8 Ai_TryEscapeMove(void *);
     void fn_8010AD94(void *);
     u8 Ai_TrySeekHealTerrain(void *);
     u8 Ai_TrySelectApproachTile(void *);
@@ -20841,7 +20841,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
             return 1;
         }
         if ((*(s32 *)((u8 *)arg0 + 0x254) & 8) != 0) {
-            if (fn_8010BDE0(arg0) != 0) {
+            if (Ai_TryEscapeMove(arg0) != 0) {
                 if (*(u8 *)(gUiContext + 8) == 1) {
                     fn_8010AD94(arg0);
                 }
@@ -20858,7 +20858,7 @@ s32 Ai_TryHandleLowHp(void *arg0) {
         }
         goto block_23;
     }
-    if (((*(s32 *)((u8 *)arg0 + 0x254) & 8) != 0) && (fn_8010BDE0(arg0) != 0) && (*(u8 *)(gUiContext + 8) == 1)) {
+    if (((*(s32 *)((u8 *)arg0 + 0x254) & 8) != 0) && (Ai_TryEscapeMove(arg0) != 0) && (*(u8 *)(gUiContext + 8) == 1)) {
         fn_8010AD94(arg0);
     }
 block_23:

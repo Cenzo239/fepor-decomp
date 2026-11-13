@@ -3750,7 +3750,7 @@ outer_cmp:
 }
 #pragma use_lmw_stmw reset
 
-u8 fn_8010BDE0(s32 arg0) {
+u8 Ai_TryEscapeMove(s32 arg0) {
     u8 fn_80102334(s32, s32, s16 *, s16 *);
     extern u8 gAiState[];
     extern u8 gUiContext[];
