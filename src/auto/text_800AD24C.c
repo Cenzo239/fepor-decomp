@@ -6210,7 +6210,7 @@ s32 fn_800BBD9C(u32 arg0, void *arg1)
     extern u8 gUnits[];
 
     extern u8 *fn_80019DD0(void *);
-    extern void fn_80105CEC(void *, u32);
+    extern void Status_Set(void *, u32);
 
     u8 *entry;
     u8 *result;
@@ -6227,7 +6227,7 @@ s32 fn_800BBD9C(u32 arg0, void *arg1)
 
     result = fn_80019DD0(arg1);
 
-    fn_80105CEC(entry + 0x1BC, result[0x18]);
+    Status_Set(entry + 0x1BC, result[0x18]);
 
     return 1;
 }

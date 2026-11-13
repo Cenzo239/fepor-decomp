@@ -3256,7 +3256,7 @@ s32 ScriptCmd_TutorialSallyCreate(void) {
 s32 fn_80126D40(u8 arg0) {
     extern u16 gBattleState[];
     u16* ptr = (u16*)((u32)gBattleState + 0x84);
-    fn_80105CEC(ptr, arg0);
+    Status_Set(ptr, arg0);
     return 1;
 }
 
@@ -3270,7 +3270,7 @@ s32 fn_80126D78(u8 arg0) {
 s32 fn_80126DB0(u8 arg0) {
     extern u16 gBattleState[];
     u16* ptr = (u16*)((u32)gBattleState + 0x74);
-    fn_80105CEC(ptr, arg0);
+    Status_Set(ptr, arg0);
     return 1;
 }
 

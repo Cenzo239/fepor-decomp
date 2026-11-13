@@ -2176,7 +2176,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
     void fn_80033E90(s32, s32);
     void fn_80034068(s32, s32, s32);
     u8 Status_Test(s32, s32);
-    void fn_80105CEC(s32, s32);
+    void Status_Set(s32, s32);
     void fn_80105D4C(s32, s32);
     u8 fn_801A3F14(s32);
     void *fn_801A7FF4(s32);
@@ -2211,7 +2211,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
         fn_80034068(self + 0x8A0, 0xA, 0);
     }
     if (a1 == 0xF) {
-        fn_80105CEC(self + 0x1BC, 0x3F);
+        Status_Set(self + 0x1BC, 0x3F);
         if (a2 != 0) {
             t = 0;
         } else {
@@ -2219,7 +2219,7 @@ void Battle_ProcessStatusAnims(s32 arg0, u8 arg1, u8 arg2) {
         }
         *(u8 *)(self + 0x2CA) = t;
     }
-    fn_80105CEC(unit49c, 0x3F);
+    Status_Set(unit49c, 0x3F);
     if (a1 == 0x15 && Status_Test(self + 0x1BC, 0x3F) != 0) {
         fn_80034068(self + 0x8A0, 0x3B, 0);
     }

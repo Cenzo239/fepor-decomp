@@ -4533,7 +4533,7 @@ void fn_8003D2C4(void *arg0) {
     void fn_8003868C(void *, s32);
     u8 Status_Test(void *, s32);
     s32 fn_8003B2D0(void *);
-    void fn_80105CEC(void *, s32);
+    void Status_Set(void *, s32);
     typedef struct {
         u8 pad0[0xC];
         void *unkC;
@@ -4600,7 +4600,7 @@ void fn_8003D2C4(void *arg0) {
     self->unk1C4 |= item->unk24;
     self->unk1C8 |= item->unk28;
     if (Status_Test(flags, code) == 0) {
-        fn_80105CEC(&self->unk1BC, 0x45);
+        Status_Set(&self->unk1BC, 0x45);
     }
     i = 0;
     for (ctr = 2; ctr != 0; ctr--) {

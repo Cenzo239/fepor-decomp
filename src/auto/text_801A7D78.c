@@ -256,16 +256,16 @@ void fn_801A859C(void *arg0) {
 }
 
 void fn_801A85F4(s32 arg0) {
-    M2C_UNK fn_80105CEC(s32, M2C_UNK);
-    fn_80105CEC(arg0 + 0x1BC, 0x4C);
-    fn_80105CEC(arg0 + 0x1BC, 0x31);
-    fn_80105CEC(arg0 + 0x1BC, 0x30);
-    fn_80105CEC(arg0 + 0x1BC, 0x5A);
-    fn_80105CEC(arg0 + 0x1BC, 0x2F);
-    fn_80105CEC(arg0 + 0x1BC, 0x38);
-    fn_80105CEC(arg0 + 0x1BC, 0x35);
-    fn_80105CEC(arg0 + 0x1BC, 0x39);
-    fn_80105CEC(arg0 + 0x1BC, 0x33);
+    M2C_UNK Status_Set(s32, M2C_UNK);
+    Status_Set(arg0 + 0x1BC, 0x4C);
+    Status_Set(arg0 + 0x1BC, 0x31);
+    Status_Set(arg0 + 0x1BC, 0x30);
+    Status_Set(arg0 + 0x1BC, 0x5A);
+    Status_Set(arg0 + 0x1BC, 0x2F);
+    Status_Set(arg0 + 0x1BC, 0x38);
+    Status_Set(arg0 + 0x1BC, 0x35);
+    Status_Set(arg0 + 0x1BC, 0x39);
+    Status_Set(arg0 + 0x1BC, 0x33);
 }
 
 s32 fn_801A8688(s32 arg0) {
@@ -273,27 +273,27 @@ s32 fn_801A8688(s32 arg0) {
     if ((Status_Test(arg0 + 0x1BC, 0x29) == 0) && (Status_Test(arg0 + 0x1BC, 0x41) == 0) && (Status_Test(arg0 + 0x1BC, 0x4C) == 0) && (Status_Test(arg0 + 0x1BC, 0x31) == 0) && (Status_Test(arg0 + 0x1BC, 0x2F) == 0) && (Status_Test(arg0 + 0x1BC, 0x30) == 0) && (Status_Test(arg0 + 0x1BC, 0x32) == 0) && (Status_Test(arg0 + 0x1BC, 0x3F) == 0) && (Status_Test(arg0 + 0x1BC, 0x10) == 0) && (Status_Test(arg0 + 0x1BC, 0x35) == 0) && (Status_Test(arg0 + 0x1BC, 0x2B) == 0) && (Status_Test(arg0 + 0x1BC, 0x2C) == 0) && (Status_Test(arg0 + 0x1BC, 0x2E) == 0) && (Status_Test(arg0 + 0x1BC, 0x33) == 0) && (Status_Test(arg0 + 0x1BC, 0x38) == 0) && (Status_Test(arg0 + 0x1BC, 0x34) == 0) && (Status_Test(arg0 + 0x1BC, 0x39) == 0) && (Status_Test(arg0 + 0x1BC, 0x36) == 0) && (Status_Test(arg0 + 0x1BC, 0x42) == 0) && (Status_Test(arg0 + 0x1BC, 0x5A) == 0) && (Status_Test(arg0 + 0x1BC, 0x2D) == 0)) {
         return 0;
     }
-    fn_80105CEC(arg0 + 0x1BC, 0x29);
-    fn_80105CEC(arg0 + 0x1BC, 0x41);
-    fn_80105CEC(arg0 + 0x1BC, 0x4C);
-    fn_80105CEC(arg0 + 0x1BC, 0x31);
-    fn_80105CEC(arg0 + 0x1BC, 0x2F);
-    fn_80105CEC(arg0 + 0x1BC, 0x30);
-    fn_80105CEC(arg0 + 0x1BC, 0x32);
-    fn_80105CEC(arg0 + 0x1BC, 0x3F);
-    fn_80105CEC(arg0 + 0x1BC, 0x10);
-    fn_80105CEC(arg0 + 0x1BC, 0x35);
-    fn_80105CEC(arg0 + 0x1BC, 0x2B);
-    fn_80105CEC(arg0 + 0x1BC, 0x2C);
-    fn_80105CEC(arg0 + 0x1BC, 0x2E);
-    fn_80105CEC(arg0 + 0x1BC, 0x33);
-    fn_80105CEC(arg0 + 0x1BC, 0x38);
-    fn_80105CEC(arg0 + 0x1BC, 0x34);
-    fn_80105CEC(arg0 + 0x1BC, 0x39);
-    fn_80105CEC(arg0 + 0x1BC, 0x36);
-    fn_80105CEC(arg0 + 0x1BC, 0x42);
-    fn_80105CEC(arg0 + 0x1BC, 0x5A);
-    fn_80105CEC(arg0 + 0x1BC, 0x2D);
+    Status_Set(arg0 + 0x1BC, 0x29);
+    Status_Set(arg0 + 0x1BC, 0x41);
+    Status_Set(arg0 + 0x1BC, 0x4C);
+    Status_Set(arg0 + 0x1BC, 0x31);
+    Status_Set(arg0 + 0x1BC, 0x2F);
+    Status_Set(arg0 + 0x1BC, 0x30);
+    Status_Set(arg0 + 0x1BC, 0x32);
+    Status_Set(arg0 + 0x1BC, 0x3F);
+    Status_Set(arg0 + 0x1BC, 0x10);
+    Status_Set(arg0 + 0x1BC, 0x35);
+    Status_Set(arg0 + 0x1BC, 0x2B);
+    Status_Set(arg0 + 0x1BC, 0x2C);
+    Status_Set(arg0 + 0x1BC, 0x2E);
+    Status_Set(arg0 + 0x1BC, 0x33);
+    Status_Set(arg0 + 0x1BC, 0x38);
+    Status_Set(arg0 + 0x1BC, 0x34);
+    Status_Set(arg0 + 0x1BC, 0x39);
+    Status_Set(arg0 + 0x1BC, 0x36);
+    Status_Set(arg0 + 0x1BC, 0x42);
+    Status_Set(arg0 + 0x1BC, 0x5A);
+    Status_Set(arg0 + 0x1BC, 0x2D);
     return 1;
 }
 

@@ -103,7 +103,7 @@ void *fn_8009FAAC(void) {
 s32 fn_8009FABC(s32 arg0, s32 arg1, void *arg2) {
 void *fn_800AA794(void);
 void *fn_80105C5C(s32, u8);
-void fn_80105CEC(s32, u8);
+void Status_Set(s32, u8);
 s32 src;
 s32 dst;
 s32 idx;
@@ -126,7 +126,7 @@ goto found;
 }
 entry = NULL;
 found:
-if (entry != NULL) fn_80105CEC(dst + 0x1BC, *(u8 *)((u8 *)entry + 0x18));
+if (entry != NULL) Status_Set(dst + 0x1BC, *(u8 *)((u8 *)entry + 0x18));
 return 0;
 }
 

@@ -320,7 +320,7 @@ s32 fn_80105C5C(s32 *arg0, u8 arg1) {
     return 0;
 }
 
-void fn_80105CEC(s32 *arg0, u8 arg1) {
+void Status_Set(s32 *arg0, u8 arg1) {
     u32 *p = (u32 *)arg0;
     s32 n = arg1;
 

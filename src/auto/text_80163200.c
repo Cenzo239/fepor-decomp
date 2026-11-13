@@ -12952,11 +12952,11 @@ void fn_8017C05C(void *arg0) {
 }
 
 void fn_8017C0EC(void *arg0) {
-    M2C_UNK fn_80105CEC(s32, u8, s32);
+    M2C_UNK Status_Set(s32, u8, s32);
     s32 temp_r5;
 
     temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x4C);
-    fn_80105CEC(temp_r5 + 0x1BC, M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), u8 *, 0x18), temp_r5);
+    Status_Set(temp_r5 + 0x1BC, M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), u8 *, 0x18), temp_r5);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s8 *, 0x3C) = 0;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x58) = 0;
 }
@@ -12980,7 +12980,7 @@ void fn_8017C140(void *arg0) {
 
 void fn_8017C170(void *arg0) {
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    void fn_80105CEC(s32, u8, s32);
+    void Status_Set(s32, u8, s32);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036AB94;
     extern f32 lbl_8036ABA0;
@@ -12998,7 +12998,7 @@ void fn_8017C170(void *arg0) {
         *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x58) = 1;
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x60) = temp_f0;
         temp_r5 = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x4C);
-        fn_80105CEC(temp_r5 + 0x1BC, *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x38) + 0x18), temp_r5);
+        Status_Set(temp_r5 + 0x1BC, *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x38) + 0x18), temp_r5);
         Process_ClearFunc(arg0);
         return;
     }
@@ -13038,7 +13038,7 @@ void fn_8017C304(void *arg0) {
     s32 temp_r5;
 
     temp_r5 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x4C);
-    fn_80105CEC(temp_r5 + 0x1BC, M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), u8 *, 0x18), temp_r5);
+    Status_Set(temp_r5 + 0x1BC, M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), u8 *, 0x18), temp_r5);
 }
 
 void fn_8017C338(void *arg0) {
