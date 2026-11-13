@@ -188,7 +188,7 @@ void fn_80211F78(s32 arg0, s32 arg1) {
     extern s32 lbl_80366FAC;
     extern s32 lbl_8036866C;
     extern s32 lbl_80368670;
-    extern char lbl_8033A1C0[];
+    extern char Origin[];
     extern void fn_802121E0(void);
     void fn_80211DD4(s32);
     void fn_8023BA70(s32, void *);
@@ -210,7 +210,7 @@ void fn_80211F78(s32 arg0, s32 arg1) {
     lbl_80366FA4 = __cntlzw(lbl_80368670);
     if (lbl_80366FA4 != 0x20) {
         lbl_80368670 &= ~(0x80000000U >> lbl_80366FA4);
-        memset(lbl_8033A1C0 + (lbl_80366FA4 * 0xC), 0, 0xC);
+        memset(Origin + (lbl_80366FA4 * 0xC), 0, 0xC);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
 }
@@ -222,7 +222,7 @@ void fn_80212108(s32 chan, u32 type) {
     void fn_8023C188(s32, void (*)(s32, u32));
     void memset(void *, int, u32);
     extern void fn_802121E0(s32, u32);
-    extern u8 lbl_8033A1C0[];
+    extern u8 Origin[];
     extern s32 lbl_80366FA4;
     extern u32 lbl_80366FAC;
     extern u32 lbl_8036866C;
@@ -248,7 +248,7 @@ void fn_80212108(s32 chan, u32 type) {
     lbl_80366FA4 = __cntlzw(bit);
     if (lbl_80366FA4 != 0x20) {
         lbl_80368670 = bit & ~(0x80000000U >> lbl_80366FA4);
-        memset(&lbl_8033A1C0[lbl_80366FA4 * 12], 0, 12);
+        memset(&Origin[lbl_80366FA4 * 12], 0, 12);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
 }
@@ -256,7 +256,7 @@ void fn_80212108(s32 chan, u32 type) {
 void fn_8021250C(s32 chan, u32 type) {
     s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback, s64 delay);
     extern void fn_8021203C(void);
-    extern u8 lbl_8033A1C0[];
+    extern u8 Origin[];
     extern u32 lbl_80366FB8;
     extern u32 lbl_8036866C;
     extern u32 lbl_80368678;
@@ -277,7 +277,7 @@ void fn_8021250C(s32 chan, u32 type) {
 
     if (!(error & 0xF) && (type & 0x80000000) && (type & 0x00100000) && (type & 0x40000000) &&
         !(type & 0x04000000) && !(type & 0x00080000) && !(type & 0x00040000)) {
-        SITransfer(chan, &lbl_80366FB8, 1, &lbl_8033A1C0[chan * 0xC], 10, fn_8021203C, 0);
+        SITransfer(chan, &lbl_80366FB8, 1, &Origin[chan * 0xC], 10, fn_8021203C, 0);
     } else {
         PADDisable(chan);
     }
@@ -299,7 +299,7 @@ u32 fn_802129C0(PADStatus *status)
   void fn_8021250C(s32, u32);
   s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
   void *memset(void *, s32, u32);
-  extern u8 lbl_8033A1C0[];
+  extern u8 Origin[];
   extern s32 lbl_80366FA4;
   extern u16 lbl_80366FB8;
   extern u32 lbl_8036866C;
@@ -318,7 +318,7 @@ u32 fn_802129C0(PADStatus *status)
   enabled = OSDisableInterrupts();
   chan = (result = 0);
   offset = chan * 12;
-  origin = lbl_8033A1C0 + offset;
+  origin = Origin + offset;
   do
   {
     bit = 0x80000000U >> chan;
@@ -550,7 +550,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     extern u32 lbl_80366FAC;
     extern u32 lbl_8033A1B0[];
     extern u32 __PADFixBits;
-    extern u8 lbl_8033A1C0[];
+    extern u8 Origin[];
     u8* origin;
 
     status->button = (u16)((data[0] >> 16) & 0x3fff);
@@ -619,7 +619,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     }
 
     __PADFixBits &= ~(0x80000000U >> chan);
-    origin = &lbl_8033A1C0[chan * 12];
+    origin = &Origin[chan * 12];
 
     ClampS8(&status->stickX, (s8)origin[2]);
     ClampS8(&status->stickY, (s8)origin[3]);
