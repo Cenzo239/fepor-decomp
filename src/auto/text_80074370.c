@@ -2891,7 +2891,7 @@ void Face_DebugScaleProc(void *arg0) {
     extern f32 gFaceDbgScaleStep;
     extern f32 lbl_803693D4;
     extern f32 lbl_803693D8;
-    extern f32 lbl_803693DC;
+    extern f32 gFaceDbgTextX;
     extern f32 lbl_803693E0;
     extern f32 lbl_803693E4;
     extern f32 lbl_803693E8;
@@ -2919,7 +2919,7 @@ void Face_DebugScaleProc(void *arg0) {
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos(lbl_803693DC, lbl_803693E0);
+    Prim2D_SetPos(gFaceDbgTextX, lbl_803693E0);
     Prim2D_SetText(sp8);
     Prim2D_SetScale(lbl_803693E4);
     Prim2D_EndPrim();
