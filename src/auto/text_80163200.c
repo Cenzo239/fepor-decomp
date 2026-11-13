@@ -11369,7 +11369,7 @@ u8 fn_80179284(void) {
  return (u8)result;
 }
 
-s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_ConfirmListCmd80(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     void Process_DetachChild(void *);
     void fn_8000A430(void *);
