@@ -114,7 +114,7 @@ void fn_801620BC(void) {
     extern M2C_UNK lbl_80367EF8;
     extern M2C_UNK lbl_80367F00;
     extern M2C_UNK lbl_80367F08;
-    extern M2C_UNK lbl_80367F10;
+    extern M2C_UNK gUiPanelDecorUvB;
     extern M2C_UNK gUiPanelDecorUvA;
     extern M2C_UNK lbl_80367F20;
     extern M2C_UNK lbl_80367F28;
@@ -292,7 +292,7 @@ void fn_801620BC(void) {
     fn_80163214(&lbl_80367EF8, 0, 0, 0x48, 0x18);
     fn_80163214(&lbl_80367F00, 0, 0, 0x48, 0x18);
     fn_80163214(&lbl_80367F08, 0, 0, 8, 0x18);
-    fn_80163214(&lbl_80367F10, 0, 0, 0xF8, 0x10);
+    fn_80163214(&gUiPanelDecorUvB, 0, 0, 0xF8, 0x10);
     fn_80163214(&gUiPanelDecorUvA, 0, 0, 0x60, 0x30);
     fn_80163214(&lbl_80367F20, 0, 0, 0x108, 0x60);
     fn_80163214(&lbl_80367F28, 0, 0, 0x108, 0x60);
