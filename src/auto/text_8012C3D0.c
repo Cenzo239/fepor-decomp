@@ -2126,6 +2126,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
 
 #pragma use_lmw_stmw on
 void Ui_DrawUnitListModels(void *arg0) {
+    /* Draw scrolled unit-list 3D models, dimming entries by filter mode. */
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -2171,17 +2172,17 @@ void Ui_DrawUnitListModels(void *arg0) {
     s32 y;
     void *list;
     s32 i;
-    void *item;
-    void *obj;
+    void *unit;
+    void *model;
     void *self;
-    s32 lo;
-    s32 hi;
-    s32 unk6A;
+    s32 firstVis;
+    s32 lastVis;
+    s32 scrollY;
     u8 inRange;
-    u8 mode;
-    f32 f30;
-    f32 f29;
-    f32 f28;
+    u8 filterMode;
+    f32 baseX;
+    f32 posX;
+    f32 posY;
 
     self = arg0;
     PSMTXRotRad(spA4, 0x58, lbl_8036A57C);
@@ -2201,52 +2202,52 @@ void Ui_DrawUnitListModels(void *arg0) {
     Prim2D_AddPrim(0xB);
     fn_80007340(fn_801302C0, 0);
     Prim2D_EndPrim();
-    f30 = lbl_8036A4E8;
+    baseX = lbl_8036A4E8;
     i = 0;
     y = 0x60;
     while (i < *(u8 *)((u8 *)self + 0x61)) {
-        item = *(void **)list;
-        obj = *((void **)list + 1);
-        fn_8004BD1C(item, sp8, lbl_8036A584);
-        unk6A = *(s16 *)((u8 *)self + 0x6A);
-        f29 = f30 + sp8[0];
-        f28 = sp8[1] + (f32)(y - unk6A);
-        lo = unk6A / 32;
-        hi = lo + 8;
-        if ((unk6A % 32) != 0) {
-            hi += 1;
+        unit = *(void **)list;
+        model = *((void **)list + 1);
+        fn_8004BD1C(unit, sp8, lbl_8036A584);
+        scrollY = *(s16 *)((u8 *)self + 0x6A);
+        posX = baseX + sp8[0];
+        posY = sp8[1] + (f32)(y - scrollY);
+        firstVis = scrollY / 32;
+        lastVis = firstVis + 8;
+        if ((scrollY % 32) != 0) {
+            lastVis += 1;
         }
-        if ((i >= lo) && (i <= hi)) {
+        if ((i >= firstVis) && (i <= lastVis)) {
             inRange = 1;
         } else {
             inRange = 0;
         }
         if (inRange != 0) {
-            mode = *(u8 *)((u8 *)self + 0x6C);
-            if ((mode == 1) && (*(u32 *)((u8 *)item + 0x1A0) & 0x10)) {
-                Model_SetColor(obj, 0x40, 0x40, 0x40);
-            } else if ((mode == 2) && !(*(u32 *)((u8 *)item + 0x1A0) & 0x400000)) {
-                Model_SetColor(obj, 0x40, 0x40, 0x40);
+            filterMode = *(u8 *)((u8 *)self + 0x6C);
+            if ((filterMode == 1) && (*(u32 *)((u8 *)unit + 0x1A0) & 0x10)) {
+                Model_SetColor(model, 0x40, 0x40, 0x40);
+            } else if ((filterMode == 2) && !(*(u32 *)((u8 *)unit + 0x1A0) & 0x400000)) {
+                Model_SetColor(model, 0x40, 0x40, 0x40);
             } else {
-                Model_SetColor(obj, 0x80, 0x80, 0x80);
+                Model_SetColor(model, 0x80, 0x80, 0x80);
             }
-            PSMTXTrans(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
-            PSMTXConcat(spD4, sp14, (u8 *)obj + 0x10);
-            Model_SetAlpha(obj, 0xFF);
-            fn_8005F780(obj, 0xFF);
-            fn_80060060(obj);
-            fn_800609DC(obj);
+            PSMTXTrans(spD4, posX, lbl_8036A518 + posY, lbl_8036A58C);
+            PSMTXConcat(spD4, sp14, (u8 *)model + 0x10);
+            Model_SetAlpha(model, 0xFF);
+            fn_8005F780(model, 0xFF);
+            fn_80060060(model);
+            fn_800609DC(model);
             Prim2D_Begin();
             Prim2D_SetTransform(lbl_8036A510, lbl_8036A510, lbl_8036A58C, lbl_8036A50C);
             fn_8000A174(0, 0x410);
             Prim2D_SetColorByte(0xFF);
-            unk6A = *(s16 *)((u8 *)self + 0x6A);
-            if ((unk6A % 32) != 0) {
+            scrollY = *(s16 *)((u8 *)self + 0x6A);
+            if ((scrollY % 32) != 0) {
                 fn_80009BC0(Ui_ScissorUnitListRows, 0);
             }
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xB);
-            fn_80007340(fn_80069F04, (s32)obj);
+            fn_80007340(fn_80069F04, (s32)model);
             Prim2D_EndPrim();
         }
         y += 0x20;
