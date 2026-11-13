@@ -1010,7 +1010,7 @@ void fn_801EC7B8(void) {
     void ARQPostRequest(void *, s32, s32, s32, s32, s32, s32, void *);
     void fn_801ED838(void);
     extern u8 lbl_8027F1D0[];
-    extern u8 lbl_80332270[];
+    extern u8 gAramSlotPool[];
     extern void *lbl_80338E70[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
@@ -1127,7 +1127,7 @@ void fn_801EC7B8(void) {
             } while (--ctr != 0);
         }
         gAramUsedList = lbl_80338E70[0];
-        p = lbl_80332270;
+        p = gAramSlotPool;
         zero = 0;
         ctr = 0x40;
         do {
@@ -1164,7 +1164,7 @@ void fn_801EC7B8(void) {
             }
             p += 0x6C;
         } while (--ctr != 0);
-        p = lbl_80332270;
+        p = gAramSlotPool;
         ctr = 0x20;
         j = 0xFF;
         for (;;) {
@@ -1225,7 +1225,7 @@ void fn_801EC7B8(void) {
         DebugPrint(lbl_8027F1D0 + 0x19, dt / ((bus >> 2) / 4000));
         return;
     }
-    p = lbl_80332270;
+    p = gAramSlotPool;
     zero = 0;
     ctr = 0x20;
     do {
@@ -1248,7 +1248,7 @@ void fn_801EC7B8(void) {
         p += 0x360;
     } while (--ctr != 0);
     gAramUsedList = 0;
-    p = lbl_80332270;
+    p = gAramSlotPool;
     ctr = 0x20;
     j = 0xFF;
     for (;;) {
@@ -1309,7 +1309,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void strcpy(void *, s32, s32);
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
-    extern u8 lbl_80332270[];
+    extern u8 gAramSlotPool[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 gAramHeapSize;
@@ -1338,7 +1338,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         return 0;
     }
     i = 0xFF;
-    for (p = lbl_80332270; i >= 0; p += 0x6C, i--) {
+    for (p = gAramSlotPool; i >= 0; p += 0x6C, i--) {
         if (*(s32 *)(p + 0x64) == 0) {
             slot = p;
             goto found;
@@ -1352,7 +1352,7 @@ found:
     flag = 0;
     if (fn_80234200(path, 0x2F) != 0 && Str_Cmp(lbl_8027F1D0 + 0x35) == 0) {
         size = 0;
-        node = lbl_80332270;
+        node = gAramSlotPool;
         do {
             if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
                 next = *(void **)(node + 0x60);
@@ -1400,7 +1400,7 @@ void fn_801ED12C(s32 arg0) {
     void *AramCache_InsertFree(void *, void *);
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    extern u8 lbl_80332270[];
+    extern u8 gAramSlotPool[];
     u32 best_size;
     void *best;
     void *cell;
@@ -1474,7 +1474,7 @@ have:
     goto insert;
 
 split:
-    cell = lbl_80332270;
+    cell = gAramSlotPool;
     *(s32 *)((u8 *)best + 0x64) = arg0;
     var_ctr = 0x20;
 loop_s:
@@ -1581,7 +1581,7 @@ void fn_801ED52C(s32 arg0) {
     s32 fn_80214184(s32);
     void fn_80215D2C(void);
     s32 fn_80215F38(void);
-    extern u8 lbl_80332270[];
+    extern u8 gAramSlotPool[];
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 gAramBase;
@@ -1598,7 +1598,7 @@ void fn_801ED52C(s32 arg0) {
         fn_80215D2C();
     }
     ctr1 = 0x20;
-    var_r4 = lbl_80332270;
+    var_r4 = gAramSlotPool;
     zero = 0;
     do {
         *(s32 *)(var_r4 + 0x64) = zero;
@@ -1625,7 +1625,7 @@ void fn_801ED52C(s32 arg0) {
     gAramBase = fn_80214184(arg0);
     zero_ptr = 0;
     ctr2 = 0x20;
-    var_r4 = lbl_80332270;
+    var_r4 = gAramSlotPool;
     var_r3 = 0xFF;
     gAramHeapSize = arg0;
     gAramUsedList = zero_ptr;
