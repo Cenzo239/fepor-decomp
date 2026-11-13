@@ -1009,6 +1009,7 @@ void fn_8020DD7C(void) {
 }
 
 #pragma opt_common_subs off
+/* Pop the next DVD command and enter its busy/resume path (Dolphin DVD state machine). */
 void stateReady(void) {
     extern u16 BB2_80339F40[];
     extern volatile s32 CurrCommand_803685B4;
@@ -1025,9 +1026,9 @@ void stateReady(void) {
     void __DVDStoreErrorCode(s32);
     void DVDLowStopMotor(void (*)(u32));
     void cbForStateError(u32);
-    u8 *base = (u8 *)BB2_80339F40;
+    u8 *bb2 = (u8 *)BB2_80339F40;
     void *block;
-    void (*cb)(s32, void *);
+    void (*callback)(s32, void *);
 
     if (!__DVDCheckWaitingQueue()) {
         executing_80368598 = 0;
@@ -1042,10 +1043,10 @@ void stateReady(void) {
     if (FatalErrorFlag_803685B0) {
         ((DVDReadyCommand *)executing_80368598)->state = -1;
         block = executing_80368598;
-        executing_80368598 = base + 0x40;
-        cb = *(void (**)(s32, void *))((u8 *)block + 0x28);
-        if (cb)
-            cb(-1, block);
+        executing_80368598 = bb2 + 0x40;
+        callback = *(void (**)(s32, void *))((u8 *)block + 0x28);
+        if (callback)
+            callback(-1, block);
         stateReady();
         return;
     }
@@ -1076,17 +1077,17 @@ void stateReady(void) {
             case 15:
                 __DVDClearWaitingQueue();
                 block = executing_80368598;
-                executing_80368598 = base + 0x40;
-                cb = *(void (**)(s32, void *))((u8 *)block + 0x28);
-                if (cb)
-                    cb(-4, block);
+                executing_80368598 = bb2 + 0x40;
+                callback = *(void (**)(s32, void *))((u8 *)block + 0x28);
+                if (callback)
+                    callback(-4, block);
                 stateReady();
                 break;
             default:
                 MotorState_803685D8 = 0;
                 DVDReset();
-                OSCreateAlarm(base + 0x70);
-                OSSetAlarm(base + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
+                OSCreateAlarm(bb2 + 0x70);
+                OSSetAlarm(bb2 + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
                 break;
             }
             break;
@@ -1110,17 +1111,17 @@ void stateReady(void) {
     case 15:
         __DVDClearWaitingQueue();
         block = executing_80368598;
-        executing_80368598 = base + 0x40;
-        cb = *(void (**)(s32, void *))((u8 *)block + 0x28);
-        if (cb)
-            cb(-4, block);
+        executing_80368598 = bb2 + 0x40;
+        callback = *(void (**)(s32, void *))((u8 *)block + 0x28);
+        if (callback)
+            callback(-4, block);
         stateReady();
         break;
     default:
         MotorState_803685D8 = 0;
         DVDReset();
-        OSCreateAlarm(base + 0x70);
-        OSSetAlarm(base + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
+        OSCreateAlarm(bb2 + 0x70);
+        OSSetAlarm(bb2 + 0x70, (u64)(((*(u32 *)0x800000f8 / 4) / 1000) * 1150), AlarmHandler);
         break;
     }
 }
