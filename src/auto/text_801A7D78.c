@@ -1753,76 +1753,77 @@ extern "C" void fn_801ADD8C(void *arg0) {
     ((Obj *)arg0)->v6();
 }
 
-extern "C" void Options_HandleFocusInput(void *arg0) {
+/* Move options focus among the main 8-slot row and the two bottom panes; play UI SE on change. */
+extern "C" void Options_HandleFocusInput(void *opt) {
     extern u8 Options_SeCues[];
     extern void *gPadInput;
     void Ui_PlaySeCue(void *, s32);
     extern s32 gUiInputFlags;
-    u8 var_r3;
-    s16 temp_r31;
-    s32 temp_r4;
-    s32 temp_r5;
-    s16 var_r3_2;
-    s32 temp_r5_2;
-    s16 temp_r0;
+    u8 blocked;
+    s16 cursor;
+    s32 held;
+    s32 buttons;
+    s16 next_focus;
+    s32 pressed;
+    s16 focus;
 
-    var_r3 = 0;
+    blocked = 0;
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
-        var_r3 = 1;
+        blocked = 1;
     }
-    if (var_r3 == 0) {
-        temp_r0 = *(s16 *)((char *)arg0 + 0x3E);
-        temp_r5 = *(s32 *)((char *)gPadInput + 4);
-        temp_r4 = *(s32 *)((char *)gPadInput + 0xC);
-        temp_r31 = *(s16 *)((char *)arg0 + 0x40);
-        temp_r5_2 = temp_r5 & (*(s32 *)((char *)gPadInput + 8) ^ temp_r5);
-        switch (temp_r0) {
+    if (blocked == 0) {
+        focus = *(s16 *)((char *)opt + 0x3E);
+        buttons = *(s32 *)((char *)gPadInput + 4);
+        held = *(s32 *)((char *)gPadInput + 0xC);
+        cursor = *(s16 *)((char *)opt + 0x40);
+        pressed = buttons & (*(s32 *)((char *)gPadInput + 8) ^ buttons);
+        switch (focus) {
         case 0:
-            if (temp_r5_2 & 0x04000004) {
-                var_r3_2 = 2;
-                if (temp_r31 < 4) {
-                    var_r3_2 = 1;
+            if (pressed & 0x04000004) {
+                next_focus = 2;
+                if (cursor < 4) {
+                    next_focus = 1;
                 }
-                *(s16 *)((char *)arg0 + 0x3E) = var_r3_2;
-            } else if (temp_r4 & 0x01000001) {
-                if ((temp_r31 == 0) && (temp_r4 == temp_r5_2)) {
-                    *(s16 *)((char *)arg0 + 0x40) = 7;
-                } else if (0 < temp_r31) {
-                    *(s16 *)((char *)arg0 + 0x40) = *(s16 *)((char *)arg0 + 0x40) - 1;
+                *(s16 *)((char *)opt + 0x3E) = next_focus;
+            } else if (held & 0x01000001) {
+                if ((cursor == 0) && (held == pressed)) {
+                    *(s16 *)((char *)opt + 0x40) = 7;
+                } else if (0 < cursor) {
+                    *(s16 *)((char *)opt + 0x40) = *(s16 *)((char *)opt + 0x40) - 1;
                 }
-            } else if (temp_r4 & 0x02000002) {
-                if ((temp_r31 == 7) && (temp_r4 == temp_r5_2)) {
-                    *(s16 *)((char *)arg0 + 0x40) = 0;
-                } else if (temp_r31 < 7) {
-                    *(s16 *)((char *)arg0 + 0x40) = *(s16 *)((char *)arg0 + 0x40) + 1;
+            } else if (held & 0x02000002) {
+                if ((cursor == 7) && (held == pressed)) {
+                    *(s16 *)((char *)opt + 0x40) = 0;
+                } else if (cursor < 7) {
+                    *(s16 *)((char *)opt + 0x40) = *(s16 *)((char *)opt + 0x40) + 1;
                 }
             }
             break;
         case 1:
-            if (temp_r5_2 & 0x02000002) {
-                *(s16 *)((char *)arg0 + 0x3E) = 2;
-            } else if (temp_r5_2 & 0x08000008) {
-                *(s16 *)((char *)arg0 + 0x3E) = 0;
-                if (*(s16 *)((char *)arg0 + 0x40) < 0) {
-                    *(s16 *)((char *)arg0 + 0x40) = 0;
+            if (pressed & 0x02000002) {
+                *(s16 *)((char *)opt + 0x3E) = 2;
+            } else if (pressed & 0x08000008) {
+                *(s16 *)((char *)opt + 0x3E) = 0;
+                if (*(s16 *)((char *)opt + 0x40) < 0) {
+                    *(s16 *)((char *)opt + 0x40) = 0;
                 }
             }
             break;
         case 2:
-            if (temp_r5_2 & 0x01000001) {
-                *(s16 *)((char *)arg0 + 0x3E) = 1;
-            } else if (temp_r5_2 & 0x08000008) {
-                *(s16 *)((char *)arg0 + 0x3E) = 0;
-                if (*(s16 *)((char *)arg0 + 0x40) < 0) {
-                    *(s16 *)((char *)arg0 + 0x40) = 0;
+            if (pressed & 0x01000001) {
+                *(s16 *)((char *)opt + 0x3E) = 1;
+            } else if (pressed & 0x08000008) {
+                *(s16 *)((char *)opt + 0x3E) = 0;
+                if (*(s16 *)((char *)opt + 0x40) < 0) {
+                    *(s16 *)((char *)opt + 0x40) = 0;
                 }
             }
             break;
         }
-        if (temp_r0 != *(s16 *)((char *)arg0 + 0x3E)) {
+        if (focus != *(s16 *)((char *)opt + 0x3E)) {
             Ui_PlaySeCue((u8 *)Options_SeCues + 0x39, 0x64);
         }
-        if (temp_r31 != *(s16 *)((char *)arg0 + 0x40)) {
+        if (cursor != *(s16 *)((char *)opt + 0x40)) {
             Ui_PlaySeCue((u8 *)Options_SeCues + 0x55, 0x64);
         }
     }
