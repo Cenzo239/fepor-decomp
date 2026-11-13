@@ -2946,7 +2946,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_EndMapHoldCursor(void);
     void ScriptCmd_pa(void);
     void ScriptCmd_tt(void);
-    void fn_80126F7C(void);
+    void ScriptCmd_tr(void);
     void fn_80126944(void);
     void fn_8012690C(void);
     void fn_801268D4(void);
@@ -2994,7 +2994,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x1B6, ScriptCmd_EndMapHoldCursor, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1C7, ScriptCmd_pa, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CB, ScriptCmd_tt, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x1CF, fn_80126F7C, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1CF, ScriptCmd_tr, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1D3, fn_80126944, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1E3, fn_8012690C, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1FA, fn_801268D4, 1);
@@ -3323,7 +3323,7 @@ s32 fn_80126F58(void) {
     return 1;
 }
 
-s32 fn_80126F7C(void) {
+s32 ScriptCmd_tr(void) {
     M2C_UNK fn_8011D5EC();
     fn_8011D5EC();
     return 1;
