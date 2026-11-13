@@ -3568,13 +3568,13 @@ void fn_801388D4(void) {
 }
 
 s32 fn_80138908(void) {
-    f32 fn_8013893C();
+    f32 Ui_GetWorldScale();
     extern f32 lbl_8036A618;
-    return (s32) (lbl_8036A618 * fn_8013893C());
+    return (s32) (lbl_8036A618 * Ui_GetWorldScale());
 }
 
 extern s32 fn_80138AB8(void *);
-f32 fn_8013893C(void *arg0) {
+f32 Ui_GetWorldScale(void *arg0) {
     f32 var_f23;
     void *temp_r4;
     
@@ -3592,7 +3592,7 @@ f32 fn_8013893C(void *arg0) {
         if (temp_r3 != NULL) {
             if (fn_80138AB8(temp_r3) != 0) {
                 fn_80138AB8(temp_r3);
-                var_f24 *= fn_8013893C(temp_r3);
+                var_f24 *= Ui_GetWorldScale(temp_r3);
             }
             var_f23 *= var_f24;
         }

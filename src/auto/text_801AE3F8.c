@@ -1707,7 +1707,7 @@ extern "C" void fn_801B14DC(void *arg0) {
 void Ui_ShowConfirmChild(void *arg0) {
     u32 Ui_FindChild();
     void Ui_AddChild(void *, void *);
-    f32 fn_8013893C(void *);
+    f32 Ui_GetWorldScale(void *);
     void fn_80140234(void *, void *, s32);
     void Ui_BringChildToFront(void *, void *);
     void fn_8011D79C(void *);
@@ -1723,7 +1723,7 @@ void Ui_ShowConfirmChild(void *arg0) {
         var_r31 = *(void **)((u8 *)arg0 + 0x48);
         Ui_AddChild(arg0, var_r31);
     }
-    if (lbl_8036B0A8 != fn_8013893C(var_r31)) {
+    if (lbl_8036B0A8 != Ui_GetWorldScale(var_r31)) {
         fn_80140234(arg0, var_r31, 0);
     }
     Ui_BringChildToFront(arg0, var_r31);

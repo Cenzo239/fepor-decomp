@@ -4162,7 +4162,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
 #pragma cplusplus on
 /* Attach cached unit-panel children, size them for the open layout, and set the caption text. */
 extern "C" void Ui_LayoutUnitPanel(void *arg0) {
-    f32 fn_8013893C(void *);
+    f32 Ui_GetWorldScale(void *);
     void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
@@ -4221,7 +4221,7 @@ extern "C" void Ui_LayoutUnitPanel(void *arg0) {
         child = *(void **)((u8 *)panel + 0x50);
         Ui_AddChild(panel, child);
     }
-    if (fn_8013893C(child) < 1.0f) {
+    if (Ui_GetWorldScale(child) < 1.0f) {
         fn_80140234(panel, child, 0);
     }
     if ((child = Ui_FindChild(panel, 0x103, 0)) == 0) {
@@ -7563,7 +7563,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     u8 *source;
     u8 *dest;
     struct { u32 temp; u32 value; } s;
-    u32 val;
+    u32 z;
 
     entry = (u8 *)Process_Find(lbl_802981F4);
     if (entry != NULL) {
@@ -7575,13 +7575,10 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
         entry = (u8 *)Process_Create(lbl_802981F4, arg2);
     }
 
-    {
-        u32 zero = 0;
-        val = *arg0;
-        *(u32 *)(entry + 0x30) = zero;
-    }
+    z = 0;
+    s.value = *arg0;
+    *(u32 *)(entry + 0x30) = z;
     *(s32 *)(entry + 0x34) = arg1;
-    s.value = val;
     *(s32 *)(entry + 0x38) = arg3;
 
     source = (u8 *)Process_Find(LightFade_script);
