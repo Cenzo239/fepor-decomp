@@ -10807,6 +10807,7 @@ void fn_8019D4F4(void *arg0) {
     fn_8004FC70(M2C_FIELD(arg0, s32 *, 0x30), 5);
 }
 
+/* Register event-arrow script command handlers. */
 void Script_RegisterEventArrowCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 gEventArrowCmdNames[];
