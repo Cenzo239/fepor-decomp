@@ -2370,7 +2370,7 @@ s32 fn_80078694(void) {
     return 5;
 }
 
-s32 fn_800786AC(void) {
+s32 Ui_HasWeaponTileTarget(void) {
     void *Item_GetFlagsPtr(void);
     void fn_8002BEFC(void *, u32);
     u32 *Unit_GetHeldItemSlot(void *, s32);
