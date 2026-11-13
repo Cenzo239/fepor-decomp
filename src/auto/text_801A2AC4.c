@@ -97,7 +97,7 @@ void fn_801A2AC4(void) {
   }
 
 s32 fn_801A2C30(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void Battle_SelectWeapon(void *, u8);
     void fn_80036150(void *);
     void fn_8019C85C(s32, s32);
@@ -105,7 +105,7 @@ s32 fn_801A2C30(s32 arg0) {
     extern u16 gBattle[];
     u8 *base;
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
     base = (u8 *)gBattle;
@@ -178,7 +178,7 @@ s32 fn_801A2EEC(void) {
 }
 
 s32 fn_801A2F54(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void Battle_SelectWeapon(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -187,7 +187,7 @@ s32 fn_801A2F54(s32 arg0) {
     extern u16 gBattle[];
     extern void fn_801A2FE0;
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A2FE0);

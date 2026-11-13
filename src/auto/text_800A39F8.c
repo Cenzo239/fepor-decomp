@@ -1383,14 +1383,14 @@ s32 fn_800A65D4(s32 arg0) {
 }
 
 s32 fn_800A6630(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void fn_801A4714(void *, u8);
     void fn_8019C8A4(s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
     u8 *base;
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     fn_801A4714(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     base = (u8 *)gBattle;
     ((struct { u8 pad : 3; u8 mid : 3; u8 lo : 2; } *)(base + 0x1A6))->mid = 4;
@@ -1419,13 +1419,13 @@ s32 fn_800A66B4(void) {
 }
 
 s32 fn_800A6720(s32 arg0) {
-void fn_801A75DC(void *, s32, s32);
+void Battle_SetupUnit(void *, s32, s32);
 void fn_801A4714(void *, u8);
 void fn_8019CA24(s32, s32);
 extern u16 gUiContext[];
 extern u16 gBattle[];
 u8 *base;
-fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
 fn_801A4714(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
 base = (u8 *)gBattle;
 ((struct { u8 hi:3; u8 lo:5; } *)(base + 0x1A6))->hi = 7;
@@ -1440,14 +1440,14 @@ void fn_800A67A4(void) {
 }
 
 s32 fn_800A67D4(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void fn_801A4714(void *, u8);
     void fn_8010446C(void *);
     void fn_8019CA6C(s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     fn_801A4714(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_8010446C((u8 *)gBattle + 0x1A4);
     fn_8019CA6C(arg0, 0);
@@ -1459,13 +1459,13 @@ s32 fn_800A6850(void *arg0) {
 }
 
 s32 fn_800A6868(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void fn_801A47B0(void *, u8, s32);
     void fn_8019C994(s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     fn_801A47B0(gBattle, *(u8 *)((u8 *)gUiContext + 0xA), 0x7F);
     fn_8019C994(arg0, 0);
     return 1;
@@ -1480,13 +1480,13 @@ s32 fn_800A68D8(void *arg0) {
 }
 
 s32 fn_800A6920(s32 arg0) {
-    void fn_801A75DC(void *, s32, s32);
+    void Battle_SetupUnit(void *, s32, s32);
     void fn_801A47B0(void *, u8, s32);
     void fn_8019C9DC(s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
 
-    fn_801A75DC(gBattle, *(s32 *)gUiContext, -1);
+    Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     fn_801A47B0(gBattle, *(u8 *)((u8 *)gUiContext + 0xA), 0xA);
     fn_8019C9DC(arg0, 0);
     return 1;

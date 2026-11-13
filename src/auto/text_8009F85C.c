@@ -1525,7 +1525,7 @@ s32 Ui_KillCursorUnit(void) {
     void Unit_SetHp(void *, s32);
     void Unit_OnZeroHp(void *);
     void Map_RefreshUnitMap(void *);
-    void fn_801A75DC(void *, void *, s32);
+    void Battle_SetupUnit(void *, void *, s32);
     void Battle_QueueDeathAnim(void *);
     void fn_8019B704(void *, s32);
     extern u8 lbl_8026D8D8[];
@@ -1553,7 +1553,7 @@ s32 Ui_KillCursorUnit(void) {
         return 6;
     }
     Unit_OnZeroHp(temp_r30);
-    fn_801A75DC(gBattle, temp_r30, -1);
+    Battle_SetupUnit(gBattle, temp_r30, -1);
     Battle_QueueDeathAnim(gBattle);
     fn_8019B704(temp_r31, 0);
     return 6;
