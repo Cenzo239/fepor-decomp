@@ -2511,7 +2511,7 @@ void fn_801E9864(void *arg0)
         void *next;
     } Owner;
     extern u8 gTabMenuDefaultTab;
-    extern u8 lbl_8036835D;
+    extern u8 gTabMenuDefaultMode;
     extern u8 lbl_8036835E;
     extern u8 lbl_8036835F;
     extern u8 lbl_80368360;
@@ -2534,7 +2534,7 @@ void fn_801E9864(void *arg0)
     self = (Owner *)arg0;
     p68 = &lbl_80368368;
     gTabMenuDefaultTab = *(u8 *)((u8 *)arg0 + 0x30);
-    lbl_8036835D = *(u8 *)((u8 *)arg0 + 0x31);
+    gTabMenuDefaultMode = *(u8 *)((u8 *)arg0 + 0x31);
     lbl_8036835E = *(u8 *)((u8 *)arg0 + 0x32);
     lbl_8036835F = *(u8 *)((u8 *)arg0 + 0x33);
     lbl_80368360 = *(u8 *)((u8 *)arg0 + 0x34);
@@ -2592,7 +2592,7 @@ void TabMenu_Init(void *arg0) {
     extern u8 gTabMenuStrings[];
     extern void *lbl_802981AC[];
     extern u8 gTabMenuDefaultTab;
-    extern u8 lbl_8036835D;
+    extern u8 gTabMenuDefaultMode;
     extern u8 lbl_8036835E;
     extern u8 lbl_8036835F;
     extern u8 lbl_80368360;
@@ -2628,7 +2628,7 @@ void TabMenu_Init(void *arg0) {
         var_r30 = (u8 *)var_r30 + 0x18;
     }
     *(u8 *)((u8 *)arg0 + 0x30) = gTabMenuDefaultTab;
-    *(u8 *)((u8 *)arg0 + 0x31) = lbl_8036835D;
+    *(u8 *)((u8 *)arg0 + 0x31) = gTabMenuDefaultMode;
     *(u8 *)((u8 *)arg0 + 0x32) = lbl_8036835E;
     *(u8 *)((u8 *)arg0 + 0x33) = lbl_8036835F;
     *(u8 *)((u8 *)arg0 + 0x34) = lbl_80368360;
