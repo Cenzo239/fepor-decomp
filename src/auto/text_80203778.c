@@ -186,7 +186,7 @@ s32 PPCMtdec(void) {
     return 0;
 }
 
-s32 fn_802037B0(void) {
+s32 PPCSync(void) {
     return 0;
 }
 

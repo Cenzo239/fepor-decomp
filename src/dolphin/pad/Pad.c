@@ -941,7 +941,7 @@ extern u32 lbl_803686E4;
 void DCFlushRange(void *, u32);
 void DCInvalidateRange(void *, u32);
 void *memset(void *, int, u32);
-void fn_802037B0(void);
+void PPCSync(void);
 void fn_80214368(void) {
     volatile u16 *regs;
     u32 *bufA;
@@ -998,7 +998,7 @@ void fn_80214368(void) {
     if ((p->val & 0x400) == 0) {
         v = p->val;
         p->val = (u16)((v & ~0x77) | 0x20);
-        fn_802037B0();
+        PPCSync();
     } else {
         memset(slots[5], 0, 0x20);
         DCFlushRange(slots[5], 0x20);

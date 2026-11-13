@@ -15048,7 +15048,7 @@ void fn_80263608(s32 arg0)
 
     extern s32 fn_8026367C(s32 arg0);
     extern void fn_8025A3A4(s32 arg0, s32 arg1);
-    extern void fn_802037B0(void);
+    extern void PPCSync(void);
     extern void fn_80215F78(u32 arg0);
     extern u32 fn_80215F40(void);
 
@@ -15061,7 +15061,7 @@ void fn_80263608(s32 arg0)
     value = gSoundAuxBuf;
     lbl_80368B18 = 0;
 
-    fn_802037B0();
+    PPCSync();
 
     fn_80215F78((lbl_80368A84) | 0xBABE0000);
     if (fn_80215F40() == 0) {

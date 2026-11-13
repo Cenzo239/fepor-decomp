@@ -790,7 +790,7 @@ void GXSetCPUFifo(void *fifo) {
     void __GXWriteFifoIntEnable(u8, u8);
     void __GXFifoLink(u8);
     void __GXWriteFifoIntReset(u8, u8);
-    void fn_802037B0(void);
+    void PPCSync(void);
     extern void *__piReg;
     extern void* __GXCurrentCPUFifo;
     extern void* __GXCurrentGPFifo;
@@ -829,7 +829,7 @@ void GXSetCPUFifo(void *fifo) {
         temp2_r7 = __rlwimi(temp2_r7, 0, 26, 5, 5);
         M2C_FIELD(__piReg, u32 *, 0x14) = temp2_r7;
     }
-    fn_802037B0();
+    PPCSync();
     OSRestoreInterrupts(enabled);
 }
 
@@ -841,7 +841,7 @@ void GXSetGPFifo(void *fifo) {
     void __GXFifoLink(u8);
     void __GXWriteFifoIntReset(u8, u8);
     void __GXFifoReadEnable(void);
-    void fn_802037B0(void);
+    void PPCSync(void);
     extern u16* const __GXData;
     extern u16* __cpReg;
     extern void* __GXCurrentCPUFifo;
@@ -871,7 +871,7 @@ void GXSetGPFifo(void *fifo) {
     __cpReg[21] = realFifo->hiWatermark >> 16;
     __cpReg[23] = realFifo->loWatermark >> 16;
 
-    fn_802037B0();
+    PPCSync();
 
     if (__GXCurrentCPUFifo == __GXCurrentGPFifo) {
         __GXGPFifoAttached = 1;
@@ -1349,7 +1349,7 @@ void GXSetMisc(s32 arg0, u32 arg1) {
 int fn_802204F8(void)
 {
     void fn_80220D6C(void);
-    void fn_802037B0(void);
+    void PPCSync(void);
     extern u32 __GXData;
 
     u8 *gx;
@@ -1372,7 +1372,7 @@ int fn_802204F8(void)
         *fifo = 0;
     }
 
-    fn_802037B0();
+    PPCSync();
 
     return 0;
 }
