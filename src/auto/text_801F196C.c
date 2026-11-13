@@ -5230,7 +5230,8 @@ void Tree_Init(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma use_lmw_stmw on
-void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
+/* Allocate and link a new RB-tree node with u16 key under parent; rebalance and return it. */
+void *Tree_InsertNode(void *tree, void *parent, s32 asLeft, s32 setFirst, u16 *key) {
     void *Heap_Alloc(u32);
     void Tree_InsertFixup(void *, void *);
     M2C_UNK abort(void);
@@ -5240,7 +5241,7 @@ void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     void *node;
     u16 *value;
 
-    if (M2C_FIELD(arg0, u32 *, 0) > (u32)-2) {
+    if (M2C_FIELD(tree, u32 *, 0) > (u32)-2) {
         fprintf(__files + 0xA0, lbl_80281420 + 0xA6E);
         abort();
     }
@@ -5251,20 +5252,20 @@ void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     }
     value = (u16 *)((char *)node + 0xC);
     if (value != NULL) {
-        *value = *arg4;
+        *value = *key;
     }
     M2C_FIELD(node, void **, 4) = NULL;
     M2C_FIELD(node, void **, 0) = NULL;
-    M2C_FIELD(node, u32 *, 8) = (u32)arg1 | (M2C_FIELD(node, u32 *, 8) & 1);
-    if ((u8)arg2) {
-        M2C_FIELD(arg1, void **, 0) = node;
+    M2C_FIELD(node, u32 *, 8) = (u32)parent | (M2C_FIELD(node, u32 *, 8) & 1);
+    if ((u8)asLeft) {
+        M2C_FIELD(parent, void **, 0) = node;
     } else {
-        M2C_FIELD(arg1, void **, 4) = node;
+        M2C_FIELD(parent, void **, 4) = node;
     }
-    M2C_FIELD(arg0, u32 *, 0)++;
-    Tree_InsertFixup(node, M2C_FIELD(arg0, void **, 4));
-    if ((u8)arg3) {
-        M2C_FIELD(arg0, void **, 8) = node;
+    M2C_FIELD(tree, u32 *, 0)++;
+    Tree_InsertFixup(node, M2C_FIELD(tree, void **, 4));
+    if ((u8)setFirst) {
+        M2C_FIELD(tree, void **, 8) = node;
     }
     return node;
 }
