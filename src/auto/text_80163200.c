@@ -10573,7 +10573,7 @@ s32 Ui_HasUsableItem(void) {
     return (u8)result;
 }
 
-s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_OpenListOrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
