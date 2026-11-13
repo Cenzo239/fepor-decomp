@@ -2954,7 +2954,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_Config_TutSet_XinfoPage(void);
     void ScriptCmd_Config_TutGet_sfx_vol(void);
     void ScriptCmd_Config_TutSet_sfx_vol(void);
-    void fn_80126830(void);
+    void ScriptCmd_GetTutorial(void);
     void fn_80013E24(void);
     void fn_80013D4C(void);
     void fn_80013C78(void);
@@ -3002,7 +3002,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x22E, ScriptCmd_Config_TutSet_XinfoPage, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x246, ScriptCmd_Config_TutGet_sfx_vol, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x25C, ScriptCmd_Config_TutSet_sfx_vol, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x272, fn_80126830, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x272, ScriptCmd_GetTutorial, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x27E, fn_80013E24, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x28B, fn_80013D4C, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x298, fn_80013C78, 1);
@@ -3035,7 +3035,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x419, fn_80128160, 3);
 }
 
-u8 fn_80126830(void) {
+u8 ScriptCmd_GetTutorial(void) {
     extern u8 lbl_80330708[];
     u8 temp = lbl_80330708[0x9D];
     temp = (temp >> 1) & 1;
