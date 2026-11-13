@@ -1414,7 +1414,7 @@ void Save_DrawMigrateProgress(void) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s16, s16, u8, void *, ...);
-    extern u8 lbl_80282008[];
+    extern u8 gSaveMigrateStrs[];
     extern s32 gSaveMigrateCount;
     extern f32 lbl_8036BBB8;
     extern f32 lbl_8036BBBC;
@@ -1434,8 +1434,8 @@ void Save_DrawMigrateProgress(void) {
     Prim2D_SetTransform(lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBC0);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    Text_Draw(0x40, 0x40, 1, lbl_80282008 + 0x33, gSaveMigrateCount);
-    Text_Draw(0x40, 0x60, 1, lbl_80282008 + 0x58);
+    Text_Draw(0x40, 0x40, 1, gSaveMigrateStrs + 0x33, gSaveMigrateCount);
+    Text_Draw(0x40, 0x60, 1, gSaveMigrateStrs + 0x58);
 }
 
 void fn_801FFE8C(void) {
@@ -1475,7 +1475,7 @@ void Save_MigrateLegacy(void) {
     u8 Save_IsValid(void *);
     void *memcpy(void *, void *, u32);
     void *memset(void *, s32, u32);
-    extern u8 lbl_80282008[];
+    extern u8 gSaveMigrateStrs[];
     extern s32 gSaveDataBase;
     extern s32 gSaveMigrateCount;
 
@@ -1498,7 +1498,7 @@ void Save_MigrateLegacy(void) {
                 switch (*(s32 *)((u8 *)(void *)j + 0x44)) {
                 case SAVE_VER_20041216:
                     smallOk = 0;
-                    smallBuf = fn_800C4638(0x4000, lbl_80282008 + 0x91, 0);
+                    smallBuf = fn_800C4638(0x4000, gSaveMigrateStrs + 0x91, 0);
                     if ((s32)*(u8 *)((u8 *)(void *)j + 0x230) == 0x4D &&
                         (s32)*(u8 *)((u8 *)(void *)j + 0x231) == 0x44 &&
                         (s32)*(u8 *)((u8 *)(void *)j + 0x232) == 0x53 &&
@@ -1536,7 +1536,7 @@ void Save_MigrateLegacy(void) {
                 switch (*(s32 *)((u8 *)largeSlot + 0x44)) {
                 case SAVE_VER_20041216:
                     largeOk = 0;
-                    largeBuf = fn_800C4638(0x6000, lbl_80282008 + 0x91, 0);
+                    largeBuf = fn_800C4638(0x6000, gSaveMigrateStrs + 0x91, 0);
                     if ((s32)*(u8 *)((u8 *)largeSlot + 0x230) == 0x4D &&
                         (s32)*(u8 *)((u8 *)largeSlot + 0x231) == 0x44 &&
                         (s32)*(u8 *)((u8 *)largeSlot + 0x232) == 0x53 &&
