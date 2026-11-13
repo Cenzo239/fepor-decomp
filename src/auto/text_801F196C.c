@@ -2880,13 +2880,13 @@ void fn_801F87E0(void) {
     void fn_8005BCAC(void);
     void fn_8005C7C8(void *);
     void fn_800C4B8C(void);
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern void *lbl_80368408;
     extern void *lbl_8036840C;
     void *p;
 
     fn_80050E80();
-    fn_8005C7C8(lbl_80281028 + 0x1FE);
+    fn_8005C7C8(StaffRoll_str + 0x1FE);
     p = lbl_80368408;
     if (p != NULL) {
         fn_8003F670(p);
@@ -2904,9 +2904,9 @@ void fn_801F87E0(void) {
 }
 
 void fn_801F8850(s32 arg0) {
-    extern u16 lbl_80281028[];
+    extern u16 StaffRoll_str[];
 
-    fn_800C08AC((u8 *)lbl_80281028 + 0x20E, arg0, lbl_80281028);
+    fn_800C08AC((u8 *)StaffRoll_str + 0x20E, arg0, StaffRoll_str);
 }
 
 #pragma global_optimizer off
@@ -2918,19 +2918,19 @@ void fn_801F8880(void) {
     void *fn_8003FCCC(void *);
     void fn_8005C84C(void *);
     void fn_80050F64(void);
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern u8 lbl_8029B41C[];
     extern void *lbl_80368408;
     extern void *lbl_8036840C;
     extern u8 lbl_80367708;
 
-    fn_800C50FC(lbl_80281028 + 0x215, 0x180000);
-    fn_800C50FC(lbl_80281028 + 0x220, fn_800C52C8(), lbl_80281028);
-    fn_800C469C(lbl_80281028 + 0x215);
-    ScriptCmd_CmLoadScript(lbl_80281028 + 0x22C);
+    fn_800C50FC(StaffRoll_str + 0x215, 0x180000);
+    fn_800C50FC(StaffRoll_str + 0x220, fn_800C52C8(), StaffRoll_str);
+    fn_800C469C(StaffRoll_str + 0x215);
+    ScriptCmd_CmLoadScript(StaffRoll_str + 0x22C);
     lbl_80368408 = fn_8003FCCC(*(void **)(lbl_8029B41C + 4));
-    lbl_8036840C = fn_8003FCCC(lbl_80281028 + 0x23F);
-    fn_8005C84C(lbl_80281028 + 0x1FE);
+    lbl_8036840C = fn_8003FCCC(StaffRoll_str + 0x23F);
+    fn_8005C84C(StaffRoll_str + 0x1FE);
     fn_80050F64();
     lbl_80367708 = 0;
 }
@@ -2941,9 +2941,9 @@ void fn_801F892C(void) {
 }
 
 void fn_801F894C(s32 arg0) {
-    extern u16 lbl_80281028[];
+    extern u16 StaffRoll_str[];
 
-    fn_800C08AC((u8 *)lbl_80281028 + 0x24D, arg0, lbl_80281028);
+    fn_800C08AC((u8 *)StaffRoll_str + 0x24D, arg0, StaffRoll_str);
 }
 
 void fn_801F897C(void) {
@@ -3032,7 +3032,7 @@ void fn_801F8A98(void *arg0) {
     void *memset(void *, s32, u32);
     u32 fn_801F8D38(void **, void **);
     extern u8 gUnits[];
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern void *lbl_8029B378[];
     extern f32 lbl_8036BA00;
     extern f32 lbl_8036BA04;
@@ -3095,7 +3095,7 @@ void fn_801F8A98(void *arg0) {
     } while (0x9F >= i);
     fn_801FA8B4((void *)((u32)self + 0x30U), fn_801F8D38);
     n = *(Node **)base;
-    strs = lbl_80281028;
+    strs = StaffRoll_str;
     n = n->unk0;
     fmt259 = (u8 *)strs + 0x259;
     n = n->unk0;
@@ -3116,8 +3116,8 @@ void fn_801F8A98(void *arg0) {
         *(f32 *)((u8 *)self + 0x40) = f + (f32)(u32)((count - 5) * 0x50);
         *(s32 *)((u8 *)self + 0x48) = (s32)((*(f32 *)((u8 *)self + 0x40) / lim) * (f32)*(s32 *)((u8 *)self + 0x48));
         *(f32 *)((u8 *)self + 0x44) = *(f32 *)((u8 *)self + 0x40) / (f32)*(s32 *)((u8 *)self + 0x48);
-        fn_80109180(lbl_80281028 + 0x284, self);
-        *(void **)((u8 *)self + 0x4C) = fn_80109180(lbl_80281028 + 0x293, self);
+        fn_80109180(StaffRoll_str + 0x284, self);
+        *(void **)((u8 *)self + 0x4C) = fn_80109180(StaffRoll_str + 0x293, self);
     }
     fn_8006EEFC((u8 *)self + 0x50, lbl_8029B378[1]);
 }
@@ -3224,7 +3224,7 @@ void fn_801F8E30(void *arg0) {
     void fn_80069F04(void);
     void fn_801F9464(void);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA00, lbl_8036BA04, lbl_8036BA18, lbl_8036BA1C, lbl_8036BA20;
     extern f32 lbl_8036BA38, lbl_8036BA3C, lbl_8036BA40, lbl_8036BA44, lbl_8036BA48;
     extern f32 lbl_8036BA4C, lbl_8036BA50, lbl_8036BA54, lbl_8036BA58, lbl_8036BA5C;
@@ -3271,7 +3271,7 @@ void fn_801F8E30(void *arg0) {
         }
     } else {
 clear:
-        fn_80109020(lbl_80281028 + 0x293);
+        fn_80109020(StaffRoll_str + 0x293);
         *(void **)((u8 *)arg0 + 0x4C) = NULL;
     }
     f30 = f27 + lbl_8036BA04;
@@ -3299,12 +3299,12 @@ clear:
             fn_8001019C((s32)lbl_8036BA44, (s32)f30, 2, fn_800A8A88(*(void **)((u8 *)unit + 0x188)));
             fn_8001019C((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
             if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) != 6) {
-                fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, lbl_80281028 + 0x29F,
-                    Msg_Expand(lbl_80281028 + 0x2A6), (s8)*(u8 *)((u8 *)unit + 0x19A));
-                fn_8001019C((s32)lbl_8036BA50, (s32)f30, 2, lbl_80281028 + 0x2B1,
-                    *(u16 *)((u8 *)unit + 0x22A), Msg_Expand(lbl_80281028 + 0x2B8));
+                fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, StaffRoll_str + 0x29F,
+                    Msg_Expand(StaffRoll_str + 0x2A6), (s8)*(u8 *)((u8 *)unit + 0x19A));
+                fn_8001019C((s32)lbl_8036BA50, (s32)f30, 2, StaffRoll_str + 0x2B1,
+                    *(u16 *)((u8 *)unit + 0x22A), Msg_Expand(StaffRoll_str + 0x2B8));
             } else {
-                sprintf(buf, lbl_80281028 + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
+                sprintf(buf, StaffRoll_str + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
                 fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buf));
             }
             f28 = f30 + (f32)fn_800102BC(-1, lbl_8036BA20);
@@ -3405,7 +3405,7 @@ void fn_801F94D8(void *arg0) {
     f32 fn_801099A0(void *, s32);
     void sprintf(void *, void *, ...);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA20;
     extern f32 lbl_8036BA74;
@@ -3475,9 +3475,9 @@ void fn_801F94D8(void *arg0) {
             obj = var_r31[2];
             val22a = *(u16 *)((u8 *)obj + 0x22A);
             val19a = *(s8 *)((u8 *)obj + 0x19A);
-            nameStr = Msg_Expand(lbl_80281028 + 0x2B8);
-            fmtStr = Msg_Expand(lbl_80281028 + 0x2A6);
-            sprintf(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            nameStr = Msg_Expand(StaffRoll_str + 0x2B8);
+            fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
+            sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
             w = fn_80010B78(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
@@ -3503,9 +3503,9 @@ void fn_801F94D8(void *arg0) {
             obj = ((void **)other)[2];
             val22a = *(u16 *)((u8 *)obj + 0x22A);
             val19a = *(s8 *)((u8 *)obj + 0x19A);
-            nameStr = Msg_Expand(lbl_80281028 + 0x2B8);
-            fmtStr = Msg_Expand(lbl_80281028 + 0x2A6);
-            sprintf(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            nameStr = Msg_Expand(StaffRoll_str + 0x2B8);
+            fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
+            sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
             w = fn_80010B78(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
@@ -3519,7 +3519,7 @@ void fn_801F99C4(void *arg0) {
     void fn_80109448(void *, s32, s32, f32, f32, f32);
     void fn_80109C80(void *, s32);
     void sprintf(void *, void *, ...);
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA88;
     extern f32 lbl_8036BA8C;
@@ -3553,9 +3553,9 @@ void fn_801F99C4(void *arg0) {
             var_r4 = (void **)*var_r4;
         }
     }
-    temp_r28 = lbl_80281028 + 0x259;
-    sprintf(sp8, lbl_80281028 + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
-    sprintf(temp_r28, lbl_80281028 + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
+    temp_r28 = StaffRoll_str + 0x259;
+    sprintf(sp8, StaffRoll_str + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
+    sprintf(temp_r28, StaffRoll_str + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
     *(void **)((u8 *)temp_r31 + 0x58) = fn_80109180(sp8, temp_r29);
     *(void **)((u8 *)temp_r31 + 0x5C) = fn_80109180(temp_r28, *(void **)((u8 *)temp_r31 + 0x58));
     temp_r4 = var_r30 * 2;
@@ -3681,7 +3681,7 @@ void fn_801F9E00(void *arg0) {
     s32 fn_8014DC04(void *);
     void fn_801FAA9C(void *, void *, s32, void *);
     extern u8 gBattleState[];
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA00;
     extern f32 lbl_8036BA04;
     extern f64 lbl_8036BA08;
@@ -3774,8 +3774,8 @@ loop_check:
     obj->unk40 = f + (f32)(u32)(count << 6);
     obj->unk48 = (s32)((obj->unk40 / lim) * (f32)obj->unk48);
     obj->unk44 = obj->unk40 / (f32)obj->unk48;
-    fn_80109180(lbl_80281028 + 0x2F3, obj);
-    obj->unk4C = fn_80109180(lbl_80281028 + 0x301, obj);
+    fn_80109180(StaffRoll_str + 0x2F3, obj);
+    obj->unk4C = fn_80109180(StaffRoll_str + 0x301, obj);
 }
 
 #pragma global_optimizer off
@@ -3788,7 +3788,7 @@ s32 fn_800102BC(s32,f32); s16 fn_80010B78(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
 void sprintf(void*,void*,...); f64 fn_802387C8(f64,f64);
 extern s32 gUiInputFlags;
-extern u8 lbl_80281028[];
+extern u8 StaffRoll_str[];
 extern f32 lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20,lbl_8036BA38,lbl_8036BA00,lbl_8036BA04,lbl_8036BA88,lbl_8036BA94,lbl_8036BA98,lbl_8036BA9C,lbl_8036BAA0,lbl_8036BAA4,lbl_8036BAA8;
 extern f64 lbl_8036BA28,lbl_8036BA30;
 f32 limit, y, scroll, step, x, period, offset;
@@ -3812,7 +3812,7 @@ if(flag) {*(f32*)((u8*)obj+0x40)=lbl_8036BA94;*(f32*)((u8*)obj+0x44)=scroll;}
 else goto clear;
 } else {
 clear:
-fn_80109020(lbl_80281028+0x301);*(void**)((u8*)arg0+0x4c)=0;
+fn_80109020(StaffRoll_str+0x301);*(void**)((u8*)arg0+0x4c)=0;
 }
 y=scroll+lbl_8036BA04;
 offset=lbl_8036BA38*(f32)(64-fn_800102BC(-1,lbl_8036BA20));
@@ -3825,21 +3825,21 @@ for(;ent!=end;ent+=8,y+=step){
 flag=0;
 if(y<=limit) {if(lbl_8036BA18<y+lbl_8036BA88)flag=1;}
 if(flag){
-a=lbl_80281028+0x30c;b=lbl_80281028+0x31b;
-sprintf(a,lbl_80281028+0x32c,*ent);
-sprintf(b,lbl_80281028+0x33d,*ent);
+a=StaffRoll_str+0x30c;b=StaffRoll_str+0x31b;
+sprintf(a,StaffRoll_str+0x32c,*ent);
+sprintf(b,StaffRoll_str+0x33d,*ent);
 Prim2D_Begin();fn_8000A174(0,19);Prim2D_PrepareTex();
 str=Msg_Expand(a);
 fn_8001003C((s32)((f32)(128-(fn_80010B78(str,-1,lbl_8036BA20)>>1))-lbl_8036BA98),(s32)y,1,1,0,str,lbl_8036BA20,lbl_8036BA18);
 fn_8001003C((s32)(lbl_8036BA9C+lbl_8036BA98),(s32)y,1,1,0,Msg_Expand(b),lbl_8036BA20,lbl_8036BA18);
 x=lbl_8036BAA0;
 x=x+lbl_8036BA98;
-fn_8001003C((s32)x,(s32)y,1,1,0,lbl_80281028+0x350,lbl_8036BA20,lbl_8036BA18,*(u16*)(ent+2));
-fn_8001003C((s32)(lbl_8036BAA4+x),(s32)y,32,1,0,lbl_80281028+0x354,lbl_8036BA20,lbl_8036BA18,Msg_Expand(lbl_80281028+0x357));
+fn_8001003C((s32)x,(s32)y,1,1,0,StaffRoll_str+0x350,lbl_8036BA20,lbl_8036BA18,*(u16*)(ent+2));
+fn_8001003C((s32)(lbl_8036BAA4+x),(s32)y,32,1,0,StaffRoll_str+0x354,lbl_8036BA20,lbl_8036BA18,Msg_Expand(StaffRoll_str+0x357));
 tx=lbl_8036BAA8+lbl_8036BA98;scale=lbl_8036BA20;zero=lbl_8036BA18;
 time=*(u32*)(ent+4);
 hours=time/3600;time%=3600;seconds=time%60;minutes=time/60;
-fn_8001003C((s32)tx,(s32)y,33,1,0,lbl_80281028+0x364,scale,zero,hours,minutes,seconds);
+fn_8001003C((s32)tx,(s32)y,33,1,0,StaffRoll_str+0x364,scale,zero,hours,minutes,seconds);
 }
 }
 }
@@ -3886,11 +3886,11 @@ void fn_801FA534(void *arg0)
     void *fn_8003FCCC(void *);
     s32 *Hash_Lookup(void *);
     extern u8 lbl_8029B2D8[];
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
     s32 *tmp;
 
     *(void **)((u8 *)arg0 + 0x30) = fn_8003FCCC(*(void **)(lbl_8029B2D8 + 4));
-    tmp = Hash_Lookup(lbl_80281028 + 0x373);
+    tmp = Hash_Lookup(StaffRoll_str + 0x373);
     *(s32 *)((u8 *)arg0 + 0x34) = *tmp;
     *(f32 *)((u8 *)arg0 + 0x3C) =
         *(f32 *)((u8 *)arg0 + 0x38) + (f32)(u32)(*(s32 *)((u8 *)arg0 + 0x34) * 0x30);
@@ -3924,7 +3924,7 @@ void StaffRoll_Draw(void *arg0) {
     extern f32 lbl_8036BA00;
     extern f32 lbl_8036BAAC;
     extern f32 lbl_8036BAB0;
-    extern u8 lbl_80281028[];
+    extern u8 StaffRoll_str[];
 
     typedef struct {
         void *str0;
@@ -3953,7 +3953,7 @@ void StaffRoll_Draw(void *arg0) {
     step = *(f32 *)((u8 *)arg0 + 0x38);
     period = (f32)fn_802387C8(lbl_8036BA28, lbl_8036BA30);
     scroll = (f32)(s32)(period * (step + lbl_8036BA38 / period)) / period;
-    ent = (Entry *)Hash_Lookup(lbl_80281028 + 0x387);
+    ent = (Entry *)Hash_Lookup(StaffRoll_str + 0x387);
     limit = lbl_8036BA00;
     step = lbl_8036BAAC;
     for (i = 0; i < *(u32 *)((u8 *)arg0 + 0x34); i++) {
@@ -3977,7 +3977,7 @@ void StaffRoll_Draw(void *arg0) {
             }
             if ((u32)ent->str8 != 0U) {
                 fn_80010B78(ent->str8, -1, lbl_8036BA20);
-                fn_8001019C((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(lbl_80281028 + 0x39A), ent->str8);
+                fn_8001019C((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(StaffRoll_str + 0x39A), ent->str8);
             }
         }
         scroll += step;
@@ -4013,7 +4013,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     void fn_8022CF78(void);
     void fn_80232058(void *, const char *, ...);
     extern char __files[];
-    extern char lbl_80281028[];
+    extern char StaffRoll_str[];
 
     Vec *vec;
     Elem *fill;
@@ -4030,7 +4030,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     }
     if (count > 0x1FFFFFFFU || vec->size > 0x1FFFFFFFU - count) {
         char *files = __files;
-        char *msg = lbl_80281028;
+        char *msg = StaffRoll_str;
         fn_80232058(files + 0xA0, msg + 0x3A1);
         fn_8022CF78();
     }
@@ -4200,7 +4200,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         p = (Elem *)Heap_Alloc(cap * 8);
         if (p == NULL) {
             char *files = __files;
-            char *msg = lbl_80281028;
+            char *msg = StaffRoll_str;
             fn_80232058(files + 0xA0, msg + 0x3BE);
             fn_8022CF78();
         }
@@ -4265,7 +4265,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
-    extern char lbl_80281028[];
+    extern char StaffRoll_str[];
     Vec *vec = arg0;
     Vec tmp;
     Elem *p;
@@ -4278,7 +4278,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
 
     if (arg1 > vec->cap) {
         if (arg1 > 0x1FFFFFFF) {
-            fn_80232058(__files + 0xA0, lbl_80281028 + 0x3D8);
+            fn_80232058(__files + 0xA0, StaffRoll_str + 0x3D8);
             fn_8022CF78();
         }
         tmp.cap = 0;
@@ -4286,7 +4286,7 @@ void fn_801FB048(void *arg0, u32 arg1) {
         tmp.data = NULL;
         p = Heap_Alloc(arg1 * 8);
         if (p == NULL) {
-            fn_80232058(__files + 0xA0, lbl_80281028 + 0x3BE);
+            fn_80232058(__files + 0xA0, StaffRoll_str + 0x3BE);
             fn_8022CF78();
         }
         tmp.data = p;
@@ -4411,7 +4411,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
         }
     };
     extern char __files[];
-    extern char lbl_80281028[];
+    extern char StaffRoll_str[];
     Value *value;
     Node *node;
     s32 owner;
@@ -4423,7 +4423,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
     list = arg1 + 1;
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
-        fn_80232058(__files + 0xA0, lbl_80281028 + 0x3BE);
+        fn_80232058(__files + 0xA0, StaffRoll_str + 0x3BE);
         fn_8022CF78();
     }
     {
