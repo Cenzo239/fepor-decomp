@@ -6276,7 +6276,7 @@ void fn_8016F694(void *arg0) {
     Process_Goto(arg0, 0x2C);
 }
 #pragma cplusplus reset
-void fn_8016F790(void *arg0) {
+void Ui_ConfirmItemDiscard(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
