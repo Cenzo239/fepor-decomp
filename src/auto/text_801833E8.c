@@ -492,7 +492,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
     void MoveAnim_MatchUnit(void *, void *);
     void *fn_8000CAA0(void *, void *);
     void *fn_800C45B8(s32, void *, s32);
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     void MoveAnim_BuildPathHeights(void *);
     u8 *BattleMap_GetPath(void *);
     extern u8 gMoveAnimClass[];
@@ -522,7 +522,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
         *(s8 *)(anim + 0x6A) = -1;
         *(void **)(anim + 0x6C) = fn_800C45B8(-1536, (char *)((u8 *)MoveAnim_str + 0x1A9), 0);
         if (*(u16 *)(anim + 0x52) & 16) {
-            fn_80050BCC(unit, 0);
+            Unit_SetModelAlpha(unit, 0);
         }
         if ((*(u8 **)((u8 *)unit + 0x18C))[0x42] == 9) {
             *(u16 *)(anim + 0x52) |= 0x8000;
@@ -568,7 +568,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 void *MoveAnim_BindPath(void *unit, u8 *path, u16 flagsIn, void *parent) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
-void fn_80050BCC(void *,s32); void MoveAnim_BuildPathHeights(void *);
+void Unit_SetModelAlpha(void *,s32); void MoveAnim_BuildPathHeights(void *);
 extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
 u8 *anim; s32 i; u8 *p; s32 count; s32 tile; u8 flags;
@@ -582,7 +582,7 @@ anim=fn_8000CAA0(gMoveAnimClass,parent);
 *(void **)(anim+0x54)=fn_800C45B8(-128,MoveAnim_str+0x1A9,0);
 anim[0x59]=0;anim[0x5A]=16;*(s8 *)(anim+0x6A)=-1;
 *(void **)(anim+0x6C)=fn_800C45B8(-1536,MoveAnim_str+0x1A9,0);
-if(*(u16 *)(anim+0x52)&16) fn_80050BCC(unit,0);
+if(*(u16 *)(anim+0x52)&16) Unit_SetModelAlpha(unit,0);
 if((*(u8 **)((u8 *)unit+0x18C))[0x42]==9) *(u16 *)(anim+0x52)|=0x8000;
 tile=(s32)*(f32 *)((u8 *)unit+4); anim[0x40]=tile;anim[0x42]=tile;
 tile=(s32)*(f32 *)((u8 *)unit+8); anim[0x41]=tile;anim[0x43]=tile;
@@ -981,7 +981,7 @@ void fn_801854D8(void *arg0) {
         fn_80050C90(M2C_FIELD(arg0, void **, 0x30));
     }
     if ((u8) M2C_FIELD(arg0, u8 *, 0x3C) != 0) {
-        fn_80050BCC(M2C_FIELD(arg0, void **, 0x30), 0xFF);
+        Unit_SetModelAlpha(M2C_FIELD(arg0, void **, 0x30), 0xFF);
     }
 }
 
@@ -1180,7 +1180,7 @@ void fn_80186028(void *arg0) {
 
 void fn_80186080(void *arg0) {
     void fn_80050C50(void *, f32, f32, f32);
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     void fn_8004BE88(void *, s32);
     void Process_Goto(void *, s32);
     extern f32 lbl_8036ACD8;
@@ -1194,7 +1194,7 @@ void fn_80186080(void *arg0) {
                     lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x3C),
                     lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x40),
                     lbl_8036ACD8);
-        fn_80050BCC(*(void **)((u8 *)arg0 + 0x30), 0);
+        Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0);
         if (*(u16 *)((u8 *)arg0 + 0x38) & 0x10) {
             fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
         }
@@ -2083,7 +2083,7 @@ void fn_80188EF4(void *arg0) {
 /* Advance a unit move animation: lerp xyz, optional fast-forward, update camera. */
 void MoveAnim_Update(void *anim, f32 scaleArg) {
     void Process_ClearFunc(void *);
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8014CAD4(void *, f32, f32);
     extern u8 gBattleState[];
@@ -2158,7 +2158,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
             *(f32 *)(gBattleState + 0x534) = x;
             *(f32 *)(gBattleState + 0x538) = y;
         }
-        fn_80050BCC(M2C_FIELD(anim, void **, 0x30),
+        Unit_SetModelAlpha(M2C_FIELD(anim, void **, 0x30),
                     (s32)Math_Lerp((f32)M2C_FIELD(anim, u8 *, 0x50), (f32)M2C_FIELD(anim, u8 *, 0x51),
                                    duration, M2C_FIELD(anim, f32 *, 0x3C)));
         index = M2C_FIELD(anim, u8 *, 0x6A);
@@ -2431,11 +2431,11 @@ void fn_8018B004(void *arg0) {
 }
 
 void fn_8018B010(void *arg0) {
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     void *p;
     f32 x, y, z;
 
-    fn_80050BCC(*(void **)((u8 *)arg0 + 0x30), 0xFF);
+    Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0xFF);
     z = *(f32 *)((u8 *)arg0 + 0x48);
     y = *(f32 *)((u8 *)arg0 + 0x44);
     p = *(void **)((u8 *)arg0 + 0x30);
@@ -2447,7 +2447,7 @@ void fn_8018B010(void *arg0) {
 
 void fn_8018B060(void *arg0) {
     void Process_ClearFunc(void);
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -2490,7 +2490,7 @@ void fn_8018B060(void *arg0) {
     } else {
         f30 += Math_EaseInPow(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)(s32)temp - half);
     }
-    fn_80050BCC(*(void **)((u8 *)self + 0x30), t);
+    Unit_SetModelAlpha(*(void **)((u8 *)self + 0x30), t);
     obj = *(void **)((u8 *)self + 0x30);
     *(f32 *)((u8 *)obj + 4) = f31;
     *(f32 *)((u8 *)obj + 8) = f29;
@@ -2498,10 +2498,10 @@ void fn_8018B060(void *arg0) {
 }
 
 void fn_8018B2C4(void *arg0) {
-    M2C_UNK fn_80050BCC(s32, M2C_UNK);
+    M2C_UNK Unit_SetModelAlpha(s32, M2C_UNK);
     M2C_FIELD(arg0, s32 *, 0x50) = 0;
     M2C_FIELD(arg0, s32 *, 0x54) = 0x10;
-    fn_80050BCC(M2C_FIELD(arg0, s32 *, 0x30), 0);
+    Unit_SetModelAlpha(M2C_FIELD(arg0, s32 *, 0x30), 0);
 }
 
 void fn_8018B2FC(void *arg0) {

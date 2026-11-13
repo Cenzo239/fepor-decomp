@@ -11889,7 +11889,7 @@ void fn_80050BA8(s32 arg0) {
     fn_8005F788(arg0 + 0x1C);
 }
 
-void fn_80050BCC(s32 arg0, u8 arg1) {
+void Unit_SetModelAlpha(s32 arg0, u8 arg1) {
     Model_SetAlpha(arg0 + 0x1C, arg1);
 }
 

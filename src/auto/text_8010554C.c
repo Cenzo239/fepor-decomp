@@ -1184,7 +1184,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void Unit_MoveToList(void *, s32);
     void fn_8003D68C(void *, s32);
     void Unit_InitFromDispos(void *, void *);
-    void fn_80050BCC(void *, s32);
+    void Unit_SetModelAlpha(void *, s32);
     void fn_80050C90(void *);
     extern u8 gDisposStrings[];
     extern struct { u8 pad[0x30]; void *unk30; u8 pad34[8]; void *unk3C; } gUnitLists;
@@ -1271,7 +1271,7 @@ skip_type:
 ok:
     Unit_SetMapPos(unit, sp8[0xB], sp8[0xC]);
     fn_80050C90(unit);
-    fn_80050BCC(unit, 0);
+    Unit_SetModelAlpha(unit, 0);
     *(void **)(arg0 + 4) = unit;
     *((u8 *)obj + 0x3C) = *((u8 *)unit + 0x198);
     return 1;
