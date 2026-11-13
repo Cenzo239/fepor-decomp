@@ -1995,7 +1995,7 @@ void fn_801F66D4(void *arg0) {
     }
 }
 
-void fn_801F676C(void *arg0) {
+void BattlePreview_Draw(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -2256,12 +2256,12 @@ void fn_801F7194(void *arg0) {
     s32 fn_80161FB8(void);
     void fn_80162054(void);
     void Process_ClearFunc(void *);
-    void fn_801F676C(void *);
+    void BattlePreview_Draw(void *);
     s32 fn_8005C6A0(void *);
     extern u8 lbl_80280D38[];
     if ((fn_8005C6A0(lbl_80280D38 + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
         fn_80162054();
-        M2C_FIELD(arg0, s32 *, 0x34) = Process_AttachFunc(fn_801F676C, arg0);
+        M2C_FIELD(arg0, s32 *, 0x34) = Process_AttachFunc(BattlePreview_Draw, arg0);
         Process_ClearFunc(arg0);
     }
 }
