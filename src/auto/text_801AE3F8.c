@@ -941,6 +941,7 @@ void fn_801AF6BC(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
+    /* Slide in the unit-panel list view: list, selection detail (or battle alt), and caption. */
     s32 Ui_ListGetSelected(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -966,76 +967,76 @@ extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
         virtual void v11(s32);
     };
 
-    s16 sp14[2];
-    s16 sp10[2];
-    s16 spC[2];
-    s16 sp8[2];
-    void *var_r31;
-    void *var_r30;
-    void *var_r29;
-    void *obj6c;
-    u32 res;
-    s16 temp_r7;
-    s16 temp_r5;
+    s16 listPos[2];
+    s16 detailPos[2];
+    s16 altPos[2];
+    s16 captionPos[2];
+    void *list;
+    void *panel;
+    void *child;
+    void *captionSrc;
+    u32 caption;
+    s16 savedH;
+    s16 endX;
 
-    var_r30 = arg0;
-    var_r31 = Ui_FindChild(arg0, 8, 0);
-    if (var_r31 == NULL) {
-        var_r31 = *(void **)((u8 *)var_r30 + 0x54);
-        Ui_AddChild(var_r30, var_r31);
+    panel = arg0;
+    list = Ui_FindChild(arg0, 8, 0);
+    if (list == NULL) {
+        list = *(void **)((u8 *)panel + 0x54);
+        Ui_AddChild(panel, list);
     }
-    if (*(s16 *)((u8 *)var_r31 + 0xA) != 0x118) {
-        temp_r7 = *(s16 *)((u8 *)var_r31 + 0xC);
-        sp14[0] = 0x118;
-        sp14[1] = temp_r7;
-        fn_8014027C(var_r30, var_r31, sp14, 0);
+    if (*(s16 *)((u8 *)list + 0xA) != 0x118) {
+        savedH = *(s16 *)((u8 *)list + 0xC);
+        listPos[0] = 0x118;
+        listPos[1] = savedH;
+        fn_8014027C(panel, list, listPos, 0);
     }
-    *(u8 *)((u8 *)var_r31 + 0x4C) = 1;
-    if (*(s16 *)((u8 *)var_r31 + 0x4E) != 0x7FFF) {
-        var_r29 = Ui_FindChild(var_r30, 0xA, 0);
-        if (var_r29 == NULL) {
-            var_r29 = *(void **)((u8 *)var_r30 + 0x60);
-            Ui_AddChild(var_r30, var_r29);
+    *(u8 *)((u8 *)list + 0x4C) = 1;
+    if (*(s16 *)((u8 *)list + 0x4E) != 0x7FFF) {
+        child = Ui_FindChild(panel, 0xA, 0);
+        if (child == NULL) {
+            child = *(void **)((u8 *)panel + 0x60);
+            Ui_AddChild(panel, child);
         }
-        ((Obj *)var_r29)->v11(Ui_ListGetSelected(var_r31));
-        if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x138) {
-            temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
-            sp10[0] = 0x138;
-            sp10[1] = temp_r7;
-            fn_8014027C(var_r30, var_r29, sp10, 0);
+        ((Obj *)child)->v11(Ui_ListGetSelected(list));
+        if (*(s16 *)((u8 *)child + 0xA) != 0x138) {
+            savedH = *(s16 *)((u8 *)child + 0xC);
+            detailPos[0] = 0x138;
+            detailPos[1] = savedH;
+            fn_8014027C(panel, child, detailPos, 0);
         }
     } else if (fn_8014D8DC(gBattleState) != 0) {
-        var_r29 = Ui_FindChild(var_r30, 0xB, 0);
-        if (var_r29 == NULL) {
-            var_r29 = *(void **)((u8 *)var_r30 + 0x64);
-            Ui_AddChild(var_r30, var_r29);
+        child = Ui_FindChild(panel, 0xB, 0);
+        if (child == NULL) {
+            child = *(void **)((u8 *)panel + 0x64);
+            Ui_AddChild(panel, child);
         }
-        if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x134) {
-            temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
-            spC[0] = 0x134;
-            spC[1] = temp_r7;
-            fn_8014027C(var_r30, var_r29, spC, 0);
+        if (*(s16 *)((u8 *)child + 0xA) != 0x134) {
+            savedH = *(s16 *)((u8 *)child + 0xC);
+            altPos[0] = 0x134;
+            altPos[1] = savedH;
+            fn_8014027C(panel, child, altPos, 0);
         }
     }
-    var_r29 = Ui_FindChild(var_r30, 4, 0);
-    if (*(u8 *)((u8 *)var_r29 + 0x48) != 0) {
-        sp8[0] = 0x14C;
-        sp8[1] = 0x30;
-        fn_801402A0(var_r30, var_r29, sp8, 0);
+    child = Ui_FindChild(panel, 4, 0);
+    if (*(u8 *)((u8 *)child + 0x48) != 0) {
+        captionPos[0] = 0x14C;
+        captionPos[1] = 0x30;
+        fn_801402A0(panel, child, captionPos, 0);
     }
-    temp_r5 = *(s16 *)((u8 *)var_r29 + 0xA) + 0xE8;
-    *(s16 *)((u8 *)var_r29 + 0xE) = temp_r5;
-    *(s16 *)((u8 *)var_r29 + 0x4A) = 8;
-    *(s16 *)((u8 *)var_r29 + 0x4C) = 0;
-    ((Obj *)var_r29)->v8();
-    *(u8 *)((u8 *)var_r29 + 0x48) = 0;
-    *(u8 *)((u8 *)var_r29 + 0x44) = 0;
-    fn_8013FF00(var_r30, var_r31);
-    obj6c = *(void **)((u8 *)var_r30 + 0x6C);
-    var_r31 = *(void **)((u8 *)obj6c + 0x70);
-    res = (u32)Ui_FindChild(var_r30, -0x1000, 0);
-    if (res != 0U) {
-        Ui_SetWidgetText(res, (s32)var_r31);
+    endX = *(s16 *)((u8 *)child + 0xA) + 0xE8;
+    *(s16 *)((u8 *)child + 0xE) = endX;
+    *(s16 *)((u8 *)child + 0x4A) = 8;
+    *(s16 *)((u8 *)child + 0x4C) = 0;
+    ((Obj *)child)->v8();
+    *(u8 *)((u8 *)child + 0x48) = 0;
+    *(u8 *)((u8 *)child + 0x44) = 0;
+    fn_8013FF00(panel, list);
+    captionSrc = *(void **)((u8 *)panel + 0x6C);
+    list = *(void **)((u8 *)captionSrc + 0x70);
+    caption = (u32)Ui_FindChild(panel, -0x1000, 0);
+    if (caption != 0U) {
+        Ui_SetWidgetText(caption, (s32)list);
     }
 }
 
