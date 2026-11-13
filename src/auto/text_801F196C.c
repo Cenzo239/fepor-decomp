@@ -1663,7 +1663,7 @@ void fn_801F5D08(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801F5D14(void *arg0) {
-    s32 fn_802655A8(void *, u8 *);
+    s32 GBAGetStatus(void *, u8 *);
     void fn_80266840(void *, void *, u8 *);
     void DebugPrint(void *, ...);
     void Process_Goto(void *, s32);
@@ -1671,7 +1671,7 @@ void fn_801F5D14(void *arg0) {
     extern u16 gCardLinkStr[18];
     s32 ret;
 
-    ret = fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
+    ret = GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
     if (ret == 0) {
         ret = *(u8 *)((u8 *)arg0 + 0x4B);
         if ((ret & 0x30) != 0x30) {
@@ -1698,7 +1698,7 @@ void fn_801F5DD0(void *arg0)
 
     object = (u8 *)arg0;
 
-    r = fn_802655A8(*(u32 *)(object + 0x38), object + 0x4B);
+    r = GBAGetStatus(*(u32 *)(object + 0x38), object + 0x4B);
     if (r == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
@@ -1724,7 +1724,7 @@ void fn_801F5DD0(void *arg0)
 #pragma opt_common_subs off
 void CardLink_PollSendKey(void *arg0) {
     void Process_Goto(void *, s32);
-    s32 fn_802655A8(void *, void *);
+    s32 GBAGetStatus(void *, void *);
     s32 fn_80266998(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
@@ -1736,7 +1736,7 @@ void CardLink_PollSendKey(void *arg0) {
         Process_Goto(arg0, 2);
         return;
     }
-    if (fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0) {
+    if (GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0) {
         return;
     }
     if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x20) {
@@ -1745,7 +1745,7 @@ void CardLink_PollSendKey(void *arg0) {
     if (fn_80266998(*(void **)((u8 *)arg0 + 0x38), gCardLinkKey, (u8 *)arg0 + 0x4B) != 0) {
         return;
     }
-    fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
+    GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
     if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x30) {
         return;
     }
@@ -1774,7 +1774,7 @@ void fn_801F5F58(void *arg0) {
 void fn_801F5FE0(void *arg0) {
     void Process_Goto(void *, s32);
     s32 fn_8026569C(void *, void *);
-    s32 fn_802655A8(void *, void *);
+    s32 GBAGetStatus(void *, void *);
     s32 fn_80266840(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
@@ -1791,7 +1791,7 @@ void fn_801F5FE0(void *arg0) {
     if (fn_8026569C(*(void **)(self + 0x38), self + 0x4B) != 0) {
         return;
     }
-    if (fn_802655A8(*(void **)(self + 0x38), self + 0x4B) != 0) {
+    if (GBAGetStatus(*(void **)(self + 0x38), self + 0x4B) != 0) {
         return;
     }
     if (*(u8 *)(self + 0x4B) != 0x28) {
