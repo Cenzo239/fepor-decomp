@@ -15219,6 +15219,7 @@ void fn_801DC1C8(u8 *arg0) {
     *(s16 *)(base + off) = (s16)(*(s16 *)(base + off) & ~1);
 }
 #pragma global_optimizer on
+/* Handle A/B confirm/cancel and left/right option select for a yes-no dialog. */
 void Ui_HandleConfirmDialogInput(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -15231,12 +15232,12 @@ void Ui_HandleConfirmDialogInput(void *arg0) {
     s32 buttons;
     s32 prev;
     s32 mask;
-    s32 v340;
+    s32 yPos;
     void *entry;
-    s16 v33e;
-    s16 t0;
-    s16 t8;
-    s16 t10;
+    s16 xPos;
+    s16 flags;
+    s16 srcX;
+    s16 srcY;
 
     self = arg0;
     buttons = ((s32 *)gPadInput)[1];
@@ -15254,7 +15255,7 @@ void Ui_HandleConfirmDialogInput(void *arg0) {
     bonus = mask == 1 ? 0x28 : 0;
 
     if ((pressed & 0x100) == 0) {
-        goto after_100;
+        goto after_a;
     }
     if ((s8)*((u8 *)state + 0x14) == 0) {
         Ui_PlaySeCue(*(void **)((u8 *)self + 0x38), 0x64);
@@ -15262,16 +15263,16 @@ void Ui_HandleConfirmDialogInput(void *arg0) {
         Ui_PlaySeCue(gUiSeCues + 0x2E4, 0x64);
     }
     Process_ClearFunc(self);
-after_100:
+after_a:
     if ((pressed & 0x200) == 0) {
-        goto after_200;
+        goto after_b;
     }
     Ui_PlaySeCue(gUiSeCues + 0x2E4, 0x64);
     *((u8 *)state + 0x14) = 1;
     Process_ClearFunc(self);
-after_200:
+after_b:
     if ((pressed & 0x01000001) == 0) {
-        goto after_01;
+        goto after_left;
     }
     if ((s32)*((u8 *)state + 0x14) == 1) {
         Ui_PlaySeCue(gUiSeCues + 0x328, 0x64);
@@ -15284,24 +15285,24 @@ after_200:
         val_c8 = 0xC8;
         *((u8 *)state + 0x14) = zero;
         four = 4;
-        v340 = *(s16 *)((u8 *)state + 0x340) + bonus;
-        v33e = *(s16 *)((u8 *)state + 0x33E);
+        yPos = *(s16 *)((u8 *)state + 0x340) + bonus;
+        xPos = *(s16 *)((u8 *)state + 0x33E);
         entry = (u8 *)state + (*(s32 *)((u8 *)self + 0x40) * 0x14) + 0x51A;
-        t0 = *(s16 *)entry;
-        t10 = *(s16 *)((u8 *)entry + 0xA);
-        t8 = *(s16 *)((u8 *)entry + 8);
-        *(s16 *)entry = t0 | 1;
+        flags = *(s16 *)entry;
+        srcY = *(s16 *)((u8 *)entry + 0xA);
+        srcX = *(s16 *)((u8 *)entry + 8);
+        *(s16 *)entry = flags | 1;
         *(s16 *)entry = *(s16 *)entry & ~2;
         *(s16 *)entry = *(s16 *)entry & ~4;
         *(s16 *)((u8 *)entry + 2) = val_c8;
-        *(s16 *)((u8 *)entry + 0xC) = t8;
-        *(s16 *)((u8 *)entry + 0xE) = t10;
-        *(s16 *)((u8 *)entry + 0x10) = v33e;
-        *(s16 *)((u8 *)entry + 0x12) = v340;
+        *(s16 *)((u8 *)entry + 0xC) = srcX;
+        *(s16 *)((u8 *)entry + 0xE) = srcY;
+        *(s16 *)((u8 *)entry + 0x10) = xPos;
+        *(s16 *)((u8 *)entry + 0x12) = yPos;
         *(s16 *)((u8 *)entry + 4) = zero;
         *(s16 *)((u8 *)entry + 6) = four;
     }
-after_01:
+after_left:
     if ((pressed & 0x02000002) == 0) {
         goto done;
     }
@@ -15309,12 +15310,12 @@ after_01:
         Ui_PlaySeCue(gUiSeCues + 0x328, 0x64);
     }
     {
-        s32 v340;
+        s32 yPos;
         void *entry;
-        s16 v33e;
-        s16 t0;
-        s16 t8;
-        s16 t10;
+        s16 xPos;
+        s16 flags;
+        s16 srcX;
+        s16 srcY;
         s32 one;
         s32 val_c8;
         s32 zero;
@@ -15324,20 +15325,20 @@ after_01:
         *((u8 *)state + 0x14) = one;
         zero = 0;
         four = 4;
-        v340 = *(s16 *)((u8 *)state + 0x344) + bonus;
-        v33e = *(s16 *)((u8 *)state + 0x342);
+        yPos = *(s16 *)((u8 *)state + 0x344) + bonus;
+        xPos = *(s16 *)((u8 *)state + 0x342);
         entry = (u8 *)state + (*(s32 *)((u8 *)self + 0x40) * 0x14) + 0x51A;
-        t0 = *(s16 *)entry;
-        t10 = *(s16 *)((u8 *)entry + 0xA);
-        t8 = *(s16 *)((u8 *)entry + 8);
-        *(s16 *)entry = t0 | 1;
+        flags = *(s16 *)entry;
+        srcY = *(s16 *)((u8 *)entry + 0xA);
+        srcX = *(s16 *)((u8 *)entry + 8);
+        *(s16 *)entry = flags | 1;
         *(s16 *)entry = *(s16 *)entry & ~2;
         *(s16 *)entry = *(s16 *)entry & ~4;
         *(s16 *)((u8 *)entry + 2) = val_c8;
-        *(s16 *)((u8 *)entry + 0xC) = t8;
-        *(s16 *)((u8 *)entry + 0xE) = t10;
-        *(s16 *)((u8 *)entry + 0x10) = v33e;
-        *(s16 *)((u8 *)entry + 0x12) = v340;
+        *(s16 *)((u8 *)entry + 0xC) = srcX;
+        *(s16 *)((u8 *)entry + 0xE) = srcY;
+        *(s16 *)((u8 *)entry + 0x10) = xPos;
+        *(s16 *)((u8 *)entry + 0x12) = yPos;
         *(s16 *)((u8 *)entry + 4) = zero;
         *(s16 *)((u8 *)entry + 6) = four;
     }
