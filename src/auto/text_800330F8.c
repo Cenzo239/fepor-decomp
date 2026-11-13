@@ -2077,7 +2077,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     void Allegiance_FillMask(s32, void *);
     u8 Id_GetKind(s32);
     s32 Item_GetByIid(s32);
-    s32 fn_80019E48(s32);
+    s32 Job_GetByJid(s32);
     s32 Person_GetByPid(s32);
     s8 fn_80091DE0(void *, s32);
     s32 fn_800C388C(void *, s32);
@@ -2094,7 +2094,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
         return temp == Person_GetByPid(arg1);
     case 2:
         temp = M2C_FIELD(arg0, s32 *, 0x18C);
-        return temp == fn_80019E48(arg1);
+        return temp == Job_GetByJid(arg1);
     case 3:
         if (fn_800C388C(lbl_803200AC, arg1) >= 0) {
             return 1;

@@ -361,7 +361,7 @@ s32 fn_80019E24(s32 arg0) {
 }
 #pragma dont_inline reset
 
-void fn_80019E48(void) {
+void Job_GetByJid(void) {
     M2C_UNK Res_GetByName();
     Res_GetByName();
 }

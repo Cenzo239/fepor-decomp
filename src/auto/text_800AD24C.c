@@ -6927,7 +6927,7 @@ s32 fn_800BCDF0(u8 arg0) {
 s32 fn_800BCE64(u32 arg0, s32 arg1)
 {
     extern u8 gUnits[];
-    s32 fn_80019E48(s32);
+    s32 Job_GetByJid(s32);
 
     u8 *unit;
     s32 value;
@@ -6944,7 +6944,7 @@ s32 fn_800BCE64(u32 arg0, s32 arg1)
 
     value = *(s32 *)(unit + 0x18C);
 
-    return (u8)(value == fn_80019E48(arg1));
+    return (u8)(value == Job_GetByJid(arg1));
 }
 
 s32 fn_800BCED4(u32 arg0, void *arg1)

@@ -1134,7 +1134,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
 
 u8 fn_800940B0(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
-    void *fn_80019E48(void *);
+    void *Job_GetByJid(void *);
 
     void *other;
     void *self;
@@ -1207,7 +1207,7 @@ u8 fn_800940B0(void *arg0, void *arg1) {
             }
             if (*(u64 *)((u8 *)other + 0x38) & 0x100000) {
                 unit = *(void **)((u8 *)self + 0x18C);
-                if (unit != fn_80019E48(lbl_8026CFE8 + 0x39)) {
+                if (unit != Job_GetByJid(lbl_8026CFE8 + 0x39)) {
                     return 0;
                 }
             }
