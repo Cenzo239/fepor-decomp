@@ -21968,7 +21968,7 @@ void Sort_Three(s32 *left, s32 *mid, s32 *right, u8 (*less)(s32, s32)) {
     s32 *c;
     s32 *b;
     s32 *a;
-    s32 rightBeforeLeft;
+    s32 notRightLtLeft;
     u8 (*cmp)(s32, s32);
 
     /* Sort three elements in place so *left <= *mid <= *right per cmp. */
@@ -21977,18 +21977,18 @@ void Sort_Three(s32 *left, s32 *mid, s32 *right, u8 (*less)(s32, s32)) {
     a = left;
     cmp = less;
 
-    rightBeforeLeft = ((u8)cmp(*c, *a) == 0);
+    notRightLtLeft = ((u8)cmp(*c, *a) == 0);
     {
-        s32 midBeforeRight = ((u8)cmp(*b, *c) == 0);
-        if ((u8)rightBeforeLeft) {
-            if ((u8)midBeforeRight) {
+        s32 notMidLtRight = ((u8)cmp(*b, *c) == 0);
+        if ((u8)notRightLtLeft) {
+            if ((u8)notMidLtRight) {
                 return;
             }
         }
-        if ((u8)rightBeforeLeft) {
+        if ((u8)notRightLtLeft) {
             goto sort;
         }
-        if ((u8)midBeforeRight) {
+        if ((u8)notMidLtRight) {
             goto sort;
         }
         {
@@ -22004,7 +22004,7 @@ sort:
         *a = *b;
         *b = tmp;
     }
-    if ((u8)rightBeforeLeft) {
+    if ((u8)notRightLtLeft) {
         s32 tmp = *b;
         *b = *c;
         *c = tmp;
