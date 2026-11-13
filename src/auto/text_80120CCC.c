@@ -187,7 +187,8 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 }
 
-void Ui_DrawTooltip(void *arg0) {
+/* Draw the tooltip balloon sprite and its text when UI input is idle. */
+void Ui_DrawTooltip(void *tip) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_SetText(void *);
     void Prim2D_SetColorPacked(void *);
@@ -212,13 +213,13 @@ void Ui_DrawTooltip(void *arg0) {
     extern f32 lbl_8036A26C;
     extern f32 lbl_8036A270;
     u32 color;
-    u8 spC[0x24];
+    u8 texBuf[0x24];
     s16 x;
     void *self;
-    f32 z;
-    u16 w;
+    f32 scale;
+    u16 texW;
 
-    self = arg0;
+    self = tip;
     if ((gUiInputFlags & 3) == 0) {
         x = M2C_FIELD(self, s16 *, 0x48);
         if (x >= 0x3E8) {
@@ -237,23 +238,23 @@ void Ui_DrawTooltip(void *arg0) {
             (f32)M2C_FIELD(self, u8 *, 0x4E),
             (f32)M2C_FIELD(self, u8 *, 0x4F));
         Prim2D_Begin();
-        z = lbl_8036A258;
-        Prim2D_SetTransform(z, z, lbl_8036A26C, lbl_8036A268);
+        scale = lbl_8036A258;
+        Prim2D_SetTransform(scale, scale, lbl_8036A26C, lbl_8036A268);
         Prim2D_SetColorByte(M2C_FIELD(self, u8 *, 0x50));
         Prim2D_PrepareTex();
-        Ui_LoadAtlasTex(gUiAtlas, spC, 0x1E);
-        *(volatile u16 *)(spC + 0x20) = GXGetTexObjWidth(spC);
-        *(volatile u16 *)(spC + 0x22) = GXGetTexObjHeight(spC);
+        Ui_LoadAtlasTex(gUiAtlas, texBuf, 0x1E);
+        *(volatile u16 *)(texBuf + 0x20) = GXGetTexObjWidth(texBuf);
+        *(volatile u16 *)(texBuf + 0x22) = GXGetTexObjHeight(texBuf);
         Prim2D_Begin();
-        Prim2D_SetTex(spC, 0x10);
+        Prim2D_SetTex(texBuf, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        w = *(u16 *)(spC + 0x20);
+        texW = *(u16 *)(texBuf + 0x20);
         Prim2D_SetRect(
-            (f32)(s32)(x - (s32)((w >> 1) & 0x7FFF)),
+            (f32)(s32)(x - (s32)((texW >> 1) & 0x7FFF)),
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC),
-            (f32)w,
-            (f32)*(u16 *)(spC + 0x22));
+            (f32)texW,
+            (f32)*(u16 *)(texBuf + 0x22));
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTex((void *)0, 0x13);
