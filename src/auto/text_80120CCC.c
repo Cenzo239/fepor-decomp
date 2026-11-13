@@ -2943,7 +2943,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_TutorialCall(void);
     void ScriptCmd_QueryLesson(void);
     void ScriptCmd_BeginMapHoldCursor(void);
-    void fn_80127028(void);
+    void ScriptCmd_EndMapHoldCursor(void);
     void fn_801275BC(void);
     void fn_80126FA0(void);
     void fn_80126F7C(void);
@@ -2991,7 +2991,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x18A, ScriptCmd_TutorialCall, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x197, ScriptCmd_QueryLesson, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1A3, ScriptCmd_BeginMapHoldCursor, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x1B6, fn_80127028, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x1B6, ScriptCmd_EndMapHoldCursor, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1C7, fn_801275BC, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CB, fn_80126FA0, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CF, fn_80126F7C, 0);
@@ -3349,7 +3349,7 @@ s32 fn_80127000(void *arg0) {
     return 1;
 }
 
-s32 fn_80127028(void) {
+s32 ScriptCmd_EndMapHoldCursor(void) {
     void fn_8000BE54(void *);
     extern u8 lbl_80290510[];
     fn_8000BE54(lbl_80290510);
