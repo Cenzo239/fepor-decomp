@@ -1121,7 +1121,7 @@ s32 fn_80185B94(void *arg0) {
     return 0;
 }
 
-void fn_80185F40(void *arg0) {
+void MuFlash_StartOnButton(void *arg0) {
     u8 Pad_IsButton(void *, s32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
