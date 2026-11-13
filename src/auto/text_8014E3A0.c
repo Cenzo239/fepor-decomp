@@ -26,10 +26,10 @@ void *fn_8014E3C8(void) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_80330CC8[];
     extern u8 lbl_80277238[];
-    extern s32 lbl_80367B7C;
+    extern s32 gMsgDebugPage;
     extern s32 lbl_80367B80;
 
-    sprintf(lbl_80330CC8, lbl_80277238 + 0xD0, lbl_80367B7C + 1, lbl_80367B80);
+    sprintf(lbl_80330CC8, lbl_80277238 + 0xD0, gMsgDebugPage + 1, lbl_80367B80);
     return lbl_80330CC8;
 }
 
@@ -37,19 +37,19 @@ s32 fn_8014E414(void) {
     return 0;
 }
 
-extern s32 lbl_80367B7C;
+extern s32 gMsgDebugPage;
 extern u32 gMsgDebugCount;
 extern u8 lbl_80277238[];
 extern u32 gMsgDebugPtrs;
 void *fn_8014E41C(s32 arg0, void *arg1) {
-    extern s32 lbl_80367B7C;
+    extern s32 gMsgDebugPage;
     extern u32 gMsgDebugCount;
     extern u8 lbl_80277238[];
     extern u32 gMsgDebugPtrs;
     s32 idx;
     s32 limit;
 
-    idx = *(u8 *)((char *)arg1 + 0x3A) + lbl_80367B7C * 0x18;
+    idx = *(u8 *)((char *)arg1 + 0x3A) + gMsgDebugPage * 0x18;
     limit = gMsgDebugCount;
     if (idx >= limit) {
         return lbl_80277238 + 0x85;
@@ -59,19 +59,19 @@ void *fn_8014E41C(s32 arg0, void *arg1) {
 
 s32 fn_8014E458(void) {
     extern void *gPadInput;
-    extern s32 lbl_80367B7C;
+    extern s32 gMsgDebugPage;
     extern s32 lbl_80367B80;
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x01000001) {
-        lbl_80367B7C = (lbl_80367B7C + (lbl_80367B80 - 1)) % lbl_80367B80;
+        gMsgDebugPage = (gMsgDebugPage + (lbl_80367B80 - 1)) % lbl_80367B80;
     }
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x02000002) {
-        lbl_80367B7C = (lbl_80367B7C + 1) % lbl_80367B80;
+        gMsgDebugPage = (gMsgDebugPage + 1) % lbl_80367B80;
     }
     return 0;
 }
 
 s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
-    extern s32 lbl_80367B7C;
+    extern s32 gMsgDebugPage;
     extern u32 gMsgDebugCount;
     extern s32 lbl_80367B84;
     extern u32 gMsgDebugPtrs;
@@ -80,7 +80,7 @@ s32 fn_8014E4C8(void *arg0, void *arg1, void *arg2) {
     char *str;
     u8 flag;
 
-    index = lbl_80367B7C * 0x18;
+    index = gMsgDebugPage * 0x18;
     index += *(u8 *)((u8 *)arg2 + 0x3A);
     lbl_80367B84 = index;
     if (index >= (s32)gMsgDebugCount) {
@@ -119,7 +119,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     void fn_80007290(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void *fn_8000E0E4(void *);
-    extern s32 lbl_80367B7C;
+    extern s32 gMsgDebugPage;
     extern u32 gMsgDebugCount;
     extern u8 *gMsgDebugKinds;
     extern u32 gMsgDebugPtrs;
@@ -146,7 +146,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     s32 mul;
 
     (void)unused;
-    mul = lbl_80367B7C * 0x18;
+    mul = gMsgDebugPage * 0x18;
     idx = mul + *(u8 *)((u8 *)arg2 + 0x3A);
     if (idx >= (s32)gMsgDebugCount) {
         return;
