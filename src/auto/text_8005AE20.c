@@ -6721,7 +6721,7 @@ void DEMOInitGX(void *rmode)
     void fn_802212C8(u16, u16);
     void fn_80221824(u8, void *, s32, void *);
     void fn_802246EC(s32, s32);
-    void fn_80221A40(void *, s32);
+    void GXCopyDisp(void *, s32);
     void fn_80221A2C(s32);
     void VIConfigure(void *);
     void VISetNextFrameBuffer(void *);
@@ -6828,7 +6828,7 @@ void DEMOInitGX(void *rmode)
     } else {
         fn_802246EC(1, 0);
     }
-    fn_80221A40(DemoCurrentBuffer, 1);
+    GXCopyDisp(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
     VIConfigure(DEMORmode);
     VISetNextFrameBuffer(DemoFrameBuffer1);
@@ -6863,7 +6863,7 @@ void fn_8006DFD8(void) {
     void fn_802212C8(u16, u16);
     void fn_80221824(u8, void *, s32, void *);
     void fn_802246EC(s32, s32);
-    void fn_80221A40(void *, s32);
+    void GXCopyDisp(void *, s32);
     void fn_80221A2C(s32);
     void VIConfigure(void *);
     void VISetNextFrameBuffer(void *);
@@ -6913,7 +6913,7 @@ void fn_8006DFD8(void) {
     timed_out = 0;
     GXSetZMode(1, 3, 1);
     fn_8022462C(1);
-    fn_80221A40(DemoCurrentBuffer, 1);
+    GXCopyDisp(DemoCurrentBuffer, 1);
     fn_802208BC(0xB00B);
     lbl_80367330 = 0;
     goto check;
@@ -7002,7 +7002,7 @@ body:
     } else {
         fn_802246EC(1, 0);
     }
-    fn_80221A40(DemoCurrentBuffer, 1);
+    GXCopyDisp(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
     VIConfigure(DEMORmode);
     VISetNextFrameBuffer(DemoFrameBuffer1);
@@ -7135,7 +7135,7 @@ void fn_8006E660(void)
     void fn_8006DFD8(void);
     void GXSetZMode(s32, s32, s32);
     void fn_8022462C(s32);
-    void fn_80221A40(void *, s32);
+    void GXCopyDisp(void *, s32);
     void fn_8022097C(void);
     void fn_8009E870(void);
     u32 fn_80211690(void);
@@ -7152,7 +7152,7 @@ void fn_8006E660(void)
     } else {
         GXSetZMode(1, 3, 1);
         fn_8022462C(1);
-        fn_80221A40(DemoCurrentBuffer, 1);
+        GXCopyDisp(DemoCurrentBuffer, 1);
         fn_8022097C();
         fn_8009E870();
 
@@ -7253,7 +7253,7 @@ void DEMOInit(void *arg0)
     void fn_802212C8(u16, u16);
     void fn_80221824(u8, void *, s32, void *);
     void fn_802246EC(s32, s32);
-    void fn_80221A40(void *, s32);
+    void GXCopyDisp(void *, s32);
     void fn_80221A2C(s32);
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
@@ -7371,7 +7371,7 @@ void DEMOInit(void *arg0)
     } else {
         fn_802246EC(1, 0);
     }
-    fn_80221A40(DemoCurrentBuffer, 1);
+    GXCopyDisp(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
     VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;

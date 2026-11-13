@@ -569,7 +569,7 @@ void fn_80221A2C(s32 arg0) {
     M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), arg0, 7, 23, 24);
 }
 
-void fn_80221A40(void)
+void GXCopyDisp(void)
 {
     if (0 == 0) 
     {

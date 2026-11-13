@@ -8719,7 +8719,7 @@ void Game_InitVideo(void) {
     void DEMOInit(void *);
     void fn_8020602C(char *, s32, char *, ...);
     void GXSetCopyClear(void *, s32);
-    void fn_80221A40(s32, s32);
+    void GXCopyDisp(s32, s32);
     extern s32 gGameFlags;
     extern void *gGameRenderMode;
     extern void *gGameRenderModeProg;
@@ -8808,7 +8808,7 @@ void Game_InitVideo(void) {
 
     sp8 = gClearColor;
     GXSetCopyClear(&sp8, 0xFFFFFF);
-    fn_80221A40(fn_8006E650(), 1);
+    GXCopyDisp(fn_8006E650(), 1);
 }
 
 s32 fn_801C9704(void) {
