@@ -11574,7 +11574,8 @@ void SpriteSheet_DrawFrame(void *sheet, s32 layer, s32 frame, s32 x, s32 y, s32 
     }
 }
 
-void SpriteSheet_DrawUvRect(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9) {
+void SpriteSheet_DrawUvRect(void *sheet, s32 layer, void *uv, void *rect, s32 angle, s32 r, s32 g, s32 b, s32 a, s32 texParam) {
+    /* Bind the sheet texture and draw a colored rect with the given UV corners. */
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
@@ -11591,19 +11592,20 @@ void SpriteSheet_DrawUvRect(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4
     s32 x;
     s32 y;
 
-    if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
+    (void)layer;
+    if (M2C_FIELD(sheet, u32 *, 0x48) != 0) {
         x = M2C_FIELD(rect, s32 *, 0);
         y = M2C_FIELD(rect, s32 *, 4);
         w = M2C_FIELD(rect, s32 *, 8) - x;
         h = M2C_FIELD(rect, s32 *, 0xC) - y;
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg4, gPrim2DOne);
-        Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg9, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) angle, gPrim2DOne);
+        Prim2D_BindTexture(M2C_FIELD(sheet, u32 *, 0x48), texParam, (u16) M2C_FIELD(sheet, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect((f32) x, (f32) y, (f32) w, (f32) h);
         Prim2D_SetUvCorners((f32) M2C_FIELD(uv, s32 *, 0), (f32) M2C_FIELD(uv, s32 *, 4), (f32) M2C_FIELD(uv, s32 *, 8), (f32) M2C_FIELD(uv, s32 *, 0xC));
-        Prim2D_SetColor((u8) arg5, (u8) arg6, (u8) arg7, (u8) arg8);
+        Prim2D_SetColor((u8) r, (u8) g, (u8) b, (u8) a);
         Prim2D_EndPrim();
     }
 }
