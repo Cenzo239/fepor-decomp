@@ -2297,7 +2297,7 @@ void fn_8002DF54(void) {
     lbl_80367AF6 = 0;
 }
 
-void fn_8002E0D0(void) {
+void Battle_AdvancePhase(void) {
     void fn_80006220(s32);
     void fn_80015320(s32, void *);
     void *fn_80016BDC(void *);
