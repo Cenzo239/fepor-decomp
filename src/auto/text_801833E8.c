@@ -6652,6 +6652,7 @@ void fn_80194374(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
+    /* Handle unit-list cursor: A select (blocked-unit check), Y unit info, B cancel. */
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     void fn_8000D8BC(s32, s32);
@@ -6697,21 +6698,21 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
         virtual void v10() = 0;
         virtual void v11() = 0;
         virtual void v12() = 0;
-        virtual Pair v13() = 0;
+        virtual Pair getPos() = 0;
     };
     struct Child {
         u8 pad[0xC];
-        s16 unkC;
+        s16 y;
         u8 padE[0x2E];
-        s32 unk3C;
+        s32 value;
     };
 
-    void *obj40;
-    s32 *var_r30;
+    void *listWidget;
+    s32 *selected;
     Child *child;
     void *self;
     register int btn;
-    register u8 gate;
+    register u8 blocked;
     register int flags;
     void *unit;
     u32 *bits;
@@ -6723,38 +6724,38 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     u32 pos2;
 
     self = arg0;
-    obj40 = *(void **)((u8 *)arg0 + 0x40);
-    var_r30 = ListWidget_GetSelected(obj40);
-    *(u8 *)((u8 *)obj40 + 0x4C) = 1;
+    listWidget = *(void **)((u8 *)arg0 + 0x40);
+    selected = ListWidget_GetSelected(listWidget);
+    *(u8 *)((u8 *)listWidget + 0x4C) = 1;
     fn_8013FDA0(arg0);
-    if (var_r30 != ListWidget_GetSelected(obj40)) {
-        var_r30 = ListWidget_GetSelected(obj40);
+    if (selected != ListWidget_GetSelected(listWidget)) {
+        selected = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            if (var_r30 != NULL) {
-                *(Pair *)&pos1 = ((Obj *)obj40)->v13();
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *var_r30, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
+            if (selected != NULL) {
+                *(Pair *)&pos1 = ((Obj *)listWidget)->getPos();
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *selected, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
             } else {
                 Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
     child = (Child *)fn_8013FF94(arg0, 1, 0);
-    if (var_r30 != NULL) {
-        val = *(s32 *)*var_r30;
+    if (selected != NULL) {
+        val = *(s32 *)*selected;
     } else {
         val = 0;
     }
-    child->unk3C = val;
+    child->value = val;
     flags = gUiInputFlags;
-    gate = 0;
+    blocked = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+        blocked = 1;
     }
-    if (!gate) {
+    if (!blocked) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30 != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            unit = (void *)*var_r30;
+        if ((btn & 0x100) && selected != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+            unit = (void *)*selected;
             Ui_PlaySeCue((u8 *)lbl_8027A360 + 0x1a0, 0x64);
             bits = fn_8001CB64(unit);
             if ((*(u64 *)bits & 0x20000000000ULL) != 0) {
@@ -6771,15 +6772,15 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x14));
                 fn_8000C188(self);
             }
-        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != NULL) {
-            *(Pair *)&pos2 = ((Obj *)obj40)->v13();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && selected != NULL) {
+            *(Pair *)&pos2 = ((Obj *)listWidget)->getPos();
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *selected, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            *(u8 *)((u8 *)obj40 + 0x4C) = 0;
-            fn_80140258(self, child, Pair(0x260, child->unkC), 0);
+            *(u8 *)((u8 *)listWidget + 0x4C) = 0;
+            fn_80140258(self, child, Pair(0x260, child->y), 0);
             fn_8000C070(self, 6);
             Ui_PlaySeCue((u8 *)lbl_8027A360 + 0x1b0, 0x64);
         }
