@@ -7333,7 +7333,7 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     void fn_80203290(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
     extern u8 gBattleMap[];
-    extern u8 lbl_8026A590[];
+    extern u8 gMapTileEdgeVecs[];
     extern f32 lbl_80368F10;
     extern f32 lbl_80368F00;
     extern f32 lbl_80368EE4;
@@ -7360,7 +7360,7 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     f32 zero;
     f32 one;
 
-    tbl = lbl_8026A590;
+    tbl = gMapTileEdgeVecs;
     ix = (s32)x;
     iy = (s32)y;
     base = Map_GetTileCornerHeight(gBattleMap, ix, iy, 0);
