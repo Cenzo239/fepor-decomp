@@ -3206,7 +3206,7 @@ void UnitPair_Read(void *arg0, s32 arg1) {
     Stream_Read(arg1, 1, (void *)((char *)arg0 + 0x16));
 }
 
-void fn_80025DCC(void *arg0, s32 arg1) {
+void UnitPair_Write(void *arg0, s32 arg1) {
     void *temp_r3;
     void *temp_r3_2;
 
