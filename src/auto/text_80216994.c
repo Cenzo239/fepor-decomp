@@ -113,7 +113,7 @@ void fn_80216BBC(s32 arg0) {
     s32 EXIDeselect(s32, s32);
     M2C_UNK EXIUnlock(s32);
     s32 fn_80239488(s32);
-    extern M2C_UNK lbl_8033A200;
+    extern M2C_UNK __CARDBlock;
     M2C_UNK (*temp_r0)(s32, M2C_UNK);
     s32 temp_r31;
     s32 temp_r4;
@@ -121,7 +121,7 @@ void fn_80216BBC(s32 arg0) {
     void *temp_r29;
 
     temp_r4 = arg0 * 0x110;
-    temp_r29 = &lbl_8033A200 + temp_r4;
+    temp_r29 = &__CARDBlock + temp_r4;
     temp_r31 = EXIDeselect(arg0, temp_r4) == 0;
     EXIUnlock(arg0);
     temp_r0 = M2C_FIELD(temp_r29, M2C_UNK (**)(s32, M2C_UNK), 0xC8);
@@ -182,10 +182,10 @@ s32 fn_80216F88(s32 arg0) {
 }
 
 void fn_80217034(void *alarm, void *context) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     void fn_80239298(s32, void *);
 
-    u8 *base = (u8 *)lbl_8033A200;
+    u8 *base = (u8 *)__CARDBlock;
     u8 *card;
     s32 chan;
     void (*callback)(s32, s32);
@@ -213,7 +213,7 @@ void fn_80217034(void *alarm, void *context) {
 }
 
 s32 __CARDRetry(s32 chan) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     s32 EXISelect(s32, s32, s32);
     s32 EXIUnlock(s32);
     s32 EXIDeselect(s32);
@@ -226,7 +226,7 @@ s32 __CARDRetry(s32 chan) {
     u8 *card;
     s32 size;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (EXISelect(chan, 0, 4) == 0) {
         EXIUnlock(chan);
         return -3;
@@ -278,14 +278,14 @@ s32 __CARDRetry(s32 chan) {
 }
 
 void fn_80217378(s32 chan, s32 result) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     s32 EXILock(s32, s32, void *);
     s32 __CARDRetry(s32);
     void fn_80216C64();
     u8 *card;
     void (*callback)(s32);
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (result >= 0) {
         *(void **)(card + 0xDC) = fn_80217378;
         if (EXILock(chan, 0, fn_80216C64) == 0) {
@@ -320,7 +320,7 @@ void fn_80217378(s32 chan, s32 result) {
 }
 
 s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s32 EXILock(s32, s32, void *);
@@ -336,7 +336,7 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
     s32 result;
 
     enabled = OSDisableInterrupts();
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (*(s32 *)card == 0) {
         result = -3;
     } else {
@@ -380,7 +380,7 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
 }
 
 s32 fn_802176AC(s32 chan, void *callback) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     extern s32 EXIDma(s32, s32, s32, s32, void *);
     extern void EXIDeselect(s32);
     extern void EXIUnlock(s32);
@@ -389,7 +389,7 @@ s32 fn_802176AC(s32 chan, void *callback) {
     u8 *card;
     s32 result;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     card[0x94] = 0x52;
     card[0x95] = (u8)((*(u32 *)(card + 0xB0) >> 17) & 0x7F);
     card[0x96] = (u8)(*(u32 *)(card + 0xB0) >> 9);
@@ -423,8 +423,8 @@ u16 fn_80217AD8(void) {
 }
 
 void fn_80217AE0(void *arg0) {
-    extern u8 lbl_8033A200[];
-    u8 *base = lbl_8033A200;
+    extern u8 __CARDBlock[];
+    u8 *base = __CARDBlock;
     void *r0;
 
     if (arg0 != (void *)0) {
@@ -440,11 +440,11 @@ void fn_80217AE0(void *arg0) {
 s32 fn_80217B18(s32 arg0, s32 *arg1) {
     void OSDisableInterrupts(void);
     void OSRestoreInterrupts(void);
-    extern u8 lbl_8033A200[];
+    extern u8 __CARDBlock[];
     s32 result;
     u8 *ptr;
 
-    ptr = lbl_8033A200 + arg0 * 0x110;
+    ptr = __CARDBlock + arg0 * 0x110;
     if (arg0 < 0 || arg0 >= 2 || *(u32 *)(ptr + 0x10C) == 0) {
         return -0x80;
     }
@@ -476,13 +476,13 @@ s32 fn_80217BD0(void *arg0, s32 arg1) {
     return arg1;
 }
 
-extern u16 lbl_8033A200[];
+extern u16 __CARDBlock[];
 s32 fn_80217C34(s32 arg0) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     if (arg0 < 0 || arg0 >= 2) {
         return -0x80;
     }
-    return *(s32 *)((u8 *)lbl_8033A200 + arg0 * 0x110 + 4);
+    return *(s32 *)((u8 *)__CARDBlock + arg0 * 0x110 + 4);
 }
 
 s32 fn_80217C64(s32 arg0)
@@ -495,7 +495,7 @@ s32 fn_80217C64(s32 arg0)
     u32 interrupts;
     s32 result;
 
-    entry = (u8 *)lbl_8033A200 + arg0 * 0x110;
+    entry = (u8 *)__CARDBlock + arg0 * 0x110;
 
     interrupts = OSDisableInterrupts();
 
@@ -677,7 +677,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     void fn_80216050(void *, void *, s32);
     extern void fn_80218C34;
     extern void fn_80218CA4;
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     extern u8 lbl_8029DA00[];
     extern u32 lbl_80366FE8;
 
@@ -698,7 +698,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     u32 spA4[5];
     u32 w0, w1, w2, w3, w4;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     work = card + 0x30;
     buf = *(void **)(card + 0x80);
     aligned = ((u32)buf + 0x2F) & ~0x1Fu;
@@ -981,7 +981,7 @@ void fn_80218C34(void *arg0)
     u8 *base;
     u32 previous;
 
-    base = (u8 *)lbl_8033A200;
+    base = (u8 *)__CARDBlock;
 
     if (arg0 == base + 0x30) {
         return;
@@ -1009,7 +1009,7 @@ void fn_80218CA4(void *arg0) {
     s32 fn_80218018(void);
     void fn_8021AE98(s32, s32);
     s32 fn_80239488(s32);
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
 
     u8 cmd[0x50];
     u8 status;
@@ -1028,11 +1028,11 @@ void fn_80218CA4(void *arg0) {
     s32 chan;
 
     chan = 0;
-    card = (u8 *)lbl_8033A200;
-    if ((u8 *)lbl_8033A200 + 0x30 != (u8 *)arg0) {
-        card = (u8 *)lbl_8033A200 + 0x110;
+    card = (u8 *)__CARDBlock;
+    if ((u8 *)__CARDBlock + 0x30 != (u8 *)arg0) {
+        card = (u8 *)__CARDBlock + 0x110;
         chan = 1;
-        if ((u8 *)lbl_8033A200 + 0x140 != (u8 *)arg0) {
+        if ((u8 *)__CARDBlock + 0x140 != (u8 *)arg0) {
             chan = 2;
         }
     }
@@ -1111,11 +1111,11 @@ void fn_80218CA4(void *arg0) {
     fn_8021AE98(chan, result);
 }
 s32 fn_802190A4(s32 chan, u32 addr, u32 length, void *dst, void *callback) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     void fn_80218FC8();
     u8 *card;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (*(s32 *)card == 0) {
         return -3;
     }
@@ -1127,7 +1127,7 @@ s32 fn_802190A4(s32 chan, u32 addr, u32 length, void *dst, void *callback) {
 }
 
 s32 fn_802191F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, s32)) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     extern void *fn_80219108;
     s32 temp_r5;
     u16 move_cost;
@@ -1135,7 +1135,7 @@ s32 fn_802191F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(s32, s32)) 
     
     // Set up pointer using the original register sequence
     s32 r9 = arg0 * 0x110;
-    unit_ptr = (void *)&lbl_8033A200[r9 / sizeof(u16)];
+    unit_ptr = (void *)&__CARDBlock[r9 / sizeof(u16)];
     
     if (*(s32 *)unit_ptr == 0) {
         return -3;
@@ -1158,7 +1158,7 @@ s32 fn_80219258(void *arg0) {
 }
 
 void fn_80219260(s32 chan, s32 result) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     void *memcpy(void *, const void *, u32);
     s32 fn_80217BD0(void *, s32);
     u8 *card;
@@ -1167,7 +1167,7 @@ void fn_80219260(s32 chan, s32 result) {
     u8 *p8000;
     void (*callback)(s32, s32);
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (result >= 0) {
         base = *(u8 **)(card + 0x80);
         p6000 = base + 0x6000;
@@ -1204,7 +1204,7 @@ s32 fn_802193FC(s32 arg0, u32 arg1)
     u16 limit;
     u32 attempts;
 
-    entry = (u8 *)lbl_8033A200 + arg0 * 0x110;
+    entry = (u8 *)__CARDBlock + arg0 * 0x110;
 
     if (*(s32 *)entry == 0) {
         return -3;
@@ -1267,8 +1267,8 @@ s32 fn_80219514(s32 arg0, u16 arg1) {
     u16 r0;
     u16 r4;
     
-    // Set up r9: lbl_8033A200 + (arg0 * 0x110)
-    r9 = (u16*)((char*)lbl_8033A200 + (arg0 * 0x110));
+    // Set up r9: __CARDBlock + (arg0 * 0x110)
+    r9 = (u16*)((char*)__CARDBlock + (arg0 * 0x110));
     
     // Load first word of structure
     r0 = r9[0]; 
@@ -1313,7 +1313,7 @@ int fn_802195B0(int arg0, void *arg1, void *arg2)
     u32 size;
 
     data = (u8 *)arg1;
-    entry = (u8 *)lbl_8033A200 + arg0 * 0x110;
+    entry = (u8 *)__CARDBlock + arg0 * 0x110;
 
     *(u16 *)(data + 4) = *(u16 *)(data + 4) + 1;
 
@@ -1341,7 +1341,7 @@ s32 fn_802197FC(s32 arg0, s32 arg1) {
     u8 *temp_r30;
     void *temp_r6;
 
-    temp_r30 = (u8 *)lbl_8033A200 + arg0 * 0x110;
+    temp_r30 = (u8 *)__CARDBlock + arg0 * 0x110;
     if (*(s32 *)temp_r30 == 0) {
         return -3;
     }
@@ -1414,7 +1414,7 @@ s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
 #pragma use_lmw_stmw on
 s32 fn_80219A70(void *arg0)
 {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     u8 *__OSLockSramEx(void);
     void __OSUnlockSramEx(s32);
     u16 fn_80217AD8(void);
@@ -1451,7 +1451,7 @@ s32 fn_80219A70(void *arg0)
         return -6;
     }
     random = *(u64 *)(header + 12);
-    sram = (u8 *)__OSLockSramEx() + (((u8 *)arg0 - (u8 *)lbl_8033A200) / 0x110) * 12;
+    sram = (u8 *)__OSLockSramEx() + (((u8 *)arg0 - (u8 *)__CARDBlock) / 0x110) * 12;
     serial = header;
     for (i = 0; i < 12; i++, sram++, serial++) {
         random = (random * 0x41c64e6dULL + 12345) >> 16;
@@ -1839,7 +1839,7 @@ void fn_8021A7D4(void *arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 s32 fn_8021A8C8(s32 chan, s32 *memSize, s32 *sectorSize) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     extern u32 lbl_8029DB60[];
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -1858,7 +1858,7 @@ s32 fn_8021A8C8(s32 chan, s32 *memSize, s32 *sectorSize) {
     if (*(u8 *)0x800030E3 & 0x80) {
         return -3;
     }
-    card = (s32)((u8 *)lbl_8033A200 + chan * 0x110);
+    card = (s32)((u8 *)__CARDBlock + chan * 0x110);
     enabled = OSDisableInterrupts();
     probe = fn_80239508(chan);
     if (probe == -1) {
@@ -1903,7 +1903,7 @@ s32 fn_8021A7FC(u32);s32 fn_80216E98(s32,void*);s32 fn_80217D4C(void);s32 fn_802
 u8 *__OSLockSramEx(void);void __OSUnlockSramEx(s32);
 s32 fn_80216CE8(s32,s32);void fn_80239298(s32,void*);void fn_80216AA4(void);void fn_8021AE98(s32,s32);
 s32 fn_802190A4(s32,u32,u32,void*,void*);void fn_80217BD0(void*,s32);void fn_8021B170(s32,s32);
-extern u16 lbl_8033A200[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
+extern u16 __CARDBlock[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
 u8 status;
 u32 id;
 u8 *card;
@@ -1911,7 +1911,7 @@ s32 rc, i, sum;
 s32 result;
 u16 code;
 u8 *serial, *p, *sram;
-card=(u8*)lbl_8033A200+chan*0x110;
+card=(u8*)__CARDBlock+chan*0x110;
 if(*(s32*)(card+0x24)==0) {
 if(!EXIGetID(chan,0,&id)) result=-3;
 else if(fn_8021A7FC(id))result=0;else result=-2;
@@ -1976,13 +1976,13 @@ void fn_8021B170(s32 arg0, s32 arg1) {
     if (r28 != 0) {
         fn_80239298(r28, 0);  
         fn_802396C8(r28);
-        fn_80204770((char*)lbl_8033A200 + r28 * 0x110 + 0xe0);
+        fn_80204770((char*)__CARDBlock + r28 * 0x110 + 0xe0);
     }
     
     // This is probably just clearing some flags/data when the condition passes
-    *(int*)((char*)lbl_8033A200 + r28 * 0x110) = 0;
-    *(int*)((char*)lbl_8033A200 + r28 * 0x110 + 0x4) = 0;
-    *(int*)((char*)lbl_8033A200 + r28 * 0x110 + 0x24) = 0;
+    *(int*)((char*)__CARDBlock + r28 * 0x110) = 0;
+    *(int*)((char*)__CARDBlock + r28 * 0x110 + 0x4) = 0;
+    *(int*)((char*)__CARDBlock + r28 * 0x110 + 0x24) = 0;
 }
 
 s32 fn_8021B20C(s32 arg0)
@@ -2005,7 +2005,7 @@ s32 fn_8021B20C(s32 arg0)
         return result;
     }
 
-    entry = (u8 *)lbl_8033A200 + arg0 * 0x110;
+    entry = (u8 *)__CARDBlock + arg0 * 0x110;
 
     interrupts = OSDisableInterrupts();
 
@@ -2026,7 +2026,7 @@ s32 fn_8021B20C(s32 arg0)
 
 #pragma dont_inline on
 void fn_8021B2B8(s32 arg0, s32 arg1) {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     s32 fn_8021791C(s32, s32, void *);
     s32 fn_802191F0(s32, s32, s32, s32, void *);
     void *memcpy(void *, const void *, u32);
@@ -2037,7 +2037,7 @@ void fn_8021B2B8(s32 arg0, s32 arg1) {
     s32 result;
 
     chan = arg0;
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     result = arg1;
     if (result >= 0) {
         *(s32 *)(card + 0x28) = *(s32 *)(card + 0x28) + 1;
@@ -2513,7 +2513,7 @@ s32 fn_8021C080(void) {
 
 void fn_8021C088(s32 chan, s32 result)
 {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
 
     s32 fn_8021965C(void *);
     s32 fn_802197FC(s32, s32);
@@ -2529,7 +2529,7 @@ void fn_8021C088(s32 chan, s32 result)
     u32 ticks;
     s64 time;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     callback = *(void (**)(s32, s32))(card + 0xD0);
     *(u32 *)(card + 0xD0) = 0;
     status = result;
@@ -2667,7 +2667,7 @@ void fn_8021C3D8(s32 arg0) {
 
 void fn_8021C5D8(s32 chan, s32 result)
 {
-    extern u16 lbl_8033A200[];
+    extern u16 __CARDBlock[];
     s32 fn_802190A4(s32, u32, u32, void *, void *);
     s32 fn_80219258(void *);
     s32 fn_80217BD0(void *, s32);
@@ -2684,7 +2684,7 @@ void fn_8021C5D8(s32 chan, s32 result)
     s32 status;
     void (*callback)(s32, s32);
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     status = result;
 
     if (status >= 0) {
@@ -2842,7 +2842,7 @@ void fn_8021C894(s32 chan, s32 result) {
     u8 *ent;
     u8 *fileInfo;
 
-    card = (u8 *)lbl_8033A200 + chan * 0x110;
+    card = (u8 *)__CARDBlock + chan * 0x110;
     if (result < 0) {
         goto error;
     }
@@ -3398,6 +3398,6 @@ ok:
 extern s32 EXIDma(s32, s32, s32, s32, void *);
 extern void EXIDeselect(s32);
 extern void EXIUnlock(s32);
-extern u16 lbl_8033A200[];
+extern u16 __CARDBlock[];
 extern void *fn_80219108;
-extern u16 lbl_8033A200[];
+extern u16 __CARDBlock[];
