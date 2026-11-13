@@ -14257,13 +14257,13 @@ s32 fn_80262538(s32 arg0) {
 
 void Sound_AramDmaCallback(void *arg0) {
     extern u8 gSoundAramQueue[0x284];
-    extern u8 lbl_803641AC[0x284];
+    extern u8 gSoundAramQueueHi[0x284];
     u8 *base;
     u8 *ptr;
     u32 count;
 
     if (*(u32 *)((char *)arg0 + 0xC) == 1) {
-        base = lbl_803641AC;
+        base = gSoundAramQueueHi;
     } else {
         base = gSoundAramQueue;
     }
@@ -14290,7 +14290,7 @@ void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 ar
     void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
     void Sound_AramDmaCallback(void *);
     extern u8 gSoundAramQueue[];
-    extern u8 lbl_803641AC[];
+    extern u8 gSoundAramQueueHi[];
     typedef struct {
         s32 pad;
         s32 code;
@@ -14313,7 +14313,7 @@ void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 ar
     s32 flag;
     s32 next;
 
-    q = arg3 != 0 ? (Queue *)lbl_803641AC : (Queue *)gSoundAramQueue;
+    q = arg3 != 0 ? (Queue *)gSoundAramQueueHi : (Queue *)gSoundAramQueue;
 
 start:
     enabled = OSDisableInterrupts();
@@ -14364,7 +14364,7 @@ void fn_802627D4(void) {
 void fn_802627EC(u32 arg0)
 {
     extern u8 gSoundAramQueue[];
-    extern u8 lbl_803641AC[];
+    extern u8 gSoundAramQueueHi[];
 
     extern u32 lbl_80368AF0;
     extern u32 lbl_80368AE8;
@@ -14406,8 +14406,8 @@ void fn_802627EC(u32 arg0)
     *(u8 *)(queue + 0x281) = 0;
     *(u8 *)(queue + 0x280) = 0;
 
-    *(u8 *)(lbl_803641AC + 0x281) = 0;
-    *(u8 *)(lbl_803641AC + 0x280) = 0;
+    *(u8 *)(gSoundAramQueueHi + 0x281) = 0;
+    *(u8 *)(gSoundAramQueueHi + 0x280) = 0;
 
     for (;;) {
         interrupts = OSDisableInterrupts();
