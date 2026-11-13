@@ -1438,7 +1438,7 @@ char *fn_80015574(s32 arg0)
 }
 
 #pragma global_optimizer reset
-s32 fn_80015610(void *arg0, void *arg1) {
+s32 Allegiance_Compare(void *arg0, void *arg1) {
     u8 temp_r0;
     u8 temp_r3;
 

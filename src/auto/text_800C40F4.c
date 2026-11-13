@@ -8,8 +8,8 @@ typedef struct { s32 a; s32 b; } PairAB;
 typedef struct HeapC55 HeapC55;
 struct HeapC55 { u32 unk0, unk4; HeapC55 *prev, *next; u32 size; HeapC55 *owner, *free; u32 extent; };
 static inline u8 relation_is_one(void *a, void *b) {
-    u8 fn_80015610(void *, void *);
-    return fn_80015610(a, b) == 1;
+    u8 Allegiance_Compare(void *, void *);
+    return Allegiance_Compare(a, b) == 1;
 }
 extern s32 lbl_8036A0C8;
 extern s32 lbl_8036A0D0;
@@ -18221,7 +18221,7 @@ s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);void fn_8002F728(void *);
 s32 fn_80110030(void *);void fn_800FDF38(s16,s16,s32,s32,s32);
 void fn_8002C530(void *,s32);void *fn_8002F658(void *,s32);
-void *fn_8002F740(void *);u8 fn_80015610(void *,void *);
+void *fn_8002F740(void *);u8 Allegiance_Compare(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
 u8 *ctx;
 struct {void *vtable;s32 callback;} pred;
@@ -18283,7 +18283,7 @@ u8 bx=(u8)x,by=(u8)y;
 count=0;
 for(index=0;index<*(s32 *)list;index++){
 unit=fn_8002F740(fn_8002F658(list,index));
-if(fn_80015610(M2C_FIELD(self,void **,0x190),M2C_FIELD(unit,void **,0x190))==1)count++;else count--;
+if(Allegiance_Compare(M2C_FIELD(self,void **,0x190),M2C_FIELD(unit,void **,0x190))==1)count++;else count--;
 }
 if(count>0&&count>best){bestX=bx;bestY=by;best=count;}
 }
@@ -18373,7 +18373,7 @@ return lbl_8032B3C0[0x21c];
 #pragma use_lmw_stmw reset
 
 void fn_800F488C(void *arg0, void *arg1) {
-    u8 fn_80015610(void *, void *);
+    u8 Allegiance_Compare(void *, void *);
     u8 fn_800F7E78(void *, void *);
     struct {
         u8 x;
@@ -18385,7 +18385,7 @@ void fn_800F488C(void *arg0, void *arg1) {
     u8 *p4;
     s32 same;
 
-    same = ((u8)fn_80015610(*(void **)(*(u8 **)((u8 *)arg0 + 8) + 0x190),
+    same = ((u8)Allegiance_Compare(*(void **)(*(u8 **)((u8 *)arg0 + 8) + 0x190),
                            *(void **)((u8 *)arg1 + 0x190)) == 1);
     p4 = *(u8 **)((u8 *)arg0 + 4);
     result.x = p4[0];
@@ -18699,12 +18699,12 @@ extern "C" void fn_800F59D8(void *arg0, s8 arg1, s8 arg2) {
 #pragma cplusplus reset
 
 void fn_800F5A8C(void *arg0, void *arg1) {
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     void fn_8002F6E8(void *, u8, u8, u8, s32);
     extern u8 gUiContext[];
     extern u8 lbl_802EF4E0[];
 
-    if (fn_80015610(*(s32 *)((u8 *)*(void **)gUiContext + 0x190),
+    if (Allegiance_Compare(*(s32 *)((u8 *)*(void **)gUiContext + 0x190),
                     *(s32 *)((u8 *)arg1 + 0x190)) != 1 ||
         ((u8 (**)(void *))arg0)[1](arg1) != 0) {
         fn_8002F6E8(lbl_802EF4E0,
@@ -18720,7 +18720,7 @@ void fn_800F5A8C(void *arg0, void *arg1) {
 void fn_800F60D4(void *arg0,s32 *arg1){
 void *Res_GetByName(void *);s32 fn_800F6F94(void *,s32);
 s8 fn_8003B2D0(void *);s8 fn_800386E0(void *);
-u8 fn_80015610(void *,void *);
+u8 Allegiance_Compare(void *,void *);
 extern u32 lbl_80330EAC[];
 extern u8 lbl_80272F44[],gBattleMap[],gUnits[],gBattleState[];
 extern f32 lbl_8036A068,lbl_8036A06C;
@@ -19161,7 +19161,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s32 fn_8001DD54(void *, void *);
     void *fn_80019DBC(u8);
     u8 Status_Test(s32, u32);
-    u8 fn_80015610(void *, void *);
+    u8 Allegiance_Compare(void *, void *);
     u32 fn_800FCF48(s8, s8, void *);
     extern u8 gBattleMap[];
     extern u8 lbl_80272E98[];
@@ -19241,7 +19241,7 @@ fail:
             t = M2C_FIELD(gBattleMap + (s8) x + ((s8) y << 6), u8 *, 0xD);
             if (t != 0) {
                 e = (t != 0) ? gUnits + (t - 1) * 0x280 : NULL;
-                match = fn_80015610(M2C_FIELD(arg0, void **, 0x190), M2C_FIELD(e, void **, 0x190)) == 1;
+                match = Allegiance_Compare(M2C_FIELD(arg0, void **, 0x190), M2C_FIELD(e, void **, 0x190)) == 1;
                 if (match == 1) {
                     acc -= cur[2];
                 } else {
@@ -20348,7 +20348,7 @@ s32 fn_800FB334(void *arg0)
     extern u8 gUiContext[];
 
     extern s32 Str_Cmp(void *, void *);
-    extern s32 fn_80015610(void *, void *);
+    extern s32 Allegiance_Compare(void *, void *);
 
     u8 *obj;
     u8 *other;
@@ -20366,7 +20366,7 @@ s32 fn_800FB334(void *arg0)
         return 0;
     }
 
-    result = fn_80015610(
+    result = Allegiance_Compare(
         *(void **)(obj + 0x190),
         *(void **)(other + 0x190)
     );
@@ -20387,7 +20387,7 @@ s32 fn_800FB3E4(void *arg0)
     extern u8 gUiContext[];
 
     extern s32 Str_Cmp(void *, void *);
-    extern s32 fn_80015610(void *, void *);
+    extern s32 Allegiance_Compare(void *, void *);
 
     u8 *obj;
     u8 *other;
@@ -20405,7 +20405,7 @@ s32 fn_800FB3E4(void *arg0)
         return 0;
     }
 
-    result = fn_80015610(
+    result = Allegiance_Compare(
         *(void **)(obj + 0x190),
         *(void **)(other + 0x190)
     );
@@ -20423,7 +20423,7 @@ s32 fn_800FB45C(void *arg0) {
 s32 fn_800FB494(void *arg0) {
     extern void *lbl_803678F8;
     s32 Str_Cmp(u8 *, u8 *);
-    s32 fn_80015610(void *, void *);
+    s32 Allegiance_Compare(void *, void *);
     extern u8 gUiContext[];
 
     register u8 *name;
@@ -20449,7 +20449,7 @@ checked:
         return 0;
     }
 
-    return (u8)fn_80015610(M2C_FIELD(arg0, void **, 0x190),
+    return (u8)Allegiance_Compare(M2C_FIELD(arg0, void **, 0x190),
                           M2C_FIELD(other, void **, 0x190)) == 1;
 }
 
@@ -20485,14 +20485,14 @@ done:
 
 s32 fn_800FB5C8(void *arg0) {
     extern u8 gUiContext[];
-    return (u8) fn_80015610(*(s32*)((u8*)arg0 + 0x190),
+    return (u8) Allegiance_Compare(*(s32*)((u8*)arg0 + 0x190),
                             *(s32*)((u8*)*(void**)&gUiContext + 0x190)) == 1;
 }
 
 s32 fn_800FB60C(void *arg0) {
-    s32 fn_80015610(s32, s32);
+    s32 Allegiance_Compare(s32, s32);
     extern u8 gUiContext[];
-    s32 r = fn_80015610(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)*(void **)gUiContext + 0x190));
+    s32 r = Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)*(void **)gUiContext + 0x190));
     return (r & 0xFF) == 0;
 }
 
@@ -21342,7 +21342,7 @@ u16 fn_800FCF48(s8 arg0, s8 arg1) {
 }
 
 void fn_800FD774(void *arg0) {
-    u8 fn_80015610(void *, void *);
+    u8 Allegiance_Compare(void *, void *);
     u8 fn_8001D500(void *);
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
@@ -21412,7 +21412,7 @@ void fn_800FD774(void *arg0) {
                 } else {
                     unit = NULL;
                 }
-                if ((u8)fn_80015610(*(void **)((u8 *)self + 0x190), *(void **)((u8 *)unit + 0x190)) == 1
+                if ((u8)Allegiance_Compare(*(void **)((u8 *)self + 0x190), *(void **)((u8 *)unit + 0x190)) == 1
                     && (*(u32 *)((u8 *)unit + 0x1A0) & 0x9D) == 0) {
                     bestHi = -1;
                     slotHi = NULL;
@@ -22473,7 +22473,7 @@ s32 fn_801001F0(void *arg0) {
 
 #pragma use_lmw_stmw on
 s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     void fn_8002C618(void *, s8, s8);
     void fn_8002F728(void *);
     u8 fn_800FB5C8(void *);
@@ -22558,7 +22558,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
                         unit = gUnits + (cell - 1) * 0x280;
                     else
                         unit = NULL;
-                    if (fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1)
+                    if (Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1)
                         goto next_x;
                 }
                 if (flags != 0) {
@@ -23511,7 +23511,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
 s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     u8 fn_800FB5C8(void *);
     u8 fn_800BE968(u8, s8, s8);
     extern struct {
@@ -23579,7 +23579,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                     } else {
                         unit = NULL;
                     }
-                    if (fn_80015610(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) {
+                    if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) {
                         continue;
                     }
                 }
@@ -23637,7 +23637,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
 s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE398(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
-    u8 fn_80015610(void *, void *);
+    u8 Allegiance_Compare(void *, void *);
     u8 fn_800FB5C8(void *);
     void fn_8002F728(void *);
     void fn_8002C618(void *, s8, s8);
@@ -23710,7 +23710,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                     } else {
                         unit = NULL;
                     }
-                    if (fn_80015610(*(void **)((u8 *)self + 0x190), *(void **)((u8 *)unit + 0x190)) == 1) {
+                    if (Allegiance_Compare(*(void **)((u8 *)self + 0x190), *(void **)((u8 *)unit + 0x190)) == 1) {
                         continue;
                     }
                 }

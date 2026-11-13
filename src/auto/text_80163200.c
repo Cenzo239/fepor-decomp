@@ -16245,12 +16245,12 @@ s32 fn_80182B7C(s32 arg0) {
 
 s32 fn_80182C84(void *arg0) {
     extern u32 gUiContext[];
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     s32 Status_Test(void *, s32);
     void *other;
 
     other = (void *)gUiContext[0];
-    if (fn_80015610(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)other + 0x190)) == 1) {
+    if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)other + 0x190)) == 1) {
         return Status_Test((u8 *)arg0 + 0x1BC, 6);
     }
     return 0;

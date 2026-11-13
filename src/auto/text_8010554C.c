@@ -6,8 +6,8 @@ static inline s32 fn_8010EF74_cost(u8 *map, s8 x, s8 y) {
 }
 
 static inline u8 fn_8010CF28_check(void *a, void *b) {
-    u8 fn_80015610(void *, void *);
-    return fn_80015610(a, b) == 1;
+    u8 Allegiance_Compare(void *, void *);
+    return Allegiance_Compare(a, b) == 1;
 }
 
 extern double lbl_8036A128;
@@ -3181,7 +3181,7 @@ loop_slot:
     return 0;
 }
 u8 fn_8010B30C(void *arg0, s8 arg1, s16 arg2) {
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
     void fn_80022DAC(u8 *, s32, s32);
     void fn_80022FD8(u8 *, s32);
@@ -3273,7 +3273,7 @@ inner:
                 } else {
                     unit = NULL;
                 }
-                if (fn_80015610(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 0) {
+                if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 0) {
                     pri = 0;
                     ent = lbl_80273B30;
                     goto tab_cmp;
@@ -3338,7 +3338,7 @@ s32 fn_8010B60C(void *arg0, void *arg1) {
 u8 fn_8010B658(void *arg0) {
     void fn_800FE2A0(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     void **fn_80037BD0(void *, s8);
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
@@ -3392,7 +3392,7 @@ inner:
                     } else {
                         other = (void *)(0 & (s32)other);
                     }
-                    if (self != other && fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
+                    if (self != other && Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
                         void *item;
                         u8 typ;
                         u8 sub;
@@ -3479,7 +3479,7 @@ u8 Ai_TrySelectApproachTile(void *arg0) {
     void fn_800FE2A0(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
     void *fn_80019DBC(u8);
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
@@ -3539,7 +3539,7 @@ inner:
                         } else {
                             other = NULL;
                         }
-                        if (fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
+                        if (Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
                             flags = *(s32 *)((u8 *)other + 0x254);
                             if (!(flags & 0x03000000)) {
                                 goto block_23;
@@ -3560,7 +3560,7 @@ inner:
                         } else {
                             other = NULL;
                         }
-                        if (fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
+                        if (Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
                             if (*(s32 *)((u8 *)other + 0x254) & 4) {
                                 goto block_23;
                             }
@@ -4291,7 +4291,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 #pragma opt_strength_reduction off
 s32 fn_8010CF28(s32 arg0, void *arg1, s16 *arg2, s16 *arg3) {
 void Allegiance_FillMask(s32,void *);
-u8 fn_80015610(void *,void *); u8 fn_8001DD04(s32);
+u8 Allegiance_Compare(void *,void *); u8 fn_8001DD04(s32);
 void fn_800FC6B0(void *);
 u16 fn_800FCF48(s8,s8);
 void fn_800FCF74(s32,s32); void fn_800FD774(s32);
@@ -4984,7 +4984,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 
 #pragma use_lmw_stmw on
 u32 fn_8010E3F0(void *arg0, s32 arg1) {
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     u8 fn_8001DD54(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -5048,7 +5048,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
                 } else {
                     other = NULL;
                 }
-                if ((fn_80015610(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1)
+                if ((Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1)
                     && ((*(u32 *)((u8 *)other + 0x254) & 1) != 0)) {
                     count += 1;
                 }
@@ -5134,7 +5134,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     return (u32)((-1 - bestScore) | (bestScore + 1)) >> 31;
 }
 s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    u8 fn_80015610(s32, s32);
+    u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
     void fn_80022DAC(u8 *, s32, s32);
     void fn_80022FD8(u8 *, s32);
@@ -5196,7 +5196,7 @@ loop_inner:
                 } else {
                     var_r21 = NULL;
                 }
-                if ((fn_80015610(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)(var_r21 + 0x190)) != 1)
+                if ((Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)(var_r21 + 0x190)) != 1)
                     && (*(s32 *)(var_r21 + 0x254) & 1)) {
                     ++var_r28;
                 }
