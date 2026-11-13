@@ -675,7 +675,7 @@ int fn_80266D94(void *arg0)
     extern u8 lbl_802A5198[];
     extern u8 lbl_802A51A4[];
 
-    extern void fn_8020602C(const char *, int, const char *);
+    extern void OSPanic(const char *, int, const char *);
     extern void fn_80215F78(int);
     extern int fn_80215F40(void);
 
@@ -694,7 +694,7 @@ int fn_80266D94(void *arg0)
     } else if ((u8 *)arg0 == base + 0x4A8) {
         index = 3;
     } else {
-        fn_8020602C(
+        OSPanic(
             (const char *)lbl_802A5198,
             0xA9,
             (const char *)lbl_802A51A4

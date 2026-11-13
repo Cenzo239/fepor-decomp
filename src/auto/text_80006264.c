@@ -12,15 +12,14 @@ extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-s32 fn_80006264(u32 *a, u32 *b, u32 n) {
+s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     a--;
     n >>= 2;
     b--;
     do {
-        if (*++a == *++b) {
-            continue;
+        if (*++a != *++b) {
+            return 1;
         }
-        return 1;
     } while (--n);
     return 0;
 }
@@ -1111,20 +1110,20 @@ void fn_800077B0(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x2C) = arg1 + arg3;
 }
 
+#pragma global_optimizer off
+#pragma scheduling off
 void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *lbl_80367140;
     extern f32 lbl_80368B98;
     extern f32 lbl_80368B94;
     u8 *ptr;
-    f32 sum_x;
-    f32 sum_y;
-    f32 constant1;
     f32 constant2;
+    f32 sum_x;
 
     ptr = (u8 *)lbl_80367140;
     sum_x = arg0 + arg2;
-    sum_y = arg1 + arg3;
-    constant1 = lbl_80368B98;
+    arg3 = arg1 + arg3;
+    arg2 = lbl_80368B98;
     ptr = *(u8 **)(ptr + 0xC);
     constant2 = lbl_80368B94;
     ptr = *(u8 **)(ptr + 0x4);
@@ -1132,13 +1131,14 @@ void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x10) = arg0;
     *(f32 *)(ptr + 0x20) = sum_x;
     *(f32 *)(ptr + 0x14) = arg1;
-    *(f32 *)(ptr + 0x24) = sum_y;
-    *(f32 *)(ptr + 0x1C) = constant1;
-    *(f32 *)(ptr + 0x18) = constant1;
+    *(f32 *)(ptr + 0x24) = arg3;
+    *(f32 *)(ptr + 0x1C) = arg2;
+    *(f32 *)(ptr + 0x18) = arg2;
     *(f32 *)(ptr + 0x2C) = constant2;
     *(f32 *)(ptr + 0x28) = constant2;
 }
-
+#pragma scheduling reset
+#pragma global_optimizer reset
 void Prim2D_SetQuadMax(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *lbl_80367140;
     u8 *ptr;
@@ -1205,7 +1205,7 @@ void Prim2D_AddPrim(u8 arg0) {
     s32 fn_80006AF4(void *);
     s32 fn_80006264(void *, void *, s32);
     void fn_800062CC(void *, void *, s32);
-    void fn_8020602C(char *, ...);
+    void OSPanic(char *, ...);
     u8 *fn_8018D900(s32);
 
     void *prev;
@@ -1288,7 +1288,7 @@ void Prim2D_AddPrim(u8 arg0) {
             size = 0x18;
             break;
         default:
-            fn_8020602C(lbl_80267C70 + 0x1A, 0x54B, lbl_80267C70 + 0x23);
+            OSPanic(lbl_80267C70 + 0x1A, 0x54B, lbl_80267C70 + 0x23);
         }
         ctx = lbl_80367140;
         neg1 = -1;

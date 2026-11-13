@@ -1235,7 +1235,7 @@ void __OSContextInit(void)
 
 #pragma use_lmw_stmw reset
 
-void fn_8020602C(void) {
+void OSPanic(void) {
     s32 obj;
     s32 temp_r5;
     s32 *ptr_obj = (s32 *)0x803679F0;

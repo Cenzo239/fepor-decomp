@@ -6710,7 +6710,7 @@ void DEMOInitGX(void *rmode)
     void GXSetGPFifo(void *);
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
-    void fn_8020602C(void *, s32, void *, ...);
+    void OSPanic(void *, s32, void *, ...);
     void GXAdjustForOverscan(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -6792,7 +6792,7 @@ void DEMOInitGX(void *rmode)
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
+            OSPanic(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
@@ -6852,7 +6852,7 @@ void fn_8006DFD8(void) {
     void GXSetGPFifo(void *);
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
-    void fn_8020602C(void *, s32, void *, ...);
+    void OSPanic(void *, s32, void *, ...);
     void GXAdjustForOverscan(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -6966,7 +6966,7 @@ body:
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
+            OSPanic(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
@@ -7056,7 +7056,7 @@ done:
 #pragma use_lmw_stmw reset
 
 void fn_8006E478(void) {
-void OSReport(char *, ...); void fn_8006DDDC(void); void fn_8020602C(char *, int, char *); void fn_8021F168(u8 *, void *, void *, void *, void *); u32 fn_8021F4DC(void);
+void OSReport(char *, ...); void fn_8006DDDC(void); void OSPanic(char *, int, char *); void fn_8021F168(u8 *, void *, void *, void *, void *); u32 fn_8021F4DC(void);
 extern char DEMOInit_str[]; extern s32 lbl_80367330; extern u32 lbl_80367334,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
 u8 sp9; u8 pad[3]; void *sp8; u32 result, count;
 if((s8)lbl_8036733C==0){lbl_80367338=0;lbl_8036733C=1;}
@@ -7064,7 +7064,7 @@ if((s8)lbl_80367344==0){lbl_80367340=0;lbl_80367344=1;}
 lbl_80367330++;
 fn_8021F168(&sp9,&sp8,&sp8,&sp8,&sp8);
 result=fn_8021F4DC();
-if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(DEMOInit_str+0x126);fn_8006DDDC();fn_8020602C(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
+if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(DEMOInit_str+0x126);fn_8006DDDC();OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
 }
 
 extern s32 lbl_8036732C;
@@ -7235,7 +7235,7 @@ void DEMOInit(void *arg0)
     void PADInit(void);
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
-    void fn_8020602C(void *, s32, void *, ...);
+    void OSPanic(void *, s32, void *, ...);
     void GXAdjustForOverscan(void *, void *, s32, s32);
     void *OSGetArenaLo(void);
     void *OSGetArenaHi(void);
@@ -7320,7 +7320,7 @@ void DEMOInit(void *arg0)
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
+            OSPanic(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);

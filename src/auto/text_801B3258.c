@@ -8717,7 +8717,7 @@ void Game_InitVideo(void) {
     u32 OSGetResetCode(void);
     s32 fn_8006E650(void);
     void DEMOInit(void *);
-    void fn_8020602C(char *, s32, char *, ...);
+    void OSPanic(char *, s32, char *, ...);
     void GXSetCopyClear(void *, s32);
     void GXCopyDisp(s32, s32);
     extern s32 gGameFlags;
@@ -8758,7 +8758,7 @@ void Game_InitVideo(void) {
         gGameFlags |= 0x80000;
         break;
     default:
-        fn_8020602C(lbl_8027D740 + 0x141, 0xE1, lbl_8027D740 + 0x14B);
+        OSPanic(lbl_8027D740 + 0x141, 0xE1, lbl_8027D740 + 0x14B);
         break;
     }
 

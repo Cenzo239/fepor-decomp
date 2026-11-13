@@ -221,7 +221,7 @@ u32 fn_8020C3E0(char *path) {
     extern u32 __DVDLongFileNameFlag;
     extern char lbl_8029CEE8[];
     extern s32 lbl_80366F60;
-    void fn_8020602C(void *, s32, char *, ...);
+    void OSPanic(void *, s32, char *, ...);
 
     s32 more;
     u32 parent;
@@ -286,7 +286,7 @@ u32 fn_8020C3E0(char *path) {
                 invalid = 1;
             }
             if (invalid) {
-                fn_8020602C(&lbl_80366F60, 0x183, lbl_8029CEE8, original);
+                OSPanic(&lbl_80366F60, 0x183, lbl_8029CEE8, original);
             }
         } else {
             for (end = path; *end && *end != '/'; end++) {
@@ -373,7 +373,7 @@ BOOL fn_8020CA74(char *path, u32 maxlen) {
 }
 
 s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    M2C_UNK fn_8020602C(M2C_UNK *, M2C_UNK, M2C_UNK *);
+    M2C_UNK OSPanic(M2C_UNK *, M2C_UNK, M2C_UNK *);
     M2C_UNK fn_8020EB10(void *, s32, s32, s32, M2C_UNK *, s32);
     extern M2C_UNK fn_8020CBF8;
     extern M2C_UNK lbl_8029CFE8;
@@ -381,11 +381,11 @@ s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     s32 temp_r4;
 
     if ((arg3 < 0) || ((u32) arg3 > (u32) M2C_FIELD(arg0, u32 *, 0x34))) {
-        fn_8020602C(&lbl_80366F60, 0x2EE, &lbl_8029CFE8);
+        OSPanic(&lbl_80366F60, 0x2EE, &lbl_8029CFE8);
     }
     temp_r4 = arg3 + arg2;
     if ((temp_r4 < 0) || ((u32) temp_r4 >= (u32) (M2C_FIELD(arg0, u32 *, 0x34) + 0x20))) {
-        fn_8020602C(&lbl_80366F60, 0x2F4, &lbl_8029CFE8);
+        OSPanic(&lbl_80366F60, 0x2F4, &lbl_8029CFE8);
     }
     M2C_FIELD(arg0, s32 *, 0x38) = arg4;
     fn_8020EB10(arg0, arg1, arg2, M2C_FIELD(arg0, s32 *, 0x30) + arg3, &fn_8020CBF8, arg5);
@@ -491,7 +491,7 @@ void fn_8020CFAC(void) {
     extern s32 lbl_80366F74;
     extern char lbl_8029D0DC[];
 
-    void fn_8020602C(void *, s32, char *, ...);
+    void OSPanic(void *, s32, char *, ...);
     s32 fn_8020BAD0(void *, u32, u32, void (*)(u32));
     void fn_8020D040(u32);
 
@@ -504,7 +504,7 @@ void fn_8020CFAC(void) {
     lbl_803685E0 = (void (*)(void *))fn_8020CFAC;
 
     if (*(u32 *)(bootInfo + 0x3C) < *(u32 *)(bb2 + 8)) {
-        fn_8020602C(
+        OSPanic(
             &lbl_80366F74,
             0x295,
             lbl_8029D0DC
@@ -2151,7 +2151,7 @@ void VIConfigure(void *arg0) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
     void OSReport(char *, ...);
-    void fn_8020602C(void *, s32, char *, ...);
+    void OSPanic(void *, s32, char *, ...);
     VITiming *fn_8021004C(u32);
     void fn_802107FC(void *, void *, void *, void *, void *);
     void fn_80210AD0(u16, u16, u8, u16, u16, u16, u16, u16);
@@ -2229,7 +2229,7 @@ path_157:
         goto path_ok;
     }
 path_err:
-    fn_8020602C(lbl_80366F94, 0x7bb, (char *)(data + 0x378), tv, mode);
+    OSPanic(lbl_80366F94, 0x7bb, (char *)(data + 0x378), tv, mode);
 path_ok:
     p118 = (u32 *)(v + 0x118);
     if (mode == 0 || mode == 2) {
