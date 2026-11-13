@@ -1547,7 +1547,7 @@ void fn_800599D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     fn_80222EB4();
 }
 
-void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_FillRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_r0;
     s32 temp_r3;
     f32 temp_f1;

@@ -7817,11 +7817,11 @@ void fn_801C7598(void *arg0) {
 }
 
 void fn_801C7604(void) {
-    M2C_UNK fn_80059A4C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK Gfx_FillRect(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80067984(M2C_UNK);
     M2C_UNK fn_80067EDC(M2C_UNK);
     fn_80067EDC(0);
-    fn_80059A4C(0, 0, 0x260, 0x1C0);
+    Gfx_FillRect(0, 0, 0x260, 0x1C0);
     fn_80067984(0);
 }
 
@@ -10482,10 +10482,9 @@ s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2)
 {
     extern u8 *lbl_802984C0[];
     extern char lbl_8027DD60[];
-
     s32 count;
     u8 **table;
-    s16 width;
+    u8 **lookup;
     u8 *result;
 
     count = 0;
@@ -10508,19 +10507,19 @@ search:
         goto loop;
     }
 
-    width = (s16)(count + 1);
-    table = (u8 **)0;
+    count = (s16)(count + 1);
+    lookup = (u8 **)0;
 
     if (arg0 == 0) {
         goto init_lookup;
     }
-    goto lookup;
+    goto lookup_idx;
 
 init_lookup:
-    table = lbl_802984C0;
+    lookup = lbl_802984C0;
 
-lookup:
-    result = table[(s16)arg1 + width * (s16)arg2];
+lookup_idx:
+    result = lookup[(s16)arg1 + count * (s16)arg2];
 
     if (result != 0) {
         return (s32)result;
@@ -11634,7 +11633,7 @@ void fn_801CF99C(void *arg0) {
 #pragma global_optimizer on
 void fn_801CFA44(void *arg0)
 {
-    extern void Process_Unlink(void *);
+    extern void fn_8000C60C(void *);
     extern void fn_801C18FC(s32);
 
     s32 i;
@@ -11651,7 +11650,7 @@ void fn_801CFA44(void *arg0)
         *(u8 *)(ptr + 0x28) = zero;
 
         if (*(void **)(ptr + 0x2C) != 0) {
-            Process_Unlink(*(void **)(ptr + 0x2C));
+            fn_8000C60C(*(void **)(ptr + 0x2C));
             *(s32 *)(ptr + 0x2C) = zero;
         }
 
