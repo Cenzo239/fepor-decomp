@@ -59,7 +59,8 @@ void fn_80098BD8(void *arg0) {
     }
 }
 
-void MapUi_Init(void *arg0) {
+void MapUi_Init(void *proc) {
+    /* Clear map-UI state, spawn unit processes, resolve cursor map-obj and mode. */
     u32 Map_Get();
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     void fn_80096AB8();
@@ -70,41 +71,41 @@ void MapUi_Init(void *arg0) {
     u8 fn_801A2690();
     extern u8 gUiContext[];
     extern u8 gBattle[];
-    s8 *p;
-    s32 var_r31;
-    u32 temp_r3;
-    s32 a;
-    s32 b;
+    s8 *ctx;
+    s32 slot;
+    u32 map;
+    s32 cursorX;
+    s32 cursorY;
 
-    M2C_FIELD(arg0, s8 *, 0x40) = 0;
-    M2C_FIELD(arg0, s8 *, 0x41) = 0;
-    M2C_FIELD(arg0, s8 *, 0x42) = 0;
-    M2C_FIELD(arg0, s8 *, 0x43) = 0;
-    M2C_FIELD(arg0, s16 *, 0x46) = 0;
+    M2C_FIELD(proc, s8 *, 0x40) = 0;
+    M2C_FIELD(proc, s8 *, 0x41) = 0;
+    M2C_FIELD(proc, s8 *, 0x42) = 0;
+    M2C_FIELD(proc, s8 *, 0x43) = 0;
+    M2C_FIELD(proc, s16 *, 0x46) = 0;
     fn_80097AB4();
-    var_r31 = 0;
+    slot = 0;
     do {
-        if (fn_800980E8(var_r31) != 0U) {
-            fn_80184618(fn_800980E8(var_r31), arg0);
+        if (fn_800980E8(slot) != 0U) {
+            fn_80184618(fn_800980E8(slot), proc);
         }
-        var_r31 += 1;
-    } while (var_r31 < 3);
+        slot += 1;
+    } while (slot < 3);
     if ((*(u32 *)(gBattle + 0xCAC) & 0x100) != 0U) {
-        M2C_FIELD(arg0, s8 *, 0x34) = 1;
-        temp_r3 = Map_Get();
-        if (temp_r3 != 0U) {
-            p = (s8 *)gUiContext;
-            a = p[0xF];
-            b = p[0x10];
-            M2C_FIELD(arg0, s32 *, 0x30) = Map_FindObjAt(temp_r3, a, b, 0x1000, 0x10);
+        M2C_FIELD(proc, s8 *, 0x34) = 1;
+        map = Map_Get();
+        if (map != 0U) {
+            ctx = (s8 *)gUiContext;
+            cursorX = ctx[0xF];
+            cursorY = ctx[0x10];
+            M2C_FIELD(proc, s32 *, 0x30) = Map_FindObjAt(map, cursorX, cursorY, 0x1000, 0x10);
         } else {
-            M2C_FIELD(arg0, s32 *, 0x30) = 0;
+            M2C_FIELD(proc, s32 *, 0x30) = 0;
         }
     } else {
-        M2C_FIELD(arg0, s8 *, 0x34) = 0;
+        M2C_FIELD(proc, s8 *, 0x34) = 0;
     }
     if (fn_801A2690() != 0) {
-        M2C_FIELD(arg0, s8 *, 0x34) = 2;
+        M2C_FIELD(proc, s8 *, 0x34) = 2;
     }
     fn_800979FC();
     fn_80096AB8();
