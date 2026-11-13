@@ -2297,7 +2297,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void fn_800C9B6C(void *, void *);
     void String_Concat(void *, void *, void *);
     void String_ConcatCStr(void *, void *, char *);
-    void fn_800CBF24(void *, char *, void *);
+    void String_JoinCStr(void *, char *, void *);
     s32 fn_800E49D0(void);
     void fn_801C4468(void *);
     void fn_801C6E60(void *);
@@ -2339,7 +2339,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     fn_801EF39C(&sp98, self, arg1);
     fn_800C9B6C(&spB0, &sp98);
     String_Destroy(&sp98, -1);
-    fn_800CBF24(&sp8C, gGActorPathExt + 0x1BB, &spB0);
+    String_JoinCStr(&sp8C, gGActorPathExt + 0x1BB, &spB0);
     String_ConcatCStr(&sp80, &sp8C, gGActorPathExt + 0x1BF);
     fn_800C9B6C(&spA4, &sp80);
     String_Destroy(&sp80, -1);
@@ -2784,7 +2784,7 @@ void fn_801EFDC8(void *arg0) {
     void String_AssignCStr(String *, char *, s32);
     s32 fn_800D5948(String *, char *, s32, s32);
     void fn_800D5D04(String *, String *, s32, s32);
-    void fn_800CBF24(String *, char *, String *);
+    void String_JoinCStr(String *, char *, String *);
     void fn_800C99A0(String *, String *, s32, s32);
     void *StringMap_FindOrInsert(void *, String *);
     void Xml_Destroy(void *, s32);
@@ -2894,7 +2894,7 @@ void fn_801EFDC8(void *arg0) {
         pos = fn_800D5948(&str160, strBase + 0x24E, 0, strlen(strBase + 0x24E));
         if ((u32)(pos + 0x10000) != 0xFFFFFFFFU) {
             fn_800D5D04(&spD4, &str160, 0, pos);
-            fn_800CBF24(&spC8, strBase + 0x222, &spD4);
+            String_JoinCStr(&spC8, strBase + 0x222, &spD4);
             fn_800C99A0(&str16c, &spC8, 0, -1);
             String_Destroy(&spC8, -1);
             String_Destroy(&spD4, -1);

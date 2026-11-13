@@ -3122,7 +3122,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     void String_Init(String *, char *, void *);
     void String_Concat(String *, String *, void *);
     void String_ConcatCStr(String *, String *, char *);
-    void fn_800CBF24(String *, char *, void *);
+    void String_JoinCStr(String *, char *, void *);
     void fn_800E8154(void *, String *);
     char *fn_801992F8(u32);
     void fn_801CA1DC(void *, void *);
@@ -3179,7 +3179,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
         String_AssignCStr(&sp88, (char *)((s32)lbl_802704F8 + 0x16F), strlen(&lbl_802704F8[0x16F]));
     }
 
-    fn_800CBF24(&sp7C, lbl_802704F8 + 0x1C7, path);
+    String_JoinCStr(&sp7C, lbl_802704F8 + 0x1C7, path);
     String_ConcatCStr(&sp70, &sp7C, lbl_802704F8 + 0x1CD);
     String_Concat(&sp64, &sp70, path);
     String_ConcatCStr(&sp58, &sp64, lbl_802704F8 + 0x1CF);
@@ -3266,7 +3266,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
 #pragma dont_inline reset
 #pragma use_lmw_stmw reset
 
-void fn_800CBF24(s32 arg0, char *arg1, s32 arg2) {
+void String_JoinCStr(s32 arg0, char *arg1, s32 arg2) {
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     s32 fn_800C99A0(M2C_UNK *, s32, M2C_UNK, M2C_UNK);
     M2C_UNK String_Init(M2C_UNK *, char *, M2C_UNK *);
@@ -3471,7 +3471,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void String_Destroy(String *, s32);
     void String_Init(String *, char *, void *);
     void String_ConcatCStr(String *, String *, char *);
-    void fn_800CBF24(String *, char *, String *);
+    void String_JoinCStr(String *, char *, String *);
     void fn_800DF67C(void *, String *);
     void fn_800E4B44(void *);
     void fn_800E4B84(void *);
@@ -3566,7 +3566,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
             sp4C.size = 0;
             sp4C.data = 0;
             sp4C.cap = 0;
-            fn_800CBF24(&sp58, lbl_802704F8 + 0x1C7, &spB8);
+            String_JoinCStr(&sp58, lbl_802704F8 + 0x1C7, &spB8);
             String_ConcatCStr(&sp64, &sp58, lbl_802704F8 + 0x3A6);
             String_Assign(&sp4C, &sp64, 0, -1);
             String_Destroy(&sp64, -1);
@@ -7707,7 +7707,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     void String_Destroy(String *, s32);
     void String_Concat(String *, String *, void *);
     void String_ConcatCStr(String *, String *, char *);
-    void fn_800CBF24(String *, char *, s32);
+    void String_JoinCStr(String *, char *, s32);
     char *fn_801992F8(u32);
     u32 strlen(const char *);
     extern char lbl_802711B0[];
@@ -7738,7 +7738,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 
     {
         String a, b, c, d, e, f;
-        fn_800CBF24(&a, &lbl_802711B0[0x189], path);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
         String_Concat(&c, &b, (void *)path);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
@@ -7763,7 +7763,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 
     {
         String a, b, c, d, e, f;
-        fn_800CBF24(&a, &lbl_802711B0[0x189], path);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
         String_Concat(&c, &b, (void *)path);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
@@ -11606,7 +11606,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     void Xml_GetNamedValue(void *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
-    void fn_800CBF24(String *, char *, String *);
+    void String_JoinCStr(String *, char *, String *);
     void String_ConcatCStr(String *, String *, char *);
     void String_Assign(String *, String *, s32, s32);
     void fn_800C9B6C(String *, String *);
@@ -11686,7 +11686,7 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     Xml_GetNamedValue(bufA4, path, &str44);
     r29 = *(s32 *)bufA4;
     String_Destroy(&str44, -1);
-    fn_800CBF24(&str38, lbl_80271DF8 + 0x25, &str98);
+    String_JoinCStr(&str38, lbl_80271DF8 + 0x25, &str98);
     String_ConcatCStr(&str2C, &str38, lbl_80271DF8 + 0x26);
     String_Assign(&str8C, &str2C, 0, -1);
     String_Destroy(&str2C, -1);

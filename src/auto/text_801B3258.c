@@ -9305,7 +9305,7 @@ void *fn_801CA77C(void *p, s16 n) {
 extern "C" void fn_801CA814(void *arg0, void *arg1) {
     u32 strlen(const char *);
     void String_AssignCStr(void *, char *, u32);
-    void fn_800CBF24(void *, char *, void *);
+    void String_JoinCStr(void *, char *, void *);
     void String_ConcatCStr(void *, void *, char *);
     void fn_800C99A0(void *, void *, s32, s32);
     void String_Destroy(void *, s16);
@@ -9347,7 +9347,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
         u32 n = strlen(lbl_8027DAB0);
         String_AssignCStr(&sp2C, lbl_8027DAB0, n);
     }
-    fn_800CBF24(&sp20, (char *)lbl_8027DAB0 + 4, (void *)((u8 *)arg0 + 0x54));
+    String_JoinCStr(&sp20, (char *)lbl_8027DAB0 + 4, (void *)((u8 *)arg0 + 0x54));
     String_ConcatCStr(&sp14, &sp20, (char *)((u8 *)lbl_8027DAB0 + 0x1C));
     fn_800C99A0(&sp2C, &sp14, 0, -1);
     String_Destroy(&sp14, -1);
