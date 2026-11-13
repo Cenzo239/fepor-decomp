@@ -2147,7 +2147,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     void fn_800609DC(void *);
     void fn_8004DDB8(s32);
     void fn_80009B98(void);
-    void fn_80130860(void);
+    void Ui_ScissorUnitListLeft(void);
     void fn_801302C0(void);
     void fn_801308F0(void);
     void fn_80069F04(void);
@@ -2196,7 +2196,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     Prim2D_SetTransform(lbl_8036A510, lbl_8036A510, lbl_8036A588, lbl_8036A50C);
     fn_8000A174(0, 0x410);
     Prim2D_SetColorByte(0xFF);
-    fn_80009BC0(fn_80130860, 0);
+    fn_80009BC0(Ui_ScissorUnitListLeft, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(0xB);
     fn_80007340(fn_801302C0, 0);
@@ -2504,7 +2504,7 @@ s32 fn_80130858(void) {
     return 0;
 }
 
-void fn_80130860(void) {
+void Ui_ScissorUnitListLeft(void) {
     M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     GXSetScissor(0, 0, 0x80, 0x1E0);
 }
