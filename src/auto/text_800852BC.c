@@ -2890,7 +2890,8 @@ void Ui_DrawRouteTex(s32 x, s32 y, u8 noFlipV) {
     Prim2D_EndPrim();
 }
 
-void Ui_DrawRouteIcon(s32 arg0, s32 arg1) {
+/* Draw route.tpl atlas tile 0x13 centered near (x, y). */
+void Ui_DrawRouteIcon(s32 x, s32 y) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2905,18 +2906,18 @@ void Ui_DrawRouteIcon(s32 arg0, s32 arg1) {
     extern f64 lbl_803696F0;
     struct {
         u8 buf[0x20];
-        u16 x;
-        u16 y;
+        u16 w;
+        u16 h;
     } sp;
 
     Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x13);
-    sp.x = GXGetTexObjWidth(sp.buf);
-    sp.y = GXGetTexObjHeight(sp.buf);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
     Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)(arg0 - 0x20), (f32)(arg1 + 0xC), (f32)sp.x, (f32)sp.y);
+    Prim2D_SetRect((f32)(x - 0x20), (f32)(y + 0xC), (f32)sp.w, (f32)sp.h);
     Prim2D_EndPrim();
 }
 
