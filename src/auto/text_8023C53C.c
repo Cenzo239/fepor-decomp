@@ -11964,7 +11964,7 @@ void fn_8025EEE8(s32 arg0, s32 arg1, s32 arg2) {
 
 #pragma global_optimizer off
 void fn_8025F0EC(u8 arg0, u8 arg1) {
-    extern u8 lbl_8035D318[];
+    extern u8 gSoundChanParams[];
     extern u8 lbl_80361618[];
     extern u8 lbl_8034C110[];
     extern s32 lbl_803689A8;
@@ -11987,7 +11987,7 @@ void fn_8025F0EC(u8 arg0, u8 arg1) {
 
     t0 = arg0 * 0x860;
     t1 = arg1 * 0x86;
-    cell = lbl_8035D318 + t0 + t1;
+    cell = gSoundChanParams + t0 + t1;
     code = (u16)(cell[0x64] | (cell[0x65] << 8));
     switch ((s32)code) {
     case 0:
@@ -12062,7 +12062,7 @@ void fn_8025F0EC(u8 arg0, u8 arg1) {
 }
 #pragma global_optimizer on
 void fn_8025F310(u8 arg0, u8 arg1) {
-    extern u8 lbl_8035D318[];
+    extern u8 gSoundChanParams[];
     extern u8 lbl_80361618[];
     extern u8 lbl_8034C110[];
     extern s32 lbl_803689A8;
@@ -12081,7 +12081,7 @@ void fn_8025F310(u8 arg0, u8 arg1) {
     s32 mul9;
     s32 idx;
 
-    cell = lbl_8035D318 + (arg0 * 0x860) + (arg1 * 0x86);
+    cell = gSoundChanParams + (arg0 * 0x860) + (arg1 * 0x86);
     code = (u16)(cell[0x64] | (cell[0x65] << 8));
     switch ((s32)code) {
     case 0:
@@ -12157,7 +12157,7 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
 {
     extern u8 lbl_80283128[];
     extern u8 lbl_802830A0[];
-    extern u8 lbl_8035D318[];
+    extern u8 gSoundChanParams[];
     extern u16 lbl_80361A98[4288];
 
     void fn_80260174(u8, u8, u8);
@@ -12173,7 +12173,7 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
     }
 
     if (arg1 != 0xFF) {
-        dst = lbl_8035D318 + (arg1 * 0x860) + (arg0 * 0x86);
+        dst = gSoundChanParams + (arg1 * 0x860) + (arg0 * 0x86);
     } else {
         dst = (u8 *)lbl_80361A98 + (arg0 * 0x86);
     }
@@ -12199,14 +12199,14 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
 }
 
 u16 Sound_GetChanParam(u8 arg0,u8 arg1,u8 arg2) {
-extern u8 lbl_8035D318[];
+extern u8 gSoundChanParams[];
 if(arg1!=255) {
-if(arg2!=255) {if(arg0<0x40U){u32 index=arg0&31;return (((lbl_8035D318+arg2*0x860+arg1*0x86)[index]<<7)|(lbl_8035D318+arg2*0x860+arg1*0x86)[index+0x20]);}
-if(arg0<0x46U) return (lbl_8035D318+arg2*0x860+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
+if(arg2!=255) {if(arg0<0x40U){u32 index=arg0&31;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+0x20]);}
+if(arg0<0x46U) return (gSoundChanParams+arg2*0x860+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
 if(arg0>=0x60U && arg0<0x66U) return 0;
-if(arg0==0x80U || arg0==0x81U) {u32 index=arg0&0xfe;return (((lbl_8035D318+arg2*0x860+arg1*0x86)[index]<<7)|(lbl_8035D318+arg2*0x860+arg1*0x86)[index+1]);}
-if(arg0==0x84U || arg0==0x85U) {u32 index=arg0&0xfe;return (((lbl_8035D318+arg2*0x860+arg1*0x86)[index]<<7)|(lbl_8035D318+arg2*0x860+arg1*0x86)[index+1]);}
-return (lbl_8035D318+arg2*0x860+arg1*0x86)[arg0]<<7;}
+if(arg0==0x80U || arg0==0x81U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
+if(arg0==0x84U || arg0==0x85U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
+return (gSoundChanParams+arg2*0x860+arg1*0x86)[arg0]<<7;}
 else {if(arg0<0x40U){u32 index; s32 offset; offset=arg1*0x86;index=arg0&31;return ((((u8*)lbl_80361A98+offset)[index]<<7)|((u8*)lbl_80361A98+offset)[index+0x20]);}
 if(arg0<0x46U) return ((u8*)lbl_80361A98+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
 if(arg0>=0x60U && arg0<0x66U) return 0;
