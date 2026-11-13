@@ -1183,18 +1183,13 @@ s32 fn_80112F44(void *arg0) {
 
     n = strlen((char *)gActorXmlStrs + 0x43F);
     if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
-                    (char *)gActorXmlStrs + 0x43F, n) != 0) {
-        if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
-                              strlen((char *)gActorXmlStrs + 0x43F)) +
-                  0x10000) == 0xFFFF) {
-            if ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
-                                  strlen((char *)gActorXmlStrs + 0x444)) +
-                      0x10000) != 0xFFFF) {
-                if (fn_800E56C4(arg0) == 0) {
-                    return 1;
-                }
-            }
-        }
+                      (char *)gActorXmlStrs + 0x43F, n) == 0 ||
+        (u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x43F, 0,
+                         strlen((char *)gActorXmlStrs + 0x43F)) + 0x10000) != 0xFFFF ||
+        ((u32)(fn_800D5948((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
+                          strlen((char *)gActorXmlStrs + 0x444)) + 0x10000) != 0xFFFF &&
+         fn_800E56C4(arg0) == 0)) {
+        return 1;
     }
     return 0;
 }
@@ -1565,15 +1560,14 @@ extern "C" void fn_80113BA0(void *arg0) {
     V3 pos;
     V3 got;
     void *actor;
-    f32 zero;
     f32 twenty;
+    f32 zero;
     s32 ch;
 
     zero = lbl_8036A184;
     twenty = lbl_8036A1BC;
-    pos.y = zero;
+    pos.y = pos.z = zero;
     pos.x = twenty;
-    pos.z = zero;
 
     actor = *(void **)((u8 *)arg0 + 0x118);
     if (actor != NULL) {
@@ -1698,16 +1692,12 @@ void fn_80113F88(void *arg0) {
     SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
 void fn_80114078(void *arg0) {
-    s32 n;
-
-    *(u8 *)((u8 *)arg0 + 0x184) = 1;
-    fn_80113298(arg0, (u8 *)gActorXmlStrs + 0x498, *(s32 *)((u8 *)arg0 + 0x188) * 2, 0, 1);
-    n = strlen((char *)gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x160, (char *)gActorXmlStrs + 0x1C, n);
-    n = strlen((char *)gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)arg0 + 0x16C, (char *)gActorXmlStrs + 0x1C, n);
-    *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
-    *(u8 *)((u8 *)arg0 + 0x1A6) = 1;
+ *(u8 *)((u8 *)arg0+0x184)=1;
+ fn_80113298(arg0,(u8 *)gActorXmlStrs+0x498,*(s32 *)((u8 *)arg0+0x188)*2,0,1);
+ { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x160,text,len); }
+ { char *text=(char *)gActorXmlStrs+0x1C; s32 len=strlen(text); String_AssignCStr((u8 *)arg0+0x16C,text,len); }
+ *(u8 *)((u8 *)arg0+0x1A4)=1;
+ *(u8 *)((u8 *)arg0+0x1A6)=1;
 }
 
 #pragma cplusplus on
