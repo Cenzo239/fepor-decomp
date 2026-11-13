@@ -3527,7 +3527,7 @@ s32 ScriptCmd_seqini(void) {
     void Process_Goto(void *, s32);
     void fn_8000BD98(void *);
     void fn_8008D988(void);
-    void fn_8004A1F0(void);
+    void Map_HideMoveLimitView(void);
     void fn_80091858(void);
     void fn_800162B8(void);
     extern u16 gScriptCmdNames[];
@@ -3551,7 +3551,7 @@ s32 ScriptCmd_seqini(void) {
     fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
     fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
-    fn_8004A1F0();
+    Map_HideMoveLimitView();
     fn_80091858();
     fn_800162B8();
     return 1;
@@ -3567,7 +3567,7 @@ void fn_80127AC4(void) {
     fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
     fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
-    fn_8004A1F0();
+    Map_HideMoveLimitView();
     fn_80091858();
     fn_800162B8();
 }

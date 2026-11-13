@@ -16308,10 +16308,10 @@ void fn_80182EC8(s32 arg0) {
 
 void fn_80182F50(void) {
     void fn_8014CBD8(void *, f32, f32);
-    void fn_8004A1F0();
+    void Map_HideMoveLimitView();
 
     fn_8014CBD8(gBattleState, (f32) (s8) ((u8 *)gUiContext)[0xD], (f32) (s8) ((u8 *)gUiContext)[0xE]);
-    fn_8004A1F0();
+    Map_HideMoveLimitView();
 }
 
 void fn_801832F8(s32 arg0) {

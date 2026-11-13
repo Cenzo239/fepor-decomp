@@ -9800,7 +9800,7 @@ void Map_DrawRangeTiles(void) {
 }
 #pragma global_optimizer reset
 
-void fn_8004A1F0(void) {
+void Map_HideMoveLimitView(void) {
     extern u8 gMoveLimitViewProc[];
     extern u32 gUiInputFlags;
     void Process_UnlinkByKey(void *);

@@ -258,7 +258,7 @@ void fn_801EB294(void *arg0)
     u8 fn_80015648(s32, u8);
     void fn_8002297C(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
-    void fn_8004A1F0(void);
+    void Map_HideMoveLimitView(void);
     void fn_8004A224(void);
     void fn_800A8400(void);
     void *Map_GetCursorUnit(void);
@@ -337,7 +337,7 @@ void fn_801EB294(void *arg0)
     }
     unit2 = Map_GetCursorUnit();
     if (unit2 == NULL && (gUiInputFlags & 0x400)) {
-        fn_8004A1F0();
+        Map_HideMoveLimitView();
     }
     skip = 0;
     gflags = gUiInputFlags;
@@ -352,7 +352,7 @@ void fn_801EB294(void *arg0)
             lbl_80368370 = unit2;
             if ((unit2 == NULL) || (*(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8) == 0)) {
                 if (gflags & 0x400) {
-                    fn_8004A1F0();
+                    Map_HideMoveLimitView();
                 }
             } else {
                 fn_800AACDC(unit2);
@@ -374,7 +374,7 @@ void fn_801EB294(void *arg0)
         if ((unit != NULL) && (buttons & 0x800)) {
             fn_800A8400();
             if (gUiInputFlags & 0x400) {
-                fn_8004A1F0();
+                Map_HideMoveLimitView();
             }
             UiCtx_BindUnit(gUiContext, unit);
             Ui_PlaySeCue(lbl_8027EE08 + 0x1c9, 0x64);
@@ -424,7 +424,7 @@ void fn_801EB294(void *arg0)
             if (buttons & 0x10) {
             block_65:
                 if (gUiInputFlags & 0x400) {
-                    fn_8004A1F0();
+                    Map_HideMoveLimitView();
                 }
                 Ui_PlaySeCue(lbl_8027EE08 + 0x20f, 0x64);
                 Process_Goto(self, 1);
@@ -432,7 +432,7 @@ void fn_801EB294(void *arg0)
             }
             if (buttons & 0x1000) {
                 if (gflags & 0x400) {
-                    fn_8004A1F0();
+                    Map_HideMoveLimitView();
                 }
                 *((u8 *)self + 0x54) = 2;
                 Process_Goto(self, 5);

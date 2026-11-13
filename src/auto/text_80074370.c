@@ -1209,8 +1209,8 @@ void fn_80076398(void) {
 s32 fn_800763DC(void){void*fn_80019E24(u8);s32 fn_8001DDBC(void);void fn_8001EF80(void*,u8,u8,u8);void fn_8002011C(void*,u8,u8,u8,s32);void fn_8004A224(void);void fn_80070EE0(void);void*MapObjEvent_Find(void*,u8,u8,s32);extern u8 gBattleMap[],gUiContext[],gMapObjEventList[];u8*p;u8 a,b,c;fn_80070EE0();p=MapObjEvent_Find(gMapObjEventList,gUiContext[13],gUiContext[14],7);a=*((u8*)fn_80019E24(p[4])+29);b=p[1];c=p[0];fn_8002011C(gBattleMap,c,b,a,fn_8001DDBC());fn_8001EF80(gBattleMap,p[0],p[1],p[3]);fn_8004A224();return 0;}
 
 s32 fn_80076494(void) {
-    M2C_UNK fn_8004A1F0();
-    fn_8004A1F0();
+    M2C_UNK Map_HideMoveLimitView();
+    Map_HideMoveLimitView();
     return 0;
 }
 
@@ -1299,8 +1299,8 @@ s32 fn_800765BC(s32 arg0, s32 arg1, void *arg2) {
 }
 
 s32 fn_800766B0(void) {
-    M2C_UNK fn_8004A1F0();
-    fn_8004A1F0();
+    M2C_UNK Map_HideMoveLimitView();
+    Map_HideMoveLimitView();
     return 0;
 }
 
@@ -1399,8 +1399,8 @@ s32 fn_8007693C(void) {
 }
 
 s32 fn_80076970(void) {
-    M2C_UNK fn_8004A1F0();
-    fn_8004A1F0();
+    M2C_UNK Map_HideMoveLimitView();
+    Map_HideMoveLimitView();
     return 0;
 }
 
@@ -2317,8 +2317,8 @@ s32 fn_80078334(void) {
 }
 
 s32 fn_80078420(void) {
-    M2C_UNK fn_8004A1F0();
-    fn_8004A1F0();
+    M2C_UNK Map_HideMoveLimitView();
+    Map_HideMoveLimitView();
     return 0;
 }
 
@@ -2349,8 +2349,8 @@ s32 fn_800785E4(void) {
 }
 
 s32 fn_80078618(void) {
-    M2C_UNK fn_8004A1F0();
-    fn_8004A1F0();
+    M2C_UNK Map_HideMoveLimitView();
+    Map_HideMoveLimitView();
     return 0;
 }
 

@@ -555,7 +555,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
 }
 
 void Map_UpdateCursorMoveLimit(void) {
-    void fn_8004A1F0(void);
+    void Map_HideMoveLimitView(void);
     void fn_8004A224(void);
     void fn_800AACDC(void *);
 
@@ -593,13 +593,13 @@ void Map_UpdateCursorMoveLimit(void) {
         ctrl = gPadInput;
         if ((ctrl->unk4 & 0xF) != 0 || ctrl->unk0->unk2 != 0 || ctrl->unk0->unk3 != 0) {
             if (unit == NULL) {
-                fn_8004A1F0();
+                Map_HideMoveLimitView();
                 lbl_80367800 = NULL;
             }
         } else if ((u32)(((gBattleState[0x9F] >> 6) & 1)) != 1U) {
             lbl_80367800 = unit;
             if (unit == NULL || *(u8 *)(*(u32 *)((char *)unit + 0x190) + 8) == 0) {
-                fn_8004A1F0();
+                Map_HideMoveLimitView();
             } else {
                 fn_800AACDC(unit);
                 fn_8004A224();

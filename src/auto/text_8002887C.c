@@ -2948,11 +2948,11 @@ s32 fn_8002F480(void *arg0, void *arg1) {
 }
 
 void fn_8002F4EC(void *arg0, void *arg1) {
-    void fn_8004A1F0(void *);
+    void Map_HideMoveLimitView(void *);
     void fn_8014CBD8(void *, f32, f32);
     extern u8 gBattleState[];
 
-    fn_8004A1F0(arg0);
+    Map_HideMoveLimitView(arg0);
     fn_8014CBD8(gBattleState, (f32)*(s8 *)((u8 *)arg1 + 0x48), (f32)*(s8 *)((u8 *)arg1 + 0x49));
 }
 
@@ -3263,7 +3263,7 @@ void fn_80031598(s32 arg0) {
 }
 
 void fn_800315F8(void) {
-    void fn_8004A1F0(void *);
+    void Map_HideMoveLimitView(void *);
     void fn_8014CB14(void *, void *);
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -3272,7 +3272,7 @@ void fn_800315F8(void) {
 
     ctx[0xF] = (u8)(s32)*(f32 *)(base + 0x524);
     ctx[0x10] = (u8)(s32)*(f32 *)(base + 0x528);
-    fn_8004A1F0(ctx);
+    Map_HideMoveLimitView(ctx);
     fn_8014CB14(gBattleState, *(void **)gUiContext);
 }
 
