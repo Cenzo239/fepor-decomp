@@ -667,7 +667,7 @@ void fn_800AE5A8(void *arg0) {
 void fn_800AE694(void *arg0) {
     void *fn_8014D8FC(void *);
     s8 fn_80146C94(void *);
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80053C30(void *, void *);
     void fn_80053658(void *, s32, void *);
     void fn_80059208(void *, void *);
@@ -720,7 +720,7 @@ void fn_800AE694(void *arg0) {
         if (var_r29 != NULL) {
             for (var_r6 = 1, var_ctr = 3; var_ctr != 0; var_ctr--, var_r6++) {
                 if (!(lbl_8032FF08[var_r6 * 0x30 + 0xC] & 1)) {
-                    fn_8014832C(var_r6, var_r29, 0x64, 1);
+                    Fx_StartSlot(var_r6, var_r29, 0x64, 1);
                     break;
                 }
             }
@@ -4181,7 +4181,7 @@ extern "C" s32 fn_800B7DB4(s32 arg0, s32 arg1) {
 
 #pragma cplusplus reset
 s32 fn_800B7E60(s32 arg0, u32 arg1, s32 arg2) {
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     void fn_800056CC(void *, ...);
     void fn_80146AF0(void);
     extern s32 gUiInputFlags;
@@ -4191,7 +4191,7 @@ s32 fn_800B7E60(s32 arg0, u32 arg1, s32 arg2) {
         return 0;
     }
     if (!(gUiInputFlags & 3)) {
-        fn_8014832C((u8)arg0, (void *)arg1, 0x64, arg2);
+        Fx_StartSlot((u8)arg0, (void *)arg1, 0x64, arg2);
         fn_800056CC(lbl_8026ECB8 + 0x9A9, arg1);
     }
     if (arg0 == 0) {
@@ -4242,7 +4242,7 @@ s32 fn_800B7F98(s32 arg0, s32 arg1, s32 arg2) {
 s32 fn_800B7FD8(s32 arg0, u32 arg1, s32 arg2) {
     extern s32 gUiInputFlags;
     extern u8 lbl_8026ECB8[];
-    void fn_8014832C(u8, u32, u8, s32);
+    void Fx_StartSlot(u8, u32, u8, s32);
     void fn_800056CC(void *, ...);
     void fn_80146AF0(void);
 
@@ -4250,7 +4250,7 @@ s32 fn_800B7FD8(s32 arg0, u32 arg1, s32 arg2) {
         return 0;
     }
     if (!(gUiInputFlags & 3)) {
-        fn_8014832C((u8)arg0, arg1, (u8)arg2, 1);
+        Fx_StartSlot((u8)arg0, arg1, (u8)arg2, 1);
         fn_800056CC(lbl_8026ECB8 + 0x9d4, arg1);
     }
     if (arg0 == 0) {
@@ -4262,7 +4262,7 @@ s32 fn_800B7FD8(s32 arg0, u32 arg1, s32 arg2) {
 s32 fn_800B8070(s32 arg0, u32 arg1) {
     extern s32 gUiInputFlags;
     extern u8 lbl_8026ECB8[];
-    void fn_8014832C(u8, u32, u8, s32);
+    void Fx_StartSlot(u8, u32, u8, s32);
     void fn_800056CC(void *, ...);
     void fn_80146AF0(void);
 
@@ -4270,7 +4270,7 @@ s32 fn_800B8070(s32 arg0, u32 arg1) {
         return 0;
     }
     if (!(gUiInputFlags & 3)) {
-        fn_8014832C((u8)arg0, arg1, 0x64, 1);
+        Fx_StartSlot((u8)arg0, arg1, 0x64, 1);
         fn_800056CC(lbl_8026ECB8 + 0xa00, arg1);
     }
     if (arg0 == 0) {

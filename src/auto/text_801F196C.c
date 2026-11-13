@@ -1904,7 +1904,7 @@ void fn_801F64F4(s32 arg0) {
 void fn_801F6538(void) {
     extern u16 lbl_80280CF0[];
     fn_80147188(0xFA);
-    fn_8014832C(0, (u8 *)lbl_80280CF0 + 0x33, 0x64, 1);
+    Fx_StartSlot(0, (u8 *)lbl_80280CF0 + 0x33, 0x64, 1);
     fn_80109180((u8 *)lbl_80280CF0 + 0x20, 0);
     fn_800A84A0();
     fn_8018DC98();

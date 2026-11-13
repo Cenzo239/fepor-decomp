@@ -5960,7 +5960,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     s8 fn_80146C94(void *);
     void fn_80147188(s32);
     void Ui_PlaySeCue(void *, s32);
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     void fn_80148980(void *, s32);
     extern void *lbl_80298040[];
     extern u8 lbl_8027D030[];
@@ -6049,7 +6049,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
 
     if (*(s32 *)((u8 *)st + 0x20) >= 0) {
         if (*(s32 *)((u8 *)st + 0x20) == 0)
-            fn_8014832C(0, lbl_80298040[*(s32 *)((u8 *)st + 0x28)], 0x64, 1);
+            Fx_StartSlot(0, lbl_80298040[*(s32 *)((u8 *)st + 0x28)], 0x64, 1);
         *(s32 *)((u8 *)st + 0x20) = *(s32 *)((u8 *)st + 0x20) - 1;
     }
 

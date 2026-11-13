@@ -7228,20 +7228,18 @@ extern "C" void fn_8013EF00(void *arg0) {
     void fn_80007668(s32 *);
     void Prim2D_EndPrim(void);
     extern f32 lbl_8036A708;
-    extern f64 lbl_8036A710;
     s32 sp8;
-    s16 a, b, c, d;
+    s32 w;
+    s32 h;
 
     ((Obj *)arg0)->v3();
     Prim2D_Begin();
     fn_8000A174(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 2));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    a = *(s16 *)((u8 *)arg0 + 0x12);
-    b = *(s16 *)((u8 *)arg0 + 0x16);
-    c = *(s16 *)((u8 *)arg0 + 0x14);
-    d = *(s16 *)((u8 *)arg0 + 0x18);
-    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)(s16)(b - a), (f32)(s16)(d - c));
+    w = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12));
+    h = (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14));
+    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)w, (f32)h);
     sp8 = *(s32 *)((u8 *)arg0 + 0x1E);
     fn_80007668(&sp8);
     Prim2D_EndPrim();
@@ -11549,7 +11547,7 @@ extern "C" void fn_801480D8(s16 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" s8 fn_8014832C(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
+extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     void *Hash_Lookup(void *);
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];

@@ -2804,18 +2804,18 @@ void fn_800CADF8(void) {
 void fn_800CAE38(void) {
     extern u8 lbl_80367878;
     extern void *lbl_8036787C;
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80145FE8(void);
     void *object;
 
     if (lbl_80367878 != 0) {
         object = *(void **)((u8 *)lbl_8036787C + 0x440);
         if (object != NULL) {
-            fn_8014832C(1, object, 0x64, 1);
+            Fx_StartSlot(1, object, 0x64, 1);
         }
     } else {
         object = fn_80145FE8();
-        fn_8014832C(1, object, 0x64, 1);
+        Fx_StartSlot(1, object, 0x64, 1);
     }
 }
 

@@ -2158,7 +2158,7 @@ extern "C" void fn_8002DA30(void)
     u8 fn_800BDD08(void *, void *, void *);
     s32 fn_802342B8(s32, void *);
     void fn_80148980(void *, s32);
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     s8 fn_80146C94(void *);
     s8 fn_80146BE4(void *);
     void fn_80148888(void *, s32);
@@ -2235,7 +2235,7 @@ extern "C" void fn_8002DA30(void)
         }
         if (ok == 0) {
             lbl_80367250 = 0;
-            fn_8014832C(0, str, 0x64, 1);
+            Fx_StartSlot(0, str, 0x64, 1);
             return;
         }
         if (fn_802342B8(*(s32 *)obj->unk0, str) != 0

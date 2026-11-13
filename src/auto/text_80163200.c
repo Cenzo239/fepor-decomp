@@ -3207,7 +3207,7 @@ void fn_8016A1BC(void *arg0) {
     void Ui_SetWidgetText(void *);
     void fn_8000BD98(void *);
     void fn_801455B8(s32);
-    void fn_8014832C(s32, void *, s32, s32);
+    void Fx_StartSlot(s32, void *, s32, s32);
     s32 strlen(void *);
     void *p = arg0;
     void *temp_r31 = (void *)M2C_FIELD(fn_8014D8FC(&gBattleState, &gBattleState), s32 *, 0x44);
@@ -3280,7 +3280,7 @@ void fn_8016A1BC(void *arg0) {
     lbl_80367AE0 = 0;
     if (!(gUiInputFlags & 0x10)) {
         fn_801455B8(0);
-        fn_8014832C(0, lbl_80277BC0 + 0x140, 0x64, 1);
+        Fx_StartSlot(0, lbl_80277BC0 + 0x140, 0x64, 1);
     }
 }
 
