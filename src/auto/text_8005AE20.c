@@ -4356,6 +4356,7 @@ void *fn_80065634(void ***arg0, s32 arg1) {
 }
 
 #pragma optimization_level 2
+/* Walk a node chain and accumulate each node's euler rotations (degrees) into out, using the node's axis order. */
 void *MTXRotDegOrder(void *node, void *out)
 {
     void PSMTXIdentity(void *);
@@ -4366,11 +4367,11 @@ void *MTXRotDegOrder(void *node, void *out)
     extern f32 gMtxZero;
     extern f32 gDegToRad;
     extern u8 gGUtilAssertMsg[];
-    u8 sp38[0x30];
+    u8 rot[0x30];
     s32 order;
     f32 rx;
     f32 ry;
-    u8 sp8[0x30];
+    u8 tmp[0x30];
     f32 rz;
 
     PSMTXIdentity(out);
@@ -4381,85 +4382,85 @@ void *MTXRotDegOrder(void *node, void *out)
             ry = *(f32 *)((u8 *)node + 0x68);
             rz = *(f32 *)((u8 *)node + 0x6C);
             order = *(u16 *)((u8 *)node + 0xEE);
-            PSMTXIdentity(sp38);
+            PSMTXIdentity(rot);
 
             switch (order) {
             case 1:
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp38, 0x58, gDegToRad * rx);
+                    PSMTXRotRad(rot, 'X', gDegToRad * rx);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Y', gDegToRad * ry);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Z', gDegToRad * rz);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             case 2:
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp38, 0x59, gDegToRad * ry);
+                    PSMTXRotRad(rot, 'Y', gDegToRad * ry);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Z', gDegToRad * rz);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'X', gDegToRad * rx);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             case 3:
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp38, 0x5A, gDegToRad * rz);
+                    PSMTXRotRad(rot, 'Z', gDegToRad * rz);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'X', gDegToRad * rx);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Y', gDegToRad * ry);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             case 4:
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp38, 0x58, gDegToRad * rx);
+                    PSMTXRotRad(rot, 'X', gDegToRad * rx);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Z', gDegToRad * rz);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Y', gDegToRad * ry);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             case 5:
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp38, 0x59, gDegToRad * ry);
+                    PSMTXRotRad(rot, 'Y', gDegToRad * ry);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'X', gDegToRad * rx);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp8, 0x5A, gDegToRad * rz);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Z', gDegToRad * rz);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             case 6:
                 if (gMtxZero != rz) {
-                    PSMTXRotRad(sp38, 0x5A, gDegToRad * rz);
+                    PSMTXRotRad(rot, 'Z', gDegToRad * rz);
                 }
                 if (gMtxZero != ry) {
-                    PSMTXRotRad(sp8, 0x59, gDegToRad * ry);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'Y', gDegToRad * ry);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 if (gMtxZero != rx) {
-                    PSMTXRotRad(sp8, 0x58, gDegToRad * rx);
-                    PSMTXConcat(sp8, sp38, sp38);
+                    PSMTXRotRad(tmp, 'X', gDegToRad * rx);
+                    PSMTXConcat(tmp, rot, rot);
                 }
                 break;
             default:
@@ -4467,8 +4468,8 @@ void *MTXRotDegOrder(void *node, void *out)
                 break;
             }
 
-            if (PSMTXInverse(sp38, sp38) != 0U) {
-                PSMTXConcat(sp38, out, out);
+            if (PSMTXInverse(rot, rot) != 0U) {
+                PSMTXConcat(rot, out, out);
             }
         }
         node = *(void **)node;
