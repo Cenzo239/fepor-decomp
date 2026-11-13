@@ -3138,64 +3138,65 @@ void fn_801F8A98(void *arg0) {
 #pragma optimization_level reset
 #pragma use_lmw_stmw on
 
-u32 StaffRoll_CompareUnits(void **arg0, void **arg1) {
-    u16 temp_r0;
-    u16 temp_r0_3;
-    u16 temp_r3;
-    u8 temp_r4_2;
-    u8 temp_r0_2;
-    u8 temp_r3_2;
-    u16 temp_r3_3;
-    void *temp_r5;
-    void *temp_r4;
-    void *temp_r6;
+/* Compare two staff-roll units: allegiance 6 first, then chapter/battles/class id. */
+u32 StaffRoll_CompareUnits(void **lhs, void **rhs) {
+    u16 battlesB;
+    u16 battlesRhs;
+    u16 battlesA;
+    u8 allegLhs;
+    u8 chapterRhs;
+    u8 chapterLhs;
+    u16 battlesLhs;
+    void *unitLhs;
+    void *personLhs;
+    void *unitRhs;
     void *p;
-    u16 a;
-    u16 b;
+    u16 classIdA;
+    u16 classIdB;
 
-    temp_r5 = *arg0;
-    temp_r6 = *arg1;
-    temp_r4 = M2C_FIELD(temp_r5, void **, 0x190);
-    if ((u8)M2C_FIELD((s32)temp_r4, u8 *, 8) == 6) {
-        if ((u8)M2C_FIELD(M2C_FIELD(temp_r6, void **, 0x190), u8 *, 8) != 6) {
+    unitLhs = *lhs;
+    unitRhs = *rhs;
+    personLhs = M2C_FIELD(unitLhs, void **, 0x190);
+    if ((u8)M2C_FIELD((s32)personLhs, u8 *, 8) == 6) {
+        if ((u8)M2C_FIELD(M2C_FIELD(unitRhs, void **, 0x190), u8 *, 8) != 6) {
             return 1U;
         }
     }
-    temp_r4_2 = M2C_FIELD(temp_r4, u8 *, 8);
-    if (temp_r4_2 != 6) {
-        if ((u8)M2C_FIELD(M2C_FIELD(temp_r6, void **, 0x190), u8 *, 8) == 6) {
+    allegLhs = M2C_FIELD(personLhs, u8 *, 8);
+    if (allegLhs != 6) {
+        if ((u8)M2C_FIELD(M2C_FIELD(unitRhs, void **, 0x190), u8 *, 8) == 6) {
             return 0U;
         }
     }
-    if (temp_r4_2 == 6) {
-        if ((u8)M2C_FIELD(M2C_FIELD(temp_r6, void **, 0x190), u8 *, 8) == 6) {
-            temp_r3_2 = M2C_FIELD(temp_r5, u8 *, 0x234);
-            temp_r0_2 = M2C_FIELD(temp_r6, u8 *, 0x234);
-            if (temp_r3_2 == temp_r0_2) {
-                temp_r3_3 = M2C_FIELD(temp_r5, u16 *, 0x22A);
-                temp_r0_3 = M2C_FIELD(temp_r6, u16 *, 0x22A);
-                if (temp_r3_3 == temp_r0_3) {
-                    p = M2C_FIELD(temp_r5, void **, 0x188);
-                    a = M2C_FIELD(p, u16 *, 0x5A);
-                    p = M2C_FIELD(temp_r6, void **, 0x188);
-                    b = M2C_FIELD(p, u16 *, 0x5A);
-                    return (u32)(a - b) >> 0x1FU;
+    if (allegLhs == 6) {
+        if ((u8)M2C_FIELD(M2C_FIELD(unitRhs, void **, 0x190), u8 *, 8) == 6) {
+            chapterLhs = M2C_FIELD(unitLhs, u8 *, 0x234);
+            chapterRhs = M2C_FIELD(unitRhs, u8 *, 0x234);
+            if (chapterLhs == chapterRhs) {
+                battlesLhs = M2C_FIELD(unitLhs, u16 *, 0x22A);
+                battlesRhs = M2C_FIELD(unitRhs, u16 *, 0x22A);
+                if (battlesLhs == battlesRhs) {
+                    p = M2C_FIELD(unitLhs, void **, 0x188);
+                    classIdA = M2C_FIELD(p, u16 *, 0x5A);
+                    p = M2C_FIELD(unitRhs, void **, 0x188);
+                    classIdB = M2C_FIELD(p, u16 *, 0x5A);
+                    return (u32)(classIdA - classIdB) >> 0x1FU;
                 }
-                return (u32)(temp_r3_3 - temp_r0_3) >> 0x1FU;
+                return (u32)(battlesLhs - battlesRhs) >> 0x1FU;
             }
-            return (u32)(temp_r3_2 - temp_r0_2) >> 0x1FU;
+            return (u32)(chapterLhs - chapterRhs) >> 0x1FU;
         }
     }
-    temp_r3 = M2C_FIELD(temp_r5, u16 *, 0x22A);
-    temp_r0 = M2C_FIELD(temp_r6, u16 *, 0x22A);
-    if (temp_r3 == temp_r0) {
-        p = M2C_FIELD(temp_r5, void **, 0x188);
-        a = M2C_FIELD(p, u16 *, 0x5A);
-        p = M2C_FIELD(temp_r6, void **, 0x188);
-        b = M2C_FIELD(p, u16 *, 0x5A);
-        return (u32)(a - b) >> 0x1FU;
+    battlesA = M2C_FIELD(unitLhs, u16 *, 0x22A);
+    battlesB = M2C_FIELD(unitRhs, u16 *, 0x22A);
+    if (battlesA == battlesB) {
+        p = M2C_FIELD(unitLhs, void **, 0x188);
+        classIdA = M2C_FIELD(p, u16 *, 0x5A);
+        p = M2C_FIELD(unitRhs, void **, 0x188);
+        classIdB = M2C_FIELD(p, u16 *, 0x5A);
+        return (u32)(classIdA - classIdB) >> 0x1FU;
     }
-    return (u32)(temp_r3 - temp_r0) >> 0x1FU;
+    return (u32)(battlesA - battlesB) >> 0x1FU;
 }
 
 #pragma global_optimizer off
