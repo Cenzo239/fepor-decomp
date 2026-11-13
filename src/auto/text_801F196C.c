@@ -3901,7 +3901,7 @@ void fn_801FA534(void *arg0)
 __declspec(section ".rodata") static const char staff_fmt[] = "#F04%s";
 
 #pragma global_optimizer off
-void fn_801FA5DC(void *arg0) {
+void StaffRoll_Draw(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
