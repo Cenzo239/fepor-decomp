@@ -8838,7 +8838,7 @@ s32 fn_801C9734(void) {
     void fn_801CA814(s32, void *);
     void fn_801CB25C(void *, s32);
     u32 strlen(const char *);
-    extern char lbl_8027D8B0[];
+    extern char CameraWin_str[];
     extern void *gGame;
     extern void *lbl_803682B8;
     struct Str {
@@ -8871,12 +8871,12 @@ s32 fn_801C9734(void) {
     String_Destroy(&sp20, -1);
     String_Assign(&sp38, gGame, 0, -1);
 
-    len = strlen(&lbl_8027D8B0[8]);
-    fn_800C992C(&sp38, (char *)lbl_8027D8B0 + 8, len);
+    len = strlen(&CameraWin_str[8]);
+    fn_800C992C(&sp38, (char *)CameraWin_str + 8, len);
 
-    len = strlen((char *)lbl_8027D8B0 + 0xE);
-    if (fn_800C9400(&sp2C, 0, sp2C.size, &lbl_8027D8B0[0xE], len) != 0) {
-        String_ConcatCStr(&sp14, &sp2C, (char *)lbl_8027D8B0 + 0xF);
+    len = strlen((char *)CameraWin_str + 0xE);
+    if (fn_800C9400(&sp2C, 0, sp2C.size, &CameraWin_str[0xE], len) != 0) {
+        String_ConcatCStr(&sp14, &sp2C, (char *)CameraWin_str + 0xF);
         fn_800C99A0(&sp38, &sp14, 0, -1);
         String_Destroy(&sp14, -1);
     }
@@ -8885,8 +8885,8 @@ s32 fn_801C9734(void) {
     fn_800C99A0(&sp38, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
 
-    len = strlen(&lbl_8027D8B0[0x11]);
-    fn_800C992C(&sp38, (char *)lbl_8027D8B0 + 0x11, len);
+    len = strlen(&CameraWin_str[0x11]);
+    fn_800C992C(&sp38, (char *)CameraWin_str + 0x11, len);
 
     fn_801CA814((s32)temp, &sp38);
     String_Destroy(&sp2C, -1);
@@ -9067,7 +9067,7 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
     s32 fn_801CAF8C(s32);
     void sprintf(char *, char *, ...);
     u32 strlen(const char *);
-    extern char lbl_8027D8B0[];
+    extern char CameraWin_str[];
 
     struct Str {
         u32 size;
@@ -9104,7 +9104,7 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
     *(s32 *)((u8 *)self + 0x428) = 0;
     handle = fn_8011C984(*(s32 *)((u8 *)self + 0x430), arg1);
     count = fn_801CAF50();
-    base = lbl_8027D8B0;
+    base = CameraWin_str;
     for (arg1 = 0; arg1 < count; arg1++) {
         entry = (struct Entry *)fn_801CAF2C(handle, arg1);
         sprintf(sp38, base + 0x16, arg1, entry->nameId);
@@ -9121,24 +9121,24 @@ void fn_801C9EE0(void *arg0, s32 arg1) {
     String_Assign(&sp20, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
 
-    len = strlen((char *)((u8 *)lbl_8027D8B0 + 0x21));
-    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)lbl_8027D8B0 + 0x21), len) == 0) {
+    len = strlen((char *)((u8 *)CameraWin_str + 0x21));
+    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x21), len) == 0) {
         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 0);
     } else {
-        len = strlen((char *)((u8 *)lbl_8027D8B0 + 0x2C));
-        if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)lbl_8027D8B0 + 0x2C), len) == 0) {
+        len = strlen((char *)((u8 *)CameraWin_str + 0x2C));
+        if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x2C), len) == 0) {
             fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 1);
         } else {
-            len = strlen((char *)((u8 *)lbl_8027D8B0 + 0x37));
-            if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)lbl_8027D8B0 + 0x37), len) == 0) {
+            len = strlen((char *)((u8 *)CameraWin_str + 0x37));
+            if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x37), len) == 0) {
                 fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 2);
             } else {
-                len = strlen((char *)((u8 *)lbl_8027D8B0 + 0x42));
-                if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)lbl_8027D8B0 + 0x42), len) == 0) {
+                len = strlen((char *)((u8 *)CameraWin_str + 0x42));
+                if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x42), len) == 0) {
                     fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 3);
                 } else {
-                    len = strlen((char *)((u8 *)lbl_8027D8B0 + 0x4D));
-                    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)lbl_8027D8B0 + 0x4D), len) == 0) {
+                    len = strlen((char *)((u8 *)CameraWin_str + 0x4D));
+                    if (fn_800C9400(&sp20, 0, sp20.size, (char *)((u32)CameraWin_str + 0x4D), len) == 0) {
                         fn_8011C9A8(*(s32 *)((u8 *)self + 0x434), 4);
                     }
                 }
@@ -9179,7 +9179,7 @@ void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     void fn_800D764C(void *,s32,s32,s32,void *,void *);
     void *fn_800D75FC(void *,void *);
     void fn_800E3F54(void *);
-    extern char lbl_8027D8B0[];
+    extern char CameraWin_str[];
     extern u8 lbl_80298418[];
     u32 spB8[3];
     u32 spAC[3];
@@ -9207,9 +9207,9 @@ void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     u8 *self;
     void *temp;
     self=(u8 *)arg0;
-    String_Init(spB8,lbl_8027D8B0+0x52,&sp30);
-    String_ConcatCStr(spAC,spB8,lbl_8027D8B0+0x59);
-    String_Init(spA0,lbl_8027D8B0+0x67,&sp2C);
+    String_Init(spB8,CameraWin_str+0x52,&sp30);
+    String_ConcatCStr(spAC,spB8,CameraWin_str+0x59);
+    String_Init(spA0,CameraWin_str+0x67,&sp2C);
     fn_800D764C(self,arg1,arg2,arg3,spAC,spA0);
     String_Destroy(spA0,-1);
     String_Destroy(spAC,-1);
@@ -9218,33 +9218,33 @@ void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     *(u32 *)(self+0x424)=0;
     *(u32 *)(self+0x428)=0;
     *(u32 *)(self+0x42C)=0;
-    String_Init(sp94,lbl_8027D8B0+0x71,&sp28);
+    String_Init(sp94,CameraWin_str+0x71,&sp28);
     *(void **)(self+0x430)=fn_800D75FC(self,sp94);
     String_Destroy(sp94,-1);
-    String_Init(sp88,lbl_8027D8B0+0x7d,&sp24);
+    String_Init(sp88,CameraWin_str+0x7d,&sp24);
     *(void **)(self+0x434)=fn_800D75FC(self,sp88);
     String_Destroy(sp88,-1);
-    String_Init(sp7C,lbl_8027D8B0+0x87,&sp20);
+    String_Init(sp7C,CameraWin_str+0x87,&sp20);
     *(void **)(self+0x438)=fn_800D75FC(self,sp7C);
     String_Destroy(sp7C,-1);
-    String_Init(sp70,lbl_8027D8B0+0x91,&sp1C);
+    String_Init(sp70,CameraWin_str+0x91,&sp1C);
     *(void **)(self+0x43c)=fn_800D75FC(self,sp70);
     String_Destroy(sp70,-1);
-    String_Init(sp64,lbl_8027D8B0+0x98,&sp18);
+    String_Init(sp64,CameraWin_str+0x98,&sp18);
     *(void **)(self+0x440)=fn_800D75FC(self,sp64);
     String_Destroy(sp64,-1);
-    String_Init(sp58,lbl_8027D8B0+0xa2,&sp14);
+    String_Init(sp58,CameraWin_str+0xa2,&sp14);
     *(void **)(self+0x444)=fn_800D75FC(self,sp58);
     String_Destroy(sp58,-1);
-    String_Init(sp4C,lbl_8027D8B0+0xab,&sp10);
+    String_Init(sp4C,CameraWin_str+0xab,&sp10);
     *(void **)(self+0x448)=fn_800D75FC(self,sp4C);
     String_Destroy(sp4C,-1);
-    String_Init(sp40,lbl_8027D8B0+0xb2,&spC);
+    String_Init(sp40,CameraWin_str+0xb2,&spC);
     temp=fn_800D75FC(self,sp40);
     *(void **)(self+0x44C)=temp;
     *(void **)(self+0x418)=temp;
     String_Destroy(sp40,-1);
-    String_Init(sp34,lbl_8027D8B0+0xb8,&sp8);
+    String_Init(sp34,CameraWin_str+0xb8,&sp8);
     *(void **)(self+0x450)=fn_800D75FC(self,sp34);
     String_Destroy(sp34,-1);
     *(void **)(*(u8 **)(self+0x430)+0xFC)=(void *)fn_801C9D58;
