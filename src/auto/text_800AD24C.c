@@ -63,7 +63,7 @@ extern s32 fn_80010710(u8* arg0);
   extern s32 gUnitRef;
   extern s32 lbl_8028D544[];
   extern s32 lbl_80319A68[];
-  void fn_800AE904(void *);
+  void Battle_ClearPhaseBannerChild(void *);
   void Battle_DrawPhaseBanner(void *);
 
 void fn_800AD24C(void) {
@@ -747,11 +747,11 @@ void Battle_InitPhaseBanner(void *arg0) {
     *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x1C) = 0.0f;
     *(s16 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) = 0x63;
     fn_80053658(*(void **)((u8 *)arg0 + 0x4C), 0, arg0);
-    *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x44) = fn_800AE904;
+    *(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x4C) + 0x30) + 0x44) = Battle_ClearPhaseBannerChild;
     fn_80059208(Battle_DrawPhaseBanner, arg0);
 }
 
-void fn_800AE904(void *arg0) {
+void Battle_ClearPhaseBannerChild(void *arg0) {
     M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), void **, 0x4C), s32 *, 0x4C) = 0;
 }
 
