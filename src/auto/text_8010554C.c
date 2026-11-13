@@ -376,12 +376,12 @@ void fn_80105DAC(s32 *arg0, s32 arg1) {
 u8 fn_80105E88(s32 arg0, s32 arg1) {
     s32 Res_GetByName(s32);
     void *fn_80234198(void *, u8 *);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     void *temp_r3;
     if (Res_GetByName(arg0) == 0U) {
         return 0U;
     }
-    temp_r3 = fn_80234198((void *)arg0, lbl_802738F8 + 0x26);
+    temp_r3 = fn_80234198((void *)arg0, gDisposStrings + 0x26);
     if (temp_r3 == NULL) {
         return 0U;
     }
@@ -410,7 +410,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void fn_80184750(void *, s32, s32, s32);
     s32 fn_801A1CC8(void);
     void strcpy(void *, void *);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     extern u8 lbl_8028F2E0[];
     extern u16 gUnits[];
     extern u8 gBattleMap[];
@@ -436,14 +436,14 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
     self = path;
     arg1b = defer;
     mode_local = mode;
-    fn_800056CC((const char *)(lbl_802738F8 + 0x33), self);
+    fn_800056CC((const char *)(gDisposStrings + 0x33), self);
     if (Res_GetByName(self) != 0) {
         nibble = fn_801A1CC8() & 0xF;
         if (gUiInputFlags & 1) {
             arg1b = 0;
         }
         if (arg1b == 0) {
-            base = fn_800C45B8(-0x6A40, lbl_802738F8 + 0x46, 0);
+            base = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
             count = fn_80107874(self, base);
             if (count > 0) {
                 entry = (u8 *)base;
@@ -849,7 +849,7 @@ void fn_801069A0(u8 *arg0) {
     u32 fn_8001B894(u32 *);
     void fn_80107B54(u32 *, void *, s32);
     void fn_8014CBD8(void *, f32, f32);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     extern u8 gBattleState[];
     u32 sp8;
     u32 spC;
@@ -863,7 +863,7 @@ void fn_801069A0(u8 *arg0) {
     u32 var_r0;
     s32 temp;
 
-    *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, lbl_802738F8 + 0x46, 0);
+    *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
     arg0[0x63] = fn_80107874(arg0 + 0x30, *(void **)(arg0 + 0x68));
     arg0[0x62] = 0;
     arg0[0x61] = 0;
@@ -1186,7 +1186,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void fn_8003EAE8(void *, void *);
     void fn_80050BCC(void *, s32);
     void fn_80050C90(void *);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     extern struct { u8 pad[0x30]; void *unk30; u8 pad34[8]; void *unk3C; } gUnitLists;
     u8 sp8[0x68];
     void *unit;
@@ -1240,7 +1240,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         }
     }
 skip_type:
-    found = Unit_FindByName(lbl_802738F8 + 0x50);
+    found = Unit_FindByName(gDisposStrings + 0x50);
     if (found != NULL && unit == found) {
         fn_8003D68C(unit, 0);
         goto ok;
@@ -1286,7 +1286,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     s32 fn_8001B940(u32 *);
     void fn_80107B54(u32 *, void *, u8);
     void *fn_80234198(void *, void *);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     extern u8 gUnitLists[];
     extern s32 gBattleMap[];
     u32 spC;
@@ -1314,7 +1314,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     *(s32 *)(sp10 + 0x24) = 0; sp10[0x35] = 0; *(s32 *)(sp10 + 0x5C) = 0;
     *(s32 *)(sp10 + 0x28) = 0; sp10[0x36] = 0; *(s32 *)(sp10 + 0x60) = 0;
     *(s32 *)(sp10 + 0x2C) = 0; sp10[0x37] = 0; *(s32 *)(sp10 + 0x64) = 0;
-    if (fn_80234198(self, lbl_802738F8 + 0x58) != 0) {
+    if (fn_80234198(self, gDisposStrings + 0x58) != 0) {
         flags |= 1;
     }
     if (fn_80015680(gUnitLists) == 0 && fn_80015680(gUnitLists + 0x3C) == 0) {
@@ -1359,7 +1359,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
             s8 y = sp10[0xC];
             u8 *map = (u8 *)gBattleMap + x + (y << 6);
             if (map[0xD] != 0 || map[0x300D] != 0) {
-                fn_800056CC((const char *)(lbl_802738F8 + 0x61), x, y, *(void **)sp10);
+                fn_800056CC((const char *)(gDisposStrings + 0x61), x, y, *(void **)sp10);
                 continue;
             }
         }
@@ -1381,7 +1381,7 @@ void fn_80107B54(u32 *arg0, u32 *arg1, u8 arg2) {
     s32 fn_8001B894(u32 *);
     u8 fn_8001B940(u32 *);
     void fn_800056CC(const char *, ...);
-    extern u8 lbl_802738F8[];
+    extern u8 gDisposStrings[];
     u32 *var_r27;
     u32 *var_r28;
     u8 var_r29;
@@ -1447,7 +1447,7 @@ void fn_80107B54(u32 *arg0, u32 *arg1, u8 arg2) {
     } while (j < 8);
     *var_r27 = (*var_r27 + 3) & ~3;
     ((u8 *)var_r28)[0x67] = var_r29;
-    fn_800056CC((const char *)(lbl_802738F8 + 0x9A),
+    fn_800056CC((const char *)(gDisposStrings + 0x9A),
                 var_r28[0],
                 var_r28[1],
                 *(s8 *)((u8 *)var_r28 + 0xD),
