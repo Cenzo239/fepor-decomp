@@ -3287,7 +3287,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     void fn_80201FF0(void *, void *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     void fn_80202640(void *, f32 *);
     void fn_8006DA64(void *, s32, void *);
@@ -3593,12 +3593,12 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             fn_80202024(mD8, mA8, mD8);
         }
         if (arg1 & 0x80) {
-            fn_80202540(mA8, arg2[0x30 / 4], arg2[0x34 / 4], arg2[0x38 / 4]);
+            PSMTXTrans(mA8, arg2[0x30 / 4], arg2[0x34 / 4], arg2[0x38 / 4]);
             fn_80202024(mA8, mD8, mD8);
-            fn_80202540(mA8, -arg2[0x30 / 4], -arg2[0x34 / 4], -arg2[0x38 / 4]);
+            PSMTXTrans(mA8, -arg2[0x30 / 4], -arg2[0x34 / 4], -arg2[0x38 / 4]);
             fn_80202024(mD8, mA8, mD8);
             if (arg1 & 0x200) {
-                fn_80202540(mA8, arg2[0x48 / 4], arg2[0x4C / 4], arg2[0x50 / 4]);
+                PSMTXTrans(mA8, arg2[0x48 / 4], arg2[0x4C / 4], arg2[0x50 / 4]);
                 fn_80202024(mA8, mD8, mD8);
             }
         }
@@ -3608,19 +3608,19 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     if (arg1 & 8) {
         fn_802025C0(m108, arg2[0], arg2[1], arg2[2]);
         if (arg1 & 0x100) {
-            fn_80202540(mA8, arg2[0x3C / 4], arg2[0x40 / 4], arg2[0x44 / 4]);
+            PSMTXTrans(mA8, arg2[0x3C / 4], arg2[0x40 / 4], arg2[0x44 / 4]);
             fn_80202024(mA8, m108, m108);
-            fn_80202540(mA8, -arg2[0x3C / 4], -arg2[0x40 / 4], -arg2[0x44 / 4]);
+            PSMTXTrans(mA8, -arg2[0x3C / 4], -arg2[0x40 / 4], -arg2[0x44 / 4]);
             fn_80202024(m108, mA8, m108);
             if (arg1 & 0x400) {
-                fn_80202540(mA8, arg2[0x54 / 4], arg2[0x58 / 4], arg2[0x5C / 4]);
+                PSMTXTrans(mA8, arg2[0x54 / 4], arg2[0x58 / 4], arg2[0x5C / 4]);
                 fn_80202024(mA8, m108, m108);
             }
         }
         fn_80202024(mD8, m108, mD8);
     }
     if (arg1 & 0x20) {
-        fn_80202540(mA8, arg2[0x18 / 4], arg2[0x1C / 4], arg2[0x20 / 4]);
+        PSMTXTrans(mA8, arg2[0x18 / 4], arg2[0x1C / 4], arg2[0x20 / 4]);
         fn_80202024(mA8, mD8, mD8);
     }
     fn_80201FF0(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
@@ -4164,6 +4164,7 @@ s32 fn_800653C8(void ***arg0, u16 *out) {
 }
 #pragma global_optimizer reset
 
+#pragma global_optimizer off
 s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     void **mid;
     u8 *base;
@@ -4171,17 +4172,17 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     u8 *walk;
     u16 *table;
     u16 offset;
-    s32 lim;
+    u16 lim;
     s32 tmp;
     s32 best;
     s32 i;
+    s32 j;
     s32 index;
     s32 diff1;
     s32 diff2;
     s32 mask;
-    s32 n;
-    s32 v;
-    s32 j;
+    u16 n;
+    u16 v;
     u16 count;
 
     if (arg0 == NULL) {
@@ -4189,7 +4190,7 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     } else {
         mid = *arg0;
         if (mid != NULL) {
-            base = *mid;
+            base = (u8 *)*mid;
         } else {
             base = NULL;
         }
@@ -4200,7 +4201,7 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
 
     tmp = 0x10000 - 1;
     count = *(u16 *)base;
-    lim = tmp & 0xFFFF;
+    lim = (u16)tmp;
     best = -1;
     i = 0;
     index = 0;
@@ -4208,16 +4209,16 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     while (i < (s32)count) {
         table = *(u16 **)(base + 4);
         offset = *(u16 *)((u8 *)table + index);
-        diff1 = (s32)offset - lim;
-        diff2 = lim - (s32)offset;
+        diff1 = (s32)offset - (s32)lim;
+        diff2 = (s32)lim - (s32)offset;
         mask = ~(diff1 | diff2) >> 31;
         entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
         walk = entry;
         n = *(u16 *)(entry + 2);
-        for (j = 0; j < n; j++) {
+        for (j = 0; j < (s32)n; j++) {
             if (*(u16 *)(walk + 4) == arg2) {
                 v = *(u16 *)entry;
-                if (v > arg1 && (best < 0 || v <= best)) {
+                if ((s32)v > arg1 && (best < 0 || (s32)v <= best)) {
                     best = v;
                 }
             }
@@ -4228,7 +4229,7 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     }
     return best;
 }
-
+#pragma global_optimizer reset
 s32 fn_8006555C(void ***arg0, s32 arg1, u32 arg2) {
     void **temp;
     u8 *base;
@@ -5049,6 +5050,7 @@ void fn_8006720C(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80067304(void *arg0) {
     typedef struct { f32 x, y, z; } Vec3;
     extern Vec3 lbl_8026B744;
@@ -5078,13 +5080,13 @@ void fn_80067304(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x10) = b.z;
     *(f32 *)((u8 *)arg0 + 0x20) = f20;
 
-    col1 = lbl_8036C444;
+    col1 = (u32)lbl_8036C444;
     ((u8 *)arg0)[0] = ((u8 *)&col1)[0];
     ((u8 *)arg0)[1] = ((u8 *)&col1)[1];
     ((u8 *)arg0)[2] = ((u8 *)&col1)[2];
     ((u8 *)arg0)[3] = ((u8 *)&col1)[3];
 
-    col2 = lbl_8036C448;
+    col2 = (u32)lbl_8036C448;
     ((u8 *)arg0)[4] = ((u8 *)&col2)[0];
     ((u8 *)arg0)[5] = ((u8 *)&col2)[1];
     ((u8 *)arg0)[6] = ((u8 *)&col2)[2];
@@ -5093,7 +5095,7 @@ void fn_80067304(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x24) = f24;
     *(f32 *)((u8 *)arg0 + 0x28) = f24;
 }
-
+#pragma global_optimizer reset
 void fn_800673E4(void *arg0, void *arg1) {
     typedef struct { s32 x; s32 y; } Pair;
     Pair t;
@@ -5123,12 +5125,8 @@ void *fn_80067440(s32 arg0) {
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern u8 *lbl_80366DDC;
-    void *p;
-
-    p = arg0;
-    if (p == NULL) {
-        p = lbl_80311B04;
-        lbl_80366DDC = p;
+    if (arg0 == NULL) {
+        lbl_80366DDC = lbl_80311B04;
     }
 }
 #pragma peephole on
@@ -5605,7 +5603,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     f32 fn_80063EC8(void **, s16, f32);
     f32 fn_80063C2C(void **, s16, f32);
     void fn_80201FC4(void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_80202300(void *, s32, f32);
     void fn_80202024(void *, void *, void *);
     void fn_802025C0(void *, f32, f32, f32);
@@ -5701,22 +5699,22 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
         }
         fn_80201FC4(sp34);
         if (lbl_80369270 != f31) {
-            fn_80202540(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
+            PSMTXTrans(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
             fn_80202300(sp94, 0x7A, lbl_80369278 * -f31);
             fn_80202024(sp94, sp64, sp94);
-            fn_80202540(sp64, lbl_8036927C, lbl_8036927C, lbl_80369270);
+            PSMTXTrans(sp64, lbl_8036927C, lbl_8036927C, lbl_80369270);
             fn_80202024(sp64, sp94, sp34);
         }
         if (lbl_80369280 != f28 || lbl_80369280 != f27) {
-            fn_80202540(sp64, lbl_80369270, lbl_80369284, lbl_80369270);
+            PSMTXTrans(sp64, lbl_80369270, lbl_80369284, lbl_80369270);
             fn_802025C0(spC4, f28, f27, lbl_80369280);
             fn_80202024(spC4, sp64, spC4);
-            fn_80202540(sp64, lbl_80369270, lbl_80369280, lbl_80369270);
+            PSMTXTrans(sp64, lbl_80369270, lbl_80369280, lbl_80369270);
             fn_80202024(sp64, spC4, spC4);
             fn_80202024(spC4, sp34, sp34);
         }
         if (lbl_80369270 != f30 || lbl_80369270 != f29) {
-            fn_80202540(sp64, f30, -f29, lbl_80369270);
+            PSMTXTrans(sp64, f30, -f29, lbl_80369270);
             fn_80202024(sp64, sp34, sp34);
         }
         if (lbl_80367303 >= 0x3C) {
@@ -6393,8 +6391,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(s32 arg0) {
-    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(register s32 arg0) {
+    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 

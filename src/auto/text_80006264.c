@@ -25,14 +25,11 @@ s32 fn_80006264(u32 *a, u32 *b, u32 n) {
 }
 
 void fn_80006298(u32 *dst, u32 val, u32 n) {
-    u32 *p;
-    u32 c;
-    c = n >> 2;
-    p = dst;
-    p--;
+    n >>= 2;
+    dst--;
     do {
-        *++p = val;
-    } while (--c);
+        *++dst = val;
+    } while (--n);
 }
 
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
@@ -801,14 +798,14 @@ void fn_80007370(float arg0, float arg1, float arg2)
     object = *(void **)((u8 *)lbl_80367140 + 0xC);
     object = *(void **)((u8 *)object + 4);
 
-    fn_80202540(matrix1, -arg0, -arg1, lbl_80368B98);
+    PSMTXTrans(matrix1, -arg0, -arg1, lbl_80368B98);
 
     scale = lbl_80368B9C * arg2;
     fn_80202300(matrix2, 0x5A, scale);
 
     fn_80202024(matrix2, matrix1, matrix2);
 
-    fn_80202540(matrix1, arg0, arg1, lbl_80368B98);
+    PSMTXTrans(matrix1, arg0, arg1, lbl_80368B98);
 
     fn_80202024(matrix1, matrix2, matrix1);
 
@@ -2030,14 +2027,14 @@ void fn_80009C20(
 
     scalar = arg2;
 
-    fn_80202540(matrix0, arg0, arg1);
+    PSMTXTrans(matrix0, arg0, arg1);
 
     fn_802025C0(matrix1, arg5, arg6, lbl_80368B94);
 
     fn_80202300(matrix2, 0x5A, lbl_80368B9C * arg7);
 
-    fn_80202540(matrix3, -arg3, -arg4, lbl_80368B98);
-    fn_80202540(matrix4, arg3, arg4, lbl_80368B98);
+    PSMTXTrans(matrix3, -arg3, -arg4, lbl_80368B98);
+    PSMTXTrans(matrix4, arg3, arg4, lbl_80368B98);
 
     fn_80202024(matrix1, matrix3, result);
     fn_80202024(matrix2, result, result);
@@ -2051,7 +2048,7 @@ void fn_80009C20(
 }
 
 void fn_80009D74(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
     void fn_80201FF0(void *, void *);
@@ -2061,10 +2058,10 @@ void fn_80009D74(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     f32 mtx[12];
 
     if (lbl_80368B94 == arg3) {
-        fn_80202540(mtx, arg0, arg1, arg2);
+        PSMTXTrans(mtx, arg0, arg1, arg2);
     } else {
         fn_802025C0(tmp, arg3, arg3, lbl_80368B94);
-        fn_80202540(mtx, arg0, arg1, arg2);
+        PSMTXTrans(mtx, arg0, arg1, arg2);
         fn_80202024(mtx, tmp, mtx);
     }
     fn_80201FF0(mtx, (*(u8 **)&lbl_80367140) + 0x60);

@@ -2139,7 +2139,7 @@ void fn_8012FF60(void *arg0) {
     void fn_80007884(void);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8005F7E0(void *, s32, s32, s32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8005F7B0(void *, s32);
     void fn_8005F780(void *, s32);
     void fn_80060060(void *);
@@ -2229,7 +2229,7 @@ void fn_8012FF60(void *arg0) {
             } else {
                 fn_8005F7E0(obj, 0x80, 0x80, 0x80);
             }
-            fn_80202540(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
+            PSMTXTrans(spD4, f29, lbl_8036A518 + f28, lbl_8036A58C);
             fn_80202024(spD4, sp14, (u8 *)obj + 0x10);
             fn_8005F7B0(obj, 0xFF);
             fn_8005F780(obj, 0xFF);

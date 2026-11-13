@@ -6059,7 +6059,7 @@ void fn_800404DC(void) {
     void fn_8006CAD4(void *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     void fn_800449C8(void);
     void fn_80048518(void);
@@ -6137,16 +6137,16 @@ void fn_800404DC(void) {
                             f28v -= (f32)a;
                             f30v -= (f32)((s32)(((u32)(s32)p0 >> 31) + (s32)p0) >> 1);
                         }
-                        fn_80202540(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+                        PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
                         fn_80202300(sp68, 0x59, lbl_80368EEC * f31v);
                         fn_80202024(sp68, sp98, sp68);
-                        fn_80202540(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+                        PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                         fn_80202024(sp98, sp68, sp8);
                         scale = *(f32 *)(obj + 0x6C);
                         fn_802025C0(sp38, scale, scale, scale);
                         fn_80202024(sp38, sp8, sp8);
                         temp_f0 = *(f32 *)(obj + 0x6C);
-                        fn_80202540(sp98, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
+                        PSMTXTrans(sp98, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
                         fn_80202024(sp98, sp8, sp8);
                         fn_80202024(obj + 0x70, sp8, ent + 0x24);
                     }
@@ -7000,7 +7000,7 @@ void fn_800432D8(void *arg0) {
     void fn_8006CAD4(void *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     void fn_80043E88(void);
     void fn_80043DEC(void);
@@ -7083,16 +7083,16 @@ void fn_800432D8(void *arg0) {
                         f28v -= (f32)a;
                         f30v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
                     }
-                    fn_80202540(sp158, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+                    PSMTXTrans(sp158, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
                     fn_80202300(sp128, 0x59, lbl_80368EEC * f31v);
                     fn_80202024(sp128, sp158, sp128);
-                    fn_80202540(sp158, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+                    PSMTXTrans(sp158, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                     fn_80202024(sp158, sp128, spC8);
                     scale = *(f32 *)((u8 *)self + 0x6C);
                     fn_802025C0(spF8, scale, scale, scale);
                     fn_80202024(spF8, spC8, spC8);
                     temp_f0 = *(f32 *)((u8 *)self + 0x6C);
-                    fn_80202540(sp158, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
+                    PSMTXTrans(sp158, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
                     fn_80202024(sp158, spC8, spC8);
                     fn_80202024((u8 *)self + 0x70, spC8, ent + 0x24);
                 }
@@ -7142,16 +7142,16 @@ void fn_800432D8(void *arg0) {
                         f31v -= (f32)a;
                         f29v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
                     }
-                    fn_80202540(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+                    PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
                     fn_80202300(sp68, 0x59, lbl_80368EEC * f28v);
                     fn_80202024(sp68, sp98, sp68);
-                    fn_80202540(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+                    PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                     fn_80202024(sp98, sp68, sp8);
                     scale = *(f32 *)((u8 *)self + 0x6C);
                     fn_802025C0(sp38, scale, scale, scale);
                     fn_80202024(sp38, sp8, sp8);
                     temp_f0 = *(f32 *)((u8 *)self + 0x6C);
-                    fn_80202540(sp98, lbl_80368EF4 * (f31v * temp_f0), lbl_80368EF4 * (f30v * temp_f0), lbl_80368EF4 * (f29v * temp_f0));
+                    PSMTXTrans(sp98, lbl_80368EF4 * (f31v * temp_f0), lbl_80368EF4 * (f30v * temp_f0), lbl_80368EF4 * (f29v * temp_f0));
                     fn_80202024(sp98, sp8, sp8);
                     fn_80202024((u8 *)self + 0x70, sp8, ent + 0x24);
                 }
@@ -8099,7 +8099,7 @@ void fn_80045D50(void *arg0, void *arg1) {
     void *fn_800C42AC(s32);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     extern u8 lbl_8026A660[];
     extern f64 lbl_80368EF8;
@@ -8194,16 +8194,16 @@ loop1_body:
         f24v -= (f32)a;
         f26v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
     }
-    fn_80202540(sp9C, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+    PSMTXTrans(sp9C, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
     fn_80202300(sp6C, 0x59, f29v * f27v);
     fn_80202024(sp6C, sp9C, sp6C);
-    fn_80202540(sp9C, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+    PSMTXTrans(sp9C, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
     fn_80202024(sp9C, sp6C, spC);
     scale = *(f32 *)((u8 *)self + 0x6C);
     fn_802025C0(sp3C, scale, scale, scale);
     fn_80202024(sp3C, spC, spC);
     temp_f0 = *(f32 *)((u8 *)self + 0x6C);
-    fn_80202540(sp9C, f30v * (f24v * temp_f0), f30v * (f25v * temp_f0), f30v * (f26v * temp_f0));
+    PSMTXTrans(sp9C, f30v * (f24v * temp_f0), f30v * (f25v * temp_f0), f30v * (f26v * temp_f0));
     fn_80202024(sp9C, spC, spC);
     fn_80202024((u8 *)self + 0x70, spC, ent + 0x24);
     tmp = r29v + 4;
@@ -8705,7 +8705,7 @@ void fn_8006785C(s32, void *, void *);
 void fn_8006CAD4(void *);
 void fn_80202024(void *, void *, void *);
 void fn_80202300(void *, s32, f32);
-void fn_80202540(void *, f32, f32, f32);
+void PSMTXTrans(void *, f32, f32, f32);
 void fn_802025C0(void *, f32, f32, f32);
 void fn_80048518(void);
 extern void *lbl_803672AC;
@@ -8784,16 +8784,16 @@ extern f32 lbl_80368EF4;
                             f28v -= (f32)a;
                             f30v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
                         }
-                        fn_80202540(sp158, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+                        PSMTXTrans(sp158, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
                         fn_80202300(sp128, 0x59, lbl_80368EEC * f31v);
                         fn_80202024(sp128, sp158, sp128);
-                        fn_80202540(sp158, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+                        PSMTXTrans(sp158, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                         fn_80202024(sp158, sp128, spC8);
                         scale = *(f32 *)((u8 *)self + 0x6C);
                         fn_802025C0(spF8, scale, scale, scale);
                         fn_80202024(spF8, spC8, spC8);
                         temp_f0 = *(f32 *)((u8 *)self + 0x6C);
-                        fn_80202540(sp158, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
+                        PSMTXTrans(sp158, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
                         fn_80202024(sp158, spC8, spC8);
                         fn_80202024((u8 *)self + 0x70, spC8, ent + 0x24);
                     }
@@ -8840,16 +8840,16 @@ extern f32 lbl_80368EF4;
                             f31v -= (f32)a;
                             f29v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
                         }
-                        fn_80202540(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
+                        PSMTXTrans(sp98, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
                         fn_80202300(sp68, 0x59, lbl_80368EEC * f28v);
                         fn_80202024(sp68, sp98, sp68);
-                        fn_80202540(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
+                        PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                         fn_80202024(sp98, sp68, sp8);
                         scale = *(f32 *)((u8 *)self + 0x6C);
                         fn_802025C0(sp38, scale, scale, scale);
                         fn_80202024(sp38, sp8, sp8);
                         temp_f0 = *(f32 *)((u8 *)self + 0x6C);
-                        fn_80202540(sp98, lbl_80368EF4 * (f31v * temp_f0), lbl_80368EF4 * (f30v * temp_f0), lbl_80368EF4 * (f29v * temp_f0));
+                        PSMTXTrans(sp98, lbl_80368EF4 * (f31v * temp_f0), lbl_80368EF4 * (f30v * temp_f0), lbl_80368EF4 * (f29v * temp_f0));
                         fn_80202024(sp98, sp8, sp8);
                         fn_80202024((u8 *)self + 0x70, sp8, ent + 0x24);
                     }
@@ -8882,7 +8882,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     void fn_8006049C(void *);
     void fn_80202300(void *, s32, f32);
     void fn_802025C0(void *, f32, f32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
     void fn_80202024(void *, void *, void *);
     void fn_80201FF0(void *, void *);
@@ -8978,7 +8978,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
                 goto checks;
             case 8:
                 fn_802025C0(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
-                fn_80202540(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
+                PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
                 fn_802033AC(e + 0x10, buf68);
                 fn_80202024(buf68, buf8, bufF8);
                 fn_80202024(buf68, bufF8, bufF8);
@@ -8989,7 +8989,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
         }
         fn_8006DA64(lbl_8026A660 + 0x2F7, 0xB8, lbl_8026A660 + 0x2FF);
         fn_802025C0(buf8, M2C_FIELD(e, f32 *, 0x28), M2C_FIELD(e, f32 *, 0x2C), M2C_FIELD(e, f32 *, 0x30));
-        fn_80202540(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
+        PSMTXTrans(buf38, M2C_FIELD(e, f32 *, 0x10), M2C_FIELD(e, f32 *, 0x14), M2C_FIELD(e, f32 *, 0x18));
         fn_80202024(buf68, buf8, bufF8);
         fn_80202024(buf98, bufF8, bufF8);
         fn_80202024(bufC8, bufF8, bufF8);
@@ -9602,7 +9602,7 @@ void fn_80049E24(void) {
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void *fn_80067FDC(void);
     void fn_80202024(void *, void *, void *);
     void fn_80224D7C(void *, s32);
@@ -9656,7 +9656,7 @@ void fn_80049E24(void) {
         fn_80223F2C(0, 0, 0, 4);
         fn_80220428(1);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-        fn_80202540(spC, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        PSMTXTrans(spC, lbl_80368F84, lbl_80368F84, lbl_80368F88);
         fn_80202024(fn_80067FDC(), spC, spC);
         fn_80224D7C(spC, 0);
         fn_80224E1C(0);
@@ -9781,7 +9781,7 @@ void fn_80223F2C(s32, s32, s32, s32);
 void fn_80220428(s32);
 void fn_802201A8(s32, s32, s32, s32, s32, s32);
 void fn_8022100C(s32);
-void fn_80202540(void *, f32, f32, f32);
+void PSMTXTrans(void *, f32, f32, f32);
 void *fn_80067FDC(void);
 void fn_80202024(void *, void *, void *);
 void fn_80224D7C(void *, s32);
@@ -9830,7 +9830,7 @@ extern u8 lbl_80285828[];
         fn_80220428(0);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_8022100C(0);
-        fn_80202540(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+        PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
         fn_80202024(fn_80067FDC(), sp8, sp8);
         fn_80224D7C(sp8, 0);
         fn_80224E1C(0);
@@ -9965,7 +9965,7 @@ void fn_8004A864(void* arg0, s32 arg1) {
 void fn_8004AAA4(void) {
     M2C_UNK fn_80067FDC();
     M2C_UNK fn_80202024(M2C_UNK, M2C_UNK *, M2C_UNK *);
-    M2C_UNK fn_80202540(M2C_UNK *, f32, f32, f32);
+    M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
     M2C_UNK fn_8021F4E4(M2C_UNK, M2C_UNK);
     M2C_UNK fn_8021FBB8();
     M2C_UNK fn_8021FBF0(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -9997,7 +9997,7 @@ void fn_8004AAA4(void) {
     fn_80220428(0);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_8022100C(0);
-    fn_80202540(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
+    PSMTXTrans(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
     fn_80202024(fn_80067FDC(), sp8, sp8);
     fn_80224D7C(sp8, 0);
     fn_80224E1C(0);
@@ -10260,7 +10260,7 @@ void fn_8004B588(u8 *arg0)
     void fn_802026E4(void *, void *, void *, void *);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80051564(void *, s32, f32, f32);
@@ -10352,9 +10352,9 @@ void fn_8004B588(u8 *arg0)
             fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
             fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
             fn_80202024(sp6C, sp9C, sp12C);
-            fn_80202540(spFC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+            PSMTXTrans(spFC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
             fn_80202024(spCC, spFC, spCC);
-            fn_80202540(spFC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+            PSMTXTrans(spFC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
             fn_80202024(spFC, spCC, spCC);
             fn_80202024(spCC, sp12C, sp12C);
         } else {
@@ -10606,7 +10606,7 @@ void fn_8004C444(void *arg0) {
     void fn_802026E4(void *, void *, void *, void *);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80051564(void *, s32, f32, f32);
@@ -10689,9 +10689,9 @@ void fn_8004C444(void *arg0) {
         fn_8020293C(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
                     lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         fn_80202024(sp5C, sp8C, sp11C);
-        fn_80202540(spEC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+        PSMTXTrans(spEC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
         fn_80202024(spBC, spEC, spBC);
-        fn_80202540(spEC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+        PSMTXTrans(spEC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
         fn_80202024(spEC, spBC, spBC);
         fn_80202024(spBC, sp11C, sp11C);
     } else {
@@ -10762,7 +10762,7 @@ void fn_8004C80C(void) {
     void *fn_80067FDC(void);
     void fn_8006ECCC(s32, void *, s32);
     void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -10808,7 +10808,7 @@ void fn_8004C80C(void) {
     fn_802240C8(1);
     fn_80223F2C(0, 0, 0, 4);
     fn_80220428(1);
-    fn_80202540(sp30, lbl_80368FCC, lbl_80368FCC, lbl_80368FF0);
+    PSMTXTrans(sp30, lbl_80368FCC, lbl_80368FCC, lbl_80368FF0);
     fn_80202024(fn_80067FDC(), sp30, sp60);
     fn_80224D7C(sp60, 0);
     fn_80224E1C(0);
@@ -10864,7 +10864,7 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
     void fn_80060F70(void *, s32, f32 *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802026E4(void *, void *, void *, void *);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
@@ -10990,9 +10990,9 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
                 fn_802026E4(sp2B0, scratch + 0x3C, scratch + 0x48, scratch + 0x30);
                 fn_8020293C(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
                 fn_80202024(sp280, sp2B0, sp340);
-                fn_80202540(sp310, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+                PSMTXTrans(sp310, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
                 fn_80202024(sp2E0, sp310, sp2E0);
-                fn_80202540(sp310, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+                PSMTXTrans(sp310, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
                 fn_80202024(sp310, sp2E0, sp2E0);
                 fn_80202024(sp2E0, sp340, sp340);
             } else {
@@ -12145,7 +12145,7 @@ void fn_80050F64(void) {
 void fn_80051328(u8 arg0, M2C_UNK *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
     M2C_UNK fn_80202024(M2C_UNK *, M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_80202300(M2C_UNK *, M2C_UNK, f32);
-    M2C_UNK fn_80202540(M2C_UNK *, f32, f32, f32);
+    M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
     M2C_UNK fn_802026E4(M2C_UNK *, f32 *, s32 *, f32 *);
     M2C_UNK fn_8020293C(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
     M2C_UNK fn_802029C4(M2C_UNK *, s32 *, s32 *);
@@ -12201,9 +12201,9 @@ void fn_80051328(u8 arg0, M2C_UNK *arg1, f32 farg0, f32 farg1, f32 farg2, f32 fa
         fn_802026E4(&sp74, &sp14, &sp20, &sp8);
         fn_8020293C(&sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         fn_80202024(&sp44, &sp74, arg1);
-        fn_80202540(&spD4, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+        PSMTXTrans(&spD4, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
         fn_80202024(&spA4, &spD4, &spA4);
-        fn_80202540(&spD4, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+        PSMTXTrans(&spD4, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
         fn_80202024(&spD4, &spA4, &spA4);
         fn_80202024(&spA4, arg1, arg1);
         return;
@@ -12472,7 +12472,7 @@ void fn_80053260(void *arg0)
     void fn_80201FF0(void *, void *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     extern f32 lbl_803690A0;
     extern f32 lbl_803690A4;
@@ -12568,7 +12568,7 @@ void fn_80053260(void *arg0)
         }
     }
     fn_802025C0(sp14C, scale, scale, scale);
-    fn_80202540(spEC, pos.x, pos.y, pos.z);
+    PSMTXTrans(spEC, pos.x, pos.y, pos.z);
     fn_80202024(sp14C, sp11C, sp14C);
     fn_80202024(spBC, sp14C, sp14C);
     fn_80202024(spEC, sp14C, (u8 *)node + 0x10);

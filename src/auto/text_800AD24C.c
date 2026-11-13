@@ -8640,7 +8640,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_802240C8(s32);
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_80202300(void *, s32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
@@ -8683,8 +8683,8 @@ void fn_800C0CDC(void *arg0) {
     fn_802240C8(1);
     fn_80223F2C(0, 0, 0, 0xFF);
     fn_802239D0(0, 3);
-    fn_80202540(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
-    fn_80202540(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
+    PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
+    PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
     fn_80202300(spC8, 0x5A, lbl_80369D34);
     fn_802025C0(sp38, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
     fn_80202024(sp38, sp98, sp8);
@@ -8869,7 +8869,7 @@ void fn_800C15A8(void) {
     s32 fn_80069EA8(void);
     void fn_80201FC4(void *);
     void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
@@ -8903,7 +8903,7 @@ void fn_800C15A8(void) {
     t1 = lbl_80369D44;
     t2 = lbl_80369D48;
     fn_8020293C(p, t1, t2, t2, t1, t5, t5, t5, t5);
-    fn_80202540(sp68, lbl_80369D50, lbl_80369D50, lbl_80369D28);
+    PSMTXTrans(sp68, lbl_80369D50, lbl_80369D50, lbl_80369D28);
     fn_80201FC4(sp8);
     fn_80202024(sp68, sp8, sp8);
     fn_80202024(sp38, sp8, sp8);
@@ -8929,7 +8929,7 @@ s32 fn_800C1730(void) {
     s32 fn_80069EA8(void);
     void fn_8006A384(void *);
     void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
@@ -8971,7 +8971,7 @@ s32 fn_800C1730(void) {
     t1 = lbl_80369D44;
     t2 = lbl_80369D48;
     fn_8020293C(p, t1, t2, t2, t1, t5, t5, t5, t5);
-    fn_80202540(sp6C, lbl_80369D50, lbl_80369D50, lbl_80369D28);
+    PSMTXTrans(sp6C, lbl_80369D50, lbl_80369D50, lbl_80369D28);
     fn_8006A384(spC);
     fn_80202024(sp6C, spC, spC);
     fn_80202024(sp3C, spC, spC);

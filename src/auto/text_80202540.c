@@ -100,7 +100,7 @@ extern u8 lbl_80368431;
 extern f32 lbl_8036BADC;
 extern f32 lbl_8036BAE0;
 
-void fn_80202540(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
+void PSMTXTrans(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     extern f32 lbl_8036BC38;
     extern f32 lbl_8036BC3C;
     f64 zero;

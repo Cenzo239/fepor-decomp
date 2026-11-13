@@ -2672,16 +2672,15 @@ void fn_8018B89C(void *arg0) {
     }
 }
 
-#pragma scheduling off
+#pragma global_optimizer off
 void fn_8018B920(void *arg0) {
     extern f32 lbl_8036ACEC;
-    struct { s32 a; f32 b; } *p;
-
-    p = (void *)((u8 *)arg0 + 0x40);
-    p->a = 0;
-    p->b = lbl_8036ACEC;
+    s32 z = 0;
+    f32 f = lbl_8036ACEC;
+    *(s32 *)((u8 *)arg0 + 0x40) = z;
+    *(f32 *)((u8 *)arg0 + 0x44) = f;
 }
-#pragma scheduling reset
+#pragma global_optimizer reset
 void fn_8018B934(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
@@ -7380,7 +7379,7 @@ void fn_801959FC(void *arg0) {
     void fn_80067FDC(void);
     u32 fn_8006D948(void *);
     void fn_80202024(void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -7432,7 +7431,7 @@ void fn_801959FC(void *arg0) {
         lbl_80368210 = fn_8006D948(lbl_8027A598 + 0xE2);
     }
     fn_8022100C(0);
-    fn_80202540(mtx, lbl_8036AE50, lbl_8036AE50, lbl_8036AE68);
+    PSMTXTrans(mtx, lbl_8036AE50, lbl_8036AE50, lbl_8036AE68);
     fn_80067FDC();
     fn_80202024(mtx, mtx);
     fn_80224D7C(mtx, 0);

@@ -6714,7 +6714,7 @@ void fn_801C45A4(void *arg0) {
     s32 fn_8006135C(void *, char *);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32, f32, f32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_802025C0(void *, f32, f32, f32);
     extern u8 lbl_8027D594[];
     extern f32 lbl_8036B40C;
@@ -6797,7 +6797,7 @@ void fn_801C45A4(void *arg0) {
                     sp5C[2] = sp5C[2] + f30;
                     fn_80202300(mtxA, 0x59, ftmp, sp5C[2], lbl_8036B42C, sp5C[0]);
                     fn_802025C0(mtxB, f29, f29, f29);
-                    fn_80202540(mtxC, sp5C[0], sp5C[1], sp5C[2]);
+                    PSMTXTrans(mtxC, sp5C[0], sp5C[1], sp5C[2]);
                     fn_80202024(mtxB, mtxA, mtxD);
                     fn_80202024(mtxC, mtxD, (u8 *)entry + 0x10);
                     fn_8005FEE8(entry, lbl_8036B424);
@@ -7296,7 +7296,7 @@ void fn_801C65E0(void *arg0) {
     void fn_8006ECCC(void *, void *, s32);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -7337,7 +7337,7 @@ void fn_801C65E0(void *arg0) {
         *(u32 *)&y = *(u32 *)((u8 *)arg0 + 4);
         *(u32 *)&z = *(u32 *)((u8 *)arg0 + 8);
         scale = *(f32 *)((u8 *)arg0 + 0xC);
-        fn_80202540(mtxA, x, y, z);
+        PSMTXTrans(mtxA, x, y, z);
         fn_80202300(mtxB, 0x79, lbl_8036B430 * scale);
         fn_80202024(mtxA, mtxB, mtxC);
         fn_80202024(fn_80067FDC(), mtxC, mtxC);
@@ -7462,7 +7462,7 @@ void fn_801C6978(u32 arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     f32 fn_80059F64(f32, f32, f32, f32);
     void fn_8005FA14(void *, s32);
-    void fn_80202540(void *, void *, f32, f32, f32);
+    void PSMTXTrans(void *, void *, f32, f32, f32);
     void fn_80202024(void *, void *, void *);
 
     f32 mtx[12];
@@ -7514,7 +7514,7 @@ void fn_801C6978(u32 arg0) {
                 sp10 = -fn_80059F64(*(f32 *)(entry + 0x10), lbl_8036B424, lbl_8036B434, t);
                 obj = *(void **)entry;
                 *(f32 *)((u8 *)obj + 0x78) = t;
-                fn_80202540(mtx, obj, sp8, spC, sp10);
+                PSMTXTrans(mtx, obj, sp8, spC, sp10);
                 obj = *(void **)entry;
                 obj_plus = (u8 *)obj + 0x10;
                 fn_80202024(mtx, obj_plus, obj_plus);
@@ -11915,7 +11915,7 @@ void fn_801D0480(void *arg0) {
     void fn_8006ECCC(void *, void *, s32);
     void fn_80202024(void *, void *, void *);
     void fn_80202300(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
     void fn_80220DEC(s32, s32, s32);
     void fn_80222C50(void *, s32);
     void fn_80224D7C(void *, s32);
@@ -12055,7 +12055,7 @@ void fn_801D0480(void *arg0) {
             alpha = (u8)((self[0x21] * (0xFF * self[0x20])) / 65025);
             fn_8006ECCC(*(void **)self, tex, 0);
             fn_80222C50(tex, 0);
-            fn_80202540(mtxA, (f32)*(s16 *)(self + 0x18), (f32)*(s16 *)(self + 0x1A), lbl_8036B580);
+            PSMTXTrans(mtxA, (f32)*(s16 *)(self + 0x18), (f32)*(s16 *)(self + 0x1A), lbl_8036B580);
             fn_80224E1C(0);
             fn_80224D7C(mtxA, 0);
             for (i = 0; i < width; i++) {
