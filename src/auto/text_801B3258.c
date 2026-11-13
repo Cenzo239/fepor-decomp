@@ -2850,7 +2850,7 @@ void fn_801BB1FC(void *arg0) {
     }
 }
 
-void fn_801BB400(void *arg0) {
+void Ui_HandleUnitManageCursorInput(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_8002833C(void *, u32);
     u32 Ui_ListGetSelected(void *);
