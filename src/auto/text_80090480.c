@@ -284,36 +284,37 @@ void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
     Prim2D_EndPrim();
 }
 
-void StatBonus_ShowHelp(void *arg0, s32 arg1) {
+/* Open a help popup naming which stat on a bonus entry is non-zero. */
+void StatBonus_ShowHelp(void *bonus, s32 parent) {
     s32 Msg_Expand(void *);
     void Ui_OpenHelpPopup(s32, void *, s32, s8);
     extern u8 gBattleHelpStrings[];
     void *msg;
 
-    if ((s8)*(u8 *)((u8 *)arg0 + 0x1F) != 0) {
+    if ((s8)*(u8 *)((u8 *)bonus + 0x1F) != 0) {
         msg = gBattleHelpStrings + 0x1BD;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x20) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x20) != 0) {
         msg = gBattleHelpStrings + 0x1C4;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x21) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x21) != 0) {
         msg = gBattleHelpStrings + 0x1CC;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x22) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x22) != 0) {
         msg = gBattleHelpStrings + 0x1D5;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x23) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x23) != 0) {
         msg = gBattleHelpStrings + 0x1DE;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x24) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x24) != 0) {
         msg = gBattleHelpStrings + 0x1E8;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x25) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x25) != 0) {
         msg = gBattleHelpStrings + 0x1F1;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x26) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x26) != 0) {
         msg = gBattleHelpStrings + 0x1F9;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x28) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x28) != 0) {
         msg = gBattleHelpStrings + 0x202;
-    } else if ((s8)*(u8 *)((u8 *)arg0 + 0x27) != 0) {
+    } else if ((s8)*(u8 *)((u8 *)bonus + 0x27) != 0) {
         msg = gBattleHelpStrings + 0x20C;
     } else {
-        msg = arg0;
+        msg = bonus;
     }
-    Ui_OpenHelpPopup(Msg_Expand(msg), gBattleHelpStrings + 0x1AC, arg1, 1);
+    Ui_OpenHelpPopup(Msg_Expand(msg), gBattleHelpStrings + 0x1AC, parent, 1);
 }
 
 void fn_800913D4(void **arg0, s32 arg1, s32 arg2) {
