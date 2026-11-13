@@ -54,57 +54,57 @@ s32 fn_80095BB0(s32 arg0) {
 
 void *Event_GetCmdFlagName(s32 arg0)
 {
-    extern char lbl_8026D030[];
+    extern char gEventCmdStrings[];
 
     switch (arg0) {
     case 0x8000000:
-        return lbl_8026D030 + 0x122;
+        return gEventCmdStrings + 0x122;
     case 0x20000000:
-        return lbl_8026D030 + 0x12A;
+        return gEventCmdStrings + 0x12A;
     case 0x10000000:
-        return lbl_8026D030 + 0x132;
+        return gEventCmdStrings + 0x132;
     case 0x40000000:
-        return lbl_8026D030 + 0x13A;
+        return gEventCmdStrings + 0x13A;
     case 0x80000000:
-        return lbl_8026D030 + 0x142;
+        return gEventCmdStrings + 0x142;
     case 0x2000000:
-        return lbl_8026D030 + 0x14A;
+        return gEventCmdStrings + 0x14A;
     case 0x4000000:
-        return lbl_8026D030 + 0x152;
+        return gEventCmdStrings + 0x152;
     case 0x1000000:
-        return lbl_8026D030 + 0x15E;
+        return gEventCmdStrings + 0x15E;
     case 2:
-        return lbl_8026D030 + 0x166;
+        return gEventCmdStrings + 0x166;
     case 0x2000:
-        return lbl_8026D030 + 0x174;
+        return gEventCmdStrings + 0x174;
     case 0x4000:
-        return lbl_8026D030 + 0x174;
+        return gEventCmdStrings + 0x174;
     case 0x1000:
-        return lbl_8026D030 + 0x17E;
+        return gEventCmdStrings + 0x17E;
     case 0x800000:
-        return lbl_8026D030 + 0x18A;
+        return gEventCmdStrings + 0x18A;
     case 0x100:
-        return lbl_8026D030 + 0x192;
+        return gEventCmdStrings + 0x192;
     case 0x200:
-        return lbl_8026D030 + 0x19A;
+        return gEventCmdStrings + 0x19A;
     case 0x400:
-        return lbl_8026D030 + 0x1A2;
+        return gEventCmdStrings + 0x1A2;
     case 0x800:
-        return lbl_8026D030 + 0x1AA;
+        return gEventCmdStrings + 0x1AA;
     case 0x8000:
-        return lbl_8026D030 + 0x1B4;
+        return gEventCmdStrings + 0x1B4;
     case 0x10000:
-        return lbl_8026D030 + 0x1B4;
+        return gEventCmdStrings + 0x1B4;
     case 0x40000:
-        return lbl_8026D030 + 0x1C0;
+        return gEventCmdStrings + 0x1C0;
     case 0x10:
-        return lbl_8026D030 + 0x1D2;
+        return gEventCmdStrings + 0x1D2;
     case 8:
-        return lbl_8026D030 + 0x1E0;
+        return gEventCmdStrings + 0x1E0;
     case 0x80:
-        return lbl_8026D030 + 0x1EC;
+        return gEventCmdStrings + 0x1EC;
     case 0x20:
-        return lbl_8026D030 + 0x1F4;
+        return gEventCmdStrings + 0x1F4;
     default:
         return NULL;
     }
@@ -252,7 +252,7 @@ void fn_80096418(s16 arg0) {
     u32 fn_80095FF8(s32);
     s32 fn_80096EEC(s32 *, u32);
     void fn_800973F0(u32 *, s32);
-    extern u8 lbl_8026D030[];
+    extern u8 gEventCmdStrings[];
     extern u8 lbl_80330EAC[];
     extern void **lbl_80367500;
     extern void **lbl_80367504;
