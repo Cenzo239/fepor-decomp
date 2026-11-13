@@ -1653,7 +1653,7 @@ void fn_801533F8(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
-void fn_80153634(s16 arg0, s16 arg1, s32 arg2) {
+void Ui_DrawAtlasLCorner(s16 arg0, s16 arg1, s32 arg2) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
     void Prim2D_Begin(void);

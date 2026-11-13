@@ -6214,9 +6214,9 @@ void fn_8013D13C(void) {
 
 void fn_8013D140(void *arg0) {
     M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
-    M2C_UNK fn_80153634(M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK Ui_DrawAtlasLCorner(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(), 0x80)();
-    fn_80153634(0, 0, 0x10);
+    Ui_DrawAtlasLCorner(0, 0, 0x10);
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
