@@ -5902,7 +5902,7 @@ extern "C" void fn_80192F70(void *arg0) {
     void fn_8000C188(void *);
     void fn_8000D8BC(s32, s32);
     u32 *fn_8001CB64(void *);
-    u32 fn_8001D2A4(void *);
+    u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
@@ -6000,7 +6000,7 @@ extern "C" void fn_80192F70(void *arg0) {
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30 != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
               unit = (void *)*var_r30;
-              price = (f32)(s32)(u16)fn_8001D2A4(unit);
+              price = (f32)(s32)(u16)UnitRef_GetValue(unit);
               scale = *(f32 *)((u8 *)self + 0x64);
               if ((s32)(scale * price) > *(s32 *)((u8 *)lbl_80330708 + 0x18)) {
                   Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x501, 0x64);
@@ -6012,7 +6012,7 @@ extern "C" void fn_80192F70(void *arg0) {
                   fn_8000C070(self, 0xB);
               } else {
                   Ui_PlaySeCue((u8 *)lbl_80279DF0 + 0x4BC, 0x64);
-                  val = (s32)(u16)fn_8001D2A4(unit);
+                  val = (s32)(u16)UnitRef_GetValue(unit);
                   price = (f32)val;
                   scale = *(f32 *)((u8 *)self + 0x64);
                   fn_8000D8BC(0, (s32)(scale * price));
@@ -6533,7 +6533,7 @@ extern "C" void fn_80194178(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000CAA0(void *, void *, void *);
     void *fn_8001CB64(void *);
-    u32 fn_8001D2A4(void *);
+    u32 UnitRef_GetValue(void *);
     void fn_8001D580(void *);
     void fn_800947E0(void *);
     void fn_8011D79C(s32);
@@ -6579,7 +6579,7 @@ extern "C" void fn_80194178(void *arg0) {
         temp_r3 = fn_80143A84(temp_r29);
         temp_r31 = *(void **)temp_r3;
         temp_r30 = *(void **)((u8 *)temp_r3 + 4);
-        temp_r5 = (s32)((fn_8001D2A4(temp_r31) >> 1) & 0x7FFFu);
+        temp_r5 = (s32)((UnitRef_GetValue(temp_r31) >> 1) & 0x7FFFu);
         fn_8014D268(lbl_80330708, *(s32 *)(lbl_80330708 + 0x18) + temp_r5, temp_r5);
         ((Obj *)temp_r29)->v12(temp_r31);
         if (__rlwinm(*(u8 *)((u8 *)temp_r31 + 5), 25, 31, 31)) {
@@ -6655,7 +6655,7 @@ extern "C" void fn_801943FC(void *arg0) {
     void fn_8000C188(void *);
     void fn_8000D8BC(s32, s32);
     u32 *fn_8001CB64(void *);
-    u32 fn_8001D2A4(void *);
+    u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
@@ -6766,7 +6766,7 @@ extern "C" void fn_801943FC(void *arg0) {
                 }
                 fn_8000C070(self, 5);
             } else {
-                fn_8000D8BC(0, (s32)((fn_8001D2A4(unit) >> 1) & 0x7FFF));
+                fn_8000D8BC(0, (s32)((UnitRef_GetValue(unit) >> 1) & 0x7FFF));
                 fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x44) + 0x14));
                 fn_8000C188(self);
             }

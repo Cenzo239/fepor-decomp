@@ -1504,7 +1504,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     s32 fn_8001C284(void *, u8, s8, s8, s8, s8);
-    u16 fn_8001D2A4(void *);
+    u16 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
     void fn_8013FDA0(void *);
     void *fn_8013FF94(void *, s32, s32);
@@ -1584,7 +1584,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     score = fn_8001C284(*(void **)((u8 *)obj + 0x60), *(u8 *)((u8 *)obj + 0x64),
                         (s8)*(u8 *)((u8 *)obj + 0x51), (s8)*(u8 *)((u8 *)obj + 0x52),
                         (s8)*(u8 *)((u8 *)obj + 0x53), (s8)*(u8 *)((u8 *)obj + 0x54));
-    addend = fn_8001D2A4(&gUnitRef);
+    addend = UnitRef_GetValue(&gUnitRef);
     score = addend + score;
     child->unk3C = score;
 
@@ -1959,7 +1959,7 @@ void fn_801B1ED4(void *arg0) {
 extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
-    u16 fn_8001D2A4(void *);
+    u16 UnitRef_GetValue(void *);
     void UnitRef_Set(void *, void *);
     void fn_8011D79C(s32);
     void *fn_80134280(void *);
@@ -2047,7 +2047,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     if (gUnitRef != cur) {
         UnitRef_Set(&gUnitRef, cur);
     }
-    child->unk3C = fn_8001D2A4(&gUnitRef);
+    child->unk3C = UnitRef_GetValue(&gUnitRef);
     flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {

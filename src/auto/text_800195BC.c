@@ -2106,7 +2106,7 @@ void fn_8001D044(s32 arg0, s32 arg1) {
     fn_8017A430(arg1, 8, arg0);
 }
 
-u16 fn_8001D2A4(void* arg0) {
+u16 UnitRef_GetValue(void* arg0) {
     void** temp_r4 = (void**)arg0;
     u16 var_r5 = 0;
 
