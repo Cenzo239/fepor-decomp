@@ -41,7 +41,7 @@ void Stream_Write(void *, s32, void *);
 void Stream_WriteU8(void *, u8);
 void Stream_WriteS32(void *, s32);
 void Stream_WriteU16(void *, u16);
-void fn_8017A4CC(void *, s32, s32);
+void Stream_WriteS64(void *, s32, s32);
 void fn_80105A30(void *, void *);
 void fn_80014F94(void *, void *);
 void fn_80199B88(void *, void *);

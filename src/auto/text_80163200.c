@@ -11898,7 +11898,7 @@ void fn_8017A480(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
 }
 
-void fn_8017A4CC(void *arg0, s32 arg1, u8 arg2, u8 arg3) {
+void Stream_WriteS64(void *arg0, s32 arg1, u8 arg2, u8 arg3) {
     u8 *temp_r4;
     u8 *temp_r4_2;
     u8 *temp_r4_3;

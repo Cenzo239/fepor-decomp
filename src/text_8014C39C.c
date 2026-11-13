@@ -41,7 +41,7 @@ void Stream_Write(void *, s32, void *);
 void Stream_WriteU8(void *, u8);
 void Stream_WriteS32(void *, s32);
 void Stream_WriteU16(void *, u16);
-void fn_8017A4CC(void *, s32, s32);
+void Stream_WriteS64(void *, s32, s32);
 void fn_80105A30(void *, void *);
 void fn_80014F94(void *, void *);
 void fn_80199B88(void *, void *);
@@ -92,7 +92,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     void Stream_WriteU8(void *, u8);
     void Stream_WriteU16(void *, u16);
     void Stream_WriteS32(void *, s32);
-    void fn_8017A4CC(void *, s64);
+    void Stream_WriteS64(void *, s64);
     void fn_8017A480(void *, s32, void *);
     void fn_8017A3E0(void *, s32, s32);
     void fn_80105A30(void *, void *);
@@ -119,8 +119,8 @@ void BattleState_Write(void *arg0, void *arg1) {
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x55));
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x56));
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x57));
-    fn_8017A4CC(arg1, *(s64 *)((u8 *)arg0 + 0x58));
-    fn_8017A4CC(arg1, *(s64 *)((u8 *)arg0 + 0x60));
+    Stream_WriteS64(arg1, *(s64 *)((u8 *)arg0 + 0x58));
+    Stream_WriteS64(arg1, *(s64 *)((u8 *)arg0 + 0x60));
     Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x68));
     Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x6c));
     Stream_WriteU16(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x70));
