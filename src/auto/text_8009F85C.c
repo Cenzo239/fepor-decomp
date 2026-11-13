@@ -1526,7 +1526,7 @@ s32 Ui_KillCursorUnit(void) {
     void Unit_OnZeroHp(void *);
     void fn_8002297C(void *);
     void fn_801A75DC(void *, void *, s32);
-    void fn_801A4958(void *);
+    void Battle_QueueDeathAnim(void *);
     void fn_8019B704(void *, s32);
     extern u8 lbl_8026D8D8[];
     extern u8 gUiContext[];
@@ -1554,7 +1554,7 @@ s32 Ui_KillCursorUnit(void) {
     }
     Unit_OnZeroHp(temp_r30);
     fn_801A75DC(gBattle, temp_r30, -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_8019B704(temp_r31, 0);
     return 6;
 }

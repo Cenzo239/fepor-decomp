@@ -3279,12 +3279,12 @@ void fn_80025FC8(void) {
 
 void fn_80025FF0(void *arg0) {
     M2C_UNK fn_8019B704(void *, M2C_UNK);
-    M2C_UNK fn_801A4958(M2C_UNK *);
+    M2C_UNK Battle_QueueDeathAnim(M2C_UNK *);
     M2C_UNK fn_801A4A88(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_801A75DC(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK gBattle[];
     fn_801A75DC(gBattle, M2C_FIELD(arg0, s32 *, 0x30), -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_801A4A88(gBattle, -0xA);
     fn_8019B704(arg0, 0);
 }
@@ -3346,7 +3346,7 @@ void fn_80026130(void) {
 
 void fn_80026194(s32 arg0) {
     void fn_801A75DC(void *, void *, s32);
-    void fn_801A4958(void *);
+    void Battle_QueueDeathAnim(void *);
     void fn_801A48A4(void *, s32);
     void fn_8019BE54(s32, void (*)(void));
     void fn_80026204(void);
@@ -3354,7 +3354,7 @@ void fn_80026194(s32 arg0) {
     extern u8 gBattle[];
 
     fn_801A75DC(gBattle, *(void **)gUiContext, -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_801A48A4(gBattle, 0xA);
     fn_8019BE54(arg0, fn_80026204);
 }
@@ -3402,7 +3402,7 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
     void *fn_8002F658(s32 *, s32);
     s32 fn_8003AFA0(s32);
     void fn_8019C0C0(s32, void *);
-    void fn_801A4958(void *);
+    void Battle_QueueDeathAnim(void *);
     void fn_801A75DC(void *, void *, s32);
     void fn_80026374(s32);
     extern u8 lbl_80268E40[];
@@ -3438,7 +3438,7 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
         ((u8 *)entry)[3] = b3;
     }
     fn_801A75DC(gBattle, *(void **)gUiContext, -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_8019C0C0(other, fn_80026374);
 }
 #pragma use_lmw_stmw reset
@@ -3481,7 +3481,7 @@ void fn_800264BC(s32 *arg0, s32 arg1) {
     void *Item_GetByIid(void *);
     void fn_8002AB9C(s32, void *);
     void fn_8019C110(s32, void *);
-    void fn_801A4958(void *);
+    void Battle_QueueDeathAnim(void *);
     void fn_801A75DC(void *, void *, s32);
     extern u8 lbl_80268E40[];
     extern u8 gUiContext[];
@@ -3493,7 +3493,7 @@ void fn_800264BC(s32 *arg0, s32 arg1) {
     temp_r31 = *arg0;
     fn_8002AB9C(temp_r31, Item_GetByIid(lbl_80268E40 + 0x1AF));
     fn_801A75DC(gBattle, *(void **)gUiContext, -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_8019C110(arg1, fn_80026544);
 }
 
@@ -3506,7 +3506,7 @@ void fn_80026544(s32 arg0) {
 
 void fn_80026570(void *arg0) {
     void fn_801A75DC(void *, void *, s32);
-    void fn_801A4958(void *);
+    void Battle_QueueDeathAnim(void *);
     void *fn_8002F658(s32 *, s32);
     void *UnitRef_GetUnit(void);
     void fn_8019C070(void *, void (*)(void));
@@ -3523,13 +3523,13 @@ void fn_80026570(void *arg0) {
     idx = *(s32 *)((u8 *)arg0 + 0x60);
     if (idx == *p) {
         fn_801A75DC(gBattle, *(void **)gUiContext, -1);
-        fn_801A4958(gBattle);
+        Battle_QueueDeathAnim(gBattle);
         return;
     }
     fn_8002F658(p, idx);
     obj = UnitRef_GetUnit();
     fn_801A75DC(gBattle, obj, -1);
-    fn_801A4958(gBattle);
+    Battle_QueueDeathAnim(gBattle);
     fn_8019C070(arg0, fn_8002662C);
     *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
     Process_Goto(arg0, 0);

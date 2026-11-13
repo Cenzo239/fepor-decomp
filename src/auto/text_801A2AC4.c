@@ -822,7 +822,7 @@ void fn_801A48A4(s32 arg0) {
     }
 }
 
-void fn_801A4958(void *arg0) {
+void Battle_QueueDeathAnim(void *arg0) {
     void fn_801A601C(void *, void *, void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
 
