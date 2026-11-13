@@ -83,7 +83,8 @@ void fn_8014A0D4(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x30) = 0;
 }
 
-void SoundMenu_Update(void *arg0) {
+void SoundMenu_Update(void *proc) {
+    /* Draw sound-menu help text; every 60s swap which of two BGMs is audible. */
     extern f32 lbl_8036A7B8;
     extern f32 gOneF;
     extern u8 gSoundMenuStrings[];
@@ -101,15 +102,15 @@ void SoundMenu_Update(void *arg0) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Text_Draw(0x20, 0x1A4, 1, gSoundMenuStrings + 0x2B);
-    *(s32 *)((u8 *)arg0 + 0x30) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
-    if (*(s32 *)((u8 *)arg0 + 0x30) == 0xE10) {
+    *(s32 *)((u8 *)proc + 0x30) = *(s32 *)((u8 *)proc + 0x30) + 1;
+    if (*(s32 *)((u8 *)proc + 0x30) == 0xE10) {
         Sound_FadeToVol(Sound_FindByName(gSoundMenuStrings + 0xD), 0xFF);
         Sound_FadeFromZero(Sound_FindByName(gSoundMenuStrings + 0x16), 0xFF);
     }
-    if (*(s32 *)((u8 *)arg0 + 0x30) == 0x1C20) {
+    if (*(s32 *)((u8 *)proc + 0x30) == 0x1C20) {
         Sound_FadeFromZero(Sound_FindByName(gSoundMenuStrings + 0xD), 0xFF);
         Sound_FadeToVol(Sound_FindByName(gSoundMenuStrings + 0x16), 0xFF);
-        *(s32 *)((u8 *)arg0 + 0x30) = 0;
+        *(s32 *)((u8 *)proc + 0x30) = 0;
     }
 }
 
