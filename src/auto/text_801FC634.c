@@ -1445,12 +1445,12 @@ void fn_801FFE8C(void) {
 void fn_801FFEB0(s32 arg0) {
     extern s32 lbl_80368440;
     extern s32 lbl_803682F0;
-    s32 fn_801E2580(s32 *, s32);
+    s32 Save_GetSmallSlot(s32 *, s32);
     void fn_800E9B80(s32, s32, s32, s32, s32);
     s32 tmp;
 
     if (lbl_80368440 != 0) {
-        tmp = fn_801E2580(&lbl_803682F0, 0);
+        tmp = Save_GetSmallSlot(&lbl_803682F0, 0);
         fn_800E9B80(tmp, 0x24000, 0x2000, 0x2000, arg0);
     }
 }
@@ -1465,7 +1465,7 @@ void Save_MigrateLegacy(void) {
     void fn_800C426C(void *);
     void *fn_800C4638(s32, void *, s32);
     void *fn_801E2568(s32 *, s32);
-    void *fn_801E2580(s32 *, s32);
+    void *Save_GetSmallSlot(s32 *, s32);
     void Save_BumpVersionChecksum(void *);
     u8 Save_IsValid(void *);
     void *memcpy(void *, void *, u32);
@@ -1488,7 +1488,7 @@ void Save_MigrateLegacy(void) {
         count = 0;
         i = 0;
         do {
-            j = (s32)fn_801E2580(&lbl_803682F0, i);
+            j = (s32)Save_GetSmallSlot(&lbl_803682F0, i);
             if ((void *)j != NULL && Save_IsValid((void *)j) != 0) {
                 switch (*(s32 *)((u8 *)(void *)j + 0x44)) {
                 case 0x20041216:

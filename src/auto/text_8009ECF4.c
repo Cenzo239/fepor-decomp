@@ -56,7 +56,7 @@ void fn_8009ED1C(void) {
     void *fn_801E2324(void *, s32);
     s32 fn_801E2458(void *);
     void *fn_801E2568(void *, s32);
-    void *fn_801E2580(void *, s32);
+    void *Save_GetSmallSlot(void *, s32);
     void fn_801E2594(void *);
     void *fn_801E417C(void *);
     u8 fn_801E434C(void *);
@@ -72,7 +72,7 @@ void fn_8009ED1C(void) {
         i = 0;
         do {
             fn_800056CC((const char *)(base + 0x1C6), i);
-            obj = fn_801E2580(&lbl_803682F0, i);
+            obj = Save_GetSmallSlot(&lbl_803682F0, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x62);
                 fn_800056CC((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
