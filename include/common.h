@@ -44,6 +44,10 @@ typedef struct Unk800C2ACC {
 #define LINK_BONUS_FLAG_POKEMON 0x10
 #define LINK_BONUS_FLAG_FE8     0x20
 
+/* Save-file version stamps (YYYYMMDD as hex) */
+#define SAVE_VER_20041216 0x20041216
+#define SAVE_VER_20050201 0x20050201
+
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
