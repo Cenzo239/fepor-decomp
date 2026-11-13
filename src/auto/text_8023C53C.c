@@ -2711,7 +2711,7 @@ void fn_80247F94(void *arg0) {
 }
 
 #pragma global_optimizer on
-s32 fn_8024800C(u8 key, u8 group, u8 channel, s32 arg3, s32 *status) {
+s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 arg3, s32 *status) {
  void fn_80255B20(void*); s32 fn_80255E9C(void*,s32);
  void fn_80257614(void*); void fn_80260174(u8,u8,u8); u32 fn_802616F4(u32);
  s32 offset; u32 keyValue; u32 i; u32 result; s32 previous; u8 *voice; u8 *last; s32 found;
@@ -2776,7 +2776,7 @@ value=low+(s8)entry[4];
 if(value>127) note=127; else note=value & ~(value>>31);
 if(!(sample&0xC000)) {
 if(Sound_GetChanParam(0x41,channel,a8)>0x1F80U) {
-result=fn_8024800C(note&127,channel,a8,0,&status);
+result=Sound_RemapVoiceKey(note&127,channel,a8,0,&status);
 valid=status==0;
 } else { result=-1; valid=1; }
 if(!valid) goto next;
@@ -2823,7 +2823,7 @@ return first;
 s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pan, s32 arg7, u8 a8, u8 a9, u16 a10, u16 a11, s32 a12, u8 a13, u8 a14, s32 a15) {
     s32 fn_802508E0(u16);
     u16 Sound_GetChanParam(u8, s32, u8);
-    s32 fn_8024800C(s32, s32, u8, s32, s32 *);
+    s32 Sound_RemapVoiceKey(s32, s32, u8, s32, s32 *);
     s32 fn_802482AC(u16, s16, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
     s32 fn_802555A0(u16, u8, s32, s32, u8, s32, u8, s32, u8, u8, u16, u16, u8, u8, u8, s32);
     u8 *table;
@@ -2885,7 +2885,7 @@ s32 fn_8024866C(u16 id, s16 volume, s32 arg2, s32 arg3, s32 key, s32 arg5, u8 pa
                 volume = v;
                 if (flags == 0) {
                     if (Sound_GetChanParam(0x41, arg7, a8) > 0x1F80U) {
-                        result = fn_8024800C(key & 127, arg7, a8, a12, &status);
+                        result = Sound_RemapVoiceKey(key & 127, arg7, a8, a12, &status);
                         valid = status == 0;
                     } else {
                         result = -1;
