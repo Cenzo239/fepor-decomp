@@ -1355,7 +1355,7 @@ void fn_801B0C70(void *arg0) {
 void fn_801B0D6C(void *arg0) {
     s32 fn_8001D2C8(void *);
     s32 fn_8001ED58(void);
-    void fn_8023440C(void *, s32, s32);
+    void Str_CopyPad(void *, s32, s32);
     void fn_801CE11C(void *, s32, s32, void *);
     void fn_8011D79C(s32);
     u32 fn_8013FF94(void *, s32, s32, void *);
@@ -1368,7 +1368,7 @@ void fn_801B0D6C(void *arg0) {
     register unsigned long res;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
-    fn_8023440C(&lbl_80331C6C, fn_8001D2C8((u8 *)obj48 + 0x60), 0x14);
+    Str_CopyPad(&lbl_80331C6C, fn_8001D2C8((u8 *)obj48 + 0x60), 0x14);
     b = 0;
     ((u8 *)&lbl_80331C6C)[0x14] = b;
     p60 = *(void **)((u8 *)obj48 + 0x60);

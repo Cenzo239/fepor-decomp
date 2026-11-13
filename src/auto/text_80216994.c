@@ -2589,7 +2589,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
     u8 *__CARDGetDirBlock(s32);
     s32 fn_8021BA9C(u8 *, char *);
     s32 fn_80231944(u8 *, void *, s32);
-    void fn_8023440C(u8 *, char *, s32);
+    void Str_CopyPad(u8 *, char *, s32);
     u32 strlen(char *);
     extern void fn_80216994(void);
     extern void fn_8021C088(void);
@@ -2646,7 +2646,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
     slot = dir + (freeIdx << 6);
     *(u16 *)((u8 *)card + 0xBC) = freeIdx;
     *(u16 *)(slot + 0x38) = (u16)(size / *(u32 *)((u8 *)card + 0xC));
-    fn_8023440C(slot + 8, name, 0x20);
+    Str_CopyPad(slot + 8, name, 0x20);
     *(void **)((u8 *)card + 0xC0) = fileInfo;
     *(s32 *)fileInfo = chan;
     *(u32 *)((u8 *)fileInfo + 4) = freeIdx;

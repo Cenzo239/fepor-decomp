@@ -2608,7 +2608,7 @@ void strcat(u8 *dest, u8 *src) {
     }
 }
 
-void fn_8023440C(char *dest, const char *src, s32 count)
+void Str_CopyPad(char *dest, const char *src, s32 count)
 {
     char *dst = dest - 1;
     const char *srcPtr = src - 1;

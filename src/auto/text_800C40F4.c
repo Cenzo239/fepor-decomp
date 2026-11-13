@@ -1570,7 +1570,7 @@ void fn_800C7F10(void* arg0, void* arg1) {
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
     M2C_UNK *String_CStr(void *);
-    void fn_8023440C(char *, const char *, s32);
+    void Str_CopyPad(char *, const char *, s32);
     s32 fn_802355BC(char *);
     f64 fn_80234524(char *);
 
@@ -1645,7 +1645,7 @@ case_str:
     sp118.d[2] = 0;
     sp118.d[1] = 0;
     sp118.d[0] = 0;
-    fn_8023440C((char *)&sp118, src, 0x20);
+    Str_CopyPad((char *)&sp118, src, 0x20);
     sp2B8 = sp118;
     *dv = sp118;
     return;
@@ -3416,7 +3416,7 @@ else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,s
 #pragma use_lmw_stmw on
 void fn_800CCB9C(u8 *self, char *arg1) {
 void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
-void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
+void Str_CopyPad(void *,void *,u32); void fn_800C908C(void *,void *,void *);
 void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
@@ -3436,7 +3436,7 @@ if(made2 != 0)String_Destroy(&sp48,-1);
 if(made1 != 0)String_Destroy(&sp54,-1);
 sp6C.cap=0;sp60.cap=0;sp6C.size=0;sp6C.data=0;sp6C.cap=0;sp60.size=0;sp60.data=0;sp60.cap=0;
 String_Init(&sp3C,lbl_802704F8+0x1EB,&spC);
-fn_8023440C(&spF8,lbl_802704F8+0x359,32); sp118=spF8;
+Str_CopyPad(&spF8,lbl_802704F8+0x359,32); sp118=spF8;
 fn_800C908C(f,&sp3C,&sp118);String_Destroy(&sp3C,-1);
 buffer=spD8;
 for(;Xml_AdvanceChild(f)!=0;){
@@ -3444,7 +3444,7 @@ Xml_GetChildName(&sp30,f);String_Assign(&sp6C,&sp30,0,-1);String_Destroy(&sp30,-
 Xml_GetChildValue(spD8,f);String_AssignCStr(&sp60,buffer,strlen(buffer));
 fn_800CA18C((void *)(arg0+0x1C8),M2C_FIELD(arg0,s32 *,0x1CC)*12+M2C_FIELD(arg0,u8 **,0x1D0),1,&sp60);
 }
-String_Init(&sp24,lbl_802704F8+0x1EB,&sp8);fn_8023440C(&sp98,lbl_802704F8+0x365,32);spB8=sp98;
+String_Init(&sp24,lbl_802704F8+0x1EB,&sp8);Str_CopyPad(&sp98,lbl_802704F8+0x365,32);spB8=sp98;
 fn_800C908C(f,&sp24,&spB8);String_Destroy(&sp24,-1);
 arg1=sp78;
 while(Xml_AdvanceChild(f)){
@@ -7433,7 +7433,7 @@ void fn_800D83B0(void* param_1) {
 #pragma use_lmw_stmw on
 void fn_800D85CC(s32 self, char *arg1) {
 void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
-void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
+void Str_CopyPad(void *,void *,u32); void fn_800C908C(void *,void *,void *);
 void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
@@ -7450,7 +7450,7 @@ if(f){String_Init(&sp44,lbl_802711B0+0xFA,&sp10);made=1;f=Xml_ParseFile(f,path,&
 if((s8)made)String_Destroy(&sp44,-1);
 sp5C.cap=0;sp50.cap=0;sp5C.size=0;sp5C.data=0;sp5C.cap=0;sp50.size=0;sp50.data=0;sp50.cap=0;
 String_Init(&sp38,lbl_802711B0+0xFF,&spC);
-fn_8023440C(&spE8,lbl_802711B0+0x110,32);sp108=spE8;
+Str_CopyPad(&spE8,lbl_802711B0+0x110,32);sp108=spE8;
 fn_800C908C(f,&sp38,&sp108);String_Destroy(&sp38,-1);
 path=spC8;
 while(Xml_AdvanceChild(f)){
@@ -7460,7 +7460,7 @@ fn_8011C674(gBgWin,&sp5C);
 fn_800CA18C((void *)(arg0+0x4C),M2C_FIELD(arg0,u8 **,0x54)+M2C_FIELD(arg0,s32 *,0x50)*12,1,&sp50);
 }
 String_Init(&sp20,lbl_802711B0+0xFF,&sp8);
-fn_8023440C(&sp88,lbl_802711B0+0x11C,32);spA8=sp88;
+Str_CopyPad(&sp88,lbl_802711B0+0x11C,32);spA8=sp88;
 fn_800C908C(f,&sp20,&spA8);String_Destroy(&sp20,-1);
 path=sp68;
 while(Xml_AdvanceChild(f)){

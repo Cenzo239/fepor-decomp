@@ -432,7 +432,7 @@ s32 fn_8005B918(void) {
     s32 fn_8020CD64(s32, void *);
     s32 fn_8020CE24(void *, void *);
     void fn_8020CEC8(void *);
-    void fn_8023440C(void *, s32, s32, s32);
+    void Str_CopyPad(void *, s32, s32, s32);
     extern void *lbl_803672F4;
     extern u8 lbl_8026B330[];
     u8 iter[0x18];
@@ -457,7 +457,7 @@ s32 fn_8005B918(void) {
         p = lbl_803672F4;
         flag = (out[1] != 0);
         ((u8 *)p)[(*(u32 *)((u8 *)p + 0x4000) << 6) + 0x3f] = (u8)flag;
-        fn_8023440C((u8 *)p + (*(u32 *)((u8 *)p + 0x4000) << 6), out[2], 0x3e, flag);
+        Str_CopyPad((u8 *)p + (*(u32 *)((u8 *)p + 0x4000) << 6), out[2], 0x3e, flag);
         *(u32 *)((u8 *)p + 0x4000) = *(u32 *)((u8 *)p + 0x4000) + 1;
     }
     fn_8020CEC8(iter);

@@ -5471,7 +5471,7 @@ extern u16 lbl_8028FE50[];
 void fn_8011D79C(void *arg0) {
     s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
-    void fn_8023440C(void *, const void *, s32);
+    void Str_CopyPad(void *, const void *, s32);
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
@@ -5488,7 +5488,7 @@ void fn_8011D79C(void *arg0) {
 
     DebugPrint((char *)TalkUi_str + 0x35, arg0);
     result = Msg_Expand(arg0);
-    fn_8023440C(lbl_8032FE04, arg0, 0x1E);
+    Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
     obj = Process_Find(lbl_8028FE50);
     fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
@@ -5512,7 +5512,7 @@ void fn_8011D87C(void *arg0)
 {
     s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
-    void fn_8023440C(void *, const void *, s32);
+    void Str_CopyPad(void *, const void *, s32);
     void *Process_Find(void *);
     void Process_Goto(void *, u8);
 
@@ -5524,7 +5524,7 @@ void fn_8011D87C(void *arg0)
 
     result = Msg_Expand(arg0);
 
-    fn_8023440C(lbl_8032FE04, arg0, 0x1E);
+    Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
 
     obj = (u8 *)Process_Find(lbl_8028FE50);
     *(void **)(obj + 0x30) = result;
@@ -6044,7 +6044,7 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     void strcat(void *, void *);
     s32 fn_8005C144(void *);
     void *Process_CreateChild(void *, void *);
-    void fn_8023440C(void *, void *, s32);
+    void Str_CopyPad(void *, void *, s32);
     extern u16 TalkUi_str[];
     extern u8 gUiContext[24];
     extern s32 gUiInputFlags;
@@ -6192,7 +6192,7 @@ got_unit:
                 i += 1;
             } while (i < 4);
         } else {
-            fn_8023440C((u8 *)Process_CreateChild(lbl_8028FED0, self) + 0x30, unit, 0x3A);
+            Str_CopyPad((u8 *)Process_CreateChild(lbl_8028FED0, self) + 0x30, unit, 0x3A);
         }
     }
 }

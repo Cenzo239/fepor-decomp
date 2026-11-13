@@ -2854,7 +2854,7 @@ void fn_801260E4(void *arg0) {
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
-    void fn_8023440C(void *, void *, s32);
+    void Str_CopyPad(void *, void *, s32);
     extern u8 lbl_80320060[];
     extern u8 gScriptCmdNames[];
     extern u8 lbl_80290480[];
@@ -2866,7 +2866,7 @@ void fn_801260E4(void *arg0) {
     fn_8000BD98(gScriptCmdNames + 0x15B);
     if (Res_GetByName((void *)(self + 0x30)) != 0) {
         temp = (s32)Process_Create(lbl_80290480, 2);
-        fn_8023440C((void *)(temp + 0x30), (void *)(self + 0x30), 0x20);
+        Str_CopyPad((void *)(temp + 0x30), (void *)(self + 0x30), 0x20);
         *(void **)(temp + 0x50) = Res_GetByName((void *)(temp + 0x30));
         *(u8 *)(temp + 0x58) = 1;
         *(void **)(temp + 0x54) = lbl_80320060;
@@ -2897,7 +2897,7 @@ void fn_80126204(void) {
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
-    void fn_8023440C(void *, void *, s32);
+    void Str_CopyPad(void *, void *, s32);
     extern u8 lbl_80320060[];
     extern u8 gScriptCmdNames[];
     extern u8 lbl_80290480[16];
@@ -2907,7 +2907,7 @@ void fn_80126204(void) {
     fn_8000BD98(gScriptCmdNames + 0x15B);
     if (Res_GetByName(gScriptCmdNames + 0x16A) != 0) {
         temp = (s32)Process_Create(lbl_80290480, 2);
-        fn_8023440C((void *)(temp + 0x30), gScriptCmdNames + 0x16A, 0x20);
+        Str_CopyPad((void *)(temp + 0x30), gScriptCmdNames + 0x16A, 0x20);
         *(void **)(temp + 0x50) = Res_GetByName((void *)(temp + 0x30));
         *(u8 *)(temp + 0x58) = 1;
         *(void **)(temp + 0x54) = lbl_80320060;
@@ -3592,7 +3592,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
     void fn_8000BD98(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
-    void fn_8023440C(void *, void *, s32);
+    void Str_CopyPad(void *, void *, s32);
 
     void *result;
     u8 *obj;
@@ -3603,7 +3603,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
         return 0;
     }
     obj = (u8 *)Process_Create(lbl_80290480, 2);
-    fn_8023440C(obj + 0x30, arg0, 0x20);
+    Str_CopyPad(obj + 0x30, arg0, 0x20);
     *(void **)(obj + 0x50) = Res_GetByName(obj + 0x30);
     obj[0x58] = 1;
     *(void **)(obj + 0x54) = lbl_80320060;

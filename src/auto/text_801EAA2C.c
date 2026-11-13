@@ -105,33 +105,36 @@ s32 fn_801EAB90(s32 unused, void *obj) {
     extern u8 gUnitLists[];
     extern s32 lbl_802EF4E0[];
     u32 flags;
-    void *node;
     s32 count;
     u32 nf;
-    s32 ret;
 
     flags = *(u32 *)((u8 *)obj + 0x1A0);
-    ret = 0;
+    unused = 0;
     if (flags & 0x400000) {
         *(u32 *)((u8 *)obj + 0x1A0) = flags & ~0x400000;
         return 1;
     }
     if (flags & 0x200000) {
-        return 0;
+        return unused;
     }
     count = 0;
-    node = *(void **)(gUnitLists + 0x3C);
-    while (node != NULL) {
-        nf = *(u32 *)((u8 *)node + 0x1A0);
-        node = *(void **)((u8 *)node + 0x184);
-        if (nf & 0x400000) {
-            count += 1;
-        }
+    flags = *(u32 *)(gUnitLists + 0x3C);
+    goto check;
+loop:
+    nf = *(u32 *)((u8 *)flags + 0x1A0);
+    flags = *(u32 *)((u8 *)flags + 0x184);
+    if (nf & 0x400000) {
+        count += 1;
+    }
+check:
+    if (flags != 0) {
+        goto loop;
     }
     if (count >= lbl_802EF4E0[0]) {
-        return ret;
+        return unused;
     }
-    *(u32 *)((u8 *)obj + 0x1A0) = *(u32 *)((u8 *)obj + 0x1A0) | 0x400000;
+    flags = *(u32 *)((u8 *)obj + 0x1A0);
+    *(u32 *)((u8 *)obj + 0x1A0) = flags | 0x400000;
     return 1;
 }
 
@@ -940,9 +943,10 @@ s32 fn_801EC6CC(void) {
     return 2;
 }
 
+#pragma global_optimizer off
 s32 fn_801EC6D4(void *msg, void *a, void *b) {
     void fn_80176888(void *, void *, f32, f32);
-    extern u8 lbl_8027EE08[];
+    extern char lbl_8027EE08[];
 
     msg = lbl_8027EE08 + 0x30a;
     fn_80176888(msg, a,
@@ -950,7 +954,7 @@ s32 fn_801EC6D4(void *msg, void *a, void *b) {
                 (f32)(*(s16 *)((u8 *)a + 0x32) + *(s16 *)((u8 *)b + 0x32)));
     return 0x10;
 }
-
+#pragma global_optimizer reset
 void fn_801EC74C(void) {
     extern u16 lbl_8027EE08[];
     Msg_Expand((u8 *)lbl_8027EE08 + 0x31D);
@@ -2778,7 +2782,7 @@ void fn_801EFDC8(void *arg0) {
     void *Heap_Alloc(s32);
     void *Xml_ParseFile(void *, String *, String *);
     void String_Destroy(String *, s32);
-    void fn_8023440C(void *, char *, s32);
+    void Str_CopyPad(void *, char *, s32);
     void fn_800C908C(void *, String *, void *);
     u8 Xml_AdvanceChild(void *);
     void Xml_GetChildName(String *, void *);
@@ -2876,7 +2880,7 @@ void fn_801EFDC8(void *arg0) {
     str160.data = NULL;
     str160.cap = 0;
     String_Init(&spEC, gGActorPathExt + 0x240, &sp24);
-    fn_8023440C(buf224, gGActorPathExt + 0x246, 0x20);
+    Str_CopyPad(buf224, gGActorPathExt + 0x246, 0x20);
     {
         u32 *d = (u32 *)buf260;
         u32 *s2 = (u32 *)buf224;
