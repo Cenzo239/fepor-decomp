@@ -58,7 +58,7 @@ s32 fn_80103818(void) {
     return 0;
 }
 
-s32 fn_80103820(void) {
+s32 Ui_OpenUnitActionMenu(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
     void Ui_CreateMenu(void *, s32, s32);
