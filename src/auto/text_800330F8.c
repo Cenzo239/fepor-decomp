@@ -9621,7 +9621,7 @@ void fn_80049D30(s32 arg0) {
     fn_8005FEE8(temp_r3, lbl_80368EE4);
 }
 
-s32 fn_80049D58(void *arg0) {
+s32 MapObj_IsVisible(void *arg0) {
     return (M2C_FIELD(arg0, u8 *, 2) & 3) == 0;
 }
 

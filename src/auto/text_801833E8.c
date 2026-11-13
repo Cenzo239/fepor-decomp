@@ -11320,7 +11320,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
     void fn_800056A0(s8);
     void fn_80016180(void);
     void fn_80013864(void);
-    s32 fn_80049D58(void *);
+    s32 MapObj_IsVisible(void *);
     void fn_80049BD4(void *, u8);
     s32 fn_800C0658(void);
     void MapObjEvent_Remove(void *, s32, s32, u8);
@@ -11344,7 +11344,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
             i = 0;
             while (i < count) {
                 v = *p;
-                if ((u8) fn_80049D58((void *) v) == 0) {
+                if ((u8) MapObj_IsVisible((void *) v) == 0) {
                     fn_80049BD4((void *) v, 0);
                 }
                 p++;
@@ -11460,7 +11460,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
     void fn_800056A0(s8);
     void fn_80016180(void);
     void fn_80013864(void);
-    s32 fn_80049D58(void *);
+    s32 MapObj_IsVisible(void *);
     void fn_80049BD4(void *, u8);
     s32 fn_800C0658(void);
     void MapObjEvent_Remove(void *, s32, s32, u8);
@@ -11484,7 +11484,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
             i = 0;
             while (i < count) {
                 entry = *p;
-                if ((u8) fn_80049D58((void *) entry) == 0) {
+                if ((u8) MapObj_IsVisible((void *) entry) == 0) {
                     fn_80049BD4((void *) entry, 0);
                 }
                 p++;
@@ -11514,7 +11514,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
     void fn_80044450(s32, s32);
     void fn_800056A0(s8);
     void fn_80016180(void);
-    s32 fn_80049D58(void *);
+    s32 MapObj_IsVisible(void *);
     void fn_80049BD4(void *, u8);
     void MapObjEvent_Remove(void *, s32, s32, u8);
     s32 sp8[10];
@@ -11536,7 +11536,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
     i = 0;
     while (i < count) {
         v = *p;
-        if ((u8)fn_80049D58((void *)v) == 0) {
+        if ((u8)MapObj_IsVisible((void *)v) == 0) {
             fn_80049BD4((void *)v, 0);
         }
         p++;
@@ -11655,7 +11655,7 @@ s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
     void MapObj_FadeIn(void *, s32);
     void *fn_80046F14(void *, s32, s32, u32, s32);
     s32 Map_CollectLinkedObjs(void *, void *, s32 *);
-    u8 fn_80049D58(void *);
+    u8 MapObj_IsVisible(void *);
     void fn_80049BD4(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
@@ -11689,7 +11689,7 @@ s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
             i = 0;
             while (i < count) {
                 v = *p;
-                if ((u8)fn_80049D58((void *)v) == 0) {
+                if ((u8)MapObj_IsVisible((void *)v) == 0) {
                     fn_80049BD4((void *)v, 0);
                 }
                 p++;
