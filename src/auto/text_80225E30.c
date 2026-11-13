@@ -423,7 +423,7 @@ s32 fn_80226888(void *arg0, u8 *arg1, u32 arg2) {
     return var_r31;
 }
 
-s32 fn_8022692C(void *arg0, u32 arg1) {
+s32 TRKSetBufferPosition(void *arg0, u32 arg1) {
     s32 var_r5;
 
     var_r5 = 0;
@@ -568,7 +568,7 @@ s32 fn_80227174(void *arg0) {
     u32 unk1C;
     u32 unk20 = *(u32 *)((u8 *)a + 0x20);
     u32 unk24 = *(u32 *)((u8 *)a + 0x24);
-    fn_8022692C(a, 0);
+    TRKSetBufferPosition(a, 0);
 
     switch (unk18) {
     case 16:
@@ -647,7 +647,7 @@ s32 fn_80227174(void *arg0) {
 }
 
 s32 TRKDoWriteRegisters(void *arg0) {
-    void fn_8022692C(void *, u32);
+    void TRKSetBufferPosition(void *, u32);
     void TRKResetBuffer(void *, u32);
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
@@ -674,7 +674,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
     err = ((u8 *)arg0)[0x18];
     start = *(u16 *)((u8 *)arg0 + 0x1C);
     end = *(u16 *)((u8 *)arg0 + 0x20);
-    fn_8022692C(arg0, 0);
+    TRKSetBufferPosition(arg0, 0);
 
     if (start > end) {
         memset(reply1, 0, 0x40);
@@ -685,7 +685,7 @@ s32 TRKDoWriteRegisters(void *arg0) {
         return 0;
     }
 
-    fn_8022692C(obj, 0x40);
+    TRKSetBufferPosition(obj, 0x40);
 
     switch (err) {
     case 0:
@@ -1004,7 +1004,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     s32 TRKMessageSend(s32);
     s32 fn_8022641C(void *, u8 *, u32);
     s32 TRKAppendBuffer(s32, void *, u32);
-    void fn_8022692C(void *, u32);
+    void TRKSetBufferPosition(void *, u32);
     void fn_8022699C(s32);
     s32 fn_80226A2C(s32 *, s32 *);
     s32 fn_802283A8(s32, s32 *, s32, s32, s32);
@@ -1071,7 +1071,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
                 temp_r20 = (u8)*(u32 *)((u8 *)var_r22 + 0x20);
                 temp_r19 = *(u16 *)((u8 *)var_r22 + 0x24);
                 if ((arg5 != 0) && (var_r21 == 0) && ((u32)temp_r19 <= (u32)var_r31)) {
-                    fn_8022692C(var_r22, 0x40);
+                    TRKSetBufferPosition(var_r22, 0x40);
                     var_r21 = fn_8022641C(var_r22, arg1 + var_r30, temp_r19);
                     if (var_r21 == 0x302) {
                         var_r21 = 0;
