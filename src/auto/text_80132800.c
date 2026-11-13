@@ -4832,10 +4832,8 @@ void *Ui_ListGetSelected(void *arg0) {
     }
     tmp = *(s16 *)((u8 *)arg0 + 0x4E);
     n = (s16)tmp;
-    if (n >= 0) {
-        if (count <= (u32)n) {
-            return NULL;
-        }
+    if (n < 0 || count <= (u32)n) {
+        return NULL;
     }
     node = *(struct Node **)((u8 *)arg0 + 0x78);
     if (n >= 0) {
