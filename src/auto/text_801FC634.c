@@ -2289,7 +2289,7 @@ void PSMTXConcat(f32* mtx, f32* vec, f32* out) {
     out[3] = mtx[9] * vec[0] + mtx[10] * vec[1] + mtx[11] * vec[2];
 }
 
-s32 fn_80202140(void *arg0) {
+s32 PSMTXInverse(void *arg0) {
     M2C_ERROR(/* unknown instruction: ps_merge10 $f6, $f1, $f0 */);
     M2C_ERROR(/* unknown instruction: ps_merge10 $f7, $f3, $f2 */);
     M2C_ERROR(/* unknown instruction: ps_mul $f11, $f3, $f6 */);

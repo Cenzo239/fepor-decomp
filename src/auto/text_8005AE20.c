@@ -4360,7 +4360,7 @@ void *MTXRotDegOrder(void *node, void *out)
 {
     void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
-    u32 fn_80202140(void *, void *);
+    u32 PSMTXInverse(void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     int GMaterial_Assert(void *, int, void *);
     extern f32 gMtxZero;
@@ -4467,7 +4467,7 @@ void *MTXRotDegOrder(void *node, void *out)
                 break;
             }
 
-            if (fn_80202140(sp38, sp38) != 0U) {
+            if (PSMTXInverse(sp38, sp38) != 0U) {
                 PSMTXConcat(sp38, out, out);
             }
         }
