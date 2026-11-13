@@ -809,7 +809,7 @@ void BattleUnit_Apply(void *arg0) {
         s8 unk2C8;
     } *p = arg0;
     u8 Status_Test(void *, s32);
-    void fn_80093154(void *, u8, void *);
+    void Unit_SetHeldItem(void *, u8, void *);
     void *temp_r3;
 
     fn_800381EC(p->unk280, p->unk1A8);
@@ -822,7 +822,7 @@ void BattleUnit_Apply(void *arg0) {
     if (p->unk294 >= 0) {
         Item_Copy(p->unk284, p->unk28C);
         Item_SetUses(p->unk284, (u8)p->unk2C8);
-        fn_80093154(p->unk280, p->unk294, p->unk284);
+        Unit_SetHeldItem(p->unk280, p->unk294, p->unk284);
         fn_800947E0(p->unk280);
         temp_r3 = p->unk280;
         M2C_FIELD(temp_r3, u8 *, 0x20C) = p->unk20C[0];

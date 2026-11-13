@@ -643,7 +643,7 @@ s32 fn_80093088(void *arg0)
   return r;
 }
 
-void fn_80093154(s32 arg0, s32 arg1, s32 arg2) {
+void Unit_SetHeldItem(s32 arg0, s32 arg1, s32 arg2) {
     M2C_UNK Item_Copy(s32, s32);
     s32 self = arg0;
 
