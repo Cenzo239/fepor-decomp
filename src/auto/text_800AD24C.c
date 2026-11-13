@@ -4398,7 +4398,8 @@ s32 fn_800B83A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return 1;
 }
 
-s32 ScriptCmd_Battle(u8 arg0, u8 arg1, u8 arg2) {
+/* Script command: set up and run a battle between two units by deployment id. */
+s32 ScriptCmd_Battle(u8 attackerId, u8 defenderId, u8 flag) {
     void Process_CreateChild(void *, s32);
     void fn_80033418(void *);
     void Battle_Execute(void *, s32);
@@ -4408,23 +4409,23 @@ s32 ScriptCmd_Battle(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 lbl_8028D200[];
     extern u8 gUnits[];
     extern u8 gBattle[];
-    void *var_r5;
-    void *var_r6;
+    void *defender;
+    void *attacker;
 
-    if (arg0 != 0) {
-        var_r6 = gUnits + (arg0 - 1) * 0x280;
+    if (attackerId != 0) {
+        attacker = gUnits + (attackerId - 1) * 0x280;
     } else {
-        var_r6 = NULL;
+        attacker = NULL;
     }
-    if (arg1 != 0) {
-        var_r5 = gUnits + (arg1 - 1) * 0x280;
+    if (defenderId != 0) {
+        defender = gUnits + (defenderId - 1) * 0x280;
     } else {
-        var_r5 = NULL;
+        defender = NULL;
     }
-    Battle_SetupPair(gBattle, var_r6, var_r5);
+    Battle_SetupPair(gBattle, attacker, defender);
     Battle_Execute(gBattle, 0xF);
     fn_80033418(gBattle + 0x8A0);
-    if (arg2 != 0) {
+    if (flag != 0) {
         *(u32 *)(gBattle + 0xCAC) = *(u32 *)(gBattle + 0xCAC) | 0x80000000;
     } else {
         *(u32 *)(gBattle + 0xCAC) = *(u32 *)(gBattle + 0xCAC) & 0x7FFFFFFF;
