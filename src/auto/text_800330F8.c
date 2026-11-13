@@ -146,8 +146,8 @@ extern f32 gUnitInfoDrawScale;
 extern f32 gUnitInfoDrawDepth;
 
 void *fn_800330F8(void) {
-    extern u16 lbl_802695F0[];
-    return (u8 *)lbl_802695F0 + 0x14F;
+    extern u16 gMapUiStrs[];
+    return (u8 *)gMapUiStrs + 0x14F;
 }
 
 #pragma cplusplus on
