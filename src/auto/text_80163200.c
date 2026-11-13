@@ -15228,7 +15228,7 @@ extern "C" void *fn_80180F24(void *arg0, s16 arg1) {
 }
 
 #pragma cplusplus reset
-void fn_80180F84(void *arg0) {
+void Ui_InitUnitInfoLabels(void *arg0) {
     void *Heap_Alloc(u32);
     void fn_801658DC(void *, void *);
     void fn_801400F4(void *, void *);
