@@ -1501,6 +1501,7 @@ void fn_801AD0B0(void *arg0) {
 }
 
 void Options_DrawHeader(void *arg0) {
+    /* Draw options header decoration and the selected entry title. */
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -1528,9 +1529,9 @@ void Options_DrawHeader(void *arg0) {
     extern f32 lbl_8036B090;
     typedef struct {
         u8 pad[0x3C];
-        u8 unk3C;
+        u8 selected;
         u8 pad3D[0x50 - 0x3D];
-        void *unk50;
+        void *texBank;
     } Obj;
     typedef struct {
         u8 pad[8];
@@ -1538,8 +1539,8 @@ void Options_DrawHeader(void *arg0) {
     } Row;
     extern Row gOptionsTable[];
     Obj *self;
-    f32 f30;
-    f32 f31;
+    f32 h;
+    f32 w;
     u16 *tex;
     u32 col0;
     u32 col1;
@@ -1551,16 +1552,16 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B084);
     Prim2D_PrepareTex();
-    tex = *fn_8006EDD8(self->unk50, 0);
-    f30 = (f32)tex[0] * lbl_8036AF9C;
-    f31 = (f32)tex[1] * lbl_8036AF9C;
+    tex = *fn_8006EDD8(self->texBank, 0);
+    h = (f32)tex[0] * lbl_8036AF9C;
+    w = (f32)tex[1] * lbl_8036AF9C;
     col0 = *(u32 *)fn_8018D900(1);
     Prim2D_Begin();
-    Prim2D_BindTexture(self->unk50, 0, 0x11);
+    Prim2D_BindTexture(self->texBank, 0, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetQuadMin(lbl_8036B088, lbl_8036AFEC, lbl_8036AFA0, lbl_8036AFA0);
-    Prim2D_SetQuadMax(lbl_8036B088 + f31, lbl_8036AFEC + f30, lbl_8036AFA0 + f31, lbl_8036AFA0 + f30);
+    Prim2D_SetQuadMax(lbl_8036B088 + w, lbl_8036AFEC + h, lbl_8036AFA0 + w, lbl_8036AFA0 + h);
     Prim2D_SetColor(((u8 *)&col0)[0], ((u8 *)&col0)[1], ((u8 *)&col0)[2], 0xFF);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
@@ -1570,30 +1571,30 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AF98);
     Prim2D_PrepareTex();
-    tex = *fn_8006EDD8(self->unk50, 1);
-    f30 = (f32)tex[0] * lbl_8036AF9C;
-    f31 = (f32)tex[1] * lbl_8036AF9C;
+    tex = *fn_8006EDD8(self->texBank, 1);
+    h = (f32)tex[0] * lbl_8036AF9C;
+    w = (f32)tex[1] * lbl_8036AF9C;
     col1 = *(u32 *)fn_8018D900(1);
     Prim2D_Begin();
-    Prim2D_BindTexture(self->unk50, 1, 0x11);
+    Prim2D_BindTexture(self->texBank, 1, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetQuadMin(lbl_8036AFA0, lbl_8036B08C, lbl_8036AFA0, lbl_8036AFA0);
-    t = lbl_8036AFA0 + f31;
-    Prim2D_SetQuadMax(t, lbl_8036B08C + f30, t, lbl_8036AFA0 + f30);
+    t = lbl_8036AFA0 + w;
+    Prim2D_SetQuadMax(t, lbl_8036B08C + h, t, lbl_8036AFA0 + h);
     Prim2D_SetColor(((u8 *)&col1)[0], ((u8 *)&col1)[1], ((u8 *)&col1)[2], 0xFF);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
-    tex = *fn_8006EDD8(self->unk50, 1);
-    f30 = (f32)tex[0] * lbl_8036AF9C;
-    f31 = (f32)tex[1] * lbl_8036AF9C;
+    tex = *fn_8006EDD8(self->texBank, 1);
+    h = (f32)tex[0] * lbl_8036AF9C;
+    w = (f32)tex[1] * lbl_8036AF9C;
     col2 = *(u32 *)fn_8018D900(1);
     Prim2D_Begin();
-    Prim2D_BindTexture(self->unk50, 1, 0x11);
+    Prim2D_BindTexture(self->texBank, 1, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetQuadMin(lbl_8036B090, lbl_8036B08C, lbl_8036AFA0 + f31, lbl_8036AFA0);
-    Prim2D_SetQuadMax(lbl_8036B090 + f31, lbl_8036B08C + f30, lbl_8036AFA0, lbl_8036AFA0 + f30);
+    Prim2D_SetQuadMin(lbl_8036B090, lbl_8036B08C, lbl_8036AFA0 + w, lbl_8036AFA0);
+    Prim2D_SetQuadMax(lbl_8036B090 + w, lbl_8036B08C + h, lbl_8036AFA0, lbl_8036AFA0 + h);
     Prim2D_SetColor(((u8 *)&col2)[0], ((u8 *)&col2)[1], ((u8 *)&col2)[2], 0xFF);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
@@ -1603,7 +1604,7 @@ void Options_DrawHeader(void *arg0) {
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    str = fn_8000E0E4(gOptionsTable[self->unk3C].ptr);
+    str = fn_8000E0E4(gOptionsTable[self->selected].ptr);
     fn_8001003C(0x64, 0x3D, 2, 0, 0, str, lbl_8036AF9C, lbl_8036AFA0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B080);
