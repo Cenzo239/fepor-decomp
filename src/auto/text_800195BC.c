@@ -288,42 +288,43 @@ f32 fn_80019C80(s32 unused, s32 idx) {
     return ((f32 *)local)[idx];
 }
 
-s32 Id_GetKind(char *arg0) {
+/* Classify an ID string by prefix (PID_/JID_/IID_/FID_/msg/EID_/AID_/RID_/SID_). */
+s32 Id_GetKind(char *idName) {
     s32 c1;
 
-    if (arg0 == NULL) {
-        return 0;
+    if (idName == NULL) {
+        return ID_KIND_NONE;
     }
-    c1 = (u8)arg0[1];
-    if (c1 == 'I' && arg0[2] == 'D' && arg0[3] == '_') {
-        switch (arg0[0]) {
+    c1 = (u8)idName[1];
+    if (c1 == 'I' && idName[2] == 'D' && idName[3] == '_') {
+        switch (idName[0]) {
             case 'P':
-                return 1;
+                return ID_KIND_PID;
             case 'J':
-                return 2;
+                return ID_KIND_JID;
             case 'I':
-                return 3;
+                return ID_KIND_IID;
             case 'F':
-                return 4;
+                return ID_KIND_FID;
             case 'E':
-                return 6;
+                return ID_KIND_EID;
             case 'A':
-                return 7;
+                return ID_KIND_AID;
             case 'S':
-                return 9;
+                return ID_KIND_SID;
             case 'R':
-                return 8;
+                return ID_KIND_RID;
         }
     }
-    if (arg0[0] == 'M') {
-        if (arg0[2] == '_' || arg0[4] == '_') {
-            return 5;
+    if (idName[0] == 'M') {
+        if (idName[2] == '_' || idName[4] == '_') {
+            return ID_KIND_MSG;
         }
         if ((s8)c1 == 'Y') {
-            return 5;
+            return ID_KIND_MSG;
         }
     }
-    return 0;
+    return ID_KIND_NONE;
 }
 
 s32 Affinity_GetEntry(u8 arg0) {
