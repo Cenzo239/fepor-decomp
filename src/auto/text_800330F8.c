@@ -11284,34 +11284,35 @@ void fn_8004DF20(void *arg0) {
     }
 }
 
-void Unit_UpdateVisual(void *arg0)
+/* Per-frame unit visual: update the model if drawable, and idle-spin mapAngle on the active phase. */
+void Unit_UpdateVisual(void *unit)
 {
     void fn_800609DC(void *);
     extern u8 gBattleState[];
     u8 flags;
-    void *p;
-    u8 ok;
-    s32 n;
+    void *model;
+    u8 canDraw;
+    s32 angle;
 
-    flags = *((u8 *)arg0 + 3);
-    p = (u8 *)arg0 + 0x1c;
+    flags = *((u8 *)unit + 3);
+    model = (u8 *)unit + 0x1c;
     if (!(flags & 8)) {
-        if (*(u32 *)((u8 *)arg0 + 0x1a0) & 0x010000FC) {
-            ok = 0;
+        if (*(u32 *)((u8 *)unit + 0x1a0) & 0x010000FC) {
+            canDraw = 0;
         } else if ((u8)(flags & 0x22) != 2) {
-            ok = 0;
-        } else if (*((u8 *)arg0 + 0x27) == 0) {
-            ok = 0;
+            canDraw = 0;
+        } else if (*((u8 *)unit + 0x27) == 0) {
+            canDraw = 0;
         } else {
-            ok = 1;
+            canDraw = 1;
         }
-        if (ok) {
-            fn_800609DC(p);
+        if (canDraw) {
+            fn_800609DC(model);
         }
-        if (!(*(u32 *)((u8 *)arg0 + 0x1a0) & 1)) {
-            if (*(*(u8 **)((u8 *)arg0 + 0x190) + 8) == gBattleState[0x11]) {
-                n = *(u16 *)arg0 + 1;
-                *(u16 *)arg0 = n % 360;
+        if (!(*(u32 *)((u8 *)unit + 0x1a0) & 1)) {
+            if (*(*(u8 **)((u8 *)unit + 0x190) + 8) == gBattleState[0x11]) {
+                angle = *(u16 *)unit + 1;
+                *(u16 *)unit = angle % 360;
             }
         }
     }
