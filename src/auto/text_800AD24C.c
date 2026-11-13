@@ -6126,7 +6126,7 @@ s32 fn_800BBB58(s32 arg0, s32 arg1) {
     u32 Unit_FindByName(s32);
     s8 fn_80036DE0(u32, u32);
     void fn_80036FC4(u32, s8);
-    u8 fn_80036F5C(u32, s8);
+    u8 Unit_GetSupportRank(u32, s8);
     s8 temp_r31;
     u32 temp_r30;
     u32 temp_r29;
@@ -6144,7 +6144,7 @@ s32 fn_800BBB58(s32 arg0, s32 arg1) {
     }
     temp_r31 = (s8)temp_r31;
     fn_80036FC4(temp_r30, temp_r31);
-    return (u8)fn_80036F5C(temp_r30, temp_r31);
+    return (u8)Unit_GetSupportRank(temp_r30, temp_r31);
 }
 
 u8 fn_800BBC14(void) {

@@ -2198,7 +2198,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_SetTint(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetScale(f32);
     M2C_UNK Prim2D_EndPrim(void);
-    s32 fn_80036F5C(void *, s32);
+    s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
     u8 fn_80036B20(void *, s32);
     M2C_UNK strcat(void *, void *);
@@ -2233,7 +2233,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             Prim2D_EndPrim();
             row = (struct UnitEntry *) ((u8 *) M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) + idx * 8 + 8);
             row2 = (struct UnitEntry *) ((u8 *) M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) + idx * 8 + 8);
-            temp = fn_80036F5C(obj, idx);
+            temp = Unit_GetSupportRank(obj, idx);
             vals[0] = lbl_8026D7C8[0];
             vals[1] = lbl_8026D7C8[1];
             vals[2] = lbl_8026D7C8[2];

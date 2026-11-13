@@ -1689,7 +1689,7 @@ s32 fn_80036EAC(void *arg0, s32 arg1) {
     return result;
 }
 
-s32 fn_80036F5C(void *arg0, s32 arg1)
+s32 Unit_GetSupportRank(void *arg0, s32 arg1)
 {
     u8 *obj;
     u8 *entry;

@@ -14676,7 +14676,7 @@ extern "C" void fn_80180084(void *arg0)
     void Process_Goto(void *, s32);
     void *fn_80016B7C(u32);
     s8 fn_80036DE0(s32, void *);
-    u8 fn_80036F5C(s32, s8);
+    u8 Unit_GetSupportRank(s32, s8);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -14797,7 +14797,7 @@ extern "C" void fn_80180084(void *arg0)
             fy = (f32)*((s16 *)&spC + 1);
             if (nodeVal == 0 || (*(u8 *)(*(u8 **)((u8 *)nodeVal + 0x190) + 8) != 0 && *(u8 *)(*(u8 **)((u8 *)nodeVal + 0x190) + 8) != 5)) {
                 fn_80176888(gUiUnitInfoStrings + 0x4E, self, fx, fy);
-            } else if (fn_80036F5C(btn, (s8)fn_80036DE0(btn, nodeVal)) == 3) {
+            } else if (Unit_GetSupportRank(btn, (s8)fn_80036DE0(btn, nodeVal)) == 3) {
                 fn_80176888(gUiUnitInfoStrings + 0x60, self, fx, fy);
             } else if (((Obj *)unit)->v10(nodeVal) == 0) {
                 fn_80176888(gUiUnitInfoStrings + 0x73, self, fx, fy);
@@ -15500,7 +15500,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     s32 Text_MeasureHeight(s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     s8 fn_80036DE0(void *, void *);
-    s32 fn_80036F5C(void *, s32);
+    s32 Unit_GetSupportRank(void *, s32);
     s32 fn_8003B938(u8);
     void Ui_DrawIcon(void *, s16, s16, s32);
     void *Msg_ResolveName(void *);
@@ -15561,16 +15561,16 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
             idx = tmp;
             x = (s16)(x + w0);
         }
-        if ((u8)fn_80036F5C(map, idx) == 3) {
+        if ((u8)Unit_GetSupportRank(map, idx) == 3) {
             mode = 0x13;
             Text_Draw(x, (s16)(temp_arg2 + halfH), 0x13, gUiUnitInfoStrings + 0x14A, gUiUnitInfoStrings + 0x13E);
         } else {
             w1 = (s16)(((0x14 - w1) >> 1) + w0);
-            if ((u8)fn_80036F5C(map, idx) == 2) {
+            if ((u8)Unit_GetSupportRank(map, idx) == 2) {
                 Text_Draw(w1, (s16)(temp_arg2 + halfH), mode, gUiUnitInfoStrings + 0x14A, gUiUnitInfoStrings + 0x141);
             } else {
                 w2 = (s16)(((0x14 - w2) >> 1) + w0);
-                if ((u8)fn_80036F5C(map, idx) == 1) {
+                if ((u8)Unit_GetSupportRank(map, idx) == 1) {
                     Text_Draw(w2, (s16)(temp_arg2 + halfH), mode, gUiUnitInfoStrings + 0x14A, gUiUnitInfoStrings + 0x144);
                 } else {
                     w3 = (s16)(((0x14 - w3) >> 1) + w0);
@@ -15771,7 +15771,7 @@ s32 fn_80181DD8(void *arg0) {
 void fn_80181DF0(s32 *arg0, void **arg1) {
     void *fn_80016B7C(void *);
     s32 fn_80036E48(void *, void *);
-    s32 fn_80036F5C(void *, s32);
+    s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
     void Heap_Free(void *);
     void fn_8018212C(s32 *, s32 *, void **);
@@ -15838,10 +15838,10 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
         sNode = fn_80036E48(*arg1, idNode);
         sNode = (s8)sNode;
         sNode2 = (s8)sNode2;
-        c0 = (u8)fn_80036F5C(*arg1, sNode);
-        if ((u8)fn_80036F5C(*arg1, sNode2) != c0) {
-            c0 = (u8)fn_80036F5C(*arg1, sNode);
-            swap = (c0 <= (u8)fn_80036F5C(*arg1, sNode2));
+        c0 = (u8)Unit_GetSupportRank(*arg1, sNode);
+        if ((u8)Unit_GetSupportRank(*arg1, sNode2) != c0) {
+            c0 = (u8)Unit_GetSupportRank(*arg1, sNode);
+            swap = (c0 <= (u8)Unit_GetSupportRank(*arg1, sNode2));
         } else {
             c0 = fn_80036FC4(*arg1, sNode);
             swap = (c0 <= fn_80036FC4(*arg1, sNode2));
@@ -15919,7 +15919,7 @@ split:
 void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
     void *fn_80016B7C(void *);
     s32 fn_80036E48(void *, void *);
-    s32 fn_80036F5C(void *, s32);
+    s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
     void fn_80182514(s32 *, void **, s32 *);
 
@@ -15978,12 +15978,12 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
             s2 = fn_80036E48(*arg2, id2);
             s1 = fn_80036E48(*arg2, id1);
             ss1 = (s8)s1;
-            c0 = (u8)fn_80036F5C(*arg2, ss1);
+            c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
             ss2 = (s8)s2;
-            c1 = (u8)fn_80036F5C(*arg2, ss2);
+            c1 = (u8)Unit_GetSupportRank(*arg2, ss2);
             if (c1 != c0) {
-                c0 = (u8)fn_80036F5C(*arg2, ss1);
-                take = (c0 <= (u8)fn_80036F5C(*arg2, ss2));
+                c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+                take = (c0 <= (u8)Unit_GetSupportRank(*arg2, ss2));
             } else {
                 c0 = fn_80036FC4(*arg2, ss1);
                 take = (c0 <= fn_80036FC4(*arg2, ss2));
@@ -16019,12 +16019,12 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
                     s2 = fn_80036E48(*arg2, id2);
                     s1 = fn_80036E48(*arg2, id1);
                     ss1 = (s8)s1;
-                    c0 = (u8)fn_80036F5C(*arg2, ss1);
+                    c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
                     ss2 = (s8)s2;
-                    c1 = (u8)fn_80036F5C(*arg2, ss2);
+                    c1 = (u8)Unit_GetSupportRank(*arg2, ss2);
                     if (c1 != c0) {
-                        c0 = (u8)fn_80036F5C(*arg2, ss1);
-                        take = (c0 <= (u8)fn_80036F5C(*arg2, ss2));
+                        c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+                        take = (c0 <= (u8)Unit_GetSupportRank(*arg2, ss2));
                     } else {
                         c0 = fn_80036FC4(*arg2, ss1);
                         take = (c0 <= fn_80036FC4(*arg2, ss2));
