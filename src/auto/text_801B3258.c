@@ -7909,51 +7909,52 @@ void GActor_FreeTexWork(void *arg0) {
     *(void **)((u8 *)arg0 + 0x30) = 0;
 }
 
-void GActor_InitTexWork(void *arg0) {
+void GActor_InitTexWork(void *proc) {
+    /* Alloc 32-slot tex work, load 608x448 texture into slot 0, attach to proc. */
     void *Heap_Alloc(s32);
     s32 fn_800C45B8(void *, void *, s32);
     void *GXGetTexBufferSize(s32, s32, s32, s32, s32);
     void fn_8005376C(void);
     extern u16 lbl_8027D594[];
-    void *temp;
+    void *work;
 
-    temp = Heap_Alloc(0x390);
-    if (temp != NULL) {
-        *(s32 *)((u8 *)temp + 0x4) = 0;
-        *(s32 *)((u8 *)temp + 0x18) = 0;
-        *(s32 *)((u8 *)temp + 0x2C) = 0;
-        *(s32 *)((u8 *)temp + 0x40) = 0;
-        *(s32 *)((u8 *)temp + 0x54) = 0;
-        *(s32 *)((u8 *)temp + 0x68) = 0;
-        *(s32 *)((u8 *)temp + 0x7C) = 0;
-        *(s32 *)((u8 *)temp + 0x90) = 0;
-        *(s32 *)((u8 *)temp + 0xA4) = 0;
-        *(s32 *)((u8 *)temp + 0xB8) = 0;
-        *(s32 *)((u8 *)temp + 0xCC) = 0;
-        *(s32 *)((u8 *)temp + 0xE0) = 0;
-        *(s32 *)((u8 *)temp + 0xF4) = 0;
-        *(s32 *)((u8 *)temp + 0x108) = 0;
-        *(s32 *)((u8 *)temp + 0x11C) = 0;
-        *(s32 *)((u8 *)temp + 0x130) = 0;
-        *(s32 *)((u8 *)temp + 0x144) = 0;
-        *(s32 *)((u8 *)temp + 0x158) = 0;
-        *(s32 *)((u8 *)temp + 0x16C) = 0;
-        *(s32 *)((u8 *)temp + 0x180) = 0;
-        *(s32 *)((u8 *)temp + 0x194) = 0;
-        *(s32 *)((u8 *)temp + 0x1A8) = 0;
-        *(s32 *)((u8 *)temp + 0x1BC) = 0;
-        *(s32 *)((u8 *)temp + 0x1D0) = 0;
-        *(s32 *)((u8 *)temp + 0x1E4) = 0;
-        *(s32 *)((u8 *)temp + 0x1F8) = 0;
-        *(s32 *)((u8 *)temp + 0x20C) = 0;
-        *(s32 *)((u8 *)temp + 0x220) = 0;
-        *(s32 *)((u8 *)temp + 0x234) = 0;
-        *(s32 *)((u8 *)temp + 0x248) = 0;
-        *(s32 *)((u8 *)temp + 0x25C) = 0;
-        *(s32 *)((u8 *)temp + 0x270) = 0;
-        *(s32 *)temp = fn_800C45B8(GXGetTexBufferSize(0x260, 0x1C0, 0x27, 0, 0), (u8 *)lbl_8027D594 + 0x1A8, 0);
+    work = Heap_Alloc(0x390);
+    if (work != NULL) {
+        *(s32 *)((u8 *)work + 0x4) = 0;
+        *(s32 *)((u8 *)work + 0x18) = 0;
+        *(s32 *)((u8 *)work + 0x2C) = 0;
+        *(s32 *)((u8 *)work + 0x40) = 0;
+        *(s32 *)((u8 *)work + 0x54) = 0;
+        *(s32 *)((u8 *)work + 0x68) = 0;
+        *(s32 *)((u8 *)work + 0x7C) = 0;
+        *(s32 *)((u8 *)work + 0x90) = 0;
+        *(s32 *)((u8 *)work + 0xA4) = 0;
+        *(s32 *)((u8 *)work + 0xB8) = 0;
+        *(s32 *)((u8 *)work + 0xCC) = 0;
+        *(s32 *)((u8 *)work + 0xE0) = 0;
+        *(s32 *)((u8 *)work + 0xF4) = 0;
+        *(s32 *)((u8 *)work + 0x108) = 0;
+        *(s32 *)((u8 *)work + 0x11C) = 0;
+        *(s32 *)((u8 *)work + 0x130) = 0;
+        *(s32 *)((u8 *)work + 0x144) = 0;
+        *(s32 *)((u8 *)work + 0x158) = 0;
+        *(s32 *)((u8 *)work + 0x16C) = 0;
+        *(s32 *)((u8 *)work + 0x180) = 0;
+        *(s32 *)((u8 *)work + 0x194) = 0;
+        *(s32 *)((u8 *)work + 0x1A8) = 0;
+        *(s32 *)((u8 *)work + 0x1BC) = 0;
+        *(s32 *)((u8 *)work + 0x1D0) = 0;
+        *(s32 *)((u8 *)work + 0x1E4) = 0;
+        *(s32 *)((u8 *)work + 0x1F8) = 0;
+        *(s32 *)((u8 *)work + 0x20C) = 0;
+        *(s32 *)((u8 *)work + 0x220) = 0;
+        *(s32 *)((u8 *)work + 0x234) = 0;
+        *(s32 *)((u8 *)work + 0x248) = 0;
+        *(s32 *)((u8 *)work + 0x25C) = 0;
+        *(s32 *)((u8 *)work + 0x270) = 0;
+        *(s32 *)work = fn_800C45B8(GXGetTexBufferSize(0x260, 0x1C0, 0x27, 0, 0), (u8 *)lbl_8027D594 + 0x1A8, 0);
     }
-    *(void **)((u8 *)arg0 + 0x30) = temp;
+    *(void **)((u8 *)proc + 0x30) = work;
     fn_8005376C();
 }
 
