@@ -2272,11 +2272,11 @@ extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
         virtual void v4(void *) = 0;
     };
     extern f32 lbl_80368DA8;
-    extern f32 lbl_80368DB8;
+    extern f32 gUiMenuZBias;
     extern f32 gUiMenuTextScale;
 
     Prim2D_Begin();
-    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
+    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - gUiMenuZBias, lbl_80368DA8);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
