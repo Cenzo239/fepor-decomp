@@ -11224,7 +11224,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
 }
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
-extern "C" void fn_80178FFC(void *unused, void *arg1) {
+extern "C" void Ui_HandleRowCursorInput(void *unused, void *arg1) {
     void *fn_8000B908(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, void *, f32, f32);
