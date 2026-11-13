@@ -220,7 +220,7 @@ s32 __CARDRetry(s32 chan) {
     s32 EXIDma(s32, s32, s32, s32, void *);
     void fn_80204770(void *);
     void OSSetAlarm(void *, s64, void *);
-    s32 fn_80238E78(s32, void *, s32, s32);
+    s32 EXIImmEx(s32, void *, s32, s32);
     void fn_80217034();
     void fn_80216BBC();
     u8 *card;
@@ -247,13 +247,13 @@ s32 __CARDRetry(s32 chan) {
         OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(s32 *)(card + 0xC) / 0x2000), fn_80217034);
         break;
     }
-    if (fn_80238E78(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) == 0) {
+    if (EXIImmEx(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) == 0) {
         EXIDeselect(chan);
         EXIUnlock(chan);
         return -3;
     }
     if (card[0x94] == 0x52) {
-        if (fn_80238E78(chan, *(u8 **)(card + 0x80) + 0x200, *(s32 *)(card + 0x14), 1) == 0) {
+        if (EXIImmEx(chan, *(u8 **)(card + 0x80) + 0x200, *(s32 *)(card + 0x14), 1) == 0) {
             EXIDeselect(chan);
             EXIUnlock(chan);
             return -3;
@@ -384,7 +384,7 @@ s32 fn_802176AC(s32 chan, void *callback) {
     extern s32 EXIDma(s32, s32, s32, s32, void *);
     extern void EXIDeselect(s32);
     extern void EXIUnlock(s32);
-    s32 fn_80238E78(s32, void *, s32, s32);
+    s32 EXIImmEx(s32, void *, s32, s32);
     void fn_80216BBC(s32 arg0);
     u8 *card;
     s32 result;
@@ -403,8 +403,8 @@ s32 fn_802176AC(s32 chan, void *callback) {
     if (result == -1) {
         result = 0;
     } else if (result >= 0) {
-        if (!fn_80238E78(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) ||
-            !fn_80238E78(chan, *(u8 **)(card + 0x80) + 0x200, *(s32 *)(card + 0x14), 1) ||
+        if (!EXIImmEx(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) ||
+            !EXIImmEx(chan, *(u8 **)(card + 0x80) + 0x200, *(s32 *)(card + 0x14), 1) ||
             !EXIDma(chan, *(s32 *)(card + 0xB4), 0x200, *(s32 *)(card + 0xA4), fn_80216BBC)) {
             *(void **)(card + 0xC8) = 0;
             EXIDeselect(chan);

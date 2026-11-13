@@ -313,7 +313,7 @@ BOOL EXIImm(s32 chan, void *buf, s32 len, u32 type, void (*callback)(s32, void *
     OSRestoreInterrupts(enabled);
     return TRUE;
 }
-s32 fn_80238E78(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 EXIImmEx(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 EXIImm(s32, s32, s32, s32, s32);
     s32 EXISync(s32);
     

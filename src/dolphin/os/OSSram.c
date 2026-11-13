@@ -150,7 +150,7 @@ s32 fn_80209010(s32 arg0, s32 arg1, s32 arg2) {
     s32 EXISelect(M2C_UNK, M2C_UNK, M2C_UNK);
     s32 EXISync(M2C_UNK);
     M2C_UNK EXIUnlock(M2C_UNK);
-    s32 fn_80238E78(M2C_UNK, s32, s32, M2C_UNK);
+    s32 EXIImmEx(M2C_UNK, s32, s32, M2C_UNK);
     extern M2C_UNK fn_80208FB0;
     s32 sp14;
     s32 temp_r31;
@@ -168,7 +168,7 @@ s32 fn_80209010(s32 arg0, s32 arg1, s32 arg2) {
     sp14 = ((arg1 << 6) + 0x100) | 0xA0000000;
     temp_r31_2 = EXIImm(0, &sp14, 4, 1, 0) == 0;
     temp_r31_3 = temp_r31_2 | (EXISync(0) == 0);
-    temp_r31_4 = temp_r31_3 | (fn_80238E78(0, arg0, arg2, 1) == 0);
+    temp_r31_4 = temp_r31_3 | (EXIImmEx(0, arg0, arg2, 1) == 0);
     temp_r31 = temp_r31_4 | (EXIDeselect(0) == 0);
     EXIUnlock(0);
     return temp_r31 == 0;
