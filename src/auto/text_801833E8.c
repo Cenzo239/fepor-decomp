@@ -7918,7 +7918,7 @@ void Ui_Meter_ApplyDelta(void *arg0, s32 arg1, u8 arg2, void *arg3) {
     }
 }
 
-void fn_80196A58(void *arg0, s32 arg1, s32 arg2) {
+void Ui_Meter_Init(void *arg0, s32 arg1, s32 arg2) {
     void fn_801232F4(void *, f32, f32);
     void fn_80123300(void *, s32);
     extern void *gGame;

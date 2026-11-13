@@ -4205,7 +4205,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     void *fn_800E7DF8(void *, String *);
     void fn_800E2218(void *, void *);
     void fn_80123300(void *, s32);
-    void fn_80196A58(void *, s32, s32);
+    void Ui_Meter_Init(void *, s32, s32);
     extern char lbl_802704F8[];
     extern void *lbl_8028DA94[];
     extern void *lbl_8028DAA4[];
@@ -4340,7 +4340,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
         String_Destroy(&s5, -1);
     }
 
-    fn_80196A58(*(void **)((u8 *)self + 0xA4), r28, r29);
+    Ui_Meter_Init(*(void **)((u8 *)self + 0xA4), r28, r29);
     fn_80123300(pE8, r27);
     fn_80123300(pE4, r25 - r20);
     fn_80123300(pE0, r24);
@@ -4348,7 +4348,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     fn_800E2218(pD0, *(void **)((u8 *)lbl_8028DA94 + idx));
     fn_800E2218(pCC, *(void **)((u8 *)lbl_8028DAA4 + idx));
     fn_800E2218(pC8, *(void **)((u8 *)lbl_8028DA94 + idx));
-    fn_80196A58(*(void **)((u8 *)self + 0xA8), r22, r23);
+    Ui_Meter_Init(*(void **)((u8 *)self + 0xA8), r22, r23);
     fn_80123300(pDC, r21);
     fn_80123300(pD8, r19 - r26);
     fn_80123300(pD4, r18);
