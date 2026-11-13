@@ -8213,40 +8213,41 @@ void fn_801C7FC0(u32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void MonitorWin_Release(Arg801C838C *arg0) {
+extern "C" void MonitorWin_Release(Arg801C838C *panel) {
     void FileCache_ReleaseSlot(void *);
     struct Obj {
-        virtual void v0(s32) = 0;
+        virtual void destroy(s32) = 0;
     };
-    Obj *temp;
+    Obj *child;
 
-    if (arg0->field30 != 0) {
-        FileCache_ReleaseSlot(&arg0->field30);
+    /* Release the monitor atlas key and destroy its child widgets. */
+    if (panel->field30 != 0) {
+        FileCache_ReleaseSlot(&panel->field30);
     }
-    if (arg0 != NULL) {
-        temp = M2C_FIELD(arg0, Obj **, 0x40);
-        if (temp != NULL) {
-            temp->v0(1);
+    if (panel != NULL) {
+        child = M2C_FIELD(panel, Obj **, 0x40);
+        if (child != NULL) {
+            child->destroy(1);
         }
-        temp = M2C_FIELD(arg0, Obj **, 0x44);
-        if (temp != NULL) {
-            temp->v0(1);
+        child = M2C_FIELD(panel, Obj **, 0x44);
+        if (child != NULL) {
+            child->destroy(1);
         }
-        temp = M2C_FIELD(arg0, Obj **, 0x38);
-        if (temp != NULL) {
-            temp->v0(1);
+        child = M2C_FIELD(panel, Obj **, 0x38);
+        if (child != NULL) {
+            child->destroy(1);
         }
-        temp = M2C_FIELD(arg0, Obj **, 0x3C);
-        if (temp != NULL) {
-            temp->v0(1);
+        child = M2C_FIELD(panel, Obj **, 0x3C);
+        if (child != NULL) {
+            child->destroy(1);
         }
-        temp = M2C_FIELD(arg0, Obj **, 0x48);
-        if (temp != NULL) {
-            temp->v0(1);
+        child = M2C_FIELD(panel, Obj **, 0x48);
+        if (child != NULL) {
+            child->destroy(1);
         }
-        temp = M2C_FIELD(arg0, Obj **, 0x4C);
-        if (temp != NULL) {
-            temp->v0(1);
+        child = M2C_FIELD(panel, Obj **, 0x4C);
+        if (child != NULL) {
+            child->destroy(1);
         }
     }
 }
