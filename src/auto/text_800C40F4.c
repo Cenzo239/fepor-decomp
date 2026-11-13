@@ -2851,25 +2851,25 @@ void fn_800CAF74(void *arg0) {
     char buf[0x40];
     String str;
     u8 scratch;
-    char *p;
-    void *obj;
-    u8 ch;
-    void *self;
 
-    self = arg0;
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
     if (lbl_80367878 != 0) {
-        p = (char *)lbl_8036787C + 0x268;
+        char *p = (char *)lbl_8036787C + 0x268;
         String_AssignCStr(&str, p, strlen(p));
     } else if ((u8 *)gBattle + 0x56C != 0) {
-        obj = *(void **)((u8 *)gBattle + 0x56C);
+        void *obj = *(void **)((u8 *)gBattle + 0x56C);
         if (obj != 0) {
-            ch = obj != 0 ? ((u8 *)obj)[0x15] : 0;
+            u8 ch;
+            if (obj != 0) {
+                ch = ((u8 *)obj)[0x15];
+            } else {
+                ch = 0;
+            }
             sprintf(buf, lbl_802704F8 + 0x1B1, (u8)ch + 0x60, UnitRef_GetName());
             String_AssignCStr(&str, buf, strlen(buf));
         }
     }
-    String_Copy(self, &str);
+    String_Copy(arg0, &str);
     String_Destroy(&str, -1);
 }
 
@@ -10507,13 +10507,13 @@ extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char 
     s32 i;
     s32 count;
     u8 flag;
-    List *list;
-    Cb *cb;
-    const char *name;
     const char *filter;
+    const char *name;
+    Cb *cb;
+    List *list;
 
-    cb = (Cb *)arg1;
     list = (List *)arg0;
+    cb = (Cb *)arg1;
     name = arg2;
     filter = arg3;
     cb->v9();
@@ -12097,15 +12097,15 @@ extern "C" void *fn_800E4454(void *arg0, String *arg1) {
         virtual void *v4(s32) = 0;
     };
     void fn_800DF6DC(String *, void *);
-    s32 String_Compare(String *, u32, u32, char *, u32);
-    void *String_Destroy(String *, s32);
-    String str;
+    s32 fn_800C9400(String *, u32, u32, char *, u32);
+    void *fn_800C9A60(String *, s32);
+    void *child;
     void *self;
     String *key;
     s32 i;
-    u8 found;
-    void *child;
     Obj *list;
+    String str;
+    u8 found;
     s32 n;
 
     self = arg0;
@@ -12123,10 +12123,10 @@ extern "C" void *fn_800E4454(void *arg0, String *arg1) {
             fn_800DF6DC(&str, child);
             found = 0;
             if (str.size == key->size &&
-                String_Compare(&str, 0, str.size, key->data, key->size) == 0) {
+                fn_800C9400(&str, 0, str.size, key->data, key->size) == 0) {
                 found = 1;
             }
-            String_Destroy(&str, -1);
+            fn_800C9A60(&str, -1);
             if (found != 0) {
                 return child;
             }
@@ -14149,8 +14149,7 @@ void fn_800E8BF8(u8 *self, f32 *vec, f32 *vec2, s32 arg3, f32 farg0) {
     f32 saved;
 
     saved = farg0;
-    farg0 = vec[0];
-    if (lbl_80369F78 != farg0 || lbl_80369F78 != vec[1] || lbl_80369F78 != vec[2]) {
+    if (lbl_80369F78 != (farg0 = vec[0]) || lbl_80369F78 != vec[1] || lbl_80369F78 != vec[2]) {
         fn_800DF44C(self + 0x134, arg3, farg0, vec[1], vec[2]);
     }
     fn_800DF44C(self + 0x194, arg3, vec2[0], vec2[1], vec2[2]);
@@ -15039,7 +15038,7 @@ void fn_800EAC7C(s32 arg0) {
     };
     void fn_800EB80C(void);
     void Process_Goto(s32, s32);
-    s32 fn_8021D6D8(s32, s32, u8 *);
+    s32 Card_GetFileAttr(s32, s32, u8 *);
     s32 fn_8021D718(s32, s32, u8, void *);
     extern struct CardWork gCardWork;
     u8 sp8;
@@ -15055,7 +15054,7 @@ void fn_800EAC7C(s32 arg0) {
     }
     if (skip == 0) {
         temp = *(s32 *)&gCardWork.fileInfo[4];
-        fn_8021D6D8(gCardWork.chan, temp, &sp8);
+        Card_GetFileAttr(gCardWork.chan, temp, &sp8);
         sp8 |= 8;
         gCardWork.busy = 1;
         gCardWork.result = fn_8021D718(gCardWork.chan, temp, sp8, fn_800EB80C);
@@ -21601,34 +21600,34 @@ retry_loop:
 
 #pragma use_lmw_stmw on
 void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
-    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
+    void fn_800213D0(void *, u8, u8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
     void fn_80022FD8(void *, s32);
-    s8 Unit_GetMov(void *);
-    u8 Status_Test(void *, s32);
-    extern u8 gBattleMap[];
+    s8 fn_8003A398(void *);
+    u8 fn_80105BC0(void *, s32);
+    extern u8 lbl_802CA518[];
     u8 *map;
     s32 t14;
     s32 t15;
     s32 slot;
 
-    map = gBattleMap;
-    t14 = Status_Test(unit + 0x1BC, 0x14) != 0;
-    t15 = Status_Test(unit + 0x1BC, 0x15) != 0;
-    fn_80022FD8(gBattleMap, arg1);
-    fn_800227F8(gBattleMap, *(void **)(unit + 0x18C));
-    fn_80022748(gBattleMap, 0);
+    map = lbl_802CA518;
+    t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
+    t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
+    fn_80022FD8(lbl_802CA518, arg1);
+    fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
+    fn_80022748(lbl_802CA518, 0);
     if (*(u32 *)(unit + 0x254) & 0x20000) {
         fn_800227D0(map, 0x37, 0x30);
     }
     if (arg2 != -1) {
         slot = arg2;
     } else {
-        slot = (s8)Unit_GetMov(unit);
+        slot = (s8)fn_8003A398(unit);
     }
-    Map_FloodMoveRange(map, unit[0x19E], unit[0x19F], (u16)slot, t14, t15);
+    fn_800213D0(map, unit[0x19E], unit[0x19F], (u16)slot, t14, t15);
 }
 
 #pragma use_lmw_stmw on
@@ -21668,44 +21667,34 @@ void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
 #pragma use_lmw_stmw on
 void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
 {
-    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
+    void fn_800213D0(void *, s8, s8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
     void fn_80022FD8(void *, s32);
-    s8 Unit_GetMov(void *);
-    u8 Status_Test(void *, s32);
-    extern u8 gBattleMap[];
+    s8 fn_8003A398(void *);
+    u8 fn_80105BC0(void *, s32);
+    extern u8 lbl_802CA518[];
     u8 *map;
-    s32 a4;
-    u8 *u;
-    s32 a1;
-    s32 a0;
     s32 t14;
-    s32 a3;
     s32 t15;
     s32 slot;
 
-    map = gBattleMap;
-    a4 = arg4;
-    u = unit;
-    a1 = arg1;
-    a0 = arg0;
-    a3 = arg3;
-    t14 = Status_Test(u + 0x1BC, 0x14) != 0;
-    t15 = Status_Test(u + 0x1BC, 0x15) != 0;
-    fn_80022FD8(gBattleMap, a3);
-    fn_800227F8(gBattleMap, *(void **)(u + 0x18C));
-    fn_80022748(gBattleMap, 0);
-    if (*(u32 *)(u + 0x254) & 0x20000) {
+    map = lbl_802CA518;
+    t14 = fn_80105BC0(unit + 0x1BC, 0x14) != 0;
+    t15 = fn_80105BC0(unit + 0x1BC, 0x15) != 0;
+    fn_80022FD8(lbl_802CA518, arg3);
+    fn_800227F8(lbl_802CA518, *(void **)(unit + 0x18C));
+    fn_80022748(lbl_802CA518, 0);
+    if (*(u32 *)(unit + 0x254) & 0x20000) {
         fn_800227D0(map, 0x37, 0x30);
     }
-    if (a4 != -1) {
-        slot = a4;
+    if (arg4 != -1) {
+        slot = arg4;
     } else {
-        slot = (s8)Unit_GetMov(u);
+        slot = (s8)fn_8003A398(unit);
     }
-    Map_FloodMoveRange(map, (s8)a0, (s8)a1, (u16)slot, t14, t15);
+    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)slot, t14, t15);
 }
 #pragma use_lmw_stmw reset
 

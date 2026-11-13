@@ -3335,7 +3335,7 @@ s32 fn_8021D614(s32 arg0, u32 *arg1) {
 }
 
 #pragma dont_inline on
-s32 fn_8021D6D8(s32 arg0, s32 arg1, u8 *arg2) {
+s32 Card_GetFileAttr(s32 arg0, s32 arg1, u8 *arg2) {
     u8 entry[0x40];
     s32 result;
 
