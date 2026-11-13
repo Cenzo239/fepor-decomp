@@ -1176,7 +1176,7 @@ void *fn_80107468(void *arg0) {
     return *(void **)((char *)temp_r29 + 0x18);
 }
 
-s32 fn_8010764C(u8 *arg0) {
+s32 Dispos_ResolveUnit(u8 *arg0) {
     void fn_80107B54(u32 *, u32 *, u8);
     void *fn_80016BDC(void *);
     void fn_8003816C(void *, u8, u8);
