@@ -443,26 +443,27 @@ f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3) {
 }
 #pragma global_optimizer on
 s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
+    s32 dy;
+    s32 sx1;
+    s32 dx;
     s32 sy1;
     s32 sy2;
-    s32 sx1;
     s32 sx2;
-    s32 dy;
-    s32 dx;
     u16 flags;
     u8 dir;
-    s32 r;
+    s32 masked;
+    s32 b;
 
     sy2 = (s8)y2;
     sy1 = (s8)y1;
     dy = sy1 - sy2;
-    if (dy < 0) {
+    if (0 > dy) {
         dy = -dy;
     }
     sx2 = (s8)x2;
     sx1 = (s8)x1;
     dx = sx1 - sx2;
-    if (dx < 0) {
+    if (0 > dx) {
         dx = -dx;
     }
     if (dx + dy != 1) {
@@ -470,20 +471,20 @@ s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
     }
     map += (sx1 + (sy1 << 6)) << 1;
     flags = *(u16 *)(map + 0x408E);
-    if (sx1 < sx2) {
+    if ((s8)x1 < (s8)x2) {
         dir = 2;
-    } else if (sx1 > sx2) {
+    } else if ((s8)x1 > (s8)x2) {
         dir = 1;
-    } else if (sy1 < sy2) {
+    } else if ((s8)y1 < (s8)y2) {
         dir = 4;
-    } else if (sy1 > sy2) {
+    } else if ((s8)y1 > (s8)y2) {
         dir = 8;
     } else {
         dir = 0x10;
     }
-    r = flags & dir;
-    r = r != 0;
-    return r != 0;
+    masked = flags & dir;
+    b = masked != 0;
+    return b != 0;
 }
 
 void fn_8001F91C(void *map, s8 centerX, s8 centerY, s8 radius) {
@@ -3170,7 +3171,7 @@ void fn_80025BA0(void) {
     }
 }
 
-void fn_80025C5C(void *arg0, s32 arg1) {
+void UnitPair_Read(void *arg0, s32 arg1) {
     u8 Stream_ReadU8(s32);
     void Stream_Read(s32, s32, void *);
     extern u8 gUnits[];
