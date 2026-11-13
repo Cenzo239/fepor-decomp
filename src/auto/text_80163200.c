@@ -13745,7 +13745,7 @@ s32 fn_8017DF4C(void) {
     return 0;
 }
 
-s32 fn_8017E08C(void) {
+s32 FloatAnim_IsActive(void) {
     return Process_Find(&E_FloatAnim_script) != 0;
 }
 
