@@ -16195,14 +16195,14 @@ s32 fn_8018286C(s32 arg0, s32 arg1) {
 s32 fn_80182A0C(s32 arg0) {
     u8 fn_800F5504(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
-    u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
+    u8 Ai_FindLowestCostUnitTile(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
     extern u8 fn_80182C84[];
     s16 spA;
     s16 sp8;
 
-    if ((fn_8010F52C(arg0, fn_80182C84) == 0) && (fn_8018D4CC(arg0, fn_80182C84) == 0) && (fn_800F5504(fn_80182C84, 0xF) == 0) && (fn_80101F0C(fn_80182C84, arg0, &spA, &sp8) != 0)) {
+    if ((fn_8010F52C(arg0, fn_80182C84) == 0) && (fn_8018D4CC(arg0, fn_80182C84) == 0) && (fn_800F5504(fn_80182C84, 0xF) == 0) && (Ai_FindLowestCostUnitTile(fn_80182C84, arg0, &spA, &sp8) != 0)) {
         Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
@@ -16211,7 +16211,7 @@ s32 fn_80182A0C(s32 arg0) {
 s32 fn_80182AC4(s32 arg0) {
     u8 fn_800F5504(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
-    u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
+    u8 Ai_FindLowestCostUnitTile(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
     extern u8 Ai_UnitIsHostileToActive[];
@@ -16219,7 +16219,7 @@ s32 fn_80182AC4(s32 arg0) {
     s16 spA;
     s16 sp8;
 
-    if ((fn_8010F52C(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_800F5504(fn_80182CE4, 0xF) == 0) && (fn_80101F0C(fn_80182CE4, arg0, &spA, &sp8) != 0)) {
+    if ((fn_8010F52C(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_800F5504(fn_80182CE4, 0xF) == 0) && (Ai_FindLowestCostUnitTile(fn_80182CE4, arg0, &spA, &sp8) != 0)) {
         Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
@@ -16229,7 +16229,7 @@ s32 Ai_TryApproachIke(s32 arg0) {
     void *Unit_FindIke(s32);
     u8 fn_800F5504(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
-    u8 fn_80101F0C(u8 *, s32, s16 *, s16 *);
+    u8 Ai_FindLowestCostUnitTile(u8 *, s32, s16 *, s16 *);
     u8 fn_8010F52C(s32, u8 *);
     u8 fn_8018D4CC(s32, u8 *);
     extern u8 Ai_UnitIsIke[];
@@ -16249,7 +16249,7 @@ s32 Ai_TryApproachIke(s32 arg0) {
     }
     if ((fn_8010F52C(arg0, Ai_UnitIsIke) == 0) && (fn_8018D4CC(arg0, Ai_UnitIsIke) == 0) &&
         (fn_800F5504(Ai_UnitIsIke, 0xF) == 0) &&
-        (fn_80101F0C(Ai_UnitIsIke, arg0, &spA, &sp8) != 0)) {
+        (Ai_FindLowestCostUnitTile(Ai_UnitIsIke, arg0, &spA, &sp8) != 0)) {
         Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
     }
     return 1;
