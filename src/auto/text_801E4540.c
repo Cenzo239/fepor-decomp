@@ -384,7 +384,7 @@ void TabMenu_Draw(void *arg0) {
     void fn_80009BC0(void *, s32);
     void TabMenu_DrawTab0(void *);
     void TabMenu_DrawTab1(void *);
-    void fn_801E554C(void *);
+    void TabMenu_DrawTab2(void *);
     void fn_80009B98(void);
     void fn_801E551C(void);
     extern f32 lbl_8036B6EC;
@@ -489,7 +489,7 @@ void TabMenu_Draw(void *arg0) {
         TabMenu_DrawTab1(arg0);
         break;
     case 2:
-        fn_801E554C(arg0);
+        TabMenu_DrawTab2(arg0);
         break;
     }
     Prim2D_Begin();
@@ -502,7 +502,7 @@ void fn_801E551C(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801E554C(void *arg0) {
+void TabMenu_DrawTab2(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
