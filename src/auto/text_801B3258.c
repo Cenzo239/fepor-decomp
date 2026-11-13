@@ -11547,7 +11547,7 @@ void ScriptObj_Start(void *name, void *parent) {
     extern u8 gScriptObjDefs[];
     extern u16 gScriptObjSlots[];
     extern u8 lbl_8027DF20[];
-    extern u8 lbl_8029992C[];
+    extern u8 gScriptObjProc[];
     extern f32 gFloatMinusOne;
     u8 *def;
     u8 *p;
@@ -11571,7 +11571,7 @@ void ScriptObj_Start(void *name, void *parent) {
             fn_801CFAB8(slot, (u8)i, def);
             fn_8005C8B4(lbl_8027DF20 + 0x13E);
             fn_8005C8B4(slot + 0x12C);
-            *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, parent);
+            *(void **)(slot + 0x150) = Process_Create(gScriptObjProc, parent);
             scale = gFloatMinusOne;
             *(u8 *)(*(u8 **)(slot + 0x150) + 0x30) = i;
             FallingParticle_CreateEx(*(void **)(slot + 0x150), scale);
