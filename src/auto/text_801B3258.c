@@ -14765,7 +14765,7 @@ void fn_801D8E80(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_UnlinkByKey(void *);
     void fn_801DB5B4(void *, void *);
-    void fn_801DC588(void *);
+    void MsgBox_Layout(void *);
     s16 fn_8021A8C8(s32, s32, s32);
     extern u8 lbl_80299C88[];
     extern u32 gUiInputFlags;
@@ -14935,7 +14935,7 @@ void fn_801D8E80(void *arg0) {
         }
         break;
     }
-    fn_801DC588(st + 0x330);
+    MsgBox_Layout(st + 0x330);
 
     {
         s16 k;
@@ -15457,7 +15457,7 @@ void fn_801DCD3C(u8 *arg0)
 }
 
 void fn_801DDAC8(void *arg0) {
-    M2C_UNK fn_801DC588();
+    M2C_UNK MsgBox_Layout();
     s16 temp_r3;
     s16 *temp_r4;
 
@@ -15491,7 +15491,7 @@ void fn_801DDAC8(void *arg0) {
         }
         break;
     }
-    fn_801DC588();
+    MsgBox_Layout();
 }
 
 extern void *lbl_801D3B14;
@@ -15501,7 +15501,7 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     void *memcpy(void *, const void *, u32);
     char *Msg_Expand(s32);
     s32 Text_MeasureWidth(char *, s32, f32);
-    M2C_UNK fn_801DC588();
+    M2C_UNK MsgBox_Layout();
     s32 n;
     char *s;
     char *start;
@@ -15574,7 +15574,7 @@ void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     if (arg2) {
         w->flags |= 2;
     }
-    fn_801DC588(w);
+    MsgBox_Layout(w);
 }
 #pragma opt_propagation reset
 void fn_801DDDE8(s32 arg0, s32 arg1) {
