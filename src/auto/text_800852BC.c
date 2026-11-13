@@ -1505,7 +1505,7 @@ void fn_80088FFC(void *arg0) {
     void GXSetProjection(void *, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_8021FBB8(void);
     void fn_8021F4E4(s32, s32);
@@ -1539,7 +1539,7 @@ void fn_80088FFC(void *arg0) {
     GXSetProjection(&sp8[0], 1);
     PSMTXTrans(&sp8[0], lbl_80369690, lbl_80369690, lbl_803696A0);
     GXLoadPosMtxImm(&sp8[0], 0);
-    fn_80224E1C(0);
+    GXSetCurrentMtx(0);
     GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
     fn_8021FBB8();
     fn_8021F4E4(9, 1);
@@ -1780,7 +1780,7 @@ void fn_80089680(void *arg0) {
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
@@ -1825,7 +1825,7 @@ void fn_80089680(void *arg0) {
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
-        fn_80224E1C(0);
+        GXSetCurrentMtx(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
         fn_8022224C(4, &sp8);
@@ -1934,7 +1934,7 @@ void fn_80089A28(void *arg0) {
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
     extern f32 lbl_80369694;
@@ -2010,7 +2010,7 @@ void fn_80089A28(void *arg0) {
     GXSetProjection(sp8, 1);
     PSMTXTrans(sp8, lbl_80369690, lbl_80369690, lbl_803696A0);
     GXLoadPosMtxImm(sp8, 0);
-    fn_80224E1C(0);
+    GXSetCurrentMtx(0);
     GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
     fn_8021FBB8();
     fn_8021F4E4(9, 1);
@@ -2153,7 +2153,7 @@ void fn_80089FA8(void *arg0) {
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
     extern f32 lbl_80369694;
@@ -2207,7 +2207,7 @@ void fn_80089FA8(void *arg0) {
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
-        fn_80224E1C(0);
+        GXSetCurrentMtx(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         fn_8021FBB8();
         fn_8021F4E4(9, 1);
@@ -2319,7 +2319,7 @@ void fn_8008A5AC(void *arg0) {
     void fn_80224684(s32, s32, s32);
     void GXSetProjection(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     extern s32 lbl_80367110;
     extern f32 lbl_80369694;
@@ -2365,7 +2365,7 @@ void fn_8008A5AC(void *arg0) {
         GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
-        fn_80224E1C(0);
+        GXSetCurrentMtx(0);
         GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
         fn_8021FBB8();
         fn_8021F4E4(9, 1);

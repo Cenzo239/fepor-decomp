@@ -1364,7 +1364,7 @@ void fn_80007B04(void)
     void GXSetScissor(u32, u32, u32);
     void fn_80009728(void *, void *, u8);
     void GXLoadPosMtxImm(void *, s16);
-    void fn_80224E1C(s16);
+    void GXSetCurrentMtx(s16);
     void fn_80009008(s32, u8, u8);
     extern void *lbl_80367140;
     extern f32 lbl_80368B98;
@@ -1488,7 +1488,7 @@ void fn_80007B04(void)
                     n++;
                 }
             }
-            fn_80224E1C(M2C_FIELD(*walk, s16 *, 0xC));
+            GXSetCurrentMtx(M2C_FIELD(*walk, s16 *, 0xC));
             node = *walk;
             if (M2C_FIELD(node, u16 *, 0x10) & 0x2000) {
                 void (*cb)(void *, void *, void *, u8) =

@@ -7393,7 +7393,7 @@ void fn_801959FC(void *arg0) {
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802240C8(s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     extern u8 lbl_8027A598[];
     extern u32 lbl_80368210;
     extern s32 lbl_8036AE48;
@@ -7435,7 +7435,7 @@ void fn_801959FC(void *arg0) {
     fn_80067FDC();
     PSMTXConcat(mtx, mtx);
     GXLoadPosMtxImm(mtx, 0);
-    fn_80224E1C(0);
+    GXSetCurrentMtx(0);
     color = lbl_8036AE48;
     fn_8022224C(4, &color);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);

@@ -7313,7 +7313,7 @@ void fn_801C65E0(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B430;
     extern f32 lbl_8036B434;
@@ -7343,7 +7343,7 @@ void fn_801C65E0(void *arg0) {
         PSMTXConcat(mtxA, mtxB, mtxC);
         PSMTXConcat(fn_80067FDC(), mtxC, mtxC);
         GXLoadPosMtxImm(mtxC, 0);
-        fn_80224E1C(0);
+        GXSetCurrentMtx(0);
         fn_8006ECCC(*(void **)((u8 *)obj + 0x38), tex, 9);
         fn_80222C50(tex, 0);
         fn_8021FBB8();
@@ -11920,7 +11920,7 @@ void fn_801D0480(void *arg0) {
     void fn_80220DEC(s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     f64 fn_80237E90(f32);
     extern f32 lbl_80367068;
     extern s32 lbl_8036B520;
@@ -12057,7 +12057,7 @@ void fn_801D0480(void *arg0) {
             fn_8006ECCC(*(void **)self, tex, 0);
             fn_80222C50(tex, 0);
             PSMTXTrans(mtxA, (f32)*(s16 *)(self + 0x18), (f32)*(s16 *)(self + 0x1A), lbl_8036B580);
-            fn_80224E1C(0);
+            GXSetCurrentMtx(0);
             GXLoadPosMtxImm(mtxA, 0);
             for (i = 0; i < width; i++) {
                 half = lbl_8036B58C * ((lbl_8036B590 * *(f32 *)(self + 0x1C) * (f32)seg[0x15]) / lbl_8036B584);

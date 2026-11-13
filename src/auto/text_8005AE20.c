@@ -5217,7 +5217,7 @@ void fn_80067EDC(void *arg0)
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void PSMTXIdentity(void *);
     void GXLoadPosMtxImm(void *, s32);
-    void fn_80224E1C(s32);
+    void GXSetCurrentMtx(s32);
     void GXSetScissor(u16, u16, u16, u16);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
@@ -5248,7 +5248,7 @@ void fn_80067EDC(void *arg0)
     *(u16 *)p &= 0xFFFE;
     PSMTXIdentity(mtx);
     GXLoadPosMtxImm(mtx, 0);
-    fn_80224E1C(0);
+    GXSetCurrentMtx(0);
     PSMTXIdentity(p + 0xA4);
     if (p == NULL) {
         p = lbl_803672F8;
@@ -6140,7 +6140,7 @@ void fn_8006B39C(void) {
 void fn_8006C2A4(void *arg0,s32 arg1){
 u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006049C(void*);s32 fn_80060520(void*);s32 fn_800604F4(void*);s32 fn_800604C8(void*);
 void fn_80220154(s32,s32,s32);void fn_8006DA64(void*,s32,void*);void fn_8006C748(void*,s32);
-void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void fn_80224E1C(s16);
+void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
 void fn_802245D8(s32,s32,s32,s32);void fn_80224684(s32,s32,s32);void fn_80067490(s32);
 void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
 extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
@@ -6163,7 +6163,7 @@ for(p=node;p;p=*(u8**)(p+4))*(s16*)(p+0xe)=-1;
 for(;node;node=*(u8**)(node+4)){
 if(!(*(u16*)(node+8)&0x400)&&(!(*(u32*)arg0&0x400000)||(*(u16*)(node+8)&0x8000))){
 if(*(u16*)(node+8)&2)fn_8006B39C(node,arg0,work);
-else{if(*(s16*)(node+0xe)<0)fn_8006A930(node,arg0,work);fn_80224E1C(*(s16*)(node+0xe));}
+else{if(*(s16*)(node+0xe)<0)fn_8006A930(node,arg0,work);GXSetCurrentMtx(*(s16*)(node+0xe));}
 if(*(u16*)(node+8)&0x1e0){
 if(*(u16*)(node+8)&0x40)fn_802245D8(1,4,1,0);
 if(*(u16*)(node+8)&0x80)fn_802245D8(3,0,0,0);

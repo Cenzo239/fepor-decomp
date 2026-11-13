@@ -518,7 +518,7 @@ void fn_80224DCC(void *arg0, s32 arg1) {
     *(u32 *)0xCC008000 = (temp_r5 | 0x80000);
 }
 
-void fn_80224E1C(void *arg0, s32 arg1) {
+void GXSetCurrentMtx(void *arg0, s32 arg1) {
     *(s32*)((u8*)arg0 + 0x50) = arg1;
     *(s32*)((u8*)arg0 + 0x54) = arg1;
 }
