@@ -1146,7 +1146,7 @@ void fn_80014F94(void *arg0, s32 arg1) {
     Stream_WriteU8(arg1, M2C_FIELD(arg0, u8 *, 3));
 }
 
-void *fn_80014FF8(void *arg0) {
+void *Msg_ExpandMmTag(void *arg0) {
     void *Msg_Expand(void *);
     extern u8 lbl_80268018[];
     u8 temp_r0;

@@ -902,7 +902,7 @@ void UnitInfo_DrawNamePlate(void *panel)
     void *Msg_Expand(void *);
     void strcpy(void *, void *);
     void strcat(void *, void *);
-    void *fn_80014FF8(void *);
+    void *Msg_ExpandMmTag(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void *fn_80017010(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
@@ -943,13 +943,13 @@ void UnitInfo_DrawNamePlate(void *panel)
         if (fn_8001512C(faction0) != 0) {
             strcpy(buf, Msg_Expand(gUiStrings + 0x218));
             strcat(buf, gUiStrings + 0x221);
-            strcat(buf, fn_80014FF8(faction0));
+            strcat(buf, Msg_ExpandMmTag(faction0));
             fn_8001003C((s32)(y + lbl_803694CC), (s32)(lbl_803694D0 + x), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
         }
         if (fn_8001512C(faction3) != 0) {
             strcpy(buf, Msg_Expand(gUiStrings + 0x223));
             strcat(buf, gUiStrings + 0x221);
-            strcat(buf, fn_80014FF8(faction3));
+            strcat(buf, Msg_ExpandMmTag(faction3));
             fn_8001003C((s32)(y + lbl_803694D4), (s32)(lbl_803694D0 + x), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
         }
     } else {
