@@ -28,7 +28,7 @@ extern u16 *lbl_803674E0;
 extern f32 lbl_8036A118;
 extern f32 lbl_8036A120;
 extern f32 lbl_8036A130;
-extern f32 lbl_8036A154;
+extern f32 gTextScale2;
 
 extern f32 lbl_80369768;
 extern u16 lbl_80289A60[];

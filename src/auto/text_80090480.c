@@ -28,7 +28,7 @@ extern u16 *lbl_803674E0;
 extern f32 lbl_8036A118;
 extern f32 lbl_8036A120;
 extern f32 lbl_8036A130;
-extern f32 lbl_8036A154;
+extern f32 gTextScale2;
 
 extern f32 lbl_80369768;
 extern u16 lbl_80289A60[];
@@ -81,7 +81,7 @@ void fn_80090480(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
     sp1C = lbl_8036A118 * var_r3;
     sp20 = lbl_8036A120 * var_r4;
     sp24 = lbl_8036A130 * var_r3;
-    sp28 = lbl_8036A154 * var_r4;
+    sp28 = gTextScale2 * var_r4;
     
     if (arg3 == 0) {
         sp30 = sp1C + sp20 + sp24 + sp28;
