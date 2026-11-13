@@ -247,7 +247,7 @@ void fn_8012C7C8(s32 arg0, s32 arg1) {
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 1;
 }
 
-void fn_8012C808(void *arg0) {
+void Ui_RefreshSelectPrompt(void *arg0) {
     M2C_UNK Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
     M2C_UNK fn_80056AE0(s32, s32);
