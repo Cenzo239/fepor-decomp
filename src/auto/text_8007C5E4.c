@@ -180,7 +180,8 @@ extern f64 lbl_803693C8;
 extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 gFaceDbgTextScale;
-void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
+/* Draw the face-debug mouth-flap start/end label at a node's screen position. */
+void FaceDbg_DrawMouthLabel(void *unused, void *parent, void *node) {
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
     void Prim2D_SetTint(s32, s32, s32, s32);
@@ -191,27 +192,27 @@ void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 sp[2];
-    s32 var_r30;
+    s32 labels[2];
+    s32 labelIdx;
 
-    var_r30 = 0;
-    sp[0] = gFaceDbgMouthStartStr;
-    sp[1] = gFaceDbgMouthEndStr;
+    labelIdx = 0;
+    labels[0] = gFaceDbgMouthStartStr;
+    labels[1] = gFaceDbgMouthEndStr;
     if ((*(u16*)((u8*)gActiveFace + 0x46) & 2) != 0) {
-        var_r30 = 1;
+        labelIdx = 1;
     }
     Prim2D_Begin();
-    Prim2D_SetTransform((f32)(*(s16*)((u8*)arg1 + 0x30)), (f32)(*(s16*)((u8*)arg1 + 0x32)), lbl_803693D4, lbl_803693D8);
+    Prim2D_SetTransform((f32)(*(s16*)((u8*)parent + 0x30)), (f32)(*(s16*)((u8*)parent + 0x32)), lbl_803693D4, lbl_803693D8);
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)(*(s16*)((u8*)arg2 + 0x30)), (f32)(*(s16*)((u8*)arg2 + 0x32)));
-    Prim2D_SetText((void *)sp[var_r30]);
+    Prim2D_SetPos((f32)(*(s16*)((u8*)node + 0x30)), (f32)(*(s16*)((u8*)node + 0x32)));
+    Prim2D_SetText((void *)labels[labelIdx]);
     Prim2D_SetScale(gFaceDbgTextScale);
-    if (*(u8*)((u8*)arg2 + 0x38) != 0) {
+    if (*(u8*)((u8*)node + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if (*(u8*)((u8*)arg2 + 0x39) == 2) {
+    if (*(u8*)((u8*)node + 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
