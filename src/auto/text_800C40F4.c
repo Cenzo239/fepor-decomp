@@ -22014,7 +22014,7 @@ sort:
     }
 }
 
-void fn_800FF0D4(s32 *arg0, s32 *arg1, u8 (*arg2)(s32, s32)) {
+void Sort_Selection(s32 *arg0, s32 *arg1, u8 (*arg2)(s32, s32)) {
     s32 *best;
     s32 *scan;
     s32 *end;
