@@ -520,7 +520,7 @@ void MapObj_StartLinkedFadeIn(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
     s32 Map_CollectLinkedObjs(void *, void *, void *);
-    extern u8 lbl_80290B70[];
+    extern u8 E_MapObjFadeIn_script[];
     void *self = arg0;
     void *temp;
     s32 y;
@@ -538,9 +538,9 @@ void MapObj_StartLinkedFadeIn(void *arg0) {
     cam = Map_Get();
     if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0)) != NULL && MapObj_IsHidden(temp)) {
         if (self != NULL) {
-            entry = Process_CreateChild(lbl_80290B70, self);
+            entry = Process_CreateChild(E_MapObjFadeIn_script, self);
         } else {
-            entry = Process_Create(lbl_80290B70, 3);
+            entry = Process_Create(E_MapObjFadeIn_script, 3);
         }
         *(s32 *)((u8 *)entry + 0x50) = Map_CollectLinkedObjs(Map_Get(), temp, (u8 *)entry + 0x30);
     }
@@ -606,7 +606,7 @@ void MapObj_StartLinkedFadeOut(void *arg0) {
 
 void fn_80129888(void *arg0, void *arg1)
 {
-    extern u8 lbl_80290B70[];
+    extern u8 E_MapObjFadeIn_script[];
 
     extern void *Process_CreateChild(void *, void *);
     extern void *Process_Create(void *, s32);
@@ -617,9 +617,9 @@ void fn_80129888(void *arg0, void *arg1)
     void *result;
 
     if (arg1 != 0) {
-        entry = (u8 *)Process_CreateChild(lbl_80290B70, arg1);
+        entry = (u8 *)Process_CreateChild(E_MapObjFadeIn_script, arg1);
     } else {
-        entry = (u8 *)Process_Create(lbl_80290B70, 3);
+        entry = (u8 *)Process_Create(E_MapObjFadeIn_script, 3);
     }
 
     result = Map_Get();
@@ -1281,7 +1281,7 @@ void fn_8012ABAC(void *arg0) {
     void *Map_Get(void);
     s32 Map_CollectLinkedObjs(void *, void *, void *);
     extern u8 E_MapObjFadeOut_script[];
-    extern u8 lbl_80290B70[];
+    extern u8 E_MapObjFadeIn_script[];
     void *saved;
     u8 *entry;
     void *result;
@@ -1298,9 +1298,9 @@ void fn_8012ABAC(void *arg0) {
     } else {
         saved = *(void **)((u8 *)arg0 + 0x30);
         if (arg0 != NULL) {
-            entry = (u8 *)Process_CreateChild(lbl_80290B70, arg0);
+            entry = (u8 *)Process_CreateChild(E_MapObjFadeIn_script, arg0);
         } else {
-            entry = (u8 *)Process_Create(lbl_80290B70, 3);
+            entry = (u8 *)Process_Create(E_MapObjFadeIn_script, 3);
         }
         result = Map_Get();
         *(s32 *)(entry + 0x50) = Map_CollectLinkedObjs(result, saved, entry + 0x30);
