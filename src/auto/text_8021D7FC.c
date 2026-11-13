@@ -456,7 +456,7 @@ void __GXInitGX(void) {
     void *fn_8021D8F8(u32);
     extern u8 *__GXData;
     extern u8 lbl_8029DBA0[];
-    extern GXRenderModeObj lbl_8029DFA8;
+    extern GXRenderModeObj GXNtsc480IntDf;
     extern GXRenderModeObj lbl_8029E020;
     extern GXRenderModeObj lbl_8029E05C;
     extern GXRenderModeObj lbl_8029DFE4;
@@ -489,7 +489,7 @@ void __GXInitGX(void) {
 
     switch (VIGetTvFormat()) {
     case 0:
-        rmode = &lbl_8029DFA8;
+        rmode = &GXNtsc480IntDf;
         break;
     case 1:
         rmode = &lbl_8029E020;
@@ -501,7 +501,7 @@ void __GXInitGX(void) {
         rmode = &lbl_8029DFE4;
         break;
     default:
-        rmode = &lbl_8029DFA8;
+        rmode = &GXNtsc480IntDf;
         break;
     }
 
