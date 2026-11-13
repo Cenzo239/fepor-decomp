@@ -1630,7 +1630,7 @@ void fn_80123D1C(void *arg0) {
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -1702,7 +1702,7 @@ void fn_80123D1C(void *arg0) {
     GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_80222C50(sp18, 0);
-    fn_80222334(1);
+    GXSetCullMode(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
@@ -1755,7 +1755,7 @@ void fn_80123D1C(void *arg0) {
     GXSetVtxDesc(9, 3);
     GXSetVtxAttrFmt(0, 9, 1, 3, 0);
     fn_80220154(9, *(s32 *)((u8 *)arg0 + 0x60), 6);
-    fn_80222334(1);
+    GXSetCullMode(1);
     a2 = (u8)(((s32)fade << 5) / 100);
     sp10 = lbl_8036A300;
     ((u8 *)&sp10)[3] = a2;
@@ -2355,7 +2355,7 @@ void fn_80125388(void *arg0) {
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -2395,7 +2395,7 @@ void fn_80125388(void *arg0) {
     GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
     GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-    fn_80222334(1);
+    GXSetCullMode(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);

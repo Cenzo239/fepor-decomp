@@ -7412,7 +7412,7 @@ void fn_801959FC(void *arg0) {
     void GXBegin(s32, s32, s32);
     void fn_8022100C(s32);
     void GXSetChanMatColor(s32, void *);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
     void GXSetTevOrder(s32, s32, s32, s32);
@@ -7464,7 +7464,7 @@ void fn_801959FC(void *arg0) {
     color = lbl_8036AE48;
     GXSetChanMatColor(4, &color);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
-    fn_80222334(1);
+    GXSetCullMode(1);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     GXSetNumTexGens(0, 4);
@@ -13263,7 +13263,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK fn_8022124C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802212FC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80221BA8(u32, M2C_UNK);
-    M2C_UNK fn_80222334(M2C_UNK);
+    M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK fn_80222370(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, u32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
@@ -13292,7 +13292,7 @@ void fn_801A27F8(void *arg0) {
         fn_80222EB4();
         fn_80222644(spC, M2C_FIELD(arg0, u32 *, 0x30), 0x260, 0x1C0, 4, 0, 0, 0);
         fn_802228D8(spC, 1, 1, 0, 0, 0, 0.0f, 0.0f, 0.0f);
-        fn_80222334(1);
+        GXSetCullMode(1);
         fn_80222370(4, 0, 1, 1, 0, 0, 2);
         GXSetNumChans(1);
         fn_80222C50(spC, 0);

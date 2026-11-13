@@ -843,7 +843,7 @@ void GXSetChanMatColor(s32 arg0, void *arg1) {
 }
 
 #pragma scheduling off
-void fn_80222334(u32 arg0) {
+void GXSetCullMode(u32 arg0) {
     u32 lo;
     u32 reg;
 

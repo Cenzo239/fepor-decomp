@@ -264,7 +264,7 @@ void fn_8014E864(void *arg0) {
     void *fn_8006060C(void *);
     void fn_8006C748(void *, s32);
     void fn_8006C6F8(void *, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
@@ -332,7 +332,7 @@ void fn_8014E864(void *arg0) {
             if ((*(u16 *)(entry + 6) & 0x0800) != 0) {
                 vtx = *(void **)(*(u8 **)((u8 *)obj54 + 0x38) + off);
                 base = (u8 *)*(void **)((u8 *)unk31 + 0x34) + (*(s16 *)(entry + 0xA) << 5);
-                fn_80222334(1);
+                GXSetCullMode(1);
                 fn_80222370(0, 0, 0, 1, 0, 0, 2);
                 fn_80222370(2, 0, 1, 1, 0, 0, 2);
                 fn_802245D8(1, 4, 5, 0);

@@ -8639,7 +8639,7 @@ void fn_800C0CDC(void *arg0) {
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void GXSetNumChans(s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void GXSetNumTevStages(s32);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
@@ -8682,7 +8682,7 @@ void fn_800C0CDC(void *arg0) {
     GXSetVtxAttrFmt(0, 0xD, 1, 4, 0);
     GXSetNumChans(1);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
-    fn_80222334(0);
+    GXSetCullMode(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
     GXSetNumTexGens(0, 3);

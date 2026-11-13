@@ -221,7 +221,7 @@ void fn_800566D4(void *arg0) {
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
     void fn_80221BA8(void *, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -254,7 +254,7 @@ void fn_800566D4(void *arg0) {
         if (tex != NULL) {
             if (*((u8 *)arg0 + 0x37) == 0 && (s32)alpha > 0) {
                 fn_80067EDC(0);
-                fn_80222334(1);
+                GXSetCullMode(1);
                 fn_80222370(4, 0, 1, 1, 0, 0, 2);
                 GXSetNumTevStages(1);
                 GXSetTevColorIn(0, 0xF, 0xF, 0xF, 8);
@@ -1409,7 +1409,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void GXSetNumChans(s32);
     void GXBegin(s32, s32, s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -1470,7 +1470,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     *(f32 *)(sp28 + 0x1C) = scale / (f32)a3;
     GXSetNumChans(2);
     GXSetNumTevStages(2);
-    fn_80222334(1);
+    GXSetCullMode(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetTevOrder(0, 0, 0, 4);
     GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xF);
@@ -1558,7 +1558,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     GXSetVtxDesc(9, 1);
     GXSetVtxAttrFmt(0, 9, 1, 4, 0);
     GXSetNumChans(0);
-    fn_80222334(1);
+    GXSetCullMode(1);
     fn_80222370(4, 0, 1, 1, 0, 0, 2);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);

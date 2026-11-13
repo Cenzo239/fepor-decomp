@@ -805,7 +805,7 @@ void Gx_Setup2DState(void *arg0) {
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80221A2C(s32);
-    void fn_80222334(s32);
+    void GXSetCullMode(s32);
     void GXSetNumChans(s32);
     void fn_80222EB4(void);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -852,7 +852,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_80224684(1, 3, 1);
     fn_802245D8(0, 1, 0, 0);
     fn_80221A2C(0);
-    fn_80222334(0);
+    GXSetCullMode(0);
     GXSetNumChans(2);
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_802201A8(1, 1, 4, 0x3C, 0, 0x7D);
@@ -906,7 +906,7 @@ void Gx_Setup2DState(void *arg0) {
 
 void fn_800A57D8(void) {
     M2C_UNK GXSetNumChans(M2C_UNK);
-    M2C_UNK fn_80222334(M2C_UNK);
+    M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223D94(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223DDC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -917,7 +917,7 @@ void fn_800A57D8(void) {
     fn_80224684(1, 7, 1);
     fn_802245D8(0, 1, 0, 0xF);
     GXSetNumChans(1);
-    fn_80222334(0);
+    GXSetCullMode(0);
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
     GXSetNumTexGens(0, 3);

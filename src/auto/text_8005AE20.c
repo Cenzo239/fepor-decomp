@@ -6074,7 +6074,7 @@ void fn_8006A384(s32* arg0) {
     return;
 }
 
-void fn_80222334(s32);
+void GXSetCullMode(s32);
 void GXClearVtxDesc(void);
 void fn_8021F750(s32 *);
 void fn_8021FE4C(s32, s32 *);
@@ -6145,7 +6145,7 @@ void fn_8006A6C8(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
         var_r31 += 2;
         ((u8 *)var_r30)[0xc] = 0;
         var_r30 += 4;
-        fn_80222334(1);
+        GXSetCullMode(1);
     }
 
     if (arg0 & 0x4000) {
