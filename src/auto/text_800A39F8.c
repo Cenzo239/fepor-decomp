@@ -796,6 +796,7 @@ void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16
     *(s16 *)0xCC008000 = 1;
 }
 
+/* Configure GX for orthographic 2D drawing to the screen size in arg0. */
 void Gx_Setup2DState(void *arg0) {
     void PSMTXIdentity(void *);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
@@ -831,22 +832,22 @@ void Gx_Setup2DState(void *arg0) {
     extern s32 lbl_80369A30;
     extern s32 lbl_80369A34;
     extern s32 lbl_80369A38;
-    u8 sp4C[0x44];
-    u8 sp1C[0x30];
+    u8 ortho[0x44];
+    u8 identity[0x30];
     s32 sp14[2];
     s32 sp10;
     s32 spC;
     s32 sp8;
-    s32 temp_r31;
-    s32 temp_r30;
-    temp_r31 = M2C_FIELD(arg0, u16 *, 4);
-    temp_r30 = M2C_FIELD(arg0, u16 *, 6);
-    C_MTXOrtho(sp4C, 0.0f, (f32)temp_r30, 0.0f, (f32)temp_r31, 0.0f, -1.0f);
-    GXSetProjection(sp4C, 1);
-    GXSetViewport(0.0f, 0.0f, (f32)temp_r31, (f32)temp_r30, 0.9f, 0.9f);
-    GXSetScissor(0, 0, temp_r31, temp_r30);
-    PSMTXIdentity(sp1C);
-    GXLoadPosMtxImm(sp1C, 0);
+    s32 width;
+    s32 height;
+    width = M2C_FIELD(arg0, u16 *, 4);
+    height = M2C_FIELD(arg0, u16 *, 6);
+    C_MTXOrtho(ortho, 0.0f, (f32)height, 0.0f, (f32)width, 0.0f, -1.0f);
+    GXSetProjection(ortho, 1);
+    GXSetViewport(0.0f, 0.0f, (f32)width, (f32)height, 0.9f, 0.9f);
+    GXSetScissor(0, 0, width, height);
+    PSMTXIdentity(identity);
+    GXLoadPosMtxImm(identity, 0);
     GXSetCurrentMtx(0);
     fn_80224684(1, 3, 1);
     fn_802245D8(0, 1, 0, 0);
