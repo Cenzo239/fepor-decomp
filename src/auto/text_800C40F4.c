@@ -17953,7 +17953,7 @@ void fn_800F2E70(void) {
 s32 fn_800F32A4(u8 *arg) {
 extern u8 gBattleMap[];
 void Map_BuildUnitMoveRange(void *, s32, s32);
-u8 fn_800FE84C(s8,s8);
+u8 Map_IsAiTerrainBlocked(s8,s8);
 u8 *arg0; u8 flags[8]; void **weapon; u8 *map; u8 *unit; s32 row; u8 *p; s32 id; s32 y; s32 x;  u8 *q; s32 dist,dy; u8 a,b; u8 range,outside,cx,cy,r,t;
 if ((M2C_FIELD(arg,u16*,0x1A4)>>7 & 7) || (M2C_FIELD(arg,u8*,0x1A5)&7) || (M2C_FIELD(arg,u32*,0x1A0)&0x9D)) return 0;
 arg0=arg;
@@ -17982,7 +17982,7 @@ for(x=*(s8 *)(map+8);x<=(s8)map[10]-1;x++){
 q=unit+((s8)x+row)*2;
 if(M2C_FIELD(q,s16*,0x610E)<0)continue;
 p=unit+row+(s8)x;
-if(M2C_FIELD(p,s8*,0xE18E) || fn_800FE84C((s8)x,(s8)y) || !M2C_FIELD(q,u16*,0xC18E))continue;
+if(M2C_FIELD(p,s8*,0xE18E) || Map_IsAiTerrainBlocked((s8)x,(s8)y) || !M2C_FIELD(q,u16*,0xC18E))continue;
 t=p[13]; if(!t || t==M2C_FIELD(arg0,u8*,0x198))return 1;
 }}
 }}return 0;
@@ -18036,7 +18036,7 @@ u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
     s8 fn_8003A398(void *);
     void fn_800FB96C(s8, s8, s8, s32, s8, s8, s8, s8, u8);
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 gAiState[];
     extern u8 gUiContext[];
@@ -18151,7 +18151,7 @@ u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
     costp = (s16 *)(cell + 0x610E);
     if (*(s16 *)(cell + 0x610E) >= 0) {
         if ((s8)*(rowbase + (s8)x + 0xE18E) == 0) {
-            if (fn_800FE84C((s8)x, (s8)y) == 0) {
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
                 if (*(rowbase + (s8)x + 0xD) == 0) {
                     if (fn_8010FF24(lbl_8032BB58, (s8)x, (s8)y, 0xA) != NULL) {
                         if (*costp < best) {
@@ -18217,7 +18217,7 @@ after_search:
 u8 fn_800F3F50(s32 arg0,s8 arg1){
 extern u8 gAiState[],gBattleMap[],gUiContext[],lbl_8032BB58[],lbl_80284E20[],lbl_8028E6E8[],lbl_802EF4E0[];
 void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);void Map_BuildUnitMoveRange(void *,s32,s32);
-s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
+s8 fn_8003A398(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);void fn_8002F728(void *);
 s32 fn_80110030(void *);void fn_800FDF38(s16,s16,s32,s32,s32);
 void fn_8002C530(void *,s32);void *fn_8002F658(void *,s32);
@@ -18264,7 +18264,7 @@ rowOffset=(s8)y<<6;row=map+rowOffset;
 for(x=xmin;x<=xmax;x++){
 if(M2C_FIELD(map+((s8)x+rowOffset)*2,s16 *,0x610E)<0)continue;
 tile=row+(s8)x;
-if(*(s8 *)(tile+0xE18E)||fn_800FE84C((s8)x,(s8)y)||tile[0xD])continue;
+if(*(s8 *)(tile+0xE18E)||Map_IsAiTerrainBlocked((s8)x,(s8)y)||tile[0xD])continue;
 if(!fn_8010FF24(lbl_8032BB58,(s8)x,(s8)y,10))continue;
 entry=fn_8010FF24(lbl_8032BB58,(s8)(s16)x,(s8)(s16)y,10);
 pred.callback=arg0;
@@ -18310,7 +18310,7 @@ u8 fn_800F43D8(s32 arg0,u8 arg1){
 extern u8 gUiContext[],gBattleMap[],gAiState[],lbl_8032BB58[],lbl_802EF4E0[],lbl_80284E20[],lbl_8028E6C8[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
-void Map_BuildUnitMoveRange(void *,s32,s32);s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
+void Map_BuildUnitMoveRange(void *,s32,s32);s8 fn_8003A398(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);void *Item_GetByIid(void *);void *fn_80019E24(u8);
 void fn_8002F728(void *);u8 fn_8001DDBC(void *);void fn_800FDDBC(s8,s8,u8,u8,s32);
 void fn_8001EF80(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *fn_8002F658(void *,s32);
@@ -18335,7 +18335,7 @@ for(y=ymin;y<=ymax;y++){rowOffset=(s8)y<<6;row=map+rowOffset;
 for(x=xmin;x<=xmax;x++){
 if(M2C_FIELD((u8*)((s32)map+((s8)x+rowOffset)*2),s16 *,0x610E)<0)continue;
 tile=row+(s8)x;
-if(*(s8*)(tile+0xe18e)||fn_800FE84C((s8)x,(s8)y)||tile[0xd])continue;
+if(*(s8*)(tile+0xe18e)||Map_IsAiTerrainBlocked((s8)x,(s8)y)||tile[0xd])continue;
 entry=fn_8010FF24(lbl_8032BB58,(s8)x,(s8)y,7);
 if(!entry||!entry[5]||entry[4]!=*(u16*)((u8*)Item_GetByIid(lbl_80272DB0+0xce)+0xe))continue;
 candidate=fn_8010FF24(lbl_8032BB58,(s8)(s16)x,(s8)(s16)y,7);
@@ -18411,7 +18411,7 @@ extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);
 void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);
-s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
+s8 fn_8003A398(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);
 void *Item_GetByIid(void *);void *fn_80019E24(u8);
 void fn_8002F728(void *);u8 fn_8001DDBC(void *);
@@ -18453,7 +18453,7 @@ rowOffset=(s8)y<<6;row=map+rowOffset;
 for(x=xmin;x<=xmax;x++){
 if(M2C_FIELD((u8 *)((s32)map+((s8)x+rowOffset)*2),s16 *,0x610E)<0)continue;
 tile=row+(s8)x;
-if(*(s8 *)(tile+0xE18E)||fn_800FE84C((s8)x,(s8)y)||tile[0xD])continue;
+if(*(s8 *)(tile+0xE18E)||Map_IsAiTerrainBlocked((s8)x,(s8)y)||tile[0xD])continue;
 entry=fn_8010FF24(lbl_8032BB58,(s8)x,(s8)y,7);
 if(!entry||!entry[5]||entry[4]==M2C_FIELD(Item_GetByIid(lbl_80272DB0+0xCE),u16 *,0xE))continue;
 candidate=fn_8010FF24(lbl_8032BB58,(s8)(s16)x,(s8)(s16)y,7);
@@ -19580,7 +19580,7 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     u32 fn_800FCF48(s8, s8);
     void fn_800FDDBC(s32, s32, u8, u8, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
 
     s16 *out_x;
@@ -19671,7 +19671,7 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
                 if ((s8)gBattleMap[row + (s8)x + 0xE18E] != 0) {
                     continue;
                 }
-                if (fn_800FE84C((s8)x, y) != 0) {
+                if (Map_IsAiTerrainBlocked((s8)x, y) != 0) {
                     continue;
                 }
                 if (*(u16 *)(gBattleMap + idx + 0xC18E) == 0) {
@@ -21779,7 +21779,7 @@ void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
     fn_800213D0(map, x, y, flags, t14, t15);
 }
 #pragma use_lmw_stmw reset
-u8 fn_800FE84C(s8 arg0, s8 arg1) {
+u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     u8 temp_r4;
@@ -22480,7 +22480,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE180(void *, s32, s32, void *);
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_800FE398(void *, s32, s32, void *);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     extern s16 lbl_802732A0[];
@@ -22552,7 +22552,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
             idx = ((s8)x + yrow) * 2;
             if (*(s16 *)(map + idx + 0x818E) >= 0
                 && (s8)rowbase[(s32)x + 0xE18E] == 0
-                && fn_800FE84C(x, y) == 0) {
+                && Map_IsAiTerrainBlocked(x, y) == 0) {
                 if (keep_bit != 0 && (cell = maprow[(s32)x + 0xD], cell != 0)) {
                     if (cell != 0)
                         unit = gUnits + (cell - 1) * 0x280;
@@ -22761,7 +22761,7 @@ void fn_80100D18(void *arg0, void **arg1, s16 arg2) {
     M2C_UNK fn_80022FCC(M2C_UNK *, s32);
     M2C_UNK fn_80022FD8(M2C_UNK *, M2C_UNK);
     s8 fn_8003A398(void *);
-    u8 fn_800FE84C(s8);
+    u8 Map_IsAiTerrainBlocked(s8);
     extern M2C_UNK gBattleMap;
     void *temp_r6;
     s8 temp_r20;
@@ -22823,7 +22823,7 @@ loop_22:
         if (var_r20 <= var_r23) {
             if ((s16) M2C_FIELD((&gBattleMap + ((var_r20 + temp_r30) * 2)), s16 *, 0x610E) >= 0) {
                 temp_r26 = &gBattleMap + temp_r30 + var_r20;
-                if (((s8) M2C_FIELD(temp_r26, u8 *, 0xE18E) == 0) && (fn_800FE84C(var_r21) == 0) && ((u8) M2C_FIELD(temp_r26, u8 *, 0xD) == 0)) {
+                if (((s8) M2C_FIELD(temp_r26, u8 *, 0xE18E) == 0) && (Map_IsAiTerrainBlocked(var_r21) == 0) && ((u8) M2C_FIELD(temp_r26, u8 *, 0xD) == 0)) {
                     fn_8002011C(&gBattleMap, var_r20, var_r21, (u8) (s8) var_r0, (u8) (s8) var_r0_2);
                 }
             }
@@ -22880,7 +22880,7 @@ void fn_800FB96C(u8,s8,s8,s32,s8,s8,s8,s8,u8);
 u16 fn_800FCF48(s8,s8);
 void fn_800FE490(s16,s16,void *,s32,s32);
 void fn_800FE590(s16,s16,void *,s32,s32);
-u8 fn_800FE84C(s8,s8);
+u8 Map_IsAiTerrainBlocked(s8,s8);
 extern u8 gBattleMap[];
 
     s16 sp1C;
@@ -22972,7 +22972,7 @@ extern u8 gBattleMap[];
             temp_r27 = map + (((s8)var_r17 + temp_r30) * 2);
             if (*(s16 *)((u8 *)temp_r27 + 0x610e) >= 0) {
                 temp_r28 = map + temp_r30 + (s8)var_r17;
-                if ((*(s8 *)((u8 *)temp_r28 + 0xe18e) == 0) && (fn_800FE84C((s8)var_r17, (s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28 + 13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8)*(u8 *)((u8 *)arg2 + 0x198))) && ((temp_r27 = (u8 *)temp_r27 + 0x818e), *(s16 *)temp_r27 >= 0)) {
+                if ((*(s8 *)((u8 *)temp_r28 + 0xe18e) == 0) && (Map_IsAiTerrainBlocked((s8)var_r17, (s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28 + 13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8)*(u8 *)((u8 *)arg2 + 0x198))) && ((temp_r27 = (u8 *)temp_r27 + 0x818e), *(s16 *)temp_r27 >= 0)) {
                     if (((u16)arg6) < fn_800FCF48((s8)var_r17, (s8)var_r18)) {
                         if (var_r24 > fn_800FCF48((s8)var_r17, (s8)var_r18)) {
                             var_r24 = fn_800FCF48((s8)var_r17, (s8)var_r18);
@@ -23030,7 +23030,7 @@ void fn_800FB96C(u8,s8,s8,s32,s8,s8,s8,s8,u8);
 u16 fn_800FCF48(s8,s8);
 void fn_800FE690(s16,s16,s32,void *,s32,s32);
 void fn_800FE770(s16,s16,s32,s32,s32);
-u8 fn_800FE84C(s8,s8);
+u8 Map_IsAiTerrainBlocked(s8,s8);
 extern u8 gBattleMap[];
 
     s16 sp1C;
@@ -23122,7 +23122,7 @@ for (; var_r17 <= var_r19; var_r17++) {
             temp_r27 = gBattleMap + (((s8) var_r17 + temp_r30) * 2);
             if (*(s16 *)((u8 *)temp_r27+0x610e) >= 0) {
                 temp_r28 = gBattleMap + temp_r30 + (s8) var_r17;
-                if ((*(s8 *)((u8 *)temp_r28+0xe18e) == 0) && (fn_800FE84C((s8)var_r17,(s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28+13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8) *(u8 *)((u8 *)arg0+0x198))) && ((temp_r27=(u8 *)temp_r27+0x818e), *(s16 *)temp_r27 >= 0)) {
+                if ((*(s8 *)((u8 *)temp_r28+0xe18e) == 0) && (Map_IsAiTerrainBlocked((s8)var_r17,(s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28+13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8) *(u8 *)((u8 *)arg0+0x198))) && ((temp_r27=(u8 *)temp_r27+0x818e), *(s16 *)temp_r27 >= 0)) {
                     if (((u16)a4) < fn_800FCF48((s8) var_r17, var_r18)) {
                         if (var_r24 > fn_800FCF48((s8) var_r17, var_r18)) {
                             var_r14 = (s16) var_r17;
@@ -23172,7 +23172,7 @@ void fn_800FB96C(u8,s8,s8,s32,s8,s8,s8,s8,u8);
 u16 fn_800FCF48(s8,s8);
 void fn_800FE490(s16,s16,void *,s32,s32);
 void fn_800FE590(s16,s16,void *,s32,s32);
-u8 fn_800FE84C(s8,s8);
+u8 Map_IsAiTerrainBlocked(s8,s8);
 extern u8 gBattleMap[];
 
     s16 sp1C;
@@ -23264,7 +23264,7 @@ for (; var_r17 <= var_r19; var_r17++) {
             temp_r27 = gBattleMap + (((s8) var_r17 + temp_r30) * 2);
             if (*(s16 *)((u8 *)temp_r27+0x610e) >= 0) {
                 temp_r28 = gBattleMap + temp_r30 + (s8) var_r17;
-                if ((*(s8 *)((u8 *)temp_r28+0xe18e) == 0) && (fn_800FE84C((s8)var_r17,(s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28+13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8) *(u8 *)((u8 *)arg0+0x198))) && ((temp_r27=(u8 *)temp_r27+0x818e), *(s16 *)temp_r27 >= 0)) {
+                if ((*(s8 *)((u8 *)temp_r28+0xe18e) == 0) && (Map_IsAiTerrainBlocked((s8)var_r17,(s8)var_r18) == 0) && ((temp_r3_3 = *(u8 *)((u8 *)temp_r28+13), ((temp_r3_3 == 0) != 0)) || (temp_r3_3 == (u8) *(u8 *)((u8 *)arg0+0x198))) && ((temp_r27=(u8 *)temp_r27+0x818e), *(s16 *)temp_r27 >= 0)) {
                     if (((u16)a4) < fn_800FCF48((s8) var_r17, var_r18)) {
                         if (var_r24 > fn_800FCF48((s8) var_r17, var_r18)) {
                             var_r14 = (s16) var_r17;
@@ -23308,7 +23308,7 @@ for (; var_r17 <= var_r19; var_r17++) {
 s32 fn_8010207C(s32 arg0, s16 *outX, s16 *outY) {
     void fn_800FE398(s32, s32, s32);
     u32 fn_80019E48(s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     extern struct {
         s32 width;
         s32 height;
@@ -23343,7 +23343,7 @@ s32 fn_8010207C(s32 arg0, s16 *outX, s16 *outY) {
             if (gBattleMap.fogMap[(s8)y][(s8)x] != 0) {
                 continue;
             }
-            if (fn_800FE84C(x, y) != 0) {
+            if (Map_IsAiTerrainBlocked(x, y) != 0) {
                 continue;
             }
             id = gBattleMap.unitMap[0][(s8)y][(s8)x];
@@ -23424,7 +23424,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
     s8 fn_8003A398(void *);
     u16 fn_800FCF48(s8, s8);
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gAiState[];
     extern u8 gBattleMap[];
 
@@ -23486,7 +23486,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
         while (x <= x_hi) {
             if (*(s16 *)(gBattleMap + 0x610e + (((s8)x + ((s8)y << 6)) * 2)) >= 0
                 && (s8)colp[(s8)x + 0xe18e] == 0
-                && fn_800FE84C((s8)x, (s8)y) == 0) {
+                && Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
                 u8 owner = rowp[(s8)x + 0xd];
                 if ((owner == 0 || owner == *(u8 *)((u8 *)arg0 + (short)0x198))
                     && best > fn_800FCF48((s8)x, (s8)y)) {
@@ -23510,7 +23510,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
 #pragma use_lmw_stmw on
 s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(s32, s32);
     u8 Ai_UnitIsHostileToActive(void *);
     u8 fn_800BE968(u8, s8, s8);
@@ -23568,7 +23568,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
             if ((s8)rowFog[x8 + 0xE18E] != 0) {
                 continue;
             }
-            if (fn_800FE84C((s8)x8, (s8)y) != 0) {
+            if (Map_IsAiTerrainBlocked((s8)x8, (s8)y) != 0) {
                 continue;
             }
             if (flag1) {
@@ -23636,7 +23636,7 @@ s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
 #pragma use_lmw_stmw reset
 s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE398(void *, s32, s32);
-    u8 fn_800FE84C(s8, s8);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(void *, void *);
     u8 Ai_UnitIsHostileToActive(void *);
     void fn_8002F728(void *);
@@ -23699,7 +23699,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
             if (gBattleMap.fogMap[(s8)y][(s8)x] != 0) {
                 continue;
             }
-            if (fn_800FE84C((s8)x, (s8)y) != 0) {
+            if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
                 continue;
             }
             if (flag1 != 0) {
