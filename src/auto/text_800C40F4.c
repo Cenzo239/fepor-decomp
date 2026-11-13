@@ -8613,8 +8613,9 @@ void* fn_800DC0BC(void* arg0, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
+extern "C" void *Layer_Create(void *self, void *host, void *name, void *userData)
 {
+    /* Construct a Layer: base init with type "Layer" / name / "default", then Layer vtable and fade/shake fields. */
     extern char Layer_str[];
     extern u8 Layer_vtable[];
     extern f32 lbl_80369E90;
@@ -8623,38 +8624,38 @@ extern "C" void *Layer_Create(void *arg0, void *arg1, void *arg2, void *arg3)
     extern void *fn_800DFAE0(void *, void *, void *, void *, void *);
     extern void *String_Destroy(void *, s32);
 
-    u8 str1C[12];
-    u8 str10[12];
-    u32 scratchC;
-    u32 scratch8;
+    u8 typeName[12];
+    u8 defaultName[12];
+    u32 scratchType;
+    u32 scratchDefault;
     char *strings;
     f32 zero;
     f32 one;
 
     strings = Layer_str;
-    String_Init(str1C, strings + 4, &scratchC);
-    String_Init(str10, Layer_str + 0xA, &scratch8);
-    fn_800DFAE0(arg0, arg1, str1C, arg2, str10);
-    String_Destroy(str10, -1);
-    String_Destroy(str1C, -1);
+    String_Init(typeName, strings + 4, &scratchType);
+    String_Init(defaultName, Layer_str + 0xA, &scratchDefault);
+    fn_800DFAE0(self, host, typeName, name, defaultName);
+    String_Destroy(defaultName, -1);
+    String_Destroy(typeName, -1);
 
-    *(void **)((u8 *)arg0 + 0x40) = Layer_vtable;
+    *(void **)((u8 *)self + 0x40) = Layer_vtable;
     one = lbl_80369E94;
-    *(s32 *)((u8 *)arg0 + 0x28) = -0x31;
+    *(s32 *)((u8 *)self + 0x28) = -0x31;
     zero = lbl_80369E90;
-    ((u8 *)arg0)[0x3C] = 0;
-    *(void **)((u8 *)arg0 + 0x48) = arg3;
-    *(s32 *)((u8 *)arg0 + 0x64) = 0;
-    *(s32 *)((u8 *)arg0 + 0x60) = 0;
-    *(f32 *)((u8 *)arg0 + 0x6C) = one;
-    *(f32 *)((u8 *)arg0 + 0x70) = zero;
-    *(f32 *)((u8 *)arg0 + 0x4C) = zero;
-    *(f32 *)((u8 *)arg0 + 0x54) = zero;
-    *(f32 *)((u8 *)arg0 + 0x50) = zero;
-    *(f32 *)((u8 *)arg0 + 0x58) = zero;
-    *(f32 *)((u8 *)arg0 + 0x68) = zero;
-    *(s32 *)((u8 *)arg0 + 0x5C) = 0;
-    return arg0;
+    ((u8 *)self)[0x3C] = 0;
+    *(void **)((u8 *)self + 0x48) = userData;
+    *(s32 *)((u8 *)self + 0x64) = 0;
+    *(s32 *)((u8 *)self + 0x60) = 0;
+    *(f32 *)((u8 *)self + 0x6C) = one;
+    *(f32 *)((u8 *)self + 0x70) = zero;
+    *(f32 *)((u8 *)self + 0x4C) = zero;
+    *(f32 *)((u8 *)self + 0x54) = zero;
+    *(f32 *)((u8 *)self + 0x50) = zero;
+    *(f32 *)((u8 *)self + 0x58) = zero;
+    *(f32 *)((u8 *)self + 0x68) = zero;
+    *(s32 *)((u8 *)self + 0x5C) = 0;
+    return self;
 }
 
 #pragma cplusplus reset
@@ -15390,9 +15391,13 @@ void fn_800EB80C(void) {
 #pragma peephole off
 s32 fn_800EB854(void) {
     extern u8 gCardWork[];
-    s32 result = 0;
-    if (*(s32 *)(gCardWork + 0xA004) != -1) {
-        if (gCardWork[0xA01A] != 0) {
+    u8 *base;
+    s32 result;
+
+    result = 0;
+    base = gCardWork + 0x10000;
+    if (*(s32 *)(base - 0x5FFC) != -1) {
+        if (base[0xA01A - 0x10000] != 0) {
             result = 1;
         }
     }
