@@ -953,7 +953,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     void *Item_Get(s32);
     s32 Item_GetMaxRange(void *);
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
-    void fn_8001EF80(void *, s32, s32, s32);
+    void Map_ClipRangeByFacing(void *, s32, s32, s32);
 
     u8 *source;
     u8 *unit;
@@ -1009,7 +1009,7 @@ void fn_8002BD44(void *arg0, void *arg1)
         result
     );
 
-    fn_8001EF80(
+    Map_ClipRangeByFacing(
         gBattleMap,
         source[0],
         source[1],

@@ -101,7 +101,7 @@ void fn_8001EF7C(void) {
 
 }
 
-s32 fn_8001EF80(void *arg0, s8 arg1, s8 arg2) {
+s32 Map_ClipRangeByFacing(void *arg0, s8 arg1, s8 arg2) {
     u8 *ptr;
     u8 var_r0_2;
     s32 tmp;
