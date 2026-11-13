@@ -15456,7 +15456,7 @@ void fn_801DCD3C(u8 *arg0)
     }
 }
 
-void fn_801DDAC8(void *arg0) {
+void MsgBox_Update(void *arg0) {
     M2C_UNK MsgBox_Layout();
     s16 temp_r3;
     s16 *temp_r4;

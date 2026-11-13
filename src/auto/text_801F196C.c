@@ -1640,7 +1640,7 @@ void fn_801F5C88(void *arg0) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     M2C_UNK fn_801DCD3C(s32);
-    M2C_UNK fn_801DDAC8(s32);
+    M2C_UNK MsgBox_Update(s32);
     extern f32 lbl_8036B8E8;
 extern f32 lbl_8036B8EC;
 extern f32 lbl_8036B908;
@@ -1649,7 +1649,7 @@ extern s32 lbl_8036840C;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B8E8, lbl_8036B8E8, lbl_8036B908, lbl_8036B8EC);
     Prim2D_PrepareTex();
-    fn_801DDAC8(M2C_FIELD(arg0, s32 *, 0x50));
+    MsgBox_Update(M2C_FIELD(arg0, s32 *, 0x50));
     fn_801DCD3C(M2C_FIELD(arg0, s32 *, 0x50));
 }
 

@@ -456,7 +456,7 @@ void fn_80073208(void *arg0) {
     M2C_UNK Prim2D_Begin();
     M2C_UNK Ui_DrawCaptionBar(s32, M2C_UNK);
     M2C_UNK fn_801DCD3C(u16 *);
-    M2C_UNK fn_801DDAC8(u16 *);
+    M2C_UNK MsgBox_Update(u16 *);
     extern u16 gMsgBox[];
     extern f32 lbl_80369368;
     extern f32 lbl_8036936C;
@@ -464,7 +464,7 @@ void fn_80073208(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369368, lbl_80369368, lbl_8036936C, lbl_80369370);
     Prim2D_PrepareTex();
-    fn_801DDAC8(gMsgBox);
+    MsgBox_Update(gMsgBox);
     fn_801DCD3C(gMsgBox);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16) (M2C_FIELD(arg0, s16 *, 0x38) + M2C_FIELD(arg0, s16 *, 0x3A));
     if (M2C_FIELD(arg0, s16 *, 0x38) > 0xFF) {
