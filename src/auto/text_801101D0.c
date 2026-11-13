@@ -3052,11 +3052,11 @@ void fn_801184A8(s32 arg0) {
 }
 
 void fn_801184DC(void *arg0) {
-    void fn_800E43EC(void *);
+    void Win_UpdatePos(void *);
     extern void *gPadInput;
     u32 buttons;
 
-    fn_800E43EC(arg0);
+    Win_UpdatePos(arg0);
     if (*(u8*)((u8*)arg0 + 0xF0) != 0) {
         buttons = *(u32*)((u8*)gPadInput + 0xC);
         if (buttons & 8) {
@@ -5303,13 +5303,13 @@ void fn_8011CC04(u8 *arg0) {
 }
 #pragma global_optimizer reset
 void fn_8011D014(void *arg0) {
-    void fn_800E43EC(void *);
+    void Win_UpdatePos(void *);
     void fn_800E7C88(void *);
     extern void *gPadInput;
     void *obj;
     u32 buttons;
 
-    fn_800E43EC(arg0);
+    Win_UpdatePos(arg0);
     obj = M2C_FIELD(arg0, void **, 0x0);
     buttons = M2C_FIELD(gPadInput, u32 *, 0xC);
     if (M2C_FIELD(arg0, u8 *, 0xF0) != 0) {

@@ -9167,7 +9167,7 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
 }
 
 void ListWin_HandleInput(void *list) {
-    void fn_800E43EC(void *);
+    void Win_UpdatePos(void *);
     void fn_800E7C88(void *);
     extern u8 *gPadInput;
     void *owner;
@@ -9175,7 +9175,7 @@ void ListWin_HandleInput(void *list) {
     s32 thumbH;
 
     /* Move list cursor/scroll with D-pad and recompute the scrollbar thumb. */
-    fn_800E43EC(list);
+    Win_UpdatePos(list);
     owner = M2C_FIELD(list, void **, 0);
     if (M2C_FIELD(list, u8 *, 0x73)) {
         keys = M2C_FIELD(gPadInput, s32 *, 12);
@@ -12067,7 +12067,7 @@ void fn_800E43E8(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_800E43EC(void *arg0) {
+extern "C" void Win_UpdatePos(void *arg0) {
     struct Vec2 {
         s32 x;
         s32 y;
@@ -14062,8 +14062,8 @@ void *fn_800E86A4(void *arg0, s16 arg1) {
 }
 
 void fn_800E8888(void) {
-    M2C_UNK fn_800E43EC();
-    fn_800E43EC();
+    M2C_UNK Win_UpdatePos();
+    Win_UpdatePos();
 }
 
 void *fn_800E89EC(void *arg0, s16 arg1) {
@@ -16232,8 +16232,8 @@ void fn_800EDF38(void *arg0, s32 arg1) {
 }
 
 void fn_800EE090(void) {
-    M2C_UNK fn_800E43EC();
-    fn_800E43EC();
+    M2C_UNK Win_UpdatePos();
+    Win_UpdatePos();
 }
 
 void *fn_800EE0B0(void *arg0) {
