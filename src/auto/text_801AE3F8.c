@@ -47,7 +47,7 @@ void fn_801AE498(void) {
 
 #pragma cplusplus on
 extern "C" void fn_801AE4B8(void *arg0) {
-    extern void fn_80140304(void *, s32);
+    extern void Ui_DestroyPanelBase(void *, s32);
     extern u16 lbl_80367A58;
 
     struct RefObj {
@@ -138,7 +138,7 @@ extern "C" void fn_801AE4B8(void *arg0) {
             }
             h->p64 = (RefObj *)0;
         }
-        fn_80140304(h, 0);
+        Ui_DestroyPanelBase(h, 0);
     }
 }
 #pragma cplusplus reset

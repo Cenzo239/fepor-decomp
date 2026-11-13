@@ -493,7 +493,7 @@ void fn_801EBB00(void *arg0) {
     void fn_80018AE4(void);
     void fn_80018B04(void);
     void String_Destroy(void *, s32);
-    void fn_80140304(void *, s32);
+    void Ui_DestroyPanelBase(void *, s32);
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
     extern u8 lbl_803671C0;
@@ -522,7 +522,7 @@ void fn_801EBB00(void *arg0) {
             return;
         }
         String_Destroy((u8 *)arg0 + 0x40, -1);
-        fn_80140304(arg0, 0);
+        Ui_DestroyPanelBase(arg0, 0);
     }
 end:
     fn_80018B04();

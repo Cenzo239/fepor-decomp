@@ -4536,7 +4536,7 @@ extern "C" void fn_801BE1EC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
-    void fn_80140304(void *, s32);
+    void Ui_DestroyPanelBase(void *, s32);
     void fn_800C428C(void *);
     extern void gUiPanelBaseVt;
 
@@ -4639,7 +4639,7 @@ extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
             }
             h->p6c = (RefObj *)0;
         }
-        fn_80140304(arg0, 0);
+        Ui_DestroyPanelBase(arg0, 0);
         if (doFree > 0) {
             fn_800C428C(arg0);
         }
@@ -5194,12 +5194,12 @@ extern "C" void fn_801C1044(void *arg0) {
 }
 
 extern "C" void *fn_801C1074(void *arg0, s16 arg1) {
-    void fn_80140304(void *, s16);
+    void Ui_DestroyPanelBase(void *, s16);
     void fn_800C428C(void *);
     extern u8 lbl_80297FEC[];
     if (arg0 != NULL) {
         *(void **)((char *)arg0 + 0x40) = lbl_80297FEC;
-        fn_80140304(arg0, 0);
+        Ui_DestroyPanelBase(arg0, 0);
         if (arg1 > 0) {
             fn_800C428C(arg0);
         }
