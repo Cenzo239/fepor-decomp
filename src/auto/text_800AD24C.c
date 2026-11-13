@@ -8926,6 +8926,7 @@ void fn_800C15A8(void) {
 }
 
 #pragma optimization_level 2
+/* Set up map blend-mode TEV (ortho UV, texture, blend ops). Returns 0 if blend off. */
 s32 Map_SetupBlendTev(void) {
     s32 GMaterial_AllocMtx(void);
     s32 GMaterial_AllocTexCoord(void);
@@ -8954,58 +8955,58 @@ s32 Map_SetupBlendTev(void) {
     extern f32 lbl_80369D48;
     extern f32 lbl_80369D4C;
     extern f32 lbl_80369D50;
-    u8 sp6C[0x30];
-    u8 sp3C[0x30];
-    u8 spC[0x30];
-    s32 sp8;
-    s32 r31;
-    s32 r30;
-    s32 r29;
-    s32 r28;
-    f32 t5;
-    void *p;
-    f32 t1;
-    f32 t2;
+    u8 mtxTrans[0x30];
+    u8 mtxOrtho[0x30];
+    u8 mtxOut[0x30];
+    s32 tevColor;
+    s32 tevStage;
+    s32 texCoord;
+    s32 texMap;
+    s32 mtxId;
+    f32 half;
+    void *ortho;
+    f32 top;
+    f32 bottom;
 
     if ((s32)gMapBlendMode == 0) {
         return 0;
     }
-    t5 = lbl_80369D4C;
-    p = sp3C;
-    t1 = lbl_80369D44;
-    t2 = lbl_80369D48;
-    C_MTXLightOrtho(p, t1, t2, t2, t1, t5, t5, t5, t5);
-    PSMTXTrans(sp6C, lbl_80369D50, lbl_80369D50, lbl_80369D28);
-    fn_8006A384(spC);
-    PSMTXConcat(sp6C, spC, spC);
-    PSMTXConcat(sp3C, spC, spC);
-    r31 = GMaterial_AllocTevStage();
-    r30 = GMaterial_AllocTexCoord();
-    r29 = GMaterial_AllocTexMap();
-    r28 = GMaterial_AllocMtx();
-    fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
-    fn_80224E50(spC, r28, 1);
-    fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
-    GXSetTevOrder(r31, r30, r29, 4);
+    half = lbl_80369D4C;
+    ortho = mtxOrtho;
+    top = lbl_80369D44;
+    bottom = lbl_80369D48;
+    C_MTXLightOrtho(ortho, top, bottom, bottom, top, half, half, half, half);
+    PSMTXTrans(mtxTrans, lbl_80369D50, lbl_80369D50, lbl_80369D28);
+    fn_8006A384(mtxOut);
+    PSMTXConcat(mtxTrans, mtxOut, mtxOut);
+    PSMTXConcat(mtxOrtho, mtxOut, mtxOut);
+    tevStage = GMaterial_AllocTevStage();
+    texCoord = GMaterial_AllocTexCoord();
+    texMap = GMaterial_AllocTexMap();
+    mtxId = GMaterial_AllocMtx();
+    fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), texMap);
+    fn_80224E50(mtxOut, mtxId, 1);
+    fn_802201A8(texCoord, 1, 0, mtxId, 0, 0x7D);
+    GXSetTevOrder(tevStage, texCoord, texMap, 4);
     switch ((s32)gMapBlendMode) {
     case 1:
-        GXSetTevColorIn(r31, 0xF, 0, 8, 0xF);
-        GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
+        GXSetTevColorIn(tevStage, 0xF, 0, 8, 0xF);
+        GXSetTevColorOp(tevStage, 0, 0, 0, 1, 0);
         break;
     case 2:
-        GXSetTevColorIn(r31, 0xD, 0xF, 8, 0);
-        GXSetTevColorOp(r31, 0, 0, 0, 1, 0);
+        GXSetTevColorIn(tevStage, 0xD, 0xF, 8, 0);
+        GXSetTevColorOp(tevStage, 0, 0, 0, 1, 0);
         break;
     case 3:
-        sp8 = lbl_80369D20;
-        fn_80223C78(3, &sp8);
-        fn_80223CDC(r31, 0xF);
-        GXSetTevColorIn(r31, 0, 0xE, 8, 0);
-        GXSetTevColorOp(r31, 0, 0, 3, 1, 0);
+        tevColor = lbl_80369D20;
+        fn_80223C78(3, &tevColor);
+        fn_80223CDC(tevStage, 0xF);
+        GXSetTevColorIn(tevStage, 0, 0xE, 8, 0);
+        GXSetTevColorOp(tevStage, 0, 0, 3, 1, 0);
         break;
     }
-    GXSetTevAlphaIn(r31, 7, 7, 7, 0);
-    GXSetTevAlphaOp(r31, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn(tevStage, 7, 7, 7, 0);
+    GXSetTevAlphaOp(tevStage, 0, 0, 0, 1, 0);
     return 1;
 }
 #pragma optimization_level 4
