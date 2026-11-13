@@ -11542,7 +11542,7 @@ void fn_801CF7F0(void *arg0, void *arg1) {
     void fn_801CFAB8(void *, u8, void *);
     void fn_8005C8B4(void *);
     void *Process_Create(void *, void *);
-    void fn_801FC980(void *, f32);
+    void FallingParticle_CreateEx(void *, f32);
     extern u8 lbl_802997CC[];
     extern u16 lbl_80331D00[];
     extern u8 lbl_8027DF20[];
@@ -11573,7 +11573,7 @@ void fn_801CF7F0(void *arg0, void *arg1) {
             *(void **)(slot + 0x150) = Process_Create(lbl_8029992C, arg1);
             f = lbl_8036B568;
             *(u8 *)(*(u8 **)(slot + 0x150) + 0x30) = i;
-            fn_801FC980(*(void **)(slot + 0x150), f);
+            FallingParticle_CreateEx(*(void **)(slot + 0x150), f);
             return;
         }
         p += 0x15C;

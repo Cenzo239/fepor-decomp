@@ -130,7 +130,7 @@ void fn_801FC95C(void) {
     FileCache_ReleaseSlot(&gFallingParticleTex);
 }
 
-void fn_801FC980(u32 arg0, f32 farg0)
+void FallingParticle_CreateEx(u32 arg0, f32 farg0)
 {
     void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
