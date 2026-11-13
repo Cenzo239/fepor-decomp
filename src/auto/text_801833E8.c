@@ -10942,7 +10942,7 @@ void fn_8019DB68(void) {
     void fn_801A1D04(void);
     void fn_801A1198(void);
     void fn_801A0F68(void);
-    void fn_801A0E84(void);
+    void ScriptCmd_UnitWarp(void);
     void fn_801A0D64(void);
     void fn_801A2464(void);
     void fn_801A0A10(void);
@@ -11029,7 +11029,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x19A, fn_801A1D04, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x1A7, fn_801A1198, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x1B3, fn_801A0F68, 3);
-    Script_RegisterCommand(lbl_8027AD98 + 0x1BF, fn_801A0E84, 3);
+    Script_RegisterCommand(lbl_8027AD98 + 0x1BF, ScriptCmd_UnitWarp, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x1CA, fn_801A0D64, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x1D5, fn_801A2464, 0);
     Script_RegisterCommand(lbl_8027AD98 + 0x1E2, fn_801A0A10, 2);
@@ -12297,7 +12297,7 @@ void fn_801A0D20(void *arg0) {
     }
 }
 
-s32 fn_801A0E84(u8 arg0, u8 arg1, u8 arg2) {
+s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 gUnits[];
     extern u8 gBattleMap[];
     extern u8 lbl_80296FA8[36];
