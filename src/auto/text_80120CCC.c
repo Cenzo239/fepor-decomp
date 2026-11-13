@@ -187,7 +187,7 @@ void fn_801210CC(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_80007124(void *);
     void fn_80007668(void *);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007858(f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
@@ -245,7 +245,7 @@ void fn_801210CC(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         w = *(u16 *)(spC + 0x20);
-        fn_800077D8(
+        Prim2D_SetRect(
             (f32)(s32)(x - (s32)((w >> 1) & 0x7FFF)),
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC),
             (f32)w,

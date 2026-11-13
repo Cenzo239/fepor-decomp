@@ -116,7 +116,7 @@ s32 fn_800A9710(void) {
 #pragma cplusplus on
 extern "C" M2C_UNK fn_800072B0(s32 *, s32 *, s32 *, s32 *, s32, s32, s32);
 extern "C" M2C_UNK fn_800075D8();
-extern "C" M2C_UNK fn_800077D8(f32, f32, f32, f32);
+extern "C" M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_80007884();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" M2C_UNK fn_80009B8C(M2C_UNK);
@@ -185,7 +185,7 @@ extern "C" void fn_800A9728(M2C_UNK arg0, void *arg1) {
     }
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
-    fn_800077D8(lbl_80369BA8, lbl_80369C1C, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) (M2C_FIELD(arg1, s16 *, 0x36) + 0x10));
+    Prim2D_SetRect(lbl_80369BA8, lbl_80369C1C, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) (M2C_FIELD(arg1, s16 *, 0x36) + 0x10));
     fn_800075D8();
     sp8 = lbl_80369BA4;
     spC = lbl_80369BA0;

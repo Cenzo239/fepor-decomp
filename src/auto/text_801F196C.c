@@ -3187,7 +3187,7 @@ u32 fn_801F8D38(void **arg0, void **arg1) {
 #pragma global_optimizer off
 void fn_801F8E30(void *arg0) {
     void fn_80007340(void *, void *);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B80(s32);
@@ -3314,7 +3314,7 @@ clear:
             fn_8000A174(sp74, 0x10);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            fn_800077D8(lbl_8036BA54, f28, (f32)sp94, (f32)sp96);
+            Prim2D_SetRect(lbl_8036BA54, f28, (f32)sp94, (f32)sp96);
             fn_80007884();
         }
     }

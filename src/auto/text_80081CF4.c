@@ -347,7 +347,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     void *fn_8000E0E4(void *);
     void fn_8000A174(s32, s32);
     void Prim2D_AddPrim(s32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_800075D8(void);
     void fn_800076AC(s32, s32, s32, s32);
     void fn_80007884(void);
@@ -417,7 +417,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_AddPrim(1);
     bx = lbl_8036943C + x;
     by = lbl_80369438 + y;
-    fn_800077D8(bx, by, lbl_803694D4, lbl_80369434);
+    Prim2D_SetRect(bx, by, lbl_803694D4, lbl_80369434);
     fn_800075D8();
     fn_800076AC(0, 0, 0, 0xFF);
     fn_80007884();

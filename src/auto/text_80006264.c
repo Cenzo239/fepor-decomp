@@ -1110,7 +1110,7 @@ void fn_800077B0(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x2C) = arg1 + arg3;
 }
 
-void fn_800077D8(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *lbl_80367140;
     extern f32 lbl_80368B98;
     extern f32 lbl_80368B94;

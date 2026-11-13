@@ -5417,7 +5417,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
 #pragma global_optimizer on
 void fn_8016E0E4(void *arg0) {
     M2C_UNK fn_800076AC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_800077D8(f32, f32, f32, f32);
+    M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK fn_80007884();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK fn_80009B8C(u8);
@@ -5440,7 +5440,7 @@ void fn_8016E0E4(void *arg0) {
     fn_8000A174(0, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    fn_800077D8(lbl_8036AA34, lbl_8036AA34, lbl_8036AB24, lbl_8036AB28);
+    Prim2D_SetRect(lbl_8036AA34, lbl_8036AA34, lbl_8036AB24, lbl_8036AB28);
     fn_800076AC(0, 0, 0, 0x80);
     fn_80007884();
     Prim2D_Begin();
@@ -13630,7 +13630,7 @@ extern "C" void fn_8017D9D8(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1
     void fn_800075D8(void);
     void fn_80007668(s32 *);
     void fn_800077B0(f32, f32, f32, f32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007870(f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
@@ -13668,7 +13668,7 @@ extern "C" void fn_8017D9D8(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1
     temp_f28 = (f32)obj->m1C();
     Prim2D_AddPrim(2);
     fn_80007870(farg2);
-    fn_800077D8(farg0, farg1, temp_f31, temp_f30);
+    Prim2D_SetRect(farg0, farg1, temp_f31, temp_f30);
     fn_800077B0((f32)arg2 * temp_f29, lbl_8036AC08, temp_f29, temp_f28);
     fn_800075D8();
     sp8 = *(s32 *)((u8 *)arg0 + 0x20);

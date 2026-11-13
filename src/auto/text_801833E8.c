@@ -7891,7 +7891,7 @@ void fn_80196A58(void *arg0, s32 arg1, s32 arg2) {
 
 void fn_80196AD0(void *arg0, s32 arg1) {
     M2C_UNK fn_800076AC(u8, u8, u8, u8);
-    M2C_UNK fn_800077D8(s32, f32, f32, f32, f32);
+    M2C_UNK Prim2D_SetRect(s32, f32, f32, f32, f32);
     M2C_UNK fn_80007884();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_SetTransform(s32, f32, f32, f32, f32);
@@ -8000,7 +8000,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
         fn_8000A174(0, 0x20);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        fn_800077D8(sp20, (f32) sp20, (f32) sp34, (f32) (sp38 - sp20), (f32) (sp3C - sp34));
+        Prim2D_SetRect(sp20, (f32) sp20, (f32) sp34, (f32) (sp38 - sp20), (f32) (sp3C - sp34));
         fn_800076AC(temp_r27, temp_r26, temp_r25_2, (u8) temp_r24_2);
         fn_80007884();
     }
@@ -8040,7 +8040,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     fn_8000A174(0, 0x20);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    fn_800077D8(sp10, (f32) sp10, (f32) sp34, (f32) (sp38 - sp10), (f32) (sp3C - sp34));
+    Prim2D_SetRect(sp10, (f32) sp10, (f32) sp34, (f32) (sp38 - sp10), (f32) (sp3C - sp34));
     fn_800076AC(temp_r24_4, temp_r25_3, temp_r26_2, (u8) temp_r27_2);
     fn_80007884();
   }
@@ -8050,7 +8050,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
 void fn_80197A78(void *arg0, s32 arg1)
 {
     void fn_800076AC(u8, u8, u8, u8);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -8130,7 +8130,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             fn_8000A174(0, 0x20);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            fn_800077D8((f32)copy[0], (f32)copy[1], (f32)(copy[2] - copy[0]), (f32)h);
+            Prim2D_SetRect((f32)copy[0], (f32)copy[1], (f32)(copy[2] - copy[0]), (f32)h);
             fn_800076AC(r, g, bl, (u8)alpha);
             fn_80007884();
         } else {
@@ -8177,7 +8177,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             fn_8000A174(0, 0x20);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            fn_800077D8((f32)copyb[0], (f32)copyb[1], (f32)(copyb[2] - copyb[0]), (f32)h);
+            Prim2D_SetRect((f32)copyb[0], (f32)copyb[1], (f32)(copyb[2] - copyb[0]), (f32)h);
             fn_800076AC(r, g, bl, (u8)alpha);
             fn_80007884();
         }

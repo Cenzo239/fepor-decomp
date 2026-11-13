@@ -736,7 +736,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     void fn_80007884(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     void fn_80009C0C(f32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     extern f32 lbl_8036B6E8;
     extern f32 lbl_8036B71C;
     extern f32 lbl_8036B720;
@@ -863,7 +863,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     fn_8000A174(0, 0x12);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    fn_800077D8((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
+    Prim2D_SetRect((f32)arg1, (f32)arg2, (f32)arg3, (f32)arg4);
     sp18 = *(s32 *)fill;
     fn_80007668(&sp18);
 
@@ -1313,7 +1313,7 @@ void fn_801E6CEC(void *arg0) {
     void fn_8000770C(f32, f32, f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
     void fn_800077B0(f32, f32, f32, f32, f32, f32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B8C(s32);
@@ -1428,7 +1428,7 @@ void fn_801E6CEC(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    fn_800077D8((f32)w1, (f32)y0, (f32)w3, (f32)h2);
+    Prim2D_SetRect((f32)w1, (f32)y0, (f32)w3, (f32)h2);
     fn_800077B0((f32)lbl_8036834C.x, (f32)lbl_8036834C.y, (f32)lbl_8036834C.x, (f32)lbl_8036834C.y, (f32)(s16)(lbl_8036834C.x2 - lbl_8036834C.x), (f32)(s16)(lbl_8036834C.y2 - lbl_8036834C.y));
     fn_80007358(lbl_8036B6EC, lbl_8036B6EC);
     fn_80007884();
@@ -1450,7 +1450,7 @@ void fn_801E6CEC(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    fn_800077D8(lbl_8036B6EC, lbl_8036B6EC, lbl_8036B73C, lbl_8036B740);
+    Prim2D_SetRect(lbl_8036B6EC, lbl_8036B6EC, lbl_8036B73C, lbl_8036B740);
     fn_800077B0((f32)lbl_8036831C.x, (f32)lbl_8036831C.y, (f32)lbl_8036831C.x, (f32)lbl_8036831C.y, (f32)(s16)(lbl_8036831C.x2 - lbl_8036831C.x), (f32)(s16)(lbl_8036831C.y2 - lbl_8036831C.y));
     fn_80007358(lbl_8036B6EC, lbl_8036B6EC);
     fn_80007884();
@@ -1475,7 +1475,7 @@ void fn_801E6CEC(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    fn_800077D8(lbl_8036B748, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
+    Prim2D_SetRect(lbl_8036B748, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
     fn_800077B0((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
     fn_80007358(lbl_8036B6EC, lbl_8036B6EC);
     fn_80007884();
@@ -1501,7 +1501,7 @@ void fn_801E6CEC(void *arg0) {
     fn_8000A174(lbl_80332000, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(9);
-    fn_800077D8(lbl_8036B750, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
+    Prim2D_SetRect(lbl_8036B750, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
     fn_800077B0((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
     fn_80007358(lbl_8036B6EC, lbl_8036B6EC);
     fn_80007884();
@@ -1528,7 +1528,7 @@ void fn_801E6CEC(void *arg0) {
         fn_8000A174(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(9);
-        fn_800077D8(lbl_8036B754, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
+        Prim2D_SetRect(lbl_8036B754, (f32)(s16)(h2 + 4), (f32)w1, (f32)w3);
         fn_800077B0((f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)lbl_8036832C.x, (f32)lbl_8036832C.y, (f32)(s16)(lbl_8036832C.x2 - lbl_8036832C.x), (f32)(s16)(lbl_8036832C.y2 - lbl_8036832C.y));
         fn_80007358(lbl_8036B6EC, lbl_8036B6EC);
         fn_80007884();

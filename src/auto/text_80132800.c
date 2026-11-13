@@ -7181,7 +7181,7 @@ extern "C" void fn_8013EF00(void *arg0) {
     void fn_8000A174(s32, u16);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007668(s32 *);
     void fn_80007884(void);
     extern f32 lbl_8036A708;
@@ -7198,7 +7198,7 @@ extern "C" void fn_8013EF00(void *arg0) {
     b = *(s16 *)((u8 *)arg0 + 0x16);
     c = *(s16 *)((u8 *)arg0 + 0x14);
     d = *(s16 *)((u8 *)arg0 + 0x18);
-    fn_800077D8(lbl_8036A708, lbl_8036A708, (f32)(s16)(b - a), (f32)(s16)(d - c));
+    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)(s16)(b - a), (f32)(s16)(d - c));
     sp8 = *(s32 *)((u8 *)arg0 + 0x1E);
     fn_80007668(&sp8);
     fn_80007884();

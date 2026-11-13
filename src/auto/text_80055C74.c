@@ -888,7 +888,7 @@ void fn_80057AE0(void *arg0) {
     void fn_80007538(void);
     void fn_800075D8(void);
     void fn_800077B0(f32, f32, f32, f32);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -966,10 +966,10 @@ void fn_80057AE0(void *arg0) {
         switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
         case 8:
         case 4:
-            fn_800077D8((f32)var_r26, (f32)var_r27, (f32)var_r29, (f32)var_r30);
+            Prim2D_SetRect((f32)var_r26, (f32)var_r27, (f32)var_r29, (f32)var_r30);
             break;
         default:
-            fn_800077D8((f32)var_r27, (f32)var_r26, (f32)var_r30, (f32)var_r29);
+            Prim2D_SetRect((f32)var_r27, (f32)var_r26, (f32)var_r30, (f32)var_r29);
             break;
         }
         fn_800077B0((f32)(temp_r31 * var_r30), lbl_80369108, (f32)var_r30, (f32)var_r29);

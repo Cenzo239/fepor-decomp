@@ -2731,7 +2731,7 @@ end:
 extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void fn_800075D8(void);
-    void fn_800077D8(f32, f32, f32, f32);
+    void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007884(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B8C(s32);
@@ -2793,7 +2793,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     }
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
-    fn_800077D8(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
+    Prim2D_SetRect(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
     fn_800075D8();
     sp8 = lbl_80368D9C;
     spC = lbl_80368D98;
