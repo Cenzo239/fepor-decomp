@@ -2605,36 +2605,37 @@ void fn_80130B10(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
     }
 }
 
-void *Ui_FormatSelectUnitName(void *arg0, void *arg1, s32 arg2) {
+void *Ui_FormatSelectUnitName(void *buf, void *entry, s32 kind) {
+    /* Format select-menu unit name into buf; kind 1/2 pick units at entry+0xC/+0x10. */
     s32 Msg_ResolveName(s32);
     s32 sprintf(char *dest, const char *fmt, ...);
     extern char gUiSelectMenuStrings[];
 
-    switch (arg2) {
+    switch (kind) {
     case 0:
         return 0;
     case 1: {
-        void *temp = *(void **)((char *)arg1 + 0xC);
-        if (temp == 0) {
-            sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
+        void *unit = *(void **)((char *)entry + 0xC);
+        if (unit == 0) {
+            sprintf(buf, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)temp + 0x188)));
+            sprintf(buf, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)unit + 0x188)));
         }
         break;
     }
     case 2: {
-        void *temp = *(void **)((char *)arg1 + 0x10);
-        if (temp == 0) {
-            sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
+        void *unit = *(void **)((char *)entry + 0x10);
+        if (unit == 0) {
+            sprintf(buf, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)temp + 0x188)));
+            sprintf(buf, &gUiSelectMenuStrings[0x264], Msg_ResolveName(*(s32 *)((char *)unit + 0x188)));
         }
         break;
     }
     default:
         break;
     }
-    return arg0;
+    return buf;
 }
 
 s32 fn_80130C54(s32 unused, void *arg1, s32 arg2) {
