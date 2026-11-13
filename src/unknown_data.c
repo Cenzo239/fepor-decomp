@@ -1,3 +1,3 @@
 #include "global.h"
 
-extern u16 lbl_80317338[4976];
+extern u16 gSoundSys[4976];
