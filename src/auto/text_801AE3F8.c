@@ -368,7 +368,7 @@ void FShop_OnAnimalHelp(void *proc) {
     }
 }
 
-void fn_801AEC14(void *arg0) {
+void FShop_OnItemMaxHelp(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
     void TalkUi_ShowMsg(void *);
