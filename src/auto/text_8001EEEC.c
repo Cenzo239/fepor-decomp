@@ -75,26 +75,26 @@ typedef struct {
 
 void fn_8001EEEC(s8 *p)
 {
-    for (;;) {
-        switch (*p) {
-        case 0:
-            *p = 0x10;
-            return;
-        case 0x34:
-            *p = 1;
-            break;
-        case 0x38:
-            *p = 8;
-            break;
-        case 0x36:
-            *p = 2;
-            break;
-        case 0x32:
-            *p = 4;
-            break;
-        }
-        p += 1;
+start:
+    switch (*p) {
+    case 0:
+        *p = 0x10;
+        return;
+    case 0x34:
+        *p = 1;
+        break;
+    case 0x38:
+        *p = 8;
+        break;
+    case 0x36:
+        *p = 2;
+        break;
+    case 0x32:
+        *p = 4;
+        break;
     }
+    p += 1;
+    goto start;
 }
 
 void fn_8001EF7C(void) {
@@ -715,28 +715,21 @@ void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 }
 
 s16 fn_8002134C(u8 *map, s8 x, s8 y) {
-    extern u8 gUnits[];
-    u8 *cell;
-    u8 *hi;
-    u8 tid;
-    u8 uid;
-    s16 val;
-    u8 *unit;
-    u8 *cls;
-
-    hi = map + 0x10000;
-    cell = map + x + (y << 6);
-    tid = cell[0x100D];
-    uid = cell[0xD];
-    val = (s16)*(u16 *)(hi + (tid << 1) + 0x4214);
-    if (uid != 0) {
-        unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
-        cls = *(u8 **)(unit + 0x190);
-        if ((map + 0x20000)[cls[8] + 0x4EE4] != 0) {
-            return 0x7FFE;
-        }
-    }
-    return val;
+extern u8 gUnits[];
+u8 *cell = map + x;
+u8 *hi = map + 0x10000;
+u8 tid,uid; s16 val; u8 *unit; u8 *cls;
+cell += y << 6;
+tid=cell[0x100D]; uid=cell[0xD];
+cell = hi + (tid << 1);
+val=*(u16 *)(cell+0x4214);
+if(uid != 0) {
+unit=uid ? gUnits+(uid-1)*0x280 : NULL;
+cls=*(u8 **)(unit+0x190);
+map += 0x20000;
+if((map+cls[8])[0x4EE4]) return 0x7FFE;
+}
+return val;
 }
 
 void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
@@ -3113,66 +3106,14 @@ void *fn_8002595C(s32 arg0) {
 }
 
 void fn_80025BA0(void) {
-    void SISetSamplingRate(u32);
-    void fn_80212870(void);
-    s32 fn_8021275C(u32);
-    extern u8 lbl_80368DC8;
-    extern u8 lbl_802EF408[];
-    extern u32 gPadInput;
-    extern s32 lbl_80367248;
-    extern s32 lbl_8036724C;
-    u8 *src;
-    u8 *pads;
-    u8 *dst;
-    u8 *p1;
-    u8 *p2;
-    u8 *p3;
-    s32 zero;
-    u8 b0;
-    u8 b1;
-    u8 b2;
-    u8 b3;
-
-    SISetSamplingRate(1);
-    fn_80212870();
-
-    src = &lbl_80368DC8;
-    pads = lbl_802EF408;
-    dst = lbl_802EF438;
-    zero = 0;
-    b0 = lbl_80368DC8;
-    p1 = pads + 0xC;
-    b1 = src[1];
-    p2 = pads + 0x18;
-    b2 = src[2];
-    p3 = pads + 0x24;
-    b3 = src[3];
-
-    dst[0x1C] = b0;
-    *(u8 **)(dst + 0x00) = pads;
-    *(s32 *)(dst + 0x18) = zero;
-    dst[0x20] = (u8)zero;
-    dst[0x40] = b1;
-    *(u8 **)(dst + 0x24) = p1;
-    *(s32 *)(dst + 0x3C) = zero;
-    dst[0x44] = (u8)zero;
-    dst[0x64] = b2;
-    *(u8 **)(dst + 0x48) = p2;
-    *(s32 *)(dst + 0x60) = zero;
-    dst[0x68] = (u8)zero;
-    dst[0x88] = b3;
-    *(u8 **)(dst + 0x6C) = p3;
-    *(s32 *)(dst + 0x84) = zero;
-    dst[0x8C] = (u8)zero;
-
-    fn_8021275C(0xF0000000);
-
-    {
-        s32 z = 0;
-        lbl_8036724C = z;
-        lbl_80367248 = z;
-        gPadInput = (u32)lbl_802EF438;
-    }
+void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
+extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
+s32 i; u8 *dst; u8 *pads; u8 *src;
+SISetSamplingRate(1); fn_80212870();
+src=&lbl_80368DC8; pads=lbl_802EF408; dst=lbl_802EF438;
+for(i=0;i<4;i++){dst[0x1c]=src[i]; *(u8**)dst=pads; *(s32*)(dst+0x18)=0; dst[0x20]=0; dst+=0x24; pads+=12;}
+fn_8021275C(0xF0000000);
+lbl_8036724C=0; lbl_80367248=0; gPadInput=(u32)lbl_802EF438;
 }
 
 /* Read a two-unit record from stream: deployment ids become gUnits pointers, then trailing bytes. */
@@ -3397,49 +3338,17 @@ void fn_8002626C(void) {
 
 #pragma use_lmw_stmw on
 void fn_8002629C(s32 *arg0, s32 arg1) {
-    void *Item_GetByIid(void *);
-    void fn_8002AD04(s32, void *);
-    void *fn_8002F658(s32 *, s32);
-    s32 fn_8003AFA0(s32);
-    void fn_8019C0C0(s32, void *);
-    void Battle_QueueDeathAnim(void *);
-    void Battle_SetupUnit(void *, void *, s32);
-    void fn_80026374(s32);
-    extern u8 lbl_80268E40[];
-    extern s32 gTargetList[];
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
-
-    s32 *self;
-    s32 other;
-    s32 saved;
-    u8 b2;
-    u8 b3;
-    s32 i;
-    s32 three;
-    void *entry;
-    s32 val;
-
-    self = arg0;
-    other = arg1;
-    saved = *self;
-    fn_8002AD04(saved, Item_GetByIid(lbl_80268E40 + 0x1A6));
-    i = 0;
-    three = 3;
-    while (i < gTargetList[0]) {
-        entry = fn_8002F658(gTargetList, i);
-        b3 = ((u8 *)entry)[3];
-        b2 = ((u8 *)entry)[2];
-        val = fn_8003AFA0(*self);
-        ((u8 *)entry)[0] = three;
-        i += 1;
-        ((u8 *)entry)[1] = (u8)val;
-        ((u8 *)entry)[2] = b2;
-        ((u8 *)entry)[3] = b3;
-    }
-    Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
-    Battle_QueueDeathAnim(gBattle);
-    fn_8019C0C0(other, fn_80026374);
+void *Item_GetByIid(void *); void fn_8002AD04(s32, void *); void *fn_8002F658(s32 *, s32); s32 fn_8003AFA0(s32); void fn_8019C0C0(s32, void *); void Battle_QueueDeathAnim(void *); void Battle_SetupUnit(void *, void *, s32); void fn_80026374(s32);
+extern u8 lbl_80268E40[]; extern s32 gTargetList[]; extern u8 gUiContext[]; extern u8 gBattle[];
+s32 *self; s32 other; s32 saved; u8 b3; u8 b2; s32 i; s32 three; void *entry; s32 val;
+self=arg0; other=arg1; saved=*self;
+fn_8002AD04(saved,Item_GetByIid(lbl_80268E40+0x1A6));
+i=0; three=3;
+while(i<gTargetList[0]) {
+entry=fn_8002F658(gTargetList,i); b3=((u8*)entry)[3]; b2=((u8*)entry)[2]; val=fn_8003AFA0(*self);
+((u8*)entry)[0]=three; i+=1; ((u8*)entry)[1]=(u8)val; ((u8*)entry)[2]=b2; ((u8*)entry)[3]=b3;
+}
+Battle_SetupUnit(gBattle,*(void**)gUiContext,-1); Battle_QueueDeathAnim(gBattle); fn_8019C0C0(other,fn_80026374);
 }
 #pragma use_lmw_stmw reset
 extern u8 lbl_802847EC[16];
@@ -3891,8 +3800,8 @@ void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     s8 Unit_GetMov(void);
     void fn_800C1060(s32);
     extern u8 gMapBlendMode;
-    u8 temp_r0;
-    u8 var_r4;
+    u8 t;
+    u8 f;
     void *p;
 
     if ((s8)*(u8 *)((u8 *)arg0 + 0x12) == 0) {
@@ -3900,12 +3809,14 @@ void UiCtx_EndMoveSelect(void *arg0, u8 arg1) {
     }
     *(u8 *)((u8 *)arg0 + 0x12) = 0;
     Map_RefreshUnitMap(&gBattleMap);
-    var_r4 = 1;
-    temp_r0 = gMapBlendMode - 1;
-    if (((u32)((var_r4 | ~temp_r0) - ((u32)(var_r4 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
-        var_r4 = 0;
+#pragma optimization_level 1
+    f = 1;
+    t = (u8)(gMapBlendMode - 1);
+    if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
+        f = 0;
     }
-    if (var_r4 != 0) {
+#pragma optimization_level reset
+    if (f != 0) {
         fn_800C1060(0);
     }
     if ((s8)*(u8 *)((u8 *)*(void **)arg0 + 0x1A8) != 0) {
@@ -4134,20 +4045,15 @@ void fn_800286C8(void *arg0) {
 }
 
 void fn_80028724(void) {
-    u8 fn_800BDD08(void *, void *, void *);
-    void fn_80146AF0(void);
-    void Fx_FadeIn(void *, s32);
-    void fn_8014876C(void *, s32, s32);
-    extern u8 lbl_80268E40[];
-    extern u8 gFxChannels[];
-    extern u8 gBattleState[];
-    u8 *buf = gFxChannels;
-
-    if (fn_800BDD08(gBattleState + 0xB4, lbl_80268E40 + 0x21E, gBattleState) == 0) {
-        fn_80146AF0();
-        Fx_FadeIn(buf, 0x3E8);
-        fn_8014876C(buf, 0x64, 0x3E8);
-    }
+u8 fn_800BDD08(void *, void *);
+void fn_80146AF0(void);
+void Fx_FadeIn(void *, s32);
+void fn_8014876C(void *, s32, s32);
+extern u8 lbl_80268E40[], gFxChannels[], gBattleState[];
+register u8 *buf = gFxChannels;
+if (!fn_800BDD08(gBattleState + 0xB4, lbl_80268E40 + 0x21E)) {
+fn_80146AF0(); Fx_FadeIn(buf,1000); fn_8014876C(buf,100,1000);
+}
 }
 
 void fn_80028794(void) {
