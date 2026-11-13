@@ -753,6 +753,33 @@ void fn_80129AF8(void *arg0) {
     }
 }
 
+#pragma use_lmw_stmw on
+void fn_80129B80(void *arg0) {
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void Model_SetAlpha(void *, s32);
+    void Process_ClearFunc(void *);
+    extern f64 lbl_8036A418;
+    extern f32 lbl_8036A424;
+    extern f32 lbl_8036A420;
+    extern f32 lbl_8036A428;
+    u8 *p;
+    s32 i;
+    u8 *node;
+
+    M2C_FIELD(arg0, s32 *, 0x54) = M2C_FIELD(arg0, s32 *, 0x54) + 1;
+    p = (u8 *)arg0;
+    i = 0;
+    while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
+        node = *(u8 **)(p + 0x30) + 0x14;
+        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
+        p += 4;
+        i += 1;
+    }
+    if (M2C_FIELD(arg0, s32 *, 0x54) == 0x3C) {
+        Process_ClearFunc(arg0);
+    }
+}
+#pragma use_lmw_stmw off
 void fn_80129C44(void *arg0) {
     void *fn_80040844(void);
     void fn_80044450(void *, s32);
