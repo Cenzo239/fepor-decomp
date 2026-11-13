@@ -51,6 +51,7 @@ s32 fn_801E45FC(void) {
 }
 
 void TabMenu_HandleInput(void *arg0) {
+    /* Handle tab-menu pad input: L/R change tab, A advance in mode 1, X info, B back; tick active mode. */
     void fn_8000C070(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -65,13 +66,13 @@ void TabMenu_HandleInput(void *arg0) {
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
     extern u32 gUnitInfoPopupFlag;
-    s16 spC[2];
-    s16 sp8[2];
-    s16 hold_val;
+    s16 posCopy[2];
+    s16 pos[2];
+    s16 holdVal;
     s32 pressed;
     s32 held;
     s32 mode;
-    s8 slot;
+    s8 tab;
     u8 skip;
     void *msg;
 
@@ -90,9 +91,9 @@ void TabMenu_HandleInput(void *arg0) {
             }
         }
         if ((pressed & 0x40) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
-            slot = *(u8 *)((u8 *)arg0 + 0x30);
-            if (slot > 0) {
-                TabMenu_SetTab(arg0, (s8)(slot - 1));
+            tab = *(u8 *)((u8 *)arg0 + 0x30);
+            if (tab > 0) {
+                TabMenu_SetTab(arg0, (s8)(tab - 1));
             } else {
                 TabMenu_SetTab(arg0, 2);
             }
@@ -100,9 +101,9 @@ void TabMenu_HandleInput(void *arg0) {
             return;
         }
         if ((pressed & 0x20) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
-            slot = *(u8 *)((u8 *)arg0 + 0x30);
-            if (slot < 2) {
-                TabMenu_SetTab(arg0, (s8)(slot + 1));
+            tab = *(u8 *)((u8 *)arg0 + 0x30);
+            if (tab < 2) {
+                TabMenu_SetTab(arg0, (s8)(tab + 1));
             } else {
                 TabMenu_SetTab(arg0, 0);
             }
@@ -110,9 +111,9 @@ void TabMenu_HandleInput(void *arg0) {
             return;
         }
         if ((pressed & 0x800) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
-            fn_801E4900(sp8, arg0);
+            fn_801E4900(pos, arg0);
             msg = NULL;
-            *(s32 *)spC = *(s32 *)sp8;
+            *(s32 *)posCopy = *(s32 *)pos;
             switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
             case 0:
                 msg = gTabMenuStrings + 0x15B;
@@ -121,7 +122,7 @@ void TabMenu_HandleInput(void *arg0) {
                 msg = gTabMenuStrings + 0x166;
                 break;
             }
-            Ui_OpenUnitInfoText(gUnitInfoPopup, arg0, msg, (f32)spC[0], (f32)spC[1]);
+            Ui_OpenUnitInfoText(gUnitInfoPopup, arg0, msg, (f32)posCopy[0], (f32)posCopy[1]);
             *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
             return;
         }
@@ -134,11 +135,11 @@ void TabMenu_HandleInput(void *arg0) {
             Ui_PlaySeCue(gTabMenuStrings + 0x172, 0x64);
             return;
         }
-        hold_val = 8;
+        holdVal = 8;
         if (held & 0x400) {
-            hold_val = 0x10;
+            holdVal = 0x10;
         }
-        *(s16 *)((u8 *)arg0 + 0x3A) = hold_val;
+        *(s16 *)((u8 *)arg0 + 0x3A) = holdVal;
         switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
         case 0:
             fn_801E8D34(arg0);
