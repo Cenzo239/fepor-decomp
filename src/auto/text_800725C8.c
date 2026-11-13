@@ -384,42 +384,43 @@ void fn_80072F28(void *arg0) {
     }
 }
 
-void Card_GotoOnResult(s32 arg0) {
-    M2C_UNK Process_Goto(s32, M2C_UNK);
-    s32 Card_GetResult();
-    s32 temp_r3;
+/* Map Card_GetResult to the matching save-UI Process_Goto state. */
+void Card_GotoOnResult(s32 proc) {
+    void Process_Goto(s32, s32);
+    s32 Card_GetResult(void);
+    s32 result;
 
-    temp_r3 = Card_GetResult();
-    switch (temp_r3) {                              /* irregular */
-    case 0:
-    case -66:
-        Process_Goto(arg0, 1);
+    result = Card_GetResult();
+    switch (result) {
+    case CARD_RESULT_READY:
+    case CARD_RESULT_DONE:
+        Process_Goto(proc, 1);
         return;
-    case -3:
-        Process_Goto(arg0, 2);
+    case CARD_RESULT_NOCARD:
+        Process_Goto(proc, 2);
         return;
-    case -2:
-        Process_Goto(arg0, 3);
+    case CARD_RESULT_WRONGDEVICE:
+        Process_Goto(proc, 3);
         return;
-    case -6:
-    case -13:
-        Process_Goto(arg0, 4);
+    case CARD_RESULT_BROKEN:
+    case CARD_RESULT_CANCELED:
+        Process_Goto(proc, 4);
         return;
-    case -5:
-        Process_Goto(arg0, 5);
+    case CARD_RESULT_IOERROR:
+        Process_Goto(proc, 5);
         return;
-    case -65:
-        Process_Goto(arg0, 6);
+    case CARD_RESULT_CORRUPT:
+        Process_Goto(proc, 6);
         return;
-    case -128:
-        Process_Goto(arg0, 7);
+    case CARD_RESULT_FATAL_ERROR:
+        Process_Goto(proc, 7);
         return;
-    case -4:
-    case -64:
-        Process_Goto(arg0, 8);
+    case CARD_RESULT_NOFILE:
+    case CARD_RESULT_MISSING:
+        Process_Goto(proc, 8);
         return;
     default:
-        Process_Goto(arg0, 7);
+        Process_Goto(proc, 7);
         return;
     }
 }
