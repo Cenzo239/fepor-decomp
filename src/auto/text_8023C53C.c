@@ -61,6 +61,25 @@ return 255;
 }
 typedef struct SynthFreeNode { u8 prev, next; u16 active; } SynthFreeNode;
 
+/* Sound ARAM DMA slot: ARQRequest plus user completion (MusyX owner 0x2A). */
+typedef struct SoundAramDmaSlot {
+    s32 next;
+    s32 owner;
+    s32 type;
+    s32 priority;
+    s32 mramAddr;
+    s32 aramAddr;
+    s32 length;
+    void *callback;
+    s32 userCb;
+    s32 userArg;
+} SoundAramDmaSlot;
+typedef struct SoundAramDmaQueue {
+    SoundAramDmaSlot slots[16];
+    volatile u8 next;
+    volatile u8 count;
+} SoundAramDmaQueue;
+
 extern u16 lbl_80366F28;
 extern char lbl_80282AE8[];
 extern u8 gSoundReady;
