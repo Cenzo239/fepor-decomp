@@ -210,7 +210,8 @@ void fn_80090990(void *arg0) {
     } while (var_r31 < 4);
 }
 
-void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
+/* Draw a fixed-size unit-info panel fill tinted by allegiance, plus white translucent edge strips. */
+void UnitInfo_DrawPanel(s32 x, s32 y, s32 allegiance)
 {
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetColor(u8, u8, u8, u8);
@@ -228,57 +229,57 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     extern f32 gUnitInfoPanelH;
     extern f32 gUnitInfoPanelOuterW;
     extern f32 gUnitInfoPanelOuterH;
-    u8 sp18[4];
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
+    u8 rgbaBytes[4];
+    s32 colorPlayer;
+    s32 colorOther;
+    s32 colorPartner;
+    s32 colorPacked;
 
-    switch (arg2) {
+    switch (allegiance) {
     case 0:
-        sp14 = gUnitInfoPanelColorPlayer;
-        sp18[0] = *(u8 *)&sp14;
-        sp18[1] = *(u8 *)((u8 *)&sp14 + 1);
-        sp18[2] = *(u8 *)((u8 *)&sp14 + 2);
-        sp18[3] = *(u8 *)((u8 *)&sp14 + 3);
+        colorPlayer = gUnitInfoPanelColorPlayer;
+        rgbaBytes[0] = *(u8 *)&colorPlayer;
+        rgbaBytes[1] = *(u8 *)((u8 *)&colorPlayer + 1);
+        rgbaBytes[2] = *(u8 *)((u8 *)&colorPlayer + 2);
+        rgbaBytes[3] = *(u8 *)((u8 *)&colorPlayer + 3);
         break;
     case 2:
-        sp10 = gUnitInfoPanelColorOther;
-        sp18[0] = *(u8 *)&sp10;
-        sp18[1] = *(u8 *)((u8 *)&sp10 + 1);
-        sp18[2] = *(u8 *)((u8 *)&sp10 + 2);
-        sp18[3] = *(u8 *)((u8 *)&sp10 + 3);
+        colorOther = gUnitInfoPanelColorOther;
+        rgbaBytes[0] = *(u8 *)&colorOther;
+        rgbaBytes[1] = *(u8 *)((u8 *)&colorOther + 1);
+        rgbaBytes[2] = *(u8 *)((u8 *)&colorOther + 2);
+        rgbaBytes[3] = *(u8 *)((u8 *)&colorOther + 3);
         break;
     case 3:
-        spC = gUnitInfoPanelColorPartner;
-        sp18[0] = *(u8 *)&spC;
-        sp18[1] = *(u8 *)((u8 *)&spC + 1);
-        sp18[2] = *(u8 *)((u8 *)&spC + 2);
-        sp18[3] = *(u8 *)((u8 *)&spC + 3);
+        colorPartner = gUnitInfoPanelColorPartner;
+        rgbaBytes[0] = *(u8 *)&colorPartner;
+        rgbaBytes[1] = *(u8 *)((u8 *)&colorPartner + 1);
+        rgbaBytes[2] = *(u8 *)((u8 *)&colorPartner + 2);
+        rgbaBytes[3] = *(u8 *)((u8 *)&colorPartner + 3);
         break;
     }
     Prim2D_Begin();
     fn_8000A174(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)arg0, (f32)arg1, gUnitInfoPanelW, gUnitInfoPanelH);
-    sp8 = *(s32 *)sp18;
-    Prim2D_SetColorPacked(&sp8);
+    Prim2D_SetRect((f32)x, (f32)y, gUnitInfoPanelW, gUnitInfoPanelH);
+    colorPacked = *(s32 *)rgbaBytes;
+    Prim2D_SetColorPacked(&colorPacked);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)(arg0 - 3), (f32)arg1, gUnitInfoPanelOuterW, gZeroF);
+    Prim2D_SetRect((f32)(x - 3), (f32)y, gUnitInfoPanelOuterW, gZeroF);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)(arg0 - 3), (f32)(arg1 + 0x62), gUnitInfoPanelOuterW, gZeroF);
+    Prim2D_SetRect((f32)(x - 3), (f32)(y + 0x62), gUnitInfoPanelOuterW, gZeroF);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)arg0, (f32)(arg1 - 3), gZeroF, gUnitInfoPanelOuterH);
+    Prim2D_SetRect((f32)x, (f32)(y - 3), gZeroF, gUnitInfoPanelOuterH);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
-    Prim2D_SetRect((f32)(arg0 + 0xD0), (f32)(arg1 - 3), gZeroF, gUnitInfoPanelOuterH);
+    Prim2D_SetRect((f32)(x + 0xD0), (f32)(y - 3), gZeroF, gUnitInfoPanelOuterH);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0x4D);
     Prim2D_EndPrim();
 }
