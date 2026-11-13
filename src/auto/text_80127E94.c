@@ -630,7 +630,7 @@ void fn_80129888(void *arg0, void *arg1)
 
 void fn_801298FC(void *arg0) {
     u8 fn_80040824(void);
-    void fn_80049BD4(void *, u8);
+    void MapObj_Show(void *, u8);
 
     void *p;
     s32 i;
@@ -644,9 +644,9 @@ void fn_801298FC(void *arg0) {
             n = *(s32 *)((u8 *)arg0 + 0x50);
             v = *(void **)((u8 *)p + 0x30);
             if (i == n - 1) {
-                fn_80049BD4(v, 1);
+                MapObj_Show(v, 1);
             } else {
-                fn_80049BD4(v, 0);
+                MapObj_Show(v, 0);
             }
             p = (u8 *)p + 4;
             i += 1;

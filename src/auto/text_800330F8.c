@@ -9550,7 +9550,7 @@ void MapObj_FadeOut(void *arg0, u8 arg1) {
 }
 
 extern u16* gMap;
-void fn_80049BD4(void *arg0, u8 arg1) {
+void MapObj_Show(void *arg0, u8 arg1) {
     void Model_SetAlpha(void *, s32, void *);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
