@@ -113,7 +113,7 @@ void fn_801F20A8(s32 arg0) {
     }
 }
 
-void fn_801F20F0(void *arg0) {
+void CardLink_InitUi(void *arg0) {
     void *Msg_Expand(void *);
     void fn_8006EEFC(void *, void *);
     void fn_80147188(s32);
@@ -2266,22 +2266,22 @@ void fn_801F7194(void *arg0) {
 }
 
 void fn_801F7200(void *arg0) {
-    extern u8 gBattleState[];
+    extern u8 lbl_80330708[];
     extern u8 lbl_80280D38[];
     void fn_80147188(s32);
     void fn_8006EEFC(void *, void *);
     void fn_80162018(void);
     u32 *obj;
-    u8 *base;
     u32 t0;
+    u32 t1;
 
     obj = *(u32 **)((u8 *)arg0 + 0x30);
     fn_80147188(0x3E8);
     obj[0] = 0;
     obj[1] = 0;
-    base = gBattleState;
-    t0 = *(u32 *)(base + 0x60);
-    obj[3] = *(u32 *)(base + 0x64);
+    t0 = *(u32 *)(lbl_80330708 + 0x60);
+    t1 = *(u32 *)(lbl_80330708 + 0x64);
+    obj[3] = t1;
     obj[2] = t0;
     fn_8006EEFC(obj + 4, lbl_80280D38 + 0x173);
     fn_80162018();
