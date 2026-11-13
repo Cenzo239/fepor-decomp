@@ -1938,7 +1938,7 @@ f32 fn_80023430(void *arg0, f32 x, f32 y) {
 extern f32 lbl_80368D8C;
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-void fn_800237A0(void *arg0) {
+void Map_PruneFlatEdges(void *arg0) {
     void *row;
     void *fp;
     u16 flags;
