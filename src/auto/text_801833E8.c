@@ -1121,7 +1121,8 @@ s32 fn_80185B94(void *arg0) {
     return 0;
 }
 
-void MuFlash_StartOnButton(void *arg0) {
+/* On pad button 0, start an E_MuFlash tint for the bound unit and clear this process func. */
+void MuFlash_StartOnButton(void *proc) {
     u8 Pad_IsButton(void *, s32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -1129,30 +1130,30 @@ void MuFlash_StartOnButton(void *arg0) {
     void MuFade_UnlinkSame(void *, void *);
     void Process_ClearFunc(void *);
     extern u8 E_MuFlash_script[];
-    u8 spC[0x44];
-    u32 sp8;
-    void *temp_r30;
-    void *temp_r3;
+    u8 key[0x44];
+    u32 color;
+    void *unit;
+    void *flash;
 
-    if ((u8)Pad_IsButton(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + 0x30) + 0x5C), 0) == 0) {
+    if ((u8)Pad_IsButton(*(void **)((u8 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x34) + 0x30) + 0x5C), 0) == 0) {
         return;
     }
-    temp_r30 = *(void **)((u8 *)arg0 + 0x30);
-    *(void **)(spC + 0x30) = temp_r30;
-    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(E_MuFlash_script, 0);
-    *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
-    *(s32 *)((u8 *)temp_r3 + 0x3C) = 0x10;
-    sp8 = Mu_GetFlashColor(0);
-    ((u8 *)temp_r3)[0x38] = ((u8 *)&sp8)[0];
-    ((u8 *)temp_r3)[0x39] = ((u8 *)&sp8)[1];
-    ((u8 *)temp_r3)[0x3A] = ((u8 *)&sp8)[2];
-    ((u8 *)temp_r3)[0x3B] = ((u8 *)&sp8)[3];
-    ((u8 *)temp_r3)[0x34] = ((u8 *)temp_r30)[0x24];
-    ((u8 *)temp_r3)[0x35] = ((u8 *)temp_r30)[0x25];
-    ((u8 *)temp_r3)[0x36] = ((u8 *)temp_r30)[0x26];
-    ((u8 *)temp_r3)[0x37] = ((u8 *)temp_r30)[0x27];
-    Process_ClearFunc(arg0);
+    unit = *(void **)((u8 *)proc + 0x30);
+    *(void **)(key + 0x30) = unit;
+    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, key);
+    flash = Process_CreateEx(E_MuFlash_script, 0);
+    *(void **)((u8 *)flash + 0x30) = unit;
+    *(s32 *)((u8 *)flash + 0x3C) = 0x10;
+    color = Mu_GetFlashColor(0);
+    ((u8 *)flash)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)flash)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)flash)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)flash)[0x3B] = ((u8 *)&color)[3];
+    ((u8 *)flash)[0x34] = ((u8 *)unit)[0x24];
+    ((u8 *)flash)[0x35] = ((u8 *)unit)[0x25];
+    ((u8 *)flash)[0x36] = ((u8 *)unit)[0x26];
+    ((u8 *)flash)[0x37] = ((u8 *)unit)[0x27];
+    Process_ClearFunc(proc);
 }
 
 void fn_80186028(void *arg0) {
