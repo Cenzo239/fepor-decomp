@@ -4560,9 +4560,9 @@ s32 fn_80065EE8(void *arg0)
 }
 
 void fn_80066124(u32 arg0) {
-extern void *lbl_803672F8;
+extern void *gCamera;
 u8 *p=(u8 *)arg0;
-if(p==NULL) p=lbl_803672F8;
+if(p==NULL) p=gCamera;
 if(p==NULL) return;
 *(s16 *)(p+0x118)=0;
 *(s32 *)(p+0x11c)=0;
@@ -4620,7 +4620,7 @@ void fn_800661A8(void *arg0) {
     extern u8 *lbl_80366DD4;
     extern u8 lbl_80366DD8;
     extern u8 *lbl_80366DDC;
-    extern u8 *lbl_803672F8;
+    extern u8 *gCamera;
     extern s32 lbl_80369220;
     extern f32 lbl_80369224;
     extern f32 lbl_80369228;
@@ -4686,13 +4686,13 @@ void fn_800661A8(void *arg0) {
                     if (i < 0) {
                     } else {
                         fn_802031CC(lights + 0x14, vec, lbl_8036922C);
-                        fn_80202A18(lbl_803672F8 + 0xA4, vec, vec);
+                        fn_80202A18(gCamera + 0xA4, vec, vec);
                         fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
                         fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
                         fn_80221D88(mtx, 0, lbl_80369234);
                     }
                 } else {
-                    fn_80202A18(lbl_803672F8 + 0xA4, (f32 *)(lights + 0x14), vec2);
+                    fn_80202A18(gCamera + 0xA4, (f32 *)(lights + 0x14), vec2);
                     fn_80221FF8(mtx, vec2[0], vec2[1], vec2[2]);
                     fn_80221F18(mtx, 0, lbl_80369228, lbl_80369230);
                     fn_80221D88(mtx, 0, lbl_80369234);
@@ -4700,7 +4700,7 @@ void fn_800661A8(void *arg0) {
                 }
             } else {
                 if (i < 8) {
-                    fn_802029C4(lbl_803672F8 + 0xA4, lights + 8, vec);
+                    fn_802029C4(gCamera + 0xA4, lights + 8, vec);
                     fn_80221FE8(mtx, vec[0], vec[1], vec[2]);
                     fn_80221F18(mtx, 2, *(f32 *)(lights + 0x20), lbl_80369230);
                     fn_80221D88(mtx, 0, lbl_80369234);
@@ -4725,7 +4725,7 @@ void fn_800661A8(void *arg0) {
         ((u8 *)&sp54)[0] = lbl_80366DD4[1];
         ((u8 *)&sp54)[1] = lbl_80366DD4[2];
         ((u8 *)&sp54)[2] = lbl_80366DD4[3];
-        cam = lbl_803672F8;
+        cam = gCamera;
         sp5C = sp54;
         fn_802240F0(lbl_80285E70[type], &sp5C, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                     *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4755,7 +4755,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp44)[0] = lbl_80366DD4[1];
             ((u8 *)&sp44)[1] = lbl_80366DD4[2];
             ((u8 *)&sp44)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp4C = sp44;
             fn_802240F0(lbl_80285E70[type], &sp4C, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4796,7 +4796,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp38)[0] = lbl_80366DD4[1];
             ((u8 *)&sp38)[1] = lbl_80366DD4[2];
             ((u8 *)&sp38)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp40 = sp38;
             fn_802240F0(lbl_80285E70[type], &sp40, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4837,7 +4837,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp2C)[0] = lbl_80366DD4[1];
             ((u8 *)&sp2C)[1] = lbl_80366DD4[2];
             ((u8 *)&sp2C)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp34 = sp2C;
             fn_802240F0(lbl_80285E70[type], &sp34, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4878,7 +4878,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp20)[0] = lbl_80366DD4[1];
             ((u8 *)&sp20)[1] = lbl_80366DD4[2];
             ((u8 *)&sp20)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp28 = sp20;
             fn_802240F0(lbl_80285E70[type], &sp28, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4919,7 +4919,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp14)[0] = lbl_80366DD4[1];
             ((u8 *)&sp14)[1] = lbl_80366DD4[2];
             ((u8 *)&sp14)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp1C = sp14;
             fn_802240F0(lbl_80285E70[type], &sp1C, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -4962,7 +4962,7 @@ void fn_800661A8(void *arg0) {
             ((u8 *)&sp8)[0] = lbl_80366DD4[1];
             ((u8 *)&sp8)[1] = lbl_80366DD4[2];
             ((u8 *)&sp8)[2] = lbl_80366DD4[3];
-            cam = lbl_803672F8;
+            cam = gCamera;
             sp10 = sp8;
             fn_802240F0(lbl_80285E70[type], &sp10, *(f32 *)(lbl_80366DD4 + 4), *(f32 *)(lbl_80366DD4 + 8),
                         *(f32 *)(cam + 0x180), *(f32 *)(cam + 0x184));
@@ -5240,7 +5240,7 @@ void fn_80067EDC(void *arg0)
     void GXSetScissor(u16, u16, u16, u16);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
-    extern void *lbl_803672F8;
+    extern void *gCamera;
     extern u8 lbl_803672FC;
     extern f32 lbl_80369228;
     extern f32 lbl_80369250;
@@ -5254,7 +5254,7 @@ void fn_80067EDC(void *arg0)
 
     p = arg0;
     if (p == NULL) {
-        p = lbl_803672F8;
+        p = gCamera;
     }
     if (p == NULL) {
         return;
@@ -5270,7 +5270,7 @@ void fn_80067EDC(void *arg0)
     GXSetCurrentMtx(0);
     PSMTXIdentity(p + 0xA4);
     if (p == NULL) {
-        p = lbl_803672F8;
+        p = gCamera;
     }
     if (p == NULL) {
         return;
@@ -5281,20 +5281,20 @@ void fn_80067EDC(void *arg0)
 }
 
 void *fn_80067FD0(void) {
-    extern void *lbl_803672F8;
-    return (u8 *)lbl_803672F8 + 0x64;
+    extern void *gCamera;
+    return (u8 *)gCamera + 0x64;
 }
 
 s32 fn_80067FDC(void) {
-    extern void *lbl_803672F8;
-    return (s32)((u8 *)lbl_803672F8 + 0xA4);
+    extern void *gCamera;
+    return (s32)((u8 *)gCamera + 0xA4);
 }
 
 void fn_80067FE8(void *arg0, void *arg1, void *arg2) {
     void fn_802026E4(void *, void *, void *, void *);
     void PSMTXCopy(void *, void *);
     void fn_80202C18(void *, void *, void *);
-    extern void *lbl_803672F8;
+    extern void *gCamera;
     extern f32 lbl_80369228;
     extern f32 lbl_80369224;
     f32 buf[16];
@@ -5302,10 +5302,10 @@ void fn_80067FE8(void *arg0, void *arg1, void *arg2) {
     f32 x;
     f32 y;
 
-    fn_802026E4((u8 *)lbl_803672F8 + 0xA4, arg0, arg1, arg2);
-    PSMTXCopy((u8 *)lbl_803672F8 + 0xA4, buf);
+    fn_802026E4((u8 *)gCamera + 0xA4, arg0, arg1, arg2);
+    PSMTXCopy((u8 *)gCamera + 0xA4, buf);
     x = lbl_80369228;
-    p = lbl_803672F8;
+    p = gCamera;
     y = lbl_80369224;
     buf[12] = x;
     buf[13] = x;
@@ -5315,62 +5315,62 @@ void fn_80067FE8(void *arg0, void *arg1, void *arg2) {
 }
 
 void fn_8006805C(f32 arg0, f32 arg1) {
-    extern void *lbl_803672F8;
+    extern void *gCamera;
 
-    *(f32 *)((u8 *)lbl_803672F8 + 0x180) = arg0;
-    *(f32 *)((u8 *)lbl_803672F8 + 0x184) = arg1;
+    *(f32 *)((u8 *)gCamera + 0x180) = arg0;
+    *(f32 *)((u8 *)gCamera + 0x184) = arg1;
 }
 
 #pragma global_optimizer off
 void fn_80068070(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    extern f32 *lbl_803672F8;
+    extern f32 *gCamera;
     extern f32 lbl_80369228;
     extern f32 lbl_80369224;
     f32 *p;
     f32 y;
     f32 x;
 
-    p = lbl_803672F8;
+    p = gCamera;
     x = lbl_80369228;
     p[1] = arg0;
     y = lbl_80369224;
-    lbl_803672F8[2] = arg1;
-    lbl_803672F8[3] = arg2;
-    lbl_803672F8[4] = arg3;
-    lbl_803672F8[5] = x;
-    lbl_803672F8[6] = y;
+    gCamera[2] = arg1;
+    gCamera[3] = arg2;
+    gCamera[4] = arg3;
+    gCamera[5] = x;
+    gCamera[6] = y;
 }
 #pragma global_optimizer reset
 void fn_800680AC(u16 arg0, u16 arg1, u16 arg2, u16 arg3) {
-    extern void *lbl_803672F8;
+    extern void *gCamera;
 
-    *(u16 *)((u8 *)lbl_803672F8 + 0x1C) = arg0;
-    *(u16 *)((u8 *)lbl_803672F8 + 0x1E) = arg1;
-    *(u16 *)((u8 *)lbl_803672F8 + 0x20) = arg2;
-    *(u16 *)((u8 *)lbl_803672F8 + 0x22) = arg3;
+    *(u16 *)((u8 *)gCamera + 0x1C) = arg0;
+    *(u16 *)((u8 *)gCamera + 0x1E) = arg1;
+    *(u16 *)((u8 *)gCamera + 0x20) = arg2;
+    *(u16 *)((u8 *)gCamera + 0x22) = arg3;
 }
 
 void fn_800680D0(void *arg0, u8 arg1)
 {
     void fn_80202BD4(void *, void *);
-    extern u32 lbl_803672F8;
+    extern u32 gCamera;
 
     u8 *ptr;
     u16 flags;
 
     if (arg1 != 0) {
-        ptr = (u8 *)lbl_803672F8;
+        ptr = (u8 *)gCamera;
         flags = *(u16 *)ptr;
         flags |= 1;
         *(u16 *)ptr = flags;
     } else {
-        ptr = (u8 *)lbl_803672F8;
+        ptr = (u8 *)gCamera;
         flags = *(u16 *)ptr;
         flags &= ~1;
         *(u16 *)ptr = (unsigned)flags;
     }
 
-    ptr = (u8 *)lbl_803672F8;
+    ptr = (u8 *)gCamera;
     fn_80202BD4(arg0, ptr + 0x24);
 }
 
@@ -5393,13 +5393,13 @@ s32 fn_80068124(char *name) {
 }
 
 s32 Camera_Get(void) {
-    extern void *lbl_803672F8;
-    return (s32)lbl_803672F8;
+    extern void *gCamera;
+    return (s32)gCamera;
 }
 
 void fn_80068550(s32 arg0) {
-    extern void *lbl_803672F8;
-    lbl_803672F8 = (void *)arg0;
+    extern void *gCamera;
+    gCamera = (void *)arg0;
 }
 
 #pragma use_lmw_stmw on
@@ -8399,7 +8399,7 @@ s32 fn_800723DC(void) {
 void fn_800723E4(void *arg0) {
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
-extern void *lbl_803672F8;
+extern void *gCamera;
 extern s32 *jumptable_80285D18;
 extern u8 lbl_80366DE9;
 extern struct Unit {
