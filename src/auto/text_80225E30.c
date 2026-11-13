@@ -757,56 +757,91 @@ s32 fn_80227444(void *arg0) {
     return err;
 }
 
-s32 TRKDoReadRegisters(void *arg0) {
-void TRKResetBuffer(void*,u32);
-s32 TRKAppendBuffer(void*,void*,s32);
-s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
-s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
-s32 TRKTargetAccessExtended1(u16,u16,void*,s32*,s32);
-s32 TRKTargetAccessExtended2(u16,u16,void*,s32*,s32);
-s32 TRK_cc_write(void*,s32);
-s32 TRKMessageSend(void*);
-void MWTRACE(u8,char*,...);
-void *memset(void*,s32,s32);
-extern char gTRK_str_SerialIO[];
-s32 result, err; s8 code; char *strings=gTRK_str_SerialIO;
-u8 request[0x40], invalid[0x40], reply[0x40];
-s32 outLen;
-if(*(u16*)((u8*)arg0+0x1c)>*(u16*)((u8*)arg0+0x20)){
-memset(invalid,0,0x40); invalid[4]=0x80; *(s32*)invalid=0x40; invalid[8]=0x14;
-TRK_cc_write(invalid,0x40);return 0;
-}
-request[4]=0x80; *(s32*)request=0x468;
-TRKResetBuffer(arg0,0);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-TRKAppendBuffer(arg0,request,0x40);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-err=TRKTargetAccessDefault(0,0x24,arg0,&outLen,1);
-MWTRACE(4,strings+0xc0,err);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(!err) err=TRKTargetAccessFP(0,0x21,arg0,&outLen,1);
-MWTRACE(4,strings+0xf8,err);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(!err) err=TRKTargetAccessExtended1(0,0x60,arg0,&outLen,1);
-MWTRACE(4,strings+0x120,err);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(!err) err=TRKTargetAccessExtended2(0,0x1f,arg0,&outLen,1);
-MWTRACE(4,strings+0x150,err);
-MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(err){
-switch(err){
-case 0x703:code=0x12;break;
-case 0x701:code=0x14;break;
-case 0x702:code=0x15;break;
-case 0x704:code=0x21;break;
-case 0x705:code=0x22;break;
-case 0x706:code=0x20;break;
-default:code=3;break;
-}
-memset(reply,0,0x40);reply[4]=0x80;*(s32*)reply=0x40;reply[8]=code;TRK_cc_write(reply,0x40);return 0;
-}
-MWTRACE(1,strings+0x60);
-result=TRKMessageSend(arg0);MWTRACE(1,strings+0x80,result);return result;
+/* Build reply with all CPU register banks and send it. */
+s32 TRKDoReadRegisters(void *buffer) {
+    void TRKResetBuffer(void *, u32);
+    s32 TRKAppendBuffer(void *, void *, s32);
+    s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessExtended1(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessExtended2(u16, u16, void *, s32 *, s32);
+    s32 TRK_cc_write(void *, s32);
+    s32 TRKMessageSend(void *);
+    void MWTRACE(u8, char *, ...);
+    void *memset(void *, s32, s32);
+    extern char gTRK_str_SerialIO[];
+
+    s32 result, err;
+    s8 replyCode;
+    char *strings = gTRK_str_SerialIO;
+    u8 header[0x40], invalidReply[0x40], errorReply[0x40];
+    s32 outLen;
+
+    if (*(u16 *)((u8 *)buffer + 0x1c) > *(u16 *)((u8 *)buffer + 0x20)) {
+        memset(invalidReply, 0, 0x40);
+        invalidReply[4] = 0x80;
+        *(s32 *)invalidReply = 0x40;
+        invalidReply[8] = 0x14;
+        TRK_cc_write(invalidReply, 0x40);
+        return 0;
+    }
+
+    header[4] = 0x80;
+    *(s32 *)header = 0x468;
+    TRKResetBuffer(buffer, 0);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    TRKAppendBuffer(buffer, header, 0x40);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    err = TRKTargetAccessDefault(0, 0x24, buffer, &outLen, 1);
+    MWTRACE(4, strings + 0xc0, err);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    if (!err)
+        err = TRKTargetAccessFP(0, 0x21, buffer, &outLen, 1);
+    MWTRACE(4, strings + 0xf8, err);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    if (!err)
+        err = TRKTargetAccessExtended1(0, 0x60, buffer, &outLen, 1);
+    MWTRACE(4, strings + 0x120, err);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    if (!err)
+        err = TRKTargetAccessExtended2(0, 0x1f, buffer, &outLen, 1);
+    MWTRACE(4, strings + 0x150, err);
+    MWTRACE(4, strings + 0x98, *(s32 *)((u8 *)buffer + 8));
+    if (err) {
+        switch (err) {
+        case 0x703:
+            replyCode = 0x12;
+            break;
+        case 0x701:
+            replyCode = 0x14;
+            break;
+        case 0x702:
+            replyCode = 0x15;
+            break;
+        case 0x704:
+            replyCode = 0x21;
+            break;
+        case 0x705:
+            replyCode = 0x22;
+            break;
+        case 0x706:
+            replyCode = 0x20;
+            break;
+        default:
+            replyCode = 3;
+            break;
+        }
+        memset(errorReply, 0, 0x40);
+        errorReply[4] = 0x80;
+        *(s32 *)errorReply = 0x40;
+        errorReply[8] = replyCode;
+        TRK_cc_write(errorReply, 0x40);
+        return 0;
+    }
+    MWTRACE(1, strings + 0x60);
+    result = TRKMessageSend(buffer);
+    MWTRACE(1, strings + 0x80, result);
+    return result;
 }
 
 #pragma use_lmw_stmw reset
