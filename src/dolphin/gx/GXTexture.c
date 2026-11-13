@@ -356,7 +356,8 @@ void GXInitTexObjCI(void *obj, void *image_ptr, u16 width, u16 height,
     *(u32 *)((char *)obj + 0x18) = tlut_name;
 }
 
-void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
+/* Pack LOD / filter / anisotropy fields into a GXTexObj. */
+void GXInitTexObjLOD(u32 *obj, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
     extern u8 GX2HWFiltConv[8];
     u8 lbias;
     u8 lmin;
@@ -368,14 +369,14 @@ void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lo
         lod_bias = 3.99f;
     }
     lbias = (u8)(32.0f * lod_bias);
-    t[0] = __rlwimi(t[0], lbias, 9, 15, 22);
-    t[0] = __rlwimi(t[0], (mag_filt == 1) ? 1 : 0, 4, 27, 27);
-    t[0] = __rlwimi(t[0], GX2HWFiltConv[min_filt], 5, 24, 26);
-    t[0] = __rlwimi(t[0], do_edge_lod ? 0 : 1, 8, 23, 23);
-    t[0] = __rlwimi(t[0], 0, 17, 14, 14);
-    t[0] = __rlwimi(t[0], 0, 18, 13, 13);
-    t[0] = __rlwimi(t[0], max_aniso, 19, 11, 12);
-    t[0] = __rlwimi(t[0], bias_clamp, 21, 10, 10);
+    obj[0] = __rlwimi(obj[0], lbias, 9, 15, 22);
+    obj[0] = __rlwimi(obj[0], (mag_filt == 1) ? 1 : 0, 4, 27, 27);
+    obj[0] = __rlwimi(obj[0], GX2HWFiltConv[min_filt], 5, 24, 26);
+    obj[0] = __rlwimi(obj[0], do_edge_lod ? 0 : 1, 8, 23, 23);
+    obj[0] = __rlwimi(obj[0], 0, 17, 14, 14);
+    obj[0] = __rlwimi(obj[0], 0, 18, 13, 13);
+    obj[0] = __rlwimi(obj[0], max_aniso, 19, 11, 12);
+    obj[0] = __rlwimi(obj[0], bias_clamp, 21, 10, 10);
 
     if (min_lod < 0.0f) {
         min_lod = 0.0f;
@@ -389,8 +390,8 @@ void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lo
         max_lod = 10.0f;
     }
     lmax = (u8)(16.0f * max_lod);
-    t[1] = __rlwimi(t[1], lmin, 0, 24, 31);
-    t[1] = __rlwimi(t[1], lmax, 8, 16, 23);
+    obj[1] = __rlwimi(obj[1], lmin, 0, 24, 31);
+    obj[1] = __rlwimi(obj[1], lmax, 8, 16, 23);
 }
 
 void fn_80222A3C(u32 *t, s32 min_filt, s32 mag_filt) {
