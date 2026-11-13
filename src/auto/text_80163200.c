@@ -13529,7 +13529,7 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     return var_r30;
 }
 
-s16 fn_8017D604(s32 arg0, s16 arg1) {
+s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 Status_Test(s32, s32);
     extern f32 lbl_8036ABD8;

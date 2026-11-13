@@ -3550,7 +3550,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
 
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
-    s16 fn_8017D604(s32, s32, u8 *);
+    s16 Unit_GetGoldCost(s32, s32, u8 *);
     extern u8 gBattleState[];
     s32 one;
     s32 t;
@@ -3562,7 +3562,7 @@ extern "C" s32 fn_801BC71C(s32 arg0) {
     one = 1;
     p = gBattleState;
     t = *(s32 *)(p + 0x1C);
-    return (fn_8017D604(arg0, one, p) <= t) ? 1 : 0;
+    return (Unit_GetGoldCost(arg0, one, p) <= t) ? 1 : 0;
 }
 
 #pragma cplusplus reset
@@ -4079,7 +4079,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  u32 fn_8013AC54(void *); void fn_8013FDA0(void *);
  void fn_80140210(void *,void *,s32);
  void Ui_PlaySeCue(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
- void fn_80176888(void *,void *,f32,f32); s16 fn_8017D604(u32,s32);
+ void fn_80176888(void *,void *,f32,f32); s16 Unit_GetGoldCost(u32,s32);
  extern u8 gUiUnitPanelStrings[]; extern u8 gUiContext[]; extern u8 gBattleState[];
  extern u32 gUiInputFlags; extern void *gPadInput; extern f32 lbl_8036B2E4;
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b): x(a), y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
@@ -4118,7 +4118,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  return;
  }
  money=*(s32 *)(gBattleState+0x1C);
- if(money<fn_8017D604(unit,1)) {
+ if(money<Unit_GetGoldCost(unit,1)) {
  *(Pair *)&pos2=((Obj *)M2C_FIELD(arg0,void **,0x48))->v9();
  fn_80176888(gUiUnitPanelStrings+0x263,arg0,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
  return;
