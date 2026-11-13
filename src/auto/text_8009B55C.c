@@ -45,7 +45,7 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void fn_8009B55C(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
+void Ui_DrawTerrainInfoDecor(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     M2C_UNK Prim2D_EmitQuad();
     M2C_UNK Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     M2C_UNK Prim2D_BindTexture(s32, M2C_UNK, M2C_UNK);

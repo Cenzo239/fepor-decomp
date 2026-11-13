@@ -418,7 +418,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *Item_GetByIid(void *);
     void fn_8005926C(s32, s32, s32, s32, s32, s32, s32, s32);
     void *fn_8005B73C(void *);
-    void fn_8009B55C(u32, s32, f32, f32);
+    void Ui_DrawTerrainInfoDecor(u32, s32, f32, f32);
     void *fn_8010F9BC(void *, s8, s8, s32);
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 lbl_8026D404[];
@@ -488,7 +488,7 @@ case_common:
     str = fn_8005B73C(unit);
     obj = fn_8010FF24(lbl_8032BB58, (s8)x, (s8)y, 4);
     if (obj != NULL && *(u8 *)((u8 *)obj + 4) != 0) {
-        fn_8009B55C(tex, 2, farg0, farg1);
+        Ui_DrawTerrainInfoDecor(tex, 2, farg0, farg1);
         Prim2D_Begin();
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         Prim2D_BindTexture(tex, 4, 0x11);
@@ -500,7 +500,7 @@ case_common:
 
 case_2b:
     obj = fn_8010F9BC(lbl_8032BB58, (s8)x, (s8)y, 7);
-    fn_8009B55C(tex, 1, farg0, farg1);
+    Ui_DrawTerrainInfoDecor(tex, 1, farg0, farg1);
     if (obj != NULL) {
         alpha = *(u8 *)((u8 *)obj + 5);
         Prim2D_Begin();
@@ -537,7 +537,7 @@ block_22:
     kind = (s8)p[0];
     y = (s8)p[1];
     x = (s8)p[2];
-    fn_8009B55C(tex, 0, farg0, farg1);
+    Ui_DrawTerrainInfoDecor(tex, 0, farg0, farg1);
     Prim2D_Begin();
     Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
     Prim2D_BindTexture(tex, 4, 0x11);
