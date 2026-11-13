@@ -6309,7 +6309,7 @@ void fn_8016F790(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8016F8CC(void *arg0) {
+extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     void *fn_8000CAA0(void *, void *);
@@ -10831,10 +10831,9 @@ extern "C" void fn_801788A0(void *arg0) {
     extern f32 lbl_8036AB80;
     extern u8 lbl_803200AC[];
 
-    s16 x;
-    s16 y;
+    s32 x;
+    s32 y;
     s32 result;
-    s32 x32;
 
     ((Obj *)arg0)->v3();
     Prim2D_Begin();
@@ -10843,11 +10842,11 @@ extern "C" void fn_801788A0(void *arg0) {
     Prim2D_PrepareTex();
     x = *(s16 *)((u8 *)arg0 + 0x3C);
     y = *(s16 *)((u8 *)arg0 + 0x3E);
-    fn_8001019C(x, y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x618));
+    fn_8001019C((s16)x, (s16)y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x618));
     result = fn_800C3E54(lbl_803200AC);
-    x32 = x;
-    fn_8001019C((s16)(x32 + 0x40), y, 1, (u8 *)lbl_80278080 + 0x62D, result, 0xC8);
-    fn_8001019C((s16)(x32 + 0xA0), y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x63E));
+    x = (s16)x;
+    fn_8001019C((s16)(x + 0x40), (s16)y, 1, (u8 *)lbl_80278080 + 0x62D, result, 0xC8);
+    fn_8001019C((s16)(x + 0xA0), (s16)y, 0xF, fn_8000E0E4((u8 *)lbl_80278080 + 0x63E));
 }
 extern "C" void fn_8017899C(void *arg0) {
     void fn_8015BA88(s32, s32, s16, s16, s32, s32);
