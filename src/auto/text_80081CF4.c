@@ -125,7 +125,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    u8 fn_8001DDBC(void);
+    u8 Item_GetMaxRange(void);
     u32 fn_80037D54(void *);
     u16 **fn_8006EDD8(s32, s32);
     void fn_80081E68(void *, void *, f32, f32);
@@ -283,7 +283,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     }
 
     if (*(void **)((u8 *)arg0 + 0x28C) != 0) {
-        a = fn_8001DDBC();
+        a = Item_GetMaxRange();
     } else {
         a = 0;
     }

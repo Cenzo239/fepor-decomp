@@ -779,7 +779,7 @@ void fn_800AA80C(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 void fn_800AA89C(void *arg0) {
-    u8 fn_8001DDBC(void *);
+    u8 Item_GetMaxRange(void *);
     void fn_8002011C(u8 *, s8, s8, u8, u8);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
@@ -829,7 +829,7 @@ slot_loop:
         pp = 0;
     }
     if (item != NULL) {
-        atk = fn_8001DDBC(item);
+        atk = Item_GetMaxRange(item);
     } else {
         atk = 0;
     }
@@ -917,7 +917,7 @@ y2_cmp:
 #pragma use_lmw_stmw reset
 
 void fn_800AAB3C(void *arg0) {
-    u8 fn_8001DDBC(void);
+    u8 Item_GetMaxRange(void);
     void fn_8002011C(void *, u8, u8, u8);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -951,7 +951,7 @@ loop_1:
                 var_r0 = 0;
             }
             if (temp_r3_2 != NULL) {
-                var_r0_2 = fn_8001DDBC();
+                var_r0_2 = Item_GetMaxRange();
             } else {
                 var_r0_2 = 0;
             }

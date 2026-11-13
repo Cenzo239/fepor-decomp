@@ -10077,7 +10077,7 @@ void Map_SetupColorGx(void) {
 
 s32 fn_8004ABD4(void **arg0, u8 arg1) {
     void *Item_GetFlagsPtr(void **);
-    u8 fn_8001DDBC();
+    u8 Item_GetMaxRange();
     u8 var_r0;
     u8 var_r0_2;
     u8 var_r0_3;
@@ -10088,7 +10088,7 @@ s32 fn_8004ABD4(void **arg0, u8 arg1) {
     if (arg0 != NULL) {
         if (arg1 == 0) {
             if ((void *) *arg0 != NULL) {
-                var_r0 = fn_8001DDBC();
+                var_r0 = Item_GetMaxRange();
             } else {
                 var_r0 = 0;
             }

@@ -956,7 +956,7 @@ void fn_8002BD44(void *arg0, void *arg1)
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
     void *fn_80019E24(s32);
-    s32 fn_8001DDBC(void *);
+    s32 Item_GetMaxRange(void *);
     void fn_8002011C(void *, s32, s32, s32, s32);
     void fn_8001EF80(void *, s32, s32, s32);
 
@@ -1004,7 +1004,7 @@ void fn_8002BD44(void *arg0, void *arg1)
 
     unit = (u8 *)fn_80019E24(source[4]);
 
-    result = fn_8001DDBC(unit);
+    result = Item_GetMaxRange(unit);
 
     fn_8002011C(
         gBattleMap,
@@ -1077,7 +1077,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
 
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
-    s32 fn_8001DDBC(void *);
+    s32 Item_GetMaxRange(void *);
     void fn_8002011C(void *, s32, s32, s32, s32);
 
     u8 *base;
@@ -1105,7 +1105,7 @@ void fn_8002BEFC(void *arg0, void *arg1)
 
     threshold = *(u8 *)((u8 *)arg1 + 0x1D);
 
-    result = fn_8001DDBC(arg1);
+    result = Item_GetMaxRange(arg1);
 
     fn_8002011C(
         gBattleMap,
@@ -1156,7 +1156,7 @@ void fn_8002C034(void *arg0, void *arg1)
 
     void fn_8002F728(void *);
     void fn_80022FD8(void *, s32);
-    s32 fn_8001DDBC(void *);
+    s32 Item_GetMaxRange(void *);
     void fn_8002011C(void *, s32, s32, s32, s32);
 
     u8 *base;
@@ -1180,7 +1180,7 @@ void fn_8002C034(void *arg0, void *arg1)
 
     value = *(u8 *)((u8 *)arg1 + 0x1D);
 
-    result = fn_8001DDBC(arg1);
+    result = Item_GetMaxRange(arg1);
 
     fn_8002011C(
         gBattleMap,

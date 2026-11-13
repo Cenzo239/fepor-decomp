@@ -1038,7 +1038,7 @@ void fn_8012DFA8(void *arg0) {
     typedef struct { s16 a; s16 b; } S16Pair;
     void Process_Goto(void *, s32);
     void *Msg_Expand(void *);
-    u8 fn_8001DDBC(void);
+    u8 Item_GetMaxRange(void);
     void *Archive_Load(void *);
     void fn_800506E0(void *, s32);
     void *fn_80056A60(void *);
@@ -1299,7 +1299,7 @@ void fn_8012DFA8(void *arg0) {
                 slot[0x21] = 0;
             }
             if (*p28c != NULL) {
-                slot[0x22] = fn_8001DDBC();
+                slot[0x22] = Item_GetMaxRange();
             } else {
                 slot[0x22] = 0;
             }
