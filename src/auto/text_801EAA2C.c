@@ -44,6 +44,21 @@ typedef struct Unk5C {
     s32 unk58;
 } Unk5C;
 
+/* 0x6C-byte ARAM file-cache slot (pool at gAramSlots). */
+typedef struct AramSlot {
+    u8 unk_00[0x20];
+    void *cbArg;              /* 0x20 */
+    void *cbData;             /* 0x24 */
+    char name[0x2B];          /* 0x28 */
+    u8 flags;                 /* 0x53 */
+    u32 nameHash;             /* 0x54 */
+    s32 tick;                 /* 0x58 */
+    struct AramSlot *prev;    /* 0x5C */
+    struct AramSlot *next;    /* 0x60 */
+    s32 size;                 /* 0x64 */
+    u32 addr;                 /* 0x68 */
+} AramSlot;
+
 void fn_801EAA2C(s8 *arg0) {
     *arg0 = -1;
 }
@@ -666,23 +681,23 @@ void fn_801EBE60(void) {
 
 void fn_801EBE88(void)
 {
-    extern u8 gUnitLists[];
+    extern u8 lbl_802CA264[];
     void fn_8001594C(void *, s32);
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
-    void *sp[7];
-    void *node;
+    void *sp8;
     void **head;
+    void *node;
     void *next;
 
-    fn_8001594C(sp, 5);
-    head = (void **)(gUnitLists + 0x3c);
+    fn_8001594C(&sp8, 5);
+    head = (void **)(lbl_802CA264 + 0x3c);
     node = *head;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         if (*(u32 *)((u8 *)node + 0x1A0) & 0x400000) {
             fn_800156A0(*(void **)((u8 *)node + 0x190), node);
-            fn_80015718(sp, node);
+            fn_80015718(&sp8, node);
         }
         node = next;
     }
@@ -691,13 +706,13 @@ void fn_801EBE88(void)
         next = *(void **)((u8 *)node + 0x184);
         if (!(*(u32 *)((u8 *)node + 0x1A0) & 0x400000)) {
             fn_800156A0(*(void **)((u8 *)node + 0x190), node);
-            fn_80015718(sp, node);
+            fn_80015718(&sp8, node);
             node = next;
         } else {
             break;
         }
     }
-    node = sp[0];
+    node = sp8;
     while (node != NULL) {
         next = *(void **)((u8 *)node + 0x184);
         fn_800156A0(*(void **)((u8 *)node + 0x190), node);
