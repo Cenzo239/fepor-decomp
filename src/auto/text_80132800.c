@@ -7849,7 +7849,7 @@ extern "C" void fn_8014004C(void *arg0, void *arg1) {
     }
 }
 #pragma cplusplus reset
-void fn_801400F4(void *arg0, void *arg1) {
+void Ui_AddChild(void *arg0, void *arg1) {
     void fn_8013FCE0(void *, void *, void *, void *);
     void *sp10;
     void *spC;
@@ -9402,7 +9402,7 @@ void fn_80143E0C(void *unit, s16 arg1) {
 #pragma cplusplus on
 extern "C" void fn_80143F64(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *fn_8000CAA0(void *, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_801403F0(void);
     extern u8 lbl_80292320[];
     struct Obj {
@@ -9426,7 +9426,7 @@ extern "C" void fn_80143F64(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         if (temp != NULL) {
             fn_801403F0();
         }
-        fn_801400F4(temp, arg0);
+        Ui_AddChild(temp, arg0);
         *(s32 *)((u8 *)temp + 0x44) = arg2;
         *(s32 *)((u8 *)temp + 0x48) = arg3;
     }

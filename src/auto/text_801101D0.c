@@ -3883,12 +3883,12 @@ void fn_8011A2FC(s32 arg0) {
             *(u8*)(temp_r31 + 0x24) = 8;
             *(f32*)(temp_r31 + 0x2c) = 0.0f;
             
-            // Call fn_801400F4 with parameters
+            // Call Ui_AddChild with parameters
             temp_r5 = *(u32*)(temp_r31 + 0x34);
             temp_r5 = temp_r5 | 0x10;
             *(u32*)(temp_r31 + 0x34) = temp_r5;
             
-            fn_801400F4(arg0, (void*)temp_r31, temp_r5);
+            Ui_AddChild(arg0, (void*)temp_r31, temp_r5);
             fn_80140234(arg0, (void*)temp_r31, 1);
         }
     }

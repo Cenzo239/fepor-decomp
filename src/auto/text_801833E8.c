@@ -5208,7 +5208,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     void fn_80138808(void *, s32);
     s32 fn_8013AC54(void *);
     void *fn_8013FF94(void *, s32, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
     extern u8 lbl_8028FDB0[];
@@ -5290,7 +5290,7 @@ extern "C" void fn_80191CFC(void *arg0) {
         M2C_FIELD(temp_r31, s16 *, 0x24) = 8;
         M2C_FIELD(temp_r31, s32 *, 0x34) |= 0x10;
         fn_80138808(temp_r31, fn_8013AC54(temp_r30));
-        fn_801400F4(arg0, temp_r31);
+        Ui_AddChild(arg0, temp_r31);
         temp_r7 = M2C_FIELD(temp_r31, s16 *, 0xC);
         sp8.x = 0x138;
         sp8.y = temp_r7;
@@ -5311,7 +5311,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     void fn_8013FDA0(void *);
     void fn_8013FF00(void *, void *);
     void *fn_8013FF94(void *, s32, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void Ui_PlaySeCue(void *, s32);
     u8 fn_8014D8DC(void *);
     void Ui_SetWidgetText(void *, s32);
@@ -5399,13 +5399,13 @@ extern "C" void fn_80191F2C(void *arg0) {
             fn_80140258(self, *(void **)((u8 *)self + 0x54),
                         Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
             if (fn_8014D8DC(gBattleState) != 0) {
-                fn_801400F4(self, *(void **)((u8 *)self + 0x58));
+                Ui_AddChild(self, *(void **)((u8 *)self + 0x58));
                 fn_8014027C(self, *(void **)((u8 *)self + 0x58),
                             Pair(0x134, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0xC)), 0);
             }
             fn_8013FF00(self, list);
         } else {
-            fn_801400F4(self, *(void **)((u8 *)self + 0x54));
+            Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
             fn_8014027C(self, *(void **)((u8 *)self + 0x54),
                         Pair(0x138, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
             ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)fn_8013AC54(list));
@@ -5528,7 +5528,7 @@ extern "C" void fn_801925A0(void *arg0) {
     s32 fn_8013AC54(void *);
     void fn_8013FF00(void *, void *);
     void *fn_8013FF94(void *, s32, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
     u8 fn_8014D8DC(void *);
@@ -5565,7 +5565,7 @@ extern "C" void fn_801925A0(void *arg0) {
     var_r30 = arg0;
     if ((var_r31 = fn_8013FF94(arg0, 3, 0)) == 0) {
         var_r31 = *(void **)((u8 *)var_r30 + 0x50);
-        fn_801400F4(var_r30, var_r31);
+        Ui_AddChild(var_r30, var_r31);
     }
     *(u8 *)((u8 *)var_r31 + 0x4C) = 1;
     if (*(s16 *)((u8 *)var_r31 + 0xA) != 0x118) {
@@ -5577,7 +5577,7 @@ extern "C" void fn_801925A0(void *arg0) {
     if (*(s16 *)((u8 *)var_r31 + 0x4E) != 0x7FFF) {
         if ((var_r29 = fn_8013FF94(var_r30, 5, 0)) == 0) {
             var_r29 = *(void **)((u8 *)var_r30 + 0x54);
-            fn_801400F4(var_r30, var_r29);
+            Ui_AddChild(var_r30, var_r29);
         }
         ((Obj *)var_r29)->v11(fn_8013AC54(var_r31));
         if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x138) {
@@ -5589,7 +5589,7 @@ extern "C" void fn_801925A0(void *arg0) {
     } else if (fn_8014D8DC(gBattleState) != 0) {
         if ((var_r29 = fn_8013FF94(var_r30, 6, 0)) == 0) {
             var_r29 = *(void **)((u8 *)var_r30 + 0x58);
-            fn_801400F4(var_r30, var_r29);
+            Ui_AddChild(var_r30, var_r29);
         }
         if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x134) {
             temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
@@ -5624,7 +5624,7 @@ extern "C" void fn_801925A0(void *arg0) {
 extern "C" void fn_801927DC(void *arg0) {
     void **ListWidget_GetSelected(void *);
     void *Heap_Alloc(s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_801402A0(void *, void *, s16 *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
     void *fn_80193B60(void *, s16 *, s16 *, s32);
@@ -5709,7 +5709,7 @@ extern "C" void fn_801927DC(void *arg0) {
     *(void **)((u8 *)panel + 0x3C) = unit;
     *(u8 *)((u8 *)panel + 0x48) = 0;
     *(u8 *)((u8 *)panel + 0x44) = 0;
-    fn_801400F4(self, panel);
+    Ui_AddChild(self, panel);
     sp1c[0] = 0x14C;
     sp1c[1] = 0x30;
     fn_801402A0(self, panel, sp1c, 0);
@@ -5744,7 +5744,7 @@ extern "C" void fn_801927DC(void *arg0) {
             fn_8013AD70(list, q);
     }
     *(u8 *)((u8 *)list + 0x4C) = 0;
-    fn_801400F4(self, list);
+    Ui_AddChild(self, list);
     if (*(s16 *)((u8 *)list + 0xA) != 0x118) {
         y = *(s16 *)((u8 *)list + 0xC);
         sp10[0] = 0x118; sp10[1] = y;
@@ -5812,7 +5812,7 @@ extern "C" void fn_801927DC(void *arg0) {
     fn_8013FF00(self, list);
 
     if (*(s16 *)((u8 *)list + 0x4E) != 0x7FFF) {
-        fn_801400F4(self, *(void **)((u8 *)self + 0x54));
+        Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
         ((Obj *)*(void **)((u8 *)self + 0x54))->v11(fn_8013AC54(list));
         q = *(void **)((u8 *)self + 0x54);
         if (*(s16 *)((u8 *)q + 0xA) != 0x138) {
@@ -5821,7 +5821,7 @@ extern "C" void fn_801927DC(void *arg0) {
             fn_8014027C(self, q, spc, 0);
         }
     } else if (fn_8014D8DC(gBattleState)) {
-        fn_801400F4(self, *(void **)((u8 *)self + 0x58));
+        Ui_AddChild(self, *(void **)((u8 *)self + 0x58));
         q = *(void **)((u8 *)self + 0x58);
         if (*(s16 *)((u8 *)q + 0xA) != 0x134) {
             y = *(s16 *)((u8 *)q + 0xC);
@@ -6065,7 +6065,7 @@ void fn_80193540(void* unit) {
 void fn_80193668(void *arg0) {
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, char *, u32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void *fn_8013FF94(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
     s32 fn_80019E04(void *);
@@ -6138,7 +6138,7 @@ void fn_80193668(void *arg0) {
     String_AssignCStr((u8 *)obj + 0x3C, (char *)((u32)lbl_80279DF0 + 0x50F), strlen((char *)((u8 *)lbl_80279DF0 + 0x50F)));
     *(s32 *)((u8 *)obj + 0x34) |= 0x10;
     *(s32 *)((u8 *)obj + 0x58) = 1;
-    fn_801400F4(self, obj);
+    Ui_AddChild(self, obj);
     key = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x68) + 0x50);
     obj = fn_8013FF94(self, -0x1000, 0);
     if (obj != NULL) {
@@ -6813,7 +6813,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8019477C(void *arg0) {
     void *fn_8013FF94(void *, s32, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void *Heap_Alloc(u32);
     void *ListWidget_GetSelected(void *);
@@ -6844,7 +6844,7 @@ extern "C" void fn_8019477C(void *arg0) {
     obj = fn_8013FF94(arg0, 0, 0);
     if (obj == NULL) {
         obj = M2C_FIELD(arg0, void **, 0x40);
-        fn_801400F4(arg0, obj);
+        Ui_AddChild(arg0, obj);
     }
     if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
         register tmp = M2C_FIELD(obj, s16 *, 0xC);
@@ -6889,7 +6889,7 @@ extern "C" void fn_8019477C(void *arg0) {
         if (ListWidget_GetSelected(obj) != NULL) {
             M2C_FIELD(p, u32 *, 0x3C) = *(u32 *)(*(void **)ListWidget_GetSelected(obj));
         }
-        fn_801400F4(arg0, p);
+        Ui_AddChild(arg0, p);
         tmp = M2C_FIELD(p, s16 *, 0xC);
         sp8.x = 0x158;
         sp8.y = tmp;
@@ -6909,7 +6909,7 @@ extern "C" void fn_80194988(void *arg0) {
     void fn_801439F0(void *, void *, void *);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_8011D908(s32, void *);
     void *fn_8013FF94(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
@@ -7041,7 +7041,7 @@ loop2_cond:
     *(s32 *)((u8 *)obj + 0x11C) = 3;
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x4C) = 0;
     ((Obj *)*(void **)((u8 *)self + 0x40))->v11();
-    fn_801400F4(self, *(void **)((u8 *)self + 0x40));
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x40));
     fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x44) + 4), self);
     saved = *(void **)((u8 *)*(void **)((u8 *)self + 0x44) + 0x2C);
     res = (u32)fn_8013FF94(self, -0x1000, 0);

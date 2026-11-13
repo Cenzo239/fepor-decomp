@@ -3202,7 +3202,7 @@ void fn_8016A1BC(void *arg0) {
     void fn_80109A54(s32, f32);
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, void *, s32);
-    void fn_801400F4(void *, void *, s32);
+    void Ui_AddChild(void *, void *, s32);
     u32 fn_8013FF94(void *, s32, s32);
     void Ui_SetWidgetText(void *);
     void fn_8000BD98(void *);
@@ -3271,7 +3271,7 @@ void fn_8016A1BC(void *arg0) {
     temp_r5 = M2C_FIELD(temp_r3, s32 *, 0x34) | 0x10;
     M2C_FIELD(temp_r3, s32 *, 0x34) = temp_r5;
     M2C_FIELD(temp_r3, u8 *, 0x58) = 1;
-    fn_801400F4(p, temp_r3, temp_r5);
+    Ui_AddChild(p, temp_r3, temp_r5);
     if (fn_8013FF94(p, -0x1000, 0) != 0U) {
         Ui_SetWidgetText(lbl_80277BC0 + 0xF0);
     }
@@ -6588,7 +6588,7 @@ void fn_80170034(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_80170058(void *arg0) {
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void *fn_8013FF94(void *, s32, s32);
@@ -6614,7 +6614,7 @@ extern "C" void fn_80170058(void *arg0) {
     *((u8 *)obj4c + 0x78) = 1;
     *((u8 *)obj4c + 0x4A) = 0;
     obj40 = *(void **)((u8 *)arg0 + 0x40);
-    fn_801400F4(arg0, obj40);
+    Ui_AddChild(arg0, obj40);
     spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
     spC[1] = 0x10;
     fn_8014027C(arg0, obj40, spC, 0);
@@ -7153,7 +7153,7 @@ extern "C" void fn_80171374(void *arg0) {
     u8 fn_801EAA88(void);
     void fn_8013B064(void *, void *);
     void fn_8013AD70(void *, s32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void *fn_8013AC54(void *);
     void fn_80138808(void *, void *);
     void fn_8013FF00(void *, void *);
@@ -7239,7 +7239,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(q, void **, 0x70) = (void *)&fn_801723A0;
     M2C_FIELD(q, s32 *, 0x74) = ctx;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 0x4C) = *(u8 *)((u8 *)gUiContext + 0x15);
-    fn_801400F4(arg0, M2C_FIELD(arg0, void **, 0x4C));
+    Ui_AddChild(arg0, M2C_FIELD(arg0, void **, 0x4C));
 
     p = Heap_Alloc(0x50);
     if (p) {
@@ -7310,7 +7310,7 @@ extern "C" void fn_80171374(void *arg0) {
     fn_801378E8(p, ctx);
     M2C_FIELD(p, u8 *, 0x48) = 0;
     M2C_FIELD(p, s16 *, 0x24) = 4;
-    fn_801400F4(arg0, p);
+    Ui_AddChild(arg0, p);
 
     p = Heap_Alloc(0x58);
     if (p) {
@@ -7334,7 +7334,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(p, u8 *, 0x4C) = 2;
     M2C_FIELD(p, s32 *, 0x48) = 0;
     M2C_FIELD(p, s16 *, 0x24) = 4;
-    fn_801400F4(arg0, p);
+    Ui_AddChild(arg0, p);
     Ui_SetWidgetText(p, (u8 *)gUiMsgStrings + 0x2D2);
     fn_8013FF00(arg0, M2C_FIELD(arg0, void **, 0x4C));
     {
@@ -7346,7 +7346,7 @@ extern "C" void fn_80171374(void *arg0) {
 #pragma opt_common_subs on
 
 void fn_80171B18(void *arg0) {
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     s16 fn_80164E78(void *, s32);
     void *fn_8013FF94(void *, s32, s32);
@@ -7362,7 +7362,7 @@ void fn_80171B18(void *arg0) {
     s16 tmp;
 
     obj40 = *(void **)((u8 *)arg0 + 0x40);
-    fn_801400F4(arg0, obj40);
+    Ui_AddChild(arg0, obj40);
     spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
     spC[1] = 0x10;
     fn_8014027C(arg0, obj40, spC, 0);
@@ -7606,7 +7606,7 @@ u8 fn_801723A0(u32 *arg0, s32 arg1) {
 extern "C" void fn_801723E8(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_801378E8(void *, u32);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     extern u16 lbl_8028FDB0[];
     extern u16 lbl_80292230[];
@@ -7681,7 +7681,7 @@ extern "C" void fn_801723E8(void *arg0) {
     fn_801378E8(temp_r31, gUiContext[0]);
     *(u8 *)((u8 *)temp_r31 + 0x48) = 0;
     *(s16 *)((u8 *)temp_r31 + 0x24) = 4;
-    fn_801400F4(self, temp_r31);
+    Ui_AddChild(self, temp_r31);
     temp_r4 = Heap_Alloc(0x58);
     if (temp_r4 != NULL) {
         vt = lbl_80293C2C;
@@ -7732,7 +7732,7 @@ extern "C" void fn_801723E8(void *arg0) {
     *(s32 *)((u8 *)temp_r4 + 0x48) = 0;
     *(s16 *)((u8 *)temp_r4 + 0x24) = 4;
     *(f32 *)((u8 *)temp_r4 + 0x2C) = f0;
-    fn_801400F4(self, temp_r4);
+    Ui_AddChild(self, temp_r4);
 }
 #pragma cplusplus reset
 
@@ -8557,7 +8557,7 @@ extern "C" void fn_801743B4(void *arg0) {
     void *fn_80174998(void *, s16, s16, s32);
     void *fn_8013AC54(void *);
     void fn_8013AF08(void *, s16);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
     void **fn_80037BBC(void *, s32);
     void fn_801439F0(void *, void *, void *);
@@ -8795,7 +8795,7 @@ loop2_cond:
         *(u32 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x124) = ef0;
     }
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
-    fn_801400F4(self, *(void **)((u8 *)self + 0x54));
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
 
     p = Heap_Alloc(0x48);
     if (p != NULL) {
@@ -8816,7 +8816,7 @@ loop2_cond:
     } else {
         *(s32 *)((u8 *)q + 0x44) = 0;
     }
-    fn_801400F4(self, *(void **)((u8 *)self + 0x54));
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
 }
 #pragma cplusplus reset
 
@@ -9073,7 +9073,7 @@ extern "C" void fn_801752EC(void *arg0) {
     void *fn_80174998(void *, s16, s16, s32);
     void *fn_8013AC54(void *);
     void fn_8013AF08(void *, s16);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
     void **fn_80037BBC(void *, s32);
     void fn_801439F0(void *, void *, void *);
@@ -9173,7 +9173,7 @@ extern "C" void fn_801752EC(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 8) = 0x104;
     ((Obj *)*(void **)((u8 *)self + 0x50))->v11(fn_8013AC54(inner));
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
-    fn_801400F4(self, *(void **)((u8 *)self + 0x50));
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x50));
 
     p = Heap_Alloc(0x12C);
     if (p != NULL) {
@@ -9602,7 +9602,7 @@ extern "C" void fn_801761F8(void *arg0) {
  void *fn_80179DEC(void *,s16,s16,s32);
  u8 fn_801EAA88(void);
  void fn_8013B064(void *,void *);
- void fn_801400F4(void *,void *);
+ void Ui_AddChild(void *,void *);
  void *fn_8013AC54(void *);
  void fn_80138808(void *,void *);
  void fn_8013FF00(void *,void *);
@@ -9653,7 +9653,7 @@ hold2=M2C_FIELD(arg0,void * *,0x40);
  entry2=M2C_FIELD(gUnitLists,void * *,0x3C);
  while(entry2){fn_8013B064(hold2,entry2);entry2=M2C_FIELD(entry2,void * *,0x184);}
  }
-fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x40));
+Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x40));
  p=Heap_Alloc(0x7C);
  if(p)p=fn_80179DEC(p,0x20,0x84,0x1F4);
  M2C_FIELD(arg0,void * *,0x4C)=p;
@@ -9663,7 +9663,7 @@ fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x40));
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),s16 *,8)=0x103;
  ((Obj *)M2C_FIELD(arg0,void * *,0x4C))->v11(fn_8013AC54(M2C_FIELD(arg0,void * *,0x40)));
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),u8 *,0x48)=0;
- fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x4C));
+ Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x4C));
  p=Heap_Alloc(0x50);
  if(p) {
  init_761F8_base(p,0x130,0x94,0x118,0x40,0x1FE);
@@ -9684,7 +9684,7 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
  q=M2C_FIELD(arg0,void * *,0x48);
  if((u8 *)q+0x3C!=col){M2C_FIELD(q,u8 *,0x3C)=first;M2C_FIELD(q,u8 *,0x3D)=col[1];M2C_FIELD(q,u8 *,0x3E)=col[2];M2C_FIELD(q,u8 *,0x3F)=col[3];}
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x48),void * *,0x40)=(u8 *)gUiMsgStrings+0x2BB;
- fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x48));
+ Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x48));
  p=Heap_Alloc(0x54);
  if(p) {
  init_761F8_base(p,0x138,0x12C,0x108,0x55,0x1F4);
@@ -9699,7 +9699,7 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
  q=M2C_FIELD(arg0,void * *,0x44);
  M2C_FIELD(q,u32 *,0x34)|=0x10;
  fn_80138808(M2C_FIELD(arg0,void * *,0x44),fn_8013AC54(M2C_FIELD(arg0,void * *,0x40)));
- fn_801400F4(arg0,M2C_FIELD(arg0,void * *,0x44));
+ Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x44));
  fn_8013FF00(arg0,M2C_FIELD(arg0,void * *,0x40));
 }
 #pragma cplusplus reset
@@ -14988,7 +14988,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void *Heap_Alloc(u32);
     void *fn_80181D88(void *, s32, s32, s32, s32);
     void fn_8013B064(void *, void *);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void fn_80142060(void *);
     void *fn_8013AC54(void *);
     void fn_80136F2C(void *, void *, void *, void *);
@@ -15091,7 +15091,7 @@ extern "C" void fn_80180AC8(void *arg0) {
 
     *(void **)((u8 *)obj + 0x7C) = (void *)&fn_80180E2C;
     *(u32 *)((u8 *)obj + 0x80) = 0;
-    fn_801400F4(arg0, obj);
+    Ui_AddChild(arg0, obj);
 
     pm0 = (s32)Heap_Alloc(0x70);
     if ((void *)pm0 != NULL) {
@@ -15164,7 +15164,7 @@ extern "C" void fn_80180AC8(void *arg0) {
             fn_80181DF0((u8 *)panel + 0x5C, &sp10);
         }
         *(u32 *)((u8 *)panel + 0x34) |= 0x10;
-        fn_801400F4(arg0, panel);
+        Ui_AddChild(arg0, panel);
     }
     if (((s32 *)&live0)[0] == ((s32 *)&live1)[0]) {
         /* keep live0/live1 across function */
@@ -15231,7 +15231,7 @@ extern "C" void *fn_80180F24(void *arg0, s16 arg1) {
 void Ui_InitUnitInfoLabels(void *arg0) {
     void *Heap_Alloc(u32);
     void Ui_SetWidgetText(void *, void *);
-    void fn_801400F4(void *, void *);
+    void Ui_AddChild(void *, void *);
     void *fn_8000E0E4(void *);
     void *fn_8013FF94(void *, s32, s32);
     void String_AssignCStr(void *, char *, s32);
@@ -15299,7 +15299,7 @@ void Ui_InitUnitInfoLabels(void *arg0) {
     M2C_FIELD(p, u8 *, 0x4C) = 2;
     M2C_FIELD(p, u32 *, 0x48) = 1;
     Ui_SetWidgetText(p, lbl_802789F0 + 0x104);
-    fn_801400F4(arg0, p);
+    Ui_AddChild(arg0, p);
 
     q = Heap_Alloc(0x5C);
     if (q != NULL) {
@@ -15349,7 +15349,7 @@ void Ui_InitUnitInfoLabels(void *arg0) {
     String_AssignCStr((u8 *)q + 0x3C, (char *)((u32)lbl_802789F0 + 0x115), strlen((char *)((u8 *)lbl_802789F0 + 0x115)));
     M2C_FIELD(q, u32 *, 0x34) |= 0x10;
     M2C_FIELD(q, u32 *, 0x58) = 1;
-    fn_801400F4(arg0, q);
+    Ui_AddChild(arg0, q);
 
     p = fn_8000E0E4(lbl_802789F0 + 0xF3);
     found = fn_8013FF94(arg0, -0x1000, 0);

@@ -548,7 +548,7 @@ void fn_801EBBB8(void *arg0) {
     void *fn_8000CAF0(void *, void *);
     void *Heap_Alloc(s32, void *);
     void String_AssignCStr(void *, void *, s32);
-    void fn_801400F4(void *, void *, s32);
+    void Ui_AddChild(void *, void *, s32);
     void *fn_8013FF94(void *, s32, s32);
     void fn_80018B18(void *);
     s32 strlen(void *);
@@ -623,7 +623,7 @@ void fn_801EBBB8(void *arg0) {
         temp_r5 = temp_r3->unk34 | 0x10;
         temp_r3->unk34 = temp_r5;
         temp_r3->unk58 = 1;
-        fn_801400F4(arg0, temp_r3, temp_r5);
+        Ui_AddChild(arg0, temp_r3, temp_r5);
     }
     temp_r3_2 = fn_8013FF94(arg0, -0x1000, 0);
     if (temp_r3_2 != NULL) {
