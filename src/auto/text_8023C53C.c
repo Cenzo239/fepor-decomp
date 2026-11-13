@@ -9454,7 +9454,7 @@ s32 fn_80257D7C(u8 *arg0) {
     return 0;
 }
 
-s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
+s32 Sound_TickAdsr(u8 *arg0, s16 *arg1, s16 *arg2) {
     extern u16 gAdsrVolCurve[];
     s32 Sound_SetupAdsrPhase(u8 *);
     s32 ret;
@@ -9523,10 +9523,10 @@ s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
 }
 
 s32 fn_8025807C(s32 arg0, s32 arg1, s32 arg2) {
-    u32 fn_80257EE4(s32, s32, s32);
+    u32 Sound_TickAdsr(s32, s32, s32);
     u8 i;
     for (i = 0; i < 15; i++) {
-        if (fn_80257EE4(arg0, arg1, arg2) != 0) {
+        if (Sound_TickAdsr(arg0, arg1, arg2) != 0) {
             return 1;
         }
     }
