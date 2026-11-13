@@ -581,6 +581,7 @@ void GXCopyDisp(void)
     }
 }
 
+/* Copy the EFB into dest as a texture; optionally clear the EFB afterward. */
 void GXCopyTex(void *dest, u8 clear) {
     u32 reg;
     u32 tempPeCtrl;
