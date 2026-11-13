@@ -487,7 +487,7 @@ void fn_80183EAC(s32 arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
     *((u8 *)temp_r3 + 0x49) = 0;
 }
 
-void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
+void *MoveAnim_BindMapPath(void *unit, void *parent) {
     void fn_8000A388(void *, void *, void *);
     void MoveAnim_MatchUnit(void *, void *);
     void *fn_8000CAA0(void *, void *);
@@ -499,46 +499,47 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
     extern u8 lbl_80278E24[];
     extern u8 gBattleMap[];
     void *search[14];
-    u8 *obj;
+    u8 *anim;
     s32 i;
     s32 count;
-    s32 temp;
+    s32 tile;
     u8 flags;
-    u8 *str;
+    u8 *path;
 
-    str = BattleMap_GetPath(gBattleMap);
-    search[12] = arg0;
+    /* Find or create a MoveAnim for unit and append the current battle-map path. */
+    path = BattleMap_GetPath(gBattleMap);
+    search[12] = unit;
     search[13] = 0;
     fn_8000A388(gMoveAnimClass, MoveAnim_MatchUnit, search);
-    obj = search[13];
-    if (obj == 0) {
-        obj = fn_8000CAA0(gMoveAnimClass, arg1);
-        *(void **)(obj + 0x30) = arg0;
-        *(u16 *)(obj + 0x52) = 0x40;
-        *(void **)(obj + 0x54) = fn_800C45B8(-128, (void *)((u32)lbl_80278E24 + 0x1A9), 0);
-        obj[0x59] = 0;
-        obj[0x5A] = 16;
-        *(s8 *)(obj + 0x6A) = -1;
-        *(void **)(obj + 0x6C) = fn_800C45B8(-1536, (char *)((u8 *)lbl_80278E24 + 0x1A9), 0);
-        if (*(u16 *)(obj + 0x52) & 16) {
-            fn_80050BCC(arg0, 0);
+    anim = search[13];
+    if (anim == 0) {
+        anim = fn_8000CAA0(gMoveAnimClass, parent);
+        *(void **)(anim + 0x30) = unit;
+        *(u16 *)(anim + 0x52) = 0x40;
+        *(void **)(anim + 0x54) = fn_800C45B8(-128, (void *)((u32)lbl_80278E24 + 0x1A9), 0);
+        anim[0x59] = 0;
+        anim[0x5A] = 16;
+        *(s8 *)(anim + 0x6A) = -1;
+        *(void **)(anim + 0x6C) = fn_800C45B8(-1536, (char *)((u8 *)lbl_80278E24 + 0x1A9), 0);
+        if (*(u16 *)(anim + 0x52) & 16) {
+            fn_80050BCC(unit, 0);
         }
-        if ((*(u8 **)((u8 *)arg0 + 0x18C))[0x42] == 9) {
-            *(u16 *)(obj + 0x52) |= 0x8000;
+        if ((*(u8 **)((u8 *)unit + 0x18C))[0x42] == 9) {
+            *(u16 *)(anim + 0x52) |= 0x8000;
         }
-        temp = (s32)*(f32 *)((u8 *)arg0 + 4);
-        obj[0x40] = temp;
-        obj[0x42] = temp;
-        temp = (s32)*(f32 *)((u8 *)arg0 + 8);
-        obj[0x41] = temp;
-        obj[0x43] = temp;
+        tile = (s32)*(f32 *)((u8 *)unit + 4);
+        anim[0x40] = tile;
+        anim[0x42] = tile;
+        tile = (s32)*(f32 *)((u8 *)unit + 8);
+        anim[0x41] = tile;
+        anim[0x43] = tile;
     }
-    if (str == 0) {
+    if (path == 0) {
         count = 0;
     } else {
         u8 *q;
         count = 0;
-        q = str;
+        q = path;
         for (;;) {
             if (*q == 16) {
                 break;
@@ -548,17 +549,17 @@ void *MoveAnim_BindMapPath(void *arg0, void *arg1) {
         }
     }
     for (i = 0; i < count; i++) {
-        (*(u8 **)(obj + 0x54))[i + obj[0x59]] = *str;
-        obj[0x5A] = *str++;
+        (*(u8 **)(anim + 0x54))[i + anim[0x59]] = *path;
+        anim[0x5A] = *path++;
     }
-    (*(u8 **)(obj + 0x54))[i + obj[0x59]] = 16;
-    flags = *(u16 *)(obj + 0x52) & 15;
+    (*(u8 **)(anim + 0x54))[i + anim[0x59]] = 16;
+    flags = *(u16 *)(anim + 0x52) & 15;
     if (flags) {
-        obj[0x5A] = flags;
+        anim[0x5A] = flags;
     }
-    obj[0x59] += count;
-    fn_8018851C(obj);
-    return obj;
+    anim[0x59] += count;
+    fn_8018851C(anim);
+    return anim;
 }
 
 #pragma opt_common_subs off
