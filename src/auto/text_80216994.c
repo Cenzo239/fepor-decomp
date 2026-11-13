@@ -465,7 +465,7 @@ s32 fn_80217B18(s32 arg0, s32 *arg1) {
     return result;
 }
 
-s32 fn_80217BD0(void *arg0, s32 arg1) {
+s32 __CARDPutControlBlock(void *arg0, s32 arg1) {
     M2C_UNK OSRestoreInterrupts();
     M2C_UNK OSDisableInterrupts();
     OSDisableInterrupts();
@@ -1162,7 +1162,7 @@ s32 __CARDGetFatBlock(void *arg0) {
 void fn_80219260(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     void *memcpy(void *, const void *, u32);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     u8 *card;
     u8 *base;
     u8 *p6000;
@@ -1183,7 +1183,7 @@ void fn_80219260(s32 chan, s32 result) {
         }
     }
     if (*(u32 *)(card + 0xD0) == 0) {
-        fn_80217BD0(card, result);
+        __CARDPutControlBlock(card, result);
     }
     callback = *(void (**)(s32, s32))(card + 0xD8);
     if (callback != NULL) {
@@ -1693,7 +1693,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s32 fn_80217B18(s32, void **);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     s32 fn_80219A70(void *);
     s32 fn_80219CF4(void *, s32 *);
     s32 fn_80219F34(void *, s32 *);
@@ -1738,12 +1738,12 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     }
     ret = fn_80219A70(card);
     if (ret < 0) {
-        return fn_80217BD0(card, ret);
+        return __CARDPutControlBlock(card, ret);
     }
     cBlock = fn_80219CF4(card, &altDir);
     cBlock += fn_80219F34(card, &altFat);
     if (cBlock > 1) {
-        return fn_80217BD0(card, -6);
+        return __CARDPutControlBlock(card, -6);
     }
     base = *(u8 **)((u8 *)card + 0x80);
     blockDir[0] = base + 0x2000;
@@ -1770,12 +1770,12 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
             len = 0;
             do {
                 if ((u32)block < 5 || (u32)block >= *(u16 *)((u8 *)card + 0x10)) {
-                    return fn_80217BD0(card, -6);
+                    return __CARDPutControlBlock(card, -6);
                 }
                 cnt = scratch[block] + 1;
                 scratch[block] = cnt;
                 if ((u32)cnt > 1) {
-                    return fn_80217BD0(card, -6);
+                    return __CARDPutControlBlock(card, -6);
                 }
                 next = (*(u16 **)((u8 *)card + 0x88))[block];
                 len++;
@@ -1784,7 +1784,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
                 }
             } while ((u32)len < *(u16 *)(dir + 0x38));
             if ((u32)len != *(u16 *)(dir + 0x38) || (u32)next != 0xFFFF) {
-                return fn_80217BD0(card, -6);
+                return __CARDPutControlBlock(card, -6);
             }
         }
     }
@@ -1799,7 +1799,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
             }
             freeCount++;
         } else if (((u32)next < 5 || (u32)next >= *(u16 *)((u8 *)card + 0x10)) && (u32)next != 0xFFFF) {
-            return fn_80217BD0(card, -6);
+            return __CARDPutControlBlock(card, -6);
         }
     }
     fat = *(u16 **)((u8 *)card + 0x88);
@@ -1824,7 +1824,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
         }
         return fn_802195B0(chan, *(void **)((u8 *)card + 0x88), callback);
     }
-    fn_80217BD0(card, 0);
+    __CARDPutControlBlock(card, 0);
     if (callback != 0) {
         irq = OSDisableInterrupts();
         callback(chan, 0);
@@ -1904,7 +1904,7 @@ s32 EXIGetID(s32,s32,u32*);s32 EXIUnlock(s32);
 s32 fn_8021A7FC(u32);s32 fn_80216E98(s32,void*);s32 fn_80217D4C(void);s32 fn_80216F88(s32);s32 fn_80216DA8(s32,u8*);s32 fn_80239488(s32);s32 fn_802180DC(s32,void*);
 u8 *__OSLockSramEx(void);void __OSUnlockSramEx(s32);
 s32 fn_80216CE8(s32,s32);void fn_80239298(s32,void*);void fn_80216AA4(void);void fn_8021AE98(s32,s32);
-s32 fn_802190A4(s32,u32,u32,void*,void*);void fn_80217BD0(void*,s32);void fn_8021B170(s32,s32);
+s32 fn_802190A4(s32,u32,u32,void*,void*);void __CARDPutControlBlock(void*,s32);void fn_8021B170(s32,s32);
 extern u16 __CARDBlock[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
 u8 status;
 u32 id;
@@ -1952,7 +1952,7 @@ DCInvalidateRange(*(void**)(card+0x80),0xa000);
 }
 i=*(s32*)(card+0x24)-2;
 rc=fn_802190A4(chan,*(s32*)(card+0xc)*i,0x2000,*(u8**)(card+0x80)+(i<<13),fn_8021AE98);
-if(rc<0)fn_80217BD0(card,rc);
+if(rc<0)__CARDPutControlBlock(card,rc);
 return rc;
 fail:
 EXIUnlock(chan);fn_8021B170(chan,result);return result;
@@ -2032,7 +2032,7 @@ void fn_8021B2B8(s32 arg0, s32 arg1) {
     s32 __CARDEraseSector(s32, s32, void *);
     s32 fn_802191F0(s32, s32, s32, s32, void *);
     void *memcpy(void *, const void *, u32);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     u8 *card;
     s32 chan;
     void (*callback)(s32, s32);
@@ -2063,7 +2063,7 @@ void fn_8021B2B8(s32 arg0, s32 arg1) {
     }
     callback = *(void (**)(s32, s32))(card + 0xD0);
     *(void **)(card + 0xD0) = 0;
-    fn_80217BD0(card, result);
+    __CARDPutControlBlock(card, result);
     callback(chan, result);
 }
 
@@ -2081,7 +2081,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
     s32 __CARDEraseSector(s32, s32, void *, void *);
-    void fn_80217BD0(void *, s32);
+    void __CARDPutControlBlock(void *, s32);
     extern void fn_80216994(void);
     extern void fn_8021B2B8(void);
 
@@ -2220,7 +2220,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     *(u32 *)((u8 *)card + 0x28) = 0;
     result = __CARDEraseSector(chan, *(s32 *)((u8 *)card + 0xC) * *(s32 *)((u8 *)card + 0x28), (void *)fn_8021B2B8, card);
     if (result < 0) {
-        fn_80217BD0(card, result);
+        __CARDPutControlBlock(card, result);
     }
     return result;
 }
@@ -2435,7 +2435,7 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
     void *__CARDGetDirBlock(void *);
     s32 fn_8021BB04(void *, void *);
     s32 fn_8021BA9C(void *, void *);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
 
     void *handle;
     u8 *entry;
@@ -2493,17 +2493,17 @@ s32 fn_8021BF10(void *arg0, void *arg1, void *arg2)
         }
     }
 
-    return fn_80217BD0(handle, result);
+    return __CARDPutControlBlock(handle, result);
 }
 
 void fn_8021C02C(s32 *arg0) {
     s32 fn_80217B18(s32, s32 *);
-    void fn_80217BD0(s32, s32);
+    void __CARDPutControlBlock(s32, s32);
     s32 spC;
 
     if (fn_80217B18(*arg0, &spC) < 0) {
         *arg0 = -1;
-        fn_80217BD0(spC, 0);
+        __CARDPutControlBlock(spC, 0);
         return;
     }
     return;
@@ -2519,7 +2519,7 @@ void fn_8021C088(s32 chan, s32 result)
 
     s32 __CARDGetDirBlock(void *);
     s32 __CARDUpdateDir(s32, s32);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     s64 OSGetTime(void);
     void *memcpy(void *, const void *, u32);
 
@@ -2572,7 +2572,7 @@ void fn_8021C088(s32 chan, s32 result)
     }
 
     if (status < 0) {
-        fn_80217BD0(card, status);
+        __CARDPutControlBlock(card, status);
         if (callback != 0) {
             callback(chan, status);
         }
@@ -2582,7 +2582,7 @@ void fn_8021C088(s32 chan, s32 result)
 #pragma use_lmw_stmw on
 s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) {
     s32 fn_80217B18(s32, s32 *);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     void *__CARDGetFatBlock(void *);
     s32 fn_802193FC(s32, u32, void *);
     u8 *__CARDGetDirBlock(s32);
@@ -2626,15 +2626,15 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
         } else if (fn_80231944(ent, *(void **)((u8 *)card + 0x10C), 4) == 0
             && fn_80231944(ent + 4, (u8 *)*(void **)((u8 *)card + 0x10C) + 4, 2) == 0
             && fn_8021BA9C(ent, name) != 0) {
-            return fn_80217BD0((void *)card, -7);
+            return __CARDPutControlBlock((void *)card, -7);
         }
     }
     if (freeIdx == 0xFFFF) {
-        return fn_80217BD0((void *)card, -8);
+        return __CARDPutControlBlock((void *)card, -8);
     }
     stat = __CARDGetFatBlock((void *)card);
     if ((u32)(*(u32 *)((u8 *)card + 0xC) * *(u16 *)((u8 *)stat + 6)) < size) {
-        return fn_80217BD0((void *)card, -9);
+        return __CARDPutControlBlock((void *)card, -9);
     }
     if (callback != NULL) {
         cb = callback;
@@ -2651,7 +2651,7 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
     *(u32 *)((u8 *)fileInfo + 4) = freeIdx;
     result = fn_802193FC(chan, size / *(u32 *)((u8 *)card + 0xC), fn_8021C088);
     if (result < 0) {
-        return fn_80217BD0((void *)card, result);
+        return __CARDPutControlBlock((void *)card, result);
     }
     return result;
 }
@@ -2672,7 +2672,7 @@ void fn_8021C5D8(s32 chan, s32 result)
     extern u16 __CARDBlock[];
     s32 fn_802190A4(s32, u32, u32, void *, void *);
     s32 __CARDGetFatBlock(void *);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
 
     u8 *card;
     u8 *file;
@@ -2739,7 +2739,7 @@ void fn_8021C5D8(s32 chan, s32 result)
             callback = *(void (**)(s32, s32))(card + 0xD0);
             *(void **)(card + 0xD0) = 0;
 
-            fn_80217BD0(card, status);
+            __CARDPutControlBlock(card, status);
             callback(chan, status);
         }
     }
@@ -2749,7 +2749,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
 {
     s32 fn_8021C420(void *, u32, u32, void **);
     s32 fn_802190A4(s32, u32, u32, void *, void *);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     s32 __CARDGetDirBlock(void *);
     s32 fn_8021BCCC(void *, void *);
     void DCInvalidateRange(void *, u32);
@@ -2779,7 +2779,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
 
     result = fn_8021BCCC(card, entry);
     if (result < 0) {
-        return fn_80217BD0(card, result);
+        return __CARDPutControlBlock(card, result);
     }
 
     DCInvalidateRange((void *)arg1, arg3);
@@ -2810,7 +2810,7 @@ s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
     );
 
     if (result < 0) {
-        fn_80217BD0(card, result);
+        __CARDPutControlBlock(card, result);
     }
 
     return result;
@@ -2833,7 +2833,7 @@ s64 OSGetTime(void);
 s32 __CARDGetDirBlock(void *arg0);
 s32 __CARDGetFatBlock(void *arg0);
 s32 __CARDUpdateDir(s32 arg0, s32 arg1);
-s32 fn_80217BD0(void *arg0, s32 arg1);
+s32 __CARDPutControlBlock(void *arg0, s32 arg1);
 int __CARDEraseSector(s32 chan, u32 addr, void *callback);
 void fn_8021CA04(s32 chan, s32 result);
 #pragma dont_inline on
@@ -2877,7 +2877,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
     error:
         callback = *(void (**)(s32, s32))(card + 0xD0);
         *(void (**)(s32, s32))(card + 0xD0) = 0;
-        fn_80217BD0(card, result);
+        __CARDPutControlBlock(card, result);
         callback(chan, result);
     }
 }
@@ -2885,7 +2885,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
 s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
 {
     s32 fn_8021C420(void *, u32, u32, void **);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     void *__CARDGetDirBlock(void);
     s32 fn_8021BB98(void *, void *);
     void fn_80205110(void *, u32);
@@ -2911,7 +2911,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
 
     if ((arg3 & alignment) != 0 ||
         (arg2 & alignment) != 0) {
-        return fn_80217BD0(state, -0x80);
+        return __CARDPutControlBlock(state, -0x80);
     }
 
     buffer = (u8 *)__CARDGetDirBlock();
@@ -2920,7 +2920,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     result = fn_8021BB98(state, buffer);
 
     if (result < 0) {
-        return fn_80217BD0(state, result);
+        return __CARDPutControlBlock(state, result);
     }
 
     fn_80205110(arg1, arg2);
@@ -2940,7 +2940,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     result = __CARDEraseSector(*(void **)arg0, size);
 
     if (result < 0) {
-        fn_80217BD0(state, result);
+        __CARDPutControlBlock(state, result);
     }
 
     return result;
@@ -3141,7 +3141,7 @@ valid:
     entry = (CardDirEntry *)((u8 *)__CARDGetDirBlock((void *)card) + (fileNo << 6));
     result = fn_8021BB98((void *)card, entry);
     if (result < 0) {
-        return fn_80217BD0((void *)card, result);
+        return __CARDPutControlBlock((void *)card, result);
     }
 
     entry->unk7 = status[0x2E];
@@ -3160,7 +3160,7 @@ valid:
 
     result = __CARDUpdateDir(chan, callback);
     if (result < 0) {
-        fn_80217BD0((void *)card, result);
+        __CARDPutControlBlock((void *)card, result);
     }
     return result;
 
@@ -3180,7 +3180,7 @@ void fn_8021D28C(s32 arg0) {
 
 s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
     s32 fn_80217B18(s32, s32 *);
-    s32 fn_80217BD0(s32, s32);
+    s32 __CARDPutControlBlock(s32, s32);
     s32 fn_8021BCCC(s32, u8 *);
     void *memcpy(void *, const void *, u32);
     s32 stack[0x14];
@@ -3202,7 +3202,7 @@ s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
         memcpy(dst, entry, 0x40);
     }
     
-    return fn_80217BD0(stack[0], ret);
+    return __CARDPutControlBlock(stack[0], ret);
 }
 
 #pragma opt_unroll off
@@ -3211,7 +3211,7 @@ s32 fn_8021D2D4(s32 arg0, s32 index, void *dst) {
 #pragma use_lmw_stmw on
 s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     s32 fn_80217B18(s32, s32 *);
-    s32 fn_80217BD0(void *, s32);
+    s32 __CARDPutControlBlock(void *, s32);
     u8 *__CARDGetDirBlock(s32);
     s32 __CARDUpdateDir(s32, s32);
     s32 fn_8021BB98(s32, CardDirEntry *);
@@ -3237,7 +3237,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     slot = (CardDirEntry *)(base + (arg1 << 6));
     ret = fn_8021BB98(sp18, slot);
     if (ret < 0) {
-        return fn_80217BD0((void *)sp18, ret);
+        return __CARDPutControlBlock((void *)sp18, ret);
     }
     fileName = arg2->unk8;
     fileNameEnd = (u8 *)arg2 + 0x28;
@@ -3265,7 +3265,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
                 if (fn_80231944(base, arg2->unk0, 4) == 0 &&
                     fn_80231944(base + 4, arg2->unk4, 2) == 0 &&
                     fn_80231944(base + 8, arg2->unk8, 0x20) == 0) {
-                    return fn_80217BD0((void *)sp18, -7);
+                    return __CARDPutControlBlock((void *)sp18, -7);
                 }
             }
         }
@@ -3283,7 +3283,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
     slot->unk35 = arg2->unk35;
     ret = __CARDUpdateDir(arg0, arg3);
     if (ret < 0) {
-        fn_80217BD0((void *)sp18, ret);
+        __CARDPutControlBlock((void *)sp18, ret);
     }
     return ret;
 }
@@ -3292,7 +3292,7 @@ s32 fn_8021D378(s32 arg0, s32 arg1, CardDirEntry *arg2, s32 arg3) {
 #pragma use_lmw_stmw reset
 s32 fn_8021D614(s32 arg0, u32 *arg1) {
     s32 fn_80217B18(s32, s32 *);
-    s32 fn_80217BD0(s32, s32);
+    s32 __CARDPutControlBlock(s32, s32);
     s32 sp10;
     s32 result;
     u32 *p;
@@ -3328,7 +3328,7 @@ s32 fn_8021D614(s32 arg0, u32 *arg1) {
     acc1 ^= t;
     arg1[1] = acc1;
     arg1[0] = acc0;
-    return fn_80217BD0(sp10, 0);
+    return __CARDPutControlBlock(sp10, 0);
 }
 
 #pragma dont_inline on
