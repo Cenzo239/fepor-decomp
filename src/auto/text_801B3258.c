@@ -13876,7 +13876,7 @@ void fn_801D3D3C(void *arg0) {
  void fn_801DE378(void *);
  void fn_801D8D68(void *);
  void fn_801D8D58(void *);
- void fn_801D8C64(void *, s16, s16);
+ void FileMenu_InitEntry(void *, s16, s16);
  s32 fn_801DBFF8(void);
  void *fn_801DC0CC(void);
  void fn_801D8894(void *);
@@ -14152,27 +14152,27 @@ void fn_801D3D3C(void *arg0) {
   *(u8 *)((u8 *)state + 0x15) = 0;
   result = fn_801DBFF8();
   if (fn_801DC0CC() != 0) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 2);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 2);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   if (result >= 1) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 1);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 1);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   if (result >= 1 && result < 5) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 3);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 3);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   if (result >= 1) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 4);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 4);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   if (result != 5) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 0);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 0);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   if (fn_801E33F4(gSystemSave)) {
-   fn_801D8C64((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 6);
+   FileMenu_InitEntry((u8 *)state + *(s8 *)((u8 *)state + 0x15) * 0x34 + 0x7c, *(s8 *)((u8 *)state + 0x15), 6);
    *(u8 *)((u8 *)state + 0x15) = *(u8 *)((u8 *)state + 0x15) + 1;
   }
   { s8 idx11 = *(s8 *)((u8 *)state + 0x11);
@@ -14695,7 +14695,7 @@ void fn_801D8C0C(void *arg0, s16 arg1)
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-void fn_801D8C64(void *arg0, s16 arg1, s16 arg2)
+void FileMenu_InitEntry(void *arg0, s16 arg1, s16 arg2)
 {
     extern u32 lbl_8027E228[12];
     extern u8 gUiSeCues[];
