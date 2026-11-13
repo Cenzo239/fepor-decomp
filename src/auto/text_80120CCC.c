@@ -672,14 +672,20 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
     void *fn_8000CAA0(void *, void *);
     void *entry;
     s32 flags;
+    u32 nib;
+    u16 a2;
 
+    a2 = arg2;
     if (!(lbl_80367A58 & 0x200)) {
         flags = gUiInputFlags;
-        if ((flags & 3) == 0) {
-            if ((flags & 0x2000) || (u32)((((u8 *)lbl_80330708)[0x9c] >> 3) & 3) != 3) {
+        switch (flags & 3) {
+        case 0:
+            if ((flags & 0x2000) ||
+                (nib = (((u8 *)lbl_80330708)[0x9c] >> 3) & 3, nib != 3U)) {
                 entry = fn_8000CAA0(lbl_802902D8, arg1);
-                *(u16 *)((char *)entry + 0x28) = arg2;
+                *(u16 *)((char *)entry + 0x28) = a2;
             }
+            break;
         }
     }
 }
