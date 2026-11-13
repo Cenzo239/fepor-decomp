@@ -1698,10 +1698,11 @@ found:
     *(s32 *)((u8 *)gAramFreeList + 0x68) = gAramBase;
 }
 
-void *AramCache_InsertFree(void *list, void *cell)
+AramSlot *AramCache_InsertFree(AramSlot *list, AramSlot *cell)
 {
-  void *prev;
-  void *next;
+  /* Insert cell into the ARAM free list by addr, coalescing adjacent free blocks. */
+  AramSlot *prev;
+  AramSlot *next;
   s32 *new_var;
   prev = NULL;
   next = list;
@@ -1709,7 +1710,7 @@ void *AramCache_InsertFree(void *list, void *cell)
   loop_b:
   if (prev != NULL)
   {
-    if ((*((u32 *) (((u8 *) cell) + 0x68))) <= (*((u32 *) (((u8 *) prev) + 0x68))))
+    if (cell->addr <= prev->addr)
     {
       goto loop_a;
     }
@@ -1719,14 +1720,14 @@ void *AramCache_InsertFree(void *list, void *cell)
   {
     goto loop_d;
   }
-  if ((*((u32 *) (((u8 *) next) + 0x68))) > (*((u32 *) (((u8 *) cell) + 0x68))))
+  if (next->addr > cell->addr)
   {
     goto loop_d;
   }
   loop_a:
   prev = next;
 
-  next = *((void **) (((u8 *) next) + 0x60));
+  next = next->next;
   loop_t:
   if (next != NULL)
   {
@@ -1734,38 +1735,38 @@ void *AramCache_InsertFree(void *list, void *cell)
   }
 
   loop_d:
-  *((void **) (((u8 *) cell) + 0x60)) = next;
+  cell->next = next;
 
-  *((void **) (((u8 *) cell) + 0x5C)) = prev;
+  cell->prev = prev;
   if (next != NULL)
   {
-    *((void **) (((u8 *) next) + 0x5C)) = cell;
-    if ((*((u32 *) (((u8 *) next) + 0x68))) == ((*((u32 *) (((u8 *) cell) + 0x68))) + (*((s32 *) (((u8 *) cell) + 0x64)))))
+    next->prev = cell;
+    if (next->addr == (cell->addr + cell->size))
     {
-      *((s32 *) (((u8 *) cell) + 0x64)) = (*((s32 *) (((u8 *) cell) + 0x64))) + (*((s32 *) (((u8 *) next) + 0x64)));
-      *((s32 *) (((u8 *) next) + 0x64)) = 0;
-      *((u8 *) (((u8 *) next) + 0x53)) = 0;
-      next = *((void **) (((u8 *) next) + 0x60));
-      *((void **) (((u8 *) cell) + 0x60)) = next;
+      cell->size = cell->size + next->size;
+      next->size = 0;
+      next->flags = 0;
+      next = next->next;
+      cell->next = next;
       if (next != NULL)
       {
-        *((void **) (((u8 *) next) + 0x5C)) = cell;
+        next->prev = cell;
       }
     }
   }
   if (prev != NULL)
   {
-    *((void **) (((u8 *) prev) + 0x60)) = cell;
-    new_var = (s32 *) (((u8 *) prev) + 0x64);
-    if ((*((u32 *) (((u8 *) cell) + 0x68))) == ((*((u32 *) (((u8 *) prev) + 0x68))) + (*((s32 *) (((u8 *) prev) + 0x64)))))
+    prev->next = cell;
+    new_var = &prev->size;
+    if (cell->addr == (prev->addr + prev->size))
     {
-      *((s32 *) (((u8 *) prev) + 0x64)) = (*new_var) + (*((s32 *) (((u8 *) cell) + 0x64)));
+      prev->size = (*new_var) + cell->size;
       *new_var = 0;
-      *((u8 *) (((u8 *) prev) + 0x53)) = 0;
-      *((void **) (((u8 *) prev) + 0x60)) = next;
+      prev->flags = 0;
+      prev->next = next;
       if (next != NULL)
       {
-        *((void **) (((u8 *) next) + 0x5C)) = prev;
+        next->prev = prev;
       }
     }
     return list;
