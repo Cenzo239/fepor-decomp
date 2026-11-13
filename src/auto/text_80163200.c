@@ -6938,7 +6938,8 @@ extern "C" void fn_80170894(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void Ui_HandleUnitListInfoInput(void *arg0) {
+/* Handle unit-list pad input: help text, unit-info popup, confirm/cancel, and back. */
+extern "C" void Ui_HandleUnitListInfoInput(void *panel) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void Ui_UpdatePanelWidgets(void *);
@@ -6981,59 +6982,59 @@ extern "C" void Ui_HandleUnitListInfoInput(void *arg0) {
         virtual Vec2s v13() = 0;
     };
 
-    void *obj54;
-    s32 *var_r30;
+    void *listWidget;
+    s32 *selected;
     void *self;
-    register int btn;
-    register u8 gate;
-    register int flags;
-    u32 ret;
-    u32 sp14;
-    u32 sp10;
+    register int pressed;
+    register u8 blocked;
+    register int inputFlags;
+    u32 helpWidget;
+    u32 posA;
+    u32 posB;
 
-    self = arg0;
-    obj54 = *(void **)((u8 *)arg0 + 0x54);
-    var_r30 = ListWidget_GetSelected(obj54);
-    if (var_r30 != NULL) {
-        ret = Ui_FindChild(arg0, -0x1000, 0);
-        if (ret != 0) {
-            Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x272);
+    self = panel;
+    listWidget = *(void **)((u8 *)panel + 0x54);
+    selected = ListWidget_GetSelected(listWidget);
+    if (selected != NULL) {
+        helpWidget = Ui_FindChild(panel, -0x1000, 0);
+        if (helpWidget != 0) {
+            Ui_SetWidgetText(helpWidget, (u8 *)gUiMsgStrings + 0x272);
         }
     } else {
-        ret = Ui_FindChild(arg0, -0x1000, 0);
-        if (ret != 0) {
-            Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x28a);
+        helpWidget = Ui_FindChild(panel, -0x1000, 0);
+        if (helpWidget != 0) {
+            Ui_SetWidgetText(helpWidget, (u8 *)gUiMsgStrings + 0x28a);
         }
     }
-    Ui_UpdatePanelWidgets(arg0);
-    if (var_r30 != ListWidget_GetSelected(obj54)) {
-        var_r30 = ListWidget_GetSelected(obj54);
+    Ui_UpdatePanelWidgets(panel);
+    if (selected != ListWidget_GetSelected(listWidget)) {
+        selected = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            if (var_r30 != NULL) {
-                *(Vec2s *)&sp14 = ((Obj *)obj54)->v13();
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *var_r30, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+            if (selected != NULL) {
+                *(Vec2s *)&posA = ((Obj *)listWidget)->v13();
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, *selected, (f32)*(s16 *)&posA, (f32)*((s16 *)&posA + 1));
             } else {
                 Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
-    flags = gUiInputFlags;
-    gate = 0;
-    if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+    inputFlags = gUiInputFlags;
+    blocked = 0;
+    if ((inputFlags & 0x10) && !(inputFlags & 0x20)) {
+        blocked = 1;
     }
-    if (!gate) {
-        btn = *(s32 *)((u8 *)gPadInput + 4);
-        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30 != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+    if (!blocked) {
+        pressed = *(s32 *)((u8 *)gPadInput + 4);
+        pressed = pressed & (*(s32 *)((u8 *)gPadInput + 8) ^ pressed);
+        if ((pressed & 0x100) && selected != NULL && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             Process_ClearFunc(self);
-        } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && var_r30 != NULL) {
-            *(Vec2s *)&sp10 = ((Obj *)obj54)->v13();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *var_r30, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
+        } else if ((pressed & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0 && selected != NULL) {
+            *(Vec2s *)&posB = ((Obj *)listWidget)->v13();
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *selected, (f32)*(s16 *)&posB, (f32)*((s16 *)&posB + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
-        } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+        } else if ((pressed & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
-        } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
+        } else if ((pressed & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             Process_Goto(self, 0x24);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
