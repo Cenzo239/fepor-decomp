@@ -4055,7 +4055,7 @@ s32 Unit_IsLowHp(void *arg0) {
     s32 fn_8022C568(f32);
     void *Res_GetByName(void *);
     extern f64 lbl_8036A168;
-    extern f32 lbl_8036A160;
+    extern f32 sLowHpRatio;
     extern f32 lbl_8036A164;
     u8 saved;
     s32 result;
@@ -4067,7 +4067,7 @@ s32 Unit_IsLowHp(void *arg0) {
     if (fn_80102EA8() != 0) {
         saved = *(u8 *)((u8 *)arg0 + 0x1A8);
         ratio = (f32)(s8)saved / (f32)Unit_GetMaxHp(arg0);
-        if (ratio <= lbl_8036A160) {
+        if (ratio <= sLowHpRatio) {
             *(u32 *)((u8 *)arg0 + 0x254) |= 1;
             return 1;
         }
