@@ -3306,11 +3306,11 @@ s32 fn_800B6A30(void) {
 }
 
 s32 fn_800B6A38(void) {
-    void fn_80025680(s32, s32);
+    void Pad_ClearDisableMask(s32, s32);
     extern s32 gPadInput;
     extern s32 gUiInputFlags;
 
-    fn_80025680(gPadInput, 0x1F70);
+    Pad_ClearDisableMask(gPadInput, 0x1F70);
     gUiInputFlags &= ~0x2000;
     return 1;
 }
@@ -4487,10 +4487,10 @@ s32 fn_800B8534(void) {
 }
 
 s32 fn_800B85EC(void) {
-    M2C_UNK fn_80025680(s32, s32);
+    M2C_UNK Pad_ClearDisableMask(s32, s32);
     s32 fn_800B864C();
     extern s32 gPadInput;
-    fn_80025680(gPadInput, fn_800B864C());
+    Pad_ClearDisableMask(gPadInput, fn_800B864C());
     return 0;
 }
 

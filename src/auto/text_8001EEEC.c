@@ -2980,7 +2980,7 @@ void fn_80025624(void *arg0, s8 arg1) {
     }
 }
 
-void fn_80025680(void *arg0, s32 arg1) {
+void Pad_ClearDisableMask(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x18) = (s32) (M2C_FIELD(arg0, s32 *, 0x18) & ~arg1);
 }
 
