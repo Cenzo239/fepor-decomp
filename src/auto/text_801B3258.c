@@ -29,10 +29,11 @@ typedef struct ListIter {
     ListNode *node;
 } ListIter;
 
-typedef struct Arg801C838C {
+typedef struct MonitorWin {
     u8 pad0[0x30];
     u32 field30;
-} Arg801C838C;
+} MonitorWin;
+typedef MonitorWin Arg801C838C;
 
 typedef struct List {
     s32 size;
