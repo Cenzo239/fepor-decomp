@@ -597,7 +597,7 @@ void fn_80099F20(void *arg0) {
     }
 }
 
-void fn_80099FAC(s32 arg0) {
+void Event_FaceTalkUnits(s32 arg0) {
     u32 Event_GetSlotUnit(s32);
     void Unit_FaceToward(u32, u32, s32, s32);
     void Mu_StartBlend(u32, s32, s32, s32);
