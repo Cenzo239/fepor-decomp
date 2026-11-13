@@ -133,6 +133,7 @@ extern u16* __cpReg;
 
 extern u16* lbl_80368790;
 
+/* Shrink a render mode's framebuffer/VI rects to leave an overscan border. */
 void GXAdjustForOverscan(const GXRenderModeObj *rmin, GXRenderModeObj *rmout, u16 hor, u16 ver) {
     u16 hor2 = (u16)(hor * 2);
     u16 ver2 = (u16)(ver * 2);
