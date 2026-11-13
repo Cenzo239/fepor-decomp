@@ -7482,7 +7482,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
     s32 fn_80255FB0();
     extern s32 lbl_8034CB74[];
     extern void (*lbl_803689AC)(u32, u32);
-    void fn_8025539C(void *);
+    void Sound_DeactivateSynthVoice(void *);
     extern u8 gSoundData[];
     extern s32 gSynthVoices;
     u32 id;
@@ -7521,7 +7521,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
                                 *(u32 *)(state + 0x38) = *(u32 *)(state + 0x64);
                                 *(u32 *)(state + 0x34) = *(u32 *)(state + 0x58);
                                 *(u32 *)(state + 0x58) = 0;
-                                fn_8025539C(state);
+                                Sound_DeactivateSynthVoice(state);
                             }
                         }
                     }
@@ -7550,7 +7550,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
                     *(u32 *)(state + 0x38) = *(u32 *)(state + 0x64);
                     *(u32 *)(state + 0x34) = *(u32 *)(state + 0x58);
                     *(u32 *)(state + 0x58) = 0;
-                    fn_8025539C(state);
+                    Sound_DeactivateSynthVoice(state);
                 }
             }
         }
@@ -7579,7 +7579,7 @@ void fn_80253E90(void) {
 
 void fn_80254F00(u32 arg0)
 {
-    void fn_8025539C(void *);
+    void Sound_DeactivateSynthVoice(void *);
     void fn_80253F6C(void *);
     s32 Sound_IsHwVoiceActive(s32);
 
@@ -7609,7 +7609,7 @@ void fn_80254F00(u32 arg0)
 
         next = *(u8 **)(current + 0x44);
 
-        fn_8025539C(current);
+        Sound_DeactivateSynthVoice(current);
 
         *(u32 *)(current + 0xA4) = (u32)lbl_80368A2C;
         *(u32 *)(current + 0xA0) = (u32)lbl_80368A28;
@@ -7641,7 +7641,7 @@ void fn_80254F00(u32 arg0)
 
                         *(u32 *)(voice + 0x54) = 0;
 
-                        fn_8025539C(voice);
+                        Sound_DeactivateSynthVoice(voice);
                         fn_80253F6C(voice);
                     }
                 }
@@ -7659,10 +7659,10 @@ void fn_80254F00(u32 arg0)
         (s32)(timeHigh + ((timeLow + arg0) < timeLow));
 }
 
-void fn_8025539C(void *arg0);
+void Sound_DeactivateSynthVoice(void *arg0);
 
 void fn_80255054(void *arg0) {
-    void fn_8025539C(void *);
+    void Sound_DeactivateSynthVoice(void *);
     u32 var_r0;
 
     if (*(s32 *)((u8 *)arg0 + 0x4C) == 1) {
@@ -7670,13 +7670,13 @@ void fn_80255054(void *arg0) {
             *(s32 *)((u8 *)arg0 + 0x38) = *(s32 *)((u8 *)arg0 + 0x60);
             *(void **)((u8 *)arg0 + 0x34) = *(void **)((u8 *)arg0 + 0x54);
             *(void **)((u8 *)arg0 + 0x54) = NULL;
-            fn_8025539C(arg0);
+            Sound_DeactivateSynthVoice(arg0);
             var_r0 = 1;
         } else {
             var_r0 = 0;
         }
         if (var_r0 == 0 && (*(u64 *)((u8 *)arg0 + 0x114) & 0x40000ULL)) {
-            fn_8025539C(arg0);
+            Sound_DeactivateSynthVoice(arg0);
         }
     }
 }
@@ -7703,12 +7703,12 @@ void fn_802551F0(void *arg0, u32 arg1) {
                 ((u32*)arg0)[0xE] = ((u32*)arg0)[0x17];
                 ((u32*)arg0)[0xD] = ((u32*)arg0)[0x14];
                 ((u32*)arg0)[0x14] = 0;
-                fn_8025539C(arg0);
+                Sound_DeactivateSynthVoice(arg0);
                 return;
             }
         } else {
             if (((u32*)arg0)[0x46] & 4) {
-                fn_8025539C(arg0);
+                Sound_DeactivateSynthVoice(arg0);
             }
         }
     }
@@ -7775,7 +7775,7 @@ void fn_802552F8(void *arg0)
     }
 }
 
-void fn_8025539C(void *arg0) {
+void Sound_DeactivateSynthVoice(void *arg0) {
     void fn_80249DD0(void *);
     void *prev;
     void *next;
