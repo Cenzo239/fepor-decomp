@@ -5397,35 +5397,36 @@ s32 fn_800BA230(u32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 ScriptCmd_SoundSetParam(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+/* Script command: look up a sound by name and tween/set a typed parameter (percent-scaled for types 5-7). */
+s32 ScriptCmd_SoundSetParam(u32 name, s32 type, s32 mode, s32 valueA, s32 valueB, s32 frames) {
     u32 Sound_FindByName(void);
     void Sound_TweenParam(u32, s32, s32, f32, f32, f32);
     extern f32 gPercentToFloat;
     extern f64 lbl_80369CF8;
-    u32 tmp;
-    f32 var_f1;
-    f32 var_f2;
+    u32 snd;
+    f32 fromVal;
+    f32 toVal;
 
-    if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
+    if ((name < 0x80000000U) || (name >= 0x81800000U)) {
         return 0;
     }
-    tmp = Sound_FindByName();
-    if (tmp == 0U) {
+    snd = Sound_FindByName();
+    if (snd == 0U) {
         return 0;
     }
-    var_f1 = (f32)arg3;
-    var_f2 = (f32)arg4;
-    switch (arg1) {
+    fromVal = (f32)valueA;
+    toVal = (f32)valueB;
+    switch (type) {
     case 5:
     case 6:
     case 7:
-        var_f2 *= gPercentToFloat;
-        if (arg3 != 123456789) {
-            var_f1 *= gPercentToFloat;
+        toVal *= gPercentToFloat;
+        if (valueA != 123456789) {
+            fromVal *= gPercentToFloat;
         }
         break;
     }
-    Sound_TweenParam(tmp, arg1, arg2, var_f1, var_f2, (f32)arg5);
+    Sound_TweenParam(snd, type, mode, fromVal, toVal, (f32)frames);
     return 1;
 }
 
