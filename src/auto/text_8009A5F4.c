@@ -70,14 +70,20 @@ void fn_8009A648(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x30) = f;
     ((u8 *)arg0)[0x3D] = (u8)z;
 }
-#pragma global_optimizer reset
-#pragma scheduling reset
+#pragma scheduling off
+#pragma global_optimizer off
 void fn_8009A660(u8 *arg0) {
     extern f32 lbl_803697E4;
-    arg0[0x3E] = arg0[0x40];
-    *(f32 *)(arg0 + 0x30) = lbl_803697E4;
+    u8 t;
+    f32 f;
+
+    t = arg0[0x40];
+    f = lbl_803697E4;
+    arg0[0x3E] = t;
+    *(f32 *)(arg0 + 0x30) = f;
     arg0[0x3D] = arg0[0x3F];
 }
+#pragma global_optimizer reset
 #pragma scheduling on
 void fn_8009A67C(void *arg0) {
     f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
