@@ -2805,7 +2805,7 @@ void fn_801EFDC8(void *arg0) {
     void String_Assign(String *, String *, s32, s32);
     void Xml_GetChildValue(char *, void *);
     void String_AssignCStr(String *, char *, s32);
-    s32 fn_800D5948(String *, char *, s32, s32);
+    s32 String_Find(String *, char *, s32, s32);
     void String_Substr(String *, String *, s32, s32);
     void String_JoinCStr(String *, char *, String *);
     void fn_800C99A0(String *, String *, s32, s32);
@@ -2914,7 +2914,7 @@ void fn_801EFDC8(void *arg0) {
         String_Destroy(&spE0, -1);
         Xml_GetChildValue(p204, file);
         String_AssignCStr(&str160, p204, strlen(p204));
-        pos = fn_800D5948(&str160, strBase + 0x24E, 0, strlen(strBase + 0x24E));
+        pos = String_Find(&str160, strBase + 0x24E, 0, strlen(strBase + 0x24E));
         if ((u32)(pos + 0x10000) != 0xFFFFFFFFU) {
             String_Substr(&spD4, &str160, 0, pos);
             String_JoinCStr(&spC8, strBase + 0x222, &spD4);

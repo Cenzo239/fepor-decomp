@@ -6367,7 +6367,7 @@ void fn_800D58C0(void **arg0)
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
-s32 fn_800D5948(u32 *arg0, char *arg1, u32 arg2, u32 arg3) {
+s32 String_Find(u32 *arg0, char *arg1, u32 arg2, u32 arg3) {
     u32 size;
     char *data;
     u32 rem;
