@@ -8808,7 +8808,7 @@ void fn_800DC598(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x73) = 0;
 }
 
-void fn_800DC5AC(void *arg0, s32 arg1, s32 arg2) {
+void ListWin_HandleScrollbarDrag(void *arg0, s32 arg1, s32 arg2) {
     s32 temp_r0;
     s32 temp_r4;
     s32 temp_r5;
