@@ -2673,13 +2673,13 @@ extern "C" void fn_80169394(void) {
     void fn_800163F8(void);
     void fn_80016180(void);
     void BattleState_SetCamPos(void *, f32, f32);
-    void fn_800187F0(void);
+    void Camera_SyncFromBattleState(void);
 
     fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();
     BattleState_SetCamPos(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
-    fn_800187F0();
+    Camera_SyncFromBattleState();
 }
 
 extern "C" void fn_80169414(s32 arg0) {

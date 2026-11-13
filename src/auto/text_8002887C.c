@@ -2032,7 +2032,7 @@ void Battle_StartMapMain(void *arg0) {
     void fn_801E379C(u32);
     void SaveData_Release(void *);
     void BattleState_SetCamPos(void *, f32, f32);
-    void fn_800187F0(void);
+    void Camera_SyncFromBattleState(void);
     void fn_8014C798(void *);
     void fn_800163F8(void);
     void fn_80016180(void);
@@ -2046,11 +2046,11 @@ void Battle_StartMapMain(void *arg0) {
     fn_801E379C(gSaveDataBase.unk4);
     SaveData_Release(&gSaveDataBase);
     BattleState_SetCamPos(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
-    fn_800187F0();
+    Camera_SyncFromBattleState();
     fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();
-    fn_800187F0();
+    Camera_SyncFromBattleState();
 }
 
 void fn_8002D72C(void *arg0) {

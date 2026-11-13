@@ -310,7 +310,7 @@ void fn_80005F04(void)
     s32 fn_8016947C(void);
     void fn_80016C58(void);
     void BattleState_SetCamPos(float, float);
-    void fn_800187F0(void);
+    void Camera_SyncFromBattleState(void);
     void fn_80016DE0(void);
 
     extern u8 gSaveDataBase;
@@ -377,7 +377,7 @@ void fn_80005F04(void)
             y = (s8)data[0x53];
 
             BattleState_SetCamPos((float)x, (float)y);
-            fn_800187F0();
+            Camera_SyncFromBattleState();
 
             state = (u8 *)Process_Find(lbl_802832FC);
             *(s32 *)(state + 0x60) = 0x15;

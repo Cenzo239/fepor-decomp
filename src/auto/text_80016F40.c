@@ -936,7 +936,7 @@ void fn_80018594(void *arg0) {
     }
 }
 
-void fn_800187F0(void) {
+void Camera_SyncFromBattleState(void) {
     void *p;
 
     p = (void *)gActiveCam;

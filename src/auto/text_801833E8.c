@@ -11918,7 +11918,7 @@ s32 fn_8019FF68(void) {
 s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
     void *Camera_GetActive(void);
     void fn_800193CC(void *, f32);
-    void fn_800187F0(void);
+    void Camera_SyncFromBattleState(void);
     void *p;
     s32 a;
     s32 b;
@@ -11937,7 +11937,7 @@ s32 fn_8019FFBC(s32 arg0, s32 arg1, s32 arg2) {
     *(f32 *)((u8 *)p + 8) = fb;
     *(f32 *)((u8 *)p + 0x14) = fb;
     fn_800193CC(p, (f32)c);
-    fn_800187F0();
+    Camera_SyncFromBattleState();
     return 1;
 }
 
@@ -12106,12 +12106,12 @@ s32 fn_801A0374(void) {
     void BattleState_LoadMap(void *, s32);
     void fn_8014C798(void *);
     void BattleState_SetCamPos(void *, f32, f32);
-    void fn_800187F0(void);
+    void Camera_SyncFromBattleState(void);
 
     BattleState_LoadMap(gBattleState, 0);
     fn_8014C798(gBattleState);
     BattleState_SetCamPos(gBattleState, (f32) (s8) gBattleState[0x52], (f32) (s8) gBattleState[0x53]);
-    fn_800187F0();
+    Camera_SyncFromBattleState();
     return 1;
 }
 
