@@ -241,7 +241,7 @@ s32 fn_8007CB08(void) {
     return v != 0;
 }
 
-void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
+void Ui_DrawCaptionBar(void *text, u8 leftAlign) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -269,15 +269,16 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     extern s32 lbl_8036C464;
     extern s32 lbl_8036C468;
     extern s32 lbl_8036C46C;
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s16 var_r3;
+    // Draw the dual gradient caption strip and place text left or centered.
+    s32 botC3;
+    s32 botC2;
+    s32 botC1;
+    s32 botC0;
+    s32 topC3;
+    s32 topC2;
+    s32 topC1;
+    s32 topC0;
+    s16 textX;
 
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x12);
@@ -285,21 +286,21 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, gUiCaptionBarY0, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(gUiCaptionBarX1, gUiCaptionBarY1, lbl_80369418, lbl_80369418);
-    sp14 = lbl_80369404;
-    sp10 = lbl_80369400;
-    spC = lbl_8036C464;
-    sp8 = lbl_8036C460;
-    fn_800072B0(&sp8, &spC, &sp10, &sp14);
+    topC3 = lbl_80369404;
+    topC2 = lbl_80369400;
+    topC1 = lbl_8036C464;
+    topC0 = lbl_8036C460;
+    fn_800072B0(&topC0, &topC1, &topC2, &topC3);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetQuadMin(lbl_80369418, gUiCaptionBarY1, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(gUiCaptionBarX1, gUiCaptionBarY2, lbl_80369418, lbl_80369418);
-    sp24 = lbl_8036C46C;
-    sp20 = lbl_8036C468;
-    sp1C = lbl_8036940C;
-    sp18 = lbl_80369408;
-    fn_800072B0(&sp18, &sp1C, &sp20, &sp24);
+    botC3 = lbl_8036C46C;
+    botC2 = lbl_8036C468;
+    botC1 = lbl_8036940C;
+    botC0 = lbl_80369408;
+    fn_800072B0(&botC0, &botC1, &botC2, &botC3);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
@@ -308,12 +309,12 @@ void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (arg1 != 0) {
-        var_r3 = 0x18;
+    if (leftAlign != 0) {
+        textX = 0x18;
     } else {
-        var_r3 = 0x130 - (Text_MeasureWidth(arg0, -1, lbl_80369430) / 2);
+        textX = 0x130 - (Text_MeasureWidth(text, -1, lbl_80369430) / 2);
     }
-    fn_8001003C(var_r3, 0x197, 1, 1, 0, arg0, lbl_80369430, lbl_80369418);
+    fn_8001003C(textX, 0x197, 1, 1, 0, text, lbl_80369430, lbl_80369418);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
