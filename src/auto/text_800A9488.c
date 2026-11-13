@@ -282,7 +282,7 @@ extern "C" void Options_DrawTextItem(void *arg0, void *arg1, void *arg2) {
     };
     extern f32 gOptionsIdentityScale;
     extern f32 gOptionsZBias;
-    extern f32 lbl_80369C24;
+    extern f32 gOptionsTextScale;
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32),
@@ -294,7 +294,7 @@ extern "C" void Options_DrawTextItem(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     Prim2D_SetText();
-    Prim2D_SetScale(lbl_80369C24);
+    Prim2D_SetScale(gOptionsTextScale);
     Prim2D_EndPrim();
 }
 #pragma cplusplus reset
