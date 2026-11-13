@@ -2515,7 +2515,7 @@ void fn_801E9864(void *arg0)
     extern u8 gTabMenuDefaultUnk32;
     extern u8 gTabMenuDefaultUnk33;
     extern u8 gTabMenuDefaultFade;
-    extern s16 lbl_80368362;
+    extern s16 gTabMenuDefaultUnk36;
     extern s16 lbl_80368364;
     extern s16 lbl_80368368;
     void fn_8003F670(void *);
@@ -2538,7 +2538,7 @@ void fn_801E9864(void *arg0)
     gTabMenuDefaultUnk32 = *(u8 *)((u8 *)arg0 + 0x32);
     gTabMenuDefaultUnk33 = *(u8 *)((u8 *)arg0 + 0x33);
     gTabMenuDefaultFade = *(u8 *)((u8 *)arg0 + 0x34);
-    lbl_80368362 = *(s16 *)((u8 *)arg0 + 0x36);
+    gTabMenuDefaultUnk36 = *(s16 *)((u8 *)arg0 + 0x36);
     lbl_80368364 = *(s16 *)((u8 *)arg0 + 0x38);
     lbl_80368368 = *(s16 *)((u8 *)arg0 + 0x3C);
     p68[1] = *(s16 *)((u8 *)arg0 + 0x3E);
@@ -2596,7 +2596,7 @@ void TabMenu_Init(void *arg0) {
     extern u8 gTabMenuDefaultUnk32;
     extern u8 gTabMenuDefaultUnk33;
     extern u8 gTabMenuDefaultFade;
-    extern s16 lbl_80368362;
+    extern s16 gTabMenuDefaultUnk36;
     extern s16 lbl_80368364;
     extern s16 lbl_80368368;
     extern f32 lbl_8036B714;
@@ -2632,7 +2632,7 @@ void TabMenu_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x32) = gTabMenuDefaultUnk32;
     *(u8 *)((u8 *)arg0 + 0x33) = gTabMenuDefaultUnk33;
     *(u8 *)((u8 *)arg0 + 0x34) = gTabMenuDefaultFade;
-    *(s16 *)((u8 *)arg0 + 0x36) = lbl_80368362;
+    *(s16 *)((u8 *)arg0 + 0x36) = gTabMenuDefaultUnk36;
     *(s16 *)((u8 *)arg0 + 0x38) = lbl_80368364;
     p68 = &lbl_80368368;
     *(s16 *)((u8 *)arg0 + 0x3C) = p68[0];
