@@ -2121,31 +2121,32 @@ s32 Unit_MatchesId(void *unit, s32 idName) {
     }
 }
 
-void Unit_SetStatBonusesToCap(void *arg0) {
-    void *temp_r6;
-    void *temp_r6_2;
-    void *temp_r6_3;
-    void *temp_r6_4;
-    void *temp_r6_5;
-    void *temp_r6_6;
-    void *temp_r6_7;
+void Unit_SetStatBonusesToCap(void *unit) {
+    /* Set HP/Str/Mag/Skl/Spd/Lck/Def/Res/Move bonuses so totals equal class caps. */
+    void *cls;
+    void *cls2;
+    void *cls3;
+    void *cls4;
+    void *cls5;
+    void *cls6;
+    void *cls7;
 
-    temp_r6 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AB) = (s8) ((M2C_FIELD(temp_r6, u8 *, 0x4C) - M2C_FIELD(temp_r6, u8 *, 0x44)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x1D));
-    temp_r6_2 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AC) = (s8) ((M2C_FIELD(temp_r6_2, u8 *, 0x4D) - M2C_FIELD(temp_r6_2, u8 *, 0x45)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x1E));
-    temp_r6_3 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AD) = (s8) ((M2C_FIELD(temp_r6_3, u8 *, 0x4E) - M2C_FIELD(temp_r6_3, u8 *, 0x46)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x1F));
-    temp_r6_4 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AE) = (s8) ((M2C_FIELD(temp_r6_4, u8 *, 0x4F) - M2C_FIELD(temp_r6_4, u8 *, 0x47)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x20));
-    temp_r6_5 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1AF) = (s8) ((M2C_FIELD(temp_r6_5, u8 *, 0x50) - M2C_FIELD(temp_r6_5, u8 *, 0x48)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x21));
-    M2C_FIELD(arg0, s8 *, 0x1B0) = (s8) (0x28 - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x22));
-    temp_r6_6 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1B1) = (s8) ((M2C_FIELD(temp_r6_6, u8 *, 0x52) - M2C_FIELD(temp_r6_6, u8 *, 0x4A)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x23));
-    temp_r6_7 = M2C_FIELD(arg0, void **, 0x18C);
-    M2C_FIELD(arg0, s8 *, 0x1B2) = (s8) ((M2C_FIELD(temp_r6_7, u8 *, 0x53) - M2C_FIELD(temp_r6_7, u8 *, 0x4B)) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x24));
-    M2C_FIELD(arg0, s8 *, 0x1AA) = (s8) (0x14 - M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3E));
+    cls = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1AB) = (s8) ((M2C_FIELD(cls, u8 *, 0x4C) - M2C_FIELD(cls, u8 *, 0x44)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x1D));
+    cls2 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1AC) = (s8) ((M2C_FIELD(cls2, u8 *, 0x4D) - M2C_FIELD(cls2, u8 *, 0x45)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x1E));
+    cls3 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1AD) = (s8) ((M2C_FIELD(cls3, u8 *, 0x4E) - M2C_FIELD(cls3, u8 *, 0x46)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x1F));
+    cls4 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1AE) = (s8) ((M2C_FIELD(cls4, u8 *, 0x4F) - M2C_FIELD(cls4, u8 *, 0x47)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x20));
+    cls5 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1AF) = (s8) ((M2C_FIELD(cls5, u8 *, 0x50) - M2C_FIELD(cls5, u8 *, 0x48)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x21));
+    M2C_FIELD(unit, s8 *, 0x1B0) = (s8) (0x28 - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x22));
+    cls6 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1B1) = (s8) ((M2C_FIELD(cls6, u8 *, 0x52) - M2C_FIELD(cls6, u8 *, 0x4A)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x23));
+    cls7 = M2C_FIELD(unit, void **, 0x18C);
+    M2C_FIELD(unit, s8 *, 0x1B2) = (s8) ((M2C_FIELD(cls7, u8 *, 0x53) - M2C_FIELD(cls7, u8 *, 0x4B)) - M2C_FIELD(M2C_FIELD(unit, void **, 0x188), u8 *, 0x24));
+    M2C_FIELD(unit, s8 *, 0x1AA) = (s8) (0x14 - M2C_FIELD(M2C_FIELD(unit, void **, 0x18C), u8 *, 0x3E));
 }
 
 s32 Unit_GetHeldItemSlot(s32 arg0, s32 arg1) {
