@@ -68,7 +68,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    s32 fn_8001CDE4(u8);
+    s32 WpnRank_GetLetter(u8);
     void Ui_DrawMenuTextItem(s32, s32, void *);
     s32 Unit_GetWpnExp(void *, u8);
     void sprintf(u8 *, void *, ...);
@@ -79,7 +79,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     s32 name;
 
     temp = Unit_GetWpnExp(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
-    name = fn_8001CDE4(temp);
+    name = WpnRank_GetLetter(temp);
     sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
     Ui_DrawMenuTextItem(arg0, arg1, arg2);
     Prim2D_AddPrim(5);

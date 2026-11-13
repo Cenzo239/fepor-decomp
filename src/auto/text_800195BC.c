@@ -2061,7 +2061,7 @@ s32 fn_8001CCE4(u8 arg0) {
     }
 }
 
-void *fn_8001CDE4(u8 arg0)
+void *WpnRank_GetLetter(u8 arg0)
 {
     extern u8 lbl_80268820[];
 
