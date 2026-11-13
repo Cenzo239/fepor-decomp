@@ -2855,7 +2855,8 @@ void Ui_DrawRouteTexCw(s32 x, s32 y, u8 flipV) {
     Prim2D_EndPrim();
 }
 
-void Ui_DrawRouteTex(s32 arg0, s32 arg1, u8 arg2) {
+void Ui_DrawRouteTex(s32 x, s32 y, u8 noFlipV) {
+    /* Draw route.tpl atlas tile 0x14 at (x, y); swap V when noFlipV is 0. */
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2871,19 +2872,19 @@ void Ui_DrawRouteTex(s32 arg0, s32 arg1, u8 arg2) {
     extern f64 lbl_803696F0;
     struct {
         u8 buf[0x20];
-        u16 x;
-        u16 y;
+        u16 w;
+        u16 h;
     } sp;
 
     Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x14);
-    sp.x = GXGetTexObjWidth(sp.buf);
-    sp.y = GXGetTexObjHeight(sp.buf);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
     Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.x, (f32)sp.y);
-    if (arg2 == 0) {
+    Prim2D_SetRect((f32)x, (f32)y, (f32)sp.w, (f32)sp.h);
+    if (noFlipV == 0) {
         Prim2D_SwapUvV();
     }
     Prim2D_EndPrim();
