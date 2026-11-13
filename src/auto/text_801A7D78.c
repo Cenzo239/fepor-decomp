@@ -268,32 +268,33 @@ void fn_801A85F4(s32 arg0) {
     Status_Set(arg0 + 0x1BC, 0x33);
 }
 
-s32 Unit_ClearEventStatuses(s32 arg0) {
+/* Clear map-event status bits on a unit if any are set; return whether any were. */
+s32 Unit_ClearEventStatuses(s32 unit) {
     u8 Status_Test(s32, M2C_UNK);
-    if ((Status_Test(arg0 + 0x1BC, 0x29) == 0) && (Status_Test(arg0 + 0x1BC, 0x41) == 0) && (Status_Test(arg0 + 0x1BC, 0x4C) == 0) && (Status_Test(arg0 + 0x1BC, 0x31) == 0) && (Status_Test(arg0 + 0x1BC, 0x2F) == 0) && (Status_Test(arg0 + 0x1BC, 0x30) == 0) && (Status_Test(arg0 + 0x1BC, 0x32) == 0) && (Status_Test(arg0 + 0x1BC, 0x3F) == 0) && (Status_Test(arg0 + 0x1BC, 0x10) == 0) && (Status_Test(arg0 + 0x1BC, 0x35) == 0) && (Status_Test(arg0 + 0x1BC, 0x2B) == 0) && (Status_Test(arg0 + 0x1BC, 0x2C) == 0) && (Status_Test(arg0 + 0x1BC, 0x2E) == 0) && (Status_Test(arg0 + 0x1BC, 0x33) == 0) && (Status_Test(arg0 + 0x1BC, 0x38) == 0) && (Status_Test(arg0 + 0x1BC, 0x34) == 0) && (Status_Test(arg0 + 0x1BC, 0x39) == 0) && (Status_Test(arg0 + 0x1BC, 0x36) == 0) && (Status_Test(arg0 + 0x1BC, 0x42) == 0) && (Status_Test(arg0 + 0x1BC, 0x5A) == 0) && (Status_Test(arg0 + 0x1BC, 0x2D) == 0)) {
+    if ((Status_Test(unit + 0x1BC, 0x29) == 0) && (Status_Test(unit + 0x1BC, 0x41) == 0) && (Status_Test(unit + 0x1BC, 0x4C) == 0) && (Status_Test(unit + 0x1BC, 0x31) == 0) && (Status_Test(unit + 0x1BC, 0x2F) == 0) && (Status_Test(unit + 0x1BC, 0x30) == 0) && (Status_Test(unit + 0x1BC, 0x32) == 0) && (Status_Test(unit + 0x1BC, 0x3F) == 0) && (Status_Test(unit + 0x1BC, 0x10) == 0) && (Status_Test(unit + 0x1BC, 0x35) == 0) && (Status_Test(unit + 0x1BC, 0x2B) == 0) && (Status_Test(unit + 0x1BC, 0x2C) == 0) && (Status_Test(unit + 0x1BC, 0x2E) == 0) && (Status_Test(unit + 0x1BC, 0x33) == 0) && (Status_Test(unit + 0x1BC, 0x38) == 0) && (Status_Test(unit + 0x1BC, 0x34) == 0) && (Status_Test(unit + 0x1BC, 0x39) == 0) && (Status_Test(unit + 0x1BC, 0x36) == 0) && (Status_Test(unit + 0x1BC, 0x42) == 0) && (Status_Test(unit + 0x1BC, 0x5A) == 0) && (Status_Test(unit + 0x1BC, 0x2D) == 0)) {
         return 0;
     }
-    Status_Set(arg0 + 0x1BC, 0x29);
-    Status_Set(arg0 + 0x1BC, 0x41);
-    Status_Set(arg0 + 0x1BC, 0x4C);
-    Status_Set(arg0 + 0x1BC, 0x31);
-    Status_Set(arg0 + 0x1BC, 0x2F);
-    Status_Set(arg0 + 0x1BC, 0x30);
-    Status_Set(arg0 + 0x1BC, 0x32);
-    Status_Set(arg0 + 0x1BC, 0x3F);
-    Status_Set(arg0 + 0x1BC, 0x10);
-    Status_Set(arg0 + 0x1BC, 0x35);
-    Status_Set(arg0 + 0x1BC, 0x2B);
-    Status_Set(arg0 + 0x1BC, 0x2C);
-    Status_Set(arg0 + 0x1BC, 0x2E);
-    Status_Set(arg0 + 0x1BC, 0x33);
-    Status_Set(arg0 + 0x1BC, 0x38);
-    Status_Set(arg0 + 0x1BC, 0x34);
-    Status_Set(arg0 + 0x1BC, 0x39);
-    Status_Set(arg0 + 0x1BC, 0x36);
-    Status_Set(arg0 + 0x1BC, 0x42);
-    Status_Set(arg0 + 0x1BC, 0x5A);
-    Status_Set(arg0 + 0x1BC, 0x2D);
+    Status_Set(unit + 0x1BC, 0x29);
+    Status_Set(unit + 0x1BC, 0x41);
+    Status_Set(unit + 0x1BC, 0x4C);
+    Status_Set(unit + 0x1BC, 0x31);
+    Status_Set(unit + 0x1BC, 0x2F);
+    Status_Set(unit + 0x1BC, 0x30);
+    Status_Set(unit + 0x1BC, 0x32);
+    Status_Set(unit + 0x1BC, 0x3F);
+    Status_Set(unit + 0x1BC, 0x10);
+    Status_Set(unit + 0x1BC, 0x35);
+    Status_Set(unit + 0x1BC, 0x2B);
+    Status_Set(unit + 0x1BC, 0x2C);
+    Status_Set(unit + 0x1BC, 0x2E);
+    Status_Set(unit + 0x1BC, 0x33);
+    Status_Set(unit + 0x1BC, 0x38);
+    Status_Set(unit + 0x1BC, 0x34);
+    Status_Set(unit + 0x1BC, 0x39);
+    Status_Set(unit + 0x1BC, 0x36);
+    Status_Set(unit + 0x1BC, 0x42);
+    Status_Set(unit + 0x1BC, 0x5A);
+    Status_Set(unit + 0x1BC, 0x2D);
     return 1;
 }
 
