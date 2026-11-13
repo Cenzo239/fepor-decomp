@@ -153,7 +153,7 @@ void fn_80098524(void **arg0) {
 
 #pragma use_lmw_stmw on
 s32 Event_HandleItemCmd(void *arg0) {
-    u8 fn_8005F7F0(void *);
+    u8 Pad_IsActive(void *);
     u8 Pad_IsButton(void *, s32);
     void fn_80054C14(void *);
     s32 Event_GetCmdKind(s16);
@@ -199,7 +199,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     if (pad == NULL) {
         return 0;
     }
-    if (fn_8005F7F0(pad) == 0) {
+    if (Pad_IsActive(pad) == 0) {
         return 0;
     }
     fn_80054C14(arg0);

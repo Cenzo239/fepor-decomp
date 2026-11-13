@@ -266,7 +266,7 @@ void fn_80054C14(void* arg0)
     r3 = *(u32*)((char*)arg0 + 0x30);
     r28 = *(u32*)((char*)r3 + 0x5c);
     r3 = r28;
-    fn_8005F7F0(r3);
+    Pad_IsActive(r3);
     r0 = (r3 & 0xFFFFFF00) >> 24;
     if (r0 == 0)
         return;

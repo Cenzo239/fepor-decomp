@@ -206,7 +206,7 @@ void fn_80099094(void *arg0)
 }
 
 void fn_8009933C(void *arg0) {
-s32 fn_80098140(void); u8 fn_8005F7F0(void *); u8 Pad_IsButton(void *,s32);
+s32 fn_80098140(void); u8 Pad_IsActive(void *); u8 Pad_IsButton(void *,s32);
 s32 Event_GetCmdKind(s16); s32 Event_GetCmdFlags(s16); void Event_AdvanceCmd(s16);
 void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
 void fn_8017DF54(void *,void *,void *);
@@ -225,7 +225,7 @@ u8 *input;
 void *unit;
 unit=(void *)fn_80098140();
 input=(u8 *)unit+0x1c;
-if(fn_8005F7F0(input)) {
+if(Pad_IsActive(input)) {
 s32 command=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x46));
 s32 flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x46));
 switch(command) {
