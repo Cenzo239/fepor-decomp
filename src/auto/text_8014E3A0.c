@@ -5731,7 +5731,8 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
         }
     }
 }
-void Ui_DrawRect(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
+/* Draw a colored screen rect sized from uvRect, with optional UV flip/rotate. */
+void Ui_DrawRect(s16 x, s16 y, s32 texFlags, s16 *uvRect, s32 *color, s32 uvFlags) {
     void Prim2D_RotateUvCw(void);
     void Prim2D_RotateUvCcw(void);
     void Prim2D_SetColorPacked(s32 *);
@@ -5744,27 +5745,27 @@ void Ui_DrawRect(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern f64 lbl_8036A868;
-    s32 sp8;
+    s32 packedColor;
 
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(arg2 | 2));
+    Prim2D_SetTex(0, (u16)(texFlags | 2));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)(s16)(arg3[2] - arg3[0]), (f32)(s16)(arg3[3] - arg3[1]));
-    if (arg5 & 1) {
+    Prim2D_SetRect((f32)x, (f32)y, (f32)(s16)(uvRect[2] - uvRect[0]), (f32)(s16)(uvRect[3] - uvRect[1]));
+    if (uvFlags & 1) {
         Prim2D_SwapUvU();
     }
-    if (arg5 & 2) {
+    if (uvFlags & 2) {
         Prim2D_SwapUvV();
     }
-    if (arg5 & 0x100) {
+    if (uvFlags & 0x100) {
         Prim2D_RotateUvCcw();
     }
-    if (arg5 & 0x200) {
+    if (uvFlags & 0x200) {
         Prim2D_RotateUvCw();
     }
-    sp8 = *arg4;
-    Prim2D_SetColorPacked(&sp8);
+    packedColor = *color;
+    Prim2D_SetColorPacked(&packedColor);
     Prim2D_EndPrim();
 }
 
