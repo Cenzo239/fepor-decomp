@@ -10967,6 +10967,7 @@ void fn_800E0FBC(void *arg0, s32 arg1)
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,SortCompare comp) {
+ /* Stable-sort [begin,end) by Sort_GetKey; uses buffer [a,b) when large enough, else in-place merge. */
  s32 Sort_GetKey(void *);
  void fn_800E18B4(s32 *,s32 *,SortIterator,SortCompare);
  void fn_800E1340(SortIterator,SortIterator,SortIterator,SortIterator,s32 *,SortCompare);
