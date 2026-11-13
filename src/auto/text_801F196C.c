@@ -1702,7 +1702,7 @@ void fn_801F5DD0(void *arg0)
     if (r == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
-            Process_Goto(arg0, 2);
+            fn_8000C070(arg0, 2);
             return;
         }
     }
@@ -1713,12 +1713,12 @@ void fn_801F5DD0(void *arg0)
     if (fn_80266998(*(u32 *)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
-            Process_Goto(arg0, 2);
+            fn_8000C070(arg0, 2);
             return;
         }
     }
 
-    Process_ClearFunc(arg0);
+    fn_8000C188(arg0);
 }
 
 #pragma opt_common_subs off
@@ -5176,7 +5176,7 @@ void fn_801FC438(void) {
 
 }
 
-void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4);
+void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4);
 
 #pragma opt_common_subs off
 void fn_801FC43C(void *arg0, void *arg1, u16 *arg2) {
@@ -5214,7 +5214,7 @@ void fn_801FC43C(void *arg0, void *arg1, u16 *arg2) {
     }
 
     if (found == NULL || *(u16 *)((u8 *)found + 0xC) < *p) {
-        *(void **)self = fn_801FC518(arg1, parent, flag5, flag6, arg2);
+        *(void **)self = Tree_InsertNode(arg1, parent, flag5, flag6, arg2);
         *((u8 *)self + 4) = lbl_80366F08;
     } else {
         *(void **)self = found;
@@ -5230,7 +5230,7 @@ void fn_801FC4F8(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma use_lmw_stmw on
-void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
+void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     void *Heap_Alloc(u32);
     void fn_800D6C1C(void *, void *);
     M2C_UNK abort(void);
