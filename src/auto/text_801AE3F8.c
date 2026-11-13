@@ -736,7 +736,7 @@ void fn_801AF6BC(void *arg0) {
     s32 Convoy_FindEmpty(void *);
     void fn_801695BC(void *, void *, s32);
     void fn_801694AC(void *, void *);
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
     extern u8 lbl_8027BD18[];
@@ -852,7 +852,7 @@ void fn_801AF6BC(void *arg0) {
             if (fn_8014D8DC(gBattleState) == 0) {
                 vt = *(void ***)list;
                 ((void (*)(s16 *, void *))vt[0x2C / 4])(sp14, list);
-                fn_80176888(lbl_8027BD18 + 0x38E, self, (f32)sp14[0], (f32)sp14[1]);
+                Ui_CreateMsgPopup(lbl_8027BD18 + 0x38E, self, (f32)sp14[0], (f32)sp14[1]);
                 return;
             }
             Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);

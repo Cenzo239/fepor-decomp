@@ -960,11 +960,11 @@ s32 fn_801EC6CC(void) {
 
 #pragma global_optimizer off
 s32 fn_801EC6D4(void *msg, void *a, void *b) {
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern char lbl_8027EE08[];
 
     msg = lbl_8027EE08 + 0x30a;
-    fn_80176888(msg, a,
+    Ui_CreateMsgPopup(msg, a,
                 (f32)(*(s16 *)((u8 *)a + 0x30) + *(s16 *)((u8 *)b + 0x30)),
                 (f32)(*(s16 *)((u8 *)a + 0x32) + *(s16 *)((u8 *)b + 0x32)));
     return 0x10;

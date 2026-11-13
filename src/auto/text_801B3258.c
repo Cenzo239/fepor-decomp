@@ -2450,7 +2450,7 @@ void Ui_UpdatePanelWidgets(void *); void *Ui_FindChild(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
-void fn_80176888(void *,void *,f32,f32); s32 Unit_GetSkillCapacityUsed(void *);
+void Ui_CreateMsgPopup(void *,void *,f32,f32); s32 Unit_GetSkillCapacityUsed(void *);
 extern u8 gUiUnitPanelStrings[],gUiContext[],gUnitInfoPopup[];
 extern u32 gUiInputFlags; extern void *gPadInput; extern s32 gUnitInfoPopupFlag;
 class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
@@ -2483,12 +2483,12 @@ s32 remaining=M2C_FIELD(M2C_FIELD(owner,void **,0x18c),u8 *,0x40);
 remaining-=Unit_GetSkillCapacityUsed(owner);
 if(Status_Test((u8 *)owner+0x1bc,M2C_FIELD(unit,u8 *,0x18))) {
 *(Pair *)&pos2=((Obj *)M2C_FIELD(self,void **,0x68))->v9();
-fn_80176888(gUiUnitPanelStrings+0x17a,self,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
+Ui_CreateMsgPopup(gUiUnitPanelStrings+0x17a,self,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
 return;
 }
 if(remaining<M2C_FIELD(unit,u8 *,0x1a)) {
 *(Pair *)&pos3=((Obj *)M2C_FIELD(self,void **,0x68))->v9();
-fn_80176888(gUiUnitPanelStrings+0x18c,self,(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
+Ui_CreateMsgPopup(gUiUnitPanelStrings+0x18c,self,(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
 return;
 }
 gUiContext[0x14]=M2C_FIELD(unit,u8 *,0x18);
@@ -4093,7 +4093,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  u32 Ui_ListGetSelected(void *); void Ui_UpdatePanelWidgets(void *);
  void fn_80140210(void *,void *,s32);
  void Ui_PlaySeCue(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
- void fn_80176888(void *,void *,f32,f32); s16 Unit_GetGoldCost(u32,s32);
+ void Ui_CreateMsgPopup(void *,void *,f32,f32); s16 Unit_GetGoldCost(u32,s32);
  extern u8 gUiUnitPanelStrings[]; extern u8 gUiContext[]; extern u8 gBattleState[];
  extern u32 gUiInputFlags; extern void *gPadInput; extern f32 lbl_8036B2E4;
  class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b): x(a), y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
@@ -4128,13 +4128,13 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  if((btn&0x100)&&unit) {
  if(!fn_8003D13C(unit)) {
  *(Pair *)&pos1=((Obj *)M2C_FIELD(arg0,void **,0x48))->v9();
- fn_80176888(gUiUnitPanelStrings+0x24F,arg0,(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
+ Ui_CreateMsgPopup(gUiUnitPanelStrings+0x24F,arg0,(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
  return;
  }
  money=*(s32 *)(gBattleState+0x1C);
  if(money<Unit_GetGoldCost(unit,1)) {
  *(Pair *)&pos2=((Obj *)M2C_FIELD(arg0,void **,0x48))->v9();
- fn_80176888(gUiUnitPanelStrings+0x263,arg0,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
+ Ui_CreateMsgPopup(gUiUnitPanelStrings+0x263,arg0,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
  return;
  }
  {
@@ -4748,12 +4748,12 @@ u8 fn_801BE808(void)
 }
 
 s32 fn_801BE854(s32 arg0, void *arg1, void *arg2) {
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
 
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        fn_80176888(
+        Ui_CreateMsgPopup(
             gUiUnitPanelStrings + 0x2AB,
             arg1,
             (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30)),
@@ -4821,7 +4821,7 @@ s32 Ui_ValidateSkillAssign(void *item) {
 }
 
 s32 Ui_SkillAssignMenuItem(void *arg0, void *arg1, void *arg2) {
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u8 gUiContext[];
     f32 x;
@@ -4832,13 +4832,13 @@ s32 Ui_SkillAssignMenuItem(void *arg0, void *arg1, void *arg2) {
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
         switch (*(s8 *)((u8 *)arg0 + 4)) {
         case -1:
-            fn_80176888(gUiUnitPanelStrings + 0x2E3, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2E3, arg1, x, y);
             break;
         case -2:
-            fn_80176888(gUiUnitPanelStrings + 0x18C, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x18C, arg1, x, y);
             break;
         case -3:
-            fn_80176888(gUiUnitPanelStrings + 0x2FA, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2FA, arg1, x, y);
             break;
         }
         return 0;
@@ -5081,7 +5081,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     u8 fn_801D2A38(void *);
     s32 fn_801D2AAC(void *);
     s32 fn_801D2C20(void *);
@@ -5144,7 +5144,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if (fn_801D2A38(list) != 0) {
                 *(Vec2s *)&pos2 = ((Obj *)list)->v9();
-                fn_80176888(gUiScrollListStrings + 0x54, self, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+                Ui_CreateMsgPopup(gUiScrollListStrings + 0x54, self, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             } else {
                 Process_ClearFunc(self);
                 Ui_PlaySeCue(gUiScrollListStrings + 0x66, 0x64);

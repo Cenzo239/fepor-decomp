@@ -5352,7 +5352,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     void Ui_SetWidgetText(void *, s32);
     void fn_801694AC(void *, void *);
     void fn_801695BC(void *, void *, s32);
-    void fn_80176888(void *, void *, f32, f32);
+    void Ui_CreateMsgPopup(void *, void *, f32, f32);
     void fn_80193344(void *);
     extern u8 lbl_80279DF0[];
     extern u8 gConvoy[];
@@ -5492,7 +5492,7 @@ extern "C" void fn_80191F2C(void *arg0) {
         } else if ((btn & 0x100) && unit == 0 && *(s16 *)((u8 *)list + 0x4E) == 0x7FFF) {
             if (fn_8014D8DC(gBattleState) == 0) {
                 *(Pair *)&pos = ((ListObj *)list)->v9();
-                fn_80176888(lbl_80279DF0 + 0x4CC, self, (f32)*(s16 *)&pos, (f32)*((s16 *)&pos + 1));
+                Ui_CreateMsgPopup(lbl_80279DF0 + 0x4CC, self, (f32)*(s16 *)&pos, (f32)*((s16 *)&pos + 1));
             } else {
                 Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
                 if (Convoy_FindEmpty(gConvoy) < 0) {
