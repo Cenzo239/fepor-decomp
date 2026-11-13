@@ -12472,7 +12472,7 @@ u32 fn_800E4C5C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
         *(u32 *)((char *)arg0 + 0xE8) = 0;
         return 0;
     }
-    *(u32 *)((char *)arg0 + 0xE8) = fn_80057F04(*(s32 *)((char *)arg0 + 0xE0), arg1, arg2, 4);
+    *(u32 *)((char *)arg0 + 0xE8) = GActor_CreateNodeLink(*(s32 *)((char *)arg0 + 0xE0), arg1, arg2, 4);
     sp8 = lbl_80369F38;
     fn_80058970(*(u32 *)((char *)arg0 + 0xE8), &sp8);
     if (arg3 != 0) {
@@ -12716,7 +12716,7 @@ u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     
     // Call function with E0 offset
     temp_r3 = *(s32 *)((char *)arg0 + 0xE0);
-    r5 = fn_80057F04(temp_r3, arg1, arg2, 4);
+    r5 = GActor_CreateNodeLink(temp_r3, arg1, arg2, 4);
     *(u32 *)((char *)arg0 + 0xE8) = r5;
     
     // Update global

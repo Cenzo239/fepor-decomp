@@ -2341,7 +2341,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     *(f32 *)(self+0x50)=lbl_8036AD38* *(f32 *)(self+0x60);
 }
 void MoveAnim_PollPadNodeLinks(void *arg0) {
-    u32 fn_80057F04(s32, void *, void *, void *);
+    u32 GActor_CreateNodeLink(s32, void *, void *, void *);
     void fn_800588EC(s32);
     void fn_80058970(void *, void *);
     u8 Pad_IsButton(void *, s32);
@@ -2359,7 +2359,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4D3, MoveAnim_str + 0x4D7, arg0);
         sp20 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp20);
     }
@@ -2367,7 +2367,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4DB, MoveAnim_str + 0x4DF, arg0);
         sp1C = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp1C);
     }
@@ -2375,7 +2375,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4E3, MoveAnim_str + 0x4E7, arg0);
         sp18 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp18);
     }
@@ -2383,7 +2383,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4EB, MoveAnim_str + 0x4EF, arg0);
         sp14 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp14);
     }
@@ -2391,7 +2391,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4F3, MoveAnim_str + 0x4F7, arg0);
         sp10 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp10);
     }
@@ -2399,7 +2399,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x4FB, MoveAnim_str + 0x4FF, arg0);
         spC = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &spC);
     }
@@ -2407,7 +2407,7 @@ void MoveAnim_PollPadNodeLinks(void *arg0) {
         if (M2C_FIELD(arg0, u32 *, 0x38) != 0) {
             fn_800588EC(M2C_FIELD(arg0, s32 *, 0x38));
         }
-        M2C_FIELD(arg0, u32 *, 0x38) = fn_80057F04(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, arg0);
+        M2C_FIELD(arg0, u32 *, 0x38) = GActor_CreateNodeLink(M2C_FIELD(arg0, s32 *, 0x30) + 0x1C, MoveAnim_str + 0x503, MoveAnim_str + 0x507, arg0);
         sp8 = M2C_FIELD(arg0, s32 *, 0x34);
         fn_80058970((void *)M2C_FIELD(arg0, u32 *, 0x38), &sp8);
     }

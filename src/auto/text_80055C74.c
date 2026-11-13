@@ -1021,7 +1021,7 @@ void fn_80057EDC(void) {
     Process_UnlinkByKey(&lbl_80285B6C);
 }
 
-s32 fn_80057F04(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 GActor_FindNode(s32, s32);
     void fn_800056CC(const char *, ...);
     void fn_800056A0(s32);
