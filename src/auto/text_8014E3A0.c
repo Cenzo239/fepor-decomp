@@ -2077,7 +2077,8 @@ void fn_801546B0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 #pragma use_lmw_stmw on
-void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
+/* Draw Job/Personal panel: window frame, icon, MD_JOB/MD_PSN labels, and exp gauge. */
+void Ui_DrawJobPersonalPanel(s16 x, s16 y, s32 width, s32 height, s32 gaugeMax, s32 alpha, s32 flags, f32 gaugeVal) {
     void Ui_DrawWindowFrame(s16, s16, s32, s32, s32, s32);
     s32 Prim2D_PushZ(f32 *);
     void Ui_LoadAtlasTex(s32, void *, s32);
@@ -2101,11 +2102,11 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     extern f32 lbl_8036A880;
     extern u8 lbl_802774F0[];
 
-    f32 sp10;
-    u8 spC[4];
-    s32 sp8;
-    s16 temp_r24;
-    s16 temp_r27;
+    f32 savedZ;
+    u8 colorBytes[4];
+    s32 packedColor;
+    s16 posY;
+    s16 posX;
     s16 h;
     s16 w;
     s16 *rect;
@@ -2113,41 +2114,41 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     u8 *color;
     s32 str;
 
-    Ui_DrawWindowFrame(arg0, arg1, arg2, arg3, arg5, arg6);
-    saved = Prim2D_PushZ(&sp10);
+    Ui_DrawWindowFrame(x, y, width, height, alpha, flags);
+    saved = Prim2D_PushZ(&savedZ);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xC);
     color = Ui_GetColor(0);
     rect = (s16 *)&gUiJobPersonalIconUv;
-    spC[0] = color[0];
+    colorBytes[0] = color[0];
     w = (s16)(rect[2] - rect[0]);
-    spC[1] = color[1];
-    spC[2] = color[2];
-    spC[3] = color[3];
+    colorBytes[1] = color[1];
+    colorBytes[2] = color[2];
+    colorBytes[3] = color[3];
     h = (s16)(rect[3] - rect[1]);
     if (w != 0) {
         if (h != 0) {
             Prim2D_Begin();
-            Prim2D_SetTex(gUiTexScratch, (u16)(arg6 | 1));
+            Prim2D_SetTex(gUiTexScratch, (u16)(flags | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)(s16)(arg0 + 0x90), (f32)(s16)(arg1 + 0x2D),
+            Prim2D_SetRectUv((f32)(s16)(x + 0x90), (f32)(s16)(y + 0x2D),
                         (f32)gUiJobPersonalIconUv.f0, (f32)rect[1], (f32)w, (f32)h);
-            sp8 = *(s32 *)spC;
-            Prim2D_SetColorPacked(&sp8);
+            packedColor = *(s32 *)colorBytes;
+            Prim2D_SetColorPacked(&packedColor);
             Prim2D_EndPrim();
         }
     }
     Prim2D_Begin();
     Prim2D_SetTex(NULL, 0x13);
     Prim2D_PrepareTex();
-    temp_r27 = (s16)arg0;
-    temp_r24 = (s16)arg1;
+    posX = (s16)x;
+    posY = (s16)y;
     str = Msg_Expand(lbl_802774F0 + 0x1E8);
-    fn_8001003C((s16)(temp_r27 + 0xA), (s16)(temp_r24 + 0xE), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
+    fn_8001003C((s16)(posX + 0xA), (s16)(posY + 0xE), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
     str = Msg_Expand(lbl_802774F0 + 0x1EF);
-    fn_8001003C((s16)(temp_r27 + 0x8C), (s16)(temp_r24 + 0x2F), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
-    Ui_DrawExpGauge(arg4, (f32)(temp_r27 + 8), (f32)(temp_r24 + 0x2E), farg0);
-    Prim2D_PopZ(saved, sp10);
+    fn_8001003C((s16)(posX + 0x8C), (s16)(posY + 0x2F), 6, 1, 0, str, lbl_8036A874, lbl_8036A880);
+    Ui_DrawExpGauge(gaugeMax, (f32)(posX + 8), (f32)(posY + 0x2E), gaugeVal);
+    Prim2D_PopZ(saved, savedZ);
 }
 #pragma use_lmw_stmw reset
 
