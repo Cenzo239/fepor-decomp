@@ -31,6 +31,19 @@ typedef struct Unk800C2ACC {
 } Unk800C2ACC;
 #endif
 
+/* Memory-card linked-game IDs (FourCC) and system-save bonus flags at gSystemSave+0x10 */
+#define GAME_ID_AFEJ 0x4146454A /* Animal Crossing (JP) */
+#define GAME_ID_AE7J 0x4145374A /* Pokémon Box Ruby/Sapphire (JP) */
+#define GAME_ID_AE7E 0x41453745 /* Pokémon Box (US) */
+#define GAME_ID_AE7X 0x41453758 /* Pokémon Box (EU X) */
+#define GAME_ID_AE7Y 0x41453759 /* Pokémon Box (EU Y) */
+#define GAME_ID_BE8J 0x4245384A /* Fire Emblem: The Sacred Stones (JP) */
+#define GAME_ID_BE8E 0x42453845 /* Fire Emblem: The Sacred Stones (US) */
+#define GAME_ID_BE8P 0x42453850 /* Fire Emblem: The Sacred Stones (EU) */
+#define LINK_BONUS_FLAG_AC      0x08
+#define LINK_BONUS_FLAG_POKEMON 0x10
+#define LINK_BONUS_FLAG_FE8     0x20
+
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
