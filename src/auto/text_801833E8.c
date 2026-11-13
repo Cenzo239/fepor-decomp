@@ -3735,17 +3735,17 @@ void fn_8018DDA8(void *arg0) {
     extern u8 lbl_80279B1C[];
     extern f32 lbl_8036AD98;
     extern f32 lbl_8036AD9C;
+    f32 fb;
+    f32 fa;
     u16 z;
     u16 lim;
-    f32 fa;
-    f32 fb;
 
     z = 0;
     fa = lbl_8036AD98;
-    lim = (u16)(0x10000 - 1);
     fb = lbl_8036AD9C;
     *(u16 *)((u8 *)arg0 + 0x30) = z;
     *(u16 *)((u8 *)arg0 + 0x32) = 1;
+    lim = (u16)(0x10000 - 1);
     *(s32 *)((u8 *)arg0 + 0x34) = z;
     *(f32 *)((u8 *)arg0 + 0x38) = fa;
     *(f32 *)((u8 *)arg0 + 0x3c) = fb;
@@ -7679,14 +7679,14 @@ s32 fn_80196388(s32 arg0) {
 
 s32 fn_80196420(s32 arg0, void *arg1) {
     s8 fn_8003A398();
-    s8 fn_8003A5B4(s32);
+    s8 Unit_GetCon(s32);
     s8 temp_r31;
     s8 temp_r3;
     s8 var_r4;
     s8 var_r5;
 
     temp_r31 = fn_8003A398();
-    temp_r3 = fn_8003A5B4(arg0);
+    temp_r3 = Unit_GetCon(arg0);
     var_r4 = temp_r31 + M2C_FIELD(arg1, u8 *, 0x27);
     var_r5 = temp_r3 + M2C_FIELD(arg1, u8 *, 0x28);
     if (var_r4 > 0x14) {

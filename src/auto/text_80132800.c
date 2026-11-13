@@ -2797,7 +2797,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     void Text_Draw(s16, s16, s32, void *, ...);
     s8 fn_8003A398(s32);
     s8 fn_8003A1E0(s32);
-    s8 fn_8003A5B4(s32);
+    s8 Unit_GetCon(s32);
     extern f32 lbl_8036A61C;
     extern f32 lbl_8036A620;
     extern s32 lbl_8036A608;
@@ -2867,7 +2867,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     Prim2D_PrepareTex();
     Text_Draw(0xE0, 0x12, 2, lbl_802767E0 + 0x44, fn_8003A398(self->unk3C));
     Text_Draw(0xE0, 0x34, 2, lbl_802767E0 + 0x44, fn_8003A1E0(self->unk3C));
-    Text_Draw(0xE0, 0x54, 2, lbl_802767E0 + 0x44, fn_8003A5B4(self->unk3C));
+    Text_Draw(0xE0, 0x54, 2, lbl_802767E0 + 0x44, Unit_GetCon(self->unk3C));
 }
 
 #pragma cplusplus on
@@ -2929,7 +2929,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 Unit_GetDef(void *);
     s32 fn_8003A778(void *);
     s32 Unit_GetRes(void *);
-    s32 fn_8003A5B4(void *);
+    s32 Unit_GetCon(void *);
     s32 fn_800388C8(void *);
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
@@ -3004,8 +3004,8 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     idx = fn_8003A778(unit);
     self->v9(0x8C, 0x82, lbl_802767E0 + 0x84, Unit_GetRes(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x53]);
-    idx = fn_8003A5B4(unit);
-    pair[0] = fn_8003A5B4(unit);
+    idx = Unit_GetCon(unit);
+    pair[0] = Unit_GetCon(unit);
     self->v9(0x8C, 0xA2, lbl_802767E0 + 0x8C, (s8)(pair[0] - fn_800388C8(unit)), idx, 0x63);
 
     if (self->unk48 != 0) {

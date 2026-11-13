@@ -689,7 +689,7 @@ void fn_80081830(void *arg0) {
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    s8 fn_8003A5B4(void *);
+    s8 Unit_GetCon(void *);
     void sprintf(void *, void *, s8, ...);
     s16 Text_MeasureWidth(void *, s32, f32);
     u32 fn_800A883C(void *, s32);
@@ -775,7 +775,7 @@ void fn_80081830(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    sprintf(buf, gUiStrings + 0x215, fn_8003A5B4(M2C_FIELD(arg0, void **, 0x58)));
+    sprintf(buf, gUiStrings + 0x215, Unit_GetCon(M2C_FIELD(arg0, void **, 0x58)));
     width = Text_MeasureWidth(buf, -1, lbl_80369430);
     fn_8001003C((s32)((lbl_803695A4 + x) - (f32)(width / 2)), (s32)(lbl_8036959C + y), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
     spC = (s8)(fn_800A883C(unit, 0) >> 24);

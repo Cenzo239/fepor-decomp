@@ -2900,7 +2900,7 @@ void fn_801315B0(void* arg0, s32 arg1) {
 s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
 {
     s32 fn_8003A398(void *);
-    s32 fn_8003A5B4(void *);
+    s32 Unit_GetCon(void *);
     s32 fn_8003A1E0(void *);
 
     void *p;
@@ -2919,7 +2919,7 @@ s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
     case 4:
         return (s8)fn_8003A398(p);
     case 5:
-        return (s8)fn_8003A5B4(p);
+        return (s8)Unit_GetCon(p);
     case 6:
         return (s8)fn_8003A1E0(p);
     default:

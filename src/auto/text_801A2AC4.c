@@ -894,14 +894,11 @@ void fn_801A4B40(u8 *obj, s32 a1) {
     void fn_800381EC(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
     s32 orig;
-    s32 ret;
-    s32 b;
 
     orig = obj[0x488];
-    ret = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj + 0x2E0), (s8)a1);
-    b = obj[0x488];
-    a1 = (s8)ret;
-    fn_800381EC(obj + 0x2E0, a1 + (s8)b);
+    a1 = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj + 0x2E0), (s8)a1);
+    a1 = (s8)a1;
+    fn_800381EC(obj + 0x2E0, a1 + (s8)obj[0x488]);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
     BattleAnim_Queue(obj + 0x8A0, 0x15, a1);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
@@ -1354,7 +1351,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     void BattleAnim_Queue(void *, s32, s32);
     u32 *fn_80037C20(void *);
     u8 fn_8003863C(void *);
-    s8 fn_8003A5B4(void *);
+    s8 Unit_GetCon(void *);
     s8 fn_8003ACF8(void *);
     s8 fn_8003AF28(void *);
     s8 fn_8003B258(void *);
@@ -1492,8 +1489,8 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     if ((fl[tbl[0x60]] & 0x20) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x38) != 0) {
-            tmp_s8 = fn_8003A5B4(arg2);
-            if (fn_8003A5B4(arg1) > tmp_s8 && fn_8003B258(arg1) >= 4
+            tmp_s8 = Unit_GetCon(arg2);
+            if (Unit_GetCon(arg1) > tmp_s8 && fn_8003B258(arg1) >= 4
                 && Status_Test((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
                 half = fn_8003AF28(arg1);
                 if (*(u32 *)((u8 *)lbl_80330EAC + 0xCAC) & 0x4000) {
