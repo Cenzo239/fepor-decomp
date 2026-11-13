@@ -11646,7 +11646,8 @@ void fn_8019F2D0(void* arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
+/* Show the 0x1000 map object at (x,y), clear its event, and show linked 0x800 objects. */
+s32 Map_ShowObjAt(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
@@ -11664,28 +11665,28 @@ s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
     s32 i;
     s32 v;
     s32 *p;
-    s32 sp8[10];
+    s32 linked[10];
 
     {
-        void *temp1 = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
-        if (temp1 == NULL) {
+        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x1000, 0x10);
+        if (obj == NULL) {
             fn_800056A0(0);
             return 0;
         }
-        MapObjEvent_Remove(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21);
+        MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x21);
         {
-            void *temp2 = MapObjEvent_Find(gMapObjEventList, (char)arg0, (char)arg1, 4);
-            if (temp2 != NULL) {
-                ((u8 *)temp2)[4] = ((u8 *)temp2)[5];
+            void *ev = MapObjEvent_Find(gMapObjEventList, (char)x, (char)y, 4);
+            if (ev != NULL) {
+                ((u8 *)ev)[4] = ((u8 *)ev)[5];
             }
         }
-        MapObj_FadeIn(temp1, 0);
+        MapObj_FadeIn(obj, 0);
     }
     {
-        void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
-        if (temp1 != NULL) {
-            count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
-            p = sp8;
+        void *obj = fn_80046F14((void *)Map_Get(), x, y, 0x800, 0);
+        if (obj != NULL) {
+            count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
+            p = linked;
             i = 0;
             while (i < count) {
                 v = *p;
