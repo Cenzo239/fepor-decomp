@@ -316,7 +316,7 @@ void fn_80074C30(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80074C44(void *arg0, void *arg1) {
+extern "C" void UiWin_DrawTitleBody(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
