@@ -9807,7 +9807,7 @@ void *fn_801769C0(void *arg0, s16 arg1) {
 extern "C" void fn_8015AD7C(s32, s32, s32, s16, s32, s32);
 extern "C" void fn_80161AA8(s32, s32, s16, s32, s32, void *);
 extern "C" s32 Prim2D_SetAlphaByte(u8);
-extern "C" void fn_80176A3C(void *arg0, s32 arg1) {
+extern "C" void Ui_DrawListPanel(void *arg0, s32 arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
