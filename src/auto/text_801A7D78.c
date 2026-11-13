@@ -399,7 +399,7 @@ void fn_801A8B48(s32 arg0) {
     }
 }
 
-void fn_801A8CB8(void *arg0, void *arg1) {
+void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
     void fn_800368C8(void *, s32, void *);
     void fn_80036E48(void *, s32);
     s32 fn_80036F5C(void *, s32);

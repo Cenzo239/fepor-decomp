@@ -808,7 +808,7 @@ void fn_8007DF6C(void *arg0) {
 
 void fn_8007E2C4(void *arg0) {
 #pragma opt_common_subs off
- void fn_801A8CB8(void *,void *);
+ void Unit_FillAffinityBonuses(void *,void *);
  void **fn_8006EDD8(void *,s32);
  u32 *Ui_GetColor(s32);
  void Prim2D_Begin(void);
@@ -847,7 +847,7 @@ void fn_8007E2C4(void *arg0) {
  f32 scale;
  x=lbl_8036948C+M2C_FIELD(arg0,f32 *,0x14);
  y=M2C_FIELD(arg0,f32 *,0x18);
- fn_801A8CB8(gBattle,&labels.info);
+ Unit_FillAffinityBonuses(gBattle,&labels.info);
  dim=*fn_8006EDD8(gUiAtlas,0x1A);
  dimw=(f32)dim[0]; dimh=(f32)dim[1];
  scaledw=dimw*lbl_80369430;
