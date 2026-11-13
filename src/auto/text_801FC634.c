@@ -1404,6 +1404,7 @@ void fn_801FFD7C(s32 arg0) {
     Process_CreateChild(lbl_8029B748, arg0);
 }
 
+/* Draw a dim fullscreen overlay and the save-migration progress lines. */
 void Save_DrawMigrateProgress(void) {
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
