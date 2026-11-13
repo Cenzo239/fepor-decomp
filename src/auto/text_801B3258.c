@@ -8712,6 +8712,7 @@ void fn_801C9170(void *arg0) {
 }
 
 void Game_InitVideo(void) {
+    /* Init VI, pick TV render modes from soft-reset, DEMOInit, then clear and copy the display. */
     void VIInit(void);
     s32 VIGetTvFormat(void);
     u32 OSGetResetCode(void);
@@ -8731,12 +8732,12 @@ void Game_InitVideo(void) {
     extern char lbl_8027D740[];
     extern s32 gClearColor;
 
-    s32 sp8;
-    s32 fmt;
+    s32 clearColor;
+    s32 tvFormat;
 
     VIInit();
-    fmt = VIGetTvFormat();
-    switch (fmt) {
+    tvFormat = VIGetTvFormat();
+    switch (tvFormat) {
     case 0:
         gGameRenderMode = GameNtsc480IntDf;
         gGameRenderModeProg = GameNtsc480Prog;
@@ -8806,8 +8807,8 @@ void Game_InitVideo(void) {
         }
     }
 
-    sp8 = gClearColor;
-    GXSetCopyClear(&sp8, 0xFFFFFF);
+    clearColor = gClearColor;
+    GXSetCopyClear(&clearColor, 0xFFFFFF);
     GXCopyDisp(DemoGetCurrentBuffer(), 1);
 }
 
