@@ -252,7 +252,7 @@ void Ui_RefreshSelectPrompt(void *arg0) {
     s32 Msg_Expand(void *);
     M2C_UNK TextBanner_SetString(s32, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
 
     if ((u8)gUiContext[8] == 0x81) {
         Process_Goto(arg0, 0);
@@ -262,26 +262,26 @@ void Ui_RefreshSelectPrompt(void *arg0) {
         switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 1:
         case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x5A)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x5A)));
             return;
         case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x6B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x6B)));
             return;
         default:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x7B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x7B)));
             return;
         }
     } else {
         switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 1:
         case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x8A)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x8A)));
             return;
         case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0x9B)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x9B)));
             return;
         default:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(lbl_80275AC0 + 0xAB)));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0xAB)));
             return;
         }
     }
@@ -334,7 +334,7 @@ void fn_8012CA40(s32 arg0) {
 
 void fn_8012CC0C(void *arg0)
 {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     void Process_Unlink(void *);
     void fn_80109020(void *);
     void fn_8007D064(void *, void *, s32);
@@ -347,7 +347,7 @@ void fn_8012CC0C(void *arg0)
     object = *(u8 **)((u8 *)arg0 + 0x18);
 
     Process_Unlink(*(void **)(object + 0x34));
-    fn_80109020(lbl_80275AC0 + 0xBA);
+    fn_80109020(gUiSelectMenuStrings + 0xBA);
 
     *(u32 *)(object + 0x34) = 0;
 
@@ -371,7 +371,7 @@ void fn_8012CC0C(void *arg0)
 void fn_8012CCA4(void *arg0)
 {
     extern u8 gBattleState[];
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
 
     u8 *object;
     u8 *global;
@@ -433,16 +433,16 @@ void fn_8012CCA4(void *arg0)
     fn_80057A10(*(void **)(object + 0x48), 1);
     Process_Unlink(*(void **)(object + 0x34));
 
-    fn_80109020(lbl_80275AC0 + 0xBA);
+    fn_80109020(gUiSelectMenuStrings + 0xBA);
     fn_8003F670(*(void **)(object + 0x30));
     fn_8006D8E8(*(void **)(object + 0x40));
-    fn_8005C7C8(lbl_80275AC0 + 0xC7);
+    fn_8005C7C8(gUiSelectMenuStrings + 0xC7);
 }
 
 void fn_8012CE34(void *arg0) {
     s32 Msg_Expand(void *);
     void TextBanner_SetString(s32, s32);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     u8 temp_r0;
 
     *(u8 *)((char *)arg0 + 0x62) = 0;
@@ -451,13 +451,13 @@ void fn_8012CE34(void *arg0) {
         switch (temp_r0) {
         case 1:
         case 2:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x5A));
             break;
         case 4:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x6B));
             break;
         default:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x7B));
             break;
         }
     } else {
@@ -465,13 +465,13 @@ void fn_8012CE34(void *arg0) {
         switch (temp_r0) {
         case 1:
         case 2:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x8A));
             break;
         case 4:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x9B));
             break;
         default:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
+            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0xAB));
             break;
         }
     }
@@ -489,7 +489,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, s32, f32, f32);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     extern u8 gUnitInfoPopup[];
     extern void *gPadInput;
     extern s32 gUnitInfoPopupFlag;
@@ -550,7 +550,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
 
     if (trig & 0x04000004) {
         Process_ClearFunc(self);
-        Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
+        Ui_PlaySeCue(gUiSelectMenuStrings + 0xDB, 0x64);
         Ui_HideUnitInfoPopup(gUnitInfoPopup);
         return;
     }
@@ -590,13 +590,13 @@ extern "C" void fn_8012CF7C(void *arg0) {
                 flag = 1;
             }
             if (flag != 0) {
-                Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0xFC, 0x64);
                 fn_80057E6C(*(void **)((u8 *)self + 0x44));
                 Process_Goto(self, 4);
             }
         } else {
             *((u8 *)self + 0x65) = *((u8 *)self + 0x65) - 1;
-            Ui_PlaySeCue(lbl_80275AC0 + 0x118, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0x118, 0x64);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             table = *(void ***)((u8 *)self + 0x38);
@@ -643,13 +643,13 @@ extern "C" void fn_8012CF7C(void *arg0) {
                 flag = 1;
             }
             if (flag != 0) {
-                Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0xFC, 0x64);
                 fn_80057E6C(*(void **)((u8 *)self + 0x48));
                 Process_Goto(self, 5);
             }
         } else {
             *((u8 *)self + 0x65) = col + 1;
-            Ui_PlaySeCue(lbl_80275AC0 + 0x118, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0x118, 0x64);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             table = *(void ***)((u8 *)self + 0x38);
@@ -673,7 +673,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             *((u8 *)self + 0x67) = 1;
         }
         fn_801305F8(self);
-        Ui_PlaySeCue(lbl_80275AC0 + 0x134, 0x64);
+        Ui_PlaySeCue(gUiSelectMenuStrings + 0x134, 0x64);
     } else if (pressed & 0x200) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
@@ -691,7 +691,7 @@ s32 fn_8012D554(void) {
 void fn_8012D55C(void *arg0) {
     s32 Msg_Expand(void *);
     M2C_UNK TextBanner_SetString(s32, s32);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
 
     M2C_FIELD(arg0, u8 *, 0x62) = -1;
     if ((s8) M2C_FIELD(arg0, u8 *, 0x62) >= 0) {
@@ -701,19 +701,19 @@ void fn_8012D55C(void *arg0) {
     switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
         case 0:
         case 1:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x5A]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x5A]));
             break;
         case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x6B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x6B]));
             break;
         case 3:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x7B]));
             break;
         case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0x7B]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0x7B]));
             break;
         default: // All cases 5-39 fall here
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&lbl_80275AC0[0xAB]));
+            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand(&gUiSelectMenuStrings[0xAB]));
             break;
     }
 }
@@ -729,7 +729,7 @@ void fn_8012D6A4(void *arg0) {
     void fn_8011ABC0(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801EAA38(void *);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     extern void *gPadInput;
     extern f32 lbl_8036A4EC;
 
@@ -772,11 +772,11 @@ void fn_8012D6A4(void *arg0) {
         mode = *((u8 *)self + 0x6C);
         if (mode == 1) {
             fn_8011ABC0(self);
-            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
+            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x155));
             Process_Goto(self, 8);
         } else if (mode == 2) {
             fn_801EAA38(self);
-            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(lbl_80275AC0 + 0x155));
+            TextBanner_SetString(*(void **)((u8 *)self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x155));
             Process_Goto(self, 8);
         }
     } else if (pressed & 0x800) {
@@ -818,7 +818,7 @@ void fn_8012D6A4(void *arg0) {
             flag = 1;
         }
         if (flag != 0) {
-            Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0xFC, 0x64);
             fn_80057E6C(*(void **)((u8 *)self + 0x44));
             Process_Goto(self, 4);
         }
@@ -853,7 +853,7 @@ void fn_8012D6A4(void *arg0) {
             flag = 1;
         }
         if (flag != 0) {
-            Ui_PlaySeCue(lbl_80275AC0 + 0xFC, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0xFC, 0x64);
             fn_80057E6C(*(void **)((u8 *)self + 0x48));
             Process_Goto(self, 5);
         }
@@ -862,11 +862,11 @@ void fn_8012D6A4(void *arg0) {
         if ((s8)mode == 0) {
             if (pressed & 0x08000008) {
                 Process_Goto(self, 6);
-                Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0xDB, 0x64);
             }
         } else {
             *((u8 *)self + 0x62) = mode - 1;
-            Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0xDB, 0x64);
             mode = *((u8 *)self + 0x62);
             if ((s8)mode != 0) {
                 pos = *(s16 *)((u8 *)self + 0x6A);
@@ -884,11 +884,11 @@ void fn_8012D6A4(void *arg0) {
                 *((u8 *)self + 0x62) = 0;
                 *(s16 *)((u8 *)self + 0x6A) = 0;
                 fn_80057860(*(void **)((u8 *)self + 0x4C), *(s16 *)((u8 *)self + 0x6A));
-                Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0xDB, 0x64);
             }
         } else {
             *((u8 *)self + 0x62) = mode + 1;
-            Ui_PlaySeCue(lbl_80275AC0 + 0xDB, 0x64);
+            Ui_PlaySeCue(gUiSelectMenuStrings + 0xDB, 0x64);
             mode = *((u8 *)self + 0x62);
             if ((s8)mode != (s32)(*((u8 *)self + 0x61) - 1)) {
                 pos = *(s16 *)((u8 *)self + 0x6A);
@@ -900,7 +900,7 @@ void fn_8012D6A4(void *arg0) {
             }
         }
     } else if (pressed & 0x200) {
-        Ui_PlaySeCue(lbl_80275AC0 + 0x166, 0x64);
+        Ui_PlaySeCue(gUiSelectMenuStrings + 0x166, 0x64);
         Process_Goto(self, 0);
     } else if (pressed & 0x100) {
         mode = *((u8 *)self + 0x62);
@@ -908,9 +908,9 @@ void fn_8012D6A4(void *arg0) {
         item = *(void **)((u8 *)*(void **)((u8 *)self + 0x3C) + (s8)mode * 0x24);
         if (cb != NULL) {
             if (cb(self) != 0) {
-                Ui_PlaySeCue(lbl_80275AC0 + 0x176, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0x176, 0x64);
             } else {
-                Ui_PlaySeCue(lbl_80275AC0 + 0x186, 0x64);
+                Ui_PlaySeCue(gUiSelectMenuStrings + 0x186, 0x64);
             }
         } else {
             fn_8004BE88(item, 1);
@@ -1063,7 +1063,7 @@ void fn_8012DFA8(void *arg0) {
     void fn_801305F8(void *);
     void fn_801A7218(void *, void *, s32);
     extern void fn_8012F360;
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     extern u8 lbl_8029115C[];
     extern u8 lbl_80291180[];
     extern u8 lbl_802911A4[];
@@ -1109,10 +1109,10 @@ void fn_8012DFA8(void *arg0) {
     self[0x66] = 0;
     self[0x65] = 0;
     self[0x67] = 1;
-    fn_8005C84C(lbl_80275AC0 + 0xC7);
-    *(void **)(self + 0x40) = fn_8006D948(lbl_80275AC0 + 0x194);
-    *(void **)(self + 0x30) = fn_8003FCCC(lbl_80275AC0 + 0x1A8);
-    fn_80109180(lbl_80275AC0 + 0xBA, self);
+    fn_8005C84C(gUiSelectMenuStrings + 0xC7);
+    *(void **)(self + 0x40) = fn_8006D948(gUiSelectMenuStrings + 0x194);
+    *(void **)(self + 0x30) = fn_8003FCCC(gUiSelectMenuStrings + 0x1A8);
+    fn_80109180(gUiSelectMenuStrings + 0xBA, self);
     self[0x61] = 0;
     mode = self[0x6C];
     switch (mode) {
@@ -1600,13 +1600,13 @@ void fn_8012DFA8(void *arg0) {
         switch (mode) {
         case 1:
         case 2:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x5A));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x5A));
             break;
         case 4:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x6B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x6B));
             break;
         default:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x7B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x7B));
             break;
         }
     } else {
@@ -1614,13 +1614,13 @@ void fn_8012DFA8(void *arg0) {
         switch (mode) {
         case 1:
         case 2:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x8A));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x8A));
             break;
         case 4:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0x9B));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x9B));
             break;
         default:
-            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(lbl_80275AC0 + 0xAB));
+            TextBanner_SetString(*(void **)(self + 0x50), Msg_Expand(gUiSelectMenuStrings + 0xAB));
             break;
         }
     }
@@ -1632,10 +1632,10 @@ void fn_8012EF04(void *arg0) {
     u8 fn_8005BA10(void *);
     void fn_8005C8B4(void *);
     void Process_ClearFunc(void *);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
 
-    fn_8005C8B4(lbl_80275AC0 + 0xC7);
-    if (fn_8005BA10(lbl_80275AC0 + 0xC7)) {
+    fn_8005C8B4(gUiSelectMenuStrings + 0xC7);
+    if (fn_8005BA10(gUiSelectMenuStrings + 0xC7)) {
         Process_ClearFunc(arg0);
     }
 }
@@ -1809,7 +1809,7 @@ void fn_8012F5CC(void *arg0) {
     extern f32 lbl_8036A548;
     extern f32 lbl_8036A54C;
     extern f32 lbl_8036A550;
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
 
     s32 unk6A;
     s32 lo;
@@ -1916,9 +1916,9 @@ void fn_8012F5CC(void *arg0) {
     fn_80009B98();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
-    fn_8001003C(0, 0, 1, 0, 1, &lbl_80275AC0[0x1C3], self[0x63] + 1, lbl_8036A50C, lbl_8036A510);
-    fn_8001003C(0x10, 0, 6, 0, 1, &lbl_80275AC0[0x1C6], lbl_8036A50C, lbl_8036A510);
-    fn_8001003C(0x20, 0, 6, 0, 1, (char *)lbl_80275AC0 + 0x1C3, self[0x6D], lbl_8036A50C, lbl_8036A510);
+    fn_8001003C(0, 0, 1, 0, 1, &gUiSelectMenuStrings[0x1C3], self[0x63] + 1, lbl_8036A50C, lbl_8036A510);
+    fn_8001003C(0x10, 0, 6, 0, 1, &gUiSelectMenuStrings[0x1C6], lbl_8036A50C, lbl_8036A510);
+    fn_8001003C(0x20, 0, 6, 0, 1, (char *)gUiSelectMenuStrings + 0x1C3, self[0x6D], lbl_8036A50C, lbl_8036A510);
     fKeep = lbl_8036A4EC;
     f30 = fn_80059EB8(0x40, self[0x6E], lbl_8036A510, lbl_8036A544) - lbl_8036A548;
     Prim2D_Begin();
@@ -1964,7 +1964,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     extern f32 lbl_8036A560;
     extern f32 lbl_8036A564;
     extern f32 lbl_8036A568;
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     extern u8 gUnitLists[];
     extern s32 lbl_802EF4E0[];
 
@@ -2021,12 +2021,12 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         if (count == limit) {
-            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1C8));
-            Text_Draw(0x140, 0x10, 1, lbl_80275AC0 + 0x1DA, count, limit);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(gUiSelectMenuStrings + 0x1C8));
+            Text_Draw(0x140, 0x10, 1, gUiSelectMenuStrings + 0x1DA, count, limit);
         } else {
             fn_8000D8BC(0, limit - count);
-            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x1E7));
-            Text_Draw(0x140, 0x10, 1, lbl_80275AC0 + 0x1F7, count, limit);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(gUiSelectMenuStrings + 0x1E7));
+            Text_Draw(0x140, 0x10, 1, gUiSelectMenuStrings + 0x1F7, count, limit);
         }
         break;
     case 2:
@@ -2060,12 +2060,12 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         if (limit == count) {
-            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x208));
-            Text_Draw(0x128, 0x10, 1, lbl_80275AC0 + 0x1DA, limit, count);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(gUiSelectMenuStrings + 0x208));
+            Text_Draw(0x128, 0x10, 1, gUiSelectMenuStrings + 0x1DA, limit, count);
         } else {
             fn_8000D8BC(0, count - limit);
-            Text_Draw(0x40, 0x10, 2, Msg_Expand(lbl_80275AC0 + 0x21E));
-            Text_Draw(0x128, 0x10, 1, lbl_80275AC0 + 0x1F7, limit, count);
+            Text_Draw(0x40, 0x10, 2, Msg_Expand(gUiSelectMenuStrings + 0x21E));
+            Text_Draw(0x128, 0x10, 1, gUiSelectMenuStrings + 0x1F7, limit, count);
         }
         break;
     default:
@@ -2575,13 +2575,13 @@ s32 fn_80130A40(void *arg0, void *arg1, s32 arg2) {
 }
 
 void *fn_80130AE4(void *unused, s32 arg1) {
-    extern u16 lbl_80275AC0[];
+    extern u16 gUiSelectMenuStrings[];
 
     switch (arg1) {
     case 1:
-        return (u8 *)lbl_80275AC0 + 0x232;
+        return (u8 *)gUiSelectMenuStrings + 0x232;
     default:
-        return (u8 *)lbl_80275AC0 + 0x247;
+        return (u8 *)gUiSelectMenuStrings + 0x247;
     }
 }
 
@@ -2605,7 +2605,7 @@ void fn_80130B10(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
     s32 fn_800A8A88(s32);
     s32 sprintf(char *dest, const char *fmt, ...);
-    extern char lbl_80275AC0[];
+    extern char gUiSelectMenuStrings[];
 
     switch (arg2) {
     case 0:
@@ -2613,18 +2613,18 @@ void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
     case 1: {
         void *temp = *(void **)((char *)arg1 + 0xC);
         if (temp == 0) {
-            sprintf(arg0, &lbl_80275AC0[0x25B]);
+            sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &gUiSelectMenuStrings[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }
     case 2: {
         void *temp = *(void **)((char *)arg1 + 0x10);
         if (temp == 0) {
-            sprintf(arg0, &lbl_80275AC0[0x25B]);
+            sprintf(arg0, &gUiSelectMenuStrings[0x25B]);
         } else {
-            sprintf(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &gUiSelectMenuStrings[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }
@@ -2657,13 +2657,13 @@ s32 fn_80130C54(s32 unused, void *arg1, s32 arg2) {
 }
 
 void *fn_80130CB0(void *unused, s32 arg1) {
-    extern u16 lbl_80275AC0[];
+    extern u16 gUiSelectMenuStrings[];
 
     switch (arg1) {
     case 1:
-        return (u8 *)lbl_80275AC0 + 0x267;
+        return (u8 *)gUiSelectMenuStrings + 0x267;
     default:
-        return (u8 *)lbl_80275AC0 + 0x247;
+        return (u8 *)gUiSelectMenuStrings + 0x247;
     }
 }
 
@@ -2715,27 +2715,27 @@ s32 fn_80131020(void *arg0, void *arg1, u32 arg2) {
 }
 
 void *fn_801310F4(s32 arg0, u32 arg1) {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     switch (arg1) {
     case 1:
-        return &lbl_80275AC0[0x27B];
+        return &gUiSelectMenuStrings[0x27B];
     case 2:
-        return &lbl_80275AC0[0x28D];
+        return &gUiSelectMenuStrings[0x28D];
     case 3:
-        return &lbl_80275AC0[0x29F];
+        return &gUiSelectMenuStrings[0x29F];
     case 4:
-        return &lbl_80275AC0[0x2B1];
+        return &gUiSelectMenuStrings[0x2B1];
     case 5:
-        return &lbl_80275AC0[0x2C3];
+        return &gUiSelectMenuStrings[0x2C3];
     case 6:
-        return &lbl_80275AC0[0x2D5];
+        return &gUiSelectMenuStrings[0x2D5];
     case 7:
-        return &lbl_80275AC0[0x2E7];
+        return &gUiSelectMenuStrings[0x2E7];
     case 8:
-        return &lbl_80275AC0[0x2F9];
+        return &gUiSelectMenuStrings[0x2F9];
     case 0:
     default:
-        return &lbl_80275AC0[0x247];
+        return &gUiSelectMenuStrings[0x247];
     }
 }
 
@@ -2808,15 +2808,15 @@ s32 fn_80131464(s32 unused, void **arg1, s32 arg2) {
 }
 
 void *fn_801314DC(void *unused, s32 arg1) {
-    extern u16 lbl_80275AC0[];
+    extern u16 gUiSelectMenuStrings[];
 
     switch (arg1) {
     case 1:
-        return (u8 *)lbl_80275AC0 + 0x314;
+        return (u8 *)gUiSelectMenuStrings + 0x314;
     case 2:
-        return (u8 *)lbl_80275AC0 + 0x328;
+        return (u8 *)gUiSelectMenuStrings + 0x328;
     default:
-        return (u8 *)lbl_80275AC0 + 0x247;
+        return (u8 *)gUiSelectMenuStrings + 0x247;
     }
 }
 
@@ -2852,13 +2852,13 @@ void fn_801315B0(void* arg0, s32 arg1) {
         return;
     case 1:
         {
-            u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
+            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
             sprintf(ptr);
         }
         break;
     case 2:
         {
-            u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
+            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
             sprintf(ptr);
         }
         break;
@@ -2866,7 +2866,7 @@ void fn_801315B0(void* arg0, s32 arg1) {
         {
             // Check if byte at offset 0x21 is zero
             if (((u8*)arg0)[0x21] == 0) {
-                u8* ptr = &((u8*)arg0)[0x340]; // lbl_80275AC0 + 0x340
+                u8* ptr = &((u8*)arg0)[0x340]; // gUiSelectMenuStrings + 0x340
                 sprintf(ptr);
             }
         }
@@ -2876,21 +2876,21 @@ void fn_801315B0(void* arg0, s32 arg1) {
             // Compare byte at offset 0x22 to something
             u8 r6 = ((u8*)arg0)[0x22];
             if (arg1 == r6) {
-                u8* ptr = &((u8*)arg0)[0x345]; // lbl_80275AC0 + 0x345
+                u8* ptr = &((u8*)arg0)[0x345]; // gUiSelectMenuStrings + 0x345
                 sprintf(ptr);
             }
         }
         break;
     case 5:
         {
-            u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
+            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
             sprintf(ptr);
         }
         break;
     case 6:
         {
             s32 r3 = arg1; // value is not used in this case, probably just to pass it to a helper function
-            u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
+            u8* ptr = &((u8*)arg0)[0x33c]; // gUiSelectMenuStrings + 0x33c
             sprintf(ptr);
         }
         break;
@@ -2928,22 +2928,22 @@ s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
 }
 
 void *fn_801317B0(s32 arg0, s32 arg1) {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     switch (arg1) {
     case 1:
-        return &lbl_80275AC0[0x34B];
+        return &gUiSelectMenuStrings[0x34B];
     case 2:
-        return &lbl_80275AC0[0x35F];
+        return &gUiSelectMenuStrings[0x35F];
     case 3:
-        return &lbl_80275AC0[0x376];
+        return &gUiSelectMenuStrings[0x376];
     case 4:
-        return &lbl_80275AC0[0x38B];
+        return &gUiSelectMenuStrings[0x38B];
     case 5:
-        return &lbl_80275AC0[0x39F];
+        return &gUiSelectMenuStrings[0x39F];
     case 6:
-        return &lbl_80275AC0[0x3B4];
+        return &gUiSelectMenuStrings[0x3B4];
     default:
-        return &lbl_80275AC0[0x247];
+        return &gUiSelectMenuStrings[0x247];
     }
 }
 
@@ -3029,18 +3029,18 @@ s32 fn_80131AA8(s32 arg0, void *arg1, s32 arg2) {
 }
 
 void *fn_80131B24(s32 arg0, s32 arg1) {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     switch (arg1) {
     case 1:
-        return &lbl_80275AC0[0x3CE];
+        return &gUiSelectMenuStrings[0x3CE];
     case 2:
-        return &lbl_80275AC0[0x3E3];
+        return &gUiSelectMenuStrings[0x3E3];
     case 3:
-        return &lbl_80275AC0[0x3F5];
+        return &gUiSelectMenuStrings[0x3F5];
     case 4:
-        return &lbl_80275AC0[0x408];
+        return &gUiSelectMenuStrings[0x408];
     default:
-        return &lbl_80275AC0[0x247];
+        return &gUiSelectMenuStrings[0x247];
     }
 }
 
@@ -3171,25 +3171,25 @@ s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
 }
 
 void *fn_80132018(s32 arg0, u32 arg1) {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     switch (arg1) {
     case 1:
-        return &lbl_80275AC0[0x42B];
+        return &gUiSelectMenuStrings[0x42B];
     case 2:
-        return &lbl_80275AC0[0x43E];
+        return &gUiSelectMenuStrings[0x43E];
     case 3:
-        return &lbl_80275AC0[0x452];
+        return &gUiSelectMenuStrings[0x452];
     case 4:
-        return &lbl_80275AC0[0x466];
+        return &gUiSelectMenuStrings[0x466];
     case 5:
-        return &lbl_80275AC0[0x47B];
+        return &gUiSelectMenuStrings[0x47B];
     case 6:
-        return &lbl_80275AC0[0x48F];
+        return &gUiSelectMenuStrings[0x48F];
     case 7:
-        return &lbl_80275AC0[0x4A2];
+        return &gUiSelectMenuStrings[0x4A2];
     case 0:
     default:
-        return &lbl_80275AC0[0x247];
+        return &gUiSelectMenuStrings[0x247];
     }
 }
 
@@ -3251,7 +3251,7 @@ void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
     u8 fn_800386B0(void *);
     s8 Unit_GetMaxHp(void *);
     void *fn_800A8978(void *);
-    extern M2C_UNK lbl_80275AC0;
+    extern M2C_UNK gUiSelectMenuStrings;
     s8 temp_r3;
     void *temp_r30;
 
@@ -3260,26 +3260,26 @@ void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
     case 1:
         return fn_800A8978(M2C_FIELD(temp_r30, void **, 0x18C));
     case 2:
-        sprintf(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x19A));
+        sprintf(&gUiSelectMenuStrings + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x19A));
 block_19:
     default:
         return arg0;
     case 3:
         if (fn_800386B0(temp_r30) == 0xFF) {
-            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x340));
+            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x340));
         } else {
-            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x33C), (void *) fn_800386B0(temp_r30));
+            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x33C), (void *) fn_800386B0(temp_r30));
         }
         goto block_19;
     case 4:
-        sprintf(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
+        sprintf(&gUiSelectMenuStrings + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
         goto block_19;
     case 5:
         temp_r3 = Unit_GetMaxHp(temp_r30);
         if (temp_r3 >= (s8) M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x18C), u8 *, 0x4C)) {
-            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x4B6), &lbl_80275AC0 + 0x423, &lbl_80275AC0 + 0x428);
+            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x4B6), &gUiSelectMenuStrings + 0x423, &gUiSelectMenuStrings + 0x428);
         } else {
-            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x4BF), (void *) temp_r3);
+            sprintf(arg0, (s8) (&gUiSelectMenuStrings + 0x4BF), (void *) temp_r3);
         }
         goto block_19;
     case 0:
@@ -3312,20 +3312,20 @@ s32 fn_8013236C(s32 unused, void **arg1, s32 arg2) {
 }
 
 void *fn_80132414(s32 arg0, s32 arg1) {
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     switch (arg1) {
     case 1:
-        return &lbl_80275AC0[0x4C4];
+        return &gUiSelectMenuStrings[0x4C4];
     case 2:
-        return &lbl_80275AC0[0x4D9];
+        return &gUiSelectMenuStrings[0x4D9];
     case 3:
-        return &lbl_80275AC0[0x4EB];
+        return &gUiSelectMenuStrings[0x4EB];
     case 4:
-        return &lbl_80275AC0[0x4FE];
+        return &gUiSelectMenuStrings[0x4FE];
     case 5:
-        return &lbl_80275AC0[0x510];
+        return &gUiSelectMenuStrings[0x510];
     default:
-        return &lbl_80275AC0[0x247];
+        return &gUiSelectMenuStrings[0x247];
     }
 }
 
@@ -3379,7 +3379,7 @@ void fn_801324A0(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg
 
 void *fn_801325A8(s32 unused, void **arg1, s32 arg2) {
     void *fn_800A8978(s32);
-    extern u8 lbl_80275AC0[];
+    extern u8 gUiSelectMenuStrings[];
     void *temp_r3;
     void *var_r3;
 
@@ -3390,9 +3390,9 @@ void *fn_801325A8(s32 unused, void **arg1, s32 arg2) {
     case 1:
         return fn_800A8978(*(s32 *)((u8 *)temp_r3 + 0x18C));
     case 2:
-        var_r3 = (u8 *)lbl_80275AC0 + 0x527;
+        var_r3 = (u8 *)gUiSelectMenuStrings + 0x527;
         if (*(s32 *)((u8 *)temp_r3 + 0x1A0) & 0x80000000) {
-            var_r3 = (u8 *)lbl_80275AC0 + 0x523;
+            var_r3 = (u8 *)gUiSelectMenuStrings + 0x523;
         }
         return var_r3;
     default:
@@ -3418,15 +3418,15 @@ s32 fn_80132624(s32 unused, void **arg1, s32 arg2) {
 }
 #pragma peephole reset
 void *fn_80132688(void *unused, s32 arg1) {
-    extern u16 lbl_80275AC0[];
+    extern u16 gUiSelectMenuStrings[];
 
     switch (arg1) {
     case 1:
-        return (u8 *)lbl_80275AC0 + 0x4C4;
+        return (u8 *)gUiSelectMenuStrings + 0x4C4;
     case 2:
-        return (u8 *)lbl_80275AC0 + 0x52E;
+        return (u8 *)gUiSelectMenuStrings + 0x52E;
     default:
-        return (u8 *)lbl_80275AC0 + 0x247;
+        return (u8 *)gUiSelectMenuStrings + 0x247;
     }
 }
 
@@ -3458,6 +3458,6 @@ extern f32 lbl_8036A50C;
 extern f32 lbl_8036A510;
 extern f64 lbl_8036A4F0;
 extern f64 lbl_8036A4F8;
-extern u8 lbl_80275AC0[];
+extern u8 gUiSelectMenuStrings[];
 extern u32 jumptable_8029137C[];
-extern u8 lbl_80275AC0[];
+extern u8 gUiSelectMenuStrings[];
