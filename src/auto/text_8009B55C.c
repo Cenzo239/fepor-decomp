@@ -158,7 +158,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
 void fn_8009CF28(void) {
     void fn_80007124(u8 *);
     void fn_80007790(f32, f32, f32, f32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
@@ -219,13 +219,13 @@ void fn_8009CF28(void) {
     Prim2D_PrepareTex();
     if (gUiInputFlags & 2) {
         Prim2D_AddPrim(7);
-        fn_80007858(lbl_80369930, lbl_80369934);
+        Prim2D_SetPos(lbl_80369930, lbl_80369934);
         fn_80007124(lbl_8026D568 + 0x47);
         Prim2D_EndPrim();
     }
     if (gUiInputFlags & 1) {
         Prim2D_AddPrim(7);
-        fn_80007858(lbl_80369968, lbl_80369934);
+        Prim2D_SetPos(lbl_80369968, lbl_80369934);
         fn_80007124(lbl_8026D568 + 0x49);
         Prim2D_EndPrim();
     }
@@ -239,7 +239,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -366,7 +366,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_PrepareTex();
 
     Prim2D_AddPrim(0xA);
-    fn_80007858(lbl_803698FC, lbl_803698FC);
+    Prim2D_SetPos(lbl_803698FC, lbl_803698FC);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 1000u;
     ticks = tbl[2] << 3;
@@ -380,7 +380,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_EndPrim();
 
     Prim2D_AddPrim(0xA);
-    fn_80007858(lbl_803698FC, lbl_8036996C);
+    Prim2D_SetPos(lbl_803698FC, lbl_8036996C);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 1000u;
     ticks = tbl[3] << 3;
@@ -395,7 +395,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
 
     if ((f32)tbl[7] > lbl_803699E0) {
         Prim2D_AddPrim(0xA);
-        fn_80007858(lbl_803698FC, lbl_803699E4);
+        Prim2D_SetPos(lbl_803698FC, lbl_803699E4);
         bus = *(u32 *)0x800000F8 >> 2;
         rate = bus / 1000u;
         ticks = tbl[7] << 3;
@@ -410,7 +410,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     }
 
     Prim2D_AddPrim(0xA);
-    fn_80007858(lbl_803698FC, lbl_80369930);
+    Prim2D_SetPos(lbl_803698FC, lbl_80369930);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 1000u;
     ticks = tbl[1] << 3;
@@ -424,7 +424,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_EndPrim();
 
     Prim2D_AddPrim(0xA);
-    fn_80007858(lbl_803698FC, lbl_80369970);
+    Prim2D_SetPos(lbl_803698FC, lbl_80369970);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 1000u;
     ticks = tbl[5] << 3;
@@ -437,7 +437,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_EndPrim();
 
     Prim2D_AddPrim(0xA);
-    fn_80007858(lbl_803698FC, lbl_80369968);
+    Prim2D_SetPos(lbl_803698FC, lbl_80369968);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 1000u;
     ticks = tbl[6] << 3;
@@ -456,7 +456,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xA);
-            fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));
+            Prim2D_SetPos(lbl_803698FC, (f32)(-0xC - i * 8));
             sprintf(buf, lbl_8026D568 + 0x21D, i);
             fn_80007124(buf);
             Prim2D_EndPrim();
@@ -468,7 +468,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             Prim2D_SetTransform((f32)x, (f32)y, lbl_803698FC, lbl_80369900);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xA);
-            fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));
+            Prim2D_SetPos(lbl_803698FC, (f32)(-0xC - i * 8));
             sprintf(buf, lbl_8026D568 + 0x234, i,
                         *(u32 *)((u8 *)tbl + 0x64 + i * 4));
             fn_80007124(buf);

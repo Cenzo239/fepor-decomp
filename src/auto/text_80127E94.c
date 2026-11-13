@@ -90,7 +90,7 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
 void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007124();
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80007858(f32, f32);
+    M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_AddZ(f32);
@@ -117,7 +117,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     temp_r5_2 = temp_r29_2 - Text_MeasureWidth(-1, lbl_8036A404);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **, void *, u32), 0x4C)(arg0, arg1, temp_r5_2);
     Prim2D_AddPrim(6);
-    fn_80007858((f32) ((s32) ((temp_r5_2 >> 0x1FU) + temp_r5_2) >> 1), (f32) temp_r28);
+    Prim2D_SetPos((f32) ((s32) ((temp_r5_2 >> 0x1FU) + temp_r5_2) >> 1), (f32) temp_r28);
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
     fn_80007124();
@@ -1650,7 +1650,7 @@ void fn_8012B7DC(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_SetPrimParam(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -1794,7 +1794,7 @@ void fn_8012B7DC(void *arg0) {
                     (s32)*(f32 *)((u8 *)cam + 0x44));
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        fn_80007858(lbl_8036A49C, lbl_8036A49C);
+        Prim2D_SetPos(lbl_8036A49C, lbl_8036A49C);
         fn_80007124(buf);
         Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
@@ -1802,7 +1802,7 @@ void fn_8012B7DC(void *arg0) {
                     (s32)(lbl_8036A4A0 * *(f32 *)((u8 *)cam + 0x54)));
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        fn_80007858(lbl_8036A49C, lbl_8036A4A4);
+        Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A4);
         fn_80007124(buf);
         Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
@@ -1810,7 +1810,7 @@ void fn_8012B7DC(void *arg0) {
                     (s32)*(f32 *)((u8 *)cam + 0x5C));
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
-        fn_80007858(lbl_8036A49C, lbl_8036A4A8);
+        Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A8);
         fn_80007124(buf);
         Prim2D_EndPrim();
         Prim2D_Begin();

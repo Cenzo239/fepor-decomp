@@ -1171,7 +1171,7 @@ void Prim2D_SetQuadMin(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x1C) = arg3;
 }
 
-void fn_80007858(f32 arg0, f32 arg1) {
+void Prim2D_SetPos(f32 arg0, f32 arg1) {
     extern void *lbl_80367140;
 
     u8 *ptr;

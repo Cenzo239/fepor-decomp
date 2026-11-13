@@ -661,7 +661,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     void fn_80007124(void *);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
@@ -719,7 +719,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 0x13));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
-    fn_80007858((f32)t48, (f32)x0);
+    Prim2D_SetPos((f32)t48, (f32)x0);
     Prim2D_SetColor(0xFF, 0x80, 0, 0xFF);
     fn_80007124(Msg_Expand(lbl_802764BC + 0x1FB));
     Prim2D_EndPrim();
@@ -740,7 +740,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     Prim2D_EndPrim();
     bar = (s32)t48 + divv;
     Prim2D_AddPrim(6);
-    fn_80007858((f32)(s16)bar, (f32)x0);
+    Prim2D_SetPos((f32)(s16)bar, (f32)x0);
     Prim2D_SetColor(0xFF, 0x80, 0, 0xFF);
     fn_80007124(Msg_Expand(lbl_802764BC + 0x202));
     Prim2D_EndPrim();
@@ -760,7 +760,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     Prim2D_EndPrim();
     bar = x0 + t46;
     Prim2D_AddPrim(6);
-    fn_80007858((f32)t48, (f32)(s16)bar);
+    Prim2D_SetPos((f32)t48, (f32)(s16)bar);
     Prim2D_SetColor(0xFF, 0x80, 0, 0xFF);
     fn_80007124(Msg_Expand(lbl_802764BC + 0x209));
     Prim2D_EndPrim();
@@ -781,7 +781,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     Prim2D_EndPrim();
     y0 = (s32)t48 + divv;
     Prim2D_AddPrim(6);
-    fn_80007858((f32)(s16)y0, (f32)x0);
+    Prim2D_SetPos((f32)(s16)y0, (f32)x0);
     Prim2D_SetColor(0xFF, 0x80, 0, 0xFF);
     fn_80007124(Msg_Expand(lbl_802764BC + 0x211));
     Prim2D_EndPrim();
@@ -5864,7 +5864,7 @@ extern "C" void fn_8013C814(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
     void Prim2D_AddPrim(s32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007124(void *);
     void Prim2D_EndPrim(void);
@@ -5904,7 +5904,7 @@ extern "C" void fn_8013C814(void *arg0) {
         v36v = (void *)(s32)(s16)self->v36();
         f30 = (f32)(half + ((s16)(s32)v36v - (s16)self->v38()));
         Prim2D_AddPrim(6);
-        fn_80007858(f31, f30);
+        Prim2D_SetPos(f31, f30);
         Prim2D_SetColor(0, 0, 0, 0xff);
         if (*(u32 *)((u8 *)self + 0x20) != 0) {
             ptr = Msg_Expand(*(void **)((u8 *)self + 0x20));
@@ -6143,7 +6143,7 @@ extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007124(s32);
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
-    M2C_UNK fn_80007858(f32, f32);
+    M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_AddZ(f32);
@@ -6200,7 +6200,7 @@ extern "C" void fn_8013CF50(void **arg0, void *arg1, void *arg2) {
     temp_f31 = (f32)M2C_FIELD(var_r29, s16 *, 0x30);
     temp_f30 = (f32)M2C_FIELD(var_r29, s16 *, 0x32);
     Prim2D_AddPrim(6);
-    fn_80007858(temp_f31 + (f32)temp_r31, temp_f30 + (f32)temp_r30);
+    Prim2D_SetPos(temp_f31 + (f32)temp_r31, temp_f30 + (f32)temp_r30);
     if ((u8)M2C_FIELD(var_r29, u8 *, 0x39) == 2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);
@@ -6372,7 +6372,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007124();
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
-    M2C_UNK fn_80007858(f32, f32);
+    M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK, s32, s16);
     M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
@@ -6411,7 +6411,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     temp_f31 = (f32) M2C_FIELD(arg2, s16 *, 0x30);
     temp_f30 = (f32) M2C_FIELD(arg2, s16 *, 0x32);
     Prim2D_AddPrim(6, temp_r5_2, temp_r3_4);
-    fn_80007858(temp_f31 + (f32) (0x18 & temp_r4), temp_f30 + (f32) temp_r30_2);
+    Prim2D_SetPos(temp_f31 + (f32) (0x18 & temp_r4), temp_f30 + (f32) temp_r30_2);
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) == 2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);

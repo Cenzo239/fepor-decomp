@@ -2226,7 +2226,7 @@ void *fn_800241C8(void *arg0) {
 extern "C" M2C_UNK fn_80007124();
 extern "C" M2C_UNK fn_8000727C(f32);
 extern "C" M2C_UNK fn_80007290(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-extern "C" M2C_UNK fn_80007858(f32, f32);
+extern "C" M2C_UNK Prim2D_SetPos(f32, f32);
 extern "C" M2C_UNK Prim2D_EndPrim();
 extern "C" M2C_UNK Prim2D_AddPrim(M2C_UNK);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -2279,7 +2279,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
+    Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     fn_80007124();
     fn_8000727C(lbl_80368DBC);
@@ -3542,20 +3542,22 @@ void fn_80026678(void *arg0) {
     void fn_800949A4(s32, u8);
     void fn_80094ABC(s32, void *, s32, void *);
     void fn_801A4BE0(void *);
-    extern u8 gUiContext[];
+    extern u8 lbl_802EF4C8[];
     extern u8 lbl_80330EAC[];
     struct { u8 hi:1; u8 flag:1; u8 lo:6; } *bf;
+    s32 zero;
     void *temp_r4;
     s32 a0;
     s32 temp_r31;
 
+    zero = 0;
     temp_r4 = *(void **)((u8 *)arg0 + 0x54);
     bf = (void *)((u8 *)temp_r4 + 5);
-    a0 = *(s32 *)gUiContext;
-    temp_r31 = *(s32 *)(gUiContext + 4);
-    bf->flag = 0;
-    fn_80094ABC(a0, temp_r4, 0, gUiContext);
-    fn_800949A4(temp_r31, gUiContext[0xA]);
+    a0 = *(s32 *)lbl_802EF4C8;
+    temp_r31 = *(s32 *)(lbl_802EF4C8 + 4);
+    bf->flag = zero;
+    fn_80094ABC(a0, temp_r4, zero, lbl_802EF4C8);
+    fn_800949A4(temp_r31, lbl_802EF4C8[0xA]);
     fn_801A4BE0(lbl_80330EAC);
 }
 

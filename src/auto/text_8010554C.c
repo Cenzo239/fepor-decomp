@@ -2710,29 +2710,32 @@ extern "C" void fn_80109F88(void *arg0, void *arg1) {
 
 extern u16 lbl_80312060[32];
 void fn_8010A4D4(void *arg0) {
-    char *p;
-    s8 dest;
     s32 i;
+    s32 dest;
+    u8 *out;
+    char *p;
+    u8 c;
+    s16 b;
+    s16 a;
+    s32 off;
 
     p = arg0;
     dest = 0;
     i = 0;
     while (i < *(s16 *)((char *)arg0 + 8)) {
-        if (*(u8 *)(p + 0xE) != 0) {
-        } else {
-            s32 off = dest * 6;
-            u8 *out;
-            u8 c;
-            s16 b;
-            s16 a;
+        switch (*(u8 *)(p + 0xE)) {
+        default: break;
+        case 0: {
+            off = (s8)dest * 6;
             c = *(u8 *)(p + 0x10);
             b = *(s16 *)(p + 0xC);
             a = *(s16 *)(p + 0xA);
-            dest = (s8)(dest + 1);
+            dest++;
             out = (u8 *)lbl_80312060 + off;
             *(s16 *)(out + 0) = a;
             *(s16 *)(out + 2) = b;
             *(s16 *)(out + 4) = c;
+        }
         }
         p += 8;
         i++;
@@ -2746,7 +2749,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_SetPrimParam(f32);
     s32 *Ui_GetColor(u8);
     void Prim2D_SetColorPacked(s32 *);
@@ -2787,7 +2790,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
-    fn_80007858(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));
+    Prim2D_SetPos(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));
     Prim2D_SetPrimParam((f32)*(s8 *)((u8 *)temp_r29 + 2));
     sp8 = *Ui_GetColor(*(u8 *)((u8 *)temp_r29 + 0x12));
     Prim2D_SetColorPacked(&sp8);

@@ -238,7 +238,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007124(void);
     void fn_8000727C(f32);
@@ -289,7 +289,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
-    fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
+    Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
     fn_80007124();

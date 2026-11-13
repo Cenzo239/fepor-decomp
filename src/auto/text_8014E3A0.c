@@ -113,7 +113,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void fn_80007124(void *);
     void fn_8000727C(f32);
     void fn_80007290(s32, s32, s32, s32);
@@ -174,7 +174,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
         break;
     }
     Prim2D_AddPrim(5);
-    fn_80007858((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
+    Prim2D_SetPos((f32)*(s16 *)((u8 *)arg2 + 0x30), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     idx <<= 2;
     str = *(void **)(gMsgDebugPtrs + idx);
     fn_80007124(str);
@@ -182,7 +182,7 @@ extern "C" void fn_8014E568(void *unused, void *arg1, void *arg2) {
     fn_80007290(r, g, b, 0xFF);
     Prim2D_EndPrim();
     Prim2D_AddPrim(5);
-    fn_80007858((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0xB0), (f32)*(s16 *)((u8 *)arg2 + 0x32));
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0xB0), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     str = *(void **)(gMsgDebugPtrs + idx);
     if ((u32)str == 0) {
         str = lbl_80277238 + 0x85;

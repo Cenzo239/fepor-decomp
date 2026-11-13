@@ -188,7 +188,7 @@ void fn_801210CC(void *arg0) {
     void fn_80007124(void *);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_80007858(f32, f32);
+    void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(u8);
@@ -256,7 +256,7 @@ void fn_801210CC(void *arg0) {
         Prim2D_AddZ(lbl_8036A270);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(6);
-        fn_80007858(
+        Prim2D_SetPos(
             (f32)(s32)(x - (s32)((u32)M2C_FIELD(self, u8 *, 0x51) >> 1)),
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC));
         color = *Ui_GetColor(1);
@@ -3693,7 +3693,7 @@ extern void fn_80007124(void *);
 extern void Prim2D_SetColorPacked(s32 *);
 extern void Prim2D_SetColor(s32, s32, s32, s32);
 extern void fn_80007790(f32, f32, f32, f32);
-extern void fn_80007858(f32, f32);
+extern void Prim2D_SetPos(f32, f32);
 extern void Prim2D_EndPrim(void);
 extern void Prim2D_AddPrim(s32);
 extern void Prim2D_SetColorByte(u8);
