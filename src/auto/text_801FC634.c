@@ -391,7 +391,7 @@ void fn_801FD3B4(void *arg0) {
     extern f32 lbl_8036BAE8, lbl_8036BAEC, lbl_8036BB04, lbl_8036BB08;
     extern f32 lbl_8036BB0C, lbl_8036BB10, lbl_8036BB14, lbl_8036BB18;
     extern f32 lbl_8036BB1C, lbl_8036BB20, lbl_8036BB24, lbl_8036BB28;
-    extern f32 lbl_8036BB2C, lbl_8036BB30, lbl_8036BB34, lbl_8036BB38, lbl_8036BB48;
+    extern f32 lbl_8036BB2C, lbl_8036BB30, lbl_8036BB34, lbl_8036BB38, gFloatTwo;
     extern f64 lbl_8036BAF8, lbl_8036BB40;
 
     f32 ang, dx, life;
@@ -491,7 +491,7 @@ void fn_801FD3B4(void *arg0) {
                 if ((s32)*((u8 *)p + 9) < rad) {
                     rad = (s16)*((u8 *)p + 9);
                 }
-                sz = (f32)rad * lbl_8036BB08 + lbl_8036BB48;
+                sz = (f32)rad * lbl_8036BB08 + gFloatTwo;
                 fn_80007790(*(f32 *)p - sz, *(f32 *)((u8 *)p + 4) - sz, *(f32 *)p + sz, *(f32 *)((u8 *)p + 4) + sz);
                 Prim2D_SetUvRect(gFloatZero, gFloatZero, gFloatOne, gFloatOne);
                 a = *(s16 *)((u8 *)p + 0xE) - 0x3C;
@@ -536,7 +536,7 @@ void FallingParticle_Spawn(void *arg0) {
     extern u8 gFallingParticleAlphaMin;
     extern u8 gFallingParticleAlphaMax;
     extern f32 gFloatZero;
-    extern f32 lbl_8036BB48;
+    extern f32 gFloatTwo;
 
     s32 var_r25;
     void *var_r24;
@@ -549,7 +549,7 @@ void FallingParticle_Spawn(void *arg0) {
     temp_r23 = Process_Create(gFallingParticleCtrlProc, arg0);
     if ((s32)temp_r23 != 0) {
         gFallingParticleVelXCenter = 0x8000;
-        f1 = lbl_8036BB48;
+        f1 = gFloatTwo;
         gFallingParticleVelXRange = 0x4000;
         gFallingParticleVelYCenter = 0x14000;
         f0 = gFloatZero;
