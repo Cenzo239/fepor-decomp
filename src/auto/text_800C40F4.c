@@ -12787,31 +12787,32 @@ void fn_800E5A4C(void *arg0) {
     }
 }
 
-void GActor_ApplyPoseMtx(void *arg0) {
+/* If the object has a linked GActor, build its world matrix from local pos/rot/scale. */
+void GActor_ApplyPoseMtx(void *obj) {
     void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     extern f32 lbl_80369F64;
-    u8 bufF8[0x30];
-    u8 bufC8[0x30];
-    u8 buf98[0x30];
-    u8 buf68[0x30];
-    u8 buf38[0x30];
-    u8 buf8[0x30];
+    u8 mtxOut[0x30];
+    u8 mtxScale[0x30];
+    u8 mtxTrans[0x30];
+    u8 mtxRotX[0x30];
+    u8 mtxRotY[0x30];
+    u8 mtxRotZ[0x30];
 
-    if (*(u32 *)((u8 *)arg0 + 0xDC) != 0) {
-        PSMTXTrans(buf98, *(f32 *)((u8 *)arg0 + 0x48), *(f32 *)((u8 *)arg0 + 0x4C), *(f32 *)((u8 *)arg0 + 0x50));
-        PSMTXScale(bufC8, *(f32 *)((u8 *)arg0 + 0x6C), *(f32 *)((u8 *)arg0 + 0x70), *(f32 *)((u8 *)arg0 + 0x74));
-        PSMTXRotRad(buf68, 0x58, lbl_80369F64 * *(f32 *)((u8 *)arg0 + 0x54));
-        PSMTXRotRad(buf38, 0x59, lbl_80369F64 * *(f32 *)((u8 *)arg0 + 0x58));
-        PSMTXRotRad(buf8, 0x5A, lbl_80369F64 * *(f32 *)((u8 *)arg0 + 0x5C));
-        PSMTXConcat(buf8, buf68, bufF8);
-        PSMTXConcat(buf38, bufF8, bufF8);
-        PSMTXConcat(bufC8, bufF8, bufF8);
-        PSMTXConcat(buf98, bufF8, bufF8);
-        PSMTXCopy(bufF8, (u8 *)*(void **)((u8 *)arg0 + 0xE0) + 0x10);
+    if (*(u32 *)((u8 *)obj + 0xDC) != 0) {
+        PSMTXTrans(mtxTrans, *(f32 *)((u8 *)obj + 0x48), *(f32 *)((u8 *)obj + 0x4C), *(f32 *)((u8 *)obj + 0x50));
+        PSMTXScale(mtxScale, *(f32 *)((u8 *)obj + 0x6C), *(f32 *)((u8 *)obj + 0x70), *(f32 *)((u8 *)obj + 0x74));
+        PSMTXRotRad(mtxRotX, 'X', lbl_80369F64 * *(f32 *)((u8 *)obj + 0x54));
+        PSMTXRotRad(mtxRotY, 'Y', lbl_80369F64 * *(f32 *)((u8 *)obj + 0x58));
+        PSMTXRotRad(mtxRotZ, 'Z', lbl_80369F64 * *(f32 *)((u8 *)obj + 0x5C));
+        PSMTXConcat(mtxRotZ, mtxRotX, mtxOut);
+        PSMTXConcat(mtxRotY, mtxOut, mtxOut);
+        PSMTXConcat(mtxScale, mtxOut, mtxOut);
+        PSMTXConcat(mtxTrans, mtxOut, mtxOut);
+        PSMTXCopy(mtxOut, (u8 *)*(void **)((u8 *)obj + 0xE0) + 0x10);
     }
 }
 
