@@ -3040,7 +3040,7 @@ void fn_800B5708(void) {
     void fn_800B85EC(void);
     void fn_800B8534(void);
     void fn_800B850C(void);
-    void fn_800B841C(void);
+    void ScriptCmd_Battle(void);
     void fn_800B8070(void);
     void fn_800B7FD8(void);
     void fn_800B7F98(void);
@@ -3215,7 +3215,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x598, fn_800B85EC, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x5A5, fn_800B8534, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x5B0, fn_800B850C, 3);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x5BA, fn_800B841C, 3);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x5BA, ScriptCmd_Battle, 3);
     Script_RegisterCommand(lbl_8026ECB8 + 0x5C7, fn_800B8070, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x5CF, fn_800B7FD8, 3);
     Script_RegisterCommand(lbl_8026ECB8 + 0x5DA, fn_800B7F98, 3);
@@ -4398,7 +4398,7 @@ s32 fn_800B83A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return 1;
 }
 
-s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
+s32 ScriptCmd_Battle(u8 arg0, u8 arg1, u8 arg2) {
     void Process_CreateChild(void *, s32);
     void fn_80033418(void *);
     void Battle_Execute(void *, s32);
