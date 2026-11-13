@@ -1883,11 +1883,12 @@ void fn_8005E644(void *arg0) {
 #pragma dont_inline reset
 void fn_8005EB5C(u8 *dst, u8 *src)
 {
-  u8 a;
   u8 b;
-  ;
+  u8 a;
+
+  a = src[0];
   b = src[1];
-  dst[0x88] = src[0];
+  dst[0x88] = a;
   a = src[2];
   dst[0x89] = b;
   b = src[3];
