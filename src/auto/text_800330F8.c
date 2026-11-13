@@ -6052,6 +6052,7 @@ void fn_8003FFF8(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+/* Per-frame map update: alternate half-range prepare, rebuild entry matrices, queue deferred work. */
 void Map_Update(void) {
     void Map_PrepareEntryRange(void *, s32, s32);
     void fn_80060060(void *);
