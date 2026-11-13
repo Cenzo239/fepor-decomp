@@ -820,7 +820,7 @@ void Gx_Setup2DState(void *arg0) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void GXSetProjection(void *, s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
@@ -849,7 +849,7 @@ void Gx_Setup2DState(void *arg0) {
     PSMTXIdentity(identity);
     GXLoadPosMtxImm(identity, 0);
     GXSetCurrentMtx(0);
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_802245D8(0, 1, 0, 0);
     fn_80221A2C(0);
     GXSetCullMode(0);
@@ -913,8 +913,8 @@ void fn_800A57D8(void) {
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetNumTevStages(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
-    fn_80224684(1, 7, 1);
+    M2C_UNK GXSetZMode(M2C_UNK, M2C_UNK, M2C_UNK);
+    GXSetZMode(1, 7, 1);
     fn_802245D8(0, 1, 0, 0xF);
     GXSetNumChans(1);
     GXSetCullMode(0);

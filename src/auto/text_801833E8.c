@@ -13278,7 +13278,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK GXSetNumTevStages(M2C_UNK);
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetZMode(M2C_UNK, M2C_UNK, M2C_UNK);
     extern s32 lbl_8036AF60;
     M2C_UNK spC[8];
     s32 sp8;
@@ -13307,7 +13307,7 @@ void fn_801A27F8(void *arg0) {
         GXSetTevAlphaIn(0, 7, 7, 7, 6);
         GXSetTevAlphaOp(0, 0, 0, 0, 0, 0);
         fn_802245D8(0, 0, 0, 0);
-        fn_80224684(0, 3, 0);
+        GXSetZMode(0, 3, 0);
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
         GXSetVtxDesc(0xD, 1);

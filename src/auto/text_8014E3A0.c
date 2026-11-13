@@ -267,7 +267,7 @@ void fn_8014E864(void *arg0) {
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -343,7 +343,7 @@ void fn_8014E864(void *arg0) {
                     fn_802245D8(3, 0, 0, 0);
                 }
                 if (*(u16 *)(entry + 6) & 0x4000) {
-                    fn_80224684(0, 3, 0);
+                    GXSetZMode(0, 3, 0);
                 }
                 if (*(u16 *)(entry + 6) & 0x8000) {
                     GXSetBlendMode(0, 1, 0, 1, 1, 0, 2);
@@ -464,7 +464,7 @@ void fn_8014E864(void *arg0) {
         entry += 0x34;
     }
 
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_802245D8(1, 4, 5, 7);
     fn_8006C6F8(arg0, 2);
 }

@@ -1359,7 +1359,7 @@ void fn_80007B04(void)
     void GXSetNumTevStages(s32);
     void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void GXSetScissor(u32, u32, u32);
@@ -1449,7 +1449,7 @@ void fn_80007B04(void)
     mgr = lbl_80367140;
     GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
                 M2C_FIELD(mgr, f32 *, 0x9C), M2C_FIELD(mgr, f32 *, 0xA0));
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_802246B8(0);
     fn_80223E5C(6, 0x80, 1, 0, 0);
 
@@ -1520,11 +1520,11 @@ void fn_80007B04(void)
             flags = M2C_FIELD(*walk, u16 *, 0x10);
             if (flags & 0x400) {
                 if (!(flags & 0xF0)) {
-                    fn_80224684(1, 3, 1);
+                    GXSetZMode(1, 3, 1);
                     fn_802246B8(0);
                     fn_80223E5C(6, 0x80, 1, 0, 0);
                 } else {
-                    fn_80224684(1, 3, 0);
+                    GXSetZMode(1, 3, 0);
                     fn_802246B8(1);
                     fn_80223E5C(7, 0, 1, 7, 0);
                 }

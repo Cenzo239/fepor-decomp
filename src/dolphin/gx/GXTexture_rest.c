@@ -268,7 +268,7 @@ void fn_80224658(s32 arg0) {
     __GXData[1] = 0;
 }
 
-void fn_80224684(s32 arg0, s32 arg1, s32 arg2) {
+void GXSetZMode(s32 arg0, s32 arg1, s32 arg2) {
     u16 *temp_r6;
     u16 temp_r7;
 

@@ -427,7 +427,7 @@ void __GXInitGX(void) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_8022462C(s32);
     void fn_80224658(s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_802246B8(s32);
     void fn_802247C0(s32);
     void fn_802247EC(s32, s32);
@@ -650,7 +650,7 @@ void __GXInitGX(void) {
     fn_802245D8(0, 4, 5, 0);
     fn_8022462C(1);
     fn_80224658(1);
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_802246B8(1);
     fn_802247C0(1);
     fn_802247EC(0, 0);

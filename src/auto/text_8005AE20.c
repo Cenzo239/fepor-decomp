@@ -4613,7 +4613,7 @@ void fn_800661A8(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_8022462C(s32);
     void fn_80224658(s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_802246B8(s32);
     extern s32 lbl_80285E70[];
     extern u8 lbl_80366DD0;
@@ -4738,7 +4738,7 @@ void fn_800661A8(void *arg0) {
     fn_802245D8(0, 1, 0, 7);
     fn_802246B8(1);
     fn_80223E5C(0, 0, 1, 7, 0);
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -4780,7 +4780,7 @@ void fn_800661A8(void *arg0) {
     fn_802245D8(0, 1, 0, 7);
     fn_802246B8(1);
     fn_80223E5C(0, 0, 1, 7, 0);
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -4821,7 +4821,7 @@ void fn_800661A8(void *arg0) {
     fn_802245D8(0, 4, 5, 7);
     fn_802246B8(0);
     fn_80223E5C(6, 0x80, 1, 0, 0);
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -4862,7 +4862,7 @@ void fn_800661A8(void *arg0) {
     fn_802245D8(1, 4, 5, 7);
     fn_802246B8(1);
     fn_80223E5C(4, 0, 1, 0, 0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -4903,7 +4903,7 @@ void fn_800661A8(void *arg0) {
     fn_802245D8(1, 4, 5, 7);
     fn_802246B8(1);
     fn_80223E5C(4, 0, 1, 0, 0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -4946,7 +4946,7 @@ void fn_800661A8(void *arg0) {
     fn_802244B4(0, 0, NULL);
     lbl_80366DD0 = 5;
     fn_80223E5C(7, 0, 1, 7, 0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
     fn_80223D94(0, 0, 0);
@@ -6209,7 +6209,7 @@ void fn_8006C2A4(void *arg0,s32 arg1){
 u32 fn_80060638(void*);s32 fn_80060664(void*);u32 fn_800605E0(void*);s32 fn_8006049C(void*);s32 fn_80060520(void*);s32 fn_800604F4(void*);s32 fn_800604C8(void*);
 void fn_80220154(s32,s32,s32);void Game_Assert(void*,s32,void*);void fn_8006C748(void*,s32);
 void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void GXSetCurrentMtx(s16);
-void fn_802245D8(s32,s32,s32,s32);void fn_80224684(s32,s32,s32);void fn_80067490(s32);
+void fn_802245D8(s32,s32,s32,s32);void GXSetZMode(s32,s32,s32);void fn_80067490(s32);
 void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
 extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
 u8 *data,*node,*p;
@@ -6235,7 +6235,7 @@ else{if(*(s16*)(node+0xe)<0)fn_8006A930(node,arg0,work);GXSetCurrentMtx(*(s16*)(
 if(*(u16*)(node+8)&0x1e0){
 if(*(u16*)(node+8)&0x40)fn_802245D8(1,4,1,0);
 if(*(u16*)(node+8)&0x80)fn_802245D8(3,0,0,0);
-if(*(u16*)(node+8)&0x100)fn_80224684(0,3,0);
+if(*(u16*)(node+8)&0x100)GXSetZMode(0,3,0);
 if(*(u16*)(node+8)&0x20)fn_80067490(0);
 }
 lbl_80367308=arg0;lbl_8036730C=node;
@@ -6290,7 +6290,7 @@ void fn_8006C748(void *arg0, s32 arg1) {
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8022462C(M2C_UNK);
     M2C_UNK fn_80224658(M2C_UNK);
-    M2C_UNK fn_80224684(M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetZMode(M2C_UNK, M2C_UNK, M2C_UNK);
     s32 temp_r30;
     s32 temp_r3;
 
@@ -6300,7 +6300,7 @@ void fn_8006C748(void *arg0, s32 arg1) {
             switch (arg1) {                         /* switch 1; irregular */
             case 0:                                 /* switch 1 */
                 fn_802245D8(1, 4, 5, 7);
-                fn_80224684(1, 3, 1);
+                GXSetZMode(1, 3, 1);
                 /* fallthrough */
             case 1:                                 /* switch 1 */
                 fn_80223E5C(4, 0, 1, 0, 0);
@@ -6326,19 +6326,19 @@ void fn_8006C748(void *arg0, s32 arg1) {
         temp_r3 = temp_r30 & 0x70000000;
         switch (temp_r3) {                          /* switch 2; irregular */
         case 0x10000000:                            /* switch 2 */
-            fn_80224684(0, 7, 0);
+            GXSetZMode(0, 7, 0);
             break;
         case 0x20000000:                            /* switch 2 */
-            fn_80224684(1, 4, 0);
+            GXSetZMode(1, 4, 0);
             break;
         case 0x30000000:                            /* switch 2 */
-            fn_80224684(1, 5, 0);
+            GXSetZMode(1, 5, 0);
             break;
         case 0x50000000:                            /* switch 2 */
-            fn_80224684(1, 3, 1);
+            GXSetZMode(1, 3, 1);
             break;
         case 0x40000000:                            /* switch 2 */
-            fn_80224684(1, 3, 0);
+            GXSetZMode(1, 3, 0);
             break;
         }
         if (M2C_FIELD(arg0, s32 *, 0) & 0x80000000) {
@@ -6869,7 +6869,7 @@ void fn_8006DFD8(void) {
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
     void VIWaitForRetrace(void);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_8022462C(s32);
     void fn_802208BC(s32);
     u16 fn_80220970(void);
@@ -6911,7 +6911,7 @@ void fn_8006DFD8(void) {
     volatile u8 *gx;
 
     timed_out = 0;
-    fn_80224684(1, 3, 1);
+    GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_802208BC(0xB00B);
@@ -7133,7 +7133,7 @@ void fn_8006E660(void)
     extern u8 lbl_80366DE0;
 
     void fn_8006DFD8(void);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_8022462C(s32);
     void fn_80221A40(void *, s32);
     void fn_8022097C(void);
@@ -7150,7 +7150,7 @@ void fn_8006E660(void)
     if (lbl_8036732C != 0) {
         fn_8006DFD8();
     } else {
-        fn_80224684(1, 3, 1);
+        GXSetZMode(1, 3, 1);
         fn_8022462C(1);
         fn_80221A40(DemoCurrentBuffer, 1);
         fn_8022097C();

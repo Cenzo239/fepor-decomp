@@ -234,7 +234,7 @@ void fn_800566D4(void *arg0) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     extern f32 lbl_80369108;
     extern f32 lbl_8036912C;
     extern f32 lbl_80369138;
@@ -268,7 +268,7 @@ void fn_800566D4(void *arg0) {
                 fn_802228D8(sp8, 1, 1, 0, 0, 0, lbl_80369108, lbl_80369108, lbl_80369108);
                 fn_80222C50(sp8, 0);
                 fn_802245D8(1, 4, 5, 7);
-                fn_80224684(0, 3, 0);
+                GXSetZMode(0, 3, 0);
                 GXClearVtxDesc();
                 GXSetVtxDesc(9, 1);
                 GXSetVtxDesc(0xB, 1);
@@ -1422,7 +1422,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80369108;
     extern f64 lbl_80369118;
@@ -1492,7 +1492,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
     fn_802201A8(1, 1, 4, 0x21, 0, 0x7D);
     fn_80223E5C(6, 1, 0, 3, 0xFF);
-    fn_80224684(0, 3, 0);
+    GXSetZMode(0, 3, 0);
     fn_802245D8(1, 6, 7, 0);
     GXBegin(0x80, 0, 4);
 
@@ -1563,7 +1563,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     GXSetNumTexGens(0, 4);
-    fn_80224684(0, 3, 0);
+    GXSetZMode(0, 3, 0);
     fn_802245D8(1, 0, 7, 0);
     GXBegin(0x80, 0, 4);
 

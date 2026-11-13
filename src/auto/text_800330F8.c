@@ -10781,7 +10781,7 @@ void fn_8004C80C(void) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     extern u8 gUnits[];
@@ -10817,7 +10817,7 @@ void fn_8004C80C(void) {
     PSMTXConcat(fn_80067FDC(), sp30, sp60);
     GXLoadPosMtxImm(sp60, 0);
     GXSetCurrentMtx(0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_802245D8(1, 4, 5, 7);
     fn_80223E5C(7, 0, 1, 7, 0);
     GXSetNumTexGens(0, 0);

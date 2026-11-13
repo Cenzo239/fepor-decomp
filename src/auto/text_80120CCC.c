@@ -1636,7 +1636,7 @@ void fn_80123D1C(void *arg0) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_8022100C(s32);
     void GXBegin(s32, s32, s32);
     void fn_80220154(s32, s32, s32);
@@ -1708,7 +1708,7 @@ void fn_80123D1C(void *arg0) {
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumTexGens(0, 0);
     fn_802245D8(1, 4, 5, 0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_8022100C(0);
     GXBegin(0x80, 0, (s32)((count << 5) & 0xFFE0));
 
@@ -2361,7 +2361,7 @@ void fn_80125388(void *arg0) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80224684(s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     void fn_8022100C(s32);
     s32 fn_80040844(void);
     void *fn_80067FDC(void);
@@ -2401,7 +2401,7 @@ void fn_80125388(void *arg0) {
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumTexGens(0, 0);
     fn_802245D8(1, 4, 5, 0);
-    fn_80224684(1, 3, 0);
+    GXSetZMode(1, 3, 0);
     fn_8022100C(2);
     temp_r31 = fn_80040844();
     PSMTXConcat(fn_80067FDC(), (void *)(u32)(temp_r31 + 0x70), sp28);
