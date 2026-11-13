@@ -554,7 +554,7 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
     return 1;
 }
 
-void fn_800AA3C0(void) {
+void Map_UpdateCursorMoveLimit(void) {
     void fn_8004A1F0(void);
     void fn_8004A224(void);
     void fn_800AACDC(void *);
