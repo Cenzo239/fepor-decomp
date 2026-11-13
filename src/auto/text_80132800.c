@@ -5290,7 +5290,7 @@ s16 fn_8013B6A4(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorPanelMid(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelMid(void *self, s16 doFree) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -5319,35 +5319,36 @@ extern "C" void *Ui_DtorPanelMid(void *arg0, s16 arg1) {
     ListNode *spC;
     u8 sp8[4];
     ListNode *end;
-    Owner *a0;
+    Owner *owner;
 
-    a0 = (Owner *)arg0;
-    if (arg0 != NULL) {
-        a0->vtbl = gUiPanelMidVtbl;
-        if (&a0->subAC != NULL) {
-            a0->subAC = gEmptyVtbl;
-            ((Obj *)&a0->subAC)->v2();
+    /* C++ destructor for UI panel mid base (gUiPanelMidVtbl): destroy embeds, clear list, run base dtor, optional free. */
+    owner = (Owner *)self;
+    if (self != NULL) {
+        owner->vtbl = gUiPanelMidVtbl;
+        if (&owner->subAC != NULL) {
+            owner->subAC = gEmptyVtbl;
+            ((Obj *)&owner->subAC)->v2();
         }
-        if (&a0->sub84 != NULL) {
-            a0->sub84 = gEmptyVtbl;
-            ((Obj *)&a0->sub84)->v2();
+        if (&owner->sub84 != NULL) {
+            owner->sub84 = gEmptyVtbl;
+            ((Obj *)&owner->sub84)->v2();
         }
-        if (&a0->list != NULL) {
-            if (&a0->list != NULL) {
-                if (&a0->list != NULL) {
-                    end = &a0->list.node;
+        if (&owner->list != NULL) {
+            if (&owner->list != NULL) {
+                if (&owner->list != NULL) {
+                    end = &owner->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_8013BA08(sp8, &a0->list, &spC, &sp10);
+                    fn_8013BA08(sp8, &owner->list, &spC, &sp10);
                 }
             }
         }
-        fn_8013F2A4(arg0, 0);
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        fn_8013F2A4(self, 0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
