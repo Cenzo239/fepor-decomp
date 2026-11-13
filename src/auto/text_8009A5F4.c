@@ -58,17 +58,20 @@ void fn_8009A61C(s32 arg0) {
 }
 
 #pragma scheduling off
+#pragma global_optimizer off
 void fn_8009A648(void *arg0) {
     extern f32 lbl_803697E0;
-    f32 f;
     s32 z;
+    f32 f;
+
     z = 0;
     f = lbl_803697E0;
-    ((u8 *)arg0)[0x3E] = z;
+    ((u8 *)arg0)[0x3E] = (u8)z;
     *(f32 *)((u8 *)arg0 + 0x30) = f;
-    ((u8 *)arg0)[0x3D] = z;
+    ((u8 *)arg0)[0x3D] = (u8)z;
 }
-#pragma scheduling on
+#pragma global_optimizer reset
+#pragma scheduling reset
 void fn_8009A660(u8 *arg0) {
     extern f32 lbl_803697E4;
     arg0[0x3E] = arg0[0x40];
