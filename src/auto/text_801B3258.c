@@ -2435,7 +2435,7 @@ extern "C" void fn_801BA3E8(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_801BA71C(void *arg0) {
+extern "C" void Ui_HandleUnitCursorInput(void *arg0) {
 void fn_8000C070(void *,s32); void fn_8000C188(void *);
 s32 fn_80105814(void *); u8 fn_80105BC0(void *,u8); void *fn_801362C8(void *);
 void fn_8013FDA0(void *); void *fn_8013FF94(void *,s32,s32);
