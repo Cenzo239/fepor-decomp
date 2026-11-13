@@ -15021,7 +15021,8 @@ void fn_800EA8F4(s32 arg0) {
     }
 }
 
-void Card_SetNoCopyAttr(s32 arg0) {
+void Card_SetNoCopyAttr(s32 proc) {
+    /* OR CARD_ATTR_NO_COPY (0x08) onto the open save file; goto error state on failure. */
     struct CardWork {
         u8 workArea[0xA000];
         s32 chan;
@@ -15041,25 +15042,25 @@ void Card_SetNoCopyAttr(s32 arg0) {
     s32 Card_GetFileAttr(s32, s32, u8 *);
     s32 Card_SetFileAttr(s32, s32, u8, void *);
     extern struct CardWork gCardWork;
-    u8 sp8;
+    u8 attr;
     u8 skip;
-    s32 temp;
+    s32 fileNo;
 
     if (gCardWork.result < 0) {
-        Process_Goto(arg0, 0x63);
+        Process_Goto(proc, 0x63);
         gCardWork.busy = 0;
         skip = 1;
     } else {
         skip = 0;
     }
     if (skip == 0) {
-        temp = *(s32 *)&gCardWork.fileInfo[4];
-        Card_GetFileAttr(gCardWork.chan, temp, &sp8);
-        sp8 |= 8;
+        fileNo = *(s32 *)&gCardWork.fileInfo[4];
+        Card_GetFileAttr(gCardWork.chan, fileNo, &attr);
+        attr |= 8;
         gCardWork.busy = 1;
-        gCardWork.result = Card_SetFileAttr(gCardWork.chan, temp, sp8, fn_800EB80C);
+        gCardWork.result = Card_SetFileAttr(gCardWork.chan, fileNo, attr, fn_800EB80C);
         if (gCardWork.result < 0) {
-            Process_Goto(arg0, 0x63);
+            Process_Goto(proc, 0x63);
             gCardWork.busy = 0;
         }
     }
