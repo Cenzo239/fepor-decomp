@@ -2031,7 +2031,8 @@ void Ui_ApplyUnitManageFocus(void *panel) {
     Process_Goto(self, *(u8 *)((u8 *)self + 0x44));
 }
 
-void Ui_SyncUnitManageFocus(void *arg0) {
+/* Focus the unit-manage list on gBattleState+0xAC's unit and sync portrait/skill widgets. */
+void Ui_SyncUnitManageFocus(void *panel) {
     void fn_8013AD70(void *, s32);
     s32 Ui_ListGetSelected(void *);
     void Ui_SetPortraitUnit(void *, s32);
@@ -2040,31 +2041,31 @@ void Ui_SyncUnitManageFocus(void *arg0) {
     s32 Unit_GetSkillCapacityUsed(s32);
     extern u8 gBattleState[];
     extern f64 lbl_8036B2D0;
-    void *r28;
-    void *r31;
-    s32 r30;
-    void *r29;
+    void *self;
+    void *list;
+    s32 unit;
+    void *side;
     u8 kind;
 
-    r28 = arg0;
-    r31 = *(void **)((u8 *)r28 + 0x48);
-    fn_8013AD70(r31, *(s32 *)(gBattleState + 0xAC));
-    r30 = Ui_ListGetSelected(r31);
-    kind = *(u8 *)((u8 *)r28 + 0x44);
+    self = panel;
+    list = *(void **)((u8 *)self + 0x48);
+    fn_8013AD70(list, *(s32 *)(gBattleState + 0xAC));
+    unit = Ui_ListGetSelected(list);
+    kind = *(u8 *)((u8 *)self + 0x44);
     switch (kind) {
     case 4:
-        r31 = *(void **)((u8 *)r28 + 0x54);
-        r29 = *(void **)((u8 *)r28 + 0x58);
-        Ui_SetPortraitUnit(*(void **)((u8 *)r28 + 0x4C), r30);
-        fn_80137EA0(r31, r30);
-        *(s32 *)((u8 *)r29 + 0x3C) = r30;
+        list = *(void **)((u8 *)self + 0x54);
+        side = *(void **)((u8 *)self + 0x58);
+        Ui_SetPortraitUnit(*(void **)((u8 *)self + 0x4C), unit);
+        fn_80137EA0(list, unit);
+        *(s32 *)((u8 *)side + 0x3C) = unit;
         break;
     case 16:
-        *(s32 *)((u8 *)*(void **)((u8 *)r28 + 0x64) + 0x3C) = r30;
-        r31 = *(void **)((u8 *)r28 + 0x60);
-        *(s32 *)((u8 *)r31 + 0x4C) = r30;
-        fn_8017BB94(r31);
-        *(f32 *)((u8 *)r31 + 0x50) = (f32)Unit_GetSkillCapacityUsed(r30);
+        *(s32 *)((u8 *)*(void **)((u8 *)self + 0x64) + 0x3C) = unit;
+        list = *(void **)((u8 *)self + 0x60);
+        *(s32 *)((u8 *)list + 0x4C) = unit;
+        fn_8017BB94(list);
+        *(f32 *)((u8 *)list + 0x50) = (f32)Unit_GetSkillCapacityUsed(unit);
         break;
     }
 }
