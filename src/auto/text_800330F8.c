@@ -12028,7 +12028,7 @@ void fn_80050F64(void) {
     void GActor_LoadGs(void *, char *);
     void GActor_LoadG(void *, char *);
     void fn_8005F5B4(void *, char *);
-    void fn_8005F494(void *, char *);
+    void GActor_LoadTpl(void *, char *);
     void GActor_Finalize(void *);
     void Allegiance_FillMask(s32, void *);
     void fn_80052B44(void *);
@@ -12132,7 +12132,7 @@ void fn_80050F64(void) {
         fn_8005F5B4((void *)c, sp10);
         sprintf(sp10, (char *)(a + 0xA5), (char *)(a + 0xB0),
                     (char *)(a + 0xCE));
-        fn_8005F494((void *)c, sp10);
+        GActor_LoadTpl((void *)c, sp10);
         GActor_Finalize((void *)c);
         b += 1;
         c += 0xA0;
@@ -13008,7 +13008,7 @@ void MapObj_InitGraphics(void *arg0) {
  void GActor_LoadGs(void *, void *);
  void GActor_LoadG(void *, void *);
  void fn_8005F5B4(void *, void *);
- void fn_8005F494(void *, void *);
+ void GActor_LoadTpl(void *, void *);
  u8 fn_8005C3C4(void *);
  void GActor_Finalize(void *);
  void fn_8005EBCC(void *, u8);
@@ -13047,7 +13047,7 @@ void MapObj_InitGraphics(void *arg0) {
  sprintf(buf,GActor_str+330,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadGs(node,buf);
 sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadG(node,buf);
 sprintf(buf,GActor_str+345,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
-sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) fn_8005F494(node,buf);
+sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) GActor_LoadTpl(node,buf);
  GActor_Finalize(node);
  base=M2C_FIELD(arg0,void * *,0x30);
  mode=M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,7);

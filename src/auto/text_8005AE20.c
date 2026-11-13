@@ -2259,7 +2259,7 @@ void fn_8005F434(void *arg0, void *arg1, void *arg2) {
     }
 }
 
-void fn_8005F494(void *arg0, void *arg1) {
+void GActor_LoadTpl(void *arg0, void *arg1) {
     void *fn_8006D910(void *, void *);
     void fn_8006D8E8(void *);
     void *saved;

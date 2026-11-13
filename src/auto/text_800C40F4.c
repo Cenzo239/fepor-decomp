@@ -12597,8 +12597,8 @@ void fn_800E4FE8(void *arg0, void *arg1, s32 arg2) {
 }
 
 void fn_800E5044(void *arg0) {
-    M2C_UNK fn_8005F494(s32);
-    fn_8005F494(M2C_FIELD(arg0, s32 *, 0xE0));
+    M2C_UNK GActor_LoadTpl(s32);
+    GActor_LoadTpl(M2C_FIELD(arg0, s32 *, 0xE0));
 }
 
 s32 fn_800E5068(void *arg0) {

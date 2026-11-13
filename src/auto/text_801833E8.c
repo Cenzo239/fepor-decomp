@@ -4466,7 +4466,7 @@ extern "C" void fn_80190590(void *arg0) {
 extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
     M2C_UNK fn_8005C7E8(s32);
     u32 fn_8005C84C();
-    M2C_UNK fn_8005F494(s32 *, s32);
+    M2C_UNK GActor_LoadTpl(s32 *, s32);
     M2C_UNK GActor_LoadG(s32 *, s32);
     M2C_UNK GActor_LoadGs(s32 *, s32);
     M2C_UNK GActor_Finalize(s32 *);
@@ -4522,7 +4522,7 @@ extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
         GActor_LoadGs(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&sp18));
         String_Destroy((M2C_UNK *)&sp18, -1);
         String_ConcatCStr((M2C_UNK *)&spC, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x28);
-        fn_8005F494(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&spC));
+        GActor_LoadTpl(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&spC));
         String_Destroy((M2C_UNK *)&spC, -1);
         *M2C_FIELD(arg0, s32 **, 0x40) = *M2C_FIELD(arg0, s32 **, 0x40) | 0x40000000 | 0x400;
         GActor_Finalize(M2C_FIELD(arg0, s32 **, 0x40));
