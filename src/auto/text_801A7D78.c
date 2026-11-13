@@ -268,7 +268,7 @@ void fn_801A85F4(s32 arg0) {
     Status_Set(arg0 + 0x1BC, 0x33);
 }
 
-s32 fn_801A8688(s32 arg0) {
+s32 Unit_ClearEventStatuses(s32 arg0) {
     u8 Status_Test(s32, M2C_UNK);
     if ((Status_Test(arg0 + 0x1BC, 0x29) == 0) && (Status_Test(arg0 + 0x1BC, 0x41) == 0) && (Status_Test(arg0 + 0x1BC, 0x4C) == 0) && (Status_Test(arg0 + 0x1BC, 0x31) == 0) && (Status_Test(arg0 + 0x1BC, 0x2F) == 0) && (Status_Test(arg0 + 0x1BC, 0x30) == 0) && (Status_Test(arg0 + 0x1BC, 0x32) == 0) && (Status_Test(arg0 + 0x1BC, 0x3F) == 0) && (Status_Test(arg0 + 0x1BC, 0x10) == 0) && (Status_Test(arg0 + 0x1BC, 0x35) == 0) && (Status_Test(arg0 + 0x1BC, 0x2B) == 0) && (Status_Test(arg0 + 0x1BC, 0x2C) == 0) && (Status_Test(arg0 + 0x1BC, 0x2E) == 0) && (Status_Test(arg0 + 0x1BC, 0x33) == 0) && (Status_Test(arg0 + 0x1BC, 0x38) == 0) && (Status_Test(arg0 + 0x1BC, 0x34) == 0) && (Status_Test(arg0 + 0x1BC, 0x39) == 0) && (Status_Test(arg0 + 0x1BC, 0x36) == 0) && (Status_Test(arg0 + 0x1BC, 0x42) == 0) && (Status_Test(arg0 + 0x1BC, 0x5A) == 0) && (Status_Test(arg0 + 0x1BC, 0x2D) == 0)) {
         return 0;

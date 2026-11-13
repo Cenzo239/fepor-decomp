@@ -2182,7 +2182,7 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
     u8 fn_801A3F14(s32);
     void *fn_801A7FF4(s32);
     void fn_801A85F4(s32);
-    u8 fn_801A8688(s32);
+    u8 Unit_ClearEventStatuses(s32);
     void fn_801A949C(s32);
     s32 defStatus;
     s32 self;
@@ -2196,20 +2196,20 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
     skill = skillId;
     fn_80033E90(self + 0x8A0, 0x56);
     if (Status_Test(self + 0x1BC, 0x17) != 0) {
-        fn_801A8688(self);
+        Unit_ClearEventStatuses(self);
     }
     defStatus = self + 0x49C;
     if (Status_Test(defStatus, 0x17) != 0) {
-        fn_801A8688(self + 0x2E0);
+        Unit_ClearEventStatuses(self + 0x2E0);
     }
     if (*(u32 *)(self + 0xCAC) & 0x200) {
-        fn_801A8688(self);
-        fn_801A8688(self + 0x2E0);
+        Unit_ClearEventStatuses(self);
+        Unit_ClearEventStatuses(self + 0x2E0);
     }
-    if (Status_Test(self + 0x1BC, 0x2A) != 0 && fn_801A8688(self + 0x2E0) != 0) {
+    if (Status_Test(self + 0x1BC, 0x2A) != 0 && Unit_ClearEventStatuses(self + 0x2E0) != 0) {
         BattleAnim_Queue(self + 0x8A0, 0x16, 0);
     }
-    if (Status_Test(defStatus, 0x2A) != 0 && fn_801A8688(self) != 0) {
+    if (Status_Test(defStatus, 0x2A) != 0 && Unit_ClearEventStatuses(self) != 0) {
         BattleAnim_Queue(self + 0x8A0, 0xA, 0);
     }
     if (skill == 0xF) {
@@ -2232,8 +2232,8 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
         if (Status_Test(defStatus, 0x41) != 0) {
             BattleAnim_Queue(self + 0x8A0, 0x18, 0);
         }
-        fn_801A8688(self);
-        fn_801A8688(self + 0x2E0);
+        Unit_ClearEventStatuses(self);
+        Unit_ClearEventStatuses(self + 0x2E0);
         fn_801A949C(self);
         fn_801A949C(self + 0x2E0);
         Status_Clear(self + 0x1BC, 0x41);
