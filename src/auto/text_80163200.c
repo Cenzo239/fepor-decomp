@@ -10604,7 +10604,7 @@ void *fn_801780A8(void) {
     return (char *)&gUiMsgStrings + 0x55B;
 }
 
-s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
+s32 Ui_ConfirmListCmd83(void *arg0, void *arg1, void *arg2) {
     void Process_Goto(void *, u8);
     void *Process_Find(void *);
     void fn_8000C5B8(void *);
