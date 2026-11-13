@@ -1722,7 +1722,7 @@ void Unit_GetSupportPartner(void *arg0, s32 arg1) {
     temp_r3 = (void **)M2C_FIELD(arg0, void **, 0x188);
     temp_r3_2 = M2C_FIELD(temp_r3, void **, 0x50);
     temp_r3_2 = (void*)((s32)temp_r3_2 + (arg1 * 8));
-    fn_80016B7C((s32)M2C_FIELD(temp_r3_2, void **, 8));
+    Unit_FindByPerson((s32)M2C_FIELD(temp_r3_2, void **, 8));
 }
 
 s32 fn_80037004(void *arg0, s32 idx) {

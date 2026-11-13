@@ -2317,7 +2317,7 @@ void fn_80016ADC(void) {
     } while (i <= 0x9F);
 }
 
-void *fn_80016B7C(u32 arg0) {
+void *Unit_FindByPerson(u32 arg0) {
     extern u8 gUnits[];
     u8 *p;
     s32 i;

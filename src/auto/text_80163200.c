@@ -14607,7 +14607,7 @@ void fn_8017FD84(void *arg0) {
     void fn_8016A5AC(void *);
     void *Ui_FindChild(void *, s32, s32);
     void *Ui_ListGetSelected(void *);
-    void *fn_80016B7C(void *);
+    void *Unit_FindByPerson(void *);
     void fn_8014876C(void *, s32, s32);
     s8 fn_80036DE0(void *, void *);
     s32 fn_80036EAC(void *, s8);
@@ -14641,7 +14641,7 @@ void fn_8017FD84(void *arg0) {
             index++;
         }
     }
-    other = fn_80016B7C(*(void **)((u8 *)node + 8));
+    other = Unit_FindByPerson(*(void **)((u8 *)node + 8));
     fn_8014876C(gFxChannels, 0x46, 0xFA);
     obj82 = *(void **)((u8 *)other + 0x188);
     obj81 = *(void **)((u8 *)unit + 0x188);
@@ -14674,7 +14674,7 @@ void fn_8017FEF8(s32 arg0) {
 extern "C" void fn_80180084(void *arg0)
 {
     void Process_Goto(void *, s32);
-    void *fn_80016B7C(u32);
+    void *Unit_FindByPerson(u32);
     s8 fn_80036DE0(s32, void *);
     u8 Unit_GetSupportRank(s32, s8);
     void Ui_UpdatePanelWidgets(void *);
@@ -14791,7 +14791,7 @@ extern "C" void fn_80180084(void *arg0)
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && nodeVal != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             btn = *(s32 *)((u8 *)unit + 0x48);
-            nodeVal = fn_80016B7C((u32)nodeVal);
+            nodeVal = Unit_FindByPerson((u32)nodeVal);
             *(Vec2s *)&spC = ((Obj *)unit)->v9();
             fx = (f32)*(s16 *)&spC;
             fy = (f32)*((s16 *)&spC + 1);
@@ -15769,7 +15769,7 @@ s32 fn_80181DD8(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80181DF0(s32 *arg0, void **arg1) {
-    void *fn_80016B7C(void *);
+    void *Unit_FindByPerson(void *);
     s32 Unit_FindSupportPartnerIndex(void *, void *);
     s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
@@ -15813,8 +15813,8 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     node2 = (void **)node[1];
     idNode = node[2];
     idNode2 = node2[2];
-    unitNode2 = fn_80016B7C(idNode2);
-    unitNode = fn_80016B7C(idNode);
+    unitNode2 = Unit_FindByPerson(idNode2);
+    unitNode = Unit_FindByPerson(idNode);
     if (unitNode2 != 0) {
         t = *(u8 *)(*(u8 **)((u8 *)unitNode2 + 0x190) + 8);
         if (t != 0 && t != 5 && t != 6 && t != 7) {
@@ -15917,7 +15917,7 @@ split:
 
 #pragma use_lmw_stmw on
 void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
-    void *fn_80016B7C(void *);
+    void *Unit_FindByPerson(void *);
     s32 Unit_FindSupportPartnerIndex(void *, void *);
     s32 Unit_GetSupportRank(void *, s32);
     u8 fn_80036FC4(void *, s32);
@@ -15954,8 +15954,8 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
     while (node != sentinel1 && node2 != sentinel2) {
         id2 = node2[2];
         id1 = node[2];
-        unit2 = fn_80016B7C(id2);
-        unit1 = fn_80016B7C(id1);
+        unit2 = Unit_FindByPerson(id2);
+        unit1 = Unit_FindByPerson(id1);
         if (unit2 != NULL) {
             t = *(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8);
             if (t != 0 && t != 5 && t != 6 && t != 7) {
@@ -15995,8 +15995,8 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
             while (walk != sentinel2) {
                 id2 = walk[2];
                 id1 = node[2];
-                unit2 = fn_80016B7C(id2);
-                unit1 = fn_80016B7C(id1);
+                unit2 = Unit_FindByPerson(id2);
+                unit1 = Unit_FindByPerson(id1);
                 if (unit2 != NULL) {
                     t = *(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8);
                     if (t != 0 && t != 5 && t != 6 && t != 7) {

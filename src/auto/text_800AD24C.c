@@ -6835,12 +6835,12 @@ void fn_800BCC34(s16 arg0) {
 
 #pragma peephole off
 s32 fn_800BCC44(void) {
-    void *fn_80016B7C(void);
+    void *Unit_FindByPerson(void);
     void Person_GetByPid(void);
     void *temp_r3;
 
     Person_GetByPid();
-    temp_r3 = fn_80016B7C();
+    temp_r3 = Unit_FindByPerson();
     if (temp_r3 == NULL) {
         return 0;
     }
