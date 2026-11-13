@@ -934,7 +934,7 @@ void fn_801A4BE0(void *arg0) {
 void Battle_ResolveRounds(s32 arg0) {
     void fn_80034068(s32, s32, s32);
     u8 fn_80105BC0(s32, s32);
-    void fn_801A64F8(s32, s32, s32);
+    void Battle_PerformAttacks(s32, s32, s32);
     extern u8 lbl_80330708[];
     s32 self;
     u8 var_r0;
@@ -948,7 +948,7 @@ void Battle_ResolveRounds(s32 arg0) {
     if (fn_80105BC0(self + 0x49C, 0x29) != 0) {
         *(u8 *)(self + 0xCA4) = 1;
         fn_80034068(self + 0x8A0, 0x21, 0);
-        fn_801A64F8(self, self + 0x2E0, self);
+        Battle_PerformAttacks(self, self + 0x2E0, self);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
             var_r0 = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -962,7 +962,7 @@ void Battle_ResolveRounds(s32 arg0) {
         if (*(u8 *)(self + 0x5AB) == 0) {
             *(u8 *)(self + 0xCA4) = 0;
             fn_80034068(self + 0x8A0, 0x20, 0);
-            fn_801A64F8(self, self, self + 0x2E0);
+            Battle_PerformAttacks(self, self, self + 0x2E0);
             if ((s8)*(u8 *)(self + 0x1A8) == 0) {
                 var_r0 = 1;
             } else if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -979,7 +979,7 @@ void Battle_ResolveRounds(s32 arg0) {
     } else {
         *(u8 *)(self + 0xCA4) = 0;
         fn_80034068(self + 0x8A0, 0x20, 0);
-        fn_801A64F8(self, self, self + 0x2E0);
+        Battle_PerformAttacks(self, self, self + 0x2E0);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
             var_r0 = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -993,7 +993,7 @@ void Battle_ResolveRounds(s32 arg0) {
         if (*(u8 *)(self + 0x2CB) == 0) {
             *(u8 *)(self + 0xCA4) = 1;
             fn_80034068(self + 0x8A0, 0x21, 0);
-            fn_801A64F8(self, self + 0x2E0, self);
+            Battle_PerformAttacks(self, self + 0x2E0, self);
             if ((s8)*(u8 *)(self + 0x1A8) == 0) {
                 var_r0 = 1;
             } else if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -1014,7 +1014,7 @@ block_30:
         *(u8 *)(self + 0xCA4) = 0;
         fn_80034068(self + 0x8A0, 0x20, 0);
         fn_80034068(self + 0x8A0, 0x23, 0);
-        fn_801A64F8(self, self, self + 0x2E0);
+        Battle_PerformAttacks(self, self, self + 0x2E0);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
             var_r0 = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
@@ -1033,7 +1033,7 @@ block_39:
         *(u8 *)(self + 0xCA4) = 1;
         fn_80034068(self + 0x8A0, 0x21, 0);
         fn_80034068(self + 0x8A0, 0x23, 0);
-        fn_801A64F8(self, self + 0x2E0, self);
+        Battle_PerformAttacks(self, self + 0x2E0, self);
     }
 final:
     if ((s8)*(u8 *)(self + 0x1A8) == 0) {
@@ -1063,7 +1063,7 @@ void fn_801A5008(s32 arg0) {
     void fn_80034068(s32, s32, s32);
     s32 fn_8003B2D0(s32);
     void fn_801A601C(s32, s32, s32, s32);
-    void fn_801A64F8(s32, s32, s32);
+    void Battle_PerformAttacks(s32, s32, s32);
     extern u8 lbl_802EFDB8[];
     extern u8 lbl_80330708[];
     u8 *var_r3;
@@ -1079,7 +1079,7 @@ void fn_801A5008(s32 arg0) {
     fn_80034068(arg0 + 0x8A0, 0x54, 0);
     *(u8 *)(arg0 + 0xCA4) = 0;
     fn_80034068(arg0 + 0x8A0, 0x20, 0);
-    fn_801A64F8(arg0, arg0, arg0 + 0x2E0);
+    Battle_PerformAttacks(arg0, arg0, arg0 + 0x2E0);
 
     var_r3 = lbl_802EFDB8;
     temp_r0 = 0;
@@ -1906,7 +1906,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     }
 }
 
-void fn_801A64F8(void *arg0, void *arg1, void *arg2) {
+void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 fn_8000CE68(s32);
     u64 *fn_8001CB64(void *);
     void fn_800331D4(void *, s32);
