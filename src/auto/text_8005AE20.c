@@ -6695,7 +6695,8 @@ int Game_Assert(void *arg0, int arg1, int arg2) {
 }
 
 #pragma use_lmw_stmw on
-void DEMOInitGX(void *arg0)
+/* Set up GX fifos and VI render mode; reuse existing demo XFB pointers. */
+void DEMOInitGX(void *rmode)
 {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -6757,23 +6758,23 @@ void DEMOInitGX(void *arg0)
     GXInitFifoBase(fifo, buf, 0x10000);
     GXSetCPUFifo(fifo);
     GXSetGPFifo(fifo);
-    if (arg0 != NULL) {
+    if (rmode != NULL) {
         dst = DEMORmodeObj;
-        *(u32 *)dst = *(u32 *)arg0;
-        *(u16 *)(dst + 4) = *(u16 *)((u8 *)arg0 + 4);
-        *(u16 *)(dst + 6) = *(u16 *)((u8 *)arg0 + 6);
-        *(u16 *)(dst + 8) = *(u16 *)((u8 *)arg0 + 8);
-        *(u16 *)(dst + 0xa) = *(u16 *)((u8 *)arg0 + 0xa);
-        *(u16 *)(dst + 0xc) = *(u16 *)((u8 *)arg0 + 0xc);
-        *(u16 *)(dst + 0xe) = *(u16 *)((u8 *)arg0 + 0xe);
-        *(u16 *)(dst + 0x10) = *(u16 *)((u8 *)arg0 + 0x10);
-        *(u32 *)(dst + 0x14) = *(u32 *)((u8 *)arg0 + 0x14);
-        dst[0x18] = *((u8 *)arg0 + 0x18);
-        dst[0x19] = *((u8 *)arg0 + 0x19);
-        *(Pair *)(dst + 0x1a) = *(Pair *)((u8 *)arg0 + 0x1a);
-        *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)arg0 + 0x22);
-        *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)arg0 + 0x2a);
-        fn_8022C1B8(dst + 0x32, (u8 *)arg0 + 0x32, 7);
+        *(u32 *)dst = *(u32 *)rmode;
+        *(u16 *)(dst + 4) = *(u16 *)((u8 *)rmode + 4);
+        *(u16 *)(dst + 6) = *(u16 *)((u8 *)rmode + 6);
+        *(u16 *)(dst + 8) = *(u16 *)((u8 *)rmode + 8);
+        *(u16 *)(dst + 0xa) = *(u16 *)((u8 *)rmode + 0xa);
+        *(u16 *)(dst + 0xc) = *(u16 *)((u8 *)rmode + 0xc);
+        *(u16 *)(dst + 0xe) = *(u16 *)((u8 *)rmode + 0xe);
+        *(u16 *)(dst + 0x10) = *(u16 *)((u8 *)rmode + 0x10);
+        *(u32 *)(dst + 0x14) = *(u32 *)((u8 *)rmode + 0x14);
+        dst[0x18] = *((u8 *)rmode + 0x18);
+        dst[0x19] = *((u8 *)rmode + 0x19);
+        *(Pair *)(dst + 0x1a) = *(Pair *)((u8 *)rmode + 0x1a);
+        *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)rmode + 0x22);
+        *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)rmode + 0x2a);
+        fn_8022C1B8(dst + 0x32, (u8 *)rmode + 0x32, 7);
         DEMORmode = DEMORmodeObj;
     } else {
         switch (VIGetTvFormat()) {
@@ -6838,8 +6839,6 @@ void DEMOInitGX(void *arg0)
     }
     fn_800C4588(buf);
 }
-
-#pragma use_lmw_stmw on
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
