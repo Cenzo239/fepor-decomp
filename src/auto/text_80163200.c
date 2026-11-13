@@ -9888,7 +9888,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
     void Ui_DrawRouteIconEx(s16, s16, s32);
     extern f32 gF32_Neg1;
@@ -9945,11 +9945,11 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     ((Obj *)arg0)->v30();
     p = (u8 *)arg1;
     p += (s8)p[0x62];
-    tmp = fn_8000B908(p[0x40]);
+    tmp = GfxEnt_Get(p[0x40]);
     temp_r29 = *(s16 *)((u8 *)tmp + 0x30);
     p = (u8 *)arg1;
     p += (s8)*((u8 *)arg1 + 0x62);
-    tmp = fn_8000B908(p[0x40]);
+    tmp = GfxEnt_Get(p[0x40]);
     var_r28 = *(s16 *)((u8 *)tmp + 0x32);
     temp_r30 = ((Obj *)arg0)->v35();
     temp_r31 = ((Obj *)arg0)->v20();
@@ -10963,14 +10963,14 @@ extern "C" s16 fn_80178A7C(void *arg0) {
 }
 
 extern "C" void fn_80178AFC(void *unused, u8 *arg1) {
-    u8 *fn_8000B908(u8);
+    u8 *GfxEnt_Get(u8);
     extern u32 gUiContext[];
     u8 *p;
     u8 cur;
 
     ((u8 *)gUiContext)[8] = 0;
     while ((s8)(cur = arg1[0x62]) < (s8)arg1[0x60]) {
-        p = fn_8000B908(arg1[(s8)cur + 0x40]);
+        p = GfxEnt_Get(arg1[(s8)cur + 0x40]);
         if (p[0x39] != 2) {
             break;
         }
@@ -11005,7 +11005,7 @@ extern "C" void fn_80178B98(void *arg0, void *arg1) {
         virtual void v17() = 0;
         virtual s16 v18() = 0;
     };
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 i;
     void *p;
     s16 quot;
@@ -11013,7 +11013,7 @@ extern "C" void fn_80178B98(void *arg0, void *arg1) {
     u8 *a1 = (u8 *)arg1;
 
     for (i = 0; i < (s8)a1[0x60]; i++) {
-        p = fn_8000B908(a1[0x40 + i]);
+        p = GfxEnt_Get(a1[0x40 + i]);
         a = (*(Obj **)(a1 + 0x3C))->v18();
         quot = (s16)(a / ((s8)a1[0x60] + 1));
         *(s16 *)((u32)p + 0x30) = (i + 1) * quot + (*(Obj **)(a1 + 0x3C))->v16();
@@ -11125,7 +11125,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 fn_80010770(void *, s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
@@ -11193,7 +11193,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     a1 = (s32)arg1;
     p = (u8 *)a1;
     p += (s8)p[0x62];
-    obj = fn_8000B908(p[0x40]);
+    obj = GfxEnt_Get(p[0x40]);
     x = *(s16 *)((u8 *)obj + 0x30);
     y = *(s16 *)((u8 *)obj + 0x32);
     str = ((StrObj *)*(void **)((u8 *)obj + 0x34))->v1();
@@ -11249,7 +11249,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
 #pragma cplusplus reset
 /* Move a horizontal UI row cursor with left/right, refresh unit-info text, and focus/unfocus slots. */
 extern "C" void Ui_HandleRowCursorInput(void *unused, void *menu) {
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
@@ -11314,15 +11314,15 @@ extern "C" void Ui_HandleRowCursorInput(void *unused, void *menu) {
             if ((u8)Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 p = (u8 *)menu;
                 p += (s8)*(u8 *)((u8 *)menu + 0x62);
-                slot = fn_8000B908(p[0x40]);
+                slot = GfxEnt_Get(p[0x40]);
                 infoX = (f32)(*(s16 *)((u8 *)menu + 0x30) + *(s16 *)((u8 *)slot + 0x30));
                 p = (u8 *)menu;
                 p += (s8)*(u8 *)((u8 *)menu + 0x62);
-                slot = fn_8000B908(p[0x40]);
+                slot = GfxEnt_Get(p[0x40]);
                 infoY = (f32)(*(s16 *)((u8 *)menu + 0x32) + *(s16 *)((u8 *)slot + 0x32));
                 p = (u8 *)menu;
                 p += (s8)*(u8 *)((u8 *)menu + 0x62);
-                slot = fn_8000B908(p[0x40]);
+                slot = GfxEnt_Get(p[0x40]);
                 infoObj = (*(Inner **)((u8 *)slot + 0x34))->v2();
                 if (infoObj != NULL) {
                     Ui_ShowUnitInfoText(gUnitInfoPopup, infoObj, infoX, infoY);
@@ -11332,11 +11332,11 @@ extern "C" void Ui_HandleRowCursorInput(void *unused, void *menu) {
         if (*(s8 *)((u8 *)menu + 0x62) != *(s8 *)((u8 *)menu + 0x63)) {
             p = (u8 *)menu;
             p += *(s8 *)((u8 *)menu + 0x63);
-            slot = fn_8000B908(p[0x40]);
+            slot = GfxEnt_Get(p[0x40]);
             (*(Inner **)((u8 *)slot + 0x34))->v15(menu, slot);
             p = (u8 *)menu;
             p += *(s8 *)((u8 *)menu + 0x62);
-            slot = fn_8000B908(p[0x40]);
+            slot = GfxEnt_Get(p[0x40]);
             (*(Inner **)((u8 *)slot + 0x34))->v14(menu, slot);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x64e, 0x64);
         }

@@ -4501,7 +4501,7 @@ s32 fn_8011B754(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_8000B908(u8);
+extern "C" void *GfxEnt_Get(u8);
 extern "C" u8 Ui_IsUnitInfoPopupOpen(void *);
 extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
     extern void *gPadInput;
@@ -4537,7 +4537,7 @@ extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
     void *unit;
     u8 flag;
 
-    unit = fn_8000B908(M2C_FIELD(arg1, u8 *, (s8) M2C_FIELD(arg1, u8 *, 0x62) + 0x40));
+    unit = GfxEnt_Get(M2C_FIELD(arg1, u8 *, (s8) M2C_FIELD(arg1, u8 *, 0x62) + 0x40));
     flag = 0;
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         flag = 1;

@@ -3379,7 +3379,7 @@ void Process_RunScript(void *arg0) {
     }
 }
 
-void *fn_8000B908(u8 arg0) {
+void *GfxEnt_Get(u8 arg0) {
     extern u16 lbl_802A66D8[];
     return (u8 *)lbl_802A66D8 + arg0 * 0x70;
 }

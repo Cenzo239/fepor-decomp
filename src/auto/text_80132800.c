@@ -5578,7 +5578,7 @@ s32 fn_8013C3AC(void) {
 
 #pragma cplusplus on
 extern "C" void fn_8013C3B4(void *unused, void *arg1) {
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     void Ui_PlaySeCue(void *, s32);
@@ -5644,15 +5644,15 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
             if ((u8)Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 p = (u8 *)arg1;
                 p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
+                tmp = GfxEnt_Get(p[0x40]);
                 f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)tmp + 0x30));
                 p = (u8 *)arg1;
                 p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
+                tmp = GfxEnt_Get(p[0x40]);
                 f30 = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)tmp + 0x32));
                 p = (u8 *)arg1;
                 p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-                tmp = fn_8000B908(p[0x40]);
+                tmp = GfxEnt_Get(p[0x40]);
                 res = (*(Inner **)((u8 *)tmp + 0x34))->v2();
                 if (res != NULL) {
                     Ui_ShowUnitInfoText(gUnitInfoPopup, res, f31, f30);
@@ -5662,11 +5662,11 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
         if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
             p = (u8 *)arg1;
             p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
-            tmp = fn_8000B908(p[0x40]);
+            tmp = GfxEnt_Get(p[0x40]);
             (*(Inner **)((u8 *)tmp + 0x34))->v15(arg1, tmp);
             p = (u8 *)arg1;
             p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
-            tmp = fn_8000B908(p[0x40]);
+            tmp = GfxEnt_Get(p[0x40]);
             (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
             Ui_PlaySeCue(lbl_80276908 + 0x56, 0x64);
         }
@@ -5727,7 +5727,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
         virtual s32 v41() = 0;
         virtual s32 v42() = 0;
     };
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 Text_MeasureHeight(s32, f32);
     s32 Text_MeasureWidth(s32, s32, f32);
     void Prim2D_Begin(void);
@@ -5757,7 +5757,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
 
     self = (Outer *)arg0;
     a1 = (u8 *)arg1;
-    item = fn_8000B908(a1[0x40 + (s8)a1[0x62]]);
+    item = GfxEnt_Get(a1[0x40 + (s8)a1[0x62]]);
     x = *(s16 *)((u8 *)item + 0x30);
     y = *(s16 *)((u8 *)item + 0x32);
     w = (s16)Text_MeasureHeight(-1, lbl_8036A6C0);
@@ -6001,7 +6001,7 @@ extern "C" void fn_8013CCA0(void *arg0, void *arg1) {
         virtual s32 v37() = 0;
         virtual s32 v38() = 0;
     };
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s32 i;
     void *p;
     s16 quot;
@@ -6009,7 +6009,7 @@ extern "C" void fn_8013CCA0(void *arg0, void *arg1) {
     u8 *a1 = (u8 *)arg1;
 
     for (i = 0; i < (s8)a1[0x60]; i++) {
-        p = fn_8000B908(a1[0x40 + i]);
+        p = GfxEnt_Get(a1[0x40 + i]);
         a = (*(Obj **)(a1 + 0x3C))->v18();
         quot = (s16)(a / ((s8)a1[0x60] + 1));
         *(s16 *)((u32)p + 0x30) = (i + 1) * quot + (*(Obj **)(a1 + 0x3C))->v16();
@@ -6231,7 +6231,7 @@ void fn_8013D140(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
@@ -6329,24 +6329,24 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
             }
         }
         if ((s8)p[0x62] != (s8)p[0x63]) {
-            item = fn_8000B908(p[0x40 + (s8)p[0x63]]);
+            item = GfxEnt_Get(p[0x40 + (s8)p[0x63]]);
             inner = *(Inner **)((u8 *)item + 0x34);
             inner->Deselect(arg1, item);
-            item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
+            item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
             inner = *(Inner **)((u8 *)item + 0x34);
             inner->Select(arg1, item);
             if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-                item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
+                item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                 fx = (f32)(*(s16 *)(p + 0x30) + *(s16 *)((u8 *)item + 0x30));
-                item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
+                item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                 fy = (f32)(*(s16 *)(p + 0x32) + *(s16 *)((u8 *)item + 0x32));
-                item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
+                item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                 inner = *(Inner **)((u8 *)item + 0x34);
                 obj = inner->v2();
                 if (obj != NULL) {
                     Ui_ShowUnitInfoText(gUnitInfoPopup, fx, fy);
                 } else {
-                    item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
+                    item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                     inner = *(Inner **)((u8 *)item + 0x34);
                     Ui_ShowUnitInfoPopup(gUnitInfoPopup, inner->GetObj(item), fx, fy);
                 }
@@ -6508,7 +6508,7 @@ extern "C" void Ui_DrawListPanelBg(void *panel, s32 count) {
     Prim2D_PrepareTex();
 }
 
-extern "C" void *fn_8000B908(u8);
+extern "C" void *GfxEnt_Get(u8);
 extern "C" void fn_8013E218(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
@@ -6551,7 +6551,7 @@ extern "C" void fn_8013E218(void *arg0, void *arg1) {
     u8 *arg1_bytes = (u8 *)arg1;
 
     for (i = 0; i < *(s8 *)&arg1_bytes[0x60]; i++) {
-        p = fn_8000B908(arg1_bytes[0x40 + i]);
+        p = GfxEnt_Get(arg1_bytes[0x40 + i]);
         *(s16 *)((u32)p + 0x30) += ((Obj *)arg0)->v31();
         *(s16 *)((u32)p + 0x32) += ((Obj *)arg0)->v32();
     }

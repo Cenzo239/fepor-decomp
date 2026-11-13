@@ -3279,7 +3279,7 @@ extern "C" void fn_801F1110(void *arg0, void *arg1) {
         virtual void v19() = 0;
         virtual s16 v20() = 0;
     };
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     void fn_8006F9F4(void *, void *);
     s32 i;
     void *p;
@@ -3287,7 +3287,7 @@ extern "C" void fn_801F1110(void *arg0, void *arg1) {
 
     fn_8006F9F4(arg0, arg1);
     for (i = 0; i < (s8)a1[0x60]; i++) {
-        p = fn_8000B908(a1[0x40 + i]);
+        p = GfxEnt_Get(a1[0x40 + i]);
         *(s16 *)((u32)p + 0x32) -= ((Obj *)arg0)->v20();
     }
 }
@@ -3302,7 +3302,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     void fn_8000D864(s32, void *);
     void *Msg_Expand(void *);
     void Text_Draw(s32, s32, s32, void *, ...);
@@ -3410,7 +3410,7 @@ extern "C" void fn_801F11A4(void *arg0, void *arg1) {
     Text_Draw((s32)f31, 0x18, 1, str);
     row = (struct Row *)arg1;
     row = (struct Row *)((u8 *)row + *(s8 *)((u8 *)arg1 + 0x62));
-    item = fn_8000B908(row->id);
+    item = GfxEnt_Get(row->id);
     fn_8000D864(0, Msg_Expand(lbl_8029A734[*(u8 *)((u8 *)item + 0x3A)]));
     strcpy(sp8, Msg_Expand(gGActorPathExt + 0x42D));
     arg1 = (void *)(s32)(s16)((Obj *)arg0)->v18();

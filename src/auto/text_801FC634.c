@@ -1124,7 +1124,7 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     extern u8 gUnitInfoPopup[];
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     void fn_80024B6C(void);
     struct Handler {
         virtual void v0() = 0;
@@ -1149,7 +1149,7 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
         u8 *a1;
         Ui_HideUnitInfoPopup(gUnitInfoPopup);
         a1 = (u8 *)arg1;
-        entry = fn_8000B908(a1[0x40 + (s8)a1[0x62]]);
+        entry = GfxEnt_Get(a1[0x40 + (s8)a1[0x62]]);
         (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
     } else {
         fn_80024B6C();
@@ -1214,7 +1214,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     void Prim2D_SetTex(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void *fn_8000B908(u8);
+    void *GfxEnt_Get(u8);
     s16 Text_MeasureHeight(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
@@ -1262,7 +1262,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     s16 gap;
 
     p = (u8 *)arg1 + (s8)*((u8 *)arg1 + 0x62);
-    glyph = fn_8000B908(p[0x40]);
+    glyph = GfxEnt_Get(p[0x40]);
     gx = *(s16 *)((u8 *)glyph + 0x30);
     gy = *(s16 *)((u8 *)glyph + 0x32);
     wpad = Text_MeasureHeight(-1, lbl_8036BB58);
@@ -2080,7 +2080,7 @@ void fn_8020164C(void *arg0, void *arg1) {
 
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void *fn_8000B908(s32);
+    void *GfxEnt_Get(s32);
     void fn_80024B6C(void);
 
     u8 *obj;
@@ -2099,7 +2099,7 @@ void fn_8020164C(void *arg0, void *arg1) {
             index = (s8)*((u8 *)arg1 + 0x62);
             index = *((u8 *)arg1 + index + 0x40);
 
-            entry = (u8 *)fn_8000B908(index);
+            entry = (u8 *)GfxEnt_Get(index);
             handler = *(void **)(entry + 0x34);
 
             ((void (*)(void *, void *, void *))

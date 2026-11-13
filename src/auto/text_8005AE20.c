@@ -7825,7 +7825,7 @@ void fn_800708B0(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void *fn_8000B908(u8);
+extern "C" void *GfxEnt_Get(u8);
 #pragma cplusplus on
 extern "C" void fn_80070B3C(void *arg0, void *arg1) {
     struct Obj {
@@ -7869,7 +7869,7 @@ extern "C" void fn_80070B3C(void *arg0, void *arg1) {
     Ent *p;
 
     for (i = 0; i < g->count; i++) {
-        p = (Ent *)fn_8000B908(g->ids[i]);
+        p = (Ent *)GfxEnt_Get(g->ids[i]);
         if (p->level >= 4) {
             p->y = g->obj->v17() + 0x90;
             p->y += (p->level - 4) * g->obj->v20();
@@ -8025,7 +8025,7 @@ void fn_80071CE8(void *arg0, void *arg1) {
 }
 
 void Ui_DrawObjRouteIcon(void *unused, void *unit) {
-    void *fn_8000B908(s32);
+    void *GfxEnt_Get(s32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -8040,12 +8040,12 @@ void Ui_DrawObjRouteIcon(void *unused, void *unit) {
     (void)unused;
     addr = (u8 *)unit;
     addr += *(s8 *)(addr + 0x62);
-    p = fn_8000B908(*(u8 *)(addr + 0x40));
+    p = GfxEnt_Get(*(u8 *)(addr + 0x40));
     a = *(s16 *)((u8 *)p + 0x30);
 
     addr = (u8 *)unit;
     addr += *(s8 *)(addr + 0x62);
-    p = fn_8000B908(*(u8 *)(addr + 0x40));
+    p = GfxEnt_Get(*(u8 *)(addr + 0x40));
     b = *(s16 *)((u8 *)p + 0x32);
 
     if (*(s16 *)((u8 *)unit + 0x3A) < 0) {
