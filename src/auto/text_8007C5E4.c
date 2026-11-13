@@ -9,7 +9,7 @@ extern f32 lbl_803696C8;
 extern s32 lbl_803682F0;
 extern void *lbl_8026CC58;
 extern void *lbl_80289998;
-extern f32 lbl_80369690;
+extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
 

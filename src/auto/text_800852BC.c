@@ -14,7 +14,7 @@ extern f32 lbl_803696C8;
 extern s32 lbl_803682F0;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-extern f32 lbl_80369690;
+extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
 extern f64 lbl_803696C0;
@@ -1526,7 +1526,7 @@ void fn_80088FFC(void *arg0) {
     void fn_80220DEC(s32, s32, s32);
     void fn_8022097C(void);
     void Process_Unlink(void *);
-    extern f32 lbl_80369690;
+    extern f32 gScreenOrigin;
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
     extern f32 lbl_8036969C;
@@ -1535,12 +1535,12 @@ void fn_80088FFC(void *arg0) {
     u8 sp8[0x40];
     u8 alpha;
 
-    C_MTXOrtho(&sp8[0], lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+    C_MTXOrtho(&sp8[0], gScreenOrigin, lbl_80369694, gScreenOrigin, lbl_80369698, gScreenOrigin, lbl_8036969C);
     GXSetProjection(&sp8[0], 1);
-    PSMTXTrans(&sp8[0], lbl_80369690, lbl_80369690, lbl_803696A0);
+    PSMTXTrans(&sp8[0], gScreenOrigin, gScreenOrigin, lbl_803696A0);
     GXLoadPosMtxImm(&sp8[0], 0);
     GXSetCurrentMtx(0);
-    GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
+    GXSetViewport(gScreenOrigin, gScreenOrigin, lbl_80369698, lbl_80369694, gScreenOrigin, lbl_803696A4);
     fn_8021FBB8();
     fn_8021F4E4(9, 1);
     fn_8021FBF0(0, 9, 1, 3, 0);
@@ -1624,7 +1624,7 @@ void fn_800892E8(void *arg0) {
     *(void **)(obj + 0x48) = fn_800C45B8(-size, lbl_8026CC58 + 0x2A, 0);
     DCInvalidateRange(*(void **)(obj + 0x48), size);
     fn_80222644(obj + 0x4C, *(void **)(obj + 0x48), 0x260, 0x1C0, 4, 0, 0, 0);
-    fn_802228D8(obj + 0x4C, 0, 0, 0, 0, 0, lbl_80369690, lbl_80369690, lbl_80369690);
+    fn_802228D8(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
     tmp = fn_8000CAF0(lbl_80289998, 6);
     *(void **)((u8 *)tmp + 0x54) = arg0;
     f38 = lbl_803696A8;
@@ -1710,16 +1710,16 @@ void fn_80089554(void) {
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
     M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
-    extern f32 lbl_80369690;
+    extern f32 gScreenOrigin;
     extern f32 lbl_803696B0;
     extern f32 lbl_803696B4;
     extern f32 lbl_803696B8;
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_80369690, lbl_80369690, lbl_80369690, lbl_803696B0);
+    Prim2D_SetTransform(gScreenOrigin, gScreenOrigin, gScreenOrigin, lbl_803696B0);
     fn_8000A174(0, 0x800);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect(lbl_80369690, lbl_80369690, lbl_803696B4, lbl_803696B8);
+    Prim2D_SetRect(gScreenOrigin, gScreenOrigin, lbl_803696B4, lbl_803696B8);
     Prim2D_EndPrim();
 }
 
@@ -1821,12 +1821,12 @@ void fn_80089680(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x43) = (u8)(s32)(bc * (ratio * diff + lo));
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
-        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, gScreenOrigin, lbl_80369694, gScreenOrigin, lbl_80369698, gScreenOrigin, lbl_8036969C);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
-        GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
+        GXSetViewport(gScreenOrigin, gScreenOrigin, lbl_80369698, lbl_80369694, gScreenOrigin, lbl_803696A4);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
         GXSetChanMatColor(4, &sp8);
         fn_8021FBB8();
@@ -1995,7 +1995,7 @@ void fn_80089A28(void *arg0) {
         break;
     case 3:
         *(u16 *)((u8 *)arg0 + 0x34) = *(u16 *)((u8 *)arg0 + 0x34) + 1;
-        start = lbl_80369690;
+        start = gScreenOrigin;
         f31 = Math_Ease(0, start, lbl_803696D0,
                           (f32)*(u16 *)((u8 *)arg0 + 0x34),
                           (f32)*(u16 *)((u8 *)arg0 + 0x36));
@@ -2006,12 +2006,12 @@ void fn_80089A28(void *arg0) {
         break;
     }
 
-    C_MTXOrtho(sp8, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+    C_MTXOrtho(sp8, gScreenOrigin, lbl_80369694, gScreenOrigin, lbl_80369698, gScreenOrigin, lbl_8036969C);
     GXSetProjection(sp8, 1);
-    PSMTXTrans(sp8, lbl_80369690, lbl_80369690, lbl_803696A0);
+    PSMTXTrans(sp8, gScreenOrigin, gScreenOrigin, lbl_803696A0);
     GXLoadPosMtxImm(sp8, 0);
     GXSetCurrentMtx(0);
-    GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
+    GXSetViewport(gScreenOrigin, gScreenOrigin, lbl_80369698, lbl_80369694, gScreenOrigin, lbl_803696A4);
     fn_8021FBB8();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
@@ -2203,12 +2203,12 @@ void Ui_DrawColorFade(void *arg0) {
         break;
     }
     if (*(u8 *)((u8 *)arg0 + 0x37) != 0) {
-        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, gScreenOrigin, lbl_80369694, gScreenOrigin, lbl_80369698, gScreenOrigin, lbl_8036969C);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
-        GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
+        GXSetViewport(gScreenOrigin, gScreenOrigin, lbl_80369698, lbl_80369694, gScreenOrigin, lbl_803696A4);
         fn_8021FBB8();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -2361,12 +2361,12 @@ void fn_8008A5AC(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x43) = (u8)(s32)(bc * ((((f32)u34 / (f32)u36) * (*(f32 *)((u8 *)arg0 + 0x3C) - temp_f5)) + temp_f5));
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
-        C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
+        C_MTXOrtho(spC, gScreenOrigin, lbl_80369694, gScreenOrigin, lbl_80369698, gScreenOrigin, lbl_8036969C);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
-        GXSetViewport(lbl_80369690, lbl_80369690, lbl_80369698, lbl_80369694, lbl_80369690, lbl_803696A4);
+        GXSetViewport(gScreenOrigin, gScreenOrigin, lbl_80369698, lbl_80369694, gScreenOrigin, lbl_803696A4);
         fn_8021FBB8();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
