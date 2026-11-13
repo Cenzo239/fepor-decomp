@@ -625,7 +625,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
     void Map_ShowMoveLimitView(void);
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
-    extern u8 lbl_8026E770[];
+    extern u8 gMapMoveMsgStrs[];
     u8 temp_r31;
 
     if ((s8)gUiContext[0x12] != 0) {
@@ -636,12 +636,12 @@ void MapUi_ShowUnitRanges(void *arg0) {
         fn_800227F8(gBattleMap, *(s32 *)((u8 *)arg0 + 0x18C));
         fn_80022748(gBattleMap, *(s32 *)((u8 *)arg0 + 0x190));
         Map_FloodMoveRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
-        Msg_Expand(lbl_8026E770 + 0xCE);
+        Msg_Expand(gMapMoveMsgStrs + 0xCE);
         fn_80091A1C();
     } else {
         UiCtx_BeginMoveSelect(gUiContext, arg0);
         Map_SetupUnitMoveLimit(arg0);
-        Msg_Expand(lbl_8026E770 + 0xD9);
+        Msg_Expand(gMapMoveMsgStrs + 0xD9);
         fn_80091A1C();
     }
     Map_ShowMoveLimitView();
