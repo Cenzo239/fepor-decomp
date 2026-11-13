@@ -19938,7 +19938,7 @@ void fn_800FA360(void *arg0) {
     }
 }
 
-void fn_800FA424(void *arg0) {
+void Ai_Cmd_TryHashedStatus(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
