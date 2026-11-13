@@ -88,37 +88,38 @@ void fn_8008FE5C(void* arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void Ui_DrawCenteredMsgLines(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+/* Draw up to three Msg_Expand strings centered in a message panel. */
+void Ui_DrawCenteredMsgLines(s32 x, s32 y, u32 msg1, u32 msg2, u32 msg3) {
     void *Msg_Expand(u32);
     void Text_Draw(s16, s16, u8, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 Ui_DrawMsgPanelBg();
     extern f32 lbl_80369754;
-    void *temp_r27;
-    void *temp_r27_2;
-    s32 temp_r28;
-    s32 temp_r4;
-    s32 temp_r4_2;
-    s32 temp_r4_3;
+    void *text;
+    void *text2;
+    s32 panelW;
+    s32 pad;
+    s32 pad2;
+    s32 pad3;
 
-    temp_r28 = Ui_DrawMsgPanelBg();
+    panelW = Ui_DrawMsgPanelBg();
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (arg2 != 0U) {
-        temp_r27 = Msg_Expand(arg2);
-        temp_r4 = temp_r28 - Text_MeasureWidth(temp_r27, -1, lbl_80369754);
-        Text_Draw((s16) (arg0 + temp_r4 / 2), (s16) (arg1 + 0x1E), 2, temp_r27);
+    if (msg1 != 0U) {
+        text = Msg_Expand(msg1);
+        pad = panelW - Text_MeasureWidth(text, -1, lbl_80369754);
+        Text_Draw((s16) (x + pad / 2), (s16) (y + 0x1E), 2, text);
     }
-    if (arg3 != 0U) {
-        temp_r27_2 = Msg_Expand(arg3);
-        temp_r4_2 = temp_r28 - Text_MeasureWidth(temp_r27_2, -1, lbl_80369754);
-        Text_Draw((s16) (arg0 + temp_r4_2 / 2), (s16) (arg1 + 0x3C), 8, temp_r27_2);
+    if (msg2 != 0U) {
+        text2 = Msg_Expand(msg2);
+        pad2 = panelW - Text_MeasureWidth(text2, -1, lbl_80369754);
+        Text_Draw((s16) (x + pad2 / 2), (s16) (y + 0x3C), 8, text2);
     }
-    if (arg4 != 0U) {
-        arg4 = (u32) Msg_Expand(arg4);
-        temp_r4_3 = temp_r28 - Text_MeasureWidth((void *) arg4, -1, lbl_80369754);
-        Text_Draw((s16) (arg0 + temp_r4_3 / 2), (s16) (arg1 + 0x54), 8, (void *) arg4);
+    if (msg3 != 0U) {
+        msg3 = (u32) Msg_Expand(msg3);
+        pad3 = panelW - Text_MeasureWidth((void *) msg3, -1, lbl_80369754);
+        Text_Draw((s16) (x + pad3 / 2), (s16) (y + 0x54), 8, (void *) msg3);
     }
 }
 
