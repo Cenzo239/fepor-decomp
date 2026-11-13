@@ -62,7 +62,7 @@ void fn_801E460C(void *arg0) {
     void fn_801E8D34(void *);
     extern u8 lbl_8027EB78[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern u32 *lbl_80367240;
     extern u32 lbl_80368DC4;
     s16 spC[2];
@@ -76,7 +76,7 @@ void fn_801E460C(void *arg0) {
     void *msg;
 
     skip = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         skip = 1;
     }
     if (skip == 0) {

@@ -1754,7 +1754,7 @@ extern "C" void fn_801ADDB8(void *arg0) {
     extern u8 lbl_8027BC88[];
     extern void *lbl_80367240;
     void fn_801475FC(void *, s32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     u8 var_r3;
     s16 temp_r31;
     s32 temp_r4;
@@ -1764,7 +1764,7 @@ extern "C" void fn_801ADDB8(void *arg0) {
     s16 temp_r0;
 
     var_r3 = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {

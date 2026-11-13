@@ -1936,7 +1936,7 @@ void fn_80089A28(void *arg0) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
     extern f32 lbl_8036969C;
@@ -1959,7 +1959,7 @@ void fn_80089A28(void *arg0) {
     s32 height;
     u16 state;
 
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         state = *(u16 *)((u8 *)arg0 + 0x32);
         switch (state) {
         case 0:
@@ -2155,7 +2155,7 @@ void fn_80089FA8(void *arg0) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
     extern f32 lbl_8036969C;
@@ -2167,7 +2167,7 @@ void fn_80089FA8(void *arg0) {
     f32 b;
     u16 state;
 
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         *(u8 *)((u8 *)arg0 + 0x37) = 0;
         *(u16 *)((u8 *)arg0 + 0x32) = 0;
         return;
@@ -2239,7 +2239,7 @@ void fn_80089FA8(void *arg0) {
 }
 
 void fn_8008A290(s32 arg0, s32 arg1) {
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     void fn_8008A32C(void *, s32, s32);
     extern u16 *lbl_803674E0;
     int var_r6;
@@ -2247,7 +2247,7 @@ void fn_8008A290(s32 arg0, s32 arg1) {
 
     var_r6 = arg0;
     var_r5 = arg1;
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         switch ((u8)var_r6) {
         case 2:
             var_r6 = 0;
@@ -2321,7 +2321,7 @@ void fn_8008A5AC(void *arg0) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_80369694;
     extern f32 lbl_80369698;
     extern f32 lbl_8036969C;
@@ -2337,7 +2337,7 @@ void fn_8008A5AC(void *arg0) {
     u32 u36;
     void *p;
 
-    if (*(u16 *)((u8 *)arg0 + 0x34) >= *(u16 *)((u8 *)arg0 + 0x36) || (lbl_80367110 & 1)) {
+    if (*(u16 *)((u8 *)arg0 + 0x34) >= *(u16 *)((u8 *)arg0 + 0x36) || (gUiInputFlags & 1)) {
         bc = lbl_803696BC;
         t = *(u16 *)((u8 *)arg0 + 0x32);
         t &= 0xFFFE;

@@ -15225,13 +15225,13 @@ s32 fn_800EB520(char *arg0) {
 }
 
 void fn_800EB558(void) {
-    extern s32 lbl_80367110;
-    lbl_80367110 &= 0xFFFFFEFF;
+    extern s32 gUiInputFlags;
+    gUiInputFlags &= 0xFFFFFEFF;
 }
 
 void fn_800EB568(void) {
-    extern s32 lbl_80367110;
-    lbl_80367110 |= 0x100;
+    extern s32 gUiInputFlags;
+    gUiInputFlags |= 0x100;
 }
 
 void fn_800EB578(void) {
@@ -17649,7 +17649,7 @@ void fn_800F2174(void *arg0)
     extern u8 lbl_80272D08[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_80330708[];
-    extern u16 lbl_80367110;
+    extern u16 gUiInputFlags;
     extern u8 lbl_803671C1;
     extern u8 *lbl_80367240;
     extern f32 lbl_8036A010;
@@ -17720,7 +17720,7 @@ void fn_800F2174(void *arg0)
                 r0 = *(s32 *)(lbl_80367240 + 4);
             }
             r22 = r0 & 0xF;
-            if (r22 != 0 && !(lbl_80367110 & 0x80)) {
+            if (r22 != 0 && !(gUiInputFlags & 0x80)) {
                 pad = lbl_80272CE8 + (r22 * 2);
                 var_f30 = (f32)(s8)pad[0] + *(f32 *)(lbl_80330708 + 0x524);
                 var_f31 = (f32)(s8)pad[1] + *(f32 *)(lbl_80330708 + 0x528);
@@ -17733,7 +17733,7 @@ void fn_800F2174(void *arg0)
                     var_f31 -= (f32)(s8)pad[1];
                 }
                 grid = *(s16 **)(lbl_802CA518 + 0x14190);
-                if (!(lbl_80367110 & 0x400)
+                if (!(gUiInputFlags & 0x400)
                     || grid[((s8)(s32)*(f32 *)(lbl_80330708 + 0x524)) + (((s8)(s32)*(f32 *)(lbl_80330708 + 0x528)) << 6)] < 0
                     || grid[((s8)(s32)var_f30) + (((s8)(s32)var_f31) << 6)] >= 0
                     || (u32)r22 == (u32)(*(s32 *)(lbl_80367240 + 4) & (*(s32 *)(lbl_80367240 + 8) ^ *(s32 *)(lbl_80367240 + 4)) & 0xF)) {
@@ -17763,7 +17763,7 @@ void fn_800F2174(void *arg0)
             lbl_803671C1 = 1;
         } else {
             r22 = *(s32 *)(lbl_80367240 + 0xC) & 0xF;
-            if (r22 != 0 && !(lbl_80367110 & 0x80)) {
+            if (r22 != 0 && !(gUiInputFlags & 0x80)) {
                 pad = lbl_80272CE8 + (r22 * 2);
                 var_f31 = (f32)(s8)pad[0] + *(f32 *)(lbl_80330708 + 0x524);
                 var_f30 = (f32)(s8)pad[1] + *(f32 *)(lbl_80330708 + 0x528);
@@ -17776,7 +17776,7 @@ void fn_800F2174(void *arg0)
                     var_f30 -= (f32)(s8)pad[1];
                 }
                 grid = *(s16 **)(lbl_802CA518 + 0x14190);
-                if (!(lbl_80367110 & 0x400)
+                if (!(gUiInputFlags & 0x400)
                     || grid[((s8)(s32)*(f32 *)(lbl_80330708 + 0x524)) + (((s8)(s32)*(f32 *)(lbl_80330708 + 0x528)) << 6)] < 0
                     || grid[((s8)(s32)var_f31) + (((s8)(s32)var_f30) << 6)] >= 0
                     || (u32)r22 == (u32)(*(s32 *)(lbl_80367240 + 4) & (*(s32 *)(lbl_80367240 + 8) ^ *(s32 *)(lbl_80367240 + 4)) & 0xF)) {
@@ -17808,7 +17808,7 @@ void fn_800F2174(void *arg0)
         stick = *(u8 **)lbl_80367240;
         if (((s8)stick[2] | (s8)stick[3]) != 0) {
             if (*(s32 *)(lbl_80367240 + 4) & 0x200) {
-                if (!(lbl_80367110 & 0x80)) {
+                if (!(gUiInputFlags & 0x80)) {
                     stick = *(u8 **)lbl_80367240;
                     f26 = lbl_8036A038 * -*(f32 *)((u8 *)fn_80068548() + 0xFC);
                     f28 = (f32)(s8)stick[2] / lbl_8036A04C;
@@ -17841,7 +17841,7 @@ void fn_800F2174(void *arg0)
                     fn_8014CAD4(lbl_80330708, f29, f28);
                 }
                 lbl_803671C1 = 1;
-            } else if (!(lbl_80367110 & 0x80)) {
+            } else if (!(gUiInputFlags & 0x80)) {
                 stick = *(u8 **)lbl_80367240;
                 f26 = lbl_8036A038 * -*(f32 *)((u8 *)fn_80068548() + 0xFC);
                 f29 = (f32)(s8)stick[2] / lbl_8036A054;

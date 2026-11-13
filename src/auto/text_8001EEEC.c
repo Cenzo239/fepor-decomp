@@ -2523,7 +2523,7 @@ extern "C" void fn_80024734(void *arg0) {
 extern "C" void fn_80024768(void *arg0) {
 void *fn_8000B908(u8);void fn_8000C188(void*);
 void fn_801475FC(void*,s32);void fn_801673D0(void*);void fn_8016746C(void*,void*,void*,f32,f32);void fn_8016758C(void*,void*,void*,f32,f32);
-extern s32 lbl_80367110;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
+extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 lbl_80368DC4;
 f32 x,y;
 MenuController24768 *ctrl;
@@ -2531,7 +2531,7 @@ void *item,*q;
 u8 *node;
 u8 flags;
 ctrl=*(MenuController24768**)((u8*)arg0+0x3c);flags=0;
-if(!(lbl_80367110&0x80)){
+if(!(gUiInputFlags&0x80)){
 if(*(s8*)((u8*)arg0+0x62)<0){ctrl->v13(arg0);return;}
 ctrl->v11(arg0);
 (*(MenuController24768**)((u8*)arg0+0x3c))->v12(arg0);

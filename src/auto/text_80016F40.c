@@ -345,7 +345,7 @@ s32 fn_80017840(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     }
 }
 
-extern s32 lbl_80367110;
+extern s32 gUiInputFlags;
 extern f32 lbl_80368C88;
 extern f64 lbl_80368C98;
 extern f32 lbl_80368CA0;
@@ -362,7 +362,7 @@ void fn_80017998(void *arg0) {
     f32 fn_80059F64(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_80368C88;
 
     s32 mode;
@@ -370,7 +370,7 @@ void fn_80017998(void *arg0) {
     f32 f1;
 
     *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
-    if ((lbl_80367110 & 1) != 0) {
+    if ((gUiInputFlags & 1) != 0) {
         *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x38);
     }
     if (*(s32 *)((u8 *)arg0 + 0x34) >= *(s32 *)((u8 *)arg0 + 0x38)) {
@@ -725,7 +725,7 @@ void fn_8001840C(void *arg0)
 {
     extern s32 lbl_803671C4;
     extern u8 lbl_803671C8;
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u16 lbl_80330708[700];
     extern u8 lbl_802CA2C8[];
 
@@ -802,7 +802,7 @@ void fn_8001840C(void *arg0)
 
     *(f32 *)(dst + 0x70) = lbl_80368CA8;
 
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         *(f32 *)(dst + 0x10) = v0;
 
         x = *(f32 *)(data + 0x52C);

@@ -270,7 +270,7 @@ void fn_801EB294(void *arg0)
     extern u8 lbl_802CA264[];
     extern u8 lbl_802CA518[];
     extern u8 gUiContext[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     extern void *lbl_80368370;
     extern s8 lbl_80368374;
@@ -336,11 +336,11 @@ void fn_801EB294(void *arg0)
         lbl_80368374 = 1;
     }
     unit2 = fn_800AA794();
-    if (unit2 == NULL && (lbl_80367110 & 0x400)) {
+    if (unit2 == NULL && (gUiInputFlags & 0x400)) {
         fn_8004A1F0();
     }
     skip = 0;
-    gflags = lbl_80367110;
+    gflags = gUiInputFlags;
     if ((gflags & 0x10) && !(gflags & 0x20)) {
         skip = 1;
     }
@@ -361,7 +361,7 @@ void fn_801EB294(void *arg0)
         }
     }
     skip = 0;
-    gflags = lbl_80367110;
+    gflags = gUiInputFlags;
     if ((gflags & 0x10) && !(gflags & 0x20)) {
         skip = 1;
     }
@@ -373,7 +373,7 @@ void fn_801EB294(void *arg0)
         }
         if ((unit != NULL) && (buttons & 0x800)) {
             fn_800A8400();
-            if (lbl_80367110 & 0x400) {
+            if (gUiInputFlags & 0x400) {
                 fn_8004A1F0();
             }
             fn_8002833C(gUiContext, unit);
@@ -423,7 +423,7 @@ void fn_801EB294(void *arg0)
         } else {
             if (buttons & 0x10) {
             block_65:
-                if (lbl_80367110 & 0x400) {
+                if (gUiInputFlags & 0x400) {
                     fn_8004A1F0();
                 }
                 fn_801475FC(lbl_8027EE08 + 0x20f, 0x64);
@@ -530,7 +530,7 @@ end:
 
 #pragma use_lmw_stmw on
 void fn_801EBBB8(void *arg0) {
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern s8 lbl_803683B8;
     extern f32 lbl_8036B780;
     extern u8 lbl_8027EE08[];
@@ -562,7 +562,7 @@ void fn_801EBBB8(void *arg0) {
     Unk5C *temp_r3;
 
     lbl_803683B8 = 0;
-    lbl_80367110 &= 0xFFFFFFFE;
+    gUiInputFlags &= 0xFFFFFFFE;
     fn_800C93EC((u8 *)arg0 + 0x40, 0);
     count = fn_80106DC8(sp8);
     fn_8002F728(lbl_802EF4E0, lbl_802EF4E0);
@@ -1952,9 +1952,9 @@ void fn_801EDDF0(void *arg0) {
 }
 
 void fn_801EDEC8(void *arg0) {
-    extern s32 lbl_80367110;
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) (lbl_80367110 & 4);
-    lbl_80367110 |= 4;
+    extern s32 gUiInputFlags;
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) (gUiInputFlags & 4);
+    gUiInputFlags |= 4;
 }
 
 void fn_801EDEE4(void *arg0) {
@@ -3467,4 +3467,4 @@ extern void* lbl_8027EE08;
 /* Functions from 0x801EAA2C to 0x801F18D4, found by decomp-toolkit. */
 #include "common.h"
 
-s32 lbl_80367110;
+s32 gUiInputFlags;

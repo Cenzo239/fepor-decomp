@@ -166,7 +166,7 @@ void fn_8009CF28(void) {
     void Prim2D_Begin(void);
     void Prim2D_EndPrim(void);
     extern u8 lbl_8026D568[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_803698FC;
     extern f32 lbl_80369900;
     extern f32 lbl_8036992C;
@@ -217,13 +217,13 @@ void fn_8009CF28(void) {
     Prim2D_Begin();
     fn_8000A174(0, 3);
     Prim2D_PrepareTex();
-    if (lbl_80367110 & 2) {
+    if (gUiInputFlags & 2) {
         Prim2D_AddPrim(7);
         fn_80007858(lbl_80369930, lbl_80369934);
         fn_80007124(lbl_8026D568 + 0x47);
         Prim2D_EndPrim();
     }
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         Prim2D_AddPrim(7);
         fn_80007858(lbl_80369968, lbl_80369934);
         fn_80007124(lbl_8026D568 + 0x49);

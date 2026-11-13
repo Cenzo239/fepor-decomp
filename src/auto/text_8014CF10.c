@@ -570,7 +570,7 @@ void fn_8014DF68(void *arg0)
 {
     extern u8 lbl_8036723A;
     extern u8 lbl_80277238[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern s32 lbl_80367B84;
     extern void **lbl_80367B70;
 
@@ -586,7 +586,7 @@ void fn_8014DF68(void *arg0)
             lbl_80277238 + 0x79
         );
 
-        lbl_80367110 &= ~1;
+        gUiInputFlags &= ~1;
 
         fn_8011D908(
             lbl_80367B70[lbl_80367B84],

@@ -3,6 +3,6 @@
 #include "common.h"
 
 void fn_80006258(void) {
-    extern s32 lbl_80367110;
-    lbl_80367110 = 0;
+    extern s32 gUiInputFlags;
+    gUiInputFlags = 0;
 }

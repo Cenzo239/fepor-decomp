@@ -327,8 +327,8 @@ void fn_80029730(void) {
 void fn_80029784(void) {
     u8 fn_800AA188();
     M2C_UNK fn_800F214C();
-    extern s32 lbl_80367110;
-    if ((fn_800AA188() != 0) && !(lbl_80367110 & 0x80)) {
+    extern s32 gUiInputFlags;
+    if ((fn_800AA188() != 0) && !(gUiInputFlags & 0x80)) {
         fn_800F214C();
         fn_800F20E0();
     }

@@ -3222,7 +3222,7 @@ void fn_801F8E30(void *arg0) {
     f64 fn_802387C8(f64, f64);
     void fn_80069F04(void);
     void fn_801F9464(void);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80281028[];
     extern f32 lbl_8036BA00, lbl_8036BA04, lbl_8036BA18, lbl_8036BA1C, lbl_8036BA20;
     extern f32 lbl_8036BA38, lbl_8036BA3C, lbl_8036BA40, lbl_8036BA44, lbl_8036BA48;
@@ -3242,7 +3242,7 @@ void fn_801F8E30(void *arg0) {
     u8 flag;
     char buf[0x20];
 
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         fn_8000C070(arg0, 3);
         return;
     }
@@ -3403,7 +3403,7 @@ void fn_801F94D8(void *arg0) {
     void *fn_800A8978(void *);
     f32 fn_801099A0(void *, s32);
     void sprintf(void *, void *, ...);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80281028[];
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA20;
@@ -3433,7 +3433,7 @@ void fn_801F94D8(void *arg0) {
     s8 val19a;
 
     temp_r29 = arg0;
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         fn_8000C070(temp_r29, 3);
         return;
     }
@@ -3786,7 +3786,7 @@ void fn_8000A174(s32,s32); void *fn_8000E0E4(void*);
 s32 fn_800102BC(s32,f32); s16 fn_80010B78(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
 void sprintf(void*,void*,...); f64 fn_802387C8(f64,f64);
-extern s32 lbl_80367110;
+extern s32 gUiInputFlags;
 extern u8 lbl_80281028[];
 extern f32 lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20,lbl_8036BA38,lbl_8036BA00,lbl_8036BA04,lbl_8036BA88,lbl_8036BA94,lbl_8036BA98,lbl_8036BA9C,lbl_8036BAA0,lbl_8036BAA4,lbl_8036BAA8;
 extern f64 lbl_8036BA28,lbl_8036BA30;
@@ -3796,7 +3796,7 @@ void *str, *a, *b, *obj;
 u8 flag;
 u32 minutes, seconds, hours, time;
 f32 tx, scale, zero;
-if(lbl_80367110 & 1) {fn_8000C070(arg0,1);return;}
+if(gUiInputFlags & 1) {fn_8000C070(arg0,1);return;}
 Prim2D_Begin();
 Prim2D_SetTransform(lbl_8036BA18,lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20);
 fn_80009B8C(255); fn_80009B80(128); Prim2D_PrepareTex();
@@ -3912,7 +3912,7 @@ void fn_801FA5DC(void *arg0) {
     s16 fn_80010B78(void *, s32, f32);
     void fn_8001019C(s32, s32, s32, void *, ...);
     f64 fn_802387C8(f64, f64);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA1C;
     extern f32 lbl_8036BA20;
@@ -3940,7 +3940,7 @@ void fn_801FA5DC(void *arg0) {
     Entry *ent;
     u32 i;
 
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         fn_8000C070(arg0, 1);
         return;
     }

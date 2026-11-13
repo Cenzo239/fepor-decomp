@@ -413,7 +413,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
     extern u8 lbl_8028F2E0[];
     extern u16 lbl_802B14E4[];
     extern u8 lbl_802CA518[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     u8 sp8[0x68];
     void *self;
     u32 arg1b;
@@ -438,7 +438,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
     fn_800056CC((const char *)(lbl_802738F8 + 0x33), self);
     if (fn_8000D354(self) != 0) {
         nibble = fn_801A1CC8() & 0xF;
-        if (lbl_80367110 & 1) {
+        if (gUiInputFlags & 1) {
             arg1b = 0;
         }
         if (arg1b == 0) {

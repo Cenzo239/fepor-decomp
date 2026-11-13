@@ -154,7 +154,7 @@ void fn_8005AE78(void) {
     void fn_80211478(void);
     void fn_80211614(s32);
     void fn_8022097C(void);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_803672DC;
     extern s8 lbl_803672E0;
@@ -189,7 +189,7 @@ void fn_8005AE78(void) {
         lbl_803672E3 = 1;
     }
     lbl_803672E1 = fn_80208D18() != 0;
-    if (!(lbl_80367110 & 0x100) && lbl_803672E3 != 0) {
+    if (!(gUiInputFlags & 0x100) && lbl_803672E3 != 0) {
         fn_80211614(1);
         fn_80211478();
         fn_802107A8();

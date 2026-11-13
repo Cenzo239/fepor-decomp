@@ -466,7 +466,7 @@ extern "C" void fn_80163E70(void *arg0) {
 void fn_80163E9C(void *arg0) {
     u32 *fn_80037BD0(s32, s16);
     void fn_801475FC(void *, s32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     extern u8 lbl_802776F8[];
     s32 temp_r26;
@@ -482,7 +482,7 @@ void fn_80163E9C(void *arg0) {
     u8 var_r3;
 
     var_r3 = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {
@@ -2869,7 +2869,7 @@ void fn_80169870(void *arg0) {
     void fn_80145520(void);
     void fn_80148980(void *, s32);
     extern u8 lbl_8032FF08[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern s32 lbl_80367AE0;
     s32 flags;
 
@@ -2881,7 +2881,7 @@ void fn_80169870(void *arg0) {
             fn_80140304(arg0, 0);
         }
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     lbl_80367AE0 = 0;
     if (!(flags & 0x10)) {
         fn_80145520();
@@ -3177,7 +3177,7 @@ void fn_8016A0CC(void *arg0) {
 void fn_8016A1BC(void *arg0) {
     extern f32 lbl_8036A9C8;
     extern char lbl_80277BC0[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern s32 lbl_80367AE0;
     extern u8 lbl_80330708[];
     extern u16 lbl_8028FDB0[];
@@ -3264,10 +3264,10 @@ void fn_8016A1BC(void *arg0) {
     if (fn_8013FF94(p, -0x1000, 0) != 0U) {
         fn_801658DC(lbl_80277BC0 + 0xF0);
     }
-    lbl_80367110 &= 0xFFFFFFFE;
+    gUiInputFlags &= 0xFFFFFFFE;
     fn_8000BD98(lbl_80277BC0 + 0x50);
     lbl_80367AE0 = 0;
-    if (!(lbl_80367110 & 0x10)) {
+    if (!(gUiInputFlags & 0x10)) {
         fn_801455B8(0);
         fn_8014832C(0, lbl_80277BC0 + 0x140, 0x64, 1);
     }
@@ -6332,7 +6332,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
@@ -6386,7 +6386,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
             }
         }
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -6672,7 +6672,7 @@ extern "C" void fn_801703FC(void *arg0) {
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
@@ -6726,7 +6726,7 @@ extern "C" void fn_801703FC(void *arg0) {
             }
         }
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -6935,7 +6935,7 @@ extern "C" void fn_80170AD0(void *arg0) {
     void fn_8016746C(void *, void *, s32, f32, f32);
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
 
@@ -7000,7 +7000,7 @@ extern "C" void fn_80170AD0(void *arg0) {
             }
         }
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -7485,7 +7485,7 @@ extern "C" void fn_80171F00(void *arg0) {
     void fn_8016746C(void *, void *, u32, f32, f32);
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
@@ -7542,7 +7542,7 @@ extern "C" void fn_80171F00(void *arg0) {
         }
     }
     fn_801658DC(text, (u8 *)lbl_80278080 + 0x2ff);
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -7886,7 +7886,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     extern u8 lbl_80294AE8[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
 
@@ -7940,7 +7940,7 @@ extern "C" void fn_80172DA4(void *arg0) {
             }
         }
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -8169,7 +8169,7 @@ void fn_801673D0(void *);
 void fn_8016746C(void *, void *, u32, f32, f32);
 extern u16 lbl_80278080[];
 extern u8 gUnitInfoPopup[];
-extern u32 lbl_80367110;
+extern u32 gUiInputFlags;
 extern void *lbl_80367240;
 extern s32 lbl_80368DC4;
 extern u8 lbl_80294580[];
@@ -8225,7 +8225,7 @@ fn_801673D0(gUnitInfoPopup);
 }
 }
 }
-flags = lbl_80367110;
+flags = gUiInputFlags;
 gate = 0;
 if ((flags & 0x10) && !(flags & 0x20)) gate = 1;
 if (!gate) {
@@ -8385,7 +8385,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     extern u16 lbl_80278080[];
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
 
@@ -8459,7 +8459,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     } else {
         *(u32 *)((u8 *)detailWidget + 0x44) = 0;
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -8934,7 +8934,7 @@ extern "C" void fn_80174E4C(void *arg0) {
     extern u16 lbl_80278080[];
     extern u8 lbl_80294580[];
     extern u32 gUiContext[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
 
     class Vec2s {
@@ -8980,7 +8980,7 @@ extern "C" void fn_80174E4C(void *arg0) {
         var_r30 = fn_8013AC54(obj40);
         ((VObj *)obj50)->v11(var_r30);
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -9505,7 +9505,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     void fn_801695BC(u32, void *, s32);
     extern u16 lbl_80278080[];
     extern u32 gUiContext[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
 
     struct VObj {
@@ -9540,7 +9540,7 @@ extern "C" void fn_80175E3C(void *arg0) {
         ((VObj *)obj4c)->v11(var_r30);
         fn_80138808(*(void **)((u8 *)arg0 + 0x44), var_r30);
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -9716,7 +9716,7 @@ void fn_80176888(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
 }
 
 void fn_801768E4(s32 arg0) {
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern u8 gUnitInfoPopup[];
     
@@ -9724,7 +9724,7 @@ void fn_801768E4(s32 arg0) {
     u8 var_r3;
 
     var_r3 = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {
@@ -11208,7 +11208,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
     s32 fn_80166D8C(void *);
     void fn_80167190(void *, void *, f32, f32);
     void fn_801475FC(void *, s32);
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern u8 gUnitInfoPopup[];
     extern u16 lbl_80278080[];
@@ -11241,7 +11241,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
     void *res;
     u8 *p;
 
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -13105,7 +13105,7 @@ void fn_8017C4BC(void *arg0) {
     void fn_801475FC(void *, s32);
     extern u8 lbl_80278838[];
     extern u8 lbl_80330708[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern f32 lbl_8036ABD8;
 
@@ -13120,7 +13120,7 @@ void fn_8017C4BC(void *arg0) {
     s32 limit;
 
     skip = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         skip = 1;
     }
     if (skip != 0) {
@@ -14650,7 +14650,7 @@ extern "C" void fn_80180084(void *arg0)
     void fn_80176888(void *, void *, f32, f32);
     extern char lbl_802789F0[];
     extern u8 gUnitInfoPopup[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern s32 lbl_80368DC4;
 
@@ -14744,7 +14744,7 @@ extern "C" void fn_80180084(void *arg0)
         }
     }
 
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -14840,7 +14840,7 @@ extern "C" void fn_80180624(void *arg0) {
     void fn_80176888(void *, void *, f32, f32);
     void fn_80181DF0(void *, void * const *);
     extern u8 lbl_802789F0[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     struct PairBig {
         s16 x;
@@ -14926,7 +14926,7 @@ extern "C" void fn_80180624(void *arg0) {
         *(s16 *)((u8 *)obj82 + 0x50) = -1;
         *(s16 *)((u8 *)obj82 + 0x52) = -1;
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -15376,7 +15376,7 @@ extern "C" void fn_80181328(void *arg0) {
 extern "C" void fn_80181354(void *arg0) {
     void fn_801475FC(void *, s32);
     extern u8 lbl_802789F0[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     long buttons;
     s32 edge;
@@ -15390,7 +15390,7 @@ extern "C" void fn_80181354(void *arg0) {
     register s16 now;
 
     skip = 0;
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     count = *(s32 *)((u8 *)arg0 + 0x5C);
     old = *(s16 *)((u8 *)arg0 + 0x4E);
     cur = (s16)count;

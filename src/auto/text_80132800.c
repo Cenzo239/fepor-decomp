@@ -342,7 +342,7 @@ void fn_80132CDC(void) {
 extern "C" void fn_80132CFC(void *arg0) {
     s8 fn_801475FC(void *, s32);
     extern u8 lbl_802764BC[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     struct Obj {
         virtual void v0() = 0;
@@ -373,7 +373,7 @@ extern "C" void fn_80132CFC(void *arg0) {
     if (state != 1) {
         return;
     }
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     blocked = 0;
     if ((flags & 0x10) != 0 && (flags & 0x20) == 0) {
         blocked = 1;
@@ -1755,7 +1755,7 @@ extern "C" void fn_8013577C(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8013ED84(void *, s16);
     extern u8 lbl_80276720[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern u32 *lbl_80367240;
     extern f32 lbl_8036A5EC;
     extern f32 lbl_8036A5F0;
@@ -1798,8 +1798,8 @@ extern "C" void fn_8013577C(void *arg0) {
         page = (s16)(t / rows);
         col = (s16)(t % rows);
     }
-    if ((lbl_80367110 & 0x10) != 0) {
-        if ((lbl_80367110 & 0x20) == 0) {
+    if ((gUiInputFlags & 0x10) != 0) {
+        if ((gUiInputFlags & 0x20) == 0) {
             skip = 1;
         }
     }
@@ -4324,7 +4324,7 @@ extern "C" void fn_80139E88(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8013ED84(void *, s16);
     extern char lbl_802768A0[];
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern u32 *lbl_80367240;
     extern f64 lbl_8036A690;
     struct Obj {
@@ -4366,8 +4366,8 @@ extern "C" void fn_80139E88(void *arg0) {
         page = (s16)(t / rows);
         col = (s16)(t % rows);
     }
-    if ((lbl_80367110 & 0x10) != 0) {
-        if ((lbl_80367110 & 0x20) == 0) {
+    if ((gUiInputFlags & 0x10) != 0) {
+        if ((gUiInputFlags & 0x20) == 0) {
             skip = 1;
         }
     }
@@ -5550,7 +5550,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     s32 fn_80166D8C(void *);
     void fn_80167190(void *, void *, f32, f32);
     void fn_801475FC(void *, s32);
-    extern u32 lbl_80367110;
+    extern u32 gUiInputFlags;
     extern void *lbl_80367240;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80276908[];
@@ -5584,7 +5584,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void *res;
     u8 *p;
 
-    flags = lbl_80367110;
+    flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
         gate = 1;
@@ -6188,7 +6188,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     u8 fn_80166D8C(void *);
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u32 *lbl_80367240;
     extern u8 gUnitInfoPopup[];
     extern f64 lbl_8036A6C8;
@@ -6237,7 +6237,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     f32 fx, fy;
     void *obj;
 
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20))
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20))
         skip = 1;
     if (skip == 0) {
         trig = lbl_80367240[3];
@@ -9410,7 +9410,7 @@ extern "C" void fn_80144000(void *arg0) {
 extern "C" void fn_8014402C(void *arg0, s32 arg1) {
     s32 fn_801475FC(u8 *, s32);
     extern u8 lbl_80276B3C[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern void *lbl_80367240;
     struct Obj {
         virtual void v0() = 0;
@@ -9438,7 +9438,7 @@ extern "C" void fn_8014402C(void *arg0, s32 arg1) {
     s32 cursor;
     s32 next;
 
-    if ((lbl_80367110 & 0x10) != 0 && (lbl_80367110 & 0x20) == 0) {
+    if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
         skip = 1;
     }
     if (skip != 0) {
@@ -10420,11 +10420,11 @@ void fn_801457B4(void) {
 void fn_8014589C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 100;
         fn_8000C188(arg0);
         return;
@@ -10439,11 +10439,11 @@ void fn_8014589C(void *arg0) {
 void fn_8014595C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 120;
         fn_8000C188(arg0);
         return;
@@ -10458,11 +10458,11 @@ void fn_8014595C(void *arg0) {
 void fn_80145A1C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 100;
         fn_8000C188(arg0);
         return;
@@ -10477,11 +10477,11 @@ void fn_80145A1C(void *arg0) {
 void fn_80145ADC(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 0;
         fn_8000C188(arg0);
         return;
@@ -10496,11 +10496,11 @@ void fn_80145ADC(void *arg0) {
 void fn_80145B9C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 100;
         fn_8000C188(arg0);
         return;
@@ -10515,11 +10515,11 @@ void fn_80145B9C(void *arg0) {
 void fn_80145C5C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEE;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEE = 0x46;
         fn_8000C188(arg0);
         return;
@@ -10534,11 +10534,11 @@ void fn_80145C5C(void *arg0) {
 void fn_80145D1C(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEC;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEC = 100;
         fn_8000C188(arg0);
         return;
@@ -10553,11 +10553,11 @@ void fn_80145D1C(void *arg0) {
 void fn_80145DDC(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_80367AEC;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
-    if (lbl_80367110 & 3) {
+    if (gUiInputFlags & 3) {
         lbl_80367AEC = 0x46;
         fn_8000C188(arg0);
         return;
@@ -11073,7 +11073,7 @@ s32 fn_80147578(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
 s8 fn_801475FC(void *arg0, int arg1) {
     void *fn_8000D2BC(void *);
     extern u8 lbl_803301A8[1344];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
     extern u8 lbl_8029267C[];
@@ -11101,7 +11101,7 @@ found:
     if (slot == -1) {
         return -1;
     }
-    if (lbl_80367110 & 1) {
+    if (gUiInputFlags & 1) {
         return -1;
     }
     found = lbl_803301A8 + ((u8)slot * 0x30);

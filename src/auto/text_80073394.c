@@ -181,11 +181,11 @@ extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
 u8 fn_800736F0(void) {
     u8 fn_801E3620(M2C_UNK *);
     extern u8 lbl_80331FB8[];
-    extern s32 lbl_80367110;
+    extern s32 gUiInputFlags;
     u8 res;
     s32 ret;
 
-    if (lbl_80367110 & 0x10) {
+    if (gUiInputFlags & 0x10) {
         return 0;
     }
     res = fn_801E3620((M2C_UNK *)lbl_80331FB8);
