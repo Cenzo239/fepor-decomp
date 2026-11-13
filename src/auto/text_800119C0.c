@@ -1093,12 +1093,9 @@ u8 fn_80014E70(void) {
 void fn_80014E78(void) {
     extern u8 lbl_803671B8;
     extern void OS_YieldThread(void);
-    goto start;
-    do {
-        /* spin */
-    start:
+    while (lbl_803671B8 == 0) {
         OS_YieldThread();
-    } while (lbl_803671B8 == 0);
+    }
 }
 
 extern u8 lbl_803671B8;
