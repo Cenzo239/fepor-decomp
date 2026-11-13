@@ -4365,7 +4365,7 @@ void *MTXRotDegOrder(void *node, void *out)
     int GMaterial_Assert(void *, int, void *);
     extern f32 gMtxZero;
     extern f32 gDegToRad;
-    extern u8 lbl_8026B6E8[];
+    extern u8 gGUtilAssertMsg[];
     u8 sp38[0x30];
     s32 order;
     f32 rx;
@@ -4463,7 +4463,7 @@ void *MTXRotDegOrder(void *node, void *out)
                 }
                 break;
             default:
-                GMaterial_Assert(lbl_8026B6E8, 0xED, lbl_8026B6E8 + 8);
+                GMaterial_Assert(gGUtilAssertMsg, 0xED, gGUtilAssertMsg + 8);
                 break;
             }
 
@@ -8496,4 +8496,4 @@ extern f32 lbl_80369208;
 
 extern f32 gMtxZero;
 extern f32 gDegToRad;
-extern u8 lbl_8026B6E8[];
+extern u8 gGUtilAssertMsg[];
