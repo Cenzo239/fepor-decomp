@@ -2401,7 +2401,8 @@ void fn_801B2E3C(void *arg0) {
     }
 }
 
-void Ui_CreateMainListPanel(void *arg0) {
+/* Create the main list panel at self+0x40, attach it, and set its caption text. */
+void Ui_CreateMainListPanel(void *self) {
     void *Heap_Alloc(s32);
     void *Ui_MainListPanel_Ctor(void *, s32, s32, s32, s32, s32);
     void Ui_LayoutListPanel(void *);
@@ -2409,33 +2410,33 @@ void Ui_CreateMainListPanel(void *arg0) {
     void fn_8011D908(s32, void *);
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
-    void *var_r0;
-    void *temp_r4;
-    void *temp_r6;
-    s32 temp_r31;
-    u32 ret;
+    void *panel;
+    void *tmp;
+    void *data;
+    s32 caption;
+    u32 child;
 
-    var_r0 = Heap_Alloc(0x4C);
-    if (var_r0 != NULL) {
-        var_r0 = Ui_MainListPanel_Ctor(var_r0, 0x138, 0x6C, 0x108, 0xD0, 0x226);
+    panel = Heap_Alloc(0x4C);
+    if (panel != NULL) {
+        panel = Ui_MainListPanel_Ctor(panel, 0x138, 0x6C, 0x108, 0xD0, 0x226);
     }
-    *(void **)((u8 *)arg0 + 0x40) = var_r0;
-    temp_r4 = *(void **)((u8 *)arg0 + 0x40);
-    if (temp_r4 != NULL) {
-        *(s32 *)((u8 *)temp_r4 + 4) = *(s32 *)((u8 *)temp_r4 + 4) + 1;
+    *(void **)((u8 *)self + 0x40) = panel;
+    tmp = *(void **)((u8 *)self + 0x40);
+    if (tmp != NULL) {
+        *(s32 *)((u8 *)tmp + 4) = *(s32 *)((u8 *)tmp + 4) + 1;
     }
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 8) = 0;
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x46) = 0x38;
-    Ui_LayoutListPanel(*(void **)((u8 *)arg0 + 0x40));
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x24) = 8;
-    *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x3C) = 0;
-    Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x40));
-    fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 4), arg0);
-    temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
-    temp_r31 = *(s32 *)((u8 *)temp_r6 + 0x80);
-    ret = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, temp_r31);
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x40) + 8) = 0;
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x46) = 0x38;
+    Ui_LayoutListPanel(*(void **)((u8 *)self + 0x40));
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x24) = 8;
+    *(u8 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x3C) = 0;
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x40));
+    fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 4), self);
+    data = *(void **)((u8 *)self + 0x6C);
+    caption = *(s32 *)((u8 *)data + 0x80);
+    child = Ui_FindChild(self, -0x1000, 0, data);
+    if (child != 0) {
+        Ui_SetWidgetText(child, caption);
     }
 }
 
