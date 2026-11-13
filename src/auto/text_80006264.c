@@ -950,7 +950,7 @@ void fn_80007648(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     *(f32 *)(ptr + 0x3C) = arg3;
 }
 
-void fn_80007668(u8 *src)
+void Prim2D_SetColorPacked(u8 *src)
 {
   extern void *lbl_80367140;
   u8 *base;

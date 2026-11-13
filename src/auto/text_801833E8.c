@@ -180,7 +180,7 @@ s32 fn_8018361C(void) {
 void fn_80183624(void **arg0) {
     u8 *fn_8014C5A8(void *, u8);
     s32 *fn_8018D900(u8);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     extern u8 gBattleState[];
     extern u8 lbl_803681F0;
     s32 sp8;
@@ -203,7 +203,7 @@ void fn_80183624(void **arg0) {
                 mode = 7;
             }
             sp8 = *fn_8018D900((u8)mode);
-            fn_80007668(&sp8);
+            Prim2D_SetColorPacked(&sp8);
         }
     }
 }
@@ -3929,7 +3929,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     void fn_8001019C(s16, s16, s32, ...);
     void Prim2D_AddPrim(s32);
     s32 *fn_8018D900(s32);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void fn_80006B18(s32, s16, s32, s32, s32);
     void Prim2D_EndPrim(void);
     extern u8 lbl_80279C40[];
@@ -3961,7 +3961,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     if (arg2 != 0 && M2C_FIELD(arg0, void **, 0x40) != NULL) {
         Prim2D_AddPrim(6);
         spC = *fn_8018D900(2);
-        fn_80007668(&spC);
+        Prim2D_SetColorPacked(&spC);
         target = M2C_FIELD(arg0, void **, 0x40);
         count = 0;
         if (target != NULL) {
@@ -4001,7 +4001,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     } else {
         Prim2D_AddPrim(6);
         sp8 = *fn_8018D900(2);
-        fn_80007668(&sp8);
+        Prim2D_SetColorPacked(&sp8);
         fn_80006B18(y + 0xA4, x, 0, 0, 0);
         Prim2D_EndPrim();
     }
@@ -4131,7 +4131,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         virtual void v9() = 0;
     };
     void fn_80006B18(s16, s16, s32, s32, s32);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
@@ -4184,7 +4184,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         }
         Prim2D_AddPrim(6);
         spC = *fn_8018D900((u8)arg1);
-        fn_80007668(&spC);
+        Prim2D_SetColorPacked(&spC);
         fn_80006B18(y, (s16)x, 0, 0, *(s32 *)((u8 *)arg0 + 0x3C));
         Prim2D_EndPrim();
     } else {
@@ -4194,7 +4194,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         fn_8001019C(y2, (s16)(arg1 + 0x20), 0xF, Msg_Expand((u8 *)lbl_80279C40 + 209));
         Prim2D_AddPrim(6);
         sp8 = *fn_8018D900(2);
-        fn_80007668(&sp8);
+        Prim2D_SetColorPacked(&sp8);
         fn_80006B18(y, (s16)(arg1 + 0x20), 0, 0, *(s32 *)(gBattleState + 0x18));
         Prim2D_EndPrim();
     }

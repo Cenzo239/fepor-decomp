@@ -2453,7 +2453,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
     s32 *fn_8018D900(u8);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
     void Prim2D_EndPrim(void);
     extern s32 lbl_803674F4;
@@ -2487,17 +2487,17 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     Prim2D_SetQuadMin((f32)width, (f32)(y - 0xA), lbl_803696E0, lbl_803696E0);
     width = lo + width; bottom = (y + hi) - 0xA;
     Prim2D_SetQuadMax((f32)width, (f32)bottom, (f32)lo, (f32)hi);
-    Prim2D_EmitQuad(); col0 = *fn_8018D900((u8)cidx); fn_80007668(&col0); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col0 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col0); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
     Prim2D_AddPrim(1); x += half; half = x - lo;
     Prim2D_SetQuadMin((f32)half, (f32)(y - 0xA), (f32)lo, lbl_803696E0);
     Prim2D_SetQuadMax((f32)x, (f32)bottom, lbl_803696E0, (f32)hi);
-    Prim2D_EmitQuad(); col1 = *fn_8018D900((u8)cidx); fn_80007668(&col1); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col1 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col1); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
     fn_8006ECCC(handle, sp.buf, 0x44);
     sp.w = fn_80222A80(sp.buf); sp.h = fn_80222A90(sp.buf);
     Prim2D_Begin(); fn_8000A174(sp.buf, 0x11); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
     Prim2D_SetQuadMin((f32)width, (f32)(y - 0xA), lbl_803696E0, lbl_803696E0);
     Prim2D_SetQuadMax((f32)half, (f32)bottom, (f32)(u32)sp.w, (f32)(u32)sp.h);
-    Prim2D_EmitQuad(); col2 = *fn_8018D900((u8)cidx); fn_80007668(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
+    Prim2D_EmitQuad(); col2 = *fn_8018D900((u8)cidx); Prim2D_SetColorPacked(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
 }
 u16 fn_8008AF9C(s32 arg0, s32 arg1) {
     s32 fn_8006ECCC(s32, void *, s32);

@@ -62,7 +62,7 @@ void fn_8008F4BC(void *arg0) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
-    void fn_80007668(s32 *, s32);
+    void Prim2D_SetColorPacked(s32 *, s32);
     extern f32 lbl_80369754;
     extern f32 lbl_80369764;
     extern f64 lbl_80369770;
@@ -224,25 +224,25 @@ void fn_8008F4BC(void *arg0) {
         Prim2D_SetRect(ox, oy, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
         c0 = pal[(0 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
+        Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(x1 - lbl_80369754, oy, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
         c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
+        Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(x1 - lbl_80369754, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
         c0 = pal[(0 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
+        Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(ox, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
         c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
-        fn_80007668(&c0, (s32)pal);
+        Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
     }
 }

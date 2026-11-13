@@ -1651,12 +1651,12 @@ s32 fn_80076F80(void) {
 }
 
 void fn_80077008(void) {
-    M2C_UNK fn_80007668(s32 *);
+    M2C_UNK Prim2D_SetColorPacked(s32 *);
     s32 *fn_8018D900(M2C_UNK);
     s32 sp8;
 
     sp8 = *fn_8018D900(6);
-    fn_80007668(&sp8);
+    Prim2D_SetColorPacked(&sp8);
 }
 
 s32 fn_8007703C(s32 unused, s32 arg1) {
@@ -1697,12 +1697,12 @@ s32 fn_800770CC(void) {
 
 void fn_80077150(void) {
     extern u32 *fn_8018D900(int);
-    extern void fn_80007668(void *);
+    extern void Prim2D_SetColorPacked(void *);
 
     u32 value;
 
     value = *fn_8018D900(7);
-    fn_80007668(&value);
+    Prim2D_SetColorPacked(&value);
 }
 
 s32 fn_80077184(s32 unused, s32 arg1) {

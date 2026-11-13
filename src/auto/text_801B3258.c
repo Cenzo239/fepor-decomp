@@ -15858,7 +15858,7 @@ void fn_801DE474(void *arg0, void *arg1)
     void fn_8001019C(s32, s32, s32, void *, ...);
     void Prim2D_AddPrim(s32);
     s32 *fn_8018D900(s32);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void fn_80006B18(s32, s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void *fn_8014C604(u8 *);
@@ -15964,7 +15964,7 @@ void fn_801DE474(void *arg0, void *arg1)
         fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
-        fn_80007668(&tmp);
+        Prim2D_SetColorPacked(&tmp);
         fn_80006B18(x0, row_y, 0, 0, *(s32 *)(gBattleState + 0x68));
         Prim2D_EndPrim();
         vt = *(V0 **)arg0;
@@ -15982,7 +15982,7 @@ void fn_801DE474(void *arg0, void *arg1)
         fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1E);
-        fn_80007668(&tmp);
+        Prim2D_SetColorPacked(&tmp);
         fn_80006B18(x0, row_y, 0, 0, *(s32 *)(gBattleState + 0x6C));
         Prim2D_EndPrim();
         vt = *(V0 **)arg0;
@@ -16000,7 +16000,7 @@ void fn_801DE474(void *arg0, void *arg1)
         fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x20);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(2);
-        fn_80007668(&tmp);
+        Prim2D_SetColorPacked(&tmp);
         fn_80006B18(x0, row_y, 0, 0, *(s32 *)(gBattleState + 0x18));
         Prim2D_EndPrim();
         vt = *(V0 **)arg0;
@@ -16018,7 +16018,7 @@ void fn_801DE474(void *arg0, void *arg1)
         fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
-        fn_80007668(&tmp);
+        Prim2D_SetColorPacked(&tmp);
         fn_80006B18(x0, row_y, 0, 0, (s32)M2C_FIELD(gBattleState, s16 *, 0x70));
         Prim2D_EndPrim();
         vt = *(V0 **)arg0;
@@ -16036,7 +16036,7 @@ void fn_801DE474(void *arg0, void *arg1)
         fn_8001019C(x0, row_y, 0xF, lbl_8027E8D0 + 0x62);
         Prim2D_AddPrim(6);
         tmp = *fn_8018D900(0x1D);
-        fn_80007668(&tmp);
+        Prim2D_SetColorPacked(&tmp);
         fn_80006B18(x0, row_y, 0, 0, (s32)M2C_FIELD(gBattleState, s16 *, 0x72));
         Prim2D_EndPrim();
         vt = *(V0 **)arg0;

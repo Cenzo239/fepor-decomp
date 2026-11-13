@@ -513,7 +513,7 @@ s32 fn_8014B328(void) {
 
 void fn_8014BB58(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     M2C_UNK fn_80007124(s32);
-    M2C_UNK fn_80007668(s32 *);
+    M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK fn_80007858(f32, f32);
     M2C_UNK Prim2D_EndPrim();
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
@@ -528,7 +528,7 @@ void fn_8014BB58(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     Prim2D_AddPrim(0xA);
     fn_80007858((f32) arg0, (f32) arg1);
     sp8 = *arg2;
-    fn_80007668(&sp8);
+    Prim2D_SetColorPacked(&sp8);
     fn_80007124(arg3);
     Prim2D_EndPrim();
 }

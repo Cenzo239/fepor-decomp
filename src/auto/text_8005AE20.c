@@ -7999,13 +7999,13 @@ void fn_80071B88(void) {
 }
 
 void fn_80071CE8(void *arg0, void *arg1) {
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     s32 *fn_8018D900(s32);
     s32 sp8;
 
     if (*(u8 *)((u8 *)arg1 + 0x39) == 2) {
         sp8 = *fn_8018D900(0);
-        fn_80007668(&sp8);
+        Prim2D_SetColorPacked(&sp8);
     }
 }
 

@@ -212,7 +212,7 @@ void fn_80090990(void *arg0) {
 
 void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
 {
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -263,7 +263,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)arg0, (f32)arg1, lbl_80369794, lbl_80369798);
     sp8 = *(s32 *)sp18;
-    fn_80007668(&sp8);
+    Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
     Prim2D_AddPrim(4);
     Prim2D_SetRect((f32)(arg0 - 3), (f32)arg1, lbl_8036979C, lbl_80369764);

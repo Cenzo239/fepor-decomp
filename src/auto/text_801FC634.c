@@ -844,7 +844,7 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddZ(f32);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     extern void *lbl_80368438;
     extern f32 lbl_8036BB58;
     extern f32 lbl_8036BB78;
@@ -965,7 +965,7 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)x, (f32)y2, (f32)ww, (f32)(hh - 4));
     sp8 = *arg4;
-    fn_80007668(&sp8);
+    Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036BB78);
@@ -1202,7 +1202,7 @@ extern "C" void fn_801FF480(void *arg0) {
 #pragma cplusplus reset
 void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetAlpha(s32);
     void fn_800076EC(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -1339,14 +1339,14 @@ void fn_801FF6B8(void *arg0, void *arg1) {
         ty = top - 0xA;
         Prim2D_SetRect((f32)lx, (f32)ty, (f32)sp34, (f32)sp36);
         sp8 = *fn_8018D900(0x18);
-        fn_80007668(&sp8);
+        Prim2D_SetColorPacked(&sp8);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect((f32)((left + half) - (s16)sp34), (f32)ty, (f32)sp34, (f32)sp36);
         fn_800076EC();
         spC = *fn_8018D900(0x18);
-        fn_80007668(&spC);
+        Prim2D_SetColorPacked(&spC);
         Prim2D_SetAlpha(alpha);
         Prim2D_EndPrim();
         bw = (s16)sp34;
@@ -1361,7 +1361,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
             Prim2D_AddPrim(1);
             Prim2D_SetRect((f32)(bw + lx), (f32)ty, (f32)gap, (f32)sp36);
             sp10 = *fn_8018D900(0x18);
-            fn_80007668(&sp10);
+            Prim2D_SetColorPacked(&sp10);
             Prim2D_SetAlpha(alpha);
             Prim2D_EndPrim();
         }
@@ -1800,7 +1800,7 @@ void fn_80200A7C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddZ(f32);
-    void fn_80007668(s32 *);
+    void Prim2D_SetColorPacked(s32 *);
     extern u32 lbl_80368448;
     extern f32 lbl_8036BBD8;
     extern f32 lbl_8036BBF8;
@@ -1922,7 +1922,7 @@ void fn_80200A7C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)x, (f32)y2, (f32)ww, (f32)(hh - 4));
     sp8 = *arg4;
-    fn_80007668(&sp8);
+    Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036BBF8);
