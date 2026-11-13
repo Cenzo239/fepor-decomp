@@ -3548,24 +3548,22 @@ extern "C" void fn_801BBDA0(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
     s16 Unit_GetGoldCost(s32, s32, u8 *);
     extern u8 gBattleState[];
-    s32 one;
     s32 t;
     u8 *p;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    one = 1;
     p = gBattleState;
     t = *(s32 *)(p + 0x1C);
-    return (Unit_GetGoldCost(arg0, one, p) <= t) ? 1 : 0;
+    return (Unit_GetGoldCost(arg0, 1, p) <= t) ? 1 : 0;
 }
-
-#pragma cplusplus reset
+#pragma global_optimizer reset
 
 #pragma cplusplus reset
 
@@ -13855,7 +13853,7 @@ void fn_801D3D3C(void *arg0) {
  u8 fn_801DE3D0(void *);
  u8 fn_801E33F4(void *);
  void Ui_PlaySeCue(void *, s32);
- void fn_801DDBA8(void *, void *, u8, u8, s16);
+ void MsgBox_Init(void *, void *, u8, u8, s16);
  void *Msg_Expand(void *);
  void sprintf(void *, void *, void *, void *);
  void fn_801DE3C4(void *);
@@ -13970,7 +13968,7 @@ void fn_801D3D3C(void *arg0) {
   break;
  case 5:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x2a4, 0, 1, 0);
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x2a4, 0, 1, 0);
   *(s32 *)state = 6; break;
  case 6:
   if (*(u8 *)((u8 *)state + 0x10) == 1) { *(s32 *)state = 0x2d; break; }
@@ -13994,7 +13992,7 @@ void fn_801D3D3C(void *arg0) {
  case 9:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    *(s32 *)state = 0xa;
-   fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
+   MsgBox_Init((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
    *(u8 *)((u8 *)state + 0x14) = 0;
    fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
    fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14047,14 +14045,14 @@ void fn_801D3D3C(void *arg0) {
   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); break;
  case 0xd:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x344, 0, 1, 0); *(s32 *)state = 6; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x344, 0, 1, 0); *(s32 *)state = 6; break;
  case 0xe:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x351, 0, 1, 0); *(s32 *)state = 6; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x351, 0, 1, 0); *(s32 *)state = 6; break;
  case 0xf:
   if (*(u8 *)((u8 *)state + 0x10) == 1) {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x35e, 0, 1, 0); *(s32 *)state = 0x2d;
+   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x35e, 0, 1, 0); *(s32 *)state = 0x2d;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
    Ui_OpenConfirmDialog(gUiSeCues + 0x36d, 1, 1, 0, gUiSeCues + 0x2d4, 1, arg0); *(s32 *)state = 0x10;
@@ -14068,7 +14066,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x11:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    fn_800E99E4(arg0);
-   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x38a, 0, 0, 0); *(s32 *)state = 0x12;
+   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x38a, 0, 0, 0); *(s32 *)state = 0x12;
   } else { *(s32 *)state = 0x14; }
   break;
  case 0x12:
@@ -14078,15 +14076,15 @@ void fn_801D3D3C(void *arg0) {
    Ui_OpenConfirmDialog(gUiSeCues + 0x39a, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3ab, 0, 1, 0); *(s32 *)state = 6;
+   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3ab, 0, 1, 0); *(s32 *)state = 6;
   }
   break;
  case 0x14:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3bc, 0, 1, 0); *(s32 *)state = 6; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3bc, 0, 1, 0); *(s32 *)state = 6; break;
  case 0x18:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0); *(s32 *)state = 6; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0); *(s32 *)state = 6; break;
  case 0x19:
   if (*(u8 *)((u8 *)state + 0x10) == 1) *(s32 *)state = 0x23;
   else { Ui_OpenConfirmDialog(gUiSeCues + 0x3d5, 1, 0, 0, gUiSeCues + 0x2d4, 0, arg0); *(s32 *)state = 0x1a; }
@@ -14094,7 +14092,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x1a:
   if (*(s8 *)((u8 *)state + 0x14) == 0) {
    fn_801E323C(&gSaveDataBase, arg0);
-   fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3e3, 0, 0, 0); *(s32 *)state = 0x1b;
+   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3e3, 0, 0, 0); *(s32 *)state = 0x1b;
   } else { *(s32 *)state = 8; }
   break;
  case 0x1b:
@@ -14104,14 +14102,14 @@ void fn_801D3D3C(void *arg0) {
    Ui_OpenConfirmDialog(gUiSeCues + 0x3ef, 0, 0, 0, NULL, 0, arg0); *(s32 *)state = 0;
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-   if (fn_800EB774() == -5) fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0);
-   else fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x3fd, 0, 1, 0);
+   if (fn_800EB774() == -5) MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3cb, 0, 1, 0);
+   else MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x3fd, 0, 1, 0);
    *(s32 *)state = 6;
   }
   break;
  case 0x1e:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64); fn_801DF5D8(&gSaveDataBase, arg0);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x40b, 0, 1, 0); *(s32 *)state = 0x20; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x40b, 0, 1, 0); *(s32 *)state = 0x20; break;
  case 0x1f: break;
  case 0x20:
   if (flags_a & 0x100) {
@@ -14121,10 +14119,10 @@ void fn_801D3D3C(void *arg0) {
   break;
  case 0x23:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x417, 0, 1, 0); *(s32 *)state = 0x2d; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x417, 0, 1, 0); *(s32 *)state = 0x2d; break;
  case 0x28:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64); fn_801DE378((u8 *)state + 0x330);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x428, 1, 1, 0); *(s32 *)state = 6; break;
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x428, 1, 1, 0); *(s32 *)state = 6; break;
  case 0x2d:
   if (*(u8 *)((u8 *)state + 0x10) == 1) {
    tmp_ptr = Msg_Expand(gUiSeCues + 0x43e); tmp_ptr2 = Msg_Expand(gUiSeCues + 0x435);
@@ -14266,7 +14264,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0x73:
-  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
+  MsgBox_Init((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x307), 1, 0, 1);
   *(u8 *)((u8 *)state + 0x14) = 0;
   fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
   fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14305,7 +14303,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0x75:
-  fn_801DDBA8((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x49b), 1, 0, 2);
+  MsgBox_Init((u8 *)state + 0x330, Msg_Expand(gUiSeCues + 0x49b), 1, 0, 2);
   *(u8 *)((u8 *)state + 0x14) = 0;
   fn_801DE3BC((u8 *)state + 0x330, *(s8 *)((u8 *)state + 0x14));
   fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
@@ -14348,7 +14346,7 @@ void fn_801D3D3C(void *arg0) {
   sel = *(s8 *)((u8 *)state + 0x18);
   if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
   fn_801E1498(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12), changed, *(s8 *)((u8 *)state + 0x19) != 0, arg0);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x4ab, 0, 0, 0);
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x4ab, 0, 0, 0);
   *(s32 *)state = 0x78; break;
  case 0x78:
   fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x7d; fn_801DDDE8(5, arg0);
@@ -14578,7 +14576,7 @@ void fn_801D3D3C(void *arg0) {
   break;
  case 0x19f:
   fn_801E0B48(&gSaveDataBase, *(s8 *)((u8 *)state + 0x12), *(s8 *)((u8 *)state + 0x13), arg0);
-  fn_801DDBA8((u8 *)state + 0x330, gUiSeCues + 0x4fb, 0, 0, 0);
+  MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x4fb, 0, 0, 0);
   *(s32 *)state = 0x1a1; break;
     case 0x1a1:
     fn_801DE3C4((u8 *)state + 0x330); *(s32 *)state = 0x1a4;
@@ -15498,7 +15496,7 @@ void fn_801DDAC8(void *arg0) {
 
 extern void *lbl_801D3B14;
 #pragma opt_propagation off
-void fn_801DDBA8(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
+void MsgBox_Init(MsgBox *w, s32 arg1, u8 arg2, u8 arg3, s16 arg4) {
     void *memset(void *, s32, u32);
     void *memcpy(void *, const void *, u32);
     char *Msg_Expand(s32);

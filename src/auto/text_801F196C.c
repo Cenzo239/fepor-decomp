@@ -1423,7 +1423,7 @@ void fn_801F53E0(void *arg0)
     fn_801E2594(&gSaveDataBase);
 
     if (fn_800EB774() == 0) {
-        fn_801DDBA8(
+        MsgBox_Init(
             *(void **)((u8 *)arg0 + 0x50),
             Msg_Expand((u8 *)gCardLinkStr + 0x6A),
             0,
@@ -1435,7 +1435,7 @@ void fn_801F53E0(void *arg0)
 
     Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 
-    fn_801DDBA8(
+    MsgBox_Init(
         *(void **)((u8 *)arg0 + 0x50),
         Msg_Expand((u8 *)gCardLinkStr + 0x8A),
         0,
@@ -1457,7 +1457,7 @@ void fn_801F5484(void *arg0)
 
     Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 
-    fn_801DDBA8(
+    MsgBox_Init(
         *(void **)((u8 *)arg0 + 0x50),
         Msg_Expand((u8 *)gCardLinkStr + 0x8A),
         0,
@@ -1481,7 +1481,7 @@ void CardLink_ApplyBonus(void *proc) {
     void Process_UnlinkByKey(void *);
     s32 Msg_Expand(void *);
     void Ui_PlaySeCue(void *, s32);
-    void fn_801DDBA8(void *, s32, s32, s32, s32);
+    void MsgBox_Init(void *, s32, s32, s32, s32);
     extern u8 gSystemSave[];
     void *cardProc;
     s32 gameId;
@@ -1495,7 +1495,7 @@ void CardLink_ApplyBonus(void *proc) {
     }
     if (status == 4) {
         Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-        fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0x9A), 0, 1, 0);
+        MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0x9A), 0, 1, 0);
         Process_Goto(proc, 0x59);
     } else {
         cardProc = Process_Find(&gCardLinkProc);
@@ -1507,7 +1507,7 @@ void CardLink_ApplyBonus(void *proc) {
         switch (gameId) {
         case GAME_ID_AFEJ:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
+            MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
             *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_AC;
             break;
         case GAME_ID_AE7J:
@@ -1515,24 +1515,24 @@ void CardLink_ApplyBonus(void *proc) {
         case GAME_ID_AE7X:
         case GAME_ID_AE7Y:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
+            MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
             *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_POKEMON;
             break;
         case GAME_ID_BE8J:
         case GAME_ID_BE8E:
         case GAME_ID_BE8P:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
+            MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
             *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_FE8;
             break;
         case 0:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xE2), 0, 1, 0);
+            MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xE2), 0, 1, 0);
             Process_Goto(proc, 0x59);
             break;
         default:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xF1), 0, 1, 0);
+            MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xF1), 0, 1, 0);
             Process_Goto(proc, 0x59);
             break;
         }
@@ -1578,7 +1578,7 @@ void fn_801F5A28(void *arg0) {
 
 void fn_801F5AEC(void *arg0) {
     s32 Msg_Expand(void *);
-    void fn_801DDBA8(void *, s32, s32, s32, s32);
+    void MsgBox_Init(void *, s32, s32, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
@@ -1592,7 +1592,7 @@ void fn_801F5AEC(void *arg0) {
     pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
         Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x5A, 0x64);
-        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)&gCardLinkStr + 0x121), 0, 0, 0);
+        MsgBox_Init(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)&gCardLinkStr + 0x121), 0, 0, 0);
         Process_ClearFunc(arg0);
         return;
     }
