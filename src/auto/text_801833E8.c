@@ -8713,7 +8713,7 @@ void* fn_80199508(void* arg0, s16 arg1) {
 
 #pragma use_lmw_stmw off
 #pragma global_optimizer off
-void *fn_80199590(void *arg0, void *arg1, void *arg2) {
+void *WeaponAttach_Ctor(void *arg0, void *arg1, void *arg2) {
     void fn_800E6058(void *);
     void String_Assign(void *, void *, s32, s32);
     void String_Init(void *, char *, void *);
