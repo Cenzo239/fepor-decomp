@@ -1306,7 +1306,7 @@ int fn_802195B0(int arg0, void *arg1, void *arg2)
 {
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
-    int fn_8021791C(int, u32, void *);
+    int __CARDEraseSector(int, u32, void *);
     void fn_80219334(void);
 
     u8 *data;
@@ -1328,7 +1328,7 @@ int fn_802195B0(int arg0, void *arg1, void *arg2)
     offset = ((u32)data - *(u32 *)(entry + 0x80)) >> 13;
     size = *(u32 *)(entry + 0xC) * offset;
 
-    return fn_8021791C(arg0, size, (void *)fn_80219334);
+    return __CARDEraseSector(arg0, size, (void *)fn_80219334);
 }
 
 s32 __CARDGetDirBlock(void *arg0) {
@@ -1353,7 +1353,7 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     fn_802198C0((u16 *)temp_r31, 0x1FFC, (u16 *)((u8 *)temp_r6 + 0x3C), (u16 *)((u8 *)temp_r6 + 0x3E));
     fn_80205110(temp_r31, 0x2000);
     *(s32 *)(temp_r30 + 0xD8) = arg1;
-    return fn_8021791C(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
+    return __CARDEraseSector(arg0, *(s32 *)(temp_r30 + 0x0C) * ((u32)(temp_r31 - *(u8 **)(temp_r30 + 0x80)) >> 13), (void *)fn_80219734);
 }
 
 #pragma opt_strength_reduction off
@@ -2029,7 +2029,7 @@ s32 fn_8021B20C(s32 arg0)
 #pragma dont_inline on
 void fn_8021B2B8(s32 arg0, s32 arg1) {
     extern u16 __CARDBlock[];
-    s32 fn_8021791C(s32, s32, void *);
+    s32 __CARDEraseSector(s32, s32, void *);
     s32 fn_802191F0(s32, s32, s32, s32, void *);
     void *memcpy(void *, const void *, u32);
     s32 fn_80217BD0(void *, s32);
@@ -2044,7 +2044,7 @@ void fn_8021B2B8(s32 arg0, s32 arg1) {
     if (result >= 0) {
         *(s32 *)(card + 0x28) = *(s32 *)(card + 0x28) + 1;
         if (*(s32 *)(card + 0x28) < 5) {
-            result = fn_8021791C(chan, *(s32 *)(card + 0xC) * *(s32 *)(card + 0x28), fn_8021B2B8);
+            result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * *(s32 *)(card + 0x28), fn_8021B2B8);
             if (result >= 0) {
                 return;
             }
@@ -2080,7 +2080,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     s64 fn_8022CB50(s64, s32);
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
-    s32 fn_8021791C(s32, s32, void *, void *);
+    s32 __CARDEraseSector(s32, s32, void *, void *);
     void fn_80217BD0(void *, s32);
     extern void fn_80216994(void);
     extern void fn_8021B2B8(void);
@@ -2218,7 +2218,7 @@ s32 fn_8021B3FC(s32 chan, s16 arg1, void *callback)
     *(void **)((u8 *)card + 0xD0) = cb;
     fn_80205110(*(void **)((u8 *)card + 0x80), 0xA000);
     *(u32 *)((u8 *)card + 0x28) = 0;
-    result = fn_8021791C(chan, *(s32 *)((u8 *)card + 0xC) * *(s32 *)((u8 *)card + 0x28), (void *)fn_8021B2B8, card);
+    result = __CARDEraseSector(chan, *(s32 *)((u8 *)card + 0xC) * *(s32 *)((u8 *)card + 0x28), (void *)fn_8021B2B8, card);
     if (result < 0) {
         fn_80217BD0(card, result);
     }
@@ -2834,7 +2834,7 @@ s32 __CARDGetDirBlock(void *arg0);
 s32 __CARDGetFatBlock(void *arg0);
 s32 __CARDUpdateDir(s32 arg0, s32 arg1);
 s32 fn_80217BD0(void *arg0, s32 arg1);
-int fn_8021791C(s32 chan, u32 addr, void *callback);
+int __CARDEraseSector(s32 chan, u32 addr, void *callback);
 void fn_8021CA04(s32 chan, s32 result);
 #pragma dont_inline on
 void __CARDWriteCallback(s32 chan, s32 result) {
@@ -2870,7 +2870,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
             result = -6;
             goto error;
         }
-        result = fn_8021791C(chan, *(s32 *)(card + 0xC) * (u32)*(u16 *)(fileInfo + 0x10), fn_8021CA04);
+        result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * (u32)*(u16 *)(fileInfo + 0x10), fn_8021CA04);
     }
 
     if (result < 0) {
@@ -2889,7 +2889,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     void *__CARDGetDirBlock(void);
     s32 fn_8021BB98(void *, void *);
     void fn_80205110(void *, u32);
-    s32 fn_8021791C(void *, u32);
+    s32 __CARDEraseSector(void *, u32);
 
     extern void fn_80216994(void);
     extern void fn_8021CA04(void);
@@ -2937,7 +2937,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     size = *(u32 *)((u8 *)state + 0xC);
     size *= *(u16 *)((u8 *)arg0 + 0x10);
 
-    result = fn_8021791C(*(void **)arg0, size);
+    result = __CARDEraseSector(*(void **)arg0, size);
 
     if (result < 0) {
         fn_80217BD0(state, result);
