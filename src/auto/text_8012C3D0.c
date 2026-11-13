@@ -1795,7 +1795,7 @@ void fn_8012F5CC(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     f32 fn_80059EB8(s32, s32, f32, f32);
     void *fn_800A8A88(s32);
-    void fn_801308F0(void);
+    void Ui_ScissorUnitListRows(void);
     extern f64 lbl_8036A4F0;
     extern f32 lbl_8036A4EC;
     extern f32 lbl_8036A500;
@@ -1879,7 +1879,7 @@ void fn_8012F5CC(void *arg0) {
                 Prim2D_SetTransform(lbl_8036A524, f30, lbl_8036A500, lbl_8036A50C);
                 fn_8000A174(0, 0x13);
                 Prim2D_SetColorByte(0xFF);
-                fn_80009BC0(fn_801308F0, 0);
+                fn_80009BC0(Ui_ScissorUnitListRows, 0);
                 Prim2D_PrepareTex();
                 fn_8001003C(0, 0, icon, 1, 0, str, lbl_8036A50C, lbl_8036A510);
             }
@@ -1888,7 +1888,7 @@ void fn_8012F5CC(void *arg0) {
             Prim2D_Begin();
             Prim2D_SetTransform(lbl_8036A528, f30, lbl_8036A52C, lbl_8036A50C);
             Prim2D_BindTexture(*(void **)(self + 0x40), 2, 0x11);
-            fn_80009BC0(fn_801308F0, 0);
+            fn_80009BC0(Ui_ScissorUnitListRows, 0);
             Prim2D_SetColorByte(0xFF);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
@@ -1900,7 +1900,7 @@ void fn_8012F5CC(void *arg0) {
             Prim2D_Begin();
             Prim2D_SetTransform(lbl_8036A534, f30, lbl_8036A52C, lbl_8036A50C);
             fn_8000A174(0, 0x12);
-            fn_80009BC0(fn_801308F0, 0);
+            fn_80009BC0(Ui_ScissorUnitListRows, 0);
             Prim2D_SetColorByte(0x60);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
@@ -2149,7 +2149,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     void fn_80009B98(void);
     void Ui_ScissorUnitListLeft(void);
     void fn_801302C0(void);
-    void fn_801308F0(void);
+    void Ui_ScissorUnitListRows(void);
     void fn_80069F04(void);
     void fn_80130890(void);
     extern f32 lbl_8036A57C;
@@ -2242,7 +2242,7 @@ void Ui_DrawUnitListModels(void *arg0) {
             Prim2D_SetColorByte(0xFF);
             unk6A = *(s16 *)((u8 *)self + 0x6A);
             if ((unk6A % 32) != 0) {
-                fn_80009BC0(fn_801308F0, 0);
+                fn_80009BC0(Ui_ScissorUnitListRows, 0);
             }
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xB);
@@ -2517,7 +2517,7 @@ void fn_801308C0(void) {
     GXSetScissor(0xF8, 0, 0x120, 0x1E0);
 }
 
-void fn_801308F0(void) {
+void Ui_ScissorUnitListRows(void) {
     GXSetScissor(0, 0x60, 0x260, 0x120);
 }
 
