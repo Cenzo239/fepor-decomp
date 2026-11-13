@@ -10,7 +10,7 @@ typedef struct String {
 } String;
 
 extern f32 lbl_8036A1DC;
-extern f32 lbl_8036A1A4;
+extern f32 fActorDefaultRadius;
 extern f32 lbl_8036A1C8;
 extern u16 lbl_8028F6C8[];
 void fn_800C9ABC(void *, char *, void *);
@@ -1074,7 +1074,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         *(f32 *)((u8 *)self + 0x124) = fActorDefaultHeight;
     }
     if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x128)) {
-        *(f32 *)((u8 *)self + 0x128) = lbl_8036A1A4;
+        *(f32 *)((u8 *)self + 0x128) = fActorDefaultRadius;
     }
     if (*(s32 *)((u8 *)self + 0x198) == 0) {
         *(s32 *)((u8 *)self + 0x198) = 1;
@@ -2794,7 +2794,7 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
         *(s32 *)(self + 0x11C) = 0;
         *(s32 *)(self + 0x120) = 0;
         *(f32 *)(self + 0x124) = lbl_8036A1DC;
-        *(f32 *)(self + 0x128) = lbl_8036A1A4;
+        *(f32 *)(self + 0x128) = fActorDefaultRadius;
         *(s32 *)(self + 0x12C) = 0;
         *(s32 *)(self + 0x130) = 0;
         *(s32 *)(self + 0x134) = 0;
