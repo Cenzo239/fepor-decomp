@@ -826,7 +826,7 @@ void fn_801850A8(void *arg0) {
     M2C_FIELD(temp_r3, u8 *, 0x37) = ((u8 *)temp_r30)[0x27];
 }
 
-void fn_80185164(void *arg0) {
+void MuFlash_StartWithSe(void *arg0) {
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
