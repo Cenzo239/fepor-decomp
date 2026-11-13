@@ -1373,10 +1373,10 @@ void fn_8001BC5C(void *arg0, u8 a, u8 b, u8 c, u8 d) {
 void fn_8001BCF4(void *arg0) {
     s32 fn_800C2EF8(u8 *, s32, u8 *);
     extern u8 lbl_803206EC[];
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     u8 mask = ((u8 *)arg0)[5] & 0x3F;
     if (mask) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(lbl_803206EC, mask, lbl_80268820 + 0x3B) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(lbl_803206EC, mask, gDataStr + 0x3B) & 0x3F));
     }
 }
 
@@ -1780,13 +1780,13 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
     u32 Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     struct { u8 pad[0xC]; void (*fn)(void *); } *s;
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
-        strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
+        strcat(lbl_802CA4FC, gDataStr + 0x3C);
     }
     if (Res_GetByName(lbl_802CA4FC) == 0) {
         s = NULL;
@@ -1800,14 +1800,14 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
     u32 fn_8000D354(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     void (*cb)(void *);
     u32 ret;
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
         fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
-        fn_802343E0(lbl_802CA4FC, lbl_80268820 + 0x3C);
+        fn_802343E0(lbl_802CA4FC, gDataStr + 0x3C);
     }
     ret = fn_8000D354(lbl_802CA4FC);
     if (ret == 0) {
@@ -1827,13 +1827,13 @@ u32 fn_8001C914(void *arg0, void *arg1) {
     void *Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     void *obj;
 
     if (lbl_80367230 != arg1) {
         lbl_80367230 = arg1;
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
-        strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
+        strcat(lbl_802CA4FC, gDataStr + 0x3C);
     }
     obj = Res_GetByName(lbl_802CA4FC);
     if (obj == 0) {
@@ -1851,13 +1851,13 @@ u32 fn_8001C9BC(void *arg0) {
     u32 Res_GetByName(void *);
     extern void *lbl_80367230;
     extern u8 lbl_802CA4FC[];
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     u32 ret;
 
     if (lbl_80367230 != arg0) {
         lbl_80367230 = arg0;
         strcpy(lbl_802CA4FC, *(s32 *)arg0);
-        strcat(lbl_802CA4FC, lbl_80268820 + 0x3C);
+        strcat(lbl_802CA4FC, gDataStr + 0x3C);
     }
     ret = Res_GetByName(lbl_802CA4FC);
     if (ret == 0) {
@@ -2064,27 +2064,27 @@ s32 WpnRank_GetNext(u8 exp) {
 
 void *WpnRank_GetLetter(u8 arg0)
 {
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
 
     if (arg0 >= 0xFBU) {
-        return lbl_80268820 + 0x41;
+        return gDataStr + 0x41;
     }
     if (arg0 >= 0xB5U) {
-        return lbl_80268820 + 0x6;
+        return gDataStr + 0x6;
     }
     if (arg0 >= 0x79U) {
-        return lbl_80268820 + 0x4;
+        return gDataStr + 0x4;
     }
     if (arg0 >= 0x47U) {
-        return lbl_80268820 + 0x2;
+        return gDataStr + 0x2;
     }
     if (arg0 >= 0x1FU) {
-        return lbl_80268820 + 0x43;
+        return gDataStr + 0x43;
     }
     if (arg0 >= 1U) {
-        return lbl_80268820 + 0x45;
+        return gDataStr + 0x45;
     }
-    return lbl_80268820;
+    return gDataStr;
 }
 
 #pragma peephole off
@@ -2411,34 +2411,34 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
 /* OR one map-move SFX category bit into *flags from the category name (mage, fly, …). */
 void Unit_OrMSfxFlag(u16 *flags, char *name) {
     s32 Str_Cmp(char *, char *);
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
 
     if (name != NULL) {
-        if (Str_Cmp(name, (char *)lbl_80268820 + 0x113) == 0) {
+        if (Str_Cmp(name, (char *)gDataStr + 0x113) == 0) {
             *flags |= MSFX_FLAG_MAGE;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x118) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x118) == 0) {
             *flags |= MSFX_FLAG_FLY;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x11C) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x11C) == 0) {
             *flags |= MSFX_FLAG_KNIGHT;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x123) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x123) == 0) {
             *flags |= MSFX_FLAG_ARMOR;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x129) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x129) == 0) {
             *flags |= MSFX_FLAG_ALIZE;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x12F) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x12F) == 0) {
             *flags |= MSFX_FLAG_HUMAN;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x135) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x135) == 0) {
             *flags |= MSFX_FLAG_BEAST;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x13B) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x13B) == 0) {
             *flags |= MSFX_FLAG_DRAGON;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x142) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x142) == 0) {
             *flags |= MSFX_FLAG_BIRD;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x147) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x147) == 0) {
             *flags |= MSFX_FLAG_FINAL;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x14D) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x14D) == 0) {
             *flags |= MSFX_FLAG_HERO;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x152) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x152) == 0) {
             *flags |= MSFX_FLAG_BOSS;
-        } else if (Str_Cmp(name, (char *)lbl_80268820 + 0x157) == 0) {
+        } else if (Str_Cmp(name, (char *)gDataStr + 0x157) == 0) {
             *flags |= MSFX_FLAG_DOORBREAK;
         }
     }
@@ -2499,50 +2499,50 @@ u8 fn_8001DDE8(void *arg0) {
 
 char *fn_8001E4D0(u8 arg0, u8 arg1)
 {
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
 
     switch (arg0) {
     case 0:
-        return (char *)lbl_80268820 + 0x2D4;
+        return (char *)gDataStr + 0x2D4;
 
     case 1:
-        return (char *)lbl_80268820 + 0x2DA;
+        return (char *)gDataStr + 0x2DA;
 
     case 2:
-        return (char *)lbl_80268820 + 0x2E0;
+        return (char *)gDataStr + 0x2E0;
 
     case 3:
-        return (char *)lbl_80268820 + 0x2E4;
+        return (char *)gDataStr + 0x2E4;
 
     case 4:
-        return (char *)lbl_80268820 + 0x2E8;
+        return (char *)gDataStr + 0x2E8;
 
     case 5:
-        return (char *)lbl_80268820 + 0x2ED;
+        return (char *)gDataStr + 0x2ED;
 
     case 6:
-        return (char *)lbl_80268820 + 0x2F5;
+        return (char *)gDataStr + 0x2F5;
 
     case 7:
         if (arg1 != 0) {
-            return (char *)lbl_80268820 + 0x2FA;
+            return (char *)gDataStr + 0x2FA;
         }
-        return (char *)lbl_80268820 + 0x300;
+        return (char *)gDataStr + 0x300;
 
     case 8:
-        return (char *)lbl_80268820 + 0x306;
+        return (char *)gDataStr + 0x306;
 
     case 9:
-        return (char *)lbl_80268820 + 0x30B;
+        return (char *)gDataStr + 0x30B;
 
     case 10:
-        return (char *)lbl_80268820 + 0x30E;
+        return (char *)gDataStr + 0x30E;
 
     case 11:
-        return (char *)lbl_80268820 + 0x311;
+        return (char *)gDataStr + 0x311;
 
     default:
-        return (char *)lbl_80268820 + 0x314;
+        return (char *)gDataStr + 0x314;
     }
 }
 
@@ -2597,140 +2597,140 @@ void fn_8001E71C(u8 *arg0) {
 /* Map a special item IID string to its ItemData kind (0x81–0x87), or 0xC for normal items. */
 s32 Item_GetKindFromIid(char *iid) {
     s32 Str_Cmp(void *, void *);
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
 
-    if (Str_Cmp(iid, lbl_80268820 + 0x35D) == 0) { /* IID_LIVE */
+    if (Str_Cmp(iid, gDataStr + 0x35D) == 0) { /* IID_LIVE */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x366) == 0) { /* IID_RELIVE */
+    if (Str_Cmp(iid, gDataStr + 0x366) == 0) { /* IID_RELIVE */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x371) == 0) { /* IID_RECOVER */
+    if (Str_Cmp(iid, gDataStr + 0x371) == 0) { /* IID_RECOVER */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x37D) == 0) { /* IID_REBLOW */
+    if (Str_Cmp(iid, gDataStr + 0x37D) == 0) { /* IID_REBLOW */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x388) == 0) { /* IID_RESERVE */
+    if (Str_Cmp(iid, gDataStr + 0x388) == 0) { /* IID_RESERVE */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x394) == 0) { /* IID_REST */
+    if (Str_Cmp(iid, gDataStr + 0x394) == 0) { /* IID_REST */
         return 0x83;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x39D) == 0) { /* IID_SLEEP */
+    if (Str_Cmp(iid, gDataStr + 0x39D) == 0) { /* IID_SLEEP */
         return 0x84;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3A7) == 0) { /* IID_BERSERK */
+    if (Str_Cmp(iid, gDataStr + 0x3A7) == 0) { /* IID_BERSERK */
         return 0x84;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3B3) == 0) { /* IID_SILENCE */
+    if (Str_Cmp(iid, gDataStr + 0x3B3) == 0) { /* IID_SILENCE */
         return 0x84;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3BF) == 0) { /* IID_WARP */
+    if (Str_Cmp(iid, gDataStr + 0x3BF) == 0) { /* IID_WARP */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3C8) == 0) { /* IID_RESCUE */
+    if (Str_Cmp(iid, gDataStr + 0x3C8) == 0) { /* IID_RESCUE */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3D3) == 0) { /* IID_HAMMERNE */
+    if (Str_Cmp(iid, gDataStr + 0x3D3) == 0) { /* IID_HAMMERNE */
         return 0x86;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3E0) == 0) { /* IID_MSHIELD */
+    if (Str_Cmp(iid, gDataStr + 0x3E0) == 0) { /* IID_MSHIELD */
         return 0x87;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3EC) == 0) { /* IID_TORCH */
+    if (Str_Cmp(iid, gDataStr + 0x3EC) == 0) { /* IID_TORCH */
         return 0x87;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x3F6) == 0) { /* IID_UNLOCK */
+    if (Str_Cmp(iid, gDataStr + 0x3F6) == 0) { /* IID_UNLOCK */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x401) == 0) { /* IID_VULNERARY */
+    if (Str_Cmp(iid, gDataStr + 0x401) == 0) { /* IID_VULNERARY */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x40F) == 0) { /* IID_ELIXIR */
+    if (Str_Cmp(iid, gDataStr + 0x40F) == 0) { /* IID_ELIXIR */
         return 0x81;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x41A) == 0) { /* IID_TREASUREKEY */
+    if (Str_Cmp(iid, gDataStr + 0x41A) == 0) { /* IID_TREASUREKEY */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x42A) == 0) { /* IID_DOORKEY */
+    if (Str_Cmp(iid, gDataStr + 0x42A) == 0) { /* IID_DOORKEY */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x436) == 0) { /* IID_ROBBERSKEY */
+    if (Str_Cmp(iid, gDataStr + 0x436) == 0) { /* IID_ROBBERSKEY */
         return 0x85;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x445) == 0) { /* IID_DETOXDRUG */
+    if (Str_Cmp(iid, gDataStr + 0x445) == 0) { /* IID_DETOXDRUG */
         return 0x83;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x453) == 0) { /* IID_HOLYWATER */
+    if (Str_Cmp(iid, gDataStr + 0x453) == 0) { /* IID_HOLYWATER */
         return 0x87;
     }
-    if (Str_Cmp(iid, lbl_80268820 + 0x461) == 0) { /* IID_JACKLIGHT */
+    if (Str_Cmp(iid, gDataStr + 0x461) == 0) { /* IID_JACKLIGHT */
         return 0x87;
     }
-    return Str_Cmp(iid, lbl_80268820 + 0x46F) ? 0xC : 0x85; /* IID_MINE or default item */
+    return Str_Cmp(iid, gDataStr + 0x46F) ? 0xC : 0x85; /* IID_MINE or default item */
 }
 
 s32 fn_8001EB44(const char *arg0)
 {
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     extern s32 Str_Cmp(const char *, const char *);
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x478) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x478) == 0) {
         return 0;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x47E) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x47E) == 0) {
         return 1;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x484) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x484) == 0) {
         return 2;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x488) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x488) == 0) {
         return 3;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x48C) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x48C) == 0) {
         return 4;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x492) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x492) == 0) {
         return 5;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x49A) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x49A) == 0) {
         return 6;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x49F) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x49F) == 0) {
         return 7;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x4A3) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x4A3) == 0) {
         return 8;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x188) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x188) == 0) {
         return 9;
     }
 
-    if (Str_Cmp(arg0, (char *)lbl_80268820 + 0x4A9) == 0) {
+    if (Str_Cmp(arg0, (char *)gDataStr + 0x4A9) == 0) {
         return 10;
     }
 
-    return Str_Cmp(arg0, (char *)lbl_80268820 + 0x4AE) == 0 ? 11 : 0;
+    return Str_Cmp(arg0, (char *)gDataStr + 0x4AE) == 0 ? 11 : 0;
 }
 
 void *fn_8001ED1C(void *arg0) {
     void *Msg_Expand(void *);
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     void *v;
 
     v = *(void **)((char *)arg0 + 8);
     if (v == NULL) {
-        return lbl_80268820 + 0x4BE;
+        return gDataStr + 0x4BE;
     }
     return Msg_Expand(v);
 }
@@ -2754,15 +2754,15 @@ void fn_8001EDA0(u8 *arg0) {
 
 void fn_8001EDB8(u8 *out, void *key) {
     void *Item_GetByIid(void *);
-    extern u8 lbl_80268820[];
+    extern u8 gDataStr[];
     s32 flags;
 
     flags = 0;
-    if (key == Item_GetByIid(lbl_80268820 + 0x41A)) {
+    if (key == Item_GetByIid(gDataStr + 0x41A)) {
         flags |= 1;
-    } else if (key == Item_GetByIid(lbl_80268820 + 0x42A)) {
+    } else if (key == Item_GetByIid(gDataStr + 0x42A)) {
         flags |= 2;
-    } else if (key == Item_GetByIid(lbl_80268820 + 0x436)) {
+    } else if (key == Item_GetByIid(gDataStr + 0x436)) {
         flags |= 0x80;
     }
     *out = (u8)flags;
