@@ -180,7 +180,7 @@ extern f64 lbl_803693C8;
 extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 gFaceDbgTextScale;
-void fn_8007C968(void *arg0, void *arg1, void *arg2) {
+void FaceDbg_DrawMouthLabel(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
     void Prim2D_SetTint(s32, s32, s32, s32);
