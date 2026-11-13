@@ -522,7 +522,8 @@ void fn_801FDA40(void) {
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-void FallingParticle_Spawn(void *arg0) {
+/* Create a falling-particle controller and fill free process slots with randomized 3-particle procs. */
+void FallingParticle_Spawn(void *parent) {
     void *Process_Create(void *, void *);
     s32 Process_CountFree(void);
     u32 Rand_Next(void);
@@ -538,16 +539,16 @@ void FallingParticle_Spawn(void *arg0) {
     extern f32 gFloatZero;
     extern f32 gFloatTwo;
 
-    s32 var_r25;
-    void *var_r24;
-    void *temp_r23;
-    s32 temp_r22;
+    s32 slot;
+    void *part;
+    void *ctrl;
+    s32 range;
     s32 temp;
     f32 f0;
     f32 f1;
 
-    temp_r23 = Process_Create(gFallingParticleCtrlProc, arg0);
-    if ((s32)temp_r23 != 0) {
+    ctrl = Process_Create(gFallingParticleCtrlProc, parent);
+    if ((s32)ctrl != 0) {
         gFallingParticleVelXCenter = 0x8000;
         f1 = gFloatTwo;
         gFallingParticleVelXRange = 0x4000;
@@ -556,14 +557,14 @@ void FallingParticle_Spawn(void *arg0) {
         gFallingParticleVelYRange = 0xC000;
         gFallingParticleAlphaMin = 0x40;
         gFallingParticleAlphaMax = 0xC0;
-        *(f32 *)((u8 *)temp_r23 + 0x30) = f1;
-        *(f32 *)((u8 *)temp_r23 + 0x34) = f0;
+        *(f32 *)((u8 *)ctrl + 0x30) = f1;
+        *(f32 *)((u8 *)ctrl + 0x34) = f0;
         for (;;) {
             if (0x100 - Process_CountFree() < 1) {
                 break;
             }
-            var_r24 = Process_Create(gFallingParticleProc, temp_r23);
-            var_r25 = 0;
+            part = Process_Create(gFallingParticleProc, ctrl);
+            slot = 0;
             do {
                 s32 r0;
                 s32 r3;
@@ -571,13 +572,13 @@ void FallingParticle_Spawn(void *arg0) {
                 s32 r5;
                 s32 r6;
 
-                *(s32 *)((u8 *)var_r24 + 0x34) = (s32)(Rand_Next() % 39780352U);
-                *(s32 *)((u8 *)var_r24 + 0x38) = (s32)(Rand_Next() % 32768000U);
-                *(s32 *)((u8 *)var_r24 + 0x38) -= 0xC80000;
-                *(s16 *)((u8 *)var_r24 + 0x30) = (s16)((Rand_Next() % 300U) + 0x12C);
-                if (var_r25 == 0) {
-                    temp_r22 = gFallingParticleVelYRange;
-                    temp = (gFallingParticleVelYCenter - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
+                *(s32 *)((u8 *)part + 0x34) = (s32)(Rand_Next() % 39780352U);
+                *(s32 *)((u8 *)part + 0x38) = (s32)(Rand_Next() % 32768000U);
+                *(s32 *)((u8 *)part + 0x38) -= 0xC80000;
+                *(s16 *)((u8 *)part + 0x30) = (s16)((Rand_Next() % 300U) + 0x12C);
+                if (slot == 0) {
+                    range = gFallingParticleVelYRange;
+                    temp = (gFallingParticleVelYCenter - range) + (s32)(Rand_Next() % (u32)(range * 2));
                     gFallingParticleVelY = temp;
                     if (temp <= 0) {
                         temp = -temp;
@@ -587,30 +588,30 @@ void FallingParticle_Spawn(void *arg0) {
                         }
                     }
                 }
-                temp_r22 = gFallingParticleVelXRange;
-                *(s32 *)((u8 *)var_r24 + 0x3C) = (gFallingParticleVelXCenter - temp_r22) + (s32)(Rand_Next() % (u32)(temp_r22 * 2));
-                var_r25 += 1;
-                *(s32 *)((u8 *)var_r24 + 0x40) = gFallingParticleVelY;
+                range = gFallingParticleVelXRange;
+                *(s32 *)((u8 *)part + 0x3C) = (gFallingParticleVelXCenter - range) + (s32)(Rand_Next() % (u32)(range * 2));
+                slot += 1;
+                *(s32 *)((u8 *)part + 0x40) = gFallingParticleVelY;
                 r0 = gFallingParticleVelYRange;
                 r5 = gFallingParticleVelYCenter;
-                r3 = *(s32 *)((u8 *)var_r24 + 0x40);
+                r3 = *(s32 *)((u8 *)part + 0x40);
                 r4 = r5 - r0;
                 r0 = r5 + r0;
                 r3 = r3 - r4;
                 r3 = r3 * 7;
                 r5 = r0 - r4;
-                *(u8 *)((u8 *)var_r24 + 0x32) = (u8)(r3 / r5);
-                *(u8 *)((u8 *)var_r24 + 0x32) = (u8)(*(u8 *)((u8 *)var_r24 + 0x32) + 2);
-                r3 = *(s32 *)((u8 *)var_r24 + 0x40);
+                *(u8 *)((u8 *)part + 0x32) = (u8)(r3 / r5);
+                *(u8 *)((u8 *)part + 0x32) = (u8)(*(u8 *)((u8 *)part + 0x32) + 2);
+                r3 = *(s32 *)((u8 *)part + 0x40);
                 r6 = gFallingParticleAlphaMin;
                 r0 = gFallingParticleAlphaMax;
                 r3 = r3 - r4;
                 r0 = r0 - r6;
                 r0 = r3 * r0;
                 r0 = r0 / r5;
-                *(u8 *)((u8 *)var_r24 + 0x33) = (u8)(r6 + r0);
-                var_r24 = (u8 *)var_r24 + 0x14;
-            } while (var_r25 < 3);
+                *(u8 *)((u8 *)part + 0x33) = (u8)(r6 + r0);
+                part = (u8 *)part + 0x14;
+            } while (slot < 3);
         }
     }
 }
