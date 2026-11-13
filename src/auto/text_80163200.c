@@ -944,7 +944,7 @@ void fn_80164A48(void *arg0) {
 }
 
 #pragma global_optimizer off
-s32 fn_80164BB0(void *arg0) {
+s32 MapCursor_GetUnit(void *arg0) {
     u32 *fn_80037BD0(s32, s32);
     s16 slot = *(s16 *)((u8 *)arg0 + 0x4C);
     s32 idx = slot;
@@ -6265,7 +6265,7 @@ void fn_8016F790(void *arg0) {
     void fn_8000CAA0(void *, void *);
     void *fn_8001CB64(void *);
     void fn_8001D580(void *);
-    s32 fn_80164BB0(void *);
+    s32 MapCursor_GetUnit(void *);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(u32, s32);
     typedef struct { u8 hi : 1; u8 lo : 7; } Bit7;
@@ -6281,7 +6281,7 @@ void fn_8016F790(void *arg0) {
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
         temp_r28 = M2C_FIELD(arg0, void **, 0x4C);
-        temp_r31 = (void *)fn_80164BB0(temp_r28);
+        temp_r31 = (void *)MapCursor_GetUnit(temp_r28);
         if (temp_r31 != NULL) {
             ((u8 *)gUiContext)[8] = 5;
             gUiContext[1] = gUiContext[0];
@@ -6325,7 +6325,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
  void fn_80138808(void *,void *); 
  extern u32 gUiContext[];
     void fn_801475FC(void *, s32);
-    u32 fn_80164BB0(void *);
+    u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -6373,10 +6373,10 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
 
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    var_r30 = fn_80164BB0(obj4c);
+    var_r30 = MapCursor_GetUnit(obj4c);
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80164BB0(obj4c)) {
-        var_r30 = fn_80164BB0(obj4c);
+    if (var_r30 != MapCursor_GetUnit(obj4c)) {
+        var_r30 = MapCursor_GetUnit(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
@@ -6665,7 +6665,7 @@ extern "C" void fn_801703FC(void *arg0) {
     u32 *fn_8001CB64(u32);
     void fn_8013FDA0(void *);
     void fn_801475FC(void *, s32);
-    u32 fn_80164BB0(void *);
+    u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -6713,10 +6713,10 @@ extern "C" void fn_801703FC(void *arg0) {
 
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    var_r30 = fn_80164BB0(obj4c);
+    var_r30 = MapCursor_GetUnit(obj4c);
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80164BB0(obj4c)) {
-        var_r30 = fn_80164BB0(obj4c);
+    if (var_r30 != MapCursor_GetUnit(obj4c)) {
+        var_r30 = MapCursor_GetUnit(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
@@ -7435,7 +7435,7 @@ extern "C" void fn_80171C0C(void *arg0) {
 void fn_80171D04(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_800271C8(void *, void *);
-    u32 fn_80164BB0(void *);
+    u32 MapCursor_GetUnit(void *);
     u32 fn_8013FF94(void *, s32, s32);
     void fn_801658DC(s32, s32);
     extern u16 gUiMsgStrings[];
@@ -7447,7 +7447,7 @@ void fn_80171D04(void *arg0) {
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
         temp_r30 = M2C_FIELD(arg0, void **, 0x4C);
-        if (fn_80164BB0(temp_r30) != 0) {
+        if (MapCursor_GetUnit(temp_r30) != 0) {
             ((u8 *)gUiContext)[8] = 4;
             gUiContext[1] = gUiContext[0];
             temp_r0 = M2C_FIELD(temp_r30, s16 *, 0x4C);
@@ -7478,7 +7478,7 @@ extern "C" void fn_80171F00(void *arg0) {
     extern u32 gUiContext[];
     void fn_8013FDA0(void *);
     void fn_801475FC(void *, s32);
-    u32 fn_80164BB0(void *);
+    u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -7528,10 +7528,10 @@ extern "C" void fn_80171F00(void *arg0) {
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
     text = fn_8013FF94(arg0, 0x106, 0);
-    var_r30 = fn_80164BB0(obj4c);
+    var_r30 = MapCursor_GetUnit(obj4c);
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80164BB0(obj4c)) {
-        var_r30 = fn_80164BB0(obj4c);
+    if (var_r30 != MapCursor_GetUnit(obj4c)) {
+        var_r30 = MapCursor_GetUnit(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)obj4c)->v10();
@@ -7877,7 +7877,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     void fn_80094CDC(void *, s16);
     void fn_8013FDA0(void *);
     void fn_801475FC(void *, s32);
-    u32 fn_80164BB0(void *);
+    u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -7927,10 +7927,10 @@ extern "C" void fn_80172DA4(void *arg0) {
 
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    var_r29 = fn_80164BB0(obj4c);
+    var_r29 = MapCursor_GetUnit(obj4c);
     fn_8013FDA0(arg0);
-    if (var_r29 != fn_80164BB0(obj4c)) {
-        var_r29 = fn_80164BB0(obj4c);
+    if (var_r29 != MapCursor_GetUnit(obj4c)) {
+        var_r29 = MapCursor_GetUnit(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r29 != 0) {
                 *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
@@ -8162,7 +8162,7 @@ s32 *fn_80143A84(void *);
 void fn_80143C9C(void *);
 void fn_80143E0C(void *, s16);
 void fn_801475FC(void *, s32);
-u32 fn_80164BB0(void *);
+u32 MapCursor_GetUnit(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
 void Ui_HideUnitInfoPopup(void *);
@@ -8212,10 +8212,10 @@ u8 ok;
 self = arg0;
 obj4c = *(void **)((u8 *)arg0 + 0x4C);
 obj54 = *(void **)((u8 *)arg0 + 0x54);
-var_r27 = fn_80164BB0(obj4c);
+var_r27 = MapCursor_GetUnit(obj4c);
 fn_8013FDA0(arg0);
-if (var_r27 != fn_80164BB0(obj4c)) {
-var_r27 = fn_80164BB0(obj4c);
+if (var_r27 != MapCursor_GetUnit(obj4c)) {
+var_r27 = MapCursor_GetUnit(obj4c);
 if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
 if (var_r27 != 0 && *(u32 *)var_r27 != 0) {
 *(Vec2s *)&sp10 = ((Obj *)obj4c)->v10();
@@ -8243,7 +8243,7 @@ obj = fn_8000CAA0(lbl_80294580, self);
 void *r28 = *(void **)((u8 *)self + 0x54);
 void *r26a = *(void **)((u8 *)self + 0x4C);
 s32 *r27b = fn_80143A84(r28);
-u32 *r26b = (u32 *)fn_80164BB0(r26a);
+u32 *r26b = (u32 *)MapCursor_GetUnit(r26a);
 if (r26b != 0 && r27b != 0) {
 u32 r5 = *r26b;
 register u32 r25;
