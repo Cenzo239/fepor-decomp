@@ -70,7 +70,7 @@ struct Arg0 {
 extern u16 lbl_802737A0[];
 
 static inline void *GetUnitIfBitSet(u32 *bits, u8 id) {
-    void *fn_80019DF0(u8);
+    void *Res_GetEntry(u8);
     s32 n = id;
 
     if (n < 0) {
@@ -85,7 +85,7 @@ static inline void *GetUnitIfBitSet(u32 *bits, u8 id) {
         if (!(*p & (1 << n))) {
             return NULL;
         }
-        return fn_80019DF0(id);
+        return Res_GetEntry(id);
     }
 }
 
@@ -281,7 +281,7 @@ s32 fn_80105A5C(s32 *arg0) {
 }
 
 s32 Status_Test(void *arg0, u8 arg1) {
-    s32 fn_80019DF0(u8);
+    s32 Res_GetEntry(u8);
     u32 *p = arg0;
     s32 n = arg1;
     s32 r;
@@ -296,14 +296,14 @@ s32 Status_Test(void *arg0, u8 arg1) {
         if (!(*p & (1 << n))) {
             r = 0;
         } else {
-            r = fn_80019DF0(arg1);
+            r = Res_GetEntry(arg1);
         }
     }
     return r != 0;
 }
 
 s32 fn_80105C5C(s32 *arg0, u8 arg1) {
-    s32 fn_80019DF0(u8);
+    s32 Res_GetEntry(u8);
     u32 *p = (u32 *)arg0;
     s32 n = arg1;
 
@@ -315,7 +315,7 @@ s32 fn_80105C5C(s32 *arg0, u8 arg1) {
         n -= 32;
     }
     if (*p & (1 << n)) {
-        return fn_80019DF0(arg1);
+        return Res_GetEntry(arg1);
     }
     return 0;
 }
@@ -349,7 +349,7 @@ void Status_Clear(s32 *arg0, u8 arg1) {
 }
 
 void fn_80105DAC(s32 *arg0, s32 arg1) {
-    s32 *fn_80019DF0(u8);
+    s32 *Res_GetEntry(u8);
     s32 Str_Cmp(s32, s32);
     u8 i;
     u32 *p;
@@ -357,7 +357,7 @@ void fn_80105DAC(s32 *arg0, s32 arg1) {
 
     if (arg1 != 0) {
         for (i = 0; i < 0x62; i++) {
-            if (Str_Cmp(arg1, *fn_80019DF0(i)) == 0) {
+            if (Str_Cmp(arg1, *Res_GetEntry(i)) == 0) {
                 n = i;
                 if (n >= 0) {
                     p = (u32 *)arg0;
@@ -5637,35 +5637,25 @@ void fn_8010FAA8(void) {
     void fn_8001F91C(void *, u8, u8, s8);
     extern u8 lbl_8032BB58[];
     extern u8 gBattleMap[];
-    u8 *p;
-    u8 *base;
-    s32 i;
-    u8 *cell;
-    u8 t;
-    s8 x;
-    s8 y;
-
-    i = 0;
-    base = lbl_8032BB58;
-    p = base;
-    while (i < *(s32 *)(base + 0x200)) {
-        switch (p[2]) {
+    struct { s32 i; u8 *base; u8 *p; } walk;
+    walk.i = 0;
+    walk.base = lbl_8032BB58;
+    walk.p = walk.base;
+    while (walk.i < *(s32 *)(walk.base + 0x200)) {
+        switch (walk.p[2]) {
         case 6:
-            fn_8001F91C(gBattleMap, p[0], p[1], (s8)p[3]);
+            fn_8001F91C(gBattleMap, walk.p[0], walk.p[1], (s8)walk.p[3]);
             break;
-        case 9:
-            y = p[1];
-            x = p[0];
-            cell = gBattleMap + x + (y << 6);
-            if (cell[0xd] == 0) {
-                t = cell[0x300d];
-                t |= 2;
-                cell[0x300d] = t;
-            }
+        case 9: {
+            s32 y = (s8)walk.p[1];
+            s32 x = (s8)walk.p[0];
+            u8 *cell = gBattleMap + x + (y << 6);
+            if (cell[0xd] == 0) cell[0x300d] |= 2;
             break;
         }
-        p += 8;
-        i += 1;
+        }
+        walk.p += 8;
+        walk.i++;
     }
 }
 

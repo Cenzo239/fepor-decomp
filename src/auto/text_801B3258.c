@@ -2165,7 +2165,7 @@ extern "C" void fn_801B9654(void *arg0) {
 #pragma cplusplus reset
 void fn_801B9748(void *a) {
     void *Ui_FindChild(void *, s32, s32);
-    s32 fn_80019DF0(u8);
+    s32 Res_GetEntry(u8);
     void fn_8017A9F0(void *, s32, void *);
     extern u8 gUiContext[];
     extern f32 lbl_8036B2DC;
@@ -2180,7 +2180,7 @@ void fn_801B9748(void *a) {
     p = Ui_FindChild(a, 0x108, 0);
     *(f32 *)((u8 *)p + 0x30) = lbl_8036B2DC;
 
-    x = fn_80019DF0(gUiContext[0x14]);
+    x = Res_GetEntry(gUiContext[0x14]);
     q = *(void **)((u8 *)a + 0x60);
     *(u8 *)((u8 *)q + 0x3C) = 0;
     fn_8017A9F0(q, x, a);
@@ -2545,7 +2545,7 @@ s32 fn_801BAC40(struct efUnit* arg0, s32 arg1)
 #pragma global_optimizer off
 extern "C" void fn_801BADB0(void *arg0) {
     void *Heap_Alloc(s32);
-    s32 fn_80019DF0(u8);
+    s32 Res_GetEntry(u8);
     void fn_8013FCE0(void *, void *, void *, void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -2648,7 +2648,7 @@ extern "C" void fn_801BADB0(void *arg0) {
     *((s32 *)&p[1].ptmf + 1) = t1;
     *((s32 *)&p[1].ptmf + 2) = t2;
     for (; i < 0x62; i++) {
-        id = fn_80019DF0((u8)i);
+        id = Res_GetEntry((u8)i);
         *(s32 *)&call.ptmf = t0;
         *((s32 *)&call.ptmf + 1) = t1;
         *((s32 *)&call.ptmf + 2) = t2;
@@ -4759,7 +4759,7 @@ void *fn_801BE91C(void) { extern u8 gUiUnitPanelStrings[]; return gUiUnitPanelSt
 
 s32 fn_801BE92C(void *arg0) {
     void *Process_Find(void *);
-    void *fn_80019DF0(u8);
+    void *Res_GetEntry(u8);
     u8 fn_801058C4(void *, void *);
     void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BD58(void);
@@ -4791,7 +4791,7 @@ s32 fn_801BE92C(void *arg0) {
     found = 0;
     i = 0;
     do {
-        unit = fn_80019DF0((u8)i);
+        unit = Res_GetEntry((u8)i);
         if (*((u8 *)unit + 0x19) != 0 && fn_801058C4(unit, temp_r31) != 0) {
             found = 1;
             break;

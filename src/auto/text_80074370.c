@@ -212,10 +212,10 @@ extern "C" void fn_80074AA8(void *arg0) {
         virtual void v18() = 0;
         virtual void v19() = 0;
     };
-    void fn_80019DF0(void);
+    void Res_GetEntry(void);
     void fn_8010586C(void);
     ((Obj *)arg0)->v19();
-    fn_80019DF0();
+    Res_GetEntry();
     fn_8010586C();
 }
 #pragma cplusplus reset

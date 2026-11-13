@@ -2051,7 +2051,7 @@ s32 fn_800A28C0(void *arg0) {
 }
 
 char *fn_800A2914(void) {
-    void *fn_80019DF0(u8);
+    void *Res_GetEntry(u8);
     s32 fn_8010586C(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_80366E08;
@@ -2060,7 +2060,7 @@ char *fn_800A2914(void) {
     u8 temp_r31;
     s32 temp_r6;
 
-    temp_r31 = *((u8 *)fn_80019DF0(lbl_80366E08) + 0x18);
+    temp_r31 = *((u8 *)Res_GetEntry(lbl_80366E08) + 0x18);
     temp_r6 = fn_8010586C();
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x2C7, temp_r31, temp_r6);
     return lbl_80312270;
@@ -2086,14 +2086,14 @@ s32 fn_800A2974(void) {
 }
 
 s32 fn_800A29E8(void) {
-    M2C_UNK fn_80019DF0(u8);
+    M2C_UNK Res_GetEntry(u8);
     u8 Status_Test(s32, u8);
     M2C_UNK Status_Clear(s32, u8);
     extern u8 lbl_80366E08;
     s32 temp_r31;
 
     temp_r31 = fn_800AA794();
-    fn_80019DF0(lbl_80366E08);
+    Res_GetEntry(lbl_80366E08);
     if (Status_Test(temp_r31 + 0x1BC, lbl_80366E08) == 0) {
         Status_Clear(temp_r31 + 0x1BC, lbl_80366E08);
     }

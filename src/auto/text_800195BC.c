@@ -341,7 +341,7 @@ void fn_80019DD0(void) {
     Res_GetByName();
 }
 
-s32 fn_80019DF0(u8 arg0) {
+s32 Res_GetEntry(u8 arg0) {
     extern s32 lbl_803671E8;
     return lbl_803671E8 + (arg0 * 0x28);
 }

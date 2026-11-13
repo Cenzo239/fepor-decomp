@@ -112,7 +112,7 @@ char *Event_GetCmdFlagName(s32 flag)
 }
 
 u32 Event_GetCmdFlagRes(s32 arg0) {
-    void *fn_80019DF0(u8);
+    void *Res_GetEntry(u8);
     void fn_800056A0(s32);
     u32 var_r3;
     u8 var_r5;
@@ -196,7 +196,7 @@ u32 Event_GetCmdFlagRes(s32 arg0) {
         fn_800056A0(0);
         return 0U;
     }
-    var_r3 = *(u32 *)((u8 *)fn_80019DF0(var_r5) + 0x14);
+    var_r3 = *(u32 *)((u8 *)Res_GetEntry(var_r5) + 0x14);
     if (var_r3 == 0U) {
         fn_800056A0(0);
         return 0U;
