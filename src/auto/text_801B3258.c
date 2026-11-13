@@ -8715,7 +8715,7 @@ void Game_InitVideo(void) {
     void VIInit(void);
     s32 VIGetTvFormat(void);
     u32 OSGetResetCode(void);
-    s32 fn_8006E650(void);
+    s32 DemoGetCurrentBuffer(void);
     void DEMOInit(void *);
     void OSPanic(char *, s32, char *, ...);
     void GXSetCopyClear(void *, s32);
@@ -8808,7 +8808,7 @@ void Game_InitVideo(void) {
 
     sp8 = gClearColor;
     GXSetCopyClear(&sp8, 0xFFFFFF);
-    GXCopyDisp(fn_8006E650(), 1);
+    GXCopyDisp(DemoGetCurrentBuffer(), 1);
 }
 
 s32 fn_801C9704(void) {

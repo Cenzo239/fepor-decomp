@@ -7112,7 +7112,7 @@ void fn_8006E568(u32 arg0)
     }
 }
 
-s32 fn_8006E650(void) {
+s32 DemoGetCurrentBuffer(void) {
     extern s32 DemoCurrentBuffer;
     return DemoCurrentBuffer;
 }
