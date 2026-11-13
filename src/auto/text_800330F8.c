@@ -4307,7 +4307,8 @@ s32 fn_8003C7D0(s32 arg0) {
 }
 
 #pragma global_optimizer off
-s32 Unit_Read(void *arg0, void *arg1) {
+/* Read a unit record from stream into unit; return 0 if person id is 0 (empty). */
+s32 Unit_Read(void *unit, void *stream) {
     u16 Stream_ReadU16(void *);
     u8 Stream_ReadU8(void *);
     s32 Person_Get(u16);
@@ -4327,22 +4328,22 @@ s32 Unit_Read(void *arg0, void *arg1) {
     extern u8 gUnits[];
     void *src;
     void *dst;
-    u32 first;
-    s32 tmp;
-    s32 t2;
+    u32 pid;
+    s32 person;
+    s32 job;
     u8 id;
     void *p;
 
-    src = arg1;
-    dst = arg0;
-    first = Stream_ReadU16(src);
-    if ((u16)first == 0) {
+    src = stream;
+    dst = unit;
+    pid = Stream_ReadU16(src);
+    if ((u16)pid == 0) {
         return 0;
     }
-    tmp = Person_Get((u16)first);
-    t2 = Job_Get((u16)Stream_ReadU16(src));
-    *(s32 *)((u8 *)dst + 0x188) = tmp;
-    *(s32 *)((u8 *)dst + 0x18C) = t2;
+    person = Person_Get((u16)pid);
+    job = Job_Get((u16)Stream_ReadU16(src));
+    *(s32 *)((u8 *)dst + 0x188) = person;
+    *(s32 *)((u8 *)dst + 0x18C) = job;
     id = Stream_ReadU8(src);
     fn_8003B6C4(dst, (s32)(gUnitLists + id * 0xC));
     id = Stream_ReadU8(src);
@@ -4381,8 +4382,8 @@ s32 Unit_Read(void *arg0, void *arg1) {
     Stream_Read(src, 8, (u8 *)dst + 0x1AB);
     Stream_Read(src, 8, (u8 *)dst + 0x1B4);
     fn_80105A04((u8 *)dst + 0x1BC, src);
-    for (tmp = 0; tmp < 8; tmp++) {
-        Item_Read((void *)Unit_GetItemSlot((s32)dst, tmp), src);
+    for (person = 0; person < 8; person++) {
+        Item_Read((void *)Unit_GetItemSlot((s32)dst, person), src);
     }
     fn_8001D018((u8 *)dst + 0x20C, src);
     fn_80017414((u8 *)dst + 0x228, src);
@@ -4927,7 +4928,7 @@ void fn_8003DCDC(u8 *arg0, u8 *arg1, s32 arg2, s8 *arg3, s8 *arg4) {
     s32 b19f;
     s32 d0;
     s32 d1;
-
+    s32 product;
     b19e = arg1[0x19E];
     a19e = arg0[0x19E];
     b19e = (s8)b19e;
@@ -4935,7 +4936,8 @@ void fn_8003DCDC(u8 *arg0, u8 *arg1, s32 arg2, s8 *arg3, s8 *arg4) {
     d0 = (s8)(b19e - a19e);
     b19f = arg1[0x19F];
     d1 = (s8)(b19f - a19f);
-    *arg3 = (s8)(arg2 * d0 + b19e);
+    product = arg2 * d0;
+    *arg3 = (s8)(product + b19e);
     d1 = d1 * arg2;
     *arg4 = (s8)(d1 + arg1[0x19F]);
 }
