@@ -1461,23 +1461,23 @@ extern "C" void fn_8002C618(void *arg0, s8 arg1, s8 arg2) {
         virtual void v0(s8, s8) = 0;
         virtual void visit(s8, s8) = 0;
     };
-    register s8 y;
+    s8 y;
     s8 x;
 
     y = arg2;
     x = arg1;
 
     if (y - 1 >= 0) {
-        ((Visitor *)arg0)->visit(x, y - 1);
+        ((Visitor *)arg0)->visit(x, (s8)(y - 1));
     }
     if (x + 1 < gBattleMap[0]) {
-        ((Visitor *)arg0)->visit(x + 1, y);
+        ((Visitor *)arg0)->visit((s8)(x + 1), y);
     }
     if (y + 1 < gBattleMap[1]) {
-        ((Visitor *)arg0)->visit(x, y + 1);
+        ((Visitor *)arg0)->visit(x, (s8)(y + 1));
     }
     if (x - 1 >= 0) {
-        ((Visitor *)arg0)->visit(x - 1, y);
+        ((Visitor *)arg0)->visit((s8)(x - 1), y);
     }
 }
 #pragma use_lmw_stmw reset
@@ -1743,7 +1743,7 @@ void fn_8002CDCC(void *arg0, void *arg1)
 void fn_8002CE5C(void *arg0, void *arg1) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8002F6E8(void *, u8, u8, u8, u8);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     extern u8 lbl_802EF4E0[];
     u8 temp_r31;
     void *inner;
@@ -1751,7 +1751,7 @@ void fn_8002CE5C(void *arg0, void *arg1) {
     inner = *(void **)((u8 *)arg0 + 4);
     if (Allegiance_Compare(*(s32 *)((u8 *)inner + 0x190), *(s32 *)((u8 *)arg1 + 0x190)) != 1) {
         temp_r31 = *(u8 *)((u8 *)arg1 + 0x1A8);
-        if ((s8)temp_r31 != fn_8003B2D0(arg1)) {
+        if ((s8)temp_r31 != Unit_GetMaxHp(arg1)) {
             fn_8002F6E8(
                 lbl_802EF4E0,
                 *(u8 *)((u8 *)arg1 + 0x19E),
@@ -2310,7 +2310,7 @@ void Battle_AdvancePhase(void) {
     void *Unit_FindByName(void *);
     void fn_80016C58(void);
     void fn_800381EC(void *, s8);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     void fn_8003BBD4(void *, s32);
     void fn_8003C1B4(void *);
     void Unit_MoveToListHead(void *, s32);
@@ -2359,7 +2359,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 *(u32 *)(unit + 0x1A0) = flags & 0xFF88C7FE;
                 fn_80104410(unit + 0x1A4);
-                fn_800381EC(unit, (s8)fn_8003B2D0(unit));
+                fn_800381EC(unit, (s8)Unit_GetMaxHp(unit));
                 fn_8003BBD4(unit, 0);
                 fn_8003C1B4(unit);
             }
@@ -2418,7 +2418,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 *(u32 *)(unit + 0x1A0) = flags & 0xFF88C7FE;
                 fn_80104410(unit + 0x1A4);
-                fn_800381EC(unit, (s8)fn_8003B2D0(unit));
+                fn_800381EC(unit, (s8)Unit_GetMaxHp(unit));
                 fn_8003BBD4(unit, 0);
                 fn_8003C1B4(unit);
             }

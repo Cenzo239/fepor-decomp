@@ -3661,7 +3661,7 @@ s8 fn_8003B258(void *arg0) {
 
 void *fn_80037D54(void *);
 void *fn_80037C20(void *);
-s8 fn_8003B2D0(void *arg0)
+s8 Unit_GetMaxHp(void *arg0)
 {
     s8 var_r5;
     s8 var_r6;
@@ -4559,7 +4559,7 @@ void Unit_Promote(void *arg0) {
     void fn_800381EC(void *, s8);
     void fn_8003868C(void *, s32);
     u8 Status_Test(void *, s32);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     void Status_Set(void *, s32);
     typedef struct {
         u8 pad0[0xC];
@@ -4683,7 +4683,7 @@ void Unit_Promote(void *arg0) {
     tmp = self->unk1BB;
     self->unk1BB = (u8)((s32)(((u32)tmp >> 31) + tmp) >> 1);
     self->unk1A0 &= 0xFFFBFFFF;
-    fn_800381EC(self, (s8)fn_8003B2D0(self));
+    fn_800381EC(self, (s8)Unit_GetMaxHp(self));
 }
 
 s32 fn_8003D538(s32 arg0) {
@@ -5325,7 +5325,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void fn_80036834(void *);
     void fn_800951D0(void *, s32);
     void fn_80095070(void *, s32);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void fn_800381EC(void *, s8);
     u8 fn_80091D74(void *);
     void fn_8003BE50(void *);
@@ -5580,7 +5580,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     fn_80036834(self);
     fn_800951D0(self, -1);
     fn_80095070(self, -1);
-    fn_800381EC(self, fn_8003B2D0(self));
+    fn_800381EC(self, Unit_GetMaxHp(self));
     if (fn_80091D74(self) != 0 && Status_Test(&self->unk1BC, 9) == 0) {
         fn_8003BE50(self);
     }

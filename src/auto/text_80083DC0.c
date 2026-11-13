@@ -115,7 +115,7 @@ void fn_80083F08(void *arg0) {
     u8 fn_800386B0(void *);
     s8 fn_8003A1E0(void *);
     s8 Unit_GetMov(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8004DDB8(s32);
     void Ui_DrawIcon(void *, s32, s32);
@@ -440,7 +440,7 @@ void fn_80083F08(void *arg0) {
     f31v = lbl_80369634 + by;
     fn_8001003C((s32)(lbl_803695FC + bx), (s32)f31v, 8, 0, 0, Msg_Expand(gUiStrings + 0x370), lbl_80369430, lbl_80369418);
     fn_8001003C((s32)(lbl_80369638 + bx), (s32)f31v, 2, 0, 0, gUiStrings + 0x240, (s8)*(u8 *)((u8 *)unit + 0x1A8), lbl_80369430, lbl_80369418);
-    fn_8001003C((s32)(lbl_80369498 + bx), (s32)f31v, 0xC, 0, 0, gUiStrings + 0x244, fn_8003B2D0(unit), lbl_80369430, lbl_80369418);
+    fn_8001003C((s32)(lbl_80369498 + bx), (s32)f31v, 0xC, 0, 0, gUiStrings + 0x244, Unit_GetMaxHp(unit), lbl_80369430, lbl_80369418);
 
     f29v = lbl_8036963C + bx;
     f23v = lbl_80369438 + by;

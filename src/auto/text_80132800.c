@@ -2911,7 +2911,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
     void fn_8013F920(void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     s32 Unit_GetHp(void *);
     s32 fn_8003B258(void *);
     s32 Unit_GetStr(void *);
@@ -2977,7 +2977,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     Prim2D_PrepareTex();
 
     unit = self->unk44;
-    idx = fn_8003B2D0(unit);
+    idx = Unit_GetMaxHp(unit);
     self->v9(0xC, 0x22, lbl_802767E0 + 0x48, Unit_GetHp(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4C]);
     idx = fn_8003B258(unit);
@@ -3317,7 +3317,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void *fn_800A8A88(void *);
     void *fn_800A8978(void *);
     u8 fn_800386B0(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     u16 fn_8017C3C8(void *);
     void fn_8004BD1C(void *, f32 *, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
@@ -3434,7 +3434,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         Text_Draw((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
         Text_Draw((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (s8)((u8 *)unit)[0x1A8]);
-        Text_Draw((s32)(lbl_8036A640 + fy), (s32)fx, 0xC, lbl_802767E0 + 0xB1, fn_8003B2D0(unit));
+        Text_Draw((s32)(lbl_8036A640 + fy), (s32)fx, 0xC, lbl_802767E0 + 0xB1, Unit_GetMaxHp(unit));
         fy += lbl_8036A648;
     }
     if (self->unk40 & 0x40) {

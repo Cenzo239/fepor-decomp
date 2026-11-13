@@ -296,7 +296,7 @@ void *fn_8002F62C(void *);
 void *fn_8002F740(void);
 void fn_801A7218(void *, void *, s32);
 void fn_801A4958(void *);
-s8 fn_8003B2D0(void *);
+s8 Unit_GetMaxHp(void *);
 void fn_801A4A88(void *, s8);
 void fn_8019B704(void *, s32);
 extern u8 lbl_802EF4E0[];
@@ -315,7 +315,7 @@ div=*((u8*)p+3);
 eac=gBattle;
 diff=*(s16*)((u8*)arg0+0x34)-*(s16*)((u8*)eac+0x29A);
 diff/=div;
-if(diff>fn_8003B2D0(eac)) diff=fn_8003B2D0(eac);
+if(diff>Unit_GetMaxHp(eac)) diff=Unit_GetMaxHp(eac);
 if(diff<1) diff=1;
 neg=-diff;
 *((u8*)arg0+0x3B)=(u32)(neg|diff)>>31;
@@ -7021,7 +7021,7 @@ s32 fn_800BCFF4(u8 arg0)
 }
 
 s32 fn_800BD034(u8 arg0) {
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     extern u8 gUnits[];
     void *unit;
 
@@ -7033,7 +7033,7 @@ s32 fn_800BD034(u8 arg0) {
     if (unit == NULL) {
         return 0;
     }
-    return fn_8003B2D0(unit);
+    return Unit_GetMaxHp(unit);
 }
 
 s32 fn_800BD08C(u8 arg0) {

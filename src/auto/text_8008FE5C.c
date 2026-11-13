@@ -130,7 +130,7 @@ void fn_800900F4(u8 *arg0) {
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
     void fn_8008CD64(f32);
     void fn_8008CD34(void);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     s8 fn_8003A1E0(void *);
     void *Msg_Expand(char *);
     void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
@@ -163,7 +163,7 @@ void fn_800900F4(u8 *arg0) {
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
     b = self[0x1A8];
-    t = fn_8003B2D0(self);
+    t = Unit_GetMaxHp(self);
     p = Msg_Expand(lbl_8026CD60 + 0x111);
     fn_8001003C(0x10, 0x2C, 1, 1, 0, lbl_8026CD60 + 0xFA, p, (s8)b, lbl_80369754, gZeroF, (s8)t);
     t = fn_8003A1E0(self);
@@ -187,7 +187,7 @@ void fn_800900F4(u8 *arg0) {
     Text_Draw((s16)(b + 9), 0x6C, 1, fn_800A8A88(*(void **)(self + 0x188)));
     Text_Draw((s16)(b - 0xF), 0x6C, 1, lbl_8026CD60 + 0x13D);
     b = self[0x1A8];
-    t = fn_8003B2D0(self);
+    t = Unit_GetMaxHp(self);
     p = Msg_Expand(lbl_8026CD60 + 0x111);
     fn_8001003C(0x10, 0x90, 1, 1, 0, lbl_8026CD60 + 0xFA, p, (s8)b, lbl_80369754, gZeroF, (s8)t);
     t = fn_8003A1E0(self);

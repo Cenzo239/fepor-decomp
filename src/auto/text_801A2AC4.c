@@ -196,7 +196,7 @@ s32 fn_801A2F54(s32 arg0) {
 
 void fn_801A2FE0(void) {
     void Allegiance_FillMask(s32, void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     void fn_800381EC(void *, s8);
     void fn_80104480(void *);
     extern u8 gUnits[];
@@ -214,11 +214,11 @@ void fn_801A2FE0(void) {
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
             sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
-            fn_800381EC(unit, (s8)fn_8003B2D0(unit));
+            fn_800381EC(unit, (s8)Unit_GetMaxHp(unit));
             fn_80104480((u8 *)unit + 0x1A4);
         }
     }
-    fn_800381EC(gBattle, (s8)fn_8003B2D0(gBattle));
+    fn_800381EC(gBattle, (s8)Unit_GetMaxHp(gBattle));
     fn_80104480(gBattle + 0x1A4);
 }
 
@@ -780,7 +780,7 @@ void fn_801A47B0(void *arg0, s32 arg1, s32 arg2) {
     void fn_801A601C(void *, void *, void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
     void fn_801A8268(void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void fn_800381EC(void *, s32);
     void fn_801A8010(void *);
@@ -797,7 +797,7 @@ void fn_801A47B0(void *arg0, s32 arg1, s32 arg2) {
     BattleAnim_Queue(obj + 0x8A0, 0x54, 0);
     fn_801A8268(obj);
     saved = obj[0x1A8];
-    tmp = fn_800AA76C((s8)saved, (s8)fn_8003B2D0(obj), (s8)a2);
+    tmp = fn_800AA76C((s8)saved, (s8)Unit_GetMaxHp(obj), (s8)a2);
     fn_800381EC(obj, tmp + (s8)obj[0x1A8]);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
     BattleAnim_Queue(obj + 0x8A0, 9, tmp);
@@ -869,7 +869,7 @@ void fn_801A4A24(s32 arg0, u8 arg1) {
 
 #pragma opt_common_subs off
 void fn_801A4A88(u8 *obj, s32 a1) {
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void fn_800381EC(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
@@ -877,7 +877,7 @@ void fn_801A4A88(u8 *obj, s32 a1) {
     s32 b;
 
     orig = obj[0x1A8];
-    a1 = (s8)fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj), (s8)a1);
+    a1 = (s8)fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
     b = obj[0x1A8];
     fn_800381EC(obj, a1 + (s8)b);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
@@ -889,7 +889,7 @@ void fn_801A4A88(u8 *obj, s32 a1) {
 }
 #pragma opt_common_subs reset
 void fn_801A4B40(u8 *obj, s32 a1) {
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void fn_800381EC(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
@@ -900,7 +900,7 @@ void fn_801A4B40(u8 *obj, s32 a1) {
     v = a1;
     o = obj;
     orig = o[0x488];
-    v = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(o + 0x2E0), (s8)v);
+    v = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(o + 0x2E0), (s8)v);
     v = (s8)v;
     fn_800381EC(o + 0x2E0, v + (s8)o[0x488]);
     BattleAnim_Queue(o + 0x8A0, 0x20, 0);
@@ -1064,7 +1064,7 @@ final:
 void fn_801A5008(s32 arg0) {
     s32 *Item_GetFlagsPtr(s32);
     void BattleAnim_Queue(s32, s32, s32);
-    s32 fn_8003B2D0(s32);
+    s32 Unit_GetMaxHp(s32);
     void fn_801A601C(s32, s32, s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
     extern u8 lbl_802EFDB8[];
@@ -1077,7 +1077,7 @@ void fn_801A5008(s32 arg0) {
     u32 var_r4;
 
     fn_801A601C(arg0, arg0, 0, 0);
-    BattleAnim_Queue(arg0 + 0x8A0, 0xF, fn_8003B2D0(arg0 + 0x2E0));
+    BattleAnim_Queue(arg0 + 0x8A0, 0xF, Unit_GetMaxHp(arg0 + 0x2E0));
     BattleAnim_Queue(arg0 + 0x8A0, 0x10, *(u8 *)(arg0 + 0x488));
     BattleAnim_Queue(arg0 + 0x8A0, 0x54, 0);
     *(u8 *)(arg0 + 0xCA4) = 0;
@@ -1359,7 +1359,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     s8 fn_8003ACF8(void *);
     s8 fn_8003AF28(void *);
     s8 fn_8003B258(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     u8 fn_8003C7D0(void *);
     u8 Status_Test(void *, s32);
     void **fn_801A7FF4(void *);
@@ -1384,14 +1384,14 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if (arg3 == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x10) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
-            half = fn_8003B2D0(arg1);
+            half = Unit_GetMaxHp(arg1);
             if ((s8)hp <= half / 2) {
                 BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3C, 0);
             }
         }
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2B) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
-            half = fn_8003B2D0(arg1);
+            half = Unit_GetMaxHp(arg1);
             if ((s8)hp <= half / 2) {
                 BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3E, 0);
             }
@@ -1717,7 +1717,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
     void BattleAnim_Queue(s32, s32, s32);
-    s32 fn_8003B2D0(s32);
+    s32 Unit_GetMaxHp(s32);
     u8 Status_Test(s32, s32);
     void fn_801A859C(s32);
     void fn_801A8AF4(s32);
@@ -1836,8 +1836,8 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     }
     if (flag == 0) {
         fn_80033E90(self + 0x8A0, 0x55);
-        if (*(u8 *)(u1 + 0x2B7) != fn_8003B2D0(u1)) {
-            BattleAnim_Queue(self + 0x8A0, 0x59, fn_8003B2D0(u1));
+        if (*(u8 *)(u1 + 0x2B7) != Unit_GetMaxHp(u1)) {
+            BattleAnim_Queue(self + 0x8A0, 0x59, Unit_GetMaxHp(u1));
         }
         {
             u8 t = *(u8 *)(u1 + 0x1A8);
@@ -1870,8 +1870,8 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
             }
         }
         if (!(*(u32 *)(self + 0xCAC) & 1)) {
-            if (*(u8 *)(u2 + 0x2B7) != fn_8003B2D0(u2)) {
-                BattleAnim_Queue(self + 0x8A0, 0x60, fn_8003B2D0(u2));
+            if (*(u8 *)(u2 + 0x2B7) != Unit_GetMaxHp(u2)) {
+                BattleAnim_Queue(self + 0x8A0, 0x60, Unit_GetMaxHp(u2));
             }
             {
                 u8 t = *(u8 *)(u2 + 0x1A8);
@@ -1922,7 +1922,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void fn_80034120(void *);
     void fn_800381EC(void *, s32);
     s8 fn_8003AF28(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     u8 Status_Test(void *, s32);
     void fn_801A55D4(void *, void *, void *, s32);
     void fn_801A601C(void *, void *, void *, s32);
@@ -2039,7 +2039,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             fn_801A601C(self, unit, foe, 0);
             if (Status_Test((u8 *)unit + 0x1BC, 0x2B) != 0) {
                 hp = *(u8 *)((u8 *)unit + 0x1A8);
-                if ((s8)hp <= (s32)fn_8003B2D0(unit) / 2) {
+                if ((s8)hp <= (s32)Unit_GetMaxHp(unit) / 2) {
                     *(s16 *)((u8 *)unit + 0x2A8) = (s16)(*(s16 *)((u8 *)unit + 0x2A8) + 0x32);
                     if (*(s16 *)((u8 *)unit + 0x2A8) > 0x64) {
                         *(s16 *)((u8 *)unit + 0x2A8) = 0x64;
@@ -2087,8 +2087,8 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             lim2 = (s16)((s8)hp - deal);
             fn_800381EC(foe, deal);
             tmp = (s16)(v2ac + (s8)*(u8 *)((u8 *)unit + 0x1A8));
-            if (tmp > fn_8003B2D0(unit)) {
-                tmp = fn_8003B2D0(unit);
+            if (tmp > Unit_GetMaxHp(unit)) {
+                tmp = Unit_GetMaxHp(unit);
             }
             cap = (s16)(tmp - (s8)*(u8 *)((u8 *)unit + 0x1A8));
             if (cap > lim2) {
@@ -2152,8 +2152,8 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             lim2 = (s16)((s8)hp - deal);
             fn_800381EC(unit, deal);
             cur = (s8)*(u8 *)((u8 *)foe + 0x1A8);
-            if (cur > fn_8003B2D0(foe)) {
-                cur = fn_8003B2D0(foe);
+            if (cur > Unit_GetMaxHp(foe)) {
+                cur = Unit_GetMaxHp(foe);
             }
             cap = (s16)(cur - (s8)*(u8 *)((u8 *)foe + 0x1A8));
             if (cap > lim2) {

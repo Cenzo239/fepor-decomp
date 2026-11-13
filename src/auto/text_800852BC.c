@@ -2676,7 +2676,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void *Msg_Expand(void *);
     u8 fn_800386B0(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void fn_8007AD6C(void *);
     void fn_8008BA50(s32, s32);
     extern s32 gUiAtlas;
@@ -2791,7 +2791,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     fn_8001003C((s16)(x + 0x3A), (s16)(y + 0x3A), 2, 0, 0,
                 lbl_8026CC88 + 0x41, (s8)((u8 *)self)[0x1A8], lbl_80369704, lbl_803696E0);
     fn_8001003C((s16)(x + 0x54), (s16)(y + 0x3A), 0xC, 0, 0,
-                lbl_8026CC88 + 0x56, fn_8003B2D0(self), lbl_80369704, lbl_803696E0);
+                lbl_8026CC88 + 0x56, Unit_GetMaxHp(self), lbl_80369704, lbl_803696E0);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369720);

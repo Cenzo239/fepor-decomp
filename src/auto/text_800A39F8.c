@@ -1471,11 +1471,11 @@ s32 fn_800A6868(s32 arg0) {
 }
 
 s32 fn_800A68D8(void *arg0) {
-    s8 fn_8003B2D0();
+    s8 Unit_GetMaxHp();
     u8 temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, u8 *, 0x1A8);
-    return (s8) temp_r31 < fn_8003B2D0();
+    return (s8) temp_r31 < Unit_GetMaxHp();
 }
 
 s32 fn_800A6920(s32 arg0) {
@@ -1492,11 +1492,11 @@ s32 fn_800A6920(s32 arg0) {
 }
 
 s32 fn_800A6990(void *arg0) {
-    s8 fn_8003B2D0();
+    s8 Unit_GetMaxHp();
     u8 temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, u8 *, 0x1A8);
-    return (s8) temp_r31 < fn_8003B2D0();
+    return (s8) temp_r31 < Unit_GetMaxHp();
 }
 
 s32 fn_800A69D8(s32 *arg0, s32 *arg1) {

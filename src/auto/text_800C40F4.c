@@ -18725,7 +18725,7 @@ void fn_800F5A8C(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 void fn_800F60D4(void *arg0,s32 *arg1){
 void *Res_GetByName(void *);s32 fn_800F6F94(void *,s32);
-s8 fn_8003B2D0(void *);s8 fn_800386E0(void *);
+s8 Unit_GetMaxHp(void *);s8 fn_800386E0(void *);
 u8 Allegiance_Compare(void *,void *);
 extern u32 gBattle[];
 extern u8 lbl_80272F44[],gBattleMap[],gUnits[],gBattleState[];
@@ -18741,8 +18741,8 @@ u8 *unit;
 cfg=Res_GetByName(M2C_FIELD(arg0,void **,0x244));
 score=fn_800F6F94(cfg,1);
 unit=(u8 *)gBattle+0x2E0;
-maxhp=(f32)fn_8003B2D0(unit);
-remaining=fn_8003B2D0(unit)-(s8)unit[0x1A8];
+maxhp=(f32)Unit_GetMaxHp(unit);
+remaining=Unit_GetMaxHp(unit)-(s8)unit[0x1A8];
 amount=(f32)remaining;
 amount=lbl_8036A068*amount;
 percent=(s32)(amount/maxhp);

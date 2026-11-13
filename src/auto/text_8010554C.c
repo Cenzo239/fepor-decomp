@@ -3781,7 +3781,7 @@ u8 fn_8010BEB8(void *arg0) {
     void *fn_8002F740(void);
     void **Unit_GetItemSlot(void *, s32);
     void *Item_GetByIid(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     s32 fn_80230BCC(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_80094ABC(void *, void *);
@@ -3865,7 +3865,7 @@ u8 fn_8010BEB8(void *arg0) {
                             if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
                                 priA = 0xA;
                             } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
-                                priA = fn_8003B2D0(arg0);
+                                priA = Unit_GetMaxHp(arg0);
                             } else {
                                 priA = 0;
                             }
@@ -3874,7 +3874,7 @@ u8 fn_8010BEB8(void *arg0) {
                             if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
                                 cur = 0xA;
                             } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
-                                cur = fn_8003B2D0(arg0);
+                                cur = Unit_GetMaxHp(arg0);
                             } else {
                                 cur = 0;
                             }
@@ -3886,7 +3886,7 @@ u8 fn_8010BEB8(void *arg0) {
                                     pick = bestItem;
                                     other = cand;
                                 }
-                                rem = (s8)(fn_8003B2D0(arg0) - ((u8 *)arg0)[0x1A8]);
+                                rem = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
                                 distA = fn_80230BCC(rem - hi);
                                 distB = fn_80230BCC(rem - lo);
                                 if (distB > distA) {
@@ -3939,7 +3939,7 @@ u8 fn_8010BEB8(void *arg0) {
 s32 fn_8010C244(void *arg0) {
     void *Item_GetByIid(void *);
     void *Unit_GetItemSlot(void *, s32);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     void fn_801025BC(void *, s16 *, s16 *);
     s32 fn_80230BCC(s32);
@@ -3979,7 +3979,7 @@ loop:
             if (key == Item_GetByIid(lbl_80273B40 + 0x1D)) {
                 valBest = 0xA;
             } else if (key == Item_GetByIid(lbl_80273B40 + 0x2B)) {
-                valBest = fn_8003B2D0(arg0);
+                valBest = Unit_GetMaxHp(arg0);
             } else {
                 valBest = 0;
             }
@@ -3988,7 +3988,7 @@ loop:
             if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
                 valCur = 0xA;
             } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
-                valCur = fn_8003B2D0(arg0);
+                valCur = Unit_GetMaxHp(arg0);
             } else {
                 valCur = 0;
             }
@@ -3999,7 +3999,7 @@ loop:
                     chosen = slot;
                     slot = best;
                 }
-                valBest = (s8)(fn_8003B2D0(arg0) - ((u8 *)arg0)[0x1A8]);
+                valBest = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
                 a = fn_80230BCC((s8)(valBest - (s8)valCur));
                 if (fn_80230BCC((s8)(valBest - (s8)temp)) > a) {
                     chosen = slot;
@@ -4051,7 +4051,7 @@ s32 Unit_HasLowHpAi(void *arg0) {
 
 s32 Unit_IsLowHp(void *arg0) {
     u8 fn_80102EA8(void);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     s32 fn_8022C568(f32);
     void *Res_GetByName(void *);
     extern f64 lbl_8036A168;
@@ -4066,7 +4066,7 @@ s32 Unit_IsLowHp(void *arg0) {
 
     if (fn_80102EA8() != 0) {
         saved = *(u8 *)((u8 *)arg0 + 0x1A8);
-        ratio = (f32)(s8)saved / (f32)fn_8003B2D0(arg0);
+        ratio = (f32)(s8)saved / (f32)Unit_GetMaxHp(arg0);
         if (ratio <= lbl_8036A160) {
             *(u32 *)((u8 *)arg0 + 0x254) |= 1;
             return 1;
@@ -4077,7 +4077,7 @@ s32 Unit_IsLowHp(void *arg0) {
 
     result = 0;
     {
-        s8 b2d = fn_8003B2D0(arg0);
+        s8 b2d = Unit_GetMaxHp(arg0);
         s8 v = (s8)*(u8 *)((u8 *)arg0 + 0x1A8);
         val = fn_8022C568((lbl_8036A164 * (f32)v) / (f32)b2d);
     }
@@ -5228,7 +5228,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80022FD8(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     s32 fn_800F7838(void *, s8, s8);
     s32 fn_800F7994(void *, s8, s8);
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
@@ -5376,7 +5376,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                                 }
                             }
                             if ((u32)(bestScore + 0x80000000) != 0) {
-                                maximum = fn_8003B2D0(unit);
+                                maximum = Unit_GetMaxHp(unit);
                                 numerator = (f32)(s8)*((u8 *)unit + 0x1A8);
                                 denominator = (f32)maximum;
                                 ratio = (s32)((lbl_8036A170 * numerator) / denominator);
@@ -5420,7 +5420,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
-    s8 Unit_GetMov(void *); s8 fn_8003B2D0(void *);
+    s8 Unit_GetMov(void *); s8 Unit_GetMaxHp(void *);
     extern f32 lbl_8036A170;
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -5471,7 +5471,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                 if(!(flags[1]&4) && arg2 && arg2(unit)) continue;
                 if((*(u32 *)((u8 *)unit+0x254)&1)==0) continue;
                 {
-                    s8 maximum=fn_8003B2D0(unit);
+                    s8 maximum=Unit_GetMaxHp(unit);
                     u8 value=*((u8 *)unit+0x1a8);
                     f32 numerator=(f32)(s8)value;
                     f32 denominator=(f32)maximum;

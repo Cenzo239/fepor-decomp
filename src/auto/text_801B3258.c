@@ -3646,7 +3646,7 @@ extern "C" void Ui_DetachChildSlots(void *panel) {
 extern "C" void Ui_InitUnitPanel(void *arg0) {
 void *Heap_Alloc(u32); void Ui_AddChild(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
-void fn_800381EC(void *,s8); s32 fn_8003B2D0(void *);
+void fn_800381EC(void *,s8); s32 Unit_GetMaxHp(void *);
 void *Ui_FindChild(void *,s32,s32); u8 fn_8017D6D8(void *);
 void Ui_PlaySeCue(void *,s32); void Process_Goto(void *,s32); void fn_8013FF00(void *,void *);
 extern u8 lbl_8028FDB0[],lbl_80292230[],lbl_80293C84[],lbl_80293C58[],gUiUnitPanelStrings[],gUiContext[];
@@ -3710,7 +3710,7 @@ String_AssignCStr((u8 *)p+0x3C,gUiUnitPanelStrings+0xF7,strlen((char *)gUiUnitPa
 M2C_FIELD(p,u32 *,0x34)|=0x10;
 M2C_FIELD(p,u32 *,0x58)=1;
 Ui_AddChild(self,p);
-fn_800381EC(unit,(s8)fn_8003B2D0(unit));
+fn_800381EC(unit,(s8)Unit_GetMaxHp(unit));
 M2C_FIELD(M2C_FIELD(self,void **,0x5C),s16 *,0x3E)=0;
 if(!fn_8017D6D8(M2C_FIELD(self,void **,0x5C))) {
 temp=Ui_FindChild(self,0x80,0);

@@ -3249,7 +3249,7 @@ void fn_801320B8(void* arg0, f32 arg1) {
 
 void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
     u8 fn_800386B0(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void *fn_800A8978(void *);
     extern M2C_UNK lbl_80275AC0;
     s8 temp_r3;
@@ -3275,7 +3275,7 @@ block_19:
         sprintf(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
         goto block_19;
     case 5:
-        temp_r3 = fn_8003B2D0(temp_r30);
+        temp_r3 = Unit_GetMaxHp(temp_r30);
         if (temp_r3 >= (s8) M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x18C), u8 *, 0x4C)) {
             sprintf(arg0, (s8) (&lbl_80275AC0 + 0x4B6), &lbl_80275AC0 + 0x423, &lbl_80275AC0 + 0x428);
         } else {
@@ -3289,7 +3289,7 @@ block_19:
 
 s32 fn_8013236C(s32 unused, void **arg1, s32 arg2) {
     u8 fn_800386B0(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void *temp_r3;
 
     temp_r3 = *arg1;
@@ -3305,7 +3305,7 @@ s32 fn_8013236C(s32 unused, void **arg1, s32 arg2) {
     case 4:
         return *(s8 *)((u8 *)temp_r3 + 0x1A8);
     case 5:
-        return fn_8003B2D0(temp_r3);
+        return Unit_GetMaxHp(temp_r3);
     default:
         return 0;
     }

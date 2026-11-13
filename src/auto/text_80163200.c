@@ -4841,7 +4841,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
     void **fn_80037D54(void *);
     s8 fn_8003A1E0(void *);
     s8 Unit_GetMov(void *);
-    s8 fn_8003B2D0(void *);
+    s8 Unit_GetMaxHp(void *);
     void **fn_8006EDD8(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *);
     void fn_8007D044(s32, s32, f32, f32, f32, f32);
@@ -5002,7 +5002,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
             fn_8001003C((s32)(lbl_8036AAD4 + fx), (s32)f31, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x138), lbl_8036AAB4, lbl_8036AA34);
             fn_8001003C((s32)(lbl_8036AAD8 + fx), (s32)f31, 1, 1, 0, lbl_80277EA0 + 0x134, (s8)*((u8 *)unit + 0x1A8), lbl_8036AAB4, lbl_8036AA34);
             f31 = lbl_8036AADC + fx;
-            fn_8001003C((s32)f31, (s32)(lbl_8036AAD0 + fy), 4, 1, 0, lbl_80277EA0 + 0x13E, (s8)fn_8003B2D0(unit), lbl_8036AAB4, lbl_8036AA34);
+            fn_8001003C((s32)f31, (s32)(lbl_8036AAD0 + fy), 4, 1, 0, lbl_80277EA0 + 0x13E, (s8)Unit_GetMaxHp(unit), lbl_8036AAB4, lbl_8036AA34);
             f30 = lbl_8036AAE0 + fy;
             fn_8001003C((s32)(lbl_8036AAC8 + fx), (s32)f30, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x143), lbl_8036AAB4, lbl_8036AA34);
             fn_8001003C((s32)(lbl_8036AAE4 + fx), (s32)f30, 1, 1, 0, lbl_80277EA0 + 0x134, (s8)Unit_GetMov(unit), lbl_8036AAB4, lbl_8036AA34);
@@ -7411,7 +7411,7 @@ extern "C" void fn_80171C0C(void *arg0) {
         virtual void v11(void *) = 0;
     };
     void fn_80027038(void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     void fn_800381EC(void *, s32);
     void fn_80138808(void *, void *);
     void fn_80050C90(void *);
@@ -7435,7 +7435,7 @@ extern "C" void fn_80171C0C(void *arg0) {
     fn_80027038(gUiContext);
     unit = (void *)gUiContext[0];
     ((Obj *)obj)->v11(unit);
-    t = (s8)fn_8003B2D0(unit);
+    t = (s8)Unit_GetMaxHp(unit);
     fn_800381EC(unit, t);
     tmp44 = *(void **)((u8 *)self + 0x44);
     if (*(u32 *)(gBattle + 0xcac) & 0x10) {

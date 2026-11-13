@@ -125,7 +125,7 @@ void fn_801A8268(void *arg0) {
     s32 DebugPrint(const char *, ...);
     s32 fn_800A8A88(void *);
     s32 fn_800A8978(void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     u8 fn_800386B0(void *);
     s32 fn_8003A778(void *);
     s32 fn_8003AA40(void *);
@@ -159,7 +159,7 @@ void fn_801A8268(void *arg0) {
 
     v1a8 = *(s8 *)((u8 *)arg0 + 0x1A8);
     v19a = *(s8 *)((u8 *)arg0 + 0x19A);
-    t = fn_8003B2D0(arg0);
+    t = Unit_GetMaxHp(arg0);
     DebugPrint((const char *)(lbl_8027B650 + 0x35),
                 v19a, fn_800386B0(arg0), v1a8, t);
 
@@ -247,7 +247,7 @@ void fn_801A8268(void *arg0) {
 }
 void fn_801A859C(void *arg0) {
     s8 temp;
-    temp = fn_8003B2D0();
+    temp = Unit_GetMaxHp();
     M2C_FIELD(arg0, s8 *, 0x2B7) = temp;
     M2C_FIELD(arg0, u8 *, 0x2B8) = (u8) M2C_FIELD(arg0, u8 *, 0x1A8);
     M2C_FIELD(arg0, s16 *, 0x2BA) = (s16) M2C_FIELD(arg0, s16 *, 0x298);
