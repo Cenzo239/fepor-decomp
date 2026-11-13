@@ -888,7 +888,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void *fn_800D59CC(void *, String *);
     u32 strlen(char *);
     extern void *lbl_80368278;
-    extern f32 lbl_8036A1A0;
+    extern f32 fActorDefaultHeight;
 
     char sp33C[0x20];
     char sp31C[0x20];
@@ -1071,7 +1071,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     fn_800C9A60(&sp4C, -1);
 
     if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x124)) {
-        *(f32 *)((u8 *)self + 0x124) = lbl_8036A1A0;
+        *(f32 *)((u8 *)self + 0x124) = fActorDefaultHeight;
     }
     if (lbl_8036A184 == *(f32 *)((u8 *)self + 0x128)) {
         *(f32 *)((u8 *)self + 0x128) = lbl_8036A1A4;
