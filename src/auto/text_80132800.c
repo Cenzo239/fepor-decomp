@@ -12424,12 +12424,12 @@ extern "C" void fn_80149C94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) 
         virtual s32 v22();
         virtual s32 v23();
     };
-    u8 fn_800B1E98(u16, s32, s32, s32);
+    u8 Sound_PlaySE(u16, s32, s32, s32);
     void fn_800B1D0C(s32, s32);
     void fn_800B1DEC(s32, s16);
     s8 b;
 
-    *(u8 *)((u8 *)arg0 + 4) = fn_800B1E98((u16)((Obj *)arg0)->v23(), 0, arg1, arg2);
+    *(u8 *)((u8 *)arg0 + 4) = Sound_PlaySE((u16)((Obj *)arg0)->v23(), 0, arg1, arg2);
     b = *(s8 *)((u8 *)arg0 + 4);
     if (b >= 0) {
         fn_800B1D0C((s32)b, arg3);

@@ -1491,7 +1491,7 @@ void fn_800B1E44(s32 arg0)
 }
 
 #pragma use_lmw_stmw on
-s32 fn_800B1E98(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
+s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void *fn_8024B754(u16, u8, s32, s32);
