@@ -1683,10 +1683,10 @@ void *fn_800A1CF0(void) {
 }
 
 s32 fn_800A1D00(void) {
-    M2C_UNK fn_80037AB8();
+    M2C_UNK Unit_SetStatBonusesToCap();
     M2C_UNK Map_GetCursorUnit();
     Map_GetCursorUnit();
-    fn_80037AB8();
+    Unit_SetStatBonusesToCap();
     return 6;
 }
 

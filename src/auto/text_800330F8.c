@@ -2121,7 +2121,7 @@ s32 Unit_MatchesId(void *unit, s32 idName) {
     }
 }
 
-void fn_80037AB8(void *arg0) {
+void Unit_SetStatBonusesToCap(void *arg0) {
     void *temp_r6;
     void *temp_r6_2;
     void *temp_r6_3;
