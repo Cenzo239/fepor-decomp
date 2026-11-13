@@ -12198,21 +12198,22 @@ void fn_8025FB74(u8 arg0, u8 arg1, u8 arg2)
     fn_80260174(arg0, arg1, 0xFF);
 }
 
-u16 Sound_GetChanParam(u8 arg0,u8 arg1,u8 arg2) {
+/* Read channel param `op` from group/channel tables as a 14-bit value (0 if channel is 255). */
+u16 Sound_GetChanParam(u8 op,u8 channel,u8 group) {
 extern u8 gSoundChanParams[];
-if(arg1!=255) {
-if(arg2!=255) {if(arg0<0x40U){u32 index=arg0&31;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+0x20]);}
-if(arg0<0x46U) return (gSoundChanParams+arg2*0x860+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
-if(arg0>=0x60U && arg0<0x66U) return 0;
-if(arg0==0x80U || arg0==0x81U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
-if(arg0==0x84U || arg0==0x85U) {u32 index=arg0&0xfe;return (((gSoundChanParams+arg2*0x860+arg1*0x86)[index]<<7)|(gSoundChanParams+arg2*0x860+arg1*0x86)[index+1]);}
-return (gSoundChanParams+arg2*0x860+arg1*0x86)[arg0]<<7;}
-else {if(arg0<0x40U){u32 index; s32 offset; offset=arg1*0x86;index=arg0&31;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+0x20]);}
-if(arg0<0x46U) return ((u8*)gSoundChanParamsDefault+arg1*0x86)[arg0]<0x40 ? 0 : 0x3fff;
-if(arg0>=0x60U && arg0<0x66U) return 0;
-if(arg0==0x80U || arg0==0x81U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
-if(arg0==0x84U || arg0==0x85U) {u32 index; s32 offset; offset=arg1*0x86;index=arg0&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
-return ((u8*)gSoundChanParamsDefault+arg1*0x86)[arg0]<<7;}
+if(channel!=255) {
+if(group!=255) {if(op<0x40U){u32 index=op&31;return (((gSoundChanParams+group*0x860+channel*0x86)[index]<<7)|(gSoundChanParams+group*0x860+channel*0x86)[index+0x20]);}
+if(op<0x46U) return (gSoundChanParams+group*0x860+channel*0x86)[op]<0x40 ? 0 : 0x3fff;
+if(op>=0x60U && op<0x66U) return 0;
+if(op==0x80U || op==0x81U) {u32 index=op&0xfe;return (((gSoundChanParams+group*0x860+channel*0x86)[index]<<7)|(gSoundChanParams+group*0x860+channel*0x86)[index+1]);}
+if(op==0x84U || op==0x85U) {u32 index=op&0xfe;return (((gSoundChanParams+group*0x860+channel*0x86)[index]<<7)|(gSoundChanParams+group*0x860+channel*0x86)[index+1]);}
+return (gSoundChanParams+group*0x860+channel*0x86)[op]<<7;}
+else {if(op<0x40U){u32 index; s32 offset; offset=channel*0x86;index=op&31;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+0x20]);}
+if(op<0x46U) return ((u8*)gSoundChanParamsDefault+channel*0x86)[op]<0x40 ? 0 : 0x3fff;
+if(op>=0x60U && op<0x66U) return 0;
+if(op==0x80U || op==0x81U) {u32 index; s32 offset; offset=channel*0x86;index=op&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
+if(op==0x84U || op==0x85U) {u32 index; s32 offset; offset=channel*0x86;index=op&0xfe;return ((((u8*)gSoundChanParamsDefault+offset)[index]<<7)|((u8*)gSoundChanParamsDefault+offset)[index+1]);}
+return ((u8*)gSoundChanParamsDefault+channel*0x86)[op]<<7;}
 }
 else return 0;
 }
