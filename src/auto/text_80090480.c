@@ -220,7 +220,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    extern s32 lbl_80369748;
+    extern s32 gUnitInfoPanelColorPlayer;
     extern s32 lbl_8036974C;
     extern s32 lbl_80369750;
     extern f32 lbl_80369764;
@@ -236,7 +236,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
 
     switch (arg2) {
     case 0:
-        sp14 = lbl_80369748;
+        sp14 = gUnitInfoPanelColorPlayer;
         sp18[0] = *(u8 *)&sp14;
         sp18[1] = *(u8 *)((u8 *)&sp14 + 1);
         sp18[2] = *(u8 *)((u8 *)&sp14 + 2);
