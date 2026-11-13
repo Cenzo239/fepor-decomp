@@ -50,11 +50,11 @@ void fn_801F1D70(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029A910[];
-    extern u8 lbl_8027F730[];
+    extern u8 gCardLinkStrings[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_8029A910, arg0);
-    *(s32 *)((u8 *)temp_r31 + 0x30) = fn_800C4638(0xB0, lbl_8027F730 + 0xA4, 0);
+    *(s32 *)((u8 *)temp_r31 + 0x30) = fn_800C4638(0xB0, gCardLinkStrings + 0xA4, 0);
 }
 
 void fn_801F1DC4(void *arg0) {
@@ -104,11 +104,11 @@ void fn_801F1E8C(void *arg0) {
 }
 
 void fn_801F20A8(s32 arg0) {
-    extern u8 lbl_8027F730[];
+    extern u8 gCardLinkStrings[];
     s32 fn_8005C6A0(void *);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(lbl_8027F730 + 0xE1) & 0x2000) {
+    if (fn_8005C6A0(gCardLinkStrings + 0xE1) & 0x2000) {
         Process_ClearFunc(arg0);
     }
 }
@@ -119,7 +119,7 @@ void CardLink_InitUi(void *arg0) {
     void fn_80147188(s32);
     void strcat(void *, void *);
     void strcpy(void *, void *);
-    extern u8 lbl_8027F730[];
+    extern u8 gCardLinkStrings[];
 
     struct Slot {
         s16 x;
@@ -160,7 +160,7 @@ void CardLink_InitUi(void *arg0) {
     temp_r31->unk16 = 0x30;
     temp_r31->unk18 = 0x70;
     fn_80147188(0);
-    a4 = lbl_8027F730;
+    a4 = gCardLinkStrings;
     c40 = 0x40;
     temp_r31->slots[0].x = *(s16 *)((u8 *)temp_r31 + 0x16) + 0x2A;
     z = 0;
@@ -190,11 +190,11 @@ void CardLink_InitUi(void *arg0) {
     temp_r31->slots[5].w = c40;
     temp_r31->slots[5].flag = z;
     strcpy(a3, a4);
-    strcat(temp_r31->unk50, Msg_Expand(lbl_8027F730 + 0xFC));
-    strcat(temp_r31->unk50, lbl_8027F730 + 0x107);
-    strcat(temp_r31->unk50, Msg_Expand(lbl_8027F730 + 0x10F));
-    strcat(temp_r31->unk50, lbl_8027F730 + 0x118);
-    strcat(temp_r31->unk50, Msg_Expand(lbl_8027F730 + 0x120));
+    strcat(temp_r31->unk50, Msg_Expand(gCardLinkStrings + 0xFC));
+    strcat(temp_r31->unk50, gCardLinkStrings + 0x107);
+    strcat(temp_r31->unk50, Msg_Expand(gCardLinkStrings + 0x10F));
+    strcat(temp_r31->unk50, gCardLinkStrings + 0x118);
+    strcat(temp_r31->unk50, Msg_Expand(gCardLinkStrings + 0x120));
     temp_r31->unkC = 4;
     temp_r31->unkE = temp_r31->unk8;
     temp_r31->unk10 = temp_r31->unkA;
@@ -203,7 +203,7 @@ void CardLink_InitUi(void *arg0) {
     temp_r31->unkC = 0;
     temp_r31->unk8 = temp_r31->unk12;
     temp_r31->unkA = temp_r31->unk14;
-    fn_8006EEFC(temp_r31->unk4C, lbl_8027F730 + 0xE1);
+    fn_8006EEFC(temp_r31->unk4C, gCardLinkStrings + 0xE1);
 }
 
 void fn_801F230C(void *arg0) {
@@ -229,7 +229,7 @@ void fn_801F230C(void *arg0) {
     void fn_8007CB3C(void *, s32);
     void fn_8008BF68(s16, s16, s32);
     s32 *Ui_GetColor(s32);
-    extern u8 lbl_8027F730[];
+    extern u8 gCardLinkStrings[];
     extern void *lbl_8029A8C8[];
     extern f32 lbl_8036B808;
     extern f32 lbl_8036B80C;
@@ -398,7 +398,7 @@ void fn_801F230C(void *arg0) {
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0xF0, 0x3D, 2, 0, 0, Msg_Expand(lbl_8027F730 + 0x128), lbl_8036B814, lbl_8036B80C);
+        fn_8001003C(0xF0, 0x3D, 2, 0, 0, Msg_Expand(gCardLinkStrings + 0x128), lbl_8036B814, lbl_8036B80C);
 
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036B818);
@@ -5265,7 +5265,7 @@ void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
 }
 #pragma use_lmw_stmw reset
 extern u16 gCardLinkStr[18];
-extern u16* lbl_8027F730;
+extern u16* gCardLinkStrings;
 extern u16* lbl_8029A910;
 extern u8 lbl_8027F710[32];
 extern u8 gBattleState[1400];
