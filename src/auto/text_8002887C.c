@@ -2956,7 +2956,7 @@ void fn_8002F4EC(void *arg0, void *arg1) {
 }
 
 void fn_8002F564(void) {
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_ShowMoveLimitView(void);
     extern u8 lbl_802CA518[];
     extern s32 gTargetList[];
@@ -2968,8 +2968,8 @@ void fn_8002F564(void) {
     s8 x;
     s8 y;
 
-    fn_80022DAC(lbl_802CA518, 5, -1);
-    fn_80022DAC(lbl_802CA518, 8, 0);
+    Map_FillLayer(lbl_802CA518, 5, -1);
+    Map_FillLayer(lbl_802CA518, 8, 0);
 
     p = gTargetList;
     i = 0;

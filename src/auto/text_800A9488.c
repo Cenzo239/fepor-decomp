@@ -614,7 +614,7 @@ void Map_UpdateCursorMoveLimit(void) {
 /* Build and show the selected unit's move-range overlay (refresh or first setup). */
 void MapUi_ShowUnitRanges(void *unit) {
     void UiCtx_RefreshRangeSelect(void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void fn_800227F8(void *, s32);
     void fn_80022748(void *, s32);
@@ -632,7 +632,7 @@ void MapUi_ShowUnitRanges(void *unit) {
     if ((s8)gUiContext[0x12] != 0) {
         UiCtx_RefreshRangeSelect(gUiContext);
         mov = gUiContext[0x11];
-        fn_80022DAC(gBattleMap, 8, 0);
+        Map_FillLayer(gBattleMap, 8, 0);
         Map_SelectRangeBuffer(gBattleMap, 5);
         fn_800227F8(gBattleMap, *(s32 *)((u8 *)unit + 0x18C));
         fn_80022748(gBattleMap, *(s32 *)((u8 *)unit + 0x190));
@@ -763,14 +763,14 @@ void *Map_GetCursorUnit(void) {
 
 void fn_800AA80C(void *arg0) {
     u8 Status_Test(void *, s32);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void Map_FillAttackRange(void *, u8, u8, s32, s32);
     extern u8 gBattleMap[];
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 0x43) != 0) {
-        fn_80022DAC(gBattleMap, 5, -1);
-        fn_80022DAC(gBattleMap, 8, 0);
+        Map_FillLayer(gBattleMap, 5, -1);
+        Map_FillLayer(gBattleMap, 8, 0);
         Map_SelectRangeBuffer(gBattleMap, 6);
         Map_FillAttackRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
     }
@@ -919,7 +919,7 @@ y2_cmp:
 void fn_800AAB3C(void *arg0) {
     u8 Item_GetMaxRange(void);
     void Map_FillAttackRange(void *, u8, u8, u8);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
@@ -934,8 +934,8 @@ void fn_800AAB3C(void *arg0) {
     void *temp_r3_2;
     u8 temp_r31;
 
-    fn_80022DAC(&gBattleMap, 5, -1);
-    fn_80022DAC(&gBattleMap, 8, 0);
+    Map_FillLayer(&gBattleMap, 5, -1);
+    Map_FillLayer(&gBattleMap, 8, 0);
     Map_SelectRangeBuffer(&gBattleMap, 6);
     var_r29 = 0x64;
     var_r28 = 0;

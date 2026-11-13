@@ -569,7 +569,7 @@ s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
 u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
 u8 fn_8001F85C(void *,u8,u8,u8,u8); void **fn_80037D54(void *);
-void Map_SelectRangeBuffer(void *,s32); void fn_80022DAC(void *,s32,s32);
+void Map_SelectRangeBuffer(void *,s32); void Map_FillLayer(void *,s32,s32);
 u8 fn_8001DD54(void *,void *); void Map_FillAttackRange(void *,u8,u8,u8,u8);
 void *members[3]; s32 cross[3]; s32 out;
 if(M2C_FIELD(M2C_FIELD(self,void **,0x190),u8 *,8)) return 0;
@@ -614,7 +614,7 @@ item=fn_80037D54(unit);
 if(!item || !(data=*item)) return 0;
 if(data) type=M2C_FIELD(data,u8 *,0x12); else type=12;
 if(type!=3) return 0;
-Map_SelectRangeBuffer(gBattleMap,6); fn_80022DAC(gBattleMap,8,0);
+Map_SelectRangeBuffer(gBattleMap,6); Map_FillLayer(gBattleMap,8,0);
 {u8 range; u8 reach;
 if(*item) range=fn_8001DD54(*item,*walk); else range=0;
 data=*item;

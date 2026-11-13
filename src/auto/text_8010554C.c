@@ -3055,7 +3055,7 @@ void fn_8010AEC8(void) {
 s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void Allegiance_FillMask(s32, void *);
     s32 fn_8001DD54(void *, void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
@@ -3100,7 +3100,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
 
     best.score = 0x80000000;
     best.unit = NULL;
-    fn_80022DAC(gBattleMap, 5, -1);
+    Map_FillLayer(gBattleMap, 5, -1);
     Map_SelectRangeBuffer(gBattleMap, 5);
     map = gBattleMap;
     (*(s16 **)(map + 0x14190))[(s8)arg1 + ((s8)arg2 << 6)] = 0;
@@ -3191,7 +3191,7 @@ loop_slot:
 u8 fn_8010B30C(void *arg0, s8 arg1, s16 arg2) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
-    void fn_80022DAC(u8 *, s32, s32);
+    void Map_FillLayer(u8 *, s32, s32);
     void Map_SelectRangeBuffer(u8 *, s32);
     u8 fn_8003863C(void *);
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
@@ -3244,7 +3244,7 @@ scan_done:
     }
 
     Map_SelectRangeBuffer(gBattleMap, 5);
-    fn_80022DAC(gBattleMap, 0xB, -1);
+    Map_FillLayer(gBattleMap, 0xB, -1);
     fn_8001F9C4(gBattleMap, arg1, (s8)sp10, 1, 0);
 
     bestPri = 0x7F;
@@ -3774,7 +3774,7 @@ u8 Ai_TryEscapeMove(s32 arg0) {
 #pragma opt_strength_reduction off
 u8 Ai_TrySeekHealer(void *arg0) {
     u8 fn_80092F38(void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_8018D7A4(void *, void *);
@@ -3825,7 +3825,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
         return 0U;
     }
     if ((gAiState[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_80022DAC(map, 5, -1);
+        Map_FillLayer(map, 5, -1);
         Map_SelectRangeBuffer(map, 5);
         (*(s16 **)(map + 0x14190))[(s8)((u8 *)arg0)[0x19E] + ((s8)((u8 *)arg0)[0x19F] << 6)] = 0;
     } else {
@@ -4102,7 +4102,7 @@ s32 Unit_IsLowHp(void *unit) {
 #pragma opt_strength_reduction off
 s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
-    void fn_80022DAC(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
+    void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 fn_8003A778(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
@@ -4130,7 +4130,7 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s16 chosenX,chosenY;
     s32 x;
     if ((flags[1]&2) || (*(u32 *)((u8 *)arg0+0x254)&0x03000000)) {
-        fn_80022DAC(map,5,-1); Map_SelectRangeBuffer(map,5);
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
     fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
@@ -4206,7 +4206,7 @@ void fn_8010CAAC(void) {
 #pragma opt_strength_reduction off
 s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
-    void fn_80022DAC(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
+    void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_8010CF28(void *,void *,s16 *,s16 *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
@@ -4237,7 +4237,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s16 chosenX,chosenY;
     s32 x;
     if ((flags[1]&2) || (*(u32 *)((u8 *)arg0+0x254)&0x03000000)) {
-        fn_80022DAC(map,5,-1); Map_SelectRangeBuffer(map,5);
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
     fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
@@ -4449,7 +4449,7 @@ void fn_8010D364(void) {
 #pragma use_lmw_stmw on
 s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *, void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetActiveItemSlot(void *);
@@ -4512,7 +4512,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     slot = arg1;
 
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_80022DAC(map, 5, -1);
+        Map_FillLayer(map, 5, -1);
         Map_SelectRangeBuffer(map, 5);
         (*(s16 **)(map + 0x14190))[(s8)*((u8 *)arg0 + 0x19e) + ((s8)*((u8 *)arg0 + 0x19f) << 6)] = 0;
     } else {
@@ -4675,7 +4675,7 @@ ok_done:
 #pragma use_lmw_stmw on
 s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *, void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetActiveItemSlot(void *);
@@ -4738,7 +4738,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     slot = arg1;
 
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_80022DAC(map, 5, -1);
+        Map_FillLayer(map, 5, -1);
         Map_SelectRangeBuffer(map, 5);
         (*(s16 **)(map + 0x14190))[(s8)*((u8 *)arg0 + 0x19e) + ((s8)*((u8 *)arg0 + 0x19f) << 6)] = 0;
     } else {
@@ -4906,7 +4906,7 @@ ok_done:
 #pragma use_lmw_stmw reset
 s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
-    void fn_80022DAC(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
+    void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_801044FC(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
@@ -4936,7 +4936,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 x;
     s32 baseX;
     if ((flags[1]&2) || (*(u32 *)((u8 *)arg0+0x254)&0x03000000)) {
-        fn_80022DAC(map,5,-1); Map_SelectRangeBuffer(map,5);
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
     fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);
@@ -4996,7 +4996,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 u32 fn_8010E3F0(void *arg0, s32 arg1) {
     u8 Allegiance_Compare(s32, s32);
     u8 fn_8001DD54(void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void *Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
@@ -5069,7 +5069,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
         return 0;
     }
     if (((flags[1] & 2) != 0) || ((*(u32 *)((u8 *)self + 0x254) & 0x03000000) != 0)) {
-        fn_80022DAC(mapBase, 5, -1);
+        Map_FillLayer(mapBase, 5, -1);
         Map_SelectRangeBuffer(mapBase, 5);
         {
             s8 uy = (s8)((u8 *)self)[0x19F];
@@ -5146,7 +5146,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
 s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
-    void fn_80022DAC(u8 *, s32, s32);
+    void Map_FillLayer(u8 *, s32, s32);
     void Map_SelectRangeBuffer(u8 *, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[151280];
@@ -5166,7 +5166,7 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     var_r28 = 0;
     Map_SelectRangeBuffer(gBattleMap, 6);
-    fn_80022DAC(gBattleMap, 0xB, -1);
+    Map_FillLayer(gBattleMap, 0xB, -1);
     fn_8001F9C4(gBattleMap, arg1, arg2, arg4, 1);
     fn_8001F9C4(gBattleMap, arg1, arg2, arg3 - 1, -1);
     Map_SelectRangeBuffer(gBattleMap, 5);
@@ -5226,7 +5226,7 @@ loop_inner_cmp:
 #pragma opt_strength_reduction off
 s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     u8 fn_8001DD54(void *, void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
@@ -5290,7 +5290,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     cb = arg2;
     map = gBattleMap;
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_80022DAC(map, 5, -1);
+        Map_FillLayer(map, 5, -1);
         Map_SelectRangeBuffer(map, 5);
         (*(s16 **)(map + 0x14190))[(s8)*((u8 *)arg0 + 0x19e) + ((s8)*((u8 *)arg0 + 0x19f) << 6)] = 0;
     } else {
@@ -5420,7 +5420,7 @@ void fn_8010EF54(void) {
 #pragma opt_strength_reduction off
 s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
-    void fn_80022DAC(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
+    void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 Unit_GetMaxHp(void *);
     extern f32 lbl_8036A170;
@@ -5452,7 +5452,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 x;
     s32 ratio;
     if ((flags[1]&2) || (*(u32 *)((u8 *)arg0+0x254)&0x03000000)) {
-        fn_80022DAC(map,5,-1); Map_SelectRangeBuffer(map,5);
+        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
         (*(s16 **)(map+0x14190))[(s8)*((u8 *)arg0+0x19e)+((s8)*((u8 *)arg0+0x19f)<<6)]=0;
     } else Map_BuildUnitMoveRange(arg0,5,-1);
     fn_80100D18(arg0,Unit_GetHeldItemSlot(arg0,slot),-1);

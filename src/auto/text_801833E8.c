@@ -3344,7 +3344,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 u8 fn_8018D4CC(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_8002F728(void *);
@@ -3391,7 +3391,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
         return 0;
     }
     if ((gAiState[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
-        fn_80022DAC(base, 5, -1);
+        Map_FillLayer(base, 5, -1);
         Map_SelectRangeBuffer(base, 5);
         ((s16 *)*(void **)((u8 *)base + 0x14190))[(s8)*(u8 *)((u8 *)arg0 + 0x19E) + ((s8)*(u8 *)((u8 *)arg0 + 0x19F) << 6)] = 0;
     } else {

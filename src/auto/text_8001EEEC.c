@@ -159,7 +159,7 @@ s32 fn_8001EF80(void *arg0, s8 arg1, s8 arg2) {
 #pragma opt_strength_reduction off
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void Map_SetupUnitMoveLimit(void *);
     extern u8 gUnitLists[];
     extern u8 gMapBlendMode;
@@ -206,7 +206,7 @@ void fn_8001F140(void *arg0) {
     s32 zero;
 
     OSGetTick();
-    fn_80022DAC(arg0, 9, 0);
+    Map_FillLayer(arg0, 9, 0);
     node = *(void **)(gUnitLists + 0xC);
     while (node != NULL) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
@@ -654,7 +654,7 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
 
 void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     s8 x;
     void *self;
     s8 y;
@@ -676,7 +676,7 @@ void Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
     *(u8 **)((u8 *)self + 0x24EDC) = *(u8 **)((u8 *)self + 0x24EDC) + 6;
     (*(u8 **)((u8 *)self + 0x24EDC))[2] = 0x10;
 
-    fn_80022DAC(self, 0xB, -1);
+    Map_FillLayer(self, 0xB, -1);
 
     (*(s16 **)((u8 *)self + 0x14190))[(s8)x + ((s8)y << 6)] = 0;
 
@@ -734,7 +734,7 @@ return val;
 
 void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
 {
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     extern u8 gUnits[];
     u8 *ed8;
     u8 *edc;
@@ -771,7 +771,7 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
     edc = *(u8 **)((u8 *)map + 0x24EDC);
     edc[2] = 0x10;
 
-    fn_80022DAC(map, 0xB, -1);
+    Map_FillLayer(map, 0xB, -1);
 
     ((u8 *)map)[0xC] = 0;
     costs = *(s16 **)((u8 *)map + 0x14190);
@@ -1495,7 +1495,7 @@ void Map_RefreshUnitMap(void *arg0)
 {
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_8001F140(void *);
-    void fn_80022DAC(void *, s32, u8);
+    void Map_FillLayer(void *, s32, u8);
     s8 fn_8003A1C4(void *);
     void fn_8010FAA8(void);
     extern u8 gUnits[];
@@ -1530,9 +1530,9 @@ void Map_RefreshUnitMap(void *arg0)
     }
     saved = (f != 0);
 #pragma optimization_level reset
-    fn_80022DAC(self, 0, 0);
-    fn_80022DAC(self, 2, (u8)(saved == 0));
-    fn_80022DAC(self, 3, 0);
+    Map_FillLayer(self, 0, 0);
+    Map_FillLayer(self, 2, (u8)(saved == 0));
+    Map_FillLayer(self, 3, 0);
     fn_800152F8(1, 0, 1, 1, 0, 0, 0, 0, buf1);
 
     unit = 0;
@@ -1635,7 +1635,7 @@ void Map_RefreshUnitMap(void *arg0)
 }
 
 extern u16 jumptable_80284514[12];
-void fn_80022DAC(s32 arg0, s32 arg1) {
+void Map_FillLayer(s32 arg0, s32 arg1) {
     if (arg0 >= 11) {
         return;
     }
@@ -2032,7 +2032,7 @@ outer_test:
 void fn_80023D14(void *arg0) {
     void *Map_Get(void);
     s32 fn_80047AF8(void *);
-    void fn_80022DAC(void *, s32, s32);
+    void Map_FillLayer(void *, s32, s32);
     void fn_80044450(void *, s32);
     void *cam;
 
@@ -2044,7 +2044,7 @@ void fn_80023D14(void *arg0) {
     *(u8 *)((u8 *)arg0 + 9) = fn_80047AF8(cam);
     *(u8 *)((u8 *)arg0 + 0xB) = *(s32 *)((u8 *)arg0 + 4) - fn_80047AF8(cam);
     *(s32 *)((char *)arg0 + 0x14190) = (s32)arg0 + 0x610E;
-    fn_80022DAC(arg0, 0, 0);
+    Map_FillLayer(arg0, 0, 0);
     fn_80044450(cam, 1);
 }
 
