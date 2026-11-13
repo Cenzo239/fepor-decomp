@@ -4055,40 +4055,41 @@ void fn_8003B9AC(u32 arg0) {
 }
 
 extern u16 gAffinityStr[];
-s32 Affinity_FromName(void *arg0) {
+s32 Affinity_FromName(void *name) {
+    /* Map affinity name (fire..telius) to id 1-8; 0 if unknown or NULL. */
     s32 Str_Cmp(void *, void *);
     extern u16 gAffinityStr[];
-    s32 temp_r3;
+    s32 cmp;
 
-    if (arg0 == NULL) {
+    if (name == NULL) {
         return 0;
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x44) == 0) {
-        return 1;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x44) == 0) {
+        return 1; /* fire */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x49) == 0) {
-        return 2;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x49) == 0) {
+        return 2; /* thunder */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x51) == 0) {
-        return 3;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x51) == 0) {
+        return 3; /* wind */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x56) == 0) {
-        return 4;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x56) == 0) {
+        return 4; /* water */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x5C) == 0) {
-        return 5;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x5C) == 0) {
+        return 5; /* dark */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x61) == 0) {
-        return 6;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x61) == 0) {
+        return 6; /* light */
     }
-    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x67) == 0) {
-        return 7;
+    if (Str_Cmp(name, (u8 *)gAffinityStr + 0x67) == 0) {
+        return 7; /* heaven */
     }
-    temp_r3 = Str_Cmp(arg0, (u8 *)gAffinityStr + 0x6E);
-    if (temp_r3 != 0) {
+    cmp = Str_Cmp(name, (u8 *)gAffinityStr + 0x6E);
+    if (cmp != 0) {
         return 0;
     }
-    return 8;
+    return 8; /* telius */
 }
 
 void fn_8003BD58(void *arg0) {
