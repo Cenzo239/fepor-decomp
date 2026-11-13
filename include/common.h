@@ -69,6 +69,21 @@ typedef struct Unk800C2ACC {
 #define MSFX_FLAG_BOSS   0x0800
 #define MSFX_FLAG_DOORBREAK 0x1000
 
+/* GX vertex attribute IDs (subset used by Gfx_SetupVtxFormat) */
+#define GX_VA_PNMTXIDX 0
+#define GX_VA_POS      9
+#define GX_VA_NRM      10
+#define GX_VA_CLR0     11
+#define GX_VA_TEX0     13
+#define GX_VA_TEX1     14
+#define GX_VA_TEX2     15
+#define GX_VA_TEX3     16
+#define GX_VA_NBT      25
+#define GX_VA_NULL     0xFF
+#define GX_NONE        0
+#define GX_DIRECT      1
+#define GX_INDEX16     3
+
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
