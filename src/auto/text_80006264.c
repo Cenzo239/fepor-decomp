@@ -3349,7 +3349,7 @@ s32 fn_8000B82C(void) {
 extern void *(*lbl_80366DA0)(s32);
 extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
 extern u32 lbl_802ADAFC[9];
-void fn_8000B850(void *arg0) {
+void Process_RunScript(void *arg0) {
     extern u32 lbl_802ADAFC[9];
     u8 *self;
     u32 *table;
@@ -3757,7 +3757,7 @@ void fn_8000C194(s32 arg0) {
     }
 }
 
-void fn_8000B850(void *);
+void Process_RunScript(void *);
 void Process_ClearFunc(void *);
 void Process_Update(void *arg0) {
     extern u32 lbl_802ADAFC[9];
@@ -3780,7 +3780,7 @@ void Process_Update(void *arg0) {
             if (node[0x2D] == 0 && ((node[0x2C] & 4) == 0 || (*(u8 **)(node + 0x18))[0x2D] == 0)) {
                 for (;;) {
                     if (*(void **)(node + 0x10) == NULL) {
-                        fn_8000B850(node);
+                        Process_RunScript(node);
                     }
                     if (*(void **)(node + 0x10) != NULL) {
                         t = *(s16 *)(node + 0x28);
@@ -3860,7 +3860,7 @@ done1:
                 if (node[0x2D] == 0 && ((node[0x2C] & 4) == 0 || (*(u8 **)(node + 0x18))[0x2D] == 0)) {
                     for (;;) {
                         if (*(void **)(node + 0x10) == NULL) {
-                            fn_8000B850(node);
+                            Process_RunScript(node);
                         }
                         if (*(void **)(node + 0x10) != NULL) {
                             t = *(s16 *)(node + 0x28);
