@@ -975,7 +975,7 @@ s32 fn_800A08FC(void) {
     return 2;
 }
 
-s32 fn_800A09B8(s32 a0, s32 a1, void *arg2) {
+s32 MenuCmd_ToggleCursorMapObj(s32 a0, s32 a1, void *arg2) {
     s32 Map_Get();
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     void fn_800498A4(s32, s32, s32);
