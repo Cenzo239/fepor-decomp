@@ -8722,7 +8722,7 @@ void Game_InitVideo(void) {
     void fn_80221A40(s32, s32);
     extern s32 gGameFlags;
     extern void *gGameRenderMode;
-    extern void *lbl_803682AC;
+    extern void *gGameRenderModeProg;
     extern u8 lbl_80298278[];
     extern u8 lbl_802982B4[];
     extern u8 lbl_802982F0[];
@@ -8739,22 +8739,22 @@ void Game_InitVideo(void) {
     switch (fmt) {
     case 0:
         gGameRenderMode = lbl_80298278;
-        lbl_803682AC = lbl_802982B4;
+        gGameRenderModeProg = lbl_802982B4;
         gGameFlags |= 0x10000;
         break;
     case 1:
         gGameRenderMode = lbl_802982F0;
-        lbl_803682AC = lbl_8029832C;
+        gGameRenderModeProg = lbl_8029832C;
         gGameFlags |= 0x20000;
         break;
     case 5:
         gGameRenderMode = lbl_8029832C;
-        lbl_803682AC = lbl_8029832C;
+        gGameRenderModeProg = lbl_8029832C;
         gGameFlags |= 0x40000;
         break;
     case 2:
         gGameRenderMode = lbl_80298368;
-        lbl_803682AC = lbl_802982B4;
+        gGameRenderModeProg = lbl_802982B4;
         gGameFlags |= 0x80000;
         break;
     default:
@@ -8771,7 +8771,7 @@ void Game_InitVideo(void) {
                 DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x40;
             } else {
-                DEMOInit(lbl_803682AC);
+                DEMOInit(gGameRenderModeProg);
                 gGameFlags |= 0x40;
             }
             gGameFlags |= 0x30;
@@ -8785,7 +8785,7 @@ void Game_InitVideo(void) {
                 DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x40;
             } else {
-                DEMOInit(lbl_803682AC);
+                DEMOInit(gGameRenderModeProg);
                 gGameFlags |= 0x40;
             }
             gGameFlags |= 0x30;
@@ -8799,7 +8799,7 @@ void Game_InitVideo(void) {
                 DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x100;
             } else {
-                DEMOInit(lbl_803682AC);
+                DEMOInit(gGameRenderModeProg);
                 gGameFlags |= 0x100;
             }
             gGameFlags |= 0x30;
@@ -8812,8 +8812,8 @@ void Game_InitVideo(void) {
 }
 
 s32 fn_801C9704(void) {
-    extern s32 lbl_803682AC;
-    return lbl_803682AC;
+    extern s32 gGameRenderModeProg;
+    return gGameRenderModeProg;
 }
 
 s32 fn_801C970C(void) {
