@@ -8369,6 +8369,7 @@ void fn_80173C24(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void Ui_HandleListCursorInput(void *arg0) {
+    /* Handle list-cursor input: A select, Y info, X back, B cancel. */
     void fn_8000C070(void *, s32);
     s8 fn_80037E00(u32);
     void fn_800951D0(u32, s32);
@@ -8416,9 +8417,9 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
         virtual Vec2s v13() = 0;
     };
 
-    void *obj54;
-    void *obj58;
-    s32 *var_r28;
+    void *listWidget;
+    void *detailWidget;
+    s32 *entry;
     void *self;
     register int btn;
     register u8 gate;
@@ -8429,10 +8430,10 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     u32 sp10;
 
     self = arg0;
-    obj54 = *(void **)((u8 *)arg0 + 0x54);
-    obj58 = *(void **)((u8 *)arg0 + 0x58);
-    var_r28 = fn_80143A84(obj54);
-    if (var_r28 != NULL) {
+    listWidget = *(void **)((u8 *)arg0 + 0x54);
+    detailWidget = *(void **)((u8 *)arg0 + 0x58);
+    entry = fn_80143A84(listWidget);
+    if (entry != NULL) {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
             fn_801658DC(ret, (u8 *)lbl_80278080 + 0x38a);
@@ -8444,22 +8445,22 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
         }
     }
     fn_8013FDA0(arg0);
-    if (var_r28 != fn_80143A84(obj54)) {
-        var_r28 = fn_80143A84(obj54);
+    if (entry != fn_80143A84(listWidget)) {
+        entry = fn_80143A84(listWidget);
         if (fn_80166D8C(lbl_80330D68) != 0) {
-            if (var_r28 != NULL) {
-                *(Vec2s *)&sp14 = ((Obj *)obj54)->v13();
-                fn_80166DD0(lbl_80330D68, *var_r28, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+            if (entry != NULL) {
+                *(Vec2s *)&sp14 = ((Obj *)listWidget)->v13();
+                fn_80166DD0(lbl_80330D68, *entry, (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
             } else {
                 fn_801673D0(lbl_80330D68);
             }
         }
     }
-    *(s32 **)((u8 *)obj58 + 0x40) = var_r28;
-    if (var_r28 != NULL) {
-        *(u32 *)((u8 *)obj58 + 0x44) = *(u32 *)((u8 *)var_r28 + 4);
+    *(s32 **)((u8 *)detailWidget + 0x40) = entry;
+    if (entry != NULL) {
+        *(u32 *)((u8 *)detailWidget + 0x44) = *(u32 *)((u8 *)entry + 4);
     } else {
-        *(u32 *)((u8 *)obj58 + 0x44) = 0;
+        *(u32 *)((u8 *)detailWidget + 0x44) = 0;
     }
     flags = lbl_80367110;
     gate = 0;
@@ -8469,11 +8470,11 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     if (!gate) {
         btn = *(s32 *)((u8 *)lbl_80367240 + 4);
         btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
-        if ((btn & 0x100) && var_r28 != NULL && fn_80166D8C(lbl_80330D68) == 0) {
-            if (*(u32 *)((u8 *)var_r28 + 4) == 0) {
-                *((u8 *)obj54 + 0x4d) = 1;
-                *(s16 *)((u8 *)obj54 + 0x7a) = fn_80143C58(obj54);
-                *((u8 *)obj54 + 0x4c) = 0;
+        if ((btn & 0x100) && entry != NULL && fn_80166D8C(lbl_80330D68) == 0) {
+            if (*(u32 *)((u8 *)entry + 4) == 0) {
+                *((u8 *)listWidget + 0x4d) = 1;
+                *(s16 *)((u8 *)listWidget + 0x7a) = fn_80143C58(listWidget);
+                *((u8 *)listWidget + 0x4c) = 0;
                 fn_8000C070(arg0, 0x10);
             } else {
                 if (fn_80037E00(gUiContext[0]) < 0) {
@@ -8486,13 +8487,13 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 if (obj && *(void **)((u8 *)obj + 0x3C)) {
                     fn_80138808(obj, *(void **)((u8 *)obj + 0x3C));
                 }
-                gUiContext[1] = *(u32 *)((u8 *)var_r28 + 4);
+                gUiContext[1] = *(u32 *)((u8 *)entry + 4);
                 fn_8000C070(arg0, 0x11);
             }
             fn_801475FC((u8 *)lbl_80278080 + 0x1dd, 0x64);
-        } else if ((btn & 0x800) && fn_80166D8C(lbl_80330D68) == 0 && var_r28 != NULL) {
-            *(Vec2s *)&sp10 = ((Obj *)obj54)->v13();
-            fn_8016746C(lbl_80330D68, self, *var_r28, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
+        } else if ((btn & 0x800) && fn_80166D8C(lbl_80330D68) == 0 && entry != NULL) {
+            *(Vec2s *)&sp10 = ((Obj *)listWidget)->v13();
+            fn_8016746C(lbl_80330D68, self, *entry, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
             *(s32 *)lbl_80330D68 = *(s32 *)lbl_80330D68 | lbl_80368DC4;
         } else if ((btn & 0x400) && fn_80166D8C(lbl_80330D68) == 0) {
             if (fn_80037E00(gUiContext[0]) < 0) {
@@ -12635,10 +12636,10 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     extern u8 lbl_802F0350[];
     extern f32 lbl_8036AB94;
     void *self;
+    void *unit;
+    s32 color;
     s32 a1;
     s32 a2;
-    s32 color;
-    void *unit;
     u8 flag;
     s32 ret;
 
@@ -12647,6 +12648,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     a2 = arg2;
     color = arg3;
     unit = arg4;
+    (void)arg5;
     flag = 0;
     if (arg6 != 0) {
         flag = 0x11;
@@ -12665,6 +12667,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     fn_80009B8C(0xFF);
     fn_8000A248();
 }
+#pragma use_lmw_stmw reset
 s32 fn_8017B8F8(s32 unused, s32 arg1) {
     return arg1 != 0;
 }
