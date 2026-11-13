@@ -92,7 +92,7 @@ void Ui_DrawCenteredMsgLines(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     void *Msg_Expand(u32);
     void Text_Draw(s16, s16, u8, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_8008B1B0();
+    s32 Ui_DrawMsgPanelBg();
     extern f32 lbl_80369754;
     void *temp_r27;
     void *temp_r27_2;
@@ -101,7 +101,7 @@ void Ui_DrawCenteredMsgLines(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     s32 temp_r4_2;
     s32 temp_r4_3;
 
-    temp_r28 = fn_8008B1B0();
+    temp_r28 = Ui_DrawMsgPanelBg();
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();

@@ -7598,7 +7598,7 @@ s32 fn_8006F398(void) {
 
 #pragma cplusplus on
 extern "C" void fn_8006F514(void *arg0) {
-    void fn_8008B1B0(s32, s32);
+    void Ui_DrawMsgPanelBg(s32, s32);
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
@@ -7633,7 +7633,7 @@ extern "C" void fn_8006F514(void *arg0) {
         virtual void v29() = 0;
     };
     ((Obj *)arg0)->v29();
-    fn_8008B1B0(0, 0);
+    Ui_DrawMsgPanelBg(0, 0);
 }
 #pragma cplusplus reset
 void fn_8006F6A4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {

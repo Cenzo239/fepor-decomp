@@ -2568,7 +2568,7 @@ u16 fn_8008B09C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return sp28;
 }
 
-u16 fn_8008B1B0(s32 arg0, s32 arg1) {
+u16 Ui_DrawMsgPanelBg(s32 arg0, s32 arg1) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
