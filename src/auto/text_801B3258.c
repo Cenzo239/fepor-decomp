@@ -2765,7 +2765,8 @@ extern "C" void fn_801BADB0(void *arg0) {
 #pragma global_optimizer reset
 #pragma cplusplus reset
 
-void Ui_LayoutUnitManagePanel(void *arg0) {
+/* Layout the unit-manage panel: attach list, slide inventory into place, init help cursor, set caption. */
+void Ui_LayoutUnitManagePanel(void *panel) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
@@ -2785,30 +2786,30 @@ void Ui_LayoutUnitManagePanel(void *arg0) {
     extern void *volatile lbl_80368264;
     extern s8 lbl_8036826C;
     extern void *lbl_80368270;
-    struct { s16 x; s16 y; } spC;
-    struct { s16 x; s16 y; } sp8;
-    void *r30;
-    void *obj60;
-    void *p;
+    struct { s16 x; s16 y; } listPos;
+    struct { s16 x; s16 y; } invPos;
+    void *list;
+    void *invPanel;
+    void *help;
 
-    r30 = Ui_FindChild(arg0, 0x100, 0);
-    if (r30 == NULL) {
-        r30 = M2C_FIELD(arg0, void **, 0x48);
-        Ui_AddChild(arg0, r30);
+    list = Ui_FindChild(panel, 0x100, 0);
+    if (list == NULL) {
+        list = M2C_FIELD(panel, void **, 0x48);
+        Ui_AddChild(panel, list);
     }
-    if (M2C_FIELD(r30, s16 *, 0xC) != 0x10) {
-        spC.x = M2C_FIELD(r30, s16 *, 0xA);
-        spC.y = 0x10;
-        fn_8014027C(arg0, r30, &spC.x, 0);
+    if (M2C_FIELD(list, s16 *, 0xC) != 0x10) {
+        listPos.x = M2C_FIELD(list, s16 *, 0xA);
+        listPos.y = 0x10;
+        fn_8014027C(panel, list, &listPos.x, 0);
     }
-    M2C_FIELD(r30, u8 *, 0x4D) = 0;
-    M2C_FIELD(r30, f32 *, 0x30) = 0.5f;
-    obj60 = M2C_FIELD(arg0, void **, 0x60);
-    M2C_FIELD(obj60, u8 *, 0x3C) = 0;
-    if (M2C_FIELD(obj60, s16 *, 0xC) != 0x94) {
-        sp8.x = M2C_FIELD(obj60, s16 *, 0xA);
-        sp8.y = 0x94;
-        fn_801402A0(arg0, obj60, &sp8.x, 0);
+    M2C_FIELD(list, u8 *, 0x4D) = 0;
+    M2C_FIELD(list, f32 *, 0x30) = 0.5f;
+    invPanel = M2C_FIELD(panel, void **, 0x60);
+    M2C_FIELD(invPanel, u8 *, 0x3C) = 0;
+    if (M2C_FIELD(invPanel, s16 *, 0xC) != 0x94) {
+        invPos.x = M2C_FIELD(invPanel, s16 *, 0xA);
+        invPos.y = 0x94;
+        fn_801402A0(panel, invPanel, &invPos.x, 0);
     }
     if (lbl_80368260 == 0) {
         lbl_80368264 = lbl_8028459C;
@@ -2820,33 +2821,33 @@ void Ui_LayoutUnitManagePanel(void *arg0) {
         lbl_80368270 = lbl_80297E84;
         lbl_8036826C = 1;
     }
-    p = Heap_Alloc(0x20);
-    if (p != NULL) {
-        M2C_FIELD(p, void **, 4) = lbl_802845E8;
-        M2C_FIELD(p, void **, 0) = lbl_80297C08;
-        M2C_FIELD(p, void **, 4) = lbl_802920E0;
-        M2C_FIELD(p, s16 *, 8) = 0;
-        M2C_FIELD(p, s16 *, 0xA) = 0;
-        M2C_FIELD(p, s16 *, 0xC) = 0x80;
-        M2C_FIELD(p, s16 *, 0xE) = 0;
-        M2C_FIELD(p, s16 *, 0x10) = 2;
-        M2C_FIELD(p, s16 *, 0x12) = 0xC;
-        M2C_FIELD(p, s16 *, 0x14) = 0x10;
-        M2C_FIELD(p, s16 *, 0x16) = 0;
-        M2C_FIELD(p, f32 *, 0x18) = 0.0f;
-        M2C_FIELD(p, s16 *, 0x1C) = 0x20;
-        M2C_FIELD(p, s16 *, 0x1E) = 4;
+    help = Heap_Alloc(0x20);
+    if (help != NULL) {
+        M2C_FIELD(help, void **, 4) = lbl_802845E8;
+        M2C_FIELD(help, void **, 0) = lbl_80297C08;
+        M2C_FIELD(help, void **, 4) = lbl_802920E0;
+        M2C_FIELD(help, s16 *, 8) = 0;
+        M2C_FIELD(help, s16 *, 0xA) = 0;
+        M2C_FIELD(help, s16 *, 0xC) = 0x80;
+        M2C_FIELD(help, s16 *, 0xE) = 0;
+        M2C_FIELD(help, s16 *, 0x10) = 2;
+        M2C_FIELD(help, s16 *, 0x12) = 0xC;
+        M2C_FIELD(help, s16 *, 0x14) = 0x10;
+        M2C_FIELD(help, s16 *, 0x16) = 0;
+        M2C_FIELD(help, f32 *, 0x18) = 0.0f;
+        M2C_FIELD(help, s16 *, 0x1C) = 0x20;
+        M2C_FIELD(help, s16 *, 0x1E) = 4;
     }
-    M2C_FIELD(p, s16 *, 0xC) = 0x78;
-    M2C_FIELD(p, s16 *, 8) = 0x181;
-    M2C_FIELD(p, s16 *, 0xA) = 0xB4;
-    M2C_FIELD(p, s16 *, 0x14) = 0x1C;
-    M2C_FIELD(p, f32 *, 0x18) = 200.0f;
-    M2C_FIELD(p, s16 *, 0x1E) = 4;
-    fn_80024398(p, arg0, 0);
-    p = Ui_FindChild(arg0, -0x1000, 0);
-    if (p != NULL) {
-        Ui_SetWidgetText(p, gUiUnitPanelStrings + 0x142);
+    M2C_FIELD(help, s16 *, 0xC) = 0x78;
+    M2C_FIELD(help, s16 *, 8) = 0x181;
+    M2C_FIELD(help, s16 *, 0xA) = 0xB4;
+    M2C_FIELD(help, s16 *, 0x14) = 0x1C;
+    M2C_FIELD(help, f32 *, 0x18) = 200.0f;
+    M2C_FIELD(help, s16 *, 0x1E) = 4;
+    fn_80024398(help, panel, 0);
+    help = Ui_FindChild(panel, -0x1000, 0);
+    if (help != NULL) {
+        Ui_SetWidgetText(help, gUiUnitPanelStrings + 0x142);
     }
 }
 
