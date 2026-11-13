@@ -4820,25 +4820,26 @@ s32 Ui_ValidateSkillAssign(void *item) {
     return 0;
 }
 
-s32 Ui_SkillAssignMenuItem(void *arg0, void *arg1, void *arg2) {
+/* Menu item for skill assign: draw error popup from item+4, or enter state 0x82. */
+s32 Ui_SkillAssignMenuItem(void *item, void *parent, void *slot) {
     void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u8 gUiContext[];
     f32 x;
     f32 y;
 
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
-        y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        switch (*(s8 *)((u8 *)arg0 + 4)) {
+    if (*(u8 *)((u8 *)slot + 0x39) == 2) {
+        x = (f32)(*(s16 *)((u8 *)parent + 0x30) + *(s16 *)((u8 *)slot + 0x30));
+        y = (f32)(*(s16 *)((u8 *)parent + 0x32) + *(s16 *)((u8 *)slot + 0x32));
+        switch (*(s8 *)((u8 *)item + 4)) {
         case -1:
-            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2E3, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2E3, parent, x, y);
             break;
         case -2:
-            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x18C, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x18C, parent, x, y);
             break;
         case -3:
-            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2FA, arg1, x, y);
+            Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2FA, parent, x, y);
             break;
         }
         return 0;
