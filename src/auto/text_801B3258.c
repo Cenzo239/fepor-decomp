@@ -8724,7 +8724,7 @@ void Game_InitVideo(void) {
     extern void *gGameRenderMode;
     extern void *gGameRenderModeProg;
     extern u8 GameNtsc480IntDf[];
-    extern u8 lbl_802982B4[];
+    extern u8 GameNtsc480Prog[];
     extern u8 lbl_802982F0[];
     extern u8 lbl_8029832C[];
     extern u8 lbl_80298368[];
@@ -8739,7 +8739,7 @@ void Game_InitVideo(void) {
     switch (fmt) {
     case 0:
         gGameRenderMode = GameNtsc480IntDf;
-        gGameRenderModeProg = lbl_802982B4;
+        gGameRenderModeProg = GameNtsc480Prog;
         gGameFlags |= 0x10000;
         break;
     case 1:
@@ -8754,7 +8754,7 @@ void Game_InitVideo(void) {
         break;
     case 2:
         gGameRenderMode = lbl_80298368;
-        gGameRenderModeProg = lbl_802982B4;
+        gGameRenderModeProg = GameNtsc480Prog;
         gGameFlags |= 0x80000;
         break;
     default:
