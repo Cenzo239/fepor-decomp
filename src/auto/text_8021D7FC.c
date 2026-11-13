@@ -788,7 +788,7 @@ void GXSetCPUFifo(void *fifo) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void fn_8021F36C(u8, u8);
-    void fn_8021F338(u8);
+    void __GXFifoLink(u8);
     void fn_8021F39C(u8, u8);
     void fn_802037B0(void);
     extern void *__piReg;
@@ -812,13 +812,13 @@ void GXSetCPUFifo(void *fifo) {
         __GXGPFifoAttached = 1;
         fn_8021F39C(1, 1);
         fn_8021F36C(1, 0);
-        fn_8021F338(1);
+        __GXFifoLink(1);
     } else {
         u32 temp2_r8;
         u32 temp2_r7;
 
         if (__GXGPFifoAttached != 0) {
-            fn_8021F338(0);
+            __GXFifoLink(0);
             __GXGPFifoAttached = 0;
         }
         fn_8021F36C(0, 0);
@@ -838,7 +838,7 @@ void GXSetGPFifo(void *fifo) {
     void OSRestoreInterrupts(s32);
     void __GXFifoReadDisable(void);
     void fn_8021F36C(u8, u8);
-    void fn_8021F338(u8);
+    void __GXFifoLink(u8);
     void fn_8021F39C(u8, u8);
     void fn_8021F2F0(void);
     void fn_802037B0(void);
@@ -876,11 +876,11 @@ void GXSetGPFifo(void *fifo) {
     if (__GXCurrentCPUFifo == __GXCurrentGPFifo) {
         __GXGPFifoAttached = 1;
         fn_8021F36C(1, 0);
-        fn_8021F338(1);
+        __GXFifoLink(1);
     } else {
         __GXGPFifoAttached = 0;
         fn_8021F36C(0, 0);
-        fn_8021F338(0);
+        __GXFifoLink(0);
     }
 
     reg = M2C_FIELD(__GXData, u32 *, 0x8);
@@ -989,7 +989,7 @@ void __GXFifoReadDisable(void) {
     *(u16 *)(__cpReg + 0x2) = (u16)value;
 }
 
-void fn_8021F338(u8 en) {
+void __GXFifoLink(u8 en) {
     extern u16* const __GXData;
     extern u16* __cpReg;
     u32 b;
