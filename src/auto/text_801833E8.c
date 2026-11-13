@@ -2443,7 +2443,7 @@ void fn_8018B060(void *arg0) {
     void Process_ClearFunc(void);
     void fn_80050BCC(void *, s32);
     f32 Math_Lerp(f32, f32, f32, f32);
-    f32 fn_80059F78(s32, f32, f32, f32, f32);
+    f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     extern f64 lbl_8036ACE0;
     extern f32 lbl_8036ACD8;
@@ -2468,7 +2468,7 @@ void fn_8018B060(void *arg0) {
         *(s32 *)((u8 *)self + 0x50) = *(s32 *)((u8 *)arg0 + 0x54);
         Process_ClearFunc();
     }
-    t = (s32)fn_80059F78(2, lbl_8036ACEC, lbl_8036AD00,
+    t = (s32)Math_EaseInPow(2, lbl_8036ACEC, lbl_8036AD00,
                          (f32)*(s32 *)((u8 *)self + 0x54),
                          (f32)*(s32 *)((u8 *)self + 0x50));
     f31 = Math_Lerp(*(f32 *)((u8 *)self + 0x34), *(f32 *)((u8 *)self + 0x40),
@@ -2482,7 +2482,7 @@ void fn_8018B060(void *arg0) {
     if ((f32)(s32)temp < half) {
         f30 += fn_8005A028(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)(s32)temp);
     } else {
-        f30 += fn_80059F78(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)(s32)temp - half);
+        f30 += Math_EaseInPow(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)(s32)temp - half);
     }
     fn_80050BCC(*(void **)((u8 *)self + 0x30), t);
     obj = *(void **)((u8 *)self + 0x30);
@@ -9116,7 +9116,7 @@ s32 fn_8019A364(void *arg0)
     void fn_80025624(s32, s32);
     void fn_800536B0(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
-    f32 fn_80059F78(s32, f32, f32, f32, f32);
+    f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
@@ -9187,7 +9187,7 @@ s32 fn_8019A364(void *arg0)
         f31 += fn_8005A028(2, lbl_8036AF24, -scaled, f24, (f32)*(s16 *)(obj + 0x48));
         alpha = (s32)fn_8005A028(2, lbl_8036AF20, lbl_8036AF28, f24, (f32)*(s16 *)(obj + 0x48));
     } else {
-        f31 += fn_80059F78(2, -scaled, f25, f24, (f32)*(s16 *)(obj + 0x48) - f24);
+        f31 += Math_EaseInPow(2, -scaled, f25, f24, (f32)*(s16 *)(obj + 0x48) - f24);
     }
     f25 += lbl_8036AF2C;
 
@@ -9391,7 +9391,7 @@ s32 fn_8019ADD8(void *arg0)
     f32 fn_80023068(void *, f32, f32);
     void fn_800536B0(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
-    f32 fn_80059F78(s32, f32, f32, f32, f32);
+    f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
@@ -9459,8 +9459,8 @@ s32 fn_8019ADD8(void *arg0)
             f27 = fn_8005A028(2, lbl_8036AF38, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68));
             alpha = (s32)fn_8005A028(2, lbl_8036AF20, lbl_8036AF28, f31, (f32)*(s16 *)(obj + 0x68));
         } else {
-            f26 = f28 + fn_80059F78(2, -scaled, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68) - f31);
-            f27 = fn_80059F78(2, lbl_8036AF20, lbl_8036AF3C, f31, (f32)*(s16 *)(obj + 0x68) - f31);
+            f26 = f28 + Math_EaseInPow(2, -scaled, lbl_8036AF20, f31, (f32)*(s16 *)(obj + 0x68) - f31);
+            f27 = Math_EaseInPow(2, lbl_8036AF20, lbl_8036AF3C, f31, (f32)*(s16 *)(obj + 0x68) - f31);
         }
     }
 

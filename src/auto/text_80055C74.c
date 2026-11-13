@@ -1607,7 +1607,7 @@ f32 Math_Lerp(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     return farg0 + ((farg3 * (farg1 - farg0)) / farg2);
 }
 
-f32 fn_80059F78(s32 n, f32 a, f32 b, f32 c, f32 d) {
+f32 Math_EaseInPow(s32 n, f32 a, f32 b, f32 c, f32 d) {
 f32 diff = b-a;
 f32 x = d;
 f32 y = c;
