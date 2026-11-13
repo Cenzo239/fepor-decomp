@@ -826,7 +826,8 @@ void fn_801850A8(void *arg0) {
     M2C_FIELD(temp_r3, u8 *, 0x37) = ((u8 *)temp_r30)[0x27];
 }
 
-void MuFlash_StartWithSe(void *arg0) {
+/* Play an SE at the bound unit, then start an E_MuFlash tint (palette 0xB, duration 8). */
+void MuFlash_StartWithSe(void *proc) {
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
@@ -834,32 +835,32 @@ void MuFlash_StartWithSe(void *arg0) {
     void MuFade_UnlinkSame(void *, void *);
     extern u8 MoveAnim_str[];
     extern u8 E_MuFlash_script[];
-    u8 spC[0x34];
-    u32 sp8;
-    void *temp_r30;
-    void *temp_r3;
-    void *temp_r5;
+    u8 key[0x34];
+    u32 color;
+    void *unit;
+    void *flash;
+    void *unitSe;
 
-    temp_r5 = *(void **)((u8 *)arg0 + 0x30);
+    unitSe = *(void **)((u8 *)proc + 0x30);
     SeCue_PlayAt(MoveAnim_str + 0x1AA, 0x64,
-                *(f32 *)((u8 *)temp_r5 + 4),
-                *(f32 *)((u8 *)temp_r5 + 8),
-                *(f32 *)((u8 *)temp_r5 + 0xC));
-    temp_r30 = *(void **)((u8 *)arg0 + 0x30);
-    *(void **)(spC + 0x30) = temp_r30;
-    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
-    *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
-    *(s32 *)((u8 *)temp_r3 + 0x3C) = 8;
-    sp8 = Mu_GetFlashColor(0xB);
-    ((u8 *)temp_r3)[0x38] = ((u8 *)&sp8)[0];
-    ((u8 *)temp_r3)[0x39] = ((u8 *)&sp8)[1];
-    ((u8 *)temp_r3)[0x3A] = ((u8 *)&sp8)[2];
-    ((u8 *)temp_r3)[0x3B] = ((u8 *)&sp8)[3];
-    ((u8 *)temp_r3)[0x34] = ((u8 *)temp_r30)[0x24];
-    ((u8 *)temp_r3)[0x35] = ((u8 *)temp_r30)[0x25];
-    ((u8 *)temp_r3)[0x36] = ((u8 *)temp_r30)[0x26];
-    ((u8 *)temp_r3)[0x37] = ((u8 *)temp_r30)[0x27];
+                *(f32 *)((u8 *)unitSe + 4),
+                *(f32 *)((u8 *)unitSe + 8),
+                *(f32 *)((u8 *)unitSe + 0xC));
+    unit = *(void **)((u8 *)proc + 0x30);
+    *(void **)(key + 0x30) = unit;
+    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, key);
+    flash = Process_CreateEx(E_MuFlash_script, proc);
+    *(void **)((u8 *)flash + 0x30) = unit;
+    *(s32 *)((u8 *)flash + 0x3C) = 8;
+    color = Mu_GetFlashColor(0xB);
+    ((u8 *)flash)[0x38] = ((u8 *)&color)[0];
+    ((u8 *)flash)[0x39] = ((u8 *)&color)[1];
+    ((u8 *)flash)[0x3A] = ((u8 *)&color)[2];
+    ((u8 *)flash)[0x3B] = ((u8 *)&color)[3];
+    ((u8 *)flash)[0x34] = ((u8 *)unit)[0x24];
+    ((u8 *)flash)[0x35] = ((u8 *)unit)[0x25];
+    ((u8 *)flash)[0x36] = ((u8 *)unit)[0x26];
+    ((u8 *)flash)[0x37] = ((u8 *)unit)[0x27];
 }
 
 void fn_80185244(void *arg0) {
