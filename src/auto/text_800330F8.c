@@ -3830,11 +3830,13 @@ s8 Unit_GetHp(void *arg0) {
     s8 lim;
     u8 t;
     s8 var;
+    u8 base;
 
     p18c = *(void **)((u8 *)arg0 + 0x18C);
     t = *(u8 *)((u8 *)arg0 + 0x1AB);
+    base = *(u8 *)((u8 *)p18c + 0x44);
     lim = *(u8 *)((u8 *)p18c + 0x4C);
-    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + *(u8 *)((u8 *)p18c + 0x44)) + t;
+    var = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1D) + base) + t;
     if (var > lim) {
         var = lim;
     }
@@ -4719,16 +4721,20 @@ void Unit_MoveToList(void *arg0, s32 arg1) {
     void fn_80015718(void *, void *, s32);
     void fn_800946F0(void *);
     extern u8 gUnitLists[];
+    s32 listId;
+    void *unit;
     s32 off;
 
-    switch (arg1) {
+    listId = arg1;
+    unit = arg0;
+    switch (listId) {
     case 0:
     case 2:
     case 3:
-        fn_800946F0(arg0);
-        fn_800156A0(*(void **)((u8 *)arg0 + 0x190), arg0);
-        off = arg1 * 0xC;
-        fn_80015718(gUnitLists + off, arg0, off);
+        fn_800946F0(unit);
+        fn_800156A0(*(void **)((u8 *)unit + 0x190), unit);
+        off = listId * 0xC;
+        fn_80015718(gUnitLists + off, unit, off);
         break;
     }
 }
@@ -6436,7 +6442,7 @@ void fn_80041514(void *arg0, char *arg1)
     void *Hash_Lookup(void *);
     f32 fn_8001B84C(void *);
     s32 fn_8001B8E0(void *);
-    void *fn_8001B894(void *);
+    void *Bin_ReadU32(void *);
     void *fn_800C42AC(s32);
     void fn_80061824(void *);
     s32 fn_80065EE8(void *);
@@ -6613,7 +6619,7 @@ void fn_80041514(void *arg0, char *arg1)
             M2C_FIELD(entry, f32 *, 0xB4) = fn_8001B84C(&cursor);
             M2C_FIELD(entry, f32 *, 0xB8) = fn_8001B84C(&cursor);
             M2C_FIELD(entry, s32 *, 0xBC) = fn_8001B8E0(&cursor);
-            name = fn_8001B894(&cursor);
+            name = Bin_ReadU32(&cursor);
             M2C_FIELD(entry, void **, 0) = name;
             sub = (u8 *)entry + 4;
             fn_80061824(sub);

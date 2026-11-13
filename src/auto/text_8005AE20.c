@@ -252,7 +252,7 @@ s32 fn_8005B448(s32 arg0, s32 arg1, s32 *arg2, u8 (*arg3)(s32, s32)) {
 s32 fn_8005B4D8(s32 arg0) {
     s32 Hash_Lookup(void *);
     void *Res_GetByName(void *);
-    s32 fn_8001B894(s32 *);
+    s32 Bin_ReadU32(s32 *);
     void fn_8001B940(s32 *);
     extern u8 lbl_8026B308[];
     s32 sp8;
@@ -265,9 +265,9 @@ s32 fn_8005B4D8(s32 arg0) {
         fn_8001B940(&sp8);
         fn_8001B940(&sp8);
         for (i = 0; i < arg0; i++) {
-            fn_8001B894(&sp8);
+            Bin_ReadU32(&sp8);
         }
-        return fn_8001B894(&sp8);
+        return Bin_ReadU32(&sp8);
     }
     return 0;
 }

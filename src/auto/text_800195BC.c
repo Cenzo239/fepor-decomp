@@ -1201,54 +1201,46 @@ void fn_8001B134(void) {
     fn_800056CC(lbl_80268510 + 0x2CD);
 }
 #pragma global_optimizer reset
-f32 fn_8001B84C(u8 **arg0)
-{
-    u8 *data;
-    u8 *next;
-    u32 b2;
-    u32 b1;
-    u32 b0;
-    u32 b3;
-    u32 mid;
+f32 fn_8001B84C(u8 **arg0) {
     u32 value;
-
-    data = *arg0;
-    b2 = data[2];
-    next = data + 4;
-    b1 = data[1];
-    b0 = data[0];
+    u8 *data = *arg0;
+    u8 *next = data + 4;
+    u32 b2 = data[2];
+    u32 b1 = data[1];
+    u32 b0 = data[0];
+    u32 b3;
     b2 <<= 8;
     b1 <<= 16;
     b3 = data[3];
-    mid = b1 + b2;
+    b1 += b2;
     b0 <<= 24;
-    mid = mid + b3;
+    b1 += b3;
     *arg0 = next;
-    value = b0 + mid;
+    value = b0 + b1;
     return *(f32 *)&value;
 }
 
-u32 fn_8001B894(u8 **arg0)
-{
+u32 Bin_ReadU32(u8 **arg0) {
     u8 *data;
-    u32 b0;
-    u32 b1;
+    u8 *next;
+    u32 result;
     u32 b2;
+    u32 b0;
     u32 b3;
-    u32 mid;
-
     data = *arg0;
-    if (data == 0) {
-        return 0;
-    }
-    b2 = data[2];
-    b1 = data[1];
+    if (data == 0) return 0;
+    b2 = data[2] << 8;
+    next = data + 4;
+    result = data[1];
     b0 = data[0];
+    result <<= 16;
     b3 = data[3];
-    mid = (b1 << 16) + (b2 << 8);
-    mid = mid + b3;
-    *arg0 = data + 4;
-    return (b0 << 24) + mid;
+    result += b2;
+    b0 <<= 24;
+    result += b3;
+    result = b0 + result;
+    *arg0 = next;
+    return result;
 }
 
 #pragma scheduling off
