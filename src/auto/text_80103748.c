@@ -430,7 +430,7 @@ char *fn_80103E50(s32 arg0, void *arg1) {
     return lbl_8032BAF8;
 }
 #pragma global_optimizer reset
-s32 fn_80103EA4(s32 arg0, void *arg1) {
+s32 Options_AdjustRatioPad(s32 arg0, void *arg1) {
     extern void *gPadInput;
     u16 temp_r5;
     void *temp_r6;
