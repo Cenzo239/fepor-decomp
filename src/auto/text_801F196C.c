@@ -666,30 +666,30 @@ void fn_801F31D0(void *arg0) {
     }
 }
 
-void Options_LoadSelectedEntry(void *arg0) {
+void Options_LoadSelectedEntry(void *proc) {
     struct Entry {
         s32 unk0;
         char *name;
     };
     struct Work {
         u8 pad0[4];
-        void *unk4;
-        s32 unk8;
+        void *asset;
+        s32 state;
         u8 padC[2];
-        s16 unkE;
+        s16 cursor;
         u8 pad10[0x10];
-        u8 unk20;
+        u8 flag20;
         u8 pad21[5];
-        u8 unk26;
+        u8 flag26;
         u8 pad27;
-        u8 unk28;
+        u8 flag28;
         u8 pad29[0xB];
-        struct Entry *unk34;
+        struct Entry *list;
         u8 pad38[0x1C];
-        char unk54[0x60];
-        char unkB4[0x28];
-        s32 unkDC;
-        s32 unkE0;
+        char caption[0x60];
+        char path[0x28];
+        s32 btnLeft;
+        s32 btnRight;
     };
     void fn_80057E64(s32, s32);
     char *Msg_Expand(char *);
@@ -699,30 +699,31 @@ void Options_LoadSelectedEntry(void *arg0) {
     char *strcat(char *, const char *);
     extern char gOptionsStrs[];
     char buf[64];
-    struct Work *p;
+    struct Work *work;
 
-    p = M2C_FIELD(arg0, struct Work **, 0x30);
-    p->unk8 = 2;
-    p->unk54[0] = 0;
-    p->unk20 = 0;
-    p->unk26 = 0;
-    p->unk28 = 0;
-    fn_80057E64(p->unkDC, 1);
-    fn_80057E64(p->unkE0, 1);
-    strcpy(p->unk54, gOptionsStrs + 0x11E9);
-    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x11EF));
-    strcat(p->unk54, gOptionsStrs + 0x11FA);
-    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1209));
-    if (p->unk4 != NULL) {
-        if (p->unk4 != NULL) {
-            fn_8006EDA0(&p->unk4);
-            p->unk4 = NULL;
+    // Show nav buttons, build the caption, and load the asset for the cursor entry.
+    work = M2C_FIELD(proc, struct Work **, 0x30);
+    work->state = 2;
+    work->caption[0] = 0;
+    work->flag20 = 0;
+    work->flag26 = 0;
+    work->flag28 = 0;
+    fn_80057E64(work->btnLeft, 1);
+    fn_80057E64(work->btnRight, 1);
+    strcpy(work->caption, gOptionsStrs + 0x11E9);
+    strcat(work->caption, Msg_Expand(gOptionsStrs + 0x11EF));
+    strcat(work->caption, gOptionsStrs + 0x11FA);
+    strcat(work->caption, Msg_Expand(gOptionsStrs + 0x1209));
+    if (work->asset != NULL) {
+        if (work->asset != NULL) {
+            fn_8006EDA0(&work->asset);
+            work->asset = NULL;
         }
     }
     strcpy(buf, gOptionsStrs + 0x1214);
-    strcat(buf, p->unk34[p->unkE].name);
-    fn_8006EEFC(&p->unk4, buf);
-    strcpy(p->unkB4, buf);
+    strcat(buf, work->list[work->cursor].name);
+    fn_8006EEFC(&work->asset, buf);
+    strcpy(work->path, buf);
 }
 
 void fn_801F3338(void *arg0) {
