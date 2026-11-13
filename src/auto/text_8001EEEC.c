@@ -3171,39 +3171,40 @@ void fn_80025BA0(void) {
     }
 }
 
-void UnitPair_Read(void *arg0, s32 arg1) {
+/* Read a two-unit record from stream: deployment ids become gUnits pointers, then trailing bytes. */
+void UnitPair_Read(void *dst, s32 stream) {
     u8 Stream_ReadU8(s32);
     void Stream_Read(s32, s32, void *);
     extern u8 gUnits[];
     u8 id;
 
-    id = Stream_ReadU8(arg1);
+    id = Stream_ReadU8(stream);
     if (id != 0) {
-        *(void **)arg0 = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
+        *(void **)dst = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
-        *(void **)arg0 = NULL;
+        *(void **)dst = NULL;
     }
-    id = Stream_ReadU8(arg1);
+    id = Stream_ReadU8(stream);
     if (id != 0) {
-        *(void **)((char *)arg0 + 0x4) = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
+        *(void **)((char *)dst + 0x4) = (id != 0) ? gUnits + (id - 1) * 0x280 : NULL;
     } else {
-        *(void **)((char *)arg0 + 0x4) = NULL;
+        *(void **)((char *)dst + 0x4) = NULL;
     }
-    *(u8 *)((char *)arg0 + 0x8) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0x9) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xA) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xB) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xC) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xD) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xE) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0xF) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0x10) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0x11) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0x12) = Stream_ReadU8(arg1);
-    Stream_Read(arg1, 1, (void *)((char *)arg0 + 0x13));
-    *(u8 *)((char *)arg0 + 0x14) = Stream_ReadU8(arg1);
-    *(u8 *)((char *)arg0 + 0x15) = Stream_ReadU8(arg1);
-    Stream_Read(arg1, 1, (void *)((char *)arg0 + 0x16));
+    *(u8 *)((char *)dst + 0x8) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0x9) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xA) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xB) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xC) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xD) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xE) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0xF) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0x10) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0x11) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0x12) = Stream_ReadU8(stream);
+    Stream_Read(stream, 1, (void *)((char *)dst + 0x13));
+    *(u8 *)((char *)dst + 0x14) = Stream_ReadU8(stream);
+    *(u8 *)((char *)dst + 0x15) = Stream_ReadU8(stream);
+    Stream_Read(stream, 1, (void *)((char *)dst + 0x16));
 }
 
 void UnitPair_Write(void *arg0, s32 arg1) {
