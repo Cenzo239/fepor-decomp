@@ -837,7 +837,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     extern f32 gPhaseBannerPrimParam;
     extern f32 gPhaseBannerTopY;
     extern f32 gPhaseBannerWidth;
-    extern f32 lbl_80369CA0;
+    extern f32 gPhaseBannerBarH;
     extern f32 lbl_80369CA4;
     extern s32 lbl_8036C488;
     extern s32 lbl_8036C48C;
@@ -865,7 +865,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(gPhaseBannerPrimParam);
-    Prim2D_SetRect(gPhaseBannerZero, gPhaseBannerTopY, gPhaseBannerWidth, lbl_80369CA0);
+    Prim2D_SetRect(gPhaseBannerZero, gPhaseBannerTopY, gPhaseBannerWidth, gPhaseBannerBarH);
     Prim2D_EmitQuad();
     sp18 = lbl_80369C6C;
     sp1C = lbl_80369C68;
@@ -875,7 +875,7 @@ void Battle_DrawPhaseBanner(void *arg0) {
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(gPhaseBannerPrimParam);
-    Prim2D_SetRect(gPhaseBannerZero, lbl_80369CA4, gPhaseBannerWidth, lbl_80369CA0);
+    Prim2D_SetRect(gPhaseBannerZero, lbl_80369CA4, gPhaseBannerWidth, gPhaseBannerBarH);
     Prim2D_EmitQuad();
     sp8 = lbl_8036C494;
     spC = lbl_8036C490;
