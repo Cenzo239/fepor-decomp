@@ -4771,7 +4771,7 @@ void *fn_801BE91C(void) { extern u8 gUiUnitPanelStrings[]; return gUiUnitPanelSt
 s32 fn_801BE92C(void *arg0) {
     void *Process_Find(void *);
     void *Res_GetEntry(u8);
-    u8 fn_801058C4(void *, void *);
+    u8 Skill_UnitMeetsReqs(void *, void *);
     void Ui_FindChild(void *, s32, s32);
     u32 Unit_CountExtraSkills(void);
     s32 Unit_GetSkillCapacityUsed(void *);
@@ -4803,7 +4803,7 @@ s32 fn_801BE92C(void *arg0) {
     i = 0;
     do {
         unit = Res_GetEntry((u8)i);
-        if (*((u8 *)unit + 0x19) != 0 && fn_801058C4(unit, temp_r31) != 0) {
+        if (*((u8 *)unit + 0x19) != 0 && Skill_UnitMeetsReqs(unit, temp_r31) != 0) {
             found = 1;
             break;
         }
