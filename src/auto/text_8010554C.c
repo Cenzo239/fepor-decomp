@@ -2899,7 +2899,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
-extern "C" void fn_8010A998(void *arg0, u8 arg1) {
+extern "C" void Sprite_Draw(void *arg0, u8 arg1) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetUvCorners(f32, f32, f32, f32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
