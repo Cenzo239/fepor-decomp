@@ -754,7 +754,7 @@ void Script_RegisterWinCondCommands(void) {
     void ScriptCmd_EnemyUnitCheckByPID(void);
     void ScriptCmd_EnemyMonkCheck(void);
     void ScriptCmd_EnemySelfDefenceCheck(void);
-    void fn_801B7330(void);
+    void ScriptCmd_EnemyTigerCheck(void);
     void fn_801B7260(void);
     void fn_801B7188(void);
     void fn_801B70C8(void);
@@ -766,7 +766,7 @@ void Script_RegisterWinCondCommands(void) {
     Script_RegisterCommand(gWinCondCmdNames + 0xF8, ScriptCmd_EnemyUnitCheckByPID, 1);
     Script_RegisterCommand(gWinCondCmdNames + 0x10C, ScriptCmd_EnemyMonkCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x11B, ScriptCmd_EnemySelfDefenceCheck, 0);
-    Script_RegisterCommand(gWinCondCmdNames + 0x131, fn_801B7330, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x131, ScriptCmd_EnemyTigerCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x141, fn_801B7260, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x153, fn_801B7188, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x165, fn_801B70C8, 0);
@@ -876,7 +876,7 @@ s32 fn_801B7260(void) {
 }
 
 #pragma use_lmw_stmw reset
-s32 fn_801B7330(void) {
+s32 ScriptCmd_EnemyTigerCheck(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
     extern u8 gWinCondCmdNames[];
