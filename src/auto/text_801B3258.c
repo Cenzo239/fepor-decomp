@@ -8213,7 +8213,7 @@ void fn_801C7FC0(u32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801C838C(Arg801C838C *arg0) {
+extern "C" void MonitorWin_Release(Arg801C838C *arg0) {
     void FileCache_ReleaseSlot(void *);
     struct Obj {
         virtual void v0(s32) = 0;
