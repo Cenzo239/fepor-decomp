@@ -6550,9 +6550,9 @@ void fn_8016FF34(void *arg0) {
     extern u8 lbl_80294B10[];
     extern u32 gUiContext[];
     extern u8 lbl_803200AC[];
-    s8 i;
-    void *obj;
     void *base;
+    void *obj;
+    s8 i;
     u32 *slot;
     void *temp;
 
@@ -6563,7 +6563,7 @@ void fn_8016FF34(void *arg0) {
         slot = fn_80037BD0(base, i);
         if (*slot != 0) {
             temp = Item_GetFlagsPtr(slot);
-            if (((((*(s32 *)((u8 *)temp + 4) & 0x200) ^ 0) | ((*(s32 *)temp & 0) ^ 0)) == 0) != 0) {
+            if ((*(u64 *)temp & 0x200ULL) == 0) {
                 if ((s16)fn_800C3D48(lbl_803200AC) >= 0) {
                     if (fn_800C3C1C(lbl_803200AC, slot) != 0) {
                         fn_8001D580(slot);
@@ -12755,8 +12755,9 @@ void fn_8017BB94(void *arg0) {
     s16 count;
     u8 r;
     u8 r2;
-    s16 cur;
-    s16 lim;
+    s32 lim;
+    s32 total;
+    s32 cur;
 
     count = 0;
     self = arg0;
@@ -12790,12 +12791,13 @@ void fn_8017BB94(void *arg0) {
         }
         i += 1;
     } while (i < 0x62);
-    if ((s16)count == 0) {
+    total = (s16)count;
+    if (total == 0) {
         *(s16 *)((u8 *)self + 0x3E) = -1;
     } else {
         cur = *(s16 *)((u8 *)self + 0x3E);
-        lim = (s16)count - 1;
-        if (cur < (s16)count) {
+        lim = total - 1;
+        if (cur < total) {
             lim = cur;
         }
         *(s16 *)((u8 *)self + 0x3E) = lim;
@@ -13643,7 +13645,7 @@ extern "C" void *fn_8017D800(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_8017D9D8(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1, f32 farg2) {
+extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1, f32 farg2) {
     void fn_80007538(void);
     void fn_80007588(void);
     void Prim2D_EmitQuad(void);
