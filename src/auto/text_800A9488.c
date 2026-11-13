@@ -31,8 +31,8 @@ static inline void *fn_800AA794_helper(void) {
 }
 
 void *fn_800A9488(void) {
-    extern u8 lbl_8026E470[];
-    return (void *)((u32)lbl_8026E470 + 0xCC);
+    extern u8 gOptionsStr[];
+    return (void *)((u32)gOptionsStr + 0xCC);
 }
 
 s32 fn_800A9498(void) {
@@ -56,8 +56,8 @@ s32 fn_800A94B8(void) {
 }
 
 void *fn_800A9638(void) {
-    extern u8 lbl_8026E470[];
-    return (void *)((u32)lbl_8026E470 + 0x110);
+    extern u8 gOptionsStr[];
+    return (void *)((u32)gOptionsStr + 0x110);
 }
 
 s32 fn_800A9648(void) {
@@ -67,8 +67,8 @@ s32 fn_800A9648(void) {
 }
 
 void *fn_800A9670(void) {
-    extern u8 lbl_8026E470[];
-    return (void *)((u32)lbl_8026E470 + 0x110);
+    extern u8 gOptionsStr[];
+    return (void *)((u32)gOptionsStr + 0x110);
 }
 
 s32 fn_800A9680(void) {
@@ -77,8 +77,8 @@ s32 fn_800A9680(void) {
 }
 
 void *fn_800A96A8(void) {
-    extern u8 lbl_8026E470[];
-    return (void *)((u32)lbl_8026E470 + 0x13F);
+    extern u8 gOptionsStr[];
+    return (void *)((u32)gOptionsStr + 0x13F);
 }
 
 s32 fn_800A96B8(void) {
@@ -155,7 +155,7 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
         virtual void v24() = 0;
         virtual f32 v25() = 0;
     };
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     extern u8 lbl_802832E0[];
     extern u8 gBattleState[];
     extern s32 lbl_80369B98;
@@ -199,29 +199,29 @@ extern "C" void Options_DrawDifficulty(M2C_UNK arg0, void *arg1) {
     Prim2D_PrepareTex();
     switch (gBattleState[0xA6]) {
     case 0:
-        var_r7 = lbl_8026E470 + 0x150;
+        var_r7 = gOptionsStr + 0x150;
         break;
     case 1:
-        var_r7 = lbl_8026E470 + 0x157;
+        var_r7 = gOptionsStr + 0x157;
         break;
     case 2:
-        var_r7 = lbl_8026E470 + 0x15C;
+        var_r7 = gOptionsStr + 0x15C;
         break;
     case 3:
-        var_r7 = lbl_8026E470 + 0x163;
+        var_r7 = gOptionsStr + 0x163;
         break;
     default:
         var_r7 = NULL;
         break;
     }
-    Text_Draw(0x160, 0, 1, lbl_8026E470 + 0x168, var_r7);
-    Text_Draw(0x148, 0x18, 1, lbl_8026E470 + 0x177, *(void **)(lbl_802832E0 + 4));
+    Text_Draw(0x160, 0, 1, gOptionsStr + 0x168, var_r7);
+    Text_Draw(0x148, 0x18, 1, gOptionsStr + 0x177, *(void **)(lbl_802832E0 + 4));
 }
 #pragma cplusplus reset
 
 void *fn_800A9AFC(void) {
-    extern char lbl_8026E470[];
-    return &lbl_8026E470[0x19B];
+    extern char gOptionsStr[];
+    return &gOptionsStr[0x19B];
 }
 
 s32 fn_800A9B0C(void) {
@@ -299,8 +299,8 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 
 void *fn_800A9C5C(void) {
-    extern u16 lbl_8026E470[];
-    return (u8 *)lbl_8026E470 + 0x1b1;
+    extern u16 gOptionsStr[];
+    return (u8 *)gOptionsStr + 0x1b1;
 }
 
 s32 fn_800A9C6C(s32 unused, void *arg1) {
@@ -311,8 +311,8 @@ s32 fn_800A9C6C(s32 unused, void *arg1) {
 }
 
 void *fn_800A9C9C(void) {
-    extern u16 lbl_8026E470[];
-    return (u8 *)lbl_8026E470 + 0x1be;
+    extern u16 gOptionsStr[];
+    return (u8 *)gOptionsStr + 0x1be;
 }
 
 s32 fn_800A9CAC(void) {
@@ -323,8 +323,8 @@ s32 fn_800A9CAC(void) {
 }
 
 void *fn_800A9CE0(void) {
-    extern u16 lbl_8026E470[];
-    return (u8 *)lbl_8026E470 + 0x1d2;
+    extern u16 gOptionsStr[];
+    return (u8 *)gOptionsStr + 0x1d2;
 }
 
 s32 fn_800A9CF0(void) {
@@ -335,8 +335,8 @@ s32 fn_800A9CF0(void) {
 }
 
 void *fn_800A9D24(void) {
-    extern u16 lbl_8026E470[];
-    return (u8 *)lbl_8026E470 + 0x1e6;
+    extern u16 gOptionsStr[];
+    return (u8 *)gOptionsStr + 0x1e6;
 }
 
 s32 fn_800A9D34(void) {
@@ -354,8 +354,8 @@ s32 fn_800A9D34(void) {
 }
 
 void *fn_800A9D90(void) {
-    extern u16 lbl_8026E470[];
-    return (u8 *)lbl_8026E470 + 0x1f7;
+    extern u16 gOptionsStr[];
+    return (u8 *)gOptionsStr + 0x1f7;
 }
 
 s32 fn_800A9DA0(void) {
@@ -364,8 +364,8 @@ s32 fn_800A9DA0(void) {
 }
 
 void *fn_800A9DC8(void) {
-    extern u16 lbl_8026E470[];
-    return &lbl_8026E470[0x105];
+    extern u16 gOptionsStr[];
+    return &gOptionsStr[0x105];
 }
 
 s32 fn_800A9DD8(void) {
@@ -374,8 +374,8 @@ s32 fn_800A9DD8(void) {
 }
 
 void *fn_800A9E00(void) {
-    extern u8 lbl_8026E470[];
-    return (void *)((u32)lbl_8026E470 + 0xCC);
+    extern u8 gOptionsStr[];
+    return (void *)((u32)gOptionsStr + 0xCC);
 }
 
 s32 fn_800A9E10(void *arg0) {

@@ -2411,9 +2411,9 @@ s32 fn_800A8A88(void *arg0) {
 }
 
 void fn_800A8AE4(s32 arg0) {
-    extern u16 lbl_8026E470[];
+    extern u16 gOptionsStr[];
     fn_8006EDA0(arg0 + 0x30);
-    fn_8005C7C8(&lbl_8026E470[0x58 / sizeof(u16)]);
+    fn_8005C7C8(&gOptionsStr[0x58 / sizeof(u16)]);
 }
 
 void fn_800A8B18(void *arg0) {
@@ -2421,13 +2421,13 @@ void fn_800A8B18(void *arg0) {
     void fn_8006EEFC(void *, void *);
     s32 fn_80005E2C(s32);
     void Process_Goto(void *, s32);
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     extern u8 lbl_803677FC;
     void *self;
 
     self = arg0;
-    fn_8005C84C(lbl_8026E470 + 0x58);
-    fn_8006EEFC((u8 *)self + 0x30, lbl_8026E470 + 0x62);
+    fn_8005C84C(gOptionsStr + 0x58);
+    fn_8006EEFC((u8 *)self + 0x30, gOptionsStr + 0x62);
     *(s32 *)((u8 *)self + 0x34) = 0;
     ((u8 *)self)[0x38] = 0;
     if (lbl_803677FC == 0) {
@@ -2439,12 +2439,12 @@ void fn_800A8B18(void *arg0) {
 }
 
 void fn_800A8BA0(void) {
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     void fn_80109020(s32);
     void fn_801481CC(void *, s32);
 
     fn_80109020(0);
-    fn_801481CC(lbl_8026E470 + 0x73, 0x1F4);
+    fn_801481CC(gOptionsStr + 0x73, 0x1F4);
 }
 
 void fn_800A8BD8(void *arg0) {
@@ -2452,11 +2452,11 @@ void fn_800A8BD8(void *arg0) {
     void fn_801481CC(void *, s32);
     void Process_Goto(void *, s32);
     extern u8 *gPadInput;
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
 
     if (*(u32 *)(gPadInput + 4) & 0x1100) {
-        Ui_PlaySeCue((u8 *)&lbl_8026E470 + 0x82, 0x64);
-        fn_801481CC((u8 *)&lbl_8026E470 + 0x73, 0x1F4);
+        Ui_PlaySeCue((u8 *)&gOptionsStr + 0x82, 0x64);
+        fn_801481CC((u8 *)&gOptionsStr + 0x73, 0x1F4);
         ((u8 *)arg0)[0x38] = 1;
         Process_Goto(arg0, 2);
     }
@@ -2564,13 +2564,13 @@ void Ui_DrawPromptSprites(void *proc) {
 }
 void fn_800A8F94(s32 arg0) {
 void *fn_80109180(void *, s32); void fn_80148618(void *, s32);
-extern u8 lbl_8026E470[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
+extern u8 gOptionsStr[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
 void *temp; f32 b; f32 a;
-temp = fn_80109180(lbl_8026E470+0x96,arg0);
+temp = fn_80109180(gOptionsStr+0x96,arg0);
 a=lbl_80369C08; b=lbl_80369BA8;
 *(f32 *)((u8 *)temp+0x40)=a;
 *(f32 *)((u8 *)temp+0x44)=b;
-fn_80148618(lbl_8026E470+0x73,500);
+fn_80148618(gOptionsStr+0x73,500);
 }
 
 #pragma optimization_level reset
@@ -2594,8 +2594,8 @@ void fn_800A8FE8(void *arg0) {
 
 void fn_800A904C(s32 arg0) {
     M2C_UNK fn_800A5D1C(void *, s32, M2C_UNK);
-    extern M2C_UNK lbl_8026E470;
-    fn_800A5D1C(&lbl_8026E470 + 0xA3, arg0 != 0, 0);
+    extern M2C_UNK gOptionsStr;
+    fn_800A5D1C(&gOptionsStr + 0xA3, arg0 != 0, 0);
 }
 
 extern u8 lbl_8028C870[16];
@@ -2607,28 +2607,28 @@ void fn_800A9088(s32 arg0) {
 
 void fn_800A90B4(void) {
     void fn_80148618(void *, s32);
-    extern u8 lbl_8026E470[];
-    fn_80148618(lbl_8026E470 + 0x73, 0x1F4);
+    extern u8 gOptionsStr[];
+    fn_80148618(gOptionsStr + 0x73, 0x1F4);
 }
 
 void fn_800A90E4(s32 arg0) {
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(s32);
     extern void *gPadInput;
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     s32 temp_r3;
 
     temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
     if (temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3) & 0x1F70) {
-        Ui_PlaySeCue(lbl_8026E470 + 0x82, 0x64);
+        Ui_PlaySeCue(gOptionsStr + 0x82, 0x64);
         Process_ClearFunc(arg0);
     }
 }
 
 void fn_800A9144(void) {
     void fn_801481CC(void *, s32);
-    extern u8 lbl_8026E470[];
-    fn_801481CC(lbl_8026E470 + 0x73, 0x1F4);
+    extern u8 gOptionsStr[];
+    fn_801481CC(gOptionsStr + 0x73, 0x1F4);
 }
 
 extern void *D_800E53FC;
@@ -2641,7 +2641,7 @@ void fn_800A9174(void) {
     void Prim2D_PrepareTex(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void fn_800C4588(void *);
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369C0C;
     extern f32 lbl_80369BB0;
@@ -2658,7 +2658,7 @@ void fn_800A9174(void) {
     s32 b;
     s32 a;
 
-    fn_8017A764(&tmp, lbl_8026E470 + 0xb5, 0);
+    fn_8017A764(&tmp, gOptionsStr + 0xb5, 0);
     tmp.cur += 4;
     a = fn_8017A950(&tmp);
     b = fn_8017A950(&tmp);
@@ -2666,7 +2666,7 @@ void fn_800A9174(void) {
     Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369C0C, lbl_80369BB0);
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
-    fn_8001003C(0xb8, 0x190, 1, 0, 1, lbl_8026E470 + 0xc2, a, b, lbl_80369BB0, lbl_80369BA8);
+    fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, a, b, lbl_80369BB0, lbl_80369BA8);
     tmp.vt = lbl_802842B8;
     tmp.vt = lbl_802842A4;
     if (tmp.flag != 0) {
@@ -2695,15 +2695,15 @@ void fn_800A92C4(s32 arg0) {
 }
 
 void fn_800A92F0(void) {
-    extern u16 lbl_8026E470[];
-    fn_8005C7C8(&lbl_8026E470[0x58 / sizeof(u16)]);
+    extern u16 gOptionsStr[];
+    fn_8005C7C8(&gOptionsStr[0x58 / sizeof(u16)]);
 }
 
 void fn_800A931C(s32 arg0) {
     void fn_8005BCD0(void);
     void fn_8005C84C(void *);
     void *fn_80109180(void *, s32);
-    extern u8 lbl_8026E470[];
+    extern u8 gOptionsStr[];
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369C08;
     extern f32 lbl_80369C10;
@@ -2711,9 +2711,9 @@ void fn_800A931C(s32 arg0) {
     f32 f0;
     f32 f1;
 
-    fn_8005C84C(lbl_8026E470 + 0x58);
+    fn_8005C84C(gOptionsStr + 0x58);
     fn_8005BCD0();
-    temp_r3 = fn_80109180(lbl_8026E470 + 0x96, arg0);
+    temp_r3 = fn_80109180(gOptionsStr + 0x96, arg0);
     f0 = lbl_80369C08;
     f1 = lbl_80369BA8;
     *(f32 *)((u8 *)temp_r3 + 0x40) = f0;
@@ -2725,7 +2725,7 @@ void fn_800A931C(s32 arg0) {
 #include "common.h"
 extern u16 lbl_8026E168[];
 extern void *D_800E53FC;
-extern void *lbl_8026E470;
+extern void *gOptionsStr;
 extern f32 lbl_80369BA8;
 extern f32 lbl_80369C0C;
 extern f32 lbl_80369BB0;
