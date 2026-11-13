@@ -1520,7 +1520,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern void *lbl_80368230;
+    extern void *gUnitRef;
     extern u8 lbl_80368238;
     extern s32 gUnitInfoPopupFlag;
 
@@ -1584,7 +1584,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     score = fn_8001C284(*(void **)((u8 *)obj + 0x60), *(u8 *)((u8 *)obj + 0x64),
                         (s8)*(u8 *)((u8 *)obj + 0x51), (s8)*(u8 *)((u8 *)obj + 0x52),
                         (s8)*(u8 *)((u8 *)obj + 0x53), (s8)*(u8 *)((u8 *)obj + 0x54));
-    addend = fn_8001D2A4(&lbl_80368230);
+    addend = fn_8001D2A4(&gUnitRef);
     score = addend + score;
     child->unk3C = score;
 
@@ -1753,7 +1753,7 @@ void fn_801B1B7C(void *arg0) {
     void fn_80140234(void *, void *, s32);
     u32 fn_8013FF94(void *, s32, s32, void *);
     void fn_801658DC(u32, s32);
-    extern u8 lbl_80368230;
+    extern u8 gUnitRef;
     void *var_r0;
     void *temp_r4;
     void *temp_r6;
@@ -1772,7 +1772,7 @@ void fn_801B1B7C(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 8) = 6;
     *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3C) = 0;
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x24) = 8;
-    fn_80133FBC(*(void **)((u8 *)arg0 + 0x48), &lbl_80368230);
+    fn_80133FBC(*(void **)((u8 *)arg0 + 0x48), &gUnitRef);
     fn_801400F4(arg0, *(void **)((u8 *)arg0 + 0x48));
     fn_80140234(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
     temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
@@ -1821,7 +1821,7 @@ void fn_801B1ED4(void *arg0) {
     extern M2C_UNK lbl_80292230;
     extern M2C_UNK lbl_80296228;
     extern M2C_UNK lbl_8029625C;
-    extern M2C_UNK lbl_80368230;
+    extern M2C_UNK gUnitRef;
     extern f32 lbl_8036B0A8;
     s16 spE;
     s16 spC;
@@ -1883,12 +1883,12 @@ void fn_801B1ED4(void *arg0) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 0x24) = 8;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s8 *, 0x48) = 1;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s8 *, 0x44) = 0;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &lbl_80368230;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &gUnitRef;
     }
     if (fn_8013FF94(arg0, 4, 0) == 0U) {
         fn_801400F4(arg0, M2C_FIELD(arg0, void **, 0x4C));
     }
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &lbl_80368230;
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &gUnitRef;
     temp_r4_2 = M2C_FIELD(arg0, void **, 0x4C);
     if ((s16) M2C_FIELD(temp_r4_2, s16 *, 0xA) != 0x138) {
         temp_r7 = M2C_FIELD(temp_r4_2, s16 *, 0xC);
@@ -1940,7 +1940,7 @@ void fn_801B1ED4(void *arg0) {
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s16 *, 8) = 5;
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s16 *, 0x24) = 8;
         }
-        fn_801905FC(M2C_FIELD(arg0, void **, 0x50), &lbl_80368230);
+        fn_801905FC(M2C_FIELD(arg0, void **, 0x50), &gUnitRef);
         if (fn_8013FF94(arg0, 5, 0) == 0U) {
             fn_801400F4(arg0, M2C_FIELD(arg0, void **, 0x50));
         }
@@ -1978,7 +1978,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    extern void *lbl_80368230;
+    extern void *gUnitRef;
     extern s32 gUnitInfoPopupFlag;
     extern f32 lbl_8036B0A8;
     extern f64 lbl_8036B0B0;
@@ -2036,18 +2036,18 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     fn_8013FDA0(arg0);
     if (cur != fn_80134280(*(void **)((u8 *)arg0 + 0x44))) {
         cur = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
-        if (lbl_80368230 != cur) {
-            fn_8001D818(&lbl_80368230, cur);
+        if (gUnitRef != cur) {
+            fn_8001D818(&gUnitRef, cur);
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)arg0 + 0x44))->v9();
-            Ui_ShowUnitInfoPopup(gUnitInfoPopup, &lbl_80368230, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
+            Ui_ShowUnitInfoPopup(gUnitInfoPopup, &gUnitRef, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
         }
     }
-    if (lbl_80368230 != cur) {
-        fn_8001D818(&lbl_80368230, cur);
+    if (gUnitRef != cur) {
+        fn_8001D818(&gUnitRef, cur);
     }
-    child->unk3C = fn_8001D2A4(&lbl_80368230);
+    child->unk3C = fn_8001D2A4(&gUnitRef);
     flags = gUiInputFlags;
     gate = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
@@ -2078,7 +2078,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(Pair *)&pos2 = ((Obj *)*(void **)((u8 *)self + 0x44))->v9();
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, &lbl_80368230, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
+            Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, &gUnitRef, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xA00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);

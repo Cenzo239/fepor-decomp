@@ -60,7 +60,7 @@ typedef struct {
     s16 cursor;
 } UnkAD554;
 extern s32 fn_80010710(u8* arg0);
-  extern s32 lbl_80368230;
+  extern s32 gUnitRef;
   extern s32 lbl_8028D544[];
   extern s32 lbl_80319A68[];
   void fn_800AE904(void *);
@@ -8105,7 +8105,7 @@ s32 fn_800BF9D8(void)
 
 extern u16* const lbl_8036A0D0;
 void fn_800BFCA8(void) {
-    lbl_80368230 = 0x22;
+    gUnitRef = 0x22;
     lbl_8036A0D0[4] = 0;
 }
 
