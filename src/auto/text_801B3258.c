@@ -8935,7 +8935,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     void *fn_801CAF8C(void *);
     void Camera_GetEyePos(f32 *, void *);
     void Camera_GetLookAt(f32 *, void *);
-    f32 fn_800E9018(void *);
+    f32 Camera_GetFov(void *);
     extern void *gCameraWin;
 
     f32 z1;
@@ -8964,7 +8964,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     x2 = sp8[0];
     y2 = sp8[1];
     z2 = sp8[2];
-    f1 = fn_800E9018(obj);
+    f1 = Camera_GetFov(obj);
     slot = *(u32 *)((u8 *)*(void **)((u8 *)gCameraWin + 0x42C) + (index << 2));
     *(f32 *)((u8 *)result + 0x00) = x1;
     *(f32 *)((u8 *)result + 0x04) = y1;

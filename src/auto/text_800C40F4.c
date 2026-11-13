@@ -4380,7 +4380,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void Camera_GetLookAt(f32 *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
-    f32 fn_800E9018(void *);
+    f32 Camera_GetFov(void *);
     void fn_800E8FE8(void *, f32);
     void fn_800E8FBC(void *, f32, f32, f32);
     void Prim2D_Begin(void);
@@ -4557,7 +4557,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
                 f29 += (f27 * sy) * lbl_80369DE0;
                 f31 += (f28 * sx) * lbl_80369DE0;
             } else {
-                f23 = fn_800E9018(obj);
+                f23 = Camera_GetFov(obj);
                 if (held & 0x40) {
                     f23 += lbl_80369DCC * f20;
                     fn_800E8FE8(obj, f23);
@@ -4640,7 +4640,7 @@ void fn_800D06BC(u8 *self) {
     void fn_800E9020(s32, f32 *, s32);
     void fn_800E7AD4(s32, void *, s32, u8, u8);
     u8 fn_800E8BC4(s32);
-    void fn_800E9018(s32);
+    void Camera_GetFov(s32);
     void fn_800E76D0(s32, u8);
     u8 fn_800DF6A8(void *);
     void fn_800DF44C(void *, s32, f32, f32, f32);
@@ -4743,7 +4743,7 @@ void fn_800D06BC(u8 *self) {
         break;
     case 2:
         if (fn_800E8BC4(handle) == 0) {
-            fn_800E9018(handle);
+            Camera_GetFov(handle);
             {
                 f32 z = lbl_80369DC8;
                 fn_800DF494(xf2, z, z, z);
@@ -14235,7 +14235,7 @@ void fn_800E8FE8(void *arg0, f32 arg1) {
 }
 #pragma scheduling reset
 #pragma dont_inline reset
-f32 fn_800E9018(void *arg0) {
+f32 Camera_GetFov(void *arg0) {
     return M2C_FIELD(arg0, f32 *, 0x104);
 }
 
