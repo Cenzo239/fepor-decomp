@@ -9884,7 +9884,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
     void *fn_8000B908(u8);
     void fn_8008AB7C(s32, s32, s16, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
-    extern f32 lbl_8036AB80;
+    extern f32 gF32_Neg1;
     extern f32 lbl_8036AB74;
     extern f32 lbl_8036AB84;
     struct Obj {
@@ -9966,7 +9966,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
         *(s16 *)((u8 *)arg1 + 0x3A) = (x + t) / 2;
     }
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036AB80);
+    Prim2D_AddZ(gF32_Neg1);
     flag = false;
     if (*((u8 *)arg1 + 0x2D) == 0 && *((u8 *)arg1 + 0x2E) == 0) {
         flag = true;
@@ -10815,7 +10815,7 @@ extern "C" void Ui_DrawUnitNameCentered(void *arg0, s32 arg1) {
     s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, ...);
     extern u16 gUiMsgStrings[];
-    extern f32 lbl_8036AB80;
+    extern f32 gF32_Neg1;
     extern f32 gF32_1;
     void *str;
     void *p;
@@ -10826,7 +10826,7 @@ extern "C" void Ui_DrawUnitNameCentered(void *arg0, s32 arg1) {
     ((Obj *)arg0)->m28();
     ((Obj *)arg0)->m14(arg1);
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036AB80);
+    Prim2D_AddZ(gF32_Neg1);
     Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 3));
     Prim2D_PrepareTex();
     if (*(u32 *)((u8 *)arg0 + 0x40) == 0) {
@@ -10860,7 +10860,7 @@ extern "C" void fn_801788A0(void *arg0) {
     void Text_Draw(s16, s16, s32, void *, ...);
     s32 fn_800C3E54(void *);
     extern u16 gUiMsgStrings[];
-    extern f32 lbl_8036AB80;
+    extern f32 gF32_Neg1;
     extern u8 gConvoy[];
 
     s32 x;
@@ -10869,7 +10869,7 @@ extern "C" void fn_801788A0(void *arg0) {
 
     ((Obj *)arg0)->v3();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036AB80);
+    Prim2D_AddZ(gF32_Neg1);
     Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 3));
     Prim2D_PrepareTex();
     x = *(s16 *)((u8 *)arg0 + 0x3C);
@@ -11098,11 +11098,11 @@ extern "C" void fn_80178D88(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_SetAlphaByte(u8);
     void Prim2D_PrepareTex(void);
-    extern f32 lbl_8036AB80;
+    extern f32 gF32_Neg1;
 
     ((Obj *)arg0)->v30();
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036AB80);
+    Prim2D_AddZ(gF32_Neg1);
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
@@ -11121,7 +11121,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     void fn_8008BF68(s16, s16, s32);
     extern f32 gF32_1;
     extern f32 lbl_8036AB74;
-    extern f32 lbl_8036AB80;
+    extern f32 gF32_Neg1;
     extern f32 lbl_8036AB84;
     struct StrObj {
         virtual void *v0() = 0;
@@ -11201,7 +11201,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
         *(s16 *)((u8 *)a1 + 0x3A) = (s16)(t / 2);
     }
     Prim2D_Begin();
-    Prim2D_AddZ(lbl_8036AB80);
+    Prim2D_AddZ(gF32_Neg1);
     flag = false;
     if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
         flag = true;
