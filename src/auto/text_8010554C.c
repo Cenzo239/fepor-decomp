@@ -4056,7 +4056,7 @@ s32 Unit_IsLowHp(void *arg0) {
     void *Res_GetByName(void *);
     extern f64 lbl_8036A168;
     extern f32 sLowHpRatio;
-    extern f32 lbl_8036A164;
+    extern f32 sHpPercentScale;
     u8 saved;
     s32 result;
     u32 val;
@@ -4079,7 +4079,7 @@ s32 Unit_IsLowHp(void *arg0) {
     {
         s8 b2d = Unit_GetMaxHp(arg0);
         s8 v = (s8)*(u8 *)((u8 *)arg0 + 0x1A8);
-        val = fn_8022C568((lbl_8036A164 * (f32)v) / (f32)b2d);
+        val = fn_8022C568((sHpPercentScale * (f32)v) / (f32)b2d);
     }
     data = Res_GetByName(*(void **)((u8 *)arg0 + 0x240));
     flags = *(u32 *)((u8 *)arg0 + 0x254);
