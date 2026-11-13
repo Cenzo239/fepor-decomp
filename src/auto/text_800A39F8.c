@@ -2464,7 +2464,7 @@ void fn_800A8BD8(void *arg0) {
 
 #pragma optimization_level 2
 #pragma opt_common_subs off
-void fn_800A8C4C(void *arg0) {
+void Ui_DrawPromptSprites(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
     void Prim2D_SetAlpha(s32);
     void Prim2D_SetColor(s32, s32, s32, s32);
