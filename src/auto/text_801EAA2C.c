@@ -63,7 +63,7 @@ void fn_801EAA38(s32 arg0) {
 
 extern u16 lbl_8029A164[10];
 s32 fn_801EAA88(void) {
-    return fn_8000C0C0(&lbl_8029A164) != 0;
+    return Process_Find(&lbl_8029A164) != 0;
 }
 
 void *fn_801EAABC(char *arg0, void *arg1) {
@@ -1958,7 +1958,7 @@ void fn_801EDEC8(void *arg0) {
 }
 
 void fn_801EDEE4(void *arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_80015D54(void);
     void fn_80016180(void);
     void fn_80016358(void);
@@ -1975,7 +1975,7 @@ void fn_801EDEE4(void *arg0) {
         fn_8014C7C0(gBattleState, gBattleState + 0x504);
         fn_8014C798(gBattleState);
     }
-    temp_r3 = fn_8000C0C0(lbl_8029A5FC);
+    temp_r3 = Process_Find(lbl_8029A5FC);
     if (temp_r3 != NULL) {
         temp_r0 = *(u8 *)((u8 *)temp_r3 + 0x38);
         switch (temp_r0) {
@@ -2059,7 +2059,7 @@ void fn_801EE76C(void *arg0) {
     void fn_801C77A4(f32, f32, f32);
     void fn_801EFDC8(void *);
     s32 fn_800C9400(void *, s32, void *, char *, s32);
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void *fn_8014D8FC(void *);
     void String_Init(void *, char *, void *);
     void fn_800C992C(void *, char *, s32);
@@ -2164,7 +2164,7 @@ void fn_801EE76C(void *arg0) {
     n = strlen(str);
     str = gGActorPathExt;
     if (fn_800C9400(path, 0, *(void **)path, str + 0x1CE, n) != 0) {
-        r29 = fn_8000C0C0(lbl_8029A5FC);
+        r29 = Process_Find(lbl_8029A5FC);
         if (r29 == NULL) {
             goto set0;
         }

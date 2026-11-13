@@ -7796,14 +7796,14 @@ s32 fn_800704F0(s32 arg0, s32 arg1, s32 arg2)
 
 extern u16 lbl_80286860[];
 void fn_800708B0(void *arg0, void *arg1) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8018DC58(void);
     extern u16 lbl_80286860[];
     extern u8 lbl_80366DE9;
     void *p;
 
     p = *(void **)((u8 *)arg1 + 0x18);
-    if (p == fn_8000C0C0(&lbl_80286860)) {
+    if (p == Process_Find(&lbl_80286860)) {
         fn_8018DC58();
         *(s8 *)&lbl_80366DE9 = -1;
     }
@@ -8094,13 +8094,13 @@ void fn_80071E0C(void *arg0, void *arg1) {
 }
 
 void fn_80072088(void *arg0, void *arg1) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8018DC58(void);
     extern u16 lbl_80286860[];
     void *p;
 
     p = *(void **)((u8 *)arg1 + 0x18);
-    if (p == fn_8000C0C0(&lbl_80286860)) {
+    if (p == Process_Find(&lbl_80286860)) {
         fn_8018DC58();
     }
 }
@@ -8117,14 +8117,14 @@ void fn_800720C8(s32 unused, void *arg1) {
 }
 
 void fn_80072100(void *arg0, void *arg1) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8018DBD8(void);
     void *temp_r31;
     void *result;
 
     *(u8 *)((u8 *)gBattleState + 0x51D) = 0xF;
     temp_r31 = *(void **)((u8 *)arg1 + 0x18);
-    result = fn_8000C0C0(lbl_80286860);
+    result = Process_Find(lbl_80286860);
     if (temp_r31 == result) {
         fn_8018DBD8();
     }

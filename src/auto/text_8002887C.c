@@ -2070,10 +2070,10 @@ void fn_8002D72C(void *arg0) {
 
 extern u16 lbl_80284E78[216];
 void fn_8002D780(s32 arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8000C070(void *, u8);
 
-    fn_8000C070(fn_8000C0C0(lbl_80284E78), (u8)arg0);
+    fn_8000C070(Process_Find(lbl_80284E78), (u8)arg0);
 }
 
 void fn_8002D7BC(s32 arg0) {

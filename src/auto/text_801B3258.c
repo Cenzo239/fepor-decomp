@@ -4716,14 +4716,14 @@ void *fn_801BE7F8(void){extern u8 gUiUnitPanelStrings[];return gUiUnitPanelStrin
 
 u8 fn_801BE808(void)
 {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BC94(void);
     extern u8 lbl_80297C14[];
     u32 result;
     s32 ret;
 
-    Ui_FindChild(fn_8000C0C0(lbl_80297C14), 0x106, 0);
+    Ui_FindChild(Process_Find(lbl_80297C14), 0x106, 0);
     result = fn_8017BC94();
     ret = 2;
     if (result != 0) {
@@ -4757,7 +4757,7 @@ void fn_801BE8F0(void) {
 void *fn_801BE91C(void) { extern u8 gUiUnitPanelStrings[]; return gUiUnitPanelStrings+0x2D4; }
 
 s32 fn_801BE92C(void *arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void *fn_80019DF0(u8);
     u8 fn_801058C4(void *, void *);
     void Ui_FindChild(void *, s32, s32);
@@ -4774,7 +4774,7 @@ s32 fn_801BE92C(void *arg0) {
     void *ret;
 
     *((s8 *)arg0 + 4) = 0;
-    ret = fn_8000C0C0(lbl_80297C14);
+    ret = Process_Find(lbl_80297C14);
     temp_r31 = (void *)gUiContext[0];
     Ui_FindChild(ret, 0x106, 0);
     if (fn_8017BD58() >= 5U) {
@@ -7424,7 +7424,7 @@ void fn_801C65E0(void *arg0) {
 
 void fn_801C68D0(u32 arg0) {
     extern u8 LightFade_script[];
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8005FA14(void *, s32);
     void *x;
     u8 *table;
@@ -7434,7 +7434,7 @@ void fn_801C68D0(u32 arg0) {
     s32 off;
     void *obj;
 
-    x = fn_8000C0C0(LightFade_script);
+    x = Process_Find(LightFade_script);
     if (x == NULL) {
         table = NULL;
     } else {
@@ -7464,7 +7464,7 @@ void fn_801C6978(u32 arg0) {
     extern u32 lbl_8027D540[];
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B434;
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005FA14(void *, s32);
@@ -7487,7 +7487,7 @@ void fn_801C6978(u32 arg0) {
     void *obj;
     void *obj_plus;
 
-    p = fn_8000C0C0(LightFade_script);
+    p = Process_Find(LightFade_script);
     if (p == NULL) {
         base = NULL;
     } else {
@@ -7547,7 +7547,7 @@ void fn_801C6978(u32 arg0) {
 
 void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8000C070(void *, s32);
     void *fn_8000CAF0(void *, s32);
 
@@ -7560,7 +7560,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     struct { u32 temp; u32 value; } s;
     u32 val;
 
-    entry = (u8 *)fn_8000C0C0(lbl_802981F4);
+    entry = (u8 *)Process_Find(lbl_802981F4);
     if (entry != NULL) {
         if (*(s32 *)(entry + 0x38) < arg3) {
             return;
@@ -7579,7 +7579,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     s.value = val;
     *(s32 *)(entry + 0x38) = arg3;
 
-    source = (u8 *)fn_8000C0C0(LightFade_script);
+    source = (u8 *)Process_Find(LightFade_script);
     if (source == NULL) {
         dest = NULL;
     } else {
@@ -7605,14 +7605,14 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 void fn_801C6DB8(u32 arg0)
 {
     extern u8 LightFade_script[];
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8005F788(u32, s32, s32);
     s32 i;
     u8 *list;
     u32 clear;
     void *p;
 
-    p = fn_8000C0C0(LightFade_script);
+    p = Process_Find(LightFade_script);
     if (p == NULL) {
         list = NULL;
     } else {
@@ -7642,12 +7642,12 @@ void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
 void fn_801C6F9C(void) {
     extern u8 LightFade_script[];
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     s32 Light_GetChannel(s32);
     void fn_800673E4(s32, s32);
     u8 *Fog_GetColor(void);
     void fn_8005F788(u32, s32, s32);
-    void *p = fn_8000C0C0(LightFade_script);
+    void *p = Process_Find(LightFade_script);
     u8 *work;
     if (p == NULL) {
         work = 0;
@@ -7691,7 +7691,7 @@ u32* fn_801C7080(u32 arg0) {
 #pragma use_lmw_stmw on
 /* Fade GX light and fog colors toward the linked unit's target colors over time. */
 void Light_FadeProcess(void *proc) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void Process_ClearFunc(void *);
     void Process_Unlink(void *);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
@@ -7714,7 +7714,7 @@ void Light_FadeProcess(void *proc) {
     s32 v;
     u8 *fog;
 
-    node = fn_8000C0C0(LightFade_script);
+    node = Process_Find(LightFade_script);
     if (node == NULL)
         unit = NULL;
     else
@@ -7840,13 +7840,13 @@ void fn_801C7644(s32 arg0) {
 
 void fn_801C76E8(void) {
     extern u8 LightFade_script[];
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_80067708(s32, s32, void (*)(void), s32);
     void fn_801C7598(void), fn_801C7604(void), fn_801C7644(void);
     void *x;
     s32 *p;
 
-    x = fn_8000C0C0(LightFade_script);
+    x = Process_Find(LightFade_script);
     if (x == NULL) {
         p = NULL;
     } else {

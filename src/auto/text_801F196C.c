@@ -1474,7 +1474,7 @@ void fn_801F5518(s32 arg0) {
 }
 
 void CardLink_ApplyBonus(void *arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8000C070(void *, s32);
     void fn_8000BF00(void *);
     s32 Msg_Expand(void *);
@@ -1485,7 +1485,7 @@ void CardLink_ApplyBonus(void *arg0) {
     s32 code;
     s32 flag;
 
-    tmp = fn_8000C0C0(&gCardLinkProc);
+    tmp = Process_Find(&gCardLinkProc);
     if (tmp == NULL) {
         flag = 0;
     } else {
@@ -1496,7 +1496,7 @@ void CardLink_ApplyBonus(void *arg0) {
         fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)lbl_80280B58 + 0x9A), 0, 1, 0);
         fn_8000C070(arg0, 0x59);
     } else {
-        tmp = fn_8000C0C0(&gCardLinkProc);
+        tmp = Process_Find(&gCardLinkProc);
         if (tmp == NULL) {
             code = -1;
         } else {
@@ -1539,7 +1539,7 @@ void CardLink_ApplyBonus(void *arg0) {
 }
 
 void fn_801F5A28(void *arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void Process_ClearFunc(void *);
     void fn_8000C070(void *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -1551,7 +1551,7 @@ void fn_801F5A28(void *arg0) {
     s32 temp_r4_2;
     void *temp_r5;
 
-    tmp = fn_8000C0C0(&gCardLinkProc);
+    tmp = Process_Find(&gCardLinkProc);
     if (tmp == NULL) {
         var_r0 = 0;
     } else {

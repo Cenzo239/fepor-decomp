@@ -279,10 +279,10 @@ void fn_80017570(s32 arg0)
 }
 
 s32 fn_8001772C(void) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void *p;
 
-    p = fn_8000C0C0(lbl_802841B0);
+    p = Process_Find(lbl_802841B0);
     if (p != NULL && M2C_FIELD(p, u8 *, 0x3C) == 0) {
         return 1;
     }
@@ -294,11 +294,11 @@ void fn_80017774(void) {
 }
 
 void fn_8001779C(s32 arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_800180F4(void *, u8);
     void *p;
 
-    p = fn_8000C0C0(lbl_802841B0);
+    p = Process_Find(lbl_802841B0);
     if (p != NULL) {
         fn_800180F4(p, arg0);
     }

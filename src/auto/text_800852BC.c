@@ -1478,13 +1478,13 @@ void fn_80088CC4(void *arg0) {
 }
 
 void fn_80088F34(void) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8000CAF0(void *, s32);
     extern u8 lbl_802899CC[];
     void *p;
 
-    if (fn_8000C0C0(lbl_802899CC) != 0) {
-        p = fn_8000C0C0(lbl_802899CC);
+    if (Process_Find(lbl_802899CC) != 0) {
+        p = Process_Find(lbl_802899CC);
         *(u8 *)((u8 *)p + 0x30) = 0x7B;
         return;
     }

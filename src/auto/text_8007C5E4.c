@@ -237,7 +237,7 @@ s32 fn_8007CAC4(void) {
 
 s32 fn_8007CB08(void) {
     extern u16 lbl_80289894[];
-    s32 v = fn_8000C0C0(lbl_80289894);
+    s32 v = Process_Find(lbl_80289894);
     return v != 0;
 }
 

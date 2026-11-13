@@ -303,7 +303,7 @@ void fn_80005F04(void)
     void Battle_SetPhase(u32);
     void fn_8014D41C(void *);
     void fn_801E2594(void *);
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void fn_8002D548(void);
     void fn_8014D920(void);
     s32 fn_8016947C(void);
@@ -342,7 +342,7 @@ void fn_80005F04(void)
     case 4:
         fn_801E2594(&lbl_803682F0);
 
-        state = (u8 *)fn_8000C0C0(lbl_802832FC);
+        state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0xA;
         break;
 
@@ -354,7 +354,7 @@ void fn_80005F04(void)
         fn_801E379C(object);
         fn_801E2594(&lbl_803682F0);
 
-        state = (u8 *)fn_8000C0C0(lbl_802832FC);
+        state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x11;
         break;
 
@@ -367,7 +367,7 @@ void fn_80005F04(void)
         if ((u8)fn_8016947C() == 0) {
             fn_80016C58();
 
-            state = (u8 *)fn_8000C0C0(lbl_802832FC);
+            state = (u8 *)Process_Find(lbl_802832FC);
             *(s32 *)(state + 0x60) = 0xE;
         } else {
             data = gBattleState;
@@ -378,7 +378,7 @@ void fn_80005F04(void)
             fn_8014CBD8((float)x, (float)y);
             fn_800187F0();
 
-            state = (u8 *)fn_8000C0C0(lbl_802832FC);
+            state = (u8 *)Process_Find(lbl_802832FC);
             *(s32 *)(state + 0x60) = 0x15;
         }
         break;
@@ -389,7 +389,7 @@ void fn_80005F04(void)
         fn_801E379C(object);
         fn_801E2594(&lbl_803682F0);
 
-        state = (u8 *)fn_8000C0C0(lbl_802832FC);
+        state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x16;
         break;
 
@@ -398,12 +398,12 @@ void fn_80005F04(void)
         fn_801E379C(object);
         fn_80016DE0();
 
-        state = (u8 *)fn_8000C0C0(lbl_802832FC);
+        state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0xA;
         break;
 
     case 8:
-        state = (u8 *)fn_8000C0C0(lbl_802832FC);
+        state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x12;
         break;
 
@@ -421,7 +421,7 @@ void fn_800060F8(void) {
 
 void fn_80006118(void)
 {
-  void *fn_8000C0C0(void *, void *);
+  void *Process_Find(void *, void *);
   extern u8 lbl_802832FC[];
   extern u8 lbl_803682F0;
   void *temp;
@@ -430,7 +430,7 @@ void fn_80006118(void)
   {
     ret = &lbl_803682F0;
     temp = *((void **) (((u8 *) ret) + 4));
-    ret = fn_8000C0C0(lbl_802832FC, ret);
+    ret = Process_Find(lbl_802832FC, ret);
     *(((u8 *) temp) + 0x64) = *((u32 *) (((u8 *) ret) + 0x64));
   }
   *(((u8 *) temp) + 0x65) = 0xA;
@@ -439,18 +439,18 @@ void fn_80006118(void)
 void fn_80006160(s32 arg0)
 {
     extern u16 lbl_802832FC[];
-    void *fn_8000C0C0(u16 *);
+    void *Process_Find(u16 *);
     s32 *obj;
 
-    obj = (s32 *)fn_8000C0C0(lbl_802832FC);
+    obj = (s32 *)Process_Find(lbl_802832FC);
     obj[0x64 / 4] = arg0;
 }
 
 void fn_80006198(void) {
     extern u16 lbl_802832FC[];
-    void *fn_8000C0C0(u16 *);
+    void *Process_Find(u16 *);
     void fn_8000C070(void *, u8);
-    void *arg0 = fn_8000C0C0(lbl_802832FC);
+    void *arg0 = Process_Find(lbl_802832FC);
     fn_8000C070(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
 }
 
@@ -461,16 +461,16 @@ void fn_800061CC(void *arg0) {
 
 s32 fn_800061F4(void) {
     extern u16 lbl_802832FC[];
-    void *fn_8000C0C0(u16 *);
-    void *arg0 = fn_8000C0C0(lbl_802832FC);
+    void *Process_Find(u16 *);
+    void *arg0 = Process_Find(lbl_802832FC);
     return *(u32 *)((u8 *)arg0 + 0x60);
 }
 
 void fn_80006220(s32 arg0) {
     extern u16 lbl_802832FC[];
-    void *fn_8000C0C0(u16 *);
+    void *Process_Find(u16 *);
     s32 *obj;
-    obj = (s32 *)fn_8000C0C0(lbl_802832FC);
+    obj = (s32 *)Process_Find(lbl_802832FC);
     obj[0x60 / 4] = arg0;
 }
 #include <common.h>

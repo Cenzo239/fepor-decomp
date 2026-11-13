@@ -749,7 +749,7 @@ void FallingParticle_Update(void *proc)
 
 extern u16 lbl_8029B634[10];
 s32 fn_801FE32C(void) {
-    return fn_8000C0C0(&lbl_8029B634) != 0;
+    return Process_Find(&lbl_8029B634) != 0;
 }
 
 void *fn_801FE360(void) {
@@ -990,7 +990,7 @@ void fn_801FEF58(void *arg0) {
 
 s32 fn_801FEF6C(void) {
     extern u16 lbl_8029B5DC[];
-    s32 v = fn_8000C0C0(lbl_8029B5DC);
+    s32 v = Process_Find(lbl_8029B5DC);
     return v != 0;
 }
 
@@ -1628,7 +1628,7 @@ void fn_80200494(void) {
 
 extern u16 lbl_8029B7FC[10];
 s32 fn_8020055C(void) {
-    return fn_8000C0C0(&lbl_8029B7FC) != 0;
+    return Process_Find(&lbl_8029B7FC) != 0;
 }
 
 void *fn_80200590(void) {
@@ -1947,7 +1947,7 @@ void fn_80201188(void *arg0) {
 
 extern u16 lbl_8029B7A4[10];
 s32 fn_8020119C(void) {
-    return fn_8000C0C0(&lbl_8029B7A4) != 0;
+    return Process_Find(&lbl_8029B7A4) != 0;
 }
 
 void *fn_802011D0(void) {

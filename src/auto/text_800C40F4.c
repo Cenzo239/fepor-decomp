@@ -778,11 +778,11 @@ void fn_800C5EF8(s32 arg0) {
 }
 
 void fn_800C5F34(s32 arg0) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     void Process_ClearFunc(s32);
     extern u8 lbl_8028D7A4[];
 
-    if (fn_8000C0C0(lbl_8028D7A4) == 0) {
+    if (Process_Find(lbl_8028D7A4) == 0) {
         Process_ClearFunc(arg0);
     }
 }

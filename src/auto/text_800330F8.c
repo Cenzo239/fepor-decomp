@@ -12702,7 +12702,7 @@ void fn_80053750(void *arg0, void *arg1) {
 }
 
 void fn_8005376C(void) {
-    u32 fn_8000C0C0(u32 *);
+    u32 Process_Find(u32 *);
     void *fn_8000BF00(u32 *);
     void *fn_8000CAF0(void *, s32);
     s32 fn_801451BC(void);
@@ -12715,7 +12715,7 @@ void fn_8005376C(void) {
     extern u8 lbl_80285968[];
 
     fn_8000BF00(lbl_80285990);
-    if ((fn_8000C0C0(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
+    if ((Process_Find(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
         fn_801451BC();
         fn_800056CC((const char *)((u8 *) &GActor_str + 0x12E));
         return;
@@ -12726,7 +12726,7 @@ void fn_8005376C(void) {
 #pragma cplusplus reset
 s32 fn_800537E8(void) {
     extern u16 lbl_80285990[];
-    s32 v = fn_8000C0C0(lbl_80285990);
+    s32 v = Process_Find(lbl_80285990);
     return v != 0;
 }
 

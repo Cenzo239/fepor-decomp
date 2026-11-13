@@ -4086,10 +4086,10 @@ void fn_8002863C(void) {
 
 extern u8 lbl_80284668[];
 s32 fn_80028640(void) {
-    s32 fn_8000C0C0(void *);
+    s32 Process_Find(void *);
     s32 v;
 
-    v = fn_8000C0C0(lbl_80284668);
+    v = Process_Find(lbl_80284668);
     return v != 0;
 }
 

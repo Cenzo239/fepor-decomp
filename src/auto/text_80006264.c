@@ -3731,7 +3731,7 @@ load:
     }
 }
 
-u32 *fn_8000C0C0(u32 arg0) {
+u32 *Process_Find(u32 arg0) {
     extern u8 lbl_802A66D8[];
     u32 *p = (u32 *)lbl_802A66D8;
     s32 i;

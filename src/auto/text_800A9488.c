@@ -438,13 +438,13 @@ void fn_800AA15C(void) {
     fn_8000CAF0(lbl_8028CDF0, 4);
 }
 
-u32 *fn_8000C0C0(u32 arg0);
+u32 *Process_Find(u32 arg0);
 s32 fn_800AA188(void) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     extern u8 lbl_8028CDF0[];
     void *p;
 
-    p = fn_8000C0C0(lbl_8028CDF0);
+    p = Process_Find(lbl_8028CDF0);
     if (p != NULL) {
         return *(s32 *)((u8 *)p + 0x60) == 0;
     }
@@ -453,12 +453,12 @@ s32 fn_800AA188(void) {
 
 void fn_800AA1CC(void)
 {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     extern u8 lbl_8028CDF0[];
     void *p;
     u32 v;
 
-    p = fn_8000C0C0(lbl_8028CDF0);
+    p = Process_Find(lbl_8028CDF0);
     if (p != NULL) {
         v = *(u32 *)((u8 *)p + 0x60);
         *(u32 *)((u8 *)p + 0x60) = v + 1;
@@ -467,12 +467,12 @@ void fn_800AA1CC(void)
 
 void fn_800AA208(void)
 {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     extern u8 lbl_8028CDF0[];
     void *p;
     u32 v;
 
-    p = fn_8000C0C0(lbl_8028CDF0);
+    p = Process_Find(lbl_8028CDF0);
     if (p != NULL) {
         v = *(u32 *)((u8 *)p + 0x60);
         *(u32 *)((u8 *)p + 0x60) = v - 1;

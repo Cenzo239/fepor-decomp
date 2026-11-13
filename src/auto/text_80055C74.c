@@ -168,11 +168,11 @@ void fn_800561EC(void *arg0) {
 }
 
 void fn_80056580(void) {
-    void *fn_8000C0C0(void *);
+    void *Process_Find(void *);
     extern u8 lbl_80285B90[];
     void *temp_r3;
 
-    temp_r3 = fn_8000C0C0(lbl_80285B90);
+    temp_r3 = Process_Find(lbl_80285B90);
     if (temp_r3 != NULL) {
         *(s8 *)((u8 *)temp_r3 + 0x36) = -1;
     }
