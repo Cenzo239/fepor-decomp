@@ -9234,7 +9234,8 @@ void fn_8019A7E8(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-void Event_RunItemCmd(void *arg0) {
+/* Start an event item command (opcodes 0x50-0x52): play SE and set up give/take/trade. */
+void Event_RunItemCmd(void *cmd) {
     void fn_80025624(void *, s32);
     void fn_800536B0(f32, f32, f32);
     void *fn_80053C30(void *, void *);
@@ -9269,95 +9270,95 @@ void Event_RunItemCmd(void *arg0) {
     Word3 sp20;
     Word3 sp14;
     Word3 sp8;
-    void *obj;
-    s32 sub;
-    s32 code;
-    s32 val;
+    void *unit;
+    s32 flags;
+    s32 kind;
+    s32 slot;
     s32 tmp;
     void *p;
-    s32 v280;
+    s32 actor;
 
-    obj = fn_8009809C();
-    sub = Event_GetCmdFlags(*(s16 *)((u8 *)arg0 + 0x56));
-    code = Event_GetCmdKind(*(s16 *)((u8 *)arg0 + 0x56));
-    if (code == 0x52) {
-        p = *(void **)obj;
+    unit = fn_8009809C();
+    flags = Event_GetCmdFlags(*(s16 *)((u8 *)cmd + 0x56));
+    kind = Event_GetCmdKind(*(s16 *)((u8 *)cmd + 0x56));
+    if (kind == 0x52) {
+        p = *(void **)unit;
         if (p != NULL) {
-            v280 = *(s32 *)((u8 *)p + 0x280);
+            actor = *(s32 *)((u8 *)p + 0x280);
         } else {
-            v280 = 0;
+            actor = 0;
         }
-        fn_80184C7C(v280, 7, 2, 0);
-        p = *(void **)obj;
+        fn_80184C7C(actor, 7, 2, 0);
+        p = *(void **)unit;
         if (p != NULL) {
-            v280 = *(s32 *)((u8 *)p + 0x280);
+            actor = *(s32 *)((u8 *)p + 0x280);
         } else {
-            v280 = 0;
+            actor = 0;
         }
-        fn_80184BE8(v280, 8, 0x18, 0);
-        fn_8017F474(obj, arg0);
-        fn_800983E0(&sp74, obj);
+        fn_80184BE8(actor, 8, 0x18, 0);
+        fn_8017F474(unit, cmd);
+        fn_800983E0(&sp74, unit);
         sp80 = sp74;
         fn_80147548(lbl_8027AA38 + 0xF3, &sp80, 0x64);
         return;
     }
-    val = (s32)*(f32 *)((u8 *)obj + 0xC);
-    if (val == 0) {
-        fn_8017F70C(obj, arg0);
-        fn_800983E0(&sp5c, obj);
+    slot = (s32)*(f32 *)((u8 *)unit + 0xC);
+    if (slot == 0) {
+        fn_8017F70C(unit, cmd);
+        fn_800983E0(&sp5c, unit);
         sp68 = sp5c;
         fn_80147548(lbl_8027AA38 + 0x101, &sp68, 0x64);
         fn_80025624(gPadInput, 4);
     } else {
         if (fn_80096C18() != 0) {
-            fn_800983E0(&sp44, obj);
+            fn_800983E0(&sp44, unit);
             sp50 = sp44;
             fn_80147548(lbl_8027AA38 + 0x114, &sp50, 0x64);
         } else {
-            fn_800983E0(&sp2c, obj);
+            fn_800983E0(&sp2c, unit);
             sp38 = sp2c;
             fn_80147548(lbl_8027AA38 + 0x12B, &sp38, 0x64);
         }
-        p = *(void **)obj;
+        p = *(void **)unit;
         if (p != NULL) {
-            v280 = *(s32 *)((u8 *)p + 0x280);
+            actor = *(s32 *)((u8 *)p + 0x280);
         } else {
-            v280 = 0;
+            actor = 0;
         }
-        fn_80184C7C(v280, 9, 2, 0);
-        p = *(void **)obj;
+        fn_80184C7C(actor, 9, 2, 0);
+        p = *(void **)unit;
         if (p != NULL) {
-            v280 = *(s32 *)((u8 *)p + 0x280);
+            actor = *(s32 *)((u8 *)p + 0x280);
         } else {
-            v280 = 0;
+            actor = 0;
         }
-        fn_80184BE8(v280, 8, 0x18, 0);
-        if (code == 0x51) {
-            fn_8018CFA4(0x3C, 6, 2, 0, arg0);
+        fn_80184BE8(actor, 8, 0x18, 0);
+        if (kind == 0x51) {
+            fn_8018CFA4(0x3C, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 0x10);
             fn_8017E2BC();
-            fn_800983E0(&sp14, obj);
+            fn_800983E0(&sp14, unit);
             sp20 = sp14;
             fn_80147548(lbl_8027AA38 + 0x142, &sp20, 0x64);
         } else {
-            fn_8018CFA4(0xF, 6, 2, 0, arg0);
+            fn_8018CFA4(0xF, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 8);
         }
-        fn_8017E0C0(obj, val, arg0);
-        fn_8017F040(obj, val, arg0);
+        fn_8017E0C0(unit, slot, cmd);
+        fn_8017F040(unit, slot, cmd);
     }
-    p = *(void **)obj;
+    p = *(void **)unit;
     if (p != NULL) {
-        v280 = *(s32 *)((u8 *)p + 0x280);
+        actor = *(s32 *)((u8 *)p + 0x280);
     } else {
-        v280 = 0;
+        actor = 0;
     }
-    fn_80184688(v280, 1, 4, arg0);
-    tmp = (s32)fn_80095934(0, code, sub);
+    fn_80184688(actor, 1, 4, cmd);
+    tmp = (s32)fn_80095934(0, kind, flags);
     if (tmp != 0) {
-        fn_800983E0(&sp8, obj);
+        fn_800983E0(&sp8, unit);
         sp8c = sp8;
-        fn_80053C30((void *)tmp, arg0);
+        fn_80053C30((void *)tmp, cmd);
         fn_800536B0(*(f32 *)&sp8c.x, *(f32 *)&sp8c.y, *(f32 *)&sp8c.z);
     }
 }
