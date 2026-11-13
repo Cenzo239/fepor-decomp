@@ -9909,7 +9909,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
         void *subB0;
     };
     void Heap_Free(void *);
-    extern u8 lbl_802924DC[];
+    extern u8 gUiPanelCVtbl[];
     extern u8 gEmptyVtbl[];
     extern u8 lbl_80292504[];
     extern u8 lbl_80292230[];
@@ -9918,7 +9918,7 @@ extern "C" void *fn_80144918(void *arg0, s16 arg1) {
 
     self = (Owner *)arg0;
     if (arg0 != NULL) {
-        self->vtbl = lbl_802924DC;
+        self->vtbl = gUiPanelCVtbl;
         if (&self->subB0 != NULL) {
             self->subB0 = gEmptyVtbl;
             ((Obj *)&self->subB0)->v2();

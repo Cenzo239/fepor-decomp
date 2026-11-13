@@ -11466,7 +11466,7 @@ if(Convoy_FindEmpty(gConvoy)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
 extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
-    extern u8 lbl_802924DC[];
+    extern u8 gUiPanelCVtbl[];
     extern u8 lbl_80285C18[];
     extern u8 lbl_80285CCC[];
     extern u8 lbl_80292504[];
@@ -11529,7 +11529,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     c108 = 0x108;
     one = gF32_1;
     self = (Parent *)arg0;
-    vtdc = lbl_802924DC;
+    vtdc = gUiPanelCVtbl;
     vt30 = lbl_80292230;
     e1 = arg1;
     r29 = self;
