@@ -8633,7 +8633,7 @@ void Capture_DrawRotated(void *cap) {
     void fn_8022097C(void);
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
-    void fn_80221BA8(s32, s32);
+    void GXCopyTex(s32, s32);
     void fn_802209FC(void);
     void fn_80222EB4(void);
     void fn_80067EDC(s32);
@@ -8674,7 +8674,7 @@ void Capture_DrawRotated(void *cap) {
     fn_8022097C();
     fn_8022124C(0, 0, 0x260, 0x1E0);
     fn_802212FC(0x260, 0x1E0, 4, 0);
-    fn_80221BA8(*(s32 *)((u8 *)self + 0x50), 1);
+    GXCopyTex(*(s32 *)((u8 *)self + 0x50), 1);
     fn_802209FC();
     fn_80222EB4();
     fn_80067EDC(0);

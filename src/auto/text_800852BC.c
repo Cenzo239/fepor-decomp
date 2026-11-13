@@ -1861,14 +1861,14 @@ void fn_800898E4(void *arg0) {
     M2C_UNK fn_802209FC();
     M2C_UNK fn_8022124C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802212FC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80221BA8(s32, M2C_UNK);
+    M2C_UNK GXCopyTex(s32, M2C_UNK);
     M2C_UNK fn_80222EB4();
     void *temp_r31;
 
     temp_r31 = *(void **)((char *)arg0 + 0x54);
     fn_8022124C(0, 0, 0x260, 0x1C0);
     fn_802212FC(0x260, 0x1C0, 4, 0);
-    fn_80221BA8(*(s32 *)((char *)temp_r31 + 0x48), 0);
+    GXCopyTex(*(s32 *)((char *)temp_r31 + 0x48), 0);
     fn_802209FC();
     fn_80222EB4();
 }

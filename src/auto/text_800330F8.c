@@ -7300,7 +7300,7 @@ void fn_80043DEC(void) {
     M2C_UNK fn_802209FC();
     M2C_UNK fn_8022124C(s32, s32, u16, u16);
     M2C_UNK fn_802212FC(u16, u16, s32, s32);
-    M2C_UNK fn_80221BA8(s32, s32);
+    M2C_UNK GXCopyTex(s32, s32);
     M2C_UNK fn_80222EB4();
     M2C_UNK fn_80067984(s32);
     M2C_UNK fn_80067058();
@@ -7312,7 +7312,7 @@ void fn_80043DEC(void) {
     temp_r30 = (s32)*(f32 *)((char *)lbl_803672A8 + 0x14);
     fn_8022124C(0, 0, (u16)temp_r31, (u16)temp_r30);
     fn_802212FC((u16)temp_r31, (u16)temp_r30, 4, 0);
-    fn_80221BA8(*(s32 *)((char *)lbl_803672A8 + 0x1C), 1);
+    GXCopyTex(*(s32 *)((char *)lbl_803672A8 + 0x1C), 1);
     fn_802209FC();
     fn_80222EB4();
     fn_80067984(0);

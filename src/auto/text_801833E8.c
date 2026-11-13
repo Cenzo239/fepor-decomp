@@ -13290,7 +13290,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK GXBegin(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8022124C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802212FC(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80221BA8(u32, M2C_UNK);
+    M2C_UNK GXCopyTex(u32, M2C_UNK);
     M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK GXSetBlendMode(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, u32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13315,7 +13315,7 @@ void fn_801A27F8(void *arg0) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) != 0U) {
         fn_8022124C(0, 0, 0x260, 0x1C0);
         fn_802212FC(0x260, 0x1C0, 4, 0);
-        fn_80221BA8(M2C_FIELD(arg0, u32 *, 0x30), 0);
+        GXCopyTex(M2C_FIELD(arg0, u32 *, 0x30), 0);
         fn_802209FC();
         fn_80222EB4();
         fn_80222644(spC, M2C_FIELD(arg0, u32 *, 0x30), 0x260, 0x1C0, 4, 0, 0, 0);

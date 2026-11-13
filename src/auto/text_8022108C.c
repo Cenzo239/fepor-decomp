@@ -581,7 +581,7 @@ void GXCopyDisp(void)
     }
 }
 
-void fn_80221BA8(void *dest, u8 clear) {
+void GXCopyTex(void *dest, u8 clear) {
     u32 reg;
     u32 tempPeCtrl;
     u32 phyAddr;

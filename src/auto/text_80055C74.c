@@ -220,7 +220,7 @@ void fn_800566D4(void *arg0) {
     void GXBegin(s32, s32, s32);
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
-    void fn_80221BA8(void *, s32);
+    void GXCopyTex(void *, s32);
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
@@ -323,7 +323,7 @@ void fn_800566D4(void *arg0) {
             }
             fn_8022124C(0, 0, 0x260, 0x1C0);
             fn_802212FC(0x260, 0x1C0, 4, 0);
-            fn_80221BA8(tex, 0);
+            GXCopyTex(tex, 0);
             fn_802209FC();
             fn_80222EB4();
             *((u8 *)arg0 + 0x37) = 0;
@@ -1531,7 +1531,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 void fn_800599D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
-    void fn_80221BA8(s32, s32);
+    void GXCopyTex(s32, s32);
     void fn_802209FC(void);
     void fn_80222EB4(void);
     s32 a2;
@@ -1543,7 +1543,7 @@ void fn_800599D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     a2 = arg2;
     fn_8022124C(arg0 & 0xFFFF, arg1 & 0xFFFF, arg2 & 0xFFFF, arg3 & 0xFFFF);
     fn_802212FC((u16)a2, (u16)a3, 0x27, 0);
-    fn_80221BA8(a4, 0);
+    GXCopyTex(a4, 0);
     fn_802209FC();
     fn_80222EB4();
 }
