@@ -1176,7 +1176,8 @@ block_19:
 }
 
 #pragma opt_strength_reduction off
-void Battle_Execute(s32 arg0, u8 arg1) {
+/* Run a full combat: init both sides, resolve rounds, clear hit tables, set result flags. */
+void Battle_Execute(s32 battle, u8 arg1) {
     u64 *fn_8001CB64(s32);
     void fn_80034068(s32, s32, s32);
     void fn_8004E670(f32 *, void *, s32);
@@ -1191,8 +1192,8 @@ void Battle_Execute(s32 arg0, u8 arg1) {
     extern u8 lbl_8036728A;
     f32 sp14[3];
     f32 sp8[3];
-    f32 f31;
-    u8 *r31;
+    f32 leftY;
+    u8 *hitTbl;
     u8 *var_r3;
     u8 *var_r5;
     s32 self;
@@ -1202,20 +1203,20 @@ void Battle_Execute(s32 arg0, u8 arg1) {
     s32 ptr;
     u64 *temp_r3;
     u32 var_r4;
-    void *p280;
-    void *p560;
+    void *leftUnit;
+    void *rightUnit;
 
-    r31 = lbl_802EFDB8;
-    self = arg0;
+    hitTbl = lbl_802EFDB8;
+    self = battle;
     *(u32 *)(self + 0xCAC) |= 2;
-    if (r31[0x61] != 0) {
+    if (hitTbl[0x61] != 0) {
         *(u32 *)(self + 0xCAC) |= 0x4000;
-        r31[0x61] = 0;
+        hitTbl[0x61] = 0;
     }
-    p280 = *(void **)(self + 0x280);
-    *(u16 *)((u8 *)p280 + 0x228) = *(u16 *)((u8 *)p280 + 0x228) + 1;
-    p560 = *(void **)(self + 0x560);
-    *(u16 *)((u8 *)p560 + 0x228) = *(u16 *)((u8 *)p560 + 0x228) + 1;
+    leftUnit = *(void **)(self + 0x280);
+    *(u16 *)((u8 *)leftUnit + 0x228) = *(u16 *)((u8 *)leftUnit + 0x228) + 1;
+    rightUnit = *(void **)(self + 0x560);
+    *(u16 *)((u8 *)rightUnit + 0x228) = *(u16 *)((u8 *)rightUnit + 0x228) + 1;
     fn_801A6C18(self, arg1, 0);
     *(u8 *)(self + 0xCA4) = 0;
     fn_801A601C(self, self, self + 0x2E0, 0);
@@ -1225,7 +1226,7 @@ void Battle_Execute(s32 arg0, u8 arg1) {
     Battle_ResolveRounds(self);
 
     temp_r0 = 0;
-    r31[0x61] = (u8)temp_r0;
+    hitTbl[0x61] = (u8)temp_r0;
     var_r3 = lbl_802EFDB8;
     var_r5 = var_r3;
     var_r3[0x60] = (u8)temp_r0;
@@ -1333,9 +1334,9 @@ block_27:
 after_blocks:
     if (!(*(u32 *)(self + 0xCAC) & 1) && *(u32 *)(self + 0x468) != 0) {
         fn_8004E670(sp8, *(void **)(self + 0x280), 1);
-        f31 = sp8[0];
+        leftY = sp8[0];
         fn_8004E670(sp14, *(void **)(self + 0x560), 1);
-        if (!(sp14[0] < f31)) {
+        if (!(sp14[0] < leftY)) {
             *(u32 *)(self + 0xCAC) |= 0x20000000;
             return;
         }
