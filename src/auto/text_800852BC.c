@@ -2609,7 +2609,7 @@ u16 fn_8008B1B0(s32 arg0, s32 arg1) {
 }
 
 void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
-    M2C_UNK fn_80007124(s32);
+    M2C_UNK Prim2D_SetText(s32);
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_SetColorByte(u8);
@@ -2635,7 +2635,7 @@ void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
     Prim2D_AddPrim(6);
     Prim2D_SetPos((f32) (arg0 + 0x18), (f32) (arg1 - 1));
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
-    fn_80007124(arg4);
+    Prim2D_SetText(arg4);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369704);

@@ -185,7 +185,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
 
 void fn_801210CC(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_SetPos(f32, f32);
@@ -261,7 +261,7 @@ void fn_801210CC(void *arg0) {
             (f32)(s32)(M2C_FIELD(self, s16 *, 0x4A) - 0xC));
         color = *Ui_GetColor(1);
         Prim2D_SetColorPacked(&color);
-        fn_80007124((u8 *)self + 0x30);
+        Prim2D_SetText((u8 *)self + 0x30);
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
@@ -3689,7 +3689,7 @@ extern f32 lbl_8036A298;
 extern f64 lbl_8036A2A0;
 
 extern s32 *Ui_GetColor(s32);
-extern void fn_80007124(void *);
+extern void Prim2D_SetText(void *);
 extern void Prim2D_SetColorPacked(s32 *);
 extern void Prim2D_SetColor(s32, s32, s32, s32);
 extern void fn_80007790(f32, f32, f32, f32);

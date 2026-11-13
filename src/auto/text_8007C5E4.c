@@ -181,7 +181,7 @@ extern f32 lbl_803693D4;
 extern f32 lbl_803693D8;
 extern f32 lbl_803693E4;
 void fn_8007C968(void *arg0, void *arg1, void *arg2) {
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void fn_8000727C(f32);
     void fn_80007290(s32, s32, s32, s32);
     void Prim2D_SetPos(f32, f32);
@@ -206,7 +206,7 @@ void fn_8007C968(void *arg0, void *arg1, void *arg2) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16*)((u8*)arg2 + 0x30)), (f32)(*(s16*)((u8*)arg2 + 0x32)));
-    fn_80007124((void *)sp[var_r30]);
+    Prim2D_SetText((void *)sp[var_r30]);
     fn_8000727C(lbl_803693E4);
     if (*(u8*)((u8*)arg2 + 0x38) != 0) {
         fn_80007290(0xFF, 0xFF, 0, 0xFF);

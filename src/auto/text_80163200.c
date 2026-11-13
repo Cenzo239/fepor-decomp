@@ -783,7 +783,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void Prim2D_SetPos(f32, f32);
     s32 *Ui_GetColor(s32);
     void Prim2D_SetColorPacked(s32 *);
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     void fn_8013F748(void *, s16 *, s16 *);
     void fn_80009BC0(void (*)(void *), s16 *);
@@ -837,7 +837,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     Prim2D_SetPos((f32)ox, (f32)t);
     sp8 = *Ui_GetColor(2);
     Prim2D_SetColorPacked(&sp8);
-    fn_80007124(text);
+    Prim2D_SetText(text);
     Prim2D_EndPrim();
 
     self->v3(idx);
@@ -1196,7 +1196,7 @@ extern "C" void fn_80165300(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_8016533C(void *arg0, s32 arg1) {
-    void fn_80007124(void);
+    void Prim2D_SetText(void);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
@@ -1300,7 +1300,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
         spC = *Ui_GetColor(*(u8 *)((u8 *)arg0 + 0x4c));
         Prim2D_SetColorPacked(&spC);
         String_CStr((u8 *)arg0 + 0x3c);
-        fn_80007124();
+        Prim2D_SetText();
         Prim2D_EndPrim();
     }
     s = (char *)String_CStr(sp10);
@@ -3747,7 +3747,7 @@ u8 fn_8016B000(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
-    M2C_UNK fn_80007124(s32);
+    M2C_UNK Prim2D_SetText(s32);
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
@@ -3821,7 +3821,7 @@ extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
-    fn_80007124(temp_virt2);
+    Prim2D_SetText(temp_virt2);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A9E0);
@@ -3865,7 +3865,7 @@ void *fn_8016B338(void) {
 
 #pragma cplusplus on
 extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
-    M2C_UNK fn_80007124(s32);
+    M2C_UNK Prim2D_SetText(s32);
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
@@ -3940,7 +3940,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
-    fn_80007124(temp_virt2);
+    Prim2D_SetText(temp_virt2);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A9E0);
@@ -10030,7 +10030,7 @@ void *fn_80176EA4(void) {
 }
 
 void fn_80177028(void **arg0, void *arg1, void *arg2) {
-    M2C_UNK fn_80007124(s32);
+    M2C_UNK Prim2D_SetText(s32);
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
@@ -10071,7 +10071,7 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
         Prim2D_SetColorPacked(&sp8);
         fn_80007220(1, lbl_8036AB8C);
     }
-    fn_80007124(temp_r31);
+    Prim2D_SetText(temp_r31);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
@@ -10245,7 +10245,7 @@ s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
-    void fn_80007124(s32);
+    void Prim2D_SetText(s32);
     void fn_80007220(s32, f32);
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_SetPos(f32, f32);
@@ -10364,7 +10364,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         fn_80007220(1, lbl_8036AB8C);
     }
 
-    fn_80007124(t28);
+    Prim2D_SetText(t28);
     Prim2D_EndPrim();
 
     if (((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5() != 0) {
@@ -11379,7 +11379,7 @@ void fn_801793B4(void) {
 }
 
 void fn_801793EC(void **arg0, void *arg2) {
-    M2C_UNK fn_80007124();
+    M2C_UNK Prim2D_SetText();
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
     s32 fn_80010770(M2C_UNK, f32);
@@ -11412,7 +11412,7 @@ void fn_801793EC(void **arg0, void *arg2) {
     }
     Prim2D_SetPos(temp_f31_2, temp_f30 + (f32) ((s32) ((temp_r4 >> 0x1FU) + temp_r4) >> 1));
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    fn_80007124();
+    Prim2D_SetText();
     Prim2D_EndPrim();
 }
 

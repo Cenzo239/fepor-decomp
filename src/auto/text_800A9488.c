@@ -240,7 +240,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_SetColor(s32, s32, s32, s32);
-    void fn_80007124(void);
+    void Prim2D_SetText(void);
     void fn_8000727C(f32);
     void Prim2D_EndPrim(void);
     struct Model {
@@ -292,7 +292,7 @@ extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
     Prim2D_SetPos((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
-    fn_80007124();
+    Prim2D_SetText();
     fn_8000727C(lbl_80369C24);
     Prim2D_EndPrim();
 }

@@ -2871,7 +2871,7 @@ fn_80009EB0(fn_802002F0(arg0),idx,0,arg1); fn_80200270(arg0);
 }
 
 void fn_8007947C(void *arg0) {
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void fn_8000727C(f32);
     void Prim2D_SetPos(f32, f32);
     void Prim2D_EndPrim(void);
@@ -2919,7 +2919,7 @@ void fn_8007947C(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     Prim2D_SetPos(lbl_803693DC, lbl_803693E0);
-    fn_80007124(sp8);
+    Prim2D_SetText(sp8);
     fn_8000727C(lbl_803693E4);
     Prim2D_EndPrim();
     Prim2D_Begin();

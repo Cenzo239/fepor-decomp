@@ -2756,7 +2756,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     void Prim2D_SetAlpha(s32);
     void fn_80007220(u8, f32);
     void fn_800071D8(u8, f32);
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     extern f32 lbl_8036A130;
     extern f32 lbl_8036A118;
@@ -2797,7 +2797,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     Prim2D_SetAlpha(temp_r30);
     fn_80007220(*(u8 *)((u8 *)temp_r29 + 0x10), lbl_8036A154);
     fn_800071D8(*(u8 *)((u8 *)temp_r29 + 0x11), lbl_8036A118);
-    fn_80007124(temp_r31);
+    Prim2D_SetText(temp_r31);
     Prim2D_EndPrim();
 }
 

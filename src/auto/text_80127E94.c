@@ -88,7 +88,7 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 
 void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
-    M2C_UNK fn_80007124();
+    M2C_UNK Prim2D_SetText();
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim();
@@ -120,7 +120,7 @@ void fn_80127F8C(void **arg0, void *arg1, void *arg2) {
     Prim2D_SetPos((f32) ((s32) ((temp_r5_2 >> 0x1FU) + temp_r5_2) >> 1), (f32) temp_r28);
     Prim2D_SetColor(0, 0, 0, 0xFF);
     M2C_FIELD(*arg0, M2C_UNK (**)(void **), 0xC)(arg0);
-    fn_80007124();
+    Prim2D_SetText();
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A404);
@@ -1646,7 +1646,7 @@ void fn_8012B554(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_8012B7DC(void *arg0) {
-    void fn_80007124(void *);
+    void Prim2D_SetText(void *);
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -1795,7 +1795,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         Prim2D_SetPos(lbl_8036A49C, lbl_8036A49C);
-        fn_80007124(buf);
+        Prim2D_SetText(buf);
         Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
         sprintf(buf, lbl_802758F8 + 0x39,
@@ -1803,7 +1803,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A4);
-        fn_80007124(buf);
+        Prim2D_SetText(buf);
         Prim2D_EndPrim();
         cam = (void *)lbl_80367A88;
         sprintf(buf, lbl_802758F8 + 0x45,
@@ -1811,7 +1811,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_AddPrim(7);
         Prim2D_SetAlpha((u8)*(s16 *)((u8 *)arg0 + 0x4C));
         Prim2D_SetPos(lbl_8036A49C, lbl_8036A4A8);
-        fn_80007124(buf);
+        Prim2D_SetText(buf);
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_8036A498, lbl_8036A498, lbl_8036A4AC, lbl_8036A480);

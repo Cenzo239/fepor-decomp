@@ -607,7 +607,7 @@ void fn_800070C8(s32 *arg0, s16 *arg1, s16 *arg2, s32 *arg3) {
     }
 }
 
-void fn_80007124(u8 *arg0) {
+void Prim2D_SetText(u8 *arg0) {
     extern void *lbl_80367140;
     extern u8 lbl_80366DA4;
     u8 *g;
