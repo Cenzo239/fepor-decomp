@@ -24,7 +24,7 @@ first=*(void **)((u8*)first+4);
 
 extern u16 gSystemSave[36]; // 72 bytes 
 extern f32 lbl_8036A6D0;
-extern f32 lbl_8036A6C4;
+extern f32 gUiMenuSlotPlainTextScale;
 
 extern u16 gSystemSave[36]; // 72 bytes = 36 * 2-byte entries
 extern f32 lbl_8036A5A8;
@@ -6136,7 +6136,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Ui_DrawSlotFrame(s32, s32, u8, M2C_UNK);
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A6C0;
-    extern f32 lbl_8036A6C4;
+    extern f32 gUiMenuSlotPlainTextScale;
     extern f32 gUiMenuSlotPlainTextZ;
     extern f32 gUiMenuSlotPlainFrameZ;
     struct Obj {
@@ -6187,7 +6187,7 @@ extern "C" void Ui_DrawMenuSlotPlain(void **arg0, void *arg1, void *arg2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);
     } else {
-        Prim2D_SetTextScale(1, lbl_8036A6C4);
+        Prim2D_SetTextScale(1, gUiMenuSlotPlainTextScale);
     }
     temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
@@ -6363,7 +6363,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     s32 *Ui_GetColor(M2C_UNK);
     extern M2C_UNK gUiIconDrawer;
     extern f32 lbl_8036A6C0;
-    extern f32 lbl_8036A6C4;
+    extern f32 gUiMenuSlotPlainTextScale;
     s32 sp8;
     f32 temp_f30;
     f32 temp_f31;
@@ -6398,7 +6398,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
         sp8 = *Ui_GetColor(0);
         Prim2D_SetColorPacked(&sp8);
     } else {
-        Prim2D_SetTextScale(1, lbl_8036A6C4);
+        Prim2D_SetTextScale(1, gUiMenuSlotPlainTextScale);
     }
     temp_r3_5 = M2C_FIELD(arg2, void ***, 0x34);
     M2C_FIELD(*temp_r3_5, M2C_UNK (**)(void **, void *), 0x18)(temp_r3_5, arg2);
@@ -12746,7 +12746,7 @@ void* Heap_Alloc(int);
 #include "dolphin/os.h"
 
 extern f32 lbl_8036A6C0;
-extern f32 lbl_8036A6C4;
+extern f32 gUiMenuSlotPlainTextScale;
 extern f32 lbl_8036A6C8;
 extern u16 lbl_80291730[];
 #include "common.h"
