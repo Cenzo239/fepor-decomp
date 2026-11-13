@@ -11000,7 +11000,7 @@ void fn_8019DB68(void) {
     void fn_8019F4A8(void);
     void fn_8019F2D0(void);
     void Map_HideLinkedAt(void);
-    void fn_8019F04C(void);
+    void Map_ShowLinkedAt(void);
     void fn_8019EEE0(void);
     void Map_SelectObjAt(void);
     void fn_8019F230(void);
@@ -11087,7 +11087,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x319, fn_8019F4A8, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x322, fn_8019F2D0, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x32C, Map_HideLinkedAt, 2);
-    Script_RegisterCommand(lbl_8027AD98 + 0x33C, fn_8019F04C, 2);
+    Script_RegisterCommand(lbl_8027AD98 + 0x33C, Map_ShowLinkedAt, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x34D, fn_8019EEE0, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x356, Map_SelectObjAt, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x360, fn_8019F230, 2);
@@ -11509,7 +11509,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
     return 1;
 }
 
-s32 fn_8019F04C(s32 arg0, s32 arg1) {
+s32 Map_ShowLinkedAt(s32 arg0, s32 arg1) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
