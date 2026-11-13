@@ -2733,7 +2733,7 @@ void fn_80247F94(void *arg0) {
 s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status) {
     /* Find active synth voices on group/channel and retune them to key; return new VID or -1. */
     void fn_80255B20(void *);
-    s32 fn_80255E9C(void *, s32);
+    s32 Sound_AddVid(void *, s32);
     void fn_80257614(void *);
     void fn_80260174(u8, u8, u8);
     u32 Sound_IsHwVoiceActive(u32);
@@ -2777,13 +2777,13 @@ s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status)
                 if (result == 0xFFFFFFFF) {
                     *(s32 *)(voice + 0xEC) = -1;
                     *(s32 *)(voice + 0xF0) = -1;
-                    result = fn_80255E9C((u8 *)gSynthVoices + offset, isMaster);
+                    result = Sound_AddVid((u8 *)gSynthVoices + offset, isMaster);
                     previous = *(s32 *)(voice + 0xF4);
                 } else {
                     ((SynthStateLink *)gSynthVoices)[(u8)previous].next = *(s32 *)(voice + 0xF4);
                     *(s32 *)(voice + 0xF0) = previous;
                     previous = *(s32 *)(voice + 0xF4);
-                    fn_80255E9C((u8 *)gSynthVoices + offset, 0);
+                    Sound_AddVid((u8 *)gSynthVoices + offset, 0);
                 }
             }
         }
@@ -7826,7 +7826,7 @@ s32 fn_802555A0(
     void fn_80256054(void *, u8);
     void fn_8025FB74(u8, u8, u8);
     void *fn_802506A8(u16);
-    u32 fn_80255E9C(SynthVoice *, u32);
+    u32 Sound_AddVid(SynthVoice *, u32);
     s32 Sound_IsHwVoiceActive(s32);
     void fn_802618E4(int);
     void fn_80249DD0(s32);
@@ -7955,7 +7955,7 @@ s32 fn_802555A0(
         (u32)(u8)index | ((u32)arg4 << 8) | ((u32)arg0 << 16);
 
     fn_80256054(voice, arg1);
-    result = (s32)fn_80255E9C((SynthVoice *)voice, arg12);
+    result = (s32)Sound_AddVid((SynthVoice *)voice, arg12);
 
     if (result != -1) {
         if (*(s32 *)(voice + 0x4C) != 0) {
@@ -8222,7 +8222,7 @@ s32 fn_80255E88(void *arg0) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 0xF8), s32 *, 8);
 }
 
-u32 fn_80255E9C(SynthVoice *sv, u32 isMaster) {
+u32 Sound_AddVid(SynthVoice *sv, u32 isMaster) {
     extern VidList *vidListRoot;
     extern VidList *vidListFree;
     u32 vid;
