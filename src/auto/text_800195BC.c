@@ -1642,7 +1642,7 @@ s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
 
 void *Item_Copy(void *arg0, void *arg1) {
     s32 Icon_GetSlot(void *, s32);
-    s32 fn_800C30DC(void *, s32, s32);
+    s32 Icon_CopySlot(void *, s32, s32);
     s32 Icon_AllocSlot(void *);
     void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
@@ -1669,7 +1669,7 @@ void *Item_Copy(void *arg0, void *arg1) {
             if (dst->rest == 0) {
                 dst->rest = Icon_AllocSlot(gIconSlots);
             }
-            dst->rest = fn_800C30DC(gIconSlots, dst->rest, temp);
+            dst->rest = Icon_CopySlot(gIconSlots, dst->rest, temp);
         } else if (dst->rest != 0) {
             Icon_FreeSlot(gIconSlots, dst->rest);
             dst->rest = 0;
@@ -1710,7 +1710,7 @@ void *Item_Destroy(void *arg0, s16 arg1) {
 
 void *Item_Clone(void *arg0, void *arg1) {
     s32 Icon_GetSlot(void *, s32);
-    s32 fn_800C30DC(void *, s32, s32);
+    s32 Icon_CopySlot(void *, s32, s32);
     s32 Icon_AllocSlot(void *);
     extern u8 gIconSlots[];
     typedef struct {
@@ -1744,7 +1744,7 @@ void *Item_Clone(void *arg0, void *arg1) {
         if (dst->rest == 0) {
             dst->rest = Icon_AllocSlot(gIconSlots);
         }
-        dst->rest = fn_800C30DC(gIconSlots, dst->rest, temp);
+        dst->rest = Icon_CopySlot(gIconSlots, dst->rest, temp);
     }
     return arg0;
 }

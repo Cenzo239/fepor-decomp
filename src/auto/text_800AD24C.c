@@ -9446,7 +9446,7 @@ s32 Icon_GetSlot(s32 arg0, s32 arg1) {
     return arg0 + ((arg1 - 1) * 0x18);
 }
 
-s32 fn_800C30DC(s32 arg0, s32 arg1, void *arg2) {
+s32 Icon_CopySlot(s32 arg0, s32 arg1, void *arg2) {
     s32 temp_r31;
     u8 temp_r6;
     void *temp_r30;
