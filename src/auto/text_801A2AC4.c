@@ -542,26 +542,27 @@ void MapAnim_DispatchByIid(void *iidDef, s32 parent, s32 extra) {
     }
 }
 
-s32 Item_GetHealAmount(void *arg0) {
+/* Return base HP healed by a known potion/staff item def (10/20/80), or 0 if unrecognized. */
+s32 Item_GetHealAmount(void *itemDef) {
     void *Item_GetByIid(void *);
     extern u8 gMapAnimStr[];
 
-    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1E6)) {
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x1E6)) {
         return 0xA;
     }
-    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1EF)) {
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x1EF)) {
         return 0x14;
     }
-    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1FA)) {
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x1FA)) {
         return 0x50;
     }
-    if (arg0 == Item_GetByIid(gMapAnimStr + 0x206)) {
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x206)) {
         return 0xA;
     }
-    if (arg0 == Item_GetByIid(gMapAnimStr + 0x211)) {
+    if (itemDef == Item_GetByIid(gMapAnimStr + 0x211)) {
         return 0xA;
     }
-    return (arg0 == Item_GetByIid(gMapAnimStr + 0x21D)) ? 0x50 : 0;
+    return (itemDef == Item_GetByIid(gMapAnimStr + 0x21D)) ? 0x50 : 0;
 }
 
 s32 fn_801A3F14(void *self) {
