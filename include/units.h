@@ -4,7 +4,13 @@
 #include "global.h"
 
 struct Unit {
-    /* 0x00 */ u8 unk00[0xB0];
+    /* 0x00 */ u16 mapAngle; /* degrees; idle-spins % 360 on active phase */
+    /* 0x02 */ u8 unk02;
+    /* 0x03 */ u8 dispFlags; /* bit3 skip visual update; drawable when (flags&0x22)==2 */
+    /* 0x04 */ u8 unk04[0x18];
+    /* 0x1C */ u8 model[0xB]; /* gfx object (+0x1C); model updater / draw path */
+    /* 0x27 */ u8 modelActive; /* nonzero required to update/draw model */
+    /* 0x28 */ u8 unk28[0x88];
     /* 0xB0 */ u8 unkB0[0x40];
     /* 0xF0 */ u8 unkF0[0x10];
     /* 0x100 */ u8 unk100[0x40];
@@ -17,7 +23,7 @@ struct Unit {
     /* 0x199 */ u8 unk199[5];
     /* 0x19E */ s8 mapX;
     /* 0x19F */ s8 mapY;
-    /* 0x1A0 */ u32 stateFlags; /* bit 0x1C: gone/dead-style; skip in UnitGetByPos */
+    /* 0x1A0 */ u32 stateFlags; /* bit0: skip idle spin; 0x010000FC: not drawable; bit 0x1C: gone/dead */
     /* 0x1A4 */ u8 unk1A4[4];
     /* 0x1A8 */ s8 hp;
     /* 0x1A9 */ u8 unk1A9[0x13];
