@@ -96,7 +96,7 @@ extern s32 lbl_8036842C;
 extern u8 lbl_80368430;
 extern u8 lbl_80368431;
 extern f32 gFloatZero;
-extern f32 lbl_8036BAE0;
+extern f32 gFloatOne;
 
 void PSMTXRotRad(s32 arg0, s32 arg1, f32 farg0) {
     f32 fn_80238A30(f32);
