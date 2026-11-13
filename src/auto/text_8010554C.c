@@ -607,10 +607,10 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
 
 extern void fn_8002297C(void* arg0);
 extern s32 fn_80183AB4(s32 arg0, s8 arg1, s8 arg2, void* arg3);
-extern s32 fn_80184264(void* arg0, u16 arg1, void* arg2);
+extern s32 MoveAnim_BindPath(void* arg0, u16 arg1, void* arg2);
 void fn_801065A8(void *arg0) {
     void fn_80183AB4(void *, s32, s32, s32, void *);
-    void fn_80184264(void *, void *, u16, void *);
+    void MoveAnim_BindPath(void *, void *, u16, void *);
     void fn_8002297C(void *);
     extern u8 gBattleMap[];
     u16 flags;
@@ -641,7 +641,7 @@ void fn_801065A8(void *arg0) {
             if (*(u8 *)((u8 *)self + 0x60) == 3) {
                 fn_80183AB4(p, 1, *(s8 *)((u8 *)entry + 0xA), *(s8 *)((u8 *)entry + 0xB), self);
             } else {
-                fn_80184264(p, (u8 *)entry + 0xC, flags, self);
+                MoveAnim_BindPath(p, (u8 *)entry + 0xC, flags, self);
             }
         }
         count++;

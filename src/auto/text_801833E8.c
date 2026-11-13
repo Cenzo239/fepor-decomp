@@ -564,7 +564,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
-void *fn_80184264(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
+void *MoveAnim_BindPath(void *arg0,u8 *arg1,u16 arg2,void *arg3) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void fn_80050BCC(void *,s32); void fn_8018851C(void *);
@@ -12342,7 +12342,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     s32 fn_800C0658(void);
     s32 fn_80107D64(void *, u8 *, u8 *, s32, s32, s32);
     u32 fn_80127C48(void);
-    void fn_80184264(void *, s32, u16, void *);
+    void MoveAnim_BindPath(void *, s32, u16, void *);
     void fn_80184750(void *, s32, s32, s32);
 
     u8 *var_r31;
@@ -12430,7 +12430,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
                 }
                 var_r6 = fn_8000CAF0(lbl_80296FA8, var_r3);
             }
-            fn_80184264(var_r31, temp_r28, temp_r0, var_r6);
+            MoveAnim_BindPath(var_r31, temp_r28, temp_r0, var_r6);
         }
     }
     fn_8002297C(gBattleMap);
