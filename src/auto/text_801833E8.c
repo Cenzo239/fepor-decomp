@@ -7867,51 +7867,52 @@ void Ui_Meter_Nudge(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x8C) = 3;
 }
 
-void Ui_Meter_ApplyDelta(void *arg0, s32 arg1, u8 arg2, void *arg3) {
+/* Apply a scroll delta to a UI meter, or refresh its string list when delta is 0. */
+void Ui_Meter_ApplyDelta(void *meter, s32 delta, u8 useAltTiming, void *stringList) {
     void fn_80122F04(void *, void *);
     void fn_80123034(void *, void *, f32, f32, s32);
     void fn_801232F4(void *, void *, f32, f32);
     extern void *gGame;
-    s32 temp_r0;
-    s32 temp_r3;
+    s32 cur;
+    s32 target;
 
-    if (arg1 == 0) {
-        fn_80122F04(*(void **)((u8 *)arg0 + 0x64), arg3);
-        if (*(u32 *)((u8 *)arg3 + 4) != 0) {
-            *(f32 *)((u8 *)arg0 + 0x90) = *(f32 *)((u8 *)gGame + 0xC8);
-            *(f32 *)((u8 *)arg0 + 0x94) = *(f32 *)((u8 *)gGame + 0xCC);
-            *(s32 *)((u8 *)arg0 + 0x98) = *(s32 *)((u8 *)gGame + 0xD0);
-            *(u8 *)((u8 *)arg0 + 0x9C) = 1;
+    if (delta == 0) {
+        fn_80122F04(*(void **)((u8 *)meter + 0x64), stringList);
+        if (*(u32 *)((u8 *)stringList + 4) != 0) {
+            *(f32 *)((u8 *)meter + 0x90) = *(f32 *)((u8 *)gGame + 0xC8);
+            *(f32 *)((u8 *)meter + 0x94) = *(f32 *)((u8 *)gGame + 0xCC);
+            *(s32 *)((u8 *)meter + 0x98) = *(s32 *)((u8 *)gGame + 0xD0);
+            *(u8 *)((u8 *)meter + 0x9C) = 1;
         }
     } else {
-        temp_r0 = *(s32 *)((u8 *)arg0 + 0x7C);
-        temp_r3 = *(s32 *)((u8 *)arg0 + 0x78);
-        if (temp_r0 != temp_r3) {
-            *(s32 *)((u8 *)arg0 + 0x7C) = temp_r0 + arg1;
+        cur = *(s32 *)((u8 *)meter + 0x7C);
+        target = *(s32 *)((u8 *)meter + 0x78);
+        if (cur != target) {
+            *(s32 *)((u8 *)meter + 0x7C) = cur + delta;
         } else {
-            *(s32 *)((u8 *)arg0 + 0x7C) = temp_r3 + arg1;
+            *(s32 *)((u8 *)meter + 0x7C) = target + delta;
         }
-        *(s32 *)((u8 *)arg0 + 0x8C) = 1;
-        *(f32 *)((u8 *)arg0 + 0x90) = *(f32 *)((u8 *)gGame + 0xC8);
-        *(f32 *)((u8 *)arg0 + 0x94) = *(f32 *)((u8 *)gGame + 0xCC);
-        *(s32 *)((u8 *)arg0 + 0x98) = *(s32 *)((u8 *)gGame + 0xD0);
-        *(u8 *)((u8 *)arg0 + 0x9C) = 0;
-        if (*(u32 *)((u8 *)arg3 + 4) != 0) {
-            *(u8 *)((u8 *)arg0 + 0x9C) = 1;
+        *(s32 *)((u8 *)meter + 0x8C) = 1;
+        *(f32 *)((u8 *)meter + 0x90) = *(f32 *)((u8 *)gGame + 0xC8);
+        *(f32 *)((u8 *)meter + 0x94) = *(f32 *)((u8 *)gGame + 0xCC);
+        *(s32 *)((u8 *)meter + 0x98) = *(s32 *)((u8 *)gGame + 0xD0);
+        *(u8 *)((u8 *)meter + 0x9C) = 0;
+        if (*(u32 *)((u8 *)stringList + 4) != 0) {
+            *(u8 *)((u8 *)meter + 0x9C) = 1;
         }
-        if (*(s32 *)((u8 *)arg0 + 0x78) != 0) {
-            fn_801232F4(*(void **)((u8 *)arg0 + 0x64), gGame,
+        if (*(s32 *)((u8 *)meter + 0x78) != 0) {
+            fn_801232F4(*(void **)((u8 *)meter + 0x64), gGame,
                         *(f32 *)((u8 *)gGame + 0xA4),
                         *(f32 *)((u8 *)gGame + 0xA8));
         }
-        if (arg2 != 0) {
-            fn_80123034(*(void **)((u8 *)arg0 + 0x64), arg3,
+        if (useAltTiming != 0) {
+            fn_80123034(*(void **)((u8 *)meter + 0x64), stringList,
                         *(f32 *)((u8 *)gGame + 0xBC),
                         *(f32 *)((u8 *)gGame + 0xC0),
                         *(s32 *)((u8 *)gGame + 0xC4));
             return;
         }
-        fn_80123034(*(void **)((u8 *)arg0 + 0x64), arg3,
+        fn_80123034(*(void **)((u8 *)meter + 0x64), stringList,
                     *(f32 *)((u8 *)gGame + 0xB0),
                     *(f32 *)((u8 *)gGame + 0xB4),
                     *(s32 *)((u8 *)gGame + 0xB8));
