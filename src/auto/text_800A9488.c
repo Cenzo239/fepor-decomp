@@ -1921,7 +1921,7 @@ void fn_800ACD18(void *arg0)
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_8008B464(s32, s32, s32);
     void fn_8008BBF8(s32, s32, s32, s32, s32, u8);
-    void fn_8008BE84(s16, s16);
+    void Ui_DrawRouteIcon(s16, s16);
     void fn_8008BF68(s16, s16, s32);
     void UnitRef_Draw(void *, s32, s32, s16);
     s32 fn_80093DA8(s32);
@@ -2096,7 +2096,7 @@ void fn_800ACD18(void *arg0)
         Prim2D_PrepareTex();
 
         if (*(u8 *)((u8 *)arg0 + 0x41) == 1) {
-            fn_8008BE84(x27, y28);
+            Ui_DrawRouteIcon(x27, y28);
             Prim2D_Begin();
             Prim2D_AddZ(lbl_80369C30);
             Prim2D_PrepareTex();

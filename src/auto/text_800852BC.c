@@ -2890,7 +2890,7 @@ void Ui_DrawRouteTex(s32 x, s32 y, u8 noFlipV) {
     Prim2D_EndPrim();
 }
 
-void fn_8008BE84(s32 arg0, s32 arg1) {
+void Ui_DrawRouteIcon(s32 arg0, s32 arg1) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
