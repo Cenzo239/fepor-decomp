@@ -44,7 +44,7 @@ typedef struct Unk5C {
     s32 unk58;
 } Unk5C;
 
-/* 0x6C-byte ARAM file-cache slot (pool at gAramSlots). */
+/* 0x6C-byte ARAM file-cache slot (pool at gAramSlotPool). */
 typedef struct AramSlot {
     u8 unk_00[0x20];
     void *cbArg;              /* 0x20 */
