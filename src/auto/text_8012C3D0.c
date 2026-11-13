@@ -2078,7 +2078,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
 }
 #pragma cplusplus reset
 
-void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
+void Ui_DrawUnitListPanel(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
