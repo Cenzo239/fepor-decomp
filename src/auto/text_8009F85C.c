@@ -2116,31 +2116,32 @@ void fn_800A2A58(void *arg0, void *arg1) {
     fn_801043FC(*(u8 *)((char *)arg1 + 0x3A));
 }
 
-void Ui_DrawSkillRankMenuItem(s32 arg0, s32 arg1, void *arg2) {
+/* Draw a menu text item, then overlay the cursor unit's skill rank. */
+void Ui_DrawSkillRankMenuItem(s32 unused, s32 parent, void *item) {
     void *Map_GetCursorUnit(void);
-    M2C_UNK Prim2D_SetText(void *);
-    M2C_UNK Prim2D_SetScale(f32);
-    M2C_UNK Prim2D_SetTint(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK Prim2D_SetPos(f32, f32);
-    M2C_UNK Prim2D_EndPrim(void);
-    M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK Ui_DrawMenuTextItem(s32, s32, void *);
+    void Prim2D_SetText(void *);
+    void Prim2D_SetScale(f32);
+    void Prim2D_SetTint(s32, s32, s32, s32);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Ui_DrawMenuTextItem(s32, s32, void *);
     s32 Unit_GetSkillRank(void *, u8);
-    M2C_UNK sprintf(u8 *, void *, ...);
+    void sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
     extern f32 gItemMenuTextScale;
-    u8 sp8[8];
+    u8 buf[8];
 
-    sprintf(sp8, lbl_8026D8D8 + 0x6E5, Unit_GetSkillRank((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
-    Ui_DrawMenuTextItem(arg0, arg1, arg2);
+    sprintf(buf, lbl_8026D8D8 + 0x6E5, Unit_GetSkillRank((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)item + 0x3A)));
+    Ui_DrawMenuTextItem(unused, parent, item);
     Prim2D_AddPrim(5);
-    Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));
-    Prim2D_SetText(sp8);
+    Prim2D_SetPos((f32)(*(s16 *)((u8 *)item + 0x30) + 0x64), (f32)*(s16 *)((u8 *)item + 0x32));
+    Prim2D_SetText(buf);
     Prim2D_SetScale(gItemMenuTextScale);
-    if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
+    if (*(u8 *)((u8 *)item + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
+    if (*(u8 *)((u8 *)item + 0x39) == 2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
