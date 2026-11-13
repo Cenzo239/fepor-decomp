@@ -10235,36 +10235,37 @@ void fn_80259A5C(void) {
     DCFlushRangeNoSync(lbl_80368A94, 0x100);
 }
 
-s32 Sound_ApplyParamStep(s16 *arg0, u16 *arg1, u16 *arg2, u16 arg3, u16 *arg4, u16 arg5) {
+s32 Sound_ApplyParamStep(s16 *related, u16 *dir, u16 *current, u16 target, u16 *flags, u16 flagBit) {
+    /* Step *current toward target in units of 32; set *dir and OR flagBit into flags[idx]. */
     s16 diff;
     s16 idx;
 
-    if (arg3 != *arg2) {
-        diff = (s16)arg3 - (s16)*arg2;
+    if (target != *current) {
+        diff = (s16)target - (s16)*current;
         if (diff >= 0x20 && diff < 0xA0) {
             idx = (s16)(diff >> 5);
             if (idx < 5) {
-                arg4[idx] |= arg5;
+                flags[idx] |= flagBit;
             }
-            *arg1 = 1;
-            *arg2 += idx << 5;
+            *dir = 1;
+            *current += idx << 5;
             return 1;
         }
         if (diff <= -0x20 && diff > -0xA0) {
             idx = (s16)(-diff >> 5);
             if (idx < 5) {
-                arg4[idx] |= arg5;
+                flags[idx] |= flagBit;
             }
-            *arg1 = 0xFFFF;
-            *arg2 -= idx << 5;
+            *dir = 0xFFFF;
+            *current -= idx << 5;
             return 1;
         }
-        if (arg3 == 0 && diff > -0x20) {
-            *arg2 = 0;
-            *arg0 = 0;
+        if (target == 0 && diff > -0x20) {
+            *current = 0;
+            *related = 0;
         }
     }
-    *arg1 = 0;
+    *dir = 0;
     return 0;
 }
 
