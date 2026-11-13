@@ -5595,43 +5595,55 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
 }
 
 #pragma opt_strength_reduction off
-s32 AudioTable_Insert(u16 id,s32 data) {
-void Audio_Lock(void);void Audio_Unlock(void);
-extern AudioTableRange gAudioTableRanges[];
-extern AudioTableEntry gAudioTableEntries[];
-extern u16 gAudioTableCount;
-u16 count;
-s32 start,i,j,index;
-AudioTableRange *range;
-AudioTableEntry *moving;
-u32 bucket;
-Audio_Lock();
-bucket=(id>>6)&1023;
-count=gAudioTableRanges[bucket].count;
-if(count==0){
-gAudioTableRanges[bucket].start=gAudioTableCount;
-start=gAudioTableCount;index=gAudioTableCount;
-}else{
-start=gAudioTableRanges[bucket].start;
-for(i=0;i<(s32)count && gAudioTableEntries[start+i].id<id;i++){}
-if(i<(s32)count){
-index=start+i;
-if(id==gAudioTableEntries[index].id) {
-gAudioTableEntries[index].ref++;
-Audio_Unlock();return 0;
-}
-}else index=start+i;
-}
-for(j=0,range=gAudioTableRanges;j<512;range++,j++){
-if((s32)range->start>(s32)start) range->start++;
-}
-for(j=gAudioTableCount-1,moving=&gAudioTableEntries[j];j>=index;j--,moving--) moving[1]=moving[0];
-gAudioTableEntries[index].id=id;
-gAudioTableEntries[index].data=data;
-gAudioTableEntries[index].ref=1;
-gAudioTableRanges[bucket].count++;
-gAudioTableCount++;
-Audio_Unlock();return 1;
+s32 AudioTable_Insert(u16 id, s32 data) {
+    /* Insert id/data into the audio hash table, or bump ref if id already exists. */
+    void Audio_Lock(void);
+    void Audio_Unlock(void);
+    extern AudioTableRange gAudioTableRanges[];
+    extern AudioTableEntry gAudioTableEntries[];
+    extern u16 gAudioTableCount;
+    u16 count;
+    s32 start, i, j, index;
+    AudioTableRange *range;
+    AudioTableEntry *moving;
+    u32 bucket;
+
+    Audio_Lock();
+    bucket = (id >> 6) & 1023;
+    count = gAudioTableRanges[bucket].count;
+    if (count == 0) {
+        gAudioTableRanges[bucket].start = gAudioTableCount;
+        start = gAudioTableCount;
+        index = gAudioTableCount;
+    } else {
+        start = gAudioTableRanges[bucket].start;
+        for (i = 0; i < (s32)count && gAudioTableEntries[start + i].id < id; i++) {}
+        if (i < (s32)count) {
+            index = start + i;
+            if (id == gAudioTableEntries[index].id) {
+                gAudioTableEntries[index].ref++;
+                Audio_Unlock();
+                return 0;
+            }
+        } else {
+            index = start + i;
+        }
+    }
+    for (j = 0, range = gAudioTableRanges; j < 512; range++, j++) {
+        if ((s32)range->start > (s32)start) {
+            range->start++;
+        }
+    }
+    for (j = gAudioTableCount - 1, moving = &gAudioTableEntries[j]; j >= index; j--, moving--) {
+        moving[1] = moving[0];
+    }
+    gAudioTableEntries[index].id = id;
+    gAudioTableEntries[index].data = data;
+    gAudioTableEntries[index].ref = 1;
+    gAudioTableRanges[bucket].count++;
+    gAudioTableCount++;
+    Audio_Unlock();
+    return 1;
 }
 #pragma opt_strength_reduction off
 s32 fn_80250414(u16 id) {
