@@ -11442,7 +11442,8 @@ s32 fn_8019ED74(void) {
     return 1;
 }
 
-s32 Map_SelectObjAt(s32 arg0, s32 arg1) {
+/* Script command: select the map object at (x,y), or refresh links when free-input is on. */
+s32 Map_SelectObjAt(s32 x, s32 y) {
     extern u32 gUiInputFlags;
     extern u8 lbl_8032BB58[];
     s32 Map_Get(void);
@@ -11457,27 +11458,27 @@ s32 Map_SelectObjAt(s32 arg0, s32 arg1) {
     s32 fn_800C0658(void);
     void fn_8010FE08(void *, s32, s32, u8);
     void fn_80129888(void *, s32);
-    void *temp1;
-    s32 sp8[10];
+    void *obj;
+    s32 linked[10];
     s32 count;
     s32 i;
-    s32 v;
+    s32 entry;
     s32 *p;
-    u8 *temp2;
+    u8 *sel;
 
     if (gUiInputFlags & 1) {
-        temp1 = Map_FindObjAt((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
-        if (temp1 == NULL) {
+        obj = Map_FindObjAt((void *) Map_Get(), x, y, 0x800, 0x10);
+        if (obj == NULL) {
             fn_800056A0(0);
         } else {
-            fn_8010FE08(lbl_8032BB58, (s8) arg0, (s8) arg1, 0x22);
-            count = fn_80046400((void *) Map_Get(), temp1, sp8);
-            p = sp8;
+            fn_8010FE08(lbl_8032BB58, (s8) x, (s8) y, 0x22);
+            count = fn_80046400((void *) Map_Get(), obj, linked);
+            p = linked;
             i = 0;
             while (i < count) {
-                v = *p;
-                if ((u8) fn_80049D58((void *) v) == 0) {
-                    fn_80049BD4((void *) v, 0);
+                entry = *p;
+                if ((u8) fn_80049D58((void *) entry) == 0) {
+                    fn_80049BD4((void *) entry, 0);
                 }
                 p++;
                 i++;
@@ -11487,13 +11488,13 @@ s32 Map_SelectObjAt(s32 arg0, s32 arg1) {
         }
         return 0;
     }
-    temp2 = (u8 *) Map_FindObjAt((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
-    if (temp2 == NULL) {
+    sel = (u8 *) Map_FindObjAt((void *) Map_Get(), x, y, 0x800, 0x10);
+    if (sel == NULL) {
         fn_800056A0(0);
         return 0;
     }
-    fn_80129888(temp2, fn_800C0658());
-    fn_8010FE08(lbl_8032BB58, (s8) temp2[0], (s8) temp2[1], 0x22);
+    fn_80129888(sel, fn_800C0658());
+    fn_8010FE08(lbl_8032BB58, (s8) sel[0], (s8) sel[1], 0x22);
     fn_80013864();
     return 1;
 }
