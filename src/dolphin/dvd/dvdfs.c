@@ -348,6 +348,7 @@ u32 entryToPath(u32 entry, char *path, u32 maxlen) {
 }
 
 BOOL DVDConvertEntrynumToPath(s32 entrynum, char *path, u32 maxlen) {
+    /* Build an absolute DVD path for entrynum; append '/' for directories. FALSE if truncated. */
     u32 loc;
 
     loc = entryToPath((u32)entrynum, path, maxlen);
