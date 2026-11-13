@@ -5218,7 +5218,7 @@ void fn_80067EDC(void *arg0)
     void PSMTXIdentity(void *);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
-    void fn_80225058(u16, u16, u16, u16);
+    void GXSetScissor(u16, u16, u16, u16);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
     extern void *lbl_803672F8;
@@ -5256,7 +5256,7 @@ void fn_80067EDC(void *arg0)
     if (p == NULL) {
         return;
     }
-    fn_80225058(*(u16 *)(p + 0x1C), *(u16 *)(p + 0x1E), *(u16 *)(p + 0x20), *(u16 *)(p + 0x22));
+    GXSetScissor(*(u16 *)(p + 0x1C), *(u16 *)(p + 0x1E), *(u16 *)(p + 0x20), *(u16 *)(p + 0x22));
     GXSetViewport(*(f32 *)(p + 4), *(f32 *)(p + 8), *(f32 *)(p + 0xC), *(f32 *)(p + 0x10), *(f32 *)(p + 0x14), *(f32 *)(p + 0x18));
     GXSetProjection(p + 0x24, (*(u16 *)p & 1) ^ 1);
 }
@@ -6645,7 +6645,7 @@ void fn_8006DA98(void *arg0)
     void fn_8022108C(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void fn_80225058(s32, s32, u16, u16);
+    void GXSetScissor(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
     void fn_802211D0(s32, s32, u16, u16);
@@ -6738,7 +6738,7 @@ void fn_8006DA98(void *arg0)
     }
     {
         void *rm = lbl_80367324;
-        fn_80225058(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
+        GXSetScissor(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
     {
         void *rm = lbl_80367324;
@@ -6789,7 +6789,7 @@ void fn_8006DFD8(void) {
     void fn_8022108C(void *, void *, s32, s32);
     void *GXInit(s32, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void fn_80225058(s32, s32, u16, u16);
+    void GXSetScissor(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
     void fn_802211D0(s32, s32, u16, u16);
@@ -6914,7 +6914,7 @@ body:
     }
     {
         void *rm = lbl_80367324;
-        fn_80225058(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
+        GXSetScissor(0, 0, *(u16 *)((u8 *)rm + 4), *(u16 *)((u8 *)rm + 6));
     }
     {
         void *rm = lbl_80367324;
@@ -7178,7 +7178,7 @@ void fn_8006E838(void *arg0)
     void *fn_800C4638(s32, void *, s32);
     void *GXInit(void *, s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void fn_80225058(s32, s32, u16, u16);
+    void GXSetScissor(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
     void fn_802211D0(s32, s32, u16, u16);
@@ -7282,7 +7282,7 @@ void fn_8006E838(void *arg0)
     }
     {
         void *rm2 = lbl_80367324;
-        fn_80225058(0, 0, *(u16 *)((u8 *)rm2 + 4), *(u16 *)((u8 *)rm2 + 6));
+        GXSetScissor(0, 0, *(u16 *)((u8 *)rm2 + 4), *(u16 *)((u8 *)rm2 + 6));
     }
     {
         void *rm2 = lbl_80367324;

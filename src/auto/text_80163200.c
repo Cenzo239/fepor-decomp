@@ -2425,7 +2425,7 @@ void fn_80168D68(s32 arg0) {
 }
 
 void fn_80168DE0(void) {
-    void fn_80225058(s32, s32, s32, s32);
+    void GXSetScissor(s32, s32, s32, s32);
     s32 fn_8022C568(f32);
     extern u8 lbl_80330D68[];
     extern f32 lbl_8036A95C;
@@ -2442,7 +2442,7 @@ void fn_80168DE0(void) {
     b = fn_8022C568(*(f32 *)(lbl_80330D68 + 0x10c) - lbl_8036A95C);
     c = fn_8022C568(lbl_8036A970 + *(f32 *)(lbl_80330D68 + 0xf8));
     d = fn_8022C568(lbl_8036A970 + *(f32 *)(lbl_80330D68 + 0xf4));
-    fn_80225058(d, c, b, a);
+    GXSetScissor(d, c, b, a);
 }
 
 s32 fn_80168E90(s32 arg0) {
@@ -12635,34 +12635,35 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     extern u8 lbl_80278780[];
     extern u8 lbl_802F0350[];
     extern f32 lbl_8036AB94;
-    void *self;
-    void *unit;
-    s32 color;
-    s32 a1;
-    s32 a2;
     u8 flag;
-    s32 ret;
+    s32 a2;
+    s32 a1;
+    s32 color;
+    void *unit;
+    void *self;
 
+    flag = 0;
+    if (arg6 != 0) {
+        flag = 0x11;
+    }
     self = arg0;
     a1 = arg1;
     a2 = arg2;
     color = arg3;
     unit = arg4;
     (void)arg5;
-    flag = 0;
-    if (arg6 != 0) {
-        flag = 0x11;
-    }
     fn_8000A258();
     fn_8000A174(0, (u16)(*(s32 *)((u8 *)self + 0x34) | 3));
     fn_80009B8C(color);
     fn_8000A248();
-    color = (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1);
-    ret = fn_8010586C(unit);
-    a1 = (s16)a1;
-    a2 = (s16)a2;
-    fn_8001019C((s16)(a1 + 0x20), (s16)(a2 + color), flag, lbl_80278780 + 0xB3, ret);
-    fn_8005AC24(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    {
+        s32 off = (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1);
+        s32 ret = fn_8010586C(unit);
+        a1 = (s16)a1;
+        a2 = (s16)a2;
+        fn_8001019C((s16)(a1 + 0x20), (s16)(a2 + off), flag, lbl_80278780 + 0xB3, ret);
+        fn_8005AC24(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    }
     fn_8000A258();
     fn_80009B8C(0xFF);
     fn_8000A248();

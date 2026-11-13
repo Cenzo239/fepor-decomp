@@ -1361,7 +1361,7 @@ void fn_80007B04(void)
     void fn_80224684(s32, s32, s32);
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
-    void fn_80225058(u32, u32, u32);
+    void GXSetScissor(u32, u32, u32);
     void fn_80009728(void *, void *, u8);
     void fn_80224D7C(void *, s16);
     void fn_80224E1C(s16);
@@ -1459,7 +1459,7 @@ void fn_80007B04(void)
         if (!(flags & 0xF0) && !(flags & 0x800)) {
             fn_802250D0(&sp14, &sp10, &spC, &sp8);
             if (sp24 != sp14 || sp20 != sp10 || sp1C != spC || sp18 != sp8) {
-                fn_80225058(sp20, sp1C, sp18);
+                GXSetScissor(sp20, sp1C, sp18);
             }
             node = *walk;
             if (M2C_FIELD(node, u16 *, 0x10) & 0x1000) {

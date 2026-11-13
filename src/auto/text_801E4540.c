@@ -497,8 +497,8 @@ void fn_801E50E4(void *arg0) {
     fn_8000A248();
 }
 void fn_801E551C(void) {
-    M2C_UNK fn_80225058(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    fn_80225058(0x20, 0x5A, 0x220, 0x136);
+    M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    GXSetScissor(0x20, 0x5A, 0x220, 0x136);
 }
 
 #pragma use_lmw_stmw on

@@ -64,8 +64,8 @@ void fn_800852BC(s32 arg0) {
 }
 
 void fn_8008532C(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 void fn_80085360(void *arg0) {
@@ -2799,8 +2799,8 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     }
 }
 void fn_8008BA50(s32 unused, s32 arg1) {
-    void fn_80225058(s32, s32, s32, s32);
-    fn_80225058(arg1 - 0x40, 0, 0x87, 0x1E0);
+    void GXSetScissor(s32, s32, s32, s32);
+    GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
 }
 
 void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {

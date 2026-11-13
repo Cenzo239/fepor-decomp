@@ -7370,7 +7370,7 @@ void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
 }
 
 void fn_8013F920(void *arg0, void *arg1) {
-    void fn_80225058(s16, s16, s16, s16);
+    void GXSetScissor(s16, s16, s16, s16);
     struct {
         s16 x;
         s16 y;
@@ -7427,7 +7427,7 @@ void fn_8013F920(void *arg0, void *arg1) {
     }
     r.y2 = t;
 
-    fn_80225058(r.x, r.y, r.x2 - r.x, r.y2 - r.y);
+    GXSetScissor(r.x, r.y, r.x2 - r.x, r.y2 - r.y);
 }
 
 s32 fn_8013FA10(void) {

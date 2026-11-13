@@ -1732,8 +1732,8 @@ void fn_801ADA50(void *arg0) {
 }
 
 void fn_801ADD58(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 #pragma cplusplus on

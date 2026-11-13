@@ -414,8 +414,8 @@ void fn_80121A70(void) {
 }
 
 void fn_80121D30(void) {
-    M2C_UNK fn_80225058(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    fn_80225058(0, 0x33, 0x260, 0x177);
+    M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    GXSetScissor(0, 0x33, 0x260, 0x177);
 }
 
 void fn_80121D60(void *arg0, u8 *arg1) {
@@ -1078,8 +1078,8 @@ void fn_80122A2C(void *arg0, u8 arg1) {
 }
 
 void fn_80122A74(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 void fn_80122AA8(void* arg0) {

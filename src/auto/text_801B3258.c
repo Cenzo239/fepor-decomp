@@ -362,8 +362,8 @@ void fn_801B5E2C(void *arg0) {
 }
 
 void fn_801B6064(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 #pragma opt_common_subs reset
@@ -6627,8 +6627,8 @@ void fn_801C36E8(void *arg0) {
 
 #pragma opt_common_subs on
 void fn_801C4394(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 void *fn_801C43C8(void *arg0, s16 arg1) {

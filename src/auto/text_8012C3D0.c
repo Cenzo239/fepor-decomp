@@ -2504,24 +2504,24 @@ s32 fn_80130858(void) {
 }
 
 void fn_80130860(void) {
-    M2C_UNK fn_80225058(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    fn_80225058(0, 0, 0x80, 0x1E0);
+    M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    GXSetScissor(0, 0, 0x80, 0x1E0);
 }
 
 void fn_80130890(void) {
-    fn_80225058(0, 0, 0x78, 0x1E0);
+    GXSetScissor(0, 0, 0x78, 0x1E0);
 }
 
 void fn_801308C0(void) {
-    fn_80225058(0xF8, 0, 0x120, 0x1E0);
+    GXSetScissor(0xF8, 0, 0x120, 0x1E0);
 }
 
 void fn_801308F0(void) {
-    fn_80225058(0, 0x60, 0x260, 0x120);
+    GXSetScissor(0, 0x60, 0x260, 0x120);
 }
 
 void fn_80130920(void) {
-    fn_80225058(0xF8, 0x60, 0x120, 0x120);
+    GXSetScissor(0xF8, 0x60, 0x120, 0x120);
 }
 
 void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {

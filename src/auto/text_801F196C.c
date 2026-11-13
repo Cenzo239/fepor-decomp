@@ -1376,8 +1376,8 @@ void fn_801F3E60(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void fn_801F52A8(s32 unused, s16 *p) {
-    extern void fn_80225058(s16, s16, s16, s16);
-    fn_80225058(p[0], p[1], p[2], p[3]);
+    extern void GXSetScissor(s16, s16, s16, s16);
+    GXSetScissor(p[0], p[1], p[2], p[3]);
 }
 
 extern u8 lbl_8029B0E0[16];

@@ -668,7 +668,7 @@ void fn_80225034(u32 arg0, u32 *dst) {
     dst[2] = src[arg0 + 2];
 }
 
-void fn_80225058(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void GXSetScissor(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u32 temp_r4;
     u32 temp_r6;
     u32 temp_r7;

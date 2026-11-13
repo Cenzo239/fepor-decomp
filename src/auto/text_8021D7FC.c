@@ -399,7 +399,7 @@ void __GXInitGX(void) {
     void fn_80221034(s32);
     void fn_8022100C(s32);
     void fn_80225158(s32);
-    void fn_80225058(s32, s32, u16, u16);
+    void GXSetScissor(s32, s32, u16, u16);
     void fn_80225118(s32, s32);
     void fn_80222334(s32);
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
@@ -568,7 +568,7 @@ void __GXInitGX(void) {
     fn_80221034(0);
     fn_8022100C(2);
     fn_80225158(0);
-    fn_80225058(0, 0, rmode->fbWidth, rmode->efbHeight);
+    GXSetScissor(0, 0, rmode->fbWidth, rmode->efbHeight);
     fn_80225118(0, 0);
     fn_80222334(0);
 
