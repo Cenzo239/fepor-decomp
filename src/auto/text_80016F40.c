@@ -352,13 +352,13 @@ extern f32 lbl_80368CA0;
 extern f32 lbl_80368C8C;
 extern u8 lbl_802CA434[];
 void Process_ClearFunc(void *);
-void fn_80017C1C(void *, f32);
+void CamPath_Apply(void *, f32);
 f32 Math_Lerp(f32, f32, f32, f32);
 f32 fn_80059F78(s32, f32, f32, f32, f32);
 f32 fn_8005A028(s32, f32, f32, f32, f32);
 void CamPath_Update(void *arg0) {
     void Process_ClearFunc(void *);
-    void fn_80017C1C(void *, f32);
+    void CamPath_Apply(void *, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
@@ -405,7 +405,7 @@ void CamPath_Update(void *arg0) {
         break;
     }
     }
-    fn_80017C1C(arg0, f1);
+    CamPath_Apply(arg0, f1);
 }
 
 void fn_80017BFC(void) {
@@ -414,7 +414,7 @@ void fn_80017BFC(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80017C1C(void *arg0, f32 farg0) {
+void CamPath_Apply(void *arg0, f32 farg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     extern s32 lbl_80268318[];
     extern s32 lbl_803671C4;
@@ -573,7 +573,7 @@ void fn_80017C1C(void *arg0, f32 farg0) {
 
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
-    void fn_80017C1C(void *, f32);
+    void CamPath_Apply(void *, f32);
     void Process_Goto(void *, s32);
     extern s32 lbl_803671C4;
     extern u8 lbl_803671C8;
@@ -717,7 +717,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     fn_80018594(arg0);
     lbl_803671C8 = 3;
     lbl_803671C4 = (s32)lbl_802CA434;
-    fn_80017C1C(arg0, lbl_80368C88);
+    CamPath_Apply(arg0, lbl_80368C88);
     Process_Goto(arg0, 0);
 }
 
