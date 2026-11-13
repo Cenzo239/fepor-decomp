@@ -3927,26 +3927,27 @@ s32 fn_80032B5C(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_80090688(void *, s32, s32);
-extern "C" void UnitInfo_DrawStaff(void *arg0, void *arg1) {
+/* Draw unit-info HP/staff panel for the slot unit (weapon type 7). */
+extern "C" void UnitInfo_DrawStaff(void *win, void *slot) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
         u8 pad[4];
-        virtual void v0(s32 *, s32 *, s32 *) = 0;
+        virtual void getPos(s32 *, s32 *, s32 *) = 0;
     };
     s32 x;
     s32 y;
     s32 alpha;
-    void *temp_r31;
+    void *unit;
 
-    if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
-        ((Obj *)arg0)->v0(&x, &y, &alpha);
+    if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
+        ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        temp_r31 = (void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40));
-        fn_80090688((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), 7, 7 - ((*(u8 *)((u8 *)temp_r31 + 0x1A6) >> 5) & 7));
+        unit = (void *)UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40));
+        fn_80090688((void *)UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)), 7, 7 - ((*(u8 *)((u8 *)unit + 0x1A6) >> 5) & 7));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
