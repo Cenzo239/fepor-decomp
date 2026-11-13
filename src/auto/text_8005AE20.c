@@ -5620,7 +5620,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     extern u8 lbl_8026B7F8[];
-    extern s32 lbl_80285E88[];
+    extern s32 gMaterialStageIds[];
     extern u8 gMaterialTevStageCount;
     extern u8 lbl_80367301;
     extern u8 lbl_80367302;
@@ -5645,7 +5645,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     s32 *base;
     u8 idx;
 
-    pool = lbl_80285E88;
+    pool = gMaterialStageIds;
     fn_8006ECCC(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
     if (lbl_80367301 >= 8) {
         fn_8006DA64(lbl_8026B7F8 + 1, 0x4F, lbl_8026B7F8 + 0xD);
@@ -5753,7 +5753,7 @@ void fn_8006DA64(void*,s32,void*);
 void fn_80223BB4(s32,MaterialColor*);void fn_8022224C(s32,MaterialColor*);
 void fn_80223F2C(s32,s32,s32,s32);void fn_80223A5C(s32,s32,s32,s32,s32);
 void fn_80223AE4(s32,s32,s32,s32,s32,s32);void fn_80223AA0(s32,s32,s32,s32,s32);void fn_80223B4C(s32,s32,s32,s32,s32,s32);
-extern u8 gMaterialTevStageCount;extern u8 lbl_8026B7F8[];extern s32 lbl_80285E88[16];
+extern u8 gMaterialTevStageCount;extern u8 lbl_8026B7F8[];extern s32 gMaterialStageIds[16];
 extern f32 lbl_80369288;extern u32 lbl_8036C450,lbl_8036C454,lbl_8036C458;
 MaterialColor color,copy3,c3,copy4,c4,copy2,c2;
 s32 stage,r,g,b;
@@ -5774,7 +5774,7 @@ if(((u8*)arg0)[10]<128)color.b=(((u8*)arg0)[10]*color.b)>>7;
 if((*(u32*)((u8*)arg2+0x10)&0x1000)&&(((u8*)arg0)[8]<128||((u8*)arg0)[9]<128||((u8*)arg0)[10]<128)){
 if(gMaterialTevStageCount>=16)fn_8006DA64(lbl_8026B7F8+1,44,lbl_8026B7F8+0x3f);
 c3=*(MaterialColor*)&lbl_8036C450;
-stage=lbl_80285E88[gMaterialTevStageCount++];
+stage=gMaterialStageIds[gMaterialTevStageCount++];
 c3.r=color.r;c3.g=color.g;c3.b=color.b;c3.a=color.a;
 copy3=c3;fn_80223BB4(3,&copy3);
 fn_80223F2C(stage,255,255,255);
@@ -5790,7 +5790,7 @@ r=((((u8*)arg0)[8]-128)*255)>>7;g=((((u8*)arg0)[9]-128)*255)>>7;b=((((u8*)arg0)[
 if(r<0)r=0;if(g<0)g=0;if(b<0)b=0;
 if(gMaterialTevStageCount>=16)fn_8006DA64(lbl_8026B7F8+1,44,lbl_8026B7F8+0x3f);
 c2=*(MaterialColor*)&lbl_8036C458;
-stage=lbl_80285E88[gMaterialTevStageCount++];
+stage=gMaterialStageIds[gMaterialTevStageCount++];
 c2.r=r;c2.g=g;c2.b=b;
 copy2=c2;fn_80223BB4(2,&copy2);
 fn_80223F2C(stage,255,255,255);
@@ -5820,14 +5820,14 @@ void fn_80069C7C(void) {
 void fn_80069C98(void) {
     void fn_802238A8(s32);
     void fn_802238CC(s32);
-    extern s32 lbl_80285E88[];
+    extern s32 gMaterialStageIds[];
     extern u8 lbl_80367304;
     s32 *p;
     s32 i;
 
     if (lbl_80367304 != 0) {
         i = 0;
-        p = lbl_80285E88;
+        p = gMaterialStageIds;
         do {
             fn_802238CC(*p);
             i += 1;
@@ -5915,14 +5915,14 @@ extern u8 lbl_80367304;
 return gMaterialTevStageCount;
 }
 
-extern u16 lbl_80285E88[0x20];
+extern u16 gMaterialStageIds[0x20];
 s32 fn_80069E7C(void)
 {
   extern u8 gMaterialTevStageCount;
-  extern u16 lbl_80285E88[0x20];
+  extern u16 gMaterialStageIds[0x20];
   u8 idx = gMaterialTevStageCount;
   s32 *new_var;
-  if (gMaterialTevStageCount == (((s32 *) lbl_80285E88)[idx - 1] * 0))
+  if (gMaterialTevStageCount == (((s32 *) gMaterialStageIds)[idx - 1] * 0))
   {
     return 0;
     if (gMaterialTevStageCount)
@@ -5933,7 +5933,7 @@ s32 fn_80069E7C(void)
     {
     }
   }
-  new_var = (s32 *) lbl_80285E88;
+  new_var = (s32 *) gMaterialStageIds;
   return new_var[(idx & 0xFFFFFFFF) - 1];
 }
 
@@ -5941,14 +5941,14 @@ s32 fn_80069E7C(void)
 void *fn_80069EA8(void) {
     extern u8 gMaterialTevStageCount;
     extern u8 lbl_8026B7F8[];
-    extern u16 lbl_80285E88[0x20];
+    extern u16 gMaterialStageIds[0x20];
     void fn_8006DA64(const char *, s32, const char *);
     void **entry;
     u8 idx;
     if (gMaterialTevStageCount >= 0x10)
         fn_8006DA64((const char *)lbl_8026B7F8+1,0x2C,(const char *)lbl_8026B7F8+0x3F);
     idx=gMaterialTevStageCount;
-    entry=&((void **)lbl_80285E88)[idx];
+    entry=&((void **)gMaterialStageIds)[idx];
     gMaterialTevStageCount = ++idx;
     return *entry;
 }
