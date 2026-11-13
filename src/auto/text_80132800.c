@@ -2345,7 +2345,8 @@ s16 fn_80136474(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorUnitPanel(void *arg0, s16 arg1) {
+/* C++ destructor for a unit-panel widget (gUiUnitPanelVtbl): destroy embeds, clear list, base dtor, optional free. */
+extern "C" void *Ui_DtorUnitPanel(void *self, s16 doFree) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -2375,38 +2376,38 @@ extern "C" void *Ui_DtorUnitPanel(void *arg0, s16 arg1) {
     ListNode *spC;
     u8 sp8[4];
     ListNode *end;
-    Owner *a0;
+    Owner *owner;
 
-    a0 = (Owner *)arg0;
-    if (arg0 != NULL) {
-        a0->vtbl = gUiUnitPanelVtbl;
-        if (arg0 != NULL) {
-            a0->vtbl = gUiUnitPanelMidVtbl;
-            if (&a0->subA4 != NULL) {
-                a0->subA4 = lbl_80295478;
-                ((Obj *)&a0->subA4)->v2();
+    owner = (Owner *)self;
+    if (self != NULL) {
+        owner->vtbl = gUiUnitPanelVtbl;
+        if (self != NULL) {
+            owner->vtbl = gUiUnitPanelMidVtbl;
+            if (&owner->subA4 != NULL) {
+                owner->subA4 = lbl_80295478;
+                ((Obj *)&owner->subA4)->v2();
             }
-            if (&a0->sub7C != NULL) {
-                a0->sub7C = lbl_80295478;
-                ((Obj *)&a0->sub7C)->v2();
+            if (&owner->sub7C != NULL) {
+                owner->sub7C = lbl_80295478;
+                ((Obj *)&owner->sub7C)->v2();
             }
-            if (&a0->list != NULL) {
-                if (&a0->list != NULL) {
-                    if (&a0->list != NULL) {
-                        end = &a0->list.node;
+            if (&owner->list != NULL) {
+                if (&owner->list != NULL) {
+                    if (&owner->list != NULL) {
+                        end = &owner->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                        fn_80136F2C(sp8, &owner->list, &spC, &sp10);
                     }
                 }
             }
-            fn_8013F2A4(arg0, 0);
+            fn_8013F2A4(self, 0);
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 s16 fn_801366E4(void *arg0) {
