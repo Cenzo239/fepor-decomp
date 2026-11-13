@@ -13355,7 +13355,7 @@ void fn_8017CE1C(void *self, void *arg1) {
     s32 fn_80010B78(void *, s32, f32);
     u8 fn_8003863C(void *);
     u8 fn_800386B0(void *);
-    void fn_80154C04(s32, s32, s16, s16, s32, s32);
+    void Ui_DrawPanelDecor(s32, s32, s16, s16, s32, s32);
     void fn_80154F1C(s16, s16, s32, s16, s32);
     void fn_8015512C(s16, s32, s32, s32);
     f64 fn_802380D0(f32);
@@ -13386,7 +13386,7 @@ void fn_8017CE1C(void *self, void *arg1) {
     f32 f2;
 
     (*(void (**)(void *))(*(u32 *)self + 0x10))(self);
-    fn_80154C04(0, 0,
+    Ui_DrawPanelDecor(0, 0,
         (s16)(*(s16 *)((u8 *)self + 0xE) - *(s16 *)((u8 *)self + 0xA)),
         (s16)(*(s16 *)((u8 *)self + 0x10) - *(s16 *)((u8 *)self + 0xC)),
         0xFF, 0x10);

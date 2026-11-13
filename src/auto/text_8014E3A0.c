@@ -2156,7 +2156,7 @@ void fn_80154BE4(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80154C04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 arg5) {
+void Ui_DrawPanelDecor(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 unused, s32 arg5) {
     void fn_8015D240(void);
     s32 fn_80009E44(f32 *);
     void Prim2D_Begin(void);
