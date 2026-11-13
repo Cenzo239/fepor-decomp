@@ -9034,7 +9034,7 @@ void fn_80199D18(void *arg0) {
     void *fn_80053C30(void *, s32);
     void fn_800536B0(f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     extern f32 lbl_8036AF00;
     extern f32 lbl_8036AF04;
     void *msg;
@@ -9045,7 +9045,7 @@ void fn_80199D18(void *arg0) {
     f32 f24;
 
     if (*(s16 *)((u8 *)arg0 + 0x48) >= *(s16 *)((u8 *)arg0 + 0x4A) - 4) {
-        msg = fn_80053C30(lbl_8027AA38 + 0xCA, 0);
+        msg = fn_80053C30(MapSelect_str + 0xCA, 0);
         a = *(s8 *)((u8 *)arg0 + 0x3C);
         b = *(s8 *)((u8 *)arg0 + 0x3D);
         fn_800536B0(lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
@@ -9068,7 +9068,7 @@ void MapSelect_StartMove(void *arg0) {
     extern void fn_8019A364(void);
     extern void fn_8019A7A8(void);
     extern u32 lbl_8027AA2C[3];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     extern u8 gBattleState[];
     extern f32 lbl_8036AF10;
     extern f32 lbl_8036AF14;
@@ -9095,7 +9095,7 @@ void MapSelect_StartMove(void *arg0) {
         (f32)(s8)((u8 *)arg0)[0x3B],
         (f32)(s8)((u8 *)arg0)[0x3C],
         (f32)(s8)((u8 *)arg0)[0x3D]);
-    temp_r3 = fn_80053C30(lbl_8027AA38 + 0xD4, arg0);
+    temp_r3 = fn_80053C30(MapSelect_str + 0xD4, arg0);
     temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
     *(void **)((u8 *)temp_r6 + 0x3C) = (void *)&fn_8019A7A8;
     temp_r6 = *(void **)((u8 *)temp_r3 + 0x30);
@@ -9141,7 +9141,7 @@ s32 fn_8019A364(void *arg0)
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_8027AA20[3];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     extern s32 gPadInput;
     extern u32 lbl_8036AEFC;
     extern f32 lbl_8036AF00;
@@ -9212,7 +9212,7 @@ s32 fn_8019A364(void *arg0)
     if (*(s16 *)(obj + 0x48) >= *(s16 *)(obj + 0x4A)) {
         fn_80025624(gPadInput, 0x10);
         fn_8018CFA4(0x1E, 6, 2, 0, obj);
-        SeCue_PlayAt(lbl_8027AA38 + 0xDF, 0x64, f30, f29, f28);
+        SeCue_PlayAt(MapSelect_str + 0xDF, 0x64, f30, f29, f28);
         {
             void *p = *(void **)((u8 *)self + 0x30);
             f25 = lbl_8036AF20;
@@ -9278,7 +9278,7 @@ void Event_RunItemCmd(void *cmd) {
     void fn_80184BE8(s32, s32, s32, s32);
     void fn_80184C7C(s32, s32, s32, s32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     extern void *gPadInput;
     typedef struct { s32 x, y, z; } Word3;
     Word3 sp8c;
@@ -9322,7 +9322,7 @@ void Event_RunItemCmd(void *cmd) {
         fn_8017F474(unit, cmd);
         fn_800983E0(&sp74, unit);
         sp80 = sp74;
-        SeCue_PlayAtPos(lbl_8027AA38 + 0xF3, &sp80, 0x64);
+        SeCue_PlayAtPos(MapSelect_str + 0xF3, &sp80, 0x64);
         return;
     }
     slot = (s32)*(f32 *)((u8 *)unit + 0xC);
@@ -9330,17 +9330,17 @@ void Event_RunItemCmd(void *cmd) {
         fn_8017F70C(unit, cmd);
         fn_800983E0(&sp5c, unit);
         sp68 = sp5c;
-        SeCue_PlayAtPos(lbl_8027AA38 + 0x101, &sp68, 0x64);
+        SeCue_PlayAtPos(MapSelect_str + 0x101, &sp68, 0x64);
         fn_80025624(gPadInput, 4);
     } else {
         if (fn_80096C18() != 0) {
             fn_800983E0(&sp44, unit);
             sp50 = sp44;
-            SeCue_PlayAtPos(lbl_8027AA38 + 0x114, &sp50, 0x64);
+            SeCue_PlayAtPos(MapSelect_str + 0x114, &sp50, 0x64);
         } else {
             fn_800983E0(&sp2c, unit);
             sp38 = sp2c;
-            SeCue_PlayAtPos(lbl_8027AA38 + 0x12B, &sp38, 0x64);
+            SeCue_PlayAtPos(MapSelect_str + 0x12B, &sp38, 0x64);
         }
         p = *(void **)unit;
         if (p != NULL) {
@@ -9362,7 +9362,7 @@ void Event_RunItemCmd(void *cmd) {
             fn_8017E2BC();
             fn_800983E0(&sp14, unit);
             sp20 = sp14;
-            SeCue_PlayAtPos(lbl_8027AA38 + 0x142, &sp20, 0x64);
+            SeCue_PlayAtPos(MapSelect_str + 0x142, &sp20, 0x64);
         } else {
             fn_8018CFA4(0xF, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 8);
@@ -9664,9 +9664,9 @@ void fn_8019B6B4(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296938[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, lbl_8027AA38 + 0x166);
+    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, MapSelect_str + 0x166);
 }
 
 void fn_8019B704(s32 arg0, s32 arg1) {
@@ -9674,12 +9674,12 @@ void fn_8019B704(s32 arg0, s32 arg1) {
     void fn_8019D51C(void *, s32, void *);
     void fn_8004FC70(void *, s32);
     extern u8 lbl_80296D5C[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     void *temp_r30;
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, lbl_8027AA38 + 0x17A);
+    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x17A);
     temp_r30 = 0;
     M2C_FIELD(temp_r31, u8 *, 0x5C) = (u8)(s32)temp_r30;
     {
@@ -9699,13 +9699,13 @@ void fn_8019B79C(s32 arg0, s32 arg1) {
     void fn_8019D51C(void *, s32, void *);
     void fn_8004FC70(void *, s32);
     extern u8 lbl_80296D5C[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     void *temp_r31;
     void *var_r31;
     void *temp_r3;
 
     temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, lbl_8027AA38 + 0x185);
+    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x185);
     ((u8 *)temp_r31)[0x5C] = 1;
     temp_r3 = *(void **)((u8 *)temp_r31 + 0x34);
     temp_r3 = *(void **)temp_r3;
@@ -9724,11 +9724,11 @@ void fn_8019B83C(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, lbl_8027AA38 + 0x194);
+    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x194);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 3;
 }
 
@@ -9736,11 +9736,11 @@ void fn_8019B8A0(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, lbl_8027AA38 + 0x1A4);
+    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x1A4);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
 
@@ -9796,7 +9796,7 @@ s32 MapSelect_Update(void *proc) {
     void fn_8017F040(void *, s32, void *);
     void fn_80184688(s32, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     extern f32 gMapSelectCamZoom;
 
     typedef struct { s32 x, y, z; } Vec3i;
@@ -9840,13 +9840,13 @@ s32 MapSelect_Update(void *proc) {
         case 1:
             fn_8018CFA4(0xF, 6, 2, 0, cmd);
             if (fn_80098568(*(void **)((u8 *)cmd + 0x34)) != 0) {
-                tmp = lbl_8027AA38 + 0x114;
+                tmp = MapSelect_str + 0x114;
                 *(s32 *)(&sePosA) = *(s32 *)(&posCopy);
                 *(s32 *)((u8 *)&sePosA + 4) = *(s32 *)((u8 *)&posCopy + 4);
                 *(s32 *)((u8 *)&sePosA + 8) = *(s32 *)((u8 *)&posCopy + 8);
                 SeCue_PlayAtPos(tmp, &sePosA, 0x64);
             } else {
-                tmp = lbl_8027AA38 + 0x1B1;
+                tmp = MapSelect_str + 0x1B1;
                 *(s32 *)(&sePosB) = *(s32 *)(&posCopy);
                 *(s32 *)((u8 *)&sePosB + 4) = *(s32 *)((u8 *)&posCopy + 4);
                 *(s32 *)((u8 *)&sePosB + 8) = *(s32 *)((u8 *)&posCopy + 8);
@@ -9965,7 +9965,7 @@ void fn_8019BE54(void *arg0, void *arg1)
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C74[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
     void *result;
 
@@ -9974,7 +9974,7 @@ void fn_8019BE54(void *arg0, void *arg1)
     fn_8019D51C(
         result,
         arg1,
-        (const char *)(lbl_8027AA38 + 0x1C6)
+        (const char *)(MapSelect_str + 0x1C6)
     );
 }
 
@@ -10046,11 +10046,11 @@ void fn_8019C00C(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
-    fn_8019D51C(temp_r31, arg1, lbl_8027AA38 + 0x1A4);
+    fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x1A4);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
 
@@ -10058,9 +10058,9 @@ void fn_8019C070(s32 arg0, s32 arg1) {
     void *fn_8000CAA0(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296938[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, lbl_8027AA38 + 0x1D4);
+    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, MapSelect_str + 0x1D4);
 }
 
 void fn_8019C0C0(void *arg0, void *arg1)
@@ -10069,7 +10069,7 @@ void fn_8019C0C0(void *arg0, void *arg1)
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
     void *result;
 
@@ -10078,7 +10078,7 @@ void fn_8019C0C0(void *arg0, void *arg1)
     fn_8019D51C(
         result,
         arg1,
-        (const char *)(lbl_8027AA38 + 0x1DD)
+        (const char *)(MapSelect_str + 0x1DD)
     );
 }
 
@@ -10088,7 +10088,7 @@ void fn_8019C110(void *arg0, void *arg1)
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
     void *result;
 
@@ -10097,7 +10097,7 @@ void fn_8019C110(void *arg0, void *arg1)
     fn_8019D51C(
         result,
         arg1,
-        (const char *)(lbl_8027AA38 + 0x1E8)
+        (const char *)(MapSelect_str + 0x1E8)
     );
 }
 
@@ -10115,7 +10115,7 @@ void fn_8019C160(void *arg0, void *arg1)
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
-    extern u8 lbl_8027AA38[];
+    extern u8 MapSelect_str[];
 
     void *result;
 
@@ -10124,7 +10124,7 @@ void fn_8019C160(void *arg0, void *arg1)
     fn_8019D51C(
         result,
         arg1,
-        (const char *)(lbl_8027AA38 + 0x1F5)
+        (const char *)(MapSelect_str + 0x1F5)
     );
 }
 
