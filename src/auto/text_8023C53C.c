@@ -6509,7 +6509,7 @@ void fn_8025164C(void *arg0)
         ((lower - value) * 100) / (upper - lower);
 }
 
-void fn_80251A44(SynthVoice *sv, u32 *arg1) {
+void Sound_ApplyVoiceAdsr(SynthVoice *sv, u32 *arg1) {
     extern f32 gSoundVolCurve[];
     extern s32 gSoundTimeCurve[];
     extern u8 gSoundLevelCurve[];
