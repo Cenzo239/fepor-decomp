@@ -2850,7 +2850,8 @@ void fn_801BB1FC(void *arg0) {
     }
 }
 
-void Ui_HandleUnitManageCursorInput(void *arg0) {
+/* Handle unit-manage list input: sync inventory widgets on selection change; A confirms unit, Y/X open side panels, B backs out. */
+void Ui_HandleUnitManageCursorInput(void *panel) {
     void Process_Goto(void *, s32);
     void UiCtx_BindUnit(void *, u32);
     u32 Ui_ListGetSelected(void *);
@@ -2866,26 +2867,26 @@ void Ui_HandleUnitManageCursorInput(void *arg0) {
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    s16 sp8[2];
-    s32 a;
+    s16 slidePos[2];
+    s32 held;
     s32 btn;
     register u8 gate;
     register int flags;
-    s16 tmp;
-    unsigned int var_r31;
-    void *obj60;
-    void *obj64;
+    s16 savedY;
+    unsigned int unit;
+    void *invPanel;
+    void *sidePanel;
 
-    var_r31 = Ui_ListGetSelected(M2C_FIELD(arg0, void **, 0x48));
-    Ui_UpdatePanelWidgets(arg0);
-    if (var_r31 != Ui_ListGetSelected(M2C_FIELD(arg0, void **, 0x48))) {
-        var_r31 = Ui_ListGetSelected(M2C_FIELD(arg0, void **, 0x48));
-        obj64 = M2C_FIELD(arg0, void **, 0x64);
-        M2C_FIELD(obj64, u32 *, 0x3C) = var_r31;
-        obj60 = M2C_FIELD(arg0, void **, 0x60);
-        M2C_FIELD(obj60, u32 *, 0x4C) = var_r31;
-        fn_8017BB94(obj60);
-        M2C_FIELD(obj60, f32 *, 0x50) = (f32)fn_8017C3C8(var_r31);
+    unit = Ui_ListGetSelected(M2C_FIELD(panel, void **, 0x48));
+    Ui_UpdatePanelWidgets(panel);
+    if (unit != Ui_ListGetSelected(M2C_FIELD(panel, void **, 0x48))) {
+        unit = Ui_ListGetSelected(M2C_FIELD(panel, void **, 0x48));
+        sidePanel = M2C_FIELD(panel, void **, 0x64);
+        M2C_FIELD(sidePanel, u32 *, 0x3C) = unit;
+        invPanel = M2C_FIELD(panel, void **, 0x60);
+        M2C_FIELD(invPanel, u32 *, 0x4C) = unit;
+        fn_8017BB94(invPanel);
+        M2C_FIELD(invPanel, f32 *, 0x50) = (f32)fn_8017C3C8(unit);
     }
     flags = gUiInputFlags;
     gate = 0;
@@ -2893,31 +2894,31 @@ void Ui_HandleUnitManageCursorInput(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        a = M2C_FIELD(gPadInput, s32 *, 4);
-        btn = a & (M2C_FIELD(gPadInput, s32 *, 8) ^ a);
-        if ((btn & 0x100) && var_r31) {
-            UiCtx_BindUnit(gUiContext, var_r31);
-            M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), f32 *, 0x30) = 0.5f;
-            obj64 = M2C_FIELD(arg0, void **, 0x64);
-            tmp = M2C_FIELD(obj64, s16 *, 0xC);
-            sp8[0] = 0x260;
-            sp8[1] = tmp;
-            fn_80140258(arg0, obj64, sp8, 0);
-            fn_80140210(arg0, M2C_FIELD(arg0, void **, 0x50), 0);
-            obj60 = M2C_FIELD(arg0, void **, 0x60);
-            M2C_FIELD(obj60, u8 *, 0x54) = 1;
-            Process_Goto(arg0, 0x11);
+        held = M2C_FIELD(gPadInput, s32 *, 4);
+        btn = held & (M2C_FIELD(gPadInput, s32 *, 8) ^ held);
+        if ((btn & 0x100) && unit) {
+            UiCtx_BindUnit(gUiContext, unit);
+            M2C_FIELD(M2C_FIELD(panel, void **, 0x48), f32 *, 0x30) = 0.5f;
+            sidePanel = M2C_FIELD(panel, void **, 0x64);
+            savedY = M2C_FIELD(sidePanel, s16 *, 0xC);
+            slidePos[0] = 0x260;
+            slidePos[1] = savedY;
+            fn_80140258(panel, sidePanel, slidePos, 0);
+            fn_80140210(panel, M2C_FIELD(panel, void **, 0x50), 0);
+            invPanel = M2C_FIELD(panel, void **, 0x60);
+            M2C_FIELD(invPanel, u8 *, 0x54) = 1;
+            Process_Goto(panel, 0x11);
             Ui_PlaySeCue(gUiUnitPanelStrings + 0x10C, 0x64);
-        } else if ((btn & 0x800) && var_r31) {
-            fn_801695BC(var_r31, arg0, 0x1000000);
-            M2C_FIELD(arg0, u8 *, 0x44) = 0x10;
-            Process_Goto(arg0, 0x1D);
-        } else if ((btn & 0x400) && var_r31) {
-            fn_801694AC(var_r31, arg0);
-            M2C_FIELD(arg0, u8 *, 0x44) = 0x10;
-            Process_Goto(arg0, 0x1E);
+        } else if ((btn & 0x800) && unit) {
+            fn_801695BC(unit, panel, 0x1000000);
+            M2C_FIELD(panel, u8 *, 0x44) = 0x10;
+            Process_Goto(panel, 0x1D);
+        } else if ((btn & 0x400) && unit) {
+            fn_801694AC(unit, panel);
+            M2C_FIELD(panel, u8 *, 0x44) = 0x10;
+            Process_Goto(panel, 0x1E);
         } else if (btn & 0x200) {
-            Process_Goto(arg0, 0x1C);
+            Process_Goto(panel, 0x1C);
             Ui_PlaySeCue(gUiUnitPanelStrings + 0x11C, 0x64);
         }
     }
