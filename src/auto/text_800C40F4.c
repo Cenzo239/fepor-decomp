@@ -19110,7 +19110,7 @@ void fn_800F74C0(Unit* unit)
 extern "C" u8 Unit_GetActiveItemSlot(void *);
 extern "C" void Battle_SetupFromParams(void *, void *, void *);
 extern "C" void fn_801A6F34(void *, u8);
-extern "C" void fn_800F6550(s32, void *);
+extern "C" void Battle_ScoreTarget(s32, void *);
 typedef struct Param {
     void *p;
     u8 b4[4];
@@ -19134,7 +19134,7 @@ extern "C" s32 Battle_EvalTarget(s32 arg0, void *arg1) {
     b.b4[2] = M2C_FIELD(arg1, u16 *, 2);
     Battle_SetupFromParams(gBattle, &b, &a);
     fn_801A6F34(gBattle, gUiContext[8]);
-    fn_800F6550(arg0, arg1);
+    Battle_ScoreTarget(arg0, arg1);
     return 1;
 }
 #pragma auto_inline reset
