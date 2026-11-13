@@ -2089,7 +2089,7 @@ void fn_80016628(s32 arg0) {
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_800158A0(M2C_UNK *);
     M2C_UNK fn_8003B6F0(M2C_UNK *, s32);
-    u8 fn_8003C830(M2C_UNK *, s32);
+    u8 Unit_Read(M2C_UNK *, s32);
     extern M2C_UNK gUnits;
     extern M2C_UNK gUnitLists;
     M2C_UNK *temp_r27;
@@ -2124,7 +2124,7 @@ void fn_80016628(s32 arg0) {
     var_r29_2 = 0;
     do {
         fn_800156A0(temp_r27, var_r28_2);
-        if (fn_8003C830(var_r28_2, arg0) == 0) {
+        if (Unit_Read(var_r28_2, arg0) == 0) {
             fn_80015718(temp_r27, var_r28_2);
         }
         var_r29_2 += 1;

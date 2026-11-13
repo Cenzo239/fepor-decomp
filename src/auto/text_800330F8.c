@@ -2514,17 +2514,14 @@ u8 fn_8003863C(u8 *arg0) {
 }
 
 void fn_8003868C(void *arg0, s32 arg1) {
-    if (arg1 == 0xff) {
-        goto store;
+    if (arg1 != 0xff) {
+        if (arg1 < 0) {
+            return;
+        }
+        if (arg1 > 0x64) {
+            return;
+        }
     }
-    if (arg1 < 0) {
-        return;
-    }
-    if (arg1 <= 0x64) {
-        goto store;
-    }
-    return;
-store:
     *(u8 *)((u8 *)arg0 + 0x19B) = (u8)arg1;
 }
 
@@ -4310,7 +4307,7 @@ s32 fn_8003C7D0(s32 arg0) {
 }
 
 #pragma global_optimizer off
-s32 fn_8003C830(void *arg0, void *arg1) {
+s32 Unit_Read(void *arg0, void *arg1) {
     u16 fn_8017A9B0(void *);
     u8 fn_8017A9DC(void *);
     s32 fn_80019EAC(u16);
