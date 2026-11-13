@@ -921,7 +921,7 @@ void *fn_800A0828(void) {
     s32 Map_Get(void *);
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     u8 fn_80049D58(s32);
-    u8 fn_80049D6C(void);
+    u8 MapObj_IsHidden(void);
     extern u8 gBattleState[];
     extern u16 lbl_8026D8D8[];
     f32 f31;
@@ -934,7 +934,7 @@ void *fn_800A0828(void) {
     tmp = Map_Get(gBattleState);
     r31 = Map_FindObjAt(tmp, (s32)f30, (s32)f31, 0x800, 0x10);
     if (r31 != 0) {
-        if (fn_80049D6C() != 0) {
+        if (MapObj_IsHidden() != 0) {
             return (u8 *)lbl_8026D8D8 + 0x4FC;
         }
     }
@@ -950,7 +950,7 @@ s32 fn_800A08FC(void) {
     s32 Map_Get(void *);
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     u8 fn_80049D58(s32);
-    u8 fn_80049D6C(void);
+    u8 MapObj_IsHidden(void);
     extern u8 gBattleState[];
     f32 f31;
     f32 f30;
@@ -962,7 +962,7 @@ s32 fn_800A08FC(void) {
     tmp = Map_Get(gBattleState);
     r31 = Map_FindObjAt(tmp, (s32)f30, (s32)f31, 0x800, 0x10);
     if (r31 != 0) {
-        if (fn_80049D6C() != 0) {
+        if (MapObj_IsHidden() != 0) {
             return 0;
         }
     }
@@ -979,7 +979,7 @@ s32 fn_800A09B8(s32 a0, s32 a1, void *arg2) {
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     void fn_800498A4(s32, s32, s32);
     u8 fn_80049D58(s32);
-    u8 fn_80049D6C(void);
+    u8 MapObj_IsHidden(void);
     void fn_80044450(s32, s32);
     extern u8 gBattleState[];
     f32 f31;
@@ -997,7 +997,7 @@ s32 fn_800A09B8(s32 a0, s32 a1, void *arg2) {
     tmp = Map_Get(gBattleState);
     r31 = Map_FindObjAt(tmp, (s32)f30, (s32)f31, 0x800, 0x10);
     if (r31 != 0) {
-        if (fn_80049D6C() != 0) {
+        if (MapObj_IsHidden() != 0) {
             fn_800498A4(r31, 0, 1);
             goto after;
         }

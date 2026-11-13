@@ -9625,7 +9625,7 @@ s32 fn_80049D58(void *arg0) {
     return (M2C_FIELD(arg0, u8 *, 2) & 3) == 0;
 }
 
-s32 fn_80049D6C(void *arg0) {
+s32 MapObj_IsHidden(void *arg0) {
     return (M2C_FIELD(arg0, u8 *, 2) & 3) != 0;
 }
 
