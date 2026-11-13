@@ -2674,7 +2674,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     void Prim2D_Begin(void);
     s32 Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, s32, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_8008BC94(s32, s32, s32);
     s32 *Ui_GetColor(s32);
@@ -2727,7 +2727,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     Prim2D_SetTex(NULL, 0x13);
     Prim2D_PrepareTex();
     x = (s16)(rect[3] - rect[1]);
-    x = (s16)((x - fn_800102BC(-1, lbl_8036A874)) >> 1);
+    x = (s16)((x - Text_MeasureHeight(-1, lbl_8036A874)) >> 1);
     str = Msg_Expand(lbl_802774F0 + 0x1f6);
     x = y + x;
     Text_Draw((s16)(flags + 0x40), (s16)x, 0xF, str);

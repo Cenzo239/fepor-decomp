@@ -816,7 +816,7 @@ void fn_801FE488(void *arg0) {
 void fn_801FE520(void *arg0) {
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     extern f32 lbl_8036BB58;
     void *self;
     s16 tw;
@@ -824,7 +824,7 @@ void fn_801FE520(void *arg0) {
 
     self = arg0;
     tw = (s16)Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BB58);
-    th = (s16)fn_800102BC(-1, lbl_8036BB58);
+    th = (s16)Text_MeasureHeight(-1, lbl_8036BB58);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);
     *(s16 *)((u8 *)self + 0x38) = (s16)((0x260 - *(s16 *)((u8 *)self + 0x3E)) >> 1);
@@ -1213,7 +1213,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *fn_8000B908(u8);
-    s16 fn_800102BC(s32, f32);
+    s16 Text_MeasureHeight(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
     s32 *Ui_GetColor(s32);
@@ -1263,7 +1263,7 @@ void fn_801FF6B8(void *arg0, void *arg1) {
     glyph = fn_8000B908(p[0x40]);
     gx = *(s16 *)((u8 *)glyph + 0x30);
     gy = *(s16 *)((u8 *)glyph + 0x32);
-    wpad = fn_800102BC(-1, lbl_8036BB58);
+    wpad = Text_MeasureHeight(-1, lbl_8036BB58);
     vt = *(void ***)((u8 *)glyph + 0x34);
     str = ((void *(*)(void *))vt[3])(vt);
     tw = Text_MeasureWidth(str, -1, lbl_8036BB58);
@@ -1693,7 +1693,7 @@ void fn_802006B8(void *arg0) {
 void fn_80200750(void *arg0) {
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     extern f32 lbl_8036BBD8;
     void *self;
     s16 tw;
@@ -1701,7 +1701,7 @@ void fn_80200750(void *arg0) {
 
     self = arg0;
     tw = (s16)Text_MeasureWidth(Msg_Expand(*(void **)((u8 *)self + 0x34)), -1, lbl_8036BBD8);
-    th = (s16)fn_800102BC(-1, lbl_8036BBD8);
+    th = (s16)Text_MeasureHeight(-1, lbl_8036BBD8);
     *(s16 *)((u8 *)self + 0x3E) = (s16)(tw + 0x20);
     *(s16 *)((u8 *)self + 0x40) = (s16)(th + 0x40);
     *(s16 *)((u8 *)self + 0x38) = (s16)((0x260 - *(s16 *)((u8 *)self + 0x3E)) >> 1);
@@ -2136,7 +2136,7 @@ extern "C" void fn_80201778(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s32, s32, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     char *String_CStr(void *);
     void fn_800C9874(void *, u32, char);
     void String_Destroy(void *, s16);
@@ -2246,7 +2246,7 @@ extern "C" void fn_80201778(void *arg0) {
                 Text_Draw(x, y, 1, var_r31 + 0xB6, String_CStr(&sp8));
             }
             if (*var_r29 == 0xA) {
-                var_f30 += (f32)fn_800102BC(-1, lbl_8036BBD8);
+                var_f30 += (f32)Text_MeasureHeight(-1, lbl_8036BBD8);
                 String_Destroy(&sp8, -1);
                 var_r29++;
             } else if ((s8)*var_r29 == 0) {

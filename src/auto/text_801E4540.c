@@ -152,7 +152,7 @@ void TabMenu_HandleInput(void *arg0) {
 }
 
 void fn_801E4900(void *arg0, void *arg1, s16 arg5, s16 arg6) {
-    s32 fn_800102BC(M2C_UNK, s8, f32);
+    s32 Text_MeasureHeight(M2C_UNK, s8, f32);
     s8 fn_801E4A60(void *, s8);
     extern u16 lbl_80332260[4];
     extern u8 lbl_803682F8;
@@ -193,13 +193,13 @@ void fn_801E4900(void *arg0, void *arg1, s16 arg5, s16 arg6) {
             temp_r3 = fn_801E4A60(arg1, (s8) M2C_FIELD(arg1, u8 *, 0x32));
             temp_r31 = temp_r3 - ((s16) M2C_FIELD(arg1, s16 *, 0x38) / 32);
             var_r8 = 0x28;
-            var_r9 = (s16) ((s16) ((s32) (0x20 - fn_800102BC(-1, temp_r3, gTabMenuOne)) >> 1) + 0x62) + (temp_r31 << 5);
+            var_r9 = (s16) ((s16) ((s32) (0x20 - Text_MeasureHeight(-1, temp_r3, gTabMenuOne)) >> 1) + 0x62) + (temp_r31 << 5);
             break;
         case 1:
             temp_r4 = (s16) M2C_FIELD(arg1, s16 *, 0x38) / 32;
             temp_r31_2 = (s8) M2C_FIELD(arg1, u8 *, 0x33) - temp_r4;
             var_r8 = 0xA0;
-            var_r9 = (s16) ((s16) ((s32) (0x20 - fn_800102BC(-1, (s8) temp_r4, gTabMenuOne)) >> 1) + 0x62) + (temp_r31_2 << 5);
+            var_r9 = (s16) ((s16) ((s32) (0x20 - Text_MeasureHeight(-1, (s8) temp_r4, gTabMenuOne)) >> 1) + 0x62) + (temp_r31_2 << 5);
             break;
         }
         M2C_FIELD(arg0, s16 *, 0) = var_r8;
@@ -513,7 +513,7 @@ void TabMenu_DrawTab2(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
@@ -591,7 +591,7 @@ void TabMenu_DrawTab2(void *arg0) {
 
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
+    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
@@ -733,7 +733,7 @@ void TabMenu_DrawTab2(void *arg0) {
 }
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
@@ -775,7 +775,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     s32 py;
 
     tw = (s16)Text_MeasureWidth(arg6, -1, gTabMenuOne);
-    th = fn_800102BC(-1, gTabMenuOne);
+    th = Text_MeasureHeight(-1, gTabMenuOne);
     x = arg1;
     y = arg2;
     left = (s16)(x - 1);
@@ -884,7 +884,7 @@ void TabMenu_DrawTab1(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
@@ -962,7 +962,7 @@ void TabMenu_DrawTab1(void *arg0) {
 
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
+    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
@@ -1102,7 +1102,7 @@ void TabMenu_DrawTab0(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, s32);
     void Prim2D_AddPrim(s32);
@@ -1177,7 +1177,7 @@ void TabMenu_DrawTab0(void *arg0) {
 
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - fn_800102BC(-1, gTabMenuOne)) >> 1));
+    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
     rect = &lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
@@ -1557,7 +1557,7 @@ void fn_801E7D18(void *arg0) {
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_800102BC(s32, s32, f32);
+    s32 Text_MeasureHeight(s32, s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
     void fn_801E7FC0(void *);
@@ -1602,7 +1602,7 @@ void fn_801E7D18(void *arg0) {
     case 1:
         div = *(s16 *)((u8 *)self + 0x38) / 32;
         row = (s8)*(u8 *)((u8 *)self + 0x33) - div;
-        y = (s16)((0x20 - fn_800102BC(-1, div, gTabMenuOne)) >> 1);
+        y = (s16)((0x20 - Text_MeasureHeight(-1, div, gTabMenuOne)) >> 1);
         x = *(s16 *)((u8 *)self + 0x3C);
         y = (s16)((s16)(y + 0x62) + (row << 5));
         if (x < 0 || *(s16 *)((u8 *)self + 0x3E) < 0) {
@@ -1648,7 +1648,7 @@ void fn_801E7D18(void *arg0) {
 }
 
 void fn_801E7FC0(void *arg0) {
-    s32 fn_800102BC(s32, s32, f32);
+    s32 Text_MeasureHeight(s32, s32, f32);
     void fn_8008BF68(s16, s16, s32);
     s32 fn_801E4A60(void *, s8);
     extern f32 gTabMenuOne;
@@ -1663,7 +1663,7 @@ void fn_801E7FC0(void *arg0) {
     self = arg0;
     v = (s8)fn_801E4A60(self, (s8)*(u8 *)((u8 *)self + 0x32));
     row = (s8)(v - (*(s16 *)((u8 *)self + 0x38) / 32));
-    y = (s16)((0x20 - fn_800102BC(-1, v, gTabMenuOne)) >> 1);
+    y = (s16)((0x20 - Text_MeasureHeight(-1, v, gTabMenuOne)) >> 1);
     x = *(s16 *)((u8 *)self + 0x3C);
     y = (s16)((s16)(y + 0x62) + (row << 5));
     if (x < 0 || *(s16 *)((u8 *)self + 0x3E) < 0) {

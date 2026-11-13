@@ -3201,7 +3201,7 @@ void fn_801F8E30(void *arg0) {
     void Process_Goto(void *, s32);
     void *Msg_Expand(void *);
     void Text_Draw(s32, s32, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8004DDB8(s32);
     void fn_8005F780(void *, s32);
@@ -3275,7 +3275,7 @@ clear:
         *(void **)((u8 *)arg0 + 0x4C) = NULL;
     }
     f30 = f27 + lbl_8036BA04;
-    f30 = f30 + lbl_8036BA38 * (f32)(0x50 - fn_800102BC(-1, lbl_8036BA20));
+    f30 = f30 + lbl_8036BA38 * (f32)(0x50 - Text_MeasureHeight(-1, lbl_8036BA20));
     p = *(void ***)((u8 *)arg0 + 0x34);
     p = (void **)*p;
     p = (void **)*p;
@@ -3307,7 +3307,7 @@ clear:
                 sprintf(buf, StaffRoll_str + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
                 Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buf));
             }
-            f28 = f30 + (f32)fn_800102BC(-1, lbl_8036BA20);
+            f28 = f30 + (f32)Text_MeasureHeight(-1, lbl_8036BA20);
             Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
             sp94 = fn_80222A80(sp74);
             sp96 = fn_80222A90(sp74);
@@ -3784,7 +3784,7 @@ void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32);
 void Prim2D_SetColorByte(s32); void Prim2D_SetAlphaByte(s32); void Prim2D_PrepareTex(void);
 void Process_Goto(void*,s32); void fn_80109020(void*);
 void Prim2D_SetTex(s32,s32); void *Msg_Expand(void*);
-s32 fn_800102BC(s32,f32); s16 Text_MeasureWidth(void*,s32,f32);
+s32 Text_MeasureHeight(s32,f32); s16 Text_MeasureWidth(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
 void sprintf(void*,void*,...); f64 fmod(f64,f64);
 extern s32 gUiInputFlags;
@@ -3815,7 +3815,7 @@ clear:
 fn_80109020(StaffRoll_str+0x301);*(void**)((u8*)arg0+0x4c)=0;
 }
 y=scroll+lbl_8036BA04;
-offset=lbl_8036BA38*(f32)(64-fn_800102BC(-1,lbl_8036BA20));
+offset=lbl_8036BA38*(f32)(64-Text_MeasureHeight(-1,lbl_8036BA20));
 y=y+offset;
 base=*(u8**)((u8*)arg0+0x38);
 ent=base;

@@ -8054,7 +8054,7 @@ void fn_80071D28(void *unused, void *unit) {
 }
 
 void fn_80071E0C(void *arg0, void *arg1) {
-    u32 fn_800102BC(M2C_UNK, f32, f32);
+    u32 Text_MeasureHeight(M2C_UNK, f32, f32);
     M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8008C1D8(M2C_UNK, M2C_UNK, M2C_UNK, s32, M2C_UNK);
     extern f32 lbl_803692E0;
@@ -8083,7 +8083,7 @@ void fn_80071E0C(void *arg0, void *arg1) {
         }
         temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
         temp_r29 = (s32) (lbl_80369324 * temp_f2);
-        temp_r3 = fn_800102BC(-1, lbl_803692E0, temp_f2);
+        temp_r3 = Text_MeasureHeight(-1, lbl_803692E0, temp_f2);
         temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
         temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
         temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);

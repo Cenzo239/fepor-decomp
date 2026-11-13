@@ -111,7 +111,7 @@ void fn_80183434(void *arg0, void *arg1) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    u32 fn_800102BC(M2C_UNK, f32, f32);
+    u32 Text_MeasureHeight(M2C_UNK, f32, f32);
     M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8008C1D8(M2C_UNK, M2C_UNK, M2C_UNK, s32, M2C_UNK);
     extern f32 lbl_8036ACC4;
@@ -140,7 +140,7 @@ void fn_80183434(void *arg0, void *arg1) {
         }
         temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
         temp_r29 = (s32) (lbl_8036ACCC * temp_f2);
-        temp_r3 = fn_800102BC(-1, lbl_8036ACC8, temp_f2);
+        temp_r3 = Text_MeasureHeight(-1, lbl_8036ACC8, temp_f2);
         temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
         temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
         temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
@@ -3893,7 +3893,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     s32 UnitRef_GetName(void *);
     void UnitRef_Set(void *, s32);
     void fn_8001C5F8(void *, s32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, ...);
     void fn_8008CFB4(void *, s16, s16);
     extern u8 lbl_80279C40[];
@@ -3912,7 +3912,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     fn_8001C76C(sp8);
     UnitRef_Set(sp8, *(s32 *)((u8 *)self + 0x40));
     y = *(s16 *)((u8 *)self + 0x44);
-    half = (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1);
+    half = (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
     w = UnitRef_GetName(sp8);
     y2 = y;
     x = (s16)(a1 + half);
@@ -3924,7 +3924,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, ...);
     void Prim2D_AddPrim(s32);
@@ -3954,7 +3954,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     s16 y;
 
     y = M2C_FIELD(arg0, s16 *, 0x44);
-    x = (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1);
+    x = (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
     str = Msg_Expand(lbl_80279C40 + 0x53);
     x += arg1;
     Text_Draw(y, x, 0xF, str);
@@ -4014,7 +4014,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
 void fn_8018EFE0(void *arg0, s16 arg1) {
     void *Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80279C40[];
     extern f32 lbl_8036ADF0;
@@ -4027,7 +4027,7 @@ void fn_8018EFE0(void *arg0, s16 arg1) {
     h = Text_MeasureWidth(str, -1, lbl_8036ADF0);
     t = *(s16 *)((u8 *)arg0 + 0x12);
     y = (s16)(((s16)(*(s16 *)((u8 *)arg0 + 0x16) - t) - h) >> 1);
-    Text_Draw(y, (s16)(arg1 + (s16)((0x1C - fn_800102BC(-1, lbl_8036ADF0)) >> 1)), 2, str);
+    Text_Draw(y, (s16)(arg1 + (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1)), 2, str);
 }
 
 #pragma cplusplus on
@@ -4140,7 +4140,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s16 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80104E58(void);
     s32 *Ui_GetColor(s32);
@@ -4158,7 +4158,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v9();
     ((Obj *)arg0)->v3(arg1);
 
-    x = (s16)((0x20 - fn_800102BC(-1, lbl_8036ADF0)) >> 1);
+    x = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
     {
         s32 t = *(s16 *)((u8 *)arg0 + 0x40);
         y = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12));
@@ -4580,7 +4580,7 @@ extern "C" void fn_80190920(void *arg0) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8008D510(void *, s32, s32, s32);
     extern f32 lbl_8036ADFC;
     extern f32 lbl_8036AE18;
@@ -4604,7 +4604,7 @@ extern "C" void fn_80190920(void *arg0) {
 
     ((Obj *)arg0)->v3();
     tmp = *(s16 *)((u8 *)arg0 + 0x46);
-    y = (s32)tmp - fn_800102BC(-1, lbl_8036ADFC);
+    y = (s32)tmp - Text_MeasureHeight(-1, lbl_8036ADFC);
     p3c = *(void **)((u8 *)arg0 + 0x3C);
     tmp = *(s16 *)((u8 *)arg0 + 0x4A);
     y = (y >> 1) + *(s16 *)((u8 *)arg0 + 0x4C);

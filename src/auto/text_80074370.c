@@ -346,7 +346,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
     void fn_80071740(void *, f32, f32, s32);
     void fn_8007149C(void *, void *, f32, f32, s32, s32);
     void Prim2D_AddZ(f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     f32 t;
 
@@ -362,7 +362,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
         Prim2D_Begin();
         Prim2D_AddZ(-0.1f);
         Prim2D_PrepareTex();
-        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + fn_800102BC(-1, 1.0f) / 2,
+        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
                     (s32)(0.9f * ((Obj *)arg0)->v18()), 0x18, 0x19, 0x4B, 1);
         Prim2D_Begin();
         Prim2D_AddZ(0.1f);
@@ -459,7 +459,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     extern void fn_80071740(void *, f32, f32, s32);
     extern void fn_8007149C(void *, void *, f32, f32, s32, s32);
     extern void Prim2D_AddZ(f32);
-    extern s32 fn_800102BC(s32, f32);
+    extern s32 Text_MeasureHeight(s32, f32);
     extern void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     extern void fn_8008FFB0(u32, u32, void *, void *, void *);
 
@@ -491,7 +491,7 @@ void fn_80074F20(void *arg0, void *arg1) {
         fn1 = (v18_fn)*(u32 *)((u8 *)arg0 + 0x54);
         v18_1 = fn1(arg0);
         r29 = (s32)(lbl_80369398 * (((f32)(s16)v18_1) - lbl_803693A0));
-        temp = fn_800102BC(-1, lbl_80369394);
+        temp = Text_MeasureHeight(-1, lbl_80369394);
         r30 = (temp + (temp < 0 ? 1 : 0)) >> 1;
         fn2 = (v18_fn)*(u32 *)((u8 *)arg0 + 0x54);
         v18_2 = fn2(arg0);
@@ -1106,7 +1106,7 @@ extern "C" void Prim2D_SetColorByte(s32);
 extern "C" void Prim2D_AddZ(f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
-extern "C" s32 fn_800102BC(s32, f32);
+extern "C" s32 Text_MeasureHeight(s32, f32);
 extern "C" f32 fn_80023EE0(void *);
 extern "C" void fn_80070F54(void *, void *, f32, f32);
 extern "C" void fn_80071410(void *, void *, f32, f32);
@@ -1151,7 +1151,7 @@ extern "C" void fn_80076174(void *arg0, void *arg1) {
         Prim2D_Begin();
         Prim2D_AddZ(-0.1f);
         Prim2D_PrepareTex();
-        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + fn_800102BC(-1, 1.0f) / 2,
+        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
                     (s32)(0.9f * ((Obj *)arg0)->v18()), 0x18, 0x19, 0x4B, 1);
         Prim2D_Begin();
         Prim2D_AddZ(0.1f);

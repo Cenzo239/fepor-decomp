@@ -8305,7 +8305,7 @@ void fn_801C85E0(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s32, s32, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
@@ -8407,7 +8407,7 @@ void fn_801C85E0(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex((void *)0, 0x13);
     Prim2D_PrepareTex();
-    tmp = fn_800102BC(-1, lbl_8036B478);
+    tmp = Text_MeasureHeight(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x40);
     if (v0 > 0) {
         Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
@@ -8452,7 +8452,7 @@ void fn_801C85E0(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex((void *)0, 0x13);
     Prim2D_PrepareTex();
-    tmp = fn_800102BC(-1, lbl_8036B478);
+    tmp = Text_MeasureHeight(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x90);
     if (v1 > 0) {
         Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
@@ -8497,7 +8497,7 @@ void fn_801C85E0(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex((void *)0, 0x13);
     Prim2D_PrepareTex();
-    tmp = fn_800102BC(-1, lbl_8036B478);
+    tmp = Text_MeasureHeight(-1, lbl_8036B478);
     yy = (s16)(((0x30 - tmp) >> 1) + 0x100);
     if (v2 > 0) {
         Text_Draw(0xC8, yy, 0x10, lbl_8027D740 + 0xDA);
@@ -10108,7 +10108,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *), s16 *);
     void Prim2D_SetTex(s32, u16);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s32 fn_8001059C(u8 *, s32, f32);
     s32 Text_MeasureWidth(u8 *, s32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, f32, f32);
@@ -10160,7 +10160,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
 
-    half = (s16)((self->v12() - fn_800102BC(-1, lbl_8036B4CC)) >> 1);
+    half = (s16)((self->v12() - Text_MeasureHeight(-1, lbl_8036B4CC)) >> 1);
     scroll = (s16)(s32)self->unk58;
     {
         f32 zero = lbl_8036B4D0;
@@ -10225,8 +10225,8 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
                                  (f32)(Text_MeasureWidth(cell, -1, lbl_8036B4CC) -
                                        Text_MeasureWidth(cell, -1, scale));
                             dy = lbl_8036B4DC *
-                                 (f32)(fn_800102BC(-1, lbl_8036B4CC) -
-                                       fn_800102BC(-1, scale));
+                                 (f32)(Text_MeasureHeight(-1, lbl_8036B4CC) -
+                                       Text_MeasureHeight(-1, scale));
                         }
                         fn_8001003C((s32)((f32)x + dx), (s32)((f32)ybase + dy), 1, 0, 0,
                                     cell, scale, lbl_8036B4D0);
@@ -15852,7 +15852,7 @@ void fn_801DE474(void *arg0, void *arg1)
     void fn_80009B98(void);
     void Prim2D_SetTex(s32, u16);
     void fn_8013F920(void *);
-    s16 fn_800102BC(s32, f32);
+    s16 Text_MeasureHeight(s32, f32);
     s32 fn_8001059C(u8 *, s32, f32);
     s16 Text_MeasureWidth(u8 *, s32, f32);
     void *Msg_Expand(u8 *);
@@ -15949,7 +15949,7 @@ void fn_801DE474(void *arg0, void *arg1)
     left_x = M2C_FIELD(arg0, s16 *, 0x3C);
     scroll_adj = (s16)(M2C_FIELD(arg0, s16 *, 0x40) + scroll_adj);
     ybase = (s16)(scroll_adj + M2C_FIELD(arg0, s16 *, 0x3E));
-    half = fn_800102BC(-1, lbl_8036B6CC);
+    half = Text_MeasureHeight(-1, lbl_8036B6CC);
     gap = (s16)((0x1C - half) >> 1);
     right = (s16)((s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)) - left_x);
     right = (s16)(right - fn_8001059C(lbl_8027E8D0 + 0x20, -1, lbl_8036B6CC));

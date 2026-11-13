@@ -4442,7 +4442,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    s32 fn_800102BC(M2C_UNK, f32, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32, f32);
     M2C_UNK fn_80071D28();
     M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036A1E8;
@@ -4461,7 +4461,7 @@ void fn_8011B5FC(void *arg0, void *arg1) {
     Prim2D_PrepareTex();
     temp_f2 = (f32) M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
     temp_r29 = (s32) (lbl_8036A238 * temp_f2);
-    temp_r30 = fn_800102BC(-1, lbl_8036A1E8, temp_f2) >> 1;
+    temp_r30 = Text_MeasureHeight(-1, lbl_8036A1E8, temp_f2) >> 1;
     temp_r31 = M2C_FIELD(arg1, s16 *, 0x3A);
     fn_8008AB7C(M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0) >> 1, temp_r31 + temp_r30, temp_r29, 0x17, 0xA, 0x28, 1);
     Prim2D_Begin();

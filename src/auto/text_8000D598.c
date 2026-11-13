@@ -729,7 +729,7 @@ s32 fn_8000E684(void* arg0) {
     return fn_80004610(arg0);
 }
 
-s32 fn_800102BC(s32 arg0, f32 arg1)
+s32 Text_MeasureHeight(s32 arg0, f32 arg1)
 {
     extern s32 lbl_802AEE20[5];
     extern f64 lbl_80368C28;

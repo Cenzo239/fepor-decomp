@@ -148,7 +148,7 @@ void fn_80163728(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8008BF68(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
     void **vt0 = (void **)M2C_FIELD(arg0, u32 *, 0x00);
@@ -217,7 +217,7 @@ void fn_80163728(void *arg0, void *arg1) {
             Prim2D_PrepareTex();
 
             temp_r24 = M2C_FIELD(arg0, s16 *, 0x54);
-            temp_r25_2 = fn_800102BC(-1, lbl_8036A8A0);
+            temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
             fn_8008BF68(M2C_FIELD(arg0, s16 *, 0x50),
                        (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + ((temp_r24 - temp_r25_2) >> 1))),
                        var_r30);
@@ -247,7 +247,7 @@ void fn_80163728(void *arg0, void *arg1) {
         temp_r4 = var_r3_3 * var_r29;
         temp_r25 = M2C_FIELD(arg0, s16 *, 0x54);
         temp_r24_2 = temp_r4 + M2C_FIELD(arg0, s16 *, 0x66);
-        temp_r25_2 = fn_800102BC(-1, lbl_8036A8A0);
+        temp_r25_2 = Text_MeasureHeight(-1, lbl_8036A8A0);
         temp_r25_2_final = (s16)((s32)(temp_r25 - temp_r25_2) >> 1);
 
         Prim2D_Begin();
@@ -641,7 +641,7 @@ void fn_80164350(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8008BF68(s16, s32, u8);
     void Prim2D_SetAlphaByte(s32);
     s16 temp_r24;
@@ -711,7 +711,7 @@ void fn_80164350(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
         temp_r27 = M2C_FIELD(arg0, s16 *, 0x4E);
         var_r24 = (s16)((s32)((s32)temp_r27 * (s32)var_r29) + (s32)M2C_FIELD(arg0, s16 *, 0x66));
-        var_r3 = fn_800102BC(-1, lbl_8036A8A0);
+        var_r3 = Text_MeasureHeight(-1, lbl_8036A8A0);
         temp_r26_2 = (s16)(((s32)M2C_FIELD(arg0, s16 *, 0x54) - var_r3) >> 1);
         if (temp_r27 >= 4 && temp_r27 <= 7) {
             var_r24 = (s16)((s32)var_r24 + (s32)(s16)((s16 (*)(void *))((void **)M2C_FIELD(arg0, void **, 0x00))[11])(arg0));
@@ -778,7 +778,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void *fn_800A8A88(s32);
     s32 Text_MeasureWidth(void *, s32, f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetPos(f32, f32);
     s32 *Ui_GetColor(s32);
@@ -832,7 +832,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     text = fn_800A8A88(*(s32 *)((u8 *)self->unk58 + 0x188));
     t = (s16)(self->unkE - self->unkA);
     ox = (s16)((t - Text_MeasureWidth(text, -1, lbl_8036A8A0)) >> 1);
-    t = (s16)((0x1a - fn_800102BC(-1, lbl_8036A8A0)) >> 1);
+    t = (s16)((0x1a - Text_MeasureHeight(-1, lbl_8036A8A0)) >> 1);
     Prim2D_AddPrim(6);
     Prim2D_SetPos((f32)ox, (f32)t);
     sp8 = *Ui_GetColor(2);
@@ -1206,7 +1206,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void *Msg_Expand(void *);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     void *String_CStr(void *);
     void String_AssignCStr(void *, void *, s32);
@@ -1294,7 +1294,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
         }
         h = *(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0xc);
         top = *(s16 *)((u8 *)arg0 + 0x50);
-        y = (s16)((s32)(top + (h - fn_800102BC(-1, lbl_8036A8B8))) >> 1);
+        y = (s16)((s32)(top + (h - Text_MeasureHeight(-1, lbl_8036A8B8))) >> 1);
         Prim2D_AddPrim(6);
         Prim2D_SetPos((f32)x, (f32)y);
         spC = *Ui_GetColor(*(u8 *)((u8 *)arg0 + 0x4c));
@@ -3756,7 +3756,7 @@ extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    s32 fn_800102BC(M2C_UNK, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Text_MeasureWidth(s32, M2C_UNK, f32);
     M2C_UNK fn_801533F8(s32, s32, u8, M2C_UNK);
     s32 *Ui_GetColor(M2C_UNK);
@@ -3804,7 +3804,7 @@ extern "C" void fn_8016B060(void *arg0, void *arg1, void *arg2) {
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
     temp_r31 = (0x9A - Text_MeasureWidth(temp_virt, -1, lbl_8036A9CC)) >> 1;
-    temp_r30 = (0x24 - fn_800102BC(-1, lbl_8036A9CC)) >> 1;
+    temp_r30 = (0x24 - Text_MeasureHeight(-1, lbl_8036A9CC)) >> 1;
     temp_f31 = (f32)M2C_FIELD(var_r29, s16 *, 0x30);
     temp_f30 = (f32)M2C_FIELD(var_r29, s16 *, 0x32);
     Prim2D_AddPrim(6);
@@ -3874,7 +3874,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_AddZ(f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    s32 fn_800102BC(M2C_UNK, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Text_MeasureWidth(s32, M2C_UNK, f32);
     M2C_UNK fn_801533F8(s32, s32, u8, M2C_UNK);
     u32 fn_8017F9D4();
@@ -3923,7 +3923,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
     temp_virt = ((Obj *)temp_r3)->v4(var_r29);
     temp_r31 = (0x9A - Text_MeasureWidth(temp_virt, -1, lbl_8036A9CC)) >> 1;
-    temp_r30 = (0x24 - fn_800102BC(-1, lbl_8036A9CC)) >> 1;
+    temp_r30 = (0x24 - Text_MeasureHeight(-1, lbl_8036A9CC)) >> 1;
     temp_f31 = (f32)M2C_FIELD(var_r29, s16 *, 0x30);
     temp_f30 = (f32)M2C_FIELD(var_r29, s16 *, 0x32);
     Prim2D_AddPrim(6);
@@ -10034,7 +10034,7 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPos(f32, f32);
-    s32 fn_800102BC(M2C_UNK, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32);
     s16 Text_MeasureWidth(s32, M2C_UNK, f32);
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036AB6C;
@@ -10055,7 +10055,7 @@ void fn_80177028(void **arg0, void *arg1, void *arg2) {
     temp_r3 = M2C_FIELD(arg1, void **, 0x3C);
     temp_r29 = M2C_FIELD(M2C_FIELD(temp_r3, void **, 4), s16 (**)(void *), 0x58)(temp_r3);
     temp_r3_2 = M2C_FIELD(arg2, void ***, 0x34);
-    temp_r28 = (s16) ((s32) (temp_r29 - fn_800102BC(-1, lbl_8036AB6C)) >> 1);
+    temp_r28 = (s16) ((s32) (temp_r29 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
     temp_r3_3 = M2C_FIELD(arg1, void **, 0x3C);
     temp_r31 = M2C_FIELD(*temp_r3_2, s32 (**)(void **, void *), 0x18)(temp_r3_2, arg2);
     temp_r29_2 = M2C_FIELD(M2C_FIELD(temp_r3_3, void **, 4), s16 (**)(void *), 0x94)(temp_r3_3);
@@ -10254,7 +10254,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetAlphaByte(u8);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s16 Text_MeasureWidth(s32, s32, f32);
     void Ui_DrawIcon(void *, s32, s32, s32);
     s32 *Ui_GetColor(s32);
@@ -10342,7 +10342,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
         t26 = ((ObjB *)p3c)->v20();
     }
 
-    t30 = (s16)((t26 - fn_800102BC(-1, lbl_8036AB6C)) >> 1);
+    t30 = (s16)((t26 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
 
     t29 = (s16)((((ObjB *)*(void **)((u8 *)arg1 + 0x3c))->v20() - 0x18) >> 1);
 
@@ -10800,7 +10800,7 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
     void *Msg_Expand(void *);
     void *fn_800A8A88(s32);
     s32 Text_MeasureWidth(void *, s32, s16, f32);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, ...);
     extern u16 gUiMsgStrings[];
     extern f32 lbl_8036AB80;
@@ -10825,7 +10825,7 @@ extern "C" void fn_80178778(void *arg0, s32 arg1) {
     }
     w = *(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12);
     x = (s16)((w - Text_MeasureWidth(str, -1, *(s16 *)((u8 *)arg0 + 0x12), lbl_8036AB6C)) >> 1);
-    y = (s16)((0x16 - fn_800102BC(-1, lbl_8036AB6C)) >> 1);
+    y = (s16)((0x16 - Text_MeasureHeight(-1, lbl_8036AB6C)) >> 1);
     Text_Draw(x, y, 1, str);
 }
 #pragma cplusplus reset
@@ -12136,7 +12136,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, u8);
     void fn_8008BF68(s16, s32, u8);
     u8 Status_Test(void *, u8);
@@ -12260,7 +12260,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                 Prim2D_AddZ(lbl_8036AB90);
                 Prim2D_PrepareTex();
                 fn_8008BF68(*(s16 *)((u8 *)self + 0x40),
-                            *(s16 *)((u8 *)self + 0x42) + (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1),
+                            *(s16 *)((u8 *)self + 0x42) + (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1),
                             flag);
                 Prim2D_Begin();
                 Prim2D_AddZ(lbl_8036AB98);
@@ -12560,7 +12560,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     M2C_UNK fn_80007220(M2C_UNK, f32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Text_Draw(s16, s16, s32, void *, ...);
-    s32 fn_800102BC(M2C_UNK, f32);
+    s32 Text_MeasureHeight(M2C_UNK, f32);
     M2C_UNK Ui_DrawIcon(void *, s32, s32, u8);
     s32 fn_8010586C(void *);
     s32 *Ui_GetColor(s32);
@@ -12580,7 +12580,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     Prim2D_SetTex(0, (u16) (M2C_FIELD(arg0, s32 *, 0x34) | 3));
     Prim2D_SetColorByte(arg3);
     Prim2D_PrepareTex();
-    off = (0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1;
+    off = (0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1;
     Text_Draw(temp_arg1 + 0x20, temp_arg2 + off, flag, lbl_80278780 + 0xB3, fn_8010586C(arg4));
     Prim2D_AddPrim(6);
     sp8 = *Ui_GetColor(flag);
@@ -12599,7 +12599,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Prim2D_SetTex(s32, u16);
     void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
     void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
@@ -12627,7 +12627,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)self + 0x34) | 3));
     Prim2D_SetColorByte(color);
     Prim2D_PrepareTex();
-    color = (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1);
+    color = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1);
     ret = fn_8010586C(unit);
     a1 = (s16)a1;
     a2 = (s16)a2;
@@ -12644,7 +12644,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Prim2D_SetTex(s32, u16);
     void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
     void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
@@ -12673,7 +12673,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     Prim2D_SetColorByte(color);
     Prim2D_PrepareTex();
     {
-        s32 off = (s16)((0x20 - fn_800102BC(-1, lbl_8036AB94)) >> 1);
+        s32 off = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036AB94)) >> 1);
         s32 ret = fn_8010586C(unit);
         a1 = (s16)a1;
         a2 = (s16)a2;
@@ -13355,7 +13355,7 @@ void fn_8017CE1C(void *self, void *arg1) {
     void *Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void Text_Draw(s16, s16, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     u8 fn_8003863C(void *);
     u8 fn_800386B0(void *);
@@ -13399,9 +13399,9 @@ void fn_8017CE1C(void *self, void *arg1) {
     Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)self + 0x34) | 3));
     Prim2D_PrepareTex();
     str = Msg_Expand((u8 *)lbl_80278838 + 0x36);
-    Text_Draw(0x2A, (s16)(((0x20 - fn_800102BC(-1, lbl_8036ABE0)) >> 1) + 0x10), 0x10, str);
+    Text_Draw(0x2A, (s16)(((0x20 - Text_MeasureHeight(-1, lbl_8036ABE0)) >> 1) + 0x10), 0x10, str);
     x = (s16)((s16)(*(s16 *)((u8 *)self + 0xE) - *(s16 *)((u8 *)self + 0xA)) - 0x34);
-    y = (s16)(((0x20 - fn_800102BC(-1, lbl_8036ABE0)) >> 1) + 0x10);
+    y = (s16)(((0x20 - Text_MeasureHeight(-1, lbl_8036ABE0)) >> 1) + 0x10);
     Prim2D_AddPrim(6);
     fn_80006B18(x, y, 0, 0, *(s16 *)((u8 *)self + 0x3C));
     Prim2D_EndPrim();
@@ -13413,7 +13413,7 @@ void fn_8017CE1C(void *self, void *arg1) {
     Prim2D_PrepareTex();
     t30 = (s16)((s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12)) >> 2);
     t26 = (s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14));
-    ftmp = (f32)(fn_800102BC(-1, lbl_8036ABE0) >> 1);
+    ftmp = (f32)(Text_MeasureHeight(-1, lbl_8036ABE0) >> 1);
     t29 = (s16)(lbl_8036ABC0 * (f32)t26 - ftmp);
     t26 = (s16)(lbl_8036ABC0 * (f32)(s16)(*(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14)) - lbl_8036ABE4);
     Text_Draw((s16)(t30 - 0x20), t29, 0x10, (u8 *)lbl_80278838 + 0x4B);
@@ -15479,7 +15479,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Text_Draw(s16, s16, s32, void *, ...);
-    s32 fn_800102BC(s32, f32);
+    s32 Text_MeasureHeight(s32, f32);
     s32 Text_MeasureWidth(void *, s32, f32);
     s8 fn_80036DE0(void *, void *);
     s32 fn_80036F5C(void *, s32);
@@ -15516,7 +15516,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 0x13));
     Prim2D_PrepareTex();
-    halfH = (s16)((rowH - fn_800102BC(-1, lbl_8036ACA8)) >> 1);
+    halfH = (s16)((rowH - Text_MeasureHeight(-1, lbl_8036ACA8)) >> 1);
     if (unit != 0) {
         u8 kind = *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8);
         if (kind == 0) {
