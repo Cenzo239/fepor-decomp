@@ -3998,7 +3998,7 @@ void fn_802387A8(void) {
     __ieee754_fmod();
 }
 
-void fn_802387C8(void) {
+void fmod(void) {
     M2C_UNK fn_802360C4();
     fn_802360C4();
 }

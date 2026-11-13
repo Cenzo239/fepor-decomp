@@ -3220,7 +3220,7 @@ void fn_801F8E30(void *arg0) {
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     void sprintf(void *, void *, ...);
-    f64 fn_802387C8(f64, f64);
+    f64 fmod(f64, f64);
     void fn_80069F04(void);
     void fn_801F9464(void);
     extern s32 gUiInputFlags;
@@ -3253,7 +3253,7 @@ void fn_801F8E30(void *arg0) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     f29 = *(f32 *)((u8 *)arg0 + 0x3C);
-    period = (f32)fn_802387C8(lbl_8036BA28, lbl_8036BA30);
+    period = (f32)fmod(lbl_8036BA28, lbl_8036BA30);
     f27 = (f32)(s32)(period * (f29 + lbl_8036BA38 / period)) / period;
     obj = *(void **)((u8 *)arg0 + 0x4C);
     if (obj != NULL) {
@@ -3786,7 +3786,7 @@ void Process_Goto(void*,s32); void fn_80109020(void*);
 void fn_8000A174(s32,s32); void *Msg_Expand(void*);
 s32 fn_800102BC(s32,f32); s16 fn_80010B78(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
-void sprintf(void*,void*,...); f64 fn_802387C8(f64,f64);
+void sprintf(void*,void*,...); f64 fmod(f64,f64);
 extern s32 gUiInputFlags;
 extern u8 StaffRoll_str[];
 extern f32 lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20,lbl_8036BA38,lbl_8036BA00,lbl_8036BA04,lbl_8036BA88,lbl_8036BA94,lbl_8036BA98,lbl_8036BA9C,lbl_8036BAA0,lbl_8036BAA4,lbl_8036BAA8;
@@ -3802,7 +3802,7 @@ Prim2D_Begin();
 Prim2D_SetTransform(lbl_8036BA18,lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20);
 Prim2D_SetColorByte(255); Prim2D_SetAlphaByte(128); Prim2D_PrepareTex();
 scroll=*(f32*)((u8*)arg0+0x3c);
-period=(f32)fn_802387C8(lbl_8036BA28,lbl_8036BA30);
+period=(f32)fmod(lbl_8036BA28,lbl_8036BA30);
 scroll=(f32)(s32)(period*(scroll+lbl_8036BA38/period))/period;
 obj=*(void**)((u8*)arg0+0x4c);
 if(obj) {
@@ -3912,7 +3912,7 @@ void StaffRoll_Draw(void *arg0) {
     void fn_8000A174(s32, s32);
     s16 fn_80010B78(void *, s32, f32);
     void fn_8001019C(s32, s32, s32, void *, ...);
-    f64 fn_802387C8(f64, f64);
+    f64 fmod(f64, f64);
     extern s32 gUiInputFlags;
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA1C;
@@ -3951,7 +3951,7 @@ void StaffRoll_Draw(void *arg0) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
     step = *(f32 *)((u8 *)arg0 + 0x38);
-    period = (f32)fn_802387C8(lbl_8036BA28, lbl_8036BA30);
+    period = (f32)fmod(lbl_8036BA28, lbl_8036BA30);
     scroll = (f32)(s32)(period * (step + lbl_8036BA38 / period)) / period;
     ent = (Entry *)Hash_Lookup(StaffRoll_str + 0x387);
     limit = lbl_8036BA00;

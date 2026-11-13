@@ -9242,11 +9242,11 @@ s32 fn_80257820(u16 arg0) {
 }
 
 void fn_80257940(s32 arg0) {
-    f64 fn_802387C8(f64, f32, f32);
+    f64 fmod(f64, f32, f32);
     extern f64 lbl_8036C280;
     extern f32 lbl_8036C288;
     extern f32 lbl_8036C28C;
-    fn_8022C568(lbl_8036C28C * (f32) fn_802387C8(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
+    fn_8022C568(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
 }
 
 s32 fn_80257998(u8 *arg0) {
@@ -15095,7 +15095,7 @@ s32 fn_8026386C(
     extern u32 lbl_802A4560[];
 
     extern void *fn_802637A4(s32);
-    extern f64 fn_802387C8(f64, f32);
+    extern f64 fmod(f64, f32);
     extern void *memset(void *, s32, u32);
 
     u8 *data;
@@ -15160,7 +15160,7 @@ s32 fn_8026386C(
 
             *(s32 *)(record + 0x7C) = offset;
 
-            value = (f32)fn_802387C8(
+            value = (f32)fmod(
                 lbl_8036C390,
                 (f32)(-(s32)(lbl_802A4560[index] * 3)) / frequency
             );
@@ -15289,7 +15289,7 @@ s32 fn_80263D30(
     extern u32 lbl_802A4570[];
 
     extern void *fn_802637A4(s32);
-    extern f64 fn_802387C8(f64, f32);
+    extern f64 fmod(f64, f32);
     extern void *memset(void *, s32, u32);
 
     u8 *data;
@@ -15362,7 +15362,7 @@ s32 fn_80263D30(
 
             *(s32 *)(record + 0xB8) = offset;
 
-            value = (f32)fn_802387C8(
+            value = (f32)fmod(
                 lbl_8036C3C0,
                 (f32)(-(s32)(lbl_802A4570[index] * 3)) / frequency
             );

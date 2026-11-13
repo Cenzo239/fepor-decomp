@@ -18791,7 +18791,7 @@ u64 fn_800F8328(void *, u64);
 s16 fn_800F833C(void *);
 void *fn_800F8344(void *);
 void *fn_800F834C(void *);
-f64 fn_802387C8(f64, f64);
+f64 fmod(f64, f64);
 extern u32 lbl_80330EAC[];
 extern s32 lbl_80366E6C;
 extern f32 lbl_8036A06C, lbl_8036A078, lbl_8036A07C, lbl_8036A080, lbl_8036A090;
@@ -18873,7 +18873,7 @@ extern f64 lbl_8036A088;
                 if (var_f1_2 < lbl_8036A080) {
                     var_f1_2 = lbl_8036A080;
                 }
-                var_r31 = (s32)(lbl_8036A090 * (f32)var_r31 * (f32)fn_802387C8(var_f1_2, lbl_8036A088));
+                var_r31 = (s32)(lbl_8036A090 * (f32)var_r31 * (f32)fmod(var_f1_2, lbl_8036A088));
             } else {
                 if (var_f1 > lbl_8036A07C) {
                     var_f1 = lbl_8036A07C;
@@ -18881,7 +18881,7 @@ extern f64 lbl_8036A088;
                 if (var_f1 < lbl_8036A080) {
                     var_f1 = lbl_8036A080;
                 }
-                var_r31 = (s32)((f32)var_r31 * (f32)fn_802387C8(var_f1, lbl_8036A088));
+                var_r31 = (s32)((f32)var_r31 * (f32)fmod(var_f1, lbl_8036A088));
             }
         }
     }
@@ -18935,7 +18935,7 @@ s16 fn_800F833C(void *);
 void *fn_800F8344(void *);
 void *fn_800F834C(void *);
 u8 fn_800F8350(void *);
-f64 fn_802387C8(f64,f64);
+f64 fmod(f64,f64);
 extern u32 lbl_80330EAC[];
 extern s32 lbl_80366E68;
 extern f32 lbl_8036A06C,lbl_8036A078,lbl_8036A07C,lbl_8036A080,lbl_8036A090;
@@ -18979,7 +18979,7 @@ extern f64 lbl_8036A098;
         if (var_f1_2 < lbl_8036A080) {
             var_f1_2 = lbl_8036A080;
         }
-        var_r30 = (s32) (lbl_8036A090 * (f32) var_r30 * (f32) fn_802387C8(var_f1_2, lbl_8036A098));
+        var_r30 = (s32) (lbl_8036A090 * (f32) var_r30 * (f32) fmod(var_f1_2, lbl_8036A098));
     } else {
         if (var_f1 > lbl_8036A07C) {
             var_f1 = lbl_8036A07C;
@@ -18987,7 +18987,7 @@ extern f64 lbl_8036A098;
         if (var_f1 < lbl_8036A080) {
             var_f1 = lbl_8036A080;
         }
-        var_r30 = (s32) ((f32) var_r30 * (f32) fn_802387C8(var_f1, lbl_8036A098));
+        var_r30 = (s32) ((f32) var_r30 * (f32) fmod(var_f1, lbl_8036A098));
     }
     if (arg1 != 0) {
         var_r30 = (s32) (lbl_8036A06C * ((f32) var_r30 * (f32) *(s8 *)((u8 *)arg0 + 5)));
@@ -19033,7 +19033,7 @@ extern f64 lbl_8036A098;
 }
 #pragma scheduling off
 f32 fn_800F738C(u8 arg0, f32 farg0) {
-    f64 fn_802387C8(f64, f64);
+    f64 fmod(f64, f64);
     extern f32 lbl_8036A07C;
     extern f32 lbl_8036A080;
     extern f64 lbl_8036A088;
@@ -19049,9 +19049,9 @@ f32 fn_800F738C(u8 arg0, f32 farg0) {
         farg0 = lim;
     }
     if (arg0 != 0) {
-        return (f32)fn_802387C8(farg0, lbl_8036A098);
+        return (f32)fmod(farg0, lbl_8036A098);
     }
-    return (f32)fn_802387C8(farg0, lbl_8036A088);
+    return (f32)fmod(farg0, lbl_8036A088);
 }
 #pragma scheduling reset
 void fn_800F74C0(Unit* unit)
