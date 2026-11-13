@@ -1091,9 +1091,9 @@ void fn_80243F14(void *arg0, u8 *arg1) {
 
 static inline u32 SynthFindVoice(u32 arg0) {
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     SynthVoice *p;
-    for (p = lbl_80368974; p != NULL; p = p->next) {
+    for (p = gKeyedVoices; p != NULL; p = p->next) {
         if (p->vid == (arg0 & 0x7FFFFFFF)) {
             return p->id | (arg0 & 0x80000000);
         }
@@ -1108,10 +1108,10 @@ static inline u32 SynthFindVoice(u32 arg0) {
 
 u32 Sound_FindVoiceId(u32 arg0) {
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     SynthVoice *p;
 
-    for (p = lbl_80368974; p != NULL; p = p->next) {
+    for (p = gKeyedVoices; p != NULL; p = p->next) {
         if (p->vid == (arg0 & 0x7FFFFFFF)) {
             return p->id | (arg0 & 0x80000000);
         }
@@ -1141,7 +1141,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     extern StreamState *lbl_80368968;
     extern SynthVoice *lbl_8036896C;
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
 
     SynthVoice *sv;
     SynthVoice *n;
@@ -1176,9 +1176,9 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     if (n != NULL) {
         n->prev = NULL;
     }
-    sv->next = lbl_80368974;
-    if (lbl_80368974 != NULL) {
-        lbl_80368974->prev = sv;
+    sv->next = gKeyedVoices;
+    if (gKeyedVoices != NULL) {
+        gKeyedVoices->prev = sv;
     }
     z = 0;
     sv->prev = NULL;
@@ -1201,7 +1201,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
         *(s32 *)(base + 0x1834) = z;
         *(s32 *)(base + 0x186C) = z;
     }
-    lbl_80368974 = sv;
+    gKeyedVoices = sv;
     sv->state = 1;
 
     base = (u8 *)sv;
@@ -1559,7 +1559,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     do {
         vid = lbl_80368958;
         lbl_80368958 = (vid + 1) & 0x7FFFFFFF;
-        for (n = lbl_80368974; n != NULL; n = n->next) {
+        for (n = gKeyedVoices; n != NULL; n = n->next) {
             if (n->vid == vid) {
                 vid = 0xFFFFFFFF;
                 break;
@@ -1581,12 +1581,12 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
 
 void Sound_VoiceKeyOn(SynthVoice *sv) {
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
 
     if (sv->prev != NULL) {
         sv->prev->next = sv->next;
     } else {
-        lbl_80368974 = sv->next;
+        gKeyedVoices = sv->next;
     }
     if (sv->next != NULL) {
         sv->next->prev = sv->prev;
@@ -1601,12 +1601,12 @@ void Sound_VoiceKeyOn(SynthVoice *sv) {
 
 #pragma global_optimizer on
 void fn_80244AE8(s32 arg0) {
- extern SynthVoice *gActiveVoices; extern SynthVoice *lbl_80368974;
+ extern SynthVoice *gActiveVoices; extern SynthVoice *gKeyedVoices;
  extern SynthVoice lbl_8033F990[]; extern VidList *lbl_80368964;
  void fn_80257224(s32);
  u32 id, vid; SynthVoice *p, *sv; VidList *tail; u32 i; VidList *node; SynthVoice *walk;
  vid=arg0&0x7FFFFFFF;
- for(p=lbl_80368974;p!=NULL;p=p->next) {
+ for(p=gKeyedVoices;p!=NULL;p=p->next) {
   if(p->vid==vid) {id=p->id|(arg0&0x80000000);goto found;}
  }
  for(p=gActiveVoices;p!=NULL;p=p->next) {
@@ -1619,7 +1619,7 @@ found:
    sv=&lbl_8033F990[id];
    if(sv->state==1) {
     if(sv->prev!=NULL) sv->prev->next=sv->next;
-    else lbl_80368974=sv->next;
+    else gKeyedVoices=sv->next;
     if(sv->next!=NULL) sv->next->prev=sv->prev;
     sv->next=gActiveVoices;
     if(gActiveVoices!=NULL) gActiveVoices->prev=sv;
@@ -1658,7 +1658,7 @@ found:
 
 void fn_80244D64(s32 arg0) {
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     extern SynthVoice *lbl_8036896C;
     extern SynthVoice lbl_8033F990[];
     extern VidList *lbl_80368964;
@@ -1675,7 +1675,7 @@ void fn_80244D64(s32 arg0) {
     SynthVoice *p;
 
     vid = arg0 & 0x7FFFFFFF;
-    p = lbl_80368974;
+    p = gKeyedVoices;
     goto loop1_test;
 loop1:
     if (p->vid == vid) {
@@ -1710,7 +1710,7 @@ found:
                 if (sv->prev != NULL) {
                     sv->prev->next = sv->next;
                 } else {
-                    lbl_80368974 = sv->next;
+                    gKeyedVoices = sv->next;
                 }
                 i = 0;
                 walk = sv;
@@ -1821,10 +1821,10 @@ found:
 
 void fn_80245014(u16 arg0) {
     extern void *gActiveVoices;
-    extern void *lbl_80368974;
+    extern void *gKeyedVoices;
     void *var_r30;
 
-    var_r30 = lbl_80368974;
+    var_r30 = gKeyedVoices;
     while (var_r30 != NULL) {
         if ((u16) M2C_FIELD(var_r30, u16 *, 0xA) == arg0) {
             fn_80244D64(M2C_FIELD(var_r30, s32 *, 0xC));
@@ -1859,7 +1859,7 @@ void fn_802450A4(u32 arg0, u16 arg1) {
 
 void Sound_VoiceKeyOff(s32 arg0) {
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     extern SynthVoice lbl_8033F990[];
     u32 id;
     u32 vid;
@@ -1867,7 +1867,7 @@ void Sound_VoiceKeyOff(s32 arg0) {
     SynthVoice *sv;
 
     vid = arg0 & 0x7FFFFFFF;
-    for (p = lbl_80368974; p != NULL; p = p->next) {
+    for (p = gKeyedVoices; p != NULL; p = p->next) {
         if (p->vid == vid) {
             id = p->id | (arg0 & 0x80000000);
             goto found;
@@ -1892,12 +1892,12 @@ found:
             if (sv->next != NULL) {
                 sv->next->prev = sv->prev;
             }
-            sv->next = lbl_80368974;
-            if (lbl_80368974 != NULL) {
-                lbl_80368974->prev = sv;
+            sv->next = gKeyedVoices;
+            if (gKeyedVoices != NULL) {
+                gKeyedVoices->prev = sv;
             }
             sv->prev = NULL;
-            lbl_80368974 = sv;
+            gKeyedVoices = sv;
             sv->state = 1;
         }
         return;
@@ -1933,7 +1933,7 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
     typedef struct { s32 a; s32 b; } Pair;
     extern SynthVoice lbl_8033F990[];
     extern SynthVoice *gActiveVoices;
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     SynthVoice *sv;
     u8 *base;
     u8 *p;
@@ -2072,12 +2072,12 @@ void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
                     if (sv->next != NULL) {
                         sv->next->prev = sv->prev;
                     }
-                    sv->next = lbl_80368974;
-                    if (lbl_80368974 != NULL) {
-                        lbl_80368974->prev = sv;
+                    sv->next = gKeyedVoices;
+                    if (gKeyedVoices != NULL) {
+                        gKeyedVoices->prev = sv;
                     }
                     sv->prev = NULL;
-                    lbl_80368974 = sv;
+                    gKeyedVoices = sv;
                     sv->state = 1;
                 }
             } else {
@@ -2351,7 +2351,7 @@ if(time>tempo->buffers[tempo->active*2+1])return 1;
 }
 
 void fn_80247358(u32 arg0) {
-    extern SynthVoice *lbl_80368974;
+    extern SynthVoice *gKeyedVoices;
     extern SynthVoice *lbl_8036896C;
     extern VidList *lbl_80368964;
     extern u8 lbl_8036895C;
@@ -2393,7 +2393,7 @@ void fn_80247358(u32 arg0) {
     if (arg0 == 0) {
         return;
     }
-    sv = lbl_80368974;
+    sv = gKeyedVoices;
     goto outer_test;
 outer:
     svNext = sv->next;
@@ -2623,7 +2623,7 @@ outer:
         if (sv->prev != NULL) {
             sv->prev->next = svNext;
         } else {
-            lbl_80368974 = svNext;
+            gKeyedVoices = svNext;
         }
         if (svNext != NULL) {
             svNext->prev = sv->prev;
@@ -2674,7 +2674,7 @@ outer_test:
 #pragma opt_strength_reduction reset
 void fn_80247D74(void)
 {
-    extern u32 lbl_80368974;
+    extern u32 gKeyedVoices;
 
     u8 *pool1;
     u8 *pool2;
@@ -2683,7 +2683,7 @@ void fn_80247D74(void)
     u32 i;
     u32 j;
 
-    lbl_80368974 = 0;
+    gKeyedVoices = 0;
 
     /* Rest of your existing function */
 }
@@ -4290,14 +4290,14 @@ u16 fn_8024B594(s32 arg0, s32 arg1) {
 }
 
 s32 fn_8024B5B0(u32 arg0) {
-    extern void *lbl_80368974;
+    extern void *gKeyedVoices;
     s32 i;
     void *r5;
     void *r6;
 
     i = 8;
 loop_1:
-    r6 = lbl_80368974;
+    r6 = gKeyedVoices;
 loop_18:
     if (r6 == NULL) {
         i -= 1;
