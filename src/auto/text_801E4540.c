@@ -369,7 +369,7 @@ void fn_801E4CF8(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801E50E4(void *arg0) {
+void TabMenu_Draw(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void fn_80009B8C(s32);
@@ -2580,7 +2580,7 @@ void fn_801E9978(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_8013FCE0(void *, void *, void **, void **);
     void fn_801E4CF8(void *);
-    void fn_801E50E4(void);
+    void TabMenu_Draw(void);
     void fn_801E7D18(void);
     extern u8 lbl_8027EB78[];
     extern void *lbl_802981AC[];
@@ -2660,7 +2660,7 @@ skip_sub:
     t = *(s16 *)((u8 *)arg0 + 0x36);
     fn_80057860(*(void **)((u8 *)arg0 + 0x5C), t);
     fn_800578A0(*(void **)((u8 *)arg0 + 0x5C), lbl_8036B714);
-    fn_80059208(fn_801E50E4, arg0);
+    fn_80059208(TabMenu_Draw, arg0);
     fn_80059208(fn_801E7D18, arg0);
 }
 
