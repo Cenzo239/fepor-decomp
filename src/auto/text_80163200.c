@@ -10256,7 +10256,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     void Prim2D_Begin(void);
     s32 fn_800102BC(s32, f32);
     s16 Text_MeasureWidth(s32, s32, f32);
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     s32 *Ui_GetColor(s32);
     extern u8 lbl_802F0308[];
     extern f32 lbl_8036AB6C;
@@ -10368,7 +10368,7 @@ extern "C" void Ui_DrawLabeledSlot(void *arg0, void *arg1, void *arg2) {
     Prim2D_EndPrim();
 
     if (((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5() != 0) {
-        fn_8005AC24(lbl_802F0308, (s32)f31, (s32)(f30 + (f32)t29), ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5());
+        Ui_DrawIcon(lbl_802F0308, (s32)f31, (s32)(f30 + (f32)t29), ((Obj *)*(void **)((u8 *)arg2 + 0x34))->v5());
     }
 
     Prim2D_Begin();
@@ -12561,7 +12561,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Text_Draw(s16, s16, s32, void *, ...);
     s32 fn_800102BC(M2C_UNK, f32);
-    M2C_UNK fn_8005AC24(void *, s32, s32, u8);
+    M2C_UNK Ui_DrawIcon(void *, s32, s32, u8);
     s32 fn_8010586C(void *);
     s32 *Ui_GetColor(s32);
     extern u8 lbl_80278780[];
@@ -12588,7 +12588,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     fn_80007220(1, lbl_8036ABB8);
     fn_80006B18(temp_arg1 + 0x8C, temp_arg2 + off, 0, 0, M2C_FIELD(arg4, u8 *, 0x1A));
     Prim2D_EndPrim();
-    fn_8005AC24(lbl_802F0350, temp_arg1, temp_arg2, M2C_FIELD(arg4, u8 *, 0x19));
+    Ui_DrawIcon(lbl_802F0350, temp_arg1, temp_arg2, M2C_FIELD(arg4, u8 *, 0x19));
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
@@ -12601,7 +12601,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Prim2D_PrepareTex(void);
     s32 fn_800102BC(s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
-    void fn_8005AC24(void *, s16, s16, u8);
+    void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     extern u8 lbl_80278780[];
     extern u8 lbl_802F0350[];
@@ -12632,7 +12632,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     a1 = (s16)a1;
     a2 = (s16)a2;
     Text_Draw((s16)(a1 + 0x20), (s16)(a2 + color), flag, lbl_80278780 + 0xB3, ret);
-    fn_8005AC24(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+    Ui_DrawIcon(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
@@ -12646,7 +12646,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     void Prim2D_PrepareTex(void);
     s32 fn_800102BC(s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
-    void fn_8005AC24(void *, s16, s16, u8);
+    void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     extern u8 lbl_80278780[];
     extern u8 lbl_802F0350[];
@@ -12678,7 +12678,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
         a1 = (s16)a1;
         a2 = (s16)a2;
         Text_Draw((s16)(a1 + 0x20), (s16)(a2 + off), flag, lbl_80278780 + 0xB3, ret);
-        fn_8005AC24(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
+        Ui_DrawIcon(lbl_802F0350, (s16)a1, (s16)a2, *((u8 *)unit + 0x19));
     }
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
@@ -15484,7 +15484,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     s8 fn_80036DE0(void *, void *);
     s32 fn_80036F5C(void *, s32);
     s32 fn_8003B938(u8);
-    void fn_8005AC24(void *, s16, s16, s32);
+    void Ui_DrawIcon(void *, s16, s16, s32);
     void *fn_800A8A88(void *);
     extern u8 gUiUnitInfoStrings[];
     extern u8 lbl_802F0308[];
@@ -15590,7 +15590,7 @@ draw_unit:
         void *name = fn_800A8A88(*(void **)((u8 *)unit + 0x188));
         x = (s16)(temp_arg2 + halfH);
         Text_Draw((s16)(temp_arg1 + 0x18), x, mode, gUiUnitInfoStrings + 0x14A, name);
-        fn_8005AC24(lbl_802F0308, temp_arg1, x, slot);
+        Ui_DrawIcon(lbl_802F0308, temp_arg1, x, slot);
     }
 }
 #pragma use_lmw_stmw reset

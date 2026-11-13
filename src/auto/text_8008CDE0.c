@@ -60,13 +60,13 @@ void fn_8008CDE0(void *arg0, s32 arg1) {
 }
 
 void fn_8008CFB4(void **arg0, s32 arg1, s32 arg2) {
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 lbl_802F0308[];
     void *p;
 
     p = *arg0;
     if (p != NULL) {
-        fn_8005AC24(lbl_802F0308, arg1, arg2, (u8)(p != NULL ? *((u8 *)p + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(lbl_802F0308, arg1, arg2, (u8)(p != NULL ? *((u8 *)p + 0x15) : 0) + 0x61);
     }
 }
 

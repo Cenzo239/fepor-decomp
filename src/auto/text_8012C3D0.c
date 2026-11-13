@@ -2528,7 +2528,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     void fn_80009B8C(s32);
     void fn_8000A248(void);
     void *fn_80105C5C(void *, u8);
-    void fn_8005AC24(void *, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32);
     void fn_80130920(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
@@ -2551,7 +2551,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     do {
         temp = fn_80105C5C((void *)(unit + 0x1BC), (u8)i);
         if (temp != NULL && *(u8 *)((u8 *)temp + 0x19) != 0) {
-            fn_8005AC24(base, off, 0);
+            Ui_DrawIcon(base, off, 0);
             off += 0x20;
         }
         i += 1;

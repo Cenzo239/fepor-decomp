@@ -187,7 +187,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
-extern "C" void fn_8005AC24(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+extern "C" void Ui_DrawIcon(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     struct color {
         u8 r, g, b, a;
     };

@@ -118,7 +118,7 @@ void fn_80083F08(void *arg0) {
     s8 fn_8003B2D0(void *);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8004DDB8(s32);
-    void fn_8005AC24(void *, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32);
     void fn_8005F780(void *, s32);
     void Model_SetAlpha(void *, u8);
     void fn_80060060(void *);
@@ -469,7 +469,7 @@ void fn_80083F08(void *arg0) {
         if (*(s16 *)((u8 *)walk + 0x24) == -1) {
             break;
         }
-        fn_8005AC24(lbl_802F0308, (s32)(f23v + (f32)xOff), (s32)f31v);
+        Ui_DrawIcon(lbl_802F0308, (s32)(f23v + (f32)xOff), (s32)f31v);
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();

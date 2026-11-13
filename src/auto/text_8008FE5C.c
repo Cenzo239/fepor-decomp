@@ -136,7 +136,7 @@ void fn_800900F4(u8 *arg0) {
     void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     void UnitInfo_DrawPanel(s32, s32, u8);
     void *fn_800A8A88(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
@@ -175,7 +175,7 @@ void fn_800900F4(u8 *arg0) {
     t = (s32)lbl_802F0308;
     x = 0x48;
     while (b < fn_8010424C(self + 0x1A4)) {
-        fn_8005AC24((void *)t, x, 0x4A, fn_8010418C(self + 0x1A4, b));
+        Ui_DrawIcon((void *)t, x, 0x4A, fn_8010418C(self + 0x1A4, b));
         x += 0x1A;
         b += 1;
     }
@@ -199,7 +199,7 @@ void fn_800900F4(u8 *arg0) {
     t = (s32)lbl_802F0308;
     x = 0x48;
     while (b < fn_8010424C(self + 0x1A4)) {
-        fn_8005AC24((void *)t, x, 0xAE, fn_8010418C(self + 0x1A4, b));
+        Ui_DrawIcon((void *)t, x, 0xAE, fn_8010418C(self + 0x1A4, b));
         x += 0x1A;
         b += 1;
     }

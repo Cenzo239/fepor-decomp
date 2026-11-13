@@ -55,7 +55,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     s32 UnitRef_GetName(void *);
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     void sprintf(void *, void *, s32, ...);
     void strcpy(void *, void *);
     extern u16 lbl_8026CD08[];
@@ -112,6 +112,6 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
             Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)arg0 + 4));
             Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
         }
-        fn_8005AC24(lbl_802F0308, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(lbl_802F0308, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
     }
 }

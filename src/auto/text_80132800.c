@@ -933,7 +933,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     void Prim2D_SetAlphaByte(s32);
     s32 fn_800102BC(s32, f32);
     void *Item_GetByIid(void *);
-    void fn_8005AC24(void *, s16, s16, s32);
+    void Ui_DrawIcon(void *, s16, s16, s32);
     s32 Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, s32, ...);
     extern f32 lbl_8036A5AC;
@@ -1005,7 +1005,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
                 if (*(u32 *)cell != 0) {
                     p = Item_GetByIid(*(void **)cell);
                     x16 = (s16)x;
-                    fn_8005AC24(lbl_802F0308, x16, curY16, ((u8 *)p)[0x15] + 0x61);
+                    Ui_DrawIcon(lbl_802F0308, x16, curY16, ((u8 *)p)[0x15] + 0x61);
                     Prim2D_Begin();
                     Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
                     Prim2D_PrepareTex();
@@ -1177,7 +1177,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     s32 fn_800102BC(s32, s16, s32, f32);
     void *Msg_Expand(void *);
-    void fn_8005AC24(void *, s16, s16, s16);
+    void Ui_DrawIcon(void *, s16, s16, s16);
     void Prim2D_SetTex(s32, u16);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void Prim2D_SetAlphaByte(s32);
@@ -1239,7 +1239,7 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     for (i = 0; i < 5; i++) {
         cx = p->x;
         cy = p->y;
-        fn_8005AC24(lbl_802F0308, cx, cy, p->unk4);
+        Ui_DrawIcon(lbl_802F0308, cx, cy, p->unk4);
         Prim2D_Begin();
         Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
         Prim2D_PrepareTex();
@@ -2192,7 +2192,7 @@ void fn_80136168(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5
     void fn_80007220(s32, f32);
     void fn_80006B18(s16, s16, s32, s32, u8);
     void Prim2D_EndPrim(void);
-    void fn_8005AC24(void *, s16, s16, u8);
+    void Ui_DrawIcon(void *, s16, s16, u8);
     s32 fn_8010586C(void *);
     s32 *Ui_GetColor(s32);
     extern u8 lbl_80276720[];
@@ -2213,7 +2213,7 @@ void fn_80136168(void *arg0, s16 arg1, s16 arg2, s32 unused, void *arg4, u8 arg5
     fn_80007220(1, lbl_8036A5E0);
     fn_80006B18((s16)(arg1 + 0x20), (s16)(arg2 + 8), 0, 0, ((u8 *)arg4)[0x1A]);
     Prim2D_EndPrim();
-    fn_8005AC24(lbl_802F0350, arg1, arg2, ((u8 *)arg4)[0x19]);
+    Ui_DrawIcon(lbl_802F0350, arg1, arg2, ((u8 *)arg4)[0x19]);
 }
 
 s32 fn_80136268(void *arg0, void *arg1) {
@@ -2810,7 +2810,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     u8 fn_8005A310(void *, u8, s32);
     void fn_8001E5D0(u8, s32);
     s32 fn_800102BC(s32, f32);
-    void fn_8005AC24(void *, s16, s16, u8);
+    void Ui_DrawIcon(void *, s16, s16, u8);
     void Prim2D_SetTex(s32, u16);
     void Text_Draw(s16, s16, s32, void *, ...);
     s8 fn_8003A398(s32);
@@ -2871,7 +2871,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
             unit = (u8)fn_8005A310(lbl_802F0308, idx_u8, 0);
             fn_8001E5D0(idx_u8, 0);
         after_icon:
-            fn_8005AC24(lbl_802F0308, x, (s16)((s16)slot + ((fn_800102BC(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
+            Ui_DrawIcon(lbl_802F0308, x, (s16)((s16)slot + ((fn_800102BC(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
             Prim2D_Begin();
             Prim2D_SetTex(0, (u16)(flags | 3));
             Prim2D_PrepareTex();
@@ -6038,13 +6038,8 @@ void fn_8013CD7C(void)
 }
 
 void *fn_8013CD90(void *arg0) {
-    void *Msg_Expand(void *);
-    extern u8 lbl_80276908[];
-    arg0 = *(void **)((u8 *)arg0 + 0x20);
-    if (arg0 != NULL) {
-        return Msg_Expand(arg0);
-    }
-    return lbl_80276908 + 0x72;
+ void *Msg_Expand(void *); extern u8 lbl_80276908[];
+ return *(void **)((u8 *)arg0 + 0x20) ? Msg_Expand(*(void **)((u8 *)arg0 + 0x20)) : lbl_80276908 + 0x72;
 }
 
 s32 fn_8013CDCC(void) {
@@ -6382,7 +6377,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_AddPrim(M2C_UNK, s32, s16);
     M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
     s32 fn_800102BC(M2C_UNK, f32);
-    M2C_UNK fn_8005AC24(M2C_UNK *, s32, s32, s32);
+    M2C_UNK Ui_DrawIcon(M2C_UNK *, s32, s32, s32);
     s32 *Ui_GetColor(M2C_UNK);
     extern M2C_UNK lbl_802F0308;
     extern f32 lbl_8036A6C0;
@@ -6430,7 +6425,7 @@ void fn_8013DAD8(void **arg0, void *arg1, void *arg2) {
     temp_r3_6 = M2C_FIELD(arg2, void ***, 0x34);
     if (M2C_FIELD(*temp_r3_6, s32 (**)(void **), 0x1C)(temp_r3_6) != 0) {
         temp_r3_7 = M2C_FIELD(arg2, void ***, 0x34);
-        fn_8005AC24(&lbl_802F0308, (s32) temp_f31, (s32) (temp_f30 + (f32) (temp_r5_2 >> 1)), M2C_FIELD(*temp_r3_7, s32 (**)(void **), 0x1C)(temp_r3_7));
+        Ui_DrawIcon(&lbl_802F0308, (s32) temp_f31, (s32) (temp_f30 + (f32) (temp_r5_2 >> 1)), M2C_FIELD(*temp_r3_7, s32 (**)(void **), 0x1C)(temp_r3_7));
     }
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);

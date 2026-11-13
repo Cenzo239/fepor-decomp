@@ -264,7 +264,7 @@ void fn_8007FF58(void *arg0) {
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     s32 fn_80105A5C(void *);
     void *fn_8010586C(void *);
     void fn_8007F844(u8, f32, f32, f32);
@@ -409,7 +409,7 @@ void fn_8007FF58(void *arg0) {
         item = *(void **)((u8 *)slot + 0x38);
         if (item != 0) {
             fx = (x + lbl_80369570) + (f32)off;
-            fn_8005AC24(lbl_802F0350, (s32)(fx - lbl_803694E4), ypos, *(u8 *)((u8 *)item + 0x19));
+            Ui_DrawIcon(lbl_802F0350, (s32)(fx - lbl_803694E4), ypos, *(u8 *)((u8 *)item + 0x19));
             Prim2D_Begin();
             Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
@@ -433,7 +433,7 @@ void fn_8007FF58(void *arg0) {
         item = *(void **)((u8 *)slot + 0x38);
         if (item != 0) {
             fy = baseY + (f32)((i - 2) << 5);
-            fn_8005AC24(lbl_802F0350, iconX, (s32)fy, *(u8 *)((u8 *)item + 0x19));
+            Ui_DrawIcon(lbl_802F0350, iconX, (s32)fy, *(u8 *)((u8 *)item + 0x19));
             Prim2D_Begin();
             Prim2D_SetTex(0, 0x13);
             Prim2D_PrepareTex();
@@ -694,7 +694,7 @@ void fn_80081830(void *arg0) {
     s16 Text_MeasureWidth(void *, s32, f32);
     u32 fn_800A883C(void *, s32);
     s32 fn_800A886C(s8 *);
-    void fn_8005AC24(void *, s32, s32, s32);
+    void Ui_DrawIcon(void *, s32, s32, s32);
     extern u8 gUiStrings[];
     extern u8 lbl_802F0350[];
     extern s32 lbl_803674F4;
@@ -780,9 +780,9 @@ void fn_80081830(void *arg0) {
     fn_8001003C((s32)((lbl_803695A4 + x) - (f32)(width / 2)), (s32)(lbl_8036959C + y), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
     spC = (s8)(fn_800A883C(unit, 0) >> 24);
     xpos = (s32)(lbl_803694BC + x);
-    fn_8005AC24(lbl_802F0350, xpos, (s32)(lbl_80369574 + y), fn_800A886C(&spC));
+    Ui_DrawIcon(lbl_802F0350, xpos, (s32)(lbl_80369574 + y), fn_800A886C(&spC));
     sp8 = (s8)(fn_800A883C(unit, 1) >> 24);
-    fn_8005AC24(lbl_802F0350, xpos, (s32)(lbl_803695A8 + y), fn_800A886C(&sp8));
+    Ui_DrawIcon(lbl_802F0350, xpos, (s32)(lbl_803695A8 + y), fn_800A886C(&sp8));
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
