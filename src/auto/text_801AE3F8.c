@@ -1956,7 +1956,7 @@ void fn_801B1ED4(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801B224C(void *arg0) {
+extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     u16 fn_8001D2A4(void *);
