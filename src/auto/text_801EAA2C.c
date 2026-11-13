@@ -2672,7 +2672,8 @@ void fn_801EF6BC(void *arg0) {
     String_Destroy(&spE4, -1);
 }
 
-void GActor_LoadByName(void *arg0, char *arg1) {
+void GActor_LoadByName(void *arg0, char *name) {
+    /* Build asset paths from name and load model/tex/anim into a new GActor at +0xD0. */
     void *Map_Get(void *);
     s32 fn_8005C84C(void);
     void GActor_Finalize(void *);
@@ -2691,8 +2692,8 @@ void GActor_LoadByName(void *arg0, char *arg1) {
     extern char gGActorPathExt[];
     extern f32 gGActorDefaultScale;
 
-    String sp54;
-    String sp48;
+    String path;
+    String dir;
     String sp3C;
     String sp30;
     String sp24;
@@ -2700,72 +2701,72 @@ void GActor_LoadByName(void *arg0, char *arg1) {
     String spC;
     void *sp8;
     void *self;
-    void *obj;
+    void *actor;
     void *tmp;
     s32 n;
-    f32 f;
+    f32 scale;
 
     self = arg0;
-    if (arg1 == NULL || *(s32 *)((u8 *)self + 0xA8) != 0) {
+    if (name == NULL || *(s32 *)((u8 *)self + 0xA8) != 0) {
         *(void **)((u8 *)self + 0xD0) = NULL;
         return;
     }
 
-    sp54.cap = 0;
-    sp54.size = 0;
-    sp54.data = 0;
-    sp54.cap = 0;
-    String_Init(&sp48, gGActorPathExt + 0x1D6, &sp8);
-    n = strlen(arg1);
-    fn_800C992C(&sp48, arg1, n);
+    path.cap = 0;
+    path.size = 0;
+    path.data = 0;
+    path.cap = 0;
+    String_Init(&dir, gGActorPathExt + 0x1D6, &sp8);
+    n = strlen(name);
+    fn_800C992C(&dir, name, n);
     n = strlen((char *)((u32)gGActorPathExt + 0x1BF));
-    fn_800C992C(&sp48, (char *)((u8 *)gGActorPathExt + 0x1BF), n);
-    n = strlen(arg1);
-    fn_800C992C(&sp48, arg1, n);
-    String_ConcatCStr(&sp3C, &sp48, gGActorPathExt + 0x229);
-    String_Assign(&sp54, &sp3C, 0, -1);
+    fn_800C992C(&dir, (char *)((u8 *)gGActorPathExt + 0x1BF), n);
+    n = strlen(name);
+    fn_800C992C(&dir, name, n);
+    String_ConcatCStr(&sp3C, &dir, gGActorPathExt + 0x229);
+    String_Assign(&path, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
-    String_CStr(&sp54);
+    String_CStr(&path);
     *(s32 *)((u8 *)self + 0xCC) = fn_8005C84C();
     *(void **)((u8 *)self + 0xD0) = GActor_Create();
-    String_ConcatCStr(&sp30, &sp48, gGActorPathExt + 0x208);
-    String_Assign(&sp54, &sp30, 0, -1);
+    String_ConcatCStr(&sp30, &dir, gGActorPathExt + 0x208);
+    String_Assign(&path, &sp30, 0, -1);
     String_Destroy(&sp30, -1);
-    String_CStr(&sp54);
+    String_CStr(&path);
     tmp = (void *)fn_8006CE14();
-    obj = *(void **)((u8 *)self + 0xD0);
-    *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
-    String_ConcatCStr(&sp24, &sp48, gGActorPathExt + 0x20C);
-    String_Assign(&sp54, &sp24, 0, -1);
+    actor = *(void **)((u8 *)self + 0xD0);
+    *(s32 *)((u8 *)actor + 0x48) = (s32)tmp;
+    String_ConcatCStr(&sp24, &dir, gGActorPathExt + 0x20C);
+    String_Assign(&path, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
-    String_CStr(&sp54);
+    String_CStr(&path);
     tmp = (void *)fn_80065EE8();
-    obj = *(void **)((u8 *)self + 0xD0);
-    *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
-    String_ConcatCStr(&sp18, &sp48, gGActorPathExt + 0x1C9);
-    String_Assign(&sp54, &sp18, 0, -1);
+    actor = *(void **)((u8 *)self + 0xD0);
+    *(s32 *)((u8 *)actor + 0x40) = (s32)tmp;
+    String_ConcatCStr(&sp18, &dir, gGActorPathExt + 0x1C9);
+    String_Assign(&path, &sp18, 0, -1);
     String_Destroy(&sp18, -1);
-    String_CStr(&sp54);
+    String_CStr(&path);
     tmp = (void *)fn_8006D948();
-    obj = *(void **)((u8 *)self + 0xD0);
-    *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
-    String_ConcatCStr(&spC, &sp48, gGActorPathExt + 0x20F);
-    String_Assign(&sp54, &spC, 0, -1);
+    actor = *(void **)((u8 *)self + 0xD0);
+    *(s32 *)((u8 *)actor + 0x4C) = (s32)tmp;
+    String_ConcatCStr(&spC, &dir, gGActorPathExt + 0x20F);
+    String_Assign(&path, &spC, 0, -1);
     String_Destroy(&spC, -1);
-    String_CStr(&sp54);
+    String_CStr(&path);
     tmp = (void *)fn_800639B4();
-    obj = *(void **)((u8 *)self + 0xD0);
-    *(s32 *)((u8 *)obj + 0x44) = (s32)tmp;
+    actor = *(void **)((u8 *)self + 0xD0);
+    *(s32 *)((u8 *)actor + 0x44) = (s32)tmp;
     GActor_Finalize(*(void **)((u8 *)self + 0xD0));
-    obj = *(void **)((u8 *)self + 0xD0);
-    f = gGActorDefaultScale;
-    *(u32 *)obj |= 0x01040000;
-    obj = *(void **)((u8 *)self + 0xD0);
-    *(f32 *)((u8 *)obj + 0x5C) = f;
-    tmp = Map_Get(obj);
+    actor = *(void **)((u8 *)self + 0xD0);
+    scale = gGActorDefaultScale;
+    *(u32 *)actor |= 0x01040000;
+    actor = *(void **)((u8 *)self + 0xD0);
+    *(f32 *)((u8 *)actor + 0x5C) = scale;
+    tmp = Map_Get(actor);
     *(void **)((u8 *)tmp + 0x34) = *(void **)((u8 *)self + 0xD0);
-    String_Destroy(&sp48, -1);
-    String_Destroy(&sp54, -1);
+    String_Destroy(&dir, -1);
+    String_Destroy(&path, -1);
 }
 
 #pragma global_optimizer off
