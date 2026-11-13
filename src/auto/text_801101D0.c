@@ -4994,7 +4994,7 @@ s32 fn_8011C5B4(void) {
     return 0;
 }
 
-s32 fn_8011C5DC(void)
+s32 BgWin_OnOk(void)
 {
     extern u8 *gBgWin;
 
@@ -5040,7 +5040,7 @@ void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_800E3F54(void *);
     extern char BgWin_str[];
     extern u8 BgWin_vtable[];
-    extern void fn_8011C5DC(void);
+    extern void BgWin_OnOk(void);
     String sp78;
     String sp6C;
     String sp60;
@@ -5088,7 +5088,7 @@ void *BgWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(void **)((u8 *)self + 0x41C) = temp;
     String_Destroy(&sp24, -1);
     temp = *(void **)((u8 *)self + 0x430);
-    *(void **)((u8 *)temp + 0xA4) = (void *)fn_8011C5DC;
+    *(void **)((u8 *)temp + 0xA4) = (void *)BgWin_OnOk;
     temp = *(void **)((u8 *)self + 0x434);
     *(void **)((u8 *)temp + 0xA4) = (void *)fn_8011C5B4;
     *(void **)((u8 *)self + 0x14) = *(void **)((u8 *)self + 0x424);
