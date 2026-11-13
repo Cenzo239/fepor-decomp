@@ -3001,7 +3001,7 @@ void fn_800B5708(void) {
     void fn_800B90C4(void);
     void fn_800BA438(void);
     void fn_800BA38C(void);
-    void fn_800BA298(void);
+    void ScriptCmd_SoundSetParam(void);
     void fn_80108FA8(void);
     void fn_800BA230(void);
     void fn_8005BB2C(void);
@@ -3176,7 +3176,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x3E2, fn_800B90C4, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x3F5, fn_800BA438, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x3FD, fn_800BA38C, 3);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x405, fn_800BA298, 6);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x405, ScriptCmd_SoundSetParam, 6);
     Script_RegisterCommand(lbl_8026ECB8 + 0x412, fn_80108FA8, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x41E, fn_800BA230, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x431, fn_8005BB2C, 0);
@@ -5397,7 +5397,7 @@ s32 fn_800BA230(u32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+s32 ScriptCmd_SoundSetParam(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     u32 Sound_FindByName(void);
     void fn_80109448(u32, s32, s32, f32, f32, f32);
     extern f32 gPercentToFloat;
