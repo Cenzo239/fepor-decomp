@@ -4253,7 +4253,8 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     }
 }
 #pragma peephole on
-void StaffRoll_VecReserve(void *arg0, u32 arg1) {
+/* Grow the staff-roll vector so it can hold at least newCap elements. */
+void StaffRoll_VecReserve(void *arg0, u32 newCap) {
     typedef struct {
         s32 unk0;
         s32 unk4;
@@ -4280,22 +4281,22 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
     Elem *tp;
     s32 ts;
 
-    if (arg1 > vec->cap) {
-        if (arg1 > 0x1FFFFFFF) {
+    if (newCap > vec->cap) {
+        if (newCap > 0x1FFFFFFF) {
             fprintf(__files + 0xA0, StaffRoll_str + 0x3D8);
             abort();
         }
         tmp.cap = 0;
         tmp.size = 0;
         tmp.data = NULL;
-        p = Heap_Alloc(arg1 * 8);
+        p = Heap_Alloc(newCap * 8);
         if (p == NULL) {
             fprintf(__files + 0xA0, StaffRoll_str + 0x3BE);
             abort();
         }
         tmp.data = p;
         dst = p;
-        tmp.cap = arg1;
+        tmp.cap = newCap;
         src = vec->data;
         end = src + vec->size;
         for (; src < end; src++, dst++) {
