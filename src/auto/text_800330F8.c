@@ -7328,6 +7328,7 @@ void fn_80043E88(void) {
 }
 
 #pragma global_optimizer off
+/* Build a terrain-aligned 3x4 basis matrix from map tile corner heights at (x, y). */
 void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     f32 Map_GetTileCornerHeight(void *, s32, s32, s32);
     void fn_80203290(f32 *, f32 *, f32 *);
@@ -7337,20 +7338,20 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     extern f32 lbl_80368F10;
     extern f32 lbl_80368F00;
     extern f32 lbl_80368EE4;
-    f32 spA4[3];
-    f32 sp98[3];
-    f32 sp8C[3];
-    f32 sp80[3];
-    f32 sp74[3];
-    f32 sp68[3];
-    f32 sp5C[3];
-    f32 sp50[3];
-    f32 sp44[3];
-    f32 sp38[3];
-    f32 sp2C[3];
-    f32 sp20[3];
-    f32 sp14[3];
-    f32 sp8[3];
+    f32 xAxis[3];
+    f32 binormal[3];
+    f32 normal[3];
+    f32 unit[3];
+    f32 nTri0[3];
+    f32 nTri1[3];
+    f32 edge0b[3];
+    f32 edge0a[3];
+    f32 edge0bTmp[3];
+    f32 edge0aTmp[3];
+    f32 edge1b[3];
+    f32 edge1a[3];
+    f32 edge1bTmp[3];
+    f32 edge1aTmp[3];
     u8 *tbl;
     s32 ix;
     s32 iy;
@@ -7365,106 +7366,106 @@ void Map_BuildSlopeMatrix(void *cam, f32 *mtx, f32 x, f32 y) {
     iy = (s32)y;
     base = Map_GetTileCornerHeight(gBattleMap, ix, iy, 0);
 
-    *(u32 *)&sp50[0] = *(u32 *)(tbl + 0x94);
-    *(u32 *)&sp50[1] = *(u32 *)(tbl + 0x98);
-    *(u32 *)&sp50[2] = *(u32 *)(tbl + 0x9C);
+    *(u32 *)&edge0a[0] = *(u32 *)(tbl + 0x94);
+    *(u32 *)&edge0a[1] = *(u32 *)(tbl + 0x98);
+    *(u32 *)&edge0a[2] = *(u32 *)(tbl + 0x9C);
     tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 1) - base;
     {
         u32 t2;
         u32 tz;
         u32 t1;
         u32 t0;
-        t0 = *(u32 *)&sp50[0];
-        t1 = *(u32 *)&sp50[1];
+        t0 = *(u32 *)&edge0a[0];
+        t1 = *(u32 *)&edge0a[1];
         t2 = *(u32 *)(tbl + 0xA0);
-        sp50[2] = tmp;
-        *(u32 *)&sp38[0] = t0;
-        *(u32 *)&sp38[1] = t1;
-        tz = *(u32 *)&sp50[2];
-        *(u32 *)&sp38[2] = tz;
-        *(u32 *)&sp5C[0] = t2;
-        *(u32 *)&sp5C[1] = *(u32 *)(tbl + 0xA4);
-        *(u32 *)&sp5C[2] = *(u32 *)(tbl + 0xA8);
+        edge0a[2] = tmp;
+        *(u32 *)&edge0aTmp[0] = t0;
+        *(u32 *)&edge0aTmp[1] = t1;
+        tz = *(u32 *)&edge0a[2];
+        *(u32 *)&edge0aTmp[2] = tz;
+        *(u32 *)&edge0b[0] = t2;
+        *(u32 *)&edge0b[1] = *(u32 *)(tbl + 0xA4);
+        *(u32 *)&edge0b[2] = *(u32 *)(tbl + 0xA8);
     }
     tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 2) - base;
-    *(u32 *)&sp44[0] = *(u32 *)&sp5C[0];
-    *(u32 *)&sp44[1] = *(u32 *)&sp5C[1];
-    sp5C[2] = tmp;
-    *(u32 *)&sp44[2] = *(u32 *)&sp5C[2];
-    fn_80203290(sp38, sp44, sp74);
+    *(u32 *)&edge0bTmp[0] = *(u32 *)&edge0b[0];
+    *(u32 *)&edge0bTmp[1] = *(u32 *)&edge0b[1];
+    edge0b[2] = tmp;
+    *(u32 *)&edge0bTmp[2] = *(u32 *)&edge0b[2];
+    fn_80203290(edge0aTmp, edge0bTmp, nTri0);
 
     base = Map_GetTileCornerHeight(gBattleMap, ix, iy, 3);
 
-    *(u32 *)&sp20[0] = *(u32 *)(tbl + 0x7C);
-    *(u32 *)&sp20[1] = *(u32 *)(tbl + 0x80);
-    *(u32 *)&sp20[2] = *(u32 *)(tbl + 0x84);
+    *(u32 *)&edge1a[0] = *(u32 *)(tbl + 0x7C);
+    *(u32 *)&edge1a[1] = *(u32 *)(tbl + 0x80);
+    *(u32 *)&edge1a[2] = *(u32 *)(tbl + 0x84);
     tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 2) - base;
     {
         u32 t2;
         u32 tz;
         u32 t1;
         u32 t0;
-        t0 = *(u32 *)&sp20[0];
-        t1 = *(u32 *)&sp20[1];
+        t0 = *(u32 *)&edge1a[0];
+        t1 = *(u32 *)&edge1a[1];
         t2 = *(u32 *)(tbl + 0x88);
-        sp20[2] = tmp;
-        *(u32 *)&sp8[0] = t0;
-        *(u32 *)&sp8[1] = t1;
-        tz = *(u32 *)&sp20[2];
-        *(u32 *)&sp8[2] = tz;
-        *(u32 *)&sp2C[0] = t2;
-        *(u32 *)&sp2C[1] = *(u32 *)(tbl + 0x8C);
-        *(u32 *)&sp2C[2] = *(u32 *)(tbl + 0x90);
+        edge1a[2] = tmp;
+        *(u32 *)&edge1aTmp[0] = t0;
+        *(u32 *)&edge1aTmp[1] = t1;
+        tz = *(u32 *)&edge1a[2];
+        *(u32 *)&edge1aTmp[2] = tz;
+        *(u32 *)&edge1b[0] = t2;
+        *(u32 *)&edge1b[1] = *(u32 *)(tbl + 0x8C);
+        *(u32 *)&edge1b[2] = *(u32 *)(tbl + 0x90);
     }
     tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 1) - base;
-    *(u32 *)&sp14[0] = *(u32 *)&sp2C[0];
-    *(u32 *)&sp14[1] = *(u32 *)&sp2C[1];
-    sp2C[2] = tmp;
-    *(u32 *)&sp14[2] = *(u32 *)&sp2C[2];
-    fn_80203290(sp8, sp14, sp68);
+    *(u32 *)&edge1bTmp[0] = *(u32 *)&edge1b[0];
+    *(u32 *)&edge1bTmp[1] = *(u32 *)&edge1b[1];
+    edge1b[2] = tmp;
+    *(u32 *)&edge1bTmp[2] = *(u32 *)&edge1b[2];
+    fn_80203290(edge1aTmp, edge1bTmp, nTri1);
 
     t = (y + (x - (f32)(s8)ix)) - (f32)(s8)iy;
     if (lbl_80368F10 == t) {
-        sp8C[0] = lbl_80368F00 * (sp74[0] + sp68[0]);
-        sp8C[1] = lbl_80368F00 * (sp74[1] + sp68[1]);
-        sp8C[2] = lbl_80368F00 * (sp74[2] + sp68[2]);
+        normal[0] = lbl_80368F00 * (nTri0[0] + nTri1[0]);
+        normal[1] = lbl_80368F00 * (nTri0[1] + nTri1[1]);
+        normal[2] = lbl_80368F00 * (nTri0[2] + nTri1[2]);
     } else if (t > lbl_80368F10) {
-        sp8C[0] = sp68[0];
-        sp8C[1] = sp68[1];
-        sp8C[2] = sp68[2];
+        normal[0] = nTri1[0];
+        normal[1] = nTri1[1];
+        normal[2] = nTri1[2];
     } else {
-        sp8C[0] = sp74[0];
-        sp8C[1] = sp74[1];
-        sp8C[2] = sp74[2];
+        normal[0] = nTri0[0];
+        normal[1] = nTri0[1];
+        normal[2] = nTri0[2];
     }
 
     zero = lbl_80368EE4;
     one = lbl_80368F10;
-    spA4[1] = zero;
-    spA4[0] = one;
-    spA4[2] = zero;
-    fn_80203290(sp8C, spA4, sp98);
-    fn_80203290(sp98, sp8C, spA4);
+    xAxis[1] = zero;
+    xAxis[0] = one;
+    xAxis[2] = zero;
+    fn_80203290(normal, xAxis, binormal);
+    fn_80203290(binormal, normal, xAxis);
 
-    fn_802031E8(spA4, sp80);
-    mtx[0] = sp80[0];
-    mtx[4] = sp80[1];
-    mtx[8] = sp80[2];
+    fn_802031E8(xAxis, unit);
+    mtx[0] = unit[0];
+    mtx[4] = unit[1];
+    mtx[8] = unit[2];
 
-    fn_802031E8(sp98, sp80);
-    mtx[1] = sp80[0];
-    mtx[5] = sp80[1];
-    mtx[9] = sp80[2];
+    fn_802031E8(binormal, unit);
+    mtx[1] = unit[0];
+    mtx[5] = unit[1];
+    mtx[9] = unit[2];
 
-    fn_802031E8(sp8C, sp80);
+    fn_802031E8(normal, unit);
     {
         f32 z;
-        t = sp80[0];
+        t = unit[0];
         z = lbl_80368EE4;
         mtx[2] = t;
-        t = sp80[1];
+        t = unit[1];
         mtx[6] = t;
-        t = sp80[2];
+        t = unit[2];
         mtx[10] = t;
         mtx[11] = z;
         mtx[7] = z;
