@@ -2730,7 +2730,7 @@ end:
 #pragma cplusplus on
 extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -2794,7 +2794,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetRect(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
-    fn_800075D8();
+    Prim2D_EmitQuad();
     sp8 = lbl_80368D9C;
     spC = lbl_80368D98;
     sp10 = lbl_80368D94;

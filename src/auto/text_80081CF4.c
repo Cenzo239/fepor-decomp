@@ -112,7 +112,7 @@ s32 fn_80081CF4(void) {
 #pragma use_lmw_stmw off
 void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -175,7 +175,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_SetQuadMin(x, y, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(x + sw, y + sh, w, h);
     Prim2D_SetColor(color.r, color.g, color.b, 0xFF);
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036942C);
@@ -348,7 +348,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     void fn_8000A174(s32, s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     u16 **fn_8006EDD8(s32, s32);
@@ -418,7 +418,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     bx = lbl_8036943C + x;
     by = lbl_80369438 + y;
     Prim2D_SetRect(bx, by, lbl_803694D4, lbl_80369434);
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_SetColor(0, 0, 0, 0xFF);
     Prim2D_EndPrim();
     tex = *fn_8006EDD8(lbl_803674F4, 0x1D);
@@ -437,7 +437,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_SetQuadMin(tx, by, lbl_80369418, lbl_80369418);
     Prim2D_SetQuadMax(tx + sw, by + sh, w, h);
     Prim2D_SetColor(color.r, color.g, color.b, 0xFF);
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
     fn_80009C0C(lbl_8036942C);

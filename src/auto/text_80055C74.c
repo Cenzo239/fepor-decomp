@@ -382,7 +382,7 @@ void fn_80056AE0(void *arg0, u32 arg1) {
 
 void fn_80056B0C(void *arg0) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -456,14 +456,14 @@ void fn_80056B0C(void *arg0) {
         sp40 = lbl_8036C420;
         sp44 = lbl_8036C41C;
         fn_800072B0(&sp44, &sp40, &sp3C, &sp38);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         temp_r30 = temp_r30 + temp_r30;
         Prim2D_SetQuadMax(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
@@ -473,7 +473,7 @@ void fn_80056B0C(void *arg0) {
         sp30 = lbl_803690E4;
         sp34 = lbl_803690E0;
         fn_800072B0(&sp34, &sp30, &sp2C, &sp28);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         break;
     case 1:
@@ -485,13 +485,13 @@ void fn_80056B0C(void *arg0) {
         sp20 = lbl_8036C430;
         sp24 = lbl_8036C42C;
         fn_800072B0(&sp24, &sp20, &sp1C, &sp18);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         Prim2D_SetQuadMax(lbl_80369138, (f32)*(s16 *)((u8 *)arg0 + 4), lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         break;
     case 2:
@@ -500,7 +500,7 @@ void fn_80056B0C(void *arg0) {
         temp_r30 = temp_r30 + temp_r30;
         Prim2D_SetQuadMax(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
@@ -510,7 +510,7 @@ void fn_80056B0C(void *arg0) {
         sp10 = lbl_803690F4;
         sp14 = lbl_803690F0;
         fn_800072B0(&sp14, &sp10, &spC, &sp8);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         break;
     }
@@ -536,7 +536,7 @@ void fn_80056B0C(void *arg0) {
 }
 
 void fn_80057020(void *arg0) {
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -577,7 +577,7 @@ void fn_80057020(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, lbl_8036914C);
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_SetTransform((f32)temp_r29, (f32)(var_r28 + 8), lbl_8036912C + *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
@@ -585,7 +585,7 @@ void fn_80057020(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, (f32)(var_r31 - 0x10));
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_EndPrim();
     Prim2D_Begin();
     temp_r30 = var_r28 + var_r31;
@@ -594,7 +594,7 @@ void fn_80057020(void *arg0) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, lbl_8036914C);
-    fn_800075D8();
+    Prim2D_EmitQuad();
     Prim2D_EndPrim();
     temp_r4 = *(s32 *)((u8 *)arg0 + 0x14);
     temp_r25 = (var_r31 * *(s32 *)((u8 *)arg0 + 0x1C)) / temp_r4;
@@ -612,7 +612,7 @@ void fn_80057020(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, (f32)var_r27);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
     } else {
         s32 mid;
@@ -623,7 +623,7 @@ void fn_80057020(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, lbl_8036914C);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform((f32)temp_r29, (f32)(mid + 8), *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
@@ -631,7 +631,7 @@ void fn_80057020(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, (f32)(var_r27 - 0x10));
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         Prim2D_Begin();
         Prim2D_SetTransform((f32)temp_r29, (f32)(var_r27 + (mid - 8)), *(f32 *)((u8 *)arg0 + 0xC), lbl_8036912C);
@@ -639,7 +639,7 @@ void fn_80057020(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRectUv(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369148, lbl_8036914C);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
     }
     temp_r3 = *(void **)((u8 *)arg0 + 0x24);
@@ -886,7 +886,7 @@ void *fn_80057A64(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void fn_80057AE0(void *arg0) {
     void fn_80007538(void);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void fn_800077B0(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -973,7 +973,7 @@ void fn_80057AE0(void *arg0) {
             break;
         }
         fn_800077B0((f32)(temp_r31 * var_r30), lbl_80369108, (f32)var_r30, (f32)var_r29);
-        fn_800075D8();
+        Prim2D_EmitQuad();
         switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
         case 4:
             fn_80007538();

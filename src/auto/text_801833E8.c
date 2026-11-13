@@ -3743,7 +3743,7 @@ void fn_8018DDA8(void *arg0) {
 
 void fn_8018DE24(void *arg0) {
     f32 fn_800067BC(s32, f32, f32, f32, f32);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
@@ -3855,7 +3855,7 @@ void fn_8018DE24(void *arg0) {
             Prim2D_SetQuadMin(fx, fy, lbl_8036ADA0, lbl_8036ADA0);
             Prim2D_SetQuadMax(fx + (f32)h, fy + (f32)w, (f32)h, (f32)w);
             Prim2D_SetColor(col[0], col[1], col[2], 0xFF);
-            fn_800075D8();
+            Prim2D_EmitQuad();
             Prim2D_EndPrim();
         }
     }

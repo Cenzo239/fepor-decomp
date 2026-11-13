@@ -60,7 +60,7 @@ void fn_8008F4BC(void *arg0) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 fn_800067B4(void);
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
     void fn_80007668(s32 *, s32);
     extern f32 lbl_80369754;
@@ -115,7 +115,7 @@ void fn_8008F4BC(void *arg0) {
             c0 = pal[(n - fn_800067B4()) & 0x1F];
             fn_800072B0(&c0, &c1, &c2, &c3);
         }
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         cur += step;
         idx += 1;
@@ -147,7 +147,7 @@ void fn_8008F4BC(void *arg0) {
             c0 = pal[(n - fn_800067B4()) & 0x1F];
             fn_800072B0(&c0, &c1, &c2, &c3);
         }
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         cur += step;
         idx += 1;
@@ -179,7 +179,7 @@ void fn_8008F4BC(void *arg0) {
             c0 = pal[(n - fn_800067B4()) & 0x1F];
             fn_800072B0(&c0, &c1, &c2, &c3);
         }
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         cur += step;
         idx += 1;
@@ -211,7 +211,7 @@ void fn_8008F4BC(void *arg0) {
             c0 = pal[(n - fn_800067B4()) & 0x1F];
             fn_800072B0(&c0, &c1, &c2, &c3);
         }
-        fn_800075D8();
+        Prim2D_EmitQuad();
         Prim2D_EndPrim();
         cur += step;
         idx += 1;

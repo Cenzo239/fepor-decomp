@@ -2346,48 +2346,64 @@ f32 fn_801099A0(void *arg0, u8 arg1) {
     }
 }
 
-void fn_80109A54(void *arg0, u8 arg1, f32 arg2) {
-    extern f32 lbl_8036A138;
-
-    if (lbl_8036A138 == arg2) {
-        return;
-    }
-    switch (arg1) {
+void fn_80109A54(void *arg0, u8 arg1, f32 arg2)
+{
+  extern f32 lbl_8036A138;
+  void **new_var;
+  if (lbl_8036A138 == arg2)
+  {
+    return;
+  }
+  new_var = &arg0;
+  switch (arg1)
+  {
     case 0:
-        *(f32 *)((u8 *)arg0 + 0x40) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x40)) = arg2;
+      break;
+
     case 1:
-        *(f32 *)((u8 *)arg0 + 0x44) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x44)) = arg2;
+      break;
+
     case 2:
-        *(f32 *)((u8 *)arg0 + 0x48) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x48)) = arg2;
+      break;
+
     case 3:
-        *(f32 *)((u8 *)arg0 + 0x4C) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x4C)) = arg2;
+      break;
+
     case 4:
-        *(f32 *)((u8 *)arg0 + 0x50) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x50)) = arg2;
+      break;
+
     case 5:
-        *(f32 *)((u8 *)arg0 + 0x54) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x54)) = arg2;
+      break;
+
     case 6:
-        *(f32 *)((u8 *)arg0 + 0x58) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x58)) = arg2;
+      break;
+
     case 7:
-        *(f32 *)((u8 *)arg0 + 0x54) = arg2;
-        *(f32 *)((u8 *)arg0 + 0x58) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x54)) = arg2;
+      *((f32 *) (((u8 *) arg0) + 0x58)) = arg2;
+      break;
+
     case 8:
-        *(f32 *)((u8 *)arg0 + 0x5C) = arg2;
-        break;
+      *((f32 *) (((u8 *) arg0) + 0x5C)) = arg2;
+      break;
+
     case 9:
-        *(u8 *)((u8 *)arg0 + 0x60) = (u8)(s32)arg2;
-        break;
+      *((u8 *) (((u8 *) (*new_var)) + 0x60)) = (u8) ((s32) arg2);
+      break;
+
     case 10:
-        *(u8 *)((u8 *)arg0 + 0x61) = (u8)(s32)arg2;
-        break;
-    }
+      *((u8 *) (((u8 *) (*new_var)) + 0x61)) = (u8) ((s32) arg2);
+      break;
+
+  }
+
 }
 
 void fn_80109B00(void *arg0, s8 arg1) {
@@ -2784,7 +2800,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void fn_8010A704(void *arg0, u8 arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
-    void fn_800075D8(void);
+    void Prim2D_EmitQuad(void);
     void fn_80007770(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
@@ -2866,7 +2882,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
         (f32)*(u16 *)((u8 *)arg0 + 0x1E),
         (f32)*(u16 *)((u8 *)arg0 + 0x20),
         (f32)*(u16 *)((u8 *)arg0 + 0x22));
-    fn_800075D8();
+    Prim2D_EmitQuad();
     sp8 = sp18;
     spC = sp1C;
     sp10 = sp20;

@@ -908,7 +908,7 @@ void fn_80007588(void)
     *(f32 *)((u8 *)object + 0x4C) = y;
 }
 
-void fn_800075D8(void) {
+void Prim2D_EmitQuad(void) {
     extern void *lbl_80367140;
     void *object;
 
