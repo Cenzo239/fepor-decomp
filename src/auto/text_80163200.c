@@ -6839,6 +6839,7 @@ void fn_801707D4(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void Ui_ConfirmItemTake(void *arg0) {
+    /* Copy the selected list item into a free unit inventory slot, or show a full-inventory popup. */
     s32 *ListWidget_GetSelected(void *);
     u32 *Item_GetFlagsPtr(s32);
     s32 UnitInv_FindEmptyLow(void *);
@@ -6882,57 +6883,57 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
         virtual Vec2s v13() = 0;
     };
 
-    void *var_r28;
-    void *temp_r31;
-    void *temp_r30;
-    s32 temp_r29;
-    s32 var_r27;
-    u32 *bits;
-    void *proc;
-    u32 sp14;
-    u32 sp10;
-    s16 var_r3;
+    void *self;
+    void *list;
+    void *inv;
+    s32 item;
+    s32 slot;
+    u32 *flags;
+    void *popup;
+    u32 posLow;
+    u32 posHigh;
+    s16 next;
 
-    var_r28 = arg0;
-    temp_r31 = *(void **)((u8 *)arg0 + 0x54);
-    temp_r30 = *(void **)((u8 *)arg0 + 0x4c);
-    temp_r29 = *ListWidget_GetSelected(temp_r31);
-    bits = Item_GetFlagsPtr(temp_r29);
-    if ((*(u64 *)bits & 5ULL) != 0) {
-        var_r27 = UnitInv_FindEmptyLow(temp_r30);
-        if (!(*(u32 *)((u8 *)temp_r30 + 0x60) & 1) || ((s16)var_r27 < 0)) {
-            *(Vec2s *)&sp14 = ((Obj *)temp_r31)->v13();
-            proc = fn_8000CAA0(gUiMsgPopupProc, var_r28);
-            *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
-            *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
-            *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
+    self = arg0;
+    list = *(void **)((u8 *)arg0 + 0x54);
+    inv = *(void **)((u8 *)arg0 + 0x4c);
+    item = *ListWidget_GetSelected(list);
+    flags = Item_GetFlagsPtr(item);
+    if ((*(u64 *)flags & 5ULL) != 0) {
+        slot = UnitInv_FindEmptyLow(inv);
+        if (!(*(u32 *)((u8 *)inv + 0x60) & 1) || ((s16)slot < 0)) {
+            *(Vec2s *)&posLow = ((Obj *)list)->v13();
+            popup = fn_8000CAA0(gUiMsgPopupProc, self);
+            *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posLow;
+            *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posLow + 1);
+            *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x260;
             return;
         }
     } else {
-        var_r27 = UnitInv_FindEmptyHigh(temp_r30);
-        if (!(*(u32 *)((u8 *)temp_r30 + 0x60) & 2) || ((s16)var_r27 < 0)) {
-            *(Vec2s *)&sp10 = ((Obj *)temp_r31)->v13();
-            proc = fn_8000CAA0(gUiMsgPopupProc, var_r28);
-            *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
-            *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
-            *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
+        slot = UnitInv_FindEmptyHigh(inv);
+        if (!(*(u32 *)((u8 *)inv + 0x60) & 2) || ((s16)slot < 0)) {
+            *(Vec2s *)&posHigh = ((Obj *)list)->v13();
+            popup = fn_8000CAA0(gUiMsgPopupProc, self);
+            *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posHigh;
+            *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posHigh + 1);
+            *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x260;
             return;
         }
     }
     Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
-    Item_Copy(UnitInv_GetSlot(temp_r30, (s16)var_r27), temp_r29);
-    UnitInv_Refresh(temp_r30);
-    fn_801436AC(temp_r31, temp_r29);
-    fn_80143C9C(temp_r31);
-    fn_8001D580(temp_r29);
-    var_r3 = fn_80164FBC(temp_r30, *(s16 *)((u8 *)temp_r30 + 0x4c));
-    if (var_r3 < 0) {
-        var_r3 = fn_80164E78(temp_r30, *(s16 *)((u8 *)temp_r30 + 0x4c));
+    Item_Copy(UnitInv_GetSlot(inv, (s16)slot), item);
+    UnitInv_Refresh(inv);
+    fn_801436AC(list, item);
+    fn_80143C9C(list);
+    fn_8001D580(item);
+    next = fn_80164FBC(inv, *(s16 *)((u8 *)inv + 0x4c));
+    if (next < 0) {
+        next = fn_80164E78(inv, *(s16 *)((u8 *)inv + 0x4c));
     }
-    if (var_r3 >= 0) {
-        *(s16 *)((u8 *)temp_r30 + 0x4c) = var_r3;
+    if (next >= 0) {
+        *(s16 *)((u8 *)inv + 0x4c) = next;
     } else {
-        Process_Goto(var_r28, 0x24);
+        Process_Goto(self, 0x24);
     }
 }
 
