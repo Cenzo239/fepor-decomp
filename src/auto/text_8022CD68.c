@@ -3654,7 +3654,7 @@ f64 fn_80238378(s32 arg0, f64 farg0) {
 
 #pragma global_optimizer off
 f64 __kernel_cos(f64 farg0, f64 farg1) {
-    extern f64 lbl_8036C010;
+    extern f64 __kcos_one;
     extern f64 lbl_8036C018;
     extern f64 lbl_8036C020;
     extern f64 lbl_8036C028;
@@ -3673,13 +3673,13 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
     ix = ((s32 *)&x)[0] & 0x7FFFFFFF;
     if (ix < 0x3E400000) {
         if ((s32)farg0 == 0) {
-            return lbl_8036C010;
+            return __kcos_one;
         }
     }
     z = x * x;
     r = z * (((((lbl_8036C040 * z + lbl_8036C038) * z + lbl_8036C030) * z + lbl_8036C028) * z + lbl_8036C020) * z + lbl_8036C018);
     if (ix < 0x3FD33333) {
-        return lbl_8036C010 - ((lbl_8036C048 * z) - ((z * r) - (x * farg1)));
+        return __kcos_one - ((lbl_8036C048 * z) - ((z * r) - (x * farg1)));
     }
     if (ix > 0x3FE90000) {
         qx = lbl_8036C050;
@@ -3687,7 +3687,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
         ((s32 *)&qx)[0] = ix - 0x00200000;
         ((s32 *)&qx)[1] = 0;
     }
-    return (lbl_8036C010 - qx) - (((lbl_8036C048 * z) - qx) - ((z * r) - (x * farg1)));
+    return (__kcos_one - qx) - (((lbl_8036C048 * z) - qx) - ((z * r) - (x * farg1)));
 }
 
 s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
