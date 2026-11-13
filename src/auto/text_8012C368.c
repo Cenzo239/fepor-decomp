@@ -41,3 +41,4 @@ void fn_8012C368(void) {
     dst[0] = pC30;
     dst[1] = pCB4;
 }
+__declspec(section ".ctors") static void (*const lbl_80267AE8)(void) = fn_8012C368;
