@@ -6594,7 +6594,7 @@ void fn_80170034(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80170058(void *arg0) {
+extern "C" void Ui_RestoreUnitListAfterItem(void *arg0) {
     void Ui_AddChild(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
