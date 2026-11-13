@@ -617,7 +617,7 @@ void fn_80034130(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 /* Promote the foe copy, then queue battle anims for each stat gain vs the base unit. */
 void Battle_QueuePromotionGains(s32 battle, void *unit) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void Unit_Promote(void *);
     void fn_801A981C(void *, s32, s32);
     s32 Unit_GetHp(void *);
@@ -644,7 +644,7 @@ void Battle_QueuePromotionGains(s32 battle, void *unit) {
     s8 dCon;
     s32 t;
 
-    fn_801A7794((void *)battle, unit, unit);
+    Battle_SetupPair((void *)battle, unit, unit);
     Unit_Promote((void *)(battle + 0x2E0));
     *(u32 *)(battle + 0xCAC) |= 0x2000;
     fn_801A981C((void *)battle, 0, -1);

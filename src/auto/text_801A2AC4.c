@@ -228,7 +228,7 @@ s32 fn_801A30B8(void) {
 
 s32 fn_801A30C0(s32 arg0) {
     void Unit_SetMapPos(void *, u8, u8);
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void fn_8019BCC0(s32, s32, s32);
@@ -238,7 +238,7 @@ s32 fn_801A30C0(s32 arg0) {
 
     ctx = gUiContext;
     Unit_SetMapPos(*(void **)(ctx + 4), ctx[0xF], ctx[0x10]);
-    fn_801A7794(gBattle, *(void **)ctx, *(void **)(ctx + 4));
+    Battle_SetupPair(gBattle, *(void **)ctx, *(void **)(ctx + 4));
     fn_801A49AC(gBattle, ctx[0xA]);
     fn_80036150(gBattle);
     fn_8019BCC0((s8)ctx[0xF], (s8)ctx[0x10], arg0);
@@ -261,7 +261,7 @@ s32 fn_801A3190(void) {
 s32 fn_801A31C8(s32 arg0) {
     void fn_8003CCB0(void *, u8 *, u8 *);
     void fn_8003816C(void *, u8, u8);
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void fn_8019BC50(s8, s8, s32);
@@ -283,7 +283,7 @@ s32 fn_801A31C8(s32 arg0) {
     map[(s8)sp9 + ((s8)sp8 << 6) + 0xD] = 0xFF;
     fn_8003CCB0(other, &sp9, &sp8);
     fn_8003816C(other, sp9, sp8);
-    fn_801A7794(lbl_80330EAC, *(void **)lbl_802EF4C8, *(void **)(ctx + 4));
+    Battle_SetupPair(lbl_80330EAC, *(void **)lbl_802EF4C8, *(void **)(ctx + 4));
     fn_801A49AC(lbl_80330EAC, lbl_802EF4C8[0xA]);
     fn_80036150(lbl_80330EAC);
     fn_8019BC50((s8)sp9, (s8)sp8, arg0);
@@ -298,7 +298,7 @@ s32 fn_801A32C0(void) {
 }
 
 s32 fn_801A32F8(s32 arg0) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -307,7 +307,7 @@ s32 fn_801A32F8(s32 arg0) {
     extern u16 gBattle[];
     u8 *base;
 
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     base = (u8 *)gBattle;
     ((struct { u8 hi:3; u8 lo:5; } *)(base + 0x486))->hi = 7;
@@ -317,7 +317,7 @@ s32 fn_801A32F8(s32 arg0) {
 }
 
 s32 fn_801A3390(s32 arg0) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
@@ -329,7 +329,7 @@ s32 fn_801A3390(s32 arg0) {
     extern u16 gUiContext[];
     extern u16 gBattle[];
 
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
@@ -343,7 +343,7 @@ s32 fn_801A3390(s32 arg0) {
 }
 
 s32 fn_801A3478(s32 arg0) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
@@ -356,7 +356,7 @@ s32 fn_801A3478(s32 arg0) {
     extern u16 gBattle[];
     u8 *base;
 
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
@@ -372,7 +372,7 @@ s32 fn_801A3478(s32 arg0) {
 }
 
 s32 fn_801A3570(s32 arg0) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
@@ -385,7 +385,7 @@ s32 fn_801A3570(s32 arg0) {
     extern u16 gBattle[];
     u8 *base;
 
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
         && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
@@ -408,7 +408,7 @@ s32 fn_801A3668(void) {
 }
 
 s32 fn_801A36A0(s32 arg0) {
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -417,7 +417,7 @@ s32 fn_801A36A0(s32 arg0) {
     extern u16 gBattle[];
     extern void fn_801A372C;
 
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
+    Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
     MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A372C);
@@ -2374,7 +2374,7 @@ void fn_801A7528(void *arg0, void *arg1) {
         }
     }
 }
-void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
+void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
     void fn_8002011C(void *, u8, u8, s32, s32);

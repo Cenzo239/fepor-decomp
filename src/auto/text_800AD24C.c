@@ -258,7 +258,7 @@ void fn_800AD76C(void *arg0) {
     void fn_801A4BE0(void *);
     void *fn_8002F62C(void *);
     void *UnitRef_GetUnit(void);
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     void fn_80036248(void *);
     extern u8 gBattle[];
     extern u8 lbl_802EF4E0[];
@@ -280,7 +280,7 @@ void fn_800AD76C(void *arg0) {
     fn_8002F62C(lbl_802EF4E0);
     f740 = UnitRef_GetUnit();
     unit = *(void **)((u8 *)arg0 + 0x30);
-    fn_801A7794(gBattle, unit, f740);
+    Battle_SetupPair(gBattle, unit, f740);
     if (*(u8 *)((u8 *)arg0 + 0x3B) != 0) {
         gBattle[0x2D6] = 1;
     }
@@ -4400,7 +4400,7 @@ s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
     void Process_CreateChild(void *, s32);
     void fn_80033418(void *);
     void Battle_Execute(void *, s32);
-    void fn_801A7794(void *, void *, void *);
+    void Battle_SetupPair(void *, void *, void *);
     s32 fn_800C0658(void);
     void fn_80013864(void);
     extern u8 lbl_8028D200[];
@@ -4419,7 +4419,7 @@ s32 fn_800B841C(u8 arg0, u8 arg1, u8 arg2) {
     } else {
         var_r5 = NULL;
     }
-    fn_801A7794(gBattle, var_r6, var_r5);
+    Battle_SetupPair(gBattle, var_r6, var_r5);
     Battle_Execute(gBattle, 0xF);
     fn_80033418(gBattle + 0x8A0);
     if (arg2 != 0) {
