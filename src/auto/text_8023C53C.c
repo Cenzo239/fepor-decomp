@@ -1125,7 +1125,7 @@ u32 Sound_FindVoiceId(u32 arg0) {
 }
 
 s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 arg5, s16 arg6) {
-    void fn_80244A84(void *);
+    void Sound_VoiceKeyOn(void *);
     void fn_80246D48(void);
     void fn_80247F1C(s32, u8, s32);
     void fn_8024A780(u8, u16, u8, u8, s32);
@@ -1549,7 +1549,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
 
     base[0xF02] = 0;
     if (arg4 != NULL && (*(u32 *)arg4 & 0x10)) {
-        fn_80244A84(sv);
+        Sound_VoiceKeyOn(sv);
     }
     saved = lbl_80368968;
     lbl_80368968 = (StreamState *)sv;
@@ -1579,7 +1579,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     return (s32)vid;
 }
 
-void fn_80244A84(SynthVoice *sv) {
+void Sound_VoiceKeyOn(SynthVoice *sv) {
     extern SynthVoice *lbl_80368970;
     extern SynthVoice *lbl_80368974;
 
