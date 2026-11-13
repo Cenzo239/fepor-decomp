@@ -1950,7 +1950,7 @@ void fn_8002D44C(void) {
 
 s32 fn_800C52C8(void);
 void Heap_Create(void *, s32, void *);
-void fn_800C469C(void *);
+void Heap_Select(void *);
 void fn_80016498(void);
 void fn_80015D54(void);
 void fn_8002D46C(void)
@@ -1960,7 +1960,7 @@ void fn_8002D46C(void)
 
     tmp = fn_800C52C8();
     Heap_Create(Battle_str + 0x16c, tmp, Battle_str);
-    fn_800C469C(Battle_str + 0x176);
+    Heap_Select(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
 }
@@ -1998,7 +1998,7 @@ void Battle_LoadMap(void)
     void fn_8005C84C(void *);
     void fn_80050F64(void);
     s32 fn_800C52C8(void);
-    void fn_800C469C(void *);
+    void Heap_Select(void *);
     void fn_80016498(void);
     void fn_80015D54(void);
     void fn_80018F08(void);
@@ -2015,7 +2015,7 @@ void Battle_LoadMap(void)
     fn_8005C84C(Battle_str + 0x1AF);
     fn_80050F64();
     Heap_Create(Battle_str + 0x16C, fn_800C52C8());
-    fn_800C469C(Battle_str + 0x176);
+    Heap_Select(Battle_str + 0x176);
     fn_80016498();
     fn_80015D54();
     fn_80018F08();

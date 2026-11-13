@@ -534,7 +534,7 @@ void fn_800C4664(s32 arg0) {
 }
 
 #pragma global_optimizer off
-void fn_800C469C(char *arg0)
+void Heap_Select(char *arg0)
 {
     s32 Str_Cmp(char *, s32);
     extern u32 lbl_80320B88[];

@@ -2926,7 +2926,7 @@ void fn_801F8850(s32 arg0) {
 void fn_801F8880(void) {
     void Heap_Create();
     s32 fn_800C52C8(void);
-    void fn_800C469C(void *);
+    void Heap_Select(void *);
     void ScriptCmd_CmLoadScript(void *);
     void *fn_8003FCCC(void *);
     void fn_8005C84C(void *);
@@ -2939,7 +2939,7 @@ void fn_801F8880(void) {
 
     Heap_Create(StaffRoll_str + 0x215, 0x180000);
     Heap_Create(StaffRoll_str + 0x220, fn_800C52C8(), StaffRoll_str);
-    fn_800C469C(StaffRoll_str + 0x215);
+    Heap_Select(StaffRoll_str + 0x215);
     ScriptCmd_CmLoadScript(StaffRoll_str + 0x22C);
     lbl_80368408 = fn_8003FCCC(*(void **)(lbl_8029B41C + 4));
     lbl_8036840C = fn_8003FCCC(StaffRoll_str + 0x23F);
