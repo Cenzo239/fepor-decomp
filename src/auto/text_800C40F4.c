@@ -20817,7 +20817,8 @@ s32 fn_800FBB68(void) {
     return 1;
 }
 
-s32 Ai_TryHandleLowHp(void *arg0) {
+/* When a unit is in low-HP AI mode, try heal item, seek healer, escape, or approach safety. */
+s32 Ai_TryHandleLowHp(void *unit) {
     u8 Unit_HasLowHpAi(void *);
     u8 Unit_IsLowHp(void *);
     u8 Ai_TryUseHealItem(void *);
@@ -20833,33 +20834,33 @@ s32 Ai_TryHandleLowHp(void *arg0) {
     if ((*(u8 *)(gAiState + 1) & 4) != 0) {
         return 1;
     }
-    if ((Unit_HasLowHpAi(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
-        if (Ai_TryUseHealItem(arg0) != 0) {
+    if ((Unit_HasLowHpAi(unit) != 0) && (Unit_IsLowHp(unit) != 0)) {
+        if (Ai_TryUseHealItem(unit) != 0) {
             return 1;
         }
-        if (Ai_TrySeekHealer(arg0) != 0) {
+        if (Ai_TrySeekHealer(unit) != 0) {
             return 1;
         }
-        if ((*(s32 *)((u8 *)arg0 + 0x254) & 8) != 0) {
-            if (Ai_TryEscapeMove(arg0) != 0) {
+        if ((*(s32 *)((u8 *)unit + 0x254) & 8) != 0) {
+            if (Ai_TryEscapeMove(unit) != 0) {
                 if (*(u8 *)(gUiContext + 8) == 1) {
-                    fn_8010AD94(arg0);
+                    fn_8010AD94(unit);
                 }
                 return 1;
             }
             goto block_23;
         }
-        if (Ai_TrySeekHealTerrain(arg0) != 0) {
-            fn_8010AC58(arg0);
-        } else if (Ai_TrySelectApproachTile(arg0) != 0) {
-            fn_8010AC58(arg0);
-        } else if (Ai_TryApproachHealer(arg0) != 0) {
-            fn_8010AC58(arg0);
+        if (Ai_TrySeekHealTerrain(unit) != 0) {
+            fn_8010AC58(unit);
+        } else if (Ai_TrySelectApproachTile(unit) != 0) {
+            fn_8010AC58(unit);
+        } else if (Ai_TryApproachHealer(unit) != 0) {
+            fn_8010AC58(unit);
         }
         goto block_23;
     }
-    if (((*(s32 *)((u8 *)arg0 + 0x254) & 8) != 0) && (Ai_TryEscapeMove(arg0) != 0) && (*(u8 *)(gUiContext + 8) == 1)) {
-        fn_8010AD94(arg0);
+    if (((*(s32 *)((u8 *)unit + 0x254) & 8) != 0) && (Ai_TryEscapeMove(unit) != 0) && (*(u8 *)(gUiContext + 8) == 1)) {
+        fn_8010AD94(unit);
     }
 block_23:
     return 1;
