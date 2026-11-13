@@ -1932,7 +1932,7 @@ void fn_8003712C(void *arg0) {
 }
 
 void *fn_80037710(u8 *arg0) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     extern u8 gUnits[];
     u8 sp8[8];
     u8 *sub;
@@ -1941,7 +1941,7 @@ void *fn_80037710(u8 *arg0) {
     u32 flags;
 
     sub = NULL;
-    fn_80015320(5, sp8);
+    Allegiance_FillMask(5, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;
@@ -2031,7 +2031,7 @@ void fn_80037904(void *arg0, s32 arg1) {
 }
 
 s32 fn_80037960(void *arg0, s32 arg1) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     u8 Id_GetKind(s32);
     s32 Item_GetByIid(s32);
     s32 fn_80019E48(s32);
@@ -2056,7 +2056,7 @@ s32 fn_80037960(void *arg0, s32 arg1) {
         if (fn_800C388C(lbl_803200AC, arg1) >= 0) {
             return 1;
         }
-        fn_80015320(4, sp8);
+        Allegiance_FillMask(4, sp8);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -10768,7 +10768,7 @@ void fn_8004C444(void *arg0) {
 #pragma use_lmw_stmw reset
 
 void Unit_DrawShadows(void) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     void Unit_DrawShadow(void *, s32);
     void fn_80066D00(s32);
     void *Light_GetChannel(s32);
@@ -10840,7 +10840,7 @@ void Unit_DrawShadows(void) {
     if (var_r31 > 0xFF) {
         var_r31 = 0xFF;
     }
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     var_r30 = 1;
     do {
         if ((u8)var_r30 != 0) {
@@ -12013,7 +12013,7 @@ void fn_80050F64(void) {
     void fn_8005F5B4(void *, char *);
     void fn_8005F494(void *, char *);
     void GActor_Finalize(void *);
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     void fn_80052B44(void *);
     void fn_8004DE78(void);
     extern u8 lbl_8026AB18[];
@@ -12121,7 +12121,7 @@ void fn_80050F64(void) {
         c += 0xA0;
     } while (b < 5);
 
-    fn_80015320(5, sp8);
+    Allegiance_FillMask(5, sp8);
     {
         u8 id = 1;
         s32 ctr = 0x9F;

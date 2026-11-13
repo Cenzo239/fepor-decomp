@@ -17959,7 +17959,7 @@ if ((M2C_FIELD(arg,u16*,0x1A4)>>7 & 7) || (M2C_FIELD(arg,u8*,0x1A5)&7) || (M2C_F
 arg0=arg;
 fn_800FE2A0(arg0,5,-1);
 weapon=(void **)fn_80037D54(arg0); if (!weapon || !*weapon) return 0;
-fn_80015320(1,flags);
+Allegiance_FillMask(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
 unit=(u8)id ? gUnits+((u8)id-1)*0x280:0;
@@ -18007,7 +18007,7 @@ M2C_FIELD(a,u16 **,0x14190)[(s8)self[0x19E]+((s8)self[0x19F]<<6)]=0;
 }else fn_800FE2A0(self,5,-1);
 fn_8001C76C(&weapon);fn_8001D780(&weapon,arg1);
 result.item=M2C_FIELD(weapon.ptr,u16 *,14);
-fn_80015320(1,flags);
+Allegiance_FillMask(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
 u8 *unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
@@ -18524,7 +18524,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
     void fn_800FE2A0(void *, s32, s32);
     void **fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *);
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     s8 fn_8003A398(void *);
     u8 fn_8001DD54(void *, void *);
     void fn_800FDDBC(s32, s32, u8, u8, s32);
@@ -18575,7 +18575,7 @@ u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
             continue;
         }
         result.item = (u16)i;
-        fn_80015320(1, flags);
+        Allegiance_FillMask(1, flags);
         for (j = 1; j <= 0x9F; j++) {
             unit = (u8)j ? gUnits + ((u8)j - 1) * 0x280 : 0;
             if (!*(u32 *)(unit + 0x188)) {

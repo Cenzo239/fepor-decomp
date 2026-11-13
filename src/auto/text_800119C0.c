@@ -1285,7 +1285,7 @@ void fn_800152F8(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6, 
 }
 
 #pragma global_optimizer off
-void fn_80015320(u8 arg0, u8 *arg1) {
+void Allegiance_FillMask(u8 arg0, u8 *arg1) {
     extern u8 gBattleState[];
     u8 var_r5;
     u8 r6;
@@ -1648,7 +1648,7 @@ void fn_80015960(s32 arg0) {
 
 void fn_8001598C(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004EB14(u8 *, s32);
     extern u8 gUnits[];
     u8 sp8[8];
@@ -1657,7 +1657,7 @@ void fn_8001598C(void)
     s32 i;
     u8 *unit;
 
-    fn_80015320(5, sp8);
+    Allegiance_FillMask(5, sp8);
     a = sp8;
     b = gUnits;
     i = 1;
@@ -1678,7 +1678,7 @@ void fn_8001598C(void)
 
 void fn_80015A2C(void *arg0) {
     void Process_ClearFunc(void *);
-    void fn_80015320(s32, u8 *, s32);
+    void Allegiance_FillMask(s32, u8 *, s32);
     u8 fn_8004F128(void *);
     extern u8 gUnits[];
     u8 sp8[8];
@@ -1690,7 +1690,7 @@ void fn_80015A2C(void *arg0) {
 
     temp = *(s32 *)((u8 *)arg0 + 0x60);
     *(s32 *)((u8 *)arg0 + 0x60) = temp + 1;
-    fn_80015320(5, sp8, temp);
+    Allegiance_FillMask(5, sp8, temp);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1718,14 +1718,14 @@ after:
 
 void fn_80015C18(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_80184C7C(u8 *, s32, s32, s32);
     extern u8 gUnits[];
     u8 sp8[8];
     s32 i;
     u8 *unit;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1746,7 +1746,7 @@ void fn_80015C18(void)
 
 void fn_80015CBC(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8003A064(u8 *);
     void *fn_8007C3BC(void);
     void fn_8007C4D4(void *, s32);
@@ -1756,7 +1756,7 @@ void fn_80015CBC(void)
     u8 *unit;
     u8 *sub;
 
-    fn_80015320(4, sp8);
+    Allegiance_FillMask(4, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1777,7 +1777,7 @@ void fn_80015CBC(void)
 
 void fn_80015D54(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8003A114(u8 *);
     void *fn_8007C3BC(void);
     void fn_8007C4D4(void *, s32);
@@ -1787,7 +1787,7 @@ void fn_80015D54(void)
     u8 *unit;
     u8 *sub;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1807,7 +1807,7 @@ void fn_80015D54(void)
 }
 
 void fn_80015DEC(void) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     void fn_80050C50(f32, f32, f32);
     extern u8 gUnits[];
     extern f32 lbl_80368C78;
@@ -1815,7 +1815,7 @@ void fn_80015DEC(void) {
     s32 i;
     void *unit;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1831,7 +1831,7 @@ void fn_80015DEC(void) {
 }
 
 void fn_80015ED4(void) {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004B218(void);
     void fn_8004B984(void);
     void fn_8004C108(void);
@@ -1851,7 +1851,7 @@ void fn_80015ED4(void) {
         fn_8004D370();
         fn_8004C108();
         fn_8004B218();
-        fn_80015320(3, sp8);
+        Allegiance_FillMask(3, sp8);
         pBase = gUnits;
         i = 1;
         do {
@@ -1887,7 +1887,7 @@ void fn_80015FA4(void* arg0, void* arg1)
 
 void fn_800160D4(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004E040(u8 *);
     u32 fn_80055D94(s32);
     extern u8 gUnits[];
@@ -1896,7 +1896,7 @@ void fn_800160D4(void)
     u8 *unit;
 
     if (fn_80055D94(0x200) == 0) {
-        fn_80015320(3, sp8);
+        Allegiance_FillMask(3, sp8);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -1916,7 +1916,7 @@ void fn_800160D4(void)
 
 void fn_80016180(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_80050C90(u8 *);
     extern u8 gUnits[];
     u8 sp8[8];
@@ -1925,7 +1925,7 @@ void fn_80016180(void)
     u8 *flags;
     u8 *unit;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     flags = sp8;
     base = gUnits;
     i = 1;
@@ -1972,14 +1972,14 @@ void fn_8001621C(void) {
 
 void fn_800163F8(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004EB14(u8 *, s32);
     extern u8 gUnits[];
     u8 sp8[8];
     s32 i;
     u8 *unit;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1998,14 +1998,14 @@ void fn_800163F8(void)
 
 void fn_80016498(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004F5EC(u8 *, s32);
     extern u8 gUnits[];
     u8 sp8[8];
     s32 i;
     u8 *unit;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -2299,7 +2299,7 @@ s32 fn_80016A9C(s32 arg0) {
 }
 
 void fn_80016ADC(void) {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8004DF04(void);
     void fn_8004E178(u8 *);
     extern u8 gUnits[];
@@ -2310,7 +2310,7 @@ void fn_80016ADC(void) {
     u8 *sub;
 
     fn_8004DF04();
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     pBase = gUnits;
     i = 1;
     do {

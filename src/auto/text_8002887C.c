@@ -2299,7 +2299,7 @@ void fn_8002DF54(void) {
 
 void Battle_AdvancePhase(void) {
     void fn_80006220(s32);
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     void *fn_80016BDC(void *);
     void fn_80016C58(void);
     void fn_800381EC(void *, s8);
@@ -2331,7 +2331,7 @@ void Battle_AdvancePhase(void) {
         void *partner;
         u32 flags;
 
-        fn_80015320(4, factionMaskA);
+        Allegiance_FillMask(4, factionMaskA);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -2390,7 +2390,7 @@ void Battle_AdvancePhase(void) {
         void *partner;
         u32 flags;
 
-        fn_80015320(4, factionMaskB);
+        Allegiance_FillMask(4, factionMaskB);
         i = 1;
         do {
             if ((u8)i != 0) {
@@ -2572,7 +2572,7 @@ void fn_8002E738(s32 arg0) {
 
 void fn_8002E780(void)
 {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
     void fn_8002297C(void *);
     void fn_80184AFC(u8 *, s32, s32, f32);
@@ -2585,7 +2585,7 @@ void fn_8002E780(void)
     u8 *unit;
     u8 *base;
 
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     base = gBattleState;
     i = 1;
     do {
@@ -2611,7 +2611,7 @@ void fn_8002E780(void)
 }
 
 void fn_8002E880(void) {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     void fn_8003B69C(void *);
     void fn_8010FBD4(void *);
     extern u8 gUnits[];
@@ -2621,7 +2621,7 @@ void fn_8002E880(void) {
     s32 i;
     u8 *unit;
 
-    fn_80015320(0, sp8);
+    Allegiance_FillMask(0, sp8);
     i = 1;
     do {
         if ((u8)i != 0) {

@@ -94,7 +94,7 @@ s32 fn_800AD2DC(s32 arg0) {
 s32 fn_800AD310(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void Process_Unlink(void *);
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     s32 Item_GetByIid(void *);
     void fn_8002AB9C(void *, s32);
     void fn_8002AD04(void *, s32);
@@ -136,7 +136,7 @@ s32 fn_800AD310(s32 arg0) {
     *((u8 *)temp_r3 + 0x6A) = 0;
     *(s32 *)((u8 *)temp_r3 + 0x5C) = 0;
     *((u8 *)temp_r3 + 0x6B) = 0;
-    fn_80015320(0, &sp8);
+    Allegiance_FillMask(0, &sp8);
     var_r29 = 1;
     do {
         if ((u8)var_r29 != 0) {
@@ -5574,7 +5574,7 @@ s32 fn_800BA75C(s8 arg0, s8 arg1, s8 arg2) {
 }
 
 s32 fn_800BA784(void) {
-    M2C_UNK fn_80015320(M2C_UNK, M2C_UNK *);
+    M2C_UNK Allegiance_FillMask(M2C_UNK, M2C_UNK *);
     M2C_UNK fn_8002297C(M2C_UNK *);
     M2C_UNK fn_8003DFB8();
     M2C_UNK Unit_SeparateRescue(u8, u8);
@@ -5593,7 +5593,7 @@ s32 fn_800BA784(void) {
     void *var_r3_2;
     void *var_r3_3;
 
-    fn_80015320(3, &sp10);
+    Allegiance_FillMask(3, &sp10);
     var_r31 = 1;
     do {
         if (var_r31 != 0) {
@@ -5622,7 +5622,7 @@ loop_13:
         goto loop_13;
     }
     
-    fn_80015320(3, &sp8);
+    Allegiance_FillMask(3, &sp8);
     var_r29 = 1;
     do {
         if (var_r29 != 0) {
@@ -7238,7 +7238,7 @@ u8 fn_800BD470(u8 arg0) {
 }
 
 u8 fn_800BD4C0(s32 arg0, s32 arg1) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     extern u16 gUnits[];
     u8 sp8[8];
     u8 *found;
@@ -7246,7 +7246,7 @@ u8 fn_800BD4C0(s32 arg0, s32 arg1) {
     s32 i;
 
     found = NULL;
-    fn_80015320(3, sp8);
+    Allegiance_FillMask(3, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = (u8 *)gUnits + ((u8)i - 1) * 0x280;

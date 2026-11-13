@@ -89,7 +89,7 @@ extern u8 gBattleState[];
 
 u8 fn_8014BC10(void *arg0) {
     void *fn_80019F04(u8);
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     extern u8 gUnitLists[];
     extern u8 gUnits[];
     s32 score;
@@ -169,7 +169,7 @@ u8 fn_8014BC10(void *arg0) {
         u8 *flagp;
         s32 ctr;
         n = 0;
-        fn_80015320(4, flags);
+        Allegiance_FillMask(4, flags);
         base = gUnits;
         flagp = flags;
         i = 1;

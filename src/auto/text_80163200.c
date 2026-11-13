@@ -4482,7 +4482,7 @@ void fn_8016C1EC(void *arg0) {
 }
 
 void fn_8016C3C8(void *arg0) {
-    void fn_80015320(s32, u8 *);
+    void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
     void *fn_80037710(void *);
     void *fn_800377D8(void *);
@@ -4581,7 +4581,7 @@ void fn_8016C3C8(void *arg0) {
     *(void **)((u8 *)node + 0x30) = NULL;
 
     *(u32 *)counts = lbl_8036C4F0;
-    fn_80015320(3, flags);
+    Allegiance_FillMask(3, flags);
 
     i = 1;
     do {
@@ -5254,7 +5254,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_Begin(void);
     void Process_Unlink(void *);
     void *Msg_Expand(void *);
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     s32 fn_800377D8(void *);
     void *fn_80040844(void);
     void fn_800431EC(void *, void *);
@@ -5321,7 +5321,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     tex = fn_8006EDD8(*(void **)((u8 *)arg0 + 0x38), 4);
     fn_80040844();
     scale = fn_80043DD8();
-    fn_80015320(3, sp18);
+    Allegiance_FillMask(3, sp18);
     i = 1;
     f31 = scale * lbl_8036AB1C;
     f30 = scale * lbl_8036AAB4;

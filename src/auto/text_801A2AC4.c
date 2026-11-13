@@ -195,7 +195,7 @@ s32 fn_801A2F54(s32 arg0) {
 }
 
 void fn_801A2FE0(void) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     s32 fn_8003B2D0(void *);
     void fn_800381EC(void *, s8);
     void fn_80104480(void *);
@@ -205,7 +205,7 @@ void fn_801A2FE0(void) {
     void *unit;
     s32 i;
 
-    fn_80015320(2, sp8);
+    Allegiance_FillMask(2, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;

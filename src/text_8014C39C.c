@@ -152,7 +152,7 @@ void fn_8014C5F4(void *arg0, s32 arg1) {
 }
 
 void *fn_8014C604(void) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     extern u8 gUnits[];
     u8 sp8[8];
     u8 *best;
@@ -162,7 +162,7 @@ void *fn_8014C604(void) {
 
     best = NULL;
     best_val = 0;
-    fn_80015320(4, sp8);
+    Allegiance_FillMask(4, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = (u8 *)gUnits + ((u8)i - 1) * 0x280;

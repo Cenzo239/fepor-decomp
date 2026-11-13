@@ -3045,7 +3045,7 @@ void fn_8010AEC8(void) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
-    void fn_80015320(s32, void *);
+    void Allegiance_FillMask(s32, void *);
     s32 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -3103,7 +3103,7 @@ loop_slot:
     if (*item != NULL) {
         if (fn_8009339C(arg0) != 0) {
             result.slot = (u16)slot;
-            fn_80015320(1, flags);
+            Allegiance_FillMask(1, flags);
             unitId = 1;
             do {
                 if ((u8)unitId != 0) {
@@ -4290,7 +4290,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010CF28(s32 arg0, void *arg1, s16 *arg2, s16 *arg3) {
-void fn_80015320(s32,void *);
+void Allegiance_FillMask(s32,void *);
 u8 fn_80015610(void *,void *); u8 fn_8001DD04(s32);
 void fn_800FC6B0(void *);
 u16 fn_800FCF48(s8,s8);
@@ -4332,7 +4332,7 @@ extern u8 gBattleMap[]; extern u16 gUnits[];
     u8 *map=gBattleMap;
     fn_800FC6B0(*(void **)((u8 *)arg1+0x190));
     var_r20 = NULL;
-    fn_80015320(0, &sp8);
+    Allegiance_FillMask(0, &sp8);
     var_r21 = 1;
     do {
         if ((u8)var_r21 != 0) {
