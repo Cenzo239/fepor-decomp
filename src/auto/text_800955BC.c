@@ -45,7 +45,7 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-s32 fn_800955BC(void *arg0) {
+s32 Unit_FindEmptyItemSlot(void *arg0) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x1EC) == 0U) {
         return 0;
     }
