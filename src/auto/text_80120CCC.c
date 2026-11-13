@@ -14,7 +14,7 @@ void fn_80120CCC(u16 *arg0) {
     *arg0 &= ~0x130;
 }
 
-void fn_80120CE0(void *arg0) {
+void UiPanel_ClearFlags(void *arg0) {
     extern u32 gUiInputFlags;
 
     *(u16 *)((u8 *)arg0 + 0x0) = 0;

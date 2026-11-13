@@ -5538,7 +5538,7 @@ void fn_8011D87C(void *arg0)
 }
 
 void UiPanel_Create(void *arg0, void *arg1) {
-    void fn_80120CE0(void *);
+    void UiPanel_ClearFlags(void *);
     void *fn_8000CA64(void *, void *);
     void fn_8012205C(void *);
     void fn_80120CFC(void *);
@@ -5551,7 +5551,7 @@ void UiPanel_Create(void *arg0, void *arg1) {
     extern s32 gUiInputFlags;
     u8 *e;
 
-    fn_80120CE0(&gUiPanelFlags);
+    UiPanel_ClearFlags(&gUiPanelFlags);
     e = (u8 *)fn_8000CA64(gUiPanelProc, arg1);
     *(s32 *)(e + 0x34) = 0;
     *(s32 *)(e + 0x38) = 0;
