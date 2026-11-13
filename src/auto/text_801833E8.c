@@ -10328,7 +10328,7 @@ void fn_8019C7B4(void *arg0) {
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
     void fn_80053658(void *, s32, void *);
-    extern void fn_8019CED0(void);
+    extern void MapSelect_UpdateTarget(void);
     void *temp;
     void *p;
 
@@ -10343,7 +10343,7 @@ void fn_8019C7B4(void *arg0) {
             fn_800536D8(temp, *(void **)p);
         }
         fn_8005306C(temp);
-        *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = fn_8019CED0;
+        *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = MapSelect_UpdateTarget;
         fn_80053658(temp, 0, arg0);
         p = *(void **)((u8 *)temp + 0x30);
         *(u32 *)((u8 *)p + 8) |= 0x400;
@@ -10444,7 +10444,7 @@ void fn_8019CAB4(void *arg0) {
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
     void fn_80053658(void *, s32, void *);
-    extern void fn_8019CED0(void);
+    extern void MapSelect_UpdateTarget(void);
     void *temp;
     void *p;
 
@@ -10459,7 +10459,7 @@ void fn_8019CAB4(void *arg0) {
             fn_800536D8(temp, *(void **)p);
         }
         fn_8005306C(temp);
-        *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = fn_8019CED0;
+        *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = MapSelect_UpdateTarget;
         fn_80053658(temp, 0, arg0);
         p = *(void **)((u8 *)temp + 0x30);
         *(u32 *)((u8 *)p + 8) |= 0x400;
@@ -10557,7 +10557,7 @@ void fn_8019CD40(void* arg0, void* arg1) {
     // For now we'll implement the structure with placeholders for external calls
 }
 
-s32 fn_8019CED0(void *arg0) {
+s32 MapSelect_UpdateTarget(void *arg0) {
     M2C_UNK fn_80052CA8(void *);
     M2C_UNK fn_80054C14(void *);
     s32 fn_8005F894(s32, M2C_UNK);
