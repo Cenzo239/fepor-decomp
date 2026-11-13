@@ -14255,7 +14255,7 @@ s32 fn_80262538(s32 arg0) {
     return gSoundVoices[arg0].unkF0 == 1;
 }
 
-void fn_80262558(void *arg0) {
+void Sound_AramDmaCallback(void *arg0) {
     extern u8 lbl_80363F28[0x284];
     extern u8 lbl_803641AC[0x284];
     u8 *base;
@@ -14288,7 +14288,7 @@ void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 ar
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
     void fn_80215D9C(void *, s32, s32, s32, s32, void *, s32, void *);
-    void fn_80262558(void *);
+    void Sound_AramDmaCallback(void *);
     extern u8 lbl_80363F28[];
     extern u8 lbl_803641AC[];
     typedef struct {
@@ -14326,7 +14326,7 @@ start:
         q->slots[q->next].a0 = arg0;
         q->slots[q->next].a1 = arg1;
         q->slots[q->next].a2 = arg2;
-        q->slots[q->next].cb = (void *)fn_80262558;
+        q->slots[q->next].cb = (void *)Sound_AramDmaCallback;
         q->slots[q->next].a4 = arg4;
         q->slots[q->next].a5 = arg5;
 
@@ -14374,7 +14374,7 @@ void fn_802627EC(u32 arg0)
     extern void fn_80263800(void *);
     extern u32 fn_802142B8(void);
     extern void fn_80262FB0(void);
-    extern void fn_80262558(void);
+    extern void Sound_AramDmaCallback(void);
 
     extern void DCFlushRange(void *, u32);
     extern u32 OSDisableInterrupts(void);
@@ -14422,7 +14422,7 @@ void fn_802627EC(u32 arg0)
             *(void **)(entry + 0x10) = buffer;
             *(u32 *)(entry + 0x14) = base;
             *(u32 *)(entry + 0x18) = 0x500;
-            *(void (**)(void))(entry + 0x1C) = fn_80262558;
+            *(void (**)(void))(entry + 0x1C) = Sound_AramDmaCallback;
             *(u32 *)(entry + 0x20) = 0;
             *(u32 *)(entry + 0x24) = 0;
 
@@ -14507,7 +14507,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
     extern u32 (*lbl_80368AE8)(void *, u32);
 
     extern u32 fn_802142B0(void);
-    extern void fn_80262558(void);
+    extern void Sound_AramDmaCallback(void);
     extern void fn_80215D9C(
         void *, u32, u32, u32, u32, u32, u32, u32
     );
@@ -14567,7 +14567,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
                 *(u32 *)(entry + 0x14) = offset;
                 *(u32 *)(entry + 0x18) = size;
                 *(void (**)(void))(entry + 0x1C) =
-                    fn_80262558;
+                    Sound_AramDmaCallback;
                 *(u32 *)(entry + 0x20) = 0;
                 *(u32 *)(entry + 0x24) = 0;
 
@@ -14626,7 +14626,7 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
                 *(u32 *)(entry + 0x14) = offset;
                 *(u32 *)(entry + 0x18) = chunkSize;
                 *(void (**)(void))(entry + 0x1C) =
-                    fn_80262558;
+                    Sound_AramDmaCallback;
                 *(u32 *)(entry + 0x20) = 0;
                 *(u32 *)(entry + 0x24) = 0;
 
