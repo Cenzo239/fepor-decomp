@@ -5232,7 +5232,7 @@ void fn_801FC4F8(s32 arg0, s32 arg1, s32 arg2) {
 #pragma use_lmw_stmw on
 void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     void *Heap_Alloc(u32);
-    void fn_800D6C1C(void *, void *);
+    void Tree_InsertFixup(void *, void *);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     extern char __files[];
@@ -5262,7 +5262,7 @@ void *Tree_InsertNode(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
         M2C_FIELD(arg1, void **, 4) = node;
     }
     M2C_FIELD(arg0, u32 *, 0)++;
-    fn_800D6C1C(node, M2C_FIELD(arg0, void **, 4));
+    Tree_InsertFixup(node, M2C_FIELD(arg0, void **, 4));
     if ((u8)arg3) {
         M2C_FIELD(arg0, void **, 8) = node;
     }

@@ -6888,7 +6888,7 @@ void fn_800D6A84(void *arg0, u32 arg1, s32 arg2) {
     }
 }
 
-void fn_800D6C1C(void *arg0, void *arg1)
+void Tree_InsertFixup(void *arg0, void *arg1)
 {
     // If arg0 is NULL, return
     if (arg0 == NULL) {
