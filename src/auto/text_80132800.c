@@ -2914,7 +2914,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 fn_8003B2D0(void *);
     s32 Unit_GetHp(void *);
     s32 fn_8003B258(void *);
-    s32 fn_8003B614(void *);
+    s32 Unit_GetStr(void *);
     s32 fn_8003AFA0(void *);
     s32 fn_8003B5D0(void *);
     s32 fn_8003AF28(void *);
@@ -2981,7 +2981,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     self->v9(0xC, 0x22, lbl_802767E0 + 0x48, Unit_GetHp(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4C]);
     idx = fn_8003B258(unit);
-    self->v9(0xC, 0x42, lbl_802767E0 + 0x4E, fn_8003B614(unit), idx,
+    self->v9(0xC, 0x42, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
     idx = fn_8003AFA0(unit);
     self->v9(0xC, 0x62, lbl_802767E0 + 0x55, fn_8003B5D0(unit), idx,
@@ -3138,7 +3138,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void Prim2D_PrepareTex(void);
     void fn_8013F920(void *);
     s32 fn_8003B258(void *);
-    s32 fn_8003B614(void *);
+    s32 Unit_GetStr(void *);
     s32 fn_8003AFA0(void *);
     s32 fn_8003B5D0(void *);
     s32 fn_8003AF28(void *);
@@ -3197,7 +3197,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
 
     unit = self->unk44;
     idx = fn_8003B258(unit);
-    self->v9(0xC, 0x29, lbl_802767E0 + 0x4E, fn_8003B614(unit), idx,
+    self->v9(0xC, 0x29, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
     idx = fn_8003AFA0(unit);
     self->v9(0xC, 0x48, lbl_802767E0 + 0x55, fn_8003B5D0(unit), idx,
