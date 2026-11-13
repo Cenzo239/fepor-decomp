@@ -11276,7 +11276,7 @@ void *fn_800E26CC(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_800E273C(void *arg0) {
+void Win_DrawColorRect(void *arg0) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_EndPrim();
