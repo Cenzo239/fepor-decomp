@@ -1113,7 +1113,8 @@ extern "C" void fn_80071410(void *, void *, f32, f32);
 extern "C" void fn_8007149C(void *, void *, f32, f32, s32, s32);
 extern "C" void fn_80071740(void *, f32, f32, s32);
 extern "C" void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-extern "C" void BattleInfoWin_Draw(void *arg0, void *arg1) {
+/* Draw the battle info window: title, body, optional text box, and battle HUD bits. */
+extern "C" void BattleInfoWin_Draw(void *win, void *state) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
@@ -1137,28 +1138,28 @@ extern "C" void BattleInfoWin_Draw(void *arg0, void *arg1) {
         virtual s16 v18() = 0;
     };
     extern u8 gBattle[];
-    f32 t;
+    f32 fade;
 
-    t = UiWin_GetFade(arg1);
-    *(s16 *)((u8 *)arg1 + 0x30) = 0;
-    *(s16 *)((u8 *)arg1 + 0x32) = 0;
+    fade = UiWin_GetFade(state);
+    *(s16 *)((u8 *)state + 0x30) = 0;
+    *(s16 *)((u8 *)state + 0x32) = 0;
     Prim2D_Begin();
-    Prim2D_SetColorByte((s32)(255.0f * t));
+    Prim2D_SetColorByte((s32)(255.0f * fade));
     Prim2D_PrepareTex();
-    fn_80071740(arg0, 16.0f * t + 16.0f, 35.0f, *(s32 *)((u8 *)arg0 + 0xC));
-    fn_8007149C(arg0, arg1, 16.0f * t + 16.0f, 136.0f, *(s32 *)((u8 *)arg0 + 0xC), 1);
-    if (*(s16 *)((u8 *)arg1 + 0x3A) >= 5) {
+    fn_80071740(win, 16.0f * fade + 16.0f, 35.0f, *(s32 *)((u8 *)win + 0xC));
+    fn_8007149C(win, state, 16.0f * fade + 16.0f, 136.0f, *(s32 *)((u8 *)win + 0xC), 1);
+    if (*(s16 *)((u8 *)state + 0x3A) >= 5) {
         Prim2D_Begin();
         Prim2D_AddZ(-0.1f);
         Prim2D_PrepareTex();
-        fn_8008AB7C(((Obj *)arg0)->v18() / 2 + 0x28, *(s16 *)((u8 *)arg1 + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
-                    (s32)(0.9f * ((Obj *)arg0)->v18()), 0x18, 0x19, 0x4B, 1);
+        fn_8008AB7C(((Obj *)win)->v18() / 2 + 0x28, *(s16 *)((u8 *)state + 0x3A) + Text_MeasureHeight(-1, 1.0f) / 2,
+                    (s32)(0.9f * ((Obj *)win)->v18()), 0x18, 0x19, 0x4B, 1);
         Prim2D_Begin();
         Prim2D_AddZ(0.1f);
         Prim2D_PrepareTex();
     }
-    fn_80071410(arg0, gBattle, 312.0f, 282.0f);
-    fn_80070F54(arg0, gBattle, 500.0f, 212.0f);
+    fn_80071410(win, gBattle, 312.0f, 282.0f);
+    fn_80070F54(win, gBattle, 500.0f, 212.0f);
 }
 #pragma cplusplus off
 s32 fn_8007633C(void) {
