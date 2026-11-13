@@ -342,7 +342,8 @@ s32 fn_801A3390(s32 arg0) {
     return 0;
 }
 
-s32 Battle_StartMapHitAnimB(s32 arg0) {
+/* Setup UI attacker/defender, roll hit (set battle+0x485 mid=5 on hit), and start map combat anim. */
+s32 Battle_StartMapHitAnimB(s32 parent) {
     void Battle_SetupPair(void *, void *, void *);
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
@@ -367,7 +368,7 @@ s32 Battle_StartMapHitAnimB(s32 arg0) {
         Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), parent, 0);
     return 0;
 }
 
