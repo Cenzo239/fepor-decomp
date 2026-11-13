@@ -4535,7 +4535,8 @@ extern "C" void fn_801BE1EC(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
+/* Destroy a unit panel: release ten refcounted children, run base dtor, optionally free. */
+extern "C" void *Ui_DestroyUnitPanel(void *panel, s16 doFree) {
     void Ui_DestroyPanelBase(void *, s32);
     void Heap_Free(void *);
     extern void gUiPanelBaseVt;
@@ -4545,106 +4546,106 @@ extern "C" void *Ui_DestroyUnitPanel(void *arg0, s16 arg1) {
         s32 refCount;
     };
 
-    struct Holder {
+    struct UnitPanel {
         u8 pad[0x40];
         void *vt;
         u8 pad44[4];
-        RefObj *p48;
-        RefObj *p4c;
-        RefObj *p50;
-        RefObj *p54;
-        RefObj *p58;
-        RefObj *p5c;
-        RefObj *p60;
-        RefObj *p64;
-        RefObj *p68;
-        RefObj *p6c;
+        RefObj *slot0;
+        RefObj *slot1;
+        RefObj *slot2;
+        RefObj *slot3;
+        RefObj *slot4;
+        RefObj *slot5;
+        RefObj *slot6;
+        RefObj *slot7;
+        RefObj *slot8;
+        RefObj *slot9;
     };
 
-    s16 doFree;
-    RefObj *p;
-    Holder *h;
+    s16 freeFlag;
+    RefObj *child;
+    UnitPanel *self;
 
-    doFree = arg1;
-    if (arg0 != NULL) {
-        h = (Holder *)arg0;
-        h->vt = &gUiPanelBaseVt;
-        p = h->p48;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+    freeFlag = doFree;
+    if (panel != NULL) {
+        self = (UnitPanel *)panel;
+        self->vt = &gUiPanelBaseVt;
+        child = self->slot0;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p48 = (RefObj *)0;
+            self->slot0 = (RefObj *)0;
         }
-        p = h->p4c;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot1;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p4c = (RefObj *)0;
+            self->slot1 = (RefObj *)0;
         }
-        p = h->p50;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot2;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p50 = (RefObj *)0;
+            self->slot2 = (RefObj *)0;
         }
-        p = h->p54;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot3;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p54 = (RefObj *)0;
+            self->slot3 = (RefObj *)0;
         }
-        p = h->p58;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot4;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p58 = (RefObj *)0;
+            self->slot4 = (RefObj *)0;
         }
-        p = h->p5c;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot5;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p5c = (RefObj *)0;
+            self->slot5 = (RefObj *)0;
         }
-        p = h->p60;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot6;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p60 = (RefObj *)0;
+            self->slot6 = (RefObj *)0;
         }
-        p = h->p64;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot7;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p64 = (RefObj *)0;
+            self->slot7 = (RefObj *)0;
         }
-        p = h->p68;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot8;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p68 = (RefObj *)0;
+            self->slot8 = (RefObj *)0;
         }
-        p = h->p6c;
-        if (p != NULL) {
-            if (--p->refCount == 0 && p != NULL) {
-                p->destroy(1);
+        child = self->slot9;
+        if (child != NULL) {
+            if (--child->refCount == 0 && child != NULL) {
+                child->destroy(1);
             }
-            h->p6c = (RefObj *)0;
+            self->slot9 = (RefObj *)0;
         }
-        Ui_DestroyPanelBase(arg0, 0);
-        if (doFree > 0) {
-            Heap_Free(arg0);
+        Ui_DestroyPanelBase(panel, 0);
+        if (freeFlag > 0) {
+            Heap_Free(panel);
         }
     }
-    return arg0;
+    return panel;
 }
 #pragma cplusplus reset
 
