@@ -4073,6 +4073,7 @@ void fn_801BD37C(void *arg0) {
 }
 
 #pragma cplusplus on
+/* Handle unit-hire panel input: A buys if affordable, X/Y open side panels, B backs out. */
 extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  void fn_8000C070(void *,s32); void fn_8002833C(void *,u32);
  u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void fn_80138808(void *,u32);
@@ -4091,13 +4092,13 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  };
  u32 pos1,pos2;
 
- s32 a,btn;
+ s32 held,btn;
  u8 gate;
  s32 flags;
- s16 tmp;
+ s16 height;
  u32 unit;
  s32 money;
- void *obj;
+ void *list;
  unit=fn_8013AC54(M2C_FIELD(arg0,void **,0x48));
  fn_8013FDA0(arg0);
  if(unit!=fn_8013AC54(M2C_FIELD(arg0,void **,0x48))) {
@@ -4109,8 +4110,8 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  flags=gUiInputFlags; gate=0;
  if((flags&0x10)&&!(flags&0x20)) gate=1;
  if(!gate) {
- a=M2C_FIELD(gPadInput,s32 *,4);
- btn=a&(M2C_FIELD(gPadInput,s32 *,8)^a);
+ held=M2C_FIELD(gPadInput,s32 *,4);
+ btn=held&(M2C_FIELD(gPadInput,s32 *,8)^held);
  if((btn&0x100)&&unit) {
  if(!fn_8003D13C(unit)) {
  *(Pair *)&pos1=((Obj *)M2C_FIELD(arg0,void **,0x48))->v9();
@@ -4126,12 +4127,12 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  {
 
  fn_8002833C(gUiContext,unit);
- obj=M2C_FIELD(arg0,void **,0x48);
- gUiContext[0x15]=M2C_FIELD(obj,s16 *,0x56);
- M2C_FIELD(obj,f32 *,0x30)=lbl_8036B2E4;
- obj=M2C_FIELD(arg0,void **,0x48);
- tmp=M2C_FIELD(obj,s16 *,0x10)-M2C_FIELD(obj,s16 *,0xC);
- fn_80140258(arg0,obj,Pair(M2C_FIELD(obj,s16 *,0xA),-tmp),0);
+ list=M2C_FIELD(arg0,void **,0x48);
+ gUiContext[0x15]=M2C_FIELD(list,s16 *,0x56);
+ M2C_FIELD(list,f32 *,0x30)=lbl_8036B2E4;
+ list=M2C_FIELD(arg0,void **,0x48);
+ height=M2C_FIELD(list,s16 *,0x10)-M2C_FIELD(list,s16 *,0xC);
+ fn_80140258(arg0,list,Pair(M2C_FIELD(list,s16 *,0xA),-height),0);
  fn_80140210(arg0,M2C_FIELD(arg0,void **,0x50),0);
  fn_8000C070(arg0,5);
  Ui_PlaySeCue(gUiUnitPanelStrings+0x10C,0x64);
