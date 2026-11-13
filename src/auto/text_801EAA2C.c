@@ -2811,7 +2811,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_800C99A0(String *, String *, s32, s32);
     void *StringMap_FindOrInsert(void *, String *);
     void Xml_Destroy(void *, s32);
-    char *fn_80050AB8(void *);
+    char *Unit_GetMapModelName(void *);
     void fn_801EF39C(String *, void *, s32);
     void String_Concat(String *, String *, String *);
     void String_ConcatCStr(String *, String *, char *);
@@ -2964,7 +2964,7 @@ void fn_801EFDC8(void *arg0) {
         String_AssignCStr((String *)((u8 *)base + 0x5C), s, strlen(s));
         s = *(char **)(*(void **)((u8 *)*slot + 0x18C));
         String_AssignCStr((String *)((u8 *)base + 0x74), s, strlen(s));
-        s = fn_80050AB8(*slot);
+        s = Unit_GetMapModelName(*slot);
         String_AssignCStr((String *)((u8 *)base + 0x8C), s, strlen(s));
         kind = *(u8 *)(*(u8 **)((u8 *)*slot + 0x190) + 8);
         if (kind == 5) {

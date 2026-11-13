@@ -11884,7 +11884,7 @@ void fn_800508C4(void* arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma global_optimizer off
-void *fn_80050AB8(void *arg0) {
+void *Unit_GetMapModelName(void *arg0) {
     void fn_800056A0(s32);
     void *Res_GetByName(void *);
     u8 Status_Test(void *, s32);
