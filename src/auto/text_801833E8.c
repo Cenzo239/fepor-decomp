@@ -11026,7 +11026,7 @@ void fn_8019DB68(void) {
     void fn_8019FEB8(void);
     void fn_8019FE54(void);
     void fn_8019FE2C(void);
-    void fn_8019FD40(void);
+    void ScriptCmd_CamPathAddScaled(void);
     void fn_8019FCD0(void);
     void fn_8019FCAC(void);
     void fn_8019FC88(void);
@@ -11113,7 +11113,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x420, fn_8019FEB8, 0);
     Script_RegisterCommand(lbl_8027AD98 + 0x42E, fn_8019FE54, 0);
     Script_RegisterCommand(lbl_8027AD98 + 0x443, fn_8019FE2C, 0);
-    Script_RegisterCommand(lbl_8027AD98 + 0x455, fn_8019FD40, 4);
+    Script_RegisterCommand(lbl_8027AD98 + 0x455, ScriptCmd_CamPathAddScaled, 4);
     Script_RegisterCommand(lbl_8027AD98 + 0x466, fn_8019FCD0, 4);
     Script_RegisterCommand(lbl_8027AD98 + 0x478, fn_8019FCAC, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x489, fn_8019FC88, 0);
@@ -11847,7 +11847,7 @@ s32 fn_8019FCD0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return 1;
 }
 
-s32 fn_8019FD40(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 ScriptCmd_CamPathAddScaled(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_Find(void *);
     void CamPath_AddPoint(s32, s32, f32, f32, f32);
     extern u8 E_EventState_script[];
