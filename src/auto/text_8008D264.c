@@ -52,7 +52,7 @@ extern Vec4 lbl_8026CD50;
 #pragma scheduling reset
 
 #pragma use_lmw_stmw on
-void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
+void UnitRef_DrawScaled(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     void fn_8005AC24(void *, s32, s32, s32);
     void fn_8000A174(s32, s32);
     void Prim2D_PrepareTex(void);
