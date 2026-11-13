@@ -2222,7 +2222,7 @@ void fn_80125130(void *arg0) {
     void *fn_8006D948(void *);
     void *fn_800C42AC(s32);
     void *Heap_Alloc(s32);
-    void fn_80147B9C(void *, s32, s32);
+    void Fx_AllocSlot(void *, s32, s32);
     void fn_8012600C(void *, s32);
     void fn_802031CC(void *, void *, f32);
     void *fn_8022C414(void *, void (*)(void *, s32), void *, s32, s32);
@@ -2266,7 +2266,7 @@ void fn_80125130(void *arg0) {
         M2C_FIELD(self, f32 *, 0x38) = f1;
         M2C_FIELD(self, f32 *, 0x3C) = f0;
         M2C_FIELD(self, f32 *, 0x40) = f1;
-        fn_80147B9C(lbl_80274F74 + 0x94, 0x32, 1);
+        Fx_AllocSlot(lbl_80274F74 + 0x94, 0x32, 1);
         break;
     case 7:
         M2C_FIELD(self, u8 *, 0x48) = 0x32;
@@ -2278,7 +2278,7 @@ void fn_80125130(void *arg0) {
         M2C_FIELD(self, f32 *, 0x40) = f0;
         tmp = fn_8000CAF0(lbl_80290388, self);
         M2C_FIELD(tmp, u8 *, 0x4C) = 1;
-        fn_80147B9C(lbl_80274F74 + 0xA6, 0x32, 1);
+        Fx_AllocSlot(lbl_80274F74 + 0xA6, 0x32, 1);
         break;
     }
 
@@ -2524,7 +2524,7 @@ void fn_80125624(void *arg0) {
 void fn_80125818(void *arg0) {
     void *fn_80040844(void);
     void *fn_8006D948(void *);
-    void fn_80147B9C(void *, s32, s32);
+    void Fx_AllocSlot(void *, s32, s32);
     extern u8 lbl_80274F74[];
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
@@ -2548,7 +2548,7 @@ void fn_80125818(void *arg0) {
     *(f32 *)((u8 *)self + 0x54) = f0;
     *(f32 *)((u8 *)self + 0x5C) = f0;
     if (*(u8 *)((u8 *)self + 0x4C) == 0) {
-        fn_80147B9C(lbl_80274F74 + 0xBB, 0x32, 1);
+        Fx_AllocSlot(lbl_80274F74 + 0xBB, 0x32, 1);
     }
     if (*(u8 *)((u8 *)fn_80040844() + 0x68) == 1) {
         flag = 1;

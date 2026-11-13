@@ -11258,12 +11258,12 @@ extern "C" void fn_801478D0(s32 arg0) {
 }
 #pragma cplusplus reset
 s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
-    s32 fn_80147B9C(void);
+    s32 Fx_AllocSlot(void);
     extern u8 lbl_8032FFC8[];
     s32 temp_r3;
     u8 *temp_r4;
 
-    temp_r3 = fn_80147B9C();
+    temp_r3 = Fx_AllocSlot();
     if ((s8)temp_r3 >= 0) {
         temp_r4 = (u8 *)lbl_8032FFC8 + ((s8)temp_r3 * 0x30);
         *(f32 *)(temp_r4 + 0x1C) = farg0;
@@ -11274,7 +11274,7 @@ s32 fn_80147B24(f32 farg0, f32 farg1, f32 farg2) {
     return temp_r3;
 }
 
-s8 fn_80147B9C(void *arg0, s8 arg1, s16 arg2) {
+s8 Fx_AllocSlot(void *arg0, s8 arg1, s16 arg2) {
     void *fn_8000D2BC(void *);
     extern u8 lbl_8032FFC8[];
     extern u8 lbl_8029275C[];
