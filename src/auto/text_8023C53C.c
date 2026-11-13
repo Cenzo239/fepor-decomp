@@ -6509,29 +6509,30 @@ void fn_8025164C(void *arg0)
         ((lower - value) * 100) / (upper - lower);
 }
 
-void Sound_ApplyVoiceAdsr(SynthVoice *sv, u32 *arg1) {
+/* Build ADSR envelope from packed channel params and apply it to the synth voice. */
+void Sound_ApplyVoiceAdsr(SynthVoice *sv, u32 *paramsIn) {
     extern f32 gSoundVolCurve[];
     extern s32 gSoundTimeCurve[];
     extern u8 gSoundLevelCurve[];
     extern f32 gSoundVolIndexScale;
     struct {
-        s32 unk0;
-        s32 unk4;
-        s16 unk8;
-        s16 unkA;
+        s32 attack;
+        s32 decay;
+        s16 sustain;
+        s16 release;
         s32 unkC;
         s32 unk10;
-    } params;
+    } env;
     f32 vol;
 
-    vol = gSoundVolCurve[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk0 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk4 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk8 = 0xC1 - gSoundLevelCurve[__cvt_fp2unsigned(gSoundVolIndexScale * vol)];
-    params.unkA = gSoundTimeCurve[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unkC = 0x80000000;
-    params.unk10 = 0x80000000;
-    Sound_SetVoiceEnvelope(sv->unkF4, &params, 2);
+    vol = gSoundVolCurve[Sound_GetChanParam(paramsIn[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    env.attack = gSoundTimeCurve[Sound_GetChanParam(paramsIn[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    env.decay = gSoundTimeCurve[Sound_GetChanParam(paramsIn[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    env.sustain = 0xC1 - gSoundLevelCurve[__cvt_fp2unsigned(gSoundVolIndexScale * vol)];
+    env.release = gSoundTimeCurve[Sound_GetChanParam(paramsIn[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    env.unkC = 0x80000000;
+    env.unk10 = 0x80000000;
+    Sound_SetVoiceEnvelope(sv->unkF4, &env, 2);
     M2C_FIELD(sv, u32 *, 0x118) |= 0x100;
 }
 
