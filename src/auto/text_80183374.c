@@ -46,3 +46,6 @@ void fn_80183374(void) {
     dst[0] = p770;
     dst[1] = p7C8;
 }
+
+__declspec(section ".ctors") static void (*const lbl_80267B00)(void) = fn_80183374;
+
