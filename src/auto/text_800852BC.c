@@ -1530,14 +1530,14 @@ void fn_80088FFC(void *arg0) {
     extern f32 gScreenHeight;
     extern f32 gScreenWidth;
     extern f32 gOrthoFar;
-    extern f32 lbl_803696A0;
+    extern f32 gFadeQuadZ;
     extern f32 lbl_803696A4;
     u8 sp8[0x40];
     u8 alpha;
 
     C_MTXOrtho(&sp8[0], gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
     GXSetProjection(&sp8[0], 1);
-    PSMTXTrans(&sp8[0], gScreenOrigin, gScreenOrigin, lbl_803696A0);
+    PSMTXTrans(&sp8[0], gScreenOrigin, gScreenOrigin, gFadeQuadZ);
     GXLoadPosMtxImm(&sp8[0], 0);
     GXSetCurrentMtx(0);
     GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
@@ -1785,7 +1785,7 @@ void fn_80089680(void *arg0) {
     extern f32 gScreenHeight;
     extern f32 gScreenWidth;
     extern f32 gOrthoFar;
-    extern f32 lbl_803696A0;
+    extern f32 gFadeQuadZ;
     extern f32 lbl_803696A4;
     extern f32 lbl_803696BC;
     u8 spC[0x44];
@@ -1823,7 +1823,7 @@ void fn_80089680(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
         C_MTXOrtho(spC, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
@@ -1940,7 +1940,7 @@ void fn_80089A28(void *arg0) {
     extern f32 gScreenHeight;
     extern f32 gScreenWidth;
     extern f32 gOrthoFar;
-    extern f32 lbl_803696A0;
+    extern f32 gFadeQuadZ;
     extern f32 lbl_803696A4;
     extern f32 lbl_803696B4;
     extern f32 lbl_803696CC;
@@ -2008,7 +2008,7 @@ void fn_80089A28(void *arg0) {
 
     C_MTXOrtho(sp8, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
     GXSetProjection(sp8, 1);
-    PSMTXTrans(sp8, gScreenOrigin, gScreenOrigin, lbl_803696A0);
+    PSMTXTrans(sp8, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
     GXLoadPosMtxImm(sp8, 0);
     GXSetCurrentMtx(0);
     GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
@@ -2159,7 +2159,7 @@ void Ui_DrawColorFade(void *arg0) {
     extern f32 gScreenHeight;
     extern f32 gScreenWidth;
     extern f32 gOrthoFar;
-    extern f32 lbl_803696A0;
+    extern f32 gFadeQuadZ;
     extern f32 lbl_803696A4;
     u8 spC[0x44];
     s32 sp8;
@@ -2205,7 +2205,7 @@ void Ui_DrawColorFade(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x37) != 0) {
         C_MTXOrtho(spC, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
@@ -2325,7 +2325,7 @@ void fn_8008A5AC(void *arg0) {
     extern f32 gScreenHeight;
     extern f32 gScreenWidth;
     extern f32 gOrthoFar;
-    extern f32 lbl_803696A0;
+    extern f32 gFadeQuadZ;
     extern f32 lbl_803696A4;
     extern f32 lbl_803696BC;
     u8 spC[0x44];
@@ -2363,7 +2363,7 @@ void fn_8008A5AC(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
         C_MTXOrtho(spC, gScreenOrigin, gScreenHeight, gScreenOrigin, gScreenWidth, gScreenOrigin, gOrthoFar);
         GXSetProjection(spC, 1);
-        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, lbl_803696A0);
+        PSMTXTrans(spC, gScreenOrigin, gScreenOrigin, gFadeQuadZ);
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
