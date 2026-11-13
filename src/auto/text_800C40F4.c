@@ -7151,7 +7151,7 @@ s32 fn_800D77D4(void) {
     extern u16 *gWin3;
     extern void *lbl_803679C8;
     extern void *lbl_803679D0;
-    extern void *lbl_80367A50;
+    extern void *gBgWin;
     extern void *lbl_803678C0;
 
     fn_800D758C(lbl_80367898);
@@ -7159,7 +7159,7 @@ s32 fn_800D77D4(void) {
     fn_800D758C(gWin3);
     fn_800D758C(lbl_803679C8);
     fn_800D758C(lbl_803679D0);
-    fn_800D758C(lbl_80367A50);
+    fn_800D758C(gBgWin);
     fn_800D75C4(lbl_803678C0);
     fn_800DA2CC(lbl_803678C0);
     return 0;
@@ -7168,9 +7168,9 @@ s32 fn_800D77D4(void) {
 s32 fn_800D7834(void) {
     void fn_800D75C4(void *);
     void fn_800DA2CC(void *);
-    extern s32 lbl_80367A50;
-    fn_800D75C4((void *)lbl_80367A50);
-    fn_800DA2CC((void *)lbl_80367A50);
+    extern s32 gBgWin;
+    fn_800D75C4((void *)gBgWin);
+    fn_800DA2CC((void *)gBgWin);
     return 0;
 }
 
@@ -7210,7 +7210,7 @@ s32 fn_800D78F4(void) {
     extern u16 *gWin3;
     extern void *lbl_803679C8;
     extern void *lbl_803679D0;
-    extern void *lbl_80367A50;
+    extern void *gBgWin;
     extern void *lbl_803678C0;
 
     fn_800D75C4(lbl_80367898);
@@ -7219,7 +7219,7 @@ s32 fn_800D78F4(void) {
     fn_800D758C(lbl_803678C0);
     fn_800D758C(lbl_803679C8);
     fn_800D758C(lbl_803679D0);
-    fn_800D758C(lbl_80367A50);
+    fn_800D758C(gBgWin);
     fn_800DA2CC(lbl_80367898);
     return 0;
 }
@@ -7439,7 +7439,7 @@ void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 
 void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
 void fn_8011C674(void *,void *); void fn_8011C64C(void *,void *); void *fn_8011C9EC(void *); void fn_8011CA3C(void *,void *,void *);
-extern char lbl_802711B0[]; extern void *lbl_80367A50; extern void *lbl_803678C0;
+extern char lbl_802711B0[]; extern void *gBgWin; extern void *lbl_803678C0;
 struct Block { u32 a,b,c,d,e,f,g,h; };
 struct Block sp108,spE8; char spC8[32]; struct Block spA8,sp88; char sp68[32];
 String sp5C,sp50,sp44,sp38,sp2C,sp20,sp14; u32 sp10,spC,sp8;
@@ -7457,7 +7457,7 @@ path=spC8;
 while(Xml_AdvanceChild(f)){
 Xml_GetChildName(&sp2C,f);String_Assign(&sp5C,&sp2C,0,-1);String_Destroy(&sp2C,-1);
 Xml_GetChildValue(spC8,f);String_AssignCStr(&sp50,path,strlen(path));
-fn_8011C674(lbl_80367A50,&sp5C);
+fn_8011C674(gBgWin,&sp5C);
 fn_800CA18C((void *)(arg0+0x4C),M2C_FIELD(arg0,u8 **,0x54)+M2C_FIELD(arg0,s32 *,0x50)*12,1,&sp50);
 }
 String_Init(&sp20,lbl_802711B0+0xFF,&sp8);
@@ -7467,10 +7467,10 @@ path=sp68;
 while(Xml_AdvanceChild(f)){
 Xml_GetChildName(&sp14,f);String_Assign(&sp5C,&sp14,0,-1);String_Destroy(&sp14,-1);
 Xml_GetChildValue(sp68,f);String_AssignCStr(&sp50,path,strlen(path));
-fn_8011C64C(lbl_80367A50,&sp5C);
+fn_8011C64C(gBgWin,&sp5C);
 fn_800CA18C((void *)(arg0+0x58),M2C_FIELD(arg0,u8 **,0x60)+M2C_FIELD(arg0,s32 *,0x5C)*12,1,&sp50);
 }
-{void *t;t=fn_8011C9EC(*(void **)((u8 *)lbl_80367A50+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x448),t,lbl_803678C0);t=fn_8011C9EC(*(void **)((u8 *)lbl_80367A50+0x428));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x450),t,lbl_803678C0);}
+{void *t;t=fn_8011C9EC(*(void **)((u8 *)gBgWin+0x424));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x448),t,lbl_803678C0);t=fn_8011C9EC(*(void **)((u8 *)gBgWin+0x428));fn_8011CA3C(*(void **)((u8 *)lbl_803678C0+0x450),t,lbl_803678C0);}
 Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
 }
 #pragma use_lmw_stmw reset
@@ -7850,7 +7850,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     extern void *lbl_80367918;
     extern void *lbl_803679C8;
     extern void *lbl_803679D0;
-    extern void *lbl_80367A50;
+    extern void *gBgWin;
     extern void *lbl_80367BA0;
     extern void *gGame;
 
@@ -7958,7 +7958,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     if (tmp != NULL) {
         tmp = BgWin_Create(tmp, *(void **)((u8 *)self + 4), 0x28, 0x50);
     }
-    lbl_80367A50 = tmp;
+    gBgWin = tmp;
     tmp = Heap_Alloc(0x430);
     if (tmp != NULL) {
         tmp = fn_801513EC(tmp, *(void **)((u8 *)self + 4), 0x28, 0x50);
@@ -7974,7 +7974,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_803678C0);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_803679C8);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_803679D0);
-    fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_80367A50);
+    fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &gBgWin);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_80367BA0);
 #pragma global_optimizer reset
 

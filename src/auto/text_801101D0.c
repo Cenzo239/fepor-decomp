@@ -4989,14 +4989,14 @@ void *fn_8011C558(void *arg0, s16 arg1) {
 
 s32 fn_8011C5B4(void) {
     M2C_UNK fn_800D758C(s32);
-    extern s32 lbl_80367A50;
-    fn_800D758C(lbl_80367A50);
+    extern s32 gBgWin;
+    fn_800D758C(gBgWin);
     return 0;
 }
 
 s32 fn_8011C5DC(void)
 {
-    extern u8 *lbl_80367A50;
+    extern u8 *gBgWin;
 
     extern void fn_800D758C(void *);
     extern s32 fn_8011C9E4(void *);
@@ -5007,15 +5007,15 @@ s32 fn_8011C5DC(void)
     s32 value2;
     s32 value3;
 
-    fn_800D758C(lbl_80367A50);
+    fn_800D758C(gBgWin);
 
-    obj = lbl_80367A50;
+    obj = gBgWin;
     value3 = fn_8011C9E4(*(void **)(obj + 0x42C));
 
-    obj = lbl_80367A50;
+    obj = gBgWin;
     value2 = fn_8011C9E4(*(void **)(obj + 0x428));
 
-    obj = lbl_80367A50;
+    obj = gBgWin;
     value1 = fn_8011C9E4(*(void **)(obj + 0x424));
 
     fn_800DA894(value1, value2, value3);
