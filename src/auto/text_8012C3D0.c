@@ -440,39 +440,40 @@ void fn_8012CCA4(void *arg0)
     fn_8005C7C8(gUiSelectMenuStrings + 0xC7);
 }
 
-void Ui_ResetSelectPrompt(void *arg0) {
+void Ui_ResetSelectPrompt(void *proc) {
+    /* Clear select cursor index, then set the text banner from mode (0x6C) and selection state. */
     s32 Msg_Expand(void *);
     void TextBanner_SetString(s32, s32);
     extern u8 gUiSelectMenuStrings[];
-    u8 temp_r0;
+    u8 mode;
 
-    *(u8 *)((char *)arg0 + 0x62) = 0;
-    if ((s8)*(u8 *)((char *)arg0 + 0x62) < 0) {
-        temp_r0 = *(u8 *)((char *)arg0 + 0x6C);
-        switch (temp_r0) {
+    *(u8 *)((char *)proc + 0x62) = 0;
+    if ((s8)*(u8 *)((char *)proc + 0x62) < 0) {
+        mode = *(u8 *)((char *)proc + 0x6C);
+        switch (mode) {
         case 1:
         case 2:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x5A));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x5A));
             break;
         case 4:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x6B));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x6B));
             break;
         default:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x7B));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x7B));
             break;
         }
     } else {
-        temp_r0 = *(u8 *)((char *)arg0 + 0x6C);
-        switch (temp_r0) {
+        mode = *(u8 *)((char *)proc + 0x6C);
+        switch (mode) {
         case 1:
         case 2:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x8A));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x8A));
             break;
         case 4:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x9B));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0x9B));
             break;
         default:
-            TextBanner_SetString(*(s32 *)((char *)arg0 + 0x50), Msg_Expand(gUiSelectMenuStrings + 0xAB));
+            TextBanner_SetString(*(s32 *)((char *)proc + 0x50), Msg_Expand(gUiSelectMenuStrings + 0xAB));
             break;
         }
     }
