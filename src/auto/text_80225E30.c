@@ -650,7 +650,7 @@ s32 fn_80227444(void *arg0) {
     void fn_8022692C(void *, u32);
     void fn_8022695C(void *, u32);
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
-    s32 fn_80229A98(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
     s32 fn_80229928(u16, u16, void *, s32 *, s32);
     s32 fn_802294F0(u16, u16, void *, s32 *, s32);
     s32 fn_80226888(void *, void *, s32);
@@ -692,7 +692,7 @@ s32 fn_80227444(void *arg0) {
         err = TRKTargetAccessDefault(start, end, obj, &outLen, 0);
         break;
     case 1:
-        err = fn_80229A98(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessFP(start, end, obj, &outLen, 0);
         break;
     case 2:
         err = fn_80229928(start, end, obj, &outLen, 0);
@@ -761,7 +761,7 @@ s32 TRKDoReadRegisters(void *arg0) {
 void fn_8022695C(void*,u32);
 s32 fn_80226698(void*,void*,s32);
 s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
-s32 fn_80229A98(u16,u16,void*,s32*,s32);
+s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
 s32 fn_80229928(u16,u16,void*,s32*,s32);
 s32 fn_802294F0(u16,u16,void*,s32*,s32);
 s32 fn_8022B078(void*,s32);
@@ -784,7 +784,7 @@ MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 err=TRKTargetAccessDefault(0,0x24,arg0,&outLen,1);
 MWTRACE(4,strings+0xc0,err);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(!err) err=fn_80229A98(0,0x21,arg0,&outLen,1);
+if(!err) err=TRKTargetAccessFP(0,0x21,arg0,&outLen,1);
 MWTRACE(4,strings+0xf8,err);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 if(!err) err=fn_80229928(0,0x60,arg0,&outLen,1);
