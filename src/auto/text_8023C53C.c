@@ -9604,73 +9604,84 @@ else fn_80261AE0(callId,0,0);
 return -1;
 }
 
-void Sound_SeekStreamPos(void *arg0,u32 arg1) {
-extern u8 gSoundStreamCtrl[];
-u8 *self=arg0; u32 pos=*(u32 *)(self+4); u32 result; u8 *state;
-if(pos!=arg1) {
-if(pos<arg1) {
-switch(self[2]) {
-case 5:
-*(u32 *)(self+0x1C)=(pos / 14) * 8;
-*(u32 *)(self+0x20)=arg1-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(gSoundStreamCtrl+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(gSoundStreamCtrl+4);
-break;
-case 6:
-*(u32 *)(self+0x1C)=pos * 2;
-*(u32 *)(self+0x20)=arg1-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(gSoundStreamCtrl+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(gSoundStreamCtrl+4);
-break;
-}
-}else if(arg1==0) {
-switch(self[2]) {
-case 5:
-*(u32 *)(self+0x1C)=(pos / 14) * 8;
-state=gSoundStreamCtrl;
-*(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(state+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
-break;
-case 6:
-*(u32 *)(self+0x1C)=pos * 2;
-state=gSoundStreamCtrl;
-*(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(state+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
-break;
-}
-}else {
-switch(self[2]) {
-case 5:
-*(u32 *)(self+0x1C)=(pos / 14) * 8;
-state=gSoundStreamCtrl;
-*(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=arg1;
-result=(*(u32 (**)(s32,void *))(state+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
-break;
-case 6:
-*(u32 *)(self+0x1C)=pos * 2;
-state=gSoundStreamCtrl;
-*(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
-*(u32 *)(self+0x24)=0;
-*(u32 *)(self+0x28)=arg1;
-result=(*(u32 (**)(s32,void *))(state+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
-break;
-}
-}
-}
+void Sound_SeekStreamPos(void *arg0, u32 arg1) {
+    /* Seek a stream entry toward sample arg1 (ADPCM type 5 / PCM type 6). */
+    extern u8 gSoundStreamCtrl[];
+    u8 *self = arg0;
+    u32 pos = *(u32 *)(self + 4);
+    u32 result;
+    u8 *state;
+
+    if (pos != arg1) {
+        if (pos < arg1) {
+            switch (self[2]) {
+            case 5:
+                *(u32 *)(self + 0x1C) = (pos / 14) * 8;
+                *(u32 *)(self + 0x20) = arg1 - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = 0;
+                result = (*(u32 (**)(s32, void *))(gSoundStreamCtrl + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(gSoundStreamCtrl + 4);
+                break;
+            case 6:
+                *(u32 *)(self + 0x1C) = pos * 2;
+                *(u32 *)(self + 0x20) = arg1 - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = 0;
+                result = (*(u32 (**)(s32, void *))(gSoundStreamCtrl + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(gSoundStreamCtrl + 4);
+                break;
+            }
+        } else if (arg1 == 0) {
+            switch (self[2]) {
+            case 5:
+                *(u32 *)(self + 0x1C) = (pos / 14) * 8;
+                state = gSoundStreamCtrl;
+                *(u32 *)(self + 0x20) = *(u32 *)(state + 4) - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = 0;
+                result = (*(u32 (**)(s32, void *))(state + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(state + 4);
+                break;
+            case 6:
+                *(u32 *)(self + 0x1C) = pos * 2;
+                state = gSoundStreamCtrl;
+                *(u32 *)(self + 0x20) = *(u32 *)(state + 4) - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = 0;
+                result = (*(u32 (**)(s32, void *))(state + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(state + 4);
+                break;
+            }
+        } else {
+            switch (self[2]) {
+            case 5:
+                *(u32 *)(self + 0x1C) = (pos / 14) * 8;
+                state = gSoundStreamCtrl;
+                *(u32 *)(self + 0x20) = *(u32 *)(state + 4) - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = arg1;
+                result = (*(u32 (**)(s32, void *))(state + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(state + 4);
+                break;
+            case 6:
+                *(u32 *)(self + 0x1C) = pos * 2;
+                state = gSoundStreamCtrl;
+                *(u32 *)(self + 0x20) = *(u32 *)(state + 4) - *(u32 *)(self + 4);
+                *(u32 *)(self + 0x24) = 0;
+                *(u32 *)(self + 0x28) = arg1;
+                result = (*(u32 (**)(s32, void *))(state + 0xB4C))(1, self + 0x10);
+                if (result)
+                    *(u32 *)(self + 4) = (*(u32 *)(self + 4) + result) % *(u32 *)(state + 4);
+                break;
+            }
+        }
+    }
 }
 
 #pragma inline_depth(8)
