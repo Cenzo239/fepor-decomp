@@ -3956,7 +3956,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     (void)pad;
 }
 
-extern "C" void fn_801BD28C(void *arg0) {
+extern "C" void Ui_LayoutUnitHirePanel(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SetWidgetText(void *, void *);
