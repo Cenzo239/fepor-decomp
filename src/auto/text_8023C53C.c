@@ -6511,7 +6511,7 @@ void fn_8025164C(void *arg0)
 
 void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     extern f32 gSoundVolCurve[];
-    extern s32 lbl_8029F1CC[];
+    extern s32 gSoundTimeCurve[];
     extern u8 lbl_8029FB7C[];
     extern f32 lbl_8036C260;
     struct {
@@ -6525,10 +6525,10 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     f32 vol;
 
     vol = gSoundVolCurve[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk0 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk4 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unk0 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unk4 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk8 = 0xC1 - lbl_8029FB7C[__cvt_fp2unsigned(lbl_8036C260 * vol)];
-    params.unkA = lbl_8029F1CC[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    params.unkA = gSoundTimeCurve[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unkC = 0x80000000;
     params.unk10 = 0x80000000;
     fn_80261934(sv->unkF4, &params, 2);
