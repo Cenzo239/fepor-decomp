@@ -931,16 +931,17 @@ void fn_801A4BE0(void *arg0) {
     }
 }
 
-void Battle_ResolveRounds(s32 arg0) {
+/* Decide attack order (Vantage skill 0x29, doubles) and run rounds; award kill counts on death. */
+void Battle_ResolveRounds(s32 battle) {
     void fn_80034068(s32, s32, s32);
     u8 fn_80105BC0(s32, s32);
     void Battle_PerformAttacks(s32, s32, s32);
     extern u8 lbl_80330708[];
     s32 self;
-    u8 var_r0;
-    void *temp_r5;
+    u8 eitherDead;
+    void *unit;
 
-    self = arg0;
+    self = battle;
     if ((s8)*(u8 *)(self + 0x488) == 0) {
         fn_80034068(self + 0x8A0, 0x17, 0);
         return;
@@ -950,13 +951,13 @@ void Battle_ResolveRounds(s32 arg0) {
         fn_80034068(self + 0x8A0, 0x21, 0);
         Battle_PerformAttacks(self, self + 0x2E0, self);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else {
-            var_r0 = 0;
+            eitherDead = 0;
         }
-        if (var_r0 != 0) {
+        if (eitherDead != 0) {
             goto final;
         }
         if (*(u8 *)(self + 0x5AB) == 0) {
@@ -964,13 +965,13 @@ void Battle_ResolveRounds(s32 arg0) {
             fn_80034068(self + 0x8A0, 0x20, 0);
             Battle_PerformAttacks(self, self, self + 0x2E0);
             if ((s8)*(u8 *)(self + 0x1A8) == 0) {
-                var_r0 = 1;
+                eitherDead = 1;
             } else if ((s8)*(u8 *)(self + 0x488) == 0) {
-                var_r0 = 1;
+                eitherDead = 1;
             } else {
-                var_r0 = 0;
+                eitherDead = 0;
             }
-            if (var_r0 != 0) {
+            if (eitherDead != 0) {
                 goto final;
             }
             goto block_30;
@@ -981,13 +982,13 @@ void Battle_ResolveRounds(s32 arg0) {
         fn_80034068(self + 0x8A0, 0x20, 0);
         Battle_PerformAttacks(self, self, self + 0x2E0);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else {
-            var_r0 = 0;
+            eitherDead = 0;
         }
-        if (var_r0 != 0) {
+        if (eitherDead != 0) {
             goto final;
         }
         if (*(u8 *)(self + 0x2CB) == 0) {
@@ -995,13 +996,13 @@ void Battle_ResolveRounds(s32 arg0) {
             fn_80034068(self + 0x8A0, 0x21, 0);
             Battle_PerformAttacks(self, self + 0x2E0, self);
             if ((s8)*(u8 *)(self + 0x1A8) == 0) {
-                var_r0 = 1;
+                eitherDead = 1;
             } else if ((s8)*(u8 *)(self + 0x488) == 0) {
-                var_r0 = 1;
+                eitherDead = 1;
             } else {
-                var_r0 = 0;
+                eitherDead = 0;
             }
-            if (var_r0 != 0) {
+            if (eitherDead != 0) {
                 goto final;
             }
             goto block_30;
@@ -1016,13 +1017,13 @@ block_30:
         fn_80034068(self + 0x8A0, 0x23, 0);
         Battle_PerformAttacks(self, self, self + 0x2E0);
         if ((s8)*(u8 *)(self + 0x1A8) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else if ((s8)*(u8 *)(self + 0x488) == 0) {
-            var_r0 = 1;
+            eitherDead = 1;
         } else {
-            var_r0 = 0;
+            eitherDead = 0;
         }
-        if (var_r0 != 0) {
+        if (eitherDead != 0) {
             goto final;
         }
         goto block_39;
@@ -1038,22 +1039,22 @@ block_39:
 final:
     if ((s8)*(u8 *)(self + 0x1A8) == 0) {
         fn_80034068(self + 0x8A0, 0xB, 0);
-        temp_r5 = *(void **)(self + 0x560);
-        *(u16 *)((u8 *)temp_r5 + 0x22C) = *(u16 *)((u8 *)temp_r5 + 0x22C) + 1;
-        temp_r5 = *(void **)(self + 0x560);
-        *(u16 *)((u8 *)temp_r5 + 0x22A) = *(u16 *)((u8 *)temp_r5 + 0x22A) + 1;
-        temp_r5 = *(void **)(self + 0x560);
-        *(u8 *)((u8 *)temp_r5 + 0x234) = lbl_80330708[0x10];
+        unit = *(void **)(self + 0x560);
+        *(u16 *)((u8 *)unit + 0x22C) = *(u16 *)((u8 *)unit + 0x22C) + 1;
+        unit = *(void **)(self + 0x560);
+        *(u16 *)((u8 *)unit + 0x22A) = *(u16 *)((u8 *)unit + 0x22A) + 1;
+        unit = *(void **)(self + 0x560);
+        *(u8 *)((u8 *)unit + 0x234) = lbl_80330708[0x10];
         return;
     }
     if ((s8)*(u8 *)(self + 0x488) == 0) {
         fn_80034068(self + 0x8A0, 0x17, 0);
-        temp_r5 = *(void **)(self + 0x280);
-        *(u16 *)((u8 *)temp_r5 + 0x22C) = *(u16 *)((u8 *)temp_r5 + 0x22C) + 1;
-        temp_r5 = *(void **)(self + 0x280);
-        *(u16 *)((u8 *)temp_r5 + 0x22A) = *(u16 *)((u8 *)temp_r5 + 0x22A) + 1;
-        temp_r5 = *(void **)(self + 0x280);
-        *(u8 *)((u8 *)temp_r5 + 0x234) = lbl_80330708[0x10];
+        unit = *(void **)(self + 0x280);
+        *(u16 *)((u8 *)unit + 0x22C) = *(u16 *)((u8 *)unit + 0x22C) + 1;
+        unit = *(void **)(self + 0x280);
+        *(u16 *)((u8 *)unit + 0x22A) = *(u16 *)((u8 *)unit + 0x22A) + 1;
+        unit = *(void **)(self + 0x280);
+        *(u8 *)((u8 *)unit + 0x234) = lbl_80330708[0x10];
     }
 }
 
