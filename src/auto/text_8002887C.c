@@ -1993,7 +1993,7 @@ void Battle_LoadMap(void)
     void Heap_Create(void *, s32);
     void Chapter_LoadScript(s32);
     u16 FileCache_Probe(void *);
-    void fn_8003F87C(void *, s32);
+    void Archive_LoadFlags(void *, s32);
     void Archive_Load(void *);
     void FileCache_Load(void *);
     void fn_80050F64(void);
@@ -2007,7 +2007,7 @@ void Battle_LoadMap(void)
     Heap_Create(Battle_str + 0x176, 0x180000);
     Chapter_LoadScript(gBattleState[0x10]);
     if (FileCache_Probe(Battle_str + 0x198) != 0x8000) {
-        fn_8003F87C(Battle_str + 0x198, 8);
+        Archive_LoadFlags(Battle_str + 0x198, 8);
     }
     if (FileCache_Probe(Battle_str + 0x17F) != 0x8000) {
         Archive_Load(Battle_str + 0x17F);

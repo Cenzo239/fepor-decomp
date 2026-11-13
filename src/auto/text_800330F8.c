@@ -5866,7 +5866,7 @@ void fn_8003F670(void *arg0) {
     fn_8005C7E8(ptr);
 }
 
-void *fn_8003F87C(s32 arg0, u32 arg1) {
+void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
     void fn_8005C5A8(s32);
     void fn_8000D3EC(void *, void *);
@@ -6014,8 +6014,8 @@ void *fn_8003F87C(s32 arg0, u32 arg1) {
 }
 
 void Archive_Load(s32 arg0) {
-    void fn_8003F87C(s32, s32);
-    fn_8003F87C(arg0, 0);
+    void Archive_LoadFlags(s32, s32);
+    Archive_LoadFlags(arg0, 0);
 }
 
 int fn_8003FCF0(void *arg0) {
@@ -6548,7 +6548,7 @@ void fn_80041514(void *arg0, char *arg1)
     void *light;
     void *fog;
     s32 (*fccc)(void *) = (s32 (*)(void *))Archive_Load;
-    void *(*f87c)(void *, s32) = (void *(*)(void *, s32))fn_8003F87C;
+    void *(*f87c)(void *, s32) = (void *(*)(void *, s32))Archive_LoadFlags;
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
