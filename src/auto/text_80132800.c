@@ -6448,7 +6448,7 @@ void fn_8013DD90(void* arg0, void* arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8015AD7C(s32, s32, s32, s16, s32, s32);
+extern "C" void Ui_DrawListWindowFrame(s32, s32, s32, s16, s32, s32);
 s32 Prim2D_SetAlphaByte(u8);
 extern "C" void fn_8013DF7C(void *arg0, s32 arg1) {
     struct Obj {
@@ -6495,7 +6495,7 @@ extern "C" void fn_8013DF7C(void *arg0, s32 arg1) {
     if (y == 0) {
         y = ((Obj *)arg0)->v20() * ((Obj *)arg0)->v33(arg1) + ((Obj *)arg0)->v17() * 2;
     }
-    fn_8015AD7C(0, 0, ((Obj *)arg0)->v18(), y, 0xE6, 0x10);
+    Ui_DrawListWindowFrame(0, 0, ((Obj *)arg0)->v18(), y, 0xE6, 0x10);
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
