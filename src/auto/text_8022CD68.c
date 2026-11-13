@@ -3291,7 +3291,7 @@ f64 fn_80235B4C(f64 farg0) {
     return lbl_8036BEA0 * (sp10 + (Nz / Dz * h + (-((sp10 * sp10) - z) / (h + sp10))));
 }
 
-f64 fn_80235D88(f64 x, f64 y) {
+f64 __ieee754_fmod(f64 x, f64 y) {
     extern f64 lbl_80282CC0[];
     int n, hx, hy, hz, ix, iy, sx, i;
     unsigned lx, ly, lz;
@@ -3993,8 +3993,8 @@ void fn_80238788(void) {
 }
 
 void fn_802387A8(void) {
-    M2C_UNK fn_80235D88();
-    fn_80235D88();
+    M2C_UNK __ieee754_fmod();
+    __ieee754_fmod();
 }
 
 void fn_802387C8(void) {
