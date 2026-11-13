@@ -8628,7 +8628,8 @@ void fn_800C0CA4(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x50) = 0;
 }
 
-void Capture_DrawRotated(void *arg0) {
+/* Copy the EFB into the capture buffer, then draw it as a Z-rotated textured strip. */
+void Capture_DrawRotated(void *cap) {
     void fn_8022097C(void);
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
@@ -8660,20 +8661,20 @@ void Capture_DrawRotated(void *arg0) {
     extern f32 lbl_80369D38;
     extern f32 lbl_80369D3C;
     extern f32 lbl_80369D40;
-    u8 spC8[0x30];
-    u8 sp98[0x30];
-    u8 sp68[0x30];
-    u8 sp38[0x30];
-    u8 sp8[0x30];
-    void *temp_r31;
+    u8 mtx_rot[0x30];
+    u8 mtx_center[0x30];
+    u8 mtx_origin[0x30];
+    u8 mtx_scale[0x30];
+    u8 mtx[0x30];
+    void *self;
     f32 vals[2];
     volatile f32 *wgpipe;
 
-    temp_r31 = arg0;
+    self = cap;
     fn_8022097C();
     fn_8022124C(0, 0, 0x260, 0x1E0);
     fn_802212FC(0x260, 0x1E0, 4, 0);
-    fn_80221BA8(*(s32 *)((u8 *)temp_r31 + 0x50), 1);
+    fn_80221BA8(*(s32 *)((u8 *)self + 0x50), 1);
     fn_802209FC();
     fn_80222EB4();
     fn_80067EDC(0);
@@ -8688,15 +8689,15 @@ void Capture_DrawRotated(void *arg0) {
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 0xFF);
     GXSetNumTexGens(0, 3);
-    PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
-    PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
-    PSMTXRotRad(spC8, 0x5A, lbl_80369D34);
-    PSMTXScale(sp38, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
-    PSMTXConcat(sp38, sp98, sp8);
-    PSMTXConcat(spC8, sp8, sp8);
-    PSMTXConcat(sp68, sp8, sp8);
-    GXLoadPosMtxImm(sp8, 0);
-    fn_80222C50((u8 *)temp_r31 + 0x30, 0);
+    PSMTXTrans(mtx_center, lbl_80369D24, lbl_80369D24, lbl_80369D28);
+    PSMTXTrans(mtx_origin, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
+    PSMTXRotRad(mtx_rot, 0x5A, lbl_80369D34);
+    PSMTXScale(mtx_scale, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
+    PSMTXConcat(mtx_scale, mtx_center, mtx);
+    PSMTXConcat(mtx_rot, mtx, mtx);
+    PSMTXConcat(mtx_origin, mtx, mtx);
+    GXLoadPosMtxImm(mtx, 0);
+    fn_80222C50((u8 *)self + 0x30, 0);
     GXBegin(0x98, 0, 4);
     vals[0] = lbl_80369D28;
     wgpipe = (volatile f32 *)0xCC008000;
