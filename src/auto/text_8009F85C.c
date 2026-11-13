@@ -1177,17 +1177,17 @@ char *fn_800A0E24(void) {
     s32 fn_801E3308(void *);
     void sprintf(void *, void *, ...);
     extern u8 gSystemSave[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x599, (u8)fn_801E3308(gSystemSave));
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x599, (u8)fn_801E3308(gSystemSave));
+    return gItemMenuTextBuf;
 }
 
 char *fn_800A101C(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
     u8 *base;
     u8 flag;
@@ -1197,14 +1197,14 @@ char *fn_800A101C(void) {
 
     base = lbl_8026D8D8;
     flag = gBattleState[0x9F];
-    buf = lbl_80312270;
+    buf = gItemMenuTextBuf;
     arg2 = base + 0x5AE;
     var_r5 = base + 0x5C3;
     if ((flag >> 7) & 1) {
         var_r5 = base + 0x5BA;
     }
     sprintf(buf, arg2, var_r5);
-    return lbl_80312270;
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A1078(void) {
@@ -1227,7 +1227,7 @@ s32 fn_800A1078(void) {
 char *fn_800A10C0(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
     void *var_r5;
 
@@ -1248,8 +1248,8 @@ char *fn_800A10C0(void) {
         var_r5 = NULL;
         break;
     }
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x5E2, var_r5);
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x5E2, var_r5);
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A1178(void)
@@ -1284,32 +1284,32 @@ s32 fn_800A1178(void)
 char *fn_800A11F0(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x5EC, gBattleState[0x10], gBattleState + 0x504);
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x5EC, gBattleState[0x10], gBattleState + 0x504);
+    return gItemMenuTextBuf;
 }
 
 char *fn_800A1240(void) {
     s32 fn_8014D2CC(void *);
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x5FA, fn_8014D2CC(gBattleState));
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x5FA, fn_8014D2CC(gBattleState));
+    return gItemMenuTextBuf;
 }
 
 char *fn_800A1290(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x606, *(s32 *)(gBattleState + 0x18));
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x606, *(s32 *)(gBattleState + 0x18));
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A12DC(void)
@@ -1350,11 +1350,11 @@ s32 fn_800A12DC(void)
 char *fn_800A1354(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x612, *(s32 *)(gBattleState + 0x1C));
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x612, *(s32 *)(gBattleState + 0x1C));
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A13A0(void) {
@@ -1374,11 +1374,11 @@ s32 fn_800A13A0(void) {
 char *fn_800A13FC(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x61E, *(s16 *)(gBattleState + 0x12));
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x61E, *(s16 *)(gBattleState + 0x12));
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A1448(void) {
@@ -1704,7 +1704,7 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_SetScale(f32);
     void Prim2D_EndPrim(void);
     extern u8 lbl_8026D8D8[];
-    extern u8 lbl_80312270[];
+    extern u8 gItemMenuTextBuf[];
     extern f32 lbl_80369A04;
     extern f32 lbl_803699E8;
     void *temp_r30;
@@ -1715,21 +1715,21 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     if (temp_r31 == NULL || *temp_r31 == NULL) {
         return;
     }
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6C7, UnitRef_GetName());
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6C7, UnitRef_GetName());
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369A04);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)*(s16 *)((u8 *)temp_r30 + 0x30), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
-    Prim2D_SetText(lbl_80312270);
+    Prim2D_SetText(gItemMenuTextBuf);
     Prim2D_SetScale(lbl_803699E8);
     Prim2D_EndPrim();
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)temp_r31 + 4),
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)temp_r31 + 4),
         (u8)((*temp_r31 != NULL) ? *(u8 *)((u8 *)*temp_r31 + 0x18) : 0));
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)temp_r30 + 0x30) + 0x78), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
-    Prim2D_SetText(lbl_80312270);
+    Prim2D_SetText(gItemMenuTextBuf);
     Prim2D_SetScale(lbl_803699E8);
     Prim2D_EndPrim();
 }
@@ -1917,14 +1917,14 @@ char *fn_800A2660(void *arg0) {
     s32 fn_800A8978(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026D8D8[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     void *temp_r31;
     s32 temp_r6;
 
     temp_r31 = Job_Get(*(s16 *)((u8 *)arg0 + 4));
     temp_r6 = fn_800A8978();
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A26D0(void *arg0)
@@ -1993,14 +1993,14 @@ char *fn_800A27D8(void *arg0) {
     s32 fn_800A8A88(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026D8D8[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     void *temp_r31;
     s32 temp_r6;
 
     temp_r31 = Person_Get(*(s16 *)((u8 *)arg0 + 4));
     temp_r6 = fn_800A8A88();
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A2848(void *arg0)
@@ -2056,14 +2056,14 @@ char *fn_800A2914(void) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_80366E08;
     extern u8 lbl_8026D8D8[];
-    extern char lbl_80312270[];
+    extern char gItemMenuTextBuf[];
     u8 temp_r31;
     s32 temp_r6;
 
     temp_r31 = *((u8 *)Res_GetEntry(lbl_80366E08) + 0x18);
     temp_r6 = fn_8010586C();
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x2C7, temp_r31, temp_r6);
-    return lbl_80312270;
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x2C7, temp_r31, temp_r6);
+    return gItemMenuTextBuf;
 }
 
 s32 fn_800A2974(void) {
@@ -2621,7 +2621,7 @@ extern u16 lbl_8026D8D8;
 #include "global.h"
 
 extern u16 lbl_8026D8D8;
-extern u16 lbl_80312270;
+extern u16 gItemMenuTextBuf;
 extern u8 gBattleState[1400];
 #include "global.h"
 
