@@ -1131,71 +1131,72 @@ void fn_801AADA4(void *arg0) {
     }
 }
 
-void Options_LoadFromBattleState(u8 *arg0) {
+void Options_LoadFromBattleState(u8 *opt) {
     extern u8 gBattleState[];
-    u8 *src = gBattleState;
+    u8 *cfg = gBattleState;
     struct {
         u8 hi : 6;
         u8 mid : 1;
         u8 lo : 1;
     } *bf;
 
-    *(u16 *)(arg0 + 0x5C) = 0;
-    arg0[0x5E] = (u8)((src[0x9C] >> 6) & 3);
-    if (!((src[0x9F] >> 4) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x4000;
+    // Load packed options from gBattleState into the Options UI object.
+    *(u16 *)(opt + 0x5C) = 0;
+    opt[0x5E] = (u8)((cfg[0x9C] >> 6) & 3);
+    if (!((cfg[0x9F] >> 4) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x4000;
     }
-    arg0[0x5F] = (u8)((src[0x9C] >> 5) & 1);
-    arg0[0x60] = (u8)((src[0x9C] >> 3) & 3);
-    arg0[0x61] = src[0xA0];
-    if (!((src[0x9C] >> 2) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 1;
+    opt[0x5F] = (u8)((cfg[0x9C] >> 5) & 1);
+    opt[0x60] = (u8)((cfg[0x9C] >> 3) & 3);
+    opt[0x61] = cfg[0xA0];
+    if (!((cfg[0x9C] >> 2) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 1;
     }
-    if (!((src[0x9C] >> 1) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 2;
+    if (!((cfg[0x9C] >> 1) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 2;
     }
-    if (!(src[0x9C] & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 4;
+    if (!(cfg[0x9C] & 1)) {
+        *(u16 *)(opt + 0x5C) |= 4;
     }
-    arg0[0x62] = (u8)((src[0x9D] >> 6) & 3);
-    if (!((src[0x9D] >> 5) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 8;
+    opt[0x62] = (u8)((cfg[0x9D] >> 6) & 3);
+    if (!((cfg[0x9D] >> 5) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 8;
     }
-    if (!((src[0x9D] >> 4) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x10;
+    if (!((cfg[0x9D] >> 4) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x10;
     }
-    arg0[0x63] = (u8)((src[0x9D] >> 2) & 3);
-    if (!((src[0x9D] >> 1) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x20;
+    opt[0x63] = (u8)((cfg[0x9D] >> 2) & 3);
+    if (!((cfg[0x9D] >> 1) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x20;
     }
-    if (!(src[0x9D] & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x40;
+    if (!(cfg[0x9D] & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x40;
     }
-    if (!((src[0x9E] >> 7) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x80;
+    if (!((cfg[0x9E] >> 7) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x80;
     }
-    if (!((src[0x9E] >> 6) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x100;
+    if (!((cfg[0x9E] >> 6) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x100;
     }
-    if (!((src[0x9E] >> 5) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x200;
+    if (!((cfg[0x9E] >> 5) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x200;
     }
-    if (!((src[0x9E] >> 4) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x400;
+    if (!((cfg[0x9E] >> 4) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x400;
     }
-    if (!((src[0x9F] >> 5) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x2000;
+    if (!((cfg[0x9F] >> 5) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x2000;
     }
-    arg0[0x66] = (u8)((src[0x9E] >> 2) & 3);
-    arg0[0x67] = src[0xA4];
-    arg0[0x68] = src[0xA5];
-    if (!((src[0x9E] >> 1) & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x800;
+    opt[0x66] = (u8)((cfg[0x9E] >> 2) & 3);
+    opt[0x67] = cfg[0xA4];
+    opt[0x68] = cfg[0xA5];
+    if (!((cfg[0x9E] >> 1) & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x800;
     }
-    if (!(src[0x9E] & 1)) {
-        *(u16 *)(arg0 + 0x5C) |= 0x1000;
+    if (!(cfg[0x9E] & 1)) {
+        *(u16 *)(opt + 0x5C) |= 0x1000;
     }
-    bf = (void *)&src[0x9E];
+    bf = (void *)&cfg[0x9E];
     bf->mid = 0;
 }
 
