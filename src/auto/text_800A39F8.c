@@ -2140,7 +2140,7 @@ void fn_800A828C(s32 arg0) {
 void fn_800A82B0(void *arg0) {
     s32 fn_800067B4();
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80007770(s32, f32, f32, f32, f32);
+    M2C_UNK Prim2D_SetUvCorners(s32, f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetPrimParam(f32);
     M2C_UNK Prim2D_EndPrim();
@@ -2170,7 +2170,7 @@ void fn_800A82B0(void *arg0) {
     Prim2D_SetRect(lbl_80369B60, lbl_80369B60, lbl_80369B6C, lbl_80369B70);
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x34);
     temp_f2 = lbl_80369B74 * (f32) temp_r3;
-    fn_80007770(temp_r3, lbl_80369B60, temp_f2, lbl_80369B68, lbl_80369B78 + temp_f2);
+    Prim2D_SetUvCorners(temp_r3, lbl_80369B60, temp_f2, lbl_80369B68, lbl_80369B78 + temp_f2);
     Prim2D_SetPrimParam(lbl_80369B7C);
     Prim2D_EndPrim();
     Prim2D_Begin();

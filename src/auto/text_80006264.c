@@ -1072,7 +1072,7 @@ void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
     *(f32 *)((u8 *)p + 0x2C) = t3;
 }
 
-void fn_80007770(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Prim2D_SetUvCorners(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *lbl_80367140;
     u8 *ptr;
 

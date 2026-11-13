@@ -2807,7 +2807,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
 void fn_8010A704(void *arg0, u8 arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
-    void fn_80007770(f32, f32, f32, f32);
+    void Prim2D_SetUvCorners(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -2883,7 +2883,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
         (f32)*(s16 *)((u8 *)arg0 + 0x16),
         (f32)*(s16 *)((u8 *)arg0 + 0x18),
         (f32)*(s16 *)((u8 *)arg0 + 0x1A));
-    fn_80007770(
+    Prim2D_SetUvCorners(
         (f32)*(u16 *)((u8 *)arg0 + 0x1C),
         (f32)*(u16 *)((u8 *)arg0 + 0x1E),
         (f32)*(u16 *)((u8 *)arg0 + 0x20),
@@ -2901,7 +2901,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
 #pragma cplusplus on
 extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     void Prim2D_SetAlpha(u8);
-    void fn_80007770(f32, f32, f32, f32);
+    void Prim2D_SetUvCorners(f32, f32, f32, f32);
     void fn_80007790(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -2959,7 +2959,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
         (f32)*(s16 *)((u8 *)arg0 + 0x16),
         (f32)*(s16 *)((u8 *)arg0 + 0x18),
         (f32)*(s16 *)((u8 *)arg0 + 0x1A));
-    fn_80007770(
+    Prim2D_SetUvCorners(
         (f32)*(u16 *)((u8 *)arg0 + 0x1C),
         (f32)*(u16 *)((u8 *)arg0 + 0x1E),
         (f32)*(u16 *)((u8 *)arg0 + 0x20),
