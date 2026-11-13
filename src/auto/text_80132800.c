@@ -7565,7 +7565,7 @@ void fn_8013FC68(ListIter *ret, List *list, ListIter *it) {
 extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
-    void fn_80232058(void *, void *, ...);
+    void fprintf(void *, void *, ...);
     void abort(void);
     extern char __files[];
     extern char lbl_80276A80[];
@@ -7592,7 +7592,7 @@ extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
     list = (s32 *)arg1 + 1;
     node = (Node *)Heap_Alloc(0xC);
     if (node == 0) {
-        fn_80232058(__files + 0xA0, lbl_80276A80, __files);
+        fprintf(__files + 0xA0, lbl_80276A80, __files);
         abort();
     }
     {
@@ -10080,7 +10080,7 @@ void fn_80144E34(ListIter *ret, List *list, ListIter *it) {
 extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
-    void fn_80232058(void *, void *, ...);
+    void fprintf(void *, void *, ...);
     void abort(void);
     extern char __files[];
     extern char lbl_80276B3C[];
@@ -10108,7 +10108,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     list = (s32 *)arg1 + 1;
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
-        fn_80232058(__files + 0xA0, lbl_80276B3C + 0x72, __files);
+        fprintf(__files + 0xA0, lbl_80276B3C + 0x72, __files);
         abort();
     }
     {

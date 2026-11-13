@@ -2011,7 +2011,7 @@ M2C_UNK *String_CStr(void *arg0) {
 
 s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     s32 fn_80231944(char *, char *, u32);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2021,7 +2021,7 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
     s32 cmp;
 
     if (pos > arg0->size) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0x1D);
+        fprintf(__files + 0xA0, lbl_80270350 + 0x1D);
         abort();
     }
     rest = arg0->size - pos;
@@ -2050,7 +2050,7 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     String *fn_800C984C(String *, u32, u32);
     void fn_800CA7F4(String *, u32, s32);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2058,7 +2058,7 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     u32 len;
 
     if (pos > arg1->size) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0x96);
+        fprintf(__files + 0xA0, lbl_80270350 + 0x96);
         abort();
     }
     rest = arg1->size - pos;
@@ -2082,7 +2082,7 @@ String *fn_800C984C(String *arg0, u32 arg1, u32 arg2) {
 String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
     void fn_800CA7F4(String *, u32, s32);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     void *memset(void *, s32, u32);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2090,7 +2090,7 @@ String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
 
     if (arg1 != 0) {
         if (arg1 > (u32)-2 || arg0->size > (u32)-2 - arg1) {
-            fn_80232058(__files + 0xA0, lbl_80270350 + 0xBC);
+            fprintf(__files + 0xA0, lbl_80270350 + 0xBC);
             abort();
         }
         size = arg0->size;
@@ -2117,7 +2117,7 @@ void *fn_800C992C(void *arg0, const char *arg1, u32 arg2) {
 String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
     void fn_800CA7F4(String *, u32, s32);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2128,7 +2128,7 @@ String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
 
     lim = arg1->size;
     if (pos > lim) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0xEE);
+        fprintf(__files + 0xA0, lbl_80270350 + 0xEE);
         abort();
     }
     rest = arg1->size - pos;
@@ -2161,7 +2161,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     struct Tag { u8 b; };
     void fn_800CA728(void *, char *, char *, void *, struct Tag);
     void abort(void);
-    void fn_80232058(void *, const char *, ...);
+    void fprintf(void *, const char *, ...);
     u32 strlen(const char *);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2172,7 +2172,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     *(u32 *)((u8 *)arg0 + 4) = 0;
     len = strlen(arg1);
     if (len > (u32)-2) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0x114);
+        fprintf(__files + 0xA0, lbl_80270350 + 0x114);
         abort();
     }
     home = copy;
@@ -2199,7 +2199,7 @@ void *arg1;
 #pragma use_lmw_stmw on
 void fn_800C9BC4(void *vec,s32 *pos,u32 count,s32 *value){
 void *Heap_Alloc(s32);void Heap_Free(void *);
-void fn_80232058(void *,const char *,...);void abort(void);
+void fprintf(void *,const char *,...);void abort(void);
 extern char __files[],lbl_80270350[];
 u32 bytes;
 s32 *old,*allocation,*dst,*end,*fill,*src,*split;
@@ -2211,7 +2211,7 @@ s32 initial;
 s32 *copySrc,*copyDst;
 if(count){
 if(count>0x3FFFFFFF || M2C_FIELD(vec,u32 *,4)>0x3FFFFFFF-count){
-fn_80232058(__files+0xA0,lbl_80270350+0x136);abort();
+fprintf(__files+0xA0,lbl_80270350+0x136);abort();
 }
 size=M2C_FIELD(vec,u32 *,4);available=M2C_FIELD(vec,u32 *,0);
 need=size+count;
@@ -2236,7 +2236,7 @@ while(need>capacity){
 if(capacity<0x1FFFFFFF)capacity*=2;else capacity=0x3FFFFFFF;
 }
 allocation=Heap_Alloc(capacity*4);
-if(!allocation){fn_80232058(__files+0xA0,lbl_80270350+0x7C);abort();}
+if(!allocation){fprintf(__files+0xA0,lbl_80270350+0x7C);abort();}
 M2C_FIELD(vec,s32 **,8)=allocation;
 bytes=offset*4;
 dst=(s32 *)((u8 *)M2C_FIELD(vec,s32 **,8)+bytes);n=count;
@@ -2266,7 +2266,7 @@ void fn_800CA18C(void *vec, void *pos, u32 count, void *src)
     void *Heap_Alloc(s32);
     void fn_800CA91C(void *);
     void Heap_Free(void *);
-    void fn_80232058(void *, const char *, ...);
+    void fprintf(void *, const char *, ...);
     void abort(void);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2295,7 +2295,7 @@ struct LocalState st;
 
     if (count > 0x15555555U ||
         *(u32 *)((u8 *)vec + 4) > 0x15555555U - count) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0x136);
+        fprintf(__files + 0xA0, lbl_80270350 + 0x136);
         abort();
     }
 
@@ -2433,7 +2433,7 @@ struct LocalState st;
         dst = Heap_Alloc((s32)(cap * 0xC));
 
         if (dst == 0) {
-            fn_80232058(
+            fprintf(
                 __files + 0xA0,
                 lbl_80270350 + 0x7C
             );
@@ -2624,7 +2624,7 @@ void *fn_800CA6C8(void *arg0, s16 arg1) {
 
 void fn_800CA728(void *arg0, char *begin, char *end) {
     s32 Heap_Alloc(s32);
-    void fn_80232058(void *, const char *, ...);
+    void fprintf(void *, const char *, ...);
     void abort(void);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
@@ -2646,7 +2646,7 @@ void fn_800CA728(void *arg0, char *begin, char *end) {
         *(u32 *)((u8 *)self + 4) = (len + 3) - (len & 3);
         buf = (char *)Heap_Alloc(*(s32 *)((u8 *)self + 4) + 1);
         if (buf == 0) {
-            fn_80232058(__files + 0xA0, lbl_80270350 + 0x7C);
+            fprintf(__files + 0xA0, lbl_80270350 + 0x7C);
             abort();
         }
         *(char **)((u8 *)self + 8) = buf;
@@ -6436,13 +6436,13 @@ void *fn_800D5C88(void *arg0, s16 arg1) {
 
 u32 *fn_800D6898(u32 *, u32 *, u32, u32, void *);
 M2C_UNK abort(void);
-M2C_UNK fn_80232058(void *, const char *, ...);
+M2C_UNK fprintf(void *, const char *, ...);
 extern char __files[];
 
 void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     M2C_UNK fn_800D6898(u32 *, u32 *, u32, u32, void *);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     extern char __files[];
     extern char lbl_802704F8[];
     struct S { u32 size; };
@@ -6451,7 +6451,7 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     const u32 *n;
 
     if (arg2 > ((struct S *)arg1)->size) {
-        fn_80232058(__files + 0xA0, lbl_802704F8 + 0x8E7);
+        fprintf(__files + 0xA0, lbl_802704F8 + 0x8E7);
         abort();
     }
     rem = ((struct S *)arg1)->size - arg2;
@@ -6461,7 +6461,7 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
 
 #pragma cplusplus on
 extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
-    void fn_80232058(void *, char *, ...);
+    void fprintf(void *, char *, ...);
     void abort(void);
     void *Heap_Alloc(s32);
     void fn_800D6940(void *);
@@ -6493,7 +6493,7 @@ extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
     }
 
     if (n > 0x02E8BA2Eu || v->size > 0x02E8BA2Eu - n) {
-        fn_80232058(__files + 0xA0, lbl_802704F8 + 0x97C);
+        fprintf(__files + 0xA0, lbl_802704F8 + 0x97C);
         abort();
     }
 
@@ -6572,7 +6572,7 @@ extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
         }
         tmp.data = (Elem *)Heap_Alloc((s32)(newCap * 0x58));
         if (tmp.data == 0) {
-            fn_80232058(__files + 0xA0, lbl_802704F8 + 0x999);
+            fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
             abort();
         }
         tmp.cap = newCap;
@@ -6828,7 +6828,7 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
     struct Tag { u8 b; } tag;
     M2C_UNK fn_800CA728(u32 *, char *, char *, void *, struct Tag);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     extern char __files[];
 
     u32 size;
@@ -6840,7 +6840,7 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
     arg0[1] = 0;
 
     if (arg2 > size) {
-        fn_80232058(__files + 0xA0, lbl_802704F8 + 0x9B3);
+        fprintf(__files + 0xA0, lbl_802704F8 + 0x9B3);
         abort();
     }
 
@@ -7480,13 +7480,13 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     extern char lbl_80270350[];
     void fn_800CA7F4(String *, u32, s32);
     M2C_UNK abort(void);
-    M2C_UNK fn_80232058(void *, const char *, ...);
+    M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     u32 rest;
     u32 len;
 
     if (pos > arg1->size) {
-        fn_80232058(__files + 0xA0, lbl_80270350 + 0x96);
+        fprintf(__files + 0xA0, lbl_80270350 + 0x96);
         abort();
     }
     rest = arg1->size - pos;
@@ -13055,7 +13055,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *Heap_Alloc(s32);
     void fn_800E6DC8(void *);
     void Heap_Free(void *);
-    void fn_80232058(void *, const char *, ...);
+    void fprintf(void *, const char *, ...);
     void abort(void);
     void *memcpy(void *, void *, u32);
     extern char __files[];
@@ -13090,7 +13090,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
     if (count > 0x09249249U ||
         *(u32 *)((u8 *)vec + 4) > 0x09249249U - count) {
-        fn_80232058(__files + 0xA0, lbl_802720E0 + 0x9A);
+        fprintf(__files + 0xA0, lbl_802720E0 + 0x9A);
         abort();
     }
 
@@ -13183,7 +13183,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 lim = (u8 *)lim - 0x1C;
                 *(u32 *)&st.pads[0x40] = (u32)-1;
                 if (*(u32 *)lim >= 0x80000000U) {
-                    fn_80232058(err, lbl_802720E0 + 0x52);
+                    fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
                 len = *(u32 *)lim;
@@ -13202,7 +13202,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 }
                 *(u32 *)&st.pads[0x38] = (u32)-1;
                 if (*(u32 *)((u8 *)lim + 0xC) >= 0x80000000U) {
-                    fn_80232058(err, lbl_802720E0 + 0x52);
+                    fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
                 len = *(u32 *)((u8 *)lim + 0xC);
@@ -13228,7 +13228,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         while (count != 0) {
             *(u32 *)&st.pads[0x48 - 0x8] = (u32)-1;
             if (*(u32 *)src >= 0x80000000U) {
-                fn_80232058(err, lbl_802720E0 + 0x52);
+                fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
             len = *(u32 *)src;
@@ -13247,7 +13247,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pads[0x38] = (u32)-1;
             if (*(u32 *)((u8 *)src + 0xC) >= 0x80000000U) {
-                fn_80232058(err, lbl_802720E0 + 0x52);
+                fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
             len = *(u32 *)((u8 *)src + 0xC);
@@ -13288,7 +13288,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         dst = Heap_Alloc((s32)(cap * 0x1C));
         if (dst == 0) {
-            fn_80232058(__files + 0xA0, lbl_802720E0 + 0xB7);
+            fprintf(__files + 0xA0, lbl_802720E0 + 0xB7);
             abort();
         }
 

@@ -1553,7 +1553,7 @@ s32 vprintf(const char *format, void *args) {
     return result;
 }
 
-s32 fn_80232058(void *stream, const char *format, ...)
+s32 fprintf(void *stream, const char *format, ...)
 {
     s32 fwide(void *, s32);
     void __begin_critical_region(s32);
