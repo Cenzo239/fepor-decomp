@@ -10542,21 +10542,22 @@ s32 Ui_HasUsableItem(void) {
     u32 unit;
     u8 found;
     s32 i;
-    u32 *entry;
-    u64 *bits;
-    s32 var_r3;
+    u32 *slot;
+    u64 *flags;
+    s32 result;
 
+    /* Return 0 if the UI unit has any usable inventory item, else 2 (menu grayed). */
     found = 0;
     i = 0;
     unit = gUiContext[0];
     do {
-        entry = Unit_GetItemSlot(unit, i);
-        if (*entry != 0) {
-            bits = Item_GetFlagsPtr(entry);
-            if ((*(u64 *)bits & 4ULL) == 0) {
-                bits = Item_GetFlagsPtr(entry);
-                if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    if (Unit_CanUseItem(unit, *entry) != 0) {
+        slot = Unit_GetItemSlot(unit, i);
+        if (*slot != 0) {
+            flags = Item_GetFlagsPtr(slot);
+            if ((*(u64 *)flags & 4ULL) == 0) {
+                flags = Item_GetFlagsPtr(slot);
+                if ((*(u64 *)flags & 0x200ULL) == 0) {
+                    if (Unit_CanUseItem(unit, *slot) != 0) {
                         found = 1;
                         break;
                     }
@@ -10565,11 +10566,11 @@ s32 Ui_HasUsableItem(void) {
         }
         i += 1;
     } while (i < 8);
-    var_r3 = 2;
+    result = 2;
     if (found != 0) {
-        var_r3 = 0;
+        result = 0;
     }
-    return (u8)var_r3;
+    return (u8)result;
 }
 
 s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
