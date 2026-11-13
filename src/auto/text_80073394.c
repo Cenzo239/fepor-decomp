@@ -337,11 +337,11 @@ void fn_80073C74(s32 arg0) {
 
 void fn_80073CA4(void) {
     void fn_8003BE50(void *);
-    void fn_8003A398(void *);
+    void Unit_GetMov(void *);
     void fn_800F0A3C(void);
     extern u8 gUiContext[24];
     fn_8003BE50(*(void **)gUiContext);
-    fn_8003A398(*(void **)gUiContext);
+    Unit_GetMov(*(void **)gUiContext);
     fn_800F0A3C();
 }
 

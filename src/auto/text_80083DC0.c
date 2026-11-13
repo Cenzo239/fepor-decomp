@@ -114,7 +114,7 @@ void fn_80083F08(void *arg0) {
     f32 fn_80037904(void *, s32);
     u8 fn_800386B0(void *);
     s8 fn_8003A1E0(void *);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s8 fn_8003B2D0(void *);
     void fn_8004BD1C(void *, f32 *, f32);
     void fn_8004DDB8(s32);
@@ -445,7 +445,7 @@ void fn_80083F08(void *arg0) {
     f29v = lbl_8036963C + bx;
     f23v = lbl_80369438 + by;
     fn_8001003C((s32)f29v, (s32)f23v, 8, 0, 0, Msg_Expand(gUiStrings + 0x376), lbl_80369430, lbl_80369418);
-    fn_8001003C((s32)(lbl_80369640 + bx), (s32)f23v, 2, 0, 0, gUiStrings + 0x240, fn_8003A398(unit), lbl_80369430, lbl_80369418);
+    fn_8001003C((s32)(lbl_80369640 + bx), (s32)f23v, 2, 0, 0, gUiStrings + 0x240, Unit_GetMov(unit), lbl_80369430, lbl_80369418);
     fn_8001003C((s32)(lbl_80369644 + bx), (s32)f23v, 8, 0, 0, Msg_Expand(gUiStrings + 0x37D), lbl_80369430, lbl_80369418);
     fn_8001003C((s32)f30v, (s32)f23v, 2, 0, 0, gUiStrings + 0x240, fn_8003A1E0(unit), lbl_80369430, lbl_80369418);
 

@@ -31,7 +31,7 @@ static inline u8 *map_first(s32 *m) {
 }
 
 void fn_8002887C(void) {
-    s32 fn_8003A398(void *);
+    s32 Unit_GetMov(void *);
     M2C_UNK fn_8003B69C(void *);
     M2C_UNK fn_800AA4F8();
     M2C_UNK fn_800F0C30(u8, u8, s32);
@@ -44,7 +44,7 @@ void fn_8002887C(void) {
     fn_800AA4F8();
     temp_r31 = M2C_FIELD(temp_r29, u8 *, 0x19F);
     temp_r30 = M2C_FIELD(temp_r29, u8 *, 0x19E);
-    fn_800F0C30(temp_r30, temp_r31, fn_8003A398(temp_r29));
+    fn_800F0C30(temp_r30, temp_r31, Unit_GetMov(temp_r29));
     fn_8003B69C(temp_r29);
 }
 

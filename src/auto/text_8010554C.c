@@ -3623,7 +3623,7 @@ outer_cmp:
 #pragma use_lmw_stmw on
 u8 fn_8010BB74(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void *Terrain_GetEntry(u8);
     s32 Map_CountNeighborUnits(s16, s16, void *);
@@ -3666,7 +3666,7 @@ u8 fn_8010BB74(void *arg0) {
         s8 range;
         s32 lim;
         s32 yMin;
-        range = fn_8003A398(self);
+        range = Unit_GetMov(self);
         xMin = x0 - range;
         if (xMin < (s8)gBattleMap[8]) {
             xMin = (s8)gBattleMap[8];
@@ -4098,7 +4098,7 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
     void **fn_80037BBC(void *,s32);
-    s8 fn_8003A398(void *); s8 fn_8003A778(void *);
+    s8 Unit_GetMov(void *); s8 fn_8003A778(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
@@ -4132,7 +4132,7 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     best=NULL; rank=(u8)-1;
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=(u8)0;
-    range=fn_8003A398(arg0)+(u8)extra;
+    range=Unit_GetMov(arg0)+(u8)extra;
     minX=x-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=y-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
     maxX=x+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
@@ -4202,7 +4202,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
     void **fn_80037BBC(void *,s32);
-    s8 fn_8003A398(void *); u8 fn_8003863C(void *); u8 fn_8010CF28(void *,void *,s16 *,s16 *);
+    s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_8010CF28(void *,void *,s16 *,s16 *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
@@ -4239,7 +4239,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     best=NULL; rank=0;
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
-    range=(s8)fn_8003A398(arg0); range+=(u8)extra;
+    range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
     maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
@@ -4448,7 +4448,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void **fn_80037BBC(void *, s32);
     s8 fn_80037E00(void *);
     u8 fn_8003863C(void *);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s8 fn_8003CFF0(void *, void *);
     u8 fn_800934CC(void *);
     s32 fn_800F7838(void *, s8, s8);
@@ -4525,7 +4525,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     } else {
         extra = 0;
     }
-    range = (s8)fn_8003A398(arg0);
+    range = (s8)Unit_GetMov(arg0);
     range += (u8)extra;
 
     minX = x - range;
@@ -4673,7 +4673,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80022FD8(void *, s32);
     void **fn_80037BBC(void *, s32);
     s8 fn_80037E00(void *);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
     s8 fn_8003CFF0(void *, void *);
     u8 fn_800934CC(void *, void *);
@@ -4751,7 +4751,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     } else {
         extra = 0;
     }
-    range = (s8)fn_8003A398(arg0);
+    range = (s8)Unit_GetMov(arg0);
     range += (u8)extra;
 
     minX = x - range;
@@ -4902,7 +4902,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
     void **fn_80037BBC(void *,s32);
-    s8 fn_8003A398(void *); u8 fn_8003863C(void *); u8 fn_801044FC(void *);
+    s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_801044FC(void *);
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
@@ -4938,7 +4938,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     best=NULL; rank=0;
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
-    range=(s8)fn_8003A398(arg0); range+=(u8)extra;
+    range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
     maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
@@ -4993,7 +4993,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void *fn_80037BBC(void *, s32);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s32 fn_800F7838(void *, s16, s16);
     s32 fn_800F7994(void *, s16, s16);
     void fn_800FB96C(s32, s8, s8, s32, s8, s8, s8, s32);
@@ -5080,7 +5080,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     {
         s8 ux = (s8)((u8 *)self)[0x19E];
         s8 uy = (s8)((u8 *)self)[0x19F];
-        range = fn_8003A398(self);
+        range = Unit_GetMov(self);
         sp14 = ux - range;
         if (sp14 < (s8)map[8]) {
             sp14 = (s8)map[8];
@@ -5223,7 +5223,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void **fn_80037BBC(void *, s32);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s8 fn_8003B2D0(void *);
     s32 fn_800F7838(void *, s8, s8);
     s32 fn_800F7994(void *, s8, s8);
@@ -5301,7 +5301,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     } else {
         extra = 0;
     }
-    range = (s8)fn_8003A398(arg0);
+    range = (s8)Unit_GetMov(arg0);
     range += (u8)extra;
     minX = ax - range;
     if (minX < (s8)gBattleMap[8]) {
@@ -5416,7 +5416,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s32 fn_8001DD54(void *,void *);
     void fn_80022DAC(void *,s32,s32); void fn_80022FD8(void *,s32);
     void **fn_80037BBC(void *,s32);
-    s8 fn_8003A398(void *); s8 fn_8003B2D0(void *);
+    s8 Unit_GetMov(void *); s8 fn_8003B2D0(void *);
     extern f32 lbl_8036A170;
     s32 fn_800F7838(void *,s16,s16); s32 fn_800F7994(void *,s16,s16);
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -5454,7 +5454,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     best=NULL; rank=100;
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
-    range=(s8)fn_8003A398(arg0); range+=(u8)extra;
+    range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
     maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;

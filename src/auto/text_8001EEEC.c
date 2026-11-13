@@ -3882,7 +3882,7 @@ void fn_80026FA0(void *arg0) {
 }
 
 void fn_80027F98(void *arg0, u8 arg1) {
-    s8 fn_8003A398(void);
+    s8 Unit_GetMov(void);
     void fn_800C1060(s32);
     extern u8 gMapBlendMode;
     u8 temp_r0;
@@ -3903,7 +3903,7 @@ void fn_80027F98(void *arg0, u8 arg1) {
         fn_800C1060(0);
     }
     if ((s8)*(u8 *)((u8 *)*(void **)arg0 + 0x1A8) != 0) {
-        s8 v = fn_8003A398();
+        s8 v = Unit_GetMov();
         p = *(void **)arg0;
         *(u16 *)((u8 *)p + 0x22E) =
             *(u16 *)((u8 *)p + 0x22E) + (u16)(v - *(u8 *)((u8 *)arg0 + 0x11));
@@ -3971,7 +3971,7 @@ void fn_8002833C(void *arg0, void *arg1) {
     M2C_FIELD(arg0, void **, 0) = arg1;
     M2C_FIELD(arg0, u8 *, 0xB) = (u8) M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = (u8) M2C_FIELD(arg1, u8 *, 0x19F);
-    M2C_FIELD(arg0, s8 *, 0x11) = fn_8003A398(arg1);
+    M2C_FIELD(arg0, s8 *, 0x11) = Unit_GetMov(arg1);
     M2C_FIELD(arg0, s32 *, 4) = 0;
     M2C_FIELD(arg0, s8 *, 8) = 0;
     M2C_FIELD(arg0, s8 *, 0xA) = -1;
@@ -3986,7 +3986,7 @@ void fn_8002833C(void *arg0, void *arg1) {
 
 #pragma peephole off
 void fn_800283C8(void *arg0, void *arg1) {
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     void *self;
     u8 *map;
 
@@ -3994,7 +3994,7 @@ void fn_800283C8(void *arg0, void *arg1) {
     self = arg0;
     *((u8 *)self + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)self + 0xC) = *((u8 *)arg1 + 0x19F);
-    *((s8 *)self + 0x11) = fn_8003A398(arg1);
+    *((s8 *)self + 0x11) = Unit_GetMov(arg1);
     map = (u8 *)&gBattleMap;
     *(s32 *)((u8 *)self + 4) = 0;
     *((u8 *)self + 8) = 0;

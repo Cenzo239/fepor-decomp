@@ -2795,7 +2795,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     void Ui_DrawIcon(void *, s16, s16, u8);
     void Prim2D_SetTex(s32, u16);
     void Text_Draw(s16, s16, s32, void *, ...);
-    s8 fn_8003A398(s32);
+    s8 Unit_GetMov(s32);
     s8 fn_8003A1E0(s32);
     s8 Unit_GetCon(s32);
     extern f32 lbl_8036A61C;
@@ -2865,7 +2865,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
-    Text_Draw(0xE0, 0x12, 2, lbl_802767E0 + 0x44, fn_8003A398(self->unk3C));
+    Text_Draw(0xE0, 0x12, 2, lbl_802767E0 + 0x44, Unit_GetMov(self->unk3C));
     Text_Draw(0xE0, 0x34, 2, lbl_802767E0 + 0x44, fn_8003A1E0(self->unk3C));
     Text_Draw(0xE0, 0x54, 2, lbl_802767E0 + 0x44, Unit_GetCon(self->unk3C));
 }
@@ -2919,7 +2919,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 Unit_GetMag(void *);
     s32 fn_8003AF28(void *);
     s32 Unit_GetSkl(void *);
-    s32 fn_8003A398(void *);
+    s32 Unit_GetMov(void *);
     s32 fn_80038748(void *);
     s32 fn_8003AEB0(void *);
     s32 Unit_GetSpd(void *);
@@ -2990,8 +2990,8 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     self->v9(0xC, 0x82, lbl_802767E0 + 0x5D, Unit_GetSkl(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4F]);
     pair[0] = 0;
-    pair[1] = fn_8003A398(unit);
-    pair[0] = fn_8003A398(unit);
+    pair[1] = Unit_GetMov(unit);
+    pair[0] = Unit_GetMov(unit);
     self->v9(0xC, 0xA2, lbl_802767E0 + 0x65, (s8)(pair[0] - fn_80038748(unit)), pair[1], 0x14);
     idx = fn_8003AEB0(unit);
     self->v9(0x8C, 0x22, lbl_802767E0 + 0x6C, Unit_GetSpd(unit), idx,

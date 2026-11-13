@@ -284,7 +284,7 @@ void UnitStatus_Init(void *arg0) {
     u8 Unit_GetDef(void *);
     u8 Unit_GetRes(void *);
     u8 Unit_GetCon(void *);
-    u8 fn_8003A398(void *);
+    u8 Unit_GetMov(void *);
     void fn_801B6BE4(void *);
     u8 fn_80037960(void *, void *);
     void *fn_8003A064(void *);
@@ -320,7 +320,7 @@ void UnitStatus_Init(void *arg0) {
     *(u8 *)((u8 *)arg0 + 0x23) = Unit_GetDef(unit);
     *(u8 *)((u8 *)arg0 + 0x24) = Unit_GetRes(unit);
     *(u8 *)((u8 *)arg0 + 0x25) = Unit_GetCon(unit);
-    *(u8 *)((u8 *)arg0 + 0x26) = fn_8003A398(unit);
+    *(u8 *)((u8 *)arg0 + 0x26) = Unit_GetMov(unit);
     fn_801B6BE4(sp8);
     b = sp8[0xA];
     f = (str = lbl_8027C128, 1.0f);

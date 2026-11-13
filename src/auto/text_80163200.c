@@ -4837,7 +4837,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
     s32 UnitRef_GetName(void);
     void **fn_80037D54(void *);
     s8 fn_8003A1E0(void *);
-    s8 fn_8003A398(void *);
+    s8 Unit_GetMov(void *);
     s8 fn_8003B2D0(void *);
     void **fn_8006EDD8(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *);
@@ -5002,7 +5002,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
             fn_8001003C((s32)f31, (s32)(lbl_8036AAD0 + fy), 4, 1, 0, lbl_80277EA0 + 0x13E, (s8)fn_8003B2D0(unit), lbl_8036AAB4, lbl_8036AA34);
             f30 = lbl_8036AAE0 + fy;
             fn_8001003C((s32)(lbl_8036AAC8 + fx), (s32)f30, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x143), lbl_8036AAB4, lbl_8036AA34);
-            fn_8001003C((s32)(lbl_8036AAE4 + fx), (s32)f30, 1, 1, 0, lbl_80277EA0 + 0x134, (s8)fn_8003A398(unit), lbl_8036AAB4, lbl_8036AA34);
+            fn_8001003C((s32)(lbl_8036AAE4 + fx), (s32)f30, 1, 1, 0, lbl_80277EA0 + 0x134, (s8)Unit_GetMov(unit), lbl_8036AAB4, lbl_8036AA34);
             fn_8001003C((s32)(lbl_8036AAE8 + fx), (s32)f30, 6, 1, 0, Msg_Expand(lbl_80277EA0 + 0x14A), lbl_8036AAB4, lbl_8036AA34);
             fn_8001003C((s32)f31, (s32)f30, 1, 1, 0, lbl_80277EA0 + 0x134, (s8)fn_8003A1E0(unit), lbl_8036AAB4, lbl_8036AA34);
             Prim2D_Begin();

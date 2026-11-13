@@ -7678,14 +7678,14 @@ s32 fn_80196388(s32 arg0) {
 }
 
 s32 fn_80196420(s32 arg0, void *arg1) {
-    s8 fn_8003A398();
+    s8 Unit_GetMov();
     s8 Unit_GetCon(s32);
     s8 temp_r31;
     s8 temp_r3;
     s8 var_r4;
     s8 var_r5;
 
-    temp_r31 = fn_8003A398();
+    temp_r31 = Unit_GetMov();
     temp_r3 = Unit_GetCon(arg0);
     var_r4 = temp_r31 + M2C_FIELD(arg1, u8 *, 0x27);
     var_r5 = temp_r3 + M2C_FIELD(arg1, u8 *, 0x28);

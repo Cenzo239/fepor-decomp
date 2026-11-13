@@ -2899,7 +2899,7 @@ void fn_801315B0(void* arg0, s32 arg1) {
 
 s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
 {
-    s32 fn_8003A398(void *);
+    s32 Unit_GetMov(void *);
     s32 Unit_GetCon(void *);
     s32 fn_8003A1E0(void *);
 
@@ -2917,7 +2917,7 @@ s32 fn_80131714(void *arg0, u8 *arg1, u32 arg2)
     case 3:
         return arg1[0x21] + arg1[0x22] * 100;
     case 4:
-        return (s8)fn_8003A398(p);
+        return (s8)Unit_GetMov(p);
     case 5:
         return (s8)Unit_GetCon(p);
     case 6:

@@ -625,7 +625,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 Unit_GetLck(void *);
     s32 Unit_GetDef(void *);
     s32 Unit_GetRes(void *);
-    s32 fn_8003A398(void *);
+    s32 Unit_GetMov(void *);
     s32 Unit_GetCon(void *);
     void BattleAnim_Queue(void *, s32, s8);
     void fn_801A442C(void *);
@@ -662,8 +662,8 @@ void fn_80034864(s32 self, void *arg1) {
     d6 = (s8)(t - Unit_GetDef((void *)self));
     t = Unit_GetRes((void *)(self + 0x2E0));
     d7 = (s8)(t - Unit_GetRes((void *)self));
-    t = fn_8003A398((void *)(self + 0x2E0));
-    d8 = (s8)(t - fn_8003A398((void *)self));
+    t = Unit_GetMov((void *)(self + 0x2E0));
+    d8 = (s8)(t - Unit_GetMov((void *)self));
     t = Unit_GetCon((void *)(self + 0x2E0));
     d9 = (s8)(t - Unit_GetCon((void *)self));
     t = self + 0x8A0;
@@ -3131,7 +3131,7 @@ s8 fn_8003A1C4(void *arg0) {
 }
 
 #pragma opt_strength_reduction off
-s8 fn_8003A398(void *arg0) {
+s8 Unit_GetMov(void *arg0) {
     u8 Status_Test(void *, s32);
     s32 sum;
     s32 index;
