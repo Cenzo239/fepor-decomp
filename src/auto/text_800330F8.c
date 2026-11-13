@@ -5866,7 +5866,7 @@ void fn_8003F670(void *arg0) {
 
 void *Archive_LoadFlags(s32 arg0, u32 arg1) {
     void *fn_8005C82C(s32, u16);
-    void fn_8005C5A8(s32);
+    void FileCache_MarkRelocated(s32);
     void fn_8000D3EC(void *, void *);
     extern s8 *lbl_80366DC0;
 
@@ -5962,7 +5962,7 @@ void *Archive_LoadFlags(s32 arg0, u32 arg1) {
         }
     }
 
-    fn_8005C5A8(self);
+    FileCache_MarkRelocated(self);
     result = obj;
     ref2 = lbl_80366DC0;
     if (*(s8 *)((u8 *)obj + 0x18) != *(s8 *)((u8 *)ref2 + 0)) {

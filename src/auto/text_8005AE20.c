@@ -797,7 +797,7 @@ void FileCache_OrFlags(char *name, s32 flags) {
     v |= flags;
     *(u16 *)(e + 0x30) = v;
 }
-void fn_8005C5A8(char *name) {
+void FileCache_MarkRelocated(char *name) {
     u8 *e = FindEntryByName(name);
     u16 v = *(u16 *)(e + 0x30);
     v |= 0x4000;
@@ -3800,7 +3800,7 @@ M2C_UNK fn_80063954(char *arg0) {
     temp_r31 = fn_8005C82C();
     if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
-        fn_8005C5A8(arg0);
+        FileCache_MarkRelocated(arg0);
     }
     return temp_r31;
 }
@@ -3814,7 +3814,7 @@ void *fn_800639B4(void *arg0) {
     temp_r31 = (void *)fn_8005C82C(arg0, 0);
     if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
-        fn_8005C5A8(arg0);
+        FileCache_MarkRelocated(arg0);
     }
     return temp_r31;
 }
@@ -4541,7 +4541,7 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
     temp_r31 = fn_8005C82C();
     if (!(FileCache_GetFlags((char *)arg0) & 0x4000)) {
         fn_80065F48(temp_r31);
-        fn_8005C5A8((char *)arg0);
+        FileCache_MarkRelocated((char *)arg0);
     }
     return temp_r31;
 }
@@ -4550,7 +4550,7 @@ s32 fn_80065EE8(void *arg0)
     extern s32 fn_8005C82C(void *, s32);
     extern u32 FileCache_GetFlags(void *);
     extern void fn_80065F48(s32);
-    extern void fn_8005C5A8(void *);
+    extern void FileCache_MarkRelocated(void *);
 
     s32 result;
 
@@ -4560,7 +4560,7 @@ s32 fn_80065EE8(void *arg0)
         fn_80065F48(result);
     }
 
-    fn_8005C5A8(arg0);
+    FileCache_MarkRelocated(arg0);
 
     return result;
 }
