@@ -417,26 +417,34 @@ void fn_802666F4(s32 arg0, void *arg1)
     *(void **)(entry + 0x20) = arg1;
 }
 
-void fn_80266774(s32 arg0)
-{
+void fn_80266774(s32 arg0) {
     extern u8 lbl_803669A0[];
-    extern void *memcpy(void *dest, const void *src, u32 size);
-
-    u8 *entry;
-    u8 *destination;
-
-    entry = lbl_803669A0 + (arg0 << 8);
+    void *memcpy(void *, const void *, u32);
+    u8 *entry = lbl_803669A0 + (arg0 << 8);
 
     if (*(s32 *)(entry + 0x20) != 0) {
         return;
     }
-
-    memcpy(entry + 0x18, entry + 0x5, 4);
-
-    destination = *(u8 **)(entry + 0x14);
-    *destination = entry[0x9] & 0x3A;
+    memcpy(*(void **)(entry + 0x18), entry + 0x5, 4);
+    *(u8 *)(*(void **)(entry + 0x14)) = entry[0x9] & 0x3A;
 }
 
+#pragma peephole off
+s32 fn_802667D4(s32 channel, void *input, void *callback, void *outputCallback) {
+    extern u8 lbl_803669A0[];
+    extern int fn_80266CFC(int, int, int, void *);
+    u8 *entry = lbl_803669A0 + (channel << 8);
+
+    if (*(u32 *)(entry + 0x1C) != 0U) {
+        return 2;
+    }
+    *entry = 0x14;
+    *(void **)(entry + 0x18) = input;
+    *(void **)(entry + 0x14) = callback;
+    *(void **)(entry + 0x1C) = outputCallback;
+    return fn_80266CFC(channel, 1, 5, (void *)fn_80266774);
+}
+#pragma peephole on
 void fn_802668D4(s32 arg0) {
     extern u8 lbl_803669A0[];
     u8 *temp_r3 = lbl_803669A0 + (arg0 << 8);
@@ -477,7 +485,7 @@ int fn_80266904(int arg0, u32 arg1, void *arg2, void *arg3)
     );
 }
 
-int fn_80266998(int arg0, u32 arg1, void *arg2)
+int GBAWrite(int arg0, u32 arg1, void *arg2)
 {
     extern u8 lbl_803669A0[];
 
@@ -559,32 +567,30 @@ void fn_80266B38(s32 arg0) {
     fn_8020AEC4(lbl_803669A0 + (arg0 << 8) + 0x24);
 }
 
-u32 fn_80266B6C(s32 arg0)
+#pragma optimization_level 2
+s32 fn_80266B6C(s32 arg0)
 {
     extern u8 lbl_803669A0[];
     extern u32 OSDisableInterrupts(void);
     extern void OSRestoreInterrupts(u32 level);
-    extern void OSSleepThread(void *arg0);
+    extern void OSSleepThread(void *queue);
 
     u8 *entry;
     u32 interruptState;
-    u32 result;
+    s32 result;
 
     entry = lbl_803669A0 + (arg0 << 8);
-
     interruptState = OSDisableInterrupts();
 
-    do {
+    while (*(u32 *)(entry + 0x1C) != 0) {
         OSSleepThread(entry + 0x24);
-    } while (*(u32 *)(entry + 0x1C) != 0);
+    }
 
-    result = *(u32 *)(entry + 0x20);
-
+    result = *(s32 *)(entry + 0x20);
     OSRestoreInterrupts(interruptState);
-
     return result;
 }
-
+#pragma optimization_level reset
 void fn_80266BD8(s32 arg0, u32 arg1)
 {
     extern u8 lbl_803669A0[];

@@ -1710,7 +1710,7 @@ void fn_801F5DD0(void *arg0)
         return;
     }
 
-    if (fn_80266998(*(u32 *)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
+    if (GBAWrite(*(u32 *)(object + 0x38), object + 0x44, object + 0x4B) == 0) {
         r = object[0x4B];
         if ((r & 0x30) != 0x30) {
             fn_8000C070(arg0, 2);
@@ -1725,7 +1725,7 @@ void fn_801F5DD0(void *arg0)
 void CardLink_PollSendKey(void *arg0) {
     void Process_Goto(void *, s32);
     s32 GBAGetStatus(void *, void *);
-    s32 fn_80266998(void *, void *, void *);
+    s32 GBAWrite(void *, void *, void *);
     void DebugPrint(const char *, ...);
     void Process_ClearFunc(void *);
     extern s8 *gCardLinkKey;
@@ -1742,7 +1742,7 @@ void CardLink_PollSendKey(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x4B) != 0x20) {
         return;
     }
-    if (fn_80266998(*(void **)((u8 *)arg0 + 0x38), gCardLinkKey, (u8 *)arg0 + 0x4B) != 0) {
+    if (GBAWrite(*(void **)((u8 *)arg0 + 0x38), gCardLinkKey, (u8 *)arg0 + 0x4B) != 0) {
         return;
     }
     GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
