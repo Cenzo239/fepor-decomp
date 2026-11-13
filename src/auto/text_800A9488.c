@@ -97,7 +97,7 @@ s32 fn_800A96D0(void) {
     return 0;
 }
 
-s32 fn_800A96D8(void) {
+s32 Options_CycleDifficulty(void) {
     extern u8 gBattleState[];
     u8 x;
 
