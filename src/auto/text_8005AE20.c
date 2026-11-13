@@ -4356,7 +4356,7 @@ void *fn_80065634(void ***arg0, s32 arg1) {
 }
 
 #pragma optimization_level 2
-void *fn_800656C8(void *node, void *out)
+void *MTXRotDegOrder(void *node, void *out)
 {
     void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);

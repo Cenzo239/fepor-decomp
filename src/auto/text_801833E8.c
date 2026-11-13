@@ -13482,7 +13482,7 @@ void fn_80198CA4(void *arg0) {
     void fn_800608AC(void *);
     void *fn_800E56BC(void *);
     void *fn_80060690(void *);
-    void fn_800656C8(void *, void *);
+    void MTXRotDegOrder(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
     s32 fn_802342B8(char *, char *);
@@ -13519,7 +13519,7 @@ void fn_80198CA4(void *arg0) {
         n_outer = *(s32 *)((u8 *)t5 + 8);
         n_inner = *(s32 *)((u8 *)t4 + 8);
     }
-    fn_800656C8(
+    MTXRotDegOrder(
         (u8 *)*(void **)((u8 *)fn_80060690(obj) + 0xC) + *(s32 *)((u8 *)self + 0xF0) * 0xF4,
         sp68);
     PSMTXConcat((u8 *)obj + 0x10, sp68, sp68);
