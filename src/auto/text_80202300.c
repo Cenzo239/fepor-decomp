@@ -100,16 +100,16 @@ extern f32 gFloatOne;
 
 void PSMTXRotRad(s32 arg0, s32 arg1, f32 farg0) {
     f32 sinf(f32);
-    f32 fn_80238A54(f32);
+    f32 cosf(f32);
     void fn_80202370(s32, s32, f32, f32);
 
     f32 temp_f31 = sinf(farg0);
-    fn_80202370(arg0, arg1, temp_f31, fn_80238A54(farg0));
+    fn_80202370(arg0, arg1, temp_f31, cosf(farg0));
 }
 
 void fn_802024D0(s32 arg0, s32 arg1, f32 farg0) {
     f32 sinf(f32);
-    f32 fn_80238A54(f32);
+    f32 cosf(f32);
     void fn_80202420(s32, s32, f32, f32);
     f32 a;
     f32 b;
@@ -117,7 +117,7 @@ void fn_802024D0(s32 arg0, s32 arg1, f32 farg0) {
 
     angle = farg0;
     a = sinf(angle);
-    b = fn_80238A54(angle);
+    b = cosf(angle);
     fn_80202420(arg0, arg1, a, b);
 }
 

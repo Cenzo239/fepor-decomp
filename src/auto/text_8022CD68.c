@@ -4174,7 +4174,7 @@ f32 sinf(void) {
     return (f32) fn_80238638();
 }
 
-f32 fn_80238A54(void) {
+f32 cosf(void) {
     f64 fn_802380D0();
     return (f32) fn_802380D0();
 }
