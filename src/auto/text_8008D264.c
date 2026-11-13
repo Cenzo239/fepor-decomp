@@ -173,7 +173,8 @@ void UnitRef_Draw(void *ref, u8 selected, s32 x, s32 y) {
         Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
-void MsgTip_Create(void *arg0) {
+void MsgTip_Create(void *msgId) {
+    /* Expand msgId into a MsgTip process, claim a free stack slot, or unlink if all four are busy. */
     M2C_UNK Process_Create(void *, s32);
     M2C_UNK Msg_Expand(void *);
     M2C_UNK Str_CopyPad(void *, s32, s32);
@@ -183,27 +184,27 @@ void MsgTip_Create(void *arg0) {
     extern f32 lbl_80369754;
     extern u8 gMsgTipSlots[4];
     extern f32 lbl_80369758;
-    u8 *temp_r31;
-    Vec4 sp8;
+    u8 *tip;
+    Vec4 yPos;
 
-    temp_r31 = (u8 *)Process_Create(MsgTip_script, 3);
-    Str_CopyPad(temp_r31 + 0x3E, Msg_Expand(arg0), 0x30);
-    *(s16 *)(temp_r31 + 0x38) = Text_MeasureWidth(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
-    sp8 = gMsgTipYPos;
-    M2C_FIELD(temp_r31, s8 *, 0x3D) = 0;
-    while (M2C_FIELD(temp_r31, s8 *, 0x3D) < 4) {
-        s32 index = M2C_FIELD(temp_r31, s8 *, 0x3D);
+    tip = (u8 *)Process_Create(MsgTip_script, 3);
+    Str_CopyPad(tip + 0x3E, Msg_Expand(msgId), 0x30);
+    *(s16 *)(tip + 0x38) = Text_MeasureWidth(tip + 0x3E, -1, lbl_80369754) + 0x60;
+    yPos = gMsgTipYPos;
+    M2C_FIELD(tip, s8 *, 0x3D) = 0;
+    while (M2C_FIELD(tip, s8 *, 0x3D) < 4) {
+        s32 index = M2C_FIELD(tip, s8 *, 0x3D);
         if (gMsgTipSlots[index] == 0) {
             gMsgTipSlots[index] = 1;
             break;
         }
-        M2C_FIELD(temp_r31, s8 *, 0x3D)++;
+        M2C_FIELD(tip, s8 *, 0x3D)++;
     }
-    if (M2C_FIELD(temp_r31, s8 *, 0x3D) == 4) {
-        Process_Unlink(temp_r31);
+    if (M2C_FIELD(tip, s8 *, 0x3D) == 4) {
+        Process_Unlink(tip);
     } else {
-        *(f32 *)(temp_r31 + 0x30) = lbl_80369758;
-        *(f32 *)(temp_r31 + 0x34) = sp8.v[M2C_FIELD(temp_r31, s8 *, 0x3D)];
+        *(f32 *)(tip + 0x30) = lbl_80369758;
+        *(f32 *)(tip + 0x34) = yPos.v[M2C_FIELD(tip, s8 *, 0x3D)];
     }
 }
 
