@@ -2732,7 +2732,8 @@ end:
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
+extern "C" void Ui_DrawMenuDimRect(s32 unused, void *node) {
+    /* Draw a menu node as a dimmed Prim2D quad; soft corner alphas, extra dim if flags 0x2D/0x2E set. */
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -2777,33 +2778,34 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
     extern s32 gUiMenuDimColorBL;
     extern s32 gUiMenuDimColorBR;
     extern f32 gUiMenuIdentityScale;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    u8 var_r3;
-    f32 fv;
+    s32 colorTL;
+    s32 colorTR;
+    s32 colorBL;
+    s32 colorBR;
+    u8 fullyLit;
+    f32 z;
 
+    (void)unused;
     Prim2D_Begin();
-    fv = M2C_FIELD(arg1, Model **, 0x3C)->v25();
-    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), fv, gUiMenuIdentityScale);
+    z = M2C_FIELD(node, Model **, 0x3C)->v25();
+    Prim2D_SetTransform((f32) M2C_FIELD(node, s16 *, 0x30), (f32) M2C_FIELD(node, s16 *, 0x32), z, gUiMenuIdentityScale);
     Prim2D_SetTex(0, 0x12);
-    var_r3 = 0;
-    if ((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0 && (u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
-        var_r3 = 1;
+    fullyLit = 0;
+    if ((u8) M2C_FIELD(node, u8 *, 0x2D) == 0 && (u8) M2C_FIELD(node, u8 *, 0x2E) == 0) {
+        fullyLit = 1;
     }
-    if (var_r3 == 0) {
+    if (fullyLit == 0) {
         Prim2D_SetColorByte(0x50);
     }
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
-    Prim2D_SetRect(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
+    Prim2D_SetRect(0.0f, 0.0f, (f32) M2C_FIELD(node, s16 *, 0x34), (f32) M2C_FIELD(node, s16 *, 0x36));
     Prim2D_EmitQuad();
-    sp8 = gUiMenuDimColorBR;
-    spC = gUiMenuDimColorBL;
-    sp10 = gUiMenuDimColorTR;
-    sp14 = gUiMenuDimColorTL;
-    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
+    colorBR = gUiMenuDimColorBR;
+    colorBL = gUiMenuDimColorBL;
+    colorTR = gUiMenuDimColorTR;
+    colorTL = gUiMenuDimColorTL;
+    Prim2D_SetCornerColors(&colorTL, &colorTR, &colorBL, &colorBR);
     Prim2D_EndPrim();
 }
 #pragma cplusplus reset
