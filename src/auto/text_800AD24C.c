@@ -670,7 +670,7 @@ void Battle_InitPhaseBanner(void *proc) {
     void *fn_8014D8FC(void *);
     s8 Fx_FindSlotByName(void *);
     void Fx_StartSlot(s32, void *, s32, s32);
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_80053658(void *, s32, void *);
     void Process_AttachFunc(void *, void *);
     extern u8 gBattleState[];
@@ -745,7 +745,7 @@ void Battle_InitPhaseBanner(void *proc) {
         bannerName = NULL;
         break;
     }
-    *(void **)((u8 *)proc + 0x4C) = fn_80053C30(bannerName, proc);
+    *(void **)((u8 *)proc + 0x4C) = Effect_Create(bannerName, proc);
     *(f32 *)((u8 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) + 0x1C) = 0.0f;
     *(s16 *)*(void **)((u8 *)*(void **)((u8 *)proc + 0x4C) + 0x30) = 0x63;
     fn_80053658(*(void **)((u8 *)proc + 0x4C), 0, proc);

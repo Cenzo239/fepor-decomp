@@ -123,7 +123,7 @@ void fn_80099094(void *arg0)
   s32 Event_GetCmdKind(s16);
   s32 Event_GetCmdFlags(s16);
   void *fn_80095934(void *, s32, s32);
-  void *fn_80053C30(void *, void *);
+  void *Effect_Create(void *, void *);
   void fn_800536CC(void *, void *);
   void fn_800536D8(void *, void *);
   s32 new_var;
@@ -163,7 +163,7 @@ void fn_80099094(void *arg0)
     temp_r3 = fn_80095934(*((void **) (((u8 *) self) + 0x38)), new_var, Event_GetCmdFlags(temp_r29));
     if (temp_r3 != NULL)
     {
-      temp_r29_2 = fn_80053C30(temp_r3, self);
+      temp_r29_2 = Effect_Create(temp_r3, self);
       fn_800536CC(temp_r29_2, *((void **) (*((void **) (((u8 *) self) + 0x38)))));
       fn_800536D8(temp_r29_2, *((void **) (*((void **) (((u8 *) self) + 0x3C)))));
       fn_8005306C(temp_r29_2);
@@ -194,7 +194,7 @@ void fn_80099094(void *arg0)
       fn_80184688(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 1, 2, self);
     }
     fn_8018CFA4(0xF, 6, 2, 0, self);
-    temp_r3 = fn_80053C30(gEventUiSeCues + 0x119, self);
+    temp_r3 = Effect_Create(gEventUiSeCues + 0x119, self);
     Effect_SetPos(temp_r3, *((f32 *) (&sp20[0])), *((f32 *) (&sp20[1])), *((f32 *) (&sp20[2])));
     fn_8017E0C0(*((void **) (((u8 *) self) + 0x38)), new_var, self);
     if ((*((u8 *) (((u8 *) self) + 0x34))) != 2)
@@ -210,7 +210,7 @@ s32 fn_80098140(void); u8 Pad_IsActive(void *); u8 Pad_IsButton(void *,s32);
 s32 Event_GetCmdKind(s16); s32 Event_GetCmdFlags(s16); void Event_AdvanceCmd(s16);
 void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
 void fn_8017DF54(void *,void *,void *);
-void *fn_80095934(void *,s32,s32); void *fn_80053C30(void *,void *);
+void *fn_80095934(void *,s32,s32); void *Effect_Create(void *,void *);
 void fn_800536CC(void *,void *); void fn_800536D8(void *,void *); void fn_8005306C(void *);
 void fn_80184688(void *,s32,s32,void *); void fn_800983E0(void *,void *);
 void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
@@ -246,7 +246,7 @@ if(amount==0) {
 s32 kind=Event_GetCmdKind(index);
 p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
-p=fn_80053C30(p,self);
+p=Effect_Create(p,self);
 fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
 fn_800536D8(p,*M2C_FIELD(self,void ***,0x3c));
 fn_8005306C(p);
@@ -281,7 +281,7 @@ if(amount==0) {
 s32 kind=Event_GetCmdKind(index);
 p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
-p=fn_80053C30(p,self);
+p=Effect_Create(p,self);
 fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
 fn_800536D8(p,*M2C_FIELD(self,void ***,0x3c));
 fn_8005306C(p);
@@ -638,7 +638,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void fn_80025624(s32, s32);
     void fn_8017E2BC(void);
     void *fn_80095934(void *, s32, s32);
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void Effect_SetPos(void *, f32, f32, f32);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
@@ -760,7 +760,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     }
     tmp = fn_80095934(M2C_FIELD(arg0, void **, 0x38), kind, flags);
     if (tmp != NULL) {
-        created = fn_80053C30(tmp, arg0);
+        created = Effect_Create(tmp, arg0);
         mode = M2C_FIELD(arg0, u8 *, 0x34);
         switch (mode) {
         case 1:

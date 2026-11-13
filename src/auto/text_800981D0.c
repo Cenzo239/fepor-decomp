@@ -163,7 +163,7 @@ s32 Event_HandleItemCmd(void *arg0)
     void Event_AdvanceCmd(s16);
     s32 fn_800958C4(s32);
     void *fn_80095934(void *, s32, s32);
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -265,7 +265,7 @@ s32 Event_HandleItemCmd(void *arg0)
                 flags = Event_GetCmdFlags(id);
                 tmp = fn_80095934(M2C_FIELD(self, void **, 0x38), kind, flags);
                 if (tmp != NULL) {
-                    kind = (s32)fn_80053C30(tmp, self);
+                    kind = (s32)Effect_Create(tmp, self);
                     fn_800536CC((void *)kind, M2C_FIELD(M2C_FIELD(self, void **, 0x38), void **, 0));
                     fn_800536D8((void *)kind, M2C_FIELD(M2C_FIELD(self, void **, 0x3C), void **, 0));
                     fn_8005306C((void *)kind);

@@ -457,7 +457,7 @@ void fn_80129464(void *arg0) {
     f32 Map_SampleHeight(void *, f32, f32);
     void fn_800498A4(void *, void *, s32);
     void Effect_SetPos(s32, f32, f32, f32);
-    s32 fn_80053C30(void *, void *);
+    s32 Effect_Create(void *, void *);
     extern u8 lbl_80275740[];
     extern u8 gBattleMap[];
     extern f32 lbl_8036A410;
@@ -475,7 +475,7 @@ void fn_80129464(void *arg0) {
     b0 = *(s8 *)ptr;
     b1 = *((s8 *)ptr + 1);
     fn_800498A4(ptr, self, 0);
-    path = fn_80053C30(lbl_80275740 + 0x15B, self);
+    path = Effect_Create(lbl_80275740 + 0x15B, self);
     f31 = (f32)b1;
     f31 = lbl_8036A410 + f31;
     f30 = (f32)b0;
@@ -1309,7 +1309,7 @@ void fn_8012ABAC(void *arg0) {
 
 void fn_8012AC88(void *arg0) {
     f32 Map_SampleHeight(void *, f32, f32);
-    void fn_80053C30(void *, s32);
+    void Effect_Create(void *, s32);
     void Effect_SetPos(f32, f32, f32);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 lbl_80275740[];
@@ -1324,7 +1324,7 @@ void fn_8012AC88(void *arg0) {
     temp_f30 = lbl_8036A410 + (f32)(s8)temp_r6[0];
     temp_f31 = lbl_8036A410 + (f32)(s8)temp_r6[1];
     temp_f29 = Map_SampleHeight(gBattleMap, temp_f30, temp_f31);
-    fn_80053C30(lbl_80275740 + 0x165, 0);
+    Effect_Create(lbl_80275740 + 0x165, 0);
     Effect_SetPos(temp_f30, temp_f31, temp_f29);
     SeCue_PlayAt(lbl_80275740 + 0x196, 0x64, temp_f30, temp_f31, temp_f29);
 }

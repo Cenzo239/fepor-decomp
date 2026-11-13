@@ -1233,7 +1233,7 @@ void fn_80186260(void *arg0) {
 }
 
 void fn_80186318(void *arg0) {
-    s32 fn_80053C30(void *, void *);
+    s32 Effect_Create(void *, void *);
     void Effect_SetPos(s32, f32, f32, f32);
     extern u8 MoveAnim_str[];
     f32 temp_f31;
@@ -1254,7 +1254,7 @@ void fn_80186318(void *arg0) {
     if (bit) {
         var_r3 = base + 0x34C;
     }
-    M2C_FIELD(arg0, s32 *, 0x34) = fn_80053C30(var_r3, arg0);
+    M2C_FIELD(arg0, s32 *, 0x34) = Effect_Create(var_r3, arg0);
     Effect_SetPos(M2C_FIELD(arg0, s32 *, 0x34), temp_f31, temp_f30, temp_f29);
 }
 
@@ -1649,7 +1649,7 @@ void fn_801877C4(void *arg0) {
     void *fn_800508C4(void *);
     u32 fn_80052B30(s32);
     void Effect_SetPos(f32, f32, f32);
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     f32 Math_Angle2D(void *, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     u8 Pad_IsButton(void *, s32);
@@ -1761,7 +1761,7 @@ void fn_801877C4(void *arg0) {
         if (count >= 2) {
             msg = MoveAnim_str + 0x360;
         }
-        base = fn_80053C30(msg, arg0);
+        base = Effect_Create(msg, arg0);
         Effect_SetPos(f31, f30, f29);
         *(f32 *)((u8 *)*(void **)((u8 *)base + 0x30) + 0x24) = f28;
         cb = *(void (**)(s32))((u8 *)arg0 + 0x40);
@@ -9047,7 +9047,7 @@ void fn_80199CEC(void *arg0) {
 }
 
 void fn_80199D18(void *arg0) {
-    void *fn_80053C30(void *, s32);
+    void *Effect_Create(void *, s32);
     void Effect_SetPos(f32, f32, f32);
     void Process_ClearFunc(void *);
     extern u8 MapSelect_str[];
@@ -9061,7 +9061,7 @@ void fn_80199D18(void *arg0) {
     f32 f24;
 
     if (*(s16 *)((u8 *)arg0 + 0x48) >= *(s16 *)((u8 *)arg0 + 0x4A) - 4) {
-        msg = fn_80053C30(MapSelect_str + 0xCA, 0);
+        msg = Effect_Create(MapSelect_str + 0xCA, 0);
         a = *(s8 *)((u8 *)arg0 + 0x3C);
         b = *(s8 *)((u8 *)arg0 + 0x3D);
         Effect_SetPos(lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
@@ -9078,7 +9078,7 @@ void fn_80199D18(void *arg0) {
 void MapSelect_StartMove(void *arg0) {
     /* Start a map-select cursor slide from (x0,y0) to (x1,y1): length, duration, actor, camera. */
     void fn_80053658(void *, s32, void *);
-    void *fn_80053C30(u8 *, void *);
+    void *Effect_Create(u8 *, void *);
     f32 Math_Angle2D(f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     f32 Vec_Length(f32 *);
@@ -9112,7 +9112,7 @@ void MapSelect_StartMove(void *arg0) {
         (f32)(s8)((u8 *)arg0)[0x3B],
         (f32)(s8)((u8 *)arg0)[0x3C],
         (f32)(s8)((u8 *)arg0)[0x3D]);
-    actor = fn_80053C30(MapSelect_str + 0xD4, arg0);
+    actor = Effect_Create(MapSelect_str + 0xD4, arg0);
     node = *(void **)((u8 *)actor + 0x30);
     *(void **)((u8 *)node + 0x3C) = (void *)&MapSelect_SetGhostColor;
     node = *(void **)((u8 *)actor + 0x30);
@@ -9278,7 +9278,7 @@ void fn_8019A7E8(s32 arg0) {
 void Event_RunItemCmd(void *cmd) {
     void fn_80025624(void *, s32);
     void Effect_SetPos(f32, f32, f32);
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void *fn_80095934(s32, s32, s32);
     u8 fn_80096C18(void);
     s32 Event_GetCmdKind(s16);
@@ -9398,7 +9398,7 @@ void Event_RunItemCmd(void *cmd) {
     if (tmp != 0) {
         fn_800983E0(&sp8, unit);
         sp8c = sp8;
-        fn_80053C30((void *)tmp, cmd);
+        Effect_Create((void *)tmp, cmd);
         Effect_SetPos(*(f32 *)&sp8c.x, *(f32 *)&sp8c.y, *(f32 *)&sp8c.z);
     }
 }
@@ -9762,7 +9762,7 @@ void fn_8019B8A0(s32 arg0, s32 arg1) {
 }
 
 void fn_8019B904(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
     void fn_80053658(void *, s32, void *);
@@ -9774,7 +9774,7 @@ void fn_8019B904(void *arg0) {
     void *p;
     s32 mode;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     fn_800536D8(temp, *(void **)*(void **)((u8 *)arg0 + 0x34));
     fn_8005306C(temp);
     *(void **)((u8 *)*(void **)((u8 *)temp + 0x30) + 0x40) = MapSelect_Update;
@@ -10001,7 +10001,7 @@ void fn_8019BEA4(void *arg0) {
     void *UnitRef_GetUnit(void);
     void fn_80053658(void *, s32, void *);
     void fn_80053680(void *, void *);
-    void *fn_80053C30(u8 *, void *);
+    void *Effect_Create(u8 *, void *);
     extern void fn_8019BF5C(void);
     extern s32 lbl_802EF4E0[];
     s32 *table;
@@ -10015,7 +10015,7 @@ void fn_8019BEA4(void *arg0) {
 loop:
     fn_8002F658(table, i);
     item = UnitRef_GetUnit();
-    obj = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    obj = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (obj != NULL) {
         fn_80053680(obj, item);
         *(void **)((u8 *)*(void **)((u8 *)obj + 0x30) + 0x40) = (void *)&fn_8019BF5C;
@@ -10124,7 +10124,7 @@ extern void* fn_8005306C(void*);
 extern void* fn_80053658(void*, s32, void*);
 extern void* fn_800536CC(s32);
 extern void* fn_800536D8(void*, s32);
-extern void* fn_80053C30(s32, void*);
+extern void* Effect_Create(s32, void*);
 s32 fn_8019CC04(void *arg0);
 void fn_8019C160(void *arg0, void *arg1)
 {
@@ -10159,13 +10159,13 @@ void fn_8019C1B0(void *arg0) {
 
 void fn_8019C1F8(void *arg0)
 {
-    extern void *fn_80053C30(void *, void *);
+    extern void *Effect_Create(void *, void *);
     extern void fn_800536D8(void *, void *);
     extern void fn_8005306C(void *);
 
     void *result;
 
-    result = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    result = Effect_Create((u8 *)arg0 + 0x41, arg0);
 
     fn_800536D8(
         result,
@@ -10237,7 +10237,7 @@ void fn_8019C4FC(s32 arg0, s32 arg1) {
 }
 
 void fn_8019C544(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10246,7 +10246,7 @@ void fn_8019C544(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
@@ -10305,7 +10305,7 @@ void fn_8019C6C4(s32 arg0, s32 arg1) {
 }
 
 void fn_8019C70C(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10314,7 +10314,7 @@ void fn_8019C70C(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
@@ -10333,7 +10333,7 @@ void fn_8019C70C(void *arg0) {
 }
 
 void fn_8019C7B4(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10342,7 +10342,7 @@ void fn_8019C7B4(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
@@ -10381,7 +10381,7 @@ void fn_8019C8A4(s32 arg0, s32 arg1) {
 }
 
 void fn_8019C8EC(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10390,7 +10390,7 @@ void fn_8019C8EC(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
@@ -10449,7 +10449,7 @@ void fn_8019CA6C(s32 arg0, s32 arg1) {
 }
 
 void fn_8019CAB4(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10458,7 +10458,7 @@ void fn_8019CAB4(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
@@ -10477,7 +10477,7 @@ void fn_8019CAB4(void *arg0) {
 }
 
 void fn_8019CB5C(void *arg0) {
-    void *fn_80053C30(void *, void *);
+    void *Effect_Create(void *, void *);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -10486,7 +10486,7 @@ void fn_8019CB5C(void *arg0) {
     void *temp;
     void *p;
 
-    temp = fn_80053C30((u8 *)arg0 + 0x41, arg0);
+    temp = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (temp) {
         p = *(void **)((u8 *)arg0 + 0x30);
         if (p) {
