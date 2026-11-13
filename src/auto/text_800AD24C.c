@@ -6140,8 +6140,8 @@ s32 fn_800BBB58(s32 arg0, s32 arg1) {
 
 u8 fn_800BBC14(void) {
     s32 fn_801E3308(void *);
-    extern u8 gSaveExtra[];
-    return (u8)fn_801E3308(gSaveExtra);
+    extern u8 gSystemSave[];
+    return (u8)fn_801E3308(gSystemSave);
 }
 
 s32 fn_800BBC40(void) {

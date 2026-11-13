@@ -1176,11 +1176,11 @@ s32 fn_800A0DE4(s32 arg0, s32 arg1, void *arg2) {
 char *fn_800A0E24(void) {
     s32 fn_801E3308(void *);
     void sprintf(void *, void *, ...);
-    extern u8 gSaveExtra[];
+    extern u8 gSystemSave[];
     extern char lbl_80312270[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312270, lbl_8026D8D8 + 0x599, (u8)fn_801E3308(gSaveExtra));
+    sprintf(lbl_80312270, lbl_8026D8D8 + 0x599, (u8)fn_801E3308(gSystemSave));
     return lbl_80312270;
 }
 

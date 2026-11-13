@@ -541,7 +541,7 @@ void fn_801F2E08(void *arg0) {
     extern void *gPadInput;
     extern char lbl_8027F868[];
     extern u8 lbl_8029A9E8[];
-    extern u8 gSaveExtra[];
+    extern u8 gSystemSave[];
     void *obj;
     s32 pressed;
     s32 stick;
@@ -569,7 +569,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSaveExtra, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -618,7 +618,7 @@ void fn_801F2E08(void *arg0) {
             if (*(u8 *)((u8 *)obj + 0x11) != 1) {
                 break;
             }
-            if (fn_801E3570(gSaveExtra, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + *(s16 *)((u8 *)obj + 0xE) * 8))) != 0) {
                 break;
             }
         }
@@ -731,7 +731,7 @@ void fn_801F3338(void *arg0) {
     u8 fn_801E3570(void *, s32);
     extern u8 lbl_8027F868[];
     extern u8 lbl_8029A9E8[];
-    extern u8 gSaveExtra[];
+    extern u8 gSystemSave[];
     extern f32 lbl_8036B850;
     extern f32 lbl_8036B854;
     s32 temp_r27;
@@ -757,7 +757,7 @@ void fn_801F3338(void *arg0) {
     temp_r27 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
-            if (fn_801E3570(gSaveExtra, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
                 Ui_PlaySeCue(lbl_8027F868 + 0x121C, 0x64);
                 Process_Goto(arg0, 2);
                 fn_8008A290(3, 0xB4);
@@ -1101,7 +1101,7 @@ void fn_801F3E60(void *arg0) {
     extern s32 OSGetTime(void);
     extern void __div2i(s32, s32);
     extern u8 lbl_8027F868[];
-    extern u8 gSaveExtra[];
+    extern u8 gSystemSave[];
     extern s8 lbl_803683E0;
     extern s16 lbl_803683E4[4];
     extern f32 lbl_8036B850;
@@ -1371,7 +1371,7 @@ void fn_801F3E60(void *arg0) {
     (void)fn_800A8A88; (void)fn_8007CB3C; (void)fn_8008AB7C;
     (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;
     (void)fn_80238638; (void)OSGetTime; (void)__div2i;
-    (void)lbl_803683E0; (void)lbl_803683E4; (void)gSaveExtra;
+    (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
 }
 #pragma use_lmw_stmw reset
 
@@ -1480,7 +1480,7 @@ void CardLink_ApplyBonus(void *arg0) {
     s32 Msg_Expand(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801DDBA8(void *, s32, s32, s32, s32);
-    extern u8 gSaveExtra[];
+    extern u8 gSystemSave[];
     void *tmp;
     s32 code;
     s32 flag;
@@ -1506,7 +1506,7 @@ void CardLink_ApplyBonus(void *arg0) {
         case 0x4146454A:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
-            *(u16 *)(gSaveExtra + 0x10) |= 8;
+            *(u16 *)(gSystemSave + 0x10) |= 8;
             break;
         case 0x4145374A:
         case 0x41453745:
@@ -1514,14 +1514,14 @@ void CardLink_ApplyBonus(void *arg0) {
         case 0x41453759:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
-            *(u16 *)(gSaveExtra + 0x10) |= 0x10;
+            *(u16 *)(gSystemSave + 0x10) |= 0x10;
             break;
         case 0x4245384A:
         case 0x42453845:
         case 0x42453850:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
-            *(u16 *)(gSaveExtra + 0x10) |= 0x20;
+            *(u16 *)(gSystemSave + 0x10) |= 0x20;
             break;
         case 0:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);

@@ -3596,11 +3596,11 @@ void *fn_8016AC5C(void) {
 
 u8 fn_8016AC6C(void) {
     u8 fn_801E3620(M2C_UNK *);
-    extern M2C_UNK gSaveExtra;
+    extern M2C_UNK gSystemSave;
     u8 var_r3;
 
     var_r3 = 2;
-    if (fn_801E3620(&gSaveExtra) != 0) {
+    if (fn_801E3620(&gSystemSave) != 0) {
         var_r3 = 0;
     }
     return var_r3;
