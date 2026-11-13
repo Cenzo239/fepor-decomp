@@ -2162,7 +2162,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
     void *Map_GetCursorUnit(void);
     u8 Unit_CountSupportPartners(void);
     u32 fn_80037004(void *, u8);
-    s32 fn_80036FD0(void *, u8);
+    s32 Unit_GetSupportPartner(void *, u8);
     void *obj;
     void *p;
     u8 value;
@@ -2179,7 +2179,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
     if (fn_80037004(obj, value) == 0) {
         return 3;
     }
-    return (fn_80036FD0(obj, value) == 0) ? 2 : 0;
+    return (Unit_GetSupportPartner(obj, value) == 0) ? 2 : 0;
 }
 
 void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {

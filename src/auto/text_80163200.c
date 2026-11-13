@@ -15201,7 +15201,7 @@ extern "C" void fn_80180AC8(void *arg0) {
 
 s32 fn_80180E2C(s32 arg0) {
     u8 fn_80036B20(s32, s32);
-    void *fn_80036FD0(s32, s32);
+    void *Unit_GetSupportPartner(s32, s32);
     u8 Unit_CountSupportPartners(void);
     u8 count;
     s32 i;
@@ -15209,7 +15209,7 @@ s32 fn_80180E2C(s32 arg0) {
 
     count = Unit_CountSupportPartners();
     for (i = 0; i < count; i++) {
-        obj = fn_80036FD0(arg0, i);
+        obj = Unit_GetSupportPartner(arg0, i);
         if (obj != NULL) {
             switch (M2C_FIELD(M2C_FIELD(obj, void **, 0x190), u8 *, 8)) {
             case 0:

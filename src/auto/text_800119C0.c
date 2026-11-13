@@ -1237,7 +1237,7 @@ void fn_8001520C(void *arg0, u8 arg1) {
 void fn_80015234(void **arg0) {
     void fn_80036998(void *, s32);
     s32 fn_80036A24(void *);
-    void *fn_80036FD0(void *, s32);
+    void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
     void *temp_r31;
     void *var_r30;
@@ -1247,7 +1247,7 @@ void fn_80015234(void **arg0) {
     while (var_r30 != NULL) {
         if (*(u32 *)((u8 *)var_r30 + 0x188) != 0) {
             for (var_r29 = 0; var_r29 < (s32)Unit_CountSupportPartners(var_r30); var_r29++) {
-                temp_r31 = fn_80036FD0(var_r30, var_r29);
+                temp_r31 = Unit_GetSupportPartner(var_r30, var_r29);
                 if (temp_r31 != NULL &&
                     *(u32 *)((u8 *)temp_r31 + 0x190) == *(u32 *)((u8 *)var_r30 + 0x190) &&
                     fn_80036A24(var_r30) < 5 &&

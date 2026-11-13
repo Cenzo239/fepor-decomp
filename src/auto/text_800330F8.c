@@ -1715,7 +1715,7 @@ u8 fn_80036FC4(u8 *arg0, s32 arg1) {
     return arg0[arg1 + 0x214];
 }
 #pragma peephole on
-void fn_80036FD0(void *arg0, s32 arg1) {
+void Unit_GetSupportPartner(void *arg0, s32 arg1) {
     void **temp_r3;
     void *temp_r3_2;
 
