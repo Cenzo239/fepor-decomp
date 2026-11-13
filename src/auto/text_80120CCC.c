@@ -3288,7 +3288,7 @@ s32 ScriptCmd_cmb_mess_load(s32 arg0, s32 arg1) {
     void ScriptCmd_CmLoadScript(s32);
     s8 fn_8005BA00(void);
     void fn_8005BA08(s8);
-    void fn_8005C4C4(s32, s32);
+    void FileCache_OrFlags(s32, s32);
     void fn_8003FCCC(s32);
     s32 fn_800C4740(void);
     s8 temp_r31;
@@ -3296,9 +3296,9 @@ s32 ScriptCmd_cmb_mess_load(s32 arg0, s32 arg1) {
     temp_r31 = fn_8005BA00();
     fn_8005BA08((s8)fn_800C4740());
     ScriptCmd_CmLoadScript(arg0);
-    fn_8005C4C4(arg0, 4);
+    FileCache_OrFlags(arg0, 4);
     fn_8003FCCC(arg1);
-    fn_8005C4C4(arg1, 4);
+    FileCache_OrFlags(arg1, 4);
     fn_8005BA08(temp_r31);
     return 1;
 }

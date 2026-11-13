@@ -1700,7 +1700,7 @@ void fn_80166258(void) {
     void sprintf(void *, const char *, ...);
     void ScriptCmd_CmLoadScript(void *);
     void *fn_8003FCCC(void *);
-    void fn_8005C4C4(void *, s32);
+    void FileCache_OrFlags(void *, s32);
 
     u8 buffer[0x20];
     u8 *obj;
@@ -1727,7 +1727,7 @@ void fn_80166258(void) {
         lbl_803680E8 = fn_8003FCCC(buffer);
     }
 
-    fn_8005C4C4(buffer, 4);
+    FileCache_OrFlags(buffer, 4);
 }
 
 void *fn_801662F0(void **arg0) {

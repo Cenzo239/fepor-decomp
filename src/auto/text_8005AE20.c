@@ -789,7 +789,7 @@ s32 fn_8005C3C4(char *name) {
 
 #pragma no_register_save_helpers on
 #pragma use_lmw_stmw on
-void fn_8005C4C4(char *name, s32 flags) {
+void FileCache_OrFlags(char *name, s32 flags) {
     u8 *e = FindEntryByName(name);
     s32 v = *(u16 *)(e + 0x30);
     v |= flags;

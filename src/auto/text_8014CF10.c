@@ -305,7 +305,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void fn_80016DE0(void);
     void fn_8003F670(s32);
     s32 fn_8003FCCC(void);
-    void fn_8005C4C4(void *, s32);
+    void FileCache_OrFlags(void *, s32);
     void fn_800BE068(void *);
     void fn_800C32A4(void *);
     void fn_800C341C(void *);
@@ -377,7 +377,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
         var_r30 += 0x18;
         var_r29 += 0x18;
     }
-    fn_8005C4C4(fn_801E45FC(), 4);
+    FileCache_OrFlags(fn_801E45FC(), 4);
     fn_8003F670(temp_r28);
     fn_800BE068((u8 *)arg0 + 0xB4);
     fn_801A7CDC(gBattle);
@@ -610,7 +610,7 @@ void MsgDebug_Init(void) {
     void fn_8005B8E8(void);
     void sprintf(void *, void *, ...);
     void fn_8003FCCC(void *);
-    void fn_8005C4C4(void *, s32);
+    void FileCache_OrFlags(void *, s32);
     void DebugPrint(void *, void *, ...);
     void *fn_8000D1B4(s32);
     u8 Id_GetKind(void);
@@ -642,7 +642,7 @@ void MsgDebug_Init(void) {
         if (fn_8005B888(i) == 0) {
             sprintf(&path, lbl_80277238 + 0x2D, fn_8005B8AC(i));
             fn_8003FCCC(&path);
-            fn_8005C4C4(&path, 4);
+            FileCache_OrFlags(&path, 4);
             DebugPrint(lbl_80277238 + 0x59, &path);
         }
         i += 1;
