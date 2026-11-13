@@ -175,7 +175,7 @@ s32 fn_8010568C(s32 arg0) {
 }
 
 s32 fn_80105710(void *arg0) {
-    u8 fn_80019CC0(void *);
+    u8 Id_GetKind(void *);
     s32 fn_80019E04(void *);
     s32 off;
     s32 i;
@@ -187,7 +187,7 @@ s32 fn_80105710(void *arg0) {
     i = 0;
     off = 0;
     while (i < *(u8 *)((u8 *)arg0 + 0x1B)) {
-        status = fn_80019CC0(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + off));
+        status = Id_GetKind(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + off));
         switch (status) {
         case 3:
             return fn_80019E04(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + (i * 4)));

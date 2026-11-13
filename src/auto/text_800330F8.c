@@ -2025,7 +2025,7 @@ void fn_80037904(void *arg0, s32 arg1) {
 
 s32 fn_80037960(void *arg0, s32 arg1) {
     void fn_80015320(s32, void *);
-    u8 fn_80019CC0(s32);
+    u8 Id_GetKind(s32);
     s32 fn_80019E04(s32);
     s32 fn_80019E48(s32);
     s32 fn_80019E8C(s32);
@@ -2038,7 +2038,7 @@ s32 fn_80037960(void *arg0, s32 arg1) {
     void *unit;
     s32 i;
 
-    switch ((s32)(u8)fn_80019CC0(arg1)) {
+    switch ((s32)(u8)Id_GetKind(arg1)) {
     case 1:
         temp = M2C_FIELD(arg0, s32 *, 0x188);
         return temp == fn_80019E8C(arg1);

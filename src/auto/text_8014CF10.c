@@ -613,7 +613,7 @@ void MsgDebug_Init(void) {
     void fn_8005C4C4(void *, s32);
     void fn_800056CC(void *, void *, ...);
     void *fn_8000D1B4(s32);
-    u8 fn_80019CC0(void);
+    u8 Id_GetKind(void);
     s32 fn_800C42AC(s32);
     char *fn_8000E0E4(void *);
     s32 strlen(char *);
@@ -653,7 +653,7 @@ void MsgDebug_Init(void) {
     i = 0;
     do {
         fn_8000D1B4(i);
-        if (fn_80019CC0() == 5) {
+        if (Id_GetKind() == 5) {
             gMsgDebugCount += 1;
         }
         i += 1;
@@ -664,7 +664,7 @@ void MsgDebug_Init(void) {
     j = 0;
     do {
         fn_8000D1B4(j);
-        if (fn_80019CC0() == 5) {
+        if (Id_GetKind() == 5) {
             val = (u32)fn_8000D1B4(j);
             arr = gMsgDebugPtrs;
             idx = gMsgDebugCount << 2;

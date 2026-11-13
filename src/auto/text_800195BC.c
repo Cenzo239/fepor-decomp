@@ -288,7 +288,7 @@ f32 fn_80019C80(s32 unused, s32 idx) {
     return ((f32 *)local)[idx];
 }
 
-s32 fn_80019CC0(char *arg0) {
+s32 Id_GetKind(char *arg0) {
     if (arg0 == NULL) {
         return 0;
     }

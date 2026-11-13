@@ -13212,7 +13212,7 @@ extern "C" void fn_801D2C30(void *arg0) {
     s32 fn_800BE914(void);
     u8 fn_800BE800(s32);
     s32 fn_800BE728(s32);
-    u8 fn_80019CC0(void);
+    u8 Id_GetKind(void);
     u32 fn_80016BDC(s32);
     void fn_800616A0(void *);
     void *GActor_Create(void);
@@ -13285,7 +13285,7 @@ extern "C" void fn_801D2C30(void *arg0) {
             row.unit = 0;
             item = fn_800BE728(idx);
             unit = 0;
-            kind = (s32)(u8)fn_80019CC0();
+            kind = (s32)(u8)Id_GetKind();
             if (kind == 5) {
             } else if (kind >= 5) {
             } else {
