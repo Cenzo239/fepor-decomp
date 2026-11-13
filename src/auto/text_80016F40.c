@@ -989,7 +989,7 @@ s32 Camera_HasMoved(u8 arg0) {
         p = (void *) gActiveCam;
         var_f2 = lbl_80368C8C;
         if (arg0 != 0) {
-            var_f2 = lbl_80368CAC;
+            var_f2 = gCamAtMoveThreshTight;
         }
         if ((f32) __fabs((f64) (M2C_FIELD(p, f32 *, 0x4C) - M2C_FIELD(p, f32 *, 0x40))) > var_f2) {
             r = 1;
@@ -1033,7 +1033,7 @@ s32 fn_80018A08(u8 arg0) {
     extern u8 gActiveCamIndex;
     extern u16 gBattleState[700];
     extern f32 lbl_80368C8C;
-    extern f32 lbl_80368CAC;
+    extern f32 gCamAtMoveThreshTight;
     f32 var_f2;
     void *p;
     s32 r;
@@ -1050,7 +1050,7 @@ s32 fn_80018A08(u8 arg0) {
     p = (void *)gActiveCam;
     var_f2 = lbl_80368C8C;
     if (arg0 != 0) {
-        var_f2 = lbl_80368CAC;
+        var_f2 = gCamAtMoveThreshTight;
     }
     if ((f32)__fabs((f64)(*(f32 *)((u8 *)p + 0x4C) - *(f32 *)((u8 *)p + 0x40))) > var_f2) {
         return 1;

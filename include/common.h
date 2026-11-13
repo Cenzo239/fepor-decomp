@@ -109,7 +109,7 @@ extern u8 lbl_80366DB0;
 extern s32 gActiveCam;
 extern u8 gActiveCamIndex;
 extern f32 lbl_80368C8C;
-extern f32 lbl_80368CAC;
+extern f32 gCamAtMoveThreshTight;
 extern char lbl_802704F8[];
 
 
