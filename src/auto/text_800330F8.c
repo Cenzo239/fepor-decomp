@@ -901,80 +901,81 @@ void fn_80034F40(void *arg0) {
  M2C_FIELD(obj,u8*,0x1BB)=M2C_FIELD(arg0,u8*,0x1BB);
 }
 
-void Unit_AddGrowthProgress(void *arg0, void *arg1) {
-    s16 var_r4;
-    s16 var_r5;
-    s16 var_r5_2;
-    s16 var_r5_3;
-    s16 var_r5_4;
-    s16 var_r5_5;
-    s16 var_r5_6;
-    s16 var_r5_7;
+/* Add rounded growth deltas into the unit's eight growth-progress bytes (clamp 0..255). */
+void Unit_AddGrowthProgress(void *unit, void *deltas) {
+    s16 res;
+    s16 hp;
+    s16 str;
+    s16 mag;
+    s16 skl;
+    s16 spd;
+    s16 lck;
+    s16 def;
 
-    var_r5 = M2C_FIELD(arg0, u8 *, 0x1B4) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0));
-    if (var_r5 < 0) {
-        var_r5 = 0;
+    hp = M2C_FIELD(unit, u8 *, 0x1B4) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0));
+    if (hp < 0) {
+        hp = 0;
     }
-    if (var_r5 > 0xFF) {
-        var_r5 = 0xFF;
+    if (hp > 0xFF) {
+        hp = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B4) = (u8) var_r5;
-    var_r5_2 = M2C_FIELD(arg0, u8 *, 0x1B5) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 4));
-    if (var_r5_2 < 0) {
-        var_r5_2 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B4) = (u8) hp;
+    str = M2C_FIELD(unit, u8 *, 0x1B5) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 4));
+    if (str < 0) {
+        str = 0;
     }
-    if (var_r5_2 > 0xFF) {
-        var_r5_2 = 0xFF;
+    if (str > 0xFF) {
+        str = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B5) = (u8) var_r5_2;
-    var_r5_3 = M2C_FIELD(arg0, u8 *, 0x1B6) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 8));
-    if (var_r5_3 < 0) {
-        var_r5_3 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B5) = (u8) str;
+    mag = M2C_FIELD(unit, u8 *, 0x1B6) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 8));
+    if (mag < 0) {
+        mag = 0;
     }
-    if (var_r5_3 > 0xFF) {
-        var_r5_3 = 0xFF;
+    if (mag > 0xFF) {
+        mag = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B6) = (u8) var_r5_3;
-    var_r5_4 = M2C_FIELD(arg0, u8 *, 0x1B7) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0xC));
-    if (var_r5_4 < 0) {
-        var_r5_4 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B6) = (u8) mag;
+    skl = M2C_FIELD(unit, u8 *, 0x1B7) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0xC));
+    if (skl < 0) {
+        skl = 0;
     }
-    if (var_r5_4 > 0xFF) {
-        var_r5_4 = 0xFF;
+    if (skl > 0xFF) {
+        skl = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B7) = (u8) var_r5_4;
-    var_r5_5 = M2C_FIELD(arg0, u8 *, 0x1B8) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0x10));
-    if (var_r5_5 < 0) {
-        var_r5_5 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B7) = (u8) skl;
+    spd = M2C_FIELD(unit, u8 *, 0x1B8) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0x10));
+    if (spd < 0) {
+        spd = 0;
     }
-    if (var_r5_5 > 0xFF) {
-        var_r5_5 = 0xFF;
+    if (spd > 0xFF) {
+        spd = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B8) = (u8) var_r5_5;
-    var_r5_6 = M2C_FIELD(arg0, u8 *, 0x1B9) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0x14));
-    if (var_r5_6 < 0) {
-        var_r5_6 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B8) = (u8) spd;
+    lck = M2C_FIELD(unit, u8 *, 0x1B9) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0x14));
+    if (lck < 0) {
+        lck = 0;
     }
-    if (var_r5_6 > 0xFF) {
-        var_r5_6 = 0xFF;
+    if (lck > 0xFF) {
+        lck = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1B9) = (u8) var_r5_6;
-    var_r5_7 = M2C_FIELD(arg0, u8 *, 0x1BA) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0x18));
-    if (var_r5_7 < 0) {
-        var_r5_7 = 0;
+    M2C_FIELD(unit, u8 *, 0x1B9) = (u8) lck;
+    def = M2C_FIELD(unit, u8 *, 0x1BA) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0x18));
+    if (def < 0) {
+        def = 0;
     }
-    if (var_r5_7 > 0xFF) {
-        var_r5_7 = 0xFF;
+    if (def > 0xFF) {
+        def = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1BA) = (u8) var_r5_7;
-    var_r4 = M2C_FIELD(arg0, u8 *, 0x1BB) + (s32) (0.5f + M2C_FIELD(arg1, f32 *, 0x1C));
-    if (var_r4 < 0) {
-        var_r4 = 0;
+    M2C_FIELD(unit, u8 *, 0x1BA) = (u8) def;
+    res = M2C_FIELD(unit, u8 *, 0x1BB) + (s32) (0.5f + M2C_FIELD(deltas, f32 *, 0x1C));
+    if (res < 0) {
+        res = 0;
     }
-    if (var_r4 > 0xFF) {
-        var_r4 = 0xFF;
+    if (res > 0xFF) {
+        res = 0xFF;
     }
-    M2C_FIELD(arg0, u8 *, 0x1BB) = (u8) var_r4;
+    M2C_FIELD(unit, u8 *, 0x1BB) = (u8) res;
 }
 
 void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
