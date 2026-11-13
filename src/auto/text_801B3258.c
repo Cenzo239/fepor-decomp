@@ -4653,14 +4653,14 @@ void *fn_801BE6A8(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_801403F0(void);
     void Process_Goto(void *, s32);
-    extern u8 lbl_80297C14[];
+    extern u8 gUiUnitPanelClass[];
     extern u8 gUiPanelBaseVt[];
     extern u8 gUiContext[];
     extern u8 lbl_80368274;
     void *temp_r3;
 
     gUiContext[8] = 0x80;
-    temp_r3 = fn_8000CAA0(lbl_80297C14, arg0);
+    temp_r3 = fn_8000CAA0(gUiUnitPanelClass, arg0);
     if (temp_r3 != NULL) {
         fn_801403F0();
         *(void **)((char *)temp_r3 + 0x40) = gUiPanelBaseVt;
@@ -4683,12 +4683,12 @@ void *fn_801BE6A8(s32 arg0) {
 void *fn_801BE748(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void fn_801403F0(void);
-    extern u8 lbl_80297C14[];
+    extern u8 gUiUnitPanelClass[];
     extern u8 gUiPanelBaseVt[];
     extern u8 lbl_80368274;
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80297C14, arg0);
+    temp_r3 = fn_8000CAA0(gUiUnitPanelClass, arg0);
     if (temp_r3 != NULL) {
         fn_801403F0();
         *(void **)((char *)temp_r3 + 0x40) = gUiPanelBaseVt;
@@ -4719,11 +4719,11 @@ u8 fn_801BE808(void)
     void *Process_Find(void *);
     void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BC94(void);
-    extern u8 lbl_80297C14[];
+    extern u8 gUiUnitPanelClass[];
     u32 result;
     s32 ret;
 
-    Ui_FindChild(Process_Find(lbl_80297C14), 0x106, 0);
+    Ui_FindChild(Process_Find(gUiUnitPanelClass), 0x106, 0);
     result = fn_8017BC94();
     ret = 2;
     if (result != 0) {
@@ -4763,7 +4763,7 @@ s32 fn_801BE92C(void *arg0) {
     void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BD58(void);
     s32 fn_8017C3C8(void *);
-    extern u8 lbl_80297C14[];
+    extern u8 gUiUnitPanelClass[];
     extern u32 gUiContext[];
     void *temp_r31;
     void *temp_r4;
@@ -4774,7 +4774,7 @@ s32 fn_801BE92C(void *arg0) {
     void *ret;
 
     *((s8 *)arg0 + 4) = 0;
-    ret = Process_Find(lbl_80297C14);
+    ret = Process_Find(gUiUnitPanelClass);
     temp_r31 = (void *)gUiContext[0];
     Ui_FindChild(ret, 0x106, 0);
     if (fn_8017BD58() >= 5U) {
