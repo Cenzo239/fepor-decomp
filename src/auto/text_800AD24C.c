@@ -2974,7 +2974,7 @@ void fn_800B5708(void) {
     void fn_800BA5AC(void);
     void fn_800BA528(void);
     void fn_800BA4A8(void);
-    void fn_800BA138(void);
+    void ScriptCmd_SetPos(void);
     void fn_800B9B58(void);
     void fn_800B9A9C(void);
     void fn_800B9A34(void);
@@ -3149,7 +3149,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x277, fn_800BA5AC, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x281, fn_800BA528, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x28B, fn_800BA4A8, 1);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x294, fn_800BA138, 3);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x294, ScriptCmd_SetPos, 3);
     Script_RegisterCommand(lbl_8026ECB8 + 0x29F, fn_800B9B58, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x2AA, fn_800B9A9C, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x2B6, fn_800B9A34, 2);
@@ -5348,7 +5348,7 @@ s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
     return fn_80010710(arg0);
 }
 
-s32 fn_800BA138(u32 arg0, s32 arg1, s32 arg2) {
+s32 ScriptCmd_SetPos(u32 arg0, s32 arg1, s32 arg2) {
     void *Sound_FindByName(u32);
     void *fn_801CF760(u32);
     s32 fn_80234278(void *, void *, s32);
