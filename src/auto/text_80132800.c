@@ -5552,7 +5552,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void fn_801475FC(void *, s32);
     extern u32 lbl_80367110;
     extern void *lbl_80367240;
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     extern u8 lbl_80276908[];
     extern f64 lbl_8036A6C8;
     struct Inner {
@@ -5609,7 +5609,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
             }
         }
         if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
-            if ((u8)fn_80166D8C(lbl_80330D68) != 0) {
+            if ((u8)fn_80166D8C(gUnitInfoPopup) != 0) {
                 p = (u8 *)arg1;
                 p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
                 tmp = fn_8000B908(p[0x40]);
@@ -5623,7 +5623,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
                 tmp = fn_8000B908(p[0x40]);
                 res = (*(Inner **)((u8 *)tmp + 0x34))->v2();
                 if (res != NULL) {
-                    fn_80167190(lbl_80330D68, res, f31, f30);
+                    fn_80167190(gUnitInfoPopup, res, f31, f30);
                 }
             }
         }
@@ -6190,7 +6190,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void fn_80167190(void *, f32, f32);
     extern s32 lbl_80367110;
     extern u32 *lbl_80367240;
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     extern f64 lbl_8036A6C8;
     extern u8 lbl_80276908[];
 
@@ -6287,7 +6287,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
             item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
             inner = *(Inner **)((u8 *)item + 0x34);
             inner->Select(arg1, item);
-            if (fn_80166D8C(lbl_80330D68) != 0) {
+            if (fn_80166D8C(gUnitInfoPopup) != 0) {
                 item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
                 fx = (f32)(*(s16 *)(p + 0x30) + *(s16 *)((u8 *)item + 0x30));
                 item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
@@ -6296,11 +6296,11 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 inner = *(Inner **)((u8 *)item + 0x34);
                 obj = inner->v2();
                 if (obj != NULL) {
-                    fn_80167190(lbl_80330D68, fx, fy);
+                    fn_80167190(gUnitInfoPopup, fx, fy);
                 } else {
                     item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
                     inner = *(Inner **)((u8 *)item + 0x34);
-                    fn_80166DD0(lbl_80330D68, inner->GetObj(item), fx, fy);
+                    fn_80166DD0(gUnitInfoPopup, inner->GetObj(item), fx, fy);
                 }
             }
             fn_801475FC(lbl_80276908 + 0x83, 0x64);

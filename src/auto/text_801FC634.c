@@ -1119,7 +1119,7 @@ void fn_801FF3AC(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     u8 fn_80166D8C(void *);
     void fn_801673D0(void *);
     void *fn_8000B908(u8);
@@ -1142,10 +1142,10 @@ extern "C" void fn_801FF3E8(void *arg0, void *arg1) {
     if (++*cntp < *(u32 *)((u8 *)arg0 + 0x2C)) {
         return;
     }
-    if (fn_80166D8C(lbl_80330D68)) {
+    if (fn_80166D8C(gUnitInfoPopup)) {
         void *entry;
         u8 *a1;
-        fn_801673D0(lbl_80330D68);
+        fn_801673D0(gUnitInfoPopup);
         a1 = (u8 *)arg1;
         entry = fn_8000B908(a1[0x40 + (s8)a1[0x62]]);
         (*(Handler **)((u8 *)entry + 0x34))->v9(arg1, entry);
@@ -2070,7 +2070,7 @@ void fn_80201610(void *arg0) {
 }
 
 void fn_8020164C(void *arg0, void *arg1) {
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
 
     u8 fn_80166D8C(void *);
     void fn_801673D0(void *);
@@ -2087,8 +2087,8 @@ void fn_8020164C(void *arg0, void *arg1) {
     *(s32 *)(obj + 0x28) += 1;
 
     if (*(u32 *)(obj + 0x28) >= *(u32 *)(obj + 0x2C)) {
-        if (fn_80166D8C(lbl_80330D68) != 0) {
-            fn_801673D0(lbl_80330D68);
+        if (fn_80166D8C(gUnitInfoPopup) != 0) {
+            fn_801673D0(gUnitInfoPopup);
 
             index = (s8)*((u8 *)arg1 + 0x62);
             index = *((u8 *)arg1 + index + 0x40);

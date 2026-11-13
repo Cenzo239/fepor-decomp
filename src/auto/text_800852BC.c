@@ -1254,14 +1254,14 @@ void fn_801475FC(void *, s32);
 void fn_801673D0(void *);
 extern u8 lbl_8026C86C[];
 extern Menu888Entry lbl_80288FE8[][37];
-extern u8 lbl_80330D68[];
+extern u8 gUnitInfoPopup[];
 extern void *lbl_80367240;
 void *self = M2C_FIELD(arg0, void **, 0x30);
 u32 pressed = M2C_FIELD(lbl_80367240,u32 *,4);
 u32 repeat = M2C_FIELD(lbl_80367240,u32 *,12);
 pressed &= M2C_FIELD(lbl_80367240,u32 *,8) ^ pressed;
 if ((pressed & 0x200) || (pressed & 0x800)) {
-M2C_FIELD(self,s16 *,4)=0; fn_801673D0(lbl_80330D68); return;
+M2C_FIELD(self,s16 *,4)=0; fn_801673D0(gUnitInfoPopup); return;
 }
 if (repeat & 0x08000008) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1362,7 +1362,7 @@ void fn_800888A4(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 fn_80166D8C(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     extern u8 lbl_8026C86C[];
     extern s32 lbl_8026C7D0[];
     extern Menu888Entry lbl_80288FE8[][37];
@@ -1383,7 +1383,7 @@ void fn_800888A4(void *arg0) {
     buttons = M2C_FIELD(lbl_80367240, u32 *, 4);
     repeat = M2C_FIELD(lbl_80367240, u32 *, 0xC);
     pressed = buttons & (M2C_FIELD(lbl_80367240, u32 *, 8) ^ buttons);
-    if (fn_80166D8C(lbl_80330D68) != 0) return;
+    if (fn_80166D8C(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
         fn_8000C070(arg0,3);
         fn_801475FC(lbl_8026C86C+0x394,100);
@@ -1445,7 +1445,7 @@ void fn_800888A4(void *arg0) {
             if (!valid) goto next;
         }
         entry=&lbl_80288FE8[M2C_FIELD(self, s8 *, 9)][M2C_FIELD(self, s32 *, 0x1C)];
-        fn_8016758C(lbl_80330D68,arg0,lbl_8026C86C+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
+        fn_8016758C(gUnitInfoPopup,arg0,lbl_8026C86C+0x3E1,M2C_FIELD(entry, f32 *, 0),M2C_FIELD(entry, f32 *, 4));
         fn_8007DAC4(self,entry);
         return;
     }

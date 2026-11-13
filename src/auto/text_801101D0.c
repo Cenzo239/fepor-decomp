@@ -4496,11 +4496,11 @@ s32 fn_8011B74C(void) {
     return 0x40;
 }
 
-extern u8 lbl_80330D68[];
+extern u8 gUnitInfoPopup[];
 s32 fn_8011B754(void) {
     u8 fn_80166D8C(void *);
 
-    return fn_80166D8C(lbl_80330D68) ? 0x40 : 0x10;
+    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x10;
 }
 
 #pragma cplusplus on
@@ -4550,7 +4550,7 @@ extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
     }
     buttons = M2C_FIELD(lbl_80367240, u32 *, 4) & (M2C_FIELD(lbl_80367240, u32 *, 8) ^ M2C_FIELD(lbl_80367240, u32 *, 4));
     lbl_80367A48 = M2C_FIELD(unit, u8 *, 0x3A) + 0x80;
-    if ((buttons & 0x100) && !fn_80166D8C(lbl_80330D68)) {
+    if ((buttons & 0x100) && !fn_80166D8C(gUnitInfoPopup)) {
         return M2C_FIELD(unit, Handler **, 0x34)->OnA(arg1, unit);
     }
     if (buttons & 0x200) {
@@ -4565,7 +4565,7 @@ extern "C" s32 fn_8011B78C(void *arg0, void *arg1) {
     if (buttons & 0x10) {
         return M2C_FIELD(unit, Handler **, 0x34)->OnZ(arg1, unit);
     }
-    if ((buttons & 0x1000) && !fn_80166D8C(lbl_80330D68)) {
+    if ((buttons & 0x1000) && !fn_80166D8C(gUnitInfoPopup)) {
         M2C_FIELD(M2C_FIELD(arg1, void **, 0x18), u8 *, 0x48) = 1;
         gUiContext[8] = 0x88;
         return 5;

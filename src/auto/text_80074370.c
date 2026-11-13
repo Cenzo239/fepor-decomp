@@ -22,11 +22,11 @@ void fn_80074370(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0xC) = (s32) lbl_80367468;
 }
 
-extern u8 lbl_80330D68[];
+extern u8 gUnitInfoPopup[];
 s32 fn_8007437C(void) {
     u8 fn_80166D8C(void *);
 
-    return fn_80166D8C(lbl_80330D68) ? 0x40 : 0x10;
+    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x10;
 }
 
 u32 fn_800745E8(u8 arg2) {
@@ -1305,10 +1305,10 @@ s32 fn_800766B0(void) {
 s32 fn_800766D4(void) {
     u8 fn_800281F4(void *);
     u8 fn_80166D8C(void *);
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     extern u8 gUiContext[24];
 
-    if (fn_80166D8C(lbl_80330D68) != 0) {
+    if (fn_80166D8C(gUnitInfoPopup) != 0) {
         return 0x40;
     }
     if (fn_800281F4(gUiContext) == 0 && gUiContext[0x16] != 0) {

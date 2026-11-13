@@ -2524,7 +2524,7 @@ extern "C" void fn_80024768(void *arg0) {
 void *fn_8000B908(u8);void fn_8000C188(void*);
 void fn_801475FC(void*,s32);void fn_801673D0(void*);void fn_8016746C(void*,void*,void*,f32,f32);void fn_8016758C(void*,void*,void*,f32,f32);
 extern s32 lbl_80367110;extern u8 lbl_80367238,lbl_80367239,lbl_8036723A;
-extern u8 lbl_80268D90[],lbl_80284548[],lbl_80330D68[];extern u32 lbl_80368DC4;
+extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 lbl_80368DC4;
 f32 x,y;
 MenuController24768 *ctrl;
 void *item,*q;
@@ -2565,14 +2565,14 @@ item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 y=(f32)(*(s16*)((u8*)arg0+0x32)+*(s16*)((u8*)item+0x32));
 item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 q=(*(MenuItem24768**)((u8*)item+0x34))->v2();
-if(q)fn_8016758C(lbl_80330D68,arg0,q,x,y);
+if(q)fn_8016758C(gUnitInfoPopup,arg0,q,x,y);
 else {
 item=fn_8000B908(*((u8*)arg0+0x40+*(s8*)((u8*)arg0+0x62)));
 q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);
-fn_8016746C(lbl_80330D68,arg0,q,x,y);
+fn_8016746C(gUnitInfoPopup,arg0,q,x,y);
 }
-*(u32*)lbl_80330D68|=lbl_80368DC4;
-}else if(flags&64)fn_801673D0(lbl_80330D68);
+*(u32*)gUnitInfoPopup|=lbl_80368DC4;
+}else if(flags&64)fn_801673D0(gUnitInfoPopup);
 }
 #pragma cplusplus reset
 
@@ -2633,7 +2633,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern u8 lbl_80268D90[];
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -2702,7 +2702,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
         node = (Node *)fn_8000B908(p[0x40]);
         node->obj->v14(arg1, node);
-        if (fn_80166D8C(lbl_80330D68) != 0) {
+        if (fn_80166D8C(gUnitInfoPopup) != 0) {
             p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)fn_8000B908(p[0x40]);
             f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + node->x);
@@ -2713,11 +2713,11 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
             node = (Node *)fn_8000B908(p[0x40]);
             ret = node->obj->v2();
             if (ret != NULL) {
-                fn_80167190(lbl_80330D68, f31, f30);
+                fn_80167190(gUnitInfoPopup, f31, f30);
             } else {
                 p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
                 node2 = (Node *)fn_8000B908(p[0x40]);
-                fn_80166DD0(lbl_80330D68, node2->obj->v16(node2), f31, f30);
+                fn_80166DD0(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
             }
         }
         fn_801475FC(lbl_80268D90 + 0x71, 0x64);
@@ -2805,16 +2805,16 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
 #pragma cplusplus reset
 s32 fn_80025440(void) {
     u8 fn_80166D8C(void *);
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
 
-    return fn_80166D8C(lbl_80330D68) ? 0x40 : 0x20;
+    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x20;
 }
 
 s32 fn_80025478(void) {
     u8 fn_80166D8C(void *);
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
 
-    return fn_80166D8C(lbl_80330D68) ? 0x40 : 0x9;
+    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x9;
 }
 
 #pragma cplusplus on
