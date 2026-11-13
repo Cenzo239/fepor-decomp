@@ -183,9 +183,9 @@ void *fn_8014C604(void) {
 }
 
 s32 fn_8014C6B8(void) {
-    M2C_UNK fn_80040844();
+    M2C_UNK Map_Get();
     M2C_UNK fn_80040854();
-    fn_80040844();
+    Map_Get();
     fn_80040854();
     return 1;
 }
@@ -207,7 +207,7 @@ void fn_8014C718(void *arg0, u32 arg1) {
     if (fn_80040824() != 0) {
         if (arg1 == 0) {
             fn_800AA134();
-            fn_80040844();
+            Map_Get();
             fn_80040854();
         } else {
             fn_8000CA64(lbl_80293760, arg1);
@@ -217,17 +217,17 @@ void fn_8014C718(void *arg0, u32 arg1) {
 
 void fn_8014C774(void) {
     M2C_UNK fn_80040854();
-    M2C_UNK fn_80040844();
-    fn_80040844();
+    M2C_UNK Map_Get();
+    Map_Get();
     fn_80040854();
 }
 
 void fn_8014C798(void) {
     M2C_UNK fn_80018EC0();
-    M2C_UNK fn_80040844();
+    M2C_UNK Map_Get();
     M2C_UNK fn_80042558();
     fn_80018EC0();
-    fn_80040844();
+    Map_Get();
     fn_80042558();
 }
 
@@ -237,7 +237,7 @@ void fn_8014C7C0(void *arg0, char *arg1) {
     void sprintf(char *, char *, ...);
     void *fn_800408A8(s32);
     void fn_8004084C(void *);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80041514(void *, char *);
     void fn_80023D14(void *);
     void fn_800AA15C(void);
@@ -261,7 +261,7 @@ copy:
 after_copy:
     sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
-    fn_80041514(fn_80040844(), buffer);
+    fn_80041514(Map_Get(), buffer);
     fn_80023D14(gBattleMap);
     fn_800AA15C();
     fn_800056CC((char *)lbl_80277060 + 0x15e, str);

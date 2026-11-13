@@ -1104,7 +1104,7 @@ void fn_80018B18(void) {
 #pragma cplusplus on
 extern "C" void fn_80018B24(void) {
     f32 Math_Lerp(f32, f32, f32, f32);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void PSMTXRotRad(f32 *, s32, f32);
     void PSMTXConcat(f32 *, f32 *, f32 *);
     void fn_802029C4(f32 *, f32 *, f32 *);
@@ -1181,7 +1181,7 @@ extern "C" void fn_80018B24(void) {
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0xE4) = (a + b) + t;
     {
-        void *cam = fn_80040844();
+        void *cam = Map_Get();
         f32 z;
         f32 c0;
         f32 c4;
@@ -1262,34 +1262,39 @@ extern "C" void fn_80018E0C(void)
     Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
 }
 
-extern "C" void fn_80018EC0(void) {
-    extern s32 lbl_803671C4;
-    extern f32 lbl_80368CA0;
-    extern f32 lbl_80368C88;
-    extern f32 lbl_80368C8C;
-    void *p;
-    f32 f2;
-    f32 f1;
-    f32 f0;
-    s32 z;
-
-    p = (void *)lbl_803671C4;
-    if (p != NULL) {
-        f2 = lbl_80368CA0;
-        z = 0;
-        f1 = lbl_80368C88;
-        M2C_FIELD(p, f32 *, 0x28) = f2;
-        f0 = lbl_80368C8C;
-        M2C_FIELD(p, f32 *, 0x34) = f2;
-        M2C_FIELD(p, f32 *, 0x58) = f1;
-        M2C_FIELD(p, f32 *, 0x5C) = f1;
-        M2C_FIELD(p, f32 *, 0x60) = f1;
-        M2C_FIELD(p, f32 *, 0x64) = f1;
-        M2C_FIELD(p, f32 *, 0x68) = f1;
-        M2C_FIELD(p, f32 *, 0x6C) = f1;
-        M2C_FIELD(p, s32 *, 0x1C) = z;
-        M2C_FIELD(p, f32 *, 0x70) = f0;
+extern "C" void fn_80018EC0(void)
+{
+  extern s32 lbl_803671C4;
+  extern f32 lbl_80368C88;
+  extern f32 lbl_80368C8C;
+  void *new_var;
+  void *p;
+  f32 f2;
+  f32 f1;
+  f32 f0;
+  s32 z;
+  p = (void *) lbl_803671C4;
+  if (p != NULL)
+  {
+    f2 = lbl_80368C8C;
+    z = 0;
+    f1 = lbl_80368C88;
+    if ((f1 && f1) && f1)
+    {
     }
+    *((f32 *) (((s8 *) p) + 0x28)) = f2;
+    f0 = lbl_80368C8C;
+    *((f32 *) (((s8 *) p) + 0x34)) = lbl_80368C8C;
+    *((f32 *) (((s8 *) p) + 0x58)) = f1;
+    new_var = p;
+    *((f32 *) (((s8 *) new_var) + 0x5C)) = f1;
+    *((f32 *) (((s8 *) new_var) + 0x60)) = f1;
+    *((f32 *) (((s8 *) new_var) + 0x64)) = f1;
+    *((f32 *) (((s8 *) new_var) + 0x68)) = f1;
+    *((f32 *) (((s8 *) p) + 0x6C)) = f1;
+    *((s32 *) (((s8 *) new_var) + 0x1C)) = z;
+    *((f32 *) (((s8 *) new_var) + ((0, 0x70)))) = f0;
+  }
 }
 
 #pragma cplusplus on

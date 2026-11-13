@@ -511,7 +511,7 @@ void fn_801295DC(void *arg0) {
 }
 
 void fn_8012961C(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_80016180(void);
     void fn_800498A4(void *, void *, s32);
@@ -529,20 +529,20 @@ void fn_8012961C(void *arg0) {
 
     temp = *(void **)((u8 *)arg0 + 0x30);
     ((u8 *)temp)[2] &= ~2;
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     fn_800498A4(*(void **)((u8 *)self + 0x30), self, 1);
 
     temp = *(void **)((u8 *)self + 0x30);
     y = *(s8 *)((u8 *)temp + 1);
-    cam = fn_80040844();
+    cam = Map_Get();
     if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0)) != NULL && fn_80049D6C(temp)) {
         if (self != NULL) {
             entry = fn_8000CAA0(lbl_80290B70, self);
         } else {
             entry = fn_8000CAF0(lbl_80290B70, 3);
         }
-        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(fn_80040844(), temp, (u8 *)entry + 0x30);
+        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
     }
 }
 
@@ -569,7 +569,7 @@ void fn_8012975C(void *arg0) {
 }
 
 void fn_8012979C(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_80016180(void);
     void fn_800498A4(void *, void *, s32);
@@ -587,13 +587,13 @@ void fn_8012979C(void *arg0) {
     self = arg0;
     temp = *(void **)((u8 *)arg0 + 0x30);
     ((u8 *)temp)[2] |= 2;
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     fn_800498A4(*(void **)((u8 *)self + 0x30), self, 0);
 
     temp = *(void **)((u8 *)self + 0x30);
     entry = (void *)(s32)(s8)((u8 *)temp)[1];
-    cam = fn_80040844();
+    cam = Map_Get();
     temp = fn_80046F14(cam, (s8)((u8 *)temp)[0], (s32)entry, 0x800, 0x10);
     if (temp != NULL) {
         if ((u8)fn_80049D58(temp) != 0) {
@@ -602,7 +602,7 @@ void fn_8012979C(void *arg0) {
             } else {
                 entry = fn_8000CAF0(lbl_80290B3C, 3);
             }
-            *(s32 *)((u8 *)entry + 0x50) = fn_80046400(fn_80040844(), temp, (u8 *)entry + 0x30);
+            *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
         }
     }
 }
@@ -613,7 +613,7 @@ void fn_80129888(void *arg0, void *arg1)
 
     extern void *fn_8000CAA0(void *, void *);
     extern void *fn_8000CAF0(void *, s32);
-    extern void *fn_80040844(void);
+    extern void *Map_Get(void);
     extern s32 fn_80046400(void *, void *, void *);
 
     u8 *entry;
@@ -625,7 +625,7 @@ void fn_80129888(void *arg0, void *arg1)
         entry = (u8 *)fn_8000CAF0(lbl_80290B70, 3);
     }
 
-    result = fn_80040844();
+    result = Map_Get();
 
     *(s32 *)(entry + 0x50) =
         fn_80046400(result, arg0, entry + 0x30);
@@ -705,7 +705,7 @@ void fn_80129A84(void *arg0, void *arg1)
 
     extern void *fn_8000CAA0(void *, void *);
     extern void *fn_8000CAF0(void *, s32);
-    extern void *fn_80040844(void);
+    extern void *Map_Get(void);
     extern s32 fn_80046400(void *, void *, void *);
 
     u8 *entry;
@@ -717,7 +717,7 @@ void fn_80129A84(void *arg0, void *arg1)
         entry = (u8 *)fn_8000CAF0(lbl_80290B3C, 3);
     }
 
-    result = fn_80040844();
+    result = Map_Get();
 
     *(s32 *)(entry + 0x50) =
         fn_80046400(result, arg0, entry + 0x30);
@@ -778,7 +778,7 @@ void ModelList_FadeOutProcess(void *proc) {
 }
 #pragma use_lmw_stmw off
 void fn_80129C44(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_80016180(void);
     void *entry;
@@ -798,7 +798,7 @@ check:
     if (i < *(s32 *)((u8 *)arg0 + 0x50)) {
         goto loop;
     }
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
 }
 
@@ -808,7 +808,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void *fn_8000CAA0(void *, u32);
     void *fn_8000CAF0(void *, s32);
     void fn_8001EEEC(void *);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void *fn_8004721C(void *, s32, s32, s32, s32);
     void fn_80049CB4(void *, void *);
     void fn_80049D30(void *);
@@ -872,7 +872,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     fn_8010FE08(lbl_8032BB58, x, y - 1, 0xA);
     fn_8010FE08(lbl_8032BB58, x, y + 1, 0xA);
     fn_8010FEEC(lbl_8032BB58, x, y, 0x27, 0);
-    obj = fn_8004721C(fn_80040844(), x, y, 0x10000, 0);
+    obj = fn_8004721C(Map_Get(), x, y, 0x10000, 0);
     if (obj == NULL) {
         fn_800056A0(0);
         return;
@@ -921,7 +921,7 @@ void fn_80129F68(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_80129FA4(void *arg0) {
     void fn_80025624(s32, s32);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_800498A4(void *, void *, s32, f32);
     void fn_800536B0(void *, f32, f32, f32);
     void *fn_80053AE8(void *, void *);
@@ -963,7 +963,7 @@ void fn_80129FA4(void *arg0) {
     *(f32 *)((u8 *)sub + 0x2C) = lbl_8036A420;
     sub = *(void **)((u8 *)self + 0x30);
     PSMTXIdentity((u8 *)sub + 0x3C);
-    cam = fn_80040844();
+    cam = Map_Get();
     sub = *(void **)((u8 *)self + 0x30);
     child = *(void **)sub;
     fn_802024D0(sp38, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
@@ -1040,7 +1040,7 @@ void fn_8012A45C(void *arg0) {
 
 void fn_8012A4CC(void *arg0) {
     u8 fn_80040824(void);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_800C4588(void *);
     void *inner;
@@ -1048,7 +1048,7 @@ void fn_8012A4CC(void *arg0) {
     inner = **(void ***)((u8 *)arg0 + 0x30);
     *(u8 *)((u8 *)inner + 2) |= 1;
     if ((u8)fn_80040824() != 0) {
-        fn_80044450(fn_80040844(), 1);
+        fn_80044450(Map_Get(), 1);
     }
     fn_800C4588(*(void **)((u8 *)arg0 + 0x30));
     *(void **)((u8 *)arg0 + 0x30) = NULL;
@@ -1060,7 +1060,7 @@ void fn_8012A530(void *arg0) {
     void Process_ClearFunc(void *);
     f32 fn_8001F53C(void *, s8, s8, s32);
     f32 fn_80023068(void *, f32, f32);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     void fn_80184688(void *, s32, s32, s32);
@@ -1227,7 +1227,7 @@ void fn_8012A530(void *arg0) {
 
     {
         void *keep = (void *)newY;
-        cam = fn_80040844();
+        cam = Map_Get();
         sub = *(void **)((u8 *)self + 0x30);
         child = *(void **)sub;
         fn_802024D0(sp44, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
@@ -1281,7 +1281,7 @@ void fn_8012ABAC(void *arg0) {
     u8 fn_80049D58(void *);
     void *fn_8000CAA0(void *, void *);
     void *fn_8000CAF0(void *, s32);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B3C[];
     extern u8 lbl_80290B70[];
@@ -1296,7 +1296,7 @@ void fn_8012ABAC(void *arg0) {
         } else {
             entry = (u8 *)fn_8000CAF0(lbl_80290B3C, 3);
         }
-        result = fn_80040844();
+        result = Map_Get();
         *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
     } else {
         saved = *(void **)((u8 *)arg0 + 0x30);
@@ -1305,7 +1305,7 @@ void fn_8012ABAC(void *arg0) {
         } else {
             entry = (u8 *)fn_8000CAF0(lbl_80290B70, 3);
         }
-        result = fn_80040844();
+        result = Map_Get();
         *(s32 *)(entry + 0x50) = fn_80046400(result, saved, entry + 0x30);
     }
 }
@@ -1345,7 +1345,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *fn_800056A0(void *);
     void *fn_8000CAA0(void *, u32);
     void *fn_8000CAF0(void *, s32);
-    void fn_80040844(void);
+    void Map_Get(void);
     void *fn_80046F14(s32, s32, u32, u32);
     s32 fn_8004721C(s8, s8, u32, u32);
     void fn_8014CBD8(void *, f32, f32);
@@ -1354,7 +1354,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *t30;
     void *r6;
 
-    fn_80040844();
+    Map_Get();
     t30 = fn_80046F14(arg0, arg1, 0xA00, 0);
     if (t30 == NULL) {
         fn_800056A0(0);
@@ -1362,7 +1362,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     }
     arg0 = *(s8 *)t30;
     arg1 = *((s8 *)t30 + 1);
-    fn_80040844();
+    Map_Get();
     t31 = fn_8004721C((s8)arg0, (s8)arg1, 0x20000, 0);
     if (t31 == 0) {
         fn_800056A0(0);
@@ -1382,7 +1382,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
 #pragma use_lmw_stmw reset
 void fn_8012AEC4(void *arg0) {
     u8 fn_80040824(void);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80044450(void *, s32);
     void Model_SetAlpha(void *, s32);
     void fn_80049D08(void *);
@@ -1398,7 +1398,7 @@ void fn_8012AEC4(void *arg0) {
     *(u8 *)((u8 *)p + 2) &= ~1;
     fn_80049D08(*(void **)((u8 *)arg0 + 0x3C));
     if ((u8)fn_80040824() != 0) {
-        fn_80044450(fn_80040844(), 1);
+        fn_80044450(Map_Get(), 1);
     }
 }
 
@@ -1476,7 +1476,7 @@ void fn_8012B394(void) {
 }
 
 void fn_8012B3C0(s32 arg0, s32 arg1, s32 arg2) {
-    s32 r = fn_80040844();
+    s32 r = Map_Get();
     r = fn_8004721C(r, arg0, arg1, 0x4200, 0);
     if ((u32)r != 0U) {
         fn_800498A4(r, arg2, 0);

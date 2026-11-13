@@ -1455,7 +1455,7 @@ void fn_80107B54(u32 *arg0, u32 *arg1, u8 arg2) {
 }
 
 s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     u8 fn_8004434C(void *, s32, s32);
     u8 fn_80040B1C(void *, s32, s32);
     void fn_800AAC64(void *);
@@ -1488,17 +1488,17 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     yp = arg2;
     x = (s8)*arg1;
     y = (s8)*arg2;
-    if (fn_8004434C(fn_80040844(), x, y) != 0) {
+    if (fn_8004434C(Map_Get(), x, y) != 0) {
         return 0;
     }
-    terrain = fn_80040B1C(fn_80040844(), x, y);
+    terrain = fn_80040B1C(Map_Get(), x, y);
     if (arg3 != 0 && arg0 != NULL) {
         fn_800AAC64(arg0);
     }
     map = gBattleMap;
     if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
         cost = -1;
-    } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
+    } else if ((u8)terrain != (u8)fn_80040B1C(Map_Get(), x, y)) {
         cost = -1;
     } else {
         row = y << 6;
@@ -1540,7 +1540,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                 p = arg5;
                 if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
                     cost = -1;
-                } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
+                } else if ((u8)terrain != (u8)fn_80040B1C(Map_Get(), x, y)) {
                     cost = -1;
                 } else {
                     if (arg5 != NULL && arg4 > 0) {
@@ -1596,7 +1596,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                 p = arg5;
                 if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
                     cost = -1;
-                } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
+                } else if ((u8)terrain != (u8)fn_80040B1C(Map_Get(), x, y)) {
                     cost = -1;
                 } else {
                     if (arg5 != NULL && arg4 > 0) {
@@ -1652,7 +1652,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                 p = arg5;
                 if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
                     cost = -1;
-                } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
+                } else if ((u8)terrain != (u8)fn_80040B1C(Map_Get(), x, y)) {
                     cost = -1;
                 } else {
                     if (arg5 != NULL && arg4 > 0) {
@@ -1708,7 +1708,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                 p = arg5;
                 if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
                     cost = -1;
-                } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
+                } else if ((u8)terrain != (u8)fn_80040B1C(Map_Get(), x, y)) {
                     cost = -1;
                 } else {
                     if (arg5 != NULL && arg4 > 0) {

@@ -6190,7 +6190,7 @@ s32 fn_80040824(void) {
     return (M2C_FIELD(gMap, u32 *, 0x64) >> 30) & 1;
 }
 
-s32 fn_80040844(void) {
+s32 Map_Get(void) {
     extern u16 *gMap;
     return (s32)gMap;
 }
@@ -10586,10 +10586,10 @@ u8 fn_8004C00C(void *arg0) {
 }
 
 void fn_8004C0A0(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     u8 fn_80040B1C(void *, s32, s32);
 
-    fn_80040B1C(fn_80040844(), (s32)*(f32 *)((u8 *)arg0 + 4), (s32)*(f32 *)((u8 *)arg0 + 8));
+    fn_80040B1C(Map_Get(), (s32)*(f32 *)((u8 *)arg0 + 4), (s32)*(f32 *)((u8 *)arg0 + 8));
 }
 
 #pragma peephole off
@@ -11064,12 +11064,12 @@ void fn_8004D5D4(s32 arg0) {
 }
 
 void fn_8004D644(void) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     extern void fn_8004D688(void);
     extern void fn_80067708(s32, s32, void (*)(void), s32);
     void *p;
 
-    p = fn_80040844();
+    p = Map_Get();
     if (*(u32 *)((u8 *)p + 0x64) & 0x10) {
         fn_80067708(3, 1, fn_8004D688, 0);
     }
@@ -12480,7 +12480,7 @@ static inline void *MapObj_GetOwner(void *base) {
 void MapObj_UpdateMatrix(void *arg0)
 {
     /* Build map-object world matrix: billboard, fixed, or free rot (+slope). */
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void Map_BuildSlopeMatrix(void *, void *, f32, f32);
     void fn_8004E670(f32 *, void *, s32);
     void fn_8005A1E8(s32, f32 *, f32 *);
@@ -12564,7 +12564,7 @@ void MapObj_UpdateMatrix(void *arg0)
             PSMTXRotRad(sp2C, 0x5A, lbl_803690B0 * *(f32 *)((u8 *)base + 0x28));
             PSMTXConcat(sp5C, sp8C, sp11C);
             PSMTXConcat(sp2C, sp11C, sp11C);
-            cam = fn_80040844();
+            cam = Map_Get();
             if (cam != NULL) {
                 PSMTXCopy((u8 *)cam + 0x70, spBC);
                 mode = *(u8 *)((u8 *)cam + 0x68);

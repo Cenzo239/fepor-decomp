@@ -2065,7 +2065,7 @@ void fn_801EE76C(void *arg0) {
     void fn_800C992C(void *, char *, s32);
     void fn_800408A8(s32);
     void fn_8004084C(void);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void *String_CStr(void *);
     void fn_80041514(void *, void *);
     void String_ConcatCStr(void *, void *, char *);
@@ -2205,7 +2205,7 @@ use30708:
     fn_800C992C(&sp24, str + 0x1BF, n);
     fn_800408A8(1);
     fn_8004084C();
-    r29 = fn_80040844();
+    r29 = Map_Get();
     fn_80041514(r29, String_CStr(&sp24));
 
     flag27 = 0;
@@ -2673,7 +2673,7 @@ void fn_801EF6BC(void *arg0) {
 }
 
 void GActor_LoadByName(void *arg0, char *arg1) {
-    void *fn_80040844(void *);
+    void *Map_Get(void *);
     s32 fn_8005C84C(void);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
@@ -2762,7 +2762,7 @@ void GActor_LoadByName(void *arg0, char *arg1) {
     *(u32 *)obj |= 0x01040000;
     obj = *(void **)((u8 *)self + 0xD0);
     *(f32 *)((u8 *)obj + 0x5C) = f;
-    tmp = fn_80040844(obj);
+    tmp = Map_Get(obj);
     *(void **)((u8 *)tmp + 0x34) = *(void **)((u8 *)self + 0xD0);
     String_Destroy(&sp48, -1);
     String_Destroy(&sp54, -1);

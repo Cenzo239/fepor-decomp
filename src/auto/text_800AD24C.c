@@ -9009,17 +9009,17 @@ s32 fn_800C1730(void) {
 }
 #pragma optimization_level 4
 void fn_800C1984(void) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_800462FC(s32, s32, void *);
     void fn_80046360(s32, s32, void *, s32, s32, s32);
     void fn_800C1730(void);
     extern u8 gMapBlendMode;
 
     if (gMapBlendMode == 0) {
-        fn_800462FC(fn_80040844(), 0, fn_800C1730);
+        fn_800462FC(Map_Get(), 0, fn_800C1730);
         return;
     }
-    fn_80046360(fn_80040844(), 0, fn_800C1730, 0, 0, 0x8000);
+    fn_80046360(Map_Get(), 0, fn_800C1730, 0, 0, 0x8000);
 }
 
 void fn_800C1E24(void) {

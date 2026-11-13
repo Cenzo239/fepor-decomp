@@ -11277,7 +11277,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
 s32 fn_8019E8B0(s32 arg0, s32 arg1) {
     extern u32 gUiInputFlags;
     extern u8 lbl_8032BB58[];
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
     void fn_80044450(s32, s32);
@@ -11298,12 +11298,12 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
     u8 *temp2;
 
     if (gUiInputFlags & 1) {
-        temp1 = fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x800, 0x10);
+        temp1 = fn_8004721C((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
         } else {
             fn_8010FE08(lbl_8032BB58, (s8) arg0, (s8) arg1, 0x22);
-            count = fn_80046400((void *) fn_80040844(), temp1, sp8);
+            count = fn_80046400((void *) Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11314,12 +11314,12 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
                 p++;
                 i++;
             }
-            fn_80044450(fn_80040844(), 1);
+            fn_80044450(Map_Get(), 1);
             fn_80016180();
         }
         return 0;
     }
-    temp2 = (u8 *) fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x800, 0x10);
+    temp2 = (u8 *) fn_8004721C((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
     if (temp2 == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11356,14 +11356,14 @@ void fn_8019EAC8(void *arg0) {
 
 s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
     void *fn_8004721C(void *, s32, s32, s32, s32);
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
     void fn_800056A0(s32);
     
     u8 *temp_r3;
 
-    temp_r3 = fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x800, 0x10);
+    temp_r3 = fn_8004721C((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
     if (temp_r3 == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11375,13 +11375,13 @@ s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
         temp_r3[2] = (u8)(temp_r3[2] | 2);
     }
     
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 
 s32 fn_8019ECB4(s32 arg0, s32 arg1, s32 arg2) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_80046F14(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
     void fn_8010FEEC(void *, s32, s32, s32, s32);
@@ -11394,7 +11394,7 @@ s32 fn_8019ECB4(s32 arg0, s32 arg1, s32 arg2) {
     u8 *temp;
 
     (void)arg0;
-    temp = (u8 *)fn_80046F14((void *)fn_80040844(), arg1, arg2, 0xa00, 0x10);
+    temp = (u8 *)fn_80046F14((void *)Map_Get(), arg1, arg2, 0xa00, 0x10);
     if (temp == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11416,7 +11416,7 @@ s32 fn_8019ED74(void) {
 s32 fn_8019ED7C(s32 arg0, s32 arg1) {
     extern u32 gUiInputFlags;
     extern u8 lbl_8032BB58[];
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
     void fn_80044450(s32, s32);
@@ -11437,12 +11437,12 @@ s32 fn_8019ED7C(s32 arg0, s32 arg1) {
     u8 *temp2;
 
     if (gUiInputFlags & 1) {
-        temp1 = fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x800, 0x10);
+        temp1 = fn_8004721C((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
         } else {
             fn_8010FE08(lbl_8032BB58, (s8) arg0, (s8) arg1, 0x22);
-            count = fn_80046400((void *) fn_80040844(), temp1, sp8);
+            count = fn_80046400((void *) Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11453,12 +11453,12 @@ s32 fn_8019ED7C(s32 arg0, s32 arg1) {
                 p++;
                 i++;
             }
-            fn_80044450(fn_80040844(), 1);
+            fn_80044450(Map_Get(), 1);
             fn_80016180();
         }
         return 0;
     }
-    temp2 = (u8 *) fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x800, 0x10);
+    temp2 = (u8 *) fn_8004721C((void *) Map_Get(), arg0, arg1, 0x800, 0x10);
     if (temp2 == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11471,7 +11471,7 @@ s32 fn_8019ED7C(s32 arg0, s32 arg1) {
 
 s32 fn_8019F04C(s32 arg0, s32 arg1) {
     extern u8 lbl_8032BB58[];
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
     void fn_80044450(s32, s32);
@@ -11487,13 +11487,13 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
     s32 *p;
 
     {
-        void *temp1 = fn_8004721C((void *)fn_80040844(), arg0, arg1, 0x800, 0x10);
+        void *temp1 = fn_8004721C((void *)Map_Get(), arg0, arg1, 0x800, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
             return 0;
         }
         fn_8010FE08(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x22);
-        count = fn_80046400((void *)fn_80040844(), temp1, sp8);
+        count = fn_80046400((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
     i = 0;
@@ -11505,14 +11505,14 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
         p++;
         i++;
     }
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 
 s32 fn_8019F13C(s32 arg0, s32 arg1) {
     extern u8 lbl_8032BB58[];
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
     void fn_80044450(s32, s32);
@@ -11528,13 +11528,13 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
     s32 *p;
 
     {
-        void *temp1 = fn_8004721C((void *)fn_80040844(), arg0, arg1, 0x800, 0x10);
+        void *temp1 = fn_8004721C((void *)Map_Get(), arg0, arg1, 0x800, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
             return 0;
         }
         fn_8010FEEC(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x22, 0);
-        count = fn_80046400((void *)fn_80040844(), temp1, sp8);
+        count = fn_80046400((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
     i = 0;
@@ -11546,13 +11546,13 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
         p++;
         i++;
     }
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 
 s32 fn_8019F230(s32 arg0, s32 arg1) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, s32, s32);
     void fn_800056A0(s32);
     void fn_8012942C(void *, s32);
@@ -11563,7 +11563,7 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
 
     void *temp_r3;
 
-    temp_r3 = fn_8004721C((void *) fn_80040844(), arg0, arg1, 0x200, 0x410);
+    temp_r3 = fn_8004721C((void *) Map_Get(), arg0, arg1, 0x200, 0x410);
     if (temp_r3 == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11610,7 +11610,7 @@ void fn_8019F2D0(void* arg0) {
 
 #pragma use_lmw_stmw on
 s32 fn_8019F688(s32 arg0, s32 arg1) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
     void fn_8010FE08(void *, s32, s32, s32);
@@ -11630,7 +11630,7 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
     s32 sp8[10];
 
     {
-        void *temp1 = fn_8004721C((void *)fn_80040844(), arg0, arg1, 0x1000, 0x10);
+        void *temp1 = fn_8004721C((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
             return 0;
@@ -11645,9 +11645,9 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
         fn_80049B1C(temp1, 0);
     }
     {
-        void *temp1 = fn_80046F14((void *)fn_80040844(), arg0, arg1, 0x800, 0);
+        void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
         if (temp1 != NULL) {
-            count = fn_80046400((void *)fn_80040844(), temp1, sp8);
+            count = fn_80046400((void *)Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11660,13 +11660,13 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
             }
         }
     }
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 #pragma use_lmw_stmw on
 s32 fn_8019F7CC(s32 arg0, s32 arg1) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
     void fn_8010FEEC(void *, s32, s32, s32, s32);
@@ -11686,7 +11686,7 @@ s32 fn_8019F7CC(s32 arg0, s32 arg1) {
     s32 sp8[10];
 
     {
-        void *temp1 = fn_8004721C((void *)fn_80040844(), arg0, arg1, 0x1000, 0x10);
+        void *temp1 = fn_8004721C((void *)Map_Get(), arg0, arg1, 0x1000, 0x10);
         if (temp1 == NULL) {
             fn_800056A0(0);
             return 0;
@@ -11701,9 +11701,9 @@ s32 fn_8019F7CC(s32 arg0, s32 arg1) {
         fn_80049B78(temp1, 0);
     }
     {
-        void *temp1 = fn_80046F14((void *)fn_80040844(), arg0, arg1, 0x800, 0);
+        void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
         if (temp1 != NULL) {
-            count = fn_80046400((void *)fn_80040844(), temp1, sp8);
+            count = fn_80046400((void *)Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
             while (i < count) {
@@ -11716,12 +11716,12 @@ s32 fn_8019F7CC(s32 arg0, s32 arg1) {
             }
         }
     }
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 s32 fn_8019F914(s32 arg0, s32 arg1) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(s32, s32, s32, s32, s32);
     void fn_8010FEEC(void *, s32, s32, s32, s32);
     void fn_80049C8C(void *, s32);
@@ -11730,19 +11730,19 @@ s32 fn_8019F914(s32 arg0, s32 arg1) {
     extern u8 lbl_8032BB58[];
     void *temp;
 
-    temp = fn_8004721C(fn_80040844(), arg0, arg1, 0x80000, 0x10);
+    temp = fn_8004721C(Map_Get(), arg0, arg1, 0x80000, 0x10);
     if (temp == NULL) {
         return 0;
     }
     fn_8010FEEC(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x29, 0);
     fn_80049C8C(temp, 0);
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
 
 s32 fn_8019F9B4(s32 arg0, s32 arg1) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_8004721C(s32, s32, s32, s32, s32);
     void fn_8010FE08(void *, s32, s32, s32);
     void fn_80049C8C(void *, s32);
@@ -11751,13 +11751,13 @@ s32 fn_8019F9B4(s32 arg0, s32 arg1) {
     extern u8 lbl_8032BB58[];
     void *temp;
 
-    temp = fn_8004721C(fn_80040844(), arg0, arg1, 0x80000, 0x10);
+    temp = fn_8004721C(Map_Get(), arg0, arg1, 0x80000, 0x10);
     if (temp == NULL) {
         return 0;
     }
     fn_8010FE08(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x29);
     fn_80049C8C(temp, 1);
-    fn_80044450(fn_80040844(), 1);
+    fn_80044450(Map_Get(), 1);
     fn_80016180();
     return 1;
 }
@@ -11944,7 +11944,7 @@ s32 fn_801A0060(s32 arg0, s32 arg1, s32 arg2) {
 s32 fn_801A0100(u8 arg0, u8 arg1, u8 arg2) {
     extern s32 lbl_8036AF6C;
     extern u8 lbl_80367298;
-    void fn_80040844(void);
+    void Map_Get(void);
     void fn_80045C68(void);
     void fn_80013864(void);
     s32 value;
@@ -11961,7 +11961,7 @@ s32 fn_801A0100(u8 arg0, u8 arg1, u8 arg2) {
     (&lbl_80367298)[1] = p[1];
     (&lbl_80367298)[2] = p[2];
     (&lbl_80367298)[3] = p[3];
-    fn_80040844();
+    Map_Get();
     fn_80045C68();
     fn_80013864();
     return 1;
@@ -11985,7 +11985,7 @@ int fn_801A016C(u8 arg0, u8 arg1, u8 arg2)
     lbl_8036729C[2] = ((u8 *)&value)[2];
     lbl_8036729C[3] = ((u8 *)&value)[3];
 
-    fn_80040844();
+    Map_Get();
     fn_80045C68();
     fn_80013864();
 
@@ -11994,11 +11994,11 @@ int fn_801A016C(u8 arg0, u8 arg1, u8 arg2)
 
 s32 fn_801A01D8(s8 arg0) {
     M2C_UNK fn_80013864();
-    M2C_UNK fn_80040844();
+    M2C_UNK Map_Get();
     M2C_UNK fn_80040DA4();
     extern s8 gBattleSkyIndex;
     gBattleSkyIndex = arg0;
-    fn_80040844();
+    Map_Get();
     fn_80040DA4();
     fn_80013864();
     return 1;
@@ -12008,7 +12008,7 @@ s32 fn_801A0208(s32 arg0, s32 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
 {
     extern u32 lbl_8036AF64;
     void fn_80048A3C(s32, s32, s32, u32 *);
-    void fn_80040844(void);
+    void Map_Get(void);
     void fn_80045B9C(void);
     void fn_80013864(void);
 
@@ -12021,7 +12021,7 @@ s32 fn_801A0208(s32 arg0, s32 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
     ((u8 *)&value)[2] = arg5;
     copy = value;
     fn_80048A3C(arg0, arg1, arg2, &copy);
-    fn_80040844();
+    Map_Get();
     fn_80045B9C();
     fn_80013864();
     return 1;
@@ -12030,7 +12030,7 @@ s32 fn_801A0208(s32 arg0, s32 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
 s32 fn_801A0258(void) {
     void fn_80048A70(void);
     void fn_8002297C(void *);
-    void fn_80040844(void);
+    void Map_Get(void);
     void fn_80040DA4(void);
     void fn_80016180(void);
     void fn_80013864(void);
@@ -12038,7 +12038,7 @@ s32 fn_801A0258(void) {
 
     fn_80048A70();
     fn_8002297C(gBattleMap);
-    fn_80040844();
+    Map_Get();
     fn_80040DA4();
     fn_80016180();
     fn_80013864();
@@ -12049,7 +12049,7 @@ s32 fn_801A0298(s32 arg0) {
     void *Process_Find(void *);
     void *fn_8000CAF0(void *, s32);
     s32 fn_800C0658();
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_8004496C(s32, u8);
     extern u16 lbl_80296F90[];
     extern u8 gBattleState[];
@@ -12077,11 +12077,11 @@ s32 fn_801A0298(s32 arg0) {
     if (arg0 != 0) {
         ((u8 *)v)[0x36] = 1;
         gUiInputFlags &= 0xFFFFEFFF;
-        fn_8004496C(fn_80040844(), 1);
+        fn_8004496C(Map_Get(), 1);
     } else {
         ((u8 *)v)[0x36] = 0;
         gUiInputFlags |= 0x1000;
-        fn_8004496C(fn_80040844(), 0);
+        fn_8004496C(Map_Get(), 0);
     }
     return 1;
 }
@@ -13210,7 +13210,7 @@ void fn_801A26CC(void *arg0) {
     extern u16 gBattleState[];
     extern s32 gUiInputFlags;
     s32 fn_80040824(void *);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_8004496C(void *, s32);
     void fn_8004DC54(s32);
     u8 *obj;
@@ -13220,7 +13220,7 @@ void fn_801A26CC(void *arg0) {
     if (obj[0x36] == 0) {
         gUiInputFlags &= ~0x1000;
         if ((u8)fn_80040824(arg0) != 0) {
-            fn_8004496C(fn_80040844(), 1);
+            fn_8004496C(Map_Get(), 1);
             fn_8004DC54(1);
         }
     }

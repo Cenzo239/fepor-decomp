@@ -1616,7 +1616,7 @@ void fn_80123CFC(void) {
 void fn_80123D1C(void *arg0) {
     void fn_8006ECCC(s32, void *, s32);
     s32 fn_800067B4(void);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void *fn_80067FDC(void);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -1684,7 +1684,7 @@ void fn_80123D1C(void *arg0) {
     n = *(u16 *)((u8 *)arg0 + 0x56);
     limit = *(u8 *)((u8 *)arg0 + 0x52);
     PSMTXScale(sp158, (f32)sx, (f32)sx, (f32)sx);
-    PSMTXConcat((u8 *)fn_80040844() + 0x70, sp158, sp158);
+    PSMTXConcat((u8 *)Map_Get() + 0x70, sp158, sp158);
     PSMTXConcat(fn_80067FDC(), sp158, sp158);
     PSMTXScale(spF8, lbl_8036A310, lbl_8036A314, lbl_8036A310);
     PSMTXTrans(spC8, lbl_8036A30C, lbl_8036A318, lbl_8036A30C);
@@ -1959,7 +1959,7 @@ void fn_801248E4(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma peephole off
 void fn_8012497C(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80067708(s32, s32, void (*)(void *), void *);
     u8 fn_800AA188(void);
@@ -2021,7 +2021,7 @@ void fn_8012497C(void *arg0) {
         *(u8 *)((u8 *)self + 0x4D) = (u8)(s32)t;
     }
 
-    cam = fn_80040844();
+    cam = Map_Get();
     gqrVal = 0x08070807;
     for (outer = 0; outer < limit; outer++) {
         switch (*(u8 *)((u8 *)cam + 0x68)) {
@@ -2218,7 +2218,7 @@ void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
 
 void fn_80125130(void *arg0) {
     void *fn_8000CAF0(void *, void *);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void *fn_8006D948(void *);
     void *fn_800C42AC(s32);
     void *Heap_Alloc(s32);
@@ -2282,7 +2282,7 @@ void fn_80125130(void *arg0) {
         break;
     }
 
-    tmp = fn_80040844();
+    tmp = Map_Get();
     M2C_FIELD(self, f32 *, 0x50) = M2C_FIELD(tmp, f32 *, 0x6C);
     fn_802031CC((u8 *)self + 0x38, (u8 *)self + 0x38, M2C_FIELD(self, f32 *, 0x50));
     M2C_FIELD(self, f32 *, 0x34) = lbl_8036A30C;
@@ -2363,7 +2363,7 @@ void fn_80125388(void *arg0) {
     void fn_802245D8(s32, s32, s32, s32);
     void GXSetZMode(s32, s32, s32);
     void fn_8022100C(s32);
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void *fn_80067FDC(void);
     void PSMTXConcat(void *, void *, void *);
     void GXLoadPosMtxImm(void *, s32);
@@ -2403,7 +2403,7 @@ void fn_80125388(void *arg0) {
     fn_802245D8(1, 4, 5, 0);
     GXSetZMode(1, 3, 0);
     fn_8022100C(2);
-    temp_r31 = fn_80040844();
+    temp_r31 = Map_Get();
     PSMTXConcat(fn_80067FDC(), (void *)(u32)(temp_r31 + 0x70), sp28);
     GXLoadPosMtxImm(sp28, 0);
     GXSetCurrentMtx(0);
@@ -2522,7 +2522,7 @@ void fn_80125624(void *arg0) {
 }
 
 void fn_80125818(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void *fn_8006D948(void *);
     void Fx_AllocSlot(void *, s32, s32);
     extern u8 lbl_80274F74[];
@@ -2550,7 +2550,7 @@ void fn_80125818(void *arg0) {
     if (*(u8 *)((u8 *)self + 0x4C) == 0) {
         Fx_AllocSlot(lbl_80274F74 + 0xBB, 0x32, 1);
     }
-    if (*(u8 *)((u8 *)fn_80040844() + 0x68) == 1) {
+    if (*(u8 *)((u8 *)Map_Get() + 0x68) == 1) {
         flag = 1;
         f1 = lbl_8036A388;
         *(u8 *)((u8 *)self + 0x4D) = flag;
@@ -2595,7 +2595,7 @@ void fn_80125AE0(void *arg0)
   u8 fn_800AA188(void);
   void Math_Lerp(f32, f32, f32, f32);
   f64 fn_80238638(void);
-  void *fn_80040844(void);
+  void *Map_Get(void);
   extern f32 lbl_8036A30C;
   extern f32 lbl_8036A398;
   extern f32 lbl_8036A39C;
@@ -2625,7 +2625,7 @@ void fn_80125AE0(void *arg0)
     t = new_var;
     t = (*((f32 *) (((char *) arg0) + 0x30))) * t;
     temp_f31 = (f32) (t * lbl_8036A3A8);
-    *((f32 *) (((char *) (*((void **) (((char *) fn_80040844()) + 0x30)))) + 0x48)) = temp_f31;
+    *((f32 *) (((char *) (*((void **) (((char *) Map_Get()) + 0x30)))) + 0x48)) = temp_f31;
   }
 }
 
@@ -2796,7 +2796,7 @@ void fn_80125EB8(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80125F3C(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80046360(void *, s32, void *, s32, s32, s32);
     void *fn_8006D948(void *);
     s32 fn_80125BB0(void);
@@ -2820,11 +2820,11 @@ void fn_80125F3C(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x40) = f2;
     *((u8 *)arg0 + 0x49) = 0;
     *(void **)((u8 *)arg0 + 0x54) = fn_8006D948(lbl_80274F74 + 0x84);
-    fn_80046360(fn_80040844(), 0, (void *)fn_80125BB0, 0, 0x80, 0x8000);
+    fn_80046360(Map_Get(), 0, (void *)fn_80125BB0, 0, 0x80, 0x8000);
 }
 #pragma global_optimizer reset
 void fn_80125FC8(void *arg0) {
-    s32 r = fn_80040844();
+    s32 r = Map_Get();
     fn_800462FC(r, 0, fn_80125BB0);
     fn_8006D8E8(*(s32 *)((u8 *)arg0 + 0x54));
 }

@@ -60,7 +60,7 @@ void fn_80098BD8(void *arg0) {
 }
 
 void fn_80098C04(void *arg0) {
-    u32 fn_80040844();
+    u32 Map_Get();
     s32 fn_8004721C(s32, s32, s32, s32, s32);
     void fn_80096AB8();
     void fn_800979FC();
@@ -91,7 +91,7 @@ void fn_80098C04(void *arg0) {
     } while (var_r31 < 3);
     if ((*(u32 *)(lbl_80330EAC + 0xCAC) & 0x100) != 0U) {
         M2C_FIELD(arg0, s8 *, 0x34) = 1;
-        temp_r3 = fn_80040844();
+        temp_r3 = Map_Get();
         if (temp_r3 != 0U) {
             p = (s8 *)gUiContext;
             a = p[0xF];

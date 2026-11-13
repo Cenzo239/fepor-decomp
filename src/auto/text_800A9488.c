@@ -498,7 +498,7 @@ void fn_800AA27C(void *arg0) {
 s32 fn_800AA288(s32 arg0) {
     s32 fn_8003F224(s32, s32);
     s32 fn_8003F47C(void);
-    void fn_80040844(void);
+    void Map_Get(void);
     s32 fn_800431E4(void);
     u8 fn_80105E88(s32, s32);
     s32 count;
@@ -506,7 +506,7 @@ s32 fn_800AA288(s32 arg0) {
     s32 i;
     s32 item;
 
-    fn_80040844();
+    Map_Get();
     list = fn_800431E4();
     count = fn_8003F47C();
     for (i = 0; i < count; i++) {

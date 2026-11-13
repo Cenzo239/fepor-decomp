@@ -2037,13 +2037,13 @@ outer_test:
 }
 
 void fn_80023D14(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     s32 fn_80047AF8(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80044450(void *, s32);
     void *cam;
 
-    cam = fn_80040844();
+    cam = Map_Get();
     *(s32 *)arg0 = *(s16 *)cam;
     *(s32 *)((u8 *)arg0 + 4) = *(s16 *)((u8 *)cam + 2);
     *(u8 *)((u8 *)arg0 + 8) = fn_80047AF8(cam);
@@ -3572,13 +3572,13 @@ void fn_80026724(void *arg0) {
     void fn_800915E8(void *, void *);
     extern u8 gUiContext[];
     void *ctx;
+    void *node;
     void *param;
-    s32 node;
 
     ctx = *(void **)gUiContext;
     param = *(void **)((u8 *)arg0 + 0x54);
-    node = *(s32 *)((u8 *)ctx + 0x190);
-    if (*(u8 *)(node + 8) != 1) {
+    node = *(void **)((u8 *)ctx + 0x190);
+    if (*(u8 *)((u8 *)node + 8) != 1) {
         fn_800915E8(param, arg0);
     } else {
         fn_80091518(param, arg0);
@@ -3623,12 +3623,12 @@ void fn_800267F8(s32 arg0) {
 void fn_80026850(s32 arg0) {
     void fn_800913D4(s32, s32, s32);
     s32 fn_80037BD0(s32, s8);
-    extern u8 gUiContext[];
+    extern u8 lbl_802EF4C8[];
     s32 temp_r31;
     s8 temp_r4;
     u8 *p;
 
-    p = gUiContext;
+    p = lbl_802EF4C8;
     temp_r4 = p[0xA];
     temp_r31 = *(s32 *)p;
     fn_800913D4(fn_80037BD0(temp_r31, temp_r4), arg0, temp_r31);

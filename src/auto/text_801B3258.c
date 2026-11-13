@@ -6870,7 +6870,7 @@ done:
 
 #pragma use_lmw_stmw on
 void fn_801C5B80(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     s32 Str_Cmp(void *, void *);
     void fn_800056A0(s32);
     void *Heap_Alloc(s32);
@@ -6917,7 +6917,7 @@ void fn_801C5B80(void *arg0) {
     ((u8 *)self)[0x3A] = ((u8 *)&sp24)[2];
     ((u8 *)self)[0x3B] = ((u8 *)&sp24)[3];
 
-    cam = fn_80040844();
+    cam = Map_Get();
     if (cam != NULL) {
         tmp = (s32)((u8 *)cam + 0x3C);
         if (Str_Cmp((void *)tmp, (u8 *)lbl_8027D594 + 0x12C) == 0) {
@@ -7296,7 +7296,7 @@ get_next:
     }
 }
 void fn_801C65E0(void *arg0) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80066D00(s32);
     void *fn_80067FDC(void);
@@ -7338,7 +7338,7 @@ void fn_801C65E0(void *arg0) {
     s16 t;
     u8 c;
 
-    obj = fn_80040844();
+    obj = Map_Get();
     if (obj != NULL) {
         *(u32 *)&x = *(u32 *)((u8 *)arg0 + 0);
         *(u32 *)&y = *(u32 *)((u8 *)arg0 + 4);

@@ -1448,14 +1448,14 @@ s32 fn_80165B14(void *arg0) {
 }
 
 void fn_80165B1C(void) {
-    M2C_UNK fn_80040844();
+    M2C_UNK Map_Get();
     M2C_UNK Map_UpdateTransforms();
-    fn_80040844();
+    Map_Get();
     Map_UpdateTransforms();
 }
 
 void *fn_80165B40(void *arg0, s16 arg1) {
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_80041254(void *);
     void fn_800DF724(void *, s32);
     void Heap_Free(void *);
@@ -1463,7 +1463,7 @@ void *fn_80165B40(void *arg0, s16 arg1) {
 
     if (arg0 != NULL) {
         *(void **)((u8 *)arg0 + 0x40) = lbl_80293CB0;
-        fn_80041254(fn_80040844());
+        fn_80041254(Map_Get());
         fn_800DF724(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
@@ -1473,7 +1473,7 @@ void *fn_80165B40(void *arg0, s16 arg1) {
 }
 
 void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_80041514(s32, void *);
     void Xml_GetNamedValue(void *, void *, void *);
     void *String_CStr(void *);
@@ -1514,7 +1514,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     String_AssignCStr(&sp18, a2, strlen((char *)a2));
     String_Destroy(&spC, -1);
     temp = String_CStr(&sp18);
-    fn_80041514(fn_80040844(), temp);
+    fn_80041514(Map_Get(), temp);
     lbl_803680E0 = 1;
     String_Destroy(&sp18, -1);
     return self;
@@ -1523,7 +1523,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_80041514(s32, void *);
     void *Heap_Alloc(s32);
     void Xml_GetNamedValue(void *, void *, void *);
@@ -1577,7 +1577,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     String_Destroy(&sp68, -1);
     *(void **)((u8 *)self + 0x40) = lbl_80293CB0;
     a2 = String_CStr(a3);
-    fn_80041514(fn_80040844(), a2);
+    fn_80041514(Map_Get(), a2);
     a1 = (void *)0;
     lbl_803680E0 = 1;
     flag2 = 0;
@@ -3975,7 +3975,7 @@ s32 fn_8016B538(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus reset
 void fn_8016B5E8(void) {
     M2C_UNK fn_8004327C();
-    fn_80040844();
+    Map_Get();
     fn_8004327C();
 }
 
@@ -4037,12 +4037,12 @@ void fn_8016B730(s32 arg0) {
 
 void fn_8016B75C(void) {
     s32 fn_800C0658(void);
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_80043A00(s32, s32, s32, s32);
     s32 temp_r31;
 
     temp_r31 = fn_800C0658();
-    fn_80043A00(fn_80040844(), 0x168, 0x10E, temp_r31);
+    fn_80043A00(Map_Get(), 0x168, 0x10E, temp_r31);
 }
 
 extern void fn_8005376C(void);
@@ -4123,7 +4123,7 @@ void fn_8016BA5C(void *arg0) {
 }
 
 void fn_8016BADC(void *arg0) {
-    void fn_80040844(void);
+    void Map_Get(void);
     void fn_8004327C(void);
     void fn_8007B990(void *);
     void *fn_8003A114(void *);
@@ -4154,7 +4154,7 @@ void fn_8016BADC(void *arg0) {
 
     obj = (Obj *)arg0;
     if (obj->flag == 0) {
-        fn_80040844();
+        Map_Get();
         fn_8004327C();
         obj40 = obj->unk40;
         if (obj40 != NULL) {
@@ -4402,7 +4402,7 @@ void fn_8016C168(void *arg0) {
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 void fn_8016C1EC(void *arg0) {
-    s32 fn_80040844(void);
+    s32 Map_Get(void);
     void fn_80043838(s32, void *, f32, f32, f32, f32, f32, f32);
     void fn_80043A00(s32, s32, s32, void *);
     void fn_8005C8B4(void *);
@@ -4444,20 +4444,20 @@ void fn_8016C1EC(void *arg0) {
         case 1:
         case 2:
         case 4:
-            fn_80043838(fn_80040844(), arg0, lbl_8036AA54, lbl_8036AA58, lbl_8036AA5C, lbl_8036AA60, lbl_8036AA64, lbl_8036AA68);
+            fn_80043838(Map_Get(), arg0, lbl_8036AA54, lbl_8036AA58, lbl_8036AA5C, lbl_8036AA60, lbl_8036AA64, lbl_8036AA68);
             break;
         case 5:
-            fn_80043838(fn_80040844(), arg0, lbl_8036AA6C, lbl_8036AA70, lbl_8036AA74, lbl_8036AA78, lbl_8036AA64, lbl_8036AA68);
+            fn_80043838(Map_Get(), arg0, lbl_8036AA6C, lbl_8036AA70, lbl_8036AA74, lbl_8036AA78, lbl_8036AA64, lbl_8036AA68);
             break;
         case 6:
-            fn_80043838(fn_80040844(), arg0, lbl_8036AA7C, lbl_8036AA80, lbl_8036AA84, lbl_8036AA88, lbl_8036AA64, lbl_8036AA68);
+            fn_80043838(Map_Get(), arg0, lbl_8036AA7C, lbl_8036AA80, lbl_8036AA84, lbl_8036AA88, lbl_8036AA64, lbl_8036AA68);
             break;
         case 7:
-            fn_80043838(fn_80040844(), arg0, lbl_8036AA8C, lbl_8036AA90, lbl_8036AA60, lbl_8036AA78, lbl_8036AA64, lbl_8036AA68);
+            fn_80043838(Map_Get(), arg0, lbl_8036AA8C, lbl_8036AA90, lbl_8036AA60, lbl_8036AA78, lbl_8036AA64, lbl_8036AA68);
             break;
         }
     } else {
-        fn_80043A00(fn_80040844(), 0x168, 0x10E, arg0);
+        fn_80043A00(Map_Get(), 0x168, 0x10E, arg0);
     }
     *(s32 *)((u8 *)arg0 + 0x30) = 0x1F;
     *((u8 *)arg0 + 0x35) = 0;
@@ -5256,7 +5256,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void *Msg_Expand(void *);
     void Allegiance_FillMask(s32, void *);
     s32 fn_800377D8(void *);
-    void *fn_80040844(void);
+    void *Map_Get(void);
     void fn_800431EC(void *, void *);
     void fn_80043D18(void *, s8, s8, f32 *);
     f32 fn_80043DD8(void);
@@ -5299,7 +5299,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     s32 i;
 
     pad = 0;
-    fn_800431EC(fn_80040844(), sp2C);
+    fn_800431EC(Map_Get(), sp2C);
     mode = 1;
     Prim2D_Begin();
     fn_8000A174(sp2C, 0x11);
@@ -5319,7 +5319,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_AddZ(lbl_8036AAB8);
     Prim2D_PrepareTex();
     tex = fn_8006EDD8(*(void **)((u8 *)arg0 + 0x38), 4);
-    fn_80040844();
+    Map_Get();
     scale = fn_80043DD8();
     Allegiance_FillMask(3, sp18);
     i = 1;
@@ -5346,7 +5346,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
                     case 1: mode = 3; break;
                     case 2: mode = 4; break;
                     }
-                    fn_80043D18(fn_80040844(), (s8)*(u8 *)((u8 *)unit + 0x19E),
+                    fn_80043D18(Map_Get(), (s8)*(u8 *)((u8 *)unit + 0x19E),
                                 (s8)*(u8 *)((u8 *)unit + 0x19F), sp20);
                     node = *(void **)((u8 *)arg0 + 0x3C);
                     while (node != NULL) {
