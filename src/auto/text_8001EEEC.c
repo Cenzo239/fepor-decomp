@@ -2732,7 +2732,7 @@ end:
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_800251EC(s32 unused, void *arg1) {
+extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
