@@ -3759,6 +3759,7 @@ void fn_8000C194(s32 arg0) {
 
 void Process_RunScript(void *);
 void Process_ClearFunc(void *);
+/* Recursively tick a process subtree: run scripts/funcs with timers, then post callbacks and children. */
 void Process_Update(void *arg0) {
     extern u32 gProcessOpcodeTables[9];
     u8 *self;
