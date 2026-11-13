@@ -13557,45 +13557,46 @@ s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
     return var_r31;
 }
 
-u32 Ui_CanAffordNextGoldCost(void *arg0) {
+u32 Ui_CanAffordNextGoldCost(void *panel) {
     f32 fn_80037818(s32, u8);
     u8 fn_8003D13C(s32);
     u8 Status_Test(s32, s32);
     extern f32 lbl_8036ABD8;
     extern u8 gBattleState[];
-    s32 temp_r31;
-    s32 temp_r30;
-    s16 var_r29;
+    s32 funds;
+    s32 unit;
+    s16 cost;
     s32 diff;
-    u32 var_r3;
-    s16 field;
-    s16 temp_r0;
+    u32 can;
+    s16 qty;
+    s16 next;
 
-    diff = (u8)fn_8003D13C(*(s32 *)((u8 *)arg0 + 0x40));
-    field = *(s16 *)((u8 *)arg0 + 0x3E);
-    diff = diff - field;
-    var_r3 = (u32)(-diff & ~diff) >> 31;
-    if (var_r3 != 0) {
-        temp_r0 = field + 1;
-        temp_r30 = *(s32 *)((u8 *)arg0 + 0x40);
-        temp_r31 = *(s32 *)(gBattleState + 0x1C);
-        if (temp_r0 == 0) {
-            var_r29 = 0;
+    // True if capacity remains and funds cover the gold cost of qty+1.
+    diff = (u8)fn_8003D13C(*(s32 *)((u8 *)panel + 0x40));
+    qty = *(s16 *)((u8 *)panel + 0x3E);
+    diff = diff - qty;
+    can = (u32)(-diff & ~diff) >> 31;
+    if (can != 0) {
+        next = qty + 1;
+        unit = *(s32 *)((u8 *)panel + 0x40);
+        funds = *(s32 *)(gBattleState + 0x1C);
+        if (next == 0) {
+            cost = 0;
         } else {
-            var_r29 = (s16)(lbl_8036ABD8 + fn_80037818(temp_r30, (u8)temp_r0));
-            if (Status_Test(temp_r30 + 0x1BC, 0x4B) != 0) {
-                var_r29 = (s16)((var_r29 * 10) / 7);
+            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
+                cost = (s16)((cost * 10) / 7);
             }
-            if (Status_Test(temp_r30 + 0x1BC, 0xB) != 0) {
-                var_r29 = (s16)((s32)(((u32)var_r29 >> 31) + var_r29) >> 1);
+            if (Status_Test(unit + 0x1BC, 0xB) != 0) {
+                cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
             }
-            if (var_r29 < 1) {
-                var_r29 = 1;
+            if (cost < 1) {
+                cost = 1;
             }
         }
-        var_r3 = var_r29 <= temp_r31;
+        can = cost <= funds;
     }
-    return var_r3;
+    return can;
 }
 
 #pragma cplusplus on
