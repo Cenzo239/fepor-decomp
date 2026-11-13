@@ -1641,7 +1641,7 @@ s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
 }
 
 void *Item_Copy(void *arg0, void *arg1) {
-    s32 fn_800C30CC(void *, s32);
+    s32 Icon_GetSlot(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);
     void fn_800C3220(void *, s32);
@@ -1665,7 +1665,7 @@ void *Item_Copy(void *arg0, void *arg1) {
         dst->flag = src->flag;
         mask = src->rest;
         if (mask != 0) {
-            temp = fn_800C30CC(gIconSlots, mask);
+            temp = Icon_GetSlot(gIconSlots, mask);
             if (dst->rest == 0) {
                 dst->rest = fn_800C3260(gIconSlots);
             }
@@ -1709,7 +1709,7 @@ void *Item_Destroy(void *arg0, s16 arg1) {
 }
 
 void *Item_Clone(void *arg0, void *arg1) {
-    s32 fn_800C30CC(void *, s32);
+    s32 Icon_GetSlot(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);
     extern u8 gIconSlots[];
@@ -1740,7 +1740,7 @@ void *Item_Clone(void *arg0, void *arg1) {
     dst->pad = pad;
     dst->flag = flag;
     if (mask != 0) {
-        temp = fn_800C30CC(gIconSlots, mask);
+        temp = Icon_GetSlot(gIconSlots, mask);
         if (dst->rest == 0) {
             dst->rest = fn_800C3260(gIconSlots);
         }

@@ -21,7 +21,7 @@ typedef unsigned long uintptr_t;
 #define NULL ((void*)0)
 #endif
 
-/* 0x18-byte record used by fn_800C29D0 / fn_800C2ACC / fn_800C30CC (1-based index) */
+/* 0x18-byte record used by fn_800C29D0 / fn_800C2ACC / Icon_GetSlot (1-based index) */
 #ifndef UNK800C2ACC_TYPE
 #define UNK800C2ACC_TYPE
 typedef struct Unk800C2ACC {

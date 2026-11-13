@@ -9442,7 +9442,7 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     return lbl_80320B6C;
 }
 
-s32 fn_800C30CC(s32 arg0, s32 arg1) {
+s32 Icon_GetSlot(s32 arg0, s32 arg1) {
     return arg0 + ((arg1 - 1) * 0x18);
 }
 
