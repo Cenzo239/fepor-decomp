@@ -1217,16 +1217,14 @@ void fn_80036150(s32 arg0) {
     void fn_8014C5F4(void *, s32);
     void fn_800351FC(s32, u8, s32, s32);
     extern u8 gBattleState[];
-    void *p;
     u8 var_r30;
-    u16 hp;
+    void *p;
 
     if (fn_8003D13C(arg0) != 0) {
         BattleAnim_Queue(arg0 + 0x8A0, 0x25, 0);
         BattleAnim_Queue(arg0 + 0x8A0, 0x27, (s8)fn_800386B0(arg0));
         p = *(void **)(arg0 + 0x28C);
-        hp = *(u16 *)((u8 *)p + 0x10);
-        var_r30 = fn_8003D094(arg0, (u8)(hp / 20 + 0xA));
+        var_r30 = fn_8003D094(arg0, (u8)(*(u16 *)((u8 *)p + 0x10) / 20 + 0xA));
         if (var_r30 > fn_8003D13C(arg0)) {
             var_r30 = fn_8003D13C(arg0);
         }
@@ -1474,70 +1472,97 @@ void fn_80036998(void *arg0, s32 arg1) {
 }
 #pragma global_optimizer reset
 #pragma opt_strength_reduction reset
-s32 fn_80036A24(u8 *arg0) {
-    u8 *obj;
-    u8 *table;
-    u8 *entry;
-    u8 *ptr;
-    s32 result;
-    s32 index;
-    s32 offset;
-    u8 value;
-    u8 unit_val;
-    u8 lim;
+s32 fn_80036A24(u8 *arg0)
+{
+  u8 *table;
+  u8 *entry;
+  u8 *new_var3[2];
+  int new_var2;
+  u8 *obj;
+  s32 result;
+  s32 index;
+  s32 offset;
+  u8 value;
+  u8 unit_val;
+  u8 lim;
+  obj = *((u8 **) (arg0 + 0x188));
+  if ((*((void **) (obj + 0x50))) == NULL)
+  {
+    return 0;
+  }
+  result = 0;
+  new_var2 = 0;
+  new_var3[1] = obj + 0x50;
+  index = new_var2;
+  offset = new_var2;
+  goto check;
+  loop:
+  table = *((u8 **) new_var3[1]);
 
-    obj = *(u8 **)(arg0 + 0x188);
-    if (*(void **)(obj + 0x50) == NULL) {
-        return 0;
+  entry = table + offset;
+  if ((*((u32 *) (entry + 8))) != new_var2)
+  {
+    new_var3[0] = entry + 8;
+    if (new_var3[0] == NULL)
+    {
+      value = new_var2;
     }
-    result = 0;
-    index = 0;
-    offset = 0;
-    goto check;
+    else
+    {
+      unit_val = arg0[index + 0x214];
+      if (unit_val <= new_var3[0][4])
+      {
+        value = new_var2;
+      }
+      else
+        if (unit_val <= new_var3[0][5])
+      {
+        value = 1;
+      }
+      else
+        if (unit_val <= new_var3[0][6])
+      {
+        value = 2;
+      }
+      else
+      {
+        value = 3;
+      }
+    }
+    switch (value)
+    {
+      case 3:
+        result += 1;
 
-loop:
-    table = *(u8 **)(obj + 0x50);
-    entry = table + offset;
-    if (*(u32 *)(entry + 8) != 0) {
-        ptr = entry + 8;
-        if (ptr == NULL) {
-            value = 0;
-        } else {
-            unit_val = arg0[index + 0x214];
-            if (unit_val <= ptr[4]) {
-                value = 0;
-            } else if (unit_val <= ptr[5]) {
-                value = 1;
-            } else if (unit_val <= ptr[6]) {
-                value = 2;
-            } else {
-                value = 3;
-            }
-        }
-        switch (value) {
-        case 3:
-            result += 1;
-        case 2:
-            result += 1;
-        case 1:
-            result += 1;
-            break;
-        }
+      case 2:
+        result += 1;
+
+      case 1:
+        result += 1;
+        break;
+
     }
-    offset += 8;
-    index += 1;
-check:
-    table = *(u8 **)(obj + 0x50);
-    if (table == NULL) {
-        lim = 0;
-    } else {
-        lim = (u8)*(u32 *)(table + 4);
-        lim = (u8)lim;
-    }
-    if (index < (s32)lim) {
-        goto loop;
-    }
-    return result;
+
+  }
+  offset += 8;
+  index += 1;
+  check:
+  table = *((u8 **) (obj + 0x50));
+
+  if (table == NULL)
+  {
+    lim = new_var2;
+  }
+  else
+  {
+    lim = (u8) (*((u32 *) (table + 4)));
+    lim = (u8) (lim & 0xFFu);
+  }
+  if (index < ((s32) lim))
+  {
+    goto loop;
+  }
+  return result;
 }
 
 #pragma global_optimizer off
@@ -2048,7 +2073,7 @@ void fn_80037904(void *arg0, s32 arg1) {
     fn_801660C4(var_r4, *(u16 *)((u8 *)temp_r6 + 0x58), *(u16 *)((u8 *)arg0 + 0x228), *(u8 *)((u8 *)temp_r6 + 0x55));
 }
 
-s32 fn_80037960(void *arg0, s32 arg1) {
+s32 Unit_MatchesId(void *arg0, s32 arg1) {
     void Allegiance_FillMask(s32, void *);
     u8 Id_GetKind(s32);
     s32 Item_GetByIid(s32);

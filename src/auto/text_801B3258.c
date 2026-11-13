@@ -287,7 +287,7 @@ void UnitStatus_Init(void *arg0) {
     u8 Unit_GetCon(void *);
     u8 Unit_GetMov(void *);
     void fn_801B6BE4(void *);
-    u8 fn_80037960(void *, void *);
+    u8 Unit_MatchesId(void *, void *);
     void *fn_8003A064(void *);
     void *fn_8007C3BC(void *);
     void fn_8007C4D4(void *, s32);
@@ -347,9 +347,9 @@ void UnitStatus_Init(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x54) = one;
     *(f32 *)((u8 *)arg0 + 0x58) = one;
     *(f32 *)((u8 *)arg0 + 0x5C) = one;
-    if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), classKey) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
+    if (Unit_MatchesId(*(void **)((u8 *)arg0 + 0x14), classKey) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
         *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0xFA;
-    } else if (fn_80037960(*(void **)((u8 *)arg0 + 0x14), gUnitStatusStr + 0x105) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
+    } else if (Unit_MatchesId(*(void **)((u8 *)arg0 + 0x14), gUnitStatusStr + 0x105) != 0 && *(s32 *)((u8 *)arg0 + 0x10) == 1) {
         *(void **)((u8 *)arg0 + 0x110) = gUnitStatusStr + 0x10E;
     } else {
         *(void **)((u8 *)arg0 + 0x110) = fn_8003A064(*(void **)((u8 *)arg0 + 0x14));
