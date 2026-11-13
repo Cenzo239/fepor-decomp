@@ -388,7 +388,7 @@ void fn_80013BD4(void) {
     }
 }
 
-s32 fn_80013C78(char *arg0) {
+s32 ScriptCmd_CmSleepScript(char *arg0) {
     void fn_8000D1D0(u32);
     extern void *lbl_80367190;
     void *node;
