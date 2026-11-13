@@ -324,7 +324,7 @@ s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_803123A0[];
     void Gx_Setup2DState(void *);
     void fn_800A5158(s32, s32, s32, s16, s16, s16, s16, s16, s16);
-    void fn_800A57D8(void);
+    void Gx_SetupSimpleTev(void);
     s32 a1;
     s32 a2;
     s32 a3;
@@ -348,7 +348,7 @@ s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
             (s16)*(s32 *)(lbl_803123A0 + 0x84),
             (s16)a3,
             (s16)a4);
-        fn_800A57D8();
+        Gx_SetupSimpleTev();
         return *(s32 *)(base + 0x158);
     }
     return -1;
@@ -904,7 +904,7 @@ void Gx_Setup2DState(void *arg0) {
     GXSetTevSwapModeTable(0, 0, 1, 2, 3);
 }
 
-void fn_800A57D8(void) {
+void Gx_SetupSimpleTev(void) {
     M2C_UNK GXSetNumChans(M2C_UNK);
     M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
