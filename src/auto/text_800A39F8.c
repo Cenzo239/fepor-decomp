@@ -2139,7 +2139,7 @@ void fn_800A828C(s32 arg0) {
 }
 
 void fn_800A82B0(void *arg0) {
-    s32 fn_800067B4();
+    s32 Game_GetFrameCount();
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetUvCorners(s32, f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
@@ -2162,7 +2162,7 @@ void fn_800A82B0(void *arg0) {
     f32 temp_f2;
     s32 temp_r3;
 
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) (fn_800067B4() & 0x3FF);
+    M2C_FIELD(arg0, s32 *, 0x34) = (s32) (Game_GetFrameCount() & 0x3FF);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369B60, lbl_80369B60, lbl_80369B64, lbl_80369B68);
     Prim2D_BindTexture(M2C_FIELD(arg0, s32 *, 0x30), 0, 0);

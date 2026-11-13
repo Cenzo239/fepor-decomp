@@ -314,7 +314,7 @@ s64 fn_80006798(void) {
     return cur - prev;
 }
 
-s32 fn_800067B4(void) {
+s32 Game_GetFrameCount(void) {
     extern s32 lbl_80367118;
     return lbl_80367118;
 }

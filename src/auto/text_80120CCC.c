@@ -1602,7 +1602,7 @@ void fn_80123CFC(void) {
 #pragma use_lmw_stmw on
 void fn_80123D1C(void *arg0) {
     void Ui_LoadAtlasTex(s32, void *, s32);
-    s32 fn_800067B4(void);
+    s32 Game_GetFrameCount(void);
     void *Map_Get(void);
     void *Camera_GetViewMtx(void);
     void PSMTXScale(void *, f32, f32, f32);
@@ -1663,7 +1663,7 @@ void fn_80123D1C(void *arg0) {
     register volatile u8 *fifo_b;
 
     Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x58), sp18, 8);
-    ring = fn_800067B4();
+    ring = Game_GetFrameCount();
     sx = *(s8 *)((u8 *)arg0 + 0x4E);
     fade = *(s8 *)((u8 *)arg0 + 0x4F);
     ring &= 7;
@@ -1809,7 +1809,7 @@ void fn_80123D1C(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80124424(void *self) {
-    s32 fn_800067B4(void);
+    s32 Game_GetFrameCount(void);
     u32 Rand_Next(void);
     f32 fn_800233D0(void *, s8, s8, u8);
     extern u8 gBattleMap[];
@@ -1826,7 +1826,7 @@ void fn_80124424(void *self) {
     rangeX = ((s8)*((u8 *)self + 0x50) + 0x10) << 8;
     rangeY = ((s8)*((u8 *)self + 0x51) + 0x10) << 8;
     {
-        s32 t = fn_800067B4();
+        s32 t = Game_GetFrameCount();
         u8 flag = *((u8 *)self + 0x4D);
         t = *(u16 *)((u8 *)self + 0x54) * (t & 7);
         pts = (s16 *)((u8 *)*(s16 **)((u8 *)self + 0x5C) + t * 6);
@@ -1875,7 +1875,7 @@ void fn_80124424(void *self) {
         return;
     }
 
-    if ((fn_800067B4() & 3) == 0) {
+    if ((Game_GetFrameCount() & 3) == 0) {
         register s32 off;
         register s32 j;
         s32 ctr;

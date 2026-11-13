@@ -58,7 +58,7 @@ void fn_8008F4BC(void *arg0) {
     s32 fn_80230BCC(s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
-    s32 fn_800067B4(void);
+    s32 Game_GetFrameCount(void);
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
@@ -101,18 +101,18 @@ void fn_8008F4BC(void *arg0) {
         if (step >= zero) {
             Prim2D_SetRect(cur, y0, step, lbl_8036977C);
             n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         } else {
             Prim2D_SetRect(cur + step, y0, nstep, lbl_8036977C);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             n = idx + 1;
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
+            c2 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(n - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         }
         Prim2D_EmitQuad();
@@ -133,18 +133,18 @@ void fn_8008F4BC(void *arg0) {
         if (step >= zero) {
             Prim2D_SetRect(x1, cur, lbl_8036977C, step);
             n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         } else {
             Prim2D_SetRect(x1, cur + step, lbl_8036977C, nstep);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             n = idx + 1;
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
+            c1 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(n - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         }
         Prim2D_EmitQuad();
@@ -165,18 +165,18 @@ void fn_8008F4BC(void *arg0) {
         if (step >= zero) {
             Prim2D_SetRect(cur, y1, step, lbl_8036977C);
             n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         } else {
             Prim2D_SetRect(cur + step, y1, nstep, lbl_8036977C);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             n = idx + 1;
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
+            c2 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(n - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         }
         Prim2D_EmitQuad();
@@ -197,18 +197,18 @@ void fn_8008F4BC(void *arg0) {
         if (step >= zero) {
             Prim2D_SetRect(x0, cur, lbl_8036977C, step);
             n = idx + 1;
-            c3 = pal[(n - fn_800067B4()) & 0x1F];
-            c2 = pal[(n - fn_800067B4()) & 0x1F];
-            c1 = pal[(idx - fn_800067B4()) & 0x1F];
-            c0 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c1 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         } else {
             Prim2D_SetRect(x0, cur + step, lbl_8036977C, nstep);
-            c3 = pal[(idx - fn_800067B4()) & 0x1F];
-            c2 = pal[(idx - fn_800067B4()) & 0x1F];
+            c3 = pal[(idx - Game_GetFrameCount()) & 0x1F];
+            c2 = pal[(idx - Game_GetFrameCount()) & 0x1F];
             n = idx + 1;
-            c1 = pal[(n - fn_800067B4()) & 0x1F];
-            c0 = pal[(n - fn_800067B4()) & 0x1F];
+            c1 = pal[(n - Game_GetFrameCount()) & 0x1F];
+            c0 = pal[(n - Game_GetFrameCount()) & 0x1F];
             Prim2D_SetCornerColors(&c0, &c1, &c2, &c3);
         }
         Prim2D_EmitQuad();
@@ -223,25 +223,25 @@ void fn_8008F4BC(void *arg0) {
         Prim2D_AddPrim(1);
         Prim2D_SetRect(ox, oy, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0 - fn_800067B4()) & 0x1F];
+        c0 = pal[(0 - Game_GetFrameCount()) & 0x1F];
         Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(x1 - lbl_80369754, oy, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
+        c0 = pal[(0x10 - Game_GetFrameCount()) & 0x1F];
         Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(x1 - lbl_80369754, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0 - fn_800067B4()) & 0x1F];
+        c0 = pal[(0 - Game_GetFrameCount()) & 0x1F];
         Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(ox, y1 - lbl_80369754, lbl_8036977C, lbl_8036977C);
         pal = *(s32 **)((u8 *)arg0 + 0x30);
-        c0 = pal[(0x10 - fn_800067B4()) & 0x1F];
+        c0 = pal[(0x10 - Game_GetFrameCount()) & 0x1F];
         Prim2D_SetColorPacked(&c0, (s32)pal);
         Prim2D_EndPrim();
     }

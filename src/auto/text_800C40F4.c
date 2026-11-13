@@ -17531,7 +17531,7 @@ void fn_800F1BFC(void) {
 
 #pragma use_lmw_stmw on
 void fn_800F1C24(void *arg0) {
-s32 fn_800067B4(void);
+s32 Game_GetFrameCount(void);
 f32 fn_80023068(void *, f32, f32);
 void *Map_Get(void);
 void Map_BuildSlopeMatrix(void *, void *, f32, f32);
@@ -17576,8 +17576,8 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
     PSMTXTrans(m1C8, f27, f26, f29 - lbl_8036A040);
     PSMTXConcat(m1C8, m138, (u8 *)self + 0x298);
     fn_800606BC((u8 *)self + 0x288);
-    same = *(s32 *)((u8 *)self + 0x638) == fn_800067B4() - 1;
-    *(s32 *)((u8 *)self + 0x638) = fn_800067B4();
+    same = *(s32 *)((u8 *)self + 0x638) == Game_GetFrameCount() - 1;
+    *(s32 *)((u8 *)self + 0x638) = Game_GetFrameCount();
     if (*(u8 *)((u8 *)self + 0x63C) != 0) {
         f30 = lbl_8036A010;
         *(f32 *)((u8 *)self + 0x5E0) = *(f32 *)(ctx + 0x534) - f30;

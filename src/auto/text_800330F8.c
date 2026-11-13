@@ -10673,7 +10673,7 @@ void fn_8004C148(void) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8004C444(void *arg0) {
-    s32 fn_800067B4(void);
+    s32 Game_GetFrameCount(void);
     f32 fn_80059EB8(s32, s32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802026E4(void *, void *, void *, void *);
@@ -10724,7 +10724,7 @@ void fn_8004C444(void *arg0) {
     angle = (f32)*(u16 *)arg0;
     x = *(f32 *)((u8 *)arg0 + 4);
     y = *(f32 *)((u8 *)arg0 + 8);
-    f1 = fn_80059EB8(0x80, fn_800067B4(), lbl_80368FD4, lbl_80369000);
+    f1 = fn_80059EB8(0x80, Game_GetFrameCount(), lbl_80368FD4, lbl_80369000);
 
     t24 = *(u32 *)(tbl + 0x24);
     t30 = *(u32 *)(tbl + 0x30);
@@ -13060,7 +13060,7 @@ void MapObj_InitGraphics(void *arg0) {
  void *Heap_Alloc(s32);
  void *Res_GetByName(void *);
  void *fn_80060664(void *);
- u32 fn_800067B4(void);
+ u32 Game_GetFrameCount(void);
  void fn_8005FEE8(void *, f32);
  extern u8 GActor_str[];
  extern u8 lbl_80285990[];
@@ -13132,7 +13132,7 @@ M2C_FIELD(M2C_FIELD(child,void * *,0x30),u8 *,3)=M2C_FIELD(M2C_FIELD(arg0,void *
  }}
  if(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),u32 *,8)&0x1000) {
  ref=fn_80060664(node); range=M2C_FIELD(ref,u32 *,0x18)-M2C_FIELD(ref,s32 *,0x14);
- rnd=fn_800067B4();
+ rnd=Game_GetFrameCount();
  quotient=rnd/range;
  rnd-=quotient*range;
  lo=M2C_FIELD(ref,s32 *,0x14);

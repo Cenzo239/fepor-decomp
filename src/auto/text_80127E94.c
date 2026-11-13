@@ -1993,14 +1993,14 @@ void fn_8012C21C(void *arg0) {
     u8 fn_80109B48(void *);
     void fn_80109B30(void *, u8);
     u8 fn_80109B24(void *);
-    s32 fn_800067B4(void);
+    s32 Game_GetFrameCount(void);
     extern s32 lbl_80367A88;
 
     if ((u32)lbl_80367A88 != 0) {
         fn_80109B30((void *)lbl_80367A88, fn_80109B48((void *)lbl_80367A88));
     }
     if (*(void **)((u8 *)arg0 + 0x44) != NULL) {
-        if ((fn_800067B4() & 0x1FF) < 0x100) {
+        if ((Game_GetFrameCount() & 0x1FF) < 0x100) {
             *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x41) = fn_80109B24((void *)lbl_80367A88);
             *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x41) = fn_80109B24((void *)lbl_80367A88) - 0x4D;
         } else {
