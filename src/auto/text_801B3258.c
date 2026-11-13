@@ -7850,7 +7850,7 @@ void fn_801C7644(s32 arg0) {
     fn_80067984(0);
 }
 
-void fn_801C76E8(void) {
+void LightFade_Start(void) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
     void fn_80067708(s32, s32, void (*)(void), s32);
@@ -10563,6 +10563,7 @@ s32 fn_801CD548(s32 arg0) {
     u8 **table;
     s32 n;
     s16 stride;
+    u8 **tmp;
     u8 **cur;
     s32 step;
 
@@ -10579,33 +10580,35 @@ init_table:
     table = lbl_802984C0;
     goto search;
 
+loop1:
+    table += 1;
+    count += 1;
 search:
-    while ((s32)**table != 0xA) {
-        table += 1;
-        count += 1;
+    if ((s32)**table != 0xA) {
+        goto loop1;
     }
 
     stride = (s16)(count + 1);
-    cur = (u8 **)0;
+    tmp = (u8 **)0;
 
     if (arg0 == 0) {
         goto init_lookup;
     }
-    goto lookup;
+    goto join_lookup;
 
 init_lookup:
-    cur = lbl_802984C0;
-    goto lookup;
+    tmp = lbl_802984C0;
 
-lookup:
+join_lookup:
+    cur = tmp;
     step = stride << 2;
     goto check;
-loop:
+loop2:
     cur = (u8 **)((u8 *)cur + step);
     n += 1;
 check:
     if (*cur != NULL) {
-        goto loop;
+        goto loop2;
     }
     return n;
 }
@@ -11525,16 +11528,16 @@ void *fn_801CF760(void *arg0) {
     u8 *p;
     s32 i;
 
-    p = (u8 *)lbl_80331D00;
     i = 0;
-    do {
-        if ((*(s32 *)(p + 8) & 1) &&
+    p = (u8 *)lbl_80331D00;
+    while (i < 2) {
+        if ((*(u32 *)(p + 8) & 1) &&
             Str_Cmp(*(void **)(*(void **)(p + 0x24)), arg0) == 0) {
-            return (u8 *)lbl_80331D00 + i * 0x15C;
+            return (void *)((u8 *)lbl_80331D00 + i * 0x15C);
         }
         i += 1;
         p += 0x15C;
-    } while (i < 2);
+    }
     return NULL;
 }
 

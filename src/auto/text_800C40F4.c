@@ -6106,7 +6106,7 @@ extern "C" void *GameScene_Create(void *arg0)
 
 #pragma cplusplus on
 extern "C" void GameScene_StopWorlds(void) {
-    void fn_801C76E8(void);
+    void LightFade_Start(void);
     extern void *gGameScene;
     struct Obj {
         u8 pad[0x10];
@@ -6147,7 +6147,7 @@ extern "C" void GameScene_StopWorlds(void) {
             obj->v16(0, 0);
             obj = *(Obj **)(unit + 4);
             obj->v15();
-            fn_801C76E8();
+            LightFade_Start();
         }
     }
     obj = *(Obj **)(unit + 8);
