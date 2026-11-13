@@ -838,7 +838,7 @@ void fn_801850A8(void *arg0) {
 }
 
 void fn_80185164(void *arg0) {
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8000A388(void *, void *, void *);
     void *fn_8000CA64(void *, void *);
     s32 fn_80052B30(s32);
@@ -852,7 +852,7 @@ void fn_80185164(void *arg0) {
     void *temp_r5;
 
     temp_r5 = *(void **)((u8 *)arg0 + 0x30);
-    fn_80147578(lbl_80278E24 + 0x1AA, 0x64,
+    SeCue_PlayAt(lbl_80278E24 + 0x1AA, 0x64,
                 *(f32 *)((u8 *)temp_r5 + 4),
                 *(f32 *)((u8 *)temp_r5 + 8),
                 *(f32 *)((u8 *)temp_r5 + 0xC));
@@ -1654,7 +1654,7 @@ void fn_801877C4(void *arg0) {
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(void *);
     void *fn_800639B4(void);
-    s8 fn_80147578(void *, s32, f32, f32, f32);
+    s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_80185078(void *, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     s32 fn_80230BCC(s32);
@@ -1766,7 +1766,7 @@ void fn_801877C4(void *arg0) {
             cb(*(s32 *)((u8 *)arg0 + 0x44));
             *(u8 *)((u8 *)arg0 + 0x49) = 1;
         }
-        fn_80147578(lbl_80278E24 + 0x37C, 0x64, f31, f30, f29);
+        SeCue_PlayAt(lbl_80278E24 + 0x37C, 0x64, f31, f30, f29);
         fn_8018CFA4(0xF, 6, 2, 0, arg0);
         fn_80025624(gPadInput, 8);
         Process_ClearFunc(arg0);
@@ -1984,7 +1984,7 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 void MoveAnim_AttachClassCue(void *arg0) {
     s32 fn_802342B8(void *, void *);
     s32 fn_800056CC(const char *, ...);
-    s8 fn_80147578(void *, s32, f32, f32, f32);
+    s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 lbl_80278E24[];
     void *ent;
     void *str;
@@ -2049,7 +2049,7 @@ void MoveAnim_AttachClassCue(void *arg0) {
             f30 = *(f32 *)((u8 *)parent + 8);
             f29 = *(f32 *)((u8 *)parent + 0xC);
             fn_800056CC((char *)(lbl_80278E24 + 0x4B3), str);
-            *(s8 *)((u8 *)arg0 + 0x6A) = fn_80147578(str, 0x64, f31, f30, f29);
+            *(s8 *)((u8 *)arg0 + 0x6A) = SeCue_PlayAt(str, 0x64, f31, f30, f29);
         }
     }
 }
@@ -9114,7 +9114,7 @@ s32 fn_8019A364(void *arg0)
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
@@ -9190,7 +9190,7 @@ s32 fn_8019A364(void *arg0)
     if (*(s16 *)(obj + 0x48) >= *(s16 *)(obj + 0x4A)) {
         fn_80025624(gPadInput, 0x10);
         fn_8018CFA4(0x1E, 6, 2, 0, obj);
-        fn_80147578(lbl_8027AA38 + 0xDF, 0x64, f30, f29, f28);
+        SeCue_PlayAt(lbl_8027AA38 + 0xDF, 0x64, f30, f29, f28);
         {
             void *p = *(void **)((u8 *)self + 0x30);
             f25 = lbl_8036AF20;

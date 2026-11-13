@@ -11087,14 +11087,14 @@ entry->frame=0;
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-s32 fn_80147578(void *, s32, f32, f32, f32);
+s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
 s32 fn_80147548(void *arg0, f32 *arg1, s32 arg2) {
-    s32 fn_80147578(void *, f32, f32, f32, s32);
-    return fn_80147578(arg0, arg1[0], arg1[1], arg1[2], arg2);
+    s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
+    return SeCue_PlayAt(arg0, arg1[0], arg1[1], arg1[2], arg2);
 }
 
-s32 fn_80147578(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
+s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     s32 Ui_PlaySeCue(void *, s32);
     extern u8 lbl_803301A8[1344];
     s32 temp_r3;

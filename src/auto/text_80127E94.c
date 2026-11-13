@@ -901,7 +901,7 @@ void fn_80129FA4(void *arg0) {
     void fn_800498A4(void *, void *, s32, f32);
     void fn_800536B0(void *, f32, f32, f32);
     void *fn_80053AE8(void *, void *);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
@@ -966,7 +966,7 @@ void fn_80129FA4(void *arg0) {
     ia = (s32)(unk38 / lbl_8036A448);
     ib = (s32)((unk38 + unk2c) / lbl_8036A448);
     if (!(lbl_8036A420 != unk38 && ia == ib)) {
-        fn_80147578(lbl_80275740 + 0x16F, 0x64,
+        SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
             lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
             lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
@@ -976,7 +976,7 @@ void fn_80129FA4(void *arg0) {
     *(f32 *)((u8 *)sub + 0x38) = unk38 + *(f32 *)((u8 *)sub + 0x2C);
     fn_800498A4(*(void **)(*(void **)((u8 *)self + 0x30)), self, 0, unk38);
     sub = *(void **)((u8 *)self + 0x30);
-    fn_80147578(lbl_80275740 + 0x182, 0x64,
+    SeCue_PlayAt(lbl_80275740 + 0x182, 0x64,
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
@@ -1037,7 +1037,7 @@ void fn_8012A530(void *arg0) {
     f32 fn_8001F53C(void *, s8, s8, s32);
     f32 fn_80023068(void *, f32, f32);
     void *fn_80040844(void);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     void fn_80184688(void *, s32, s32, s32);
     void fn_80184BE8(void *, s32, s32, s32);
@@ -1232,7 +1232,7 @@ void fn_8012A530(void *arg0) {
     ia = (s32)(unk38 / lbl_8036A448);
     ib = (s32)((unk38 + *(f32 *)((u8 *)sub + 0x2C)) / lbl_8036A448);
     if (lbl_8036A420 == unk38 || ia != ib) {
-        fn_80147578(lbl_80275740 + 0x16F, 0x64,
+        SeCue_PlayAt(lbl_80275740 + 0x16F, 0x64,
             lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
             lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
             *(f32 *)((u8 *)sub + 0x18));
@@ -1290,7 +1290,7 @@ void fn_8012AC88(void *arg0) {
     f32 fn_80023068(void *, f32, f32);
     void fn_80053C30(void *, s32);
     void fn_800536B0(f32, f32, f32);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 lbl_80275740[];
     extern u8 gBattleMap[];
     extern f32 lbl_8036A410;
@@ -1305,7 +1305,7 @@ void fn_8012AC88(void *arg0) {
     temp_f29 = fn_80023068(gBattleMap, temp_f30, temp_f31);
     fn_80053C30(lbl_80275740 + 0x165, 0);
     fn_800536B0(temp_f30, temp_f31, temp_f29);
-    fn_80147578(lbl_80275740 + 0x196, 0x64, temp_f30, temp_f31, temp_f29);
+    SeCue_PlayAt(lbl_80275740 + 0x196, 0x64, temp_f30, temp_f31, temp_f29);
 }
 
 void fn_8012AD80(void) {

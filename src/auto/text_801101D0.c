@@ -1669,7 +1669,7 @@ u8 fn_80113F68(void *arg0) {
 void fn_80113F88(void *arg0) {
     void fn_800E4C14(void *, f32);
     void fn_800E4BE0(void *, s32, s32, f32);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern f32 lbl_8036A1C0;
     extern f32 lbl_8036A1C4;
 
@@ -1697,7 +1697,7 @@ void fn_80113F88(void *arg0) {
     if (child != 0) {
         fn_800E4BE0(child, 0x80, 0x270f, lbl_8036A1C4);
     }
-    fn_80147578((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
+    SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
 void fn_80114078(void *arg0) {
     s32 n;
@@ -1731,7 +1731,7 @@ extern "C" void fn_80114124(void *arg0, s32 arg1) {
     void fn_800E4FE8(void *, void *, char *);
     void fn_80113298(void *, void *, s32, s32, s32);
     void fn_801134EC(void *, void *, void *);
-    void fn_80147578(char *, s32, f32, f32, f32);
+    void SeCue_PlayAt(char *, s32, f32, f32, f32);
     void *fn_801992F8(void *);
     s32 fn_80199310(void);
     void fn_80203184(void *, void *, void *);
@@ -1931,7 +1931,7 @@ after_dist:
     }
 
     *(s32 *)((u8 *)arg0 + 0x140) = 0;
-    fn_80147578((char *)&gActorXmlStrs + 0x4A7, 0x64, fx, fy, fz);
+    SeCue_PlayAt((char *)&gActorXmlStrs + 0x4A7, 0x64, fx, fy, fz);
     *(u8 *)((u8 *)arg0 + 0x1A4) = 1;
     String_Destroy(&sp104, -1);
 }
@@ -1945,7 +1945,7 @@ extern "C" void fn_80114840(void *arg0) {
     void fn_800DBB74(void *, void *);
     void String_Destroy(void *, s32);
     void *fn_80151D50(void *, void *, void *, void *, void *, void *, s32);
-    void fn_80147578(void *, s32, f32, f32, f32);
+    void SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern void *gPadInput;
     void fn_80025624(void *, s32);
 
@@ -2051,7 +2051,7 @@ extern "C" void fn_80114840(void *arg0) {
     if (flagA) {
         String_Destroy(&strD, -1);
     }
-    fn_80147578((char *)gActorXmlStrs + 0x4DA, 0x64, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
+    SeCue_PlayAt((char *)gActorXmlStrs + 0x4DA, 0x64, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
     fn_80025624(gPadInput, 4);
     *(u8 *)((u8 *)self + 0x1A4) = 1;
 }
