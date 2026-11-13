@@ -620,7 +620,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
     void Map_FloodMoveRange(void *, u8, u8, u8, s32, s32);
     void Msg_Expand(void *);
     void fn_80091A1C(void);
-    void fn_800283C8(void *, void *);
+    void UiCtx_BeginMoveSelect(void *, void *);
     void Map_SetupUnitMoveLimit(void *);
     void Map_ShowMoveLimitView(void);
     extern u8 gUiContext[];
@@ -639,7 +639,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
         Msg_Expand(lbl_8026E770 + 0xCE);
         fn_80091A1C();
     } else {
-        fn_800283C8(gUiContext, arg0);
+        UiCtx_BeginMoveSelect(gUiContext, arg0);
         Map_SetupUnitMoveLimit(arg0);
         Msg_Expand(lbl_8026E770 + 0xD9);
         fn_80091A1C();

@@ -3991,7 +3991,7 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma peephole off
-void fn_800283C8(void *arg0, void *arg1) {
+void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     void *self;
     u8 *map;

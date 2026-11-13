@@ -184,7 +184,7 @@ s32 Event_StartBless(s32 parent) {
 
 void fn_800AD554(UnkAD554 *arg0) {
     void Process_Goto(void *, s32);
-    void fn_800283C8(void *, void *);
+    void UiCtx_BeginMoveSelect(void *, void *);
     void fn_8002629C(void *, void *);
     void fn_800264BC(void *, void *);
     extern u8 gUiContext[];
@@ -201,7 +201,7 @@ void fn_800AD554(UnkAD554 *arg0) {
         Process_Goto(arg0, 0x63);
         return;
     }
-    fn_800283C8(gUiContext, count >= 0xC ? NULL : arg0->entries[idx]);
+    UiCtx_BeginMoveSelect(gUiContext, count >= 0xC ? NULL : arg0->entries[idx]);
     if (arg0->count >= 0xC) kind = 0;
     else kind = arg0->kinds[idx];
     switch (kind) {
