@@ -15219,7 +15219,7 @@ void fn_801DC1C8(u8 *arg0) {
     *(s16 *)(base + off) = (s16)(*(s16 *)(base + off) & ~1);
 }
 #pragma global_optimizer on
-void fn_801DC1F0(void *arg0) {
+void Ui_HandleConfirmDialogInput(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
     extern void *gPadInput;
