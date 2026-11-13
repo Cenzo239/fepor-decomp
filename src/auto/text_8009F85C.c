@@ -1491,7 +1491,7 @@ s32 fn_800A1920(s32 unused, s32 arg1) {
     u8 Status_Test(void *, s32);
     void fn_8003BD58(void *);
     void *fn_800241C8(s32);
-    void fn_801B79A0(void *, s32, s32, s32);
+    void Ui_OpenHelpPopup(void *, s32, s32, s32);
     extern u8 lbl_8026D8D8[];
     void *temp_r31;
     void *temp_r3;
@@ -1505,7 +1505,7 @@ s32 fn_800A1920(s32 unused, s32 arg1) {
     }
     fn_8003BD58(temp_r31);
     temp_r3 = fn_800241C8(arg1);
-    fn_801B79A0(lbl_8026D8D8 + 0x660, 0, *(s32 *)((u8 *)temp_r3 + 0x18), 0);
+    Ui_OpenHelpPopup(lbl_8026D8D8 + 0x660, 0, *(s32 *)((u8 *)temp_r3 + 0x18), 0);
     return 6;
 }
 

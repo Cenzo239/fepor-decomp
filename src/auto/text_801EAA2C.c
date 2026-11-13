@@ -1796,10 +1796,10 @@ void fn_801ED8CC(void *arg0)
     extern u8 gGActorPathExt[];
     void *Msg_Expand(void *);
     void fn_8000D864(s32, void *);
-    void fn_801B79A0(void *, s32, void *, s32);
+    void Ui_OpenHelpPopup(void *, s32, void *, s32);
 
     fn_8000D864(0, Msg_Expand(lbl_8029A734[gUiContext[0x14]]));
-    fn_801B79A0(Msg_Expand(gGActorPathExt + 0x17E), 0, arg0, 0);
+    Ui_OpenHelpPopup(Msg_Expand(gGActorPathExt + 0x17E), 0, arg0, 0);
 }
 
 void fn_801ED940(s32 arg0) {

@@ -1178,7 +1178,7 @@ void fn_801B794C(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x220) = fn_800C044C(0xC);
 }
 
-void fn_801B79A0(s32 arg0, s32 arg1, s32 arg2, s8 arg3) {
+void Ui_OpenHelpPopup(s32 arg0, s32 arg1, s32 arg2, s8 arg3) {
     void *Process_CreateChild(void *, s32);
     void *fn_800C4638(s32, void *, s32);
     void strcpy(void *, s32);
