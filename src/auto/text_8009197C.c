@@ -244,7 +244,7 @@ block_19:
 }
 
 #pragma global_optimizer off
-u8 fn_80091EF0(s32 arg0, void *arg1) {
+u8 Unit_CanUseItem(s32 arg0, void *arg1) {
 u8 fn_800940B0(s32, void *);
 u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
 if (flags & 5ULL) return fn_800940B0(arg0, arg1) != 0;

@@ -8059,7 +8059,7 @@ void fn_801731FC(void *arg0) {
 
 u8 fn_80173220(u32 *arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
-    u8 fn_80091EF0(void *, void *);
+    u8 Unit_CanUseItem(void *, void *);
     u32 *p;
     u8 var_r4;
 
@@ -8074,7 +8074,7 @@ u8 fn_80173220(u32 *arg0, void *arg1) {
     if ((*(u64 *)p & 4ULL) != 0) {
         var_r4 = 0;
     } else {
-        var_r4 = (u8)fn_80091EF0(arg1, (void *)*arg0);
+        var_r4 = (u8)Unit_CanUseItem(arg1, (void *)*arg0);
     }
     return var_r4;
 }
@@ -10537,7 +10537,7 @@ void *fn_80177E74(void) {
 s32 Ui_HasUsableItem(void) {
     u32 *Unit_GetItemSlot(u32, s32);
     u64 *Item_GetFlagsPtr(u32 *);
-    u8 fn_80091EF0(u32, u32);
+    u8 Unit_CanUseItem(u32, u32);
     extern u32 gUiContext[];
     u32 unit;
     u8 found;
@@ -10556,7 +10556,7 @@ s32 Ui_HasUsableItem(void) {
             if ((*(u64 *)bits & 4ULL) == 0) {
                 bits = Item_GetFlagsPtr(entry);
                 if ((*(u64 *)bits & 0x200ULL) == 0) {
-                    if (fn_80091EF0(unit, *entry) != 0) {
+                    if (Unit_CanUseItem(unit, *entry) != 0) {
                         found = 1;
                         break;
                     }

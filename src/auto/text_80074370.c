@@ -978,7 +978,7 @@ void fn_80075DD8(void) {
 s32 fn_80075E04(void) {
     u64 *Item_GetFlagsPtr(void *);
     void *fn_800285C0(void *);
-    u8 fn_80091EF0(void *, void *);
+    u8 Unit_CanUseItem(void *, void *);
     extern void *gUiContext[];
     void *item;
     void *temp_r31;
@@ -993,7 +993,7 @@ s32 fn_80075E04(void) {
     if (*Item_GetFlagsPtr(item) & 4ULL) {
         return 3;
     }
-    return fn_80091EF0(temp_r30, temp_r31) ? 0 : 3;
+    return Unit_CanUseItem(temp_r30, temp_r31) ? 0 : 3;
 }
 
 s32 fn_80075EB4(void *arg1, void *arg2) {
