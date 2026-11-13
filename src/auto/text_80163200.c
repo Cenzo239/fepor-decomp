@@ -3307,7 +3307,7 @@ void fn_8016A400(void *arg0) {
     M2C_UNK Process_DetachChild();
     void *Heap_Alloc(s32);
 
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u16 lbl_802920E0[76];
     extern u8 lbl_80293D64[];
     extern u16 lbl_802940AC[76];
@@ -3348,7 +3348,7 @@ void fn_8016A400(void *arg0) {
     config = Heap_Alloc(0x20);
     init = (volatile Config *)config;
     if (config != NULL) {
-        init->table = lbl_802845E8;
+        init->table = gUiMenuDrawVtbl;
         init->field00 = lbl_80293D64;
         init->table = lbl_802920E0;
         init->field08 = 0;
@@ -3668,7 +3668,7 @@ void *fn_8016AE6C(void) {
 s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Ui_CreateMenu(void *, s32, s32);
     void *Heap_Alloc(u32);
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80293D64[];
     extern u8 lbl_802940AC[];
@@ -3693,7 +3693,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     }
     p = Heap_Alloc(0x20);
     if (p != NULL) {
-        M2C_FIELD(p, void **, 4) = lbl_802845E8;
+        M2C_FIELD(p, void **, 4) = gUiMenuDrawVtbl;
         M2C_FIELD(p, void **, 0) = lbl_80293D64;
         M2C_FIELD(p, void **, 4) = lbl_802920E0;
         M2C_FIELD(p, s16 *, 8) = 0;
@@ -9448,7 +9448,7 @@ void fn_80175CA0(void) {
     extern void* lbl_80292090;
     extern void* lbl_80295110;
     extern void* lbl_80294FD0;
-    extern void* lbl_802845E8;
+    extern void* gUiMenuDrawVtbl;
     extern void* lbl_802945C0;
     extern void* lbl_802920E0;
     extern void* lbl_80291FF8;
@@ -9497,7 +9497,7 @@ void fn_80175CA0(void) {
     
     temp_r3 = Heap_Alloc(0x24);
     if (temp_r3 != NULL) {
-        *(void**)((char*)temp_r3 + 4) = &lbl_802845E8;
+        *(void**)((char*)temp_r3 + 4) = &gUiMenuDrawVtbl;
         *(void***)((char*)temp_r3 + 0) = &lbl_802945C0;
         *(void**)((char*)temp_r3 + 4) = &lbl_802920E0;
         *(s16*)((char*)temp_r3 + 8) = 0;

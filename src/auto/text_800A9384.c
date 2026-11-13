@@ -4,7 +4,7 @@
 #include "common.h"
 
 extern u16 lbl_8028CD0C[38];
-extern u16 lbl_802845E8[64];
+extern u16 gUiMenuDrawVtbl[64];
 extern u16 lbl_80312AB0[8];
 extern u16 lbl_8028459C[38];
 extern u16 lbl_80286664[64];
@@ -48,11 +48,11 @@ void fn_800A9384(void) {
     void **c = (void**)&lbl_803677EC;
 
     // Direct memory assignments as in the target assembly
-    a[1] = lbl_802845E8;
+    a[1] = gUiMenuDrawVtbl;
     b[0] = lbl_8028459C;
     a[1] = lbl_80286664;
     b[0] = lbl_8028CDA4;
-    c[1] = lbl_802845E8;
+    c[1] = gUiMenuDrawVtbl;
     a[1] = lbl_802863BC;
     b[0] = lbl_8028CD58;
     lbl_803677D0 = lbl_8028CD0C;

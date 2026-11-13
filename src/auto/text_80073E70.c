@@ -10,7 +10,7 @@ extern "C" void fn_80073E70(void) {
     void *fn_8001C5F8(void *, s16);
     void __register_global_object(s32, s32, void *);
 
-    extern u8 lbl_802845E8[], lbl_80286338[], lbl_802863BC[];
+    extern u8 gUiMenuDrawVtbl[], lbl_80286338[], lbl_802863BC[];
     extern u8 lbl_8028643C[], lbl_80286510[], lbl_80286664[];
     extern u8 lbl_802873B8[], lbl_80287438[], lbl_8028748C[];
     extern u8 lbl_80287510[], lbl_802875C0[], lbl_80287640[];
@@ -130,7 +130,7 @@ extern "C" void fn_80073E70(void) {
     lbl_803673F0 = table88300;
     lbl_803673F4 = table882AC;
 
-    table845E8 = lbl_802845E8;
+    table845E8 = gUiMenuDrawVtbl;
     table86664 = lbl_80286664;
     table86510 = lbl_80286510;
     table88258 = lbl_80288258;

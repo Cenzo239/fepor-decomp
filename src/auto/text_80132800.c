@@ -5401,7 +5401,7 @@ void *fn_8013BC10(void *arg0, void *arg1) {
     void *Heap_Alloc(s32);
     extern u8 lbl_80276908[];
     extern u8 lbl_8028459C[];
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_80291BE0[];
     extern u8 lbl_80291BEC[];
     extern u8 lbl_80291CF8[];
@@ -5466,7 +5466,7 @@ void *fn_8013BC10(void *arg0, void *arg1) {
 
     obj = Heap_Alloc(0x28);
     if (obj != NULL) {
-        *(void **)((u8 *)obj + 4) = lbl_802845E8;
+        *(void **)((u8 *)obj + 4) = gUiMenuDrawVtbl;
         *(void **)obj = lbl_80291BE0;
         *(void **)((u8 *)obj + 4) = lbl_802920E0;
         *(s16 *)((u8 *)obj + 8) = 0x80;
@@ -5497,7 +5497,7 @@ void fn_8013BE3C(s32 arg0) {
     void *Heap_Alloc(M2C_UNK);
     extern M2C_UNK lbl_80276908;
     extern M2C_UNK lbl_8028459C;
-    extern M2C_UNK lbl_802845E8;
+    extern M2C_UNK gUiMenuDrawVtbl;
     extern M2C_UNK lbl_80291BD4;
     extern M2C_UNK lbl_80291BEC;
     extern M2C_UNK lbl_80291C50;
@@ -5535,7 +5535,7 @@ void fn_8013BE3C(s32 arg0) {
     }
     temp_r3 = Heap_Alloc(0x28);
     if (temp_r3 != NULL) {
-        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &lbl_802845E8;
+        M2C_FIELD(temp_r3, M2C_UNK **, 4) = &gUiMenuDrawVtbl;
         M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_80291BD4;
         M2C_FIELD(temp_r3, M2C_UNK **, 4) = &lbl_802920E0;
         M2C_FIELD(temp_r3, s16 *, 8) = 0x80;
@@ -6074,7 +6074,7 @@ void fn_8013CE7C(void *arg0) {
 }
 
 void fn_8013CED0(void *arg0, void *arg1) {
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80291DA0[];
     extern f32 lbl_8036A6B8;
@@ -6090,7 +6090,7 @@ void fn_8013CED0(void *arg0, void *arg1) {
     s16 g;
     f32 f;
 
-    vt1 = lbl_802845E8;
+    vt1 = gUiMenuDrawVtbl;
     vt2 = lbl_802920E0;
     a = 0x80;
     *(void **)((u8 *)arg0 + 4) = vt1;
@@ -12736,7 +12736,7 @@ extern u32 lbl_80276908;
 extern u32 lbl_80291EAC;
 extern u32 lbl_8032FEE4;
 extern u32 lbl_80291E48;
-extern u32 lbl_802845E8;
+extern u32 gUiMenuDrawVtbl;
 extern u32 lbl_80291BD4;
 extern u32 lbl_80291DA0;
 extern u32 lbl_80291C50;

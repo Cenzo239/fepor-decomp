@@ -64,7 +64,7 @@ s32 fn_80103820(void) {
     void Ui_CreateMenu(void *, s32, s32);
     void fn_800A8400(void);
     extern u8 lbl_802734D0[];
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_8028EAD8[];
     extern u8 lbl_8028ED04[];
     extern u8 lbl_8028ED80[];
@@ -100,7 +100,7 @@ s32 fn_80103820(void) {
         lbl_80367974 = 1;
     }
     if ((s8)lbl_8036797C == 0) {
-        lbl_80367980[1] = lbl_802845E8;
+        lbl_80367980[1] = gUiMenuDrawVtbl;
         lbl_80367980[0] = lbl_8028EAD8;
         lbl_80367980[1] = lbl_8028ED04;
         lbl_8036797C = 1;

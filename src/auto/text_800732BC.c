@@ -2,7 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-extern u8 lbl_802845E8[128];
+extern u8 gUiMenuDrawVtbl[128];
 extern u8 lbl_80286590[128];
 extern u8 lbl_80286664[128];
 extern u8 lbl_80286F40[128];
@@ -39,9 +39,9 @@ void fn_800732BC(void) {
     b = lbl_80367388;
     c = lbl_80367390;
 
-    a[1] = lbl_802845E8;
-    b[1] = lbl_802845E8;
-    c[1] = lbl_802845E8;
+    a[1] = gUiMenuDrawVtbl;
+    b[1] = gUiMenuDrawVtbl;
+    c[1] = gUiMenuDrawVtbl;
 
     a[1] = lbl_80286664;
     b[1] = lbl_80286664;

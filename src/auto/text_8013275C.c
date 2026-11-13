@@ -3,7 +3,7 @@
 #include "common.h"
 
 void fn_8013275C(void) {
-    extern u8 lbl_802845E8[128];
+    extern u8 gUiMenuDrawVtbl[128];
     extern u8 lbl_802916E0[80];
     extern u8 lbl_80291694[76];
     extern u8 lbl_80291648[76];
@@ -27,7 +27,7 @@ void fn_8013275C(void) {
     void *v;
 
     p = lbl_80367AC4;
-    p[1] = lbl_802845E8;
+    p[1] = gUiMenuDrawVtbl;
     v = lbl_802916E0;
     lbl_80367AA8 = v;
     lbl_80367AAC = lbl_80291694;

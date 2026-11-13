@@ -9,7 +9,7 @@ void fn_80072408(void)
 
     extern u8 lbl_8026BB84[];
     extern u8 lbl_8028459C[];
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_80285FE8[];
     extern u8 lbl_802866E4[];
     extern u8 lbl_80286764[];
@@ -53,14 +53,14 @@ void fn_80072408(void)
     p27C = data + 0x27C;
     p17C = data + 0x17C;
 
-    M2C_FIELD(p38, void **, 4) = lbl_802845E8;
-    M2C_FIELD(p10, void **, 4) = lbl_802845E8;
+    M2C_FIELD(p38, void **, 4) = gUiMenuDrawVtbl;
+    M2C_FIELD(p10, void **, 4) = gUiMenuDrawVtbl;
 
     M2C_FIELD(&lbl_80367350, void **, 0) = lbl_8028459C;
     M2C_FIELD(&lbl_80367358, void **, 0) = lbl_8028459C;
 
-    M2C_FIELD(p24, void **, 4) = lbl_802845E8;
-    M2C_FIELD(base, void **, 4) = lbl_802845E8;
+    M2C_FIELD(p24, void **, 4) = gUiMenuDrawVtbl;
+    M2C_FIELD(base, void **, 4) = gUiMenuDrawVtbl;
 
     M2C_FIELD(p38, void **, 4) = p67C;
     M2C_FIELD(&lbl_80367350, void **, 0) = p628;
@@ -117,8 +117,8 @@ void fn_80072408(void)
     p80 = base + 0x80;
     p94 = base + 0x94;
 
-    M2C_FIELD(p94, void **, 4) = lbl_802845E8;
-    M2C_FIELD(p80, void **, 4) = lbl_802845E8;
+    M2C_FIELD(p94, void **, 4) = gUiMenuDrawVtbl;
+    M2C_FIELD(p80, void **, 4) = gUiMenuDrawVtbl;
 
     pFC = data + 0xFC;
     p7C = data + 0x7C;

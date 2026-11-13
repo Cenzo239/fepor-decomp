@@ -2782,7 +2782,7 @@ void Ui_LayoutUnitManagePanel(void *panel) {
     extern u8 lbl_80292090[];
     extern u8 lbl_80297ED4[];
     extern u8 lbl_80297E84[];
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_80297C08[];
     extern u8 lbl_802920E0[];
     extern u8 gUiUnitPanelStrings[];
@@ -2827,7 +2827,7 @@ void Ui_LayoutUnitManagePanel(void *panel) {
     }
     help = Heap_Alloc(0x20);
     if (help != NULL) {
-        M2C_FIELD(help, void **, 4) = lbl_802845E8;
+        M2C_FIELD(help, void **, 4) = gUiMenuDrawVtbl;
         M2C_FIELD(help, void **, 0) = lbl_80297C08;
         M2C_FIELD(help, void **, 4) = lbl_802920E0;
         M2C_FIELD(help, s16 *, 8) = 0;

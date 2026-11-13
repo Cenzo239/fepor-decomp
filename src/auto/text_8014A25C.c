@@ -9,7 +9,7 @@ typedef struct InitTable { u8 first[0x20]; u8 second[0x68]; u8 third[0x18]; } In
 #pragma global_optimizer off
 void fn_8014A25C(void) {
     typedef struct Pair { u8 *lo; u8 *hi; } Pair;
-    extern u8 lbl_802845E8[];
+    extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_80292808[];
     extern u8 lbl_80292914[];
     extern u8 lbl_80292990[];
@@ -69,7 +69,7 @@ void fn_8014A25C(void) {
     Pair *r60;
     Pair *r34;
 
-    common = lbl_802845E8;
+    common = gUiMenuDrawVtbl;
     base = lbl_80292808;
     r44 = &lbl_80367B44;
     r60 = &lbl_80367B60;

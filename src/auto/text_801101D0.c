@@ -3908,7 +3908,7 @@ void fn_8011A470(s32 arg0) {
 
 void fn_8011A4E4(s32 arg0) {
     M2C_UNK Ui_CreateMenu(M2C_UNK *, s32, M2C_UNK);
-    extern M2C_UNK lbl_802845E8;
+    extern M2C_UNK gUiMenuDrawVtbl;
     extern M2C_UNK lbl_80286590;
     extern M2C_UNK lbl_80286664;
     extern M2C_UNK lbl_8028F7EC;
@@ -3980,7 +3980,7 @@ void fn_8011A4E4(s32 arg0) {
         lbl_80367A38 = &lbl_8028FABC;
     }
     if ((s8) lbl_80367A3C == 0) {
-        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_802845E8;
+        M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &gUiMenuDrawVtbl;
         M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_80286664;
         M2C_FIELD(&lbl_80367A40, M2C_UNK **, 4) = &lbl_80286590;
         M2C_FIELD(&lbl_80367A40, M2C_UNK **, 0) = &lbl_8028F7EC;

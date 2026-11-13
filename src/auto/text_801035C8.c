@@ -14,7 +14,7 @@ void fn_801035C8(void) {
     };
 
     extern u8 lbl_8028459C[76];
-    extern u8 lbl_802845E8[128];
+    extern u8 gUiMenuDrawVtbl[128];
     extern u8 lbl_8028EB7C[76];
     extern u8 lbl_8028EB9C[76];
     extern u8 lbl_8028EBF0[76];
@@ -68,7 +68,7 @@ void fn_801035C8(void) {
     lbl_80367954.ptr = p1;
     lbl_8036795C.ptr = p1;
 
-    lbl_803679B4.f4 = lbl_802845E8;
+    lbl_803679B4.f4 = gUiMenuDrawVtbl;
     lbl_80367920 = lbl_8028F1C0;
 
     lbl_8036794C.id = 4;
