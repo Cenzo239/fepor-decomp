@@ -1399,8 +1399,7 @@ extern "C" void fn_8002C47C(void *arg0, s32 arg1) {
 extern "C" void fn_8002C530(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2(void *) = 0;
+        virtual void apply(void *) = 0;
     };
     extern u8 gBattleMap[];
     extern u8 gUnits[];
@@ -1414,7 +1413,6 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
     u8 *map;
     u8 *maprow;
     u8 *cell;
-    s32 byteOff;
     s16 *arr;
     u8 id;
     void *unit;
@@ -1429,11 +1427,10 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
     while ((s8)y < *(s32 *)(map + 4)) {
         scratch = row;
         cell = maprow;
-        byteOff = row * 2;
         x = 0;
         while ((s8)x < *(s32 *)map) {
             arr = *(s16 **)(map2 + 0x4190);
-            if (*(s16 *)((u8 *)arr + byteOff) >= thresh) {
+            if (arr[scratch] >= thresh) {
                 id = cell[0xD];
                 if (id != 0) {
                     if (id != 0) {
@@ -1441,11 +1438,10 @@ extern "C" void fn_8002C530(void *arg0, s32 arg1) {
                     } else {
                         unit = 0;
                     }
-                    ((Obj *)self)->v2(unit);
+                    ((Obj *)self)->apply(unit);
                 }
             }
             scratch += 1;
-            byteOff += 2;
             cell += 1;
             x += 1;
         }
@@ -3723,7 +3719,7 @@ extern "C" void fn_80090C50(s32);
 extern "C" void fn_800900F4(s32);
 extern "C" void fn_8008BD90(s32, s32, s32);
 extern "C" void Prim2D_AddZ(f32);
-extern "C" void fn_80032564(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawDualSwap(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
     extern f32 lbl_80368E34;
