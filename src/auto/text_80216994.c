@@ -181,7 +181,7 @@ s32 fn_80216F88(s32 arg0) {
     return 0;
 }
 
-void fn_80217034(void *alarm, void *context) {
+void __CARDTimeoutHandler(void *alarm, void *context) {
     extern u16 __CARDBlock[];
     void fn_80239298(s32, void *);
 
@@ -221,7 +221,7 @@ s32 __CARDRetry(s32 chan) {
     void OSCancelAlarm(void *);
     void OSSetAlarm(void *, s64, void *);
     s32 EXIImmEx(s32, void *, s32, s32);
-    void fn_80217034();
+    void __CARDTimeoutHandler();
     void fn_80216BBC();
     u8 *card;
     s32 size;
@@ -234,17 +234,17 @@ s32 __CARDRetry(s32 chan) {
     OSCancelAlarm(card + 0xE0);
     switch (card[0x94]) {
     case 0xF2:
-        OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, fn_80217034);
+        OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, __CARDTimeoutHandler);
         break;
     case 0xF3:
         break;
     case 0xF4:
         if (*(u16 *)(card + 0xA) > 0x80) {
-            OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(u16 *)(card + 0x10) / 64), fn_80217034);
+            OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(u16 *)(card + 0x10) / 64), __CARDTimeoutHandler);
             break;
         }
     case 0xF1:
-        OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(s32 *)(card + 0xC) / 0x2000), fn_80217034);
+        OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(s32 *)(card + 0xC) / 0x2000), __CARDTimeoutHandler);
         break;
     }
     if (EXIImmEx(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) == 0) {
@@ -330,7 +330,7 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
     void OSSetAlarm(void *, s64, void *);
     void fn_80217378();
     void fn_80216C64();
-    void fn_80217034();
+    void __CARDTimeoutHandler();
     s32 enabled;
     u8 *card;
     s32 result;
@@ -358,17 +358,17 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
                 OSCancelAlarm(card + 0xE0);
                 switch (card[0x94]) {
                 case 0xF2:
-                    OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, fn_80217034);
+                    OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, __CARDTimeoutHandler);
                     break;
                 case 0xF3:
                     break;
                 case 0xF4:
                     if (*(u16 *)(card + 0xA) > 0x80) {
-                        OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(u16 *)(card + 0x10) / 64), fn_80217034);
+                        OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(u16 *)(card + 0x10) / 64), __CARDTimeoutHandler);
                         break;
                     }
                 case 0xF1:
-                    OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(s32 *)(card + 0xC) / 0x2000), fn_80217034);
+                    OSSetAlarm(card + 0xE0, (s64)2 * (*(u32 *)0x800000F8 / 4) * (*(s32 *)(card + 0xC) / 0x2000), __CARDTimeoutHandler);
                     break;
                 }
                 result = 0;
