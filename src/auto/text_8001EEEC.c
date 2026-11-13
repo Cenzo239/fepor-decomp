@@ -3268,8 +3268,8 @@ s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
 }
 
 void fn_80025FA4(void *arg0) {
-    M2C_UNK fn_8003E8DC(s32);
-    fn_8003E8DC(M2C_FIELD(arg0, s32 *, 0x30));
+    M2C_UNK Unit_OnZeroHp(s32);
+    Unit_OnZeroHp(M2C_FIELD(arg0, s32 *, 0x30));
 }
 
 void fn_80025FC8(void) {

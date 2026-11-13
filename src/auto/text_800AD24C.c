@@ -430,11 +430,11 @@ extern u8 gTargetList[];
 extern void fn_8002F61C(void *);
 extern void *TargetList_GetCurrent(void *);
 extern u8 *UnitRef_GetUnit(void);
-extern void fn_8003E8DC(void);
+extern void Unit_OnZeroHp(void);
 void fn_800ADD48(void) {
     TargetList_GetCurrent(gTargetList);
     UnitRef_GetUnit();
-    fn_8003E8DC();
+    Unit_OnZeroHp();
     fn_8002F61C(gTargetList);
 }
 

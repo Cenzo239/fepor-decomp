@@ -5248,7 +5248,7 @@ finish:
 }
 #pragma use_lmw_stmw reset
 
-void fn_8003E8DC(void *arg0, void *arg1) {
+void Unit_OnZeroHp(void *arg0, void *arg1) {
     u8 temp_r0;
     u8 temp_r4;
     u8 temp_r5;
