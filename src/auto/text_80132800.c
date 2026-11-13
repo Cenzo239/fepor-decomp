@@ -2210,24 +2210,39 @@ s32 fn_80136268(void *arg0, void *arg1) {
 }
 
 s32 fn_801362C8(void *arg0) {
-    void **node;
-    s32 idx;
+    struct Node {
+        struct Node *prev;
+        struct Node *next;
+        s32 unk8;
+    };
+    s32 tmp;
+    s16 n;
+    struct Node *node;
 
     if (*(u32 *)((u8 *)arg0 + 0x68) == 0) {
         return 0;
     }
-    idx = *(s16 *)((u8 *)arg0 + 0x4E);
-    node = *(void ***)((u8 *)arg0 + 0x70);
-    if ((s16)idx >= 0) {
-        for (; (s16)idx > 0; idx--) {
-            node = (void **)node[1];
-        }
+    tmp = *(s16 *)((u8 *)arg0 + 0x4E);
+    node = *(struct Node **)((u8 *)arg0 + 0x70);
+    n = (s16)tmp;
+    if (n >= 0) {
+        goto loop_pos;
+        do {
+            node = node->next;
+            n -= 1;
+        loop_pos:
+            ;
+        } while (n > 0);
     } else {
-        for (; (s16)idx < 0; idx++) {
-            node = (void **)node[0];
-        }
+        goto loop_neg;
+        do {
+            node = node->prev;
+            n += 1;
+        loop_neg:
+            ;
+        } while (n < 0);
     }
-    return (s32)node[2];
+    return node->unk8;
 }
 
 void fn_80136320(s32 *arg0, void *arg1) {
@@ -6920,19 +6935,13 @@ extern "C" s16 fn_8013E684(void *arg0, void *arg1) {
         virtual void v33() = 0;
         virtual s16 v34() = 0;
     };
-    struct Arg1 {
-        u8 pad[0x60];
-        s8 field_60;
-    };
     s32 sum;
     s16 temp;
-    s8 b;
 
     temp = ((Obj *)arg0)->v34();
-    b = ((Arg1 *)arg1)->field_60;
-    sum = temp + b;
-    sum -= 1;
-    return (s16)(sum / temp);
+    sum = (s32)temp + *(s8 *)((u8 *)arg1 + 0x60);
+    sum = sum - 1;
+    return (s16)(sum / (s32)temp);
 }
 #pragma cplusplus reset
 s16 fn_8013E6D8(void *arg0) {
