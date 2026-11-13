@@ -1360,7 +1360,7 @@ void fn_800888A4(void *arg0) {
     void *fn_80037BD0(void *, s32);
     void fn_8007DAC4(void *, void *);
     void fn_801475FC(void *, s32);
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_8026C86C[];
@@ -1383,7 +1383,7 @@ void fn_800888A4(void *arg0) {
     buttons = M2C_FIELD(gPadInput, u32 *, 4);
     repeat = M2C_FIELD(gPadInput, u32 *, 0xC);
     pressed = buttons & (M2C_FIELD(gPadInput, u32 *, 8) ^ buttons);
-    if (fn_80166D8C(gUnitInfoPopup) != 0) return;
+    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
         fn_8000C070(arg0,3);
         fn_801475FC(lbl_8026C86C+0x394,100);

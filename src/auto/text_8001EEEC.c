@@ -2629,7 +2629,7 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
 extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void *fn_8000B908(u8);
     void fn_801475FC(void *, s32);
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern u8 lbl_80268D90[];
@@ -2702,7 +2702,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
         node = (Node *)fn_8000B908(p[0x40]);
         node->obj->v14(arg1, node);
-        if (fn_80166D8C(gUnitInfoPopup) != 0) {
+        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)fn_8000B908(p[0x40]);
             f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + node->x);
@@ -2804,17 +2804,17 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
 }
 #pragma cplusplus reset
 s32 fn_80025440(void) {
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     extern u8 gUnitInfoPopup[];
 
-    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x20;
+    return Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) ? 0x40 : 0x20;
 }
 
 s32 fn_80025478(void) {
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     extern u8 gUnitInfoPopup[];
 
-    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x9;
+    return Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) ? 0x40 : 0x9;
 }
 
 #pragma cplusplus on

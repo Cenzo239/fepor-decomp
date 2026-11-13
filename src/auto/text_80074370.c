@@ -24,9 +24,9 @@ void fn_80074370(void *arg0) {
 
 extern u8 gUnitInfoPopup[];
 s32 fn_8007437C(void) {
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
 
-    return fn_80166D8C(gUnitInfoPopup) ? 0x40 : 0x10;
+    return Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) ? 0x40 : 0x10;
 }
 
 u32 fn_800745E8(u8 arg2) {
@@ -1304,11 +1304,11 @@ s32 fn_800766B0(void) {
 
 s32 fn_800766D4(void) {
     u8 fn_800281F4(void *);
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     extern u8 gUnitInfoPopup[];
     extern u8 gUiContext[24];
 
-    if (fn_80166D8C(gUnitInfoPopup) != 0) {
+    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
         return 0x40;
     }
     if (fn_800281F4(gUiContext) == 0 && gUiContext[0x16] != 0) {

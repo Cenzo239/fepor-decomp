@@ -5547,7 +5547,7 @@ s32 fn_8013C3AC(void) {
 #pragma cplusplus on
 extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void *fn_8000B908(u8);
-    s32 fn_80166D8C(void *);
+    s32 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80167190(void *, void *, f32, f32);
     void fn_801475FC(void *, s32);
     extern u32 gUiInputFlags;
@@ -5609,7 +5609,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
             }
         }
         if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
-            if ((u8)fn_80166D8C(gUnitInfoPopup) != 0) {
+            if ((u8)Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 p = (u8 *)arg1;
                 p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
                 tmp = fn_8000B908(p[0x40]);
@@ -6185,7 +6185,7 @@ void fn_8013D140(void *arg0) {
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *fn_8000B908(u8);
     void fn_801475FC(void *, s32);
-    u8 fn_80166D8C(void *);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern s32 gUiInputFlags;
@@ -6287,7 +6287,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
             item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
             inner = *(Inner **)((u8 *)item + 0x34);
             inner->Select(arg1, item);
-            if (fn_80166D8C(gUnitInfoPopup) != 0) {
+            if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
                 fx = (f32)(*(s16 *)(p + 0x30) + *(s16 *)((u8 *)item + 0x30));
                 item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
