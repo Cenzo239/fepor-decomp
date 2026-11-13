@@ -13068,7 +13068,7 @@ void fn_8017C338(void *arg0) {
         Math_Ease(5, temp_r4, lbl_8036AB94, lbl_8036ABBC, (f32)temp_r4, lbl_8036ABA0);
 }
 
-s32 fn_8017C3C8(u8 *arg0) {
+s32 Unit_GetSkillCapacityUsed(u8 *arg0) {
     s32 Status_SumBonus(void *);
     s32 num;
 

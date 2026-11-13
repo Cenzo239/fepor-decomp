@@ -3318,7 +3318,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void *fn_800A8978(void *);
     u8 fn_800386B0(void *);
     s8 Unit_GetMaxHp(void *);
-    u16 fn_8017C3C8(void *);
+    u16 Unit_GetSkillCapacityUsed(void *);
     void fn_8004BD1C(void *, f32 *, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -3442,7 +3442,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         tw = Text_MeasureWidth(-1, lbl_8036A620);
         Text_Draw((s32)fy, (s32)fx, 0xF, str);
         fy = fy + ((f32)tw + fgap);
-        Text_Draw((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (u16)fn_8017C3C8(unit));
+        Text_Draw((s32)fy, (s32)fx, 2, lbl_802767E0 + 0x44, (u16)Unit_GetSkillCapacityUsed(unit));
         Text_Draw((s32)(lbl_8036A64C + fy), (s32)fx, 0xC, lbl_802767E0 + 0xB1,
                     (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x40]);
     }

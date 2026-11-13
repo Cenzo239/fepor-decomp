@@ -1993,7 +1993,7 @@ void fn_801B9300(void *arg0) {
     void fn_80138808(void *, s32);
     void fn_80137EA0(void *, s32);
     void fn_8017BB94(void *);
-    s32 fn_8017C3C8(s32);
+    s32 Unit_GetSkillCapacityUsed(s32);
     void Process_Goto(void *, u8);
     extern u8 gBattleState[];
     extern f64 lbl_8036B2D0;
@@ -2021,7 +2021,7 @@ void fn_801B9300(void *arg0) {
         r31 = *(void **)((u8 *)r28 + 0x60);
         *(s32 *)((u8 *)r31 + 0x4C) = r30;
         fn_8017BB94(r31);
-        *(f32 *)((u8 *)r31 + 0x50) = (f32)fn_8017C3C8(r30);
+        *(f32 *)((u8 *)r31 + 0x50) = (f32)Unit_GetSkillCapacityUsed(r30);
         break;
     }
     Process_Goto(r28, *(u8 *)((u8 *)r28 + 0x44));
@@ -2033,7 +2033,7 @@ void fn_801B93F4(void *arg0) {
     void fn_80138808(void *, s32);
     void fn_80137EA0(void *, s32);
     void fn_8017BB94(void *);
-    s32 fn_8017C3C8(s32);
+    s32 Unit_GetSkillCapacityUsed(s32);
     extern u8 gBattleState[];
     extern f64 lbl_8036B2D0;
     void *r28;
@@ -2060,7 +2060,7 @@ void fn_801B93F4(void *arg0) {
         r31 = *(void **)((u8 *)r28 + 0x60);
         *(s32 *)((u8 *)r31 + 0x4C) = r30;
         fn_8017BB94(r31);
-        *(f32 *)((u8 *)r31 + 0x50) = (f32)fn_8017C3C8(r30);
+        *(f32 *)((u8 *)r31 + 0x50) = (f32)Unit_GetSkillCapacityUsed(r30);
         break;
     }
 }
@@ -2448,7 +2448,7 @@ void Ui_UpdatePanelWidgets(void *); void *Ui_FindChild(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
-void fn_80176888(void *,void *,f32,f32); s32 fn_8017C3C8(void *);
+void fn_80176888(void *,void *,f32,f32); s32 Unit_GetSkillCapacityUsed(void *);
 extern u8 gUiUnitPanelStrings[],gUiContext[],gUnitInfoPopup[];
 extern u32 gUiInputFlags; extern void *gPadInput; extern s32 gUnitInfoPopupFlag;
 class Pair { public: s16 x,y; Pair() {} Pair(s16 a,s16 b):x(a),y(b) {} Pair(const Pair &o) { *(u32 *)this=*(u32 *)&o; } Pair &operator=(const Pair &o) { *(u32 *)this=*(u32 *)&o; return *this; } };
@@ -2478,7 +2478,7 @@ M2C_FIELD(M2C_FIELD(self,void **,0x6c),void **,0x3c)=unit;
 btn=a&changed;
 if((btn&0x100)&&unit&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 s32 remaining=M2C_FIELD(M2C_FIELD(owner,void **,0x18c),u8 *,0x40);
-remaining-=fn_8017C3C8(owner);
+remaining-=Unit_GetSkillCapacityUsed(owner);
 if(Status_Test((u8 *)owner+0x1bc,M2C_FIELD(unit,u8 *,0x18))) {
 *(Pair *)&pos2=((Obj *)M2C_FIELD(self,void **,0x68))->v9();
 fn_80176888(gUiUnitPanelStrings+0x17a,self,(f32)*(s16 *)&pos2,(f32)*((s16 *)&pos2+1));
@@ -2865,7 +2865,7 @@ void Ui_HandleUnitManageCursorInput(void *panel) {
     void fn_801694AC(u32, void *);
     void fn_801695BC(u32, void *, s32);
     void fn_8017BB94(void *);
-    s32 fn_8017C3C8(u32);
+    s32 Unit_GetSkillCapacityUsed(u32);
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
@@ -2889,7 +2889,7 @@ void Ui_HandleUnitManageCursorInput(void *panel) {
         invPanel = M2C_FIELD(panel, void **, 0x60);
         M2C_FIELD(invPanel, u32 *, 0x4C) = unit;
         fn_8017BB94(invPanel);
-        M2C_FIELD(invPanel, f32 *, 0x50) = (f32)fn_8017C3C8(unit);
+        M2C_FIELD(invPanel, f32 *, 0x50) = (f32)Unit_GetSkillCapacityUsed(unit);
     }
     flags = gUiInputFlags;
     gate = 0;
@@ -2938,7 +2938,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
     void Ui_AddChild(void *, void *);
     void *fn_80179F8C(void *, s16, s16, s16, s16, s32);
     void fn_8017BB94(void *);
-    s32 fn_8017C3C8(s32);
+    s32 Unit_GetSkillCapacityUsed(s32);
     u8 *Ui_GetColor(s32);
     extern u8 gUiUnitPanelStrings[];
     extern u8 lbl_8028FDB0[];
@@ -3164,7 +3164,7 @@ extern "C" void fn_801BB7E0(void *arg0) {
         void *obj60 = *(void **)((u8 *)self + 0x60);
         *(s32 *)((u8 *)obj60 + 0x4C) = ac;
         fn_8017BB94(obj60);
-        *(f32 *)((u8 *)obj60 + 0x50) = (f32)fn_8017C3C8(ac);
+        *(f32 *)((u8 *)obj60 + 0x50) = (f32)Unit_GetSkillCapacityUsed(ac);
     }
     Ui_AddChild(self, *(void **)((u8 *)self + 0x60));
 }
@@ -4774,7 +4774,7 @@ s32 fn_801BE92C(void *arg0) {
     u8 fn_801058C4(void *, void *);
     void Ui_FindChild(void *, s32, s32);
     u32 fn_8017BD58(void);
-    s32 fn_8017C3C8(void *);
+    s32 Unit_GetSkillCapacityUsed(void *);
     extern u8 gUiUnitPanelClass[];
     extern u32 gUiContext[];
     void *temp_r31;
@@ -4795,7 +4795,7 @@ s32 fn_801BE92C(void *arg0) {
     }
     temp_r4 = *(void **)((u8 *)temp_r31 + 0x18C);
     temp_r30 = *((u8 *)temp_r4 + 0x40);
-    if (temp_r30 <= fn_8017C3C8(temp_r31)) {
+    if (temp_r30 <= Unit_GetSkillCapacityUsed(temp_r31)) {
         *((s8 *)arg0 + 4) = -2;
         return 2;
     }
@@ -7621,7 +7621,7 @@ void fn_801C6DB8(u32 arg0)
     void fn_8005F788(u32, s32, s32);
     s32 i;
     u8 *list;
-    u32 clear;
+    s32 clear;
     void *p;
 
     p = Process_Find(LightFade_script);
@@ -7632,7 +7632,7 @@ void fn_801C6DB8(u32 arg0)
     }
     if (list != NULL && arg0 != 0) {
         i = 0;
-        clear = (u32)(i | i);
+        clear = i;
         for (; i < 0x40; i++) {
             if (*(u32 *)(list + 0x290) == arg0) {
                 *(u32 *)(list + 0x290) = clear;
@@ -7902,18 +7902,18 @@ void fn_801C77D0(void *arg0) {
     if (ptr != NULL) {
         fn_800C4588(*ptr);
         zero = 0;
-        walk = ptr;
+        i = (s32)ptr;
         *ptr = (void *)zero;
-        i = zero;
+        walk = (void **)zero;
         *ptr = (void *)zero;
         do {
-            if (walk[1] != NULL) {
-                fn_8005FA14(walk[1], 0);
-                walk[1] = (void *)zero;
+            if (((void **)i)[1] != NULL) {
+                fn_8005FA14(((void **)i)[1], 0);
+                ((void **)i)[1] = (void *)zero;
             }
-            i += 1;
-            walk = (void **)((u8 *)walk + 0x14);
-        } while (i < 0x20);
+            walk = (void **)((s32)walk + 1);
+            i = (s32)((u8 *)i + 0x14);
+        } while ((s32)walk < 0x20);
         Heap_Free(ptr);
     }
     *(void **)((u8 *)arg0 + 0x30) = 0;
@@ -10949,48 +10949,48 @@ void *fn_801CDF5C(void *arg0, s16 arg1) {
 
 void fn_801CDFC8(void *arg0)
 {
-    s16 *p;
-    s32 pad;
-    s16 ten;
-    s16 eight;
-    s16 c;
-    s16 t10;
-    s16 a;
-    s16 e;
-    s16 diff_v;
-    s16 diff_h;
-    s16 tmp;
-    s32 half;
-
-    p = (s16 *)arg0;
-    pad = 0x128;
-    if (*(s32 *)((u8 *)arg0 + 0x78) != 0) {
-        pad = 0x140;
-    }
-    ten = 0x10;
-    eight = 8;
-    p[0xE / 2] = p[0xA / 2] + pad;
-
-    c = p[0xC / 2];
-    t10 = p[0x10 / 2];
-    a = p[0xA / 2];
-    e = p[0xE / 2];
-    diff_v = t10 - c;
-    p[0x12 / 2] = ten;
-    diff_h = e - a;
-    tmp = diff_v - 8;
-    p[0x14 / 2] = eight;
-    p[0x16 / 2] = diff_h - 0x10;
-    p[0x18 / 2] = tmp;
-
-    a = p[0xA / 2];
-    e = p[0xE / 2];
-    c = p[0xC / 2];
-    diff_h = e - a;
-    half = (0x200 - diff_h) >> 1;
-    p[0xE / 2] = (s16)half + diff_h;
-    p[0xA / 2] = half;
-    p[0x10 / 2] = c + (s16)(p[0x10 / 2] - p[0xC / 2]);
+  s16 *p;
+  s32 pad;
+  s16 ten;
+  s16 eight;
+  s16 c;
+  s16 t10;
+  s16 a;
+  s16 e;
+  s16 diff_v;
+  s16 diff_h;
+  s16 tmp;
+  s32 half;
+  p = (s16 *) arg0;
+  pad = 0x128;
+  if ((*((s32 *) (((u8 *) arg0) + 0x78))) != 0)
+  {
+    pad = 0x140;
+  }
+  ten = 0x10;
+  eight = 8;
+  p[0xE / 2] = p[0xA / 2] + pad;
+  c = p[0xC / 2];
+  t10 = p[0x10 / 2];
+  tmp = t10 - c;
+  a = p[0xA / 2];
+  e = p[0xE / 2];
+  diff_v = tmp;
+  p[0x12 / 2] = ten;
+  diff_h = e - a;
+  tmp = diff_v - 8;
+  p[0x14 / 2] = eight;
+  p[0x16 / 2] = diff_h - 0x10;
+  p[0x18 / 2] = tmp;
+  a = p[0xA / 2];
+  e = p[0xE / 2];
+  c = p[0xC / 2];
+  diff_h = e - a;
+  a = (0x200 - diff_h) >> 1;
+  half = a;
+  p[0xE / 2] = ((s16) half) + diff_h;
+  p[0xA / 2] = half;
+  p[0x10 / 2] = c + ((s16) (p[0x10 / 2] - p[0xC / 2]));
 }
 
 void *fn_801CE070(s32 a,char*b,s32 c){void *Process_CreateChild(void*,s32);void fn_801403F0(void);void String_AssignCStr(void*,char*,s32);extern u8 lbl_802986A8[];void*p=Process_CreateChild(lbl_802986A8,c);if(p){fn_801403F0();*(s32*)((char*)p+0x40)=0;*(s32*)((char*)p+0x44)=0;*(s32*)((char*)p+0x4c)=0;*(s32*)((char*)p+0x50)=0;*(s32*)((char*)p+0x54)=0;*(s32*)((char*)p+0x58)=0;*(s32*)((char*)p+0x5c)=0;*(s32*)((char*)p+0x58)=0;*(s32*)((char*)p+0x48)=0;}*(s32*)((char*)p+0x4c)=0;*(s32*)((char*)p+0x50)=a;String_AssignCStr((char*)p+0x54,b,strlen(b));return p;}
