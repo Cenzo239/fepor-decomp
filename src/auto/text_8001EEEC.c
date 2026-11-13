@@ -2234,7 +2234,7 @@ extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
-extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
+extern "C" void Ui_DrawMenuTextItem(void *arg0, void *arg1, void *arg2) {
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;

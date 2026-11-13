@@ -69,7 +69,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     s32 fn_8001CDE4(u8);
-    void fn_80024214(s32, s32, void *);
+    void Ui_DrawMenuTextItem(s32, s32, void *);
     s32 fn_80092ADC(void *, u8);
     void sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
@@ -81,7 +81,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     temp = fn_80092ADC(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
     name = fn_8001CDE4(temp);
     sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
-    fn_80024214(arg0, arg1, arg2);
+    Ui_DrawMenuTextItem(arg0, arg1, arg2);
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x40), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
@@ -1844,7 +1844,7 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
         temp_r3 = arg2;
         temp_r4 = arg3;  
         temp_r5 = arg4;
-        // Function call to fn_80024214
+        // Function call to Ui_DrawMenuTextItem
     }
     else if (temp_r0 == 0x26) {
         temp_r3 = 5;
@@ -2123,7 +2123,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_SetPos(f32, f32);
     M2C_UNK Prim2D_EndPrim(void);
     M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK fn_80024214(s32, s32, void *);
+    M2C_UNK Ui_DrawMenuTextItem(s32, s32, void *);
     s32 fn_80104338(void *, u8);
     M2C_UNK sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
@@ -2131,7 +2131,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     u8 sp8[8];
 
     sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
-    fn_80024214(arg0, arg1, arg2);
+    Ui_DrawMenuTextItem(arg0, arg1, arg2);
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
