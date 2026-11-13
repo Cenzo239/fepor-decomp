@@ -370,7 +370,7 @@ return 0;
 }
 
 void fn_8005B820(void) {
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     extern u32 lbl_802F03A8[];
     u32 *out;
     u8 *entry;
@@ -379,7 +379,7 @@ void fn_8005B820(void) {
     u8 *s;
     u8 b;
 
-    entry = fn_80019DBC(0);
+    entry = Terrain_GetEntry(0);
     out = lbl_802F03A8;
     for (i = 0x4D; i != 0; i--) {
         s = *(u8 **)entry;
@@ -7390,7 +7390,9 @@ s32 fn_8006EBA4(void *arg0, s32 arg1) {
     return *(s32 *)(base + (arg1 << 3) + 4) != 0;
 }
 
-void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx) {
+#pragma global_optimizer off
+void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
+{
     void fn_80222644(void *, void *, u16, u16, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     s32 off;
@@ -7401,15 +7403,16 @@ void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx) {
     off = idx << 3;
     table = *(u8 **)((u8 *)arg0 + 8);
     node = *(u8 **)(table + off);
-    flag = 1;
     if (node[0x21] == node[0x22]) {
         flag = 0;
+    } else {
+        flag = 1;
     }
     fn_80222644(tex, *(void **)(node + 8), *(u16 *)(node + 2), *(u16 *)(node + 0), *(s32 *)(node + 4), *(s32 *)(node + 0xC), *(s32 *)(node + 0x10), flag);
     node = *(u8 **)(table + off);
     fn_802228D8(tex, *(s32 *)(node + 0x14), *(s32 *)(node + 0x18), 0, node[0x20], 0, (f32)node[0x21], (f32)node[0x22], *(f32 *)(node + 0x1C));
 }
-
+#pragma global_optimizer reset
 extern void FileCache_ReleaseByKey(u32);
 void fn_8006EDA0(s32 *arg0)
 {

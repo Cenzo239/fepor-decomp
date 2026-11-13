@@ -408,7 +408,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *Msg_Expand(void *);
     void Text_Draw(s16, s32, s32, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
-    void *fn_80019DBC(s32);
+    void *Terrain_GetEntry(s32);
     void *Item_GetByIid(void *);
     void fn_8005926C(s32, s32, s32, s32, s32, s32, s32, s32);
     void *fn_8005B73C(void *);
@@ -455,7 +455,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     if (kind < 0) {
         goto after_cases;
     }
-    unit = fn_80019DBC(kind);
+    unit = Terrain_GetEntry(kind);
     if (kind != 0x21) {
         if (kind < 0x21) {
             if (kind != 0x1C) {

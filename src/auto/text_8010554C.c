@@ -1459,7 +1459,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     u8 fn_8004434C(void *, s32, s32);
     u8 fn_80040B1C(void *, s32, s32);
     void fn_800AAC64(void *);
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     void fn_800056A0(s32);
     void fn_8001FC24(void *);
     s32 fn_8001FC40(void *, s8, s8);
@@ -1502,7 +1502,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
         cost = -1;
     } else {
         row = y << 6;
-        tmp = fn_80019DBC(map[0x100D + x + row]);
+        tmp = Terrain_GetEntry(map[0x100D + x + row]);
         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
             cost = -1;
         } else {
@@ -1557,7 +1557,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                         s32 xx = (s8)x;
                         s32 yy = (s8)y << 6;
                         cell = map + xx + yy;
-                        tmp = fn_80019DBC(cell[0x100D]);
+                        tmp = Terrain_GetEntry(cell[0x100D]);
                         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
                             cost = -1;
                         } else {
@@ -1613,7 +1613,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                         s32 xx = (s8)x;
                         s32 yy = (s8)y << 6;
                         cell = map + xx + yy;
-                        tmp = fn_80019DBC(cell[0x100D]);
+                        tmp = Terrain_GetEntry(cell[0x100D]);
                         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
                             cost = -1;
                         } else {
@@ -1669,7 +1669,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                         s32 xx = (s8)x;
                         s32 yy = (s8)y << 6;
                         cell = map + xx + yy;
-                        tmp = fn_80019DBC(cell[0x100D]);
+                        tmp = Terrain_GetEntry(cell[0x100D]);
                         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
                             cost = -1;
                         } else {
@@ -1725,7 +1725,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
                         s32 xx = (s8)x;
                         s32 yy = (s8)y << 6;
                         cell = map + xx + yy;
-                        tmp = fn_80019DBC(cell[0x100D]);
+                        tmp = Terrain_GetEntry(cell[0x100D]);
                         if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 7) != 0) {
                             cost = -1;
                         } else {
@@ -3478,7 +3478,7 @@ outer_cmp:
 u8 Ai_TrySelectApproachTile(void *arg0) {
     void fn_800FE2A0(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     u8 Allegiance_Compare(s32, s32);
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
@@ -3530,7 +3530,7 @@ inner:
                 s32 flags;
 
                 other = row2 + (s32)other;
-                info = fn_80019DBC(((u8 *)other)[0x100D]);
+                info = Terrain_GetEntry(((u8 *)other)[0x100D]);
                 if (*(u8 *)(*(u8 **)((u8 *)info + 8) + 6) != 0) {
                     id = ((u8 *)other)[0xD];
                     if (id != 0) {
@@ -3621,7 +3621,7 @@ u8 fn_8010BB74(void *arg0) {
     void fn_800FE2A0(void *, s32, s32);
     s8 fn_8003A398(void *);
     u8 fn_800FE84C(s8, s8);
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
@@ -3696,7 +3696,7 @@ inner:
     if (((s16 *)(map2 + 0x610E))[t] >= 0) {
         u8 *cell = row + (s8)x;
         if ((s8)cell[0xE18E] == 0 && fn_800FE84C((s8)x, (s8)y) == 0 && cell[0xD] == 0) {
-            void *tmp = fn_80019DBC(*(row2 + ((s8)x + 0x100D)));
+            void *tmp = Terrain_GetEntry(*(row2 + ((s8)x + 0x100D)));
             if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 6) != 0) {
                 s32 dist = fn_8010067C((s16)x, (s16)y, fn_800FB5C8);
                 if (dist <= bestDist) {

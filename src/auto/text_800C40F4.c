@@ -19132,14 +19132,14 @@ extern "C" s32 fn_800F773C(s32 arg0, void *arg1) {
 #pragma cplusplus reset
 
 s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
     extern u8 gBattleMap[];
     void *terrain;
     u8 *tp;
     s32 sum;
 
-    terrain = fn_80019DBC(M2C_FIELD(gBattleMap + arg1 + (arg2 << 6), u8 *, 0x100D));
+    terrain = Terrain_GetEntry(M2C_FIELD(gBattleMap + arg1 + (arg2 << 6), u8 *, 0x100D));
     if (Status_Test((s32)((u8 *)arg0 + 0x1BC), 4) != 0) {
         tp = M2C_FIELD(terrain, u8 **, 8);
         sum = (s8)tp[3] + (s8)tp[4];
@@ -19159,7 +19159,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s32 fn_80230BBC(s32);
     void **fn_80037D54(void *);
     s32 fn_8001DD54(void *, void *);
-    void *fn_80019DBC(u8);
+    void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
     u8 Allegiance_Compare(void *, void *);
     u32 fn_800FCF48(s8, s8, void *);
@@ -19215,7 +19215,7 @@ fail:
         penalty = 0;
     }
     sx = (s8) arg1;
-    terrain = fn_80019DBC(M2C_FIELD(gBattleMap + sx + ((s8) arg2 << 6), u8 *, 0x100D));
+    terrain = Terrain_GetEntry(M2C_FIELD(gBattleMap + sx + ((s8) arg2 << 6), u8 *, 0x100D));
     if (Status_Test((s32) ((u8 *) arg0 + 0x1BC), 4) != 0) {
         tp = M2C_FIELD(terrain, u8 **, 8);
         sum = (s8) tp[3] + (s8) tp[4];

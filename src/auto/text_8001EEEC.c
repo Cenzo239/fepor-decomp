@@ -1418,8 +1418,8 @@ void fn_800227F8(void* arg0, s32 arg1)
     r30 = arg1;
     r31 = (s32)arg0;
     
-    // Call to fn_80019DBC
-    fn_80019DBC();
+    // Call to Terrain_GetEntry
+    Terrain_GetEntry();
     
     if (r30 != 0) {
         return;
