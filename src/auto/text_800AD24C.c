@@ -673,7 +673,7 @@ void fn_800AE694(void *arg0) {
     void fn_80059208(void *, void *);
     extern u8 gBattleState[];
     extern u8 lbl_8026EAA0[];
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     extern f32 lbl_80369C7C;
 
     void *temp_r30;
@@ -719,7 +719,7 @@ void fn_800AE694(void *arg0) {
         }
         if (var_r29 != NULL) {
             for (var_r6 = 1, var_ctr = 3; var_ctr != 0; var_ctr--, var_r6++) {
-                if (!(lbl_8032FF08[var_r6 * 0x30 + 0xC] & 1)) {
+                if (!(gFxChannels[var_r6 * 0x30 + 0xC] & 1)) {
                     Fx_StartSlot(var_r6, var_r29, 0x64, 1);
                     break;
                 }
@@ -4016,7 +4016,7 @@ extern "C" s32 fn_800B7A80(void) {
         u8 flag;
         u8 pad2[0x23];
     };
-    extern Obj lbl_8032FF08;
+    extern Obj gFxChannels;
     void fn_801457B4(void);
     void fn_801487D0(void *, s32);
     void fn_80146AF0(void);
@@ -4029,7 +4029,7 @@ extern "C" s32 fn_800B7A80(void) {
     fn_801457B4();
 
     ok = 0;
-    obj = &lbl_8032FF08;
+    obj = &gFxChannels;
     if (obj->flag & 1) {
         if (obj->v0()) {
             ok = 1;
@@ -4042,8 +4042,8 @@ extern "C" s32 fn_800B7A80(void) {
     fn_8014876C(obj, 0x64, 0xC8);
 
     ok = 0;
-    obj = (Obj *)((u8 *)&lbl_8032FF08 + 0x30);
-    if (*((u8 *)&lbl_8032FF08 + 0x3C) & 1) {
+    obj = (Obj *)((u8 *)&gFxChannels + 0x30);
+    if (*((u8 *)&gFxChannels + 0x3C) & 1) {
         if (obj->v0()) {
             ok = 1;
         }
@@ -4053,8 +4053,8 @@ extern "C" s32 fn_800B7A80(void) {
     }
 
     ok = 0;
-    obj = (Obj *)((u8 *)&lbl_8032FF08 + 0x60);
-    if (*((u8 *)&lbl_8032FF08 + 0x6C) & 1) {
+    obj = (Obj *)((u8 *)&gFxChannels + 0x60);
+    if (*((u8 *)&gFxChannels + 0x6C) & 1) {
         if (obj->v0()) {
             ok = 1;
         }
@@ -4064,8 +4064,8 @@ extern "C" s32 fn_800B7A80(void) {
     }
 
     ok = 0;
-    obj = (Obj *)((u8 *)&lbl_8032FF08 + 0x90);
-    if (*((u8 *)&lbl_8032FF08 + 0x9C) & 1) {
+    obj = (Obj *)((u8 *)&gFxChannels + 0x90);
+    if (*((u8 *)&gFxChannels + 0x9C) & 1) {
         if (obj->v0()) {
             ok = 1;
         }
@@ -4097,7 +4097,7 @@ extern "C" s32 fn_800B7C4C(s32 arg0, s32 arg1) {
         u8 flag;
         u8 pad2[0x23];
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     void fn_80146AF0(void);
     void fn_8014876C(void *, s32, s16);
     void fn_801487D0(void *, s16);
@@ -4105,7 +4105,7 @@ extern "C" s32 fn_800B7C4C(s32 arg0, s32 arg1) {
     Obj *obj;
 
     ok = 0;
-    obj = &lbl_8032FF08[(u8)arg0];
+    obj = &gFxChannels[(u8)arg0];
     if (obj->flag & 1) {
         if (obj->v0()) {
             ok = 1;
@@ -4128,14 +4128,14 @@ extern "C" s32 fn_800B7D08(s32 arg0, s32 arg1) {
         u8 flag;
         u8 pad2[0x23];
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     void fn_80146B00(void);
     void fn_80148888(void *, s16);
     u8 ok;
     Obj *obj;
 
     ok = 0;
-    obj = &lbl_8032FF08[(u8)arg0];
+    obj = &gFxChannels[(u8)arg0];
     if (obj->flag & 1) {
         if (obj->v0()) {
             ok = 1;
@@ -4157,14 +4157,14 @@ extern "C" s32 fn_800B7DB4(s32 arg0, s32 arg1) {
         u8 flag;
         u8 pad2[0x23];
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     void fn_80146B00(void);
     void fn_80148980(void *, s16);
     u8 ok;
     Obj *obj;
 
     ok = 0;
-    obj = &lbl_8032FF08[(u8)arg0];
+    obj = &gFxChannels[(u8)arg0];
     if (obj->flag & 1) {
         if (obj->v0()) {
             ok = 1;
@@ -4208,14 +4208,14 @@ extern "C" s32 fn_800B7EF8(s32 arg0) {
         u8 flag;
         u8 pad2[0x23];
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     void fn_80146B00(void);
     void fn_80148980(void *, s32);
     u8 ok;
     Obj *obj;
 
     ok = 0;
-    obj = &lbl_8032FF08[(u8)arg0];
+    obj = &gFxChannels[(u8)arg0];
     if (obj->flag & 1) {
         if (obj->v0()) {
             ok = 1;
@@ -4233,9 +4233,9 @@ extern "C" s32 fn_800B7EF8(s32 arg0) {
 
 s32 fn_800B7F98(s32 arg0, s32 arg1, s32 arg2) {
     void fn_8014876C(void *, u8, s16);
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
 
-    fn_8014876C(lbl_8032FF08 + (u8)arg0 * 0x30, (u8)arg1, (s16)arg2);
+    fn_8014876C(gFxChannels + (u8)arg0 * 0x30, (u8)arg1, (s16)arg2);
     return 1;
 }
 
@@ -9689,7 +9689,7 @@ s32 fn_800C3E54(u32 *arg0) {
 }
 
 #include "common.h"
-extern u8 lbl_8032FF08[];
+extern u8 gFxChannels[];
 extern void fn_80148888(u32*, s16);
 extern void fn_80146B00(void);
 #include "global.h"

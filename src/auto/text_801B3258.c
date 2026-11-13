@@ -55,7 +55,7 @@ static inline s32 MsgBoxAddPad(s32 h, s32 pad) {
 }
 
 void fn_801E00EC(void *arg0, void *arg1);
-extern u8 lbl_8032FF08[];
+extern u8 gFxChannels[];
 extern u16 lbl_80331D00[];
 extern f32 lbl_8036B4A8;
 extern f32 lbl_8027D528[3];
@@ -226,7 +226,7 @@ void fn_801B3D68(void *arg0) {
     void *ptr;
 
     temp_r31 = M2C_FIELD(arg0, void **, 0x30);
-    fn_8014876C(lbl_8032FF08 + (M2C_FIELD(temp_r31, u8 *, 0x10C) * 0x30), 0x64, 0x3E8);
+    fn_8014876C(gFxChannels + (M2C_FIELD(temp_r31, u8 *, 0x10C) * 0x30), 0x64, 0x3E8);
     ptr = M2C_FIELD(temp_r31, void **, 0x18);
     if (ptr != NULL) {
         fn_8005C7E8(ptr);
@@ -576,7 +576,7 @@ void fn_801B647C(void *arg0) {
     void fn_8014876C(void *, s32, s32);
     extern u8 lbl_80330EAC[];
     extern u8 lbl_8027C248[];
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     extern f32 lbl_8036B1B0;
     extern f32 lbl_8036B1B4;
     extern f32 lbl_8036B1B8;
@@ -584,7 +584,7 @@ void fn_801B647C(void *arg0) {
     if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
         fn_800536B0(fn_8005381C(lbl_8027C248 + 0xE4, arg0), lbl_8036B1B0, lbl_8036B1B4, lbl_8036B1B8);
         Ui_PlaySeCue(lbl_8027C248 + 0xF1, 0x64);
-        fn_8014876C(lbl_8032FF08 + ((u8 *)arg0)[0x3A] * 0x30, 0x32, 0xFA);
+        fn_8014876C(gFxChannels + ((u8 *)arg0)[0x3A] * 0x30, 0x32, 0xFA);
     }
 }
 
@@ -592,7 +592,7 @@ void fn_801B6510(void *arg0) {
     void fn_8006D8E8(void *);
     void fn_8014876C(void *, s32, s32);
     extern u8 lbl_80330EAC[];
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     void *p;
 
     p = *(void **)((u8 *)arg0 + 0x40);
@@ -600,7 +600,7 @@ void fn_801B6510(void *arg0) {
         fn_8006D8E8(p);
     }
     if (*(u32 *)(lbl_80330EAC + 0xCAC) & 0x10) {
-        fn_8014876C(lbl_8032FF08 + ((u8 *)arg0)[0x3A] * 0x30, 0x64, 0x3E8);
+        fn_8014876C(gFxChannels + ((u8 *)arg0)[0x3A] * 0x30, 0x64, 0x3E8);
     }
 }
 
@@ -5028,7 +5028,7 @@ void fn_801C09B0(void *arg0) {
     if (*(u32 *)((char *)temp_r31 + 0x6C) == 0) {
         fn_8000C070(arg0, 6);
     }
-    fn_8014876C(lbl_8032FF08, 0x64, 0x2EE);
+    fn_8014876C(gFxChannels, 0x64, 0x2EE);
 }
 
 void fn_801C0A28(void *arg0) {
@@ -5037,7 +5037,7 @@ void fn_801C0A28(void *arg0) {
     temp_r31 = Ui_FindChild(arg0, 0x81, 0);
     fn_8016A5AC(*(s32 *)((char *)arg0 + 0x18));
     fn_8013FEF0();
-    fn_8014876C(lbl_8032FF08, 0x46, 0x2EE);
+    fn_8014876C(gFxChannels, 0x46, 0x2EE);
     fn_800BE658(fn_801D2AAC(temp_r31), arg0);
 }
 
@@ -5964,7 +5964,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     void fn_80148980(void *, s32);
     extern void *lbl_80298040[];
     extern u8 lbl_8027D030[];
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     extern void *gPadInput;
     extern f32 lbl_8036B374, lbl_8036B378, lbl_8036B37C, lbl_8036B380;
     extern f32 lbl_8036B384, lbl_8036B388;
@@ -6080,10 +6080,10 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 *(f32 *)((u8 *)q + 0x48) = lbl_8036B380;
                 if (fn_80146C94(lbl_80298040[*(s32 *)((u8 *)st + 0x24)]) == -1) {
                     flag = 0;
-                    if ((lbl_8032FF08[0xC] & 1) && ((Obj *)lbl_8032FF08)->v2() != 0)
+                    if ((gFxChannels[0xC] & 1) && ((Obj *)gFxChannels)->v2() != 0)
                         flag = 1;
                     if (flag)
-                        fn_80148980(lbl_8032FF08, 0x64);
+                        fn_80148980(gFxChannels, 0x64);
                     *(s32 *)((u8 *)st + 0x20) = 0xA;
                     *(s32 *)((u8 *)st + 0x28) = *(s32 *)((u8 *)st + 0x24);
                 }

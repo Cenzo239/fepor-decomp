@@ -56,10 +56,10 @@ void fn_800288E4(void) {
     void fn_8014876C(void *, s32, s32);
     void fn_80146AF0(void);
     extern u8 lbl_80269070[];
-    extern u16 lbl_8032FF08[];
+    extern u16 gFxChannels[];
     if (fn_80146C94((u8 *)lbl_80269070 + 0xE6) != -1) {
         fn_80147EBC(0x3E8);
-        fn_8014876C(lbl_8032FF08, 0x64, 0x3E8);
+        fn_8014876C(gFxChannels, 0x64, 0x3E8);
         fn_801481CC((u8 *)lbl_80269070 + 0xE6, 0x190);
         fn_80146AF0();
     }
@@ -2179,7 +2179,7 @@ extern "C" void fn_8002DA30(void)
         u16 unk2C;
         u16 unk2E;
     };
-    extern Obj lbl_8032FF08;
+    extern Obj gFxChannels;
 
     void *str;
     Obj *obj;
@@ -2227,7 +2227,7 @@ extern "C" void fn_8002DA30(void)
     base = gBattleState;
     if (fn_800BDD08((u8 *)base + 0xB4, lbl_80269210 + 0x26D, base) == 0) {
         ok = 0;
-        obj = &lbl_8032FF08;
+        obj = &gFxChannels;
         if (obj->flag & 1) {
             if (obj->v0()) {
                 ok = 1;
@@ -2247,7 +2247,7 @@ extern "C" void fn_8002DA30(void)
 
     idx = fn_80146C94(str);
     if (idx != -1) {
-        obj = (Obj *)((u8 *)&lbl_8032FF08 + (u8)idx * 0x30);
+        obj = (Obj *)((u8 *)&gFxChannels + (u8)idx * 0x30);
         if (fn_80146C94(lbl_80269210 + 0x1E3) != -1
             || fn_80146C94(lbl_80269210 + 0x1F1) != -1
             || fn_80146C94(lbl_80269210 + 0x1FF) != -1

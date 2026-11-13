@@ -3,7 +3,7 @@
 #include "common.h"
 
 void fn_80149F38(void) {
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     void fn_8014A008(void);
     void fn_80149FE0(void);
     void fn_80149FB8(void);
@@ -15,7 +15,7 @@ void fn_80149F38(void) {
     } T;
     T *t;
 
-    t = (T *)lbl_8032FF08;
+    t = (T *)gFxChannels;
     fn_8022C260(t->a, (void *)fn_8014A008, 0, 0x30, 4);
     fn_8022C260(t->b, (void *)fn_80149FE0, 0, 0x30, 0xA);
     fn_8022C260(t->c, (void *)fn_80149FB8, 0, 0x30, 0x1C);

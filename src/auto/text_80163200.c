@@ -2879,7 +2879,7 @@ void fn_80169870(void *arg0) {
     void fn_80140304(void *, s32);
     void fn_80145520(void);
     void fn_80148980(void *, s32);
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     extern s32 gUiInputFlags;
     extern s32 lbl_80367AE0;
     s32 flags;
@@ -2896,7 +2896,7 @@ void fn_80169870(void *arg0) {
     lbl_80367AE0 = 0;
     if (!(flags & 0x10)) {
         fn_80145520();
-        fn_80148980(lbl_8032FF08, 0x1F4);
+        fn_80148980(gFxChannels, 0x1F4);
     }
 }
 
@@ -14593,7 +14593,7 @@ void fn_8017FD84(void *arg0) {
     s8 fn_80036DE0(void *, void *);
     s32 fn_80036EAC(void *, s8);
     void fn_800BE3CC(void *, void *, s32, void *);
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
 
     void *obj81;
     void *unit;
@@ -14623,7 +14623,7 @@ void fn_8017FD84(void *arg0) {
         }
     }
     other = fn_80016B7C(*(void **)((u8 *)node + 8));
-    fn_8014876C(lbl_8032FF08, 0x46, 0xFA);
+    fn_8014876C(gFxChannels, 0x46, 0xFA);
     obj82 = *(void **)((u8 *)other + 0x188);
     obj81 = *(void **)((u8 *)unit + 0x188);
     fn_800BE3CC(obj81, obj82, fn_80036EAC(unit, (s8)fn_80036DE0(unit, other)), self);

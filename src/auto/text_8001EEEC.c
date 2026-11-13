@@ -4127,9 +4127,9 @@ void fn_80028724(void) {
     void fn_801487D0(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 lbl_80268E40[];
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     extern u8 gBattleState[];
-    u8 *buf = lbl_8032FF08;
+    u8 *buf = gFxChannels;
 
     if (fn_800BDD08(gBattleState + 0xB4, lbl_80268E40 + 0x21E, gBattleState) == 0) {
         fn_80146AF0();

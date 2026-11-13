@@ -10777,7 +10777,7 @@ extern "C" s8 fn_80146C94(void *arg0) {
         u8 flags;
         u8 pad[0x23];
     };
-    extern Entry lbl_8032FF08[];
+    extern Entry gFxChannels[];
     void *self;
     u8 active;
     Entry *entry;
@@ -10786,7 +10786,7 @@ extern "C" s8 fn_80146C94(void *arg0) {
     void *h1;
 
     self = arg0;
-    base = lbl_8032FF08;
+    base = gFxChannels;
     i = 0;
     do {
         active = 0;
@@ -10919,7 +10919,7 @@ extern "C" void fn_80147188(s32 arg0) {
         s16 unk_2c;
         s16 unk_2e;
     };
-    extern Entry lbl_8032FF08[];
+    extern Entry gFxChannels[];
 
     Entry *p;
     s32 i;
@@ -10934,7 +10934,7 @@ extern "C" void fn_80147188(s32 arg0) {
     s32 temp;
 
     arg_save = arg0;
-    base = lbl_8032FF08;
+    base = gFxChannels;
     i = 0;
     p = base + 0;
     ext = arg_save;
@@ -11413,7 +11413,7 @@ extern "C" void fn_80147EBC(s16 arg0) {
         virtual void v24() = 0;
         virtual u8 v25() = 0;
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     extern f32 lbl_8036A7A0;
     s32 a;
     s16 val;
@@ -11423,7 +11423,7 @@ extern "C" void fn_80147EBC(s16 arg0) {
     u8 t;
 
     a = arg0;
-    p = lbl_8032FF08;
+    p = gFxChannels;
     i = 0;
     do {
         if ((*(u8 *)((u8 *)p + 0xC) & 1) && p->v25() != 0) {
@@ -11459,7 +11459,7 @@ void fn_80147FA8(s16 arg0) {
         u8 pad_2B;
         s16 unk_2C;      /* +0x2C */
         s16 unk_2E;      /* +0x2E */
-    } lbl_8032FF08;
+    } gFxChannels;
     extern f32 lbl_8036A7A0;
     s32 var_r31;
     struct Unk30 *var_r30;
@@ -11468,7 +11468,7 @@ void fn_80147FA8(s16 arg0) {
     s16 var_r4;
 
     var_r31 = arg0;
-    var_r30 = &lbl_8032FF08;
+    var_r30 = &gFxChannels;
     var_r29 = 0;
     do {
         if ((var_r30->flags & 1) &&
@@ -11506,7 +11506,7 @@ extern "C" void fn_801480D8(s16 arg0) {
         virtual void v1() = 0;
         virtual void v2() = 0;
     };
-    extern Obj lbl_8032FF08[];
+    extern Obj gFxChannels[];
     extern f32 lbl_8036A7A0;
     s16 raw;
     s32 a;
@@ -11518,7 +11518,7 @@ extern "C" void fn_801480D8(s16 arg0) {
 
     raw = arg0;
     a = raw;
-    p = lbl_8032FF08;
+    p = gFxChannels;
     i = 0;
     do {
         flags = *(u8 *)((u8 *)p + 0xC);
@@ -11578,7 +11578,7 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
         s16 unk_2c;
         s16 unk_2e;
     };
-    extern Entry lbl_8032FF08[];
+    extern Entry gFxChannels[];
 
     u8 active;
     s32 i;
@@ -11594,7 +11594,7 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     s16 n;
     void *h1;
 
-    base = lbl_8032FF08;
+    base = gFxChannels;
     found = (Entry *)((u8 *)base + (arg0 * 0x30));
     i = 0;
     do {
@@ -12079,7 +12079,7 @@ extern "C" void fn_801490C8(void *arg0) {
     extern u8 lbl_80367AED;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     struct Obj {
         u8 pad0[8];
         virtual u8 v0() = 0;
@@ -12153,7 +12153,7 @@ extern "C" void fn_801490C8(void *arg0) {
                 }
             }
             if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEC != lbl_80367AED || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
-                if((void *)lbl_8032FF08==self) {
+                if((void *)gFxChannels==self) {
  rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
@@ -12178,7 +12178,7 @@ extern "C" void fn_801490C8(void *arg0) {
                 if (self->flags & 2) {
                     rate = fn_8014953C();
                 }
-                if((void *)lbl_8032FF08==self) {
+                if((void *)gFxChannels==self) {
  rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
@@ -12692,7 +12692,7 @@ extern u32 lbl_80291A74;
 extern u32 lbl_80291B70;
 extern u32 lbl_80295478;
 extern u8 gSeCueSlots[];
-extern u8 lbl_8032FF08[];
+extern u8 gFxChannels[];
 #include "common.h"
 extern u32 lbl_802922F0;
 

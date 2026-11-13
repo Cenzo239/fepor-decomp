@@ -2013,25 +2013,25 @@ void fn_801EDF7C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801EDFCC(void) {
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     void fn_80146AF0(void);
     void fn_801487D0(void *, s32);
     void fn_8014876C(void *, s32, s32);
     s32 p;
 
-    p = (s32)lbl_8032FF08;
+    p = (s32)gFxChannels;
     fn_80146AF0();
     fn_801487D0((void *)p, 0x3E8);
     fn_8014876C((void *)p, 0x64, 0x3E8);
 }
 #pragma global_optimizer on
 void fn_801EE018(void *arg0) {
-    extern u8 lbl_8032FF08[];
+    extern u8 gFxChannels[];
     void fn_80148980(void *, s32, s32);
     s16 temp_r5;
 
     temp_r5 = *(s16 *)((char *)arg0 + 0x3A);
-    fn_80148980(lbl_8032FF08 + ((u8)temp_r5 * 0x30), 0x3E8, temp_r5);
+    fn_80148980(gFxChannels + ((u8)temp_r5 * 0x30), 0x3E8, temp_r5);
 }
 
 void fn_801EE054(void *arg0) {
