@@ -1988,7 +1988,7 @@ void fn_801B9254(void *arg0) {
     fn_8005C8B4(lbl_8027C5E8 + 0x9C);
 }
 
-void fn_801B9300(void *arg0) {
+void Ui_ApplyUnitManageFocus(void *arg0) {
     void fn_8013AD70(void *, s32);
     s32 Ui_ListGetSelected(void *);
     void Ui_SetPortraitUnit(void *, s32);
