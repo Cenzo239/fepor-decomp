@@ -264,7 +264,7 @@ void fn_801EB294(void *arg0)
     void *fn_800AA794(void);
     void fn_800AACDC(void *);
     u32 fn_8013FF94(void *, s32, s32);
-    void fn_801475FC(u8 *, s32);
+    void Ui_PlaySeCue(u8 *, s32);
     void fn_801658DC(u32, u8 *);
     extern u8 lbl_8027EE08[];
     extern u8 lbl_802CA264[];
@@ -377,7 +377,7 @@ void fn_801EB294(void *arg0)
                 fn_8004A1F0();
             }
             fn_8002833C(gUiContext, unit);
-            fn_801475FC(lbl_8027EE08 + 0x1c9, 0x64);
+            Ui_PlaySeCue(lbl_8027EE08 + 0x1c9, 0x64);
             *((u8 *)self + 0x54) = 2;
             fn_8000C070(self, 0xA);
             return;
@@ -389,7 +389,7 @@ void fn_801EB294(void *arg0)
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
                     fn_8002297C(lbl_802CA518);
                     fn_800AACDC(unit);
-                    fn_801475FC(lbl_8027EE08 + 0x1d9, 0x64);
+                    Ui_PlaySeCue(lbl_8027EE08 + 0x1d9, 0x64);
                 }
             } else {
                 goto block_65;
@@ -401,7 +401,7 @@ void fn_801EB294(void *arg0)
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
                     fn_8002297C(lbl_802CA518);
                     fn_800AACDC(unit);
-                    fn_801475FC(lbl_8027EE08 + 0x1f4, 0x64);
+                    Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
                 }
             } else if (unit == NULL) {
                 flag = 0;
@@ -416,7 +416,7 @@ void fn_801EB294(void *arg0)
                     iter = next;
                 }
                 if (flag != 0) {
-                    fn_801475FC(lbl_8027EE08 + 0x1f4, 0x64);
+                    Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
                     fn_8002297C(lbl_802CA518);
                 }
             }
@@ -426,7 +426,7 @@ void fn_801EB294(void *arg0)
                 if (gUiInputFlags & 0x400) {
                     fn_8004A1F0();
                 }
-                fn_801475FC(lbl_8027EE08 + 0x20f, 0x64);
+                Ui_PlaySeCue(lbl_8027EE08 + 0x20f, 0x64);
                 fn_8000C070(self, 1);
                 return;
             }

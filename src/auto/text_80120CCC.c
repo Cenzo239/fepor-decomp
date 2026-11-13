@@ -833,7 +833,7 @@ void fn_80122450(void *arg0) {
 void fn_80122524(void *arg0) {
     void fn_80120CFC(u16 *);
     u8 fn_80120C2C(void);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_80109BB4(s32, s32);
     void fn_8000C188(void *);
     void fn_80121630(void *);
@@ -844,7 +844,7 @@ void fn_80122524(void *arg0) {
 
     fn_80120CFC(&lbl_80367A58);
     if (fn_80120C2C() != 0 || (lbl_80367A58 & 4)) {
-        fn_801475FC(lbl_80274D60 + 0x3D, 0x64);
+        Ui_PlaySeCue(lbl_80274D60 + 0x3D, 0x64);
         if (*(u32 *)((u8 *)arg0 + 0x30) != 0) {
             fn_80109BB4(*(s32 *)((u8 *)arg0 + 0x38), 8);
         }

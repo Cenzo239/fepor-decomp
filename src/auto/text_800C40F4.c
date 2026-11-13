@@ -17641,7 +17641,7 @@ void fn_800F2174(void *arg0)
     void *fn_80040844(void);
     u8 fn_80047AF8(void);
     void *fn_80068548(void);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_8014CAD4(void *, f32, f32);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
@@ -17891,7 +17891,7 @@ void fn_800F2174(void *arg0)
         }
     }
     if ((s32)f30 != (s32)*(f32 *)(lbl_80330708 + 0x534) || (s32)f31 != (s32)*(f32 *)(lbl_80330708 + 0x538)) {
-        fn_801475FC(lbl_80272D08 + 0x37, 0x64);
+        Ui_PlaySeCue(lbl_80272D08 + 0x37, 0x64);
     }
     self[0x65C] = 0;
 }

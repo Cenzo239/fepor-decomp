@@ -183,7 +183,7 @@ void *fn_800199E8(void) {
 #pragma cplusplus on
 extern "C" void fn_800199F8(void *arg0) {
     void fn_8000A274(s32);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_80268330[];
     extern u8 lbl_80330708[];
     extern void *gPadInput;
@@ -236,14 +236,14 @@ extern "C" void fn_800199F8(void *arg0) {
         temp_f1 = *(f32 *)((u8 *)arg0 + 4);
         if (temp_f1 < lbl_80368CF8) {
             *(f32 *)((u8 *)arg0 + 4) = temp_f1 + lbl_80368CF8;
-            fn_801475FC(lbl_80268330 + 0x18C, 0x64);
+            Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
         }
     }
     if (var_r30 & 0x20000000) {
         temp_f1_2 = *(f32 *)((u8 *)arg0 + 4);
         if (temp_f1_2 > lbl_80368CF4) {
             *(f32 *)((u8 *)arg0 + 4) = temp_f1_2 - lbl_80368CF8;
-            fn_801475FC(lbl_80268330 + 0x18C, 0x64);
+            Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
         }
     }
     temp_f1_3 = *(f32 *)((u8 *)arg0 + 4);

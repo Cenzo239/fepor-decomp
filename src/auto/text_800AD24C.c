@@ -3995,14 +3995,14 @@ s32 fn_800B7A08(void) {
 }
 
 s32 fn_800B7A2C(u32 arg0) {
-    M2C_UNK fn_801475FC(u32, s32);
+    M2C_UNK Ui_PlaySeCue(u32, s32);
     extern s32 gUiInputFlags;
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
     if (!(gUiInputFlags & 3)) {
-        fn_801475FC(arg0, 100);
+        Ui_PlaySeCue(arg0, 100);
     }
     return 1;
 }

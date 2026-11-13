@@ -1231,7 +1231,7 @@ extern "C" void fn_80018B24(void) {
 
 extern "C" void fn_80018E0C(void)
 {
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_803671C0;
     extern u8 lbl_803671C8;
     extern s32 lbl_803671C4;
@@ -1259,7 +1259,7 @@ extern "C" void fn_80018E0C(void)
             break;
         }
     }
-    fn_801475FC(lbl_80268330 + 0x18C, 0x64);
+    Ui_PlaySeCue(lbl_80268330 + 0x18C, 0x64);
 }
 
 extern "C" void fn_80018EC0(void) {

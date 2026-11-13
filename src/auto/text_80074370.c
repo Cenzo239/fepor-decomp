@@ -719,7 +719,7 @@ s32 fn_800755F4(void) {
 
 s32 fn_800755FC(void) {
     extern u16 lbl_8026C0B8[];
-    fn_801475FC(&lbl_8026C0B8[0x7F], 0x64);
+    Ui_PlaySeCue(&lbl_8026C0B8[0x7F], 0x64);
     return 1;
 }
 
@@ -1002,7 +1002,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     M2C_UNK fn_800285C0(M2C_UNK *);
     s8 fn_80037E00(void *);
     M2C_UNK fn_80094CDC(void *, s8);
-    M2C_UNK fn_801475FC(void *, M2C_UNK);
+    M2C_UNK Ui_PlaySeCue(void *, M2C_UNK);
     extern M2C_UNK lbl_8026C0B8;
     extern M2C_UNK lbl_802872B0;
     extern M2C_UNK gUiContext;
@@ -1014,7 +1014,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) != 0) {
         return 0x10;
     }
-    fn_801475FC(&lbl_8026C0B8 + 0x29E, 0x64);
+    Ui_PlaySeCue(&lbl_8026C0B8 + 0x29E, 0x64);
     fn_80094CDC(M2C_FIELD(&gUiContext, void **, 0), (s8) M2C_FIELD(&gUiContext, u8 *, 0xA));
     if ((s8) M2C_FIELD(&gUiContext, u8 *, 0xA) < 4) {
         temp_r30 = M2C_FIELD(arg1, void **, 0x18);

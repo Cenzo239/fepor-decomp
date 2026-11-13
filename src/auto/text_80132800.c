@@ -340,7 +340,7 @@ void fn_80132CDC(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80132CFC(void *arg0) {
-    s8 fn_801475FC(void *, s32);
+    s8 Ui_PlaySeCue(void *, s32);
     extern u8 lbl_802764BC[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
@@ -437,7 +437,7 @@ extern "C" void fn_80132CFC(void *arg0) {
             } else {
                 *p = (u8)(*p - 1);
             }
-            fn_801475FC(lbl_802764BC + 0x1C3, 0x64);
+            Ui_PlaySeCue(lbl_802764BC + 0x1C3, 0x64);
             return;
         }
     }
@@ -448,7 +448,7 @@ extern "C" void fn_80132CFC(void *arg0) {
             } else {
                 *p = (u8)(*p + 1);
             }
-            fn_801475FC(lbl_802764BC + 0x1C3, 0x64);
+            Ui_PlaySeCue(lbl_802764BC + 0x1C3, 0x64);
         }
     }
 }
@@ -1752,7 +1752,7 @@ loop_2:
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void fn_8013577C(void *arg0) {
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_8013ED84(void *, s16);
     extern u8 lbl_80276720[];
     extern u32 gUiInputFlags;
@@ -1897,7 +1897,7 @@ extern "C" void fn_8013577C(void *arg0) {
             }
         }
         if (saved != *(s16 *)((u8 *)arg0 + 0x4E)) {
-            fn_801475FC(lbl_80276720 + 0x22, 0x64);
+            Ui_PlaySeCue(lbl_80276720 + 0x22, 0x64);
         }
     }
     fn_8013ED84(*(void **)((u8 *)arg0 + 0x48),
@@ -4321,7 +4321,7 @@ extern "C" void fn_80139E5C(void *arg0) {
 #pragma global_optimizer off
 #pragma cplusplus on
 extern "C" void fn_80139E88(void *arg0) {
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_8013ED84(void *, s16);
     extern char lbl_802768A0[];
     extern u32 gUiInputFlags;
@@ -4465,7 +4465,7 @@ extern "C" void fn_80139E88(void *arg0) {
             }
         }
         if (saved != *(s16 *)((u8 *)arg0 + 0x4E)) {
-            fn_801475FC(lbl_802768A0 + 0x1D, 0x64);
+            Ui_PlaySeCue(lbl_802768A0 + 0x1D, 0x64);
         }
     }
     fn_8013ED84(*(void **)((u8 *)arg0 + 0x48),
@@ -5549,7 +5549,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void *fn_8000B908(u8);
     s32 Ui_IsUnitInfoPopupOpen(void *);
     void fn_80167190(void *, void *, f32, f32);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -5636,7 +5636,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
             p += (s8)*(u8 *)((u8 *)arg1 + 0x62);
             tmp = fn_8000B908(p[0x40]);
             (*(Inner **)((u8 *)tmp + 0x34))->v14(arg1, tmp);
-            fn_801475FC(lbl_80276908 + 0x56, 0x64);
+            Ui_PlaySeCue(lbl_80276908 + 0x56, 0x64);
         }
     }
 }
@@ -6004,13 +6004,13 @@ void *fn_8013CD90(void *arg0) {
 }
 
 s32 fn_8013CDCC(void) {
-    s8 fn_801475FC(void *, int);
+    s8 Ui_PlaySeCue(void *, int);
     extern u8 gUiContext[24];
     extern u8 lbl_80276908[];
     u8 *ptr1 = (u8 *)&gUiContext;
     u8 *ptr2 = (u8 *)&lbl_80276908;
     ptr1[8] = 0x80;
-    fn_801475FC(ptr2 + 0x73, 0x64);
+    Ui_PlaySeCue(ptr2 + 0x73, 0x64);
     return 1;
 }
 
@@ -6184,7 +6184,7 @@ void fn_8013D140(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *fn_8000B908(u8);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
@@ -6303,7 +6303,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                     Ui_ShowUnitInfoPopup(gUnitInfoPopup, inner->GetObj(item), fx, fy);
                 }
             }
-            fn_801475FC(lbl_80276908 + 0x83, 0x64);
+            Ui_PlaySeCue(lbl_80276908 + 0x83, 0x64);
         }
     }
 }
@@ -9408,7 +9408,7 @@ extern "C" void fn_80144000(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_8014402C(void *arg0, s32 arg1) {
-    s32 fn_801475FC(u8 *, s32);
+    s32 Ui_PlaySeCue(u8 *, s32);
     extern u8 lbl_80276B3C[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
@@ -9455,7 +9455,7 @@ extern "C" void fn_8014402C(void *arg0, s32 arg1) {
             *(s16 *)((u8 *)arg0 + 0x9E) = 1;
             *(u8 *)((u8 *)arg0 + 0x95) = 1;
             (*(Obj **)((u8 *)arg0 + 0x38))->v18(arg1, next, 1);
-            fn_801475FC(lbl_80276B3C + 0x46, 0x64);
+            Ui_PlaySeCue(lbl_80276B3C + 0x46, 0x64);
         }
     } else if (buttons & 0x02000002) {
         next = cursor + 1;
@@ -9466,7 +9466,7 @@ extern "C" void fn_8014402C(void *arg0, s32 arg1) {
             *(s16 *)((u8 *)arg0 + 0xC6) = 1;
             *(u8 *)((u8 *)arg0 + 0xBD) = 1;
             (*(Obj **)((u8 *)arg0 + 0x38))->v18(arg1, next, 0);
-            fn_801475FC(lbl_80276B3C + 0x46, 0x64);
+            Ui_PlaySeCue(lbl_80276B3C + 0x46, 0x64);
         }
     }
 }
@@ -11053,12 +11053,12 @@ s32 fn_80147548(void *arg0, f32 *arg1, s32 arg2) {
 }
 
 s32 fn_80147578(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
-    s32 fn_801475FC(void *, s32);
+    s32 Ui_PlaySeCue(void *, s32);
     extern u8 lbl_803301A8[1344];
     s32 temp_r3;
     u8 *temp_r4;
 
-    temp_r3 = fn_801475FC(arg0, arg1);
+    temp_r3 = Ui_PlaySeCue(arg0, arg1);
     if ((s8)temp_r3 == -1) {
         return -1;
     }
@@ -11070,7 +11070,7 @@ s32 fn_80147578(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
     return temp_r3;
 }
 
-s8 fn_801475FC(void *arg0, int arg1) {
+s8 Ui_PlaySeCue(void *arg0, int arg1) {
     void *fn_8000D2BC(void *);
     extern u8 lbl_803301A8[1344];
     extern s32 gUiInputFlags;

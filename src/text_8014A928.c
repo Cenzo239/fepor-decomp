@@ -70,7 +70,7 @@ extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
 extern u8 lbl_80367B0D;
 
-void fn_801475FC(s32, s32); /* extern */
+void Ui_PlaySeCue(s32, s32); /* extern */
 #include "global.h"
 
 extern void* fn_80019F04();
@@ -112,7 +112,7 @@ s32 fn_8014A98C(s32 arg0, s32 arg1, void *arg2)
 {
     u8 *fn_8000D2BC(s32);
     s8 fn_80146BE4(s32);
-    void fn_801475FC(s32, s32);
+    void Ui_PlaySeCue(s32, s32);
 
     s32 index;
     s32 entry;
@@ -126,7 +126,7 @@ s32 fn_8014A98C(s32 arg0, s32 arg1, void *arg2)
     entry = ((s32 *)lbl_80367B00)[index];
 
     if (!(fn_8000D2BC(entry)[5] & 4) || (fn_80146BE4(entry) < 0)) {
-        fn_801475FC(entry, 0x64);
+        Ui_PlaySeCue(entry, 0x64);
     }
 
     return 0;
@@ -257,12 +257,12 @@ s32 fn_8014ADD4(void) {
 s32 fn_8014ADF0(void) {
     u8 *fn_8000D2BC(s32);
     s8 fn_80146BE4(s32);
-    void fn_801475FC(s32, s32);
+    void Ui_PlaySeCue(s32, s32);
     extern s32 *lbl_80367B14;
 
     s32 temp_r31 = *lbl_80367B14;
     if (!(fn_8000D2BC(temp_r31)[5] & 4) || (fn_80146BE4(temp_r31) < 0)) {
-        fn_801475FC(temp_r31, 0x64);
+        Ui_PlaySeCue(temp_r31, 0x64);
     }
     return 0;
 }
@@ -501,12 +501,12 @@ s32 fn_8014B31C(void) {
 s32 fn_8014B328(void) {
     u8 *fn_8000D2BC(s32);
     s8 fn_80146BE4(s32);
-    void fn_801475FC(s32, s32);
+    void Ui_PlaySeCue(s32, s32);
     extern s32 *lbl_80367B14;
 
     s32 temp_r31 = *lbl_80367B14;
     if (!(fn_8000D2BC(temp_r31)[5] & 4) || (fn_80146BE4(temp_r31) < 0)) {
-        fn_801475FC(temp_r31, 0x64);
+        Ui_PlaySeCue(temp_r31, 0x64);
     }
     return 0;
 }

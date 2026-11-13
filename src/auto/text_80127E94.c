@@ -29,7 +29,7 @@ extern "C" void fn_80127E94(void *arg0) {
 #pragma cplusplus reset
 s32 fn_80127EC0(void) {
     extern u16 gScriptCmdNames[];
-    fn_801475FC((u16 *)((u8 *)gScriptCmdNames + 0x521), 0x64);
+    Ui_PlaySeCue((u16 *)((u8 *)gScriptCmdNames + 0x521), 0x64);
     return 9;
 }
 
@@ -73,7 +73,7 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
         virtual u32 v28();
     };
     extern u8 lbl_80367A6C;
-    s32 fn_801475FC(u32, s32);
+    s32 Ui_PlaySeCue(u32, s32);
     Obj *obj;
 
     (void)arg0;
@@ -81,7 +81,7 @@ extern "C" s32 fn_80127F20(void *arg0, void *arg1, void *arg2) {
     obj = *(Obj **)((u8 *)arg1 + 0x3C);
     if (obj->v28() != 0U) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
-        fn_801475FC(obj->v28(), 0x64);
+        Ui_PlaySeCue(obj->v28(), 0x64);
     }
     return 5;
 }

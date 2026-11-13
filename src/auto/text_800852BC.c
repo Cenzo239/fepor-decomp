@@ -1250,7 +1250,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
 void fn_80088300(void *arg0) {
 u32 *fn_80037BD0(void *, s32);
 void fn_8007DAC4(void *, void *);
-void fn_801475FC(void *, s32);
+void Ui_PlaySeCue(void *, s32);
 void Ui_HideUnitInfoPopup(void *);
 extern u8 lbl_8026C86C[];
 extern Menu888Entry lbl_80288FE8[][37];
@@ -1283,7 +1283,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-fn_801475FC(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
 }
 else if (repeat & 0x04000004) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1305,7 +1305,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-fn_801475FC(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
 }
 else if (repeat & 0x01000001) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1327,7 +1327,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-fn_801475FC(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
 }
 else if (repeat & 0x02000002) {
 s32 index=M2C_FIELD(self,s32 *,0x1c);
@@ -1349,7 +1349,7 @@ if(valid) break;
 }
 M2C_FIELD(self,s32 *,0x1c)=index;
 fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,s32 *,0x1c)*20);
-fn_801475FC(lbl_8026C86C+0x19b,100);
+Ui_PlaySeCue(lbl_8026C86C+0x19b,100);
 }
 }
 
@@ -1359,7 +1359,7 @@ void fn_800888A4(void *arg0) {
     void fn_8000C070(void *, s32);
     void *fn_80037BD0(void *, s32);
     void fn_8007DAC4(void *, void *);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void fn_8016758C(void *, void *, void *, f32, f32);
     extern u8 gUnitInfoPopup[];
@@ -1386,37 +1386,37 @@ void fn_800888A4(void *arg0) {
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
         fn_8000C070(arg0,3);
-        fn_801475FC(lbl_8026C86C+0x394,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x394,100);
         return;
     }
     if (repeat & 0x02000002) {
         fn_8000C070(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        fn_801475FC(lbl_8026C86C+0x3A4,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
         return;
     }
     if (repeat & 0x01000001) {
         fn_8000C070(arg0,1);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        fn_801475FC(lbl_8026C86C+0x3A4,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x3A4,100);
         return;
     }
     if (repeat & 0x08000008) {
         fn_8000C070(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = -1;
-        fn_801475FC(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;
     }
     if (repeat & 0x04000004) {
         fn_8000C070(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 1;
-        fn_801475FC(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;
     }
     if ((repeat & 0x100) && M2C_FIELD(M2C_FIELD(self, void * *, 0x58), u32 *, 0x194) != 0) {
         fn_8000C070(arg0,2);
         M2C_FIELD(self, s32 *, 0x20) = 0;
-        fn_801475FC(lbl_8026C86C+0x3C0,100);
+        Ui_PlaySeCue(lbl_8026C86C+0x3C0,100);
         return;
     }
     if (pressed & 0x800) {

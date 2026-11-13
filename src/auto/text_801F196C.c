@@ -536,7 +536,7 @@ void fn_801F2E08(void *arg0) {
     void fn_80057E6C(s32);
     void fn_8008A290(s32, s32);
     u8 fn_8008A59C(void);
-    void fn_801475FC(char *, s32);
+    void Ui_PlaySeCue(char *, s32);
     u8 fn_801E3570(void *, s32);
     extern void *gPadInput;
     extern char lbl_8027F868[];
@@ -555,7 +555,7 @@ void fn_801F2E08(void *arg0) {
     stick = *(s32 *)((u8 *)gPadInput + 0xC);
     pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (((pressed & 0x100) && (fn_8008A59C() == 0)) || ((pressed & 0x200) && (fn_8008A59C() == 0))) {
-        fn_801475FC(lbl_8027F868 + 0x11BD, 0x64);
+        Ui_PlaySeCue(lbl_8027F868 + 0x11BD, 0x64);
         fn_8000C070(arg0, 1);
         fn_8008A290(3, 0xB4);
         return;
@@ -605,7 +605,7 @@ void fn_801F2E08(void *arg0) {
         *(s16 *)((u8 *)obj + 0x16) = 0;
         *(s16 *)((u8 *)obj + 0x12) = (s16)((tmp % 3) * 0xA0 + 0x45);
         *(s16 *)((u8 *)obj + 0x14) = (s16)((tmp / 3) * 0x1C + 0x9C);
-        fn_801475FC(lbl_8027F868 + 0x11CD, 0x64);
+        Ui_PlaySeCue(lbl_8027F868 + 0x11CD, 0x64);
         fn_8000C070(arg0, 3);
         return;
     }
@@ -654,7 +654,7 @@ void fn_801F2E08(void *arg0) {
         *(s16 *)((u8 *)obj + 0x16) = 0;
         *(s16 *)((u8 *)obj + 0x12) = (s16)((tmp % 3) * 0xA0 + 0x45);
         *(s16 *)((u8 *)obj + 0x14) = (s16)((tmp / 3) * 0x1C + 0x9C);
-        fn_801475FC(lbl_8027F868 + 0x11CD, 0x64);
+        Ui_PlaySeCue(lbl_8027F868 + 0x11CD, 0x64);
         fn_8000C070(arg0, 3);
     }
 }
@@ -758,7 +758,7 @@ void fn_801F3338(void *arg0) {
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
             if (fn_801E3570(lbl_80331FB8, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
-                fn_801475FC(lbl_8027F868 + 0x121C, 0x64);
+                Ui_PlaySeCue(lbl_8027F868 + 0x121C, 0x64);
                 fn_8000C070(arg0, 2);
                 fn_8008A290(3, 0xB4);
                 return;
@@ -766,7 +766,7 @@ void fn_801F3338(void *arg0) {
         }
     }
     if ((temp_r27 & 0x200) && (fn_8008A59C() == 0)) {
-        fn_801475FC(lbl_8027F868 + 0x11BD, 0x64);
+        Ui_PlaySeCue(lbl_8027F868 + 0x11BD, 0x64);
         fn_8000C070(arg0, 0);
         fn_8008A290(3, 0xB4);
         return;
@@ -818,7 +818,7 @@ void fn_801F3338(void *arg0) {
         temp_r5_3 = temp_r6 * 0x1C;
         M2C_FIELD(temp_r30, s16 *, 0x1C) = (s16)((((temp_r7 - temp_r5_2) % 3) * 0xA0) + 0x45);
         M2C_FIELD(temp_r30, s16 *, 0x1E) = (s16)(temp_r5_3 + 0x9C);
-        fn_801475FC(lbl_8027F868 + 0x122C, 0x64);
+        Ui_PlaySeCue(lbl_8027F868 + 0x122C, 0x64);
     }
 }
 
@@ -964,14 +964,14 @@ void fn_801F3890(void) {
          *(float *)(0x8036C56C + 0x30) = *(float *)0x8036B858;
          // r3 holds r27 which is arg0 from the start
          // r4 = 0x64 = 100 
-         fn_801475FC(r29, 0x64);
+         Ui_PlaySeCue(r29, 0x64);
          fn_8000C070(r29, 1);  
          fn_8008A290(r29, 3, 0xB4); 
     } else {
         if ((*(u16 *)(r5 + 0xC) & 0x8000) != 0) { // Check bit 22
             *(u16 *)(0x8036C56C + 0xE) = 0;
             r0_1 = *(u16 *)(0x8027F868 + 0x11BD); 
-            fn_801475FC(r29, 0x64);
+            Ui_PlaySeCue(r29, 0x64);
             fn_8000C070(r29, 4);
         } else {
             r0_2 = *(u16 *)(r5 + 0xC); // This is likely a mask
@@ -995,7 +995,7 @@ void fn_801F3890(void) {
             if (r30 != *(u16 *)(0x8036C56C + 0xC))
             {
                 r0_3 = *(u16 *)(0x8027F868 + 0x122C);
-                fn_801475FC(r29, 0x64);
+                Ui_PlaySeCue(r29, 0x64);
             }
         }
     }
@@ -1394,7 +1394,7 @@ void fn_801F5308(void* arg0) {
     temp_r3 = *(s32*)((u8*)gPadInput + 4);
     if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
         u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
-        fn_801475FC(ptr, 0x64);
+        Ui_PlaySeCue(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
         *(u16*)((u8*)temp_r4 + 0x2) = 0xC8;
         fn_8000C188(arg0, temp_r4);
@@ -1408,7 +1408,7 @@ void fn_801F5374(void* arg0) {
     temp_r3 = *(s32*)((u8*)gPadInput + 4);
     if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
         u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
-        fn_801475FC(ptr, 0x64);
+        Ui_PlaySeCue(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
         *(u16*)((u8*)temp_r4 + 0x2) = 0xC8;
         fn_8000C188(arg0, temp_r4);
@@ -1432,7 +1432,7 @@ void fn_801F53E0(void *arg0)
         return;
     }
 
-    fn_801475FC((u8 *)lbl_80280B58 + 0x77, 0x64);
+    Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
 
     fn_801DDBA8(
         *(void **)((u8 *)arg0 + 0x50),
@@ -1454,7 +1454,7 @@ void fn_801F5484(void *arg0)
 
     fn_801E2594(&lbl_803682F0);
 
-    fn_801475FC((u8 *)lbl_80280B58 + 0x77, 0x64);
+    Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
 
     fn_801DDBA8(
         *(void **)((u8 *)arg0 + 0x50),
@@ -1478,7 +1478,7 @@ void fn_801F5544(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000BF00(void *);
     s32 fn_8000E0E4(void *);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_801DDBA8(void *, s32, s32, s32, s32);
     extern u8 lbl_80331FB8[];
     void *tmp;
@@ -1492,7 +1492,7 @@ void fn_801F5544(void *arg0) {
         flag = *(u8 *)((u8 *)tmp + 0x4C);
     }
     if (flag == 4) {
-        fn_801475FC((u8 *)lbl_80280B58 + 0x77, 0x64);
+        Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
         fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0x9A), 0, 1, 0);
         fn_8000C070(arg0, 0x59);
     } else {
@@ -1504,7 +1504,7 @@ void fn_801F5544(void *arg0) {
         }
         switch (code) {
         case 0x4146454A:
-            fn_801475FC((u8 *)lbl_80280B58 + 0xAB, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0xBB), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 8;
             break;
@@ -1512,24 +1512,24 @@ void fn_801F5544(void *arg0) {
         case 0x41453745:
         case 0x41453758:
         case 0x41453759:
-            fn_801475FC((u8 *)lbl_80280B58 + 0xAB, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0xC8), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 0x10;
             break;
         case 0x4245384A:
         case 0x42453845:
         case 0x42453850:
-            fn_801475FC((u8 *)lbl_80280B58 + 0xAB, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0xAB, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0xD5), 0, 0, 0);
             *(u16 *)(lbl_80331FB8 + 0x10) |= 0x20;
             break;
         case 0:
-            fn_801475FC((u8 *)lbl_80280B58 + 0x77, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0xE2), 0, 1, 0);
             fn_8000C070(arg0, 0x59);
             break;
         default:
-            fn_801475FC((u8 *)lbl_80280B58 + 0x77, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_80280B58 + 0x77, 0x64);
             fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)lbl_80280B58 + 0xF1), 0, 1, 0);
             fn_8000C070(arg0, 0x59);
             break;
@@ -1542,7 +1542,7 @@ void fn_801F5A28(void *arg0) {
     void *fn_8000C0C0(void *);
     void fn_8000C188(void *);
     void fn_8000C070(void *, s32);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_8000BF00(void *);
     extern void *gPadInput;
     extern u16 lbl_80280B58[18];
@@ -1566,7 +1566,7 @@ void fn_801F5A28(void *arg0) {
     }
     temp_r4_2 = *(s32 *)((u8 *)gPadInput + 4);
     if ((temp_r4_2 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r4_2) & 0x200) != 0) {
-        fn_801475FC((u8 *)&lbl_80280B58 + 0x111, 0x64);
+        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x111, 0x64);
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         fn_8000C070(arg0, 0);
@@ -1577,7 +1577,7 @@ void fn_801F5A28(void *arg0) {
 void fn_801F5AEC(void *arg0) {
     s32 fn_8000E0E4(void *);
     void fn_801DDBA8(void *, s32, s32, s32, s32);
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     void fn_8000C188(void *);
     void fn_8000C070(void *, s32);
     extern void *gPadInput;
@@ -1589,13 +1589,13 @@ void fn_801F5AEC(void *arg0) {
     temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
     pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
-        fn_801475FC((u8 *)&lbl_80280B58 + 0x5A, 0x64);
+        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x5A, 0x64);
         fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)&lbl_80280B58 + 0x121), 0, 0, 0);
         fn_8000C188(arg0);
         return;
     }
     if (pressed & 0x200) {
-        fn_801475FC((u8 *)&lbl_80280B58 + 0x111, 0x64);
+        Ui_PlaySeCue((u8 *)&lbl_80280B58 + 0x111, 0x64);
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         fn_8000C070(arg0, 0x63);

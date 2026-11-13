@@ -1753,7 +1753,7 @@ extern "C" void fn_801ADD8C(void *arg0) {
 extern "C" void fn_801ADDB8(void *arg0) {
     extern u8 lbl_8027BC88[];
     extern void *gPadInput;
-    void fn_801475FC(void *, s32);
+    void Ui_PlaySeCue(void *, s32);
     extern s32 gUiInputFlags;
     u8 var_r3;
     s16 temp_r31;
@@ -1817,10 +1817,10 @@ extern "C" void fn_801ADDB8(void *arg0) {
             break;
         }
         if (temp_r0 != *(s16 *)((char *)arg0 + 0x3E)) {
-            fn_801475FC((u8 *)lbl_8027BC88 + 0x39, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_8027BC88 + 0x39, 0x64);
         }
         if (temp_r31 != *(s16 *)((char *)arg0 + 0x40)) {
-            fn_801475FC((u8 *)lbl_8027BC88 + 0x55, 0x64);
+            Ui_PlaySeCue((u8 *)lbl_8027BC88 + 0x55, 0x64);
         }
     }
 }
