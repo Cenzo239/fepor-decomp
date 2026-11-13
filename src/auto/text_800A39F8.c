@@ -2481,7 +2481,7 @@ void Ui_DrawPromptSprites(void *proc) {
     u16 GXGetTexObjHeight(void *);
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369BAC;
-    extern f32 lbl_80369BB0;
+    extern f32 gOptionsIdentityScale;
     extern f32 lbl_80369BB4;
     extern f32 lbl_80369BB8;
     extern f32 lbl_80369BBC;
@@ -2511,7 +2511,7 @@ void Ui_DrawPromptSprites(void *proc) {
     self = proc;
     *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)proc + 0x34) + 1;
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BAC, lbl_80369BB0);
+    Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BAC, gOptionsIdentityScale);
     Prim2D_PrepareTex();
     Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 0);
     st.x = GXGetTexObjWidth(st.buf);
@@ -2529,7 +2529,7 @@ void Ui_DrawPromptSprites(void *proc) {
             pulse = lbl_80369BC8 - pulse;
         }
         Prim2D_Begin();
-        Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BD0, lbl_80369BB0);
+        Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BD0, gOptionsIdentityScale);
         Prim2D_PrepareTex();
         Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 1);
         st.x = GXGetTexObjWidth(st.buf);
@@ -2547,7 +2547,7 @@ void Ui_DrawPromptSprites(void *proc) {
             pulse = lbl_80369BC8 - pulse;
         }
         Prim2D_Begin();
-        Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BE8, lbl_80369BB0);
+        Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BE8, gOptionsIdentityScale);
         Prim2D_PrepareTex();
         Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 2);
         st.x = GXGetTexObjWidth(st.buf);
@@ -2644,7 +2644,7 @@ void fn_800A9174(void) {
     extern u8 gOptionsStr[];
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369C0C;
-    extern f32 lbl_80369BB0;
+    extern f32 gOptionsIdentityScale;
     extern u8 lbl_802842B8[];
     extern u8 lbl_802842A4[];
     struct {
@@ -2663,10 +2663,10 @@ void fn_800A9174(void) {
     a = fn_8017A950(&tmp);
     b = fn_8017A950(&tmp);
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369C0C, lbl_80369BB0);
+    Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369C0C, gOptionsIdentityScale);
     Prim2D_SetTex(0, 3);
     Prim2D_PrepareTex();
-    fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, a, b, lbl_80369BB0, lbl_80369BA8);
+    fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, a, b, gOptionsIdentityScale, lbl_80369BA8);
     tmp.vt = lbl_802842B8;
     tmp.vt = lbl_802842A4;
     if (tmp.flag != 0) {
@@ -2728,6 +2728,6 @@ extern void *D_800E53FC;
 extern void *gOptionsStr;
 extern f32 lbl_80369BA8;
 extern f32 lbl_80369C0C;
-extern f32 lbl_80369BB0;
+extern f32 gOptionsIdentityScale;
 extern u8 lbl_802842B8[];
 extern u8 lbl_802842A4[];
