@@ -5054,7 +5054,7 @@ void fn_801C0A9C(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801C0C58(void *arg0) {
+extern "C" void Ui_HandleScrollListInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
