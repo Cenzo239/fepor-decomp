@@ -320,6 +320,7 @@ void __CARDUnlockedHandler(s32 chan, s32 result) {
     }
 }
 
+/* Lock/select the memory card EXI channel and arm the command timeout alarm. */
 s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
     extern u16 __CARDBlock[];
     s32 OSDisableInterrupts(void);
