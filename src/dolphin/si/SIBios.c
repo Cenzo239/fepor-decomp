@@ -37,7 +37,7 @@ s32 __cvt_fp2unsigned(f32 arg0);
 void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2);
 void fn_8026146C(s32 *);
 void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5);
-s32 fn_80255FB0(void);
+s32 Sound_LookupVid(void);
 extern void func_80013934(s32 arg0);
 extern s32 gSynthVoices;
 extern u16 lbl_803548B8;

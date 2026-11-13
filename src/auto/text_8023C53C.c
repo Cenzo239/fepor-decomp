@@ -118,7 +118,7 @@ s32 __cvt_fp2unsigned(f32 arg0);
 void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2);
 void fn_8026146C(s32 *);
 void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5);
-s32 fn_80255FB0();
+s32 Sound_LookupVid();
 extern void func_80013934(s32 arg0);
 extern s32 gSynthVoices;
 extern u16 lbl_803548B8;
@@ -3646,7 +3646,7 @@ s32 Sound_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
     char *temp_r7;
 
     ret = 0;
-    var_r3 = fn_80255FB0();
+    var_r3 = Sound_LookupVid();
     while ((u32)(var_r3 + 0x10000) != 0xFFFF) {
         u8 idx = (u8)var_r3;
         temp_r29 = idx * 0x458;
@@ -3674,7 +3674,7 @@ s32 Sound_SetParamU16(s32 handle, s32 ctrl, s32 value) {
     char *voice;
 
     ret = 0;
-    vid = fn_80255FB0();
+    vid = Sound_LookupVid();
     while ((u32)(vid + 0x10000) != 0xFFFF) {
         u8 idx = (u8)vid;
         voiceOff = idx * 0x458;
@@ -4387,14 +4387,14 @@ s32 Snd_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s32 fn_8024B7DC(s32 arg0) {
-    s32 fn_80255FB0(s32);
+    s32 Sound_LookupVid(s32);
     void Audio_Lock(void);
     void Audio_Unlock(void);
     s32 var_r31;
 
     var_r31 = arg0;
     Audio_Lock();
-    if ((u32)(fn_80255FB0(var_r31) + 0x10000) == 0xFFFFU) {
+    if ((u32)(Sound_LookupVid(var_r31) + 0x10000) == 0xFFFFU) {
         var_r31 = -1;
     }
     Audio_Unlock();
@@ -7491,7 +7491,7 @@ void fn_80253A80(void *arg0, u32 *arg1, u8 arg2)
 extern void (*lbl_803689AC)(u32,u32);
 #pragma opt_strength_reduction off
 void fn_80253BCC(SynthVmState *arg0, void *arg1) {
-    s32 fn_80255FB0();
+    s32 Sound_LookupVid();
     extern s32 lbl_8034CB74[];
     extern void (*lbl_803689AC)(u32, u32);
     void Sound_DeactivateSynthVoice(void *);
@@ -7522,7 +7522,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
             for (i = 0; i < gSoundData[0x210]; i++) {
                 state = (u8 *)gSynthVoices + i * 0x458;
                 if (*(u32 *)(state + 0x34) != 0 && id == *(u16 *)(state + 0x104)) {
-                    result = fn_80255FB0(*(u32 *)(*(u8 **)(state + 0xF8) + 8));
+                    result = Sound_LookupVid(*(u32 *)(*(u8 **)(state + 0xF8) + 8));
                     if ((u32)result != 0xFFFFFFFF) {
                         state = (u8 *)gSynthVoices + (u8)result * 0x458;
                         if (state[0x440] < 4) {
@@ -7549,7 +7549,7 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
         } else {
             result = lbl_8034CB74[index - 16];
         }
-        result = fn_80255FB0(result);
+        result = Sound_LookupVid(result);
         if ((u32)result != 0xFFFFFFFF) {
             state = (u8 *)gSynthVoices + (u8)result * 0x458;
             if (state[0x440] < 4) {
@@ -8273,7 +8273,7 @@ restart:
     return isMaster ? vid : sv->unkF4;
 }
 
-s32 fn_80255FB0(u32 arg0) {
+s32 Sound_LookupVid(u32 arg0) {
     extern VidList *vidListRoot;
     VidList *vl;
 
