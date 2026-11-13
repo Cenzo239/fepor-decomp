@@ -56,7 +56,7 @@ void fn_801FC634(u32 arg0, f32 farg0)
     extern u8 lbl_8029B5B0[];
     extern char lbl_80281EC8[];
     extern u8 gFallingParticleTex;
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BAD8;
     void *obj;
     f32 f;
@@ -66,7 +66,7 @@ void fn_801FC634(u32 arg0, f32 farg0)
         arg0 = 3;
     }
     obj = fn_8000CAF0(lbl_8029B5B0, arg0);
-    if (f <= lbl_8036BADC) {
+    if (f <= gFloatZero) {
         f = lbl_8036BAD8;
     }
     *(f32 *)((u8 *)obj + 0x44) = f;
@@ -88,7 +88,7 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
     extern u8 lbl_8029B5B0[];
     extern char lbl_80281EC8[];
     extern u8 gFallingParticleTex;
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BAD8;
     void *obj;
     f32 f;
@@ -98,7 +98,7 @@ void fn_801FC6E0(u32 arg0, f32 farg0)
         arg0 = 3;
     }
     obj = fn_8000CAF0(lbl_8029B5B0, arg0);
-    if (f <= lbl_8036BADC) {
+    if (f <= gFloatZero) {
         f = lbl_8036BAD8;
     }
     *(f32 *)((u8 *)obj + 0x44) = f;
@@ -137,7 +137,7 @@ void fn_801FC980(u32 arg0, f32 farg0)
     extern u8 lbl_8029B590[];
     extern char lbl_80281EC8[];
     extern u8 gFallingParticleTex;
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BB00;
     u8 fe;
     void *obj;
@@ -148,7 +148,7 @@ void fn_801FC980(u32 arg0, f32 farg0)
         arg0 = 3;
     }
     obj = fn_8000CAF0(lbl_8029B590, arg0);
-    if (f <= lbl_8036BADC) {
+    if (f <= gFloatZero) {
         f = lbl_8036BB00;
     }
     *(f32 *)((u8 *)obj + 0x48) = f;
@@ -206,7 +206,7 @@ void fn_801FCCA0(void *self) {
     void fn_800077D8(f32, f32, f32, f32);
     void fn_800076AC(s32, s32, s32, s32);
     void fn_80007884(void);
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BAE0;
     extern f32 lbl_8036BAE4;
     extern f32 lbl_8036BAE8;
@@ -290,7 +290,7 @@ void fn_801FCCA0(void *self) {
     f28 = lbl_8036BB14;
     f29 = lbl_8036BB10;
     f30 = lbl_8036BB18;
-    f31 = lbl_8036BADC;
+    f31 = gFloatZero;
     for (i = 0; i < 0x1F4; i++) {
         *(f32 *)(b + 0x3C) = *(f32 *)(b + 0x34);
         *(f32 *)(b + 0x40) = *(f32 *)(b + 0x38);
@@ -335,7 +335,7 @@ void fn_801FCCA0(void *self) {
             f22 = (f32)fn_802380D0(t);
             f23 = (f32)fn_80238638(t);
             fn_8000A258();
-            fn_80009D74(lbl_8036BADC, lbl_8036BADC, lbl_8036BB24, lbl_8036BAE0);
+            fn_80009D74(gFloatZero, gFloatZero, lbl_8036BB24, lbl_8036BAE0);
             fn_8000A174(0, 0);
             fn_8000A248();
             fn_80007898(1);
@@ -387,7 +387,7 @@ void fn_801FD3B4(void *arg0) {
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
     extern void *gFallingParticleTex;
-    extern f32 lbl_8036BAD8, lbl_8036BADC, lbl_8036BAE0, lbl_8036BAE4;
+    extern f32 lbl_8036BAD8, gFloatZero, lbl_8036BAE0, lbl_8036BAE4;
     extern f32 lbl_8036BAE8, lbl_8036BAEC, lbl_8036BB04, lbl_8036BB08;
     extern f32 lbl_8036BB0C, lbl_8036BB10, lbl_8036BB14, lbl_8036BB18;
     extern f32 lbl_8036BB1C, lbl_8036BB20, lbl_8036BB24, lbl_8036BB28;
@@ -416,7 +416,7 @@ void fn_801FD3B4(void *arg0) {
     }
     dx = *(f32 *)((u8 *)arg0 + 0x34) - *(f32 *)((u8 *)arg0 + 0x3C);
     ang = (f32)fn_80237E90((*(f32 *)((u8 *)arg0 + 0x38) - *(f32 *)((u8 *)arg0 + 0x40)) / dx) * lbl_8036BB18;
-    if (dx < lbl_8036BADC) {
+    if (dx < gFloatZero) {
         ang += lbl_8036BB1C;
     }
     life = ang;
@@ -448,7 +448,7 @@ void fn_801FD3B4(void *arg0) {
         f32 c = (f32)fn_802380D0(a);
         f32 s = (f32)fn_80238638(a);
         fn_8000A258();
-        fn_80009D74(lbl_8036BADC, lbl_8036BADC, lbl_8036BB24, lbl_8036BAE0);
+        fn_80009D74(gFloatZero, gFloatZero, lbl_8036BB24, lbl_8036BAE0);
         fn_8000A174(0, 0);
         fn_8000A248();
         fn_80007898(1);
@@ -483,7 +483,7 @@ void fn_801FD3B4(void *arg0) {
                 f32 sz;
                 s16 a;
                 fn_8000A258();
-                fn_80009D74(lbl_8036BADC, lbl_8036BADC, lbl_8036BAD8, lbl_8036BAE0);
+                fn_80009D74(gFloatZero, gFloatZero, lbl_8036BAD8, lbl_8036BAE0);
                 fn_80009F90(gFallingParticleTex, 0xA, 0x20);
                 fn_8000A248();
                 fn_80007898(1);
@@ -493,7 +493,7 @@ void fn_801FD3B4(void *arg0) {
                 }
                 sz = (f32)rad * lbl_8036BB08 + lbl_8036BB48;
                 fn_80007790(*(f32 *)p - sz, *(f32 *)((u8 *)p + 4) - sz, *(f32 *)p + sz, *(f32 *)((u8 *)p + 4) + sz);
-                fn_800077B0(lbl_8036BADC, lbl_8036BADC, lbl_8036BAE0, lbl_8036BAE0);
+                fn_800077B0(gFloatZero, gFloatZero, lbl_8036BAE0, lbl_8036BAE0);
                 a = *(s16 *)((u8 *)p + 0xE) - 0x3C;
                 if (a > 0xFF) a = 0xFF;
                 if (a < 0) a = 0;
@@ -535,7 +535,7 @@ void fn_801FDA70(void *arg0) {
     extern s32 lbl_8036842C;
     extern u8 lbl_80368430;
     extern u8 lbl_80368431;
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BB48;
 
     s32 var_r25;
@@ -552,7 +552,7 @@ void fn_801FDA70(void *arg0) {
         f1 = lbl_8036BB48;
         lbl_80368428 = 0x4000;
         lbl_80368424 = 0x14000;
-        f0 = lbl_8036BADC;
+        f0 = gFloatZero;
         lbl_8036842C = 0xC000;
         lbl_80368430 = 0x40;
         lbl_80368431 = 0xC0;
@@ -646,7 +646,7 @@ void FallingParticle_Update(void *arg0) {
     void fn_8000A258(void);
     void fn_8000C60C(void *);
     extern s32 gFallingParticleTex;
-    extern f32 lbl_8036BADC;
+    extern f32 gFloatZero;
     extern f32 lbl_8036BAE0;
 
     s32 count;
@@ -663,7 +663,7 @@ void FallingParticle_Update(void *arg0) {
             w = 0x6E;
         }
         fn_8000A258();
-        fn_80009D74(lbl_8036BADC, lbl_8036BADC, (f32)w, lbl_8036BAE0);
+        fn_80009D74(gFloatZero, gFloatZero, (f32)w, lbl_8036BAE0);
         fn_80009F90(gFallingParticleTex, 7, 0x10);
         fn_8000A248();
         fn_80007898(1);
@@ -690,7 +690,7 @@ void FallingParticle_Update(void *arg0) {
             w = 0x6E;
         }
         fn_8000A258();
-        fn_80009D74(lbl_8036BADC, lbl_8036BADC, (f32)w, lbl_8036BAE0);
+        fn_80009D74(gFloatZero, gFloatZero, (f32)w, lbl_8036BAE0);
         fn_80009F90(gFallingParticleTex, 7, 0x10);
         fn_8000A248();
         fn_80007898(1);
@@ -717,7 +717,7 @@ void FallingParticle_Update(void *arg0) {
             w = 0x6E;
         }
         fn_8000A258();
-        fn_80009D74(lbl_8036BADC, lbl_8036BADC, (f32)w, lbl_8036BAE0);
+        fn_80009D74(gFloatZero, gFloatZero, (f32)w, lbl_8036BAE0);
         fn_80009F90(gFallingParticleTex, 7, 0x10);
         fn_8000A248();
         fn_80007898(1);
@@ -2355,7 +2355,7 @@ extern s32 lbl_80368428;
 extern s32 lbl_8036842C;
 extern u8 lbl_80368430;
 extern u8 lbl_80368431;
-extern f32 lbl_8036BADC;
+extern f32 gFloatZero;
 extern f32 lbl_8036BAE0;
 #include "global.h"
 
