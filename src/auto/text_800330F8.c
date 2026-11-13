@@ -2170,21 +2170,22 @@ s32 fn_80037E00(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void Unit_Copy(void *arg0, void *arg1) {
+void Unit_Copy(void *dstUnit, void *srcUnit) {
+    /* Copy battle-unit fields and inventory from src to dst; leave link slots 0x180/0x184 cleared. */
     void Item_Copy(void *, void *);
     struct Pair { s32 x; s32 y; };
     void *dst;
     void *src;
-    void *q;
-    void *p;
+    void *srcWalk;
+    void *dstWalk;
     s32 i;
 
-    dst = arg0;
-    src = arg1;
+    dst = dstUnit;
+    src = srcUnit;
     if (src != dst) {
         *(s32 *)((u8 *)dst + 0x180) = 0;
-        q = src;
-        p = dst;
+        srcWalk = src;
+        dstWalk = dst;
         i = 0;
         *(s32 *)((u8 *)dst + 0x184) = 0;
         *(s32 *)((u8 *)dst + 0x188) = *(s32 *)((u8 *)src + 0x188);
@@ -2224,11 +2225,11 @@ void Unit_Copy(void *arg0, void *arg1) {
         *(struct Pair *)((u8 *)dst + 0x1BC) = *(struct Pair *)((u8 *)src + 0x1BC);
         *(struct Pair *)((u8 *)dst + 0x1C4) = *(struct Pair *)((u8 *)src + 0x1C4);
         do {
-            Item_Copy((u8 *)p + 0x1CC, (u8 *)q + 0x1CC);
-            Item_Copy((u8 *)p + 0x1EC, (u8 *)q + 0x1EC);
+            Item_Copy((u8 *)dstWalk + 0x1CC, (u8 *)srcWalk + 0x1CC);
+            Item_Copy((u8 *)dstWalk + 0x1EC, (u8 *)srcWalk + 0x1EC);
             i += 1;
-            q = (u8 *)q + 8;
-            p = (u8 *)p + 8;
+            srcWalk = (u8 *)srcWalk + 8;
+            dstWalk = (u8 *)dstWalk + 8;
         } while (i < 4);
         *(struct Pair *)((u8 *)dst + 0x20C) = *(struct Pair *)((u8 *)src + 0x20C);
         *(u8 *)((u8 *)dst + 0x214) = *(u8 *)((u8 *)src + 0x214);
