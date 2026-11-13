@@ -447,7 +447,7 @@ void fn_800ADD84(void) {
     fn_80033418(gBattle + 0x8A0);
 }
 
-void fn_800ADDBC(s32 arg0) {
+void Battle_SetupTargetSelect(s32 arg0) {
     void *fn_8002F62C(void *);
     u8 *UnitRef_GetUnit(void);
     void fn_8019B79C(s32, s32);
@@ -9421,8 +9421,8 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     extern f32 lbl_80369D60;
     extern char lbl_80270088[];
     extern char lbl_80320B6C[];
-    s32 Text_MeasureWidth(void *, s32, f32);
-    s32 sprintf(char *, const char *, ...);
+    s32 fn_80010B78(void *, s32, f32);
+    s32 fn_80231D94(char *, const char *, ...);
     f32 scale;
     s32 offset;
     char *text;
@@ -9433,13 +9433,13 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     offset = offset + 1;
     text = (char *)offset;
     text += (u32)arg0;
-    width = (s16)Text_MeasureWidth(text, -1, scale);
+    width = (s16)fn_80010B78(text, -1, scale);
 
     if (width < 0x70) {
         return text;
     }
 
-    sprintf(lbl_80320B6C, lbl_80270088 + 8,
+    fn_80231D94(lbl_80320B6C, lbl_80270088 + 8,
                 (u8)(s32)(lbl_80369D5C * (lbl_80369D60 / (f32)width)),
                 text);
     return lbl_80320B6C;
