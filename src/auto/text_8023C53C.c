@@ -14303,64 +14303,48 @@ void Sound_AramDmaCallback(void *arg0) {
     *(u8 *)(base + 0x281) -= 1;
 }
 
-void Sound_QueueAramDma(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+/* Queue an MRAM→ARAM DMA on the low or high sound queue and post it to ARQ. */
+void Sound_QueueAramDma(s32 mramAddr, s32 aramAddr, s32 length, s32 useHiQueue, s32 userCb, s32 userArg) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
     void ARQPostRequest(void *, s32, s32, s32, s32, void *, s32, void *);
     void Sound_AramDmaCallback(void *);
     extern u8 gSoundAramQueue[];
     extern u8 gSoundAramQueueHi[];
-    typedef struct {
-        s32 pad;
-        s32 code;
-        s32 unk08;
-        s32 flag;
-        s32 a0;
-        s32 a1;
-        s32 a2;
-        void *cb;
-        s32 a4;
-        s32 a5;
-    } Slot;
-    typedef struct {
-        Slot slots[16];
-        volatile u8 next;
-        volatile u8 count;
-    } Queue;
-    Queue *q;
+    SoundAramDmaQueue *queue;
     BOOL enabled;
-    s32 flag;
+    s32 priority;
     s32 next;
 
-    q = arg3 != 0 ? (Queue *)gSoundAramQueueHi : (Queue *)gSoundAramQueue;
+    queue = useHiQueue != 0 ? (SoundAramDmaQueue *)gSoundAramQueueHi : (SoundAramDmaQueue *)gSoundAramQueue;
 
 start:
     enabled = OSDisableInterrupts();
-    if (q->count < 0x10) {
-        next = q->next;
-        q->slots[next].code = 0x2A;
-        flag = arg3 ? 1 : 0;
-        q->slots[q->next].unk08 = 0;
-        q->slots[q->next].flag = flag;
-        q->slots[q->next].a0 = arg0;
-        q->slots[q->next].a1 = arg1;
-        q->slots[q->next].a2 = arg2;
-        q->slots[q->next].cb = (void *)Sound_AramDmaCallback;
-        q->slots[q->next].a4 = arg4;
-        q->slots[q->next].a5 = arg5;
+    if (queue->count < 0x10) {
+        next = queue->next;
+        queue->slots[next].owner = 0x2A;
+        priority = useHiQueue ? 1 : 0;
+        queue->slots[queue->next].type = 0;
+        queue->slots[queue->next].priority = priority;
+        queue->slots[queue->next].mramAddr = mramAddr;
+        queue->slots[queue->next].aramAddr = aramAddr;
+        queue->slots[queue->next].length = length;
+        queue->slots[queue->next].callback = (void *)Sound_AramDmaCallback;
+        queue->slots[queue->next].userCb = userCb;
+        queue->slots[queue->next].userArg = userArg;
 
         ARQPostRequest(
-            &q->slots[q->next],
-            q->slots[q->next].code,
-            q->slots[q->next].unk08,
-            q->slots[q->next].flag,
-            q->slots[q->next].a0,
-            (void *)q->slots[q->next].a1,
-            q->slots[q->next].a2,
-            q->slots[q->next].cb);
+            &queue->slots[queue->next],
+            queue->slots[queue->next].owner,
+            queue->slots[queue->next].type,
+            queue->slots[queue->next].priority,
+            queue->slots[queue->next].mramAddr,
+            (void *)queue->slots[queue->next].aramAddr,
+            queue->slots[queue->next].length,
+            queue->slots[queue->next].callback);
 
-        q->count = (u8)(q->count + 1);
-        q->next = (u8)(((s32)q->next + 1) % 16);
+        queue->count = (u8)(queue->count + 1);
+        queue->next = (u8)(((s32)queue->next + 1) % 16);
         OSRestoreInterrupts(enabled);
         return;
     }
