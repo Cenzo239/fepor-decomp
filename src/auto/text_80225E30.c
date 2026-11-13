@@ -646,7 +646,8 @@ s32 fn_80227174(void *arg0) {
     return 0;
 }
 
-s32 TRKDoWriteRegisters(void *arg0) {
+s32 TRKDoWriteRegisters(void *buffer) {
+    /* MetroTRK: write a register range from the command buffer to the target. */
     void TRKSetBufferPosition(void *, u32);
     void TRKResetBuffer(void *, u32);
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
@@ -662,57 +663,57 @@ s32 TRKDoWriteRegisters(void *arg0) {
     extern char gTRK_str_MessageSendErr[];
 
     s32 err;
-    u16 start;
-    u16 end;
-    void *obj;
+    u16 firstReg;
+    u16 lastReg;
+    void *buf;
     s32 outLen;
-    u8 reply2[0x40];
-    u8 reply1[0x40];
-    u8 reply3[0x40];
+    u8 ackReply[0x40];
+    u8 invalidReply[0x40];
+    u8 errorReply[0x40];
 
-    obj = arg0;
-    err = ((u8 *)arg0)[0x18];
-    start = *(u16 *)((u8 *)arg0 + 0x1C);
-    end = *(u16 *)((u8 *)arg0 + 0x20);
-    TRKSetBufferPosition(arg0, 0);
+    buf = buffer;
+    err = ((u8 *)buffer)[0x18];
+    firstReg = *(u16 *)((u8 *)buffer + 0x1C);
+    lastReg = *(u16 *)((u8 *)buffer + 0x20);
+    TRKSetBufferPosition(buffer, 0);
 
-    if (start > end) {
-        memset(reply1, 0, 0x40);
-        reply1[4] = 0x80;
-        *(s32 *)reply1 = 0x40;
-        reply1[8] = 0x14;
-        TRK_cc_write(reply1, 0x40);
+    if (firstReg > lastReg) {
+        memset(invalidReply, 0, 0x40);
+        invalidReply[4] = 0x80;
+        *(s32 *)invalidReply = 0x40;
+        invalidReply[8] = 0x14;
+        TRK_cc_write(invalidReply, 0x40);
         return 0;
     }
 
-    TRKSetBufferPosition(obj, 0x40);
+    TRKSetBufferPosition(buf, 0x40);
 
     switch (err) {
     case 0:
-        err = TRKTargetAccessDefault(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessDefault(firstReg, lastReg, buf, &outLen, 0);
         break;
     case 1:
-        err = TRKTargetAccessFP(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessFP(firstReg, lastReg, buf, &outLen, 0);
         break;
     case 2:
-        err = TRKTargetAccessExtended1(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessExtended1(firstReg, lastReg, buf, &outLen, 0);
         break;
     case 3:
-        err = TRKTargetAccessExtended2(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessExtended2(firstReg, lastReg, buf, &outLen, 0);
         break;
     default:
         err = 0x703;
         break;
     }
 
-    TRKResetBuffer(obj, 0);
+    TRKResetBuffer(buf, 0);
 
     if (err == 0) {
-        memset(reply2, 0, 0x40);
-        *(s32 *)reply2 = 0x40;
-        reply2[4] = 0x80;
-        reply2[8] = (u8)err;
-        err = TRKAppendBuffer_ui8x(obj, reply2, 0x40);
+        memset(ackReply, 0, 0x40);
+        *(s32 *)ackReply = 0x40;
+        ackReply[4] = 0x80;
+        ackReply[8] = (u8)err;
+        err = TRKAppendBuffer_ui8x(buf, ackReply, 0x40);
     }
 
     if (err != 0) {
@@ -743,16 +744,16 @@ s32 TRKDoWriteRegisters(void *arg0) {
             break;
         }
 
-        memset(reply3, 0, 0x40);
-        reply3[4] = 0x80;
-        *(s32 *)reply3 = 0x40;
-        reply3[8] = (u8)err;
-        TRK_cc_write(reply3, 0x40);
+        memset(errorReply, 0, 0x40);
+        errorReply[4] = 0x80;
+        *(s32 *)errorReply = 0x40;
+        errorReply[8] = (u8)err;
+        TRK_cc_write(errorReply, 0x40);
         return 0;
     }
 
     MWTRACE(1, gTRK_str_SendACK);
-    err = TRKMessageSend(obj);
+    err = TRKMessageSend(buf);
     MWTRACE(1, gTRK_str_MessageSendErr, err);
     return err;
 }
