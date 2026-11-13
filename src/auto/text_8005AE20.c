@@ -6725,7 +6725,7 @@ void DEMOInitGX(void *arg0)
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
     void VIWaitForRetrace(void);
-    extern char lbl_8026B990[];
+    extern char DEMOInit_str[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
     extern void *DefaultFifoObj;
@@ -6749,7 +6749,7 @@ void DEMOInitGX(void *arg0)
     u8 *dst;
     s32 fmt;
 
-    buf = fn_800C4638(0x10000, lbl_8026B990, 0);
+    buf = fn_800C4638(0x10000, DEMOInit_str, 0);
     a = fn_8021F4CC();
     b = fn_8021F250();
     c = fn_8021F258(a);
@@ -6790,7 +6790,7 @@ void DEMOInitGX(void *arg0)
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
+            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
@@ -6879,7 +6879,7 @@ void fn_8006DFD8(void) {
     u32 fn_80211690(void);
     void fn_80211614(s32);
     void fn_80225204(s32, s32);
-    extern char lbl_8026B990[];
+    extern char DEMOInit_str[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
     extern void *DefaultFifoObj;
@@ -6921,11 +6921,11 @@ body:
     if (lbl_80367330 < lbl_80367334) {
         goto check;
     }
-    OSReport(lbl_8026B990 + 0xF9);
+    OSReport(DEMOInit_str + 0xF9);
     timed_out = 1;
     fn_8006DDDC();
     src = DEMORmode;
-    buf = fn_800C4638(0x10000, lbl_8026B990, 0);
+    buf = fn_800C4638(0x10000, DEMOInit_str, 0);
     a = fn_8021F4CC();
     b = fn_8021F250();
     c = fn_8021F258(a);
@@ -6966,7 +6966,7 @@ body:
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
+            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
@@ -7057,14 +7057,14 @@ done:
 
 void fn_8006E478(void) {
 void OSReport(char *, ...); void fn_8006DDDC(void); void fn_8020602C(char *, int, char *); void fn_8021F168(u8 *, void *, void *, void *, void *); u32 fn_8021F4DC(void);
-extern char lbl_8026B990[]; extern s32 lbl_80367330; extern u32 lbl_80367334,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
+extern char DEMOInit_str[]; extern s32 lbl_80367330; extern u32 lbl_80367334,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
 u8 sp9; u8 pad[3]; void *sp8; u32 result, count;
 if((s8)lbl_8036733C==0){lbl_80367338=0;lbl_8036733C=1;}
 if((s8)lbl_80367344==0){lbl_80367340=0;lbl_80367344=1;}
 lbl_80367330++;
 fn_8021F168(&sp9,&sp8,&sp8,&sp8,&sp8);
 result=fn_8021F4DC();
-if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(lbl_8026B990+0x126);fn_8006DDDC();fn_8020602C(lbl_8026B990+1,0x326,lbl_8026B990+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
+if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=lbl_80367334){OSReport(DEMOInit_str+0x126);fn_8006DDDC();fn_8020602C(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
 }
 
 extern s32 lbl_8036732C;
@@ -7258,7 +7258,7 @@ void DEMOInit(void *arg0)
     void VISetNextFrameBuffer(void *);
     void VIFlush(void);
     void VIWaitForRetrace(void);
-    extern char lbl_8026B990[];
+    extern char DEMOInit_str[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
     extern void *DefaultFifoObj;
@@ -7320,7 +7320,7 @@ void DEMOInit(void *arg0)
             DEMORmode = GXMpal480IntDf;
             break;
         default:
-            fn_8020602C(lbl_8026B990 + 1, 0xDF, lbl_8026B990 + 0xC);
+            fn_8020602C(DEMOInit_str + 1, 0xDF, DEMOInit_str + 0xC);
             break;
         }
         GXAdjustForOverscan(DEMORmode, DEMORmodeObj, 0, 0x10);
@@ -7337,9 +7337,9 @@ void DEMOInit(void *arg0)
     DemoCurrentBuffer = DemoFrameBuffer2;
     OSSetArenaLo((void *)(((u32)DemoFrameBuffer2 + (fbSize + 0x1F)) & ~0x1Fu));
     fn_800C5300();
-    fn_800C50FC(lbl_8026B990 + 0x16b, 0x533333);
+    fn_800C50FC(DEMOInit_str + 0x16b, 0x533333);
     VIConfigure(DEMORmode);
-    buf = fn_800C4638(0x80000, lbl_8026B990 + 0x170, 0x80000);
+    buf = fn_800C4638(0x80000, DEMOInit_str + 0x170, 0x80000);
     DefaultFifo = buf;
     DefaultFifoObj = GXInit(buf, 0x80000);
     {
@@ -8503,7 +8503,7 @@ extern const s32 lbl_8026B75C[3];
 extern void fn_80225D6C(s32* a, s32* b, s32* c, s32* d);
 extern void fn_8021F168(void* a, void* b, u8* c, u8* d, void* e, s32 f, s32 g, s32 h);
 extern void OSReport(const char* fmt, ...);
-extern char lbl_8026B990[];
+extern char DEMOInit_str[];
 #include "common.h"
 #include "global.h"
 
