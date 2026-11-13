@@ -1473,7 +1473,8 @@ void fn_801F5518(s32 arg0) {
     fn_801E3118(&lbl_803682F0, arg0, 1);
 }
 
-void CardLink_ApplyBonus(void *arg0) {
+/* After a card-link scan: unlock link bonuses from the found game ID, or show an error. */
+void CardLink_ApplyBonus(void *proc) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void Process_UnlinkByKey(void *);
@@ -1481,57 +1482,57 @@ void CardLink_ApplyBonus(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void fn_801DDBA8(void *, s32, s32, s32, s32);
     extern u8 gSystemSave[];
-    void *tmp;
-    s32 code;
-    s32 flag;
+    void *cardProc;
+    s32 gameId;
+    s32 status;
 
-    tmp = Process_Find(&gCardLinkProc);
-    if (tmp == NULL) {
-        flag = 0;
+    cardProc = Process_Find(&gCardLinkProc);
+    if (cardProc == NULL) {
+        status = 0;
     } else {
-        flag = *(u8 *)((u8 *)tmp + 0x4C);
+        status = *(u8 *)((u8 *)cardProc + 0x4C);
     }
-    if (flag == 4) {
+    if (status == 4) {
         Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-        fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0x9A), 0, 1, 0);
-        Process_Goto(arg0, 0x59);
+        fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0x9A), 0, 1, 0);
+        Process_Goto(proc, 0x59);
     } else {
-        tmp = Process_Find(&gCardLinkProc);
-        if (tmp == NULL) {
-            code = -1;
+        cardProc = Process_Find(&gCardLinkProc);
+        if (cardProc == NULL) {
+            gameId = -1;
         } else {
-            code = *(s32 *)((u8 *)tmp + 0x40);
+            gameId = *(s32 *)((u8 *)cardProc + 0x40);
         }
-        switch (code) {
-        case 0x4146454A:
+        switch (gameId) {
+        case GAME_ID_AFEJ:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
-            *(u16 *)(gSystemSave + 0x10) |= 8;
+            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xBB), 0, 0, 0);
+            *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_AC;
             break;
-        case 0x4145374A:
-        case 0x41453745:
-        case 0x41453758:
-        case 0x41453759:
+        case GAME_ID_AE7J:
+        case GAME_ID_AE7E:
+        case GAME_ID_AE7X:
+        case GAME_ID_AE7Y:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
-            *(u16 *)(gSystemSave + 0x10) |= 0x10;
+            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xC8), 0, 0, 0);
+            *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_POKEMON;
             break;
-        case 0x4245384A:
-        case 0x42453845:
-        case 0x42453850:
+        case GAME_ID_BE8J:
+        case GAME_ID_BE8E:
+        case GAME_ID_BE8P:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0xAB, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
-            *(u16 *)(gSystemSave + 0x10) |= 0x20;
+            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xD5), 0, 0, 0);
+            *(u16 *)(gSystemSave + 0x10) |= LINK_BONUS_FLAG_FE8;
             break;
         case 0:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xE2), 0, 1, 0);
-            Process_Goto(arg0, 0x59);
+            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xE2), 0, 1, 0);
+            Process_Goto(proc, 0x59);
             break;
         default:
             Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
-            fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xF1), 0, 1, 0);
-            Process_Goto(arg0, 0x59);
+            fn_801DDBA8(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)gCardLinkStr + 0xF1), 0, 1, 0);
+            Process_Goto(proc, 0x59);
             break;
         }
     }
