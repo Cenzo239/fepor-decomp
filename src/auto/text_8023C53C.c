@@ -4192,41 +4192,41 @@ u32 fn_8024B370(void) {
 void fn_8024B3A0(s32 arg0) {
     M2C_UNK fn_80244D64(s32);
     M2C_UNK fn_802636F4();
-    M2C_UNK fn_8026372C();
-    fn_8026372C();
+    M2C_UNK Audio_Lock();
+    Audio_Lock();
     fn_80244D64(arg0);
     fn_802636F4();
 }
 
 void fn_8024B3D8(s32 arg0, s32 arg1) {
     M2C_UNK fn_802450A4(s32, s32);
-    fn_8026372C();
+    Audio_Lock();
     fn_802450A4(arg0, arg1);
     fn_802636F4();
 }
 
 void fn_8024B420(s32 arg0) {
     M2C_UNK fn_80245188(s32);
-    fn_8026372C();
+    Audio_Lock();
     fn_80245188(arg0);
     fn_802636F4();
 }
 
 void fn_8024B458(s32 arg0, s32 arg1, s32 arg2) {
     M2C_UNK fn_80245290(s32, s32, s32);
-    fn_8026372C();
+    Audio_Lock();
     fn_80245290(arg0, arg1, arg2);
     fn_802636F4();
 }
 
 void fn_8024B4B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    fn_8026372C();
+    Audio_Lock();
     fn_8024534C(arg0, arg1, arg2, arg3);
     fn_802636F4();
 }
 
 s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
-    s32 fn_8026372C(void);
+    s32 Audio_Lock(void);
     s32 fn_80243F50(s32);
     s32 fn_8025F534(s32, s32, u8, s32);
     s32 fn_802636F4(void);
@@ -4234,7 +4234,7 @@ s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
     s32 temp_r3;
 
     var_r31 = 0;
-    fn_8026372C();
+    Audio_Lock();
     temp_r3 = fn_80243F50(arg0);
     if ((u32) (temp_r3 + 0x10000) != 0xFFFFU) {
         fn_8025F534(arg2, arg1, (u8) temp_r3, arg3);
@@ -4301,7 +4301,7 @@ s32 Snd_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
     s32 fn_8024A4AC(s32, s32, s32);
     s32 temp_r31;
 
-    fn_8026372C();
+    Audio_Lock();
     temp_r31 = fn_8024A4AC(arg0, arg1, arg2);
     fn_802636F4();
     return temp_r31;
@@ -4311,7 +4311,7 @@ s32 Snd_SetParamU16(s32 arg0, s32 arg1, s32 arg2) {
     s32 fn_8024A590(s32, s32, s32);
     s32 temp_r31;
 
-    fn_8026372C();
+    Audio_Lock();
     temp_r31 = fn_8024A590(arg0, arg1, arg2);
     fn_802636F4();
     return temp_r31;
@@ -4321,7 +4321,7 @@ s32 fn_8024B714(s32 arg0) {
     s32 fn_8024A6F8(s32);
     s32 temp_r31;
 
-    fn_8026372C();
+    Audio_Lock();
     temp_r31 = fn_8024A6F8(arg0);
     fn_802636F4();
     return temp_r31;
@@ -4329,12 +4329,12 @@ s32 fn_8024B714(s32 arg0) {
 
 s32 Snd_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 fn_8024A34C(s32, s32, s32, s32, s32, u8);
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     extern u8 lbl_8034CB64[];
     s32 temp;
 
-    fn_8026372C();
+    Audio_Lock();
     temp = fn_8024A34C(arg0, 0xFF, arg1, arg2, arg3, lbl_8034CB64[((arg3 & 0xFF) << 1) + 1]);
     fn_802636F4();
     return temp;
@@ -4342,12 +4342,12 @@ s32 Snd_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 s32 fn_8024B7DC(s32 arg0) {
     s32 fn_80255FB0(s32);
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     s32 var_r31;
 
     var_r31 = arg0;
-    fn_8026372C();
+    Audio_Lock();
     if ((u32)(fn_80255FB0(var_r31) + 0x10000) == 0xFFFFU) {
         var_r31 = -1;
     }
@@ -4358,14 +4358,14 @@ s32 fn_8024B7DC(s32 arg0) {
 void fn_8024B828(s32 arg0, s32 arg1, s32 arg2) {
 #pragma dont_inline on
     if (arg1 == 1) {
-        fn_8026372C();
+        Audio_Lock();
         fn_8024A590(arg0, 0x1F, (s32)(16383.0f * (1.0f - (f32)(u32)(arg2 - 0x50) / 15920.0f)));
         fn_802636F4();
-        fn_8026372C();
+        Audio_Lock();
         fn_8024A4AC(arg0, 0x4F, 0x7F);
         fn_802636F4();
     } else {
-        fn_8026372C();
+        Audio_Lock();
         fn_8024A4AC(arg0, 0x4F, 0);
         fn_802636F4();
     }
@@ -4374,7 +4374,7 @@ void fn_8024B828(s32 arg0, s32 arg1, s32 arg2) {
 void fn_8024B8EC(s32 arg0, s32 arg1, s32 arg2) {
 #pragma dont_inline reset
     M2C_UNK fn_8024A780(s32, s32, s32, M2C_UNK, M2C_UNK);
-    fn_8026372C();
+    Audio_Lock();
     fn_8024A780(arg0, arg1, arg2, 0, -1);
     fn_802636F4();
 }
@@ -4637,9 +4637,9 @@ void fn_8024C84C(u32 arg0) {
 #pragma global_optimizer off
 u32 fn_8024C97C(s8 a,s32 b,s32 c,s32 d,s8 e,s8 f,s8 g,s8 h,u8 p,u8 q,u32 flags,s32 data,s32 extra,s16 *coef){
 extern u8 lbl_8034D4B8[],lbl_803689C4[8];extern u32 lbl_803689C0,lbl_803689A4;
-void fn_8026372C(void);void fn_802636F4(void);s32 fn_8024CE1C(s32,s32);u32 fn_8024E100(u32);void fn_80261C98(s32,void*,void*);u32 fn_80262290(s32);
+void Audio_Lock(void);void fn_802636F4(void);s32 fn_8024CE1C(s32,s32);u32 fn_8024E100(u32);void fn_80261C98(s32,void*,void*);u32 fn_80262290(s32);
 u8 *state,*slot,*scan,*base;u32 next,id,j,index; s32 offset,size,k;u8 voice; s8 pan,span;
-fn_8026372C();
+Audio_Lock();
 base=lbl_8034D4B8;scan=base;for(index=0;index<64;scan+=0x68,index++){if(scan[0xc]==0)break;}
 if(index!=64){
 next=lbl_803689C0;
@@ -4690,7 +4690,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
     extern u32 lbl_803689A4;
     extern f32 lbl_8036C228;
     extern f64 lbl_8036C230;
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     void fn_80261E6C(s32, s32, s32, s32, f32, f32, f32);
     void fn_8024C7F8(void *, u8, u8, u8);
@@ -4712,7 +4712,7 @@ void fn_8024CE60(u32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4)
     u8 span;
     s32 i;
 
-    fn_8026372C();
+    Audio_Lock();
     base = lbl_8034D4B8;
     scan = base;
     index = 0;
@@ -4757,7 +4757,7 @@ found1:
         }
         parent = *(u32 *)(lbl_8034D4B8 + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-            fn_8026372C();
+            Audio_Lock();
             scan = base;
             index = 0;
             for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4791,7 +4791,7 @@ found2:
                 }
                 parent = *(u32 *)slot;
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                    fn_8026372C();
+                    Audio_Lock();
                     index = fn_8024C664(parent);
                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                         offset = index * 0x68;
@@ -4819,7 +4819,7 @@ void fn_8024D3C4(u32 arg0, u32 arg1) {
     extern u8 lbl_8034C110[];
     extern f64 lbl_8036C230;
     extern f32 lbl_8036C238;
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     void fn_80261BC8(s32, s32);
     s32 fn_8024C664(u32);
@@ -4834,7 +4834,7 @@ void fn_8024D3C4(u32 arg0, u32 arg1) {
     s32 i;
     f32 f1;
 
-    fn_8026372C();
+    Audio_Lock();
     base = lbl_8034D4B8;
     scan = base;
     index = 0;
@@ -4857,7 +4857,7 @@ found1:
         }
         parent = *(u32 *)(lbl_8034D4B8 + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-            fn_8026372C();
+            Audio_Lock();
             scan = base;
             index = 0;
             for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4877,7 +4877,7 @@ found2:
                 }
                 parent = *(u32 *)(lbl_8034D4B8 + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                    fn_8026372C();
+                    Audio_Lock();
                     scan = base;
                     index = 0;
                     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4897,7 +4897,7 @@ found3:
                         }
                         parent = *(u32 *)(lbl_8034D4B8 + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                            fn_8026372C();
+                            Audio_Lock();
                             index = fn_8024C664(parent);
                             if ((u32)(index + 0x10000) != 0xFFFFU) {
                                 offset = index * 0x68;
@@ -4927,7 +4927,7 @@ found3:
 void fn_8024DA2C(u32 arg0)
 {
     extern u8 lbl_8034D4B8[];
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     void fn_8024E758(u32);
     void fn_802622B0(u8);
@@ -4945,7 +4945,7 @@ void fn_8024DA2C(u32 arg0)
     u32 parent;
     s32 i;
 
-    fn_8026372C();
+    Audio_Lock();
     base = lbl_8034D4B8;
     scan = base;
     index = 0;
@@ -4964,7 +4964,7 @@ found1:
         fn_802622B0(voicep[off1]);
         parent = *(u32 *)(lbl_8034D4B8 + off1);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-            fn_8026372C();
+            Audio_Lock();
             scan = base;
             index = 0;
             for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4981,7 +4981,7 @@ found2:
                 fn_802622B0(voicep[off2]);
                 parent = *(u32 *)(lbl_8034D4B8 + off2);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                    fn_8026372C();
+                    Audio_Lock();
                     scan = base;
                     index = 0;
                     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -4998,7 +4998,7 @@ found3:
                         fn_802622B0(voicep[off3]);
                         parent = *(u32 *)(lbl_8034D4B8 + off3);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                            fn_8026372C();
+                            Audio_Lock();
                             index = 0;
                             for (i = 0; i < 64; i++, base += 0x68) {
                                 if (base[0xC] != 0 && *(u32 *)(base + 4) == parent) {
@@ -5014,7 +5014,7 @@ found4:
                                 fn_802622B0(voicep[off4]);
                                 parent = *(u32 *)(lbl_8034D4B8 + off4);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                                    fn_8026372C();
+                                    Audio_Lock();
                                     index = fn_8024C664(parent);
                                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                                         fn_8024E758(parent);
@@ -5047,7 +5047,7 @@ found4:
 #pragma global_optimizer off
 s32 fn_8024E100(u32 arg0) {
     extern u8 lbl_8034D4B8[];
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     s32 fn_80256C14(u8);
     s32 fn_8024C664(u32);
@@ -5065,7 +5065,7 @@ s32 fn_8024E100(u32 arg0) {
     s32 result;
 
     result = 0;
-    fn_8026372C();
+    Audio_Lock();
     base = lbl_8034D4B8;
     scan = base;
     index = 0;
@@ -5095,7 +5095,7 @@ found1:
         parent = *(u32 *)(lbl_8034D4B8 + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
             result = 0;
-            fn_8026372C();
+            Audio_Lock();
             scan = base;
             index = 0;
             for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5124,7 +5124,7 @@ found2:
                 parent = *(u32 *)(lbl_8034D4B8 + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
                     result = 0;
-                    fn_8026372C();
+                    Audio_Lock();
                     scan = base;
                     index = 0;
                     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5153,7 +5153,7 @@ found3:
                         parent = *(u32 *)(lbl_8034D4B8 + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
                             result = 0;
-                            fn_8026372C();
+                            Audio_Lock();
                             index = fn_8024C664(parent);
                             if ((u32)(index + 0x10000) != 0xFFFFU) {
                                 offset = index * 0x68;
@@ -5220,7 +5220,7 @@ after2:
 void fn_8024E758(u32 arg0)
 {
     extern u8 lbl_8034D4B8[];
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     void fn_80256DD8(s32);
     s32 fn_8024C664(u32);
@@ -5234,7 +5234,7 @@ void fn_8024E758(u32 arg0)
     u8 type;
     s32 i;
 
-    fn_8026372C();
+    Audio_Lock();
     base = lbl_8034D4B8;
     scan = base;
     index = 0;
@@ -5256,7 +5256,7 @@ found1:
         }
         parent = *(u32 *)(lbl_8034D4B8 + offset);
         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-            fn_8026372C();
+            Audio_Lock();
             scan = base;
             index = 0;
             for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5276,7 +5276,7 @@ found2:
                 }
                 parent = *(u32 *)(lbl_8034D4B8 + offset);
                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                    fn_8026372C();
+                    Audio_Lock();
                     scan = base;
                     index = 0;
                     for (i = 0; i < 64; i++, scan += 0x68) {
@@ -5296,7 +5296,7 @@ found3:
                         }
                         parent = *(u32 *)(lbl_8034D4B8 + offset);
                         if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                            fn_8026372C();
+                            Audio_Lock();
                             index = 0;
                             for (i = 0; i < 64; i++, base += 0x68) {
                                 if (base[0xC] != 0 && parent == *(u32 *)(base + 4)) {
@@ -5315,7 +5315,7 @@ found4:
                                 }
                                 parent = *(u32 *)(lbl_8034D4B8 + offset);
                                 if ((u32)(parent + 0x10000) != 0xFFFFU) {
-                                    fn_8026372C();
+                                    Audio_Lock();
                                     index = fn_8024C664(parent);
                                     if ((u32)(index + 0x10000) != 0xFFFFU) {
                                         offset = index * 0x68;
@@ -5350,10 +5350,10 @@ found4:
 #pragma dont_inline reset
 
 s32 fn_8024F1D8(u16 id, s32 data, s16 type) {
- void fn_8026372C(void); void fn_802636F4(void);
+ void Audio_Lock(void); void fn_802636F4(void);
  extern SampleKey lbl_8034F6B8[]; extern u16 lbl_80368A0C;
  s32 i; s32 j; u16 count;
- fn_8026372C();
+ Audio_Lock();
  count=lbl_80368A0C;
  for(i=0;i<(s32)count && lbl_8034F6B8[i].id<id;i++) {}
  if(i<(s32)count) {
@@ -5384,7 +5384,7 @@ s32 fn_8024F5E4(u16 id, s32 data) {
         u16 id;
         u16 ref;
     };
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     extern struct Key lbl_803502B8[];
     extern u16 lbl_80368A10;
@@ -5393,7 +5393,7 @@ s32 fn_8024F5E4(u16 id, s32 data) {
     s32 j;
     u16 count;
 
-    fn_8026372C();
+    Audio_Lock();
     count = lbl_80368A10;
     for (i = 0; i < (s32)count && lbl_803502B8[i].id < id; i++) {
     }
@@ -5549,7 +5549,7 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
         return 0;
     }
     
-    fn_8026372C();
+    Audio_Lock();
     
     temp = lbl_80368A08;
     lbl_80368A08 = temp + 1;
@@ -5596,7 +5596,7 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
 
 #pragma opt_strength_reduction off
 s32 AudioTable_Insert(u16 id,s32 data) {
-void fn_8026372C(void);void fn_802636F4(void);
+void Audio_Lock(void);void fn_802636F4(void);
 extern AudioTableRange gAudioTableRanges[];
 extern AudioTableEntry gAudioTableEntries[];
 extern u16 gAudioTableCount;
@@ -5605,7 +5605,7 @@ s32 start,i,j,index;
 AudioTableRange *range;
 AudioTableEntry *moving;
 u32 bucket;
-fn_8026372C();
+Audio_Lock();
 bucket=(id>>6)&1023;
 count=gAudioTableRanges[bucket].count;
 if(count==0){
@@ -5635,12 +5635,12 @@ fn_802636F4();return 1;
 }
 #pragma opt_strength_reduction off
 s32 fn_80250414(u16 id) {
- void fn_8026372C(void); void fn_802636F4(void);
+ void Audio_Lock(void); void fn_802636F4(void);
  extern AudioTableRange gAudioTableRanges[];
  extern AudioTableEntry gAudioTableEntries[];
  extern u16 gAudioTableCount;
  s32 total,index,j; u32 bucket; u16 count,start; s32 i; AudioTableRange *range; AudioTableEntry *moving;
- fn_8026372C();
+ Audio_Lock();
  bucket=(id>>6)&1023;
  count=gAudioTableRanges[bucket].count;
  if(count!=0) {
@@ -9890,7 +9890,7 @@ return 0;
 #pragma opt_strength_reduction off
 s32 fn_802590E0(void) {
 extern s32 *gAudioGroupState;
-void fn_8026372C(void); void fn_802636F4(void);
+void Audio_Lock(void); void fn_802636F4(void);
 void fn_8025D9A4(void *,u16); void fn_80245014(u16);
 void fn_802572E8(void *); void fn_80257444(void *);
 void fn_8024FACC(s32); void fn_8024FF5C(u16);
@@ -9903,7 +9903,7 @@ slot=(AudioGroupState *)((u8 *)state+n*12); node=slot->slots[0].node;
 state=(AudioGroupState *)((u8 *)state+state->count*12);
 base=state->slots[0].data;
 id=state->slots[0].id;
-fn_8026372C();
+Audio_Lock();
 if(*(u16 *)(node+6)==1) {u16 *p; p=(u16 *)(base+*(u32 *)(node+28)); fn_8025D9A4((u8 *)p+4,*p);}
 else fn_80245014(*(u16 *)(node+4));
 fn_802572E8(base+*(u32 *)(node+8));
@@ -9997,7 +9997,7 @@ s32 fn_80259584(u16 gid, u16 sid, s32 arg2, s32 arg3, s32 arg4) {
                     b = (void *)(base + data->unk20);
                     for (item = (GroupItem *)(base + data->unk24); item->id != 0xFFFF; item++) {
                         if (item->id == sid) {
-                            fn_8026372C();
+                            Audio_Lock();
                             ret = fn_80243FB8(a, b, item, arg2, arg3, arg4, gid);
                             fn_802636F4();
                             goto done;
@@ -11050,7 +11050,7 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
     extern s32 lbl_80368ABC;
     extern u8 gSoundReady;
 
-    void fn_8026372C(void);
+    void Audio_Lock(void);
     void fn_802636F4(void);
     void fn_8024A6F8(u32);
 
@@ -11069,7 +11069,7 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
         for (i = 0; i < arg1; i++) {
             if (*(u16 *)(current + 0x40) == arg0[i * 5]) {
                 if (gSoundReady != 0) {
-                    fn_8026372C();
+                    Audio_Lock();
 
                     flags = *(u32 *)(current + 0xC);
 
@@ -14903,7 +14903,7 @@ s32 fn_80263534(void)
     extern void fn_80215F8C(void);
     extern void fn_80216050(void *arg0);
     extern void fn_802636F4(void);
-    extern void fn_8026372C(void);
+    extern void Audio_Lock(void);
 
     u8 *config;
 
@@ -14931,7 +14931,7 @@ s32 fn_80263534(void)
     fn_802636F4();
 
     if (lbl_80368B08 != 0) {
-        fn_8026372C();
+        Audio_Lock();
         return 1;
     }
 
@@ -14995,7 +14995,7 @@ int fn_802636F4(void) {
     return count;
 }
 
-int fn_8026372C(void) {
+int Audio_Lock(void) {
     extern u16 lbl_80368AFC;
     extern s32 lbl_80368AF8;
     s32 count;
