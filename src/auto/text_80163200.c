@@ -6938,7 +6938,7 @@ extern "C" void fn_80170894(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void fn_80170AD0(void *arg0) {
+extern "C" void Ui_HandleUnitListInfoInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
