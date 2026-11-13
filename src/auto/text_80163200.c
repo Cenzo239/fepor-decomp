@@ -6596,7 +6596,7 @@ void fn_80170034(void *arg0) {
 #pragma cplusplus on
 extern "C" void Ui_RestoreUnitListAfterItem(void *arg0) {
     void Ui_AddChild(void *, void *);
-    void fn_8014027C(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, void *);
@@ -6624,7 +6624,7 @@ extern "C" void Ui_RestoreUnitListAfterItem(void *arg0) {
     Ui_AddChild(arg0, obj40);
     spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
     spC[1] = 0x10;
-    fn_8014027C(arg0, obj40, spC, 0);
+    Ui_SlideWidgetChildMode1(arg0, obj40, spC, 0);
 
     p = *(RefObj **)((u8 *)arg0 + 0x54);
     tmp = *(s16 *)((u8 *)p + 0xC);
@@ -7356,7 +7356,7 @@ extern "C" void fn_80171374(void *arg0) {
 
 void fn_80171B18(void *arg0) {
     void Ui_AddChild(void *, void *);
-    void fn_8014027C(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     s16 fn_80164E78(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -7374,7 +7374,7 @@ void fn_80171B18(void *arg0) {
     Ui_AddChild(arg0, obj40);
     spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
     spC[1] = 0x10;
-    fn_8014027C(arg0, obj40, spC, 0);
+    Ui_SlideWidgetChildMode1(arg0, obj40, spC, 0);
 
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
     *((u8 *)obj4c + 0x48) = 0;
