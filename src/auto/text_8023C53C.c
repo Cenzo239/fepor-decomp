@@ -5595,7 +5595,7 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
 }
 
 #pragma opt_strength_reduction off
-s32 fn_80250128(u16 id,s32 data) {
+s32 AudioTable_Insert(u16 id,s32 data) {
 void fn_8026372C(void);void fn_802636F4(void);
 extern AudioTableRange lbl_80354EB8[];
 extern AudioTableEntry lbl_803556B8[];
@@ -9793,7 +9793,7 @@ void *fn_80258AD8(void) {
 }
 
 void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
- void fn_80250128(s32,s32); s32 fn_80250414();
+ void AudioTable_Insert(s32,s32); s32 fn_80250414();
  void fn_8024EE6C(s32,s32); void fn_8024F05C(s32);
  s32 fn_8024F1D8(); void fn_8024F420(s32);
  s32 fn_8024F5E4(); void fn_8024F7E8(s32);
@@ -9804,8 +9804,8 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  case 0:
   if(remove==0) {
    node=FindAudioResource(data,(u16)(id),0);
-   if(node!=NULL) fn_80250128(id,(s32)(node+8));
-   else fn_80250128(id,0);
+   if(node!=NULL) AudioTable_Insert(id,(s32)(node+8));
+   else AudioTable_Insert(id,0);
   } else fn_80250414(id);
   break;
  case 2:
