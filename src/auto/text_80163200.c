@@ -3310,7 +3310,7 @@ void fn_8016A400(void *arg0) {
     extern u8 gUiMenuDrawVtbl[];
     extern u16 lbl_802920E0[76];
     extern u8 lbl_80293D64[];
-    extern u16 lbl_802940AC[76];
+    extern u16 gUiMenuConfigVtbl[76];
     extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
     extern s8 sUiMenuVtbl0Ready;
@@ -3362,7 +3362,7 @@ void fn_8016A400(void *arg0) {
         init->field18 = lbl_8036A9D0;
         init->field1C = 0x20;
         init->field1E = 4;
-        init->table = lbl_802940AC;
+        init->table = gUiMenuConfigVtbl;
     }
 
     init->field08 = 0x9E;
@@ -3432,11 +3432,11 @@ void *fn_8016A6A4(void *arg0) {
 }
 
 void *fn_8016A6DC(void *arg0, s16 arg1) {
-    extern u16 lbl_802940AC[76];
+    extern u16 gUiMenuConfigVtbl[76];
     extern u16 lbl_802920E0[76];
     
     if (arg0 != NULL) {
-        *(u16**)((char*)arg0 + 4) = lbl_802940AC;
+        *(u16**)((char*)arg0 + 4) = gUiMenuConfigVtbl;
         if (arg0 != NULL) {
             *(u16**)((char*)arg0 + 4) = lbl_802920E0;
         }
@@ -3671,7 +3671,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     extern u8 gUiMenuDrawVtbl[];
     extern u8 lbl_802920E0[];
     extern u8 lbl_80293D64[];
-    extern u8 lbl_802940AC[];
+    extern u8 gUiMenuConfigVtbl[];
     extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
     extern s8 sUiMenuVtbl0Ready;
@@ -3707,7 +3707,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
         M2C_FIELD(p, f32 *, 0x18) = 0.0f;
         M2C_FIELD(p, s16 *, 0x1C) = 0x20;
         M2C_FIELD(p, s16 *, 0x1E) = 4;
-        M2C_FIELD(p, void **, 4) = lbl_802940AC;
+        M2C_FIELD(p, void **, 4) = gUiMenuConfigVtbl;
     }
     M2C_FIELD(p, s16 *, 8) = 0x9E;
     M2C_FIELD(p, s16 *, 0xA) = 0xB5;
