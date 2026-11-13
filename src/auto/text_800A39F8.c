@@ -1648,7 +1648,8 @@ void fn_800A6D78(void *arg0) {
     }
 }
 
-void MapUi_TrackCursorUnit(void *arg0) {
+/* Track the unit under the map cursor: goto 2 on appear, 3 on leave; invalidate +0x36 if it changes. */
+void MapUi_TrackCursorUnit(void *proc) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
@@ -1668,15 +1669,15 @@ void MapUi_TrackCursorUnit(void *arg0) {
     }
 
     if (unit != NULL) {
-        if (*(void **)((u8 *)arg0 + 0x30) == NULL) {
-            Process_Goto(arg0, 2);
+        if (*(void **)((u8 *)proc + 0x30) == NULL) {
+            Process_Goto(proc, 2);
         }
-        if (*(void **)((u8 *)arg0 + 0x30) != unit) {
-            *(s16 *)((u8 *)arg0 + 0x36) = -1;
+        if (*(void **)((u8 *)proc + 0x30) != unit) {
+            *(s16 *)((u8 *)proc + 0x36) = -1;
         }
-        *(void **)((u8 *)arg0 + 0x30) = unit;
-    } else if (*(void **)((u8 *)arg0 + 0x30) != NULL) {
-        Process_Goto(arg0, 3);
+        *(void **)((u8 *)proc + 0x30) = unit;
+    } else if (*(void **)((u8 *)proc + 0x30) != NULL) {
+        Process_Goto(proc, 3);
     }
 }
 
