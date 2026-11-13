@@ -212,7 +212,7 @@ void fn_80217034(void *alarm, void *context) {
     }
 }
 
-s32 fn_802170D8(s32 chan) {
+s32 __CARDRetry(s32 chan) {
     extern u16 lbl_8033A200[];
     s32 EXISelect(s32, s32, s32);
     s32 EXIUnlock(s32);
@@ -280,7 +280,7 @@ s32 fn_802170D8(s32 chan) {
 void fn_80217378(s32 chan, s32 result) {
     extern u16 lbl_8033A200[];
     s32 EXILock(s32, s32, void *);
-    s32 fn_802170D8(s32);
+    s32 __CARDRetry(s32);
     void fn_80216C64();
     u8 *card;
     void (*callback)(s32);
@@ -292,7 +292,7 @@ void fn_80217378(s32 chan, s32 result) {
             result = 0;
         } else {
             *(void **)(card + 0xDC) = NULL;
-            result = fn_802170D8(chan);
+            result = __CARDRetry(chan);
         }
     }
     if (result < 0) {
