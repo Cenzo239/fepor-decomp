@@ -7202,8 +7202,9 @@ void fn_80252F8C(void *arg0, void *arg1) {
     *(u32*)((u8*)arg0 + 0x220) |= 0x10;
 }
 
-void Sound_SelectSource12(void *arg0, u32 *arg1) {
-    SelectSource(arg0, (u8 *)arg0 + 0x3D4, arg1, 0x10000000, 0x1000);
+void Sound_SelectSource12(void *voice, u32 *step) {
+    /* MusyX select-source macro for modulator slot 12 (voice+0x3D4). */
+    SelectSource(voice, (u8 *)voice + 0x3D4, step, 0x10000000, 0x1000);
 }
 
 void fn_80253194(void *arg0, void *arg1) {
