@@ -6427,7 +6427,7 @@ s32 fn_800BC204(u8 arg0) {
 
 s32 fn_800BC29C(u8 arg0) {
     void *Unit_GetHeldItemSlot(void *, s32);
-    s32 fn_80037E00(void *);
+    s32 Unit_GetActiveItemSlot(void *);
     u8 Status_Test(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     extern u8 gUnits[];
@@ -6447,7 +6447,7 @@ s32 fn_800BC29C(u8 arg0) {
     if (Status_Test((u8 *)var_r31 + 0x1BC, 8) != 0) {
         return -1;
     }
-    var_r30 = (s8)fn_80037E00(var_r31);
+    var_r30 = (s8)Unit_GetActiveItemSlot(var_r31);
     if (var_r30 < 0) {
         return -1;
     }
@@ -6482,7 +6482,7 @@ s8 fn_800BC380(u8 arg0) {
 }
 
 s8 fn_800BC3F4(u8 arg0) {
-    s32 fn_80037E00(void *);
+    s32 Unit_GetActiveItemSlot(void *);
     extern u8 gUnits[];
     void *unit;
     if (arg0 != 0) {
@@ -6493,7 +6493,7 @@ s8 fn_800BC3F4(u8 arg0) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    return fn_80037E00(unit);
+    return Unit_GetActiveItemSlot(unit);
 }
 
 s32 fn_800BC458(u8 arg0, s32 arg1) {

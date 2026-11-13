@@ -6236,7 +6236,7 @@ void fn_8016F628(void *arg0) {
 #pragma cplusplus on
 void fn_8016F694(void *arg0) {
     void Process_Goto(void *, s32);
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     void fn_800951D0(void *, s32);
     void Ui_SetPortraitUnit(void *, void *);
     void UnitInv_Refresh(void *);
@@ -6261,7 +6261,7 @@ void fn_8016F694(void *arg0) {
         Process_Goto(arg0, 0x2B);
         return;
     }
-    if ((s8) fn_80037E00(M2C_FIELD(gUiContext, void **, 0)) < 0) {
+    if ((s8) Unit_GetActiveItemSlot(M2C_FIELD(gUiContext, void **, 0)) < 0) {
         fn_800951D0(M2C_FIELD(gUiContext, void **, 0), -1);
     }
     if (M2C_FIELD(gUiContext, void **, 0) != NULL) {
@@ -6338,7 +6338,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, void *);
-    s8 fn_80037E00(u32);
+    s8 Unit_GetActiveItemSlot(u32);
     void fn_800951D0(u32, s32);
     void fn_80184C7C(u32, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
@@ -6438,7 +6438,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_80037E00(gUiContext[0]) < 0)
+            if (Unit_GetActiveItemSlot(gUiContext[0]) < 0)
                 fn_800951D0(gUiContext[0], -1);
             if (gUiContext[0])
                 fn_80184C7C(gUiContext[0], 0, 4, 0);
@@ -6648,7 +6648,7 @@ extern "C" void Ui_RestoreUnitListAfterItem(void *panel) {
 }
 
 extern "C" void fn_80170160(void *arg0) {
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     void fn_800951D0(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
@@ -6659,7 +6659,7 @@ extern "C" void fn_80170160(void *arg0) {
     void *temp_r4;
 
     temp_r31 = arg0;
-    if ((s8)fn_80037E00((void *)gUiContext[0]) < 0) {
+    if ((s8)Unit_GetActiveItemSlot((void *)gUiContext[0]) < 0) {
         fn_800951D0((void *)gUiContext[0], -1);
     }
     temp_r3 = (void *)gUiContext[0];
@@ -6811,7 +6811,7 @@ void fn_80170794(void *arg0) {
 }
 
 void fn_801707D4(void *arg0) {
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     void fn_800951D0(void *, s32);
     void fn_80184C7C(void *, s32, s32, s32);
     void Ui_SetPortraitUnit(void *, void *);
@@ -6822,7 +6822,7 @@ void fn_801707D4(void *arg0) {
     void *temp2;
 
     self = arg0;
-    if ((s8)fn_80037E00((void *)gUiContext[0]) < 0) {
+    if ((s8)Unit_GetActiveItemSlot((void *)gUiContext[0]) < 0) {
         fn_800951D0((void *)gUiContext[0], -1);
     }
     temp = (void *)gUiContext[0];
@@ -8398,7 +8398,7 @@ void fn_80173C24(void *arg0) {
 extern "C" void Ui_HandleListCursorInput(void *arg0) {
     /* Handle list-cursor input: A select, Y info, X back, B cancel. */
     void Process_Goto(void *, s32);
-    s8 fn_80037E00(u32);
+    s8 Unit_GetActiveItemSlot(u32);
     void fn_800951D0(u32, s32);
     void Ui_SetPortraitUnit(void *, void *);
     void Ui_UpdatePanelWidgets(void *);
@@ -8504,7 +8504,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
                 *((u8 *)listWidget + 0x4c) = 0;
                 Process_Goto(arg0, 0x10);
             } else {
-                if (fn_80037E00(gUiContext[0]) < 0) {
+                if (Unit_GetActiveItemSlot(gUiContext[0]) < 0) {
                     fn_800951D0(gUiContext[0], -1);
                 }
                 if (gUiContext[0]) {
@@ -8523,7 +8523,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
             Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, *entry, (f32)*(s16 *)&sp10, (f32)*((s16 *)&sp10 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0x400) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_80037E00(gUiContext[0]) < 0) {
+            if (Unit_GetActiveItemSlot(gUiContext[0]) < 0) {
                 fn_800951D0(gUiContext[0], -1);
             }
             if (gUiContext[0]) {
@@ -8538,7 +8538,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_80037E00(gUiContext[0]) < 0) {
+            if (Unit_GetActiveItemSlot(gUiContext[0]) < 0) {
                 fn_800951D0(gUiContext[0], -1);
             }
             if (gUiContext[0]) {

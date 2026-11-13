@@ -19107,7 +19107,7 @@ void fn_800F74C0(Unit* unit)
 
 #pragma cplusplus on
 #pragma auto_inline off
-extern "C" u8 fn_80037E00(void *);
+extern "C" u8 Unit_GetActiveItemSlot(void *);
 extern "C" void Battle_SetupFromParams(void *, void *, void *);
 extern "C" void fn_801A6F34(void *, u8);
 extern "C" void fn_800F6550(s32, void *);
@@ -19126,7 +19126,7 @@ extern "C" s32 Battle_EvalTarget(s32 arg0, void *arg1) {
     a.p = M2C_FIELD(arg1, void **, 4);
     a.b4[0] = M2C_FIELD(a.p, u8 *, 0x19E);
     a.b4[1] = M2C_FIELD(a.p, u8 *, 0x19F);
-    a.b4[2] = fn_80037E00(a.p);
+    a.b4[2] = Unit_GetActiveItemSlot(a.p);
     b = lbl_80272EE4;
     b.p = (void *)arg0;
     b.b4[0] = M2C_FIELD(arg1, u8 *, 0);
@@ -21357,7 +21357,7 @@ void fn_800FD774(void *arg0) {
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
-    s32 fn_80037E00(void *);
+    s32 Unit_GetActiveItemSlot(void *);
     u8 fn_8009339C(void *);
     u8 fn_80100F10(void *, void *, void *);
     void fn_801A6F34(void *, s32);
@@ -21497,7 +21497,7 @@ void fn_800FD774(void *arg0) {
                             sp3C.unit = self;
                             sp3C.x = ((u8 *)self)[0x19E];
                             sp3C.y = ((u8 *)self)[0x19F];
-                            sp3C.z = (u8)fn_80037E00(self);
+                            sp3C.z = (u8)Unit_GetActiveItemSlot(self);
                             sp2C = *(T16 *)lbl_80273210;
                             sp2C.unit = unit;
                             sp2C.x = ((u8 *)unit)[0x19E];
@@ -21526,7 +21526,7 @@ void fn_800FD774(void *arg0) {
                             sp1C.unit = self;
                             sp1C.x = ((u8 *)self)[0x19E];
                             sp1C.y = ((u8 *)self)[0x19F];
-                            sp1C.z = (u8)fn_80037E00(self);
+                            sp1C.z = (u8)Unit_GetActiveItemSlot(self);
                             spC = *(T16 *)lbl_80273210;
                             spC.unit = unit;
                             spC.x = ((u8 *)unit)[0x19E];

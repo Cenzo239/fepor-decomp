@@ -2198,7 +2198,7 @@ void *fn_80037D54(void *arg0) {
     return (u8 *)arg0 + (index * 8) + 0x1CC;
 }
 
-s32 fn_80037E00(void *arg0) {
+s32 Unit_GetActiveItemSlot(void *arg0) {
     if ((((u8) M2C_FIELD(arg0, u8 *, 0x1D1) >> 7U) & 1) && ((u32) M2C_FIELD(arg0, u32 *, 0x1CC) != 0U)) {
         return 0;
     }

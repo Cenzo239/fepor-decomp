@@ -4452,7 +4452,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     u8 fn_8003863C(void *);
     s8 Unit_GetMov(void *);
     s8 fn_8003CFF0(void *, void *);
@@ -4643,7 +4643,7 @@ ok_done:
             sp18.p = unit;
             sp18.b4 = *((u8 *)unit + 0x19e);
             sp18.b5 = *((u8 *)unit + 0x19f);
-            sp18.b6 = fn_80037E00(unit);
+            sp18.b6 = Unit_GetActiveItemSlot(unit);
             sp28 = lbl_80273BA8;
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;
@@ -4678,7 +4678,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
     s8 fn_8003CFF0(void *, void *);
@@ -4873,7 +4873,7 @@ ok_done:
             sp18.p = unit;
             sp18.b4 = *((u8 *)unit + 0x19e);
             sp18.b5 = *((u8 *)unit + 0x19f);
-            sp18.b6 = fn_80037E00(unit);
+            sp18.b6 = Unit_GetActiveItemSlot(unit);
             sp28 = lbl_80273B88;
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;

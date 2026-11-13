@@ -1001,7 +1001,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     void *Item_GetFlagsPtr();
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK fn_800285C0(M2C_UNK *);
-    s8 fn_80037E00(void *);
+    s8 Unit_GetActiveItemSlot(void *);
     M2C_UNK fn_80094CDC(void *, s8);
     M2C_UNK Ui_PlaySeCue(void *, M2C_UNK);
     extern M2C_UNK lbl_8026C0B8;
@@ -1019,7 +1019,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     fn_80094CDC(M2C_FIELD(&gUiContext, void **, 0), (s8) M2C_FIELD(&gUiContext, u8 *, 0xA));
     if ((s8) M2C_FIELD(&gUiContext, u8 *, 0xA) < 4) {
         temp_r30 = M2C_FIELD(arg1, void **, 0x18);
-        M2C_FIELD(temp_r30, s8 *, 0x62) = fn_80037E00(M2C_FIELD(&gUiContext, void **, 0));
+        M2C_FIELD(temp_r30, s8 *, 0x62) = Unit_GetActiveItemSlot(M2C_FIELD(&gUiContext, void **, 0));
     }
     if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (fn_800285C0(&gUiContext), temp_r3 = Item_GetFlagsPtr(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
         Process_CreateChild(&lbl_802872B0, M2C_FIELD(arg1, void **, 0x18));

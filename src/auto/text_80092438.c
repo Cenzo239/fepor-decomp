@@ -1480,7 +1480,7 @@ s32 fn_80094A54(s32 arg0, s32 arg1)
 
 s32 fn_80094C10(s32 arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
-    s8 fn_80037E00(s32);
+    s8 Unit_GetActiveItemSlot(s32);
     u8 fn_80093708(s32, u32);
     struct { u8 pad[5]; u8 bit7 : 1; u8 rest : 7; } *p;
 
@@ -1490,7 +1490,7 @@ s32 fn_80094C10(s32 arg0, void *arg1) {
     if ((*Item_GetFlagsPtr(arg1) & 1ULL) == 0) {
         return 0;
     }
-    if (fn_80037E00(arg0) >= 0) {
+    if (Unit_GetActiveItemSlot(arg0) >= 0) {
         return 0;
     }
     if (fn_80093708(arg0, *(u32 *)arg1) == 0) {
