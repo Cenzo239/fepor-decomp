@@ -893,14 +893,14 @@ void *fn_8005CEC0(void) {
     return NULL;
 }
 #pragma global_optimizer on
-void fn_8005D690(u8 *);
+void FileCache_Release(u8 *);
 void fn_8005D1DC(char *name) {
-    fn_8005D690(FindEntryByName(name));
+    FileCache_Release(FindEntryByName(name));
 }
 
 #pragma global_optimizer off
 void fn_8005D2CC(u32 arg0) {
-    void fn_8005D690(void *);
+    void FileCache_Release(void *);
     extern u8 lbl_802F04E0[];
     u8 *e;
     s32 i;
@@ -914,10 +914,10 @@ void fn_8005D2CC(u32 arg0) {
     }
     found = 0;
 done:
-    fn_8005D690(found);
+    FileCache_Release(found);
 }
 #pragma global_optimizer reset
-void fn_8005D690(u8 *arg0) {
+void FileCache_Release(u8 *arg0) {
     s64 OSGetTime(void);
     void fn_8003FED8(void *);
     void fn_800C4588(void *);
