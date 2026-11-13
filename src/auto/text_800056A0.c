@@ -207,7 +207,7 @@ void Game_InitSystems(void) {
     void fn_80147188(s32);
     void fn_801A2AC4(void);
     void fn_80200494(void);
-    extern u8 lbl_80267B80[];
+    extern u8 Game_str[];
     extern u8 gUiIconDrawer[];
     extern u8 lbl_802F0350[];
     extern u8 gBattleState[];
@@ -216,13 +216,13 @@ void Game_InitSystems(void) {
     extern u8 lbl_80367AF6;
 
     fn_800C4664(0x100000);
-    FileCache_Load(lbl_80267B80 + 0x9B);
+    FileCache_Load(Game_str + 0x9B);
     fn_800C4664(0xFFF00000);
     fn_800C2750();
     fn_8006826C(0x200);
     fn_80066F64();
     fn_80067480();
-    fn_8001B134(lbl_80267B80 + 0xA6);
+    fn_8001B134(Game_str + 0xA6);
     fn_800FC678();
     fn_800A6450();
     fn_801A2AC4();
@@ -234,9 +234,9 @@ void Game_InitSystems(void) {
     fn_8008CD9C();
     fn_8005AC88(gUiIconDrawer);
     fn_8005AC88(lbl_802F0350);
-    Archive_Load(lbl_80267B80 + 0xB2);
-    Archive_Load(lbl_80267B80 + 0xBD);
-    Archive_Load(lbl_80267B80 + 0xD1);
+    Archive_Load(Game_str + 0xB2);
+    Archive_Load(Game_str + 0xBD);
+    Archive_Load(Game_str + 0xD1);
     fn_80147188(0);
     lbl_80367AEC = 0x64;
     lbl_80367AEE = 0x64;
@@ -291,8 +291,8 @@ void fn_80005EB4(void) {
 }
 
 void fn_80005ED4(void) {
-    extern u16 lbl_80267B80[];
-    Heap_Create((u8 *)lbl_80267B80 + 0xDF, 0xB00000);
+    extern u16 Game_str[];
+    Heap_Create((u8 *)Game_str + 0xDF, 0xB00000);
 }
 
 void fn_80005F04(void)
