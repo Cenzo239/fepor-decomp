@@ -3016,8 +3016,8 @@ void fn_8018CAD8(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_8018CB7C(void) {
-    M2C_UNK fn_8018CCB8();
-    fn_8018CCB8();
+    M2C_UNK Light_ScaleProcess();
+    Light_ScaleProcess();
 }
 
 void fn_8018CB9C(void *arg0) {
@@ -3052,7 +3052,7 @@ void fn_8018CC3C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x44) = 0;
 }
 
-void fn_8018CCB8(void *arg0) {
+void Light_ScaleProcess(void *arg0) {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
     void Process_Unlink(void *);
