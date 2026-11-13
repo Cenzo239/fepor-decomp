@@ -2960,7 +2960,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_CmSleepScript(void);
     void ScriptCmd_CmWakeupScripts(void);
     void ScriptCmd_seqini(void);
-    void fn_801279D4(void);
+    void ScriptCmd_bmsini(void);
     void fn_80126F58(void);
     void fn_80126F34(void);
     void fn_80126EB0(void);
@@ -3008,7 +3008,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x298, ScriptCmd_CmSleepScript, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2A6, ScriptCmd_CmWakeupScripts, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2B6, ScriptCmd_seqini, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x2BE, fn_801279D4, 0);
+    Script_RegisterCommand(gScriptCmdNames + 0x2BE, ScriptCmd_bmsini, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x2C6, fn_80126F58, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2CE, fn_80126F34, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2D6, fn_80126EB0, 2);
@@ -3523,7 +3523,7 @@ s32 ScriptCmd_GameBind(void) {
     return 1;
 }
 
-s32 fn_801279D4(void) {
+s32 ScriptCmd_bmsini(void) {
     void fn_8014D55C(void *);
     extern u8 lbl_80330708[];
     fn_8014D55C(lbl_80330708);
