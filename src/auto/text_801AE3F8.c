@@ -1757,7 +1757,7 @@ void Ui_ShowConfirmChild(void *panel) {
 
 void Ui_CreateConfirmChild(void *arg0) {
     void *Heap_Alloc(s32);
-    void *fn_801B3150(void *, s32, s32, s32, s32, s32);
+    void *Ui_ConfirmChild_Ctor(void *, s32, s32, s32, s32, s32);
     void fn_80133FBC(void *, void *);
     void Ui_AddChild(void *, void *);
     void fn_80140234(void *, void *, s32);
@@ -1772,7 +1772,7 @@ void Ui_CreateConfirmChild(void *arg0) {
 
     var_r0 = Heap_Alloc(0x68);
     if (var_r0 != NULL) {
-        var_r0 = fn_801B3150(var_r0, 0x138, 0xA8, 0x108, 0x78, 0x190);
+        var_r0 = Ui_ConfirmChild_Ctor(var_r0, 0x138, 0xA8, 0x108, 0x78, 0x190);
     }
     *(void **)((u8 *)arg0 + 0x48) = var_r0;
     temp_r4 = *(void **)((u8 *)arg0 + 0x48);
@@ -2446,7 +2446,7 @@ void Ui_CreateMainListPanel(void *self) {
     }
 }
 
-void *fn_801B3150(void *arg0) {
+void *Ui_ConfirmChild_Ctor(void *arg0) {
     extern u8 lbl_80291758[];
     void fn_80134E48(void *);
     void fn_8001C76C(void *);
