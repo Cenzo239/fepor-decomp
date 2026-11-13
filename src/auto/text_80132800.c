@@ -9161,7 +9161,7 @@ extern "C" void fn_801439F0(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 #pragma cplusplus on
-extern "C" void *fn_80143A84(void *arg0) {
+extern "C" void *ListWidget_GetSelected(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;

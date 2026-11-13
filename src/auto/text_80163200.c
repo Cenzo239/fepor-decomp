@@ -6838,7 +6838,7 @@ void fn_801707D4(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80170894(void *arg0) {
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     u32 *fn_8001CB64(s32);
     s32 fn_80164D24(void *);
     s32 fn_80164CAC(void *);
@@ -6895,7 +6895,7 @@ extern "C" void fn_80170894(void *arg0) {
     var_r28 = arg0;
     temp_r31 = *(void **)((u8 *)arg0 + 0x54);
     temp_r30 = *(void **)((u8 *)arg0 + 0x4c);
-    temp_r29 = *fn_80143A84(temp_r31);
+    temp_r29 = *ListWidget_GetSelected(temp_r31);
     bits = fn_8001CB64(temp_r29);
     if ((*(u64 *)bits & 5ULL) != 0) {
         var_r27 = fn_80164D24(temp_r30);
@@ -6942,7 +6942,7 @@ extern "C" void fn_80170AD0(void *arg0) {
     void fn_8000C188(void *);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -6992,7 +6992,7 @@ extern "C" void fn_80170AD0(void *arg0) {
 
     self = arg0;
     obj54 = *(void **)((u8 *)arg0 + 0x54);
-    var_r30 = fn_80143A84(obj54);
+    var_r30 = ListWidget_GetSelected(obj54);
     if (var_r30 != NULL) {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
@@ -7005,8 +7005,8 @@ extern "C" void fn_80170AD0(void *arg0) {
         }
     }
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80143A84(obj54)) {
-        var_r30 = fn_80143A84(obj54);
+    if (var_r30 != ListWidget_GetSelected(obj54)) {
+        var_r30 = ListWidget_GetSelected(obj54);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != NULL) {
                 *(Vec2s *)&sp14 = ((Obj *)obj54)->v13();
@@ -8136,7 +8136,7 @@ void fn_801735F0(void *arg0) {
     u32 *fn_80037BD0(s32, s32);
     void fn_800AAE78(s32, s32, s32, s8);
     void fn_8013FED0(void *);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     void *self;
     s32 handle;
     u32 match;
@@ -8145,7 +8145,7 @@ void fn_801735F0(void *arg0) {
 
     self = arg0;
     handle = (s32)gUiContext[1];
-    match = *fn_80143A84(*(void **)((u8 *)arg0 + 0x54));
+    match = *ListWidget_GetSelected(*(void **)((u8 *)arg0 + 0x54));
     for (i = 0; i < 8; i++) {
         p = fn_80037BD0(handle, i);
         if (*p != 0 && (u32)p == match) {
@@ -8174,7 +8174,7 @@ void fn_80143570(void *);
 s16 fn_801435E0(void *, void *);
 void fn_801436AC(void *, s32);
 void fn_801439F0(void *, void *, s32);
-s32 *fn_80143A84(void *);
+s32 *ListWidget_GetSelected(void *);
 void fn_80143C9C(void *);
 void fn_80143E0C(void *, s16);
 void Ui_PlaySeCue(void *, s32);
@@ -8258,7 +8258,7 @@ obj = fn_8000CAA0(lbl_80294580, self);
 } else {
 void *r28 = *(void **)((u8 *)self + 0x54);
 void *r26a = *(void **)((u8 *)self + 0x4C);
-s32 *r27b = fn_80143A84(r28);
+s32 *r27b = ListWidget_GetSelected(r28);
 u32 *r26b = (u32 *)MapCursor_GetUnit(r26a);
 if (r26b != 0 && r27b != 0) {
 u32 r5 = *r26b;
@@ -8340,7 +8340,7 @@ Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 
 void fn_80173C24(void *arg0) {
     void fn_8013FF00(void *, void *);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     u64 *fn_8001CB64(s32);
     s16 fn_80164D9C(void *);
     s16 fn_80164E78(void *, s32);
@@ -8355,7 +8355,7 @@ void fn_80173C24(void *arg0) {
     obj54 = *(void **)((u8 *)arg0 + 0x54);
     fn_8013FF00(arg0, obj4c);
     *(s32 *)((u8 *)obj4c + 0x5C) = 1;
-    if ((*(u64 *)fn_8001CB64(*fn_80143A84(obj54)) & 5ULL) != 0) {
+    if ((*(u64 *)fn_8001CB64(*ListWidget_GetSelected(obj54)) & 5ULL) != 0) {
         *(s32 *)((u8 *)obj4c + 0x60) = 1;
         *(u8 *)((u8 *)obj4c + 0x4B) = 1;
     } else {
@@ -8389,7 +8389,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     void fn_80138808(void *, void *);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     s16 fn_80143C58(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, void *);
@@ -8445,7 +8445,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     self = arg0;
     listWidget = *(void **)((u8 *)arg0 + 0x54);
     detailWidget = *(void **)((u8 *)arg0 + 0x58);
-    entry = fn_80143A84(listWidget);
+    entry = ListWidget_GetSelected(listWidget);
     if (entry != NULL) {
         ret = fn_8013FF94(arg0, -0x1000, 0);
         if (ret != 0) {
@@ -8458,8 +8458,8 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
         }
     }
     fn_8013FDA0(arg0);
-    if (entry != fn_80143A84(listWidget)) {
-        entry = fn_80143A84(listWidget);
+    if (entry != ListWidget_GetSelected(listWidget)) {
+        entry = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (entry != NULL) {
                 *(Vec2s *)&sp14 = ((Obj *)listWidget)->v13();
@@ -8563,7 +8563,7 @@ extern "C" void fn_801743B4(void *arg0) {
     u32 *fn_8001CB64(u32);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
-    void *fn_80143A84(void *);
+    void *ListWidget_GetSelected(void *);
     s32 fn_801758C4(u32, u32);
     u8 fn_80175924(s32 **, s32);
     extern u32 gUiContext[];
@@ -8806,7 +8806,7 @@ loop2_cond:
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 8) = 0x108;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0x24) = 8;
-    tmp = fn_80143A84(*(void **)((u8 *)self + 0x54));
+    tmp = ListWidget_GetSelected(*(void **)((u8 *)self + 0x54));
     q = *(void **)((u8 *)self + 0x58);
     *(void **)((u8 *)q + 0x40) = tmp;
     if (tmp != NULL) {
@@ -9079,7 +9079,7 @@ extern "C" void fn_801752EC(void *arg0) {
     u32 *fn_8001CB64(u32);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
-    void *fn_80143A84(void *);
+    void *ListWidget_GetSelected(void *);
     s32 fn_801758C4(u32, u32);
     u8 fn_80175924(s32 **, s32);
     extern u32 gUiContext[];
@@ -9343,7 +9343,7 @@ loop2_cond:
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 8) = 0x108;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0x24) = 8;
-    tmp = fn_80143A84(*(void **)((u8 *)self + 0x54));
+    tmp = ListWidget_GetSelected(*(void **)((u8 *)self + 0x54));
     q = *(void **)((u8 *)self + 0x58);
     *(void **)((u8 *)q + 0x40) = tmp;
     if (tmp != NULL) {

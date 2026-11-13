@@ -5601,7 +5601,7 @@ extern "C" void fn_801925A0(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801927DC(void *arg0) {
-    void **fn_80143A84(void *);
+    void **ListWidget_GetSelected(void *);
     void *Heap_Alloc(s32);
     void fn_801400F4(void *, void *);
     void fn_801402A0(void *, void *, s16 *, s32);
@@ -5632,7 +5632,7 @@ extern "C" void fn_801927DC(void *arg0) {
 
     s16 sp1c[2], sp18[2], sp14[2], sp10[2], spc[2], sp8[2];
     void *self = arg0;
-    void *unit = *fn_80143A84(*(void **)((u8 *)self + 0x4C));
+    void *unit = *ListWidget_GetSelected(*(void **)((u8 *)self + 0x4C));
     void *panel;
     void *list;
     void *p;
@@ -5906,7 +5906,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     void fn_8011D79C(s32);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -5973,11 +5973,11 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
 
     self = arg0;
     obj40 = *(void **)((u8 *)arg0 + 0x4C);
-    var_r30 = fn_80143A84(obj40);
+    var_r30 = ListWidget_GetSelected(obj40);
     *(u8 *)((u8 *)obj40 + 0x4C) = 1;
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80143A84(obj40)) {
-        var_r30 = fn_80143A84(obj40);
+    if (var_r30 != ListWidget_GetSelected(obj40)) {
+        var_r30 = ListWidget_GetSelected(obj40);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != NULL) {
                 *(Pair *)&pos1 = ((Obj *)obj40)->v13();
@@ -6541,7 +6541,7 @@ extern "C" void fn_80194178(void *arg0) {
     void fn_80143570(void *);
     void fn_801436AC(void *, void *);
     void fn_80143784(void *, void *);
-    void *fn_80143A84(void *);
+    void *ListWidget_GetSelected(void *);
     void fn_80143C9C(void *);
     void fn_8014D268(void *, s32, s32);
     void fn_801658DC(u32, s32);
@@ -6576,7 +6576,7 @@ extern "C" void fn_80194178(void *arg0) {
     switch ((s32)gUiContext[8]) {
     case 0x81:
         temp_r29 = *(void **)((u8 *)arg0 + 0x40);
-        temp_r3 = fn_80143A84(temp_r29);
+        temp_r3 = ListWidget_GetSelected(temp_r29);
         temp_r31 = *(void **)temp_r3;
         temp_r30 = *(void **)((u8 *)temp_r3 + 4);
         temp_r5 = (s32)((UnitRef_GetValue(temp_r31) >> 1) & 0x7FFFu);
@@ -6659,7 +6659,7 @@ extern "C" void fn_801943FC(void *arg0) {
     void fn_8011D79C(s32);
     void fn_8013FDA0(void *);
     u32 fn_8013FF94(void *, s32, s32);
-    s32 *fn_80143A84(void *);
+    s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801658DC(u32, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -6723,11 +6723,11 @@ extern "C" void fn_801943FC(void *arg0) {
 
     self = arg0;
     obj40 = *(void **)((u8 *)arg0 + 0x40);
-    var_r30 = fn_80143A84(obj40);
+    var_r30 = ListWidget_GetSelected(obj40);
     *(u8 *)((u8 *)obj40 + 0x4C) = 1;
     fn_8013FDA0(arg0);
-    if (var_r30 != fn_80143A84(obj40)) {
-        var_r30 = fn_80143A84(obj40);
+    if (var_r30 != ListWidget_GetSelected(obj40)) {
+        var_r30 = ListWidget_GetSelected(obj40);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r30 != NULL) {
                 *(Pair *)&pos1 = ((Obj *)obj40)->v13();
@@ -6793,7 +6793,7 @@ extern "C" void fn_8019477C(void *arg0) {
     void fn_801400F4(void *, void *);
     void fn_8014027C(void *, void *, s16 *, s32);
     void *Heap_Alloc(u32);
-    void *fn_80143A84(void *);
+    void *ListWidget_GetSelected(void *);
     void fn_8013FF00(void *, void *);
     void fn_801658DC(void *, void *);
     extern u8 lbl_8028FDB0[];
@@ -6863,8 +6863,8 @@ extern "C" void fn_8019477C(void *arg0) {
         }
         M2C_FIELD(p, s16 *, 8) = 1;
         M2C_FIELD(p, s16 *, 0x24) = 8;
-        if (fn_80143A84(obj) != NULL) {
-            M2C_FIELD(p, u32 *, 0x3C) = *(u32 *)(*(void **)fn_80143A84(obj));
+        if (ListWidget_GetSelected(obj) != NULL) {
+            M2C_FIELD(p, u32 *, 0x3C) = *(u32 *)(*(void **)ListWidget_GetSelected(obj));
         }
         fn_801400F4(arg0, p);
         tmp = M2C_FIELD(p, s16 *, 0xC);
