@@ -546,6 +546,7 @@ static void ClampU8(u8* p, u8 o) {
     *p = s;
 }
 
+/* Decode raw PAD transfer words into a calibrated PADStatus for one channel. */
 void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     extern u32 PADSpec;
     extern u32 PADType[];
