@@ -6805,10 +6805,10 @@ void fn_80042558(void *arg0) {
     void fn_80049B78(void *, s32);
     s32 fn_80046400(void *, void *);
     void fn_80049C30(void *, s32);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern f32 lbl_80368F2C;
     u32 list[19];
-    u8 *start = lbl_8032BB58;
+    u8 *start = gMapObjEventList;
     u8 *rec;
     s32 foundCount = 0;
     s8 x;

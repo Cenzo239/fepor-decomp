@@ -11312,7 +11312,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
 
 s32 fn_8019E8B0(s32 arg0, s32 arg1) {
     extern u32 gUiInputFlags;
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
@@ -11338,7 +11338,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
         if (temp1 == NULL) {
             fn_800056A0(0);
         } else {
-            fn_8010FE08(lbl_8032BB58, (s8) arg0, (s8) arg1, 0x22);
+            fn_8010FE08(gMapObjEventList, (s8) arg0, (s8) arg1, 0x22);
             count = fn_80046400((void *) Map_Get(), temp1, sp8);
             p = sp8;
             i = 0;
@@ -11361,7 +11361,7 @@ s32 fn_8019E8B0(s32 arg0, s32 arg1) {
         return 0;
     }
     fn_80129888(temp2, fn_800C0658());
-    fn_8010FE08(lbl_8032BB58, (s8) temp2[0], (s8) temp2[1], 0x22);
+    fn_8010FE08(gMapObjEventList, (s8) temp2[0], (s8) temp2[1], 0x22);
     fn_80013864();
     return 1;
 }
@@ -11425,7 +11425,7 @@ s32 fn_8019ECB4(s32 arg0, s32 arg1, s32 arg2) {
     s32 fn_800C0658(void);
     void fn_800498A4(void *, s32, s32);
     void fn_80013864(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern s32 gUiInputFlags;
     u8 *temp;
 
@@ -11435,7 +11435,7 @@ s32 fn_8019ECB4(s32 arg0, s32 arg1, s32 arg2) {
         fn_800056A0(0);
         return 0;
     }
-    fn_8010FEEC(lbl_8032BB58, (s8)temp[0], (s8)temp[1], 0x24, 0);
+    fn_8010FEEC(gMapObjEventList, (s8)temp[0], (s8)temp[1], 0x24, 0);
     if (gUiInputFlags & 1) {
         fn_80049D08(temp);
         return 0;
@@ -11452,7 +11452,7 @@ s32 fn_8019ED74(void) {
 /* Script command: select the map object at (x,y), or refresh links when free-input is on. */
 s32 Map_SelectObjAt(s32 x, s32 y) {
     extern u32 gUiInputFlags;
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
@@ -11478,7 +11478,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
         if (obj == NULL) {
             fn_800056A0(0);
         } else {
-            fn_8010FE08(lbl_8032BB58, (s8) x, (s8) y, 0x22);
+            fn_8010FE08(gMapObjEventList, (s8) x, (s8) y, 0x22);
             count = fn_80046400((void *) Map_Get(), obj, linked);
             p = linked;
             i = 0;
@@ -11501,13 +11501,13 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
         return 0;
     }
     fn_80129888(sel, fn_800C0658());
-    fn_8010FE08(lbl_8032BB58, (s8) sel[0], (s8) sel[1], 0x22);
+    fn_8010FE08(gMapObjEventList, (s8) sel[0], (s8) sel[1], 0x22);
     fn_80013864();
     return 1;
 }
 
 s32 fn_8019F04C(s32 arg0, s32 arg1) {
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
@@ -11529,7 +11529,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
             fn_800056A0(0);
             return 0;
         }
-        fn_8010FE08(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x22);
+        fn_8010FE08(gMapObjEventList, (s8)arg0, (s8)arg1, 0x22);
         count = fn_80046400((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
@@ -11548,7 +11548,7 @@ s32 fn_8019F04C(s32 arg0, s32 arg1) {
 }
 
 s32 fn_8019F13C(s32 arg0, s32 arg1) {
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, void *);
@@ -11570,7 +11570,7 @@ s32 fn_8019F13C(s32 arg0, s32 arg1) {
             fn_800056A0(0);
             return 0;
         }
-        fn_8010FEEC(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x22, 0);
+        fn_8010FEEC(gMapObjEventList, (s8)arg0, (s8)arg1, 0x22, 0);
         count = fn_80046400((void *)Map_Get(), temp1, sp8);
     }
     p = sp8;
@@ -11596,7 +11596,7 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
     s32 fn_800C0658(void);
     void fn_8010FEEC(void *, s32, s32, s32, s32);
     void fn_80013864(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
 
     void *temp_r3;
 
@@ -11606,7 +11606,7 @@ s32 fn_8019F230(s32 arg0, s32 arg1) {
         return 0;
     }
     fn_8012942C(temp_r3, fn_800C0658());
-    fn_8010FEEC(lbl_8032BB58, (s8) arg0, (s8) arg1, 0x23, 0);
+    fn_8010FEEC(gMapObjEventList, (s8) arg0, (s8) arg1, 0x23, 0);
     fn_80013864();
     return 1;
 }
@@ -11659,7 +11659,7 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
     void fn_80049BD4(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 count;
     s32 i;
     s32 v;
@@ -11672,9 +11672,9 @@ s32 fn_8019F688(s32 arg0, s32 arg1) {
             fn_800056A0(0);
             return 0;
         }
-        fn_8010FE08(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x21);
+        fn_8010FE08(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21);
         {
-            void *temp2 = fn_8010FF24(lbl_8032BB58, (char)arg0, (char)arg1, 4);
+            void *temp2 = fn_8010FF24(gMapObjEventList, (char)arg0, (char)arg1, 4);
             if (temp2 != NULL) {
                 ((u8 *)temp2)[4] = ((u8 *)temp2)[5];
             }
@@ -11715,7 +11715,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     void fn_80049C30(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     s32 count;
     s32 i;
     s32 v;
@@ -11728,9 +11728,9 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
             fn_800056A0(0);
             return 0;
         }
-        fn_8010FEEC(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x21, 0);
+        fn_8010FEEC(gMapObjEventList, (s8)arg0, (s8)arg1, 0x21, 0);
         {
-            void *temp2 = fn_8010FF24(lbl_8032BB58, (char)arg0, (char)arg1, 4);
+            void *temp2 = fn_8010FF24(gMapObjEventList, (char)arg0, (char)arg1, 4);
             if (temp2 != NULL) {
                 ((u8 *)temp2)[4] = 0;
             }
@@ -11764,14 +11764,14 @@ s32 fn_8019F914(s32 arg0, s32 arg1) {
     void fn_80049C8C(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     void *temp;
 
     temp = Map_FindObjAt(Map_Get(), arg0, arg1, 0x80000, 0x10);
     if (temp == NULL) {
         return 0;
     }
-    fn_8010FEEC(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x29, 0);
+    fn_8010FEEC(gMapObjEventList, (s8)arg0, (s8)arg1, 0x29, 0);
     fn_80049C8C(temp, 0);
     fn_80044450(Map_Get(), 1);
     fn_80016180();
@@ -11785,14 +11785,14 @@ s32 fn_8019F9B4(s32 arg0, s32 arg1) {
     void fn_80049C8C(void *, s32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     void *temp;
 
     temp = Map_FindObjAt(Map_Get(), arg0, arg1, 0x80000, 0x10);
     if (temp == NULL) {
         return 0;
     }
-    fn_8010FE08(lbl_8032BB58, (s8)arg0, (s8)arg1, 0x29);
+    fn_8010FE08(gMapObjEventList, (s8)arg0, (s8)arg1, 0x29);
     fn_80049C8C(temp, 1);
     fn_80044450(Map_Get(), 1);
     fn_80016180();

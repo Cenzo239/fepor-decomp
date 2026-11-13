@@ -5641,11 +5641,11 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
 
 void fn_8010FAA8(void) {
     void fn_8001F91C(void *, u8, u8, s8);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 gBattleMap[];
     struct { s32 i; u8 *base; u8 *p; } walk;
     walk.i = 0;
-    walk.base = lbl_8032BB58;
+    walk.base = gMapObjEventList;
     walk.p = walk.base;
     while (walk.i < *(s32 *)(walk.base + 0x200)) {
         switch (walk.p[2]) {

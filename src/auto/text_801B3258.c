@@ -798,7 +798,7 @@ s32 ScriptCmd_ShooterBulletCheck(void) {
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 gWinCondCmdNames[];
     extern u8 gBattleMap[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     void *table;
     u8 *map;
     s32 sum;
@@ -810,7 +810,7 @@ s32 ScriptCmd_ShooterBulletCheck(void) {
     DebugPrint(gWinCondCmdNames + 0x18B);
     map = gBattleMap;
     y = (s8)map[9];
-    table = lbl_8032BB58;
+    table = gMapObjEventList;
     for (; y <= (s8)map[0xB] - 1; y++) {
         for (x = (s8)map[8]; x <= (s8)map[0xA] - 1; x++) {
             tmp = fn_8010FF24(table, (s8)x, (s8)y, 7);
@@ -16885,7 +16885,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
     extern s32 gSaveDataBase;
@@ -16999,7 +16999,7 @@ loop:
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
-    fn_8010FBA8(lbl_8032BB58, &w);
+    fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
@@ -17315,7 +17315,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
     extern void *gSaveDataBase;
@@ -17639,7 +17639,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
-    fn_8010FBA8(lbl_8032BB58, &w);
+    fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
@@ -17674,7 +17674,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
 
@@ -17788,7 +17788,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
-    fn_8010FBA8(lbl_8032BB58, &w);
+    fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {

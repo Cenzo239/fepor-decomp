@@ -5,7 +5,7 @@
 volatile unsigned int fn_80110128(void)
 {
   extern s32 lbl_8032BD5C[];
-  extern u8 lbl_8032BB58[];
+  extern u8 gMapObjEventList[];
   int new_var;
   lbl_8032BD5C[0] = 0;
   lbl_8032BD5C[1] = 0;
@@ -39,9 +39,9 @@ volatile unsigned int fn_80110128(void)
   lbl_8032BD5C[29] = 0;
   lbl_8032BD5C[30] = 0;
   lbl_8032BD5C[31] = 0;
-  *((u32 *) (((u8 *) lbl_8032BB58) + 0x200)) = 0;
-  lbl_8032BB58[0] = 0;
-  lbl_8032BB58[1] = 0;
-  lbl_8032BB58[2] = 0;
-  lbl_8032BB58[3] = 0;
+  *((u32 *) (((u8 *) gMapObjEventList) + 0x200)) = 0;
+  gMapObjEventList[0] = 0;
+  gMapObjEventList[1] = 0;
+  gMapObjEventList[2] = 0;
+  gMapObjEventList[3] = 0;
 }

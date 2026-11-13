@@ -869,22 +869,24 @@ void fn_801A4A24(s32 arg0, u8 arg1) {
 
 #pragma opt_common_subs off
 void fn_801A4A88(u8 *obj, s32 a1) {
-    s32 Unit_GetMaxHp(void *);
+    s32 fn_8003B2D0(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void fn_800381EC(void *, s32);
-    void BattleAnim_Queue(void *, s32, s32);
+    void fn_80034068(void *, s32, s32);
     s32 orig;
+    s32 ret;
     s32 b;
 
     orig = obj[0x1A8];
-    a1 = (s8)fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
+    ret = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj), (s8)a1);
     b = obj[0x1A8];
+    a1 = (s8)ret;
     fn_800381EC(obj, a1 + (s8)b);
-    BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(obj + 0x8A0, 0x9, a1);
-    BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
+    fn_80034068(obj + 0x8A0, 0x20, 0);
+    fn_80034068(obj + 0x8A0, 0x9, a1);
+    fn_80034068(obj + 0x8A0, 0x50, 0);
     if ((s8)obj[0x1A8] <= 0) {
-        BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
+        fn_80034068(obj + 0x8A0, 0xB, 0);
     }
 }
 #pragma opt_common_subs reset
@@ -909,7 +911,7 @@ void fn_801A4B40(u8 *obj, s32 a1) {
 }
 #pragma opt_common_subs reset
 void fn_801A4BE0(void *arg0) {
-    extern u8 lbl_8032BB58[516];
+    extern u8 gMapObjEventList[516];
     void fn_801A9AF8(void *);
     void fn_80034F40(void *);
     void *fn_8010FF24(void *, u8, u8, u8);
@@ -925,10 +927,10 @@ void fn_801A4BE0(void *arg0) {
         fn_80034F40((s8 *)arg0 + 0x2E0);
     }
     if (M2C_FIELD(arg0, u32 *, 0xCAC) & 0x100) {
-        entry = fn_8010FF24(lbl_8032BB58, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
+        entry = fn_8010FF24(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
         M2C_FIELD(entry, s8 *, 4) = M2C_FIELD(arg0, s8 *, 0x488);
         if (M2C_FIELD(arg0, s8 *, 0x488) == 0) {
-            fn_8010FE08(lbl_8032BB58, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
+            fn_8010FE08(gMapObjEventList, M2C_FIELD(arg0, u8 *, 0x47E), M2C_FIELD(arg0, u8 *, 0x47F), 4);
         }
     }
 }

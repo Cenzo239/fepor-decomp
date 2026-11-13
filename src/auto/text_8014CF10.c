@@ -88,7 +88,7 @@ extern u16 gUnits[];
 
 extern u8 gBattleState[];
 extern u8 lbl_80277060[];
-extern u8 lbl_8032BB58[];
+extern u8 gMapObjEventList[];
 #include "global.h"
 extern u8 gBattleState[];
 
@@ -316,7 +316,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void *fn_801E45FC(void);
     extern u8 lbl_80277060[];
     extern u8 gBattle[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
     u8 var_r27;
@@ -382,7 +382,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_800BE068((u8 *)arg0 + 0xB4);
     fn_801A7CDC(gBattle);
     fn_80016DE0();
-    fn_8010FF90(lbl_8032BB58);
+    fn_8010FF90(gMapObjEventList);
     fn_800C341C(gConvoy);
     fn_800C32A4(lbl_803206EC);
     p = (u8 *)arg0;

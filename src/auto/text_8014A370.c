@@ -335,6 +335,6 @@ extern u8 gUnits[];
 
 extern u8 gBattleState[];
 extern u8 lbl_80277060[];
-extern u8 lbl_8032BB58[];
+extern u8 gMapObjEventList[];
 #include "global.h"
 extern u8 gBattleState[];

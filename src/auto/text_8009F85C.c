@@ -1032,9 +1032,9 @@ void *fn_800A0AF0(void) {
 s32 fn_800A0B00(void) {
     void fn_800056A0(s32);
     void fn_8010FBD8(void *);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     fn_800056A0(0);
-    fn_8010FBD8(lbl_8032BB58);
+    fn_8010FBD8(gMapObjEventList);
     return 6;
 }
 

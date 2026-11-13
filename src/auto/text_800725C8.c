@@ -105,7 +105,7 @@ void fn_80072810(void) {
     void UnitRef_GetName(void);
     void fn_80091A1C(void);
     extern u8 gUiContext[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     u8 *base;
     void *ptr;
     u8 a;
@@ -115,7 +115,7 @@ void fn_80072810(void) {
     ptr = *(void **)base;
     a = *((u8 *)ptr + 0x19F);
     b = *((u8 *)ptr + 0x19E);
-    fn_8010FF24(lbl_8032BB58, b, a, 7);
+    fn_8010FF24(gMapObjEventList, b, a, 7);
     fn_8010FA2C();
     UnitRef_GetName();
     fn_80091A1C();

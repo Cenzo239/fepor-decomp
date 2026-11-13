@@ -943,7 +943,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
 
 void fn_8002BD44(void *arg0, void *arg1)
 {
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 lbl_80284E20[];
     extern u8 lbl_80284CE0[];
     extern u8 lbl_80284CD0[];
@@ -981,7 +981,7 @@ void fn_8002BD44(void *arg0, void *arg1)
 
     if (source == 0) {
         source = (u8 *)fn_8010FF24(
-            lbl_8032BB58,
+            gMapObjEventList,
             *((u8 *)arg0 + 0x19E),
             *((u8 *)arg0 + 0x19F),
             7
@@ -1482,13 +1482,13 @@ extern "C" void fn_8002C618(void *arg0, s8 arg1, s8 arg2) {
 void fn_8002C8E0(void) {
     void *fn_8010FF24(void *, s8, s8, u8);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 lbl_802EF4E0[];
     void *ptr;
     s8 x;
     s8 y;
 
-    ptr = fn_8010FF24(lbl_8032BB58, x, y, 4);
+    ptr = fn_8010FF24(gMapObjEventList, x, y, 4);
     if (ptr != NULL) {
         if (*(u8 *)((char *)ptr + 4) != 0) {
             fn_8002F6E8(lbl_802EF4E0, *(u8 *)ptr, *(u8 *)((char *)ptr + 1), 0, 4);
@@ -2618,7 +2618,7 @@ void fn_8002E880(void) {
     void fn_8010FBD4(void *);
     extern u8 gUnits[];
     extern u8 gBattleState[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     u8 sp8[8];
     s32 i;
     u8 *unit;
@@ -2639,7 +2639,7 @@ void fn_8002E880(void) {
         i += 1;
     } while (i <= 0x9F);
     if (gBattleState[0x11] == 0) {
-        fn_8010FBD4(lbl_8032BB58);
+        fn_8010FBD4(gMapObjEventList);
     }
 }
 
@@ -3984,14 +3984,14 @@ void *fn_80032D5C(void) {
     void UnitRef_Set(void *, s32);
     void *fn_8010FF24(void *, u8, u8, s32);
     extern u8 gUiContext[];
-    extern u8 lbl_8032BB58[];
+    extern u8 gMapObjEventList[];
     extern u8 lbl_80367278;
     u8 *p;
     void *temp;
     s32 val;
 
     p = gUiContext;
-    temp = fn_8010FF24(lbl_8032BB58, p[0xD], p[0xE], 7);
+    temp = fn_8010FF24(gMapObjEventList, p[0xD], p[0xE], 7);
     val = fn_80019E24(*(u8 *)((u8 *)temp + 4));
     UnitRef_Set(&lbl_80367278, val);
     return &lbl_80367278;
@@ -4070,7 +4070,7 @@ extern u16 lbl_80284E20[8];
 extern u32 lbl_802EF4E0[502];
 extern u8 gBattleMap[151280];
 extern u8 gUnits[101760];
-extern u32 lbl_8032BB58; // size: 0x204
+extern u32 gMapObjEventList; // size: 0x204
 
 #include "common.h"
 #include "global.h"

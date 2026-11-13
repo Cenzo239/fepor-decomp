@@ -2,7 +2,7 @@
 #include "common.h"
 
 extern u8 lbl_80290AA0[0x40];
-extern u8 lbl_8032BB58[0x200];
+extern u8 gMapObjEventList[0x200];
 extern u8 gBattleState[0x578];
 
 extern s32 lbl_80367A88;
@@ -818,7 +818,7 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
     extern u8 lbl_80275740[];
     extern u8 lbl_80290AE0[];
     extern u8 gUiContext[];
-    extern u8 lbl_8032BB58[0x200];
+    extern u8 gMapObjEventList[0x200];
     extern u32 lbl_8036A408;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A42C;
@@ -864,11 +864,11 @@ void fn_80129CA8(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4, u32 arg5) {
         break;
     }
     y = arg1 + dy;
-    fn_8010FE08(lbl_8032BB58, x - 1, y, 0xA);
-    fn_8010FE08(lbl_8032BB58, x + 1, y, 0xA);
-    fn_8010FE08(lbl_8032BB58, x, y - 1, 0xA);
-    fn_8010FE08(lbl_8032BB58, x, y + 1, 0xA);
-    fn_8010FEEC(lbl_8032BB58, x, y, 0x27, 0);
+    fn_8010FE08(gMapObjEventList, x - 1, y, 0xA);
+    fn_8010FE08(gMapObjEventList, x + 1, y, 0xA);
+    fn_8010FE08(gMapObjEventList, x, y - 1, 0xA);
+    fn_8010FE08(gMapObjEventList, x, y + 1, 0xA);
+    fn_8010FEEC(gMapObjEventList, x, y, 0x27, 0);
     obj = Map_FindObjAt(Map_Get(), x, y, 0x10000, 0);
     if (obj == NULL) {
         fn_800056A0(0);
