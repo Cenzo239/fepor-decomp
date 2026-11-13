@@ -57,7 +57,7 @@ void TabMenu_HandleInput(void *arg0) {
     void Ui_HideUnitInfoPopup(void *);
     void Ui_OpenUnitInfoText(void *, void *, void *, f32, f32);
     void fn_801E4900(s16 *, void *);
-    void fn_801E4C48(void *, s8);
+    void TabMenu_SetTab(void *, s8);
     void fn_801E80B4(void *);
     void fn_801E8D34(void *);
     extern u8 gTabMenuStrings[];
@@ -92,9 +92,9 @@ void TabMenu_HandleInput(void *arg0) {
         if ((pressed & 0x40) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
             slot = *(u8 *)((u8 *)arg0 + 0x30);
             if (slot > 0) {
-                fn_801E4C48(arg0, (s8)(slot - 1));
+                TabMenu_SetTab(arg0, (s8)(slot - 1));
             } else {
-                fn_801E4C48(arg0, 2);
+                TabMenu_SetTab(arg0, 2);
             }
             Ui_PlaySeCue(gTabMenuStrings + 0x13F, 0x64);
             return;
@@ -102,9 +102,9 @@ void TabMenu_HandleInput(void *arg0) {
         if ((pressed & 0x20) && (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0)) {
             slot = *(u8 *)((u8 *)arg0 + 0x30);
             if (slot < 2) {
-                fn_801E4C48(arg0, (s8)(slot + 1));
+                TabMenu_SetTab(arg0, (s8)(slot + 1));
             } else {
-                fn_801E4C48(arg0, 0);
+                TabMenu_SetTab(arg0, 0);
             }
             Ui_PlaySeCue(gTabMenuStrings + 0x13F, 0x64);
             return;
@@ -318,7 +318,7 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
 }
 
 #pragma global_optimizer off
-void fn_801E4C48(void *arg0, s8 arg1) {
+void TabMenu_SetTab(void *arg0, s8 arg1) {
     void *Msg_Expand(void *);
     void fn_80056AE0(void *, void *);
     void fn_80057860(void *, s16);
