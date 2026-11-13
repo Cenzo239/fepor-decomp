@@ -1754,7 +1754,7 @@ extern "C" void fn_801ADD8C(void *arg0) {
 }
 
 extern "C" void Options_HandleFocusInput(void *arg0) {
-    extern u8 lbl_8027BC88[];
+    extern u8 Options_SeCues[];
     extern void *gPadInput;
     void Ui_PlaySeCue(void *, s32);
     extern s32 gUiInputFlags;
@@ -1820,10 +1820,10 @@ extern "C" void Options_HandleFocusInput(void *arg0) {
             break;
         }
         if (temp_r0 != *(s16 *)((char *)arg0 + 0x3E)) {
-            Ui_PlaySeCue((u8 *)lbl_8027BC88 + 0x39, 0x64);
+            Ui_PlaySeCue((u8 *)Options_SeCues + 0x39, 0x64);
         }
         if (temp_r31 != *(s16 *)((char *)arg0 + 0x40)) {
-            Ui_PlaySeCue((u8 *)lbl_8027BC88 + 0x55, 0x64);
+            Ui_PlaySeCue((u8 *)Options_SeCues + 0x55, 0x64);
         }
     }
 }
