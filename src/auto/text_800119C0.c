@@ -917,7 +917,7 @@ void main(void) {
     void Camera_ApplyOrtho(s32);
     void fn_8006E568(s32);
     void fn_8006E660(void);
-    void fn_8006E748(void);
+    void DEMOBeforeRender(void);
     void fn_80078DF8(void);
     void fn_800895B8(void);
     void fn_8009B738(s32, s32);
@@ -1027,7 +1027,7 @@ void main(void) {
             fn_80066124(0);
         } else {
             fn_8009E9D0();
-            fn_8006E748();
+            DEMOBeforeRender();
             fn_8000C194(5);
             fn_80224658(0);
             fn_8009E7DC();

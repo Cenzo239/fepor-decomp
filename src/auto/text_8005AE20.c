@@ -7199,7 +7199,7 @@ void fn_8006E660(void)
 }
 
 #pragma global_optimizer off
-void fn_8006E748(void)
+void DEMOBeforeRender(void)
 {
     u32 fn_80211690(void);
     void fn_802208BC(s32);
