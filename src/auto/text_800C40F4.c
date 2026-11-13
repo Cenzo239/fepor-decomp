@@ -15224,7 +15224,7 @@ s32 fn_800EB428(s32 arg0) {
         u8 unkA019;
         u8 busy;
     };
-    s32 fn_8021A8C8(s32, s32, void *);
+    s32 CARDProbeEx(s32, s32, void *);
     void Process_Goto(s32, s32);
     extern struct CardWork gCardWork;
     u8 flag;
@@ -15235,7 +15235,7 @@ s32 fn_800EB428(s32 arg0) {
     gCardWork.unkA018 = 0;
     gCardWork.unkA019 = 0;
     gCardWork.busy = 0;
-    gCardWork.result = fn_8021A8C8(gCardWork.chan, 0, &gCardWork.sectorSize);
+    gCardWork.result = CARDProbeEx(gCardWork.chan, 0, &gCardWork.sectorSize);
     flag = 0;
     if (gCardWork.result == -1 || gCardWork.busy != 0) {
         flag = 1;
@@ -15404,7 +15404,7 @@ s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
 u8 fn_800EBF58(void) {
     s32 OSGetTick(void);
     void PADInit(void);
-    s32 fn_8021A8C8(s32, void *, void *);
+    s32 CARDProbeEx(s32, void *, void *);
     s32 fn_8021AFD0(s32, void *, s32, s32);
     s32 fn_80217C34(s32);
     s32 fn_8021A7D4(s32, s32);
@@ -15425,7 +15425,7 @@ u8 fn_800EBF58(void) {
     start = OSGetTick();
     result = 0;
     PADInit();
-    r = fn_8021A8C8(0, &spC, &sp8);
+    r = CARDProbeEx(0, &spC, &sp8);
     if (r == -1) goto L_AFD0;
     if (r < 0) goto END;
 L_AFD0:

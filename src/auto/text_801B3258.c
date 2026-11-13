@@ -14770,7 +14770,7 @@ void fn_801D8E80(void *arg0) {
     void Process_UnlinkByKey(void *);
     void fn_801DB5B4(void *, void *);
     void MsgBox_Layout(void *);
-    s16 fn_8021A8C8(s32, s32, s32);
+    s16 CARDProbeEx(s32, s32, s32);
     extern u8 lbl_80299C88[];
     extern u32 gUiInputFlags;
     extern f32 lbl_8036B628;
@@ -14788,7 +14788,7 @@ void fn_801D8E80(void *arg0) {
 
     st = *(u8 **)((u8 *)arg0 + 0x30);
     if (!(gUiInputFlags & 0x10)) {
-        pad = fn_8021A8C8(0, 0, 0);
+        pad = CARDProbeEx(0, 0, 0);
         if (pad == -0x80) {
             *(s32 *)st = 0x28;
         }

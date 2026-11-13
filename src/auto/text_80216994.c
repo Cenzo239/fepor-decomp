@@ -1841,7 +1841,7 @@ void fn_8021A7D4(void *arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_8021A8C8(s32 chan, s32 *memSize, s32 *sectorSize) {
+s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
     extern u16 __CARDBlock[];
     extern u32 lbl_8029DB60[];
     s32 OSDisableInterrupts(void);
