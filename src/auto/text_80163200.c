@@ -4488,7 +4488,7 @@ void fn_8016C3C8(void *arg0) {
     void *fn_800377D8(void *);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     void strcpy(void *, void *);
     void *memset(void *, s32, s32);
     extern u8 lbl_80277EA0[];
@@ -4603,7 +4603,7 @@ void fn_8016C3C8(void *arg0) {
                             cur = *(void **)((u8 *)cur + 0x38);
                             continue;
                         }
-                        if (fn_802342B8((u8 *)cur + 0x14, name) == 0) {
+                        if (Str_Cmp((u8 *)cur + 0x14, name) == 0) {
                             kind = *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8);
                             if ((kind == 0 && *(u8 *)cur == 1) ||
                                 (kind == 3 && *(u8 *)cur == 2) ||
@@ -4624,7 +4624,7 @@ void fn_8016C3C8(void *arg0) {
                         case 0:
                             cur = *(void **)((u8 *)self + 0x3C);
                             while (cur != NULL) {
-                                if (fn_802342B8((u8 *)cur + 0x14, lbl_80277EA0 + 0xFE) == 0) {
+                                if (Str_Cmp((u8 *)cur + 0x14, lbl_80277EA0 + 0xFE) == 0) {
                                     break;
                                 }
                                 cur = *(void **)((u8 *)cur + 0x38);
@@ -4653,7 +4653,7 @@ void fn_8016C3C8(void *arg0) {
                         case 3:
                             cur = *(void **)((u8 *)self + 0x3C);
                             while (cur != NULL) {
-                                if (fn_802342B8((u8 *)cur + 0x14, lbl_80277EA0 + 0x108) == 0) {
+                                if (Str_Cmp((u8 *)cur + 0x14, lbl_80277EA0 + 0x108) == 0) {
                                     break;
                                 }
                                 cur = *(void **)((u8 *)cur + 0x38);
@@ -4682,7 +4682,7 @@ void fn_8016C3C8(void *arg0) {
                         case 1:
                             cur = *(void **)((u8 *)self + 0x3C);
                             while (cur != NULL) {
-                                if (fn_802342B8((u8 *)cur + 0x14, lbl_80277EA0 + 0x113) == 0) {
+                                if (Str_Cmp((u8 *)cur + 0x14, lbl_80277EA0 + 0x113) == 0) {
                                     break;
                                 }
                                 cur = *(void **)((u8 *)cur + 0x38);
@@ -4711,7 +4711,7 @@ void fn_8016C3C8(void *arg0) {
                         case 2:
                             cur = *(void **)((u8 *)self + 0x3C);
                             while (cur != NULL) {
-                                if (fn_802342B8((u8 *)cur + 0x14, lbl_80277EA0 + 0x11C) == 0) {
+                                if (Str_Cmp((u8 *)cur + 0x14, lbl_80277EA0 + 0x11C) == 0) {
                                     break;
                                 }
                                 cur = *(void **)((u8 *)cur + 0x38);
@@ -4749,7 +4749,7 @@ void fn_8016C3C8(void *arg0) {
         cur = *(void **)((u8 *)self + 0x3C);
         while (cur != NULL) {
             next = *(void **)((u8 *)cur + 0x38);
-            if (next != NULL && fn_802342B8((u8 *)next + 0x14, lbl_80277EA0 + 0xFE) == 0) {
+            if (next != NULL && Str_Cmp((u8 *)next + 0x14, lbl_80277EA0 + 0xFE) == 0) {
                 *(void **)((u8 *)cur + 0x38) = *(void **)((u8 *)next + 0x38);
                 if (*(void **)((u8 *)next + 0x38) != NULL) {
                     *(void **)((u8 *)*(void **)((u8 *)next + 0x38) + 0x34) = cur;
@@ -4764,7 +4764,7 @@ void fn_8016C3C8(void *arg0) {
         cur = *(void **)((u8 *)self + 0x3C);
         while (cur != NULL) {
             next = *(void **)((u8 *)cur + 0x38);
-            if (next != NULL && fn_802342B8((u8 *)next + 0x14, lbl_80277EA0 + 0x108) == 0) {
+            if (next != NULL && Str_Cmp((u8 *)next + 0x14, lbl_80277EA0 + 0x108) == 0) {
                 *(void **)((u8 *)cur + 0x38) = *(void **)((u8 *)next + 0x38);
                 if (*(void **)((u8 *)next + 0x38) != NULL) {
                     *(void **)((u8 *)*(void **)((u8 *)next + 0x38) + 0x34) = cur;
@@ -4779,7 +4779,7 @@ void fn_8016C3C8(void *arg0) {
         cur = *(void **)((u8 *)self + 0x3C);
         while (cur != NULL) {
             next = *(void **)((u8 *)cur + 0x38);
-            if (next != NULL && fn_802342B8((u8 *)next + 0x14, lbl_80277EA0 + 0x113) == 0) {
+            if (next != NULL && Str_Cmp((u8 *)next + 0x14, lbl_80277EA0 + 0x113) == 0) {
                 *(void **)((u8 *)cur + 0x38) = *(void **)((u8 *)next + 0x38);
                 if (*(void **)((u8 *)next + 0x38) != NULL) {
                     *(void **)((u8 *)*(void **)((u8 *)next + 0x38) + 0x34) = cur;
@@ -4794,7 +4794,7 @@ void fn_8016C3C8(void *arg0) {
         cur = *(void **)((u8 *)self + 0x3C);
         while (cur != NULL) {
             next = *(void **)((u8 *)cur + 0x38);
-            if (next != NULL && fn_802342B8((u8 *)next + 0x14, lbl_80277EA0 + 0x11C) == 0) {
+            if (next != NULL && Str_Cmp((u8 *)next + 0x14, lbl_80277EA0 + 0x11C) == 0) {
                 *(void **)((u8 *)cur + 0x38) = *(void **)((u8 *)next + 0x38);
                 if (*(void **)((u8 *)next + 0x38) != NULL) {
                     *(void **)((u8 *)*(void **)((u8 *)next + 0x38) + 0x34) = cur;
@@ -5265,7 +5265,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void *fn_8005397C(void *, void *);
     void **fn_8006EDD8(void *, s32);
     s32 *fn_8018D900(u8);
-    s32 fn_802342B8(void *, s32);
+    s32 Str_Cmp(void *, s32);
     extern u8 lbl_80277EA0[];
     extern u32 lbl_8036A9E8;
     extern f32 lbl_8036AA34;
@@ -5360,7 +5360,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
                         }
                         {
                             s32 name = fn_800377D8(unit);
-                            if (fn_802342B8(Msg_Expand((u8 *)node + 0x14), name) != 0) {
+                            if (Str_Cmp(Msg_Expand((u8 *)node + 0x14), name) != 0) {
                                 node = *(void **)((u8 *)node + 0x38);
                                 continue;
                             }

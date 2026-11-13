@@ -350,14 +350,14 @@ void Status_Clear(s32 *arg0, u8 arg1) {
 
 void fn_80105DAC(s32 *arg0, s32 arg1) {
     s32 *fn_80019DF0(u8);
-    s32 fn_802342B8(s32, s32);
+    s32 Str_Cmp(s32, s32);
     u8 i;
     u32 *p;
     s32 n;
 
     if (arg1 != 0) {
         for (i = 0; i < 0x62; i++) {
-            if (fn_802342B8(arg1, *fn_80019DF0(i)) == 0) {
+            if (Str_Cmp(arg1, *fn_80019DF0(i)) == 0) {
                 n = i;
                 if (n >= 0) {
                     p = (u32 *)arg0;
@@ -2105,10 +2105,10 @@ s32 fn_801090C0(s8 *arg0)
 }
 
 void fn_8010913C(void *arg0) {
-    s32 fn_802342B8(s32, s32);
+    s32 Str_Cmp(s32, s32);
     extern s32 lbl_803679D8;
     extern void *lbl_803679DC;
-    if (fn_802342B8(*M2C_FIELD(arg0, s32 **, 0x30), lbl_803679D8) == 0) {
+    if (Str_Cmp(*M2C_FIELD(arg0, s32 **, 0x30), lbl_803679D8) == 0) {
         lbl_803679DC = arg0;
     }
 }

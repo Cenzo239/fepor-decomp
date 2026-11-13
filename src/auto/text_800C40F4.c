@@ -298,7 +298,7 @@ static inline const u32 *StrMin(const u32 *a, const u32 *b) {
   void fn_800E01C8(void *);
   /* fn_800E0140 declared at definition */
   void fn_800E8A88(void *, f32);
-s32 fn_802342B8(); /* strcmp */
+s32 Str_Cmp(); /* strcmp */
 
 /* std::equal on chars */
 static inline BOOL CharsEqual(const char *first1, const char *last1, const char *first2) {
@@ -447,7 +447,7 @@ s32 fn_800C4304(s32 arg0) {
     p = (u32 *)lbl_80320B88;
 loop_1:
     v = *p;
-    if ((v == 0U) || (fn_802342B8(arg0, v + 4) != 0)) {
+    if ((v == 0U) || (Str_Cmp(arg0, v + 4) != 0)) {
         idx += 1;
         p += 1;
         if (idx >= 0x10) {
@@ -536,7 +536,7 @@ void fn_800C4664(s32 arg0) {
 #pragma global_optimizer off
 void fn_800C469C(char *arg0)
 {
-    s32 fn_802342B8(char *, s32);
+    s32 Str_Cmp(char *, s32);
     extern u32 lbl_80320B88[];
     extern u32 lbl_80367870;
 
@@ -551,7 +551,7 @@ void fn_800C469C(char *arg0)
         entry = *table;
 
         if (entry != 0) {
-            if (fn_802342B8(arg0, (s32)(entry + 4)) == 0) {
+            if (Str_Cmp(arg0, (s32)(entry + 4)) == 0) {
                 lbl_80367870 = lbl_80320B88[i];
                 break;
             }
@@ -10008,13 +10008,13 @@ void fn_800DF110(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg
 s32 fn_800DF258(void *arg0, const char *arg1)
 {
     void *String_CStr(void *);
-    s32 fn_802342B8(const char *, const char *);
+    s32 Str_Cmp(const char *, const char *);
 
     void *str;
     s32 result;
 
     str = String_CStr((u8 *)arg0 + 0x10);
-    result = fn_802342B8((const char *)str, arg1);
+    result = Str_Cmp((const char *)str, arg1);
 
     return result == 0;
 }
@@ -10022,7 +10022,7 @@ s32 fn_800DF258(void *arg0, const char *arg1)
 #pragma cplusplus on
 #pragma dont_inline on
 extern "C" bool fn_800DF298(void *arg0, const char *arg1) {
-    return fn_802342B8((char *)String_CStr((s8 *)arg0 + 4), arg1) == 0;
+    return Str_Cmp((char *)String_CStr((s8 *)arg0 + 4), arg1) == 0;
 }
 #pragma dont_inline reset
 #pragma cplusplus reset
@@ -10487,7 +10487,7 @@ void fn_800DFC2C(void *arg0) {
 extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char *arg3) {
     u8 fn_800DF298(void *, const char *);
     u8 fn_800DF258(void *, const char *);
-    s32 fn_802342B8(const char *, const char *);
+    s32 Str_Cmp(const char *, const char *);
     extern char lbl_80271B50[];
     struct Cb {
         u8 pad[0x10];
@@ -10524,7 +10524,7 @@ extern "C" s32 fn_800DFC68(void *arg0, void *arg1, const char *arg2, const char 
     filter = arg3;
     cb->v9();
     flag = 0;
-    if (filter == 0 || fn_802342B8(filter, lbl_80271B50) == 0) {
+    if (filter == 0 || Str_Cmp(filter, lbl_80271B50) == 0) {
         flag = 1;
     }
     match = (u8)flag != 0;
@@ -15254,7 +15254,7 @@ s32 fn_800EB428(s32 arg0) {
 
 s32 fn_800EB520(char *arg0) {
     extern char lbl_802725D8[];
-    return fn_802342B8(arg0, lbl_802725D8 + 0xE0) != 0;
+    return Str_Cmp(arg0, lbl_802725D8 + 0xE0) != 0;
 }
 
 void fn_800EB558(void) {
@@ -20347,7 +20347,7 @@ s32 fn_800FB334(void *arg0)
     extern u8 *lbl_803678F8;
     extern u8 gUiContext[];
 
-    extern s32 fn_802342B8(void *, void *);
+    extern s32 Str_Cmp(void *, void *);
     extern s32 fn_80015610(void *, void *);
 
     u8 *obj;
@@ -20357,7 +20357,7 @@ s32 fn_800FB334(void *arg0)
     obj = (u8 *)arg0;
     other = *(u8 **)gUiContext;
 
-    result = fn_802342B8(
+    result = Str_Cmp(
         *(void **)(lbl_803678F8 + 0x14),
         **(void ***)(obj + 0x18c)
     );
@@ -20375,10 +20375,10 @@ s32 fn_800FB334(void *arg0)
 }
 
 s32 fn_800FB3AC(void *arg0) {
-    s32 fn_802342B8(s32, s32, void *);
+    s32 Str_Cmp(s32, s32, void *);
     extern void *lbl_803678F8;
 extern void *gUiContext;
-    return fn_802342B8(M2C_FIELD(lbl_803678F8, s32 *, 0x14), *M2C_FIELD(arg0, s32 **, 0x18C), lbl_803678F8) == 0;
+    return Str_Cmp(M2C_FIELD(lbl_803678F8, s32 *, 0x14), *M2C_FIELD(arg0, s32 **, 0x18C), lbl_803678F8) == 0;
 }
 
 s32 fn_800FB3E4(void *arg0)
@@ -20386,7 +20386,7 @@ s32 fn_800FB3E4(void *arg0)
     extern u8 *lbl_803678F8;
     extern u8 gUiContext[];
 
-    extern s32 fn_802342B8(void *, void *);
+    extern s32 Str_Cmp(void *, void *);
     extern s32 fn_80015610(void *, void *);
 
     u8 *obj;
@@ -20396,7 +20396,7 @@ s32 fn_800FB3E4(void *arg0)
     obj = (u8 *)arg0;
     other = *(u8 **)gUiContext;
 
-    result = fn_802342B8(
+    result = Str_Cmp(
         *(void **)(lbl_803678F8 + 0x14),
         **(void ***)(obj + 0x188)
     );
@@ -20414,15 +20414,15 @@ s32 fn_800FB3E4(void *arg0)
 }
 
 s32 fn_800FB45C(void *arg0) {
-    s32 fn_802342B8(s32, s32, void *);
+    s32 Str_Cmp(s32, s32, void *);
     extern void *lbl_803678F8;
     
-    return fn_802342B8(((s32*)lbl_803678F8)[0x14/4], ((s32**)arg0)[0x188/4][0], lbl_803678F8) == 0;
+    return Str_Cmp(((s32*)lbl_803678F8)[0x14/4], ((s32**)arg0)[0x188/4][0], lbl_803678F8) == 0;
 }
 
 s32 fn_800FB494(void *arg0) {
     extern void *lbl_803678F8;
-    s32 fn_802342B8(u8 *, u8 *);
+    s32 Str_Cmp(u8 *, u8 *);
     s32 fn_80015610(void *, void *);
     extern u8 gUiContext[];
 
@@ -20437,7 +20437,7 @@ s32 fn_800FB494(void *arg0) {
     name = *M2C_FIELD(arg0, u8 ***, 0x188);
 
     while ((entry = *list++) != NULL) {
-        if (fn_802342B8(entry, name) == 0) {
+        if (Str_Cmp(entry, name) == 0) {
             found = 1;
             goto checked;
         }
@@ -20456,7 +20456,7 @@ checked:
 s32 fn_800FB548(void *arg0)
 {
     extern u8 *lbl_803678F8;
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     void *key;
     void **list;
     void *item;
@@ -20467,7 +20467,7 @@ s32 fn_800FB548(void *arg0)
 
     goto load;
     do {
-        if (fn_802342B8(item, key) == 0) {
+        if (Str_Cmp(item, key) == 0) {
             found = 1;
             goto done;
         }

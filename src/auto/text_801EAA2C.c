@@ -1270,7 +1270,7 @@ void *fn_801ECE40(s32 arg0) {
     for (node = lbl_803683C0; node != NULL; node = *(void **)((u8 *)node + 0x60)) {
         if (*(s32 *)((u8 *)node + 0x64) != 0 &&
             *(u32 *)((u8 *)node + 0x54) == id &&
-            fn_802342B8((u8 *)node + 0x28, arg0) == 0) {
+            Str_Cmp((u8 *)node + 0x28, arg0) == 0) {
             return node;
         }
     }
@@ -1286,7 +1286,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void DCFlushRange(s32, s32);
     void fn_80215D9C(void *, s32, s32, s32, s32, s32, s32, void *);
     void *fn_80234200(s32, s32);
-    s32 fn_802342B8(void *);
+    s32 Str_Cmp(void *);
     void strcpy(void *, s32, s32);
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
@@ -1331,7 +1331,7 @@ found:
         return 0;
     }
     flag = 0;
-    if (fn_80234200(path, 0x2F) != 0 && fn_802342B8(lbl_8027F1D0 + 0x35) == 0) {
+    if (fn_80234200(path, 0x2F) != 0 && Str_Cmp(lbl_8027F1D0 + 0x35) == 0) {
         size = 0;
         node = lbl_80332270;
         do {

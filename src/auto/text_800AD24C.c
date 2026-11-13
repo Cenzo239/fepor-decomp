@@ -7391,7 +7391,7 @@ void fn_800BDBC8(s32 arg0, s32 arg1) {
     var_r29 = arg0;
     var_r30 = 0;
 loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (fn_802342B8(*(s32 *)var_r29, arg1) == 0)) {
+    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, arg1) == 0)) {
 
     } else {
         var_r30 += 1;
@@ -7422,7 +7422,7 @@ void fn_800BDC68(void *arg0, void *arg1) {
     var_r29 = a0;
     var_r30 = 0;
 loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (fn_802342B8(*(s32 *)var_r29, a1) == 0)) {
+    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, a1) == 0)) {
 
     } else {
         var_r30 += 1;
@@ -7444,7 +7444,7 @@ loop_1:
 #pragma use_lmw_stmw on
 s32 fn_800BDD08(s32 arg0, s32 arg1) {
     s32 fn_8000D598(s32);
-    s32 fn_802342B8(s32, s32);
+    s32 Str_Cmp(s32, s32);
     s32 var_r30;
     u32 temp_r31;
     s32 var_r29;
@@ -7459,7 +7459,7 @@ s32 fn_800BDD08(s32 arg0, s32 arg1) {
     var_r29 = arg0;
     var_r30 = 0;
 loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (fn_802342B8(*(s32 *)var_r29, arg1) == 0)) {
+    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, arg1) == 0)) {
 
     } else {
         var_r30 += 1;
@@ -9080,7 +9080,7 @@ s32 fn_800C1F1C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 char *fn_800C2048(s8 arg0, s8 arg1) {
     void *fn_80013B60(void *);
     u8 fn_800BDD08(void *, char *);
-    s32 fn_802342B8(char *, char *);
+    s32 Str_Cmp(char *, char *);
     u8 cont;
     u8 *p;
     s32 value;
@@ -9130,7 +9130,7 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
                         base = M2C_FIELD(M2C_FIELD(node, void **, 8), char **, 0x24);
                         base += (s16) (((p[0] & 0xFF) << 8) + p[1]);
                         p += 3;
-                        if (fn_802342B8("MindGetItem", base) == 0) {
+                        if (Str_Cmp("MindGetItem", base) == 0) {
                             return M2C_FIELD(M2C_FIELD(node, void **, 8), char **, 0x24) + value;
                         }
                         break;

@@ -617,7 +617,7 @@ s32 fn_800A4CD8(s32 arg0) {
     s32 fn_8020C6D4(s32, void *);
     void fn_8020C79C(void *);
     s32 fn_8020CC28(void *, void *, s32, s32, s32);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     void *memset(void *, s32, s32);
     void *memcpy(void *, void *, s32);
     extern s32 lbl_803677B0;
@@ -656,7 +656,7 @@ s32 fn_800A4CD8(s32 arg0) {
     }
     r24 = (s32)(lbl_803123A0 + 0x3C);
     memcpy((void *)r24, lbl_80312540, 0x30);
-    if (fn_802342B8((void *)r24, lbl_8026E1A8) != 0) {
+    if (Str_Cmp((void *)r24, lbl_8026E1A8) != 0) {
         fn_8020C79C(lbl_803123A0);
         return 0;
     }

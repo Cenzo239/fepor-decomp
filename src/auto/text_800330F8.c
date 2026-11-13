@@ -4002,35 +4002,35 @@ void fn_8003B9AC(u32 arg0) {
 
 extern u16 lbl_8026A458[];
 s32 fn_8003BA80(void *arg0) {
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     extern u16 lbl_8026A458[];
     s32 temp_r3;
 
     if (arg0 == NULL) {
         return 0;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x44) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x44) == 0) {
         return 1;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x49) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x49) == 0) {
         return 2;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x51) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x51) == 0) {
         return 3;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x56) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x56) == 0) {
         return 4;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x5C) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x5C) == 0) {
         return 5;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x61) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x61) == 0) {
         return 6;
     }
-    if (fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x67) == 0) {
+    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x67) == 0) {
         return 7;
     }
-    temp_r3 = fn_802342B8(arg0, (u8 *)lbl_8026A458 + 0x6E);
+    temp_r3 = Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x6E);
     if (temp_r3 != 0) {
         return 0;
     }
@@ -5272,7 +5272,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
     void fn_80104410(void *);
     void fn_8003816C(void *, u8, u8);
     void fn_80105DAC(void *, void *);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     u8 Status_Test(void *, s32);
     void *fn_80028854(void);
     void fn_8003C1B4(void *);
@@ -5433,7 +5433,7 @@ void fn_8003EAE8(void *arg0, void *arg1) {
         walk = (struct Src *)((u8 *)walk + 4);
     }
     c = self->unk188;
-    if (fn_802342B8(src->unk4, *(void **)((u8 *)c + 0x10)) != 0 ||
+    if (Str_Cmp(src->unk4, *(void **)((u8 *)c + 0x10)) != 0 ||
         src->unkA > (s8)*(u8 *)((u8 *)c + 0x1A)) {
         self->unk19A = src->unkA;
     } else {

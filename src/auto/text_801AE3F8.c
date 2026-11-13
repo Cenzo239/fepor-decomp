@@ -1316,7 +1316,7 @@ void fn_801B0C70(void *arg0) {
     void fn_8001BD4C(void *, void *);
     s32 fn_8001D2C8(void *);
     s32 fn_8001ED58(void *);
-    s32 fn_802342B8(s32, s32);
+    s32 Str_Cmp(s32, s32);
     void fn_8001BCF4(void *);
     void Process_Goto(void *, s32);
     extern struct unk_struct lbl_80331C6C;
@@ -1333,14 +1333,14 @@ void fn_801B0C70(void *arg0) {
     if (flag == 0) {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
         temp_r31 = fn_8001D2C8((u8 *)obj48 + 0x60);
-        if (fn_802342B8(fn_8001ED58(temp_r30), temp_r31) == 0) {
+        if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
             Process_Goto(arg0, 0xE);
         }
     } else {
         temp_r30 = *(void **)((u8 *)obj48 + 0x60);
         temp_r31 = fn_8001D2C8((u8 *)obj48 + 0x60);
-        if (fn_802342B8(fn_8001ED58(temp_r30), temp_r31) == 0) {
+        if (Str_Cmp(fn_8001ED58(temp_r30), temp_r31) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
         }
         if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x3E) == 4) {

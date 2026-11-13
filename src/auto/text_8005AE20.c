@@ -51,7 +51,7 @@ extern u8 lbl_8026B658[];
 
 static inline u8 *FindEntryByName(char *name) {
     extern u8 gFileCache[];
-    s32 fn_802342B8();
+    s32 Str_Cmp();
     u8 *e;
     char *start;
     u32 hash;
@@ -69,7 +69,7 @@ static inline u8 *FindEntryByName(char *name) {
         hash = *name++ + hash * 37;
     }
     for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
-        if (hash == *(u32 *)(e + 0x2C) && fn_802342B8(start, e) == 0) {
+        if (hash == *(u32 *)(e + 0x2C) && Str_Cmp(start, e) == 0) {
             return gFileCache + i * 0x7C;
         }
     }
@@ -664,7 +664,7 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     void *fn_80234200(void *, s32);
     void strcpy(void *, void *);
     void fn_80238ADC(void *);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     char sp18[0x10];
     char sp8[0x10];
     void *temp_r3;
@@ -682,12 +682,12 @@ s32 fn_8005C0AC(void *arg0, u8 *arg1) {
     fn_80238ADC(sp18);
     strcpy(sp8, var_r31);
     fn_80238ADC(sp8);
-    return fn_802342B8(sp18, sp8) == 0;
+    return Str_Cmp(sp18, sp8) == 0;
 }
 
 u16 fn_8005C144(u8 *arg0) {
     s32 fn_8020C3E0(u8 *);
-    s32 fn_802342B8(u8 *, M2C_UNK *);
+    s32 Str_Cmp(u8 *, M2C_UNK *);
     extern M2C_UNK gFileCache;
     M2C_UNK *var_r27;
     s32 temp_r3;
@@ -720,7 +720,7 @@ loop_7:
     var_r30 = 0;
     var_r27 = &gFileCache;
 loop_9:
-    if ((var_r29 == (u32) M2C_FIELD(var_r27, u32 *, 0x2C)) && (fn_802342B8(temp_r28, var_r27) == 0)) {
+    if ((var_r29 == (u32) M2C_FIELD(var_r27, u32 *, 0x2C)) && (Str_Cmp(temp_r28, var_r27) == 0)) {
         var_r3_2 = &gFileCache + (var_r30 * 0x7C);
     } else {
         var_r30 += 1;
@@ -5407,7 +5407,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
 {
     void *fn_8000D354(void *);
     void fn_800C4588(void *);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     s32 i;
     void *entry;
     void *found;
@@ -5466,7 +5466,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
             i = 0;
             j = i;
             while (i < *(u16 *)((u8 *)arg0 + 0x54)) {
-                if (fn_802342B8(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + j), arg1) == 0) {
+                if (Str_Cmp(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x34) + j), arg1) == 0) {
                     found = (u8 *)*(void **)((u8 *)arg0 + 0x34) + (i << 5);
                     break;
                 }
@@ -5508,7 +5508,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
 s32 fn_800688D4(void *arg0, void *arg1,u32 arg2,s32 arg3) {
-void *fn_8000D354(void*);void *fn_800C4638(s32,void*,s32);s32 fn_802342B8(void*,void*);
+void *fn_8000D354(void*);void *fn_800C4638(s32,void*,s32);s32 Str_Cmp(void*,void*);
 extern u8 gGMaterialAssertMsg[];
 s32 i,off,j;
 u32 value;
@@ -5535,7 +5535,7 @@ return 1;
 }
 if(!arg0)found=fn_8000D354(arg1);
 else for(i=0,off=0;i<*(u16*)((u8*)arg0+0x54);i++,off+=32){
-if(!fn_802342B8(*(void**)(*(u8**)((u8*)arg0+0x34)+off),arg1)){
+if(!Str_Cmp(*(void**)(*(u8**)((u8*)arg0+0x34)+off),arg1)){
 found=*(u8**)((u8*)arg0+0x34)+(i<<5);break;
 }
 }
@@ -5559,7 +5559,7 @@ return 0;
 #pragma opt_loop_invariants reset
 
 s32 fn_80068CFC(void *arg0, s32 arg1) {
-    s32 fn_802342B8(void *, s32);
+    s32 Str_Cmp(void *, s32);
     s32 offset;
     s32 i;
     void *base;
@@ -5568,7 +5568,7 @@ s32 fn_80068CFC(void *arg0, s32 arg1) {
     i = 0;
     while (i < *(u16 *)((u8 *)arg0 + 0x54)) {
         base = *(void **)((u8 *)arg0 + 0x34);
-        if (fn_802342B8(*(void **)((u8 *)base + offset), arg1) == 0) {
+        if (Str_Cmp(*(void **)((u8 *)base + offset), arg1) == 0) {
             return 1;
         }
         offset += 0x20;

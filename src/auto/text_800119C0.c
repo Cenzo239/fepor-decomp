@@ -407,7 +407,7 @@ s32 ScriptCmd_CmSleepScript(char *arg0) {
         }
     } else {
         for (node = lbl_80367190; node != NULL; node = M2C_FIELD(node, void **, 0x1C)) {
-            if (fn_802342B8((u8 *)node + 4, arg0) == 0) {
+            if (Str_Cmp((u8 *)node + 4, arg0) == 0) {
                 goto found;
             }
         }

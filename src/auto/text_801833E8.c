@@ -1983,7 +1983,7 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 }
 
 void MoveAnim_AttachClassCue(void *anim) {
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
     s32 fn_800056CC(const char *, ...);
     s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     extern u8 MoveAnim_str[];
@@ -1999,50 +1999,50 @@ void MoveAnim_AttachClassCue(void *anim) {
     unit = *(void **)((u8 *)anim + 0x30);
     klass = *(void **)((u8 *)unit + 0x18C);
     if (*(u8 *)((u8 *)klass + 0x42) == 9) {
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3AB) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x3AB) == 0) {
             cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3BF) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x3BF) == 0) {
             cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3D2) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x3D2) == 0) {
             cuePath = MoveAnim_str + 0x393;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x3FF) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x3FF) == 0) {
             cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x410) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x410) == 0) {
             cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x423) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x423) == 0) {
             cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x434) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x434) == 0) {
             cuePath = MoveAnim_str + 0x3E7;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x312) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x312) == 0) {
             cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x332) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x332) == 0) {
             cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x33E) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x33E) == 0) {
             cuePath = MoveAnim_str + 0x447;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2E7) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x2E7) == 0) {
             cuePath = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x305) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x305) == 0) {
             cuePath = MoveAnim_str + 0x45F;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2BC) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x2BC) == 0) {
             cuePath = MoveAnim_str + 0x477;
         }
-        if (fn_802342B8(*(void **)klass, MoveAnim_str + 0x2DA) == 0) {
+        if (Str_Cmp(*(void **)klass, MoveAnim_str + 0x2DA) == 0) {
             cuePath = MoveAnim_str + 0x477;
         }
         unit = *(void **)((u8 *)anim + 0x30);
-        if (fn_802342B8(**(void ***)((u8 *)unit + 0x188), MoveAnim_str + 0x4A7) == 0) {
+        if (Str_Cmp(**(void ***)((u8 *)unit + 0x188), MoveAnim_str + 0x4A7) == 0) {
             cuePath = MoveAnim_str + 0x48F;
         }
         if (cuePath != NULL) {
@@ -3209,7 +3209,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void **fn_80037BD0(void *, s32);
     u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
-    s32 fn_802342B8(s32, u32);
+    s32 Str_Cmp(s32, u32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     extern u8 lbl_80284E20[];
@@ -3272,7 +3272,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
                         } else {
                             val = 0;
                         }
-                        if (fn_802342B8(val, t) == 0) {
+                        if (Str_Cmp(val, t) == 0) {
                             goto lbl_done;
                         }
                         tbl++;
@@ -3328,7 +3328,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void **fn_80037BD0(void *, s32);
     u32 *Hash_Lookup(char *);
     u8 fn_8003DAC4(void *, void **);
-    s32 fn_802342B8(s32);
+    s32 Str_Cmp(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     extern u8 gBattleMap[];
@@ -3403,7 +3403,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
                         } else {
                             val = 0;
                         }
-                        if (fn_802342B8(val) == 0) {
+                        if (Str_Cmp(val) == 0) {
                             goto lbl_done;
                         }
                         tbl++;
@@ -13511,7 +13511,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
     void MTXRotDegOrder(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_80201FF0(void *, void *);
-    s32 fn_802342B8(char *, char *);
+    s32 Str_Cmp(char *, char *);
     s32 GActor_FindNode(void *, char *);
     void fn_8006D378(void *);
     void fn_800E4A78(void *, void *);
@@ -13594,7 +13594,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
                         (u8 *)*(void **)((u8 *)obj + 0x60) + off,
                         ent_i + 0x10,
                         (u8 *)*(void **)((u8 *)e0 + 0x64) + j * 0x30);
-                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x6A)) == 0) {
+                    if (Str_Cmp(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x6A)) == 0) {
                         found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x38));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp38);
@@ -13602,7 +13602,7 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
                             PSMTXConcat(sp38, dst, dst);
                         }
                     }
-                    if (fn_802342B8(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x70)) == 0) {
+                    if (Str_Cmp(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x70)) == 0) {
                         found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x4C));
                         if (found >= 0) {
                             PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp8);

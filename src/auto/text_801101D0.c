@@ -4249,8 +4249,8 @@ void fn_8011B204(void *arg0) {
     extern f32 lbl_8036A1E8;
     extern f32 lbl_8036A230;
     f32 c1;
-    s16 num;
-    s16 den;
+    s32 num;
+    s32 den;
     f32 c2;
     f32 p1y;
     f32 tn;
@@ -4267,7 +4267,7 @@ void fn_8011B204(void *arg0) {
     void *out;
     f32 u;
     f32 t2;
-    f32 w;
+    f32 tmp;
     f32 u2;
     f32 x;
     f32 y;
@@ -4279,9 +4279,9 @@ void fn_8011B204(void *arg0) {
     den = *(s16 *)((u8 *)arg0 + 0x5C);
     c2 = lbl_8036A230;
     p1y = *(f32 *)((u8 *)arg0 + 0x44);
-    tn = (f32)num;
+    tn = num;
     p1x = *(f32 *)((u8 *)arg0 + 0x40);
-    td = (f32)den;
+    td = den;
     p1z = *(f32 *)((u8 *)arg0 + 0x48);
     p0x = *(f32 *)((u8 *)arg0 + 0x34);
     p0y = *(f32 *)((u8 *)arg0 + 0x38);
@@ -4294,13 +4294,13 @@ void fn_8011B204(void *arg0) {
 
     u = c1 - t;
     t2 = t * t;
-    w = c2 * u;
+    tmp = c2 * u;
     u2 = u * u;
-    w = w * t;
+    tmp = tmp * t;
 
-    x = p1x * w;
-    y = p1y * w;
-    z = p1z * w;
+    x = p1x * tmp;
+    y = p1y * tmp;
+    z = p1z * tmp;
     x = p0x * u2 + x;
     y = p0y * u2 + y;
     z = p0z * u2 + z;
@@ -6039,7 +6039,7 @@ void fn_8011E4B8(void) {
 }
 
 void fn_8011FB58(void *arg0, s32 arg1) {
-    s32 fn_802342B8(s32, void *);
+    s32 Str_Cmp(s32, void *);
     void *fn_8003A114(void *);
     void *fn_8003A064(void *);
     void *fn_80016BDC(void *);
@@ -6074,33 +6074,33 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     self = arg0;
     arg = arg1;
     unit = (void *)arg;
-    if (fn_802342B8(arg, (u8 *)TalkUi_str + 0x90) == 0) {
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x90) == 0) {
         unit = fn_8003A114(*(void **)gUiContext);
         goto got_unit;
     }
-    if (fn_802342B8(arg, (u8 *)TalkUi_str + 0x97) == 0) {
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x97) == 0) {
         unit = fn_8003A064(*(void **)gUiContext);
         goto got_unit;
     }
-    if (fn_802342B8(arg, (u8 *)TalkUi_str + 0x9F) == 0) {
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x9F) == 0) {
         tmp = fn_80016BDC((u8 *)TalkUi_str + 0xA7);
         if (tmp != NULL) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
-    } else if (fn_802342B8(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
+    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
         tmp = fn_80016BDC((u8 *)TalkUi_str + 0xA7);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);
             goto got_unit;
         }
-    } else if (fn_802342B8(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
+    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
         tmp = fn_80016BDC((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
-    } else if (fn_802342B8(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
+    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
         tmp = fn_80016BDC((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);

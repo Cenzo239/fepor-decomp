@@ -2519,7 +2519,7 @@ s32 fn_80234278(u8 *arg0, u8 *arg1, u32 arg2) {
     return 0;
 }
 
-s32 fn_802342B8(u8 *arg0, u8 *arg1) {
+s32 Str_Cmp(u8 *arg0, u8 *arg1) {
     register u8 *left = arg0;
     register u8 *right = arg1;
     u32 align;

@@ -10617,7 +10617,7 @@ void *fn_80145EBC(void *arg0) {
     extern u8 lbl_80276BC8[];
 
     void *Hash_Lookup(void *);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
 
     s32 count;
     u8 *entry;
@@ -10630,7 +10630,7 @@ void *fn_80145EBC(void *arg0) {
     index = 0;
     while (index < count) {
         if (*(void **)entry != NULL) {
-            if (fn_802342B8(*(void **)entry, arg0) == 0) {
+            if (Str_Cmp(*(void **)entry, arg0) == 0) {
                 return entry;
             }
         }
@@ -10644,7 +10644,7 @@ void *fn_80145EBC(void *arg0) {
 s32 fn_80145F58(void *arg0, void **arg1) {
     extern u8 lbl_80276BC8[];
     void *Hash_Lookup(void *);
-    s32 fn_802342B8(void *, void *);
+    s32 Str_Cmp(void *, void *);
 
     s32 count;
     u8 *entry;
@@ -10662,7 +10662,7 @@ s32 fn_80145F58(void *arg0, void **arg1) {
 
     while (index < count) {
         if (*(void **)entry != NULL) {
-            if (fn_802342B8(*(void **)entry, arg0) == 0) {
+            if (Str_Cmp(*(void **)entry, arg0) == 0) {
                 *arg1 = entry;
                 arg1++;
                 matches++;
