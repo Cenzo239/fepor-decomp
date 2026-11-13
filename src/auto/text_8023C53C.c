@@ -1106,7 +1106,7 @@ static inline u32 SynthFindVoice(u32 arg0) {
     return -1;
 }
 
-u32 fn_80243F50(u32 arg0) {
+u32 Sound_FindVoiceId(u32 arg0) {
     extern SynthVoice *lbl_80368970;
     extern SynthVoice *lbl_80368974;
     SynthVoice *p;
@@ -1846,7 +1846,7 @@ void fn_802450A4(u32 arg0, u16 arg1) {
     u32 id;
     u32 i;
 
-    id = fn_80243F50(arg0);
+    id = Sound_FindVoiceId(arg0);
     if (!(id & 0x80000000)) {
         for (i = 0; i < 16; i++) {
             lbl_8033F990[id].unk1508[i].unk32 = arg1;
@@ -1909,7 +1909,7 @@ void fn_80245290(u32 arg0, s32 arg1, s32 arg2) {
     extern SynthVoice lbl_8033F990[];
     u32 id;
 
-    id = fn_80243F50(arg0);
+    id = Sound_FindVoiceId(arg0);
     if (id != 0xFFFFFFFF) {
         if (!(id & 0x80000000)) {
             lbl_8033F990[id].unk11C = arg1;
@@ -4222,10 +4222,10 @@ loop:
 }
 
 u32 fn_8024B370(void) {
-    s32 fn_80243F50();
+    s32 Sound_FindVoiceId();
     s32 temp_r3;
 
-    temp_r3 = fn_80243F50();
+    temp_r3 = Sound_FindVoiceId();
     return (u32) ((-1 - temp_r3) | (temp_r3 + 1)) >> 0x1FU;
 }
 
@@ -4267,7 +4267,7 @@ void fn_8024B4B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
     s32 Audio_Lock(void);
-    s32 fn_80243F50(s32);
+    s32 Sound_FindVoiceId(s32);
     s32 fn_8025F534(s32, s32, u8, s32);
     s32 Audio_Unlock(void);
     s32 var_r31;
@@ -4275,7 +4275,7 @@ s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
 
     var_r31 = 0;
     Audio_Lock();
-    temp_r3 = fn_80243F50(arg0);
+    temp_r3 = Sound_FindVoiceId(arg0);
     if ((u32) (temp_r3 + 0x10000) != 0xFFFFU) {
         fn_8025F534(arg2, arg1, (u8) temp_r3, arg3);
         var_r31 = 1;
