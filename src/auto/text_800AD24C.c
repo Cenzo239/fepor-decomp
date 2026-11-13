@@ -6737,7 +6737,7 @@ s32 fn_800BC9D4(u8 arg0, s32 arg1) {
 s32 fn_800BCA38(u8 arg0, s32 arg1) {
     void *fn_80016A9C(s32);
     void fn_8003D5FC(void *, u8);
-    void fn_8003D60C(void *, s32);
+    void Unit_MoveToList(void *, s32);
     void fn_80050268(void *);
     extern u8 gUnits[];
     void *temp_r3;
@@ -6755,7 +6755,7 @@ s32 fn_800BCA38(u8 arg0, s32 arg1) {
     if (temp_r3 != NULL) {
         fn_8003D5FC(var_r31, *(u8 *)((u8 *)temp_r3 + 0x199));
     }
-    fn_8003D60C(var_r31, arg1);
+    Unit_MoveToList(var_r31, arg1);
     fn_80050268(var_r31);
     return 1;
 }

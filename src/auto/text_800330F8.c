@@ -4713,7 +4713,7 @@ void fn_8003D5FC(void *arg0, u8 arg1) {
     }
 }
 
-void fn_8003D60C(void *arg0, s32 arg1) {
+void Unit_MoveToList(void *arg0, s32 arg1) {
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *, s32);
     void fn_800946F0(void *);

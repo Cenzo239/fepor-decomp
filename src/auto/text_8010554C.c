@@ -1181,7 +1181,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void *Unit_FindByName(void *);
     void Unit_SetMapPos(void *, u8, u8);
     void fn_8003D5FC(void *, u8);
-    void fn_8003D60C(void *, s32);
+    void Unit_MoveToList(void *, s32);
     void fn_8003D68C(void *, s32);
     void fn_8003EAE8(void *, void *);
     void fn_80050BCC(void *, s32);
@@ -1221,10 +1221,10 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
                 goto after_sw;
             }
         do_call:
-            fn_8003D60C(unit, kind);
+            Unit_MoveToList(unit, kind);
         after_sw:
             fn_8003EAE8(unit, sp8);
-            fn_8003D60C(unit, 5);
+            Unit_MoveToList(unit, 5);
         } else {
             unit = NULL;
             goto skip_type;
@@ -1235,7 +1235,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         if (t == 6) {
             unit = NULL;
         } else if (t == 7) {
-            fn_8003D60C(unit, 5);
+            Unit_MoveToList(unit, 5);
             fn_8003D5FC(unit, sp8[0x67]);
         }
     }
@@ -1256,7 +1256,7 @@ skip_type:
         var_r4 = *(void **)((u8 *)var_r5 + 0x184);
         if ((found != var_r5) && !(*(s32 *)((u8 *)var_r5 + 0x1A0) & 0x200000)) {
             unit = var_r5;
-            fn_8003D60C(var_r5, 0);
+            Unit_MoveToList(var_r5, 0);
             goto ok;
         }
         var_r5 = var_r4;

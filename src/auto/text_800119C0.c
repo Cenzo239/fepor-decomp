@@ -2156,7 +2156,7 @@ void fn_800167E4(void *arg0)
 
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     s32 Status_Test(void *, s32);
-    void fn_8003D60C(void *, s32);
+    void Unit_MoveToList(void *, s32);
     void fn_80016F78(void *);
     void fn_8003B6F0(void *, s32);
     void fn_8003CA94(void *, void *);
@@ -2202,7 +2202,7 @@ void fn_800167E4(void *arg0)
                     savedIds[savedCount] = type;
                     savedCount++;
 
-                    fn_8003D60C(unit, 7);
+                    Unit_MoveToList(unit, 7);
                 }
             }
         }
@@ -2231,7 +2231,7 @@ void fn_800167E4(void *arg0)
     }
 
     for (i = 0; i < savedCount; i++) {
-        fn_8003D60C(savedUnits[i], savedIds[i]);
+        Unit_MoveToList(savedUnits[i], savedIds[i]);
     }
 
     fn_8022C1E8(list1, fn_8001C5F8, 8, 4);
