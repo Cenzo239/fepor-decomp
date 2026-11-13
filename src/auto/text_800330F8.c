@@ -6483,7 +6483,7 @@ void fn_80041514(void *arg0, char *arg1)
     void fn_80061824(void *);
     s32 fn_80065EE8(void *);
     s32 fn_8006CE14(void *);
-    u8 fn_8005C3C4(void *);
+    u8 FileCache_Exists(void *);
     s32 fn_8006D948(void *);
     void fn_8005F5B4(void *, void *);
     void GActor_Finalize(void *);
@@ -6670,7 +6670,7 @@ void fn_80041514(void *arg0, char *arg1)
             strcpy(lbl_802EFE20, arg1);
             strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
             strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
-            if (fn_8005C3C4(lbl_802EFE20) != 0) {
+            if (FileCache_Exists(lbl_802EFE20) != 0) {
                 strcpy(lbl_802EFE20, arg1);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x19A);
                 strcat(lbl_802EFE20, lbl_8026A660 + 0x1A2);
@@ -13054,7 +13054,7 @@ void MapObj_InitGraphics(void *arg0) {
  void GActor_LoadG(void *, void *);
  void fn_8005F5B4(void *, void *);
  void GActor_LoadTpl(void *, void *);
- u8 fn_8005C3C4(void *);
+ u8 FileCache_Exists(void *);
  void GActor_Finalize(void *);
  void fn_8005EBCC(void *, u8);
  void *Process_Create(void *, void *);
@@ -13092,7 +13092,7 @@ void MapObj_InitGraphics(void *arg0) {
  sprintf(buf,GActor_str+330,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadGs(node,buf);
 sprintf(buf,GActor_str+338,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); GActor_LoadG(node,buf);
 sprintf(buf,GActor_str+345,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
-sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) GActor_LoadTpl(node,buf);
+sprintf(buf,GActor_str+353,GActor_str+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(FileCache_Exists(buf)) GActor_LoadTpl(node,buf);
  GActor_Finalize(node);
  base=M2C_FIELD(arg0,void * *,0x30);
  mode=M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,7);

@@ -780,7 +780,7 @@ done:
     return *(u16 *)(found + 0x32);
 }
 
-s32 fn_8005C3C4(char *name) {
+s32 FileCache_Exists(char *name) {
     if (FindEntryByName(name) == NULL) {
         return 0;
     }
