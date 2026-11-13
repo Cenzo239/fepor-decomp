@@ -363,7 +363,7 @@ u32 fn_8023AC30(void) {
 #pragma global_optimizer off
 void SIInterruptHandler(s32 interrupt, s32 context) {
     s64 __OSGetSystemTime(void);
-    void fn_80204770(void *);
+    void OSCancelAlarm(void *);
     u32 fn_8023AC30(void);
     BOOL fn_8023B57C(s32, void *, u32, void *, u32, void *);
     s32 fn_8023B99C(s32);
@@ -423,7 +423,7 @@ void SIInterruptHandler(s32 interrupt, s32 context) {
                     if (fn_8023B57C(packet->chan, packet->output, packet->outputBytes,
                                     packet->input, packet->inputBytes, packet->callback)) {
                         alarm = (u8 *)pktBase + j * 0x28;
-                        fn_80204770(alarm + 0x80);
+                        OSCancelAlarm(alarm + 0x80);
                         packet->chan = -1;
                     }
                     break;

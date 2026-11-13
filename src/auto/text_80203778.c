@@ -742,7 +742,7 @@ void DecrementerExceptionHandler(u8 type, OSContext *context) {
 
 #pragma peephole off
 BOOL fn_80204B0C(BOOL final) {
-    extern void fn_80204770(void *);
+    extern void OSCancelAlarm(void *);
     extern BOOL fn_8020F620(void *);
     extern void *AlarmQueue_80368490;
     void *alarm;
@@ -754,7 +754,7 @@ BOOL fn_80204B0C(BOOL final) {
 
         while (alarm != NULL) {
             if (fn_8020F620(alarm) == FALSE) {
-                fn_80204770(alarm);
+                OSCancelAlarm(alarm);
             }
             alarm = next;
             next = (alarm) ? M2C_FIELD(alarm, void **, 0x14) : NULL;

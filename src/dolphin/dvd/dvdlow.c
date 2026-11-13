@@ -161,7 +161,7 @@ void __DVDInitWA(void) {
 #pragma use_lmw_stmw on
 void __DVDInterruptHandler(s32 type, OSContext *context) {
     s64 __OSGetSystemTime(void);
-    void fn_80204770(void *);
+    void OSCancelAlarm(void *);
     void fn_8020B940(void *, u32, u32, void *);
     void fn_8020BD68(u32, void *);
     extern s32 lbl_80368570;
@@ -214,7 +214,7 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
     }
     if (intVal != 0) {
         ResetOccurred_80368548 = 0;
-        fn_80204770(base + 0x68);
+        OSCancelAlarm(base + 0x68);
     }
     *(volatile u32 *)0xCC006000 = regand | masked;
     if (ResetOccurred_80368548 != 0) {

@@ -218,7 +218,7 @@ s32 __CARDRetry(s32 chan) {
     s32 EXIUnlock(s32);
     s32 EXIDeselect(s32);
     s32 EXIDma(s32, s32, s32, s32, void *);
-    void fn_80204770(void *);
+    void OSCancelAlarm(void *);
     void OSSetAlarm(void *, s64, void *);
     s32 EXIImmEx(s32, void *, s32, s32);
     void fn_80217034();
@@ -231,7 +231,7 @@ s32 __CARDRetry(s32 chan) {
         EXIUnlock(chan);
         return -3;
     }
-    fn_80204770(card + 0xE0);
+    OSCancelAlarm(card + 0xE0);
     switch (card[0x94]) {
     case 0xF2:
         OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, fn_80217034);
@@ -326,7 +326,7 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
     s32 EXILock(s32, s32, void *);
     s32 EXISelect(s32, s32, s32);
     s32 EXIUnlock(s32);
-    void fn_80204770(void *);
+    void OSCancelAlarm(void *);
     void OSSetAlarm(void *, s64, void *);
     void fn_80217378();
     void fn_80216C64();
@@ -355,7 +355,7 @@ s32 fn_80217488(s32 chan, void *txCallback, void *exiCallback) {
                 EXIUnlock(chan);
                 result = -3;
             } else {
-                fn_80204770(card + 0xE0);
+                OSCancelAlarm(card + 0xE0);
                 switch (card[0x94]) {
                 case 0xF2:
                     OSSetAlarm(card + 0xE0, (*(u32 *)0x800000F8 / 4) / 1000 * 100, fn_80217034);
@@ -1976,7 +1976,7 @@ void fn_8021B170(s32 arg0, s32 arg1) {
     if (r28 != 0) {
         fn_80239298(r28, 0);  
         fn_802396C8(r28);
-        fn_80204770((char*)__CARDBlock + r28 * 0x110 + 0xe0);
+        OSCancelAlarm((char*)__CARDBlock + r28 * 0x110 + 0xe0);
     }
     
     // This is probably just clearing some flags/data when the condition passes
@@ -1992,7 +1992,7 @@ s32 fn_8021B20C(s32 arg0)
     void OSRestoreInterrupts(u32);
     void fn_80239298(s32, s32);
     void fn_802396C8(s32);
-    void fn_80204770(void *);
+    void OSCancelAlarm(void *);
 
     void *handle;
     u8 *entry;
@@ -2012,7 +2012,7 @@ s32 fn_8021B20C(s32 arg0)
     if (*(s32 *)entry != 0) {
         fn_80239298(arg0, 0);
         fn_802396C8(arg0);
-        fn_80204770(entry + 0xE0);
+        OSCancelAlarm(entry + 0xE0);
 
         *(u32 *)entry = 0;
         *(s32 *)(entry + 4) = -3;
