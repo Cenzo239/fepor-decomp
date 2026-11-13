@@ -1841,7 +1841,7 @@ void fn_80245014(u16 arg0) {
     }
 }
 
-void fn_802450A4(u32 arg0, u16 arg1) {
+void Sound_SetVoicePortU16(u32 arg0, u16 arg1) {
     extern SynthVoice gSynthVoicePool[];
     u32 id;
     u32 i;
@@ -4244,9 +4244,9 @@ void fn_8024B3A0(s32 arg0) {
 }
 
 void fn_8024B3D8(s32 arg0, s32 arg1) {
-    M2C_UNK fn_802450A4(s32, s32);
+    M2C_UNK Sound_SetVoicePortU16(s32, s32);
     Audio_Lock();
-    fn_802450A4(arg0, arg1);
+    Sound_SetVoicePortU16(arg0, arg1);
     Audio_Unlock();
 }
 
@@ -15075,36 +15075,39 @@ s32 fn_80263534(void)
     return 0;
 }
 
+#pragma peephole off
 void fn_80263608(s32 arg0)
 {
     extern u32 gSoundAuxBuf;
     extern u16 lbl_80368A84;
     extern u32 lbl_80368B18;
-
-    extern s32 fn_8026367C(s32 arg0);
-    extern void fn_8025A3A4(s32 arg0, s32 arg1);
+    extern u32 fn_8026367C(void);
+    extern void fn_8025A3A4(s32, s32);
     extern void PPCSync(void);
-    extern void fn_80215F78(u32 arg0);
+    extern void fn_80215F78(u32);
     extern u32 fn_80215F40(void);
 
-    u32 value;
+    s32 self;
+    u32 aux;
+    u32 zero;
 
-    value = fn_8026367C(arg0);
-    fn_8025A3A4(arg0, value);
+    self = arg0;
+    fn_8025A3A4(self, fn_8026367C());
 
-    value = 0;
-    value = gSoundAuxBuf;
-    lbl_80368B18 = 0;
-
+    zero = 0;
+    aux = gSoundAuxBuf;
+    lbl_80368B18 = zero;
     PPCSync();
 
-    fn_80215F78((lbl_80368A84) | 0xBABE0000);
+    fn_80215F78((u32)lbl_80368A84 | 0xBABE0000);
     if (fn_80215F40() == 0) {
-        fn_80215F78(value);
-        fn_80215F40();
+        fn_80215F78(aux);
+        if (fn_80215F40() != 0) {
+            return;
+        }
     }
 }
-
+#pragma peephole on
 u32 fn_8026367C(void) {
     u32 OSGetTick(void);
     extern s32 lbl_80368B0C;
