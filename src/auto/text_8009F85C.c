@@ -20,8 +20,8 @@ s32 fn_8009F87C(s32 arg0, s32 arg1) {
 }
 
 void fn_8009F8A8(void *unused, void *arg1) {
-    M2C_UNK fn_8001E4D0(u8, M2C_UNK);
-    fn_8001E4D0(M2C_FIELD(arg1, u8 *, 0x3A), 0);
+    M2C_UNK WpnType_GetName(u8, M2C_UNK);
+    WpnType_GetName(M2C_FIELD(arg1, u8 *, 0x3A), 0);
 }
 
 s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {

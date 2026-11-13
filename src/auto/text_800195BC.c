@@ -2497,7 +2497,7 @@ u8 fn_8001DDE8(void *arg0) {
     return (u8)((*(unsigned long long *)((u8 *)arg0 + 0x38) & 0x40EULL) != 0);
 }
 
-char *fn_8001E4D0(u8 arg0, u8 arg1)
+char *WpnType_GetName(u8 arg0, u8 arg1)
 {
     extern u8 gDataStr[];
 
