@@ -6073,7 +6073,7 @@ void fn_8006A384(s32* arg0) {
 
 void GXSetCullMode(s32);
 void GXClearVtxDesc(void);
-void fn_8021F750(s32 *);
+void GXSetVtxDescv(s32 *);
 void fn_8021FE4C(s32, s32 *);
 void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     s32 sp8[0x36];
@@ -6192,7 +6192,7 @@ void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     var_r31[0] = 0xFF;
     var_r30[0] = 0xFF;
     GXClearVtxDesc();
-    fn_8021F750(sp8);
+    GXSetVtxDescv(sp8);
     fn_8021FE4C(0, spE0);
 }
 

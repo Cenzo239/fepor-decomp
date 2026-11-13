@@ -1053,7 +1053,7 @@ s32 fn_8021F4DC(void) {
     return lbl_80368788;
 }
 
-void fn_8021F750(s32 arg0, s32 arg1) {
+void GXSetVtxDescv(s32 arg0, s32 arg1) {
     extern u16 *const __GXData;
     
     if (arg0 >= 0 && arg0 <= 23) {
