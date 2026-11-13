@@ -11652,7 +11652,7 @@ s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
     void fn_800056A0(s32);
     void MapObjEvent_Remove(void *, s32, s32, s32);
     void *MapObjEvent_Find(void *, s32, s32, s32);
-    void fn_80049B1C(void *, s32);
+    void MapObj_FadeIn(void *, s32);
     void *fn_80046F14(void *, s32, s32, u32, s32);
     s32 Map_CollectLinkedObjs(void *, void *, s32 *);
     u8 fn_80049D58(void *);
@@ -11679,7 +11679,7 @@ s32 Map_ShowObjAt(s32 arg0, s32 arg1) {
                 ((u8 *)temp2)[4] = ((u8 *)temp2)[5];
             }
         }
-        fn_80049B1C(temp1, 0);
+        MapObj_FadeIn(temp1, 0);
     }
     {
         void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);

@@ -9502,7 +9502,7 @@ void fn_80049A98(void *arg0) {
                 *(f32 *)((u8 *)arg0 + 0x40));
 }
 
-void fn_80049B1C(void *arg0, u8 arg1)
+void MapObj_FadeIn(void *arg0, u8 arg1)
 {
     void fn_8005FEE8(void *, f32);
     void fn_80044450(void *, s32);
