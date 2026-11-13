@@ -125,7 +125,7 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
 #pragma use_lmw_stmw off
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-void fn_800900F4(u8 *arg0) {
+void UnitInfo_DrawPair(u8 *arg0) {
     void fn_8008BA80(void *, s32, s32, s32);
     void fn_8007D044(s32, u8, f32, f32, f32, f32);
     void fn_8008CD64(f32);
