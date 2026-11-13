@@ -822,39 +822,40 @@ void fn_801F3338(void *arg0) {
     }
 }
 
-void Options_InitPanel(void *arg0) {
-    struct Entry {
-        u32 unk0;
+/* Initialize an options panel: select entry list, compute layout, build title. */
+void Options_InitPanel(void *proc) {
+    struct OptEntry {
+        u32 id;
         char *name;
     };
-    struct Work {
+    struct OptPanel {
         u8 pad0[4];
-        void *unk4;
-        s32 unk8;
+        void *tex;
+        s32 state;
         u8 padC[2];
-        s16 unkE;
+        s16 cursor;
         u8 pad10;
-        u8 unk11;
-        s16 unk12;
-        s16 unk14;
-        s16 unk16;
+        u8 category;
+        s16 posX;
+        s16 posY;
+        s16 scroll;
         u8 pad18[8];
-        u8 unk20;
+        u8 flag20;
         u8 pad21[5];
-        u8 unk26;
-        u8 unk27;
-        u8 unk28;
-        u8 unk29;
-        s16 unk2A;
+        u8 flag26;
+        u8 prevCategory;
+        u8 flag28;
+        u8 entryCount;
+        s16 panelH;
         s16 unk2C;
         u8 pad30[4];
-        struct Entry *unk34;
+        struct OptEntry *entries;
         u8 pad38[4];
-        char unk3C[0x18];
-        char unk54[0x60];
-        char unkB4[0x28];
-        s32 unkDC;
-        s32 unkE0;
+        char title[0x18];
+        char header[0x60];
+        char padB4[0x28];
+        s32 handleDC;
+        s32 handleE0;
     };
     void fn_80057E64(s32, s32);
     char *Msg_Expand(char *);
@@ -866,67 +867,67 @@ void Options_InitPanel(void *arg0) {
     extern u8 gOptionsList2[];
     extern u8 gOptionsList3[];
     extern u8 gOptionsList4[];
-    struct Work *p;
-    struct Entry *vr;
-    s32 var_r3;
+    struct OptPanel *p;
+    struct OptEntry *entry;
+    s32 rows;
     s32 diff;
     s32 quotient;
     s32 remainder;
 
-    p = M2C_FIELD(arg0, struct Work **, 0x30);
-    p->unk8 = 5;
-    p->unk54[0] = 0;
-    p->unk20 = 0;
-    p->unk26 = 1;
-    p->unk28 = 1;
-    fn_80057E64(p->unkDC, 0);
-    fn_80057E64(p->unkE0, 0);
-    strcpy(p->unk3C, gOptionsStrs + 0x1248);
-    p->unk27 = p->unk11;
-    switch (p->unk11) {
+    p = M2C_FIELD(proc, struct OptPanel **, 0x30);
+    p->state = 5;
+    p->header[0] = 0;
+    p->flag20 = 0;
+    p->flag26 = 1;
+    p->flag28 = 1;
+    fn_80057E64(p->handleDC, 0);
+    fn_80057E64(p->handleE0, 0);
+    strcpy(p->title, gOptionsStrs + 0x1248);
+    p->prevCategory = p->category;
+    switch (p->category) {
     case 1:
-        p->unk34 = (struct Entry *)gOptionsList1;
+        p->entries = (struct OptEntry *)gOptionsList1;
         break;
     case 2:
-        p->unk34 = (struct Entry *)gOptionsList2;
+        p->entries = (struct OptEntry *)gOptionsList2;
         break;
     case 3:
-        p->unk34 = (struct Entry *)gOptionsList3;
+        p->entries = (struct OptEntry *)gOptionsList3;
         break;
     case 4:
-        p->unk34 = (struct Entry *)gOptionsList4;
+        p->entries = (struct OptEntry *)gOptionsList4;
         break;
     }
-    vr = p->unk34;
-    p->unk29 = 0;
-    while (vr->unk0 != 0) {
-        vr++;
-        p->unk29 = (u8)(p->unk29 + 1);
+    entry = p->entries;
+    p->entryCount = 0;
+    while (entry->id != 0) {
+        entry++;
+        p->entryCount = (u8)(p->entryCount + 1);
     }
-    var_r3 = p->unk29 / 3;
-    if (p->unk29 % 3 > 0) {
-        var_r3++;
+    rows = p->entryCount / 3;
+    if (p->entryCount % 3 > 0) {
+        rows++;
     }
-    p->unk2A = (s16)(var_r3 * 0x1C + 0x30);
-    if (p->unk2A > 0x10C) {
-        p->unk2A = 0x10C;
+    p->panelH = (s16)(rows * 0x1C + 0x30);
+    if (p->panelH > 0x10C) {
+        p->panelH = 0x10C;
     }
-    diff = (s32)p->unkE - (s32)p->unk2C * 3;
-    p->unk16 = 0;
+    diff = (s32)p->cursor - (s32)p->unk2C * 3;
+    p->scroll = 0;
     quotient = diff / 3;
     remainder = diff % 3;
-    p->unk12 = (s16)(remainder * 0xA0 + 0x45);
-    p->unk14 = (s16)(quotient * 0x1C + 0x9C);
-    strcpy(p->unk54, gOptionsStrs + 0x1259);
-    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x11EF));
-    strcat(p->unk54, gOptionsStrs + 0x125F);
-    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1267));
-    strcat(p->unk54, gOptionsStrs + 0x1272);
-    strcat(p->unk54, Msg_Expand(gOptionsStrs + 0x1209));
-    if (p->unk4 != NULL) {
-        if (p->unk4 != NULL) {
-            fn_8006EDA0(&p->unk4);
-            p->unk4 = NULL;
+    p->posX = (s16)(remainder * 0xA0 + 0x45);
+    p->posY = (s16)(quotient * 0x1C + 0x9C);
+    strcpy(p->header, gOptionsStrs + 0x1259);
+    strcat(p->header, Msg_Expand(gOptionsStrs + 0x11EF));
+    strcat(p->header, gOptionsStrs + 0x125F);
+    strcat(p->header, Msg_Expand(gOptionsStrs + 0x1267));
+    strcat(p->header, gOptionsStrs + 0x1272);
+    strcat(p->header, Msg_Expand(gOptionsStrs + 0x1209));
+    if (p->tex != NULL) {
+        if (p->tex != NULL) {
+            fn_8006EDA0(&p->tex);
+            p->tex = NULL;
         }
     }
 }
