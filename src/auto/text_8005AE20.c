@@ -6075,125 +6075,126 @@ void GXSetCullMode(s32);
 void GXClearVtxDesc(void);
 void GXSetVtxDescv(s32 *);
 void GXSetVtxAttrFmtv(s32, s32 *);
-void Gfx_SetupVtxFormat(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
-    s32 sp8[0x36];
-    s32 spE0[0x6C];
-    s32 *var_r31;
-    s32 *var_r30;
+/* Build GX vtx-desc and attr-fmt lists from format flags, then apply them. */
+void Gfx_SetupVtxFormat(s32 format, u8 nrmIdx, u8 nrmIdxAlt, u8 texIdx, u8 useNrmIdx) {
+    s32 desc[0x36];
+    s32 fmt[0x6C];
+    s32 *dp;
+    s32 *fp;
 
-    var_r31 = sp8;
-    var_r30 = spE0;
+    dp = desc;
+    fp = fmt;
 
-    if (arg0 & 1) {
-        var_r31[0] = 0;
-        var_r31[1] = 1;
-        var_r31 += 2;
+    if (format & 1) {
+        dp[0] = GX_VA_PNMTXIDX;
+        dp[1] = GX_DIRECT;
+        dp += 2;
     }
 
-    if (arg0 & 0x200) {
-        var_r31[0] = 9;
-        var_r31[1] = 3;
-        var_r31 += 2;
-        var_r30[0] = 9;
-        var_r30[1] = 1;
-        var_r30[2] = 3;
-        ((u8 *)var_r30)[0xc] = arg1;
-        var_r30 += 4;
+    if (format & 0x200) {
+        dp[0] = GX_VA_POS;
+        dp[1] = GX_INDEX16;
+        dp += 2;
+        fp[0] = GX_VA_POS;
+        fp[1] = GX_DIRECT;
+        fp[2] = GX_INDEX16;
+        ((u8 *)fp)[0xc] = nrmIdx;
+        fp += 4;
     }
 
-    if (arg0 & 0x400) {
-        var_r31[0] = 0xA;
-        var_r31[1] = 3;
-        var_r30[0] = 0xA;
-        var_r30[1] = 0;
-        if (arg4 != 0) {
-            var_r30[2] = 3;
-            ((u8 *)var_r30)[0xc] = arg1;
+    if (format & 0x400) {
+        dp[0] = GX_VA_NRM;
+        dp[1] = GX_INDEX16;
+        fp[0] = GX_VA_NRM;
+        fp[1] = GX_NONE;
+        if (useNrmIdx != 0) {
+            fp[2] = GX_INDEX16;
+            ((u8 *)fp)[0xc] = nrmIdx;
         } else {
-            var_r30[2] = 1;
-            ((u8 *)var_r30)[0xc] = arg2;
+            fp[2] = GX_DIRECT;
+            ((u8 *)fp)[0xc] = nrmIdxAlt;
         }
-        var_r30 += 4;
-        var_r31 += 2;
+        fp += 4;
+        dp += 2;
     }
 
-    if (arg0 & 0x800) {
-        var_r31[0] = 0x19;
-        var_r31[1] = 3;
-        var_r30[0] = 0x19;
-        var_r30[1] = 1;
-        if (arg4 != 0) {
-            var_r30[2] = 3;
-            ((u8 *)var_r30)[0xc] = arg1;
+    if (format & 0x800) {
+        dp[0] = GX_VA_NBT;
+        dp[1] = GX_INDEX16;
+        fp[0] = GX_VA_NBT;
+        fp[1] = GX_DIRECT;
+        if (useNrmIdx != 0) {
+            fp[2] = GX_INDEX16;
+            ((u8 *)fp)[0xc] = nrmIdx;
         } else {
-            var_r30[2] = 1;
-            ((u8 *)var_r30)[0xc] = arg2;
+            fp[2] = GX_DIRECT;
+            ((u8 *)fp)[0xc] = nrmIdxAlt;
         }
-        var_r30 += 4;
-        var_r31 += 2;
+        fp += 4;
+        dp += 2;
     }
 
-    if (arg0 & 0x1000) {
-        var_r30[0] = 0xB;
-        var_r30[1] = 1;
-        var_r31[0] = 0xB;
-        var_r31[1] = 3;
-        var_r30[2] = 5;
-        var_r31 += 2;
-        ((u8 *)var_r30)[0xc] = 0;
-        var_r30 += 4;
+    if (format & 0x1000) {
+        fp[0] = GX_VA_CLR0;
+        fp[1] = GX_DIRECT;
+        dp[0] = GX_VA_CLR0;
+        dp[1] = GX_INDEX16;
+        fp[2] = 5;
+        dp += 2;
+        ((u8 *)fp)[0xc] = 0;
+        fp += 4;
         GXSetCullMode(1);
     }
 
-    if (arg0 & 0x4000) {
-        var_r31[0] = 0xD;
-        var_r31[1] = 3;
-        var_r31 += 2;
-        var_r30[0] = 0xD;
-        var_r30[1] = 1;
-        var_r30[2] = 3;
-        ((u8 *)var_r30)[0xc] = arg3;
-        var_r30 += 4;
+    if (format & 0x4000) {
+        dp[0] = GX_VA_TEX0;
+        dp[1] = GX_INDEX16;
+        dp += 2;
+        fp[0] = GX_VA_TEX0;
+        fp[1] = GX_DIRECT;
+        fp[2] = GX_INDEX16;
+        ((u8 *)fp)[0xc] = texIdx;
+        fp += 4;
     }
 
-    if (arg0 & 0x8000) {
-        var_r31[0] = 0xE;
-        var_r31[1] = 3;
-        var_r31 += 2;
-        var_r30[0] = 0xE;
-        var_r30[1] = 1;
-        var_r30[2] = 3;
-        ((u8 *)var_r30)[0xc] = arg3;
-        var_r30 += 4;
+    if (format & 0x8000) {
+        dp[0] = GX_VA_TEX1;
+        dp[1] = GX_INDEX16;
+        dp += 2;
+        fp[0] = GX_VA_TEX1;
+        fp[1] = GX_DIRECT;
+        fp[2] = GX_INDEX16;
+        ((u8 *)fp)[0xc] = texIdx;
+        fp += 4;
     }
 
-    if (arg0 & 0x10000) {
-        var_r31[0] = 0xF;
-        var_r31[1] = 3;
-        var_r31 += 2;
-        var_r30[0] = 0xF;
-        var_r30[1] = 1;
-        var_r30[2] = 3;
-        ((u8 *)var_r30)[0xc] = arg3;
-        var_r30 += 4;
+    if (format & 0x10000) {
+        dp[0] = GX_VA_TEX2;
+        dp[1] = GX_INDEX16;
+        dp += 2;
+        fp[0] = GX_VA_TEX2;
+        fp[1] = GX_DIRECT;
+        fp[2] = GX_INDEX16;
+        ((u8 *)fp)[0xc] = texIdx;
+        fp += 4;
     }
 
-    if (arg0 & 0x20000) {
-        var_r31[0] = 0x10;
-        var_r31[1] = 3;
-        var_r31 += 2;
-        var_r30[0] = 0x10;
-        var_r30[1] = 1;
-        var_r30[2] = 3;
-        ((u8 *)var_r30)[0xc] = arg3;
-        var_r30 += 4;
+    if (format & 0x20000) {
+        dp[0] = GX_VA_TEX3;
+        dp[1] = GX_INDEX16;
+        dp += 2;
+        fp[0] = GX_VA_TEX3;
+        fp[1] = GX_DIRECT;
+        fp[2] = GX_INDEX16;
+        ((u8 *)fp)[0xc] = texIdx;
+        fp += 4;
     }
 
-    var_r31[0] = 0xFF;
-    var_r30[0] = 0xFF;
+    dp[0] = GX_VA_NULL;
+    fp[0] = GX_VA_NULL;
     GXClearVtxDesc();
-    GXSetVtxDescv(sp8);
-    GXSetVtxAttrFmtv(0, spE0);
+    GXSetVtxDescv(desc);
+    GXSetVtxAttrFmtv(0, fmt);
 }
 
 void fn_8006B39C(void) {
