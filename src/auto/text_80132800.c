@@ -9439,7 +9439,8 @@ extern "C" void fn_80144000(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void Ui_HandleWrappedCursorInput(void *arg0, s32 arg1) {
+extern "C" void Ui_HandleWrappedCursorInput(void *panel, s32 animArg) {
+    /* Move the panel cursor left/right with wraparound 0..10, play SE, and notify the child widget. */
     s32 Ui_PlaySeCue(u8 *, s32);
     extern u8 lbl_80276B3C[];
     extern s32 gUiInputFlags;
@@ -9476,7 +9477,7 @@ extern "C" void Ui_HandleWrappedCursorInput(void *arg0, s32 arg1) {
     if (skip != 0) {
         return;
     }
-    cursor = *(s32 *)((u8 *)arg0 + 0x3C);
+    cursor = *(s32 *)((u8 *)panel + 0x3C);
     buttons = *(s32 *)((u8 *)gPadInput + 0xC);
     if (buttons & 0x01000001) {
         next = cursor - 1;
@@ -9484,9 +9485,9 @@ extern "C" void Ui_HandleWrappedCursorInput(void *arg0, s32 arg1) {
             next = 0xA;
         }
         if (cursor != next) {
-            *(s16 *)((u8 *)arg0 + 0x9E) = 1;
-            *(u8 *)((u8 *)arg0 + 0x95) = 1;
-            (*(Obj **)((u8 *)arg0 + 0x38))->v18(arg1, next, 1);
+            *(s16 *)((u8 *)panel + 0x9E) = 1;
+            *(u8 *)((u8 *)panel + 0x95) = 1;
+            (*(Obj **)((u8 *)panel + 0x38))->v18(animArg, next, 1);
             Ui_PlaySeCue(lbl_80276B3C + 0x46, 0x64);
         }
     } else if (buttons & 0x02000002) {
@@ -9495,14 +9496,13 @@ extern "C" void Ui_HandleWrappedCursorInput(void *arg0, s32 arg1) {
             next = 0;
         }
         if (cursor != next) {
-            *(s16 *)((u8 *)arg0 + 0xC6) = 1;
-            *(u8 *)((u8 *)arg0 + 0xBD) = 1;
-            (*(Obj **)((u8 *)arg0 + 0x38))->v18(arg1, next, 0);
+            *(s16 *)((u8 *)panel + 0xC6) = 1;
+            *(u8 *)((u8 *)panel + 0xBD) = 1;
+            (*(Obj **)((u8 *)panel + 0x38))->v18(animArg, next, 0);
             Ui_PlaySeCue(lbl_80276B3C + 0x46, 0x64);
         }
     }
 }
-
 extern "C" void fn_8014413C(void *arg0) {
     struct Sub {
         virtual void v0();
