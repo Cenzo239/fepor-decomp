@@ -2997,7 +2997,7 @@ void fn_800256A0(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x10) = (s32) (M2C_FIELD(arg0, s32 *, 0x10) & temp_r4);
 }
 
-void fn_800256CC(void *arg0) {
+void Pad_UpdateButtons(void *arg0) {
     u32 temp_r4;
     void *temp_r3;
     void *temp_r4_10;
