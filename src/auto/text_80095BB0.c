@@ -111,7 +111,7 @@ char *Event_GetCmdFlagName(s32 flag)
     }
 }
 
-u32 fn_80095FF8(s32 arg0) {
+u32 Event_GetCmdFlagRes(s32 arg0) {
     void *fn_80019DF0(u8);
     void fn_800056A0(s32);
     u32 var_r3;
@@ -250,7 +250,7 @@ void fn_80096418(s16 arg0) {
     void fn_8004FC70(s32, s32);
     void *fn_80055204(void *, s32);
     void GActor_RequestRes(void *);
-    u32 fn_80095FF8(s32);
+    u32 Event_GetCmdFlagRes(s32);
     s32 fn_80096EEC(s32 *, u32);
     void fn_800973F0(u32 *, s32);
     extern u8 gEventCmdStrings[];
@@ -327,7 +327,7 @@ void fn_80096418(s16 arg0) {
     n = fn_80096EEC(buf, flaga);
     p = buf;
     for (i = 0; i < n; i++) {
-        GActor_RequestRes((void *)fn_80095FF8(*p));
+        GActor_RequestRes((void *)Event_GetCmdFlagRes(*p));
         p++;
     }
     saved2 = *idx;

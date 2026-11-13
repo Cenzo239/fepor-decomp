@@ -405,7 +405,7 @@ void fn_80099AD0(void *arg0) {
     s32 Event_GetCmdFlags(s16);
     void *fn_800980E8(s32);
     void *fn_800958A4(s32);
-    void *fn_80095FF8(s32);
+    void *Event_GetCmdFlagRes(s32);
     void *fn_80053AE8(void *, void *);
     void fn_80052FB0(void *, f32 *, f32 *);
     void fn_80184A00(void *, void *, s32, void *);
@@ -437,7 +437,7 @@ void fn_80099AD0(void *arg0) {
                 dst[0] = *(f32 *)((u8 *)temp_r4 + 4);
                 dst[1] = *(f32 *)((u8 *)temp_r4 + 8);
                 dst[2] = *(f32 *)((u8 *)temp_r4 + 0xC);
-                temp_r3 = fn_80095FF8(0x40000);
+                temp_r3 = Event_GetCmdFlagRes(0x40000);
                 if (temp_r3 != NULL) {
                     fn_80052FB0(fn_80053AE8(temp_r3, arg0), dst, src);
                 }
@@ -481,7 +481,7 @@ void fn_80099BF8(void *arg0) {
 #pragma use_lmw_stmw off
 void fn_80099CA4(void *arg0) {
     void *fn_80095BB0(s32);
-    void *fn_80095FF8(s32);
+    void *Event_GetCmdFlagRes(s32);
     void Event_GetCmdFlagName(s32);
     void *fn_80053AE8(void *, void *);
     void fn_800536CC(void *, s32);
@@ -495,7 +495,7 @@ void fn_80099CA4(void *arg0) {
     temp_r29 = arg0;
     temp_r31 = fn_80095BB0(*(s32 *)((u8 *)arg0 + 0x60));
     if (temp_r31 != NULL) {
-        temp_r30 = fn_80095FF8(*(s32 *)((u8 *)temp_r29 + 0x60));
+        temp_r30 = Event_GetCmdFlagRes(*(s32 *)((u8 *)temp_r29 + 0x60));
         Event_GetCmdFlagName(*(s32 *)((u8 *)temp_r29 + 0x60));
         if (temp_r30 != NULL) {
             temp_r30_2 = fn_80053AE8(temp_r30, temp_r29);

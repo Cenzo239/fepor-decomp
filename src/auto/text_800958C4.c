@@ -46,18 +46,18 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 s32 fn_800958C4(s32 arg0) {
-    s32 fn_80095FF8(s32);
+    s32 Event_GetCmdFlagRes(s32);
     if (arg0 & 0x80) {
-        return fn_80095FF8(0x80);
+        return Event_GetCmdFlagRes(0x80);
     }
     if (arg0 & 0x20) {
-        return fn_80095FF8(0x20);
+        return Event_GetCmdFlagRes(0x20);
     }
     if (arg0 & 8) {
-        return fn_80095FF8(8);
+        return Event_GetCmdFlagRes(8);
     }
     if (arg0 & 0x10) {
-        return fn_80095FF8(0x10);
+        return Event_GetCmdFlagRes(0x10);
     }
     return 0;
 }
