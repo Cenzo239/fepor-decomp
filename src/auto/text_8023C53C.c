@@ -5807,7 +5807,7 @@ s32 AudioGroup_CompareId(u16 *arg0, u16 *arg1) {
     return *arg0 - *arg1;
 }
 
-s32 fn_80250744(u16 id, void *arg1) {
+s32 AudioGroup_Lookup(u16 id, void *arg1) {
     struct Header {
         u32 unk0;
         u32 unk4;
