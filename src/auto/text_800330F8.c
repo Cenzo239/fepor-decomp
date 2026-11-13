@@ -10228,7 +10228,7 @@ void fn_8004B1B4(u8 *arg0) {
 
 extern s32 gGMaterialCurrent;
 #pragma use_lmw_stmw on
-s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
+s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
     s32 GMaterial_GetCurrent(void);
     s32 GMaterial_GetNode(void);
     s32 GMaterial_AllocTevStage(void);
@@ -10248,41 +10248,42 @@ s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
     void fn_80069010(s32, s32);
     void fn_800690D4(s32, s32, void *);
     void GMaterial_SetupColor(s32, s32, s32, void *);
-    u8 sp8[0x20];
-    s32 t30;
-    s32 t29;
-    s32 t28;
-    s32 t27;
-    s32 t26;
-    s32 t25;
+    // Set up one TEV stage from an atlas tex (or color-only), then apply material color.
+    u8 texBuf[0x20];
+    s32 mat;
+    s32 node;
+    s32 owner;
+    s32 tevStage;
+    s32 texMap;
+    s32 texCoord;
 
-    t30 = GMaterial_GetCurrent();
-    t29 = GMaterial_GetNode();
-    t28 = *(s32 *)((u8 *)t30 + 0x90);
-    t27 = GMaterial_AllocTevStage();
-    if ((*(s32 *)t30 & 0x2000) != 0) {
-        GXSetTevOrder(t27, 0xFF, 0xFF, 4);
-        GXSetNumTexGens(t27, 4);
+    mat = GMaterial_GetCurrent();
+    node = GMaterial_GetNode();
+    owner = *(s32 *)((u8 *)mat + 0x90);
+    tevStage = GMaterial_AllocTevStage();
+    if ((*(s32 *)mat & 0x2000) != 0) {
+        GXSetTevOrder(tevStage, 0xFF, 0xFF, 4);
+        GXSetNumTexGens(tevStage, 4);
     } else {
-        Ui_LoadAtlasTex(arg1, sp8, *(u16 *)((u8 *)(*(void **)((u8 *)arg0 + 0x14)) + 4));
-        t26 = GMaterial_AllocTexMap();
-        t25 = GMaterial_AllocTexCoord();
-        fn_802201A8(t25, 1, 4, 0x3C, 0, 0x7D);
-        fn_80222C50(sp8, t26);
-        GXSetTevOrder(t27, t25, t26, 4);
-        GXSetNumTexGens(t27, 0);
+        Ui_LoadAtlasTex(atlas, texBuf, *(u16 *)((u8 *)(*(void **)((u8 *)obj + 0x14)) + 4));
+        texMap = GMaterial_AllocTexMap();
+        texCoord = GMaterial_AllocTexCoord();
+        fn_802201A8(texCoord, 1, 4, 0x3C, 0, 0x7D);
+        fn_80222C50(texBuf, texMap);
+        GXSetTevOrder(tevStage, texCoord, texMap, 4);
+        GXSetNumTexGens(tevStage, 0);
     }
-    if ((*(s32 *)((u8 *)t28 + 0x1A0) & 1) != 0) {
+    if ((*(s32 *)((u8 *)owner + 0x1A0) & 1) != 0) {
         fn_80223DDC(1, 1, 1, 1, 3);
-        fn_80223D94(t27, 0, 1);
-        GXSetTevColorIn(t27, 0xF, 8, 0xA, 0xA);
-        GXSetTevColorOp(t27, 0, 2, 3, 1, 0);
-        GXSetTevAlphaIn(t27, 7, 4, 5, 7);
-        GXSetTevAlphaOp(t27, 0, 0, 0, 1, 0);
+        fn_80223D94(tevStage, 0, 1);
+        GXSetTevColorIn(tevStage, 0xF, 8, 0xA, 0xA);
+        GXSetTevColorOp(tevStage, 0, 2, 3, 1, 0);
+        GXSetTevAlphaIn(tevStage, 7, 4, 5, 7);
+        GXSetTevAlphaOp(tevStage, 0, 0, 0, 1, 0);
     }
-    fn_80069010(t30, t29);
-    fn_800690D4(t30, t29, arg0);
-    GMaterial_SetupColor(t30, 0, t29, arg0);
+    fn_80069010(mat, node);
+    fn_800690D4(mat, node, obj);
+    GMaterial_SetupColor(mat, 0, node, obj);
     return 1;
 }
 
