@@ -9778,7 +9778,7 @@ s32 MapSelect_Update(void *arg0) {
     void fn_80184688(s32, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     extern u8 lbl_8027AA38[];
-    extern f32 lbl_8036AF40;
+    extern f32 gMapSelectCamZoom;
 
     Word3B9 sp2c, sp20, sp14, sp8;
     s32 val;
@@ -9797,7 +9797,7 @@ s32 MapSelect_Update(void *arg0) {
     if (!(*(u8 *)((u8 *)p4c + 0x40) & 1)) {
         if (fn_8005F894(p5c, 0x12) < 0) {
             tmp = Camera_GetActive();
-            *(f32 *)((u8 *)tmp + 0x70) = lbl_8036AF40;
+            *(f32 *)((u8 *)tmp + 0x70) = gMapSelectCamZoom;
             fn_80098524(*(void **)((u8 *)p4c + 0x34));
         }
         *(u8 *)((u8 *)p4c + 0x40) = (u8)(*(u8 *)((u8 *)p4c + 0x40) | 1);
@@ -10539,7 +10539,7 @@ s32 fn_8019CED0(void *arg0) {
     M2C_UNK fn_8017E0C0(void *, s32, void *);
     M2C_UNK fn_8017F040(void *, s32, void *);
     M2C_UNK fn_80184688(s32, M2C_UNK, M2C_UNK, void *);
-    extern f32 lbl_8036AF40;
+    extern f32 gMapSelectCamZoom;
     s32 temp_r29;
     s32 temp_r28;
     void *var_r30;
@@ -10558,7 +10558,7 @@ s32 fn_8019CED0(void *arg0) {
     if (!(M2C_FIELD(temp_r31, u8 *, 0x40) & 1)) {
         if (fn_8005F894(temp_r29, 0x12) < 0) {
             temp_r3_5 = (void *)Camera_GetActive();
-            M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) lbl_8036AF40;
+            M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) gMapSelectCamZoom;
             fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
         }
         M2C_FIELD(temp_r31, u8 *, 0x40) = (u8) (M2C_FIELD(temp_r31, u8 *, 0x40) | 1);
@@ -10586,7 +10586,7 @@ s32 fn_8019CED0(void *arg0) {
     if (Pad_IsButton(temp_r29, 0x12) != 0) {
         fn_80052CA8(var_r30);
         temp_r3_5 = (void *)Camera_GetActive();
-        M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) lbl_8036AF40;
+        M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) gMapSelectCamZoom;
         fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
     }
     fn_80054C14(var_r30);
@@ -10786,11 +10786,11 @@ void fn_8019D458(void *arg0) {
 void fn_8019D4B4(void *arg0) {
     void *Camera_GetActive(void);
     void fn_8004BE88(void *, s32);
-    extern f32 lbl_8036AF40;
+    extern f32 gMapSelectCamZoom;
     void *tmp;
 
     tmp = Camera_GetActive();
-    *(f32 *)((u8 *)tmp + 0x70) = lbl_8036AF40;
+    *(f32 *)((u8 *)tmp + 0x70) = gMapSelectCamZoom;
     fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
 }
 
