@@ -73,7 +73,7 @@
     void fn_800DF664(void *);
     void fn_80113F88(void *);
     s32 fn_80113F68(void *);
-    void fn_800E56CC(void *);
+    void Actor_ClearBusy(void *);
     void fn_801B6164(void *);
     s32 fn_801B6098(void *);
     void fn_800E76D0(void *, s32);
@@ -692,7 +692,7 @@
                     fn_800CF27C(self, *(s32 *)((u8 *)gGame + 0x190), 0);
                 if ((u8)fn_8011388C(*(void **)((u8 *)self + 0x9C))) {
                     if (*(s32 *)((u8 *)self + 0x218) != 0)
-                        fn_800E56CC(*(void **)((u8 *)self + 0x9C));
+                        Actor_ClearBusy(*(void **)((u8 *)self + 0x9C));
                     else
                         fn_8011631C(*(void **)((u8 *)self + 0x9C), 1);
                 }
@@ -835,7 +835,7 @@
             break;
         case 43:
             if ((u8)fn_80113F68(*(void **)((u8 *)self + 0xA0)) == 0) {
-                fn_800E56CC(*(void **)((u8 *)self + 0xA0));
+                Actor_ClearBusy(*(void **)((u8 *)self + 0xA0));
                 *(u32 *)((u8 *)self + 0x10) = *(u32 *)((u8 *)gGame + 0x58);
                 *(u32 *)((u8 *)self + 0xC) = 4;
             }

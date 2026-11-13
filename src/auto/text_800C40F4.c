@@ -12677,7 +12677,7 @@ u8 Actor_IsBusy(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0xD0);
 }
 
-void fn_800E56CC(void *arg0) {
+void Actor_ClearBusy(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0xD0) = 0;
 }
 
@@ -15985,7 +15985,7 @@ s32 fn_800ED754(void) {
 }
 
 s32 fn_800ED77C(void) {
-    void fn_800E56CC(void *);
+    void Actor_ClearBusy(void *);
     void fn_800D75C4(void *);
     extern void *gWin3;
     extern void *lbl_80367918;
@@ -15993,7 +15993,7 @@ s32 fn_800ED77C(void) {
 
     p = *(void **)((u8 *)gWin3 + 0x440);
     if (p != NULL) {
-        fn_800E56CC(p);
+        Actor_ClearBusy(p);
     }
     fn_800D75C4(lbl_80367918);
     return 0;
@@ -16066,7 +16066,7 @@ s32 fn_800ED884(void) {
 s32 fn_800ED8C0(void) {
     void *p = M2C_FIELD(gWin3, void **, 0x440);
     if (p != NULL) {
-        fn_800E56CC(p);
+        Actor_ClearBusy(p);
     }
     return 0;
 }
@@ -16087,7 +16087,7 @@ s32 fn_800ED8F4(void) {
 s32 fn_800ED92C(void) {
     void *p = M2C_FIELD(gWin3, void **, 0x440);
     if (p != NULL) {
-        fn_800E56CC(p);
+        Actor_ClearBusy(p);
     }
     return 0;
 }

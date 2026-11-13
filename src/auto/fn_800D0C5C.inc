@@ -76,7 +76,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800DF664(void *);
     void fn_80113F88(void *);
     s32 fn_80113F68(void *);
-    void fn_800E56CC(void *);
+    void Actor_ClearBusy(void *);
     void fn_801B6164(void *);
     s32 fn_801B6098(void *);
     void fn_800E76D0(void *, s32);

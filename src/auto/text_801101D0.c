@@ -2069,7 +2069,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     void String_Concat(void *, void *, void *);
     s32 fn_800DDC04(void *, void *);
     void String_Destroy(void *, s32);
-    void fn_800E56CC(void *);
+    void Actor_ClearBusy(void *);
     void fn_80111740(void *);
     void Actor_LoadAnim(void *, char *, s32, s32, s32);
     void fn_80203184(f32 *, f32 *, f32 *);
@@ -2115,19 +2115,19 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
     if (other == 0) return 1;
     if (*(u8 *)((u8 *)self + 0x195) != 0) return 1;
     if (*(s32 *)((u8 *)self + 0x12C) != 0 && arg1 == 0 && *(s32 *)((u8 *)self + 0x140) == 0) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (*(s32 *)((u8 *)self + 0x130) != 0 && arg1 == 0 && *(s32 *)((u8 *)self + 0x140) != 0) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (*(s32 *)((u8 *)self + 0x134) != 0 && arg1 == 1) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (*(s32 *)((u8 *)self + 0x138) != 0 && arg1 == 2) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (*(s32 *)((u8 *)self + 0x13C) != 0 && arg1 == 3) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (other == 0) {
         dist = lbl_8036A184;
@@ -2147,7 +2147,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         pad = lbl_8036A1D0;
     }
     if (dist <= pad + (*(f32 *)((u8 *)self + 0x128) + *(f32 *)((u8 *)self + 0x1B0))) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (((BoolFn)((void **)*(void **)((u8 *)self + 0x40))[0x12])(self) == 0
         && dist > (*(f32 *)((u8 *)self + 0x128) + *(f32 *)((u8 *)self + 0x1B0))
@@ -2160,7 +2160,7 @@ extern "C" s32 fn_80115C0C(void *arg0, s32 arg1) {
         return 1;
     }
     if (*(u8 *)((u8 *)self + 0x1A4) != 0) {
-        fn_800E56CC(self); return 1;
+        Actor_ClearBusy(self); return 1;
     }
     if (String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x53A, strlen((char *)&gActorXmlStrs + 0x53A)) == 0
         || String_Compare((u8 *)self + 0x178, 0, *(s32 *)((u8 *)self + 0x178), (char *)&gActorXmlStrs + 0x43F, strlen((char *)&gActorXmlStrs + 0x43F)) == 0) {
