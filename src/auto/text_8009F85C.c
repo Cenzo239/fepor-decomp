@@ -1294,13 +1294,13 @@ char *fn_800A11F0(void) {
 }
 
 char *fn_800A1240(void) {
-    s32 fn_8014D2CC(void *);
+    s32 Battle_GetTotalAssets(void *);
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
     extern char gItemMenuTextBuf[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x5FA, fn_8014D2CC(gBattleState));
+    sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x5FA, Battle_GetTotalAssets(gBattleState));
     return gItemMenuTextBuf;
 }
 

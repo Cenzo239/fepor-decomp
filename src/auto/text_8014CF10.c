@@ -229,7 +229,7 @@ void Battle_SetPhase(void *arg0, u8 arg1) {
     }
 }
 
-s32 fn_8014D2CC(void *arg0) {
+s32 Battle_GetTotalAssets(void *arg0) {
     u16 UnitRef_GetValue(void *);
     u32 *Unit_GetItemSlot(void *, s32);
     void *next;
