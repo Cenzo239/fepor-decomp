@@ -233,7 +233,7 @@ s32 fn_800A9B0C(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_800A9B38(void *arg0, void *arg1, void *arg2) {
+extern "C" void Options_DrawTextItem(void *arg0, void *arg1, void *arg2) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
