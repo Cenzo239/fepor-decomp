@@ -385,7 +385,7 @@ void fn_80056B0C(void *arg0) {
     void fn_800075D8(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void fn_80007818(f32, f32, f32, f32);
-    void fn_80007838(f32, f32, f32, f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void fn_80009B28(void);
@@ -449,7 +449,7 @@ void fn_80056B0C(void *arg0) {
     switch ((s32)temp_r0) {
     case 0:
         Prim2D_AddPrim(3);
-        fn_80007838(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         sp38 = lbl_803690DC;
         sp3C = lbl_803690D8;
@@ -459,14 +459,14 @@ void fn_80056B0C(void *arg0) {
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
-        fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         temp_r30 = temp_r30 + temp_r30;
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
-        fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)*(s16 *)((u8 *)arg0 + 4), lbl_80369108, lbl_80369108);
         sp28 = lbl_8036C428;
         sp2C = lbl_8036C424;
@@ -478,7 +478,7 @@ void fn_80056B0C(void *arg0) {
         break;
     case 1:
         Prim2D_AddPrim(3);
-        fn_80007838(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         sp18 = lbl_803690EC;
         sp1C = lbl_803690E8;
@@ -488,7 +488,7 @@ void fn_80056B0C(void *arg0) {
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(1);
-        fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)*(s16 *)((u8 *)arg0 + 4), lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
@@ -496,14 +496,14 @@ void fn_80056B0C(void *arg0) {
         break;
     case 2:
         Prim2D_AddPrim(1);
-        fn_80007838(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, lbl_80369108, lbl_80369108, lbl_80369108);
         temp_r30 = temp_r30 + temp_r30;
         fn_80007818(lbl_80369138, (f32)temp_r30, lbl_80369108, lbl_80369108);
         Prim2D_SetColor(0, 0, 0, 0xFF);
         fn_800075D8();
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
-        fn_80007838(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
+        Prim2D_SetQuadMin(lbl_80369108, (f32)temp_r30, lbl_80369108, lbl_80369108);
         fn_80007818(lbl_80369138, (f32)*(s16 *)((u8 *)arg0 + 4), lbl_80369108, lbl_80369108);
         sp8 = lbl_803690FC;
         spC = lbl_803690F8;

@@ -60,7 +60,7 @@ void fn_8007F410(void *arg0) {
     Color *fn_8018D900(s32);
     void Prim2D_BindTexture(s32, s32, s32);
     void fn_80007870(f32);
-    void fn_80007838(f32, f32, f32, f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void fn_80007818(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void *fn_8003B9AC(u8);
@@ -131,7 +131,7 @@ void fn_8007F410(void *arg0) {
     Prim2D_AddPrim(1);
     fn_80007870(lbl_80369418);
     tx = bx + lbl_803694E8;
-    fn_80007838(tx, by, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMin(tx, by, lbl_80369418, lbl_80369418);
     fn_80007818(tx + sw, by + sh, w, h);
     Prim2D_SetColor(color.r, color.g, color.b, 0xFF);
     fn_800075D8();

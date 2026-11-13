@@ -3746,7 +3746,7 @@ void fn_8018DE24(void *arg0) {
     void fn_800075D8(void);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void fn_80007818(f32, f32, f32, f32);
-    void fn_80007838(f32, f32, f32, f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void fn_80007870(f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -3852,7 +3852,7 @@ void fn_8018DE24(void *arg0) {
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
             fn_80007870(lbl_8036ADA0);
-            fn_80007838(fx, fy, lbl_8036ADA0, lbl_8036ADA0);
+            Prim2D_SetQuadMin(fx, fy, lbl_8036ADA0, lbl_8036ADA0);
             fn_80007818(fx + (f32)h, fy + (f32)w, (f32)h, (f32)w);
             Prim2D_SetColor(col[0], col[1], col[2], 0xFF);
             fn_800075D8();
