@@ -1169,12 +1169,12 @@ void fn_80185F40(void *arg0) {
 }
 
 void fn_80186028(void *arg0) {
-    M2C_UNK fn_800536B0(void *, void *, f32, f32, f32);
+    M2C_UNK Effect_SetPos(void *, void *, f32, f32, f32);
     s32 *temp_r3;
     void *temp_r4;
 
     temp_r4 = M2C_FIELD(arg0, void **, 0x30);
-    fn_800536B0(M2C_FIELD(arg0, void **, 0x34), temp_r4, M2C_FIELD(temp_r4, f32 *, 4), M2C_FIELD(temp_r4, f32 *, 8), M2C_FIELD(temp_r4, f32 *, 0xC));
+    Effect_SetPos(M2C_FIELD(arg0, void **, 0x34), temp_r4, M2C_FIELD(temp_r4, f32 *, 4), M2C_FIELD(temp_r4, f32 *, 8), M2C_FIELD(temp_r4, f32 *, 0xC));
     temp_r3 = M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), s32 **, 0x5C);
     *temp_r3 &= 0xFFFFFFBF;
 }
@@ -1234,7 +1234,7 @@ void fn_80186260(void *arg0) {
 
 void fn_80186318(void *arg0) {
     s32 fn_80053C30(void *, void *);
-    void fn_800536B0(s32, f32, f32, f32);
+    void Effect_SetPos(s32, f32, f32, f32);
     extern u8 MoveAnim_str[];
     f32 temp_f31;
     f32 temp_f30;
@@ -1255,7 +1255,7 @@ void fn_80186318(void *arg0) {
         var_r3 = base + 0x34C;
     }
     M2C_FIELD(arg0, s32 *, 0x34) = fn_80053C30(var_r3, arg0);
-    fn_800536B0(M2C_FIELD(arg0, s32 *, 0x34), temp_f31, temp_f30, temp_f29);
+    Effect_SetPos(M2C_FIELD(arg0, s32 *, 0x34), temp_f31, temp_f30, temp_f29);
 }
 
 void fn_801863BC(void *arg0) {
@@ -1648,7 +1648,7 @@ void fn_801877C4(void *arg0) {
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
     u32 fn_80052B30(s32);
-    void fn_800536B0(f32, f32, f32);
+    void Effect_SetPos(f32, f32, f32);
     void *fn_80053C30(void *, void *);
     f32 Math_Angle2D(void *, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -1762,7 +1762,7 @@ void fn_801877C4(void *arg0) {
             msg = MoveAnim_str + 0x360;
         }
         base = fn_80053C30(msg, arg0);
-        fn_800536B0(f31, f30, f29);
+        Effect_SetPos(f31, f30, f29);
         *(f32 *)((u8 *)*(void **)((u8 *)base + 0x30) + 0x24) = f28;
         cb = *(void (**)(s32))((u8 *)arg0 + 0x40);
         if (cb != 0) {
@@ -9048,7 +9048,7 @@ void fn_80199CEC(void *arg0) {
 
 void fn_80199D18(void *arg0) {
     void *fn_80053C30(void *, s32);
-    void fn_800536B0(f32, f32, f32);
+    void Effect_SetPos(f32, f32, f32);
     void Process_ClearFunc(void *);
     extern u8 MapSelect_str[];
     extern f32 lbl_8036AF00;
@@ -9064,7 +9064,7 @@ void fn_80199D18(void *arg0) {
         msg = fn_80053C30(MapSelect_str + 0xCA, 0);
         a = *(s8 *)((u8 *)arg0 + 0x3C);
         b = *(s8 *)((u8 *)arg0 + 0x3D);
-        fn_800536B0(lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
+        Effect_SetPos(lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
         f18 = lbl_8036AF00;
         f24 = lbl_8036AF04;
         obj = *(void **)((u8 *)msg + 0x30);
@@ -9149,7 +9149,7 @@ void fn_8019A088(void *arg0) {
 s32 MapSelect_UpdateMove(void *arg0)
 {
     void fn_80025624(s32, s32);
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -9237,7 +9237,7 @@ s32 MapSelect_UpdateMove(void *arg0)
         }
     }
 
-    fn_800536B0(self, f27, f26, f31);
+    Effect_SetPos(self, f27, f26, f31);
     {
         u8 *p;
         p = *(u8 **)((u8 *)self + 0x30);
@@ -9277,7 +9277,7 @@ void fn_8019A7E8(s32 arg0) {
 /* Start an event item command (opcodes 0x50-0x52): play SE and set up give/take/trade. */
 void Event_RunItemCmd(void *cmd) {
     void fn_80025624(void *, s32);
-    void fn_800536B0(f32, f32, f32);
+    void Effect_SetPos(f32, f32, f32);
     void *fn_80053C30(void *, void *);
     void *fn_80095934(s32, s32, s32);
     u8 fn_80096C18(void);
@@ -9399,7 +9399,7 @@ void Event_RunItemCmd(void *cmd) {
         fn_800983E0(&sp8, unit);
         sp8c = sp8;
         fn_80053C30((void *)tmp, cmd);
-        fn_800536B0(*(f32 *)&sp8c.x, *(f32 *)&sp8c.y, *(f32 *)&sp8c.z);
+        Effect_SetPos(*(f32 *)&sp8c.x, *(f32 *)&sp8c.y, *(f32 *)&sp8c.z);
     }
 }
 #pragma use_lmw_stmw reset
@@ -9424,7 +9424,7 @@ void fn_8019ABBC(void *arg0) {
 s32 fn_8019ADD8(void *arg0)
 {
     f32 Map_SampleHeight(void *, f32, f32);
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -9499,7 +9499,7 @@ s32 fn_8019ADD8(void *arg0)
         }
     }
 
-    fn_800536B0(self, f30, f29, f26);
+    Effect_SetPos(self, f30, f29, f26);
     {
         u8 *p = *(u8 **)((u8 *)self + 0x30);
         sp8 = lbl_8036AEF4;

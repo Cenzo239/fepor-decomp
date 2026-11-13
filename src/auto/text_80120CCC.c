@@ -1218,7 +1218,7 @@ void *fn_80122E80(void *arg0, s16 arg1) {
 }
 
 void fn_80122F04(void *arg0, void *arg1) {
-    M2C_UNK fn_800536B0(s32, f32, f32, f32);
+    M2C_UNK Effect_SetPos(s32, f32, f32, f32);
     void *fn_8005397C(M2C_UNK);
     M2C_UNK String_CStr(s32);
     extern f32 lbl_8036A2C0;
@@ -1239,7 +1239,7 @@ loop_2:
         String_CStr(M2C_FIELD(arg1, s32 *, 8) + var_r26);
         temp_r30 = fn_8005397C(4);
         temp_r5 = M2C_FIELD(arg0, s32 *, 0x4C) + 0xC;
-        fn_800536B0(temp_r5, (f32) M2C_FIELD(arg0, s32 *, 0x48), (f32) temp_r5, (f32) (M2C_FIELD(arg0, s32 *, 0x44) + 1));
+        Effect_SetPos(temp_r5, (f32) M2C_FIELD(arg0, s32 *, 0x48), (f32) temp_r5, (f32) (M2C_FIELD(arg0, s32 *, 0x44) + 1));
         var_r29 += 1;
         var_r26 += 0xC;
         M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x30), f32 *, 0x1C) = (f32) (s16) (M2C_FIELD(arg0, s32 *, 0x44) + 1);
@@ -1252,7 +1252,7 @@ loop_2:
 #pragma use_lmw_stmw on
 #pragma dont_reuse_strings on
 void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8005397C(void *, s32);
     void *String_CStr(s32);
     extern f32 lbl_8036A2D0;
@@ -1283,7 +1283,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 
     if (M2C_FIELD(list, u32 *, 4) == 0) {
         obj = fn_8005397C(lbl_80274DB0 + 8, 4);
-        fn_800536B0(obj,
+        Effect_SetPos(obj,
                     (f32)M2C_FIELD(self, s32 *, 0x48),
                     (f32)M2C_FIELD(self, s32 *, 0x4C),
                     (f32)(M2C_FIELD(self, s32 *, 0x44) + 1));
@@ -1299,7 +1299,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     f31 = lbl_8036A2C4;
     while (i < M2C_FIELD(list, s32 *, 4)) {
         obj = fn_8005397C(String_CStr(M2C_FIELD(list, s32 *, 8) + off), 4);
-        fn_800536B0(obj,
+        Effect_SetPos(obj,
                     (f32)M2C_FIELD(self, s32 *, 0x48),
                     (f32)M2C_FIELD(self, s32 *, 0x4C),
                     (f32)(M2C_FIELD(self, s32 *, 0x44) + 1));

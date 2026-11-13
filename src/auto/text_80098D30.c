@@ -138,7 +138,7 @@ void fn_80099094(void *arg0)
   void fn_80184C7C(void *, s32, s32, s32);
   void fn_80184BE8(void *, s32, s32, s32);
   void fn_8018CFA4(s32, s32, s32, s32, void *);
-  void fn_800536B0(void *, f32, f32, f32);
+  void Effect_SetPos(void *, f32, f32, f32);
   extern u8 gEventUiSeCues[];
   extern s32 gPadInput;
   s32 sp38[3];
@@ -195,7 +195,7 @@ void fn_80099094(void *arg0)
     }
     fn_8018CFA4(0xF, 6, 2, 0, self);
     temp_r3 = fn_80053C30(gEventUiSeCues + 0x119, self);
-    fn_800536B0(temp_r3, *((f32 *) (&sp20[0])), *((f32 *) (&sp20[1])), *((f32 *) (&sp20[2])));
+    Effect_SetPos(temp_r3, *((f32 *) (&sp20[0])), *((f32 *) (&sp20[1])), *((f32 *) (&sp20[2])));
     fn_8017E0C0(*((void **) (((u8 *) self) + 0x38)), new_var, self);
     if ((*((u8 *) (((u8 *) self) + 0x34))) != 2)
     {
@@ -639,7 +639,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void fn_8017E2BC(void);
     void *fn_80095934(void *, s32, s32);
     void *fn_80053C30(void *, void *);
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
@@ -764,7 +764,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
         mode = M2C_FIELD(arg0, u8 *, 0x34);
         switch (mode) {
         case 1:
-            fn_800536B0(created, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
+            Effect_SetPos(created, *(f32 *)&pos.x, *(f32 *)&pos.y, *(f32 *)&pos.z);
             break;
         default:
             fn_800536CC(created, *M2C_FIELD(arg0, void ***, 0x38));

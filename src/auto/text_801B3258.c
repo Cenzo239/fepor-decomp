@@ -573,7 +573,7 @@ s32 fn_801B6414(u32 arg0) {
 
 void fn_801B647C(void *arg0) {
     void *fn_8005381C(void *, void *);
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 gBattle[];
@@ -584,7 +584,7 @@ void fn_801B647C(void *arg0) {
     extern f32 lbl_8036B1B8;
 
     if (*(u32 *)(gBattle + 0xCAC) & 0x10) {
-        fn_800536B0(fn_8005381C(lbl_8027C248 + 0xE4, arg0), lbl_8036B1B0, lbl_8036B1B4, lbl_8036B1B8);
+        Effect_SetPos(fn_8005381C(lbl_8027C248 + 0xE4, arg0), lbl_8036B1B0, lbl_8036B1B4, lbl_8036B1B8);
         Ui_PlaySeCue(lbl_8027C248 + 0xF1, 0x64);
         fn_8014876C(gFxChannels + ((u8 *)arg0)[0x3A] * 0x30, 0x32, 0xFA);
     }

@@ -12723,7 +12723,7 @@ void fn_80053680(void *arg0, void *arg1) {
     *(f32 *)((char *)*(void **)((char *)arg0 + 0x30) + 0x14) = z;
 }
 
-void fn_800536B0(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
+void Effect_SetPos(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0xC) = farg0;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = farg1;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = farg2;

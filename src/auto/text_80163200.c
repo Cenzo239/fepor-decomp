@@ -5266,7 +5266,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
     void fn_80043D18(void *, s8, s8, f32 *);
     f32 fn_80043DD8(void);
     u8 fn_8004C0A0(void *);
-    void fn_800536B0(void *, f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8005397C(void *, void *);
     void **fn_8006EDD8(void *, s32);
     s32 *Ui_GetColor(u8);
@@ -5379,7 +5379,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
                                 void *obj = fn_8005397C(lbl_80277EA0 + 0x1CB, arg0);
                                 void *gfx;
                                 *(void **)((u8 *)node + 0x30) = obj;
-                                fn_800536B0(obj, farg0 + sp20[0], farg1 + sp20[1], lbl_8036AB20);
+                                Effect_SetPos(obj, farg0 + sp20[0], farg1 + sp20[1], lbl_8036AB20);
                                 *(f32 *)(*(u8 **)((u8 *)obj + 0x30) + 0x18) = f31;
                                 spC = lbl_8036A9E8;
                                 gfx = *(void **)((u8 *)obj + 0x30);
