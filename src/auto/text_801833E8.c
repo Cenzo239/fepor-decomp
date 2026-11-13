@@ -778,7 +778,7 @@ void *Unit_FadeFacing(void *unit, s32 frames, s32 priority, f32 angle) {
     return proc;
 }
 
-void fn_80184BE8(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
+void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
     void MuFade_UnlinkSame(void *, void *);
@@ -9294,7 +9294,7 @@ void Event_RunItemCmd(void *cmd) {
     void fn_8017F474(void *, void *);
     void fn_8017F70C(void *, void *);
     void fn_80184688(s32, s32, s32, void *);
-    void fn_80184BE8(s32, s32, s32, s32);
+    void Mu_StartTransfer(s32, s32, s32, s32);
     void Mu_StartBlend(s32, s32, s32, s32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     extern u8 MapSelect_str[];
@@ -9337,7 +9337,7 @@ void Event_RunItemCmd(void *cmd) {
         } else {
             actor = 0;
         }
-        fn_80184BE8(actor, 8, 0x18, 0);
+        Mu_StartTransfer(actor, 8, 0x18, 0);
         fn_8017F474(unit, cmd);
         fn_800983E0(&sp74, unit);
         sp80 = sp74;
@@ -9374,7 +9374,7 @@ void Event_RunItemCmd(void *cmd) {
         } else {
             actor = 0;
         }
-        fn_80184BE8(actor, 8, 0x18, 0);
+        Mu_StartTransfer(actor, 8, 0x18, 0);
         if (kind == 0x51) {
             fn_8018CFA4(0x3C, 6, 2, 0, cmd);
             fn_80025624(gPadInput, 0x10);
@@ -9769,7 +9769,7 @@ void fn_8019B904(void *arg0) {
     void fn_8005306C(void *);
     void fn_80053658(void *, s32, void *);
     void Mu_StartBlend(void *, s32, s32, s32);
-    void fn_80184BE8(void *, s32, s32, s32);
+    void Mu_StartTransfer(void *, s32, s32, s32);
     extern void MapSelect_Update(void);
     void *temp;
     void *unit;
@@ -9793,7 +9793,7 @@ void fn_8019B904(void *arg0) {
         case 0:
         case 1:
             Mu_StartBlend(unit, 9, 0x10, 0);
-            fn_80184BE8(unit, 8, 0x10, 0);
+            Mu_StartTransfer(unit, 8, 0x10, 0);
             break;
         }
     }
@@ -10816,10 +10816,10 @@ void fn_8019D388(void *arg0) {
 
 void fn_8019D458(void *arg0) {
     M2C_UNK fn_80184618(s32, void *);
-    M2C_UNK fn_80184BE8(s32, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK Mu_StartTransfer(s32, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Mu_StartBlend(s32, M2C_UNK, M2C_UNK, M2C_UNK);
     Mu_StartBlend(M2C_FIELD(arg0, s32 *, 0x30), 5, 0x10, 0);
-    fn_80184BE8(M2C_FIELD(arg0, s32 *, 0x30), 0, 0x10, 0);
+    Mu_StartTransfer(M2C_FIELD(arg0, s32 *, 0x30), 0, 0x10, 0);
     fn_80184618(M2C_FIELD(arg0, s32 *, 0x30), arg0);
 }
 

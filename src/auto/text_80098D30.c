@@ -136,7 +136,7 @@ void fn_80099094(void *arg0)
   void FloatAnim_Start(void *, s32, void *);
   void fn_8017F040(void *, s32, void *);
   void Mu_StartBlend(void *, s32, s32, s32);
-  void fn_80184BE8(void *, s32, s32, s32);
+  void Mu_StartTransfer(void *, s32, s32, s32);
   void fn_8018CFA4(s32, s32, s32, s32, void *);
   void Effect_SetPos(void *, f32, f32, f32);
   extern u8 gEventUiSeCues[];
@@ -190,7 +190,7 @@ void fn_80099094(void *arg0)
     if (var_r0 != NULL)
     {
       Mu_StartBlend(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 9, 2, 0);
-      fn_80184BE8(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 8, 8, 0);
+      Mu_StartTransfer(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 8, 8, 0);
       fn_80184688(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 1, 2, self);
     }
     fn_8018CFA4(0xF, 6, 2, 0, self);
@@ -215,7 +215,7 @@ void fn_800536CC(void *,void *); void fn_800536D8(void *,void *); void fn_800530
 void fn_80184688(void *,s32,s32,void *); void fn_800983E0(void *,void *);
 void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
 void fn_8017F70C(void *,void *); void FloatAnim_Start(void *,s32,void *); void fn_8017F040(void *,s32,void *);
-void Mu_StartBlend(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
+void Mu_StartBlend(void *,s32,s32,s32); void Mu_StartTransfer(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
 u8 fn_8004BF80(void *); void Process_ClearFunc(void *);
 extern u8 gEventUiSeCues[]; extern void *gPadInput;
@@ -306,7 +306,7 @@ if(Pad_IsButton(input,1)) {
 Event_AdvanceCmd(M2C_FIELD(self,s16 *,0x46));
 if(M2C_FIELD(self,u8 *,0x34)!=1) {
 Mu_StartBlend(get_280(M2C_FIELD(self,void ***,0x3c)),7,2,0);
-fn_80184BE8(get_280(M2C_FIELD(self,void ***,0x3c)),8,8,0);
+Mu_StartTransfer(get_280(M2C_FIELD(self,void ***,0x3c)),8,8,0);
 }
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F474(M2C_FIELD(self,void **,0x3c),self);
 fn_800983E0(&tmpC,M2C_FIELD(self,void **,0x3c));
@@ -633,7 +633,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void fn_80048E08(void *, void *, void *, s32);
     void **fn_800984FC(void **);
     void Mu_StartBlend(void *, s32, s32, s32);
-    void fn_80184BE8(void *, s32, s32, s32);
+    void Mu_StartTransfer(void *, s32, s32, s32);
     void fn_80184688(void *, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void fn_80025624(s32, s32);
@@ -739,7 +739,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
                 temp_r3_3 = NULL;
             }
             Mu_StartBlend(temp_r3_3, 9, 2, 0);
-            fn_80184BE8(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
+            Mu_StartTransfer(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
             fn_80184688(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
         }
         break;
