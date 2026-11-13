@@ -652,7 +652,7 @@ s32 fn_80227444(void *arg0) {
     s32 TRKTargetAccessDefault(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessFP(u16, u16, void *, s32 *, s32);
     s32 TRKTargetAccessExtended1(u16, u16, void *, s32 *, s32);
-    s32 fn_802294F0(u16, u16, void *, s32 *, s32);
+    s32 TRKTargetAccessExtended2(u16, u16, void *, s32 *, s32);
     s32 fn_80226888(void *, void *, s32);
     s32 fn_8022B078(void *, s32);
     s32 fn_802262E8(void *);
@@ -698,7 +698,7 @@ s32 fn_80227444(void *arg0) {
         err = TRKTargetAccessExtended1(start, end, obj, &outLen, 0);
         break;
     case 3:
-        err = fn_802294F0(start, end, obj, &outLen, 0);
+        err = TRKTargetAccessExtended2(start, end, obj, &outLen, 0);
         break;
     default:
         err = 0x703;
@@ -763,7 +763,7 @@ s32 fn_80226698(void*,void*,s32);
 s32 TRKTargetAccessDefault(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended1(u16,u16,void*,s32*,s32);
-s32 fn_802294F0(u16,u16,void*,s32*,s32);
+s32 TRKTargetAccessExtended2(u16,u16,void*,s32*,s32);
 s32 fn_8022B078(void*,s32);
 s32 fn_802262E8(void*);
 void MWTRACE(u8,char*,...);
@@ -790,7 +790,7 @@ MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 if(!err) err=TRKTargetAccessExtended1(0,0x60,arg0,&outLen,1);
 MWTRACE(4,strings+0x120,err);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
-if(!err) err=fn_802294F0(0,0x1f,arg0,&outLen,1);
+if(!err) err=TRKTargetAccessExtended2(0,0x1f,arg0,&outLen,1);
 MWTRACE(4,strings+0x150,err);
 MWTRACE(4,strings+0x98,*(s32*)((u8*)arg0+8));
 if(err){
@@ -1319,7 +1319,7 @@ void fn_802291A4(void *b) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 1
-s32 fn_802294F0(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
+s32 TRKTargetAccessExtended2(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
 void fn_802264B4(s32, s32 *);
 s32 fn_80226700(s32, s32, s32);
 void fn_80228858(u32 *, s32);
