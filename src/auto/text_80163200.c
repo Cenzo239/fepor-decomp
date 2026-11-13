@@ -5487,7 +5487,7 @@ void fn_8016E1B4(void *arg0) {
     void *Msg_Expand(void *);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void **fn_8006EDD8(void *, s32);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     void fn_8007CD08(void *, s32, f32, f32, f32);
     void fn_8007D024(s32, s32, f32, f32, f32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
@@ -5662,7 +5662,7 @@ void fn_8016E1B4(void *arg0) {
         strcat(spC, (u8 *)lbl_80277EA0 + 0x187);
         strcat(spC, Msg_Expand((u8 *)lbl_80277EA0 + 0x1A5));
     }
-    fn_8007CB3C(spC, 0);
+    Ui_DrawCaptionBar(spC, 0);
     mode = *(u8 *)((u8 *)self + 0x35);
     if (mode == 2) {
         Prim2D_Begin();

@@ -6316,7 +6316,7 @@ void fn_801C36E8(void *arg0) {
     void fn_8015E848(s16, s16, s16, s16, s32 *, s32);
     void fn_80152010(s16, s16, s32, s32, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     void fn_800578A8(void *, s32, s32, s32);
     void fn_80057860(void *, s32);
     void fn_80057020(void *);
@@ -6624,9 +6624,9 @@ void fn_801C36E8(void *arg0) {
     Prim2D_AddZ(lbl_8036B3D0);
     Prim2D_PrepareTex();
     if (*(s32 *)((u8 *)self + 0x28) == -1) {
-        fn_8007CB3C((u8 *)self + 0x3C, 0);
+        Ui_DrawCaptionBar((u8 *)self + 0x3C, 0);
     } else {
-        fn_8007CB3C((u8 *)self + 0xBC, 0);
+        Ui_DrawCaptionBar((u8 *)self + 0xBC, 0);
     }
     fn_800578A8(*(void **)((u8 *)self + 0x38), *(s16 *)((u8 *)self + 0x152) + 0x172, *(s16 *)((u8 *)self + 0x154) + 0x10, 0xD0);
     fn_80057860(*(void **)((u8 *)self + 0x38), *(s32 *)((u8 *)self + 0x13C));

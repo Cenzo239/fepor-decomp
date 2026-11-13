@@ -1630,7 +1630,7 @@ void fn_801ADA50(void *arg0) {
     void *Msg_Expand(void *);
     void strcpy(void *, void *);
     void strcat(void *, void *);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_AddZ(f32);
     void fn_8008BF68(s32, s32, s32);
@@ -1699,7 +1699,7 @@ void fn_801ADA50(void *arg0) {
         strcat(sp8, Msg_Expand(lbl_8027B838 + 0x349));
         strcat(sp8, lbl_8027B838 + 0x346);
         strcat(sp8, Msg_Expand(lbl_8027B838 + 0x35C));
-        fn_8007CB3C(sp8, 0);
+        Ui_DrawCaptionBar(sp8, 0);
         if (self->unk3D != 0) {
             self->unk3D -= 1;
             x0 = self->unk48;

@@ -241,7 +241,7 @@ s32 fn_8007CB08(void) {
     return v != 0;
 }
 
-void fn_8007CB3C(void *arg0, u8 arg1) {
+void Ui_DrawCaptionBar(void *arg0, u8 arg1) {
     void fn_800072B0(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);

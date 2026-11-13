@@ -451,7 +451,7 @@ void fn_80073208(void *arg0) {
     M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
-    M2C_UNK fn_8007CB3C(s32, M2C_UNK);
+    M2C_UNK Ui_DrawCaptionBar(s32, M2C_UNK);
     M2C_UNK fn_801DCD3C(u16 *);
     M2C_UNK fn_801DDAC8(u16 *);
     extern u16 lbl_80311D50[];
@@ -473,7 +473,7 @@ void fn_80073208(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetColorByte((u8) M2C_FIELD(arg0, s16 *, 0x38));
     Prim2D_PrepareTex();
-    fn_8007CB3C(M2C_FIELD(arg0, s32 *, 0x34), 0);
+    Ui_DrawCaptionBar(M2C_FIELD(arg0, s32 *, 0x34), 0);
 }
 
 extern u16 gUiContext[12];

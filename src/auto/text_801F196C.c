@@ -227,7 +227,7 @@ void fn_801F230C(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     void **fn_8006EDD8(s32, s32);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     void fn_8008BF68(s16, s16, s32);
     s32 *Ui_GetColor(s32);
     extern u8 gCardLinkStrings[];
@@ -512,7 +512,7 @@ void fn_801F230C(void *arg0) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036B83C);
         Prim2D_PrepareTex();
-        fn_8007CB3C((u8 *)obj + 0x50, 0);
+        Ui_DrawCaptionBar((u8 *)obj + 0x50, 0);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
@@ -1088,7 +1088,7 @@ void fn_801F3E60(void *arg0) {
     void fn_800578A8(s32, s32, s32, s32);
     void fn_80057AE0(s32);
     u16 **fn_8006EDD8(s32, s32);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
     void *fn_800A8A88(s32);
@@ -1370,7 +1370,7 @@ void fn_801F3E60(void *arg0) {
     (void)c7; (void)c8; (void)f31v; (void)f30v; (void)f29v;
     (void)fn_80009BC0; (void)fn_801F52A8; (void)fn_8015F24C;
     (void)fn_80152010; (void)fn_801E3570; (void)fn_80019E8C;
-    (void)fn_800A8A88; (void)fn_8007CB3C; (void)fn_8008AB7C;
+    (void)fn_800A8A88; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
     (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;
     (void)fn_80238638; (void)OSGetTime; (void)__div2i;
     (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
@@ -2502,7 +2502,7 @@ void fn_801F7A60(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 fn_80019F04(s32);
     void **fn_8006EDD8(void *, s32);
-    void fn_8007CB3C(void *, s32);
+    void Ui_DrawCaptionBar(void *, s32);
     void fn_8007D024(s32, s32, f32, f32, f32, f32);
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void fn_8008BF68(s16, s16, s32);
@@ -2857,7 +2857,7 @@ void fn_801F7A60(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B910, lbl_8036B910, lbl_8036B9F4, lbl_8036B918);
     Prim2D_PrepareTex();
-    fn_8007CB3C((u8 *)self + 0x28, 0);
+    Ui_DrawCaptionBar((u8 *)self + 0x28, 0);
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
