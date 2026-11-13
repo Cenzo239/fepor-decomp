@@ -1473,7 +1473,7 @@ s32 fn_80152DE0(void) {
 
 #pragma use_lmw_stmw on
 void fn_80152F28(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_8000A174(void *, u16);
@@ -1492,7 +1492,7 @@ void fn_80152F28(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
     s16 temp_r31;
     s16 temp_r30;
 
-    temp_r28 = fn_80009E44(&sp8);
+    temp_r28 = Prim2D_PushZ(&sp8);
     Ui_LoadAtlasTex(lbl_803680CC, (void *)&gUiTexScratch, 1);
     temp_r31 = (s16)(lbl_803680B0.f6 - lbl_803680B0.f2);
     temp_r30 = (s16)(lbl_803680B0.f4 - lbl_803680B0.f0);
@@ -1526,7 +1526,7 @@ void fn_80152F28(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
 }
 #pragma use_lmw_stmw reset
 void fn_80153190(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_8000A174(void *, u16);
@@ -1546,7 +1546,7 @@ void fn_80153190(s16 arg0, s16 arg1, u8 arg2, s32 arg3) {
     s16 temp_r30;
     s16 temp_r31;
 
-    temp_r28 = fn_80009E44(&sp8);
+    temp_r28 = Prim2D_PushZ(&sp8);
     Ui_LoadAtlasTex(lbl_803680CC, (void *)&gUiTexScratch, 0);
     {
         s16 t2, t6, t0, t4;
@@ -1709,7 +1709,7 @@ void fn_80153634(s16 arg0, s16 arg1, s32 arg2) {
 
 #pragma use_lmw_stmw on
 void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, u16 arg7) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_8000A174(void *, u16);
@@ -1734,7 +1734,7 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     s16 mid_h, mid_w;
     (void)arg3;
 
-    saved = fn_80009E44(&sp8);
+    saved = Prim2D_PushZ(&sp8);
     tbl = (s32 *)(lbl_80277488 + (s8)arg0 * 0x18);
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl);
     tbl++;
@@ -1931,7 +1931,7 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
 #pragma use_lmw_stmw reset
 void fn_80154370(s16 arg0, s16 arg1) {
     void Ui_DrawWindowFrame(void);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     s32 Msg_Expand(void *);
     s32 Text_MeasureWidth(s32, s32, f32);
     s32 fn_80010770(s32, s32, f32);
@@ -1977,7 +1977,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
     temp_r23 = arg0;
     temp_r24 = arg1;
     Ui_DrawWindowFrame();
-    temp_r22 = fn_80009E44(&sp10);
+    temp_r22 = Prim2D_PushZ(&sp10);
     temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
     temp_r30 = Text_MeasureWidth(temp_r21, -1, lbl_8036A874);
     temp_r31 = fn_80010770(temp_r21, -1, lbl_8036A874);
@@ -2079,7 +2079,7 @@ void fn_801546B0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 #pragma use_lmw_stmw on
 void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void Ui_DrawWindowFrame(s16, s16, s32, s32, s32, s32);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void Ui_LoadAtlasTex(s32, void *, s32);
     u8 *fn_8018D900(s32);
     void Prim2D_Begin(void);
@@ -2114,7 +2114,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     s32 str;
 
     Ui_DrawWindowFrame(arg0, arg1, arg2, arg3, arg5, arg6);
-    saved = fn_80009E44(&sp10);
+    saved = Prim2D_PushZ(&sp10);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xC);
     color = fn_8018D900(0);
     rect = (s16 *)&gUiJobPersonalIconUv;
@@ -2160,7 +2160,7 @@ void fn_80154BE4(void) {
 /* Draw panel decor sprites 0x81 and 0x80, centered in the given box. */
 void Ui_DrawPanelDecor(s16 x, s16 y, s16 boxW, s16 boxH, s32 unused, s32 flags) {
     void fn_8015D240(void);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -2188,7 +2188,7 @@ void Ui_DrawPanelDecor(s16 x, s16 y, s16 boxW, s16 boxH, s32 unused, s32 flags) 
     s16 drawY;
 
     fn_8015D240();
-    saved = fn_80009E44(&savedZ);
+    saved = Prim2D_PushZ(&savedZ);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
@@ -2254,7 +2254,7 @@ void fn_8015547C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     void fn_800077B0(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_AddZ(f32);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     extern s16 lbl_80367CD8[4];
     extern s16 lbl_80367CB0[4];
@@ -2294,7 +2294,7 @@ void fn_8015547C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
         sp5C = t20;
     }
 
-    handle = fn_80009E44(&sp14);
+    handle = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x36);
 
     w = (s16)(lbl_80367CB0[2] - lbl_80367CB0[0]);
@@ -2428,7 +2428,7 @@ void fn_8015547C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_801569C4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -2497,7 +2497,7 @@ void fn_801569C4(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t20 = (s16)(a1 + (s16)(p70->f6 - p70->f2));
     t14 = (s16)(a0 + (s16)(p70->f4 - lbl_80367C70.f0));
-    saved = fn_80009E44(&sp14);
+    saved = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x2A);
     w = (s16)(p70->f4 - lbl_80367C70.f0);
     h = (s16)(p70->f6 - p70->f2);
@@ -2666,7 +2666,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
@@ -2699,7 +2699,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     y = arg1;
     a2 = arg2;
     flags = arg3;
-    saved = fn_80009E44(&spC);
+    saved = Prim2D_PushZ(&spC);
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)gUiTexScratch, 0x49);
     rect = (s16 *)&lbl_80368008;
     h = (s16)(rect[3] - rect[1]);
@@ -2740,7 +2740,7 @@ void fn_80157700(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
 
 #pragma use_lmw_stmw on
 void fn_80157930(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -2806,7 +2806,7 @@ void fn_80157930(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t20 = (s16)(a1 + (s16)(p38->f6 - p38->f2));
     t14 = (s16)(a0 + (s16)(p38->f4 - lbl_80367C38.f0));
-    saved = fn_80009E44(&sp14);
+    saved = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 4);
     w = (s16)(p38->f4 - lbl_80367C38.f0);
     h = (s16)(p38->f6 - p38->f2);
@@ -2931,7 +2931,7 @@ void fn_80157930(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_801583D0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -2980,7 +2980,7 @@ void fn_801583D0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t14 = (s16)(arg0 + (s16)(lbl_80367DC0.f4 - lbl_80367DC0.f0));
     t20 = (s16)(arg1 + (s16)(lbl_80367DC0.f6 - lbl_80367DC0.f2));
-    saved = fn_80009E44(&sp14);
+    saved = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x57);
     w = (s16)(lbl_80367DC0.f4 - lbl_80367DC0.f0);
     h = (s16)(lbl_80367DC0.f6 - lbl_80367DC0.f2);
@@ -3105,7 +3105,7 @@ void fn_80158DD8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     void fn_80007358(f32, f32);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_AddZ(f32);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     extern s16 lbl_80367E28[4];
     extern s16 lbl_80367E00[4];
@@ -3144,7 +3144,7 @@ void fn_80158DD8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
         t14 = (s16)(x + w38);
     }
 
-    handle = fn_80009E44(&sp14);
+    handle = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x5F);
 
     w = (s16)(lbl_80367E00[2] - lbl_80367E00[0]);
@@ -3287,7 +3287,7 @@ void fn_80159898(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
     M2C_UNK fn_800076EC();
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_AddZ(f32);
-    s32 fn_80009E44(f32 *, s16, s16, s16, s16, s16, s16);
+    s32 Prim2D_PushZ(f32 *, s16, s16, s16, s16, s16, s16);
     M2C_UNK fn_80009E64(s32, f32);
     M2C_UNK Ui_LoadAtlasTex(s32, void *, M2C_UNK);
     extern M2C_UNK lbl_80330CE8;
@@ -3358,7 +3358,7 @@ void fn_80159898(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
     sp60 = temp_r6;
     sp62 = temp_r5;
     sp64 = temp_r4;
-    temp_r18 = fn_80009E44(&sp28, temp_r4, temp_r5, temp_r6, temp_r7, temp_r0, temp_r10);
+    temp_r18 = Prim2D_PushZ(&sp28, temp_r4, temp_r5, temp_r6, temp_r7, temp_r0, temp_r10);
     Ui_LoadAtlasTex(gUiTexAtlas, &lbl_80330CE8 + 0x30, 0x5F);
     temp_r0_2 = M2C_FIELD(&lbl_80367E00, s16 *, 4) - M2C_FIELD(&lbl_80367E00, s16 *, 0);
     temp_r0_3 = M2C_FIELD(&lbl_80367E00, s16 *, 6) - M2C_FIELD(&lbl_80367E00, s16 *, 2);
@@ -3489,7 +3489,7 @@ void fn_80159898(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_8015A2D8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -3554,7 +3554,7 @@ void fn_8015A2D8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t20 = (s16)(a1 + (s16)(p38->f6 - p38->f2));
     t14 = (s16)(a0 + (s16)(p38->f4 - lbl_80367D80.f0));
-    saved = fn_80009E44(&sp14);
+    saved = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x4E);
     w = (s16)(p38->f4 - lbl_80367D80.f0);
     h = (s16)(p38->f6 - p38->f2);
@@ -3678,7 +3678,7 @@ void fn_8015A2D8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_8015AD7C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -3743,7 +3743,7 @@ void fn_8015AD7C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t20 = (s16)(a1 + (s16)(p38->f6 - p38->f2));
     t14 = (s16)(a0 + (s16)(p38->f4 - lbl_80367D80.f0));
-    saved = fn_80009E44(&sp14);
+    saved = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x4E);
     w = (s16)(p38->f4 - lbl_80367D80.f0);
     h = (s16)(p38->f6 - p38->f2);
@@ -3927,7 +3927,7 @@ void fn_8015BA88(void) {
 
 #pragma use_lmw_stmw on
 void fn_8015BAA8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -3992,7 +3992,7 @@ void fn_8015BAA8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t21 = (s16)(a1 + (s16)(pD0->f6 - pD0->f2));
     t20 = (s16)(a0 + (s16)(pD0->f4 - lbl_80367ED0.f0));
-    saved = fn_80009E44(&sp8);
+    saved = Prim2D_PushZ(&sp8);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A888);
     Prim2D_PrepareTex();
@@ -4126,7 +4126,7 @@ void fn_8015BAA8(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_8015C674(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -4191,7 +4191,7 @@ void fn_8015C674(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     dh = (s16)(y1 - h);
     t21 = (s16)(a1 + (s16)(p88->f6 - p88->f2));
     t20 = (s16)(a0 + (s16)(p88->f4 - lbl_80367E88.f0));
-    saved = fn_80009E44(&sp8);
+    saved = Prim2D_PushZ(&sp8);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A888);
     Prim2D_PrepareTex();
@@ -4325,7 +4325,7 @@ void fn_8015C674(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_8015D240(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -4394,7 +4394,7 @@ void fn_8015D240(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     t20 = (s16)(a0 + (s16)(p40->f4 - lbl_80367E40.f0));
     sp54 = dh;
     psaved = &saved;
-    *psaved = fn_80009E44(&sp8);
+    *psaved = Prim2D_PushZ(&sp8);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A888);
     Prim2D_PrepareTex();
@@ -4540,7 +4540,7 @@ void fn_8015DE0C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
-    void *fn_80009E44(f32 *);
+    void *Prim2D_PushZ(f32 *);
     void fn_80009E64(void *, f32);
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
@@ -4618,7 +4618,7 @@ void fn_8015DE0C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
     sp62 = (s16)(x2 - w);
     sp64 = (s16)(y + h2);
     sp66 = (s16)(x + w2);
-    saved = fn_80009E44(&sp28);
+    saved = Prim2D_PushZ(&sp28);
 
     Ui_LoadAtlasTex(gUiTexAtlas, base + 0x30, 0x3E);
     w = (s16)(p40[2] - p40[0]);
@@ -4771,7 +4771,7 @@ void fn_8015DE0C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s8 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 void fn_8015E848(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 *arg4, s32 arg5) {
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     void Prim2D_AddZ(f32);
     void fn_8000A174(void *, u16);
@@ -4818,7 +4818,7 @@ void fn_8015E848(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 *arg4, s32 arg5) {
     sp4C = (s16)(y1 - h);
     t14 = (s16)(arg0 + (s16)(lbl_80367CB0.f4 - lbl_80367CB0.f0));
     sp4E = (s16)(arg1 + (s16)(lbl_80367CB0.f6 - lbl_80367CB0.f2));
-    saved = fn_80009E44(&sp10);
+    saved = Prim2D_PushZ(&sp10);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0x36);
     w = (s16)(lbl_80367CB0.f4 - lbl_80367CB0.f0);
     h = (s16)(lbl_80367CB0.f6 - lbl_80367CB0.f2);
@@ -4941,7 +4941,7 @@ void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg
     void fn_800077B0(f32, f32, f32, f32);
     void Prim2D_SetColorPacked(void *);
     void Prim2D_AddZ(f32);
-    s32 fn_80009E44(f32 *);
+    s32 Prim2D_PushZ(f32 *);
     void fn_80009E64(s32, f32);
     extern s16 lbl_80367C58[4];
     extern s16 lbl_80367C38[4];
@@ -4978,7 +4978,7 @@ void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg
         t14 = (s16)(x + w38);
     }
 
-    handle = fn_80009E44(&sp14);
+    handle = Prim2D_PushZ(&sp14);
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 4);
 
     w = (s16)(lbl_80367C38[2] - lbl_80367C38[0]);
@@ -5122,7 +5122,7 @@ void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_AddZ(f32);
-    void *fn_80009E44(f32 *);
+    void *Prim2D_PushZ(f32 *);
     void fn_80009E64(void *, f32);
     void fn_8000A174(void *, u16);
     void Prim2D_PrepareTex(void);
@@ -5192,7 +5192,7 @@ void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     flags = arg5;
     alpha = arg4;
     Ui_LoadAtlasTex(gUiTexAtlas, base + 0x30, 0);
-    saved = fn_80009E44(&sp38);
+    saved = Prim2D_PushZ(&sp38);
     bc0 = &lbl_80367BC0;
     rect[0] = x;
     h = (s16)(bc0[3] - bc0[1]);

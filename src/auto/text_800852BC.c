@@ -2664,7 +2664,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(s32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
-    void *fn_80009E44(s32);
+    void *Prim2D_PushZ(s32);
     s32 fn_8022C568(f32, f32, f32);
     void fn_80009BC0(void (*)(s32, s32), s32);
     void Prim2D_AddZ(f32);
@@ -2718,7 +2718,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     Prim2D_SetRect(sp.w, (f32)x, (f32)y, (f32)sp.w, (f32)sp.h);
     Prim2D_EndPrim();
 
-    tmp = *(f32 *)((u8 *)fn_80009E44(0) + 0xC);
+    tmp = *(f32 *)((u8 *)Prim2D_PushZ(0) + 0xC);
     cb = fn_8022C568(lbl_8036970C + (tmp + (f32)x), tmp, lbl_8036970C);
     Prim2D_Begin();
     fn_80009BC0(fn_8008BA50, cb);

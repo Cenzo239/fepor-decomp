@@ -2071,7 +2071,7 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #pragma peephole off
-void *fn_80009E44(f32 *arg0) {
+void *Prim2D_PushZ(f32 *arg0) {
     extern u16 lbl_80367140;
     if (arg0 == NULL) {
         return arg0;

@@ -3766,7 +3766,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
         virtual void v17() = 0;
         virtual void v18(void *) = 0;
     };
-    void *fn_80009E44(void *);
+    void *Prim2D_PushZ(void *);
     void fn_80202574(void *, void *, f32, f32, f32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -3792,7 +3792,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
     void *tmp;
 
     ((Obj *)self)->v3();
-    tmp = fn_80009E44(sp8);
+    tmp = Prim2D_PushZ(sp8);
     fn_80202574(tmp, tmp, lbl_8036A668, lbl_8036A668, lbl_8036A66C);
     r29 = ((Obj *)self)->v11();
     {
