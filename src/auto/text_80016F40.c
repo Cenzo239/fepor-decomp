@@ -417,7 +417,7 @@ void fn_80017BFC(void) {
 void CamPath_Apply(void *arg0, f32 farg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     extern s32 lbl_80268318[];
-    extern s32 lbl_803671C4;
+    extern s32 gActiveCam;
     extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
 
@@ -442,7 +442,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
     f32 prev_f;
 
     n = *((u8 *)arg0 + 0x45);
-    cam = (void *)lbl_803671C4;
+    cam = (void *)gActiveCam;
     self = arg0;
     if (((u32)(-(s32)n | n) >> 31) != 0) {
         src = (Vec *)lbl_80268318;
@@ -575,7 +575,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
     void Process_Goto(void *, s32);
-    extern s32 lbl_803671C4;
+    extern s32 gActiveCam;
     extern u8 lbl_803671C8;
     extern u8 lbl_802CA434[];
     extern f32 lbl_80368CA0;
@@ -601,7 +601,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     s32 t;
     s32 i;
 
-    cam = (void *)lbl_803671C4;
+    cam = (void *)gActiveCam;
     *(s32 *)((u8 *)arg0 + 0x30) = arg1;
     fn_80018594(arg0);
     dst = lbl_802CA434;
@@ -716,14 +716,14 @@ void fn_800180F4(void *arg0, u8 arg1) {
     }
     fn_80018594(arg0);
     lbl_803671C8 = 3;
-    lbl_803671C4 = (s32)lbl_802CA434;
+    gActiveCam = (s32)lbl_802CA434;
     CamPath_Apply(arg0, lbl_80368C88);
     Process_Goto(arg0, 0);
 }
 
 void fn_8001840C(void *arg0)
 {
-    extern s32 lbl_803671C4;
+    extern s32 gActiveCam;
     extern u8 lbl_803671C8;
     extern s32 gUiInputFlags;
     extern u16 gBattleState[700];
@@ -753,7 +753,7 @@ void fn_8001840C(void *arg0)
     f32 v2;
 
     obj = (u8 *)arg0;
-    src = (u8 *)lbl_803671C4;
+    src = (u8 *)gActiveCam;
     data = (u8 *)gBattleState;
     dst = lbl_802CA2C8;
 
@@ -822,7 +822,7 @@ void fn_8001840C(void *arg0)
     }
 
     lbl_803671C8 = 0;
-    lbl_803671C4 = (s32)lbl_802CA2C8;
+    gActiveCam = (s32)lbl_802CA2C8;
 
     obj[0x3C] = 1;
 
@@ -938,7 +938,7 @@ void fn_80018594(void *arg0) {
 void fn_800187F0(void) {
     void *p;
 
-    p = (void *)lbl_803671C4;
+    p = (void *)gActiveCam;
     if (p != NULL) {
         M2C_FIELD(p, f32 *, 0x4C) = M2C_FIELD(gBattleState, f32 *, 0x52C);
         M2C_FIELD(p, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
@@ -947,7 +947,7 @@ void fn_800187F0(void) {
         M2C_FIELD(p, f32 *, 0x44) = M2C_FIELD(p, f32 *, 0x50);
         M2C_FIELD(p, f32 *, 0x48) = M2C_FIELD(p, f32 *, 0x54);
     }
-    p = (void *)lbl_803671C4;
+    p = (void *)gActiveCam;
     if (p != NULL) {
         M2C_FIELD(p, f32 *, 0x10) = M2C_FIELD(p, f32 *, 0x4);
         M2C_FIELD(p, f32 *, 0x14) = M2C_FIELD(p, f32 *, 0x8);
@@ -958,7 +958,7 @@ void fn_800187F0(void) {
 void fn_8001885C(void) {
     void *p;
 
-    p = (void *)lbl_803671C4;
+    p = (void *)gActiveCam;
     if (p != NULL) {
         M2C_FIELD(p, f32 *, 0x4C) = M2C_FIELD(gBattleState, f32 *, 0x52C);
         M2C_FIELD(p, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
@@ -976,7 +976,7 @@ s32 fn_800188A4(u8 arg0) {
     void *p;
     void *q;
 
-    p = (void *) lbl_803671C4;
+    p = (void *) gActiveCam;
     if (p == NULL) {
         r = 0;
     } else {
@@ -985,7 +985,7 @@ s32 fn_800188A4(u8 arg0) {
             M2C_FIELD(p, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
             M2C_FIELD(p, f32 *, 0x54) = M2C_FIELD(gBattleState, f32 *, 0x53C);
         }
-        p = (void *) lbl_803671C4;
+        p = (void *) gActiveCam;
         var_f2 = lbl_80368C8C;
         if (arg0 != 0) {
             var_f2 = lbl_80368CAC;
@@ -1001,7 +1001,7 @@ s32 fn_800188A4(u8 arg0) {
     if (r == 1) {
         return 1;
     }
-    q = (void *) lbl_803671C4;
+    q = (void *) gActiveCam;
     if (q == NULL) {
         r = 0;
     } else {
@@ -1028,7 +1028,7 @@ zero:
 }
 
 s32 fn_80018A08(u8 arg0) {
-    extern long lbl_803671C4;
+    extern long gActiveCam;
     extern u8 lbl_803671C8;
     extern u16 gBattleState[700];
     extern f32 lbl_80368C8C;
@@ -1037,7 +1037,7 @@ s32 fn_80018A08(u8 arg0) {
     void *p;
     s32 r;
 
-    p = (void *)lbl_803671C4;
+    p = (void *)gActiveCam;
     if (p == NULL) {
         return 0;
     }
@@ -1046,7 +1046,7 @@ s32 fn_80018A08(u8 arg0) {
         *(f32 *)((u8 *)p + 0x50) = *(f32 *)((u8 *)gBattleState + 0x530);
         *(f32 *)((u8 *)p + 0x54) = *(f32 *)((u8 *)gBattleState + 0x53C);
     }
-    p = (void *)lbl_803671C4;
+    p = (void *)gActiveCam;
     var_f2 = lbl_80368C8C;
     if (arg0 != 0) {
         var_f2 = lbl_80368CAC;
@@ -1064,7 +1064,7 @@ s32 fn_80018A08(u8 arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_80018AAC(void) {
-    extern s32 lbl_803671C4;
+    extern s32 gActiveCam;
     struct Cam {
         u8 pad[0x74];
         virtual void v0() = 0;
@@ -1072,12 +1072,12 @@ extern "C" void fn_80018AAC(void) {
         virtual void v2() = 0;
         virtual void v3() = 0;
     };
-    ((Cam *)lbl_803671C4)->v0();
+    ((Cam *)gActiveCam)->v0();
 }
 #pragma cplusplus off
 s32 fn_80018ADC(void) {
-    extern s32 lbl_803671C4;
-    return lbl_803671C4;
+    extern s32 gActiveCam;
+    return gActiveCam;
 }
 
 void fn_80018AE4(void) {
@@ -1111,7 +1111,7 @@ extern "C" void fn_80018B24(void) {
     void fn_80067FE8(f32 *, f32 *, f32 *);
     void fn_8006785C(s32, void (*)(void *), void *);
     void fn_800193D8(void *);
-    extern long lbl_803671C4;
+    extern long gActiveCam;
     extern u8 lbl_8036728B;
     extern s32 gBattleMap[];
     extern f32 lbl_80368C88;
@@ -1139,8 +1139,8 @@ extern "C" void fn_80018B24(void) {
     f32 a;
     f32 b;
 
-    ((Cam *)lbl_803671C4)->v3();
-    r31 = (void *)lbl_803671C4;
+    ((Cam *)gActiveCam)->v3();
+    r31 = (void *)gActiveCam;
     if ((lbl_8036728B & 1) != 0) {
         t = lbl_80368C88;
         *(f32 *)((u8 *)r31 + 0x64) = t;
@@ -1234,7 +1234,7 @@ extern "C" void fn_80018E0C(void)
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_803671C0;
     extern u8 lbl_803671C8;
-    extern s32 lbl_803671C4;
+    extern s32 gActiveCam;
     extern u8 lbl_802CA2C8[];
     extern u8 lbl_80268330[];
     u8 *base;
@@ -1246,16 +1246,16 @@ extern "C" void fn_80018E0C(void)
         lbl_803671C8 = index;
         switch (index) {
         case 0:
-            lbl_803671C4 = (s32)base + 0;
+            gActiveCam = (s32)base + 0;
             break;
         case 1:
-            lbl_803671C4 = (s32)base + 0x78;
+            gActiveCam = (s32)base + 0x78;
             break;
         case 2:
-            lbl_803671C4 = (s32)base + 0xF0;
+            gActiveCam = (s32)base + 0xF0;
             break;
         case 3:
-            lbl_803671C4 = (s32)base + 0x16C;
+            gActiveCam = (s32)base + 0x16C;
             break;
         }
     }
@@ -1264,7 +1264,7 @@ extern "C" void fn_80018E0C(void)
 
 extern "C" void fn_80018EC0(void)
 {
-  extern s32 lbl_803671C4;
+  extern s32 gActiveCam;
   extern f32 lbl_80368C88;
   extern f32 lbl_80368C8C;
   void *new_var;
@@ -1273,7 +1273,7 @@ extern "C" void fn_80018EC0(void)
   f32 f1;
   f32 f0;
   s32 z;
-  p = (void *) lbl_803671C4;
+  p = (void *) gActiveCam;
   if (p != NULL)
   {
     f2 = lbl_80368C8C;
@@ -1448,7 +1448,7 @@ extern "C" void fn_80018F08(void) {
     *(s32 *)((u8 *)slot + 0x1C) = 0;
     *(f32 *)((u8 *)slot + 0x70) = lbl_80368C8C;
     lbl_803671C8 = 0;
-    lbl_803671C4 = (s32)base;
+    gActiveCam = (s32)base;
 }
 #pragma peephole reset
 #pragma optimization_level reset

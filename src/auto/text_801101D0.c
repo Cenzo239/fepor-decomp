@@ -1671,10 +1671,10 @@ void fn_80113F88(void *arg0) {
     f32 fz;
     Vec3f pos;
     void *child;
-    void (**vt)(Vec3f *, void *, s32);
+    void (*getpos)(Vec3f *, void *, s32);
 
-    vt = *(void (***)(Vec3f *, void *, s32))((u8 *)arg0 + 0x40);
-    vt[0xe](&pos, arg0, 0);
+    getpos = (*(void (***)(Vec3f *, void *, s32))((u8 *)arg0 + 0x40))[0xe];
+    getpos(&pos, arg0, 0);
     fx = pos.x;
     fy = pos.y;
     fz = pos.z;
@@ -6593,7 +6593,7 @@ void fn_801207D8(void *arg0) {
 }
 
 extern s32 fn_80010710(u8* arg0);
-extern s32 lbl_803671C4;
+extern s32 gActiveCam;
 s32 fn_801208BC(struct Unit* unit) {
     s32 result;
     u8* temp_r5;

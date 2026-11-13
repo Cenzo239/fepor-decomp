@@ -87,7 +87,7 @@ typedef struct Unk800C2ACC {
 /* Global variables from the original game code */
 extern u8 lbl_803671C0;
 extern u8 lbl_80366DB0;
-extern s32 lbl_803671C4;
+extern s32 gActiveCam;
 extern u8 lbl_803671C8;
 extern f32 lbl_80368C8C;
 extern f32 lbl_80368CAC;
