@@ -1682,7 +1682,7 @@ extern "C" void fn_8012F360(void *arg0) {
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_ClearCallbacks(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -1737,7 +1737,7 @@ extern "C" void fn_8012F360(void *arg0) {
     Prim2D_SetRectUv((f32)((0x30 - var_r31) / 2), lbl_8036A510, (f32)sp8, (f32)spC, (f32)var_r31, (f32)var_r29);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
-    fn_80009B28();
+    Prim2D_ResetState();
     var_r28 = 0;
     var_r31 = var_r28;
     var_r29 = (s32)0x38E38E39;
@@ -2278,7 +2278,7 @@ void fn_801302F4(void *arg0) {
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     void Prim2D_SetTex(s32, s32);
     void fn_8008BF68(s16, s16, s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void fn_80057E64(void *, s32);
     void fn_80057AE0(void *);
     void fn_80057020(void *);
@@ -2360,7 +2360,7 @@ void fn_801302F4(void *arg0) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     fn_8008BF68(x, y, 1);
-    fn_80009B28();
+    Prim2D_ResetState();
     if (*(u8 *)((u8 *)arg0 + 0x63) != 0) {
         fn_80057E64(*(void **)((u8 *)arg0 + 0x44), 1);
     } else {

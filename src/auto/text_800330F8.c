@@ -11227,7 +11227,7 @@ void fn_8004DDB8(s32 arg0) {
     void fn_80007340(void (*)(void), s32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
@@ -11260,7 +11260,7 @@ void fn_8004DDB8(s32 arg0) {
         Prim2D_AddPrim(0xB);
         fn_80007340(fn_8004DEAC, 0);
         Prim2D_EndPrim();
-        fn_80009B28();
+        Prim2D_ResetState();
     }
 }
 

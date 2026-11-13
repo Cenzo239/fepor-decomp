@@ -388,7 +388,7 @@ void fn_80056B0C(void *arg0) {
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
@@ -532,7 +532,7 @@ void fn_80056B0C(void *arg0) {
         temp_r0 = (u8)(temp_r0 >> 1);
         fn_8001003C((s16)temp_r4, (s16)((s32)((((u32)temp_r3_2) >> 0x1FU) + temp_r3_2) >> 1), 1, 1, 0, *(u8 **)((u8 *)arg0 + 0x14), lbl_8036912C, gF32_0);
     }
-    fn_80009B28();
+    Prim2D_ResetState();
 }
 
 void fn_80057020(void *arg0) {

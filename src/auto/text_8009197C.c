@@ -152,7 +152,7 @@ void fn_80091B84(void *arg0) {
         f2 = *(f32*)((u8*)arg0 + 0x38);
         
         arg0 = (void*)fn_8008B2B0((s32)f0, (s32)f1, (s32)f2, ((u8*)arg0)[0x6F], (u8*)arg0 + 0x58);
-        fn_80009B28();
+        Prim2D_ResetState();
     }
 }
 

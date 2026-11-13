@@ -679,7 +679,7 @@ void Ui_DrawExpBar(void *bar) {
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(void *, s32, s32);
@@ -738,7 +738,7 @@ void Ui_DrawExpBar(void *bar) {
     Prim2D_EmitQuad();
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
     Prim2D_EndPrim();
-    fn_80009B28();
+    Prim2D_ResetState();
 }
 
 s32 fn_801B6BE4(struct efUnit* arg0) {

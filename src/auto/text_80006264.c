@@ -1955,7 +1955,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
 #pragma scheduling reset
 }
 
-void fn_80009B28(void) {
+void Prim2D_ResetState(void) {
     extern u16 lbl_80367140;
 
     *(u8 *)(*(u8 **)&lbl_80367140 + 0xa8) = 1;

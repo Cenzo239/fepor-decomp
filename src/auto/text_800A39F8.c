@@ -1786,7 +1786,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
-    void fn_80009B28(void);
+    void Prim2D_ResetState(void);
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
@@ -1888,7 +1888,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     sp8 = lbl_80369AA0;
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
-    fn_80009B28();
+    Prim2D_ResetState();
 }
 void fn_800A7C94(void *arg0) {
     void *Process_Create(void *, void *);
