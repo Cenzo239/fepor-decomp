@@ -13645,7 +13645,8 @@ extern "C" void *fn_8017D800(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 farg1, f32 farg2) {
+/* Draw a UI sprite quad with frame UVs, color, and optional UV rotation. */
+extern "C" void UiObj_DrawSprite(void *arg0, s32 flags, s32 frame, f32 x, f32 y, f32 primParam) {
     void Prim2D_RotateUvCw(void);
     void Prim2D_RotateUvCcw(void);
     void Prim2D_EmitQuad(void);
@@ -13664,38 +13665,38 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
         virtual void m08() = 0;
         virtual void m0C() = 0;
         virtual void m10() = 0;
-        virtual s32 m14() = 0;
-        virtual s16 m18() = 0;
-        virtual s16 m1C() = 0;
-        virtual s16 m20() = 0;
-        virtual s16 m24() = 0;
+        virtual s32 getTexId() = 0;
+        virtual s16 getUvW() = 0;
+        virtual s16 getUvH() = 0;
+        virtual s16 getW() = 0;
+        virtual s16 getH() = 0;
     };
     Obj *obj;
-    s32 sp8;
-    f32 temp_f31;
-    f32 temp_f30;
-    f32 temp_f29;
-    f32 temp_f28;
-    s32 temp_r0;
+    s32 packedColor;
+    f32 dstW;
+    f32 dstH;
+    f32 uvW;
+    f32 uvH;
+    s32 flip;
 
     obj = (Obj *)arg0;
     Prim2D_Begin();
-    Prim2D_BindTexture(*(s32 *)((u8 *)arg0 + 4), obj->m14(), (u16)(arg1 | 1));
+    Prim2D_BindTexture(*(s32 *)((u8 *)arg0 + 4), obj->getTexId(), (u16)(flags | 1));
     Prim2D_AddZ(*(f32 *)((u8 *)arg0 + 0x24));
     Prim2D_PrepareTex();
-    temp_f31 = (f32)obj->m20();
-    temp_f30 = (f32)obj->m24();
-    temp_f29 = (f32)obj->m18();
-    temp_f28 = (f32)obj->m1C();
+    dstW = (f32)obj->getW();
+    dstH = (f32)obj->getH();
+    uvW = (f32)obj->getUvW();
+    uvH = (f32)obj->getUvH();
     Prim2D_AddPrim(2);
-    Prim2D_SetPrimParam(farg2);
-    Prim2D_SetRect(farg0, farg1, temp_f31, temp_f30);
-    Prim2D_SetUvRect((f32)arg2 * temp_f29, lbl_8036AC08, temp_f29, temp_f28);
+    Prim2D_SetPrimParam(primParam);
+    Prim2D_SetRect(x, y, dstW, dstH);
+    Prim2D_SetUvRect((f32)frame * uvW, lbl_8036AC08, uvW, uvH);
     Prim2D_EmitQuad();
-    sp8 = *(s32 *)((u8 *)arg0 + 0x20);
-    Prim2D_SetColorPacked(&sp8);
-    temp_r0 = *(s32 *)((u8 *)arg0 + 8);
-    switch (temp_r0) {
+    packedColor = *(s32 *)((u8 *)arg0 + 0x20);
+    Prim2D_SetColorPacked(&packedColor);
+    flip = *(s32 *)((u8 *)arg0 + 8);
+    switch (flip) {
     case 3:
         Prim2D_RotateUvCcw();
         break;
@@ -13710,9 +13711,9 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
         break;
     }
     Prim2D_EndPrim();
-    temp_f31 = -*(f32 *)((u8 *)arg0 + 0x24);
+    dstW = -*(f32 *)((u8 *)arg0 + 0x24);
     Prim2D_Begin();
-    Prim2D_AddZ(temp_f31);
+    Prim2D_AddZ(dstW);
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
