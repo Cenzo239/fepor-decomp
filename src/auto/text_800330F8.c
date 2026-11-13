@@ -5289,7 +5289,7 @@ void fn_8003EA84(void *arg0, void *arg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8003EAE8(void *arg0, void *arg1) {
+void Unit_InitFromDispos(void *arg0, void *arg1) {
     void *Res_GetByName(void *);
     void fn_80104410(void *);
     void Unit_SetMapPos(void *, u8, u8);

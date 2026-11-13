@@ -1183,7 +1183,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void fn_8003D5FC(void *, u8);
     void Unit_MoveToList(void *, s32);
     void fn_8003D68C(void *, s32);
-    void fn_8003EAE8(void *, void *);
+    void Unit_InitFromDispos(void *, void *);
     void fn_80050BCC(void *, s32);
     void fn_80050C90(void *);
     extern u8 gDisposStrings[];
@@ -1223,7 +1223,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
         do_call:
             Unit_MoveToList(unit, kind);
         after_sw:
-            fn_8003EAE8(unit, sp8);
+            Unit_InitFromDispos(unit, sp8);
             Unit_MoveToList(unit, 5);
         } else {
             unit = NULL;
