@@ -1130,7 +1130,7 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
     void fn_80247F1C(s32, u8, s32);
     void fn_8024A780(u8, u16, u8, u8, s32);
     void fn_8024AD04(u8, s32, u8);
-    void fn_8025F534(s32, s32, u8, s32);
+    void Sound_WriteParamU8(s32, s32, u8, s32);
     void fn_8025FB74(u8, u8, u8);
     void fn_8025FF6C(u8, u8);
     extern SynthVoice gSynthVoicePool[];
@@ -1498,10 +1498,10 @@ s32 fn_80243FB8(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4, u8 a
                     q[0xE74] = j;
                 }
             }
-            fn_8025F534(7, i, id, ep[5]);
-            fn_8025F534(0xA, i, id, ep[6]);
-            fn_8025F534(0x5B, i, id, ep[7]);
-            fn_8025F534(0x5D, i, id, ep[8]);
+            Sound_WriteParamU8(7, i, id, ep[5]);
+            Sound_WriteParamU8(0xA, i, id, ep[6]);
+            Sound_WriteParamU8(0x5B, i, id, ep[7]);
+            Sound_WriteParamU8(0x5D, i, id, ep[8]);
             ep += 5;
         }
     }
@@ -3653,9 +3653,9 @@ s32 Sound_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
         temp_r7 = (char *)gSynthVoices + temp_r29;
         if ((u32)var_r3 == *(u32 *)(temp_r7 + 0xF4)) {
             if (*(u64 *)(temp_r7 + 0x114) & 2) {
-                fn_8025F534(arg1, idx, *(u8 *)(temp_r7 + 0x217), arg2);
+                Sound_WriteParamU8(arg1, idx, *(u8 *)(temp_r7 + 0x217), arg2);
             } else {
-                fn_8025F534(arg1, idx, *(u8 *)(temp_r7 + 0x122), arg2);
+                Sound_WriteParamU8(arg1, idx, *(u8 *)(temp_r7 + 0x122), arg2);
             }
             ret = 1;
             var_r3 = *(s32 *)((char *)gSynthVoices + temp_r29 + 0xEC);
@@ -4274,7 +4274,7 @@ void fn_8024B4B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
     s32 Audio_Lock(void);
     s32 Sound_FindVoiceId(s32);
-    s32 fn_8025F534(s32, s32, u8, s32);
+    s32 Sound_WriteParamU8(s32, s32, u8, s32);
     s32 Audio_Unlock(void);
     s32 var_r31;
     s32 temp_r3;
@@ -4283,7 +4283,7 @@ s32 fn_8024B518(s32 arg0, s32 arg1, s32 arg2, s32 arg3, M2C_UNK arg_sp0) {
     Audio_Lock();
     temp_r3 = Sound_FindVoiceId(arg0);
     if ((u32) (temp_r3 + 0x10000) != 0xFFFFU) {
-        fn_8025F534(arg2, arg1, (u8) temp_r3, arg3);
+        Sound_WriteParamU8(arg2, arg1, (u8) temp_r3, arg3);
         var_r31 = 1;
     }
     Audio_Unlock();
