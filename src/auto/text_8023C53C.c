@@ -9265,7 +9265,7 @@ void fn_80257940(s32 arg0) {
     fn_8022C568(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
 }
 
-s32 fn_80257998(u8 *arg0) {
+s32 Sound_SetupAdsrPhase(u8 *arg0) {
     extern u16 lbl_8029F9F8[];
     s32 ret;
     u32 tmp;
@@ -9362,9 +9362,9 @@ s32 fn_80257998(u8 *arg0) {
 }
 
 void fn_80257C04(void *arg0) {
-    M2C_UNK fn_80257998();
+    M2C_UNK Sound_SetupAdsrPhase();
     M2C_FIELD(arg0, s8 *, 1) = 0;
-    fn_80257998();
+    Sound_SetupAdsrPhase();
 }
 
 s32 fn_80257C2C(u8 *arg0, u32 arg1) {
@@ -9456,7 +9456,7 @@ s32 fn_80257D7C(u8 *arg0) {
 
 s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
     extern u16 lbl_8029F9F8[];
-    s32 fn_80257998(u8 *);
+    s32 Sound_SetupAdsrPhase(u8 *);
     s32 ret;
     s32 old;
     s32 delta;
@@ -9481,7 +9481,7 @@ s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
             ctr = *(s32 *)(arg0 + 4) - 1;
             *(s32 *)(arg0 + 4) = ctr;
             if (ctr == 0) {
-                ret = fn_80257998(arg0);
+                ret = Sound_SetupAdsrPhase(arg0);
             }
         } else {
             *arg1 = (s16)(*(s32 *)(arg0 + 8) >> 16);
@@ -9511,7 +9511,7 @@ s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
             ctr = *(s32 *)(arg0 + 4) - 1;
             *(s32 *)(arg0 + 4) = ctr;
             if (ctr == 0) {
-                ret = fn_80257998(arg0);
+                ret = Sound_SetupAdsrPhase(arg0);
             }
         } else {
             *arg1 = (s16)(*(s32 *)(arg0 + 8) >> 16);
