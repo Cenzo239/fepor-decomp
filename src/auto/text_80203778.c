@@ -1747,55 +1747,56 @@ int OSFontCodeToIndex(u16 encode, u16 code) {
     return 0;
 }
 
-void Yay0_Decode(u8 *s, u8 *d) {
-    int j;
-    int k;
-    int p;
-    int q;
-    int r7;
-    int r25;
-    int cnt;
-    int os;
-    u32 flag;
-    u32 code;
+/* Decode a Yay0 bitstream from src into dst (literal bytes and back-references). */
+void Yay0_Decode(u8 *src, u8 *dst) {
+    int link;
+    int copySrc;
+    int bitsPos;
+    int dstPos;
+    int linkPos;
+    int literalPos;
+    int copyLen;
+    int outSize;
+    u32 bitsLeft;
+    u32 flags;
 
-    os = *(int *)(s + 0x4);
-    r7 = *(int *)(s + 0x8);
-    r25 = *(int *)(s + 0xC);
-    q = 0;
-    flag = 0;
-    p = 16;
+    outSize = *(int *)(src + 0x4);
+    linkPos = *(int *)(src + 0x8);
+    literalPos = *(int *)(src + 0xC);
+    dstPos = 0;
+    bitsLeft = 0;
+    bitsPos = 16;
 
     do {
-        if (flag == 0) {
-            code = *(u32 *)(s + p);
-            p += 4;
-            flag = 32;
+        if (bitsLeft == 0) {
+            flags = *(u32 *)(src + bitsPos);
+            bitsPos += 4;
+            bitsLeft = 32;
         }
 
-        if (code & 0x80000000) {
-            d[q++] = s[r25++];
+        if (flags & 0x80000000) {
+            dst[dstPos++] = src[literalPos++];
         } else {
-            j = (s[r7] << 8) | s[r7 + 1];
-            r7 += 2;
+            link = (src[linkPos] << 8) | src[linkPos + 1];
+            linkPos += 2;
 
-            k = q - (j & 0xFFF);
-            cnt = j >> 12;
-            if (cnt == 0) {
-                cnt = s[r25++] + 0x12;
+            copySrc = dstPos - (link & 0xFFF);
+            copyLen = link >> 12;
+            if (copyLen == 0) {
+                copyLen = src[literalPos++] + 0x12;
             } else {
-                cnt += 2;
+                copyLen += 2;
             }
 
-            for (; cnt > 0; cnt--) {
-                d[q] = d[k - 1];
-                q++;
-                k++;
+            for (; copyLen > 0; copyLen--) {
+                dst[dstPos] = dst[copySrc - 1];
+                dstPos++;
+                copySrc++;
             }
         }
-        code <<= 1;
-        flag--;
-    } while (q < os);
+        flags <<= 1;
+        bitsLeft--;
+    } while (dstPos < outSize);
 }
 
 u16 fn_802072A0(void) {
