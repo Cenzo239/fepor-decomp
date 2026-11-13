@@ -2969,7 +2969,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_TutorialSallyDelete(void);
     void ScriptCmd_TutorialBasesCreate(void);
     void ScriptCmd_TutorialBasesDelete(void);
-    void fn_80126DE8(void);
+    void ScriptCmd_TutorialUnlock(void);
     void fn_80126DB0(void);
     void fn_80126D78(void);
     void fn_80126D40(void);
@@ -3017,7 +3017,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x30C, ScriptCmd_TutorialSallyDelete, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x320, ScriptCmd_TutorialBasesCreate, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x334, ScriptCmd_TutorialBasesDelete, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x348, fn_80126DE8, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x348, ScriptCmd_TutorialUnlock, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x357, fn_80126DB0, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x364, fn_80126D78, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x372, fn_80126D40, 1);
@@ -3267,7 +3267,7 @@ s32 fn_80126DB0(u8 arg0) {
     return 1;
 }
 
-s32 fn_80126DE8(u8 arg0) {
+s32 ScriptCmd_TutorialUnlock(u8 arg0) {
     extern u16 lbl_80330708[];
     u16* ptr = (u16*)((u32)lbl_80330708 + 0x74);
     fn_80105D4C(ptr, arg0);
