@@ -3749,17 +3749,17 @@ void fn_8000C188(void *arg0) {
 }
 
 void fn_8000C194(s32 arg0) {
-    void fn_8000C1CC(u32);
+    void Process_Update(u32);
     extern u32 lbl_802ADADC[];
     u32 v = lbl_802ADADC[arg0];
     if (v != 0) {
-        fn_8000C1CC(v);
+        Process_Update(v);
     }
 }
 
 void fn_8000B850(void *);
 void fn_8000C188(void *);
-void fn_8000C1CC(void *arg0) {
+void Process_Update(void *arg0) {
     extern u32 lbl_802ADAFC[9];
     u8 *self;
     u8 *node;
@@ -3774,7 +3774,7 @@ void fn_8000C1CC(void *arg0) {
     if (node != NULL) {
         child = *(u8 **)(node + 0x24);
         if (child != NULL) {
-            fn_8000C1CC(child);
+            Process_Update(child);
         }
         if (*(u32 *)node != 0 && node[0x2E] == 0) {
             if (node[0x2D] == 0 && ((node[0x2C] & 4) == 0 || (*(u8 **)(node + 0x18))[0x2D] == 0)) {
@@ -3805,7 +3805,7 @@ void fn_8000C1CC(void *arg0) {
             }
             child = *(u8 **)(node + 0x1C);
             if (child != NULL) {
-                fn_8000C1CC(child);
+                Process_Update(child);
             }
         }
     }
@@ -3854,7 +3854,7 @@ done1:
         if (node != NULL) {
             child = *(u8 **)(node + 0x24);
             if (child != NULL) {
-                fn_8000C1CC(child);
+                Process_Update(child);
             }
             if (*(u32 *)node != 0 && node[0x2E] == 0) {
                 if (node[0x2D] == 0 && ((node[0x2C] & 4) == 0 || (*(u8 **)(node + 0x18))[0x2D] == 0)) {
@@ -3885,7 +3885,7 @@ done1:
                 }
                 child = *(u8 **)(node + 0x1C);
                 if (child != NULL) {
-                    fn_8000C1CC(child);
+                    Process_Update(child);
                 }
             }
         }
