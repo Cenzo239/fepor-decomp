@@ -2156,7 +2156,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     extern f32 gScrollBgWidth;
     extern f32 gScrollBgHeight;
     extern f32 gScrollBgUvScale;
-    extern f32 lbl_80369B78;
+    extern f32 gScrollBgUvH;
     extern f32 lbl_80369B7C;
     extern f32 lbl_80369B80;
     f32 temp_f2;
@@ -2171,7 +2171,7 @@ void Bg_DrawScrollLayers(void *arg0) {
     Prim2D_SetRect(gScrollBgZero, gScrollBgZero, gScrollBgWidth, gScrollBgHeight);
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x34);
     temp_f2 = gScrollBgUvScale * (f32) temp_r3;
-    Prim2D_SetUvCorners(temp_r3, gScrollBgZero, temp_f2, gScrollBgOne, lbl_80369B78 + temp_f2);
+    Prim2D_SetUvCorners(temp_r3, gScrollBgZero, temp_f2, gScrollBgOne, gScrollBgUvH + temp_f2);
     Prim2D_SetPrimParam(lbl_80369B7C);
     Prim2D_EndPrim();
     Prim2D_Begin();
