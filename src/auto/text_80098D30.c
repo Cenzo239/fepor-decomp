@@ -482,7 +482,7 @@ void fn_80099BF8(void *arg0) {
 void fn_80099CA4(void *arg0) {
     void *fn_80095BB0(s32);
     void *fn_80095FF8(s32);
-    void fn_80095D1C(s32);
+    void Event_GetCmdFlagName(s32);
     void *fn_80053AE8(void *, void *);
     void fn_800536CC(void *, s32);
     void fn_8005306C(void *);
@@ -496,7 +496,7 @@ void fn_80099CA4(void *arg0) {
     temp_r31 = fn_80095BB0(*(s32 *)((u8 *)arg0 + 0x60));
     if (temp_r31 != NULL) {
         temp_r30 = fn_80095FF8(*(s32 *)((u8 *)temp_r29 + 0x60));
-        fn_80095D1C(*(s32 *)((u8 *)temp_r29 + 0x60));
+        Event_GetCmdFlagName(*(s32 *)((u8 *)temp_r29 + 0x60));
         if (temp_r30 != NULL) {
             temp_r30_2 = fn_80053AE8(temp_r30, temp_r29);
             fn_800536CC(temp_r30_2, *(s32 *)temp_r31);

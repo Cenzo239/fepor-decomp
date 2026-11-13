@@ -52,7 +52,7 @@ s32 fn_80095BB0(s32 arg0) {
     return 0;
 }
 
-void *fn_80095D1C(s32 arg0)
+void *Event_GetCmdFlagName(s32 arg0)
 {
     extern char lbl_8026D030[];
 
