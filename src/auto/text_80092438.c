@@ -55,7 +55,7 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void fn_80092438(void *arg0) {
+void Unit_ApplyStatusWpnExp(void *arg0) {
     u8 Status_Test(void *, s32);
 
     if (*(u8 *)((u8 *)arg0 + 0x20C) == 0 && Status_Test((u8 *)arg0 + 0x1BC, 0x24) != 0) {

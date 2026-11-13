@@ -5347,7 +5347,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void *Unit_GetItemSlot(void *, s32);
     u8 fn_80094768(void *);
     void Unit_ResetHeldFromClass(void *);
-    void fn_80092438(void *);
+    void Unit_ApplyStatusWpnExp(void *);
     u8 Unit_GetWpnExp(void *, u8);
     void *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_80093DA8(void *);
@@ -5568,7 +5568,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     self->unk20C[5] = *((u8 *)self->unk18C + 0x31);
     self->unk20C[6] = *((u8 *)self->unk18C + 0x32);
     self->unk20C[7] = *((u8 *)self->unk18C + 0x33);
-    fn_80092438(self);
+    Unit_ApplyStatusWpnExp(self);
     for (j = 0; j < 8; j++) {
         if (Unit_GetWpnExp(self, j) != 0) {
             t = *((u8 *)self->unk188 + 0x35 + j);
