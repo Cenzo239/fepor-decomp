@@ -1652,7 +1652,7 @@ void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(s32);
-    void fn_80009BC0(void (*)(void), s32);
+    void Prim2D_SetCallback(void (*)(void), s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_PrepareTex(void);
@@ -1667,7 +1667,7 @@ void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTransform(farg0, farg1, lbl_8036A500, lbl_8036A50C);
     Prim2D_BindTexture(arg1, 3, 0x11);
-    fn_80009BC0(Ui_ScissorUnitListRight, 0);
+    Prim2D_SetCallback(Ui_ScissorUnitListRight, 0);
     Prim2D_SetColorByte(0xC0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
@@ -1783,7 +1783,7 @@ void fn_8012F5CC(void *arg0) {
     void Prim2D_AddPrim(s32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_ClearCallbacks(void);
-    void fn_80009BC0(void (*)(void), s32);
+    void Prim2D_SetCallback(void (*)(void), s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_SetTex(s32, s32);
@@ -1876,7 +1876,7 @@ void fn_8012F5CC(void *arg0) {
                 Prim2D_SetTransform(lbl_8036A524, f30, lbl_8036A500, lbl_8036A50C);
                 Prim2D_SetTex(0, 0x13);
                 Prim2D_SetColorByte(0xFF);
-                fn_80009BC0(Ui_ScissorUnitListRows, 0);
+                Prim2D_SetCallback(Ui_ScissorUnitListRows, 0);
                 Prim2D_PrepareTex();
                 fn_8001003C(0, 0, icon, 1, 0, str, lbl_8036A50C, lbl_8036A510);
             }
@@ -1885,7 +1885,7 @@ void fn_8012F5CC(void *arg0) {
             Prim2D_Begin();
             Prim2D_SetTransform(lbl_8036A528, f30, lbl_8036A52C, lbl_8036A50C);
             Prim2D_BindTexture(*(void **)(self + 0x40), 2, 0x11);
-            fn_80009BC0(Ui_ScissorUnitListRows, 0);
+            Prim2D_SetCallback(Ui_ScissorUnitListRows, 0);
             Prim2D_SetColorByte(0xFF);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
@@ -1897,7 +1897,7 @@ void fn_8012F5CC(void *arg0) {
             Prim2D_Begin();
             Prim2D_SetTransform(lbl_8036A534, f30, lbl_8036A52C, lbl_8036A50C);
             Prim2D_SetTex(0, 0x12);
-            fn_80009BC0(Ui_ScissorUnitListRows, 0);
+            Prim2D_SetCallback(Ui_ScissorUnitListRows, 0);
             Prim2D_SetColorByte(0x60);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
@@ -2132,7 +2132,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
     void Prim2D_SetColorByte(s32);
-    void fn_80009BC0(void *, s32);
+    void Prim2D_SetCallback(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void fn_80007340(void *, s32);
@@ -2195,7 +2195,7 @@ void Ui_DrawUnitListModels(void *arg0) {
     Prim2D_SetTransform(lbl_8036A510, lbl_8036A510, lbl_8036A588, lbl_8036A50C);
     Prim2D_SetTex(0, 0x410);
     Prim2D_SetColorByte(0xFF);
-    fn_80009BC0(Ui_ScissorUnitListLeft, 0);
+    Prim2D_SetCallback(Ui_ScissorUnitListLeft, 0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(0xB);
     fn_80007340(fn_801302C0, 0);
@@ -2241,7 +2241,7 @@ void Ui_DrawUnitListModels(void *arg0) {
             Prim2D_SetColorByte(0xFF);
             scrollY = *(s16 *)((u8 *)self + 0x6A);
             if ((scrollY % 32) != 0) {
-                fn_80009BC0(Ui_ScissorUnitListRows, 0);
+                Prim2D_SetCallback(Ui_ScissorUnitListRows, 0);
             }
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xB);
@@ -2253,7 +2253,7 @@ void Ui_DrawUnitListModels(void *arg0) {
         list = (u8 *)list + 0x24;
     }
     Prim2D_Begin();
-    fn_80009BC0(Ui_ScissorUnitListNarrow, 0);
+    Prim2D_SetCallback(Ui_ScissorUnitListNarrow, 0);
     Prim2D_PrepareTex();
     fn_8004DDB8(0x64);
     Prim2D_Begin();
@@ -2527,7 +2527,7 @@ void fn_80130920(void) {
 void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     void fn_8000A258(void);
     void fn_80009D74(f32, f32, f32, f32);
-    void fn_80009BC0(void (*)(void), s32);
+    void Prim2D_SetCallback(void (*)(void), s32);
     void fn_80009B8C(s32);
     void fn_8000A248(void);
     void *fn_80105C5C(void *, u8);
@@ -2544,7 +2544,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
 
     fn_8000A258();
     fn_80009D74(farg0, farg1, lbl_8036A500, lbl_8036A50C);
-    fn_80009BC0(fn_80130920, 0);
+    Prim2D_SetCallback(fn_80130920, 0);
     fn_80009B8C(0xFF);
     fn_8000A248();
     unit = (s32)*(void **)arg1;

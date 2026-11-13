@@ -24,7 +24,7 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
     return 0;
 }
 
-#pragma optimization_level 3
+#pragma opt_strength_reduction off
 void fn_80006298(u32 *dst, u32 val, u32 n) {
     n >>= 2;
     dst--;
@@ -32,7 +32,7 @@ void fn_80006298(u32 *dst, u32 val, u32 n) {
         *++dst = val;
     } while (--n);
 }
-#pragma optimization_level reset
+#pragma opt_strength_reduction reset
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
     u32 count;
 
@@ -1986,7 +1986,7 @@ void Prim2D_ClearCallbacks(void) {
     *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) &= ~0x7000;
 }
 
-void fn_80009BC0(s32 arg0, s32 arg1) {
+void Prim2D_SetCallback(s32 arg0, s32 arg1) {
     extern u16 lbl_80367140;
 
     *(u32 *)(*(u8 **)&lbl_80367140 + 0x2c) = arg0;
@@ -4180,7 +4180,7 @@ extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
     extern u8 lbl_802A66D8[];
     extern u8 lbl_80283828[];
-    extern void *gProcessFreeTop;
+    extern void *lbl_80367148;
     u8 *base;
     u8 *p;
     u8 **q;
@@ -4218,7 +4218,7 @@ void fn_8000CC88(void) {
     }
     *(u32 *)(base + 0x7424) = zero;
     *(u32 *)(base + 0x7400) = zero;
-    gProcessFreeTop = base + 0x7000;
+    lbl_80367148 = base + 0x7000;
     *(u32 *)(base + 0x7428) = zero;
     *(u32 *)(base + 0x742C) = zero;
     *(u32 *)(base + 0x7430) = zero;
@@ -4267,7 +4267,7 @@ s32 fn_8000CD88(s32 arg0) {
     s32 sum;
 
     st = &lbl_80367150;
-    s0 = lbl_80367150;
+    s0 = st[0];
     s2 = *(st + 2);
     s1 = *(st + 1);
     t4 = (s2 * 2) & 0xFFFE;
@@ -4277,15 +4277,16 @@ s32 fn_8000CD88(s32 arg0) {
         *(st + 2) = t4 + 1;
     }
     t6 ^= *(st + 2);
-    *(st + 2) = *(st + 1);
+    s2 = *(st + 1);
+    s0 = st[0];
+    *(st + 2) = s2;
     scaled = (u16)t6 * 100;
-    *(st + 1) = lbl_80367150;
-    lbl_80367150 = t6;
+    *(st + 1) = s0;
+    st[0] = t6;
     sum = scaled / 65536;
 
-    s0 = lbl_80367150;
-    s2 = *(st + 2);
-    s1 = *(st + 1);
+    s1 = s0;
+    s0 = t6;
     t4 = (s2 * 2) & 0xFFFE;
     t6 = (u16)((s1 << 11) + (s0 >> 5));
     *(st + 2) = t4;
@@ -4293,13 +4294,15 @@ s32 fn_8000CD88(s32 arg0) {
         *(st + 2) = t4 + 1;
     }
     t6 ^= *(st + 2);
-    *(st + 2) = *(st + 1);
+    s2 = *(st + 1);
+    s0 = st[0];
+    *(st + 2) = s2;
     scaled = (u16)t6 * 100;
-    *(st + 1) = lbl_80367150;
-    lbl_80367150 = t6;
+    *(st + 1) = s0;
+    st[0] = t6;
     sum += scaled / 65536;
 
-    sum = (sum + (sum >> 31)) >> 1;
+    sum = sum / 2;
     return sum < arg0;
 }
 

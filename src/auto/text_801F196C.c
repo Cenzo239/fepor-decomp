@@ -1070,7 +1070,7 @@ void fn_801F3E60(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_ClearCallbacks(void);
-    void fn_80009BC0(void (*)(s32, s16 *), s16 *);
+    void Prim2D_SetCallback(void (*)(s32, s16 *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_BindTexture(s32, s32, s32);
@@ -1369,7 +1369,7 @@ void fn_801F3E60(void *arg0) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
     (void)c7; (void)c8; (void)f31v; (void)f30v; (void)f29v;
-    (void)fn_80009BC0; (void)fn_801F52A8; (void)fn_8015F24C;
+    (void)Prim2D_SetCallback; (void)fn_801F52A8; (void)fn_8015F24C;
     (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
     (void)Msg_ResolveName; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
     (void)fn_8008BF68; (void)fn_8022C9FC; (void)fn_8022CB78;

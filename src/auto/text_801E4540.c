@@ -386,7 +386,7 @@ void TabMenu_Draw(void *menu)
     void Prim2D_SetAlphaByte(u8);
     void fn_80056B0C(s32);
     void fn_801E6CEC(void *);
-    void fn_80009BC0(void *, s32);
+    void Prim2D_SetCallback(void *, s32);
     void TabMenu_DrawTab0(void *);
     void TabMenu_DrawTab1(void *);
     void TabMenu_DrawTab2(void *);
@@ -488,7 +488,7 @@ void TabMenu_Draw(void *menu)
     fn_80056B0C(*(s32 *)((u8 *)menu + 0x60));
     fn_801E6CEC(menu);
     Prim2D_Begin();
-    fn_80009BC0((void *)fn_801E551C, 0);
+    Prim2D_SetCallback((void *)fn_801E551C, 0);
     Prim2D_PrepareTex();
     switch ((s8)*(u8 *)((u8 *)menu + 0x30)) {
     case 0:

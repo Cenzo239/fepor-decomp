@@ -306,7 +306,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_PrepareTex(void);
     void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
@@ -354,7 +354,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A890);
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk68);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk68);
     Prim2D_PrepareTex();
 
     row_h = self->unk54;
@@ -786,7 +786,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void Prim2D_SetText(void *);
     void Prim2D_EndPrim(void);
     void fn_8013F748(void *, s16 *, s16 *);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A064(void *);
@@ -855,7 +855,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A890);
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk68);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk68);
     Prim2D_PrepareTex();
 
     row_h = self->unk54;
@@ -12287,7 +12287,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
 #pragma global_optimizer off
 extern "C" void fn_8017AF30(void *arg0, void *arg1) {
     void Prim2D_ClearCallbacks(void);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -12383,7 +12383,7 @@ extern "C" void fn_8017AF30(void *arg0, void *arg1) {
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036AB9C);
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk44);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk44);
     Prim2D_PrepareTex();
 
     flag = 0;

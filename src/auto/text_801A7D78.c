@@ -1331,7 +1331,7 @@ void fn_801ACF4C(void *arg0) {
         }
     }
     Prim2D_Begin();
-    fn_80009BC0(&fn_801ADD58, &lbl_80368224);
+    Prim2D_SetCallback(&fn_801ADD58, &lbl_80368224);
     Prim2D_PrepareTex();
     var_r30 = 0;
     do {

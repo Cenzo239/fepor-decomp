@@ -1580,7 +1580,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     };
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
@@ -1627,7 +1627,7 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     rect = &self->unk48;
     fn_8013F748(self, rect, rect);
     Prim2D_Begin();
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk44);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk44);
     Prim2D_AddZ(lbl_8036A5D8);
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
@@ -2064,7 +2064,7 @@ extern "C" void fn_80135CE8(void *arg0, s32 arg1) {
     void fn_8013F748(void *,s16 *,s16 *);
     void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void Prim2D_ClearCallbacks(void);
     void Prim2D_AddZ(f32); void Prim2D_ScissorFromRect(void *);
-    void fn_80009BC0(void (*)(void *),s16 *);
+    void Prim2D_SetCallback(void (*)(void *),s16 *);
     extern f32 lbl_8036A5D8,lbl_8036A5E4,lbl_8036A5E8,lbl_8036A5F4;
     extern f32 lbl_80367098[];
     extern PTMF lbl_80291848;
@@ -2097,7 +2097,7 @@ extern "C" void fn_80135CE8(void *arg0, s32 arg1) {
     fn_8013F748(self,rect,rect);
     rect=(s16 *)(self+0x64); fn_8013F748(self,rect,rect);
     Prim2D_Begin(); Prim2D_AddZ(lbl_8036A5D8);
-    fn_80009BC0(Prim2D_ScissorFromRect,(s16 *)(self+0x60)); Prim2D_PrepareTex();
+    Prim2D_SetCallback(Prim2D_ScissorFromRect,(s16 *)(self+0x60)); Prim2D_PrepareTex();
     rows=((Obj *)self)->a56;
     visible=((Obj *)self)->v10();
     width=(s16)((s16)(((Obj *)self)->a16-((Obj *)self)->a12)/ ((Obj *)self)->a56);
@@ -2908,7 +2908,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void fn_80154370(s32, s32, s16, s16, s32, s32);
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
@@ -2973,7 +2973,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     fn_8013F748(self, rect, rect);
 
     Prim2D_Begin();
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk3C);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk3C);
     Prim2D_AddZ(lbl_8036A61C);
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
@@ -3134,7 +3134,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void fn_80154370(s32, s32, s16, s16, s32, s32);
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
@@ -3192,7 +3192,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     fn_8013F748(self, rect, rect);
 
     Prim2D_Begin();
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk3C);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk3C);
     Prim2D_AddZ(lbl_8036A61C);
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
@@ -3307,7 +3307,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     void fn_80160F00(s32, s32, s32, s32);
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
@@ -3387,7 +3387,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     fn_8013F748(self, rect, rect);
 
     Prim2D_Begin();
-    fn_80009BC0(Prim2D_ScissorFromRect, &self->unk44);
+    Prim2D_SetCallback(Prim2D_ScissorFromRect, &self->unk44);
     Prim2D_AddZ(lbl_8036A61C);
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
@@ -3884,7 +3884,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     void Prim2D_SetTransform(f32, f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
     void Prim2D_SetColorByte(s32);
-    void fn_80009BC0(void (*)(void *), s16 *);
+    void Prim2D_SetCallback(void (*)(void *), s16 *);
     void Prim2D_ScissorFromRect(void *);
     void Prim2D_AddPrim(s32);
     void fn_80007340(void *, s32);
@@ -3978,7 +3978,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     Prim2D_SetTex(0, 0x410);
     Prim2D_SetColorByte(0xFF);
     if ((s16)self->a5c != 0) {
-        fn_80009BC0(Prim2D_ScissorFromRect, self->rect);
+        Prim2D_SetCallback(Prim2D_ScissorFromRect, self->rect);
     }
     Prim2D_PrepareTex();
     Prim2D_AddPrim(0xB);
@@ -4627,7 +4627,7 @@ extern "C" void fn_8013A5A0(void *arg0, s32 arg1) {
     void fn_8013F748(void *,s16 *,s16 *);
     void Prim2D_Begin(void); void Prim2D_PrepareTex(void); void Prim2D_ClearCallbacks(void);
     void Prim2D_AddZ(f32); void Prim2D_ScissorFromRect(void *);
-    void fn_80009BC0(void (*)(void *),s16 *);
+    void Prim2D_SetCallback(void (*)(void *),s16 *);
     extern f32 lbl_8036A668,lbl_8036A6AC,lbl_8036A670;
     extern f32 lbl_80367098[];
     extern PTMF lbl_80291A68;
@@ -4662,7 +4662,7 @@ extern "C" void fn_8013A5A0(void *arg0, s32 arg1) {
     fn_8013F748(self,rect,rect);
     rect=(s16 *)(self+0x6a); fn_8013F748(self,rect,rect);
     Prim2D_Begin();
-    fn_80009BC0(Prim2D_ScissorFromRect,(s16 *)(self+0x66)); Prim2D_PrepareTex();
+    Prim2D_SetCallback(Prim2D_ScissorFromRect,(s16 *)(self+0x66)); Prim2D_PrepareTex();
     rows=((Obj *)self)->a58;
     visible=((Obj *)self)->v13();
     s16 page0=((Obj *)self)->a56;
@@ -8868,7 +8868,7 @@ extern "C" void fn_80142ED0(Menu42 *self, s32 arg) {
 void fn_8013F748(void *,s16 *,s16 *);
 void Prim2D_ScissorFromRect(void *);
 void Prim2D_Begin(void); void Prim2D_PrepareTex(void);
-void fn_80009BC0(void (*)(void *),s16 *);
+void Prim2D_SetCallback(void (*)(void *),s16 *);
 void Prim2D_AddZ(f32); void Prim2D_ClearCallbacks(void);
 void Prim2D_SetTex(s32,s32);
 void *Msg_Expand(void *);
@@ -8910,7 +8910,7 @@ s16 index = *(s16 *)(slot + 0x4e);
 table = (u8 *)self + mul12 + 0x90;
 count = (s16)*(s32 *)table;
 Prim2D_Begin();
-fn_80009BC0(Prim2D_ScissorFromRect, (s16 *)((u8 *)self + 0x114));
+Prim2D_SetCallback(Prim2D_ScissorFromRect, (s16 *)((u8 *)self + 0x114));
 Prim2D_AddZ(lbl_8036A770);
 Prim2D_PrepareTex();
 {
