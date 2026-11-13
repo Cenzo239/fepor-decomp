@@ -1428,10 +1428,10 @@ void fn_80036834(u8 *arg0)
 }
 #pragma global_optimizer reset
 void Unit_AddAffinityBonuses(void *arg0, u8 arg1, void *arg2) {
-    void *fn_80019DA8(u8);
+    void *Affinity_GetEntry(u8);
     void *temp_r3;
 
-    temp_r3 = fn_80019DA8(M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x54));
+    temp_r3 = Affinity_GetEntry(M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x54));
     M2C_FIELD(arg2, u8 *, 4) = (u8) (M2C_FIELD(arg2, u8 *, 4) + (arg1 * M2C_FIELD(temp_r3, u8 *, 4)));
     M2C_FIELD(arg2, u8 *, 5) = (u8) (M2C_FIELD(arg2, u8 *, 5) + (arg1 * M2C_FIELD(temp_r3, u8 *, 5)));
     M2C_FIELD(arg2, u8 *, 6) = (u8) (M2C_FIELD(arg2, u8 *, 6) + (arg1 * M2C_FIELD(temp_r3, u8 *, 6)));

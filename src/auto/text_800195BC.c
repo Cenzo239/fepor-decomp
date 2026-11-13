@@ -326,7 +326,7 @@ s32 Id_GetKind(char *arg0) {
     return 0;
 }
 
-s32 fn_80019DA8(u8 arg0) {
+s32 Affinity_GetEntry(u8 arg0) {
     extern s32 lbl_8036720C;
     return lbl_8036720C + (arg0 * 0xC);
 }
@@ -1776,23 +1776,21 @@ void *fn_8001C76C(void *arg0) {
 }
 
 void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
-    void strcpy(void *, s32);
-    void strcat(void *, void *);
-    u32 Res_GetByName(void *);
-    extern void *lbl_80367230;
-    extern u8 lbl_802CA4FC[];
-    extern u8 gDataStr[];
-    struct { u8 pad[0xC]; void (*fn)(void *); } *s;
-
-    if (lbl_80367230 != arg1) {
-        lbl_80367230 = arg1;
-        strcpy(lbl_802CA4FC, *(s32 *)arg1);
-        strcat(lbl_802CA4FC, gDataStr + 0x3C);
-    }
-    if (Res_GetByName(lbl_802CA4FC) == 0) {
-        s = NULL;
-        s->fn(arg2);
-    }
+void strcpy(void *, s32);
+void strcat(void *, void *);
+void *Res_GetByName(void *);
+extern void *lbl_80367230;
+extern u8 lbl_802CA4FC[], gDataStr[];
+void *obj;
+if(lbl_80367230 != arg1) {
+lbl_80367230=arg1;
+strcpy(lbl_802CA4FC,*(s32 *)arg1);
+strcat(lbl_802CA4FC,gDataStr+0x3C);
+}
+obj=Res_GetByName(lbl_802CA4FC);
+if(obj==0) {
+(*(void (**)(void *))((u8 *)obj+0xC))(arg2);
+}
 }
 
 s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
