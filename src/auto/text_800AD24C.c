@@ -8641,7 +8641,7 @@ void Capture_DrawRotated(void *cap) {
     void GXCopyTex(s32, s32);
     void fn_802209FC(void);
     void fn_80222EB4(void);
-    void fn_80067EDC(s32);
+    void Camera_ApplyOrtho(s32);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
@@ -8682,7 +8682,7 @@ void Capture_DrawRotated(void *cap) {
     GXCopyTex(*(s32 *)((u8 *)self + 0x50), 1);
     fn_802209FC();
     fn_80222EB4();
-    fn_80067EDC(0);
+    Camera_ApplyOrtho(0);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
     GXSetVtxDesc(0xD, 1);
@@ -9532,26 +9532,58 @@ s32 Icon_AllocSlot(u8* arg0) {
 }
 
 void fn_800C32A4(u8 *p) {
-    s32 n = 0xC;
-    u8 z = 0;
-    u8 m = 0x80;
-    u8 f = 0xFF;
+    s32 n;
+    u8 z;
+    u8 m;
+    u8 f;
 
+    n = 0xC;
+    z = 0;
+    m = 0x80;
+    f = 0xFF;
     do {
-        p[0] = z; p[1] = z;
-        p[0x13] = z; p[0x12] = z; p[0x11] = z; p[0x10] = z;
-        p[0x16] = m; p[0x15] = m; p[0x14] = m; p[0x17] = f;
-        p[0x18] = z; p[0x19] = z;
-        p[0x2B] = z; p[0x2A] = z; p[0x29] = z; p[0x28] = z;
-        p[0x2E] = m; p[0x2D] = m; p[0x2C] = m; p[0x2F] = f;
-        p[0x30] = z; p[0x31] = z;
-        p[0x43] = z; p[0x42] = z; p[0x41] = z; p[0x40] = z;
-        p[0x46] = m; p[0x45] = m; p[0x44] = m; p[0x47] = f;
-        p[0x48] = z; p[0x49] = z;
-        p[0x5B] = z; p[0x5A] = z; p[0x59] = z; p[0x58] = z;
-        p[0x5E] = m; p[0x5D] = m; p[0x5C] = m; p[0x5F] = f;
+        p[0] = z;
+        p[1] = z;
+        p[0x13] = z;
+        p[0x12] = z;
+        p[0x11] = z;
+        p[0x10] = z;
+        p[0x16] = m;
+        p[0x15] = m;
+        p[0x14] = m;
+        p[0x17] = f;
+        p[0x18] = z;
+        p[0x19] = z;
+        p[0x2B] = z;
+        p[0x2A] = z;
+        p[0x29] = z;
+        p[0x28] = z;
+        p[0x2E] = m;
+        p[0x2D] = m;
+        p[0x2C] = m;
+        p[0x2F] = f;
+        p[0x30] = z;
+        p[0x31] = z;
+        p[0x43] = z;
+        p[0x42] = z;
+        p[0x41] = z;
+        p[0x40] = z;
+        p[0x46] = m;
+        p[0x45] = m;
+        p[0x44] = m;
+        p[0x47] = f;
+        p[0x48] = z;
+        p[0x49] = z;
+        p[0x5B] = z;
+        p[0x5A] = z;
+        p[0x59] = z;
+        p[0x58] = z;
+        p[0x5E] = m;
+        p[0x5D] = m;
+        p[0x5C] = m;
+        p[0x5F] = f;
         p += 0x60;
-    } while (--n);
+    } while (--n != 0);
 }
 
 void fn_800C3364(s32 arg0, s32 arg1) {

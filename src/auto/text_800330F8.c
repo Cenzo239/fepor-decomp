@@ -11157,7 +11157,7 @@ void fn_8004DAFC(void *arg0, f32 farg0) {
 
     fn_80068070(spC, sp8, lbl_80368FCC, lbl_80368FCC, lbl_8036902C, lbl_80369030);
     fn_800680AC(0, 0, 0xA0, 0x78);
-    fn_80067EDC(0);
+    Camera_ApplyOrtho(0);
     temp_r31 = *(u8 *)((u8 *)arg0 + 0x27);
     GXBegin(0x98, 0, 4);
 

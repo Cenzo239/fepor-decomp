@@ -5238,7 +5238,7 @@ loop_2:
     goto loop_2;
 }
 
-void fn_80067EDC(void *arg0)
+void Camera_ApplyOrtho(void *arg0)
 {
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void PSMTXIdentity(void *);
@@ -6467,8 +6467,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(s32 arg0) {
-    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(register s32 arg0) {
+    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 

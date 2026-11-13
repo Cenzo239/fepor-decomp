@@ -7816,8 +7816,8 @@ void fn_801C7598(void *arg0) {
 void fn_801C7604(void) {
     M2C_UNK Gfx_FillRect(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80067984(M2C_UNK);
-    M2C_UNK fn_80067EDC(M2C_UNK);
-    fn_80067EDC(0);
+    M2C_UNK Camera_ApplyOrtho(M2C_UNK);
+    Camera_ApplyOrtho(0);
     Gfx_FillRect(0, 0, 0x260, 0x1C0);
     fn_80067984(0);
 }
@@ -7826,13 +7826,13 @@ void fn_801C7644(s32 arg0) {
     extern f32 lbl_8036B3E8;
     extern f32 lbl_8036B424;
     u32 fn_80055D94(s32);
-    void fn_80067EDC(s32);
+    void Camera_ApplyOrtho(s32);
     void fn_800599D0(s32,s32,s32,s32,s32);
     void fn_8005956C(s32,s32,s32,s32,s32,s32*,s32,f32);
     void fn_80059C2C(s32,s32,s32,s32,s32);
     void fn_80067984(s32);
     s32 tmp = *(s32 *)&lbl_8036B3E8;
-    fn_80067EDC(0);
+    Camera_ApplyOrtho(0);
     if (fn_80055D94(0x80) == 0) {
        fn_800599D0(0,0,0x260,0x1c0,arg0);
        fn_8005956C(0,0,0x260,0x1c0,1,&tmp,arg0,lbl_8036B424);

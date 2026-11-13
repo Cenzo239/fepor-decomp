@@ -914,7 +914,7 @@ void main(void) {
     void fn_80066124(s32);
     void fn_800675E8(s32);
     void fn_80067DA4(s32);
-    void fn_80067EDC(s32);
+    void Camera_ApplyOrtho(s32);
     void fn_8006E568(s32);
     void fn_8006E660(void);
     void fn_8006E748(void);
@@ -1052,7 +1052,7 @@ void main(void) {
                 fn_8009B738(0xB8, 0x188);
             }
             fn_8009E5F8();
-            fn_80067EDC(0);
+            Camera_ApplyOrtho(0);
             fn_8009E774();
             fn_80007B04();
             fn_8009E71C();

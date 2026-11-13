@@ -210,7 +210,7 @@ void fn_80056698(void *arg0) {
 void fn_800566D4(void *arg0) {
     void fn_80066D00(s32);
     void fn_80067984(s32);
-    void fn_80067EDC(s32);
+    void Camera_ApplyOrtho(s32);
     void GXSetVtxDesc(s32, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
@@ -253,7 +253,7 @@ void fn_800566D4(void *arg0) {
         alpha = *((u8 *)arg0 + 0x34);
         if (tex != NULL) {
             if (*((u8 *)arg0 + 0x37) == 0 && (s32)alpha > 0) {
-                fn_80067EDC(0);
+                Camera_ApplyOrtho(0);
                 GXSetCullMode(1);
                 GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
                 GXSetNumTevStages(1);

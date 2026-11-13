@@ -13300,7 +13300,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK fn_80066D00(M2C_UNK, void *, f32, f32, f32);
     M2C_UNK fn_80067490(M2C_UNK);
     M2C_UNK fn_80067984(M2C_UNK);
-    M2C_UNK fn_80067EDC(M2C_UNK);
+    M2C_UNK Camera_ApplyOrtho(M2C_UNK);
     M2C_UNK GXSetVtxDesc(M2C_UNK, M2C_UNK);
     M2C_UNK GXClearVtxDesc();
     M2C_UNK GXSetVtxAttrFmt(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13331,7 +13331,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK spC[8];
     s32 sp8;
 
-    fn_80067EDC(0);
+    Camera_ApplyOrtho(0);
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) != 0U) {
         fn_8022124C(0, 0, 0x260, 0x1C0);
         fn_802212FC(0x260, 0x1C0, 4, 0);
