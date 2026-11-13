@@ -780,18 +780,18 @@ void fn_80184BE8(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void fn_8000A388(void *, void *, void *);
     void *fn_8000CAF0(void *, u32);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     u8 sp8[0x34];
     u32 var_r31;
     void *temp_r3;
 
     var_r31 = arg3;
     M2C_FIELD(sp8, void **, 0x30) = (void *)arg0;
-    fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+    fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = fn_8000CAF0(lbl_80295A20, var_r31);
+    temp_r3 = fn_8000CAF0(E_MuTransfer_script, var_r31);
     M2C_FIELD(temp_r3, s32 *, 0x30) = arg0;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg1;
     M2C_FIELD(temp_r3, s32 *, 0x3C) = arg2;
@@ -900,7 +900,7 @@ void fn_80185280(void *arg0) {
     u8 Status_Test(void *, s32);
     void fn_80185078(void *, void *);
     extern u8 E_MuBlend_script[];
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -918,7 +918,7 @@ void fn_80185280(void *arg0) {
         *(void **)(sp40 + 0x30) = obj;
         fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+        fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if ((s32)lvl > 0x14) {
             if ((s32)lvl > 0x28) {
@@ -1284,7 +1284,7 @@ void fn_801863F8(void *arg0) {
     void *fn_800639B4();
     
     extern void E_MuBlend_script;
-    extern void lbl_80295A20;
+    extern void E_MuTransfer_script;
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1309,7 +1309,7 @@ void fn_801863F8(void *arg0) {
         sp70 = temp_r30;
         fn_8000A388(&E_MuBlend_script, &fn_80185078, &sp40);
         sp38 = temp_r30;
-        fn_8000A388(&lbl_80295A20, &fn_80185078, &sp8);
+        fn_8000A388(&E_MuTransfer_script, &fn_80185078, &sp8);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r30) + 9);
         if ((s32) temp_r3 > 0x14) {
             if ((s32) temp_r3 > 0x28) {
@@ -1359,7 +1359,7 @@ void Event_StartMuBlend(void *arg0) {
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
     extern u8 E_MuBlend_script[];
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036AD08;
@@ -1377,7 +1377,7 @@ void Event_StartMuBlend(void *arg0) {
         *(void **)(sp40 + 0x30) = obj;
         fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+        fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
         {
             u8 lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
             if ((s32)lvl > 0x14) {
@@ -1531,7 +1531,7 @@ void fn_80187344(void *arg0) {
     s32 fn_80060440(s32);
     void *fn_800639B4(void);
     extern u8 E_MuBlend_script[];
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1554,7 +1554,7 @@ void fn_80187344(void *arg0) {
         spB0.val = temp_r29;
         fn_8000A388(E_MuBlend_script, fn_80185078, &spB0);
         sp78.val = temp_r29;
-        fn_8000A388(lbl_80295A20, fn_80185078, &sp78);
+        fn_8000A388(E_MuTransfer_script, fn_80185078, &sp78);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
         if ((s32)temp_r3 > 0x14) {
             if ((s32)temp_r3 > 0x28) {
@@ -1593,7 +1593,7 @@ void fn_80187344(void *arg0) {
             sp40.val = temp_r29;
             fn_8000A388(E_MuBlend_script, fn_80185078, &sp40);
             sp8.val = temp_r29;
-            fn_8000A388(lbl_80295A20, fn_80185078, &sp8);
+            fn_8000A388(E_MuTransfer_script, fn_80185078, &sp8);
             temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
             if ((s32)temp_r3 > 0x14) {
                 if ((s32)temp_r3 > 0x28) {
@@ -1864,7 +1864,7 @@ void fn_80187FBC(void *arg0) {
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
     extern u8 E_MuBlend_script[];
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1885,7 +1885,7 @@ void fn_80187FBC(void *arg0) {
         *(void **)(sp40 + 0x30) = obj;
         fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+        fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if (lvl > 0x14) {
             if (lvl > 0x28) {
@@ -2870,7 +2870,7 @@ void fn_8018C6C0(void *arg0) {
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
     extern u8 E_MuBlend_script[];
-    extern u8 lbl_80295A20[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     u8 sp40[0x34];
@@ -2891,7 +2891,7 @@ void fn_8018C6C0(void *arg0) {
         *(void **)(sp40 + 0x30) = obj;
         fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+        fn_8000A388(E_MuTransfer_script, fn_80185078, sp8);
         {
             s32 lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
             if (lvl > 0x14) {
@@ -13353,7 +13353,7 @@ extern u16 lbl_80291AC8[];
 #include "global.h"
 
 extern u32 E_MuBlend_script[];
-extern u32 lbl_80295A20[];
+extern u32 E_MuTransfer_script[];
 extern f32 lbl_8036ACE0;
 extern f32 lbl_8036ACEC;
 extern f32 lbl_8036AD04;
