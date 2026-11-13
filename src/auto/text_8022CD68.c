@@ -503,7 +503,7 @@ void fn_8022D234(void **arg0, void *arg1) {
 }
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
-s32 fn_8022D4C8(void) {
+s32 __flush_all(void) {
     s32 fflush(void *);
     extern char __files[];
     s32 ret;
@@ -1154,7 +1154,7 @@ u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
 
 int fflush(void *arg0) {
     s32 __flush_buffer(void *, s32 *);
-    s32 fn_8022D4C8();
+    s32 __flush_all();
     s32 fn_80231748(void *);
     typedef struct {
         u8 pad[4];
@@ -1180,7 +1180,7 @@ int fflush(void *arg0) {
     s32 var_r30;
 
     if (arg0 == NULL) {
-        return fn_8022D4C8();
+        return __flush_all();
     }
     if (((u8) M2C_FIELD(arg0, u8 *, 0xA) != 0) || (s4->mode == 0)) {
         return -1;
@@ -1217,7 +1217,7 @@ int fflush(void *arg0) {
 s32 fn_802312B0(void *arg0) {
     s32 __flush_buffer(void *, s32 *);
     M2C_UNK fn_8022D014(s32);
-    s32 fn_8022D4C8();
+    s32 __flush_all();
     s32 fn_80231748(void *);
     typedef struct {
         u8 pad[4];
@@ -1252,7 +1252,7 @@ s32 fn_802312B0(void *arg0) {
         return 0;
     }
     if (arg0 == NULL) {
-        var_r29 = fn_8022D4C8();
+        var_r29 = __flush_all();
     } else if (((u8) M2C_FIELD(arg0, u8 *, 0xA) != 0) || (s4->mode == 0)) {
         var_r29 = -1;
     } else if (b4->modeB == 1) {
