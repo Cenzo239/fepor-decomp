@@ -1704,7 +1704,7 @@ extern "C" void fn_801B14DC(void *arg0) {
 }
 
 #pragma cplusplus reset
-void Ui_ShowConfirmChild(void *arg0) {
+void Ui_ShowConfirmChild(void *panel) {
     u32 Ui_FindChild();
     void Ui_AddChild(void *, void *);
     f32 Ui_GetWorldScale(void *);
@@ -1713,36 +1713,37 @@ void Ui_ShowConfirmChild(void *arg0) {
     void TalkUi_ShowMsg(void *);
     void Ui_SetWidgetText(u32, s32);
     extern f32 lbl_8036B0A8;
-    void *var_r31;
-    void *temp_r6;
-    s32 saved;
-    u32 ret;
+    void *child;
+    void *ctx;
+    s32 text;
+    u32 widget;
 
-    var_r31 = (void *)Ui_FindChild(arg0, 6, 0);
-    if (var_r31 == NULL) {
-        var_r31 = *(void **)((u8 *)arg0 + 0x48);
-        Ui_AddChild(arg0, var_r31);
+    /* Show confirm child 6 (or +0x48), talk message, and mode 0/1 help text. */
+    child = (void *)Ui_FindChild(panel, 6, 0);
+    if (child == NULL) {
+        child = *(void **)((u8 *)panel + 0x48);
+        Ui_AddChild(panel, child);
     }
-    if (lbl_8036B0A8 != Ui_GetWorldScale(var_r31)) {
-        fn_80140234(arg0, var_r31, 0);
+    if (lbl_8036B0A8 != Ui_GetWorldScale(child)) {
+        fn_80140234(panel, child, 0);
     }
-    Ui_BringChildToFront(arg0, var_r31);
-    TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x14));
-    switch (*(s32 *)((u8 *)var_r31 + 0x4C)) {
+    Ui_BringChildToFront(panel, child);
+    TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)panel + 0x6C) + 0x14));
+    switch (*(s32 *)((u8 *)child + 0x4C)) {
     case 0:
-        temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
-        saved = *(s32 *)((u8 *)temp_r6 + 0x74);
-        ret = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
-        if (ret != 0) {
-            Ui_SetWidgetText(ret, saved);
+        ctx = *(void **)((u8 *)panel + 0x6C);
+        text = *(s32 *)((u8 *)ctx + 0x74);
+        widget = Ui_FindChild(panel, -0x1000, 0, ctx);
+        if (widget != 0) {
+            Ui_SetWidgetText(widget, text);
         }
         break;
     case 1:
-        temp_r6 = *(void **)((u8 *)arg0 + 0x6C);
-        saved = *(s32 *)((u8 *)temp_r6 + 0x78);
-        ret = Ui_FindChild(arg0, -0x1000, 0, temp_r6);
-        if (ret != 0) {
-            Ui_SetWidgetText(ret, saved);
+        ctx = *(void **)((u8 *)panel + 0x6C);
+        text = *(s32 *)((u8 *)ctx + 0x78);
+        widget = Ui_FindChild(panel, -0x1000, 0, ctx);
+        if (widget != 0) {
+            Ui_SetWidgetText(widget, text);
         }
         break;
     }
