@@ -548,7 +548,7 @@ static void ClampU8(u8* p, u8 o) {
 
 void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     extern u32 PADSpec;
-    extern u32 lbl_8033A1B0[];
+    extern u32 PADType[];
     extern u32 __PADFixBits;
     extern u8 Origin[];
     u8* origin;
@@ -608,7 +608,7 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     status->substickX -= 128;
     status->substickY -= 128;
 
-    if (((lbl_8033A1B0[chan] & 0xffff0000) == 0x09000000) &&
+    if (((PADType[chan] & 0xffff0000) == 0x09000000) &&
         ((status->button & 0x0080) ^ 0x0080)) {
         __PADFixBits |= 0x80000000U >> chan;
         status->stickX = 0;
