@@ -1466,7 +1466,7 @@ void Save_MigrateLegacy(void) {
     void *fn_800C4638(s32, void *, s32);
     void *fn_801E2568(s32 *, s32);
     void *fn_801E2580(s32 *, s32);
-    void fn_801E4194(void *);
+    void Save_BumpVersionChecksum(void *);
     u8 fn_801E4268(void *);
     void *memcpy(void *, void *, u32);
     void *memset(void *, s32, u32);
@@ -1502,13 +1502,13 @@ void Save_MigrateLegacy(void) {
                         memset((u8 *)buf + 0x170, 0, 0x140);
                         memcpy((u8 *)buf + 0x2B0, (u8 *)(void *)j + 0x210, 0x3D50);
                         memcpy((void *)j, buf, 0x4000);
-                        fn_801E4194((void *)j);
+                        Save_BumpVersionChecksum((void *)j);
                         ok = 1;
                     } else if ((s32)*(u8 *)((u8 *)(void *)j + 0x2D0) == 0x4D &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D1) == 0x44 &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D2) == 0x53 &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D3) == 0x54) {
-                        fn_801E4194((void *)j);
+                        Save_BumpVersionChecksum((void *)j);
                         ok = 1;
                     }
                     fn_800C426C(buf);
@@ -1540,13 +1540,13 @@ void Save_MigrateLegacy(void) {
                         memset((u8 *)buf2 + 0x170, 0, 0x140);
                         memcpy((u8 *)buf2 + 0x2B0, (u8 *)slot + 0x210, 0x5D50);
                         memcpy(slot, buf2, 0x6000);
-                        fn_801E4194(slot);
+                        Save_BumpVersionChecksum(slot);
                         ok2 = 1;
                     } else if ((s32)*(u8 *)((u8 *)slot + 0x2D0) == 0x4D &&
                                (s32)*(u8 *)((u8 *)slot + 0x2D1) == 0x44 &&
                                (s32)*(u8 *)((u8 *)slot + 0x2D2) == 0x53 &&
                                (s32)*(u8 *)((u8 *)slot + 0x2D3) == 0x54) {
-                        fn_801E4194(slot);
+                        Save_BumpVersionChecksum(slot);
                         ok2 = 1;
                     }
                     fn_800C426C(buf2);

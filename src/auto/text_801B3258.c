@@ -18852,7 +18852,7 @@ u32 fn_801E417C(void *arg0) {
     return size;
 }
 
-s32 fn_801E4194(void *arg0) {
+s32 Save_BumpVersionChecksum(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800EC1F8(void);
     u32 fn_800EC0A4(void *, void *, s32);
