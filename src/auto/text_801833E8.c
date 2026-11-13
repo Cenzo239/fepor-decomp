@@ -2173,7 +2173,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
     }
 }
 
-void MoveAnim_StartFlagFoot(void *arg0) {
+void MoveAnim_StartFlagFoot(void *anim) {
     void fn_8000A388(void *, void *, void *);
     void *Process_Create(void *, u32);
     void fn_8004BE88(void *, s32);
@@ -2181,38 +2181,39 @@ void MoveAnim_StartFlagFoot(void *arg0) {
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuFlag_script[];
     extern u8 E_MuFoot_script[];
-    u8 sp40[0x34];
-    u8 sp8[0x38];
+    u8 flagKey[0x34];
+    u8 footKey[0x38];
     void *self;
-    void *obj;
-    void *var;
-    void *obj2;
-    void *var2;
+    void *unit;
+    void *prio;
+    void *unit2;
+    void *prio2;
 
-    self = arg0;
+    /* Optional camera/SFX prep, then restart E_MuFlag and E_MuFoot for this map unit. */
+    self = anim;
     if (*(u16 *)((u8 *)self + 0x52) & 0x40) {
         fn_8004BE88(*(void **)((u8 *)self + 0x30), 0);
     }
     if (*(u16 *)((u8 *)self + 0x52) & 0x100) {
         fn_8004FC70(*(void **)((u8 *)self + 0x30), 0xF);
     }
-    obj = *(void **)((u8 *)self + 0x30);
-    var = self;
-    *(void **)(sp40 + 0x30) = obj;
-    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp40);
+    unit = *(void **)((u8 *)self + 0x30);
+    prio = self;
+    *(void **)(flagKey + 0x30) = unit;
+    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, flagKey);
     if (!self) {
-        var = (void *)3;
+        prio = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(E_MuFlag_script, (u32)var) + 0x30) = obj;
+    *(void **)((u8 *)Process_Create(E_MuFlag_script, (u32)prio) + 0x30) = unit;
 
-    obj2 = *(void **)((u8 *)self + 0x30);
-    var2 = self;
-    *(void **)(sp8 + 0x30) = obj2;
-    fn_8000A388(E_MuFoot_script, MuFade_UnlinkSame, sp8);
+    unit2 = *(void **)((u8 *)self + 0x30);
+    prio2 = self;
+    *(void **)(footKey + 0x30) = unit2;
+    fn_8000A388(E_MuFoot_script, MuFade_UnlinkSame, footKey);
     if (!self) {
-        var2 = (void *)3;
+        prio2 = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(E_MuFoot_script, (u32)var2) + 0x30) = obj2;
+    *(void **)((u8 *)Process_Create(E_MuFoot_script, (u32)prio2) + 0x30) = unit2;
 }
 
 #pragma global_optimizer reset
