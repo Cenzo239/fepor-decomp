@@ -2338,13 +2338,17 @@ void fn_8005F7E0(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 #pragma opt_strength_reduction off
 s32 Pad_IsActive(u8 *arg0) {
     s32 i;
-    for(i=0;i<2;i++,arg0+=4) {
-        if (*(u16 *)(arg0+0x7C)!=0xFFFF) return 1;
-        if (*(u16 *)(arg0+0x7E)!=0xFFFF) return 1;
+    for (i = 0; i < 2; i++, arg0 += 4) {
+        if (*(u16 *)(arg0 + 0x7C) != 0xFFFF) {
+            return 1;
+        }
+        if (*(u16 *)(arg0 + 0x7E) != 0xFFFF) {
+            return 1;
+        }
     }
     return 0;
 }
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction reset
 static inline u32 GetListField44(void *p) {
     while (p != NULL) {
         u32 v = *(u32 *)((u8 *)p + 0x44);
@@ -2376,23 +2380,31 @@ void fn_8005F8E4(void *arg0) {
 
 u16 fn_8005F92C(void *arg0,u16 *arg1){ s32 i; u16 v; u16 *p; for(i=0;i<4;i++){v=((u16*)arg0)[0x3e+i]; if(v!=0xffff){for(p=arg1;*p!=0xffff;p++){if(*p==v)return v;}}} return 0xffff;}
 
-#pragma peephole off
-s32 Pad_IsButton(void *arg0, u16 arg1) {
-    if ((u16) M2C_FIELD(arg0, u16 *, 0x7C) == arg1) {
+#pragma global_optimizer off
+s32 Pad_IsButton(u8 *arg0, u32 arg1) {
+    u32 key;
+    u32 v;
+
+    key = arg1 & 0xFFFF;
+    v = *(u16 *)(arg0 + 0x7C);
+    if (v == key) {
         return 1;
     }
-    if ((u16) M2C_FIELD(arg0, u16 *, 0x7E) == arg1) {
+    v = *(u16 *)(arg0 + 0x7E);
+    if (v == key) {
         return 1;
     }
-    if ((u16) M2C_FIELD(arg0, u16 *, 0x80) == arg1) {
+    v = *(u16 *)(arg0 + 0x80);
+    if (v == key) {
         return 1;
     }
-    if ((u16) M2C_FIELD(arg0, u16 *, 0x82) == arg1) {
+    v = *(u16 *)(arg0 + 0x82);
+    if (v == key) {
         return 1;
     }
     return 0;
 }
-#pragma peephole on
+#pragma global_optimizer reset
 s32 fn_8005FA14(void *arg0, s32 arg1) {
     M2C_UNK fn_8005FA94(void *, s32);
     extern char lbl_8026B590[];
