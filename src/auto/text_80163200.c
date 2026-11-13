@@ -10793,7 +10793,7 @@ extern "C" void fn_8017873C(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_DrawUnitNameCentered(void *arg0, s32 arg1) {
+extern "C" void Ui_DrawUnitNameCentered(void *widget, s32 flags) {
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
@@ -10818,25 +10818,26 @@ extern "C" void Ui_DrawUnitNameCentered(void *arg0, s32 arg1) {
     extern f32 gF32_Neg1;
     extern f32 gF32_1;
     void *str;
-    void *p;
-    s16 w;
+    void *unit;
+    s16 width;
     s16 x;
     s16 y;
 
-    ((Obj *)arg0)->m28();
-    ((Obj *)arg0)->m14(arg1);
+    // Draw the unit's display name (or a placeholder) centered in the widget.
+    ((Obj *)widget)->m28();
+    ((Obj *)widget)->m14(flags);
     Prim2D_Begin();
     Prim2D_AddZ(gF32_Neg1);
-    Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 3));
+    Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)widget + 0x34) | 3));
     Prim2D_PrepareTex();
-    if (*(u32 *)((u8 *)arg0 + 0x40) == 0) {
+    if (*(u32 *)((u8 *)widget + 0x40) == 0) {
         str = (u8 *)gUiMsgStrings + 0x5F9;
     } else {
-        p = *(void **)((u8 *)arg0 + 0x44);
-        str = (p != NULL) ? fn_800A8A88(*(s32 *)((u8 *)p + 0x188)) : Msg_Expand((u8 *)gUiMsgStrings + 0x58D);
+        unit = *(void **)((u8 *)widget + 0x44);
+        str = (unit != NULL) ? fn_800A8A88(*(s32 *)((u8 *)unit + 0x188)) : Msg_Expand((u8 *)gUiMsgStrings + 0x58D);
     }
-    w = *(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12);
-    x = (s16)((w - Text_MeasureWidth(str, -1, *(s16 *)((u8 *)arg0 + 0x12), gF32_1)) >> 1);
+    width = *(s16 *)((u8 *)widget + 0x16) - *(s16 *)((u8 *)widget + 0x12);
+    x = (s16)((width - Text_MeasureWidth(str, -1, *(s16 *)((u8 *)widget + 0x12), gF32_1)) >> 1);
     y = (s16)((0x16 - Text_MeasureHeight(-1, gF32_1)) >> 1);
     Text_Draw(x, y, 1, str);
 }
