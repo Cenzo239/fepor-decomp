@@ -143,7 +143,7 @@ void fn_80083F08(void *arg0) {
     extern s16 lbl_803674BC[4];
     extern s32 gUiAtlas;
     extern f32 lbl_80369418;
-    extern f32 lbl_80369428;
+    extern f32 gUiCaptionBarY2;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
     extern f32 lbl_80369438;
@@ -455,7 +455,7 @@ void fn_80083F08(void *arg0) {
     if (child != NULL) {
         fn_800A8A88(*(s32 *)((u8 *)child + 0x188));
         w = (f32)Text_MeasureWidth(fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), -1, lbl_80369430);
-        fn_8001003C((s32)((lbl_80369428 + bx) - (lbl_80369514 * w)), (s32)f23v, 2, 0, 0, fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), lbl_80369430, lbl_80369418);
+        fn_8001003C((s32)((gUiCaptionBarY2 + bx) - (lbl_80369514 * w)), (s32)f23v, 2, 0, 0, fn_800A8A88(*(s32 *)((u8 *)child + 0x188)), lbl_80369430, lbl_80369418);
     }
 
     fn_8001003C((s32)f29v, (s32)f31v, 8, 0, 0, Msg_Expand(gUiStrings + 0x38C), lbl_80369430, lbl_80369418);

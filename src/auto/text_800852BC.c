@@ -91,7 +91,7 @@ void Ui_DrawUnitInfo(void *proc) {
     extern f32 gUiCaptionBarY0;
     extern f32 gUiCaptionBarX1;
     extern f32 gUiCaptionBarY1;
-    extern f32 lbl_80369428;
+    extern f32 gUiCaptionBarY2;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
     extern f32 lbl_80369488;
@@ -146,7 +146,7 @@ void Ui_DrawUnitInfo(void *proc) {
         Prim2D_EndPrim();
         Prim2D_AddPrim(3);
         Prim2D_SetQuadMin(lbl_80369418, gUiCaptionBarY1, lbl_80369418, lbl_80369418);
-        Prim2D_SetQuadMax(gUiCaptionBarX1, lbl_80369428, lbl_80369418, lbl_80369418);
+        Prim2D_SetQuadMax(gUiCaptionBarX1, gUiCaptionBarY2, lbl_80369418, lbl_80369418);
         colorB3 = lbl_8036C46C;
         colorB2 = lbl_8036C468;
         colorB1 = lbl_8036940C;
