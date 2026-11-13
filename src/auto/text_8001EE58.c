@@ -4,7 +4,7 @@
 
 void fn_8001EE58(void)
 {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     void Item_Destroy(void);
     extern u8 lbl_80367218;
     extern u8 gIconSlots[];
@@ -26,7 +26,7 @@ void fn_8001EE58(void)
     bf->flag = 0;
     mask = *((u8 *)&lbl_80367218 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(gIconSlots, mask);
+        Icon_FreeSlot(gIconSlots, mask);
         bf->rest = 0;
     }
     __register_global_object(&lbl_80367218, Item_Destroy, lbl_802CA4B0);

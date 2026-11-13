@@ -9496,7 +9496,7 @@ s32 fn_800C30DC(s32 arg0, s32 arg1, void *arg2) {
     return arg1;
 }
 
-void fn_800C3220(s32 arg0, s32 arg1) {
+void Icon_FreeSlot(s32 arg0, s32 arg1) {
     u8 *temp_r3;
 
     temp_r3 = (u8 *)(arg0 + (arg1 * 0x18));

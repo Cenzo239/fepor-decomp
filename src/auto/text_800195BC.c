@@ -1533,7 +1533,7 @@ s32 fn_8001C0C8(u8 *arg0)
 }
 
 void Item_Read(void *arg0, void *arg1) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     u16 Stream_ReadU16(void *);
     s32 fn_80019E24(s32);
     extern u8 gIconSlots[];
@@ -1557,7 +1557,7 @@ void Item_Read(void *arg0, void *arg1) {
         bf->flag = 0;
         mask = *((u8 *)arg0 + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(gIconSlots, mask);
+            Icon_FreeSlot(gIconSlots, mask);
             bf->rest = 0;
         }
     } else {
@@ -1644,7 +1644,7 @@ void *Item_Copy(void *arg0, void *arg1) {
     s32 Icon_GetSlot(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 Icon_AllocSlot(void *);
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -1671,7 +1671,7 @@ void *Item_Copy(void *arg0, void *arg1) {
             }
             dst->rest = fn_800C30DC(gIconSlots, dst->rest, temp);
         } else if (dst->rest != 0) {
-            fn_800C3220(gIconSlots, dst->rest);
+            Icon_FreeSlot(gIconSlots, dst->rest);
             dst->rest = 0;
         }
     }
@@ -1679,7 +1679,7 @@ void *Item_Copy(void *arg0, void *arg1) {
 }
 
 void *Item_Destroy(void *arg0, s16 arg1) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     void Heap_Free(void *);
     extern u8 gIconSlots[];
     typedef struct {
@@ -1698,7 +1698,7 @@ void *Item_Destroy(void *arg0, s16 arg1) {
         bf->flag = 0;
         mask = *((u8 *)arg0 + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(gIconSlots, mask);
+            Icon_FreeSlot(gIconSlots, mask);
             bf->rest = 0;
         }
         if (arg1 > 0) {
@@ -1750,7 +1750,7 @@ void *Item_Clone(void *arg0, void *arg1) {
 }
 
 void *fn_8001C76C(void *arg0) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -1768,7 +1768,7 @@ void *fn_8001C76C(void *arg0) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(gIconSlots, mask);
+        Icon_FreeSlot(gIconSlots, mask);
         bf->rest = 0;
     }
     return arg0;
@@ -2256,7 +2256,7 @@ u8 fn_8001D500(void *arg0) {
 }
 
 void Item_Clear(void *arg0) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -2273,13 +2273,13 @@ void Item_Clear(void *arg0) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(gIconSlots, mask);
+        Icon_FreeSlot(gIconSlots, mask);
         bf->rest = 0;
     }
 }
 
 s32 Item_SetUses(void *arg0, u8 arg1) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -2296,7 +2296,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
         bf->pad = 0;
         bf->flag = 0;
         if (bf->rest != 0) {
-            fn_800C3220(gIconSlots, bf->rest);
+            Icon_FreeSlot(gIconSlots, bf->rest);
             bf->rest = 0;
         }
         return 1;
@@ -2306,7 +2306,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
 
 s32 Item_DecUses(void *item) {
     /* Decrement item uses unless unbreakable; clear the slot when uses hit 0. */
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gItemFlagsDummyReady;
     extern s32 gItemFlagsDummy;
     extern s32 gItemFlagsDummyHi;
@@ -2345,7 +2345,7 @@ s32 Item_DecUses(void *item) {
         bf->flag = 0;
         mask = *((u8 *)item + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(gIconSlots, mask);
+            Icon_FreeSlot(gIconSlots, mask);
             bf->rest = 0;
         }
         return 1;
@@ -2356,7 +2356,7 @@ s32 Item_DecUses(void *item) {
 s32 fn_8001D780(void *arg0, void *arg1)
 {
     void *Res_GetByName(void *);
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -2375,7 +2375,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(gIconSlots, mask);
+        Icon_FreeSlot(gIconSlots, mask);
         bf->rest = 0;
     }
     *(void **)arg0 = result;
@@ -2384,7 +2384,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
 }
 
 s32 UnitRef_Set(void *arg0, void *arg1) {
-    void fn_800C3220(void *, s32);
+    void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
@@ -2401,7 +2401,7 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(gIconSlots, mask);
+        Icon_FreeSlot(gIconSlots, mask);
         bf->rest = 0;
     }
     *(void **)arg0 = arg1;
