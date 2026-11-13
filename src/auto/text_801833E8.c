@@ -1981,7 +1981,7 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 }
 }
 
-void fn_80188820(void *arg0) {
+void MoveAnim_AttachClassCue(void *arg0) {
     s32 fn_802342B8(void *, void *);
     s32 fn_800056CC(const char *, ...);
     s8 fn_80147578(void *, s32, f32, f32, f32);
