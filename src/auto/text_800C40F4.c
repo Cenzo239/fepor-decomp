@@ -11393,7 +11393,7 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     s32 w;
     s32 h;
     s32 x2;
@@ -11419,7 +11419,7 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     v1 = v0 + h;
     if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, gPrim2DOne);
         Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg10, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -11442,7 +11442,7 @@ void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     s32 w;
     s32 h;
     s32 x2;
@@ -11467,7 +11467,7 @@ void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     v1 = v0 + h;
     if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, gPrim2DOne);
         Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg12, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -11489,7 +11489,7 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     s32 w;
     s32 h;
     s32 v1;
@@ -11514,7 +11514,7 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     v1 = v0 + h;
     if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32)arg5, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32)arg5, gPrim2DOne);
         Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg10, (u16)M2C_FIELD(arg0, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -11537,7 +11537,7 @@ void fn_800E3428(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     s32 w;
     s32 h;
     s32 x2;
@@ -11562,7 +11562,7 @@ void fn_800E3428(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     v1 = v0 + h;
     if (M2C_FIELD(arg0, u32 *, 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg5, gPrim2DOne);
         Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg10, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -11584,7 +11584,7 @@ void fn_800E35F4(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5,
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     s32 w;
     s32 h;
     s32 x;
@@ -11596,7 +11596,7 @@ void fn_800E35F4(void *arg0, s32 arg1, void *uv, void *rect, s32 arg4, s32 arg5,
         w = M2C_FIELD(rect, s32 *, 8) - x;
         h = M2C_FIELD(rect, s32 *, 0xC) - y;
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg4, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32) arg4, gPrim2DOne);
         Prim2D_BindTexture(M2C_FIELD(arg0, u32 *, 0x48), arg9, (u16) M2C_FIELD(arg0, s32 *, 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
@@ -22222,7 +22222,7 @@ void fn_800FF3C4(void *arg0)
 
 void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
     extern f32 gPrim2DZero;
-    extern f32 lbl_80369F24;
+    extern f32 gPrim2DOne;
     extern f64 lbl_80369F28;
     
     s32 w;
@@ -22249,7 +22249,7 @@ void fn_800FF564(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     v1 = v0 + h;
     if (*(u32*)((char*)arg0 + 0x48) != 0) {
         Prim2D_Begin();
-        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32)arg5, lbl_80369F24);
+        Prim2D_SetTransform(gPrim2DZero, gPrim2DZero, (f32)arg5, gPrim2DOne);
         Prim2D_BindTexture(*(u32*)((char*)arg0 + 0x48), arg10, (u16)*(s32*)((char*)arg0 + 0x6C));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
