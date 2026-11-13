@@ -181,7 +181,7 @@ void fn_80202870(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 far
     M2C_FIELD(arg0, f32 *, 0x2C) = (f32) lbl_8036BC3C;
 }
 
-void fn_8020293C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5, f32 farg6, f32 farg7) {
+void C_MTXLightOrtho(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5, f32 farg6, f32 farg7) {
     extern f32 lbl_8036BC38;
     extern f32 lbl_8036BC48;
     extern f32 lbl_8036BC3C;

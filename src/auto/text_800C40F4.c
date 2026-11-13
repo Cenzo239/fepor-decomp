@@ -16321,7 +16321,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void PSMTXConcat(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
     void fn_80202870(void *, f32, f32, f32, f32, f32, f32);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_802031A8(void *, void *, void *);
     void fn_802031E8(void *, void *);
@@ -16462,7 +16462,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_802029C4((u8 *)mtx + 0x70, sp58, sp58);
     fn_802029C4((u8 *)mtx + 0x70, sp64, sp64);
     fn_802026E4(sp12C, sp4C, sp64, sp58);
-    fn_8020293C(sp15C, lbl_80369FBC, lbl_80369FC4, lbl_80369FBC, lbl_80369FC4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+    C_MTXLightOrtho(sp15C, lbl_80369FBC, lbl_80369FC4, lbl_80369FBC, lbl_80369FC4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp12C, sp22C, sp12C);
     PSMTXConcat(sp15C, sp12C, sp25C);
     fn_80224E50(sp25C, t25, 0);
@@ -16548,7 +16548,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_802029C4((u8 *)mtx + 0x70, sp1C, sp1C);
     fn_802029C4((u8 *)mtx + 0x70, sp28, sp28);
     fn_802026E4(spCC, sp10, sp28, sp1C);
-    fn_8020293C(spFC, lbl_80369FBC, lbl_80369FC4, lbl_80369FBC, lbl_80369FC4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+    C_MTXLightOrtho(spFC, lbl_80369FBC, lbl_80369FC4, lbl_80369FBC, lbl_80369FC4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(spCC, sp22C, spCC);
     PSMTXConcat(spFC, spCC, sp25C);
     fn_80224E50(sp25C, t28b, 0);
@@ -16643,7 +16643,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     void Ui_LoadAtlasTex(s32, void *, u16);
     void PSMTXConcat(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_8022100C(s32);
@@ -16797,7 +16797,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     fn_802029C4((u8 *)mtx + 0x70, spA8, spA8);
     fn_802026E4(sp1C4, sp90, spA8, sp9C);
     negFec = -lbl_80369FEC;
-    fn_8020293C(sp1F4, negFec, lbl_80369FEC, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+    C_MTXLightOrtho(sp1F4, negFec, lbl_80369FEC, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp1C4, sp224, sp1C4);
     PSMTXConcat(sp1F4, sp1C4, sp254);
     t29 = fn_80069D58();
@@ -16850,7 +16850,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     fn_802029C4((u8 *)mtx + 0x70, sp60, sp60);
     fn_802029C4((u8 *)mtx + 0x70, sp6C, sp6C);
     fn_802026E4(sp164, sp54, sp6C, sp60);
-    fn_8020293C(sp194, lbl_80369FEC, negFec, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+    C_MTXLightOrtho(sp194, lbl_80369FEC, negFec, negFec, lbl_80369FEC, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp164, sp224, sp164);
     PSMTXConcat(sp194, sp164, sp254);
     t29b = fn_80069D58();
@@ -16893,7 +16893,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
         fn_802029C4((u8 *)mtx + 0x70, sp24, sp24);
         fn_802029C4((u8 *)mtx + 0x70, sp30, sp30);
         fn_802026E4(sp104, sp18, sp30, sp24);
-        fn_8020293C(sp134, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
+        C_MTXLightOrtho(sp134, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
         PSMTXConcat(sp104, sp224, sp104);
         PSMTXConcat(sp134, sp104, sp254);
         t26c = fn_80069D58();
@@ -16926,7 +16926,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     s32 fn_80069D58(void);
     void fn_802029C4(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void GXSetChanMatColor(s32, void *);
     void fn_80222C50(void *, s32);
@@ -17016,7 +17016,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     fn_802029C4((u8 *)mtx_obj + 0x70, sp24, sp24);
     fn_802029C4((u8 *)mtx_obj + 0x70, sp30, sp30);
     fn_802026E4(sp74, sp18, sp30, sp24);
-    fn_8020293C(spA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4,
+    C_MTXLightOrtho(spA4, lbl_80369FFC, lbl_80369FA4, lbl_80369FFC, lbl_80369FA4,
                 lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
     PSMTXConcat(sp74, spD4, sp74);
     PSMTXConcat(spA4, sp74, sp104);

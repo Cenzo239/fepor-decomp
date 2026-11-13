@@ -8874,7 +8874,7 @@ void fn_800C15A8(void) {
     void PSMTXIdentity(void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -8906,7 +8906,7 @@ void fn_800C15A8(void) {
     p = sp38;
     t1 = lbl_80369D44;
     t2 = lbl_80369D48;
-    fn_8020293C(p, t1, t2, t2, t1, t5, t5, t5, t5);
+    C_MTXLightOrtho(p, t1, t2, t2, t1, t5, t5, t5, t5);
     PSMTXTrans(sp68, lbl_80369D50, lbl_80369D50, lbl_80369D28);
     PSMTXIdentity(sp8);
     PSMTXConcat(sp68, sp8, sp8);
@@ -8934,7 +8934,7 @@ s32 Map_SetupBlendTev(void) {
     void fn_8006A384(void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -8974,7 +8974,7 @@ s32 Map_SetupBlendTev(void) {
     p = sp3C;
     t1 = lbl_80369D44;
     t2 = lbl_80369D48;
-    fn_8020293C(p, t1, t2, t2, t1, t5, t5, t5, t5);
+    C_MTXLightOrtho(p, t1, t2, t2, t1, t5, t5, t5, t5);
     PSMTXTrans(sp6C, lbl_80369D50, lbl_80369D50, lbl_80369D28);
     fn_8006A384(spC);
     PSMTXConcat(sp6C, spC, spC);

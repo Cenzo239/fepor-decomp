@@ -2639,7 +2639,7 @@ s32 fn_80125BB0(void) {
     M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK PSMTXConcat(M2C_UNK *, M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_802026E4(M2C_UNK *, f32 *, s32 *, f32 *, s32, s32, f32, f32, f32, f32);
-    M2C_UNK fn_8020293C(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
+    M2C_UNK C_MTXLightOrtho(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
     M2C_UNK fn_802201A8(s32, M2C_UNK, M2C_UNK, s32, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222C50(M2C_UNK *, s32);
     M2C_UNK GXSetTevColorIn(s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -2713,7 +2713,7 @@ s32 fn_80125BB0(void) {
     sp28 = M2C_FIELD(&lbl_80274EE0, s32 *, 0x2C);
     fn_802026E4(&sp94, &sp2C, &sp20, &sp38, M2C_FIELD(&lbl_80274EE0, s32 *, 0x28), M2C_FIELD(&lbl_80274EE0, s32 *, 0x24), spC, sp8, temp_f1, lbl_8036A3B4);
     temp_f1_2 = -lbl_8036A3B4;
-    fn_8020293C(&spC4, temp_f1_2, lbl_8036A3B4, temp_f1_2, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
+    C_MTXLightOrtho(&spC4, temp_f1_2, lbl_8036A3B4, temp_f1_2, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
     PSMTXConcat(&sp94, &sp64, &sp94);
     PSMTXConcat(&spC4, &sp94, &spF4);
     fn_80224E50(&spF4, temp_r26, 0);

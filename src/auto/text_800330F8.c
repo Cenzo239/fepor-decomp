@@ -10284,7 +10284,7 @@ void fn_8004B588(u8 *arg0)
     void fn_80222C50(void *, s32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
@@ -10376,7 +10376,7 @@ void fn_8004B588(u8 *arg0)
         if (lbl_80368FCC != angle) {
             PSMTXRotRad(spCC, 0x5A, lbl_80368FD8 * angle);
             fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
-            fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            C_MTXLightOrtho(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
             PSMTXConcat(sp6C, sp9C, sp12C);
             PSMTXTrans(spFC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
             PSMTXConcat(spCC, spFC, spCC);
@@ -10385,7 +10385,7 @@ void fn_8004B588(u8 *arg0)
             PSMTXConcat(spCC, sp12C, sp12C);
         } else {
             fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
-            fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            C_MTXLightOrtho(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
             PSMTXConcat(sp6C, sp9C, sp12C);
         }
     }
@@ -10630,7 +10630,7 @@ void fn_8004C444(void *arg0) {
     f32 fn_80059EB8(s32, s32, f32, f32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
@@ -10712,7 +10712,7 @@ void fn_8004C444(void *arg0) {
     if (angle != lbl_80368FCC) {
         PSMTXRotRad(spBC, 0x5A, lbl_80368FD8 * angle);
         fn_802026E4(sp8C, &sp1C, &sp28, &sp10);
-        fn_8020293C(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
+        C_MTXLightOrtho(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
                     lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(sp5C, sp8C, sp11C);
         PSMTXTrans(spEC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
@@ -10722,7 +10722,7 @@ void fn_8004C444(void *arg0) {
         PSMTXConcat(spBC, sp11C, sp11C);
     } else {
         fn_802026E4(sp8C, &sp1C, &sp28, &sp10);
-        fn_8020293C(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
+        C_MTXLightOrtho(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
                     lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(sp5C, sp8C, sp11C);
     }
@@ -10893,7 +10893,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+    void C_MTXLightOrtho(void *, f32, f32, f32, f32, f32, f32, f32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_802031E8(void *, void *);
     f32 fn_80203270(void *, void *);
@@ -11015,7 +11015,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
                 PSMTXRotRad(sp2E0, 0x5A, lbl_80368FD8 * dx);
                 fn_802029C4(sp2E0, scratch + 0x48, scratch + 0x48);
                 fn_802026E4(sp2B0, scratch + 0x3C, scratch + 0x48, scratch + 0x30);
-                fn_8020293C(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
                 PSMTXConcat(sp280, sp2B0, sp340);
                 PSMTXTrans(sp310, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
                 PSMTXConcat(sp2E0, sp310, sp2E0);
@@ -11024,7 +11024,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
                 PSMTXConcat(sp2E0, sp340, sp340);
             } else {
                 fn_802026E4(sp2B0, scratch + 0x3C, scratch + 0x48, scratch + 0x30);
-                fn_8020293C(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+                C_MTXLightOrtho(sp280, -(f25 * f31), f25 * f31, -(f26 * f31), f26 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
                 PSMTXConcat(sp280, sp2B0, sp340);
             }
         }
@@ -11032,14 +11032,14 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
             sp18 = lbl_80368FA8;
             ((u8 *)&sp18)[3] = r30;
             fn_802026E4(sp250, scratch + 0x60, scratch + 0x6C, scratch + 0x54);
-            fn_8020293C(sp220, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            C_MTXLightOrtho(sp220, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
             PSMTXConcat(sp220, sp250, sp340);
             fn_80224E50(sp340, 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
             sp10 = sp18;
             fn_80051564(&sp10, 1, f30, f29);
             fn_802026E4(sp1F0, scratch + 0x80, scratch + 0x8C, scratch + 0x74);
-            fn_8020293C(sp1C0, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+            C_MTXLightOrtho(sp1C0, lbl_80369018, lbl_80369010, lbl_80369018, lbl_80369010, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
             PSMTXConcat(sp1C0, sp1F0, sp340);
             fn_80224E50(sp340, 0x1E, 0);
             fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
@@ -11050,7 +11050,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     } else {
         fn_80060F70(r28, 1, &sp124);
         fn_802026E4(sp190, scratch + 0xA0, scratch + 0xAC, scratch + 0x94);
-        fn_8020293C(sp160, -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+        C_MTXLightOrtho(sp160, -(f28 * f31), f28 * f31, -(f27 * f31), f27 * f31, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(sp160, sp190, sp340);
     }
     fn_80224E50(sp340, 0x1E, 0);
@@ -12174,7 +12174,7 @@ void fn_80051328(u8 arg0, M2C_UNK *arg1, f32 farg0, f32 farg1, f32 farg2, f32 fa
     M2C_UNK PSMTXRotRad(M2C_UNK *, M2C_UNK, f32);
     M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
     M2C_UNK fn_802026E4(M2C_UNK *, f32 *, s32 *, f32 *);
-    M2C_UNK fn_8020293C(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
+    M2C_UNK C_MTXLightOrtho(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
     M2C_UNK fn_802029C4(M2C_UNK *, s32 *, s32 *);
     extern M2C_UNK lbl_8026AA98;
     extern f32 lbl_80368FC4;
@@ -12226,7 +12226,7 @@ void fn_80051328(u8 arg0, M2C_UNK *arg1, f32 farg0, f32 farg1, f32 farg2, f32 fa
             fn_802029C4(&spA4, &sp20, &sp20);
         }
         fn_802026E4(&sp74, &sp14, &sp20, &sp8);
-        fn_8020293C(&sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+        C_MTXLightOrtho(&sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(&sp44, &sp74, arg1);
         PSMTXTrans(&spD4, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
         PSMTXConcat(&spA4, &spD4, &spA4);
@@ -12236,7 +12236,7 @@ void fn_80051328(u8 arg0, M2C_UNK *arg1, f32 farg0, f32 farg1, f32 farg2, f32 fa
         return;
     }
     fn_802026E4(&sp74, &sp14, &sp20, &sp8);
-    fn_8020293C(&sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+    C_MTXLightOrtho(&sp44, -farg2, farg2, -farg3, farg3, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
     PSMTXConcat(&sp44, &sp74, arg1);
 }
 
