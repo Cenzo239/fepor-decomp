@@ -2572,7 +2572,8 @@ void fn_801E9958(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void TabMenu_Init(void *arg0) {
+/* Initialize a tab menu: look up assets, copy defaults, build text widgets, attach draw callbacks. */
+void TabMenu_Init(void *menu) {
     void *Hash_Lookup(void *);
     void *Msg_Expand(void *);
     void *fn_80056A60(void *);
@@ -2604,71 +2605,71 @@ void TabMenu_Init(void *arg0) {
     void *sp10;
     void *spC;
     void *sp8;
-    void *var_r30;
-    void *r29;
-    u32 temp_r28;
-    u32 var_r27;
-    u32 *temp_r3;
-    void *temp_r3_2;
-    void *var_r0;
-    s16 t;
-    s16 *p68;
+    void *entry;
+    void *listHead;
+    u32 count;
+    u32 i;
+    u32 *table;
+    void *textBox;
+    void *caption;
+    s16 scroll;
+    s16 *cursor;
 
-    *(void **)((u8 *)arg0 + 0x44) = Hash_Lookup(gTabMenuStrings + 0x201);
-    *(void **)((u8 *)arg0 + 0x48) = Hash_Lookup(gTabMenuStrings + 0x20D);
-    *(void **)((u8 *)arg0 + 0x4C) = Hash_Lookup(gTabMenuStrings + 0x21A);
-    temp_r3 = Hash_Lookup(gTabMenuStrings + 0x226);
-    temp_r28 = temp_r3[0];
-    var_r30 = temp_r3 + 1;
-    r29 = (u8 *)arg0 + 0x54;
-    for (var_r27 = 0; var_r27 < temp_r28; var_r27 += 1) {
-        sp10 = var_r30;
-        spC = r29;
-        fn_8013FCE0(&sp8, (u8 *)arg0 + 0x50, &spC, &sp10);
-        var_r30 = (u8 *)var_r30 + 0x18;
+    *(void **)((u8 *)menu + 0x44) = Hash_Lookup(gTabMenuStrings + 0x201);
+    *(void **)((u8 *)menu + 0x48) = Hash_Lookup(gTabMenuStrings + 0x20D);
+    *(void **)((u8 *)menu + 0x4C) = Hash_Lookup(gTabMenuStrings + 0x21A);
+    table = Hash_Lookup(gTabMenuStrings + 0x226);
+    count = table[0];
+    entry = table + 1;
+    listHead = (u8 *)menu + 0x54;
+    for (i = 0; i < count; i += 1) {
+        sp10 = entry;
+        spC = listHead;
+        fn_8013FCE0(&sp8, (u8 *)menu + 0x50, &spC, &sp10);
+        entry = (u8 *)entry + 0x18;
     }
-    *(u8 *)((u8 *)arg0 + 0x30) = gTabMenuDefaultTab;
-    *(u8 *)((u8 *)arg0 + 0x31) = gTabMenuDefaultMode;
-    *(u8 *)((u8 *)arg0 + 0x32) = gTabMenuDefaultUnk32;
-    *(u8 *)((u8 *)arg0 + 0x33) = gTabMenuDefaultUnk33;
-    *(u8 *)((u8 *)arg0 + 0x34) = gTabMenuDefaultFade;
-    *(s16 *)((u8 *)arg0 + 0x36) = gTabMenuDefaultUnk36;
-    *(s16 *)((u8 *)arg0 + 0x38) = gTabMenuDefaultScroll;
-    p68 = &gTabMenuDefaultCursor;
-    *(s16 *)((u8 *)arg0 + 0x3C) = p68[0];
-    *(s16 *)((u8 *)arg0 + 0x3E) = p68[1];
-    temp_r3_2 = Heap_Alloc(0x30);
-    if (temp_r3_2 == 0) {
+    *(u8 *)((u8 *)menu + 0x30) = gTabMenuDefaultTab;
+    *(u8 *)((u8 *)menu + 0x31) = gTabMenuDefaultMode;
+    *(u8 *)((u8 *)menu + 0x32) = gTabMenuDefaultUnk32;
+    *(u8 *)((u8 *)menu + 0x33) = gTabMenuDefaultUnk33;
+    *(u8 *)((u8 *)menu + 0x34) = gTabMenuDefaultFade;
+    *(s16 *)((u8 *)menu + 0x36) = gTabMenuDefaultUnk36;
+    *(s16 *)((u8 *)menu + 0x38) = gTabMenuDefaultScroll;
+    cursor = &gTabMenuDefaultCursor;
+    *(s16 *)((u8 *)menu + 0x3C) = cursor[0];
+    *(s16 *)((u8 *)menu + 0x3E) = cursor[1];
+    textBox = Heap_Alloc(0x30);
+    if (textBox == 0) {
         goto skip_obj;
     }
-    fn_80057998(temp_r3_2);
-    *(void **)((u8 *)temp_r3_2 + 0x2C) = lbl_802981AC;
+    fn_80057998(textBox);
+    *(void **)((u8 *)textBox + 0x2C) = lbl_802981AC;
 skip_obj:
-    *(void **)((u8 *)arg0 + 0x5C) = temp_r3_2;
-    fn_800578A8(*(void **)((u8 *)arg0 + 0x5C), 0x22A, 0x6A, 0x110);
-    fn_800576D4(*(void **)((u8 *)arg0 + 0x5C), 1);
-    var_r0 = Heap_Alloc(0x18);
-    if (var_r0 == 0) {
+    *(void **)((u8 *)menu + 0x5C) = textBox;
+    fn_800578A8(*(void **)((u8 *)menu + 0x5C), 0x22A, 0x6A, 0x110);
+    fn_800576D4(*(void **)((u8 *)menu + 0x5C), 1);
+    caption = Heap_Alloc(0x18);
+    if (caption == 0) {
         goto skip_sub;
     }
-    var_r0 = fn_80056A60(var_r0);
+    caption = fn_80056A60(caption);
 skip_sub:
-    *(void **)((u8 *)arg0 + 0x60) = var_r0;
-    switch ((s8)*(u8 *)((u8 *)arg0 + 0x31)) {
+    *(void **)((u8 *)menu + 0x60) = caption;
+    switch ((s8)*(u8 *)((u8 *)menu + 0x31)) {
     case 0:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
+        fn_80056AE0(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x182));
         break;
     case 1:
-        fn_80056AE0(*(void **)((u8 *)arg0 + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
+        fn_80056AE0(*(void **)((u8 *)menu + 0x60), Msg_Expand(gTabMenuStrings + 0x18D));
         break;
     }
-    fn_801E4CF8(arg0);
-    fn_80057880(*(void **)((u8 *)arg0 + 0x5C), 0x120);
-    t = *(s16 *)((u8 *)arg0 + 0x36);
-    fn_80057860(*(void **)((u8 *)arg0 + 0x5C), t);
-    fn_800578A0(*(void **)((u8 *)arg0 + 0x5C), lbl_8036B714);
-    Process_AttachFunc(TabMenu_Draw, arg0);
-    Process_AttachFunc(TabMenu_DrawHud, arg0);
+    fn_801E4CF8(menu);
+    fn_80057880(*(void **)((u8 *)menu + 0x5C), 0x120);
+    scroll = *(s16 *)((u8 *)menu + 0x36);
+    fn_80057860(*(void **)((u8 *)menu + 0x5C), scroll);
+    fn_800578A0(*(void **)((u8 *)menu + 0x5C), lbl_8036B714);
+    Process_AttachFunc(TabMenu_Draw, menu);
+    Process_AttachFunc(TabMenu_DrawHud, menu);
 }
 
 void fn_801E9B80(void *arg0) {
