@@ -1459,10 +1459,10 @@ void *fn_80165B40(void *arg0, s16 arg1) {
     void fn_80041254(void *);
     void fn_800DF724(void *, s32);
     void Heap_Free(void *);
-    extern void *lbl_80293CB0[];
+    extern void *BattleTerrain_Vtbl[];
 
     if (arg0 != NULL) {
-        *(void **)((u8 *)arg0 + 0x40) = lbl_80293CB0;
+        *(void **)((u8 *)arg0 + 0x40) = BattleTerrain_Vtbl;
         fn_80041254(Map_Get());
         fn_800DF724(arg0, 0);
         if (arg1 > 0) {
@@ -1483,7 +1483,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     void fn_800DF7A0(void *, void *, void *);
     s32 strlen(char *);
     extern u8 BattleTerrain_Str[];
-    extern void *lbl_80293CB0[];
+    extern void *BattleTerrain_Vtbl[];
     extern s8 lbl_803680E0;
 
     typedef struct {
@@ -1503,7 +1503,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     self = arg0;
     a2 = arg2;
     fn_800DF7A0(arg0, arg1, arg2);
-    *(void **)((u8 *)self + 0x40) = lbl_80293CB0;
+    *(void **)((u8 *)self + 0x40) = BattleTerrain_Vtbl;
     sp18.cap = 0;
     sp18.size = 0;
     sp18.data = 0;
@@ -1535,7 +1535,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     void String_ConcatCStr(void *, void *, void *);
     void fn_800DFAE0(void *, void *, void *, void *, void *);
     extern u8 BattleTerrain_Str[];
-    extern void *lbl_80293CB0[];
+    extern void *BattleTerrain_Vtbl[];
     extern s8 lbl_803680E0;
 
     typedef struct {
@@ -1575,7 +1575,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     fn_800DFAE0(self, a1, &sp68, a2, &sp5C);
     String_Destroy(&sp5C, -1);
     String_Destroy(&sp68, -1);
-    *(void **)((u8 *)self + 0x40) = lbl_80293CB0;
+    *(void **)((u8 *)self + 0x40) = BattleTerrain_Vtbl;
     a2 = String_CStr(a3);
     fn_80041514(Map_Get(), a2);
     a1 = (void *)0;
