@@ -1255,11 +1255,11 @@ void fn_801673D0(void *);
 extern u8 lbl_8026C86C[];
 extern Menu888Entry lbl_80288FE8[][37];
 extern u8 gUnitInfoPopup[];
-extern void *lbl_80367240;
+extern void *gPadInput;
 void *self = M2C_FIELD(arg0, void **, 0x30);
-u32 pressed = M2C_FIELD(lbl_80367240,u32 *,4);
-u32 repeat = M2C_FIELD(lbl_80367240,u32 *,12);
-pressed &= M2C_FIELD(lbl_80367240,u32 *,8) ^ pressed;
+u32 pressed = M2C_FIELD(gPadInput,u32 *,4);
+u32 repeat = M2C_FIELD(gPadInput,u32 *,12);
+pressed &= M2C_FIELD(gPadInput,u32 *,8) ^ pressed;
 if ((pressed & 0x200) || (pressed & 0x800)) {
 M2C_FIELD(self,s16 *,4)=0; fn_801673D0(gUnitInfoPopup); return;
 }
@@ -1366,7 +1366,7 @@ void fn_800888A4(void *arg0) {
     extern u8 lbl_8026C86C[];
     extern s32 lbl_8026C7D0[];
     extern Menu888Entry lbl_80288FE8[][37];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_80369670, lbl_80369674, lbl_80369678;
     s32 sp8[3];
     s32 *initial;
@@ -1380,9 +1380,9 @@ void fn_800888A4(void *arg0) {
     s32 valid;
     u32 type;
     self = M2C_FIELD(arg0, void * *, 0x30);
-    buttons = M2C_FIELD(lbl_80367240, u32 *, 4);
-    repeat = M2C_FIELD(lbl_80367240, u32 *, 0xC);
-    pressed = buttons & (M2C_FIELD(lbl_80367240, u32 *, 8) ^ buttons);
+    buttons = M2C_FIELD(gPadInput, u32 *, 4);
+    repeat = M2C_FIELD(gPadInput, u32 *, 0xC);
+    pressed = buttons & (M2C_FIELD(gPadInput, u32 *, 8) ^ buttons);
     if (fn_80166D8C(gUnitInfoPopup) != 0) return;
     if (pressed & 0x200) {
         fn_8000C070(arg0,3);
@@ -1451,7 +1451,7 @@ void fn_800888A4(void *arg0) {
     }
     if(lbl_80330708[0x57]>=2) {
         f32 lower = lbl_80369674;
-        M2C_FIELD(self, f32 *, 0x64) -= (f32)(s32)(M2C_FIELD(M2C_FIELD(lbl_80367240, void * *, 0), s8 *, 4)*lbl_80369670);
+        M2C_FIELD(self, f32 *, 0x64) -= (f32)(s32)(M2C_FIELD(M2C_FIELD(gPadInput, void * *, 0), s8 *, 4)*lbl_80369670);
         if(M2C_FIELD(self, f32 *, 0x64)<0.0f) M2C_FIELD(self, f32 *, 0x64)+=lbl_80369678;
         {
             f32 value=M2C_FIELD(self, f32 *, 0x64);

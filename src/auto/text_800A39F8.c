@@ -2451,10 +2451,10 @@ void fn_800A8BD8(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_801481CC(void *, s32);
     void fn_8000C070(void *, s32);
-    extern u8 *lbl_80367240;
+    extern u8 *gPadInput;
     extern u8 lbl_8026E470[];
 
-    if (*(u32 *)(lbl_80367240 + 4) & 0x1100) {
+    if (*(u32 *)(gPadInput + 4) & 0x1100) {
         fn_801475FC((u8 *)&lbl_8026E470 + 0x82, 0x64);
         fn_801481CC((u8 *)&lbl_8026E470 + 0x73, 0x1F4);
         ((u8 *)arg0)[0x38] = 1;
@@ -2579,11 +2579,11 @@ void fn_800A8FE8(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_8000C188(void *);
     u8 fn_800A5C88(void);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r5;
 
-    temp_r5 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    if (temp_r5 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r5) & 0x1100) {
+    temp_r5 = *(s32 *)((u8 *)gPadInput + 4);
+    if (temp_r5 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5) & 0x1100) {
         fn_8000C188(arg0);
         return;
     }
@@ -2614,12 +2614,12 @@ void fn_800A90B4(void) {
 void fn_800A90E4(s32 arg0) {
     void fn_801475FC(void *, s32);
     void fn_8000C188(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_8026E470[];
     s32 temp_r3;
 
-    temp_r3 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    if (temp_r3 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r3) & 0x1F70) {
+    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
+    if (temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3) & 0x1F70) {
         fn_801475FC(lbl_8026E470 + 0x82, 0x64);
         fn_8000C188(arg0);
     }

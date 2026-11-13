@@ -467,7 +467,7 @@ void fn_80163E9C(void *arg0) {
     u32 *fn_80037BD0(s32, s16);
     void fn_801475FC(void *, s32);
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_802776F8[];
     s32 temp_r26;
     u32 *temp_r27;
@@ -486,7 +486,7 @@ void fn_80163E9C(void *arg0) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {
-        pad_base = lbl_80367240;
+        pad_base = gPadInput;
         temp_r29 = M2C_FIELD(arg0, s16 *, 0x4C);
         temp_r4 = *(s32 *)((u8 *)pad_base + 0xC);
         temp_r6 = *(s32 *)((u8 *)pad_base + 4);
@@ -1786,7 +1786,7 @@ void fn_801669B0(void* arg0, s32 arg1) {
 void fn_80166CB0(s32 arg0) {
     void fn_801475FC(void *, s32);
     void fn_8000C188(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_8036A92C;
     extern u8 gUnitInfoPopup[];
     extern s32 lbl_8036A938;
@@ -1803,8 +1803,8 @@ void fn_80166CB0(s32 arg0) {
     f32 f3;
     u8 *p;
 
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    if (buttons & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ buttons) & 0x0F001F7F) {
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    if (buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x0F001F7F) {
         p = gUnitInfoPopup;
         flags = *(s32 *)p;
         if (!(flags & 1)) {
@@ -2490,11 +2490,11 @@ void fn_80168F54(s32 arg0) {
 void fn_801690B0(s32 arg0) {
     void fn_8000C070(s32, s32);
     void fn_8013FDA0(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 *p;
     s32 temp;
 
-    p = lbl_80367240;
+    p = gPadInput;
     temp = p[2];
     if (temp & (temp ^ p[1]) & 0x200) {
         fn_8000C070(arg0, 1);
@@ -4183,7 +4183,7 @@ void fn_8016BBB8(void *self) {
     void *fn_8007BA4C(void *, s32);
     void fn_801475FC(void *, s32);
     f32 fn_800067BC(s32, f32, f32, f32, f32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u16 lbl_80277EA0[];
     extern f32 lbl_8036AA34, lbl_8036AA38, lbl_8036AA48, lbl_8036AA4C, lbl_8036AA50;
     void *pad;
@@ -4202,7 +4202,7 @@ void fn_8016BBB8(void *self) {
     f32 f;
     s8 ty;
 
-    pad = lbl_80367240;
+    pad = gPadInput;
     delta = *(u8 *)((u8 *)self + 0x5B);
     held = *(s32 *)((u8 *)pad + 4);
     trig = *(s32 *)((u8 *)pad + 8);
@@ -6333,7 +6333,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
 
@@ -6392,8 +6392,8 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             bits = fn_8001CB64(var_r30);
             if ((*(u64 *)bits & 0x20000000000ULL) != 0 || (*(u64 *)fn_8001CB64(var_r30) & 0x200ULL) != 0) {
@@ -6673,7 +6673,7 @@ extern "C" void fn_801703FC(void *arg0) {
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
 
@@ -6732,8 +6732,8 @@ extern "C" void fn_801703FC(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             bits = fn_8001CB64(var_r30);
             if ((*(u64 *)bits & 0x200ULL) != 0) {
@@ -6936,7 +6936,7 @@ extern "C" void fn_80170AD0(void *arg0) {
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
 
     class Vec2s {
@@ -7006,8 +7006,8 @@ extern "C" void fn_80170AD0(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30 != NULL && fn_80166D8C(gUnitInfoPopup) == 0) {
             fn_8000C188(self);
         } else if ((btn & 0x800) && fn_80166D8C(gUnitInfoPopup) == 0 && var_r30 != NULL) {
@@ -7486,7 +7486,7 @@ extern "C" void fn_80171F00(void *arg0) {
     extern u16 lbl_80278080[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
     extern u8 lbl_80294580[];
 
@@ -7548,8 +7548,8 @@ extern "C" void fn_80171F00(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             if (fn_80091F70(gUiContext[0], *(u32 *)var_r30) == 0) {
                 *(Vec2s *)&sp18 = ((Obj *)obj4c)->v10();
@@ -7887,7 +7887,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
 
     class Vec2s {
@@ -7946,8 +7946,8 @@ extern "C" void fn_80172DA4(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r29 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             if (((Obj *)obj4c)->v12(var_r29, (item = *(void **)gUiContext, (void *)gUiContext)) == 0) {
                 fn_801475FC((u8 *)lbl_80278080 + 0x322, 0x64);
@@ -8170,7 +8170,7 @@ void fn_8016746C(void *, void *, u32, f32, f32);
 extern u16 lbl_80278080[];
 extern u8 gUnitInfoPopup[];
 extern u32 gUiInputFlags;
-extern void *lbl_80367240;
+extern void *gPadInput;
 extern s32 lbl_80368DC4;
 extern u8 lbl_80294580[];
 extern u8 lbl_803200AC[];
@@ -8229,8 +8229,8 @@ flags = gUiInputFlags;
 gate = 0;
 if ((flags & 0x10) && !(flags & 0x20)) gate = 1;
 if (!gate) {
-btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+btn = *(s32 *)((u8 *)gPadInput + 4);
+btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
 if ((btn & 0x100) && var_r27 != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
 bits = fn_8001CB64(var_r27);
 if ((*(u64 *)bits & 0x200ULL) != 0) {
@@ -8386,7 +8386,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     extern u32 gUiContext[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
 
     class Vec2s {
@@ -8465,8 +8465,8 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && entry != NULL && fn_80166D8C(gUnitInfoPopup) == 0) {
             if (*(u32 *)((u8 *)entry + 4) == 0) {
                 *((u8 *)listWidget + 0x4d) = 1;
@@ -8935,7 +8935,7 @@ extern "C" void fn_80174E4C(void *arg0) {
     extern u8 lbl_80294580[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
 
     class Vec2s {
     public:
@@ -8986,8 +8986,8 @@ extern "C" void fn_80174E4C(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r30) {
             if (gUiContext[0] == var_r30) {
                 *(Vec2s *)&sp14 = ((VObj *)obj40)->v9();
@@ -9506,7 +9506,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     extern u16 lbl_80278080[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
 
     struct VObj {
         virtual void v0();
@@ -9546,8 +9546,8 @@ extern "C" void fn_80175E3C(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        register btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        register btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && (var_r30)) {
             fn_8002833C(gUiContext, var_r30);
             obj4c = *(void **)((u8 *)arg0 + 0x4C);
@@ -9717,7 +9717,7 @@ void fn_80176888(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
 
 void fn_801768E4(s32 arg0) {
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     
     s32 temp_r5;
@@ -9728,8 +9728,8 @@ void fn_801768E4(s32 arg0) {
         var_r3 = 1;
     }
     if (var_r3 == 0) {
-        temp_r5 = *(s32 *)((u8 *)lbl_80367240 + 4);
-        if (temp_r5 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r5) & 0x0F001F7F) {
+        temp_r5 = *(s32 *)((u8 *)gPadInput + 4);
+        if (temp_r5 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5) & 0x0F001F7F) {
             fn_801673D0(gUnitInfoPopup);
             fn_8000C188(arg0);
         }
@@ -11209,7 +11209,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
     void fn_80167190(void *, void *, f32, f32);
     void fn_801475FC(void *, s32);
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u16 lbl_80278080[];
     struct Inner {
@@ -11249,7 +11249,7 @@ extern "C" void fn_80178FFC(void *unused, void *arg1) {
     if ((u8)gate == 0) {
         u8 t62;
         s32 prev;
-        pad = lbl_80367240;
+        pad = gPadInput;
         t62 = *(u8 *)((u8 *)arg1 + 0x62);
         cur = *(s32 *)((u8 *)pad + 4);
         prev = *(s32 *)((u8 *)pad + 8);
@@ -13106,7 +13106,7 @@ void fn_8017C4BC(void *arg0) {
     extern u8 lbl_80278838[];
     extern u8 lbl_80330708[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_8036ABD8;
 
     u8 skip;
@@ -13128,7 +13128,7 @@ void fn_8017C4BC(void *arg0) {
     }
 
     {
-        void *p = lbl_80367240;
+        void *p = gPadInput;
         unit = *(s32 *)((u8 *)arg0 + 0x40);
         buttons = *(u32 *)((u8 *)p + 0x10);
         diff = (u8)fn_8003D13C(unit);
@@ -14651,7 +14651,7 @@ extern "C" void fn_80180084(void *arg0)
     extern char lbl_802789F0[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
 
     class Vec2s {
@@ -14750,8 +14750,8 @@ extern "C" void fn_80180084(void *arg0)
         gate = 1;
     }
     if (!gate) {
-        btn = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = btn & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ btn);
+        btn = *(s32 *)((u8 *)gPadInput + 4);
+        btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && nodeVal != 0 && fn_80166D8C(gUnitInfoPopup) == 0) {
             btn = *(s32 *)((u8 *)unit + 0x48);
             nodeVal = fn_80016B7C((u32)nodeVal);
@@ -14841,7 +14841,7 @@ extern "C" void fn_80180624(void *arg0) {
     void fn_80181DF0(void *, void * const *);
     extern u8 lbl_802789F0[];
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     struct PairBig {
         s16 x;
         s16 y;
@@ -14932,8 +14932,8 @@ extern "C" void fn_80180624(void *arg0) {
         gate = 1;
     }
     if (!gate) {
-        a = *(s32 *)((u8 *)lbl_80367240 + 4);
-        btn = a & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ a);
+        a = *(s32 *)((u8 *)gPadInput + 4);
+        btn = a & (*(s32 *)((u8 *)gPadInput + 8) ^ a);
         if ((btn & 0x100) && unit != 0) {
             if (((Obj *)obj81)->v14(unit) == 0) {
                 pr = ((Obj *)obj81)->v9();
@@ -15377,7 +15377,7 @@ extern "C" void fn_80181354(void *arg0) {
     void fn_801475FC(void *, s32);
     extern u8 lbl_802789F0[];
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     long buttons;
     s32 edge;
     s32 held;
@@ -15399,9 +15399,9 @@ extern "C" void fn_80181354(void *arg0) {
     }
     if (!skip) {
         now = *(s16 *)((u8 *)arg0 + 0x4E);
-        buttons = *(s32 *)((u8 *)lbl_80367240 + 0xC);
-        held = *(s32 *)((u8 *)lbl_80367240 + 4);
-        edge = held & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ held);
+        buttons = *(s32 *)((u8 *)gPadInput + 0xC);
+        held = *(s32 *)((u8 *)gPadInput + 4);
+        edge = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
         if (buttons & 0x08000008) {
             if (old == 0) {
                 if ((int)buttons == edge) {

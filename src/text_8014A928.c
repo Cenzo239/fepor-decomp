@@ -167,11 +167,11 @@ extern "C" s32 fn_8014AA18(void *arg0, void *arg1, void *arg2) {
 }
 #pragma cplusplus reset
 s32 fn_8014AC68(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80367B0D;
     extern u8 lbl_80367B0E;
     s32 e;
-    void *p = lbl_80367240;
+    void *p = gPadInput;
 
     if (*(u32 *)((u8 *)p + 0x10) & 0x1000001) {
         e = (s8)lbl_80367B0E;

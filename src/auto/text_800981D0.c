@@ -180,7 +180,7 @@ s32 fn_80098670(void *arg0) {
     void fn_800535B0(void *);
     void fn_8005366C(void *, s32, s32);
     extern u8 lbl_8026D230[];
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     s32 sp2C[3];
     s32 sp20[3];
     s32 sp14[3];
@@ -280,7 +280,7 @@ s32 fn_80098670(void *arg0) {
                 sp8[1] = sp14[1];
                 sp8[2] = sp14[2];
                 fn_80147548(lbl_8026D230 + 0xE3, sp8, 0x64);
-                fn_80025624(lbl_80367240, 4);
+                fn_80025624(gPadInput, 4);
                 if (M2C_FIELD(self, u8 *, 0x34) != 2) {
                     fn_8017F70C(M2C_FIELD(self, void **, 0x3C), self);
                 }

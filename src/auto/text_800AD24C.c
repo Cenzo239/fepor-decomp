@@ -613,7 +613,7 @@ void fn_800AE444(void *arg0) {
 
 void fn_800AE52C(void *arg0)
 {
-    extern u8 *lbl_80367240;
+    extern u8 *gPadInput;
 
     extern void fn_8000C188(void *);
     extern void fn_800535B0(void *);
@@ -630,7 +630,7 @@ void fn_800AE52C(void *arg0)
     if (*(s32 *)(obj + 0x48) == 0) {
         fn_8000C188(obj);
     } else {
-        input = lbl_80367240;
+        input = gPadInput;
 
         previous = *(u32 *)(input + 0x4);
         current = *(u32 *)(input + 0x8);
@@ -3306,20 +3306,20 @@ s32 fn_800B6A30(void) {
 
 s32 fn_800B6A38(void) {
     void fn_80025680(s32, s32);
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     extern s32 gUiInputFlags;
 
-    fn_80025680(lbl_80367240, 0x1F70);
+    fn_80025680(gPadInput, 0x1F70);
     gUiInputFlags &= ~0x2000;
     return 1;
 }
 
 s32 fn_800B6A70(void) {
     void fn_80025690(s32, s32);
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     extern s32 gUiInputFlags;
 
-    fn_80025690(lbl_80367240, 0x1F70);
+    fn_80025690(gPadInput, 0x1F70);
     gUiInputFlags |= 0x2000;
     return 1;
 }
@@ -3348,11 +3348,11 @@ s32 fn_800B6B20(void)
 }
 
 void fn_800B6B58(s32 arg0) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r5;
 
-    temp_r5 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r5) & 0x1F70) {
+    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x1F70) {
         fn_8000C188(arg0);
     }
 }
@@ -4488,16 +4488,16 @@ s32 fn_800B8534(void) {
 s32 fn_800B85EC(void) {
     M2C_UNK fn_80025680(s32, s32);
     s32 fn_800B864C();
-    extern s32 lbl_80367240;
-    fn_80025680(lbl_80367240, fn_800B864C());
+    extern s32 gPadInput;
+    fn_80025680(gPadInput, fn_800B864C());
     return 0;
 }
 
 s32 fn_800B861C(void) {
     M2C_UNK fn_80025690(s32, s32);
     s32 fn_800B864C();
-    extern s32 lbl_80367240;
-    fn_80025690(lbl_80367240, fn_800B864C());
+    extern s32 gPadInput;
+    fn_80025690(gPadInput, fn_800B864C());
     return 0;
 }
 
@@ -8517,7 +8517,7 @@ void fn_800C0A24(void *arg0) {
 void fn_800C0A60(void *arg0)
 {
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_8028D4D0[];
 
     u32 current;
@@ -8527,8 +8527,8 @@ void fn_800C0A60(void *arg0)
         return;
     }
 
-    current = *(u32 *)((u8 *)lbl_80367240 + 4);
-    previous = *(u32 *)((u8 *)lbl_80367240 + 8);
+    current = *(u32 *)((u8 *)gPadInput + 4);
+    previous = *(u32 *)((u8 *)gPadInput + 8);
 
     if (((current & (previous ^ current)) & 0x1000) == 0) {
         return;

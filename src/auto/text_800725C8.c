@@ -219,8 +219,8 @@ void fn_80072A94(void) {
 
 void fn_80072AD4(void *arg0) {
     void fn_8000C188(void *);
-    extern void *lbl_80367240;
-    if (*(s32 *)((char *)lbl_80367240 + 4) & 0x300) {
+    extern void *gPadInput;
+    if (*(s32 *)((char *)gPadInput + 4) & 0x300) {
         fn_8000C188(arg0);
     }
 }
@@ -348,14 +348,14 @@ void fn_80072F28(void *arg0) {
     s32 fn_8021A8C8(s32, s32, s32);
     extern u8 lbl_8026BE40[];
     extern u16 lbl_80311D50[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 buttons;
     s32 prev;
     s32 var_r3;
 
     *(s32 *)((u8 *)arg0 + 0x34) = fn_8000E0E4(lbl_8026BE40 + 0x13B);
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    prev = *(s32 *)((u8 *)lbl_80367240 + 8);
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
         lbl_80311D50[1] = 0xC8;
         fn_8000C070(arg0, 9);

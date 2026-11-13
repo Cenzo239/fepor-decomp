@@ -1,5 +1,5 @@
     s32 fn_800D3590(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     u8 str0[12], str1[12], str2[12], str3[12], str4[12];
     u8 str5[12], str6[12], str7[12], str8[12], str9[12];
     u8 strA[12], strB[12], strC[12], strD[12], strE[12];
@@ -34,7 +34,7 @@
     (void)scK; (void)scL; (void)scM; (void)scN; (void)scO;
     (void)scW; (void)scX; (void)scY; (void)scZ; (void)scPad;
     (void)obj; (void)f1; (void)sub; (void)r27;
-    fn_800D3590(lbl_80367240);
+    fn_800D3590(gPadInput);
     state = *(u32 *)((u8 *)self + 0xC);
     r28 = 1;
     r30 = 0;

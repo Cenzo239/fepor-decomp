@@ -89,7 +89,7 @@
     s32 fn_800E4BD8(void *);
     s32 fn_8011388C(void *);
     void fn_800CD5E4(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_8036788C;
     extern void *gGame;
     extern f32 lbl_80369DC8;
@@ -124,7 +124,7 @@
     s32 r30;
     void *self = arg0;
 
-    fn_800D3590(lbl_80367240);
+    fn_800D3590(gPadInput);
     state = *(u32 *)((u8 *)self + 0xC);
     r28 = 0;
     r30 = 0;
@@ -1011,7 +1011,7 @@
 
     if (lbl_80367878 != 0
         && *(u8 *)((u8 *)self + 0x195) == 0
-        && (fn_800D3590(lbl_80367240) & 0x1000) != 0) {
+        && (fn_800D3590(gPadInput) & 0x1000) != 0) {
         *(u8 *)((u8 *)self + 0x187) = 1;
         *(s32 *)((u8 *)lbl_8036787C + 0x444) = 0;
         fn_800DA330();

@@ -2886,7 +2886,7 @@ void fn_8007947C(void *arg0) {
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026C640[];
     extern void *lbl_80312040[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_803693D0;
     extern f32 lbl_803693D4;
     extern f32 lbl_803693D8;
@@ -2902,13 +2902,13 @@ void fn_8007947C(void *arg0) {
     s32 index;
     void *entry;
 
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    prev = *(s32 *)((u8 *)lbl_80367240 + 8);
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x08000008) {
         *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) + lbl_803693D0;
     }
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    prev = *(s32 *)((u8 *)lbl_80367240 + 8);
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x04000004) {
         *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) - lbl_803693D0;
     }
@@ -2928,8 +2928,8 @@ void fn_8007947C(void *arg0) {
     temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
     fn_8007B4D8((s32)(lbl_803693E0 / temp_f2), (s32)(lbl_803693E8 / temp_f2), 0xFF,
                 *(void **)((u8 *)arg0 + 0x30));
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    prev = *(s32 *)((u8 *)lbl_80367240 + 8);
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
         temp_r3 = *(void **)((u8 *)arg0 + 0x30);
         if (temp_r3 != NULL) {

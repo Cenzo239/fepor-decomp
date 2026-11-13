@@ -2810,7 +2810,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     void fn_800F214C(void);
     void fn_8014CBD8(void *, f32, f32);
     void fn_801475FC(void *, s32);
-    extern s32 *lbl_80367240;
+    extern s32 *gPadInput;
     extern u8 lbl_80330708[];
     extern s32 lbl_802EF4E0[];
     extern f32 lbl_80368E08;
@@ -2835,7 +2835,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     u8 t0;
     u8 t1;
 
-    if ((lbl_80367240[1] & 0xF) == 0) {
+    if ((gPadInput[1] & 0xF) == 0) {
         fn_800F214C();
         t0 = ((u8 *)arg1)[0x3E];
         fa = *(f32 *)(lbl_80330708 + 0x538);
@@ -2857,7 +2857,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
             }
         }
     } else {
-        flags = lbl_80367240[3];
+        flags = gPadInput[3];
         var_r31 = NULL;
         cur = *(void **)((u8 *)arg1 + 0x44);
         if (flags & 9) {
@@ -3147,7 +3147,7 @@ void fn_8002FA54(void) {
 void fn_8002FAB0(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8000C070(void *, s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_80330708[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_802695F0[];
@@ -3158,8 +3158,8 @@ void fn_8002FAB0(void *arg0) {
     f32 f1;
     u16 *cell;
 
-    temp_r3 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r3);
+    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
         f0 = lbl_80330708[0x528 / 4];
         f1 = lbl_80330708[0x524 / 4];
@@ -3276,7 +3276,7 @@ void fn_800315F8(void) {
 void fn_80031668(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8000C070(void *, s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_80330708[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_802695F0[];
@@ -3287,8 +3287,8 @@ void fn_80031668(void *arg0) {
     f32 f1;
     s16 *cell;
 
-    temp_r3 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r3);
+    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
         f0 = lbl_80330708[0x528 / 4];
         f1 = lbl_80330708[0x524 / 4];

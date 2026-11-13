@@ -2578,18 +2578,18 @@ fn_8016746C(gUnitInfoPopup,arg0,q,x,y);
 
 #pragma cplusplus reset
 void fn_80024D18(s32 unused, void *arg1) {
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern u8 lbl_80268D90[];
     void fn_801475FC(void *, s32);
-    u32 temp_r6 = lbl_80367240[1];
+    u32 temp_r6 = gPadInput[1];
 
-    if (temp_r6 & (lbl_80367240[2] ^ temp_r6) & 0x0C00000C) {
+    if (temp_r6 & (gPadInput[2] ^ temp_r6) & 0x0C00000C) {
         ((u8 *)arg1)[0x62] = 0;
         fn_801475FC(&lbl_80268D90[0x71], 0x64);
     }
 }
 
-extern u32 lbl_80367240;
+extern u32 gPadInput;
 #pragma cplusplus on
 extern "C" void fn_80024D74(s32 unused, void *arg1) {
     void *fn_8000B908(u8);
@@ -2617,7 +2617,7 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
     u8 idx_u;
     s32 idx;
 
-    if ((((u32 *)lbl_80367240)[1] & 0x3000003U) == 0) {
+    if ((((u32 *)gPadInput)[1] & 0x3000003U) == 0) {
         return;
     }
     idx_u = *((u8 *)arg1 + 0x62);
@@ -2671,7 +2671,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     f32 f30;
     u8 *p;
 
-    pad = *(u32 **)&lbl_80367240;
+    pad = *(u32 **)&gPadInput;
     trig = pad[3];
     sel = *(u8 *)((u8 *)arg1 + 0x62);
     held = pad[1];
@@ -3111,7 +3111,7 @@ void fn_80025BA0(void) {
     s32 fn_8021275C(u32);
     extern u8 lbl_80368DC8;
     extern u8 lbl_802EF408[];
-    extern u32 lbl_80367240;
+    extern u32 gPadInput;
     extern s32 lbl_80367248;
     extern s32 lbl_8036724C;
     u8 *src;
@@ -3164,7 +3164,7 @@ void fn_80025BA0(void) {
         s32 z = 0;
         lbl_8036724C = z;
         lbl_80367248 = z;
-        lbl_80367240 = (u32)lbl_802EF438;
+        gPadInput = (u32)lbl_802EF438;
     }
 }
 

@@ -63,7 +63,7 @@ void fn_801E460C(void *arg0) {
     extern u8 lbl_8027EB78[];
     extern u8 gUnitInfoPopup[];
     extern u32 gUiInputFlags;
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern u32 lbl_80368DC4;
     s16 spC[2];
     s16 sp8[2];
@@ -80,8 +80,8 @@ void fn_801E460C(void *arg0) {
         skip = 1;
     }
     if (skip == 0) {
-        held = lbl_80367240[1];
-        pressed = held & (lbl_80367240[2] ^ held);
+        held = gPadInput[1];
+        pressed = held & (gPadInput[2] ^ held);
         if ((pressed & 0x100) != 0) {
             mode = *(u8 *)((u8 *)arg0 + 0x31);
             if (mode == 1 && fn_80166D8C(gUnitInfoPopup) == 0) {
@@ -1689,7 +1689,7 @@ void fn_801E80B4(void *arg0) {
     u8 fn_801E85A4(void *, s8);
     void *fn_8000E0E4(void *);
     void fn_80056AE0(void *, void *);
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_8027EB78[];
     extern f64 lbl_8036B6E0;
@@ -1716,7 +1716,7 @@ void fn_801E80B4(void *arg0) {
     u8 b;
     s32 zero;
 
-    pad = lbl_80367240;
+    pad = gPadInput;
     t = *(u8 *)((u8 *)arg0 + 0x33);
     p33 = (u8 *)((u8 *)arg0 + 0x33);
     held = *(u32 *)((u8 *)pad + 0x10);
@@ -2167,7 +2167,7 @@ void fn_801E8D34(void *arg0) {
     void *fn_8000E0E4(void *);
     void fn_80056AE0(void *, void *);
     u8 fn_801E91E8(void *, void *);
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_8027EB78[];
     extern f64 lbl_8036B6E0;
@@ -2191,7 +2191,7 @@ void fn_801E8D34(void *arg0) {
     s16 sp10[2];
 
     max = fn_801E9410();
-    pad = lbl_80367240;
+    pad = gPadInput;
     t = *(u8 *)((u8 *)arg0 + 0x32);
     held = pad[3];
     cur = pad[1];

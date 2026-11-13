@@ -27,7 +27,7 @@ void fn_8009F8A8(void *unused, void *arg1) {
 s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
     u8 fn_80092ADC(void *, u8);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     u8 *base;
     u8 index;
     s32 value;
@@ -39,7 +39,7 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     index = *(u8 *)((u8 *)arg2 + 0x3A);
     value = fn_80092ADC(base, index);
     step = 1;
-    obj = lbl_80367240;
+    obj = gPadInput;
     if (*(u32 *)((u8 *)obj + 4) & 0x400) {
         step = 8;
     }
@@ -483,11 +483,11 @@ extern "C" s32 fn_800A01D4(void *arg0, void *arg1, s32 arg2) {
         virtual s32 v8(void *, s32) = 0;
         virtual s32 v9(void *, s32) = 0;
     };
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r8;
 
-    temp_r8 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r8 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r8) & 0x03000003) {
+    temp_r8 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r8 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r8) & 0x03000003) {
         return ((Obj *)arg0)->v9(arg1, arg2);
     }
     return 0;
@@ -1208,7 +1208,7 @@ char *fn_800A101C(void) {
 }
 
 s32 fn_800A1078(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80330708[];
     s32 temp_r5;
     struct {
@@ -1216,8 +1216,8 @@ s32 fn_800A1078(void) {
         u8 rest : 7;
     } *b;
 
-    temp_r5 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    if (temp_r5 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r5) & 0x03000003) {
+    temp_r5 = *(s32 *)((u8 *)gPadInput + 4);
+    if (temp_r5 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r5) & 0x03000003) {
         b = (void *)&lbl_80330708[0x9F];
         b->flag ^= 1;
     }
@@ -1254,7 +1254,7 @@ char *fn_800A10C0(void) {
 
 s32 fn_800A1178(void)
 {
-  extern u8 *lbl_80367240;
+  extern u8 *gPadInput;
   extern u16 lbl_80330708[];
   u8 *obj;
   u8 *table;
@@ -1262,7 +1262,7 @@ s32 fn_800A1178(void)
   u32 current;
   u32 changed;
   u8 count;
-  obj = lbl_80367240;
+  obj = gPadInput;
   table = (u8 *) lbl_80330708;
   previous = *((u32 *) (obj + 4));
   current = *((u32 *) (obj + 8));
@@ -1314,7 +1314,7 @@ char *fn_800A1290(void) {
 
 s32 fn_800A12DC(void)
 {
-    extern u8 *lbl_80367240;
+    extern u8 *gPadInput;
     extern u16 lbl_80330708[];
 
     extern void fn_8014D268(void *, s32);
@@ -1324,7 +1324,7 @@ s32 fn_800A12DC(void)
     u32 flags;
     s32 value;
 
-    obj = lbl_80367240;
+    obj = gPadInput;
     flags = *(u32 *)(obj + 0x10);
 
     if (flags & 0x01000001) {
@@ -1334,7 +1334,7 @@ s32 fn_800A12DC(void)
         fn_8014D268(table, value - 0x64);
     }
 
-    obj = lbl_80367240;
+    obj = gPadInput;
     flags = *(u32 *)(obj + 0x10);
 
     if (flags & 0x02000002) {
@@ -1358,9 +1358,9 @@ char *fn_800A1354(void) {
 }
 
 s32 fn_800A13A0(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80330708[];
-    void *obj = lbl_80367240;
+    void *obj = gPadInput;
 
     if (*(s32 *)((u8 *)obj + 0x10) & 0x01000001) {
         *(s32 *)(lbl_80330708 + 0x1C) -= 0x64;
@@ -1382,9 +1382,9 @@ char *fn_800A13FC(void) {
 }
 
 s32 fn_800A1448(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80330708[];
-    void *obj = lbl_80367240;
+    void *obj = gPadInput;
 
     if (*(s32 *)((u8 *)obj + 0x10) & 0x01000001) {
         *(s16 *)(lbl_80330708 + 0x12) -= 1;
@@ -1396,9 +1396,9 @@ s32 fn_800A1448(void) {
 }
 
 s32 fn_800A1658(s32 arg0,s32 arg1,void *arg2) {
-extern u8 *lbl_80367240; extern u8 lbl_80330708[]; void fn_8014D244(u8 *,u8,u8);
+extern u8 *gPadInput; extern u8 lbl_80330708[]; void fn_8014D244(u8 *,u8,u8);
 u32 previous,current,changed; s32 idx; u8 val; u8 initial;
-previous=*(u32*)(lbl_80367240+4); current=*(u32*)(lbl_80367240+8);
+previous=*(u32*)(gPadInput+4); current=*(u32*)(gPadInput+8);
 idx=*((u8*)arg2+0x3A)+1; initial=lbl_80330708[idx+0x14];
 changed=previous & (current ^ previous); val=initial;
 if(changed&0x01000001) val=(u8)(initial+2);
@@ -1929,14 +1929,14 @@ char *fn_800A2660(void *arg0) {
 
 s32 fn_800A26D0(void *arg0)
 {
-    extern u8 *lbl_80367240;
+    extern u8 *gPadInput;
     extern s32 lbl_803671D8;
 
     u8 *obj;
     s32 limit;
     s32 value;
 
-    obj = lbl_80367240;
+    obj = gPadInput;
     limit = lbl_803671D8;
 
     if (*(u32 *)(obj + 0x10) & 0x01000001) {
@@ -1949,7 +1949,7 @@ s32 fn_800A26D0(void *arg0)
         }
     }
 
-    obj = lbl_80367240;
+    obj = gPadInput;
 
     if (*(u32 *)(obj + 0x10) & 0x02000002) {
         value = *(s16 *)((u8 *)arg0 + 4);
@@ -2005,14 +2005,14 @@ char *fn_800A27D8(void *arg0) {
 
 s32 fn_800A2848(void *arg0)
 {
-    extern u8 *lbl_80367240;
+    extern u8 *gPadInput;
     extern s32 lbl_803671D0;
 
     u8 *obj;
     s32 limit;
     s32 value;
 
-    obj = lbl_80367240;
+    obj = gPadInput;
     limit = lbl_803671D0;
 
     if (*(u32 *)(obj + 0x10) & 0x01000001) {
@@ -2025,7 +2025,7 @@ s32 fn_800A2848(void *arg0)
         }
     }
 
-    obj = lbl_80367240;
+    obj = gPadInput;
 
     if (*(u32 *)(obj + 0x10) & 0x02000002) {
         value = *(s16 *)((u8 *)arg0 + 4);
@@ -2067,16 +2067,16 @@ char *fn_800A2914(void) {
 }
 
 s32 fn_800A2974(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80366E08;
 
-    if (*(u32*)((u8*)lbl_80367240 + 0xC) & 0x1000001) {
+    if (*(u32*)((u8*)gPadInput + 0xC) & 0x1000001) {
         if (lbl_80366E08 == 0)
             lbl_80366E08 = 0x61;
         else
             lbl_80366E08 -= 1;
     }
-    if (*(u32*)((u8*)lbl_80367240 + 0xC) & 0x2000002) {
+    if (*(u32*)((u8*)gPadInput + 0xC) & 0x2000002) {
         if (lbl_80366E08 == 0x61)
             lbl_80366E08 = 0;
         else
@@ -2317,13 +2317,13 @@ s32 fn_800A31D0(s32 arg0, s32 arg1) {
 }
 
 s32 fn_800A320C(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80367558;
     extern u8 lbl_80367559;
-    if (((s8) lbl_80367558 > 0) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x01000001)) {
+    if (((s8) lbl_80367558 > 0) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
         lbl_80367558 -= 1;
     }
-    if (((s8) lbl_80367558 < (s8) lbl_80367559) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x02000002)) {
+    if (((s8) lbl_80367558 < (s8) lbl_80367559) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
         lbl_80367558 += 1;
     }
     return 0;
@@ -2370,13 +2370,13 @@ char *fn_800A3490(void) {
 }
 
 s32 fn_800A34E8(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80367558;
     extern u8 lbl_80367559;
-    if (((s8) lbl_80367558 > 0) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x01000001)) {
+    if (((s8) lbl_80367558 > 0) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
         lbl_80367558 -= 1;
     }
-    if (((s8) lbl_80367558 < (s8) lbl_80367559) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x02000002)) {
+    if (((s8) lbl_80367558 < (s8) lbl_80367559) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
         lbl_80367558 += 1;
     }
     return 0;
@@ -2614,7 +2614,7 @@ extern u16 lbl_8026D8D8;
 extern u16 lbl_8026D8D8;
 extern u8 lbl_803200AC[];
 #include "global.h"
-extern u32* lbl_80367240;
+extern u32* gPadInput;
 extern u8 lbl_80330708[];
 extern u16 lbl_8026D8D8;
 extern u16 lbl_8026D8D8;

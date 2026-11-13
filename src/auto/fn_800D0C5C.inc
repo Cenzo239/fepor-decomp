@@ -92,7 +92,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     s32 fn_800E4BD8(void *);
     s32 fn_8011388C(void *);
     void fn_800CD5E4(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_8036788C;
     extern void *gGame;
     extern f32 lbl_80369DC8;
@@ -127,7 +127,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     s32 state;
     void *self = arg0;
 
-    fn_800D3590(lbl_80367240);
+    fn_800D3590(gPadInput);
     state = *(u32 *)((u8 *)self + 0xC);
     r28 = 0;
     r30 = 0;

@@ -431,18 +431,18 @@ char *fn_80103E50(s32 arg0, void *arg1) {
 }
 #pragma global_optimizer reset
 s32 fn_80103EA4(s32 arg0, void *arg1) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     u16 temp_r5;
     void *temp_r6;
 
     temp_r6 = M2C_FIELD(arg1, void **, 0x3C);
     temp_r5 = M2C_FIELD(temp_r6, u16 *, 0x10);
-    if ((temp_r5 != 0) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) < 0xFCU) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x01000001)) {
+    if ((temp_r5 != 0) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) < 0xFCU) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
         M2C_FIELD(temp_r6, u16 *, 0x10) = (u16) (temp_r5 - 1);
         M2C_FIELD(temp_r6, u16 *, 0x12) = (u16) (M2C_FIELD(temp_r6, u16 *, 0x12) + 1);
         M2C_FIELD(temp_r6, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(temp_r6, u16 *, 0x10) / M2C_FIELD(temp_r6, f32 *, 8));
         M2C_FIELD(temp_r6, s8 *, 0x1B) = 1;
-    } else if ((temp_r5 < 0xC0U) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) != 0) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x02000002)) {
+    } else if ((temp_r5 < 0xC0U) && ((u16) M2C_FIELD(temp_r6, u16 *, 0x12) != 0) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
         M2C_FIELD(temp_r6, u16 *, 0x10) += 1;
         M2C_FIELD(temp_r6, u16 *, 0x12) -= 1;
         M2C_FIELD(temp_r6, f32 *, 0xC) = (f32) ((f32) M2C_FIELD(temp_r6, u16 *, 0x10) / M2C_FIELD(temp_r6, f32 *, 8));
@@ -473,17 +473,17 @@ char *fn_80103FA4(s32 arg0, void *arg1) {
 #pragma global_optimizer reset
 
 s32 fn_80103FF8(s32 arg0, void *arg1) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_8036A0F0;
     void *temp_r5;
 
     temp_r5 = M2C_FIELD(arg1, void **, 0x3C);
-    if ((M2C_FIELD(temp_r5, f32 *, 8) > 0.0f) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x01000001)) {
+    if ((M2C_FIELD(temp_r5, f32 *, 8) > 0.0f) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x01000001)) {
         M2C_FIELD(temp_r5, f32 *, 8) -= lbl_8036A0F0;
         M2C_FIELD(temp_r5, s16 *, 0x10) = (s16) (M2C_FIELD(temp_r5, f32 *, 8) * M2C_FIELD(temp_r5, f32 *, 0xC));
         M2C_FIELD(temp_r5, s16 *, 0x12) = (s16) (M2C_FIELD(temp_r5, f32 *, 8) - (f32) M2C_FIELD(temp_r5, u16 *, 0x10));
         M2C_FIELD(temp_r5, s8 *, 0x1B) = 1;
-    } else if ((M2C_FIELD(temp_r5, u16 *, 0x10) < 0xC0U) && (M2C_FIELD(temp_r5, u16 *, 0x12) < 0x100U) && (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 0x02000002)) {
+    } else if ((M2C_FIELD(temp_r5, u16 *, 0x10) < 0xC0U) && (M2C_FIELD(temp_r5, u16 *, 0x12) < 0x100U) && (M2C_FIELD(gPadInput, s32 *, 0xC) & 0x02000002)) {
         M2C_FIELD(temp_r5, f32 *, 8) += lbl_8036A0F0;
         M2C_FIELD(temp_r5, s16 *, 0x10) = (s16) (M2C_FIELD(temp_r5, f32 *, 8) * M2C_FIELD(temp_r5, f32 *, 0xC));
         M2C_FIELD(temp_r5, s16 *, 0x12) = (s16) (M2C_FIELD(temp_r5, f32 *, 8) - (f32) M2C_FIELD(temp_r5, u16 *, 0x10));

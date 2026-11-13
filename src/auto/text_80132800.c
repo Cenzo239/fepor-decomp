@@ -343,7 +343,7 @@ extern "C" void fn_80132CFC(void *arg0) {
     s8 fn_801475FC(void *, s32);
     extern u8 lbl_802764BC[];
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -383,7 +383,7 @@ extern "C" void fn_80132CFC(void *arg0) {
     }
     dir = *(s16 *)((u8 *)arg0 + 0x3E);
     p = (u8 *)0;
-    pad = *(s32 *)((u8 *)lbl_80367240 + 0xC);
+    pad = *(s32 *)((u8 *)gPadInput + 0xC);
     switch (dir) {
     case 0:
         p = (u8 *)arg0 + 0x51;
@@ -1756,7 +1756,7 @@ extern "C" void fn_8013577C(void *arg0) {
     void fn_8013ED84(void *, s16);
     extern u8 lbl_80276720[];
     extern u32 gUiInputFlags;
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern f32 lbl_8036A5EC;
     extern f32 lbl_8036A5F0;
     struct Obj {
@@ -1806,9 +1806,9 @@ extern "C" void fn_8013577C(void *arg0) {
     if (skip == 0) {
         rows2 = (s16)rows;
         saved = *(s16 *)((u8 *)arg0 + 0x4E);
-        held = (s32)lbl_80367240[1];
-        trig = (s32)lbl_80367240[3];
-        edge = held & ((s32)lbl_80367240[2] ^ held);
+        held = (s32)gPadInput[1];
+        trig = (s32)gPadInput[3];
+        edge = held & ((s32)gPadInput[2] ^ held);
         if (rows2 > 1) {
             held = total - page * rows2;
             if (held > rows2) {
@@ -4325,7 +4325,7 @@ extern "C" void fn_80139E88(void *arg0) {
     void fn_8013ED84(void *, s16);
     extern char lbl_802768A0[];
     extern u32 gUiInputFlags;
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern f64 lbl_8036A690;
     struct Obj {
         virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
@@ -4374,9 +4374,9 @@ extern "C" void fn_80139E88(void *arg0) {
     if (skip == 0) {
         rows2 = (s16)rows;
         saved = *(s16 *)((u8 *)arg0 + 0x4E);
-        held = (s32)lbl_80367240[1];
-        trig = (s32)lbl_80367240[3];
-        edge = held & ((s32)lbl_80367240[2] ^ held);
+        held = (s32)gPadInput[1];
+        trig = (s32)gPadInput[3];
+        edge = held & ((s32)gPadInput[2] ^ held);
         if (rows2 > 1) {
             held = total - page * rows2;
             if (held > rows2) {
@@ -5551,7 +5551,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     void fn_80167190(void *, void *, f32, f32);
     void fn_801475FC(void *, s32);
     extern u32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80276908[];
     extern f64 lbl_8036A6C8;
@@ -5592,7 +5592,7 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
     if ((u8)gate == 0) {
         u8 t62;
         s32 prev;
-        pad = lbl_80367240;
+        pad = gPadInput;
         t62 = *(u8 *)((u8 *)arg1 + 0x62);
         cur = *(s32 *)((u8 *)pad + 4);
         prev = *(s32 *)((u8 *)pad + 8);
@@ -6189,7 +6189,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern s32 gUiInputFlags;
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern f64 lbl_8036A6C8;
     extern u8 lbl_80276908[];
@@ -6240,9 +6240,9 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20))
         skip = 1;
     if (skip == 0) {
-        trig = lbl_80367240[3];
-        held = lbl_80367240[1];
-        edge = held & (lbl_80367240[2] ^ held);
+        trig = gPadInput[3];
+        held = gPadInput[1];
+        edge = held & (gPadInput[2] ^ held);
         p[0x63] = p[0x62];
         if (cols > 1) {
             rem = (s16)(maxIdx - row * colW);
@@ -9411,7 +9411,7 @@ extern "C" void fn_8014402C(void *arg0, s32 arg1) {
     s32 fn_801475FC(u8 *, s32);
     extern u8 lbl_80276B3C[];
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -9445,7 +9445,7 @@ extern "C" void fn_8014402C(void *arg0, s32 arg1) {
         return;
     }
     cursor = *(s32 *)((u8 *)arg0 + 0x3C);
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 0xC);
+    buttons = *(s32 *)((u8 *)gPadInput + 0xC);
     if (buttons & 0x01000001) {
         next = cursor - 1;
         if (cursor == 0) {

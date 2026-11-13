@@ -908,7 +908,7 @@ void fn_80129FA4(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_80275740[];
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     extern f32 lbl_8036A410;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A430;
@@ -979,7 +979,7 @@ void fn_80129FA4(void *arg0) {
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14),
         *(f32 *)((u8 *)sub + 0x18));
-    fn_80025624(lbl_80367240, 8);
+    fn_80025624(gPadInput, 8);
     fn_8018CFA4(0x1E, 6, 2, 0, self);
     path = fn_80053AE8(lbl_80275740 + 0x165, self);
     sub = *(void **)((u8 *)self + 0x30);
@@ -1644,7 +1644,7 @@ void fn_8012B7DC(void *arg0) {
     void fn_80109EEC(void *);
     void sprintf(void *, void *, ...);
     extern char lbl_802758F8[];
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     extern s32 lbl_80367A88;
     extern s32 lbl_80367A9C;
     extern f32 lbl_8036A480;
@@ -1688,7 +1688,7 @@ void fn_8012B7DC(void *arg0) {
     f32 t;
 
     scale = lbl_8036A480;
-    pad = (void *)lbl_80367240;
+    pad = (void *)gPadInput;
     if (*(s32 *)((u8 *)pad + 4) & 0x10) {
         f32 f488 = lbl_8036A488;
         f32 f48C = lbl_8036A48C;
@@ -1701,17 +1701,17 @@ void fn_8012B7DC(void *arg0) {
         cam = (void *)lbl_80367A88;
         t = *(f32 *)((u8 *)cam + 0x40);
         *(f32 *)((u8 *)cam + 0x40) = t - (scale * (f32)(s8)stick[2] * f488);
-        pad = (void *)lbl_80367240;
+        pad = (void *)gPadInput;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x44);
         *(f32 *)((u8 *)cam + 0x44) = t + (scale * (f32)(s8)stick[3] * f488);
-        pad = (void *)lbl_80367240;
+        pad = (void *)gPadInput;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x54);
         *(f32 *)((u8 *)cam + 0x54) = t - ((scale * (f32)stick[6]) / f48C);
-        pad = (void *)lbl_80367240;
+        pad = (void *)gPadInput;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x54);
@@ -1722,7 +1722,7 @@ void fn_8012B7DC(void *arg0) {
         }
         cam = (void *)lbl_80367A88;
         *(f32 *)((u8 *)cam + 0x58) = *(f32 *)((u8 *)cam + 0x54);
-        pad = (void *)lbl_80367240;
+        pad = (void *)gPadInput;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
         t = *(f32 *)((u8 *)cam + 0x5C);
@@ -1731,7 +1731,7 @@ void fn_8012B7DC(void *arg0) {
         (void)conv_u;
     }
 
-    pad = (void *)lbl_80367240;
+    pad = (void *)gPadInput;
     buttons = *(s32 *)((u8 *)pad + 4);
     prev = *(s32 *)((u8 *)pad + 8);
     if (buttons & (prev ^ buttons) & 0x1000) {
@@ -1754,7 +1754,7 @@ void fn_8012B7DC(void *arg0) {
     if (*(s16 *)((u8 *)arg0 + 0x4C) < 0) {
         *(s16 *)((u8 *)arg0 + 0x4C) = 0;
     }
-    if (*(s32 *)((u8 *)(void *)lbl_80367240 + 4) & 0x10) {
+    if (*(s32 *)((u8 *)(void *)gPadInput + 4) & 0x10) {
         *(s16 *)((u8 *)arg0 + 0x4C) = 0xFF;
     }
 
@@ -1798,7 +1798,7 @@ void fn_8012B7DC(void *arg0) {
         Prim2D_EndPrim();
     }
 
-    pad = (void *)lbl_80367240;
+    pad = (void *)gPadInput;
     held = *(s32 *)((u8 *)pad + 0xC);
     if (held & 9) {
         *(s32 *)((u8 *)arg0 + 0x34) =
@@ -1822,7 +1822,7 @@ void fn_8012B7DC(void *arg0) {
                 *(u8 *)((u8 *)arg0 + 0x40) =
                     *(u8 *)((u8 *)arg0 + 0x40) + 1;
             }
-            pad = (void *)lbl_80367240;
+            pad = (void *)gPadInput;
             buttons = *(s32 *)((u8 *)pad + 4);
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x800) {
@@ -1920,7 +1920,7 @@ void fn_8012B7DC(void *arg0) {
                     *(void **)((u8 *)arg0 + 0x44) = NULL;
                 }
             }
-            pad = (void *)lbl_80367240;
+            pad = (void *)gPadInput;
             buttons = *(s32 *)((u8 *)pad + 4);
             prev = *(s32 *)((u8 *)pad + 8);
             if (buttons & (prev ^ buttons) & 0x100) {

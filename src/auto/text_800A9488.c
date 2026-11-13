@@ -340,14 +340,14 @@ void *fn_800A9D24(void) {
 }
 
 s32 fn_800A9D34(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80367701;
     extern s8 lbl_80367702;
     fn_80006220(4);
-    if ((u32) (M2C_FIELD(lbl_80367240, s32 *, 4) & 0x60) == 0x60) {
+    if ((u32) (M2C_FIELD(gPadInput, s32 *, 4) & 0x60) == 0x60) {
         lbl_80367701 ^= 1;
     }
-    if (M2C_FIELD(lbl_80367240, s32 *, 4) & 0x10) {
+    if (M2C_FIELD(gPadInput, s32 *, 4) & 0x10) {
         lbl_80367702 = 1;
     }
     return 5;
@@ -380,11 +380,11 @@ void *fn_800A9E00(void) {
 
 s32 fn_800A9E10(void *arg0) {
     u32 fn_80019ED0(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     u32 flags;
     s32 delta;
 
-    flags = *(u32 *)((u8 *)lbl_80367240 + 0x10);
+    flags = *(u32 *)((u8 *)gPadInput + 0x10);
     if (flags & 0x01000001) {
         delta = -1;
     }
@@ -561,7 +561,7 @@ void fn_800AA3C0(void) {
     extern u8 lbl_802B14E4[101760];
     extern u8 lbl_802CA518[151280];
     extern u8 lbl_80330708[1400];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern void *lbl_80367800;
     extern s8 lbl_80367804;
 
@@ -589,7 +589,7 @@ void fn_800AA3C0(void) {
     unit = (id != 0) ? &lbl_802B14E4[(id - 1) * 0x280] : NULL;
 
     if (lbl_80367800 != unit) {
-        ctrl = lbl_80367240;
+        ctrl = gPadInput;
         if ((ctrl->unk4 & 0xF) != 0 || ctrl->unk0->unk2 != 0 || ctrl->unk0->unk3 != 0) {
             if (unit == NULL) {
                 fn_8004A1F0();
@@ -988,7 +988,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_80330708[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     typedef struct {
         u8 pad[0x28];
         s16 unk28;
@@ -1136,7 +1136,7 @@ void fn_800AB2A4(void *arg0) {
     extern void *gUiContext[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_80330708[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     typedef struct {
         u8 pad[0x28];
         s16 unk28;
@@ -1258,7 +1258,7 @@ void fn_800AB2A4(void *arg0) {
     self->unk28 = 4;
     self->unk45 = 0x9A;
     if (*((u8 *)gUiContext + 8) == 0x28) {
-        fn_800256A0(lbl_80367240, 0x100);
+        fn_800256A0(gPadInput, 0x100);
         self->unk3C = 0;
         self->unk3D = *((u8 *)gUiContext + 0xA);
         fn_8000C070(self, 3);
@@ -1458,7 +1458,7 @@ void fn_800ABE74(void *arg0) {
     u8 fn_80166D8C(void *);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, void *, f32, f32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
@@ -1472,8 +1472,8 @@ void fn_800ABE74(void *arg0) {
 
     var_r30 = arg0;
     fn_800AC0C0();
-    a = ((u32 *)lbl_80367240)[1];
-    var_r31 = a & (((u32 *)lbl_80367240)[2] ^ a);
+    a = ((u32 *)gPadInput)[1];
+    var_r31 = a & (((u32 *)gPadInput)[2] ^ a);
     if (fn_80166D8C(gUnitInfoPopup) != 0) {
         if (var_r31 & 0xA00) {
             fn_801673D0(gUnitInfoPopup);
@@ -1521,7 +1521,7 @@ void fn_800AC0C0(void *arg0) {
     u8 fn_80166D8C(void *);
     void fn_80166DD0(void *, void *, f32, f32);
     void fn_801673D0(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
     extern u8 gUnitInfoPopup[];
@@ -1542,9 +1542,9 @@ void fn_800AC0C0(void *arg0) {
     void *self = arg0;
 
     var_r7 = 0;
-    temp_r0 = ((u32 *)lbl_80367240)[3];
-    temp_r6 = ((u32 *)lbl_80367240)[1];
-    temp_r3 = temp_r6 & (((u32 *)lbl_80367240)[2] ^ temp_r6);
+    temp_r0 = ((u32 *)gPadInput)[3];
+    temp_r6 = ((u32 *)gPadInput)[1];
+    temp_r3 = temp_r6 & (((u32 *)gPadInput)[2] ^ temp_r6);
     if ((temp_r0 & 0x01000001) && ((s32)*(u8 *)((u8 *)self + 0x3C) == 1)) {
         var_r6 = *(s8 *)((u8 *)self + 0x3D);
         var_r5 = lbl_80312ACC + (var_r6 * 0x10);
@@ -1686,7 +1686,7 @@ void fn_800AC5DC(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8016746C(void *, void *, void *, f32, f32);
 
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 gUnitInfoPopup[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
@@ -1697,7 +1697,7 @@ void fn_800AC5DC(void *arg0) {
 
     self = arg0;
     fn_800AC810();
-    pressed = ((u32 *)lbl_80367240)[1] & (((u32 *)lbl_80367240)[2] ^ ((u32 *)lbl_80367240)[1]);
+    pressed = ((u32 *)gPadInput)[1] & (((u32 *)gPadInput)[2] ^ ((u32 *)gPadInput)[1]);
     if (fn_80166D8C(gUnitInfoPopup) != 0) {
         if (pressed & 0xA00) {
             fn_801673D0(gUnitInfoPopup);
@@ -1745,7 +1745,7 @@ void fn_800AC810(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 fn_80166D8C(void *);
     void fn_80166DD0(void *, void *, f32, f32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
     extern u8 gUnitInfoPopup[];
@@ -1763,9 +1763,9 @@ void fn_800AC810(void *arg0) {
     s16 y;
 
     var_r8 = 0;
-    flags = *(s32 *)((u8 *)lbl_80367240 + 0xC);
-    buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-    pressed = buttons & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ buttons);
+    flags = *(s32 *)((u8 *)gPadInput + 0xC);
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons);
     if (flags & 0x01000001) {
         tmp = *(u8 *)((u8 *)arg0 + 0x3C);
         if (tmp == 1) {

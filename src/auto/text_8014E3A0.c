@@ -58,13 +58,13 @@ void *fn_8014E41C(s32 arg0, void *arg1) {
 }
 
 s32 fn_8014E458(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80367B7C;
     extern s32 lbl_80367B80;
-    if (M2C_FIELD(lbl_80367240, s32 *, 0x10) & 0x01000001) {
+    if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x01000001) {
         lbl_80367B7C = (lbl_80367B7C + (lbl_80367B80 - 1)) % lbl_80367B80;
     }
-    if (M2C_FIELD(lbl_80367240, s32 *, 0x10) & 0x02000002) {
+    if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x02000002) {
         lbl_80367B7C = (lbl_80367B7C + 1) % lbl_80367B80;
     }
     return 0;

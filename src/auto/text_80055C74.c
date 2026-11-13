@@ -1251,11 +1251,11 @@ void fn_8005902C(s32 arg0, s16 arg1) {
 
 void fn_8005906C(void *arg0) {
     M2C_UNK fn_8000C188();
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r5;
 
-    temp_r5 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r5) & 0x1F70) {
+    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x1F70) {
         fn_8000C188();
         return;
     }

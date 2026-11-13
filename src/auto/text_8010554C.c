@@ -1959,7 +1959,7 @@ void fn_80108C80(s32 arg0, s32 arg1) {
 
 void fn_80108CB8(void *arg0) {
     void fn_8000C188(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_8036A110;
     extern f32 lbl_8036A114;
     extern f32 lbl_8036A118;
@@ -1972,23 +1972,23 @@ void fn_80108CB8(void *arg0) {
     f32 v64;
     f32 v1b;
 
-    temp_r5 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r5) & 0x200) {
+    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x200) {
         fn_8000C188(arg0);
     }
     scale = lbl_8036A110;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = -(((f32)(s8)M2C_FIELD(M2C_FIELD(lbl_80367240, void **, 0), u8 *, 2) * scale) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40));
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = -(((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 2) * scale) - M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40));
     divisor = lbl_8036A114;
     one = lbl_8036A118;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44) = ((f32)(s8)M2C_FIELD(M2C_FIELD(lbl_80367240, void **, 0), u8 *, 3) * scale) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) - ((f32)M2C_FIELD(M2C_FIELD(lbl_80367240, void **, 0), u8 *, 6) / divisor);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) + ((f32)M2C_FIELD(M2C_FIELD(lbl_80367240, void **, 0), u8 *, 7) / divisor);
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44) = ((f32)(s8)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 3) * scale) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x44);
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) - ((f32)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 6) / divisor);
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) + ((f32)M2C_FIELD(M2C_FIELD(gPadInput, void **, 0), u8 *, 7) / divisor);
     if (M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) < one) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = one;
     }
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x58) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54);
-    temp_r4_3 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r4_3 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r4_3) & 0x1000) {
+    temp_r4_3 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r4_3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r4_3) & 0x1000) {
         v64 = lbl_8036A11C;
         v1b = lbl_8036A118;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x40) = v64;
@@ -1996,11 +1996,11 @@ void fn_80108CB8(void *arg0) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x54) = v1b;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x58) = v1b;
     }
-    if (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 1) {
+    if (M2C_FIELD(gPadInput, s32 *, 0xC) & 1) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) + (f32)(M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4) - 1);
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = (s32)M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) % M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4);
     }
-    if (M2C_FIELD(lbl_80367240, s32 *, 0xC) & 2) {
+    if (M2C_FIELD(gPadInput, s32 *, 0xC) & 2) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) + one;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) = (s32)M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), f32 *, 0x3C) % M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x34), void **, 0x30), u8 *, 4);
     }

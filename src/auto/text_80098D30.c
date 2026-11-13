@@ -140,7 +140,7 @@ void fn_80099094(void *arg0)
   void fn_8018CFA4(s32, s32, s32, s32, void *);
   void fn_800536B0(void *, f32, f32, f32);
   extern u8 lbl_8026D230[];
-  extern s32 lbl_80367240;
+  extern s32 gPadInput;
   s32 sp38[3];
   s32 sp2C[3];
   s32 sp20[3];
@@ -174,7 +174,7 @@ void fn_80099094(void *arg0)
     sp8[1] = sp14[1];
     sp8[2] = sp14[2];
     fn_80147548(lbl_8026D230 + 0xE3, sp8, 0x64);
-    fn_80025624(lbl_80367240, 4);
+    fn_80025624(gPadInput, 4);
     if ((*((u8 *) (((u8 *) self) + 0x34))) != 2)
     {
       fn_8017F70C(*((void **) (((u8 *) self) + 0x38)), self);
@@ -201,7 +201,7 @@ void fn_80099094(void *arg0)
     {
       fn_8017F040(*((void **) (((u8 *) self) + 0x38)), new_var, self);
     }
-    fn_80025624(lbl_80367240, 8);
+    fn_80025624(gPadInput, 8);
   }
 }
 
@@ -218,7 +218,7 @@ void fn_8017F70C(void *,void *); void fn_8017E0C0(void *,s32,void *); void fn_80
 void fn_80184C7C(void *,s32,s32,s32); void fn_80184BE8(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
 u8 fn_8004BF80(void *); void fn_8000C188(void *);
-extern u8 lbl_8026D230[]; extern void *lbl_80367240;
+extern u8 lbl_8026D230[]; extern void *gPadInput;
 Word3 posC, tmpC, posA, tmpA, posB, tmpB;
 void *self=arg0;
 u8 *input;
@@ -255,7 +255,7 @@ fn_80184688(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
 fn_800983E0(&tmpA,M2C_FIELD(self,void **,0x3c));
 posA=tmpA;
 fn_80147548(lbl_8026D230+0xe3,&posA,100);
-fn_80025624(lbl_80367240,4);
+fn_80025624(gPadInput,4);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F70C(M2C_FIELD(self,void **,0x3c),self);
 } else {
 fn_8009A0A4(self,index);
@@ -290,7 +290,7 @@ fn_80184688(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
 fn_800983E0(&tmpB,M2C_FIELD(self,void **,0x3c));
 posB=tmpB;
 fn_80147548(lbl_8026D230+0xe3,&posB,100);
-fn_80025624(lbl_80367240,4);
+fn_80025624(gPadInput,4);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F70C(M2C_FIELD(self,void **,0x3c),self);
 } else {
 fn_8009A0A4(self,index);
@@ -644,7 +644,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
     extern u8 lbl_8026D230[];
-    extern s32 lbl_80367240;
+    extern s32 gPadInput;
     extern s32 lbl_803697D8;
     Word3 pos;
     Word3 sp78;
@@ -752,11 +752,11 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     }
     if (kind == 0x51) {
         fn_8018CFA4(0x3C, 6, 2, 0, arg0);
-        fn_80025624(lbl_80367240, 0x10);
+        fn_80025624(gPadInput, 0x10);
         fn_8017E2BC();
     } else {
         fn_8018CFA4(0xF, 6, 2, 0, arg0);
-        fn_80025624(lbl_80367240, 8);
+        fn_80025624(gPadInput, 8);
     }
     tmp = fn_80095934(M2C_FIELD(arg0, void **, 0x38), kind, flags);
     if (tmp != NULL) {

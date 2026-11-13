@@ -80,13 +80,13 @@ void *fn_8012C460(void) {
 s32 fn_8012C470(void) {
     void fn_80109B00(void *, u8);
     u8 fn_80109B0C(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern void *lbl_80367A88;
     u32 flags;
     s32 val;
 
     val = fn_80109B0C(lbl_80367A88);
-    flags = *(u32 *)((u8 *)lbl_80367240 + 0x10);
+    flags = *(u32 *)((u8 *)gPadInput + 0x10);
     if (flags & 0x01000001) {
         val -= 1;
     }
@@ -122,13 +122,13 @@ void *fn_8012C53C(void) {
 s32 fn_8012C54C(void) {
     void fn_80109B18(void *, u8);
     u8 fn_80109B24(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern void *lbl_80367A88;
     u32 flags;
     s32 val;
 
     val = fn_80109B24(lbl_80367A88);
-    flags = *(u32 *)((u8 *)lbl_80367240 + 0x10);
+    flags = *(u32 *)((u8 *)gPadInput + 0x10);
     if (flags & 0x01000001) {
         val -= 1;
     }
@@ -164,13 +164,13 @@ void *fn_8012C618(void) {
 s32 fn_8012C628(void) {
     void fn_80109B30(void *, u8);
     u8 fn_80109B48(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern void *lbl_80367A88;
     u32 flags;
     s32 val;
 
     val = fn_80109B48(lbl_80367A88);
-    flags = *(u32 *)((u8 *)lbl_80367240 + 0x10);
+    flags = *(u32 *)((u8 *)gPadInput + 0x10);
     if (flags & 0x01000001) {
         val -= 1;
     }
@@ -207,7 +207,7 @@ void *fn_8012C6F0(void) {
 s32 fn_8012C700(void) {
     M2C_UNK fn_80109B54(s32, f32);
     f32 fn_80109BA8(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80367A88;
     extern f32 lbl_8036A4AC;
     extern f32 lbl_8036A4D8;
@@ -215,7 +215,7 @@ s32 fn_8012C700(void) {
     s32 temp_r4;
 
     var_f1 = fn_80109BA8(lbl_80367A88);
-    temp_r4 = M2C_FIELD(lbl_80367240, s32 *, 0x10);
+    temp_r4 = M2C_FIELD(gPadInput, s32 *, 0x10);
     if (temp_r4 & 0x01000001) {
         var_f1 -= lbl_8036A4D8;
     }
@@ -496,7 +496,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     void fn_8016758C(void *, void *, s32, f32, f32);
     extern u8 lbl_80275AC0[];
     extern u8 gUnitInfoPopup[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_80368DC4;
     extern f32 lbl_8036A4E8;
     extern f32 lbl_8036A4EC;
@@ -530,7 +530,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
     u8 *base;
 
     self = arg0;
-    pad = (u32 *)lbl_80367240;
+    pad = (u32 *)gPadInput;
     cur = pad[1];
     prev = pad[2];
     trig = pad[3];
@@ -735,7 +735,7 @@ void fn_8012D6A4(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_801EAA38(void *);
     extern u8 lbl_80275AC0[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern f32 lbl_8036A4EC;
 
     void *self;
@@ -760,7 +760,7 @@ void fn_8012D6A4(void *arg0) {
     f32 ff;
 
     self = arg0;
-    pad = (u32 *)lbl_80367240;
+    pad = (u32 *)gPadInput;
     cur = pad[1];
     prev = pad[2];
     trig = pad[3];
@@ -768,7 +768,7 @@ void fn_8012D6A4(void *arg0) {
 
     if (cur & 0x400) {
         *((u8 *)self + 0x6F) = 0x10;
-        trig = *(u32 *)((u8 *)lbl_80367240 + 0x10);
+        trig = *(u32 *)((u8 *)gPadInput + 0x10);
     } else {
         *((u8 *)self + 0x6F) = 8;
     }

@@ -25,7 +25,7 @@ void fn_80120CE0(void *arg0) {
 void fn_80120CFC(u16 *arg0) {
     u32 fn_8000BCA4(void *);
     void *fn_8000C0C0(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u8 lbl_80274CE0[];
     extern u32 gUiInputFlags;
     extern u8 lbl_80290200[];
@@ -35,8 +35,8 @@ void fn_80120CFC(u16 *arg0) {
     u8 v;
 
     if (!(*arg0 & 8)) {
-        buttons = *(s32 *)((u8 *)lbl_80367240 + 4);
-        if ((buttons & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ buttons) & 0x200) &&
+        buttons = *(s32 *)((u8 *)gPadInput + 4);
+        if ((buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x200) &&
             fn_8000BCA4(lbl_80274CE0 + 0x34) == 0) {
             if (gUiInputFlags & 3) {
                 flag = 0;
@@ -839,7 +839,7 @@ void fn_80122524(void *arg0) {
     void fn_80121630(void *);
     extern u16 lbl_80367A58;
     extern u8 lbl_80274D60[];
-    extern u32 *lbl_80367240;
+    extern u32 *gPadInput;
     u32 temp;
 
     fn_80120CFC(&lbl_80367A58);
@@ -851,8 +851,8 @@ void fn_80122524(void *arg0) {
         fn_8000C188(arg0);
         lbl_80367A58 &= ~0x200;
     } else {
-        temp = lbl_80367240[1];
-        if (temp & (lbl_80367240[2] ^ temp) & 0x10) {
+        temp = gPadInput[1];
+        if (temp & (gPadInput[2] ^ temp) & 0x10) {
             fn_80121630(arg0);
         }
     }
@@ -3418,7 +3418,7 @@ void fn_80127594(void *arg0) {
 s32 ScriptCmd_pa(s32 arg0) {
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_802904C0[32];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     void *temp_r3;
 
     temp_r3 = fn_8000CAF0(lbl_802904C0, 2);
@@ -3427,39 +3427,39 @@ s32 ScriptCmd_pa(s32 arg0) {
     *(u8 *)((u8 *)temp_r3 + 0x38) = 0x10;
     *(u8 *)((u8 *)temp_r3 + 0x39) = 1;
 
-    *(u32 *)((u8 *)lbl_80367240 + 0x8) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0x4) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0xc) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0x10) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x8) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x4) = 0;
+    *(u32 *)((u8 *)gPadInput + 0xc) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x10) = 0;
 
-    *(u8 *)(*(u8 **)lbl_80367240 + 2) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 3) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 4) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 5) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 6) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 7) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 2) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 3) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 4) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 5) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 6) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 7) = 0;
     return 1;
 }
 
 void fn_8012767C(void)
 {
     extern u32 gUiInputFlags;
-    extern void *volatile lbl_80367240;
+    extern void *volatile gPadInput;
 
     gUiInputFlags &= ~0x20;
     gUiInputFlags |= 0x80;
 
-    *(u32 *)((u8 *)lbl_80367240 + 0x08) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0x04) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0x0C) = 0;
-    *(u32 *)((u8 *)lbl_80367240 + 0x10) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x08) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x04) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x0C) = 0;
+    *(u32 *)((u8 *)gPadInput + 0x10) = 0;
 
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x02) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x03) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x04) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x05) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x06) = 0;
-    *(u8 *)(*(u8 **)lbl_80367240 + 0x07) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x02) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x03) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x04) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x05) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x06) = 0;
+    *(u8 *)(*(u8 **)gPadInput + 0x07) = 0;
 }
 
 void fn_80127700(void* arg0, s32 arg1) {
@@ -3643,7 +3643,7 @@ void fn_80127C78(void *arg0) {
 }
 
 void fn_80127CDC(void) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 gUiInputFlags;
     extern u8 gScriptCmdNames[];
     extern u8 lbl_80290608[];
@@ -3656,8 +3656,8 @@ void fn_80127CDC(void) {
     s32 temp_r3;
     void *obj;
 
-    val = **(u16 **)lbl_80367240;
-    if (val & (*(u32 *)((u8 *)lbl_80367240 + 0x14) ^ val) & 0x1000) {
+    val = **(u16 **)gPadInput;
+    if (val & (*(u32 *)((u8 *)gPadInput + 0x14) ^ val) & 0x1000) {
         temp_r31 = fn_80089634();
         temp_r3 = fn_8008A56C();
         if (!((u16)(temp_r3 | temp_r31) & 0xD) && (gUiInputFlags & 0x10) && !(gUiInputFlags & 4)
@@ -3717,5 +3717,5 @@ extern void *lbl_80367A68;
 #include "global.h"
 #include "unit.h"
 
-extern u32* gUnitStructs; // lbl_80367240
+extern u32* gUnitStructs; // gPadInput
 extern u8* gSomeGlobal;

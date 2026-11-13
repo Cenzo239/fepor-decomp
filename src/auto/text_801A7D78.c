@@ -1752,7 +1752,7 @@ extern "C" void fn_801ADD8C(void *arg0) {
 
 extern "C" void fn_801ADDB8(void *arg0) {
     extern u8 lbl_8027BC88[];
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     void fn_801475FC(void *, s32);
     extern s32 gUiInputFlags;
     u8 var_r3;
@@ -1769,10 +1769,10 @@ extern "C" void fn_801ADDB8(void *arg0) {
     }
     if (var_r3 == 0) {
         temp_r0 = *(s16 *)((char *)arg0 + 0x3E);
-        temp_r5 = *(s32 *)((char *)lbl_80367240 + 4);
-        temp_r4 = *(s32 *)((char *)lbl_80367240 + 0xC);
+        temp_r5 = *(s32 *)((char *)gPadInput + 4);
+        temp_r4 = *(s32 *)((char *)gPadInput + 0xC);
         temp_r31 = *(s16 *)((char *)arg0 + 0x40);
-        temp_r5_2 = temp_r5 & (*(s32 *)((char *)lbl_80367240 + 8) ^ temp_r5);
+        temp_r5_2 = temp_r5 & (*(s32 *)((char *)gPadInput + 8) ^ temp_r5);
         switch (temp_r0) {
         case 0:
             if (temp_r5_2 & 0x04000004) {

@@ -32,7 +32,7 @@ extern void ScriptCmd_CmFreeScript(void);
 extern void fn_8005BCAC(void);
 extern void fn_800C4B8C(void);
 
-extern void* lbl_80367240;
+extern void* gPadInput;
 extern u16 lbl_80280B58[18];
 
 void fn_801F196C(M2C_UNK **arg0) {
@@ -66,13 +66,13 @@ void fn_801F1DC4(void *arg0) {
 
 void fn_801F1DD8(s32 arg0) {
     u8 fn_800A5C88(s32, void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r31;
     s32 temp_r3;
 
-    temp_r3 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    temp_r31 = temp_r3 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r3);
-    if ((fn_800A5C88(temp_r3, lbl_80367240) == 0) || (temp_r31 & 0x1000)) {
+    temp_r3 = M2C_FIELD(gPadInput, s32 *, 4);
+    temp_r31 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
+    if ((fn_800A5C88(temp_r3, gPadInput) == 0) || (temp_r31 & 0x1000)) {
         fn_8000C188(arg0);
     }
 }
@@ -538,7 +538,7 @@ void fn_801F2E08(void *arg0) {
     u8 fn_8008A59C(void);
     void fn_801475FC(char *, s32);
     u8 fn_801E3570(void *, s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern char lbl_8027F868[];
     extern u8 lbl_8029A9E8[];
     extern u8 lbl_80331FB8[];
@@ -551,9 +551,9 @@ void fn_801F2E08(void *arg0) {
     s16 idx;
 
     obj = *(void **)((u8 *)arg0 + 0x30);
-    held = *(s32 *)((u8 *)lbl_80367240 + 4);
-    stick = *(s32 *)((u8 *)lbl_80367240 + 0xC);
-    pressed = held & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ held);
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    stick = *(s32 *)((u8 *)gPadInput + 0xC);
+    pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (((pressed & 0x100) && (fn_8008A59C() == 0)) || ((pressed & 0x200) && (fn_8008A59C() == 0))) {
         fn_801475FC(lbl_8027F868 + 0x11BD, 0x64);
         fn_8000C070(arg0, 1);
@@ -751,10 +751,10 @@ void fn_801F3338(void *arg0) {
     u32 var_r3;
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x30);
-    temp_r3 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    temp_r31 = M2C_FIELD(lbl_80367240, s32 *, 0xC);
+    temp_r3 = M2C_FIELD(gPadInput, s32 *, 4);
+    temp_r31 = M2C_FIELD(gPadInput, s32 *, 0xC);
     temp_r29 = M2C_FIELD(temp_r30, s16 *, 0xE);
-    temp_r27 = temp_r3 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r3);
+    temp_r27 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
             if (fn_801E3570(lbl_80331FB8, fn_80019E8C(*(s32 *)(lbl_8029A9E8 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
@@ -941,7 +941,7 @@ void fn_801F3890(void) {
     r28 = (u16 *)0x8036C56C + 0x20/2 + r30;
     r7 = *(u8 *)(0x8036C56C + 0x11);
     r3 = r28[r30/2];
-    r5 = (u16)lbl_80367240; // This is a global pointer to 0x80367240
+    r5 = (u16)gPadInput; // This is a global pointer to 0x80367240
     r6 = *(u16 *)(r5 + 0x4);
     r0 = *(u8 *)(r3 + 0x2);
     r4 = *(u16 *)(r5 + 0x8);
@@ -1391,8 +1391,8 @@ void fn_801F5308(void* arg0) {
     s32 temp_r3;
     void* temp_r4;
 
-    temp_r3 = *(s32*)((u8*)lbl_80367240 + 4);
-    if (temp_r3 & (*(s32*)((u8*)lbl_80367240 + 8) ^ temp_r3) & 0x100) {
+    temp_r3 = *(s32*)((u8*)gPadInput + 4);
+    if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
         u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
         fn_801475FC(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
@@ -1405,8 +1405,8 @@ void fn_801F5374(void* arg0) {
     s32 temp_r3;
     void* temp_r4;
 
-    temp_r3 = *(s32*)((u8*)lbl_80367240 + 4);
-    if (temp_r3 & (*(s32*)((u8*)lbl_80367240 + 8) ^ temp_r3) & 0x100) {
+    temp_r3 = *(s32*)((u8*)gPadInput + 4);
+    if (temp_r3 & (*(s32*)((u8*)gPadInput + 8) ^ temp_r3) & 0x100) {
         u16* ptr = (u16*)((u8*)&lbl_80280B58 + 0x5A);
         fn_801475FC(ptr, 0x64);
         temp_r4 = *(void**)((u8*)arg0 + 0x50);
@@ -1544,7 +1544,7 @@ void fn_801F5A28(void *arg0) {
     void fn_8000C070(void *, s32);
     void fn_801475FC(void *, s32);
     void fn_8000BF00(void *);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u16 lbl_80280B58[18];
     void *tmp;
     s32 var_r0;
@@ -1564,8 +1564,8 @@ void fn_801F5A28(void *arg0) {
         fn_8000C188(arg0);
         return;
     }
-    temp_r4_2 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    if ((temp_r4_2 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r4_2) & 0x200) != 0) {
+    temp_r4_2 = *(s32 *)((u8 *)gPadInput + 4);
+    if ((temp_r4_2 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r4_2) & 0x200) != 0) {
         fn_801475FC((u8 *)&lbl_80280B58 + 0x111, 0x64);
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
@@ -1580,14 +1580,14 @@ void fn_801F5AEC(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_8000C188(void *);
     void fn_8000C070(void *, s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern u16 lbl_80280B58[18];
     s32 temp_r3;
     s32 pressed;
     void *temp_r5;
 
-    temp_r3 = *(s32 *)((u8 *)lbl_80367240 + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)lbl_80367240 + 8) ^ temp_r3);
+    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
     if (pressed & 0x100) {
         fn_801475FC((u8 *)&lbl_80280B58 + 0x5A, 0x64);
         fn_801DDBA8(*(void **)((u8 *)arg0 + 0x50), fn_8000E0E4((u8 *)&lbl_80280B58 + 0x121), 0, 0, 0);
@@ -1891,11 +1891,11 @@ void fn_801F64C8(void) {
 void fn_801F64F4(s32 arg0) {
     void fn_8000C188(s32);
     void fn_801480D8(s32);
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r5;
 
-    temp_r5 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r5) & 0x300) {
+    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x300) {
         fn_8000C188(arg0);
         fn_801480D8(0x1388);
     }
@@ -1970,8 +1970,8 @@ void fn_801F66D4(void *arg0) {
     void *obj;
     s32 state;
 
-    held = M2C_FIELD(lbl_80367240, s32 *, 4);
-    pressed = held & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ held);
+    held = M2C_FIELD(gPadInput, s32 *, 4);
+    pressed = held & (M2C_FIELD(gPadInput, s32 *, 8) ^ held);
     obj = M2C_FIELD(arg0, void **, 0x30);
     if ((s8)lbl_80368404 == 0) {
         lbl_80368400 = 0;
@@ -3619,11 +3619,11 @@ void fn_801F9C8C(void *arg0) {
 }
 
 void fn_801F9CE0(s32 arg0) {
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     s32 temp_r5;
 
-    temp_r5 = M2C_FIELD(lbl_80367240, s32 *, 4);
-    if (temp_r5 & (M2C_FIELD(lbl_80367240, s32 *, 8) ^ temp_r5) & 0x1F70) {
+    temp_r5 = M2C_FIELD(gPadInput, s32 *, 4);
+    if (temp_r5 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r5) & 0x1F70) {
         fn_8000C188(arg0);
     }
 }

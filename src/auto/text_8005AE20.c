@@ -155,7 +155,7 @@ void fn_8005AE78(void) {
     void fn_80211614(s32);
     void fn_8022097C(void);
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern s32 lbl_803672DC;
     extern s8 lbl_803672E0;
     extern u8 lbl_803672E1;
@@ -179,7 +179,7 @@ void fn_8005AE78(void) {
         lbl_803672E3 = 0;
         lbl_803672E4 = 1;
     }
-    temp_r3 = **(u16 **)lbl_80367240;
+    temp_r3 = **(u16 **)gPadInput;
     temp_r0 = (temp_r3 == 0x1600) ? (lbl_803672DC + 1) : 0;
     lbl_803672DC = temp_r0;
     if (temp_r0 >= 0x1E) {

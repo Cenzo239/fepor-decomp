@@ -271,7 +271,7 @@ void fn_801EB294(void *arg0)
     extern u8 lbl_802CA518[];
     extern u8 gUiContext[];
     extern s32 gUiInputFlags;
-    extern void *lbl_80367240;
+    extern void *gPadInput;
     extern void *lbl_80368370;
     extern s8 lbl_80368374;
     void *unit;
@@ -345,9 +345,9 @@ void fn_801EB294(void *arg0)
         skip = 1;
     }
     if ((skip != 0) ||
-        ((!( *(u32 *)((u8 *)lbl_80367240 + 4) & 0xF)) &&
-         ((s8)(*(u8 **)lbl_80367240)[2] == 0) &&
-         ((s8)(*(u8 **)lbl_80367240)[3] == 0))) {
+        ((!( *(u32 *)((u8 *)gPadInput + 4) & 0xF)) &&
+         ((s8)(*(u8 **)gPadInput)[2] == 0) &&
+         ((s8)(*(u8 **)gPadInput)[3] == 0))) {
         if ((lbl_80368370 != unit2) || !(gflags & 0x400)) {
             lbl_80368370 = unit2;
             if ((unit2 == NULL) || (*(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8) == 0)) {
@@ -366,7 +366,7 @@ void fn_801EB294(void *arg0)
         skip = 1;
     }
     if (skip == 0) {
-        buttons = (u32)lbl_80367240;
+        buttons = (u32)gPadInput;
         {
             u32 a = *(u32 *)((u8 *)buttons + 4);
             buttons = a & (*(u32 *)((u8 *)buttons + 8) ^ a);
