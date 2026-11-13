@@ -10629,7 +10629,6 @@ void fn_80146B00(void) {
     lbl_80367AF8 |= 1;
 }
 
-#pragma peephole off
 s32 fn_80146B10(s32 arg0) {
     void *fn_8000D2BC(void *);
     void fn_800056A0(s32);
@@ -10670,7 +10669,6 @@ s32 fn_80146B10(s32 arg0) {
     fn_800056A0(0);
     return result;
 }
-#pragma peephole on
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
