@@ -7646,7 +7646,7 @@ s32 fn_801C6E60(s32 arg0) {
 
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
-void fn_801C6F9C(void) {
+void LightFade_RestoreLights(void) {
     extern u8 LightFade_script[];
     void *Process_Find(void *);
     s32 Light_GetChannel(s32);
