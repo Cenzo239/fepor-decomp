@@ -19108,7 +19108,7 @@ void fn_800F74C0(Unit* unit)
 #pragma cplusplus on
 #pragma auto_inline off
 extern "C" u8 fn_80037E00(void *);
-extern "C" void fn_801A7A68(void *, void *, void *);
+extern "C" void Battle_SetupFromParams(void *, void *, void *);
 extern "C" void fn_801A6F34(void *, u8);
 extern "C" void fn_800F6550(s32, void *);
 typedef struct Param {
@@ -19132,7 +19132,7 @@ extern "C" s32 Battle_EvalTarget(s32 arg0, void *arg1) {
     b.b4[0] = M2C_FIELD(arg1, u8 *, 0);
     b.b4[1] = M2C_FIELD(arg1, u8 *, 1);
     b.b4[2] = M2C_FIELD(arg1, u16 *, 2);
-    fn_801A7A68(gBattle, &b, &a);
+    Battle_SetupFromParams(gBattle, &b, &a);
     fn_801A6F34(gBattle, gUiContext[8]);
     fn_800F6550(arg0, arg1);
     return 1;
@@ -21361,7 +21361,7 @@ void fn_800FD774(void *arg0) {
     u8 fn_8009339C(void *);
     u8 fn_80100F10(void *, void *, void *);
     void fn_801A6F34(void *, s32);
-    void fn_801A7A68(void *, void *, void *);
+    void Battle_SetupFromParams(void *, void *, void *);
     extern u8 gBattleMap[];
     extern u8 lbl_8032B5E0[];
     extern u32 gBattle[];
@@ -21503,7 +21503,7 @@ void fn_800FD774(void *arg0) {
                             sp2C.x = ((u8 *)unit)[0x19E];
                             sp2C.y = ((u8 *)unit)[0x19F];
                             sp2C.z = (u8)bestHi;
-                            fn_801A7A68(gBattle, &sp2C, &sp3C);
+                            Battle_SetupFromParams(gBattle, &sp2C, &sp3C);
                             fn_801A6F34(gBattle, 0xF);
                             diff = *(s16 *)(ui + 0x298) - *(s16 *)(ui + 0x57A);
                             if (diff < 0) {
@@ -21532,7 +21532,7 @@ void fn_800FD774(void *arg0) {
                             spC.x = ((u8 *)unit)[0x19E];
                             spC.y = ((u8 *)unit)[0x19F];
                             spC.z = (u8)bestLo;
-                            fn_801A7A68(gBattle, &spC, &sp1C);
+                            Battle_SetupFromParams(gBattle, &spC, &sp1C);
                             fn_801A6F34(gBattle, 0xF);
                             diff = *(s16 *)(ui + 0x298) - *(s16 *)(ui + 0x57A);
                             if (diff < 0) {

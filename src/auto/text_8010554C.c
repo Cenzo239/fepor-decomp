@@ -4467,7 +4467,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_80100D18(void *, void *, s32);
     u8 fn_801044FC(void *);
     void fn_801A49AC(void *, s8);
-    void fn_801A7A68(void *, void *, void *);
+    void Battle_SetupFromParams(void *, void *, void *);
     extern u8 gAiState[];
     extern u8 gBattleMap[];
     extern u16 gUnits[];
@@ -4648,7 +4648,7 @@ ok_done:
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
-            fn_801A7A68(gBattle, &sp28, &sp18);
+            Battle_SetupFromParams(gBattle, &sp28, &sp18);
             fn_801A49AC(gBattle, (s8)slot);
 
             ciff = fn_8003CFF0(arg0, unit);
@@ -4693,7 +4693,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     void fn_80100D18(void *, void *, s32);
     void fn_801A49AC(void *, s8);
-    void fn_801A7A68(void *, void *, void *);
+    void Battle_SetupFromParams(void *, void *, void *);
     extern u8 gAiState[];
     extern u8 gBattleMap[];
     extern u16 gUnits[];
@@ -4878,7 +4878,7 @@ ok_done:
             sp28.p = arg0;
             sp28.b4 = (u8)(s8)chosenX;
             sp28.b5 = (u8)(s8)chosenY;
-            fn_801A7A68(gBattle, &sp28, &sp18);
+            Battle_SetupFromParams(gBattle, &sp28, &sp18);
             fn_801A49AC(gBattle, (s8)slot);
 
             ciff = fn_8003CFF0(arg0, unit);

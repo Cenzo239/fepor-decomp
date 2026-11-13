@@ -2488,7 +2488,7 @@ void fn_801A7794(s32 arg0, void *arg1, void *arg2) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801A7A68(s32 arg0, void *arg1, void *arg2) {
+void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
     void fn_8002011C(void *, u8, u8, s32, s32);
