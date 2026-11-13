@@ -9319,13 +9319,12 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
 
 void *fn_800DDB94(void *arg0)
 {
-    extern void *StringMap_FindOrInsert(void *);
-    extern void String_Assign(void *, void *, s32, s32);
-    extern void *String_CStr(void *);
-    extern void String_Destroy(void *, s32);
+    void *StringMap_FindOrInsert(void *);
+    void String_Assign(void *, void *, s32, s32);
+    void *String_CStr(void *);
+    void String_Destroy(void *, s32);
 
     u32 temp[3];
-    void *source;
     void *result;
 
     temp[1] = 0;
@@ -9333,19 +9332,15 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    source = StringMap_FindOrInsert((u8 *)arg0 + 0x68);
-
     String_Assign(
         temp,
-        (u8 *)source + 0xC,
+        (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x68) + 0xC,
         0,
         -1
     );
 
     result = String_CStr(temp);
-
     String_Destroy(temp, -1);
-
     return result;
 }
 
@@ -19123,7 +19118,7 @@ typedef struct Param {
     u8 bC[4];
 } Param;
 static const Param lbl_80272EE4 = {0, {0, 0, 0, 1}, 0, {1}};
-extern "C" s32 fn_800F773C(s32 arg0, void *arg1) {
+extern "C" s32 Battle_EvalTarget(s32 arg0, void *arg1) {
     extern u8 gUiContext[];
     Param b;
     Param a = {0, {0, 0, 0, 1}, 0, {1}};
@@ -19285,7 +19280,7 @@ s32 fn_800F7E9C(s32 arg0, s8 arg1, s8 arg2, void *arg3) {
     }
     *(u8*)arg3 = arg1;
     *((u8*)arg3 + 1) = arg2;
-    return fn_800F773C(arg0, arg3);
+    return Battle_EvalTarget(arg0, arg3);
 }
 
 u8 fn_800F8308(void *arg0) {
@@ -22314,22 +22309,16 @@ void fn_800FF948(void *arg0) {
     void Process_ClearFunc(void *);
     void fn_800F20E0(void);
     extern void *gPadInput;
-    void *self;
-    u32 *pad;
-    s32 ctr;
+    void *self = arg0;
 
-    self = arg0;
-    pad = (u32 *)gPadInput;
-    if ((pad[1] & 0x1100) == 0) {
-        ctr = *(s32 *)((u8 *)self + 0x64);
-        if (ctr > 0x2D) {
-            Process_ClearFunc(self);
-            return;
-        }
+    if ((*(u32 *)((u8 *)gPadInput + 4) & 0x1100) == 0
+        && *(s32 *)((u8 *)self + 0x64) > 0x2D) {
+        arg0 = self;
+        Process_ClearFunc(arg0);
+    } else {
+        fn_800F20E0();
+        *(s32 *)((u8 *)self + 0x64) = *(s32 *)((u8 *)self + 0x64) + 1;
     }
-    fn_800F20E0();
-    ctr = *(s32 *)((u8 *)self + 0x64);
-    *(s32 *)((u8 *)self + 0x64) = ctr + 1;
 }
 
 void fn_800FF9A8(void *arg0) {
