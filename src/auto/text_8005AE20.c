@@ -7228,7 +7228,7 @@ void DEMOInit(void *arg0)
     void OSInit(void);
     void DVDInit(void);
     void VIInit(void);
-    void fn_80217A2C(void);
+    void PADInit(void);
     s32 VIGetTvFormat(void);
     void fn_8022C1B8(void *, void *, s32);
     void fn_8020602C(void *, s32, void *, ...);
@@ -7282,7 +7282,7 @@ void DEMOInit(void *arg0)
     OSInit();
     DVDInit();
     VIInit();
-    fn_80217A2C();
+    PADInit();
     if (arg0 != NULL) {
         dst = DEMORmodeObj;
         *(u32 *)dst = *(u32 *)arg0;

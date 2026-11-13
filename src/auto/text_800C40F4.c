@@ -15363,7 +15363,7 @@ s32 fn_800EB884(s32 arg0, s32 arg1, s32 arg2) {
 
 u8 fn_800EBF58(void) {
     s32 OSGetTick(void);
-    void fn_80217A2C(void);
+    void PADInit(void);
     s32 fn_8021A8C8(s32, void *, void *);
     s32 fn_8021AFD0(s32, void *, s32, s32);
     s32 fn_80217C34(s32);
@@ -15384,7 +15384,7 @@ u8 fn_800EBF58(void) {
 
     start = OSGetTick();
     result = 0;
-    fn_80217A2C();
+    PADInit();
     r = fn_8021A8C8(0, &spC, &sp8);
     if (r == -1) goto L_AFD0;
     if (r < 0) goto END;
