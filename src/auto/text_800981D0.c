@@ -73,7 +73,7 @@ u8 fn_800981D0(void **arg0) {
 }
 
 void fn_800983E0(void *arg0, void **arg1) {
-    f32 fn_80023068(M2C_UNK *, f32, f32, f32);
+    f32 Map_SampleHeight(M2C_UNK *, f32, f32, f32);
     extern M2C_UNK gBattleMap;
     extern f32 lbl_803697D0;
     f32 sp10;
@@ -117,7 +117,7 @@ void fn_800983E0(void *arg0, void **arg1) {
         temp_f2 = lbl_803697D0 + (f32) (s8) M2C_FIELD(temp_r6, u8 *, 0x19F);
         sp8 = temp_f1;
         spC = temp_f2;
-        sp10 = fn_80023068(&gBattleMap, temp_f1, temp_f2, lbl_803697D0);
+        sp10 = Map_SampleHeight(&gBattleMap, temp_f1, temp_f2, lbl_803697D0);
     }
     M2C_FIELD(arg0, f32 *, 0) = sp8;
     M2C_FIELD(arg0, f32 *, 4) = spC;

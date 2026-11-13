@@ -454,7 +454,7 @@ void fn_8012942C(s32 arg0, s32 arg1) {
 }
 
 void fn_80129464(void *arg0) {
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     void fn_800498A4(void *, void *, s32);
     void fn_800536B0(s32, f32, f32, f32);
     s32 fn_80053C30(void *, void *);
@@ -480,7 +480,7 @@ void fn_80129464(void *arg0) {
     f31 = lbl_8036A410 + f31;
     f30 = (f32)b0;
     f30 = lbl_8036A410 + f30;
-    fn_800536B0(path, f30, f31, fn_80023068(gBattleMap, f30, f31));
+    fn_800536B0(path, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
 }
 
 void fn_8012955C(void) {
@@ -1056,7 +1056,7 @@ void fn_8012A4CC(void *arg0) {
 void fn_8012A530(void *arg0) {
     void Process_ClearFunc(void *);
     f32 fn_8001F53C(void *, s8, s8, s32);
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     void *Map_Get(void);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
@@ -1206,7 +1206,7 @@ void fn_8012A530(void *arg0) {
     }
 
     sub = *(void **)((u8 *)self + 0x30);
-    z = fn_80023068(gBattleMap,
+    z = Map_SampleHeight(gBattleMap,
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x10),
         lbl_8036A410 + *(f32 *)((u8 *)sub + 0x14));
     sub = *(void **)((u8 *)self + 0x30);
@@ -1308,7 +1308,7 @@ void fn_8012ABAC(void *arg0) {
 }
 
 void fn_8012AC88(void *arg0) {
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     void fn_80053C30(void *, s32);
     void fn_800536B0(f32, f32, f32);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
@@ -1323,7 +1323,7 @@ void fn_8012AC88(void *arg0) {
     temp_r6 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_f30 = lbl_8036A410 + (f32)(s8)temp_r6[0];
     temp_f31 = lbl_8036A410 + (f32)(s8)temp_r6[1];
-    temp_f29 = fn_80023068(gBattleMap, temp_f30, temp_f31);
+    temp_f29 = Map_SampleHeight(gBattleMap, temp_f30, temp_f31);
     fn_80053C30(lbl_80275740 + 0x165, 0);
     fn_800536B0(temp_f30, temp_f31, temp_f29);
     SeCue_PlayAt(lbl_80275740 + 0x196, 0x64, temp_f30, temp_f31, temp_f29);

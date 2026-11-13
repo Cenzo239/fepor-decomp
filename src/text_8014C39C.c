@@ -292,14 +292,14 @@ void fn_8014CA98(s32 arg0, s32 arg1, u32 arg2) {
 }
 
 void fn_8014CAD4(void *arg0, f32 farg0, f32 farg1) {
-    f32 fn_80023068(void *);
+    f32 Map_SampleHeight(void *);
     *(f32 *)((u8 *)arg0 + 0x52C) = farg0;
     *(f32 *)((u8 *)arg0 + 0x530) = farg1;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap);
+    *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap);
 }
 
 void fn_8014CB14(void *arg0, void *arg1) {
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     extern u8 gBattleMap[];
     extern f32 lbl_8036A7F0;
     f32 temp_f31;
@@ -313,13 +313,13 @@ void fn_8014CB14(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f30;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap, temp_f31, temp_f30);
+    *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap, temp_f31, temp_f30);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f30;
 }
 
 void fn_8014CBD8(void *arg0, f32 farg0, f32 farg1) {
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     extern f32 lbl_8036A7F0;
     f32 temp_f31;
     f32 temp_f30;
@@ -330,7 +330,7 @@ void fn_8014CBD8(void *arg0, f32 farg0, f32 farg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f31;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap, temp_f30, temp_f31);
+    *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap, temp_f30, temp_f31);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f31;
 }

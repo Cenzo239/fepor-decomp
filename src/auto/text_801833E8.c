@@ -9423,7 +9423,7 @@ void fn_8019ABBC(void *arg0) {
 #pragma use_lmw_stmw on
 s32 fn_8019ADD8(void *arg0)
 {
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     void fn_800536B0(void *, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
@@ -9467,10 +9467,10 @@ s32 fn_8019ADD8(void *arg0)
     f28 = lbl_8036AF00 + (f32)(s8)obj[0x64];
     f29 = lbl_8036AF00 + (f32)(s8)obj[0x65];
 #pragma scheduling reset
-    f31 = fn_80023068(gBattleMap, f28, f29);
+    f31 = Map_SampleHeight(gBattleMap, f28, f29);
     f30 = lbl_8036AF00 + (f32)(s8)obj[0x66];
     f27 = lbl_8036AF00 + (f32)(s8)obj[0x67];
-    f26 = fn_80023068(gBattleMap, f30, f27);
+    f26 = Map_SampleHeight(gBattleMap, f30, f27);
     f30 = Math_Lerp(f28, f30,
                       (f32)*(s16 *)(obj + 0x6A), (f32)*(s16 *)(obj + 0x68));
     f29 = Math_Lerp(f29, f27,
@@ -12899,7 +12899,7 @@ s32 fn_801A1E6C(s8 arg0, s8 arg1) {
 
 s32 fn_801A1F38(s8 arg0, s8 arg1) {
     void *Process_Find(void *);
-    f32 fn_80023068(void *, f32, f32);
+    f32 Map_SampleHeight(void *, f32, f32);
     extern u16 lbl_80296F90[];
     extern u8 gBattleMap[];
     void *temp;
@@ -12912,7 +12912,7 @@ s32 fn_801A1F38(s8 arg0, s8 arg1) {
     } else {
         scale = 1;
     }
-    f = fn_80023068(gBattleMap, (f32)arg0, (f32)arg1);
+    f = Map_SampleHeight(gBattleMap, (f32)arg0, (f32)arg1);
     return (s32)(f * (f32)scale);
 }
 

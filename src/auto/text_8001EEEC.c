@@ -1778,7 +1778,7 @@ f32 Map_GetTileCornerHeight(void *arg0, s8 arg1, s8 arg2, u8 arg3)
     return (f32)((s16 *)(base - 0x3D28))[index] * *(f32 *)(base - 0x3D2C);
 }
 #pragma opt_strength_reduction reset
-void fn_80023068(u16 *a0, u16 *a1, f32 a2, f32 a3) {
+void Map_SampleHeight(u16 *a0, u16 *a1, f32 a2, f32 a3) {
     extern f32 lbl_8036A7F0;
     
     *(f32*)((u8*)a0 + 0x534) = a2;

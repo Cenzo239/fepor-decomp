@@ -4543,16 +4543,13 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003AF28(void *);
     u8 fn_80038128(void *, void *);
     s32 t;
-    s32 scaled;
     s32 u;
-    s32 sum;
     s32 v;
 
     t = (s8)fn_8003AFA0(arg0);
-    scaled = (t - (s8)fn_8003A778(arg1)) * 5;
+    t = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
-    sum = scaled + u;
-    v = (sum + 0x1E) - ((u8)fn_80038128(arg0, arg1) << 1);
+    v = t + u + 0x1E - ((u8)fn_80038128(arg0, arg1) << 1);
     if (v > 0x64) {
         v = 0x64;
     }
@@ -10932,7 +10929,7 @@ void Unit_DrawShadows(void) {
 
 #pragma use_lmw_stmw on
 void Unit_DrawShadow(u8 *arg0, s32 arg1) {
-    f32 fn_80023068(void *);
+    f32 Map_SampleHeight(void *);
     void fn_80051564(void *, s32, f32, f32);
     u32 fn_80055D94(s32);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -11010,7 +11007,7 @@ void Unit_DrawShadow(u8 *arg0, s32 arg1) {
     r30 = (u8)((arg1 * arg0[0x27]) / 255);
     tbl = lbl_8026AA98;
     (void)gBattleMap;
-    lim = -(f25 - fn_80023068(gBattleMap));
+    lim = -(f25 - Map_SampleHeight(gBattleMap));
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {

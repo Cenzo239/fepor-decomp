@@ -9319,12 +9319,13 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
 
 void *fn_800DDB94(void *arg0)
 {
-    void *StringMap_FindOrInsert(void *);
-    void String_Assign(void *, void *, s32, s32);
-    void *String_CStr(void *);
-    void String_Destroy(void *, s32);
+    extern void *fn_800D59CC(void *);
+    extern void fn_800C9758(void *, void *, s32, s32);
+    extern void *fn_800C93EC(void *);
+    extern void fn_800C9A60(void *, s32);
 
     u32 temp[3];
+    void *source;
     void *result;
 
     temp[1] = 0;
@@ -9332,15 +9333,19 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    String_Assign(
+    source = fn_800D59CC((u8 *)arg0 + 0x68);
+
+    fn_800C9758(
         temp,
-        (u8 *)StringMap_FindOrInsert((u8 *)arg0 + 0x68) + 0xC,
+        (u8 *)source + 0xC,
         0,
         -1
     );
 
-    result = String_CStr(temp);
-    String_Destroy(temp, -1);
+    result = fn_800C93EC(temp);
+
+    fn_800C9A60(temp, -1);
+
     return result;
 }
 
@@ -17492,7 +17497,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
 }
 
 void fn_800F18A4(s32 arg0,s32 arg1) {
-void fn_80060060(void *); f32 fn_80023068(void *,f32,f32); void PSMTXScale(void *,f32,f32,f32);void PSMTXTrans(void *,f32,f32,f32);void PSMTXRotRad(void *,s32,f32);
+void fn_80060060(void *); f32 Map_SampleHeight(void *,f32,f32); void PSMTXScale(void *,f32,f32,f32);void PSMTXTrans(void *,f32,f32,f32);void PSMTXRotRad(void *,s32,f32);
 void *Map_Get(void);void Map_BuildSlopeMatrix(void *,void *,f32,f32);void QUATMtx(void *,void *);void QUATSlerp(void *,void *,void *,f32);void fn_80202640(void *,void *);void PSMTXIdentity(void *);void PSMTXConcat(void *,void *,void *);void PSMTXCopy(void *,void *);
 void Model_SetAlpha(void *,s32);void Model_SetColor(void *,s32,s32,s32);void fn_800606BC(void *);
 extern u8 lbl_8032AC58[],gBattleMap[];extern f32 lbl_8028E588[],lbl_8028E578[];extern f32 lbl_8036A014,lbl_8036A030,lbl_8036A034,lbl_8036A038,lbl_8036A03C;
@@ -17505,7 +17510,7 @@ ys=lbl_8028E588;xs=lbl_8028E578;
 origin=lbl_8032AC58;
 M2C_FIELD(origin,f32 *,0x5E0)=(f32)arg0;M2C_FIELD(base,f32 *,0x5E4)=(f32)arg1;
 offset=lbl_8036A014; x=xs;y=ys;h=base;i=0;
-do {M2C_FIELD(h,f32 *,0x5E8)=fn_80023068(gBattleMap,M2C_FIELD(base,f32 *,0x5E0)+*x,M2C_FIELD(base,f32 *,0x5E4)+*y)-offset;i++;x++;y++;h+=4;}while(i<4);
+do {M2C_FIELD(h,f32 *,0x5E8)=Map_SampleHeight(gBattleMap,M2C_FIELD(base,f32 *,0x5E0)+*x,M2C_FIELD(base,f32 *,0x5E4)+*y)-offset;i++;x++;y++;h+=4;}while(i<4);
 PSMTXScale(m48,lbl_8036A030,lbl_8036A030,lbl_8036A030);
 PSMTXRotRad(m78,0x58,lbl_8036A034);terrain=Map_Get();
 angle=lbl_8036A038;step=lbl_8036A03C; qp=base;obj=base;i=0;
@@ -17535,7 +17540,7 @@ void fn_800F1BFC(void) {
 #pragma use_lmw_stmw on
 void fn_800F1C24(void *arg0) {
 s32 Game_GetFrameCount(void);
-f32 fn_80023068(void *, f32, f32);
+f32 Map_SampleHeight(void *, f32, f32);
 void *Map_Get(void);
 void Map_BuildSlopeMatrix(void *, void *, f32, f32);
 void Model_SetAlpha(void *, s32);
@@ -17572,7 +17577,7 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
     ctx = gBattleState;
     f26 = *(f32 *)(ctx + 0x538);
     f27 = *(f32 *)(ctx + 0x534);
-    f29 = fn_80023068(gBattleMap, f27, f26);
+    f29 = Map_SampleHeight(gBattleMap, f27, f26);
     PSMTXScale(m168, lbl_8036A030, lbl_8036A030, lbl_8036A030);
     PSMTXRotRad(m198, 0x58, lbl_8036A034);
     PSMTXConcat(m198, m168, m138);
@@ -17604,7 +17609,7 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
     same_u8 = same;
     i = 0;
     do {
-        f28 = fn_80023068(map, *(f32 *)((u8 *)self + 0x5E0) + *x, *(f32 *)((u8 *)self + 0x5E4) + *y) - f30;
+        f28 = Map_SampleHeight(map, *(f32 *)((u8 *)self + 0x5E0) + *x, *(f32 *)((u8 *)self + 0x5E4) + *y) - f30;
         if (same_u8 != 0) {
             *(f32 *)(h + 0x5E8) = f29 * (*(f32 *)(h + 0x5E8) + f28);
         } else {
