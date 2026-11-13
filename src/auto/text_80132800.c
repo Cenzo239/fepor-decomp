@@ -9683,7 +9683,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
 
 void *fn_80144584(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
-    void fn_8022C1E8(void *, void *, s32, s32);
+    void Array_Destroy(void *, void *, s32, s32);
     void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_80292358[];
@@ -9693,7 +9693,7 @@ void *fn_80144584(void *arg0, s16 arg1) {
         *(void **)arg0 = lbl_80292358;
         if (arg0 != NULL) {
             *(void **)arg0 = lbl_80292488;
-            fn_8022C1E8((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
+            Array_Destroy((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {
@@ -9812,7 +9812,7 @@ void fn_801447A4(void *arg0, s32 arg1) {
 
 void *fn_801447B4(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
-    void fn_8022C1E8(void *, void *, s32, s32);
+    void Array_Destroy(void *, void *, s32, s32);
     void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_802923E0[];
@@ -9825,7 +9825,7 @@ void *fn_801447B4(void *arg0, s16 arg1) {
             *(void **)arg0 = lbl_80292434;
             if (arg0 != NULL) {
                 *(void **)arg0 = lbl_80292488;
-                fn_8022C1E8((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
+                Array_Destroy((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
                 fn_8013F2A4(arg0, 0);
             }
         }
@@ -9860,7 +9860,7 @@ extern "C" void fn_8014485C(void *arg0) {
 #pragma cplusplus reset
 void *fn_8014488C(void *arg0, s16 arg1) {
     void fn_8013F2A4(void *, s32);
-    void fn_8022C1E8(void *, void *, s32, s32);
+    void Array_Destroy(void *, void *, s32, s32);
     void Heap_Free(void *);
     void *fn_80144610(void *, s16);
     extern void *lbl_80292434[];
@@ -9870,7 +9870,7 @@ void *fn_8014488C(void *arg0, s16 arg1) {
         *(void **)arg0 = lbl_80292434;
         if (arg0 != NULL) {
             *(void **)arg0 = lbl_80292488;
-            fn_8022C1E8((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
+            Array_Destroy((u8 *)arg0 + 0x90, (void *)fn_80144610, 0xC, 0xB);
             fn_8013F2A4(arg0, 0);
         }
         if (arg1 > 0) {

@@ -2,7 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-void fn_8022C1E8(char *block, void (*dtor)(char *, int), int size, unsigned int count) {
+void Array_Destroy(char *block, void (*dtor)(char *, int), int size, unsigned int count) {
     char *p;
     void (*d)(char *, int);
 

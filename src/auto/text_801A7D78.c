@@ -6,7 +6,7 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
     M2C_UNK fn_8001C5F8(s32, M2C_UNK);
     M2C_UNK Heap_Free(u32);
     M2C_UNK fn_801A9EB8(u32);
-    M2C_UNK fn_8022C1E8(s32, M2C_UNK (*)(s32, M2C_UNK), M2C_UNK, M2C_UNK);
+    M2C_UNK Array_Destroy(s32, M2C_UNK (*)(s32, M2C_UNK), M2C_UNK, M2C_UNK);
 
     if (arg0 != 0U) {
         if ((arg0 + 0x5C0) != 0) {
@@ -14,8 +14,8 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
             fn_8001C5F8(arg0 + 0x84C, -1);
             fn_8001C5F8(arg0 + 0x844, -1);
             if (((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0) && ((arg0 + 0x5C0) != 0)) {
-                fn_8022C1E8(arg0 + 0x7AC, fn_8001C5F8, 8, 4);
-                fn_8022C1E8(arg0 + 0x78C, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x7AC, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x78C, fn_8001C5F8, 8, 4);
             }
         }
         if ((arg0 + 0x2E0) != 0) {
@@ -23,8 +23,8 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
             fn_8001C5F8(arg0 + 0x56C, -1);
             fn_8001C5F8(arg0 + 0x564, -1);
             if (((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0) && ((arg0 + 0x2E0) != 0)) {
-                fn_8022C1E8(arg0 + 0x4CC, fn_8001C5F8, 8, 4);
-                fn_8022C1E8(arg0 + 0x4AC, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x4CC, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x4AC, fn_8001C5F8, 8, 4);
             }
         }
         if (arg0 != 0U) {
@@ -32,8 +32,8 @@ u32 Battle_Destroy(u32 arg0, s16 arg1) {
             fn_8001C5F8(arg0 + 0x28C, -1);
             fn_8001C5F8(arg0 + 0x284, -1);
             if ((arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U) && (arg0 != 0U)) {
-                fn_8022C1E8(arg0 + 0x1EC, fn_8001C5F8, 8, 4);
-                fn_8022C1E8(arg0 + 0x1CC, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x1EC, fn_8001C5F8, 8, 4);
+                Array_Destroy(arg0 + 0x1CC, fn_8001C5F8, 8, 4);
             }
         }
         if (arg1 > 0) {

@@ -354,7 +354,7 @@ void fn_800C40F4(u8 *arg0) {
 
 void *fn_800C412C(void *arg0, s16 arg1)
 {
-    void fn_8022C1E8(char *, void (*)(char *, int), int, unsigned int);
+    void Array_Destroy(char *, void (*)(char *, int), int, unsigned int);
     void *fn_8001C5F8(void *, s16);
     void Heap_Free();
 
@@ -365,7 +365,7 @@ void *fn_800C412C(void *arg0, s16 arg1)
     flag = arg1;
 
     if (obj != 0) {
-        fn_8022C1E8(
+        Array_Destroy(
             (char *)obj,
             (void (*)(char *, int))fn_8001C5F8,
             8,
@@ -14062,7 +14062,7 @@ void fn_800E8888(void) {
 }
 
 void *fn_800E89EC(void *arg0, s16 arg1) {
-    void fn_8022C1E8(void *, void *, s32, s32);
+    void Array_Destroy(void *, void *, s32, s32);
     void fn_800DF724(void *, s32);
     void Heap_Free(void *);
     extern void *lbl_8028E2B0[];
@@ -14070,7 +14070,7 @@ void *fn_800E89EC(void *arg0, s16 arg1) {
 
     if (arg0 != NULL) {
         M2C_FIELD(arg0, void ***, 0x40) = lbl_8028E2B0;
-        fn_8022C1E8((s8 *)arg0 + 0xBC, (void *)String_Destroy, 0xC, 3);
+        Array_Destroy((s8 *)arg0 + 0xBC, (void *)String_Destroy, 0xC, 3);
         String_Destroy((s8 *)arg0 + 0xB0, -1);
         if (arg0 != NULL) {
             M2C_FIELD(arg0, void ***, 0x40) = lbl_8028DED0;

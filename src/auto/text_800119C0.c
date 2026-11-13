@@ -2160,7 +2160,7 @@ void fn_800167E4(void *arg0)
     void fn_80016F78(void *);
     void fn_8003B6F0(void *, s32);
     void fn_8003CA94(void *, void *);
-    void fn_8022C1E8(void *, void *, s32, s32);
+    void Array_Destroy(void *, void *, s32, s32);
     void fn_8001C5F8(void);
 
     u8 flags[8];
@@ -2234,14 +2234,14 @@ void fn_800167E4(void *arg0)
         Unit_MoveToList(savedUnits[i], savedIds[i]);
     }
 
-    fn_8022C1E8(list1, fn_8001C5F8, 8, 4);
-    fn_8022C1E8(list2, fn_8001C5F8, 8, 4);
+    Array_Destroy(list1, fn_8001C5F8, 8, 4);
+    Array_Destroy(list2, fn_8001C5F8, 8, 4);
 }
 
 void *fn_800169A8(void *arg0, s16 arg1)
 {
     void Heap_Free(void *);
-    void fn_8022C1E8(void *, void (*)(void), s32, s32);
+    void Array_Destroy(void *, void (*)(void), s32, s32);
     void fn_8001C5F8(void);
 
     if (arg0 != NULL) {
@@ -2263,8 +2263,8 @@ void *fn_800169A8(void *arg0, s16 arg1)
         if (arg0 == NULL) {
             goto after;
         }
-        fn_8022C1E8((u8 *)arg0 + 0x1EC, fn_8001C5F8, 8, 4);
-        fn_8022C1E8((u8 *)arg0 + 0x1CC, fn_8001C5F8, 8, 4);
+        Array_Destroy((u8 *)arg0 + 0x1EC, fn_8001C5F8, 8, 4);
+        Array_Destroy((u8 *)arg0 + 0x1CC, fn_8001C5F8, 8, 4);
     after:
         if (arg1 > 0) {
             Heap_Free(arg0);

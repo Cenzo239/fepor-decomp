@@ -69,7 +69,7 @@ extern s32 fn_80010710(u8* arg0);
 void fn_800AD24C(void) {
     extern u16 lbl_80312ACC[];
     extern void fn_800AD284(void);
-    fn_8022C1E8(lbl_80312ACC, fn_800AD284, 0x10, 0x10);
+    Array_Destroy(lbl_80312ACC, fn_800AD284, 0x10, 0x10);
 }
 
 s32 fn_800AD284(s32 arg0, s16 arg1) {
