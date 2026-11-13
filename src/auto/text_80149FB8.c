@@ -64,15 +64,15 @@ void fn_8014A0D4(void *arg0) {
     void fn_800AA1CC(void);
     void fn_80024398(void *, void *, s32);
     void fn_80146B00(void);
-    extern u8 lbl_80276F00[];
+    extern u8 gSoundMenuStrings[];
     extern s8 lbl_80367700;
     extern s8 lbl_80367701;
     extern s8 lbl_80367705;
     extern s32 lbl_80367B60;
     void *tmp;
 
-    fn_80109180(&lbl_80276F00[0xD], arg0);
-    tmp = fn_80109180(&lbl_80276F00[0x16], arg0);
+    fn_80109180(&gSoundMenuStrings[0xD], arg0);
+    tmp = fn_80109180(&gSoundMenuStrings[0x16], arg0);
     *((u8 *)tmp + 0x60) = 0;
     fn_800AA1CC();
     lbl_80367705 = 1;
@@ -86,7 +86,7 @@ void fn_8014A0D4(void *arg0) {
 void fn_8014A160(void *arg0) {
     extern f32 lbl_8036A7B8;
     extern f32 lbl_8036A7BC;
-    extern u8 lbl_80276F00[];
+    extern u8 gSoundMenuStrings[];
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
@@ -100,15 +100,15 @@ void fn_8014A160(void *arg0) {
     Prim2D_SetTransform(lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7BC);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    Text_Draw(0x20, 0x1A4, 1, lbl_80276F00 + 0x2B);
+    Text_Draw(0x20, 0x1A4, 1, gSoundMenuStrings + 0x2B);
     *(s32 *)((u8 *)arg0 + 0x30) = *(s32 *)((u8 *)arg0 + 0x30) + 1;
     if (*(s32 *)((u8 *)arg0 + 0x30) == 0xE10) {
-        fn_80109C1C(fn_801090C0(lbl_80276F00 + 0xD), 0xFF);
-        fn_80109C80(fn_801090C0(lbl_80276F00 + 0x16), 0xFF);
+        fn_80109C1C(fn_801090C0(gSoundMenuStrings + 0xD), 0xFF);
+        fn_80109C80(fn_801090C0(gSoundMenuStrings + 0x16), 0xFF);
     }
     if (*(s32 *)((u8 *)arg0 + 0x30) == 0x1C20) {
-        fn_80109C80(fn_801090C0(lbl_80276F00 + 0xD), 0xFF);
-        fn_80109C1C(fn_801090C0(lbl_80276F00 + 0x16), 0xFF);
+        fn_80109C80(fn_801090C0(gSoundMenuStrings + 0xD), 0xFF);
+        fn_80109C1C(fn_801090C0(gSoundMenuStrings + 0x16), 0xFF);
         *(s32 *)((u8 *)arg0 + 0x30) = 0;
     }
 }

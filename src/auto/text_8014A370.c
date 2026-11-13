@@ -35,13 +35,13 @@ s32 fn_8014A380(void) {
 }
 
 void *fn_8014A388(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0x99;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0x99;
 }
 
 void *fn_8014A398(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0xc6;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0xc6;
 }
 
 s32 fn_8014A3A8(void) {
@@ -82,8 +82,8 @@ s32 fn_8014A3A8(void) {
 }
 
 void *fn_8014A4C8(void) {
-    extern char lbl_80276F00[];
-    return &lbl_80276F00[0xCF];
+    extern char gSoundMenuStrings[];
+    return &gSoundMenuStrings[0xCF];
 }
 
 s32 fn_8014A4D8(void) {
@@ -95,8 +95,8 @@ s32 fn_8014A4E0(void) {
 }
 
 void *fn_8014A4E8(void) {
-    extern u16 lbl_80276F00[];
-    return (char *)lbl_80276F00 + 0xDE;
+    extern u16 gSoundMenuStrings[];
+    return (char *)gSoundMenuStrings + 0xDE;
 }
 
 void fn_800C426C(s32);
@@ -106,7 +106,7 @@ void fn_80024398(void *, s32, s32);
 #pragma opt_strength_reduction off
 s32 fn_8014A4F8(s32 arg0, s32 arg1)
 {
-    extern u16 lbl_80276F00[];
+    extern u16 gSoundMenuStrings[];
     void fn_800C426C(s32);
     s32 fn_800C42AC(s32);
     void *fn_8003FCCC(void *);
@@ -153,7 +153,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
         *(s32 *)(lbl_80367B00 + temp_r0) = 0;
     }
     lbl_80367B04 = 0;
-    var_r3 = fn_8003FCCC((u8 *)lbl_80276F00 + 0x6b);
+    var_r3 = fn_8003FCCC((u8 *)gSoundMenuStrings + 0x6b);
     goto loop_check;
 loop_body:
     if ((s8)lbl_80367B08 == 0) {
@@ -185,13 +185,13 @@ loop_check:
     return 0;
 }
 void *fn_8014A6FC(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0xEC;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0xEC;
 }
 
 s32 fn_8014A70C(s32 arg0, s32 arg1)
 {
-    extern u16 lbl_80276F00[];
+    extern u16 gSoundMenuStrings[];
     s32 off;
     s32 ctr;
     u8 *node;
@@ -228,7 +228,7 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
     } while (--ctr != 0);
 
     lbl_80367B04 = 0;
-    node = fn_8003FCCC((u8 *)lbl_80276F00 + 0x6b);
+    node = fn_8003FCCC((u8 *)gSoundMenuStrings + 0x6b);
     goto check;
 
 loop:

@@ -201,7 +201,7 @@ s32 fn_8014ACE8(s32 unused0, s32 unused1, s32 arg2) {
 char *fn_8014AD34(void) {
     void sprintf(void *, void *, ...);
     extern char lbl_803306E8[];
-    extern u8 lbl_80276F00[];
+    extern u8 gSoundMenuStrings[];
     extern u8 lbl_80367B0D;
     extern u8 lbl_80367B0E;
     s32 page;
@@ -210,7 +210,7 @@ char *fn_8014AD34(void) {
 
     page = (s8)lbl_80367B0D + 1;
     total = (s8)lbl_80367B0E;
-    fmt = lbl_80276F00 + 0xF0;
+    fmt = gSoundMenuStrings + 0xF0;
     sprintf(lbl_803306E8, fmt, page, total);
     return lbl_803306E8;
 }
@@ -232,8 +232,8 @@ s32 fn_8014ADA0(void) {
 }
 
 void *fn_8014ADAC(void) {
-    extern char lbl_80276F00[];
-    return &lbl_80276F00[0x104];
+    extern char gSoundMenuStrings[];
+    return &gSoundMenuStrings[0x104];
 }
 
 u16 fn_8014ADBC(void) {
@@ -342,7 +342,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     extern f32 lbl_8036A7BC;
     extern f32 lbl_8036A7C0;
     extern f32 lbl_8036A7C4;
-    extern u8 lbl_80276F00[];
+    extern u8 gSoundMenuStrings[];
     char sp8[8];
 
     Prim2D_Begin();
@@ -361,7 +361,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
         Prim2D_SetTint(0, 0, 0, 0xFF);
     }
     Prim2D_EndPrim();
-    sprintf(sp8, lbl_80276F00 + 0x10D, ((Obj *)arg0)->v20());
+    sprintf(sp8, gSoundMenuStrings + 0x10D, ((Obj *)arg0)->v20());
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x60), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
@@ -401,8 +401,8 @@ s32 fn_8014B234(void) {
 }
 
 void *fn_8014B23C(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0x113;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0x113;
 }
 
 s16 fn_8014B24C(void) {
@@ -421,8 +421,8 @@ s32 fn_8014B264(void) {
 }
 
 void *fn_8014B26C(void) {
-    extern char lbl_80276F00[];
-    return &lbl_80276F00[0x119];
+    extern char gSoundMenuStrings[];
+    return &gSoundMenuStrings[0x119];
 }
 
 u8 fn_8014B27C(void) {
@@ -437,8 +437,8 @@ void fn_8014B288(u8 arg0, u8 arg1) {
 }
 
 void *fn_8014B294(void) {
-    extern u8 lbl_80276F00[];
-    return &lbl_80276F00[0x11F];
+    extern u8 gSoundMenuStrings[];
+    return &gSoundMenuStrings[0x11F];
 }
 
 u8 fn_8014B2A4(void) {
@@ -453,8 +453,8 @@ void fn_8014B2B0(u8 arg0, u8 arg1) {
 }
 
 void *fn_8014B2BC(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0x126;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0x126;
 }
 
 u8 fn_8014B2CC(void) {
@@ -473,8 +473,8 @@ s32 fn_8014B2E4(void) {
 }
 
 void *fn_8014B2EC(void) {
-    extern u16 lbl_80276F00[];
-    return (u8 *)lbl_80276F00 + 0x12a;
+    extern u16 gSoundMenuStrings[];
+    return (u8 *)gSoundMenuStrings + 0x12a;
 }
 
 u8 fn_8014B2FC(void) {
