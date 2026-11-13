@@ -1704,7 +1704,7 @@ extern "C" void fn_801B14DC(void *arg0) {
 }
 
 #pragma cplusplus reset
-void fn_801B1A7C(void *arg0) {
+void Ui_ShowConfirmChild(void *arg0) {
     u32 Ui_FindChild();
     void Ui_AddChild(void *, void *);
     f32 fn_8013893C(void *);
