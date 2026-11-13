@@ -244,28 +244,29 @@ extern f64 __floor_zero;
 extern f64 lbl_8036C148;
 
 #pragma scheduling off
-void SetExiInterruptMask(s32 arg0, void *arg1) {
+/* Mask or unmask the EXI interrupt for chan based on callback/lock state. */
+void SetExiInterruptMask(s32 chan, EXIControl *exi) {
     void __OSMaskInterrupts(u32);
     void __OSUnmaskInterrupts(u32);
     u32 __OSGetInterruptHandler(u32);
     u32 *ecb2 = (u32 *)((u8 *)Ecb_8033E188 + 0x80);
-    switch (arg0) {
+    switch (chan) {
     case 0:
-        if (((u32)M2C_FIELD(arg1, u32 *, 0) == 0U && *ecb2 == 0U) || (M2C_FIELD(arg1, s32 *, 0xC) & 0x10)) {
+        if (((u32)M2C_FIELD(exi, u32 *, 0) == 0U && *ecb2 == 0U) || (M2C_FIELD(exi, s32 *, 0xC) & 0x10)) {
             __OSMaskInterrupts(0x410000);
             return;
         }
         __OSUnmaskInterrupts(0x410000);
         return;
     case 1:
-        if (((u32)M2C_FIELD(arg1, u32 *, 0) == 0U) || (M2C_FIELD(arg1, s32 *, 0xC) & 0x10)) {
+        if (((u32)M2C_FIELD(exi, u32 *, 0) == 0U) || (M2C_FIELD(exi, s32 *, 0xC) & 0x10)) {
             __OSMaskInterrupts(0x80000);
             return;
         }
         __OSUnmaskInterrupts(0x80000);
         return;
     case 2:
-        if ((__OSGetInterruptHandler(0x19) == 0U) || (M2C_FIELD(arg1, s32 *, 0xC) & 0x10)) {
+        if ((__OSGetInterruptHandler(0x19) == 0U) || (M2C_FIELD(exi, s32 *, 0xC) & 0x10)) {
             __OSMaskInterrupts(0x40);
             return;
         }
