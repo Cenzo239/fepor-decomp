@@ -944,7 +944,7 @@ void UnitInv_Refresh(void *arg0) {
 }
 
 #pragma global_optimizer off
-s32 MapCursor_GetUnit(void *arg0) {
+s32 MapCursor_GetItem(void *arg0) {
     u32 *Unit_GetItemSlot(s32, s32);
     s16 slot = *(s16 *)((u8 *)arg0 + 0x4C);
     s32 idx = slot;
@@ -6281,7 +6281,7 @@ void Ui_ConfirmItemDiscard(void *arg0) {
     void Process_CreateChild(void *, void *);
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void *);
-    s32 MapCursor_GetUnit(void *);
+    s32 MapCursor_GetItem(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
     typedef struct { u8 hi : 1; u8 lo : 7; } Bit7;
@@ -6297,7 +6297,7 @@ void Ui_ConfirmItemDiscard(void *arg0) {
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
         temp_r28 = M2C_FIELD(arg0, void **, 0x4C);
-        temp_r31 = (void *)MapCursor_GetUnit(temp_r28);
+        temp_r31 = (void *)MapCursor_GetItem(temp_r28);
         if (temp_r31 != NULL) {
             ((u8 *)gUiContext)[8] = 5;
             gUiContext[1] = gUiContext[0];
@@ -6342,7 +6342,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void fn_80138808(void *, void *);
     extern u32 gUiContext[];
     void fn_801475FC(void *, s32);
-    u32 MapCursor_GetUnit(void *);
+    u32 MapCursor_GetItem(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -6390,10 +6390,10 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
 
     self = arg0;
     cursorWidget = *(void **)((u8 *)arg0 + 0x4C);
-    unit = MapCursor_GetUnit(cursorWidget);
+    unit = MapCursor_GetItem(cursorWidget);
     Ui_UpdatePanelWidgets(arg0);
-    if (unit != MapCursor_GetUnit(cursorWidget)) {
-        unit = MapCursor_GetUnit(cursorWidget);
+    if (unit != MapCursor_GetItem(cursorWidget)) {
+        unit = MapCursor_GetItem(cursorWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (unit != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)cursorWidget)->v10();
@@ -6687,7 +6687,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     u32 *Item_GetFlagsPtr(u32);
     void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
-    u32 MapCursor_GetUnit(void *);
+    u32 MapCursor_GetItem(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -6735,10 +6735,10 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
 
     self = proc;
     cursor = *(void **)((u8 *)proc + 0x4C);
-    unit = MapCursor_GetUnit(cursor);
+    unit = MapCursor_GetItem(cursor);
     Ui_UpdatePanelWidgets(proc);
-    if (unit != MapCursor_GetUnit(cursor)) {
-        unit = MapCursor_GetUnit(cursor);
+    if (unit != MapCursor_GetItem(cursor)) {
+        unit = MapCursor_GetItem(cursor);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (unit != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)cursor)->v10();
@@ -7459,7 +7459,7 @@ extern "C" void fn_80171C0C(void *arg0) {
 void fn_80171D04(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_800271C8(void *, void *);
-    u32 MapCursor_GetUnit(void *);
+    u32 MapCursor_GetItem(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
     extern u16 gUiMsgStrings[];
@@ -7471,7 +7471,7 @@ void fn_80171D04(void *arg0) {
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
         temp_r30 = M2C_FIELD(arg0, void **, 0x4C);
-        if (MapCursor_GetUnit(temp_r30) != 0) {
+        if (MapCursor_GetItem(temp_r30) != 0) {
             ((u8 *)gUiContext)[8] = 4;
             gUiContext[1] = gUiContext[0];
             temp_r0 = M2C_FIELD(temp_r30, s16 *, 0x4C);
@@ -7503,7 +7503,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     extern u32 gUiContext[];
     void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
-    u32 MapCursor_GetUnit(void *);
+    u32 MapCursor_GetItem(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -7553,10 +7553,10 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     self = arg0;
     cursorWidget = *(void **)((u8 *)arg0 + 0x4C);
     textWidget = Ui_FindChild(arg0, 0x106, 0);
-    unit = MapCursor_GetUnit(cursorWidget);
+    unit = MapCursor_GetItem(cursorWidget);
     Ui_UpdatePanelWidgets(arg0);
-    if (unit != MapCursor_GetUnit(cursorWidget)) {
-        unit = MapCursor_GetUnit(cursorWidget);
+    if (unit != MapCursor_GetItem(cursorWidget)) {
+        unit = MapCursor_GetItem(cursorWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (unit != 0) {
                 *(Vec2s *)&sp1C = ((Obj *)cursorWidget)->v10();
@@ -7902,7 +7902,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     void fn_80094CDC(void *, s16);
     void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
-    u32 MapCursor_GetUnit(void *);
+    u32 MapCursor_GetItem(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
     void Ui_HideUnitInfoPopup(void *);
@@ -7952,10 +7952,10 @@ extern "C" void fn_80172DA4(void *arg0) {
 
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    var_r29 = MapCursor_GetUnit(obj4c);
+    var_r29 = MapCursor_GetItem(obj4c);
     Ui_UpdatePanelWidgets(arg0);
-    if (var_r29 != MapCursor_GetUnit(obj4c)) {
-        var_r29 = MapCursor_GetUnit(obj4c);
+    if (var_r29 != MapCursor_GetItem(obj4c)) {
+        var_r29 = MapCursor_GetItem(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             if (var_r29 != 0) {
                 *(Vec2s *)&sp14 = ((Obj *)obj4c)->v10();
@@ -8187,7 +8187,7 @@ s32 *ListWidget_GetSelected(void *);
 void fn_80143C9C(void *);
 void fn_80143E0C(void *, s16);
 void Ui_PlaySeCue(void *, s32);
-u32 MapCursor_GetUnit(void *);
+u32 MapCursor_GetItem(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoPopup(void *, u32, f32, f32);
 void Ui_HideUnitInfoPopup(void *);
@@ -8237,10 +8237,10 @@ u8 ok;
 self = arg0;
 obj4c = *(void **)((u8 *)arg0 + 0x4C);
 obj54 = *(void **)((u8 *)arg0 + 0x54);
-var_r27 = MapCursor_GetUnit(obj4c);
+var_r27 = MapCursor_GetItem(obj4c);
 Ui_UpdatePanelWidgets(arg0);
-if (var_r27 != MapCursor_GetUnit(obj4c)) {
-var_r27 = MapCursor_GetUnit(obj4c);
+if (var_r27 != MapCursor_GetItem(obj4c)) {
+var_r27 = MapCursor_GetItem(obj4c);
 if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
 if (var_r27 != 0 && *(u32 *)var_r27 != 0) {
 *(Vec2s *)&sp10 = ((Obj *)obj4c)->v10();
@@ -8268,7 +8268,7 @@ obj = Process_CreateChild(gUiMsgPopupProc, self);
 void *r28 = *(void **)((u8 *)self + 0x54);
 void *r26a = *(void **)((u8 *)self + 0x4C);
 s32 *r27b = ListWidget_GetSelected(r28);
-u32 *r26b = (u32 *)MapCursor_GetUnit(r26a);
+u32 *r26b = (u32 *)MapCursor_GetItem(r26a);
 if (r26b != 0 && r27b != 0) {
 u32 r5 = *r26b;
 register u32 r25;
