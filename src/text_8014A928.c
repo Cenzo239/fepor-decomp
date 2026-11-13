@@ -339,7 +339,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
     void Prim2D_SetTint(s32, s32, s32, s32);
     void Prim2D_EndPrim(void);
     void sprintf(void *, void *, ...);
-    extern f32 lbl_8036A7BC;
+    extern f32 gOneF;
     extern f32 lbl_8036A7C0;
     extern f32 lbl_8036A7C4;
     extern u8 gSoundMenuStrings[];
@@ -347,7 +347,7 @@ void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
 
     Prim2D_Begin();
     Prim2D_SetTransform((f32)*(s16 *)((u8 *)arg1 + 0x30), (f32)*(s16 *)((u8 *)arg1 + 0x32),
-                (*(Model **)((u8 *)arg1 + 0x3C))->v25() - lbl_8036A7C0, lbl_8036A7BC);
+                (*(Model **)((u8 *)arg1 + 0x3C))->v25() - lbl_8036A7C0, gOneF);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);

@@ -85,7 +85,7 @@ void fn_8014A0D4(void *arg0) {
 
 void fn_8014A160(void *arg0) {
     extern f32 lbl_8036A7B8;
-    extern f32 lbl_8036A7BC;
+    extern f32 gOneF;
     extern u8 gSoundMenuStrings[];
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -97,7 +97,7 @@ void fn_8014A160(void *arg0) {
     void fn_80109C80(void *, s32);
 
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7BC);
+    Prim2D_SetTransform(lbl_8036A7B8, lbl_8036A7B8, lbl_8036A7B8, gOneF);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Text_Draw(0x20, 0x1A4, 1, gSoundMenuStrings + 0x2B);
