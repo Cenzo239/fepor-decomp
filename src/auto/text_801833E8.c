@@ -11509,7 +11509,7 @@ s32 Map_SelectObjAt(s32 x, s32 y) {
     return 1;
 }
 
-s32 Map_ShowLinkedAt(s32 arg0, s32 arg1) {
+s32 Map_ShowLinkedAt(s32 x, s32 y) {
     extern u8 gMapObjEventList[];
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
@@ -11520,27 +11520,28 @@ s32 Map_ShowLinkedAt(s32 arg0, s32 arg1) {
     s32 MapObj_IsVisible(void *);
     void MapObj_Show(void *, u8);
     void MapObjEvent_Remove(void *, s32, s32, u8);
-    s32 sp8[10];
+    s32 linked[10];
     s32 count;
     s32 i;
-    s32 v;
+    s32 entry;
     s32 *p;
 
+    /* Show linked map objects at (x,y) and clear event 0x22; fail if none. */
     {
-        void *temp1 = Map_FindObjAt((void *)Map_Get(), arg0, arg1, 0x800, 0x10);
-        if (temp1 == NULL) {
+        void *obj = Map_FindObjAt((void *)Map_Get(), x, y, 0x800, 0x10);
+        if (obj == NULL) {
             fn_800056A0(0);
             return 0;
         }
-        MapObjEvent_Remove(gMapObjEventList, (s8)arg0, (s8)arg1, 0x22);
-        count = Map_CollectLinkedObjs((void *)Map_Get(), temp1, sp8);
+        MapObjEvent_Remove(gMapObjEventList, (s8)x, (s8)y, 0x22);
+        count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
     }
-    p = sp8;
+    p = linked;
     i = 0;
     while (i < count) {
-        v = *p;
-        if ((u8)MapObj_IsVisible((void *)v) == 0) {
-            MapObj_Show((void *)v, 0);
+        entry = *p;
+        if ((u8)MapObj_IsVisible((void *)entry) == 0) {
+            MapObj_Show((void *)entry, 0);
         }
         p++;
         i++;
