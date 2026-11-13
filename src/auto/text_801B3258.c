@@ -794,7 +794,7 @@ s32 fn_801B70C8(void) {
     void fn_800056CC(void *, ...);
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 lbl_8027C370[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8032BB58[];
     void *table;
     u8 *map;
@@ -805,7 +805,7 @@ s32 fn_801B70C8(void) {
 
     sum = 0;
     fn_800056CC(lbl_8027C370 + 0x18B);
-    map = lbl_802CA518;
+    map = gBattleMap;
     y = (s8)map[9];
     table = lbl_8032BB58;
     for (; y <= (s8)map[0xB] - 1; y++) {

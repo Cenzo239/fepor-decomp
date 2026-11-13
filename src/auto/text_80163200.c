@@ -4493,7 +4493,7 @@ void fn_8016C3C8(void *arg0) {
     void *memset(void *, s32, s32);
     extern u8 lbl_80277EA0[];
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern f32 lbl_8036AA48;
     extern f32 lbl_8036AA94;
     extern f32 lbl_8036AA98;
@@ -4595,7 +4595,7 @@ void fn_8016C3C8(void *arg0) {
             if (flags[kind] != 0) {
                 name = fn_800377D8(unit);
                 if ((*(u32 *)((u8 *)unit + 0x1A0) & 0xD8) == 0 &&
-                    fn_8001F4CC(lbl_802CA518, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) != 0) {
+                    fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F)) != 0) {
                     cur = *(void **)((u8 *)self + 0x3C);
                     while (cur != NULL) {
                         t = *(u8 *)cur;

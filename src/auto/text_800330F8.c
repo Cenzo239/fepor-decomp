@@ -6449,7 +6449,7 @@ void fn_80041514(void *arg0, char *arg1)
     extern f32 lbl_80368F24;
     extern f32 lbl_80368F28;
     extern f32 lbl_80368EF4;
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8036729C;
     extern u8 lbl_80367298;
     extern u8 lbl_80367294;
@@ -6553,7 +6553,7 @@ void fn_80041514(void *arg0, char *arg1)
             cursor = (u8 *)cursor + 2;
             scale = lbl_80368F10 / fn_8001B84C(&cursor);
         }
-        *(f32 *)(lbl_802CA518 + 0x1C2D4) = scale;
+        *(f32 *)(gBattleMap + 0x1C2D4) = scale;
 
         if (fn_8000D354(lbl_8026A660 + 0x17D) != 0) {
             bytes = (u8 *)fn_8000D2BC(lbl_8026A660 + 0x17D);
@@ -7332,7 +7332,7 @@ void fn_80043F9C(void *cam, f32 *mtx, f32 x, f32 y) {
     f32 Map_GetTileCornerHeight(void *, s32, s32, s32);
     void fn_80203290(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8026A590[];
     extern f32 lbl_80368F10;
     extern f32 lbl_80368F00;
@@ -7363,12 +7363,12 @@ void fn_80043F9C(void *cam, f32 *mtx, f32 x, f32 y) {
     tbl = lbl_8026A590;
     ix = (s32)x;
     iy = (s32)y;
-    base = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 0);
+    base = Map_GetTileCornerHeight(gBattleMap, ix, iy, 0);
 
     *(u32 *)&sp50[0] = *(u32 *)(tbl + 0x94);
     *(u32 *)&sp50[1] = *(u32 *)(tbl + 0x98);
     *(u32 *)&sp50[2] = *(u32 *)(tbl + 0x9C);
-    tmp = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 1) - base;
+    tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 1) - base;
     {
         u32 t2;
         u32 tz;
@@ -7386,19 +7386,19 @@ void fn_80043F9C(void *cam, f32 *mtx, f32 x, f32 y) {
         *(u32 *)&sp5C[1] = *(u32 *)(tbl + 0xA4);
         *(u32 *)&sp5C[2] = *(u32 *)(tbl + 0xA8);
     }
-    tmp = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 2) - base;
+    tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 2) - base;
     *(u32 *)&sp44[0] = *(u32 *)&sp5C[0];
     *(u32 *)&sp44[1] = *(u32 *)&sp5C[1];
     sp5C[2] = tmp;
     *(u32 *)&sp44[2] = *(u32 *)&sp5C[2];
     fn_80203290(sp38, sp44, sp74);
 
-    base = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 3);
+    base = Map_GetTileCornerHeight(gBattleMap, ix, iy, 3);
 
     *(u32 *)&sp20[0] = *(u32 *)(tbl + 0x7C);
     *(u32 *)&sp20[1] = *(u32 *)(tbl + 0x80);
     *(u32 *)&sp20[2] = *(u32 *)(tbl + 0x84);
-    tmp = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 2) - base;
+    tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 2) - base;
     {
         u32 t2;
         u32 tz;
@@ -7416,7 +7416,7 @@ void fn_80043F9C(void *cam, f32 *mtx, f32 x, f32 y) {
         *(u32 *)&sp2C[1] = *(u32 *)(tbl + 0x8C);
         *(u32 *)&sp2C[2] = *(u32 *)(tbl + 0x90);
     }
-    tmp = Map_GetTileCornerHeight(lbl_802CA518, ix, iy, 1) - base;
+    tmp = Map_GetTileCornerHeight(gBattleMap, ix, iy, 1) - base;
     *(u32 *)&sp14[0] = *(u32 *)&sp2C[0];
     *(u32 *)&sp14[1] = *(u32 *)&sp2C[1];
     sp2C[2] = tmp;
@@ -7482,7 +7482,7 @@ void fn_80023B80(void *);
 void fn_80045604(void *);
 u8 fn_8005B7A4(void *);
 extern u8 lbl_8026A660[];
-extern u8 lbl_802CA518[];
+extern u8 gBattleMap[];
 
     void *tblA;
     u16 *idxA;
@@ -7527,7 +7527,7 @@ extern u8 lbl_802CA518[];
         tblB = fn_8000D2BC(lbl_8026A660 + 0x2A0);
         idxB = fn_8000D2BC(lbl_8026A660 + 0x2B0);
     }
-    ca = lbl_802CA518;
+    ca = gBattleMap;
     for (row = 0; row < *(s16 *)((u8 *)arg0 + 2); row++) {
         rowSl = (s8)row << 6;
         rowPtr = ca + rowSl;
@@ -7615,7 +7615,7 @@ extern u8 lbl_802CA518[];
                 }
                 tblA = fn_8000D2BC(lbl_8026A660 + 0x26A);
                 idxA = fn_8000D2BC(lbl_8026A660 + 0x27A);
-                ca = lbl_802CA518;
+                ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
@@ -7660,7 +7660,7 @@ extern u8 lbl_802CA518[];
                 }
                 tblA = fn_8000D2BC(lbl_8026A660 + 0x26A);
                 idxA = fn_8000D2BC(lbl_8026A660 + 0x27A);
-                ca = lbl_802CA518;
+                ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
@@ -7694,9 +7694,9 @@ extern u8 lbl_802CA518[];
             }
         }
     }
-    fn_80023B80(lbl_802CA518);
+    fn_80023B80(gBattleMap);
     fn_80045604(arg0);
-    fn_80023A4C(lbl_802CA518);
+    fn_80023A4C(gBattleMap);
     if ((u8)arg1 != 0) {
         fn_80015DEC();
         *(u32 *)((u8 *)arg0 + 0x64) |= 1;
@@ -7708,12 +7708,12 @@ void fn_8004496C(void *arg0, u8 arg1) {
     void fn_80023A4C(void *);
     void fn_80023B80(void *);
     void fn_80045604(void *);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
 
-    fn_80023B80(lbl_802CA518);
+    fn_80023B80(gBattleMap);
     fn_80045604(arg0);
     if (arg1 != 0) {
-        fn_80023A4C(lbl_802CA518);
+        fn_80023A4C(gBattleMap);
     }
 }
 
@@ -7730,7 +7730,7 @@ void fn_80044BE4(void *arg0) {
     void fn_800056CC(void *, s32);
     void *memcpy(void *, void *, s32);
     extern u8 lbl_8026A660[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern f32 lbl_80368F58;
     volatile f32 *wgpipe;
     void *buf;
@@ -7761,7 +7761,7 @@ void fn_80044BE4(void *arg0) {
         above = (u8 *)buf + (((y - 1) << 7) + margin);
         while (x < M2C_FIELD(arg0, s16 *, 0) - margin) {
             *cell = 0;
-            tile = lbl_802CA518[((s8)y << 6) + ((s8)x + 0x100D)];
+            tile = gBattleMap[((s8)y << 6) + ((s8)x + 0x100D)];
             do_edge = 0;
             if (tile == 0xB) {
             } else if (tile >= 0xB) {
@@ -7784,10 +7784,10 @@ void fn_80044BE4(void *arg0) {
                 } else if (cell[-1] == 0) {
                     *cell |= 1;
                 } else {
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)(x - 1), (s8)y, 1);
-                    dx = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0) - a;
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)(x - 1), (s8)y, 3);
-                    dy = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 2) - a;
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)y, 1);
+                    dx = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0) - a;
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)y, 3);
+                    dy = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2) - a;
                     if (dy * dy + dx * dx >= lbl_80368F58) {
                         *cell |= 1;
                     }
@@ -7797,10 +7797,10 @@ void fn_80044BE4(void *arg0) {
                 } else if (*above == 0) {
                     *cell |= 8;
                 } else {
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)(y - 1), 2);
-                    dx = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0) - a;
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)(y - 1), 3);
-                    dy = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 1) - a;
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)(y - 1), 2);
+                    dx = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0) - a;
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)(y - 1), 3);
+                    dy = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1) - a;
                     if (dy * dy + dx * dx >= lbl_80368F58) {
                         *cell |= 8;
                     }
@@ -7838,15 +7838,15 @@ void fn_80044BE4(void *arg0) {
                 } else if (tile >= 7) {
                 } else if (tile >= 6) {
                     fn_80220DEC(0xB0, 0, 3);
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 1);
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                     wgpipe[0] = (f32)(x + 1);
                     wgpipe[0] = (f32)y;
                     wgpipe[0] = a;
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 3);
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
                     wgpipe[0] = (f32)(x + 1);
                     wgpipe[0] = (f32)(y + 1);
                     wgpipe[0] = a;
-                    a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 2);
+                    a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
                     wgpipe[0] = (f32)x;
                     wgpipe[0] = (f32)(y + 1);
                     wgpipe[0] = a;
@@ -7854,61 +7854,61 @@ void fn_80044BE4(void *arg0) {
                 goto next2;
             case_7:
                 fn_80220DEC(0xB0, 0, 4);
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 1);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
                 goto next2;
             case_e:
                 fn_80220DEC(0xB0, 0, 4);
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 1);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
                 goto next2;
             case_f:
                 fn_80220DEC(0xB0, 0, 5);
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 1);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 1);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 3);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 3);
                 wgpipe[0] = (f32)(x + 1);
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 2);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 2);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)(y + 1);
                 wgpipe[0] = a;
-                a = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0);
+                a = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
                 wgpipe[0] = (f32)x;
                 wgpipe[0] = (f32)y;
                 wgpipe[0] = a;
@@ -7941,7 +7941,7 @@ void fn_80045604(s32 unused) {
     void *fn_8000D2BC(void *);
     u32 fn_8000D354(void *);
     extern u8 lbl_8026A660[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
 
     typedef struct { u8 pad[0x408E]; u16 flags; } FlagTile;
 
@@ -7969,7 +7969,7 @@ void fn_80045604(s32 unused) {
                 y = (s8)p[1];
                 v = p[2];
                 p += 3;
-                ((FlagTile *)(lbl_802CA518 + ((x + (y << 6)) * 2)))->flags = v;
+                ((FlagTile *)(gBattleMap + ((x + (y << 6)) * 2)))->flags = v;
             }
         }
     }
@@ -7978,7 +7978,7 @@ void fn_80045604(s32 unused) {
         data = fn_8000D2BC(lbl_8026A660 + 0x2DB);
         count = *data;
         p = (u8 *)data + 2;
-        base = lbl_802CA518;
+        base = gBattleMap;
         n = count;
         if (n > 0) {
             pairs = (u32)n >> 1;
@@ -8025,7 +8025,7 @@ void fn_80045604(s32 unused) {
                 y = (s8)p[1];
                 v = p[2];
                 p += 3;
-                ((FlagTile *)(lbl_802CA518 + ((x + (y << 6)) * 2)))->flags =
+                ((FlagTile *)(gBattleMap + ((x + (y << 6)) * 2)))->flags =
                     (u16)(v + (((~v) << 4) & 0xF0));
             }
         }
@@ -9623,7 +9623,7 @@ void Map_DrawRangeTiles(void) {
     extern f32 lbl_80368F8C;
     extern f64 lbl_80368F90;
     extern s32 lbl_803674F0;
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     u32 sp8;
     f32 spC[12];
     u8 sp3C[16][32];
@@ -9672,15 +9672,15 @@ void Map_DrawRangeTiles(void) {
             i += 1;
             p += 0x20;
         } while (i < 0x10);
-        y = *(s32 *)(lbl_802CA518 + 4) - 1;
+        y = *(s32 *)(gBattleMap + 4) - 1;
         yOff = y << 6;
         goto y_test;
         do {
-            x = *(s32 *)lbl_802CA518 - 1;
+            x = *(s32 *)gBattleMap - 1;
             pos = x + yOff;
             goto x_test;
             do {
-                tile = *(u16 *)(lbl_802CA518 + 0x1218E + (pos << 1));
+                tile = *(u16 *)(gBattleMap + 0x1218E + (pos << 1));
                 if (tile & 0x2000) {
                     off = (tile >> 4) & 15;
                     fn_80222C50(sp3C[off], 0);
@@ -9689,25 +9689,25 @@ void Map_DrawRangeTiles(void) {
                     fx1 = lbl_80368F8C + fx;
                     fy1 = lbl_80368F8C + fy;
                     fn_80220DEC(0x98, 0, 4);
-                    z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 0);
+                    z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                     *(f32 *)0xCC008000 = fx;
                     *(f32 *)0xCC008000 = fy;
                     *(f32 *)0xCC008000 = z;
                     *(u8 *)0xCC008000 = 0;
                     *(u8 *)0xCC008000 = 0;
-                    z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 1);
+                    z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                     *(f32 *)0xCC008000 = fx1;
                     *(f32 *)0xCC008000 = fy;
                     *(f32 *)0xCC008000 = z;
                     *(u8 *)0xCC008000 = 1;
                     *(u8 *)0xCC008000 = 0;
-                    z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 2);
+                    z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                     *(f32 *)0xCC008000 = fx;
                     *(f32 *)0xCC008000 = fy1;
                     *(f32 *)0xCC008000 = z;
                     *(u8 *)0xCC008000 = 0;
                     *(u8 *)0xCC008000 = 1;
-                    z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 3);
+                    z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                     *(f32 *)0xCC008000 = fx1;
                     *(f32 *)0xCC008000 = fy1;
                     *(f32 *)0xCC008000 = z;
@@ -9795,7 +9795,7 @@ extern f32 lbl_80368F84;
 extern f32 lbl_80368F88;
 extern f32 lbl_80368F8C;
 extern f64 lbl_80368F90;
-extern u8 lbl_802CA518[];
+extern u8 gBattleMap[];
 extern u8 lbl_80285828[];
     f32 sp8[12];
     u8 *ca;
@@ -9836,7 +9836,7 @@ extern u8 lbl_80285828[];
         GXLoadPosMtxImm(sp8, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 1, 0);
-        ca = lbl_802CA518;
+        ca = gBattleMap;
         k8c = lbl_80368F8C;
         pal = lbl_80285828;
         k90 = lbl_80368F90;
@@ -9853,7 +9853,7 @@ extern u8 lbl_80285828[];
             goto x_test;
             do {
                 if ((s8)*(cell + 0xE18E) == 0) {
-                    th = *(s16 *)(lbl_802CA518 + (idx << 1) + 0x610E);
+                    th = *(s16 *)(gBattleMap + (idx << 1) + 0x610E);
                     if (th >= 0) {
                         margin = *(f32 *)((u8 *)self + 0x34);
                         f26v = f31v - margin;
@@ -9861,7 +9861,7 @@ extern u8 lbl_80285828[];
                         f27v = f25v + margin;
                         f28v = (f32)y1;
                         fn_80220DEC(0x98, 0, 4);
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 0);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = z;
@@ -9869,7 +9869,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x11];
                         *(u8 *)0xCC008000 = pal[0x12];
                         *(u8 *)0xCC008000 = pal[0x13];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 1);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = z;
@@ -9877,7 +9877,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x15];
                         *(u8 *)0xCC008000 = pal[0x16];
                         *(u8 *)0xCC008000 = pal[0x17];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 2);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = z;
@@ -9885,7 +9885,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x19];
                         *(u8 *)0xCC008000 = pal[0x1A];
                         *(u8 *)0xCC008000 = pal[0x1B];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 3);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = z;
@@ -9893,14 +9893,14 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x1D];
                         *(u8 *)0xCC008000 = pal[0x1E];
                         *(u8 *)0xCC008000 = pal[0x1F];
-                    } else if (*(u16 *)(lbl_802CA518 + (idx << 1) + 0xC18E) != 0) {
+                    } else if (*(u16 *)(gBattleMap + (idx << 1) + 0xC18E) != 0) {
                         margin = *(f32 *)((u8 *)self + 0x34);
                         f27v = f31v - margin;
                         f28v = (f32)x;
                         f26v = f28v + margin;
                         f25v = (f32)y1;
                         fn_80220DEC(0x98, 0, 4);
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 0);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = z;
@@ -9908,7 +9908,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x21];
                         *(u8 *)0xCC008000 = pal[0x22];
                         *(u8 *)0xCC008000 = pal[0x23];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 1);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = f27v;
                         *(f32 *)0xCC008000 = z;
@@ -9916,7 +9916,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x25];
                         *(u8 *)0xCC008000 = pal[0x26];
                         *(u8 *)0xCC008000 = pal[0x27];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 2);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
                         *(f32 *)0xCC008000 = f28v;
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = z;
@@ -9924,7 +9924,7 @@ extern u8 lbl_80285828[];
                         *(u8 *)0xCC008000 = pal[0x29];
                         *(u8 *)0xCC008000 = pal[0x2A];
                         *(u8 *)0xCC008000 = pal[0x2B];
-                        z = Map_GetTileCornerHeight(lbl_802CA518, x, y, 3);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
                         *(f32 *)0xCC008000 = f26v;
                         *(f32 *)0xCC008000 = f25v;
                         *(f32 *)0xCC008000 = z;
@@ -10875,7 +10875,7 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
     void fn_80224E50(void *, s32, s32);
     f64 fn_80238788(f32);
     extern u8 lbl_8026AA98[];
-    extern void *lbl_802CA518;
+    extern void *gBattleMap;
     extern u32 lbl_80368FA8;
     extern u32 lbl_80368FAC;
     extern f32 lbl_80368FBC;
@@ -10935,8 +10935,8 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
     f27 = lbl_80369004 * ((f32)*(s16 *)(arg0 + 0x162) / lbl_80369008);
     r30 = (u8)((arg1 * arg0[0x27]) / 255);
     tbl = lbl_8026AA98;
-    (void)lbl_802CA518;
-    lim = -(f25 - fn_80023068(lbl_802CA518));
+    (void)gBattleMap;
+    lim = -(f25 - fn_80023068(gBattleMap));
     if (lim > lbl_8036900C) lim = lbl_8036900C;
     f31 = fn_80059F64(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {
@@ -11881,11 +11881,11 @@ void fn_80050BF4(void *arg0, s32 arg1)
 
 void fn_80050C50(void *arg0, f32 farg0, f32 farg1) {
     f32 fn_80023430(void *);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
 
     *(f32 *)((u8 *)arg0 + 4) = farg0;
     *(f32 *)((u8 *)arg0 + 8) = farg1;
-    *(f32 *)((u8 *)arg0 + 0xC) = fn_80023430(lbl_802CA518);
+    *(f32 *)((u8 *)arg0 + 0xC) = fn_80023430(gBattleMap);
 }
 
 #pragma peephole off
@@ -12225,7 +12225,7 @@ void fn_80051538(s32 *arg0) {
 void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
     void fn_80220DEC(s32, s32, s32);
     f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
-    extern s32 lbl_802CA518[];
+    extern s32 gBattleMap[];
     extern f32 lbl_8036904C;
     extern f32 lbl_80369050;
     volatile f32 *wgpipe = (volatile f32 *)0xCC008000;
@@ -12238,14 +12238,14 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy) {
     color = *arg0;
     x = (s32)fx;
     y = (s32)fy;
-    if (x < 0 || y < 0 || x >= lbl_802CA518[0] || y >= lbl_802CA518[1]) {
+    if (x < 0 || y < 0 || x >= gBattleMap[0] || y >= gBattleMap[1]) {
         return;
     }
-    if (arg1 != 0 && *(((u8 *)lbl_802CA518) + x + (y << 6) + 0x100D) == 0x1A) {
+    if (arg1 != 0 && *(((u8 *)gBattleMap) + x + (y << 6) + 0x100D) == 0x1A) {
         return;
     }
     fn_80220DEC(0x98, 0, 4);
-    z = Map_GetTileCornerHeight(lbl_802CA518, (s8)x, (s8)y, 0);
+    z = Map_GetTileCornerHeight(gBattleMap, (s8)x, (s8)y, 0);
     r = ((u8 *)&color)[0];
     g = ((u8 *)&color)[1];
     b = ((u8 *)&color)[2];
@@ -12392,7 +12392,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 void fn_8005306C(void *arg0) {
     f32 fn_80023430(M2C_UNK *, f32, f32, f32);
     f32 fn_80059440(f32, f32, f32, f32);
-    extern M2C_UNK lbl_802CA518;
+    extern M2C_UNK gBattleMap;
     extern f32 lbl_80369098;
     extern f32 lbl_8036909C;
     f32 sp1C;
@@ -12426,7 +12426,7 @@ void fn_8005306C(void *arg0) {
         temp_r0_2 = M2C_FIELD(temp_r5, u8 *, 0x19F);
         temp_f3 = lbl_80369098 + (f32) (s8) temp_r0_2;
         sp18 = temp_f3;
-        sp1C = fn_80023430(&lbl_802CA518, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
+        sp1C = fn_80023430(&gBattleMap, (f32) (s8) temp_r0, (f32) (s8) temp_r0_2, temp_f3);
         var_r31 = &sp14;
     }
     if (temp_r29 != NULL) {
@@ -12435,7 +12435,7 @@ void fn_8005306C(void *arg0) {
         temp_r0_4 = M2C_FIELD(temp_r29, u8 *, 0x19F);
         temp_f3_2 = lbl_80369098 + (f32) (s8) temp_r0_4;
         spC = temp_f3_2;
-        sp10 = fn_80023430(&lbl_802CA518, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
+        sp10 = fn_80023430(&gBattleMap, (f32) (s8) temp_r0_3, (f32) (s8) temp_r0_4, temp_f3_2);
         var_r30 = &sp8;
     }
     if ((var_r31 != NULL) && (var_r30 != NULL)) {
@@ -13127,7 +13127,7 @@ extern u16 *gMap;
 
 extern u16 lbl_8026A660;
 extern void* lbl_803672A8;
-extern u8 lbl_802CA518[0x24F60];
+extern u8 gBattleMap[0x24F60];
 extern u32* lbl_803672CC;
 #include "global.h"
 #include "common.h"

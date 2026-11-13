@@ -19,11 +19,11 @@ typedef struct {
 
 static inline void *fn_800AA794_helper(void) {
     extern u8 lbl_802B14E4[101760];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u8 lbl_80330708[1400];
     s8 sx = *(float *)&lbl_80330708[0x524];
     s8 sy = *(float *)&lbl_80330708[0x528];
-    u8 id = lbl_802CA518[sx + (sy << 6) + 0xD];
+    u8 id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         return &lbl_802B14E4[(id - 1) * 0x280];
     }
@@ -524,24 +524,24 @@ s32 fn_800AA304(s8 arg0, s8 arg1) {
         u8 pad1;
         s16 costMap[0x4040];
         s8 fogMap[64];
-    } lbl_802CA518;
+    } gBattleMap;
     extern u8 lbl_802B14E4[];
     extern void *gUiContext[];
     s16 val;
     u8 id;
     void *unit;
 
-    val = lbl_802CA518.costMap[arg0 + arg1 * 64];
+    val = gBattleMap.costMap[arg0 + arg1 * 64];
     if (val < 0) {
         return 0;
     }
     if (val == 0) {
         return 1;
     }
-    if (lbl_802CA518.fogMap[arg0 + arg1 * 64] != 0) {
+    if (gBattleMap.fogMap[arg0 + arg1 * 64] != 0) {
         return 0;
     }
-    id = lbl_802CA518.unitMap[arg0 + arg1 * 64];
+    id = gBattleMap.unitMap[arg0 + arg1 * 64];
     if (id != 0) {
         unit = lbl_802B14E4 + (id - 1) * 0x280;
     } else {
@@ -559,7 +559,7 @@ void fn_800AA3C0(void) {
     void fn_800AACDC(void *);
 
     extern u8 lbl_802B14E4[101760];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u8 lbl_80330708[1400];
     extern void *gPadInput;
     extern void *lbl_80367800;
@@ -585,7 +585,7 @@ void fn_800AA3C0(void) {
 
     sx = *(float *)&lbl_80330708[0x524];
     sy = *(float *)&lbl_80330708[0x528];
-    id = lbl_802CA518[sx + (sy << 6) + 0xD];
+    id = gBattleMap[sx + (sy << 6) + 0xD];
     unit = (id != 0) ? &lbl_802B14E4[(id - 1) * 0x280] : NULL;
 
     if (lbl_80367800 != unit) {
@@ -620,18 +620,18 @@ void fn_800AA4F8(void *arg0) {
     void fn_800AACDC(void *);
     void fn_8004A224(void);
     extern u8 gUiContext[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8026E770[];
     u8 temp_r31;
 
     if ((s8)gUiContext[0x12] != 0) {
         fn_80028160(gUiContext);
         temp_r31 = gUiContext[0x11];
-        fn_80022DAC(lbl_802CA518, 8, 0);
-        fn_80022FD8(lbl_802CA518, 5);
-        fn_800227F8(lbl_802CA518, *(s32 *)((u8 *)arg0 + 0x18C));
-        fn_80022748(lbl_802CA518, *(s32 *)((u8 *)arg0 + 0x190));
-        fn_800213D0(lbl_802CA518, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
+        fn_80022DAC(gBattleMap, 8, 0);
+        fn_80022FD8(gBattleMap, 5);
+        fn_800227F8(gBattleMap, *(s32 *)((u8 *)arg0 + 0x18C));
+        fn_80022748(gBattleMap, *(s32 *)((u8 *)arg0 + 0x190));
+        fn_800213D0(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
         fn_8000E0E4(lbl_8026E770 + 0xCE);
         fn_80091A1C();
     } else {
@@ -741,7 +741,7 @@ s32 fn_800AA76C(s32 arg0, s32 arg1, s32 arg2) {
 
 void *fn_800AA794(void) {
     extern u8 lbl_80330708[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_802B14E4[];
     s8 sx;
     s8 sy;
@@ -749,7 +749,7 @@ void *fn_800AA794(void) {
 
     sx = (s8)*(f32 *)(lbl_80330708 + 0x524);
     sy = (s8)*(f32 *)(lbl_80330708 + 0x528);
-    id = lbl_802CA518[sx + (sy << 6) + 0xD];
+    id = gBattleMap[sx + (sy << 6) + 0xD];
     if (id != 0) {
         return &lbl_802B14E4[(id - 1) * 0x280];
     }
@@ -761,13 +761,13 @@ void fn_800AA80C(void *arg0) {
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_8002011C(void *, u8, u8, s32, s32);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
 
     if (fn_80105BC0((u8 *)arg0 + 0x1BC, 0x43) != 0) {
-        fn_80022DAC(lbl_802CA518, 5, -1);
-        fn_80022DAC(lbl_802CA518, 8, 0);
-        fn_80022FD8(lbl_802CA518, 6);
-        fn_8002011C(lbl_802CA518, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
+        fn_80022DAC(gBattleMap, 5, -1);
+        fn_80022DAC(gBattleMap, 8, 0);
+        fn_80022FD8(gBattleMap, 6);
+        fn_8002011C(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], 1, 2);
     }
 }
 
@@ -779,7 +779,7 @@ void fn_800AA89C(void *arg0) {
     void **fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *);
     u8 fn_80105BC0(void *, s32);
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
 
     u8 saved;
     void *self;
@@ -800,7 +800,7 @@ void fn_800AA89C(void *arg0) {
 
     self = arg0;
     bestMin = 0x64;
-    map = lbl_802CA518;
+    map = gBattleMap;
     bestMax = 0;
     unitSlot = map + 0xD;
     slot = 0;
@@ -838,7 +838,7 @@ slot_loop:
         }
         y = 0;
         yOff = 0;
-        rowBase = lbl_802CA518;
+        rowBase = gBattleMap;
         goto y_cmp;
 y_loop:
         cell = rowBase;
@@ -849,7 +849,7 @@ x_loop:
         if (*(s16 *)(map + idx2 + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
-            fn_8002011C(lbl_802CA518, x, y, (u8)pp, (u8)atk);
+            fn_8002011C(gBattleMap, x, y, (u8)pp, (u8)atk);
         }
         idx2 += 2;
         cell += 1;
@@ -874,7 +874,7 @@ slot_cmp:
     }
 slots_done:
     if (fn_80105BC0((u8 *)self + 0x1BC, 0x43) != 0) {
-        u8 *map2 = lbl_802CA518;
+        u8 *map2 = gBattleMap;
         y = 0;
         yOff = 0;
         rowBase = map2;
@@ -888,7 +888,7 @@ x2_loop:
         if (*(s16 *)(map2 + idx2 + 0x610E) >= 0
             && (s8)cell[0xE18E] == 0
             && cell[0xD] == 0) {
-            fn_8002011C(lbl_802CA518, x, y, 1, 2);
+            fn_8002011C(gBattleMap, x, y, 1, 2);
         }
         idx2 += 2;
         cell += 1;
@@ -918,7 +918,7 @@ void fn_800AAB3C(void *arg0) {
     void fn_80022FD8(void *, s32);
     void **fn_80037BBC(void *, s32);
     u8 fn_8009339C(void *);
-    extern u16 lbl_802CA518;
+    extern u16 gBattleMap;
 
     s32 var_r27;
     s8 var_r28;
@@ -929,9 +929,9 @@ void fn_800AAB3C(void *arg0) {
     void *temp_r3_2;
     u8 temp_r31;
 
-    fn_80022DAC(&lbl_802CA518, 5, -1);
-    fn_80022DAC(&lbl_802CA518, 8, 0);
-    fn_80022FD8(&lbl_802CA518, 6);
+    fn_80022DAC(&gBattleMap, 5, -1);
+    fn_80022DAC(&gBattleMap, 8, 0);
+    fn_80022FD8(&gBattleMap, 6);
     var_r29 = 0x64;
     var_r28 = 0;
     var_r27 = 0;
@@ -957,7 +957,7 @@ loop_1:
                 if (var_r28 < (s32) var_r0_2) {
                     var_r28 = (s8) var_r0_2;
                 }
-                fn_8002011C(&lbl_802CA518, M2C_FIELD(arg0, u8 *, 0x19E), M2C_FIELD(arg0, u8 *, 0x19F), var_r0);
+                fn_8002011C(&gBattleMap, M2C_FIELD(arg0, u8 *, 0x19E), M2C_FIELD(arg0, u8 *, 0x19F), var_r0);
             }
         }
         var_r27 += 1;
@@ -968,12 +968,12 @@ loop_1:
 }
 
 void fn_800AAC64(void *arg0) {
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     
-    fn_80022FD8(lbl_802CA518, 5);
-    fn_800227F8(lbl_802CA518, *(s32*)((char*)arg0 + 0x18C));
-    fn_80022748(lbl_802CA518, 0);
-    fn_800213D0(lbl_802CA518, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);
+    fn_80022FD8(gBattleMap, 5);
+    fn_800227F8(gBattleMap, *(s32*)((char*)arg0 + 0x18C));
+    fn_80022748(gBattleMap, 0);
+    fn_800213D0(gBattleMap, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);
 }
 
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {

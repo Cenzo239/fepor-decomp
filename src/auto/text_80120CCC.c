@@ -1820,7 +1820,7 @@ void fn_80124424(void *self) {
     s32 fn_800067B4(void);
     u32 fn_8000CD60(void);
     f32 fn_800233D0(void *, s8, s8, u8);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern f32 lbl_8036A328;
     extern f32 lbl_8036A30C;
     extern f32 lbl_8036A32C;
@@ -1853,7 +1853,7 @@ void fn_80124424(void *self) {
             while (i < *(u16 *)((u8 *)self + 0x54)) {
                 pts[0] = (s16)((fn_8000CD60() % rangeX) - 0x800);
                 pts[1] = (s16)((fn_8000CD60() % rangeY) - 0x800);
-                pts[2] = (s16)(scale * fn_800233D0(lbl_802CA518, (s8)(pts[0] >> 8), (s8)(pts[1] >> 8), 0));
+                pts[2] = (s16)(scale * fn_800233D0(gBattleMap, (s8)(pts[0] >> 8), (s8)(pts[1] >> 8), 0));
                 pts = (s16 *)((u8 *)pts + 6);
                 i++;
             }

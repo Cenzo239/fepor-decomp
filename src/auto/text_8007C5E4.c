@@ -428,7 +428,7 @@ void fn_8007D270(void *arg0) {
     void fn_8007DD78(void *);
     void fn_801A7218(void *, void *, s32);
     extern u8 gUnitLists[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_80330EAC[];
     void *obj;
     void *node;
@@ -477,7 +477,7 @@ void fn_8007D270(void *arg0) {
             node = *(void **)((u8 *)obj + 0x58);
             flags = *(s32 *)((u8 *)node + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                fn_8001F4CC(lbl_802CA518, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
+                fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
                 if (!(*(u32 *)obj & 0x01000000)) {
                     continue;
                 }
@@ -521,7 +521,7 @@ void fn_8007D270(void *arg0) {
             node = *(void **)((u8 *)obj + 0x58);
             flags = *(s32 *)((u8 *)node + 0x1A0);
             if ((flags & 0x40) || (flags & 0x80) || (flags & 0x18) ||
-                fn_8001F4CC(lbl_802CA518, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
+                fn_8001F4CC(gBattleMap, *(u8 *)((u8 *)node + 0x19E), *(u8 *)((u8 *)node + 0x19F)) == 0) {
                 if (!(*(u32 *)obj & 0x01000000)) {
                     continue;
                 }

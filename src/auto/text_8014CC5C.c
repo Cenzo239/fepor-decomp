@@ -70,7 +70,7 @@ extern u16 lbl_80367B14;
 extern u16 lbl_80367B14;
 #include "common.h"
 extern f32 lbl_8036A7F0;
-extern u8 lbl_802CA518[];
+extern u8 gBattleMap[];
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
 extern u8 lbl_80367B0D;

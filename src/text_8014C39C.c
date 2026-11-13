@@ -65,7 +65,7 @@ void fn_80234450(s32, u32);
 
 #include "common.h"
 extern f32 lbl_8036A7F0;
-extern u8 lbl_802CA518[];
+extern u8 gBattleMap[];
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
 extern u8 lbl_80367B0D;
@@ -243,7 +243,7 @@ void fn_8014C7C0(void *arg0, char *arg1) {
     void fn_800AA15C(void);
     void fn_800056CC(char *, ...);
     extern u8 lbl_80277060[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     char buffer[0x40];
     char *str;
 
@@ -262,7 +262,7 @@ after_copy:
     sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
     fn_80041514(fn_80040844(), buffer);
-    fn_80023D14(lbl_802CA518);
+    fn_80023D14(gBattleMap);
     fn_800AA15C();
     fn_800056CC((char *)lbl_80277060 + 0x15e, str);
 }
@@ -294,12 +294,12 @@ void fn_8014CAD4(void *arg0, f32 farg0, f32 farg1) {
     f32 fn_80023068(void *);
     *(f32 *)((u8 *)arg0 + 0x52C) = farg0;
     *(f32 *)((u8 *)arg0 + 0x530) = farg1;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(lbl_802CA518);
+    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap);
 }
 
 void fn_8014CB14(void *arg0, void *arg1) {
     f32 fn_80023068(void *, f32, f32);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern f32 lbl_8036A7F0;
     f32 temp_f31;
     f32 temp_f30;
@@ -312,7 +312,7 @@ void fn_8014CB14(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f30;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(lbl_802CA518, temp_f31, temp_f30);
+    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap, temp_f31, temp_f30);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f30;
 }
@@ -329,7 +329,7 @@ void fn_8014CBD8(void *arg0, f32 farg0, f32 farg1) {
     *(f32 *)((u8 *)arg0 + 0x528) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x52C) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x530) = temp_f31;
-    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(lbl_802CA518, temp_f30, temp_f31);
+    *(f32 *)((u8 *)arg0 + 0x53C) = fn_80023068(gBattleMap, temp_f30, temp_f31);
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f30;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f31;
 }

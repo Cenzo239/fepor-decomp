@@ -1796,7 +1796,7 @@ typedef struct {
     s16 costMap[0x4040];
     s8 fogMap[64];
 } Map_802CA518;
-extern Map_802CA518 lbl_802CA518;
+extern Map_802CA518 gBattleMap;
 
 f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 {
@@ -1965,7 +1965,7 @@ outer:
     x = 0;
     goto inner_test;
 inner:
-    fp = (u8 *)&lbl_802CA518 + (((s8)x + ((s8)y << 6)) * 2);
+    fp = (u8 *)&gBattleMap + (((s8)x + ((s8)y << 6)) * 2);
     flags = *(u16 *)((u8 *)fp + 0x408E);
     fp = (u8 *)fp + 0x408E;
     if (flags & 8) {
@@ -2024,13 +2024,13 @@ skip2:
     p12 = (u8 *)p12 + 8;
     p31 = (u8 *)p31 + 8;
 inner_test:
-    if (x < lbl_802CA518.width) {
+    if (x < gBattleMap.width) {
         goto inner;
     }
     row = (u8 *)row + 0x200;
     ++y;
 outer_test:
-    if (y < lbl_802CA518.height) {
+    if (y < gBattleMap.height) {
         goto outer;
     }
 }
@@ -2058,7 +2058,7 @@ void fn_80023D14(void *arg0) {
 #pragma global_optimizer on
 void fn_80023DC0(void) {
     void fn_8002297C(void *);
-    fn_8002297C(&lbl_802CA518);
+    fn_8002297C(&gBattleMap);
 }
 
 void fn_80023DE8(void) {
@@ -3244,11 +3244,11 @@ s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
     void *unit;
     u8 id;
 
-    if (lbl_802CA518.unitMap[arg0 + arg1 * 64] == 0) {
+    if (gBattleMap.unitMap[arg0 + arg1 * 64] == 0) {
         return 0;
     }
     obj = fn_8000CAA0(lbl_802848DC, arg2);
-    id = lbl_802CA518.unitMap[arg0 + arg1 * 64];
+    id = gBattleMap.unitMap[arg0 + arg1 * 64];
     if (id != 0) {
         unit = lbl_802B14E4 + (id - 1) * 0x280;
     } else {
@@ -3661,9 +3661,9 @@ s32 fn_800268A8(s32 arg0) {
     temp_r7 = M2C_FIELD(temp_r3_2, u8 *, 0x198);
     idx1 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19E);
     idx2 = (s8) M2C_FIELD(temp_r3_2, u8 *, 0x19F);
-    lbl_802CA518.unitMap[idx1 + (idx2 << 6)] = temp_r7;
+    gBattleMap.unitMap[idx1 + (idx2 << 6)] = temp_r7;
     temp_r30 = M2C_FIELD(temp_r3, void **, 0x280);
-    fn_8003DDF8(temp_r30, &sp9, &sp8, &lbl_802CA518, temp_r7);
+    fn_8003DDF8(temp_r30, &sp9, &sp8, &gBattleMap, temp_r7);
     temp_r3_3 = M2C_FIELD(temp_r30, void **, 0x194);
     fn_80183C6C(temp_r3_3, (s8) M2C_FIELD(temp_r3_3, u8 *, 0x19E), (s8) M2C_FIELD(temp_r3_3, u8 *, 0x19F), (s8) sp9, (s8) sp8, arg0);
     fn_8003EA24(temp_r30, sp9, sp8);
@@ -3890,7 +3890,7 @@ void fn_80027F98(void *arg0, u8 arg1) {
         *(u8 *)((u8 *)arg0 + 9) = *(u8 *)((u8 *)arg0 + 8);
     }
     *(u8 *)((u8 *)arg0 + 0x12) = 0;
-    fn_8002297C(&lbl_802CA518);
+    fn_8002297C(&gBattleMap);
     var_r4 = 1;
     temp_r0 = lbl_80367289 - 1;
     if (((u32)((var_r4 | ~temp_r0) - ((u32)(var_r4 - temp_r0) >> 1U)) >> 0x1FU) == 0) {
@@ -3916,7 +3916,7 @@ void fn_8002807C(void *arg0) {
     M2C_UNK fn_80050C90(s32);
     fn_8003816C(M2C_FIELD(arg0, s32 *, 0), M2C_FIELD(arg0, u8 *, 0xB), M2C_FIELD(arg0, u8 *, 0xC));
     fn_80050C90(M2C_FIELD(arg0, s32 *, 0));
-    fn_8002297C(&lbl_802CA518);
+    fn_8002297C(&gBattleMap);
 }
 
 void fn_800280C8(void *arg0, s32 arg1, s32 arg2) {
@@ -3929,7 +3929,7 @@ void fn_800280C8(void *arg0, s32 arg1, s32 arg2) {
     *((u8 *)arg0 + 0xD) = (u8)arg1;
     *((u8 *)arg0 + 0xE) = (u8)arg2;
     if ((s8)*((u8 *)arg0 + 0x12) == 0) {
-        costs = *(s16 **)((u8 *)&lbl_802CA518 + 0x14190);
+        costs = *(s16 **)((u8 *)&gBattleMap + 0x14190);
         *((u8 *)arg0 + 0x11) = *((u8 *)arg0 + 0x11) - costs[(s8)arg1 + ((s8)arg2 << 6)];
     }
 }
@@ -3939,7 +3939,7 @@ void fn_80028160(void *arg0) {
     u8 *map;
 
     unit = *(void **)arg0;
-    map = (u8 *)&lbl_802CA518;
+    map = (u8 *)&gBattleMap;
     *((u8 *)arg0 + 0xB) = *((u8 *)unit + 0x19E);
     *((u8 *)arg0 + 0xC) = *((u8 *)unit + 0x19F);
     *(s32 *)((u8 *)arg0 + 4) = 0;
@@ -3992,7 +3992,7 @@ void fn_800283C8(void *arg0, void *arg1) {
     *((u8 *)self + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)self + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)self + 0x11) = fn_8003A398(arg1);
-    map = (u8 *)&lbl_802CA518;
+    map = (u8 *)&gBattleMap;
     *(s32 *)((u8 *)self + 4) = 0;
     *((u8 *)self + 8) = 0;
     *((s8 *)self + 0xA) = -1;

@@ -412,7 +412,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
     extern u8 lbl_802738F8[];
     extern u8 lbl_8028F2E0[];
     extern u16 lbl_802B14E4[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u32 gUiInputFlags;
     u8 sp8[0x68];
     void *self;
@@ -590,7 +590,7 @@ void fn_80105F0C(void *arg0, u32 arg1, s32 arg2) {
                 }
             }
             fn_800C4588(base);
-            fn_8002297C(lbl_802CA518);
+            fn_8002297C(gBattleMap);
             fn_800163F8();
             fn_80016180();
             fn_800C1BDC();
@@ -611,7 +611,7 @@ void fn_801065A8(void *arg0) {
     void fn_80183AB4(void *, s32, s32, s32, void *);
     void fn_80184264(void *, void *, u16, void *);
     void fn_8002297C(void *);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     u16 flags;
     void *entry;
     s32 count;
@@ -647,7 +647,7 @@ void fn_801065A8(void *arg0) {
         entry = (u8 *)entry + 0x110;
     }
 
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     *(u8 *)((u8 *)self + 0x61) = 1;
 }
 
@@ -1287,7 +1287,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
     void *fn_80234198(void *, void *);
     extern u8 lbl_802738F8[];
     extern u8 gUnitLists[];
-    extern s32 lbl_802CA518[];
+    extern s32 gBattleMap[];
     u32 spC;
     u32 sp8;
     u8 sp10[0x68];
@@ -1343,7 +1343,7 @@ s32 fn_80107874(void *arg0, void *arg1) {
         spC = sp8;
     }
     n = (u8)r30v;
-    r30v = (s32)lbl_802CA518;
+    r30v = (s32)gBattleMap;
     a = (u8)a;
     for (i = 0; i < n; i++) {
         *(s32 *)((u8 *)out + 4) = 0;
@@ -1356,14 +1356,14 @@ s32 fn_80107874(void *arg0, void *arg1) {
         if (a == 0) {
             s8 x = sp10[0xB];
             s8 y = sp10[0xC];
-            u8 *map = (u8 *)lbl_802CA518 + x + (y << 6);
+            u8 *map = (u8 *)gBattleMap + x + (y << 6);
             if (map[0xD] != 0 || map[0x300D] != 0) {
                 fn_800056CC((const char *)(lbl_802738F8 + 0x61), x, y, *(void **)sp10);
                 continue;
             }
         }
-        if ((s8)sp10[0xB] < lbl_802CA518[0] && (s8)sp10[0xC] < ((s32 *)r30v)[1]
-            && (s8)sp10[0xD] < lbl_802CA518[0] && (s8)sp10[0xE] < ((s32 *)r30v)[1]) {
+        if ((s8)sp10[0xB] < gBattleMap[0] && (s8)sp10[0xC] < ((s32 *)r30v)[1]
+            && (s8)sp10[0xD] < gBattleMap[0] && (s8)sp10[0xE] < ((s32 *)r30v)[1]) {
             count += 1;
             *(s32 *)((u8 *)out + 4) = 0;
             ((u8 *)out)[8] = sp10[0xB];
@@ -1462,7 +1462,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     void fn_800056A0(s32);
     void fn_8001FC24(void *);
     s32 fn_8001FC40(void *, s8, s8);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u16 lbl_802B14E4[];
 
     u8 *yp;
@@ -1494,7 +1494,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     if (arg3 != 0 && arg0 != NULL) {
         fn_800AAC64(arg0);
     }
-    map = lbl_802CA518;
+    map = gBattleMap;
     if (x < 0 || y < 0 || x >= *(s32 *)map || y >= *(s32 *)(map + 4)) {
         cost = -1;
     } else if ((u8)terrain != (u8)fn_80040B1C(fn_80040844(), x, y)) {
@@ -1526,7 +1526,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
     }
     if (cost < 0) {
         ring = 0;
-        map = lbl_802CA518;
+        map = gBattleMap;
         map1 = map + 0x10000;
         do {
             bestX = -1;
@@ -1765,7 +1765,7 @@ s32 fn_80107D64(void *arg0, u8 *arg1, u8 *arg2, u8 arg3, s32 arg4, void *arg5) {
             }
         } while (ring < 0x10);
         fn_800056A0(0);
-        fn_8001FC24(lbl_802CA518);
+        fn_8001FC24(gBattleMap);
         return 0;
     }
 found:
@@ -1775,9 +1775,9 @@ found:
     *arg1 = (u8)x;
     *yp = (u8)y;
     if (x != (s8)*((u8 *)arg0 + 0x19E) || y != (s8)*((u8 *)arg0 + 0x19F)) {
-        return fn_8001FC40(lbl_802CA518, (s8)x, (s8)y);
+        return fn_8001FC40(gBattleMap, (s8)x, (s8)y);
     }
-    fn_8001FC24(lbl_802CA518);
+    fn_8001FC24(gBattleMap);
     return 0;
 }
 
@@ -3038,7 +3038,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
     void fn_800FDDBC(s8, s8, u8, u8, s32);
     u8 fn_80100FD0(s8, s8, s8, s8, u8);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u16 lbl_802B14E4[];
 
     struct Unit {
@@ -3073,9 +3073,9 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
 
     best.score = 0x80000000;
     best.unit = NULL;
-    fn_80022DAC(lbl_802CA518, 5, -1);
-    fn_80022FD8(lbl_802CA518, 5);
-    map = lbl_802CA518;
+    fn_80022DAC(gBattleMap, 5, -1);
+    fn_80022FD8(gBattleMap, 5);
+    map = gBattleMap;
     (*(s16 **)(map + 0x14190))[(s8)arg1 + ((s8)arg2 << 6)] = 0;
 
     slot = 0;
@@ -3170,7 +3170,7 @@ u8 fn_8010B30C(void *arg0, s8 arg1, s16 arg2) {
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
     u8 fn_800FE84C(s8, s8);
     u8 fn_80105BC0(void *, u8);
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u16 lbl_802B14E4[];
     extern s32 lbl_8036A158;
     extern s32 lbl_80273B30[];
@@ -3216,26 +3216,26 @@ scan_done:
         return 0;
     }
 
-    fn_80022FD8(lbl_802CA518, 5);
-    fn_80022DAC(lbl_802CA518, 0xB, -1);
-    fn_8001F9C4(lbl_802CA518, arg1, (s8)sp10, 1, 0);
+    fn_80022FD8(gBattleMap, 5);
+    fn_80022DAC(gBattleMap, 0xB, -1);
+    fn_8001F9C4(gBattleMap, arg1, (s8)sp10, 1, 0);
 
     bestPri = 0x7F;
     xMin = (s16)arg1 - 1;
-    if (xMin < (s8)lbl_802CA518[8]) {
-        xMin = (s8)lbl_802CA518[8];
+    if (xMin < (s8)gBattleMap[8]) {
+        xMin = (s8)gBattleMap[8];
     }
     yMin = sp10 - 1;
-    if (yMin < (s8)lbl_802CA518[9]) {
-        yMin = (s8)lbl_802CA518[9];
+    if (yMin < (s8)gBattleMap[9]) {
+        yMin = (s8)gBattleMap[9];
     }
     xMax = (s16)arg1 + 1;
-    if (xMax > (s8)lbl_802CA518[0xA] - 1) {
-        xMax = (s8)lbl_802CA518[0xA] - 1;
+    if (xMax > (s8)gBattleMap[0xA] - 1) {
+        xMax = (s8)gBattleMap[0xA] - 1;
     }
     yMax = sp10 + 1;
-    if (yMax > (s8)lbl_802CA518[0xB] - 1) {
-        yMax = (s8)lbl_802CA518[0xB] - 1;
+    if (yMax > (s8)gBattleMap[0xB] - 1) {
+        yMax = (s8)gBattleMap[0xB] - 1;
     }
 
     y = yMin;
@@ -3245,8 +3245,8 @@ outer:
     xShift = (s8)y << 6;
     goto inner_cmp;
 inner:
-    if ((*(s16 **)(lbl_802CA518 + 0x14190))[(s8)x + xShift] >= 0) {
-        cell = lbl_802CA518 + xShift + (s8)x;
+    if ((*(s16 **)(gBattleMap + 0x14190))[(s8)x + xShift] >= 0) {
+        cell = gBattleMap + xShift + (s8)x;
         if ((s8)cell[0xE18E] == 0 && fn_800FE84C((s8)x, (s8)y) == 0) {
             if (cell[0xD] != 0) {
                 if (cell[0xD] != 0) {
@@ -3324,7 +3324,7 @@ u8 fn_8010B658(void *arg0) {
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u16 lbl_802B14E4[];
     extern u8 fn_800FB5C8[];
 
@@ -3348,11 +3348,11 @@ u8 fn_8010B658(void *arg0) {
     if ((lbl_8032B3C0[1] & 2) || (*(u32 *)((u8 *)self + 0x254) & 0x03000000)) {
         return 0;
     }
-    map = lbl_802CA518;
+    map = gBattleMap;
     bestCost = 0xFF;
     bestDist = 0x7FFFFFFF;
     fn_800FE2A0(self, 5, *(s32 *)map * *(s32 *)(map + 4));
-    map2 = lbl_802CA518;
+    map2 = gBattleMap;
     y = ((s8 *)map2)[9];
     goto outer_cmp;
 outer:
@@ -3464,7 +3464,7 @@ u8 fn_8010B8E4(void *arg0) {
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u16 lbl_802B14E4[];
     extern u8 fn_800FB5C8[];
 
@@ -3487,11 +3487,11 @@ u8 fn_8010B8E4(void *arg0) {
     if ((lbl_8032B3C0[1] & 2) || (*(u32 *)((u8 *)self + 0x254) & 0x03000000)) {
         return 0;
     }
-    map = lbl_802CA518;
+    map = gBattleMap;
     bestCost = 0xFF;
     bestDist = 0x7FFFFFFF;
     fn_800FE2A0(self, 5, *(s32 *)map * *(s32 *)(map + 4));
-    map2 = lbl_802CA518;
+    map2 = gBattleMap;
     y = ((s8 *)map2)[9];
     goto outer_cmp;
 outer:
@@ -3606,7 +3606,7 @@ u8 fn_8010BB74(void *arg0) {
     s32 fn_8010067C(s16, s16, void *);
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u8 fn_800FB5C8[];
     void *self;
     s8 by;
@@ -3631,7 +3631,7 @@ u8 fn_8010BB74(void *arg0) {
     if ((lbl_8032B3C0[1] & 2) || (*(u32 *)((u8 *)self + 0x254) & 0x03000000)) {
         return 0;
     }
-    map = lbl_802CA518;
+    map = gBattleMap;
     bestCost = 0xFF;
     bestDist = 0x7FFFFFFF;
     fn_800FE2A0(self, 5, -1);
@@ -3645,26 +3645,26 @@ u8 fn_8010BB74(void *arg0) {
         s32 yMin;
         range = fn_8003A398(self);
         xMin = x0 - range;
-        if (xMin < (s8)lbl_802CA518[8]) {
-            xMin = (s8)lbl_802CA518[8];
+        if (xMin < (s8)gBattleMap[8]) {
+            xMin = (s8)gBattleMap[8];
         }
         yMin = y0 - range;
-        if (yMin < (s8)lbl_802CA518[9]) {
-            yMin = (s8)lbl_802CA518[9];
+        if (yMin < (s8)gBattleMap[9]) {
+            yMin = (s8)gBattleMap[9];
         }
         xMax = x0 + range;
-        lim = (s8)lbl_802CA518[0xA] - 1;
+        lim = (s8)gBattleMap[0xA] - 1;
         if (xMax > lim) {
             xMax = lim;
         }
         yMax = y0 + range;
-        lim = (s8)lbl_802CA518[0xB] - 1;
+        lim = (s8)gBattleMap[0xB] - 1;
         if (yMax > lim) {
             yMax = lim;
         }
         y = yMin;
     }
-    map2 = lbl_802CA518;
+    map2 = gBattleMap;
     goto outer_cmp;
 outer:
     x = xMin;
@@ -3761,7 +3761,7 @@ u8 fn_8010BEB8(void *arg0) {
     s32 fn_80093010(void *, void *);
     void fn_800949A4(void *, s8);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8032B3C0[];
     extern u8 lbl_802EF4E0[];
     extern u8 lbl_80273B40[];
@@ -3792,7 +3792,7 @@ u8 fn_8010BEB8(void *arg0) {
     void *p;
     void **cand;
 
-    map = lbl_802CA518;
+    map = gBattleMap;
     if ((u8)fn_80092F38(arg0) >= 4U) {
         return 0U;
     }
@@ -4080,11 +4080,11 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
     void fn_800FE2A0(void *,s32,s32); void fn_80100D18(void *,void *,s32);
-    extern u8 lbl_8032B3C0[],lbl_802CA518[];
+    extern u8 lbl_8032B3C0[],gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern s16 lbl_80273B78[];
     u8 *flags=lbl_8032B3C0;
-    u8 *map=lbl_802CA518;
+    u8 *map=gBattleMap;
     s16 bestX,bestY;
     void *best;
     s32 minX,maxX,maxY,row;
@@ -4110,10 +4110,10 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=(u8)0;
     range=fn_8003A398(arg0)+(u8)extra;
-    minX=x-range; if(minX<(s8)lbl_802CA518[8]) minX=(s8)lbl_802CA518[8];
-    minY=y-range; if(minY<(s8)lbl_802CA518[9]) minY=(s8)lbl_802CA518[9];
-    maxX=x+range; if(maxX>(s8)lbl_802CA518[10]-1) maxX=(s8)lbl_802CA518[10]-1;
-    maxY=y+range; if(maxY>(s8)lbl_802CA518[11]-1) maxY=(s8)lbl_802CA518[11]-1;
+    minX=x-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+    minY=y-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    maxX=x+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+    maxY=y+range; if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
     for(row=minY;row<=maxY;row++) {
         for(x=minX;x<=maxX;x++) {
             u8 id=map[((s8)row<<6)+(s8)x+13];
@@ -4122,7 +4122,7 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                 if(!(flags[1]&4) && arg2 && arg2(unit)) continue;
                 if((u8)rank<fn_8003A778(unit)) continue;
                 {
-                u8 *grid=lbl_802CA518;
+                u8 *grid=gBattleMap;
                 dir=lbl_80273B78; score=0; k=0; bestScore=0x80000000;
                 do {
                     s32 index;
@@ -4184,10 +4184,10 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
     void fn_800FE2A0(void *,s32,s32); void fn_80100D18(void *,void *,s32);
-    extern u8 lbl_8032B3C0[],lbl_802CA518[];
+    extern u8 lbl_8032B3C0[],gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern s16 lbl_80273B78[];
-    u8 *map=lbl_802CA518;
+    u8 *map=gBattleMap;
     u8 *flags=lbl_8032B3C0;
     s16 bestX,bestY;
     void *best;
@@ -4217,10 +4217,10 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)fn_8003A398(arg0); range+=(u8)extra;
-    minX=startX-range; if(minX<(s8)lbl_802CA518[8]) minX=(s8)lbl_802CA518[8];
-    minY=startY-range; if(minY<(s8)lbl_802CA518[9]) minY=(s8)lbl_802CA518[9];
-    maxX=startX+range; if(maxX>(s8)lbl_802CA518[10]-1) maxX=(s8)lbl_802CA518[10]-1;
-    maxY=startY+range; if(maxY>(s8)lbl_802CA518[11]-1) maxY=(s8)lbl_802CA518[11]-1;
+    minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+    minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+    maxY=startY+range; if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
     for(row=minY;maxY>=row;++row) {
         rowMap=map+((s8)row<<6);
         for(x=minX;x<=maxX;x++) {
@@ -4232,7 +4232,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                 if((*(u32 *)((u8 *)unit+0x254)&9)!=0) continue;
                 if((u8)rank>fn_8003863C(unit)) continue;
                 {
-                u8 *grid=lbl_802CA518;
+                u8 *grid=gBattleMap;
                 score=0; dir=lbl_80273B78; k=score; bestScore=0x80000000;
                 do {
                     s32 index;
@@ -4278,7 +4278,7 @@ u16 fn_800FCF48(s8,s8);
 void fn_800FCF74(s32,s32); void fn_800FD774(s32);
 void fn_800FE2A0(void *,s32,s32);
 void fn_800FE490(s8,s8,void *,s32,s32); u8 fn_800FE84C(s8,s8);
-extern u8 lbl_802CA518[]; extern u16 lbl_802B14E4[];
+extern u8 gBattleMap[]; extern u16 lbl_802B14E4[];
 
     u8 sp8[8];
     s16 temp_r3_3;
@@ -4310,7 +4310,7 @@ extern u8 lbl_802CA518[]; extern u16 lbl_802B14E4[];
     void *var_r24;
     void *var_r27;
 
-    u8 *map=lbl_802CA518;
+    u8 *map=gBattleMap;
     fn_800FC6B0(*(void **)((u8 *)arg1+0x190));
     var_r20 = NULL;
     fn_80015320(0, &sp8);
@@ -4325,7 +4325,7 @@ extern u8 lbl_802CA518[]; extern u16 lbl_802B14E4[];
             temp_r3 = *(u8 *)((u8 *)var_r27+0x19E);
             var_r7 = 0;
             temp_r4 = *(u8 *)((u8 *)var_r27+0x19F);
-            if (((s8) temp_r3 < (s8) *(s8 *)(lbl_802CA518+0x8)) || ((s32) ((s8) *(s8 *)(lbl_802CA518+0xA) - 1) < (s8) temp_r3) || ((s8) temp_r4 < (s8) *(s8 *)(lbl_802CA518+0x9)) || ((s32) ((s8) *(s8 *)(lbl_802CA518+0xB) - 1) < (s8) temp_r4)) {
+            if (((s8) temp_r3 < (s8) *(s8 *)(gBattleMap+0x8)) || ((s32) ((s8) *(s8 *)(gBattleMap+0xA) - 1) < (s8) temp_r3) || ((s8) temp_r4 < (s8) *(s8 *)(gBattleMap+0x9)) || ((s32) ((s8) *(s8 *)(gBattleMap+0xB) - 1) < (s8) temp_r4)) {
                 var_r7 = 1;
             }
             if ((var_r7 == 0) && !(*(u32 *)((u8 *)var_r27+0x1A0) & 0x010000DC) && (fn_800FCF48((s8)temp_r3,(s8)temp_r4) > 0U)) {
@@ -4339,17 +4339,17 @@ extern u8 lbl_802CA518[]; extern u16 lbl_802B14E4[];
         fn_800FCF74(arg0, 0x9F);
         return 0;
     }
-    fn_800FE2A0(var_r20, 6, *(s32 *)lbl_802CA518 * *(s32 *)(lbl_802CA518+4));
+    fn_800FE2A0(var_r20, 6, *(s32 *)gBattleMap * *(s32 *)(gBattleMap+4));
     var_r19 = 0xFF;
-    var_r17 = (s8) *(s8 *)(lbl_802CA518+0x9);
+    var_r17 = (s8) *(s8 *)(gBattleMap+0x9);
     var_r18 = NULL;
-for (; var_r17 <= (s32) ((s8) *(s8 *)(lbl_802CA518+0xB) - 1); var_r17++) {
+for (; var_r17 <= (s32) ((s8) *(s8 *)(gBattleMap+0xB) - 1); var_r17++) {
         temp_r23 = (s8)var_r17 << 6;
-        var_r16_2 = (s8) *(s8 *)(lbl_802CA518+0x8);
-for (; var_r16_2 <= (s32) ((s8) *(s8 *)(lbl_802CA518+0xA) - 1); var_r16_2++) {
+        var_r16_2 = (s8) *(s8 *)(gBattleMap+0x8);
+for (; var_r16_2 <= (s32) ((s8) *(s8 *)(gBattleMap+0xA) - 1); var_r16_2++) {
             temp_r21 = ((s8)var_r16_2 + temp_r23) * 2;
-            if (*(s16 *)(lbl_802CA518+temp_r21+0x818e) >= 0) {
-                temp_r24 = lbl_802CA518 + temp_r23 + (s8)var_r16_2;
+            if (*(s16 *)(gBattleMap+temp_r21+0x818e) >= 0) {
+                temp_r24 = gBattleMap + temp_r23 + (s8)var_r16_2;
                 if ((*(s8 *)((u8 *)temp_r24+0xe18e) == 0) && (fn_800FE84C((s8)var_r16_2,(s8)var_r17) == 0)) {
                     temp_r3_2 = *(u8 *)((u8 *)temp_r24+13);
                     if (temp_r3_2 != 0) {
@@ -4378,13 +4378,13 @@ for (; var_r16_2 <= (s32) ((s8) *(s8 *)(lbl_802CA518+0xA) - 1); var_r16_2++) {
     fn_800FE490((s8) *(u8 *)((u8 *)var_r18+0x19E), (s8) *(u8 *)((u8 *)var_r18+0x19F), arg1, 6, -1);
     var_r16 = 0xFFFF;
     temp_r24_2 = fn_8001DD04(arg0);
-    var_r17_2 = (s8) *(s8 *)(lbl_802CA518+0x9);
-for (; var_r17_2 <= (s32) ((s8) *(s8 *)(lbl_802CA518+0xB) - 1); var_r17_2++) {
+    var_r17_2 = (s8) *(s8 *)(gBattleMap+0x9);
+for (; var_r17_2 <= (s32) ((s8) *(s8 *)(gBattleMap+0xB) - 1); var_r17_2++) {
         temp_r22 = (s8)var_r17_2 << 6;
-        var_r18_2 = (s8) *(s8 *)(lbl_802CA518+0x8);
-for (; var_r18_2 <= (s32) ((s8) *(s8 *)(lbl_802CA518+0xA) - 1); var_r18_2++) {
-            if (*(s16 *)(lbl_802CA518+((s8)var_r18_2+temp_r22)*2+0x818e) >= 0) {
-                temp_r19 = lbl_802CA518 + temp_r22 + (s8)var_r18_2;
+        var_r18_2 = (s8) *(s8 *)(gBattleMap+0x8);
+for (; var_r18_2 <= (s32) ((s8) *(s8 *)(gBattleMap+0xA) - 1); var_r18_2++) {
+            if (*(s16 *)(gBattleMap+((s8)var_r18_2+temp_r22)*2+0x818e) >= 0) {
+                temp_r19 = gBattleMap + temp_r22 + (s8)var_r18_2;
                 if ((*(s8 *)((u8 *)temp_r19+0xe18e) == 0) && (fn_800FE84C((s8)var_r18_2,(s8)var_r17_2) == 0) && ((u8) *(u8 *)((u8 *)temp_r19+13) == 0)) {
                     temp_r3_4 = fn_800FCF48(var_r18_2, var_r17_2);
                     temp_r4_2 = *(u8 *)((u8 *)arg1+0x19f);
@@ -4440,7 +4440,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_801A49AC(void *, s8);
     void fn_801A7A68(void *, void *, void *);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern AiParam lbl_80273BB8;
     extern AiParam lbl_80273BA8;
@@ -4479,7 +4479,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s8 ix;
 
     flags = lbl_8032B3C0;
-    map = lbl_802CA518;
+    map = gBattleMap;
     slot = arg1;
 
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
@@ -4506,21 +4506,21 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     range += (u8)extra;
 
     minX = x - range;
-    if (minX < (s8)lbl_802CA518[8]) {
-        minX = (s8)lbl_802CA518[8];
+    if (minX < (s8)gBattleMap[8]) {
+        minX = (s8)gBattleMap[8];
     }
     minY = y - range;
-    map9 = lbl_802CA518;
+    map9 = gBattleMap;
     if (minY < (s8)map9[9]) {
         minY = (s8)map9[9];
     }
     maxX = x + range;
-    pMaxX = &lbl_802CA518[10];
+    pMaxX = &gBattleMap[10];
     if (maxX > (s8)*pMaxX - 1) {
         maxX = (s8)*pMaxX - 1;
     }
     maxY = y + range;
-    map11 = lbl_802CA518;
+    map11 = gBattleMap;
     if (maxY > (s8)map11[11] - 1) {
         maxY = (s8)map11[11] - 1;
     }
@@ -4576,14 +4576,14 @@ ok_done:
             fn_800FDDBC((s8)*((u8 *)unit + 0x19e), (s8)*((u8 *)unit + 0x19f), wrange, wextra, 6);
 
             {
-                u8 *grid = lbl_802CA518;
-                u8 *grid2 = lbl_802CA518;
+                u8 *grid = gBattleMap;
+                u8 *grid2 = gBattleMap;
                 bestScore = 0x80000000;
                 for (iy = (s8)map9[9]; iy <= (s8)map11[11] - 1; iy++) {
                     s32 yoff = (s8)iy << 6;
                     u8 *rowY = grid + yoff;
                     u8 *rowY2 = grid2 + yoff;
-                    for (ix = (s8)lbl_802CA518[8]; ix <= (s8)*pMaxX - 1; ix++) {
+                    for (ix = (s8)gBattleMap[8]; ix <= (s8)*pMaxX - 1; ix++) {
                         s32 t = (s8)ix + yoff;
                         s32 t2 = t * 2;
                         if (*(s16 *)(grid + t2 + 0x610e) >= 0
@@ -4666,7 +4666,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_801A49AC(void *, s8);
     void fn_801A7A68(void *, void *, void *);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern AiParam lbl_80273B98;
     extern AiParam lbl_80273B88;
@@ -4705,7 +4705,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     s8 ix;
 
     flags = lbl_8032B3C0;
-    map = lbl_802CA518;
+    map = gBattleMap;
     slot = arg1;
 
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
@@ -4732,21 +4732,21 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     range += (u8)extra;
 
     minX = x - range;
-    if (minX < (s8)lbl_802CA518[8]) {
-        minX = (s8)lbl_802CA518[8];
+    if (minX < (s8)gBattleMap[8]) {
+        minX = (s8)gBattleMap[8];
     }
     minY = y - range;
-    map9 = lbl_802CA518;
+    map9 = gBattleMap;
     if (minY < (s8)map9[9]) {
         minY = (s8)map9[9];
     }
     maxX = x + range;
-    pMaxX = &lbl_802CA518[10];
+    pMaxX = &gBattleMap[10];
     if (maxX > (s8)*pMaxX - 1) {
         maxX = (s8)*pMaxX - 1;
     }
     maxY = y + range;
-    map11 = lbl_802CA518;
+    map11 = gBattleMap;
     if (maxY > (s8)map11[11] - 1) {
         maxY = (s8)map11[11] - 1;
     }
@@ -4806,14 +4806,14 @@ ok_done:
             fn_800FDDBC((s8)*((u8 *)unit + 0x19e), (s8)*((u8 *)unit + 0x19f), wrange, wextra, 6);
 
             {
-                u8 *grid = lbl_802CA518;
-                u8 *grid2 = lbl_802CA518;
+                u8 *grid = gBattleMap;
+                u8 *grid2 = gBattleMap;
                 bestScore = 0x80000000;
                 for (iy = (s8)map9[9]; iy <= (s8)map11[11] - 1; iy++) {
                     s32 yoff = (s8)iy << 6;
                     u8 *rowY = grid + yoff;
                     u8 *rowY2 = grid2 + yoff;
-                    for (ix = (s8)lbl_802CA518[8]; ix <= (s8)*pMaxX - 1; ix++) {
+                    for (ix = (s8)gBattleMap[8]; ix <= (s8)*pMaxX - 1; ix++) {
                         s32 t = (s8)ix + yoff;
                         s32 t2 = t * 2;
                         if (*(s16 *)(grid + t2 + 0x610e) >= 0
@@ -4884,11 +4884,11 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
     void fn_800FE2A0(void *,s32,s32); void fn_80100D18(void *,void *,s32);
-    extern u8 lbl_8032B3C0[],lbl_802CA518[];
+    extern u8 lbl_8032B3C0[],gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern s16 lbl_80273B78[];
     u8 *flags=lbl_8032B3C0;
-    u8 *map=lbl_802CA518;
+    u8 *map=gBattleMap;
     s16 bestX,bestY;
     void *best;
     s32 minX,maxX,maxY,row;
@@ -4916,10 +4916,10 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)fn_8003A398(arg0); range+=(u8)extra;
-    minX=startX-range; if(minX<(s8)lbl_802CA518[8]) minX=(s8)lbl_802CA518[8];
-    minY=startY-range; if(minY<(s8)lbl_802CA518[9]) minY=(s8)lbl_802CA518[9];
-    maxX=startX+range; if(maxX>(s8)lbl_802CA518[10]-1) maxX=(s8)lbl_802CA518[10]-1;
-    maxY=startY+range; if(maxY>(s8)lbl_802CA518[11]-1) maxY=(s8)lbl_802CA518[11]-1;
+    minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+    minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+    maxY=startY+range; if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
     for(row=minY;row<=maxY;row++) {
         for(x=minX;x<=maxX;x++) {
             u8 id=map[((s8)row<<6)+(s8)x+13];
@@ -4929,7 +4929,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                 if(!fn_801044FC((u8 *)unit+0x1a4)) continue;
                 if((u8)rank>fn_8003863C(unit)) continue;
                 {
-                u8 *grid=lbl_802CA518;
+                u8 *grid=gBattleMap;
                 score=0; dir=lbl_80273B78; baseX=(s16)x; k=score; bestScore=0x80000000;
                 do {
                     s32 index;
@@ -4979,7 +4979,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     u8 fn_800FE84C(s8, s8);
     s32 fn_8010E804(void *, s16, s16, s32, u8);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u16 lbl_802B14E4[];
 
     s32 sp14;
@@ -5011,7 +5011,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
     u8 *flags;
 
     flags = lbl_8032B3C0;
-    map = lbl_802CA518;
+    map = gBattleMap;
     self = arg0;
     sp10 = arg1;
     mapBase = map;
@@ -5120,7 +5120,7 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void fn_80022DAC(u8 *, s32, s32);
     void fn_80022FD8(u8 *, s32);
     u8 fn_800FE84C(s8, s8);
-    extern u8 lbl_802CA518[151280];
+    extern u8 gBattleMap[151280];
     extern u16 lbl_802B14E4[];
     int var_r26;
     int var_r28;
@@ -5136,27 +5136,27 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 *temp_r21;
 
     var_r28 = 0;
-    fn_80022FD8(lbl_802CA518, 6);
-    fn_80022DAC(lbl_802CA518, 0xB, -1);
-    fn_8001F9C4(lbl_802CA518, arg1, arg2, arg4, 1);
-    fn_8001F9C4(lbl_802CA518, arg1, arg2, arg3 - 1, -1);
-    fn_80022FD8(lbl_802CA518, 5);
+    fn_80022FD8(gBattleMap, 6);
+    fn_80022DAC(gBattleMap, 0xB, -1);
+    fn_8001F9C4(gBattleMap, arg1, arg2, arg4, 1);
+    fn_8001F9C4(gBattleMap, arg1, arg2, arg3 - 1, -1);
+    fn_80022FD8(gBattleMap, 5);
 
     var_r27 = (s16)arg1 - (s16)arg4;
-    if (var_r27 < (s8)lbl_802CA518[8]) {
-        var_r27 = (s8)lbl_802CA518[8];
+    if (var_r27 < (s8)gBattleMap[8]) {
+        var_r27 = (s8)gBattleMap[8];
     }
     var_r7 = (s16)arg2 - (s16)arg4;
-    if (var_r7 < (s8)lbl_802CA518[9]) {
-        var_r7 = (s8)lbl_802CA518[9];
+    if (var_r7 < (s8)gBattleMap[9]) {
+        var_r7 = (s8)gBattleMap[9];
     }
     var_r26 = (s16)arg1 + (s16)arg4;
-    temp_r0 = (s8)lbl_802CA518[0xA] - 1;
+    temp_r0 = (s8)gBattleMap[0xA] - 1;
     if (var_r26 > temp_r0) {
         var_r26 = temp_r0;
     }
     var_r25 = (s16)arg2 + (s16)arg4;
-    temp_r0 = (s8)lbl_802CA518[0xB] - 1;
+    temp_r0 = (s8)gBattleMap[0xB] - 1;
     if (var_r25 > temp_r0) {
         var_r25 = temp_r0;
     }
@@ -5167,8 +5167,8 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     temp_r30 = (s8)var_r24 << 6;
     goto loop_inner_cmp;
 loop_inner:
-    if (*(s16 *)(lbl_802CA518 + (((s8)var_r23 + temp_r30) * 2) + 0x818E) >= 0) {
-        temp_r21 = lbl_802CA518 + temp_r30 + (s8)var_r23;
+    if (*(s16 *)(gBattleMap + (((s8)var_r23 + temp_r30) * 2) + 0x818E) >= 0) {
+        temp_r21 = gBattleMap + temp_r30 + (s8)var_r23;
         if (((s8)temp_r21[0xE18E] == 0) && (fn_800FE84C((s8)var_r23, (s8)var_r24) == 0)) {
             temp_r3 = temp_r21[0xD];
             if (temp_r3) {
@@ -5210,7 +5210,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_800FE2A0(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
     extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern f32 lbl_8036A170;
 
@@ -5259,7 +5259,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     flags = lbl_8032B3C0;
     slot = arg1;
     cb = arg2;
-    map = lbl_802CA518;
+    map = gBattleMap;
     if ((flags[1] & 2) || (*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
         fn_80022DAC(map, 5, -1);
         fn_80022FD8(map, 5);
@@ -5281,24 +5281,24 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     range = (s8)fn_8003A398(arg0);
     range += (u8)extra;
     minX = ax - range;
-    if (minX < (s8)lbl_802CA518[8]) {
-        minX = (s8)lbl_802CA518[8];
+    if (minX < (s8)gBattleMap[8]) {
+        minX = (s8)gBattleMap[8];
     }
     minY = ay - range;
-    mapBase = lbl_802CA518;
+    mapBase = gBattleMap;
     if (minY < (s8)mapBase[9]) {
         minY = (s8)mapBase[9];
     }
     maxX = ax + range;
-    if (maxX > (s8)lbl_802CA518[10] - 1) {
-        maxX = (s8)lbl_802CA518[10] - 1;
+    if (maxX > (s8)gBattleMap[10] - 1) {
+        maxX = (s8)gBattleMap[10] - 1;
     }
     maxY = ay + range;
-    if (maxY > (s8)lbl_802CA518[11] - 1) {
-        maxY = (s8)lbl_802CA518[11] - 1;
+    if (maxY > (s8)gBattleMap[11] - 1) {
+        maxY = (s8)gBattleMap[11] - 1;
     }
-    map2 = lbl_802CA518;
-    map3 = lbl_802CA518;
+    map2 = gBattleMap;
+    map3 = gBattleMap;
     for (y = minY; y <= maxY; y++) {
         for (x = minX; x <= maxX; x++) {
             id = map3[((s8)y << 6) + (s8)x + 0xD];
@@ -5325,9 +5325,9 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                             }
                             fn_800FDDBC((s8)*((u8 *)unit + 0x19e), (s8)*((u8 *)unit + 0x19f), kind, extra2, 6);
                             bestScore = 0x80000000;
-                            for (iy = (s8)mapBase[9]; iy <= (s8)lbl_802CA518[11] - 1; iy++) {
+                            for (iy = (s8)mapBase[9]; iy <= (s8)gBattleMap[11] - 1; iy++) {
                                 rowY = map + ((s8)iy << 6);
-                                for (ix = (s8)lbl_802CA518[8]; ix <= (s8)lbl_802CA518[10] - 1; ix++) {
+                                for (ix = (s8)gBattleMap[8]; ix <= (s8)gBattleMap[10] - 1; ix++) {
                                     idx = (s8)ix + ((s8)iy << 6);
                                     idx2 = idx * 2;
                                     if (*(s16 *)(map + idx2 + 0x610e) >= 0
@@ -5399,11 +5399,11 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void fn_800FB96C(s32,s8,s8,void *,u8,u8,s8,s32,s32);
     u32 fn_800FCF48(s8,s8);
     void fn_800FE2A0(void *,s32,s32); void fn_80100D18(void *,void *,s32);
-    extern u8 lbl_8032B3C0[],lbl_802CA518[];
+    extern u8 lbl_8032B3C0[],gBattleMap[];
     extern u16 lbl_802B14E4[];
     extern s16 lbl_80273B78[];
     u8 *flags=lbl_8032B3C0;
-    u8 *map=lbl_802CA518;
+    u8 *map=gBattleMap;
     s16 bestX,bestY;
     void *best;
     s32 minX,maxX,maxY,row;
@@ -5432,10 +5432,10 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     item=*fn_80037BBC(arg0,slot);
     if(item) extra=fn_8001DD54(item,arg0); else extra=0;
     range=(s8)fn_8003A398(arg0); range+=(u8)extra;
-    minX=startX-range; if(minX<(s8)lbl_802CA518[8]) minX=(s8)lbl_802CA518[8];
-    minY=startY-range; if(minY<(s8)lbl_802CA518[9]) minY=(s8)lbl_802CA518[9];
-    maxX=startX+range; if(maxX>(s8)lbl_802CA518[10]-1) maxX=(s8)lbl_802CA518[10]-1;
-    maxY=startY+range; if(maxY>(s8)lbl_802CA518[11]-1) maxY=(s8)lbl_802CA518[11]-1;
+    minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+    minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+    maxX=startX+range; if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+    maxY=startY+range; if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
     for(row=minY;row<=maxY;row++) {
         for(x=minX;x<=maxX;x++) {
             u8 id=map[((s8)row<<6)+(s8)x+13];
@@ -5452,7 +5452,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                 }
                 if((u8)ratio>(u8)rank) continue;
                 {
-                u8 *grid=lbl_802CA518;
+                u8 *grid=gBattleMap;
                 score=0; dir=lbl_80273B78; k=score; bestScore=0x80000000;
                 do {
                     s32 index;
@@ -5487,7 +5487,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 
 s32 fn_8010F3F4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5)
 {
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern s16 lbl_80273B78[];
 
     extern s32 fn_800F7994(void *, s32, s32);
@@ -5507,7 +5507,7 @@ s32 fn_8010F3F4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4, s32 *arg5)
     s32 i;
     u32 value;
 
-    base = lbl_802CA518;
+    base = gBattleMap;
     direction = lbl_80273B78;
     heightTable = *(s16 **)(base + 0x14190);
 
@@ -5613,7 +5613,7 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
 void fn_8010FAA8(void) {
     void fn_8001F91C(void *, u8, u8, s8);
     extern u8 lbl_8032BB58[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     u8 *p;
     u8 *base;
     s32 i;
@@ -5628,12 +5628,12 @@ void fn_8010FAA8(void) {
     while (i < *(s32 *)(base + 0x200)) {
         switch (p[2]) {
         case 6:
-            fn_8001F91C(lbl_802CA518, p[0], p[1], (s8)p[3]);
+            fn_8001F91C(gBattleMap, p[0], p[1], (s8)p[3]);
             break;
         case 9:
             y = p[1];
             x = p[0];
-            cell = lbl_802CA518 + x + (y << 6);
+            cell = gBattleMap + x + (y << 6);
             if (cell[0xd] == 0) {
                 t = cell[0x300d];
                 t |= 2;

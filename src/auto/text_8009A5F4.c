@@ -413,7 +413,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *fn_8010F9BC(void *, s8, s8, s32);
     void *fn_8010FF24(void *, s8, s8, s32);
     extern u8 lbl_8026D404[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_8032BB58[];
     extern f32 lbl_803697E4;
     extern f32 lbl_80369808;
@@ -448,7 +448,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
 
     y = (s8)(s32)*(f32 *)(lbl_80330708 + 0x528);
     x = (s8)(s32)*(f32 *)(lbl_80330708 + 0x524);
-    kind = *(u8 *)(lbl_802CA518 + x + (y << 6) + 0x100D);
+    kind = *(u8 *)(gBattleMap + x + (y << 6) + 0x100D);
     if (kind < 0) {
         goto after_cases;
     }

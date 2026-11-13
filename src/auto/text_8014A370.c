@@ -317,7 +317,7 @@ void fn_80234450(s32, u32);
 
 #include "common.h"
 extern f32 lbl_8036A7F0;
-extern M2C_UNK lbl_802CA518;
+extern M2C_UNK gBattleMap;
 extern s32 lbl_80367B00;
 extern s32 lbl_80367B04;
 extern u8 lbl_80367B0D;

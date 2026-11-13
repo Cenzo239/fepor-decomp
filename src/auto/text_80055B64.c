@@ -106,7 +106,7 @@ extern u16 *gMap;
 
 extern u16 lbl_8026A660;
 extern void* lbl_803672A8;
-extern u8 lbl_802CA518[0x24F60];
+extern u8 gBattleMap[0x24F60];
 extern u32* lbl_803672CC;
 #include "global.h"
 #include "common.h"

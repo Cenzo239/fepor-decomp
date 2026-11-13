@@ -3617,12 +3617,12 @@ s32 fn_800B7210(void)
     void fn_80016DE0(void);
     void fn_8002297C(void *);
     extern u8 lbl_80330EAC[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
 
     fn_800162B8();
     fn_801A7CDC(lbl_80330EAC);
     fn_80016DE0();
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     return 1;
 }
 
@@ -3664,7 +3664,7 @@ s32 fn_800B72CC(void) {
     void fn_801A7CDC(void *);
     void fn_801E38E0(void *, s32);
     extern u8 lbl_8026ECB8[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_803200AC[];
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
@@ -3677,12 +3677,12 @@ s32 fn_800B72CC(void) {
     fn_800162B8();
     fn_801A7CDC(lbl_80330EAC);
     fn_80016DE0();
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     fn_800BDED8(lbl_80330708 + 0xB4);
     fn_8010FF90(lbl_8032BB58);
     fn_800C341C(lbl_803200AC);
     fn_800C32A4(lbl_803206EC);
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     return 1;
 }
 
@@ -5567,8 +5567,8 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BA75C(s8 arg0, s8 arg1, s8 arg2) {
-    extern u8 lbl_802CA518[];
-    lbl_802CA518[arg0 + (arg1 << 6) + 0x100D] = (u8)arg2;
+    extern u8 gBattleMap[];
+    gBattleMap[arg0 + (arg1 << 6) + 0x100D] = (u8)arg2;
     return 0;
 }
 
@@ -5580,7 +5580,7 @@ s32 fn_800BA784(void) {
     M2C_UNK fn_800C1060();
     extern M2C_UNK lbl_802B14E4;
     extern M2C_UNK gUnitLists;
-    extern M2C_UNK lbl_802CA518;
+    extern M2C_UNK gBattleMap;
     
     s32 sp10;
     s32 sp8;
@@ -5635,7 +5635,7 @@ loop_13:
         var_r29 += 1;
     } while ((s32) var_r29 <= 0x9F);
     
-    fn_8002297C(&lbl_802CA518);
+    fn_8002297C(&gBattleMap);
     fn_800C0658();
     fn_800C1060();
     return 1;
@@ -5646,7 +5646,7 @@ s32 fn_800BA8F8(u8 arg0) {
     M2C_UNK fn_8003DFB8(void *);
     M2C_UNK fn_801A251C(void);
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     void *unit;
 
     if (arg0 != 0) {
@@ -5658,7 +5658,7 @@ s32 fn_800BA8F8(u8 arg0) {
         return 0;
     }
     fn_8003DFB8(unit);
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     fn_801A251C();
     return 1;
 }
@@ -6156,7 +6156,7 @@ s32 fn_800BBC50(void) {
 s16 fn_800BBC58(u8 arg0, s32 arg1) {
     void fn_800227F8(void *, s32);
     extern u8 lbl_802B14E4[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     s16 var_r3;
     u16 temp_r0;
     void *var_r4;
@@ -6169,8 +6169,8 @@ s16 fn_800BBC58(u8 arg0, s32 arg1) {
     if ((var_r4 == NULL) || ((u32) M2C_FIELD(var_r4, u32 *, 0x188) == 0U)) {
         return 0;
     }
-    fn_800227F8(lbl_802CA518, M2C_FIELD(var_r4, s32 *, 0x18C));
-    temp_r0 = ((u16 *)(lbl_802CA518 + 0x10000) + arg1)[0x210A];
+    fn_800227F8(gBattleMap, M2C_FIELD(var_r4, s32 *, 0x18C));
+    temp_r0 = ((u16 *)(gBattleMap + 0x10000) + arg1)[0x210A];
     var_r3 = (s16) temp_r0;
     if ((s16) temp_r0 > 0x7530) {
         var_r3 = -1;
@@ -6179,18 +6179,18 @@ s16 fn_800BBC58(u8 arg0, s32 arg1) {
 }
 
 u8 fn_800BBCFC(s8 arg0, s8 arg1) {
-    extern u8 lbl_802CA518[];
-    return lbl_802CA518[arg0 + (arg1 << 6) + 0x200D];
+    extern u8 gBattleMap[];
+    return gBattleMap[arg0 + (arg1 << 6) + 0x200D];
 }
 
 u8 fn_800BBD20(s8 arg0, s8 arg1) {
-    extern u8 lbl_802CA518[];
-    return lbl_802CA518[arg0 + (arg1 << 6) + 0x100D];
+    extern u8 gBattleMap[];
+    return gBattleMap[arg0 + (arg1 << 6) + 0x100D];
 }
 
 u8 fn_800BBD44(s8 arg0, s8 arg1) {
-    extern u8 lbl_802CA518[];
-    return lbl_802CA518[arg0 + (arg1 << 6) + 0xD];
+    extern u8 gBattleMap[];
+    return gBattleMap[arg0 + (arg1 << 6) + 0xD];
 }
 
 u16 fn_800BBD68(void) {
@@ -7090,7 +7090,7 @@ s32 fn_800BD1A4(u8 arg0, u8 arg1) {
     void fn_8003816C(void *, s8, u8);
     void fn_8003EA84(void *, void *);
     void fn_8002297C(void *);
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     void *var_r31;
     void *var_r30;
 
@@ -7112,7 +7112,7 @@ s32 fn_800BD1A4(u8 arg0, u8 arg1) {
     }
     fn_8003816C(var_r30, (s8)(*(u8 *)((u8 *)var_r31 + 0x19E) + 1), *(u8 *)((u8 *)var_r31 + 0x19F));
     fn_8003EA84(var_r31, var_r30);
-    fn_8002297C(&lbl_802CA518);
+    fn_8002297C(&gBattleMap);
     return 1;
 }
 

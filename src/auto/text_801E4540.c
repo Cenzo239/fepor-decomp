@@ -2769,7 +2769,7 @@ void fn_801E9D3C(s32 arg0) {
 void fn_801E9D68(void) {
     extern u8 lbl_8027EB78[];
     extern u8 lbl_80330708[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     void fn_80013A90(void *);
     void fn_800138F4(void);
     void fn_8002297C(void *);
@@ -2794,7 +2794,7 @@ void fn_801E9D68(void) {
     fn_800138F4();
     fn_80013A90(lbl_8027EB78 + 0x26C);
     fn_800138F4();
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
 
     *(u32 *)(base + 0x84) = *(u32 *)(base + 0x84) | v84;
     *(u32 *)(base + 0x88) = *(u32 *)(base + 0x88) | v88;

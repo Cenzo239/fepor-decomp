@@ -1113,7 +1113,7 @@ extern "C" void fn_80018B24(void) {
     void fn_800193D8(void *);
     extern long lbl_803671C4;
     extern u8 lbl_8036728B;
-    extern s32 lbl_802CA518[];
+    extern s32 gBattleMap[];
     extern f32 lbl_80368C88;
     extern f32 lbl_80368CA4;
     extern f32 lbl_80368CBC;
@@ -1146,8 +1146,8 @@ extern "C" void fn_80018B24(void) {
         *(f32 *)((u8 *)r31 + 0x64) = t;
         *(f32 *)((u8 *)r31 + 0x68) = t;
     } else {
-        f29 = lbl_80368CA4 * (f32)lbl_802CA518[1];
-        f30 = lbl_80368CA4 * (f32)lbl_802CA518[0];
+        f29 = lbl_80368CA4 * (f32)gBattleMap[1];
+        f30 = lbl_80368CA4 * (f32)gBattleMap[0];
         f31 = fn_80059F64(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
                           *(f32 *)((u8 *)r31 + 0x18) - lbl_80368CBC);
         if (f31 < lbl_80368C88) {

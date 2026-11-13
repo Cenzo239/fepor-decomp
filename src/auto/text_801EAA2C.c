@@ -268,7 +268,7 @@ void fn_801EB294(void *arg0)
     void fn_801658DC(u32, u8 *);
     extern u8 lbl_8027EE08[];
     extern u8 gUnitLists[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 gUiContext[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
@@ -387,7 +387,7 @@ void fn_801EB294(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
-                    fn_8002297C(lbl_802CA518);
+                    fn_8002297C(gBattleMap);
                     fn_800AACDC(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1d9, 0x64);
                 }
@@ -399,7 +399,7 @@ void fn_801EB294(void *arg0)
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
-                    fn_8002297C(lbl_802CA518);
+                    fn_8002297C(gBattleMap);
                     fn_800AACDC(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
                 }
@@ -417,7 +417,7 @@ void fn_801EB294(void *arg0)
                 }
                 if (flag != 0) {
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
-                    fn_8002297C(lbl_802CA518);
+                    fn_8002297C(gBattleMap);
                 }
             }
         } else {
@@ -495,7 +495,7 @@ void fn_801EBB00(void *arg0) {
     void String_Destroy(void *, s32);
     void fn_80140304(void *, s32);
     extern u8 gUnitLists[];
-    extern u8 lbl_802CA518[];
+    extern u8 gBattleMap[];
     extern u8 lbl_803671C0;
     void *iter;
     void *next;
@@ -512,7 +512,7 @@ void fn_801EBB00(void *arg0) {
     String_CStr((u8 *)arg0 + 0x40);
     fn_80106BCC();
     fn_800A8400();
-    fn_8002297C(lbl_802CA518);
+    fn_8002297C(gBattleMap);
     fn_80161F7C();
     fn_8003F670(*(void **)((u8 *)arg0 + 0x4C));
     goto end;
