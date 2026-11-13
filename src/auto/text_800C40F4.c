@@ -23880,7 +23880,7 @@ s32 fn_801032F8(void) {
 
 void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
-    extern u8 lbl_80273420[];
+    extern u8 TagWin_str[];
     extern u8 lbl_8028EAC8[];
 
     extern void String_Init(void *, const char *, void *);
@@ -23912,7 +23912,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     u8 *entry;
 
     obj = (u8 *)arg0;
-    strings = lbl_80273420;
+    strings = TagWin_str;
 
     String_Init(temp0, (const char *)(strings + 0xC), &value0);
 
@@ -23976,7 +23976,7 @@ extern u8 gAiState[544];
 extern u16 *lbl_803678A8;
 extern u16 *gWin3;
 extern u16 *lbl_80367918;
-extern u16 lbl_80273420[];
+extern u16 TagWin_str[];
 #include "global.h"
 
 extern f32 lbl_80369E70;
