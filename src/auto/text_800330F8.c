@@ -6066,7 +6066,7 @@ void fn_800404DC(void) {
     extern void *gMap;
     extern s32 lbl_803682A4;
     extern u8 lbl_803672A4;
-    extern s32 lbl_803672A0;
+    extern s32 sMapUpdateCounter;
     extern f64 lbl_80368EF8;
     extern f32 lbl_80368EE4;
     extern f32 lbl_80368EE8;
@@ -6096,10 +6096,10 @@ void fn_800404DC(void) {
         if (*(u32 *)(p0 + 0xC) != 0) {
             if ((s8)lbl_803672A4 == 0) {
                 a = 0;
-                lbl_803672A0 = a;
+                sMapUpdateCounter = a;
                 lbl_803672A4 = 1;
             }
-            if ((lbl_803672A0 & 1) != 0) {
+            if ((sMapUpdateCounter & 1) != 0) {
                 t6 = *(s16 *)(p0 + 6);
                 a = 0;
                 b = (s32)(((u32)t6 >> 31) + t6) >> 1;
@@ -6107,7 +6107,7 @@ void fn_800404DC(void) {
                 b = *(s16 *)(p0 + 6);
                 a = (s32)(((u32)b >> 31) + b) >> 1;
             }
-            lbl_803672A0 = lbl_803672A0 + 1;
+            sMapUpdateCounter = sMapUpdateCounter + 1;
             Map_PrepareEntryRange(p0, a, b);
         }
         obj = gMap;
@@ -8710,7 +8710,7 @@ void PSMTXScale(void *, f32, f32, f32);
 void fn_80048518(void);
 extern void *gMap;
 extern u8 lbl_803672A4;
-extern s32 lbl_803672A0;
+extern s32 sMapUpdateCounter;
 extern f64 lbl_80368EF8;
 extern f32 lbl_80368EE4;
 extern f32 lbl_80368EE8;
@@ -8743,10 +8743,10 @@ extern f32 lbl_80368EF4;
     if (*(u32 *)((u8 *)self + 0x64) & 0x40000000) {
         if (*(u32 *)((u8 *)self + 0xC) != 0) {
             if ((s8)lbl_803672A4 == 0) {
-                lbl_803672A0 = 0;
+                sMapUpdateCounter = 0;
                 lbl_803672A4 = 1;
             }
-            if ((lbl_803672A0 & 1) != 0) {
+            if ((sMapUpdateCounter & 1) != 0) {
                 t6 = *(s16 *)((u8 *)self + 6);
                 a = 0;
                 b = (s32)(((u32)t6 >> 31) + t6) >> 1;
@@ -8754,7 +8754,7 @@ extern f32 lbl_80368EF4;
                 b = *(s16 *)((u8 *)self + 6);
                 a = (s32)(((u32)b >> 31) + b) >> 1;
             }
-            lbl_803672A0 = lbl_803672A0 + 1;
+            sMapUpdateCounter = sMapUpdateCounter + 1;
             Map_PrepareEntryRange(self, a, b);
         }
         if ((*(u32 *)((u8 *)self + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)self + 0x64) & 0x40000000) != 0) {
