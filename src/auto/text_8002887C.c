@@ -3663,7 +3663,7 @@ extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_SetColorByte(u8);
 extern "C" void fn_80090990(void *);
 extern "C" void fn_800323BC(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     struct Obj {
         u8 pad[4];
@@ -3676,7 +3676,7 @@ extern "C" void fn_800323BC(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         fn_80090990((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
@@ -3690,7 +3690,7 @@ extern "C" void fn_800323BC(void *arg0, void *arg1) {
 #pragma cplusplus on
 extern "C" void fn_80090AA4(s32, s32);
 extern "C" void fn_80032488(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     struct Obj {
         u8 pad[4];
@@ -3703,7 +3703,7 @@ extern "C" void fn_80032488(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         fn_80090AA4(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
@@ -3721,7 +3721,7 @@ extern "C" void fn_8008BD90(s32, s32, s32);
 extern "C" void Prim2D_AddZ(f32);
 extern "C" void UnitInfo_DrawDualSwap(void *win, void *slot) {
     /* Draw dual unit-info with status below and pair panel above (layout swap of UnitInfo_DrawDual). */
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     extern f32 lbl_80368E34;
     extern u8 gUiContext[];
@@ -3736,12 +3736,12 @@ extern "C" void UnitInfo_DrawDualSwap(void *win, void *slot) {
     if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
         ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x118), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x118), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         UnitInfo_DrawStatus(UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_PrepareTex();
         UnitInfo_DrawPair(M2C_FIELD(gUiContext, s32 *, 0));
         Prim2D_Begin();
@@ -3757,7 +3757,7 @@ extern "C" void UnitInfo_DrawDualSwap(void *win, void *slot) {
 #pragma cplusplus on
 extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
     /* Draw the selected unit's status panel, the UI-context panel, and an atlas icon. */
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     extern f32 lbl_80368E34;
     extern u8 gUiContext[];
@@ -3775,12 +3775,12 @@ extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
     if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
         ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         UnitInfo_DrawPair(UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_PrepareTex();
         UnitInfo_DrawStatus(M2C_FIELD(gUiContext, s32 *, 0));
         Prim2D_Begin();
@@ -3803,7 +3803,7 @@ extern "C" void UnitInfo_DrawDual(void *win, void *slot) {
 
 #pragma cplusplus on
 extern "C" void UnitInfo_DrawDualStatus(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     extern u8 gUiContext[];
     struct Obj {
@@ -3817,12 +3817,12 @@ extern "C" void UnitInfo_DrawDualStatus(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0xB0), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         UnitInfo_DrawStatus(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_PrepareTex();
         UnitInfo_DrawStatus(M2C_FIELD(gUiContext, s32 *, 0));
         Prim2D_Begin();
@@ -3833,7 +3833,7 @@ extern "C" void UnitInfo_DrawDualStatus(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_8003297C(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     extern u32 gUiContext[];
     s32 UnitRef_GetUnit(u32);
@@ -3852,7 +3852,7 @@ extern "C" void fn_8003297C(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
@@ -3867,7 +3867,7 @@ extern "C" void fn_8003297C(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_80032A74(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     extern u32 gUiContext[];
     void fn_80090874(s32, s32);
@@ -3884,7 +3884,7 @@ extern "C" void fn_80032A74(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
@@ -3922,7 +3922,7 @@ s32 fn_80032B5C(void *arg0, void *arg1) {
 #pragma cplusplus on
 extern "C" void fn_80090688(void *, s32, s32);
 extern "C" void fn_80032B90(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     struct Obj {
         u8 pad[4];
@@ -3936,7 +3936,7 @@ extern "C" void fn_80032B90(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         temp_r31 = (void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40));
@@ -3951,7 +3951,7 @@ extern "C" void fn_80032B90(void *arg0, void *arg1) {
 #pragma cplusplus on
 extern "C" void fn_800907B8(void *);
 extern "C" void fn_80032C80(void *arg0, void *arg1) {
-    extern f32 lbl_80368E24;
+    extern f32 gUnitInfoDrawScale;
     extern f32 lbl_80368E28;
     struct Obj {
         u8 pad[4];
@@ -3964,7 +3964,7 @@ extern "C" void fn_80032C80(void *arg0, void *arg1) {
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
         Prim2D_Begin();
-        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
+        Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, lbl_80368E28);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         fn_800907B8((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));

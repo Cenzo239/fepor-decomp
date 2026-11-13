@@ -41,7 +41,7 @@ extern f32 lbl_80368FC4;
 extern f32 lbl_8036901C;
 extern f64 lbl_80368FE0;
 extern f64 lbl_80368E80;
-extern f32 lbl_80368E24;
+extern f32 gUnitInfoDrawScale;
 extern f32 lbl_80368E28;
 
 extern f32 lbl_80368EA8;
