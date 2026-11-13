@@ -4014,7 +4014,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     void Heap_Free(void *);
     void *Heap_Alloc(u32);
     void StaffRoll_VecClear(Vec *);
-    void fn_8022CF78(void);
+    void abort(void);
     void fn_80232058(void *, const char *, ...);
     extern char __files[];
     extern char StaffRoll_str[];
@@ -4036,7 +4036,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         char *files = __files;
         char *msg = StaffRoll_str;
         fn_80232058(files + 0xA0, msg + 0x3A1);
-        fn_8022CF78();
+        abort();
     }
     if (vec->size + count <= vec->cap) {
         Elem *dst = vec->data + vec->size;
@@ -4206,7 +4206,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
             char *files = __files;
             char *msg = StaffRoll_str;
             fn_80232058(files + 0xA0, msg + 0x3BE);
-            fn_8022CF78();
+            abort();
         }
         tmp.data = p;
         tmp.cap = cap;
@@ -4266,7 +4266,7 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
     void Heap_Free(void *);
     void *Heap_Alloc(u32);
     void StaffRoll_VecClear(Vec *);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
     extern char StaffRoll_str[];
@@ -4283,7 +4283,7 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
     if (arg1 > vec->cap) {
         if (arg1 > 0x1FFFFFFF) {
             fn_80232058(__files + 0xA0, StaffRoll_str + 0x3D8);
-            fn_8022CF78();
+            abort();
         }
         tmp.cap = 0;
         tmp.size = 0;
@@ -4291,7 +4291,7 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
         p = Heap_Alloc(arg1 * 8);
         if (p == NULL) {
             fn_80232058(__files + 0xA0, StaffRoll_str + 0x3BE);
-            fn_8022CF78();
+            abort();
         }
         tmp.data = p;
         dst = p;
@@ -4386,7 +4386,7 @@ extern "C" void GActor_Finalize(void *);
 extern "C" void fn_800616A0(void *);
 extern "C" void *GActor_Create(void);
 extern "C" s32 fn_800639B4(void);
-extern "C" M2C_UNK fn_8022CF78(void);
+extern "C" M2C_UNK abort(void);
 extern "C" M2C_UNK fn_80232058(void *, const char *, ...);
 extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
     struct Obj {
@@ -4428,7 +4428,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fn_80232058(__files + 0xA0, StaffRoll_str + 0x3BE);
-        fn_8022CF78();
+        abort();
     }
     {
         Holder h(list, node);
@@ -5230,7 +5230,7 @@ void fn_801FC4F8(s32 arg0, s32 arg1, s32 arg2) {
 void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
     void *Heap_Alloc(u32);
     void fn_800D6C1C(void *, void *);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
     extern char lbl_80281420[];
@@ -5239,12 +5239,12 @@ void *fn_801FC518(void *arg0, void *arg1, s32 arg2, s32 arg3, u16 *arg4) {
 
     if (M2C_FIELD(arg0, u32 *, 0) > (u32)-2) {
         fn_80232058(__files + 0xA0, lbl_80281420 + 0xA6E);
-        fn_8022CF78();
+        abort();
     }
     node = Heap_Alloc(0x10);
     if (node == NULL) {
         fn_80232058(__files + 0xA0, lbl_80281420 + 0xA89);
-        fn_8022CF78();
+        abort();
     }
     value = (u16 *)((char *)node + 0xC);
     if (value != NULL) {

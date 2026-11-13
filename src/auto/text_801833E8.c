@@ -6339,7 +6339,7 @@ extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void Heap_Free(void *);
     void fn_8001C690(void *, void *);
     void fn_80232058(void *, void *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     extern char __files[];
     extern char lbl_80279DF0[];
     struct Node {
@@ -6366,7 +6366,7 @@ extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fn_80232058(__files + 0xA0, lbl_80279DF0 + 0x51F, __files);
-        fn_8022CF78();
+        abort();
     }
     {
         Holder h(list, node);
@@ -13439,7 +13439,7 @@ extern u8 lbl_80279DF0[29]; // 29 bytes
 
 void *Heap_Alloc(s32);
 void fn_80232058(void*, void*, void*);
-void fn_8022CF78(void);
+void abort(void);
 void fn_8001C690(void*, s32);
 
 typedef struct {

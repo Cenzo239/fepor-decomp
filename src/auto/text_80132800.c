@@ -7566,7 +7566,7 @@ extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void fn_80232058(void *, void *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     extern char __files[];
     extern char lbl_80276A80[];
     struct Node {
@@ -7593,7 +7593,7 @@ extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
     node = (Node *)Heap_Alloc(0xC);
     if (node == 0) {
         fn_80232058(__files + 0xA0, lbl_80276A80, __files);
-        fn_8022CF78();
+        abort();
     }
     {
         Holder h(list, node);
@@ -10081,7 +10081,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void fn_80232058(void *, void *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     extern char __files[];
     extern char lbl_80276B3C[];
     struct Node {
@@ -10109,7 +10109,7 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fn_80232058(__files + 0xA0, lbl_80276B3C + 0x72, __files);
-        fn_8022CF78();
+        abort();
     }
     {
         Holder h(list, node);

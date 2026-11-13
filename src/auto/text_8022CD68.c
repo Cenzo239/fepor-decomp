@@ -225,7 +225,7 @@ s32 __register_fragment(s32 arg0, s32 arg1) {
     return -1;
 }
 
-void fn_8022CF78(void) {
+void abort(void) {
     extern s32 __aborting;
     extern s32 __atexit_curr_func;
     extern void (*__atexit_funcs[])(void);

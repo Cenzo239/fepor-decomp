@@ -9673,7 +9673,7 @@ return self;
 #pragma use_lmw_stmw on
 void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3) {
     void fn_80232058(void *, void *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     void *Heap_Alloc(s32);
     void fn_801CC030(void *);
     void Heap_Free(void *);
@@ -9686,7 +9686,7 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3) {
     }
     if (n > 0x07FFFFFFU || *(u32 *)((u8 *)arg0 + 4) > (0x07FFFFFFU - n)) {
         fn_80232058(__files + 0xA0, lbl_8027DAB0 + 0x1A7);
-        fn_8022CF78();
+        abort();
     }
     (void)fill;
     (void)arg1;

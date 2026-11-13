@@ -2010,7 +2010,7 @@ M2C_UNK *String_CStr(void *arg0) {
 }
 
 s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     s32 fn_80231944(char *, char *, u32);
     extern char __files[];
@@ -2022,7 +2022,7 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
 
     if (pos > arg0->size) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0x1D);
-        fn_8022CF78();
+        abort();
     }
     rest = arg0->size - pos;
     len = *StrMin(&rest, &n);
@@ -2049,7 +2049,7 @@ String *String_AssignCStr(String *arg0, const char *arg1, u32 arg2) {
 String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     String *fn_800C984C(String *, u32, u32);
     void fn_800CA7F4(String *, u32, s32);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
@@ -2059,7 +2059,7 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
 
     if (pos > arg1->size) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0x96);
-        fn_8022CF78();
+        abort();
     }
     rest = arg1->size - pos;
     len = *StrMin(&n, &rest);
@@ -2081,7 +2081,7 @@ String *fn_800C984C(String *arg0, u32 arg1, u32 arg2) {
 
 String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
     void fn_800CA7F4(String *, u32, s32);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     void *memset(void *, s32, u32);
     extern char __files[];
@@ -2091,7 +2091,7 @@ String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
     if (arg1 != 0) {
         if (arg1 > (u32)-2 || arg0->size > (u32)-2 - arg1) {
             fn_80232058(__files + 0xA0, lbl_80270350 + 0xBC);
-            fn_8022CF78();
+            abort();
         }
         size = arg0->size;
         fn_800CA7F4(arg0, size + arg1, 1);
@@ -2116,7 +2116,7 @@ void *fn_800C992C(void *arg0, const char *arg1, u32 arg2) {
 #pragma use_lmw_stmw on
 String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
     void fn_800CA7F4(String *, u32, s32);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
@@ -2129,7 +2129,7 @@ String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
     lim = arg1->size;
     if (pos > lim) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0xEE);
-        fn_8022CF78();
+        abort();
     }
     rest = arg1->size - pos;
     len = *StrMin(&n, &rest);
@@ -2160,7 +2160,7 @@ void *String_Destroy(void *arg0, s16 arg1) {
 void *String_Init(void *arg0, char *arg1, void *arg2) {
     struct Tag { u8 b; };
     void fn_800CA728(void *, char *, char *, void *, struct Tag);
-    void fn_8022CF78(void);
+    void abort(void);
     void fn_80232058(void *, const char *, ...);
     u32 strlen(const char *);
     extern char __files[];
@@ -2173,7 +2173,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     len = strlen(arg1);
     if (len > (u32)-2) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0x114);
-        fn_8022CF78();
+        abort();
     }
     home = copy;
     fn_800CA728(arg0, arg1, arg1 + len, arg2, home);
@@ -2199,7 +2199,7 @@ void *arg1;
 #pragma use_lmw_stmw on
 void fn_800C9BC4(void *vec,s32 *pos,u32 count,s32 *value){
 void *Heap_Alloc(s32);void Heap_Free(void *);
-void fn_80232058(void *,const char *,...);void fn_8022CF78(void);
+void fn_80232058(void *,const char *,...);void abort(void);
 extern char __files[],lbl_80270350[];
 u32 bytes;
 s32 *old,*allocation,*dst,*end,*fill,*src,*split;
@@ -2211,7 +2211,7 @@ s32 initial;
 s32 *copySrc,*copyDst;
 if(count){
 if(count>0x3FFFFFFF || M2C_FIELD(vec,u32 *,4)>0x3FFFFFFF-count){
-fn_80232058(__files+0xA0,lbl_80270350+0x136);fn_8022CF78();
+fn_80232058(__files+0xA0,lbl_80270350+0x136);abort();
 }
 size=M2C_FIELD(vec,u32 *,4);available=M2C_FIELD(vec,u32 *,0);
 need=size+count;
@@ -2236,7 +2236,7 @@ while(need>capacity){
 if(capacity<0x1FFFFFFF)capacity*=2;else capacity=0x3FFFFFFF;
 }
 allocation=Heap_Alloc(capacity*4);
-if(!allocation){fn_80232058(__files+0xA0,lbl_80270350+0x7C);fn_8022CF78();}
+if(!allocation){fn_80232058(__files+0xA0,lbl_80270350+0x7C);abort();}
 M2C_FIELD(vec,s32 **,8)=allocation;
 bytes=offset*4;
 dst=(s32 *)((u8 *)M2C_FIELD(vec,s32 **,8)+bytes);n=count;
@@ -2267,7 +2267,7 @@ void fn_800CA18C(void *vec, void *pos, u32 count, void *src)
     void fn_800CA91C(void *);
     void Heap_Free(void *);
     void fn_80232058(void *, const char *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     extern char __files[];
     extern char lbl_80270350[];
 
@@ -2296,7 +2296,7 @@ struct LocalState st;
     if (count > 0x15555555U ||
         *(u32 *)((u8 *)vec + 4) > 0x15555555U - count) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0x136);
-        fn_8022CF78();
+        abort();
     }
 
     size = *(u32 *)((u8 *)vec + 4);
@@ -2437,7 +2437,7 @@ struct LocalState st;
                 __files + 0xA0,
                 lbl_80270350 + 0x7C
             );
-            fn_8022CF78();
+            abort();
         }
 
         st.data = dst;
@@ -2625,7 +2625,7 @@ void *fn_800CA6C8(void *arg0, s16 arg1) {
 void fn_800CA728(void *arg0, char *begin, char *end) {
     s32 Heap_Alloc(s32);
     void fn_80232058(void *, const char *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
     extern char lbl_80270350[];
@@ -2647,7 +2647,7 @@ void fn_800CA728(void *arg0, char *begin, char *end) {
         buf = (char *)Heap_Alloc(*(s32 *)((u8 *)self + 4) + 1);
         if (buf == 0) {
             fn_80232058(__files + 0xA0, lbl_80270350 + 0x7C);
-            fn_8022CF78();
+            abort();
         }
         *(char **)((u8 *)self + 8) = buf;
         memcpy(*(char **)((u8 *)self + 8), b, len);
@@ -6435,13 +6435,13 @@ void *fn_800D5C88(void *arg0, s16 arg1) {
 }
 
 u32 *fn_800D6898(u32 *, u32 *, u32, u32, void *);
-M2C_UNK fn_8022CF78(void);
+M2C_UNK abort(void);
 M2C_UNK fn_80232058(void *, const char *, ...);
 extern char __files[];
 
 void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     M2C_UNK fn_800D6898(u32 *, u32 *, u32, u32, void *);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
     extern char lbl_802704F8[];
@@ -6452,7 +6452,7 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
 
     if (arg2 > ((struct S *)arg1)->size) {
         fn_80232058(__files + 0xA0, lbl_802704F8 + 0x8E7);
-        fn_8022CF78();
+        abort();
     }
     rem = ((struct S *)arg1)->size - arg2;
     n = MinU32(&arg3, &rem);
@@ -6462,7 +6462,7 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
 #pragma cplusplus on
 extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
     void fn_80232058(void *, char *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     void *Heap_Alloc(s32);
     void fn_800D6940(void *);
     void Heap_Free(void *);
@@ -6494,7 +6494,7 @@ extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
 
     if (n > 0x02E8BA2Eu || v->size > 0x02E8BA2Eu - n) {
         fn_80232058(__files + 0xA0, lbl_802704F8 + 0x97C);
-        fn_8022CF78();
+        abort();
     }
 
     if (v->size + n <= v->cap) {
@@ -6573,7 +6573,7 @@ extern "C" s32 fn_800D5DB0(void *self, s32 pos, s32 count, s32 *src) {
         tmp.data = (Elem *)Heap_Alloc((s32)(newCap * 0x58));
         if (tmp.data == 0) {
             fn_80232058(__files + 0xA0, lbl_802704F8 + 0x999);
-            fn_8022CF78();
+            abort();
         }
         tmp.cap = newCap;
         {
@@ -6827,7 +6827,7 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
 {
     struct Tag { u8 b; } tag;
     M2C_UNK fn_800CA728(u32 *, char *, char *, void *, struct Tag);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
 
@@ -6841,7 +6841,7 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
 
     if (arg2 > size) {
         fn_80232058(__files + 0xA0, lbl_802704F8 + 0x9B3);
-        fn_8022CF78();
+        abort();
     }
 
     len = size - arg2;
@@ -7479,7 +7479,7 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     extern char __files[];
     extern char lbl_80270350[];
     void fn_800CA7F4(String *, u32, s32);
-    M2C_UNK fn_8022CF78(void);
+    M2C_UNK abort(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     u32 rest;
@@ -7487,7 +7487,7 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
 
     if (pos > arg1->size) {
         fn_80232058(__files + 0xA0, lbl_80270350 + 0x96);
-        fn_8022CF78();
+        abort();
     }
     rest = arg1->size - pos;
     len = (n < rest) ? n : rest; 
@@ -13056,7 +13056,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void fn_800E6DC8(void *);
     void Heap_Free(void *);
     void fn_80232058(void *, const char *, ...);
-    void fn_8022CF78(void);
+    void abort(void);
     void *memcpy(void *, void *, u32);
     extern char __files[];
     extern char lbl_802720E0[];
@@ -13091,7 +13091,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     if (count > 0x09249249U ||
         *(u32 *)((u8 *)vec + 4) > 0x09249249U - count) {
         fn_80232058(__files + 0xA0, lbl_802720E0 + 0x9A);
-        fn_8022CF78();
+        abort();
     }
 
     size = *(u32 *)((u8 *)vec + 4);
@@ -13184,7 +13184,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 *(u32 *)&st.pads[0x40] = (u32)-1;
                 if (*(u32 *)lim >= 0x80000000U) {
                     fn_80232058(err, lbl_802720E0 + 0x52);
-                    fn_8022CF78();
+                    abort();
                 }
                 len = *(u32 *)lim;
                 *(u32 *)&st.pads[0x44] = len;
@@ -13203,7 +13203,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 *(u32 *)&st.pads[0x38] = (u32)-1;
                 if (*(u32 *)((u8 *)lim + 0xC) >= 0x80000000U) {
                     fn_80232058(err, lbl_802720E0 + 0x52);
-                    fn_8022CF78();
+                    abort();
                 }
                 len = *(u32 *)((u8 *)lim + 0xC);
                 *(u32 *)&st.pads[0x3C] = len;
@@ -13229,7 +13229,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             *(u32 *)&st.pads[0x48 - 0x8] = (u32)-1;
             if (*(u32 *)src >= 0x80000000U) {
                 fn_80232058(err, lbl_802720E0 + 0x52);
-                fn_8022CF78();
+                abort();
             }
             len = *(u32 *)src;
             *(u32 *)&st.pads[0x44] = len;
@@ -13248,7 +13248,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             *(u32 *)&st.pads[0x38] = (u32)-1;
             if (*(u32 *)((u8 *)src + 0xC) >= 0x80000000U) {
                 fn_80232058(err, lbl_802720E0 + 0x52);
-                fn_8022CF78();
+                abort();
             }
             len = *(u32 *)((u8 *)src + 0xC);
             *(u32 *)&st.pads[0x3C] = len;
@@ -13289,7 +13289,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         dst = Heap_Alloc((s32)(cap * 0x1C));
         if (dst == 0) {
             fn_80232058(__files + 0xA0, lbl_802720E0 + 0xB7);
-            fn_8022CF78();
+            abort();
         }
 
         st.data = dst;
