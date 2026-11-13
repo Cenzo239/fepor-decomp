@@ -4919,34 +4919,31 @@ void fn_801912C0(void *arg0) {
 }
 
 void fn_80191374(void *arg0) {
-    M2C_UNK fn_8011D79C(s32);
-    M2C_UNK fn_8013FF00(void *, s32);
     s32 Ui_FindChild(void *, s32, s32);
-    M2C_UNK Ui_PlaySeCue(void *, M2C_UNK);
-    M2C_UNK Process_ClearFunc(void *);
+    void fn_8013FF00(void *, s32);
+    void fn_8011D79C(void *);
+    void Ui_PlaySeCue(void *, s32);
+    void Process_ClearFunc(void *);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 lbl_80279DF0[];
+    u8 flag;
+    u32 a;
+    u32 b;
 
     fn_8013FF00(arg0, Ui_FindChild(arg0, -0x1000, 0));
-    {
-        u8 var_r3;
-        u32 flags;
-        s32 temp_r4;
-
-        flags = gUiInputFlags;
-        var_r3 = 0;
-        if ((flags & 0x10) && !(flags & 0x20)) {
-            var_r3 = 1;
-        }
-        if (var_r3 == 0) {
-            temp_r4 = *(s32 *)((char *)gPadInput + 4);
-            if (temp_r4 & (*(s32 *)((char *)gPadInput + 8) ^ temp_r4) & 0x300) {
-                fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x50));
-                fn_8011D79C(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x34));
-                Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
-                Process_ClearFunc(arg0);
-            }
+    flag = 0;
+    if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
+        flag = 1;
+    }
+    if (flag == 0) {
+        a = *(u32 *)((u8 *)gPadInput + 4);
+        b = *(u32 *)((u8 *)gPadInput + 8);
+        if ((a & (b ^ a) & 0x300) != 0) {
+            fn_8013FF00(arg0, *(s32 *)((u8 *)arg0 + 0x50));
+            fn_8011D79C(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x34));
+            Ui_PlaySeCue(lbl_80279DF0 + 0x4AC, 0x64);
+            Process_ClearFunc(arg0);
         }
     }
 }
