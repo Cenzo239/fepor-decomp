@@ -6725,7 +6725,7 @@ void fn_8006DA98(void *arg0)
     extern char lbl_8026B990[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
-    extern void *lbl_80367320;
+    extern void *DefaultFifoObj;
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer2;
     extern void *DemoFrameBuffer1;
@@ -6793,7 +6793,7 @@ void fn_8006DA98(void *arg0)
         fn_8022108C(DEMORmode, DEMORmodeObj, 0, 0x10);
         DEMORmode = DEMORmodeObj;
     }
-    lbl_80367320 = GXInit(b, c);
+    DefaultFifoObj = GXInit(b, c);
     {
         void *rm = DEMORmode;
         u16 w = *(u16 *)((u8 *)rm + 4);
@@ -6879,7 +6879,7 @@ void fn_8006DFD8(void) {
     extern char lbl_8026B990[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
-    extern void *lbl_80367320;
+    extern void *DefaultFifoObj;
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer2;
     extern void *DemoFrameBuffer1;
@@ -6969,7 +6969,7 @@ body:
         fn_8022108C(DEMORmode, DEMORmodeObj, 0, 0x10);
         DEMORmode = DEMORmodeObj;
     }
-    lbl_80367320 = GXInit(b, c);
+    DefaultFifoObj = GXInit(b, c);
     {
         void *rm = DEMORmode;
         u16 w = *(u16 *)((u8 *)rm + 4);
@@ -7257,7 +7257,7 @@ void DEMOInit(void *arg0)
     extern char lbl_8026B990[];
     extern u8 DEMORmodeObj[];
     extern void *DEMORmode;
-    extern void *lbl_80367320;
+    extern void *DefaultFifoObj;
     extern void *DefaultFifo;
     extern void *DemoCurrentBuffer;
     extern void *DemoFrameBuffer2;
@@ -7337,7 +7337,7 @@ void DEMOInit(void *arg0)
     fn_80210C70(DEMORmode);
     buf = fn_800C4638(0x80000, lbl_8026B990 + 0x170, 0x80000);
     DefaultFifo = buf;
-    lbl_80367320 = GXInit(buf, 0x80000);
+    DefaultFifoObj = GXInit(buf, 0x80000);
     {
         void *rm2 = DEMORmode;
         u16 w2 = *(u16 *)((u8 *)rm2 + 4);
@@ -7379,8 +7379,8 @@ void DEMOInit(void *arg0)
 }
 
 s32 fn_8006EB9C(void) {
-    extern s32 lbl_80367320;
-    return lbl_80367320;
+    extern s32 DefaultFifoObj;
+    return DefaultFifoObj;
 }
 
 s32 fn_8006EBA4(void *arg0, s32 arg1) {
