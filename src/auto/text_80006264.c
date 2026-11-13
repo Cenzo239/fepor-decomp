@@ -2080,7 +2080,7 @@ void *Prim2D_PushZ(f32 *arg0) {
     return *(u8 **)&lbl_80367140 + 0x60;
 }
 #pragma peephole on
-void fn_80009E64(void *src, f32 farg0) {
+void Prim2D_PopZ(void *src, f32 farg0) {
     void PSMTXCopy(void *, void *);
     extern u16 lbl_80367140;
 
