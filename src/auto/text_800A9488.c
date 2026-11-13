@@ -1519,7 +1519,7 @@ void fn_800ABE74(void *arg0) {
 void fn_800AC0C0(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void fn_801673D0(void *);
     extern void *gPadInput;
     extern u8 lbl_80312ACC[];
@@ -1659,7 +1659,7 @@ void fn_800AC0C0(void *arg0) {
             temp_r7 = lbl_80312ACC + (*(s8 *)((u8 *)self + 0x3C) << 7)
                                   + (*(s8 *)((u8 *)self + 0x3D) << 4);
             if (*(u32 *)(temp_r7 + 4) != 0) {
-                fn_80166DD0(gUnitInfoPopup, temp_r7 + 4,
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, temp_r7 + 4,
                             (f32)*(s16 *)temp_r7,
                             (f32)(*(s16 *)(temp_r7 + 2) + 0x28));
             } else {
@@ -1744,7 +1744,7 @@ void fn_800AC5DC(void *arg0) {
 void fn_800AC810(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     extern void *gPadInput;
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
@@ -1894,7 +1894,7 @@ void fn_800AC810(void *arg0) {
                 + (*(s8 *)((u8 *)arg0 + 0x3D) * 0x10);
             x = *(s16 *)entry;
             y = *(s16 *)(entry + 2);
-            fn_80166DD0(gUnitInfoPopup, entry + 4, (f32)x, (f32)(y + 0x28));
+            Ui_ShowUnitInfoPopup(gUnitInfoPopup, entry + 4, (f32)x, (f32)(y + 0x28));
         }
     }
 }

@@ -2630,7 +2630,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void *fn_8000B908(u8);
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern u8 lbl_80268D90[];
     extern u8 gUnitInfoPopup[];
@@ -2717,7 +2717,7 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
             } else {
                 p = (u8 *)arg1 + *(s8 *)((u8 *)arg1 + 0x62);
                 node2 = (Node *)fn_8000B908(p[0x40]);
-                fn_80166DD0(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
             }
         }
         fn_801475FC(lbl_80268D90 + 0x71, 0x64);

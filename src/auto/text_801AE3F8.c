@@ -1970,7 +1970,7 @@ extern "C" void fn_801B224C(void *arg0) {
     void fn_801475FC(void *, s32);
     void fn_801658DC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void fn_801673D0(void *);
     void fn_8016746C(void *, void *, void *, f32, f32);
     extern u8 lbl_8027BD18[];
@@ -2041,7 +2041,7 @@ extern "C" void fn_801B224C(void *arg0) {
         }
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)arg0 + 0x44))->v9();
-            fn_80166DD0(gUnitInfoPopup, &lbl_80368230, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
+            Ui_ShowUnitInfoPopup(gUnitInfoPopup, &lbl_80368230, (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
         }
     }
     if (lbl_80368230 != cur) {

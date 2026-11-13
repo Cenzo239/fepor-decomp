@@ -6186,7 +6186,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *fn_8000B908(u8);
     void fn_801475FC(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
     void fn_80167190(void *, f32, f32);
     extern s32 gUiInputFlags;
     extern u32 *gPadInput;
@@ -6300,7 +6300,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 } else {
                     item = fn_8000B908(p[0x40 + (s8)p[0x62]]);
                     inner = *(Inner **)((u8 *)item + 0x34);
-                    fn_80166DD0(gUnitInfoPopup, inner->GetObj(item), fx, fy);
+                    Ui_ShowUnitInfoPopup(gUnitInfoPopup, inner->GetObj(item), fx, fy);
                 }
             }
             fn_801475FC(lbl_80276908 + 0x83, 0x64);
