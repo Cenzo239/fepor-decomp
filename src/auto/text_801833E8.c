@@ -1649,7 +1649,7 @@ void fn_801877C4(void *arg0) {
     u32 fn_80052B30(s32);
     void fn_800536B0(f32, f32, f32);
     void *fn_80053C30(void *, void *);
-    f32 fn_80059440(void *, f32, f32, f32, f32);
+    f32 Math_Angle2D(void *, f32, f32, f32, f32);
     f32 Math_Lerp(f32, f32, f32, f32);
     u8 Pad_IsButton(void *, s32);
     void fn_8005FC74(void *, void *, s32);
@@ -1752,7 +1752,7 @@ void fn_801877C4(void *arg0) {
             f29 = fn_80023430(gBattleMap, f31, f30);
             tmp = *(void **)((u8 *)arg0 + 0x30);
             t8 = *(f32 *)((u8 *)tmp + 8);
-            f28 = fn_80059440(tmp, *(f32 *)((u8 *)tmp + 4), t8, f31, f30);
+            f28 = Math_Angle2D(tmp, *(f32 *)((u8 *)tmp + 4), t8, f31, f30);
         }
         count = fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3A) - (s32)*(s8 *)((u8 *)arg0 + 0x38));
         count += fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3B) - (s32)*(s8 *)((u8 *)arg0 + 0x39));
@@ -9062,7 +9062,7 @@ void fn_80199D18(void *arg0) {
 void MapSelect_StartMove(void *arg0) {
     void fn_80053658(void *, s32, void *);
     void *fn_80053C30(u8 *, void *);
-    f32 fn_80059440(f32, f32, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
     f32 fn_8020322C(f32 *);
     extern void fn_8019A364(void);
@@ -9090,7 +9090,7 @@ void MapSelect_StartMove(void *arg0) {
         *(s16 *)((u8 *)arg0 + 0x4A) = 1;
     }
     *(s16 *)((u8 *)arg0 + 0x48) = 0;
-    temp_f31 = fn_80059440(
+    temp_f31 = Math_Angle2D(
         (f32)(s8)((u8 *)arg0)[0x3A],
         (f32)(s8)((u8 *)arg0)[0x3B],
         (f32)(s8)((u8 *)arg0)[0x3C],

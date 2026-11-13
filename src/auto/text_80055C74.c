@@ -1353,7 +1353,7 @@ loop_4:
     }
 }
 
-f32 fn_80059440(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
+f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     f64 fn_80237E90(f32);
     extern f32 lbl_80369108;
     extern f32 lbl_8036916C;

@@ -10513,16 +10513,16 @@ x=x*k; t=t*scale; y=y*k; out[0]=x; t=t*k; out[1]=y; out[2]=t;
 }
 #pragma global_optimizer on
 f32 fn_8004BDA8(void *arg0, f32 farg0, f32 farg1) {
-    f32 fn_80059440(f32, f32, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
     extern f32 lbl_80368FF8;
     if ((farg0 == M2C_FIELD(arg0, f32 *, 4)) && (farg1 == M2C_FIELD(arg0, f32 *, 8))) {
         return (f32)M2C_FIELD(arg0, s16 *, 0x15C) / lbl_80368FF8;
     }
-    return fn_80059440(M2C_FIELD(arg0, f32 *, 4), M2C_FIELD(arg0, f32 *, 8), farg0, farg1);
+    return Math_Angle2D(M2C_FIELD(arg0, f32 *, 4), M2C_FIELD(arg0, f32 *, 8), farg0, farg1);
 }
 
 f32 fn_8004BE18(void *arg0, void *arg1) {
-    f32 fn_80059440(f32, f32, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
     extern f32 lbl_80368FF8;
     f32 y1;
     f32 y0;
@@ -10534,7 +10534,7 @@ f32 fn_8004BE18(void *arg0, void *arg1) {
     if (y1 == y0 && x1 == *(f32 *)((char *)arg0 + 8)) {
         return (f32)*(s16 *)((char *)arg0 + 0x15C) / lbl_80368FF8;
     }
-    return fn_80059440(y0, *(f32 *)((char *)arg0 + 8), y1, x1);
+    return Math_Angle2D(y0, *(f32 *)((char *)arg0 + 8), y1, x1);
 }
 
 void fn_8004BE88(void *arg0, u8 arg1) {
@@ -12384,7 +12384,7 @@ s32 fn_80052F9C(void *arg0) {
 }
 
 void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
-    f32 fn_80059440(f32, f32, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
     extern f32 lbl_8036909C;
     void *temp_r3;
     f32 *var_r4;
@@ -12394,7 +12394,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 
     if (arg1 != NULL && arg2 != NULL) {
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
-            fn_80059440(arg1[0], arg1[1], arg2[0], arg2[1]);
+            Math_Angle2D(arg1[0], arg1[1], arg2[0], arg2[1]);
     }
 
     temp_r3 = *(void **)((u8 *)arg0 + 0x30);
@@ -12417,7 +12417,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 
 void fn_8005306C(void *arg0) {
     f32 fn_80023430(M2C_UNK *, f32, f32, f32);
-    f32 fn_80059440(f32, f32, f32, f32);
+    f32 Math_Angle2D(f32, f32, f32, f32);
     extern M2C_UNK gBattleMap;
     extern f32 lbl_80369098;
     extern f32 lbl_8036909C;
@@ -12465,7 +12465,7 @@ void fn_8005306C(void *arg0) {
         var_r30 = &sp8;
     }
     if ((var_r31 != NULL) && (var_r30 != NULL)) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x24) = fn_80059440(M2C_FIELD(var_r31, f32 *, 0), M2C_FIELD(var_r31, f32 *, 4), M2C_FIELD(var_r30, f32 *, 0), M2C_FIELD(var_r30, f32 *, 4));
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x24) = Math_Angle2D(M2C_FIELD(var_r31, f32 *, 0), M2C_FIELD(var_r31, f32 *, 4), M2C_FIELD(var_r30, f32 *, 0), M2C_FIELD(var_r30, f32 *, 4));
     }
     temp_r4 = M2C_FIELD(arg0, void **, 0x30);
     if ((M2C_FIELD(temp_r4, s32 *, 8) & 0x20000000) && (var_r31 != NULL)) {
