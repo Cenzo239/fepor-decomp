@@ -1034,7 +1034,7 @@ s32 fn_801519C0(void *arg0) {
     return result;
 }
 
-void fn_801519EC(void *arg0) {
+void Camera_ApplyPadControls(void *arg0) {
     void *fn_800536FC(u16);
     s32 Pad_IsButton(void *, s32);
     void fn_800E76E0(void *, f32);
