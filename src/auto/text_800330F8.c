@@ -6295,7 +6295,7 @@ u8 fn_80040B1C(void *arg0, s32 arg1, s32 arg2) {
     return (u8) ((M2C_FIELD(arg0, s16 *, 2) - temp_r6) <= arg2);
 }
 
-void fn_80040F90(void *arg0) {
+void Map_DecodeHeaderFlags(void *arg0) {
     extern u8 gBattleState[];
     extern s8 lbl_80367289;
     extern s8 lbl_8036728A;
@@ -6577,7 +6577,7 @@ void fn_80041514(void *arg0, char *arg1)
             ((u8 *)arg0)[0x61] = 0;
             M2C_FIELD(arg0, s32 *, 0x64) = 0;
         }
-        fn_80040F90(arg0);
+        Map_DecodeHeaderFlags(arg0);
         cursor = Hash_Lookup(lbl_8026A660 + 0x186);
         M2C_FIELD(arg0, void **, 0x10) = fn_800C42AC(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
         entry = M2C_FIELD(arg0, void **, 0x10);
