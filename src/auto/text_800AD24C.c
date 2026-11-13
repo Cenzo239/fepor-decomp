@@ -4868,7 +4868,7 @@ s32 fn_800B9060(u32 arg0) {
 
 s32 fn_800B90C4(u32 arg0) {
     extern s32 gUiInputFlags;
-    u32 fn_801CF760(void);
+    u32 ScriptObj_FindByName(void);
     void fn_801CFCB4(void);
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -4877,7 +4877,7 @@ s32 fn_800B90C4(u32 arg0) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    if (fn_801CF760() == 0) {
+    if (ScriptObj_FindByName() == 0) {
         return 0;
     }
     fn_801CFCB4();
@@ -4886,7 +4886,7 @@ s32 fn_800B90C4(u32 arg0) {
 
 s32 fn_800B9130(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801CFD40(void *, s32);
     void *tmp;
 
@@ -4896,7 +4896,7 @@ s32 fn_800B9130(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -4905,7 +4905,7 @@ s32 fn_800B9130(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800B91AC(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     void fn_801CFD60(void *, s32, s32, s32, s32);
     extern s32 gUiInputFlags;
     void *p;
@@ -4916,7 +4916,7 @@ s32 fn_800B91AC(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = fn_801CF760(arg0);
+    p = ScriptObj_FindByName(arg0);
     if (p == NULL) {
         return 0;
     }
@@ -4925,7 +4925,7 @@ s32 fn_800B91AC(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 s32 fn_800B9258(u32 arg0, s32 arg1, s32 arg2) {
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     void fn_801CFD8C(void *, s32, s32);
     extern s32 gUiInputFlags;
     void *p;
@@ -4936,7 +4936,7 @@ s32 fn_800B9258(u32 arg0, s32 arg1, s32 arg2) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = fn_801CF760(arg0);
+    p = ScriptObj_FindByName(arg0);
     if (p == NULL) {
         return 0;
     }
@@ -4946,7 +4946,7 @@ s32 fn_800B9258(u32 arg0, s32 arg1, s32 arg2) {
 
 s32 fn_800B92EC(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801CFDBC(void *, s32);
     void *tmp;
 
@@ -4956,7 +4956,7 @@ s32 fn_800B92EC(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -4966,7 +4966,7 @@ s32 fn_800B92EC(u32 arg0, s32 arg1) {
 
 s32 fn_800B9368(u32 arg0) {
     extern s32 gUiInputFlags;
-    u32 fn_801CF760(void);
+    u32 ScriptObj_FindByName(void);
     void fn_801CFDD4(void);
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -4975,7 +4975,7 @@ s32 fn_800B9368(u32 arg0) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    if (fn_801CF760() == 0) {
+    if (ScriptObj_FindByName() == 0) {
         return 0;
     }
     fn_801CFDD4();
@@ -4984,7 +4984,7 @@ s32 fn_800B9368(u32 arg0) {
 
 s32 fn_800B93D4(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801CFE80(void *, s32);
     void *tmp;
 
@@ -4994,7 +4994,7 @@ s32 fn_800B93D4(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5004,7 +5004,7 @@ s32 fn_800B93D4(u32 arg0, s32 arg1) {
 
 s32 fn_800B9450(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801CFEA4(void *, s32);
     void *tmp;
 
@@ -5014,7 +5014,7 @@ s32 fn_800B9450(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5024,7 +5024,7 @@ s32 fn_800B9450(u32 arg0, s32 arg1) {
 
 s32 fn_800B94CC(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801CFEF4(void *, s32);
     void *tmp;
 
@@ -5034,7 +5034,7 @@ s32 fn_800B94CC(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5044,7 +5044,7 @@ s32 fn_800B94CC(u32 arg0, s32 arg1) {
 
 s32 fn_800B9548(u32 arg0) {
     extern s32 gUiInputFlags;
-    u32 fn_801CF760(void);
+    u32 ScriptObj_FindByName(void);
     void fn_801D0200(void);
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -5053,7 +5053,7 @@ s32 fn_800B9548(u32 arg0) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    if (fn_801CF760() == 0) {
+    if (ScriptObj_FindByName() == 0) {
         return 0;
     }
     fn_801D0200();
@@ -5062,7 +5062,7 @@ s32 fn_800B9548(u32 arg0) {
 
 s32 fn_800B95B4(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801D027C(void *, s32);
     void *tmp;
 
@@ -5072,7 +5072,7 @@ s32 fn_800B95B4(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5081,7 +5081,7 @@ s32 fn_800B95B4(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800B9630(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     void fn_801D029C(void *, s32, s32, s32, void *, f32);
     extern s32 gUiInputFlags;
     extern u32 lbl_80369CF0;
@@ -5100,7 +5100,7 @@ s32 fn_800B9630(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = fn_801CF760(arg0);
+    p = ScriptObj_FindByName(arg0);
     if (p == NULL) {
         return 0;
     }
@@ -5120,7 +5120,7 @@ s32 fn_800B9630(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
 }
 
 s32 fn_800B9724(u32 arg0, s32 arg1, s32 arg2) {
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     void fn_801D03E4(void *, s32, s32);
     extern s32 gUiInputFlags;
     void *p;
@@ -5131,7 +5131,7 @@ s32 fn_800B9724(u32 arg0, s32 arg1, s32 arg2) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = fn_801CF760(arg0);
+    p = ScriptObj_FindByName(arg0);
     if (p == NULL) {
         return 0;
     }
@@ -5140,7 +5140,7 @@ s32 fn_800B9724(u32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_800B97B8(u32 arg0, s32 arg1) {
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     M2C_UNK fn_801D041C(void *, s32);
     extern s32 gUiInputFlags;
     void *p;
@@ -5151,7 +5151,7 @@ s32 fn_800B97B8(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    p = fn_801CF760(arg0);
+    p = ScriptObj_FindByName(arg0);
     if (p == NULL) {
         return 0;
     }
@@ -5161,7 +5161,7 @@ s32 fn_800B97B8(u32 arg0, s32 arg1) {
 
 s32 fn_800B983C(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801D0444(void *, s32);
     void *tmp;
 
@@ -5171,7 +5171,7 @@ s32 fn_800B983C(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5183,7 +5183,7 @@ s32 fn_800B98B8(u32 arg0) {
     extern s32 gUiInputFlags;
     extern u8 lbl_8028D1C4[];
     extern u8 lbl_80320060[];
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void *fn_800C0658(void);
     void *Process_CreateChild(void *, void *);
     void fn_80013864(void);
@@ -5197,7 +5197,7 @@ s32 fn_800B98B8(u32 arg0) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5227,7 +5227,7 @@ void fn_800B995C(void *arg0) {
 #pragma optimization_level 4
 s32 fn_800B99B8(u32 arg0, s32 arg1) {
     extern s32 gUiInputFlags;
-    void *fn_801CF760(void);
+    void *ScriptObj_FindByName(void);
     void fn_801D0460(void *, s32);
     void *tmp;
 
@@ -5237,7 +5237,7 @@ s32 fn_800B99B8(u32 arg0, s32 arg1) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    tmp = fn_801CF760();
+    tmp = ScriptObj_FindByName();
     if (tmp == 0) {
         return 0;
     }
@@ -5264,7 +5264,7 @@ s32 fn_800B9A34(u32 arg0, s32 arg1) {
 s32 fn_800B9A9C(u32 arg0, s32 arg1) {
     u32 Sound_FindByName(u32);
     void Sound_FadeToVol(u32, u8);
-    u32 fn_801CF760(u32);
+    u32 ScriptObj_FindByName(u32);
     void fn_801CFC4C(u32, s32);
     s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
@@ -5283,7 +5283,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
         return 1;
     }
 
-    temp = fn_801CF760(arg0);
+    temp = ScriptObj_FindByName(arg0);
     if (temp == 0U) {
         return 0;
     }
@@ -5295,7 +5295,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
 s32 fn_800B9B58(u32 arg0, s32 arg1) {
     u32 Sound_FindByName(u32);
     void Sound_FadeFromZero(u32, u8);
-    u32 fn_801CF760(u32);
+    u32 ScriptObj_FindByName(u32);
     void fn_801CFC80(u32, s32);
     s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
@@ -5314,7 +5314,7 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
         return 1;
     }
 
-    temp = fn_801CF760(arg0);
+    temp = ScriptObj_FindByName(arg0);
     if (temp == 0U) {
         return 0;
     }
@@ -5350,7 +5350,7 @@ s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
 
 s32 ScriptCmd_SetPos(u32 arg0, s32 arg1, s32 arg2) {
     void *Sound_FindByName(u32);
-    void *fn_801CF760(u32);
+    void *ScriptObj_FindByName(u32);
     s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
 
@@ -5367,7 +5367,7 @@ s32 ScriptCmd_SetPos(u32 arg0, s32 arg1, s32 arg2) {
         *(f32 *)((u8 *)temp_r3 + 0x44) = (f32)arg2;
         return 1;
     } else {
-        void *temp_r3_2 = fn_801CF760(arg0);
+        void *temp_r3_2 = ScriptObj_FindByName(arg0);
         if (temp_r3_2 == NULL) {
             return 0;
         }
@@ -5471,7 +5471,7 @@ s32 fn_800BA438(u32 arg0, s32 arg1)
 
 s32 fn_800BA4A8(u32 arg0) {
     void fn_80109020(u32);
-    void fn_801CF760(u32);
+    void ScriptObj_FindByName(u32);
     void fn_801CFA44(void);
     s32 Str_NCmp(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
@@ -5483,7 +5483,7 @@ s32 fn_800BA4A8(u32 arg0) {
     if (Str_NCmp((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
         fn_80109020(arg0);
     } else {
-        fn_801CF760(arg0);
+        ScriptObj_FindByName(arg0);
         fn_801CFA44();
     }
 

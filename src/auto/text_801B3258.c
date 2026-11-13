@@ -11518,7 +11518,7 @@ void *fn_801CF6F4(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void *fn_801CF760(void *arg0) {
+void *ScriptObj_FindByName(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u16 lbl_80331D00[];
     u8 *p;
