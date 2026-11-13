@@ -12673,7 +12673,7 @@ s32 Unit_GetActor(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0xE0);
 }
 
-u8 fn_800E56C4(void *arg0) {
+u8 Actor_IsBusy(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0xD0);
 }
 

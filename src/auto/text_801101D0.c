@@ -21,7 +21,7 @@ void fn_800D6878(void *, void *, void *);
 void String_AssignCStr(void *, char *, u32);
 s32 String_Compare(void *, s32, void *, char *, s32);
 s32 String_Find(void *, char *, s32, s32);
-u8 fn_800E56C4(void *);
+u8 Actor_IsBusy(void *);
 void Actor_LoadAnim(void *, void *, s32, s32, s32);
 void fn_801134EC(void *, void *, void *);
 void String_Assign(void *, void *, s32, s32);
@@ -1179,7 +1179,7 @@ s32 Actor_IsWaitAnim(void *arg0) {
     s32 strlen(char *);
     s32 String_Compare(void *, s32, void *, char *, s32);
     s32 String_Find(void *, char *, s32, s32);
-    u8 fn_800E56C4(void *);
+    u8 Actor_IsBusy(void *);
 
     n = strlen((char *)gActorXmlStrs + 0x43F);
     if (String_Compare((u8 *)arg0 + 0x178, 0, (void *)*(s32 *)((u8 *)arg0 + 0x178),
@@ -1188,7 +1188,7 @@ s32 Actor_IsWaitAnim(void *arg0) {
                          strlen((char *)gActorXmlStrs + 0x43F)) + 0x10000) != 0xFFFF ||
         ((u32)(String_Find((u8 *)arg0 + 0x178, (char *)gActorXmlStrs + 0x444, 0,
                           strlen((char *)gActorXmlStrs + 0x444)) + 0x10000) != 0xFFFF &&
-         fn_800E56C4(arg0) == 0)) {
+         Actor_IsBusy(arg0) == 0)) {
         return 1;
     }
     return 0;
@@ -2257,7 +2257,7 @@ void fn_8011631C(void *arg0, s8 arg1)
                              strlen((char *)&gActorXmlStrs + 0x43f)) + 0x10000) != (u32)-1
         || ((u32)(String_Find((u8 *)arg0 + 0x178, (char *)&gActorXmlStrs + 0x444, 0,
                               strlen((char *)&gActorXmlStrs + 0x444)) + 0x10000) != (u32)-1
-            && fn_800E56C4(arg0) == 0)) {
+            && Actor_IsBusy(arg0) == 0)) {
         flag = 1;
     } else {
         flag = 0;
