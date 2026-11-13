@@ -2019,7 +2019,8 @@ void Battle_LoadMap(void)
     DebugPrint((char *)(Battle_str + 0x1BF), Heap_GetFree());
 }
 #pragma global_optimizer reset
-void Battle_StartMapMain(void *arg0) {
+/* Create E_BMapMain (+BGM ctrl), load map and save, then place the camera and refresh units. */
+void Battle_StartMapMain(void *parent) {
     extern u16 Proc_BMapMain[];
     extern u16 Proc_BMapBGMCtrl[];
     extern u8 gBattleState[];
@@ -2036,11 +2037,11 @@ void Battle_StartMapMain(void *arg0) {
     void fn_8014C798(void *);
     void fn_800163F8(void);
     void fn_80016180(void);
-    void *r;
+    void *proc;
 
-    r = Process_CreateChild(Proc_BMapMain, arg0);
-    Process_Goto(r, 4);
-    Process_Create(Proc_BMapBGMCtrl, r);
+    proc = Process_CreateChild(Proc_BMapMain, parent);
+    Process_Goto(proc, 4);
+    Process_Create(Proc_BMapBGMCtrl, proc);
     fn_80006220(0x10);
     BattleState_LoadMap(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
