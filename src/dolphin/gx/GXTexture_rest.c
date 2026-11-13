@@ -649,7 +649,7 @@ void fn_80224F94(u32 arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4
     *(u16*)((char*)__GXData + 0x2) = 1;
 }
 
-void fn_80224FEC(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+void GXSetViewport(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     *(f32*)((char*)__GXData + 0x4F4) = farg0;
     *(f32*)((char*)__GXData + 0x4F8) = farg1;
     *(f32*)((char*)__GXData + 0x4FC) = farg2;

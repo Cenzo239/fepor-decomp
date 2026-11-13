@@ -1357,7 +1357,7 @@ void fn_80007B04(void)
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802240C8(s32);
     void fn_802250D0(u32 *, u32 *, u32 *, u32 *);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80224684(s32, s32, s32);
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
@@ -1446,7 +1446,7 @@ void fn_80007B04(void)
     buf[M2C_FIELD(lbl_80367140, s16 *, 0x90)] = NULL;
     fn_802250D0(&sp24, &sp20, &sp1C, &sp18);
     mgr = lbl_80367140;
-    fn_80224FEC(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
+    GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
                 M2C_FIELD(mgr, f32 *, 0x9C), M2C_FIELD(mgr, f32 *, 0xA0));
     fn_80224684(1, 3, 1);
     fn_802246B8(0);
@@ -1549,7 +1549,7 @@ void fn_80007B04(void)
     }
 
     mgr = lbl_80367140;
-    fn_80224FEC(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
+    GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
                 M2C_FIELD(mgr, f32 *, 0x94), M2C_FIELD(mgr, f32 *, 0x98));
     mgr = lbl_80367140;
     M2C_FIELD(mgr, s32 *, 0xA4) = OSGetTick() - M2C_FIELD(mgr, s32 *, 0xA4);

@@ -394,7 +394,7 @@ void __GXInitGX(void) {
     void fn_80224DCC(f32 *, s32);
     void fn_80224E1C(s32);
     void fn_80224E50(f32 *, s32, s32);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80224CF0(void *);
     void fn_80221034(s32);
     void fn_8022100C(s32);
@@ -563,7 +563,7 @@ void __GXInitGX(void) {
     fn_80224E50(&mtx[0][0], 0x3C, 0);
     fn_80224E50(&mtx[0][0], 0x7D, 0);
 
-    fn_80224FEC(0.0f, 0.0f, (f32)rmode->fbWidth, (f32)rmode->xfbHeight, 0.0f, lbl_8036BCC0);
+    GXSetViewport(0.0f, 0.0f, (f32)rmode->fbWidth, (f32)rmode->xfbHeight, 0.0f, lbl_8036BCC0);
     fn_80224CF0(base + 0x150);
     fn_80221034(0);
     fn_8022100C(2);

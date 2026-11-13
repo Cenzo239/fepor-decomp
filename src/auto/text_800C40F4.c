@@ -825,7 +825,7 @@ void fn_800C6008(void) {
 
 void fn_800C6028(void *arg0) {
     void fn_800C6E44(void *);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_802217AC(void *, s32);
     void fn_802240F0(s32, void *, f32, f32, f32, f32);
     void fn_8022462C(s32);
@@ -892,7 +892,7 @@ void fn_800C6028(void *arg0) {
         fn_800C6E44(arg0);
         break;
     case 2:
-        fn_80224FEC(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
+        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
         sp30 = lbl_8036C4A8;
         fn_802217AC(&sp30, 0xFFFFFF);
         sp34 = lbl_8036C4AC;
@@ -960,7 +960,7 @@ void fn_800C6028(void *arg0) {
         fifo[0] = 0x68;
         break;
     case 3:
-        fn_80224FEC(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
+        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
         sp24 = lbl_8036C4A0;
         fn_802217AC(&sp24, 0xFFFFFF);
         sp28 = lbl_8036C4A4;
@@ -1026,7 +1026,7 @@ void fn_800C6028(void *arg0) {
         fifo[0] = 0x70;
         break;
     case 4:
-        fn_80224FEC(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
+        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
         sp18 = lbl_8036C498;
         fn_802217AC(&sp18, 0xFFFFFF);
         sp1C = lbl_8036C49C;
@@ -1092,7 +1092,7 @@ void fn_800C6028(void *arg0) {
         fifo[0] = 0x60;
         break;
     case 5:
-        fn_80224FEC(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
+        GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
         sp8 = lbl_8036C4C0;
         fn_802217AC(&sp8, 0xFFFFFF);
         spC = lbl_8036C4C4;
@@ -1163,7 +1163,7 @@ void fn_800C6028(void *arg0) {
 }
 
 void fn_800C6E44(void *arg0) {
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_802217AC(void *, s32);
     void fn_802240F0(s32, void *, f32, f32, f32, f32);
     void fn_8022462C(s32);
@@ -1216,7 +1216,7 @@ void fn_800C6E44(void *arg0) {
     u32 rem;
     volatile s16 *fifo;
 
-    fn_80224FEC(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
+    GXSetViewport(lbl_80369D8C, lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C);
     sp1C = lbl_8036C4B4;
     fn_802217AC(&sp1C, 0xFFFFFF);
     sp18 = lbl_8036C4B8;

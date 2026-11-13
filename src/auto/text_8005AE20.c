@@ -5219,7 +5219,7 @@ void fn_80067EDC(void *arg0)
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80225058(u16, u16, u16, u16);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
     extern void *lbl_803672F8;
     extern u8 lbl_803672FC;
@@ -5257,7 +5257,7 @@ void fn_80067EDC(void *arg0)
         return;
     }
     fn_80225058(*(u16 *)(p + 0x1C), *(u16 *)(p + 0x1E), *(u16 *)(p + 0x20), *(u16 *)(p + 0x22));
-    fn_80224FEC(*(f32 *)(p + 4), *(f32 *)(p + 8), *(f32 *)(p + 0xC), *(f32 *)(p + 0x10), *(f32 *)(p + 0x14), *(f32 *)(p + 0x18));
+    GXSetViewport(*(f32 *)(p + 4), *(f32 *)(p + 8), *(f32 *)(p + 0xC), *(f32 *)(p + 0x10), *(f32 *)(p + 0x14), *(f32 *)(p + 0x18));
     GXSetProjection(p + 0x24, (*(u16 *)p & 1) ^ 1);
 }
 
@@ -6644,7 +6644,7 @@ void fn_8006DA98(void *arg0)
     void fn_8020602C(void *, s32, void *, ...);
     void fn_8022108C(void *, void *, s32, s32);
     void *GXInit(s32, s32);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80225058(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
@@ -6734,7 +6734,7 @@ void fn_8006DA98(void *arg0)
         void *rm = lbl_80367324;
         u16 w = *(u16 *)((u8 *)rm + 4);
         u16 h = *(u16 *)((u8 *)rm + 6);
-        fn_80224FEC(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
+        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
     }
     {
         void *rm = lbl_80367324;
@@ -6788,7 +6788,7 @@ void fn_8006DFD8(void) {
     void fn_8020602C(void *, s32, void *, ...);
     void fn_8022108C(void *, void *, s32, s32);
     void *GXInit(s32, s32);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80225058(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
@@ -6910,7 +6910,7 @@ body:
         void *rm = lbl_80367324;
         u16 w = *(u16 *)((u8 *)rm + 4);
         u16 h = *(u16 *)((u8 *)rm + 6);
-        fn_80224FEC(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
+        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w, (f32)h, lbl_803692C8, lbl_803692CC);
     }
     {
         void *rm = lbl_80367324;
@@ -7129,7 +7129,7 @@ void fn_8006E748(void)
     void fn_80225BF4(void);
     s32 fn_8021173C(void);
     void fn_80224F94(u32, f32, f32, f32, f32, f32, f32);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80220198(void);
     void fn_80222EB4(void);
     extern s32 lbl_8036732C;
@@ -7153,7 +7153,7 @@ void fn_8006E748(void)
         flag = fn_8021173C();
         fn_80224F94(flag, lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
     } else {
-        fn_80224FEC(lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
+        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)*(u16 *)((u8 *)rm + 4), (f32)*(u16 *)((u8 *)rm + 6), lbl_803692C8, lbl_803692CC);
     }
     fn_80220198();
     fn_80222EB4();
@@ -7177,7 +7177,7 @@ void fn_8006E838(void *arg0)
     void fn_80210C70(void *);
     void *fn_800C4638(s32, void *, s32);
     void *GXInit(void *, s32);
-    void fn_80224FEC(f32, f32, f32, f32, f32, f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80225058(s32, s32, u16, u16);
     void fn_802214A8(u16, u16);
     s32 fn_802216E0(void);
@@ -7278,7 +7278,7 @@ void fn_8006E838(void *arg0)
         void *rm2 = lbl_80367324;
         u16 w2 = *(u16 *)((u8 *)rm2 + 4);
         u16 h2 = *(u16 *)((u8 *)rm2 + 6);
-        fn_80224FEC(lbl_803692C8, lbl_803692C8, (f32)w2, (f32)h2, lbl_803692C8, lbl_803692CC);
+        GXSetViewport(lbl_803692C8, lbl_803692C8, (f32)w2, (f32)h2, lbl_803692C8, lbl_803692CC);
     }
     {
         void *rm2 = lbl_80367324;
