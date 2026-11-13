@@ -1459,7 +1459,7 @@ void fn_800B1D68(s32 arg0, u8 arg1) {
 
 void fn_800B1DEC(s32 arg0, s32 arg1)
 {
-    void fn_8024B6B4(s32, s32, s32);
+    void Snd_SetParamU16(s32, s32, s32);
     extern u8 gSoundSys[];
     u8 *entry;
     u8 *base;
@@ -1469,7 +1469,7 @@ void fn_800B1DEC(s32 arg0, s32 arg1)
     entry = base + arg0 * 0x14;
     handle = *(u32 *)(entry + 0xC);
     if (handle != 0xFFFFFFFFu) {
-        fn_8024B6B4((s32)handle, 0x80, (u16)(*(u16 *)(entry + 0xA) + arg1));
+        Snd_SetParamU16((s32)handle, 0x80, (u16)(*(u16 *)(entry + 0xA) + arg1));
     }
 }
 
@@ -1496,7 +1496,7 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     void OSRestoreInterrupts(s32);
     void *Snd_Start(u16, u8, s32, s32);
     void Snd_SetParamU8(void *, s32, u8);
-    void fn_8024B6B4(void *, s32, u16);
+    void Snd_SetParamU16(void *, s32, u16);
     extern u8 gSoundSys[];
 
     u8 *sys;
@@ -1560,7 +1560,7 @@ s32 Sound_PlaySE(u16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     *(u16 *)(sys + 0x124) = *(u16 *)(sys + 0x124) + 1;
     *(void **)(slot + 0xC) = Snd_Start(arg0, (u8)vol, 0x40, 0);
     Snd_SetParamU8(*(void **)(slot + 0xC), 7, arg2);
-    fn_8024B6B4(*(void **)(slot + 0xC), 0x80, (u16)pan);
+    Snd_SetParamU16(*(void **)(slot + 0xC), 0x80, (u16)pan);
     Snd_SetParamU8(*(void **)(slot + 0xC), 0xA, arg3);
     {
         u16 nest;
