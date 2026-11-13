@@ -10205,7 +10205,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     void fn_80222C50(void *, s32);
     void fn_80223DDC(s32, s32, s32, s32, s32);
     void fn_80223D94(s32, s32, s32);
-    void fn_80223A5C(s32, s32, s32, s32, s32);
+    void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void fn_80223AE4(s32, s32, s32, s32, s32, s32);
     void fn_80223AA0(s32, s32, s32, s32, s32);
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
@@ -10239,7 +10239,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     if ((*(s32 *)((u8 *)t28 + 0x1A0) & 1) != 0) {
         fn_80223DDC(1, 1, 1, 1, 3);
         fn_80223D94(t27, 0, 1);
-        fn_80223A5C(t27, 0xF, 8, 0xA, 0xA);
+        GXSetTevColorIn(t27, 0xF, 8, 0xA, 0xA);
         fn_80223AE4(t27, 0, 2, 3, 1, 0);
         fn_80223AA0(t27, 7, 4, 5, 7);
         fn_80223B4C(t27, 0, 0, 0, 1, 0);

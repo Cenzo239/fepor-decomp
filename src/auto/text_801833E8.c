@@ -13243,7 +13243,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     M2C_UNK fn_80222C50(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_80222EB4();
-    M2C_UNK fn_80223A5C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevColorIn(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223AA0(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223AE4(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223B4C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13276,7 +13276,7 @@ void fn_801A27F8(void *arg0) {
         sp8 = lbl_8036AF60;
         fn_80223C78(3, &sp8);
         fn_80223CDC(0, 0xF);
-        fn_80223A5C(0, 0xF, 0xE, 8, 0xF);
+        GXSetTevColorIn(0, 0xF, 0xE, 8, 0xF);
         fn_80223AE4(0, 0, 0, 0, 1, 0);
         fn_80223AA0(0, 7, 7, 7, 6);
         fn_80223B4C(0, 0, 0, 0, 0, 0);

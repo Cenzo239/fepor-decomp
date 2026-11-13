@@ -947,7 +947,7 @@ void fn_802239D0(s32 arg0, u32 arg1)
     *(u16 *)(gx + 2) = 0;
 }
 
-void fn_80223A5C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void GXSetTevColorIn(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u32 *temp_r8;
     u32 temp_r10;
     u32 temp_r9;
