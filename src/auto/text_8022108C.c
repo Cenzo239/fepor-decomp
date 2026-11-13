@@ -289,7 +289,7 @@ void fn_80221450(u32 arg0)
 #pragma use_lmw_stmw on
 extern f64 lbl_8036BCD8;
 extern f32 lbl_8036BCD0;
-s32 fn_8022C568(f32);
+s32 __cvt_fp2unsigned(f32);
 #pragma use_lmw_stmw on
 f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     f64 bias;
@@ -316,7 +316,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
     tmp = (f32)yScale / (f32)efb;
     inv = lbl_8036BCD0 / tmp;
     ratio = tmp;
-    denom = (u32)fn_8022C568(inv) & 0x1FF;
+    denom = (u32)__cvt_fp2unsigned(inv) & 0x1FF;
     fixed = (efb - 1) << 8;
     lines = (fixed / denom) + 1;
     if (denom > 0x80U && denom < 0x100U) {
@@ -342,7 +342,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
         tmp = (f32)yScale / (f32)efbOrig;
         inv = f256 / tmp;
         ratio = tmp;
-        denom = (u32)fn_8022C568(inv) & 0x1FF;
+        denom = (u32)__cvt_fp2unsigned(inv) & 0x1FF;
         lines = (fixed / denom) + 1;
         if (denom > 0x80U && denom < 0x100U) {
             while ((denom & 1) == 0) {
@@ -369,7 +369,7 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
         tmp = (f32)yScale / (f32)efbOrig;
         inv = f256 / tmp;
         ratio = tmp;
-        denom = (u32)fn_8022C568(inv) & 0x1FF;
+        denom = (u32)__cvt_fp2unsigned(inv) & 0x1FF;
         lines = (fixed / denom) + 1;
         if (denom > 0x80U && denom < 0x100U) {
             while ((denom & 1) == 0) {

@@ -114,7 +114,7 @@ extern u32 lbl_8035C918[];
 
 u32 fn_8026367C(void);
 u16 Sound_GetChanParam(u8 arg0, u8 arg1, u8 arg2);
-s32 fn_8022C568(f32 arg0);
+s32 __cvt_fp2unsigned(f32 arg0);
 void fn_80261934(u8 arg0, void *arg1, s32 arg2);
 void fn_8026146C(s32 *);
 void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5);
@@ -2329,7 +2329,7 @@ t->cursor+=2;
 }
 t=(StreamTempo*)((u8*)lbl_80368968+off+0x1508);
 f=lbl_8036C1B0*((f32)t->value*(f32)arg1)*(lbl_8036C1B4*(f32)t->scale);
-t->timing[t->active*2]=fn_8022C568((f32)fn_802387A8(lbl_8036C1B8*f,lbl_8036C1C0));
+t->timing[t->active*2]=__cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8*f,lbl_8036C1C0));
 t->timing[t->active*2+1]=(s32)(f32)fn_802381A4(f);
 }
 tempo->count++;
@@ -2426,7 +2426,7 @@ outer:
     ev_done0:
         t = (StreamTempo *)((u8 *)lbl_80368968 + 0x1508);
         f = lbl_8036C1B0 * ((f32)t->value * (f32)arg0) * (lbl_8036C1B4 * (f32)t->scale);
-        t->timing[t->active * 2] = fn_8022C568((f32)fn_802387A8(lbl_8036C1B8 * f, lbl_8036C1C0));
+        t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(lbl_8036C1B8 * f, lbl_8036C1C0));
         t->timing[t->active * 2 + 1] = (s32)(f32)fn_802381A4(f);
         result = (u32)fn_80246EBC(0, arg0);
         for (i = 0; i < 2; i++) {
@@ -2531,7 +2531,7 @@ outer:
         ev_done1:
             t = (StreamTempo *)((u8 *)lbl_80368968 + (u32)ch * 0x38 + 0x1508);
             f27 = f28 * ((f32)t->value * (f32)arg0) * (f30 * (f32)t->scale);
-            t->timing[t->active * 2] = fn_8022C568((f32)fn_802387A8(f31 * f27, lbl_8036C1C0));
+            t->timing[t->active * 2] = __cvt_fp2unsigned((f32)fn_802387A8(f31 * f27, lbl_8036C1C0));
             t->timing[t->active * 2 + 1] = (s32)(f32)fn_802381A4(f27);
             result |= (u32)fn_80246EBC(ch, arg0);
         }
@@ -6525,7 +6525,7 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     vol = lbl_8029FF7C[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk0 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk4 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk8 = 0xC1 - lbl_8029FB7C[fn_8022C568(lbl_8036C260 * vol)];
+    params.unk8 = 0xC1 - lbl_8029FB7C[__cvt_fp2unsigned(lbl_8036C260 * vol)];
     params.unkA = lbl_8029F1CC[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unkC = 0x80000000;
     params.unk10 = 0x80000000;
@@ -9298,7 +9298,7 @@ void fn_80257940(s32 arg0) {
     extern f64 lbl_8036C280;
     extern f32 lbl_8036C288;
     extern f32 lbl_8036C28C;
-    fn_8022C568(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
+    __cvt_fp2unsigned(lbl_8036C28C * (f32) fmod(lbl_8036C280, lbl_8036C288 * (f32) arg0, lbl_8036C288));
 }
 
 /* Set volume and per-step delta for the voice's current ADSR phase; return 1 when finished. */
@@ -9405,7 +9405,7 @@ void fn_80257C04(void *arg0) {
 }
 
 s32 fn_80257C2C(u8 *arg0, u32 arg1) {
-    u32 fn_8022C568(f32, f32, f32);
+    u32 __cvt_fp2unsigned(f32, f32, f32);
     extern u8 lbl_8029FB7C[];
     extern f32 lbl_8036C298;
     f32 temp_f2;
@@ -9427,7 +9427,7 @@ s32 fn_80257C2C(u8 *arg0, u32 arg1) {
             *(s32 *)(arg0 + 0xC) = (0xC1 - lbl_8029FB7C[*(s32 *)(arg0 + 8) >> 21]) << 16;
         }
         temp_f2 = lbl_8036C298 * (f32)*(s32 *)(arg0 + 0xC);
-        *(u32 *)(arg0 + 4) = fn_8022C568(temp_f2 * (f32)arg1, temp_f2, lbl_8036C298) >> 12;
+        *(u32 *)(arg0 + 4) = __cvt_fp2unsigned(temp_f2 * (f32)arg1, temp_f2, lbl_8036C298) >> 12;
         arg0[1] = 4;
         temp_r3 = *(u32 *)(arg0 + 4);
         if (temp_r3 == 0) {
@@ -9444,7 +9444,7 @@ s32 fn_80257C2C(u8 *arg0, u32 arg1) {
 }
 
 s32 fn_80257D7C(u8 *arg0) {
-    u32 fn_8022C568(f32, f32, f32);
+    u32 __cvt_fp2unsigned(f32, f32, f32);
     extern u8 lbl_8029FB7C[];
     extern f32 lbl_8036C298;
     f32 temp_f2;
@@ -9474,7 +9474,7 @@ s32 fn_80257D7C(u8 *arg0) {
                 *(s32 *)(arg0 + 0xC) = (0xC1 - lbl_8029FB7C[*(s32 *)(arg0 + 8) >> 21]) << 16;
             }
             temp_f2 = lbl_8036C298 * (f32)*(s32 *)(arg0 + 0xC);
-            *(u32 *)(arg0 + 4) = fn_8022C568(temp_f2 * (f32)temp_r4, temp_f2, lbl_8036C298) >> 12;
+            *(u32 *)(arg0 + 4) = __cvt_fp2unsigned(temp_f2 * (f32)temp_r4, temp_f2, lbl_8036C298) >> 12;
             arg0[1] = 4;
             temp_r3 = *(u32 *)(arg0 + 4);
             if (temp_r3 == 0) {
@@ -10820,28 +10820,28 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
     r28 = 0;
     if (arg5 != 0) {
         f26 = (f32)fn_802387A8(f24, lbl_8036C2C8);
-        r29 = fn_8022C568(f24);
+        r29 = __cvt_fp2unsigned(f24);
         f23 = lbl_8036C2D0 - f24;
         f25 = (f32)fn_802387A8(f23, lbl_8036C2C8);
-        r28 = fn_8022C568(f23);
+        r28 = __cvt_fp2unsigned(f23);
     }
     if (arg4 != 0) {
         f24 = lbl_8036C2AC + (lbl_8036C2D4 * (f24 - lbl_8036C2AC));
     }
     f30 = (f32)fn_802387A8(f24, lbl_8036C2C8);
-    r22 = fn_8022C568(f24);
+    r22 = __cvt_fp2unsigned(f24);
     f29 = (f32)fn_802387A8(f20, lbl_8036C2C8);
-    r23 = fn_8022C568(f20);
+    r23 = __cvt_fp2unsigned(f20);
     f23 = lbl_8036C2D0 - f24;
     f20 = lbl_8036C2D0 - f20;
     f28 = (f32)fn_802387A8(f23, lbl_8036C2C8);
-    r24 = fn_8022C568(f23);
+    r24 = __cvt_fp2unsigned(f23);
     f27 = (f32)fn_802387A8(f20, lbl_8036C2C8);
-    r26i = fn_8022C568(f20);
+    r26i = __cvt_fp2unsigned(f20);
 
     if (arg5 == 0) {
         f20 = lbl_8036C2A8 * f22v;
-        idx = fn_8022C568(f20);
+        idx = __cvt_fp2unsigned(f20);
         t204 = base + (0x204 / 4);
         t208 = t204 + 1;
         f26 = lbl_8036C2AC - f29;
@@ -10868,7 +10868,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
         v = f28 * t208[r24];
         out[0] = a * (u + v);
 
-        idx = fn_8022C568(f25);
+        idx = __cvt_fp2unsigned(f25);
         f22v = lbl_8036C2A8 * f21v;
         t = f25 - (f32)(u32)idx;
         u = (lbl_8036C2AC - t) * tbl[idx];
@@ -10887,7 +10887,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
         v = f28 * t208[r24];
         out[3] = a * (u + v);
 
-        idx = fn_8022C568(f22v);
+        idx = __cvt_fp2unsigned(f22v);
         t = f22v - (f32)(u32)idx;
         u = (lbl_8036C2AC - t) * tbl[idx];
         v = t * tbl[idx + 1];
@@ -10906,7 +10906,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
         out[6] = a * (u + v);
     } else {
         f20 = lbl_8036C2A8 * f22v;
-        idx = fn_8022C568(f20);
+        idx = __cvt_fp2unsigned(f20);
         t204 = base + (0x204 / 4);
         t208 = t204 + 1;
         t214 = base + (0x214 / 4);
@@ -10939,7 +10939,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
         v = f25 * t208[r28];
         out[6] = c * (u + v);
 
-        idx = fn_8022C568(f22v);
+        idx = __cvt_fp2unsigned(f22v);
         t = f22v - (f32)(u32)idx;
         u = (lbl_8036C2AC - t) * tbl[idx];
         v = t * tbl[idx + 1];

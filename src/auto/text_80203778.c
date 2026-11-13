@@ -1155,7 +1155,7 @@ void fn_80205B7C(void *arg0, s32 arg1, s32 arg2) {
 #pragma use_lmw_stmw on
 void OSDumpContext(OSContext *context) {
     extern char lbl_8029BDE0[];
-    s32 fn_8022C568(f64);
+    s32 __cvt_fp2unsigned(f64);
     OSContext exceptionContext;
     OSContext *oldCtx;
     BOOL enabled;
@@ -1192,14 +1192,14 @@ void OSDumpContext(OSContext *context) {
         OSSetCurrentContext(&exceptionContext);
         OSReport(str + 0x10C);
         for (i = 0; i < 32; i += 2) {
-            hi = fn_8022C568(context->fpr[i + 1]);
-            lo = fn_8022C568(context->fpr[i]);
+            hi = __cvt_fp2unsigned(context->fpr[i + 1]);
+            lo = __cvt_fp2unsigned(context->fpr[i]);
             OSReport(str + 0x120, i, lo, i + 1, hi);
         }
         OSReport(str + 0x13C);
         for (i = 0; i < 32; i += 2) {
-            hi = fn_8022C568(context->psf[i + 1]);
-            lo = fn_8022C568(context->psf[i]);
+            hi = __cvt_fp2unsigned(context->psf[i + 1]);
+            lo = __cvt_fp2unsigned(context->psf[i]);
             OSReport(str + 0x150, i, lo, i + 1, hi);
         }
         exceptionContext.mode = 0;

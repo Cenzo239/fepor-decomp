@@ -4052,7 +4052,7 @@ s32 Unit_HasLowHpAi(void *arg0) {
 s32 Unit_IsLowHp(void *arg0) {
     u8 fn_80102EA8(void);
     s8 Unit_GetMaxHp(void *);
-    s32 fn_8022C568(f32);
+    s32 __cvt_fp2unsigned(f32);
     void *Res_GetByName(void *);
     extern f64 lbl_8036A168;
     extern f32 sLowHpRatio;
@@ -4079,7 +4079,7 @@ s32 Unit_IsLowHp(void *arg0) {
     {
         s8 b2d = Unit_GetMaxHp(arg0);
         s8 v = (s8)*(u8 *)((u8 *)arg0 + 0x1A8);
-        val = fn_8022C568((sHpPercentScale * (f32)v) / (f32)b2d);
+        val = __cvt_fp2unsigned((sHpPercentScale * (f32)v) / (f32)b2d);
     }
     data = Res_GetByName(*(void **)((u8 *)arg0 + 0x240));
     flags = *(u32 *)((u8 *)arg0 + 0x254);

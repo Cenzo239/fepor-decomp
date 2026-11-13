@@ -190,7 +190,7 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 
 #pragma use_lmw_stmw on
 void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d) {
-    s32 fn_8022C568(f32);
+    s32 __cvt_fp2unsigned(f32);
     extern f32 lbl_8036BD58;
     extern f32 lbl_8036BD5C;
     extern f32 lbl_8036BD60;
@@ -259,7 +259,7 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d) {
         }
         exp += 1;
         sp24 = f3 / (f32)(1 << exp);
-        ef = __rlwimi(ef, fn_8022C568(lbl_8036BD80 * f4), 0, 8, 31);
+        ef = __rlwimi(ef, __cvt_fp2unsigned(lbl_8036BD80 * f4), 0, 8, 31);
         sp20 = f31;
         f0r = __rlwimi(f0r, exp, 0, 27, 31);
         {

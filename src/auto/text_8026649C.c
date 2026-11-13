@@ -153,7 +153,7 @@ extern u16 lbl_803548B8;
 extern u16 lbl_80368A08;
 
 u16 Sound_GetChanParam(u8 arg0, u8 arg1, u8 arg2);
-s32 fn_8022C568(f32 arg0);
+s32 __cvt_fp2unsigned(f32 arg0);
 void fn_80261934(u8 arg0, void *arg1, s32 arg2);
 
 void fn_8026146C(s32 *);

@@ -31,7 +31,7 @@ u32* fn_8022C540(u32* param_1, u32 param_2) {
     return param_1; // Return param_1 unchanged
 }
 
-s32 fn_8022C568(f32 farg0) {
+s32 __cvt_fp2unsigned(f32 farg0) {
     extern M2C_UNK lbl_80282AD0;
     f32 var_f2;
     s32 temp_cr0_lt;

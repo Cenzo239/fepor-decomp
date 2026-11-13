@@ -2438,7 +2438,7 @@ void fn_80168D68(s32 arg0) {
 
 void fn_80168DE0(void) {
     void GXSetScissor(s32, s32, s32, s32);
-    s32 fn_8022C568(f32);
+    s32 __cvt_fp2unsigned(f32);
     extern u8 gUnitInfoPopup[];
     extern f32 lbl_8036A95C;
     extern f32 lbl_8036A964;
@@ -2449,11 +2449,11 @@ void fn_80168DE0(void) {
     s32 d;
     s32 a;
 
-    a = fn_8022C568(*(f32 *)(gUnitInfoPopup + 0x110) - t);
+    a = __cvt_fp2unsigned(*(f32 *)(gUnitInfoPopup + 0x110) - t);
     t = lbl_8036A964;
-    b = fn_8022C568(*(f32 *)(gUnitInfoPopup + 0x10c) - lbl_8036A95C);
-    c = fn_8022C568(lbl_8036A970 + *(f32 *)(gUnitInfoPopup + 0xf8));
-    d = fn_8022C568(lbl_8036A970 + *(f32 *)(gUnitInfoPopup + 0xf4));
+    b = __cvt_fp2unsigned(*(f32 *)(gUnitInfoPopup + 0x10c) - lbl_8036A95C);
+    c = __cvt_fp2unsigned(lbl_8036A970 + *(f32 *)(gUnitInfoPopup + 0xf8));
+    d = __cvt_fp2unsigned(lbl_8036A970 + *(f32 *)(gUnitInfoPopup + 0xf4));
     GXSetScissor(d, c, b, a);
 }
 

@@ -2665,7 +2665,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void Prim2D_SetRect(s32, f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void *Prim2D_PushZ(s32);
-    s32 fn_8022C568(f32, f32, f32);
+    s32 __cvt_fp2unsigned(f32, f32, f32);
     void fn_80009BC0(void (*)(s32, s32), s32);
     void Prim2D_AddZ(f32);
     void fn_8007B4D8(s32, s32, s32, void *);
@@ -2719,7 +2719,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     Prim2D_EndPrim();
 
     tmp = *(f32 *)((u8 *)Prim2D_PushZ(0) + 0xC);
-    cb = fn_8022C568(lbl_8036970C + (tmp + (f32)x), tmp, lbl_8036970C);
+    cb = __cvt_fp2unsigned(lbl_8036970C + (tmp + (f32)x), tmp, lbl_8036970C);
     Prim2D_Begin();
     fn_80009BC0(fn_8008BA50, cb);
     Prim2D_PrepareTex();

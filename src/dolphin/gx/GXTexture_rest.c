@@ -177,7 +177,7 @@ void fn_80222644(void *, void *, u16, u16, s32, s32, s32, u8);
 #pragma use_lmw_stmw reset
 
 void fn_80224304(s16 *arg0, u16 arg1, f32 *arg2) {
-    s32 fn_8022C568(f32);
+    s32 __cvt_fp2unsigned(f32);
     extern f32 lbl_8036BD58;
     extern f32 lbl_8036BD5C;
     extern f32 lbl_8036BD70;
@@ -236,7 +236,7 @@ void fn_80224304(s16 *arg0, u16 arg1, f32 *arg2) {
             sp14 = (f32)((f64)var_f2 * guess);
             var_f2 = sp14;
         }
-        *var_r30 = (s16)(fn_8022C568(f23 * var_f2) & 0xFFF);
+        *var_r30 = (s16)(__cvt_fp2unsigned(f23 * var_f2) & 0xFFF);
         var_r29 += 1;
         var_r30 += 1;
     } while (var_r29 < 10U);
