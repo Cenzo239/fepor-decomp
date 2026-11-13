@@ -399,7 +399,8 @@ void fn_801A8B48(s32 arg0) {
     }
 }
 
-void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
+/* Sum affinity bonuses from same-unk190 support partners within 3 tiles into info, then halve. */
+void Unit_FillAffinityBonuses(void *unit, void *info) {
     void Unit_AddAffinityBonuses(void *, s32, void *);
     void Unit_FindSupportPartnerIndex(void *, s32);
     s32 Unit_GetSupportRank(void *, s32);
@@ -408,34 +409,34 @@ void Unit_FillAffinityBonuses(void *arg0, void *arg1) {
     u8 Unit_GetDistance(void *, void *);
     void AffinityBonuses_Halve(void *);
     s32 i;
-    void *unit;
-    s32 val;
+    void *partner;
+    s32 rank;
 
     i = 0;
-    *(u8 *)((u8 *)arg1 + 9) = 0;
-    *(u8 *)((u8 *)arg1 + 8) = 0;
-    *(u8 *)((u8 *)arg1 + 7) = 0;
-    *(u8 *)((u8 *)arg1 + 6) = 0;
-    *(u8 *)((u8 *)arg1 + 5) = 0;
-    *(u8 *)((u8 *)arg1 + 4) = 0;
+    *(u8 *)((u8 *)info + 9) = 0;
+    *(u8 *)((u8 *)info + 8) = 0;
+    *(u8 *)((u8 *)info + 7) = 0;
+    *(u8 *)((u8 *)info + 6) = 0;
+    *(u8 *)((u8 *)info + 5) = 0;
+    *(u8 *)((u8 *)info + 4) = 0;
 
-    for (; i < (s32)Unit_CountSupportPartners(arg0); i++) {
-        unit = Unit_GetSupportPartner(arg0, i);
-        if (unit == NULL) {
+    for (; i < (s32)Unit_CountSupportPartners(unit); i++) {
+        partner = Unit_GetSupportPartner(unit, i);
+        if (partner == NULL) {
             continue;
         }
-        if (*(u32 *)((u8 *)arg0 + 0x190) != *(u32 *)((u8 *)unit + 0x190)) {
+        if (*(u32 *)((u8 *)unit + 0x190) != *(u32 *)((u8 *)partner + 0x190)) {
             continue;
         }
-        if ((u8)Unit_GetDistance(arg0, unit) > 3) {
+        if ((u8)Unit_GetDistance(unit, partner) > 3) {
             continue;
         }
-        Unit_FindSupportPartnerIndex(unit, *(s32 *)((u8 *)arg0 + 0x188));
-        val = Unit_GetSupportRank(arg0, i);
-        Unit_AddAffinityBonuses(arg0, val, arg1);
-        Unit_AddAffinityBonuses(unit, val, arg1);
+        Unit_FindSupportPartnerIndex(partner, *(s32 *)((u8 *)unit + 0x188));
+        rank = Unit_GetSupportRank(unit, i);
+        Unit_AddAffinityBonuses(unit, rank, info);
+        Unit_AddAffinityBonuses(partner, rank, info);
     }
-    AffinityBonuses_Halve(arg1);
+    AffinityBonuses_Halve(info);
 }
 
 void fn_801A8DA4(void *arg0) {
