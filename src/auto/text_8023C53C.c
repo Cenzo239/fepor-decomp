@@ -8223,6 +8223,7 @@ s32 fn_80255E88(void *arg0) {
 }
 
 u32 Sound_AddVid(SynthVoice *sv, u32 isMaster) {
+    /* Take a free VidList node, assign a unique vid, insert sorted into the active list, and attach it to the synth voice. */
     extern VidList *vidListRoot;
     extern VidList *vidListFree;
     u32 vid;
