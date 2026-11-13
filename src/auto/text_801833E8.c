@@ -10809,7 +10809,7 @@ void fn_8019D4F4(void *arg0) {
 
 void Script_RegisterEventArrowCommands(void) {
     void Script_RegisterCommand(void *, void *, s32);
-    extern u8 lbl_8027AC44[];
+    extern u8 gEventArrowCmdNames[];
     void fn_8019D9BC(void);
     void fn_8019D958(void);
     void fn_8019D8CC(void);
@@ -10818,13 +10818,13 @@ void Script_RegisterEventArrowCommands(void) {
     void fn_8019D7A8(void);
     void fn_8019D90C(void);
 
-    Script_RegisterCommand(lbl_8027AC44 + 0xDF, fn_8019D9BC, 5);
-    Script_RegisterCommand(lbl_8027AC44 + 0xF0, fn_8019D958, 2);
-    Script_RegisterCommand(lbl_8027AC44 + 0x100, fn_8019D8CC, 2);
-    Script_RegisterCommand(lbl_8027AC44 + 0x110, fn_8019D850, 5);
-    Script_RegisterCommand(lbl_8027AC44 + 0x120, fn_8019D930, 1);
-    Script_RegisterCommand(lbl_8027AC44 + 0x132, fn_8019D7A8, 0);
-    Script_RegisterCommand(lbl_8027AC44 + 0x141, fn_8019D90C, 0);
+    Script_RegisterCommand(gEventArrowCmdNames + 0xDF, fn_8019D9BC, 5);
+    Script_RegisterCommand(gEventArrowCmdNames + 0xF0, fn_8019D958, 2);
+    Script_RegisterCommand(gEventArrowCmdNames + 0x100, fn_8019D8CC, 2);
+    Script_RegisterCommand(gEventArrowCmdNames + 0x110, fn_8019D850, 5);
+    Script_RegisterCommand(gEventArrowCmdNames + 0x120, fn_8019D930, 1);
+    Script_RegisterCommand(gEventArrowCmdNames + 0x132, fn_8019D7A8, 0);
+    Script_RegisterCommand(gEventArrowCmdNames + 0x141, fn_8019D90C, 0);
 }
 
 s32 fn_8019D7A8(void) {
