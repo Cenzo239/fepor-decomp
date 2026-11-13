@@ -1649,14 +1649,16 @@ void fn_8002CBDC(void *unused, s32 x, s32 y)
 
     u8 *base;
     s32 r31;
-    s32 yoff;
     s32 r30;
+    s32 sx;
+    s32 sy;
 
     base = gBattleMap;
     r31 = y;
-    yoff = (s8)r31 << 6;
+    sy = (s8)r31;
     r30 = x;
-    if (*(u8 *)(base + (s8)r30 + yoff + 0xD) == 0) {
+    sx = (s8)r30;
+    if (*(u8 *)(base + sx + (sy << 6) + 0xD) == 0) {
         if (fn_8002134C(base) <= 0x7530) {
             fn_8002F6E8(lbl_802EF4E0, r30, r31, 0, 0);
         }
@@ -1913,14 +1915,19 @@ void fn_8002D39C(void) {
 
 }
 
+#pragma global_optimizer off
 void fn_8002D3A0(void *arg0) {
     void fn_800C08AC(void *, void *);
-    extern u8 gBattleState[];
+    typedef struct {
+        u8 pad[0x54];
+        u8 mode;
+    } BattleState;
+    extern BattleState gBattleState;
     extern u8 lbl_80269210[];
     void *str;
 
     str = arg0;
-    switch (gBattleState[0x54]) {
+    switch (gBattleState.mode) {
     case 5:
         str = lbl_80269210 + 0x148;
         break;
@@ -1933,7 +1940,7 @@ void fn_8002D3A0(void *arg0) {
     }
     fn_800C08AC(str, arg0);
 }
-
+#pragma global_optimizer reset
 void fn_8002D420(s32 arg0) {
     void fn_8014C718(void *, s32);
     extern u8 gBattleState[16];
@@ -3751,7 +3758,7 @@ extern "C" void fn_80032564(void *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_800326B4(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawDual(void *arg0, void *arg1) {
     extern f32 lbl_80368E24;
     extern f32 lbl_80368E28;
     extern f32 lbl_80368E34;
