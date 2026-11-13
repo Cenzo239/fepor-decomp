@@ -9284,7 +9284,7 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
 
 void *fn_800DDB94(void *arg0)
 {
-    extern void *fn_800D59CC(void *);
+    extern void *StringMap_FindOrInsert(void *);
     extern void String_Assign(void *, void *, s32, s32);
     extern void *fn_800C93EC(void *);
     extern void String_Destroy(void *, s32);
@@ -9298,7 +9298,7 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    source = fn_800D59CC((u8 *)arg0 + 0x68);
+    source = StringMap_FindOrInsert((u8 *)arg0 + 0x68);
 
     String_Assign(
         temp,
@@ -9410,7 +9410,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void fn_800CA6C8(void *, s32);
     void fn_800CB8A4(String *, String *, String *);
     void fn_800CB90C(String *, String *, char *);
-    void *fn_800D59CC(void *, String *);
+    void *StringMap_FindOrInsert(void *, String *);
     void fn_800D5D04(String *, String *, s32, char *);
     void fn_800D6878(void *, void *, void *);
     void *fn_800DE73C(void *, String *);
@@ -9633,7 +9633,7 @@ loop_body:
             fn_800056CC(lbl_80271860 + 0x2F, fn_800C93EC(&str120));
         }
         Xml_GetChildValue(buf15C, iter);
-        name = (char *)((u8 *)fn_800D59CC((u8 *)self + 0x68, &str108) + 0xC);
+        name = (char *)((u8 *)StringMap_FindOrInsert((u8 *)self + 0x68, &str108) + 0xC);
         String_AssignCStr((String *)name, buf15C, strlen(buf15C));
     }
 

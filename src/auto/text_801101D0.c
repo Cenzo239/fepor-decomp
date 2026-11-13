@@ -885,7 +885,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void String_Assign(String *, String *, s32, s32);
     void String_Destroy(String *, s32);
     void String_Init(String *, char *, void *);
-    void *fn_800D59CC(void *, String *);
+    void *StringMap_FindOrInsert(void *, String *);
     u32 strlen(char *);
     extern void *lbl_80368278;
     extern f32 fActorDefaultHeight;
@@ -989,7 +989,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         String_Destroy(&sp100, -1);
         Xml_GetChildValue(sp31C, xml);
         String_AssignCStr(&str124, nameBuf, strlen(nameBuf));
-        node = (String *)((u8 *)fn_800D59CC((u8 *)self + 0x1BC, &str130) + 0xC);
+        node = (String *)((u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, &str130) + 0xC);
         String_Assign(node, &str124, 0, -1);
     }
 
@@ -1198,7 +1198,7 @@ s32 fn_80112F44(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
-    void *fn_800D59CC(void *, void *);
+    void *StringMap_FindOrInsert(void *, void *);
     void String_Assign(void *, void *, s32, s32);
     s32 fn_800C9400(void *, s32, void *, char *, s32);
     void String_Init(void *, char *, void *);
@@ -1233,15 +1233,15 @@ void fn_80113030(void *arg0, s32 arg1, void *arg2, void *arg3) {
     sp3C.data = 0;
     sp3C.cap = 0;
 
-    String_Assign(&sp3C, (u8 *)fn_800D59CC((u8 *)self + 0x1BC, arg3) + 0xC, 0, -1);
+    String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, arg3) + 0xC, 0, -1);
     n = strlen((char *)((u8 *)lbl_80273DF8 + 0x1C));
     if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)lbl_80273DF8 + 0x1C), n) == 0) {
-        String_Assign(&sp3C, (u8 *)fn_800D59CC((u8 *)self + 0x1BC, a2) + 0xC, 0, -1);
+        String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, a2) + 0xC, 0, -1);
     }
     n = strlen((char *)((u8 *)lbl_80273DF8 + 0x1C));
     if (fn_800C9400(&sp3C, 0, (void *)sp3C.size, (char *)((u32)lbl_80273DF8 + 0x1C), n) == 0) {
         String_Init(&sp30, lbl_8028F6B8[idx & 3], &sp8);
-        String_Assign(&sp3C, (u8 *)fn_800D59CC((u8 *)self + 0x1BC, &sp30) + 0xC, 0, -1);
+        String_Assign(&sp3C, (u8 *)StringMap_FindOrInsert((u8 *)self + 0x1BC, &sp30) + 0xC, 0, -1);
         String_Destroy(&sp30, -1);
     }
     n = strlen((char *)((u8 *)lbl_80273DF8 + 0x449));
