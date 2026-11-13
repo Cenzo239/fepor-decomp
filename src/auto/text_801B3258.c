@@ -1605,7 +1605,7 @@ void fn_801B8798(void) {
     }
 }
 
-void fn_801B87E8(s32 arg0) {
+void Battle_ApplyAchieveBonuses(s32 arg0) {
     void *Heap_Alloc(s32);
     void fn_801B77E8(void *, s32);
     void fn_801B794C(void *);
