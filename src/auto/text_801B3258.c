@@ -11521,19 +11521,19 @@ void *fn_801CF6F4(void *arg0, s16 arg1) {
 void *ScriptObj_FindByName(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u16 lbl_80331D00[];
-    u8 *p;
-    s32 i;
+    u8 *var_r31;
+    s32 var_r30;
 
-    i = 0;
-    p = (u8 *)lbl_80331D00;
-    while (i < 2) {
-        if ((*(u32 *)(p + 8) & 1) &&
-            Str_Cmp(*(void **)(*(void **)(p + 0x24)), arg0) == 0) {
-            return (void *)((u8 *)lbl_80331D00 + i * 0x15C);
+    var_r31 = (u8 *)lbl_80331D00;
+    var_r30 = 0;
+    do {
+        if ((*(u32 *)(var_r31 + 8) & 1) != 0 &&
+            Str_Cmp(*(void **)(*(void **)(var_r31 + 0x24)), arg0) == 0) {
+            return (void *)((u8 *)lbl_80331D00 + var_r30 * 0x15C);
         }
-        i += 1;
-        p += 0x15C;
-    }
+        var_r30 += 1;
+        var_r31 += 0x15C;
+    } while (var_r30 < 2);
     return NULL;
 }
 
@@ -13844,7 +13844,7 @@ void fn_801D3D3C(void *arg0) {
  void *fn_800D3590(void *);
  void *fn_801DE370(void *);
  void fn_801DBD84(void *);
- void fn_801E2594(void *);
+ void SaveData_Release(void *);
  void fn_801E3118(void *, void *, u8);
  s32 Card_GetResult(void);
  void *fn_801DC10C(s32);
@@ -13920,7 +13920,7 @@ void fn_801D3D3C(void *arg0) {
   saved_byte = *(s8 *)((u8 *)state + 0x11);
   fn_801DBD84(arg0);
   *(s8 *)((u8 *)state + 0x11) = saved_byte;
-  fn_801E2594(&gSaveDataBase);
+  SaveData_Release(&gSaveDataBase);
   fn_801E3118(&gSaveDataBase, arg0, *(u8 *)((u8 *)state + 0x10) == 1);
   *(s32 *)state = 3; break;
  case 3:
@@ -13983,7 +13983,7 @@ void fn_801D3D3C(void *arg0) {
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
+   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
  case 8:
@@ -13999,7 +13999,7 @@ void fn_801D3D3C(void *arg0) {
   } else {
    fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase);
+   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase);
   }
   break;
  case 0xa:
@@ -14013,7 +14013,7 @@ void fn_801D3D3C(void *arg0) {
   if (flags_a & 0x200) {
    Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase);
+   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase);
   }
   if (flags_b & 0x1000001) {
    *(u8 *)((u8 *)state + 0x14) = *(u8 *)((u8 *)state + 0x14) - 1;
@@ -14042,7 +14042,7 @@ void fn_801D3D3C(void *arg0) {
   fn_801E1440(&gSaveDataBase, changed, *(s8 *)((u8 *)state + 0x19) != 0);
   fn_8008A290(3, 0xfa);
   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1a);
-  Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); break;
+  Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); break;
  case 0xd:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x344, 0, 1, 0); *(s32 *)state = 6; break;
@@ -14139,7 +14139,7 @@ void fn_801D3D3C(void *arg0) {
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
    if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
-   Process_ClearFunc(arg0); fn_801E2594(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
+   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
  case 0x32:
@@ -17985,7 +17985,7 @@ s32 Save_GetSmallSlot(s32 *arg0, s32 arg1) {
     return x + 0x2000;
 }
 
-void fn_801E2594(u32 *arg0) {
+void SaveData_Release(u32 *arg0) {
     extern u16 lbl_8027E980[];
     void DebugPrint(char *, ...);
 

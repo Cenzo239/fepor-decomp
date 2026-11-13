@@ -57,7 +57,7 @@ void fn_8009ED1C(void) {
     s32 fn_801E2458(void *);
     void *Save_GetLargeSlot(void *, s32);
     void *Save_GetSmallSlot(void *, s32);
-    void fn_801E2594(void *);
+    void SaveData_Release(void *);
     void *fn_801E417C(void *);
     u8 fn_801E434C(void *);
     extern s32 gSaveDataBase;
@@ -120,7 +120,7 @@ void fn_8009ED1C(void) {
         DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
         DebugPrint((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&gSaveDataBase), lbl_8026D8D8);
     }
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 }
 #pragma optimization_level reset
 void fn_8009F000(s32 arg0) {

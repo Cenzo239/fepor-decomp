@@ -1422,7 +1422,7 @@ void fn_801F53E0(void *arg0)
 {
     extern u8 gSaveDataBase;
 
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 
     if (Card_GetResult() == 0) {
         MsgBox_Init(
@@ -1455,7 +1455,7 @@ void fn_801F5484(void *arg0)
         return;
     }
 
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 
     Ui_PlaySeCue((u8 *)gCardLinkStr + 0x77, 0x64);
 

@@ -2685,9 +2685,9 @@ void fn_800A9274(s32 arg0) {
 }
 
 void fn_800A92A0(void) {
-    M2C_UNK fn_801E2594(M2C_UNK *);
+    M2C_UNK SaveData_Release(M2C_UNK *);
     extern M2C_UNK gSaveDataBase;
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 }
 
 void fn_800A92C4(s32 arg0) {

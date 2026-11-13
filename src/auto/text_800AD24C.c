@@ -3484,9 +3484,9 @@ s32 fn_800B6F10(void)
 }
 
 void fn_800B6F48(void) {
-    M2C_UNK fn_801E2594(M2C_UNK *);
+    M2C_UNK SaveData_Release(M2C_UNK *);
     extern M2C_UNK gSaveDataBase;
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 }
 
 void fn_800B6F6C(void *arg0) {

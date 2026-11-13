@@ -46,9 +46,9 @@
   #pragma scheduling reset
   
   void fn_8009EA14(void) {
-      void fn_801E2594(void *);
+      void SaveData_Release(void *);
       extern s32 gSaveDataBase;
-      fn_801E2594(&gSaveDataBase);
+      SaveData_Release(&gSaveDataBase);
   }
   
   void fn_8009EA38(s32 arg0) {
@@ -64,9 +64,9 @@
   }
   
   void fn_8009EA90(void) {
-      void fn_801E2594(void *);
+      void SaveData_Release(void *);
       extern s32 gSaveDataBase;
-      fn_801E2594(&gSaveDataBase);
+      SaveData_Release(&gSaveDataBase);
   }
 
 void fn_8009EAB4(s32 arg0) {
@@ -88,9 +88,9 @@ void fn_8009EAB4(s32 arg0) {
 
   
   void fn_8009EB7C(void) {
-      void fn_801E2594(void *);
+      void SaveData_Release(void *);
       extern s32 gSaveDataBase;
-      fn_801E2594(&gSaveDataBase);
+      SaveData_Release(&gSaveDataBase);
   }
 
   void fn_8009EBA0(s32 arg0) {
@@ -110,9 +110,9 @@ void fn_8009EAB4(s32 arg0) {
 
   
   void fn_8009EC38(void) {
-      void fn_801E2594(void *);
+      void SaveData_Release(void *);
       extern s32 gSaveDataBase;
-      fn_801E2594(&gSaveDataBase);
+      SaveData_Release(&gSaveDataBase);
   }
   
 void fn_8009EC5C(s32 arg0) {

@@ -2035,7 +2035,7 @@ void fn_8002D648(void *arg0) {
     void fn_80006220(s32);
     void fn_8014C7C0(void *, void *);
     void fn_801E379C(u32);
-    void fn_801E2594(void *);
+    void SaveData_Release(void *);
     void fn_8014CBD8(void *, f32, f32);
     void fn_800187F0(void);
     void fn_8014C798(void *);
@@ -2049,7 +2049,7 @@ void fn_8002D648(void *arg0) {
     fn_80006220(0x10);
     fn_8014C7C0(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
     fn_8014CBD8(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);
     fn_800187F0();
     fn_8014C798(gBattleState);

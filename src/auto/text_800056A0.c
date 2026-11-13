@@ -302,7 +302,7 @@ void fn_80005F04(void)
     void fn_801E379C(void *);
     void Battle_SetPhase(u32);
     void fn_8014D41C(void *);
-    void fn_801E2594(void *);
+    void SaveData_Release(void *);
     void *Process_Find(void *);
     void Battle_LoadMap(void);
     void fn_8014D920(void);
@@ -340,7 +340,7 @@ void fn_80005F04(void)
         fn_8014D41C(data);
 
     case 4:
-        fn_801E2594(&gSaveDataBase);
+        SaveData_Release(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0xA;
@@ -352,7 +352,7 @@ void fn_80005F04(void)
         Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&gSaveDataBase);
+        SaveData_Release(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x11;
@@ -362,7 +362,7 @@ void fn_80005F04(void)
         Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&gSaveDataBase);
+        SaveData_Release(&gSaveDataBase);
 
         if ((u8)fn_8016947C() == 0) {
             fn_80016C58();
@@ -387,14 +387,14 @@ void fn_80005F04(void)
         Battle_LoadMap();
         fn_8014D920();
         fn_801E379C(object);
-        fn_801E2594(&gSaveDataBase);
+        SaveData_Release(&gSaveDataBase);
 
         state = (u8 *)Process_Find(lbl_802832FC);
         *(s32 *)(state + 0x60) = 0x16;
         break;
 
     case 3:
-        fn_801E2594(&gSaveDataBase);
+        SaveData_Release(&gSaveDataBase);
         fn_801E379C(object);
         fn_80016DE0();
 

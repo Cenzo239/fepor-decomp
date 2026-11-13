@@ -237,7 +237,7 @@ void fn_80072B04(void *arg0) {
 
 void Card_ShowResultMsg(void *arg0)
 {
-    void fn_801E2594(void *);
+    void SaveData_Release(void *);
     s32 Card_GetResult(void);
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
     s32 Msg_Expand(u8 *);
@@ -247,7 +247,7 @@ void Card_ShowResultMsg(void *arg0)
     extern u16 gMsgBox[];
     s32 r;
 
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
     r = Card_GetResult();
     switch (r) {
     case -3:
@@ -427,9 +427,9 @@ void Card_GotoOnResult(s32 proc) {
 }
 
 void fn_80073164(void) {
-    M2C_UNK fn_801E2594(M2C_UNK *);
+    M2C_UNK SaveData_Release(M2C_UNK *);
     extern M2C_UNK gSaveDataBase;
-    fn_801E2594(&gSaveDataBase);
+    SaveData_Release(&gSaveDataBase);
 }
 
 void fn_80073188(void *arg0) {
