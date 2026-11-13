@@ -4606,7 +4606,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     void fn_802240C8(s32);
     void fn_80223F2C(s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void fn_80223AE4(s32, s32, s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void fn_80223AA0(s32, s32, s32, s32, s32);
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -4665,7 +4665,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     fn_802240C8(1);
     fn_80223F2C(0, 0, 0, 4);
     GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);
-    fn_80223AE4(0, 0, 0, 0, 1, 0);
+    GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     fn_80223AA0(0, 7, 4, 5, 7);
     fn_80223B4C(0, 0, 0, 0, 1, 0);
     fn_80220428(1);

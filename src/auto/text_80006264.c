@@ -1841,7 +1841,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
-    void fn_80223AE4(s32, s32, s32, s32, s32, s32);
+    void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void fn_80223AA0(s32, s32, s32, s32, s32);
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
     extern f32 lbl_80368B94;
@@ -1910,7 +1910,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
             case 0:
             case 1:
                 GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);
-                fn_80223AE4(0, 0, 0, 0, 1, 0);
+                GXSetTevColorOp(0, 0, 0, 0, 1, 0);
                 fn_80223AA0(0, 7, 4, 5, 7);
                 fn_80223B4C(0, 0, 0, 0, 1, 0);
                 break;
@@ -1942,7 +1942,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
         break;
     case 0x40:
         GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);
-        fn_80223AE4(0, 0, 0, 0, 1, 0);
+        GXSetTevColorOp(0, 0, 0, 0, 1, 0);
         fn_80223AA0(0, 7, 4, 5, 7);
         fn_80223B4C(0, 0, 0, 0, 1, 0);
         break;

@@ -969,7 +969,7 @@ u16 fn_80223AA0(u16 arg0) {
     return __GXData[0x388 + arg0 * 0x10];
 }
 
-void fn_80223AE4(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
+void GXSetTevColorOp(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
 {
     u8 *gx;
     u32 *entry;

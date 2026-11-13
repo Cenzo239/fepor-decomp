@@ -1414,11 +1414,11 @@ void fn_800117B0(void *arg0) {
 void fn_8001185C(void) {
     M2C_UNK GXSetTevColorIn(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223AA0(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_80223AE4(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    M2C_UNK GXSetTevColorOp(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80223B4C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
     GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);
-    fn_80223AE4(0, 0, 0, 0, 1, 0);
+    GXSetTevColorOp(0, 0, 0, 0, 1, 0);
     fn_80223AA0(0, 7, 4, 5, 7);
     fn_80223B4C(0, 0, 0, 0, 1, 0);
     fn_80223F2C(0, 0, 0, 4);
