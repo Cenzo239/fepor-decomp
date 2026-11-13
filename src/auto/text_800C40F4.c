@@ -637,6 +637,7 @@ extern s32 lbl_80366DDC;
 s32 Heap_GetFree(void) {
     u32 lo;
     HeapC55 *heap;
+    u32 hi;
 
     heap = (HeapC55 *)lbl_80367868;
     if (heap != NULL) {
@@ -645,10 +646,11 @@ s32 Heap_GetFree(void) {
         lo = (u32)lbl_80367860;
     }
 
-    if (lbl_8036786C == 0) {
-        return (s32)(lbl_80367864 - lo);
+    hi = lbl_8036786C;
+    if (hi == 0) {
+        hi = lbl_80367864 - lo;
     }
-    return (s32)lbl_8036786C;
+    return (s32)hi;
 }
 
 void fn_800C5300(void) {
@@ -16264,7 +16266,7 @@ void *fn_800EE0B0(void *arg0) {
 
 #pragma cplusplus off
 void fn_800EE124(void *arg0) {
-void *Map_Get(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 GActor_FindNode(void *,void *);
+void *Map_Get(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 GXGetTexBufferSize(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 GActor_FindNode(void *,void *);
 void fn_800EFEE0();void fn_800EFC2C();s32 Map_SetupProjTexTev();void fn_800EF364();void fn_800EEEF0();void fn_800EE72C();
 extern const f32 lbl_80369FB8;extern void *lbl_803678D0,*lbl_803678D4[2],*lbl_803678DC,*lbl_803678E0;extern u8 lbl_80272C64[];
 u8 *obj;void *res;register u32 size;
@@ -16292,8 +16294,8 @@ fn_80046360(obj,lbl_80272C64+108,fn_800EEEF0,0x110,0,0x8000);
 res=fn_80046360(obj,lbl_80272C64+0x76,fn_800EE72C,0,0,0x4000);
 if(res){
 M2C_FIELD(arg0,u8 **,0x3C)=fn_80046EB8(obj,res)+0x14;
-size=fn_80222420(0x130,0xE0,4,0,0);lbl_803678D0=fn_800C45B8(size,lbl_80272C64+0x7E,0);DCFlushRange(lbl_803678D0,size);
-size=fn_80222420(4,0x10,3,0,0);lbl_803678D4[0]=fn_800C45B8(size,lbl_80272C64+0x7E,0);lbl_803678D4[1]=fn_800C45B8(size,lbl_80272C64+0x7E,0);
+size=GXGetTexBufferSize(0x130,0xE0,4,0,0);lbl_803678D0=fn_800C45B8(size,lbl_80272C64+0x7E,0);DCFlushRange(lbl_803678D0,size);
+size=GXGetTexBufferSize(4,0x10,3,0,0);lbl_803678D4[0]=fn_800C45B8(size,lbl_80272C64+0x7E,0);lbl_803678D4[1]=fn_800C45B8(size,lbl_80272C64+0x7E,0);
 DCFlushRange(lbl_803678D4[0],size);DCFlushRange(lbl_803678D4[1],size);
 lbl_803678DC=lbl_803678D4[0];lbl_803678E0=lbl_803678D4[1];
 if(GActor_FindNode(M2C_FIELD(arg0,void **,0x3C),lbl_80272C64+0x7F)<0)fn_800056A0(0);

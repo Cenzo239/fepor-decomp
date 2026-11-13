@@ -12065,7 +12065,7 @@ void Map_InitGfx(void) {
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void (*)(void *, s32), void *, s32, s32);
     void DCFlushRange(void *, u32);
-    void *fn_80222420(s32, s32, s32, s32, s32);
+    void *GXGetTexBufferSize(s32, s32, s32, s32, s32);
     void *fn_800C45B8(void *, void *, s32);
     void fn_80067708(s32, s32, void (*)(void), s32);
     void fn_80061824(void *);
@@ -12134,9 +12134,9 @@ void Map_InitGfx(void) {
         *(s32 *)(a + 0x10) = 0;
     }
 
-    lbl_803672B4 = fn_800C45B8(fn_80222420(0x260, 0x1C0, 0x27, 0, 0),
+    lbl_803672B4 = fn_800C45B8(GXGetTexBufferSize(0x260, 0x1C0, 0x27, 0, 0),
                                lbl_8026AB18 + 0x52, 0);
-    lbl_803672B8 = fn_800C45B8(fn_80222420(0xA0, 0x78, 0, 0, 0),
+    lbl_803672B8 = fn_800C45B8(GXGetTexBufferSize(0xA0, 0x78, 0, 0, 0),
                                lbl_8026AB18 + 0x52, 0);
     fn_80067708(3, 1, fn_8004DE78, 0);
 

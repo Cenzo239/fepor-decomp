@@ -170,7 +170,7 @@ extern u16* lbl_80368790;
 extern u16* __peReg;
 extern u16 *__GXData;
 
-s32 fn_80222420(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
+s32 GXGetTexBufferSize(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
 {
     u16 var_r3;
     u16 var_r4;

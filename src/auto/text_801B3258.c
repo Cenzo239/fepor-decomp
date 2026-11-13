@@ -7912,7 +7912,7 @@ void fn_801C77D0(void *arg0) {
 void GActor_InitTexWork(void *arg0) {
     void *Heap_Alloc(s32);
     s32 fn_800C45B8(void *, void *, s32);
-    void *fn_80222420(s32, s32, s32, s32, s32);
+    void *GXGetTexBufferSize(s32, s32, s32, s32, s32);
     void fn_8005376C(void);
     extern u16 lbl_8027D594[];
     void *temp;
@@ -7951,7 +7951,7 @@ void GActor_InitTexWork(void *arg0) {
         *(s32 *)((u8 *)temp + 0x248) = 0;
         *(s32 *)((u8 *)temp + 0x25C) = 0;
         *(s32 *)((u8 *)temp + 0x270) = 0;
-        *(s32 *)temp = fn_800C45B8(fn_80222420(0x260, 0x1C0, 0x27, 0, 0), (u8 *)lbl_8027D594 + 0x1A8, 0);
+        *(s32 *)temp = fn_800C45B8(GXGetTexBufferSize(0x260, 0x1C0, 0x27, 0, 0), (u8 *)lbl_8027D594 + 0x1A8, 0);
     }
     *(void **)((u8 *)arg0 + 0x30) = temp;
     fn_8005376C();

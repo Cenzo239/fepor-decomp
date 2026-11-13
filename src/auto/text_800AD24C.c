@@ -8725,7 +8725,7 @@ void Capture_DrawRotated(void *cap) {
     *wgpipe = vals[1];
 }
 
-s32 fn_80222420(s32, s32, s32, s32, s32);
+s32 GXGetTexBufferSize(s32, s32, s32, s32, s32);
 void *fn_800C45B8(s32, void *, s32);
 void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
 void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -8734,7 +8734,7 @@ void fn_800C0EEC(u8 *obj) {
     extern f32 lbl_80369D28;
     s32 size;
 
-    size = fn_80222420(0x260, 0x1E0, 4, 0, 0);
+    size = GXGetTexBufferSize(0x260, 0x1E0, 4, 0, 0);
     *(void **)(obj + 0x50) = fn_800C45B8(-size, lbl_8026FDC0 + 0x53, 0);
     fn_80222644(obj + 0x30, *(void **)(obj + 0x50), 0x260, 0x1E0, 4, 0, 0, 0);
     GXInitTexObjLOD(obj + 0x30, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);

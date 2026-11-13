@@ -1607,7 +1607,7 @@ void fn_80088FFC(void *arg0) {
 }
 
 void fn_800892E8(void *arg0) {
-    s32 fn_80222420(s32, s32, s32, s32, s32);
+    s32 GXGetTexBufferSize(s32, s32, s32, s32, s32);
     void *fn_800C45B8(s32, void *, s32);
     void DCInvalidateRange(void *, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
@@ -1621,7 +1621,7 @@ void fn_800892E8(void *arg0) {
 
     obj = (u8 *)arg0;
     *(s32 *)(obj + 0x48) = 0;
-    size = fn_80222420(0x260, 0x1C0, 4, 0, 0);
+    size = GXGetTexBufferSize(0x260, 0x1C0, 4, 0, 0);
     *(void **)(obj + 0x48) = fn_800C45B8(-size, lbl_8026CC58 + 0x2A, 0);
     DCInvalidateRange(*(void **)(obj + 0x48), size);
     fn_80222644(obj + 0x4C, *(void **)(obj + 0x48), 0x260, 0x1C0, 4, 0, 0, 0);

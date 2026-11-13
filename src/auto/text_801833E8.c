@@ -13289,9 +13289,9 @@ void fn_801A2764(void *arg0) {
 
 void fn_801A27A0(void *arg0) {
     s32 fn_800C45B8(void *, void *, M2C_UNK);
-    void *fn_80222420(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
+    void *GXGetTexBufferSize(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     extern u16 lbl_8027AD98[];
-    *(s32 *)((u8 *)arg0 + 0x30) = fn_800C45B8(fn_80222420(0x260, 0x1C0, 4, 0, 0), (u8 *)lbl_8027AD98 + 0x5C5, 0);
+    *(s32 *)((u8 *)arg0 + 0x30) = fn_800C45B8(GXGetTexBufferSize(0x260, 0x1C0, 4, 0, 0), (u8 *)lbl_8027AD98 + 0x5C5, 0);
 }
 
 void fn_801A27F8(void *arg0) {
