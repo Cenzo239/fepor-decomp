@@ -27,9 +27,9 @@ void *fn_8014E3C8(void) {
     extern u8 lbl_80330CC8[];
     extern u8 lbl_80277238[];
     extern s32 gMsgDebugPage;
-    extern s32 lbl_80367B80;
+    extern s32 gMsgDebugPageCount;
 
-    sprintf(lbl_80330CC8, lbl_80277238 + 0xD0, gMsgDebugPage + 1, lbl_80367B80);
+    sprintf(lbl_80330CC8, lbl_80277238 + 0xD0, gMsgDebugPage + 1, gMsgDebugPageCount);
     return lbl_80330CC8;
 }
 
@@ -60,12 +60,12 @@ void *fn_8014E41C(s32 arg0, void *arg1) {
 s32 fn_8014E458(void) {
     extern void *gPadInput;
     extern s32 gMsgDebugPage;
-    extern s32 lbl_80367B80;
+    extern s32 gMsgDebugPageCount;
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x01000001) {
-        gMsgDebugPage = (gMsgDebugPage + (lbl_80367B80 - 1)) % lbl_80367B80;
+        gMsgDebugPage = (gMsgDebugPage + (gMsgDebugPageCount - 1)) % gMsgDebugPageCount;
     }
     if (M2C_FIELD(gPadInput, s32 *, 0x10) & 0x02000002) {
-        gMsgDebugPage = (gMsgDebugPage + 1) % lbl_80367B80;
+        gMsgDebugPage = (gMsgDebugPage + 1) % gMsgDebugPageCount;
     }
     return 0;
 }

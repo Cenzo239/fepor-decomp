@@ -622,7 +622,7 @@ void MsgDebug_Init(void) {
     extern u32 *gMsgDebugPtrs;
     extern u8 *gMsgDebugKinds;
     extern s32 gMsgDebugPage;
-    extern s32 lbl_80367B80;
+    extern s32 gMsgDebugPageCount;
     char sp8[0x18];
     s32 i;
     s32 j;
@@ -732,6 +732,6 @@ void MsgDebug_Init(void) {
         j += 1;
     } while (j < 0x2800);
     gMsgDebugPage = 0;
-    lbl_80367B80 = (gMsgDebugCount + 0x17) / 24;
+    gMsgDebugPageCount = (gMsgDebugCount + 0x17) / 24;
 }
 #pragma global_optimizer reset
