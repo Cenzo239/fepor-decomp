@@ -5238,7 +5238,8 @@ loop_2:
     goto loop_2;
 }
 
-void Camera_ApplyOrtho(void *arg0)
+// Build default 640x480 ortho, reset view/pos matrices, and apply camera scissor/viewport/projection to GX.
+void Camera_ApplyOrtho(void *camIn)
 {
     void C_MTXOrtho(void *, s32, f32, f32, f32, f32, f32, f32);
     void PSMTXIdentity(void *);
@@ -5253,38 +5254,38 @@ void Camera_ApplyOrtho(void *arg0)
     extern f32 gScreenHeightF;
     extern f32 gScreenWidthF;
     extern f32 gOrthoFarZ;
-    f32 mtx[12];
-    u8 *p;
-    s32 bit;
-    s32 negbit;
-    f32 z;
+    f32 posMtx[12];
+    u8 *cam;
+    s32 flagBit;
+    s32 negFlag;
+    f32 zero;
 
-    p = arg0;
-    if (p == NULL) {
-        p = gCamera;
+    cam = camIn;
+    if (cam == NULL) {
+        cam = gCamera;
     }
-    if (p == NULL) {
+    if (cam == NULL) {
         return;
     }
-    bit = *(u16 *)p & 1;
-    negbit = -bit;
-    gCameraProjMode = negbit + 2;
-    z = lbl_80369228;
-    C_MTXOrtho(p + 0x24, negbit, z, gScreenHeightF, z, gScreenWidthF, z, gOrthoFarZ);
-    *(u16 *)p &= 0xFFFE;
-    PSMTXIdentity(mtx);
-    GXLoadPosMtxImm(mtx, 0);
+    flagBit = *(u16 *)cam & 1;
+    negFlag = -flagBit;
+    gCameraProjMode = negFlag + 2;
+    zero = lbl_80369228;
+    C_MTXOrtho(cam + 0x24, negFlag, zero, gScreenHeightF, zero, gScreenWidthF, zero, gOrthoFarZ);
+    *(u16 *)cam &= 0xFFFE;
+    PSMTXIdentity(posMtx);
+    GXLoadPosMtxImm(posMtx, 0);
     GXSetCurrentMtx(0);
-    PSMTXIdentity(p + 0xA4);
-    if (p == NULL) {
-        p = gCamera;
+    PSMTXIdentity(cam + 0xA4);
+    if (cam == NULL) {
+        cam = gCamera;
     }
-    if (p == NULL) {
+    if (cam == NULL) {
         return;
     }
-    GXSetScissor(*(u16 *)(p + 0x1C), *(u16 *)(p + 0x1E), *(u16 *)(p + 0x20), *(u16 *)(p + 0x22));
-    GXSetViewport(*(f32 *)(p + 4), *(f32 *)(p + 8), *(f32 *)(p + 0xC), *(f32 *)(p + 0x10), *(f32 *)(p + 0x14), *(f32 *)(p + 0x18));
-    GXSetProjection(p + 0x24, (*(u16 *)p & 1) ^ 1);
+    GXSetScissor(*(u16 *)(cam + 0x1C), *(u16 *)(cam + 0x1E), *(u16 *)(cam + 0x20), *(u16 *)(cam + 0x22));
+    GXSetViewport(*(f32 *)(cam + 4), *(f32 *)(cam + 8), *(f32 *)(cam + 0xC), *(f32 *)(cam + 0x10), *(f32 *)(cam + 0x14), *(f32 *)(cam + 0x18));
+    GXSetProjection(cam + 0x24, (*(u16 *)cam & 1) ^ 1);
 }
 
 void *fn_80067FD0(void) {
