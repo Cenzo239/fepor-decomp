@@ -6106,9 +6106,10 @@ extern "C" void *GameScene_Create(void *arg0)
 
 #pragma cplusplus on
 extern "C" void GameScene_StopWorlds(void) {
+    /* Stop the game scene's primary and secondary world roots, and start a light fade on the primary. */
     void LightFade_Start(void);
     extern void *gGameScene;
-    struct Obj {
+    struct WorldRoot {
         u8 pad[0x10];
         virtual void v0();
         virtual void v1();
@@ -6128,41 +6129,39 @@ extern "C" void GameScene_StopWorlds(void) {
         virtual void v15();
         virtual void v16(s32, s32);
     };
-    u8 *unit;
-    Obj *obj;
+    u8 *scene;
+    WorldRoot *world;
 
-    unit = (u8 *)gGameScene;
-    if (unit == NULL) {
+    scene = (u8 *)gGameScene;
+    if (scene == NULL) {
         return;
     }
-    if (unit[0x187] == 0) {
-        obj = *(Obj **)(unit + 4);
-        if (obj != NULL) {
-            if (unit[0x1a5] == 0) {
-                obj->v13(1);
+    if (scene[0x187] == 0) {
+        world = *(WorldRoot **)(scene + 4);
+        if (world != NULL) {
+            if (scene[0x1a5] == 0) {
+                world->v13(1);
             }
-            obj = *(Obj **)(unit + 4);
-            obj->v14();
-            obj = *(Obj **)(unit + 4);
-            obj->v16(0, 0);
-            obj = *(Obj **)(unit + 4);
-            obj->v15();
+            world = *(WorldRoot **)(scene + 4);
+            world->v14();
+            world = *(WorldRoot **)(scene + 4);
+            world->v16(0, 0);
+            world = *(WorldRoot **)(scene + 4);
+            world->v15();
             LightFade_Start();
         }
     }
-    obj = *(Obj **)(unit + 8);
-    if (obj != NULL) {
-        obj->v13(1);
-        obj = *(Obj **)(unit + 8);
-        obj->v14();
-        obj = *(Obj **)(unit + 8);
-        obj->v16(0, 0);
-        obj = *(Obj **)(unit + 8);
-        obj->v15();
+    world = *(WorldRoot **)(scene + 8);
+    if (world != NULL) {
+        world->v13(1);
+        world = *(WorldRoot **)(scene + 8);
+        world->v14();
+        world = *(WorldRoot **)(scene + 8);
+        world->v16(0, 0);
+        world = *(WorldRoot **)(scene + 8);
+        world->v15();
     }
 }
-
-#pragma cplusplus on
 extern "C" void fn_800D540C(void *arg0) {
 s64 OSGetTime(void);
 s64 __div2i(s64, s64);
