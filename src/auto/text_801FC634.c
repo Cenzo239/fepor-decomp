@@ -526,7 +526,7 @@ void FallingParticle_Spawn(void *arg0) {
     void *fn_8000CAF0(void *, void *);
     s32 fn_8000C510(void);
     u32 fn_8000CD60(void);
-    extern u8 lbl_8029B540[];
+    extern u8 gFallingParticleProc[];
     extern u8 lbl_8029B550[];
     extern s32 lbl_8036841C;
     extern s32 lbl_80368420;
@@ -562,7 +562,7 @@ void FallingParticle_Spawn(void *arg0) {
             if (0x100 - fn_8000C510() < 1) {
                 break;
             }
-            var_r24 = fn_8000CAF0(lbl_8029B540, temp_r23);
+            var_r24 = fn_8000CAF0(gFallingParticleProc, temp_r23);
             var_r25 = 0;
             do {
                 s32 r0;
