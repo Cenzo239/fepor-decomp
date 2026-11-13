@@ -20817,7 +20817,7 @@ s32 fn_800FBB68(void) {
     return 1;
 }
 
-s32 fn_800FBBD8(void *arg0) {
+s32 Ai_TryHandleLowHp(void *arg0) {
     u8 Unit_HasLowHpAi(void *);
     u8 Unit_IsLowHp(void *);
     u8 fn_8010C244(void *);
