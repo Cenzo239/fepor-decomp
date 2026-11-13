@@ -52,11 +52,12 @@ s32 fn_80095BB0(s32 arg0) {
     return 0;
 }
 
-void *Event_GetCmdFlagName(s32 arg0)
+/* Return the debug name string for a single event command flag bit. */
+char *Event_GetCmdFlagName(s32 flag)
 {
     extern char gEventCmdStrings[];
 
-    switch (arg0) {
+    switch (flag) {
     case 0x8000000:
         return gEventCmdStrings + 0x122;
     case 0x20000000:
