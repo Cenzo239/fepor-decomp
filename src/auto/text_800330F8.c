@@ -4308,7 +4308,7 @@ s32 fn_8003C7D0(s32 arg0) {
 
 #pragma global_optimizer off
 s32 Unit_Read(void *arg0, void *arg1) {
-    u16 fn_8017A9B0(void *);
+    u16 Stream_ReadU16(void *);
     u8 fn_8017A9DC(void *);
     s32 fn_80019EAC(u16);
     s32 fn_80019E68(u16);
@@ -4335,12 +4335,12 @@ s32 Unit_Read(void *arg0, void *arg1) {
 
     src = arg1;
     dst = arg0;
-    first = fn_8017A9B0(src);
+    first = Stream_ReadU16(src);
     if ((u16)first == 0) {
         return 0;
     }
     tmp = fn_80019EAC((u16)first);
-    t2 = fn_80019E68((u16)fn_8017A9B0(src));
+    t2 = fn_80019E68((u16)Stream_ReadU16(src));
     *(s32 *)((u8 *)dst + 0x188) = tmp;
     *(s32 *)((u8 *)dst + 0x18C) = t2;
     id = fn_8017A9DC(src);
@@ -10474,7 +10474,7 @@ s32 fn_8004BAC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_8004BC48(void *arg0, s32 arg1) {
-    s16 fn_8017A9B0(s32);
+    s16 Stream_ReadU16(s32);
     M2C_UNK fn_8017A9DC(s32);
     extern f32 lbl_80368FCC;
     M2C_FIELD(arg0, s8 *, 3) = 0;
@@ -10487,7 +10487,7 @@ void fn_8004BC48(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, f32 *, 0x174) = (f32) lbl_80368FCC;
     M2C_FIELD(arg0, f32 *, 0x178) = (f32) lbl_80368FCC;
     M2C_FIELD(arg0, s32 *, 0x17C) = 0;
-    M2C_FIELD(arg0, s16 *, 0x15C) = fn_8017A9B0(arg1);
+    M2C_FIELD(arg0, s16 *, 0x15C) = Stream_ReadU16(arg1);
     fn_8017A9DC(arg1);
     fn_8017A9DC(arg1);
 }

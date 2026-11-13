@@ -12077,7 +12077,7 @@ u32 fn_8017A950(u8 **arg0) {
     return v;
 }
 
-s32 fn_8017A9B0(void *arg0) {
+s32 Stream_ReadU16(void *arg0) {
     u8 **pp = (u8 **)((u8 *)arg0 + 4);
     u8 hi = *(*pp)++;
     u8 lo = *(*pp)++;

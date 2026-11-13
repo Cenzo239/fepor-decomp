@@ -1281,15 +1281,17 @@ u32 fn_8001B8E0(u8 **arg0)
 #pragma scheduling reset
 u16 fn_8001B91C(u8 **arg0) {
     u8 *p;
-    u32 result;
     u8 *next;
+    u32 hi;
+    u32 lo;
 
     p = *arg0;
-    result = p[0];
+    hi = p[0];
     next = p + 2;
-    result = (result << 8) + p[1];
+    lo = p[1];
+    hi = (hi << 8) + lo;
     *arg0 = next;
-    return result;
+    return (u16)hi;
 }
 
 u8 fn_8001B940(u8 **arg0) {
@@ -1533,7 +1535,7 @@ s32 fn_8001C0C8(u8 *arg0)
 
 void fn_8001C15C(void *arg0, void *arg1) {
     void fn_800C3220(void *, s32);
-    u16 fn_8017A9B0(void *);
+    u16 Stream_ReadU16(void *);
     s32 fn_80019E24(s32);
     extern u8 lbl_803206EC[];
     typedef struct {
@@ -1545,7 +1547,7 @@ void fn_8001C15C(void *arg0, void *arg1) {
     s32 mask;
     u16 temp;
 
-    temp = fn_8017A9B0(arg1);
+    temp = Stream_ReadU16(arg1);
     if (temp == 0) {
         *(s32 *)((u8 *)arg1 + 4) = *(s32 *)((u8 *)arg1 + 4) + 2;
         bf = (Bit6 *)((u8 *)arg0 + 5);
@@ -1561,7 +1563,7 @@ void fn_8001C15C(void *arg0, void *arg1) {
         }
     } else {
         *(s32 *)arg0 = fn_80019E24(temp);
-        *((u16 *)arg0 + 2) = fn_8017A9B0(arg1);
+        *((u16 *)arg0 + 2) = Stream_ReadU16(arg1);
     }
 }
 
