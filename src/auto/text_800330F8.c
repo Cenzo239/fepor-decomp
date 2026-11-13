@@ -12968,6 +12968,7 @@ void fn_80054314(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
+/* Build map-object model node from path templates; optionally spawn a linked child object. */
 void MapObj_InitGraphics(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
