@@ -10557,7 +10557,8 @@ void fn_8019CD40(void* arg0, void* arg1) {
     // For now we'll implement the structure with placeholders for external calls
 }
 
-s32 MapSelect_UpdateTarget(void *arg0) {
+/* Map-select process tick: init zoom, confirm selection on A, cancel on B. */
+s32 MapSelect_UpdateTarget(void *proc) {
     M2C_UNK fn_80052CA8(void *);
     M2C_UNK fn_80054C14(void *);
     s32 fn_8005F894(s32, M2C_UNK);
@@ -10567,56 +10568,56 @@ s32 MapSelect_UpdateTarget(void *arg0) {
     M2C_UNK fn_8017F040(void *, s32, void *);
     M2C_UNK fn_80184688(s32, M2C_UNK, M2C_UNK, void *);
     extern f32 gMapSelectCamZoom;
-    s32 temp_r29;
-    s32 temp_r28;
-    void *var_r30;
-    s32 var_r3;
-    u8 temp_r3_4;
-    void *temp_r3;
-    void *temp_r3_2;
-    void *temp_r3_3;
-    void *temp_r3_5;
-    void *temp_r31;
+    s32 pad;
+    s32 height;
+    void *self;
+    s32 actor;
+    u8 flags;
+    void *work;
+    void *cursor;
+    void *unit;
+    void *cam;
+    void *cmd;
 
-    temp_r3 = M2C_FIELD(arg0, void **, 0x30);
-    var_r30 = arg0;
-    temp_r31 = M2C_FIELD(temp_r3, void **, 0x4C);
-    temp_r29 = M2C_FIELD(temp_r3, s32 *, 0x5C);
-    if (!(M2C_FIELD(temp_r31, u8 *, 0x40) & 1)) {
-        if (fn_8005F894(temp_r29, 0x12) < 0) {
-            temp_r3_5 = (void *)Camera_GetActive();
-            M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) gMapSelectCamZoom;
-            fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
+    work = M2C_FIELD(proc, void **, 0x30);
+    self = proc;
+    cmd = M2C_FIELD(work, void **, 0x4C);
+    pad = M2C_FIELD(work, s32 *, 0x5C);
+    if (!(M2C_FIELD(cmd, u8 *, 0x40) & 1)) {
+        if (fn_8005F894(pad, 0x12) < 0) {
+            cam = (void *)Camera_GetActive();
+            M2C_FIELD(cam, f32 *, 0x70) = (f32) gMapSelectCamZoom;
+            fn_80098524(M2C_FIELD(cmd, void **, 0x34));
         }
-        M2C_FIELD(temp_r31, u8 *, 0x40) = (u8) (M2C_FIELD(temp_r31, u8 *, 0x40) | 1);
+        M2C_FIELD(cmd, u8 *, 0x40) = (u8) (M2C_FIELD(cmd, u8 *, 0x40) | 1);
     }
-    if (Pad_IsButton(temp_r29, 0) != 0) {
-        temp_r3_2 = M2C_FIELD(temp_r31, void **, 0x34);
-        temp_r28 = (s32) M2C_FIELD(temp_r3_2, f32 *, 0xC);
-        fn_8017E0C0(temp_r3_2, temp_r28, temp_r31);
-        fn_8017F040(M2C_FIELD(temp_r31, void **, 0x34), temp_r28, temp_r31);
-        temp_r3_3 = M2C_FIELD(M2C_FIELD(temp_r31, void **, 0x34), void **, 0);
-        if (temp_r3_3 != NULL) {
-            var_r3 = M2C_FIELD(temp_r3_3, s32 *, 0x280);
+    if (Pad_IsButton(pad, 0) != 0) {
+        cursor = M2C_FIELD(cmd, void **, 0x34);
+        height = (s32) M2C_FIELD(cursor, f32 *, 0xC);
+        fn_8017E0C0(cursor, height, cmd);
+        fn_8017F040(M2C_FIELD(cmd, void **, 0x34), height, cmd);
+        unit = M2C_FIELD(M2C_FIELD(cmd, void **, 0x34), void **, 0);
+        if (unit != NULL) {
+            actor = M2C_FIELD(unit, s32 *, 0x280);
         } else {
-            var_r3 = 0;
+            actor = 0;
         }
-        fn_80184688(var_r3, 1, 0x20, temp_r31);
-        if (((M2C_UNK (*)(void *)) M2C_FIELD(temp_r31, M2C_UNK (**)(void *), 0x58)) != NULL) {
-            temp_r3_4 = M2C_FIELD(temp_r31, u8 *, 0x40);
-            if (!(temp_r3_4 & 4)) {
-                M2C_FIELD(temp_r31, u8 *, 0x40) = (u8) (temp_r3_4 | 4);
-                M2C_FIELD(temp_r31, M2C_UNK (**)(void *), 0x58)(temp_r31);
+        fn_80184688(actor, 1, 0x20, cmd);
+        if (((M2C_UNK (*)(void *)) M2C_FIELD(cmd, M2C_UNK (**)(void *), 0x58)) != NULL) {
+            flags = M2C_FIELD(cmd, u8 *, 0x40);
+            if (!(flags & 4)) {
+                M2C_FIELD(cmd, u8 *, 0x40) = (u8) (flags | 4);
+                M2C_FIELD(cmd, M2C_UNK (**)(void *), 0x58)(cmd);
             }
         }
     }
-    if (Pad_IsButton(temp_r29, 0x12) != 0) {
-        fn_80052CA8(var_r30);
-        temp_r3_5 = (void *)Camera_GetActive();
-        M2C_FIELD(temp_r3_5, f32 *, 0x70) = (f32) gMapSelectCamZoom;
-        fn_80098524(M2C_FIELD(temp_r31, void **, 0x34));
+    if (Pad_IsButton(pad, 0x12) != 0) {
+        fn_80052CA8(self);
+        cam = (void *)Camera_GetActive();
+        M2C_FIELD(cam, f32 *, 0x70) = (f32) gMapSelectCamZoom;
+        fn_80098524(M2C_FIELD(cmd, void **, 0x34));
     }
-    fn_80054C14(var_r30);
+    fn_80054C14(self);
     return 0;
 }
 
