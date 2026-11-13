@@ -7419,7 +7419,7 @@ void fn_801C65E0(void *arg0) {
 }
 
 void fn_801C68D0(u32 arg0) {
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     void *fn_8000C0C0(void *);
     void fn_8005FA14(void *, s32);
     void *x;
@@ -7430,7 +7430,7 @@ void fn_801C68D0(u32 arg0) {
     s32 off;
     void *obj;
 
-    x = fn_8000C0C0(lbl_802981D0);
+    x = fn_8000C0C0(LightFade_script);
     if (x == NULL) {
         table = NULL;
     } else {
@@ -7456,7 +7456,7 @@ void fn_801C68D0(u32 arg0) {
 }
 
 void fn_801C6978(u32 arg0) {
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     extern u32 lbl_8027D540[];
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B434;
@@ -7483,7 +7483,7 @@ void fn_801C6978(u32 arg0) {
     void *obj;
     void *obj_plus;
 
-    p = fn_8000C0C0(lbl_802981D0);
+    p = fn_8000C0C0(LightFade_script);
     if (p == NULL) {
         base = NULL;
     } else {
@@ -7548,7 +7548,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     void *fn_8000CAF0(void *, s32);
 
     extern u8 lbl_802981F4[];
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
 
     u8 *entry;
     u8 *source;
@@ -7575,7 +7575,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     s.value = val;
     *(s32 *)(entry + 0x38) = arg3;
 
-    source = (u8 *)fn_8000C0C0(lbl_802981D0);
+    source = (u8 *)fn_8000C0C0(LightFade_script);
     if (source == NULL) {
         dest = NULL;
     } else {
@@ -7600,7 +7600,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 
 void fn_801C6DB8(u32 arg0)
 {
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     void *fn_8000C0C0(void *);
     void fn_8005F788(u32, s32, s32);
     s32 i;
@@ -7608,7 +7608,7 @@ void fn_801C6DB8(u32 arg0)
     u32 clear;
     void *p;
 
-    p = fn_8000C0C0(lbl_802981D0);
+    p = fn_8000C0C0(LightFade_script);
     if (p == NULL) {
         list = NULL;
     } else {
@@ -7637,13 +7637,13 @@ s32 fn_801C6E60(s32 arg0) {
 void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
 void fn_801C6F9C(void) {
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     void *fn_8000C0C0(void *);
     s32 Light_GetChannel(s32);
     void fn_800673E4(s32, s32);
     u8 *Fog_GetColor(void);
     void fn_8005F788(u32, s32, s32);
-    void *p = fn_8000C0C0(lbl_802981D0);
+    void *p = fn_8000C0C0(LightFade_script);
     u8 *work;
     if (p == NULL) {
         work = 0;
@@ -7692,7 +7692,7 @@ void Light_FadeProcess(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     u8 *Light_GetChannel(s32);
     u8 *Fog_GetColor(void);
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     extern f64 lbl_8036B440;
     extern f64 lbl_8036B470;
 
@@ -7709,7 +7709,7 @@ void Light_FadeProcess(void *arg0) {
     s32 v;
     u8 *out;
 
-    node = fn_8000C0C0(lbl_802981D0);
+    node = fn_8000C0C0(LightFade_script);
     if (node == NULL)
         unit = NULL;
     else
@@ -7834,14 +7834,14 @@ void fn_801C7644(s32 arg0) {
 }
 
 void fn_801C76E8(void) {
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     void *fn_8000C0C0(void *);
     void fn_80067708(s32, s32, void (*)(void), s32);
     void fn_801C7598(void), fn_801C7604(void), fn_801C7644(void);
     void *x;
     s32 *p;
 
-    x = fn_8000C0C0(lbl_802981D0);
+    x = fn_8000C0C0(LightFade_script);
     if (x == NULL) {
         p = NULL;
     } else {
@@ -7854,11 +7854,11 @@ void fn_801C76E8(void) {
     }
 }
 
-extern u8 lbl_802981D0[];
-void fn_801C777C(void){extern u8 lbl_802981D0[];void fn_8000BF00(void*);fn_8000BF00(lbl_802981D0);}
+extern u8 LightFade_script[];
+void fn_801C777C(void){extern u8 LightFade_script[];void fn_8000BF00(void*);fn_8000BF00(LightFade_script);}
 
 void fn_801C77A4(void) {
-    fn_8000CAF0((void*)&lbl_802981D0, 4);
+    fn_8000CAF0((void*)&LightFade_script, 4);
 }
 
 void fn_801C77D0(void *arg0) {
@@ -7868,14 +7868,14 @@ void fn_801C77D0(void *arg0) {
     void fn_800C4588(void *);
     void fn_8005FA14(void *, s32);
     void fn_800C428C(void *);
-    extern u8 lbl_802981D0[];
+    extern u8 LightFade_script[];
     void **walk;
     void **ptr;
     s32 i;
     s32 zero;
     s32 base;
 
-    base = (s32)lbl_802981D0;
+    base = (s32)LightFade_script;
     fn_8000BF00((void *)(base + 0x54));
     fn_8000BF00((void *)(base + 0x7c));
     fn_80057EDC();
