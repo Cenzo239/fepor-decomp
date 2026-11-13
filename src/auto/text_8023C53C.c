@@ -5598,7 +5598,7 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
 s32 AudioTable_Insert(u16 id,s32 data) {
 void fn_8026372C(void);void fn_802636F4(void);
 extern AudioTableRange gAudioTableRanges[];
-extern AudioTableEntry lbl_803556B8[];
+extern AudioTableEntry gAudioTableEntries[];
 extern u16 lbl_80368A0A;
 u16 count;
 s32 start,i,j,index;
@@ -5613,11 +5613,11 @@ gAudioTableRanges[bucket].start=lbl_80368A0A;
 start=lbl_80368A0A;index=lbl_80368A0A;
 }else{
 start=gAudioTableRanges[bucket].start;
-for(i=0;i<(s32)count && lbl_803556B8[start+i].id<id;i++){}
+for(i=0;i<(s32)count && gAudioTableEntries[start+i].id<id;i++){}
 if(i<(s32)count){
 index=start+i;
-if(id==lbl_803556B8[index].id) {
-lbl_803556B8[index].ref++;
+if(id==gAudioTableEntries[index].id) {
+gAudioTableEntries[index].ref++;
 fn_802636F4();return 0;
 }
 }else index=start+i;
@@ -5625,10 +5625,10 @@ fn_802636F4();return 0;
 for(j=0,range=gAudioTableRanges;j<512;range++,j++){
 if((s32)range->start>(s32)start) range->start++;
 }
-for(j=lbl_80368A0A-1,moving=&lbl_803556B8[j];j>=index;j--,moving--) moving[1]=moving[0];
-lbl_803556B8[index].id=id;
-lbl_803556B8[index].data=data;
-lbl_803556B8[index].ref=1;
+for(j=lbl_80368A0A-1,moving=&gAudioTableEntries[j];j>=index;j--,moving--) moving[1]=moving[0];
+gAudioTableEntries[index].id=id;
+gAudioTableEntries[index].data=data;
+gAudioTableEntries[index].ref=1;
 gAudioTableRanges[bucket].count++;
 lbl_80368A0A++;
 fn_802636F4();return 1;
@@ -5637,7 +5637,7 @@ fn_802636F4();return 1;
 s32 fn_80250414(u16 id) {
  void fn_8026372C(void); void fn_802636F4(void);
  extern AudioTableRange gAudioTableRanges[];
- extern AudioTableEntry lbl_803556B8[];
+ extern AudioTableEntry gAudioTableEntries[];
  extern u16 lbl_80368A0A;
  s32 total,index,j; u32 bucket; u16 count,start; s32 i; AudioTableRange *range; AudioTableEntry *moving;
  fn_8026372C();
@@ -5645,12 +5645,12 @@ s32 fn_80250414(u16 id) {
  count=gAudioTableRanges[bucket].count;
  if(count!=0) {
   start=gAudioTableRanges[bucket].start;
-  for(i=0;i<(s32)count && id!=lbl_803556B8[start+i].id;i++) {}
+  for(i=0;i<(s32)count && id!=gAudioTableEntries[start+i].id;i++) {}
   if(i<(s32)count) {
    index=start+i;
-   if(--lbl_803556B8[index].ref==0) {
+   if(--gAudioTableEntries[index].ref==0) {
     total=lbl_80368A0A;
-    for(j=index+1,moving=&lbl_803556B8[j];j<total;j++,moving++) moving[-1]=moving[0];
+    for(j=index+1,moving=&gAudioTableEntries[j];j<total;j++,moving++) moving[-1]=moving[0];
     for(j=0,range=gAudioTableRanges;j<512;range++,j++) {
      if((s32)range->start>(s32)start) range->start--;
     }
@@ -5673,7 +5673,7 @@ void *fn_802506A8(u32 arg0)
     void fn_80250698(void);
 
     extern u8 gAudioTableRanges[];
-    extern u8 lbl_803556B8[];
+    extern u8 gAudioTableEntries[];
     extern u8 lbl_803689F8[];
     extern void *lbl_803689F4;
     extern u32 lbl_80368A00;
@@ -5702,7 +5702,7 @@ void *fn_802506A8(u32 arg0)
 
     result = fn_802612A0(
         lbl_803689F8,
-        lbl_803556B8 + (offset << 3),
+        gAudioTableEntries + (offset << 3),
         value,
         8,
         (void *)fn_80250698
