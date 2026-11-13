@@ -2520,7 +2520,7 @@ void Ui_ScissorUnitListRows(void) {
     GXSetScissor(0, 0x60, 0x260, 0x120);
 }
 
-void fn_80130920(void) {
+void Ui_ScissorUnitListRightRows(void) {
     GXSetScissor(0xF8, 0x60, 0x120, 0x120);
 }
 
@@ -2532,7 +2532,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     void fn_8000A248(void);
     void *fn_80105C5C(void *, u8);
     void Ui_DrawIcon(void *, s32, s32);
-    void fn_80130920(void);
+    void Ui_ScissorUnitListRightRows(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern u8 gItemIconDrawer[];
@@ -2544,7 +2544,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
 
     fn_8000A258();
     fn_80009D74(farg0, farg1, lbl_8036A500, lbl_8036A50C);
-    Prim2D_SetCallback(fn_80130920, 0);
+    Prim2D_SetCallback(Ui_ScissorUnitListRightRows, 0);
     fn_80009B8C(0xFF);
     fn_8000A248();
     unit = (s32)*(void **)arg1;
