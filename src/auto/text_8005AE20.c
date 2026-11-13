@@ -6719,7 +6719,7 @@ void fn_8006DA98(void *arg0)
     void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
     void VIConfigure(void *);
-    void fn_802115A8(void *);
+    void VISetNextFrameBuffer(void *);
     void fn_80211478(void);
     void fn_802107A8(void);
     extern char lbl_8026B990[];
@@ -6826,7 +6826,7 @@ void fn_8006DA98(void *arg0)
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
     VIConfigure(DEMORmode);
-    fn_802115A8(DemoFrameBuffer1);
+    VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     fn_80211478();
     fn_802107A8();
@@ -6863,7 +6863,7 @@ void fn_8006DFD8(void) {
     void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
     void VIConfigure(void *);
-    void fn_802115A8(void *);
+    void VISetNextFrameBuffer(void *);
     void fn_80211478(void);
     void fn_802107A8(void);
     void fn_80224684(s32, s32, s32);
@@ -7002,7 +7002,7 @@ body:
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
     VIConfigure(DEMORmode);
-    fn_802115A8(DemoFrameBuffer1);
+    VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     fn_80211478();
     fn_802107A8();
@@ -7032,7 +7032,7 @@ done:
     if (lbl_803682A0 != fn_80211690() && !(lbl_803682A4 & 8)) {
         lbl_803682A4 |= 4;
     }
-    fn_802115A8(DemoCurrentBuffer);
+    VISetNextFrameBuffer(DemoCurrentBuffer);
     if (lbl_80366DE0 != 0) {
         fn_80211614(0);
         lbl_80366DE0 = 0;
@@ -7136,7 +7136,7 @@ void fn_8006E660(void)
     void fn_8022097C(void);
     void fn_8009E870(void);
     u32 fn_80211690(void);
-    void fn_802115A8(void *);
+    void VISetNextFrameBuffer(void *);
     void fn_80211614(s32);
     void fn_80211478(void);
     void fn_802107A8(void);
@@ -7159,7 +7159,7 @@ void fn_8006E660(void)
             }
         }
 
-        fn_802115A8(DemoCurrentBuffer);
+        VISetNextFrameBuffer(DemoCurrentBuffer);
 
         if (lbl_80366DE0 != 0) {
             fn_80211614(0);
@@ -7251,7 +7251,7 @@ void DEMOInit(void *arg0)
     void fn_802246EC(s32, s32);
     void fn_80221A40(void *, s32);
     void fn_80221A2C(s32);
-    void fn_802115A8(void *);
+    void VISetNextFrameBuffer(void *);
     void fn_80211478(void);
     void fn_802107A8(void);
     extern char lbl_8026B990[];
@@ -7369,7 +7369,7 @@ void DEMOInit(void *arg0)
     }
     fn_80221A40(DemoCurrentBuffer, 1);
     fn_80221A2C(0);
-    fn_802115A8(DemoFrameBuffer1);
+    VISetNextFrameBuffer(DemoFrameBuffer1);
     DemoCurrentBuffer = DemoFrameBuffer2;
     fn_80211478();
     fn_802107A8();
