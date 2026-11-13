@@ -1755,7 +1755,7 @@ void Ui_ShowConfirmChild(void *panel) {
     }
 }
 
-void fn_801B1B7C(void *arg0) {
+void Ui_CreateConfirmChild(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801B3150(void *, s32, s32, s32, s32, s32);
     void fn_80133FBC(void *, void *);
