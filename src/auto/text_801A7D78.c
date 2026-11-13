@@ -498,7 +498,7 @@ void fn_801A8F14(void *arg0, void *arg1) {
 
 void fn_801A8F80(void *arg0, void *arg1) {
     void *Item_GetFlagsPtr(void *);
-    u8 fn_8001D37C(void *);
+    u8 Item_GetWt(void *);
     u8 fn_8001D3FC(void *);
     u8 fn_8001D47C(void *);
     u8 fn_8001D500(void *);
@@ -618,7 +618,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
             (s16)((s8)*(u8 *)((u8 *)self + 0x2B5) + fn_8003A778(self));
     }
 
-    tmp = (u8)fn_8001D37C((u8 *)self + 0x28C);
+    tmp = (u8)Item_GetWt((u8 *)self + 0x28C);
     diff = tmp - fn_8003B258(self);
     if (diff < 0) {
         diff = 0;

@@ -674,7 +674,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     s8 fn_8001BFFC(void *);
     s8 fn_8001C040(void *);
     s8 fn_8001C084(void *);
-    u8 fn_8001D37C(void *);
+    u8 Item_GetWt(void *);
     u8 fn_8001D3FC(void *);
     u8 fn_8001D47C(void *);
     u8 fn_8001D500(void *);
@@ -786,7 +786,7 @@ extern "C" void fn_80133760(void *arg0, s32 arg1) {
     Prim2D_SetText(Msg_Expand(lbl_802764BC + 0x211));
     Prim2D_EndPrim();
     Prim2D_AddPrim(6);
-    arg = (u8)fn_8001D37C((u8 *)self + 0x60) - (s8)((u8 *)self)[0x54];
+    arg = (u8)Item_GetWt((u8 *)self + 0x60) - (s8)((u8 *)self)[0x54];
     if (arg < 1) {
         arg = 1;
     }

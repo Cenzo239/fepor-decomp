@@ -2156,7 +2156,7 @@ void *UnitRef_GetName(void *arg0) {
     return fn_800C2E3C(gIconSlots, *((u8 *)arg0 + 5) & 0x3F);
 }
 
-u8 fn_8001D37C(void *arg0) {
+u8 Item_GetWt(void *arg0) {
     s32 fn_800C2ACC(void *, s32);
     extern u8 gIconSlots[];
     s8 result;
