@@ -6347,7 +6347,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern s32 gUnitInfoPopupFlag;
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
 
     class Vec2s {
     public:
@@ -6410,7 +6410,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
             bits = fn_8001CB64(unit);
             if ((*(u64 *)bits & 0x20000000000ULL) != 0 || (*(u64 *)fn_8001CB64(unit) & 0x200ULL) != 0) {
                 *(Vec2s *)&sp18 = ((Obj *)cursorWidget)->v10();
-                obj = fn_8000CAA0(lbl_80294580, self);
+                obj = fn_8000CAA0(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
                 *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x1A7;
@@ -6692,7 +6692,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern s32 gUnitInfoPopupFlag;
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
 
     class Vec2s {
     public:
@@ -6755,7 +6755,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
             bits = fn_8001CB64(unit);
             if ((*(u64 *)bits & 0x200ULL) != 0) {
                 *(Vec2s *)&sp18 = ((Obj *)cursor)->v10();
-                child = fn_8000CAA0(lbl_80294580, self);
+                child = fn_8000CAA0(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)child + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)child + 0x34) = (f32)*((s16 *)&sp18 + 1);
                 *(void **)((u8 *)child + 0x54) = (u8 *)gUiMsgStrings + 0x236;
@@ -6854,7 +6854,7 @@ extern "C" void fn_80170894(void *arg0) {
     s16 fn_80164FBC(void *, s16);
     s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
 
     class Vec2s {
@@ -6902,7 +6902,7 @@ extern "C" void fn_80170894(void *arg0) {
         var_r27 = fn_80164D24(temp_r30);
         if (!(*(u32 *)((u8 *)temp_r30 + 0x60) & 1) || ((s16)var_r27 < 0)) {
             *(Vec2s *)&sp14 = ((Obj *)temp_r31)->v13();
-            proc = fn_8000CAA0(lbl_80294580, var_r28);
+            proc = fn_8000CAA0(gUiMsgPopupProc, var_r28);
             *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
             *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
             *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
@@ -6912,7 +6912,7 @@ extern "C" void fn_80170894(void *arg0) {
         var_r27 = fn_80164CAC(temp_r30);
         if (!(*(u32 *)((u8 *)temp_r30 + 0x60) & 2) || ((s16)var_r27 < 0)) {
             *(Vec2s *)&sp10 = ((Obj *)temp_r31)->v13();
-            proc = fn_8000CAA0(lbl_80294580, var_r28);
+            proc = fn_8000CAA0(gUiMsgPopupProc, var_r28);
             *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
             *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
             *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x260;
@@ -7507,7 +7507,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern s32 gUnitInfoPopupFlag;
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
 
     class Vec2s {
     public:
@@ -7572,7 +7572,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
         if ((btn & 0x100) && unit != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             if (fn_80091F70(gUiContext[0], *(u32 *)unit) == 0) {
                 *(Vec2s *)&sp18 = ((Obj *)cursorWidget)->v10();
-                obj = fn_8000CAA0(lbl_80294580, self);
+                obj = fn_8000CAA0(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
                 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
                 *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x316;
@@ -8191,7 +8191,7 @@ extern u8 gUnitInfoPopup[];
 extern u32 gUiInputFlags;
 extern void *gPadInput;
 extern s32 gUnitInfoPopupFlag;
-extern u8 lbl_80294580[];
+extern u8 gUiMsgPopupProc[];
 extern u8 lbl_803200AC[];
 extern u32 gUiContext[];
 extern u8 lbl_80294B10[];
@@ -8254,7 +8254,7 @@ if ((btn & 0x100) && var_r27 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0
 bits = fn_8001CB64(var_r27);
 if ((*(u64 *)bits & 0x200ULL) != 0) {
 *(Vec2s *)&sp18 = ((Obj *)obj4c)->v10();
-obj = fn_8000CAA0(lbl_80294580, self);
+obj = fn_8000CAA0(gUiMsgPopupProc, self);
 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
 *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x236;
@@ -8951,7 +8951,7 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void fn_801695BC(u32, void *, s32);
     extern u16 gUiMsgStrings[];
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u32 gUiContext[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -9010,13 +9010,13 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
         if ((btn & 0x100) && var_r30) {
             if (gUiContext[0] == var_r30) {
                 *(Vec2s *)&sp14 = ((VObj *)obj40)->v9();
-                proc = fn_8000CAA0(lbl_80294580, self);
+                proc = fn_8000CAA0(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
                 *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
                 *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3db;
             } else if (fn_80093088(gUiContext[0]) && fn_80093088(var_r30)) {
                 *(Vec2s *)&sp10 = ((VObj *)obj40)->v9();
-                proc = fn_8000CAA0(lbl_80294580, self);
+                proc = fn_8000CAA0(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
                 *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
                 *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3e9;
@@ -9727,8 +9727,8 @@ void fn_801766C0(s32 param_1, s32 param_2, s32 param_3, s32 param_4)
 
 void fn_80176888(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     void *fn_8000CAA0(void *, s32);
-    extern u8 lbl_80294580[];
-    void *temp_r3 = fn_8000CAA0(lbl_80294580, arg1);
+    extern u8 gUiMsgPopupProc[];
+    void *temp_r3 = fn_8000CAA0(gUiMsgPopupProc, arg1);
     *(f32 *)((u8 *)temp_r3 + 0x30) = farg0;
     *(f32 *)((u8 *)temp_r3 + 0x34) = farg1;
     *(s32 *)((u8 *)temp_r3 + 0x54) = arg0;
@@ -10221,7 +10221,7 @@ void *fn_8017761C(void) {
 
 s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -10231,7 +10231,7 @@ s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x4E0;
@@ -10420,7 +10420,7 @@ u8 fn_80177B10(void) {
 
 s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -10430,7 +10430,7 @@ s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x4FE;
@@ -10483,7 +10483,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
@@ -10495,7 +10495,7 @@ s32 fn_80177D50(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x51E;
@@ -10561,7 +10561,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
     void fn_8000C5B8(s32);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u16 lbl_80294604[];
     extern u32 gUiContext[];
@@ -10573,7 +10573,7 @@ s32 fn_80177F84(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x53F;
@@ -10600,7 +10600,7 @@ s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
     void *Process_Find(void *);
     void fn_8000C5B8(void *);
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     void *proc;
     f32 x;
     f32 y;
@@ -10610,19 +10610,19 @@ s32 fn_801781DC(void *arg0, void *arg1, void *arg2) {
         y = M2C_FIELD(arg1, s16 *, 0x32) + M2C_FIELD(arg2, s16 *, 0x32);
         switch (M2C_FIELD(arg0, s8 *, 4)) {
         case 0:
-            proc = fn_8000CAA0(lbl_80294580, arg1);
+            proc = fn_8000CAA0(gUiMsgPopupProc, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
             M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x569;
             break;
         case 1:
-            proc = fn_8000CAA0(lbl_80294580, arg1);
+            proc = fn_8000CAA0(gUiMsgPopupProc, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
             M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x57B;
             break;
         case 2:
-            proc = fn_8000CAA0(lbl_80294580, arg1);
+            proc = fn_8000CAA0(gUiMsgPopupProc, arg1);
             M2C_FIELD(proc, f32 *, 0x30) = x;
             M2C_FIELD(proc, f32 *, 0x34) = y;
             M2C_FIELD(proc, void **, 0x54) = (u8 *)gUiMsgStrings + 0x224;
@@ -10658,7 +10658,7 @@ s32 fn_8017838C(void) {
 
 s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -10668,7 +10668,7 @@ s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x569;
@@ -10713,7 +10713,7 @@ s32 fn_801784D8(void) {
 #pragma scheduling reset
 s32 fn_80178558(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -10723,7 +10723,7 @@ s32 fn_80178558(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x5B2;
@@ -10747,7 +10747,7 @@ s32 fn_80178664(void) {
 
 s32 fn_8017866C(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -10757,7 +10757,7 @@ s32 fn_8017866C(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x5D6;
@@ -11347,7 +11347,7 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
     void *fn_8000CAA0(void *, void *);
     void fn_8000C5B8(void *);
     void fn_8000A430(void *);
-    extern u8 lbl_80294580[];
+    extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
     void *obj;
@@ -11357,7 +11357,7 @@ s32 fn_801792C8(s32 arg0, void *arg1, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
         y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = fn_8000CAA0(lbl_80294580, arg1);
+        obj = fn_8000CAA0(gUiMsgPopupProc, arg1);
         *(f32 *)((u8 *)obj + 0x30) = x;
         *(f32 *)((u8 *)obj + 0x34) = y;
         *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x67e;
