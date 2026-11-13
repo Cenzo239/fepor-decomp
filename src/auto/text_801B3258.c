@@ -3637,6 +3637,7 @@ extern "C" void fn_801BC784(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+/* Allocate the unit-panel caption and position child widgets, or exit if the panel is not ready. */
 extern "C" void Ui_InitUnitPanel(void *arg0) {
 void *Heap_Alloc(u32); void fn_801400F4(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
