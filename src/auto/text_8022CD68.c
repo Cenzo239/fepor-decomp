@@ -504,14 +504,14 @@ void fn_8022D234(void **arg0, void *arg1) {
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 s32 fn_8022D4C8(void) {
-    s32 fn_80231178(void *);
+    s32 fflush(void *);
     extern char __files[];
     s32 ret;
     char *p;
 
     ret = 0;
     for (p = __files; p != NULL; p = *(char **)(p + 0x4c)) {
-        if (((*(u16 *)(p + 4) >> 6) & 7) != 0 && fn_80231178(p) != 0) {
+        if (((*(u16 *)(p + 4) >> 6) & 7) != 0 && fflush(p) != 0) {
             ret = -1;
         }
     }
@@ -1152,7 +1152,7 @@ u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
     return result;
 }
 
-int fn_80231178(void *arg0) {
+int fflush(void *arg0) {
     s32 __flush_buffer(void *, s32 *);
     s32 fn_8022D4C8();
     s32 fn_80231748(void *);
