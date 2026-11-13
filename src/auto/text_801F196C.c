@@ -3901,7 +3901,8 @@ void fn_801FA534(void *arg0)
 __declspec(section ".rodata") static const char staff_fmt[] = "#F04%s";
 
 #pragma global_optimizer off
-void StaffRoll_Draw(void *arg0) {
+void StaffRoll_Draw(void *proc) {
+    /* Draw visible staff-roll credit lines for the current scroll position. */
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
@@ -3927,22 +3928,22 @@ void StaffRoll_Draw(void *arg0) {
     extern u8 StaffRoll_str[];
 
     typedef struct {
-        void *str0;
-        void *str4;
-        void *str8;
-    } Entry;
+        void *left;
+        void *center;
+        void *right;
+    } CreditLine;
 
     f32 limit;
-    f32 scroll;
-    f32 step;
+    f32 scrollY;
+    f32 lineHeight;
     f32 period;
-    s16 w;
-    u8 flag;
-    Entry *ent;
+    s16 width;
+    u8 visible;
+    CreditLine *line;
     u32 i;
 
     if (gUiInputFlags & 1) {
-        Process_Goto(arg0, 1);
+        Process_Goto(proc, 1);
         return;
     }
     Prim2D_Begin();
@@ -3950,38 +3951,38 @@ void StaffRoll_Draw(void *arg0) {
     Prim2D_SetColorByte(0xFF);
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
-    step = *(f32 *)((u8 *)arg0 + 0x38);
+    lineHeight = *(f32 *)((u8 *)proc + 0x38);
     period = (f32)fmod(lbl_8036BA28, lbl_8036BA30);
-    scroll = (f32)(s32)(period * (step + lbl_8036BA38 / period)) / period;
-    ent = (Entry *)Hash_Lookup(StaffRoll_str + 0x387);
+    scrollY = (f32)(s32)(period * (lineHeight + lbl_8036BA38 / period)) / period;
+    line = (CreditLine *)Hash_Lookup(StaffRoll_str + 0x387);
     limit = lbl_8036BA00;
-    step = lbl_8036BAAC;
-    for (i = 0; i < *(u32 *)((u8 *)arg0 + 0x34); i++) {
-        flag = 0;
-        if (scroll <= limit) {
-            if (lbl_8036BA18 < scroll + lbl_8036BAAC) {
-                flag = 1;
+    lineHeight = lbl_8036BAAC;
+    for (i = 0; i < *(u32 *)((u8 *)proc + 0x34); i++) {
+        visible = 0;
+        if (scrollY <= limit) {
+            if (lbl_8036BA18 < scrollY + lbl_8036BAAC) {
+                visible = 1;
             }
         }
-        if (flag != 0) {
+        if (visible != 0) {
             Prim2D_Begin();
             fn_8000A174(0, 0x13);
             Prim2D_PrepareTex();
-            if ((u32)ent->str0 != 0U) {
-                w = Text_MeasureWidth(ent->str0, -1, lbl_8036BA20);
-                Text_Draw((s32)(f32)(0x120 - w), (s32)scroll, 1, ent->str0);
+            if ((u32)line->left != 0U) {
+                width = Text_MeasureWidth(line->left, -1, lbl_8036BA20);
+                Text_Draw((s32)(f32)(0x120 - width), (s32)scrollY, 1, line->left);
             }
-            if ((u32)ent->str4 != 0U) {
-                w = Text_MeasureWidth(ent->str4, -1, lbl_8036BA20);
-                Text_Draw((s32)(f32)(0x130 - (w >> 1)), (s32)scroll, 1, ent->str4);
+            if ((u32)line->center != 0U) {
+                width = Text_MeasureWidth(line->center, -1, lbl_8036BA20);
+                Text_Draw((s32)(f32)(0x130 - (width >> 1)), (s32)scrollY, 1, line->center);
             }
-            if ((u32)ent->str8 != 0U) {
-                Text_MeasureWidth(ent->str8, -1, lbl_8036BA20);
-                Text_Draw((s32)lbl_8036BAB0, (s32)scroll, 1, (void *)(StaffRoll_str + 0x39A), ent->str8);
+            if ((u32)line->right != 0U) {
+                Text_MeasureWidth(line->right, -1, lbl_8036BA20);
+                Text_Draw((s32)lbl_8036BAB0, (s32)scrollY, 1, (void *)(StaffRoll_str + 0x39A), line->right);
             }
         }
-        scroll += step;
-        ent++;
+        scrollY += lineHeight;
+        line++;
     }
 }
 #pragma global_optimizer reset
