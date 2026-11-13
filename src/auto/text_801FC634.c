@@ -631,11 +631,11 @@ void fn_801FDE88(void) {
 }
 
 void fn_801FDEB8(void) {
-    M2C_UNK fn_801FDED8();
-    fn_801FDED8();
+    M2C_UNK FallingParticle_Update();
+    FallingParticle_Update();
 }
 
-void fn_801FDED8(void *arg0) {
+void FallingParticle_Update(void *arg0) {
     void fn_80007698(u8);
     void fn_800077D8(f32, f32, f32, f32);
     void fn_80007884(void);
