@@ -4841,7 +4841,7 @@ void fn_801FBC84(void) {
     s32 fn_800C45B8(s32, char *, s32);
     void *fn_800C4604(s32, s32, char *, s32);
     void fn_800DE9FC(void *);
-    void fn_801FC038(void *, void *);
+    void Tree_Destroy(void *, void *);
     void Tree_InsertKey(void *, void *, u16 *);
     void fn_801FC4F8(void *, void *, void *);
     u16 fn_802072A0(void);
@@ -4984,7 +4984,7 @@ glyph_cond:
     fn_800C4588(h2);
     fn_800C4588(h1);
     if (tree.root != NULL) {
-        fn_801FC038(&tree, tree.root);
+        Tree_Destroy(&tree, tree.root);
     }
 }
 s32 fn_801FBF98(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
@@ -5011,7 +5011,7 @@ loop_4:
 }
 
 #pragma use_lmw_stmw on
-void fn_801FC038(void *arg0, void *arg1) {
+void Tree_Destroy(void *arg0, void *arg1) {
     void Heap_Free(void *);
     void fn_801FC400(void *);
     void fn_801FC404(void *);
@@ -5030,10 +5030,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v27 = *(void **)((u8 *)v28 + 0);
             if (v27 != 0) {
                 if (*(void **)((u8 *)v27 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v27 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v27 + 0));
                 }
                 if (*(void **)((u8 *)v27 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v27 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v27 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v27 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v27, 1);
@@ -5041,10 +5041,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v27 = *(void **)((u8 *)v28 + 4);
             if (v27 != 0) {
                 if (*(void **)((u8 *)v27 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v27 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v27 + 0));
                 }
                 if (*(void **)((u8 *)v27 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v27 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v27 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v27 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v27, 1);
@@ -5058,10 +5058,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v28 = *(void **)((u8 *)v27 + 0);
             if (v28 != 0) {
                 if (*(void **)((u8 *)v28 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v28 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v28 + 0));
                 }
                 if (*(void **)((u8 *)v28 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v28 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v28 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v28 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v28, 1);
@@ -5069,10 +5069,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v28 = *(void **)((u8 *)v27 + 4);
             if (v28 != 0) {
                 if (*(void **)((u8 *)v28 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v28 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v28 + 0));
                 }
                 if (*(void **)((u8 *)v28 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v28 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v28 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v28 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v28, 1);
@@ -5092,10 +5092,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v29 = *(void **)((u8 *)v28 + 0);
             if (v29 != 0) {
                 if (*(void **)((u8 *)v29 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 0));
                 }
                 if (*(void **)((u8 *)v29 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v29 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v29, 1);
@@ -5103,10 +5103,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v29 = *(void **)((u8 *)v28 + 4);
             if (v29 != 0) {
                 if (*(void **)((u8 *)v29 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 0));
                 }
                 if (*(void **)((u8 *)v29 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v29 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v29, 1);
@@ -5120,10 +5120,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v29 = *(void **)((u8 *)v28 + 0);
             if (v29 != 0) {
                 if (*(void **)((u8 *)v29 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 0));
                 }
                 if (*(void **)((u8 *)v29 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v29 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v29, 1);
@@ -5131,10 +5131,10 @@ void fn_801FC038(void *arg0, void *arg1) {
             v29 = *(void **)((u8 *)v28 + 4);
             if (v29 != 0) {
                 if (*(void **)((u8 *)v29 + 0) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 0));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 0));
                 }
                 if (*(void **)((u8 *)v29 + 4) != 0) {
-                    fn_801FC038(arg0, *(void **)((u8 *)v29 + 4));
+                    Tree_Destroy(arg0, *(void **)((u8 *)v29 + 4));
                 }
                 fn_801FC434(fn_801FC438(arg0), (u8 *)v29 + 0xC);
                 fn_801FC408(fn_801FC42C(arg0), v29, 1);
