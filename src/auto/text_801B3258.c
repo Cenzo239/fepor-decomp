@@ -10798,7 +10798,7 @@ void *fn_801CDB74(void *arg0) {
     return (u8 *)arg0 + ((s32)*(s16 *)((u8 *)arg0 + 0x70) * 4) + 0x3C;
 }
 
-s16 fn_801CDC54(void *self, u8 flag) {
+s16 NameEntry_MoveCaretRight(void *self, u8 flag) {
     extern s16 lbl_80366EAA;
     extern u8 lbl_8027DE18[];
     void Ui_PlaySeCue(void *, s32);
@@ -10998,7 +10998,7 @@ void fn_801CE2DC(void *arg0) {
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
 void *fn_8013FF94(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *); void fn_80167190(void *,s32,f32,f32); void fn_8016758C(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
-void NameEntry_InsertChar(void *,u32); void fn_801CDC54(void *,s32); void fn_801CDD10(void *,s32);
+void NameEntry_InsertChar(void *,u32); void NameEntry_MoveCaretRight(void *,s32); void fn_801CDD10(void *,s32);
 void Ui_PlaySeCue(void *,s32); void fn_8000C188(void *);
 void fn_8013F748(void *,void *,void *); s16 *fn_8013F6B8(void *,void *,void *);
 extern u8 gUnitInfoPopup[],lbl_8027DE48[]; extern void *gPadInput; extern const s32 gUnitInfoPopupFlag;
@@ -11025,11 +11025,11 @@ fn_80167190(gUnitInfoPopup,((Obj *)c)->v15(),(f32)*(s16 *)&pos1,(f32)*((s16 *)&p
 t=M2C_FIELD(gPadInput,s32 *,4);
 btn=t&(M2C_FIELD(gPadInput,s32 *,8)^t);
 if((btn&0x100)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-NameEntry_InsertChar(b,unit);fn_801CDC54(b,0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
+NameEntry_InsertChar(b,unit);NameEntry_MoveCaretRight(b,0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
 } else if((btn&0x10000040)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 fn_801CDD10(b,0);
 } else if((btn&0x20000020)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-fn_801CDC54(b,0);
+NameEntry_MoveCaretRight(b,0);
 } else if((btn&0x1000)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 M2C_FIELD(a,s16 *,0x3c)=3;
 pos2=M2C_FIELD(c,u32 *,0x4c);
