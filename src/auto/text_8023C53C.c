@@ -6969,7 +6969,7 @@ void fn_80252564(void *arg0, u32 *arg1)
     *(u32 *)(voice + 0x220) |= 0x2;
 }
 
-void fn_80252668(void *arg0, u32 *arg1) {
+void Sound_SelectSource3(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x290, arg1, 0x200000, 8);
 }
 
