@@ -2072,7 +2072,7 @@ void fn_801B94DC(void *arg0)
 }
 
 #pragma cplusplus on
-extern "C" void fn_801B9500(void *arg0) {
+extern "C" void Ui_ReleaseUnitManageWidgets(void *arg0) {
     void Ui_RemoveChild(void *, void *);
     struct Obj {
         virtual void destroy(s32) = 0;
