@@ -1865,7 +1865,7 @@ void Xml_GetChildName(String *arg0, void *arg1) {
     fn_800C9A60(&tmp, -1);
 }
 
-void fn_800C8D58(void *arg0, void *arg1)
+void Xml_GetChildValue(void *arg0, void *arg1)
 {
     typedef struct { u32 a, b, c, d, e, f, g, h; } Block;
     u8 *p;
@@ -3106,7 +3106,7 @@ void fn_800CB90C(M2C_UNK *arg0, M2C_UNK *unused, s32 arg2) {
 extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     u16 fn_8005C144(void);
     void *fn_800C42D8(u32);
-    void fn_800C8D58(char *, void *);
+    void Xml_GetChildValue(char *, void *);
     char *fn_800C8DCC(char *, void *, String *);
     void Xml_AdvanceChild(void *);
     void fn_800C8F70(void *, s32);
@@ -3233,7 +3233,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     buf = spA0;
     for (i = 0; i < count; i++) {
         Xml_AdvanceChild(obj);
-        fn_800C8D58(buf, obj);
+        Xml_GetChildValue(buf, obj);
         fn_800C96F8(&sp94, buf, strlen(buf));
 
         sp10.cap = 0;
@@ -3417,7 +3417,7 @@ else {obj=*(void **)((u8 *)lbl_80330EAC+0xCB4);fn_800C96F8(&str80,(char *)obj,st
 void fn_800CCB9C(u8 *self, char *arg1) {
 void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91EC(void *,void *,void *);
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
-void Xml_GetChildName(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
+void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
 extern char lbl_802704F8[];
@@ -3441,7 +3441,7 @@ fn_800C908C(f,&sp3C,&sp118);fn_800C9A60(&sp3C,-1);
 buffer=spD8;
 for(;Xml_AdvanceChild(f)!=0;){
 Xml_GetChildName(&sp30,f);fn_800C9758(&sp6C,&sp30,0,-1);fn_800C9A60(&sp30,-1);
-fn_800C8D58(spD8,f);fn_800C96F8(&sp60,buffer,strlen(buffer));
+Xml_GetChildValue(spD8,f);fn_800C96F8(&sp60,buffer,strlen(buffer));
 fn_800CA18C((void *)(arg0+0x1C8),M2C_FIELD(arg0,s32 *,0x1CC)*12+M2C_FIELD(arg0,u8 **,0x1D0),1,&sp60);
 }
 fn_800C9ABC(&sp24,lbl_802704F8+0x1EB,&sp8);fn_8023440C(&sp98,lbl_802704F8+0x365,32);spB8=sp98;
@@ -3449,7 +3449,7 @@ fn_800C908C(f,&sp24,&spB8);fn_800C9A60(&sp24,-1);
 arg1=sp78;
 while(Xml_AdvanceChild(f)){
 Xml_GetChildName(&sp18,f);fn_800C9758(&sp6C,&sp18,0,-1);fn_800C9A60(&sp18,-1);
-fn_800C8D58(sp78,f);fn_800C96F8(&sp60,arg1,strlen(arg1));
+Xml_GetChildValue(sp78,f);fn_800C96F8(&sp60,arg1,strlen(arg1));
 fn_800CA18C((void *)(arg0+0x1D4),M2C_FIELD(arg0,s32 *,0x1D8)*12+M2C_FIELD(arg0,u8 **,0x1DC),1,&sp60);
 }
 fn_800C9120(f,1);fn_800C9A60(&sp60,-1);fn_800C9A60(&sp6C,-1);
@@ -7433,7 +7433,7 @@ void fn_800D83B0(void* param_1) {
 void fn_800D85CC(s32 self, char *arg1) {
 void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91EC(void *,void *,void *);
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
-void Xml_GetChildName(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
+void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
 void fn_8011C674(void *,void *); void fn_8011C64C(void *,void *); void *fn_8011C9EC(void *); void fn_8011CA3C(void *,void *,void *);
@@ -7454,7 +7454,7 @@ fn_800C908C(f,&sp38,&sp108);fn_800C9A60(&sp38,-1);
 path=spC8;
 while(Xml_AdvanceChild(f)){
 Xml_GetChildName(&sp2C,f);fn_800C9758(&sp5C,&sp2C,0,-1);fn_800C9A60(&sp2C,-1);
-fn_800C8D58(spC8,f);fn_800C96F8(&sp50,path,strlen(path));
+Xml_GetChildValue(spC8,f);fn_800C96F8(&sp50,path,strlen(path));
 fn_8011C674(lbl_80367A50,&sp5C);
 fn_800CA18C((void *)(arg0+0x4C),M2C_FIELD(arg0,u8 **,0x54)+M2C_FIELD(arg0,s32 *,0x50)*12,1,&sp50);
 }
@@ -7464,7 +7464,7 @@ fn_800C908C(f,&sp20,&spA8);fn_800C9A60(&sp20,-1);
 path=sp68;
 while(Xml_AdvanceChild(f)){
 Xml_GetChildName(&sp14,f);fn_800C9758(&sp5C,&sp14,0,-1);fn_800C9A60(&sp14,-1);
-fn_800C8D58(sp68,f);fn_800C96F8(&sp50,path,strlen(path));
+Xml_GetChildValue(sp68,f);fn_800C96F8(&sp50,path,strlen(path));
 fn_8011C64C(lbl_80367A50,&sp5C);
 fn_800CA18C((void *)(arg0+0x58),M2C_FIELD(arg0,u8 **,0x60)+M2C_FIELD(arg0,s32 *,0x5C)*12,1,&sp50);
 }
@@ -9397,7 +9397,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     s32 fn_8006CE14(void);
     s32 fn_8006D948(void);
     void Xml_GetChildName(String *, void *);
-    void fn_800C8D58(char *, void *);
+    void Xml_GetChildValue(char *, void *);
     char *fn_800C8DCC(char *, void *, String *);
     u8 Xml_AdvanceChild(void *);
     char *fn_800C93EC(String *);
@@ -9580,7 +9580,7 @@ loop_body:
     Xml_GetChildName(&str6C, iter);
     fn_800C9758(&str108, &str6C, 0, -1);
     fn_800C9A60(&str6C, -1);
-    fn_800C8D58(buf17C, iter);
+    Xml_GetChildValue(buf17C, iter);
     fn_800CB90C(&str60, &str144, buf17C);
     fn_800CB90C(&str54, &str60, strBase + 1);
     fn_800C9758(&str120, &str54, 0, -1);
@@ -9632,7 +9632,7 @@ loop_body:
         } else {
             fn_800056CC(lbl_80271860 + 0x2F, fn_800C93EC(&str120));
         }
-        fn_800C8D58(buf15C, iter);
+        Xml_GetChildValue(buf15C, iter);
         name = (char *)((u8 *)fn_800D59CC((u8 *)self + 0x68, &str108) + 0xC);
         fn_800C96F8((String *)name, buf15C, strlen(buf15C));
     }

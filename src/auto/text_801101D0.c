@@ -876,7 +876,7 @@ fail:
 void Actor_LoadXml(void *arg0, void *arg1) {
     void *fn_800C42D8(s32);
     void Xml_GetChildName(String *, void *);
-    void fn_800C8D58(char *, void *);
+    void Xml_GetChildValue(char *, void *);
     void fn_800C8DCC(void *, void *, String *);
     void Xml_AdvanceChild(void *);
     void fn_800C9120(void *, s32);
@@ -987,7 +987,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
         Xml_GetChildName(&sp100, xml);
         fn_800C9758(&str130, &sp100, 0, -1);
         fn_800C9A60(&sp100, -1);
-        fn_800C8D58(sp31C, xml);
+        Xml_GetChildValue(sp31C, xml);
         fn_800C96F8(&str124, nameBuf, strlen(nameBuf));
         node = (String *)((u8 *)fn_800D59CC((u8 *)self + 0x1BC, &str130) + 0xC);
         fn_800C9758(node, &str124, 0, -1);

@@ -2780,7 +2780,7 @@ void fn_801EFDC8(void *arg0) {
     u8 Xml_AdvanceChild(void *);
     void Xml_GetChildName(String *, void *);
     void fn_800C9758(String *, String *, s32, s32);
-    void fn_800C8D58(char *, void *);
+    void Xml_GetChildValue(char *, void *);
     void fn_800C96F8(String *, char *, s32);
     s32 fn_800D5948(String *, char *, s32, s32);
     void fn_800D5D04(String *, String *, s32, s32);
@@ -2889,7 +2889,7 @@ void fn_801EFDC8(void *arg0) {
         Xml_GetChildName(&spE0, file);
         fn_800C9758(&str16c, &spE0, 0, -1);
         fn_800C9A60(&spE0, -1);
-        fn_800C8D58(p204, file);
+        Xml_GetChildValue(p204, file);
         fn_800C96F8(&str160, p204, strlen(p204));
         pos = fn_800D5948(&str160, strBase + 0x24E, 0, strlen(strBase + 0x24E));
         if ((u32)(pos + 0x10000) != 0xFFFFFFFFU) {
@@ -2977,11 +2977,11 @@ void fn_801EFDC8(void *arg0) {
                 fn_800C9758(&str154, &sp80, 0, -1);
                 fn_800C9A60(&sp80, -1);
                 if (fn_800C9400(&str154, 0, str154.data, strBase + 0x255, strlen(strBase + 0x255)) == 0) {
-                    fn_800C8D58(buf1E4, file2);
+                    Xml_GetChildValue(buf1E4, file2);
                     fn_800C96F8(field44, buf1E4, strlen(buf1E4));
                 }
                 if (fn_800C9400(&str154, 0, str154.data, strBase + 0x25B, strlen(strBase + 0x25B)) == 0) {
-                    fn_800C8D58(buf1C4, file2);
+                    Xml_GetChildValue(buf1C4, file2);
                     fn_800C96F8((String *)((u8 *)base + 0x2C), buf1C4, strlen(buf1C4));
                     break;
                 }
@@ -3017,7 +3017,7 @@ void fn_801EFDC8(void *arg0) {
             Xml_GetChildName(&sp44, file2);
             fn_800C9758(&str130, &sp44, 0, -1);
             fn_800C9A60(&sp44, -1);
-            fn_800C8D58(buf184, file2);
+            Xml_GetChildValue(buf184, file2);
             fn_800C96F8(&str124, buf184, strlen(buf184));
             fn_800C9758((String *)((u8 *)fn_800D59CC(tree, &str130) + 0xC), &str124, 0, -1);
         }
