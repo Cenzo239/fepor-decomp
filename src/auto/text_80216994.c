@@ -109,7 +109,7 @@ void fn_80216994(void) {
 
 }
 
-void fn_80216BBC(s32 arg0) {
+void __CARDTxHandler(s32 arg0) {
     s32 EXIDeselect(s32, s32);
     M2C_UNK EXIUnlock(s32);
     s32 fn_80239488(s32);
@@ -222,7 +222,7 @@ s32 __CARDRetry(s32 chan) {
     void OSSetAlarm(void *, s64, void *);
     s32 EXIImmEx(s32, void *, s32, s32);
     void __CARDTimeoutHandler();
-    void fn_80216BBC();
+    void __CARDTxHandler();
     u8 *card;
     s32 size;
 
@@ -269,7 +269,7 @@ s32 __CARDRetry(s32 chan) {
     } else {
         size = *(u16 *)(card + 0xA);
     }
-    if (EXIDma(chan, *(s32 *)(card + 0xB4), size, *(s32 *)(card + 0xA4), fn_80216BBC) == 0) {
+    if (EXIDma(chan, *(s32 *)(card + 0xB4), size, *(s32 *)(card + 0xA4), __CARDTxHandler) == 0) {
         EXIDeselect(chan);
         EXIUnlock(chan);
         return -3;
@@ -385,7 +385,7 @@ s32 fn_802176AC(s32 chan, void *callback) {
     extern void EXIDeselect(s32);
     extern void EXIUnlock(s32);
     s32 EXIImmEx(s32, void *, s32, s32);
-    void fn_80216BBC(s32 arg0);
+    void __CARDTxHandler(s32 arg0);
     u8 *card;
     s32 result;
 
@@ -405,7 +405,7 @@ s32 fn_802176AC(s32 chan, void *callback) {
     } else if (result >= 0) {
         if (!EXIImmEx(chan, card + 0x94, *(s32 *)(card + 0xA0), 1) ||
             !EXIImmEx(chan, *(u8 **)(card + 0x80) + 0x200, *(s32 *)(card + 0x14), 1) ||
-            !EXIDma(chan, *(s32 *)(card + 0xB4), 0x200, *(s32 *)(card + 0xA4), fn_80216BBC)) {
+            !EXIDma(chan, *(s32 *)(card + 0xB4), 0x200, *(s32 *)(card + 0xA4), __CARDTxHandler)) {
             *(void **)(card + 0xC8) = 0;
             EXIDeselect(chan);
             EXIUnlock(chan);
