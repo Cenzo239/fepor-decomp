@@ -6513,7 +6513,7 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     extern f32 gSoundVolCurve[];
     extern s32 gSoundTimeCurve[];
     extern u8 gSoundLevelCurve[];
-    extern f32 lbl_8036C260;
+    extern f32 gSoundVolIndexScale;
     struct {
         s32 unk0;
         s32 unk4;
@@ -6527,7 +6527,7 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     vol = gSoundVolCurve[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk0 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk4 = gSoundTimeCurve[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
-    params.unk8 = 0xC1 - gSoundLevelCurve[__cvt_fp2unsigned(lbl_8036C260 * vol)];
+    params.unk8 = 0xC1 - gSoundLevelCurve[__cvt_fp2unsigned(gSoundVolIndexScale * vol)];
     params.unkA = gSoundTimeCurve[Sound_GetChanParam(arg1[1], M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unkC = 0x80000000;
     params.unk10 = 0x80000000;
