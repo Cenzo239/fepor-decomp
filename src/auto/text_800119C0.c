@@ -226,9 +226,8 @@ s32 fn_80013880(void) {
     u8 *context;
     u32 *stack;
     s32 fn_80011EDC();
-
     lbl_80367180 = lbl_803671A4;
-    fn_80011EDC();
+    fn_80011EDC(lbl_80367180);
     context = (u8 *)lbl_80367180;
     stack = *(u32 **)(context + 0x18) - 1;
     *(u32 **)(context + 0x18) = stack;
@@ -315,7 +314,7 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     next = index + 1;
     base = lbl_803671A0;
     lbl_8036719E = next;
-    entry = (index << 4) + base;
+    entry = base + (index * 16);
     if (next > limit) {
         lbl_803671A8 = 9;
         return 0;
