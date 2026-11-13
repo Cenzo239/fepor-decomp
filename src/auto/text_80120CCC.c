@@ -1206,14 +1206,14 @@ void fn_80122E34(void *arg0, u32 arg1) {
 
 extern u16 lbl_8028E090[];
 void *fn_80122E80(void *arg0, s16 arg1) {
-    void fn_800C9A60(void *, s32);
+    void String_Destroy(void *, s32);
     void fn_800DF724(void *, s32);
     void fn_800C428C(void *);
     extern void *lbl_802902E8[];
 
     if (arg0 != NULL) {
         M2C_FIELD(arg0, void ***, 0x40) = lbl_802902E8;
-        fn_800C9A60((s8 *)arg0 + 0x54, -1);
+        String_Destroy((s8 *)arg0 + 0x54, -1);
         if (arg0 != NULL) {
             *(void **)((char *)arg0 + 0x40) = (void *)lbl_8028E090;
             fn_800DF724(arg0, 0);
@@ -1400,7 +1400,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     void String_Init(void *, void *, void *);
     void fn_800C8DCC(void *, void *, void *);
     void fn_800C96F8(void *, void *, u32);
-    void fn_800C9A60(void *, s32);
+    void String_Destroy(void *, s32);
     s32 fn_800C9400(void *, u32, u32, char *, u32);
     s32 fn_800E7FB4(void *, void *);
     u32 strlen(const char *);
@@ -1483,18 +1483,18 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     fn_800C8DCC(spC0, path, &sp3C);
     buf = (Obj *)spC0;
     fn_800C96F8(&self->str54, buf, strlen((char *)buf));
-    fn_800C9A60(&sp3C, -1);
+    String_Destroy(&sp3C, -1);
 
     String_Init(&sp30, lbl_80274DB0 + 0x1A, &sp10);
     fn_800C8DCC(spA0, path, &sp30);
     buf = (Obj *)spA0;
     fn_800C96F8(&sp48, buf, strlen((char *)buf));
-    fn_800C9A60(&sp30, -1);
+    String_Destroy(&sp30, -1);
 
     String_Init(&sp24, lbl_80274DB0 + 0x1F, &spC);
     fn_800C8DCC(sp80, path, &sp24);
     self->unk68 = *(s32 *)sp80;
-    fn_800C9A60(&sp24, -1);
+    String_Destroy(&sp24, -1);
 
     t1 = lbl_8036A2F8;
     self->unk6C = t1;
@@ -1512,7 +1512,7 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
     String_Init(&sp18, lbl_80274DB0 + 0x23, &sp8);
     fn_800C8DCC(sp60, path, &sp18);
     self->unk94 = *(s32 *)sp60;
-    fn_800C9A60(&sp18, -1);
+    String_Destroy(&sp18, -1);
 
     buf = (Obj *)(lbl_80274DB0 + 0x2B);
     if (fn_800C9400(&sp48, 0, sp48.size, (char *)buf, strlen((char *)buf)) == 0) {
@@ -1521,8 +1521,8 @@ void *fn_801236CC(void *arg0, void *arg1, void *arg2) {
         self->unk64 = 0;
     }
     self->unk60 = fn_800E7FB4(saved, &self->str54);
-    fn_800C9A60(&sp48, -1);
-    fn_800C9A60(&sp54, -1);
+    String_Destroy(&sp48, -1);
+    String_Destroy(&sp54, -1);
     return self;
 }
 

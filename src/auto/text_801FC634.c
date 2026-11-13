@@ -2133,7 +2133,7 @@ extern "C" void fn_80201778(void *arg0) {
     s32 fn_800102BC(s32, f32);
     char *fn_800C93EC(void *);
     void fn_800C9874(void *, u32, char);
-    void fn_800C9A60(void *, s16);
+    void String_Destroy(void *, s16);
     u8 *fn_80104970(u8 *);
     u8 *fn_8013CD90(void *);
     extern u8 lbl_802820B8[];
@@ -2241,13 +2241,13 @@ extern "C" void fn_80201778(void *arg0) {
             }
             if (*var_r29 == 0xA) {
                 var_f30 += (f32)fn_800102BC(-1, lbl_8036BBD8);
-                fn_800C9A60(&sp8, -1);
+                String_Destroy(&sp8, -1);
                 var_r29++;
             } else if ((s8)*var_r29 == 0) {
-                fn_800C9A60(&sp8, -1);
+                String_Destroy(&sp8, -1);
                 break;
             } else {
-                fn_800C9A60(&sp8, -1);
+                String_Destroy(&sp8, -1);
                 var_r29++;
             }
         }

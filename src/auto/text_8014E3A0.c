@@ -891,14 +891,14 @@ extern "C" void fn_80151330(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 #pragma cplusplus reset
 
 void fn_801513A0(void *arg0) {
-    M2C_UNK fn_800C9A60(M2C_UNK *, M2C_UNK);
+    M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_800C9B6C(M2C_UNK *);
     M2C_UNK fn_800DC518(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK sp8;
 
     fn_800C9B6C(&sp8);
     fn_800DC518(M2C_FIELD(arg0, s32 *, 0x424), &sp8, 0);
-    fn_800C9A60(&sp8, -1);
+    String_Destroy(&sp8, -1);
 }
 
 extern u16 lbl_80367BA0;
@@ -1180,7 +1180,7 @@ typedef struct Vec {
     f32 x, y, z;
 } Vec;
 extern "C" M2C_UNK String_Init(M2C_UNK *, const char *, M2C_UNK *);
-extern "C" M2C_UNK fn_800C9A60(M2C_UNK *, M2C_UNK);
+extern "C" M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
 extern "C" void fn_800DBE34(void *, s32, M2C_UNK *, s32, M2C_UNK *);
 extern "C" char *fn_800C93EC(void *);
 extern "C" void *fn_80053C30(char *, s32);
@@ -1214,8 +1214,8 @@ extern "C" void *fn_80151D50(void *arg0, s32 arg1, s32 arg2, void *arg3, f32 *ar
     String_Init(name, "Effect", &alloc1);
     String_Init(kind, "effect", &alloc2);
     fn_800DBE34(arg0, arg1, name, arg2, kind);
-    fn_800C9A60(kind, -1);
-    fn_800C9A60(name, -1);
+    String_Destroy(kind, -1);
+    String_Destroy(name, -1);
     M2C_FIELD(arg0, void **, 0x40) = lbl_80293A88;
     M2C_FIELD(arg0, f32 *, 0xBC) = 0.0f;
     M2C_FIELD(arg0, f32 *, 0xB8) = 0.0f;
