@@ -2986,7 +2986,7 @@ void fn_800B5708(void) {
     void fn_800B983C(void);
     void fn_800B97B8(void);
     void fn_800B9724(void);
-    void fn_800B9630(void);
+    void ScriptCmd_PlayEffect(void);
     void fn_800B95B4(void);
     void fn_800B9548(void);
     void fn_800B94CC(void);
@@ -3161,7 +3161,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x300, fn_800B983C, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x30D, fn_800B97B8, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x31E, fn_800B9724, 3);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x32F, fn_800B9630, 6);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x32F, ScriptCmd_PlayEffect, 6);
     Script_RegisterCommand(lbl_8026ECB8 + 0x33B, fn_800B95B4, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x348, fn_800B9548, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x358, fn_800B94CC, 2);
@@ -5081,7 +5081,7 @@ s32 fn_800B95B4(u32 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_800B9630(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
+s32 ScriptCmd_PlayEffect(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u32 arg5) {
     void *ScriptObj_FindByName(u32);
     void fn_801D029C(void *, s32, s32, s32, void *, f32);
     extern s32 gUiInputFlags;
