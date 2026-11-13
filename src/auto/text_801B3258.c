@@ -758,7 +758,7 @@ void Script_RegisterWinCondCommands(void) {
     void ScriptCmd_PlayerEscapeCheck(void);
     void ScriptCmd_PlayerEscapeCount(void);
     void ScriptCmd_ShooterBulletCheck(void);
-    void fn_801B7094(void);
+    void ScriptCmd_GetDiedPlayerCount(void);
 
     Script_RegisterCommand(gWinCondCmdNames + 0xCE, ScriptCmd_AchieveSet, 2);
     Script_RegisterCommand(gWinCondCmdNames + 0xD9, ScriptCmd_PlayerDeadCheck, 0);
@@ -770,10 +770,10 @@ void Script_RegisterWinCondCommands(void) {
     Script_RegisterCommand(gWinCondCmdNames + 0x141, ScriptCmd_PlayerEscapeCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x153, ScriptCmd_PlayerEscapeCount, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x165, ScriptCmd_ShooterBulletCheck, 0);
-    Script_RegisterCommand(gWinCondCmdNames + 0x178, fn_801B7094, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x178, ScriptCmd_GetDiedPlayerCount, 0);
 }
 
-s32 fn_801B7094(void) {
+s32 ScriptCmd_GetDiedPlayerCount(void) {
     extern u16 gUnitLists[50];
     s32 count;
     s32 flags;
