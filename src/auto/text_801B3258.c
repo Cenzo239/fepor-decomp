@@ -3982,7 +3982,7 @@ extern "C" void fn_801BD28C(void *arg0) {
 
 #pragma cplusplus reset
 
-void fn_801BD37C(void *arg0) {
+void Ui_InitUnitHirePanel(void *arg0) {
     void *Heap_Alloc(u32);
     void Ui_SetWidgetText(void *, void *);
     void Ui_AddChild(void *, void *);
@@ -11912,8 +11912,7 @@ void fn_801D0444(u8 *arg0, s32 arg1) {
         return;
     }
     arg0 += arg1 * 2;
-    arg1 = 0;
-    *(s16 *)(arg0 + 0xe) = arg1;
+    *(s16 *)(arg0 + 0xe) = 0;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
