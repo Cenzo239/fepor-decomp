@@ -3747,20 +3747,21 @@ u8 fn_8016B000(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
-    M2C_UNK Prim2D_SetText(s32);
-    M2C_UNK Prim2D_SetTextScale(M2C_UNK, f32);
-    M2C_UNK Prim2D_SetColorPacked(s32 *);
-    M2C_UNK Prim2D_SetPos(f32, f32);
-    M2C_UNK Prim2D_EndPrim();
-    M2C_UNK Prim2D_AddPrim(M2C_UNK);
-    M2C_UNK Prim2D_AddZ(f32);
-    M2C_UNK Prim2D_PrepareTex();
-    M2C_UNK Prim2D_Begin();
-    s32 Text_MeasureHeight(M2C_UNK, f32);
-    s32 Text_MeasureWidth(s32, M2C_UNK, f32);
-    M2C_UNK Ui_DrawSlotFrame(s32, s32, u8, M2C_UNK);
-    s32 *Ui_GetColor(M2C_UNK);
+/* Draw a centered menu-slot label and its selection frame. */
+extern "C" void Ui_DrawMenuSlot(void *self, void *unused, void *slot) {
+    void Prim2D_SetText(s32);
+    void Prim2D_SetTextScale(s32, f32);
+    void Prim2D_SetColorPacked(s32 *);
+    void Prim2D_SetPos(f32, f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    s32 Text_MeasureHeight(s32, f32);
+    s32 Text_MeasureWidth(s32, s32, f32);
+    void Ui_DrawSlotFrame(s32, s32, u8, s32);
+    s32 *Ui_GetColor(s32);
     extern f32 lbl_8036A9CC;
     extern f32 gUiMenuSlotTextZ;
     extern f32 gUiMenuSlotTextScale;
@@ -3770,7 +3771,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v1() = 0;
         virtual void v2() = 0;
         virtual void v3() = 0;
-        virtual s32 v4(void *) = 0;
+        virtual s32 getLabel(void *) = 0;
         virtual void v5() = 0;
         virtual void v6() = 0;
         virtual void v7() = 0;
@@ -3783,51 +3784,51 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
         virtual void v14() = 0;
         virtual void v15() = 0;
         virtual void v16() = 0;
-        virtual void v17() = 0;
+        virtual void draw() = 0;
     };
-    s32 temp_r31;
-    s32 temp_r30;
-    void *var_r29;
-    s32 spC;
-    s32 sp8;
-    f32 temp_f31;
-    f32 temp_f30;
-    void *temp_r3;
-    s32 temp_virt;
-    void *temp_r3_2;
-    s32 temp_virt2;
+    s32 padX;
+    s32 padY;
+    void *item;
+    s32 colorSel;
+    s32 colorDim;
+    f32 x;
+    f32 y;
+    void *labelObj;
+    s32 label;
+    void *labelObj2;
+    s32 label2;
 
-    var_r29 = arg2;
-    ((Obj *)arg0)->v17();
+    item = slot;
+    ((Obj *)self)->draw();
     Prim2D_Begin();
     Prim2D_AddZ(gUiMenuSlotTextZ);
     Prim2D_PrepareTex();
-    temp_r3 = M2C_FIELD(var_r29, void **, 0x34);
-    temp_virt = ((Obj *)temp_r3)->v4(var_r29);
-    temp_r31 = (0x9A - Text_MeasureWidth(temp_virt, -1, lbl_8036A9CC)) >> 1;
-    temp_r30 = (0x24 - Text_MeasureHeight(-1, lbl_8036A9CC)) >> 1;
-    temp_f31 = (f32)M2C_FIELD(var_r29, s16 *, 0x30);
-    temp_f30 = (f32)M2C_FIELD(var_r29, s16 *, 0x32);
+    labelObj = M2C_FIELD(item, void **, 0x34);
+    label = ((Obj *)labelObj)->getLabel(item);
+    padX = (0x9A - Text_MeasureWidth(label, -1, lbl_8036A9CC)) >> 1;
+    padY = (0x24 - Text_MeasureHeight(-1, lbl_8036A9CC)) >> 1;
+    x = (f32)M2C_FIELD(item, s16 *, 0x30);
+    y = (f32)M2C_FIELD(item, s16 *, 0x32);
     Prim2D_AddPrim(6);
-    Prim2D_SetPos(temp_f31 + (f32)temp_r31, temp_f30 + (f32)temp_r30);
-    if ((u8)M2C_FIELD(var_r29, u8 *, 0x39) == 2) {
-        spC = *Ui_GetColor(0);
-        Prim2D_SetColorPacked(&spC);
-    } else if ((u8)M2C_FIELD(arg0, u8 *, 0x4) != 0) {
-        sp8 = *Ui_GetColor(0x13);
-        Prim2D_SetColorPacked(&sp8);
+    Prim2D_SetPos(x + (f32)padX, y + (f32)padY);
+    if ((u8)M2C_FIELD(item, u8 *, 0x39) == 2) {
+        colorSel = *Ui_GetColor(0);
+        Prim2D_SetColorPacked(&colorSel);
+    } else if ((u8)M2C_FIELD(self, u8 *, 0x4) != 0) {
+        colorDim = *Ui_GetColor(0x13);
+        Prim2D_SetColorPacked(&colorDim);
         Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     } else {
         Prim2D_SetTextScale(1, gUiMenuSlotTextScale);
     }
-    temp_r3_2 = M2C_FIELD(var_r29, void **, 0x34);
-    temp_virt2 = ((Obj *)temp_r3_2)->v4(var_r29);
-    Prim2D_SetText(temp_virt2);
+    labelObj2 = M2C_FIELD(item, void **, 0x34);
+    label2 = ((Obj *)labelObj2)->getLabel(item);
+    Prim2D_SetText(label2);
     Prim2D_EndPrim();
     Prim2D_Begin();
     Prim2D_AddZ(gUiMenuSlotFrameZ);
     Prim2D_PrepareTex();
-    Ui_DrawSlotFrame((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
+    Ui_DrawSlotFrame((s32)x, (s32)y, M2C_FIELD(item, u8 *, 0x38), 0x10);
 }
 #pragma cplusplus reset
 s32 fn_8016B25C(void *arg0, void *arg1, void *arg2) {
