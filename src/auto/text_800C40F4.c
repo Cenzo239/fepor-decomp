@@ -19784,7 +19784,7 @@ void fn_800F9B58(void *arg0) {
 }
 
 void fn_800F9DAC(void *arg0) {
-    u8 fn_8010207C(s32, s16 *, s16 *);
+    u8 Ai_FindLowestCostAllyTile(s32, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 gAiState[544];
 extern s32 lbl_803678F4;
@@ -19794,7 +19794,7 @@ extern void *lbl_803678F8;
     s16 y;
 
     if (!(gAiState[1] & 2) && !(M2C_FIELD(arg0, u32 *, 0x254) & 0x03000000) &&
-        fn_8010207C(M2C_FIELD(work, s32 *, 0x14), &x, &y) != 0) {
+        Ai_FindLowestCostAllyTile(M2C_FIELD(work, s32 *, 0x14), &x, &y) != 0) {
         Ai_SetUnitMoveTo(arg0, x, y, 1, M2C_FIELD(gAiState, u16 *, 4), 1, 0, -1);
     }
     if (lbl_803678F4 == 0) {
@@ -23311,7 +23311,7 @@ for (; var_r17 <= var_r19; var_r17++) {
     }
 }
 #pragma opt_strength_reduction reset
-s32 fn_8010207C(s32 arg0, s16 *outX, s16 *outY) {
+s32 Ai_FindLowestCostAllyTile(s32 arg0, s16 *outX, s16 *outY) {
     void fn_800FE398(s32, s32, s32);
     u32 fn_80019E48(s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
