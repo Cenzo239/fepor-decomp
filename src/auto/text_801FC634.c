@@ -130,7 +130,8 @@ void fn_801FC95C(void) {
     FileCache_ReleaseSlot(&gFallingParticleTex);
 }
 
-void FallingParticle_CreateEx(u32 arg0, f32 farg0)
+/* Create an extended falling-particle FX process (dual sprites) and load its texture. */
+void FallingParticle_CreateEx(u32 parent, f32 scale)
 {
     void *Process_Create(void *, u32);
     void fn_8006EEFC(void *, void *);
@@ -140,37 +141,37 @@ void FallingParticle_CreateEx(u32 arg0, f32 farg0)
     extern f32 gFloatZero;
     extern f32 lbl_8036BB00;
     u8 fe;
-    void *obj;
+    void *proc;
     f32 f;
 
-    f = farg0;
-    if (arg0 == 0) {
-        arg0 = 3;
+    f = scale;
+    if (parent == 0) {
+        parent = 3;
     }
-    obj = Process_Create(gFallingParticleExProc, arg0);
+    proc = Process_Create(gFallingParticleExProc, parent);
     if (f <= gFloatZero) {
         f = lbl_8036BB00;
     }
-    *(f32 *)((u8 *)obj + 0x48) = f;
+    *(f32 *)((u8 *)proc + 0x48) = f;
     fe = 0xfe;
-    *(s8 *)((u8 *)obj + 0x34) = -3;
-    *(s8 *)((u8 *)obj + 0x35) = -1;
-    *(u8 *)((u8 *)obj + 0x36) = fe;
-    *(u8 *)((u8 *)obj + 0x37) = fe;
-    *(u8 *)((u8 *)obj + 0x38) = fe;
-    *(u8 *)((u8 *)obj + 0x39) = 0x5a;
-    *(u8 *)((u8 *)obj + 0x3a) = 1;
-    *(s16 *)((u8 *)obj + 0x32) = 0;
-    *(s16 *)((u8 *)obj + 0x30) = 0;
-    *(s8 *)((u8 *)obj + 0x40) = -6;
-    *(s8 *)((u8 *)obj + 0x41) = -2;
-    *(u8 *)((u8 *)obj + 0x42) = 0x36;
-    *(u8 *)((u8 *)obj + 0x43) = 0x3f;
-    *(u8 *)((u8 *)obj + 0x44) = 0x55;
-    *(u8 *)((u8 *)obj + 0x45) = 1;
-    *(u8 *)((u8 *)obj + 0x46) = 2;
-    *(s16 *)((u8 *)obj + 0x3e) = 0;
-    *(s16 *)((u8 *)obj + 0x3c) = 0;
+    *(s8 *)((u8 *)proc + 0x34) = -3;
+    *(s8 *)((u8 *)proc + 0x35) = -1;
+    *(u8 *)((u8 *)proc + 0x36) = fe;
+    *(u8 *)((u8 *)proc + 0x37) = fe;
+    *(u8 *)((u8 *)proc + 0x38) = fe;
+    *(u8 *)((u8 *)proc + 0x39) = 0x5a;
+    *(u8 *)((u8 *)proc + 0x3a) = 1;
+    *(s16 *)((u8 *)proc + 0x32) = 0;
+    *(s16 *)((u8 *)proc + 0x30) = 0;
+    *(s8 *)((u8 *)proc + 0x40) = -6;
+    *(s8 *)((u8 *)proc + 0x41) = -2;
+    *(u8 *)((u8 *)proc + 0x42) = 0x36;
+    *(u8 *)((u8 *)proc + 0x43) = 0x3f;
+    *(u8 *)((u8 *)proc + 0x44) = 0x55;
+    *(u8 *)((u8 *)proc + 0x45) = 1;
+    *(u8 *)((u8 *)proc + 0x46) = 2;
+    *(s16 *)((u8 *)proc + 0x3e) = 0;
+    *(s16 *)((u8 *)proc + 0x3c) = 0;
     fn_8006EEFC(&gFallingParticleTex, lbl_80281EC8 + 0x23);
 }
 
