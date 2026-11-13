@@ -146,6 +146,7 @@ void *fn_8005AE68(void) {
 }
 
 void Game_PollSoftReset(void) {
+    /* Hold Start+X+B for 30 frames or release the reset switch to soft-reset. */
     void OSResetSystem(s32, s32, s32);
     u8 fn_80014E70(void);
     void fn_800B46D8(void);
@@ -163,9 +164,9 @@ void Game_PollSoftReset(void) {
     extern u8 gSoftResetRequested;
     extern s8 gSoftResetReqInited;
     extern u32 gGameFlags;
-    s32 temp_r0;
-    s32 var_r31;
-    u16 temp_r3;
+    s32 holdCount;
+    s32 resetCode;
+    u16 buttons;
 
     if (gSoftResetHoldInited == 0) {
         gSoftResetHoldCount = 0;
@@ -179,10 +180,10 @@ void Game_PollSoftReset(void) {
         gSoftResetRequested = 0;
         gSoftResetReqInited = 1;
     }
-    temp_r3 = **(u16 **)gPadInput;
-    temp_r0 = (temp_r3 == 0x1600) ? (gSoftResetHoldCount + 1) : 0;
-    gSoftResetHoldCount = temp_r0;
-    if (temp_r0 >= 0x1E) {
+    buttons = **(u16 **)gPadInput;
+    holdCount = (buttons == 0x1600) ? (gSoftResetHoldCount + 1) : 0;
+    gSoftResetHoldCount = holdCount;
+    if (holdCount >= 0x1E) {
         gSoftResetRequested = 1;
     }
     if (gResetSwitchWasHeld != 0 && fn_80208D18() == 0) {
@@ -198,27 +199,27 @@ void Game_PollSoftReset(void) {
         VIWaitForRetrace();
         VIWaitForRetrace();
         VIWaitForRetrace();
-        var_r31 = 0;
+        resetCode = 0;
         if (gGameFlags & 0x90000) {
             if (!(gGameFlags & 0x10)) {
-                var_r31 |= 2;
+                resetCode |= 2;
             }
             if (gGameFlags & 0x40) {
-                var_r31 |= 1;
+                resetCode |= 1;
             }
         } else if (gGameFlags & 0x60000) {
             if (!(gGameFlags & 0x10)) {
-                var_r31 |= 0x20;
+                resetCode |= 0x20;
             }
             if (gGameFlags & 0x100) {
-                var_r31 |= 0x10;
+                resetCode |= 0x10;
             }
         }
         if (fn_80014E70() != 0) {
-            var_r31 |= 0x100;
+            resetCode |= 0x100;
             fn_800B46D8();
         }
-        OSResetSystem(0, var_r31, 0);
+        OSResetSystem(0, resetCode, 0);
         while (1) {}
     }
 }
