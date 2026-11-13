@@ -2180,7 +2180,7 @@ void fn_8018A6F4(void *arg0) {
     void fn_8004FC70(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuFlag_script[];
-    extern u8 lbl_80295A60[];
+    extern u8 E_MuFoot_script[];
     u8 sp40[0x34];
     u8 sp8[0x38];
     void *self;
@@ -2208,11 +2208,11 @@ void fn_8018A6F4(void *arg0) {
     obj2 = *(void **)((u8 *)self + 0x30);
     var2 = self;
     *(void **)(sp8 + 0x30) = obj2;
-    fn_8000A388(lbl_80295A60, MuFade_UnlinkSame, sp8);
+    fn_8000A388(E_MuFoot_script, MuFade_UnlinkSame, sp8);
     if (!self) {
         var2 = (void *)3;
     }
-    *(void **)((u8 *)Process_Create(lbl_80295A60, (u32)var2) + 0x30) = obj2;
+    *(void **)((u8 *)Process_Create(E_MuFoot_script, (u32)var2) + 0x30) = obj2;
 }
 
 #pragma global_optimizer reset
