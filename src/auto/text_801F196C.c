@@ -2385,7 +2385,7 @@ void fn_801F75D4(void* arg0) {
     *(u32*)((char*)arg0 + 0x198) = 0;
 }
 
-void fn_801F7750(void *arg0)
+void BattlePreview_InitCaption(void *arg0)
 {
     extern u8 gBattlePreviewStrings[];
     extern void strcpy(s32 arg0, s32 arg1);
