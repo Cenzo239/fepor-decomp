@@ -11215,7 +11215,7 @@ void fn_800E2218(void *arg0, s32 arg1) {
 void fn_800E2220(void *arg0) {
     M2C_UNK fn_800E2E70(s32, s32, u8, u8);
     M2C_UNK fn_800E320C(s32, s32, u8, u8);
-    M2C_UNK fn_800E3428(s32, s32, u8, u8);
+    M2C_UNK SpriteSheet_DrawFrame(s32, s32, u8, u8);
     extern f32 lbl_80369EC8;
     s32 sp10;
     s32 spC;
@@ -11235,7 +11235,7 @@ void fn_800E2220(void *arg0) {
             sp8 = (s32) M2C_FIELD(arg0, u8 *, 0x52);
             spC = temp_r5;
             sp10 = M2C_FIELD(arg0, s32 *, 0x78);
-            fn_800E3428(M2C_FIELD(arg0, s32 *, 0x64), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51));
+            SpriteSheet_DrawFrame(M2C_FIELD(arg0, s32 *, 0x64), M2C_FIELD(arg0, s32 *, 0x44), M2C_FIELD(arg0, u8 *, 0x50), M2C_FIELD(arg0, u8 *, 0x51));
             return;
         }
         sp8 = (s32) M2C_FIELD(arg0, u8 *, 0x52);
@@ -11526,7 +11526,7 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 }
 
 #pragma use_lmw_stmw on
-void fn_800E3428(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
+void SpriteSheet_DrawFrame(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
