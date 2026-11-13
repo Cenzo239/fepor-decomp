@@ -9168,11 +9168,11 @@ void fn_800C28CC(void) {
 void fn_800C28EC(void) {
     M2C_UNK fn_800138F4();
     M2C_UNK fn_80013A90(void *);
-    M2C_UNK fn_80013E24(void *);
+    M2C_UNK ScriptCmd_CmLoadScript(void *);
     M2C_UNK fn_800AA1CC();
     extern u8 lbl_80270000[];
     fn_800AA1CC();
-    fn_80013E24(lbl_80270000 + 0x26);
+    ScriptCmd_CmLoadScript(lbl_80270000 + 0x26);
     fn_80013A90(lbl_80270000 + 0x37);
     fn_800138F4();
 }

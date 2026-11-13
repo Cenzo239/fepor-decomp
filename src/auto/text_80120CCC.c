@@ -2955,7 +2955,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_Config_TutGet_sfx_vol(void);
     void ScriptCmd_Config_TutSet_sfx_vol(void);
     void ScriptCmd_GetTutorial(void);
-    void fn_80013E24(void);
+    void ScriptCmd_CmLoadScript(void);
     void fn_80013D4C(void);
     void fn_80013C78(void);
     void fn_80013BD4(void);
@@ -3003,7 +3003,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x246, ScriptCmd_Config_TutGet_sfx_vol, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x25C, ScriptCmd_Config_TutSet_sfx_vol, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x272, ScriptCmd_GetTutorial, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x27E, fn_80013E24, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x27E, ScriptCmd_CmLoadScript, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x28B, fn_80013D4C, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x298, fn_80013C78, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x2A6, fn_80013BD4, 0);
@@ -3293,7 +3293,7 @@ s32 fn_80126E80(void) {
 }
 
 s32 fn_80126EB0(s32 arg0, s32 arg1) {
-    void fn_80013E24(s32);
+    void ScriptCmd_CmLoadScript(s32);
     s8 fn_8005BA00(void);
     void fn_8005BA08(s8);
     void fn_8005C4C4(s32, s32);
@@ -3303,7 +3303,7 @@ s32 fn_80126EB0(s32 arg0, s32 arg1) {
 
     temp_r31 = fn_8005BA00();
     fn_8005BA08((s8)fn_800C4740());
-    fn_80013E24(arg0);
+    ScriptCmd_CmLoadScript(arg0);
     fn_8005C4C4(arg0, 4);
     fn_8003FCCC(arg1);
     fn_8005C4C4(arg1, 4);

@@ -1696,7 +1696,7 @@ void fn_80166258(void) {
 
     void *fn_80019F04(void);
     void fn_80231D94(void *, const char *, ...);
-    void fn_80013E24(void *);
+    void ScriptCmd_CmLoadScript(void *);
     void *fn_8003FCCC(void *);
     void fn_8005C4C4(void *, s32);
 
@@ -1711,7 +1711,7 @@ void fn_80166258(void) {
         *(u32 *)(obj + 8)
     );
 
-    fn_80013E24(buffer);
+    ScriptCmd_CmLoadScript(buffer);
 
     if (*(u32 *)(obj + 0x0C) == 0) {
         lbl_803680E8 = NULL;
