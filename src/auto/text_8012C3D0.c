@@ -2559,30 +2559,19 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
 }
 
 s32 fn_80130A40(void *arg0, void *arg1, s32 arg2) {
-    void *fn_80105C5C(void *, u8);
-    s32 count;
-    s32 i;
-    void *unit;
-    void *temp;
-
-    count = 0;
-    unit = *(void **)arg1;
-    switch (arg2) {
-    case 0:
-        return -(s32)*(u16 *)((u8 *)*(void **)((u8 *)unit + 0x188) + 0x5A);
-    case 1:
-        i = 0;
-        do {
-            temp = fn_80105C5C((u8 *)unit + 0x1BC, (u8)i);
-            if (temp != NULL && *(u8 *)((u8 *)temp + 0x19) != 0) {
-                count += 1;
-            }
-            i += 1;
-        } while (i < 0x62);
-        return count;
-    default:
-        return 0;
-    }
+ void *fn_80105C5C(void *, u8);
+ struct Unit { u8 pad[0x188]; void *data; u8 pad2[0x30]; u8 entries[1]; };
+ s32 count=0;
+ struct Unit *unit=*(struct Unit **)arg1;
+ s32 i;
+ void *temp;
+ switch(arg2) {
+ case 0: return -(s32)*(u16 *)((u8 *)unit->data+0x5A);
+ case 1:
+ for(i=0;i<0x62;i++) {temp=fn_80105C5C(unit->entries,(u8)i); if(temp && *((u8 *)temp+0x19)) count++;}
+ return count;
+ default: return 0;
+ }
 }
 
 void *fn_80130AE4(void *unused, s32 arg1) {
