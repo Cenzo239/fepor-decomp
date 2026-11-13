@@ -9953,7 +9953,7 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
     *(u32 *)((u8 *)arg0 + 0xC) = (u32)ptr;
 }
 
-void fn_800DF110(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
+void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     f32 fn_802032CC(f32 *, f32 *);
     extern f32 lbl_80369EA0;
     f32 sp14[3];
@@ -10072,8 +10072,8 @@ void fn_800DF430(void *arg0, void *arg1) {
 }
 
 void fn_800DF44C(f32 farg0, f32 farg1, f32 farg2) {
-    void fn_800DF110(f32, f32, f32, f32, f32, f32);
-    fn_800DF110(farg0, farg1, farg2, farg0, farg1, farg2);
+    void Vec3Interp_Set(f32, f32, f32, f32, f32, f32);
+    Vec3Interp_Set(farg0, farg1, farg2, farg0, farg1, farg2);
 }
 
 void fn_800DF478(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
