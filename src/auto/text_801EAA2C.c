@@ -2073,7 +2073,7 @@ void fn_801EE76C(void *arg0) {
     void String_Destroy(void *, s32);
     void Xml_GetNamedValue(void *, void *, void *);
     void Xml_Destroy(void *, s32);
-    void fn_801EFB2C(void *, char *);
+    void GActor_LoadByName(void *, char *);
     void fn_801EF6BC(void *);
     void GActor_LoadResources(void *, s32);
     void fn_800558D8(char *);
@@ -2243,7 +2243,7 @@ use30708:
     Xml_Destroy(r29, 1);
     String_Destroy(&sp24, -1);
 
-    fn_801EFB2C(*(void **)((char *)self + 0x48), path);
+    GActor_LoadByName(*(void **)((char *)self + 0x48), path);
     fn_801EF6BC(*(void **)((char *)self + 0x48));
     GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
     fn_800558D8(gGActorPathExt + 0x1AB);
@@ -2672,7 +2672,7 @@ void fn_801EF6BC(void *arg0) {
     String_Destroy(&spE4, -1);
 }
 
-void fn_801EFB2C(void *arg0, char *arg1) {
+void GActor_LoadByName(void *arg0, char *arg1) {
     void *fn_80040844(void *);
     s32 fn_8005C84C(void);
     void GActor_Finalize(void *);
