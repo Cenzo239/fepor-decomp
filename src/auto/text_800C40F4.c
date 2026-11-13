@@ -23880,7 +23880,8 @@ s32 TagWin_OnCancel(void) {
 
 void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
-    extern u8 TagWin_str[];
+    /* Construct the ztool TagWin window and wire its TagList/Ok/Cancel controls. */
+    extern char TagWin_str[];
     extern u8 TagWin_vtable[];
 
     extern void String_Init(void *, const char *, void *);
@@ -23892,81 +23893,81 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     extern void TagWin_OnOk(void);
     extern void TagWin_OnCancel(void);
 
-    u8 *obj;
-    u8 *strings;
+    u8 *self;
+    char *strings;
 
-    u8 temp0[12];
-    u8 temp1[12];
-    u8 temp2[12];
-    u8 temp3[12];
-    u8 temp4[12];
-    u8 temp5[12];
+    String pathBase;
+    String dbxPath;
+    String winName;
+    String tagList;
+    String okBtn;
+    String cancelBtn;
 
-    u32 value0;
-    u32 value1;
-    u32 value2;
-    u32 value3;
-    u32 value4;
-    u32 value5;
+    void *sp0;
+    void *sp1;
+    void *sp2;
+    void *sp3;
+    void *sp4;
+    void *sp5;
 
-    u8 *entry;
+    void *entry;
 
-    obj = (u8 *)arg0;
+    self = (u8 *)arg0;
     strings = TagWin_str;
 
-    String_Init(temp0, (const char *)(strings + 0xC), &value0);
+    String_Init(&pathBase, (const char *)(strings + 0xC), &sp0);
 
     String_ConcatCStr(
-        temp1,
-        temp0,
+        &dbxPath,
+        &pathBase,
         (const char *)(strings + 0x13)
     );
 
-    String_Init(temp2, (const char *)(strings + 0x1E), &value1);
+    String_Init(&winName, (const char *)(strings + 0x1E), &sp1);
 
     fn_800D764C(
-        obj,
+        self,
         arg1,
         arg2,
         arg3,
-        temp1,
-        temp2
+        &dbxPath,
+        &winName
     );
 
-    String_Destroy(temp2, -1);
-    String_Destroy(temp1, -1);
-    String_Destroy(temp0, -1);
+    String_Destroy(&winName, -1);
+    String_Destroy(&dbxPath, -1);
+    String_Destroy(&pathBase, -1);
 
-    *(void **)(obj + 0xC) = TagWin_vtable;
+    *(void **)(self + 0xC) = TagWin_vtable;
 
-    String_Init(temp3, (const char *)(strings + 0x25), &value2);
+    String_Init(&tagList, (const char *)(strings + 0x25), &sp2);
 
-    entry = (u8 *)fn_800D75FC(obj, temp3);
-    *(void **)(obj + 0x424) = entry;
+    entry = (u8 *)fn_800D75FC(self, &tagList);
+    *(void **)(self + 0x424) = entry;
 
-    String_Destroy(temp3, -1);
+    String_Destroy(&tagList, -1);
 
-    String_Init(temp4, (const char *)(strings + 0x2D), &value3);
+    String_Init(&okBtn, (const char *)(strings + 0x2D), &sp3);
 
-    entry = (u8 *)fn_800D75FC(obj, temp4);
-    *(void **)(obj + 0x428) = entry;
+    entry = (u8 *)fn_800D75FC(self, &okBtn);
+    *(void **)(self + 0x428) = entry;
 
-    String_Destroy(temp4, -1);
+    String_Destroy(&okBtn, -1);
 
-    String_Init(temp5, (const char *)(strings + 0x33), &value4);
+    String_Init(&cancelBtn, (const char *)(strings + 0x33), &sp4);
 
-    entry = (u8 *)fn_800D75FC(obj, temp5);
-    *(void **)(obj + 0x42C) = entry;
+    entry = (u8 *)fn_800D75FC(self, &cancelBtn);
+    *(void **)(self + 0x42C) = entry;
 
-    String_Destroy(temp5, -1);
+    String_Destroy(&cancelBtn, -1);
 
-    entry = *(u8 **)(obj + 0x428);
-    *(void **)(entry + 0xA4) = (void *)TagWin_OnOk;
+    entry = *(u8 **)(self + 0x428);
+    *(void **)((u8 *)entry + 0xA4) = (void *)TagWin_OnOk;
 
-    entry = *(u8 **)(obj + 0x42C);
-    *(void **)(entry + 0xA4) = (void *)TagWin_OnCancel;
+    entry = *(u8 **)(self + 0x42C);
+    *(void **)((u8 *)entry + 0xA4) = (void *)TagWin_OnCancel;
 
-    return obj;
+    return self;
 }
 
 extern s32 gCardWork;
