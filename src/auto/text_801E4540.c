@@ -2566,13 +2566,13 @@ void fn_801E9864(void *arg0)
 
 #pragma optimization_level reset
 void fn_801E9958(void) {
-    M2C_UNK fn_801E9978();
-    fn_801E9978();
+    M2C_UNK TabMenu_Init();
+    TabMenu_Init();
 }
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_801E9978(void *arg0) {
+void TabMenu_Init(void *arg0) {
     void *Hash_Lookup(void *);
     void *Msg_Expand(void *);
     void *fn_80056A60(void *);
