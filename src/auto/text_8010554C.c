@@ -3345,7 +3345,7 @@ u8 fn_8010B658(void *arg0) {
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
-    extern u8 fn_800FB5C8[];
+    extern u8 Ai_UnitIsHostileToActive[];
 
     void *other;
     s8 found;
@@ -3429,7 +3429,7 @@ inner:
                         }
                     slot_done:
                         if (found >= 0) {
-                            dist = fn_8010067C((s16)x, (s16)y, fn_800FB5C8);
+                            dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                             if (dist <= bestDist) {
                                 u8 bc = bestCost;
                                 cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
@@ -3485,7 +3485,7 @@ u8 Ai_TrySelectApproachTile(void *arg0) {
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
-    extern u8 fn_800FB5C8[];
+    extern u8 Ai_UnitIsHostileToActive[];
 
     void *self;
     s32 xShift;
@@ -3572,7 +3572,7 @@ inner:
                 {
                     s32 dist;
                     s16 cost;
-                    dist = fn_8010067C((s16)x, (s16)y, fn_800FB5C8);
+                    dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                     if (dist <= bestDist) {
                         u8 bc = bestCost;
                         cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
@@ -3626,7 +3626,7 @@ u8 fn_8010BB74(void *arg0) {
     void fn_801014BC(void *, s32, s32, s32, s32, s32, s32, s32);
     extern u8 lbl_8032B3C0[];
     extern u8 gBattleMap[151280];
-    extern u8 fn_800FB5C8[];
+    extern u8 Ai_UnitIsHostileToActive[];
     void *self;
     s8 by;
     s8 bx;
@@ -3698,7 +3698,7 @@ inner:
         if ((s8)cell[0xE18E] == 0 && fn_800FE84C((s8)x, (s8)y) == 0 && cell[0xD] == 0) {
             void *tmp = Terrain_GetEntry(*(row2 + ((s8)x + 0x100D)));
             if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 6) != 0) {
-                s32 dist = fn_8010067C((s16)x, (s16)y, fn_800FB5C8);
+                s32 dist = fn_8010067C((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                 if (dist <= bestDist) {
                     s16 cost = *(s16 *)((s32)*(s16 **)(map + 0x14190) + (t << 1));
                     if (cost < (s32)bestCost) {
