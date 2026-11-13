@@ -2307,7 +2307,7 @@ void Battle_AdvancePhase(void) {
     void fn_8003BBD4(void *, s32);
     void fn_8003C1B4(void *);
     void fn_8003D68C(void *, s32);
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     void fn_80104410(void *);
     void fn_8014D2B0(void *, u8);
     void fn_8014DA88(void *, s32);
@@ -2343,7 +2343,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 if ((flags & 2) && !(flags & 0x100000)) {
                     linked = *(void **)(unit + 0x194);
-                    fn_8003EA24(unit, unit[0x19E], unit[0x19F]);
+                    Unit_SeparateRescue(unit, unit[0x19E], unit[0x19F]);
                     if (linked != NULL) {
                         *(u32 *)((u8 *)linked + 0x1A0) &= ~1;
                     }
@@ -2402,7 +2402,7 @@ void Battle_AdvancePhase(void) {
                 flags = *(u32 *)(unit + 0x1A0);
                 if ((flags & 2) && !(flags & 0x100000)) {
                     linked = *(void **)(unit + 0x194);
-                    fn_8003EA24(unit, unit[0x19E], unit[0x19F]);
+                    Unit_SeparateRescue(unit, unit[0x19E], unit[0x19F]);
                     if (linked != NULL) {
                         *(u32 *)((u8 *)linked + 0x1A0) &= ~1;
                     }

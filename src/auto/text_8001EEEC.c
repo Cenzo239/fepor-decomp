@@ -3635,7 +3635,7 @@ void fn_80026850(s32 arg0) {
 
 s32 fn_800268A8(s32 arg0) {
     void *fn_8003DDF8(void *, u8 *, u8 *, void *, u8);
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
     void *fn_801A4624(void *);
     void *fn_801A46BC(void *);
@@ -3666,7 +3666,7 @@ s32 fn_800268A8(s32 arg0) {
     fn_8003DDF8(temp_r30, &sp9, &sp8, &gBattleMap, temp_r7);
     temp_r3_3 = M2C_FIELD(temp_r30, void **, 0x194);
     fn_80183C6C(temp_r3_3, (s8) M2C_FIELD(temp_r3_3, u8 *, 0x19E), (s8) M2C_FIELD(temp_r3_3, u8 *, 0x19F), (s8) sp9, (s8) sp8, arg0);
-    fn_8003EA24(temp_r30, sp9, sp8);
+    Unit_SeparateRescue(temp_r30, sp9, sp8);
     return 1;
 }
 
@@ -3814,7 +3814,7 @@ void fn_80026E2C(s32 arg0) {
 }
 
 void fn_80026E88(s32 arg0) {
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183D7C(void *, s32, s8, s8, s32);
     typedef struct {
         void *unit;
@@ -3832,7 +3832,7 @@ void fn_80026E88(s32 arg0) {
     unit = ctx->unit;
     saved = *(s32 *)((u8 *)unit + 0x194);
     ctx->unk04 = saved;
-    fn_8003EA24(unit, ctx->unk0F, ctx->unk10);
+    Unit_SeparateRescue(unit, ctx->unk0F, ctx->unk10);
     fn_80183D7C(gUiContext.unit, saved, (s8)ctx->unk0F, (s8)ctx->unk10, arg0);
 }
 

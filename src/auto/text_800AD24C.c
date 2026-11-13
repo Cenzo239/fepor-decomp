@@ -545,7 +545,7 @@ void fn_800AE278(s32 arg0) {
 
 s32 fn_800AE328(s32 arg0) {
     void fn_8003DDF8(void *, u8 *, u8 *);
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     void fn_80183C6C(void *, s8, s8, s8, s8, s32);
     void *fn_801A46BC(void *);
     extern u8 lbl_80330EAC[];
@@ -574,7 +574,7 @@ s32 fn_800AE328(s32 arg0) {
     c = (s8)*(u8 *)((u8 *)temp_r3_2 + 0x19F);
     d = (s8)sp8;
     fn_80183C6C(temp_r3_2, b, c, a, d, arg0);
-    fn_8003EA24(temp_r31, sp9, sp8);
+    Unit_SeparateRescue(temp_r31, sp9, sp8);
     return 1;
 }
 
@@ -5577,7 +5577,7 @@ s32 fn_800BA784(void) {
     M2C_UNK fn_80015320(M2C_UNK, M2C_UNK *);
     M2C_UNK fn_8002297C(M2C_UNK *);
     M2C_UNK fn_8003DFB8();
-    M2C_UNK fn_8003EA24(u8, u8);
+    M2C_UNK Unit_SeparateRescue(u8, u8);
     M2C_UNK fn_800C1060();
     extern M2C_UNK gUnits;
     extern M2C_UNK gUnitLists;
@@ -5604,7 +5604,7 @@ s32 fn_800BA784(void) {
         if (((u32) M2C_FIELD(var_r3, u32 *, 0x188) != 0U) && ((u8) *(&sp10 + M2C_FIELD(M2C_FIELD(var_r3, void **, 0x190), u8 *, 8)) != 0)) {
             temp_r30 = M2C_FIELD(var_r3, void **, 0x194);
             if ((temp_r30 != NULL) && (M2C_FIELD(var_r3, s32 *, 0x1A0) & 2)) {
-                fn_8003EA24(M2C_FIELD(var_r3, u8 *, 0x19E), M2C_FIELD(var_r3, u8 *, 0x19F));
+                Unit_SeparateRescue(M2C_FIELD(var_r3, u8 *, 0x19E), M2C_FIELD(var_r3, u8 *, 0x19F));
                 if (temp_r30 != NULL) {
                     M2C_FIELD(temp_r30, s32 *, 0x1A0) = (s32) (M2C_FIELD(temp_r30, s32 *, 0x1A0) & 0xFFFFFFFE);
                 }
@@ -7118,7 +7118,7 @@ s32 fn_800BD1A4(u8 arg0, u8 arg1) {
 }
 
 s32 fn_800BD284(u8 arg0) {
-    void fn_8003EA24(void *, u8, u8);
+    void Unit_SeparateRescue(void *, u8, u8);
     extern u16 gUnits[];
     void *temp_r31;
     void *var_r30;
@@ -7137,7 +7137,7 @@ s32 fn_800BD284(u8 arg0) {
         var_r30 = *(void **)((u8 *)var_r3 + 0x194);
     }
     temp_r31 = *(void **)((u8 *)var_r30 + 0x194);
-    fn_8003EA24(var_r30, *(u8 *)((u8 *)var_r30 + 0x19E), *(u8 *)((u8 *)var_r30 + 0x19F));
+    Unit_SeparateRescue(var_r30, *(u8 *)((u8 *)var_r30 + 0x19E), *(u8 *)((u8 *)var_r30 + 0x19F));
     *(s32 *)((u8 *)var_r30 + 0x1A0) = *(s32 *)((u8 *)var_r30 + 0x1A0) & ~1;
     *(s32 *)((u8 *)temp_r31 + 0x1A0) = *(s32 *)((u8 *)temp_r31 + 0x1A0) & ~1;
     return 1;
