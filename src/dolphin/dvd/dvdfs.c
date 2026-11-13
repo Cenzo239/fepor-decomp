@@ -323,7 +323,7 @@ s32 fn_8020C79C(void) {
     return 1;
 }
 
-u32 fn_8020C7C0(u32 entry, char *path, u32 maxlen) {
+u32 entryToPath(u32 entry, char *path, u32 maxlen) {
     char *name;
     u32 loc;
 
@@ -333,7 +333,7 @@ u32 fn_8020C7C0(u32 entry, char *path, u32 maxlen) {
 
     name = FstStringStart_80368580 + stringOff(entry);
 
-    loc = fn_8020C7C0(parentDir(entry), path, maxlen);
+    loc = entryToPath(parentDir(entry), path, maxlen);
 
     if (loc == maxlen) {
         return loc;
@@ -349,7 +349,7 @@ u32 fn_8020C7C0(u32 entry, char *path, u32 maxlen) {
 BOOL fn_8020C920(s32 entrynum, char *path, u32 maxlen) {
     u32 loc;
 
-    loc = fn_8020C7C0((u32)entrynum, path, maxlen);
+    loc = entryToPath((u32)entrynum, path, maxlen);
 
     if (loc == maxlen) {
         path[maxlen - 1] = '\0';
