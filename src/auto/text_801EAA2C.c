@@ -2778,7 +2778,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_8023440C(void *, char *, s32);
     void fn_800C908C(void *, String *, void *);
     u8 Xml_AdvanceChild(void *);
-    void fn_800C8CB4(String *, void *);
+    void Xml_GetChildName(String *, void *);
     void fn_800C9758(String *, String *, s32, s32);
     void fn_800C8D58(char *, void *);
     void fn_800C96F8(String *, char *, s32);
@@ -2886,7 +2886,7 @@ void fn_801EFDC8(void *arg0) {
     p204 = buf204;
     strBase = lbl_8027F26C;
     while (Xml_AdvanceChild(file) != 0) {
-        fn_800C8CB4(&spE0, file);
+        Xml_GetChildName(&spE0, file);
         fn_800C9758(&str16c, &spE0, 0, -1);
         fn_800C9A60(&spE0, -1);
         fn_800C8D58(p204, file);
@@ -2973,7 +2973,7 @@ void fn_801EFDC8(void *arg0) {
         {
             String *field44 = (String *)((u8 *)base + 0x44);
             while (Xml_AdvanceChild(file2) != 0) {
-                fn_800C8CB4(&sp80, file2);
+                Xml_GetChildName(&sp80, file2);
                 fn_800C9758(&str154, &sp80, 0, -1);
                 fn_800C9A60(&sp80, -1);
                 if (fn_800C9400(&str154, 0, str154.data, strBase + 0x255, strlen(strBase + 0x255)) == 0) {
@@ -3014,7 +3014,7 @@ void fn_801EFDC8(void *arg0) {
 
         for (j = 0; j < count; j++) {
             Xml_AdvanceChild(file2);
-            fn_800C8CB4(&sp44, file2);
+            Xml_GetChildName(&sp44, file2);
             fn_800C9758(&str130, &sp44, 0, -1);
             fn_800C9A60(&sp44, -1);
             fn_800C8D58(buf184, file2);

@@ -1841,7 +1841,7 @@ case_float:
     }
 }
 
-void fn_800C8CB4(String *arg0, void *arg1) {
+void Xml_GetChildName(String *arg0, void *arg1) {
     void fn_800C96F8(String *, char *, u32);
     u32 strlen(const char *);
     String tmp;
@@ -3417,7 +3417,7 @@ else {obj=*(void **)((u8 *)lbl_80330EAC+0xCB4);fn_800C96F8(&str80,(char *)obj,st
 void fn_800CCB9C(u8 *self, char *arg1) {
 void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91EC(void *,void *,void *);
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
-void fn_800C8CB4(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
+void Xml_GetChildName(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
 extern char lbl_802704F8[];
@@ -3440,7 +3440,7 @@ fn_8023440C(&spF8,lbl_802704F8+0x359,32); sp118=spF8;
 fn_800C908C(f,&sp3C,&sp118);fn_800C9A60(&sp3C,-1);
 buffer=spD8;
 for(;Xml_AdvanceChild(f)!=0;){
-fn_800C8CB4(&sp30,f);fn_800C9758(&sp6C,&sp30,0,-1);fn_800C9A60(&sp30,-1);
+Xml_GetChildName(&sp30,f);fn_800C9758(&sp6C,&sp30,0,-1);fn_800C9A60(&sp30,-1);
 fn_800C8D58(spD8,f);fn_800C96F8(&sp60,buffer,strlen(buffer));
 fn_800CA18C((void *)(arg0+0x1C8),M2C_FIELD(arg0,s32 *,0x1CC)*12+M2C_FIELD(arg0,u8 **,0x1D0),1,&sp60);
 }
@@ -3448,7 +3448,7 @@ fn_800C9ABC(&sp24,lbl_802704F8+0x1EB,&sp8);fn_8023440C(&sp98,lbl_802704F8+0x365,
 fn_800C908C(f,&sp24,&spB8);fn_800C9A60(&sp24,-1);
 arg1=sp78;
 while(Xml_AdvanceChild(f)){
-fn_800C8CB4(&sp18,f);fn_800C9758(&sp6C,&sp18,0,-1);fn_800C9A60(&sp18,-1);
+Xml_GetChildName(&sp18,f);fn_800C9758(&sp6C,&sp18,0,-1);fn_800C9A60(&sp18,-1);
 fn_800C8D58(sp78,f);fn_800C96F8(&sp60,arg1,strlen(arg1));
 fn_800CA18C((void *)(arg0+0x1D4),M2C_FIELD(arg0,s32 *,0x1D8)*12+M2C_FIELD(arg0,u8 **,0x1DC),1,&sp60);
 }
@@ -7433,7 +7433,7 @@ void fn_800D83B0(void* param_1) {
 void fn_800D85CC(s32 self, char *arg1) {
 void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91EC(void *,void *,void *);
 void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
-void fn_800C8CB4(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
+void Xml_GetChildName(void *,void *); void fn_800C8D58(void *,void *); u8 Xml_AdvanceChild(void *);
 void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
 void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
 void fn_8011C674(void *,void *); void fn_8011C64C(void *,void *); void *fn_8011C9EC(void *); void fn_8011CA3C(void *,void *,void *);
@@ -7453,7 +7453,7 @@ fn_8023440C(&spE8,lbl_802711B0+0x110,32);sp108=spE8;
 fn_800C908C(f,&sp38,&sp108);fn_800C9A60(&sp38,-1);
 path=spC8;
 while(Xml_AdvanceChild(f)){
-fn_800C8CB4(&sp2C,f);fn_800C9758(&sp5C,&sp2C,0,-1);fn_800C9A60(&sp2C,-1);
+Xml_GetChildName(&sp2C,f);fn_800C9758(&sp5C,&sp2C,0,-1);fn_800C9A60(&sp2C,-1);
 fn_800C8D58(spC8,f);fn_800C96F8(&sp50,path,strlen(path));
 fn_8011C674(lbl_80367A50,&sp5C);
 fn_800CA18C((void *)(arg0+0x4C),M2C_FIELD(arg0,u8 **,0x54)+M2C_FIELD(arg0,s32 *,0x50)*12,1,&sp50);
@@ -7463,7 +7463,7 @@ fn_8023440C(&sp88,lbl_802711B0+0x11C,32);spA8=sp88;
 fn_800C908C(f,&sp20,&spA8);fn_800C9A60(&sp20,-1);
 path=sp68;
 while(Xml_AdvanceChild(f)){
-fn_800C8CB4(&sp14,f);fn_800C9758(&sp5C,&sp14,0,-1);fn_800C9A60(&sp14,-1);
+Xml_GetChildName(&sp14,f);fn_800C9758(&sp5C,&sp14,0,-1);fn_800C9A60(&sp14,-1);
 fn_800C8D58(sp68,f);fn_800C96F8(&sp50,path,strlen(path));
 fn_8011C64C(lbl_80367A50,&sp5C);
 fn_800CA18C((void *)(arg0+0x58),M2C_FIELD(arg0,u8 **,0x60)+M2C_FIELD(arg0,s32 *,0x5C)*12,1,&sp50);
@@ -9396,7 +9396,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
     s32 fn_8006D948(void);
-    void fn_800C8CB4(String *, void *);
+    void Xml_GetChildName(String *, void *);
     void fn_800C8D58(char *, void *);
     char *fn_800C8DCC(char *, void *, String *);
     u8 Xml_AdvanceChild(void *);
@@ -9577,7 +9577,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
 
     goto loop_check;
 loop_body:
-    fn_800C8CB4(&str6C, iter);
+    Xml_GetChildName(&str6C, iter);
     fn_800C9758(&str108, &str6C, 0, -1);
     fn_800C9A60(&str6C, -1);
     fn_800C8D58(buf17C, iter);
