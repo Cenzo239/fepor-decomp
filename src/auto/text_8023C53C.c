@@ -9266,7 +9266,7 @@ void fn_80257940(s32 arg0) {
 }
 
 s32 Sound_SetupAdsrPhase(u8 *arg0) {
-    extern u16 lbl_8029F9F8[];
+    extern u16 gAdsrVolCurve[];
     s32 ret;
     u32 tmp;
     s32 x;
@@ -9347,7 +9347,7 @@ s32 Sound_SetupAdsrPhase(u8 *arg0) {
                 x = (s32)(*(u32 *)(arg0 + 0xC) + 0x8000) >> 16;
                 y = 0xC1 - x;
                 x = y & ~(y >> 31);
-                *(u32 *)(arg0 + 8) = (u32)lbl_8029F9F8[x] << 16;
+                *(u32 *)(arg0 + 8) = (u32)gAdsrVolCurve[x] << 16;
                 *(u32 *)(arg0 + 0x10) = 0;
                 break;
             }
@@ -9455,7 +9455,7 @@ s32 fn_80257D7C(u8 *arg0) {
 }
 
 s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
-    extern u16 lbl_8029F9F8[];
+    extern u16 gAdsrVolCurve[];
     s32 Sound_SetupAdsrPhase(u8 *);
     s32 ret;
     s32 old;
@@ -9499,7 +9499,7 @@ s32 fn_80257EE4(u8 *arg0, s16 *arg1, s16 *arg2) {
                 x = (s32)(*(u32 *)(arg0 + 0xC) + 0x8000) >> 16;
                 y = 0xC1 - x;
                 x = y & ~(y >> 31);
-                *(s32 *)(arg0 + 8) = (s32)lbl_8029F9F8[x] << 16;
+                *(s32 *)(arg0 + 8) = (s32)gAdsrVolCurve[x] << 16;
             }
             *arg1 = (s16)(old >> 16);
             delta = *(s32 *)(arg0 + 8) - old;
