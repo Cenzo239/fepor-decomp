@@ -1413,7 +1413,7 @@ void fn_801FFDA8(void) {
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     extern u8 lbl_80282008[];
-    extern s32 lbl_80368440;
+    extern s32 gSaveMigrateCount;
     extern f32 lbl_8036BBB8;
     extern f32 lbl_8036BBBC;
     extern f32 lbl_8036BBC0;
@@ -1432,7 +1432,7 @@ void fn_801FFDA8(void) {
     Prim2D_SetTransform(lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBB8, lbl_8036BBC0);
     fn_8000A174(0, 0x13);
     Prim2D_PrepareTex();
-    fn_8001019C(0x40, 0x40, 1, lbl_80282008 + 0x33, lbl_80368440);
+    fn_8001019C(0x40, 0x40, 1, lbl_80282008 + 0x33, gSaveMigrateCount);
     fn_8001019C(0x40, 0x60, 1, lbl_80282008 + 0x58);
 }
 
@@ -1443,13 +1443,13 @@ void fn_801FFE8C(void) {
 }
 
 void fn_801FFEB0(s32 arg0) {
-    extern s32 lbl_80368440;
+    extern s32 gSaveMigrateCount;
     extern s32 lbl_803682F0;
     s32 Save_GetSmallSlot(s32 *, s32);
     void fn_800E9B80(s32, s32, s32, s32, s32);
     s32 tmp;
 
-    if (lbl_80368440 != 0) {
+    if (gSaveMigrateCount != 0) {
         tmp = Save_GetSmallSlot(&lbl_803682F0, 0);
         fn_800E9B80(tmp, 0x24000, 0x2000, 0x2000, arg0);
     }
@@ -1472,7 +1472,7 @@ void Save_MigrateLegacy(void) {
     void *memset(void *, s32, u32);
     extern u8 lbl_80282008[];
     extern s32 lbl_803682F0;
-    extern s32 lbl_80368440;
+    extern s32 gSaveMigrateCount;
 
     s32 count;
     s32 i;
@@ -1483,7 +1483,7 @@ void Save_MigrateLegacy(void) {
     void *buf2;
     u8 ok2;
 
-    lbl_80368440 = 0;
+    gSaveMigrateCount = 0;
     do {
         count = 0;
         i = 0;
@@ -1519,7 +1519,7 @@ void Save_MigrateLegacy(void) {
                 }
                 if (ok != 0) {
                     count += 1;
-                    lbl_80368440 += 1;
+                    gSaveMigrateCount += 1;
                 }
             }
             i += 1;
@@ -1557,7 +1557,7 @@ void Save_MigrateLegacy(void) {
                 }
                 if (ok2 != 0) {
                     count += 1;
-                    lbl_80368440 += 1;
+                    gSaveMigrateCount += 1;
                 }
             }
             j += 1;
