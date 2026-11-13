@@ -2304,7 +2304,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
     return 0;
 }
 
-s32 fn_8001D684(void *arg0) {
+s32 Item_DecUses(void *arg0) {
     void fn_800C3220(void *, s32);
     extern u8 lbl_80367220;
     extern s32 lbl_80367228;

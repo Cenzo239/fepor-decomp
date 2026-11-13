@@ -1450,11 +1450,11 @@ void fn_800949A4(void *arg0, s8 arg1) {
 }
 
 s32 fn_80094A08(s32 arg0) {
-    u8 fn_8001D684();
+    u8 Item_DecUses();
     M2C_UNK Unit_GetItemSlot();
     M2C_UNK fn_800947E0(s32);
     Unit_GetItemSlot();
-    if (fn_8001D684() != 0) {
+    if (Item_DecUses() != 0) {
         fn_800947E0(arg0);
         return 1;
     }
