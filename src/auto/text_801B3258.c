@@ -11543,7 +11543,7 @@ void ScriptObj_Start(void *arg0, void *arg1) {
     void fn_8005C8B4(void *);
     void *Process_Create(void *, void *);
     void FallingParticle_CreateEx(void *, f32);
-    extern u8 lbl_802997CC[];
+    extern u8 gScriptObjDefs[];
     extern u16 gScriptObjSlots[];
     extern u8 lbl_8027DF20[];
     extern u8 lbl_8029992C[];
@@ -11555,7 +11555,7 @@ void ScriptObj_Start(void *arg0, void *arg1) {
     s32 ctr;
     f32 f;
 
-    row = lbl_802997CC;
+    row = gScriptObjDefs;
     for (;;) {
         if (Str_Cmp(arg0, *(void **)row) == 0) {
             break;
