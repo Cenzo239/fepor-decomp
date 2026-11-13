@@ -10992,7 +10992,7 @@ void fn_8019DB68(void) {
     void fn_8019F13C(void);
     void fn_8019F04C(void);
     void fn_8019EEE0(void);
-    void fn_8019ED7C(void);
+    void Map_SelectObjAt(void);
     void fn_8019F230(void);
     void fn_8019ED74(void);
     void fn_8019ECB4(void);
@@ -11079,7 +11079,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x32C, fn_8019F13C, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x33C, fn_8019F04C, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x34D, fn_8019EEE0, 2);
-    Script_RegisterCommand(lbl_8027AD98 + 0x356, fn_8019ED7C, 2);
+    Script_RegisterCommand(lbl_8027AD98 + 0x356, Map_SelectObjAt, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x360, fn_8019F230, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x369, fn_8019ED74, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x371, fn_8019ECB4, 3);
@@ -11442,7 +11442,7 @@ s32 fn_8019ED74(void) {
     return 1;
 }
 
-s32 fn_8019ED7C(s32 arg0, s32 arg1) {
+s32 Map_SelectObjAt(s32 arg0, s32 arg1) {
     extern u32 gUiInputFlags;
     extern u8 lbl_8032BB58[];
     s32 Map_Get(void);
