@@ -563,7 +563,7 @@ void Map_UpdateCursorMoveLimit(void) {
     extern u8 gBattleMap[151280];
     extern u8 gBattleState[1400];
     extern void *gPadInput;
-    extern void *lbl_80367800;
+    extern void *gCursorHoverUnit;
     extern s8 lbl_80367804;
 
     void *unit;
@@ -580,7 +580,7 @@ void Map_UpdateCursorMoveLimit(void) {
     } *ctrl;
 
     if (lbl_80367804 == 0) {
-        lbl_80367800 = NULL;
+        gCursorHoverUnit = NULL;
         lbl_80367804 = 1;
     }
 
@@ -589,15 +589,15 @@ void Map_UpdateCursorMoveLimit(void) {
     id = gBattleMap[sx + (sy << 6) + 0xD];
     unit = (id != 0) ? &gUnits[(id - 1) * 0x280] : NULL;
 
-    if (lbl_80367800 != unit) {
+    if (gCursorHoverUnit != unit) {
         ctrl = gPadInput;
         if ((ctrl->unk4 & 0xF) != 0 || ctrl->unk0->unk2 != 0 || ctrl->unk0->unk3 != 0) {
             if (unit == NULL) {
                 Map_HideMoveLimitView();
-                lbl_80367800 = NULL;
+                gCursorHoverUnit = NULL;
             }
         } else if ((u32)(((gBattleState[0x9F] >> 6) & 1)) != 1U) {
-            lbl_80367800 = unit;
+            gCursorHoverUnit = unit;
             if (unit == NULL || *(u8 *)(*(u32 *)((char *)unit + 0x190) + 8) == 0) {
                 Map_HideMoveLimitView();
             } else {
