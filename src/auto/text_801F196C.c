@@ -4013,7 +4013,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     } Vec;
     void Heap_Free(void *);
     void *Heap_Alloc(u32);
-    void fn_801FB548(Vec *);
+    void StaffRoll_VecClear(Vec *);
     void fn_8022CF78(void);
     void fn_80232058(void *, const char *, ...);
     extern char __files[];
@@ -4246,7 +4246,7 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
             tmp.size = vec->size;
             vec->size = ts;
         }
-        fn_801FB548(&tmp);
+        StaffRoll_VecClear(&tmp);
         if (tmp.data != NULL) {
             Heap_Free(tmp.data);
         }
@@ -4265,7 +4265,7 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
     } Vec;
     void Heap_Free(void *);
     void *Heap_Alloc(u32);
-    void fn_801FB548(Vec *);
+    void StaffRoll_VecClear(Vec *);
     M2C_UNK fn_8022CF78(void);
     M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
@@ -4315,7 +4315,7 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
             tmp.size = vec->size;
             vec->size = ts;
         }
-        fn_801FB548(&tmp);
+        StaffRoll_VecClear(&tmp);
         if (tmp.data != NULL) {
             Heap_Free(tmp.data);
         }
@@ -4324,10 +4324,10 @@ void StaffRoll_VecReserve(void *arg0, u32 arg1) {
 
 void *fn_801FB1C0(void *arg0, s16 arg1) {
     void Heap_Free(void *);
-    void fn_801FB548(void *);
+    void StaffRoll_VecClear(void *);
 
     if (arg0 != NULL) {
-        fn_801FB548(arg0);
+        StaffRoll_VecClear(arg0);
         if (M2C_FIELD(arg0, void **, 8) != NULL) {
             Heap_Free(M2C_FIELD(arg0, void **, 8));
         }
@@ -4557,7 +4557,7 @@ void fn_801FB428(void *arg0, void *arg1, s32 (*compare)(void *, void *))
 }
 
 #pragma global_optimizer off
-void fn_801FB548(u32 *arg0) {
+void StaffRoll_VecClear(u32 *arg0) {
     u8 (*start)[8];
     u8 (*end)[8];
 
