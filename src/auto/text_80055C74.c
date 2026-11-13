@@ -1630,7 +1630,7 @@ return farg0+(diff-diff*x/y);
 void fn_8005A1E8(void *arg0, f32 *arg1, f32 *arg2) {
 void *Camera_Get(void);
 void fn_80225034(f32 *);
-void fn_80224AD8(void *, f32 *, f32 *, f32 *, f32 *, f32 *, f32, f32, f32);
+void GXProject(void *, f32 *, f32 *, f32 *, f32 *, f32 *, f32, f32, f32);
 extern f32 gF32_0;
 f32 vals[7]; f32 sp8[6];
 if(arg0==NULL) arg0=Camera_Get();
@@ -1642,7 +1642,7 @@ vals[4]=*(f32 *)((u8 *)arg0+60);
 vals[5]=*(f32 *)((u8 *)arg0+76);
 vals[6]=*(f32 *)((u8 *)arg0+80);
 fn_80225034(sp8);
-fn_80224AD8((u8 *)arg0+0xA4,vals,sp8,arg2,arg2+1,arg2+2,arg1[0],arg1[1],arg1[2]);
+GXProject((u8 *)arg0+0xA4,vals,sp8,arg2,arg2+1,arg2+2,arg1[0],arg1[1],arg1[2]);
 }
 
 #include "global.h"
