@@ -2356,24 +2356,20 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
 
 #pragma opt_strength_reduction off
 void fn_801A7528(void *arg0, void *arg1) {
-    void *Item_GetFlagsPtr(void *);
-    void Item_Clear(void);
-    void *fn_801A7FF4(void *);
-    void fn_801A9600(void *, void *);
-    void *temp;
-    s32 z;
-
-    z = 0;
-    fn_801A9600(arg0, arg1);
-    temp = Item_GetFlagsPtr(arg1);
-    if (((((M2C_FIELD(temp, s32 *, 4) & 0x1000) ^ z) | ((M2C_FIELD(temp, s32 *, 0) & z) ^ z)) != 0)) {
-        temp = Item_GetFlagsPtr(fn_801A7FF4(arg0));
-        if (((((M2C_FIELD(temp, s32 *, 4) & 0x4F) ^ z) | ((M2C_FIELD(temp, s32 *, 0) & z) ^ z)) != 0)) {
-            *(u32 *)((char *)arg0 + 0xCAC) |= 0x200;
-            fn_801A7FF4((u8 *)arg0 + 0x2E0);
-            Item_Clear();
-        }
-    }
+ void *Item_GetFlagsPtr(void *);
+ void Item_Clear(void);
+ void *fn_801A7FF4(void *);
+ void fn_801A9600(void *,void *);
+ void *item=arg1;
+ void *battle=arg0;
+ fn_801A9600(battle,item);
+ if((*(u64 *)Item_GetFlagsPtr(item)&0x1000ULL)!=0) {
+ if((*(u64 *)Item_GetFlagsPtr(fn_801A7FF4(battle))&0x4FULL)!=0) {
+ *(u32 *)((u8 *)battle+0xcac)|=0x200;
+ fn_801A7FF4((u8 *)battle+0x2e0);
+ Item_Clear();
+ }
+ }
 }
 void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
