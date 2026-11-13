@@ -3001,7 +3001,7 @@ void fn_80169C94(void *arg0) {
 
 void fn_80169CF4(void *arg0) {
     void *Sound_FindByName(void *);
-    void fn_8000A430(void *);
+    void Process_AdvanceStep(void *);
     void fn_8013FED0(void *);
     void fn_801D3B14(void *);
     void fn_8000A408(void *);
@@ -3011,7 +3011,7 @@ void fn_80169CF4(void *arg0) {
     fn_8000A408(M2C_FIELD(arg0, void **, 0x4C));
     temp = M2C_FIELD(arg0, void **, 0x40);
     if (temp != NULL) {
-        fn_8000A430(Sound_FindByName(temp));
+        Process_AdvanceStep(Sound_FindByName(temp));
     }
     fn_8013FED0(arg0);
     gBattleState[0x54] = 1;
@@ -3052,7 +3052,7 @@ void fn_80169E2C(void *arg0) {
 }
 
 void fn_80169E50(void *arg0) {
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x50));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x50));
 }
 
 void fn_80169E74(void *arg0) {
@@ -3063,7 +3063,7 @@ void fn_80169E74(void *arg0) {
 }
 
 void fn_80169EB4(void *arg0) {
-    void fn_8000A430(void *);
+    void Process_AdvanceStep(void *);
     void *fn_8013BFFC(void *);
     void Ui_CreateMenu(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -3072,7 +3072,7 @@ void fn_80169EB4(void *arg0) {
     void *tmp;
     u32 result;
 
-    fn_8000A430(*(void **)((u8 *)arg0 + 0x4C));
+    Process_AdvanceStep(*(void **)((u8 *)arg0 + 0x4C));
     tmp = fn_8013BFFC(lbl_80277BC0 + 0xC5);
     *((u8 *)tmp + 0x24) = 1;
     Ui_CreateMenu(tmp, arg0, 0);
@@ -3394,7 +3394,7 @@ void fn_8016A5AC(void *arg0) {
 
     p = M2C_FIELD(arg0, void **, 0x40);
     if (p != NULL) {
-        fn_8000A430(Sound_FindByName(p));
+        Process_AdvanceStep(Sound_FindByName(p));
     }
 }
 
@@ -6081,7 +6081,7 @@ void fn_8016F194(void *arg0) {
 void fn_8016F1D4(void *arg0) {
     M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x60));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
@@ -6125,7 +6125,7 @@ void fn_8016F2EC(void *arg0) {
 void fn_8016F32C(void *arg0) {
     M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x60));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
@@ -6167,7 +6167,7 @@ void fn_8016F404(void *arg0) {
 void fn_8016F484(void *arg0) {
     M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x60));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
@@ -6213,7 +6213,7 @@ void fn_8016F55C(void *arg0) {
 void fn_8016F5DC(void *arg0) {
     M2C_UNK Ui_BringChildToFront(void *, s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x60));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
@@ -6589,8 +6589,8 @@ void fn_8016FF34(void *arg0) {
 }
 
 void fn_80170034(void *arg0) {
-    M2C_UNK fn_8000A430(s32);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x5C));
+    M2C_UNK Process_AdvanceStep(s32);
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x5C));
 }
 
 #pragma cplusplus on
@@ -7836,8 +7836,8 @@ void fn_80172B74(void *arg0) {
 }
 
 void fn_80172C44(void *arg0) {
-    M2C_UNK fn_8000A430(s32);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x5C));
+    M2C_UNK Process_AdvanceStep(s32);
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x5C));
 }
 
 s32 fn_80172C68(void *arg0) {
@@ -8055,8 +8055,8 @@ extern "C" void fn_8017312C(void *arg0) {
 #pragma cplusplus reset
 
 void fn_801731FC(void *arg0) {
-    M2C_UNK fn_8000A430(s32);
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x5C));
+    M2C_UNK Process_AdvanceStep(s32);
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x5C));
 }
 
 u8 fn_80173220(u32 *arg0, void *arg1) {
@@ -11372,7 +11372,7 @@ u8 fn_80179284(void) {
 s32 Ui_ConfirmListCmd80(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     void Process_DetachChild(void *);
-    void fn_8000A430(void *);
+    void Process_AdvanceStep(void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
@@ -11391,7 +11391,7 @@ s32 Ui_ConfirmListCmd80(s32 arg0, void *arg1, void *arg2) {
     }
     *((u8 *)gUiContext + 8) = 0x80;
     Process_DetachChild(arg1);
-    fn_8000A430(arg1);
+    Process_AdvanceStep(arg1);
     return 4;
 }
 

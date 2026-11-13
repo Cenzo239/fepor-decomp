@@ -2323,7 +2323,7 @@ void fn_8000A420(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x2D) = (u8) (M2C_FIELD(arg0, u8 *, 0x2D) - 1);
 }
 
-void fn_8000A430(void *arg0) {
+void Process_AdvanceStep(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x2D) = (u8) (M2C_FIELD(arg0, u8 *, 0x2D) + 1);
 }
 

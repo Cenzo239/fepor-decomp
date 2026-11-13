@@ -2923,14 +2923,14 @@ s32 fn_80117F98(void *arg0) {
 
 void fn_80118170(void *arg0) {
     void fn_8012C7C8(void *, void *);
-    void fn_8000A430(s32);
+    void Process_AdvanceStep(s32);
     s32 Ui_FindChild(void *, s32, s32);
     void Ui_RemoveChild(void *, s32);
     void fn_80117D80(void);
     s32 tmp;
 
     fn_8012C7C8((void *)fn_80117D80, arg0);
-    fn_8000A430(*(s32 *)((u8 *)arg0 + 0x44));
+    Process_AdvanceStep(*(s32 *)((u8 *)arg0 + 0x44));
     tmp = Ui_FindChild(arg0, -0x1000, 0);
     if (tmp != 0) {
         Ui_RemoveChild(arg0, tmp);
@@ -3084,13 +3084,13 @@ void fn_801184DC(void *arg0) {
 }
 
 void fn_8011868C(void *arg0) {
-    M2C_UNK fn_8000A430(s32);
+    M2C_UNK Process_AdvanceStep(s32);
     s32 Ui_FindChild(void *, M2C_UNK, M2C_UNK);
     M2C_UNK Ui_RemoveChild(void *, s32);
     M2C_UNK fn_8016E9DC(void *);
     s32 tmp;
 
-    fn_8000A430(M2C_FIELD(arg0, s32 *, 0x44));
+    Process_AdvanceStep(M2C_FIELD(arg0, s32 *, 0x44));
     tmp = Ui_FindChild(arg0, -0x1000, 0);
     if (tmp != 0) {
         Ui_RemoveChild(arg0, tmp);
