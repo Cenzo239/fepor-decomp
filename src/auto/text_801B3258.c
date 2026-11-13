@@ -15456,38 +15456,39 @@ void fn_801DCD3C(u8 *arg0)
     }
 }
 
-void MsgBox_Update(void *arg0) {
-    M2C_UNK MsgBox_Layout();
-    s16 temp_r3;
-    s16 *temp_r4;
+/* Advance MsgBox open/close fade (timer 0..5) and relayout. */
+void MsgBox_Update(MsgBox *box) {
+    void MsgBox_Layout(void);
+    s16 state;
+    s16 *timer;
 
-    temp_r3 = *(s16 *)((u8 *)arg0 + 2);
-    switch (temp_r3) {                              /* irregular */
+    state = box->state;
+    switch (state) {                              /* irregular */
     case 0x0:
-        *(s16 *)arg0 = 0;
+        box->flags = 0;
         break;
     case 0x64:
-        *(s16 *)arg0 = *(s16 *)arg0 | 1;
-        *(s16 *)((u8 *)arg0 + 2) = 0x6E;
+        box->flags = box->flags | 1;
+        box->state = 0x6E;
         /* fallthrough */
     case 0x6E:
-        temp_r4 = (s16 *)((u8 *)arg0 + 0x1E);
-        *temp_r4 = *temp_r4 + 1;
-        if (*temp_r4 >= 5) {
-            *temp_r4 = 5;
+        timer = &box->timer;
+        *timer = *timer + 1;
+        if (*timer >= 5) {
+            *timer = 5;
         }
         break;
     case 0xC8:
-        *(s16 *)arg0 = *(s16 *)arg0 | 1;
-        *(s16 *)((u8 *)arg0 + 2) = 0xD2;
+        box->flags = box->flags | 1;
+        box->state = 0xD2;
         /* fallthrough */
     case 0xD2:
-        temp_r4 = (s16 *)((u8 *)arg0 + 0x1E);
-        *temp_r4 = *temp_r4 - 1;
-        if (*temp_r4 < 1) {
-            *temp_r4 = 0;
-            *(s16 *)((u8 *)arg0 + 2) = 0;
-            *(s16 *)arg0 = 0;
+        timer = &box->timer;
+        *timer = *timer - 1;
+        if (*timer < 1) {
+            *timer = 0;
+            box->state = 0;
+            box->flags = 0;
         }
         break;
     }
