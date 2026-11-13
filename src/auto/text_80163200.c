@@ -10573,7 +10573,8 @@ s32 Ui_HasUsableItem(void) {
     return (u8)result;
 }
 
-s32 Ui_OpenListOrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
+/* If the menu entry is locked, show a popup; otherwise open the list panel. */
+s32 Ui_OpenListOrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
@@ -10582,24 +10583,24 @@ s32 Ui_OpenListOrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     extern u16 gUiMsgStrings[];
     extern u16 gUiListPanelProc[];
     extern u32 gUiContext[];
-    void *obj;
-    void *temp;
+    void *popup;
+    void *panel;
     f32 x;
     f32 y;
 
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
-        y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = Process_CreateChild(gUiMsgPopupProc, arg1);
-        *(f32 *)((u8 *)obj + 0x30) = x;
-        *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x53F;
+    if (*(u8 *)((u8 *)entry + 0x39) == 2) {
+        x = (f32)(*(s16 *)((u8 *)parent + 0x30) + *(s16 *)((u8 *)entry + 0x30));
+        y = (f32)(*(s16 *)((u8 *)parent + 0x32) + *(s16 *)((u8 *)entry + 0x32));
+        popup = Process_CreateChild(gUiMsgPopupProc, parent);
+        *(f32 *)((u8 *)popup + 0x30) = x;
+        *(f32 *)((u8 *)popup + 0x34) = y;
+        *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x53F;
         return 0;
     }
-    temp = Process_Find(gUiListPanelProc);
+    panel = Process_Find(gUiListPanelProc);
     *((u8 *)gUiContext + 8) = 0x84;
-    Process_Goto(temp, 0x13);
-    Process_DetachChild(*(s32 *)((u8 *)temp + 0x5C));
+    Process_Goto(panel, 0x13);
+    Process_DetachChild(*(s32 *)((u8 *)panel + 0x5C));
     return 4;
 }
 
