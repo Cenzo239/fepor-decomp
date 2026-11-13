@@ -382,6 +382,7 @@ s32 __CARDStart(s32 chan, void *txCallback, void *exiCallback) {
 }
 
 s32 __CARDReadPage(s32 chan, void *callback) {
+    /* Issue a memory-card page-read (cmd 0x52) and DMA 0x200 bytes into the card buffer. */
     extern u16 __CARDBlock[];
     extern s32 EXIDma(s32, s32, s32, s32, void *);
     extern void EXIDeselect(s32);
