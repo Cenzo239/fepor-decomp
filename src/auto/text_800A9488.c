@@ -978,7 +978,7 @@ void fn_800AAC64(void *arg0) {
 }
 
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void *Unit_GetItemSlot(void *, s32);
     void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
@@ -1021,7 +1021,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
         void **ef;
         void *w1;
         void *w0;
-        ret = fn_8000CAA0(lbl_8028CEF8, arg0);
+        ret = Process_CreateChild(lbl_8028CEF8, arg0);
         ef = gUiContext;
         row = 0;
         w1 = ef[1];
@@ -1126,7 +1126,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 
 #pragma use_lmw_stmw on
 void fn_800AB2A4(void *arg0) {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void *Unit_GetItemSlot(void *, s32);
     void Item_Copy(void *, void *);
     void fn_80091CD8(void *);
@@ -1169,7 +1169,7 @@ void fn_800AB2A4(void *arg0) {
         void **ef;
         void *w1;
         void *w0;
-        ret = fn_8000CAA0(lbl_8028CE90, arg0);
+        ret = Process_CreateChild(lbl_8028CE90, arg0);
         ef = gUiContext;
         row = 0;
         w1 = ef[1];

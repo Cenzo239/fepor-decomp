@@ -1064,9 +1064,9 @@ found:
 
 extern u8 lbl_802973C8[16];
 void fn_801AA120(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_802973C8[16];
-    fn_8000CAA0(lbl_802973C8, arg0);
+    Process_CreateChild(lbl_802973C8, arg0);
 }
 
 void fn_801AA14C(void *arg0) {

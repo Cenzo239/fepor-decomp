@@ -228,21 +228,21 @@ s32 fn_8012C700(void) {
 }
 
 void fn_8012C788(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_80291084[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80291084, arg1);
+    temp_r3 = Process_CreateChild(lbl_80291084, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x54) = arg0;
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 2;
 }
 
 void fn_8012C7C8(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_80291084[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80291084, arg1);
+    temp_r3 = Process_CreateChild(lbl_80291084, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x54) = arg0;
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 1;
 }
@@ -288,21 +288,21 @@ void fn_8012C808(void *arg0) {
 }
 
 void fn_8012C964(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_80290FA0[];
     void *temp_r3;
-    temp_r3 = fn_8000CAA0(lbl_80290FA0, arg0);
+    temp_r3 = Process_CreateChild(lbl_80290FA0, arg0);
     *(u32 *)((u8 *)temp_r3 + 0x54) = 0;
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 3;
 }
 
 void fn_8012C9A0(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_8012C9E8(s32, void *);
     extern u8 lbl_80290EB0[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80290EB0, arg0);
+    temp_r3 = Process_CreateChild(lbl_80290EB0, arg0);
     *(u8 *)((u8 *)temp_r3 + 0x60) = 0;
     *(void **)((u8 *)temp_r3 + 0x54) = fn_8012C9E8;
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 4;
@@ -316,10 +316,10 @@ s32 fn_8012C9E8(s32 unused, void *arg1)
 
 void fn_8012C9FC(s32 arg0, s32 arg1) {
     extern u8 lbl_80290EB0[];
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void *obj;
 
-    obj = fn_8000CAA0(lbl_80290EB0, arg1);
+    obj = Process_CreateChild(lbl_80290EB0, arg1);
     *(u8 *)((u8 *)obj + 0x60) = (u8)arg0;
     *(s32 *)((u8 *)obj + 0x54) = 0;
     *(u8 *)((u8 *)obj + 0x6C) = 0;
@@ -327,9 +327,9 @@ void fn_8012C9FC(s32 arg0, s32 arg1) {
 
 extern u8 lbl_80290E88[16];
 void fn_8012CA40(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80290E88[16];
-    fn_8000CAA0(lbl_80290E88, arg0);
+    Process_CreateChild(lbl_80290E88, arg0);
 }
 
 void fn_8012CC0C(void *arg0)

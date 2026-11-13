@@ -2591,8 +2591,10 @@ void fn_80024D18(s32 unused, void *arg1) {
 
 extern u32 gPadInput;
 #pragma cplusplus on
+#pragma opt_strength_reduction off
 extern "C" void fn_80024D74(s32 unused, void *arg1) {
     void *fn_8000B908(u8);
+    extern u32 gPadInput;
     struct Item {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -2614,18 +2616,17 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
     };
     void *item;
     struct Row *row;
-    u8 idx_u;
-    s32 idx;
+    s8 idx;
 
     if ((((u32 *)gPadInput)[1] & 0x3000003U) == 0) {
         return;
     }
-    idx_u = *((u8 *)arg1 + 0x62);
-    idx = (s8)idx_u;
+    idx = *(s8 *)((u8 *)arg1 + 0x62);
     row = (struct Row *)((u8 *)arg1 + idx);
     item = fn_8000B908(row->id);
     (*(Item **)((u8 *)item + 0x34))->v12(arg1, item);
 }
+#pragma opt_strength_reduction reset
 extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void *fn_8000B908(u8);
     void Ui_PlaySeCue(void *, s32);
@@ -3238,7 +3239,7 @@ void fn_80025DCC(void *arg0, s32 arg1) {
 }
 
 s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_802848DC[];
     extern u8 gUnits[];
     void *obj;
@@ -3248,7 +3249,7 @@ s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
     if (gBattleMap.unitMap[arg0 + arg1 * 64] == 0) {
         return 0;
     }
-    obj = fn_8000CAA0(lbl_802848DC, arg2);
+    obj = Process_CreateChild(lbl_802848DC, arg2);
     id = gBattleMap.unitMap[arg0 + arg1 * 64];
     if (id != 0) {
         unit = gUnits + (id - 1) * 0x280;
@@ -3436,9 +3437,9 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
 #pragma use_lmw_stmw reset
 extern u8 lbl_802847EC[16];
 void fn_80026374(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_802847EC[16];
-    fn_8000CAA0(lbl_802847EC, arg0);
+    Process_CreateChild(lbl_802847EC, arg0);
 }
 
 s32 fn_800263A0(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
@@ -3491,9 +3492,9 @@ void fn_800264BC(s32 *arg0, s32 arg1) {
 
 extern u8 lbl_802847C8[16];
 void fn_80026544(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_802847C8[16];
-    fn_8000CAA0(lbl_802847C8, arg0);
+    Process_CreateChild(lbl_802847C8, arg0);
 }
 
 void fn_80026570(void *arg0) {
@@ -3817,26 +3818,23 @@ void fn_80026E2C(s32 arg0) {
 }
 
 void fn_80026E88(s32 arg0) {
-    void Unit_SeparateRescue(void *, u8, u8);
+    void fn_8003EA24(void *, u8, u8);
     void fn_80183D7C(void *, s32, s8, s8, s32);
-    typedef struct {
-        void *unit;
-        s32 unk04;
-        u8 pad[7];
-        u8 unk0F;
-        u8 unk10;
-    } Ctx;
-    extern Ctx gUiContext;
-    Ctx *ctx;
+    extern u8 lbl_802EF4C8[];
+    u8 *ctx;
     void *unit;
     s32 saved;
+    u8 b0;
+    u8 b1;
 
-    ctx = &gUiContext;
-    unit = ctx->unit;
+    ctx = lbl_802EF4C8;
+    unit = *(void **)ctx;
+    b0 = ctx[0xF];
     saved = *(s32 *)((u8 *)unit + 0x194);
-    ctx->unk04 = saved;
-    Unit_SeparateRescue(unit, ctx->unk0F, ctx->unk10);
-    fn_80183D7C(gUiContext.unit, saved, (s8)ctx->unk0F, (s8)ctx->unk10, arg0);
+    b1 = ctx[0x10];
+    *(s32 *)(ctx + 4) = saved;
+    fn_8003EA24(unit, b0, b1);
+    fn_80183D7C(*(void **)lbl_802EF4C8, saved, (s8)ctx[0xF], (s8)ctx[0x10], arg0);
 }
 
 void fn_80026F08(void)

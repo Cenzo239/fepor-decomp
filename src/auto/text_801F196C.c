@@ -47,13 +47,13 @@ void fn_801F196C(M2C_UNK **arg0) {
 }
 
 void fn_801F1D70(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029A910[];
     extern u8 gCardLinkStrings[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_8029A910, arg0);
+    temp_r31 = Process_CreateChild(lbl_8029A910, arg0);
     *(s32 *)((u8 *)temp_r31 + 0x30) = fn_800C4638(0xB0, gCardLinkStrings + 0xA4, 0);
 }
 
@@ -520,13 +520,13 @@ void fn_801F230C(void *arg0) {
 }
 
 void fn_801F2DB4(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029AF78[];
     extern u8 gOptionsStrs[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_8029AF78, arg0);
+    temp_r31 = Process_CreateChild(lbl_8029AF78, arg0);
     M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0xE8, gOptionsStrs + 0x11BC, 0);
 }
 
@@ -1384,9 +1384,9 @@ void fn_801F52A8(s32 unused, s16 *p) {
 
 extern u8 lbl_8029B0E0[16];
 void fn_801F52DC(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8029B0E0[16];
-    fn_8000CAA0(lbl_8029B0E0, arg0);
+    Process_CreateChild(lbl_8029B0E0, arg0);
 }
 
 void fn_801F5308(void* arg0) {
@@ -1881,9 +1881,9 @@ void fn_801F6260(void *arg0) {
 
 extern u8 lbl_8029B198[16];
 void fn_801F649C(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8029B198[16];
-    fn_8000CAA0(lbl_8029B198, arg0);
+    Process_CreateChild(lbl_8029B198, arg0);
 }
 
 void fn_801F64C8(void) {
@@ -1922,24 +1922,24 @@ void fn_801F6594(void) {
 }
 
 void fn_801F65C8(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029B27C[];
     extern u8 gBattlePreviewStrings[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_8029B27C, arg0);
+    temp_r31 = Process_CreateChild(lbl_8029B27C, arg0);
     M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x18, gBattlePreviewStrings + 0x6A, 0);
 }
 
 void fn_801F661C(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029B1F8[];
     extern u8 gBattlePreviewStrings[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_8029B1F8, arg0);
+    temp_r31 = Process_CreateChild(lbl_8029B1F8, arg0);
     M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x210, gBattlePreviewStrings + 0x6A, 0);
 }
 
@@ -2866,9 +2866,9 @@ void fn_801F7A60(void *arg0) {
 
 extern u8 lbl_8029B438[16];
 void fn_801F8798(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8029B438[16];
-    fn_8000CAA0(lbl_8029B438, arg0);
+    Process_CreateChild(lbl_8029B438, arg0);
 }
 
 s32 fn_801F87C4(void) {
@@ -2961,11 +2961,11 @@ void fn_801F897C(void) {
 void fn_801F89AC(s32 arg0, s32 arg1) {
     extern u8 lbl_8029B394[];
     extern f32 lbl_8036BA00;
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_801FB410(void *);
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_8029B394, arg1);
+    temp_r31 = Process_CreateChild(lbl_8029B394, arg1);
     if (temp_r31 != 0) {
         fn_801FB410((u8 *)temp_r31 + 0x30);
         *(f32 *)((u8 *)temp_r31 + 0x3C) = lbl_8036BA00;
@@ -3641,7 +3641,7 @@ void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
     extern f32 lbl_8036BA00;
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void StaffRoll_VecReserve(void *, u32);
     struct Entry {
         u8 pad[0x30];
@@ -3655,7 +3655,7 @@ void *fn_801F9D50(void *arg0)
     struct Entry *tmp;
     u32 *p;
 
-    entry = (struct Entry *)fn_8000CAA0(lbl_8029B32C, arg0);
+    entry = (struct Entry *)Process_CreateChild(lbl_8029B32C, arg0);
     tmp = entry;
     if (tmp != NULL) {
         p = &tmp->unk30;

@@ -392,7 +392,7 @@ u8 fn_80105E88(s32 arg0, s32 arg1) {
 /* Load a dispos file and place units / build move paths; mode selects how entries are applied. */
 void Dispos_Apply(void *path, u32 defer, s32 mode) {
     void DebugPrint(const char *, ...);
-    void *fn_8000CAA0(void *, u32);
+    void *Process_CreateChild(void *, u32);
     u32 Res_GetByName(void *);
     void fn_80016180(void);
     void fn_800163F8(void);
@@ -596,7 +596,7 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
             fn_80016180();
             fn_800C1BDC();
         } else {
-            tmp = fn_8000CAA0(lbl_8028F2E0, arg1b);
+            tmp = Process_CreateChild(lbl_8028F2E0, arg1b);
             strcpy((u8 *)tmp + 0x30, self);
             *(u8 *)((u8 *)tmp + 0x60) = (u8)mode_local;
             *(u8 *)((u8 *)tmp + 0x64) = (u8)nibble;
@@ -1954,9 +1954,9 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
 
 void fn_80108C80(s32 arg0, s32 arg1) {
     extern u8 lbl_8028F3AC[];
-    void *fn_8000CAA0(u8 *, s32);
+    void *Process_CreateChild(u8 *, s32);
     s32 *obj;
-    obj = (s32 *)fn_8000CAA0(lbl_8028F3AC, arg1);
+    obj = (s32 *)Process_CreateChild(lbl_8028F3AC, arg1);
     obj[0x30 / 4] = arg0;
 }
 

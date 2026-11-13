@@ -55,14 +55,14 @@ void *fn_80073464(void) {
 
 s32 fn_80073474(s32 unused, s32 arg1) {
     void *fn_800241C8(s32);
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80286EF0[];
     void *p;
     void *lbl;
 
     p = fn_800241C8(arg1);
     lbl = lbl_80286EF0;
-    fn_8000CAA0(lbl, *(s32 *)((u8 *)p + 0x18));
+    Process_CreateChild(lbl, *(s32 *)((u8 *)p + 0x18));
     return 5;
 }
 
@@ -125,7 +125,7 @@ void fn_80073610(void) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_8000CAA0(void *);
+extern "C" void Process_CreateChild(void *);
 extern "C" void fn_80166AE8(s32, s32, s32, void *);
 extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
     struct Obj {
@@ -173,7 +173,7 @@ extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
         fn_80166AE8(b + x, a + y, str, arg1);
         return 0;
     }
-    fn_8000CAA0(lbl_80286ED8);
+    Process_CreateChild(lbl_80286ED8);
     return 4;
 }
 #pragma use_lmw_stmw reset

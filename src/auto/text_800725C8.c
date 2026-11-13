@@ -21,9 +21,9 @@ void fn_800725C8(void **arg0)
 
 extern u8 lbl_80286860[16];
 void fn_800725F8(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80286860[16];
-    fn_8000CAA0(lbl_80286860, arg0);
+    Process_CreateChild(lbl_80286860, arg0);
 }
 
 #pragma global_optimizer off
@@ -167,14 +167,14 @@ void fn_80072954(void *arg0) {
 }
 
 void fn_80072988(void) {
-s32 fn_8000BCA4(void *); void fn_8000CAA0(void *,s32); void fn_80023DE8(void);
+s32 fn_8000BCA4(void *); void Process_CreateChild(void *,s32); void fn_80023DE8(void);
 extern u8 gUiContext[]; extern u8 lbl_8036723A; extern u8 lbl_8026BE40[]; extern u8 lbl_80286DA8[];
 s32 temp;
 if(gUiContext[8]==1) {
 switch(lbl_8036723A & 8) {
 case 0:
 temp=fn_8000BCA4(lbl_8026BE40+0x101);
-if(temp) {fn_80023DE8(); fn_8000CAA0(lbl_80286DA8,temp);}
+if(temp) {fn_80023DE8(); Process_CreateChild(lbl_80286DA8,temp);}
 break;
 default: break;
 }
@@ -485,5 +485,5 @@ extern void fn_80006220(s32);
 extern void fn_8002D780(s32);
 extern void fn_8000BD98(void *);
 extern s32 fn_8000BCA4(void *);
-extern void fn_8000CAA0(void *, s32);
+extern void Process_CreateChild(void *, s32);
 extern void fn_80023DE8(void);

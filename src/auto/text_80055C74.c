@@ -13,14 +13,14 @@ s32 fn_80055C84(s32 *arg0) {
     return *arg0;
 }
 
-void *fn_8000CAA0(void *, s32, void *);             /* extern */
+void *Process_CreateChild(void *, s32, void *);             /* extern */
 s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
 void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80285BD0, arg2);
+    temp_r3 = Process_CreateChild(lbl_80285BD0, arg2);
     *(s32 *)((char *)temp_r3 + 0x6C) = arg1;
     strcpy((char *)temp_r3 + 0x30, arg0);
 }
@@ -1255,11 +1255,11 @@ void fn_80058A0C(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_8005902C(s32 arg0, s16 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_80285B34[];
     void *temp;
 
-    temp = fn_8000CAA0(lbl_80285B34, arg0);
+    temp = Process_CreateChild(lbl_80285B34, arg0);
     *(s16 *)((u8 *)temp + 0x32) = arg1;
 }
 
@@ -1284,11 +1284,11 @@ void fn_800590CC(void *arg0) {
 }
 
 void fn_800590D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_80285B08[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80285B08, arg3);
+    temp_r3 = Process_CreateChild(lbl_80285B08, arg3);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     *(s32 *)((u8 *)temp_r3 + 0x34) = arg1;
     *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;

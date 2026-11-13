@@ -70,7 +70,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
     extern u8 gUnitLists[];
     extern char lbl_8027EE08[];
     s32 fn_80015680(void *);
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
     void fn_801403F0(void *);
     void String_Init(void *, char *, void *);
@@ -85,7 +85,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
     }
 
     if (arg1 != NULL) {
-        obj = fn_8000CAA0(lbl_8029A164, arg1);
+        obj = Process_CreateChild(lbl_8029A164, arg1);
     } else {
         obj = Process_Create(lbl_8029A164, arg1);
     }
@@ -1816,19 +1816,19 @@ void fn_801ED970(void *arg0, void *arg1)
     extern u8 lbl_80366F00;
 
     extern void *fn_8000BCA4(void *);
-    extern void *fn_8000CAA0(void *, void *);
+    extern void *Process_CreateChild(void *, void *);
 
     u8 *entry;
     void *value;
 
     value = fn_8000BCA4(gGActorPathExt + 0x186);
 
-    entry = (u8 *)fn_8000CAA0(lbl_8029A5FC, value);
+    entry = (u8 *)Process_CreateChild(lbl_8029A5FC, value);
 
     *(void **)(entry + 0x30) = arg0;
     entry[0x38] = 2;
 
-    fn_8000CAA0(&lbl_80366F00, arg1);
+    Process_CreateChild(&lbl_80366F00, arg1);
 }
 
 void fn_801ED9DC(void *arg0, void *arg1)
@@ -1838,37 +1838,37 @@ void fn_801ED9DC(void *arg0, void *arg1)
     extern u8 lbl_80366F00;
 
     extern void *fn_8000BCA4(void *);
-    extern void *fn_8000CAA0(void *, void *);
+    extern void *Process_CreateChild(void *, void *);
 
     u8 *entry;
     void *value;
 
     value = fn_8000BCA4(gGActorPathExt + 0x186);
 
-    entry = (u8 *)fn_8000CAA0(lbl_8029A5FC, value);
+    entry = (u8 *)Process_CreateChild(lbl_8029A5FC, value);
 
     *(void **)(entry + 0x30) = arg0;
     entry[0x38] = 3;
 
-    fn_8000CAA0(&lbl_80366F00, arg1);
+    Process_CreateChild(&lbl_80366F00, arg1);
 }
 
 void fn_801EDA48(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_8029A5FC[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_8029A5FC, arg1);
+    temp_r3 = Process_CreateChild(lbl_8029A5FC, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     *(u8 *)((u8 *)temp_r3 + 0x38) = 1;
 }
 
 void fn_801EDA88(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     extern u8 lbl_8029A5FC[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_8029A5FC, arg1);
+    temp_r3 = Process_CreateChild(lbl_8029A5FC, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     *(u8 *)((u8 *)temp_r3 + 0x38) = 0;
 }

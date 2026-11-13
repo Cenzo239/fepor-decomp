@@ -997,7 +997,7 @@ s32 fn_80075E04(void) {
 }
 
 s32 fn_80075EB4(void *arg1, void *arg2) {
-    M2C_UNK fn_8000CAA0(M2C_UNK *, void *);
+    M2C_UNK Process_CreateChild(M2C_UNK *, void *);
     void *Item_GetFlagsPtr();
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK fn_800285C0(M2C_UNK *);
@@ -1022,7 +1022,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
         M2C_FIELD(temp_r30, s8 *, 0x62) = fn_80037E00(M2C_FIELD(&gUiContext, void **, 0));
     }
     if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (fn_800285C0(&gUiContext), temp_r3 = Item_GetFlagsPtr(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
-        fn_8000CAA0(&lbl_802872B0, M2C_FIELD(arg1, void **, 0x18));
+        Process_CreateChild(&lbl_802872B0, M2C_FIELD(arg1, void **, 0x18));
     }
     temp_r30_2 = M2C_FIELD(arg1, void **, 0x18);
     temp_r31 = M2C_FIELD(temp_r30_2, u8 *, 0x62);

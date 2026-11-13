@@ -769,11 +769,11 @@ head=self->owner;block->next=head;block->prev=0;if(head)head->prev=block;self->o
 
 #pragma global_optimizer on
 void fn_800C5EF8(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     void Process_Create(void *, s32);
     extern u8 lbl_8028D908[];
     extern u8 lbl_8028D7A4[];
-    fn_8000CAA0(lbl_8028D908, arg0);
+    Process_CreateChild(lbl_8028D908, arg0);
     Process_Create(lbl_8028D7A4, 5);
 }
 
@@ -6298,7 +6298,7 @@ Process_ClearFunc(lbl_80367888);
 
 extern "C" void fn_800D5784(s32 arg0) {
     void DebugPrint(char *, ...);
-    s32 fn_8000CAA0(void *, s32);
+    s32 Process_CreateChild(void *, s32);
     s32 Process_Create(void *, s32);
     extern char lbl_802704F8[];
     extern u8 lbl_80284668[];
@@ -6315,9 +6315,9 @@ extern "C" void fn_800D5784(s32 arg0) {
     gGameScene = 0;
     lbl_8036788C = 1;
     if (lbl_80367878 != 0) {
-        temp = fn_8000CAA0(lbl_8028DA48, arg0);
+        temp = Process_CreateChild(lbl_8028DA48, arg0);
     } else {
-        temp = fn_8000CAA0(lbl_80284668, arg0);
+        temp = Process_CreateChild(lbl_80284668, arg0);
     }
     lbl_80367884 = temp;
     lbl_80367888 = Process_Create(lbl_8028DA70, arg0);
@@ -6325,7 +6325,7 @@ extern "C" void fn_800D5784(s32 arg0) {
 
 void fn_800D5818(s32 arg0) {
     void DebugPrint(void *, ...);
-    s32 fn_8000CAA0(void *, s32);
+    s32 Process_CreateChild(void *, s32);
     s32 Process_Create(void *, s32);
     extern char lbl_802704F8[];
     extern u8 lbl_80284668[];
@@ -6341,7 +6341,7 @@ void fn_800D5818(s32 arg0) {
     gGameScene = 0;
     lbl_8036788C = 0;
     lbl_80367878 = 0;
-    temp = fn_8000CAA0(lbl_80284668, arg0);
+    temp = Process_CreateChild(lbl_80284668, arg0);
     lbl_80367884 = temp;
     lbl_80367888 = Process_Create(lbl_8028DA70, temp);
 }
@@ -8196,7 +8196,7 @@ void fn_800DB110(void *arg0) {
     u8 *Fog_GetColor(void);
     void *Heap_Alloc(s32);
     void *fn_800D9B10(void *);
-    void fn_8000CAA0(void *, void *);
+    void Process_CreateChild(void *, void *);
     extern char lbl_802711B0[];
     extern u8 lbl_80367878;
     extern s32 lbl_803678B8;
@@ -8213,7 +8213,7 @@ void fn_800DB110(void *arg0) {
         tmp = fn_800D9B10(tmp);
     }
     lbl_803678B8 = (s32)tmp;
-    fn_8000CAA0(lbl_8028DDF8, arg0);
+    Process_CreateChild(lbl_8028DDF8, arg0);
 }
 
 void *fn_800DB18C(void *arg0, s16 arg1) {
@@ -14561,9 +14561,9 @@ void fn_800E99CC(void *arg0) {
 
 extern u8 lbl_8028E4A4[16];
 void fn_800E99E4(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028E4A4[16];
-    fn_8000CAA0(lbl_8028E4A4, arg0);
+    Process_CreateChild(lbl_8028E4A4, arg0);
 }
 
 void fn_800E9A10(s32 arg0) {
@@ -14607,9 +14607,9 @@ void fn_800E9A94(void) {
 
 extern u8 lbl_8028E484[16];
 void fn_800E9AE4(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028E484[16];
-    fn_8000CAA0(lbl_8028E484, arg0);
+    Process_CreateChild(lbl_8028E484, arg0);
 }
 
 #pragma global_optimizer off
@@ -14666,7 +14666,7 @@ void Card_RequestWrite(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gCardWork.unkA00C = arg1;
     gCardWork.unkA010 = arg2;
     gCardWork.unkA014 = arg3;
-    fn_8000CAA0(lbl_8028E420, arg4);
+    Process_CreateChild(lbl_8028E420, arg4);
 }
 
 void fn_800E9CE4(s32 arg0) {
@@ -14846,7 +14846,7 @@ void fn_800EA540(s32 arg0, s32 arg1) {
     extern u8 lbl_8028E3EC[];
 
     gCardWork.unkA034 = arg0;
-    fn_8000CAA0(lbl_8028E3EC, arg1);
+    Process_CreateChild(lbl_8028E3EC, arg1);
 }
 
 void fn_800EA57C(void)
@@ -14873,7 +14873,7 @@ void fn_800EA7CC(s32 arg0, s32 arg1) {
     extern u8 lbl_8028E358[];
 
     gCardWork.unkA034 = arg0;
-    fn_8000CAA0(lbl_8028E358, arg1);
+    Process_CreateChild(lbl_8028E358, arg1);
 }
 
 void fn_800EA808(void) {
@@ -15117,14 +15117,14 @@ void fn_800EB028(s32 arg0) {
 
 void fn_800EB210(u32 arg0) {
     void *Process_Create(void *, s32);
-    void *fn_8000CAA0(void *, u32);
+    void *Process_CreateChild(void *, u32);
     extern u8 lbl_8028E308[];
 
     if (arg0 == 0U) {
         Process_Create(lbl_8028E308, 2);
         return;
     }
-    fn_8000CAA0(lbl_8028E308, arg0);
+    Process_CreateChild(lbl_8028E308, arg0);
 }
 
 void fn_800EB258(void) {
@@ -20932,9 +20932,9 @@ void fn_800FC490(void *arg0) {
 
 extern u8 lbl_8028E758[16];
 void fn_800FC49C(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028E758[16];
-    fn_8000CAA0(lbl_8028E758, arg0);
+    Process_CreateChild(lbl_8028E758, arg0);
 }
 
 void fn_800FC4C8(void *unused, void *arg1) {
@@ -21006,20 +21006,20 @@ s32 fn_800FC5F8(void) {
 }
 
 void fn_800FC600(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028E7F8[];
     extern u8 gAiState[];
 
-    fn_8000CAA0(lbl_8028E7F8, arg0);
+    Process_CreateChild(lbl_8028E7F8, arg0);
     gAiState[1] = 8;
 }
 
 void fn_800FC63C(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028E7F8[];
     extern u8 gAiState[];
 
-    fn_8000CAA0(lbl_8028E7F8, arg0);
+    Process_CreateChild(lbl_8028E7F8, arg0);
     gAiState[1] = 1;
 }
 
@@ -22295,7 +22295,7 @@ void fn_800FF75C(void *arg0) {
 
 void fn_800FF918(s32 arg0) {
     extern u16 lbl_8028E888[66];
-    fn_8000CAA0(lbl_8028E888, arg0);
+    Process_CreateChild(lbl_8028E888, arg0);
     fn_800288E4();
 }
 

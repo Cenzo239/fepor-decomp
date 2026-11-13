@@ -264,12 +264,12 @@ s32 fn_80132A64(void) {
 }
 
 void *fn_80132B00(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     M2C_UNK fn_8016A6A4(void *);
     extern u8 lbl_80276270[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80276270, arg0);
+    temp_r3 = Process_CreateChild(lbl_80276270, arg0);
     if (temp_r3 != NULL) {
         fn_8016A6A4(temp_r3);
     }
@@ -8383,7 +8383,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     extern void *lbl_80292258;
     extern f32 lbl_8036A730;
     extern f32 lbl_8036A740;
-    void *fn_8000CAA0(void *, s32, void *);
+    void *Process_CreateChild(void *, s32, void *);
     void *Process_Create(void *, s32, void *);
     void *fn_8013FCE0(void *, void *, void **, void **);
     void *fn_80140B04(void *);
@@ -8395,7 +8395,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     (void)lbl_80292258;
     (void)lbl_8036A730;
     (void)lbl_8036A740;
-    (void)fn_8000CAA0;
+    (void)Process_CreateChild;
     (void)Process_Create;
     (void)fn_8013FCE0;
     (void)fn_80140B04;
@@ -9391,7 +9391,7 @@ void fn_80143E0C(void *unit, s16 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_80143F64(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void Ui_AddChild(void *, void *);
     void fn_801403F0(void);
     extern u8 lbl_80292320[];
@@ -9412,7 +9412,7 @@ extern "C" void fn_80143F64(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     if (arg2 != ((Obj *)arg0)->v10()) {
         *(s16 *)((u8 *)arg0 + 0x24) = 6;
-        temp = fn_8000CAA0(lbl_80292320, arg1);
+        temp = Process_CreateChild(lbl_80292320, arg1);
         if (temp != NULL) {
             fn_801403F0();
         }

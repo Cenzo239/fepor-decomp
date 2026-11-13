@@ -452,7 +452,7 @@ void fn_80099AD0(void *arg0) {
 void fn_80099BF8(void *arg0) {
     s32 Event_GetCmdFlags(s16);
     s32 fn_80096EEC(s32 *, s32);
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void Process_Goto(void *, s32);
     extern u8 lbl_80289C38[];
     s32 buf[19];
@@ -469,7 +469,7 @@ void fn_80099BF8(void *arg0) {
     for (i = 0; i < count; i++) {
         val = buf[count - (i + 1)];
         if (val != 0x40000) {
-            obj = fn_8000CAA0(lbl_80289C38, chain);
+            obj = Process_CreateChild(lbl_80289C38, chain);
             *(s32 *)((u8 *)obj + 0x60) = val;
             chain = obj;
         }

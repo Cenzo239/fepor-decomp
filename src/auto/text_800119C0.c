@@ -1643,9 +1643,9 @@ void fn_8001594C(void *arg0, s8 arg1) {
 }
 
 void fn_80015960(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80284128[16];
-    fn_8000CAA0(lbl_80284128, arg0);
+    Process_CreateChild(lbl_80284128, arg0);
 }
 
 void fn_8001598C(void)

@@ -1343,7 +1343,7 @@ void fn_800A6450(void) {
 #pragma global_optimizer on
 s32 fn_800A6510(s32 arg0) {
     void fn_80094A08(s32, s32);
-    void fn_8000CAA0(void *, s32, void *);
+    void Process_CreateChild(void *, s32, void *);
     extern struct {
         s32 unk0;
         s32 unk4;
@@ -1357,7 +1357,7 @@ s32 fn_800A6510(s32 arg0) {
 
     fn_80094A08(gUiContext.unk0, gUiContext.unkA);
     *(u32 *)(gBattle + 0xCAC) |= 0x2000;
-    fn_8000CAA0(lbl_8028C6D8, arg0, gBattle);
+    Process_CreateChild(lbl_8028C6D8, arg0, gBattle);
     return 1;
 }
 
@@ -2600,9 +2600,9 @@ void fn_800A904C(s32 arg0) {
 
 extern u8 lbl_8028C870[16];
 void fn_800A9088(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8028C870[16];
-    fn_8000CAA0(lbl_8028C870, arg0);
+    Process_CreateChild(lbl_8028C870, arg0);
 }
 
 void fn_800A90B4(void) {

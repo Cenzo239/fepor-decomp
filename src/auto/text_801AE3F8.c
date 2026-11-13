@@ -12,7 +12,7 @@ extern u8 lbl_802917D0[];
 extern struct unk_struct lbl_80331C6C;
 
 void *fn_801AE3F8(u32 arg0) {
-    void *fn_8000CAA0(void *, u32);
+    void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     extern u8 lbl_802975D0[];
@@ -20,7 +20,7 @@ void *fn_801AE3F8(u32 arg0) {
     void *var_r31;
 
     if (arg0 != 0U) {
-        var_r31 = fn_8000CAA0(lbl_802975D0, arg0);
+        var_r31 = Process_CreateChild(lbl_802975D0, arg0);
     } else {
         var_r31 = Process_Create(lbl_802975D0, arg0);
     }
@@ -2265,7 +2265,7 @@ extern "C" void fn_801B27B0(void *arg0) {
 #pragma cplusplus reset
 
 void *fn_801B2A80(u32 arg0) {
-    void *fn_8000CAA0(void *, u32, void *);
+    void *Process_CreateChild(void *, u32, void *);
     void *Process_Create(void *, u32, void *);
     void fn_801403F0(void *);
     extern u8 lbl_802975D0[];
@@ -2274,7 +2274,7 @@ void *fn_801B2A80(u32 arg0) {
     void *var_r31;
     
     if (arg0 != 0U) {
-        var_r31 = fn_8000CAA0(lbl_802975D0, arg0, lbl_802975D0);
+        var_r31 = Process_CreateChild(lbl_802975D0, arg0, lbl_802975D0);
     } else {
         var_r31 = Process_Create(lbl_802975D0, arg0, lbl_802975D0);
     }

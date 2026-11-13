@@ -490,7 +490,7 @@ void fn_80183EAC(s32 arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
 void *MoveAnim_BindMapPath(void *unit, void *parent) {
     void fn_8000A388(void *, void *, void *);
     void MoveAnim_MatchUnit(void *, void *);
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void *fn_800C45B8(s32, void *, s32);
     void Unit_SetModelAlpha(void *, s32);
     void MoveAnim_BuildPathHeights(void *);
@@ -513,7 +513,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
     fn_8000A388(gMoveAnimClass, MoveAnim_MatchUnit, search);
     anim = search[13];
     if (anim == 0) {
-        anim = fn_8000CAA0(gMoveAnimClass, parent);
+        anim = Process_CreateChild(gMoveAnimClass, parent);
         *(void **)(anim + 0x30) = unit;
         *(u16 *)(anim + 0x52) = 0x40;
         *(void **)(anim + 0x54) = fn_800C45B8(-128, (void *)((u32)MoveAnim_str + 0x1A9), 0);
@@ -567,7 +567,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 /* Find or create a MoveAnim for unit and append the given path steps. */
 void *MoveAnim_BindPath(void *unit, u8 *path, u16 flagsIn, void *parent) {
 void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
-void *fn_8000CAA0(void *,void *); void *fn_800C45B8(s32,void *,s32);
+void *Process_CreateChild(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void Unit_SetModelAlpha(void *,s32); void MoveAnim_BuildPathHeights(void *);
 extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
@@ -576,7 +576,7 @@ search[12]=unit; search[13]=0;
 fn_8000A388(gMoveAnimClass,MoveAnim_MatchUnit,search);
 anim=search[13];
 if(anim==0) {
-anim=fn_8000CAA0(gMoveAnimClass,parent);
+anim=Process_CreateChild(gMoveAnimClass,parent);
 *(void **)(anim+0x30)=unit;
 *(u16 *)(anim+0x52)=flagsIn;
 *(void **)(anim+0x54)=fn_800C45B8(-128,MoveAnim_str+0x1A9,0);
@@ -6396,7 +6396,7 @@ int fn_80193DC0(void *arg0) {
 }
 
 void *fn_80193DD8(u32 arg0) {
-    void *fn_8000CAA0(void *, u32);
+    void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, u32);
     void fn_801403F0(void *);
     extern u8 lbl_802965C0[];
@@ -6404,7 +6404,7 @@ void *fn_80193DD8(u32 arg0) {
     void *var_r31;
 
     if (arg0 != 0U) {
-        var_r31 = fn_8000CAA0(lbl_802965C0, arg0);
+        var_r31 = Process_CreateChild(lbl_802965C0, arg0);
     } else {
         var_r31 = Process_Create(lbl_802965C0, arg0);
     }
@@ -6579,7 +6579,7 @@ void fn_80194174(void) {
 #pragma cplusplus on
 extern "C" void fn_80194178(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8000CAA0(void *, void *, void *);
+    void Process_CreateChild(void *, void *, void *);
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8001D580(void *);
@@ -6636,7 +6636,7 @@ extern "C" void fn_80194178(void *arg0) {
                 *(u8 *)((u8 *)temp_r31 + 5) =
                     (u8)__rlwimi(*(u8 *)((u8 *)temp_r31 + 5), 0, 7, 24, 24);
                 *(void **)(gUiContext + 4) = temp_r30;
-                fn_8000CAA0(lbl_802966B0, arg0, gUiContext);
+                Process_CreateChild(lbl_802966B0, arg0, gUiContext);
             }
         }
         fn_8001D580(temp_r31);
@@ -9026,9 +9026,9 @@ void fn_80199C2C(void) {
 }
 
 void fn_80199CC0(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80296ED4[16];
-    fn_8000CAA0(lbl_80296ED4, arg0);
+    Process_CreateChild(lbl_80296ED4, arg0);
 }
 
 void fn_80199CEC(void *arg0) {
@@ -9257,10 +9257,10 @@ s32 MapSelect_SetGhostColor(void *arg0) {
 
 void fn_8019A7E8(s32 arg0) {
     extern u16 lbl_80296DF0[];
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
 
-    fn_8019D51C(fn_8000CAA0(lbl_80296DF0, arg0), 0, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296DF0, arg0), 0, 0);
 }
 
 #pragma use_lmw_stmw on
@@ -9668,16 +9668,16 @@ loop_24:
     return sp8;
 }
 void fn_8019B6B4(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296938[];
     extern u8 MapSelect_str[];
 
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, MapSelect_str + 0x166);
+    fn_8019D51C(Process_CreateChild(lbl_80296938, arg0), arg1, MapSelect_str + 0x166);
 }
 
 void fn_8019B704(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     void fn_8004FC70(void *, s32);
     extern u8 lbl_80296D5C[];
@@ -9685,7 +9685,7 @@ void fn_8019B704(s32 arg0, s32 arg1) {
     void *temp_r30;
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
+    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
     fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x17A);
     temp_r30 = 0;
     M2C_FIELD(temp_r31, u8 *, 0x5C) = (u8)(s32)temp_r30;
@@ -9702,7 +9702,7 @@ void fn_8019B704(s32 arg0, s32 arg1) {
 }
 
 void fn_8019B79C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     void fn_8004FC70(void *, s32);
     extern u8 lbl_80296D5C[];
@@ -9711,7 +9711,7 @@ void fn_8019B79C(s32 arg0, s32 arg1) {
     void *var_r31;
     void *temp_r3;
 
-    temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
+    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
     fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x185);
     ((u8 *)temp_r31)[0x5C] = 1;
     temp_r3 = *(void **)((u8 *)temp_r31 + 0x34);
@@ -9728,25 +9728,25 @@ void fn_8019B79C(s32 arg0, s32 arg1) {
 }
 
 void fn_8019B83C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
     extern u8 MapSelect_str[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
+    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
     fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x194);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 3;
 }
 
 void fn_8019B8A0(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
     extern u8 MapSelect_str[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
+    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
     fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x1A4);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
@@ -9895,12 +9895,12 @@ s32 MapSelect_Update(void *proc) {
 }
 
 void fn_8019BC50(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296CF8[];
     u8 *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296CF8, arg2);
+    temp_r31 = Process_CreateChild(lbl_80296CF8, arg2);
     fn_8019D51C(temp_r31, 0, NULL);
     temp_r31[0x5D] = arg0;
     temp_r31[0x5E] = arg1;
@@ -9908,12 +9908,12 @@ void fn_8019BC50(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_8019BCC0(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296CF8[];
     u8 *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296CF8, arg2);
+    temp_r31 = Process_CreateChild(lbl_80296CF8, arg2);
     fn_8019D51C(temp_r31, 0, NULL);
     temp_r31[0x5D] = arg0;
     temp_r31[0x5E] = arg1;
@@ -9935,13 +9935,13 @@ void fn_8019BD30(u8 *arg0) {
 }
 
 void fn_8019BD8C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296CAC[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296CAC, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296CAC, arg0), temp, 0);
 }
 
 void fn_8019BDD4(void *arg0) {
@@ -9968,7 +9968,7 @@ void fn_8019BDD4(void *arg0) {
 
 void fn_8019BE54(void *arg0, void *arg1)
 {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C74[];
@@ -9976,7 +9976,7 @@ void fn_8019BE54(void *arg0, void *arg1)
 
     void *result;
 
-    result = fn_8000CAA0(lbl_80296C74, arg0);
+    result = Process_CreateChild(lbl_80296C74, arg0);
 
     fn_8019D51C(
         result,
@@ -10050,29 +10050,29 @@ s32 fn_8019BF5C(void *arg0) {
 }
 
 void fn_8019C00C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296D5C[];
     extern u8 MapSelect_str[];
     void *temp_r31;
 
-    temp_r31 = fn_8000CAA0(lbl_80296D5C, arg0);
+    temp_r31 = Process_CreateChild(lbl_80296D5C, arg0);
     fn_8019D51C(temp_r31, arg1, MapSelect_str + 0x1A4);
     M2C_FIELD(temp_r31, u8 *, 0x5C) = 2;
 }
 
 void fn_8019C070(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, void *);
     extern u8 lbl_80296938[];
     extern u8 MapSelect_str[];
 
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), arg1, MapSelect_str + 0x1D4);
+    fn_8019D51C(Process_CreateChild(lbl_80296938, arg0), arg1, MapSelect_str + 0x1D4);
 }
 
 void fn_8019C0C0(void *arg0, void *arg1)
 {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
@@ -10080,7 +10080,7 @@ void fn_8019C0C0(void *arg0, void *arg1)
 
     void *result;
 
-    result = fn_8000CAA0(lbl_80296C00, arg0);
+    result = Process_CreateChild(lbl_80296C00, arg0);
 
     fn_8019D51C(
         result,
@@ -10091,7 +10091,7 @@ void fn_8019C0C0(void *arg0, void *arg1)
 
 void fn_8019C110(void *arg0, void *arg1)
 {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
@@ -10099,7 +10099,7 @@ void fn_8019C110(void *arg0, void *arg1)
 
     void *result;
 
-    result = fn_8000CAA0(lbl_80296C00, arg0);
+    result = Process_CreateChild(lbl_80296C00, arg0);
 
     fn_8019D51C(
         result,
@@ -10118,7 +10118,7 @@ extern void* fn_80053C30(s32, void*);
 s32 fn_8019CC04(void *arg0);
 void fn_8019C160(void *arg0, void *arg1)
 {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_8019D51C(void *, void *, const char *);
 
     extern u8 lbl_80296C00[];
@@ -10126,7 +10126,7 @@ void fn_8019C160(void *arg0, void *arg1)
 
     void *result;
 
-    result = fn_8000CAA0(lbl_80296C00, arg0);
+    result = Process_CreateChild(lbl_80296C00, arg0);
 
     fn_8019D51C(
         result,
@@ -10167,63 +10167,63 @@ void fn_8019C1F8(void *arg0)
 
 extern u16 gUnkGlobalVar_80296B20[];
 void fn_8019C394(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B20, arg0), temp, 0);
 }
 
 void fn_8019C3DC(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B20, arg0), temp, 0);
 }
 
 void fn_8019C424(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B20, arg0), temp, 0);
 }
 
 void fn_8019C46C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B20, arg0), temp, 0);
 }
 
 void fn_8019C4B4(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B20, arg0), temp, 0);
 }
 
 void fn_8019C4FC(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296B98[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296B98, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296B98, arg0), temp, 0);
 }
 
 void fn_8019C544(void *arg0) {
@@ -10255,43 +10255,43 @@ void fn_8019C544(void *arg0) {
 }
 
 void fn_8019C5EC(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296A80[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296A80, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296A80, arg0), temp, 0);
 }
 
 void fn_8019C634(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296A80[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296A80, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296A80, arg0), temp, 0);
 }
 
 void fn_8019C67C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296A80[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296A80, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296A80, arg0), temp, 0);
 }
 
 void fn_8019C6C4(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296A80[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296A80, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296A80, arg0), temp, 0);
 }
 
 void fn_8019C70C(void *arg0) {
@@ -10351,23 +10351,23 @@ void fn_8019C7B4(void *arg0) {
 }
 
 void fn_8019C85C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296A20[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296A20, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296A20, arg0), temp, 0);
 }
 
 void fn_8019C8A4(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_802969E4[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_802969E4, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_802969E4, arg0), temp, 0);
 }
 
 void fn_8019C8EC(void *arg0) {
@@ -10399,43 +10399,43 @@ void fn_8019C8EC(void *arg0) {
 }
 
 void fn_8019C994(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296970[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296970, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296970, arg0), temp, 0);
 }
 
 void fn_8019C9DC(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296970[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296970, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296970, arg0), temp, 0);
 }
 
 void fn_8019CA24(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296938[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296938, arg0), temp, 0);
 }
 
 void fn_8019CA6C(s32 arg0, s32 arg1) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_8019D51C(void *, s32, s32);
     extern u8 lbl_80296938[];
     s32 temp;
 
     temp = arg1;
-    fn_8019D51C(fn_8000CAA0(lbl_80296938, arg0), temp, 0);
+    fn_8019D51C(Process_CreateChild(lbl_80296938, arg0), temp, 0);
 }
 
 void fn_8019CAB4(void *arg0) {
@@ -10850,7 +10850,7 @@ s32 fn_8019D7A8(void) {
     extern s32 gUiInputFlags;
     extern u8 lbl_80296F50[];
 
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_80013864(void);
     s32 fn_800C0658(void);
     u8 fn_80194E38(void);
@@ -10859,7 +10859,7 @@ s32 fn_8019D7A8(void) {
         return 0;
     }
     if (fn_80194E38() != 0) {
-        fn_8000CAA0(lbl_80296F50, fn_800C0658());
+        Process_CreateChild(lbl_80296F50, fn_800C0658());
         fn_80013864();
     }
     return 1;
@@ -11245,7 +11245,7 @@ s32 fn_8019E764(void) {
     extern s32 gUiInputFlags;
     extern u8 lbl_80297058[];
 
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_80013864(void);
     void fn_8005376C(void);
     u8 fn_800537E8(void);
@@ -11256,7 +11256,7 @@ s32 fn_8019E764(void) {
         return 0;
     }
     if (fn_800537E8() != 0) {
-        fn_8000CAA0(lbl_80297058, fn_800C0658());
+        Process_CreateChild(lbl_80297058, fn_800C0658());
         fn_80013864();
     }
     return 1;
@@ -11281,7 +11281,7 @@ void fn_8019E7C0(void *arg0)
 }
 
 s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_80013864(void);
     void GActor_RequestRes(s32);
     s32 fn_800C0658(void);
@@ -11293,7 +11293,7 @@ s32 fn_8019E818(s32 arg0, s32 arg1, s32 arg2) {
     if (gUiInputFlags & 1) {
         return 0;
     }
-    obj = fn_8000CAA0(lbl_80297040, fn_800C0658());
+    obj = Process_CreateChild(lbl_80297040, fn_800C0658());
     strcpy((u8 *)obj + 0x30, arg0);
     *(s32 *)((u8 *)obj + 0x50) = arg1;
     *(s32 *)((u8 *)obj + 0x54) = arg2;
@@ -11792,11 +11792,11 @@ s32 fn_8019F9B4(s32 arg0, s32 arg1) {
 
 s32 fn_8019FC08(void) {
     u8 fn_8001772C(void);
-    M2C_UNK fn_8000CAA0(void *, s32);
+    M2C_UNK Process_CreateChild(void *, s32);
     M2C_UNK fn_80013864(void);
     extern u8 lbl_80297010[];
     if (fn_8001772C() != 0) {
-        fn_8000CAA0(lbl_80297010, fn_800C0658());
+        Process_CreateChild(lbl_80297010, fn_800C0658());
         fn_80013864();
     }
     return 1;
@@ -12485,7 +12485,7 @@ s32 fn_801A147C(void *arg0, s32 *arg1, s32 *arg2) {
 s32 fn_801A1604(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C0658(void);
     void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
@@ -12511,7 +12511,7 @@ s32 fn_801A1604(s32 arg0) {
     temp = Process_Find(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
-        fn_8000CAA0(lbl_80296FCC, fn_800C0658());
+        Process_CreateChild(lbl_80296FCC, fn_800C0658());
     }
     return 1;
 }
@@ -12524,7 +12524,7 @@ s32 fn_801A16BC(void *arg0) {
 s32 fn_801A16E8(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C0658(void);
     void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
@@ -12550,7 +12550,7 @@ s32 fn_801A16E8(s32 arg0) {
     temp = Process_Find(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
-        fn_8000CAA0(lbl_80296FCC, fn_800C0658());
+        Process_CreateChild(lbl_80296FCC, fn_800C0658());
     }
     return 1;
 }
@@ -12563,7 +12563,7 @@ s32 fn_801A17A0(void *arg0) {
 s32 fn_801A17CC(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C0658(void);
     void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
@@ -12589,7 +12589,7 @@ s32 fn_801A17CC(s32 arg0) {
     temp = Process_Find(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
-        fn_8000CAA0(lbl_80296FCC, fn_800C0658());
+        Process_CreateChild(lbl_80296FCC, fn_800C0658());
     }
     return 1;
 }
@@ -12652,7 +12652,7 @@ s32 fn_801A1960(s32 arg0) {
 s32 fn_801A19D8(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C0658(void);
     void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
@@ -12678,7 +12678,7 @@ s32 fn_801A19D8(s32 arg0) {
     temp = Process_Find(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
-        fn_8000CAA0(lbl_80296FCC, fn_800C0658());
+        Process_CreateChild(lbl_80296FCC, fn_800C0658());
     }
     return 1;
 }
@@ -13117,7 +13117,7 @@ s32 fn_801A23D0(void) {
 
 s32 fn_801A2464(void) {
     void *Process_Find(void *);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     s32 fn_800C0658(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
@@ -13128,7 +13128,7 @@ s32 fn_801A2464(void) {
     temp = Process_Find(lbl_80296FA8);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
-        fn_8000CAA0(lbl_80296FCC, fn_800C0658());
+        Process_CreateChild(lbl_80296FCC, fn_800C0658());
     }
     return 1;
 }

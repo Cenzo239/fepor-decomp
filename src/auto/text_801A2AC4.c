@@ -139,9 +139,9 @@ s32 fn_801A2D2C(void) {
 
 extern u8 lbl_80297144[16];
 void fn_801A2E3C(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80297144[16];
-    fn_8000CAA0(lbl_80297144, arg0);
+    Process_CreateChild(lbl_80297144, arg0);
 }
 
 s32 fn_801A2E68(void) {
@@ -246,9 +246,9 @@ s32 fn_801A30C0(s32 arg0) {
 }
 
 void fn_801A3164(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_80297118[16];
-    fn_8000CAA0(lbl_80297118, arg0);
+    Process_CreateChild(lbl_80297118, arg0);
 }
 
 s32 fn_801A3190(void) {

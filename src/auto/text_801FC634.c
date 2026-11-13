@@ -1398,9 +1398,9 @@ s32 fn_801FFD74(void) {
 }
 
 void fn_801FFD7C(s32 arg0) {
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     extern u8 lbl_8029B748[16];
-    fn_8000CAA0(lbl_8029B748, arg0);
+    Process_CreateChild(lbl_8029B748, arg0);
 }
 
 void fn_801FFDA8(void) {

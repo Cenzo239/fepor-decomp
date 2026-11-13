@@ -530,7 +530,7 @@ void fn_8014DE70(s32 arg0) {
     extern s8 lbl_80367701;
     lbl_80367701 = 0;
     lbl_80367700 = 0;
-    fn_8000CAA0(lbl_802937EC, arg0);
+    Process_CreateChild(lbl_802937EC, arg0);
 }
 
 #pragma global_optimizer off

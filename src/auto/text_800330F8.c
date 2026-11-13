@@ -9282,7 +9282,7 @@ void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
-    void *fn_8000CAA0(void *);
+    void *Process_CreateChild(void *);
     void *Process_Create(void *, s32);
     void Model_SetColor(s32, u8, u8, u8);
     void Model_SetAlpha(s32, u8);
@@ -9301,7 +9301,7 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
         return;
     }
     if (arg1 != 0U) {
-        var_r3 = fn_8000CAA0(lbl_80285738);
+        var_r3 = Process_CreateChild(lbl_80285738);
     } else {
         var_r3 = Process_Create(lbl_80285738, 3);
     }
@@ -9364,13 +9364,13 @@ void fn_800494F0(void *arg0) {
 }
 
 void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
-    void *fn_8000CAA0(void *);
+    void *Process_CreateChild(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_802856E8[];
     void *var_r3;
 
     if (arg1 != 0U) {
-        var_r3 = fn_8000CAA0(lbl_802856E8);
+        var_r3 = Process_CreateChild(lbl_802856E8);
     } else {
         var_r3 = Process_Create(lbl_802856E8, 3);
     }

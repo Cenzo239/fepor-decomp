@@ -12,7 +12,7 @@ void fn_801E4540(void)
     void fn_800C0818(s32);
     void fn_8008A290(s32, s32);
     s32 fn_801270A4(void);
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_80142060(void *);
     void Process_Goto(void *, s32);
     extern u8 lbl_80299FE0[];
@@ -20,7 +20,7 @@ void fn_801E4540(void)
 
     fn_800C0818(1);
     fn_8008A290(1, 0);
-    ptr = (u8 *)fn_8000CAA0(lbl_80299FE0, fn_801270A4());
+    ptr = (u8 *)Process_CreateChild(lbl_80299FE0, fn_801270A4());
     if (ptr == 0) {
         return;
     }
@@ -2717,14 +2717,14 @@ void fn_801E9C24(void) {
 
 void *fn_801E9C70(void *arg0)
 {
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_80142060(void *);
 
     extern u8 lbl_80299FE0[];
 
     u8 *ptr;
 
-    ptr = (u8 *)fn_8000CAA0(lbl_80299FE0, arg0);
+    ptr = (u8 *)Process_CreateChild(lbl_80299FE0, arg0);
 
     if (ptr != 0) {
         *(u8 *)(ptr + 0x30) = 0;

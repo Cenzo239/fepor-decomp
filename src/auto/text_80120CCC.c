@@ -674,7 +674,7 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
     extern s32 gUiInputFlags;
     extern u8 gBattleState[];
     extern u8 lbl_802902D8[];
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void *entry;
     s32 flags;
     u32 nib;
@@ -687,7 +687,7 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
         case 0:
             if ((flags & 0x2000) ||
                 (nib = (((u8 *)gBattleState)[0x9c] >> 3) & 3, nib != 3U)) {
-                entry = fn_8000CAA0(lbl_802902D8, arg1);
+                entry = Process_CreateChild(lbl_802902D8, arg1);
                 *(u16 *)((char *)entry + 0x28) = a2;
             }
             break;
@@ -814,7 +814,7 @@ void fn_80122314(void *arg0) {
 }
 
 void fn_80122450(void *arg0) {
-    void *fn_8000CAA0(void *);
+    void *Process_CreateChild(void *);
     void *fn_80109180(s32, u32);
     void fn_80109C80(void *, u8);
     extern u32 gUiInputFlags;
@@ -825,7 +825,7 @@ void fn_80122450(void *arg0) {
     void *sub;
 
     if ((gUiInputFlags & 3) == 0) {
-        entry = fn_8000CAA0(lbl_802902AC);
+        entry = Process_CreateChild(lbl_802902AC);
         y = *(s16 *)((u8 *)arg0 + 0x62);
         x = *(s16 *)((u8 *)arg0 + 0x60);
         *(u32 *)((u8 *)entry + 0x30) = *(u32 *)((u8 *)arg0 + 0x5C);
@@ -873,7 +873,7 @@ void fn_801225D4(void *arg0) {
 extern s32 gUiInputFlags;
 extern u16 gUiPanelFlags;
 extern u8 lbl_80290298[];
-void *fn_8000CAA0(void *);
+void *Process_CreateChild(void *);
 u8 *obj=arg0;
 s32 diff;
 gUiPanelFlags &= ~0x200;
@@ -892,7 +892,7 @@ diff=(s8)obj[0x47]+1-(s8)obj[0x46];
 if(diff) {
 u8 *entry;
 if(diff>4) diff=4;
-entry=fn_8000CAA0(lbl_80290298);
+entry=Process_CreateChild(lbl_80290298);
 *(s32 *)(entry+0x38)=diff*obj[0x49];
 { s32 t=(s8)obj[0x44]; t*=diff; *(s32 *)(entry+0x34)=t; }
 *(void **)(entry+0x30)=obj;
@@ -907,7 +907,7 @@ void fn_801226D0(void *arg0)
   extern s32 gUiInputFlags;
   u8 *new_var;
   extern u8 lbl_80290298[];
-  void *fn_8000CAA0(void *);
+  void *Process_CreateChild(void *);
   u8 *obj;
   u8 *entry;
   s8 a;
@@ -929,7 +929,7 @@ void fn_801226D0(void *arg0)
   }
   else
   {
-    entry = (u8 *) fn_8000CAA0(lbl_80290298);
+    entry = (u8 *) Process_CreateChild(lbl_80290298);
     *((s32 *) (entry + 0x38)) = obj[0x49];
     *((s32 *) (entry + 0x34)) = (s8) obj[0x44];
     *((void **) (entry + 0x30)) = obj;
@@ -3162,11 +3162,11 @@ extern u16 lbl_80290564[];
 s32 ScriptCmd_TutorialInitialize(void)
 {
     s32 fn_800C0658(void);
-    void fn_8000CAA0(u16 *, s32);
+    void Process_CreateChild(u16 *, s32);
     void fn_80013864(void);
     extern u16 lbl_80290564[];
 
-    fn_8000CAA0(lbl_80290564, fn_800C0658());
+    Process_CreateChild(lbl_80290564, fn_800C0658());
     fn_80013864();
     return 1;
 }
@@ -3393,12 +3393,12 @@ void fn_80127150(void *arg0) {
 }
 
 void fn_80127170(s32 arg0) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void fn_80109180(void *, void *);
     extern u8 lbl_80290504[];
     extern u8 gScriptCmdNames[];
 
-    fn_80109180(gScriptCmdNames + 0x493, fn_8000CAA0(lbl_80290504, arg0));
+    fn_80109180(gScriptCmdNames + 0x493, Process_CreateChild(lbl_80290504, arg0));
 }
 
 void fn_80127594(void *arg0) {
@@ -3492,7 +3492,7 @@ s32 ScriptCmd_GameUnbind(void) {
 s32 ScriptCmd_GameBind(void) {
     void *fn_8000BCA4(void *);
     void fn_8000B950(void *, void (*)(void *));
-    void *fn_8000CAA0(void *, void *);
+    void *Process_CreateChild(void *, void *);
     void fn_80127150(void *);
     extern u8 gScriptCmdNames[];
     extern void *lbl_80367A68;
@@ -3511,7 +3511,7 @@ s32 ScriptCmd_GameBind(void) {
         }
     }
     fn_8000B950(var, fn_80127150);
-    fn_8000CAA0(lbl_802904AC, lbl_80367A68 != NULL ? lbl_80367A68 : var);
+    Process_CreateChild(lbl_802904AC, lbl_80367A68 != NULL ? lbl_80367A68 : var);
     return 1;
 }
 

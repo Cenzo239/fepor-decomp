@@ -2851,9 +2851,9 @@ s32 fn_8000AEB4(void *arg0) {
 }
 
 s32 fn_8000AF04(void *arg0) {
-    s32 fn_8000CAA0(s32, void *);
+    s32 Process_CreateChild(s32, void *);
     void **temp_r3 = (void **)((s32 *)arg0)[1];
-    fn_8000CAA0(((s32 *) temp_r3)[1], arg0);
+    Process_CreateChild(((s32 *) temp_r3)[1], arg0);
     ((s32 **) arg0)[1] = (s32 *) ((s32 *) arg0)[1] + 2;
     return 0;
 }
@@ -4142,7 +4142,7 @@ void Process_Destroy(Process *proc) {
 }
 
 void fn_8000CA64(u32 unused, u32 arg1) {
-    void fn_8000CAA0(void);
+    void Process_CreateChild(void);
     void Process_Create(void);
     u32 var_r4;
 
@@ -4151,13 +4151,13 @@ void fn_8000CA64(u32 unused, u32 arg1) {
         var_r4 = 3U;
     }
     if ((s32)var_r4 < 0) {
-        fn_8000CAA0();
+        Process_CreateChild();
         return;
     }
     Process_Create();
 }
 
-void *fn_8000CAA0(void *arg0, s32 arg1, void *arg2) {
+void *Process_CreateChild(void *arg0, s32 arg1, void *arg2) {
     void *Process_Create();
     void *temp_r3;
     void *temp_r5;

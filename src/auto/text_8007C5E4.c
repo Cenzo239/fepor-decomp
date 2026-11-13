@@ -359,13 +359,13 @@ void fn_8007D044(void) {
 }
 
 void fn_8007D064(s32 arg0, s32 arg1, s32 arg2) {
-    void *fn_8000CAA0(void *, s32);
+    void *Process_CreateChild(void *, s32);
     void Ui_PlaySeCue(void *, s32, void *);
     extern u8 lbl_80289894[];
     extern u8 gUiStrings[];
     void *temp_r3;
 
-    temp_r3 = fn_8000CAA0(lbl_80289894, arg1);
+    temp_r3 = Process_CreateChild(lbl_80289894, arg1);
     *(s32 *)((u8 *)temp_r3 + 0x34) = arg0;
     *(s32 *)((u8 *)temp_r3 + 0x38) = arg2;
     Ui_PlaySeCue(gUiStrings + 0x140, 0x64, gUiStrings);

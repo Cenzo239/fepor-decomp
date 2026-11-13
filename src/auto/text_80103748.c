@@ -270,7 +270,7 @@ s32 fn_80103B9C(void) {
 s32 fn_80103BA4(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
     extern struct { u8 pad[0x100]; } lbl_8028EB50;
@@ -281,7 +281,7 @@ s32 fn_80103BA4(void) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
     }
-    fn_8000CAA0(&lbl_8028EB50, temp_r31);
+    Process_CreateChild(&lbl_8028EB50, temp_r31);
     return 6;
 }
 
@@ -297,7 +297,7 @@ s32 fn_80103C14(void) {
 s32 fn_80103C1C(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
     extern struct { u8 pad[0x100]; } lbl_8028EB10;
@@ -308,7 +308,7 @@ s32 fn_80103C1C(void) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
     }
-    fn_8000CAA0(&lbl_8028EB10, temp_r31);
+    Process_CreateChild(&lbl_8028EB10, temp_r31);
     return 6;
 }
 
@@ -324,7 +324,7 @@ s32 fn_80103C8C(void) {
 s32 fn_80103C94(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
-    void fn_8000CAA0(void *, s32);
+    void Process_CreateChild(void *, s32);
     void fn_800A8400(void);
     extern char lbl_802734D0[];
     extern struct { u8 pad[0x100]; } lbl_8028EAE8;
@@ -335,7 +335,7 @@ s32 fn_80103C94(void) {
         fn_800A8400();
         Process_Goto(temp_r31, 0);
     }
-    fn_8000CAA0(&lbl_8028EAE8, temp_r31);
+    Process_CreateChild(&lbl_8028EAE8, temp_r31);
     return 6;
 }
 
