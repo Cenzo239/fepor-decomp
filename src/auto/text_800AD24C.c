@@ -182,7 +182,8 @@ s32 Event_StartBless(s32 parent) {
     return 1;
 }
 
-void Event_BlessNextUnit(EventBlessProc *arg0) {
+/* Advance the E_Bless queue: begin move-select for the next unit, or finish at label 0x63. */
+void Event_BlessNextUnit(EventBlessProc *proc) {
     void Process_Goto(void *, s32);
     void UiCtx_BeginMoveSelect(void *, void *);
     void fn_8002629C(void *, void *);
@@ -190,23 +191,23 @@ void Event_BlessNextUnit(EventBlessProc *arg0) {
     extern u8 gUiContext[];
     s32 idx;
     s32 count;
-    void *ptr;
+    void *unit;
     u8 kind;
-    idx = arg0->cursor;
-    arg0->cursor = idx + 1;
-    count = arg0->count;
-    if (count >= 0xC) ptr = NULL;
-    else ptr = arg0->entries[idx];
-    if (ptr == NULL) {
-        Process_Goto(arg0, 0x63);
+    idx = proc->cursor;
+    proc->cursor = idx + 1;
+    count = proc->count;
+    if (count >= 0xC) unit = NULL;
+    else unit = proc->entries[idx];
+    if (unit == NULL) {
+        Process_Goto(proc, 0x63);
         return;
     }
-    UiCtx_BeginMoveSelect(gUiContext, count >= 0xC ? NULL : arg0->entries[idx]);
-    if (arg0->count >= 0xC) kind = 0;
-    else kind = arg0->kinds[idx];
+    UiCtx_BeginMoveSelect(gUiContext, count >= 0xC ? NULL : proc->entries[idx]);
+    if (proc->count >= 0xC) kind = 0;
+    else kind = proc->kinds[idx];
     switch (kind) {
-    case 1: fn_8002629C(gUiContext, arg0); break;
-    case 2: fn_800264BC(gUiContext, arg0); break;
+    case 1: fn_8002629C(gUiContext, proc); break;
+    case 2: fn_800264BC(gUiContext, proc); break;
     }
 }
 
