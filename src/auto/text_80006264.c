@@ -4490,8 +4490,11 @@ void fn_8000D048(void)
 }
 
 s32 fn_8000D1B4(s32 arg0) {
-    extern u8 lbl_802ADB20[];
-    return ((struct { u8 pad[8]; s32 val; u8 pad2[4]; } *)*(void **)(lbl_802ADB20 + 4))[arg0].val;
+extern u8 lbl_802ADB20[];
+s32 off=arg0*16;
+u8 *p=*(u8 **)(lbl_802ADB20+4);
+p+=off;
+return *(s32 *)(p+8);
 }
 
 typedef struct HashKey {
