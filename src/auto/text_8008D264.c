@@ -124,7 +124,8 @@ void UnitRef_DrawScaled(void *ref, u8 enabled, s32 x, s32 y, f32 priceScale) {
         Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
-void UnitRef_Draw(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
+/* Draw a unit inventory slot: badge, name, uses/max, and item icon. */
+void UnitRef_Draw(void *ref, u8 selected, s32 x, s32 y) {
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
@@ -134,42 +135,42 @@ void UnitRef_Draw(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Ui_DrawIcon(void *, s32, s32, s32);
     extern u16 gUnitRefStrs[];
     extern u8 gUiIconDrawer[];
-    struct { unsigned b : 8; } t;
-    u8 var_r26;
-    u32 var_r3;
-    s32 var_color;
+    struct { unsigned b : 8; } selBit;
+    u8 nameColor;
+    u32 usesColor;
+    s32 baseColor;
     u64 flags;
 
-    if (*(void **)arg0 != NULL) {
-        if ((*(u8 *)((u8 *)arg0 + 5) >> 7) & 1) {
-            Ui_DrawIcon(gUiIconDrawer, arg2 + 9, arg3 + 9, 1);
+    if (*(void **)ref != NULL) {
+        if ((*(u8 *)((u8 *)ref + 5) >> 7) & 1) {
+            Ui_DrawIcon(gUiIconDrawer, x + 9, y + 9, 1);
         }
         {
-            s32 cond = arg1;
-            t.b = cond != 0;
-            var_color = 0;
+            s32 cond = selected;
+            selBit.b = cond != 0;
+            baseColor = 0;
             if (cond != 0) {
-                var_color = 4;
+                baseColor = 4;
             }
         }
-        var_r3 = (u8)var_color;
-        var_r26 = t.b;
-        if (t.b == 1 && (*(u8 *)((u8 *)arg0 + 5) & 0x3F)) {
-            var_r26 = 4;
+        usesColor = (u8)baseColor;
+        nameColor = selBit.b;
+        if (selBit.b == 1 && (*(u8 *)((u8 *)ref + 5) & 0x3F)) {
+            nameColor = 4;
         }
-        if ((*(u8 *)((u8 *)arg0 + 5) >> 6) & 1) {
-            var_r26 = 3;
+        if ((*(u8 *)((u8 *)ref + 5) >> 6) & 1) {
+            nameColor = 3;
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        Text_Draw((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)gUnitRefStrs + 0x21, UnitRef_GetName(arg0));
-        flags = *(u64 *)Item_GetFlagsPtr(arg0);
+        Text_Draw((s16)(x + 0x18), (s16)y, nameColor, (u8 *)gUnitRefStrs + 0x21, UnitRef_GetName(ref));
+        flags = *(u64 *)Item_GetFlagsPtr(ref);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
-            Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)gUnitRefStrs + 0x34, *(u8 *)((u8 *)arg0 + 4));
-            Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)gUnitRefStrs + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
+            Text_Draw((s16)(x + 0xA2), (s16)y, selBit.b, (u8 *)gUnitRefStrs + 0x34, *(u8 *)((u8 *)ref + 4));
+            Text_Draw((s16)(x + 0xBC), (s16)y, usesColor, (u8 *)gUnitRefStrs + 0x3A, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x18) : 0));
         }
-        Ui_DrawIcon(gUiIconDrawer, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
+        Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
 void fn_8008D6D8(void *arg0) {
