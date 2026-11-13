@@ -826,7 +826,7 @@ void fn_800AEA74(void *arg0) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     extern s32 lbl_80369C68;
     extern s32 lbl_80369C6C;
     extern s32 lbl_80369C70;
@@ -852,7 +852,7 @@ void fn_800AEA74(void *arg0) {
     s32 temp_r31;
 
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x34);
-    fn_8000A258();
+    Prim2D_Begin();
     {
         f32 z = lbl_80369C7C;
         f32 o = 1.0f;

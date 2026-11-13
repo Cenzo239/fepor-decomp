@@ -2167,7 +2167,7 @@ void fn_80109244(struct Arg0 *arg0) {
     if (a0->unk3C >= a0->unk34) {
         a0->unk3C = a0->unk3C - a0->unk34;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     outer = a0->unk30;
     fn_80009C20(outer, a0->unk40, a0->unk44, a0->unk48 + (f32)outer->unk6, a0->unk4C, a0->unk50, a0->unk54, a0->unk58, arg0->unk5C);
     fn_80009B8C(a0->unk60);
@@ -2189,7 +2189,7 @@ void fn_80109244(struct Arg0 *arg0) {
     } else if (outer->unk5 == 1) {
         outer->unk14[(s32)a0->unk3C]->v1(0xFF);
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009B8C(0xFF);
     fn_80009B80(0x80);
     fn_8000A248();
@@ -2723,7 +2723,7 @@ void fn_8010A4D4(void *arg0) {
 void fn_8010A53C(void *arg0, s32 arg1) {
     void *fn_8000E0E4(void *);
     s32 fn_80010B78(void *, s32, f32);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
     void fn_80007898(s32);
@@ -2764,7 +2764,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
         var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - fn_80010B78(temp_r31, -1, lbl_8036A118));
         break;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x13);
     fn_8000A248();
     fn_80007898(6);
@@ -2790,7 +2790,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     void fn_80009EB0(s32, u8, u8, s32);
     void fn_80009F90(s32, u8, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     extern s32 lbl_8036C4D8;
     extern s32 lbl_8036C4DC;
     extern s32 lbl_8036C4E0;
@@ -2808,7 +2808,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     s16 a;
     s16 b;
 
-    fn_8000A258();
+    Prim2D_Begin();
     if (*(u8 *)((u8 *)arg0 + 0x10) & 2) {
         fn_80009EB0(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), *(u8 *)((u8 *)arg0 + 0x11), 0x11);
     } else {
@@ -2884,7 +2884,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     void fn_80009EB0(s32, u8, u8, s32);
     void fn_80009F90(s32, u8, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
 
     struct Obj {
         u8 pad[4];
@@ -2901,7 +2901,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     if (!(*(u8 *)((u8 *)arg0 + 0x10) & 0x80)) {
         ((Obj *)arg0)->method();
     }
-    fn_8000A258();
+    Prim2D_Begin();
     if (*(u8 *)((u8 *)arg0 + 0x10) & 2) {
         fn_80009EB0(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), *(u8 *)((u8 *)arg0 + 0x11), 0x11);
     } else {

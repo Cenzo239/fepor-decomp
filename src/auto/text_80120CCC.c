@@ -196,7 +196,7 @@ void fn_801210CC(void *arg0) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(void *, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8006ECCC(void *, void *, s32);
     u32 *fn_8018D900(s32);
     u16 fn_80222A80(void *);
@@ -232,7 +232,7 @@ void fn_801210CC(void *arg0) {
             (f32)M2C_FIELD(self, u8 *, 0x4D),
             (f32)M2C_FIELD(self, u8 *, 0x4E),
             (f32)M2C_FIELD(self, u8 *, 0x4F));
-        fn_8000A258();
+        Prim2D_Begin();
         z = lbl_8036A258;
         fn_80009D74(z, z, lbl_8036A26C, lbl_8036A268);
         fn_80009B8C(M2C_FIELD(self, u8 *, 0x50));
@@ -240,7 +240,7 @@ void fn_801210CC(void *arg0) {
         fn_8006ECCC(lbl_803674F4, spC, 0x1E);
         *(volatile u16 *)(spC + 0x20) = fn_80222A80(spC);
         *(volatile u16 *)(spC + 0x22) = fn_80222A90(spC);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_8000A174(spC, 0x10);
         fn_8000A248();
         fn_80007898(1);
@@ -251,7 +251,7 @@ void fn_801210CC(void *arg0) {
             (f32)w,
             (f32)*(u16 *)(spC + 0x22));
         fn_80007884();
-        fn_8000A258();
+        Prim2D_Begin();
         fn_8000A174((void *)0, 0x13);
         fn_80009C0C(lbl_8036A270);
         fn_8000A248();
@@ -263,7 +263,7 @@ void fn_801210CC(void *arg0) {
         fn_80007668(&color);
         fn_80007124((u8 *)self + 0x30);
         fn_80007884();
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -2478,7 +2478,7 @@ void fn_80125624(void *arg0) {
     void fn_80007884(void);
     void fn_80007898(s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     Obj *obj = arg0;
     Vec delta = {0.0f, 0.0f, 0.0f};
     Vec pos = {0.0f, 0.0f, 0.0f};
@@ -2507,7 +2507,7 @@ void fn_80125624(void *arg0) {
         obj->scrollY[i] -= (f32)((s32)(obj->scrollY[i] * 0.0078125f) << 7);
         scale *= 1.5f;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(0.0f, 0.0f, 800.0f, 1.0f);
     fn_80009F90(obj->unk6C, 6, 0x411);
     fn_8000A248();
@@ -3696,7 +3696,7 @@ extern void fn_80009BC0(void *, s32);
 extern void fn_80009D74(f32, f32, f32, f32);
 extern void fn_8000A174(s32, s32);
 extern void fn_8000A248(void);
-extern void fn_8000A258(void);
+extern void Prim2D_Begin(void);
 extern void fn_80057020(u32);
 extern void fn_80057860(s32);
 extern s32 sprintf(void *, void *, s32);

@@ -2220,7 +2220,7 @@ void fn_8000A248(void) {
     *(u8 *)(*(u8 **)&lbl_80367140 + 0xa8) = 2;
 }
 
-void fn_8000A258(void) {
+void Prim2D_Begin(void) {
 *(u8 *)(*(u8 **)&lbl_80367140+0xA8)=1;
 }
 
@@ -2454,7 +2454,7 @@ void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
 }
 
 void fn_8000A860(void) {
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A248(void);
     void fn_8014BB58(s32, s32, s32 *, s32);
@@ -2475,7 +2475,7 @@ void fn_8000A860(void) {
 
     sp10 = 1;
     spC = 0;
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_80368BCC, lbl_80368BCC, lbl_80368BD0, lbl_80368BD4);
     fn_8000A248();
 

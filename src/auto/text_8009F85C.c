@@ -1694,7 +1694,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     s32 fn_80037BD0(s32, s32);
     s32 fn_8001D2C8(void);
     void sprintf(void *, void *, ...);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80009C0C(f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
@@ -1716,7 +1716,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
         return;
     }
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x6C7, fn_8001D2C8());
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_80369A04);
     fn_8000A174(0, 0x13);
     fn_8000A248();
@@ -2179,7 +2179,7 @@ s32 fn_800A2CD0(void *a, void *b, s32 arg) {
 
 void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     void *fn_800AA794(void);
-    M2C_UNK fn_8000A258(void);
+    M2C_UNK Prim2D_Begin(void);
     M2C_UNK fn_80009C0C(f32);
     M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
     M2C_UNK fn_8000A248(void);
@@ -2213,7 +2213,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     if (M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) != NULL) {
         idx = M2C_FIELD(arg2, u8 *, 0x3A);
         if ((u8) fn_8003701C(obj) > idx) {
-            fn_8000A258();
+            Prim2D_Begin();
             fn_80009C0C(lbl_80369A04);
             fn_8000A174(0, 0x13);
             fn_8000A248();

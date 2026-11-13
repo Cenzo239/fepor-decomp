@@ -219,7 +219,7 @@ void fn_80090E0C(s32 arg0, s32 arg1, s32 arg2)
     void fn_80007898(s32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     extern s32 lbl_80369748;
     extern s32 lbl_8036974C;
     extern s32 lbl_80369750;
@@ -257,7 +257,7 @@ void fn_80090E0C(s32 arg0, s32 arg1, s32 arg2)
         sp18[3] = *(u8 *)((u8 *)&spC + 3);
         break;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x10);
     fn_8000A248();
     fn_80007898(1);

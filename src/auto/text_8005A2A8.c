@@ -86,7 +86,7 @@ extern "C" void fn_80007898(s32);
 extern "C" void fn_8000A03C(void *, void *, s32, s32);
 extern "C" void fn_8000A174(void *, s32);
 extern "C" void fn_8000A248(void);
-extern "C" void fn_8000A258(void);
+extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_80222CDC(void *);
 extern "C" u32 fn_80222CE8(void *);
 extern "C" void *memcpy(void *, const void *, u32);
@@ -130,7 +130,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
     a2 = arg2;
     color = arg4;
     if (a3 != 0) {
-        fn_8000A258();
+        Prim2D_Begin();
         if (((u8 *)arg0)[0x40] != 0) {
             if (color[0] == 0 && color[1] == 0 && color[2] == 0) {
                 fn_8000A03C((u8 *)arg0 + 4, (u8 *)arg0 + 0x24, 0, 0x11);

@@ -154,7 +154,7 @@ void *fn_800330F8(void) {
 extern "C" void fn_80009B8C(u8);
 extern "C" void fn_80009D74(f32, f32, f32, f32);
 extern "C" void fn_8000A248(void);
-extern "C" void fn_8000A258(void);
+extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_8002F740(u32);
 extern "C" void fn_80090C50(s32);
 extern "C" void fn_80033108(void *arg0, void *arg1) {
@@ -170,12 +170,12 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -11159,7 +11159,7 @@ void fn_8004DDB8(s32 arg0) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     u32 fn_80055D94(s32);
     void fn_8004DEAC(void);
     extern u8 lbl_803672BD;
@@ -11179,7 +11179,7 @@ void fn_8004DDB8(s32 arg0) {
         p[2] = c;
         p[3] = c;
         lbl_803672BD = flag;
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74(lbl_80368FCC, lbl_80368FCC, (f32)arg0, lbl_80368FC0);
         fn_8000A174(0, 0x410);
         fn_80009B8C(0xFF);
@@ -12803,7 +12803,7 @@ void fn_80053F68(void *arg0) {
     void fn_8000A174(s32, s32);
     void fn_80009B8C(u8);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80007898(s32);
     void fn_80007340(void *, void *);
     void fn_80007884(void);
@@ -12922,7 +12922,7 @@ void fn_80053F68(void *arg0) {
             (*(u8 *)((u8 *)*(void **)((u8 *)inner + 0x2C) + 4) & 3) == 0) {
             fn_8006CAD4(gfx);
         } else {
-            fn_8000A258();
+            Prim2D_Begin();
             inner = *(void **)((u8 *)arg0 + 0x30);
             fn_80009D74(lbl_80369084, lbl_80369084,
                         (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);

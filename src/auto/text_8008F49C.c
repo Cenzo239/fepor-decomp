@@ -51,7 +51,7 @@ void fn_8008F49C(void) {
 }
 
 void fn_8008F4BC(void *arg0) {
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
@@ -77,7 +77,7 @@ void fn_8008F4BC(void *arg0) {
     s32 i, n, idx, count;
     s32 a, b;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_80369764, lbl_80369764, lbl_80369778, lbl_80369754);
     fn_8000A174(0, 0);
     fn_8000A248();

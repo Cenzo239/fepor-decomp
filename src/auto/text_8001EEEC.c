@@ -2232,7 +2232,7 @@ extern "C" M2C_UNK fn_80007898(M2C_UNK);
 extern "C" void fn_80009D74(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
 extern "C" M2C_UNK fn_8000A248();
-extern "C" M2C_UNK fn_8000A258();
+extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     struct Model {
         u8 pad[4];
@@ -2274,7 +2274,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     extern f32 lbl_80368DB8;
     extern f32 lbl_80368DBC;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
     fn_8000A174(0, 0x13);
     fn_8000A248();
@@ -2738,7 +2738,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;
@@ -2780,7 +2780,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     u8 var_r3;
     f32 fv;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fv = M2C_FIELD(arg1, Model **, 0x3C)->v25();
     fn_80009D74((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), fv, lbl_80368DA8);
     fn_8000A174(0, 0x12);

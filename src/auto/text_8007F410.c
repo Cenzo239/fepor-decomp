@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 void fn_8007F410(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8000A248(void);
     void fn_80009C0C(f32);
     void *fn_8000E0E4(void *);
@@ -104,11 +104,11 @@ void fn_8007F410(void *arg0) {
     y = M2C_FIELD(arg0, f32 *, 0x18);
     pid = M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x58), void **, 0x188), u8 *, 0x54);
     fn_800875B4(0xB3, 0, x, y, lbl_803694C4, lbl_803694C8);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_8036942C);
     fn_8000A248();
     str = fn_8000E0E4(lbl_8026C86C + 0x236);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x12);
     fn_8000A248();
     fn_80007898(1);
@@ -125,7 +125,7 @@ void fn_8007F410(void *arg0) {
     tex = *fn_8006EDD8((id = lbl_803674F4), 0x1D);
     w = tex[1];
     h = tex[0];
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009F90(id, 0x1D, 0x11);
     fn_8000A248();
     fn_80007898(1);
@@ -136,17 +136,17 @@ void fn_8007F410(void *arg0) {
     fn_800076AC(color.r, color.g, color.b, 0xFF);
     fn_800075D8();
     fn_80007884();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_8036942C);
     fn_8000A248();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x13);
     fn_8000A248();
     fn_8001003C(lbl_80369438 + bx, by - lbl_8036943C, 9, 0, 0, str, lbl_80369430, lbl_80369418);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_80369430);
     fn_8000A248();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x13);
     fn_8000A248();
     obj = fn_8003B9AC(pid);
@@ -156,7 +156,7 @@ void fn_8007F410(void *arg0) {
     obj = fn_8003B9AC(pid);
     width = fn_80010B78(obj, -1, lbl_80369430);
     fn_8005AC24(lbl_802F0308, lbl_80369500 + (nx + width), by, id);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_80369430);
     fn_8000A248();
 }

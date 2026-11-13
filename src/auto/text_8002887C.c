@@ -3654,7 +3654,7 @@ void fn_80031FF8(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8000A258(void);
+extern "C" void Prim2D_Begin(void);
 extern "C" void fn_8000A248(void);
 extern "C" void fn_80009D74(f32, f32, f32, f32);
 extern "C" void fn_80009B8C(u8);
@@ -3672,12 +3672,12 @@ extern "C" void fn_800323BC(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_80090990((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3699,12 +3699,12 @@ extern "C" void fn_80032488(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_80090AA4(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3731,20 +3731,20 @@ extern "C" void fn_80032564(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x118), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_8000A248();
         fn_800900F4(M2C_FIELD(gUiContext, s32 *, 0));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_80368E34);
         fn_8000A248();
         fn_8008BD90(0x64, 0xD2, 0);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3769,25 +3769,25 @@ extern "C" void fn_800326B4(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_800900F4(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_8000A248();
         fn_80090C50(M2C_FIELD(gUiContext, s32 *, 0));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
         ((Obj *)arg0)->v0(&x2, &y2, &alpha2);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_80368E34);
         fn_80009B8C((u8)alpha2);
         fn_8000A248();
         fn_8008BD90(0x64, 0x6A, 1);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3811,16 +3811,16 @@ extern "C" void fn_8003284C(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0xB0), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_8000A248();
         fn_80090C50(M2C_FIELD(gUiContext, s32 *, 0));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3846,14 +3846,14 @@ extern "C" void fn_8003297C(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         saved = gUiContext[0];
         flag = (u8)fn_8003CFF0(saved, fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
         fn_80090480(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), flag);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3878,13 +3878,13 @@ extern "C" void fn_80032A74(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         saved = gUiContext[0];
         fn_80090874(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), saved);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3930,13 +3930,13 @@ extern "C" void fn_80032B90(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         temp_r31 = (void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40));
         fn_80090688((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)), 7, 7 - ((*(u8 *)((u8 *)temp_r31 + 0x1A6) >> 5) & 7));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }
@@ -3958,12 +3958,12 @@ extern "C" void fn_80032C80(void *arg0, void *arg1) {
 
     if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
         ((Obj *)arg0)->v0(&x, &y, &alpha);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
         fn_8000A248();
         fn_800907B8((void *)fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
     }

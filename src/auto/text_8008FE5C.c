@@ -102,7 +102,7 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     s32 temp_r4_3;
 
     temp_r28 = fn_8008B1B0();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_8000A174(0, 0x13);
     fn_8000A248();
     if (arg2 != 0U) {

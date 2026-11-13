@@ -1659,7 +1659,7 @@ void fn_8012F274(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_80009F90(void *, s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_801308C0(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
@@ -1667,7 +1667,7 @@ void fn_8012F274(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     extern f32 lbl_8036A514;
     extern f32 lbl_8036A518;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(farg0, farg1, lbl_8036A500, lbl_8036A50C);
     fn_80009F90(arg1, 3, 0x11);
     fn_80009BC0(fn_801308C0, 0);
@@ -1691,7 +1691,7 @@ extern "C" void fn_8012F360(void *arg0) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_80009F90(void *, s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8012EF5C(void *, void *, s32);
     void fn_8012F5CC(void *);
     void fn_8012FA3C(void *);
@@ -1723,7 +1723,7 @@ extern "C" void fn_8012F360(void *arg0) {
     var_r30 = arg0;
     fn_8012FA3C(var_r30);
     fn_8012F5CC(var_r30);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(414.0f, 34.0f, lbl_8036A500, lbl_8036A50C);
     fn_80009F90(*(void **)((u8 *)var_r30 + 0x40), 4, 0x11);
     fn_80009B98();
@@ -1791,7 +1791,7 @@ void fn_8012F5CC(void *arg0) {
     void fn_80009F90(void *, s32, s32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     f32 fn_80059EB8(s32, s32, f32, f32);
     void *fn_800A8A88(s32);
@@ -1875,7 +1875,7 @@ void fn_8012F5CC(void *arg0) {
             }
             str = fn_800A8A88(*(s32 *)((u8 *)item + 0x188));
             if (str != NULL) {
-                fn_8000A258();
+                Prim2D_Begin();
                 fn_80009D74(lbl_8036A524, f30, lbl_8036A500, lbl_8036A50C);
                 fn_8000A174(0, 0x13);
                 fn_80009B8C(0xFF);
@@ -1885,7 +1885,7 @@ void fn_8012F5CC(void *arg0) {
             }
             unk6A = *(s16 *)(self + 0x6A);
             f30 = (f32)(y2 - unk6A);
-            fn_8000A258();
+            Prim2D_Begin();
             fn_80009D74(lbl_8036A528, f30, lbl_8036A52C, lbl_8036A50C);
             fn_80009F90(*(void **)(self + 0x40), 2, 0x11);
             fn_80009BC0(fn_801308F0, 0);
@@ -1897,7 +1897,7 @@ void fn_8012F5CC(void *arg0) {
             fn_80007884();
             unk6A = *(s16 *)(self + 0x6A);
             f30 = (f32)(y3 - unk6A);
-            fn_8000A258();
+            Prim2D_Begin();
             fn_80009D74(lbl_8036A534, f30, lbl_8036A52C, lbl_8036A50C);
             fn_8000A174(0, 0x12);
             fn_80009BC0(fn_801308F0, 0);
@@ -1915,7 +1915,7 @@ void fn_8012F5CC(void *arg0) {
         i += 1;
         list = (u8 *)list + 0x24;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_8036A53C, lbl_8036A540, lbl_8036A500, lbl_8036A50C);
     fn_8000A174(0, 0x13);
     fn_80009B98();
@@ -1926,7 +1926,7 @@ void fn_8012F5CC(void *arg0) {
     fn_8001003C(0x20, 0, 6, 0, 1, (char *)lbl_80275AC0 + 0x1C3, self[0x6D], lbl_8036A50C, lbl_8036A510);
     fKeep = lbl_8036A4EC;
     f30 = fn_80059EB8(0x40, self[0x6E], lbl_8036A510, lbl_8036A544) - lbl_8036A548;
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_8036A54C, lbl_8036A550 + (lbl_8036A518 + f30), lbl_8036A500, lbl_8036A50C);
     fn_80009F90(*(void **)(self + 0x40), 0x12, 0x11);
     fn_80009B8C(0xFF);
@@ -1955,7 +1955,7 @@ extern "C" void fn_8012FA3C(void *arg0) {
     void fn_80009F90(void *, s32, s32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8000D8BC(s32, s32);
     void *fn_8000E0E4(void *);
     void fn_8001019C(s32, s32, s32, void *, ...);
@@ -1995,11 +1995,11 @@ extern "C" void fn_8012FA3C(void *arg0) {
 
     switch (self[0x6C]) {
     case 1:
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B98();
         fn_80009B8C(0xFF);
         fn_8000A248();
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74(lbl_8036A510, lbl_8036A4EC, lbl_8036A554, lbl_8036A50C);
         fn_80009F90(*(void **)(self + 0x40), 0x14, 0x11);
         fn_8000A248();
@@ -2020,7 +2020,7 @@ extern "C" void fn_8012FA3C(void *arg0) {
                 a++;
         }
         b = (s16)lbl_802EF4E0[0];
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036A560);
         fn_8000A174(0, 0x13);
         fn_8000A248();
@@ -2034,11 +2034,11 @@ extern "C" void fn_8012FA3C(void *arg0) {
         }
         break;
     case 2:
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B98();
         fn_80009B8C(0xFF);
         fn_8000A248();
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74(lbl_8036A510, lbl_8036A4EC, lbl_8036A554, lbl_8036A50C);
         fn_80009F90(*(void **)(self + 0x40), 0x14, 0x11);
         fn_8000A248();
@@ -2059,7 +2059,7 @@ extern "C" void fn_8012FA3C(void *arg0) {
                 b++;
         }
         a = (s16)lbl_802EF4E0[0];
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036A560);
         fn_8000A174(0, 0x13);
         fn_8000A248();
@@ -2090,7 +2090,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_80009F90(void *, s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     extern f32 lbl_8036A550;
     extern f32 lbl_8036A554;
     extern f32 lbl_8036A56C;
@@ -2101,11 +2101,11 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     extern f32 lbl_8036A50C;
     extern f32 lbl_8036A510;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009B98();
     fn_80009B8C(0xFF);
     fn_8000A248();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(farg0, farg1, lbl_8036A554, lbl_8036A50C);
     fn_80009F90(arg1, 0, 0x11);
     fn_8000A248();
@@ -2113,7 +2113,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     fn_8000770C(lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A510, lbl_8036A56C, lbl_8036A570);
     fn_800075D8();
     fn_80007884();
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_8036A550 + farg0, lbl_8036A550 + farg1, lbl_8036A500, lbl_8036A50C);
     fn_80009F90(arg1, 0x11, 0x11);
     fn_8000A248();
@@ -2128,7 +2128,7 @@ void fn_8012FF60(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_80009B8C(s32);
@@ -2191,7 +2191,7 @@ void fn_8012FF60(void *arg0) {
     PSMTXConcat(sp74, sp14, sp14);
     PSMTXConcat(sp44, sp14, sp14);
     list = *(void **)((u8 *)self + 0x3C);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_8036A510, lbl_8036A510, lbl_8036A588, lbl_8036A50C);
     fn_8000A174(0, 0x410);
     fn_80009B8C(0xFF);
@@ -2235,7 +2235,7 @@ void fn_8012FF60(void *arg0) {
             fn_8005F780(obj, 0xFF);
             fn_80060060(obj);
             fn_800609DC(obj);
-            fn_8000A258();
+            Prim2D_Begin();
             fn_80009D74(lbl_8036A510, lbl_8036A510, lbl_8036A58C, lbl_8036A50C);
             fn_8000A174(0, 0x410);
             fn_80009B8C(0xFF);
@@ -2252,11 +2252,11 @@ void fn_8012FF60(void *arg0) {
         i += 1;
         list = (u8 *)list + 0x24;
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009BC0(fn_80130890, 0);
     fn_8000A248();
     fn_8004DDB8(0x64);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009B98();
     fn_8000A248();
 }
@@ -2271,7 +2271,7 @@ void fn_801302C0(void) {
 #pragma use_lmw_stmw on
 void fn_801302F4(void *arg0) {
     void fn_80009B98(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8000A248(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_80009B8C(s32);
@@ -2338,12 +2338,12 @@ void fn_801302F4(void *arg0) {
     y = *(s16 *)((u8 *)arg0 + 0x5A);
     w = *(s16 *)((u8 *)arg0 + 0x5C);
     h = *(s16 *)((u8 *)arg0 + 0x5E);
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009B98();
     fn_8000A248();
     if ((s8)*(u8 *)((u8 *)arg0 + 0x62) >= 0) {
         s32 bw;
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009D74((f32)(x + 0x2E), (f32)(y + 5), lbl_8036A500, lbl_8036A50C);
         fn_80009B8C(0xFF);
         fn_8000A248();
@@ -2354,7 +2354,7 @@ void fn_801302F4(void *arg0) {
         fn_8008AB7C(aw / 2, ah, aw, 0x18, 0x19, 0x4B, 1);
         fn_8008AB7C(aw + bw / 2, ah, bw, 0x18, 0x19, 0x4B, 1);
     }
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(lbl_8036A510, lbl_8036A510, lbl_8036A598, lbl_8036A50C);
     fn_8000A174(0, 0x11);
     fn_80009B8C(0xFF);
@@ -2525,7 +2525,7 @@ void fn_80130920(void) {
 }
 
 void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_80009BC0(void (*)(void), s32);
     void fn_80009B8C(s32);
@@ -2542,7 +2542,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     s32 i;
     void *temp;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009D74(farg0, farg1, lbl_8036A500, lbl_8036A50C);
     fn_80009BC0(fn_80130920, 0);
     fn_80009B8C(0xFF);

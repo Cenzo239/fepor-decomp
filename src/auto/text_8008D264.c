@@ -56,7 +56,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     void fn_8005AC24(void *, s32, s32, s32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     s32 fn_80010B78(void *, s32, f32);
     void *fn_8001CB64(void *);
@@ -82,7 +82,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     s32 scaled;
 
     if (*(void **)arg0 != NULL) {
-        fn_8000A258();
+        Prim2D_Begin();
         fn_8000A174(0, 0x13);
         fn_8000A248();
         scaled = (s32)(farg0 * (f32)(u16)fn_8001D2A4(arg0));
@@ -111,7 +111,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
         if ((*(u8 *)((u8 *)arg0 + 5) >> 6) & 1) {
             var_r26 = 3;
         }
-        fn_8000A258();
+        Prim2D_Begin();
         fn_8000A174(0, 0x13);
         fn_8000A248();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, fn_8001D2C8(arg0));
@@ -126,7 +126,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
 void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     void *fn_8001CB64(void *);
     s32 fn_8001D2C8(void *);
@@ -159,7 +159,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         if ((*(u8 *)((u8 *)arg0 + 5) >> 6) & 1) {
             var_r26 = 3;
         }
-        fn_8000A258();
+        Prim2D_Begin();
         fn_8000A174(0, 0x13);
         fn_8000A248();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, fn_8001D2C8(arg0));

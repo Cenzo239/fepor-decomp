@@ -110,7 +110,7 @@ s32 fn_80183400(void) {
 void fn_80183434(void *arg0, void *arg1) {
     M2C_UNK fn_80009C0C(f32);
     M2C_UNK fn_8000A248();
-    M2C_UNK fn_8000A258();
+    M2C_UNK Prim2D_Begin();
     u32 fn_800102BC(M2C_UNK, f32, f32);
     M2C_UNK fn_8008AB7C(s32, s32, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_8008C1D8(M2C_UNK, M2C_UNK, M2C_UNK, s32, M2C_UNK);
@@ -131,7 +131,7 @@ void fn_80183434(void *arg0, void *arg1) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(), 0x7C)();
     fn_8008C1D8(0, 0, 0x90, (temp_r28 << 5) + 0x20, 3);
     if ((s16) M2C_FIELD(arg1, s16 *, 0x3A) >= 5) {
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036ACC4);
         fn_8000A248();
         var_r28 = 0;
@@ -145,7 +145,7 @@ void fn_80183434(void *arg0, void *arg1) {
         temp_r30 = (s32) ((temp_r3 >> 0x1FU) + temp_r3) >> 1;
         temp_r3_2 = M2C_FIELD(M2C_FIELD(arg0, void **, 4), s16 (**)(void *), 0x50)(arg0);
         fn_8008AB7C((s32) (((u32) temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1, temp_r31 + temp_r30, temp_r29, 0x18, 0x19, 0x4B, var_r28);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036ACD0);
         fn_8000A248();
     }
@@ -3736,7 +3736,7 @@ void fn_8018DE24(void *arg0) {
     void fn_80009EB0(s32, s32, s32, s32);
     void fn_80009F90(s32, s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void **fn_8006EDD8(s32, s32);
     s32 *fn_8018D900(s32);
     extern u8 lbl_80279900[];
@@ -3811,7 +3811,7 @@ void fn_8018DE24(void *arg0) {
         *(u16 *)(self + 0x4E) = *(u16 *)(row + 6);
         *(u16 *)(self + 0x50) = *(u16 *)(row + 8);
         *(u16 *)(self + 0x52) = *(u16 *)(row + 0xA);
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009B8C(0xFF);
         fn_8000A248();
         mode = (base[0x9D] >> 2) & 3;
@@ -3823,7 +3823,7 @@ void fn_8018DE24(void *arg0) {
             tex = *p;
             h = *(u16 *)((u8 *)tex + 2);
             w = *(u16 *)tex;
-            fn_8000A258();
+            Prim2D_Begin();
             fn_80009D74(lbl_8036ADA0, lbl_8036ADA0, lbl_8036ADC0, lbl_8036ADA4);
             if (*(u32 *)((u8 *)p + 4) != 0) {
                 fn_80009EB0(*(s32 *)(self + 0x34), 0, 0, 0x11);
@@ -4114,7 +4114,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     void fn_80009C0C(f32);
     void fn_8000A174(s32, u16);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     void *fn_8000E0E4(void *);
     void fn_8001019C(s16, s16, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
@@ -4145,7 +4145,7 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     }
     y -= fn_80104E58() + 8;
 
-    fn_8000A258();
+    Prim2D_Begin();
     fn_80009C0C(lbl_8036ADF4);
     fn_8000A174(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 0x13));
     fn_8000A248();
@@ -4556,7 +4556,7 @@ extern "C" void fn_801908B8(void *arg0, s32 arg1) {
 extern "C" void fn_80190920(void *arg0) {
     void fn_80009C0C(f32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     s32 fn_800102BC(s32, f32);
     void fn_8008D510(void *, s32, s32, s32);
     extern f32 lbl_8036ADFC;
@@ -4586,7 +4586,7 @@ extern "C" void fn_80190920(void *arg0) {
     tmp = *(s16 *)((u8 *)arg0 + 0x4A);
     y = (y >> 1) + *(s16 *)((u8 *)arg0 + 0x4C);
     if (p3c != NULL) {
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036AE18);
         fn_8000A248();
         fn_8008D510(p3c, ((Obj *)arg0)->v9(p3c), tmp, y);
@@ -4608,7 +4608,7 @@ s32 fn_801909E4(void *arg0, s32 *arg1) {
 void fn_80190A1C(void *arg0) {
     M2C_UNK fn_80009C0C(f32);
     M2C_UNK fn_8000A248();
-    M2C_UNK fn_8000A258();
+    M2C_UNK Prim2D_Begin();
     M2C_UNK fn_8008BD90(s16, s16, s32);
     M2C_UNK fn_801583D0(M2C_UNK, M2C_UNK, s16, s16, M2C_UNK, M2C_UNK);
     extern f32 lbl_8036AE1C;
@@ -4618,7 +4618,7 @@ void fn_80190A1C(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0), M2C_UNK (**)(), 0x10)();
     fn_801583D0(0, 0, (s16) (M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)), (s16) (M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)), 0xFF, 0x10);
     if ((u8) M2C_FIELD(arg0, u8 *, 0x44) != 0) {
-        fn_8000A258();
+        Prim2D_Begin();
         fn_80009C0C(lbl_8036AE1C);
         fn_8000A248();
         temp_r5 = M2C_FIELD(arg0, u8 *, 0x44);
@@ -7897,7 +7897,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     M2C_UNK fn_80009D74(s32, f32, f32, f32, f32);
     M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
     M2C_UNK fn_8000A248();
-    M2C_UNK fn_8000A258(s32, void *, s32, f32);
+    M2C_UNK Prim2D_Begin(s32, void *, s32, f32);
     s32 fn_800E2E50(s32);
     s32 fn_800E2E58(s32);
     u32 fn_800E2E60(s32);
@@ -7994,7 +7994,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
         temp_r27 = M2C_FIELD(arg0, u8 *, 0x50);
         sp2C = sp3C;
         temp_r24_2 = (s32) (temp_f2 * (f32) M2C_FIELD(arg0, u8 *, 0x53));
-        fn_8000A258(sp38, temp_r4, sp30, temp_f2);
+        Prim2D_Begin(sp38, temp_r4, sp30, temp_f2);
         temp_r3 = M2C_FIELD(arg0, s32 *, 0x44) - 1;
         fn_80009D74(temp_r3, lbl_8036AE88, lbl_8036AE88, (f32) temp_r3, lbl_8036AE8C);
         fn_8000A174(0, 0x20);
@@ -8034,7 +8034,7 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     temp_r24_4 = M2C_FIELD(arg0, u8 *, 0x50);
     sp1C = sp3C;
     temp_r27_2 = (s32) (temp_f2_2 * (f32) M2C_FIELD(arg0, u8 *, 0x53));
-    fn_8000A258(sp38, temp_r4_2, sp30, temp_f2_2);
+    Prim2D_Begin(sp38, temp_r4_2, sp30, temp_f2_2);
     temp_r3_2 = M2C_FIELD(arg0, s32 *, 0x44) - 1;
     fn_80009D74(temp_r3_2, lbl_8036AE88, lbl_8036AE88, (f32) temp_r3_2, lbl_8036AE8C);
     fn_8000A174(0, 0x20);
@@ -8056,7 +8056,7 @@ void fn_80197A78(void *arg0, s32 arg1)
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
-    void fn_8000A258(void);
+    void Prim2D_Begin(void);
     s32 fn_800E2E50(void *);
     s32 fn_800E2E58(void *);
     s32 fn_800E2E60(void *);
@@ -8122,7 +8122,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             copy[3] = rect2[3];
             h = rect2[3] - rect2[1];
             alpha = (s32)(*(f32 *)((u8 *)obj38 + 0x6C) * (f32)*(u8 *)((u8 *)self + 0x53));
-            fn_8000A258();
+            Prim2D_Begin();
             {
                 s32 t = *(s32 *)((u8 *)self + 0x44) - 1;
                 fn_80009D74(lbl_8036AE88, lbl_8036AE88, (f32)t, lbl_8036AE8C);
@@ -8169,7 +8169,7 @@ void fn_80197A78(void *arg0, s32 arg1)
             copyb[3] = rect2b[3];
             h = rect2b[3] - rect2b[1];
             alpha = (s32)(*(f32 *)((u8 *)obj38 + 0x6C) * (f32)*(u8 *)((u8 *)self + 0x53));
-            fn_8000A258();
+            Prim2D_Begin();
             {
                 s32 t = *(s32 *)((u8 *)self + 0x44) - 1;
                 fn_80009D74(lbl_8036AE88, lbl_8036AE88, (f32)t, lbl_8036AE8C);
