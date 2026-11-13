@@ -1561,7 +1561,7 @@ void Item_Read(void *arg0, void *arg1) {
 
 void fn_8001C21C(void *arg0, s32 arg1) {
     M2C_UNK fn_8017A574(s32, M2C_UNK);
-    M2C_UNK fn_8017A5C4(s32, u16);
+    M2C_UNK Stream_WriteU16(s32, u16);
     void *temp_r3;
 
     temp_r3 = M2C_FIELD(arg0, void **, 0);
@@ -1569,8 +1569,8 @@ void fn_8001C21C(void *arg0, s32 arg1) {
         fn_8017A574(arg1, 0);
         return;
     }
-    fn_8017A5C4(arg1, M2C_FIELD(temp_r3, u16 *, 0xE));
-    fn_8017A5C4(arg1, M2C_FIELD(arg0, u16 *, 4));
+    Stream_WriteU16(arg1, M2C_FIELD(temp_r3, u16 *, 0xE));
+    Stream_WriteU16(arg1, M2C_FIELD(arg0, u16 *, 4));
 }
 
 extern f32 lbl_80368D5C;

@@ -292,7 +292,7 @@ extern u16 *g_AccessoryArray;
 void fn_8017A430(void *, s32, void *);
 void Stream_WriteU8(void *, u8);
 void fn_8017A574(void *, s32);
-void fn_8017A5C4(void *, u16);
+void Stream_WriteU16(void *, u16);
 void fn_8017A4CC(void *, s32, s32);
 void fn_80105A30(void *, void *);
 void fn_80014F94(void *, void *);

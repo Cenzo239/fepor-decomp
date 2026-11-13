@@ -11955,7 +11955,7 @@ void fn_8017A574(void *arg0, u32 arg1) {
     *r5_val = (u8)arg1;
 }
 
-void fn_8017A5C4(u8 **arg0, u16 arg1) {
+void Stream_WriteU16(u8 **arg0, u16 arg1) {
     u8 **pp = &arg0[1];
     *(*pp)++ = (u8)(arg1 >> 8);
     *(*pp)++ = (u8)arg1;
