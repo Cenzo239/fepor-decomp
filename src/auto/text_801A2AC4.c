@@ -146,9 +146,9 @@ void fn_801A2E3C(s32 arg0) {
 
 s32 fn_801A2E68(void) {
     void fn_8002A084(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     fn_8002A084();
-    return lbl_802EF4E0[0] != 0;
+    return gTargetList[0] != 0;
 }
 
 void fn_801A2EA0(s32 arg0) {
@@ -166,7 +166,7 @@ s32 fn_801A2EEC(void) {
     void fn_80026770(void *, s8 *);
     void fn_8002A784(s32, u8 *);
     extern u8 gUiContext[];
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
     s32 spC;
     u8 sp8;
 
@@ -174,7 +174,7 @@ s32 fn_801A2EEC(void) {
     fn_80026770(gUiContext, (s8 *)&spC);
     sp8 = gUiContext[0x13];
     fn_8002A784(*(s32 *)gUiContext, &sp8);
-    return *(s32 *)lbl_802EF4E0 != 0;
+    return *(s32 *)gTargetList != 0;
 }
 
 s32 fn_801A2F54(s32 arg0) {
@@ -253,9 +253,9 @@ void fn_801A3164(s32 arg0) {
 
 s32 fn_801A3190(void) {
     void fn_8002A2BC(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     fn_8002A2BC();
-    return lbl_802EF4E0[0] != 0;
+    return gTargetList[0] != 0;
 }
 
 s32 fn_801A31C8(s32 arg0) {
@@ -292,9 +292,9 @@ s32 fn_801A31C8(s32 arg0) {
 
 s32 fn_801A32C0(void) {
     void fn_8002A8CC(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     fn_8002A8CC();
-    return lbl_802EF4E0[0] != 0;
+    return gTargetList[0] != 0;
 }
 
 s32 fn_801A32F8(s32 arg0) {
@@ -404,9 +404,9 @@ s32 Battle_StartMapHitAnim(s32 parent) {
 
 s32 fn_801A3668(void) {
     void fn_8002AA34(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     fn_8002AA34();
-    return lbl_802EF4E0[0] != 0;
+    return gTargetList[0] != 0;
 }
 
 s32 fn_801A36A0(s32 arg0) {
@@ -439,17 +439,17 @@ void fn_801A372C(void) {
 
 s32 fn_801A376C(void) {
     void fn_8002AB9C(void);
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
 
     fn_8002AB9C();
-    return *(s32 *) lbl_802EF4E0 != 0;
+    return *(s32 *) gTargetList != 0;
 }
 
 s32 fn_801A3B08(void) {
     void fn_8002AD04(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     fn_8002AD04();
-    return lbl_802EF4E0[0] != 0;
+    return gTargetList[0] != 0;
 }
 
 /* Dispatch a map-object IID to the matching map-anim process starter. */
@@ -2590,10 +2590,10 @@ void fn_801A7CDC(void *arg0)
 }
 
 #include "global.h"
-extern u16 lbl_802EF4E0;
+extern u16 gTargetList;
 #include "common.h"
 
-extern u16 lbl_802EF4E0;
+extern u16 gTargetList;
 #include "global.h"
 
-extern u16 lbl_802EF4E0;
+extern u16 gTargetList;

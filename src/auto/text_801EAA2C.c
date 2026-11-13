@@ -118,7 +118,7 @@ void *fn_801EAABC(char *arg0, void *arg1) {
 
 s32 fn_801EAB90(s32 unused, void *obj) {
     extern u8 gUnitLists[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     u32 flags;
     s32 count;
     u32 nf;
@@ -145,7 +145,7 @@ check:
     if (flags != 0) {
         goto loop;
     }
-    if (count >= lbl_802EF4E0[0]) {
+    if (count >= gTargetList[0]) {
         return unused;
     }
     flags = *(u32 *)((u8 *)obj + 0x1A0);
@@ -557,7 +557,7 @@ void fn_801EBBB8(void *arg0) {
     extern u8 lbl_80292230[];
     extern u8 lbl_80293C84[];
     extern u8 lbl_80293C58[];
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
     extern u8 gBattleState[];
     void String_CStr(void *, s32);
     s32 fn_80106DC8(void *);
@@ -583,10 +583,10 @@ void fn_801EBBB8(void *arg0) {
     gUiInputFlags &= 0xFFFFFFFE;
     String_CStr((u8 *)arg0 + 0x40, 0);
     count = fn_80106DC8(sp8);
-    fn_8002F728(lbl_802EF4E0, lbl_802EF4E0);
+    fn_8002F728(gTargetList, gTargetList);
     p = sp8;
     for (i = 0; i < count; i++) {
-        fn_8002F6E8(lbl_802EF4E0, p[0], p[1], 0, 0);
+        fn_8002F6E8(gTargetList, p[0], p[1], 0, 0);
         p += 2;
     }
 

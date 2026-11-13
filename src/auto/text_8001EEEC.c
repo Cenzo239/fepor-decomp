@@ -3362,13 +3362,13 @@ void fn_80026194(s32 arg0) {
 void fn_80026204(void) {
     void fn_8002F658(s32 *, s32);
     void *UnitRef_GetUnit(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     s32 i;
     void *obj;
     s32 flags;
 
-    for (i = 0; i < lbl_802EF4E0[0]; i++) {
-        fn_8002F658(lbl_802EF4E0, i);
+    for (i = 0; i < gTargetList[0]; i++) {
+        fn_8002F658(gTargetList, i);
         obj = UnitRef_GetUnit();
         flags = *(s32 *)((u8 *)obj + 0x1A0);
         *(s32 *)((u8 *)obj + 0x1A0) = flags & ~1;
@@ -3406,7 +3406,7 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
     void fn_801A75DC(void *, void *, s32);
     void fn_80026374(s32);
     extern u8 lbl_80268E40[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 gUiContext[];
     extern u8 gBattle[];
 
@@ -3426,8 +3426,8 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
     fn_8002AD04(saved, Item_GetByIid(lbl_80268E40 + 0x1A6));
     i = 0;
     three = 3;
-    while (i < lbl_802EF4E0[0]) {
-        entry = fn_8002F658(lbl_802EF4E0, i);
+    while (i < gTargetList[0]) {
+        entry = fn_8002F658(gTargetList, i);
         b3 = ((u8 *)entry)[3];
         b2 = ((u8 *)entry)[2];
         val = fn_8003AFA0(*self);
@@ -3512,14 +3512,14 @@ void fn_80026570(void *arg0) {
     void fn_8019C070(void *, void (*)(void));
     void Process_Goto(void *, s32);
     void fn_8002662C(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 gUiContext[];
     extern u8 gBattle[];
     s32 *p;
     s32 idx;
     void *obj;
 
-    p = lbl_802EF4E0;
+    p = gTargetList;
     idx = *(s32 *)((u8 *)arg0 + 0x60);
     if (idx == *p) {
         fn_801A75DC(gBattle, *(void **)gUiContext, -1);
@@ -3993,15 +3993,14 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 #pragma peephole off
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
-    void *self;
-    u8 *map;
+    void *self = arg0;
+    s8 x;
+    s8 y;
 
     *(void **)arg0 = arg1;
-    self = arg0;
     *((u8 *)self + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)self + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)self + 0x11) = Unit_GetMov(arg1);
-    map = (u8 *)&gBattleMap;
     *(s32 *)((u8 *)self + 4) = 0;
     *((u8 *)self + 8) = 0;
     *((s8 *)self + 0xA) = -1;
@@ -4013,7 +4012,9 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     *((u8 *)self + 0x15) = 0;
     *((u8 *)self + 0x12) = 0;
     *((u8 *)self + 0x16) = 0;
-    map[(s8)*((u8 *)self + 0xB) + ((s8)*((u8 *)self + 0xC) << 6) + 0xD] = 0;
+    x = *((s8 *)self + 0xB);
+    y = *((s8 *)self + 0xC);
+    gBattleMap.unitMap[x + (y << 6)] = 0;
 }
 #pragma peephole reset
 void fn_8002846C(void *arg0) {

@@ -156,7 +156,7 @@ s32 fn_8010568C(s32 arg0) {
     void fn_8001EDB8(u8 *);
     void fn_8002A784(s32, u8 *);
     u8 Status_Test(s32, s32);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     u32 sp10;
     u32 spC;
     u32 sp8;
@@ -168,7 +168,7 @@ s32 fn_8010568C(s32 arg0) {
     }
     *(u8 *)&sp8 = *(u8 *)&sp10;
     fn_8002A784(arg0, (u8 *)&sp8);
-    if (lbl_802EF4E0[0] != 0) {
+    if (gTargetList[0] != 0) {
         return 1;
     }
     return 0;
@@ -3791,7 +3791,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     extern u8 gBattleMap[];
     extern u8 gAiState[];
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
     extern u8 lbl_80273B40[];
     extern void fn_800FB60C(void);
 
@@ -3833,7 +3833,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     }
     fn_8018D7A4(arg0, fn_800FB60C);
     bestUnit = NULL;
-    tbl = lbl_802EF4E0;
+    tbl = gTargetList;
     bestItem = NULL;
     i = 0;
     while (i < *(s32 *)tbl) {

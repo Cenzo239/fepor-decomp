@@ -3239,7 +3239,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     extern u8 lbl_80284E20[];
     extern u8 lbl_80296078[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 lbl_802798D0[];
     extern u8 gAiState[];
 
@@ -3272,11 +3272,11 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     obj.unk4 = arg0;
     obj.vtbl = lbl_80296078;
     obj.unk8 = arg1;
-    fn_8002F728(lbl_802EF4E0);
+    fn_8002F728(gTargetList);
     fn_8002C47C(&obj, 0);
     i = 0;
-    while (i < lbl_802EF4E0[0]) {
-        fn_8002F658(lbl_802EF4E0, i);
+    while (i < gTargetList[0]) {
+        fn_8002F658(gTargetList, i);
         unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
@@ -3359,7 +3359,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     extern u8 gBattleMap[];
     extern u8 lbl_80284E20[];
     extern u8 lbl_80296078[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 lbl_802798D0[];
     extern u8 gAiState[];
 
@@ -3403,11 +3403,11 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     obj.unk4 = arg0;
     obj.vtbl = lbl_80296078;
     obj.unk8 = arg1;
-    fn_8002F728(lbl_802EF4E0);
+    fn_8002F728(gTargetList);
     fn_8002C47C(&obj, 0);
     i = 0;
-    while (i < lbl_802EF4E0[0]) {
-        fn_8002F658(lbl_802EF4E0, i);
+    while (i < gTargetList[0]) {
+        fn_8002F658(gTargetList, i);
         unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
@@ -3478,7 +3478,7 @@ void fn_8018D7A4(s32 arg0, s32 arg1) {
     void fn_8002F728(void *);
     extern u8 lbl_80284E20[];
     extern u8 lbl_80296078[];
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
     struct {
         void *vtbl;
         s32 unk4;
@@ -3489,16 +3489,16 @@ void fn_8018D7A4(s32 arg0, s32 arg1) {
     obj.unk4 = arg0;
     obj.vtbl = lbl_80296078;
     obj.unk8 = arg1;
-    fn_8002F728(lbl_802EF4E0);
+    fn_8002F728(gTargetList);
     fn_8002C47C(&obj, 0);
 }
 
 void fn_8018D7FC(void *arg0, void *arg1) {
-    extern u8 lbl_802EF4E0[];
+    extern u8 gTargetList[];
     void fn_8002F6E8(void *, u8, u8, u8, s32);
 
     if (((u8 (**)(void *))arg0)[2](arg1) != 0) {
-        fn_8002F6E8(lbl_802EF4E0,
+        fn_8002F6E8(gTargetList,
                     *(u8 *)((u8 *)arg0 + 0xC),
                     *(u8 *)((u8 *)arg0 + 0xD),
                     *(u8 *)((u8 *)arg1 + 0x198),
@@ -10003,13 +10003,13 @@ void fn_8019BEA4(void *arg0) {
     void fn_80053680(void *, void *);
     void *Effect_Create(u8 *, void *);
     extern void fn_8019BF5C(void);
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     s32 *table;
     s32 i;
     void *item;
     void *obj;
 
-    table = lbl_802EF4E0;
+    table = gTargetList;
     i = 0;
     goto check;
 loop:
@@ -13476,7 +13476,7 @@ extern f32 lbl_8036ACE8;
 #pragma optimization_level 4
 #pragma inline auto
 
-extern u16 lbl_802EF4E0;
+extern u16 gTargetList;
 extern f32 lbl_8036AF00;
 extern f32 lbl_8036AF20;
 #include "common.h"

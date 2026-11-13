@@ -179,13 +179,13 @@ s32 fn_80074A38(void) {
     u8 Status_Test(void *, s32);
     void fn_80029C08(void *);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
 
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x18) == 0) {
         return 3;
     }
     fn_80029C08(*(u8 **)gUiContext);
-    return lbl_802EF4E0.n ? 0 : 2;
+    return gTargetList.n ? 0 : 2;
 }
 
 #pragma cplusplus on
@@ -294,7 +294,7 @@ extern "C" s32 fn_80074BA4(void *arg0) {
     u8 Status_Test(void *, s32);
     void fn_800299B8(void *);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *base;
     void *p;
     void *slot;
@@ -306,7 +306,7 @@ extern "C" s32 fn_80074BA4(void *arg0) {
         return 3;
     }
     fn_800299B8(*(void **)gUiContext);
-    return lbl_802EF4E0.n ? 0 : 2;
+    return gTargetList.n ? 0 : 2;
 }
 #pragma cplusplus reset
 
@@ -857,7 +857,7 @@ s32 fn_800759E8(void) {
     void *fn_800285C0(void *);
     void fn_8002C194(void *, u8);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
 
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
@@ -866,7 +866,7 @@ s32 fn_800759E8(void) {
         return 3;
     }
     fn_8002C194(*(void **)gUiContext, gUiContext[0xA]);
-    if (lbl_802EF4E0[0] == 0) {
+    if (gTargetList[0] == 0) {
         return 3;
     }
     if (*Item_GetFlagsPtr(fn_800285C0(gUiContext)) & 0x200ULL) {
@@ -1222,7 +1222,7 @@ s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
     void fn_8002BEFC(s32, u32);
     void fn_8002C034(s32, u32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u32 *entry;
 
     entry = Unit_GetHeldItemSlot(*(s32 *)gUiContext, arg2);
@@ -1237,7 +1237,7 @@ s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
     } else {
         fn_8002C034(*(s32 *)gUiContext, *entry);
     }
-    if (lbl_802EF4E0.n == 0) {
+    if (gTargetList.n == 0) {
         return 2;
     }
     return 1;
@@ -1363,7 +1363,7 @@ s32 fn_8007686C(void) {
     s32 Item_GetByIid(u8 *);
     void fn_8002C034(void *, s32);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 lbl_8026C0B8[];
     void *temp;
 
@@ -1375,7 +1375,7 @@ s32 fn_8007686C(void) {
     }
     temp = *(void **)gUiContext;
     fn_8002C034(temp, Item_GetByIid(lbl_8026C0B8 + 0x2E3));
-    return lbl_802EF4E0[0] == 0 ? 3 : 0;
+    return gTargetList[0] == 0 ? 3 : 0;
 }
 
 s32 fn_80076910(s32 arg0, s32 arg1, void *arg2) {
@@ -1418,7 +1418,7 @@ s32 fn_800769EC(void) {
     u8 Status_Test(void *, s32);
     void fn_80029E4C(void);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
 
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
@@ -1430,7 +1430,7 @@ s32 fn_800769EC(void) {
         return 2;
     }
     fn_80029E4C();
-    return lbl_802EF4E0[0] == 0 ? 3 : 0;
+    return gTargetList[0] == 0 ? 3 : 0;
 }
 
 #pragma cplusplus on
@@ -1501,7 +1501,7 @@ s32 fn_80076B94(void) {
     s32 Item_GetByIid(u8 *);
     void fn_8002AD04(void *, s32);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 lbl_8026C0B8[];
     void *temp;
 
@@ -1513,7 +1513,7 @@ s32 fn_80076B94(void) {
     }
     temp = *(void **)gUiContext;
     fn_8002AD04(temp, Item_GetByIid(lbl_8026C0B8 + 0x30E));
-    return lbl_802EF4E0[0] == 0 ? 3 : 0;
+    return gTargetList[0] == 0 ? 3 : 0;
 }
 
 s32 fn_80076C38(void) {
@@ -1538,7 +1538,7 @@ s32 fn_80076CA8(void) {
     s32 Item_GetByIid(u8 *);
     void fn_8002AB9C(void *, s32);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
     extern u8 lbl_8026C0B8[];
     void *temp;
 
@@ -1550,7 +1550,7 @@ s32 fn_80076CA8(void) {
     }
     temp = *(void **)gUiContext;
     fn_8002AB9C(temp, Item_GetByIid(lbl_8026C0B8 + 0x320));
-    return lbl_802EF4E0[0] == 0 ? 3 : 0;
+    return gTargetList[0] == 0 ? 3 : 0;
 }
 
 s32 fn_80076D4C(void) {
@@ -1573,14 +1573,14 @@ s32 fn_80076DBC(void) {
     u8 Status_Test(void *, s32);
     void fn_80029C08(void *);
     extern u8 gUiContext[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
 
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
     }
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x18) != 0) {
         fn_80029C08(*(u8 **)gUiContext);
-        if (lbl_802EF4E0[0] != 0) {
+        if (gTargetList[0] != 0) {
             return 0;
         }
     }
@@ -1611,7 +1611,7 @@ s32 fn_80076E9C(void) {
 s32 fn_80076EB4(void) {
     void fn_8002C194(void *, s32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
 
     p = gUiContext;
@@ -1622,7 +1622,7 @@ s32 fn_80076EB4(void) {
         return 3;
     }
     fn_8002C194(*(void **)p, -1);
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 void fn_80076F28(void) {
@@ -1767,7 +1767,7 @@ s32 fn_80077344(void) {
     u8 Status_Test(void *, s32);
     void fn_8002AE6C(void *);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
 
     if ((s8)gUiContext[0x12] != 0) {
         return 3;
@@ -1776,7 +1776,7 @@ s32 fn_80077344(void) {
         return 3;
     }
     fn_8002AE6C(*(void **)gUiContext);
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_800773C8(void) {
@@ -1943,7 +1943,7 @@ void fn_80077968(void) {
 s32 fn_80077994(void) {
     void fn_8002B2E8(void);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
 
     p = gUiContext;
@@ -1957,7 +1957,7 @@ s32 fn_80077994(void) {
         return 3;
     }
     fn_8002B2E8();
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_80077A18(void) {
@@ -1983,7 +1983,7 @@ void fn_80077A64(void) {
 s32 fn_80077A90(void) {
     void fn_8002B520(void *);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
     void *obj;
     s32 flags;
@@ -2004,7 +2004,7 @@ s32 fn_80077A90(void) {
         return 3;
     }
     fn_8002B520(obj);
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_80077B24(void) {
@@ -2098,7 +2098,7 @@ void fn_80077CC0(void) {
 s32 fn_80077CEC(void) {
     void fn_8002B758(void);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
     u8 *obj;
 
@@ -2114,7 +2114,7 @@ s32 fn_80077CEC(void) {
         return 3;
     }
     fn_8002B758();
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_80077D70(void) {
@@ -2161,7 +2161,7 @@ void fn_80077E00(void) {
 s32 fn_80077E60(void) {
     void fn_8002B89C(void);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
 
     p = gUiContext;
@@ -2172,7 +2172,7 @@ s32 fn_80077E60(void) {
         return 3;
     }
     fn_8002B89C();
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_80077ED0(void) {
@@ -2205,7 +2205,7 @@ s32 fn_80077F58(void) {
     u8 Status_Test(void *, s32);
     void fn_8002BAFC(void *, s32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
 
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x45) == 0) {
         return 3;
@@ -2214,7 +2214,7 @@ s32 fn_80077F58(void) {
         return 3;
     }
     fn_8002BAFC(*(void **)gUiContext, 2);
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_80077FE0(void) {
@@ -2243,7 +2243,7 @@ s32 fn_80078060(void) {
     u8 Status_Test(void *, s32);
     void fn_8002BAFC(void *, s32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
 
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0x44) == 0) {
@@ -2254,7 +2254,7 @@ s32 fn_80078060(void) {
         return 3;
     }
     fn_8002BAFC(*(void **)p, 1);
-    return lbl_802EF4E0.n ? 0 : 3;
+    return gTargetList.n ? 0 : 3;
 }
 
 s32 fn_800780E8(void) {
@@ -2274,7 +2274,7 @@ void fn_8007812C(void) {
 }
 
 s32 fn_80078158(void) {
-    extern u8 gUiContext[], gMapObjEventList[], lbl_802EF4E0[];
+    extern u8 gUiContext[], gMapObjEventList[], gTargetList[];
     u8 Status_Test(void *, s32); void *MapObjEvent_Find(void *, s32, s32, s32); void fn_8002BD44(void *, void *);
     void *obj; void *entry;
     if (*(s8 *)(gUiContext + 0x12)) return 3;
@@ -2283,7 +2283,7 @@ s32 fn_80078158(void) {
     entry = MapObjEvent_Find(gMapObjEventList, *(u8 *)((u8 *)obj + 0x19E), *(u8 *)((u8 *)obj + 0x19F), 7);
     if (!entry) return 3;
     fn_8002BD44(*(void **)gUiContext, entry);
-    if (*(s32 *)lbl_802EF4E0 == 0) return 3;
+    if (*(s32 *)gTargetList == 0) return 3;
     if (*(u8 *)((u8 *)entry + 5) == 0) return 2;
     return 0;
 }
@@ -2376,7 +2376,7 @@ s32 fn_800786AC(void) {
     u32 *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *, u32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u32 *entry;
     s32 i;
     u8 *p;
@@ -2394,7 +2394,7 @@ s32 fn_800786AC(void) {
             if ((*(u64 *)tmp & 1) != 0
                 && fn_8009339C(*(void **)gUiContext, *entry) != 0) {
                 fn_8002BEFC(*(void **)gUiContext, *entry);
-                if (lbl_802EF4E0.n != 0) {
+                if (gTargetList.n != 0) {
                     return 0;
                 }
             }
@@ -2428,7 +2428,7 @@ s32 fn_80078810(void) {
     u32 *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *, u32);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u32 *entry;
     s32 i;
     u8 *p;
@@ -2446,7 +2446,7 @@ s32 fn_80078810(void) {
             if ((*(u64 *)tmp & 1) != 0
                 && fn_8009339C(*(void **)gUiContext, *entry) != 0) {
                 fn_8002C034(*(void **)gUiContext, *entry);
-                if (lbl_802EF4E0.n != 0) {
+                if (gTargetList.n != 0) {
                     return 0;
                 }
             }
@@ -2498,7 +2498,7 @@ void fn_800789F8(void) {
 s32 fn_80078A24(void) {
     void fn_8002B0A4(void *);
     extern u8 gUiContext[];
-    extern struct { s32 n; u8 pad[2004]; } lbl_802EF4E0;
+    extern struct { s32 n; u8 pad[2004]; } gTargetList;
     u8 *p;
     void *obj;
     u8 v;
@@ -2512,7 +2512,7 @@ s32 fn_80078A24(void) {
     }
     obj = *(void **)p;
     fn_8002B0A4(obj);
-    if (lbl_802EF4E0.n == 0) {
+    if (gTargetList.n == 0) {
         return 3;
     }
     v = *(u8 *)((u8 *)*(void **)gUiContext + 0x1A5);
@@ -4160,7 +4160,7 @@ void fn_8007C4D4(void *arg0, s32 arg1) {
 #include "structs.h"
 
 extern u16 gUiContext[12];
-extern s32 lbl_802EF4E0[];
+extern s32 gTargetList[];
 extern void *Item_GetFlagsPtr(void);
 extern void *fn_800285C0(void *);
 extern u16 lbl_8026C0B8[];
@@ -4177,5 +4177,5 @@ extern u16 gFaceSlots[8];
 #include <common.h>
 
 extern u16 gUiContext[12];
-extern s32 lbl_802EF4E0[502];
+extern s32 gTargetList[502];
 #include "global.h"

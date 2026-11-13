@@ -1968,7 +1968,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
     extern f32 lbl_8036A568;
     extern u8 gUiSelectMenuStrings[];
     extern u8 gUnitLists[];
-    extern s32 lbl_802EF4E0[];
+    extern s32 gTargetList[];
 
     struct Node {
         u8 pad0[0x184];
@@ -2017,7 +2017,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
             if (!(flags & 0x10))
                 count++;
         }
-        limit = (s16)lbl_802EF4E0[0];
+        limit = (s16)gTargetList[0];
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A560);
         Prim2D_SetTex(0, 0x13);
@@ -2056,7 +2056,7 @@ extern "C" void Ui_DrawUnitCountBanner(void *arg0) {
             if (flags & 0x400000)
                 limit++;
         }
-        count = (s16)lbl_802EF4E0[0];
+        count = (s16)gTargetList[0];
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A560);
         Prim2D_SetTex(0, 0x13);
