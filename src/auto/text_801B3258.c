@@ -752,7 +752,7 @@ void Script_RegisterWinCondCommands(void) {
     void ScriptCmd_PlayerDeadCheck(void);
     void ScriptCmd_EnemyDeadCheck(void);
     void ScriptCmd_EnemyUnitCheckByPID(void);
-    void fn_801B7488(void);
+    void ScriptCmd_EnemyMonkCheck(void);
     void fn_801B73DC(void);
     void fn_801B7330(void);
     void fn_801B7260(void);
@@ -764,7 +764,7 @@ void Script_RegisterWinCondCommands(void) {
     Script_RegisterCommand(gWinCondCmdNames + 0xD9, ScriptCmd_PlayerDeadCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0xE9, ScriptCmd_EnemyDeadCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0xF8, ScriptCmd_EnemyUnitCheckByPID, 1);
-    Script_RegisterCommand(gWinCondCmdNames + 0x10C, fn_801B7488, 0);
+    Script_RegisterCommand(gWinCondCmdNames + 0x10C, ScriptCmd_EnemyMonkCheck, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x11B, fn_801B73DC, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x131, fn_801B7330, 0);
     Script_RegisterCommand(gWinCondCmdNames + 0x141, fn_801B7260, 0);
@@ -926,7 +926,7 @@ s32 fn_801B73DC(void) {
     return count;
 }
 
-s32 fn_801B7488(void) {
+s32 ScriptCmd_EnemyMonkCheck(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
     extern u8 gWinCondCmdNames[];
