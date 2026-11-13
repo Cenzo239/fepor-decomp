@@ -9679,7 +9679,7 @@ void Map_DrawRangeTiles(void) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void fn_802245D8(s32, s32, s32, s32);
-    void fn_80223D94(s32, s32, s32);
+    void GXSetTevSwapMode(s32, s32, s32);
     void fn_80223DDC(s32, s32, s32, s32, s32);
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
@@ -9732,7 +9732,7 @@ void Map_DrawRangeTiles(void) {
         GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 5, 0);
-        fn_80223D94(0, 0, 3);
+        GXSetTevSwapMode(0, 0, 3);
         fn_80223DDC(3, 0, 1, 2, 0);
         texId = lbl_803674F0;
         p = &texBuf[0][0];
@@ -9794,7 +9794,7 @@ void Map_DrawRangeTiles(void) {
         y_test:
             ;
         } while (y >= 0);
-        fn_80223D94(0, 0, 0);
+        GXSetTevSwapMode(0, 0, 0);
         fn_80223DDC(3, 0, 1, 2, 3);
         fn_80066D00(-1);
     }
@@ -10275,7 +10275,7 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222C50(void *, s32);
     void fn_80223DDC(s32, s32, s32, s32, s32);
-    void fn_80223D94(s32, s32, s32);
+    void GXSetTevSwapMode(s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
@@ -10310,7 +10310,7 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
     }
     if ((*(s32 *)((u8 *)owner + 0x1A0) & 1) != 0) {
         fn_80223DDC(1, 1, 1, 1, 3);
-        fn_80223D94(tevStage, 0, 1);
+        GXSetTevSwapMode(tevStage, 0, 1);
         GXSetTevColorIn(tevStage, 0xF, 8, 0xA, 0xA);
         GXSetTevColorOp(tevStage, 0, 2, 3, 1, 0);
         GXSetTevAlphaIn(tevStage, 7, 4, 5, 7);

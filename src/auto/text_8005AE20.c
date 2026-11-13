@@ -4608,7 +4608,7 @@ void fn_800661A8(void *arg0) {
     void fn_80221FF8(void *, f32, f32, f32);
     void fn_802220DC(void *, s32 *);
     void fn_802220E8(void *, s32);
-    void fn_80223D94(s32, s32, s32);
+    void GXSetTevSwapMode(s32, s32, s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void fn_802240F0(s32, s32 *, f32, f32, f32, f32);
     void fn_80224304(void *, s32, void *);
@@ -4744,7 +4744,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
 
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
@@ -4786,7 +4786,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
@@ -4827,7 +4827,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 1);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
@@ -4868,7 +4868,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
@@ -4909,7 +4909,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;
@@ -4952,7 +4952,7 @@ void fn_800661A8(void *arg0) {
     GXSetZMode(1, 3, 0);
     fn_8022462C(1);
     fn_80224658(0);
-    fn_80223D94(0, 0, 0);
+    GXSetTevSwapMode(0, 0, 0);
     if (lbl_80366DD8 != 6) {
         type = lbl_80366DD4[0];
         lbl_80366DD8 = 8;

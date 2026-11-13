@@ -1112,7 +1112,7 @@ void* fn_80223D38(u32 arg0) {
     return ret;
 }
 
-void fn_80223D94(s32 arg0, s32 arg1, s32 arg2) {
+void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
     u32 *temp_r8;
     u32 temp_r6;
     
