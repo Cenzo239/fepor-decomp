@@ -73,7 +73,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     s32 fn_80092ADC(void *, u8);
     void sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
-    extern f32 lbl_803699E8;
+    extern f32 gItemMenuTextScale;
     u8 sp8[8];
     u8 temp;
     s32 name;
@@ -85,7 +85,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x40), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
-    Prim2D_SetScale(lbl_803699E8);
+    Prim2D_SetScale(gItemMenuTextScale);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
@@ -1706,7 +1706,7 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     extern u8 lbl_8026D8D8[];
     extern u8 gItemMenuTextBuf[];
     extern f32 gItemMenuTextZ;
-    extern f32 lbl_803699E8;
+    extern f32 gItemMenuTextScale;
     void *temp_r30;
     void **temp_r31;
 
@@ -1723,14 +1723,14 @@ void ItemMenu_DrawItemText(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)*(s16 *)((u8 *)temp_r30 + 0x30), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
     Prim2D_SetText(gItemMenuTextBuf);
-    Prim2D_SetScale(lbl_803699E8);
+    Prim2D_SetScale(gItemMenuTextScale);
     Prim2D_EndPrim();
     sprintf(gItemMenuTextBuf, lbl_8026D8D8 + 0x6CA, *(u8 *)((u8 *)temp_r31 + 4),
         (u8)((*temp_r31 != NULL) ? *(u8 *)((u8 *)*temp_r31 + 0x18) : 0));
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)temp_r30 + 0x30) + 0x78), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
     Prim2D_SetText(gItemMenuTextBuf);
-    Prim2D_SetScale(lbl_803699E8);
+    Prim2D_SetScale(gItemMenuTextScale);
     Prim2D_EndPrim();
 }
 
@@ -2126,7 +2126,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     s32 fn_80104338(void *, u8);
     M2C_UNK sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
-    extern f32 lbl_803699E8;
+    extern f32 gItemMenuTextScale;
     u8 sp8[8];
 
     sprintf(sp8, lbl_8026D8D8 + 0x6E5, fn_80104338((u8 *)Map_GetCursorUnit() + 0x1A4, *(u8 *)((u8 *)arg2 + 0x3A)));
@@ -2134,7 +2134,7 @@ void fn_800A2BA8(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_AddPrim(5);
     Prim2D_SetPos((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x64), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     Prim2D_SetText(sp8);
-    Prim2D_SetScale(lbl_803699E8);
+    Prim2D_SetScale(gItemMenuTextScale);
     if (*(u8 *)((u8 *)arg2 + 0x38) != 0) {
         Prim2D_SetTint(0xFF, 0xFF, 0, 0xFF);
     }
@@ -2200,7 +2200,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     extern u8 lbl_8026D8D8[];
     extern s32 lbl_8026D7C8[];
     extern f32 gItemMenuTextZ;
-    extern f32 lbl_803699E8;
+    extern f32 gItemMenuTextScale;
     void *obj;
     struct UnitEntry *row;
     struct UnitEntry *row2;
@@ -2224,7 +2224,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
                 Prim2D_SetTint(0, 0, 0, 0xFF);
             }
-            Prim2D_SetScale(lbl_803699E8);
+            Prim2D_SetScale(gItemMenuTextScale);
             Prim2D_EndPrim();
             row = (struct UnitEntry *) ((u8 *) M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) + idx * 8 + 8);
             row2 = (struct UnitEntry *) ((u8 *) M2C_FIELD(M2C_FIELD(obj, void **, 0x188), void **, 0x50) + idx * 8 + 8);
@@ -2243,7 +2243,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
                 Prim2D_SetTint(0, 0, 0, 0xFF);
             }
-            Prim2D_SetScale(lbl_803699E8);
+            Prim2D_SetScale(gItemMenuTextScale);
             Prim2D_EndPrim();
         }
     }
