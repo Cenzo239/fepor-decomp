@@ -2008,14 +2008,14 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
     M2C_UNK fprintf(void *, const char *, ...);
     s32 fn_80231944(char *, char *, u32);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     u32 len;
     u32 rest;
     const u32 *q;
     s32 cmp;
 
     if (pos > arg0->size) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0x1D);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x1D);
         abort();
     }
     rest = arg0->size - pos;
@@ -2047,12 +2047,12 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     u32 rest;
     u32 len;
 
     if (pos > arg1->size) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0x96);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x96);
         abort();
     }
     rest = arg1->size - pos;
@@ -2079,12 +2079,12 @@ String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
     M2C_UNK fprintf(void *, const char *, ...);
     void *memset(void *, s32, u32);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     u32 size;
 
     if (arg1 != 0) {
         if (arg1 > (u32)-2 || arg0->size > (u32)-2 - arg1) {
-            fprintf(__files + 0xA0, lbl_80270350 + 0xBC);
+            fprintf(__files + 0xA0, gStringErrorMsgs + 0xBC);
             abort();
         }
         size = arg0->size;
@@ -2114,7 +2114,7 @@ String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
     M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     u32 lim;
     u32 size;
     u32 len;
@@ -2122,7 +2122,7 @@ String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
 
     lim = arg1->size;
     if (pos > lim) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0xEE);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0xEE);
         abort();
     }
     rest = arg1->size - pos;
@@ -2158,7 +2158,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     void fprintf(void *, const char *, ...);
     u32 strlen(const char *);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     struct Tag home;
     struct Tag copy;
     u32 len;
@@ -2166,7 +2166,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
     *(u32 *)((u8 *)arg0 + 4) = 0;
     len = strlen(arg1);
     if (len > (u32)-2) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0x114);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x114);
         abort();
     }
     home = copy;
@@ -2194,7 +2194,7 @@ void *arg1;
 void fn_800C9BC4(void *vec,s32 *pos,u32 count,s32 *value){
 void *Heap_Alloc(s32);void Heap_Free(void *);
 void fprintf(void *,const char *,...);void abort(void);
-extern char __files[],lbl_80270350[];
+extern char __files[],gStringErrorMsgs[];
 u32 bytes;
 s32 *old,*allocation,*dst,*end,*fill,*src,*split;
 s32 offset;
@@ -2205,7 +2205,7 @@ s32 initial;
 s32 *copySrc,*copyDst;
 if(count){
 if(count>0x3FFFFFFF || M2C_FIELD(vec,u32 *,4)>0x3FFFFFFF-count){
-fprintf(__files+0xA0,lbl_80270350+0x136);abort();
+fprintf(__files+0xA0,gStringErrorMsgs+0x136);abort();
 }
 size=M2C_FIELD(vec,u32 *,4);available=M2C_FIELD(vec,u32 *,0);
 need=size+count;
@@ -2230,7 +2230,7 @@ while(need>capacity){
 if(capacity<0x1FFFFFFF)capacity*=2;else capacity=0x3FFFFFFF;
 }
 allocation=Heap_Alloc(capacity*4);
-if(!allocation){fprintf(__files+0xA0,lbl_80270350+0x7C);abort();}
+if(!allocation){fprintf(__files+0xA0,gStringErrorMsgs+0x7C);abort();}
 M2C_FIELD(vec,s32 **,8)=allocation;
 bytes=offset*4;
 dst=(s32 *)((u8 *)M2C_FIELD(vec,s32 **,8)+bytes);n=count;
@@ -2263,7 +2263,7 @@ void fn_800CA18C(void *vec, void *pos, u32 count, void *src)
     void fprintf(void *, const char *, ...);
     void abort(void);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
 
     struct LocalState {
     u8 pads[0x48];
@@ -2289,7 +2289,7 @@ struct LocalState st;
 
     if (count > 0x15555555U ||
         *(u32 *)((u8 *)vec + 4) > 0x15555555U - count) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0x136);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x136);
         abort();
     }
 
@@ -2429,7 +2429,7 @@ struct LocalState st;
         if (dst == 0) {
             fprintf(
                 __files + 0xA0,
-                lbl_80270350 + 0x7C
+                gStringErrorMsgs + 0x7C
             );
             abort();
         }
@@ -2622,7 +2622,7 @@ void fn_800CA728(void *arg0, char *begin, char *end) {
     void abort(void);
     void *memcpy(void *, const void *, u32);
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     extern u8 lbl_80366E42;
 
     char *buf;
@@ -2640,7 +2640,7 @@ void fn_800CA728(void *arg0, char *begin, char *end) {
         *(u32 *)((u8 *)self + 4) = (len + 3) - (len & 3);
         buf = (char *)Heap_Alloc(*(s32 *)((u8 *)self + 4) + 1);
         if (buf == 0) {
-            fprintf(__files + 0xA0, lbl_80270350 + 0x7C);
+            fprintf(__files + 0xA0, gStringErrorMsgs + 0x7C);
             abort();
         }
         *(char **)((u8 *)self + 8) = buf;
@@ -7462,7 +7462,7 @@ Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
 
 void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     extern char __files[];
-    extern char lbl_80270350[];
+    extern char gStringErrorMsgs[];
     void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
@@ -7471,7 +7471,7 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     u32 len;
 
     if (pos > arg1->size) {
-        fprintf(__files + 0xA0, lbl_80270350 + 0x96);
+        fprintf(__files + 0xA0, gStringErrorMsgs + 0x96);
         abort();
     }
     rest = arg1->size - pos;
