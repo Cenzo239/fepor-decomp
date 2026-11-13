@@ -4644,7 +4644,7 @@ void fn_800D06BC(u8 *self) {
     void fn_800E76D0(s32, u8);
     u8 fn_800DF6A8(void *);
     void fn_800DF44C(void *, s32, f32, f32, f32);
-    void fn_800DF2D8(void *);
+    void Vec3Interp_Update(void *);
     void fn_800DF430(void *, f32 *);
     void fn_800DF410(void *, f32 *);
     void fn_800E8FE8(s32, f32);
@@ -4779,7 +4779,7 @@ void fn_800D06BC(u8 *self) {
             mid[2] = pos[2];
         }
         fn_800DF44C(self + 0x280, 8, mid[0], mid[1], mid[2]);
-        fn_800DF2D8(self + 0x280);
+        Vec3Interp_Update(self + 0x280);
         fn_800DF430(self + 0x280, mid);
         tmp[0] = mid[0];
         tmp[1] = mid[1];
@@ -4798,7 +4798,7 @@ void fn_800D06BC(u8 *self) {
                 f32 z = lbl_80369DC8;
                 fn_800DF44C(self + 0x2E0, 8, scaled, z, z);
             }
-            fn_800DF2D8(self + 0x2E0);
+            Vec3Interp_Update(self + 0x2E0);
             fn_800DF410(self + 0x2E0, &scaled);
             fn_800E8FE8(handle, scaled);
         }
@@ -10028,7 +10028,7 @@ extern "C" bool fn_800DF298(void *arg0, const char *arg1) {
 #pragma dont_inline reset
 #pragma cplusplus reset
 
-void fn_800DF2D8(void *arg0) {
+void Vec3Interp_Update(void *arg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     f32 temp_f5;
     s32 temp_r0;
