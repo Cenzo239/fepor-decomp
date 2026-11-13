@@ -797,6 +797,7 @@ void FileCache_OrFlags(char *name, s32 flags) {
     v |= flags;
     *(u16 *)(e + 0x30) = v;
 }
+/* Mark the named file-cache entry as relocated (flags |= 0x4000). */
 void FileCache_MarkRelocated(char *name) {
     u8 *e = FindEntryByName(name);
     u16 v = *(u16 *)(e + 0x30);
