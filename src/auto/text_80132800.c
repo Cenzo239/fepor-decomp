@@ -11131,7 +11131,7 @@ s8 Ui_PlaySeCue(void *arg0, int arg1) {
     extern u8 gSeCueSlots[1344];
     extern s32 gUiInputFlags;
     extern u8 gSeCueVtblBase[];
-    extern u8 lbl_802926EC[];
+    extern u8 gSeCueVtbl0[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
 
@@ -11168,7 +11168,7 @@ found:
         if (found != NULL) {
             *(void **)(found + 8) = gSeCueVtblBase;
             *(void **)found = src;
-            *(void **)(found + 8) = lbl_802926EC;
+            *(void **)(found + 8) = gSeCueVtbl0;
         }
         break;
     case 1:
@@ -11292,7 +11292,7 @@ s8 Fx_AllocSlot(void *name, s8 param, s16 duration) {
     void *Hash_Lookup(void *);
     extern u8 gFxSlots[];
     extern u8 gSeCueVtblBase[];
-    extern u8 lbl_802926EC[];
+    extern u8 gSeCueVtbl0[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
     extern f32 gMsPerFrame;
@@ -11327,7 +11327,7 @@ found:
             if (fx != NULL) {
                 *(void **)(fx + 8) = gSeCueVtblBase;
                 *(void **)fx = def;
-                *(void **)(fx + 8) = lbl_802926EC;
+                *(void **)(fx + 8) = gSeCueVtbl0;
             }
             break;
         case 1:
@@ -11568,7 +11568,7 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     /* Start named FX in channel arg0; return -1 if that name is already active in any channel. */
     void *Hash_Lookup(void *);
     extern u8 gSeCueVtblBase[];
-    extern u8 lbl_802926EC[];
+    extern u8 gSeCueVtbl0[];
     extern u8 lbl_8029267C[];
     extern u8 lbl_8029260C[];
     extern f32 gMsPerFrame;
@@ -11651,7 +11651,7 @@ after_search:
         if (slot != NULL) {
             *(void **)((u8 *)slot + 8) = gSeCueVtblBase;
             slot->names = (void **)def;
-            *(void **)((u8 *)slot + 8) = lbl_802926EC;
+            *(void **)((u8 *)slot + 8) = gSeCueVtbl0;
         }
         break;
     case 1:
