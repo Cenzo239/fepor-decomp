@@ -11884,48 +11884,49 @@ void fn_800508C4(void* arg0, s32 arg1, s32 arg2) {
 }
 
 #pragma global_optimizer off
-void *Unit_GetMapModelName(void *arg0) {
+void *Unit_GetMapModelName(void *unit) {
     void fn_800056A0(s32);
     void *Res_GetByName(void *);
     u8 Status_Test(void *, s32);
     extern u8 lbl_8026AB18[];
-    void *result;
-    void *base;
-    s32 idx;
+    void *name;
+    void *klass;
+    s32 slot;
     void *r;
     u32 tmp;
 
-    r = *(void **)((u8 *)arg0 + 0x18C);
-    base = r;
-    if (*(u8 *)((u8 *)arg0 + 3) & 4) {
+    /* Pick mounted or base class map-model name; fall back to a default string. */
+    r = *(void **)((u8 *)unit + 0x18C);
+    klass = r;
+    if (*(u8 *)((u8 *)unit + 3) & 4) {
         r = *(void **)((u8 *)r + 0xC);
         if (r != 0) {
             r = Res_GetByName(r);
         } else {
             r = 0;
         }
-        base = r;
+        klass = r;
     }
-    idx = 0;
-    if (Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
-        if (Status_Test((u8 *)base + 0x1C, 9) != 0) {
-            idx = 1;
+    slot = 0;
+    if (Status_Test((u8 *)unit + 0x1BC, 8) != 0) {
+        if (Status_Test((u8 *)klass + 0x1C, 9) != 0) {
+            slot = 1;
         }
-    } else if (Status_Test((u8 *)base + 0x1C, 2) != 0) {
-        idx = 1;
+    } else if (Status_Test((u8 *)klass + 0x1C, 2) != 0) {
+        slot = 1;
     }
-    result = *(void **)((u8 *)arg0 + 0x188);
-    result = (void *)((u8 *)result + (idx * 4));
-    tmp = *(u32 *)((u8 *)result + 0x5C);
-    result = (void *)tmp;
+    name = *(void **)((u8 *)unit + 0x188);
+    name = (void *)((u8 *)name + (slot * 4));
+    tmp = *(u32 *)((u8 *)name + 0x5C);
+    name = (void *)tmp;
     if (tmp == 0) {
-        result = *(void **)((u8 *)base + 0x18);
+        name = *(void **)((u8 *)klass + 0x18);
     }
-    if (result == 0) {
+    if (name == 0) {
         fn_800056A0(0);
-        result = lbl_8026AB18 + 0x52;
+        name = lbl_8026AB18 + 0x52;
     }
-    return result;
+    return name;
 }
 #pragma global_optimizer on
 void fn_80050BA8(s32 arg0) {
