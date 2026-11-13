@@ -60,7 +60,7 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     return 0;
 }
 
-void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
+void Ui_DrawWpnRankMenuItem(s32 arg0, s32 arg1, void *arg2) {
     void *Map_GetCursorUnit(void);
     void Prim2D_SetText(void *);
     void Prim2D_SetScale(f32);
