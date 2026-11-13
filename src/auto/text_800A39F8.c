@@ -2419,7 +2419,7 @@ void fn_800A8AE4(s32 arg0) {
 }
 
 void fn_800A8B18(void *arg0) {
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void fn_8006EEFC(void *, void *);
     s32 fn_80005E2C(s32);
     void Process_Goto(void *, s32);
@@ -2428,7 +2428,7 @@ void fn_800A8B18(void *arg0) {
     void *self;
 
     self = arg0;
-    fn_8005C84C(gOptionsStr + 0x58);
+    FileCache_Load(gOptionsStr + 0x58);
     fn_8006EEFC((u8 *)self + 0x30, gOptionsStr + 0x62);
     *(s32 *)((u8 *)self + 0x34) = 0;
     ((u8 *)self)[0x38] = 0;
@@ -2703,7 +2703,7 @@ void fn_800A92F0(void) {
 
 void fn_800A931C(s32 arg0) {
     void fn_8005BCD0(void);
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void *fn_80109180(void *, s32);
     extern u8 gOptionsStr[];
     extern f32 lbl_80369BA8;
@@ -2713,7 +2713,7 @@ void fn_800A931C(s32 arg0) {
     f32 f0;
     f32 f1;
 
-    fn_8005C84C(gOptionsStr + 0x58);
+    FileCache_Load(gOptionsStr + 0x58);
     fn_8005BCD0();
     temp_r3 = fn_80109180(gOptionsStr + 0x96, arg0);
     f0 = lbl_80369C08;

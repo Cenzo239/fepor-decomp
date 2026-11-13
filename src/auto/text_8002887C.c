@@ -1995,7 +1995,7 @@ void Battle_LoadMap(void)
     u16 fn_8005C144(void *);
     void fn_8003F87C(void *, s32);
     void fn_8003FCCC(void *);
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void fn_80050F64(void);
     s32 Heap_GetFree(void);
     void Heap_Select(void *);
@@ -2012,7 +2012,7 @@ void Battle_LoadMap(void)
     if (fn_8005C144(Battle_str + 0x17F) != 0x8000) {
         fn_8003FCCC(Battle_str + 0x17F);
     }
-    fn_8005C84C(Battle_str + 0x1AF);
+    FileCache_Load(Battle_str + 0x1AF);
     fn_80050F64();
     Heap_Create(Battle_str + 0x16C, Heap_GetFree());
     Heap_Select(Battle_str + 0x176);

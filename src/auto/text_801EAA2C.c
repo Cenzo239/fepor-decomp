@@ -2287,7 +2287,7 @@ void fn_801EED94(void) {
 /* Build asset paths for entry arg1 and load model/tex/anim into a new GActor hierarchy. */
 void GActor_LoadResources(void *arg0, s32 arg1)
 {
-    s32 fn_8005C84C(void);
+    s32 FileCache_Load(void);
     void Model_SetAlpha(void *, s32);
     void Model_SetColor(void *, s32, s32, s32);
     void *GActor_FindNode(void *, char *);
@@ -2356,7 +2356,7 @@ void GActor_LoadResources(void *arg0, s32 arg1)
     String_Destroy(&sp68, -1);
     String_Destroy(&sp74, -1);
     String_CStr(&path);
-    *(s32 *)((u8 *)self + 0xB4) = fn_8005C84C();
+    *(s32 *)((u8 *)self + 0xB4) = FileCache_Load();
     *(void **)((u8 *)self + 0xB8) = GActor_Create();
     row = (u8 *)self + arg1 * 0xC;
     nameField = row + 0x44;
@@ -2522,7 +2522,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
 void fn_801EF6BC(void *arg0) {
     typedef struct { u32 unk0; char name[4]; } Named;
     u16 fn_8005C144(void);
-    s32 fn_8005C84C(void);
+    s32 FileCache_Load(void);
     void Model_SetAlpha(void *, s32);
     void Model_SetColor(void *, s32, s32, s32);
     void GActor_Finalize(void *);
@@ -2607,7 +2607,7 @@ void fn_801EF6BC(void *arg0) {
     String_CStr(&spE4);
     if ((u16)fn_8005C144() != 0x8000) {
         String_CStr(&spE4);
-        *(s32 *)((u8 *)self + 0xC0) = fn_8005C84C();
+        *(s32 *)((u8 *)self + 0xC0) = FileCache_Load();
         *(void **)((u8 *)self + 0xC4) = GActor_Create();
         String_Concat(&sp90, &spCC, &spD8);
         String_ConcatCStr(&sp84, &sp90, (char *)((u32)gGActorPathExt + 0x1BF));
@@ -2679,7 +2679,7 @@ void fn_801EF6BC(void *arg0) {
 void GActor_LoadByName(void *arg0, char *name) {
     /* Build asset paths from name and load model/tex/anim into a new GActor at +0xD0. */
     void *Map_Get(void *);
-    s32 fn_8005C84C(void);
+    s32 FileCache_Load(void);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
@@ -2731,7 +2731,7 @@ void GActor_LoadByName(void *arg0, char *name) {
     String_Assign(&path, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
     String_CStr(&path);
-    *(s32 *)((u8 *)self + 0xCC) = fn_8005C84C();
+    *(s32 *)((u8 *)self + 0xCC) = FileCache_Load();
     *(void **)((u8 *)self + 0xD0) = GActor_Create();
     String_ConcatCStr(&sp30, &dir, gGActorPathExt + 0x208);
     String_Assign(&path, &sp30, 0, -1);

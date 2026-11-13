@@ -1068,7 +1068,7 @@ void fn_80104BF4(void* arg0, void* arg1) {
 
 s32 fn_80104D90(void)
 {
-  void *fn_8005C84C(void *);
+  void *FileCache_Load(void *);
   extern u8 lbl_80273788[];
   extern u8 lbl_8032BB44[20];
   extern void *lbl_803679C0;
@@ -1080,7 +1080,7 @@ s32 fn_80104D90(void)
   u16 off;
   u32 n;
   u16 *p;
-  file = fn_8005C84C(lbl_80273788);
+  file = FileCache_Load(lbl_80273788);
   ctx = lbl_8032BB44;
   *((u8 **) (lbl_8032BB44 + 4)) = file;
   sum = (*((u16 *) (file + 0x8))) + (*((u16 *) (file + 0xA)));
@@ -1179,14 +1179,14 @@ end:
 }
 
 void *fn_80105284(void *arg0, void *arg1) {
-    void *fn_8005C84C(void *);
+    void *FileCache_Load(void *);
     u8 *file;
     u16 sum;
     u16 off;
     u32 n;
     u16 *p;
 
-    *(u8 **)((u8 *)arg0 + 4) = fn_8005C84C(arg1);
+    *(u8 **)((u8 *)arg0 + 4) = FileCache_Load(arg1);
     file = *(u8 **)((u8 *)arg0 + 4);
     sum = *(u16 *)(file + 0x8) + *(u16 *)(file + 0xA);
     *(u16 *)(file + 0x12) = sum;

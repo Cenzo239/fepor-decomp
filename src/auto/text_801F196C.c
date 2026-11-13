@@ -2929,7 +2929,7 @@ void fn_801F8880(void) {
     void Heap_Select(void *);
     void ScriptCmd_CmLoadScript(void *);
     void *fn_8003FCCC(void *);
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void fn_80050F64(void);
     extern u8 StaffRoll_str[];
     extern u8 lbl_8029B41C[];
@@ -2943,7 +2943,7 @@ void fn_801F8880(void) {
     ScriptCmd_CmLoadScript(StaffRoll_str + 0x22C);
     lbl_80368408 = fn_8003FCCC(*(void **)(lbl_8029B41C + 4));
     lbl_8036840C = fn_8003FCCC(StaffRoll_str + 0x23F);
-    fn_8005C84C(StaffRoll_str + 0x1FE);
+    FileCache_Load(StaffRoll_str + 0x1FE);
     fn_80050F64();
     lbl_80367708 = 0;
 }

@@ -7701,7 +7701,7 @@ String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 #pragma use_lmw_stmw on
 s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     u16 fn_8005C144(void);
-    s32 fn_8005C84C(void);
+    s32 FileCache_Load(void);
     char *String_CStr(String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -7756,7 +7756,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     String_CStr(&name);
     if ((u16)fn_8005C144() != 0x8000) {
         String_CStr(&name);
-        ret = fn_8005C84C();
+        ret = FileCache_Load();
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
         return ret;
@@ -7781,7 +7781,7 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     String_CStr(&name);
     if ((u16)fn_8005C144() != 0x8000) {
         String_CStr(&name);
-        ret = fn_8005C84C();
+        ret = FileCache_Load();
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
         return ret;
@@ -9423,7 +9423,7 @@ void fn_800DDD08(void* arg0) {
 void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void DebugPrint(char *, char *, ...);
     u16 fn_8005C144(void);
-    s32 fn_8005C84C(void);
+    s32 FileCache_Load(void);
     s32 fn_800639B4(char *);
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
@@ -9567,7 +9567,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     String_CStr(&str114);
     if ((u16)fn_8005C144() != 0x8000) {
         String_CStr(&str114);
-        *(s32 *)((u8 *)self + 0x48) = fn_8005C84C();
+        *(s32 *)((u8 *)self + 0x48) = FileCache_Load();
     } else {
         *(s32 *)((u8 *)self + 0x48) = 0;
     }

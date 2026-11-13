@@ -6469,7 +6469,7 @@ void fn_80041514(void *arg0, char *arg1)
     s32 strlen(char *);
     void strcpy(void *, char *);
     void strcat(void *, void *);
-    s32 fn_8005C84C(void *);
+    s32 FileCache_Load(void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXCopy(void *, void *);
     void PSMTXIdentity(void *);
@@ -6574,7 +6574,7 @@ void fn_80041514(void *arg0, char *arg1)
     if (mode == 0) {
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x161);
-        M2C_FIELD(arg0, s32 *, 8) = fn_8005C84C(lbl_802EFE20);
+        M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x169);
         M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
@@ -6745,7 +6745,7 @@ void fn_80041514(void *arg0, char *arg1)
     } else if (mode == 1) {
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x1D0);
-        M2C_FIELD(arg0, s32 *, 8) = fn_8005C84C(lbl_802EFE20);
+        M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x169);
         M2C_FIELD(arg0, s32 *, 0xC) = fccc(lbl_802EFE20);
@@ -6756,7 +6756,7 @@ void fn_80041514(void *arg0, char *arg1)
         fn_8006805C(lbl_80368F24, lbl_80368F28);
     }
 
-    fn_8005C84C(lbl_8026A660 + 0x112);
+    FileCache_Load(lbl_8026A660 + 0x112);
     M2C_FIELD(arg0, s32 *, 0x38) = fn_8006D948(lbl_8026A660 + 0x21C);
     M2C_FIELD(arg0, s32 *, 0x2C) = fn_800EE490();
     M2C_FIELD(arg0, s32 *, 0x30) = fn_80123BA8();

@@ -4478,7 +4478,7 @@ extern "C" void fn_80190590(void *arg0) {
 /* Bind or clear the forge preview GActor for a weapon (xwp/forge/<name>_b.*). */
 extern "C" void Forge_BindWeaponActor(void *panel, s32 **weapon) {
     M2C_UNK fn_8005C7E8(s32);
-    u32 fn_8005C84C();
+    u32 FileCache_Load();
     M2C_UNK GActor_LoadTpl(s32 *, s32);
     M2C_UNK GActor_LoadG(s32 *, s32);
     M2C_UNK GActor_LoadGs(s32 *, s32);
@@ -4526,7 +4526,7 @@ extern "C" void Forge_BindWeaponActor(void *panel, s32 **weapon) {
         fn_800C992C((M2C_UNK *)&basePath, name, strlen(name));
         String_ConcatCStr((M2C_UNK *)&cmpPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x16);
         String_CStr((M2C_UNK *)&cmpPath);
-        M2C_FIELD(panel, u32 *, 0x54) = fn_8005C84C();
+        M2C_FIELD(panel, u32 *, 0x54) = FileCache_Load();
         String_Destroy((M2C_UNK *)&cmpPath, -1);
         String_ConcatCStr((M2C_UNK *)&gPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x1D);
         GActor_LoadG(M2C_FIELD(panel, s32 **, 0x40), String_CStr((M2C_UNK *)&gPath));

@@ -1053,7 +1053,7 @@ void fn_8012DFA8(void *arg0) {
     void *fn_80057A64(void *, s32);
     void fn_80057E98(void *, s32, s32);
     void *Process_AttachFunc(void *, void *);
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
@@ -1111,7 +1111,7 @@ void fn_8012DFA8(void *arg0) {
     self[0x66] = 0;
     self[0x65] = 0;
     self[0x67] = 1;
-    fn_8005C84C(gUiSelectMenuStrings + 0xC7);
+    FileCache_Load(gUiSelectMenuStrings + 0xC7);
     *(void **)(self + 0x40) = fn_8006D948(gUiSelectMenuStrings + 0x194);
     *(void **)(self + 0x30) = fn_8003FCCC(gUiSelectMenuStrings + 0x1A8);
     fn_80109180(gUiSelectMenuStrings + 0xBA, self);

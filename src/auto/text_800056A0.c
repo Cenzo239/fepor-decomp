@@ -192,7 +192,7 @@ void fn_80005C8C(void) {
     void fn_8003FCCC(void *);
     void fn_8005AC88(void *);
     void fn_8005BCAC(void);
-    void fn_8005C84C(void *);
+    void FileCache_Load(void *);
     void fn_80066F64(void);
     void fn_80067480(void);
     void fn_8006826C(s32);
@@ -216,7 +216,7 @@ void fn_80005C8C(void) {
     extern u8 lbl_80367AF6;
 
     fn_800C4664(0x100000);
-    fn_8005C84C(lbl_80267B80 + 0x9B);
+    FileCache_Load(lbl_80267B80 + 0x9B);
     fn_800C4664(0xFFF00000);
     fn_800C2750();
     fn_8006826C(0x200);

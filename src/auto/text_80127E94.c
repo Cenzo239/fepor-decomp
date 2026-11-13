@@ -1497,7 +1497,7 @@ void fn_8012B458(void *arg0) {
 
 void fn_8012B488(s32 arg0) {
     void *Process_CreateChild(void *, s32);
-    void *fn_8005C84C(void *);
+    void *FileCache_Load(void *);
     s32 fn_8003F47C(void);
     void *fn_800C42AC(s32);
     s32 fn_8003F224(void *, s32);
@@ -1510,7 +1510,7 @@ void fn_8012B488(s32 arg0) {
     s32 v;
 
     self = Process_CreateChild(lbl_80290C44, arg0);
-    src = fn_8005C84C(lbl_802758F8 + 0x21);
+    src = FileCache_Load(lbl_802758F8 + 0x21);
     *(s32 *)((u8 *)self + 0x38) = fn_8003F47C();
     v = (s32)fn_800C42AC(*(s32 *)((u8 *)self + 0x38) << 2);
     i = 0;

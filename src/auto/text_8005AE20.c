@@ -838,7 +838,7 @@ M2C_UNK fn_8005C82C() {
     return fn_8005D474();
 }
 
-void fn_8005C84C(s32 arg0) {
+void FileCache_Load(s32 arg0) {
     void fn_8005D474(s32, s32);
     fn_8005D474(arg0, 0);
 }
