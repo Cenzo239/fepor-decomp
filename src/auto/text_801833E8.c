@@ -333,10 +333,10 @@ s32 fn_80183954(void) {
 
 s32 fn_80183974(void) {
     u32 Process_Find(void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     u8 *base;
 
-    base = lbl_80295A00;
+    base = E_MuBlend_script;
     if (Process_Find((u8 *)((s32)base + 0)) != 0) {
         return 1;
     }
@@ -899,7 +899,7 @@ void fn_80185280(void *arg0) {
     void *fn_800639B4(void);
     u8 Status_Test(void *, s32);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -916,7 +916,7 @@ void fn_80185280(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
+        fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
         fn_8000A388(lbl_80295A20, fn_80185078, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
@@ -931,7 +931,7 @@ void fn_80185280(void *arg0) {
         if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
             fn_8004FE98(obj, 0xB);
         } else {
-            tmp = fn_8000CA64(lbl_80295A00, 0);
+            tmp = fn_8000CA64(E_MuBlend_script, 0);
             *(void **)((u8 *)tmp + 0x30) = obj;
             *(s32 *)((u8 *)tmp + 0x34) = (s32)obj + 0x1C;
             *(s32 *)((u8 *)tmp + 0x38) = 0xB;
@@ -1012,7 +1012,7 @@ void fn_80185830(void *arg0) {
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
     void fn_80185AF4(void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1030,7 +1030,7 @@ void fn_80185830(void *arg0) {
     s32 z;
 
     self = arg0;
-    base = lbl_80295A00;
+    base = E_MuBlend_script;
     z = 0x40;
     *(s32 *)((u8 *)arg0 + 0x34) = 1;
     if (*(u8 *)((u8 *)arg0 + 0x3C) != 0) {
@@ -1283,7 +1283,7 @@ void fn_801863F8(void *arg0) {
     s32 fn_80060440(s32);
     void *fn_800639B4();
     
-    extern void lbl_80295A00;
+    extern void E_MuBlend_script;
     extern void lbl_80295A20;
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -1307,7 +1307,7 @@ void fn_801863F8(void *arg0) {
     temp_r30 = *(s32 *)((u8 *)arg0 + 0x34);
     if (fn_8004C0F0(temp_r30) != 0) {
         sp70 = temp_r30;
-        fn_8000A388(&lbl_80295A00, &fn_80185078, &sp40);
+        fn_8000A388(&E_MuBlend_script, &fn_80185078, &sp40);
         sp38 = temp_r30;
         fn_8000A388(&lbl_80295A20, &fn_80185078, &sp8);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r30) + 9);
@@ -1323,7 +1323,7 @@ void fn_801863F8(void *arg0) {
             fn_8004FE98(temp_r30, 0);
             return;
         }
-        temp_r3_2 = fn_8000CA64(&lbl_80295A00, arg0);
+        temp_r3_2 = fn_8000CA64(&E_MuBlend_script, arg0);
         *(s32 *)((u8 *)temp_r3_2 + 0x30) = temp_r30;
         *(void **)((u8 *)temp_r3_2 + 0x34) = (void *) (temp_r30 + 0x1C);
         *(s32 *)((u8 *)temp_r3_2 + 0x38) = 0;
@@ -1358,7 +1358,7 @@ void Event_StartMuBlend(void *arg0) {
     s32 fn_80060440(void *);
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -1375,7 +1375,7 @@ void Event_StartMuBlend(void *arg0) {
     count += 1;
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
+        fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
         fn_8000A388(lbl_80295A20, fn_80185078, sp8);
         {
@@ -1392,7 +1392,7 @@ void Event_StartMuBlend(void *arg0) {
             fn_8004FE98(obj, 0);
             return;
         }
-        arg0 = fn_8000CA64(lbl_80295A00, arg0);
+        arg0 = fn_8000CA64(E_MuBlend_script, arg0);
         *(void **)((u8 *)arg0 + 0x30) = obj;
         *(s32 *)((u8 *)arg0 + 0x34) = (s32)obj + 0x1C;
         *(s32 *)((u8 *)arg0 + 0x38) = 0;
@@ -1530,7 +1530,7 @@ void fn_80187344(void *arg0) {
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(s32);
     void *fn_800639B4(void);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -1552,7 +1552,7 @@ void fn_80187344(void *arg0) {
     temp_r29 = *(u32 *)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(temp_r29) != 0) {
         spB0.val = temp_r29;
-        fn_8000A388(lbl_80295A00, fn_80185078, &spB0);
+        fn_8000A388(E_MuBlend_script, fn_80185078, &spB0);
         sp78.val = temp_r29;
         fn_8000A388(lbl_80295A20, fn_80185078, &sp78);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
@@ -1566,7 +1566,7 @@ void fn_80187344(void *arg0) {
         if ((var_r28 == 0) || (fn_80060440(temp_r29 + 0x1C) >= 4)) {
             fn_8004FE98(temp_r29, 0);
         } else {
-            temp_r30 = fn_8000CA64(lbl_80295A00, arg0);
+            temp_r30 = fn_8000CA64(E_MuBlend_script, arg0);
             *(u32 *)((u8 *)temp_r30 + 0x30) = temp_r29;
             *(void **)((u8 *)temp_r30 + 0x34) = (void *)(temp_r29 + 0x1C);
             *(s32 *)((u8 *)temp_r30 + 0x38) = 0;
@@ -1591,7 +1591,7 @@ void fn_80187344(void *arg0) {
         var_r28 = 0x10;
         if (fn_8004C0F0(temp_r29) != 0) {
             sp40.val = temp_r29;
-            fn_8000A388(lbl_80295A00, fn_80185078, &sp40);
+            fn_8000A388(E_MuBlend_script, fn_80185078, &sp40);
             sp8.val = temp_r29;
             fn_8000A388(lbl_80295A20, fn_80185078, &sp8);
             temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
@@ -1605,7 +1605,7 @@ void fn_80187344(void *arg0) {
             if ((var_r28 == 0) || (fn_80060440(temp_r29 + 0x1C) >= 4)) {
                 fn_8004FE98(temp_r29, 0);
             } else {
-                temp_r30 = fn_8000CA64(lbl_80295A00, arg0);
+                temp_r30 = fn_8000CA64(E_MuBlend_script, arg0);
                 *(u32 *)((u8 *)temp_r30 + 0x30) = temp_r29;
                 *(void **)((u8 *)temp_r30 + 0x34) = (void *)(temp_r29 + 0x1C);
                 *(s32 *)((u8 *)temp_r30 + 0x38) = 0;
@@ -1660,7 +1660,7 @@ void fn_801877C4(void *arg0) {
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     s32 fn_80230BCC(s32);
     extern u8 MoveAnim_str[];
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 gBattleMap[];
     extern void *gPadInput;
     extern f32 lbl_8036ACD8;
@@ -1686,7 +1686,7 @@ void fn_801877C4(void *arg0) {
     void *tmp;
     u8 *base;
 
-    base = lbl_80295A00;
+    base = E_MuBlend_script;
     z = 0x40;
     if (Pad_IsButton((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C, 0) != 0) {
         pos = *(void **)((u8 *)arg0 + 0x34);
@@ -1863,7 +1863,7 @@ void fn_80187FBC(void *arg0) {
     s32 fn_80060440(void *);
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -1883,7 +1883,7 @@ void fn_80187FBC(void *arg0) {
     obj = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18) + 0x34);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
+        fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
         fn_8000A388(lbl_80295A20, fn_80185078, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
@@ -1898,7 +1898,7 @@ void fn_80187FBC(void *arg0) {
         if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
             fn_8004FE98(obj, 0);
         } else {
-            node = fn_8000CA64(lbl_80295A00, 0);
+            node = fn_8000CA64(E_MuBlend_script, 0);
             *(void **)((u8 *)node + 0x30) = obj;
             *(void **)((u8 *)node + 0x34) = (void *)((s32)obj + 0x1C);
             *(s32 *)((u8 *)node + 0x38) = 0;
@@ -2869,7 +2869,7 @@ void fn_8018C6C0(void *arg0) {
     s32 fn_80060440(void *);
     void *fn_800639B4(void);
     void fn_80185078(void *, void *);
-    extern u8 lbl_80295A00[];
+    extern u8 E_MuBlend_script[];
     extern u8 lbl_80295A20[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
@@ -2889,7 +2889,7 @@ void fn_8018C6C0(void *arg0) {
     kind = *(s32 *)((u8 *)arg0 + 0x38);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
+        fn_8000A388(E_MuBlend_script, fn_80185078, sp40);
         *(void **)(sp8 + 0x30) = obj;
         fn_8000A388(lbl_80295A20, fn_80185078, sp8);
         {
@@ -2905,7 +2905,7 @@ void fn_8018C6C0(void *arg0) {
         if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
             fn_8004FE98(obj, kind);
         } else {
-            mode = (u32)fn_8000CA64(lbl_80295A00, (s32)mode);
+            mode = (u32)fn_8000CA64(E_MuBlend_script, (s32)mode);
             *(void **)((u8 *)mode + 0x30) = obj;
             *(s32 *)((u8 *)mode + 0x34) = (s32)obj + 0x1C;
             *(s32 *)((u8 *)mode + 0x38) = kind;
@@ -13352,7 +13352,7 @@ extern u8 lbl_80367298;
 extern u16 lbl_80291AC8[];
 #include "global.h"
 
-extern u32 lbl_80295A00[];
+extern u32 E_MuBlend_script[];
 extern u32 lbl_80295A20[];
 extern f32 lbl_8036ACE0;
 extern f32 lbl_8036ACEC;
