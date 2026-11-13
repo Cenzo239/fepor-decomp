@@ -4463,7 +4463,8 @@ extern "C" void fn_80190590(void *arg0) {
         0xB3, 0x10);
 }
 
-extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
+/* Bind or clear the forge preview GActor for a weapon (xwp/forge/<name>_b.*). */
+extern "C" void Forge_BindWeaponActor(void *panel, s32 **weapon) {
     M2C_UNK fn_8005C7E8(s32);
     u32 fn_8005C84C();
     M2C_UNK GActor_LoadTpl(s32 *, s32);
@@ -4481,54 +4482,54 @@ extern "C" void Forge_BindWeaponActor(void *arg0, s32 **arg1) {
     s32 sprintf(void *, void *, ...);
     s32 strlen(s32);
     extern u8 gForgeActorStrings[];
-    struct { s32 v[15]; } sp48;
-    struct { s32 v[3]; } sp3C;
-    struct { s32 v[3]; } sp30;
-    struct { s32 v[3]; } sp24;
-    struct { s32 v[3]; } sp18;
-    struct { s32 v[3]; } spC;
-    s32 sp8;
-    s32 temp_r29;
-    if (arg1 == NULL) {
-        M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
-        if (M2C_FIELD(arg0, s32 **, 0x40) != 0) {
-            fn_800616A0(M2C_FIELD(arg0, s32 **, 0x40));
-            M2C_FIELD(arg0, s32 **, 0x40) = 0;
+    struct { s32 v[15]; } pathBuf;
+    struct { s32 v[3]; } basePath;
+    struct { s32 v[3]; } cmpPath;
+    struct { s32 v[3]; } gPath;
+    struct { s32 v[3]; } gsPath;
+    struct { s32 v[3]; } tplPath;
+    s32 scratch;
+    s32 name;
+    if (weapon == NULL) {
+        M2C_FIELD(panel, s32 ***, 0x3C) = weapon;
+        if (M2C_FIELD(panel, s32 **, 0x40) != 0) {
+            fn_800616A0(M2C_FIELD(panel, s32 **, 0x40));
+            M2C_FIELD(panel, s32 **, 0x40) = 0;
         }
-        if (M2C_FIELD(arg0, u32 *, 0x54) != 0U) {
-            fn_8005C7E8(M2C_FIELD(arg0, s32 *, 0x54));
-            M2C_FIELD(arg0, u32 *, 0x54) = 0U;
+        if (M2C_FIELD(panel, u32 *, 0x54) != 0U) {
+            fn_8005C7E8(M2C_FIELD(panel, s32 *, 0x54));
+            M2C_FIELD(panel, u32 *, 0x54) = 0U;
         }
     } else {
-        if ((M2C_FIELD(arg0, s32 ***, 0x3C) != 0) && (*M2C_FIELD(arg0, s32 ***, 0x3C) == *arg1)) {
-            M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
-            fn_8008CDE0(M2C_FIELD(arg0, s32 **, 0x40), M2C_FIELD(arg0, s32 ***, 0x3C));
+        if ((M2C_FIELD(panel, s32 ***, 0x3C) != 0) && (*M2C_FIELD(panel, s32 ***, 0x3C) == *weapon)) {
+            M2C_FIELD(panel, s32 ***, 0x3C) = weapon;
+            fn_8008CDE0(M2C_FIELD(panel, s32 **, 0x40), M2C_FIELD(panel, s32 ***, 0x3C));
             return;
         }
-        M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
-        M2C_FIELD(arg0, s32 **, 0x40) = GActor_Create();
-        sprintf((M2C_UNK *)&sp48, gForgeActorStrings + 8, gForgeActorStrings + 0x11);
-        String_Init((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
-        temp_r29 = **M2C_FIELD(arg0, s32 ***, 0x3C) + 4;
-        fn_800C992C((M2C_UNK *)&sp3C, temp_r29, strlen(temp_r29));
-        String_ConcatCStr((M2C_UNK *)&sp30, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x16);
-        String_CStr((M2C_UNK *)&sp30);
-        M2C_FIELD(arg0, u32 *, 0x54) = fn_8005C84C();
-        String_Destroy((M2C_UNK *)&sp30, -1);
-        String_ConcatCStr((M2C_UNK *)&sp24, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x1D);
-        GActor_LoadG(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&sp24));
-        String_Destroy((M2C_UNK *)&sp24, -1);
-        String_ConcatCStr((M2C_UNK *)&sp18, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x22);
-        GActor_LoadGs(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&sp18));
-        String_Destroy((M2C_UNK *)&sp18, -1);
-        String_ConcatCStr((M2C_UNK *)&spC, (M2C_UNK *)&sp3C, gForgeActorStrings + 0x28);
-        GActor_LoadTpl(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&spC));
-        String_Destroy((M2C_UNK *)&spC, -1);
-        *M2C_FIELD(arg0, s32 **, 0x40) = *M2C_FIELD(arg0, s32 **, 0x40) | 0x40000000 | 0x400;
-        GActor_Finalize(M2C_FIELD(arg0, s32 **, 0x40));
-        fn_8008CDE0(M2C_FIELD(arg0, s32 **, 0x40), M2C_FIELD(arg0, s32 ***, 0x3C));
-        M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
-        String_Destroy((M2C_UNK *)&sp3C, -1);
+        M2C_FIELD(panel, s32 ***, 0x3C) = weapon;
+        M2C_FIELD(panel, s32 **, 0x40) = GActor_Create();
+        sprintf((M2C_UNK *)&pathBuf, gForgeActorStrings + 8, gForgeActorStrings + 0x11);
+        String_Init((M2C_UNK *)&basePath, (M2C_UNK *)&pathBuf, (M2C_UNK *)&scratch);
+        name = **M2C_FIELD(panel, s32 ***, 0x3C) + 4;
+        fn_800C992C((M2C_UNK *)&basePath, name, strlen(name));
+        String_ConcatCStr((M2C_UNK *)&cmpPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x16);
+        String_CStr((M2C_UNK *)&cmpPath);
+        M2C_FIELD(panel, u32 *, 0x54) = fn_8005C84C();
+        String_Destroy((M2C_UNK *)&cmpPath, -1);
+        String_ConcatCStr((M2C_UNK *)&gPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x1D);
+        GActor_LoadG(M2C_FIELD(panel, s32 **, 0x40), String_CStr((M2C_UNK *)&gPath));
+        String_Destroy((M2C_UNK *)&gPath, -1);
+        String_ConcatCStr((M2C_UNK *)&gsPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x22);
+        GActor_LoadGs(M2C_FIELD(panel, s32 **, 0x40), String_CStr((M2C_UNK *)&gsPath));
+        String_Destroy((M2C_UNK *)&gsPath, -1);
+        String_ConcatCStr((M2C_UNK *)&tplPath, (M2C_UNK *)&basePath, gForgeActorStrings + 0x28);
+        GActor_LoadTpl(M2C_FIELD(panel, s32 **, 0x40), String_CStr((M2C_UNK *)&tplPath));
+        String_Destroy((M2C_UNK *)&tplPath, -1);
+        *M2C_FIELD(panel, s32 **, 0x40) = *M2C_FIELD(panel, s32 **, 0x40) | 0x40000000 | 0x400;
+        GActor_Finalize(M2C_FIELD(panel, s32 **, 0x40));
+        fn_8008CDE0(M2C_FIELD(panel, s32 **, 0x40), M2C_FIELD(panel, s32 ***, 0x3C));
+        M2C_FIELD(panel, s32 ***, 0x3C) = weapon;
+        String_Destroy((M2C_UNK *)&basePath, -1);
     }
 }
 
