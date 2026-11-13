@@ -9234,7 +9234,7 @@ void fn_8019A7E8(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8019A820(void *arg0) {
+void Event_RunItemCmd(void *arg0) {
     void fn_80025624(void *, s32);
     void fn_800536B0(f32, f32, f32);
     void *fn_80053C30(void *, void *);
