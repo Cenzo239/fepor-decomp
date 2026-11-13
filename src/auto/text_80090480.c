@@ -222,7 +222,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
     void Prim2D_Begin(void);
     extern s32 gUnitInfoPanelColorPlayer;
     extern s32 gUnitInfoPanelColorOther;
-    extern s32 lbl_80369750;
+    extern s32 gUnitInfoPanelColorPartner;
     extern f32 lbl_80369764;
     extern f32 lbl_80369794;
     extern f32 lbl_80369798;
@@ -250,7 +250,7 @@ void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
         sp18[3] = *(u8 *)((u8 *)&sp10 + 3);
         break;
     case 3:
-        spC = lbl_80369750;
+        spC = gUnitInfoPanelColorPartner;
         sp18[0] = *(u8 *)&spC;
         sp18[1] = *(u8 *)((u8 *)&spC + 1);
         sp18[2] = *(u8 *)((u8 *)&spC + 2);
