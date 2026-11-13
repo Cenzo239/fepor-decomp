@@ -341,7 +341,7 @@ void fn_80072ED4(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x30) = -3;
 }
 
-void fn_80072F28(void *arg0) {
+void Card_PollProbe(void *arg0) {
     void Process_Goto(void *, s32);
     s32 Msg_Expand(u8 *);
     s32 fn_800EB74C(void);
