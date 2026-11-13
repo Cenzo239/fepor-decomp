@@ -6594,7 +6594,8 @@ void fn_80170034(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_RestoreUnitListAfterItem(void *arg0) {
+extern "C" void Ui_RestoreUnitListAfterItem(void *panel) {
+    /* Re-enable the info panel, slide the unit list back on, slide the item list off and release it, then remove widget 0x109. */
     void Ui_AddChild(void *, void *);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -6608,41 +6609,41 @@ extern "C" void Ui_RestoreUnitListAfterItem(void *arg0) {
         s32 refCount;
     };
 
-    void *obj4c;
-    void *obj40;
-    RefObj *p;
-    void *ret;
-    s16 spC[2];
-    s16 sp8[2];
-    s16 tmp;
+    void *infoPanel;
+    void *unitList;
+    RefObj *itemList;
+    void *widget;
+    s16 listPos[2];
+    s16 slidePos[2];
+    s16 savedY;
     s32 refs;
 
-    obj4c = *(void **)((u8 *)arg0 + 0x4C);
-    *((u8 *)obj4c + 0x78) = 1;
-    *((u8 *)obj4c + 0x4A) = 0;
-    obj40 = *(void **)((u8 *)arg0 + 0x40);
-    Ui_AddChild(arg0, obj40);
-    spC[0] = *(s16 *)((u8 *)obj40 + 0xA);
-    spC[1] = 0x10;
-    Ui_SlideWidgetChildMode1(arg0, obj40, spC, 0);
+    infoPanel = *(void **)((u8 *)panel + 0x4C);
+    *((u8 *)infoPanel + 0x78) = 1;
+    *((u8 *)infoPanel + 0x4A) = 0;
+    unitList = *(void **)((u8 *)panel + 0x40);
+    Ui_AddChild(panel, unitList);
+    listPos[0] = *(s16 *)((u8 *)unitList + 0xA);
+    listPos[1] = 0x10;
+    Ui_SlideWidgetChildMode1(panel, unitList, listPos, 0);
 
-    p = *(RefObj **)((u8 *)arg0 + 0x54);
-    tmp = *(s16 *)((u8 *)p + 0xC);
-    sp8[0] = 0x260;
-    sp8[1] = tmp;
-    Ui_SlideWidgetChild(arg0, p, sp8, 1);
+    itemList = *(RefObj **)((u8 *)panel + 0x54);
+    savedY = *(s16 *)((u8 *)itemList + 0xC);
+    slidePos[0] = 0x260;
+    slidePos[1] = savedY;
+    Ui_SlideWidgetChild(panel, itemList, slidePos, 1);
 
-    p = *(RefObj **)((u8 *)arg0 + 0x54);
-    if (p != NULL) {
-        refs = p->refCount - 1;
-        p->refCount = refs;
-        if (refs == 0 && p != NULL) {
-            p->destroy(1);
+    itemList = *(RefObj **)((u8 *)panel + 0x54);
+    if (itemList != NULL) {
+        refs = itemList->refCount - 1;
+        itemList->refCount = refs;
+        if (refs == 0 && itemList != NULL) {
+            itemList->destroy(1);
         }
-        *(RefObj **)((u8 *)arg0 + 0x54) = (RefObj *)0;
+        *(RefObj **)((u8 *)panel + 0x54) = (RefObj *)0;
     }
-    ret = Ui_FindChild(arg0, 0x109, 0);
-    Ui_RemoveChild(arg0, ret);
+    widget = Ui_FindChild(panel, 0x109, 0);
+    Ui_RemoveChild(panel, widget);
     fn_80109020((u8 *)gUiMsgStrings + 0x210);
 }
 
