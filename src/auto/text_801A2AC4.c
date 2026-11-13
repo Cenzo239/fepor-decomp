@@ -2,7 +2,7 @@
 #include "common.h"
 
 void fn_801A2AC4(void) {
-    extern u16 lbl_8027B368[];
+    extern u16 gMapAnimStr[];
     extern u16 lbl_80297118[];
     
     register u32 r31_reg asm("r31");
@@ -10,88 +10,88 @@ void fn_801A2AC4(void) {
     register u32 r3_reg asm("r3");
     
     // Load base addresses once
-    u16* base1 = &lbl_8027B368[0];
+    u16* base1 = &gMapAnimStr[0];
     u16* base2 = &lbl_80297118[0];
     
     r31_reg = (u32)base2;
     
     // First call with offset 0xE1 and base2 offset 0x58
-    r3_reg = (u32)&lbl_8027B368[0xE1];
+    r3_reg = (u32)&gMapAnimStr[0xE1];
     r4_reg = r31_reg + 0x58;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Second call with offset 0xEE and base2 offset 0x58
-    r3_reg = (u32)&lbl_8027B368[0xEE];
+    r3_reg = (u32)&gMapAnimStr[0xEE];
     r4_reg = r31_reg + 0x58;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Third call with offset 0xFD and base2 offset 0x58
-    r3_reg = (u32)&lbl_8027B368[0xFD];
+    r3_reg = (u32)&gMapAnimStr[0xFD];
     r4_reg = r31_reg + 0x58;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Fourth call with offset 0x10C and base2 offset 0x58
-    r3_reg = (u32)&lbl_8027B368[0x10C];
+    r3_reg = (u32)&gMapAnimStr[0x10C];
     r4_reg = r31_reg + 0x58;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Fifth call with offset 0x11C and base2 offset 0x68
-    r3_reg = (u32)&lbl_8027B368[0x11C];
+    r3_reg = (u32)&gMapAnimStr[0x11C];
     r4_reg = r31_reg + 0x68;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Sixth call with offset 0x12C and base2 offset 0x78
-    r3_reg = (u32)&lbl_8027B368[0x12C];
+    r3_reg = (u32)&gMapAnimStr[0x12C];
     r4_reg = r31_reg + 0x78;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Seventh call with offset 0x139 and base2 offset 0x88
-    r3_reg = (u32)&lbl_8027B368[0x139];
+    r3_reg = (u32)&gMapAnimStr[0x139];
     r4_reg = r31_reg + 0x88;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Eighth call with offset 0x149 and base2 offset 0x98
-    r3_reg = (u32)&lbl_8027B368[0x149];
+    r3_reg = (u32)&gMapAnimStr[0x149];
     r4_reg = r31_reg + 0x98;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Ninth call with offset 0x157 and base2 offset 0xA8
-    r3_reg = (u32)&lbl_8027B368[0x157];
+    r3_reg = (u32)&gMapAnimStr[0x157];
     r4_reg = r31_reg + 0xA8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Tenth call with offset 0x167 and base2 offset 0xB8
-    r3_reg = (u32)&lbl_8027B368[0x167];
+    r3_reg = (u32)&gMapAnimStr[0x167];
     r4_reg = r31_reg + 0xB8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Eleventh call with offset 0x177 and base2 offset 0xC8
-    r3_reg = (u32)&lbl_8027B368[0x177];
+    r3_reg = (u32)&gMapAnimStr[0x177];
     r4_reg = r31_reg + 0xC8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Twelfth call with offset 0x184 and base2 offset 0xD8
-    r3_reg = (u32)&lbl_8027B368[0x184];
+    r3_reg = (u32)&gMapAnimStr[0x184];
     r4_reg = r31_reg + 0xD8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Thirteenth call with offset 0x193 and base2 offset 0xE8
-    r3_reg = (u32)&lbl_8027B368[0x193];
+    r3_reg = (u32)&gMapAnimStr[0x193];
     r4_reg = r31_reg + 0xE8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Fourteenth call with offset 0x1A2 and base2 offset 0xF8
-    r3_reg = (u32)&lbl_8027B368[0x1A2];
+    r3_reg = (u32)&gMapAnimStr[0x1A2];
     r4_reg = r31_reg + 0xF8;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Fifteenth call with offset 0x1B3 and base2 offset 0x108
-    r3_reg = (u32)&lbl_8027B368[0x1B3];
+    r3_reg = (u32)&gMapAnimStr[0x1B3];
     r4_reg = r31_reg + 0x108;
     fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
     
     // Sixteenth call with offset 0x1C1 and base2 offset 0x118
-    r3_reg = (u32)&lbl_8027B368[0x1C1];
+    r3_reg = (u32)&gMapAnimStr[0x1C1];
     r4_reg = r31_reg + 0x118;
           fn_8000D3EC((void*)r3_reg, (void*)r4_reg);
   }
@@ -475,97 +475,97 @@ void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
     void fn_8019C9DC(s32, s32);
     void fn_8019CA24(s32, s32);
     void fn_8019CA6C(s32, s32);
-    extern u8 lbl_8027B368[];
+    extern u8 gMapAnimStr[];
 
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x22C])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x22C])) {
         fn_8019C9DC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x23A])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x23A])) {
         fn_8019CA6C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x248])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x248])) {
         fn_8019CA24(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x256])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x256])) {
         fn_8019C994(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x261])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x261])) {
         fn_8019C8A4(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x1E6])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x1E6])) {
         fn_8019C6C4(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x1EF])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x1EF])) {
         fn_8019C67C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x1FA])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x1FA])) {
         fn_8019C634(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x206])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x206])) {
         fn_8019C5EC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x211])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x211])) {
         fn_8019C4FC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x26F])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x26F])) {
         fn_8019C4B4(arg1, arg2);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x278])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x278])) {
         fn_8019C46C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x284])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x284])) {
         fn_8019C424(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x28E])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x28E])) {
         fn_8019C3DC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x29B])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x29B])) {
         fn_8019C394(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x2A7])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x2A7])) {
         fn_8019C85C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&lbl_8027B368[0x21D])) {
+    if (item == fn_80019E04((char *)&gMapAnimStr[0x21D])) {
         fn_8019C4FC(arg1, arg2);
     }
 }
 
 s32 fn_801A3E24(void *arg0) {
     void *fn_80019E04(void *);
-    extern u8 lbl_8027B368[];
+    extern u8 gMapAnimStr[];
 
-    if (arg0 == fn_80019E04(lbl_8027B368 + 0x1E6)) {
+    if (arg0 == fn_80019E04(gMapAnimStr + 0x1E6)) {
         return 0xA;
     }
-    if (arg0 == fn_80019E04(lbl_8027B368 + 0x1EF)) {
+    if (arg0 == fn_80019E04(gMapAnimStr + 0x1EF)) {
         return 0x14;
     }
-    if (arg0 == fn_80019E04(lbl_8027B368 + 0x1FA)) {
+    if (arg0 == fn_80019E04(gMapAnimStr + 0x1FA)) {
         return 0x50;
     }
-    if (arg0 == fn_80019E04(lbl_8027B368 + 0x206)) {
+    if (arg0 == fn_80019E04(gMapAnimStr + 0x206)) {
         return 0xA;
     }
-    if (arg0 == fn_80019E04(lbl_8027B368 + 0x211)) {
+    if (arg0 == fn_80019E04(gMapAnimStr + 0x211)) {
         return 0xA;
     }
-    return (arg0 == fn_80019E04(lbl_8027B368 + 0x21D)) ? 0x50 : 0;
+    return (arg0 == fn_80019E04(gMapAnimStr + 0x21D)) ? 0x50 : 0;
 }
 
 s32 fn_801A3F14(void *self) {
