@@ -2971,17 +2971,17 @@ void fn_8018C9CC(void *arg0) {
     }
 }
 
-extern u8 lbl_80296044[];
+extern u8 LightScale_script[];
 #pragma opt_strength_reduction off
 void fn_8018CA68(u32 arg0) {
     void *Process_Find(void *);
     void fn_80050BA8(u32, s32, s32);
-    extern u8 lbl_80296044[];
+    extern u8 LightScale_script[];
     void *temp_r3;
     s32 temp_r6;
     u8 *p;
 
-    temp_r3 = Process_Find(lbl_80296044);
+    temp_r3 = Process_Find(LightScale_script);
     if ((temp_r3 != NULL) && (arg0 != 0U)) {
         p = (u8 *)temp_r3 + (*(s32 *)((u8 *)temp_r3 + 0x44) << 2);
         *(u32 *)(p + 0x48) = arg0;
@@ -2995,13 +2995,13 @@ void fn_8018CAD8(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_Find(void *);
     void *fn_8000CAF0(void *, s32);
     void Process_Goto(void *, s32);
-    extern u8 lbl_80296044[];
+    extern u8 LightScale_script[];
     void *var_r31;
     s32 var_r0;
 
-    var_r31 = Process_Find(lbl_80296044);
+    var_r31 = Process_Find(LightScale_script);
     if (var_r31 == NULL) {
-        var_r31 = fn_8000CAF0(lbl_80296044, arg2);
+        var_r31 = fn_8000CAF0(LightScale_script, arg2);
     } else {
         *(s32 *)((char *)var_r31 + 0x34) = *(s32 *)((char *)var_r31 + 0x30);
         Process_Goto(var_r31, 0);
