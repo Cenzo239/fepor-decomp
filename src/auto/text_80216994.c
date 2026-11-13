@@ -2582,7 +2582,7 @@ void fn_8021C088(s32 chan, s32 result)
 }
 
 #pragma use_lmw_stmw on
-s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) {
+s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callback) {
     s32 fn_80217B18(s32, s32 *);
     s32 __CARDPutControlBlock(void *, s32);
     void *__CARDGetFatBlock(void *);
@@ -2660,11 +2660,11 @@ s32 fn_8021C1B8(s32 chan, char *name, u32 size, void *fileInfo, void *callback) 
 #pragma use_lmw_stmw reset
 
 void fn_8021C3D8(s32 arg0) {
-    s32 fn_8021C1B8(void *arg0);
+    s32 CARDCreateAsync(void *arg0);
     void fn_80217C64(s32 arg0);
     extern void *fn_80216998;
     
-    if (fn_8021C1B8(&fn_80216998) >= 0) {
+    if (CARDCreateAsync(&fn_80216998) >= 0) {
         fn_80217C64(arg0);
     }
 }

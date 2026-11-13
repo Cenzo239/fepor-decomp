@@ -13864,7 +13864,7 @@ void Card_CreateSaveFile(s32 arg0) {
         u8 fileInfo[0x14];
     };
     void fn_800EB80C(void);
-    s32 fn_8021C1B8(s32, char *, u32, void *, void *);
+    s32 CARDCreateAsync(s32, char *, u32, void *, void *);
     extern struct CardWork gCardWork;
     extern char gCardStrings[];
     u8 skip;
@@ -13878,7 +13878,7 @@ void Card_CreateSaveFile(s32 arg0) {
     }
     if (skip == 0) {
         gCardWork.busy = 1;
-        gCardWork.result = fn_8021C1B8(gCardWork.chan, gCardStrings + 0x70, 0x26000,
+        gCardWork.result = CARDCreateAsync(gCardWork.chan, gCardStrings + 0x70, 0x26000,
                                           gCardWork.fileInfo, fn_800EB80C);
         if (gCardWork.result < 0) {
             Process_Goto(arg0, 0x63);
