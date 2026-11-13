@@ -1765,7 +1765,7 @@ void fn_80022FD8(void *arg0, s32 arg1) {
     *(s32 *)((char *)arg0 + 0x14190) = (s32)arg0 + 0x818E;
 }
 
-f32 fn_8002300C(void *arg0, s8 arg1, s8 arg2, u8 arg3)
+f32 Map_GetTileCornerHeight(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 {
     u8 *base;
     s32 index;

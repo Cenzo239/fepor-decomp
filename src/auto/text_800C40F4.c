@@ -17240,7 +17240,7 @@ void fn_800F0C30(s8 arg0, s8 arg1, s8 arg2) {
 
 void fn_800F0C54(u8 *arg0) {
 void fn_8006ECCC(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
-void *fn_80067FDC(void); void PSMTXConcat(void *,void *,void *); f32 fn_8002300C(void *,u8,u8,s32);
+void *fn_80067FDC(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
 extern s32 lbl_803674F0; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 lbl_802CA518[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018; union { f64 d; struct {u32 hi,lo;} w; } dx,dy; f64 magic;
 f32 one,fx,fy,fx1,fy1,z;
@@ -17255,16 +17255,16 @@ magic=lbl_8036A018; one=lbl_8036A024;
 for(i=0;i<=(s8)arg0[0x100];i++){
 p=arg0+i; x=p[0];y=p[0x40]; dx.w.hi=0x43300000; dx.w.lo=(s32)(s8)x^0x80000000; dy.w.hi=0x43300000; dy.w.lo=(s32)(s8)y^0x80000000; fx=dx.d-magic;fy=dy.d-magic;fx1=one+fx;fy1=one+fy;
 fn_80220DEC(0x98,0,4);
-z=fn_8002300C(lbl_802CA518,x,y,0);
+z=Map_GetTileCornerHeight(lbl_802CA518,x,y,0);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=0;
-z=fn_8002300C(lbl_802CA518,x,y,1);
+z=Map_GetTileCornerHeight(lbl_802CA518,x,y,1);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=0;
-z=fn_8002300C(lbl_802CA518,x,y,2);
+z=Map_GetTileCornerHeight(lbl_802CA518,x,y,2);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=1;
-z=fn_8002300C(lbl_802CA518,x,y,3);
+z=Map_GetTileCornerHeight(lbl_802CA518,x,y,3);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=1;
 }fn_80066D00(-1);
