@@ -6101,7 +6101,7 @@ void fn_80193668(void *arg0) {
     void Ui_SetWidgetText(u32, s32);
     s32 Item_GetByIid(void *);
     void Allegiance_FillMask(s32, void *);
-    s8 fn_80091DE0(void *, s32);
+    s8 Unit_FindItemSlot(void *, s32);
     s32 fn_800C39A4(void *, s32);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
@@ -6187,7 +6187,7 @@ void fn_80193668(void *arg0) {
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
             sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
-            (s8)fn_80091DE0(unit, key) >= 0) {
+            (s8)Unit_FindItemSlot(unit, key) >= 0) {
             found = 1;
             break;
         }

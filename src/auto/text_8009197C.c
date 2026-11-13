@@ -201,7 +201,7 @@ s32 fn_80091D74(void) {
     return (*Item_GetFlagsPtr(p) & 0x100000000ULL) != 0;
 }
 
-s8 fn_80091DE0(void* arg0, void* arg1) {
+s8 Unit_FindItemSlot(void* arg0, void* arg1) {
     s8 var_r31;
     u32 temp_r0;
 

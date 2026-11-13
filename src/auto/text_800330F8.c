@@ -2079,7 +2079,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     s32 Item_GetByIid(s32);
     s32 Job_GetByJid(s32);
     s32 Person_GetByPid(s32);
-    s8 fn_80091DE0(void *, s32);
+    s8 Unit_FindItemSlot(void *, s32);
     s32 Convoy_FindByIid(void *, s32);
     extern u8 gUnits[];
     extern u8 gConvoy[];
@@ -2109,7 +2109,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
             }
             if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
                 sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
-                (s8)fn_80091DE0(unit, Item_GetByIid(arg1)) >= 0) {
+                (s8)Unit_FindItemSlot(unit, Item_GetByIid(arg1)) >= 0) {
                 return 1;
             }
             i += 1;
