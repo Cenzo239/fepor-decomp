@@ -23311,6 +23311,7 @@ for (; var_r17 <= var_r19; var_r17++) {
     }
 }
 #pragma opt_strength_reduction reset
+/* Find the reachable same-faction occupied tile with lowest AI move cost; write x/y. */
 s32 Ai_FindLowestCostAllyTile(s32 arg0, s16 *outX, s16 *outY) {
     void fn_800FE398(s32, s32, s32);
     u32 fn_80019E48(s32);
