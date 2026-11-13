@@ -2072,58 +2072,59 @@ void fn_801B94DC(void *arg0)
 }
 
 #pragma cplusplus on
-extern "C" void Ui_ReleaseUnitManageWidgets(void *arg0) {
+extern "C" void Ui_ReleaseUnitManageWidgets(void *panel) {
+    /* Remove and release unit-manage list (0x48), side (0x64), help (0x50), and inventory (0x60) widgets. */
     void Ui_RemoveChild(void *, void *);
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
     };
-    Obj *temp;
+    Obj *child;
     s32 refs;
 
-    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x48));
-    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x64));
-    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x50));
-    Ui_RemoveChild(arg0, M2C_FIELD(arg0, void **, 0x60));
+    Ui_RemoveChild(panel, M2C_FIELD(panel, void **, 0x48));
+    Ui_RemoveChild(panel, M2C_FIELD(panel, void **, 0x64));
+    Ui_RemoveChild(panel, M2C_FIELD(panel, void **, 0x50));
+    Ui_RemoveChild(panel, M2C_FIELD(panel, void **, 0x60));
 
-    temp = M2C_FIELD(arg0, Obj **, 0x48);
-    if (temp != NULL) {
-        refs = temp->refcount - 1;
-        temp->refcount = refs;
-        if (refs == 0 && temp != NULL) {
-            temp->destroy(1);
+    child = M2C_FIELD(panel, Obj **, 0x48);
+    if (child != NULL) {
+        refs = child->refcount - 1;
+        child->refcount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        M2C_FIELD(arg0, void **, 0x48) = NULL;
+        M2C_FIELD(panel, void **, 0x48) = NULL;
     }
 
-    temp = M2C_FIELD(arg0, Obj **, 0x64);
-    if (temp != NULL) {
-        refs = temp->refcount - 1;
-        temp->refcount = refs;
-        if (refs == 0 && temp != NULL) {
-            temp->destroy(1);
+    child = M2C_FIELD(panel, Obj **, 0x64);
+    if (child != NULL) {
+        refs = child->refcount - 1;
+        child->refcount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        M2C_FIELD(arg0, void **, 0x64) = NULL;
+        M2C_FIELD(panel, void **, 0x64) = NULL;
     }
 
-    temp = M2C_FIELD(arg0, Obj **, 0x50);
-    if (temp != NULL) {
-        refs = temp->refcount - 1;
-        temp->refcount = refs;
-        if (refs == 0 && temp != NULL) {
-            temp->destroy(1);
+    child = M2C_FIELD(panel, Obj **, 0x50);
+    if (child != NULL) {
+        refs = child->refcount - 1;
+        child->refcount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        M2C_FIELD(arg0, void **, 0x50) = NULL;
+        M2C_FIELD(panel, void **, 0x50) = NULL;
     }
 
-    temp = M2C_FIELD(arg0, Obj **, 0x60);
-    if (temp != NULL) {
-        refs = temp->refcount - 1;
-        temp->refcount = refs;
-        if (refs == 0 && temp != NULL) {
-            temp->destroy(1);
+    child = M2C_FIELD(panel, Obj **, 0x60);
+    if (child != NULL) {
+        refs = child->refcount - 1;
+        child->refcount = refs;
+        if (refs == 0 && child != NULL) {
+            child->destroy(1);
         }
-        M2C_FIELD(arg0, void **, 0x60) = NULL;
+        M2C_FIELD(panel, void **, 0x60) = NULL;
     }
 }
 
