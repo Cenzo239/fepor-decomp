@@ -9955,7 +9955,7 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
 
 void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
     f32 PSVECDistance(f32 *, f32 *);
-    extern f32 lbl_80369EA0;
+    extern f32 gVec3InterpZero;
     f32 sp14[3];
     f32 sp8[3];
     f32 temp_f1;
@@ -9999,7 +9999,7 @@ void Vec3Interp_Set(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2, f32 f
     sp8[1] = M2C_FIELD(arg0, f32 *, 0x10);
     sp8[2] = M2C_FIELD(arg0, f32 *, 0x14);
     temp_f1 = PSVECDistance(sp8, sp14);
-    if (lbl_80369EA0 == temp_f1) {
+    if (gVec3InterpZero == temp_f1) {
         M2C_FIELD(arg0, s32 *, 0x2C) = 0;
         return;
     }
@@ -10086,7 +10086,7 @@ void fn_800DF478(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
 }
 
 void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
-    extern f32 lbl_80369EA0;
+    extern f32 gVec3InterpZero;
     extern f32 lbl_80369EB0;
     extern f32 lbl_80369EB4;
     extern f32 lbl_80369EB8;
@@ -10098,7 +10098,7 @@ void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
 
     zero = 0;
     arg0[3] = x;
-    d = lbl_80369EA0;
+    d = gVec3InterpZero;
     arg0[0] = x;
     c = lbl_80369EB0;
     arg0[4] = y;
@@ -10128,13 +10128,13 @@ void fn_800DF494(f32 *arg0, f32 x, f32 y, f32 z) {
 }
 
 void fn_800DF50C(f32 *arg0) {
-    extern f32 lbl_80369EA0;
+    extern f32 gVec3InterpZero;
     extern f32 lbl_80369EBC;
     extern f32 lbl_80369EC0;
     extern f32 lbl_80369EC4;
     f32 vals[4];
 
-    vals[0] = lbl_80369EA0;
+    vals[0] = gVec3InterpZero;
     vals[3] = lbl_80369EBC;
     arg0[5] = vals[0];
     vals[2] = lbl_80369EC0;
