@@ -8352,7 +8352,7 @@ Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void fn_80173C24(void *arg0) {
+void Ui_FocusInvForListItem(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
     s32 *ListWidget_GetSelected(void *);
     u64 *Item_GetFlagsPtr(s32);
