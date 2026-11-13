@@ -7845,7 +7845,7 @@ s32 fn_80172C68(void *arg0) {
     return ((struct { u8 hi:1; u8 lo:7; } *)((u8 *)arg0 + 5))->hi != 0;
 }
 
-void fn_80172C9C(void *arg0) {
+void Ui_ExitSubmenuToUnitList(void *arg0) {
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
     void fn_8000C5E0(void *);
