@@ -7304,7 +7304,7 @@ void fn_801C65E0(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -7351,7 +7351,7 @@ void fn_801C65E0(void *arg0) {
         GXSetCurrentMtx(0);
         fn_8006ECCC(*(void **)((u8 *)obj + 0x38), tex, 9);
         fn_80222C50(tex, 0);
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021F4E4(0xB, 1);
         fn_8021F4E4(0xD, 1);

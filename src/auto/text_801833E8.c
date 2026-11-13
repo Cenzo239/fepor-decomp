@@ -7406,7 +7406,7 @@ void fn_801959FC(void *arg0) {
     void PSMTXConcat(void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
@@ -7469,7 +7469,7 @@ void fn_801959FC(void *arg0) {
     GXSetTevOrder(0, 0xFF, 0xFF, 4);
     fn_802239D0(0, 4);
     fn_80220428(0);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
@@ -13254,7 +13254,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK fn_80067984(M2C_UNK);
     M2C_UNK fn_80067EDC(M2C_UNK);
     M2C_UNK fn_8021F4E4(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8021FBB8();
+    M2C_UNK GXClearVtxDesc();
     M2C_UNK fn_8021FBF0(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80220428(M2C_UNK);
@@ -13308,7 +13308,7 @@ void fn_801A27F8(void *arg0) {
         GXSetTevAlphaOp(0, 0, 0, 0, 0, 0);
         fn_802245D8(0, 0, 0, 0);
         fn_80224684(0, 3, 0);
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021F4E4(0xD, 1);
         fn_8021FBF0(0, 9, 1, 4, 0);

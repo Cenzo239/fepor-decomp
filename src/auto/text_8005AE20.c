@@ -6075,7 +6075,7 @@ void fn_8006A384(s32* arg0) {
 }
 
 void fn_80222334(s32);
-void fn_8021FBB8(void);
+void GXClearVtxDesc(void);
 void fn_8021F750(s32 *);
 void fn_8021FE4C(s32, s32 *);
 void fn_8006A6C8(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
@@ -6194,7 +6194,7 @@ void fn_8006A6C8(s32 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
 
     var_r31[0] = 0xFF;
     var_r30[0] = 0xFF;
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F750(sp8);
     fn_8021FE4C(0, spE0);
 }

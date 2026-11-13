@@ -280,7 +280,7 @@ void fn_8014E864(void *arg0) {
     void GXSetCurrentMtx(s32);
     void fn_801502EC(void *, void *, void *, void *);
     void fn_8014EFB8(void *, void *, void *, void *, void *);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -413,7 +413,7 @@ void fn_8014E864(void *arg0) {
                         break;
                     case 2:
                         base = vtx;
-                        fn_8021FBB8();
+                        GXClearVtxDesc();
                         fn_8021F4E4(9, 1);
                         fn_8021F4E4(11, 1);
                         fn_8021FBF0(0, 9, 1, 4, 0);
@@ -503,7 +503,7 @@ void fn_8014EFB8(void) {
 
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_8021F4E4(s32, s32);
     void fn_8006ECCC(void *, void *, u16);
@@ -532,7 +532,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     var_r29 = arg2;
     var_r28 = arg3;
     fn_8022100C(0);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);

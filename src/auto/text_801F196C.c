@@ -4598,7 +4598,7 @@ void fn_801FB580(u32 *arg0, void **arg1, void *arg2)
 
 #pragma use_lmw_stmw on
 void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
@@ -4654,7 +4654,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     var_r21 = arg0;
     var_r20 = arg1;
 
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xD, 1);
     fn_8021FBF0(0, 9, 1, 3, 0);

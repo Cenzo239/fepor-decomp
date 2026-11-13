@@ -1624,7 +1624,7 @@ void fn_80123D1C(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -1692,7 +1692,7 @@ void fn_80123D1C(void *arg0) {
     PSMTXConcat(sp158, sp128, sp128);
     GXLoadPosMtxImm(sp128, 0);
     GXSetCurrentMtx(0);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021F4E4(0xD, 1);
@@ -1751,7 +1751,7 @@ void fn_80123D1C(void *arg0) {
         k -= 0x1F;
     } while (j >= 0);
 
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 3);
     fn_8021FBF0(0, 9, 1, 3, 0);
     fn_80220154(9, *(s32 *)((u8 *)arg0 + 0x60), 6);
@@ -2350,7 +2350,7 @@ void fn_80125388(void *arg0) {
     extern f32 lbl_8036A30C;
     void fn_8006ECCC(s32, void *, s32);
     void fn_80222C50(void *, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -2386,7 +2386,7 @@ void fn_80125388(void *arg0) {
 
     fn_8006ECCC(a->unk54, sp8, 7);
     fn_80222C50(sp8, 0);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021F4E4(0xD, 1);

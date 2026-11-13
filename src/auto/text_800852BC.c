@@ -1507,7 +1507,7 @@ void fn_80088FFC(void *arg0) {
     void GXLoadPosMtxImm(void *, s32);
     void GXSetCurrentMtx(s32);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -1541,7 +1541,7 @@ void fn_80088FFC(void *arg0) {
     GXLoadPosMtxImm(&sp8[0], 0);
     GXSetCurrentMtx(0);
     GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021FBF0(0, 9, 1, 3, 0);
     fn_8021F4E4(0xB, 1);
@@ -1766,7 +1766,7 @@ void fn_80089680(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
@@ -1829,7 +1829,7 @@ void fn_80089680(void *arg0) {
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
         sp8 = *(s32 *)((u8 *)arg0 + 0x40);
         GXSetChanMatColor(4, &sp8);
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
         fn_802240C8(1);
@@ -1921,7 +1921,7 @@ void fn_80089A28(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
@@ -2012,7 +2012,7 @@ void fn_80089A28(void *arg0) {
     GXLoadPosMtxImm(sp8, 0);
     GXSetCurrentMtx(0);
     GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021FBF0(0, 9, 1, 3, 0);
@@ -2139,7 +2139,7 @@ void Ui_DrawColorFade(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_80220DEC(s32, s32, s32);
@@ -2209,7 +2209,7 @@ void Ui_DrawColorFade(void *arg0) {
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
         fn_80220428(0);
@@ -2299,7 +2299,7 @@ void fn_8008A5AC(void *arg0) {
     void PSMTXTrans(void *, f32, f32, f32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -2367,7 +2367,7 @@ void fn_8008A5AC(void *arg0) {
         GXLoadPosMtxImm(spC, 0);
         GXSetCurrentMtx(0);
         GXSetViewport(gScreenOrigin, gScreenOrigin, gScreenWidth, gScreenHeight, gScreenOrigin, lbl_803696A4);
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021FBF0(0, 9, 1, 3, 0);
         if (*(u8 *)((u8 *)arg0 + 0x30) == 7) {

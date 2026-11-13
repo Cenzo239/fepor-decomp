@@ -801,7 +801,7 @@ void Gx_Setup2DState(void *arg0) {
     void PSMTXIdentity(void *);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80221A2C(s32);
@@ -857,7 +857,7 @@ void Gx_Setup2DState(void *arg0) {
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
     fn_802201A8(1, 1, 4, 0x3C, 0, 0x7D);
     fn_80222EB4();
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xD, 1);
     fn_8021FBF0(7, 9, 1, 3, 0);

@@ -383,7 +383,7 @@ void __GXInitGX(void) {
     void fn_802217AC(void *, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_80220198(void);
     void fn_80220154(s32, void *, s32);
     void fn_8021FE4C(s32, void *);
@@ -518,7 +518,7 @@ void __GXInitGX(void) {
     fn_802201A8(7, 1, 0xB, 0x3C, 0, 0x7D);
 
     fn_80220428(1);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_80220198();
 
     i = 9;
@@ -1193,7 +1193,7 @@ void fn_8021FA94(void)
     *(u16 *)(gx + 6) = (u16)count;
 }
 
-void fn_8021FBB8(void) {
+void GXClearVtxDesc(void) {
     u32* temp_r4 = (u32*)0x803B81A0;
     temp_r4[0x14/4] = 0;
     temp_r4[0x14/4] = (temp_r4[0x14/4] & ~0x600) | 0x200;

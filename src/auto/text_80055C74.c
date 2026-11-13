@@ -212,7 +212,7 @@ void fn_800566D4(void *arg0) {
     void fn_80067984(s32);
     void fn_80067EDC(s32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -269,7 +269,7 @@ void fn_800566D4(void *arg0) {
                 fn_80222C50(sp8, 0);
                 fn_802245D8(1, 4, 5, 7);
                 fn_80224684(0, 3, 0);
-                fn_8021FBB8();
+                GXClearVtxDesc();
                 fn_8021F4E4(9, 1);
                 fn_8021F4E4(0xB, 1);
                 fn_8021F4E4(0xD, 1);
@@ -1217,22 +1217,35 @@ void fn_80058910(void *arg0, u8 arg1) {
 }
 
 #pragma scheduling off
-void GActor_SetNodeLinkParam(void *arg0, void *arg1) {
-    M2C_FIELD(arg0, u8 *, 0x38) = (u8) M2C_FIELD(arg1, u8 *, 0);
-    M2C_FIELD(arg0, u8 *, 0x39) = (u8) M2C_FIELD(arg1, u8 *, 1);
-    M2C_FIELD(arg0, u8 *, 0x3A) = (u8) M2C_FIELD(arg1, u8 *, 2);
-    M2C_FIELD(arg0, u8 *, 0x3B) = (u8) M2C_FIELD(arg1, u8 *, 3);
-    M2C_FIELD(arg0, u8 *, 0x3C) = (u8) M2C_FIELD(arg0, u8 *, 0x38);
-    M2C_FIELD(arg0, u8 *, 0x3D) = (u8) M2C_FIELD(arg0, u8 *, 0x39);
-    M2C_FIELD(arg0, u8 *, 0x3E) = (u8) M2C_FIELD(arg0, u8 *, 0x3A);
-    M2C_FIELD(arg0, u8 *, 0x3F) = (u8) M2C_FIELD(arg0, u8 *, 0x3B);
-    if (((u8) M2C_FIELD(arg1, u8 *, 0) < 0x80U) && ((u8) M2C_FIELD(arg1, u8 *, 1) < 0x80U) && ((u8) M2C_FIELD(arg1, u8 *, 2) < 0x80U)) {
-        M2C_FIELD(arg0, u16 *, 0x54) = (u16) (M2C_FIELD(arg0, u16 *, 0x54) & 0xFFFE);
-        M2C_FIELD(arg0, u16 *, 0x54) = (u16) (M2C_FIELD(arg0, u16 *, 0x54) | 2);
-        return;
+void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
+    u8 a;
+    u8 b;
+    u8 c;
+    u8 d;
+
+    a = arg1[0];
+    ((u8 *)arg0)[0x38] = arg1[0];
+    b = arg1[1];
+    c = arg1[2];
+    ((u8 *)arg0)[0x39] = b;
+    d = arg1[3];
+    ((u8 *)arg0)[0x3A] = c;
+    ((u8 *)arg0)[0x3B] = d;
+    ((u8 *)arg0)[0x3C] = ((u8 *)arg0)[0x38];
+    ((u8 *)arg0)[0x3D] = ((u8 *)arg0)[0x39];
+    ((u8 *)arg0)[0x3E] = ((u8 *)arg0)[0x3A];
+    ((u8 *)arg0)[0x3F] = ((u8 *)arg0)[0x3B];
+    if (a < 0x80) {
+        if (arg1[1] < 0x80) {
+            if (arg1[2] < 0x80) {
+                *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~1);
+                *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 2);
+                return;
+            }
+        }
     }
-    M2C_FIELD(arg0, u16 *, 0x54) = (u16) (M2C_FIELD(arg0, u16 *, 0x54) & 0xFFFFFFFD);
-    M2C_FIELD(arg0, u16 *, 0x54) = (u16) (M2C_FIELD(arg0, u16 *, 0x54) | 1);
+    *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) & ~2);
+    *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
 #pragma scheduling reset
 void fn_80058A0C(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -1391,7 +1404,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_80066D00(s32);
     void PSMTXIdentity(void *);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80220428(s32);
@@ -1471,7 +1484,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     GXSetTevAlphaOp(1, 1, 0, 0, 0, 0);
     fn_80224E50(sp58, 0x1E, 1);
     fn_80224E50(sp28, 0x21, 1);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xD, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
@@ -1541,7 +1554,7 @@ void fn_80059A4C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     f32 temp_f1;
     f32 temp_f2;
 
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
     fn_80220428(0);

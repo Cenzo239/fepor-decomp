@@ -9596,7 +9596,7 @@ s32 fn_80049E1C(void *arg0) {
 void Map_DrawRangeTiles(void) {
     /* Draw GX quads for map tiles flagged as movement/range overlays. */
     u8 fn_800AA188(void);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
@@ -9647,7 +9647,7 @@ void Map_DrawRangeTiles(void) {
     s32 texIdx;
 
     if (fn_800AA188() != 0 && !(gUiInputFlags & 0x1000)) {
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021F4E4(0xD, 1);
         fn_8021FBF0(0, 9, 1, 4, 0);
@@ -9775,7 +9775,7 @@ void fn_8004A264(void *arg0) {
 #pragma global_optimizer off
 void fn_8004A2EC(void *arg0) {
 u8 fn_800AA188(void);
-void fn_8021FBB8(void);
+void GXClearVtxDesc(void);
 void fn_8021F4E4(s32, s32);
 void fn_8021FBF0(s32, s32, s32, s32, s32);
 void fn_80222334(s32);
@@ -9822,7 +9822,7 @@ extern u8 lbl_80285828[];
 
     self = arg0;
     if (fn_800AA188() != 0) {
-        fn_8021FBB8();
+        GXClearVtxDesc();
         fn_8021F4E4(9, 1);
         fn_8021F4E4(0xB, 1);
         fn_8021FBF0(0, 9, 1, 4, 0);
@@ -9972,7 +9972,7 @@ void fn_8004AAA4(void) {
     M2C_UNK PSMTXConcat(M2C_UNK, M2C_UNK *, M2C_UNK *);
     M2C_UNK PSMTXTrans(M2C_UNK *, f32, f32, f32);
     M2C_UNK fn_8021F4E4(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8021FBB8();
+    M2C_UNK GXClearVtxDesc();
     M2C_UNK fn_8021FBF0(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_802201A8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80220428(M2C_UNK);
@@ -9989,7 +9989,7 @@ void fn_8004AAA4(void) {
     extern f32 lbl_80368F88;
     M2C_UNK sp8[14];
 
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);
@@ -10769,7 +10769,7 @@ void fn_8004C80C(void) {
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80220428(s32);
     void fn_8022100C(s32);
@@ -10803,7 +10803,7 @@ void fn_8004C80C(void) {
     fn_8006ECCC(lbl_803672B0, sp10, 0);
     fn_80222C50(sp10, 0);
     fn_8022100C(2);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021FBF0(0, 9, 1, 4, 0);

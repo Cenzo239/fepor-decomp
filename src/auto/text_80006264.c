@@ -1351,7 +1351,7 @@ void fn_80007B04(void)
     s32 OSGetTick(void);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
-    void fn_8021FBB8(void);
+    void GXClearVtxDesc(void);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
     void fn_80222334(s32);
@@ -1395,7 +1395,7 @@ void fn_80007B04(void)
     f1 = lbl_80368B98;
     C_MTXOrtho(sp128, f1, lbl_80368BAC, f1, lbl_80368BB0, f1, lbl_80368BB4);
     GXSetProjection(sp128, 1);
-    fn_8021FBB8();
+    GXClearVtxDesc();
     fn_8021F4E4(9, 1);
     fn_8021F4E4(0xB, 1);
     fn_8021F4E4(0xD, 1);
@@ -1534,7 +1534,7 @@ void fn_80007B04(void)
                     C_MTXOrtho(mat, z, lbl_80368BAC, z, lbl_80368BB0, z, lbl_80368BB4);
                     GXSetProjection(mat, 1);
                 }
-                fn_8021FBB8();
+                GXClearVtxDesc();
                 fn_8021F4E4(9, 1);
                 fn_8021F4E4(0xB, 1);
                 fn_8021F4E4(0xD, 1);
