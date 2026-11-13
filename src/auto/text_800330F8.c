@@ -2310,7 +2310,7 @@ void Unit_Copy(void *dstUnit, void *srcUnit) {
 }
 #pragma use_lmw_stmw reset
 
-u8 fn_80038128(void *arg0, void *arg1) {
+u8 Unit_GetDistance(void *arg0, void *arg1) {
     s32 var_r5;
     s32 var_r0;
     s32 first;
@@ -4542,7 +4542,7 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 fn_8003AFA0(void *);
     s32 fn_8003A778(void *);
     s32 fn_8003AF28(void *);
-    u8 fn_80038128(void *, void *);
+    u8 Unit_GetDistance(void *, void *);
     s32 t;
     s32 u;
     s32 v;
@@ -4550,7 +4550,7 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     t = (s8)fn_8003AFA0(arg0);
     t = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
-    v = t + u + 0x1E - ((u8)fn_80038128(arg0, arg1) << 1);
+    v = t + u + 0x1E - ((u8)Unit_GetDistance(arg0, arg1) << 1);
     if (v > 0x64) {
         v = 0x64;
     }
@@ -6044,47 +6044,39 @@ label_1:
 
 #pragma use_lmw_stmw on
 void fn_8003FED8(u8 *arg0) {
-    void fn_8000D1D0(void *);
-    u32 j;
-    u8 *obj;
-    u32 *p30;
-    u8 *p29;
-    u32 *p28;
-    u32 *scan;
-    u32 count;
-    void *da;
-
-    obj = arg0;
-    j = 0;
-    {
-        u32 t4 = *(u32 *)(arg0 + 4);
-        u32 t8 = *(u32 *)(arg0 + 8);
-        u32 tC = *(u32 *)(arg0 + 0xC);
-        u32 t10 = *(u32 *)(obj + 0x10);
-        p30 = (u32 *)((u8 *)obj + (t4 & ~3u));
-        t8 <<= 2;
-        tC <<= 3;
-        t10 <<= 3;
-        p30 = (u32 *)((u8 *)p30 + 0x20);
-        p28 = (u32 *)((u8 *)p30 + t8);
-        p29 = (u8 *)p28 + tC + t10;
-    }
-
-    while (j < *(u32 *)(obj + 0xC)) {
-        scan = p30;
-        count = *(u32 *)(obj + 8);
-        da = p29 + p28[1];
-        for (; count != 0; count--) {
-            if (*p28 == *scan) {
-                break;
-            }
-            scan += 1;
-        }
-        fn_8000D1D0(da);
-        p28 += 2;
-        j += 1;
-    }
-    obj[0x1F] = 0;
+void fn_8000D1D0(void *);
+u32 *p30;
+u32 j;
+u8 *p29;
+u32 *p28;
+u32 *scan;
+u32 count;
+u32 i;
+void *da;
+j=0;
+{
+u32 t4=*(u32 *)(arg0+4);
+u32 t8=*(u32 *)(arg0+8);
+u32 tC=*(u32 *)(arg0+0xC);
+u32 t10=*(u32 *)(arg0+0x10);
+p30=(u32 *)(arg0+(t4&~3u));
+t8<<=2; tC<<=3; t10<<=3;
+p30=(u32 *)((u8 *)p30+0x20);
+p28=(u32 *)((u8 *)p30+t8);
+p29=(u8 *)p28+tC+t10;
+}
+while(j<*(u32 *)(arg0+0xC)) {
+scan=p30;
+count=*(u32 *)(arg0+8);
+da=p29+p28[1];
+for(i=0;i<count;i++) {
+if(*p28==*scan) break;
+scan++;
+}
+fn_8000D1D0(da);
+p28+=2; j++;
+}
+arg0[0x1F]=0;
 }
 #pragma use_lmw_stmw reset
 

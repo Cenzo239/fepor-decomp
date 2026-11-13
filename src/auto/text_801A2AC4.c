@@ -567,7 +567,7 @@ s32 Item_GetHealAmount(void *itemDef) {
 
 s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
-u8 Status_Test(void *,s32); u8 fn_80038128(void *,void *);
+u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
 u8 fn_8001F85C(void *,u8,u8,u8,u8); void **fn_80037D54(void *);
 void fn_80022FD8(void *,s32); void fn_80022DAC(void *,s32,s32);
 u8 fn_8001DD54(void *,void *); void Map_FillAttackRange(void *,u8,u8,u8,u8);
@@ -588,7 +588,7 @@ if(M2C_FIELD(unit,u32 *,0x1a0)&0x010000dc) return 0;
 if((M2C_FIELD(unit,u16 *,0x1a4)>>7)&7) return 0;
 if(M2C_FIELD(unit,u8 *,0x1a5)&7) return 0;
 if(!Status_Test((u8 *)unit+0x1bc,2)) return 0;
-if(fn_80038128(*walk,(u8 *)self+0x2e0)!=1) return 0;
+if(Unit_GetDistance(*walk,(u8 *)self+0x2e0)!=1) return 0;
 unit=*walk;
 if(!fn_8001F85C(gBattleMap,M2C_FIELD(unit,u8 *,0x19e),M2C_FIELD(unit,u8 *,0x19f),M2C_FIELD(self,u8 *,0x47e),M2C_FIELD(self,u8 *,0x47f))) return 0;
 item=fn_80037D54(*walk);
