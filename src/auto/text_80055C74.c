@@ -887,7 +887,7 @@ void *fn_80057A64(void *arg0, s32 arg1) {
 void fn_80057AE0(void *arg0) {
     void Prim2D_RotateUvCw(void);
     void Prim2D_EmitQuad(void);
-    void fn_800077B0(f32, f32, f32, f32);
+    void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EndPrim(void);
     void Prim2D_AddPrim(s32);
@@ -972,7 +972,7 @@ void fn_80057AE0(void *arg0) {
             Prim2D_SetRect((f32)var_r27, (f32)var_r26, (f32)var_r30, (f32)var_r29);
             break;
         }
-        fn_800077B0((f32)(temp_r31 * var_r30), lbl_80369108, (f32)var_r30, (f32)var_r29);
+        Prim2D_SetUvRect((f32)(temp_r31 * var_r30), lbl_80369108, (f32)var_r30, (f32)var_r29);
         Prim2D_EmitQuad();
         switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
         case 4:

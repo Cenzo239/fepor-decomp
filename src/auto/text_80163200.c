@@ -13650,7 +13650,7 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
     void Prim2D_RotateUvCcw(void);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColorPacked(s32 *);
-    void fn_800077B0(f32, f32, f32, f32);
+    void Prim2D_SetUvRect(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_80007870(f32);
     void Prim2D_EndPrim(void);
@@ -13690,7 +13690,7 @@ extern "C" void UiObj_DrawSprite(void *arg0, s32 arg1, s32 arg2, f32 farg0, f32 
     Prim2D_AddPrim(2);
     fn_80007870(farg2);
     Prim2D_SetRect(farg0, farg1, temp_f31, temp_f30);
-    fn_800077B0((f32)arg2 * temp_f29, lbl_8036AC08, temp_f29, temp_f28);
+    Prim2D_SetUvRect((f32)arg2 * temp_f29, lbl_8036AC08, temp_f29, temp_f28);
     Prim2D_EmitQuad();
     sp8 = *(s32 *)((u8 *)arg0 + 0x20);
     Prim2D_SetColorPacked(&sp8);
