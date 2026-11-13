@@ -3,8 +3,13 @@
 #include <dolphin/os.h>
 #include "global.h"
 
+/* Minimal DVDCommandBlock layout used by the DVD state machine. */
 typedef struct DVDReadyCommand {
- u8 pad[8]; s32 command; s32 state; u8 pad10[0x18]; void (*callback)(s32, void*);
+    u8 pad[8];
+    s32 command; /* +0x08 */
+    s32 state;   /* +0x0C */
+    u8 pad10[0x18];
+    void (*callback)(s32, void *); /* +0x28 */
 } DVDReadyCommand;
 extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
