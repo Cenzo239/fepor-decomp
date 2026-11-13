@@ -301,7 +301,7 @@ s32 Unit_ClearEventStatuses(s32 unit) {
 
 void fn_801A895C(void *arg0, void *arg1) {
     s32 fn_800927EC(void *);
-    u8 fn_80092ADC(void *, u8);
+    u8 Unit_GetWpnExp(void *, u8);
     s32 DebugPrint(const char *, ...);
     extern u8 lbl_8027B650[];
     void *slot;
@@ -322,7 +322,7 @@ void fn_801A895C(void *arg0, void *arg1) {
     }
     *(u8 *)((u8 *)arg0 + 0x2C6) |= fn_800927EC(arg0);
     DebugPrint((const char *)(lbl_8027B650 + 0x16A),
-                fn_80092ADC(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
+                Unit_GetWpnExp(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
 }
 
 extern u8 gBattleHitTbl[104];

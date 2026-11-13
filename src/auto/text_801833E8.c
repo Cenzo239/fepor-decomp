@@ -7632,7 +7632,7 @@ s32 fn_80196194(s32 arg0) {
 
 s32 fn_80196268(void *arg0) {
     void *fn_80037D54(void *);
-    s32 fn_80092ADC(void *, s32);
+    s32 Unit_GetWpnExp(void *, s32);
     s32 fn_80092C50(void *, s32, s32);
     s32 fn_8001CFA8(s32);
     s8 fn_80092414(void *);
@@ -7657,7 +7657,7 @@ s32 fn_80196268(void *arg0) {
         return 0;
     }
     kind = (obj != NULL) ? *(u8 *)((u8 *)obj + 0x12) : 0xC;
-    v1 = fn_80092ADC(arg0, kind);
+    v1 = Unit_GetWpnExp(arg0, kind);
     v2 = fn_80092C50(arg0, ((obj2 = *(void **)slot) != NULL) ? *(u8 *)((u8 *)obj2 + 0x12) : 0xC, 0xFF);
     v1 = fn_8001CFA8(v1);
     v2 = fn_8001CFA8(v2);

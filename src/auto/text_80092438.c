@@ -370,7 +370,7 @@ done2:
         return (u8)a != (u8)fn_8001CFA8((u8)other);
     }
 }
-u8 fn_80092ADC(void *arg0, s32 arg1) {
+u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     u8 result;
     u32 idx;

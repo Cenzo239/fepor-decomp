@@ -2689,7 +2689,7 @@ void fn_80130CDC(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 
 extern u16 jumptable_802911EC[];
 s32 fn_80131020(void *arg0, void *arg1, u32 arg2) {
-    u8 fn_80092ADC(void *, s32);
+    u8 Unit_GetWpnExp(void *, s32);
     void *p;
 
     p = *(void **)arg1;
@@ -2697,21 +2697,21 @@ s32 fn_80131020(void *arg0, void *arg1, u32 arg2) {
     case 0:
         return -(s32)*(u16 *)((u8 *)*(void **)((u8 *)p + 0x188) + 0x5A);
     case 1:
-        return (u8)fn_80092ADC(p, 0);
+        return (u8)Unit_GetWpnExp(p, 0);
     case 2:
-        return (u8)fn_80092ADC(p, 1);
+        return (u8)Unit_GetWpnExp(p, 1);
     case 3:
-        return (u8)fn_80092ADC(p, 2);
+        return (u8)Unit_GetWpnExp(p, 2);
     case 4:
-        return (u8)fn_80092ADC(p, 3);
+        return (u8)Unit_GetWpnExp(p, 3);
     case 5:
-        return (u8)fn_80092ADC(p, 4);
+        return (u8)Unit_GetWpnExp(p, 4);
     case 6:
-        return (u8)fn_80092ADC(p, 5);
+        return (u8)Unit_GetWpnExp(p, 5);
     case 7:
-        return (u8)fn_80092ADC(p, 6);
+        return (u8)Unit_GetWpnExp(p, 6);
     case 8:
-        return (u8)fn_80092ADC(p, 7);
+        return (u8)Unit_GetWpnExp(p, 7);
     default:
         return 0;
     }

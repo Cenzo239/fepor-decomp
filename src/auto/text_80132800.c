@@ -2785,7 +2785,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    void fn_80092ADC(s32, u8);
+    void Unit_GetWpnExp(s32, u8);
     u8 *fn_8001CDE4(void);
     u8 Status_Test(void *, s32);
     void *Msg_Expand(void *);
@@ -2835,7 +2835,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
         coords[2] = lbl_8036A610;
         coords[3] = lbl_8036A614;
         flags = self->unk34;
-        fn_80092ADC(unit, idx_u8);
+        Unit_GetWpnExp(unit, idx_u8);
         str = fn_8001CDE4();
         if ((s32)*str != 0x2D) {
             s16 *row;

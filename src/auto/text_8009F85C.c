@@ -26,7 +26,7 @@ void fn_8009F8A8(void *unused, void *arg1) {
 
 s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
     void *Map_GetCursorUnit(void);
-    u8 fn_80092ADC(void *, u8);
+    u8 Unit_GetWpnExp(void *, u8);
     extern void *gPadInput;
     u8 *base;
     u8 index;
@@ -37,7 +37,7 @@ s32 fn_8009F8D0(s32 arg0, s32 arg1, void *arg2) {
 
     base = Map_GetCursorUnit();
     index = *(u8 *)((u8 *)arg2 + 0x3A);
-    value = fn_80092ADC(base, index);
+    value = Unit_GetWpnExp(base, index);
     step = 1;
     obj = gPadInput;
     if (*(u32 *)((u8 *)obj + 4) & 0x400) {
@@ -70,7 +70,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
     s32 fn_8001CDE4(u8);
     void Ui_DrawMenuTextItem(s32, s32, void *);
-    s32 fn_80092ADC(void *, u8);
+    s32 Unit_GetWpnExp(void *, u8);
     void sprintf(u8 *, void *, ...);
     extern u8 lbl_8026D8D8[];
     extern f32 gItemMenuTextScale;
@@ -78,7 +78,7 @@ void fn_8009F980(s32 arg0, s32 arg1, void *arg2) {
     u8 temp;
     s32 name;
 
-    temp = fn_80092ADC(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
+    temp = Unit_GetWpnExp(Map_GetCursorUnit(), *(u8 *)((u8 *)arg2 + 0x3A));
     name = fn_8001CDE4(temp);
     sprintf(sp8, lbl_8026D8D8 + 0x2A8, temp, name);
     Ui_DrawMenuTextItem(arg0, arg1, arg2);

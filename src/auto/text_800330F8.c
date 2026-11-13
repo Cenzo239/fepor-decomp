@@ -5349,7 +5349,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     u8 fn_80094768(void *);
     void fn_8003BD58(void *);
     void fn_80092438(void *);
-    u8 fn_80092ADC(void *, u8);
+    u8 Unit_GetWpnExp(void *, u8);
     void *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_80093DA8(void *);
     void fn_800056A0(s32);
@@ -5571,7 +5571,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     self->unk20C[7] = *((u8 *)self->unk18C + 0x33);
     fn_80092438(self);
     for (j = 0; j < 8; j++) {
-        if (fn_80092ADC(self, j) != 0) {
+        if (Unit_GetWpnExp(self, j) != 0) {
             t = *((u8 *)self->unk188 + 0x35 + j);
             if (t != 0) {
                 self->unk20C[j] = t;
@@ -5587,7 +5587,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
                 if (a < 8) {
                     p = *(void **)item;
                     a = p ? *(u8 *)((u8 *)p + 0x12) : 0xC;
-                    if (fn_80092ADC(self, a) == 0) {
+                    if (Unit_GetWpnExp(self, a) == 0) {
                         if (((*(u8 *)((u8 *)item + 5) >> 6) & 1) == 0) {
                             fn_800056A0(0);
                         }
@@ -5596,7 +5596,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
                         b = p ? *(u8 *)((u8 *)p + 0x16) : 0;
                         p = *(void **)item;
                         a = p ? *(u8 *)((u8 *)p + 0x12) : 0xC;
-                        if ((u8)fn_80092ADC(self, a) < b) {
+                        if ((u8)Unit_GetWpnExp(self, a) < b) {
                             p = *(void **)item;
                             b = p ? *(u8 *)((u8 *)p + 0x16) : 0;
                             p = *(void **)item;
