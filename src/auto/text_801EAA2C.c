@@ -2075,7 +2075,7 @@ void fn_801EE76C(void *arg0) {
     void Xml_Destroy(void *, s32);
     void fn_801EFB2C(void *, char *);
     void fn_801EF6BC(void *);
-    void fn_801EEF74(void *, s32);
+    void GActor_LoadResources(void *, s32);
     void fn_800558D8(char *);
     void *fn_8000CAF0(void *, void *);
     void *fn_80059208(void *, void *);
@@ -2245,7 +2245,7 @@ use30708:
 
     fn_801EFB2C(*(void **)((char *)self + 0x48), path);
     fn_801EF6BC(*(void **)((char *)self + 0x48));
-    fn_801EEF74(*(void **)((char *)self + 0x48), 0);
+    GActor_LoadResources(*(void **)((char *)self + 0x48), 0);
     fn_800558D8(lbl_8027F26C + 0x1AB);
     *(void **)((char *)self + 0x44) = fn_8000CAF0(lbl_8029A5BC, self);
     *(void **)((char *)self + 0x40) = fn_80059208((void *)fn_801EEDB4, self);
@@ -2280,7 +2280,7 @@ void fn_801EED94(void) {
     fn_801EE76C();
 }
 
-void fn_801EEF74(void *arg0, s32 arg1) {
+void GActor_LoadResources(void *arg0, s32 arg1) {
     s32 fn_8005C84C(void);
     void fn_8005F7B0(void *, s32);
     void fn_8005F7E0(void *, s32, s32, s32);
