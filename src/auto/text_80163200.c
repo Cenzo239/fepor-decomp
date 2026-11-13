@@ -8941,6 +8941,7 @@ void fn_80174E0C(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+/* Handle A/B/X/Y while choosing a trade partner from the unit list. */
 extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *, void *);
@@ -8979,57 +8980,57 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
         virtual void v11(u32) = 0;
     };
 
-    void *obj40;
-    u32 var_r30;
+    void *list;
+    u32 selected;
     void *self;
-    void *obj50;
-    register u8 gate;
+    void *preview;
+    register u8 gated;
     register int flags;
     register int btn;
-    void *proc;
-    u32 sp14;
-    u32 sp10;
+    void *popup;
+    u32 posA;
+    u32 posB;
 
     self = arg0;
-    obj40 = *(void **)((u8 *)arg0 + 0x40);
-    obj50 = *(void **)((u8 *)arg0 + 0x50);
-    var_r30 = Ui_ListGetSelected(obj40);
+    list = *(void **)((u8 *)arg0 + 0x40);
+    preview = *(void **)((u8 *)arg0 + 0x50);
+    selected = Ui_ListGetSelected(list);
     Ui_UpdatePanelWidgets(arg0);
-    if (var_r30 != Ui_ListGetSelected(obj40)) {
-        var_r30 = Ui_ListGetSelected(obj40);
-        ((VObj *)obj50)->v11(var_r30);
+    if (selected != Ui_ListGetSelected(list)) {
+        selected = Ui_ListGetSelected(list);
+        ((VObj *)preview)->v11(selected);
     }
     flags = gUiInputFlags;
-    gate = 0;
+    gated = 0;
     if ((flags & 0x10) && !(flags & 0x20)) {
-        gate = 1;
+        gated = 1;
     }
-    if (!gate) {
+    if (!gated) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
-        if ((btn & 0x100) && var_r30) {
-            if (gUiContext[0] == var_r30) {
-                *(Vec2s *)&sp14 = ((VObj *)obj40)->v9();
-                proc = fn_8000CAA0(gUiMsgPopupProc, self);
-                *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp14;
-                *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp14 + 1);
-                *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3db;
-            } else if (fn_80093088(gUiContext[0]) && fn_80093088(var_r30)) {
-                *(Vec2s *)&sp10 = ((VObj *)obj40)->v9();
-                proc = fn_8000CAA0(gUiMsgPopupProc, self);
-                *(f32 *)((u8 *)proc + 0x30) = (f32)*(s16 *)&sp10;
-                *(f32 *)((u8 *)proc + 0x34) = (f32)*((s16 *)&sp10 + 1);
-                *(void **)((u8 *)proc + 0x54) = (u8 *)gUiMsgStrings + 0x3e9;
+        if ((btn & 0x100) && selected) {
+            if (gUiContext[0] == selected) {
+                *(Vec2s *)&posA = ((VObj *)list)->v9();
+                popup = fn_8000CAA0(gUiMsgPopupProc, self);
+                *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posA;
+                *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posA + 1);
+                *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x3db;
+            } else if (fn_80093088(gUiContext[0]) && fn_80093088(selected)) {
+                *(Vec2s *)&posB = ((VObj *)list)->v9();
+                popup = fn_8000CAA0(gUiMsgPopupProc, self);
+                *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posB;
+                *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posB + 1);
+                *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x3e9;
             } else {
-                gUiContext[1] = var_r30;
+                gUiContext[1] = selected;
                 Process_ClearFunc(self, gUiContext);
                 Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1dd, 0x64);
             }
-        } else if ((btn & 0x800) && var_r30) {
-            fn_801695BC(var_r30, self, 0x1000000);
+        } else if ((btn & 0x800) && selected) {
+            fn_801695BC(selected, self, 0x1000000);
             *(u8 *)((u8 *)self + 0x65) = 0xb;
             Process_Goto(self, 0x31);
-        } else if ((btn & 0x400) && var_r30) {
+        } else if ((btn & 0x400) && selected) {
             Process_Goto(self, 0xe);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x3bf, 0x64);
         } else if (btn & 0x200) {
