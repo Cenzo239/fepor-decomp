@@ -19325,7 +19325,7 @@ void fn_800F8364(void *arg0) {
 
 void fn_800F8390(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 lbl_803678F0;
 
@@ -19339,7 +19339,7 @@ void fn_800F8390(void *arg0)
     obj = (u8 *)arg0;
     index = 0;
 
-    count = *(s32 *)(lbl_803678F8 + 0x10);
+    count = *(s32 *)(gAiCmd + 0x10);
 
     if (lbl_803678F4 == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
@@ -19372,7 +19372,7 @@ void fn_800F8390(void *arg0)
 
 void fn_800F8464(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 lbl_803678F0;
 
@@ -19386,7 +19386,7 @@ void fn_800F8464(void *arg0)
     obj = (u8 *)arg0;
     index = 0;
 
-    count = *(s32 *)(lbl_803678F8 + 0x10);
+    count = *(s32 *)(gAiCmd + 0x10);
 
     if (lbl_803678F4 == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
@@ -19418,7 +19418,7 @@ void fn_800F8464(void *arg0)
 }
 
 void fn_800F8538(void *arg0) {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
@@ -19427,7 +19427,7 @@ void fn_800F8538(void *arg0) {
     register s32 index;
     s32 ret;
 
-    global = lbl_803678F8;
+    global = gAiCmd;
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
     ret = (s8)Unit_GetMov(arg0);
@@ -19441,7 +19441,7 @@ void fn_800F8538(void *arg0) {
 }
 
 void fn_800F86D4(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     u8 Status_Test(void *, s32);
@@ -19450,7 +19450,7 @@ void fn_800F86D4(void *arg0) {
     s32 index;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
     if (Status_Test(obj + 0x1BC, 9) != 0) {
         index = *(s32 *)(state + 4);
         *(s32 *)&gAiState[(index << 2) + 8] = 0xB;
@@ -19466,7 +19466,7 @@ void fn_800F86D4(void *arg0) {
 }
 
 void fn_800F8780(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     extern f32 lbl_8036A0A0;
@@ -19480,7 +19480,7 @@ void fn_800F8780(void *arg0) {
     s32 index;
     s32 ret;
 
-    state = lbl_803678F8;
+    state = gAiCmd;
     if (*(u32 *)((u8 *)state + 0x14) == 0) {
         cb = Ai_UnitIsHostileToActive;
     } else {
@@ -19531,8 +19531,8 @@ void fn_800F8E5C(void* arg0, void* arg1, s32 arg2) {
 }
 
 void fn_800F8FF4(void *arg0) {
-    extern void *lbl_803678F8;
-    if ((s32) lbl_803678F8 == 0) {
+    extern void *gAiCmd;
+    if ((s32) gAiCmd == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8) (M2C_FIELD(arg0, u8 *, 0x250) + 1);
         return;
     }
@@ -19779,8 +19779,8 @@ void fn_800F9DAC(void *arg0) {
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     extern u8 gAiState[544];
 extern s32 lbl_803678F4;
-extern void *lbl_803678F8;
-    void *work = lbl_803678F8;
+extern void *gAiCmd;
+    void *work = gAiCmd;
     s16 x;
     s16 y;
 
@@ -19805,7 +19805,7 @@ void fn_800F9E64(void *arg0) {
 }
 
 void fn_800FA0E4(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     u8 fn_800F51A0(void (*)(void *), s32);
@@ -19818,7 +19818,7 @@ void fn_800FA0E4(void *arg0) {
     void (*cb)(void *);
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -19836,7 +19836,7 @@ void fn_800FA0E4(void *arg0) {
 }
 
 void fn_800FA1A8(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
 
     s32 fn_8000CEE4(s32);
@@ -19849,7 +19849,7 @@ void fn_800FA1A8(void *arg0) {
     u8 *state;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         fn_800F30E0(*(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive :
@@ -19866,10 +19866,10 @@ void fn_800FA1A8(void *arg0) {
 
 void fn_800FA254(void *arg0) {
     extern s32 lbl_803678F4;
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     u8 fn_800F3BA4(s16 *, u8);
 
-    fn_800F3BA4(*(s16 **)(lbl_803678F8 + 0x14), 0x2E);
+    fn_800F3BA4(*(s16 **)(gAiCmd + 0x14), 0x2E);
 
     if (lbl_803678F4 == 0) {
         *(u8 *)((u8 *)arg0 + 0x250) += 1;
@@ -19879,7 +19879,7 @@ void fn_800FA254(void *arg0) {
 }
 
 void fn_800FA2B4(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     u8 fn_800F3F50(s32, s8);
@@ -19890,7 +19890,7 @@ void fn_800FA2B4(void *arg0) {
     u8 *state;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         fn_800F3F50(
@@ -19908,7 +19908,7 @@ void fn_800FA2B4(void *arg0) {
 }
 
 void fn_800FA360(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     u8 fn_800F43D8(void (*)(void *), s32);
@@ -19921,7 +19921,7 @@ void fn_800FA360(void *arg0) {
     void (*cb)(void *);
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -19939,7 +19939,7 @@ void fn_800FA360(void *arg0) {
 }
 
 void fn_800FA424(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
@@ -19955,14 +19955,14 @@ void fn_800FA424(void *arg0) {
     void *tmp;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? fn_800FB494 : fn_800FB548);
         flag = gAiState;
         flag[1] |= 2;
-        tmp = Hash_Lookup(*(void **)((u8 *)lbl_803678F8 + 0x18));
+        tmp = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
         fn_801AA064(obj, tmp, cb);
         flag[1] &= ~2;
     }
@@ -19975,7 +19975,7 @@ void fn_800FA424(void *arg0) {
 }
 
 void fn_800FA510(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     void *Hash_Lookup(void *);
@@ -19989,12 +19989,12 @@ void fn_800FA510(void *arg0) {
     void *tmp;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? fn_800FB494 : fn_800FB548);
-        tmp = Hash_Lookup(*(void **)((u8 *)lbl_803678F8 + 0x18));
+        tmp = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
         fn_801AA064(obj, tmp, cb);
     }
 
@@ -20015,7 +20015,7 @@ void fn_800FA5D4(void *arg0) {
 }
 
 void fn_800FA600(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
@@ -20029,7 +20029,7 @@ void fn_800FA600(void *arg0) {
     u8 *flag;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -20048,7 +20048,7 @@ void fn_800FA600(void *arg0) {
 }
 
 void fn_800FA6CC(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     void fn_8018D4CC(void *, void (*)(void *));
@@ -20060,7 +20060,7 @@ void fn_800FA6CC(void *arg0) {
     void (*cb)(void *);
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -20076,7 +20076,7 @@ void fn_800FA6CC(void *arg0) {
 }
 
 void fn_800FA778(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
@@ -20090,7 +20090,7 @@ void fn_800FA778(void *arg0) {
     u8 *flag;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -20109,7 +20109,7 @@ void fn_800FA778(void *arg0) {
 }
 
 void fn_800FA844(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     void fn_8010F7B4(void *, void (*)(void *));
@@ -20121,7 +20121,7 @@ void fn_800FA844(void *arg0) {
     void (*cb)(void *);
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -20138,7 +20138,7 @@ void fn_800FA844(void *arg0) {
 
 #pragma peephole on
 void fn_800FA8F0(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
 
     s32 fn_8000CEE4(s32);
@@ -20150,7 +20150,7 @@ void fn_800FA8F0(void *arg0) {
     u8 *state;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         fn_800F5504(*(s32 *)(state + 0x10) != 0 ? fn_800FB334 : fn_800FB3AC, 0xF);
@@ -20164,7 +20164,7 @@ void fn_800FA8F0(void *arg0) {
 }
 
 void fn_800FA984(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
     s32 fn_8000CEE4(s32);
@@ -20178,7 +20178,7 @@ void fn_800FA984(void *arg0) {
     u8 *flag;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
@@ -20207,7 +20207,7 @@ void fn_800FAA50(void *arg0) {
 }
 
 void fn_800FAA7C(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     extern s32 lbl_803678F4;
     s32 fn_8000CEE4(s32);
     void fn_800F5504(s32, s32);
@@ -20218,7 +20218,7 @@ void fn_800FAA7C(void *arg0) {
     u8 *state;
 
     obj = (u8 *)arg0;
-    state = (u8 *)lbl_803678F8;
+    state = (u8 *)gAiCmd;
 
     if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
         fn_800F5504(
@@ -20258,7 +20258,7 @@ void fn_800FAD94(void) {
 
 void fn_800FAEA4(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern s32 lbl_803678F4;
 
     extern void *Res_GetByName(void *);
@@ -20271,7 +20271,7 @@ void fn_800FAEA4(void *arg0)
     obj = (u8 *)arg0;
     index = 0;
 
-    count = *(s32 *)(lbl_803678F8 + 0x10);
+    count = *(s32 *)(gAiCmd + 0x10);
 
     if (lbl_803678F4 == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
@@ -20303,7 +20303,7 @@ void fn_800FAEA4(void *arg0)
 void fn_800FB074(void *arg0)
 {
     extern s32 lbl_803678F4;
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     void *Hash_Lookup(void *);
     void *self;
@@ -20311,7 +20311,7 @@ void fn_800FB074(void *arg0)
     u8 (*cb)(void *);
 
     self = arg0;
-    p = lbl_803678F8;
+    p = gAiCmd;
     cb = (u8 (*)(void *))Hash_Lookup(*(void **)(p + 0x14));
     lbl_803678F0 = cb(*(void **)(p + 0x18));
     if (lbl_803678F4 == 0) {
@@ -20341,7 +20341,7 @@ void fn_800FB308(void *arg0) {
 
 s32 fn_800FB334(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 gUiContext[];
 
     extern s32 Str_Cmp(void *, void *);
@@ -20355,7 +20355,7 @@ s32 fn_800FB334(void *arg0)
     other = *(u8 **)gUiContext;
 
     result = Str_Cmp(
-        *(void **)(lbl_803678F8 + 0x14),
+        *(void **)(gAiCmd + 0x14),
         **(void ***)(obj + 0x18c)
     );
 
@@ -20373,14 +20373,14 @@ s32 fn_800FB334(void *arg0)
 
 s32 fn_800FB3AC(void *arg0) {
     s32 Str_Cmp(s32, s32, void *);
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
 extern void *gUiContext;
-    return Str_Cmp(M2C_FIELD(lbl_803678F8, s32 *, 0x14), *M2C_FIELD(arg0, s32 **, 0x18C), lbl_803678F8) == 0;
+    return Str_Cmp(M2C_FIELD(gAiCmd, s32 *, 0x14), *M2C_FIELD(arg0, s32 **, 0x18C), gAiCmd) == 0;
 }
 
 s32 fn_800FB3E4(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 gUiContext[];
 
     extern s32 Str_Cmp(void *, void *);
@@ -20394,7 +20394,7 @@ s32 fn_800FB3E4(void *arg0)
     other = *(u8 **)gUiContext;
 
     result = Str_Cmp(
-        *(void **)(lbl_803678F8 + 0x14),
+        *(void **)(gAiCmd + 0x14),
         **(void ***)(obj + 0x188)
     );
 
@@ -20412,13 +20412,13 @@ s32 fn_800FB3E4(void *arg0)
 
 s32 fn_800FB45C(void *arg0) {
     s32 Str_Cmp(s32, s32, void *);
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     
-    return Str_Cmp(((s32*)lbl_803678F8)[0x14/4], ((s32**)arg0)[0x188/4][0], lbl_803678F8) == 0;
+    return Str_Cmp(((s32*)gAiCmd)[0x14/4], ((s32**)arg0)[0x188/4][0], gAiCmd) == 0;
 }
 
 s32 fn_800FB494(void *arg0) {
-    extern void *lbl_803678F8;
+    extern void *gAiCmd;
     s32 Str_Cmp(u8 *, u8 *);
     s32 Allegiance_Compare(void *, void *);
     extern u8 gUiContext[];
@@ -20429,7 +20429,7 @@ s32 fn_800FB494(void *arg0) {
     u8 found;
     void *other;
 
-    list = M2C_FIELD(lbl_803678F8, u8 ***, 0x14);
+    list = M2C_FIELD(gAiCmd, u8 ***, 0x14);
     other = *(void **)gUiContext;
     name = *M2C_FIELD(arg0, u8 ***, 0x188);
 
@@ -20452,7 +20452,7 @@ checked:
 
 s32 fn_800FB548(void *arg0)
 {
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     s32 Str_Cmp(void *, void *);
     void *key;
     void **list;
@@ -20460,7 +20460,7 @@ s32 fn_800FB548(void *arg0)
     u8 found;
 
     key = **(void ***)((u8 *)arg0 + 0x188);
-    list = *(void ***)(lbl_803678F8 + 0x14);
+    list = *(void ***)(gAiCmd + 0x14);
 
     goto load;
     do {
@@ -20495,7 +20495,7 @@ s32 fn_800FB60C(void *arg0) {
 
 u8 fn_800FB64C(void) {
     extern u8 gUiContext[];
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
@@ -20513,12 +20513,12 @@ u8 fn_800FB64C(void) {
 
     obj = *(u8 **)gUiContext;
     entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
     off = obj[0x251] * 0x1C;
     lbl_803678F0 = 0;
     lbl_803678F4 = 1;
     entry += off;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
 
     val = *(s32 *)(entry + 8);
     if (val != 0) {
@@ -20535,7 +20535,7 @@ u8 fn_800FB64C(void) {
 
 u8 fn_800FB6FC(void) {
     extern u8 gUiContext[];
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
@@ -20553,12 +20553,12 @@ u8 fn_800FB6FC(void) {
 
     obj = *(u8 **)gUiContext;
     entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F0 = 0;
     lbl_803678F4 = 0;
     entry += off;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
 
     val = *(s32 *)(entry + 8);
     if (val != 0) {
@@ -20575,7 +20575,7 @@ u8 fn_800FB6FC(void) {
 
 u8 fn_800FB7A8(void) {
     extern u8 gUiContext[];
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     extern s32 lbl_803678F4;
     extern u8 gAiState[];
@@ -20593,12 +20593,12 @@ u8 fn_800FB7A8(void) {
 
     obj = *(u8 **)gUiContext;
     entry = lbl_80272FC8;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F4 = 1;
     lbl_803678F0 = 0;
     entry += off;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
     obj[0x260] = 0x10;
 
     val = *(s32 *)(entry + 8);
@@ -20616,7 +20616,7 @@ u8 fn_800FB7A8(void) {
 
 u8 fn_800FB868(void) {
     extern u8 lbl_802EF4C8[];
-    extern u8 *lbl_803678F8;
+    extern u8 *gAiCmd;
     extern u8 lbl_803678F0;
     extern s32 lbl_803678F4;
     extern u8 lbl_8032B3C0[];
@@ -20634,12 +20634,12 @@ u8 fn_800FB868(void) {
 
     obj = *(u8 **)lbl_802EF4C8;
     entry = lbl_80272F90;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     lbl_803678F0 = 0;
     lbl_803678F4 = 0;
     entry += off;
-    lbl_803678F8 = entry;
+    gAiCmd = entry;
 
     val = *(s32 *)(entry + 8);
     if (val != 0) {
