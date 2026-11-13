@@ -3770,7 +3770,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
     void fn_8001C5F8(void *, s32);
     void fn_8001C690(void *, void *);
     void *Unit_GetItemSlot(s32, s32);
-    void fn_8007386C(s32, void *, s32);
+    void Unit_OfferItem(s32, void *, s32);
     void *Battle_GetOpponent(void *);
     s32 Battle_GetActiveCombatant(void *);
     extern u8 gBattle[];
@@ -3797,7 +3797,7 @@ s32 Battle_TryOfferDroppableItem(s32 arg0) {
         entry = Unit_GetItemSlot(handle, i);
         if (entry != NULL && *(u32 *)entry != 0 && ((*(u8 *)((u8 *)entry + 5) >> 6) & 1)) {
             fn_8001C690(sp8, entry);
-            fn_8007386C(*(s32 *)((u8 *)obj + 0x280), sp8, arg0);
+            Unit_OfferItem(*(s32 *)((u8 *)obj + 0x280), sp8, arg0);
             fn_8001C5F8(sp8, -1);
             return 1;
         }

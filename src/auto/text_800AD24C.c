@@ -5547,7 +5547,7 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
     void fn_8001C690(void *, void *);
     void fn_8001C5F8(void *, s32);
     s32 fn_800C0658(void);
-    void fn_8007386C(void *, void *, s32);
+    void Unit_OfferItem(void *, void *, s32);
     extern u8 gUnits[];
     u8 sp10[8];
     u8 sp8[8];
@@ -5564,7 +5564,7 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
     fn_8001C76C(sp10);
     fn_8001D780(sp10, arg1);
     fn_8001C690(sp8, sp10);
-    fn_8007386C(var_r31, sp8, fn_800C0658());
+    Unit_OfferItem(var_r31, sp8, fn_800C0658());
     fn_8001C5F8(sp8, -1);
     fn_8001C5F8(sp10, -1);
     return 1;
