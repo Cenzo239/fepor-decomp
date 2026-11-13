@@ -6070,7 +6070,7 @@ void fn_80193668(void *arg0) {
     void Ui_AddChild(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
-    s32 fn_80019E04(void *);
+    s32 Item_GetByIid(void *);
     void fn_80015320(s32, void *);
     s8 fn_80091DE0(void *, s32);
     s32 fn_800C39A4(void *, s32);
@@ -6148,7 +6148,7 @@ void fn_80193668(void *arg0) {
     }
     found = 0;
     *(f32 *)((u8 *)self + 0x64) = lbl_8036AE20;
-    key = fn_80019E04(lbl_80279DF0 + 0x510);
+    key = Item_GetByIid(lbl_80279DF0 + 0x510);
     fn_80015320(4, sp8);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {

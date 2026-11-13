@@ -3388,7 +3388,7 @@ void fn_8002626C(void) {
 
 #pragma use_lmw_stmw on
 void fn_8002629C(s32 *arg0, s32 arg1) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void fn_8002AD04(s32, void *);
     void *fn_8002F658(s32 *, s32);
     s32 fn_8003AFA0(s32);
@@ -3414,7 +3414,7 @@ void fn_8002629C(s32 *arg0, s32 arg1) {
     self = arg0;
     other = arg1;
     saved = *self;
-    fn_8002AD04(saved, fn_80019E04(lbl_80268E40 + 0x1A6));
+    fn_8002AD04(saved, Item_GetByIid(lbl_80268E40 + 0x1A6));
     i = 0;
     three = 3;
     while (i < lbl_802EF4E0[0]) {
@@ -3469,7 +3469,7 @@ label_check_arg1:
 }
 
 void fn_800264BC(s32 *arg0, s32 arg1) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void fn_8002AB9C(s32, void *);
     void fn_8019C110(s32, void *);
     void fn_801A4958(void *);
@@ -3482,7 +3482,7 @@ void fn_800264BC(s32 *arg0, s32 arg1) {
     s32 temp_r31;
 
     temp_r31 = *arg0;
-    fn_8002AB9C(temp_r31, fn_80019E04(lbl_80268E40 + 0x1AF));
+    fn_8002AB9C(temp_r31, Item_GetByIid(lbl_80268E40 + 0x1AF));
     fn_801A75DC(lbl_80330EAC, *(void **)gUiContext, -1);
     fn_801A4958(lbl_80330EAC);
     fn_8019C110(arg1, fn_80026544);

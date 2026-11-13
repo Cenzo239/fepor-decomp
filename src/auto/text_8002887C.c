@@ -3073,7 +3073,7 @@ void *fn_8002F778(void) {
 }
 
 void fn_8002F788(s32 arg0) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void fn_8002C034(void *, void *);
     void *fn_8002EB54(void *, s32);
     extern u8 lbl_802695F0[];
@@ -3086,7 +3086,7 @@ void fn_8002F788(s32 arg0) {
     void *temp;
 
     temp = gUiContext[0];
-    fn_8002C034(temp, fn_80019E04(lbl_802695F0 + 0xE5));
+    fn_8002C034(temp, Item_GetByIid(lbl_802695F0 + 0xE5));
     if (lbl_80367281 == 0) {
         *(void **)(lbl_802EFDAC + 4) = lbl_80285050;
         *(void **)(lbl_802EFDAC + 4) = lbl_802853EC;
@@ -4051,11 +4051,11 @@ void fn_80033024(void) {
 }
 
 M2C_UNK *fn_80033044(void) {
-    s32 fn_80019E04(void *);
+    s32 Item_GetByIid(void *);
     M2C_UNK UnitRef_Set(M2C_UNK *, s32);
     extern u8 lbl_802695F0[];
     extern M2C_UNK lbl_80367278;
-    UnitRef_Set(&lbl_80367278, fn_80019E04(lbl_802695F0 + 0xE5));
+    UnitRef_Set(&lbl_80367278, Item_GetByIid(lbl_802695F0 + 0xE5));
     return &lbl_80367278;
 }
 

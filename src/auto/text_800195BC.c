@@ -346,7 +346,7 @@ s32 fn_80019DF0(u8 arg0) {
     return lbl_803671E8 + (arg0 * 0x28);
 }
 
-void fn_80019E04(void) {
+void Item_GetByIid(void) {
     M2C_UNK fn_8000D354();
     fn_8000D354();
 }
@@ -2747,16 +2747,16 @@ void fn_8001EDA0(u8 *arg0) {
 }
 
 void fn_8001EDB8(u8 *out, void *key) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     extern u8 lbl_80268820[];
     s32 flags;
 
     flags = 0;
-    if (key == fn_80019E04(lbl_80268820 + 0x41A)) {
+    if (key == Item_GetByIid(lbl_80268820 + 0x41A)) {
         flags |= 1;
-    } else if (key == fn_80019E04(lbl_80268820 + 0x42A)) {
+    } else if (key == Item_GetByIid(lbl_80268820 + 0x42A)) {
         flags |= 2;
-    } else if (key == fn_80019E04(lbl_80268820 + 0x436)) {
+    } else if (key == Item_GetByIid(lbl_80268820 + 0x436)) {
         flags |= 0x80;
     }
     *out = (u8)flags;

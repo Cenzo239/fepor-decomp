@@ -176,7 +176,7 @@ s32 fn_8010568C(s32 arg0) {
 
 s32 fn_80105710(void *arg0) {
     u8 Id_GetKind(void *);
-    s32 fn_80019E04(void *);
+    s32 Item_GetByIid(void *);
     s32 off;
     s32 i;
     u8 status;
@@ -190,7 +190,7 @@ s32 fn_80105710(void *arg0) {
         status = Id_GetKind(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + off));
         switch (status) {
         case 3:
-            return fn_80019E04(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + (i * 4)));
+            return Item_GetByIid(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x20) + (i * 4)));
         case 0:
         default:
             break;
@@ -3772,7 +3772,7 @@ u8 fn_8010BEB8(void *arg0) {
     void fn_8002F658(void *, s32);
     void *fn_8002F740(void);
     void **fn_80037BD0(void *, s32);
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     s8 fn_8003B2D0(void *);
     s32 fn_80230BCC(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
@@ -3854,18 +3854,18 @@ u8 fn_8010BEB8(void *arg0) {
                             key = *(void **)cand;
                             other = bestItem;
                             pick = cand;
-                            if (key == fn_80019E04(&lbl_80273B40[0x1D])) {
+                            if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
                                 priA = 0xA;
-                            } else if (key == fn_80019E04(&lbl_80273B40[0x2B])) {
+                            } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
                                 priA = fn_8003B2D0(arg0);
                             } else {
                                 priA = 0;
                             }
                             lo = priA;
                             key = *(void **)bestItem;
-                            if (key == fn_80019E04((u8 *)lbl_80273B40 + 0x1D)) {
+                            if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
                                 cur = 0xA;
-                            } else if (key == fn_80019E04((u8 *)lbl_80273B40 + 0x2B)) {
+                            } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
                                 cur = fn_8003B2D0(arg0);
                             } else {
                                 cur = 0;
@@ -3929,7 +3929,7 @@ u8 fn_8010BEB8(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 s32 fn_8010C244(void *arg0) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void *fn_80037BD0(void *, s32);
     s8 fn_8003B2D0(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
@@ -3968,18 +3968,18 @@ loop:
         } else {
             key = *(void **)best;
             chosen = best;
-            if (key == fn_80019E04(lbl_80273B40 + 0x1D)) {
+            if (key == Item_GetByIid(lbl_80273B40 + 0x1D)) {
                 valBest = 0xA;
-            } else if (key == fn_80019E04(lbl_80273B40 + 0x2B)) {
+            } else if (key == Item_GetByIid(lbl_80273B40 + 0x2B)) {
                 valBest = fn_8003B2D0(arg0);
             } else {
                 valBest = 0;
             }
             key = *(void **)slot;
             temp = valBest;
-            if (key == fn_80019E04(&lbl_80273B40[0x1D])) {
+            if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
                 valCur = 0xA;
-            } else if (key == fn_80019E04(&lbl_80273B40[0x2B])) {
+            } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
                 valCur = fn_8003B2D0(arg0);
             } else {
                 valCur = 0;
@@ -5579,12 +5579,12 @@ void fn_8010F52C(void* arg0, int arg1)
 }
 
 void fn_8010F970(void) {
-    u32 fn_80019E04(u32);
+    u32 Item_GetByIid(u32);
     extern u32 lbl_8028F5F8[48];
     u32 *p;
 
     for (p = lbl_8028F5F8; p[0] != 0; p += 3) {
-        p[1] = fn_80019E04(p[0]);
+        p[1] = Item_GetByIid(p[0]);
     }
 }
 

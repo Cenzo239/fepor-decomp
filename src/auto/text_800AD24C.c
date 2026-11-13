@@ -95,7 +95,7 @@ s32 fn_800AD310(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void Process_Unlink(void *);
     void fn_80015320(s32, void *);
-    s32 fn_80019E04(void *);
+    s32 Item_GetByIid(void *);
     void fn_8002AB9C(void *, s32);
     void fn_8002AD04(void *, s32);
     u8 Status_Test(void *, s32);
@@ -150,7 +150,7 @@ s32 fn_800AD310(s32 arg0) {
             && !((*(u16 *)((u8 *)var_r31 + 0x1A4) >> 7) & 7)
             && !(*((u8 *)var_r31 + 0x1A5) & 7)) {
             if (Status_Test((u8 *)var_r31 + 0x1BC, 0x4A) != 0) {
-                fn_8002AD04(var_r31, fn_80019E04(lbl_8026E988 + 0x101));
+                fn_8002AD04(var_r31, Item_GetByIid(lbl_8026E988 + 0x101));
                 if (*(s32 *)lbl_802EF4E0 != 0) {
                     temp_r0 = *(s16 *)((u8 *)temp_r3 + 0x6C);
                     if (temp_r0 != 0xB) {
@@ -161,7 +161,7 @@ s32 fn_800AD310(s32 arg0) {
                 }
             }
             if (Status_Test((void *)((u32)var_r31 + 0x1BC), 0x49) != 0) {
-                fn_8002AB9C(var_r31, fn_80019E04(lbl_8026E988 + 0x10A));
+                fn_8002AB9C(var_r31, Item_GetByIid(lbl_8026E988 + 0x10A));
                 if (*(s32 *)lbl_802EF4E0 != 0) {
                     temp_r0 = *(s16 *)((u8 *)temp_r3 + 0x6C);
                     if (temp_r0 != 0xB) {
@@ -4353,11 +4353,11 @@ s32 fn_800B8298(s8 arg0, s8 arg1) {
 }
 
 s32 fn_800B82D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 fn_80019E04(s32);
+    s32 Item_GetByIid(s32);
     void fn_8010FDB8(void *, s8, s8, u8, s32);
     extern u8 lbl_8032BB58[];
 
-    fn_8010FDB8(lbl_8032BB58, (s8)arg0, (s8)arg1, (u8)arg2, fn_80019E04(arg3));
+    fn_8010FDB8(lbl_8032BB58, (s8)arg0, (s8)arg1, (u8)arg2, Item_GetByIid(arg3));
     return 1;
 }
 
@@ -6195,10 +6195,10 @@ u8 fn_800BBD44(s8 arg0, s8 arg1) {
 }
 
 u16 fn_800BBD68(void) {
-    void *fn_80019E04();
+    void *Item_GetByIid();
     void *temp_r3;
 
-    temp_r3 = fn_80019E04();
+    temp_r3 = Item_GetByIid();
     if (temp_r3 == NULL) {
         return 0U;
     }
@@ -6644,7 +6644,7 @@ s32 fn_800BC7C8(u8 arg0, s32 arg1) {
 }
 
 s32 fn_800BC82C(u8 arg0, s32 arg1) {
-    s32 fn_80019E04(s32);
+    s32 Item_GetByIid(s32);
     s32 fn_80093010(void *, s32);
     extern u8 gUnits[];
     u8 *entry;
@@ -6660,7 +6660,7 @@ s32 fn_800BC82C(u8 arg0, s32 arg1) {
         return 0;
     }
 
-    tmp = fn_80019E04(arg1);
+    tmp = Item_GetByIid(arg1);
     return fn_80093010(entry, tmp);
 }
 
@@ -9598,7 +9598,7 @@ s32 fn_800C388C(s32 *arg0, s32 arg1) {
     s32 i;
     s32 j;
     
-    temp_r3 = fn_80019E04(arg1);
+    temp_r3 = Item_GetByIid(arg1);
     
     for (i = 0; i < 0x14; i++) {
       if (arg0[i * 0x14 + 0] == temp_r3) return i;

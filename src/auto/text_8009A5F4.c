@@ -409,7 +409,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     void fn_8001019C(s16, s32, s32, ...);
     s32 fn_80010B78(void *, s32, f32);
     void *fn_80019DBC(s32);
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void fn_8005926C(s32, s32, s32, s32, s32, s32, s32, s32);
     void *fn_8005B73C(void *);
     void fn_8009B55C(u32, s32, f32, f32);
@@ -503,10 +503,10 @@ case_2b:
         Prim2D_PrepareTex();
         fn_8005926C(0x48, 0x1B, 0, 0, 0xB, 0x1A, 9, alpha);
         if (*(u16 *)((u8 *)self + 0x42) == 0) {
-            *(u16 *)((u8 *)self + 0x42) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0xEE) + 0xE);
-            *(u16 *)((u8 *)self + 0x44) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0xFB) + 0xE);
-            *(u16 *)((u8 *)self + 0x46) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0x108) + 0xE);
-            *(u16 *)((u8 *)self + 0x48) = *(u16 *)((u8 *)fn_80019E04(lbl_8026D404 + 0x117) + 0xE);
+            *(u16 *)((u8 *)self + 0x42) = *(u16 *)((u8 *)Item_GetByIid(lbl_8026D404 + 0xEE) + 0xE);
+            *(u16 *)((u8 *)self + 0x44) = *(u16 *)((u8 *)Item_GetByIid(lbl_8026D404 + 0xFB) + 0xE);
+            *(u16 *)((u8 *)self + 0x46) = *(u16 *)((u8 *)Item_GetByIid(lbl_8026D404 + 0x108) + 0xE);
+            *(u16 *)((u8 *)self + 0x48) = *(u16 *)((u8 *)Item_GetByIid(lbl_8026D404 + 0x117) + 0xE);
             *(void **)((u8 *)self + 0x4C) = Msg_Expand(lbl_8026D404 + 0x122);
             *(void **)((u8 *)self + 0x50) = Msg_Expand(lbl_8026D404 + 0x12E);
             *(void **)((u8 *)self + 0x54) = Msg_Expand(lbl_8026D404 + 0x13A);

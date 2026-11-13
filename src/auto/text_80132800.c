@@ -929,7 +929,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     void fn_8000A174(s32, u16);
     void Prim2D_SetAlphaByte(s32);
     s32 fn_800102BC(s32, f32);
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     void fn_8005AC24(void *, s16, s16, s32);
     s32 Msg_Expand(void *);
     void fn_8001003C(s16, s16, s32, s32, s32, s32, ...);
@@ -1000,7 +1000,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
                     goto done;
                 }
                 if (*(u32 *)cell != 0) {
-                    p = fn_80019E04(*(void **)cell);
+                    p = Item_GetByIid(*(void **)cell);
                     x16 = (s16)x;
                     fn_8005AC24(lbl_802F0308, x16, curY16, ((u8 *)p)[0x15] + 0x61);
                     Prim2D_Begin();
@@ -1027,7 +1027,7 @@ done:
 }
 
 extern "C" void fn_80134280(void *arg0) {
-    s32 fn_80019E04(u32);
+    s32 Item_GetByIid(u32);
     s32 off;
     s16 count;
     s32 i;
@@ -1068,7 +1068,7 @@ extern "C" void fn_80134280(void *arg0) {
         p += 2;
     }
 end:
-    fn_80019E04(*p);
+    Item_GetByIid(*p);
 }
 
 #pragma cplusplus reset
@@ -4135,15 +4135,15 @@ extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
     struct Point in2;
     struct Point in;
     struct Point out;
-    s32 vret;
+    unsigned vret;
     s16 v4e;
     s16 v58;
     s16 v56;
     s16 v5a;
     s16 v62;
     s16 v64;
-    s32 quot;
-    s32 rem;
+    u32 quot;
+    s16 rem;
     s16 adj;
 
     v4e = *(s16 *)((u8 *)arg1 + 0x4E);
@@ -4156,18 +4156,16 @@ extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
         v5a = *(s16 *)((u8 *)arg1 + 0x5A);
         v62 = *(s16 *)((u8 *)arg1 + 0x62);
         v64 = *(s16 *)((u8 *)arg1 + 0x64);
-        rem = quot * v58;
-        adj = (s16)quot;
-        adj = adj - v56;
-        rem = v4e - rem;
-        adj = (s16)adj;
-        rem = (s16)rem;
-        in.x = vret * rem + v62;
-        in.y = v5a * adj + v64;
+        rem = (s16)(v4e - quot * v58);
+        adj = (s16)((s16)quot - v56);
+        in.x = (s16)(vret * rem + v62);
+        in.y = (s16)(v5a * adj + v64);
         *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
     } else {
-        s16 a14 = *(s16 *)((u8 *)arg1 + 0x14);
-        s16 a18 = *(s16 *)((u8 *)arg1 + 0x18);
+        s16 a14;
+        s16 a18;
+        a14 = *(s16 *)((u8 *)arg1 + 0x14);
+        a18 = *(s16 *)((u8 *)arg1 + 0x18);
         in2.x = *(s16 *)((u8 *)arg1 + 0x62);
         in2.y = a18 - a14;
         *arg0 = *(s32 *)fn_8013F748(arg1, &out2, &in2);

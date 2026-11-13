@@ -2026,7 +2026,7 @@ void fn_80037904(void *arg0, s32 arg1) {
 s32 fn_80037960(void *arg0, s32 arg1) {
     void fn_80015320(s32, void *);
     u8 Id_GetKind(s32);
-    s32 fn_80019E04(s32);
+    s32 Item_GetByIid(s32);
     s32 fn_80019E48(s32);
     s32 fn_80019E8C(s32);
     s8 fn_80091DE0(void *, s32);
@@ -2059,7 +2059,7 @@ s32 fn_80037960(void *arg0, s32 arg1) {
             }
             if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
                 sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
-                (s8)fn_80091DE0(unit, fn_80019E04(arg1)) >= 0) {
+                (s8)fn_80091DE0(unit, Item_GetByIid(arg1)) >= 0) {
                 return 1;
             }
             i += 1;

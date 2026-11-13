@@ -249,7 +249,7 @@ static inline u8 GetItemKind(void *item) {
     return 0xC;
 }
 
-void *fn_80019E04(char *);
+void *Item_GetByIid(char *);
 
 /* string object (String_Copy copies one) */
 typedef struct String {
@@ -18311,7 +18311,7 @@ extern u8 gUiContext[],gBattleMap[],lbl_8032B3C0[],lbl_8032BB58[],lbl_802EF4E0[]
 extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
 void fn_800FE2A0(void *,s32,s32);s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
-void *fn_8010FF24(void *,s8,s8,s32);void *fn_80019E04(void *);void *fn_80019E24(u8);
+void *fn_8010FF24(void *,s8,s8,s32);void *Item_GetByIid(void *);void *fn_80019E24(u8);
 void fn_8002F728(void *);u8 fn_8001DDBC(void *);void fn_800FDDBC(s8,s8,u8,u8,s32);
 void fn_8001EF80(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *fn_8002F658(void *,s32);
 void fn_8002C6F4(void *,s8,s8);void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
@@ -18337,7 +18337,7 @@ if(M2C_FIELD((u8*)((s32)map+((s8)x+rowOffset)*2),s16 *,0x610E)<0)continue;
 tile=row+(s8)x;
 if(*(s8*)(tile+0xe18e)||fn_800FE84C((s8)x,(s8)y)||tile[0xd])continue;
 entry=fn_8010FF24(lbl_8032BB58,(s8)x,(s8)y,7);
-if(!entry||!entry[5]||entry[4]!=*(u16*)((u8*)fn_80019E04(lbl_80272DB0+0xce)+0xe))continue;
+if(!entry||!entry[5]||entry[4]!=*(u16*)((u8*)Item_GetByIid(lbl_80272DB0+0xce)+0xe))continue;
 candidate=fn_8010FF24(lbl_8032BB58,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6D8;pred.value=callback;
 fn_8002F728(lbl_802EF4E0);fn_80022FD8(gBattleMap,6);
@@ -18413,7 +18413,7 @@ void fn_80022DAC(void *,s32,s32);void fn_80022FD8(void *,s32);
 void fn_800FE2A0(void *,s32,s32);
 s8 fn_8003A398(void *);u8 fn_800FE84C(s8,s8);
 void *fn_8010FF24(void *,s8,s8,s32);
-void *fn_80019E04(void *);void *fn_80019E24(u8);
+void *Item_GetByIid(void *);void *fn_80019E24(u8);
 void fn_8002F728(void *);u8 fn_8001DDBC(void *);
 void fn_800FDDBC(s8,s8,u8,u8,s32);void fn_8001EF80(void *,u8,u8,u8);
 void fn_8002C530(void *,s8);void *fn_8002F658(void *,s32);
@@ -18455,7 +18455,7 @@ if(M2C_FIELD((u8 *)((s32)map+((s8)x+rowOffset)*2),s16 *,0x610E)<0)continue;
 tile=row+(s8)x;
 if(*(s8 *)(tile+0xE18E)||fn_800FE84C((s8)x,(s8)y)||tile[0xD])continue;
 entry=fn_8010FF24(lbl_8032BB58,(s8)x,(s8)y,7);
-if(!entry||!entry[5]||entry[4]==M2C_FIELD(fn_80019E04(lbl_80272DB0+0xCE),u16 *,0xE))continue;
+if(!entry||!entry[5]||entry[4]==M2C_FIELD(Item_GetByIid(lbl_80272DB0+0xCE),u16 *,0xE))continue;
 candidate=fn_8010FF24(lbl_8032BB58,(s8)(s16)x,(s8)(s16)y,7);
 pred.vtable=lbl_80284E20;pred.vtable=lbl_8028E6B8;pred.callback=callback;
 fn_8002F728(lbl_802EF4E0);fn_80022FD8(gBattleMap,6);
@@ -22457,15 +22457,15 @@ void fn_801001B8(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 
 s32 fn_801001F0(void *arg0) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     s32 result;
 
     result = 0;
-    if (arg0 == fn_80019E04((char *)&lbl_80273304 + 0xCE)) {
+    if (arg0 == Item_GetByIid((char *)&lbl_80273304 + 0xCE)) {
         result = 1;
-    } else if (arg0 == fn_80019E04((char *)&lbl_80273304 + 0xDE)) {
+    } else if (arg0 == Item_GetByIid((char *)&lbl_80273304 + 0xDE)) {
         result = 2;
-    } else if (arg0 == fn_80019E04((char *)&lbl_80273304 + 0xEA)) {
+    } else if (arg0 == Item_GetByIid((char *)&lbl_80273304 + 0xEA)) {
         result = 0x80;
     }
     return result;
@@ -22700,15 +22700,15 @@ void fn_801007A0(void *arg0) {
         if (fn_8009326C(unit, *item)) {
             M2C_FIELD(unit, u32 *, 0x254) |= 0x200;
             cur = *item;
-            if (fn_80019E04(lbl_80273304.iidSilence) == cur) {
+            if (Item_GetByIid(lbl_80273304.iidSilence) == cur) {
                 M2C_FIELD(unit, u32 *, 0x254) |= 0x400;
             } else {
                 cur = *item;
-                if (fn_80019E04(lbl_80273304.iidSleep) == cur) {
+                if (Item_GetByIid(lbl_80273304.iidSleep) == cur) {
                     M2C_FIELD(unit, u32 *, 0x254) |= 0x800;
                 } else {
                     cur = *item;
-                    if (fn_80019E04(lbl_80273304.iidBerserk) == cur) {
+                    if (Item_GetByIid(lbl_80273304.iidBerserk) == cur) {
                         M2C_FIELD(unit, u32 *, 0x254) |= 0x1000;
                     }
                 }

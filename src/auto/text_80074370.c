@@ -1358,7 +1358,7 @@ void fn_80076840(void) {
 
 s32 fn_8007686C(void) {
     u8 Status_Test(void *, s32);
-    s32 fn_80019E04(u8 *);
+    s32 Item_GetByIid(u8 *);
     void fn_8002C034(void *, s32);
     extern u8 gUiContext[];
     extern s32 lbl_802EF4E0[];
@@ -1372,7 +1372,7 @@ s32 fn_8007686C(void) {
         return 3;
     }
     temp = *(void **)gUiContext;
-    fn_8002C034(temp, fn_80019E04(lbl_8026C0B8 + 0x2E3));
+    fn_8002C034(temp, Item_GetByIid(lbl_8026C0B8 + 0x2E3));
     return lbl_802EF4E0[0] == 0 ? 3 : 0;
 }
 
@@ -1496,7 +1496,7 @@ void fn_80076B68(void) {
 
 s32 fn_80076B94(void) {
     u8 Status_Test(void *, s32);
-    s32 fn_80019E04(u8 *);
+    s32 Item_GetByIid(u8 *);
     void fn_8002AD04(void *, s32);
     extern u8 gUiContext[];
     extern s32 lbl_802EF4E0[];
@@ -1510,7 +1510,7 @@ s32 fn_80076B94(void) {
         return 3;
     }
     temp = *(void **)gUiContext;
-    fn_8002AD04(temp, fn_80019E04(lbl_8026C0B8 + 0x30E));
+    fn_8002AD04(temp, Item_GetByIid(lbl_8026C0B8 + 0x30E));
     return lbl_802EF4E0[0] == 0 ? 3 : 0;
 }
 
@@ -1533,7 +1533,7 @@ void fn_80076C7C(void) {
 
 s32 fn_80076CA8(void) {
     u8 Status_Test(void *, s32);
-    s32 fn_80019E04(u8 *);
+    s32 Item_GetByIid(u8 *);
     void fn_8002AB9C(void *, s32);
     extern u8 gUiContext[];
     extern s32 lbl_802EF4E0[];
@@ -1547,7 +1547,7 @@ s32 fn_80076CA8(void) {
         return 3;
     }
     temp = *(void **)gUiContext;
-    fn_8002AB9C(temp, fn_80019E04(lbl_8026C0B8 + 0x320));
+    fn_8002AB9C(temp, Item_GetByIid(lbl_8026C0B8 + 0x320));
     return lbl_802EF4E0[0] == 0 ? 3 : 0;
 }
 

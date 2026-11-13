@@ -458,7 +458,7 @@ s32 fn_801A3B08(void) {
 }
 
 void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
-    void *fn_80019E04(const char *name);
+    void *Item_GetByIid(const char *name);
     void fn_8019C394(s32, s32);
     void fn_8019C3DC(s32, s32);
     void fn_8019C424(s32, s32);
@@ -477,95 +477,95 @@ void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
     void fn_8019CA6C(s32, s32);
     extern u8 gMapAnimStr[];
 
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x22C])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x22C])) {
         fn_8019C9DC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x23A])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x23A])) {
         fn_8019CA6C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x248])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x248])) {
         fn_8019CA24(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x256])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x256])) {
         fn_8019C994(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x261])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x261])) {
         fn_8019C8A4(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x1E6])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1E6])) {
         fn_8019C6C4(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x1EF])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1EF])) {
         fn_8019C67C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x1FA])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1FA])) {
         fn_8019C634(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x206])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x206])) {
         fn_8019C5EC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x211])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x211])) {
         fn_8019C4FC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x26F])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x26F])) {
         fn_8019C4B4(arg1, arg2);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x278])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x278])) {
         fn_8019C46C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x284])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x284])) {
         fn_8019C424(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x28E])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x28E])) {
         fn_8019C3DC(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x29B])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x29B])) {
         fn_8019C394(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x2A7])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x2A7])) {
         fn_8019C85C(arg1, 0);
         return;
     }
-    if (item == fn_80019E04((char *)&gMapAnimStr[0x21D])) {
+    if (item == Item_GetByIid((char *)&gMapAnimStr[0x21D])) {
         fn_8019C4FC(arg1, arg2);
     }
 }
 
 s32 fn_801A3E24(void *arg0) {
-    void *fn_80019E04(void *);
+    void *Item_GetByIid(void *);
     extern u8 gMapAnimStr[];
 
-    if (arg0 == fn_80019E04(gMapAnimStr + 0x1E6)) {
+    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1E6)) {
         return 0xA;
     }
-    if (arg0 == fn_80019E04(gMapAnimStr + 0x1EF)) {
+    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1EF)) {
         return 0x14;
     }
-    if (arg0 == fn_80019E04(gMapAnimStr + 0x1FA)) {
+    if (arg0 == Item_GetByIid(gMapAnimStr + 0x1FA)) {
         return 0x50;
     }
-    if (arg0 == fn_80019E04(gMapAnimStr + 0x206)) {
+    if (arg0 == Item_GetByIid(gMapAnimStr + 0x206)) {
         return 0xA;
     }
-    if (arg0 == fn_80019E04(gMapAnimStr + 0x211)) {
+    if (arg0 == Item_GetByIid(gMapAnimStr + 0x211)) {
         return 0xA;
     }
-    return (arg0 == fn_80019E04(gMapAnimStr + 0x21D)) ? 0x50 : 0;
+    return (arg0 == Item_GetByIid(gMapAnimStr + 0x21D)) ? 0x50 : 0;
 }
 
 s32 fn_801A3F14(void *self) {

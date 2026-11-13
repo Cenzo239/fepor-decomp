@@ -420,12 +420,12 @@ u8 fn_80129104(void *arg0) {
 }
 
 void fn_80129374(void) {
-    u32 fn_80019E04(u32);
+    u32 Item_GetByIid(u32);
     extern u32 lbl_802909F8[48];
     u32 *p;
 
     for (p = lbl_802909F8; p[0] != 0; p += 3) {
-        p[1] = fn_80019E04(p[0]);
+        p[1] = Item_GetByIid(p[0]);
     }
 }
 
