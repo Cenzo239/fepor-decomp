@@ -7736,7 +7736,7 @@ s32 fn_800BE2F4(void) {
 s32 fn_800BE57C(void *arg0) {
     void fn_800C273C(void *, u32);
     void *fn_80019E8C(void);
-    void *fn_80019EAC(s32);
+    void *Person_Get(s32);
     extern s16 lbl_8031FFC0[];
     void *obj;
     void *v1;
@@ -7752,8 +7752,8 @@ s32 fn_800BE57C(void *arg0) {
     v1 = fn_80019E8C();
     fn_800C273C(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
     v2 = fn_80019E8C();
-    v3 = fn_80019EAC(lbl_8031FFC0[3]);
-    v4 = fn_80019EAC(lbl_8031FFC0[4]);
+    v3 = Person_Get(lbl_8031FFC0[3]);
+    v4 = Person_Get(lbl_8031FFC0[4]);
     if (v3 == v1 && v4 == v2) {
         return 1;
     }

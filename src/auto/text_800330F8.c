@@ -4310,7 +4310,7 @@ s32 fn_8003C7D0(s32 arg0) {
 s32 Unit_Read(void *arg0, void *arg1) {
     u16 Stream_ReadU16(void *);
     u8 Stream_ReadU8(void *);
-    s32 fn_80019EAC(u16);
+    s32 Person_Get(u16);
     s32 fn_80019E68(u16);
     void fn_8003B6C4(void *, s32);
     void Stream_Read(void *, s32, void *);
@@ -4339,7 +4339,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     if ((u16)first == 0) {
         return 0;
     }
-    tmp = fn_80019EAC((u16)first);
+    tmp = Person_Get((u16)first);
     t2 = fn_80019E68((u16)Stream_ReadU16(src));
     *(s32 *)((u8 *)dst + 0x188) = tmp;
     *(s32 *)((u8 *)dst + 0x18C) = t2;

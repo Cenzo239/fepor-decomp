@@ -1989,7 +1989,7 @@ s32 fn_800A279C(void *arg0)
 }
 
 char *fn_800A27D8(void *arg0) {
-    void *fn_80019EAC(s16);
+    void *Person_Get(s16);
     s32 fn_800A8A88(void);
     void sprintf(void *, void *, ...);
     extern u8 lbl_8026D8D8[];
@@ -1997,7 +1997,7 @@ char *fn_800A27D8(void *arg0) {
     void *temp_r31;
     s32 temp_r6;
 
-    temp_r31 = fn_80019EAC(*(s16 *)((u8 *)arg0 + 4));
+    temp_r31 = Person_Get(*(s16 *)((u8 *)arg0 + 4));
     temp_r6 = fn_800A8A88();
     sprintf(lbl_80312270, lbl_8026D8D8 + 0x6D6, *(s16 *)((u8 *)arg0 + 4), temp_r6, *(s32 *)temp_r31);
     return lbl_80312270;
@@ -2041,11 +2041,11 @@ s32 fn_800A2848(void *arg0)
 }
 
 s32 fn_800A28C0(void *arg0) {
-    s32 fn_80019EAC(s16);
+    s32 Person_Get(s16);
     M2C_UNK fn_8003C6BC(s32, s32, M2C_UNK);
 
     s32 temp_r31 = fn_800AA794();
-    s32 arg1 = fn_80019EAC(M2C_FIELD(arg0, s16 *, 4));
+    s32 arg1 = Person_Get(M2C_FIELD(arg0, s16 *, 4));
     fn_8003C6BC(temp_r31, arg1, 0);
     return 0;
 }

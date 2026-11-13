@@ -379,7 +379,7 @@ void fn_80019E8C(void) {
     Res_GetByName();
 }
 
-s32 fn_80019EAC(s32 arg0) {
+s32 Person_Get(s32 arg0) {
     extern s32 lbl_803671D4;
     if (arg0 == 0) {
         return 0;
