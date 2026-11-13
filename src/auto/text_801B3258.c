@@ -5919,7 +5919,7 @@ void fn_801C29E8(s32 arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801C2A3C(void *arg0) {
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void Process_Unlink(void *);
     void FileCache_ReleaseSlot(void *);
     void fn_80161F7C(void);
@@ -5940,11 +5940,11 @@ extern "C" void fn_801C2A3C(void *arg0) {
 
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (*(void **)((u8 *)obj + 0x30) != NULL) {
-        if (fn_801090C0(*(void **)((u8 *)obj + 0x30)) != NULL) {
-            Process_Unlink(fn_801090C0(*(void **)((u8 *)obj + 0x30)));
+        if (Sound_FindByName(*(void **)((u8 *)obj + 0x30)) != NULL) {
+            Process_Unlink(Sound_FindByName(*(void **)((u8 *)obj + 0x30)));
         }
     }
-    Process_Unlink(fn_801090C0(*(void **)((u8 *)obj + 0x2C)));
+    Process_Unlink(Sound_FindByName(*(void **)((u8 *)obj + 0x2C)));
     p = *(Obj **)((u8 *)obj + 0x38);
     if (p != NULL) {
         p->v6(1);
@@ -5958,7 +5958,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     void Process_Unlink(void);
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void *fn_80109180(void *, s32);
     void fn_80109BB4(void *, s32);
     void fn_80109C80(void *, s32);
@@ -6064,14 +6064,14 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 *(s32 *)((u8 *)st + 0x10) = *(s32 *)((u8 *)st + 0x10) + 1;
                 if (*(s32 *)((u8 *)st + 0x10) > *(s32 *)((u8 *)st + 8) - 1)
                     *(s32 *)((u8 *)st + 0x10) = 0;
-                if (*(void **)((u8 *)st + 0x30) != NULL && fn_801090C0(*(void **)((u8 *)st + 0x30)) != NULL) {
-                    fn_801090C0(*(void **)((u8 *)st + 0x30));
+                if (*(void **)((u8 *)st + 0x30) != NULL && Sound_FindByName(*(void **)((u8 *)st + 0x30)) != NULL) {
+                    Sound_FindByName(*(void **)((u8 *)st + 0x30));
                     Process_Unlink();
                 }
                 *(void **)((u8 *)st + 0x30) = *(void **)((u8 *)st + 0x2C);
                 off = *(s32 *)((u8 *)st + 0x10) << 3;
                 *(void **)((u8 *)st + 0x2C) = *(void **)(*(u8 **)((u8 *)st + 0xC) + off);
-                p = fn_801090C0(*(void **)((u8 *)st + 0x30));
+                p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
                 fn_80109BB4(p, 0x40);
                 *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
                 q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
@@ -6079,7 +6079,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
                 y = (f32)row[3];
                 x = (f32)row[2];
-                q = fn_801090C0(*(void **)((u8 *)st + 0x2C));
+                q = Sound_FindByName(*(void **)((u8 *)st + 0x2C));
                 *(f32 *)((u8 *)q + 0x40) = x;
                 *(f32 *)((u8 *)q + 0x44) = y;
                 *(f32 *)((u8 *)q + 0x48) = lbl_8036B380;
@@ -6137,14 +6137,14 @@ extern "C" void fn_801C2AD0(void *arg0) {
         *(s32 *)((u8 *)st + 0x10) = *(s32 *)((u8 *)st + 0x10) + 1;
         if (*(s32 *)((u8 *)st + 0x10) > *(s32 *)((u8 *)st + 8) - 1)
             *(s32 *)((u8 *)st + 0x10) = 0;
-        if (*(void **)((u8 *)st + 0x30) != NULL && fn_801090C0(*(void **)((u8 *)st + 0x30)) != NULL) {
-            fn_801090C0(*(void **)((u8 *)st + 0x30));
+        if (*(void **)((u8 *)st + 0x30) != NULL && Sound_FindByName(*(void **)((u8 *)st + 0x30)) != NULL) {
+            Sound_FindByName(*(void **)((u8 *)st + 0x30));
             Process_Unlink();
         }
         *(void **)((u8 *)st + 0x30) = *(void **)((u8 *)st + 0x2C);
         off = *(s32 *)((u8 *)st + 0x10) << 3;
         *(void **)((u8 *)st + 0x2C) = *(void **)(*(u8 **)((u8 *)st + 0xC) + off);
-        p = fn_801090C0(*(void **)((u8 *)st + 0x30));
+        p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
         q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
@@ -6152,7 +6152,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
         x = (f32)row[2];
-        q = fn_801090C0(*(void **)((u8 *)st + 0x2C));
+        q = Sound_FindByName(*(void **)((u8 *)st + 0x2C));
         *(f32 *)((u8 *)q + 0x40) = x;
         *(f32 *)((u8 *)q + 0x44) = y;
         *(f32 *)((u8 *)q + 0x48) = lbl_8036B380;
@@ -6160,14 +6160,14 @@ extern "C" void fn_801C2AD0(void *arg0) {
         *(s32 *)((u8 *)st + 0x10) = *(s32 *)((u8 *)st + 0x10) - 1;
         if (*(s32 *)((u8 *)st + 0x10) < 0)
             *(s32 *)((u8 *)st + 0x10) = *(s32 *)((u8 *)st + 8) - 1;
-        if (*(void **)((u8 *)st + 0x30) != NULL && fn_801090C0(*(void **)((u8 *)st + 0x30)) != NULL) {
-            fn_801090C0(*(void **)((u8 *)st + 0x30));
+        if (*(void **)((u8 *)st + 0x30) != NULL && Sound_FindByName(*(void **)((u8 *)st + 0x30)) != NULL) {
+            Sound_FindByName(*(void **)((u8 *)st + 0x30));
             Process_Unlink();
         }
         *(void **)((u8 *)st + 0x30) = *(void **)((u8 *)st + 0x2C);
         off = *(s32 *)((u8 *)st + 0x10) << 3;
         *(void **)((u8 *)st + 0x2C) = *(void **)(*(u8 **)((u8 *)st + 0xC) + off);
-        p = fn_801090C0(*(void **)((u8 *)st + 0x30));
+        p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
         q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
@@ -6175,7 +6175,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
         x = (f32)row[2];
-        q = fn_801090C0(*(void **)((u8 *)st + 0x2C));
+        q = Sound_FindByName(*(void **)((u8 *)st + 0x2C));
         *(f32 *)((u8 *)q + 0x40) = x;
         *(f32 *)((u8 *)q + 0x44) = y;
         *(f32 *)((u8 *)q + 0x48) = lbl_8036B380;
@@ -6206,7 +6206,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     void *memset(void *, int, u32);
     s32 Archive_Load();
     void fn_80109180(u32, void *);
-    u32 fn_801090C0(u32);
+    u32 Sound_FindByName(u32);
     void fn_80147188(s32);
     void *Heap_Alloc(s32);
     void fn_80057998(void *);
@@ -6251,7 +6251,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     entry=*(u8 **)(panel+12)+off;
     y=*(s16 *)(entry+6);
     x=*(s16 *)(entry+4);
-    entry=(u8 *)fn_801090C0(*(u32 *)(panel+44));
+    entry=(u8 *)Sound_FindByName(*(u32 *)(panel+44));
     *(f32 *)(entry+64)=x; *(f32 *)(entry+68)=y; *(f32 *)(entry+72)=lbl_8036B380;
     *(s32 *)(panel+48)=0;
     fn_80147188(0);

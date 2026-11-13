@@ -3000,7 +3000,7 @@ void fn_80169C94(void *arg0) {
 }
 
 void fn_80169CF4(void *arg0) {
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void fn_8000A430(void *);
     void fn_8013FED0(void *);
     void fn_801D3B14(void *);
@@ -3011,7 +3011,7 @@ void fn_80169CF4(void *arg0) {
     fn_8000A408(M2C_FIELD(arg0, void **, 0x4C));
     temp = M2C_FIELD(arg0, void **, 0x40);
     if (temp != NULL) {
-        fn_8000A430(fn_801090C0(temp));
+        fn_8000A430(Sound_FindByName(temp));
     }
     fn_8013FED0(arg0);
     gBattleState[0x54] = 1;
@@ -3019,14 +3019,14 @@ void fn_80169CF4(void *arg0) {
 }
 
 void fn_80169D58(void *arg0) {
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void fn_8000A420(void *);
     void *temp;
 
     fn_8000A3F8(M2C_FIELD(arg0, void **, 0x4C));
     temp = M2C_FIELD(arg0, void **, 0x40);
     if (temp != NULL) {
-        fn_8000A420(fn_801090C0(temp));
+        fn_8000A420(Sound_FindByName(temp));
     }
     fn_8013FEC0(arg0);
     Process_ClearFunc(arg0);
@@ -3379,22 +3379,22 @@ void fn_8016A400(void *arg0) {
 }
 
 void fn_8016A57C(void *arg0) {
-    s32 fn_801090C0(void *);
+    s32 Sound_FindByName(void *);
     void *p;
 
     p = M2C_FIELD(arg0, void **, 0x40);
     if (p != NULL) {
-        fn_8000A420(fn_801090C0(p));
+        fn_8000A420(Sound_FindByName(p));
     }
 }
 
 void fn_8016A5AC(void *arg0) {
-    s32 fn_801090C0(void *);
+    s32 Sound_FindByName(void *);
     void *p;
 
     p = M2C_FIELD(arg0, void **, 0x40);
     if (p != NULL) {
-        fn_8000A430(fn_801090C0(p));
+        fn_8000A430(Sound_FindByName(p));
     }
 }
 

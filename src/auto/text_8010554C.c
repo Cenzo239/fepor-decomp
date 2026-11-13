@@ -2086,7 +2086,7 @@ void fn_80109020(u8 *arg0) {
     }
 }
 
-s32 fn_801090C0(s8 *arg0)
+s32 Sound_FindByName(s8 *arg0)
 {
     extern s32 lbl_803679DC;
     extern s8 *lbl_803679D8;

@@ -5748,7 +5748,7 @@ void fn_8011DED8(void *arg0) {
     void fn_80089650(s32, s32);
     void fn_800AA208(void);
     void fn_80109020(void *);
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void fn_80109BB4(void *, u8);
     void fn_8011E12C(void *);
     void fn_80120F0C(void);
@@ -5859,7 +5859,7 @@ void fn_8011DED8(void *arg0) {
         } while (i2 < 4);
     }
     if (lbl_80367A5C != 0) {
-        fn_80109BB4(fn_801090C0((void *)lbl_80367A5C), (u8)((*(s16 *)((u8 *)self + 0x68) * 0x3C) / 1000));
+        fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), (u8)((*(s16 *)((u8 *)self + 0x68) * 0x3C) / 1000));
     }
 }
 
@@ -6559,7 +6559,7 @@ void fn_801207D8(void *arg0) {
     void fn_80079198(void *, void *);
     void fn_80122238(void *, void *);
     void fn_80120F94(void);
-    void *fn_801090C0(void *);
+    void *Sound_FindByName(void *);
     void fn_80109BB4(void *, u8);
     extern u32 lbl_80367A5C;
     void *self = arg0;
@@ -6592,7 +6592,7 @@ void fn_801207D8(void *arg0) {
     }
     fn_80120F94();
     if (lbl_80367A5C != 0) {
-        fn_80109BB4(fn_801090C0((void *)lbl_80367A5C), 8);
+        fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), 8);
     }
     Process_ClearFunc(self);
 }

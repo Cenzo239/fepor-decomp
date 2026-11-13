@@ -5246,14 +5246,14 @@ s32 fn_800B99B8(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800B9A34(u32 arg0, s32 arg1) {
-    u32 fn_801090C0(void);
+    u32 Sound_FindByName(void);
     void fn_80109BB4(u32, u8);
     u32 tmp;
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    tmp = fn_801090C0();
+    tmp = Sound_FindByName();
     if (tmp == 0U) {
         return 0;
     }
@@ -5262,7 +5262,7 @@ s32 fn_800B9A34(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800B9A9C(u32 arg0, s32 arg1) {
-    u32 fn_801090C0(u32);
+    u32 Sound_FindByName(u32);
     void fn_80109C1C(u32, u8);
     u32 fn_801CF760(u32);
     void fn_801CFC4C(u32, s32);
@@ -5275,7 +5275,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
     }
 
     if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
-        temp = fn_801090C0(arg0);
+        temp = Sound_FindByName(arg0);
         if (temp == 0U) {
             return 0;
         }
@@ -5293,7 +5293,7 @@ s32 fn_800B9A9C(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800B9B58(u32 arg0, s32 arg1) {
-    u32 fn_801090C0(u32);
+    u32 Sound_FindByName(u32);
     void fn_80109C80(u32, u8);
     u32 fn_801CF760(u32);
     void fn_801CFC80(u32, s32);
@@ -5306,7 +5306,7 @@ s32 fn_800B9B58(u32 arg0, s32 arg1) {
     }
 
     if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
-        temp = fn_801090C0(arg0);
+        temp = Sound_FindByName(arg0);
         if (temp == 0U) {
             return 0;
         }
@@ -5349,7 +5349,7 @@ s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
 }
 
 s32 fn_800BA138(u32 arg0, s32 arg1, s32 arg2) {
-    void *fn_801090C0(u32);
+    void *Sound_FindByName(u32);
     void *fn_801CF760(u32);
     s32 fn_80234278(void *, void *, s32);
     extern u8 lbl_8026ECB8[];
@@ -5359,7 +5359,7 @@ s32 fn_800BA138(u32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (fn_80234278((void *)arg0, lbl_8026ECB8 + 0xA47, 8) != 0) {
-        void *temp_r3 = fn_801090C0(arg0);
+        void *temp_r3 = Sound_FindByName(arg0);
         if (temp_r3 == NULL) {
             return 0;
         }
@@ -5378,14 +5378,14 @@ s32 fn_800BA138(u32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_800BA230(u32 arg0, s32 arg1) {
-    u32 fn_801090C0(void);
+    u32 Sound_FindByName(void);
     void fn_80109DC0(u32, s32);
     u32 tmp;
 
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    tmp = fn_801090C0();
+    tmp = Sound_FindByName();
     if (tmp == 0U) {
         return 0;
     }
@@ -5394,7 +5394,7 @@ s32 fn_800BA230(u32 arg0, s32 arg1) {
 }
 
 s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    u32 fn_801090C0(void);
+    u32 Sound_FindByName(void);
     void fn_80109448(u32, s32, s32, f32, f32, f32);
     extern f32 lbl_80369D00;
     extern f64 lbl_80369CF8;
@@ -5405,7 +5405,7 @@ s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    tmp = fn_801090C0();
+    tmp = Sound_FindByName();
     if (tmp == 0U) {
         return 0;
     }
@@ -5426,7 +5426,7 @@ s32 fn_800BA298(u32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 }
 
 s32 fn_800BA38C(u32 arg0, s32 arg1, s32 arg2) {
-    u32 fn_801090C0(void);
+    u32 Sound_FindByName(void);
     void fn_80109A54(u32, u8, f32);
     extern f32 lbl_80369D00;
     u32 tmp;
@@ -5435,7 +5435,7 @@ s32 fn_800BA38C(u32 arg0, s32 arg1, s32 arg2) {
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    tmp = fn_801090C0();
+    tmp = Sound_FindByName();
     if (tmp == 0U) {
         return 0;
     }
@@ -5453,7 +5453,7 @@ s32 fn_800BA38C(u32 arg0, s32 arg1, s32 arg2) {
 
 s32 fn_800BA438(u32 arg0, s32 arg1)
 {
-  u32 fn_801090C0(void);
+  u32 Sound_FindByName(void);
   f32 fn_801099A0(u32, u8);
   u32 tmp;
 
@@ -5461,7 +5461,7 @@ s32 fn_800BA438(u32 arg0, s32 arg1)
   {
     return 0;
   }
-  tmp = fn_801090C0();
+  tmp = Sound_FindByName();
   if (tmp == 0U)
   {
     return 0;
