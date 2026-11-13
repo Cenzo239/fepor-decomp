@@ -6510,7 +6510,7 @@ void fn_8025164C(void *arg0)
 }
 
 void fn_80251A44(SynthVoice *sv, u32 *arg1) {
-    extern f32 lbl_8029FF7C[];
+    extern f32 gSoundVolCurve[];
     extern s32 lbl_8029F1CC[];
     extern u8 lbl_8029FB7C[];
     extern f32 lbl_8036C260;
@@ -6524,7 +6524,7 @@ void fn_80251A44(SynthVoice *sv, u32 *arg1) {
     } params;
     f32 vol;
 
-    vol = lbl_8029FF7C[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
+    vol = gSoundVolCurve[Sound_GetChanParam(arg1[0] >> 24, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk0 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 8, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk4 = lbl_8029F1CC[Sound_GetChanParam(arg1[0] >> 16, M2C_FIELD(sv, u8 *, 0x121), M2C_FIELD(sv, u8 *, 0x122)) >> 7];
     params.unk8 = 0xC1 - lbl_8029FB7C[__cvt_fp2unsigned(lbl_8036C260 * vol)];
@@ -10776,7 +10776,7 @@ void fn_8025CA80(void *arg0) {
 f64 fn_802387A8(f64, f64);
 #pragma fp_contract off
 void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 fx, f32 fy, f32 fz) {
-    extern f32 lbl_8029FF7C[];
+    extern f32 gSoundVolCurve[];
     extern f32 lbl_802A1BD8[];
     extern f32 lbl_8036C2A8;
     extern f32 lbl_8036C2AC;
@@ -10799,7 +10799,7 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
     f32 t, a, b, c, d, e, u, v;
     u32 xa, xb;
 
-    tbl = lbl_8029FF7C;
+    tbl = gSoundVolCurve;
     f22v = fx;
     f31v = fy;
     f21v = fz;
