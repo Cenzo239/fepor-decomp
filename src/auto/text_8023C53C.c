@@ -5518,7 +5518,7 @@ s32 AudioGroup_Register(u32 arg0, void *arg1)
     return 1;
 }
 
-s32 fn_8024FD80(u16 id, s32 arg1) {
+s32 AudioGroup_Unregister(u16 id, s32 arg1) {
     struct Entry {
         u16 id;
         u16 ref;
@@ -9831,7 +9831,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
  void AudioBank_Insert(s32,s32); void AudioBank_Remove(s32);
  s32 SampleKey_Insert(); void SampleKey_Remove(s32);
  s32 AudioWave_Insert(); void AudioWave_Remove(s32);
- void AudioGroup_Register(s32,s32); s32 fn_8024FD80();
+ void AudioGroup_Register(s32,s32); s32 AudioGroup_Unregister();
  extern s32 *gAudioGroupState;
  u8 *node;
  switch(type) {
@@ -9865,7 +9865,7 @@ void Sound_SetResource(s32 id, void *data, u8 type, u32 remove) {
   break;
  case 1:
   if(remove==0) AudioGroup_Register(id,(s32)((u8*)gAudioGroupState+0x60C));
-  else fn_8024FD80(id,(s32)((u8*)gAudioGroupState+0x60C));
+  else AudioGroup_Unregister(id,(s32)((u8*)gAudioGroupState+0x60C));
   break;
  }
 }
