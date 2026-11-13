@@ -2499,7 +2499,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     Prim2D_SetQuadMax((f32)half, (f32)bottom, (f32)(u32)sp.w, (f32)(u32)sp.h);
     Prim2D_EmitQuad(); col2 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col2); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
 }
-u16 fn_8008AF9C(s32 arg0, s32 arg1) {
+u16 Ui_DrawMsgPanelAlt(s32 arg0, s32 arg1) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
