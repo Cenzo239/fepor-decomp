@@ -11765,13 +11765,14 @@ void fn_801CFD8C(s32 arg0, s32 arg1, u8 arg2) {
     *(u8*)(arg0 + temp_r4) &= 0xFFFFFFFD;
 }
 
-#pragma opt_strength_reduction off
-void fn_801CFDBC(void *arg0, s32 arg1) {
-    struct Ent { u8 flag; u8 pad[0xD]; };
-    ((struct Ent *)((u8 *)arg0 + 0x60))[arg1].flag |= 1;
-}
 #pragma global_optimizer off
-#pragma opt_strength_reduction off
+void fn_801CFDBC(s32 arg0, s32 arg1) {
+    s32 temp_r4;
+
+    temp_r4 = (arg1 * 0xE) + 0x60;
+    *(u8 *)(arg0 + temp_r4) = *(u8 *)(arg0 + temp_r4) | 1;
+}
+#pragma global_optimizer on
 void fn_801CFDD4(s8 *a)
 {
     s32 c;
