@@ -7930,7 +7930,8 @@ void fn_801402E4(void) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorPanelBase(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelBase(void *self, s16 doFree) {
+    /* Release refcounted children on the panel dtor list, clear the list, optionally free. */
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
@@ -7953,36 +7954,36 @@ extern "C" void *Ui_DtorPanelBase(void *arg0, s16 arg1) {
     ListNode *spC;
     u8 sp8[4];
     ListNode *end;
-    Owner *a0;
+    Owner *owner;
     Obj *obj;
 
-    a0 = (Owner *)arg0;
-    if (arg0 != NULL) {
-        while (a0->list.unk0 != 0) {
-            obj = (Obj *)a0->list.node.prev->val;
+    owner = (Owner *)self;
+    if (self != NULL) {
+        while (owner->list.unk0 != 0) {
+            obj = (Obj *)owner->list.node.prev->val;
             if (obj != NULL) {
                 if (--obj->refcount == 0 && obj != NULL) {
                     obj->destroy(1);
                 }
             }
-            found = a0->list.node.prev;
-            fn_8013FC68(ret, &a0->list, &found);
+            found = owner->list.node.prev;
+            fn_8013FC68(ret, &owner->list, &found);
         }
-        if (&a0->list != NULL) {
-            if (&a0->list != NULL) {
-                if (&a0->list != NULL) {
-                    end = &a0->list.node;
+        if (&owner->list != NULL) {
+            if (&owner->list != NULL) {
+                if (&owner->list != NULL) {
+                    end = &owner->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                    fn_80136F2C(sp8, &owner->list, &spC, &sp10);
                 }
             }
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
