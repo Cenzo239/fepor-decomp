@@ -361,9 +361,9 @@ s32 fn_80183974(void) {
     return Process_Find(base + 0x3F0) != 0;
 }
 
-extern u16 lbl_80295A78[36];
+extern u16 E_MuFade_script[36];
 s32 fn_80183A5C(void) {
-    return Process_Find(&lbl_80295A78) != 0;
+    return Process_Find(&E_MuFade_script) != 0;
 }
 
 void fn_80183A90(s32 arg0) {
@@ -695,7 +695,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *Process_CreateEx(void *, s32);
     f32 fn_8004BDA8(f32, f32, f32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u16 lbl_80295A78[36];
+    extern u16 E_MuFade_script[36];
     extern f32 lbl_8036ACD8;
     u8 sp8[0x34];
     f32 temp_f31;
@@ -707,7 +707,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     b = lbl_8036ACD8 + (f32)arg2;
     temp_f31 = fn_8004BDA8(a, b, lbl_8036ACD8);
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp8);
+    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -715,7 +715,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * temp_f31);
         return NULL;
     }
-    temp_r3 = Process_CreateEx(&lbl_80295A78, arg4);
+    temp_r3 = Process_CreateEx(&E_MuFade_script, arg4);
     M2C_FIELD(temp_r3, void **, 0x30) = arg0;
     M2C_FIELD(temp_r3, f32 *, 0x34) = temp_f31;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg3;
@@ -727,7 +727,7 @@ void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     void *Process_CreateEx(void *, s32);
     f32 Unit_GetAngleTo(void);
     void MuFade_UnlinkSame(void *, void *);
-    extern u16 lbl_80295A78[36];
+    extern u16 E_MuFade_script[36];
     u8 sp8[0x34];
     f32 temp_f31;
     void *temp_r3;
@@ -737,7 +737,7 @@ void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
     }
     temp_f31 = Unit_GetAngleTo();
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp8);
+    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -745,7 +745,7 @@ void *Unit_FaceToward(void *arg0, u32 arg1, s32 arg2, s32 arg3) {
         M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * temp_f31);
         return NULL;
     }
-    temp_r3 = Process_CreateEx(&lbl_80295A78, arg3);
+    temp_r3 = Process_CreateEx(&E_MuFade_script, arg3);
     M2C_FIELD(temp_r3, void **, 0x30) = arg0;
     M2C_FIELD(temp_r3, f32 *, 0x34) = temp_f31;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg2;
@@ -756,12 +756,12 @@ void *Unit_FadeAlpha(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
     void fn_8000A388(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u16 lbl_80295A78[36];
+    extern u16 E_MuFade_script[36];
     u8 sp8[0x34];
     void *temp_r3;
 
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp8);
+    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (farg0 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -769,7 +769,7 @@ void *Unit_FadeAlpha(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
         M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * farg0);
         return NULL;
     }
-    temp_r3 = Process_CreateEx(&lbl_80295A78, arg2);
+    temp_r3 = Process_CreateEx(&E_MuFade_script, arg2);
     M2C_FIELD(temp_r3, void **, 0x30) = arg0;
     M2C_FIELD(temp_r3, f32 *, 0x34) = farg0;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg1;
@@ -1451,7 +1451,7 @@ void fn_8018715C(void *arg0) {
     void *Process_CreateEx(void *, void *);
     f32 Unit_GetAngleTo(void *);
     void MuFade_UnlinkSame(void *, void *);
-    extern u16 lbl_80295A78[36];
+    extern u16 E_MuFade_script[36];
     extern f32 lbl_8036ACEC;
     void *check;
     void *temp_r30;
@@ -1468,9 +1468,9 @@ void fn_8018715C(void *arg0) {
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x68) = temp_r30;
-        fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp + 0x38);
+        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
-            temp_r3 = Process_CreateEx(&lbl_80295A78, arg0);
+            temp_r3 = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
             *(f32 *)((u8 *)temp_r3 + 0x34) = temp_f31;
             *(s32 *)((u8 *)temp_r3 + 0x38) = 0x10;
@@ -1482,9 +1482,9 @@ void fn_8018715C(void *arg0) {
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x30) = temp_r30;
-        fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp);
+        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
-            temp_r3 = Process_CreateEx(&lbl_80295A78, arg0);
+            temp_r3 = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
             *(f32 *)((u8 *)temp_r3 + 0x34) = temp_f31;
             *(s32 *)((u8 *)temp_r3 + 0x38) = 0x10;
@@ -1790,7 +1790,7 @@ void fn_80187D70(void *arg0) {
     void GActor_RequestRes(void *);
     s32 fn_80230BCC(s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u16 lbl_80295A78[36];
+    extern u16 E_MuFade_script[36];
     extern u8 MoveAnim_str[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACD8;
@@ -1812,9 +1812,9 @@ void fn_80187D70(void *arg0) {
         if (temp_r4 != NULL) {
             f = Unit_GetAngleTo(unit);
             *(void **)(sp + 0x68) = unit;
-            fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp + 0x38);
+            fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
             if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-                node = Process_CreateEx(&lbl_80295A78, arg0);
+                node = Process_CreateEx(&E_MuFade_script, arg0);
                 *(void **)((u8 *)node + 0x30) = unit;
                 *(f32 *)((u8 *)node + 0x34) = f;
                 *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -1827,9 +1827,9 @@ void fn_80187D70(void *arg0) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         f = fn_8004BDA8(unit, lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
         *(void **)(sp + 0x30) = unit;
-        fn_8000A388(&lbl_80295A78, MuFade_UnlinkSame, sp);
+        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-            node = Process_CreateEx(&lbl_80295A78, arg0);
+            node = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)node + 0x30) = unit;
             *(f32 *)((u8 *)node + 0x34) = f;
             *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -13466,7 +13466,7 @@ typedef struct {
 } unk_struct_80193CFC;
 extern u8 lbl_80295AE8[0x80];
 #include "global.h"
-extern u16 lbl_80295A78[36];
+extern u16 E_MuFade_script[36];
 extern f32 lbl_8036ACE0;
 extern f32 lbl_8036ACD8;
 extern f32 lbl_8036ACE8;
