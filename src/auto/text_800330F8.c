@@ -6052,7 +6052,7 @@ void fn_8003FFF8(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_800404DC(void) {
+void Map_Update(void) {
     void Map_PrepareEntryRange(void *, s32, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
