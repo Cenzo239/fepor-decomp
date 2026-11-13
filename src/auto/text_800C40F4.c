@@ -2041,7 +2041,7 @@ String *String_AssignCStr(String *arg0, const char *arg1, u32 arg2) {
 }
 
 String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
-    String *fn_800C984C(String *, u32, u32);
+    String *String_Erase(String *, u32, u32);
     void fn_800CA7F4(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
@@ -2058,7 +2058,7 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     rest = arg1->size - pos;
     len = *StrMin(&n, &rest);
     if (arg0 == arg1) {
-        fn_800C984C(arg0, 0, pos);
+        String_Erase(arg0, 0, pos);
         fn_800CA7F4(arg0, len, 1);
     } else {
         fn_800CA7F4(arg0, len, 0);
@@ -2068,7 +2068,7 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
 }
 #pragma auto_inline reset
 
-String *fn_800C984C(String *arg0, u32 arg1, u32 arg2) {
+String *String_Erase(String *arg0, u32 arg1, u32 arg2) {
     String *fn_800C94F8(String *, u32, u32, u32, u32);
     return fn_800C94F8(arg0, arg1, arg2, 0, 0);
 }
@@ -7477,7 +7477,7 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     rest = arg1->size - pos;
     len = (n < rest) ? n : rest; 
     if (arg0 == arg1) {
-        fn_800C984C(arg0, 0, pos);
+        String_Erase(arg0, 0, pos);
         fn_800CA7F4(arg0, len, 1);
     } else {
         fn_800CA7F4(arg0, len, 0);
