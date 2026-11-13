@@ -1182,7 +1182,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
     void Unit_SetMapPos(void *, u8, u8);
     void fn_8003D5FC(void *, u8);
     void Unit_MoveToList(void *, s32);
-    void fn_8003D68C(void *, s32);
+    void Unit_MoveToListHead(void *, s32);
     void Unit_InitFromDispos(void *, void *);
     void Unit_SetModelAlpha(void *, s32);
     void fn_80050C90(void *);
@@ -1242,7 +1242,7 @@ s32 Dispos_ResolveUnit(u8 *arg0) {
 skip_type:
     found = Unit_FindByName(gDisposStrings + 0x50);
     if (found != NULL && unit == found) {
-        fn_8003D68C(unit, 0);
+        Unit_MoveToListHead(unit, 0);
         goto ok;
     }
     {

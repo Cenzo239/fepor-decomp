@@ -4732,7 +4732,7 @@ void Unit_MoveToList(void *arg0, s32 arg1) {
     }
 }
 
-void fn_8003D68C(void *arg0, s32 arg1)
+void Unit_MoveToListHead(void *arg0, s32 arg1)
 {
     extern u8 gUnitLists[];
 
@@ -4975,7 +4975,7 @@ void fn_8003DFB8(void *arg0) {
     void fn_800157DC(void *, void *);
     void Unit_SetMapPos(void *, u8, u8);
     void fn_8003B6F0(void *, s32);
-    void fn_8003D68C(void *, s32);
+    void Unit_MoveToListHead(void *, s32);
     void Unit_SeparateRescue(void *, s32, s32);
     void *fn_8003F1AC(s32);
     u8 fn_8003F1C0(void *);
@@ -5041,7 +5041,7 @@ void fn_8003DFB8(void *arg0) {
                 }
                 fn_8004EA60(other, 1);
                 if (fn_8003F1C0(fn_8003F1C8(other)) == 0) {
-                    fn_8003D68C(other, 5);
+                    Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
                     fn_8003F1C8(other);
@@ -5075,7 +5075,7 @@ void fn_8003DFB8(void *arg0) {
                 }
                 fn_8004EA60(other, 1);
                 if (fn_8003F1C0(fn_8003F1C8(other)) == 0) {
-                    fn_8003D68C(other, 5);
+                    Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
                     fn_8003F1C8(other);
@@ -5135,7 +5135,7 @@ void fn_8003DFB8(void *arg0) {
                 }
                 fn_8004EA60(other, 1);
                 if (fn_8003F1C0(fn_8003F1C8(other)) == 0) {
-                    fn_8003D68C(other, 5);
+                    Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
                     fn_8003F1C8(other);
@@ -5169,7 +5169,7 @@ void fn_8003DFB8(void *arg0) {
                 }
                 fn_8004EA60(other, 1);
                 if (fn_8003F1C0(fn_8003F1C8(other)) == 0) {
-                    fn_8003D68C(other, 5);
+                    Unit_MoveToListHead(other, 5);
                     fn_8003F1DC(fn_8003F21C(other), 0x4000);
                 } else {
                     fn_8003F1C8(other);

@@ -2306,7 +2306,7 @@ void Battle_AdvancePhase(void) {
     s32 fn_8003B2D0(void *);
     void fn_8003BBD4(void *, s32);
     void fn_8003C1B4(void *);
-    void fn_8003D68C(void *, s32);
+    void Unit_MoveToListHead(void *, s32);
     void Unit_SeparateRescue(void *, u8, u8);
     void fn_80104410(void *);
     void Battle_SetPhase(void *, u8);
@@ -2375,13 +2375,13 @@ void Battle_AdvancePhase(void) {
             flags = *(u32 *)((u8 *)unit + 0x1A0);
             next = *(void **)((u8 *)unit + 0x180);
             if ((flags & 0x4000) && (flags & 0x10000)) {
-                fn_8003D68C(unit, 0);
+                Unit_MoveToListHead(unit, 0);
             }
             unit = next;
         }
         unit = Unit_FindByName(lbl_80269210 + 0x29C);
         if (unit != NULL) {
-            fn_8003D68C(unit, 0);
+            Unit_MoveToListHead(unit, 0);
         }
     }
     {
