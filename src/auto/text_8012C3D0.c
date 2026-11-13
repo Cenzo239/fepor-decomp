@@ -1657,7 +1657,7 @@ void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     void Prim2D_BindTexture(void *, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_801308C0(void);
+    void Ui_ScissorUnitListRight(void);
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern f32 lbl_8036A510;
@@ -1667,7 +1667,7 @@ void Ui_DrawUnitListFill(void *arg0, void *arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTransform(farg0, farg1, lbl_8036A500, lbl_8036A50C);
     Prim2D_BindTexture(arg1, 3, 0x11);
-    fn_80009BC0(fn_801308C0, 0);
+    fn_80009BC0(Ui_ScissorUnitListRight, 0);
     Prim2D_SetColorByte(0xC0);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
@@ -2512,7 +2512,7 @@ void Ui_ScissorUnitListNarrow(void) {
     GXSetScissor(0, 0, 0x78, 0x1E0);
 }
 
-void fn_801308C0(void) {
+void Ui_ScissorUnitListRight(void) {
     GXSetScissor(0xF8, 0, 0x120, 0x1E0);
 }
 
