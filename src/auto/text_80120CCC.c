@@ -2941,7 +2941,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_GameBind(void);
     void ScriptCmd_GameUnbind(void);
     void ScriptCmd_TutorialCall(void);
-    void fn_80127B50(void);
+    void ScriptCmd_QueryLesson(void);
     void fn_80127054(void);
     void fn_80127028(void);
     void fn_801275BC(void);
@@ -2989,7 +2989,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x176, ScriptCmd_GameBind, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x17F, ScriptCmd_GameUnbind, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x18A, ScriptCmd_TutorialCall, 1);
-    Script_RegisterCommand(gScriptCmdNames + 0x197, fn_80127B50, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x197, ScriptCmd_QueryLesson, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1A3, fn_80127054, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1B6, fn_80127028, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1C7, fn_801275BC, 1);
@@ -3580,7 +3580,7 @@ void fn_80127AC4(void) {
     fn_800162B8();
 }
 
-u8 fn_80127B50(s32 arg0) {
+u8 ScriptCmd_QueryLesson(s32 arg0) {
     void *fn_8000C0C0(void *);
     s32 fn_802342B8(s32, s32);
     s32 temp_r3;
