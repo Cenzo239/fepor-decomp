@@ -18536,8 +18536,9 @@ void fn_801E32C4(s32 unused, s32 arg1) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-u8 SystemSave_CountPackedSlots(u8 *p)
+u8 SystemSave_CountPackedSlots(u8 *save)
 {
+    /* Count leading non-zero bytes in save+0x12 (3 rows × 10); return count+1. */
     s32 count = 0;
     s32 off = 0;
     s32 i;
@@ -18545,43 +18546,43 @@ u8 SystemSave_CountPackedSlots(u8 *p)
 
     for (i = 0; i < 3; i++) {
         idx = off + 0x12;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x13;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x14;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x15;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x16;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x17;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x18;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x19;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x1a;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         idx = off + 0x1b;
-        if (p[idx] == 0)
+        if (save[idx] == 0)
             goto end;
         count += 1;
         off += 0xa;
