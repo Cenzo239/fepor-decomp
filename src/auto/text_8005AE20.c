@@ -5137,17 +5137,15 @@ void *Light_GetChannel(s32 arg0) {
     return (u8 *)lbl_80366DDC + arg0 * 0x2c;
 }
 
-#pragma peephole off
+#pragma optimization_level 2
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
-    void *p;
-    if (arg0 == 0) {
-        p = &lbl_80311B04[0];
-        lbl_80366DDC = p;
+    if (arg0 == NULL) {
+        lbl_80366DDC = lbl_80311B04;
     }
 }
-#pragma peephole on
+#pragma optimization_level reset
 s32 fn_80067478(void) {
     extern s32 lbl_80366DDC;
     return lbl_80366DDC;
@@ -5612,7 +5610,7 @@ void fn_80069010(s32 *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
-    void fn_8006ECCC(void *, void *, u16);
+    void Ui_LoadAtlasTex(void *, void *, u16);
     void Game_Assert(void *, s32, void *);
     void fn_8006EBC4(void *, void *, void *, s32);
     f32 fn_80064164(void **, s16, f32);
@@ -5664,7 +5662,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     u8 idx;
 
     pool = gMaterialStageIds;
-    fn_8006ECCC(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
+    Ui_LoadAtlasTex(arg4, sp14, *(u16 *)((u8 *)arg3 + 4));
     if (lbl_80367301 >= 8) {
         Game_Assert(gGMaterialAssertMsg + 1, 0x4F, gGMaterialAssertMsg + 0xD);
     }
@@ -7392,7 +7390,7 @@ s32 fn_8006EBA4(void *arg0, s32 arg1) {
     return *(s32 *)(base + (arg1 << 3) + 4) != 0;
 }
 
-void fn_8006ECCC(void *arg0, void *tex, s32 idx) {
+void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx) {
     void fn_80222644(void *, void *, u16, u16, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     s32 off;

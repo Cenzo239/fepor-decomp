@@ -1896,7 +1896,7 @@ void fn_800A7C94(void *arg0) {
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, void *, s32, s32);
     s32 fn_8000CEE4(s32);
-    void fn_8006ECCC(void *, void *, u16);
+    void Ui_LoadAtlasTex(void *, void *, u16);
     u16 fn_80222A80(void *);
     s16 fn_80222A90(void *);
     u8 fn_80006650(void *, void *);
@@ -1942,7 +1942,7 @@ void fn_800A7C94(void *arg0) {
         s16 tmp16;
         u16 t;
         r30 = fn_8000CEE4(8) + 2;
-        fn_8006ECCC(r26, st.sp10, (u16)r30);
+        Ui_LoadAtlasTex(r26, st.sp10, (u16)r30);
         st.sp30 = fn_80222A80(st.sp10);
         tmp16 = fn_80222A90(st.sp10);
         t = st.sp30;
@@ -1998,7 +1998,7 @@ void fn_800A7EC4(void *arg0) {
     s32 fn_8000CEE4(s32);
     void fn_800C42AC(s32);
     void *fn_8022C414(void (*)(void), s32, s32, s32);
-    void fn_8006ECCC(s32, void *, u16);
+    void Ui_LoadAtlasTex(s32, void *, u16);
     u16 fn_80222A80(void *);
     s16 fn_80222A90(void *);
     u8 fn_80006650(void *, void *);
@@ -2044,7 +2044,7 @@ void fn_800A7EC4(void *arg0) {
     cur = (u8 *)arr;
     while (count < 0x20) {
         span = fn_8000CEE4(8) + 2;
-        fn_8006ECCC(unk30, sp10, span);
+        Ui_LoadAtlasTex(unk30, sp10, span);
         a = fn_80222A80(sp10);
         b = fn_80222A90(sp10);
         sp30 = a;
@@ -2092,7 +2092,7 @@ cleanup:
 
 void fn_800A80F0(void *arg0) {
     M2C_UNK fn_8000A174(M2C_UNK *, M2C_UNK);
-    M2C_UNK fn_8006ECCC(s32, M2C_UNK *, u16);
+    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, u16);
     u16 fn_80222A80(M2C_UNK *);
     u16 fn_80222A90(M2C_UNK *);
     f64 fn_802380D0(f32, f32);
@@ -2118,7 +2118,7 @@ void fn_800A80F0(void *arg0) {
     if (temp_f0 > temp_f1) {
         M2C_FIELD(arg0, f32 *, 0x40) = (f32) (temp_f0 - temp_f1);
     }
-    fn_8006ECCC(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30), &sp8, (u16) M2C_FIELD(arg0, s32 *, 0x44));
+    Ui_LoadAtlasTex(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x30), &sp8, (u16) M2C_FIELD(arg0, s32 *, 0x44));
     sp28 = fn_80222A80(&sp8);
     sp2A = fn_80222A90(&sp8);
     Prim2D_Begin();
@@ -2476,7 +2476,7 @@ void Ui_DrawPromptSprites(void *proc) {
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     extern f32 lbl_80369BA8;
@@ -2513,7 +2513,7 @@ void Ui_DrawPromptSprites(void *proc) {
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BAC, lbl_80369BB0);
     Prim2D_PrepareTex();
-    fn_8006ECCC(*(void **)((u8 *)self + 0x30), st.buf, 0);
+    Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 0);
     st.x = fn_80222A80(st.buf);
     st.y = fn_80222A90(st.buf);
     Prim2D_Begin();
@@ -2531,7 +2531,7 @@ void Ui_DrawPromptSprites(void *proc) {
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BD0, lbl_80369BB0);
         Prim2D_PrepareTex();
-        fn_8006ECCC(*(void **)((u8 *)self + 0x30), st.buf, 1);
+        Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 1);
         st.x = fn_80222A80(st.buf);
         st.y = fn_80222A90(st.buf);
         Prim2D_Begin();
@@ -2549,7 +2549,7 @@ void Ui_DrawPromptSprites(void *proc) {
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BE8, lbl_80369BB0);
         Prim2D_PrepareTex();
-        fn_8006ECCC(*(void **)((u8 *)self + 0x30), st.buf, 2);
+        Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), st.buf, 2);
         st.x = fn_80222A80(st.buf);
         st.y = fn_80222A90(st.buf);
         Prim2D_Begin();

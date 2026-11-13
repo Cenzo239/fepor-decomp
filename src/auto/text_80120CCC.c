@@ -197,7 +197,7 @@ void fn_801210CC(void *arg0) {
     void fn_8000A174(void *, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     u32 *fn_8018D900(s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
@@ -237,7 +237,7 @@ void fn_801210CC(void *arg0) {
         Prim2D_SetTransform(z, z, lbl_8036A26C, lbl_8036A268);
         Prim2D_SetColorByte(M2C_FIELD(self, u8 *, 0x50));
         Prim2D_PrepareTex();
-        fn_8006ECCC(lbl_803674F4, spC, 0x1E);
+        Ui_LoadAtlasTex(lbl_803674F4, spC, 0x1E);
         *(volatile u16 *)(spC + 0x20) = fn_80222A80(spC);
         *(volatile u16 *)(spC + 0x22) = fn_80222A90(spC);
         Prim2D_Begin();
@@ -1614,7 +1614,7 @@ void fn_80123CFC(void) {
 
 #pragma use_lmw_stmw on
 void fn_80123D1C(void *arg0) {
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     s32 fn_800067B4(void);
     void *Map_Get(void);
     void *fn_80067FDC(void);
@@ -1675,7 +1675,7 @@ void fn_80123D1C(void *arg0) {
     register volatile s16 *fifo_s;
     register volatile u8 *fifo_b;
 
-    fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x58), sp18, 8);
+    Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x58), sp18, 8);
     ring = fn_800067B4();
     sx = *(s8 *)((u8 *)arg0 + 0x4E);
     fade = *(s8 *)((u8 *)arg0 + 0x4F);
@@ -2348,7 +2348,7 @@ void fn_80125388(void *arg0) {
         ListCtrl *unk58;     // 0x58
     } Arg0;
     extern f32 lbl_8036A30C;
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
@@ -2384,7 +2384,7 @@ void fn_80125388(void *arg0) {
     u8 uc;
     ListCtrl *lc;
 
-    fn_8006ECCC(a->unk54, sp8, 7);
+    Ui_LoadAtlasTex(a->unk54, sp8, 7);
     fn_80222C50(sp8, 0);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
@@ -2656,7 +2656,7 @@ s32 fn_80125BB0(void) {
     s32 fn_80069E18();
     s32 fn_80069EA8();
     M2C_UNK fn_8006A384(M2C_UNK *);
-    M2C_UNK fn_8006ECCC(s32, M2C_UNK *, M2C_UNK);
+    M2C_UNK Ui_LoadAtlasTex(s32, M2C_UNK *, M2C_UNK);
     M2C_UNK PSMTXConcat(M2C_UNK *, M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_802026E4(M2C_UNK *, f32 *, s32 *, f32 *, s32, s32, f32, f32, f32, f32);
     M2C_UNK fn_8020293C(M2C_UNK *, f32, f32, f32, f32, f32, f32, f32, f32);
@@ -2737,7 +2737,7 @@ s32 fn_80125BB0(void) {
     PSMTXConcat(&sp94, &sp64, &sp94);
     PSMTXConcat(&spC4, &sp94, &spF4);
     fn_80224E50(&spF4, temp_r26, 0);
-    fn_8006ECCC(M2C_FIELD(temp_r3, s32 *, 0x54), &sp44, 5);
+    Ui_LoadAtlasTex(M2C_FIELD(temp_r3, s32 *, 0x54), &sp44, 5);
     fn_80222C50(&sp44, temp_r27);
     fn_802201A8(temp_r28, 0, 0, temp_r26, 0, 0x7D);
     GXSetTevOrder(temp_r29, temp_r28, temp_r27, 4);

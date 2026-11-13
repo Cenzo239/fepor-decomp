@@ -849,7 +849,7 @@ void fn_800C6028(void *arg0) {
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevColor(s32, void *);
     void GXSetChanMatColor(s32, void *);
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
@@ -923,7 +923,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevColor(1, &sp38);
         sp3C = lbl_80369D78;
         GXSetTevColor(2, &sp3C);
-        fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), spA0, *(s32 *)((u8 *)arg0 + 0x34));
+        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), spA0, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(spA0, 0);
         w = fn_80222A80(spA0);
         h = fn_80222A90(spA0);
@@ -989,7 +989,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
         sp2C = lbl_80369D74;
         GXSetChanMatColor(0, &sp2C);
-        fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), sp80, *(s32 *)((u8 *)arg0 + 0x34));
+        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp80, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp80, 0);
         w = fn_80222A80(sp80);
         h = fn_80222A90(sp80);
@@ -1055,7 +1055,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
         sp20 = lbl_80369D70;
         GXSetChanMatColor(0, &sp20);
-        fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), sp60, *(s32 *)((u8 *)arg0 + 0x34));
+        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp60, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp60, 0);
         w = fn_80222A80(sp60);
         h = fn_80222A90(sp60);
@@ -1123,7 +1123,7 @@ void fn_800C6028(void *arg0) {
         GXSetTevColor(1, &sp10);
         sp14 = lbl_80369D88;
         GXSetTevColor(2, &sp14);
-        fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), sp40, *(s32 *)((u8 *)arg0 + 0x34));
+        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp40, *(s32 *)((u8 *)arg0 + 0x34));
         fn_80222C50(sp40, 0);
         w = fn_80222A80(sp40);
         h = fn_80222A90(sp40);
@@ -1186,7 +1186,7 @@ void fn_800C6E44(void *arg0) {
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevColor(s32, void *);
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
@@ -1247,7 +1247,7 @@ void fn_800C6E44(void *arg0) {
     GXSetTevColor(1, &sp14);
     sp10 = lbl_80369D80;
     GXSetTevColor(2, &sp10);
-    fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34));
+    Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34));
     fn_80222C50(sp20, 0);
     w = fn_80222A80(sp20);
     h = fn_80222A90(sp20);
@@ -1294,7 +1294,7 @@ void fn_800C6E44(void *arg0) {
         ((u8 *)&sp8)[3] = (u8)alpha;
         spC = sp8;
         GXSetTevColor(1, &spC);
-        fn_8006ECCC(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34) + 1);
+        Ui_LoadAtlasTex(*(s32 *)((u8 *)arg0 + 0x30), sp20, *(s32 *)((u8 *)arg0 + 0x34) + 1);
         fn_80222C50(sp20, 0);
         w = fn_80222A80(sp20);
         h = fn_80222A90(sp20);
@@ -16640,7 +16640,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     s32 fn_80069EA8(void);
     void *fn_8006A37C(void *);
     void fn_8006A384(void *);
-    void fn_8006ECCC(s32, void *, u16);
+    void Ui_LoadAtlasTex(s32, void *, u16);
     void PSMTXConcat(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
     void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
@@ -16805,7 +16805,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     t24 = fn_80069DBC();
     t23 = fn_80069EA8();
     t25 = fn_80069E18();
-    fn_8006ECCC(path, spE4, idx);
+    Ui_LoadAtlasTex(path, spE4, idx);
     fn_80222C50(spE4, t25);
     fn_802201A8(t24, 0, 0, t29, 0, 0x7D);
     GXSetTevOrder(t23, t24, t25, 4);
@@ -16901,7 +16901,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
         t29c = fn_80069DBC();
         t25c = fn_80069EA8();
         t24c = fn_80069E18();
-        fn_8006ECCC(path, spE4, (u16)(idx + 1));
+        Ui_LoadAtlasTex(path, spE4, (u16)(idx + 1));
         fn_80222C50(spE4, t24c);
         fn_802201A8(t29c, 0, 0, t26c, 0, 0x7D);
         GXSetTevOrder(t25c, t29c, t24c, 4);
@@ -16919,7 +16919,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     s32 fn_8006A374(void);
     void fn_8006A384(void *);
     void fn_800690D4(void *, s32, void *);
-    void fn_8006ECCC(s32, void *, u16);
+    void Ui_LoadAtlasTex(s32, void *, u16);
     s32 fn_80069DBC(void);
     s32 fn_80069EA8(void);
     s32 fn_80069E18(void);
@@ -17028,7 +17028,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     sp10 = *(u32 *)color;
     GXSetChanMatColor(4, &sp10);
     idx = *(u16 *)(*(u8 **)((u8 *)self + 0x14) + 4);
-    fn_8006ECCC(path, sp54, idx);
+    Ui_LoadAtlasTex(path, sp54, idx);
     a = fn_80069DBC();
     b = fn_80069EA8();
     c = fn_80069E18();
@@ -17055,7 +17055,7 @@ s32 fn_800EFEE0(void *arg0, s32 arg1) {
     fn_802201A8(a, 0, 0, tmp, 0, 0x7D);
     b = fn_80069EA8();
     c = fn_80069E18();
-    fn_8006ECCC(path, sp54, (u16)(idx + 1));
+    Ui_LoadAtlasTex(path, sp54, (u16)(idx + 1));
     fn_80222C50(sp54, c);
     GXSetTevOrder(b, a, c, 4);
     GXSetTevColorOp(b, 0, 0, 0, 1, 0);
@@ -17272,12 +17272,12 @@ void fn_800F0C30(s8 arg0, s8 arg1, s8 arg2) {
 }
 
 void fn_800F0C54(u8 *arg0) {
-void fn_8006ECCC(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
+void Ui_LoadAtlasTex(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
 void *fn_80067FDC(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
 extern s32 lbl_803674F0; extern f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; extern f64 lbl_8036A018; union { f64 d; struct {u32 hi,lo;} w; } dx,dy; f64 magic;
 f32 one,fx,fy,fx1,fy1,z;
-fn_8006ECCC(lbl_803674F0,sp8,0);
+Ui_LoadAtlasTex(lbl_803674F0,sp8,0);
 GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0);GXSetVtxAttrFmt(0,13,1,1,0);
 GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetNumTexGens(0,3);GXSetTevOrder(0,0,0,255);
 GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);

@@ -4900,14 +4900,15 @@ s32 fn_8003DBA8(s32 arg0, void *arg1) {
     return 0;
 }
 
-s32 fn_8003DC80(s32 arg0, s32 arg1) {
+s32 fn_8003DC80(s32 arg0, s32 arg1)
+{
     s8 fn_8003AEB0(s32);
-    s32 temp_r31;
-    s32 temp_r4;
+    s32 b;
+    s32 a;
 
-    temp_r31 = (s8)fn_8003AEB0(arg1);
-    temp_r4 = (s8)fn_8003AEB0(arg0);
-    return temp_r31 > temp_r4;
+    b = (s8)fn_8003AEB0(arg1);
+    a = (s8)fn_8003AEB0(arg0);
+    return b > a;
 }
 
 void fn_8003DCDC(u8 *arg0, u8 *arg1, s32 arg2, s8 *arg3, s8 *arg4) {
@@ -9624,7 +9625,7 @@ void Map_DrawRangeTiles(void) {
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80223D94(s32, s32, s32);
     void fn_80223DDC(s32, s32, s32, s32, s32);
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     void GXBegin(s32, s32, s32);
     f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
@@ -9681,7 +9682,7 @@ void Map_DrawRangeTiles(void) {
         p = &texBuf[0][0];
         i = 0;
         do {
-            fn_8006ECCC(texId, p, i + 1);
+            Ui_LoadAtlasTex(texId, p, i + 1);
             i += 1;
             p += 0x20;
         } while (i < 0x10);
@@ -10211,7 +10212,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     s32 fn_80069EA8(void);
     s32 fn_80069E18(void);
     s32 fn_80069DBC(void);
-    void fn_8006ECCC(s32, void *, u16);
+    void Ui_LoadAtlasTex(s32, void *, u16);
     void GXSetTevOrder(s32, s32, s32, s32);
     void GXSetNumTexGens(s32, s32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -10241,7 +10242,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
         GXSetTevOrder(t27, 0xFF, 0xFF, 4);
         GXSetNumTexGens(t27, 4);
     } else {
-        fn_8006ECCC(arg1, sp8, *(u16 *)((u8 *)(*(void **)((u8 *)arg0 + 0x14)) + 4));
+        Ui_LoadAtlasTex(arg1, sp8, *(u16 *)((u8 *)(*(void **)((u8 *)arg0 + 0x14)) + 4));
         t26 = fn_80069E18();
         t25 = fn_80069DBC();
         fn_802201A8(t25, 1, 4, 0x3C, 0, 0x7D);
@@ -10268,7 +10269,7 @@ void fn_8004B588(u8 *arg0)
 {
     f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
     void PSMTXRotRad(void *, s32, f32);
     void fn_802026E4(void *, void *, void *, void *);
@@ -10327,12 +10328,12 @@ void fn_8004B588(u8 *arg0)
         if (arg0[1] > 0x78U) {
             alpha = (s32)Math_Lerp(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32)(s32)(arg0[1] - 0x78));
         }
-        fn_8006ECCC(gUnitShadowMat, sp4C, 3);
+        Ui_LoadAtlasTex(gUnitShadowMat, sp4C, 3);
         break;
     case 1:
         alpha = (s32)fn_8005A028(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32)arg0[1]);
         scale = fn_8005A028(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32)arg0[1]);
-        fn_8006ECCC(gUnitShadowMat, sp4C, 4);
+        Ui_LoadAtlasTex(gUnitShadowMat, sp4C, 4);
         break;
     }
     fn_80222C50(sp4C, 0);
@@ -10775,7 +10776,7 @@ void Unit_DrawShadows(void) {
     void fn_80066D00(s32);
     void *Light_GetChannel(s32);
     void *fn_80067FDC(void);
-    void fn_8006ECCC(s32, void *, s32);
+    void Ui_LoadAtlasTex(s32, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXTrans(void *, f32, f32, f32);
     void GXSetVtxDesc(s32, s32);
@@ -10810,7 +10811,7 @@ void Unit_DrawShadows(void) {
     void *unit;
     s32 canDraw;
 
-    fn_8006ECCC(gUnitShadowMat, matBuf, 0);
+    Ui_LoadAtlasTex(gUnitShadowMat, matBuf, 0);
     fn_80222C50(matBuf, 0);
     fn_8022100C(2);
     GXClearVtxDesc();

@@ -3209,7 +3209,7 @@ void fn_801F8E30(void *arg0) {
     void Model_SetColor(void *, s32, s32, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     void *fn_800A8978(void *);
     void *fn_800A8A88(void *);
     void fn_80109020(void *);
@@ -3308,7 +3308,7 @@ clear:
                 Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buf));
             }
             f28 = f30 + (f32)fn_800102BC(-1, lbl_8036BA20);
-            fn_8006ECCC(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
+            Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
             sp94 = fn_80222A80(sp74);
             sp96 = fn_80222A90(sp74);
             Prim2D_Begin();

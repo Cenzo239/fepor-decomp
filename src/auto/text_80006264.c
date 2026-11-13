@@ -2134,7 +2134,7 @@ void fn_80009EB0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     extern u16 lbl_80367140;
     u32 sp[8];
     u8 *p;
@@ -2143,7 +2143,7 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     u32 t1;
     u8 ff;
 
-    fn_8006ECCC(arg0, sp, arg1);
+    Ui_LoadAtlasTex(arg0, sp, arg1);
     p = *(u8 **)&lbl_80367140;
     mask = 0xFFFF7B0C;
     t0 = sp[0];

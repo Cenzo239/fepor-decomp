@@ -7300,7 +7300,7 @@ void fn_801C65E0(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80066D00(s32);
     void *fn_80067FDC(void);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -7350,7 +7350,7 @@ void fn_801C65E0(void *arg0) {
         PSMTXConcat(fn_80067FDC(), mtxC, mtxC);
         GXLoadPosMtxImm(mtxC, 0);
         GXSetCurrentMtx(0);
-        fn_8006ECCC(*(void **)((u8 *)obj + 0x38), tex, 9);
+        Ui_LoadAtlasTex(*(void **)((u8 *)obj + 0x38), tex, 9);
         fn_80222C50(tex, 0);
         GXClearVtxDesc();
         GXSetVtxDesc(9, 1);
@@ -8306,7 +8306,7 @@ void fn_801C85E0(void *arg0) {
     void Prim2D_Begin(void);
     void Text_Draw(s32, s32, s32, void *, ...);
     s32 fn_800102BC(s32, f32);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
     void fn_80230BBC(s32);
@@ -8357,7 +8357,7 @@ void fn_801C85E0(void *arg0) {
     Prim2D_SetTransform(lbl_8036B498, lbl_8036B498, lbl_8036B49C, lbl_8036B478);
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
-    fn_8006ECCC(*(void **)((u8 *)self + 0x30), &t0, 0);
+    Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t0, 0);
     t0.w = fn_80222A80(&t0);
     t0.h = fn_80222A90(&t0);
     Prim2D_Begin();
@@ -8379,7 +8379,7 @@ void fn_801C85E0(void *arg0) {
     fn_80230BBC(v0);
     fn_80238ABC(buf0, 0xA);
     len = strlen(buf0);
-    fn_8006ECCC(*(void **)((u8 *)self + 0x30), &t1, 1);
+    Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t1, 1);
     t1.w = fn_80222A80(&t1);
     t1.h = fn_80222A90(&t1);
     Prim2D_Begin();
@@ -8424,7 +8424,7 @@ void fn_801C85E0(void *arg0) {
     fn_80230BBC(v1);
     fn_80238ABC(buf1, 0xA);
     len = strlen(buf1);
-    fn_8006ECCC(*(void **)((u8 *)self + 0x30), &t2, 1);
+    Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t2, 1);
     t2.w = fn_80222A80(&t2);
     t2.h = fn_80222A90(&t2);
     Prim2D_Begin();
@@ -8469,7 +8469,7 @@ void fn_801C85E0(void *arg0) {
     fn_80230BBC(v2);
     fn_80238ABC(buf2, 0xA);
     len = strlen(buf2);
-    fn_8006ECCC(*(void **)((u8 *)self + 0x30), &t3, 1);
+    Ui_LoadAtlasTex(*(void **)((u8 *)self + 0x30), &t3, 1);
     t3.w = fn_80222A80(&t3);
     t3.h = fn_80222A90(&t3);
     Prim2D_Begin();
@@ -11925,7 +11925,7 @@ void fn_801D0460(void *arg0, s32 arg1) {
 void fn_801D0480(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     f32 fn_80059500(f32, f32, f32, f32, f32);
-    void fn_8006ECCC(void *, void *, s32);
+    void Ui_LoadAtlasTex(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -12066,7 +12066,7 @@ void fn_801D0480(void *arg0) {
                 cb = (s32)(fade * Math_Ease(0, (f32)b1, (f32)b0, (f32)(timer - 0x5DC), lbl_8036B588));
             }
             alpha = (u8)((self[0x21] * (0xFF * self[0x20])) / 65025);
-            fn_8006ECCC(*(void **)self, tex, 0);
+            Ui_LoadAtlasTex(*(void **)self, tex, 0);
             fn_80222C50(tex, 0);
             PSMTXTrans(mtxA, (f32)*(s16 *)(self + 0x18), (f32)*(s16 *)(self + 0x1A), lbl_8036B580);
             GXSetCurrentMtx(0);
