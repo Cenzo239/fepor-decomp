@@ -3759,7 +3759,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_Begin();
     s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Text_MeasureWidth(s32, M2C_UNK, f32);
-    M2C_UNK fn_801533F8(s32, s32, u8, M2C_UNK);
+    M2C_UNK Ui_DrawSlotFrame(s32, s32, u8, M2C_UNK);
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
     extern f32 lbl_8036A9D8;
@@ -3827,7 +3827,7 @@ extern "C" void Ui_DrawMenuSlot(void *arg0, void *arg1, void *arg2) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A9E0);
     Prim2D_PrepareTex();
-    fn_801533F8((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
+    Ui_DrawSlotFrame((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
 }
 #pragma cplusplus reset
 s32 fn_8016B25C(void *arg0, void *arg1, void *arg2) {
@@ -3877,7 +3877,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     M2C_UNK Prim2D_Begin();
     s32 Text_MeasureHeight(M2C_UNK, f32);
     s32 Text_MeasureWidth(s32, M2C_UNK, f32);
-    M2C_UNK fn_801533F8(s32, s32, u8, M2C_UNK);
+    M2C_UNK Ui_DrawSlotFrame(s32, s32, u8, M2C_UNK);
     u32 fn_8017F9D4();
     s32 *Ui_GetColor(M2C_UNK);
     extern f32 lbl_8036A9CC;
@@ -3946,7 +3946,7 @@ extern "C" void fn_8016B348(void **arg0, void *arg1, void *arg2) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A9E0);
     Prim2D_PrepareTex();
-    fn_801533F8((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
+    Ui_DrawSlotFrame((s32)temp_f31, (s32)temp_f30, M2C_FIELD(var_r29, u8 *, 0x38), 0x10);
 }
 
 #pragma cplusplus reset
