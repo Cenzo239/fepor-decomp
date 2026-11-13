@@ -1502,7 +1502,7 @@ void fn_80088F8C(void *arg0) {
 #pragma scheduling on
 void fn_80088FFC(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
@@ -1536,7 +1536,7 @@ void fn_80088FFC(void *arg0) {
     u8 alpha;
 
     C_MTXOrtho(&sp8[0], lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
-    fn_80224C4C(&sp8[0], 1);
+    GXSetProjection(&sp8[0], 1);
     PSMTXTrans(&sp8[0], lbl_80369690, lbl_80369690, lbl_803696A0);
     fn_80224D7C(&sp8[0], 0);
     fn_80224E1C(0);
@@ -1778,7 +1778,7 @@ void fn_80089680(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
@@ -1822,7 +1822,7 @@ void fn_80089680(void *arg0) {
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
-        fn_80224C4C(spC, 1);
+        GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);
         fn_80224E1C(0);
@@ -1932,7 +1932,7 @@ void fn_80089A28(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
@@ -2007,7 +2007,7 @@ void fn_80089A28(void *arg0) {
     }
 
     C_MTXOrtho(sp8, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
-    fn_80224C4C(sp8, 1);
+    GXSetProjection(sp8, 1);
     PSMTXTrans(sp8, lbl_80369690, lbl_80369690, lbl_803696A0);
     fn_80224D7C(sp8, 0);
     fn_80224E1C(0);
@@ -2151,7 +2151,7 @@ void fn_80089FA8(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
@@ -2204,7 +2204,7 @@ void fn_80089FA8(void *arg0) {
     }
     if (*(u8 *)((u8 *)arg0 + 0x37) != 0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
-        fn_80224C4C(spC, 1);
+        GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);
         fn_80224E1C(0);
@@ -2317,7 +2317,7 @@ void fn_8008A5AC(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
@@ -2362,7 +2362,7 @@ void fn_8008A5AC(void *arg0) {
     }
     if (*(u8 *)((u8 *)arg0 + 0x43) != 0) {
         C_MTXOrtho(spC, lbl_80369690, lbl_80369694, lbl_80369690, lbl_80369698, lbl_80369690, lbl_8036969C);
-        fn_80224C4C(spC, 1);
+        GXSetProjection(spC, 1);
         PSMTXTrans(spC, lbl_80369690, lbl_80369690, lbl_803696A0);
         fn_80224D7C(spC, 0);
         fn_80224E1C(0);

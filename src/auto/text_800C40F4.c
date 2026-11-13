@@ -834,7 +834,7 @@ void fn_800C6028(void *arg0) {
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_8022100C(s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -903,7 +903,7 @@ void fn_800C6028(void *arg0) {
         fn_802246B8(1);
         fn_80223E5C(7, 0, 1, 7, 0);
         C_MTXOrtho(sp210, lbl_80369DA0, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        fn_80224C4C(sp210, 1);
+        GXSetProjection(sp210, 1);
         fn_8022100C(0);
         fn_8021FBB8();
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -971,7 +971,7 @@ void fn_800C6028(void *arg0) {
         fn_802246B8(1);
         fn_80223E5C(7, 0, 1, 7, 0);
         C_MTXOrtho(sp1A0, lbl_80369D8C, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        fn_80224C4C(sp1A0, 1);
+        GXSetProjection(sp1A0, 1);
         fn_8022100C(0);
         fn_8021FBB8();
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -1037,7 +1037,7 @@ void fn_800C6028(void *arg0) {
         fn_802246B8(1);
         fn_80223E5C(7, 0, 1, 7, 0);
         C_MTXOrtho(sp130, lbl_80369D8C, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        fn_80224C4C(sp130, 1);
+        GXSetProjection(sp130, 1);
         fn_8022100C(0);
         fn_8021FBB8();
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -1103,7 +1103,7 @@ void fn_800C6028(void *arg0) {
         fn_802246B8(1);
         fn_80223E5C(7, 0, 1, 7, 0);
         C_MTXOrtho(spC0, lbl_80369DA0, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-        fn_80224C4C(spC0, 1);
+        GXSetProjection(spC0, 1);
         fn_8022100C(0);
         fn_8021FBB8();
         fn_8021FBF0(0, 9, 1, 3, 0);
@@ -1172,7 +1172,7 @@ void fn_800C6E44(void *arg0) {
     void fn_802246B8(s32);
     void fn_80223E5C(s32, s32, s32, s32, s32);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_8022100C(s32);
     void fn_8021FBB8(void);
     void fn_8021FBF0(s32, s32, s32, s32, s32);
@@ -1227,7 +1227,7 @@ void fn_800C6E44(void *arg0) {
     fn_802246B8(1);
     fn_80223E5C(7, 0, 1, 7, 0);
     C_MTXOrtho(spA0, lbl_80369DA0, lbl_80369D94, lbl_80369D8C, lbl_80369D90, lbl_80369DA4, lbl_80369DA8);
-    fn_80224C4C(spA0, 1);
+    GXSetProjection(spA0, 1);
     fn_8022100C(0);
     fn_8021FBB8();
     fn_8021FBF0(0, 9, 1, 3, 0);

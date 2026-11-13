@@ -460,7 +460,7 @@ void fn_80224AD8(f32 x, f32 y, f32 z, f32 mtx[3][4], f32 *pm, f32 *vp, f32 *sx, 
     *sz = vp[5] + (wc * (zc * (vp[5] - vp[4])));
 }
 
-void fn_80224C4C(s32 arg0, s32 arg1, s32 arg2)
+void GXSetProjection(s32 arg0, s32 arg1, s32 arg2)
 {
     if (arg2 != 0) {
         arg0 = arg0 + arg1 - arg2;

@@ -5220,7 +5220,7 @@ void fn_80067EDC(void *arg0)
     void fn_80224E1C(s32);
     void fn_80225058(u16, u16, u16, u16);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     extern void *lbl_803672F8;
     extern u8 lbl_803672FC;
     extern f32 lbl_80369228;
@@ -5258,7 +5258,7 @@ void fn_80067EDC(void *arg0)
     }
     fn_80225058(*(u16 *)(p + 0x1C), *(u16 *)(p + 0x1E), *(u16 *)(p + 0x20), *(u16 *)(p + 0x22));
     fn_80224FEC(*(f32 *)(p + 4), *(f32 *)(p + 8), *(f32 *)(p + 0xC), *(f32 *)(p + 0x10), *(f32 *)(p + 0x14), *(f32 *)(p + 0x18));
-    fn_80224C4C(p + 0x24, (*(u16 *)p & 1) ^ 1);
+    GXSetProjection(p + 0x24, (*(u16 *)p & 1) ^ 1);
 }
 
 void *fn_80067FD0(void) {

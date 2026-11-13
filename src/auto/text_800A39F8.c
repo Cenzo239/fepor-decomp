@@ -820,7 +820,7 @@ void Gx_Setup2DState(void *arg0) {
     void fn_802240C8(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80224C4C(void *, s32);
+    void GXSetProjection(void *, s32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_80224FEC(f32, f32, f32, f32, f32, f32);
@@ -842,7 +842,7 @@ void Gx_Setup2DState(void *arg0) {
     temp_r31 = M2C_FIELD(arg0, u16 *, 4);
     temp_r30 = M2C_FIELD(arg0, u16 *, 6);
     C_MTXOrtho(sp4C, 0.0f, (f32)temp_r30, 0.0f, (f32)temp_r31, 0.0f, -1.0f);
-    fn_80224C4C(sp4C, 1);
+    GXSetProjection(sp4C, 1);
     fn_80224FEC(0.0f, 0.0f, (f32)temp_r31, (f32)temp_r30, 0.9f, 0.9f);
     fn_80225058(0, 0, temp_r31, temp_r30);
     PSMTXIdentity(sp1C);
