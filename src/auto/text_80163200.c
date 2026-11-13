@@ -1532,7 +1532,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *String_CStr(void *);
     void String_Destroy(void *, s16);
     void String_Init(void *, void *, void *);
-    void fn_800CB90C(void *, void *, void *);
+    void String_ConcatCStr(void *, void *, void *);
     void fn_800DFAE0(void *, void *, void *, void *, void *);
     extern u8 lbl_802777C8[];
     extern void *lbl_80293CB0[];
@@ -1585,7 +1585,7 @@ void *fn_80165C84(void *arg0, void *arg1, void *arg2, void *arg3) {
     if ((s32)a2 != 0) {
         String_Init(&sp20, lbl_802777C8, &sp8);
         a1 = (void *)1;
-        fn_800CB90C(&sp2C, a3, lbl_802777C8 + 5);
+        String_ConcatCStr(&sp2C, a3, lbl_802777C8 + 5);
         flag2 = 1;
         a2 = Xml_ParseFile(a2, &sp2C, &sp20);
     }

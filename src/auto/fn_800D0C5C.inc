@@ -68,7 +68,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     s32 fn_8011654C(void *);
     void fn_80112DFC(void *, s32);
     void fn_801165B4(void *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     s32 fn_800D3534(void *, char *);
     void fn_80111AE8(void *, void *, s32);
     void fn_800CA91C(void *);

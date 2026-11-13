@@ -65,7 +65,7 @@
     s32 fn_8011654C(void *);
     void fn_80112DFC(void *, s32);
     void fn_801165B4(void *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     s32 fn_800D3534(void *, char *);
     void fn_80111AE8(void *, void *, s32);
     void fn_800CA91C(void *);
@@ -610,7 +610,7 @@
                   && (u8)fn_80112F44(*(void **)((u8 *)self + 0x9C)) == 0)) {
                 fn_80113A24(*(void **)((u8 *)self + 0x9C), 0);
                 fn_801165B4(strP, *(void **)((u8 *)self + 0x9C));
-                fn_800CB90C(strQ, strP, lbl_802704F8 + 0x3C6);
+                String_ConcatCStr(strQ, strP, lbl_802704F8 + 0x3C6);
                 fn_800CF500(self, strQ, NULL);
                 String_Destroy(strQ, -1);
                 String_Destroy(strP, -1);
@@ -633,7 +633,7 @@
                     fn_800CF500(self, (u8 *)self + 0x10C, NULL);
                 } else {
                     fn_801165B4(strR, *(void **)((u8 *)self + 0x9C));
-                    fn_800CB90C(strS, strR, lbl_802704F8 + 0x3CB);
+                    String_ConcatCStr(strS, strR, lbl_802704F8 + 0x3CB);
                     fn_800CF500(self, strS, NULL);
                     String_Destroy(strS, -1);
                     String_Destroy(strR, -1);

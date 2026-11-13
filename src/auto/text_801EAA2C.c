@@ -2068,7 +2068,7 @@ void fn_801EE76C(void *arg0) {
     void *fn_80040844(void);
     void *String_CStr(void *);
     void fn_80041514(void *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     void *Xml_ParseFile(void *, void *, void *);
     void String_Destroy(void *, s32);
     void Xml_GetNamedValue(void *, void *, void *);
@@ -2214,7 +2214,7 @@ use30708:
     if (r29 != NULL) {
         String_Init(&sp30, gGActorPathExt + 0x1DB, &sp14);
         flag27 = 1;
-        fn_800CB90C(&sp3C, &sp24, gGActorPathExt + 0x1E0);
+        String_ConcatCStr(&sp3C, &sp24, gGActorPathExt + 0x1E0);
         flag26 = 1;
         r29 = Xml_ParseFile(r29, &sp3C, &sp30);
     }
@@ -2296,7 +2296,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void String_Destroy(void *, s32);
     void fn_800C9B6C(void *, void *);
     void String_Concat(void *, void *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     void fn_800CBF24(void *, char *, void *);
     s32 fn_800E49D0(void);
     void fn_801C4468(void *);
@@ -2340,12 +2340,12 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     fn_800C9B6C(&spB0, &sp98);
     String_Destroy(&sp98, -1);
     fn_800CBF24(&sp8C, gGActorPathExt + 0x1BB, &spB0);
-    fn_800CB90C(&sp80, &sp8C, gGActorPathExt + 0x1BF);
+    String_ConcatCStr(&sp80, &sp8C, gGActorPathExt + 0x1BF);
     fn_800C9B6C(&spA4, &sp80);
     String_Destroy(&sp80, -1);
     String_Destroy(&sp8C, -1);
     String_Concat(&sp74, &spA4, &spB0);
-    fn_800CB90C(&sp68, &sp74, gGActorPathExt + 0x1C1);
+    String_ConcatCStr(&sp68, &sp74, gGActorPathExt + 0x1C1);
     String_Assign(&spBC, &sp68, 0, -1);
     String_Destroy(&sp68, -1);
     String_Destroy(&sp74, -1);
@@ -2355,7 +2355,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     row = (u8 *)self + arg1 * 0xC;
     path44 = row + 0x44;
     String_Concat(&sp5C, &spA4, path44);
-    fn_800CB90C(&sp50, &sp5C, gGActorPathExt + 0x208);
+    String_ConcatCStr(&sp50, &sp5C, gGActorPathExt + 0x208);
     String_Assign(&spBC, &sp50, 0, -1);
     String_Destroy(&sp50, -1);
     String_Destroy(&sp5C, -1);
@@ -2364,7 +2364,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
     String_Concat(&sp44, &spA4, path44);
-    fn_800CB90C(&sp38, &sp44, gGActorPathExt + 0x20C);
+    String_ConcatCStr(&sp38, &sp44, gGActorPathExt + 0x20C);
     String_Assign(&spBC, &sp38, 0, -1);
     String_Destroy(&sp38, -1);
     String_Destroy(&sp44, -1);
@@ -2373,7 +2373,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
     String_Concat(&sp2C, &spA4, row + 0x14);
-    fn_800CB90C(&sp20, &sp2C, gGActorPathExt + 0x1C9);
+    String_ConcatCStr(&sp20, &sp2C, gGActorPathExt + 0x1C9);
     String_Assign(&spBC, &sp20, 0, -1);
     String_Destroy(&sp20, -1);
     String_Destroy(&sp2C, -1);
@@ -2382,7 +2382,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
     String_Concat(&sp14, &spA4, row + 0x2C);
-    fn_800CB90C(&sp8, &sp14, gGActorPathExt + 0x20F);
+    String_ConcatCStr(&sp8, &sp14, gGActorPathExt + 0x20F);
     String_Assign(&spBC, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
     String_Destroy(&sp14, -1);
@@ -2435,7 +2435,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
     void String_Init(String *, char *, void *);
     void fn_800C9B6C(String *, void *);
     void String_Concat(String *, String *, String *);
-    void fn_800CB90C(String *, String *, char *);
+    void String_ConcatCStr(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
     s32 strlen(char *);
     extern char gGActorPathExt[];
@@ -2478,7 +2478,7 @@ void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
         String_Destroy(&sp54, -1);
         return;
     }
-    fn_800CB90C(&sp18, &sp3C, (char *)((u8 *)gGActorPathExt + 0x222));
+    String_ConcatCStr(&sp18, &sp3C, (char *)((u8 *)gGActorPathExt + 0x222));
     String_Concat(&spC, &sp18, &sp30);
     String_Assign(&sp54, &spC, 0, -1);
     String_Destroy(&spC, -1);
@@ -2531,7 +2531,7 @@ void fn_801EF6BC(void *arg0) {
     void String_Destroy(void *, s32);
     void String_Init(void *, char *, void *);
     void String_Concat(void *, void *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     s32 fn_800E49D0(void);
     void fn_801C6E60(void *);
     s32 strlen(char *);
@@ -2590,9 +2590,9 @@ void fn_801EF6BC(void *arg0) {
     }
     String_AssignCStr(&spD8, p->name, strlen(p->name));
     String_Concat(&spC0, &spCC, &spD8);
-    fn_800CB90C(&spB4, &spC0, gGActorPathExt + 0x1BF);
+    String_ConcatCStr(&spB4, &spC0, gGActorPathExt + 0x1BF);
     String_Concat(&spA8, &spB4, &spD8);
-    fn_800CB90C(&sp9C, &spA8, gGActorPathExt + 0x229);
+    String_ConcatCStr(&sp9C, &spA8, gGActorPathExt + 0x229);
     String_Assign(&spE4, &sp9C, 0, -1);
     String_Destroy(&sp9C, -1);
     String_Destroy(&spA8, -1);
@@ -2604,9 +2604,9 @@ void fn_801EF6BC(void *arg0) {
         *(s32 *)((u8 *)self + 0xC0) = fn_8005C84C();
         *(void **)((u8 *)self + 0xC4) = GActor_Create();
         String_Concat(&sp90, &spCC, &spD8);
-        fn_800CB90C(&sp84, &sp90, (char *)((u32)gGActorPathExt + 0x1BF));
+        String_ConcatCStr(&sp84, &sp90, (char *)((u32)gGActorPathExt + 0x1BF));
         String_Concat(&sp78, &sp84, &spD8);
-        fn_800CB90C(&sp6C, &sp78, gGActorPathExt + 0x208);
+        String_ConcatCStr(&sp6C, &sp78, gGActorPathExt + 0x208);
         String_Assign(&spE4, &sp6C, 0, -1);
         String_Destroy(&sp6C, -1);
         String_Destroy(&sp78, -1);
@@ -2617,9 +2617,9 @@ void fn_801EF6BC(void *arg0) {
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
         String_Concat(&sp60, &spCC, &spD8);
-        fn_800CB90C(&sp54, &sp60, (char *)((u8 *)gGActorPathExt + 0x1BF));
+        String_ConcatCStr(&sp54, &sp60, (char *)((u8 *)gGActorPathExt + 0x1BF));
         String_Concat(&sp48, &sp54, &spD8);
-        fn_800CB90C(&sp3C, &sp48, gGActorPathExt + 0x20C);
+        String_ConcatCStr(&sp3C, &sp48, gGActorPathExt + 0x20C);
         String_Assign(&spE4, &sp3C, 0, -1);
         String_Destroy(&sp3C, -1);
         String_Destroy(&sp48, -1);
@@ -2630,9 +2630,9 @@ void fn_801EF6BC(void *arg0) {
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
         String_Concat(&sp30, &spCC, &spD8);
-        fn_800CB90C(&sp24, &sp30, (char *)(gGActorPathExt + 0x1BF));
+        String_ConcatCStr(&sp24, &sp30, (char *)(gGActorPathExt + 0x1BF));
         String_Concat(&sp18, &sp24, &spD8);
-        fn_800CB90C(&spC, &sp18, gGActorPathExt + 0x1C9);
+        String_ConcatCStr(&spC, &sp18, gGActorPathExt + 0x1C9);
         String_Assign(&spE4, &spC, 0, -1);
         String_Destroy(&spC, -1);
         String_Destroy(&sp18, -1);
@@ -2684,7 +2684,7 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     void fn_800C992C(void *, char *, s32);
     void String_Destroy(void *, s32);
     void String_Init(void *, char *, void *);
-    void fn_800CB90C(void *, void *, char *);
+    void String_ConcatCStr(void *, void *, char *);
     s32 strlen(char *);
     extern char gGActorPathExt[];
     extern f32 lbl_8036B7D0;
@@ -2720,34 +2720,34 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     fn_800C992C(&sp48, (char *)((u8 *)gGActorPathExt + 0x1BF), n);
     n = strlen(arg1);
     fn_800C992C(&sp48, arg1, n);
-    fn_800CB90C(&sp3C, &sp48, gGActorPathExt + 0x229);
+    String_ConcatCStr(&sp3C, &sp48, gGActorPathExt + 0x229);
     String_Assign(&sp54, &sp3C, 0, -1);
     String_Destroy(&sp3C, -1);
     String_CStr(&sp54);
     *(s32 *)((u8 *)self + 0xCC) = fn_8005C84C();
     *(void **)((u8 *)self + 0xD0) = GActor_Create();
-    fn_800CB90C(&sp30, &sp48, gGActorPathExt + 0x208);
+    String_ConcatCStr(&sp30, &sp48, gGActorPathExt + 0x208);
     String_Assign(&sp54, &sp30, 0, -1);
     String_Destroy(&sp30, -1);
     String_CStr(&sp54);
     tmp = (void *)fn_8006CE14();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x48) = (s32)tmp;
-    fn_800CB90C(&sp24, &sp48, gGActorPathExt + 0x20C);
+    String_ConcatCStr(&sp24, &sp48, gGActorPathExt + 0x20C);
     String_Assign(&sp54, &sp24, 0, -1);
     String_Destroy(&sp24, -1);
     String_CStr(&sp54);
     tmp = (void *)fn_80065EE8();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x40) = (s32)tmp;
-    fn_800CB90C(&sp18, &sp48, gGActorPathExt + 0x1C9);
+    String_ConcatCStr(&sp18, &sp48, gGActorPathExt + 0x1C9);
     String_Assign(&sp54, &sp18, 0, -1);
     String_Destroy(&sp18, -1);
     String_CStr(&sp54);
     tmp = (void *)fn_8006D948();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
-    fn_800CB90C(&spC, &sp48, gGActorPathExt + 0x20F);
+    String_ConcatCStr(&spC, &sp48, gGActorPathExt + 0x20F);
     String_Assign(&sp54, &spC, 0, -1);
     String_Destroy(&spC, -1);
     String_CStr(&sp54);
@@ -2791,7 +2791,7 @@ void fn_801EFDC8(void *arg0) {
     char *fn_80050AB8(void *);
     void fn_801EF39C(String *, void *, s32);
     void String_Concat(String *, String *, String *);
-    void fn_800CB90C(String *, String *, char *);
+    void String_ConcatCStr(String *, String *, char *);
     s32 fn_800C9400(String *, s32, void *, char *, s32);
     void fn_800D6878(void *, void *, void *);
     void Xml_GetNamedValue(char *, void *, String *);
@@ -2962,7 +2962,7 @@ void fn_801EFDC8(void *arg0) {
             flag0 = 1;
             String_Concat(&sp98, &str13c, &str148);
             flag1 = 1;
-            fn_800CB90C(&sp8C, &sp98, strBase + 0x250);
+            String_ConcatCStr(&sp8C, &sp98, strBase + 0x250);
             flag2 = 1;
             file2 = Xml_ParseFile(file2, &sp8C, &spA4);
         }
@@ -2999,7 +2999,7 @@ void fn_801EFDC8(void *arg0) {
             flag0 = 1;
             String_Concat(&sp68, &str13c, &str148);
             flag1 = 1;
-            fn_800CB90C(&sp5C, &sp68, strBase + 0x263);
+            String_ConcatCStr(&sp5C, &sp68, strBase + 0x263);
             flag2 = 1;
             file2 = Xml_ParseFile(file2, &sp5C, &sp74);
         }
