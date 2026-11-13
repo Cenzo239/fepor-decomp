@@ -1168,7 +1168,7 @@ u8 fn_801B78A8(void *arg0) {
     return var_r31;
 }
 
-void fn_801B794C(void *arg0) {
+void AchieveList_Build(void *arg0) {
     s32 fn_800C044C(s32);
     u8 fn_801B78A8(void *);
     s32 fn_800C04B0(s32, u8 (*)(void *));
@@ -1608,7 +1608,7 @@ void fn_801B8798(void) {
 void Battle_ApplyAchieveBonuses(s32 arg0) {
     void *Heap_Alloc(s32);
     void AchieveList_SetBaseGold(void *, s32);
-    void fn_801B794C(void *);
+    void AchieveList_Build(void *);
     s32 fn_801B7734(void *);
     s32 fn_801B767C(void *);
     u8 fn_801E33F4(void *);
@@ -1626,7 +1626,7 @@ void Battle_ApplyAchieveBonuses(s32 arg0) {
     alloc = Heap_Alloc(0x22C);
     base = gBattleState;
     AchieveList_SetBaseGold(alloc, *(s32 *)(base + 0x1C));
-    fn_801B794C(alloc);
+    AchieveList_Build(alloc);
     *(s16 *)(gBattleState + 0x72) = fn_801B7734(alloc);
     *(s32 *)(base + 0x1C) = fn_801B767C(alloc);
     if (((u32)(gBattleState[0x9E] & 1) != 1) && fn_801E33F4(gSystemSave)) {
