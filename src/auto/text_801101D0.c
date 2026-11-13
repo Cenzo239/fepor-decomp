@@ -5302,7 +5302,7 @@ void fn_8011CC04(u8 *arg0) {
     *(s32 *)(arg0 + 0x64) = base + shifted + 2;
 }
 #pragma global_optimizer reset
-void fn_8011D014(void *arg0) {
+void ListBox_HandleInput(void *arg0) {
     void Win_UpdatePos(void *);
     void Win_SetDirty(void *);
     extern void *gPadInput;
