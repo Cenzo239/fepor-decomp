@@ -579,12 +579,12 @@ void fn_8012979C(void *arg0) {
     void *fn_8000CAF0(void *, s32);
     s32 fn_80046400(void *, void *, void *);
     extern u8 lbl_80290B3C[];
-    void *entry;
+    void *self = arg0;
     void *temp;
-    void *self;
+    s32 y;
     void *cam;
+    void *entry;
 
-    self = arg0;
     temp = *(void **)((u8 *)arg0 + 0x30);
     ((u8 *)temp)[2] |= 2;
     fn_80044450(Map_Get(), 1);
@@ -592,18 +592,15 @@ void fn_8012979C(void *arg0) {
     fn_800498A4(*(void **)((u8 *)self + 0x30), self, 0);
 
     temp = *(void **)((u8 *)self + 0x30);
-    entry = (void *)(s32)(s8)((u8 *)temp)[1];
+    y = *(s8 *)((u8 *)temp + 1);
     cam = Map_Get();
-    temp = fn_80046F14(cam, (s8)((u8 *)temp)[0], (s32)entry, 0x800, 0x10);
-    if (temp != NULL) {
-        if ((u8)fn_80049D58(temp) != 0) {
-            if (self != NULL) {
-                entry = fn_8000CAA0(lbl_80290B3C, self);
-            } else {
-                entry = fn_8000CAF0(lbl_80290B3C, 3);
-            }
-            *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
+    if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0x10)) != NULL && fn_80049D58(temp)) {
+        if (self != NULL) {
+            entry = fn_8000CAA0(lbl_80290B3C, self);
+        } else {
+            entry = fn_8000CAF0(lbl_80290B3C, 3);
         }
+        *(s32 *)((u8 *)entry + 0x50) = fn_80046400(Map_Get(), temp, (u8 *)entry + 0x30);
     }
 }
 
@@ -1506,19 +1503,18 @@ void fn_8012B488(s32 arg0) {
     s32 fn_8003F224(void *, s32);
     extern u8 lbl_80290C44[];
     extern u8 lbl_802758F8[];
-    s32 off;
+    void *self;
     void *src;
     s32 i;
-    void *self;
-    void *p;
+    s32 off;
     s32 v;
 
     self = fn_8000CAA0(lbl_80290C44, arg0);
     src = fn_8005C84C(lbl_802758F8 + 0x21);
     *(s32 *)((u8 *)self + 0x38) = fn_8003F47C();
-    p = fn_800C42AC(*(s32 *)((u8 *)self + 0x38) << 2);
+    v = (s32)fn_800C42AC(*(s32 *)((u8 *)self + 0x38) << 2);
     i = 0;
-    *(void **)((u8 *)self + 0x3C) = p;
+    *(s32 *)((u8 *)self + 0x3C) = v;
     off = i;
     while (i < *(s32 *)((u8 *)self + 0x38)) {
         v = fn_8003F224(src, i);
