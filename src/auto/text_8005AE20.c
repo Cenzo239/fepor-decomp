@@ -802,7 +802,7 @@ void fn_8005C5A8(char *name) {
     *(u16 *)(e + 0x30) = v;
 }
 
-u16 fn_8005C6A0(char *name) {
+u16 FileCache_GetFlags(char *name) {
     u8 *e = FindEntryByName(name);
     if (e == NULL) {
         return 0x8000;
@@ -3795,7 +3795,7 @@ M2C_UNK fn_80063954(char *arg0) {
     M2C_UNK temp_r31;
 
     temp_r31 = fn_8005C82C();
-    if (!(fn_8005C6A0(arg0) & 0x4000)) {
+    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
         fn_8005C5A8(arg0);
     }
@@ -3809,7 +3809,7 @@ void *fn_800639B4(void *arg0) {
     void *temp_r31;
 
     temp_r31 = (void *)fn_8005C82C(arg0, 0);
-    if (!(fn_8005C6A0(arg0) & 0x4000)) {
+    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
         fn_8005C5A8(arg0);
     }
@@ -4536,7 +4536,7 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
 
     (void)arg1;
     temp_r31 = fn_8005C82C();
-    if (!(fn_8005C6A0((char *)arg0) & 0x4000)) {
+    if (!(FileCache_GetFlags((char *)arg0) & 0x4000)) {
         fn_80065F48(temp_r31);
         fn_8005C5A8((char *)arg0);
     }
@@ -4545,7 +4545,7 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
 s32 fn_80065EE8(void *arg0)
 {
     extern s32 fn_8005C82C(void *, s32);
-    extern u32 fn_8005C6A0(void *);
+    extern u32 FileCache_GetFlags(void *);
     extern void fn_80065F48(s32);
     extern void fn_8005C5A8(void *);
 
@@ -4553,7 +4553,7 @@ s32 fn_80065EE8(void *arg0)
 
     result = fn_8005C82C(arg0, 0);
 
-    if (!(fn_8005C6A0(arg0) & 0x4000)) {
+    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
         fn_80065F48(result);
     }
 
@@ -5143,14 +5143,13 @@ void *Light_GetChannel(s32 arg0) {
 #pragma peephole off
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
-    extern u8 *lbl_80366DDC;
-    void *p;
+    extern void *lbl_80366DDC;
+    void *tmp;
 
-    if (arg0 != NULL) {
-        return;
+    if (arg0 == NULL) {
+        tmp = lbl_80311B04;
+        lbl_80366DDC = tmp;
     }
-    p = lbl_80311B04;
-    lbl_80366DDC = p;
 }
 #pragma peephole on
 s32 fn_80067478(void) {
@@ -6464,8 +6463,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(register s32 arg0) {
-    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(s32 arg0) {
+    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 

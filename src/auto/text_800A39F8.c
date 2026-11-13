@@ -1009,9 +1009,9 @@ void fn_800A5968(void *arg0) {
 #pragma optimization_level reset
 void fn_800A5BB4(s32 arg0) {
     M2C_UNK Process_ClearFunc(s32);
-    s32 fn_8005C6A0(s32);
+    s32 FileCache_GetFlags(s32);
     M2C_UNK fn_8006EEFC(s32, s32);
-    if (fn_8005C6A0(arg0 + 0x44) & 0x2000) {
+    if (FileCache_GetFlags(arg0 + 0x44) & 0x2000) {
         fn_8006EEFC(arg0 + 0x34, arg0 + 0x44);
         Process_ClearFunc(arg0);
     }

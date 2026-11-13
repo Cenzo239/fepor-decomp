@@ -105,10 +105,10 @@ void fn_801F1E8C(void *arg0) {
 
 void fn_801F20A8(s32 arg0) {
     extern u8 gCardLinkStrings[];
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(gCardLinkStrings + 0xE1) & 0x2000) {
+    if (FileCache_GetFlags(gCardLinkStrings + 0xE1) & 0x2000) {
         Process_ClearFunc(arg0);
     }
 }
@@ -660,8 +660,8 @@ void fn_801F2E08(void *arg0) {
     }
 }
 void fn_801F31D0(void *arg0) {
-    s32 fn_8005C6A0(s32);
-    if (fn_8005C6A0(M2C_FIELD(arg0, s32 *, 0x30) + 0xB4) & 0x2000) {
+    s32 FileCache_GetFlags(s32);
+    if (FileCache_GetFlags(M2C_FIELD(arg0, s32 *, 0x30) + 0xB4) & 0x2000) {
         Process_ClearFunc(arg0);
     }
 }
@@ -1044,12 +1044,12 @@ extern "C" void fn_801F3C1C(void *arg0) {
 
 void fn_801F3CB0(s32 arg0) {
     extern u8 gOptionsStrs[];
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(gOptionsStrs + 0x1293) & 0x2000) {
+    if (FileCache_GetFlags(gOptionsStrs + 0x1293) & 0x2000) {
         if (fn_80161FB8() != 0) {
             fn_80162054();
             Process_ClearFunc(arg0);
@@ -2259,9 +2259,9 @@ void fn_801F7194(void *arg0) {
     void fn_80162054(void);
     void Process_ClearFunc(void *);
     void BattlePreview_Draw(void *);
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     extern u8 gBattlePreviewStrings[];
-    if ((fn_8005C6A0(gBattlePreviewStrings + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
+    if ((FileCache_GetFlags(gBattlePreviewStrings + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
         fn_80162054();
         M2C_FIELD(arg0, s32 *, 0x34) = Process_AttachFunc(BattlePreview_Draw, arg0);
         Process_ClearFunc(arg0);
@@ -2410,10 +2410,10 @@ void fn_801F7750(void *arg0)
 
 void fn_801F7838(s32 arg0) {
     extern u8 gBattlePreviewStrings[];
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(gBattlePreviewStrings + 0x24F) & 0x2000) {
+    if (FileCache_GetFlags(gBattlePreviewStrings + 0x24F) & 0x2000) {
         Process_ClearFunc(arg0);
     }
 }
@@ -3586,19 +3586,22 @@ void fn_801F9BD8(void *arg0) {
     extern f32 lbl_8036BA90;
     extern f32 lbl_8036BA8C;
     void *self;
-    s32 idx;
     void *a;
+    s32 idx;
     void *b;
     s8 v;
+    u8 *row;
 
     self = arg0;
     v = *(s8 *)((u8 *)arg0 + 0x54);
     if (v > 1) {
         idx = (v & 1) << 3;
-        a = *(void **)((u8 *)self + idx + 0x58);
+        row = (u8 *)self + idx;
+        a = *(void **)(row + 0x58);
         fn_80109C1C(a, 0x18);
         fn_80109448(a, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
-        b = *(void **)((u8 *)self + idx + 0x5C);
+        row = (u8 *)self + idx;
+        b = *(void **)(row + 0x5C);
         fn_80109C1C(b, 0x18);
         fn_80109448(b, 1, 2, lbl_8036BA18, lbl_8036BA90, lbl_8036BA8C);
     }

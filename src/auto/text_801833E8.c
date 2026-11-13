@@ -3728,14 +3728,14 @@ void fn_8018DD0C(void *arg0)
 
 #pragma global_optimizer off
 void fn_8018DD3C(void *arg0) {
-    u16 fn_8005C6A0(char *);
+    u16 FileCache_GetFlags(char *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
     void Process_AttachFunc(void *, void *);
     void fn_8018DE24(void *);
     extern u8 lbl_80279B1C[];
 
-    if (fn_8005C6A0((char *)lbl_80279B1C + 0x105) & 0x2000) {
+    if (FileCache_GetFlags((char *)lbl_80279B1C + 0x105) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x34, (char *)lbl_80279B1C + 0x105);
         Process_ClearFunc(arg0);
         Process_AttachFunc(fn_8018DE24, arg0);

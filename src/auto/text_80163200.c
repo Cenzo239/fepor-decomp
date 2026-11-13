@@ -2419,14 +2419,14 @@ void fn_80168D3C(s32 arg0) {
 
 #pragma opt_common_subs off
 void fn_80168D68(s32 arg0) {
-    u32 fn_8005C6A0(void *);
+    u32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     M2C_UNK Process_ClearFunc(s32);
     extern u8 lbl_80277A20[];
     extern u8 gUnitInfoPopup[];
     u8 ok;
 
-    if (!(fn_8005C6A0(lbl_80277A20 + 0x42) & 0x2000)) {
+    if (!(FileCache_GetFlags(lbl_80277A20 + 0x42) & 0x2000)) {
         ok = 0;
     } else {
         fn_8006EEFC(gUnitInfoPopup + 0xC4, lbl_80277A20 + 0x42);
@@ -4092,13 +4092,13 @@ void fn_8016B800(void *arg0) {
 
 void fn_8016B9EC(void *arg0) {
     s32 Process_AttachFunc(void *, void *);
-    u16 fn_8005C6A0(void *);
+    u16 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
     void fn_8016E0E4(void *);
     extern u8 lbl_80277EA0[];
 
-    if (fn_8005C6A0(&lbl_80277EA0[0x78]) & 0x2000) {
+    if (FileCache_GetFlags(&lbl_80277EA0[0x78]) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x38, (void *)((s32)lbl_80277EA0 + 0x78));
         *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(fn_8016E0E4, arg0);
         Process_ClearFunc(arg0);
@@ -4388,14 +4388,14 @@ void fn_8016BBB8(void *self) {
 
 void fn_8016C168(void *arg0) {
     s32 Process_AttachFunc(void *, void *);
-    u16 fn_8005C6A0(void *);
+    u16 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
     void fn_8016E1B4(void *);
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_80277EA0[];
 
-    if (fn_8005C6A0(&lbl_80277EA0[0x78]) & 0x2000) {
+    if (FileCache_GetFlags(&lbl_80277EA0[0x78]) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x38, (void *)((s32)lbl_80277EA0 + 0x78));
         *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(fn_8016E1B4, arg0);
         Ui_PlaySeCue((void *)((s32)lbl_80277EA0 + 0xD2), 0x64);

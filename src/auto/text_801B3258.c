@@ -256,7 +256,7 @@ void fn_801B484C(void *arg0, f32 f1, f32 f2, f32 f3, f32 f4) {
 
 #pragma opt_common_subs off
 void fn_801B5DB0(void *arg0) {
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     s32 fn_8007C3BC(s32);
     u8 fn_8007C484(s32);
@@ -264,7 +264,7 @@ void fn_801B5DB0(void *arg0) {
     u8 *temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, u8 **, 0x30);
-    if (fn_8005C6A0(gUnitStatusStr + 0xE1) & 0x2000) {
+    if (FileCache_GetFlags(gUnitStatusStr + 0xE1) & 0x2000) {
         if (fn_8007C484(fn_8007C3BC(M2C_FIELD(temp_r31, s32 *, 0x110)))) {
             fn_8006EEFC(temp_r31 + 0x18, gUnitStatusStr + 0xE1);
             Process_ClearFunc(arg0);
@@ -1446,13 +1446,13 @@ void fn_801B7B5C(void *arg0, s32 arg1, f32 farg0) {
 
 #pragma opt_common_subs off
 void fn_801B8334(void *arg0) {
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 lbl_8027C5A8[];
     u8 *temp_r31;
 
     temp_r31 = M2C_FIELD(arg0, u8 **, 0x30);
-    if (fn_8005C6A0(lbl_8027C5A8 + 0xA) & 0x2000) {
+    if (FileCache_GetFlags(lbl_8027C5A8 + 0xA) & 0x2000) {
         fn_8006EEFC(temp_r31 + 8, lbl_8027C5A8 + 0xA);
         Process_ClearFunc(arg0);
     }
@@ -1943,7 +1943,7 @@ void fn_801B8B94(void *arg0) {
 #pragma global_optimizer off
 void fn_801B91D8(void *arg0) {
     s32 Process_AttachFunc(void *, void *);
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
     void fn_801B8B94(void *);
@@ -1951,7 +1951,7 @@ void fn_801B91D8(void *arg0) {
     void *temp_r31;
 
     temp_r31 = *(void **)((char *)arg0 + 0x30);
-    if (fn_8005C6A0(lbl_8027C5E8 + 0x9C) & 0x2000) {
+    if (FileCache_GetFlags(lbl_8027C5E8 + 0x9C) & 0x2000) {
         fn_8006EEFC((char *)temp_r31 + 8, lbl_8027C5E8 + 0x9C);
         *(s32 *)((char *)arg0 + 0x34) = Process_AttachFunc(fn_801B8B94, arg0);
         Process_ClearFunc(arg0);
@@ -6195,12 +6195,12 @@ extern "C" void fn_801C2AD0(void *arg0) {
 
 void fn_801C32D4(s32 arg0) {
     extern u8 lbl_8027D030[];
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     s32 fn_80161FB8(void);
     void fn_80162054(void);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(lbl_8027D030 + 0x402) & 0x2000) {
+    if (FileCache_GetFlags(lbl_8027D030 + 0x402) & 0x2000) {
         if (fn_80161FB8() != 0) {
             fn_80162054();
             Process_ClearFunc(arg0);
@@ -11621,7 +11621,7 @@ void fn_801CF92C(void *arg0)
 
 #pragma global_optimizer off
 void fn_801CF99C(void *arg0) {
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
     extern u16 lbl_80331D00[];
@@ -11630,8 +11630,8 @@ void fn_801CF99C(void *arg0) {
     u8 ok;
 
     entry = (u8 *)lbl_80331D00 + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C;
-    if (!(fn_8005C6A0(lbl_8027DF20 + 0x13E) & 0x2000) ||
-        !(fn_8005C6A0(entry + 0x12C) & 0x2000)) {
+    if (!(FileCache_GetFlags(lbl_8027DF20 + 0x13E) & 0x2000) ||
+        !(FileCache_GetFlags(entry + 0x12C) & 0x2000)) {
         ok = 0;
     } else {
         fn_8006EEFC(entry, lbl_8027DF20 + 0x13E);
@@ -15748,7 +15748,7 @@ void fn_801DE074(void) {
 #pragma global_optimizer off
 void fn_801DE274(void) {
     void sprintf(void *, void *, ...);
-    s32 fn_8005C6A0(void *);
+    s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     extern u8 gUiSeCues[];
     extern u8 lbl_80299A78[];
@@ -15760,7 +15760,7 @@ void fn_801DE274(void) {
     i = 0;
     do {
         sprintf(buf, gUiSeCues + 0x661, *(s32 *)(p + 4));
-        if (fn_8005C6A0(buf) & 0x2000) {
+        if (FileCache_GetFlags(buf) & 0x2000) {
             fn_8006EEFC(p + 8, buf);
         }
         i += 1;
