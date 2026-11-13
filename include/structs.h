@@ -44,7 +44,7 @@ typedef struct UiTextLabel {
 typedef struct UnitRef {
     void *item; /* +0x00 */
     u8 uses;    /* +0x04 */
-    u8 flags;   /* +0x05: low6 name-id, bit6 tint, bit7 badge */
+    u8 flags;   /* +0x05: low6 name-id, bit6 droppable, bit7 equipped */
 } UnitRef;
 
 #endif
