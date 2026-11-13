@@ -6802,7 +6802,7 @@ void fn_80041514(void *arg0, char *arg1)
 #pragma use_lmw_stmw on
 void fn_80042558(void *arg0) {
     void fn_8005FEE8(void *, f32);
-    void fn_80049B78(void *, s32);
+    void MapObj_FadeOut(void *, s32);
     s32 fn_80046400(void *, void *);
     void fn_80049C30(void *, s32);
     extern u8 gMapObjEventList[];
@@ -6884,7 +6884,7 @@ void fn_80042558(void *arg0) {
                 if (found == NULL) {
                     break;
                 }
-                fn_80049B78(found, 0);
+                MapObj_FadeOut(found, 0);
                 break;
             case 2:
                 found = NULL;
@@ -9529,7 +9529,7 @@ void fn_80049B1C(void *arg0, u8 arg1)
     fn_80016180();
 }
 
-void fn_80049B78(void *arg0, u8 arg1) {
+void MapObj_FadeOut(void *arg0, u8 arg1) {
     void fn_8005FEE8(void *, f32);
     void fn_80044450(s32, s32);
     void fn_80016180(void);

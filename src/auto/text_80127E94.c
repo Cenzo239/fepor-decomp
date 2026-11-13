@@ -562,9 +562,9 @@ void fn_80129708(s32 arg0, u32 arg1) {
 
 void fn_8012975C(void *arg0) {
     u8 fn_80040824();
-    M2C_UNK fn_80049B78(s32, M2C_UNK);
+    M2C_UNK MapObj_FadeOut(s32, M2C_UNK);
     if (fn_80040824() != 0) {
-        fn_80049B78(M2C_FIELD(arg0, s32 *, 0x30), 1);
+        MapObj_FadeOut(M2C_FIELD(arg0, s32 *, 0x30), 1);
     }
 }
 

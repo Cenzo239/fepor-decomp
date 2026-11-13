@@ -11708,7 +11708,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
     void fn_800056A0(s32);
     void MapObjEvent_Push(void *, s32, s32, s32, s32);
     void *MapObjEvent_Find(void *, s32, s32, s32);
-    void fn_80049B78(void *, s32);
+    void MapObj_FadeOut(void *, s32);
     void *fn_80046F14(void *, s32, s32, u32, s32);
     s32 fn_80046400(void *, void *, s32 *);
     u8 fn_80049D6C(void *);
@@ -11735,7 +11735,7 @@ s32 Map_HideObjAt(s32 arg0, s32 arg1) {
                 ((u8 *)temp2)[4] = 0;
             }
         }
-        fn_80049B78(temp1, 0);
+        MapObj_FadeOut(temp1, 0);
     }
     {
         void *temp1 = fn_80046F14((void *)Map_Get(), arg0, arg1, 0x800, 0);
