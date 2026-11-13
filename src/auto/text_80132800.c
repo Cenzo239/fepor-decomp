@@ -832,6 +832,8 @@ void fn_80133EA4(s32 *arg0, void *arg1) {
     s16 x;
     s16 y;
     s16 half;
+    s16 off48;
+    s16 off4a;
 
     colW = *(s16 *)((u8 *)arg1 + 0x44);
     kind = *(s16 *)((u8 *)arg1 + 0x3E);
@@ -839,16 +841,17 @@ void fn_80133EA4(s32 *arg0, void *arg1) {
     t = *(s16 *)((u8 *)arg1 + 0x12);
     rem = *(s16 *)((u8 *)arg1 + 0x16) - t;
     rowH = *(s16 *)((u8 *)arg1 + 0x46);
+    off48 = *(s16 *)((u8 *)arg1 + 0x48);
+    off4a = *(s16 *)((u8 *)arg1 + 0x4A);
     t = (s16)rem;
-    rem = (s16)quot;
     hdiv = t / colW;
     rem = quot * colW;
     t = (s16)hdiv;
     rem = kind - rem;
     rem = (s16)rem;
     rem = t * rem;
-    x = (s16)(rem + *(s16 *)((u8 *)arg1 + 0x48));
-    y = (s16)((s16)(rowH * (s16)quot) + *(s16 *)((u8 *)arg1 + 0x4A));
+    x = (s16)(rem + off48);
+    y = (s16)((s16)(rowH * (s16)quot) + off4a);
     half = (s16)((rowH - fn_800102BC(-1, lbl_8036A5AC)) >> 1);
     if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
         x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
@@ -4305,6 +4308,7 @@ extern "C" void fn_80139D60(void *arg0, void *arg1) {
     void fn_8015547C(s16, s16, s32, s32, u8, s32);
     extern f32 lbl_8036A66C;
     extern f32 lbl_8036A668;
+    void *other = arg1;
     u8 flag;
     u8 sel;
     void *p;
@@ -4318,12 +4322,12 @@ extern "C" void fn_80139D60(void *arg0, void *arg1) {
 
     sel = 0;
     flag = sel;
-    if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
+    if (*(u8 *)((u8 *)other + 0x2D) == 0 && *(u8 *)((u8 *)other + 0x2E) == 0) {
         flag = 1;
     }
     if (flag) {
-        if (*(void **)((u8 *)arg1 + 0x34) != NULL) {
-            p = *(void **)((u8 *)*(void **)((u8 *)arg1 + 0x38) + 8);
+        if (*(void **)((u8 *)other + 0x34) != NULL) {
+            p = *(void **)((u8 *)*(void **)((u8 *)other + 0x38) + 8);
         } else {
             p = NULL;
         }
@@ -4811,7 +4815,7 @@ s32 fn_8013AC00(void *arg0, s32 arg1) {
     return 1;
 }
 
-void *fn_8013AC54(void *arg0) {
+void *Ui_ListGetSelected(void *arg0) {
     void **node;
     s16 idx;
     u32 count;

@@ -4820,7 +4820,7 @@ extern "C" void fn_80191194(void *arg0) {
         virtual void v10() = 0;
         virtual void v11(s32) = 0;
     };
-    s32 fn_8013AC54(s32);
+    s32 Ui_ListGetSelected(s32);
     void fn_8013AD70(s32, s32);
     Obj *Ui_FindChild(void *, s32, s32);
     void Process_Goto(void *, s32);
@@ -4831,7 +4831,7 @@ extern "C" void fn_80191194(void *arg0) {
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x50);
     temp_r30 = Ui_FindChild(arg0, 5, 0);
     fn_8013AD70(temp_r31, *(s32 *)(gBattleState + 0xB0));
-    temp_r30->v11(fn_8013AC54(temp_r31));
+    temp_r30->v11(Ui_ListGetSelected(temp_r31));
     Process_Goto(arg0, *(u8 *)((u8 *)arg0 + 0x5D));
 }
 #pragma cplusplus reset
@@ -4852,7 +4852,7 @@ extern "C" void fn_80191224(void *arg0) {
         virtual void v10() = 0;
         virtual void v11(s32) = 0;
     };
-    s32 fn_8013AC54(s32);
+    s32 Ui_ListGetSelected(s32);
     void fn_8013AD70(s32, s32);
     Obj *Ui_FindChild(void *, s32, s32);
     extern u8 gBattleState[];
@@ -4862,7 +4862,7 @@ extern "C" void fn_80191224(void *arg0) {
     temp_r31 = *(s32 *)((u8 *)arg0 + 0x50);
     temp_r30 = Ui_FindChild(arg0, 5, 0);
     fn_8013AD70(temp_r31, *(s32 *)(gBattleState + 0xAC));
-    temp_r30->v11(fn_8013AC54(temp_r31));
+    temp_r30->v11(Ui_ListGetSelected(temp_r31));
 }
 #pragma cplusplus reset
 void fn_8019129C(void *arg0) {
@@ -5208,7 +5208,7 @@ extern "C" void fn_80191CFC(void *arg0) {
     void *Heap_Alloc(s32);
     void fn_8011D79C(s32);
     void fn_80138808(void *, s32);
-    s32 fn_8013AC54(void *);
+    s32 Ui_ListGetSelected(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
@@ -5291,7 +5291,7 @@ extern "C" void fn_80191CFC(void *arg0) {
         M2C_FIELD(temp_r31, s16 *, 8) = 4;
         M2C_FIELD(temp_r31, s16 *, 0x24) = 8;
         M2C_FIELD(temp_r31, s32 *, 0x34) |= 0x10;
-        fn_80138808(temp_r31, fn_8013AC54(temp_r30));
+        fn_80138808(temp_r31, Ui_ListGetSelected(temp_r30));
         Ui_AddChild(arg0, temp_r31);
         temp_r7 = M2C_FIELD(temp_r31, s16 *, 0xC);
         sp8.x = 0x138;
@@ -5309,7 +5309,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     u8 fn_80092F9C(void *);
     s32 fn_800C3D48(void *);
     void fn_8011D79C(s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -5392,12 +5392,12 @@ extern "C" void fn_80191F2C(void *arg0) {
     self = arg0;
     list = *(void **)((u8 *)arg0 + 0x50);
     child = (Child *)Ui_FindChild(self, 2, 0);
-    unit = fn_8013AC54(list);
+    unit = Ui_ListGetSelected(list);
     Ui_UpdatePanelWidgets(self);
-    if (unit != fn_8013AC54(list)) {
-        if (unit != 0 && fn_8013AC54(list) != 0) {
-            ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)fn_8013AC54(list));
-        } else if (unit != 0 && fn_8013AC54(list) == 0) {
+    if (unit != Ui_ListGetSelected(list)) {
+        if (unit != 0 && Ui_ListGetSelected(list) != 0) {
+            ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)Ui_ListGetSelected(list));
+        } else if (unit != 0 && Ui_ListGetSelected(list) == 0) {
             fn_80140258(self, *(void **)((u8 *)self + 0x54),
                         Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
             if (fn_8014D8DC(gBattleState) != 0) {
@@ -5410,14 +5410,14 @@ extern "C" void fn_80191F2C(void *arg0) {
             Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
             fn_8014027C(self, *(void **)((u8 *)self + 0x54),
                         Pair(0x138, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0xC)), 1);
-            ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)fn_8013AC54(list));
+            ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)Ui_ListGetSelected(list));
             if (fn_8014D8DC(gBattleState) != 0) {
                 fn_80140258(self, *(void **)((u8 *)self + 0x58),
                             Pair(0x260, *(s16 *)((u8 *)*(void **)((u8 *)self + 0x58) + 0xC)), 0);
             }
             fn_8013FF00(self, list);
         }
-        unit = fn_8013AC54(list);
+        unit = Ui_ListGetSelected(list);
     }
     child->unk40 = unit;
     flags = gUiInputFlags;
@@ -5527,7 +5527,7 @@ extern "C" void fn_80191F2C(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801925A0(void *arg0) {
-    s32 fn_8013AC54(void *);
+    s32 Ui_ListGetSelected(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
@@ -5581,7 +5581,7 @@ extern "C" void fn_801925A0(void *arg0) {
             var_r29 = *(void **)((u8 *)var_r30 + 0x54);
             Ui_AddChild(var_r30, var_r29);
         }
-        ((Obj *)var_r29)->v11(fn_8013AC54(var_r31));
+        ((Obj *)var_r29)->v11(Ui_ListGetSelected(var_r31));
         if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x138) {
             temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
             sp10[0] = 0x138;
@@ -5636,7 +5636,7 @@ extern "C" void fn_801927DC(void *arg0) {
     void *fn_80193950(void *, s16, s16, s32);
     void *fn_801938F8(void *, s16, s16, s32);
     void fn_8013FF00(void *, void *);
-    s32 fn_8013AC54(void *);
+    s32 Ui_ListGetSelected(void *);
     u8 fn_8014D8DC(void *);
     void fn_8011D79C(void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -5815,7 +5815,7 @@ extern "C" void fn_801927DC(void *arg0) {
 
     if (*(s16 *)((u8 *)list + 0x4E) != 0x7FFF) {
         Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
-        ((Obj *)*(void **)((u8 *)self + 0x54))->v11(fn_8013AC54(list));
+        ((Obj *)*(void **)((u8 *)self + 0x54))->v11(Ui_ListGetSelected(list));
         q = *(void **)((u8 *)self + 0x54);
         if (*(s16 *)((u8 *)q + 0xA) != 0x138) {
             y = *(s16 *)((u8 *)q + 0xC);

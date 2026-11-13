@@ -5969,7 +5969,7 @@ void fn_8016EEA8(void *arg0) {
 #pragma cplusplus on
 extern "C" void fn_8016EF58(void *arg0) {
     void fn_8013AD70(void *, s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_80138808(void *, void *);
     void Process_Goto(void *, u8);
     extern u8 gBattleState[];
@@ -5993,18 +5993,18 @@ extern "C" void fn_8016EF58(void *arg0) {
     fn_8013AD70(inner, *(s32 *)(gBattleState + 0xB0));
     switch ((s32)*(u8 *)((u8 *)arg0 + 0x65)) {
     case 0xB:
-        ((Obj *)*(void **)((u8 *)arg0 + 0x50))->v11(fn_8013AC54(inner));
+        ((Obj *)*(void **)((u8 *)arg0 + 0x50))->v11(Ui_ListGetSelected(inner));
         break;
     default:
-        ((Obj *)*(void **)((u8 *)arg0 + 0x4C))->v11(fn_8013AC54(inner));
-        fn_80138808(*(void **)((u8 *)arg0 + 0x44), fn_8013AC54(inner));
+        ((Obj *)*(void **)((u8 *)arg0 + 0x4C))->v11(Ui_ListGetSelected(inner));
+        fn_80138808(*(void **)((u8 *)arg0 + 0x44), Ui_ListGetSelected(inner));
         break;
     }
     Process_Goto(arg0, *(u8 *)((u8 *)arg0 + 0x65));
 }
 extern "C" void fn_8016F014(void *arg0) {
     void fn_8013AD70(void *, s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_80138808(void *, void *);
     extern u8 gBattleState[];
     struct Obj {
@@ -6027,11 +6027,11 @@ extern "C" void fn_8016F014(void *arg0) {
     fn_8013AD70(inner, *(s32 *)(gBattleState + 0xAC));
     switch ((s32)*(u8 *)((u8 *)arg0 + 0x65)) {
     case 0xB:
-        ((Obj *)*(void **)((u8 *)arg0 + 0x50))->v11(fn_8013AC54(inner));
+        ((Obj *)*(void **)((u8 *)arg0 + 0x50))->v11(Ui_ListGetSelected(inner));
         break;
     default:
-        ((Obj *)*(void **)((u8 *)arg0 + 0x4C))->v11(fn_8013AC54(inner));
-        fn_80138808(*(void **)((u8 *)arg0 + 0x44), fn_8013AC54(inner));
+        ((Obj *)*(void **)((u8 *)arg0 + 0x4C))->v11(Ui_ListGetSelected(inner));
+        fn_80138808(*(void **)((u8 *)arg0 + 0x44), Ui_ListGetSelected(inner));
         break;
     }
 }
@@ -7155,7 +7155,7 @@ extern "C" void fn_80171374(void *arg0) {
     void fn_8013B064(void *, void *);
     void fn_8013AD70(void *, s32);
     void Ui_AddChild(void *, void *);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_80138808(void *, void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -7230,7 +7230,7 @@ extern "C" void fn_80171374(void *arg0) {
     if (q) M2C_FIELD(q, s32 *, 4)++;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 0x24) = 8;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 8) = 0x103;
-    ((Obj *)M2C_FIELD(arg0, void **, 0x4C))->v11(fn_8013AC54(M2C_FIELD(arg0, void **, 0x40)));
+    ((Obj *)M2C_FIELD(arg0, void **, 0x4C))->v11(Ui_ListGetSelected(M2C_FIELD(arg0, void **, 0x40)));
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), u8 *, 0x48) = 1;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), u8 *, 0x78) = 1;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), u8 *, 0x4A) = 0;
@@ -7296,7 +7296,7 @@ extern "C" void fn_80171374(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x44), s32 *, 0x4C) = 1;
     q = M2C_FIELD(arg0, void **, 0x44);
     M2C_FIELD(q, u32 *, 0x34) |= 0x10;
-    fn_80138808(M2C_FIELD(arg0, void **, 0x44), fn_8013AC54(M2C_FIELD(arg0, void **, 0x40)));
+    fn_80138808(M2C_FIELD(arg0, void **, 0x44), Ui_ListGetSelected(M2C_FIELD(arg0, void **, 0x40)));
 
     p = Heap_Alloc(0x4C);
     if (p) {
@@ -8556,7 +8556,7 @@ extern "C" void fn_801743B4(void *arg0) {
     void *fn_80179DEC(void *, s16, s16, s32);
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_8013AF08(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
@@ -8655,7 +8655,7 @@ extern "C" void fn_801743B4(void *arg0) {
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x24) = 8;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 8) = 0x104;
-    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(fn_8013AC54(inner));
+    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(Ui_ListGetSelected(inner));
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
 
     p = Heap_Alloc(0x12C);
@@ -8946,7 +8946,7 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
     void Process_ClearFunc(void *, void *);
     void *fn_8000CAA0(void *, void *);
     u8 fn_80093088(u32);
-    u32 fn_8013AC54(void *);
+    u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801695BC(u32, void *, s32);
@@ -8993,10 +8993,10 @@ extern "C" void Ui_HandleUnitTradeSelectInput(void *arg0) {
     self = arg0;
     obj40 = *(void **)((u8 *)arg0 + 0x40);
     obj50 = *(void **)((u8 *)arg0 + 0x50);
-    var_r30 = fn_8013AC54(obj40);
+    var_r30 = Ui_ListGetSelected(obj40);
     Ui_UpdatePanelWidgets(arg0);
-    if (var_r30 != fn_8013AC54(obj40)) {
-        var_r30 = fn_8013AC54(obj40);
+    if (var_r30 != Ui_ListGetSelected(obj40)) {
+        var_r30 = Ui_ListGetSelected(obj40);
         ((VObj *)obj50)->v11(var_r30);
     }
     flags = gUiInputFlags;
@@ -9072,7 +9072,7 @@ extern "C" void fn_801752EC(void *arg0) {
     void *fn_80179DEC(void *, s16, s16, s32);
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_8013AF08(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
@@ -9172,7 +9172,7 @@ extern "C" void fn_801752EC(void *arg0) {
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x24) = 8;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x50) + 8) = 0x104;
-    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(fn_8013AC54(inner));
+    ((Obj *)*(void **)((u8 *)self + 0x50))->v11(Ui_ListGetSelected(inner));
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x50) + 0x48) = 0;
     Ui_AddChild(self, *(void **)((u8 *)self + 0x50));
 
@@ -9515,7 +9515,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_8002833C(void *, u32);
     void fn_80138808(void *, u32);
-    u32 fn_8013AC54(void *);
+    u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void fn_80140210(void *, void *, s32);
     void fn_80140258(void *, void *, s16 *, s32);
@@ -9551,10 +9551,10 @@ extern "C" void fn_80175E3C(void *arg0) {
     void *obj4c;
     void *obj44;
 
-    var_r30 = fn_8013AC54(*(void **)((u8 *)arg0 + 0x40));
+    var_r30 = Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40));
     Ui_UpdatePanelWidgets(arg0);
-    if (var_r30 != fn_8013AC54(*(void **)((u8 *)arg0 + 0x40))) {
-        var_r30 = fn_8013AC54(*(void **)((u8 *)arg0 + 0x40));
+    if (var_r30 != Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40))) {
+        var_r30 = Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x40));
         obj4c = *(void **)((u8 *)arg0 + 0x4C);
         ((VObj *)obj4c)->v11(var_r30);
         fn_80138808(*(void **)((u8 *)arg0 + 0x44), var_r30);
@@ -9604,7 +9604,7 @@ extern "C" void fn_801761F8(void *arg0) {
  u8 fn_801EAA88(void);
  void fn_8013B064(void *,void *);
  void Ui_AddChild(void *,void *);
- void *fn_8013AC54(void *);
+ void *Ui_ListGetSelected(void *);
  void fn_80138808(void *,void *);
  void fn_8013FF00(void *,void *);
  u8 *fn_8018D900(s32);
@@ -9662,7 +9662,7 @@ Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x40));
  if(q)M2C_FIELD(q,s32 *,4)++;
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),s16 *,0x24)=8;
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),s16 *,8)=0x103;
- ((Obj *)M2C_FIELD(arg0,void * *,0x4C))->v11(fn_8013AC54(M2C_FIELD(arg0,void * *,0x40)));
+ ((Obj *)M2C_FIELD(arg0,void * *,0x4C))->v11(Ui_ListGetSelected(M2C_FIELD(arg0,void * *,0x40)));
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x4C),u8 *,0x48)=0;
  Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x4C));
  p=Heap_Alloc(0x50);
@@ -9699,7 +9699,7 @@ M2C_FIELD(p,u8 *,63)=0xFF;M2C_FIELD(p,s32 *,0x40)=0;M2C_FIELD(p,s16 *,0x44)=0;M2
  M2C_FIELD(M2C_FIELD(arg0,void * *,0x44),s32 *,0x4C)=1;
  q=M2C_FIELD(arg0,void * *,0x44);
  M2C_FIELD(q,u32 *,0x34)|=0x10;
- fn_80138808(M2C_FIELD(arg0,void * *,0x44),fn_8013AC54(M2C_FIELD(arg0,void * *,0x40)));
+ fn_80138808(M2C_FIELD(arg0,void * *,0x44),Ui_ListGetSelected(M2C_FIELD(arg0,void * *,0x40)));
  Ui_AddChild(arg0,M2C_FIELD(arg0,void * *,0x44));
  fn_8013FF00(arg0,M2C_FIELD(arg0,void * *,0x40));
 }
@@ -14588,7 +14588,7 @@ void fn_8017FD84(void *arg0) {
     void fn_8013FEF0(void);
     void fn_8016A5AC(void *);
     void *Ui_FindChild(void *, s32, s32);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void *fn_80016B7C(void *);
     void fn_8014876C(void *, s32, s32);
     s8 fn_80036DE0(void *, void *);
@@ -14609,7 +14609,7 @@ void fn_8017FD84(void *arg0) {
     fn_8016A5AC(*(void **)((u8 *)self + 0x18));
     obj81 = Ui_FindChild(self, 0x81, 0);
     obj82 = Ui_FindChild(self, 0x82, 0);
-    unit = fn_8013AC54(obj81);
+    unit = Ui_ListGetSelected(obj81);
     index = *(s16 *)((u8 *)obj82 + 0x4E);
     node = *(void **)((u8 *)obj82 + 0x64);
     if ((s16)index >= 0) {
@@ -14849,7 +14849,7 @@ extern "C" void fn_80180624(void *arg0) {
     void *fn_80037004(void *, u8);
     u8 fn_8003701C(void *);
     void fn_80136F2C(void *, void *, s32 *, void **);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_8013FCE0(void *, void *, void **, void **);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
@@ -14911,10 +14911,10 @@ extern "C" void fn_80180624(void *arg0) {
 
     obj81 = Ui_FindChild(arg0, 0x81, 0);
     obj82 = Ui_FindChild(arg0, 0x82, 0);
-    unit = fn_8013AC54(obj81);
+    unit = Ui_ListGetSelected(obj81);
     Ui_UpdatePanelWidgets(arg0);
-    if (unit != fn_8013AC54(obj81)) {
-        unit = fn_8013AC54(obj81);
+    if (unit != Ui_ListGetSelected(obj81)) {
+        unit = Ui_ListGetSelected(obj81);
         if (*(void **)((u8 *)obj82 + 0x48) != unit) {
             *(void **)((u8 *)obj82 + 0x48) = unit;
             listHd = (u8 *)obj82 + 0x60;
@@ -14991,7 +14991,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void fn_8013B064(void *, void *);
     void Ui_AddChild(void *, void *);
     void fn_80142060(void *);
-    void *fn_8013AC54(void *);
+    void *Ui_ListGetSelected(void *);
     void fn_80136F2C(void *, void *, void *, void *);
     void *fn_80037004(void *, u8);
     u8 fn_8003701C(void *);
@@ -15142,7 +15142,7 @@ extern "C" void fn_80180AC8(void *arg0) {
         void *panel = (void *)pm0;
         *(s16 *)((u8 *)panel + 8) = 0x82;
         *(u8 *)((u8 *)panel + 0x4C) = 0;
-        ret = fn_8013AC54(obj);
+        ret = Ui_ListGetSelected(obj);
         if (*(void **)((u8 *)panel + 0x48) != ret) {
             *(void **)((u8 *)panel + 0x48) = ret;
             link = (u8 *)panel + 0x60;
