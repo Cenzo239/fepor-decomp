@@ -16083,7 +16083,8 @@ s32 fn_8018256C(void) {
     return 1;
 }
 
-s32 Ai_TryHandleLowHpHeal(s32 arg0) {
+s32 Ai_TryHandleLowHpHeal(s32 unit) {
+    /* When low-HP and no hostile staff action: try heal item, seek healer, or approach safety. */
     void fn_8010AC58(s32);
     u8 Ai_TryApproachHealer(s32);
     u8 Ai_TrySelectApproachTile(s32);
@@ -16098,19 +16099,19 @@ s32 Ai_TryHandleLowHpHeal(s32 arg0) {
     if ((*(u8 *)(gAiState + 1) & 4) != 0) {
         return 1;
     }
-    if ((fn_8010F670(arg0, Ai_UnitIsHostileToActive) == 0) && (Unit_HasLowHpAi(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
-        if (Ai_TryUseHealItem(arg0) != 0) {
+    if ((fn_8010F670(unit, Ai_UnitIsHostileToActive) == 0) && (Unit_HasLowHpAi(unit) != 0) && (Unit_IsLowHp(unit) != 0)) {
+        if (Ai_TryUseHealItem(unit) != 0) {
             return 1;
         }
-        if (Ai_TrySeekHealer(arg0) != 0) {
+        if (Ai_TrySeekHealer(unit) != 0) {
             return 1;
         }
-        if (Ai_TrySeekHealTerrain(arg0) != 0) {
-            fn_8010AC58(arg0);
-        } else if (Ai_TrySelectApproachTile(arg0) != 0) {
-            fn_8010AC58(arg0);
-        } else if (Ai_TryApproachHealer(arg0) != 0) {
-            fn_8010AC58(arg0);
+        if (Ai_TrySeekHealTerrain(unit) != 0) {
+            fn_8010AC58(unit);
+        } else if (Ai_TrySelectApproachTile(unit) != 0) {
+            fn_8010AC58(unit);
+        } else if (Ai_TryApproachHealer(unit) != 0) {
+            fn_8010AC58(unit);
         }
         goto block_15;
     }
