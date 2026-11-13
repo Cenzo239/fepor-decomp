@@ -7634,7 +7634,7 @@ s32 fn_801C6E60(s32 arg0) {
     return 0;
 }
 
-void fn_801C6F7C(void){void fn_801C7210(void);fn_801C7210();}
+void fn_801C6F7C(void){void Light_FadeProcess(void);Light_FadeProcess();}
 
 void fn_801C6F9C(void) {
     extern u8 lbl_802981D0[];
@@ -7685,7 +7685,7 @@ u32* fn_801C7080(u32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_801C7210(void *arg0) {
+void Light_FadeProcess(void *arg0) {
     void *fn_8000C0C0(void *);
     void fn_8000C188(void *);
     void Process_Unlink(void *);
