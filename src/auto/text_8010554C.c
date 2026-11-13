@@ -268,13 +268,14 @@ void fn_80105A30(s32 arg0, s32 arg1) {
     Stream_Write(arg1, 0x10, arg0);
 }
 
-s32 Status_SumBonus(s32 *arg0) {
+/* Sum Res entry byte 0x1A for every set bit in a status/ability mask (ids 0..0x61). */
+s32 Status_SumBonus(s32 *bits) {
     s32 total = 0;
     u8 i;
 
     for (i = 0; i < 0x62; i++) {
-        if (GetUnitIfBitSet((u32 *)arg0, i) != NULL) {
-            total += M2C_FIELD(GetUnitIfBitSet((u32 *)arg0, i), u8 *, 0x1A);
+        if (GetUnitIfBitSet((u32 *)bits, i) != NULL) {
+            total += M2C_FIELD(GetUnitIfBitSet((u32 *)bits, i), u8 *, 0x1A);
         }
     }
     return total;
