@@ -20887,7 +20887,7 @@ void fn_800FBF54(void) {
 void fn_800FBF70(s32 arg0) {
     u8 fn_80102360(void *, s16 *, s16 *, u8);
     void Ui_ConfirmUnitAction(void *);
-    void fn_80028160(void *);
+    void UiCtx_RefreshRangeSelect(void *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_800FF918(s32);
     void Process_ClearFunc(s32);
@@ -20907,7 +20907,7 @@ void fn_800FBF70(s32 arg0) {
         g = gAiState;
         g[0x21C] = 0;
         Ui_ConfirmUnitAction(ctx);
-        fn_80028160(ctx);
+        UiCtx_RefreshRangeSelect(ctx);
         Ai_SetUnitMoveTo(unit, spA, sp8, 1, 0xFFFF, 0, 0, -1);
         if (g[0x21C] != 0) {
             fn_800FF918(saved);

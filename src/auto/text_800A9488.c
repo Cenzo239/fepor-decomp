@@ -612,7 +612,7 @@ void Map_UpdateCursorMoveLimit(void) {
 }
 
 void MapUi_ShowUnitRanges(void *arg0) {
-    void fn_80028160(void *);
+    void UiCtx_RefreshRangeSelect(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
     void fn_800227F8(void *, s32);
@@ -629,7 +629,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
     u8 temp_r31;
 
     if ((s8)gUiContext[0x12] != 0) {
-        fn_80028160(gUiContext);
+        UiCtx_RefreshRangeSelect(gUiContext);
         temp_r31 = gUiContext[0x11];
         fn_80022DAC(gBattleMap, 8, 0);
         fn_80022FD8(gBattleMap, 5);

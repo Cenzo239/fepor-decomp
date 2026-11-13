@@ -3943,7 +3943,7 @@ void fn_800280C8(void *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void fn_80028160(void *arg0) {
+void UiCtx_RefreshRangeSelect(void *arg0) {
     void *unit;
     u8 *map;
 
