@@ -1952,7 +1952,7 @@ void fn_8012497C(void *arg0) {
     u8 fn_800AA188(void);
     void fn_80124E58(void *, f32 *, f32 *);
     void Fx_DrawParticles(void *);
-    f32 fn_8020322C(void *);
+    f32 Vec_Length(void *);
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
     extern f32 lbl_8036A32C;
@@ -1996,7 +1996,7 @@ void fn_8012497C(void *arg0) {
             void *p = (u8 *)self + 0x38;
             *(u8 *)((u8 *)self + 0x4E) = z;
             t = Math_Lerp(lbl_8036A30C, lbl_8036A33C, lbl_8036A308,
-                            fn_8020322C(p) / *(f32 *)((u8 *)self + 0x50));
+                            Vec_Length(p) / *(f32 *)((u8 *)self + 0x50));
         }
         t = lbl_8036A33C - t;
         if (t <= lbl_8036A340) {

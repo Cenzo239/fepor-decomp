@@ -7125,7 +7125,7 @@ void fn_801C6234(void *arg0) {
     void PSMTXConcat(void *, void *, void *);
     void fn_802029C4(void *, void *, void *);
     void fn_802031E8(f32 *, f32 *);
-    f32 fn_8020322C(f32 *);
+    f32 Vec_Length(f32 *);
     f32 fn_80203270(f32 *, f32 *);
     f64 fn_80238788(f64);
     void fn_801C65E0(void);
@@ -7187,7 +7187,7 @@ void fn_801C6234(void *arg0) {
                     mtx[2][3] = lbl_8036B424;
                     fn_802029C4(mtx, vec, vec);
                     ((f32 *)vec)[1] = lbl_8036B424;
-                    if (fn_8020322C((f32 *)vec) > lbl_8036B424) {
+                    if (Vec_Length((f32 *)vec) > lbl_8036B424) {
                         fn_802031E8((f32 *)vec, (f32 *)vec);
                         dot = fn_80203270((f32 *)refv, (f32 *)vec);
                         if (lbl_8036B434 <= dot) {

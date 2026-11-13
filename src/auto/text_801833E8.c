@@ -9064,7 +9064,7 @@ void MapSelect_StartMove(void *arg0) {
     void *fn_80053C30(u8 *, void *);
     f32 Math_Angle2D(f32, f32, f32, f32);
     void fn_8014CBD8(void *, f32, f32);
-    f32 fn_8020322C(f32 *);
+    f32 Vec_Length(f32 *);
     extern void fn_8019A364(void);
     extern void fn_8019A7A8(void);
     extern u32 lbl_8027AA2C[3];
@@ -9084,7 +9084,7 @@ void MapSelect_StartMove(void *arg0) {
     *(u32 *)&vec[2] = lbl_8027AA2C[2];
     vec[0] = (f32)((s8)((u8 *)arg0)[0x3C] - (s8)((u8 *)arg0)[0x3A]);
     vec[1] = (f32)((s8)((u8 *)arg0)[0x3D] - (s8)((u8 *)arg0)[0x3B]);
-    *(f32 *)((u8 *)arg0 + 0x4C) = fn_8020322C(vec);
+    *(f32 *)((u8 *)arg0 + 0x4C) = Vec_Length(vec);
     *(s16 *)((u8 *)arg0 + 0x4A) = (s16)(lbl_8036AF10 * *(f32 *)((u8 *)arg0 + 0x4C));
     if (*(s16 *)((u8 *)arg0 + 0x4A) <= 0) {
         *(s16 *)((u8 *)arg0 + 0x4A) = 1;

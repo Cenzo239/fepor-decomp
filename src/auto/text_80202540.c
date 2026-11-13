@@ -519,7 +519,7 @@ void fn_802031E8(f32 *src, f32 *dst) {
     dst[2] = z;
 }
 
-f32 fn_8020322C(void *arg0) {
+f32 Vec_Length(void *arg0) {
     extern f32 lbl_8036BC70;
     extern f32 lbl_8036BC74;
     f32 temp_f0;

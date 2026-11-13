@@ -16325,7 +16325,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void fn_802029C4(void *, void *, void *);
     void fn_802031A8(void *, void *, void *);
     void fn_802031E8(void *, void *);
-    f32 fn_8020322C(void *);
+    f32 Vec_Length(void *);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -16413,7 +16413,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     *(s32 *)&sp88[1] = *(s32 *)(tbl + 0x5C);
     *(s32 *)&sp88[2] = *(s32 *)(tbl + 0x60);
     fn_802031A8((u8 *)cam + 0xE0, (u8 *)cam + 0xD4, sp88);
-    if (fn_8020322C(sp88) > lbl_80369FB8) {
+    if (Vec_Length(sp88) > lbl_80369FB8) {
         fn_802031E8(sp88, sp88);
         if (sp88[1] < lbl_80369FB8) {
             sp88[1] *= lbl_80369FBC;
