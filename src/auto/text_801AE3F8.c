@@ -473,7 +473,7 @@ void fn_801AEE58(void) {
     return;
 }
 
-void fn_801AF020(void *arg0) {
+void Ui_HandleUnitPanelListMode(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
     extern u8 gConvoy[];
@@ -1352,22 +1352,22 @@ void fn_801B0C70(void *arg0) {
 }
 #pragma opt_common_subs on
 void fn_801B0D6C(void *arg0) {
-    s32 UnitRef_GetName(void *);
+    s32 fn_8001D2C8(void *);
     s32 fn_8001ED58(void);
     void fn_8023440C(void *, s32, s32);
     void fn_801CE11C(void *, s32, s32, void *);
     void fn_8011D79C(s32);
-    u32 Ui_FindChild(void *, s32, s32, void *);
-    void Ui_SetWidgetText(u32, s32);
-    void *obj48;
-    u8 b;
-    void *p60;
-    void *obj6c;
+    u32 fn_8013FF94(void *, s32, s32, void *);
+    void fn_801658DC(u32, s32);
     s32 saved;
-    u32 res;
+    void *p60;
+    u8 b;
+    void *obj6c;
+    void *obj48;
+    register unsigned long res;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
-    fn_8023440C(&lbl_80331C6C, UnitRef_GetName((u8 *)obj48 + 0x60), 0x14);
+    fn_8023440C(&lbl_80331C6C, fn_8001D2C8((u8 *)obj48 + 0x60), 0x14);
     b = 0;
     ((u8 *)&lbl_80331C6C)[0x14] = b;
     p60 = *(void **)((u8 *)obj48 + 0x60);
@@ -1378,9 +1378,9 @@ void fn_801B0D6C(void *arg0) {
     fn_8011D79C(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x24));
     obj6c = *(void **)((u8 *)arg0 + 0x6C);
     saved = *(s32 *)((u8 *)obj6c + 0x6C);
-    res = Ui_FindChild(arg0, -0x1000, 0, obj6c);
+    res = fn_8013FF94(arg0, -0x1000, 0, obj6c);
     if (res != 0U) {
-        Ui_SetWidgetText(res, saved);
+        fn_801658DC(res, saved);
     }
 }
 void fn_801B0F60(void *arg0) {
