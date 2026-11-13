@@ -909,7 +909,7 @@ void main(void) {
     void fn_80014EA8(void);
     void fn_80025970(void);
     void fn_80025BA0(void);
-    void fn_8005AE78(void);
+    void Game_PollSoftReset(void);
     void fn_8005BCF0(void);
     void fn_80066124(s32);
     void fn_800675E8(s32);
@@ -1082,7 +1082,7 @@ void main(void) {
             fn_8006E660();
         }
         fn_80006754();
-        fn_8005AE78();
+        Game_PollSoftReset();
     }
 }
 #pragma global_optimizer reset

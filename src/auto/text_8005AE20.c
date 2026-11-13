@@ -145,7 +145,7 @@ void *fn_8005AE68(void) {
     return lbl_8026AE88 + 9;
 }
 
-void fn_8005AE78(void) {
+void Game_PollSoftReset(void) {
     void OSResetSystem(s32, s32, s32);
     u8 fn_80014E70(void);
     void fn_800B46D8(void);
