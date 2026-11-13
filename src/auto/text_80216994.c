@@ -2835,7 +2835,7 @@ s32 __CARDGetFatBlock(void *arg0);
 s32 __CARDUpdateDir(s32 arg0, s32 arg1);
 s32 __CARDPutControlBlock(void *arg0, s32 arg1);
 int __CARDEraseSector(s32 chan, u32 addr, void *callback);
-void fn_8021CA04(s32 chan, s32 result);
+void __CARDEraseCallback(s32 chan, s32 result);
 #pragma dont_inline on
 void __CARDWriteCallback(s32 chan, s32 result) {
     u8 *card;
@@ -2870,7 +2870,7 @@ void __CARDWriteCallback(s32 chan, s32 result) {
             result = -6;
             goto error;
         }
-        result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * (u32)*(u16 *)(fileInfo + 0x10), fn_8021CA04);
+        result = __CARDEraseSector(chan, *(s32 *)(card + 0xC) * (u32)*(u16 *)(fileInfo + 0x10), __CARDEraseCallback);
     }
 
     if (result < 0) {
@@ -2892,7 +2892,7 @@ s32 fn_8021CAB4(void *arg0, void *arg1, u32 arg2, u32 arg3, void *arg4)
     s32 __CARDEraseSector(void *, u32);
 
     extern void fn_80216994(void);
-    extern void fn_8021CA04(void);
+    extern void __CARDEraseCallback(void);
 
     void *state;
     u32 alignment;
