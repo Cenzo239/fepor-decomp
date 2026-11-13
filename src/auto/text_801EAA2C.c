@@ -1016,7 +1016,7 @@ void fn_801EC7B8(void) {
     extern void *gAramFreeList;
     extern s32 gAramBase;
     extern s32 gAramHeapSize;
-    extern s32 lbl_803683D0;
+    extern s32 gAramRequestCount;
 
     s32 tick;
     s32 half;
@@ -1039,7 +1039,7 @@ void fn_801EC7B8(void) {
 
     DebugPrint(lbl_8027F1D0);
     tick = OSGetTick();
-    while (lbl_803683D0 != 0) {}
+    while (gAramRequestCount != 0) {}
     half = gAramHeapSize >> 1;
     if (fn_800C44F4(fn_8005BA00()) >= (u32)half) {
         buf = fn_800C45B8(-half, lbl_8027F1D0 + 0x18, 0);
@@ -1076,7 +1076,7 @@ void fn_801EC7B8(void) {
                 break;
             }
             DCInvalidateRange(buf);
-            lbl_803683D0 += 1;
+            gAramRequestCount += 1;
             ARQPostRequest(*slot, 0, 1, 1, *(s32 *)((u8 *)*slot + 0x68), (s32)buf,
                         *(s32 *)((u8 *)*slot + 0x64), fn_801ED838);
             i += 1;
@@ -1215,10 +1215,10 @@ void fn_801EC7B8(void) {
                 *(s32 *)((u8 *)n + 0x68) += *(s32 *)((u8 *)gAramFreeList + 0x64);
             } while (--ctr != 0);
         }
-        lbl_803683D0 += 1;
+        gAramRequestCount += 1;
         ARQPostRequest(gAramFreeList, 0, 0, 1, (s32)buf0,
                     gAramBase + *(s32 *)((u8 *)gAramFreeList + 0x64), used, fn_801ED838);
-        while (lbl_803683D0 != 0) {}
+        while (gAramRequestCount != 0) {}
         fn_800C4588(buf0);
         dt = (u32)(OSGetTick() - tick);
         bus = *(u32 *)0x800000F8;
@@ -1313,7 +1313,7 @@ s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     extern s32 gAramHeapSize;
-    extern s32 lbl_803683D0;
+    extern s32 gAramRequestCount;
     s32 a4;
     s32 a3;
     s32 buf;
@@ -1381,8 +1381,8 @@ found:
     }
     *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | (u8)flag;
     {
-        s32 id = lbl_803683D0;
-        lbl_803683D0 = id + 1;
+        s32 id = gAramRequestCount;
+        gAramRequestCount = id + 1;
         strcpy((u8 *)cell + 0x28, path, id);
     }
     *(s32 *)((u8 *)cell + 0x24) = a4;
@@ -1780,17 +1780,17 @@ void fn_801ED7D0(void *arg0) {
 
 void fn_801ED800(void *arg0) {
     void (*callback)(void *);
-    extern s32 lbl_803683D0;
+    extern s32 gAramRequestCount;
 
     callback = *(void (**)(void *))((u8 *)arg0 + 0x20);
     callback(*(void **)((u8 *)arg0 + 0x24));
 
-    lbl_803683D0 -= 1;
+    gAramRequestCount -= 1;
 }
 
 void fn_801ED838(void) {
-    extern s32 lbl_803683D0;
-    lbl_803683D0 -= 1;
+    extern s32 gAramRequestCount;
+    gAramRequestCount -= 1;
 }
 
 void fn_801ED848(void *arg0, void *arg1, void *arg2, void *arg3) {
@@ -1798,9 +1798,9 @@ void fn_801ED848(void *arg0, void *arg1, void *arg2, void *arg3) {
     s32 fn_8005E55C(void);
     void ARQPostRequest(void *, s32, s32, s32, s32, void *, s32, void *);
     void fn_801ED800(void *);
-    extern s32 lbl_803683D0;
+    extern s32 gAramRequestCount;
 
-    lbl_803683D0++;
+    gAramRequestCount++;
     *(void **)((char *)arg0 + 0x24) = arg3;
     *(void **)((char *)arg0 + 0x20) = arg2;
     *(s32 *)((char *)arg0 + 0x58) = fn_8005E55C();
