@@ -100,7 +100,7 @@ s32 Event_StartBless(s32 arg0) {
     void fn_8002AD04(void *, s32);
     u8 Status_Test(void *, s32);
     extern u8 lbl_8026E988[];
-    extern u8 lbl_8028D110[];
+    extern u8 E_Bless_script[];
     extern u8 gUnits[];
     extern u8 lbl_802EF4E0[];
     u8 sp8;
@@ -109,7 +109,7 @@ s32 Event_StartBless(s32 arg0) {
     void *temp_r3;
     s32 var_r29;
 
-    temp_r3 = fn_8000CAA0(lbl_8028D110, arg0);
+    temp_r3 = fn_8000CAA0(E_Bless_script, arg0);
     *(s16 *)((u8 *)temp_r3 + 0x6C) = 0;
     *(s16 *)((u8 *)temp_r3 + 0x6E) = 0;
     *(s32 *)((u8 *)temp_r3 + 0x30) = 0;
