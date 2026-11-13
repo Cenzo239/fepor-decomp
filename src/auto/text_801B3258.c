@@ -4149,6 +4149,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
+/* Attach cached unit-panel children, size them for the open layout, and set the caption text. */
 extern "C" void Ui_LayoutUnitPanel(void *arg0) {
     f32 fn_8013893C(void *);
     void fn_8013FF00(void *, void *);
@@ -4171,71 +4172,71 @@ extern "C" void Ui_LayoutUnitPanel(void *arg0) {
         virtual void v8();
     };
 
-    s16 sp14[2];
-    s16 sp10[2];
-    s16 spC[2];
-    s16 sp8[2];
-    void *var_r31;
-    void *var_r30;
-    void *var_r29;
-    u32 res;
-    s16 temp_r7;
+    s16 size0[2];
+    s16 size1[2];
+    s16 size3[2];
+    s16 size4[2];
+    void *child0;
+    void *panel;
+    void *child;
+    u32 caption;
+    s16 savedH;
 
-    var_r30 = arg0;
-    if ((var_r31 = Ui_FindChild(arg0, 0x100, 0)) == 0) {
-        var_r31 = *(void **)((u8 *)var_r30 + 0x48);
-        Ui_AddChild(var_r30, var_r31);
+    panel = arg0;
+    if ((child0 = Ui_FindChild(arg0, 0x100, 0)) == 0) {
+        child0 = *(void **)((u8 *)panel + 0x48);
+        Ui_AddChild(panel, child0);
     }
-    if (*(s16 *)((u8 *)var_r31 + 0xC) != 0x10) {
-        sp14[0] = *(s16 *)((u8 *)var_r31 + 0xA);
-        sp14[1] = 0x10;
-        fn_8014027C(var_r30, var_r31, sp14, 0);
+    if (*(s16 *)((u8 *)child0 + 0xC) != 0x10) {
+        size0[0] = *(s16 *)((u8 *)child0 + 0xA);
+        size0[1] = 0x10;
+        fn_8014027C(panel, child0, size0, 0);
     }
-    *(u8 *)((u8 *)var_r31 + 0x4D) = 0;
-    *(f32 *)((u8 *)var_r31 + 0x30) = 1.0f;
-    if ((var_r29 = Ui_FindChild(var_r30, 0x101, 0)) == 0) {
-        var_r29 = *(void **)((u8 *)var_r30 + 0x4C);
-        Ui_AddChild(var_r30, var_r29);
+    *(u8 *)((u8 *)child0 + 0x4D) = 0;
+    *(f32 *)((u8 *)child0 + 0x30) = 1.0f;
+    if ((child = Ui_FindChild(panel, 0x101, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x4C);
+        Ui_AddChild(panel, child);
     }
-    *(s32 *)((u8 *)var_r29 + 0x40) = 0x1003C;
-    ((Obj *)var_r29)->v8();
-    if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x20) {
-        temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
-        sp10[0] = 0x20;
-        sp10[1] = temp_r7;
-        fn_8014027C(var_r30, var_r29, sp10, 0);
+    *(s32 *)((u8 *)child + 0x40) = 0x1003C;
+    ((Obj *)child)->v8();
+    if (*(s16 *)((u8 *)child + 0xA) != 0x20) {
+        savedH = *(s16 *)((u8 *)child + 0xC);
+        size1[0] = 0x20;
+        size1[1] = savedH;
+        fn_8014027C(panel, child, size1, 0);
     }
-    if ((var_r29 = Ui_FindChild(var_r30, 0x102, 0)) == 0) {
-        var_r29 = *(void **)((u8 *)var_r30 + 0x50);
-        Ui_AddChild(var_r30, var_r29);
+    if ((child = Ui_FindChild(panel, 0x102, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x50);
+        Ui_AddChild(panel, child);
     }
-    if (fn_8013893C(var_r29) < 1.0f) {
-        fn_80140234(var_r30, var_r29, 0);
+    if (fn_8013893C(child) < 1.0f) {
+        fn_80140234(panel, child, 0);
     }
-    if ((var_r29 = Ui_FindChild(var_r30, 0x103, 0)) == 0) {
-        var_r29 = *(void **)((u8 *)var_r30 + 0x54);
-        Ui_AddChild(var_r30, var_r29);
+    if ((child = Ui_FindChild(panel, 0x103, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x54);
+        Ui_AddChild(panel, child);
     }
-    if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x20) {
-        temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
-        spC[0] = 0x20;
-        spC[1] = temp_r7;
-        fn_8014027C(var_r30, var_r29, spC, 0);
+    if (*(s16 *)((u8 *)child + 0xA) != 0x20) {
+        savedH = *(s16 *)((u8 *)child + 0xC);
+        size3[0] = 0x20;
+        size3[1] = savedH;
+        fn_8014027C(panel, child, size3, 0);
     }
-    if ((var_r29 = Ui_FindChild(var_r30, 0x104, 0)) == 0) {
-        var_r29 = *(void **)((u8 *)var_r30 + 0x58);
-        Ui_AddChild(var_r30, var_r29);
+    if ((child = Ui_FindChild(panel, 0x104, 0)) == 0) {
+        child = *(void **)((u8 *)panel + 0x58);
+        Ui_AddChild(panel, child);
     }
-    if (*(s16 *)((u8 *)var_r29 + 0xA) != 0x134) {
-        temp_r7 = *(s16 *)((u8 *)var_r29 + 0xC);
-        sp8[0] = 0x134;
-        sp8[1] = temp_r7;
-        fn_8014027C(var_r30, var_r29, sp8, 0);
+    if (*(s16 *)((u8 *)child + 0xA) != 0x134) {
+        savedH = *(s16 *)((u8 *)child + 0xC);
+        size4[0] = 0x134;
+        size4[1] = savedH;
+        fn_8014027C(panel, child, size4, 0);
     }
-    fn_8013FF00(var_r30, var_r31);
-    res = (u32)Ui_FindChild(var_r30, -0x1000, 0);
-    if (res != 0U) {
-        Ui_SetWidgetText(res, (s32)(gUiUnitPanelStrings + 0x277));
+    fn_8013FF00(panel, child0);
+    caption = (u32)Ui_FindChild(panel, -0x1000, 0);
+    if (caption != 0U) {
+        Ui_SetWidgetText(caption, (s32)(gUiUnitPanelStrings + 0x277));
     }
 }
 
