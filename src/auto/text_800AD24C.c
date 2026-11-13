@@ -91,7 +91,7 @@ s32 fn_800AD2DC(s32 arg0) {
 }
 
 #pragma optimization_level 2
-s32 fn_800AD310(s32 arg0) {
+s32 Event_StartBless(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     void Process_Unlink(void *);
     void Allegiance_FillMask(s32, void *);
