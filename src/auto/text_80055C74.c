@@ -1590,7 +1590,7 @@ f32 fn_80059EB8(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     return farg1 + (((f32) (temp_r0 - temp_r5) * (farg0 - farg1)) / (f32) temp_r5);
 }
 
-f32 fn_80059F64(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
+f32 Math_Lerp(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     return farg0 + ((farg3 * (farg1 - farg0)) / farg2);
 }
 

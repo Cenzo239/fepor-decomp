@@ -10256,7 +10256,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void fn_8004B588(u8 *arg0)
 {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_8006ECCC(s32, void *, s32);
     void fn_80222C50(void *, s32);
@@ -10315,7 +10315,7 @@ void fn_8004B588(u8 *arg0)
     case 0:
         alpha = 0xC0;
         if (arg0[1] > 0x78U) {
-            alpha = (s32)fn_80059F64(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32)(s32)(arg0[1] - 0x78));
+            alpha = (s32)Math_Lerp(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32)(s32)(arg0[1] - 0x78));
         }
         fn_8006ECCC(lbl_803672B0, sp4C, 3);
         break;
@@ -10864,7 +10864,7 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
     f32 fn_80023068(void *);
     void fn_80051564(void *, s32, f32, f32);
     u32 fn_80055D94(s32);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80060F70(void *, s32, f32 *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
@@ -10941,7 +10941,7 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
     (void)gBattleMap;
     lim = -(f25 - fn_80023068(gBattleMap));
     if (lim > lbl_8036900C) lim = lbl_8036900C;
-    f31 = fn_80059F64(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
+    f31 = Math_Lerp(lbl_80368FC0, lbl_80368FBC, lbl_8036900C, lim);
     if (r29 >= 0 && r27 >= 0) {
         fn_80060F70(r28, r29, &sp148);
         fn_80060F70(r28, r27, &sp154);
@@ -12330,7 +12330,7 @@ void fn_80052B54(void *arg0) {
 }
 
 void fn_80052EBC(u8 *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern f32 lbl_8036908C;
     f32 temp_f30;
@@ -12339,9 +12339,9 @@ void fn_80052EBC(u8 *arg0) {
     u8 *temp_r4;
 
     *(f32 *)(arg0 + 0x50) = *(f32 *)(arg0 + 0x50) + lbl_8036908C;
-    temp_f30 = fn_80059F64(*(f32 *)(arg0 + 0x34), *(f32 *)(arg0 + 0x40), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
-    temp_f31 = fn_80059F64(*(f32 *)(arg0 + 0x38), *(f32 *)(arg0 + 0x44), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
-    temp_f1 = fn_80059F64(*(f32 *)(arg0 + 0x3C), *(f32 *)(arg0 + 0x48), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
+    temp_f30 = Math_Lerp(*(f32 *)(arg0 + 0x34), *(f32 *)(arg0 + 0x40), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
+    temp_f31 = Math_Lerp(*(f32 *)(arg0 + 0x38), *(f32 *)(arg0 + 0x44), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
+    temp_f1 = Math_Lerp(*(f32 *)(arg0 + 0x3C), *(f32 *)(arg0 + 0x48), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
     temp_r4 = *(u8 **)(arg0 + 0x30);
     *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0xC) = temp_f30;
     *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0x10) = temp_f31;
@@ -12792,7 +12792,7 @@ void fn_80053F08(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80053F68(void *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005F7E0(void *, u8, u8, u8);
     void fn_8005F7B0(void *, u8);
     void fn_8005E644(void *);
@@ -12888,7 +12888,7 @@ void fn_80053F68(void *arg0) {
         if (cnt > 0) {
             *(s8 *)((u8 *)dst + 3) = (s8)(cnt - 1);
             dst = *(void **)((u8 *)arg0 + 0x30);
-            alpha = (s32)fn_80059F64(lbl_80369084, lbl_803690C4, lbl_803690C8,
+            alpha = (s32)Math_Lerp(lbl_80369084, lbl_803690C4, lbl_803690C8,
                                      (f32)*(s8 *)((u8 *)dst + 3));
             if (alpha == 0) {
                 fn_8000C188(arg0);

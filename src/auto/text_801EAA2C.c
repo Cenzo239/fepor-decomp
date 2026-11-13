@@ -3175,7 +3175,7 @@ extern "C" void fn_801F0A08(void *arg0) {
 }
 #pragma cplusplus reset
 void fn_801F0E4C(void *arg0) {
-    f32 fn_80059F64(u8, u8, f32, f32, f32, f32);
+    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
     M2C_UNK fn_8005F7B0(s32, u8);
     M2C_UNK fn_8005F7E0(s32, u8, u8, u8);
 
@@ -3200,14 +3200,14 @@ void fn_801F0E4C(void *arg0) {
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x48);
     temp_r6_2 = M2C_FIELD(arg0, u8 *, 0x45);
     temp_r4_2 = M2C_FIELD(arg0, u8 *, 0x49);
-    temp_r31 = (s32) fn_80059F64(temp_r4, temp_r6, (f32) temp_r6, (f32) temp_r4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
+    temp_r31 = (s32) Math_Lerp(temp_r4, temp_r6, (f32) temp_r6, (f32) temp_r4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
     temp_r6_3 = M2C_FIELD(arg0, u8 *, 0x46);
     temp_r4_3 = M2C_FIELD(arg0, u8 *, 0x4A);
-    temp_r28 = (s32) fn_80059F64(temp_r4_2, temp_r6_2, (f32) temp_r6_2, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
+    temp_r28 = (s32) Math_Lerp(temp_r4_2, temp_r6_2, (f32) temp_r6_2, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
     temp_r6_4 = M2C_FIELD(arg0, u8 *, 0x47);
     temp_r4_4 = M2C_FIELD(arg0, u8 *, 0x4B);
-    temp_r29 = (s32) fn_80059F64(temp_r4_3, temp_r6_3, (f32) temp_r6_3, (f32) temp_r4_3, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
-    temp_r31_2 = (s32) fn_80059F64(temp_r4_4, temp_r6_4, (f32) temp_r6_4, (f32) temp_r4_4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
+    temp_r29 = (s32) Math_Lerp(temp_r4_3, temp_r6_3, (f32) temp_r6_3, (f32) temp_r4_3, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
+    temp_r31_2 = (s32) Math_Lerp(temp_r4_4, temp_r6_4, (f32) temp_r6_4, (f32) temp_r4_4, (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x40));
     fn_8005F7E0(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31, (u8) temp_r28, (u8) temp_r29);
     fn_8005F7B0(M2C_FIELD(arg0, s32 *, 0x30), (u8) temp_r31_2);
 }

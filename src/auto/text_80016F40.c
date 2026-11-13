@@ -353,13 +353,13 @@ extern f32 lbl_80368C8C;
 extern u8 lbl_802CA434[];
 void fn_8000C188(void *);
 void fn_80017C1C(void *, f32);
-f32 fn_80059F64(f32, f32, f32, f32);
+f32 Math_Lerp(f32, f32, f32, f32);
 f32 fn_80059F78(s32, f32, f32, f32, f32);
 f32 fn_8005A028(s32, f32, f32, f32, f32);
 void fn_80017998(void *arg0) {
     void fn_8000C188(void *);
     void fn_80017C1C(void *, f32);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     extern s32 gUiInputFlags;
@@ -383,7 +383,7 @@ void fn_80017998(void *arg0) {
     switch (mode) {
     case 0:
         lim = *(s32 *)((u8 *)arg0 + 0x38);
-        f1 = fn_80059F64(f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
+        f1 = Math_Lerp(f1, (f32)lim, (f32)lim, (f32)*(s32 *)((u8 *)arg0 + 0x34));
         break;
     case 1:
         lim = *(s32 *)((u8 *)arg0 + 0x38);
@@ -1103,7 +1103,7 @@ void fn_80018B18(void) {
 
 #pragma cplusplus on
 extern "C" void fn_80018B24(void) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void *fn_80040844(void);
     void PSMTXRotRad(f32 *, s32, f32);
     void PSMTXConcat(f32 *, f32 *, f32 *);
@@ -1148,7 +1148,7 @@ extern "C" void fn_80018B24(void) {
     } else {
         f29 = lbl_80368CA4 * (f32)gBattleMap[1];
         f30 = lbl_80368CA4 * (f32)gBattleMap[0];
-        f31 = fn_80059F64(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
+        f31 = Math_Lerp(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
                           *(f32 *)((u8 *)r31 + 0x18) - lbl_80368CBC);
         if (f31 < lbl_80368C88) {
             f31 = lbl_80368C88;
@@ -1157,9 +1157,9 @@ extern "C" void fn_80018B24(void) {
             f31 = lbl_80368CB4;
         }
         a = *(f32 *)((u8 *)r31 + 0x40);
-        *(f32 *)((u8 *)r31 + 0x64) = -fn_80059F64(lbl_80368C88, f31, f30, a - f30);
+        *(f32 *)((u8 *)r31 + 0x64) = -Math_Lerp(lbl_80368C88, f31, f30, a - f30);
         a = *(f32 *)((u8 *)r31 + 0x44);
-        *(f32 *)((u8 *)r31 + 0x68) = -fn_80059F64(lbl_80368C88, f31, f29, a - f29);
+        *(f32 *)((u8 *)r31 + 0x68) = -Math_Lerp(lbl_80368C88, f31, f29, a - f29);
     }
     t = *(f32 *)((u8 *)r31 + 0x18);
     child = *(void **)r31;

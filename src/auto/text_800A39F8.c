@@ -1552,7 +1552,7 @@ void fn_800A6B44(s32 arg0) {
 }
 
 void fn_800A6B70(void *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern f32 lbl_80369AA4;
     extern f64 lbl_80369AA8;
@@ -1563,7 +1563,7 @@ void fn_800A6B70(void *arg0) {
     if (t != 0) {
         *(u8 *)((u8 *)arg0 + 0x39) = (u8)(t - 1);
     }
-    *(s8 *)((u8 *)arg0 + 0x38) = (s8)fn_80059F64(
+    *(s8 *)((u8 *)arg0 + 0x38) = (s8)Math_Lerp(
         lbl_80369AA4,
         (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3A),
         (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3B),
@@ -1601,7 +1601,7 @@ void fn_800A6C24(void *arg0) {
 }
 
 void fn_800A6CC4(void *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8000C188(void *);
     extern f32 lbl_80369AA4;
     u8 t;
@@ -1609,7 +1609,7 @@ void fn_800A6CC4(void *arg0) {
     t = *(u8 *)((u8 *)arg0 + 0x39);
     if (t < *(u8 *)((u8 *)arg0 + 0x3B)) {
         *(u8 *)((u8 *)arg0 + 0x39) = (u8)(t + 1);
-        *(u8 *)((u8 *)arg0 + 0x38) = (u8)(s32)fn_80059F64(
+        *(u8 *)((u8 *)arg0 + 0x38) = (u8)(s32)Math_Lerp(
             lbl_80369AA4,
             (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3A),
             (f32)(u32)*(u8 *)((u8 *)arg0 + 0x3B),

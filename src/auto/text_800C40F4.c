@@ -16267,7 +16267,7 @@ s32 fn_800EE490(void) {
 
 s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *fn_80040844(void);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void *fn_80060664(void);
     void *fn_80067FDC(void);
     void *fn_80068548(void);
@@ -16455,7 +16455,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         fn_802201A8(t26, 0, 0, t27, 0, 0x7D);
         fn_80222C50(spAC, t28);
         GXSetTevOrder(t25, t26, t28, 4);
-        tmpf = fn_80059F64(lbl_80369FA4, lbl_80369FA8, lbl_80369FC4, scaleY);
+        tmpf = Math_Lerp(lbl_80369FA4, lbl_80369FA8, lbl_80369FC4, scaleY);
         alpha = (s32)(tmpf * *(f32 *)((u8 *)unk2C + 0x38));
         if (alpha < 0) {
             alpha = 0;
@@ -16596,7 +16596,7 @@ s32 fn_800EF1C0(void) {
 
 s32 fn_800EF364(void *arg0, s32 arg1) {
     void *fn_80040844(void);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void *fn_80060664(void);
     f32 fn_8006469C(void *, s32, f32);
     s32 *fn_80067478(void);
@@ -16783,7 +16783,7 @@ s32 fn_800EF364(void *arg0, s32 arg1) {
     if (vf4 > lbl_80369FF0) {
         vf4 = lbl_80369FF0;
     }
-    color[3] = (u8)(s32)fn_80059F64(lbl_80369FF4, lbl_80369FF8, lbl_80369FF0, vf4);
+    color[3] = (u8)(s32)Math_Lerp(lbl_80369FF4, lbl_80369FF8, lbl_80369FF0, vf4);
     sp8 = *(u32 *)color;
     fn_80223C78(3, &sp8);
     fn_80223D38(t23, 0x1F);

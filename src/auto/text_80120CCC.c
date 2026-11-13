@@ -95,27 +95,27 @@ void fn_80120E4C(void *arg0) {
 
 void fn_80120F0C(void) {
     extern u16 lbl_80367A58;
-    extern u32 gUiInputFlags;
+    extern u32 lbl_80367110;
     extern u8 lbl_80290200[];
 
     void *fn_8000C0C0(void *);
-    void Process_Unlink(void);
+    void fn_8000C60C(void);
     void fn_8000C188(void);
 
-    u16 a;
     u16 b;
+    u16 a;
     u16 *p;
 
     p = &lbl_80367A58;
     a = lbl_80367A58;
     b = *(u16 *)((s8 *)p + 2);
 
-    gUiInputFlags |= 2;
+    lbl_80367110 |= 2;
 
     if (!(a & 0x40)) {
         if (fn_8000C0C0(lbl_80290200) != NULL) {
-            if (gUiInputFlags & 3) {
-                Process_Unlink();
+            if (lbl_80367110 & 3) {
+                fn_8000C60C();
             } else {
                 fn_8000C188();
             }
@@ -1960,7 +1960,7 @@ void fn_801248E4(void *arg0) {
 #pragma peephole off
 void fn_8012497C(void *arg0) {
     void *fn_80040844(void);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_80067708(s32, s32, void (*)(void *), void *);
     u8 fn_800AA188(void);
     void fn_80124E58(void *, f32 *, f32 *);
@@ -2008,7 +2008,7 @@ void fn_8012497C(void *arg0) {
             u8 z = 0;
             void *p = (u8 *)self + 0x38;
             *(u8 *)((u8 *)self + 0x4E) = z;
-            t = fn_80059F64(lbl_8036A30C, lbl_8036A33C, lbl_8036A308,
+            t = Math_Lerp(lbl_8036A30C, lbl_8036A33C, lbl_8036A308,
                             fn_8020322C(p) / *(f32 *)((u8 *)self + 0x50));
         }
         t = lbl_8036A33C - t;
@@ -2099,9 +2099,9 @@ void fn_8012497C(void *arg0) {
             fifth = mx / 5;
             if (cur < fifth) {
                 *(u8 *)((u8 *)node + 0xC) =
-                    (u8)(s32)fn_80059F64(lbl_8036A30C, (f32)amax, (f32)fifth, (f32)cur);
+                    (u8)(s32)Math_Lerp(lbl_8036A30C, (f32)amax, (f32)fifth, (f32)cur);
             } else {
-                *(u8 *)((u8 *)node + 0xC) = (u8)(s32)fn_80059F64(
+                *(u8 *)((u8 *)node + 0xC) = (u8)(s32)Math_Lerp(
                     (f32)amax, lbl_8036A30C, (f32)(mx - fifth), (f32)(cur - fifth));
             }
             keep = 1;
@@ -2593,7 +2593,7 @@ void fn_801258E4(void* arg0, void* arg1, void* arg2) {
 void fn_80125AE0(void *arg0)
 {
   u8 fn_800AA188(void);
-  void fn_80059F64(f32, f32, f32, f32);
+  void Math_Lerp(f32, f32, f32, f32);
   f64 fn_80238638(void);
   void *fn_80040844(void);
   extern f32 lbl_8036A30C;
@@ -2619,7 +2619,7 @@ void fn_80125AE0(void *arg0)
     {
       *((f32 *) (((char *) arg0) + 0x4C)) = a - limit;
     }
-    fn_80059F64(lbl_8036A30C, lbl_8036A39C, lbl_8036A398, *((f32 *) (((char *) arg0) + 0x4C)));
+    Math_Lerp(lbl_8036A30C, lbl_8036A39C, lbl_8036A398, *((f32 *) (((char *) arg0) + 0x4C)));
     x = (f32) fn_80238638();
     new_var = lbl_8036A3A0 + x;
     t = new_var;
@@ -2794,6 +2794,7 @@ void fn_80125EB8(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_80125F3C(void *arg0) {
     void *fn_80040844(void);
     void fn_80046360(void *, s32, void *, s32, s32, s32);
@@ -2821,7 +2822,7 @@ void fn_80125F3C(void *arg0) {
     *(void **)((u8 *)arg0 + 0x54) = fn_8006D948(lbl_80274F74 + 0x84);
     fn_80046360(fn_80040844(), 0, (void *)fn_80125BB0, 0, 0x80, 0x8000);
 }
-
+#pragma global_optimizer reset
 void fn_80125FC8(void *arg0) {
     s32 r = fn_80040844();
     fn_800462FC(r, 0, fn_80125BB0);

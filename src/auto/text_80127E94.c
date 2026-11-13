@@ -662,7 +662,7 @@ void fn_801298FC(void *arg0) {
 }
 
 void fn_80129984(void *arg0) {
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005F7B0(void *, s32);
     void fn_8000C188(void *);
     extern f64 lbl_8036A418;
@@ -678,7 +678,7 @@ void fn_80129984(void *arg0) {
     i = 0;
     while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
         node = *(u8 **)(p + 0x30) + 0x14;
-        fn_8005F7B0(node, (s32)fn_80059F64(lbl_8036A420, lbl_8036A424, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
+        fn_8005F7B0(node, (s32)Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
         p += 4;
         i += 1;
     }
@@ -1379,7 +1379,7 @@ void fn_8012AEC4(void *arg0) {
 
 void fn_8012AF4C(void *arg0) {
     void fn_8000C188(void *);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005F7B0(void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXScale(void *, f32, f32, f32);
@@ -1420,7 +1420,7 @@ void fn_8012AF4C(void *arg0) {
     y = (f32)sub->by;
     x = (f32)sub->bx;
 
-    z += fn_80059F64(lbl_8036A420, lbl_8036A460, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40));
+    z += Math_Lerp(lbl_8036A420, lbl_8036A460, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40));
     x = (lbl_8036A46C * (f32)fn_80238638((f32)*(s32 *)((u8 *)self + 0x40))) + x;
     y = (lbl_8036A46C * (f32)fn_802380D0((f32)*(s32 *)((u8 *)self + 0x40))) + y;
 
@@ -1436,9 +1436,9 @@ void fn_8012AF4C(void *arg0) {
     PSMTXTrans(sp38, x, y, z);
     PSMTXConcat(sp38, sp8, (u8 *)node + 0x10);
 
-    fn_8005F7B0(node, fn_80059F64(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    fn_8005F7B0(node, Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
     node = (u8 *)*(void **)((u8 *)self + 0x3C) + 0x14;
-    fn_8005F7B0(node, fn_80059F64(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    fn_8005F7B0(node, Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
 
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
         fn_8000C188(self);

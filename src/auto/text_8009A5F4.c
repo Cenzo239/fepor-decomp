@@ -77,7 +77,7 @@ void fn_8009A660(u8 *arg0) {
 }
 #pragma scheduling on
 void fn_8009A67C(void *arg0) {
-    f32 fn_80059F64(u8, u8, f32, f32, f32, f32);
+    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
     f32 fn_8005A028(M2C_UNK, u8, f32, f32, f32, f32);
     extern f32 lbl_803697E4;
     extern f32 lbl_803697E8;
@@ -92,7 +92,7 @@ void fn_8009A67C(void *arg0) {
     }
     temp_r5 = M2C_FIELD(arg0, u8 *, 0x3F);
     temp_r3_2 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) fn_80059F64(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
+    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) Math_Lerp(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
     M2C_FIELD(arg0, f32 *, 0x30) = fn_8005A028(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == 0) {
@@ -101,7 +101,7 @@ void fn_8009A67C(void *arg0) {
 }
 
 void fn_8009A76C(void *arg0) {
-    f32 fn_80059F64(u8, u8, f32, f32, f32, f32);
+    f32 Math_Lerp(u8, u8, f32, f32, f32, f32);
     f32 fn_8005A028(M2C_UNK, u8, f32, f32, f32, f32);
     extern f32 lbl_803697E4;
     extern f32 lbl_803697E8;
@@ -116,7 +116,7 @@ void fn_8009A76C(void *arg0) {
     }
     temp_r5 = M2C_FIELD(arg0, u8 *, 0x3F);
     temp_r3_2 = M2C_FIELD(arg0, u8 *, 0x40);
-    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) fn_80059F64(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
+    M2C_FIELD(arg0, s8 *, 0x3D) = (s8) Math_Lerp(temp_r3_2, temp_r5, lbl_803697E4, (f32) temp_r5, (f32) temp_r3_2, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     temp_r4 = M2C_FIELD(arg0, u8 *, 0x40);
     M2C_FIELD(arg0, f32 *, 0x30) = fn_8005A028(2, temp_r4, lbl_803697E8, lbl_803697E4, (f32) temp_r4, (f32) M2C_FIELD(arg0, u8 *, 0x3E));
     if ((u8) M2C_FIELD(arg0, u8 *, 0x3E) == (u8) M2C_FIELD(arg0, u8 *, 0x40)) {
