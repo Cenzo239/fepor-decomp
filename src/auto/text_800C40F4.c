@@ -2040,7 +2040,8 @@ String *String_AssignCStr(String *arg0, const char *arg1, u32 arg2) {
     return arg0;
 }
 
-String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
+/* Assign dst from src[pos..pos+n) (MSL basic_string::assign); aborts if pos is out of range. */
+String *String_Assign(String *dst, const String *src, u32 pos, u32 n) {
     String *String_Erase(String *, u32, u32);
     void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
@@ -2051,20 +2052,20 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     u32 rest;
     u32 len;
 
-    if (pos > arg1->size) {
+    if (pos > src->size) {
         fprintf(__files + 0xA0, gStringErrorMsgs + 0x96);
         abort();
     }
-    rest = arg1->size - pos;
+    rest = src->size - pos;
     len = *StrMin(&n, &rest);
-    if (arg0 == arg1) {
-        String_Erase(arg0, 0, pos);
-        String_Resize(arg0, len, 1);
+    if (dst == src) {
+        String_Erase(dst, 0, pos);
+        String_Resize(dst, len, 1);
     } else {
-        String_Resize(arg0, len, 0);
-        memcpy(arg0->data, arg1->data + pos, len);
+        String_Resize(dst, len, 0);
+        memcpy(dst->data, src->data + pos, len);
     }
-    return arg0;
+    return dst;
 }
 #pragma auto_inline reset
 
@@ -17173,14 +17174,15 @@ void fn_800F0A3C(s32 arg0) {
     s8 delta;
     u8 *p;
     s8 typ;
+    s8 idx;
     u8 t;
 
     base = lbl_8032B2B8;
     delta = (s8)(arg0 - base[0x80]);
     base[0x100] = 0;
 
-    while ((s8)base[0x100] < 0x40) {
-        p = base + (s8)base[0x100];
+    while ((idx = (s8)base[0x100]) < 0x40) {
+        p = base + idx;
         p[0x80] = (u8)(p[0x80] + delta);
         p = base + (s8)base[0x100];
         typ = (s8)p[0xC0];
@@ -17196,8 +17198,7 @@ void fn_800F0A3C(s32 arg0) {
     }
 
     p = lbl_8032B2B8 + (s8)lbl_8032B2B8[0x100];
-    p += 0xC0;
-    t = *p;
+    t = *(p += 0xC0);
     if (t <= 0x13) {
         switch (t) {
         case 0:
