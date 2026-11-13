@@ -9590,7 +9590,7 @@ s32 fn_80049E1C(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_80049E24(void) {
+void Map_DrawRangeTiles(void) {
     u8 fn_800AA188(void);
     void fn_8021FBB8(void);
     void fn_8021F4E4(s32, s32);
