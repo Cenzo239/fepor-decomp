@@ -142,7 +142,7 @@ typedef struct {
 
 #pragma use_lmw_stmw reset
 
-extern s32 lbl_803689A8;
+extern s32 gSynthVoices;
 s32 fn_80255FB0(void);
 
 #pragma dont_inline on
