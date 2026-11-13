@@ -186,6 +186,7 @@ void fn_80005C60(void) {
     Process_Create(lbl_802832FC, 3);
 }
 
+/* Boot init: grow heap, load file caches and archives, init UI drawers and battle defaults. */
 void Game_InitSystems(void) {
     void fn_800110B8(void);
     void fn_8001B134(void *);
