@@ -511,6 +511,7 @@ void fn_801295DC(void *arg0) {
 }
 
 void MapObj_StartLinkedFadeIn(void *arg0) {
+    /* Clear the map-object flag, refresh the map, and fade in any hidden linked object at its tile. */
     void *Map_Get(void);
     void fn_80044450(void *, s32);
     void fn_80016180(void);
