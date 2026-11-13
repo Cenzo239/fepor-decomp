@@ -2890,7 +2890,7 @@ void fn_801260E4(void *arg0) {
 
 extern u8 lbl_80290480[16];
 void fn_80126184(void) {
-    fn_8000BF00(&lbl_80290480);
+    Process_UnlinkByKey(&lbl_80290480);
 }
 
 void fn_801261AC(s32 arg0) {
@@ -2930,14 +2930,14 @@ void fn_80126204(void) {
 }
 #pragma global_optimizer on
 void fn_801262A8(s32 arg0) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void fn_8014C718(void *, s32);
     void fn_8019DB28(void);
     extern u8 lbl_80290480[16];
     extern u8 gBattleState[1400];
 
     fn_8019DB28();
-    fn_8000BF00(lbl_80290480);
+    Process_UnlinkByKey(lbl_80290480);
     fn_8014C718(gBattleState, arg0);
 }
 
@@ -3498,9 +3498,9 @@ void fn_80127700(void* arg0, s32 arg1) {
 }
 
 s32 ScriptCmd_GameUnbind(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern u8 lbl_802904AC[];
-    fn_8000BF00(lbl_802904AC);
+    Process_UnlinkByKey(lbl_802904AC);
     return 1;
 }
 

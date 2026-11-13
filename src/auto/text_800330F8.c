@@ -6978,14 +6978,14 @@ void fn_800431EC(s32 unused, s32 arg1) {
 }
 
 void fn_8004327C(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void fn_800C4588(void *);
     void fn_800C428C(void *);
     extern void *lbl_803672A8;
     extern u8 lbl_80285778[];
 
     if (lbl_803672A8 != NULL) {
-        fn_8000BF00(lbl_80285778);
+        Process_UnlinkByKey(lbl_80285778);
         fn_800C4588(*(void **)((u8 *)lbl_803672A8 + 0x1C));
         *(void **)((u8 *)lbl_803672A8 + 0x1C) = NULL;
         fn_800C428C(lbl_803672A8);
@@ -9738,8 +9738,8 @@ void Map_DrawRangeTiles(void) {
 void fn_8004A1F0(void) {
     extern u8 lbl_80285858[];
     extern u32 gUiInputFlags;
-    void fn_8000BF00(void *);
-    fn_8000BF00(lbl_80285858);
+    void Process_UnlinkByKey(void *);
+    Process_UnlinkByKey(lbl_80285858);
     gUiInputFlags &= ~0x400u;
 }
 
@@ -12703,7 +12703,7 @@ void fn_80053750(void *arg0, void *arg1) {
 
 void fn_8005376C(void) {
     u32 Process_Find(u32 *);
-    void *fn_8000BF00(u32 *);
+    void *Process_UnlinkByKey(u32 *);
     void *fn_8000CAF0(void *, s32);
     s32 fn_801451BC(void);
     u8 fn_80145308(void);
@@ -12714,7 +12714,7 @@ void fn_8005376C(void) {
     extern u8 GActor_str[];
     extern u8 lbl_80285968[];
 
-    fn_8000BF00(lbl_80285990);
+    Process_UnlinkByKey(lbl_80285990);
     if ((Process_Find(lbl_80285990) == 0U) && (fn_80145308() == 0)) {
         fn_801451BC();
         fn_800056CC((const char *)((u8 *) &GActor_str + 0x12E));

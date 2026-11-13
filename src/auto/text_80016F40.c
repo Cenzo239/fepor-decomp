@@ -290,7 +290,7 @@ s32 fn_8001772C(void) {
 }
 
 void fn_80017774(void) {
-    fn_8000BF00(&lbl_802841B0);
+    Process_UnlinkByKey(&lbl_802841B0);
 }
 
 void fn_8001779C(s32 arg0) {

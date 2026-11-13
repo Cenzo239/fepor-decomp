@@ -58,9 +58,9 @@ s32 fn_80095614(s32 arg0) {
 }
 
 void fn_80095678(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern u8 lbl_80289B00[16];
-    fn_8000BF00(lbl_80289B00);
+    Process_UnlinkByKey(lbl_80289B00);
 }
 
 void fn_800956A0(s32 arg0) {

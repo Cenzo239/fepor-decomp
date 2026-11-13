@@ -1542,7 +1542,7 @@ void fn_800A6AE4(void) {
 
 extern u8 lbl_8028C750[16];
 void fn_800A6B1C(void) {
-    fn_8000BF00(&lbl_8028C750);
+    Process_UnlinkByKey(&lbl_8028C750);
 }
 
 void fn_800A6B44(s32 arg0) {

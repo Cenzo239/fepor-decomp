@@ -1476,7 +1476,7 @@ void fn_801F5518(s32 arg0) {
 void CardLink_ApplyBonus(void *arg0) {
     void *Process_Find(void *);
     void Process_Goto(void *, s32);
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     s32 Msg_Expand(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801DDBA8(void *, s32, s32, s32, s32);
@@ -1535,7 +1535,7 @@ void CardLink_ApplyBonus(void *arg0) {
             break;
         }
     }
-    fn_8000BF00(&gCardLinkProc);
+    Process_UnlinkByKey(&gCardLinkProc);
 }
 
 void fn_801F5A28(void *arg0) {
@@ -1543,7 +1543,7 @@ void fn_801F5A28(void *arg0) {
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
     void Ui_PlaySeCue(void *, s32);
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern void *gPadInput;
     extern u16 lbl_80280B58[18];
     void *tmp;
@@ -1570,7 +1570,7 @@ void fn_801F5A28(void *arg0) {
         temp_r5 = *(void **)((u8 *)arg0 + 0x50);
         *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
         Process_Goto(arg0, 0);
-        fn_8000BF00(&gCardLinkProc);
+        Process_UnlinkByKey(&gCardLinkProc);
     }
 }
 
@@ -1613,7 +1613,7 @@ void fn_801F5BB0(void *arg0) {
         *(void **)((u8 *)arg0 + 0x50) = NULL;
     }
     fn_80109020(0);
-    fn_8000BF00(&gCardLinkProc);
+    Process_UnlinkByKey(&gCardLinkProc);
 }
 
 void fn_801F5C04(void *arg0) {

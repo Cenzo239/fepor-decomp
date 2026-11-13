@@ -2799,8 +2799,8 @@ s32 fn_8000ACE0(void *arg0) {
 }
 
 s32 fn_8000ADA0(void *arg0) {
-    s32 fn_8000BF00(s32);
-    fn_8000BF00(((s32 **) arg0)[1][1]);
+    s32 Process_UnlinkByKey(s32);
+    Process_UnlinkByKey(((s32 **) arg0)[1][1]);
     ((s32 **) arg0)[1] = ((s32 **) arg0)[1] + 2;
     return 1;
 }
@@ -3653,7 +3653,7 @@ void fn_8000BE54(u32 arg0) {
     }
 }
 
-void fn_8000BF00(u32 arg0) {
+void Process_UnlinkByKey(u32 arg0) {
     extern u8 lbl_802A66D8[];
     void Process_Unlink(void *);
     u8 *var_r31;

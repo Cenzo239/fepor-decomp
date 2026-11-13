@@ -427,9 +427,9 @@ s32 fn_800AA078(void *arg0) {
 }
 
 void fn_800AA134(void) {
-    M2C_UNK fn_8000BF00(void *);
+    M2C_UNK Process_UnlinkByKey(void *);
     extern u8 lbl_8028CDF0[];
-    fn_8000BF00(lbl_8028CDF0);
+    Process_UnlinkByKey(lbl_8028CDF0);
 }
 
 void fn_800AA15C(void) {

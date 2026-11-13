@@ -10283,7 +10283,7 @@ return 0;
 }
 
 void fn_801453F0(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
@@ -10295,12 +10295,12 @@ void fn_801453F0(void) {
     f32 a;
 
     base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = fn_8000CAF0((void *)(base + 0x8C), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
@@ -10310,7 +10310,7 @@ void fn_801453F0(void) {
 }
 
 void fn_80145488(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
@@ -10324,12 +10324,12 @@ void fn_80145488(void) {
 
     (void)lbl_8036A780;
     base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = fn_8000CAF0((void *)(base + 0x78), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
@@ -10339,17 +10339,17 @@ void fn_80145488(void) {
 }
 
 void fn_80145520(void) {
-void fn_8000BF00(void *); void *fn_8000CAF0(void *, s32);
+void Process_UnlinkByKey(void *); void *fn_8000CAF0(void *, s32);
 extern u8 lbl_80292558[]; extern u8 lbl_80367AEE;
 extern f32 lbl_8036A778; extern f32 lbl_8036A77C;
 s32 base=(s32)lbl_80292558; f32 *p; f32 a,b;
-fn_8000BF00((void*)(base+0x28)); fn_8000BF00((void*)(base+0x3c)); fn_8000BF00((void*)(base+0x50)); fn_8000BF00((void*)(base+0x64)); fn_8000BF00((void*)(base+0x78)); fn_8000BF00((void*)(base+0x8c));
+Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
 p=fn_8000CAF0((void*)(base+0x64),3);
 b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)lbl_80367AEE;
 }
 
 void fn_801455B8(s32 arg0) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
@@ -10364,12 +10364,12 @@ void fn_801455B8(s32 arg0) {
     (void)lbl_8036A780;
     base = (s32)lbl_80292558;
     arg = arg0;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
     if (arg == 0) {
         lbl_80367AEE = 0;
         return;
@@ -10381,7 +10381,7 @@ void fn_801455B8(s32 arg0) {
 }
 
 void fn_80145684(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
@@ -10393,12 +10393,12 @@ void fn_80145684(void) {
     f32 b;
 
     base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = fn_8000CAF0((void *)(base + 0x3C), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
@@ -10408,7 +10408,7 @@ void fn_80145684(void) {
 }
 
 void fn_8014571C(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_80367AEE;
@@ -10420,12 +10420,12 @@ void fn_8014571C(void) {
     f32 b;
 
     base = (s32)lbl_80292558;
-    fn_8000BF00((void *)(base + 0x28));
-    fn_8000BF00((void *)(base + 0x3C));
-    fn_8000BF00((void *)(base + 0x50));
-    fn_8000BF00((void *)(base + 0x64));
-    fn_8000BF00((void *)(base + 0x78));
-    fn_8000BF00((void *)(base + 0x8C));
+    Process_UnlinkByKey((void *)(base + 0x28));
+    Process_UnlinkByKey((void *)(base + 0x3C));
+    Process_UnlinkByKey((void *)(base + 0x50));
+    Process_UnlinkByKey((void *)(base + 0x64));
+    Process_UnlinkByKey((void *)(base + 0x78));
+    Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = fn_8000CAF0((void *)(base + 0x28), 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;
@@ -10435,7 +10435,7 @@ void fn_8014571C(void) {
 }
 
 void fn_801457B4(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80292558[];
     extern u8 lbl_8029256C[];
@@ -10446,8 +10446,8 @@ void fn_801457B4(void) {
     f32 a;
     f32 b;
 
-    fn_8000BF00(lbl_80292558);
-    fn_8000BF00(lbl_8029256C);
+    Process_UnlinkByKey(lbl_80292558);
+    Process_UnlinkByKey(lbl_8029256C);
     temp_r3 = fn_8000CAF0(lbl_8029256C, 3);
     a = lbl_8036A778;
     b = lbl_8036A77C;

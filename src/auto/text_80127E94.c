@@ -430,19 +430,19 @@ void fn_80129374(void) {
 }
 
 void fn_801293C0(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern u8 lbl_80290A40[];
     s32 base;
 
     base = (s32)lbl_80290A40;
-    fn_8000BF00((void *)(base + 0x1BC));
-    fn_8000BF00((void *)(base + 0x190));
-    fn_8000BF00((void *)(base + 0x164));
-    fn_8000BF00((void *)(base + 0x130));
-    fn_8000BF00((void *)(base + 0xFC));
-    fn_8000BF00((void *)(base + 0xA0));
-    fn_8000BF00((void *)(base + 0x18));
-    fn_8000BF00((void *)(base + 0x60));
+    Process_UnlinkByKey((void *)(base + 0x1BC));
+    Process_UnlinkByKey((void *)(base + 0x190));
+    Process_UnlinkByKey((void *)(base + 0x164));
+    Process_UnlinkByKey((void *)(base + 0x130));
+    Process_UnlinkByKey((void *)(base + 0xFC));
+    Process_UnlinkByKey((void *)(base + 0xA0));
+    Process_UnlinkByKey((void *)(base + 0x18));
+    Process_UnlinkByKey((void *)(base + 0x60));
 }
 
 void fn_8012942C(s32 arg0, s32 arg1) {

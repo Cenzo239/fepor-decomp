@@ -1018,7 +1018,7 @@ void fn_80057E98(void *arg0, s32 arg1, s32 arg2) {
 
 extern u8 lbl_80285B6C[16];
 void fn_80057EDC(void) {
-    fn_8000BF00(&lbl_80285B6C);
+    Process_UnlinkByKey(&lbl_80285B6C);
 }
 
 s32 fn_80057F04(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -1045,7 +1045,7 @@ s32 fn_80057F04(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void fn_80057FD4(void *arg0, u32 arg1) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x34) == arg1) {
-        fn_8000BF00(&lbl_80285B6C);
+        Process_UnlinkByKey(&lbl_80285B6C);
     }
 }
 

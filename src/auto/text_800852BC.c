@@ -1693,9 +1693,9 @@ void fn_80089490(void *arg0) {
 }
 #pragma optimization_level reset
 s32 fn_800894F8(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern u8 lbl_802899C0[];
-    fn_8000BF00(lbl_802899C0);
+    Process_UnlinkByKey(lbl_802899C0);
     return 1;
 }
 

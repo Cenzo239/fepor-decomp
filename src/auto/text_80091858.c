@@ -46,7 +46,7 @@ extern f32 lbl_803697E4;
 #pragma scheduling reset
 
 void fn_80091858(void) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     extern u32 lbl_803120A0[8];
     extern u8 lbl_80289A38[];
     extern s32 lbl_803674F8;
@@ -56,7 +56,7 @@ void fn_80091858(void) {
     for (i = 0; i < 8; i++) {
         lbl_803120A0[i] = 0;
     }
-    fn_8000BF00(lbl_80289A38);
+    Process_UnlinkByKey(lbl_80289A38);
 }
 
 void fn_800918B0(void) {
