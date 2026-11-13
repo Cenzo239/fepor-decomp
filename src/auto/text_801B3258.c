@@ -8726,7 +8726,7 @@ void Game_InitVideo(void) {
     extern u8 GameNtsc480IntDf[];
     extern u8 GameNtsc480Prog[];
     extern u8 GamePal528IntDf[];
-    extern u8 lbl_8029832C[];
+    extern u8 GameEurgb60Hz480IntDf[];
     extern u8 lbl_80298368[];
     extern char lbl_8027D740[];
     extern s32 lbl_8036C518;
@@ -8744,12 +8744,12 @@ void Game_InitVideo(void) {
         break;
     case 1:
         gGameRenderMode = GamePal528IntDf;
-        gGameRenderModeProg = lbl_8029832C;
+        gGameRenderModeProg = GameEurgb60Hz480IntDf;
         gGameFlags |= 0x20000;
         break;
     case 5:
-        gGameRenderMode = lbl_8029832C;
-        gGameRenderModeProg = lbl_8029832C;
+        gGameRenderMode = GameEurgb60Hz480IntDf;
+        gGameRenderModeProg = GameEurgb60Hz480IntDf;
         gGameFlags |= 0x40000;
         break;
     case 2:
