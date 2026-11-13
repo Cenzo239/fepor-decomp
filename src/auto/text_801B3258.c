@@ -8932,7 +8932,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     s32 fn_8011C9E4(s32);
     s32 fn_8011C984(s32, s32);
     void *CameraAnim_GetKeyframe(void *, s32);
-    void *fn_801CAF8C(void *);
+    void *CameraAnim_GetCamera(void *);
     void Camera_GetEyePos(f32 *, void *);
     void Camera_GetLookAt(f32 *, void *);
     f32 Camera_GetFov(void *);
@@ -8956,7 +8956,7 @@ s32 CameraWin_CaptureKeyframe(void) {
     obj = gCameraWin;
     obj = (void *)fn_8011C984(*(s32 *)((u8 *)obj + 0x430), fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
     result = CameraAnim_GetKeyframe(obj, index);
-    Camera_GetEyePos(sp14, obj = fn_801CAF8C(obj));
+    Camera_GetEyePos(sp14, obj = CameraAnim_GetCamera(obj));
     x1 = sp14[0];
     y1 = sp14[1];
     z1 = sp14[2];
@@ -9082,7 +9082,7 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
     void fn_801CADBC(s32, s32);
     void *CameraAnim_GetKeyframe(s32, s32);
     s32 fn_801CAF50(void);
-    s32 fn_801CAF8C(s32);
+    s32 CameraAnim_GetCamera(s32);
     void sprintf(char *, char *, ...);
     u32 strlen(const char *);
     extern char CameraWin_str[];
@@ -9135,7 +9135,7 @@ void CameraWin_LoadList(void *arg0, s32 arg1) {
                     1, &entry->nameId);
     }
 
-    fn_800DF6DC(&pathTmp, fn_801CAF8C(handle));
+    fn_800DF6DC(&pathTmp, CameraAnim_GetCamera(handle));
     String_Assign(&pathStr, &pathTmp, 0, -1);
     String_Destroy(&pathTmp, -1);
 
@@ -9467,7 +9467,7 @@ void fn_801CAF58(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x6C) = fn_800E7F60(M2C_FIELD(arg0, s32 *, 0));
 }
 
-s32 fn_801CAF8C(void *arg0) {
+s32 CameraAnim_GetCamera(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x6C);
 }
 
