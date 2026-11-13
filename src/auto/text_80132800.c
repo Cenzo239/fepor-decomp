@@ -4886,7 +4886,7 @@ extern "C" void fn_8013ACC4(s32 *arg0, void *arg1) {
     in.x = (s16)(vret * rem + v62);
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
-extern "C" void fn_8013AF08(void *arg0, s16 arg1) {
+extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;

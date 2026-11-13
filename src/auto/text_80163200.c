@@ -8562,7 +8562,7 @@ extern "C" void fn_801743B4(void *arg0) {
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
     void *Ui_ListGetSelected(void *);
-    void fn_8013AF08(void *, s16);
+    void Ui_ListSetCursor(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -8640,12 +8640,12 @@ extern "C" void fn_801743B4(void *arg0) {
     if ((u32)idx < count - 1) {
         next = (s16)(idx + 1);
         if ((u32)next < count) {
-            fn_8013AF08(inner, next);
+            Ui_ListSetCursor(inner, next);
         }
     } else {
         next = (s16)(idx - 1);
         if (next >= 0) {
-            fn_8013AF08(inner, next);
+            Ui_ListSetCursor(inner, next);
         }
     }
 
@@ -8828,7 +8828,7 @@ loop2_cond:
 
 #pragma cplusplus on
 extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
-    void fn_8013AF08(void *, s16);
+    void Ui_ListSetCursor(void *, s16);
     void Ui_RemoveChild(void *, void *);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
 
@@ -8866,7 +8866,7 @@ extern "C" void Ui_ReleaseUnitTradeWidgets(void *arg0) {
 
     h = (Holder *)arg0;
     inner = h->p40;
-    fn_8013AF08(inner, inner->f50);
+    Ui_ListSetCursor(inner, inner->f50);
     inner->f4d = 0;
     inner->f7c = 0;
     inner->f80 = 0;
@@ -9079,7 +9079,7 @@ extern "C" void fn_801752EC(void *arg0) {
     void *fn_80179800(void *, s16, s16, s16, s16, s32);
     void *fn_80174998(void *, s16, s16, s32);
     void *Ui_ListGetSelected(void *);
-    void fn_8013AF08(void *, s16);
+    void Ui_ListSetCursor(void *, s16);
     void Ui_AddChild(void *, void *);
     u8 fn_801EAA88(void);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -9158,12 +9158,12 @@ extern "C" void fn_801752EC(void *arg0) {
     if ((u32)idx < count - 1) {
         next = (s16)(idx + 1);
         if ((u32)next < count) {
-            fn_8013AF08(inner, next);
+            Ui_ListSetCursor(inner, next);
         }
     } else {
         next = (s16)(idx - 1);
         if (next >= 0) {
-            fn_8013AF08(inner, next);
+            Ui_ListSetCursor(inner, next);
         }
     }
 
