@@ -3943,7 +3943,7 @@ do_switch:
     return lbl_8036920C * (f32)var_r4;
 }
 
-u8 fn_80064BBC(void *arg0, s32 arg1, void *arg2, f32 farg0)
+u8 GMaterial_EvalColorAnim(void *arg0, s32 arg1, void *arg2, f32 farg0)
 {
     void fn_80064C4C(void *, void *, f32);
 
@@ -5748,7 +5748,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     fn_802239D0(r28, 0);
 }
 s32 GMaterial_SetupColor(void *arg0,s32 arg1,void *arg2,void *arg3) {
-u8 GMaterial_EvalAlphaAnim(s32,s16,void*,f32);void fn_80064BBC(s32,s16,void*,f32);
+u8 GMaterial_EvalAlphaAnim(s32,s16,void*,f32);void GMaterial_EvalColorAnim(s32,s16,void*,f32);
 void GMaterial_Assert(void*,s32,void*);
 void GXSetTevColor(s32,MaterialColor*);void GXSetChanMatColor(s32,MaterialColor*);
 void GXSetTevOrder(s32,s32,s32,s32);void GXSetTevColorIn(s32,s32,s32,s32,s32);
@@ -5767,7 +5767,7 @@ if(*(u16*)((u8*)arg2+8)&0x80){color.b=alpha;color.g=alpha;color.r=alpha;}
 }else color.a=(s32)(gInv255f*(f32)(((u8*)arg0)[11]*color.a));
 if(!color.a)return 0;
 }
-fn_80064BBC(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58));
+GMaterial_EvalColorAnim(arg1,*(s16*)((u8*)arg2+10),&color,*(f32*)((u8*)arg0+0x58));
 if(((u8*)arg0)[8]<128)color.r=(((u8*)arg0)[8]*color.r)>>7;
 if(((u8*)arg0)[9]<128)color.g=(((u8*)arg0)[9]*color.g)>>7;
 if(((u8*)arg0)[10]<128)color.b=(((u8*)arg0)[10]*color.b)>>7;
