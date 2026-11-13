@@ -727,7 +727,7 @@ void fn_801A9600(void *arg0, void *arg1) {
     void fn_8001D580(void *);
     void *fn_80037C20(void *);
     extern u16 lbl_80367218;
-    void *base;
+    void *sel;
     s8 flag;
     void *p;
     void *q;
@@ -740,12 +740,17 @@ void fn_801A9600(void *arg0, void *arg1) {
     *(u16 *)((u8 *)arg0 + 0x2AE) = 0;
     flag = *(s8 *)((u8 *)arg0 + 0x2C8);
     if (flag <= 0) {
-        base = &lbl_80367218;
+        sel = &lbl_80367218;
     } else {
-        base = (u8 *)arg0 + 0x284;
+        sel = (u8 *)arg0 + 0x284;
     }
-    if (*(void **)base != NULL) {
-        if (fn_80094614(arg0, *(void **)(flag <= 0 ? (void *)&lbl_80367218 : (u8 *)arg0 + 0x284)) == 0) {
+    if (*(void **)sel != NULL) {
+        if (flag <= 0) {
+            sel = &lbl_80367218;
+        } else {
+            sel = (u8 *)arg0 + 0x284;
+        }
+        if (fn_80094614((*(void **)sel, arg0), *(void **)sel) == 0) {
             fn_8001D580((u8 *)arg0 + 0x284);
         }
     }
@@ -1126,7 +1131,7 @@ void fn_801AADA4(void *arg0) {
     }
 }
 
-void fn_801AB358(u8 *arg0) {
+void Options_LoadFromBattleState(u8 *arg0) {
     extern u8 gBattleState[];
     u8 *src = gBattleState;
     struct {
