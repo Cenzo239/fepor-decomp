@@ -3211,37 +3211,38 @@ void UnitPair_Read(void *dst, s32 stream) {
     Stream_Read(stream, 1, (void *)((char *)dst + 0x16));
 }
 
-void UnitPair_Write(void *arg0, s32 arg1) {
-    void *temp_r3;
-    void *temp_r3_2;
+/* Serialize a unit pair: unit ids then the trailing byte fields. */
+void UnitPair_Write(void *pair, s32 stream) {
+    void *unit;
+    void *unit2;
 
-    temp_r3 = *(void **)arg0;
-    if (temp_r3 != NULL) {
-        Stream_WriteU8(arg1, *(u8 *)((char *)temp_r3 + 0x198));
+    unit = *(void **)pair;
+    if (unit != NULL) {
+        Stream_WriteU8(stream, *(u8 *)((char *)unit + 0x198));
     } else {
-        Stream_WriteU8(arg1, 0U);
+        Stream_WriteU8(stream, 0U);
     }
-    temp_r3_2 = *(void **)((char *)arg0 + 0x4);
-    if (temp_r3_2 != NULL) {
-        Stream_WriteU8(arg1, *(u8 *)((char *)temp_r3_2 + 0x198));
+    unit2 = *(void **)((char *)pair + 0x4);
+    if (unit2 != NULL) {
+        Stream_WriteU8(stream, *(u8 *)((char *)unit2 + 0x198));
     } else {
-        Stream_WriteU8(arg1, 0U);
+        Stream_WriteU8(stream, 0U);
     }
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x8));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x9));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xA));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xB));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xC));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xD));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xE));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0xF));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x10));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x11));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x12));
-    Stream_Write(arg1, 1, (void *)((char *)arg0 + 0x13));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x14));
-    Stream_WriteU8(arg1, *(u8 *)((char *)arg0 + 0x15));
-    Stream_Write(arg1, 1, (void *)((char *)arg0 + 0x16));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x8));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x9));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xA));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xB));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xC));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xD));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xE));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0xF));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x10));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x11));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x12));
+    Stream_Write(stream, 1, (void *)((char *)pair + 0x13));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x14));
+    Stream_WriteU8(stream, *(u8 *)((char *)pair + 0x15));
+    Stream_Write(stream, 1, (void *)((char *)pair + 0x16));
 }
 
 s32 fn_80025F0C(s8 arg0, s8 arg1, s32 arg2) {
