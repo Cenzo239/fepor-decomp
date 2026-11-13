@@ -1723,13 +1723,13 @@ s32 fn_800B26B0(u32 arg0) {
 }
 
 void fn_800B27BC(void) {
-    u8 fn_8025ED80(void);
+    u8 Sound_IsReady(void);
     extern u8 gSoundSys[];
     u8 *base;
     void *unit;
     s32 flag;
 
-    if (fn_8025ED80() != 0) {
+    if (Sound_IsReady() != 0) {
         base = gSoundSys;
         if (*(u16 *)(base + 0x12C) == 1) {
             unit = *(void **)(base + 0xF8);

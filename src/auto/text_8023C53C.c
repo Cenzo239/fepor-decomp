@@ -12020,7 +12020,7 @@ s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize)
     return ret;
 }
 
-u8 fn_8025ED80(void) {
+u8 Sound_IsReady(void) {
 #pragma dont_inline reset
     extern u8 gSoundReady;
     return gSoundReady;
