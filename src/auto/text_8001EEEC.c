@@ -2141,7 +2141,7 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
         virtual s32 v23() = 0;
         virtual s32 v24() = 0;
     };
-    extern f32 lbl_80368DA8;
+    extern f32 gUiMenuIdentityScale;
     extern f32 lbl_80368DAC;
     s32 n;
     s32 t;
@@ -2152,14 +2152,14 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
     t = *(s16 *)((char *)arg0 + 0x28) + 1;
     switch (mode) {
     case 0:
-        return lbl_80368DA8;
+        return gUiMenuIdentityScale;
     case 1:
         n = ((Model *)*(void **)((char *)arg0 + 0x3C))->v23() + 1;
-        return (lbl_80368DA8 / (f32)n) * (f32)(n - t);
+        return (gUiMenuIdentityScale / (f32)n) * (f32)(n - t);
     case 2:
         n = ((Model *)*(void **)((char *)arg0 + 0x3C))->v24() + 1;
         fn = (f32)n;
-        return (lbl_80368DA8 / fn) * (f32)t;
+        return (gUiMenuIdentityScale / fn) * (f32)t;
     default:
         return lbl_80368DAC;
     }
@@ -2272,13 +2272,13 @@ extern "C" void Ui_DrawMenuTextItem(void *unused, void *parent, void *item) {
         virtual void v3() = 0;
         virtual void v4(void *) = 0;
     };
-    extern f32 lbl_80368DA8;
+    extern f32 gUiMenuIdentityScale;
     extern f32 gUiMenuZBias;
     extern f32 gUiMenuTextScale;
 
     (void)unused;
     Prim2D_Begin();
-    Prim2D_SetTransform((f32) M2C_FIELD(parent, s16 *, 0x30), (f32) M2C_FIELD(parent, s16 *, 0x32), M2C_FIELD(parent, Model **, 0x3C)->v25() - gUiMenuZBias, lbl_80368DA8);
+    Prim2D_SetTransform((f32) M2C_FIELD(parent, s16 *, 0x30), (f32) M2C_FIELD(parent, s16 *, 0x32), M2C_FIELD(parent, Model **, 0x3C)->v25() - gUiMenuZBias, gUiMenuIdentityScale);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(5);
@@ -2776,7 +2776,7 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
     extern s32 gUiMenuDimColorTR;
     extern s32 gUiMenuDimColorBL;
     extern s32 gUiMenuDimColorBR;
-    extern f32 lbl_80368DA8;
+    extern f32 gUiMenuIdentityScale;
     s32 sp14;
     s32 sp10;
     s32 spC;
@@ -2786,7 +2786,7 @@ extern "C" void Ui_DrawMenuDimRect(s32 unused, void *arg1) {
 
     Prim2D_Begin();
     fv = M2C_FIELD(arg1, Model **, 0x3C)->v25();
-    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), fv, lbl_80368DA8);
+    Prim2D_SetTransform((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), fv, gUiMenuIdentityScale);
     Prim2D_SetTex(0, 0x12);
     var_r3 = 0;
     if ((u8) M2C_FIELD(arg1, u8 *, 0x2D) == 0 && (u8) M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
@@ -4195,6 +4195,6 @@ extern u8 lbl_80268E40[];
 extern u16 lbl_80368DA0;
 extern u16 lbl_80368DA4;
 extern u16 lbl_80368DAC;
-extern u16 lbl_80368DA8;
+extern u16 gUiMenuIdentityScale;
 extern u32 lbl_8036C410;
 extern u32 lbl_8036C414;
