@@ -611,7 +611,8 @@ void Map_UpdateCursorMoveLimit(void) {
     }
 }
 
-void MapUi_ShowUnitRanges(void *arg0) {
+/* Build and show the selected unit's move-range overlay (refresh or first setup). */
+void MapUi_ShowUnitRanges(void *unit) {
     void UiCtx_RefreshRangeSelect(void *);
     void fn_80022DAC(void *, s32, s32);
     void fn_80022FD8(void *, s32);
@@ -626,21 +627,21 @@ void MapUi_ShowUnitRanges(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
     extern u8 gMapMoveMsgStrs[];
-    u8 temp_r31;
+    u8 mov;
 
     if ((s8)gUiContext[0x12] != 0) {
         UiCtx_RefreshRangeSelect(gUiContext);
-        temp_r31 = gUiContext[0x11];
+        mov = gUiContext[0x11];
         fn_80022DAC(gBattleMap, 8, 0);
         fn_80022FD8(gBattleMap, 5);
-        fn_800227F8(gBattleMap, *(s32 *)((u8 *)arg0 + 0x18C));
-        fn_80022748(gBattleMap, *(s32 *)((u8 *)arg0 + 0x190));
-        Map_FloodMoveRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
+        fn_800227F8(gBattleMap, *(s32 *)((u8 *)unit + 0x18C));
+        fn_80022748(gBattleMap, *(s32 *)((u8 *)unit + 0x190));
+        Map_FloodMoveRange(gBattleMap, ((u8 *)unit)[0x19E], ((u8 *)unit)[0x19F], mov, 0, 0);
         Msg_Expand(gMapMoveMsgStrs + 0xCE);
         fn_80091A1C();
     } else {
-        UiCtx_BeginMoveSelect(gUiContext, arg0);
-        Map_SetupUnitMoveLimit(arg0);
+        UiCtx_BeginMoveSelect(gUiContext, unit);
+        Map_SetupUnitMoveLimit(unit);
         Msg_Expand(gMapMoveMsgStrs + 0xD9);
         fn_80091A1C();
     }
