@@ -9551,7 +9551,7 @@ void fn_800C3364(s32 arg0, s32 arg1) {
     s32 r30 = 0;
     
     do {
-        fn_8001C15C(r31, arg1);
+        Item_Read(r31, arg1);
         r30 += 1;
         r31 += 8;
     } while (r30 < 0xC8);

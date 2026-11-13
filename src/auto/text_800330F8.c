@@ -4317,7 +4317,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     void fn_80104134(void *, void *);
     void fn_80105A04(void *, void *);
     s32 Unit_GetItemSlot(s32, s32);
-    void fn_8001C15C(void *, void *);
+    void Item_Read(void *, void *);
     void fn_8001D018(void *, void *);
     void fn_80017414(void *, void *);
     void fn_8003C21C(void *, void *);
@@ -4382,7 +4382,7 @@ s32 Unit_Read(void *arg0, void *arg1) {
     Stream_Read(src, 8, (u8 *)dst + 0x1B4);
     fn_80105A04((u8 *)dst + 0x1BC, src);
     for (tmp = 0; tmp < 8; tmp++) {
-        fn_8001C15C((void *)Unit_GetItemSlot((s32)dst, tmp), src);
+        Item_Read((void *)Unit_GetItemSlot((s32)dst, tmp), src);
     }
     fn_8001D018((u8 *)dst + 0x20C, src);
     fn_80017414((u8 *)dst + 0x228, src);

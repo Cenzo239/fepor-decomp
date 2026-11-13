@@ -1533,7 +1533,7 @@ s32 fn_8001C0C8(u8 *arg0)
     return 1;
 }
 
-void fn_8001C15C(void *arg0, void *arg1) {
+void Item_Read(void *arg0, void *arg1) {
     void fn_800C3220(void *, s32);
     u16 Stream_ReadU16(void *);
     s32 fn_80019E24(s32);
