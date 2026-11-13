@@ -6713,7 +6713,7 @@ void fn_801C45A4(void *arg0) {
     void fn_80060F70(void *, s32, void *);
     s32 fn_8006135C(void *, char *);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80202300(void *, s32, f32, f32, f32, f32);
+    void PSMTXRotRad(void *, s32, f32, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     extern u8 lbl_8027D594[];
@@ -6795,7 +6795,7 @@ void fn_801C45A4(void *arg0) {
                     sp5C[0] = sp5C[0] + f31;
                     sp5C[1] = lbl_8036B42C;
                     sp5C[2] = sp5C[2] + f30;
-                    fn_80202300(mtxA, 0x59, ftmp, sp5C[2], lbl_8036B42C, sp5C[0]);
+                    PSMTXRotRad(mtxA, 0x59, ftmp, sp5C[2], lbl_8036B42C, sp5C[0]);
                     PSMTXScale(mtxB, f29, f29, f29);
                     PSMTXTrans(mtxC, sp5C[0], sp5C[1], sp5C[2]);
                     PSMTXConcat(mtxB, mtxA, mtxD);
@@ -7295,7 +7295,7 @@ void fn_801C65E0(void *arg0) {
     void *fn_80067FDC(void);
     void fn_8006ECCC(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_8021F4E4(s32, s32);
     void fn_8021FBB8(void);
@@ -7338,7 +7338,7 @@ void fn_801C65E0(void *arg0) {
         *(u32 *)&z = *(u32 *)((u8 *)arg0 + 8);
         scale = *(f32 *)((u8 *)arg0 + 0xC);
         PSMTXTrans(mtxA, x, y, z);
-        fn_80202300(mtxB, 0x79, lbl_8036B430 * scale);
+        PSMTXRotRad(mtxB, 0x79, lbl_8036B430 * scale);
         PSMTXConcat(mtxA, mtxB, mtxC);
         PSMTXConcat(fn_80067FDC(), mtxC, mtxC);
         fn_80224D7C(mtxC, 0);
@@ -11914,7 +11914,7 @@ void fn_801D0480(void *arg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     void fn_8006ECCC(void *, void *, s32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_80220DEC(s32, s32, s32);
     void fn_80222C50(void *, s32);
@@ -12780,7 +12780,7 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
     void fn_8000A258(void); void fn_8000A248(void); void fn_80009B98(void);
     void fn_80009C0C(f32); void fn_8013F920(void *);
     void fn_80009BC0(void (*)(void *), s16 *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_802025E8(void *, void *, f32, f32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
@@ -12926,8 +12926,8 @@ extern "C" void fn_801D2118(void *arg0, s32 arg1) {
         }
     }
     xoff = (s16)(self->a60 - 0x10);
-    fn_80202300(sp34, 0x79, lbl_8036B5FC);
-    fn_80202300(sp64, 0x78, lbl_8036B600);
+    PSMTXRotRad(sp34, 0x79, lbl_8036B5FC);
+    PSMTXRotRad(sp64, 0x78, lbl_8036B600);
     PSMTXConcat(sp64, sp34, sp64);
     fn_802025E8(sp64, sp64, lbl_8036B604, lbl_8036B604, lbl_8036B604);
     fn_8000A258();

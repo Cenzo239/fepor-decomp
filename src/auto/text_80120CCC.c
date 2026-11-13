@@ -1616,7 +1616,7 @@ void fn_80123D1C(void *arg0) {
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void fn_80224D7C(void *, s32);
     void fn_80224E1C(s32);
     void fn_8021FBB8(void);
@@ -1781,7 +1781,7 @@ void fn_80123D1C(void *arg0) {
             s16 rem;
             s32 tot;
             PSMTXTrans(spC8, zero, pts[1], zero);
-            fn_80202300(sp98, 0x59, lbl_8036A31C * pts[0]);
+            PSMTXRotRad(sp98, 0x59, lbl_8036A31C * pts[0]);
             PSMTXConcat(spC8, spF8, sp128);
             PSMTXConcat(sp38, sp128, sp128);
             PSMTXConcat(sp98, sp128, sp128);

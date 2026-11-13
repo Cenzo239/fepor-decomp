@@ -2125,7 +2125,7 @@ void fn_8012FE1C(void *arg0, void *arg1, f32 farg0, f32 farg1) {
 
 #pragma use_lmw_stmw on
 void fn_8012FF60(void *arg0) {
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_8000A258(void);
@@ -2183,9 +2183,9 @@ void fn_8012FF60(void *arg0) {
     f32 f28;
 
     self = arg0;
-    fn_80202300(spA4, 0x58, lbl_8036A57C);
-    fn_80202300(sp74, 0x59, lbl_8036A580);
-    fn_80202300(sp44, 0x58, lbl_8036A580);
+    PSMTXRotRad(spA4, 0x58, lbl_8036A57C);
+    PSMTXRotRad(sp74, 0x59, lbl_8036A580);
+    PSMTXRotRad(sp44, 0x58, lbl_8036A580);
     PSMTXScale(sp14, lbl_8036A584, lbl_8036A584, lbl_8036A584);
     PSMTXConcat(spA4, sp14, sp14);
     PSMTXConcat(sp74, sp14, sp14);

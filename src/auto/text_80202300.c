@@ -98,7 +98,7 @@ extern u8 lbl_80368431;
 extern f32 lbl_8036BADC;
 extern f32 lbl_8036BAE0;
 
-void fn_80202300(s32 arg0, s32 arg1, f32 farg0) {
+void PSMTXRotRad(s32 arg0, s32 arg1, f32 farg0) {
     f32 fn_80238A30(f32);
     f32 fn_80238A54(f32);
     void fn_80202370(s32, s32, f32, f32);

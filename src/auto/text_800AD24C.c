@@ -8641,7 +8641,7 @@ void fn_800C0CDC(void *arg0) {
     void fn_80223F2C(s32, s32, s32, s32);
     void fn_802239D0(s32, s32);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_80224D7C(void *, s32);
@@ -8685,7 +8685,7 @@ void fn_800C0CDC(void *arg0) {
     fn_802239D0(0, 3);
     PSMTXTrans(sp98, lbl_80369D24, lbl_80369D24, lbl_80369D28);
     PSMTXTrans(sp68, lbl_80369D2C, lbl_80369D30, lbl_80369D28);
-    fn_80202300(spC8, 0x5A, lbl_80369D34);
+    PSMTXRotRad(spC8, 0x5A, lbl_80369D34);
     PSMTXScale(sp38, lbl_80369D38, lbl_80369D3C, lbl_80369D40);
     PSMTXConcat(sp38, sp98, sp8);
     PSMTXConcat(spC8, sp8, sp8);

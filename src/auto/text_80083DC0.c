@@ -133,7 +133,7 @@ void fn_80083F08(void *arg0) {
     Color *fn_8018D900(s32);
     void fn_80201FF0(f32 *, void *);
     void PSMTXConcat(f32 *, f32 *, f32 *);
-    void fn_80202300(f32 *, s32, f32);
+    void PSMTXRotRad(f32 *, s32, f32);
     void PSMTXTrans(f32 *, f32, f32, f32);
     void PSMTXScale(f32 *, f32, f32, f32);
     void fn_802029C4(f32 *, f32 *, f32 *);
@@ -489,12 +489,12 @@ void fn_80083F08(void *arg0) {
     fn_80009C0C(lbl_80369650);
     fn_8000A248();
     fn_8004BD1C(unit, &sp24, lbl_8036943C);
-    fn_80202300(sp120, 0x7A, lbl_80369654 * *(f32 *)((u8 *)arg0 + 0x64));
+    PSMTXRotRad(sp120, 0x7A, lbl_80369654 * *(f32 *)((u8 *)arg0 + 0x64));
     fn_802029C4(sp120, &sp24, &sp24);
     PSMTXScale(spF0, lbl_8036943C, lbl_8036943C, lbl_8036943C);
-    fn_80202300(sp90, 0x78, lbl_80369658);
-    fn_80202300(sp60, 0x79, lbl_80369654 * (lbl_80369518 + *(f32 *)((u8 *)arg0 + 0x64)));
-    fn_80202300(sp30, 0x78, lbl_8036965C);
+    PSMTXRotRad(sp90, 0x78, lbl_80369658);
+    PSMTXRotRad(sp60, 0x79, lbl_80369654 * (lbl_80369518 + *(f32 *)((u8 *)arg0 + 0x64)));
+    PSMTXRotRad(sp30, 0x78, lbl_8036965C);
     f24v = sp24;
     f23v = sp28;
     PSMTXTrans(spC0, lbl_803695A4 + bx + f24v, lbl_80369660 + by + f23v, lbl_80369664);

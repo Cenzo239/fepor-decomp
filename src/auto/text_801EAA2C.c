@@ -3055,7 +3055,7 @@ void fn_801EFDC8(void *arg0) {
 void fn_801F0718(void *arg0) {
     f32 fn_80059500(f32, f32, f32, f32, f32);
     void *fn_80068548(void);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_80203184(void *, void *, void *);
     void fn_80067FE8(void *, void *, void *);
@@ -3132,8 +3132,8 @@ void fn_801F0718(void *arg0) {
     ((u32 *)vec)[0] = src[0];
     ((u32 *)vec)[1] = src[1];
     vec[2] = ftmp;
-    fn_80202300(mtx14, 0x58, angle);
-    fn_80202300(mtx44, 0x59, lbl_8036B7D4 * f31);
+    PSMTXRotRad(mtx14, 0x58, angle);
+    PSMTXRotRad(mtx44, 0x59, lbl_8036B7D4 * f31);
     fn_802029C4(mtx14, vec, vec);
     fn_802029C4(mtx44, vec, vec);
     fn_80203184(cam->eye, vec, cam->at);

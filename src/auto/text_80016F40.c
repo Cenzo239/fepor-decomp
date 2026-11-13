@@ -1105,7 +1105,7 @@ void fn_80018B18(void) {
 extern "C" void fn_80018B24(void) {
     f32 fn_80059F64(f32, f32, f32, f32);
     void *fn_80040844(void);
-    void fn_80202300(f32 *, s32, f32);
+    void PSMTXRotRad(f32 *, s32, f32);
     void PSMTXConcat(f32 *, f32 *, f32 *);
     void fn_802029C4(f32 *, f32 *, f32 *);
     void fn_80067FE8(f32 *, f32 *, f32 *);
@@ -1206,9 +1206,9 @@ extern "C" void fn_80018B24(void) {
         child = *(void **)r31;
         *(f32 *)((u8 *)child + 0xDC) = -*(f32 *)((u8 *)child + 0xF8);
         child = *(void **)r31;
-        fn_80202300(sp8, 0x58, c4 * *(f32 *)((u8 *)child + 0x100));
+        PSMTXRotRad(sp8, 0x58, c4 * *(f32 *)((u8 *)child + 0x100));
         child = *(void **)r31;
-        fn_80202300(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
+        PSMTXRotRad(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
     }
     PSMTXConcat(sp38, sp8, sp38);
     child = *(void **)r31;

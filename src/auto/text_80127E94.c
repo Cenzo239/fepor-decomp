@@ -1383,7 +1383,7 @@ void fn_8012AF4C(void *arg0) {
     void fn_8005F7B0(void *, s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXScale(void *, f32, f32, f32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
@@ -1425,11 +1425,11 @@ void fn_8012AF4C(void *arg0) {
     y = (lbl_8036A46C * (f32)fn_802380D0((f32)*(s32 *)((u8 *)self + 0x40))) + y;
 
     PSMTXScale(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);
-    fn_80202300(sp68, 0x58, lbl_8036A474);
+    PSMTXRotRad(sp68, 0x58, lbl_8036A474);
     PSMTXConcat(sp68, sp98, sp8);
     PSMTXTrans(sp38, lbl_8036A478, lbl_8036A478, lbl_8036A420);
     PSMTXConcat(sp38, sp8, sp8);
-    fn_80202300(sp68, 0x5A, lbl_8036A434 * scale);
+    PSMTXRotRad(sp68, 0x5A, lbl_8036A434 * scale);
     PSMTXConcat(sp68, sp8, sp8);
     PSMTXTrans(sp38, lbl_8036A410, lbl_8036A410, lbl_8036A420);
     PSMTXConcat(sp38, sp8, sp8);

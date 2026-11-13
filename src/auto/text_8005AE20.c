@@ -3031,73 +3031,73 @@ void fn_80061A08(void *arg0)
                 switch (rot) {
                 case 1:
                     if (lbl_803691E4 != fx)
-                        fn_80202300(spD0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spD0, 0x58, lbl_803691E8 * fx);
                     if (lbl_803691E4 != fy) {
-                        fn_80202300(spA0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spA0, 0x59, lbl_803691E8 * fy);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fz) {
-                        fn_80202300(spA0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spA0, 0x5A, lbl_803691E8 * fz);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
                 case 2:
                     if (lbl_803691E4 != fy)
-                        fn_80202300(spD0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spD0, 0x59, lbl_803691E8 * fy);
                     if (lbl_803691E4 != fz) {
-                        fn_80202300(spA0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spA0, 0x5A, lbl_803691E8 * fz);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fx) {
-                        fn_80202300(spA0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spA0, 0x58, lbl_803691E8 * fx);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
                 case 3:
                     if (lbl_803691E4 != fz)
-                        fn_80202300(spD0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spD0, 0x5A, lbl_803691E8 * fz);
                     if (lbl_803691E4 != fx) {
-                        fn_80202300(spA0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spA0, 0x58, lbl_803691E8 * fx);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fy) {
-                        fn_80202300(spA0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spA0, 0x59, lbl_803691E8 * fy);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
                 case 4:
                     if (lbl_803691E4 != fx)
-                        fn_80202300(spD0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spD0, 0x58, lbl_803691E8 * fx);
                     if (lbl_803691E4 != fz) {
-                        fn_80202300(spA0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spA0, 0x5A, lbl_803691E8 * fz);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fy) {
-                        fn_80202300(spA0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spA0, 0x59, lbl_803691E8 * fy);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
                 case 5:
                     if (lbl_803691E4 != fy)
-                        fn_80202300(spD0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spD0, 0x59, lbl_803691E8 * fy);
                     if (lbl_803691E4 != fx) {
-                        fn_80202300(spA0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spA0, 0x58, lbl_803691E8 * fx);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fz) {
-                        fn_80202300(spA0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spA0, 0x5A, lbl_803691E8 * fz);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
                 case 6:
                     if (lbl_803691E4 != fz)
-                        fn_80202300(spD0, 0x5A, lbl_803691E8 * fz);
+                        PSMTXRotRad(spD0, 0x5A, lbl_803691E8 * fz);
                     if (lbl_803691E4 != fy) {
-                        fn_80202300(spA0, 0x59, lbl_803691E8 * fy);
+                        PSMTXRotRad(spA0, 0x59, lbl_803691E8 * fy);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     if (lbl_803691E4 != fx) {
-                        fn_80202300(spA0, 0x58, lbl_803691E8 * fx);
+                        PSMTXRotRad(spA0, 0x58, lbl_803691E8 * fx);
                         PSMTXConcat(spA0, spD0, spD0);
                     }
                     break;
@@ -3186,73 +3186,73 @@ void fn_80061A08(void *arg0)
                         switch (rot) {
                         case 1:
                             if (lbl_803691E4 != fx)
-                                fn_80202300(sp70, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * fx);
                             if (lbl_803691E4 != fy) {
-                                fn_80202300(sp40, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fz) {
-                                fn_80202300(sp40, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 2:
                             if (lbl_803691E4 != fy)
-                                fn_80202300(sp70, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * fy);
                             if (lbl_803691E4 != fz) {
-                                fn_80202300(sp40, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fx) {
-                                fn_80202300(sp40, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 3:
                             if (lbl_803691E4 != fz)
-                                fn_80202300(sp70, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * fz);
                             if (lbl_803691E4 != fx) {
-                                fn_80202300(sp40, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fy) {
-                                fn_80202300(sp40, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 4:
                             if (lbl_803691E4 != fx)
-                                fn_80202300(sp70, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * fx);
                             if (lbl_803691E4 != fz) {
-                                fn_80202300(sp40, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fy) {
-                                fn_80202300(sp40, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 5:
                             if (lbl_803691E4 != fy)
-                                fn_80202300(sp70, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * fy);
                             if (lbl_803691E4 != fx) {
-                                fn_80202300(sp40, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fz) {
-                                fn_80202300(sp40, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 6:
                             if (lbl_803691E4 != fz)
-                                fn_80202300(sp70, 0x5A, lbl_803691E8 * fz);
+                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * fz);
                             if (lbl_803691E4 != fy) {
-                                fn_80202300(sp40, 0x59, lbl_803691E8 * fy);
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             if (lbl_803691E4 != fx) {
-                                fn_80202300(sp40, 0x58, lbl_803691E8 * fx);
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
@@ -3286,7 +3286,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     void fn_80201FC4(void *);
     void fn_80201FF0(void *, void *);
     void PSMTXConcat(void *, void *, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void fn_80202640(void *, f32 *);
@@ -3320,79 +3320,79 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
                 switch (order) {
                 case 1:
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(mD8, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(mD8, 0x58, lbl_803691E8 * rx);
                     }
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(m78, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(m78, 0x59, lbl_803691E8 * ry);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(m78, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(m78, 0x5A, lbl_803691E8 * rz);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
                 case 2:
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(mD8, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(mD8, 0x59, lbl_803691E8 * ry);
                     }
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(m78, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(m78, 0x5A, lbl_803691E8 * rz);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(m78, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(m78, 0x58, lbl_803691E8 * rx);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
                 case 3:
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(mD8, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(mD8, 0x5A, lbl_803691E8 * rz);
                     }
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(m78, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(m78, 0x58, lbl_803691E8 * rx);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(m78, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(m78, 0x59, lbl_803691E8 * ry);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
                 case 4:
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(mD8, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(mD8, 0x58, lbl_803691E8 * rx);
                     }
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(m78, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(m78, 0x5A, lbl_803691E8 * rz);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(m78, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(m78, 0x59, lbl_803691E8 * ry);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
                 case 5:
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(mD8, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(mD8, 0x59, lbl_803691E8 * ry);
                     }
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(m78, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(m78, 0x58, lbl_803691E8 * rx);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(m78, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(m78, 0x5A, lbl_803691E8 * rz);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
                 case 6:
                     if (lbl_803691E4 != rz) {
-                        fn_80202300(mD8, 0x5A, lbl_803691E8 * rz);
+                        PSMTXRotRad(mD8, 0x5A, lbl_803691E8 * rz);
                     }
                     if (lbl_803691E4 != ry) {
-                        fn_80202300(m78, 0x59, lbl_803691E8 * ry);
+                        PSMTXRotRad(m78, 0x59, lbl_803691E8 * ry);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     if (lbl_803691E4 != rx) {
-                        fn_80202300(m78, 0x58, lbl_803691E8 * rx);
+                        PSMTXRotRad(m78, 0x58, lbl_803691E8 * rx);
                         PSMTXConcat(m78, mD8, mD8);
                     }
                     break;
@@ -3418,79 +3418,79 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             switch (order) {
             case 1:
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(mA8, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(mA8, 0x58, lbl_803691E8 * rx2);
                 }
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(m48, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(m48, 0x59, lbl_803691E8 * ry2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(m48, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(m48, 0x5A, lbl_803691E8 * rz2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
             case 2:
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(mA8, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(mA8, 0x59, lbl_803691E8 * ry2);
                 }
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(m48, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(m48, 0x5A, lbl_803691E8 * rz2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(m48, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(m48, 0x58, lbl_803691E8 * rx2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
             case 3:
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(mA8, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(mA8, 0x5A, lbl_803691E8 * rz2);
                 }
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(m48, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(m48, 0x58, lbl_803691E8 * rx2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(m48, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(m48, 0x59, lbl_803691E8 * ry2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
             case 4:
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(mA8, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(mA8, 0x58, lbl_803691E8 * rx2);
                 }
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(m48, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(m48, 0x5A, lbl_803691E8 * rz2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(m48, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(m48, 0x59, lbl_803691E8 * ry2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
             case 5:
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(mA8, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(mA8, 0x59, lbl_803691E8 * ry2);
                 }
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(m48, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(m48, 0x58, lbl_803691E8 * rx2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(m48, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(m48, 0x5A, lbl_803691E8 * rz2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
             case 6:
                 if (lbl_803691E4 != rz2) {
-                    fn_80202300(mA8, 0x5A, lbl_803691E8 * rz2);
+                    PSMTXRotRad(mA8, 0x5A, lbl_803691E8 * rz2);
                 }
                 if (lbl_803691E4 != ry2) {
-                    fn_80202300(m48, 0x59, lbl_803691E8 * ry2);
+                    PSMTXRotRad(m48, 0x59, lbl_803691E8 * ry2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 if (lbl_803691E4 != rx2) {
-                    fn_80202300(m48, 0x58, lbl_803691E8 * rx2);
+                    PSMTXRotRad(m48, 0x58, lbl_803691E8 * rx2);
                     PSMTXConcat(m48, mA8, mA8);
                 }
                 break;
@@ -3510,79 +3510,79 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             switch (order) {
             case 1:
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(mA8, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(mA8, 0x58, lbl_803691E8 * rx3);
                 }
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(m18, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(m18, 0x59, lbl_803691E8 * ry3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(m18, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(m18, 0x5A, lbl_803691E8 * rz3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
             case 2:
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(mA8, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(mA8, 0x59, lbl_803691E8 * ry3);
                 }
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(m18, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(m18, 0x5A, lbl_803691E8 * rz3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(m18, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(m18, 0x58, lbl_803691E8 * rx3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
             case 3:
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(mA8, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(mA8, 0x5A, lbl_803691E8 * rz3);
                 }
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(m18, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(m18, 0x58, lbl_803691E8 * rx3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(m18, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(m18, 0x59, lbl_803691E8 * ry3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
             case 4:
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(mA8, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(mA8, 0x58, lbl_803691E8 * rx3);
                 }
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(m18, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(m18, 0x5A, lbl_803691E8 * rz3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(m18, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(m18, 0x59, lbl_803691E8 * ry3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
             case 5:
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(mA8, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(mA8, 0x59, lbl_803691E8 * ry3);
                 }
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(m18, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(m18, 0x58, lbl_803691E8 * rx3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(m18, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(m18, 0x5A, lbl_803691E8 * rz3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
             case 6:
                 if (lbl_803691E4 != rz3) {
-                    fn_80202300(mA8, 0x5A, lbl_803691E8 * rz3);
+                    PSMTXRotRad(mA8, 0x5A, lbl_803691E8 * rz3);
                 }
                 if (lbl_803691E4 != ry3) {
-                    fn_80202300(m18, 0x59, lbl_803691E8 * ry3);
+                    PSMTXRotRad(m18, 0x59, lbl_803691E8 * ry3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 if (lbl_803691E4 != rx3) {
-                    fn_80202300(m18, 0x58, lbl_803691E8 * rx3);
+                    PSMTXRotRad(m18, 0x58, lbl_803691E8 * rx3);
                     PSMTXConcat(m18, mA8, mA8);
                 }
                 break;
@@ -4361,7 +4361,7 @@ void *fn_800656C8(void *node, void *out)
     void fn_80201FC4(void *);
     void PSMTXConcat(void *, void *, void *);
     u32 fn_80202140(void *, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     int fn_8006DA64(void *, int, void *);
     extern f32 lbl_80369218;
     extern f32 lbl_8036921C;
@@ -4386,79 +4386,79 @@ void *fn_800656C8(void *node, void *out)
             switch (order) {
             case 1:
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp38, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp38, 0x58, lbl_8036921C * rx);
                 }
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 2:
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp38, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp38, 0x59, lbl_8036921C * ry);
                 }
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 3:
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp38, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp38, 0x5A, lbl_8036921C * rz);
                 }
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 4:
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp38, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp38, 0x58, lbl_8036921C * rx);
                 }
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 5:
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp38, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp38, 0x59, lbl_8036921C * ry);
                 }
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp8, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp8, 0x5A, lbl_8036921C * rz);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
             case 6:
                 if (lbl_80369218 != rz) {
-                    fn_80202300(sp38, 0x5A, lbl_8036921C * rz);
+                    PSMTXRotRad(sp38, 0x5A, lbl_8036921C * rz);
                 }
                 if (lbl_80369218 != ry) {
-                    fn_80202300(sp8, 0x59, lbl_8036921C * ry);
+                    PSMTXRotRad(sp8, 0x59, lbl_8036921C * ry);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 if (lbl_80369218 != rx) {
-                    fn_80202300(sp8, 0x58, lbl_8036921C * rx);
+                    PSMTXRotRad(sp8, 0x58, lbl_8036921C * rx);
                     PSMTXConcat(sp8, sp38, sp38);
                 }
                 break;
@@ -5015,7 +5015,7 @@ s32 fn_80067058(s32 arg0) {
 }
 
 void fn_8006720C(void *arg0) {
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_802029C4(void *, void *, void *);
     extern void *lbl_80366DDC;
@@ -5038,8 +5038,8 @@ void fn_8006720C(void *arg0) {
             vec[0] = src[0];
             vec[1] = src[1];
             vec[2] = src[2];
-            fn_80202300(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
-            fn_80202300(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
+            PSMTXRotRad(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
+            PSMTXRotRad(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
             PSMTXConcat(m74, m44, m14);
             if (arg0 != NULL) {
                 PSMTXConcat(arg0, m14, m14);
@@ -5604,7 +5604,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     f32 fn_80063C2C(void **, s16, f32);
     void fn_80201FC4(void *);
     void PSMTXTrans(void *, f32, f32, f32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXScale(void *, f32, f32, f32);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
@@ -5700,7 +5700,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
         fn_80201FC4(sp34);
         if (lbl_80369270 != f31) {
             PSMTXTrans(sp64, lbl_80369274, lbl_80369274, lbl_80369270);
-            fn_80202300(sp94, 0x7A, lbl_80369278 * -f31);
+            PSMTXRotRad(sp94, 0x7A, lbl_80369278 * -f31);
             PSMTXConcat(sp94, sp64, sp94);
             PSMTXTrans(sp64, lbl_8036927C, lbl_8036927C, lbl_80369270);
             PSMTXConcat(sp64, sp94, sp34);

@@ -38,7 +38,7 @@ extern f64 lbl_8036A198;
 extern f32 lbl_8036A1D8;
 void fn_8005FEE8(void *, f32);
 void fn_800608AC(void *);
-void fn_80202300(void *, s32, void *, f32, f32);
+void PSMTXRotRad(void *, s32, void *, f32, f32);
 void fn_802029C4(void *, void *, void *);
 #define VCALL(ptr, offset) (((void(**)(void *, void *))((u8*)(ptr) + (offset)))[0])
 
@@ -2607,7 +2607,7 @@ extern "C" void fn_80116988(void *arg0, s32 arg1, f32 farg0) {
         sp80.y = z;
         sp80.x = dx;
         sp80.z = z;
-        fn_80202300(sp98, 0x59, gGame,
+        PSMTXRotRad(sp98, 0x59, gGame,
                     lbl_8036A1D8 * (*(f32 *)((u8 *)gGame + 0x164) * f31),
                     dx);
         fn_802029C4(sp98, &sp80, &sp80);

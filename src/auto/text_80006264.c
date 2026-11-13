@@ -801,7 +801,7 @@ void fn_80007370(float arg0, float arg1, float arg2)
     PSMTXTrans(matrix1, -arg0, -arg1, lbl_80368B98);
 
     scale = lbl_80368B9C * arg2;
-    fn_80202300(matrix2, 0x5A, scale);
+    PSMTXRotRad(matrix2, 0x5A, scale);
 
     PSMTXConcat(matrix2, matrix1, matrix2);
 
@@ -2031,7 +2031,7 @@ void fn_80009C20(
 
     PSMTXScale(matrix1, arg5, arg6, lbl_80368B94);
 
-    fn_80202300(matrix2, 0x5A, lbl_80368B9C * arg7);
+    PSMTXRotRad(matrix2, 0x5A, lbl_80368B9C * arg7);
 
     PSMTXTrans(matrix3, -arg3, -arg4, lbl_80368B98);
     PSMTXTrans(matrix4, arg3, arg4, lbl_80368B98);

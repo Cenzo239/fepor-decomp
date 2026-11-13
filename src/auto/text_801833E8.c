@@ -9094,7 +9094,7 @@ s32 fn_8019A364(void *arg0)
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_80147578(void *, s32, f32, f32, f32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_8027AA20[3];
     extern u8 lbl_8027AA38[];
@@ -9151,7 +9151,7 @@ s32 fn_8019A364(void *arg0)
     *(u32 *)&vec[1] = lbl_8027AA20[1];
     *(u32 *)&vec[2] = lbl_8027AA20[2];
     vec[1] = *(f32 *)(obj + 0x4C);
-    fn_80202300(mtx, 0x58, lbl_8036AF18);
+    PSMTXRotRad(mtx, 0x58, lbl_8036AF18);
     fn_802029C4(mtx, vec, vec);
 
     f24 = (f32)*(s16 *)(obj + 0x4A) * lbl_8036AF00;
@@ -9366,7 +9366,7 @@ s32 fn_8019ADD8(void *arg0)
     f32 fn_80059F64(f32, f32, f32, f32);
     f32 fn_80059F78(s32, f32, f32, f32, f32);
     f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     extern u32 lbl_8027AA08[3];
     extern u8 lbl_802CA518[];
@@ -9421,7 +9421,7 @@ s32 fn_8019ADD8(void *arg0)
     *(u32 *)&vec[1] = lbl_8027AA08[1];
     *(u32 *)&vec[2] = lbl_8027AA08[2];
     vec[1] = *(f32 *)(obj + 0x6C);
-    fn_80202300(mtx, 0x58, lbl_8036AF34);
+    PSMTXRotRad(mtx, 0x58, lbl_8036AF34);
     fn_802029C4(mtx, vec, vec);
 
     f31 = lbl_8036AF00 * (f32)*(s16 *)(obj + 0x6A);

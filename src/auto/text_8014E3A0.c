@@ -268,7 +268,7 @@ void fn_8014E864(void *arg0) {
     void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
     void fn_802245D8(s32, s32, s32, s32);
     void fn_80224684(s32, s32, s32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void fn_802033AC(void *, void *);
@@ -351,34 +351,34 @@ void fn_8014E864(void *arg0) {
 
                 switch (*(u32 *)((u8 *)arg0 + 0xC)) {
                 case 1:
-                    fn_80202300(buf68, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
-                    fn_80202300(buf98, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
-                    fn_80202300(bufC8, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(buf68, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(buf98, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(bufC8, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
                     goto perm_join;
                 case 2:
-                    fn_80202300(buf68, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
-                    fn_80202300(buf98, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
-                    fn_80202300(bufC8, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(buf68, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(buf98, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(bufC8, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
                     goto perm_join;
                 case 3:
-                    fn_80202300(buf68, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
-                    fn_80202300(buf98, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
-                    fn_80202300(bufC8, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(buf68, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(buf98, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(bufC8, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
                     goto perm_join;
                 case 4:
-                    fn_80202300(buf68, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
-                    fn_80202300(buf98, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
-                    fn_80202300(bufC8, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(buf68, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(buf98, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(bufC8, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
                     goto perm_join;
                 case 5:
-                    fn_80202300(buf68, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
-                    fn_80202300(buf98, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
-                    fn_80202300(bufC8, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(buf68, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(buf98, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(bufC8, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
                     goto perm_join;
                 case 6:
-                    fn_80202300(buf68, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
-                    fn_80202300(buf98, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
-                    fn_80202300(bufC8, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
+                    PSMTXRotRad(buf68, 0x5A, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x24));
+                    PSMTXRotRad(buf98, 0x59, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x20));
+                    PSMTXRotRad(bufC8, 0x58, lbl_8036A818 * *(f32 *)((u8 *)arg0 + 0x1C));
                     goto perm_join;
                 case 8:
                     PSMTXScale(buf8, *(f32 *)((u8 *)arg0 + 0x28), *(f32 *)((u8 *)arg0 + 0x2C), *(f32 *)((u8 *)arg0 + 0x30));

@@ -3302,7 +3302,7 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     s8 fn_8003B2D0(void *);
     u16 fn_8017C3C8(void *);
     void fn_8004BD1C(void *, f32 *, f32, f32);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_802025E8(void *, void *, f32, f32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
@@ -3449,8 +3449,8 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         fn_8004BD1C(unit, sp2C, lbl_8036A650, (f32)self->unkA);
         fx = fx + sp2C[1] + lbl_8036A654;
         fy = fy + sp2C[0];
-        fn_80202300(sp38, 0x79, lbl_8036A658);
-        fn_80202300(sp68, 0x78, lbl_8036A65C);
+        PSMTXRotRad(sp38, 0x79, lbl_8036A658);
+        PSMTXRotRad(sp68, 0x78, lbl_8036A65C);
         PSMTXConcat(sp68, sp38, sp68);
         fn_802025E8(sp68, sp68, lbl_8036A650, lbl_8036A650, lbl_8036A650);
         fn_80202574(sp68, self->unk50 + 0x10, fy, fx, (f32)self->unk22);
@@ -3855,7 +3855,7 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
     struct Node { Node *prev; Node *next; void *obj; void *spr; };
     void fn_8013A5A0(void *, s32);
     void fn_8013F748(void *, s16 *, s16 *);
-    void fn_80202300(void *, s32, f32);
+    void PSMTXRotRad(void *, s32, f32);
     void PSMTXConcat(void *, void *, void *);
     void fn_802025E8(void *, void *, f32, f32, f32);
     void fn_80202574(void *, void *, f32, f32, f32);
@@ -3949,8 +3949,8 @@ extern "C" void fn_80139084(void *arg0, s32 arg1) {
         while (n < 0) { node = node->prev; n = (s16)(n + 1); }
     }
 
-    fn_80202300(sp1C, 0x79, lbl_8036A67C);
-    fn_80202300(sp4C, 0x78, lbl_8036A680);
+    PSMTXRotRad(sp1C, 0x79, lbl_8036A67C);
+    PSMTXRotRad(sp4C, 0x78, lbl_8036A680);
     PSMTXConcat(sp4C, sp1C, sp4C);
     fn_802025E8(sp4C, sp4C, lbl_8036A684, lbl_8036A684, lbl_8036A684);
     fn_8000A258();
