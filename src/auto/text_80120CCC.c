@@ -2948,7 +2948,7 @@ void Script_RegisterCommands(void) {
     void ScriptCmd_tt(void);
     void ScriptCmd_tr(void);
     void ScriptCmd_Config_Tutorial(void);
-    void fn_8012690C(void);
+    void ScriptCmd_Config_TutSet_unitInfo(void);
     void fn_801268D4(void);
     void fn_8012689C(void);
     void fn_8012688C(void);
@@ -2996,7 +2996,7 @@ void Script_RegisterCommands(void) {
     Script_RegisterCommand(gScriptCmdNames + 0x1CB, ScriptCmd_tt, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1CF, ScriptCmd_tr, 0);
     Script_RegisterCommand(gScriptCmdNames + 0x1D3, ScriptCmd_Config_Tutorial, 0);
-    Script_RegisterCommand(gScriptCmdNames + 0x1E3, fn_8012690C, 1);
+    Script_RegisterCommand(gScriptCmdNames + 0x1E3, ScriptCmd_Config_TutSet_unitInfo, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x1FA, fn_801268D4, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x210, fn_8012689C, 1);
     Script_RegisterCommand(gScriptCmdNames + 0x22E, fn_8012688C, 1);
@@ -3089,7 +3089,7 @@ void fn_801268D4(s32 arg0) {
     p->flag = 0;
 }
 
-void fn_8012690C(s32 arg0) {
+void ScriptCmd_Config_TutSet_unitInfo(s32 arg0) {
     extern u8 lbl_80330708[];
     struct {
         u8 pad:6;
