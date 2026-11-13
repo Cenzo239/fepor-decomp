@@ -457,7 +457,8 @@ s32 fn_801A3B08(void) {
     return lbl_802EF4E0[0] != 0;
 }
 
-void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
+/* Dispatch a map-object IID to the matching map-anim process starter. */
+void MapAnim_DispatchByIid(void *iidDef, s32 parent, s32 extra) {
     void *Item_GetByIid(const char *name);
     void fn_8019C394(s32, s32);
     void fn_8019C3DC(s32, s32);
@@ -477,72 +478,72 @@ void MapAnim_DispatchByIid(void *item, s32 arg1, s32 arg2) {
     void fn_8019CA6C(s32, s32);
     extern u8 gMapAnimStr[];
 
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x22C])) {
-        fn_8019C9DC(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x22C])) {
+        fn_8019C9DC(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x23A])) {
-        fn_8019CA6C(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x23A])) {
+        fn_8019CA6C(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x248])) {
-        fn_8019CA24(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x248])) {
+        fn_8019CA24(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x256])) {
-        fn_8019C994(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x256])) {
+        fn_8019C994(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x261])) {
-        fn_8019C8A4(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x261])) {
+        fn_8019C8A4(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1E6])) {
-        fn_8019C6C4(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x1E6])) {
+        fn_8019C6C4(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1EF])) {
-        fn_8019C67C(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x1EF])) {
+        fn_8019C67C(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x1FA])) {
-        fn_8019C634(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x1FA])) {
+        fn_8019C634(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x206])) {
-        fn_8019C5EC(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x206])) {
+        fn_8019C5EC(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x211])) {
-        fn_8019C4FC(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x211])) {
+        fn_8019C4FC(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x26F])) {
-        fn_8019C4B4(arg1, arg2);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x26F])) {
+        fn_8019C4B4(parent, extra);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x278])) {
-        fn_8019C46C(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x278])) {
+        fn_8019C46C(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x284])) {
-        fn_8019C424(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x284])) {
+        fn_8019C424(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x28E])) {
-        fn_8019C3DC(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x28E])) {
+        fn_8019C3DC(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x29B])) {
-        fn_8019C394(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x29B])) {
+        fn_8019C394(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x2A7])) {
-        fn_8019C85C(arg1, 0);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x2A7])) {
+        fn_8019C85C(parent, 0);
         return;
     }
-    if (item == Item_GetByIid((char *)&gMapAnimStr[0x21D])) {
-        fn_8019C4FC(arg1, arg2);
+    if (iidDef == Item_GetByIid((char *)&gMapAnimStr[0x21D])) {
+        fn_8019C4FC(parent, extra);
     }
 }
 
