@@ -7160,7 +7160,7 @@ void fn_80252C80(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x38C, arg1, 0x40000000, 0x400);
 }
 
-void fn_80252D84(void *arg0, u32 *arg1) {
+void Sound_SelectSource11(void *arg0, u32 *arg1) {
     SelectSource(arg0, (u8 *)arg0 + 0x3B0, arg1, 0x80000000, 0x800);
 }
 
