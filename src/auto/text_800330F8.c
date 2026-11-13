@@ -12468,6 +12468,7 @@ static inline void *MapObj_GetOwner(void *base) {
 }
 void MapObj_UpdateMatrix(void *arg0)
 {
+    /* Build map-object world matrix: billboard, fixed, or free rot (+slope). */
     void *fn_80040844(void);
     void Map_BuildSlopeMatrix(void *, void *, f32, f32);
     void fn_8004E670(f32 *, void *, s32);
