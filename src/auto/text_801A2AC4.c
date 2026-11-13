@@ -260,38 +260,33 @@ s32 fn_801A3190(void) {
 
 s32 fn_801A31C8(s32 arg0) {
     void fn_8003CCB0(void *, u8 *, u8 *);
-    void Unit_SetMapPos(void *, u8, u8);
+    void fn_8003816C(void *, u8, u8);
     void fn_801A7794(void *, void *, void *);
     void fn_801A49AC(void *, u8);
     void fn_80036150(void *);
     void fn_8019BC50(s8, s8, s32);
-    extern u8 gBattleMap[];
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
+    extern u8 lbl_802CA518[];
+    extern u8 lbl_802EF4C8[];
+    extern u8 lbl_80330EAC[];
     u8 sp9;
     u8 sp8;
     u8 *map;
     u8 *ctx;
     void *other;
-    s8 x;
-    s32 a;
-    s8 y;
 
-    map = gBattleMap;
-    ctx = gUiContext;
+    map = lbl_802CA518;
+    ctx = lbl_802EF4C8;
     other = *(void **)(ctx + 4);
     sp9 = *(u8 *)((u8 *)*(void **)ctx + 0x19E);
+    *(map + (s8)sp9) = *(map + (s8)sp9);
     sp8 = *(u8 *)((u8 *)*(void **)ctx + 0x19F);
     map[(s8)sp9 + ((s8)sp8 << 6) + 0xD] = 0xFF;
     fn_8003CCB0(other, &sp9, &sp8);
-    Unit_SetMapPos(other, sp9, sp8);
-    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)(ctx + 4));
-    fn_801A49AC(gBattle, gUiContext[0xA]);
-    fn_80036150(gBattle);
-    x = sp9;
-    a = arg0;
-    y = sp8;
-    fn_8019BC50(x, y, a);
+    fn_8003816C(other, sp9, sp8);
+    fn_801A7794(lbl_80330EAC, *(void **)lbl_802EF4C8, *(void **)(ctx + 4));
+    fn_801A49AC(lbl_80330EAC, lbl_802EF4C8[0xA]);
+    fn_80036150(lbl_80330EAC);
+    fn_8019BC50((s8)sp9, (s8)sp8, arg0);
     return 1;
 }
 
@@ -357,16 +352,14 @@ s32 fn_801A3478(s32 arg0) {
     void fn_80036150(void *);
     void **fn_800285C0(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
-    extern u8 gUiContext[];
-    extern u8 gBattle[];
-    u8 *ctx;
+    extern u16 gUiContext[];
+    extern u16 gBattle[];
     u8 *base;
 
-    ctx = gUiContext;
-    fn_801A7794(gBattle, *(void **)ctx, *(void **)(ctx + 4));
+    fn_801A7794(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     fn_801A49AC(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
-    if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)(ctx + 4))) != 0
-        && fn_8003C7D0(*(void **)(ctx + 4)) == 0) {
+    if (fn_8000CE68(fn_8003CFF0(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
+        && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
         fn_801A4A24(gBattle, 1);
