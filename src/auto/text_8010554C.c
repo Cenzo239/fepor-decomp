@@ -2744,7 +2744,8 @@ void fn_8010A4D4(void *arg0) {
     }
 }
 
-void Ui_DrawTextLabel(void *arg0, s32 arg1) {
+/* Draw a UI text label with left/center/right alignment and the given alpha. */
+void Ui_DrawTextLabel(void *label, s32 alpha) {
     void *Msg_Expand(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void Prim2D_Begin(void);
@@ -2763,43 +2764,43 @@ void Ui_DrawTextLabel(void *arg0, s32 arg1) {
     extern f32 lbl_8036A130;
     extern f32 lbl_8036A118;
     extern f32 gTextScale2;
-    s32 sp8;
-    f32 var_f31;
-    void *temp_r31;
-    s32 temp_r30;
-    void *temp_r29;
-    s8 temp_r0;
-    s32 temp;
+    s32 color;
+    f32 drawX;
+    void *text;
+    s32 alphaLocal;
+    void *lab;
+    s8 align;
+    s32 width;
 
-    temp_r29 = arg0;
-    var_f31 = lbl_8036A130;
-    temp_r31 = Msg_Expand(*(void **)((u8 *)arg0 + 8));
-    temp_r30 = arg1;
-    temp_r0 = *(s8 *)((u8 *)temp_r29 + 0x14);
-    switch (temp_r0) {
+    lab = label;
+    drawX = lbl_8036A130;
+    text = Msg_Expand(*(void **)((u8 *)label + 8));
+    alphaLocal = alpha;
+    align = *(s8 *)((u8 *)lab + 0x14);
+    switch (align) {
     case -1:
-        var_f31 = (f32)*(s16 *)((u8 *)temp_r29 + 0xC);
+        drawX = (f32)*(s16 *)((u8 *)lab + 0xC);
         break;
     case 0:
-        temp = Text_MeasureWidth(temp_r31, -1, lbl_8036A118);
-        var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - (temp / 2));
+        width = Text_MeasureWidth(text, -1, lbl_8036A118);
+        drawX = (f32)(*(s16 *)((u8 *)lab + 0xC) - (width / 2));
         break;
     case 1:
-        var_f31 = (f32)(*(s16 *)((u8 *)temp_r29 + 0xC) - Text_MeasureWidth(temp_r31, -1, lbl_8036A118));
+        drawX = (f32)(*(s16 *)((u8 *)lab + 0xC) - Text_MeasureWidth(text, -1, lbl_8036A118));
         break;
     }
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(6);
-    Prim2D_SetPos(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));
-    Prim2D_SetPrimParam((f32)*(s8 *)((u8 *)temp_r29 + 2));
-    sp8 = *Ui_GetColor(*(u8 *)((u8 *)temp_r29 + 0x12));
-    Prim2D_SetColorPacked(&sp8);
-    Prim2D_SetAlpha(temp_r30);
-    Prim2D_SetTextScale(*(u8 *)((u8 *)temp_r29 + 0x10), gTextScale2);
-    fn_800071D8(*(u8 *)((u8 *)temp_r29 + 0x11), lbl_8036A118);
-    Prim2D_SetText(temp_r31);
+    Prim2D_SetPos(drawX, (f32)*(s16 *)((u8 *)lab + 0xE));
+    Prim2D_SetPrimParam((f32)*(s8 *)((u8 *)lab + 2));
+    color = *Ui_GetColor(*(u8 *)((u8 *)lab + 0x12));
+    Prim2D_SetColorPacked(&color);
+    Prim2D_SetAlpha(alphaLocal);
+    Prim2D_SetTextScale(*(u8 *)((u8 *)lab + 0x10), gTextScale2);
+    fn_800071D8(*(u8 *)((u8 *)lab + 0x11), lbl_8036A118);
+    Prim2D_SetText(text);
     Prim2D_EndPrim();
 }
 
