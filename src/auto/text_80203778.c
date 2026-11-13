@@ -1747,7 +1747,7 @@ int OSFontCodeToIndex(u16 encode, u16 code) {
     return 0;
 }
 
-void fn_8020712C(u8 *s, u8 *d) {
+void Yay0_Decode(u8 *s, u8 *d) {
     int j;
     int k;
     int p;
@@ -1830,7 +1830,7 @@ after:
 
 u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     s32 fn_802096B0(void *, s32, s32);
-    void fn_8020712C(u8 *, u8 *);
+    void Yay0_Decode(u8 *, u8 *);
     s32 OSFontCodeToIndex(u16, u16);
     extern u32 lbl_8036BCA0;
     extern u32 lbl_8036BCA4;
@@ -1899,7 +1899,7 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
     if (size == 0) {
         return 0;
     }
-    fn_8020712C(arg0, (u8 *)arg2);
+    Yay0_Decode(arg0, (u8 *)arg2);
     if (arg1 == 1) {
         sp1C = lbl_8036BCA0;
         sp20 = lbl_8036BCA4;
