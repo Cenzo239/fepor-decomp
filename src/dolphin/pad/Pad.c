@@ -488,6 +488,7 @@ void SPEC0_MakeStatus(s32 chan, PADStatus *status, u32 *data) {
     status->substickY -= 128;
 }
 
+/* Decode raw PAD transfer words into a PADStatus using the SPEC1 bit layout. */
 void SPEC1_MakeStatus(s32 chan, PADStatus *status, u32 *data) {
     status->button = 0;
     status->button |= ((data[0] >> 16) & 0x0080) ? 0x0100 : 0;
