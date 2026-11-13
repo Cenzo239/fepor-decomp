@@ -6838,7 +6838,7 @@ void fn_801707D4(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void fn_80170894(void *arg0) {
+extern "C" void Ui_ConfirmItemTake(void *arg0) {
     s32 *ListWidget_GetSelected(void *);
     u32 *Item_GetFlagsPtr(s32);
     s32 fn_80164D24(void *);
@@ -15632,6 +15632,7 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
 }
 
 #pragma scheduling off
+#pragma global_optimizer off
 void fn_80181C40(s32 *arg0, void *arg1) {
     struct Point {
         s16 x;
@@ -15647,7 +15648,8 @@ void fn_80181C40(s32 *arg0, void *arg1) {
     in.y = row + *(s16 *)((u8 *)arg1 + 0x58);
     *(struct Point *)arg0 = *fn_8013F748(arg1, &out, &in);
 }
-#pragma scheduling on
+#pragma scheduling reset
+#pragma global_optimizer reset
 typedef struct ListNode {
     struct ListNode *prev;
     struct ListNode *next;
