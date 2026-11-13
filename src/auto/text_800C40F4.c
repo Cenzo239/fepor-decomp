@@ -23881,7 +23881,7 @@ s32 fn_801032F8(void) {
 void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     extern u8 TagWin_str[];
-    extern u8 lbl_8028EAC8[];
+    extern u8 TagWin_vtable[];
 
     extern void String_Init(void *, const char *, void *);
     extern void String_ConcatCStr(void *, void *, const char *);
@@ -23937,7 +23937,7 @@ void *TagWin_Create(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     String_Destroy(temp1, -1);
     String_Destroy(temp0, -1);
 
-    *(void **)(obj + 0xC) = lbl_8028EAC8;
+    *(void **)(obj + 0xC) = TagWin_vtable;
 
     String_Init(temp3, (const char *)(strings + 0x25), &value2);
 
