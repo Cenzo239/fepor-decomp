@@ -2888,7 +2888,7 @@ void Face_DebugScaleProc(void *arg0) {
     extern u8 lbl_8026C640[];
     extern void *gFaceSlots[];
     extern void *gPadInput;
-    extern f32 lbl_803693D0;
+    extern f32 gFaceDbgScaleStep;
     extern f32 lbl_803693D4;
     extern f32 lbl_803693D8;
     extern f32 lbl_803693DC;
@@ -2906,12 +2906,12 @@ void Face_DebugScaleProc(void *arg0) {
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x08000008) {
-        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) + lbl_803693D0;
+        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) + gFaceDbgScaleStep;
     }
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x04000004) {
-        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) - lbl_803693D0;
+        *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) - gFaceDbgScaleStep;
     }
     sprintf(sp8, lbl_8026C640 + 0xF9, *(f32 *)((u8 *)arg0 + 0x34));
     Prim2D_Begin();
