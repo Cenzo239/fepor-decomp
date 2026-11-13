@@ -325,7 +325,7 @@ s32 fn_80183974(void) {
     u8 *base;
 
     base = E_MuBlend_script;
-    if (Process_Find((u8 *)((s32)base + 0)) != 0) {
+    if (Process_Find(E_MuBlend_script) != 0) {
         return 1;
     }
     if (Process_Find(base + 0x78) != 0) {
@@ -2247,8 +2247,8 @@ void fn_8018A824(void *arg0) {
 
     if (*(u8 *)((u8 *)arg0 + 0x64)) {
         *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
-        *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
     }
+*(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
     if (*(s32 *)((u8 *)arg0 + 0x34) >= 0xA) {
         *(s32 *)((u8 *)arg0 + 0x34) = 0xA;
         Process_ClearFunc(arg0);
@@ -3879,35 +3879,30 @@ extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v14(arg1);
 }
 #pragma cplusplus reset
-void fn_8018EBC0(void *arg0, s16 arg1) {
+void fn_8018EBC0(void *arg0, s32 arg1) {
     void fn_8001C76C(void *);
     s32 UnitRef_GetName(void *);
     void UnitRef_Set(void *, s32);
     void Item_Destroy(void *, s32);
     s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, ...);
-    void fn_8008CFB4(void *, s16, s16);
+    void fn_8008CFB4(void *, s32, s32);
     extern u8 lbl_80279C40[];
     extern f32 lbl_8036ADF0;
     u8 sp8[8];
-    void *self;
-    s32 a1;
-    s16 y;
-    s16 y2;
+    u16 y;
+    s32 y2;
     s16 half;
-    s16 x;
+    s32 x;
     s32 w;
-
-    self = arg0;
-    a1 = arg1;
     fn_8001C76C(sp8);
-    UnitRef_Set(sp8, *(s32 *)((u8 *)self + 0x40));
-    y = *(s16 *)((u8 *)self + 0x44);
+    UnitRef_Set(sp8, *(s32 *)((u8 *)arg0 + 0x40));
+    y = *(s16 *)((u8 *)arg0 + 0x44);
     half = (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
     w = UnitRef_GetName(sp8);
-    y2 = y;
-    x = (s16)(a1 + half);
-    Text_Draw((s16)(y2 + 0x18), x, 2, lbl_80279C40 + 0x50, w);
+    y2 = (s16)y;
+    x = (s16)arg1 + half;
+    Text_Draw((s16)(y2 + 0x18), (s16)x, 2, lbl_80279C40 + 0x50, w);
     fn_8008CFB4(sp8, y2, x);
     Item_Destroy(sp8, -1);
 }
@@ -9015,7 +9010,7 @@ void fn_80199CEC(void *arg0) {
 
 void fn_80199D18(void *arg0) {
     void *Effect_Create(void *, s32);
-    void Effect_SetPos(f32, f32, f32);
+    void Effect_SetPos(void *, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern u8 MapSelect_str[];
     extern f32 lbl_8036AF00;
@@ -9031,7 +9026,7 @@ void fn_80199D18(void *arg0) {
         msg = Effect_Create(MapSelect_str + 0xCA, 0);
         a = *(s8 *)((u8 *)arg0 + 0x3C);
         b = *(s8 *)((u8 *)arg0 + 0x3D);
-        Effect_SetPos(lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
+        Effect_SetPos(msg, lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
         f18 = lbl_8036AF00;
         f24 = lbl_8036AF04;
         obj = *(void **)((u8 *)msg + 0x30);
