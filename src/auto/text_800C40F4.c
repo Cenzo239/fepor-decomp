@@ -4910,7 +4910,7 @@ extern "C" void *fn_800D38BC(void *arg0)
     void fn_800E8154(void *, void *);
     void fn_800E7D10(void *, void *);
 
-    void *fn_801CA3C8(void *, void *, s32, s32);
+    void *CameraWin_Create(void *, void *, s32, s32);
     void fn_800D758C(void *);
     void fn_800D7564(void *);
 
@@ -5309,7 +5309,7 @@ extern "C" void *fn_800D38BC(void *arg0)
     allocation3 = (void *)Heap_Alloc(0x454);
 
     if (allocation3 != 0) {
-        lbl_803682B8 = fn_801CA3C8(
+        lbl_803682B8 = CameraWin_Create(
             allocation3,
             *(void **)(obj + 0x8),
             0x190,

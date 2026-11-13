@@ -9171,7 +9171,7 @@ void fn_801CA1DC(void *arg0, s32 arg1) {
 }
 
 #pragma cplusplus off
-void *fn_801CA3C8(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
+void *CameraWin_Create(void *arg0,s32 arg1,s32 arg2,s32 arg3) {
     void fn_801C9B08(void);
     void String_Init(void *,char *,void *);
     void String_ConcatCStr(void *,void *,char *);
