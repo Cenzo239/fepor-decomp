@@ -323,6 +323,7 @@ s32 fn_8020C79C(void) {
     return 1;
 }
 
+/* Recursively write "/parent/.../name" for an FST entry into path; returns length used. */
 u32 entryToPath(u32 entry, char *path, u32 maxlen) {
     char *name;
     u32 loc;
