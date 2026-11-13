@@ -11548,6 +11548,7 @@ extern "C" void fn_801480D8(s16 arg0) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
+    /* Start named FX in channel arg0; return -1 if that name is already active in any channel. */
     void *Hash_Lookup(void *);
     extern u8 lbl_8029275C[];
     extern u8 lbl_802926EC[];
@@ -11583,19 +11584,19 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
     u8 active;
     s32 i;
     Entry *entry;
-    Entry *found;
+    Entry *slot;
     Entry *base;
-    s8 slot;
-    void *src;
+    s8 existing;
+    void *def;
     s32 kind;
     s32 tmp;
     u8 val;
     s32 temp;
-    s16 n;
+    s16 frames;
     void *h1;
 
     base = gFxChannels;
-    found = (Entry *)((u8 *)base + (arg0 * 0x30));
+    slot = (Entry *)((u8 *)base + (arg0 * 0x30));
     i = 0;
     do {
         active = 0;
@@ -11606,79 +11607,79 @@ extern "C" s8 Fx_StartSlot(u8 arg0, void *arg1, s8 arg2, s16 arg3) {
         if (active != 0) {
             h1 = Hash_Lookup(arg1);
             if (h1 == Hash_Lookup(*entry->names)) {
-                slot = i;
+                existing = i;
                 goto after_search;
             }
         }
         i += 1;
     } while (i < 4);
-    slot = -1;
+    existing = -1;
 after_search:
-    if (slot != -1) {
+    if (existing != -1) {
         return -1;
     }
 
     active = 0;
-    if ((found->flags & 1) && found->v0() != 0) {
+    if ((slot->flags & 1) && slot->v0() != 0) {
         active = 1;
     }
     if (active != 0) {
-        found->v2();
+        slot->v2();
     }
 
-    src = Hash_Lookup(arg1);
-    kind = *((u8 *)src + 5) & 3;
+    def = Hash_Lookup(arg1);
+    kind = *((u8 *)def + 5) & 3;
     switch (kind) {
     case 0:
-        if (found != NULL) {
-            *(void **)((u8 *)found + 8) = lbl_8029275C;
-            found->names = (void **)src;
-            *(void **)((u8 *)found + 8) = lbl_802926EC;
+        if (slot != NULL) {
+            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            slot->names = (void **)def;
+            *(void **)((u8 *)slot + 8) = lbl_802926EC;
         }
         break;
     case 1:
-        if (found != NULL) {
-            *(void **)((u8 *)found + 8) = lbl_8029275C;
-            found->names = (void **)src;
-            *(void **)((u8 *)found + 8) = lbl_8029267C;
+        if (slot != NULL) {
+            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            slot->names = (void **)def;
+            *(void **)((u8 *)slot + 8) = lbl_8029267C;
         }
         break;
     case 2:
-        if (found != NULL) {
-            *(void **)((u8 *)found + 8) = lbl_8029275C;
-            found->names = (void **)src;
-            *(void **)((u8 *)found + 8) = lbl_8029260C;
+        if (slot != NULL) {
+            *(void **)((u8 *)slot + 8) = lbl_8029275C;
+            slot->names = (void **)def;
+            *(void **)((u8 *)slot + 8) = lbl_8029260C;
         }
         break;
     }
-    found->flags = 1;
-    found->unk_d = *((u8 *)src + 6);
-    found->unk_e = *((u8 *)src + 7);
-    found->unk_f = 0;
-    if (*((u8 *)src + 5) & 4) {
+    slot->flags = 1;
+    slot->unk_d = *((u8 *)def + 6);
+    slot->unk_e = *((u8 *)def + 7);
+    slot->unk_f = 0;
+    if (*((u8 *)def + 5) & 4) {
         val = 0;
     } else {
-        val = *((u8 *)src + 0xc);
+        val = *((u8 *)def + 0xc);
     }
-    found->unk_10 = val;
-    if (*((u8 *)src + 5) & 4) {
+    slot->unk_10 = val;
+    if (*((u8 *)def + 5) & 4) {
         tmp = 0;
     } else {
-        tmp = *(s16 *)((u8 *)src + 0x10);
+        tmp = *(s16 *)((u8 *)def + 0x10);
     }
-    found->unk_12 = tmp;
-    if (*((u8 *)src + 5) & 4) {
+    slot->unk_12 = tmp;
+    if (*((u8 *)def + 5) & 4) {
         tmp = 0x3e8;
     } else {
-        tmp = *(u16 *)((u8 *)src + 0x12);
+        tmp = *(u16 *)((u8 *)def + 0x12);
     }
-    found->unk_14 = tmp;
-    found->unk_16 = 0x64;
-    found->unk_17 = 0;
-    if (*((u8 *)src + 5) & 4) {
+    slot->unk_14 = tmp;
+    slot->unk_16 = 0x64;
+    slot->unk_17 = 0;
+    if (*((u8 *)def + 5) & 4) {
         val = 0;
     } else {
-        val = *((u8 *)src + 0xf);
+        val = *((u8 *)def + 0xf);
     }
     tmp = (u8)val + 1;
     if (tmp > 0xff) {
@@ -11687,17 +11688,17 @@ after_search:
     if (tmp == 0) {
         tmp = 1;
     }
-    found->unk_11 = tmp;
-    found->unk_16 = 0;
+    slot->unk_11 = tmp;
+    slot->unk_16 = 0;
     temp = (s32)((f32)arg3 / gMsPerFrame);
-    n = (s16)temp;
-    if (n <= 0) {
-        n = 1;
+    frames = (s16)temp;
+    if (frames <= 0) {
+        frames = 1;
     }
-    found->unk_28 = found->unk_16;
-    found->unk_29 = arg2;
-    found->unk_2e = n;
-    found->unk_2c = 0;
+    slot->unk_28 = slot->unk_16;
+    slot->unk_29 = arg2;
+    slot->unk_2e = frames;
+    slot->unk_2c = 0;
     return arg0;
 }
 #pragma cplusplus reset
