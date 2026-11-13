@@ -853,7 +853,7 @@ void fn_80007370(float arg0, float arg1, float arg2)
         matrix2[3] * *(float *)((u8 *)object + 0x24);
 }
 
-void fn_80007538(void)
+void Prim2D_RotateUvCw(void)
 {
     extern void *lbl_80367140;
 
@@ -1033,33 +1033,37 @@ void fn_800076EC(void) {
 
 void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
 {
-    extern u8 *lbl_80367140;
+    extern u16 lbl_80367140;
     extern f32 lbl_80368B98;
     extern f32 lbl_80368B94;
     void *p;
     f32 t0, t1, t2, t3;
-    f32 c98, c94;
 
-    p = lbl_80367140;
+    p = *(u8 **)&lbl_80367140;
     t0 = a + e;
     t1 = b + f;
-    c98 = lbl_80368B98;
-    p = *(void **)((u8 *)p + 0xC);
-    t2 = c + e;
-    c94 = lbl_80368B94;
-    p = *(void **)((u8 *)p + 4);
-    t3 = d + f;
+    {
+        f32 c98;
+        f32 c94;
 
-    *(f32 *)((u8 *)p + 0x10) = a;
-    *(f32 *)((u8 *)p + 0x20) = t0;
-    *(f32 *)((u8 *)p + 0x14) = b;
-    *(f32 *)((u8 *)p + 0x24) = t1;
-    *(f32 *)((u8 *)p + 0x1C) = c98;
-    *(f32 *)((u8 *)p + 0x18) = c98;
-    *(f32 *)((u8 *)p + 0x2C) = c94;
-    *(f32 *)((u8 *)p + 0x28) = c94;
+        c98 = lbl_80368B98;
+        p = *(void **)((u8 *)p + 0xC);
+        t2 = c + e;
+        c94 = lbl_80368B94;
+        p = *(void **)((u8 *)p + 4);
+        t3 = d + f;
 
-    p = *(void **)(lbl_80367140 + 0xC);
+        *(f32 *)((u8 *)p + 0x10) = a;
+        *(f32 *)((u8 *)p + 0x20) = t0;
+        *(f32 *)((u8 *)p + 0x14) = b;
+        *(f32 *)((u8 *)p + 0x24) = t1;
+        *(f32 *)((u8 *)p + 0x1C) = c98;
+        *(f32 *)((u8 *)p + 0x18) = c98;
+        *(f32 *)((u8 *)p + 0x2C) = c94;
+        *(f32 *)((u8 *)p + 0x28) = c94;
+    }
+
+    p = *(void **)(*(u8 **)&lbl_80367140 + 0xC);
     p = *(void **)((u8 *)p + 4);
 
     *(f32 *)((u8 *)p + 0x18) = c;
@@ -2071,8 +2075,10 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #pragma peephole off
-void *Prim2D_PushZ(f32 *arg0) {
+void *Prim2D_PushZ(f32 *arg0)
+{
     extern u16 lbl_80367140;
+
     if (arg0 == NULL) {
         return arg0;
     }

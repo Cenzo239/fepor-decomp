@@ -2832,7 +2832,7 @@ void fn_8008BC94(s32 arg0, s32 arg1, u8 arg2) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     void fn_800076CC(void);
     void Prim2D_EmitQuad(void);
-    void fn_80007538(void);
+    void Prim2D_RotateUvCw(void);
     void Prim2D_EndPrim(void);
     extern s32 lbl_803674F0;
     extern f64 lbl_803696E8;
@@ -2848,7 +2848,7 @@ void fn_8008BC94(s32 arg0, s32 arg1, u8 arg2) {
     Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.y, (f32)sp.x);
     if (arg2 != 0) fn_800076CC();
     Prim2D_EmitQuad();
-    fn_80007538();
+    Prim2D_RotateUvCw();
     Prim2D_EndPrim();
 }
 

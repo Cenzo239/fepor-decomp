@@ -885,7 +885,7 @@ void *fn_80057A64(void *arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 void fn_80057AE0(void *arg0) {
-    void fn_80007538(void);
+    void Prim2D_RotateUvCw(void);
     void Prim2D_EmitQuad(void);
     void fn_800077B0(f32, f32, f32, f32);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -976,11 +976,11 @@ void fn_80057AE0(void *arg0) {
         Prim2D_EmitQuad();
         switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
         case 4:
-            fn_80007538();
+            Prim2D_RotateUvCw();
         case 2:
-            fn_80007538();
+            Prim2D_RotateUvCw();
         case 8:
-            fn_80007538();
+            Prim2D_RotateUvCw();
             break;
         }
         Prim2D_EndPrim();

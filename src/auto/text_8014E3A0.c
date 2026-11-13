@@ -5639,7 +5639,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     void fn_800076CC(void);
     void Prim2D_EmitQuad(void);
     void fn_80007588(void);
-    void fn_80007538(void);
+    void Prim2D_RotateUvCw(void);
     void fn_800072B0(Color *, Color *, Color *, Color *);
     void Prim2D_EndPrim(void);
     Color sp2C;
@@ -5720,7 +5720,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
                 fn_80007588();
             }
             if (arg7 & 0x200) {
-                fn_80007538();
+                Prim2D_RotateUvCw();
             }
             *(s32 *)&sp10 = *(s32 *)&sp20;
             *(s32 *)&sp14 = *(s32 *)&sp24;
@@ -5732,7 +5732,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     }
 }
 void fn_80161E58(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
-    void fn_80007538(void);
+    void Prim2D_RotateUvCw(void);
     void fn_80007588(void);
     void Prim2D_SetColorPacked(s32 *);
     void fn_800076CC(void);
@@ -5761,7 +5761,7 @@ void fn_80161E58(s16 arg0, s16 arg1, s32 arg2, s16 *arg3, s32 *arg4, s32 arg5) {
         fn_80007588();
     }
     if (arg5 & 0x200) {
-        fn_80007538();
+        Prim2D_RotateUvCw();
     }
     sp8 = *arg4;
     Prim2D_SetColorPacked(&sp8);
