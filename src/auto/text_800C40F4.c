@@ -2033,16 +2033,16 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
 
 #pragma auto_inline off
 String *String_AssignCStr(String *arg0, const char *arg1, u32 arg2) {
-    void fn_800CA7F4(String *, u32, s32);
+    void String_Resize(String *, u32, s32);
     void *memcpy(void *, const void *, u32);
-    fn_800CA7F4(arg0, arg2, 0);
+    String_Resize(arg0, arg2, 0);
     memcpy(arg0->data, arg1, arg2);
     return arg0;
 }
 
 String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     String *String_Erase(String *, u32, u32);
-    void fn_800CA7F4(String *, u32, s32);
+    void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
@@ -2059,9 +2059,9 @@ String *String_Assign(String *arg0, const String *arg1, u32 pos, u32 n) {
     len = *StrMin(&n, &rest);
     if (arg0 == arg1) {
         String_Erase(arg0, 0, pos);
-        fn_800CA7F4(arg0, len, 1);
+        String_Resize(arg0, len, 1);
     } else {
-        fn_800CA7F4(arg0, len, 0);
+        String_Resize(arg0, len, 0);
         memcpy(arg0->data, arg1->data + pos, len);
     }
     return arg0;
@@ -2074,7 +2074,7 @@ String *String_Erase(String *arg0, u32 arg1, u32 arg2) {
 }
 
 String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
-    void fn_800CA7F4(String *, u32, s32);
+    void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     void *memset(void *, s32, u32);
@@ -2088,20 +2088,20 @@ String *fn_800C9874(String *arg0, u32 arg1, char arg2) {
             abort();
         }
         size = arg0->size;
-        fn_800CA7F4(arg0, size + arg1, 1);
+        String_Resize(arg0, size + arg1, 1);
         memset(arg0->data + size, (u8)arg2, arg1);
     }
     return arg0;
 }
 
 void *fn_800C992C(void *arg0, const char *arg1, u32 arg2) {
-    void fn_800CA7F4(void *, u32, s32);
+    void String_Resize(void *, u32, s32);
     void *memcpy(void *, const void *, u32);
     u32 size;
 
     if (arg2 != 0) {
         size = ((String *)arg0)->size;
-        fn_800CA7F4(arg0, size + arg2, 1);
+        String_Resize(arg0, size + arg2, 1);
         memcpy(((String *)arg0)->data + size, arg1, arg2);
     }
     return arg0;
@@ -2109,7 +2109,7 @@ void *fn_800C992C(void *arg0, const char *arg1, u32 arg2) {
 
 #pragma use_lmw_stmw on
 String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
-    void fn_800CA7F4(String *, u32, s32);
+    void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
@@ -2129,7 +2129,7 @@ String *fn_800C99A0(String *arg0, const String *arg1, u32 pos, u32 n) {
     len = *StrMin(&n, &rest);
     if (len != 0) {
         size = arg0->size;
-        fn_800CA7F4(arg0, size + len, 1);
+        String_Resize(arg0, size + len, 1);
         memcpy(arg0->data + size, arg1->data + pos, len);
     }
     return arg0;
@@ -7463,7 +7463,7 @@ Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
 void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     extern char __files[];
     extern char lbl_80270350[];
-    void fn_800CA7F4(String *, u32, s32);
+    void String_Resize(String *, u32, s32);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     void *memcpy(void *, const void *, u32);
@@ -7478,9 +7478,9 @@ void fn_800D8928(String *arg0, const String *arg1, u32 pos, u32 n) {
     len = (n < rest) ? n : rest; 
     if (arg0 == arg1) {
         String_Erase(arg0, 0, pos);
-        fn_800CA7F4(arg0, len, 1);
+        String_Resize(arg0, len, 1);
     } else {
-        fn_800CA7F4(arg0, len, 0);
+        String_Resize(arg0, len, 0);
         memcpy(arg0->data, arg1->data + pos, len);
     }
     return;
@@ -13041,7 +13041,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
 void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 {
     void fn_800CA728(void *, char *, char *, void *, void *);
-    void fn_800CA7F4(void *, u32, s32);
+    void String_Resize(void *, u32, s32);
     void *fn_800C94F8(void *, u32, u32, u32, u32);
     void *Heap_Alloc(s32);
     void fn_800E6DC8(void *);
@@ -13186,9 +13186,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 len = *plen;
                 if (end == lim) {
                     fn_800C94F8(end, 0, 0, 0, 0);
-                    fn_800CA7F4(end, len, 1);
+                    String_Resize(end, len, 1);
                 } else {
-                    fn_800CA7F4(end, len, 0);
+                    String_Resize(end, len, 0);
                     memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)lim + 8), len);
                 }
                 *(u32 *)&st.pads[0x38] = (u32)-1;
@@ -13205,9 +13205,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 len = *plen;
                 if ((u8 *)end + 0xC == (u8 *)lim + 0xC) {
                     fn_800C94F8((u8 *)end + 0xC, 0, 0, 0, 0);
-                    fn_800CA7F4((u8 *)end + 0xC, len, 1);
+                    String_Resize((u8 *)end + 0xC, len, 1);
                 } else {
-                    fn_800CA7F4((u8 *)end + 0xC, len, 0);
+                    String_Resize((u8 *)end + 0xC, len, 0);
                     memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)lim + 0x14), len);
                 }
                 *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)lim + 0x18);
@@ -13231,9 +13231,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             len = *plen;
             if (dst == src) {
                 fn_800C94F8(dst, 0, 0, 0, 0);
-                fn_800CA7F4(dst, len, 1);
+                String_Resize(dst, len, 1);
             } else {
-                fn_800CA7F4(dst, len, 0);
+                String_Resize(dst, len, 0);
                 memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)src + 8), len);
             }
             *(u32 *)&st.pads[0x38] = (u32)-1;
@@ -13250,9 +13250,9 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             len = *plen;
             if ((u8 *)dst + 0xC == (u8 *)src + 0xC) {
                 fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
-                fn_800CA7F4((u8 *)dst + 0xC, len, 1);
+                String_Resize((u8 *)dst + 0xC, len, 1);
             } else {
-                fn_800CA7F4((u8 *)dst + 0xC, len, 0);
+                String_Resize((u8 *)dst + 0xC, len, 0);
                 memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)src + 0x14), len);
             }
             count -= 1;
