@@ -16434,7 +16434,8 @@ void fn_801DFB4C(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
-s32 Save_ClearCorruptSlots(s32 arg0) {
+/* Clear first corrupt chapter/suspend save slot (bad CRC) and request a card rewrite; return 1 if cleared. */
+s32 Save_ClearCorruptSlots(s32 proc) {
     extern void *gSaveDataBase;
     extern u8 lbl_8027E980[];
     u8 Card_CheckError(void);
@@ -16445,96 +16446,96 @@ s32 Save_ClearCorruptSlots(s32 arg0) {
     void Card_RequestWrite(void *, s32, s32, s32, s32);
     void *memset(void *, s32, s32);
 
-    void *buf;
-    u32 sum;
+    void *crcTable;
+    u32 checksum;
     s32 self;
     s32 i;
     u8 *slot;
-    s32 off;
-    u8 hdrOk;
-    u8 chkOk;
+    s32 offset;
+    u8 headerOk;
+    u8 checksumOk;
 
-    self = arg0;
+    self = proc;
     if (Card_CheckError() != 0) {
         return 0;
     }
 
     i = 0;
-    off = 0x2000;
+    offset = 0x2000;
     do {
-        slot = (u8 *)gSaveDataBase + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
+        slot = (u8 *)gSaveDataBase + offset;
+        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
+            headerOk = 0;
+        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
+            headerOk = 0;
         } else {
-            hdrOk = 1;
+            headerOk = 1;
         }
-        if (hdrOk != 0) {
-            if (*(u32 *)(slot + 0x50) == 0x12345678U) {
-                chkOk = 1;
+        if (headerOk != 0) {
+            if (*(u32 *)(slot + 0x50) == SAVE_CHECKSUM_UNINIT) {
+                checksumOk = 1;
             } else if (*(u8 *)(slot + 0x60) == 1) {
-                chkOk = 1;
+                checksumOk = 1;
             } else {
-                buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                crcTable = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                 Crc32_InitTable();
-                sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
-                fn_800C4588(buf);
-                if (*(u32 *)(slot + 0x50) != sum) {
-                    chkOk = 0;
+                checksum = Crc32_Calc(crcTable, slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)(slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
+                fn_800C4588(crcTable);
+                if (*(u32 *)(slot + 0x50) != checksum) {
+                    checksumOk = 0;
                 } else {
-                    chkOk = 1;
+                    checksumOk = 1;
                 }
             }
-            if (chkOk == 0) {
-                memset(slot, 0, 0x2000);
-                Card_RequestWrite(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
+            if (checksumOk == 0) {
+                memset(slot, 0, SAVE_SLOT_BLOCK_SIZE);
+                Card_RequestWrite(slot, SAVE_SLOT_BLOCK_SIZE, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
                 return 1;
             }
         }
         i += 1;
-        off += 0x4000;
+        offset += 0x4000;
     } while (i < 6);
 
     i = 0;
-    off = 0x1A000;
+    offset = 0x1A000;
     do {
-        slot = (u8 *)gSaveDataBase + off;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
+        slot = (u8 *)gSaveDataBase + offset;
+        if (*(u32 *)(slot + 0x40) != SAVE_SLOT_MAGIC) {
+            headerOk = 0;
+        } else if (*(u32 *)(slot + 0x44) != SAVE_VER_20050201) {
+            headerOk = 0;
         } else {
-            hdrOk = 1;
+            headerOk = 1;
         }
-        if (hdrOk != 0) {
-            if (*(u32 *)(slot + 0x50) == 0x12345678U) {
-                chkOk = 1;
+        if (headerOk != 0) {
+            if (*(u32 *)(slot + 0x50) == SAVE_CHECKSUM_UNINIT) {
+                checksumOk = 1;
             } else if (*(u8 *)(slot + 0x60) == 1) {
-                chkOk = 1;
+                checksumOk = 1;
             } else {
-                buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
+                crcTable = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
                 Crc32_InitTable();
-                sum = Crc32_Calc(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
-                fn_800C4588(buf);
-                if (*(u32 *)(slot + 0x50) != sum) {
-                    chkOk = 0;
+                checksum = Crc32_Calc(crcTable, slot + SAVE_SLOT_PAYLOAD_OFF, *(s32 *)(slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
+                fn_800C4588(crcTable);
+                if (*(u32 *)(slot + 0x50) != checksum) {
+                    checksumOk = 0;
                 } else {
-                    chkOk = 1;
+                    checksumOk = 1;
                 }
             }
-            if (chkOk == 0) {
-                memset(slot, 0, 0x2000);
-                Card_RequestWrite(slot, 0x2000, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
+            if (checksumOk == 0) {
+                memset(slot, 0, SAVE_SLOT_BLOCK_SIZE);
+                Card_RequestWrite(slot, SAVE_SLOT_BLOCK_SIZE, (s32)(slot - (u8 *)gSaveDataBase), -1, self);
                 return 1;
             }
         }
         i += 1;
-        off += 0x6000;
+        offset += 0x6000;
     } while (i < 2);
 
-          return 0;
-  }
+    return 0;
+}
   #pragma optimization_level reset
   
   static inline u32 save_slot_size(u8 *slot) {
