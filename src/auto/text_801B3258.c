@@ -5378,7 +5378,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern void *lbl_8028FDB0[];
     extern void *lbl_80292230[];
     extern void *lbl_80292208[];
-    extern void *lbl_8029998C[];
+    extern void *gUiScrollListPanelVtbl[];
     extern void *gEmptyVtbl[];
     extern f32 lbl_8036B318;
     extern f32 lbl_8036B31C;
@@ -5431,7 +5431,7 @@ extern "C" void *fn_801C14B4(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x38) = 0;
     *(void **)((u8 *)self + 0x0) = lbl_80292208;
     fn_80142060((u8 *)self + 0x3C);
-    *(void **)((u8 *)self + 0x0) = lbl_8029998C;
+    *(void **)((u8 *)self + 0x0) = gUiScrollListPanelVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
     *(s16 *)((u8 *)self + 0x4E) = 0;
@@ -13409,7 +13409,7 @@ extern "C" void *fn_801D2ED0(void *arg0, s16 arg1) {
     void fn_801C1824(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_8029998C[];
+    extern u8 gUiScrollListPanelVtbl[];
     extern u8 gEmptyVtbl[];
 
     DtorNode *sp10;
@@ -13420,7 +13420,7 @@ extern "C" void *fn_801D2ED0(void *arg0, s16 arg1) {
 
     a0 = (Owner *)arg0;
     if (arg0) {
-        a0->vtbl = lbl_8029998C;
+        a0->vtbl = gUiScrollListPanelVtbl;
         if (&a0->subA0) {
             a0->subA0 = gEmptyVtbl;
             ((Obj *)&a0->subA0)->v2();
