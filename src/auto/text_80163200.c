@@ -10793,7 +10793,7 @@ extern "C" void fn_8017873C(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80178778(void *arg0, s32 arg1) {
+extern "C" void Ui_DrawUnitNameCentered(void *arg0, s32 arg1) {
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
