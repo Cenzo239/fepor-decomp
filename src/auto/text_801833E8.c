@@ -9763,7 +9763,8 @@ void fn_8019B904(void *arg0) {
 }
 
 typedef struct { s32 x, y, z; } Word3B9;
-s32 MapSelect_Update(void *arg0) {
+/* Map unit-select process update: init cam zoom, handle A confirm / B cancel. */
+s32 MapSelect_Update(void *proc) {
     void *Camera_GetActive(void);
     void fn_80052CA8(void *);
     void fn_80054C14(void *);
@@ -9780,90 +9781,91 @@ s32 MapSelect_Update(void *arg0) {
     extern u8 lbl_8027AA38[];
     extern f32 gMapSelectCamZoom;
 
-    Word3B9 sp2c, sp20, sp14, sp8;
-    s32 val;
-    void *p5c;
-    void *p4c;
+    typedef struct { s32 x, y, z; } Vec3i;
+    Vec3i posCopy, pos, sePosA, sePosB;
+    s32 height;
+    void *pad;
+    void *cmd;
     void *tmp;
-    s32 var_r3;
-    u8 temp;
-    s32 a;
-    s32 b;
-    f32 fv;
+    s32 actor;
+    u8 mode;
+    s32 posX;
+    s32 posY;
+    f32 heightF;
 
-    tmp = *(void **)((u8 *)arg0 + 0x30);
-    p4c = *(void **)((u8 *)tmp + 0x4C);
-    p5c = *(void **)((u8 *)tmp + 0x5C);
-    if (!(*(u8 *)((u8 *)p4c + 0x40) & 1)) {
-        if (fn_8005F894(p5c, 0x12) < 0) {
+    tmp = *(void **)((u8 *)proc + 0x30);
+    cmd = *(void **)((u8 *)tmp + 0x4C);
+    pad = *(void **)((u8 *)tmp + 0x5C);
+    if (!(*(u8 *)((u8 *)cmd + 0x40) & 1)) {
+        if (fn_8005F894(pad, 0x12) < 0) {
             tmp = Camera_GetActive();
             *(f32 *)((u8 *)tmp + 0x70) = gMapSelectCamZoom;
-            fn_80098524(*(void **)((u8 *)p4c + 0x34));
+            fn_80098524(*(void **)((u8 *)cmd + 0x34));
         }
-        *(u8 *)((u8 *)p4c + 0x40) = (u8)(*(u8 *)((u8 *)p4c + 0x40) | 1);
+        *(u8 *)((u8 *)cmd + 0x40) = (u8)(*(u8 *)((u8 *)cmd + 0x40) | 1);
     }
-    if (Pad_IsButton(p5c, 0) != 0) {
-        fn_800983E0(&sp20, *(void **)((u8 *)p4c + 0x34));
-        tmp = *(void **)((u8 *)p4c + 0x34);
-        a = *(s32 *)(&sp20);
-        fv = *(f32 *)((u8 *)tmp + 0xC);
-        b = *(s32 *)((u8 *)&sp20 + 4);
-        val = (s32)fv;
-        *(s32 *)(&sp2c) = a;
-        *(s32 *)((u8 *)&sp2c + 4) = b;
-        *(s32 *)((u8 *)&sp2c + 8) = *(s32 *)((u8 *)&sp20 + 8);
-        fn_8017E0C0(tmp, val, p4c, a);
-        fn_8017F040(*(void **)((u8 *)p4c + 0x34), val, p4c);
-        temp = *(u8 *)((u8 *)p4c + 0x5C);
-        switch (temp) {
+    if (Pad_IsButton(pad, 0) != 0) {
+        fn_800983E0(&pos, *(void **)((u8 *)cmd + 0x34));
+        tmp = *(void **)((u8 *)cmd + 0x34);
+        posX = *(s32 *)(&pos);
+        heightF = *(f32 *)((u8 *)tmp + 0xC);
+        posY = *(s32 *)((u8 *)&pos + 4);
+        height = (s32)heightF;
+        *(s32 *)(&posCopy) = posX;
+        *(s32 *)((u8 *)&posCopy + 4) = posY;
+        *(s32 *)((u8 *)&posCopy + 8) = *(s32 *)((u8 *)&pos + 8);
+        fn_8017E0C0(tmp, height, cmd, posX);
+        fn_8017F040(*(void **)((u8 *)cmd + 0x34), height, cmd);
+        mode = *(u8 *)((u8 *)cmd + 0x5C);
+        switch (mode) {
         case 0:
         case 1:
-            fn_8018CFA4(0xF, 6, 2, 0, p4c);
-            if (fn_80098568(*(void **)((u8 *)p4c + 0x34)) != 0) {
+            fn_8018CFA4(0xF, 6, 2, 0, cmd);
+            if (fn_80098568(*(void **)((u8 *)cmd + 0x34)) != 0) {
                 tmp = lbl_8027AA38 + 0x114;
-                *(s32 *)(&sp14) = *(s32 *)(&sp2c);
-                *(s32 *)((u8 *)&sp14 + 4) = *(s32 *)((u8 *)&sp2c + 4);
-                *(s32 *)((u8 *)&sp14 + 8) = *(s32 *)((u8 *)&sp2c + 8);
-                SeCue_PlayAtPos(tmp, &sp14, 0x64);
+                *(s32 *)(&sePosA) = *(s32 *)(&posCopy);
+                *(s32 *)((u8 *)&sePosA + 4) = *(s32 *)((u8 *)&posCopy + 4);
+                *(s32 *)((u8 *)&sePosA + 8) = *(s32 *)((u8 *)&posCopy + 8);
+                SeCue_PlayAtPos(tmp, &sePosA, 0x64);
             } else {
                 tmp = lbl_8027AA38 + 0x1B1;
-                *(s32 *)(&sp8) = *(s32 *)(&sp2c);
-                *(s32 *)((u8 *)&sp8 + 4) = *(s32 *)((u8 *)&sp2c + 4);
-                *(s32 *)((u8 *)&sp8 + 8) = *(s32 *)((u8 *)&sp2c + 8);
-                SeCue_PlayAtPos(tmp, &sp8, 0x64);
+                *(s32 *)(&sePosB) = *(s32 *)(&posCopy);
+                *(s32 *)((u8 *)&sePosB + 4) = *(s32 *)((u8 *)&posCopy + 4);
+                *(s32 *)((u8 *)&sePosB + 8) = *(s32 *)((u8 *)&posCopy + 8);
+                SeCue_PlayAtPos(tmp, &sePosB, 0x64);
             }
-            tmp = *(void **)(*(void **)((u8 *)p4c + 0x34));
+            tmp = *(void **)(*(void **)((u8 *)cmd + 0x34));
             if (tmp != NULL) {
-                var_r3 = *(s32 *)((u8 *)tmp + 0x280);
+                actor = *(s32 *)((u8 *)tmp + 0x280);
             } else {
-                var_r3 = 0;
+                actor = 0;
             }
-            fn_80184688(var_r3, 1, 4, p4c);
+            fn_80184688(actor, 1, 4, cmd);
             break;
         case 2:
         case 3:
-            tmp = *(void **)(*(void **)((u8 *)p4c + 0x34));
+            tmp = *(void **)(*(void **)((u8 *)cmd + 0x34));
             if (tmp != NULL) {
-                var_r3 = *(s32 *)((u8 *)tmp + 0x280);
+                actor = *(s32 *)((u8 *)tmp + 0x280);
             } else {
-                var_r3 = 0;
+                actor = 0;
             }
-            fn_80184688(var_r3, 1, 0x20, p4c);
+            fn_80184688(actor, 1, 0x20, cmd);
             break;
         }
-        if (*(void **)((u8 *)p4c + 0x58) != NULL) {
-            temp = *(u8 *)((u8 *)p4c + 0x40);
-            if (!(temp & 4)) {
-                *(u8 *)((u8 *)p4c + 0x40) = (u8)(temp | 4);
-                (*(void (**)(void *))((u8 *)p4c + 0x58))(p4c);
+        if (*(void **)((u8 *)cmd + 0x58) != NULL) {
+            mode = *(u8 *)((u8 *)cmd + 0x40);
+            if (!(mode & 4)) {
+                *(u8 *)((u8 *)cmd + 0x40) = (u8)(mode | 4);
+                (*(void (**)(void *))((u8 *)cmd + 0x58))(cmd);
             }
         }
     }
-    if (Pad_IsButton(p5c, 0x12) != 0) {
-        fn_80052CA8(arg0);
-        fn_80098524(*(void **)((u8 *)p4c + 0x34));
+    if (Pad_IsButton(pad, 0x12) != 0) {
+        fn_80052CA8(proc);
+        fn_80098524(*(void **)((u8 *)cmd + 0x34));
     }
-    fn_80054C14(arg0);
+    fn_80054C14(proc);
     return 0;
 }
 
