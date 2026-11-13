@@ -662,18 +662,18 @@ void fn_801B6700(void *arg0) {
 void fn_801B6784(void *arg0) {
     s32 fn_8006D948(void *);
     void Process_AttachFunc(void *, void *);
-    void fn_801B69FC(void);
+    void Ui_DrawExpBar(void);
     extern u8 lbl_8027C248[];
 
     M2C_FIELD(arg0, s32 *, 0x40) = fn_8006D948(lbl_8027C248 + 0x114);
-    Process_AttachFunc(fn_801B69FC, arg0);
+    Process_AttachFunc(Ui_DrawExpBar, arg0);
 }
 
 s32 fn_801B67D0(struct efUnit* arg0) {
     return 0;
 }
 
-void fn_801B69FC(void *arg0) {
+void Ui_DrawExpBar(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
