@@ -16434,7 +16434,7 @@ void fn_801DFB4C(void *arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
-s32 fn_801DFBE4(s32 arg0) {
+s32 Save_ClearCorruptSlots(s32 arg0) {
     extern void *gSaveDataBase;
     extern u8 lbl_8027E980[];
     u8 fn_800EB788(void);
