@@ -653,7 +653,7 @@ void fn_801A442C(void *arg0) {
     s32 fn_8005B580(s32, u8 *, s32);
     s32 fn_8005B4D8(u8);
     extern u8 gBattleState[];
-    extern u8 lbl_8036728A;
+    extern u8 gBattleSkyIndex;
     u8 *self;
     u8 *unit;
     s32 ptr;
@@ -671,8 +671,8 @@ void fn_801A442C(void *arg0) {
     } else {
         *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, gBattleState + 0x504, 0);
     }
-    *(s32 *)(self + 0xCB4) = fn_8005B4D8(lbl_8036728A);
-    *(s32 *)(self + 0xCB8) = lbl_8036728A;
+    *(s32 *)(self + 0xCB4) = fn_8005B4D8(gBattleSkyIndex);
+    *(s32 *)(self + 0xCB8) = gBattleSkyIndex;
 }
 
 s32 fn_801A44AC(void *arg0, s32 arg1) {
@@ -1190,7 +1190,7 @@ void Battle_Execute(s32 battle, u8 arg1) {
     void fn_801A8268(s32);
     extern u8 lbl_802EFDB8[];
     extern u8 gBattleState[];
-    extern u8 lbl_8036728A;
+    extern u8 gBattleSkyIndex;
     f32 sp14[3];
     f32 sp8[3];
     f32 leftY;
@@ -1280,8 +1280,8 @@ void Battle_Execute(s32 battle, u8 arg1) {
     } else {
         *(s32 *)(self + 0xCB0) = fn_8005B580(ptr, gBattleState + 0x504, 0);
     }
-    *(s32 *)(self + 0xCB4) = fn_8005B4D8(lbl_8036728A);
-    *(s32 *)(self + 0xCB8) = lbl_8036728A;
+    *(s32 *)(self + 0xCB4) = fn_8005B4D8(gBattleSkyIndex);
+    *(s32 *)(self + 0xCB8) = gBattleSkyIndex;
 
     if (*(u32 *)(self + 0xCAC) & 0x1305) {
         goto block_26;

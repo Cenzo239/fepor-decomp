@@ -6298,7 +6298,7 @@ u8 fn_80040B1C(void *arg0, s32 arg1, s32 arg2) {
 void Map_DecodeHeaderFlags(void *arg0) {
     extern u8 gBattleState[];
     extern s8 gMapBlendMode;
-    extern s8 lbl_8036728A;
+    extern s8 gBattleSkyIndex;
 
     s32 temp_r4;
     s32 temp_r3;
@@ -6338,61 +6338,61 @@ void Map_DecodeHeaderFlags(void *arg0) {
     temp_r3 = *(s32 *)((char *)arg0 + 0x64) & 0x01F00000;
     switch (temp_r3) {
     case 0x0:
-        lbl_8036728A = 0;
+        gBattleSkyIndex = 0;
         return;
     case 0x100000:
-        lbl_8036728A = 1;
+        gBattleSkyIndex = 1;
         return;
     case 0x200000:
-        lbl_8036728A = 2;
+        gBattleSkyIndex = 2;
         return;
     case 0x300000:
-        lbl_8036728A = 3;
+        gBattleSkyIndex = 3;
         return;
     case 0x400000:
-        lbl_8036728A = 4;
+        gBattleSkyIndex = 4;
         return;
     case 0x500000:
-        lbl_8036728A = 5;
+        gBattleSkyIndex = 5;
         return;
     case 0x600000:
-        lbl_8036728A = 6;
+        gBattleSkyIndex = 6;
         return;
     case 0x700000:
-        lbl_8036728A = 7;
+        gBattleSkyIndex = 7;
         return;
     case 0x800000:
-        lbl_8036728A = 8;
+        gBattleSkyIndex = 8;
         return;
     case 0x900000:
-        lbl_8036728A = 9;
+        gBattleSkyIndex = 9;
         return;
     case 0xA00000:
-        lbl_8036728A = 0xA;
+        gBattleSkyIndex = 0xA;
         return;
     case 0xB00000:
-        lbl_8036728A = 0xB;
+        gBattleSkyIndex = 0xB;
         return;
     case 0xC00000:
-        lbl_8036728A = 0xC;
+        gBattleSkyIndex = 0xC;
         return;
     case 0xD00000:
-        lbl_8036728A = 0xD;
+        gBattleSkyIndex = 0xD;
         return;
     case 0xE00000:
-        lbl_8036728A = 0xE;
+        gBattleSkyIndex = 0xE;
         return;
     case 0xF00000:
-        lbl_8036728A = 0xF;
+        gBattleSkyIndex = 0xF;
         return;
     case 0x1000000:
-        lbl_8036728A = 0x10;
+        gBattleSkyIndex = 0x10;
         return;
     case 0x1100000:
-        lbl_8036728A = 0x11;
+        gBattleSkyIndex = 0x11;
         return;
     default:
-        lbl_8036728A = 0;
+        gBattleSkyIndex = 0;
         return;
     }
 }

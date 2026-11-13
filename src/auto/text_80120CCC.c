@@ -1536,12 +1536,12 @@ void fn_8012391C(void *arg0) {
     void Process_Unlink(void *);
     void fn_80123988(void *);
     extern u8 lbl_80290408[];
-    extern u8 lbl_8036728A;
+    extern u8 gBattleSkyIndex;
     void *temp_r3;
     void *ptr;
 
     temp_r3 = Process_Find(lbl_80290408);
-    if (temp_r3 == NULL || *(s32 *)((u8 *)temp_r3 + 0x34) != lbl_8036728A) {
+    if (temp_r3 == NULL || *(s32 *)((u8 *)temp_r3 + 0x34) != gBattleSkyIndex) {
         ptr = *(void **)((u8 *)arg0 + 0x30);
         if (ptr != NULL) {
             Process_Unlink(ptr);
@@ -3714,7 +3714,7 @@ extern f32 lbl_8036A30C;
 extern f32 lbl_8036A35C;
 extern f32 lbl_8036A3B8;
 extern s32 lbl_80274F68[2];
-extern u8 lbl_8036728A;
+extern u8 gBattleSkyIndex;
 extern void* jumptable_80290434[];
 extern f32 lbl_8036A308;
 extern f32 lbl_8036A30C;
