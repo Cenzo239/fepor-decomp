@@ -321,7 +321,7 @@ s32 fn_801A3390(s32 arg0) {
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
-    u8 fn_8003C7D0(void *);
+    u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -332,7 +332,7 @@ s32 fn_801A3390(s32 arg0) {
     Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
-        && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
+        && Unit_HasHitBlockStatus(*(void **)((u8 *)gUiContext + 4)) == 0) {
         Battle_SetAttackHit(gBattle, 1);
     } else {
         Battle_SetAttackHit(gBattle, 0);
@@ -347,7 +347,7 @@ s32 fn_801A3478(s32 arg0) {
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
-    u8 fn_8003C7D0(void *);
+    u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -359,7 +359,7 @@ s32 fn_801A3478(s32 arg0) {
     Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
-        && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
+        && Unit_HasHitBlockStatus(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u8 pad:1; u8 mid:3; u8 lo:4; } *)(base + 0x485))->mid = 5;
         Battle_SetAttackHit(gBattle, 1);
@@ -376,7 +376,7 @@ s32 fn_801A3570(s32 arg0) {
     void Battle_SelectWeapon(void *, u8);
     u8 Unit_CalcHitRate(void *, void *);
     u8 Rand_Chance(s32);
-    u8 fn_8003C7D0(void *);
+    u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
     void **fn_800285C0(void *);
@@ -388,7 +388,7 @@ s32 fn_801A3570(s32 arg0) {
     Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     if (Rand_Chance(Unit_CalcHitRate(*(void **)gUiContext, *(void **)((u8 *)gUiContext + 4))) != 0
-        && fn_8003C7D0(*(void **)((u8 *)gUiContext + 4)) == 0) {
+        && Unit_HasHitBlockStatus(*(void **)((u8 *)gUiContext + 4)) == 0) {
         base = (u8 *)gBattle;
         ((struct { u16 hi:6; u16 mid:3; u16 lo:7; } *)(base + 0x484))->mid = 5;
         Battle_SetAttackHit(gBattle, 1);
@@ -1355,7 +1355,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     s8 fn_8003AF28(void *);
     s8 fn_8003B258(void *);
     s8 Unit_GetMaxHp(void *);
-    u8 fn_8003C7D0(void *);
+    u8 Unit_HasHitBlockStatus(void *);
     u8 Status_Test(void *, s32);
     void **fn_801A7FF4(void *);
     void fn_801A8010(void *);
@@ -1416,7 +1416,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x33) != 0) {
             if (*(u8 *)((u8 *)arg1 + 0x295) != 0x51) {
                 chance = 0;
-            } else if (fn_8003C7D0(arg2) != 0) {
+            } else if (Unit_HasHitBlockStatus(arg2) != 0) {
                 chance = 0;
             } else {
                 chance = 0x32;
@@ -1542,7 +1542,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
                 ok = Rand_Chance(chance);
             }
             if (ok != 0 && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0
-                && fn_8003C7D0(arg2) == 0) {
+                && Unit_HasHitBlockStatus(arg2) == 0) {
                 goto block_stun;
             }
         }
@@ -1573,7 +1573,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     bits = Item_GetFlagsPtr(fn_801A7FF4(arg1));
-    if ((*bits & 0x800ULL) != 0 && fn_8003C7D0(arg2) == 0) {
+    if ((*bits & 0x800ULL) != 0 && Unit_HasHitBlockStatus(arg2) == 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4E, 0);
         *(u8 *)((u8 *)arg2 + 0x1A4) =
             (*(u8 *)((u8 *)arg2 + 0x1A4) & ~0xE0) | 0xA0;
@@ -1652,7 +1652,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         } else {
             ok = Rand_Chance(chance);
         }
-        if (ok != 0 && fn_8003C7D0(arg2) == 0) {
+        if (ok != 0 && Unit_HasHitBlockStatus(arg2) == 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3D, 0);
             *(u16 *)((u8 *)arg2 + 0x1A4) =
                 (*(u16 *)((u8 *)arg2 + 0x1A4) & ~0x380) | 0x280;

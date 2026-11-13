@@ -4339,7 +4339,7 @@ void fn_8003C67C(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x260) = 0x10;
 }
 
-s32 fn_8003C7D0(s32 arg0) {
+s32 Unit_HasHitBlockStatus(s32 arg0) {
     u8 Status_Test(s32, M2C_UNK);
     if (Status_Test(arg0 + 0x1BC, 6) != 0) {
         return 1;
