@@ -5415,15 +5415,16 @@ insert:
     return 1;
 }
 
+/* Insert or ref an audio-wave key by id into the sorted table; returns 1 if newly inserted. */
 s32 AudioWave_Insert(u16 id, s32 data) {
-    struct Key {
+    struct AudioWaveKey {
         s32 data;
         u16 id;
         u16 ref;
     };
     void Audio_Lock(void);
     void Audio_Unlock(void);
-    extern struct Key gAudioWaveKeys[];
+    extern struct AudioWaveKey gAudioWaveKeys[];
     extern u16 gAudioWaveKeyCount;
 
     s32 i;
