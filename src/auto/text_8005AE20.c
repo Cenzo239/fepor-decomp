@@ -158,7 +158,7 @@ void Game_PollSoftReset(void) {
     extern void *gPadInput;
     extern s32 gSoftResetHoldCount;
     extern s8 gSoftResetHoldInited;
-    extern u8 lbl_803672E1;
+    extern u8 gResetSwitchWasHeld;
     extern s8 lbl_803672E2;
     extern u8 lbl_803672E3;
     extern s8 lbl_803672E4;
@@ -172,7 +172,7 @@ void Game_PollSoftReset(void) {
         gSoftResetHoldInited = 1;
     }
     if (lbl_803672E2 == 0) {
-        lbl_803672E1 = 0;
+        gResetSwitchWasHeld = 0;
         lbl_803672E2 = 1;
     }
     if (lbl_803672E4 == 0) {
@@ -185,10 +185,10 @@ void Game_PollSoftReset(void) {
     if (temp_r0 >= 0x1E) {
         lbl_803672E3 = 1;
     }
-    if (lbl_803672E1 != 0 && fn_80208D18() == 0) {
+    if (gResetSwitchWasHeld != 0 && fn_80208D18() == 0) {
         lbl_803672E3 = 1;
     }
-    lbl_803672E1 = fn_80208D18() != 0;
+    gResetSwitchWasHeld = fn_80208D18() != 0;
     if (!(gUiInputFlags & 0x100) && lbl_803672E3 != 0) {
         fn_80211614(1);
         VIFlush();
