@@ -3927,7 +3927,7 @@ s32 fn_80032B5C(void *arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_80090688(void *, s32, s32);
-extern "C" void fn_80032B90(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawStaff(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
