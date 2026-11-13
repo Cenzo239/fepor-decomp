@@ -2126,37 +2126,38 @@ void fn_801B2644(void *arg0) {
     }
 }
 
-void Ui_CreateSideListPanel(void *arg0) {
+/* Create the secondary list panel at self+0x44, positioned from the panel at +0x40, and slide it in. */
+void Ui_CreateSideListPanel(void *self) {
     void *Heap_Alloc(s32);
     void *fn_801343F8(void *, s32, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
     void Ui_AddChild(void *, void *);
     void fn_801402E4(void *, void *, s32, s32);
-    void *var_r0;
-    void *temp_r4;
-    void *temp_r30;
-    s16 temp_r29;
-    s16 temp_r28;
+    void *panel;
+    void *tmp;
+    void *basePanel;
+    s16 x;
+    s16 y;
 
-    temp_r30 = *(void **)((u8 *)arg0 + 0x40);
-    temp_r29 = *(s16 *)((u8 *)temp_r30 + 0xA) - 0x20;
-    temp_r28 = *(s16 *)((u8 *)temp_r30 + 0xC) + 0x20;
-    var_r0 = Heap_Alloc(0x54);
-    if (var_r0 != NULL) {
-        var_r0 = fn_801343F8(var_r0, *(s16 *)((u8 *)temp_r30 + 0x3E), temp_r29, temp_r28, 0x108, 0xD0, 0x1F4);
+    basePanel = *(void **)((u8 *)self + 0x40);
+    x = *(s16 *)((u8 *)basePanel + 0xA) - 0x20;
+    y = *(s16 *)((u8 *)basePanel + 0xC) + 0x20;
+    panel = Heap_Alloc(0x54);
+    if (panel != NULL) {
+        panel = fn_801343F8(panel, *(s16 *)((u8 *)basePanel + 0x3E), x, y, 0x108, 0xD0, 0x1F4);
     }
-    *(void **)((u8 *)arg0 + 0x44) = var_r0;
-    temp_r4 = *(void **)((u8 *)arg0 + 0x44);
-    if (temp_r4 != NULL) {
-        *(s32 *)((u8 *)temp_r4 + 4) = *(s32 *)((u8 *)temp_r4 + 4) + 1;
+    *(void **)((u8 *)self + 0x44) = panel;
+    tmp = *(void **)((u8 *)self + 0x44);
+    if (tmp != NULL) {
+        *(s32 *)((u8 *)tmp + 4) = *(s32 *)((u8 *)tmp + 4) + 1;
     }
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 8) = 1;
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x46) = 0x30;
-    fn_80134CE8(*(void **)((u8 *)arg0 + 0x44));
-    *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x24) = 4;
-    *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x3C) = 0;
-    Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x44));
-    fn_801402E4(arg0, *(void **)((u8 *)arg0 + 0x44), 0, 1);
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 8) = 1;
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x46) = 0x30;
+    fn_80134CE8(*(void **)((u8 *)self + 0x44));
+    *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x24) = 4;
+    *(u8 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x3C) = 0;
+    Ui_AddChild(self, *(void **)((u8 *)self + 0x44));
+    fn_801402E4(self, *(void **)((u8 *)self + 0x44), 0, 1);
 }
 
 void fn_801B27A0(void *arg0) {
