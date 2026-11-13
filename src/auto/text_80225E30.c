@@ -198,7 +198,7 @@ s32 TRKTerminateNub(void) {
     return 0;
 }
 
-s32 fn_802262E8(void *arg0)
+s32 TRKMessageSend(void *arg0)
 {
     extern u8 lbl_802822A8[];
 
@@ -655,7 +655,7 @@ s32 fn_80227444(void *arg0) {
     s32 TRKTargetAccessExtended2(u16, u16, void *, s32 *, s32);
     s32 fn_80226888(void *, void *, s32);
     s32 fn_8022B078(void *, s32);
-    s32 fn_802262E8(void *);
+    s32 TRKMessageSend(void *);
     void MWTRACE(u8, char *, ...);
     void *memset(void *, s32, s32);
     extern char lbl_80282520[];
@@ -752,7 +752,7 @@ s32 fn_80227444(void *arg0) {
     }
 
     MWTRACE(1, lbl_80282520);
-    err = fn_802262E8(obj);
+    err = TRKMessageSend(obj);
     MWTRACE(1, lbl_80282540, err);
     return err;
 }
@@ -765,7 +765,7 @@ s32 TRKTargetAccessFP(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended1(u16,u16,void*,s32*,s32);
 s32 TRKTargetAccessExtended2(u16,u16,void*,s32*,s32);
 s32 fn_8022B078(void*,s32);
-s32 fn_802262E8(void*);
+s32 TRKMessageSend(void*);
 void MWTRACE(u8,char*,...);
 void *memset(void*,s32,s32);
 extern char lbl_802824C0[];
@@ -806,7 +806,7 @@ default:code=3;break;
 memset(reply,0,0x40);reply[4]=0x80;*(s32*)reply=0x40;reply[8]=code;fn_8022B078(reply,0x40);return 0;
 }
 MWTRACE(1,strings+0x60);
-result=fn_802262E8(arg0);MWTRACE(1,strings+0x80,result);return result;
+result=TRKMessageSend(arg0);MWTRACE(1,strings+0x80,result);return result;
 }
 
 #pragma use_lmw_stmw reset
@@ -966,7 +966,7 @@ void fn_802283A8(void) {
 #pragma use_lmw_stmw on
 s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     void *TRKGetBuffer(s32);
-    s32 fn_802262E8(s32);
+    s32 TRKMessageSend(s32);
     s32 fn_8022641C(void *, u8 *, u32);
     s32 TRKAppendBuffer(s32, void *, u32);
     void fn_8022692C(void *, u32);
@@ -1049,7 +1049,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
                 *arg3 = temp_r20;
                 fn_8022699C(sp10);
             } else {
-                var_r21 = fn_802262E8(sp8);
+                var_r21 = TRKMessageSend(sp8);
             }
         }
         fn_8022699C(spC);
