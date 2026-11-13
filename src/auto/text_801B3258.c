@@ -8721,7 +8721,7 @@ void Game_InitVideo(void) {
     void fn_802217AC(void *, s32);
     void fn_80221A40(s32, s32);
     extern s32 gGameFlags;
-    extern void *lbl_803682A8;
+    extern void *gGameRenderMode;
     extern void *lbl_803682AC;
     extern u8 lbl_80298278[];
     extern u8 lbl_802982B4[];
@@ -8738,22 +8738,22 @@ void Game_InitVideo(void) {
     fmt = VIGetTvFormat();
     switch (fmt) {
     case 0:
-        lbl_803682A8 = lbl_80298278;
+        gGameRenderMode = lbl_80298278;
         lbl_803682AC = lbl_802982B4;
         gGameFlags |= 0x10000;
         break;
     case 1:
-        lbl_803682A8 = lbl_802982F0;
+        gGameRenderMode = lbl_802982F0;
         lbl_803682AC = lbl_8029832C;
         gGameFlags |= 0x20000;
         break;
     case 5:
-        lbl_803682A8 = lbl_8029832C;
+        gGameRenderMode = lbl_8029832C;
         lbl_803682AC = lbl_8029832C;
         gGameFlags |= 0x40000;
         break;
     case 2:
-        lbl_803682A8 = lbl_80298368;
+        gGameRenderMode = lbl_80298368;
         lbl_803682AC = lbl_802982B4;
         gGameFlags |= 0x80000;
         break;
@@ -8764,11 +8764,11 @@ void Game_InitVideo(void) {
 
     if (gGameFlags & 0x10000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
-            DEMOInit(lbl_803682A8);
+            DEMOInit(gGameRenderMode);
             gGameFlags &= ~0x40;
         } else {
             if (!(OSGetResetCode() & 1)) {
-                DEMOInit(lbl_803682A8);
+                DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x40;
             } else {
                 DEMOInit(lbl_803682AC);
@@ -8778,11 +8778,11 @@ void Game_InitVideo(void) {
         }
     } else if (gGameFlags & 0x80000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 2)) {
-            DEMOInit(lbl_803682A8);
+            DEMOInit(gGameRenderMode);
             gGameFlags &= ~0x40;
         } else {
             if (!(OSGetResetCode() & 1)) {
-                DEMOInit(lbl_803682A8);
+                DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x40;
             } else {
                 DEMOInit(lbl_803682AC);
@@ -8792,11 +8792,11 @@ void Game_InitVideo(void) {
         }
     } else if (gGameFlags & 0x60000) {
         if ((OSGetResetCode() >> 31) == 0 || (OSGetResetCode() & 0x20)) {
-            DEMOInit(lbl_803682A8);
+            DEMOInit(gGameRenderMode);
             gGameFlags &= ~0x100;
         } else {
             if (!(OSGetResetCode() & 0x10)) {
-                DEMOInit(lbl_803682A8);
+                DEMOInit(gGameRenderMode);
                 gGameFlags &= ~0x100;
             } else {
                 DEMOInit(lbl_803682AC);
@@ -8817,8 +8817,8 @@ s32 fn_801C9704(void) {
 }
 
 s32 fn_801C970C(void) {
-    extern s32 lbl_803682A8;
-    return lbl_803682A8;
+    extern s32 gGameRenderMode;
+    return gGameRenderMode;
 }
 
 void fn_801C9714(void) {
