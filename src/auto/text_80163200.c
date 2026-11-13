@@ -3311,7 +3311,7 @@ void fn_8016A400(void *arg0) {
     extern u16 lbl_802920E0[76];
     extern u8 lbl_80293D64[];
     extern u16 lbl_802940AC[76];
-    extern u8 lbl_80294144[];
+    extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
     extern s8 sUiMenuVtbl0Ready;
     extern void *gUiMenuVtbl0;
@@ -3342,7 +3342,7 @@ void fn_8016A400(void *arg0) {
     }
     if (sUiMenuVtbl1Ready == 0) {
         sUiMenuVtbl1Ready = 1;
-        gUiMenuVtbl1 = lbl_80294144;
+        gUiMenuVtbl1 = gUiMenuVtbl1Template;
     }
 
     config = Heap_Alloc(0x20);
@@ -3672,7 +3672,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
     extern u8 lbl_802920E0[];
     extern u8 lbl_80293D64[];
     extern u8 lbl_802940AC[];
-    extern u8 lbl_80294144[];
+    extern u8 gUiMenuVtbl1Template[];
     extern u8 gUiMenuVtbl0Template[];
     extern s8 sUiMenuVtbl0Ready;
     extern void *gUiMenuVtbl0;
@@ -3688,7 +3688,7 @@ s32 Ui_MenuItemOpenSubmenu(s32 arg0, s32 arg1, void *arg2) {
         sUiMenuVtbl0Ready = 1;
     }
     if (sUiMenuVtbl1Ready == 0) {
-        gUiMenuVtbl1 = lbl_80294144;
+        gUiMenuVtbl1 = gUiMenuVtbl1Template;
         sUiMenuVtbl1Ready = 1;
     }
     p = Heap_Alloc(0x20);
