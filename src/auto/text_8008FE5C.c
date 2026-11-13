@@ -137,7 +137,7 @@ void fn_800900F4(u8 *arg0) {
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
     void fn_8005AC24(void *, s32, s32, s32);
-    void fn_80090E0C(s32, s32, u8);
+    void UnitInfo_DrawPanel(s32, s32, u8);
     void *fn_800A8A88(void *);
     s32 fn_80010B78(void *, s32, f32);
     void fn_8001019C(s16, s16, s32, void *, ...);
@@ -180,7 +180,7 @@ void fn_800900F4(u8 *arg0) {
         b += 1;
     }
     self = *(u8 **)(self + 0x194);
-    fn_80090E0C(9, 0x68, ((u8 *)*(void **)(self + 0x190))[8]);
+    UnitInfo_DrawPanel(9, 0x68, ((u8 *)*(void **)(self + 0x190))[8]);
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
     b = (0xCF - fn_80010B78(fn_800A8A88(*(void **)(self + 0x188)), -1, lbl_80369754)) / 2;

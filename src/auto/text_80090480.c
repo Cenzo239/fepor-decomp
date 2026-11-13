@@ -210,7 +210,7 @@ void fn_80090990(void *arg0) {
     } while (var_r31 < 4);
 }
 
-void fn_80090E0C(s32 arg0, s32 arg1, s32 arg2)
+void UnitInfo_DrawPanel(s32 arg0, s32 arg1, s32 arg2)
 {
     void fn_80007668(s32 *);
     void Prim2D_SetColor(u8, u8, u8, u8);
