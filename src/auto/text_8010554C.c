@@ -2899,7 +2899,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
-extern "C" void Sprite_Draw(void *arg0, u8 arg1) {
+extern "C" void Sprite_Draw(void *sprite, u8 alpha) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetUvCorners(f32, f32, f32, f32);
     void Prim2D_SetPosCorners(f32, f32, f32, f32);
@@ -2915,56 +2915,57 @@ extern "C" void Sprite_Draw(void *arg0, u8 arg1) {
         virtual void method();
     };
 
-    s16 var_r4;
-    s16 var_r5;
-    s16 a;
-    s16 b;
-    u8 var_r31;
+    // Draw sprite: bind texture, expand zero-size rect from UVs, apply alpha.
+    s16 uvW;
+    s16 uvH;
+    s16 x1;
+    s16 x0;
+    u8 a;
 
-    var_r31 = arg1;
-    if (!(*(u8 *)((u8 *)arg0 + 0x10) & 0x80)) {
-        ((Obj *)arg0)->method();
+    a = alpha;
+    if (!(*(u8 *)((u8 *)sprite + 0x10) & 0x80)) {
+        ((Obj *)sprite)->method();
     }
     Prim2D_Begin();
-    if (*(u8 *)((u8 *)arg0 + 0x10) & 2) {
-        fn_80009EB0(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), *(u8 *)((u8 *)arg0 + 0x11), 0x11);
+    if (*(u8 *)((u8 *)sprite + 0x10) & 2) {
+        fn_80009EB0(*(s32 *)((u8 *)sprite + 0xC), *(u8 *)((u8 *)sprite + 0x12), *(u8 *)((u8 *)sprite + 0x11), 0x11);
     } else {
-        Prim2D_BindTexture(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), 0x11);
+        Prim2D_BindTexture(*(s32 *)((u8 *)sprite + 0xC), *(u8 *)((u8 *)sprite + 0x12), 0x11);
     }
     Prim2D_PrepareTex();
-    var_r4 = *(u16 *)((u8 *)arg0 + 0x20) - *(u16 *)((u8 *)arg0 + 0x1C);
-    if (var_r4 < 0) {
-        var_r4 = -var_r4;
+    uvW = *(u16 *)((u8 *)sprite + 0x20) - *(u16 *)((u8 *)sprite + 0x1C);
+    if (uvW < 0) {
+        uvW = -uvW;
     }
-    var_r5 = *(u16 *)((u8 *)arg0 + 0x22) - *(u16 *)((u8 *)arg0 + 0x1E);
-    if (var_r5 < 0) {
-        var_r5 = -var_r5;
+    uvH = *(u16 *)((u8 *)sprite + 0x22) - *(u16 *)((u8 *)sprite + 0x1E);
+    if (uvH < 0) {
+        uvH = -uvH;
     }
-    a = *(s16 *)((u8 *)arg0 + 0x18);
-    b = *(s16 *)((u8 *)arg0 + 0x14);
-    if (a == b) {
-        *(s16 *)((u8 *)arg0 + 0x18) = b + var_r4;
+    x1 = *(s16 *)((u8 *)sprite + 0x18);
+    x0 = *(s16 *)((u8 *)sprite + 0x14);
+    if (x1 == x0) {
+        *(s16 *)((u8 *)sprite + 0x18) = x0 + uvW;
     }
-    a = *(s16 *)((u8 *)arg0 + 0x1A);
-    b = *(s16 *)((u8 *)arg0 + 0x16);
-    if (a == b) {
-        *(s16 *)((u8 *)arg0 + 0x1A) = b + var_r5;
+    x1 = *(s16 *)((u8 *)sprite + 0x1A);
+    x0 = *(s16 *)((u8 *)sprite + 0x16);
+    if (x1 == x0) {
+        *(s16 *)((u8 *)sprite + 0x1A) = x0 + uvH;
     }
-    if (var_r31 == 0xFF) {
-        var_r31 = *(u8 *)((u8 *)arg0 + 0x13);
+    if (a == 0xFF) {
+        a = *(u8 *)((u8 *)sprite + 0x13);
     }
     Prim2D_AddPrim(1);
     Prim2D_SetPosCorners(
-        (f32)*(s16 *)((u8 *)arg0 + 0x14),
-        (f32)*(s16 *)((u8 *)arg0 + 0x16),
-        (f32)*(s16 *)((u8 *)arg0 + 0x18),
-        (f32)*(s16 *)((u8 *)arg0 + 0x1A));
+        (f32)*(s16 *)((u8 *)sprite + 0x14),
+        (f32)*(s16 *)((u8 *)sprite + 0x16),
+        (f32)*(s16 *)((u8 *)sprite + 0x18),
+        (f32)*(s16 *)((u8 *)sprite + 0x1A));
     Prim2D_SetUvCorners(
-        (f32)*(u16 *)((u8 *)arg0 + 0x1C),
-        (f32)*(u16 *)((u8 *)arg0 + 0x1E),
-        (f32)*(u16 *)((u8 *)arg0 + 0x20),
-        (f32)*(u16 *)((u8 *)arg0 + 0x22));
-    Prim2D_SetAlpha(var_r31);
+        (f32)*(u16 *)((u8 *)sprite + 0x1C),
+        (f32)*(u16 *)((u8 *)sprite + 0x1E),
+        (f32)*(u16 *)((u8 *)sprite + 0x20),
+        (f32)*(u16 *)((u8 *)sprite + 0x22));
+    Prim2D_SetAlpha(a);
     Prim2D_EndPrim();
 }
 #pragma cplusplus reset
