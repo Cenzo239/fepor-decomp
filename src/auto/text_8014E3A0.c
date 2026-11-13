@@ -1930,7 +1930,7 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
 }
 #pragma use_lmw_stmw reset
 void fn_80154370(s16 arg0, s16 arg1) {
-    void fn_8015FC7C(void);
+    void Ui_DrawWindowFrame(void);
     s32 fn_80009E44(f32 *);
     s32 Msg_Expand(void *);
     s32 Text_MeasureWidth(s32, s32, f32);
@@ -1976,7 +1976,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
 
     temp_r23 = arg0;
     temp_r24 = arg1;
-    fn_8015FC7C();
+    Ui_DrawWindowFrame();
     temp_r22 = fn_80009E44(&sp10);
     temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
     temp_r30 = Text_MeasureWidth(temp_r21, -1, lbl_8036A874);
@@ -2078,7 +2078,7 @@ void fn_801546B0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
 #pragma use_lmw_stmw on
 void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
-    void fn_8015FC7C(s16, s16, s32, s32, s32, s32);
+    void Ui_DrawWindowFrame(s16, s16, s32, s32, s32, s32);
     s32 fn_80009E44(f32 *);
     void fn_8006ECCC(s32, void *, s32);
     u8 *fn_8018D900(s32);
@@ -2113,7 +2113,7 @@ void Ui_DrawJobPersonalPanel(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4, s
     u8 *color;
     s32 str;
 
-    fn_8015FC7C(arg0, arg1, arg2, arg3, arg5, arg6);
+    Ui_DrawWindowFrame(arg0, arg1, arg2, arg3, arg5, arg6);
     saved = fn_80009E44(&sp10);
     fn_8006ECCC(gUiTexAtlas, lbl_80330D18, 0xC);
     color = fn_8018D900(0);
@@ -3921,8 +3921,8 @@ void fn_8015B954(s16 arg0, s16 arg1, s32 arg2) {
 }
 
 void fn_8015BA88(void) {
-    M2C_UNK fn_8015FC7C();
-    fn_8015FC7C();
+    M2C_UNK Ui_DrawWindowFrame();
+    Ui_DrawWindowFrame();
 }
 
 #pragma use_lmw_stmw on
@@ -4928,7 +4928,7 @@ void fn_8015E848(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 *arg4, s32 arg5) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8015FC7C(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
+void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     void fn_8006ECCC(s32, void *, s32);
     void Prim2D_Begin(void);
     void fn_8000A174(void *, u16);
