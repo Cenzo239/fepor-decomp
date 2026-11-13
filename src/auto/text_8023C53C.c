@@ -5803,7 +5803,7 @@ void *fn_802506A8(u32 arg0)
     return *(void **)result;
 }
 
-s32 fn_80250734(u16 *arg0, u16 *arg1) {
+s32 AudioGroup_CompareId(u16 *arg0, u16 *arg1) {
     return *arg0 - *arg1;
 }
 
@@ -5849,7 +5849,7 @@ s32 fn_80250744(u16 id, void *arg1) {
 
     gAudioGroupLookupKey.id = id;
     for (i = 0; i < gAudioGroupCount; i++) {
-        if ((gAudioGroupFound = fn_802612A0(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, fn_80250734)) != NULL && gAudioGroupFound->ref != 0) {
+        if ((gAudioGroupFound = fn_802612A0(&gAudioGroupLookupKey, gAudioGroups[i].entries, gAudioGroups[i].count, 0x20, AudioGroup_CompareId)) != NULL && gAudioGroupFound->ref != 0) {
             gAudioGroupHeader = &gAudioGroupFound->header;
             info->unk0 = gAudioGroupHeader->unk0;
             info->unk4 = gAudioGroupFound->unk8;
