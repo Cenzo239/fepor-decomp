@@ -3475,7 +3475,7 @@ outer_cmp:
     return lbl_8032B3C0[0x21C];
 }
 #pragma use_lmw_stmw reset
-u8 fn_8010B8E4(void *arg0) {
+u8 Ai_TrySelectApproachTile(void *arg0) {
     void fn_800FE2A0(void *, s32, s32);
     u8 fn_800FE84C(s8, s8);
     void *fn_80019DBC(u8);

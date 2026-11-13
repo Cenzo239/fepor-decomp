@@ -20819,7 +20819,7 @@ s32 fn_800FBBD8(void *arg0) {
     u8 fn_8010BDE0(void *);
     void fn_8010AD94(void *);
     u8 fn_8010BB74(void *);
-    u8 fn_8010B8E4(void *);
+    u8 Ai_TrySelectApproachTile(void *);
     u8 fn_8010B658(void *);
     void fn_8010AC58(void *);
     extern u8 gUiContext[];
@@ -20845,7 +20845,7 @@ s32 fn_800FBBD8(void *arg0) {
         }
         if (fn_8010BB74(arg0) != 0) {
             fn_8010AC58(arg0);
-        } else if (fn_8010B8E4(arg0) != 0) {
+        } else if (Ai_TrySelectApproachTile(arg0) != 0) {
             fn_8010AC58(arg0);
         } else if (fn_8010B658(arg0) != 0) {
             fn_8010AC58(arg0);
