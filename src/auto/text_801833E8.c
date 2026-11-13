@@ -10920,11 +10920,11 @@ void fn_8019DB28(void) {
     void fn_801293C0(void);
     void fn_80199C2C(void);
     void fn_8005376C(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
 
     fn_800C0818(0);
     fn_801293C0();
-    Process_UnlinkByKey(lbl_80296FA8);
+    Process_UnlinkByKey(Proc_MuEventInst);
     fn_80199C2C();
     fn_800A84A0();
     fn_8005376C();
@@ -12161,7 +12161,7 @@ void fn_801A06CC(void) {
 s32 fn_801A087C(u8 arg0) {
     extern u32 gUiInputFlags;
     extern u8 gUnits[];
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     void *Process_Find(u8 *);
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
@@ -12183,7 +12183,7 @@ s32 fn_801A087C(u8 arg0) {
     if (obj == NULL || *(u32 *)((u8 *)obj + 0x188) == 0) {
         return 0;
     }
-    slot = Process_Find(lbl_80296FA8);
+    slot = Process_Find(Proc_MuEventInst);
     if (slot != NULL) {
         arg = slot;
     } else {
@@ -12191,7 +12191,7 @@ s32 fn_801A087C(u8 arg0) {
         if (tmp == 0) {
             tmp = fn_800C0658();
         }
-        arg = Process_Create(lbl_80296FA8, tmp);
+        arg = Process_Create(Proc_MuEventInst, tmp);
     }
     fn_80183AB4(obj, 4, -1, -1, arg);
     return 1;
@@ -12200,7 +12200,7 @@ s32 fn_801A087C(u8 arg0) {
 s32 fn_801A094C(u8 arg0) {
     extern u32 gUiInputFlags;
     extern u8 gUnits[];
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     void *Process_Find(u8 *);
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
@@ -12222,7 +12222,7 @@ s32 fn_801A094C(u8 arg0) {
     if (obj == NULL || *(u32 *)((u8 *)obj + 0x188) == 0) {
         return 0;
     }
-    slot = Process_Find(lbl_80296FA8);
+    slot = Process_Find(Proc_MuEventInst);
     if (slot != NULL) {
         arg = slot;
     } else {
@@ -12230,7 +12230,7 @@ s32 fn_801A094C(u8 arg0) {
         if (tmp == 0) {
             tmp = fn_800C0658();
         }
-        arg = Process_Create(lbl_80296FA8, tmp);
+        arg = Process_Create(Proc_MuEventInst, tmp);
     }
     fn_80183B24(obj, arg);
     return 1;
@@ -12300,7 +12300,7 @@ void fn_801A0D20(void *arg0) {
 s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 gUnits[];
     extern u8 gBattleMap[];
-    extern u8 lbl_80296FA8[36];
+    extern u8 Proc_MuEventInst[36];
     void *Process_Find(u8 *);
     void *Process_Create(u8 *, s32);
     s32 Unit_SetMapPos(void *, u8, u8);
@@ -12333,12 +12333,12 @@ s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
 
     fn_80050C90(var_r31);
 
-    if (Process_Find(lbl_80296FA8) == 0) {
+    if (Process_Find(Proc_MuEventInst) == 0) {
         u32 var_r3 = fn_80127C48();
         if (var_r3 == 0) {
             var_r3 = fn_800C0658();
         }
-        Process_Create(lbl_80296FA8, var_r3);
+        Process_Create(Proc_MuEventInst, var_r3);
     }
 
     return 1;
@@ -12347,7 +12347,7 @@ s32 ScriptCmd_UnitWarp(u8 arg0, u8 arg1, u8 arg2) {
 s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     extern u8 gUnits[];
     extern u8 E_EventState_script[];
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 gBattleMap[];
     extern s32 gUiInputFlags;
     void *Process_Find(u8 *);
@@ -12437,7 +12437,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
             fn_80184750(var_r31, temp_r0 & 0xF, 0, 0);
             fn_80050C90(var_r31);
         } else {
-            temp = Process_Find(lbl_80296FA8);
+            temp = Process_Find(Proc_MuEventInst);
             if (temp != NULL) {
                 var_r6 = temp;
             } else {
@@ -12445,7 +12445,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
                 if (var_r3 == 0) {
                     var_r3 = fn_800C0658();
                 }
-                var_r6 = Process_Create(lbl_80296FA8, var_r3);
+                var_r6 = Process_Create(Proc_MuEventInst, var_r3);
             }
             MoveAnim_BindPath(var_r31, temp_r28, temp_r0, var_r6);
         }
@@ -12478,13 +12478,13 @@ s32 fn_801A1604(s32 arg0) {
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 lbl_80296FCC[];
     void *var_r4;
     u32 var_r3;
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
         var_r4 = temp;
     } else {
@@ -12492,10 +12492,10 @@ s32 fn_801A1604(s32 arg0) {
         if (var_r3 == 0U) {
             var_r3 = fn_800C0658();
         }
-        var_r4 = Process_Create(lbl_80296FA8, var_r3);
+        var_r4 = Process_Create(Proc_MuEventInst, var_r3);
     }
     Dispos_Apply(arg0, var_r4, 3);
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
         Process_CreateChild(lbl_80296FCC, fn_800C0658());
@@ -12517,13 +12517,13 @@ s32 fn_801A16E8(s32 arg0) {
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 lbl_80296FCC[];
     void *var_r4;
     u32 var_r3;
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
         var_r4 = temp;
     } else {
@@ -12531,10 +12531,10 @@ s32 fn_801A16E8(s32 arg0) {
         if (var_r3 == 0U) {
             var_r3 = fn_800C0658();
         }
-        var_r4 = Process_Create(lbl_80296FA8, var_r3);
+        var_r4 = Process_Create(Proc_MuEventInst, var_r3);
     }
     Dispos_Apply(arg0, var_r4, 2);
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
         Process_CreateChild(lbl_80296FCC, fn_800C0658());
@@ -12556,13 +12556,13 @@ s32 fn_801A17CC(s32 arg0) {
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 lbl_80296FCC[];
     void *var_r4;
     u32 var_r3;
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
         var_r4 = temp;
     } else {
@@ -12570,10 +12570,10 @@ s32 fn_801A17CC(s32 arg0) {
         if (var_r3 == 0U) {
             var_r3 = fn_800C0658();
         }
-        var_r4 = Process_Create(lbl_80296FA8, var_r3);
+        var_r4 = Process_Create(Proc_MuEventInst, var_r3);
     }
     Dispos_Apply(arg0, var_r4, 1);
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
         Process_CreateChild(lbl_80296FCC, fn_800C0658());
@@ -12617,12 +12617,12 @@ s32 fn_801A1960(s32 arg0) {
     void Dispos_Apply(s32, void *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     void *var_r4;
     u32 var_r3;
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
         var_r4 = temp;
     } else {
@@ -12630,7 +12630,7 @@ s32 fn_801A1960(s32 arg0) {
         if (var_r3 == 0U) {
             var_r3 = fn_800C0658();
         }
-        var_r4 = Process_Create(lbl_80296FA8, var_r3);
+        var_r4 = Process_Create(Proc_MuEventInst, var_r3);
     }
     Dispos_Apply(arg0, var_r4, 0);
     return 1;
@@ -12645,13 +12645,13 @@ s32 fn_801A19D8(s32 arg0) {
     u32 fn_80127C48(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 lbl_80296FCC[];
     void *var_r4;
     u32 var_r3;
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
         var_r4 = temp;
     } else {
@@ -12659,10 +12659,10 @@ s32 fn_801A19D8(s32 arg0) {
         if (var_r3 == 0U) {
             var_r3 = fn_800C0658();
         }
-        var_r4 = Process_Create(lbl_80296FA8, var_r3);
+        var_r4 = Process_Create(Proc_MuEventInst, var_r3);
     }
     Dispos_Apply(arg0, var_r4, 0);
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
         Process_CreateChild(lbl_80296FCC, fn_800C0658());
@@ -13108,11 +13108,11 @@ s32 fn_801A2464(void) {
     s32 fn_800C0658(void);
     u8 fn_80183974(void);
     void fn_80013864(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     extern u8 lbl_80296FCC[];
     void *temp;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if ((((u32)(-(s32)temp | (s32)temp) >> 31) != 0) || (fn_80183974() != 0)) {
         fn_80013864();
         Process_CreateChild(lbl_80296FCC, fn_800C0658());
@@ -13124,10 +13124,10 @@ void fn_801A24C4(void *arg0) {
     s32 Process_Find(void *);
     u8 fn_80183974(void);
     void Process_ClearFunc(void *);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     s32 temp_r3;
 
-    temp_r3 = Process_Find(lbl_80296FA8);
+    temp_r3 = Process_Find(Proc_MuEventInst);
     if (((u32)(-temp_r3 | temp_r3) >> 31) == 0 && fn_80183974() == 0) {
         Process_ClearFunc(arg0);
     }
@@ -13139,18 +13139,18 @@ void fn_801A251C(void) {
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
-    extern u8 lbl_80296FA8[];
+    extern u8 Proc_MuEventInst[];
     void *temp;
     u32 var_r3;
 
-    temp = Process_Find(lbl_80296FA8);
+    temp = Process_Find(Proc_MuEventInst);
     if (temp != NULL) {
     } else {
         var_r3 = fn_80127C48();
         if (var_r3 == 0) {
             var_r3 = fn_800C0658();
         }
-        Process_Create(lbl_80296FA8, var_r3);
+        Process_Create(Proc_MuEventInst, var_r3);
     }
 }
 #pragma optimization_level reset
@@ -13395,7 +13395,7 @@ extern u16 lbl_8036AE4C;
 extern f32 lbl_8036AE50;
 #include "common.h"
 
-extern u16 lbl_80296FA8;
+extern u16 Proc_MuEventInst;
 #include "global.h"
 #include "unit.h"
 extern u16 lbl_80295D1C[];
