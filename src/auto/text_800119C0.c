@@ -1456,7 +1456,7 @@ s32 Allegiance_Compare(void *arg0, void *arg1) {
     return 2;
 }
 
-s32 fn_80015648(u8 arg0, u8 arg1) {
+s32 Allegiance_CompareIds(u8 arg0, u8 arg1) {
     if (arg0 == arg1) {
         return 0;
     }

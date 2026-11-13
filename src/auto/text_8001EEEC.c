@@ -4036,7 +4036,7 @@ void fn_8002846C(void *arg0) {
 
 s32 fn_800284B4(void *arg0) {
     extern u8 gBattleState[];
-    u8 fn_80015648(u8, u8);
+    u8 Allegiance_CompareIds(u8, u8);
     u8 temp_r30;
 
     if (arg0 == NULL) {
@@ -4046,7 +4046,7 @@ s32 fn_800284B4(void *arg0) {
         return 1;
     }
     temp_r30 = M2C_FIELD(M2C_FIELD(arg0, u8 **, 0x190), u8 *, 8);
-    if (fn_80015648(temp_r30, gBattleState[0x11]) == 1) {
+    if (Allegiance_CompareIds(temp_r30, gBattleState[0x11]) == 1) {
         return 2;
     }
     if ((temp_r30 == 2) && ((gBattleState[0x11] != 2) || (gBattleState[0x16] != 1))) {

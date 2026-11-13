@@ -3100,7 +3100,7 @@ void fn_8011868C(void *arg0) {
 void fn_801186E4(void *arg0)
 {
     void Process_Goto(void *, s32);
-    u8 fn_80015648(s32, u8);
+    u8 Allegiance_CompareIds(s32, u8);
     void fn_8002297C(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void Map_HideMoveLimitView(void);
@@ -3132,7 +3132,7 @@ void fn_801186E4(void *arg0)
     self = arg0;
     unit = Map_GetCursorUnit();
     if (unit != NULL) {
-        if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+        if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
                 ret = Ui_FindChild(self, -0x1000, 0);
                 if (ret != 0) {
@@ -3220,7 +3220,7 @@ void fn_801186E4(void *arg0)
             return;
         }
         if (buttons & 0x100) {
-            if ((unit != NULL) && (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
+            if ((unit != NULL) && (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
@@ -3232,7 +3232,7 @@ void fn_801186E4(void *arg0)
                 goto block_65;
             }
         } else if (buttons & 0x200) {
-            if ((unit != NULL) && (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
+            if ((unit != NULL) && (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
@@ -3328,7 +3328,7 @@ void fn_80118C84(void *arg0) {
     void Process_ClearFunc(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
-    u8 fn_80015648(s32, u8);
+    u8 Allegiance_CompareIds(s32, u8);
     void fn_8002297C(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
     void *fn_8002F658(void *, s32);
@@ -3393,7 +3393,7 @@ void fn_80118C84(void *arg0) {
         other = NULL;
     }
     if (unit != NULL) {
-        if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+        if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
                 ret = Ui_FindChild(self, -0x1000, 0);
                 if (ret != NULL)
@@ -3524,7 +3524,7 @@ void fn_80118C84(void *arg0) {
                 }
             }
             if (found == 0) {
-                if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+                if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
                     flags = *(u32 *)((u8 *)unit + 0x1A0);
                     if (!(flags & 0x800)) {
                         *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
@@ -3612,7 +3612,7 @@ void fn_80118C84(void *arg0) {
                     }
                 }
             }
-            if (found == 0 && fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+            if (found == 0 && Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
@@ -3747,7 +3747,7 @@ sound:
 
 void fn_80119884(void *arg0) {
     void *Map_GetCursorUnit(void);
-    u8 fn_80015648(s32, u8);
+    u8 Allegiance_CompareIds(s32, u8);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *);
     extern s32 gBattleState[];
@@ -3764,7 +3764,7 @@ void fn_80119884(void *arg0) {
     cy = (s32)*(f32 *)(base + 0x528);
     (void)cx; (void)cy;
     if (unit != 0) {
-        if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+        if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
                 if (Ui_FindChild(arg0, -0x1000, 0) != 0)
                     Ui_SetWidgetText(lbl_80274508 + 0x1A7);
