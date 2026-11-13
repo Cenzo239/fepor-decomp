@@ -746,6 +746,7 @@ s32 fn_801B6BE4(struct efUnit* arg0) {
 }
 
 void Script_RegisterWinCondCommands(void) {
+    /* Register chapter win/lose condition script command handlers. */
     void Script_RegisterCommand(void *, void *, s32);
     extern u8 gWinCondCmdNames[];
     void ScriptCmd_AchieveSet(void);
