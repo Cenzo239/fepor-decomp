@@ -1693,7 +1693,7 @@ void fn_80166228(void) {
     ScriptCmd_CmFreeScript();
 }
 
-void fn_80166258(void) {
+void Chapter_LoadScript(void) {
     extern u8 lbl_802778A8[];
 
     void *fn_80019F04(void);

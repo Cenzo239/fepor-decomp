@@ -1991,7 +1991,7 @@ void Battle_LoadMap(void)
     extern u8 Battle_str[];
     extern u8 gBattleState[];
     void Heap_Create(void *, s32);
-    void fn_80166258(s32);
+    void Chapter_LoadScript(s32);
     u16 fn_8005C144(void *);
     void fn_8003F87C(void *, s32);
     void fn_8003FCCC(void *);
@@ -2005,7 +2005,7 @@ void Battle_LoadMap(void)
     void DebugPrint(char *, ...);
 
     Heap_Create(Battle_str + 0x176, 0x180000);
-    fn_80166258(gBattleState[0x10]);
+    Chapter_LoadScript(gBattleState[0x10]);
     if (fn_8005C144(Battle_str + 0x198) != 0x8000) {
         fn_8003F87C(Battle_str + 0x198, 8);
     }
