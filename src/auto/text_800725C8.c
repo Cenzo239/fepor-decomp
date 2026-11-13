@@ -384,7 +384,7 @@ void fn_80072F28(void *arg0) {
     }
 }
 
-void fn_8007303C(s32 arg0) {
+void Card_GotoOnResult(s32 arg0) {
     M2C_UNK Process_Goto(s32, M2C_UNK);
     s32 Card_GetResult();
     s32 temp_r3;
