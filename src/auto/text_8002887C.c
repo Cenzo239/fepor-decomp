@@ -3842,7 +3842,7 @@ extern "C" void UnitInfo_DrawCombat(void *arg0, void *arg1) {
     extern u32 gUiContext[];
     s32 UnitRef_GetUnit(u32);
     s32 fn_8003CFF0(s32, s32);
-    void fn_80090480(s32, s32);
+    void UnitInfo_DrawCombatStats(s32, s32);
     struct Obj {
         u8 pad[4];
         virtual void v0(s32 *, s32 *, s32 *) = 0;
@@ -3861,7 +3861,7 @@ extern "C" void UnitInfo_DrawCombat(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
         saved = gUiContext[0];
         flag = (u8)fn_8003CFF0(saved, UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
-        fn_80090480(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), flag);
+        UnitInfo_DrawCombatStats(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), flag);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();

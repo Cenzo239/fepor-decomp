@@ -51,7 +51,7 @@ extern f32 lbl_803697E4;
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 
-void fn_80090480(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
+void UnitInfo_DrawCombatStats(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
     s32 sp14;
     s32 sp18;
     f32 sp1C;
