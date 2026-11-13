@@ -5747,7 +5747,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     fn_80223F2C(r28, r29, r30, 4);
     fn_802239D0(r28, 0);
 }
-s32 fn_80069810(void *arg0,s32 arg1,void *arg2,void *arg3) {
+s32 GMaterial_SetupColor(void *arg0,s32 arg1,void *arg2,void *arg3) {
 u8 fn_80064938(s32,s16,void*,f32);void fn_80064BBC(s32,s16,void*,f32);
 void fn_8006DA64(void*,s32,void*);
 void fn_80223BB4(s32,MaterialColor*);void fn_8022224C(s32,MaterialColor*);

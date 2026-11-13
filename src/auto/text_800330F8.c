@@ -10211,7 +10211,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     void fn_80223B4C(s32, s32, s32, s32, s32, s32);
     void fn_80069010(s32, s32);
     void fn_800690D4(s32, s32, void *);
-    void fn_80069810(s32, s32, s32, void *);
+    void GMaterial_SetupColor(s32, s32, s32, void *);
     u8 sp8[0x20];
     s32 t30;
     s32 t29;
@@ -10246,7 +10246,7 @@ s32 fn_8004B3DC(void *arg0, s32 arg1) {
     }
     fn_80069010(t30, t29);
     fn_800690D4(t30, t29, arg0);
-    fn_80069810(t30, 0, t29, arg0);
+    GMaterial_SetupColor(t30, 0, t29, arg0);
     return 1;
 }
 

@@ -16273,7 +16273,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void fn_80069010(void *, void *);
     void fn_800690D4(void *, void *, void *);
     void fn_80069354(void *, void *, void *, void *, s32);
-    void fn_80069810(void *, void *, void *, void *);
+    void GMaterial_SetupColor(void *, void *, void *, void *);
     s32 fn_80069CFC(void);
     s32 fn_80069D58(void);
     s32 fn_80069DBC(void);
@@ -16372,7 +16372,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_8006A384(sp22C);
     fn_80069010(r24, r26);
     fn_800690D4(r24, r26, self);
-    fn_80069810(r24, r25v, r26, self);
+    GMaterial_SetupColor(r24, r25v, r26, self);
     fn_80069354(r24, r25v, r26, r27, arg1s);
     cam = fn_80068548();
     *(s32 *)&sp88[0] = *(s32 *)(tbl + 0x58);
