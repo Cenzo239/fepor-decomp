@@ -49,11 +49,11 @@ u16 value=(p[0]<<8)|p[1];
 return value;
 }
 static inline u8 SynthAllocateStream(void) {
-extern u8 lbl_8035A6D0[];
+extern u8 gSoundStreamCtrl[];
 u8 i;
-for(i=0;i<lbl_8035A6D0[0];i++){
-if(lbl_8035A6D0[i*0x2c+8]==0){
-u8 *p=lbl_8035A6D0+i*0x2c;
+for(i=0;i<gSoundStreamCtrl[0];i++){
+if(gSoundStreamCtrl[i*0x2c+8]==0){
+u8 *p=gSoundStreamCtrl+i*0x2c;
 p[8]=1;*(u32*)(p+12)=0;return i;
 }
 }
@@ -9485,12 +9485,12 @@ s32 fn_8025807C(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80258100(void) {
-    extern M2C_UNK lbl_8035A6D0;
+    extern M2C_UNK gSoundStreamCtrl;
     M2C_UNK *var_r5;
     s32 var_ctr;
 
-    var_r5 = &lbl_8035A6D0;
-    M2C_FIELD(&lbl_8035A6D0, s8 *, 0) = 0;
+    var_r5 = &gSoundStreamCtrl;
+    M2C_FIELD(&gSoundStreamCtrl, s8 *, 0) = 0;
     var_ctr = 2;
     do {
         M2C_FIELD(var_r5, s8 *, 0xB08) = 0xFF;
@@ -9528,14 +9528,14 @@ void fn_80258100(void) {
         var_r5 += 0x20;
         var_ctr -= 1;
     } while (var_ctr != 0);
-    M2C_FIELD(&lbl_8035A6D0, s16 *, 0xB48) = 0;
-    M2C_FIELD(&lbl_8035A6D0, s32 *, 0xB4C) = 0;
+    M2C_FIELD(&gSoundStreamCtrl, s16 *, 0xB48) = 0;
+    M2C_FIELD(&gSoundStreamCtrl, s32 *, 0xB4C) = 0;
 }
 
 #pragma global_optimizer off
 #pragma inline_depth(0)
 int fn_802581BC(u32 arg0) {
-extern u8 lbl_8035A6D0[];
+extern u8 gSoundStreamCtrl[];
 s32 fn_802631AC(u8,s32*);
 void fn_80261AE0(s32,s32,s32);
 u16 fn_80261B28(s32);
@@ -9553,51 +9553,51 @@ u8 *idPtr;
 s32 result;u32 *handle;
 u8 *scan;
 u32 limit;
-for(i=0;i<(count=lbl_8035A6D0[0]);i++){
-u8 *p=lbl_8035A6D0+i*0x2c;
+for(i=0;i<(count=gSoundStreamCtrl[0]);i++){
+u8 *p=gSoundStreamCtrl+i*0x2c;
 u8 *state=p+8;u8 *owner;
 if(*state!=0){ owner=p+11;
-if(*owner==(u8)arg0){*state=0;(*(lbl_8035A6D0+*owner+0xb08))=255;}}
+if(*owner==(u8)arg0){*state=0;(*(gSoundStreamCtrl+*owner+0xb08))=255;}}
 }
 for(slot=0;slot<count;slot++) {
-if((*(lbl_8035A6D0+slot*0x2c+8))==0) {
+if((*(gSoundStreamCtrl+slot*0x2c+8))==0) {
 u8 *p;u8 state=1;
-p=lbl_8035A6D0+slot*0x2c;
+p=gSoundStreamCtrl+slot*0x2c;
 p[8]=state;*(u32*)(p+12)=0;goto allocated;
 }
 }
 slot=255;
 allocated:
 callId=id;
-map=lbl_8035A6D0+0xb08;
+map=gSoundStreamCtrl+0xb08;
 map[callId]=slot;
 if(slot!=255){
-{s32 value=fn_802631AC(map[callId],0);fn_80261AE0(callId,value,*(s32*)(lbl_8035A6D0+4));}
+{s32 value=fn_802631AC(map[callId],0);fn_80261AE0(callId,value,*(s32*)(gSoundStreamCtrl+4));}
 {u16 value=fn_80261B28(callId);offset=slot*0x2c;
-*(u16*)(lbl_8035A6D0+offset+0x18)=value;}
-limit=lbl_8035A6D0[0];
+*(u16*)(gSoundStreamCtrl+offset+0x18)=value;}
+limit=gSoundStreamCtrl[0];
 do {
-serial=(*(u16*)(lbl_8035A6D0+0xb48))++;
+serial=(*(u16*)(gSoundStreamCtrl+0xb48))++;
 for(j=0;j<limit;j++){
-scan=lbl_8035A6D0+j*0x2c;
+scan=gSoundStreamCtrl+j*0x2c;
 if(scan[8]!=0 && *(u16*)(scan+0x1a)==serial) break;
 }
 }while(j!=limit);
-serialPtr=(u16*)(lbl_8035A6D0+offset);
+serialPtr=(u16*)(gSoundStreamCtrl+offset);
 *(serialPtr+=13)=serial;
 result=fn_80256000(arg0);
-handle=(u32*)(lbl_8035A6D0+offset);
+handle=(u32*)(gSoundStreamCtrl+offset);
 *(handle+=7)=result;
 if((u32)result+0x10000U!=0xffffU)
-*(s32*)(lbl_8035A6D0+offset+0x20)=fn_8024B5B0(*handle);
-else *(s32*)(lbl_8035A6D0+offset+0x20)=-1;
-*(s32*)(lbl_8035A6D0+offset+0x24)=fn_80261B3C(callId);
-*(lbl_8035A6D0+offset+10)=fn_80261B14(callId);
-idPtr=lbl_8035A6D0+offset+11;
+*(s32*)(gSoundStreamCtrl+offset+0x20)=fn_8024B5B0(*handle);
+else *(s32*)(gSoundStreamCtrl+offset+0x20)=-1;
+*(s32*)(gSoundStreamCtrl+offset+0x24)=fn_80261B3C(callId);
+*(gSoundStreamCtrl+offset+10)=fn_80261B14(callId);
+idPtr=gSoundStreamCtrl+offset+11;
 *idPtr=id;
-if(*(u32*)(lbl_8035A6D0+0xb4c)!=0 && (*(u32(**)(s32,void*))(lbl_8035A6D0+0xb4c))(0,lbl_8035A6D0+offset+0x18)==0) return (id&~0xffff00)|((*serialPtr<<8)&0xffff00);
+if(*(u32*)(gSoundStreamCtrl+0xb4c)!=0 && (*(u32(**)(s32,void*))(gSoundStreamCtrl+0xb4c))(0,gSoundStreamCtrl+offset+0x18)==0) return (id&~0xffff00)|((*serialPtr<<8)&0xffff00);
 fn_80261AE0(callId,0,0);
-*(lbl_8035A6D0+offset+8)=0;
+*(gSoundStreamCtrl+offset+8)=0;
 map[*idPtr]=255;
 }
 else fn_80261AE0(callId,0,0);
@@ -9605,7 +9605,7 @@ return -1;
 }
 
 void Sound_SeekStreamPos(void *arg0,u32 arg1) {
-extern u8 lbl_8035A6D0[];
+extern u8 gSoundStreamCtrl[];
 u8 *self=arg0; u32 pos=*(u32 *)(self+4); u32 result; u8 *state;
 if(pos!=arg1) {
 if(pos<arg1) {
@@ -9615,23 +9615,23 @@ case 5:
 *(u32 *)(self+0x20)=arg1-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(lbl_8035A6D0+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(lbl_8035A6D0+4);
+result=(*(u32 (**)(s32,void *))(gSoundStreamCtrl+0xB4C))(1,self+0x10);
+if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(gSoundStreamCtrl+4);
 break;
 case 6:
 *(u32 *)(self+0x1C)=pos * 2;
 *(u32 *)(self+0x20)=arg1-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=0;
-result=(*(u32 (**)(s32,void *))(lbl_8035A6D0+0xB4C))(1,self+0x10);
-if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(lbl_8035A6D0+4);
+result=(*(u32 (**)(s32,void *))(gSoundStreamCtrl+0xB4C))(1,self+0x10);
+if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(gSoundStreamCtrl+4);
 break;
 }
 }else if(arg1==0) {
 switch(self[2]) {
 case 5:
 *(u32 *)(self+0x1C)=(pos / 14) * 8;
-state=lbl_8035A6D0;
+state=gSoundStreamCtrl;
 *(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=0;
@@ -9640,7 +9640,7 @@ if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
 break;
 case 6:
 *(u32 *)(self+0x1C)=pos * 2;
-state=lbl_8035A6D0;
+state=gSoundStreamCtrl;
 *(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=0;
@@ -9652,7 +9652,7 @@ break;
 switch(self[2]) {
 case 5:
 *(u32 *)(self+0x1C)=(pos / 14) * 8;
-state=lbl_8035A6D0;
+state=gSoundStreamCtrl;
 *(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=arg1;
@@ -9661,7 +9661,7 @@ if(result) *(u32 *)(self+4)=(*(u32 *)(self+4)+result)%*(u32 *)(state+4);
 break;
 case 6:
 *(u32 *)(self+0x1C)=pos * 2;
-state=lbl_8035A6D0;
+state=gSoundStreamCtrl;
 *(u32 *)(self+0x20)=*(u32 *)(state+4)-*(u32 *)(self+4);
 *(u32 *)(self+0x24)=0;
 *(u32 *)(self+0x28)=arg1;
@@ -9684,7 +9684,7 @@ void fn_80258888(void) {
     void fn_802618E4(u8);
     void fn_80255054(void *);
     void fn_80256FF0(u8);
-    extern u8 lbl_8035A6D0[];
+    extern u8 gSoundStreamCtrl[];
     extern s32 lbl_803689A8;
 
     u8 *ctrl;
@@ -9696,7 +9696,7 @@ void fn_80258888(void) {
     s32 thresh;
     u8 state;
 
-    ctrl = lbl_8035A6D0;
+    ctrl = gSoundStreamCtrl;
     if (*(u32 *)(ctrl + 0xB4C) == 0) {
         return;
     }
@@ -9705,7 +9705,7 @@ void fn_80258888(void) {
     walk = ctrl;
     do {
         if (walk[0xB08] != 0xFF && fn_80261B00(i) != 0) {
-            e = lbl_8035A6D0 + walk[0xB08] * 0x2C + 8;
+            e = gSoundStreamCtrl + walk[0xB08] * 0x2C + 8;
             pos = fn_80262154(i, e - 8);
             if (e[2] == 5) {
                 adj = pos / 7;
@@ -9744,11 +9744,11 @@ void fn_80258888(void) {
                             }
                         }
                         e[0] = 0;
-                        lbl_8035A6D0[0xB08 + e[3]] = 0xFF;
+                        gSoundStreamCtrl[0xB08 + e[3]] = 0xFF;
                     }
                 } else {
                     e[0] = 0;
-                    lbl_8035A6D0[0xB08 + e[3]] = 0xFF;
+                    gSoundStreamCtrl[0xB08 + e[3]] = 0xFF;
                 }
                 break;
             }

@@ -233,7 +233,7 @@ typedef struct {
     u32 field_0x104;
     u32 field_0x108;
 } SomeStruct;
-extern u16 lbl_8035A6D0[];
+extern u16 gSoundStreamCtrl[];
 #include "global.h"
 #include "structs.h"
 
