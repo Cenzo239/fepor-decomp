@@ -54,7 +54,7 @@ extern f32 lbl_8036AC74;
 extern f32 lbl_8036AC78;
 extern f32 lbl_8036AB94;
 extern u16 gUiListPanelProc[];
-extern u16 lbl_80295580[10];
+extern u16 E_FloatAnim_script[10];
 extern f32 lbl_8036ABB0;
 extern f32 lbl_8036ABBC;
 extern f32 lbl_8036ABA0;
@@ -13746,7 +13746,7 @@ s32 fn_8017DF4C(void) {
 }
 
 s32 fn_8017E08C(void) {
-    return Process_Find(&lbl_80295580) != 0;
+    return Process_Find(&E_FloatAnim_script) != 0;
 }
 
 #pragma opt_strength_reduction off
@@ -13759,8 +13759,8 @@ void FloatAnim_Start(void *arg0, s32 arg1, s32 arg2) {
     s32 temp_r0_2;
     void *temp_r3;
     if (arg0 != NULL) {
-        fn_8000A388(lbl_80295580, fn_8017E1B8, arg0);
-        temp_r3 = Process_Create(lbl_80295580, arg2);
+        fn_8000A388(E_FloatAnim_script, fn_8017E1B8, arg0);
+        temp_r3 = Process_Create(E_FloatAnim_script, arg2);
         M2C_FIELD(temp_r3, void **, 0x30) = arg0;
         M2C_FIELD(temp_r3, f32 *, 0x40) = M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
         M2C_FIELD(temp_r3, f32 *, 0x44) = (f32) arg1 + M2C_FIELD(M2C_FIELD(temp_r3, void **, 0x30), f32 *, 4);
