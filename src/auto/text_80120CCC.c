@@ -160,6 +160,8 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
     void *obj;
+    f32 scale;
+    s32 n;
 
     obj = Process_Find(lbl_80290200);
     if (obj) {
@@ -179,8 +181,10 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
+    scale = lbl_8036A268;
+    n = -1;
     *(s16 *)((u8 *)obj + 0x4A) = arg2;
-    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, lbl_8036A268);
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, n, scale);
 }
 #pragma global_optimizer reset
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
@@ -1947,7 +1951,7 @@ void fn_8012497C(void *arg0) {
     void fn_80067708(s32, s32, void (*)(void *), void *);
     u8 fn_800AA188(void);
     void fn_80124E58(void *, f32 *, f32 *);
-    void fn_80125388(void *);
+    void Fx_DrawParticles(void *);
     f32 fn_8020322C(void *);
     extern f32 lbl_8036A308;
     extern f32 lbl_8036A30C;
@@ -2127,7 +2131,7 @@ void fn_8012497C(void *arg0) {
         }
     }
 
-    fn_80067708(2, 3, fn_80125388, self);
+    fn_80067708(2, 3, Fx_DrawParticles, self);
 }
 #pragma peephole reset
 void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
@@ -2311,7 +2315,7 @@ void fn_80125130(void *arg0) {
     M2C_FIELD(self, u8 *, 0x4D) = 0x64;
 }
 
-void fn_80125388(void *arg0) {
+void Fx_DrawParticles(void *arg0) {
     typedef struct Node {
         struct Node *next;   // 0x00
         u8 pad0[0x08];
