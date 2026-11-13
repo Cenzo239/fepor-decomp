@@ -2289,7 +2289,7 @@ s32 fn_80078158(void) {
     return 0;
 }
 
-s32 fn_80078334(void) {
+s32 Ui_ShowMapObjAttackRange(void) {
     void *fn_80019E24(u8);
     s32 Item_GetMaxRange(void);
     void fn_8001EF80(void *, u8, u8, u8);
