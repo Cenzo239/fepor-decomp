@@ -267,7 +267,7 @@ s32 fn_8014ADF0(void) {
     return 0;
 }
 
-void fn_8014AE50(void *arg0, void *arg1, void *arg2) {
+void SoundMenu_DrawDistanceItem(void *arg0, void *arg1, void *arg2) {
 #pragma cplusplus on
     struct Model {
         u8 pad[4];
