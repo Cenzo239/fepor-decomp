@@ -58,7 +58,7 @@ void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void Ui_DrawIcon(void *, s32, s32, s32);
     void sprintf(void *, void *, s32, ...);
     void strcpy(void *, void *);
-    extern u16 lbl_8026CD08[];
+    extern u16 gUnitRefStrs[];
     extern u8 gUiIconDrawer[];
     extern f32 lbl_8036973C;
     char sp8[0x10];
@@ -81,9 +81,9 @@ void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         temp_r3 = Item_GetFlagsPtr(arg0);
         flags = *(u64 *)temp_r3;
         if (flags & (0x200ULL << 32)) {
-            strcpy(sp8, (u8 *)lbl_8026CD08 + 0x26);
+            strcpy(sp8, (u8 *)gUnitRefStrs + 0x26);
         } else {
-            sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, (s32)((UnitRef_GetValue(arg0) >> 1) & 0x7FFF));
+            sprintf(sp8, (u8 *)gUnitRefStrs + 0x2F, (s32)((UnitRef_GetValue(arg0) >> 1) & 0x7FFF));
         }
         width = Text_MeasureWidth(sp8, -1, lbl_8036973C);
         Text_Draw((s16)(arg2 + (0x10E - width)), (s16)arg3, arg1 != 0, sp8);
@@ -106,11 +106,11 @@ void UnitRef_DrawSell(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        Text_Draw((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, UnitRef_GetName(arg0));
+        Text_Draw((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)gUnitRefStrs + 0x21, UnitRef_GetName(arg0));
         flags = *(u64 *)Item_GetFlagsPtr(arg0);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
-            Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)lbl_8026CD08 + 0x34, *(u8 *)((u8 *)arg0 + 4));
-            Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)lbl_8026CD08 + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
+            Text_Draw((s16)(arg2 + 0xA2), (s16)arg3, t.b, (u8 *)gUnitRefStrs + 0x34, *(u8 *)((u8 *)arg0 + 4));
+            Text_Draw((s16)(arg2 + 0xBC), (s16)arg3, var_r3, (u8 *)gUnitRefStrs + 0x3A, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x18) : 0));
         }
         Ui_DrawIcon(gUiIconDrawer, arg2, arg3, (u8)(*(void **)arg0 != NULL ? *((u8 *)*(void **)arg0 + 0x15) : 0) + 0x61);
     }
