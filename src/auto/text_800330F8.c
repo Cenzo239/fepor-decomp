@@ -12968,7 +12968,7 @@ void fn_80054314(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void fn_80054394(void *arg0) {
+void MapObj_InitGraphics(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
  void fn_80231D94(void *, void *, ...);
