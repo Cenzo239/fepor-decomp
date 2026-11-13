@@ -235,7 +235,8 @@ void fn_80072B04(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x34) = Msg_Expand(gSaveUiStrs + 0x127);
 }
 
-void Card_ShowResultMsg(void *arg0)
+/* Release save data, then show a card error msgbox or mark the msgbox ready. */
+void Card_ShowResultMsg(void *proc)
 {
     void SaveData_Release(void *);
     s32 Card_GetResult(void);
@@ -245,23 +246,23 @@ void Card_ShowResultMsg(void *arg0)
     extern u8 gSaveDataBase;
     extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    s32 r;
+    s32 result;
 
     SaveData_Release(&gSaveDataBase);
-    r = Card_GetResult();
-    switch (r) {
-    case -3:
+    result = Card_GetResult();
+    switch (result) {
+    case CARD_RESULT_NOCARD:
         MsgBox_Init(gMsgBox, gSaveUiStrs + 0x12D, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
-        Process_Goto(arg0, 0xA);
+        *(s32 *)((u8 *)proc + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
+        Process_Goto(proc, 0xA);
         return;
     default:
         MsgBox_Init(gMsgBox, gSaveUiStrs + 0x141, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
-        Process_Goto(arg0, 0xA);
+        *(s32 *)((u8 *)proc + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
+        Process_Goto(proc, 0xA);
         return;
-    case 0:
-    case -66:
+    case CARD_RESULT_READY:
+    case CARD_RESULT_DONE:
         gMsgBox[1] = 0xC8;
         return;
     }
