@@ -58,6 +58,7 @@ s32 fn_80103818(void) {
     return 0;
 }
 
+/* Init unit-action menu configs if needed, then open the menu on the map UI process. */
 s32 Ui_OpenUnitActionMenu(void) {
     s32 fn_8000BCA4(void *);
     void Process_Goto(s32, s32);
@@ -78,25 +79,25 @@ s32 Ui_OpenUnitActionMenu(void) {
     extern void *lbl_80367978;
     extern u8 lbl_8036797C;
     extern void *gUiUnitActionMenu[2];
-    s32 temp_r31;
-    u8 *p;
+    s32 proc;
+    u8 *entry;
 
-    temp_r31 = fn_8000BCA4((u8 *)lbl_802734D0 + 0xC4);
+    proc = fn_8000BCA4((u8 *)lbl_802734D0 + 0xC4);
     fn_800A8400();
-    Process_Goto(temp_r31, 0);
+    Process_Goto(proc, 0);
     if ((s8)lbl_80367964 == 0) {
-        p = lbl_8028EE28;
-        lbl_80367968 = p;
+        entry = lbl_8028EE28;
+        lbl_80367968 = entry;
         lbl_80367964 = 1;
     }
     if ((s8)lbl_8036796C == 0) {
-        p = lbl_8028EDD4;
-        lbl_80367970 = p;
+        entry = lbl_8028EDD4;
+        lbl_80367970 = entry;
         lbl_8036796C = 1;
     }
     if ((s8)lbl_80367974 == 0) {
-        p = lbl_8028ED80;
-        lbl_80367978 = p;
+        entry = lbl_8028ED80;
+        lbl_80367978 = entry;
         lbl_80367974 = 1;
     }
     if ((s8)lbl_8036797C == 0) {
@@ -105,7 +106,7 @@ s32 Ui_OpenUnitActionMenu(void) {
         gUiUnitActionMenu[1] = lbl_8028ED04;
         lbl_8036797C = 1;
     }
-    Ui_CreateMenu(gUiUnitActionMenu, temp_r31, 0);
+    Ui_CreateMenu(gUiUnitActionMenu, proc, 0);
     return 6;
 }
 
