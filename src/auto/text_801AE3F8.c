@@ -2126,7 +2126,7 @@ void fn_801B2644(void *arg0) {
     }
 }
 
-void fn_801B26A0(void *arg0) {
+void Ui_CreateSideListPanel(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801343F8(void *, s32, s32, s32, s32, s32, s32);
     void fn_80134CE8(void *);
