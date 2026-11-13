@@ -247,7 +247,8 @@ void fn_8012C7C8(s32 arg0, s32 arg1) {
     *(u8 *)((u8 *)temp_r3 + 0x6C) = 1;
 }
 
-void Ui_RefreshSelectPrompt(void *arg0) {
+/* Refresh the select-menu help banner text from mode and whether a row is selected. */
+void Ui_RefreshSelectPrompt(void *proc) {
     M2C_UNK Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
     M2C_UNK TextBanner_SetString(s32, s32);
@@ -255,33 +256,33 @@ void Ui_RefreshSelectPrompt(void *arg0) {
     extern u8 gUiSelectMenuStrings[];
 
     if ((u8)gUiContext[8] == 0x81) {
-        Process_Goto(arg0, 0);
+        Process_Goto(proc, 0);
     }
 
-    if ((s8)M2C_FIELD(arg0, u8 *, 0x62) < 0) {
-        switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
+    if ((s8)M2C_FIELD(proc, u8 *, 0x62) < 0) {
+        switch (M2C_FIELD(proc, u8 *, 0x6C)) {
         case 1:
         case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x5A)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x5A)));
             return;
         case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x6B)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x6B)));
             return;
         default:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x7B)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x7B)));
             return;
         }
     } else {
-        switch (M2C_FIELD(arg0, u8 *, 0x6C)) {
+        switch (M2C_FIELD(proc, u8 *, 0x6C)) {
         case 1:
         case 2:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x8A)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x8A)));
             return;
         case 4:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x9B)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0x9B)));
             return;
         default:
-            TextBanner_SetString(M2C_FIELD(arg0, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0xAB)));
+            TextBanner_SetString(M2C_FIELD(proc, s32 *, 0x50), Msg_Expand((void *)(gUiSelectMenuStrings + 0xAB)));
             return;
         }
     }
