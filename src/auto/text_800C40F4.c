@@ -9164,61 +9164,91 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
     }
 }
 
-void ListWin_HandleInput(void *arg0) {
-void fn_800E43EC(void *); void fn_800E7C88(void *); extern u8 *gPadInput;
-void *owner; s32 keys, size;
-fn_800E43EC(arg0); owner=M2C_FIELD(arg0,void **,0);
-if(M2C_FIELD(arg0,u8 *,0x73)) {
-keys=M2C_FIELD(gPadInput,s32 *,12);
-if(keys&8){
-M2C_FIELD(arg0,s32 *,0x110)-=1;
-if(M2C_FIELD(arg0,s32 *,0x110)<0)M2C_FIELD(arg0,s32 *,0x110)=0;
-if(M2C_FIELD(arg0,s32 *,0x110)<M2C_FIELD(arg0,s32 *,0x108)){
-M2C_FIELD(arg0,s32 *,0x108)-=1;
-if(M2C_FIELD(arg0,s32 *,0x108)<0)M2C_FIELD(arg0,s32 *,0x108)=0; }
-M2C_FIELD(arg0,s32 *,0x104)=(M2C_FIELD(arg0,s32 *,0x64)-32)*M2C_FIELD(arg0,s32 *,0x108)/M2C_FIELD(arg0,s32 *,0xB0);
-if(M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)) M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)(arg0,0,0);
-fn_800E7C88(owner);
-}
-else if(keys&4){
-if(M2C_FIELD(arg0,u32 *,0xB0)) {
-M2C_FIELD(arg0,s32 *,0x110)+=1;
-if(M2C_FIELD(arg0,u32 *,0x110)>=M2C_FIELD(arg0,u32 *,0xB0)) M2C_FIELD(arg0,s32 *,0x110)=M2C_FIELD(arg0,s32 *,0xB0)-1;
-if(M2C_FIELD(arg0,s32 *,0x110)>=M2C_FIELD(arg0,s32 *,0x108)+M2C_FIELD(arg0,s32 *,0x10C))M2C_FIELD(arg0,s32 *,0x108)+=1;
-M2C_FIELD(arg0,s32 *,0x104)=(M2C_FIELD(arg0,s32 *,0x64)-32)*M2C_FIELD(arg0,s32 *,0x108)/M2C_FIELD(arg0,s32 *,0xB0);
-}
-if(M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)) M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)(arg0,0,0);
-fn_800E7C88(owner);
-}
-else if(keys&1){
-M2C_FIELD(arg0,s32 *,0x110)-=10;
-if(M2C_FIELD(arg0,s32 *,0x110)<0)M2C_FIELD(arg0,s32 *,0x110)=0;
-if(M2C_FIELD(arg0,s32 *,0x110)<M2C_FIELD(arg0,s32 *,0x108)){
-M2C_FIELD(arg0,s32 *,0x108)-=10;
-if(M2C_FIELD(arg0,s32 *,0x108)<0)M2C_FIELD(arg0,s32 *,0x108)=0; }
-M2C_FIELD(arg0,s32 *,0x104)=(M2C_FIELD(arg0,s32 *,0x64)-32)*M2C_FIELD(arg0,s32 *,0x108)/M2C_FIELD(arg0,s32 *,0xB0);
-if(M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)) M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)(arg0,0,0);
-fn_800E7C88(owner);
-}
-else if(keys&2){
-if(M2C_FIELD(arg0,u32 *,0xB0)) {
-M2C_FIELD(arg0,s32 *,0x110)+=10;
-if(M2C_FIELD(arg0,u32 *,0x110)>=M2C_FIELD(arg0,u32 *,0xB0)) M2C_FIELD(arg0,s32 *,0x110)=M2C_FIELD(arg0,s32 *,0xB0)-1;
-if(M2C_FIELD(arg0,s32 *,0x110)>=M2C_FIELD(arg0,s32 *,0x108)+M2C_FIELD(arg0,s32 *,0x10C))M2C_FIELD(arg0,s32 *,0x108)+=10;
-M2C_FIELD(arg0,s32 *,0x104)=(M2C_FIELD(arg0,s32 *,0x64)-32)*M2C_FIELD(arg0,s32 *,0x108)/M2C_FIELD(arg0,s32 *,0xB0);
-}
-if(M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)) M2C_FIELD(arg0,void (**)(void *,s32,s32),0x118)(arg0,0,0);
-fn_800E7C88(owner);
-}
-}
-M2C_FIELD(arg0,s32 *,0x10C)=M2C_FIELD(arg0,s32 *,0x64)/16;
-if(M2C_FIELD(arg0,s32 *,0x10C)>M2C_FIELD(arg0,s32 *,0xB0))M2C_FIELD(arg0,s32 *,0x10C)=M2C_FIELD(arg0,s32 *,0xB0);
-M2C_FIELD(arg0,s32 *,0xF4)=M2C_FIELD(arg0,s32 *,0x60)-14;
-M2C_FIELD(arg0,s32 *,0xF8)=M2C_FIELD(arg0,s32 *,0x104)+16;
-size=M2C_FIELD(arg0,s32 *,0x64)-32;
-if(M2C_FIELD(arg0,s32 *,0x10C)<M2C_FIELD(arg0,s32 *,0xB0))size=size*M2C_FIELD(arg0,s32 *,0x10C)/M2C_FIELD(arg0,s32 *,0xB0);
-M2C_FIELD(arg0,s32 *,0xFC)=M2C_FIELD(arg0,s32 *,0xF4)+16;
-M2C_FIELD(arg0,s32 *,0x100)=M2C_FIELD(arg0,s32 *,0xF8)+size;
+void ListWin_HandleInput(void *list) {
+    void fn_800E43EC(void *);
+    void fn_800E7C88(void *);
+    extern u8 *gPadInput;
+    void *owner;
+    s32 keys;
+    s32 thumbH;
+
+    /* Move list cursor/scroll with D-pad and recompute the scrollbar thumb. */
+    fn_800E43EC(list);
+    owner = M2C_FIELD(list, void **, 0);
+    if (M2C_FIELD(list, u8 *, 0x73)) {
+        keys = M2C_FIELD(gPadInput, s32 *, 12);
+        if (keys & 8) {
+            M2C_FIELD(list, s32 *, 0x110) -= 1;
+            if (M2C_FIELD(list, s32 *, 0x110) < 0)
+                M2C_FIELD(list, s32 *, 0x110) = 0;
+            if (M2C_FIELD(list, s32 *, 0x110) < M2C_FIELD(list, s32 *, 0x108)) {
+                M2C_FIELD(list, s32 *, 0x108) -= 1;
+                if (M2C_FIELD(list, s32 *, 0x108) < 0)
+                    M2C_FIELD(list, s32 *, 0x108) = 0;
+            }
+            M2C_FIELD(list, s32 *, 0x104) =
+                (M2C_FIELD(list, s32 *, 0x64) - 32) * M2C_FIELD(list, s32 *, 0x108)
+                / M2C_FIELD(list, s32 *, 0xB0);
+            if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
+                M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
+            fn_800E7C88(owner);
+        } else if (keys & 4) {
+            if (M2C_FIELD(list, u32 *, 0xB0)) {
+                M2C_FIELD(list, s32 *, 0x110) += 1;
+                if (M2C_FIELD(list, u32 *, 0x110) >= M2C_FIELD(list, u32 *, 0xB0))
+                    M2C_FIELD(list, s32 *, 0x110) = M2C_FIELD(list, s32 *, 0xB0) - 1;
+                if (M2C_FIELD(list, s32 *, 0x110)
+                    >= M2C_FIELD(list, s32 *, 0x108) + M2C_FIELD(list, s32 *, 0x10C))
+                    M2C_FIELD(list, s32 *, 0x108) += 1;
+                M2C_FIELD(list, s32 *, 0x104) =
+                    (M2C_FIELD(list, s32 *, 0x64) - 32) * M2C_FIELD(list, s32 *, 0x108)
+                    / M2C_FIELD(list, s32 *, 0xB0);
+            }
+            if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
+                M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
+            fn_800E7C88(owner);
+        } else if (keys & 1) {
+            M2C_FIELD(list, s32 *, 0x110) -= 10;
+            if (M2C_FIELD(list, s32 *, 0x110) < 0)
+                M2C_FIELD(list, s32 *, 0x110) = 0;
+            if (M2C_FIELD(list, s32 *, 0x110) < M2C_FIELD(list, s32 *, 0x108)) {
+                M2C_FIELD(list, s32 *, 0x108) -= 10;
+                if (M2C_FIELD(list, s32 *, 0x108) < 0)
+                    M2C_FIELD(list, s32 *, 0x108) = 0;
+            }
+            M2C_FIELD(list, s32 *, 0x104) =
+                (M2C_FIELD(list, s32 *, 0x64) - 32) * M2C_FIELD(list, s32 *, 0x108)
+                / M2C_FIELD(list, s32 *, 0xB0);
+            if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
+                M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
+            fn_800E7C88(owner);
+        } else if (keys & 2) {
+            if (M2C_FIELD(list, u32 *, 0xB0)) {
+                M2C_FIELD(list, s32 *, 0x110) += 10;
+                if (M2C_FIELD(list, u32 *, 0x110) >= M2C_FIELD(list, u32 *, 0xB0))
+                    M2C_FIELD(list, s32 *, 0x110) = M2C_FIELD(list, s32 *, 0xB0) - 1;
+                if (M2C_FIELD(list, s32 *, 0x110)
+                    >= M2C_FIELD(list, s32 *, 0x108) + M2C_FIELD(list, s32 *, 0x10C))
+                    M2C_FIELD(list, s32 *, 0x108) += 10;
+                M2C_FIELD(list, s32 *, 0x104) =
+                    (M2C_FIELD(list, s32 *, 0x64) - 32) * M2C_FIELD(list, s32 *, 0x108)
+                    / M2C_FIELD(list, s32 *, 0xB0);
+            }
+            if (M2C_FIELD(list, void (**)(void *, s32, s32), 0x118))
+                M2C_FIELD(list, void (**)(void *, s32, s32), 0x118)(list, 0, 0);
+            fn_800E7C88(owner);
+        }
+    }
+    M2C_FIELD(list, s32 *, 0x10C) = M2C_FIELD(list, s32 *, 0x64) / 16;
+    if (M2C_FIELD(list, s32 *, 0x10C) > M2C_FIELD(list, s32 *, 0xB0))
+        M2C_FIELD(list, s32 *, 0x10C) = M2C_FIELD(list, s32 *, 0xB0);
+    M2C_FIELD(list, s32 *, 0xF4) = M2C_FIELD(list, s32 *, 0x60) - 14;
+    M2C_FIELD(list, s32 *, 0xF8) = M2C_FIELD(list, s32 *, 0x104) + 16;
+    thumbH = M2C_FIELD(list, s32 *, 0x64) - 32;
+    if (M2C_FIELD(list, s32 *, 0x10C) < M2C_FIELD(list, s32 *, 0xB0))
+        thumbH = thumbH * M2C_FIELD(list, s32 *, 0x10C) / M2C_FIELD(list, s32 *, 0xB0);
+    M2C_FIELD(list, s32 *, 0xFC) = M2C_FIELD(list, s32 *, 0xF4) + 16;
+    M2C_FIELD(list, s32 *, 0x100) = M2C_FIELD(list, s32 *, 0xF8) + thumbH;
 }
 
 s32 *fn_800DD87C(void *arg0, s32 *pos) {
