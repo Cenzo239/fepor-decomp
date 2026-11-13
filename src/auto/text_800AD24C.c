@@ -8628,7 +8628,7 @@ void fn_800C0CA4(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x50) = 0;
 }
 
-void fn_800C0CDC(void *arg0) {
+void Capture_DrawRotated(void *arg0) {
     void fn_8022097C(void);
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
