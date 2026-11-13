@@ -317,7 +317,7 @@ void fn_80034130(void *arg0, void *arg1) {
     s32 Unit_GetHp(void *);
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
-    s32 fn_8003B58C(void *);
+    s32 Unit_GetSkl(void *);
     s32 fn_8003B548(void *);
     s32 fn_8003B518(void *);
     s32 fn_8003B4D4(void *);
@@ -542,7 +542,7 @@ void fn_80034130(void *arg0, void *arg1) {
     if (excess >= 0) {
         *(u8 *)((u8 *)arg0 + 0x2D9) = g - excess;
     }
-    stat = fn_8003B58C(arg0);
+    stat = Unit_GetSkl(arg0);
     cap = *(u8 **)((u8 *)arg0 + 0x18C);
     g = *(u8 *)((u8 *)arg0 + 0x2DA);
     excess = (s8)((g + stat) - cap[0x4F]);
@@ -620,7 +620,7 @@ void fn_80034864(s32 self, void *arg1) {
     s32 Unit_GetHp(void *);
     s32 Unit_GetStr(void *);
     s32 Unit_GetMag(void *);
-    s32 fn_8003B58C(void *);
+    s32 Unit_GetSkl(void *);
     s32 fn_8003B548(void *);
     s32 fn_8003B518(void *);
     s32 fn_8003B4D4(void *);
@@ -652,8 +652,8 @@ void fn_80034864(s32 self, void *arg1) {
     d1 = (s8)(t - Unit_GetStr((void *)self));
     t = Unit_GetMag((void *)(self + 0x2E0));
     d2 = (s8)(t - Unit_GetMag((void *)self));
-    t = fn_8003B58C((void *)(self + 0x2E0));
-    d3 = (s8)(t - fn_8003B58C((void *)self));
+    t = Unit_GetSkl((void *)(self + 0x2E0));
+    d3 = (s8)(t - Unit_GetSkl((void *)self));
     t = fn_8003B548((void *)(self + 0x2E0));
     d4 = (s8)(t - fn_8003B548((void *)self));
     t = fn_8003B518((void *)(self + 0x2E0));
@@ -713,7 +713,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     s32 fn_8003B4D4(void *);
     s32 fn_8003B518(void *);
     s32 fn_8003B548(void *);
-    s32 fn_8003B58C(void *);
+    s32 Unit_GetSkl(void *);
     s32 Unit_GetMag(void *);
     s32 Unit_GetStr(void *);
     s32 Unit_GetHp(void *);
@@ -804,7 +804,7 @@ void Unit_CalcLevelUpGrowths(void *unit, void *gains) {
     if (excess >= 0) {
         *(u8 *)((u8 *)self + 0x2D9) = g - excess;
     }
-    stat = fn_8003B58C(self);
+    stat = Unit_GetSkl(self);
     cls = *(void **)((u8 *)self + 0x18C);
     g = *(u8 *)((u8 *)self + 0x2DA);
     stat = g + stat;
@@ -3765,7 +3765,7 @@ s8 fn_8003B548(void *arg0) {
 }
 
 #pragma opt_peephole off
-s8 fn_8003B58C(void *arg0) {
+s8 Unit_GetSkl(void *arg0) {
     void *temp_r4;
     s8 temp_r6_2;
     u8 temp_r5;
