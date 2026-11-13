@@ -692,6 +692,7 @@ void fn_80222FC4(void) {
 
 void __GXSetTmemConfig(u32 nTmemConfig)
 {
+    /* Program GX TMEM bank layout for the given texture-memory config. */
     switch (nTmemConfig) {
     case 2:
         *(u8 *)0xCC008000 = 0x61;
