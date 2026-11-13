@@ -7869,24 +7869,24 @@ void fn_801C77A4(void) {
 }
 
 void GActor_FreeTexWork(void *arg0) {
-    void fn_8000BF00(void *);
+    void Process_UnlinkByKey(void *);
     void fn_80057EDC(void);
     void fn_8005376C(void);
     void fn_800C4588(void *);
     void fn_8005FA14(void *, s32);
-    void fn_800C428C(void *);
-    extern u8 lbl_802981D0[];
+    void Heap_Free(void *);
+    extern u8 LightFade_script[];
     s32 i;
     void **ptr;
     void **walk;
     s32 zero;
     s32 base;
 
-    base = (s32)lbl_802981D0;
-    fn_8000BF00((void *)(base + 0x54));
-    fn_8000BF00((void *)(base + 0x7c));
+    base = (s32)LightFade_script;
+    Process_UnlinkByKey((void *)(base + 0x54));
+    Process_UnlinkByKey((void *)(base + 0x7c));
     fn_80057EDC();
-    fn_8000BF00((void *)(base + 0x24));
+    Process_UnlinkByKey((void *)(base + 0x24));
     fn_8005376C();
     ptr = *(void ***)((u8 *)arg0 + 0x30);
     if (ptr != NULL) {
@@ -7894,7 +7894,7 @@ void GActor_FreeTexWork(void *arg0) {
         zero = 0;
         walk = ptr;
         *ptr = (void *)zero;
-        i = zero;
+        i = zero | 0;
         *ptr = (void *)zero;
         do {
             if (walk[1] != NULL) {
@@ -7904,7 +7904,7 @@ void GActor_FreeTexWork(void *arg0) {
             i += 1;
             walk = (void **)((u8 *)walk + 0x14);
         } while (i < 0x20);
-        fn_800C428C(ptr);
+        Heap_Free(ptr);
     }
     *(void **)((u8 *)arg0 + 0x30) = 0;
 }
@@ -16880,7 +16880,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
@@ -16993,7 +16993,7 @@ loop:
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
-    fn_800C2980(lbl_803206EC, &w);
+    fn_800C2980(gIconSlots, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
@@ -17310,7 +17310,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
@@ -17633,7 +17633,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
-    fn_800C2980(lbl_803206EC, &w);
+    fn_800C2980(gIconSlots, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
@@ -17669,7 +17669,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gConvoy[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
@@ -17782,7 +17782,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
-    fn_800C2980(lbl_803206EC, &w);
+    fn_800C2980(gIconSlots, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;

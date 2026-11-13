@@ -1337,7 +1337,7 @@ void fn_8001B9DC(void *arg0) {
 
 s32 *fn_8001BC18(void *arg0) {
     s32 *fn_800C29D0(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern s32 lbl_80368D30;
     s32 sp8;
     s32 mask;
@@ -1347,7 +1347,7 @@ s32 *fn_8001BC18(void *arg0) {
         sp8 = lbl_80368D30;
         return &sp8;
     }
-    return fn_800C29D0(lbl_803206EC, mask);
+    return fn_800C29D0(gIconSlots, mask);
 }
 
 extern u8 lbl_80268330;
@@ -1355,84 +1355,84 @@ extern u8 lbl_80268330;
 void fn_8001BC5C(void *arg0, u8 a, u8 b, u8 c, u8 d) {
     s32 fn_800C29E8(u8 *, s32, void *);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u32 lbl_8036C408;
     u32 sp8;
 
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
     sp8 = lbl_8036C408;
     ((u8 *)&sp8)[0] = a;
     ((u8 *)&sp8)[1] = b;
     ((u8 *)&sp8)[2] = c;
     ((u8 *)&sp8)[3] = d;
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C29E8(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, &sp8) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C29E8(gIconSlots, ((u8 *)arg0)[5] & 0x3F, &sp8) & 0x3F));
 }
 #pragma use_lmw_stmw reset
 void fn_8001BCF4(void *arg0) {
     s32 fn_800C2EF8(u8 *, s32, u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u8 gDataStr[];
     u8 mask = ((u8 *)arg0)[5] & 0x3F;
     if (mask) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(lbl_803206EC, mask, gDataStr + 0x3B) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(gIconSlots, mask, gDataStr + 0x3B) & 0x3F));
     }
 }
 
 void fn_8001BD4C(void *arg0, s32 arg1) {
     s32 fn_800C2EF8(u8 *, s32, s32);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2EF8(gIconSlots, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
 }
 
 void fn_8001BDC8(void *arg0, s32 arg1) {
     s32 fn_800C2AE0(u8 *, s32, s32);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2AE0(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2AE0(gIconSlots, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
 }
 
 void fn_8001BE44(void *arg0, s32 arg1) {
     s32 fn_800C2BBC(u8 *, s32, s32);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2BBC(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2BBC(gIconSlots, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
 }
 
 void fn_8001BEC0(void *arg0, s32 arg1) {
     s32 fn_800C2C98(u8 *, s32, s32);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2C98(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2C98(gIconSlots, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
 }
 
 void fn_8001BF3C(void *arg0, s32 arg1) {
     s32 fn_800C2D74(u8 *, s32, s32);
     s32 fn_800C3260(u8 *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     if (!(((u8 *)arg0)[5] & 0x3F)) {
-        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(lbl_803206EC) & 0x3F));
+        ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C3260(gIconSlots) & 0x3F));
     }
-    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2D74(lbl_803206EC, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
+    ((u8 *)arg0)[5] = (u8)((((u8 *)arg0)[5] & ~0x3F) | (fn_800C2D74(gIconSlots, ((u8 *)arg0)[5] & 0x3F, arg1) & 0x3F));
 }
 
 s8 fn_8001BFB8(u8 *arg0) {
     s32 fn_800C2ACC(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s32 result;
     s32 mask;
 
@@ -1440,14 +1440,14 @@ s8 fn_8001BFB8(u8 *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = (s8)fn_800C2ACC(lbl_803206EC, mask);
+        result = (s8)fn_800C2ACC(gIconSlots, mask);
     }
     return (s8)result;
 }
 
 s8 fn_8001BFFC(u8 *arg0) {
     s32 fn_800C2BA8(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s32 result;
     s32 mask;
 
@@ -1455,14 +1455,14 @@ s8 fn_8001BFFC(u8 *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = (s8)fn_800C2BA8(lbl_803206EC, mask);
+        result = (s8)fn_800C2BA8(gIconSlots, mask);
     }
     return (s8)result;
 }
 
 s8 fn_8001C040(u8 *arg0) {
     s32 fn_800C2C84(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s32 result;
     s32 mask;
 
@@ -1470,14 +1470,14 @@ s8 fn_8001C040(u8 *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = (s8)fn_800C2C84(lbl_803206EC, mask);
+        result = (s8)fn_800C2C84(gIconSlots, mask);
     }
     return (s8)result;
 }
 
 s8 fn_8001C084(u8 *arg0) {
     s32 fn_800C2D60(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s32 result;
     s32 mask;
 
@@ -1485,7 +1485,7 @@ s8 fn_8001C084(u8 *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = (s8)fn_800C2D60(lbl_803206EC, mask);
+        result = (s8)fn_800C2D60(gIconSlots, mask);
     }
     return (s8)result;
 }
@@ -1536,7 +1536,7 @@ void Item_Read(void *arg0, void *arg1) {
     void fn_800C3220(void *, s32);
     u16 Stream_ReadU16(void *);
     s32 fn_80019E24(s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1557,7 +1557,7 @@ void Item_Read(void *arg0, void *arg1) {
         bf->flag = 0;
         mask = *((u8 *)arg0 + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(lbl_803206EC, mask);
+            fn_800C3220(gIconSlots, mask);
             bf->rest = 0;
         }
     } else {
@@ -1645,7 +1645,7 @@ void *Item_Copy(void *arg0, void *arg1) {
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1665,13 +1665,13 @@ void *Item_Copy(void *arg0, void *arg1) {
         dst->flag = src->flag;
         mask = src->rest;
         if (mask != 0) {
-            temp = fn_800C30CC(lbl_803206EC, mask);
+            temp = fn_800C30CC(gIconSlots, mask);
             if (dst->rest == 0) {
-                dst->rest = fn_800C3260(lbl_803206EC);
+                dst->rest = fn_800C3260(gIconSlots);
             }
-            dst->rest = fn_800C30DC(lbl_803206EC, dst->rest, temp);
+            dst->rest = fn_800C30DC(gIconSlots, dst->rest, temp);
         } else if (dst->rest != 0) {
-            fn_800C3220(lbl_803206EC, dst->rest);
+            fn_800C3220(gIconSlots, dst->rest);
             dst->rest = 0;
         }
     }
@@ -1681,7 +1681,7 @@ void *Item_Copy(void *arg0, void *arg1) {
 void *Item_Destroy(void *arg0, s16 arg1) {
     void fn_800C3220(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1698,7 +1698,7 @@ void *Item_Destroy(void *arg0, s16 arg1) {
         bf->flag = 0;
         mask = *((u8 *)arg0 + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(lbl_803206EC, mask);
+            fn_800C3220(gIconSlots, mask);
             bf->rest = 0;
         }
         if (arg1 > 0) {
@@ -1712,7 +1712,7 @@ void *Item_Clone(void *arg0, void *arg1) {
     s32 fn_800C30CC(void *, s32);
     s32 fn_800C30DC(void *, s32, s32);
     s32 fn_800C3260(void *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1740,18 +1740,18 @@ void *Item_Clone(void *arg0, void *arg1) {
     dst->pad = pad;
     dst->flag = flag;
     if (mask != 0) {
-        temp = fn_800C30CC(lbl_803206EC, mask);
+        temp = fn_800C30CC(gIconSlots, mask);
         if (dst->rest == 0) {
-            dst->rest = fn_800C3260(lbl_803206EC);
+            dst->rest = fn_800C3260(gIconSlots);
         }
-        dst->rest = fn_800C30DC(lbl_803206EC, dst->rest, temp);
+        dst->rest = fn_800C30DC(gIconSlots, dst->rest, temp);
     }
     return arg0;
 }
 
 void *fn_8001C76C(void *arg0) {
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -1768,7 +1768,7 @@ void *fn_8001C76C(void *arg0) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(lbl_803206EC, mask);
+        fn_800C3220(gIconSlots, mask);
         bf->rest = 0;
     }
     return arg0;
@@ -2132,7 +2132,7 @@ void *UnitRef_GetName(void *arg0) {
     u8 *fn_800C2E3C(u8 *, s32);
     void *Res_GetByName(void *);
     void *Msg_Expand(void *);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     u8 flag;
     void *inner;
     s32 mask;
@@ -2142,7 +2142,7 @@ void *UnitRef_GetName(void *arg0) {
     }
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        flag = (u8)((s8)*fn_800C2E3C(lbl_803206EC, mask) != 0);
+        flag = (u8)((s8)*fn_800C2E3C(gIconSlots, mask) != 0);
     } else {
         flag = 0;
     }
@@ -2153,12 +2153,12 @@ void *UnitRef_GetName(void *arg0) {
         }
         return *(void **)inner;
     }
-    return fn_800C2E3C(lbl_803206EC, *((u8 *)arg0 + 5) & 0x3F);
+    return fn_800C2E3C(gIconSlots, *((u8 *)arg0 + 5) & 0x3F);
 }
 
 u8 fn_8001D37C(void *arg0) {
     s32 fn_800C2ACC(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s8 result;
     s32 mask;
     s32 diff;
@@ -2171,7 +2171,7 @@ u8 fn_8001D37C(void *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = fn_800C2ACC(lbl_803206EC, mask);
+        result = fn_800C2ACC(gIconSlots, mask);
     }
     inner = *(u8 **)arg0;
     diff = inner[0x1B] - result;
@@ -2183,7 +2183,7 @@ u8 fn_8001D37C(void *arg0) {
 
 u8 fn_8001D3FC(void *arg0) {
     s32 fn_800C2BA8(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s8 result;
     s32 mask;
     s32 var;
@@ -2195,7 +2195,7 @@ u8 fn_8001D3FC(void *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = fn_800C2BA8(lbl_803206EC, mask);
+        result = fn_800C2BA8(gIconSlots, mask);
     }
     inner = *(u8 **)arg0;
     var = inner[0x1C] + result * 3;
@@ -2207,7 +2207,7 @@ u8 fn_8001D3FC(void *arg0) {
 
 u8 fn_8001D47C(void *arg0) {
     s32 fn_800C2C84(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s8 result;
     s32 mask;
     s32 var;
@@ -2220,7 +2220,7 @@ u8 fn_8001D47C(void *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = fn_800C2C84(lbl_803206EC, mask);
+        result = fn_800C2C84(gIconSlots, mask);
     }
     inner = *(u8 **)arg0;
     var = inner[0x1A] + result * 5;
@@ -2232,7 +2232,7 @@ u8 fn_8001D47C(void *arg0) {
 
 u8 fn_8001D500(void *arg0) {
     s32 fn_800C2D60(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     s8 result;
     s32 mask;
     s32 var;
@@ -2245,7 +2245,7 @@ u8 fn_8001D500(void *arg0) {
     if (mask == 0) {
         result = 0;
     } else {
-        result = fn_800C2D60(lbl_803206EC, mask);
+        result = fn_800C2D60(gIconSlots, mask);
     }
     inner = *(u8 **)arg0;
     var = inner[0x19] + result;
@@ -2257,7 +2257,7 @@ u8 fn_8001D500(void *arg0) {
 
 void Item_Clear(void *arg0) {
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -2273,14 +2273,14 @@ void Item_Clear(void *arg0) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(lbl_803206EC, mask);
+        fn_800C3220(gIconSlots, mask);
         bf->rest = 0;
     }
 }
 
 s32 Item_SetUses(void *arg0, u8 arg1) {
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -2296,7 +2296,7 @@ s32 Item_SetUses(void *arg0, u8 arg1) {
         bf->pad = 0;
         bf->flag = 0;
         if (bf->rest != 0) {
-            fn_800C3220(lbl_803206EC, bf->rest);
+            fn_800C3220(gIconSlots, bf->rest);
             bf->rest = 0;
         }
         return 1;
@@ -2310,7 +2310,7 @@ s32 Item_DecUses(void *item) {
     extern u8 gItemFlagsDummyReady;
     extern s32 gItemFlagsDummy;
     extern s32 gItemFlagsDummyHi;
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -2345,7 +2345,7 @@ s32 Item_DecUses(void *item) {
         bf->flag = 0;
         mask = *((u8 *)item + 5) & 0x3F;
         if (mask != 0) {
-            fn_800C3220(lbl_803206EC, mask);
+            fn_800C3220(gIconSlots, mask);
             bf->rest = 0;
         }
         return 1;
@@ -2357,7 +2357,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
 {
     void *Res_GetByName(void *);
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -2375,7 +2375,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(lbl_803206EC, mask);
+        fn_800C3220(gIconSlots, mask);
         bf->rest = 0;
     }
     *(void **)arg0 = result;
@@ -2385,7 +2385,7 @@ s32 fn_8001D780(void *arg0, void *arg1)
 
 s32 UnitRef_Set(void *arg0, void *arg1) {
     void fn_800C3220(void *, s32);
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     typedef struct {
         u8 pad : 1;
         u8 flag : 1;
@@ -2401,7 +2401,7 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     bf->flag = 0;
     mask = *((u8 *)arg0 + 5) & 0x3F;
     if (mask != 0) {
-        fn_800C3220(lbl_803206EC, mask);
+        fn_800C3220(gIconSlots, mask);
         bf->rest = 0;
     }
     *(void **)arg0 = arg1;
@@ -2789,6 +2789,6 @@ extern f32 lbl_80368D10;
 #include "common.h"
 #include "global.h"
 #include "m2c_macros.h"
-extern u16 lbl_803206EC;
+extern u16 gIconSlots;
 s32 fn_800C3260(u16 *);
 s32 fn_800C2D74(u16 *, s32, s32);

@@ -318,7 +318,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     extern u8 gBattle[];
     extern u8 gMapObjEventList[];
     extern u8 gConvoy[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     u8 var_r27;
     s32 var_r26;
     s32 temp_r28;
@@ -384,7 +384,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_80016DE0();
     fn_8010FF90(gMapObjEventList);
     fn_800C341C(gConvoy);
-    fn_800C32A4(lbl_803206EC);
+    fn_800C32A4(gIconSlots);
     p = (u8 *)arg0;
     for (j = 0; j < 5; j++) {
         p[0x3C4] = 0;

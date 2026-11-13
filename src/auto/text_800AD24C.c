@@ -3670,7 +3670,7 @@ s32 fn_800B72CC(void) {
     extern u8 lbl_8026ECB8[];
     extern u8 gBattleMap[];
     extern u8 gConvoy[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
@@ -3685,7 +3685,7 @@ s32 fn_800B72CC(void) {
     fn_800BDED8(gBattleState + 0xB4);
     fn_8010FF90(gMapObjEventList);
     fn_800C341C(gConvoy);
-    fn_800C32A4(lbl_803206EC);
+    fn_800C32A4(gIconSlots);
     fn_8002297C(gBattleMap);
     return 1;
 }
@@ -3696,7 +3696,7 @@ s32 fn_800B7378(void) {
     M2C_UNK fn_8017A7D4(void *, s32);
     extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern s32 lbl_80367840;
     struct {
         s32 handle;
@@ -3709,7 +3709,7 @@ s32 fn_800B7378(void) {
     fn_800162B8();
     fn_8017A7D4(&obj, lbl_80367840);
     fn_80016628(&obj);
-    fn_800C2930(lbl_803206EC, &obj);
+    fn_800C2930(gIconSlots, &obj);
     fn_800163F8();
     fn_80016180();
     fn_800C4588(lbl_80367840);
@@ -3731,7 +3731,7 @@ s32 fn_800B7410(void) {
     M2C_UNK fn_80023DC0();
     extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern s32 lbl_80367840;
     struct {
         s32 handle;
@@ -3744,7 +3744,7 @@ s32 fn_800B7410(void) {
     fn_800162B8();
     fn_8017A7D4(&obj, lbl_80367840);
     fn_80016628(&obj);
-    fn_800C2930(lbl_803206EC, &obj);
+    fn_800C2930(gIconSlots, &obj);
     fn_80023DC0();
     fn_800163F8();
     fn_80016180();
@@ -3768,7 +3768,7 @@ s32 fn_800B74AC(void) {
     extern u8 lbl_8026ECB8[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
-    extern u8 lbl_803206EC[];
+    extern u8 gIconSlots[];
     extern s32 lbl_80367840;
     struct {
         void *start;
@@ -3795,7 +3795,7 @@ s32 fn_800B74AC(void) {
     *(void **)(pw + 4) = p;
     *(u32 *)(pw + 8) = 0x100000;
     fn_80016A3C(pw);
-    fn_800C2980(lbl_803206EC, &w);
+    fn_800C2980(gIconSlots, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
@@ -3815,7 +3815,7 @@ void fn_800C4588(void *);
 extern u8 lbl_8026ECB8[];
 extern u8 lbl_802842A4[];
 extern u8 lbl_80284C98[];
-extern u8 lbl_803206EC[];
+extern u8 gIconSlots[];
 extern s32 lbl_80367840;
 struct { void *start; void *cur; u32 size; u8 owned; u8 pad[3]; void *vtbl; } w;
 u8 *pw;
@@ -3834,7 +3834,7 @@ pw[12]=0;
 *(void **)(pw+4)=p;
 *(u32*)(pw+8)=0x100000;
 fn_80016A3C(pw);
-fn_800C2980(lbl_803206EC,&w);
+fn_800C2980(gIconSlots,&w);
 fn_80016DE0();
 w.vtbl=lbl_80284C98;
 w.vtbl=lbl_802842A4;
