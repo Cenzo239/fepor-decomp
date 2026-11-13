@@ -57,7 +57,7 @@ static inline s32 MsgBoxAddPad(s32 h, s32 pad) {
 
 void fn_801E00EC(void *arg0, void *arg1);
 extern u8 gFxChannels[];
-extern u16 lbl_80331D00[];
+extern u16 gScriptObjSlots[];
 extern f32 lbl_8036B4A8;
 extern f32 lbl_8027D528[3];
 extern f32 lbl_8027D534[3];
@@ -1534,7 +1534,7 @@ void fn_801B84C0(void) {
 }
 
 s32 fn_801B8550(void *arg0) {
-    extern u16 lbl_80331D00[];
+    extern u16 gScriptObjSlots[];
     
     void **temp_r31_ptr;
     void *temp_r31;
@@ -1558,7 +1558,7 @@ s32 fn_801B8550(void *arg0) {
     }
     
     temp_r3 = *(s32 *)((char *)temp_r31 + 0x44);
-    var_r4 = &lbl_80331D00[temp_r3];
+    var_r4 = &gScriptObjSlots[temp_r3];
     if (var_r4[0] == 0) {
         return 0;
     }
@@ -10919,7 +10919,7 @@ s32 fn_801CDE2C(struct efUnit* arg0) {
         return 0;
     }
     
-    return (*(u32*)unit >> 8) >= lbl_80331D00[(*(u32*)unit >> 8) >> 1];
+    return (*(u32*)unit >> 8) >= gScriptObjSlots[(*(u32*)unit >> 8) >> 1];
 }
 
 void *fn_801CDF5C(void *arg0, s16 arg1) {
@@ -11520,16 +11520,16 @@ void *fn_801CF6F4(void *arg0, s16 arg1) {
 
 void *ScriptObj_FindByName(void *arg0) {
     s32 Str_Cmp(void *, void *);
-    extern u16 lbl_80331D00[];
+    extern u16 gScriptObjSlots[];
     u8 *var_r31;
     s32 var_r30;
 
-    var_r31 = (u8 *)lbl_80331D00;
+    var_r31 = (u8 *)gScriptObjSlots;
     var_r30 = 0;
     do {
         if ((*(u32 *)(var_r31 + 8) & 1) != 0 &&
             Str_Cmp(*(void **)(*(void **)(var_r31 + 0x24)), arg0) == 0) {
-            return (void *)((u8 *)lbl_80331D00 + var_r30 * 0x15C);
+            return (void *)((u8 *)gScriptObjSlots + var_r30 * 0x15C);
         }
         var_r30 += 1;
         var_r31 += 0x15C;
@@ -11544,7 +11544,7 @@ void ScriptObj_Start(void *arg0, void *arg1) {
     void *Process_Create(void *, void *);
     void FallingParticle_CreateEx(void *, f32);
     extern u8 lbl_802997CC[];
-    extern u16 lbl_80331D00[];
+    extern u16 gScriptObjSlots[];
     extern u8 lbl_8027DF20[];
     extern u8 lbl_8029992C[];
     extern f32 lbl_8036B568;
@@ -11562,11 +11562,11 @@ void ScriptObj_Start(void *arg0, void *arg1) {
         }
         row += 0x10;
     }
-    p = (u8 *)lbl_80331D00;
+    p = (u8 *)gScriptObjSlots;
     i = 0;
     for (ctr = 2; ctr != 0; ctr--) {
         if ((*(s32 *)(p + 8) & 1) == 0) {
-            slot = (u8 *)lbl_80331D00 + i * 0x15C;
+            slot = (u8 *)gScriptObjSlots + i * 0x15C;
             fn_801CFAB8(slot, (u8)i, row);
             fn_8005C8B4(lbl_8027DF20 + 0x13E);
             fn_8005C8B4(slot + 0x12C);
@@ -11585,7 +11585,7 @@ void fn_801CF8E4(void *arg0)
 {
     void *record;
 
-    record = (u8 *)lbl_80331D00 +
+    record = (u8 *)gScriptObjSlots +
         (*(u8 *)((u8 *)arg0 + 0x30) * 0x15C);
 
     FileCache_ReleaseSlot(record);
@@ -11600,14 +11600,14 @@ void fn_801CF92C(void *arg0)
     u8 *table;
     u8 *entry;
 
-    table = (u8 *)lbl_80331D00;
+    table = (u8 *)gScriptObjSlots;
     entry = table + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C;
     if ((*(u32 *)(entry + 8) & 1) == 0) {
         Process_ClearFunc(arg0);
         return;
     }
     fn_801D15D4(entry);
-    fn_801D107C((u8 *)lbl_80331D00 + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C);
+    fn_801D107C((u8 *)gScriptObjSlots + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C);
 }
 
 #pragma global_optimizer off
@@ -11615,12 +11615,12 @@ void fn_801CF99C(void *arg0) {
     s32 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
-    extern u16 lbl_80331D00[];
+    extern u16 gScriptObjSlots[];
     extern u8 lbl_8027DF20[];
     u8 *entry;
     u8 ok;
 
-    entry = (u8 *)lbl_80331D00 + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C;
+    entry = (u8 *)gScriptObjSlots + *(u8 *)((u8 *)arg0 + 0x30) * 0x15C;
     if (!(FileCache_GetFlags(lbl_8027DF20 + 0x13E) & 0x2000) ||
         !(FileCache_GetFlags(entry + 0x12C) & 0x2000)) {
         ok = 0;
@@ -12154,7 +12154,7 @@ void fn_801D107C(void *arg0) {
     void Prim2D_Begin(void);
     void **fn_8006EDD8(void *, u16);
     void fn_801D0480(void *);
-    extern u16 lbl_80331D00[];
+    extern u16 gScriptObjSlots[];
     extern f32 lbl_8036B568;
     extern f64 lbl_8036B578;
     extern f32 lbl_8036B580;
@@ -12249,7 +12249,7 @@ void fn_801D107C(void *arg0) {
         Prim2D_BindTexture(*(void **)self, 0, 0x10);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(0xB);
-        fn_80007340(fn_801D0480, (u8 *)lbl_80331D00 + self[0xC] * 0x15C);
+        fn_80007340(fn_801D0480, (u8 *)gScriptObjSlots + self[0xC] * 0x15C);
         Prim2D_EndPrim();
     }
 
@@ -13676,7 +13676,7 @@ void fn_801D3860(s32 arg0, s32 arg1, s32 arg2) {
         arg2 = 0x3FF;
     }
     
-    lbl_80331D00[arg0] = ((arg1 & 0xFFFF) << 0xA) | (arg2 & 0x3FF);
+    gScriptObjSlots[arg0] = ((arg1 & 0xFFFF) << 0xA) | (arg2 & 0x3FF);
 }
 
 void fn_801D3A4C(u8 *arg0) {
@@ -17953,8 +17953,8 @@ void* fn_801E2324(u16 arg0) {
     s32 i;
     
     for (i = 0; i < 0x20; i++) {
-        if (lbl_80331D00[i] == arg0) {
-            return &lbl_80331D00[i];
+        if (gScriptObjSlots[i] == arg0) {
+            return &gScriptObjSlots[i];
         }
     }
     
