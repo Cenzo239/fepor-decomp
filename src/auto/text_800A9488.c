@@ -617,7 +617,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
     void fn_80022FD8(void *, s32);
     void fn_800227F8(void *, s32);
     void fn_80022748(void *, s32);
-    void fn_800213D0(void *, u8, u8, u8, s32, s32);
+    void Map_FloodMoveRange(void *, u8, u8, u8, s32, s32);
     void Msg_Expand(void *);
     void fn_80091A1C(void);
     void fn_800283C8(void *, void *);
@@ -635,7 +635,7 @@ void MapUi_ShowUnitRanges(void *arg0) {
         fn_80022FD8(gBattleMap, 5);
         fn_800227F8(gBattleMap, *(s32 *)((u8 *)arg0 + 0x18C));
         fn_80022748(gBattleMap, *(s32 *)((u8 *)arg0 + 0x190));
-        fn_800213D0(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
+        Map_FloodMoveRange(gBattleMap, ((u8 *)arg0)[0x19E], ((u8 *)arg0)[0x19F], temp_r31, 0, 0);
         Msg_Expand(lbl_8026E770 + 0xCE);
         fn_80091A1C();
     } else {
@@ -977,7 +977,7 @@ void fn_800AAC64(void *arg0) {
     fn_80022FD8(gBattleMap, 5);
     fn_800227F8(gBattleMap, *(s32*)((char*)arg0 + 0x18C));
     fn_80022748(gBattleMap, 0);
-    fn_800213D0(gBattleMap, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);
+    Map_FloodMoveRange(gBattleMap, *(u8*)((char*)arg0 + 0x19E), *(u8*)((char*)arg0 + 0x19F), 0x3E8, 0, 0);
 }
 
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {

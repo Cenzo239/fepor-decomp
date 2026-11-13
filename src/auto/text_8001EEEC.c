@@ -739,7 +739,7 @@ s16 fn_8002134C(u8 *map, s8 x, s8 y) {
     return val;
 }
 
-void fn_800213D0(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
+void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
 {
     void fn_80022DAC(void *, s32, s32);
     extern u8 gUnits[];

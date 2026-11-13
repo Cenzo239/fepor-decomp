@@ -13961,11 +13961,14 @@ extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
         virtual void v1() = 0;
         virtual void *v2(void *, void *) = 0;
     };
+    void *self = arg0;
+    void *s1 = arg1;
+    void *s2 = arg2;
+    void *cstr2;
     void *found;
-    void *p2;
 
-    p2 = String_CStr(arg2);
-    found = ((Obj *)arg0)->v2(String_CStr(arg1), p2);
+    cstr2 = String_CStr(s2);
+    found = ((Obj *)self)->v2(String_CStr(s1), cstr2);
     if (found != NULL) {
         fn_800DF664(found);
     }
@@ -21047,7 +21050,7 @@ void fn_800FC6B0(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u8 fn_8001D500(void *);
     u8 fn_8001DD54(void *, void *);
-    void fn_800213D0(void *, u8, u8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
     void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
@@ -21197,7 +21200,7 @@ void fn_800FC6B0(void *arg0) {
                 }
                 a = ((u8 *)unit)[0x19F];
                 b = ((u8 *)unit)[0x19E];
-                fn_800213D0(map, b, a, (u16)(s8)Unit_GetMov(unit), t14, t15);
+                Map_FloodMoveRange(map, b, a, (u16)(s8)Unit_GetMov(unit), t14, t15);
                 val = fn_8001D500(bestLo);
                 cb = Item_GetFlagsPtr(bestLo);
                 if ((*(u64 *)cb & 0x42ULL) != 0) {
@@ -21265,7 +21268,7 @@ void fn_800FC6B0(void *arg0) {
                 }
                 a = ((u8 *)unit)[0x19F];
                 b = ((u8 *)unit)[0x19E];
-                fn_800213D0(map, b, a, (u16)(s8)Unit_GetMov(unit), t14, t15);
+                Map_FloodMoveRange(map, b, a, (u16)(s8)Unit_GetMov(unit), t14, t15);
                 val = fn_8001D500(bestHi);
                 cb = Item_GetFlagsPtr(bestHi);
                 if ((*(u64 *)cb & 0x42ULL) != 0) {
@@ -21617,7 +21620,7 @@ retry_loop:
 
 #pragma use_lmw_stmw on
 void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
-    void fn_800213D0(void *, u8, u8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
@@ -21644,12 +21647,12 @@ void fn_800FE398(u8 *unit, s32 arg1, s32 arg2) {
     } else {
         slot = (s8)Unit_GetMov(unit);
     }
-    fn_800213D0(map, unit[0x19E], unit[0x19F], (u16)slot, t14, t15);
+    Map_FloodMoveRange(map, unit[0x19E], unit[0x19F], (u16)slot, t14, t15);
 }
 
 #pragma use_lmw_stmw on
 void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
     void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
@@ -21677,14 +21680,14 @@ void fn_800FE490(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4) {
     } else {
         slot = (s8)Unit_GetMov(unit);
     }
-    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)slot, t14, arg3);
+    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)slot, t14, arg3);
 }
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
 void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
 {
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227D0(void *, s32, s32);
     void fn_800227F8(void *, void *);
@@ -21721,7 +21724,7 @@ void fn_800FE590(s32 arg0, s32 arg1, u8 *unit, s32 arg3, s32 arg4)
     } else {
         slot = (s8)Unit_GetMov(u);
     }
-    fn_800213D0(map, (s8)a0, (s8)a1, (u16)slot, t14, t15);
+    Map_FloodMoveRange(map, (s8)a0, (s8)a1, (u16)slot, t14, t15);
 }
 #pragma use_lmw_stmw reset
 
@@ -21732,7 +21735,7 @@ void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
     void fn_800227F8(void *, void *);
     void fn_80022748(void *, s32);
     u8 Status_Test(void *, s32);
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
     extern u8 gBattleMap[];
 
     void *map;
@@ -21753,12 +21756,12 @@ void fn_800FE690(s32 arg0, s32 arg1, void *arg2, s32 arg3, s32 arg4, s32 arg5) {
     } else {
         flag15 = 0;
     }
-    fn_800213D0(map, (s8)arg0, (s8)arg1, (u16)arg5, flag14, flag15);
+    Map_FloodMoveRange(map, (s8)arg0, (s8)arg1, (u16)arg5, flag14, flag15);
 }
 
 #pragma use_lmw_stmw on
 void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
-    void fn_800213D0(void *, s8, s8, u16, s32, s32);
+    void Map_FloodMoveRange(void *, s8, s8, u16, s32, s32);
     void fn_80022748(void *, s32);
     void fn_800227F8(void *, void *);
     void fn_80022FD8(void *, s32);
@@ -21790,7 +21793,7 @@ void fn_800FE770(s32 arg0, s32 arg1, void *arg2, s32 arg3, u32 arg4) {
     } else {
         t15 = 0;
     }
-    fn_800213D0(map, x, y, flags, t14, t15);
+    Map_FloodMoveRange(map, x, y, flags, t14, t15);
 }
 #pragma use_lmw_stmw reset
 u8 Map_IsAiTerrainBlocked(s8 arg0, s8 arg1) {
