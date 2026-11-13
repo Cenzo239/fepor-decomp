@@ -11970,7 +11970,7 @@ void fn_8025EC10(u32 arg0) {
     lbl_80368AAF = (arg0 >> 2U) & 1;
 }
 
-s32 fn_8025EC48(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize) {
+s32 Sound_Init(u8 voices, u8 music, u8 sfx, u8 studios, u32 flags, u32 aramSize) {
 #pragma dont_inline on
     s32 fn_80261620(u32 *, u8, u8, u32);
     s32 fn_80262AF0(void);
