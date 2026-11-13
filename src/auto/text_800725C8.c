@@ -168,12 +168,12 @@ void fn_80072954(void *arg0) {
 
 void fn_80072988(void) {
 s32 fn_8000BCA4(void *); void Process_CreateChild(void *,s32); void fn_80023DE8(void);
-extern u8 gUiContext[]; extern u8 gMapUiResult; extern u8 lbl_8026BE40[]; extern u8 lbl_80286DA8[];
+extern u8 gUiContext[]; extern u8 gMapUiResult; extern u8 gSaveUiStrs[]; extern u8 lbl_80286DA8[];
 s32 temp;
 if(gUiContext[8]==1) {
 switch(gMapUiResult & 8) {
 case 0:
-temp=fn_8000BCA4(lbl_8026BE40+0x101);
+temp=fn_8000BCA4(gSaveUiStrs+0x101);
 if(temp) {fn_80023DE8(); Process_CreateChild(lbl_80286DA8,temp);}
 break;
 default: break;
@@ -199,11 +199,11 @@ void fn_80072A48(void) {
     M2C_UNK fn_80006220(M2C_UNK);
     M2C_UNK fn_8000BD98(void *);
     M2C_UNK fn_8002D780(M2C_UNK);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u8 gMsgBox[];
     fn_80006220(3);
     fn_8002D780(6);
-    fn_8000BD98(lbl_8026BE40 + 0x101);
+    fn_8000BD98(gSaveUiStrs + 0x101);
     *(u16 *)(gMsgBox + 2) = 0xC8;
 }
 
@@ -211,10 +211,10 @@ void fn_80072A94(void) {
     M2C_UNK fn_8000BD98(void *);
     M2C_UNK fn_8008A290(M2C_UNK, M2C_UNK);
     M2C_UNK fn_801480D8(M2C_UNK);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     fn_801480D8(0xBB8);
     fn_8008A290(3, 0x7D0);
-    fn_8000BD98(lbl_8026BE40 + 0x10C);
+    fn_8000BD98(gSaveUiStrs + 0x10C);
 }
 
 void fn_80072AD4(void *arg0) {
@@ -228,11 +228,11 @@ void fn_80072AD4(void *arg0) {
 void fn_80072B04(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
     s32 Msg_Expand(u8 *);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x11A, 0, 0, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x11A, 0, 0, 0);
     M2C_FIELD(arg0, s16 *, 0x28) = 0x258;
-    M2C_FIELD(arg0, s32 *, 0x34) = Msg_Expand(lbl_8026BE40 + 0x127);
+    M2C_FIELD(arg0, s32 *, 0x34) = Msg_Expand(gSaveUiStrs + 0x127);
 }
 
 void Card_ShowResultMsg(void *arg0)
@@ -243,7 +243,7 @@ void Card_ShowResultMsg(void *arg0)
     s32 Msg_Expand(u8 *);
     void Process_Goto(void *, s32);
     extern u8 gSaveDataBase;
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
     s32 r;
 
@@ -251,13 +251,13 @@ void Card_ShowResultMsg(void *arg0)
     r = Card_GetResult();
     switch (r) {
     case -3:
-        MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x12D, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
+        MsgBox_Init(gMsgBox, gSaveUiStrs + 0x12D, 0, 1, 0);
+        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
         Process_Goto(arg0, 0xA);
         return;
     default:
-        MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x141, 0, 1, 0);
-        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
+        MsgBox_Init(gMsgBox, gSaveUiStrs + 0x141, 0, 1, 0);
+        *(s32 *)((u8 *)arg0 + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
         Process_Goto(arg0, 0xA);
         return;
     case 0:
@@ -272,11 +272,11 @@ void fn_80072C64(void *arg0)
     void fn_801E047C(void *, void *);
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
     extern u8 gSaveDataBase;
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
 
     fn_801E047C(&gSaveDataBase, arg0);
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x14D, 0, 0, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x14D, 0, 0, 0);
 }
 
 void fn_80072CB0(s32 arg0) {
@@ -287,57 +287,57 @@ void fn_80072CB0(s32 arg0) {
 
 void fn_80072CDC(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x155, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x155, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = -0x80;
 }
 
 void fn_80072D30(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x162, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x162, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = 0;
 }
 
 void fn_80072D84(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x16F, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x16F, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = 0;
 }
 
 void fn_80072DD8(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x179, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x179, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = 0;
 }
 
 void fn_80072E2C(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x188, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x188, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = 0;
 }
 
 void fn_80072E80(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x199, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x199, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = -2;
 }
 
 void fn_80072ED4(void *arg0) {
     void MsgBox_Init(void *, u8 *, s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
-    MsgBox_Init(gMsgBox, lbl_8026BE40 + 0x12D, 0, 1, 0);
+    MsgBox_Init(gMsgBox, gSaveUiStrs + 0x12D, 0, 1, 0);
     M2C_FIELD(arg0, s32 *, 0x30) = -3;
 }
 
@@ -347,14 +347,14 @@ void Card_PollProbe(void *proc) {
     s32 Msg_Expand(u8 *);
     s32 Card_GetChannel(void);
     s32 CARDProbeEx(s32, s32, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
     extern void *gPadInput;
     s32 buttons;
     s32 prev;
     s32 result;
 
-    *(s32 *)((u8 *)proc + 0x34) = Msg_Expand(lbl_8026BE40 + 0x13B);
+    *(s32 *)((u8 *)proc + 0x34) = Msg_Expand(gSaveUiStrs + 0x13B);
     buttons = *(s32 *)((u8 *)gPadInput + 4);
     prev = *(s32 *)((u8 *)gPadInput + 8);
     if (buttons & (prev ^ buttons) & 0x200) {
@@ -435,14 +435,14 @@ void fn_80073164(void) {
 void fn_80073188(void *arg0) {
     void *memset(void *, s32, u32);
     void fn_801E3118(void *, void *, s32);
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u16 gMsgBox[];
     extern M2C_UNK gSaveDataBase;
     memset(gMsgBox, 0, 0x1EA);
     gMsgBox[1] = 0;
     gMsgBox[0] = 0;
     gMsgBox[0xF] = 0;
-    M2C_FIELD(arg0, u8 **, 0x34) = lbl_8026BE40 + 0x1A6;
+    M2C_FIELD(arg0, u8 **, 0x34) = gSaveUiStrs + 0x1A6;
     M2C_FIELD(arg0, u16 *, 0x38) = 0;
     M2C_FIELD(arg0, u16 *, 0x3A) = 0x20;
     fn_801E3118(&gSaveDataBase, arg0, 1);
@@ -480,7 +480,7 @@ void fn_80073208(void *arg0) {
 
 extern u16 gUiContext[12];
 extern u8 gMapUiResult;
-extern u8 lbl_8026BE40[];
+extern u8 gSaveUiStrs[];
 extern u8 lbl_80286DA8[];
 extern u16 gMsgBox[124];
 extern void fn_80006220(s32);

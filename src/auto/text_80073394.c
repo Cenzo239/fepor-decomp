@@ -7,21 +7,21 @@ extern void fn_8000BD98(void *);
 s32 Msg_Expand(void *);
 
 void *fn_80073394(void) {
-    extern u16 lbl_8026BE40[];
-    return (u8 *)lbl_8026BE40 + 0x1a7;
+    extern u16 gSaveUiStrs[];
+    return (u8 *)gSaveUiStrs + 0x1a7;
 }
 
 s32 fn_800733A4(void) {
-    extern u16 lbl_8026BE40[];
+    extern u16 gSaveUiStrs[];
     fn_80006220(3);
     fn_8002D780(6);
-    fn_8000BD98((u8 *)lbl_8026BE40 + 0x101);
+    fn_8000BD98((u8 *)gSaveUiStrs + 0x101);
     return 5;
 }
 
 void *fn_800733E4(void) {
-    extern u16 lbl_8026BE40[];
-    return (u8 *)lbl_8026BE40 + 0x1d6;
+    extern u16 gSaveUiStrs[];
+    return (u8 *)gSaveUiStrs + 0x1d6;
 }
 
 s32 fn_800733F4(void) {
@@ -29,8 +29,8 @@ s32 fn_800733F4(void) {
 }
 
 void *fn_800733FC(void) {
-    extern u16 lbl_8026BE40[];
-    return (u8 *)lbl_8026BE40 + 0x1E0;
+    extern u16 gSaveUiStrs[];
+    return (u8 *)gSaveUiStrs + 0x1E0;
 }
 
 s32 fn_8007340C(s32 arg0, s32 arg1) {
@@ -49,8 +49,8 @@ s32 fn_8007340C(s32 arg0, s32 arg1) {
 }
 
 void *fn_80073464(void) {
-    extern u8 lbl_8026BE40[];
-    return lbl_8026BE40 + 0x203;
+    extern u8 gSaveUiStrs[];
+    return gSaveUiStrs + 0x203;
 }
 
 s32 fn_80073474(s32 unused, s32 arg1) {
@@ -78,14 +78,14 @@ u8 fn_800734B0(void) {
 
 void fn_800734EC(void) {
     M2C_UNK Msg_Expand(void *);
-    extern u8 lbl_8026BE40[];
-    Msg_Expand(lbl_8026BE40 + 0x20C);
+    extern u8 gSaveUiStrs[];
+    Msg_Expand(gSaveUiStrs + 0x20C);
 }
 
 void fn_80073518(void) {
     M2C_UNK Msg_Expand(void *);
-    extern u8 lbl_8026BE40[];
-    Msg_Expand(lbl_8026BE40 + 0x215);
+    extern u8 gSaveUiStrs[];
+    Msg_Expand(gSaveUiStrs + 0x215);
 }
 
 s32 fn_80073544(void) {
@@ -96,13 +96,13 @@ s32 fn_80073544(void) {
 
 void fn_8007355C(void) {
     s32 Msg_Expand(void *);
-    extern u8 lbl_8026BE40[];
-    Msg_Expand(lbl_8026BE40 + 0x21E);
+    extern u8 gSaveUiStrs[];
+    Msg_Expand(gSaveUiStrs + 0x21E);
 }
 
 void fn_80073588(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand((u8 *)lbl_8026BE40 + 0x226);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand((u8 *)gSaveUiStrs + 0x226);
 }
 
 s32 fn_800735B4(s32 arg0, s32 arg1) {
@@ -113,14 +113,14 @@ s32 fn_800735B4(s32 arg0, s32 arg1) {
 }
 
 void fn_800735E4(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand((u8 *)lbl_8026BE40 + 0x22f);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand((u8 *)gSaveUiStrs + 0x22f);
 }
 
 void fn_80073610(void) {
     M2C_UNK Msg_Expand(void *);
-    extern u8 lbl_8026BE40[];
-    Msg_Expand(lbl_8026BE40 + 0x238);
+    extern u8 gSaveUiStrs[];
+    Msg_Expand(gSaveUiStrs + 0x238);
 }
 
 #pragma cplusplus on
@@ -154,7 +154,7 @@ extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
         virtual s16 v21() = 0;
         virtual s16 v22() = 0;
     };
-    extern u8 lbl_8026BE40[];
+    extern u8 gSaveUiStrs[];
     extern u8 lbl_80286ED8[];
     Obj *obj;
     s32 a;
@@ -164,7 +164,7 @@ extern "C" s32 fn_8007363C(s32 arg0, void *arg1, void *arg2) {
     s16 y;
 
     if (M2C_FIELD(arg2, u8 *, 0x39) != 0) {
-        str = Msg_Expand(lbl_8026BE40 + 0x242);
+        str = Msg_Expand(gSaveUiStrs + 0x242);
         obj = M2C_FIELD(arg1, Obj **, 0x3C);
         x = M2C_FIELD(arg2, s16 *, 0x30);
         a = obj->v22();
@@ -197,13 +197,13 @@ u8 fn_800736F0(void) {
 }
 
 void fn_80073740(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand((u8 *)lbl_8026BE40 + 0x24c);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand((u8 *)gSaveUiStrs + 0x24c);
 }
 
 void fn_8007376C(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand(&lbl_8026BE40[0x254 / sizeof(u16)]);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand(&gSaveUiStrs[0x254 / sizeof(u16)]);
 }
 
 s32 fn_80073798(s32 arg0, s32 arg1, void *arg2) {
@@ -218,13 +218,13 @@ s32 fn_80073798(s32 arg0, s32 arg1, void *arg2) {
 }
 
 void fn_800737DC(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand((u8 *)lbl_8026BE40 + 0x25D);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand((u8 *)gSaveUiStrs + 0x25D);
 }
 
 void fn_80073808(void) {
-    extern u16 lbl_8026BE40[];
-    Msg_Expand((u8 *)lbl_8026BE40 + 0x267);
+    extern u16 gSaveUiStrs[];
+    Msg_Expand((u8 *)gSaveUiStrs + 0x267);
 }
 
 s32 fn_80073834(s32 arg0, s32 arg1)
