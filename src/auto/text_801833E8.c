@@ -2522,43 +2522,27 @@ void fn_8018B2FC(void *arg0) {
 #pragma fp_contract off
 #pragma global_optimizer off
 void fn_8018B31C(void *arg0) {
-    extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036ACF8;
-    extern f32 lbl_8036AD40;
-    void Process_ClearFunc(void *);
-    f32 f3;
-    f32 f4;
-    f32 f1;
-    f32 f0;
-    f32 f2;
-    void *r4;
-
-    *(f32 *)((u8 *)arg0 + 0x48) = *(f32 *)((u8 *)arg0 + 0x48) + lbl_8036ACF8;
-    f3 = *(f32 *)((u8 *)arg0 + 0x48);
-    f0 = *(f32 *)((u8 *)arg0 + 0x44);
-    r4 = *(void **)((u8 *)arg0 + 0x30);
-    f1 = f0 * f3;
-    f4 = *(f32 *)((u8 *)arg0 + 0x40);
-    f2 = *(f32 *)((u8 *)r4 + 0xC);
-    f0 = *(f32 *)((u8 *)arg0 + 0x3C);
-    f1 = f3 * f1;
-    f1 = f4 - f1;
-    f1 = f2 - f1;
-    if (f1 > f0) {
-        f1 = *(f32 *)((u8 *)arg0 + 0x4C);
-        f0 = lbl_8036ACEC;
-        f1 = f4 * f1;
-        *(f32 *)((u8 *)arg0 + 0x40) = f1;
-        *(f32 *)((u8 *)arg0 + 0x48) = f0;
-    }
-    f1 = *(f32 *)((u8 *)arg0 + 0x3C);
-    r4 = *(void **)((u8 *)arg0 + 0x30);
-    f0 = lbl_8036AD40;
-    *(f32 *)((u8 *)r4 + 0xC) = f1;
-    f1 = *(f32 *)((u8 *)arg0 + 0x40);
-    if (f1 < f0) {
-        Process_ClearFunc(arg0);
-    }
+ extern f32 lbl_8036ACEC, lbl_8036ACF8, lbl_8036AD40;
+ void Process_ClearFunc(void *);
+ f32 f0; f32 f1; f32 f2; f32 f3; f32 f4; void *r4;
+ f1=*(f32 *)((u8 *)arg0+0x48); f0=lbl_8036ACF8;
+ *(f32 *)((u8 *)arg0+0x48)=f1+f0;
+ f3=*(f32 *)((u8 *)arg0+0x48);
+ f0=*(f32 *)((u8 *)arg0+0x44);
+ r4=*(void **)((u8 *)arg0+0x30);
+ f1=f0*f3;
+ f4=*(f32 *)((u8 *)arg0+0x40);
+ f2=*(f32 *)((u8 *)r4+0xc);
+ f0=*(f32 *)((u8 *)arg0+0x3c);
+ f1=f3*f1; f1=f4-f1; f1=f2-f1;
+ if(f1>f0) {
+ f1=*(f32 *)((u8 *)arg0+0x4c); f0=lbl_8036ACEC; f1=f4*f1;
+ *(f32 *)((u8 *)arg0+0x40)=f1; *(f32 *)((u8 *)arg0+0x48)=f0;
+ }
+ f1=*(f32 *)((u8 *)arg0+0x3c); r4=*(void **)((u8 *)arg0+0x30);
+ f0=lbl_8036AD40; *(f32 *)((u8 *)r4+0xc)=f1;
+ f1=*(f32 *)((u8 *)arg0+0x40);
+ if(f1<f0) Process_ClearFunc(arg0);
 }
 #pragma global_optimizer on
 #pragma fp_contract on
@@ -3040,24 +3024,15 @@ void fn_8018CB7C(void) {
 }
 
 void fn_8018CB9C(void *arg0) {
-    s32 Light_GetChannel(s32);
-    void fn_800673E4(s32, s32);
-    void fn_80050BA8(s32, s32, s32);
-    s32 t;
-    s32 i;
-    u8 *p;
-
-    t = Light_GetChannel(0);
-    fn_800673E4(Light_GetChannel(1), t);
-    t = Light_GetChannel(2);
-    fn_800673E4(Light_GetChannel(3), t);
-    p = (u8 *)arg0;
-    i = 0;
-    while (i < *(s32 *)((u8 *)arg0 + 0x44)) {
-        fn_80050BA8(*(s32 *)(p + 0x48), 0, 0);
-        p += 4;
-        i += 1;
-    }
+ s32 Light_GetChannel(s32);
+ void fn_800673E4(s32,s32);
+ void fn_80050BA8(s32,s32,s32);
+ s32 i; u8 *p; s32 t;
+ fn_800673E4(Light_GetChannel(1),Light_GetChannel(0));
+ fn_800673E4(Light_GetChannel(3),Light_GetChannel(2));
+ p=(u8 *)arg0;
+ for(i=0;i<*(s32 *)((u8 *)arg0+0x44);i++) {
+ fn_80050BA8(*(s32 *)(p+0x48),0,0); p+=4; }
 }
 
 void fn_8018CC3C(void *arg0) {
