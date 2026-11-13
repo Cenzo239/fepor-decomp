@@ -904,16 +904,17 @@ void Gx_Setup2DState(void *arg0) {
     GXSetTevSwapModeTable(0, 0, 1, 2, 3);
 }
 
+/* Configure a simple 1-stage TEV with default RGBA swap tables. */
 void Gx_SetupSimpleTev(void) {
-    M2C_UNK GXSetNumChans(M2C_UNK);
-    M2C_UNK GXSetCullMode(M2C_UNK);
-    M2C_UNK GXSetNumTexGens(M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevSwapMode(M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevSwapModeTable(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetTevOrder(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetNumTevStages(M2C_UNK);
-    M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK GXSetZMode(M2C_UNK, M2C_UNK, M2C_UNK);
+    void GXSetNumChans(s32);
+    void GXSetCullMode(s32);
+    void GXSetNumTexGens(s32, s32);
+    void GXSetTevSwapMode(s32, s32, s32);
+    void GXSetTevSwapModeTable(s32, s32, s32, s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXSetZMode(s32, s32, s32);
     GXSetZMode(1, 7, 1);
     fn_802245D8(0, 1, 0, 0xF);
     GXSetNumChans(1);
