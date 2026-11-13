@@ -4018,73 +4018,73 @@ s32 fn_8003B938(u8 arg0) {
 extern s32 gGameState;
 void fn_8003B9AC(u32 arg0) {
     void fn_8000E0E4(void *);
-    extern u16 lbl_8026A458[];
+    extern u16 gAffinityStr[];
     u8 *s;
 
     switch ((u8)arg0) {
     case 0:
-        s = (u8 *)lbl_8026A458 + 0x8;
+        s = (u8 *)gAffinityStr + 0x8;
         break;
     case 1:
-        s = (u8 *)lbl_8026A458 + 0xF;
+        s = (u8 *)gAffinityStr + 0xF;
         break;
     case 2:
-        s = (u8 *)lbl_8026A458 + 0x16;
+        s = (u8 *)gAffinityStr + 0x16;
         break;
     case 3:
-        s = (u8 *)lbl_8026A458 + 0x1D;
+        s = (u8 *)gAffinityStr + 0x1D;
         break;
     case 4:
-        s = (u8 *)lbl_8026A458 + 0x25;
+        s = (u8 *)gAffinityStr + 0x25;
         break;
     case 5:
-        s = (u8 *)lbl_8026A458 + 0x2B;
+        s = (u8 *)gAffinityStr + 0x2B;
         break;
     case 6:
-        s = (u8 *)lbl_8026A458 + 0x33;
+        s = (u8 *)gAffinityStr + 0x33;
         break;
     case 7:
-        s = (u8 *)lbl_8026A458 + 0x3A;
+        s = (u8 *)gAffinityStr + 0x3A;
         break;
     case 8:
     default:
-        s = (u8 *)lbl_8026A458 + 0x43;
+        s = (u8 *)gAffinityStr + 0x43;
         break;
     }
     fn_8000E0E4(s);
 }
 
-extern u16 lbl_8026A458[];
+extern u16 gAffinityStr[];
 s32 Affinity_FromName(void *arg0) {
     s32 Str_Cmp(void *, void *);
-    extern u16 lbl_8026A458[];
+    extern u16 gAffinityStr[];
     s32 temp_r3;
 
     if (arg0 == NULL) {
         return 0;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x44) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x44) == 0) {
         return 1;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x49) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x49) == 0) {
         return 2;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x51) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x51) == 0) {
         return 3;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x56) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x56) == 0) {
         return 4;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x5C) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x5C) == 0) {
         return 5;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x61) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x61) == 0) {
         return 6;
     }
-    if (Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x67) == 0) {
+    if (Str_Cmp(arg0, (u8 *)gAffinityStr + 0x67) == 0) {
         return 7;
     }
-    temp_r3 = Str_Cmp(arg0, (u8 *)lbl_8026A458 + 0x6E);
+    temp_r3 = Str_Cmp(arg0, (u8 *)gAffinityStr + 0x6E);
     if (temp_r3 != 0) {
         return 0;
     }

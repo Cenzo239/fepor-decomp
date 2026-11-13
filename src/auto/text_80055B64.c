@@ -55,7 +55,7 @@ void *fn_800A88E0(u32);
 
 extern s32 gGameState;
 
-extern u16 lbl_8026A458[];
+extern u16 gAffinityStr[];
 
 void *Res_GetByName(s32);
 
