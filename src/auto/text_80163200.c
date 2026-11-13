@@ -1029,7 +1029,7 @@ s16 UnitInv_FindEmptyLow(void *arg0) {
     return ret;
 }
 
-s16 fn_80164D9C(void *arg0) {
+s16 UnitInv_FindEmpty(void *arg0) {
     u32 *Unit_GetItemSlot(s32, s8);
     void *self;
     s32 i;
@@ -8356,7 +8356,7 @@ void fn_80173C24(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
     s32 *ListWidget_GetSelected(void *);
     u64 *Item_GetFlagsPtr(s32);
-    s16 fn_80164D9C(void *);
+    s16 UnitInv_FindEmpty(void *);
     s16 UnitInv_FindFilledUp(void *, s32);
 
     void *obj54;
@@ -8376,7 +8376,7 @@ void fn_80173C24(void *arg0) {
         *(s32 *)((u8 *)obj4c + 0x60) = 2;
         *(u8 *)((u8 *)obj4c + 0x4B) = 1;
     }
-    var_r3 = fn_80164D9C(obj4c);
+    var_r3 = UnitInv_FindEmpty(obj4c);
     if (var_r3 >= 0) {
         *(s16 *)((u8 *)obj4c + 0x4C) = var_r3;
     } else {
