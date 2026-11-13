@@ -2683,7 +2683,7 @@ extern "C" void fn_80169394(void) {
 }
 
 extern "C" void fn_80169414(s32 arg0) {
-    void fn_8014C7C0(void *, s32);
+    void BattleState_LoadMap(void *, s32);
     void fn_801455B8(s32);
     void fn_80013A90(void *);
     void fn_800138F4(void);
@@ -2691,7 +2691,7 @@ extern "C" void fn_80169414(s32 arg0) {
     extern u8 gBattleState[];
     extern u8 lbl_80277BC0[];
 
-    fn_8014C7C0(gBattleState, 0);
+    BattleState_LoadMap(gBattleState, 0);
     fn_801455B8(0);
     fn_80013A90(lbl_80277BC0 + 0x85);
     fn_800138F4();

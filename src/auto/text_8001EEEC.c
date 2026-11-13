@@ -4075,7 +4075,7 @@ void fn_80028794(void) {
 void fn_800287E4(void) {
     extern u8 gBattleState[];
     
-    fn_8014C7C0(gBattleState, gBattleState + 0x504);
+    BattleState_LoadMap(gBattleState, gBattleState + 0x504);
     fn_8014C798(gBattleState);
     fn_800163F8();
     fn_80016180();

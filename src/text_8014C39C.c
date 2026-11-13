@@ -232,7 +232,7 @@ void fn_8014C798(void) {
     fn_80042558();
 }
 
-void fn_8014C7C0(void *arg0, char *arg1) {
+void BattleState_LoadMap(void *arg0, char *arg1) {
     void *fn_80019F04(u8);
     void strcpy(char *, char *);
     void sprintf(char *, char *, ...);

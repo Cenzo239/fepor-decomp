@@ -2028,7 +2028,7 @@ void Battle_StartMapMain(void *arg0) {
     void *Process_Create(void *, void *);
     void Process_Goto(void *, s32);
     void fn_80006220(s32);
-    void fn_8014C7C0(void *, void *);
+    void BattleState_LoadMap(void *, void *);
     void fn_801E379C(u32);
     void SaveData_Release(void *);
     void BattleState_SetCamPos(void *, f32, f32);
@@ -2042,7 +2042,7 @@ void Battle_StartMapMain(void *arg0) {
     Process_Goto(r, 4);
     Process_Create(Proc_BMapBGMCtrl, r);
     fn_80006220(0x10);
-    fn_8014C7C0(gBattleState, gBattleState + 0x504);
+    BattleState_LoadMap(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
     SaveData_Release(&gSaveDataBase);
     BattleState_SetCamPos(gBattleState, (f32)(s8)gBattleState[0x52], (f32)(s8)gBattleState[0x53]);

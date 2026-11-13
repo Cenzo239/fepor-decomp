@@ -1984,7 +1984,7 @@ void fn_801EDEE4(void *arg0) {
     void fn_80016358(void);
     void fn_800163F8(void);
     void fn_8014C798(void *);
-    void fn_8014C7C0(void *, u8 *);
+    void BattleState_LoadMap(void *, u8 *);
     extern u8 lbl_8029A5FC[];
     extern u8 gBattleState[];
     void *temp_r3;
@@ -1992,7 +1992,7 @@ void fn_801EDEE4(void *arg0) {
     s32 temp_r0;
 
     if (*(u8 *)((u8 *)arg0 + 0x39) != 0) {
-        fn_8014C7C0(gBattleState, gBattleState + 0x504);
+        BattleState_LoadMap(gBattleState, gBattleState + 0x504);
         fn_8014C798(gBattleState);
     }
     temp_r3 = Process_Find(lbl_8029A5FC);

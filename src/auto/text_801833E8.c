@@ -12103,12 +12103,12 @@ s32 fn_801A0298(s32 arg0) {
 
 s32 fn_801A0374(void) {
     extern u8 gBattleState[];
-    void fn_8014C7C0(void *, s32);
+    void BattleState_LoadMap(void *, s32);
     void fn_8014C798(void *);
     void BattleState_SetCamPos(void *, f32, f32);
     void fn_800187F0(void);
 
-    fn_8014C7C0(gBattleState, 0);
+    BattleState_LoadMap(gBattleState, 0);
     fn_8014C798(gBattleState);
     BattleState_SetCamPos(gBattleState, (f32) (s8) gBattleState[0x52], (f32) (s8) gBattleState[0x53]);
     fn_800187F0();
@@ -12117,10 +12117,10 @@ s32 fn_801A0374(void) {
 
 extern u16 gBattleState[];
 s32 fn_801A0400(s32 arg0) {
-    void fn_8014C7C0(void *, s32);
+    void BattleState_LoadMap(void *, s32);
     void fn_80013864(void);
     extern u16 gBattleState[];
-    fn_8014C7C0(gBattleState, arg0);
+    BattleState_LoadMap(gBattleState, arg0);
     fn_80013864();
     return 1;
 }
