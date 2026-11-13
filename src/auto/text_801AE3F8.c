@@ -46,7 +46,7 @@ void fn_801AE498(void) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801AE4B8(void *arg0) {
+extern "C" void Ui_DestroyPanel(void *arg0) {
     extern void Ui_DestroyPanelBase(void *, s32);
     extern u16 lbl_80367A58;
 
