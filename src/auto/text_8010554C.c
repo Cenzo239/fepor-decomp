@@ -4040,7 +4040,7 @@ after_loop:
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
 
-s32 fn_8010C4B0(void *arg0) {
+s32 Unit_HasLowHpAi(void *arg0) {
     void *Res_GetByName(s32);
     u8 fn_80102EA8();
     if (fn_80102EA8() != 0) {

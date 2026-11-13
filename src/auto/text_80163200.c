@@ -16075,7 +16075,7 @@ s32 fn_80182574(s32 arg0) {
     u8 fn_8010BB74(s32);
     u8 fn_8010BEB8(s32);
     u8 fn_8010C244(s32);
-    u8 fn_8010C4B0(s32);
+    u8 Unit_HasLowHpAi(s32);
     u8 Unit_IsLowHp(s32);
     u8 fn_8010F670(s32, void *);
     s32 Ai_UnitIsHostileToActive(void *);
@@ -16083,7 +16083,7 @@ s32 fn_80182574(s32 arg0) {
     if ((*(u8 *)(gAiState + 1) & 4) != 0) {
         return 1;
     }
-    if ((fn_8010F670(arg0, Ai_UnitIsHostileToActive) == 0) && (fn_8010C4B0(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
+    if ((fn_8010F670(arg0, Ai_UnitIsHostileToActive) == 0) && (Unit_HasLowHpAi(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
         if (fn_8010C244(arg0) != 0) {
             return 1;
         }

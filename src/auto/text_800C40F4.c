@@ -20818,7 +20818,7 @@ s32 fn_800FBB68(void) {
 }
 
 s32 fn_800FBBD8(void *arg0) {
-    u8 fn_8010C4B0(void *);
+    u8 Unit_HasLowHpAi(void *);
     u8 Unit_IsLowHp(void *);
     u8 fn_8010C244(void *);
     u8 fn_8010BEB8(void *);
@@ -20833,7 +20833,7 @@ s32 fn_800FBBD8(void *arg0) {
     if ((*(u8 *)(gAiState + 1) & 4) != 0) {
         return 1;
     }
-    if ((fn_8010C4B0(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
+    if ((Unit_HasLowHpAi(arg0) != 0) && (Unit_IsLowHp(arg0) != 0)) {
         if (fn_8010C244(arg0) != 0) {
             return 1;
         }
@@ -21833,7 +21833,7 @@ s32 Battle_BuildUnitScoreList(void) {
     s32 fn_800FCF48(u8, u8);
     u8 fn_80102EA8(void *);
     u8 Status_Test(void *, s32);
-    u8 fn_8010C4B0(void *);
+    u8 Unit_HasLowHpAi(void *);
     extern u8 gBattleState[];
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
@@ -21885,7 +21885,7 @@ s32 Battle_BuildUnitScoreList(void) {
             scoreScratch = neg + ((*(s8 *)((u8 *)unit + 0x248) + 0x80) << 16);
             if (Status_Test((void *)((s32)unit + 0x1BC), 0x18) != 0) {
                 result = scoreScratch + 0x578;
-            } else if (fn_8010C4B0(unit) != 0
+            } else if (Unit_HasLowHpAi(unit) != 0
                 && (*(u32 *)((u8 *)unit + 0x254) & 1)
                 && (fn_80102EA8(unit) == 0 || (u8)fn_80017318((u8 *)unit + 0x236) == 6)) {
                 floorPtr = &scoreScratch;
