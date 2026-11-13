@@ -11013,7 +11013,8 @@ extern "C" void fn_80178B98(void *arg0, void *arg1) {
 extern "C" M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" M2C_UNK Prim2D_SetColorByte(u8);
 extern "C" M2C_UNK Prim2D_SetAlphaByte(u8);
-extern "C" void UiObj_PrepareDraw(void *arg0, void *arg1) {
+extern "C" void UiObj_PrepareDraw(void *obj, void *node) {
+    /* Begin a Prim2D pass at the widget's x/y/z; dim alpha unless the node is focused. */
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
@@ -11037,23 +11038,23 @@ extern "C" void UiObj_PrepareDraw(void *arg0, void *arg1) {
         virtual void v18() = 0;
         virtual void v19() = 0;
         virtual void v20() = 0;
-        virtual s16 v21() = 0;
-        virtual s16 v22() = 0;
+        virtual s16 getX() = 0;
+        virtual s16 getY() = 0;
         virtual void v23() = 0;
         virtual void v24() = 0;
-        virtual f32 v25() = 0;
+        virtual f32 getZ() = 0;
     };
     extern f32 gF32_1;
-    bool flag;
+    bool focused;
 
     Prim2D_Begin();
-    Prim2D_SetTransform(((Obj *)arg0)->v21(), ((Obj *)arg0)->v22(), ((Obj *)arg0)->v25(), gF32_1);
+    Prim2D_SetTransform(((Obj *)obj)->getX(), ((Obj *)obj)->getY(), ((Obj *)obj)->getZ(), gF32_1);
     Prim2D_SetColorByte(0xFF);
-    flag = false;
-    if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
-        flag = true;
+    focused = false;
+    if (M2C_FIELD(node, u8 *, 0x2D) == 0 && M2C_FIELD(node, u8 *, 0x2E) == 0) {
+        focused = true;
     }
-    Prim2D_SetAlphaByte(flag ? 0x80 : 0x40);
+    Prim2D_SetAlphaByte(focused ? 0x80 : 0x40);
     Prim2D_PrepareTex();
 }
 
