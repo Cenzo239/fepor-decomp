@@ -1461,6 +1461,7 @@ void fn_801FFF08(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
+/* Convert any 2004-12-16 saves (MDST layouts) to the current format; repeat until none left. */
 void Save_MigrateLegacy(void) {
     void fn_800C426C(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -1474,51 +1475,51 @@ void Save_MigrateLegacy(void) {
     extern s32 gSaveDataBase;
     extern s32 gSaveMigrateCount;
 
-    s32 count;
+    s32 converted;
     s32 i;
     s32 j;
-    void *slot;
-    void *buf;
-    u8 ok;
-    void *buf2;
-    u8 ok2;
+    void *largeSlot;
+    void *smallBuf;
+    u8 smallOk;
+    void *largeBuf;
+    u8 largeOk;
 
     gSaveMigrateCount = 0;
     do {
-        count = 0;
+        converted = 0;
         i = 0;
         do {
             j = (s32)Save_GetSmallSlot(&gSaveDataBase, i);
             if ((void *)j != NULL && Save_IsValid((void *)j) != 0) {
                 switch (*(s32 *)((u8 *)(void *)j + 0x44)) {
-                case 0x20041216:
-                    ok = 0;
-                    buf = fn_800C4638(0x4000, lbl_80282008 + 0x91, 0);
+                case SAVE_VER_20041216:
+                    smallOk = 0;
+                    smallBuf = fn_800C4638(0x4000, lbl_80282008 + 0x91, 0);
                     if ((s32)*(u8 *)((u8 *)(void *)j + 0x230) == 0x4D &&
                         (s32)*(u8 *)((u8 *)(void *)j + 0x231) == 0x44 &&
                         (s32)*(u8 *)((u8 *)(void *)j + 0x232) == 0x53 &&
                         (s32)*(u8 *)((u8 *)(void *)j + 0x233) == 0x54) {
-                        memcpy(buf, (void *)j, 0x170);
-                        memset((u8 *)buf + 0x170, 0, 0x140);
-                        memcpy((u8 *)buf + 0x2B0, (u8 *)(void *)j + 0x210, 0x3D50);
-                        memcpy((void *)j, buf, 0x4000);
+                        memcpy(smallBuf, (void *)j, 0x170);
+                        memset((u8 *)smallBuf + 0x170, 0, 0x140);
+                        memcpy((u8 *)smallBuf + 0x2B0, (u8 *)(void *)j + 0x210, 0x3D50);
+                        memcpy((void *)j, smallBuf, 0x4000);
                         Save_BumpVersionChecksum((void *)j);
-                        ok = 1;
+                        smallOk = 1;
                     } else if ((s32)*(u8 *)((u8 *)(void *)j + 0x2D0) == 0x4D &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D1) == 0x44 &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D2) == 0x53 &&
                                (s32)*(u8 *)((u8 *)(void *)j + 0x2D3) == 0x54) {
                         Save_BumpVersionChecksum((void *)j);
-                        ok = 1;
+                        smallOk = 1;
                     }
-                    fn_800C426C(buf);
+                    fn_800C426C(smallBuf);
                     break;
                 default:
-                    ok = 0;
+                    smallOk = 0;
                     break;
                 }
-                if (ok != 0) {
-                    count += 1;
+                if (smallOk != 0) {
+                    converted += 1;
                     gSaveMigrateCount += 1;
                 }
             }
@@ -1526,43 +1527,43 @@ void Save_MigrateLegacy(void) {
         } while (i < 6);
         j = 0;
         do {
-            slot = Save_GetLargeSlot(&gSaveDataBase, j);
-            if (slot != NULL && Save_IsValid(slot) != 0) {
-                switch (*(s32 *)((u8 *)slot + 0x44)) {
-                case 0x20041216:
-                    ok2 = 0;
-                    buf2 = fn_800C4638(0x6000, lbl_80282008 + 0x91, 0);
-                    if ((s32)*(u8 *)((u8 *)slot + 0x230) == 0x4D &&
-                        (s32)*(u8 *)((u8 *)slot + 0x231) == 0x44 &&
-                        (s32)*(u8 *)((u8 *)slot + 0x232) == 0x53 &&
-                        (s32)*(u8 *)((u8 *)slot + 0x233) == 0x54) {
-                        memcpy(buf2, slot, 0x170);
-                        memset((u8 *)buf2 + 0x170, 0, 0x140);
-                        memcpy((u8 *)buf2 + 0x2B0, (u8 *)slot + 0x210, 0x5D50);
-                        memcpy(slot, buf2, 0x6000);
-                        Save_BumpVersionChecksum(slot);
-                        ok2 = 1;
-                    } else if ((s32)*(u8 *)((u8 *)slot + 0x2D0) == 0x4D &&
-                               (s32)*(u8 *)((u8 *)slot + 0x2D1) == 0x44 &&
-                               (s32)*(u8 *)((u8 *)slot + 0x2D2) == 0x53 &&
-                               (s32)*(u8 *)((u8 *)slot + 0x2D3) == 0x54) {
-                        Save_BumpVersionChecksum(slot);
-                        ok2 = 1;
+            largeSlot = Save_GetLargeSlot(&gSaveDataBase, j);
+            if (largeSlot != NULL && Save_IsValid(largeSlot) != 0) {
+                switch (*(s32 *)((u8 *)largeSlot + 0x44)) {
+                case SAVE_VER_20041216:
+                    largeOk = 0;
+                    largeBuf = fn_800C4638(0x6000, lbl_80282008 + 0x91, 0);
+                    if ((s32)*(u8 *)((u8 *)largeSlot + 0x230) == 0x4D &&
+                        (s32)*(u8 *)((u8 *)largeSlot + 0x231) == 0x44 &&
+                        (s32)*(u8 *)((u8 *)largeSlot + 0x232) == 0x53 &&
+                        (s32)*(u8 *)((u8 *)largeSlot + 0x233) == 0x54) {
+                        memcpy(largeBuf, largeSlot, 0x170);
+                        memset((u8 *)largeBuf + 0x170, 0, 0x140);
+                        memcpy((u8 *)largeBuf + 0x2B0, (u8 *)largeSlot + 0x210, 0x5D50);
+                        memcpy(largeSlot, largeBuf, 0x6000);
+                        Save_BumpVersionChecksum(largeSlot);
+                        largeOk = 1;
+                    } else if ((s32)*(u8 *)((u8 *)largeSlot + 0x2D0) == 0x4D &&
+                               (s32)*(u8 *)((u8 *)largeSlot + 0x2D1) == 0x44 &&
+                               (s32)*(u8 *)((u8 *)largeSlot + 0x2D2) == 0x53 &&
+                               (s32)*(u8 *)((u8 *)largeSlot + 0x2D3) == 0x54) {
+                        Save_BumpVersionChecksum(largeSlot);
+                        largeOk = 1;
                     }
-                    fn_800C426C(buf2);
+                    fn_800C426C(largeBuf);
                     break;
                 default:
-                    ok2 = 0;
+                    largeOk = 0;
                     break;
                 }
-                if (ok2 != 0) {
-                    count += 1;
+                if (largeOk != 0) {
+                    converted += 1;
                     gSaveMigrateCount += 1;
                 }
             }
             j += 1;
         } while (j < 2);
-    } while (count != 0);
+    } while (converted != 0);
 }
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
