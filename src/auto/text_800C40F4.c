@@ -13565,7 +13565,7 @@ extern "C" void UiObj_SetCamerasTransition(void *arg0, s32 arg1, s32 arg2, f32 f
         virtual s32 v10(void *, char *, s32) = 0;
     };
     extern char gUiClassNames[];
-    extern f32 lbl_80369F68;
+    extern f32 gFloat_1_0;
     u8 list[0x18];
     s32 count;
     s32 i;
@@ -13577,7 +13577,7 @@ extern "C" void UiObj_SetCamerasTransition(void *arg0, s32 arg1, s32 arg2, f32 f
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        Camera_SetTransition((void *)ObjList_Get(list, i), arg2, farg0, lbl_80369F68, arg1);
+        Camera_SetTransition((void *)ObjList_Get(list, i), arg2, farg0, gFloat_1_0, arg1);
     }
     ObjList_Destroy(list, -1);
 }
