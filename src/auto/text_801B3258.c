@@ -673,7 +673,7 @@ s32 fn_801B67D0(struct efUnit* arg0) {
     return 0;
 }
 
-void Ui_DrawExpBar(void *arg0) {
+void Ui_DrawExpBar(void *bar) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
@@ -699,38 +699,39 @@ void Ui_DrawExpBar(void *arg0) {
     extern f32 lbl_8036B1FC;
     extern f32 lbl_8036B200;
     extern f32 lbl_8036B204;
-    s32 rem;
-    s32 scaled;
-    u16 val;
+    s32 expPct;
+    s32 barW;
+    u16 exp;
 
-    val = *(u16 *)((u8 *)arg0 + 0x3E);
-    rem = val % 100;
+    // Draw EXP digits and a fill bar for the current EXP percent (0-99).
+    exp = *(u16 *)((u8 *)bar + 0x3E);
+    expPct = exp % 100;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B1DC, lbl_8036B1E0, lbl_8036B1E4, lbl_8036B1E8);
-    Prim2D_BindTexture(*(void **)((u8 *)arg0 + 0x40), 2, 0x11);
-    Prim2D_SetColorByte(*(u8 *)((u8 *)arg0 + 0x39));
+    Prim2D_BindTexture(*(void **)((u8 *)bar + 0x40), 2, 0x11);
+    Prim2D_SetColorByte(*(u8 *)((u8 *)bar + 0x39));
     Prim2D_PrepareTex();
-    fn_8005926C(0, 0, 0, 0, 0x13, 0x14, 0xF, rem);
-    scaled = (rem * 0xAF) / 100;
-    if (rem > 0 && scaled < 2) {
-        scaled = 2;
+    fn_8005926C(0, 0, 0, 0, 0x13, 0x14, 0xF, expPct);
+    barW = (expPct * 0xAF) / 100;
+    if (expPct > 0 && barW < 2) {
+        barW = 2;
     }
-    if (scaled > 0) {
+    if (barW > 0) {
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_8036B1EC, lbl_8036B1F0, lbl_8036B1E4, lbl_8036B1E8);
-        Prim2D_BindTexture(*(void **)((u8 *)arg0 + 0x40), 1, 0x11);
-        Prim2D_SetColorByte(*(u8 *)((u8 *)arg0 + 0x39));
+        Prim2D_BindTexture(*(void **)((u8 *)bar + 0x40), 1, 0x11);
+        Prim2D_SetColorByte(*(u8 *)((u8 *)bar + 0x39));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(2);
-        Prim2D_SetRectUv(lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, (f32)scaled, lbl_8036B1F4);
+        Prim2D_SetRectUv(lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, (f32)barW, lbl_8036B1F4);
         Prim2D_EmitQuad();
         Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
         Prim2D_EndPrim();
     }
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036B1F8, lbl_8036B1FC, lbl_8036B1E4, lbl_8036B1E8);
-    Prim2D_BindTexture(*(void **)((u8 *)arg0 + 0x40), 0, 0x11);
-    Prim2D_SetColorByte(*(u8 *)((u8 *)arg0 + 0x39));
+    Prim2D_BindTexture(*(void **)((u8 *)bar + 0x40), 0, 0x11);
+    Prim2D_SetColorByte(*(u8 *)((u8 *)bar + 0x39));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(2);
     Prim2D_SetRectUv(lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, lbl_8036B1B8, lbl_8036B200, lbl_8036B204);
