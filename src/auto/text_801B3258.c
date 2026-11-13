@@ -6881,7 +6881,7 @@ void fn_801C5B80(void *arg0) {
     void DCFlushRange(void *, u32);
     void *GActor_Create(void);
     void sprintf(void *, void *, ...);
-    void fn_8005F554(void *, void *);
+    void GActor_LoadGs(void *, void *);
     void GActor_LoadG(void *, void *);
     void fn_8005F5B4(void *, void *);
     void fn_8005F494(void *, void *);
@@ -7014,7 +7014,7 @@ void fn_801C5B80(void *arg0) {
 
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x194);
-    fn_8005F554(*(void **)((u8 *)self + 0x40), sp28);
+    GActor_LoadGs(*(void **)((u8 *)self + 0x40), sp28);
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x198);
     GActor_LoadG(*(void **)((u8 *)self + 0x40), sp28);

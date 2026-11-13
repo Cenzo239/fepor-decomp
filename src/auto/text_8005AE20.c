@@ -2293,7 +2293,7 @@ void GActor_LoadG(void *arg0, s32 arg1) {
     }
 }
 
-void fn_8005F554(void *arg0, void *arg1) {
+void GActor_LoadGs(void *arg0, void *arg1) {
     void *fn_8006CCBC(void *, void *);
     void fn_8006CC6C(void *);
     void *saved;
