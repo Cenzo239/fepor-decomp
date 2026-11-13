@@ -975,7 +975,8 @@ s32 fn_800A08FC(void) {
     return 2;
 }
 
-s32 MenuCmd_ToggleCursorMapObj(s32 a0, s32 a1, void *arg2) {
+/* Toggle show/hide of the map object under the battle cursor, then refresh the map. */
+s32 MenuCmd_ToggleCursorMapObj(s32 unused0, s32 unused1, void *item) {
     s32 Map_Get();
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     void fn_800498A4(s32, s32, s32);
@@ -983,29 +984,29 @@ s32 MenuCmd_ToggleCursorMapObj(s32 a0, s32 a1, void *arg2) {
     u8 MapObj_IsHidden(void);
     void fn_80044450(s32, s32);
     extern u8 gBattleState[];
-    f32 f31;
-    f32 f30;
-    s32 r31;
-    s32 tmp;
+    f32 cy;
+    f32 cx;
+    s32 obj;
+    s32 map;
 
-    (void)a0;
-    (void)a1;
-    if (*(u8 *)((u8 *)arg2 + 0x39) != 0) {
+    (void)unused0;
+    (void)unused1;
+    if (*(u8 *)((u8 *)item + 0x39) != 0) {
         return 0;
     }
-    f31 = *(f32 *)(gBattleState + 0x538);
-    f30 = *(f32 *)(gBattleState + 0x534);
-    tmp = Map_Get(gBattleState);
-    r31 = Map_FindObjAt(tmp, (s32)f30, (s32)f31, 0x800, 0x10);
-    if (r31 != 0) {
+    cy = *(f32 *)(gBattleState + 0x538);
+    cx = *(f32 *)(gBattleState + 0x534);
+    map = Map_Get(gBattleState);
+    obj = Map_FindObjAt(map, (s32)cx, (s32)cy, 0x800, 0x10);
+    if (obj != 0) {
         if (MapObj_IsHidden() != 0) {
-            fn_800498A4(r31, 0, 1);
+            fn_800498A4(obj, 0, 1);
             goto after;
         }
     }
-    if ((u32)r31 != 0) {
-        if (MapObj_IsVisible(r31) != 0) {
-            fn_800498A4(r31, 0, 0);
+    if ((u32)obj != 0) {
+        if (MapObj_IsVisible(obj) != 0) {
+            fn_800498A4(obj, 0, 0);
         }
     }
  after:
