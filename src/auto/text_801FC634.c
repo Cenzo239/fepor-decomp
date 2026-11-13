@@ -1457,6 +1457,8 @@ void fn_801FFEB0(s32 arg0) {
 }
 
 void fn_801FFF08(s32 arg0) {
+    void fn_801E2F9C(s32 *, s32);
+    extern s32 gSaveDataBase;
     fn_801E2F9C(&gSaveDataBase, arg0);
 }
 
