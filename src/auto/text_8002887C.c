@@ -34,7 +34,7 @@ void fn_8002887C(void) {
     s32 Unit_GetMov(void *);
     M2C_UNK fn_8003B69C(void *);
     M2C_UNK MapUi_ShowUnitRanges();
-    M2C_UNK fn_800F0C30(u8, u8, s32);
+    M2C_UNK MapCursor_InitTrail(u8, u8, s32);
     void *Map_GetCursorUnit();
     u8 temp_r31;
     u8 temp_r30;
@@ -44,7 +44,7 @@ void fn_8002887C(void) {
     MapUi_ShowUnitRanges();
     temp_r31 = M2C_FIELD(temp_r29, u8 *, 0x19F);
     temp_r30 = M2C_FIELD(temp_r29, u8 *, 0x19E);
-    fn_800F0C30(temp_r30, temp_r31, Unit_GetMov(temp_r29));
+    MapCursor_InitTrail(temp_r30, temp_r31, Unit_GetMov(temp_r29));
     fn_8003B69C(temp_r29);
 }
 
@@ -134,7 +134,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
     u8 fn_800281F4(void *);
     void Ui_ConfirmUnitAction(void *);
     void MapUi_ShowUnitRanges(void *);
-    void fn_800F0C30(u8, u8, s32);
+    void MapCursor_InitTrail(u8, u8, s32);
     extern u8 gUiContext[];
     u8 *ctx;
     s32 mode;
@@ -160,7 +160,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
         Ui_ConfirmUnitAction(gUiContext);
         unit = *(void **)gUiContext;
         MapUi_ShowUnitRanges(unit);
-        fn_800F0C30(
+        MapCursor_InitTrail(
             ((u8 *)unit)[0x19E],
             ((u8 *)unit)[0x19F],
             (s8)gUiContext[0x11]

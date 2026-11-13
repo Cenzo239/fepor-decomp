@@ -17279,7 +17279,7 @@ void fn_800F0BFC(s32 arg0, s32 arg1) {
     fn_800F0F90(lbl_8032B2B8, arg0, arg1);
 }
 
-void fn_800F0C30(s8 arg0, s8 arg1, s8 arg2) {
+void MapCursor_InitTrail(s8 arg0, s8 arg1, s8 arg2) {
     extern u8 lbl_8032B2B8[];
     lbl_8032B2B8[0] = arg0;
     lbl_8032B2B8[0x40] = arg1;
@@ -22314,17 +22314,22 @@ void fn_800FF948(void *arg0) {
     void Process_ClearFunc(void *);
     void fn_800F20E0(void);
     extern void *gPadInput;
-    void *self = arg0;
-    u32 buttons = *(u32 *)((u8 *)gPadInput + 4);
+    void *self;
+    u32 *pad;
+    s32 ctr;
 
-    if ((buttons & 0x1100) == 0) {
-        if (*(s32 *)((u8 *)self + 0x64) > 0x2D) {
+    self = arg0;
+    pad = (u32 *)gPadInput;
+    if ((pad[1] & 0x1100) == 0) {
+        ctr = *(s32 *)((u8 *)self + 0x64);
+        if (ctr > 0x2D) {
             Process_ClearFunc(self);
             return;
         }
     }
     fn_800F20E0();
-    *(s32 *)((u8 *)self + 0x64) = *(s32 *)((u8 *)self + 0x64) + 1;
+    ctr = *(s32 *)((u8 *)self + 0x64);
+    *(s32 *)((u8 *)self + 0x64) = ctr + 1;
 }
 
 void fn_800FF9A8(void *arg0) {
