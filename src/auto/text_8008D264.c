@@ -173,7 +173,7 @@ void UnitRef_Draw(void *ref, u8 selected, s32 x, s32 y) {
         Ui_DrawIcon(gUiIconDrawer, x, y, (u8)(*(void **)ref != NULL ? *((u8 *)*(void **)ref + 0x15) : 0) + 0x61);
     }
 }
-void fn_8008D6D8(void *arg0) {
+void MsgTip_Create(void *arg0) {
     M2C_UNK Process_Create(void *, s32);
     M2C_UNK Msg_Expand(void *);
     M2C_UNK fn_8023440C(void *, s32, s32);

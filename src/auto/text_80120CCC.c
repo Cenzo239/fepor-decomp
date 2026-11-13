@@ -3336,8 +3336,8 @@ s32 ScriptCmd_tt(s32 arg0) {
 }
 
 s32 fn_80127000(void *arg0) {
-    void fn_8008D6D8(void *, s32);
-    fn_8008D6D8(arg0, 0);
+    void MsgTip_Create(void *, s32);
+    MsgTip_Create(arg0, 0);
     return 1;
 }
 
