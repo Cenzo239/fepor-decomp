@@ -3660,7 +3660,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
     extern f64 __kcos_C3;
     extern f64 __kcos_C4;
     extern f64 __kcos_C5;
-    extern f64 lbl_8036C040;
+    extern f64 __kcos_C6;
     extern f64 lbl_8036C048;
     extern f64 lbl_8036C050;
     f64 qx;
@@ -3677,7 +3677,7 @@ f64 __kernel_cos(f64 farg0, f64 farg1) {
         }
     }
     z = x * x;
-    r = z * (((((lbl_8036C040 * z + __kcos_C5) * z + __kcos_C4) * z + __kcos_C3) * z + __kcos_C2) * z + __kcos_C1);
+    r = z * (((((__kcos_C6 * z + __kcos_C5) * z + __kcos_C4) * z + __kcos_C3) * z + __kcos_C2) * z + __kcos_C1);
     if (ix < 0x3FD33333) {
         return __kcos_one - ((lbl_8036C048 * z) - ((z * r) - (x * farg1)));
     }
