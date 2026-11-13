@@ -1069,13 +1069,14 @@ s16 fn_80164D9C(void *arg0) {
 }
 
 #pragma scheduling reset
-s16 UnitInv_FindFilledDown(void *arg0, s16 arg1) {
-    for (; arg1 >= 0; arg1--) {
-        if (IsSlotAvailable(arg0, arg1)) {
+/* Find the next filled inventory slot at or below startSlot, or -1 if none. */
+s16 UnitInv_FindFilledDown(void *inv, s16 startSlot) {
+    for (; startSlot >= 0; startSlot--) {
+        if (IsSlotAvailable(inv, startSlot)) {
             break;
         }
     }
-    return arg1;
+    return startSlot;
 }
 
 void fn_801650DC(void *arg0) {
