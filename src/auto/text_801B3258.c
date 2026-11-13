@@ -3637,7 +3637,7 @@ extern "C" void fn_801BC784(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-extern "C" void fn_801BC924(void *arg0) {
+extern "C" void Ui_InitUnitPanel(void *arg0) {
 void *Heap_Alloc(u32); void fn_801400F4(void *,void *);
 s32 strlen(const char *); void String_AssignCStr(void *,const void *,s32);
 void fn_800381EC(void *,s8); s32 fn_8003B2D0(void *);
