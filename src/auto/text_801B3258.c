@@ -5055,6 +5055,7 @@ void fn_801C0A9C(void *arg0) {
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 extern "C" void Ui_HandleScrollListInput(void *arg0) {
+    /* Handle scroll-list pad input: A confirm/error, X unit-info, B back; refresh popup on selection change. */
     void fn_8000C070(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8013FDA0(void *);
@@ -5095,24 +5096,24 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
         virtual Vec2s v9() = 0;
     };
 
-    void *obj;
+    void *list;
     register int btn;
     void *self;
     register u8 gate;
     register int flags;
-    u32 sp1C;
-    u32 sp18;
-    u32 sp14;
+    u32 pos1;
+    u32 pos2;
+    u32 pos3;
 
     self = arg0;
-    obj = Ui_FindChild(arg0, 0x81, 0);
-    btn = fn_801D2AAC(obj);
+    list = Ui_FindChild(arg0, 0x81, 0);
+    btn = fn_801D2AAC(list);
     fn_8013FDA0(self);
-    if (btn != fn_801D2AAC(obj)) {
-        fn_801D2AAC(obj);
+    if (btn != fn_801D2AAC(list)) {
+        fn_801D2AAC(list);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            *(Vec2s *)&sp1C = ((Obj *)obj)->v9();
-            Ui_ShowUnitInfoText(gUnitInfoPopup, fn_801D2C20(obj), (f32)*(s16 *)&sp1C, (f32)*((s16 *)&sp1C + 1));
+            *(Vec2s *)&pos1 = ((Obj *)list)->v9();
+            Ui_ShowUnitInfoText(gUnitInfoPopup, fn_801D2C20(list), (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
         }
     }
 
@@ -5125,16 +5126,16 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_801D2A38(obj) != 0) {
-                *(Vec2s *)&sp18 = ((Obj *)obj)->v9();
-                fn_80176888(gUiScrollListStrings + 0x54, self, (f32)*(s16 *)&sp18, (f32)*((s16 *)&sp18 + 1));
+            if (fn_801D2A38(list) != 0) {
+                *(Vec2s *)&pos2 = ((Obj *)list)->v9();
+                fn_80176888(gUiScrollListStrings + 0x54, self, (f32)*(s16 *)&pos2, (f32)*((s16 *)&pos2 + 1));
             } else {
                 Process_ClearFunc(self);
                 Ui_PlaySeCue(gUiScrollListStrings + 0x66, 0x64);
             }
         } else if ((btn & 0x800) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            *(Vec2s *)&sp14 = ((Obj *)obj)->v9();
-            Ui_OpenUnitInfoText(gUnitInfoPopup, self, fn_801D2C20(obj), (f32)*(s16 *)&sp14, (f32)*((s16 *)&sp14 + 1));
+            *(Vec2s *)&pos3 = ((Obj *)list)->v9();
+            Ui_OpenUnitInfoText(gUnitInfoPopup, self, fn_801D2C20(list), (f32)*(s16 *)&pos3, (f32)*((s16 *)&pos3 + 1));
             *(s32 *)gUnitInfoPopup = *(s32 *)gUnitInfoPopup | gUnitInfoPopupFlag;
         } else if ((btn & 0xa00) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
