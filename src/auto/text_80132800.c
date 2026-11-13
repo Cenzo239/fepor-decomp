@@ -5238,7 +5238,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
     void fn_8013BA08(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
-    extern u8 lbl_80291B1C[];
+    extern u8 gUiPanelExVtbl[];
     extern u8 gUiPanelMidVtbl[];
     extern u8 lbl_80295478[];
     ListNode *sp10;
@@ -5248,7 +5248,7 @@ extern "C" void *fn_8013B59C(void *arg0, s16 arg1) {
     Owner *a0;
     a0 = (Owner *)arg0;
     if (arg0 != NULL) {
-        a0->vtbl = lbl_80291B1C;
+        a0->vtbl = gUiPanelExVtbl;
         if (arg0 != NULL) {
             a0->vtbl = gUiPanelMidVtbl;
             if (&a0->subAC != NULL) {
