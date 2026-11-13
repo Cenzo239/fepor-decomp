@@ -10767,7 +10767,7 @@ void fn_8004C444(void *arg0) {
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
-void fn_8004C80C(void) {
+void Unit_DrawShadows(void) {
     void fn_80015320(s32, void *);
     void fn_8004CACC(void *, s32);
     void fn_80066D00(s32);
@@ -11049,8 +11049,8 @@ void fn_8004CACC(u8 *arg0, s32 arg1) {
 
 void fn_8004D370(void) {
     void fn_80067708(s32, s32, void (*)(void), s32);
-    void fn_8004C80C(void);
-    fn_80067708(2, 1, fn_8004C80C, 0);
+    void Unit_DrawShadows(void);
+    fn_80067708(2, 1, Unit_DrawShadows, 0);
 }
 
 void fn_8004D5D4(s32 arg0) {
