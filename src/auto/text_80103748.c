@@ -375,11 +375,11 @@ s32 fn_80103D7C(void) {
     void fn_800C3AB0(void *, void *);
     s32 fn_800C3D48(void *);
     extern char lbl_802734D0[];
-    extern u8 lbl_803200AC[0x640];
+    extern u8 gConvoy[0x640];
     char *str;
     u8 *obj;
 
-    obj = lbl_803200AC;
+    obj = gConvoy;
     str = lbl_802734D0;
     while (fn_800C3D48(obj) >= 0) {
         fn_800C3AB0(obj, str + 0x1B1);

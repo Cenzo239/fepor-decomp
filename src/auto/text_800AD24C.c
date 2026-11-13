@@ -3668,7 +3668,7 @@ s32 fn_800B72CC(void) {
     void fn_801E38E0(void *, s32);
     extern u8 lbl_8026ECB8[];
     extern u8 gBattleMap[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
@@ -3683,7 +3683,7 @@ s32 fn_800B72CC(void) {
     fn_8002297C(gBattleMap);
     fn_800BDED8(gBattleState + 0xB4);
     fn_8010FF90(lbl_8032BB58);
-    fn_800C341C(lbl_803200AC);
+    fn_800C341C(gConvoy);
     fn_800C32A4(lbl_803206EC);
     fn_8002297C(gBattleMap);
     return 1;
@@ -6283,7 +6283,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     void fn_800C35C4(void *, u32 *);
     u8 fn_8014D8DC(void *);
     extern u8 gUnits[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 gBattleState[];
     u32 *temp_r3;
     void *var_r31;
@@ -6303,7 +6303,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     if (*temp_r3 == 0U) {
         return 0;
     }
-    fn_800C35C4(lbl_803200AC, temp_r3);
+    fn_800C35C4(gConvoy, temp_r3);
     fn_800949A4(var_r31, (s8)arg1);
     return 1;
 }
@@ -6314,7 +6314,7 @@ s32 fn_800BBFD0(u8 arg0) {
     void fn_800C35C4(void *, u32 *);
     void fn_8001D580(u32 *);
     extern u8 gUnits[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     void *var_r30;
     u32 *temp_r3;
     s32 var_r28;
@@ -6331,7 +6331,7 @@ s32 fn_800BBFD0(u8 arg0) {
     do {
         temp_r3 = Unit_GetItemSlot(var_r30, var_r28);
         if ((temp_r3 != NULL) && (*temp_r3 != 0U)) {
-            fn_800C35C4(lbl_803200AC, temp_r3);
+            fn_800C35C4(gConvoy, temp_r3);
             fn_8001D580(temp_r3);
         }
         var_r28 += 1;

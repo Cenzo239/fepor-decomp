@@ -2082,7 +2082,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
     s8 fn_80091DE0(void *, s32);
     s32 fn_800C388C(void *, s32);
     extern u8 gUnits[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     u8 sp8[8];
     s32 temp;
     void *unit;
@@ -2096,7 +2096,7 @@ s32 Unit_MatchesId(void *arg0, s32 arg1) {
         temp = M2C_FIELD(arg0, s32 *, 0x18C);
         return temp == Job_GetByJid(arg1);
     case 3:
-        if (fn_800C388C(lbl_803200AC, arg1) >= 0) {
+        if (fn_800C388C(gConvoy, arg1) >= 0) {
             return 1;
         }
         Allegiance_FillMask(4, sp8);

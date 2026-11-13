@@ -16879,7 +16879,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     extern u8 lbl_8027E980[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
@@ -16991,7 +16991,7 @@ loop:
         fn_80016A3C(&w);
     }
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
-    fn_800C33C0(lbl_803200AC, &w);
+    fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
@@ -17309,7 +17309,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     extern u8 lbl_8027E980[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
@@ -17631,7 +17631,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
         fn_80016A3C(&w);
     }
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
-    fn_800C33C0(lbl_803200AC, &w);
+    fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);
@@ -17668,7 +17668,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     extern u8 lbl_8027E980[];
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 lbl_803206EC[];
     extern u8 lbl_8032BB58[];
     extern u8 gBattleState[];
@@ -17780,7 +17780,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
         fn_80016A3C(&w);
     }
     fn_8017A38C(&w, lbl_8027E980 + 0x15E);
-    fn_800C33C0(lbl_803200AC, &w);
+    fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x163);
     fn_800C2980(lbl_803206EC, &w);
     fn_8017A38C(&w, lbl_8027E980 + 0x168);

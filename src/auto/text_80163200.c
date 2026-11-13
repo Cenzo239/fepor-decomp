@@ -6553,7 +6553,7 @@ void fn_8016FF34(void *arg0) {
     s16 fn_80164E78(void *, s32);
     extern u8 lbl_80294B10[];
     extern u32 gUiContext[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     void *base;
     void *obj;
     s8 i;
@@ -6568,8 +6568,8 @@ void fn_8016FF34(void *arg0) {
         if (*slot != 0) {
             temp = Item_GetFlagsPtr(slot);
             if ((*(u64 *)temp & 0x200ULL) == 0) {
-                if ((s16)fn_800C3D48(lbl_803200AC) >= 0) {
-                    if (fn_800C3C1C(lbl_803200AC, slot) != 0) {
+                if ((s16)fn_800C3D48(gConvoy) >= 0) {
+                    if (fn_800C3C1C(gConvoy, slot) != 0) {
                         fn_8001D580(slot);
                     }
                 } else {
@@ -8197,7 +8197,7 @@ extern u32 gUiInputFlags;
 extern void *gPadInput;
 extern s32 gUnitInfoPopupFlag;
 extern u8 gUiMsgPopupProc[];
-extern u8 lbl_803200AC[];
+extern u8 gConvoy[];
 extern u32 gUiContext[];
 extern u8 lbl_80294B10[];
 class Vec2s {
@@ -8278,9 +8278,9 @@ fn_801436AC(r28, *r27b);
 fn_80143C9C(r28);
 fn_8001D580(*r27b);
 if (r25) {
-s32 idx = fn_800C3D48(lbl_803200AC);
-fn_800C3C1C(lbl_803200AC, sp28);
-void *slot = lbl_803200AC + (idx << 3);
+s32 idx = fn_800C3D48(gConvoy);
+fn_800C3C1C(gConvoy, sp28);
+void *slot = gConvoy + (idx << 3);
 fn_801439F0(r28, slot, 0);
 fn_80143570(r28);
 ((Obj2 *)r28)->v11(((Obj2 *)r28)->v14(slot));
@@ -8577,7 +8577,7 @@ extern "C" void fn_801743B4(void *arg0) {
     extern u32 gUiContext[];
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
-    extern u32 lbl_803200AC[];
+    extern u32 gConvoy[];
 
     struct Obj {
         virtual void v0() = 0;
@@ -8780,7 +8780,7 @@ loop2_cond:
 
     if (fn_8014D8DC(gBattleState) != 0) {
         dst3 = *(void **)((u8 *)self + 0x54);
-        walk = lbl_803200AC;
+        walk = gConvoy;
         i = 0;
         while (i < 0xC8) {
             if (*(u32 *)walk != 0) {
@@ -9094,7 +9094,7 @@ extern "C" void fn_801752EC(void *arg0) {
     extern u32 gUiContext[];
     extern u8 gUnitLists[];
     extern u8 gBattleState[];
-    extern u32 lbl_803200AC[];
+    extern u32 gConvoy[];
 
     struct Obj {
         virtual void v0() = 0;
@@ -9319,7 +9319,7 @@ loop2_cond:
 
     if (fn_8014D8DC(gBattleState) != 0) {
         dst3 = *(void **)((u8 *)self + 0x54);
-        walk = lbl_803200AC;
+        walk = gConvoy;
         i = 0;
         while (i < 0xC8) {
             if (*(u32 *)walk != 0) {
@@ -10858,7 +10858,7 @@ extern "C" void fn_801788A0(void *arg0) {
     s32 fn_800C3E54(void *);
     extern u16 gUiMsgStrings[];
     extern f32 lbl_8036AB80;
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
 
     s32 x;
     s32 y;
@@ -10872,7 +10872,7 @@ extern "C" void fn_801788A0(void *arg0) {
     x = *(s16 *)((u8 *)arg0 + 0x3C);
     y = *(s16 *)((u8 *)arg0 + 0x3E);
     Text_Draw((s16)x, (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x618));
-    result = fn_800C3E54(lbl_803200AC);
+    result = fn_800C3E54(gConvoy);
     x = (s16)x;
     Text_Draw((s16)(x + 0x40), (s16)y, 1, (u8 *)gUiMsgStrings + 0x62D, result, 0xC8);
     Text_Draw((s16)(x + 0xA0), (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x63E));
@@ -11347,8 +11347,8 @@ void *fn_80179274(void) {
 
 u8 fn_80179284(void) {
  s32 fn_800C3E54(void *);
- extern u8 lbl_803200AC[];
- s32 result=fn_800C3E54(lbl_803200AC);
+ extern u8 gConvoy[];
+ s32 result=fn_800C3E54(gConvoy);
  result=(u32)(-result|result)>>31;
  if(result) result=0; else result=2;
  return (u8)result;
@@ -11437,14 +11437,14 @@ void *fn_801795C0(void) {
 
 s32 fn_801795D0(void *arg0) {
 void *Item_GetFlagsPtr(void *); u32 *Unit_GetItemSlot(void *, s32); u8 fn_80093088(void *); s32 fn_800C3D48(void *); u8 Status_Test(void *, s32);
-extern u32 gUiContext[]; extern u8 lbl_803200AC[];
+extern u32 gUiContext[]; extern u8 gConvoy[];
 s8 i; u8 flag; void *base;
 flag=1; base=(void*)gUiContext[0];
 if(Status_Test((u8*)base+0x1BC,8)) {
 for(i=0;i<8;i++) { u32 *slot=Unit_GetItemSlot(base,i); if(*slot) { if((*(unsigned long long*)Item_GetFlagsPtr(slot)&0x200ULL)==0) {flag=0; break;} } }
 } else flag=fn_80093088(base);
 if(flag) { *((u8*)arg0+4)=0; return 2; }
-if(fn_800C3D48(lbl_803200AC)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
+if(fn_800C3D48(gConvoy)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
 }
 
 #pragma cplusplus on

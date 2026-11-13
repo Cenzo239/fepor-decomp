@@ -476,7 +476,7 @@ void fn_801AEE58(void) {
 void fn_801AF020(void *arg0) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     s32 Ui_ListGetSelected(void *);
     void fn_80094ABC(s32, void *);
     u8 fn_8014D8DC(void *);
@@ -502,7 +502,7 @@ void fn_801AF020(void *arg0) {
         if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x54) + 0x4E) != 0x7FFF) {
             fn_80094ABC(Ui_ListGetSelected(*(void **)((u8 *)arg0 + 0x54)), r31);
         } else if (fn_8014D8DC(gBattleState) != 0) {
-            fn_800C3C1C(lbl_803200AC, r31);
+            fn_800C3C1C(gConvoy, r31);
         }
         gBattleState[0x51] = 1;
         break;
@@ -740,7 +740,7 @@ void fn_801AF6BC(void *arg0) {
     extern u32 *gPadInput;
     extern u8 lbl_8027BD18[];
     extern u8 gBattleState[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern f32 lbl_8036B0AC;
 
     typedef void (*VFn2)(void *, s32);
@@ -855,7 +855,7 @@ void fn_801AF6BC(void *arg0) {
                 return;
             }
             Ui_PlaySeCue(lbl_8027BD18 + 0x37E, 0x64);
-            if (fn_800C3D48(lbl_803200AC) < 0) {
+            if (fn_800C3D48(gConvoy) < 0) {
                 fn_8011D79C(*(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x64));
                 res = *(void **)(*(u8 **)((u8 *)self + 0x6C) + 0x7C);
                 tmp = Ui_FindChild(self, -0x1000, 0);
@@ -2304,7 +2304,7 @@ void fn_801B2C58(void *arg0) {
     u32 Ui_FindChild(void *, M2C_UNK, M2C_UNK, void *);
     M2C_UNK Ui_SetWidgetText(s32);
     extern u8 gUnits[101760];
-    extern u8 lbl_803200AC[1600];
+    extern u8 gConvoy[1600];
     u8 sp10[16];
     int var_r29;
     u8 var_r30;
@@ -2333,7 +2333,7 @@ void fn_801B2C58(void *arg0) {
             break;
         }
     }
-    if (var_r30 == 0 && fn_800C3D48(lbl_803200AC) >= 0) {
+    if (var_r30 == 0 && fn_800C3D48(gConvoy) >= 0) {
         var_r30 = 1;
     }
     if (var_r30 != 0) {

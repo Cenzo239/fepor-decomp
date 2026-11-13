@@ -2682,6 +2682,7 @@ void fn_8018B89C(void *arg0) {
     void *self;
     void *p;
     f64 d;
+    f32 cos_s;
     f32 scale;
     f32 z;
 
@@ -2690,10 +2691,11 @@ void fn_8018B89C(void *arg0) {
     *(f32 *)((u8 *)self + 0x44) =
         *(f32 *)((u8 *)self + 0x44) + *(f32 *)((u8 *)self + 0x34);
     d = fn_80238638(*(f32 *)((u8 *)self + 0x44));
+    cos_s = (f32)d;
     scale = *(f32 *)((u8 *)self + 0x3C);
     p = *(void **)((u8 *)self + 0x30);
     z = lbl_8036ACEC;
-    *(f32 *)((u8 *)p + 0x10) = scale * (f32)d;
+    *(f32 *)((u8 *)p + 0x10) = scale * cos_s;
     *(f32 *)((u8 *)p + 0x14) = z;
     *(f32 *)((u8 *)p + 0x18) = z;
     if (*(s32 *)((u8 *)self + 0x40) >= *(s32 *)((u8 *)self + 0x38)) {
@@ -2742,23 +2744,26 @@ void fn_8018BA34(void *arg0) {
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD2C;
     extern f32 lbl_8036AD48;
-    f32 thresh;
+    void *unit;
+    s16 raw;
     f32 scale;
-    f32 temp_f2;
-    f32 temp_f3;
+    f32 thresh;
+    f32 a;
+    f32 b;
 
-    thresh = lbl_8036AD2C;
+    unit = *(void **)((u8 *)arg0 + 0x30);
+    raw = *(s16 *)((u8 *)unit + 0x15C);
     scale = lbl_8036ACE8;
-    *(f32 *)((u8 *)arg0 + 0x40) =
-        (f32)*(s16 *)(*(u8 **)((u8 *)arg0 + 0x30) + 0x15C) / scale;
+    thresh = lbl_8036AD2C;
+    *(f32 *)((u8 *)arg0 + 0x40) = (f32)raw / scale;
     *(f32 *)((u8 *)arg0 + 0x44) = *(f32 *)((u8 *)arg0 + 0x34);
-    temp_f3 = *(f32 *)((u8 *)arg0 + 0x40);
-    temp_f2 = *(f32 *)((u8 *)arg0 + 0x44);
-    if ((f32)__fabs((f64)(temp_f3 - temp_f2)) > thresh) {
-        if (temp_f3 < temp_f2) {
-            *(f32 *)((u8 *)arg0 + 0x40) = temp_f3 + lbl_8036AD48;
-        } else if (temp_f3 > temp_f2) {
-            *(f32 *)((u8 *)arg0 + 0x44) = temp_f2 + lbl_8036AD48;
+    a = *(f32 *)((u8 *)arg0 + 0x40);
+    b = *(f32 *)((u8 *)arg0 + 0x44);
+    if ((f32)__fabs(a - b) > thresh) {
+        if (a < b) {
+            *(f32 *)((u8 *)arg0 + 0x40) = a + lbl_8036AD48;
+        } else if (a > b) {
+            *(f32 *)((u8 *)arg0 + 0x44) = b + lbl_8036AD48;
         }
     }
     *(s32 *)((u8 *)arg0 + 0x3C) = 0;
@@ -3961,7 +3966,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         u8 flags;
         u8 pad[2];
     } Entry;
-    extern Entry lbl_803200AC[];
+    extern Entry gConvoy[];
     s32 spC;
     s32 sp8;
     Entry *e;
@@ -3986,7 +3991,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         target = M2C_FIELD(arg0, void **, 0x40);
         count = 0;
         if (target != NULL) {
-            e = lbl_803200AC;
+            e = gConvoy;
             dummy = count;
             for (ctr = 0x28; ctr != 0; ctr--) {
                 p0 = e->ptr;
@@ -4084,7 +4089,7 @@ extern "C" s32 fn_8018F374(void *arg0) {
         u8 flags;
         u8 pad[2];
     } Entry;
-    extern Entry lbl_803200AC[];
+    extern Entry gConvoy[];
     Entry *e;
     void *p0;
     s32 i;
@@ -4125,7 +4130,7 @@ loop2_test:
     if (unit != NULL) {
         goto loop2_body;
     }
-    e = lbl_803200AC;
+    e = gConvoy;
     for (i = 0; i < 200; i++) {
         p0 = e->ptr;
         if (p0 != NULL && (e->flags & 0x3F) == 0 && target == p0) {
@@ -4267,7 +4272,7 @@ extern "C" void fn_8018FC1C(void *arg0) {
 #pragma use_lmw_stmw on
 extern "C" s32 fn_8018FC58(void *arg0) {
 void **Unit_GetHeldItemSlot(void *,s32);
-extern u32 gUnitLists[]; extern u32 lbl_803200AC[];
+extern u32 gUnitLists[]; extern u32 gConvoy[];
 u8 *self=(u8 *)arg0; s32 total;
 {
 u8 *unit; u8 *target=*(u8 **)(self+0x3C); u8 *next; s32 count,i; u8 *entry; void *item;
@@ -4287,7 +4292,7 @@ total+=CountUnitItemReferences(unit,target);
 }
 }
 {
-u8 *entry=(u8 *)lbl_803200AC;
+u8 *entry=(u8 *)gConvoy;
 u8 *target=*(u8 **)(self+0x3C);
 s32 i;
 for(i=0;i<200;i++,entry+=8) {
@@ -5345,7 +5350,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     void fn_80176888(void *, void *, f32, f32);
     void fn_80193344(void *);
     extern u8 lbl_80279DF0[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 gBattleState[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -5485,7 +5490,7 @@ extern "C" void fn_80191F2C(void *arg0) {
                 fn_80176888(lbl_80279DF0 + 0x4CC, self, (f32)*(s16 *)&pos, (f32)*((s16 *)&pos + 1));
             } else {
                 Ui_PlaySeCue(lbl_80279DF0 + 0x4BC, 0x64);
-                if (fn_800C3D48(lbl_803200AC) < 0) {
+                if (fn_800C3D48(gConvoy) < 0) {
                     fn_8011D79C(*(s32 *)(*(u8 **)((u8 *)self + 0x68) + 0x38));
                     nest = *(void **)((u8 *)self + 0x68);
                     saved = *(s32 *)((u8 *)nest + 0x54);
@@ -6104,7 +6109,7 @@ void fn_80193668(void *arg0) {
     extern u8 lbl_80293C58[];
     extern u8 lbl_80279DF0[];
     extern u8 gUnits[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern f32 lbl_8036AE20;
     extern f32 lbl_8036AE30;
     u8 sp8[8];
@@ -6188,7 +6193,7 @@ void fn_80193668(void *arg0) {
         }
     }
     if (found == 0) {
-        if (fn_800C39A4(lbl_803200AC, key) >= 0) {
+        if (fn_800C39A4(gConvoy, key) >= 0) {
             found = 1;
         }
     }
@@ -6941,7 +6946,7 @@ extern "C" void fn_80194988(void *arg0) {
     void Ui_SetWidgetText(u32, s32);
     extern struct { void *head; s32 unk4; s32 unk8; } gUnitLists[];
     extern u8 gBattleState[];
-    extern u32 lbl_803200AC[];
+    extern u32 gConvoy[];
 
     struct Obj {
         virtual void v0();
@@ -7051,7 +7056,7 @@ loop2_cond:
 
     if (fn_8014D8DC(gBattleState) != 0) {
         dst = *(void **)((u8 *)self + 0x40);
-        walk = lbl_803200AC;
+        walk = gConvoy;
         i = 0;
         while (i < 0xC8) {
             if (*(u32 *)walk != 0) {

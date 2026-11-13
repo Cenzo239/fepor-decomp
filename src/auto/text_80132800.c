@@ -4051,7 +4051,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
         s16 GetLineHeight() { return M2C_FIELD(this, s16 *, 0x5A); }
     };
     extern u8 lbl_802768A0[];
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern u8 gBattleState[];
     extern f32 lbl_8036A674;
     extern f32 lbl_8036A6A0;
@@ -4084,7 +4084,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1) {
     lineHeight = ((Obj *)arg0)->GetLineHeight();
     y = (lineHeight - Text_MeasureHeight(-1, lbl_8036A674)) >> 1;
     flag = 0;
-    if (!fn_8014D8DC(gBattleState) || fn_800C3D48(lbl_803200AC) < 0) {
+    if (!fn_8014D8DC(gBattleState) || fn_800C3D48(gConvoy) < 0) {
         flag = 1;
     }
     shadow = 6;

@@ -1053,21 +1053,21 @@ s32 fn_800A0B44(s32 arg0, s32 arg1) {
 char *fn_800A0B70(void) {
     s32 fn_800C3E54(void *);
     void sprintf(void *, void *, ...);
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     extern char lbl_80312378[];
     extern u8 lbl_8026D8D8[];
 
-    sprintf(lbl_80312378, lbl_8026D8D8 + 0x558, fn_800C3E54(lbl_803200AC));
+    sprintf(lbl_80312378, lbl_8026D8D8 + 0x558, fn_800C3E54(gConvoy));
     return lbl_80312378;
 }
 
 u8 fn_800A0BC0(void) {
     s32 fn_800C3E54(void *);
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
     s32 result;
     s32 ret;
 
-    result = fn_800C3E54(lbl_803200AC);
+    result = fn_800C3E54(gConvoy);
     ret = 2;
     if (result != 0) {
         ret = 0;
@@ -1078,12 +1078,12 @@ u8 fn_800A0BC0(void) {
 s32 fn_800A0BFC(s32 arg0, s32 arg1, void *arg2) {
     void fn_800056A0(s32);
     s32 fn_800C3468(void *);
-    extern u8 lbl_803200AC[];
+    extern u8 gConvoy[];
 
     if (*(u8 *)((char *)arg2 + 0x39) != 0) {
         return 0;
     }
-    fn_800C3468(lbl_803200AC);
+    fn_800C3468(gConvoy);
     fn_800056A0(0);
     return 0;
 }
@@ -2613,7 +2613,7 @@ extern u16 lbl_8026D8D8;
 extern u16 lbl_8026D8D8;
 extern u16 lbl_8026D8D8;
 extern u16 lbl_8026D8D8;
-extern u8 lbl_803200AC[];
+extern u8 gConvoy[];
 #include "global.h"
 extern u32* gPadInput;
 extern u8 gBattleState[];
@@ -2626,6 +2626,6 @@ extern u16 gItemMenuTextBuf;
 extern u8 gBattleState[1400];
 #include "global.h"
 
-extern u8 lbl_803200AC[];
+extern u8 gConvoy[];
 extern u16 lbl_80367100;
 extern s32 fn_800C3468(u16*);
