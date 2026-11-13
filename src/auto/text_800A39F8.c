@@ -2464,7 +2464,8 @@ void fn_800A8BD8(void *arg0) {
 
 #pragma optimization_level 2
 #pragma opt_common_subs off
-void Ui_DrawPromptSprites(void *arg0) {
+/* Advance the frame counter and draw the prompt base sprite plus two pulsing overlays. */
+void Ui_DrawPromptSprites(void *proc) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Prim2D_SetAlpha(s32);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -2502,13 +2503,13 @@ void Ui_DrawPromptSprites(void *arg0) {
         u16 x;
         u16 y;
     } st;
-    f32 f31;
-    s32 ctr;
-    s32 tmp;
+    f32 pulse;
+    s32 frame;
+    s32 shade;
     void *self;
 
-    self = arg0;
-    *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
+    self = proc;
+    *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)proc + 0x34) + 1;
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BAC, lbl_80369BB0);
     Prim2D_PrepareTex();
@@ -2522,10 +2523,10 @@ void Ui_DrawPromptSprites(void *arg0) {
     Prim2D_SetRect(lbl_80369BB4, lbl_80369BB8, (f32)(u32)st.x, (f32)(u32)st.y);
     Prim2D_EndPrim();
     if (*(u8 *)((u8 *)self + 0x38) == 0 || !(*(s32 *)((u8 *)self + 0x34) & 4)) {
-        ctr = *(s32 *)((u8 *)self + 0x34);
-        f31 = Math_Ease(0, lbl_80369BBC, lbl_80369BC0, (f32)(ctr % 60), lbl_80369BC4);
-        if (f31 > lbl_80369BCC) {
-            f31 = lbl_80369BC8 - f31;
+        frame = *(s32 *)((u8 *)self + 0x34);
+        pulse = Math_Ease(0, lbl_80369BBC, lbl_80369BC0, (f32)(frame % 60), lbl_80369BC4);
+        if (pulse > lbl_80369BCC) {
+            pulse = lbl_80369BC8 - pulse;
         }
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BD0, lbl_80369BB0);
@@ -2538,12 +2539,12 @@ void Ui_DrawPromptSprites(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_80369BD4, lbl_80369BD8, (f32)(u32)st.x, (f32)(u32)st.y);
-        Prim2D_SetAlpha((s32)f31);
+        Prim2D_SetAlpha((s32)pulse);
         Prim2D_EndPrim();
-        ctr = *(s32 *)((u8 *)self + 0x34);
-        f31 = Math_Ease(0, lbl_80369BDC, lbl_80369BE0, (f32)(ctr % 180), lbl_80369BE4);
-        if (f31 > lbl_80369BCC) {
-            f31 = lbl_80369BC8 - f31;
+        frame = *(s32 *)((u8 *)self + 0x34);
+        pulse = Math_Ease(0, lbl_80369BDC, lbl_80369BE0, (f32)(frame % 180), lbl_80369BE4);
+        if (pulse > lbl_80369BCC) {
+            pulse = lbl_80369BC8 - pulse;
         }
         Prim2D_Begin();
         Prim2D_SetTransform(lbl_80369BA8, lbl_80369BA8, lbl_80369BE8, lbl_80369BB0);
@@ -2556,12 +2557,11 @@ void Ui_DrawPromptSprites(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         Prim2D_SetRect(lbl_80369BEC, lbl_80369BF0, (f32)(u32)st.x, (f32)(u32)st.y);
-        tmp = (s32)f31;
-        Prim2D_SetColor(tmp, tmp, tmp, 0xFF);
+        shade = (s32)pulse;
+        Prim2D_SetColor(shade, shade, shade, 0xFF);
         Prim2D_EndPrim();
     }
 }
-
 void fn_800A8F94(s32 arg0) {
 void *fn_80109180(void *, s32); void fn_80148618(void *, s32);
 extern u8 lbl_8026E470[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
