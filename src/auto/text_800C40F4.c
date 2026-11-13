@@ -3128,7 +3128,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     void fn_801CA1DC(void *, void *);
     u32 strlen(const char *);
     extern char lbl_802704F8[];
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
 
     struct Obj {
         u8 pad[0x10];
@@ -3253,7 +3253,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
 
         vret = ((Obj *)*(void **)(self + 4))->v2(base + 0x1DF, String_CStr(&sp94));
         if (vret != 0) {
-            fn_801CA1DC(lbl_803682B8, vret);
+            fn_801CA1DC(gCameraWin, vret);
         }
         String_Destroy(&sp10, -1);
     }
@@ -3487,7 +3487,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void fn_801CA1DC(void *, void *);
     u32 strlen(const char *);
     extern char lbl_802704F8[];
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
 
     struct Obj {
         u8 pad[0x10];
@@ -3603,7 +3603,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         fn_800E8154(*(void **)((u8 *)self + 4), &sp34);
         vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, String_CStr(&spA0));
         if (vret != 0) {
-            fn_801CA1DC(lbl_803682B8, vret);
+            fn_801CA1DC(gCameraWin, vret);
         }
         String_Destroy(&sp34, -1);
         String_Destroy(&sp94, -1);
@@ -3628,7 +3628,7 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
         fn_800E8154(*(void **)((u8 *)self + 4), &sp1C);
         vret = ((Obj *)*(void **)((u8 *)self + 4))->v2(lbl_802704F8 + 0x1DF, String_CStr(&sp7C));
         if (vret != 0) {
-            fn_801CA1DC(lbl_803682B8, vret);
+            fn_801CA1DC(gCameraWin, vret);
         }
         String_Destroy(&sp1C, -1);
         String_Destroy(&sp70, -1);
@@ -4401,7 +4401,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     extern s32 lbl_80367890;
     extern s8 lbl_80367894;
     extern u8 *gGame;
-    extern u8 *lbl_803682B8;
+    extern u8 *gCameraWin;
     extern f32 lbl_80369DC8;
     extern f32 lbl_80369DCC;
     extern f32 lbl_80369DD4;
@@ -4472,13 +4472,13 @@ extern "C" void fn_800CFDDC(void *arg0) {
         if (self[0x195] == 0) {
             self[0x195] = 1;
             self[0x194] = 1;
-            fn_800D75C4(lbl_803682B8);
+            fn_800D75C4(gCameraWin);
             self[0x196] = 0;
             fn_800E76D0(*(void **)(self + 4), self[0x196]);
         } else {
             self[0x195] = 0;
             self[0x194] = 0;
-            fn_800D758C(lbl_803682B8);
+            fn_800D758C(gCameraWin);
             String_AssignCStr(self + 0xB8, lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0));
             self[0x196] = 1;
             fn_800E76D0(*(void **)(self + 4), self[0x196]);
@@ -4486,15 +4486,15 @@ extern "C" void fn_800CFDDC(void *arg0) {
         self[0x194] = 1;
     }
     if (pressed & 0x200) {
-        if (lbl_803682B8[0x420] == 0) {
-            fn_800D75C4(lbl_803682B8);
+        if (gCameraWin[0x420] == 0) {
+            fn_800D75C4(gCameraWin);
         } else {
-            fn_800D758C(lbl_803682B8);
+            fn_800D758C(gCameraWin);
         }
     }
     if (self[0x195] != 0) {
-        fn_800D74FC(lbl_803682B8);
-        fn_801C9D94(sp48, lbl_803682B8);
+        fn_800D74FC(gCameraWin);
+        fn_801C9D94(sp48, gCameraWin);
         String_Assign(self + 0xB8, sp48, 0, -1);
         String_Destroy(sp48, -1);
         fn_800E7B80(*(void **)(self + 4), self + 0xB8);
@@ -4505,7 +4505,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
         self[0x196] = 0;
         fn_800E76D0(*(void **)(self + 4), self[0x196]);
         self[0x195] = 0;
-        fn_800D758C(lbl_803682B8);
+        fn_800D758C(gCameraWin);
     }
     if (pressed & 0x800) {
         msg = lbl_80366E48[lbl_80367890];
@@ -4887,7 +4887,7 @@ extern "C" void *GameScene_Create(void *arg0)
     extern s64 OSGetTime(void);
     extern char lbl_802704F8[];
     extern u8 lbl_80367878;
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     extern void *gGame;
     extern void *lbl_8036787C;
     extern u32 gBattle[];
@@ -5310,15 +5310,15 @@ extern "C" void *GameScene_Create(void *arg0)
     allocation3 = (void *)Heap_Alloc(0x454);
 
     if (allocation3 != 0) {
-        lbl_803682B8 = CameraWin_Create(
+        gCameraWin = CameraWin_Create(
             allocation3,
             *(void **)(obj + 0x8),
             0x190,
             0x96
         );
 
-        fn_800D758C(lbl_803682B8);
-        fn_800D7564(lbl_803682B8);
+        fn_800D758C(gCameraWin);
+        fn_800D7564(gCameraWin);
     }
 
     if (lbl_80367878 == 0) {
@@ -5568,7 +5568,7 @@ extern "C" void *GameScene_Create(void *arg0)
     String_Destroy(&pairA, -1);
 
     /* Checkpoint: global initialization and persistent strings. */
-    fn_801CA1B8(lbl_803682B8);
+    fn_801CA1B8(gCameraWin);
 
     length = strlen(lbl_802704F8 + 0x1B0);
     String_AssignCStr(obj + 0xC4, lbl_802704F8 + 0x1B0, length);

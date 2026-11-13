@@ -8852,7 +8852,7 @@ s32 CameraWin_OnCancel(void) {
     u32 strlen(const char *);
     extern char CameraWin_str[];
     extern void *gGame;
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     struct Str {
         u32 size;
         u32 cap;
@@ -8867,7 +8867,7 @@ s32 CameraWin_OnCancel(void) {
     u32 len;
 
     sp38.cap = 0;
-    temp = lbl_803682B8;
+    temp = gCameraWin;
     sp2C.cap = 0;
     sp38.size = 0;
     sp38.data = 0;
@@ -8910,10 +8910,10 @@ s32 fn_801C98EC(void) {
     s32 fn_8011C984(s32, s32);
     s32 fn_8011C9E4(s32);
     void fn_801CAF94(s32, s32, s32, s32, s32);
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     void *temp_r31;
 
-    temp_r31 = lbl_803682B8;
+    temp_r31 = gCameraWin;
     fn_801CAF94(
         fn_8011C984(M2C_FIELD(temp_r31, s32 *, 0x430), fn_8011C9E4(M2C_FIELD(temp_r31, s32 *, 0x430))),
         0, 0, 0, 1);
@@ -8931,7 +8931,7 @@ s32 fn_801C9940(void) {
     void fn_800E8FCC(f32 *, void *);
     void fn_800DBB74(f32 *, void *);
     f32 fn_800E9018(void *);
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
 
     f32 z1;
     f32 y1;
@@ -8947,8 +8947,8 @@ s32 fn_801C9940(void) {
     f32 f1;
     u32 slot;
 
-    index = (s32)fn_800DC3B0(*(void **)((u8 *)lbl_803682B8 + 0x438));
-    obj = lbl_803682B8;
+    index = (s32)fn_800DC3B0(*(void **)((u8 *)gCameraWin + 0x438));
+    obj = gCameraWin;
     obj = (void *)fn_8011C984(*(s32 *)((u8 *)obj + 0x430), fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
     result = fn_801CAF2C(obj, index);
     fn_800E8FCC(sp14, obj = fn_801CAF8C(obj));
@@ -8960,7 +8960,7 @@ s32 fn_801C9940(void) {
     y2 = sp8[1];
     z2 = sp8[2];
     f1 = fn_800E9018(obj);
-    slot = *(u32 *)((u8 *)*(void **)((u8 *)lbl_803682B8 + 0x42C) + (index << 2));
+    slot = *(u32 *)((u8 *)*(void **)((u8 *)gCameraWin + 0x42C) + (index << 2));
     *(f32 *)((u8 *)result + 0x00) = x1;
     *(f32 *)((u8 *)result + 0x04) = y1;
     *(f32 *)((u8 *)result + 0x08) = z1;
@@ -8983,14 +8983,14 @@ s32 fn_801C9A90(void) {
     s32 fn_8011C9E4(s32);
     void CameraWin_LoadList(void *, s32);
     void fn_801CACE4(void *, s32);
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     s32 temp_r30;
     void *temp_r31;
 
-    temp_r30 = fn_800DC3B0(M2C_FIELD(lbl_803682B8, s32 *, 0x438));
-    temp_r31 = lbl_803682B8;
+    temp_r30 = fn_800DC3B0(M2C_FIELD(gCameraWin, s32 *, 0x438));
+    temp_r31 = gCameraWin;
     fn_801CACE4((void *)fn_8011C984(M2C_FIELD(temp_r31, s32 *, 0x430), fn_8011C9E4(M2C_FIELD(temp_r31, s32 *, 0x430))), temp_r30);
-    CameraWin_LoadList(lbl_803682B8, fn_8011C9E4(M2C_FIELD(lbl_803682B8, s32 *, 0x430)));
+    CameraWin_LoadList(gCameraWin, fn_8011C9E4(M2C_FIELD(gCameraWin, s32 *, 0x430)));
     return 0;
 }
 
@@ -8999,20 +8999,20 @@ s32 fn_801C9C5C(void) {
     s32 fn_8011C984(s32, s32);
     s32 fn_8011C9E4(s32);
     void fn_801CADBC(s32, s32);
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     void *temp_r31;
     s32 temp_r31_2;
     s32 temp_r0;
 
-    temp_r31 = lbl_803682B8;
+    temp_r31 = gCameraWin;
     temp_r31_2 = fn_8011C984(M2C_FIELD(temp_r31, s32 *, 0x430), fn_8011C9E4(M2C_FIELD(temp_r31, s32 *, 0x430)));
-    temp_r0 = fn_800DC3B0(M2C_FIELD(lbl_803682B8, s32 *, 0x438));
+    temp_r0 = fn_800DC3B0(M2C_FIELD(gCameraWin, s32 *, 0x438));
     fn_801CADBC(temp_r31_2, temp_r0);
     return 0;
 }
 
 s32 fn_801C9CBC(void) {
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
     void String_Assign(void *, void *, s32, s32);
     void String_Destroy(void *, s32);
     void fn_801C9D94(void *, void *);
@@ -9031,7 +9031,7 @@ s32 fn_801C9CBC(void) {
     s32 handle;
 
     sp14.cap = 0;
-    obj = lbl_803682B8;
+    obj = gCameraWin;
     sp14.size = 0;
     sp14.data = 0;
     sp14.cap = 0;
@@ -9039,7 +9039,7 @@ s32 fn_801C9CBC(void) {
     handle = fn_8011C984(*(s32 *)((u8 *)obj + 0x430),
                          fn_8011C9E4(*(s32 *)((u8 *)obj + 0x430)));
 
-    fn_801C9D94(&sp8, lbl_803682B8);
+    fn_801C9D94(&sp8, gCameraWin);
     String_Assign(&sp14, &sp8, 0, -1);
     String_Destroy(&sp8, -1);
     fn_801CAF58((void *)handle, &sp14);
@@ -9051,10 +9051,10 @@ s32 fn_801C9CBC(void) {
 s32 fn_801C9D58(void) {
     s32 fn_8011C9E4(s32);
     void CameraWin_LoadList(void *, s32);
-    extern void *lbl_803682B8;
+    extern void *gCameraWin;
 
-    s32 temp_r3 = fn_8011C9E4(*(s32 *)((char *)lbl_803682B8 + 0x430));
-    CameraWin_LoadList(lbl_803682B8, temp_r3);
+    s32 temp_r3 = fn_8011C9E4(*(s32 *)((char *)gCameraWin + 0x430));
+    CameraWin_LoadList(gCameraWin, temp_r3);
     return 0;
 }
 
@@ -18931,7 +18931,7 @@ extern u16 lbl_802842A4[5];
 extern u16 lbl_802842B8[6];
 extern s16 *gUiUnitPanelStrings;
 
-extern void *lbl_803682B8;
+extern void *gCameraWin;
 extern u8 lbl_802986A8[];
 extern u16 lbl_8027C370[];
 extern u16 gUnitLists[];
