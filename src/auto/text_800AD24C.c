@@ -816,7 +816,8 @@ void fn_800AE9CC(void) {
     fn_800555EC(var_r3, 0);
 }
 
-void Battle_DrawPhaseBanner(void *arg0) {
+/* Draw the player/enemy phase banner as two full-width gradient bars. */
+void Battle_DrawPhaseBanner(void *proc) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -843,17 +844,17 @@ void Battle_DrawPhaseBanner(void *arg0) {
     extern s32 gPhaseBannerTopColor1;
     extern s32 gPhaseBannerBottomColor0;
     extern s32 gPhaseBannerBottomColor1;
-    s32 sp24;
-    s32 sp20;
-    s32 sp1C;
-    s32 sp18;
-    s32 sp14;
-    s32 sp10;
-    s32 spC;
-    s32 sp8;
-    s32 temp_r31;
+    s32 topC0;
+    s32 topC1;
+    s32 topBlack0;
+    s32 topBlack1;
+    s32 botBlack0;
+    s32 botBlack1;
+    s32 botC0;
+    s32 botC1;
+    s32 alpha;
 
-    temp_r31 = *(s32 *)((u8 *)arg0 + 0x34);
+    alpha = *(s32 *)((u8 *)proc + 0x34);
     Prim2D_Begin();
     {
         f32 z = gPhaseBannerZero;
@@ -861,27 +862,27 @@ void Battle_DrawPhaseBanner(void *arg0) {
         Prim2D_SetTransform(z, z, o, o);
     }
     Prim2D_SetTex(0, 0x12);
-    Prim2D_SetColorByte((u8)temp_r31);
+    Prim2D_SetColorByte((u8)alpha);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(gPhaseBannerPrimParam);
     Prim2D_SetRect(gPhaseBannerZero, gPhaseBannerTopY, gPhaseBannerWidth, gPhaseBannerBarH);
     Prim2D_EmitQuad();
-    sp18 = gPhaseBannerBlack1;
-    sp1C = gPhaseBannerBlack0;
-    sp20 = gPhaseBannerTopColor1;
-    sp24 = gPhaseBannerTopColor0;
-    Prim2D_SetCornerColors(&sp24, &sp20, &sp1C, &sp18);
+    topBlack1 = gPhaseBannerBlack1;
+    topBlack0 = gPhaseBannerBlack0;
+    topC1 = gPhaseBannerTopColor1;
+    topC0 = gPhaseBannerTopColor0;
+    Prim2D_SetCornerColors(&topC0, &topC1, &topBlack0, &topBlack1);
     Prim2D_EndPrim();
     Prim2D_AddPrim(3);
     Prim2D_SetPrimParam(gPhaseBannerPrimParam);
     Prim2D_SetRect(gPhaseBannerZero, gPhaseBannerBottomY, gPhaseBannerWidth, gPhaseBannerBarH);
     Prim2D_EmitQuad();
-    sp8 = gPhaseBannerBottomColor1;
-    spC = gPhaseBannerBottomColor0;
-    sp10 = gPhaseBannerBlack3;
-    sp14 = gPhaseBannerBlack2;
-    Prim2D_SetCornerColors(&sp14, &sp10, &spC, &sp8);
+    botC1 = gPhaseBannerBottomColor1;
+    botC0 = gPhaseBannerBottomColor0;
+    botBlack1 = gPhaseBannerBlack3;
+    botBlack0 = gPhaseBannerBlack2;
+    Prim2D_SetCornerColors(&botBlack0, &botBlack1, &botC0, &botC1);
     Prim2D_EndPrim();
     Prim2D_ResetState();
 }
