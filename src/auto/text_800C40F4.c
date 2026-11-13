@@ -11286,7 +11286,7 @@ void Win_DrawColorRect(void *arg0) {
     M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     extern f32 gWinDrawZero;
-    extern f32 lbl_80369EEC;
+    extern f32 gWinDrawOne;
     M2C_UNK var_r30;
     s32 temp_r29;
     s32 temp_r28;
@@ -11304,7 +11304,7 @@ void Win_DrawColorRect(void *arg0) {
         var_r30 = 0x800;
     }
     Prim2D_Begin();
-    Prim2D_SetTransform(gWinDrawZero, gWinDrawZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), lbl_80369EEC);
+    Prim2D_SetTransform(gWinDrawZero, gWinDrawZero, (f32) M2C_FIELD(arg0, s32 *, 0x44), gWinDrawOne);
     Prim2D_SetTex(0, var_r30);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
