@@ -2823,7 +2823,8 @@ void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     fn_8007D004(arg5, var_r7, (f32) arg0, (f32) arg1, (f32) var_r5, (f32) arg3);
 }
 
-void Ui_DrawRouteTexCw(s32 arg0, s32 arg1, u8 arg2) {
+void Ui_DrawRouteTexCw(s32 x, s32 y, u8 flipV) {
+    /* Draw route.tpl atlas tile 0x14 at (x, y), rotated 90° CW; optionally flip V. */
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2839,16 +2840,16 @@ void Ui_DrawRouteTexCw(s32 arg0, s32 arg1, u8 arg2) {
     extern s32 gUiRouteAtlas;
     extern f64 lbl_803696E8;
     extern f64 lbl_803696F0;
-    struct { u8 buf[0x20]; u16 x; u16 y; } sp;
+    struct { u8 buf[0x20]; u16 w; u16 h; } sp;
     Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x14);
-    sp.x = GXGetTexObjWidth(sp.buf);
-    sp.y = GXGetTexObjHeight(sp.buf);
+    sp.w = GXGetTexObjWidth(sp.buf);
+    sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin();
     Prim2D_SetTex(sp.buf, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(2);
-    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)sp.y, (f32)sp.x);
-    if (arg2 != 0) Prim2D_SwapUvV();
+    Prim2D_SetRect((f32)x, (f32)y, (f32)sp.h, (f32)sp.w);
+    if (flipV != 0) Prim2D_SwapUvV();
     Prim2D_EmitQuad();
     Prim2D_RotateUvCw();
     Prim2D_EndPrim();
