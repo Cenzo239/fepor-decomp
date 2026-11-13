@@ -21964,53 +21964,54 @@ void fn_800FEC0C(void) {
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
 
-void Sort_Three(s32 *arg0, s32 *arg1, s32 *arg2, u8 (*cmp)(s32, s32)) {
-    s32 *a2;
-    s32 *a1;
-    s32 *a0;
-    s32 z1;
-    u8 (*c)(s32, s32);
+void Sort_Three(s32 *left, s32 *mid, s32 *right, u8 (*less)(s32, s32)) {
+    s32 *c;
+    s32 *b;
+    s32 *a;
+    s32 rightBeforeLeft;
+    u8 (*cmp)(s32, s32);
 
-    a2 = arg2;
-    a1 = arg1;
-    a0 = arg0;
-    c = cmp;
+    /* Sort three elements in place so *left <= *mid <= *right per cmp. */
+    c = right;
+    b = mid;
+    a = left;
+    cmp = less;
 
-    z1 = ((u8)c(*a2, *a0) == 0);
+    rightBeforeLeft = ((u8)cmp(*c, *a) == 0);
     {
-        s32 z2 = ((u8)c(*a1, *a2) == 0);
-        if ((u8)z1) {
-            if ((u8)z2) {
+        s32 midBeforeRight = ((u8)cmp(*b, *c) == 0);
+        if ((u8)rightBeforeLeft) {
+            if ((u8)midBeforeRight) {
                 return;
             }
         }
-        if ((u8)z1) {
+        if ((u8)rightBeforeLeft) {
             goto sort;
         }
-        if ((u8)z2) {
+        if ((u8)midBeforeRight) {
             goto sort;
         }
         {
-            s32 tmp = *a0;
-            *a0 = *a1;
-            *a1 = tmp;
+            s32 tmp = *a;
+            *a = *b;
+            *b = tmp;
         }
         return;
     }
 sort:
-    if ((u8)c(*a1, *a0) != 0) {
-        s32 tmp = *a0;
-        *a0 = *a1;
-        *a1 = tmp;
+    if ((u8)cmp(*b, *a) != 0) {
+        s32 tmp = *a;
+        *a = *b;
+        *b = tmp;
     }
-    if ((u8)z1) {
-        s32 tmp = *a1;
-        *a1 = *a2;
-        *a2 = tmp;
+    if ((u8)rightBeforeLeft) {
+        s32 tmp = *b;
+        *b = *c;
+        *c = tmp;
     } else {
-        s32 tmp = *a0;
-        *a0 = *a2;
-        *a2 = tmp;
+        s32 tmp = *a;
+        *a = *c;
+        *c = tmp;
     }
 }
 
