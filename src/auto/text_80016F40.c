@@ -970,57 +970,58 @@ void fn_8001885C(void) {
     }
 }
 
-s32 Camera_HasMoved(u8 arg0) {
+/* Returns 1 if active cam look-at (XY) or eye moved past the last snapshot beyond a threshold. */
+s32 Camera_HasMoved(u8 tight) {
     extern f32 gCamEyeMoveThreshLoose;
-    f32 var_f2;
-    u8 r;
-    void *p;
-    void *q;
+    f32 thresh;
+    u8 moved;
+    void *cam;
+    void *cam2;
 
-    p = (void *) gActiveCam;
-    if (p == NULL) {
-        r = 0;
+    cam = (void *) gActiveCam;
+    if (cam == NULL) {
+        moved = 0;
     } else {
         if ((u8) gActiveCamIndex == 0) {
-            M2C_FIELD(p, f32 *, 0x4C) = M2C_FIELD(gBattleState, f32 *, 0x52C);
-            M2C_FIELD(p, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
-            M2C_FIELD(p, f32 *, 0x54) = M2C_FIELD(gBattleState, f32 *, 0x53C);
+            M2C_FIELD(cam, f32 *, 0x4C) = M2C_FIELD(gBattleState, f32 *, 0x52C);
+            M2C_FIELD(cam, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
+            M2C_FIELD(cam, f32 *, 0x54) = M2C_FIELD(gBattleState, f32 *, 0x53C);
         }
-        p = (void *) gActiveCam;
-        var_f2 = lbl_80368C8C;
-        if (arg0 != 0) {
-            var_f2 = gCamAtMoveThreshTight;
+        cam = (void *) gActiveCam;
+        thresh = lbl_80368C8C;
+        if (tight != 0) {
+            thresh = gCamAtMoveThreshTight;
         }
-        if ((f32) __fabs((f64) (M2C_FIELD(p, f32 *, 0x4C) - M2C_FIELD(p, f32 *, 0x40))) > var_f2) {
-            r = 1;
-        } else if ((f32) __fabs((f64) (M2C_FIELD(p, f32 *, 0x50) - M2C_FIELD(p, f32 *, 0x44))) > var_f2) {
-            r = 1;
+        if ((f32) __fabs((f64) (M2C_FIELD(cam, f32 *, 0x4C) - M2C_FIELD(cam, f32 *, 0x40))) > thresh) {
+            moved = 1;
+        } else if ((f32) __fabs((f64) (M2C_FIELD(cam, f32 *, 0x50) - M2C_FIELD(cam, f32 *, 0x44))) > thresh) {
+            moved = 1;
         } else {
-            r = 0;
+            moved = 0;
         }
     }
-    if (r == 1) {
+    if (moved == 1) {
         return 1;
     }
-    q = (void *) gActiveCam;
-    if (q == NULL) {
-        r = 0;
+    cam2 = (void *) gActiveCam;
+    if (cam2 == NULL) {
+        moved = 0;
     } else {
-        var_f2 = gCamEyeMoveThreshLoose;
-        if (arg0 != 0) {
-            var_f2 = lbl_80368C8C;
+        thresh = gCamEyeMoveThreshLoose;
+        if (tight != 0) {
+            thresh = lbl_80368C8C;
         }
-        if ((f32) __fabs((f64) (M2C_FIELD(q, f32 *, 0x4) - M2C_FIELD(q, f32 *, 0x10))) > var_f2) {
-            r = 1;
-        } else if ((f32) __fabs((f64) (M2C_FIELD(q, f32 *, 0x8) - M2C_FIELD(q, f32 *, 0x14))) > var_f2) {
-            r = 1;
-        } else if ((f32) __fabs((f64) (M2C_FIELD(q, f32 *, 0xC) - M2C_FIELD(q, f32 *, 0x18))) > var_f2) {
-            r = 1;
+        if ((f32) __fabs((f64) (M2C_FIELD(cam2, f32 *, 0x4) - M2C_FIELD(cam2, f32 *, 0x10))) > thresh) {
+            moved = 1;
+        } else if ((f32) __fabs((f64) (M2C_FIELD(cam2, f32 *, 0x8) - M2C_FIELD(cam2, f32 *, 0x14))) > thresh) {
+            moved = 1;
+        } else if ((f32) __fabs((f64) (M2C_FIELD(cam2, f32 *, 0xC) - M2C_FIELD(cam2, f32 *, 0x18))) > thresh) {
+            moved = 1;
         } else {
-            r = 0;
+            moved = 0;
         }
     }
-    if (r != 1) {
+    if (moved != 1) {
         goto zero;
     }
     return 1;
