@@ -4403,7 +4403,7 @@ s32 Unit_Read(void *unit, void *stream) {
 void fn_8003CA94(void *arg0, s32 arg1) {
     void Stream_WriteU16(s32, u16);
     void Stream_WriteU8(s32, u8);
-    void fn_8017A430(s32, s32, void *);
+    void Stream_Write(s32, s32, void *);
     void fn_80104160(void *, s32);
     void fn_80105A30(void *, s32);
     s32 Unit_GetItemSlot(s32, s32);
@@ -4452,20 +4452,20 @@ void fn_8003CA94(void *arg0, s32 arg1) {
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19D));
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19E));
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x19F));
-    fn_8017A430(arg1, 4, (u8 *)arg0 + 0x1A0);
+    Stream_Write(arg1, 4, (u8 *)arg0 + 0x1A0);
     fn_80104160((u8 *)arg0 + 0x1A4, arg1);
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A8));
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1A9));
     Stream_WriteU8(arg1, *((u8 *)arg0 + 0x1AA));
-    fn_8017A430(arg1, 8, (u8 *)arg0 + 0x1AB);
-    fn_8017A430(arg1, 8, (u8 *)arg0 + 0x1B4);
+    Stream_Write(arg1, 8, (u8 *)arg0 + 0x1AB);
+    Stream_Write(arg1, 8, (u8 *)arg0 + 0x1B4);
     fn_80105A30((u8 *)arg0 + 0x1BC, arg1);
     for (i = 0; i < 8; i++) {
         fn_8001C21C((void *)Unit_GetItemSlot((s32)arg0, i), arg1);
     }
     fn_8001D044((u8 *)arg0 + 0x20C, arg1);
     fn_800174A8((u8 *)arg0 + 0x228, arg1);
-    fn_8017A430(arg1, 0xA, (u8 *)arg0 + 0x214);
+    Stream_Write(arg1, 0xA, (u8 *)arg0 + 0x214);
     fn_8003C3CC(arg0, arg1);
     fn_8004BCCC(arg0, arg1);
     Stream_WriteU16(arg1, 0);

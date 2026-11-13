@@ -9327,7 +9327,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
     void fn_800DF6DC(void *, void *);
     void *Heap_Alloc(s32);
     void *fn_800C4638(s32, char *, s32);
-    void fn_8017A430(void *, s32, char *);
+    void Stream_Write(void *, s32, char *);
     void fn_8017A310(void *, char *);
     extern char lbl_8027DAB0[];
     extern u8 lbl_802842A4[];
@@ -9422,7 +9422,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
     }
     {
         char *s = String_CStr(&sp2C);
-        fn_8017A430(arg0, sp2C.size, s);
+        Stream_Write(arg0, sp2C.size, s);
     }
     fn_8017A310(arg0, String_CStr(arg1));
     if (arg0 != 0) {

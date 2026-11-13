@@ -492,8 +492,8 @@ void fn_80104134(s32 arg0, s32 arg1) {
 }
 
 void fn_80104160(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8017A430(s32, M2C_UNK, s32);
-    fn_8017A430(arg1, 4, arg0);
+    M2C_UNK Stream_Write(s32, M2C_UNK, s32);
+    Stream_Write(arg1, 4, arg0);
 }
 
 s32 fn_8010418C(void *arg0, s32 arg1) {

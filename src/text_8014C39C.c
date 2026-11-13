@@ -37,7 +37,7 @@ extern u8 lbl_80367B0D;
 
 extern u16 *g_AccessoryArray;
 
-void fn_8017A430(void *, s32, void *);
+void Stream_Write(void *, s32, void *);
 void Stream_WriteU8(void *, u8);
 void Stream_WriteS32(void *, s32);
 void Stream_WriteU16(void *, u16);
@@ -88,7 +88,7 @@ extern u8 lbl_8032BB58[];
 extern u8 gBattleState[];
 
 void BattleState_Write(void *arg0, void *arg1) {
-    void fn_8017A430(void *, s32, void *);
+    void Stream_Write(void *, s32, void *);
     void Stream_WriteU8(void *, u8);
     void Stream_WriteU16(void *, u16);
     void Stream_WriteS32(void *, s32);
@@ -101,7 +101,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     void fn_800BDAF8(void *, void *);
     s32 i;
 
-    fn_8017A430(arg1, 0x10, arg0);
+    Stream_Write(arg1, 0x10, arg0);
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x10));
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x11));
     Stream_WriteU16(arg1, (u16)*(s16 *)((u8 *)arg0 + 0x12));
@@ -110,7 +110,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     }
     Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x18));
     Stream_WriteS32(arg1, *(s32 *)((u8 *)arg0 + 0x1c));
-    fn_8017A430(arg1, 0x30, (u8 *)arg0 + 0x20);
+    Stream_Write(arg1, 0x30, (u8 *)arg0 + 0x20);
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x50));
     Stream_WriteU8(arg1, *(u8 *)((u8 *)arg0 + 0x51));
     Stream_WriteU8(arg1, (u8)(s32)*(f32 *)((u8 *)arg0 + 0x524));
@@ -131,7 +131,7 @@ void BattleState_Write(void *arg0, void *arg1) {
     fn_80014F94((u8 *)arg0 + 0x98, arg1);
     fn_80199B88((u8 *)arg0 + 0x9c, arg1);
     fn_800BDAF8((u8 *)arg0 + 0xb4, arg1);
-    fn_8017A430(arg1, 0x140, (u8 *)arg0 + 0x3c4);
+    Stream_Write(arg1, 0x140, (u8 *)arg0 + 0x3c4);
     fn_8017A480(arg1, 0x18, (u8 *)arg0 + 0x504);
     fn_8017A3E0(arg1, 8, 0);
 }

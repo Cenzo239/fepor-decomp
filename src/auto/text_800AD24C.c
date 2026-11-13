@@ -9193,11 +9193,11 @@ void fn_800C2930(s32 arg0, s32 arg1) {
 }
 
 void fn_800C2980(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8017A430(s32, s32, s32);
+    M2C_UNK Stream_Write(s32, s32, s32);
     M2C_UNK fn_801A7CDC(void *);
     extern u8 lbl_80330EAC[];
     fn_801A7CDC(lbl_80330EAC);
-    fn_8017A430(arg1, 0x480, arg0);
+    Stream_Write(arg1, 0x480, arg0);
 }
 
 s32 fn_800C29D0(s32 arg0, s32 arg1) {

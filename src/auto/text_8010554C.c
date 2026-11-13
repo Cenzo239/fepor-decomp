@@ -264,8 +264,8 @@ void fn_80105A04(s32 arg0, s32 arg1) {
 }
 
 void fn_80105A30(s32 arg0, s32 arg1) {
-    M2C_UNK fn_8017A430(s32, M2C_UNK, s32);
-    fn_8017A430(arg1, 0x10, arg0);
+    M2C_UNK Stream_Write(s32, M2C_UNK, s32);
+    Stream_Write(arg1, 0x10, arg0);
 }
 
 s32 fn_80105A5C(s32 *arg0) {
@@ -5666,7 +5666,7 @@ void fn_8010FB7C(s32 arg0, s32 arg1) {
 }
 
 void fn_8010FBA8(s32 arg0, s32 arg1) {
-    fn_8017A430(arg1, 0x204, arg0);
+    Stream_Write(arg1, 0x204, arg0);
 }
 
 void fn_8010FBD4(void) {
