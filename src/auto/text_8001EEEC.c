@@ -2111,7 +2111,7 @@ void fn_80023ED0(void) {
 }
 
 #pragma cplusplus on
-extern "C" f32 fn_80023EE0(void *arg0) {
+extern "C" f32 UiWin_GetFade(void *arg0) {
     struct Model {
         u8 pad[4];
         virtual void v0() = 0;

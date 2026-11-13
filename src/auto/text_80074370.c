@@ -339,7 +339,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
         virtual void v17() = 0;
         virtual s16 v18() = 0;
     };
-    f32 fn_80023EE0(void *);
+    f32 UiWin_GetFade(void *);
     void Prim2D_Begin(void);
     void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
@@ -350,7 +350,7 @@ extern "C" void fn_80074C44(void *arg0, void *arg1) {
     void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
     f32 t;
 
-    t = fn_80023EE0(arg1);
+    t = UiWin_GetFade(arg1);
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
@@ -452,7 +452,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     extern f32 lbl_8036939C;
     extern f32 lbl_803693A0;
     extern u8 lbl_8026C0B8[];
-    extern f32 fn_80023EE0(void *);
+    extern f32 UiWin_GetFade(void *);
     extern void Prim2D_Begin(void);
     extern void Prim2D_SetColorByte(s32);
     extern void Prim2D_PrepareTex(void);
@@ -476,7 +476,7 @@ void fn_80074F20(void *arg0, void *arg1) {
     u32 *vtable;
 
     vtable = (u32 *)*(u32 *)((u8 *)arg0 + 4);
-    t = fn_80023EE0(arg1);
+    t = UiWin_GetFade(arg1);
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
@@ -1107,7 +1107,7 @@ extern "C" void Prim2D_AddZ(f32);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 Text_MeasureHeight(s32, f32);
-extern "C" f32 fn_80023EE0(void *);
+extern "C" f32 UiWin_GetFade(void *);
 extern "C" void fn_80070F54(void *, void *, f32, f32);
 extern "C" void fn_80071410(void *, void *, f32, f32);
 extern "C" void fn_8007149C(void *, void *, f32, f32, s32, s32);
@@ -1139,7 +1139,7 @@ extern "C" void BattleInfoWin_Draw(void *arg0, void *arg1) {
     extern u8 gBattle[];
     f32 t;
 
-    t = fn_80023EE0(arg1);
+    t = UiWin_GetFade(arg1);
     *(s16 *)((u8 *)arg1 + 0x30) = 0;
     *(s16 *)((u8 *)arg1 + 0x32) = 0;
     Prim2D_Begin();
