@@ -6442,14 +6442,14 @@ void fn_80193F3C(void) {
 #pragma cplusplus on
 extern "C" void Ui_DestroyPanelBase(void *, s32);
 extern "C" void fn_80193F5C(void *arg0) {
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
     };
     Obj *obj;
 
-    lbl_80367A58 &= ~0x10;
+    gUiPanelFlags &= ~0x10;
     if (arg0 != NULL) {
         obj = *(Obj **)((u8 *)arg0 + 0x40);
         if (obj != NULL) {

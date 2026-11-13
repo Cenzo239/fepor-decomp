@@ -94,7 +94,7 @@ void fn_80120E4C(void *arg0) {
 }
 
 void fn_80120F0C(void) {
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u32 lbl_80367110;
     extern u8 lbl_80290200[];
 
@@ -106,8 +106,8 @@ void fn_80120F0C(void) {
     u16 a;
     u16 *p;
 
-    p = &lbl_80367A58;
-    a = lbl_80367A58;
+    p = &gUiPanelFlags;
+    a = gUiPanelFlags;
     b = *(u16 *)((s8 *)p + 2);
 
     lbl_80367110 |= 2;
@@ -122,7 +122,7 @@ void fn_80120F0C(void) {
         }
     }
 
-    lbl_80367A58 = a;
+    gUiPanelFlags = a;
     *(u16 *)((s8 *)p + 2) = b;
 }
 
@@ -131,12 +131,12 @@ void fn_80120F94(void)
     void *Process_Find(void *);
     void Process_Unlink(void);
     void Process_ClearFunc(void);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
     extern u8 lbl_80290200[];
     void *p;
 
-    if ((lbl_80367A58 & 0x0040) == 0) {
+    if ((gUiPanelFlags & 0x0040) == 0) {
         p = Process_Find(lbl_80290200);
         if (p != NULL) {
             if ((gUiInputFlags & 3) != 0) {
@@ -156,7 +156,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void strcpy(void *, void *);
     u8 Text_MeasureWidth(void *, s32, f32);
     extern u8 lbl_80290200[];
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
 
     {
@@ -170,7 +170,7 @@ void fn_80120FE8(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
             Process_Unlink(obj);
         }
     }
-    if (lbl_80367A58 & 0x40) {
+    if (gUiPanelFlags & 0x40) {
         return;
     }
     {
@@ -665,7 +665,7 @@ void fn_80122114(void *arg0, u8 arg1)
 }
 
 void fn_80122170(void *arg0, void *arg1, u16 arg2) {
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     extern u8 gBattleState[];
     extern u8 lbl_802902D8[];
@@ -676,7 +676,7 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
     u16 a2;
 
     a2 = arg2;
-    if (!(lbl_80367A58 & 0x200)) {
+    if (!(gUiPanelFlags & 0x200)) {
         flags = gUiInputFlags;
         switch (flags & 3) {
         case 0:
@@ -695,13 +695,13 @@ void fn_801221E4(s32 arg0)
     void fn_80120CFC(u16 *);
     void fn_80120C2C(void);
     void Process_ClearFunc(s32);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
 
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     fn_80120C2C();
 
-    if (lbl_80367A58 & 0x0200) {
+    if (gUiPanelFlags & 0x0200) {
         return;
     }
     if ((gUiInputFlags & 3) == 0) {
@@ -767,14 +767,14 @@ void fn_801222A4(void *arg0)
 }
 
 void fn_80122314(void *arg0) {
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void fn_80120CFC(void *);
     s32 cur;
     s32 total;
 
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     M2C_FIELD(arg0, s32 *, 0x34)++;
     cur = M2C_FIELD(arg0, s32 *, 0x34);
     total = M2C_FIELD(arg0, s32 *, 0x38);
@@ -843,19 +843,19 @@ void fn_80122524(void *arg0) {
     void fn_80109BB4(s32, s32);
     void Process_ClearFunc(void *);
     void fn_80121630(void *);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u8 lbl_80274D60[];
     extern u32 *gPadInput;
     u32 temp;
 
-    fn_80120CFC(&lbl_80367A58);
-    if (fn_80120C2C() != 0 || (lbl_80367A58 & 4)) {
+    fn_80120CFC(&gUiPanelFlags);
+    if (fn_80120C2C() != 0 || (gUiPanelFlags & 4)) {
         Ui_PlaySeCue(lbl_80274D60 + 0x3D, 0x64);
         if (*(u32 *)((u8 *)arg0 + 0x30) != 0) {
             fn_80109BB4(*(s32 *)((u8 *)arg0 + 0x38), 8);
         }
         Process_ClearFunc(arg0);
-        lbl_80367A58 &= ~0x200;
+        gUiPanelFlags &= ~0x200;
     } else {
         temp = gPadInput[1];
         if (temp & (gPadInput[2] ^ temp) & 0x10) {
@@ -866,7 +866,7 @@ void fn_80122524(void *arg0) {
 
 void fn_801225D4(void *arg0) {
     extern s32 gUiInputFlags;
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u8 lbl_80290298[];
     void *fn_8000CAA0(void *);
     u8 *obj;
@@ -879,7 +879,7 @@ void fn_801225D4(void *arg0) {
     s32 t;
 
     obj = (u8 *)arg0;
-    lbl_80367A58 &= ~0x200;
+    gUiPanelFlags &= ~0x200;
     if (gUiInputFlags & 3) {
         zero = 0;
         i = zero;
@@ -992,7 +992,7 @@ void fn_80122780(void *arg0) {
     p->unk48 = 0;
 }
 
-extern struct efUnit* lbl_80367A58;
+extern struct efUnit* gUiPanelFlags;
 void fn_8012282C(struct efUnit* arg0)
 {
     struct efUnit* temp_r5;

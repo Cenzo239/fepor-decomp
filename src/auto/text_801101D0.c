@@ -26,7 +26,7 @@ void fn_80113298(void *, void *, s32, s32, s32);
 void fn_801134EC(void *, void *, void *);
 void String_Assign(void *, void *, s32, s32);
 void *String_CStr(void *);
-extern u16 lbl_80367A58;
+extern u16 gUiPanelFlags;
 
 extern s32 gUiInputFlags;
 
@@ -5391,22 +5391,22 @@ u32 fn_8011D484(void) {
 
 void fn_8011D5EC(void) {
     extern u8 lbl_8028FE50[];
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     void *Process_Find(void *);
     void fn_80120CCC(u16 *);
     void Process_Goto(void *, s32);
     u8 *obj;
 
     obj = Process_Find(lbl_8028FE50);
-    fn_80120CCC(&lbl_80367A58);
+    fn_80120CCC(&gUiPanelFlags);
     *(u32 *)(obj + 0x30) = *(u32 *)(obj + 0x30) + 2;
-    lbl_80367A58 &= ~0x10;
+    gUiPanelFlags &= ~0x10;
     Process_Goto(obj, 1);
 }
 
 void fn_8011D650(void) {
     extern u8 lbl_8028FE50[];
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void fn_80120CCC(u16 *);
@@ -5420,17 +5420,17 @@ void fn_8011D650(void) {
     u32 flags;
 
     obj = Process_Find(lbl_8028FE50);
-    fn_80120CCC(&lbl_80367A58);
+    fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = *(s32 *)((u8 *)obj + 0x30) + 2;
-    flags = lbl_80367A58;
+    flags = gUiPanelFlags;
     flags &= ~0x10;
-    lbl_80367A58 = flags;
+    gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
-        if (!(lbl_80367A58 & 0x10)) {
+        if (!(gUiPanelFlags & 0x10)) {
             Process_Unlink(obj);
         }
     } else {
@@ -5440,7 +5440,7 @@ void fn_8011D650(void) {
 
 void fn_8011D6F4(s32 arg0) {
     extern u8 lbl_8028FE50[];
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void fn_80120CCC(u16 *);
@@ -5454,17 +5454,17 @@ void fn_8011D6F4(s32 arg0) {
     u32 flags;
 
     obj = Process_Find(lbl_8028FE50);
-    fn_80120CCC(&lbl_80367A58);
+    fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = arg0;
-    flags = lbl_80367A58;
+    flags = gUiPanelFlags;
     flags &= ~0x10;
-    lbl_80367A58 = flags;
+    gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
-        if (!(lbl_80367A58 & 0x10)) {
+        if (!(gUiPanelFlags & 0x10)) {
             Process_Unlink(obj);
         }
     } else {
@@ -5479,7 +5479,7 @@ void fn_8011D79C(void *arg0) {
     s32 fn_800056CC(const char *, ...);
     void *Msg_Expand(void *);
     void fn_8023440C(void *, const void *, s32);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void fn_80120CCC(u16 *);
@@ -5497,17 +5497,17 @@ void fn_8011D79C(void *arg0) {
     result = Msg_Expand(arg0);
     fn_8023440C(lbl_8032FE04, arg0, 0x1E);
     obj = Process_Find(lbl_8028FE50);
-    fn_80120CCC(&lbl_80367A58);
+    fn_80120CCC(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(void **)((u8 *)obj + 0x30) = result;
-    flags = lbl_80367A58;
+    flags = gUiPanelFlags;
     flags &= ~0x10;
-    lbl_80367A58 = flags;
+    gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
-        if (!(lbl_80367A58 & 0x10)) {
+        if (!(gUiPanelFlags & 0x10)) {
             Process_Unlink(obj);
         }
     } else {
@@ -5536,9 +5536,9 @@ void fn_8011D87C(void *arg0)
     obj = (u8 *)Process_Find(lbl_8028FE50);
     *(void **)(obj + 0x30) = result;
 
-    flags = lbl_80367A58;
+    flags = gUiPanelFlags;
     flags &= ~0x10;
-    lbl_80367A58 = flags;
+    gUiPanelFlags = flags;
 
     Process_Goto(obj, 1);
 }
@@ -5551,13 +5551,13 @@ void fn_8011DA48(void *arg0, void *arg1) {
     void fn_8011DED8(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u16 lbl_8028FE50[];
     extern u8 lbl_8032BDE8[];
     extern s32 gUiInputFlags;
     u8 *e;
 
-    fn_80120CE0(&lbl_80367A58);
+    fn_80120CE0(&gUiPanelFlags);
     e = (u8 *)fn_8000CA64(lbl_8028FE50, arg1);
     *(s32 *)(e + 0x34) = 0;
     *(s32 *)(e + 0x38) = 0;
@@ -5581,10 +5581,10 @@ void fn_8011DA48(void *arg0, void *arg1) {
     e[0x62] = 1;
     fn_8012205C(lbl_8032BDE8);
     e[0x66] = 1;
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
     if (gUiInputFlags & 1) {
         fn_8011DED8(e);
-        if (!(lbl_80367A58 & 0x10)) {
+        if (!(gUiPanelFlags & 0x10)) {
             Process_Unlink(e);
         }
     } else {
@@ -5680,14 +5680,14 @@ void fn_8011DD80(void *arg0)
     void fn_800AA1CC(void *);
     void fn_80109180(void *, void *);
 
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern void *lbl_80367A5C;
 
     void *ptr;
 
     fn_800AA1CC(arg0);
 
-    lbl_80367A58 |= 0x80;
+    gUiPanelFlags |= 0x80;
 
     ptr = lbl_80367A5C;
 
@@ -5734,14 +5734,14 @@ void fn_8011DDCC(void* arg0) {
     // Call fn_80120F0C
     fn_80120F0C();
     
-    // Check bit 7 of lbl_80367A58 and process if set
-    if (lbl_80367A58 & 0x80) {
+    // Check bit 7 of gUiPanelFlags and process if set
+    if (gUiPanelFlags & 0x80) {
         fn_800AA208();
-        lbl_80367A58 &= 0xFFFFFF7F;
+        gUiPanelFlags &= 0xFFFFFF7F;
     }
     
-    // Clear lbl_80367A58 and update gUiInputFlags
-    lbl_80367A58 = 0;
+    // Clear gUiPanelFlags and update gUiInputFlags
+    gUiPanelFlags = 0;
     gUiInputFlags &= 0xFFFFFFFD;
 }
 
@@ -5768,10 +5768,10 @@ void fn_8011DED8(void *arg0) {
     s32 zero;
 
     self = arg0;
-    while (!(lbl_80367A58 & 0x20)) {
+    while (!(gUiPanelFlags & 0x20)) {
         fn_8011E12C(self);
     }
-    if (lbl_80367A58 & 0x10) {
+    if (gUiPanelFlags & 0x10) {
         Process_Goto(self, 2);
         return;
     }
@@ -5814,13 +5814,13 @@ void fn_8011DED8(void *arg0) {
             *(s32 *)((u8 *)self + 0x58) = 0;
         }
         fn_80120F0C();
-        if (lbl_80367A58 & 0x80) {
+        if (gUiPanelFlags & 0x80) {
             fn_800AA208();
-            *(volatile u16 *)&lbl_80367A58 &= ~0x80;
+            *(volatile u16 *)&gUiPanelFlags &= ~0x80;
         }
         {
             s32 t = gUiInputFlags;
-            *(volatile u16 *)&lbl_80367A58 = 0;
+            *(volatile u16 *)&gUiPanelFlags = 0;
             gUiInputFlags = t & ~2;
             Process_Goto(self, 4);
         }
@@ -5881,7 +5881,7 @@ s32 fn_8011E12C(void *arg0) {
     void fn_80120DD4(void *, u8);
     void fn_80122114(void *, u8);
     void fn_80122A2C(void *, u8);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u8 lbl_8032BDE8[];
     struct Item {
         u8 pad[0x34];
@@ -5927,7 +5927,7 @@ s32 fn_8011E12C(void *arg0) {
     struct Obj *cur;
 
     self = (struct Obj *)arg0;
-    sda = (struct Sda *)&lbl_80367A58;
+    sda = (struct Sda *)&gUiPanelFlags;
     old = sda->unk2;
     sda->unk2 = (u16)(old + 1);
     code = (u8)fn_8011E4B8(self, &self->text, old);
@@ -6330,9 +6330,9 @@ void fn_80120304(void *arg0)
     void fn_80120CFC(u16 *);
     u8 fn_8008A59C(void);
     void fn_80120354(void *);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
 
-    fn_80120CFC(&lbl_80367A58);
+    fn_80120CFC(&gUiPanelFlags);
 
     if (*((u8 *)arg0 + 0x63) == 0 || (u8)fn_8008A59C() == 0) {
         fn_80120354(arg0);
@@ -6351,7 +6351,7 @@ void fn_80120354(void *arg0) {
     extern u8 lbl_8028FE30[];
     extern s32 gUiInputFlags;
     extern void *gPadInput;
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u32 lbl_80367A60;
     extern s8 lbl_80367A64;
 
@@ -6384,21 +6384,21 @@ void fn_80120354(void *arg0) {
         t = 1;
     }
     limit = t;
-    if ((lbl_80367A58 & 4) && !(flags & 3)) {
+    if ((gUiPanelFlags & 4) && !(flags & 3)) {
         tmp = fn_8000CAA0(lbl_8028FE30, self);
         *(void **)((u8 *)tmp + 0x30) = self;
         *(s32 *)((u8 *)tmp + 0x34) = 0;
         return;
     }
-    raw = *(volatile u16 *)&lbl_80367A58;
+    raw = *(volatile u16 *)&gUiPanelFlags;
     pad = gPadInput;
     cleared = raw & 0xfffffbff;
-    *(volatile u16 *)&lbl_80367A58 = cleared;
+    *(volatile u16 *)&gUiPanelFlags = cleared;
     pad4 = *(s32 *)((u8 *)pad + 4);
     btn = pad4 & (*(s32 *)((u8 *)pad + 8) ^ pad4);
     if (!(btn & 0x100)) {
         if (!(pad4 & 0x04000004) || !(pad4 & 0x100)) {
-            if (*(volatile u16 *)&lbl_80367A58 & 8) {
+            if (*(volatile u16 *)&gUiPanelFlags & 8) {
                 if (!(btn & 0x200)) {
                     trigger = 0;
                     goto after_trig;
@@ -6411,11 +6411,11 @@ void fn_80120354(void *arg0) {
                 goto after_trig;
             }
         } else {
-            *(volatile u16 *)&lbl_80367A58 = cleared | 0x400;
+            *(volatile u16 *)&gUiPanelFlags = cleared | 0x400;
         }
     }
     trigger = 1;
-    *(volatile u16 *)&lbl_80367A58 |= 0x200;
+    *(volatile u16 *)&gUiPanelFlags |= 0x200;
 after_trig:
     if ((u8)trigger) {
         *((u8 *)self + 0x5f) = 0;
@@ -6553,8 +6553,8 @@ void fn_8012075C(void *arg0) {
 
 void fn_801207BC(void) {
     extern s32 gUiInputFlags;
-    extern u16 lbl_80367A58;
-    lbl_80367A58 &= 0xFFFFFFFB;
+    extern u16 gUiPanelFlags;
+    gUiPanelFlags &= 0xFFFFFFFB;
     gUiInputFlags |= 2;
 }
 
@@ -6654,7 +6654,7 @@ extern void *gUnitLists;
 extern u16 lbl_802EF4E0[];
 
 s32 fn_80120C2C(void) {
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern void *gPadInput;
     extern s32 gUiInputFlags;
     u32 raw;
@@ -6663,16 +6663,16 @@ s32 fn_80120C2C(void) {
     s32 buttons;
     s32 pressed;
 
-    raw = lbl_80367A58;
+    raw = gUiPanelFlags;
     pad = gPadInput;
     raw &= ~0x400;
     cleared = (u16)raw;
-    lbl_80367A58 = cleared;
+    gUiPanelFlags = cleared;
     buttons = *(s32 *)((u8 *)pad + 4);
     pressed = buttons & (*(s32 *)((u8 *)pad + 8) ^ buttons);
     if (!(pressed & 0x100)) {
         if (!(buttons & 0x04000004) || !(buttons & 0x100)) {
-            if (*(volatile u16 *)&lbl_80367A58 & 8) {
+            if (*(volatile u16 *)&gUiPanelFlags & 8) {
                 if (!(pressed & 0x200)) {
                     return 0;
                 }
@@ -6680,9 +6680,9 @@ s32 fn_80120C2C(void) {
                 return (gUiInputFlags & 3) != 0;
             }
         } else {
-            lbl_80367A58 = (u16)(cleared | 0x400);
+            gUiPanelFlags = (u16)(cleared | 0x400);
         }
     }
-    lbl_80367A58 |= 0x200;
+    gUiPanelFlags |= 0x200;
     return 1;
 }

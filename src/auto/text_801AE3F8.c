@@ -48,7 +48,7 @@ void fn_801AE498(void) {
 #pragma cplusplus on
 extern "C" void Ui_DestroyPanel(void *arg0) {
     extern void Ui_DestroyPanelBase(void *, s32);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
 
     struct RefObj {
         virtual void destroy(s32);
@@ -72,7 +72,7 @@ extern "C" void Ui_DestroyPanel(void *arg0) {
     Holder *h;
     RefObj *p;
 
-    lbl_80367A58 &= 0xFFFFFFEF;
+    gUiPanelFlags &= 0xFFFFFFEF;
     h = (Holder *)arg0;
     if (h != NULL) {
         p = h->p40;

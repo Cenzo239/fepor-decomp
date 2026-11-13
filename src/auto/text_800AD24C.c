@@ -5838,7 +5838,7 @@ s32 fn_800BAE4C(s32 arg0, s32 arg1) {
 
 s32 fn_800BAEAC(void) {
     void *fn_8000BCA4(void *);
-    extern u16 lbl_80367A58;
+    extern u16 gUiPanelFlags;
     extern u8 lbl_8026ECB8[];
     void *p;
     s32 flags;
@@ -5847,7 +5847,7 @@ s32 fn_800BAEAC(void) {
     if (p == NULL) {
         return 0;
     }
-    flags = lbl_80367A58;
+    flags = gUiPanelFlags;
     return (flags & 0x10) == 0;
 }
 
