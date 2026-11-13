@@ -505,7 +505,7 @@ void fn_8005BCD0(void) {
 
 void fn_8005BCF0(void) {
     extern u8 lbl_803672E9;
-    extern s8 lbl_803672EA;
+    extern s8 gFileCacheWorkRead;
     extern s8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     extern u8 gFileCache[126976];
@@ -570,7 +570,7 @@ void fn_8005BCF0(void) {
     }
     if ((u8) lbl_803672E9 == 0) {
         lbl_803672EB = 0;
-        lbl_803672EA = 0;
+        gFileCacheWorkRead = 0;
         OSInitThreadQueue(lbl_803672EC);
         fn_8020A558(lbl_8030F7E0, &FileCache_WorkerThread, 0, lbl_8030FAF8 + 0x2000, 0x2000, 0x10, 1);
         fn_8020A9E0(lbl_8030F7E0);
@@ -586,7 +586,7 @@ void FileCache_WorkerThread(void) {
     void fn_800C4588(s32);
     void fn_8020ADD8(u8 *);
     extern u8 gFileCacheWorkQueue[];
-    extern volatile u8 lbl_803672EA;
+    extern volatile u8 gFileCacheWorkRead;
     extern volatile u8 lbl_803672EB;
     extern u8 lbl_803672EC[8];
     void *obj;
@@ -595,7 +595,7 @@ void FileCache_WorkerThread(void) {
 
     goto check;
 loop:
-    obj = gFileCacheWorkQueue + lbl_803672EA * 0xC;
+    obj = gFileCacheWorkQueue + gFileCacheWorkRead * 0xC;
     type = *(u8 *)obj;
     switch (type) {
     case 0:
@@ -632,9 +632,9 @@ loop:
         *(u16 *)((u8 *)obj + 0x30) |= 0x2000;
         break;
     }
-    lbl_803672EA = (lbl_803672EA + 1) & 0x3F;
+    gFileCacheWorkRead = (gFileCacheWorkRead + 1) & 0x3F;
 check:
-    if (lbl_803672EA != lbl_803672EB) {
+    if (gFileCacheWorkRead != lbl_803672EB) {
         goto loop;
     }
     fn_8020ADD8(lbl_803672EC);
