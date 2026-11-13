@@ -179,14 +179,14 @@ void MsgTip_Create(void *arg0) {
     M2C_UNK fn_8023440C(void *, s32, s32);
     s32 Text_MeasureWidth(void *, s32, f32);
     M2C_UNK Process_Unlink(void *);
-    extern u8 lbl_80289AB8[];
+    extern u8 MsgTip_script[];
     extern f32 lbl_80369754;
     extern u8 gMsgTipSlots[4];
     extern f32 lbl_80369758;
     u8 *temp_r31;
     Vec4 sp8;
 
-    temp_r31 = (u8 *)Process_Create(lbl_80289AB8, 3);
+    temp_r31 = (u8 *)Process_Create(MsgTip_script, 3);
     fn_8023440C(temp_r31 + 0x3E, Msg_Expand(arg0), 0x30);
     *(s16 *)(temp_r31 + 0x38) = Text_MeasureWidth(temp_r31 + 0x3E, -1, lbl_80369754) + 0x60;
     sp8 = gMsgTipYPos;
