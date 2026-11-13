@@ -2131,7 +2131,7 @@ void fn_801B2644(void *arg0) {
 void Ui_CreateSideListPanel(void *self) {
     void *Heap_Alloc(s32);
     void *fn_801343F8(void *, s32, s32, s32, s32, s32, s32);
-    void fn_80134CE8(void *);
+    void Ui_LayoutListPanel(void *);
     void Ui_AddChild(void *, void *);
     void fn_801402E4(void *, void *, s32, s32);
     void *panel;
@@ -2154,7 +2154,7 @@ void Ui_CreateSideListPanel(void *self) {
     }
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 8) = 1;
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x46) = 0x30;
-    fn_80134CE8(*(void **)((u8 *)self + 0x44));
+    Ui_LayoutListPanel(*(void **)((u8 *)self + 0x44));
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x24) = 4;
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x3C) = 0;
     Ui_AddChild(self, *(void **)((u8 *)self + 0x44));
@@ -2404,7 +2404,7 @@ void fn_801B2E3C(void *arg0) {
 void Ui_CreateMainListPanel(void *arg0) {
     void *Heap_Alloc(s32);
     void *Ui_MainListPanel_Ctor(void *, s32, s32, s32, s32, s32);
-    void fn_80134CE8(void *);
+    void Ui_LayoutListPanel(void *);
     void Ui_AddChild(void *, void *);
     void fn_8011D908(s32, void *);
     u32 Ui_FindChild(void *, s32, s32, void *);
@@ -2426,7 +2426,7 @@ void Ui_CreateMainListPanel(void *arg0) {
     }
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 8) = 0;
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x46) = 0x38;
-    fn_80134CE8(*(void **)((u8 *)arg0 + 0x40));
+    Ui_LayoutListPanel(*(void **)((u8 *)arg0 + 0x40));
     *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x24) = 8;
     *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x3C) = 0;
     Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x40));

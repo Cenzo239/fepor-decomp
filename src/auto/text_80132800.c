@@ -1347,7 +1347,7 @@ void fn_80134C24(s32 *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80134CE8(void *arg0) {
+extern "C" void Ui_LayoutListPanel(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
