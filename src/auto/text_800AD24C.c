@@ -447,7 +447,8 @@ void fn_800ADD84(void) {
     fn_80033418(gBattle + 0x8A0);
 }
 
-void Battle_SetupTargetSelect(s32 arg0) {
+/* Init gBattle from the current target entry's unit, apply optional HP delta, and open MapSelect. */
+void Battle_SetupTargetSelect(s32 parent) {
     void *TargetList_GetCurrent(void *);
     u8 *UnitRef_GetUnit(void);
     void fn_8019B79C(s32, s32);
@@ -458,28 +459,28 @@ void Battle_SetupTargetSelect(s32 arg0) {
     void fn_801A75DC(void *, u8 *, s32);
     extern u8 gTargetList[];
     extern u8 gBattle[];
-    void *temp_r30;
-    u8 *temp_r29;
-    s8 flag;
+    void *entry;
+    u8 *unit;
+    s8 hpDelta;
 
-    temp_r30 = TargetList_GetCurrent(gTargetList);
-    temp_r29 = UnitRef_GetUnit();
-    fn_801A75DC(gBattle, temp_r29, -1);
+    entry = TargetList_GetCurrent(gTargetList);
+    unit = UnitRef_GetUnit();
+    fn_801A75DC(gBattle, unit, -1);
     fn_801A4958(gBattle);
-    flag = *(s8 *)((u8 *)temp_r30 + 1);
-    if (flag != 0) {
-        fn_801A4A88(gBattle, flag);
+    hpDelta = *(s8 *)((u8 *)entry + 1);
+    if (hpDelta != 0) {
+        fn_801A4A88(gBattle, hpDelta);
     }
-    if (!(*(s32 *)((u8 *)temp_r29 + 0x1A0) & 0x010000DC)) {
-        switch (*(s8 *)((u8 *)temp_r30 + 0)) {
+    if (!(*(s32 *)((u8 *)unit + 0x1A0) & 0x010000DC)) {
+        switch (*(s8 *)((u8 *)entry + 0)) {
         case 0:
-            fn_8019B8A0(arg0, 0);
+            fn_8019B8A0(parent, 0);
             break;
         case 1:
-            fn_8019B83C(arg0, 0);
+            fn_8019B83C(parent, 0);
             break;
         case 2:
-            fn_8019B79C(arg0, 0);
+            fn_8019B79C(parent, 0);
             break;
         }
     }
