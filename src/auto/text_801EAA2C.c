@@ -262,7 +262,7 @@ void fn_801EB294(void *arg0)
     void Map_ShowMoveLimitView(void);
     void fn_800A8400(void);
     void *Map_GetCursorUnit(void);
-    void fn_800AACDC(void *);
+    void Map_SetupUnitMoveLimit(void *);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(u8 *, s32);
     void Ui_SetWidgetText(u32, u8 *);
@@ -355,7 +355,7 @@ void fn_801EB294(void *arg0)
                     Map_HideMoveLimitView();
                 }
             } else {
-                fn_800AACDC(unit2);
+                Map_SetupUnitMoveLimit(unit2);
                 Map_ShowMoveLimitView();
             }
         }
@@ -388,7 +388,7 @@ void fn_801EB294(void *arg0)
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
                     fn_8002297C(gBattleMap);
-                    fn_800AACDC(unit);
+                    Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1d9, 0x64);
                 }
             } else {
@@ -400,7 +400,7 @@ void fn_801EB294(void *arg0)
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
                     fn_8002297C(gBattleMap);
-                    fn_800AACDC(unit);
+                    Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue(lbl_8027EE08 + 0x1f4, 0x64);
                 }
             } else if (unit == NULL) {

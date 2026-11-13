@@ -160,7 +160,7 @@ s32 fn_8001EF80(void *arg0, s8 arg1, s8 arg2) {
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
     void fn_80022DAC(void *, s32, s32);
-    void fn_800AACDC(void *);
+    void Map_SetupUnitMoveLimit(void *);
     extern u8 gUnitLists[];
     extern u8 gMapBlendMode;
 
@@ -212,7 +212,7 @@ void fn_8001F140(void *arg0) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
         next = *(void **)((u8 *)node + 0x184);
         if ((flags & 0x800) != 0 && (flags & 0x010000DC) == 0) {
-            fn_800AACDC(node);
+            Map_SetupUnitMoveLimit(node);
             row = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
             row_off = row << 6;
             row_base = (u8 *)arg0 + row_off;
