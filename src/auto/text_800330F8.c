@@ -10767,6 +10767,7 @@ void fn_8004C444(void *arg0) {
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
+/* Set up GX and draw a ground shadow for each visible unit. */
 void Unit_DrawShadows(void) {
     void Allegiance_FillMask(s32, void *);
     void Unit_DrawShadow(void *, s32);
@@ -10796,20 +10797,20 @@ void Unit_DrawShadows(void) {
     extern s32 gUnitShadowMat;
     extern f32 lbl_80368FCC;
     extern f32 gUnitShadowZ;
-    u8 sp60[0x30];
-    u8 sp30[0x30];
-    u8 sp10[0x20];
-    u8 sp8[8];
-    u8 *p;
-    s32 t0;
-    s32 t4;
-    s32 var_r31;
-    s32 var_r30;
+    u8 mtxOut[0x30];
+    u8 mtxTrans[0x30];
+    u8 matBuf[0x20];
+    u8 allegMask[8];
+    u8 *light;
+    s32 light0;
+    s32 light4;
+    s32 alpha;
+    s32 unitId;
     void *unit;
-    s32 flag;
+    s32 canDraw;
 
-    fn_8006ECCC(gUnitShadowMat, sp10, 0);
-    fn_80222C50(sp10, 0);
+    fn_8006ECCC(gUnitShadowMat, matBuf, 0);
+    fn_80222C50(matBuf, 0);
     fn_8022100C(2);
     GXClearVtxDesc();
     GXSetVtxDesc(9, 1);
@@ -10821,50 +10822,50 @@ void Unit_DrawShadows(void) {
     GXSetNumTevStages(1);
     GXSetTevOrder(0, 0, 0, 4);
     GXSetNumChans(1);
-    PSMTXTrans(sp30, lbl_80368FCC, lbl_80368FCC, gUnitShadowZ);
-    PSMTXConcat(fn_80067FDC(), sp30, sp60);
-    GXLoadPosMtxImm(sp60, 0);
+    PSMTXTrans(mtxTrans, lbl_80368FCC, lbl_80368FCC, gUnitShadowZ);
+    PSMTXConcat(fn_80067FDC(), mtxTrans, mtxOut);
+    GXLoadPosMtxImm(mtxOut, 0);
     GXSetCurrentMtx(0);
     GXSetZMode(1, 3, 0);
     fn_802245D8(1, 4, 5, 7);
     fn_80223E5C(7, 0, 1, 7, 0);
     GXSetNumTexGens(0, 0);
-    p = (u8 *)Light_GetChannel(0);
-    t0 = p[0];
-    t4 = p[4];
-    var_r31 = (((p[6] + (t4 + p[5])) / 3) * (0xFF - ((p[2] + (t0 + p[1])) / 3))) / 255;
-    var_r31 *= 2;
-    if (var_r31 < 0) {
-        var_r31 = 0;
+    light = (u8 *)Light_GetChannel(0);
+    light0 = light[0];
+    light4 = light[4];
+    alpha = (((light[6] + (light4 + light[5])) / 3) * (0xFF - ((light[2] + (light0 + light[1])) / 3))) / 255;
+    alpha *= 2;
+    if (alpha < 0) {
+        alpha = 0;
     }
-    if (var_r31 > 0xFF) {
-        var_r31 = 0xFF;
+    if (alpha > 0xFF) {
+        alpha = 0xFF;
     }
-    Allegiance_FillMask(3, sp8);
-    var_r30 = 1;
+    Allegiance_FillMask(3, allegMask);
+    unitId = 1;
     do {
-        if ((u8)var_r30 != 0) {
-            unit = gUnits + ((u8)var_r30 - 1) * 0x280;
+        if ((u8)unitId != 0) {
+            unit = gUnits + ((u8)unitId - 1) * 0x280;
         } else {
             unit = NULL;
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
-            sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
+            allegMask[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
             if (*(s32 *)((u8 *)unit + 0x1A0) & 0x010000FC) {
-                flag = 0;
+                canDraw = 0;
             } else if ((u8)(*(u8 *)((u8 *)unit + 3) & 0x22) != 2) {
-                flag = 0;
+                canDraw = 0;
             } else if (*(u8 *)((u8 *)unit + 0x27) == 0) {
-                flag = 0;
+                canDraw = 0;
             } else {
-                flag = 1;
+                canDraw = 1;
             }
-            if ((u8)flag != 0) {
-                Unit_DrawShadow(unit, var_r31);
+            if ((u8)canDraw != 0) {
+                Unit_DrawShadow(unit, alpha);
             }
         }
-        var_r30 += 1;
-    } while (var_r30 <= 0x9F);
+        unitId += 1;
+    } while (unitId <= 0x9F);
     fn_80066D00(-1);
 }
 
