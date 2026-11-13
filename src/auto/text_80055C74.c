@@ -688,72 +688,73 @@ void fn_80057020(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x20) = *(s32 *)((u8 *)arg0 + 0x1C);
 }
 
-void ScrollBar_RecreateArrows(void *arg0, u8 arg1) {
+/* Free up/down scroll arrows; if create, alloc new ones (kinds 8 and 4). */
+void ScrollBar_RecreateArrows(void *scrollBar, u8 create) {
     void fn_8006D8E8(void *);
     void Heap_Free(void *);
     void *Heap_Alloc(s32);
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern f32 gF32_0;
-    void *temp;
-    f32 f0;
+    void *arrow;
+    f32 zeroF;
     s32 zero;
 
-    temp = *(void **)((u8 *)arg0 + 0x24);
-    if (temp != NULL) {
-        if (temp != NULL) {
-            fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-            Heap_Free(temp);
+    arrow = *(void **)((u8 *)scrollBar + 0x24);
+    if (arrow != NULL) {
+        if (arrow != NULL) {
+            fn_8006D8E8(*(void **)((u8 *)arrow + 0x30));
+            Heap_Free(arrow);
         }
-        *(void **)((u8 *)arg0 + 0x24) = NULL;
+        *(void **)((u8 *)scrollBar + 0x24) = NULL;
     }
-    temp = *(void **)((u8 *)arg0 + 0x28);
-    if (temp != NULL) {
-        if (temp != NULL) {
-            fn_8006D8E8(*(void **)((u8 *)temp + 0x30));
-            Heap_Free(temp);
+    arrow = *(void **)((u8 *)scrollBar + 0x28);
+    if (arrow != NULL) {
+        if (arrow != NULL) {
+            fn_8006D8E8(*(void **)((u8 *)arrow + 0x30));
+            Heap_Free(arrow);
         }
-        *(void **)((u8 *)arg0 + 0x28) = NULL;
+        *(void **)((u8 *)scrollBar + 0x28) = NULL;
     }
-    if (arg1 != 0) {
-        temp = Heap_Alloc(0x58);
-        if (temp != NULL) {
-            *(s32 *)((u8 *)temp + 0x44) = 8;
+    if (create != 0) {
+        arrow = Heap_Alloc(0x58);
+        if (arrow != NULL) {
+            *(s32 *)((u8 *)arrow + 0x44) = 8;
             zero = 0;
-            *(s32 *)((u8 *)temp + 0x48) = zero;
-            *(s32 *)((u8 *)temp + 0x30) = fn_8006D948(lbl_8026AD80 + 0xBF);
-            *(s32 *)((u8 *)temp + 0x4C) = zero;
-            f0 = gF32_0;
-            *(u8 *)((u8 *)temp + 0x55) = 1;
-            *(u8 *)((u8 *)temp + 0x54) = 1;
-            *(s32 *)((u8 *)temp + 0x50) = 0x30;
-            *(f32 *)((u8 *)temp + 0x38) = f0;
-            *(f32 *)((u8 *)temp + 0x3C) = f0;
-            *(f32 *)((u8 *)temp + 0x40) = f0;
-            *(u8 *)((u8 *)temp + 0x34) = zero;
+            *(s32 *)((u8 *)arrow + 0x48) = zero;
+            *(s32 *)((u8 *)arrow + 0x30) = fn_8006D948(lbl_8026AD80 + 0xBF);
+            *(s32 *)((u8 *)arrow + 0x4C) = zero;
+            zeroF = gF32_0;
+            *(u8 *)((u8 *)arrow + 0x55) = 1;
+            *(u8 *)((u8 *)arrow + 0x54) = 1;
+            *(s32 *)((u8 *)arrow + 0x50) = 0x30;
+            *(f32 *)((u8 *)arrow + 0x38) = zeroF;
+            *(f32 *)((u8 *)arrow + 0x3C) = zeroF;
+            *(f32 *)((u8 *)arrow + 0x40) = zeroF;
+            *(u8 *)((u8 *)arrow + 0x34) = zero;
         }
-        *(void **)((u8 *)arg0 + 0x24) = temp;
-        temp = Heap_Alloc(0x58);
-        if (temp != NULL) {
-            *(s32 *)((u8 *)temp + 0x44) = 4;
+        *(void **)((u8 *)scrollBar + 0x24) = arrow;
+        arrow = Heap_Alloc(0x58);
+        if (arrow != NULL) {
+            *(s32 *)((u8 *)arrow + 0x44) = 4;
             zero = 0;
-            *(s32 *)((u8 *)temp + 0x48) = zero;
-            *(s32 *)((u8 *)temp + 0x30) = fn_8006D948(lbl_8026AD80 + 0xBF);
-            *(s32 *)((u8 *)temp + 0x4C) = zero;
-            f0 = gF32_0;
-            *(u8 *)((u8 *)temp + 0x55) = 1;
-            *(u8 *)((u8 *)temp + 0x54) = 1;
-            *(s32 *)((u8 *)temp + 0x50) = 0x30;
-            *(f32 *)((u8 *)temp + 0x38) = f0;
-            *(f32 *)((u8 *)temp + 0x3C) = f0;
-            *(f32 *)((u8 *)temp + 0x40) = f0;
-            *(u8 *)((u8 *)temp + 0x34) = zero;
+            *(s32 *)((u8 *)arrow + 0x48) = zero;
+            *(s32 *)((u8 *)arrow + 0x30) = fn_8006D948(lbl_8026AD80 + 0xBF);
+            *(s32 *)((u8 *)arrow + 0x4C) = zero;
+            zeroF = gF32_0;
+            *(u8 *)((u8 *)arrow + 0x55) = 1;
+            *(u8 *)((u8 *)arrow + 0x54) = 1;
+            *(s32 *)((u8 *)arrow + 0x50) = 0x30;
+            *(f32 *)((u8 *)arrow + 0x38) = zeroF;
+            *(f32 *)((u8 *)arrow + 0x3C) = zeroF;
+            *(f32 *)((u8 *)arrow + 0x40) = zeroF;
+            *(u8 *)((u8 *)arrow + 0x34) = zero;
         }
-        *(void **)((u8 *)arg0 + 0x28) = temp;
-        *(u8 *)(*(u8 **)((u8 *)arg0 + 0x24) + 0x34) = 1;
-        *(u8 *)(*(u8 **)((u8 *)arg0 + 0x28) + 0x34) = 1;
-        *(u8 *)(*(u8 **)((u8 *)arg0 + 0x24) + 0x54) = 0;
-        *(u8 *)(*(u8 **)((u8 *)arg0 + 0x28) + 0x54) = 0;
+        *(void **)((u8 *)scrollBar + 0x28) = arrow;
+        *(u8 *)(*(u8 **)((u8 *)scrollBar + 0x24) + 0x34) = 1;
+        *(u8 *)(*(u8 **)((u8 *)scrollBar + 0x28) + 0x34) = 1;
+        *(u8 *)(*(u8 **)((u8 *)scrollBar + 0x24) + 0x54) = 0;
+        *(u8 *)(*(u8 **)((u8 *)scrollBar + 0x28) + 0x54) = 0;
     }
 }
 
