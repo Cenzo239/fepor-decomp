@@ -1925,22 +1925,22 @@ void fn_801F65C8(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029B27C[];
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_8029B27C, arg0);
-    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x18, lbl_80280D38 + 0x6A, 0);
+    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x18, gBattlePreviewStrings + 0x6A, 0);
 }
 
 void fn_801F661C(s32 arg0) {
     void *fn_8000CAA0(void *, s32);
     s32 fn_800C4638(s32, void *, s32);
     extern u8 lbl_8029B1F8[];
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     void *temp_r31;
 
     temp_r31 = fn_8000CAA0(lbl_8029B1F8, arg0);
-    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x210, lbl_80280D38 + 0x6A, 0);
+    M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0x210, gBattlePreviewStrings + 0x6A, 0);
 }
 
 void fn_801F6670(void *arg0)
@@ -2011,7 +2011,7 @@ void BattlePreview_Draw(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     void fn_801F690C(void *, f32, f32);
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     void *temp_r31;
     void *temp_r30;
     f32 fw;
@@ -2042,7 +2042,7 @@ void BattlePreview_Draw(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    temp_r31 = Msg_Expand(lbl_80280D38 + 0x6B);
+    temp_r31 = Msg_Expand(gBattlePreviewStrings + 0x6B);
     fw = (f32)Text_MeasureWidth(temp_r31, -1, lbl_8036B934);
     fn_8001003C((s32)(lbl_8036B920 - lbl_8036B938 * fw), 0x1E, 2, 0, 0, temp_r31, lbl_8036B934, lbl_8036B910);
     Prim2D_Begin();
@@ -2074,7 +2074,7 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     u8 fn_8014C12C(void *);
     void fn_8015A2D8(s32, s32, s32, s32, s32, s32);
     s32 *Ui_GetColor(s32);
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     extern u8 gBattleState[];
     extern f32 lbl_8036B910;
     extern f32 lbl_8036B918;
@@ -2153,57 +2153,57 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
-    str = Msg_Expand(lbl_80280D38 + 0x7D);
+    str = Msg_Expand(gBattlePreviewStrings + 0x7D);
     fn_8001003C((s32)(lbl_8036B950 + fx), (s32)(lbl_8036B954 + fy), 1, 1, 0, str, lbl_8036B918, lbl_8036B910);
 
-    fn_8001003C((s32)(lbl_8036B958 + fx), (s32)(lbl_8036B95C + fy), 6, 1, 0, lbl_80280D38 + 0x93,
+    fn_8001003C((s32)(lbl_8036B958 + fx), (s32)(lbl_8036B95C + fy), 6, 1, 0, gBattlePreviewStrings + 0x93,
                 *(s16 *)(gBattleState + 0x12), lbl_8036B934, lbl_8036B910);
 
     f31 = lbl_8036B960 + fx;
-    str = Msg_Expand(lbl_80280D38 + 0xB4);
+    str = Msg_Expand(gBattlePreviewStrings + 0xB4);
     sp8 = sp18;
     spC = sp14;
-    fn_8001003C((s32)f31, (s32)(lbl_8036B964 + fy), 1, 1, 0, lbl_80280D38 + 0x96, str, (s32)sp1C,
+    fn_8001003C((s32)f31, (s32)(lbl_8036B964 + fy), 1, 1, 0, gBattlePreviewStrings + 0x96, str, (s32)sp1C,
                 lbl_8036B918, lbl_8036B910);
 
     f28 = lbl_8036B968 + fy;
-    fn_8001003C((s32)f31, (s32)f28, 1, 1, 0, Msg_Expand(lbl_80280D38 + 0xC9), lbl_8036B918, lbl_8036B910);
+    fn_8001003C((s32)f31, (s32)f28, 1, 1, 0, Msg_Expand(gBattlePreviewStrings + 0xC9), lbl_8036B918, lbl_8036B910);
 
     val = fn_8014C12C(gBattleState);
-    Msg_Expand(lbl_80280D38 + 0xC9);
+    Msg_Expand(gBattlePreviewStrings + 0xC9);
     tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     f27 = lbl_8036B970 + fy;
-    fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
+    fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)f27, 6, 1, 0, gBattlePreviewStrings + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
 
     f28 = lbl_8036B974 + fx;
-    fn_8001003C((s32)f28, (s32)(lbl_8036B968 + fy), 1, 1, 0, Msg_Expand(lbl_80280D38 + 0xE2), lbl_8036B918,
+    fn_8001003C((s32)f28, (s32)(lbl_8036B968 + fy), 1, 1, 0, Msg_Expand(gBattlePreviewStrings + 0xE2), lbl_8036B918,
                 lbl_8036B910);
 
     val = fn_8014C078(gBattleState);
-    Msg_Expand(lbl_80280D38 + 0xE2);
+    Msg_Expand(gBattlePreviewStrings + 0xE2);
     tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
-    fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
+    fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, gBattlePreviewStrings + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
 
-    fn_8001003C((s32)f31, (s32)(lbl_8036B978 + fy), 1, 1, 0, Msg_Expand(lbl_80280D38 + 0xF9), lbl_8036B918,
+    fn_8001003C((s32)f31, (s32)(lbl_8036B978 + fy), 1, 1, 0, Msg_Expand(gBattlePreviewStrings + 0xF9), lbl_8036B918,
                 lbl_8036B910);
 
     val = fn_8014BEE0(gBattleState);
-    Msg_Expand(lbl_80280D38 + 0xF9);
+    Msg_Expand(gBattlePreviewStrings + 0xF9);
     tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
     fn_8001003C((s32)(lbl_8036B96C + (f31 + (f32)tw)), (s32)(lbl_8036B97C + fy), 6, 1, 0,
-                lbl_80280D38 + 0xDF, val, lbl_8036B934, lbl_8036B910);
+                gBattlePreviewStrings + 0xDF, val, lbl_8036B934, lbl_8036B910);
 
     f28 = lbl_8036B980 + fx;
     f27 = lbl_8036B984 + fy;
-    fn_8001003C((s32)f28, (s32)f27, 0x19, 1, 0, Msg_Expand(lbl_80280D38 + 0x10E), lbl_8036B934,
+    fn_8001003C((s32)f28, (s32)f27, 0x19, 1, 0, Msg_Expand(gBattlePreviewStrings + 0x10E), lbl_8036B934,
                 lbl_8036B910);
 
     val = fn_8014BC10(gBattleState);
-    Msg_Expand(lbl_80280D38 + 0x10E);
+    Msg_Expand(gBattlePreviewStrings + 0x10E);
     tw = Text_MeasureWidth((void *)0, -1, lbl_8036B918);
-    fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, lbl_80280D38 + 0xDF, val,
+    fn_8001003C((s32)(lbl_8036B96C + (f28 + (f32)tw)), (s32)f27, 6, 1, 0, gBattlePreviewStrings + 0xDF, val,
                 lbl_8036B934, lbl_8036B910);
 
     Prim2D_Begin();
@@ -2219,22 +2219,22 @@ void fn_801F690C(void *arg0, f32 farg0, f32 farg1) {
 
     switch (gBattleState[0x10]) {
     case 0x5B:
-        label = Msg_Expand(lbl_80280D38 + 0x125);
+        label = Msg_Expand(gBattlePreviewStrings + 0x125);
         break;
     case 0x5C:
-        label = Msg_Expand(lbl_80280D38 + 0x132);
+        label = Msg_Expand(gBattlePreviewStrings + 0x132);
         break;
     case 0x5D:
-        label = Msg_Expand(lbl_80280D38 + 0x13F);
+        label = Msg_Expand(gBattlePreviewStrings + 0x13F);
         break;
     case 0x5E:
-        label = Msg_Expand(lbl_80280D38 + 0x14C);
+        label = Msg_Expand(gBattlePreviewStrings + 0x14C);
         break;
     case 0x5F:
-        label = Msg_Expand(lbl_80280D38 + 0x159);
+        label = Msg_Expand(gBattlePreviewStrings + 0x159);
         break;
     case 0x60:
-        label = Msg_Expand(lbl_80280D38 + 0x166);
+        label = Msg_Expand(gBattlePreviewStrings + 0x166);
         break;
     default:
         label = 0;
@@ -2258,8 +2258,8 @@ void fn_801F7194(void *arg0) {
     void Process_ClearFunc(void *);
     void BattlePreview_Draw(void *);
     s32 fn_8005C6A0(void *);
-    extern u8 lbl_80280D38[];
-    if ((fn_8005C6A0(lbl_80280D38 + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
+    extern u8 gBattlePreviewStrings[];
+    if ((fn_8005C6A0(gBattlePreviewStrings + 0x173) & 0x2000) && (fn_80161FB8() != 0)) {
         fn_80162054();
         M2C_FIELD(arg0, s32 *, 0x34) = Process_AttachFunc(BattlePreview_Draw, arg0);
         Process_ClearFunc(arg0);
@@ -2268,7 +2268,7 @@ void fn_801F7194(void *arg0) {
 
 void fn_801F7200(void *arg0) {
     extern u8 lbl_80330708[];
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     void fn_80147188(s32);
     void fn_8006EEFC(void *, void *);
     void fn_80162018(void);
@@ -2284,7 +2284,7 @@ void fn_801F7200(void *arg0) {
     t1 = *(u32 *)(lbl_80330708 + 0x64);
     obj[3] = t1;
     obj[2] = t0;
-    fn_8006EEFC(obj + 4, lbl_80280D38 + 0x173);
+    fn_8006EEFC(obj + 4, gBattlePreviewStrings + 0x173);
     fn_80162018();
 }
 
@@ -2376,7 +2376,7 @@ void fn_801F75D4(void* arg0) {
 
 void fn_801F7750(void *arg0)
 {
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     extern void strcpy(s32 arg0, s32 arg1);
     extern void *Msg_Expand(const char *arg0);
     extern void strcat(void *arg0, const char *arg1);
@@ -2385,7 +2385,7 @@ void fn_801F7750(void *arg0)
     u8 *strings;
 
     object = *(u8 **)((u8 *)arg0 + 0x30);
-    strings = lbl_80280D38;
+    strings = gBattlePreviewStrings;
 
     object[0x88] = 0;
     object[0x4] = 1;
@@ -2407,11 +2407,11 @@ void fn_801F7750(void *arg0)
 }
 
 void fn_801F7838(s32 arg0) {
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     s32 fn_8005C6A0(void *);
     void Process_ClearFunc(s32);
 
-    if (fn_8005C6A0(lbl_80280D38 + 0x24F) & 0x2000) {
+    if (fn_8005C6A0(gBattlePreviewStrings + 0x24F) & 0x2000) {
         Process_ClearFunc(arg0);
     }
 }
@@ -2508,7 +2508,7 @@ void fn_801F7A60(void *arg0) {
     void fn_8008BF68(s16, s16, s32);
     void *fn_8016614C(s32, s32);
     s32 *Ui_GetColor(s32);
-    extern u8 lbl_80280D38[];
+    extern u8 gBattlePreviewStrings[];
     extern f32 lbl_8036B910;
     extern f32 lbl_8036B918;
     extern f32 lbl_8036B91C;
@@ -2764,13 +2764,13 @@ void fn_801F7A60(void *arg0) {
     Prim2D_PrepareTex();
 
     if ((s8)*(u8 *)((u8 *)self + 0x88) == 0) {
-        fn_8001003C(0xF0, 0x3D, 2, 0, 0, Msg_Expand(lbl_80280D38 + 0x2C4), lbl_8036B918, lbl_8036B910);
+        fn_8001003C(0xF0, 0x3D, 2, 0, 0, Msg_Expand(gBattlePreviewStrings + 0x2C4), lbl_8036B918, lbl_8036B910);
     }
     flag = *(u8 *)((u8 *)self + 0x88);
     if (flag == 1) {
-        fn_8001003C(0x8C, 0x3D, 2, 0, 0, Msg_Expand(lbl_80280D38 + 0x2D4), lbl_8036B918, lbl_8036B910);
-        fn_8001003C(0x1C2, 0x3D, 2, 0, 0, Msg_Expand(lbl_80280D38 + 0x2E0), lbl_8036B918, lbl_8036B910);
-        fn_8001003C(0x1FE, 0x3D, 2, 0, 0, Msg_Expand(lbl_80280D38 + 0x2E8), lbl_8036B918, lbl_8036B910);
+        fn_8001003C(0x8C, 0x3D, 2, 0, 0, Msg_Expand(gBattlePreviewStrings + 0x2D4), lbl_8036B918, lbl_8036B910);
+        fn_8001003C(0x1C2, 0x3D, 2, 0, 0, Msg_Expand(gBattlePreviewStrings + 0x2E0), lbl_8036B918, lbl_8036B910);
+        fn_8001003C(0x1FE, 0x3D, 2, 0, 0, Msg_Expand(gBattlePreviewStrings + 0x2E8), lbl_8036B918, lbl_8036B910);
     }
 
     Prim2D_Begin();
@@ -5475,4 +5475,4 @@ extern s32 lbl_80234450(void *, void *, s32, s32);
 #include "global.h"
 #include "structs.h"
 
-extern u16 lbl_80280D38[40];
+extern u16 gBattlePreviewStrings[40];
