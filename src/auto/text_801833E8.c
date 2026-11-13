@@ -4429,7 +4429,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
     M2C_UNK fn_8005F494(s32 *, s32);
     M2C_UNK fn_8005F4F4(s32 *, s32);
     M2C_UNK fn_8005F554(s32 *, s32);
-    M2C_UNK fn_8006140C(s32 *);
+    M2C_UNK GActor_Finalize(s32 *);
     M2C_UNK fn_800616A0(s32 *);
     s32 *GActor_Create();
     M2C_UNK fn_8008CDE0(s32 *, s32 **);
@@ -4485,7 +4485,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
         fn_8005F494(M2C_FIELD(arg0, s32 **, 0x40), String_CStr((M2C_UNK *)&spC));
         String_Destroy((M2C_UNK *)&spC, -1);
         *M2C_FIELD(arg0, s32 **, 0x40) = *M2C_FIELD(arg0, s32 **, 0x40) | 0x40000000 | 0x400;
-        fn_8006140C(M2C_FIELD(arg0, s32 **, 0x40));
+        GActor_Finalize(M2C_FIELD(arg0, s32 **, 0x40));
         fn_8008CDE0(M2C_FIELD(arg0, s32 **, 0x40), M2C_FIELD(arg0, s32 ***, 0x3C));
         M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
         String_Destroy((M2C_UNK *)&sp3C, -1);

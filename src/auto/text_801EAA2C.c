@@ -2285,7 +2285,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     void fn_8005F7B0(void *, s32);
     void fn_8005F7E0(void *, s32, s32, s32);
     void *GActor_FindNode(void *, char *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     s32 fn_80065EE8(void);
@@ -2390,7 +2390,7 @@ void GActor_LoadResources(void *arg0, s32 arg1) {
     tmp = (void *)fn_800639B4();
     obj = *(void **)((u8 *)self + 0xB8);
     *(s32 *)((u8 *)obj + 0x44) = (s32)tmp;
-    fn_8006140C(*(void **)((u8 *)self + 0xB8));
+    GActor_Finalize(*(void **)((u8 *)self + 0xB8));
     obj = *(void **)((u8 *)self + 0xB8);
     *(u32 *)obj |= 0x8000;
     obj = *(void **)((u8 *)self + 0xB8);
@@ -2519,7 +2519,7 @@ void fn_801EF6BC(void *arg0) {
     s32 fn_8005C84C(void);
     void fn_8005F7B0(void *, s32);
     void fn_8005F7E0(void *, s32, s32, s32);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_80065EE8(void);
     s32 fn_8006CE14(void);
@@ -2642,7 +2642,7 @@ void fn_801EF6BC(void *arg0) {
         tmp = (void *)fn_8006D948();
         obj = *(void **)((u8 *)self + 0xC4);
         *(s32 *)((u8 *)obj + 0x4C) = (s32)tmp;
-        fn_8006140C(*(void **)((u8 *)self + 0xC4));
+        GActor_Finalize(*(void **)((u8 *)self + 0xC4));
         obj = *(void **)((u8 *)self + 0xC4);
         *(u32 *)obj |= 0x8000;
         obj = *(void **)((u8 *)self + 0xC4);
@@ -2673,7 +2673,7 @@ void fn_801EF6BC(void *arg0) {
 void fn_801EFB2C(void *arg0, char *arg1) {
     void *fn_80040844(void *);
     s32 fn_8005C84C(void);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     s32 fn_80065EE8(void);
@@ -2754,7 +2754,7 @@ void fn_801EFB2C(void *arg0, char *arg1) {
     tmp = (void *)fn_800639B4();
     obj = *(void **)((u8 *)self + 0xD0);
     *(s32 *)((u8 *)obj + 0x44) = (s32)tmp;
-    fn_8006140C(*(void **)((u8 *)self + 0xD0));
+    GActor_Finalize(*(void **)((u8 *)self + 0xD0));
     obj = *(void **)((u8 *)self + 0xD0);
     f = lbl_8036B7D0;
     *(u32 *)obj |= 0x01040000;

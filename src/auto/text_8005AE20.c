@@ -1909,7 +1909,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void *fn_800C4638(s32, void *, s32);
     void Game_Assert(void *, s32, void *);
     void fn_800618E4(void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *fn_80060690(void *);
     void fn_80201FF0(void *, void *);
     void fn_8006D378(void *);
@@ -1952,7 +1952,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     *(void **)((u8 *)node + 4) = self;
     *(u32 *)((u8 *)node + 0x90) = *(u32 *)((u8 *)self + 0x90);
     *(void **)((u8 *)self + 0x8C) = node;
-    fn_8006140C(node);
+    GActor_Finalize(node);
     ((u8 *)node)[0x87] = ((u8 *)self)[0x87];
 
     if (self != 0 && node != 0) {
@@ -2020,7 +2020,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     *(void **)((u8 *)count + 4) = node;
     *(u32 *)((u8 *)count + 0x90) = *(u32 *)((u8 *)node + 0x90);
     *(void **)((u8 *)node + 0x8C) = (void *)count;
-    fn_8006140C((void *)count);
+    GActor_Finalize((void *)count);
     ((u8 *)count)[0x87] = ((u8 *)node)[0x87];
 
     if (node != 0 && (void *)count != 0) {
@@ -2064,7 +2064,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
         *(void **)((u8 *)off + 4) = (void *)count;
         *(u32 *)((u8 *)off + 0x90) = *(u32 *)((u8 *)count + 0x90);
         *(void **)((u8 *)count + 0x8C) = (void *)off;
-        fn_8006140C((void *)off);
+        GActor_Finalize((void *)off);
         ((u8 *)off)[0x87] = ((u8 *)count)[0x87];
         fn_8005F12C((void *)count, (void *)off);
         fn_8005EC18((void *)off, i - 1, flags);
@@ -2769,7 +2769,7 @@ inner_check:
     return -1;
 }
 
-void fn_8006140C(void *arg0) {
+void GActor_Finalize(void *arg0) {
     if (arg0 != NULL) {
         s32 *ptr = (s32*)arg0;
         s32 val = ptr[-3];

@@ -6877,7 +6877,7 @@ void fn_801C5B80(void *arg0) {
     void fn_8005F4F4(void *, void *);
     void fn_8005F5B4(void *, void *);
     void fn_8005F494(void *, void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void fn_80061824(void *);
     void fn_801C7BF8(void *);
     extern u32 lbl_8036B3EC;
@@ -7016,7 +7016,7 @@ void fn_801C5B80(void *arg0) {
     tbl = (u8 *)lbl_8027D594;
     sprintf(sp28, tbl + 0x17A, tbl + 0x18E, tbl + 0x19F);
     fn_8005F494(*(void **)((u8 *)self + 0x40), sp28);
-    fn_8006140C(*(void **)((u8 *)self + 0x40));
+    GActor_Finalize(*(void **)((u8 *)self + 0x40));
 
     i = 0;
     off = 0;
@@ -7030,7 +7030,7 @@ void fn_801C5B80(void *arg0) {
         ((u8 *)tmp)[0xA] = ((u8 *)self)[0x3A];
         ((u8 *)tmp)[0xB] = ((u8 *)self)[0x3B];
         ((u8 *)tmp)[0x87] = (u8)three;
-        fn_8006140C((void *)tmp);
+        GActor_Finalize((void *)tmp);
         i += 1;
         off += 0xA8;
     }
@@ -13213,7 +13213,7 @@ extern "C" void fn_801D2C30(void *arg0) {
     void *GActor_Create(void);
     void fn_800506E0(u32, s32, void *);
     s32 fn_800639B4(void);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
 
     struct Obj {
         virtual void v0() {}
@@ -13303,7 +13303,7 @@ extern "C" void fn_801D2C30(void *arg0) {
                 *(s32 *)((u8 *)row.node + 0x44) = fn_800639B4();
                 row.unit = unit;
                 *(u32 *)((u8 *)row.node + 0x90) = unit;
-                fn_8006140C(row.node);
+                GActor_Finalize(row.node);
             }
             spC = endPtr;
             fn_801D2FE4(&sp8, &self->count, &spC, &row);

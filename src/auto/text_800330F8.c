@@ -6418,7 +6418,7 @@ void fn_80041514(void *arg0, char *arg1)
     u8 fn_8005C3C4(void *);
     s32 fn_8006D948(void *);
     void fn_8005F5B4(void *, void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void fn_80045D50(void *, void *);
     void fn_80044450(void *, s32);
     void fn_800C1E24(void);
@@ -6614,7 +6614,7 @@ void fn_80041514(void *arg0, char *arg1)
                 fn_802343E0(lbl_802EFE20, lbl_8026A660 + 0x1A7);
                 fn_8005F5B4(sub, lbl_802EFE20);
             }
-            fn_8006140C(sub);
+            GActor_Finalize(sub);
         }
         fn_80045D50(arg0, lbl_8026A660 + 0x1AB);
         fn_80044450(arg0, 1);
@@ -8093,7 +8093,7 @@ void fn_80045D50(void *arg0, void *arg1) {
     void fn_8005FEE8(void *, f32);
     void *fn_80060638(void *);
     void *fn_80060664(void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void fn_80061824(void *);
     u8 fn_80068CFC(void *, void *);
     void *fn_800C42AC(s32);
@@ -8208,7 +8208,7 @@ loop1_body:
     PSMTXConcat((u8 *)self + 0x70, spC, ent + 0x24);
     tmp = r29v + 4;
     *(void **)(sub + 4) = (u8 *)*(void **)((u8 *)self + 0x10) + tmp;
-    fn_8006140C(sub);
+    GActor_Finalize(sub);
     r26v = *(s32 *)(*(u8 **)(ent + 0x10) + 0xBC);
     if (*(u8 *)((u8 *)self + 0x68) == 1) {
         if (fn_80068CFC(fn_80060638(sub), lbl_8026A660 + 0x2F0) != 0) {
@@ -11347,7 +11347,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_80060638(void *);
     void *fn_80060664(void *);
     s32 GActor_FindNode(void *, void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void fn_80061824(void *);
     void fn_800688D4(void *, s32, void *, s32);
     u8 fn_80105BC0(void *, s32);
@@ -11395,7 +11395,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
             res = lbl_80366DC8;
         }
         fn_8005F434(sub, res, (u16)arg1);
-        fn_8006140C(sub);
+        GActor_Finalize(sub);
         if (M2C_FIELD(sub, u32 *, 0x64) != 0) {
             fn_800056A0(0);
         }
@@ -11435,7 +11435,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         sub2 = (u8 *)arg0 + 0xBC;
         fn_80061824(sub2);
         M2C_FIELD(sub2, void **, 4) = lbl_802EFFE8;
-        fn_8006140C(sub2);
+        GActor_Finalize(sub2);
         M2C_FIELD(sub2, u32 *, 0) |= 0x100;
         M2C_FIELD(sub2, void **, 4) = NULL;
     }
@@ -12000,7 +12000,7 @@ void fn_80050F64(void) {
     void fn_8005F4F4(void *, char *);
     void fn_8005F5B4(void *, char *);
     void fn_8005F494(void *, char *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void fn_80015320(s32, void *);
     void fn_80052B44(void *);
     void fn_8004DE78(void);
@@ -12104,7 +12104,7 @@ void fn_80050F64(void) {
         sprintf(sp10, (char *)(a + 0xA5), (char *)(a + 0xB0),
                     (char *)(a + 0xCE));
         fn_8005F494((void *)c, sp10);
-        fn_8006140C((void *)c);
+        GActor_Finalize((void *)c);
         b += 1;
         c += 0xA0;
     } while (b < 5);
@@ -12980,7 +12980,7 @@ void MapObj_InitGraphics(void *arg0) {
  void fn_8005F5B4(void *, void *);
  void fn_8005F494(void *, void *);
  u8 fn_8005C3C4(void *);
- void fn_8006140C(void *);
+ void GActor_Finalize(void *);
  void fn_8005EBCC(void *, u8);
  void *fn_8000CAF0(void *, void *);
  void *Heap_Alloc(s32);
@@ -13018,7 +13018,7 @@ void MapObj_InitGraphics(void *arg0) {
 sprintf(buf,lbl_8026AC0C+338,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F4F4(node,buf);
 sprintf(buf,lbl_8026AC0C+345,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); fn_8005F5B4(node,buf);
 sprintf(buf,lbl_8026AC0C+353,lbl_8026AC0C+0x129,M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0,void * *,0x30),void * *,0x2C),void * *,0)); if(fn_8005C3C4(buf)) fn_8005F494(node,buf);
- fn_8006140C(node);
+ GActor_Finalize(node);
  base=M2C_FIELD(arg0,void * *,0x30);
  mode=M2C_FIELD(M2C_FIELD(base,void * *,0x2C),u8 *,7);
  if(mode) {M2C_FIELD(base,u8 *,4)=mode; fn_8005EBCC(node,mode);}

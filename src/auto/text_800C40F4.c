@@ -9340,7 +9340,7 @@ void fn_800DDC2C(void *arg0, void *arg1) {
 }
 
 void *fn_800DDC90(void *arg0) {
-    M2C_UNK fn_8006140C(void *);
+    M2C_UNK GActor_Finalize(void *);
     void *GActor_Create();
     u32 temp_r0;
     u32 temp_r0_2;
@@ -9361,7 +9361,7 @@ void *fn_800DDC90(void *arg0) {
         if (temp_r0_3 != 0U) {
             M2C_FIELD(temp_r3, u32 *, 0x4C) = temp_r0_3;
         }
-        fn_8006140C(temp_r3);
+        GActor_Finalize(temp_r3);
     }
     return temp_r3;
 }

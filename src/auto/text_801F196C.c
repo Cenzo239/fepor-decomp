@@ -3018,7 +3018,7 @@ void fn_801F8A98(void *arg0) {
     void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_800506E0(void *, s32, void *);
     void fn_800616A0(void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     void fn_8006EEFC(void *, void *);
@@ -3082,7 +3082,7 @@ void fn_801F8A98(void *arg0) {
                 *p |= 0x50028400;
                 fn_800506E0(unit, 0, p);
                 *(s32 *)((u8 *)pair.obj + 0x44) = fn_800639B4();
-                fn_8006140C(pair.obj);
+                GActor_Finalize(pair.obj);
                 sp14 = base;
                 fn_801FB2EC(&sp10, (u8 *)self + 0x30, &sp14, &pair.owner);
                 if (pair.obj != (void *)0) {
@@ -4377,7 +4377,7 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
 extern "C" void *Heap_Alloc(u32);
 extern "C" void fn_800C428C(void *);
 extern "C" void fn_800506E0(s32, s32, void *);
-extern "C" void fn_8006140C(void *);
+extern "C" void GActor_Finalize(void *);
 extern "C" void fn_800616A0(void *);
 extern "C" void *GActor_Create(void);
 extern "C" s32 fn_800639B4(void);
@@ -4441,7 +4441,7 @@ extern "C" void fn_801FB2EC(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
             obj->flags |= 0x50028400;
             fn_800506E0(owner, 0, obj);
             value->obj->unk44 = fn_800639B4();
-            fn_8006140C(value->obj);
+            GActor_Finalize(value->obj);
         }
         pos = (Node *)*arg2;
         n = h.node;

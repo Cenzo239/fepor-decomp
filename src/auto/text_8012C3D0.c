@@ -1057,7 +1057,7 @@ void fn_8012DFA8(void *arg0) {
     void fn_80057E98(void *, s32, s32);
     void *fn_80059208(void *, void *);
     void fn_8005C84C(void *);
-    void fn_8006140C(void *);
+    void GActor_Finalize(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     void *fn_8006D948(void *);
@@ -1179,7 +1179,7 @@ void fn_8012DFA8(void *arg0) {
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
                 *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-                fn_8006140C(tmp);
+                GActor_Finalize(tmp);
                 slot += 0x24;
             }
             node = next;
@@ -1195,7 +1195,7 @@ void fn_8012DFA8(void *arg0) {
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
                 *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-                fn_8006140C(tmp);
+                GActor_Finalize(tmp);
                 slot += 0x24;
             }
             node = next;
@@ -1213,7 +1213,7 @@ void fn_8012DFA8(void *arg0) {
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
                 *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-                fn_8006140C(tmp);
+                GActor_Finalize(tmp);
                 slot += 0x24;
             }
             node = next;
@@ -1229,7 +1229,7 @@ void fn_8012DFA8(void *arg0) {
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
                 *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-                fn_8006140C(tmp);
+                GActor_Finalize(tmp);
                 slot += 0x24;
             }
             node = next;
@@ -1246,7 +1246,7 @@ void fn_8012DFA8(void *arg0) {
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
             *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-            fn_8006140C(tmp);
+            GActor_Finalize(tmp);
             slot += 0x24;
             node = next;
         }
@@ -1260,7 +1260,7 @@ void fn_8012DFA8(void *arg0) {
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
             *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-            fn_8006140C(tmp);
+            GActor_Finalize(tmp);
             slot += 0x24;
             node = next;
         }
@@ -1278,7 +1278,7 @@ void fn_8012DFA8(void *arg0) {
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
                 *(u32 *)tmp = *(u32 *)tmp | 0x50028400;
-                fn_8006140C(tmp);
+                GActor_Finalize(tmp);
                 slot += 0x24;
             }
             node = next;
