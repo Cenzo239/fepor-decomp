@@ -5621,7 +5621,7 @@ void *fn_8010F9BC(void *arg0, s8 arg1, s8 arg2, u8 arg3) {
 
 extern u8 lbl_803679E0;
 extern M2C_UNK lbl_803679E4;
-void fn_8001C5F8(void);
+void Item_Destroy(void);
 extern u8 lbl_8032BDDC[];
 M2C_UNK *fn_8010FA2C(void *arg0) {
     s32 fn_80019E24(s32 arg0);
@@ -5631,7 +5631,7 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
     M2C_UNK *__register_global_object(M2C_UNK *, M2C_UNK *, M2C_UNK *);
 
     if ((s8) lbl_803679E0 == 0) {
-        __register_global_object(fn_8001C76C(&lbl_803679E4), (M2C_UNK *)fn_8001C5F8, (M2C_UNK *)lbl_8032BDDC);
+        __register_global_object(fn_8001C76C(&lbl_803679E4), (M2C_UNK *)Item_Destroy, (M2C_UNK *)lbl_8032BDDC);
         lbl_803679E0 = 1;
     }
     UnitRef_Set(&lbl_803679E4, fn_80019E24(M2C_FIELD(arg0, u8 *, 4)));

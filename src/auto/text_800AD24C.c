@@ -73,10 +73,10 @@ void fn_800AD24C(void) {
 }
 
 s32 fn_800AD284(s32 arg0, s16 arg1) {
-    M2C_UNK fn_8001C5F8(s32, M2C_UNK);
+    M2C_UNK Item_Destroy(s32, M2C_UNK);
     M2C_UNK Heap_Free(s32);
     if (arg0 != 0) {
-        fn_8001C5F8(arg0 + 4, -1);
+        Item_Destroy(arg0 + 4, -1);
         if (arg1 > 0) {
             Heap_Free(arg0);
         }
@@ -5545,7 +5545,7 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
     void fn_8001C76C(void *);
     void fn_8001D780(void *, s32);
     void fn_8001C690(void *, void *);
-    void fn_8001C5F8(void *, s32);
+    void Item_Destroy(void *, s32);
     s32 fn_800C0658(void);
     void Unit_OfferItem(void *, void *, s32);
     extern u8 gUnits[];
@@ -5565,8 +5565,8 @@ s32 fn_800BA69C(u8 arg0, s32 arg1) {
     fn_8001D780(sp10, arg1);
     fn_8001C690(sp8, sp10);
     Unit_OfferItem(var_r31, sp8, fn_800C0658());
-    fn_8001C5F8(sp8, -1);
-    fn_8001C5F8(sp10, -1);
+    Item_Destroy(sp8, -1);
+    Item_Destroy(sp10, -1);
     return 1;
 }
 

@@ -1678,7 +1678,7 @@ void *Item_Copy(void *arg0, void *arg1) {
     return arg0;
 }
 
-void *fn_8001C5F8(void *arg0, s16 arg1) {
+void *Item_Destroy(void *arg0, s16 arg1) {
     void fn_800C3220(void *, s32);
     void Heap_Free(void *);
     extern u8 lbl_803206EC[];

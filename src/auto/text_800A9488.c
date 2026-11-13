@@ -2,11 +2,11 @@
 #include "common.h"
 #pragma cplusplus on
 extern "C" void fn_8001C76C(void *);
-extern "C" void fn_8001C5F8(void *, s32);
+extern "C" void Item_Destroy(void *, s32);
 struct ItemABA {
     u32 unk0, unk4;
     ItemABA() { fn_8001C76C(this); }
-    ~ItemABA() { fn_8001C5F8(this, -1); }
+    ~ItemABA() { Item_Destroy(this, -1); }
 };
 #pragma cplusplus reset
 
@@ -1276,7 +1276,7 @@ void fn_800AB73C(void) {
 void fn_800AB75C(void *arg0) {
     void fn_8001C76C(void *);
     void *Item_Copy(void *, void *);
-    void *fn_8001C5F8(void *, s32);
+    void *Item_Destroy(void *, s32);
     void fn_800ABA3C(void *);
     extern u8 lbl_80312ACC[];
 
@@ -1332,7 +1332,7 @@ void fn_800AB75C(void *arg0) {
         *(u8 *)((u8 *)self + 0x3C) = temp_x;
         *(u8 *)((u8 *)self + 0x3D) = (u8)y;
     }
-    fn_8001C5F8(sp8, -1);
+    Item_Destroy(sp8, -1);
 }
 
 #pragma cplusplus on
@@ -1343,7 +1343,7 @@ extern "C" void Item_Clear(void *);
 void fn_800ABA3C(void) {
     void fn_8001C76C(void *);
     void Item_Clear(void *);
-    void fn_8001C5F8(void *, s32);
+    void Item_Destroy(void *, s32);
     extern u8 lbl_80312ACC[];
     u8 *base;
     {
@@ -1369,7 +1369,7 @@ void fn_800ABA3C(void) {
             Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
+        Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
 
     }
     {
@@ -1395,7 +1395,7 @@ void fn_800ABA3C(void) {
             Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
+        Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
 
     }
     {
@@ -1421,7 +1421,7 @@ void fn_800ABA3C(void) {
             Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
+        Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
 
     }
     {
@@ -1447,7 +1447,7 @@ void fn_800ABA3C(void) {
             Item_Clear(p+4);
         }
         for(i=0;i<n;q+=8,dst+=16,i++) Item_Copy(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
+        Item_Destroy(a[3],-1); Item_Destroy(a[2],-1); Item_Destroy(a[1],-1); Item_Destroy(a[0],-1);
 
     }
 }

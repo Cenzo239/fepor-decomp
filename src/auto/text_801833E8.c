@@ -3920,7 +3920,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     void fn_8001C76C(void *);
     s32 UnitRef_GetName(void *);
     void UnitRef_Set(void *, s32);
-    void fn_8001C5F8(void *, s32);
+    void Item_Destroy(void *, s32);
     s32 Text_MeasureHeight(s32, f32);
     void Text_Draw(s16, s16, s32, ...);
     void fn_8008CFB4(void *, s16, s16);
@@ -3946,7 +3946,7 @@ void fn_8018EBC0(void *arg0, s16 arg1) {
     x = (s16)(a1 + half);
     Text_Draw((s16)(y2 + 0x18), x, 2, lbl_80279C40 + 0x50, w);
     fn_8008CFB4(sp8, y2, x);
-    fn_8001C5F8(sp8, -1);
+    Item_Destroy(sp8, -1);
 }
 
 #pragma use_lmw_stmw on
@@ -6300,7 +6300,7 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
-    void fn_8001C5F8(void *, s32);
+    void Item_Destroy(void *, s32);
     void Heap_Free(void *);
     void **p_end;
     void **p_cur;
@@ -6328,7 +6328,7 @@ void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
 
     goto check;
     do {
-        fn_8001C5F8((u8 *)*p_cur + 8, -1);
+        Item_Destroy((u8 *)*p_cur + 8, -1);
         cur = *p_cur;
         *p_cur = *(void **)((u8 *)cur + 4);
         Heap_Free(cur);

@@ -1413,12 +1413,12 @@ void *fn_80134DA8(void *arg0, s16 arg1) {
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
 
-    void fn_8001C5F8(void *, s32);
+    void Item_Destroy(void *, s32);
     void Heap_Free(void *);
 
     if (arg0 != NULL) {
         *(void **)arg0 = lbl_80291758;
-        fn_8001C5F8((u8 *)arg0 + 0x60, -1);
+        Item_Destroy((u8 *)arg0 + 0x60, -1);
         if (arg0 != NULL) {
             *(void **)arg0 = lbl_8029180C;
             if (arg0 != NULL) {

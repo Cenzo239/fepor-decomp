@@ -3,7 +3,7 @@
 
 extern u16 lbl_80367218;
 u32 Battle_Destroy(u32 battle, s16 doFree) {
-    void *fn_8001C5F8(s32, s32);
+    void *Item_Destroy(s32, s32);
     void Heap_Free(u32);
     void BattleUnit_Reset(u32);
     void Array_Destroy(s32, void *(*)(s32, s32), s32, s32);
@@ -12,29 +12,29 @@ u32 Battle_Destroy(u32 battle, s16 doFree) {
     if (battle != 0U) {
         if ((battle + 0x5C0) != 0) {
             BattleUnit_Reset(battle + 0x5C0);
-            fn_8001C5F8(battle + 0x84C, -1);
-            fn_8001C5F8(battle + 0x844, -1);
+            Item_Destroy(battle + 0x84C, -1);
+            Item_Destroy(battle + 0x844, -1);
             if (((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0) && ((battle + 0x5C0) != 0)) {
-                Array_Destroy(battle + 0x7AC, fn_8001C5F8, 8, 4);
-                Array_Destroy(battle + 0x78C, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x7AC, Item_Destroy, 8, 4);
+                Array_Destroy(battle + 0x78C, Item_Destroy, 8, 4);
             }
         }
         if ((battle + 0x2E0) != 0) {
             BattleUnit_Reset(battle + 0x2E0);
-            fn_8001C5F8(battle + 0x56C, -1);
-            fn_8001C5F8(battle + 0x564, -1);
+            Item_Destroy(battle + 0x56C, -1);
+            Item_Destroy(battle + 0x564, -1);
             if (((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0) && ((battle + 0x2E0) != 0)) {
-                Array_Destroy(battle + 0x4CC, fn_8001C5F8, 8, 4);
-                Array_Destroy(battle + 0x4AC, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x4CC, Item_Destroy, 8, 4);
+                Array_Destroy(battle + 0x4AC, Item_Destroy, 8, 4);
             }
         }
         if (battle != 0U) {
             BattleUnit_Reset(battle);
-            fn_8001C5F8(battle + 0x28C, -1);
-            fn_8001C5F8(battle + 0x284, -1);
+            Item_Destroy(battle + 0x28C, -1);
+            Item_Destroy(battle + 0x284, -1);
             if ((battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U) && (battle != 0U)) {
-                Array_Destroy(battle + 0x1EC, fn_8001C5F8, 8, 4);
-                Array_Destroy(battle + 0x1CC, fn_8001C5F8, 8, 4);
+                Array_Destroy(battle + 0x1EC, Item_Destroy, 8, 4);
+                Array_Destroy(battle + 0x1CC, Item_Destroy, 8, 4);
             }
         }
         if (doFree > 0) {

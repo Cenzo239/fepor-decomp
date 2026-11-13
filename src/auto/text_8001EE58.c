@@ -5,7 +5,7 @@
 void fn_8001EE58(void)
 {
     void fn_800C3220(void *, s32);
-    void fn_8001C5F8(void);
+    void Item_Destroy(void);
     extern u8 lbl_80367218;
     extern u8 lbl_803206EC[];
     extern u8 lbl_802CA4B0[];
@@ -29,5 +29,5 @@ void fn_8001EE58(void)
         fn_800C3220(lbl_803206EC, mask);
         bf->rest = 0;
     }
-    __register_global_object(&lbl_80367218, fn_8001C5F8, lbl_802CA4B0);
+    __register_global_object(&lbl_80367218, Item_Destroy, lbl_802CA4B0);
 }

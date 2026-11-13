@@ -8174,7 +8174,7 @@ void Process_Goto(void *, s32);
 void *Process_CreateChild(void *, void *);
 u32 *Item_GetFlagsPtr(u32);
 void Item_Copy(u32 *, s32);
-void fn_8001C5F8(void *, s32);
+void Item_Destroy(void *, s32);
 void fn_8001C690(void *, u32 *, u32);
 void Item_Clear(s32);
 s32 Convoy_FindEmpty(void *);
@@ -8291,7 +8291,7 @@ fn_80143E0C(r28, fn_801435E0(r28, slot));
 }
 gUiContext[1] = 0;
 Process_CreateChild(lbl_80294B10, self);
-fn_8001C5F8(sp28, -1);
+Item_Destroy(sp28, -1);
 ok = 1;
 } else {
 ok = 0;

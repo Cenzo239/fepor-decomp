@@ -7,7 +7,7 @@ extern "C" void fn_80073E70(void) {
 #pragma use_lmw_stmw on
 #pragma opt_propagation off
     void *fn_8001C76C(void *);
-    void *fn_8001C5F8(void *, s16);
+    void *Item_Destroy(void *, s16);
     void __register_global_object(s32, s32, void *);
 
     extern u8 gUiMenuDrawVtbl[], lbl_80286338[], lbl_802863BC[];
@@ -284,7 +284,7 @@ extern "C" void fn_80073E70(void) {
     record98->table = table875C0;
     lbl_80367464 = table87510;
     object = fn_8001C76C(lbl_8036746C);
-    __register_global_object((s32)object, (s32)fn_8001C5F8, records + 0xA8);
+    __register_global_object((s32)object, (s32)Item_Destroy, records + 0xA8);
 
     table8748C = lbl_8028748C;
     table87438 = lbl_80287438;

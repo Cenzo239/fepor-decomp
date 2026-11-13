@@ -355,7 +355,7 @@ void fn_800C40F4(u8 *arg0) {
 void *fn_800C412C(void *arg0, s16 arg1)
 {
     void Array_Destroy(char *, void (*)(char *, int), int, unsigned int);
-    void *fn_8001C5F8(void *, s16);
+    void *Item_Destroy(void *, s16);
     void Heap_Free();
 
     void *obj;
@@ -367,7 +367,7 @@ void *fn_800C412C(void *arg0, s16 arg1)
     if (obj != 0) {
         Array_Destroy(
             (char *)obj,
-            (void (*)(char *, int))fn_8001C5F8,
+            (void (*)(char *, int))Item_Destroy,
             8,
             0xC8
         );
@@ -17999,7 +17999,7 @@ t=p[13]; if(!t || t==M2C_FIELD(arg0,u8*,0x198))return 1;
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 extern u8 gAiState[],gUiContext[],gBattleMap[];
 int fn_80230BCC(int);
-void *fn_8001C5F8(void *,s16);
+void *Item_Destroy(void *,s16);
 u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 fn_8001DD54(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
 struct {u8 x,y;u16 item;u8 *unit;s32 score;} result;
@@ -18034,7 +18034,7 @@ result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
 if(best)fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19E],best[0x19F],(s8)item,0,0);
-a=gAiState[0x21C];fn_8001C5F8(&weapon,-1);return a;
+a=gAiState[0x21C];Item_Destroy(&weapon,-1);return a;
 }
 
 #pragma use_lmw_stmw on
