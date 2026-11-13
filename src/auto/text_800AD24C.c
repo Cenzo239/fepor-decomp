@@ -2104,7 +2104,7 @@ s32 fn_800B34B0(u8 *arg0) {
     u32 OSGetResetCode();
     void DCFlushRange(void *, u32);
     void fn_80258D74(u8 *(*)(s32, u32), s32);
-    u8 fn_80258D94(s32, u16, s32, s32, s32);
+    u8 Sound_PushGroup(s32, u16, s32, s32, s32);
     u8 *fn_800B3F8C(s32, u32);
     extern u8 gSoundSys[];
     extern void *lbl_80367814;
@@ -2167,13 +2167,13 @@ stored:
         *(u32 *)(ptr + 0xC0) = 0;
         if (arg0 != NULL) {
             while (*arg0 != 0xFF) {
-                fn_80258D94(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
+                Sound_PushGroup(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
                 *(u32 *)counter_ptr += 1;
                 arg0++;
             }
         } else {
             for (i = 0; i < 6; i++) {
-                if (fn_80258D94(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
+                if (Sound_PushGroup(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
                     *(u32 *)counter_ptr += 1;
                     *(u32 *)(ptr + 0xE8) += 1;
                 }
@@ -2414,7 +2414,7 @@ loop_1:
             M2C_FIELD(temp_r30, u32 *, 0x444) = (u32) M2C_FIELD(temp_r30, u32 *, 0x448);
             fn_80258D74(&fn_800B33FC, 0x20000);
         }
-        fn_80258D94(M2C_FIELD(temp_r30, s32 *, 0x24), temp_r27, 0, M2C_FIELD(temp_r30, s32 *, 0x44), M2C_FIELD(temp_r30, s32 *, 4));
+        Sound_PushGroup(M2C_FIELD(temp_r30, s32 *, 0x24), temp_r27, 0, M2C_FIELD(temp_r30, s32 *, 0x44), M2C_FIELD(temp_r30, s32 *, 4));
         M2C_FIELD(temp_r30, s32 *, 0xC4) = (s32) (M2C_FIELD(temp_r30, s32 *, 0xC4) + 1);
     }
     temp_r5 = &lbl_80312BD0 + 0x6E48;
@@ -2437,7 +2437,7 @@ loop_1:
     M2C_FIELD((&lbl_80312BD0 + 0x6E48), s32 *, 0x3C) = 0;
     if (temp_r27_2 != 0) {
         fn_80258D74(&fn_800B2DE4, 0x20000);
-        fn_80258D94(M2C_FIELD(temp_r30, s32 *, 0x28), (u8) (temp_r27_2 - 1), 0, M2C_FIELD(temp_r30, s32 *, 0x48), M2C_FIELD(temp_r30, s32 *, 8));
+        Sound_PushGroup(M2C_FIELD(temp_r30, s32 *, 0x28), (u8) (temp_r27_2 - 1), 0, M2C_FIELD(temp_r30, s32 *, 0x48), M2C_FIELD(temp_r30, s32 *, 8));
     }
     temp_r5_2 = &lbl_80312BD0 + 0x6E98;
     M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E98) = (s32) M2C_FIELD(temp_r5_2, s32 *, 4);

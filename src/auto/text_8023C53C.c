@@ -9841,7 +9841,7 @@ void fn_80258D74(void) {
     fn_80262410();
 }
 
-s32 fn_80258D94(void *arg0, u16 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 Sound_PushGroup(void *arg0, u16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 extern u8 lbl_80368978;
 extern s32 *lbl_80368A5C;
 s32 fn_802622F4(s32);
