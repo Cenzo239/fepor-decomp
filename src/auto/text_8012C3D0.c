@@ -2605,7 +2605,7 @@ void fn_80130B10(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
     }
 }
 
-void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
+void *Ui_FormatSelectUnitName(void *arg0, void *arg1, s32 arg2) {
     s32 Msg_ResolveName(s32);
     s32 sprintf(char *dest, const char *fmt, ...);
     extern char gUiSelectMenuStrings[];
