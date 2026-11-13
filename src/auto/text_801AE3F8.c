@@ -718,7 +718,7 @@ extern "C" void fn_801AF48C(void *arg0) {
 void fn_801AF6BC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     s32 fn_8013AC54(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_AddChild(void *, void *);
     void fn_80140258(void *, void *, s16 *, s32);
     void fn_8014027C(void *, void *, s16 *, s32);
@@ -769,7 +769,7 @@ void fn_801AF6BC(void *arg0) {
     list = *(void **)((u8 *)self + 0x54);
     panel = Ui_FindChild(self, 4, 0);
     sel = (void *)fn_8013AC54(list);
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
     if (sel != (void *)fn_8013AC54(list)) {
         if (sel != NULL && fn_8013AC54(list) != 0) {
             obj = *(void **)((u8 *)self + 0x60);
@@ -1180,7 +1180,7 @@ extern "C" void fn_801B0564(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8001BC5C(void *, u8, u8, u8, u8);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
@@ -1240,7 +1240,7 @@ extern "C" void fn_801B0564(void *arg0) {
     color_arg = *(void **)((u8 *)p + 0x3C);
     saved = *(s16 *)((u8 *)tmp + 0x3E);
     *(u8 *)((u8 *)tmp + 0x3C) = 1;
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
     tmp = *(void **)((u8 *)self + 0x58);
     a = saved;
     cur = *(s16 *)((u8 *)tmp + 0x3E);
@@ -1506,7 +1506,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     s32 fn_8001C284(void *, u8, s8, s8, s8, s8);
     u16 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_80140210(void *, void *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -1572,7 +1572,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x48);
     saved = *(s16 *)((u8 *)obj + 0x3E);
     *(u8 *)((u8 *)obj + 0x3C) = 1;
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     a = saved;
     if (a != *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E)) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -1964,7 +1964,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     void UnitRef_Set(void *, void *);
     void fn_8011D79C(s32);
     void *fn_80134280(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_801402C4(void *, void *, s32, s32);
@@ -2034,7 +2034,7 @@ extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
     tmp = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
     *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x44) + 0x3C) = 1;
     unit = tmp;
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (unit != fn_80134280(*(void **)((u8 *)arg0 + 0x44))) {
         unit = fn_80134280(*(void **)((u8 *)arg0 + 0x44));
         if (gUnitRef != unit) {
@@ -2166,7 +2166,7 @@ void fn_801B27A0(void *arg0) {
 extern "C" void fn_801B27B0(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -2220,7 +2220,7 @@ extern "C" void fn_801B27B0(void *arg0) {
     p = Ui_FindChild(arg0, 2, 0);
     saved = *(s16 *)((u8 *)obj + 0x3E);
     *(u8 *)((u8 *)obj + 0x3C) = 1;
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
     if (saved != *(s16 *)((u8 *)obj + 0x3E)) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Vec2s *)&sp18 = ((Obj *)obj)->v9();

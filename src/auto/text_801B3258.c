@@ -2203,7 +2203,7 @@ void fn_801B97C8(s32 arg0) {
 /* Handle unit select-list input: A picks the unit, X opens info, B hides/backs out. */
 extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  void Process_Goto(void *,s32); void Process_ClearFunc(void *);
- s32 fn_80105814(void *); void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
+ s32 fn_80105814(void *); void Ui_UpdatePanelWidgets(void *); void *Ui_FindChild(void *,s32,s32);
  void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
  void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
  void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32); void *fn_8017B908(void *);
@@ -2222,7 +2222,7 @@ extern "C" void Ui_HandleUnitSelectListInput(void *arg0) {
  list=M2C_FIELD(self,void **,0x60);
  slot=Ui_FindChild(self,0x108,0);
  unit=fn_8017B908(list);
- fn_8013FDA0(self);
+ Ui_UpdatePanelWidgets(self);
  if(unit!=fn_8017B908(list)) {
  unit=fn_8017B908(list);
  if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
@@ -2440,7 +2440,7 @@ extern "C" void Ui_HandleUnitCursorInput(void *arg0) {
 /* Handle map-cursor input over a unit: select/deploy with A, info with X, cancel with B. */
 void Process_Goto(void *,s32); void Process_ClearFunc(void *);
 s32 fn_80105814(void *); u8 Status_Test(void *,u8); void *fn_801362C8(void *);
-void fn_8013FDA0(void *); void *Ui_FindChild(void *,s32,s32);
+void Ui_UpdatePanelWidgets(void *); void *Ui_FindChild(void *,s32,s32);
 void Ui_PlaySeCue(void *,s32); u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
@@ -2455,7 +2455,7 @@ s32 btn; u8 gate; s32 flags;
 u32 pos1,pos2,pos3,pos4;
 self=arg0; owner=*(void **)gUiContext;
 unit=fn_801362C8(M2C_FIELD(self,void **,0x68));
-fn_8013FDA0(self);
+Ui_UpdatePanelWidgets(self);
 if(unit!=fn_801362C8(M2C_FIELD(self,void **,0x68))) {
 unit=fn_801362C8(M2C_FIELD(self,void **,0x68));
 if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
@@ -2852,7 +2852,7 @@ void fn_801BB400(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_8002833C(void *, u32);
     u32 fn_8013AC54(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void fn_80140210(void *, void *, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -2875,7 +2875,7 @@ void fn_801BB400(void *arg0) {
     void *obj64;
 
     var_r31 = fn_8013AC54(M2C_FIELD(arg0, void **, 0x48));
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (var_r31 != fn_8013AC54(M2C_FIELD(arg0, void **, 0x48))) {
         var_r31 = fn_8013AC54(M2C_FIELD(arg0, void **, 0x48));
         obj64 = M2C_FIELD(arg0, void **, 0x64);
@@ -3850,7 +3850,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void fn_8000D8BC(s32, s32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -3899,7 +3899,7 @@ extern "C" void fn_801BCFF4(void *arg0) {
     s16 tmp;
 
     obj = Ui_FindChild(arg0, 0x80, 0);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
 
     flags = gUiInputFlags;
     gate = 0;
@@ -4077,7 +4077,7 @@ void fn_801BD37C(void *arg0) {
 extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  void Process_Goto(void *,s32); void fn_8002833C(void *,u32);
  u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void fn_80138808(void *,u32);
- u32 fn_8013AC54(void *); void fn_8013FDA0(void *);
+ u32 fn_8013AC54(void *); void Ui_UpdatePanelWidgets(void *);
  void fn_80140210(void *,void *,s32);
  void Ui_PlaySeCue(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
  void fn_80176888(void *,void *,f32,f32); s16 Unit_GetGoldCost(u32,s32);
@@ -4100,7 +4100,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  s32 money;
  void *list;
  unit=fn_8013AC54(M2C_FIELD(arg0,void **,0x48));
- fn_8013FDA0(arg0);
+ Ui_UpdatePanelWidgets(arg0);
  if(unit!=fn_8013AC54(M2C_FIELD(arg0,void **,0x48))) {
  unit=fn_8013AC54(M2C_FIELD(arg0,void **,0x48));
  fn_80138808(M2C_FIELD(arg0,void **,0x4C),unit);
@@ -5059,7 +5059,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
     /* Handle scroll-list pad input: A confirm/error, X unit-info, B back; refresh popup on selection change. */
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -5109,7 +5109,7 @@ extern "C" void Ui_HandleScrollListInput(void *arg0) {
     self = arg0;
     list = Ui_FindChild(arg0, 0x81, 0);
     btn = fn_801D2AAC(list);
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
     if (btn != fn_801D2AAC(list)) {
         fn_801D2AAC(list);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -11005,7 +11005,7 @@ void fn_801CE2DC(void *arg0) {
 #pragma opt_common_subs off
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
 /* Handle name-entry input: A insert char, L/R move caret, Start confirm, Y info, B back. */
-void *Ui_FindChild(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
+void *Ui_FindChild(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void Ui_UpdatePanelWidgets(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *); void Ui_ShowUnitInfoText(void *,s32,f32,f32); void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void NameEntry_InsertChar(void *,u32); void NameEntry_MoveCaretRight(void *,s32); void NameEntry_MoveCaretLeft(void *,s32);
 void Ui_PlaySeCue(void *,s32); void Process_ClearFunc(void *);
@@ -11023,7 +11023,7 @@ field=Ui_FindChild(arg0,0,0);
 entry=Ui_FindChild(arg0,1,0);
 grid=Ui_FindChild(arg0,2,0);
 ch=NameGrid_GetCharAtCursor(grid);
-fn_8013FDA0(arg0);
+Ui_UpdatePanelWidgets(arg0);
 if(ch!=NameGrid_GetCharAtCursor(grid)) {
 ch=NameGrid_GetCharAtCursor(grid);
 if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {

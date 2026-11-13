@@ -7619,7 +7619,7 @@ extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_8013FDA0(void *arg0) {
+extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;

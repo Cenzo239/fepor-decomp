@@ -2500,7 +2500,7 @@ void fn_80168F54(s32 arg0) {
 
 void fn_801690B0(s32 arg0) {
     void Process_Goto(s32, s32);
-    void fn_8013FDA0(s32);
+    void Ui_UpdatePanelWidgets(s32);
     extern void *gPadInput;
     s32 *p;
     s32 temp;
@@ -2510,7 +2510,7 @@ void fn_801690B0(s32 arg0) {
     if (temp & (temp ^ p[1]) & 0x200) {
         Process_Goto(arg0, 1);
     }
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
 }
 
 #pragma cplusplus on
@@ -6326,7 +6326,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *fn_8013BE3C(void *);
     void fn_80024398(void *, void *, s32);
     void *Ui_FindChild(void *, s32, s32);
@@ -6386,7 +6386,7 @@ extern "C" void Ui_HandleMapCursorInput(void *arg0) {
     self = arg0;
     cursorWidget = *(void **)((u8 *)arg0 + 0x4C);
     unit = MapCursor_GetUnit(cursorWidget);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (unit != MapCursor_GetUnit(cursorWidget)) {
         unit = MapCursor_GetUnit(cursorWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -6680,7 +6680,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     void Process_ClearFunc(void *);
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -6731,7 +6731,7 @@ extern "C" void MapCursor_UpdateUnitInfo(void *proc) {
     self = proc;
     cursor = *(void **)((u8 *)proc + 0x4C);
     unit = MapCursor_GetUnit(cursor);
-    fn_8013FDA0(proc);
+    Ui_UpdatePanelWidgets(proc);
     if (unit != MapCursor_GetUnit(cursor)) {
         unit = MapCursor_GetUnit(cursor);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -6941,7 +6941,7 @@ extern "C" void fn_80170894(void *arg0) {
 extern "C" void Ui_HandleUnitListInfoInput(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -7005,7 +7005,7 @@ extern "C" void Ui_HandleUnitListInfoInput(void *arg0) {
             Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x28a);
         }
     }
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (var_r30 != ListWidget_GetSelected(obj54)) {
         var_r30 = ListWidget_GetSelected(obj54);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -7494,7 +7494,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     void Ui_SetWidgetText(u32, void *);
     u8 fn_80091F70(u32, u32);
     extern u32 gUiContext[];
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -7547,7 +7547,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     cursorWidget = *(void **)((u8 *)arg0 + 0x4C);
     textWidget = Ui_FindChild(arg0, 0x106, 0);
     unit = MapCursor_GetUnit(cursorWidget);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (unit != MapCursor_GetUnit(cursorWidget)) {
         unit = MapCursor_GetUnit(cursorWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -7893,7 +7893,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     void *fn_8000CAA0(void *, void *);
     u32 *fn_8001CB64(u32);
     void fn_80094CDC(void *, s16);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     u32 MapCursor_GetUnit(void *);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -7946,7 +7946,7 @@ extern "C" void fn_80172DA4(void *arg0) {
     self = arg0;
     obj4c = *(void **)((u8 *)arg0 + 0x4C);
     var_r29 = MapCursor_GetUnit(obj4c);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (var_r29 != MapCursor_GetUnit(obj4c)) {
         var_r29 = MapCursor_GetUnit(obj4c);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -8170,7 +8170,7 @@ void fn_8001C690(void *, u32 *, u32);
 void fn_8001D580(s32);
 s32 fn_800C3D48(void *);
 void fn_800C3C1C(void *, void *);
-void fn_8013FDA0(void *);
+void Ui_UpdatePanelWidgets(void *);
 void fn_8013FF00(void *, void *);
 void fn_80143570(void *);
 s16 fn_801435E0(void *, void *);
@@ -8231,7 +8231,7 @@ self = arg0;
 obj4c = *(void **)((u8 *)arg0 + 0x4C);
 obj54 = *(void **)((u8 *)arg0 + 0x54);
 var_r27 = MapCursor_GetUnit(obj4c);
-fn_8013FDA0(arg0);
+Ui_UpdatePanelWidgets(arg0);
 if (var_r27 != MapCursor_GetUnit(obj4c)) {
 var_r27 = MapCursor_GetUnit(obj4c);
 if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -8389,7 +8389,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
     s8 fn_80037E00(u32);
     void fn_800951D0(u32, s32);
     void fn_80138808(void *, void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
     s16 fn_80143C58(void *);
@@ -8459,7 +8459,7 @@ extern "C" void Ui_HandleListCursorInput(void *arg0) {
             Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x3a4);
         }
     }
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (entry != ListWidget_GetSelected(listWidget)) {
         entry = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -8946,7 +8946,7 @@ extern "C" void fn_80174E4C(void *arg0) {
     void *fn_8000CAA0(void *, void *);
     u8 fn_80093088(u32);
     u32 fn_8013AC54(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
     void fn_801695BC(u32, void *, s32);
     extern u16 gUiMsgStrings[];
@@ -8993,7 +8993,7 @@ extern "C" void fn_80174E4C(void *arg0) {
     obj40 = *(void **)((u8 *)arg0 + 0x40);
     obj50 = *(void **)((u8 *)arg0 + 0x50);
     var_r30 = fn_8013AC54(obj40);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (var_r30 != fn_8013AC54(obj40)) {
         var_r30 = fn_8013AC54(obj40);
         ((VObj *)obj50)->v11(var_r30);
@@ -9515,7 +9515,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     void fn_8002833C(void *, u32);
     void fn_80138808(void *, u32);
     u32 fn_8013AC54(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void fn_80140210(void *, void *, s32);
     void fn_80140258(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -9551,7 +9551,7 @@ extern "C" void fn_80175E3C(void *arg0) {
     void *obj44;
 
     var_r30 = fn_8013AC54(*(void **)((u8 *)arg0 + 0x40));
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (var_r30 != fn_8013AC54(*(void **)((u8 *)arg0 + 0x40))) {
         var_r30 = fn_8013AC54(*(void **)((u8 *)arg0 + 0x40));
         obj4c = *(void **)((u8 *)arg0 + 0x4C);
@@ -14658,7 +14658,7 @@ extern "C" void fn_80180084(void *arg0)
     void *fn_80016B7C(u32);
     s8 fn_80036DE0(s32, void *);
     u8 fn_80036F5C(s32, s8);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -14724,7 +14724,7 @@ extern "C" void fn_80180084(void *arg0)
         }
         nodeVal = *(void **)(node + 8);
     }
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
 
     {
         s32 idx = *(s16 *)((u8 *)unit + 0x4E);
@@ -14850,7 +14850,7 @@ extern "C" void fn_80180624(void *arg0) {
     void fn_80136F2C(void *, void *, s32 *, void **);
     void *fn_8013AC54(void *);
     void fn_8013FCE0(void *, void *, void **, void **);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
     void fn_801694AC(void *, void *);
@@ -14911,7 +14911,7 @@ extern "C" void fn_80180624(void *arg0) {
     obj81 = Ui_FindChild(arg0, 0x81, 0);
     obj82 = Ui_FindChild(arg0, 0x82, 0);
     unit = fn_8013AC54(obj81);
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (unit != fn_8013AC54(obj81)) {
         unit = fn_8013AC54(obj81);
         if (*(void **)((u8 *)obj82 + 0x48) != unit) {

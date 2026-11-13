@@ -5310,7 +5310,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     s32 fn_800C3D48(void *);
     void fn_8011D79C(s32);
     void *fn_8013AC54(void *);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     void fn_8013FF00(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
@@ -5393,7 +5393,7 @@ extern "C" void fn_80191F2C(void *arg0) {
     list = *(void **)((u8 *)arg0 + 0x50);
     child = (Child *)Ui_FindChild(self, 2, 0);
     unit = fn_8013AC54(list);
-    fn_8013FDA0(self);
+    Ui_UpdatePanelWidgets(self);
     if (unit != fn_8013AC54(list)) {
         if (unit != 0 && fn_8013AC54(list) != 0) {
             ((Panel *)*(void **)((u8 *)self + 0x54))->v11((s32)fn_8013AC54(list));
@@ -5928,7 +5928,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     u32 *fn_8001CB64(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -5999,7 +5999,7 @@ extern "C" void Ui_HandleShopBuyCursorInput(void *arg0) {
     listWidget = *(void **)((u8 *)arg0 + 0x4C);
     entry = ListWidget_GetSelected(listWidget);
     *(u8 *)((u8 *)listWidget + 0x4C) = 1;
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (entry != ListWidget_GetSelected(listWidget)) {
         entry = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
@@ -6682,7 +6682,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     u32 *fn_8001CB64(void *);
     u32 UnitRef_GetValue(void *);
     void fn_8011D79C(s32);
-    void fn_8013FDA0(void *);
+    void Ui_UpdatePanelWidgets(void *);
     u32 Ui_FindChild(void *, s32, s32);
     s32 *ListWidget_GetSelected(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -6750,7 +6750,7 @@ extern "C" void Ui_HandleUnitListCursorInput(void *arg0) {
     listWidget = *(void **)((u8 *)arg0 + 0x40);
     selected = ListWidget_GetSelected(listWidget);
     *(u8 *)((u8 *)listWidget + 0x4C) = 1;
-    fn_8013FDA0(arg0);
+    Ui_UpdatePanelWidgets(arg0);
     if (selected != ListWidget_GetSelected(listWidget)) {
         selected = ListWidget_GetSelected(listWidget);
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
