@@ -1500,7 +1500,7 @@ void fn_801AD0B0(void *arg0) {
     Prim2D_PrepareTex();
 }
 
-void fn_801AD704(void *arg0) {
+void Options_DrawHeader(void *arg0) {
     void Prim2D_Begin(void);
     void fn_80009C0C(f32);
     void Prim2D_PrepareTex(void);
@@ -1615,7 +1615,7 @@ void fn_801ADA50(void *arg0) {
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
-    void fn_801AD704(void *);
+    void Options_DrawHeader(void *);
     void fn_801AD0B0(void *);
     void *fn_8000E0E4(void *);
     void strcpy(void *, void *);
@@ -1682,7 +1682,7 @@ void fn_801ADA50(void *arg0) {
         Prim2D_SetColorByte(0xFF);
         Prim2D_SetTransform(lbl_8036AFA0, lbl_8036AFA0, lbl_8036AFFC, lbl_8036AF9C);
         Prim2D_PrepareTex();
-        fn_801AD704(self);
+        Options_DrawHeader(self);
         fn_801AD0B0(self);
         strcpy(sp8, fn_8000E0E4(lbl_8027B838 + 0x336));
         strcat(sp8, lbl_8027B838 + 0x346);
