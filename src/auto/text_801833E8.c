@@ -13504,7 +13504,8 @@ void fn_80198910(void) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void MoveAnim_SyncWeaponBones(void *arg0) {
+/* Sync BW00N weapon-bone matrices from the source unit actor onto this unit and its weapon actor. */
+void MoveAnim_SyncWeaponBones(void *self) {
     void fn_800608AC(void *);
     void *Unit_GetActor(void *);
     void *GActor_GetNodeTable(void *);
@@ -13517,110 +13518,110 @@ void MoveAnim_SyncWeaponBones(void *arg0) {
     void fn_800E4A78(void *, void *);
     extern u8 gWeaponAttachStr[];
 
-    f32 sp68[3][4];
-    f32 sp38[3][4];
-    f32 sp8[3][4];
-    void *obj;
-    s32 off;
-    s32 n_outer;
-    s32 n_inner;
+    f32 mtxWorld[3][4];
+    f32 mtxTmpA[3][4];
+    f32 mtxTmpB[3][4];
+    void *srcActor;
+    s32 srcMtxOff;
+    s32 nSrcBones;
+    s32 nDstBones;
     s32 i;
-    u8 *ent_o;
-    u8 *ent_i;
-    void *self;
+    u8 *srcBone;
+    u8 *dstBone;
+    void *anim;
     s32 found;
-    s32 id_o;
-    s32 id_i;
-    void *e0;
+    s32 srcBwId;
+    s32 dstBwId;
+    void *dstActor;
     s32 j;
     char *name;
-    void *dst;
+    void *dstMtx;
 
-    self = arg0;
-    fn_800608AC(*(void **)((u8 *)self + 0xE0));
-    obj = Unit_GetActor(*(void **)((u8 *)self + 0xEC));
+    anim = self;
+    fn_800608AC(*(void **)((u8 *)anim + 0xE0));
+    srcActor = Unit_GetActor(*(void **)((u8 *)anim + 0xEC));
     {
-        void *t5 = *(void **)((u8 *)obj + 0x40);
-        void *t4 = *(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x40);
-        n_outer = *(s32 *)((u8 *)t5 + 8);
-        n_inner = *(s32 *)((u8 *)t4 + 8);
+        void *srcTable = *(void **)((u8 *)srcActor + 0x40);
+        void *dstTable = *(void **)((u8 *)*(void **)((u8 *)anim + 0xE0) + 0x40);
+        nSrcBones = *(s32 *)((u8 *)srcTable + 8);
+        nDstBones = *(s32 *)((u8 *)dstTable + 8);
     }
     MTXRotDegOrder(
-        (u8 *)*(void **)((u8 *)GActor_GetNodeTable(obj) + 0xC) + *(s32 *)((u8 *)self + 0xF0) * 0xF4,
-        sp68);
-    PSMTXConcat((u8 *)obj + 0x10, sp68, sp68);
-    PSMTXCopy(sp68, (u8 *)*(void **)((u8 *)self + 0xE0) + 0x10);
-    PSMTXCopy(sp68, (u8 *)*(void **)((u8 *)self + 0xE4) + 0x10);
+        (u8 *)*(void **)((u8 *)GActor_GetNodeTable(srcActor) + 0xC) + *(s32 *)((u8 *)anim + 0xF0) * 0xF4,
+        mtxWorld);
+    PSMTXConcat((u8 *)srcActor + 0x10, mtxWorld, mtxWorld);
+    PSMTXCopy(mtxWorld, (u8 *)*(void **)((u8 *)anim + 0xE0) + 0x10);
+    PSMTXCopy(mtxWorld, (u8 *)*(void **)((u8 *)anim + 0xE4) + 0x10);
 
     i = 0;
-    off = 0;
-    ent_o = *(u8 **)((u8 *)*(void **)((u8 *)obj + 0x40) + 0xC);
-    while (i < n_outer) {
-        name = *(char **)(ent_o + 0xF0);
+    srcMtxOff = 0;
+    srcBone = *(u8 **)((u8 *)*(void **)((u8 *)srcActor + 0x40) + 0xC);
+    while (i < nSrcBones) {
+        name = *(char **)(srcBone + 0xF0);
         if (!name) {
-            id_o = -1;
+            srcBwId = -1;
         } else if ((s32)(u8)name[0] != 0x42) {
-            id_o = -1;
+            srcBwId = -1;
         } else if ((s32)(u8)name[1] != 0x57) {
-            id_o = -1;
+            srcBwId = -1;
         } else if ((s32)(u8)name[2] != 0x30) {
-            id_o = -1;
+            srcBwId = -1;
         } else if ((s32)(u8)name[3] != 0x30) {
-            id_o = -1;
+            srcBwId = -1;
         } else {
-            id_o = (s8)name[4] - 0x30;
+            srcBwId = (s8)name[4] - 0x30;
         }
-        if (id_o >= 0) {
-            e0 = *(void **)((u8 *)self + 0xE0);
+        if (srcBwId >= 0) {
+            dstActor = *(void **)((u8 *)anim + 0xE0);
             j = 0;
-            ent_i = *(u8 **)((u8 *)*(void **)((u8 *)e0 + 0x40) + 0xC);
-            for (; j < n_inner; j += 1, ent_i += 0xF4) {
-                name = *(char **)(ent_i + 0xF0);
+            dstBone = *(u8 **)((u8 *)*(void **)((u8 *)dstActor + 0x40) + 0xC);
+            for (; j < nDstBones; j += 1, dstBone += 0xF4) {
+                name = *(char **)(dstBone + 0xF0);
                 if (!name) {
-                    id_i = -1;
+                    dstBwId = -1;
                 } else if ((s32)(u8)name[0] != 0x42) {
-                    id_i = -1;
+                    dstBwId = -1;
                 } else if ((s32)(u8)name[1] != 0x57) {
-                    id_i = -1;
+                    dstBwId = -1;
                 } else if ((s32)(u8)name[2] != 0x30) {
-                    id_i = -1;
+                    dstBwId = -1;
                 } else if ((s32)(u8)name[3] != 0x30) {
-                    id_i = -1;
+                    dstBwId = -1;
                 } else {
-                    id_i = (s8)name[4] - 0x30;
+                    dstBwId = (s8)name[4] - 0x30;
                 }
-                if (id_i >= 0 && id_i == id_o) {
+                if (dstBwId >= 0 && dstBwId == srcBwId) {
                     PSMTXConcat(
-                        (u8 *)*(void **)((u8 *)obj + 0x60) + off,
-                        ent_i + 0x10,
-                        (u8 *)*(void **)((u8 *)e0 + 0x64) + j * 0x30);
-                    if (Str_Cmp(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x6A)) == 0) {
-                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x38));
+                        (u8 *)*(void **)((u8 *)srcActor + 0x60) + srcMtxOff,
+                        dstBone + 0x10,
+                        (u8 *)*(void **)((u8 *)dstActor + 0x64) + j * 0x30);
+                    if (Str_Cmp(*(char **)(srcBone + 0xF0), (char *)(gWeaponAttachStr + 0x6A)) == 0) {
+                        found = GActor_FindNode(*(void **)((u8 *)anim + 0xE0), (char *)(gWeaponAttachStr + 0x38));
                         if (found >= 0) {
-                            PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp38);
-                            dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;
-                            PSMTXConcat(sp38, dst, dst);
+                            PSMTXConcat((u8 *)*(void **)((u8 *)srcActor + 0x60) + srcMtxOff, dstBone + 0x10, mtxTmpA);
+                            dstMtx = (u8 *)*(void **)((u8 *)*(void **)((u8 *)anim + 0xE0) + 0x60) + found * 0x30;
+                            PSMTXConcat(mtxTmpA, dstMtx, dstMtx);
                         }
                     }
-                    if (Str_Cmp(*(char **)(ent_o + 0xF0), (char *)(gWeaponAttachStr + 0x70)) == 0) {
-                        found = GActor_FindNode(*(void **)((u8 *)self + 0xE0), (char *)(gWeaponAttachStr + 0x4C));
+                    if (Str_Cmp(*(char **)(srcBone + 0xF0), (char *)(gWeaponAttachStr + 0x70)) == 0) {
+                        found = GActor_FindNode(*(void **)((u8 *)anim + 0xE0), (char *)(gWeaponAttachStr + 0x4C));
                         if (found >= 0) {
-                            PSMTXConcat((u8 *)*(void **)((u8 *)obj + 0x60) + off, ent_i + 0x10, sp8);
-                            dst = (u8 *)*(void **)((u8 *)*(void **)((u8 *)self + 0xE0) + 0x60) + found * 0x30;
-                            PSMTXConcat(sp8, dst, dst);
+                            PSMTXConcat((u8 *)*(void **)((u8 *)srcActor + 0x60) + srcMtxOff, dstBone + 0x10, mtxTmpB);
+                            dstMtx = (u8 *)*(void **)((u8 *)*(void **)((u8 *)anim + 0xE0) + 0x60) + found * 0x30;
+                            PSMTXConcat(mtxTmpB, dstMtx, dstMtx);
                         }
                     }
                     break;
                 }
             }
         }
-        off += 0x30;
+        srcMtxOff += 0x30;
         i += 1;
-        ent_o += 0xF4;
+        srcBone += 0xF4;
     }
 
-    fn_8006D378(*(void **)((u8 *)self + 0xE0));
-    fn_800E4A78(*(void **)((u8 *)self + 0xE4), *(void **)((u8 *)self + 0xE0));
+    fn_8006D378(*(void **)((u8 *)anim + 0xE0));
+    fn_800E4A78(*(void **)((u8 *)anim + 0xE4), *(void **)((u8 *)anim + 0xE0));
 }
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
