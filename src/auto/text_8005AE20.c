@@ -746,7 +746,7 @@ loop_9:
     return 0x8000 & ((s32) ~((temp_r3 + 1) | (-1 - temp_r3)) >> 0x1F);
 }
 
-s32 fn_8005C268(char *name) {
+s32 FileCache_GetSize(char *name) {
     u8 *e = FindEntryByName(name);
     if (e != NULL) {
         return *(s32 *)(e + 0x3C);
@@ -5145,11 +5145,10 @@ void *Light_GetChannel(s32 arg0) {
 void fn_80067460(void *arg0) {
     extern u8 lbl_80311B04[];
     extern void *lbl_80366DDC;
-    void *tmp;
 
-    if (arg0 == NULL) {
-        tmp = lbl_80311B04;
-        lbl_80366DDC = tmp;
+    if (arg0 == 0) {
+        arg0 = lbl_80311B04;
+        lbl_80366DDC = arg0;
     }
 }
 #pragma peephole on
