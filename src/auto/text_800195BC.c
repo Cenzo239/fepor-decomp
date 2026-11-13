@@ -1492,11 +1492,11 @@ s8 fn_8001C084(u8 *arg0) {
 
 extern u8 gItemFlagsDummyReady;
 extern s32 gItemFlagsDummy;
-extern s32 lbl_8036722C;
+extern s32 gItemFlagsDummyHi;
 s32 fn_8001C0C8(u8 *arg0)
 {
     extern u8 gItemFlagsDummyReady;
-    extern s32 lbl_8036722C;
+    extern s32 gItemFlagsDummyHi;
     extern s32 gItemFlagsDummy;
 
     void *temp_r7;
@@ -1504,7 +1504,7 @@ s32 fn_8001C0C8(u8 *arg0)
     u8 other;
 
     if ((s8)gItemFlagsDummyReady == 0) {
-        lbl_8036722C = 0;
+        gItemFlagsDummyHi = 0;
         gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
@@ -1877,7 +1877,7 @@ s32 fn_8001CA2C(void *arg0) {
     }
 
     if ((s8) gItemFlagsDummyReady == 0) {
-        lbl_8036722C = 0;
+        gItemFlagsDummyHi = 0;
         gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
@@ -1939,13 +1939,13 @@ s32 fn_8001CA2C(void *arg0) {
 void *Item_GetFlagsPtr(void *arg0)
 {
     extern u8 gItemFlagsDummyReady;
-    extern s32 lbl_8036722C;
+    extern s32 gItemFlagsDummyHi;
     extern s32 gItemFlagsDummy;
 
     void *ptr;
 
     if ((s8)gItemFlagsDummyReady == 0) {
-        lbl_8036722C = 0;
+        gItemFlagsDummyHi = 0;
         gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
@@ -2308,7 +2308,7 @@ s32 Item_DecUses(void *arg0) {
     void fn_800C3220(void *, s32);
     extern u8 gItemFlagsDummyReady;
     extern s32 gItemFlagsDummy;
-    extern s32 lbl_8036722C;
+    extern s32 gItemFlagsDummyHi;
     extern u8 lbl_803206EC[];
     typedef struct {
         u8 pad : 1;
@@ -2320,7 +2320,7 @@ s32 Item_DecUses(void *arg0) {
     s32 mask;
 
     if ((s8)gItemFlagsDummyReady == 0) {
-        lbl_8036722C = 0;
+        gItemFlagsDummyHi = 0;
         gItemFlagsDummy = 0;
         gItemFlagsDummyReady = 1;
     }
