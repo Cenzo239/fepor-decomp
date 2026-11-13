@@ -8727,7 +8727,7 @@ void Capture_DrawRotated(void *cap) {
 s32 fn_80222420(s32, s32, s32, s32, s32);
 void *fn_800C45B8(s32, void *, s32);
 void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
-void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
 void fn_800C0EEC(u8 *obj) {
     extern char lbl_8026FDC0[];
     extern f32 lbl_80369D28;
@@ -8736,7 +8736,7 @@ void fn_800C0EEC(u8 *obj) {
     size = fn_80222420(0x260, 0x1E0, 4, 0, 0);
     *(void **)(obj + 0x50) = fn_800C45B8(-size, lbl_8026FDC0 + 0x53, 0);
     fn_80222644(obj + 0x30, *(void **)(obj + 0x50), 0x260, 0x1E0, 4, 0, 0, 0);
-    fn_802228D8(obj + 0x30, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
+    GXInitTexObjLOD(obj + 0x30, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
 }
 
 void fn_800C0F94(void) {
@@ -9031,7 +9031,7 @@ void fn_800C1E24(void) {
     M2C_UNK fn_800C1BDC();
     s32 fn_800C4638(M2C_UNK, void *, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, s32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
+    M2C_UNK GXInitTexObjLOD(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     extern M2C_UNK lbl_8026FDC0;
     extern M2C_UNK lbl_8031FFD0;
     extern s32 lbl_80320030;
@@ -9054,7 +9054,7 @@ void fn_800C1E24(void) {
     do {
         *var_r30 = fn_800C4638(0x2000, &lbl_8026FDC0 + 0x53, 0);
         fn_80222644(var_r29, *var_r30, 0x80, 0x80, 0, 0, 0, 0);
-        fn_802228D8(var_r29, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
+        GXInitTexObjLOD(var_r29, 1, 1, 0, 0, 0, lbl_80369D28, lbl_80369D28, lbl_80369D28);
         DCFlushRange(*var_r30, 0x2000);
         var_r28 += 1;
         var_r29 += 0x20;

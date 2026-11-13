@@ -224,7 +224,7 @@ void fn_800566D4(void *arg0) {
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
-    void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     void fn_80222C50(void *, s32);
     void fn_80222EB4(void);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
@@ -265,7 +265,7 @@ void fn_800566D4(void *arg0) {
                 GXSetTevOrder(0, 0, 0, 4);
                 fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
                 fn_80222644(sp8, tex, 0x260, 0x1C0, 4, 0, 0, 0);
-                fn_802228D8(sp8, 1, 1, 0, 0, 0, gF32_0, gF32_0, gF32_0);
+                GXInitTexObjLOD(sp8, 1, 1, 0, 0, 0, gF32_0, gF32_0, gF32_0);
                 fn_80222C50(sp8, 0);
                 fn_802245D8(1, 4, 5, 7);
                 GXSetZMode(0, 3, 0);
@@ -1412,7 +1412,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void GXSetCullMode(s32);
     void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, s32, s32, s32, s32, s32, s32, s32);
-    void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     void fn_80222C50(void *, s32);
     void GXSetTevColorIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
@@ -1460,7 +1460,7 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     t = a6;
     fn_80222644(p, t, a2 & 0xFFFF, a3 & 0xFFFF, 0x11, 0, 0, 0);
     f0 = gF32_0;
-    fn_802228D8(sp8, 1, 1, 0, 0, 0, f0, f0, f0);
+    GXInitTexObjLOD(sp8, 1, 1, 0, 0, 0, f0, f0, f0);
     fn_80222C50(sp8, 0);
     fn_80222C50(sp8, 1);
     PSMTXIdentity(sp58);

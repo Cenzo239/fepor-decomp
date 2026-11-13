@@ -749,7 +749,7 @@ void fn_800A4FF8(void) {
 void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16 arg6, s16 arg7, s16 arg_sp8) {
     M2C_UNK GXBegin(M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, s32, u16, u16, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
+    M2C_UNK GXInitTexObjLOD(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     M2C_UNK fn_80222C50(M2C_UNK *, M2C_UNK);
     extern f32 lbl_80369A3C;
     M2C_UNK sp48[8];
@@ -761,15 +761,15 @@ void fn_800A5158(s32 arg0, s32 arg1, s32 arg2, s16 arg3, s16 arg4, u16 arg5, u16
     s32 temp_r29;
 
     fn_80222644(sp48, arg0, arg5, arg6, 1, 0, 0, 0);
-    fn_802228D8(sp48, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
+    GXInitTexObjLOD(sp48, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
     fn_80222C50(sp48, 0);
     temp_r28 = (s16) arg5 >> 1;
     temp_r29 = (s16) arg6 >> 1;
     fn_80222644(sp28, arg1, (u16) temp_r28, (u16) temp_r29, 1, 0, 0, 0);
-    fn_802228D8(sp28, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
+    GXInitTexObjLOD(sp28, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
     fn_80222C50(sp28, 1);
     fn_80222644(sp8, arg2, (u16) temp_r28, (u16) temp_r29, 1, 0, 0, 0);
-    fn_802228D8(sp8, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
+    GXInitTexObjLOD(sp8, 0, 0, 0, 0, 0, lbl_80369A3C, lbl_80369A3C, lbl_80369A3C);
     fn_80222C50(sp8, 2);
     GXBegin(0x80, 7, 4);
     *(s16 *)0xCC008000 = arg3;

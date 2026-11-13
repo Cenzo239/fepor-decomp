@@ -356,7 +356,7 @@ void fn_80222890(void *obj, void *image_ptr, u16 width, u16 height,
     *(u32 *)((char *)obj + 0x18) = tlut_name;
 }
 
-void fn_802228D8(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
+void GXInitTexObjLOD(u32 *t, s32 min_filt, s32 mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, u8 bias_clamp, u8 do_edge_lod, s32 max_aniso) {
     extern u8 lbl_80367048[8];
     u8 lbias;
     u8 lmin;

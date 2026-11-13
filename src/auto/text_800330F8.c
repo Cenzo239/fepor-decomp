@@ -7009,7 +7009,7 @@ void fn_800431EC(s32 unused, s32 arg1) {
     void *ptr = lbl_803672A8;
 
     fn_80222644(arg1, M2C_FIELD(ptr, s32 *, 0x1C), (s32)M2C_FIELD(ptr, f32 *, 0x10), (s32)M2C_FIELD(ptr, f32 *, 0x14), 4, 0, 0, 0);
-    fn_802228D8(arg1, 0, 0, 0, 0, 0, lbl_80368EE4, lbl_80368EE4, lbl_80368EE4);
+    GXInitTexObjLOD(arg1, 0, 0, 0, 0, 0, lbl_80368EE4, lbl_80368EE4, lbl_80368EE4);
 }
 
 void fn_8004327C(void) {
@@ -11087,7 +11087,7 @@ void fn_8004D5D4(s32 arg0) {
     extern f32 lbl_80368FCC;
 
     fn_80222644(arg0, lbl_803672B8, 0xA0, 0x78, 0, 0, 0, 0);
-    fn_802228D8(arg0, 1, 1, 0, 0, 0, lbl_80368FCC, lbl_80368FCC, lbl_80368FCC);
+    GXInitTexObjLOD(arg0, 1, 1, 0, 0, 0, lbl_80368FCC, lbl_80368FCC, lbl_80368FCC);
 }
 
 void fn_8004D644(void) {

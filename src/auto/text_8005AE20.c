@@ -7398,7 +7398,7 @@ s32 fn_8006EBA4(void *arg0, s32 arg1) {
 void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
 {
     void fn_80222644(void *, void *, u16, u16, s32, s32, s32, s32);
-    void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     s32 off;
     u8 *table;
     u8 *node;
@@ -7414,7 +7414,7 @@ void Ui_LoadAtlasTex(void *arg0, void *tex, s32 idx)
     }
     fn_80222644(tex, *(void **)(node + 8), *(u16 *)(node + 2), *(u16 *)(node + 0), *(s32 *)(node + 4), *(s32 *)(node + 0xC), *(s32 *)(node + 0x10), flag);
     node = *(u8 **)(table + off);
-    fn_802228D8(tex, *(s32 *)(node + 0x14), *(s32 *)(node + 0x18), 0, node[0x20], 0, (f32)node[0x21], (f32)node[0x22], *(f32 *)(node + 0x1C));
+    GXInitTexObjLOD(tex, *(s32 *)(node + 0x14), *(s32 *)(node + 0x18), 0, node[0x20], 0, (f32)node[0x21], (f32)node[0x22], *(f32 *)(node + 0x1C));
 }
 #pragma global_optimizer reset
 extern void FileCache_ReleaseByKey(u32);

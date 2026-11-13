@@ -1611,7 +1611,7 @@ void fn_800892E8(void *arg0) {
     void *fn_800C45B8(s32, void *, s32);
     void DCInvalidateRange(void *, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
-    void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     void *Process_Create(void *, s32);
     u8 *obj;
     s32 size;
@@ -1625,7 +1625,7 @@ void fn_800892E8(void *arg0) {
     *(void **)(obj + 0x48) = fn_800C45B8(-size, lbl_8026CC58 + 0x2A, 0);
     DCInvalidateRange(*(void **)(obj + 0x48), size);
     fn_80222644(obj + 0x4C, *(void **)(obj + 0x48), 0x260, 0x1C0, 4, 0, 0, 0);
-    fn_802228D8(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
+    GXInitTexObjLOD(obj + 0x4C, 0, 0, 0, 0, 0, gScreenOrigin, gScreenOrigin, gScreenOrigin);
     tmp = Process_Create(lbl_80289998, 6);
     *(void **)((u8 *)tmp + 0x54) = arg0;
     f38 = lbl_803696A8;

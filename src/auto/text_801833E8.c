@@ -13295,7 +13295,7 @@ void fn_801A27F8(void *arg0) {
     M2C_UNK GXSetCullMode(M2C_UNK);
     M2C_UNK GXSetBlendMode(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK fn_80222644(M2C_UNK *, u32, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_UNK fn_802228D8(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
+    M2C_UNK GXInitTexObjLOD(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     M2C_UNK fn_80222C50(M2C_UNK *, M2C_UNK);
     M2C_UNK fn_80222EB4();
     M2C_UNK GXSetTevColorIn(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -13320,7 +13320,7 @@ void fn_801A27F8(void *arg0) {
         fn_802209FC();
         fn_80222EB4();
         fn_80222644(spC, M2C_FIELD(arg0, u32 *, 0x30), 0x260, 0x1C0, 4, 0, 0, 0);
-        fn_802228D8(spC, 1, 1, 0, 0, 0, 0.0f, 0.0f, 0.0f);
+        GXInitTexObjLOD(spC, 1, 1, 0, 0, 0, 0.0f, 0.0f, 0.0f);
         GXSetCullMode(1);
         GXSetBlendMode(4, 0, 1, 1, 0, 0, 2);
         GXSetNumChans(1);

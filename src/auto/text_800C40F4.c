@@ -16333,7 +16333,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     f32 Vec_Length(void *);
     void fn_802201A8(s32, s32, s32, s32, s32, s32);
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
-    void fn_802228D8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+    void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
     void fn_80222C50(void *, s32);
     void fn_80223500(s32, void *, s32);
     void fn_80223678(s32, s32, s32);
@@ -16430,7 +16430,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         return 1;
     }
     fn_80222644(spAC, lbl_803678DC, 4, 0x10, 3, 1, 1, 0);
-    fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
+    GXInitTexObjLOD(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t26 = fn_80069E7C();
     t28 = GMaterial_AllocTexCoord();
     t25 = GMaterial_AllocMtx();
@@ -16479,7 +16479,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     unk2C = *(void **)((u8 *)cam + 0x2C);
     if (unk2C != NULL && *(f32 *)((u8 *)unk2C + 0x38) != lbl_80369FB8) {
         fn_80222644(spAC, lbl_803678D0, 0x130, 0xE0, 4, 0, 0, 0);
-        fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
+        GXInitTexObjLOD(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
         t26 = GMaterial_AllocTexCoord();
         t25 = GMaterial_AllocTevStage();
         t28 = GMaterial_AllocTexMap();
@@ -16516,7 +16516,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         GXSetTevAlphaOp(t25, 0, 0, 0, 1, 0);
     }
     fn_80222644(spAC, lbl_803678DC, 4, 0x10, 3, 1, 1, 0);
-    fn_802228D8(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
+    GXInitTexObjLOD(spAC, 1, 1, 0, 0, 0, lbl_80369FB8, lbl_80369FB8, lbl_80369FB8);
     t30 = fn_80069E7C();
     t29b = GMaterial_AllocTexCoord();
     t28b = GMaterial_AllocMtx();
