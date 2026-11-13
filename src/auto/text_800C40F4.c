@@ -7840,7 +7840,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     u32 strlen(const char *);
     extern char lbl_802711B0[];
     extern void *lbl_80367898;
-    extern void *lbl_803678A0;
+    extern void *gPreviewWin;
     extern void *lbl_803678A8;
     extern s8 lbl_803678BC;
     extern s8 lbl_803678BF;
@@ -7917,7 +7917,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     if (tmp != NULL) {
         tmp = PreviewWin_Create(tmp, *(void **)((u8 *)self + 4), 0x10, 8);
     }
-    lbl_803678A0 = tmp;
+    gPreviewWin = tmp;
     tmp = Heap_Alloc(0x434);
     if (tmp != NULL) {
         tmp = fn_800D7060(tmp, *(void **)((u8 *)self + 4), 0x14, 0x3C);
@@ -7965,7 +7965,7 @@ extern "C" void *fn_800D9B10(void *arg0) {
     lbl_80367BA0 = tmp;
 
 #pragma global_optimizer off
-    fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_803678A0);
+    fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &gPreviewWin);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_80367898);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &lbl_803678A8);
     fn_800C9BC4((u8 *)self + 0x1C, (u8 *)*(void **)((u8 *)self + 0x24) + (*(s32 *)((u8 *)self + 0x20) << 2), 1, &gWin3);
