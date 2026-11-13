@@ -50,7 +50,7 @@ s32 fn_801E45FC(void) {
     return *(s32*)((u8*)lbl_80299FA8 + 4);
 }
 
-void fn_801E460C(void *arg0) {
+void TabMenu_HandleInput(void *arg0) {
     void fn_8000C070(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
