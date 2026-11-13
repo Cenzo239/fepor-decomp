@@ -4135,7 +4135,7 @@ void fn_800286C8(void *arg0) {
 void fn_80028724(void) {
     u8 fn_800BDD08(void *, void *, void *);
     void fn_80146AF0(void);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 lbl_80268E40[];
     extern u8 gFxChannels[];
@@ -4144,7 +4144,7 @@ void fn_80028724(void) {
 
     if (fn_800BDD08(gBattleState + 0xB4, lbl_80268E40 + 0x21E, gBattleState) == 0) {
         fn_80146AF0();
-        fn_801487D0(buf, 0x3E8);
+        Fx_FadeIn(buf, 0x3E8);
         fn_8014876C(buf, 0x64, 0x3E8);
     }
 }

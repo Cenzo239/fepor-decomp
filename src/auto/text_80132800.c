@@ -11729,7 +11729,7 @@ void fn_8014876C(void *arg0, s8 arg1, s32 arg2) {
 
 extern f64 lbl_8036A788;
 #pragma cplusplus on
-extern "C" void fn_801487D0(void *arg0, s16 arg1) {
+extern "C" void Fx_FadeIn(void *arg0, s16 arg1) {
     struct Obj {
         u8 pad[8];
         virtual void v0() = 0;

@@ -2167,7 +2167,7 @@ extern "C" void fn_8002DA30(void)
     s8 Fx_FindSlotByName(void *);
     s8 fn_80146BE4(void *);
     void Fx_FadeOut(void *, s32);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
     extern u8 gBattleState[];
     extern u8 Battle_str[];
@@ -2271,7 +2271,7 @@ extern "C" void fn_8002DA30(void)
                 lbl_80367250 = 1;
             }
         } else if (lbl_80367250 == 1) {
-            fn_801487D0(obj, 0x3E8);
+            Fx_FadeIn(obj, 0x3E8);
             fn_8014876C(obj, 0x64, 0x3E8);
             lbl_80367250 = 0;
         }

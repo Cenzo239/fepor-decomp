@@ -4021,7 +4021,7 @@ extern "C" s32 fn_800B7A80(void) {
     };
     extern Obj gFxChannels;
     void fn_801457B4(void);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_80146AF0(void);
     void fn_8014876C(void *, s32, s32);
     void fn_80148980(void *, s32);
@@ -4039,7 +4039,7 @@ extern "C" s32 fn_800B7A80(void) {
         }
     }
     if (ok) {
-        fn_801487D0(obj, 0xC8);
+        Fx_FadeIn(obj, 0xC8);
     }
     fn_80146AF0();
     fn_8014876C(obj, 0x64, 0xC8);
@@ -4103,7 +4103,7 @@ extern "C" s32 fn_800B7C4C(s32 arg0, s32 arg1) {
     extern Obj gFxChannels[];
     void fn_80146AF0(void);
     void fn_8014876C(void *, s32, s16);
-    void fn_801487D0(void *, s16);
+    void Fx_FadeIn(void *, s16);
     u8 ok;
     Obj *obj;
 
@@ -4115,7 +4115,7 @@ extern "C" s32 fn_800B7C4C(s32 arg0, s32 arg1) {
         }
     }
     if (ok) {
-        fn_801487D0(obj, (s16)arg1);
+        Fx_FadeIn(obj, (s16)arg1);
     }
     if (arg0 == 0) {
         fn_80146AF0();

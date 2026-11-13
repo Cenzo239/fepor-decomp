@@ -2035,13 +2035,13 @@ void fn_801EDF7C(void *arg0) {
 void fn_801EDFCC(void) {
     extern u8 gFxChannels[];
     void fn_80146AF0(void);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
     s32 p;
 
     p = (s32)gFxChannels;
     fn_80146AF0();
-    fn_801487D0((void *)p, 0x3E8);
+    Fx_FadeIn((void *)p, 0x3E8);
     fn_8014876C((void *)p, 0x64, 0x3E8);
 }
 #pragma global_optimizer on
