@@ -1797,7 +1797,7 @@ s32 fn_800B2928(s32 arg0) {
     extern u8 lbl_80317338[];
     s32 fn_800C4638(s32, void *, s32);
     void fn_800C4588(s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern u8 lbl_8026EB70[], lbl_80319AA8[];
     u32 value;
     u32 buffer;
@@ -1811,7 +1811,7 @@ s32 fn_800B2928(s32 arg0) {
     u16 index;
     base = (u8 *)lbl_80317338;
     if (*(u32 *)(base + 0xE4) >= 8) return 0;
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, id, lbl_8026EB70 + 0x2F);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, id, lbl_8026EB70 + 0x2F);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
@@ -1846,7 +1846,7 @@ s32 fn_800B2928(s32 arg0) {
         *(u32 *)(node + 0xC) = 0;
         buffer += length;
     }
-    fn_80231D94(lbl_80319AA8, (u8 *)lbl_8026EB70 + 0x1E, id, (u8 *)lbl_8026EB70 + 0x35);
+    sprintf(lbl_80319AA8, (u8 *)lbl_8026EB70 + 0x1E, id, (u8 *)lbl_8026EB70 + 0x35);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
@@ -1857,7 +1857,7 @@ s32 fn_800B2928(s32 arg0) {
         table += slot * 4;
         *(u32 *)(table + 0x80) = buffer;
     }
-    fn_80231D94(lbl_80319AA8, &lbl_8026EB70[0x1E], id, &lbl_8026EB70[0x3B]);
+    sprintf(lbl_80319AA8, &lbl_8026EB70[0x1E], id, &lbl_8026EB70[0x3B]);
 
     buffer = LoadSoundBankB(lbl_80319AA8);
     if (buffer == 0) return 0;
@@ -2186,63 +2186,63 @@ stored:
 
 #pragma global_optimizer off
 s32 fn_800B36D8(s32 arg0) {
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     void fn_80234450(void *, void *, void *);
     extern u8 lbl_8026EB70[], lbl_80319AA8[], lbl_80317338[];
     u32 buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x6C);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x6C);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x0) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x72);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x72);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x20) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x78);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x78);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x40) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x7E);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x7E);
     fn_80234450(lbl_80317338 + 0x142, lbl_80319AA8, lbl_80317338);
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x84);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x84);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x8) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x8E);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x8E);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x28) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x98);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0x98);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x48) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xA2);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xA2);
     fn_80234450(lbl_80317338 + 0x342, lbl_80319AA8, lbl_80317338);
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xAC);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xAC);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x4) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xB8);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xB8);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x24) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xC4);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xC4);
     buf = LoadSoundBankB(lbl_80319AA8);
     if (buf == 0) return 0;
     *(u32 *)(lbl_80317338 + 0x44) = buf;
 
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xD0);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg0, lbl_8026EB70 + 0xD0);
     fn_80234450(lbl_80317338 + 0x242, lbl_80319AA8, lbl_80317338);
     return 1;
 }
@@ -9411,7 +9411,7 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     extern char lbl_80270088[];
     extern char lbl_80320B6C[];
     s32 fn_80010B78(void *, s32, f32);
-    s32 fn_80231D94(char *, const char *, ...);
+    s32 sprintf(char *, const char *, ...);
     f32 scale;
     s32 offset;
     char *text;
@@ -9428,7 +9428,7 @@ char *fn_800C2E3C(void *arg0, s32 index) {
         return text;
     }
 
-    fn_80231D94(lbl_80320B6C, lbl_80270088 + 8,
+    sprintf(lbl_80320B6C, lbl_80270088 + 8,
                 (u8)(s32)(lbl_80369D5C * (lbl_80369D60 / (f32)width)),
                 text);
     return lbl_80320B6C;
@@ -10057,7 +10057,7 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
     void fn_800B49D0(void *);
     void fn_800B49E0(void *, s32, s32, s32, void *);
     void *fn_800B4A84(void *, s32, s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     void fn_8024DA2C(void *);
     extern f32 lbl_80369CB0;
     extern f32 lbl_80369CD4;
@@ -10174,7 +10174,7 @@ void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
             *(u16 *)entry = (u16)(*(u16 *)entry | 0x400);
         }
     }
-    fn_80231D94(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg1, lbl_8026EB70 + 0x23);
+    sprintf(lbl_80319AA8, lbl_8026EB70 + 0x1E, arg1, lbl_8026EB70 + 0x23);
     buf = lbl_80319AA8;
     h = fn_800B4A84(buf, 0, 0);
     *(void **)(entry + 0x2C) = h;

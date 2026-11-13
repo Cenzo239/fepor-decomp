@@ -690,7 +690,7 @@ void fn_80081830(void *arg0) {
     void fn_80007818(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s8 fn_8003A5B4(void *);
-    void fn_80231D94(void *, void *, s8, ...);
+    void sprintf(void *, void *, s8, ...);
     s16 fn_80010B78(void *, s32, f32);
     u32 fn_800A883C(void *, s32);
     s32 fn_800A886C(s8 *);
@@ -775,7 +775,7 @@ void fn_80081830(void *arg0) {
     fn_8000A258();
     fn_8000A174(0, 0x13);
     fn_8000A248();
-    fn_80231D94(buf, lbl_8026C86C + 0x215, fn_8003A5B4(M2C_FIELD(arg0, void **, 0x58)));
+    sprintf(buf, lbl_8026C86C + 0x215, fn_8003A5B4(M2C_FIELD(arg0, void **, 0x58)));
     width = fn_80010B78(buf, -1, lbl_80369430);
     fn_8001003C((s32)((lbl_803695A4 + x) - (f32)(width / 2)), (s32)(lbl_8036959C + y), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
     spC = (s8)(fn_800A883C(unit, 0) >> 24);

@@ -1642,7 +1642,7 @@ void fn_8012B7DC(void *arg0) {
     void **fn_8007C3F8(void);
     s32 fn_8007C400(void);
     void fn_80109EEC(void *);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern char lbl_802758F8[];
     extern s32 lbl_80367240;
     extern s32 lbl_80367A88;
@@ -1764,7 +1764,7 @@ void fn_8012B7DC(void *arg0) {
         fn_8000A174(0, 0x13);
         fn_8000A248();
         cam = (void *)lbl_80367A88;
-        fn_80231D94(buf, lbl_802758F8 + 0x2C,
+        sprintf(buf, lbl_802758F8 + 0x2C,
                     (s32)*(f32 *)((u8 *)cam + 0x40),
                     (s32)*(f32 *)((u8 *)cam + 0x44));
         fn_80007898(7);
@@ -1773,7 +1773,7 @@ void fn_8012B7DC(void *arg0) {
         fn_80007124(buf);
         fn_80007884();
         cam = (void *)lbl_80367A88;
-        fn_80231D94(buf, lbl_802758F8 + 0x39,
+        sprintf(buf, lbl_802758F8 + 0x39,
                     (s32)(lbl_8036A4A0 * *(f32 *)((u8 *)cam + 0x54)));
         fn_80007898(7);
         fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));
@@ -1781,7 +1781,7 @@ void fn_8012B7DC(void *arg0) {
         fn_80007124(buf);
         fn_80007884();
         cam = (void *)lbl_80367A88;
-        fn_80231D94(buf, lbl_802758F8 + 0x45,
+        sprintf(buf, lbl_802758F8 + 0x45,
                     (s32)*(f32 *)((u8 *)cam + 0x5C));
         fn_80007898(7);
         fn_80007698((u8)*(s16 *)((u8 *)arg0 + 0x4C));

@@ -246,7 +246,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     void fn_8000A174(s32, s32);
     void fn_8000A248(void);
     void fn_8000A258(void);
-    void fn_80231D94(void *, void *, s32, ...);
+    void sprintf(void *, void *, s32, ...);
     extern u32 lbl_80312100[];
     extern u32 lbl_80369890, lbl_80369894, lbl_80369898, lbl_8036989C;
     extern u32 lbl_803698A0, lbl_803698A4, lbl_803698A8, lbl_803698AC;
@@ -372,7 +372,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     ticks = tbl[2] << 3;
     {
         u32 qq = ticks / rate;
-        fn_80231D94(buf, lbl_8026D568 + 0x199,
+        sprintf(buf, lbl_8026D568 + 0x199,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
     fn_800076AC(0x80, 0xC8, 0xFF, 0xFF);
@@ -386,7 +386,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     ticks = tbl[3] << 3;
     {
         u32 qq = ticks / rate;
-        fn_80231D94(buf, lbl_8026D568 + 0x1AF,
+        sprintf(buf, lbl_8026D568 + 0x1AF,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
     fn_800076AC(0xA0, 0xFF, 0xA0, 0xFF);
@@ -401,7 +401,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         ticks = tbl[7] << 3;
         {
             u32 qq = ticks / rate;
-            fn_80231D94(buf, lbl_8026D568 + 0x1C5,
+            sprintf(buf, lbl_8026D568 + 0x1C5,
                         (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
         }
         fn_800076AC(0xFF, 0xA0, 0xA0, 0xFF);
@@ -416,7 +416,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     ticks = tbl[1] << 3;
     {
         u32 qq = ticks / rate;
-        fn_80231D94(buf, lbl_8026D568 + 0x1DB,
+        sprintf(buf, lbl_8026D568 + 0x1DB,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
     fn_800076AC(0xFF, 0xFF, 0x80, 0xFF);
@@ -430,7 +430,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     ticks = tbl[5] << 3;
     {
         u32 qq = ticks / rate;
-        fn_80231D94(buf, lbl_8026D568 + 0x1F1,
+        sprintf(buf, lbl_8026D568 + 0x1F1,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
     fn_80007124(buf);
@@ -443,7 +443,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     ticks = tbl[6] << 3;
     {
         u32 qq = ticks / rate;
-        fn_80231D94(buf, lbl_8026D568 + 0x207,
+        sprintf(buf, lbl_8026D568 + 0x207,
                     (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)));
     }
     fn_800076AC(0xFF, 0xB4, 0xFF, 0xFF);
@@ -457,7 +457,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             fn_8000A248();
             fn_80007898(0xA);
             fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));
-            fn_80231D94(buf, lbl_8026D568 + 0x21D, i);
+            sprintf(buf, lbl_8026D568 + 0x21D, i);
             fn_80007124(buf);
             fn_80007884();
         }
@@ -469,7 +469,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             fn_8000A248();
             fn_80007898(0xA);
             fn_80007858(lbl_803698FC, (f32)(-0xC - i * 8));
-            fn_80231D94(buf, lbl_8026D568 + 0x234, i,
+            sprintf(buf, lbl_8026D568 + 0x234, i,
                         *(u32 *)((u8 *)tbl + 0x64 + i * 4));
             fn_80007124(buf);
             fn_80007884();

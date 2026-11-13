@@ -56,7 +56,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     u32 fn_8001D2A4(void *);
     s32 fn_8001D2C8(void *);
     void fn_8005AC24(void *, s32, s32, s32);
-    void fn_80231D94(void *, void *, s32, ...);
+    void sprintf(void *, void *, s32, ...);
     void fn_80234450(void *, void *);
     extern u16 lbl_8026CD08[];
     extern u8 lbl_802F0308[];
@@ -83,7 +83,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         if (flags & (0x200ULL << 32)) {
             fn_80234450(sp8, (u8 *)lbl_8026CD08 + 0x26);
         } else {
-            fn_80231D94(sp8, (u8 *)lbl_8026CD08 + 0x2F, (s32)((fn_8001D2A4(arg0) >> 1) & 0x7FFF));
+            sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, (s32)((fn_8001D2A4(arg0) >> 1) & 0x7FFF));
         }
         width = fn_80010B78(sp8, -1, lbl_8036973C);
         fn_8001019C((s16)(arg2 + (0x10E - width)), (s16)arg3, arg1 != 0, sp8);

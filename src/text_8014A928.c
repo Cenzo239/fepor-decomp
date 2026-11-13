@@ -199,7 +199,7 @@ s32 fn_8014ACE8(s32 unused0, s32 unused1, s32 arg2) {
 }
 
 char *fn_8014AD34(void) {
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern char lbl_803306E8[];
     extern u8 lbl_80276F00[];
     extern u8 lbl_80367B0D;
@@ -211,7 +211,7 @@ char *fn_8014AD34(void) {
     page = (s8)lbl_80367B0D + 1;
     total = (s8)lbl_80367B0E;
     fmt = lbl_80276F00 + 0xF0;
-    fn_80231D94(lbl_803306E8, fmt, page, total);
+    sprintf(lbl_803306E8, fmt, page, total);
     return lbl_803306E8;
 }
 
@@ -338,7 +338,7 @@ void fn_8014AE50(void *arg0, void *arg1, void *arg2) {
     void fn_8000727C(f32);
     void fn_80007290(s32, s32, s32, s32);
     void fn_80007884(void);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern f32 lbl_8036A7BC;
     extern f32 lbl_8036A7C0;
     extern f32 lbl_8036A7C4;
@@ -361,7 +361,7 @@ void fn_8014AE50(void *arg0, void *arg1, void *arg2) {
         fn_80007290(0, 0, 0, 0xFF);
     }
     fn_80007884();
-    fn_80231D94(sp8, lbl_80276F00 + 0x10D, ((Obj *)arg0)->v20());
+    sprintf(sp8, lbl_80276F00 + 0x10D, ((Obj *)arg0)->v20());
     fn_80007898(5);
     fn_80007858((f32)(*(s16 *)((u8 *)arg2 + 0x30) + 0x60), (f32)*(s16 *)((u8 *)arg2 + 0x32));
     fn_80007124(sp8);

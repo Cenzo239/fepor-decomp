@@ -4438,7 +4438,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK String_Init(M2C_UNK *, M2C_UNK *, M2C_UNK *);
     M2C_UNK fn_800CB90C(M2C_UNK *, M2C_UNK *, void *);
-    s32 fn_80231D94(void *, void *, ...);
+    s32 sprintf(void *, void *, ...);
     s32 strlen(s32);
     extern u8 lbl_80279D50[];
     struct { s32 v[15]; } sp48;
@@ -4467,7 +4467,7 @@ extern "C" void fn_801905FC(void *arg0, s32 **arg1) {
         }
         M2C_FIELD(arg0, s32 ***, 0x3C) = arg1;
         M2C_FIELD(arg0, s32 **, 0x40) = fn_80061870();
-        fn_80231D94((M2C_UNK *)&sp48, lbl_80279D50 + 8, lbl_80279D50 + 0x11);
+        sprintf((M2C_UNK *)&sp48, lbl_80279D50 + 8, lbl_80279D50 + 0x11);
         String_Init((M2C_UNK *)&sp3C, (M2C_UNK *)&sp48, (M2C_UNK *)&sp8);
         temp_r29 = **M2C_FIELD(arg0, s32 ***, 0x3C) + 4;
         fn_800C992C((M2C_UNK *)&sp3C, temp_r29, strlen(temp_r29));

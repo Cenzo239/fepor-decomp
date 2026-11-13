@@ -315,7 +315,7 @@ void *fn_80055204(void *arg0, s32 arg1) {
 #pragma global_optimizer off
 u8 fn_80055248(s32 arg0) {
     void *fn_8000D354(s32);
-    void fn_80231D94(void *, void *, void *, ...);
+    void sprintf(void *, void *, void *, ...);
     u8 fn_8005BA10(void *);
     u8 fn_800B2FF4(s32);
     s32 fn_80055C84(void *);
@@ -335,7 +335,7 @@ u8 fn_80055248(s32 arg0) {
     s32 v;
 
     node = fn_8000D354(arg0);
-    fn_80231D94(sp188, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
+    sprintf(sp188, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(sp188) == 0) {
         return 0;
     }
@@ -350,7 +350,7 @@ u8 fn_80055248(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80231D94(sp148, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
+    sprintf(sp148, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(sp148) == 0) {
         ok = 0;
         goto check2;
@@ -367,7 +367,7 @@ u8 fn_80055248(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80231D94(sp108, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
+    sprintf(sp108, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(sp108) == 0) {
         ok = 0;
         goto check3;
@@ -384,7 +384,7 @@ u8 fn_80055248(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80231D94(spC8, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
+    sprintf(spC8, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(spC8) == 0) {
         ok = 0;
         goto check4;
@@ -401,7 +401,7 @@ u8 fn_80055248(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80231D94(sp88, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
+    sprintf(sp88, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *(s32 *)node);
     if ((u8)fn_8005BA10(sp88) == 0) {
         ok = 0;
         goto check5;
@@ -418,7 +418,7 @@ u8 fn_80055248(s32 arg0) {
     }
 
     node = fn_8000D354(*(s32 *)((u8 *)node + 8));
-    fn_80231D94(sp48, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, fn_80055C84(node));
+    sprintf(sp48, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, fn_80055C84(node));
     if ((u8)fn_8005BA10(sp48) == 0) {
         ok = 0;
         goto check6;
@@ -561,10 +561,10 @@ void fn_800558FC(void* arg0)
 }
 
 s32 fn_80055AC0(s32 *arg0, s32 arg1) {
-    void fn_80231D94(s32, void *, void *, ...);
+    void sprintf(s32, void *, void *, ...);
     extern u8 lbl_8026AC0C[];
 
-    fn_80231D94(arg1, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *arg0);
+    sprintf(arg1, lbl_8026AC0C + 0x120, lbl_8026AC0C + 0x129, *arg0);
     return arg1;
 }
 

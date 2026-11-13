@@ -389,7 +389,7 @@ s32 fn_80103D7C(void) {
 
 #pragma global_optimizer off
 char *fn_80103DDC(void *arg0, void *arg1) {
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern char lbl_8032BB18[];
     extern u8 lbl_802734D0[];
     s32 a;
@@ -399,7 +399,7 @@ char *fn_80103DDC(void *arg0, void *arg1) {
     a = *(s32 *)((char *)arg0 + 4);
     c = *(s32 *)((char *)*(void **)((char *)arg1 + 0x18) + 0x3c);
     row = (u8 *)(c + a);
-    fn_80231D94(lbl_8032BB18, lbl_802734D0 + 0x1bf, a, row[0x14]);
+    sprintf(lbl_8032BB18, lbl_802734D0 + 0x1bf, a, row[0x14]);
     return lbl_8032BB18;
 }
 #pragma global_optimizer reset
@@ -418,7 +418,7 @@ s32 fn_80103E48(void) {
 
 #pragma global_optimizer off
 char *fn_80103E50(s32 arg0, void *arg1) {
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern char lbl_8032BAF8[];
     extern u8 lbl_802734D0[];
     extern f32 lbl_8036A0D8;
@@ -426,7 +426,7 @@ char *fn_80103E50(s32 arg0, void *arg1) {
 
     p = *(void **)((u8 *)arg1 + 0x18);
     p = *(void **)((u8 *)p + 0x3c);
-    fn_80231D94(lbl_8032BAF8, lbl_802734D0 + 0x1dc, lbl_8036A0D8 * *(f32 *)((u8 *)p + 0xc));
+    sprintf(lbl_8032BAF8, lbl_802734D0 + 0x1dc, lbl_8036A0D8 * *(f32 *)((u8 *)p + 0xc));
     return lbl_8032BAF8;
 }
 #pragma global_optimizer reset
@@ -453,7 +453,7 @@ s32 fn_80103EA4(s32 arg0, void *arg1) {
 
 #pragma global_optimizer off
 char *fn_80103FA4(s32 arg0, void *arg1) {
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern char lbl_8032BAD8[];
     extern u8 lbl_802734D0[];
     extern f32 lbl_8036A0E8;
@@ -467,7 +467,7 @@ char *fn_80103FA4(s32 arg0, void *arg1) {
     p = *(void **)((u8 *)arg1 + 0x18);
     p = *(void **)((u8 *)p + 0x3c);
     val = *(f32 *)((u8 *)p + 8);
-    fn_80231D94(lbl_8032BAD8, fmt + 0x1eb, val * scale);
+    sprintf(lbl_8032BAD8, fmt + 0x1eb, val * scale);
     return lbl_8032BAD8;
 }
 #pragma global_optimizer reset

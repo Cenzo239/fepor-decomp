@@ -1477,7 +1477,7 @@ void __stdio_atexit(void) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_80231D94(char *dest, const char *fmt, ...) {
+s32 sprintf(char *dest, const char *fmt, ...) {
     va_list args;
     __OutStr out;
     s32 n;

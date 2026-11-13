@@ -1021,7 +1021,7 @@ void fn_800A5C00(void *arg0)
     extern u8 lbl_8026E1B0[];
 
     extern void fn_80234450(void *, const char *);
-    extern s32 fn_80231D94(char *, const char *, ...);
+    extern s32 sprintf(char *, const char *, ...);
     extern void fn_802343E0(void *, const char *);
     extern void fn_8005C8B4(void *);
 
@@ -1037,7 +1037,7 @@ void fn_800A5C00(void *arg0)
         (const char *)lbl_8026E1B0 + 0x2E
     );
 
-    fn_80231D94(
+    sprintf(
         buffer,
         (const char *)lbl_8026E1B0 + 0x42,
         *(u32 *)(obj + 0x30)

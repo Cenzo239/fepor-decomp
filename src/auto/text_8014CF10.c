@@ -541,7 +541,7 @@ void fn_8014DEA8(void) {
     s32 fn_8005B8AC(s32);
     s32 fn_8005B8CC(void);
     void fn_8005B8E8(void);
-    void fn_80231D94(char *, char *, ...);
+    void sprintf(char *, char *, ...);
     void fn_8005C7C8(char *);
     void fn_800056CC(char *, ...);
     extern s32 lbl_80367B74;
@@ -558,7 +558,7 @@ void fn_8014DEA8(void) {
     fn_8005B918((char *)lbl_80277238 + 0x28);
     for (i = 0; i < fn_8005B8CC(); i++) {
         if (fn_8005B888(i) == 0) {
-            fn_80231D94(buffer, (char *)lbl_80277238 + 0x2D, fn_8005B8AC(i));
+            sprintf(buffer, (char *)lbl_80277238 + 0x2D, fn_8005B8AC(i));
             fn_8005C7C8(buffer);
             fn_800056CC((char *)lbl_80277238 + 0x35, buffer);
         }
@@ -608,7 +608,7 @@ void fn_8014E014(void) {
     void *fn_8005B8AC(s32);
     s32 fn_8005B8CC(void);
     void fn_8005B8E8(void);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     void fn_8003FCCC(void *);
     void fn_8005C4C4(void *, s32);
     void fn_800056CC(void *, void *, ...);
@@ -639,7 +639,7 @@ void fn_8014E014(void) {
     goto loop_check;
     do {
         if (fn_8005B888(i) == 0) {
-            fn_80231D94(&sp8, lbl_80277238 + 0x2D, fn_8005B8AC(i));
+            sprintf(&sp8, lbl_80277238 + 0x2D, fn_8005B8AC(i));
             fn_8003FCCC(&sp8);
             fn_8005C4C4(&sp8, 4);
             fn_800056CC(lbl_80277238 + 0x59, &sp8);

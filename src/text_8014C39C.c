@@ -234,7 +234,7 @@ void fn_8014C798(void) {
 void fn_8014C7C0(void *arg0, char *arg1) {
     void *fn_80019F04(u8);
     void fn_80234450(char *, char *);
-    void fn_80231D94(char *, char *, ...);
+    void sprintf(char *, char *, ...);
     void *fn_800408A8(s32);
     void fn_8004084C(void *);
     void *fn_80040844(void);
@@ -259,7 +259,7 @@ void fn_8014C7C0(void *arg0, char *arg1) {
 copy:
     fn_80234450((char *)((u8 *)arg0 + 0x504), str);
 after_copy:
-    fn_80231D94(buffer, (char *)lbl_80277060 + 0x155, str);
+    sprintf(buffer, (char *)lbl_80277060 + 0x155, str);
     fn_8004084C(fn_800408A8(0));
     fn_80041514(fn_80040844(), buffer);
     fn_80023D14(lbl_802CA518);

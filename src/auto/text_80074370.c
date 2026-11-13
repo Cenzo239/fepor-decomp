@@ -123,7 +123,7 @@ void fn_800748E8(void) {
     u64 *fn_8001CB64(void *);
     void *fn_80037BD0(void *, s32);
     s32 fn_8001D2C8(void);
-    void fn_80231D94(void *, char *, ...);
+    void sprintf(void *, char *, ...);
     void fn_8000D864(s32, void *);
     void fn_8000E0E4(char *);
     extern u8 gUiContext[24];
@@ -149,7 +149,7 @@ void fn_800748E8(void) {
     } else {
         value = 0;
     }
-    fn_80231D94(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)value + 0x60, fn_8001D2C8());
+    sprintf(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)value + 0x60, fn_8001D2C8());
     fn_8000D864(0, lbl_80312010);
     fn_8000E0E4(lbl_8026C0B8 + 0x12B);
 }
@@ -2883,7 +2883,7 @@ void fn_8007947C(void *arg0) {
     void fn_8000C60C(void *);
     void fn_8000C188(void *);
     void fn_8007B4D8(s32, s32, s32, void *);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern u8 lbl_8026C640[];
     extern void *lbl_80312040[];
     extern void *lbl_80367240;
@@ -2912,7 +2912,7 @@ void fn_8007947C(void *arg0) {
     if (buttons & (prev ^ buttons) & 0x04000004) {
         *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)arg0 + 0x34) - lbl_803693D0;
     }
-    fn_80231D94(sp8, lbl_8026C640 + 0xF9, *(f32 *)((u8 *)arg0 + 0x34));
+    sprintf(sp8, lbl_8026C640 + 0xF9, *(f32 *)((u8 *)arg0 + 0x34));
     fn_8000A258();
     fn_80009D74(lbl_803693D4, lbl_803693D4, lbl_803693D4, lbl_803693D8);
     fn_8000A174(0, 3);

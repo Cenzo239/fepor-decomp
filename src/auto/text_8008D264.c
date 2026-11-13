@@ -62,7 +62,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     void *fn_8001CB64(void *);
     u32 fn_8001D2A4(void *);
     s32 fn_8001D2C8(void *);
-    void fn_80231D94(void *, void *, s32, ...);
+    void sprintf(void *, void *, s32, ...);
     extern u16 lbl_8026CD08[];
     extern u8 lbl_802F0308[];
     extern f32 lbl_8036973C;
@@ -86,7 +86,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
         fn_8000A174(0, 0x13);
         fn_8000A248();
         scaled = (s32)(farg0 * (f32)(u16)fn_8001D2A4(arg0));
-        fn_80231D94(sp8, (u8 *)lbl_8026CD08 + 0x2F, scaled);
+        sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, scaled);
         temp_r31 = fn_80010B78(sp8, -1, lbl_8036973C);
         var_r25 = arg1 != 0;
         temp_r26 = *(s32 *)(lbl_80330708 + 0x18);

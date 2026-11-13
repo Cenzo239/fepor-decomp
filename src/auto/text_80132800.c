@@ -1103,12 +1103,12 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     extern u8 lbl_80330708[];
     void *fn_8000D354(void *);
     void fn_80134E48(void *, s32, s32, s32, s32, s32);
-    void fn_80231D94(void *, void *, u8, ...);
+    void sprintf(void *, void *, u8, ...);
 
     fn_80134E48(arg0, arg2, arg3, arg4, arg5, arg6);
     *(void **)arg0 = lbl_80291794;
     *(s32 *)((char *)arg0 + 0x4c) = arg1;
-    fn_80231D94(lbl_802764BC + 0x218, lbl_802764BC + 0x228, *(u8 *)((char *)lbl_80330708 + 0x10));
+    sprintf(lbl_802764BC + 0x218, lbl_802764BC + 0x228, *(u8 *)((char *)lbl_80330708 + 0x10));
     *(void **)((char *)arg0 + 0x50) = fn_8000D354(lbl_802764BC + 0x218);
     if (*(void **)((char *)arg0 + 0x50) == NULL) {
         *(void **)((char *)arg0 + 0x50) = lbl_80276354;

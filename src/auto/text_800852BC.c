@@ -1165,7 +1165,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void fn_8000A248(void);
     void fn_8000A258(void);
     s32 fn_80230BCC(s32);
-    void fn_80231D94(char *, char *, ...);
+    void sprintf(char *, char *, ...);
     s32 strlen(char *);
     extern s32 lbl_8026C7DC[];
     extern u8 lbl_8026C86C[];
@@ -1227,7 +1227,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         fn_800076AC(0xFF, 0xFF, 0xFF, 0xFF);
         fn_800075D8();
         fn_80007884();
-        fn_80231D94(buf, (char *)(lbl_8026C86C + 0x215), abs_val);
+        sprintf(buf, (char *)(lbl_8026C86C + 0x215), abs_val);
         len = strlen(buf);
         y = (s16)(s32)farg1;
         v_base = (s16)(0x10 & ~((s32)(-arg0 & ~arg0) >> 0x1F));

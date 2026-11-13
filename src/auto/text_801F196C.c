@@ -3027,7 +3027,7 @@ void fn_801F8A98(void *arg0) {
     void *fn_80109180(void *, void *);
     void fn_801FA8B4(void *, void *);
     void fn_801FB2EC(void *, void *, void *, void *);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     void *memset(void *, s32, u32);
     u32 fn_801F8D38(void **, void **);
     extern u8 lbl_802B14E4[];
@@ -3101,8 +3101,8 @@ void fn_801F8A98(void *arg0) {
     n = n->unk0;
     n = n->unk0;
     while (n != (Node *)base) {
-        fn_80231D94(buf, (u8 *)strs + 0x268, fn_800A8A00(*(void **)((u8 *)n->unk8 + 0x188)));
-        fn_80231D94(fmt259, (u8 *)strs + 0x273, *(s8 *)((u8 *)self + 0x54));
+        sprintf(buf, (u8 *)strs + 0x268, fn_800A8A00(*(void **)((u8 *)n->unk8 + 0x188)));
+        sprintf(fmt259, (u8 *)strs + 0x273, *(s8 *)((u8 *)self + 0x54));
         fn_80108FA8(buf);
         fn_80108FA8(fmt259);
         n = n->unk4;
@@ -3218,7 +3218,7 @@ void fn_801F8E30(void *arg0) {
     void fn_802025E8(void *, void *, f32, f32, f32);
     u16 fn_80222A80(void *);
     u16 fn_80222A90(void *);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     f64 fn_802387C8(f64, f64);
     void fn_80069F04(void);
     void fn_801F9464(void);
@@ -3303,7 +3303,7 @@ clear:
                 fn_8001019C((s32)lbl_8036BA50, (s32)f30, 2, lbl_80281028 + 0x2B1,
                     *(u16 *)((u8 *)unit + 0x22A), fn_8000E0E4(lbl_80281028 + 0x2B8));
             } else {
-                fn_80231D94(buf, lbl_80281028 + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
+                sprintf(buf, lbl_80281028 + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
                 fn_8001019C((s32)lbl_8036BA4C, (s32)f30, 2, fn_8000E0E4(buf));
             }
             f28 = f30 + (f32)fn_800102BC(-1, lbl_8036BA20);
@@ -3402,7 +3402,7 @@ void fn_801F94D8(void *arg0) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, f32, f32, ...);
     void *fn_800A8978(void *);
     f32 fn_801099A0(void *, s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern s32 lbl_80367110;
     extern u8 lbl_80281028[];
     extern f32 lbl_8036BA18;
@@ -3476,7 +3476,7 @@ void fn_801F94D8(void *arg0) {
             val19a = *(s8 *)((u8 *)obj + 0x19A);
             nameStr = fn_8000E0E4(lbl_80281028 + 0x2B8);
             fmtStr = fn_8000E0E4(lbl_80281028 + 0x2A6);
-            fn_80231D94(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            sprintf(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
             w = fn_80010B78(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
@@ -3504,7 +3504,7 @@ void fn_801F94D8(void *arg0) {
             val19a = *(s8 *)((u8 *)obj + 0x19A);
             nameStr = fn_8000E0E4(lbl_80281028 + 0x2B8);
             fmtStr = fn_8000E0E4(lbl_80281028 + 0x2A6);
-            fn_80231D94(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            sprintf(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
             w = fn_80010B78(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
@@ -3517,7 +3517,7 @@ void fn_801F99C4(void *arg0) {
     void *fn_80109180(void *, void *);
     void fn_80109448(void *, s32, s32, f32, f32, f32);
     void fn_80109C80(void *, s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern u8 lbl_80281028[];
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA88;
@@ -3553,8 +3553,8 @@ void fn_801F99C4(void *arg0) {
         }
     }
     temp_r28 = lbl_80281028 + 0x259;
-    fn_80231D94(sp8, lbl_80281028 + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
-    fn_80231D94(temp_r28, lbl_80281028 + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
+    sprintf(sp8, lbl_80281028 + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
+    sprintf(temp_r28, lbl_80281028 + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
     *(void **)((u8 *)temp_r31 + 0x58) = fn_80109180(sp8, temp_r29);
     *(void **)((u8 *)temp_r31 + 0x5C) = fn_80109180(temp_r28, *(void **)((u8 *)temp_r31 + 0x58));
     temp_r4 = var_r30 * 2;
@@ -3785,7 +3785,7 @@ void fn_8000C070(void*,s32); void fn_80109020(void*);
 void fn_8000A174(s32,s32); void *fn_8000E0E4(void*);
 s32 fn_800102BC(s32,f32); s16 fn_80010B78(void*,s32,f32);
 void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
-void fn_80231D94(void*,void*,...); f64 fn_802387C8(f64,f64);
+void sprintf(void*,void*,...); f64 fn_802387C8(f64,f64);
 extern s32 lbl_80367110;
 extern u8 lbl_80281028[];
 extern f32 lbl_8036BA18,lbl_8036BA1C,lbl_8036BA20,lbl_8036BA38,lbl_8036BA00,lbl_8036BA04,lbl_8036BA88,lbl_8036BA94,lbl_8036BA98,lbl_8036BA9C,lbl_8036BAA0,lbl_8036BAA4,lbl_8036BAA8;
@@ -3825,8 +3825,8 @@ flag=0;
 if(y<=limit) {if(lbl_8036BA18<y+lbl_8036BA88)flag=1;}
 if(flag){
 a=lbl_80281028+0x30c;b=lbl_80281028+0x31b;
-fn_80231D94(a,lbl_80281028+0x32c,*ent);
-fn_80231D94(b,lbl_80281028+0x33d,*ent);
+sprintf(a,lbl_80281028+0x32c,*ent);
+sprintf(b,lbl_80281028+0x33d,*ent);
 fn_8000A258();fn_8000A174(0,19);fn_8000A248();
 str=fn_8000E0E4(a);
 fn_8001003C((s32)((f32)(128-(fn_80010B78(str,-1,lbl_8036BA20)>>1))-lbl_8036BA98),(s32)y,1,1,0,str,lbl_8036BA20,lbl_8036BA18);

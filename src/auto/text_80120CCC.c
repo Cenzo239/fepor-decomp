@@ -3699,7 +3699,7 @@ extern void fn_8000A248(void);
 extern void fn_8000A258(void);
 extern void fn_80057020(u32);
 extern void fn_80057860(s32);
-extern s32 fn_80231D94(void *, void *, s32);
+extern s32 sprintf(void *, void *, s32);
 extern s32 fn_80234200(void *, s32);
 
 void fn_80121D30(void);

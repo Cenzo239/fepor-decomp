@@ -63,12 +63,12 @@ extern "C" void fn_8012C3E8(void *arg0) {
 #pragma cplusplus reset
 char *fn_8012C414(void) {
     u8 fn_80109B0C(s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern s32 lbl_80367A88;
     extern u8 lbl_802758F8[];
     extern char lbl_8032FE60[];
 
-    fn_80231D94(lbl_8032FE60, lbl_802758F8 + 0x10a, (u8)fn_80109B0C(lbl_80367A88));
+    sprintf(lbl_8032FE60, lbl_802758F8 + 0x10a, (u8)fn_80109B0C(lbl_80367A88));
     return lbl_8032FE60;
 }
 
@@ -105,12 +105,12 @@ s32 fn_8012C470(void) {
 
 char *fn_8012C4F0(void) {
     u8 fn_80109B24(s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern s32 lbl_80367A88;
     extern u8 lbl_802758F8[];
     extern char lbl_8032FE60[];
 
-    fn_80231D94(lbl_8032FE60, lbl_802758F8 + 0x13C, (u8)fn_80109B24(lbl_80367A88));
+    sprintf(lbl_8032FE60, lbl_802758F8 + 0x13C, (u8)fn_80109B24(lbl_80367A88));
     return lbl_8032FE60;
 }
 
@@ -147,12 +147,12 @@ s32 fn_8012C54C(void) {
 
 char *fn_8012C5CC(void) {
     u8 fn_80109B48(s32);
-    void fn_80231D94(void *, void *, ...);
+    void sprintf(void *, void *, ...);
     extern s32 lbl_80367A88;
     extern u8 lbl_802758F8[];
     extern char lbl_8032FE60[];
 
-    fn_80231D94(lbl_8032FE60, lbl_802758F8 + 0x164, (u8)fn_80109B48(lbl_80367A88));
+    sprintf(lbl_8032FE60, lbl_802758F8 + 0x164, (u8)fn_80109B48(lbl_80367A88));
     return lbl_8032FE60;
 }
 
@@ -189,13 +189,13 @@ s32 fn_8012C628(void) {
 
 char *fn_8012C6A8(void) {
     void fn_80109BA8(s32);
-    void fn_80231D94(void *, ...);
+    void sprintf(void *, ...);
     extern s32 lbl_80367A88;
     extern char lbl_802758F8[];
     extern char lbl_8032FE60[];
 
     fn_80109BA8(lbl_80367A88);
-    fn_80231D94(lbl_8032FE60, lbl_802758F8 + 0x188);
+    sprintf(lbl_8032FE60, lbl_802758F8 + 0x188);
     return lbl_8032FE60;
 }
 
@@ -2618,7 +2618,7 @@ void fn_80130B10(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 
 void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
     s32 fn_800A8A88(s32);
-    s32 fn_80231D94(char *dest, const char *fmt, ...);
+    s32 sprintf(char *dest, const char *fmt, ...);
     extern char lbl_80275AC0[];
 
     switch (arg2) {
@@ -2627,18 +2627,18 @@ void *fn_80130B68(void *arg0, void *arg1, s32 arg2) {
     case 1: {
         void *temp = *(void **)((char *)arg1 + 0xC);
         if (temp == 0) {
-            fn_80231D94(arg0, &lbl_80275AC0[0x25B]);
+            sprintf(arg0, &lbl_80275AC0[0x25B]);
         } else {
-            fn_80231D94(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }
     case 2: {
         void *temp = *(void **)((char *)arg1 + 0x10);
         if (temp == 0) {
-            fn_80231D94(arg0, &lbl_80275AC0[0x25B]);
+            sprintf(arg0, &lbl_80275AC0[0x25B]);
         } else {
-            fn_80231D94(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
+            sprintf(arg0, &lbl_80275AC0[0x264], fn_800A8A88(*(s32 *)((char *)temp + 0x188)));
         }
         break;
     }
@@ -2867,13 +2867,13 @@ void fn_801315B0(void* arg0, s32 arg1) {
     case 1:
         {
             u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
-            fn_80231D94(ptr);
+            sprintf(ptr);
         }
         break;
     case 2:
         {
             u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
-            fn_80231D94(ptr);
+            sprintf(ptr);
         }
         break;
     case 3:
@@ -2881,7 +2881,7 @@ void fn_801315B0(void* arg0, s32 arg1) {
             // Check if byte at offset 0x21 is zero
             if (((u8*)arg0)[0x21] == 0) {
                 u8* ptr = &((u8*)arg0)[0x340]; // lbl_80275AC0 + 0x340
-                fn_80231D94(ptr);
+                sprintf(ptr);
             }
         }
         break;
@@ -2891,21 +2891,21 @@ void fn_801315B0(void* arg0, s32 arg1) {
             u8 r6 = ((u8*)arg0)[0x22];
             if (arg1 == r6) {
                 u8* ptr = &((u8*)arg0)[0x345]; // lbl_80275AC0 + 0x345
-                fn_80231D94(ptr);
+                sprintf(ptr);
             }
         }
         break;
     case 5:
         {
             u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
-            fn_80231D94(ptr);
+            sprintf(ptr);
         }
         break;
     case 6:
         {
             s32 r3 = arg1; // value is not used in this case, probably just to pass it to a helper function
             u8* ptr = &((u8*)arg0)[0x33c]; // lbl_80275AC0 + 0x33c
-            fn_80231D94(ptr);
+            sprintf(ptr);
         }
         break;
     }
@@ -3274,26 +3274,26 @@ void *fn_801321F4(void *arg0, void **arg1, s32 arg2) {
     case 1:
         return fn_800A8978(M2C_FIELD(temp_r30, void **, 0x18C));
     case 2:
-        fn_80231D94(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x19A));
+        sprintf(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x19A));
 block_19:
     default:
         return arg0;
     case 3:
         if (fn_800386B0(temp_r30) == 0xFF) {
-            fn_80231D94(arg0, (s8) (&lbl_80275AC0 + 0x340));
+            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x340));
         } else {
-            fn_80231D94(arg0, (s8) (&lbl_80275AC0 + 0x33C), (void *) fn_800386B0(temp_r30));
+            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x33C), (void *) fn_800386B0(temp_r30));
         }
         goto block_19;
     case 4:
-        fn_80231D94(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
+        sprintf(&lbl_80275AC0 + 0x33C, (s8) M2C_FIELD(temp_r30, u8 *, 0x1A8));
         goto block_19;
     case 5:
         temp_r3 = fn_8003B2D0(temp_r30);
         if (temp_r3 >= (s8) M2C_FIELD(M2C_FIELD(temp_r30, void **, 0x18C), u8 *, 0x4C)) {
-            fn_80231D94(arg0, (s8) (&lbl_80275AC0 + 0x4B6), &lbl_80275AC0 + 0x423, &lbl_80275AC0 + 0x428);
+            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x4B6), &lbl_80275AC0 + 0x423, &lbl_80275AC0 + 0x428);
         } else {
-            fn_80231D94(arg0, (s8) (&lbl_80275AC0 + 0x4BF), (void *) temp_r3);
+            sprintf(arg0, (s8) (&lbl_80275AC0 + 0x4BF), (void *) temp_r3);
         }
         goto block_19;
     case 0:
