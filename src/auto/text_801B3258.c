@@ -623,23 +623,24 @@ void fn_801B6600(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x3C) = 0;
 }
 
-void Ui_ExpBarFillProc(void *arg0) {
+/* Advance the EXP bar fill: lerp displayed EXP, play a tick SE on odd frames, clear when finished. */
+void Ui_ExpBarFillProc(void *proc) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u8 lbl_8027C248[];
-    s16 temp_r4;
-    s16 temp_r6;
+    s16 frames;
+    s16 startExp;
 
-    *(u16 *)((u8 *)arg0 + 0x3C) = (u16)(*(u16 *)((u8 *)arg0 + 0x3C) + 1);
-    temp_r4 = *(s16 *)((u8 *)arg0 + 0x4A);
-    temp_r6 = *(s16 *)((u8 *)arg0 + 0x48);
-    *(s16 *)((u8 *)arg0 + 0x3E) = (s16)Math_Lerp((f32)temp_r6, (f32)(temp_r6 + temp_r4), (f32)temp_r4, (f32)*(u16 *)((u8 *)arg0 + 0x3C));
-    if (*(u16 *)((u8 *)arg0 + 0x3C) & 1) {
+    *(u16 *)((u8 *)proc + 0x3C) = (u16)(*(u16 *)((u8 *)proc + 0x3C) + 1);
+    frames = *(s16 *)((u8 *)proc + 0x4A);
+    startExp = *(s16 *)((u8 *)proc + 0x48);
+    *(s16 *)((u8 *)proc + 0x3E) = (s16)Math_Lerp((f32)startExp, (f32)(startExp + frames), (f32)frames, (f32)*(u16 *)((u8 *)proc + 0x3C));
+    if (*(u16 *)((u8 *)proc + 0x3C) & 1) {
         Ui_PlaySeCue(lbl_8027C248 + 0x102, 0x64);
     }
-    if ((s32)*(u16 *)((u8 *)arg0 + 0x3C) == *(s16 *)((u8 *)arg0 + 0x4A)) {
-        Process_ClearFunc(arg0);
+    if ((s32)*(u16 *)((u8 *)proc + 0x3C) == *(s16 *)((u8 *)proc + 0x4A)) {
+        Process_ClearFunc(proc);
     }
 }
 
