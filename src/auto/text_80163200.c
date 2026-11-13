@@ -7399,7 +7399,8 @@ void fn_80171B18(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_ApplyFullHeal(void *arg0) {
+extern "C" void Ui_ApplyFullHeal(void *proc) {
+    /* Apply queued UI action, fully heal the unit, refresh inventory and optional portrait. */
     struct Obj {
         virtual void v1() = 0;
         virtual void v0() = 0;
@@ -7425,33 +7426,33 @@ extern "C" void Ui_ApplyFullHeal(void *arg0) {
     extern u32 gUiContext[];
     extern u8 gBattle[];
 
-    void *tmp44;
+    void *portrait;
     void *self;
-    register s16 saved;
+    register s16 savedSlot;
     void *unit;
-    s8 t;
-    void *obj;
-    s16 var_r3;
+    s8 maxHp;
+    void *inv;
+    s16 slot;
 
-    self = arg0;
-    obj = *(void **)((u8 *)self + 0x4C);
-    saved = *(s16 *)((u8 *)obj + 0x4C);
+    self = proc;
+    inv = *(void **)((u8 *)self + 0x4C);
+    savedSlot = *(s16 *)((u8 *)inv + 0x4C);
     fn_80027038(gUiContext);
     unit = (void *)gUiContext[0];
-    ((Obj *)obj)->v11(unit);
-    t = (s8)Unit_GetMaxHp(unit);
-    Unit_SetHp(unit, t);
-    tmp44 = *(void **)((u8 *)self + 0x44);
+    ((Obj *)inv)->v11(unit);
+    maxHp = (s8)Unit_GetMaxHp(unit);
+    Unit_SetHp(unit, maxHp);
+    portrait = *(void **)((u8 *)self + 0x44);
     if (*(u32 *)(gBattle + 0xcac) & 0x10) {
-        Ui_SetPortraitUnit(tmp44, unit);
+        Ui_SetPortraitUnit(portrait, unit);
         fn_80050C90(unit);
     }
-    var_r3 = UnitInv_FindFilledDown(obj, saved);
-    if (0 > var_r3) {
-        var_r3 = UnitInv_FindFilledUp(obj, saved);
+    slot = UnitInv_FindFilledDown(inv, savedSlot);
+    if (0 > slot) {
+        slot = UnitInv_FindFilledUp(inv, savedSlot);
     }
-    if (0 <= var_r3) {
-        *(s16 *)((u8 *)obj + 0x4C) = var_r3;
+    if (0 <= slot) {
+        *(s16 *)((u8 *)inv + 0x4C) = slot;
         Process_Goto(self, 0x1A);
         return;
     }
