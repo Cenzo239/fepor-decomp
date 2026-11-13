@@ -4390,16 +4390,16 @@ extern "C" void *GActor_Create(void);
 extern "C" s32 fn_800639B4(void);
 extern "C" M2C_UNK abort(void);
 extern "C" M2C_UNK fprintf(void *, const char *, ...);
-extern "C" void StaffRoll_ListInsertActor(void **arg0, s32 *arg1, void ***arg2, s32 *arg3) {
+extern "C" void StaffRoll_ListInsertActor(void **outNode, s32 *listHead, void ***insertBefore, s32 *unitPtr) {
     struct Obj {
         u32 flags;
         s32 unk4;
         u8 pad8[0x3C];
-        s32 unk44;
+        s32 anim;
     };
     struct Value {
-        s32 owner;
-        Obj *obj;
+        s32 unit;
+        Obj *actor;
     };
     struct Node {
         Node *prev;
@@ -4420,13 +4420,14 @@ extern "C" void StaffRoll_ListInsertActor(void **arg0, s32 *arg1, void ***arg2, 
     extern char StaffRoll_str[];
     Value *value;
     Node *node;
-    s32 owner;
+    s32 unit;
     void *list;
-    Obj *obj;
+    Obj *actor;
     Node *pos;
     Node *n;
 
-    list = arg1 + 1;
+    // Create a GActor for the unit and splice its node into the staff-roll list.
+    list = listHead + 1;
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fprintf(__files + 0xA0, StaffRoll_str + 0x3BE);
@@ -4436,29 +4437,29 @@ extern "C" void StaffRoll_ListInsertActor(void **arg0, s32 *arg1, void ***arg2, 
         Holder h(list, node);
         value = &h.node->value;
         if (value != 0) {
-            owner = *arg3;
-            value->owner = owner;
-            value->obj = 0;
-            if (value->obj != 0) {
-                fn_800616A0(value->obj);
+            unit = *unitPtr;
+            value->unit = unit;
+            value->actor = 0;
+            if (value->actor != 0) {
+                fn_800616A0(value->actor);
             }
-            value->obj = (Obj *)GActor_Create();
-            value->obj->unk4 = owner + 0x1C;
-            obj = value->obj;
-            obj->flags |= 0x50028400;
-            fn_800506E0(owner, 0, obj);
-            value->obj->unk44 = fn_800639B4();
-            GActor_Finalize(value->obj);
+            value->actor = (Obj *)GActor_Create();
+            value->actor->unk4 = unit + 0x1C;
+            actor = value->actor;
+            actor->flags |= 0x50028400;
+            fn_800506E0(unit, 0, actor);
+            value->actor->anim = fn_800639B4();
+            GActor_Finalize(value->actor);
         }
-        pos = (Node *)*arg2;
+        pos = (Node *)*insertBefore;
         n = h.node;
         h.node = 0;
         pos->prev->next = n;
         n->prev = pos->prev;
         pos->prev = n;
         n->next = pos;
-        (*arg1)++;
-        *arg0 = n;
+        (*listHead)++;
+        *outNode = n;
     }
 }
 
