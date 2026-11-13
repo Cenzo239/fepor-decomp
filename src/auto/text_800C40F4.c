@@ -3107,7 +3107,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
     u16 fn_8005C144(void);
     void *Heap_Alloc(u32);
     void Xml_GetChildValue(char *, void *);
-    char *fn_800C8DCC(char *, void *, String *);
+    char *Xml_GetNamedValue(char *, void *, String *);
     void Xml_AdvanceChild(void *);
     void fn_800C8F70(void *, s32);
     void Xml_Destroy(void *, s32);
@@ -3225,7 +3225,7 @@ extern "C" void fn_800CBAF8(s32 self, void *path, u32 arg2) {
 
     fn_800C8F70(obj, 0);
     String_Init(&sp28, lbl_802704F8 + 0x1DB, &scratch8);
-    fn_800C8DCC(spC0, obj, &sp28);
+    Xml_GetNamedValue(spC0, obj, &sp28);
     count = *(s32 *)spC0;
     String_Destroy(&sp28, -1);
 
@@ -9398,7 +9398,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     s32 fn_8006D948(void);
     void Xml_GetChildName(String *, void *);
     void Xml_GetChildValue(char *, void *);
-    char *fn_800C8DCC(char *, void *, String *);
+    char *Xml_GetNamedValue(char *, void *, String *);
     u8 Xml_AdvanceChild(void *);
     char *fn_800C93EC(String *);
     s32 fn_800C9400(String *, s32, u32, char *, s32);
@@ -9507,7 +9507,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     *(u8 *)((u8 *)self + 0x3C) = 0;
 
     String_Init(&strFC, lbl_80271860 + 5, &scratch20);
-    fn_800C8DCC(buf1DC, iter, &strFC);
+    Xml_GetNamedValue(buf1DC, iter, &strFC);
     String_AssignCStr(&str138, buf1DC, strlen(buf1DC));
     String_Destroy(&strFC, -1);
 
@@ -9518,12 +9518,12 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     }
 
     String_Init(&strE4, lbl_80271860 + 0xE, &scratch1C);
-    fn_800C8DCC(buf1BC, iter, &strE4);
+    Xml_GetNamedValue(buf1BC, iter, &strE4);
     String_AssignCStr(&str12C, buf1BC, strlen(buf1BC));
     String_Destroy(&strE4, -1);
 
     String_Init(&strD8, lbl_80271860 + 0x14, &scratch18);
-    fn_800C8DCC(buf19C, iter, &strD8);
+    Xml_GetNamedValue(buf19C, iter, &strD8);
     flag_word = *(s32 *)buf19C;
     String_Destroy(&strD8, -1);
 
@@ -10272,7 +10272,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
         void **vtbl;
     };
     void String_Init(String *, char *, void *);
-    char *fn_800C8DCC(char *, void *, String *);
+    char *Xml_GetNamedValue(char *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     s32 fn_800C9400(String *, u32, u32, char *, u32);
@@ -10332,22 +10332,22 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     str48.data = 0;
     str48.cap = 0;
     String_Init(&str3C, lbl_80271A30 + 1, &alloc14);
-    p = fn_800C8DCC(bufCC, path, &str3C);
+    p = Xml_GetNamedValue(bufCC, path, &str3C);
     len = strlen(p);
     String_AssignCStr(&str60, p, len);
     String_Destroy(&str3C, -1);
     String_Init(&str30, lbl_80271A30 + 7, &alloc10);
-    p = fn_800C8DCC(bufAC, path, &str30);
+    p = Xml_GetNamedValue(bufAC, path, &str30);
     len = strlen(p);
     String_AssignCStr(&str54, p, len);
     String_Destroy(&str30, -1);
     String_Init(&str24, lbl_80271A30 + 0xC, &allocC);
-    p = fn_800C8DCC(buf8C, path, &str24);
+    p = Xml_GetNamedValue(buf8C, path, &str24);
     len = strlen(p);
     String_AssignCStr(&str48, p, len);
     String_Destroy(&str24, -1);
     String_Init(&str18, lbl_80271A30 + 0x12, &alloc8);
-    fn_800C8DCC(buf6C, path, &str18);
+    Xml_GetNamedValue(buf6C, path, &str18);
     flag = *(s32 *)buf6C;
     String_Destroy(&str18, -1);
     self->obj = (Obj *)owner;
@@ -11603,7 +11603,7 @@ void *fn_800E37CC(void *arg0, s16 arg1) {
 void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     void fn_800DF7A0(void);
     void String_Init(String *, char *, void *);
-    void fn_800C8DCC(void *, void *, String *);
+    void Xml_GetNamedValue(void *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
     void fn_800CBF24(String *, char *, String *);
@@ -11661,29 +11661,29 @@ void *fn_800E3838(void *arg0, s32 arg1, void *arg2) {
     *(s32 *)((u8 *)self + 0x28) = -0x2F;
     *(u32 *)((u8 *)self + 0x48) = 0;
     String_Init(&str80, lbl_80271DF8 + 8, &alloc1C);
-    fn_800C8DCC(buf144, path, &str80);
+    Xml_GetNamedValue(buf144, path, &str80);
     r29 = (s32)buf144;
     len = strlen((char *)r29);
     String_AssignCStr(&str98, (char *)r29, len);
     String_Destroy(&str80, -1);
     String_Init(&str74, lbl_80271DF8 + 0x11, &alloc18);
-    fn_800C8DCC(buf124, path, &str74);
+    Xml_GetNamedValue(buf124, path, &str74);
     *(s32 *)((u8 *)self + 0x54) = *(s32 *)buf124;
     String_Destroy(&str74, -1);
     String_Init(&str68, lbl_80271DF8 + 0x11, &alloc14);
-    fn_800C8DCC(buf104, path, &str68);
+    Xml_GetNamedValue(buf104, path, &str68);
     *(s32 *)((u8 *)self + 0x58) = ((s32 *)buf104)[1];
     String_Destroy(&str68, -1);
     String_Init(&str5C, lbl_80271DF8 + 0x1A, &alloc10);
-    fn_800C8DCC(bufE4, path, &str5C);
+    Xml_GetNamedValue(bufE4, path, &str5C);
     *(s32 *)((u8 *)self + 0x64) = *(s32 *)bufE4;
     String_Destroy(&str5C, -1);
     String_Init(&str50, lbl_80271DF8 + 0x1A, &allocC);
-    fn_800C8DCC(bufC4, path, &str50);
+    Xml_GetNamedValue(bufC4, path, &str50);
     *(s32 *)((u8 *)self + 0x68) = ((s32 *)bufC4)[1];
     String_Destroy(&str50, -1);
     String_Init(&str44, lbl_80271DF8 + 0x21, &alloc8);
-    fn_800C8DCC(bufA4, path, &str44);
+    Xml_GetNamedValue(bufA4, path, &str44);
     r29 = *(s32 *)bufA4;
     String_Destroy(&str44, -1);
     fn_800CBF24(&str38, lbl_80271DF8 + 0x25, &str98);
@@ -12190,7 +12190,7 @@ extern "C" void *fn_800E45EC(void *arg0, s16 arg1) {
 extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void);
     void String_Init(String *, char *, void *);
-    void fn_800C8DCC(void *, void *, String *);
+    void Xml_GetNamedValue(void *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
     s32 fn_800C9400(String *, u32, u32, char *, u32);
@@ -12250,13 +12250,13 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     str44.cap = 0;
     base = (char *)&lbl_80271FC0;
     String_Init(&str38, base + 6, &alloc10);
-    fn_800C8DCC(buf9C, path, &str38);
+    Xml_GetNamedValue(buf9C, path, &str38);
     r28 = (s32)buf9C;
     len = strlen((char *)r28);
     String_AssignCStr(&str50, (char *)r28, len);
     String_Destroy(&str38, -1);
     String_Init(&str2C, base + 0x12, &allocC);
-    fn_800C8DCC(buf7C, path, &str2C);
+    Xml_GetNamedValue(buf7C, path, &str2C);
     r28 = (s32)buf7C;
     len = strlen((char *)r28);
     String_AssignCStr(&str44, (char *)r28, len);
@@ -12289,7 +12289,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     *(s32 *)((u8 *)self + 0x58) = *(s32 *)((u8 *)self + 0x48);
     *(s32 *)((u8 *)self + 0x5C) = *(s32 *)((u8 *)self + 0x4C);
     String_Init(&str14, base + 0x21, &alloc8);
-    fn_800C8DCC(buf5C, path, &str14);
+    Xml_GetNamedValue(buf5C, path, &str14);
     copyBC[0] = ((u32 *)buf5C)[0];
     copyBC[1] = ((u32 *)buf5C)[1];
     copyBC[2] = ((u32 *)buf5C)[2];
@@ -12872,7 +12872,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     } Self;
     void fn_800DBBE4(void *);
     void String_Init(String *, char *, void *);
-    void fn_800C8DCC(char *, void *, String *);
+    void Xml_GetNamedValue(char *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Destroy(String *, s32);
     void String_Assign(String *, String *, s32, s32);
@@ -12943,25 +12943,25 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     self->unkAC = owner;
 
     String_Init(&str58, (char *)(lbl_802720E0 + 0x1D), &alloc18);
-    fn_800C8DCC((char *)buf108, path, &str58);
+    Xml_GetNamedValue((char *)buf108, path, &str58);
     p = (char *)&buf108;
     { u32 n = strlen(p); String_AssignCStr(&str7C, p, n); }
     String_Destroy(&str58, -1);
 
     String_Init(&str4C, (char *)(lbl_802720E0 + 0x10), &alloc14);
-    fn_800C8DCC((char *)bufE8, path, &str4C);
+    Xml_GetNamedValue((char *)bufE8, path, &str4C);
     p = (char *)&bufE8;
     { u32 n = strlen(p); String_AssignCStr(&str70, p, n); }
     String_Destroy(&str4C, -1);
 
     String_Init(&str40, (char *)(lbl_802720E0 + 0x23), &alloc10);
-    fn_800C8DCC((char *)bufC8, path, &str40);
+    Xml_GetNamedValue((char *)bufC8, path, &str40);
     p = (char *)&bufC8;
     { u32 n = strlen(p); String_AssignCStr(&str64, p, n); }
     String_Destroy(&str40, -1);
 
     String_Init(&str34, (char *)(lbl_802720E0 + 0x2B), &allocC);
-    fn_800C8DCC((char *)bufA8, path, &str34);
+    Xml_GetNamedValue((char *)bufA8, path, &str34);
     flag = *(s32 *)bufA8;
     String_Destroy(&str34, -1);
 
@@ -12970,7 +12970,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     self->unkD0 = 0;
 
     String_Init(&str28, (char *)(lbl_802720E0 + 0x32), &alloc8);
-    fn_800C8DCC((char *)buf88, path, &str28);
+    Xml_GetNamedValue((char *)buf88, path, &str28);
     self->unkD1 = (u8)(*(s32 *)buf88 != 0);
     String_Destroy(&str28, -1);
 
@@ -14322,7 +14322,7 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     void fn_8022C260(void *, void *, void *, s32, s32);
     void fn_800E99CC(void);
     void String_Init(String *, char *, void *);
-    char *fn_800C8DCC(char *, void *, String *);
+    char *Xml_GetNamedValue(char *, void *, String *);
     void String_AssignCStr(void *, char *, u32);
     void fn_800DF50C(void *);
     void fn_800DF478(void *, f32, f32, f32);
@@ -14398,37 +14398,37 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     *(u32 *)((u8 *)arg0 + 0x28) = 0x1000;
 
     String_Init(&strCC, lbl_80272470 + 1, &alloc38);
-    fn_800C8DCC(buf258, arg2, &strCC);
+    Xml_GetNamedValue(buf258, arg2, &strCC);
     *(u8 *)((u8 *)arg0 + 0xAC) = (u8)(*(s32 *)buf258 != 0);
     String_Destroy(&strCC, -1);
 
     String_Init(&strC0, lbl_80272470 + 8, &alloc34);
-    p = fn_800C8DCC(buf238, arg2, &strC0);
+    p = Xml_GetNamedValue(buf238, arg2, &strC0);
     len = strlen(p);
     String_AssignCStr((u8 *)arg0 + 0xB0, p, len);
     String_Destroy(&strC0, -1);
 
     String_Init(&strB4, lbl_80272470 + 0x14, &alloc30);
-    p = fn_800C8DCC(buf218, arg2, &strB4);
+    p = Xml_GetNamedValue(buf218, arg2, &strB4);
     len = strlen(p);
     String_AssignCStr((u8 *)arg0 + 0xBC, p, len);
     String_Destroy(&strB4, -1);
 
     String_Init(&strA8, lbl_80272470 + 0x1F, &alloc2C);
-    p = fn_800C8DCC(buf1F8, arg2, &strA8);
+    p = Xml_GetNamedValue(buf1F8, arg2, &strA8);
     len = strlen(p);
     String_AssignCStr((u8 *)arg0 + 0xC8, p, len);
     String_Destroy(&strA8, -1);
 
     String_Init(&str9C, lbl_80272470 + 0x2B, &alloc28);
-    p = fn_800C8DCC(buf1D8, arg2, &str9C);
+    p = Xml_GetNamedValue(buf1D8, arg2, &str9C);
     len = strlen(p);
     String_AssignCStr((u8 *)arg0 + 0xD4, p, len);
     String_Destroy(&str9C, -1);
 
     *(u32 *)((u8 *)arg0 + 0xE0) = 0;
     String_Init(&str90, lbl_80272470 + 0x37, &alloc24);
-    fn_800C8DCC(buf1B8, arg2, &str90);
+    Xml_GetNamedValue(buf1B8, arg2, &str90);
     *(u32 *)(scratch + 0x00) = *(u32 *)(buf1B8 + 0x00);
     *(u32 *)(scratch + 0x04) = *(u32 *)(buf1B8 + 0x04);
     *(u32 *)(scratch + 0x08) = *(u32 *)(buf1B8 + 0x08);
@@ -14443,7 +14443,7 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     *(f32 *)((u8 *)arg0 + 0xEC) = *(f32 *)(scratch + 0x08);
 
     String_Init(&str84, lbl_80272470 + 0x3C, &alloc20);
-    fn_800C8DCC(buf198, arg2, &str84);
+    Xml_GetNamedValue(buf198, arg2, &str84);
     *(u32 *)(scratch + 0x00) = *(u32 *)(buf198 + 0x00);
     *(u32 *)(scratch + 0x04) = *(u32 *)(buf198 + 0x04);
     *(u32 *)(scratch + 0x08) = *(u32 *)(buf198 + 0x08);
@@ -14458,31 +14458,31 @@ extern "C" void *fn_800E9464(void *arg0, void *arg1, void *arg2) {
     *(f32 *)((u8 *)arg0 + 0xF8) = *(f32 *)(scratch + 0x08);
 
     String_Init(&str78, lbl_80272470 + 0x41, &alloc1C);
-    fn_800C8DCC(buf178, arg2, &str78);
+    Xml_GetNamedValue(buf178, arg2, &str78);
     *(u8 *)((u8 *)arg0 + 0xFC) = (u8)(*(s32 *)buf178 != 0);
     String_Destroy(&str78, -1);
 
     String_Init(&str6C, lbl_80272470 + 0x49, &alloc18);
-    fn_800C8DCC(buf158, arg2, &str6C);
+    Xml_GetNamedValue(buf158, arg2, &str6C);
     *(u8 *)((u8 *)arg0 + 0xFD) = (u8)(*(s32 *)buf158 != 0);
     String_Destroy(&str6C, -1);
 
     String_Init(&str60, lbl_80272470 + 0x53, &alloc14);
-    fn_800C8DCC(buf138, arg2, &str60);
+    Xml_GetNamedValue(buf138, arg2, &str60);
     *(f32 *)((u8 *)arg0 + 0x100) = *(f32 *)buf138;
     String_Destroy(&str60, -1);
 
     String_Init(&str54, lbl_80272470 + 0x58, &alloc10);
-    fn_800C8DCC(buf118, arg2, &str54);
+    Xml_GetNamedValue(buf118, arg2, &str54);
     *(f32 *)((u8 *)arg0 + 0x104) = *(f32 *)buf118;
     String_Destroy(&str54, -1);
 
     String_Init(&str48, lbl_80272470 + 0x5D, &allocC);
-    fn_800C8DCC(bufF8, arg2, &str48);
+    Xml_GetNamedValue(bufF8, arg2, &str48);
     String_Destroy(&str48, -1);
 
     String_Init(&str3C, lbl_80272470 + 0x64, &alloc8);
-    fn_800C8DCC(bufD8, arg2, &str3C);
+    Xml_GetNamedValue(bufD8, arg2, &str3C);
     String_Destroy(&str3C, -1);
 
     z0 = lbl_80369F78;

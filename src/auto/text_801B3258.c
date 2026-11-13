@@ -9600,7 +9600,7 @@ void fn_801CB2A4(struct Unit *arg0) {
 #pragma opt_common_subs off
 extern "C" void *fn_801CB41C(void *arg0, void *arg1, void *arg2) {
 void fn_800DF7A0(void *);
-void String_Init(void *,void *,void *); void fn_800C8DCC(void *,void *,void *);
+void String_Init(void *,void *,void *); void Xml_GetNamedValue(void *,void *,void *);
 u32 strlen(void *); void String_AssignCStr(void *,void *,u32); void String_Destroy(void *,s32);
 s32 fn_800C9400(void *,s32,u32,void *,u32); u8 *fn_80117CC0(void *,s32);
 void fn_800D5D04(void *,void *,s32,s32); void String_Assign(void *,void *,s32,s32);
@@ -9623,20 +9623,20 @@ saved=arg1;
 *(u32 *)(self+0x60)=0; *(u32 *)(self+0x64)=0; *(u32 *)(self+0x68)=0; *(u32 *)(self+0x64)=0;
 str.b=0;str.a=0;str.c=0;str.b=0;
 String_Init(&s48,lbl_8027DAB0+0xdd,&a14);
-fn_800C8DCC(&p180,arg2,&s48);arg1=&p180;
+Xml_GetNamedValue(&p180,arg2,&s48);arg1=&p180;
 String_AssignCStr(self+0x54,arg1,strlen(arg1));String_Destroy(&s48,-1);
 String_Init(&s3c,lbl_8027DAB0+0xe5,&a10);
-fn_800C8DCC(&p160,arg2,&s3c);arg1=&p160;
+Xml_GetNamedValue(&p160,arg2,&s3c);arg1=&p160;
 String_AssignCStr(self+0x60,arg1,strlen(arg1));String_Destroy(&s3c,-1);
 if(fn_800C9400(self+0x60,0,*(u32 *)(self+0x60),lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
 fn_800D5D04(&s30,self+0x54,0,4);String_Assign(self+0x60,&s30,0,-1);String_Destroy(&s30,-1);
 }
 String_Init(&s24,lbl_8027DAB0+0xec,&ac);
-fn_800C8DCC(&p140,arg2,&s24);arg1=&p140;
+Xml_GetNamedValue(&p140,arg2,&s24);arg1=&p140;
 String_AssignCStr(&str,arg1,strlen(arg1));String_Destroy(&s24,-1);
 *(void **)(self+0x6c)=fn_800E7F60(saved,&str);
 String_Init(&s18,lbl_8027DAB0+0xf3,&a8);
-fn_800C8DCC(&p120,arg2,&s18);
+Xml_GetNamedValue(&p120,arg2,&s18);
 *(u32 *)(self+0x70)=*(u32 *)&p120;String_Destroy(&s18,-1);
 Xml_AdvanceChild(arg2);
 for(i=0;i<*(s32 *)(self+0x70);i++){

@@ -2071,7 +2071,7 @@ void fn_801EE76C(void *arg0) {
     void fn_800CB90C(void *, void *, char *);
     void *Xml_ParseFile(void *, void *, void *);
     void String_Destroy(void *, s32);
-    void fn_800C8DCC(void *, void *, void *);
+    void Xml_GetNamedValue(void *, void *, void *);
     void Xml_Destroy(void *, s32);
     void fn_801EFB2C(void *, char *);
     void fn_801EF6BC(void *);
@@ -2226,17 +2226,17 @@ use30708:
     }
 
     String_Init(&sp48, lbl_8027F26C + 0x1EA, &sp18);
-    fn_800C8DCC(buf6C, r29, &sp48);
+    Xml_GetNamedValue(buf6C, r29, &sp48);
     *(s32 *)((char *)obj + 0xA8) = *(s32 *)buf6C;
     String_Destroy(&sp48, -1);
 
     String_Init(&sp54, lbl_8027F26C + 0x1F3, &sp1C);
-    fn_800C8DCC(buf8C, r29, &sp54);
+    Xml_GetNamedValue(buf8C, r29, &sp54);
     *(s32 *)((char *)obj + 0xAC) = *(s32 *)buf8C;
     String_Destroy(&sp54, -1);
 
     String_Init(&sp60, lbl_8027F26C + 0x1FE, &sp20);
-    fn_800C8DCC(bufAC, r29, &sp60);
+    Xml_GetNamedValue(bufAC, r29, &sp60);
     *(s32 *)((char *)obj + 0xB0) = *(s32 *)bufAC;
     String_Destroy(&sp60, -1);
 
@@ -2794,7 +2794,7 @@ void fn_801EFDC8(void *arg0) {
     void fn_800CB90C(String *, String *, char *);
     s32 fn_800C9400(String *, s32, void *, char *, s32);
     void fn_800D6878(void *, void *, void *);
-    void fn_800C8DCC(char *, void *, String *);
+    void Xml_GetNamedValue(char *, void *, String *);
     void fn_801F1888(void *);
     s32 strlen(char *);
     extern char lbl_8027F26C[];
@@ -3008,7 +3008,7 @@ void fn_801EFDC8(void *arg0) {
         if (flag0 != 0) String_Destroy(&sp74, -1);
 
         String_Init(&sp50, strBase + 0x26C, &sp14);
-        fn_800C8DCC(buf1A4, file2, &sp50);
+        Xml_GetNamedValue(buf1A4, file2, &sp50);
         count = *(s32 *)buf1A4;
         String_Destroy(&sp50, -1);
 

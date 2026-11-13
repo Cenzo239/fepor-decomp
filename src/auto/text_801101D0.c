@@ -877,7 +877,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     void *Heap_Alloc(s32);
     void Xml_GetChildName(String *, void *);
     void Xml_GetChildValue(char *, void *);
-    void fn_800C8DCC(void *, void *, String *);
+    void Xml_GetNamedValue(void *, void *, String *);
     void Xml_AdvanceChild(void *);
     void Xml_Destroy(void *, s32);
     void *Xml_ParseFile(void *, void *, String *);
@@ -977,7 +977,7 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     }
 
     String_Init(&sp10C, (char *)lbl_80273DF8 + 0x393, &sc44);
-    fn_800C8DCC(sp33C, xml, &sp10C);
+    Xml_GetNamedValue(sp33C, xml, &sp10C);
     count = *(s32 *)sp33C;
     String_Destroy(&sp10C, -1);
 
@@ -994,78 +994,78 @@ void Actor_LoadXml(void *arg0, void *arg1) {
     }
 
     String_Init(&spF4, (char *)lbl_80273DF8 + 0x39A, &sc40);
-    fn_800C8DCC(sp2FC, xml, &spF4);
+    Xml_GetNamedValue(sp2FC, xml, &spF4);
     *(f32 *)((u8 *)self + 0x124) = *(f32 *)sp2FC;
     String_Destroy(&spF4, -1);
 
     String_Init(&spE8, (char *)lbl_80273DF8 + 0x3A3, &sc3C);
-    fn_800C8DCC(sp2DC, xml, &spE8);
+    Xml_GetNamedValue(sp2DC, xml, &spE8);
     *(f32 *)((u8 *)self + 0x128) = *(f32 *)sp2DC;
     String_Destroy(&spE8, -1);
 
     String_Init(&spDC, (char *)lbl_80273DF8 + 0x3AA, &sc38);
-    fn_800C8DCC(sp2BC, xml, &spDC);
+    Xml_GetNamedValue(sp2BC, xml, &spDC);
     *(s32 *)((u8 *)self + 0x12C) = *(s32 *)sp2BC;
     String_Destroy(&spDC, -1);
 
     String_Init(&spD0, (char *)lbl_80273DF8 + 0x3B7, &sc34);
-    fn_800C8DCC(sp29C, xml, &spD0);
+    Xml_GetNamedValue(sp29C, xml, &spD0);
     *(s32 *)((u8 *)self + 0x130) = *(s32 *)sp29C;
     String_Destroy(&spD0, -1);
 
     String_Init(&spC4, (char *)lbl_80273DF8 + 0x3C6, &sc30);
-    fn_800C8DCC(sp27C, xml, &spC4);
+    Xml_GetNamedValue(sp27C, xml, &spC4);
     *(s32 *)((u8 *)self + 0x134) = *(s32 *)sp27C;
     String_Destroy(&spC4, -1);
 
     String_Init(&spB8, (char *)lbl_80273DF8 + 0x3D3, &sc2C);
-    fn_800C8DCC(sp25C, xml, &spB8);
+    Xml_GetNamedValue(sp25C, xml, &spB8);
     *(s32 *)((u8 *)self + 0x138) = *(s32 *)sp25C;
     String_Destroy(&spB8, -1);
 
     String_Init(&spAC, (char *)lbl_80273DF8 + 0x3E0, &sc28);
-    fn_800C8DCC(sp23C, xml, &spAC);
+    Xml_GetNamedValue(sp23C, xml, &spAC);
     *(s32 *)((u8 *)self + 0x13C) = *(s32 *)sp23C;
     String_Destroy(&spAC, -1);
 
     String_Init(&spA0, (char *)lbl_80273DF8 + 0x3ED, &sc24);
-    fn_800C8DCC(sp21C, xml, &spA0);
+    Xml_GetNamedValue(sp21C, xml, &spA0);
     *(s32 *)((u8 *)self + 0x19C) = *(s32 *)sp21C;
     String_Destroy(&spA0, -1);
 
     String_Init(&sp94, (char *)lbl_80273DF8 + 0x3F4, &sc20);
-    fn_800C8DCC(sp1FC, xml, &sp94);
+    Xml_GetNamedValue(sp1FC, xml, &sp94);
     tmp = *(s32 *)sp1FC;
     *((u8 *)self + 0x1A1) = (u8)(tmp != 0);
     String_Destroy(&sp94, -1);
 
     String_Init(&sp88, (char *)lbl_80273DF8 + 0x401, &sc1C);
-    fn_800C8DCC(sp1DC, xml, &sp88);
+    Xml_GetNamedValue(sp1DC, xml, &sp88);
     *(s32 *)((u8 *)self + 0x198) = *(s32 *)sp1DC;
     String_Destroy(&sp88, -1);
 
     String_Init(&sp7C, (char *)lbl_80273DF8 + 0x40A, &sc18);
-    fn_800C8DCC(sp1BC, xml, &sp7C);
+    Xml_GetNamedValue(sp1BC, xml, &sp7C);
     *(f32 *)((u8 *)self + 0x150) = *(f32 *)sp1BC;
     String_Destroy(&sp7C, -1);
 
     String_Init(&sp70, (char *)lbl_80273DF8 + 0x417, &sc14);
-    fn_800C8DCC(sp19C, xml, &sp70);
+    Xml_GetNamedValue(sp19C, xml, &sp70);
     *(s32 *)((u8 *)self + 0x188) = *(s32 *)sp19C;
     String_Destroy(&sp70, -1);
 
     String_Init(&sp64, (char *)lbl_80273DF8 + 0x420, &sc10);
-    fn_800C8DCC(sp17C, xml, &sp64);
+    Xml_GetNamedValue(sp17C, xml, &sp64);
     *(s32 *)((u8 *)self + 0x18C) = *(s32 *)sp17C;
     String_Destroy(&sp64, -1);
 
     String_Init(&sp58, (char *)lbl_80273DF8 + 0x42D, &scC);
-    fn_800C8DCC(sp15C, xml, &sp58);
+    Xml_GetNamedValue(sp15C, xml, &sp58);
     *(s32 *)((u8 *)self + 0x190) = *(s32 *)sp15C;
     String_Destroy(&sp58, -1);
 
     String_Init(&sp4C, (char *)lbl_80273DF8 + 0x43A, &sc8);
-    fn_800C8DCC(sp13C, xml, &sp4C);
+    Xml_GetNamedValue(sp13C, xml, &sp4C);
     tmp = *(s32 *)sp13C;
     *((u8 *)self + 0x1B6) = (u8)(tmp != 0);
     String_Destroy(&sp4C, -1);
