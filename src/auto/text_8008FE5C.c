@@ -104,7 +104,7 @@ void fn_8008FFB0(s32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4) {
     temp_r28 = fn_8008B1B0();
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     if (arg2 != 0U) {
         temp_r27 = fn_8000E0E4(arg2);
         temp_r4 = temp_r28 - fn_80010B78(temp_r27, -1, lbl_80369754);

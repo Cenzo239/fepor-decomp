@@ -825,7 +825,7 @@ void fn_800AEA74(void *arg0) {
     void fn_80009B8C(u8);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern s32 lbl_80369C68;
     extern s32 lbl_80369C6C;
@@ -860,7 +860,7 @@ void fn_800AEA74(void *arg0) {
     }
     fn_8000A174(0, 0x12);
     fn_80009B8C((u8)temp_r31);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(3);
     fn_80007870(lbl_80369C94);
     fn_800077D8(lbl_80369C7C, lbl_80369C98, lbl_80369C9C, lbl_80369CA0);

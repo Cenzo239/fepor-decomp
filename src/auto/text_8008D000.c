@@ -48,7 +48,7 @@ extern f32 lbl_803697E4;
 #pragma use_lmw_stmw on
 void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     s16 fn_80010B78(void *, s32, f32);
@@ -77,7 +77,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     if (*(void **)arg0 != NULL) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         temp_r3 = fn_8001CB64(arg0);
         flags = *(u64 *)temp_r3;
         if (flags & (0x200ULL << 32)) {
@@ -105,7 +105,7 @@ void fn_8008D000(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, fn_8001D2C8(arg0));
         flags = *(u64 *)fn_8001CB64(arg0);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {

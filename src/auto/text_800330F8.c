@@ -153,7 +153,7 @@ void *fn_800330F8(void) {
 #pragma cplusplus on
 extern "C" void fn_80009B8C(u8);
 extern "C" void fn_80009D74(f32, f32, f32, f32);
-extern "C" void fn_8000A248(void);
+extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_8002F740(u32);
 extern "C" void fn_80090C50(s32);
@@ -173,11 +173,11 @@ extern "C" void fn_80033108(void *arg0, void *arg1) {
         Prim2D_Begin();
         fn_80009D74((f32)(x + 0x20), (f32)(y + 0x30), lbl_80368E24, lbl_80368E28);
         fn_80009B8C((u8)alpha);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         fn_80090C50(fn_8002F740(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         fn_80009B8C(0xFF);
-        fn_8000A248();
+        Prim2D_PrepareTex();
     }
 }
 #pragma cplusplus reset
@@ -11158,7 +11158,7 @@ void fn_8004DDB8(s32 arg0) {
     void fn_80009B8C(s32);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     u32 fn_80055D94(s32);
     void fn_8004DEAC(void);
@@ -11183,7 +11183,7 @@ void fn_8004DDB8(s32 arg0) {
         fn_80009D74(lbl_80368FCC, lbl_80368FCC, (f32)arg0, lbl_80368FC0);
         fn_8000A174(0, 0x410);
         fn_80009B8C(0xFF);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         fn_80007898(0xB);
         fn_80007340(fn_8004DEAC, 0);
         fn_80007884();
@@ -12802,7 +12802,7 @@ void fn_80053F68(void *arg0) {
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
     void fn_80009B8C(u8);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_80007898(s32);
     void fn_80007340(void *, void *);
@@ -12928,7 +12928,7 @@ void fn_80053F68(void *arg0) {
                         (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);
             fn_8000A174(0, 0x410);
             fn_80009B8C(0xFF);
-            fn_8000A248();
+            Prim2D_PrepareTex();
             fn_80007898(0xB);
             fn_80007340(&fn_80054314, gfx);
             fn_80007884();

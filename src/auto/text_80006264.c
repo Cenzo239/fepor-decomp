@@ -2215,7 +2215,7 @@ void fn_8000A174(void *arg0, u32 arg1) {
         *(u16 *)(*(u8 **)&lbl_80367140 + 0x20) | arg1;
 }
 
-void fn_8000A248(void) {
+void Prim2D_PrepareTex(void) {
     extern u16 lbl_80367140;
     *(u8 *)(*(u8 **)&lbl_80367140 + 0xa8) = 2;
 }
@@ -2456,7 +2456,7 @@ void fn_8000A454(void *arg0, s32 *arg1, s32 *arg2)
 void fn_8000A860(void) {
     void Prim2D_Begin(void);
     void fn_80009D74(f32, f32, f32, f32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void fn_8014BB58(s32, s32, s32 *, s32);
     void fn_8000A454(u32, s32 *, s32 *, s32);
     extern f32 lbl_80368BCC;
@@ -2477,7 +2477,7 @@ void fn_8000A860(void) {
     spC = 0;
     Prim2D_Begin();
     fn_80009D74(lbl_80368BCC, lbl_80368BCC, lbl_80368BD0, lbl_80368BD4);
-    fn_8000A248();
+    Prim2D_PrepareTex();
 
     pADA = lbl_802ADADC;
     i = 0;

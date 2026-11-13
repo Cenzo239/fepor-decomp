@@ -449,7 +449,7 @@ void fn_80073188(void *arg0) {
 void fn_80073208(void *arg0) {
     M2C_UNK fn_80009B8C(u8);
     M2C_UNK fn_80009D74(f32, f32, f32, f32);
-    M2C_UNK fn_8000A248();
+    M2C_UNK Prim2D_PrepareTex();
     M2C_UNK Prim2D_Begin();
     M2C_UNK fn_8007CB3C(s32, M2C_UNK);
     M2C_UNK fn_801DCD3C(u16 *);
@@ -460,7 +460,7 @@ void fn_80073208(void *arg0) {
     extern f32 lbl_80369370;
     Prim2D_Begin();
     fn_80009D74(lbl_80369368, lbl_80369368, lbl_8036936C, lbl_80369370);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_801DDAC8(lbl_80311D50);
     fn_801DCD3C(lbl_80311D50);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16) (M2C_FIELD(arg0, s16 *, 0x38) + M2C_FIELD(arg0, s16 *, 0x3A));
@@ -472,7 +472,7 @@ void fn_80073208(void *arg0) {
     }
     Prim2D_Begin();
     fn_80009B8C((u8) M2C_FIELD(arg0, s16 *, 0x38));
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_8007CB3C(M2C_FIELD(arg0, s32 *, 0x34), 0);
 }
 

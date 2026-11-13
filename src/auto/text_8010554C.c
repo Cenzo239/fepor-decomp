@@ -2172,7 +2172,7 @@ void fn_80109244(struct Arg0 *arg0) {
     fn_80009C20(outer, a0->unk40, a0->unk44, a0->unk48 + (f32)outer->unk6, a0->unk4C, a0->unk50, a0->unk54, a0->unk58, arg0->unk5C);
     fn_80009B8C(a0->unk60);
     fn_80009B80(a0->unk61);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     if (outer->unk5 == 0) {
         i = outer->unk4 - 1;
         do {
@@ -2192,7 +2192,7 @@ void fn_80109244(struct Arg0 *arg0) {
     Prim2D_Begin();
     fn_80009B8C(0xFF);
     fn_80009B80(0x80);
-    fn_8000A248();
+    Prim2D_PrepareTex();
 }
 
 void fn_80109448(void *arg0, s32 arg1) {
@@ -2725,7 +2725,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     s32 fn_80010B78(void *, s32, f32);
     void Prim2D_Begin(void);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void fn_80007898(s32);
     void fn_80007858(f32, f32);
     void fn_80007870(f32);
@@ -2766,7 +2766,7 @@ void fn_8010A53C(void *arg0, s32 arg1) {
     }
     Prim2D_Begin();
     fn_8000A174(0, 0x13);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(6);
     fn_80007858(var_f31, (f32)*(s16 *)((u8 *)temp_r29 + 0xE));
     fn_80007870((f32)*(s8 *)((u8 *)temp_r29 + 2));
@@ -2789,7 +2789,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     void fn_80007898(s32);
     void fn_80009EB0(s32, u8, u8, s32);
     void fn_80009F90(s32, u8, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern s32 lbl_8036C4D8;
     extern s32 lbl_8036C4DC;
@@ -2814,7 +2814,7 @@ void fn_8010A704(void *arg0, u8 arg1) {
     } else {
         fn_80009F90(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), 0x11);
     }
-    fn_8000A248();
+    Prim2D_PrepareTex();
     a = *(s16 *)((u8 *)arg0 + 0x18);
     b = *(s16 *)((u8 *)arg0 + 0x14);
     if (a == b) {
@@ -2883,7 +2883,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     void fn_80007898(s32);
     void fn_80009EB0(s32, u8, u8, s32);
     void fn_80009F90(s32, u8, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
 
     struct Obj {
@@ -2907,7 +2907,7 @@ extern "C" void fn_8010A998(void *arg0, u8 arg1) {
     } else {
         fn_80009F90(*(s32 *)((u8 *)arg0 + 0xC), *(u8 *)((u8 *)arg0 + 0x12), 0x11);
     }
-    fn_8000A248();
+    Prim2D_PrepareTex();
     var_r4 = *(u16 *)((u8 *)arg0 + 0x20) - *(u16 *)((u8 *)arg0 + 0x1C);
     if (var_r4 < 0) {
         var_r4 = -var_r4;

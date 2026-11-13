@@ -55,7 +55,7 @@ extern Vec4 lbl_8026CD50;
 void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     void fn_8005AC24(void *, s32, s32, s32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     s32 fn_80010B78(void *, s32, f32);
@@ -84,7 +84,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
     if (*(void **)arg0 != NULL) {
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         scaled = (s32)(farg0 * (f32)(u16)fn_8001D2A4(arg0));
         sprintf(sp8, (u8 *)lbl_8026CD08 + 0x2F, scaled);
         temp_r31 = fn_80010B78(sp8, -1, lbl_8036973C);
@@ -113,7 +113,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, fn_8001D2C8(arg0));
         flags = *(u64 *)fn_8001CB64(arg0);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {
@@ -125,7 +125,7 @@ void fn_8008D264(void *arg0, u8 arg1, s32 arg2, s32 arg3, f32 farg0) {
 }
 void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8001019C(s16, s16, u8, void *, ...);
     void *fn_8001CB64(void *);
@@ -161,7 +161,7 @@ void fn_8008D510(void *arg0, u8 arg1, s32 arg2, s32 arg3) {
         }
         Prim2D_Begin();
         fn_8000A174(0, 0x13);
-        fn_8000A248();
+        Prim2D_PrepareTex();
         fn_8001019C((s16)(arg2 + 0x18), (s16)arg3, var_r26, (u8 *)lbl_8026CD08 + 0x21, fn_8001D2C8(arg0));
         flags = *(u64 *)fn_8001CB64(arg0);
         if ((flags & ((0x100ULL << 32) | 0x10)) == 0) {

@@ -85,7 +85,7 @@ extern "C" void fn_80007884(void);
 extern "C" void fn_80007898(s32);
 extern "C" void fn_8000A03C(void *, void *, s32, s32);
 extern "C" void fn_8000A174(void *, s32);
-extern "C" void fn_8000A248(void);
+extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_80222CDC(void *);
 extern "C" u32 fn_80222CE8(void *);
@@ -168,7 +168,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         } else {
             fn_8000A174((u8 *)arg0 + 4, 0x11);
         }
-        fn_8000A248();
+        Prim2D_PrepareTex();
         w = ((Obj *)arg0)->v14();
         cols = ((Obj *)arg0)->v12();
         fx = (f32)(((a3 - 1) % cols) * w);

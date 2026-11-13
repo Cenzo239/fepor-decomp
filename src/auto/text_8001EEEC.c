@@ -2231,7 +2231,7 @@ extern "C" M2C_UNK fn_80007884();
 extern "C" M2C_UNK fn_80007898(M2C_UNK);
 extern "C" void fn_80009D74(f32, f32, f32, f32);
 extern "C" M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
-extern "C" M2C_UNK fn_8000A248();
+extern "C" M2C_UNK Prim2D_PrepareTex();
 extern "C" M2C_UNK Prim2D_Begin();
 extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     struct Model {
@@ -2277,7 +2277,7 @@ extern "C" void fn_80024214(void *arg0, void *arg1, void *arg2) {
     Prim2D_Begin();
     fn_80009D74((f32) M2C_FIELD(arg1, s16 *, 0x30), (f32) M2C_FIELD(arg1, s16 *, 0x32), M2C_FIELD(arg1, Model **, 0x3C)->v25() - lbl_80368DB8, lbl_80368DA8);
     fn_8000A174(0, 0x13);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(5);
     fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));
     M2C_FIELD(arg2, Drawer **, 0x34)->v4(arg2);
@@ -2737,7 +2737,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     void fn_80009B8C(s32);
     void fn_80009D74(f32, f32, f32, f32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     struct Model {
         u8 pad[4];
@@ -2791,7 +2791,7 @@ extern "C" void fn_800251EC(s32 unused, void *arg1) {
     if (var_r3 == 0) {
         fn_80009B8C(0x50);
     }
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(3);
     fn_800077D8(0.0f, 0.0f, (f32) M2C_FIELD(arg1, s16 *, 0x34), (f32) M2C_FIELD(arg1, s16 *, 0x36));
     fn_800075D8();

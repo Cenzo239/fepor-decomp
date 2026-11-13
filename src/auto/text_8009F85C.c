@@ -1697,7 +1697,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     void Prim2D_Begin(void);
     void fn_80009C0C(f32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void fn_80007898(s32);
     void fn_80007858(f32, f32);
     void fn_80007124(void *);
@@ -1719,7 +1719,7 @@ void fn_800A1D28(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_Begin();
     fn_80009C0C(lbl_80369A04);
     fn_8000A174(0, 0x13);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(5);
     fn_80007858((f32)*(s16 *)((u8 *)temp_r30 + 0x30), (f32)*(s16 *)((u8 *)temp_r30 + 0x32));
     fn_80007124(lbl_80312270);
@@ -2182,7 +2182,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
     M2C_UNK Prim2D_Begin(void);
     M2C_UNK fn_80009C0C(f32);
     M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8000A248(void);
+    M2C_UNK Prim2D_PrepareTex(void);
     s32 fn_80037004(void *, s32);
     u8 fn_8003701C(void *);
     s32 fn_800A8A88(s32);
@@ -2216,7 +2216,7 @@ void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
             Prim2D_Begin();
             fn_80009C0C(lbl_80369A04);
             fn_8000A174(0, 0x13);
-            fn_8000A248();
+            Prim2D_PrepareTex();
             sprintf(sp18, lbl_8026D8D8 + 0x6C7, fn_800A8A88(fn_80037004(obj, idx)));
             fn_80007898(5);
             fn_80007858((f32) M2C_FIELD(arg2, s16 *, 0x30), (f32) M2C_FIELD(arg2, s16 *, 0x32));

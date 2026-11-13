@@ -218,7 +218,7 @@ void fn_80090E0C(s32 arg0, s32 arg1, s32 arg2)
     void fn_80007884(void);
     void fn_80007898(s32);
     void fn_8000A174(s32, s32);
-    void fn_8000A248(void);
+    void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     extern s32 lbl_80369748;
     extern s32 lbl_8036974C;
@@ -259,7 +259,7 @@ void fn_80090E0C(s32 arg0, s32 arg1, s32 arg2)
     }
     Prim2D_Begin();
     fn_8000A174(0, 0x10);
-    fn_8000A248();
+    Prim2D_PrepareTex();
     fn_80007898(1);
     fn_800077D8((f32)arg0, (f32)arg1, lbl_80369794, lbl_80369798);
     sp8 = *(s32 *)sp18;
