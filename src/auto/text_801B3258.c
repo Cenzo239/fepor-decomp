@@ -211,11 +211,11 @@ void fn_801B3338(void *arg0) {
 }
 
 void fn_801B3D30(void *arg0) {
-    void fn_801B5E2C(void *);
+    void UnitStatus_Init(void *);
     void *temp_r31;
     
     temp_r31 = *(void **)((char *)arg0 + 0x30);
-    fn_801B5E2C(temp_r31);
+    UnitStatus_Init(temp_r31);
     *(s32 *)((char *)temp_r31 + 0x18) = 0;
 }
 
@@ -272,7 +272,7 @@ void fn_801B5DB0(void *arg0) {
     }
 }
 
-void fn_801B5E2C(void *arg0) {
+void UnitStatus_Init(void *arg0) {
     void *memset(void *, s32, s32);
     void fn_8005C8B4(void *);
     u8 fn_8003B658(void *);
@@ -1114,17 +1114,18 @@ void fn_801B77F0(s32 arg0, s32 arg1) {
     Msg_Expand(arg0 + (arg1 << 6));
 }
 
+#pragma opt_strength_reduction off
 s32 fn_801B7818(s32 arg0, s32 arg1) {
-    void strcpy(s32, s32, s32);
+    void strcpy(char *, char *);
     extern u8 gBattleState[];
     extern s32 lbl_80368250;
     extern s32 lbl_80368254;
-    struct { char pad[0x200]; s32 val; } *p;
+    s32 base;
     s32 var_r31;
     u8 v;
 
     var_r31 = arg1;
-    strcpy(lbl_80368254 + (lbl_80368250 << 6), arg0, lbl_80368254);
+    strcpy((char *)(lbl_80368254 + (lbl_80368250 << 6)), (char *)arg0);
     v = gBattleState[0xA6];
     if (v == 2) {
         var_r31 /= 2;
@@ -1132,11 +1133,11 @@ s32 fn_801B7818(s32 arg0, s32 arg1) {
     if (v == 3) {
         var_r31 += var_r31 / 2;
     }
-    p = (void *)(lbl_80368254 + (lbl_80368250 << 2));
-    p->val = var_r31;
+    base = lbl_80368254 + (lbl_80368250 << 2);
+    *(s32 *)(base + 0x200) = var_r31;
     return 1;
 }
-
+#pragma opt_strength_reduction reset
 u8 fn_801B78A8(void *arg0) {
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
