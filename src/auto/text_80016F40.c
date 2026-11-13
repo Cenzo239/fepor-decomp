@@ -577,7 +577,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     void CamPath_Apply(void *, f32);
     void Process_Goto(void *, s32);
     extern s32 gActiveCam;
-    extern u8 lbl_803671C8;
+    extern u8 gActiveCamIndex;
     extern u8 lbl_802CA434[];
     extern f32 lbl_80368CA0;
     extern f32 lbl_80368C88;
@@ -716,7 +716,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
         }
     }
     fn_80018594(arg0);
-    lbl_803671C8 = 3;
+    gActiveCamIndex = 3;
     gActiveCam = (s32)lbl_802CA434;
     CamPath_Apply(arg0, lbl_80368C88);
     Process_Goto(arg0, 0);
@@ -725,7 +725,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
 void fn_8001840C(void *arg0)
 {
     extern s32 gActiveCam;
-    extern u8 lbl_803671C8;
+    extern u8 gActiveCamIndex;
     extern s32 gUiInputFlags;
     extern u16 gBattleState[700];
     extern u8 lbl_802CA2C8[];
@@ -822,7 +822,7 @@ void fn_8001840C(void *arg0)
         *(f32 *)(dst + 0x18) = v2;
     }
 
-    lbl_803671C8 = 0;
+    gActiveCamIndex = 0;
     gActiveCam = (s32)lbl_802CA2C8;
 
     obj[0x3C] = 1;
@@ -981,7 +981,7 @@ s32 Camera_HasMoved(u8 arg0) {
     if (p == NULL) {
         r = 0;
     } else {
-        if ((u8) lbl_803671C8 == 0) {
+        if ((u8) gActiveCamIndex == 0) {
             M2C_FIELD(p, f32 *, 0x4C) = M2C_FIELD(gBattleState, f32 *, 0x52C);
             M2C_FIELD(p, f32 *, 0x50) = M2C_FIELD(gBattleState, f32 *, 0x530);
             M2C_FIELD(p, f32 *, 0x54) = M2C_FIELD(gBattleState, f32 *, 0x53C);
@@ -1030,7 +1030,7 @@ zero:
 
 s32 fn_80018A08(u8 arg0) {
     extern long gActiveCam;
-    extern u8 lbl_803671C8;
+    extern u8 gActiveCamIndex;
     extern u16 gBattleState[700];
     extern f32 lbl_80368C8C;
     extern f32 lbl_80368CAC;
@@ -1042,7 +1042,7 @@ s32 fn_80018A08(u8 arg0) {
     if (p == NULL) {
         return 0;
     }
-    if ((u8)lbl_803671C8 == 0) {
+    if ((u8)gActiveCamIndex == 0) {
         *(f32 *)((u8 *)p + 0x4C) = *(f32 *)((u8 *)gBattleState + 0x52C);
         *(f32 *)((u8 *)p + 0x50) = *(f32 *)((u8 *)gBattleState + 0x530);
         *(f32 *)((u8 *)p + 0x54) = *(f32 *)((u8 *)gBattleState + 0x53C);
@@ -1234,7 +1234,7 @@ extern "C" void fn_80018E0C(void)
 {
     void Ui_PlaySeCue(void *, s32);
     extern u8 lbl_803671C0;
-    extern u8 lbl_803671C8;
+    extern u8 gActiveCamIndex;
     extern s32 gActiveCam;
     extern u8 lbl_802CA2C8[];
     extern u8 lbl_80268330[];
@@ -1243,8 +1243,8 @@ extern "C" void fn_80018E0C(void)
 
     base = lbl_802CA2C8;
     if (lbl_803671C0 == 0) {
-        index = (lbl_803671C8 + 1) % 2;
-        lbl_803671C8 = index;
+        index = (gActiveCamIndex + 1) % 2;
+        gActiveCamIndex = index;
         switch (index) {
         case 0:
             gActiveCam = (s32)base + 0;
@@ -1448,7 +1448,7 @@ extern "C" void fn_80018F08(void) {
     *(f32 *)((u8 *)slot + 0x6C) = lbl_80368C88;
     *(s32 *)((u8 *)slot + 0x1C) = 0;
     *(f32 *)((u8 *)slot + 0x70) = lbl_80368C8C;
-    lbl_803671C8 = 0;
+    gActiveCamIndex = 0;
     gActiveCam = (s32)base;
 }
 #pragma peephole reset
