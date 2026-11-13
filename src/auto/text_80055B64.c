@@ -75,7 +75,7 @@ extern f32 lbl_80368EE4;
 #pragma opt_loop_invariants reset
 #pragma use_lmw_stmw reset
 
-extern u16* lbl_803672AC;
+extern u16* gMap;
 
 extern u16 lbl_8026A9B0[40];
 extern u16 lbl_802EFFC8[16];
@@ -100,7 +100,7 @@ extern u32 lbl_80369078;
 extern u32 lbl_8036907C;
 extern u32 jumptable_80285ACC[];
 
-extern u16 *lbl_803672AC;
+extern u16 *gMap;
 #include "common.h"
 #include "global.h"
 
