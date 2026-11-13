@@ -1484,7 +1484,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     s32 strlen(char *);
     extern u8 BattleTerrain_Str[];
     extern void *BattleTerrain_Vtbl[];
-    extern s8 lbl_803680E0;
+    extern s8 gBattleTerrainReady;
 
     typedef struct {
         u32 size;
@@ -1515,7 +1515,7 @@ void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&spC, -1);
     temp = String_CStr(&sp18);
     fn_80041514(Map_Get(), temp);
-    lbl_803680E0 = 1;
+    gBattleTerrainReady = 1;
     String_Destroy(&sp18, -1);
     return self;
 }
@@ -1536,7 +1536,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_800DFAE0(void *, void *, void *, void *, void *);
     extern u8 BattleTerrain_Str[];
     extern void *BattleTerrain_Vtbl[];
-    extern s8 lbl_803680E0;
+    extern s8 gBattleTerrainReady;
 
     typedef struct {
         u32 size;
@@ -1579,7 +1579,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     a2 = String_CStr(a3);
     fn_80041514(Map_Get(), a2);
     a1 = (void *)0;
-    lbl_803680E0 = 1;
+    gBattleTerrainReady = 1;
     flag2 = 0;
     a2 = Heap_Alloc(0x60);
     if ((s32)a2 != 0) {
