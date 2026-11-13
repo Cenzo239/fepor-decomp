@@ -329,7 +329,8 @@ void fn_801AEA58(void *arg0) {
     }
 }
 
-void FShop_OnAnimalHelp(void *arg0) {
+void FShop_OnAnimalHelp(void *proc) {
+    /* On A/B, show MESS_FSHOP_ANIMAL_NG_NEXT, refresh caption, play SE, and clear this callback. */
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
     void TalkUi_ShowMsg(void *);
@@ -339,30 +340,30 @@ void FShop_OnAnimalHelp(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 gFShopStrings[];
-    u8 flag;
-    u32 a;
-    u32 b;
-    s32 str;
-    u32 tmp;
+    u8 inputLocked;
+    u32 held;
+    u32 prev;
+    s32 captionId;
+    u32 caption;
 
-    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
-    flag = 0;
+    Ui_BringChildToFront(proc, Ui_FindChild(proc, -0x1000, 0));
+    inputLocked = 0;
     if ((gUiInputFlags & 0x10) != 0 && (gUiInputFlags & 0x20) == 0) {
-        flag = 1;
+        inputLocked = 1;
     }
-    if (flag == 0) {
-        a = *(u32 *)((u8 *)gPadInput + 4);
-        b = *(u32 *)((u8 *)gPadInput + 8);
-        if ((a & (b ^ a) & 0x300) != 0) {
-            Ui_BringChildToFront(arg0, *(s32 *)((u8 *)arg0 + 0x54));
-            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x4C));
-            str = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x70);
-            tmp = Ui_FindChild(arg0, -0x1000, 0);
-            if (tmp != 0) {
-                Ui_SetWidgetText(tmp, str);
+    if (inputLocked == 0) {
+        held = *(u32 *)((u8 *)gPadInput + 4);
+        prev = *(u32 *)((u8 *)gPadInput + 8);
+        if ((held & (prev ^ held) & 0x300) != 0) {
+            Ui_BringChildToFront(proc, *(s32 *)((u8 *)proc + 0x54));
+            TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)proc + 0x6C) + 0x4C));
+            captionId = *(s32 *)((u8 *)*(void **)((u8 *)proc + 0x6C) + 0x70);
+            caption = Ui_FindChild(proc, -0x1000, 0);
+            if (caption != 0) {
+                Ui_SetWidgetText(caption, captionId);
             }
             Ui_PlaySeCue(gFShopStrings + 0x36E, 0x64);
-            Process_ClearFunc(arg0);
+            Process_ClearFunc(proc);
         }
     }
 }
