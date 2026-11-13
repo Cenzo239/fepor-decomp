@@ -10996,6 +10996,7 @@ void fn_801CE2DC(void *arg0) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 extern "C" void Ui_HandleNameEntryInput(void *arg0) {
+/* Handle name-entry input: A insert char, L/R move caret, Start confirm, Y info, B back. */
 void *fn_8013FF94(void *,s32,s32); u32 NameGrid_GetCharAtCursor(void *); void fn_8013FDA0(void *);
 u8 Ui_IsUnitInfoPopupOpen(void *); void fn_80167190(void *,s32,f32,f32); void fn_8016758C(void *,void *,s32,f32,f32); void Ui_HideUnitInfoPopup(void *);
 void NameEntry_InsertChar(void *,u32); void NameEntry_MoveCaretRight(void *,s32); void NameEntry_MoveCaretLeft(void *,s32);
@@ -11006,48 +11007,48 @@ class Pair { public: s16 x,y; Pair() {} Pair(const Pair &o) { *(u32 *)this=*(u32
 struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual s32 v15(); virtual Pair v16(); };
 u32 pos1,pos2,pos3,pos4;
 s32 btn;
-void *a,*b,*c;
-u32 unit;
-s32 t;
-s16 *v;
-a=fn_8013FF94(arg0,0,0);
-b=fn_8013FF94(arg0,1,0);
-c=fn_8013FF94(arg0,2,0);
-unit=NameGrid_GetCharAtCursor(c);
+void *field,*entry,*grid;
+u32 ch;
+s32 held;
+s16 *xy;
+field=fn_8013FF94(arg0,0,0);
+entry=fn_8013FF94(arg0,1,0);
+grid=fn_8013FF94(arg0,2,0);
+ch=NameGrid_GetCharAtCursor(grid);
 fn_8013FDA0(arg0);
-if(unit!=NameGrid_GetCharAtCursor(c)) {
-unit=NameGrid_GetCharAtCursor(c);
+if(ch!=NameGrid_GetCharAtCursor(grid)) {
+ch=NameGrid_GetCharAtCursor(grid);
 if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-*(Pair *)&pos1=((Obj *)c)->v16();
-fn_80167190(gUnitInfoPopup,((Obj *)c)->v15(),(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
+*(Pair *)&pos1=((Obj *)grid)->v16();
+fn_80167190(gUnitInfoPopup,((Obj *)grid)->v15(),(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
 }
 }
-t=M2C_FIELD(gPadInput,s32 *,4);
-btn=t&(M2C_FIELD(gPadInput,s32 *,8)^t);
+held=M2C_FIELD(gPadInput,s32 *,4);
+btn=held&(M2C_FIELD(gPadInput,s32 *,8)^held);
 if((btn&0x100)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-NameEntry_InsertChar(b,unit);NameEntry_MoveCaretRight(b,0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
+NameEntry_InsertChar(entry,ch);NameEntry_MoveCaretRight(entry,0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
 } else if((btn&0x10000040)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-NameEntry_MoveCaretLeft(b,0);
+NameEntry_MoveCaretLeft(entry,0);
 } else if((btn&0x20000020)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-NameEntry_MoveCaretRight(b,0);
+NameEntry_MoveCaretRight(entry,0);
 } else if((btn&0x1000)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-M2C_FIELD(a,s16 *,0x3c)=3;
-pos2=M2C_FIELD(c,u32 *,0x4c);
-fn_8013F748(c,&pos2,&pos2);
-v=fn_8013F6B8(a,&pos2,&pos2);
-M2C_FIELD(a,s16 *,0x3e)=v[0];M2C_FIELD(a,s16 *,0x40)=v[1];
+M2C_FIELD(field,s16 *,0x3c)=3;
+pos2=M2C_FIELD(grid,u32 *,0x4c);
+fn_8013F748(grid,&pos2,&pos2);
+xy=fn_8013F6B8(field,&pos2,&pos2);
+M2C_FIELD(field,s16 *,0x3e)=xy[0];M2C_FIELD(field,s16 *,0x40)=xy[1];
 fn_8000C188(arg0);Ui_PlaySeCue(lbl_8027DE48+0x1e,100);
 } else if((btn&0x800)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-*(Pair *)&pos3=((Obj *)c)->v16();
-fn_8016758C(gUnitInfoPopup,arg0,((Obj *)c)->v15(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
+*(Pair *)&pos3=((Obj *)grid)->v16();
+fn_8016758C(gUnitInfoPopup,arg0,((Obj *)grid)->v15(),(f32)*(s16 *)&pos3,(f32)*((s16 *)&pos3+1));
 *(s32 *)gUnitInfoPopup|=gUnitInfoPopupFlag;
 } else if((btn&0xa00)&&Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
 Ui_HideUnitInfoPopup(gUnitInfoPopup);
 } else if((btn&0x200)&&!Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
-pos4=M2C_FIELD(c,u32 *,0x4c);
-fn_8013F748(c,&pos4,&pos4);
-v=fn_8013F6B8(a,&pos4,&pos4);
-M2C_FIELD(a,s16 *,0x3e)=v[0];M2C_FIELD(a,s16 *,0x40)=v[1];
+pos4=M2C_FIELD(grid,u32 *,0x4c);
+fn_8013F748(grid,&pos4,&pos4);
+xy=fn_8013F6B8(field,&pos4,&pos4);
+M2C_FIELD(field,s16 *,0x3e)=xy[0];M2C_FIELD(field,s16 *,0x40)=xy[1];
 fn_8000C188(arg0);Ui_PlaySeCue(lbl_8027DE48+0x2e,100);
 }
 }
