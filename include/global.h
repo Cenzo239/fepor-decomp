@@ -1,5 +1,5 @@
 extern u16 lbl_8026D8D8;
-extern u16 lbl_80272230[];
+extern u16 gUiClassNames[];
 //extern u16 gUnits[];
 extern u16 gSoundSys[4976];
 extern f32 lbl_80369CB4;
@@ -9,6 +9,6 @@ extern u8* __TRKWritequeue;
 extern u8* __TRKReadqueue;
 extern u8 __TRKWritequeue_start[];
 extern u8 __TRKReadqueue_start[];
-extern u16 lbl_80272230[];
+extern u16 gUiClassNames[];
 extern u16 gSoundSys[4976];
 extern u16 lbl_80312BD0[];

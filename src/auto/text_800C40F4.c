@@ -13441,7 +13441,7 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
         virtual void v9() = 0;
         virtual s32 v10(void *, char *, s32) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     u8 list[0x18];
     s32 count;
     s32 i;
@@ -13451,7 +13451,7 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
         fn_800E0140(list, -1);
         return;
     }
-    count = ((Obj *)arg0)->v10(list, lbl_80272230 + 0x16, 0);
+    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         fn_800E8A88((void *)fn_800DFFF4(list, i), farg0);
     }
@@ -13564,7 +13564,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
         virtual void v9() = 0;
         virtual s32 v10(void *, char *, s32) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     extern f32 lbl_80369F68;
     u8 list[0x18];
     s32 count;
@@ -13575,7 +13575,7 @@ extern "C" void fn_800E77A0(void *arg0, s32 arg1, s32 arg2, f32 farg0) {
         fn_800E0140(list, -1);
         return;
     }
-    count = ((Obj *)arg0)->v10(list, lbl_80272230 + 0x16, 0);
+    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         fn_800E8AA0((void *)fn_800DFFF4(list, i), arg2, farg0, lbl_80369F68, arg1);
     }
@@ -13694,10 +13694,10 @@ extern "C" s32 fn_800E7AD4(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4)
         virtual void *v2(char *, void *) = 0;
     };
     void fn_801CAF94(void *, s32, s32, s32, s32);
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     void *result;
 
-    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x1D, String_CStr(arg1));
+    result = ((Obj *)arg0)->v2(gUiClassNames + 0x1D, String_CStr(arg1));
     if (result != NULL && *(u8 *)((u8 *)arg0 + 0x3D) != 0) {
         fn_801CAF94(result, arg2, arg3, arg4, 0);
         return 1;
@@ -13722,7 +13722,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
         virtual void v9() = 0;
         virtual s32 v10(void *, char *, s32) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     void fn_800DF6DC(u8 *, void *);
     s32 String_Compare(u8 *, u32, u32, char *, u32);
     void String_Destroy(void *, s32);
@@ -13737,7 +13737,7 @@ extern "C" s32 fn_800E7B80(void *arg0, void *arg1) {
     u8 list[0x14];
 
     fn_800E01C8(list);
-    count = ((Obj *)arg0)->v10(list, lbl_80272230 + 0x16, 0);
+    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     key = *(u32 *)arg1;
     for (i = 0; i < count; i++) {
         item = (void *)fn_800DFFF4(list, i);
@@ -13777,10 +13777,10 @@ extern "C" void fn_800E7C94(void *arg0, void *arg1, s32 arg2, f32 arg3) {
         virtual void v1() = 0;
         virtual void *v2(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     void *result;
 
-    result = ((Obj *)arg0)->v2(lbl_80272230 + 0x6, String_CStr(arg1));
+    result = ((Obj *)arg0)->v2(gUiClassNames + 0x6, String_CStr(arg1));
     if (result != NULL) {
         *(f32 *)((u8 *)result + 0x70) = arg3;
         *(s32 *)((u8 *)result + 0x74) = arg2;
@@ -13798,12 +13798,12 @@ extern "C" void fn_800E7D10(void *arg0, String *arg1) {
         virtual void v1() = 0;
         virtual void *v2(M2C_UNK *, M2C_UNK *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     u8 alloc;
     String tmp;
     void *found;
 
-    String_Init(&tmp, lbl_80272230 + 6, &alloc);
+    String_Init(&tmp, gUiClassNames + 6, &alloc);
     found = ((Obj *)arg0)->v2(String_CStr(&tmp), String_CStr(arg1));
     if (found != NULL) {
         fn_800DF664(found);
@@ -13822,9 +13822,9 @@ extern "C" void fn_800E7DA4(void *arg0, void *arg1) {
         virtual void v1() = 0;
         virtual void v2(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x2E, String_CStr(arg1));
+    ((Obj *)arg0)->v2(gUiClassNames + 0x2E, String_CStr(arg1));
 }
 #pragma cplusplus on
 extern "C" void fn_800E7DF8(void *arg0, void *arg1) {
@@ -13835,9 +13835,9 @@ extern "C" void fn_800E7DF8(void *arg0, void *arg1) {
         virtual void v1() = 0;
         virtual void v2(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x3C, String_CStr(arg1));
+    ((Obj *)arg0)->v2(gUiClassNames + 0x3C, String_CStr(arg1));
 }
 #pragma cplusplus reset
 extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
@@ -13848,9 +13848,9 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
         virtual void v1() = 0;
         virtual void v2(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x6, String_CStr(arg1));
+    ((Obj *)arg0)->v2(gUiClassNames + 0x6, String_CStr(arg1));
 }
 #pragma cplusplus reset
 
@@ -13874,14 +13874,14 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
         virtual void v9() = 0;
         virtual s32 v10(void *, char *, s32) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
     u8 list[0x18];
     s32 count;
     s32 item;
     s32 i;
 
     fn_800E01C8(list);
-    count = ((Obj *)arg0)->v10(list, lbl_80272230 + 0x16, 0);
+    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         item = fn_800DFFF4(list, i);
         if (fn_800E903C((void *)item)) {
@@ -13901,9 +13901,9 @@ extern "C" void fn_800E7F60(void *arg0, void *arg1) {
         virtual void v1() = 0;
         virtual void v2(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x16, String_CStr(arg1));
+    ((Obj *)arg0)->v2(gUiClassNames + 0x16, String_CStr(arg1));
 }
 
 #pragma dont_inline reset
@@ -13918,9 +13918,9 @@ extern "C" void fn_800E7FB4(void *arg0, String *arg1) {
         virtual void v1() = 0;
         virtual void v2(char *, M2C_UNK *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v2(lbl_80272230 + 0x34, String_CStr(arg1));
+    ((Obj *)arg0)->v2(gUiClassNames + 0x34, String_CStr(arg1));
 }
 
 extern "C" void fn_800E8008(void *arg0, void *arg1) {
@@ -13932,9 +13932,9 @@ extern "C" void fn_800E8008(void *arg0, void *arg1) {
         virtual void v2(char *, void *) = 0;
         virtual void v3(char *, void *) = 0;
     };
-    extern char lbl_80272230[];
+    extern char gUiClassNames[];
 
-    ((Obj *)arg0)->v3(lbl_80272230 + 0x10, String_CStr(arg1));
+    ((Obj *)arg0)->v3(gUiClassNames + 0x10, String_CStr(arg1));
 }
 
 #pragma dont_inline reset
