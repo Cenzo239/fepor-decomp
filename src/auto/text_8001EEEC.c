@@ -3965,7 +3965,7 @@ void fn_80028160(void *arg0) {
     map[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
 }
 
-void fn_800281D8(void *arg0) {
+void Ui_ConfirmUnitAction(void *arg0) {
     void *temp_r3;
 
     M2C_FIELD(arg0, s8 *, 0x12) = 1;

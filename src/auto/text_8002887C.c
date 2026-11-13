@@ -132,7 +132,7 @@ void fn_80028B4C(s32 arg0) {
 void MapUi_HandleUnitSelect(void *arg0) {
     void Process_Goto(void *, s32);
     u8 fn_800281F4(void *);
-    void fn_800281D8(void *);
+    void Ui_ConfirmUnitAction(void *);
     void fn_800AA4F8(void *);
     void fn_800F0C30(u8, u8, s32);
     extern u8 gUiContext[];
@@ -157,7 +157,7 @@ void MapUi_HandleUnitSelect(void *arg0) {
     }
 
     if ((u8)fn_800281F4(gUiContext) != 0) {
-        fn_800281D8(gUiContext);
+        Ui_ConfirmUnitAction(gUiContext);
         unit = *(void **)gUiContext;
         fn_800AA4F8(unit);
         fn_800F0C30(

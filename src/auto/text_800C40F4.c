@@ -19050,25 +19050,22 @@ extern f64 lbl_8036A098;
 }
 #pragma scheduling off
 f32 fn_800F738C(u8 arg0, f32 farg0) {
-    f64 fmod(f64, f64);
+    f64 fn_802387C8(f64, f64);
     extern f32 lbl_8036A07C;
     extern f32 lbl_8036A080;
     extern f64 lbl_8036A088;
     extern f64 lbl_8036A098;
-    f32 lim;
 
-    lim = lbl_8036A07C;
-    if (farg0 > lim) {
-        farg0 = lim;
+    if (farg0 > 1.0f) {
+        farg0 = 1.0f;
     }
-    lim = lbl_8036A080;
-    if (farg0 < lim) {
-        farg0 = lim;
+    if (farg0 < lbl_8036A080) {
+        farg0 = lbl_8036A080;
     }
     if (arg0 != 0) {
-        return (f32)fmod(farg0, lbl_8036A098);
+        return (f32)fn_802387C8((f64)farg0, lbl_8036A098);
     }
-    return (f32)fmod(farg0, lbl_8036A088);
+    return (f32)fn_802387C8((f64)farg0, lbl_8036A088);
 }
 #pragma scheduling reset
 void fn_800F74C0(Unit* unit)
@@ -20887,7 +20884,7 @@ void fn_800FBF54(void) {
 
 void fn_800FBF70(s32 arg0) {
     u8 fn_80102360(void *, s16 *, s16 *, u8);
-    void fn_800281D8(void *);
+    void Ui_ConfirmUnitAction(void *);
     void fn_80028160(void *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void fn_800FF918(s32);
@@ -20907,7 +20904,7 @@ void fn_800FBF70(s32 arg0) {
     if (fn_80102360(unit, &spA, &sp8, ctx[0x11]) != 0) {
         g = gAiState;
         g[0x21C] = 0;
-        fn_800281D8(ctx);
+        Ui_ConfirmUnitAction(ctx);
         fn_80028160(ctx);
         Ai_SetUnitMoveTo(unit, spA, sp8, 1, 0xFFFF, 0, 0, -1);
         if (g[0x21C] != 0) {
@@ -22316,25 +22313,18 @@ void fn_800FF918(s32 arg0) {
 void fn_800FF948(void *arg0) {
     void Process_ClearFunc(void *);
     void fn_800F20E0(void);
-    extern u8 *gPadInput;
-    void *self;
-    s32 *p;
+    extern void *gPadInput;
+    void *self = arg0;
+    u32 buttons = *(u32 *)((u8 *)gPadInput + 4);
 
-    self = arg0;
-    if ((*(u32 *)(gPadInput + 4) & 0x1100) != 0) {
-        goto do_inc;
+    if ((buttons & 0x1100) == 0) {
+        if (*(s32 *)((u8 *)self + 0x64) > 0x2D) {
+            Process_ClearFunc(self);
+            return;
+        }
     }
-    if (*(s32 *)((u8 *)self + 0x64) <= 0x2D) {
-        goto do_inc;
-    }
-    Process_ClearFunc(self);
-    goto done;
-do_inc:
     fn_800F20E0();
-    p = (s32 *)((u8 *)self + 0x64);
-    *p = *p + 1;
-done:
-    ;
+    *(s32 *)((u8 *)self + 0x64) = *(s32 *)((u8 *)self + 0x64) + 1;
 }
 
 void fn_800FF9A8(void *arg0) {
