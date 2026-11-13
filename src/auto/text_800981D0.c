@@ -179,7 +179,7 @@ s32 Event_HandleItemCmd(void *arg0) {
     void fn_8017F474(void *, void *);
     void fn_800535B0(void *);
     void fn_8005366C(void *, s32, s32);
-    extern u8 lbl_8026D230[];
+    extern u8 gEventUiSeCues[];
     extern s32 gPadInput;
     s32 sp2C[3];
     s32 sp20[3];
@@ -279,7 +279,7 @@ s32 Event_HandleItemCmd(void *arg0) {
                 sp8[0] = sp14[0];
                 sp8[1] = sp14[1];
                 sp8[2] = sp14[2];
-                fn_80147548(lbl_8026D230 + 0xE3, sp8, 0x64);
+                fn_80147548(gEventUiSeCues + 0xE3, sp8, 0x64);
                 fn_80025624(gPadInput, 4);
                 if (M2C_FIELD(self, u8 *, 0x34) != 2) {
                     fn_8017F70C(M2C_FIELD(self, void **, 0x3C), self);
@@ -319,7 +319,7 @@ s32 Event_HandleItemCmd(void *arg0) {
             sp20[0] = sp2C[0];
             sp20[1] = sp2C[1];
             sp20[2] = sp2C[2];
-            fn_80147548(lbl_8026D230 + 0xF6, sp20, 0x64);
+            fn_80147548(gEventUiSeCues + 0xF6, sp20, 0x64);
             fn_800535B0(arg0);
             fn_8005366C(arg0, 0, 0);
         }
