@@ -267,6 +267,7 @@ void fn_80033E90(void *arg0) {
     *(s16 *)((u8 *)self + 2) = *(s16 *)self;
 }
 
+#pragma global_optimizer off
 void BattleAnim_Queue(s16 *arg0, s32 arg1, s8 arg2) {
     s8 fn_80033F18(s16 *, s32);
     u8 *entry;
@@ -274,17 +275,17 @@ void BattleAnim_Queue(s16 *arg0, s32 arg1, s8 arg2) {
     s32 off;
 
     ret = fn_80033F18(arg0, arg1);
-    off = (*arg0 << 2) + 4;
-    entry = (u8 *)arg0 + off;
+    off = *arg0 << 2;
+    entry = (u8 *)arg0 + off + 4;
     *entry = ret;
     *(s16 *)(entry + 2) = arg2;
     (*arg0)++;
-    off = (*arg0 << 2) + 4;
-    entry = (u8 *)arg0 + off;
+    off = *arg0 << 2;
+    entry = (u8 *)arg0 + off + 4;
     *entry = 0;
     *(s16 *)(entry + 2) = 0;
 }
-
+#pragma global_optimizer reset
 void fn_800340E4(s16 *arg0) {
     *arg0 = 0;
 }
@@ -10227,7 +10228,7 @@ void fn_8004B1B4(u8 *arg0) {
 
 extern s32 lbl_80367308;
 #pragma use_lmw_stmw on
-s32 fn_8004B3DC(void *arg0, s32 arg1) {
+s32 GMaterial_SetupAtlasTev(void *arg0, s32 arg1) {
     s32 fn_8006A37C(void);
     s32 fn_8006A374(void);
     s32 GMaterial_AllocTevStage(void);
@@ -11388,7 +11389,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_800688D4(void *, s32, void *, s32);
     u8 Status_Test(void *, s32);
     void sprintf(void *, void *, ...);
-    void fn_8004B3DC(void);
+    void GMaterial_SetupAtlasTev(void);
     extern u8 lbl_8026AB18[];
     extern void *lbl_80366DC8;
     extern f32 lbl_80368FCC;
@@ -11465,7 +11466,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         M2C_FIELD(arg0, u8 *, 0x168) = sp[0];
         M2C_FIELD(arg0, u8 *, 0x169) = sp[1];
         fn_80060638(sub2);
-        fn_800688D4(sub2, 0, fn_8004B3DC, 0x4000);
+        fn_800688D4(sub2, 0, GMaterial_SetupAtlasTev, 0x4000);
         M2C_FIELD(sub2, void **, 0x90) = arg0;
         Model_SetAlpha(sub2, 0);
         sub2 = (u8 *)arg0 + 0xBC;
