@@ -2756,7 +2756,7 @@ u32 GActor_GetNodeTable(void *arg0) {
 }
 
 s32 GActor_FindNode(void *arg0, void *name) {
-    u8 fn_8006D980(void *, void *);
+    u8 Str_MatchUnderscoreTag(void *, void *);
     void *node;
     void *entry;
     s32 i;
@@ -2781,7 +2781,7 @@ search:
     goto inner_check;
 inner:
     if (*(u32 *)((u8 *)entry + 0xC) & 0x80000000U) {
-        if (fn_8006D980(*(void **)((u8 *)entry + 0xF0), name) != 0) {
+        if (Str_MatchUnderscoreTag(*(void **)((u8 *)entry + 0xF0), name) != 0) {
             return i;
         }
     }
@@ -6646,7 +6646,7 @@ s32 fn_8006D948(s32 arg0) {
     return sp8;
 }
 
-s32 fn_8006D980(char *s, char *pat)
+s32 Str_MatchUnderscoreTag(char *s, char *pat)
 {
     char *m;
     u8 c;
