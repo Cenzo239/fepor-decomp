@@ -918,7 +918,7 @@ s32 fn_800A0804(void) {
     return 0;
 }
 
-void *fn_800A0828(void) {
+void *MenuCmd_GetCursorMapObjLabel(void) {
     s32 Map_Get(void *);
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     u8 MapObj_IsVisible(s32);
