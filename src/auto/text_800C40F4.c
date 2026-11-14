@@ -11228,7 +11228,7 @@ void fn_800E4C14(void *arg0, f32 farg0) {
     M2C_FIELD(arg0, f32 *, 0x104) = farg0;
 }
 
-void fn_800E4C1C(void *arg0) {
+void Actor_ClearNodeLink(void *arg0) {
     void GActor_StopNodeLink(void *);
     void *ptr;
 
