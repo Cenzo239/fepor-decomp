@@ -12743,7 +12743,8 @@ s32 fn_801A1B58(s32 arg0) {
     return 1;
 }
 
-s32 ScriptCmd_EventSetSavedByte(s32 arg0) {
+s32 ScriptCmd_EventSetSavedByte(s32 value) {
+    /* Set gBattleState[0xA0] clamped to 0–100; negative restores the E_EventState backup. */
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
@@ -12752,7 +12753,7 @@ s32 ScriptCmd_EventSetSavedByte(s32 arg0) {
     s32 v;
     void *p;
 
-    v = arg0;
+    v = value;
     if (v > 0x64) {
         v = 0x64;
     }
