@@ -402,7 +402,7 @@ s32 fn_800A9E10(void *arg0) {
 }
 
 s32 fn_800AA078(void *arg0) {
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void Unit_ResetAll(void);
     void *fn_80019ED0(s32);
     void Battle_SetPhase(void *, u8);
@@ -416,7 +416,7 @@ s32 fn_800AA078(void *arg0) {
     s = gBattleState;
     saved = s[0xA6];
     Unit_ResetAll();
-    fn_8014D698(gBattleState, (u8)(fn_8000CEE4(0x1E) + 1), 0, 0, 1);
+    fn_8014D698(gBattleState, (u8)(Rand_Range(0x1E) + 1), 0, 0, 1);
     s[0xA6] = saved;
     unit = fn_80019ED0((s32)*(s8 *)((u8 *)arg0 + 4));
     {

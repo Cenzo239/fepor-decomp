@@ -3466,7 +3466,7 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8007A8D8(void *arg0) {
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void **fn_8006EDD8(void *, s32);
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -3505,7 +3505,7 @@ void fn_8007A8D8(void *arg0) {
     if (timer > 0) {
         *(s16 *)((u8 *)arg0 + 0x36) = (s16)(timer - 1);
         if (*(s16 *)((u8 *)arg0 + 0x36) == 0) {
-            *(s16 *)((u8 *)arg0 + 0x36) = (s16)(fn_8000CEE4(8) + 1);
+            *(s16 *)((u8 *)arg0 + 0x36) = (s16)(Rand_Range(8) + 1);
             *(s16 *)((u8 *)arg0 + 0x34) = (s16)((*(s16 *)((u8 *)arg0 + 0x34) + 1) & 3);
         }
     }

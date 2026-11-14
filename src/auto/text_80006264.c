@@ -4338,7 +4338,7 @@ s32 Rand_Chance(s32 arg0) {
     return (scaled / 65536) < arg0;
 }
 
-s32 fn_8000CEE4(s32 arg0) {
+s32 Rand_Range(s32 arg0) {
     extern u16 lbl_80367150;
     u16 *st;
     s32 s0;

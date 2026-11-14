@@ -14326,7 +14326,7 @@ s32 fn_800EC2B8(void) {
 
 #pragma global_optimizer off
 s32 fn_800EC2E0(void) {
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void BattleAnim_Queue(void *, u8, s8);
     void fn_800340F0(void *);
     void *Heap_Alloc(s32);
@@ -14393,8 +14393,8 @@ s32 fn_800EC2E0(void) {
     strcpy((u8 *)obj + 0x100, String_CStr(&work));
     *(s32 *)((u8 *)obj + 0x164) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x430));
     *(s32 *)((u8 *)obj + 0x140) = 0x4C;
-    *(s32 *)((u8 *)obj + 0x144) = fn_8000CEE4(0xA) + 7;
-    *(s32 *)((u8 *)obj + 0x148) = 0x64 - fn_8000CEE4(0x1E);
+    *(s32 *)((u8 *)obj + 0x144) = Rand_Range(0xA) + 7;
+    *(s32 *)((u8 *)obj + 0x148) = 0x64 - Rand_Range(0x1E);
     *(s32 *)((u8 *)obj + 0x14C) = 4;
     *(s32 *)((u8 *)obj + 0x150) = 0x32;
     *(s32 *)((u8 *)obj + 0x154) = 0xA;
@@ -14414,8 +14414,8 @@ s32 fn_800EC2E0(void) {
     strcpy((u8 *)obj + 0x268, String_CStr(&work));
     *(s32 *)((u8 *)obj + 0x2CC) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x434));
     *(s32 *)((u8 *)obj + 0x2A8) = 0x28;
-    *(s32 *)((u8 *)obj + 0x2AC) = fn_8000CEE4(0xA) + 3;
-    *(s32 *)((u8 *)obj + 0x2B0) = 0x64 - fn_8000CEE4(0x1E);
+    *(s32 *)((u8 *)obj + 0x2AC) = Rand_Range(0xA) + 3;
+    *(s32 *)((u8 *)obj + 0x2B0) = 0x64 - Rand_Range(0x1E);
     *(s32 *)((u8 *)obj + 0x2B4) = 8;
     *(s32 *)((u8 *)obj + 0x2B8) = 0x32;
     *(s32 *)((u8 *)obj + 0x2BC) = 4;
@@ -14436,8 +14436,8 @@ s32 fn_800EC2E0(void) {
         strcpy((u8 *)obj + 0x3D0, String_CStr(&work));
         *(s32 *)((u8 *)obj + 0x434) = fn_8011C9E4(*(void **)((u8 *)lbl_803678C0 + 0x438));
         *(s32 *)((u8 *)obj + 0x410) = 0x28;
-        *(s32 *)((u8 *)obj + 0x414) = fn_8000CEE4(0xA) + 3;
-        *(s32 *)((u8 *)obj + 0x418) = 0x64 - fn_8000CEE4(0x1E);
+        *(s32 *)((u8 *)obj + 0x414) = Rand_Range(0xA) + 3;
+        *(s32 *)((u8 *)obj + 0x418) = 0x64 - Rand_Range(0x1E);
         *(s32 *)((u8 *)obj + 0x41C) = 8;
         *(s32 *)((u8 *)obj + 0x420) = 0x32;
         *(s32 *)((u8 *)obj + 0x424) = 4;
@@ -18594,7 +18594,7 @@ void fn_800F9E64(void *arg0) {
 void fn_800FA0E4(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     u8 fn_800F51A0(void (*)(void *), s32);
     void fn_800F4E3C(void (*)(void *), s32);
     void Ai_UnitIsHostileToActive(void *);
@@ -18607,7 +18607,7 @@ void fn_800FA0E4(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         if (fn_800F51A0(cb, 0xF) == 0) {
@@ -18626,7 +18626,7 @@ void fn_800FA1A8(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     u8 fn_800F30E0(u8 (*)(void *), u8);
     u8 Ai_UnitIsHostileToActive(void *);
     u8 Ai_UnitNameInCmdList(void *);
@@ -18638,7 +18638,7 @@ void fn_800FA1A8(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         fn_800F30E0(*(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive :
                     (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList),
                     0x13);
@@ -18668,7 +18668,7 @@ void fn_800FA254(void *arg0) {
 void fn_800FA2B4(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     u8 fn_800F3F50(s32, s8);
     s32 Ai_UnitIsHostileToActive(void *);
     s32 Ai_UnitNameInCmdList(void *);
@@ -18679,7 +18679,7 @@ void fn_800FA2B4(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         fn_800F3F50(
             (s32)(*(u32 *)(state + 0x14) == 0
                       ? Ai_UnitIsHostileToActive
@@ -18697,7 +18697,7 @@ void fn_800FA2B4(void *arg0) {
 void fn_800FA360(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     u8 fn_800F43D8(void (*)(void *), s32);
     void fn_800F4954(void (*)(void *), s32);
     void Ai_UnitIsHostileToActive(void *);
@@ -18710,7 +18710,7 @@ void fn_800FA360(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         if (fn_800F43D8(cb, 0x31) == 0) {
@@ -18730,7 +18730,7 @@ void Ai_Cmd_TryHashedStatus(void *unit) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void *Hash_Lookup(void *);
     void fn_801AA064(void *, void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
@@ -18745,7 +18745,7 @@ void Ai_Cmd_TryHashedStatus(void *unit) {
     self = (u8 *)unit;
     cmd = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(cmd + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
         filter = *(u32 *)(cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         aiFlags = gAiState;
@@ -18765,7 +18765,7 @@ void Ai_Cmd_TryHashedStatus(void *unit) {
 void fn_800FA510(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void *Hash_Lookup(void *);
     void fn_801AA064(void *, void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
@@ -18779,7 +18779,7 @@ void fn_800FA510(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         tmp = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
@@ -18806,7 +18806,7 @@ void fn_800FA600(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8018D4CC(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
@@ -18819,7 +18819,7 @@ void fn_800FA600(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         flag = gAiState;
@@ -18838,7 +18838,7 @@ void fn_800FA600(void *arg0) {
 void fn_800FA6CC(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8018D4CC(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
@@ -18850,7 +18850,7 @@ void fn_800FA6CC(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         fn_8018D4CC(obj, cb);
@@ -18867,7 +18867,7 @@ void fn_800FA778(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8010F7B4(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
@@ -18880,7 +18880,7 @@ void fn_800FA778(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         flag = gAiState;
@@ -18899,7 +18899,7 @@ void fn_800FA778(void *arg0) {
 void fn_800FA844(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8010F7B4(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
@@ -18911,7 +18911,7 @@ void fn_800FA844(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         fn_8010F7B4(obj, cb);
@@ -18929,7 +18929,7 @@ void fn_800FA8F0(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     u8 fn_800F5504(u8 (*)(void *), u8);
     u8 fn_800FB3AC(void *);
     u8 fn_800FB334(void *);
@@ -18940,7 +18940,7 @@ void fn_800FA8F0(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         fn_800F5504(*(s32 *)(state + 0x10) != 0 ? fn_800FB334 : fn_800FB3AC, 0xF);
     }
 
@@ -18955,7 +18955,7 @@ void fn_800FA984(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_800F5504(void (*)(void *), s32);
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
@@ -18968,7 +18968,7 @@ void fn_800FA984(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         flag = gAiState;
@@ -18997,7 +18997,7 @@ void fn_800FAA50(void *arg0) {
 void fn_800FAA7C(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_800F5504(s32, s32);
     s32 Ai_UnitIsHostileToActive(void *);
     s32 Ai_UnitNameInCmdList(void *);
@@ -19008,7 +19008,7 @@ void fn_800FAA7C(void *arg0) {
     obj = (u8 *)arg0;
     state = (u8 *)gAiCmd;
 
-    if (fn_8000CEE4(0x64) <= *(s32 *)(state + 4)) {
+    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         fn_800F5504(
             (s32)(*(u32 *)(state + 0x14) == 0
                       ? Ai_UnitIsHostileToActive

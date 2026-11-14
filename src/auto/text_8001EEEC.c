@@ -540,7 +540,7 @@ u8 *fn_8001FC40(void *arg0, s8 arg1, s8 arg2) {
 }
 
 extern u8 lbl_80366DB8[8];
-s32 fn_8000CEE4(s32);
+s32 Rand_Range(s32);
 u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
     u8 cand[4];
     u16 dist[4];
@@ -618,7 +618,7 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
         case 2:
         case 3:
         case 4:
-            dir = cand[fn_8000CEE4(n)];
+            dir = cand[Rand_Range(n)];
             break;
         }
         *arg1++ = dir;

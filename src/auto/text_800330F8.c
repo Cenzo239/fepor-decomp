@@ -4811,7 +4811,7 @@ void fn_8003D70C(s32 arg0) {
     void *Res_GetByName(void *);
     u8 Status_Test(s32, s32);
     s8 fn_801F1A2C(void);
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
 
     void *partner;
     s16 s7;
@@ -4872,21 +4872,21 @@ void fn_8003D70C(s32 arg0) {
         s7 = (s16)(s7 + bonus * p[0x5B]);
     }
 
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1AB) = *(u8 *)(arg0 + 0x1AB) + (s0 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1AC) = *(u8 *)(arg0 + 0x1AC) + (s1 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1AD) = *(u8 *)(arg0 + 0x1AD) + (s2 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1AE) = *(u8 *)(arg0 + 0x1AE) + (s3 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1AF) = *(u8 *)(arg0 + 0x1AF) + (s4 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1B0) = *(u8 *)(arg0 + 0x1B0) + (s5 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1B1) = *(u8 *)(arg0 + 0x1B1) + (s6 * factor) / 10000;
-    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
+    factor = 0x64 - (0xA - Rand_Range(0x14));
     *(u8 *)(arg0 + 0x1B2) = *(u8 *)(arg0 + 0x1B2) + (s7 * factor) / 10000;
 }
 

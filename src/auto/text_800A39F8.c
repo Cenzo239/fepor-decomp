@@ -1897,7 +1897,7 @@ void fn_800A7C94(void *arg0) {
     void fn_8006EEFC(void **, s32);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, void *, s32, s32);
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void Ui_LoadAtlasTex(void *, void *, u16);
     u16 GXGetTexObjWidth(void *);
     s16 GXGetTexObjHeight(void *);
@@ -1943,7 +1943,7 @@ void fn_800A7C94(void *arg0) {
         s16 adj;
         s16 tmp16;
         u16 t;
-        r30 = fn_8000CEE4(8) + 2;
+        r30 = Rand_Range(8) + 2;
         Ui_LoadAtlasTex(r26, st.sp10, (u16)r30);
         st.sp30 = GXGetTexObjWidth(st.sp10);
         tmp16 = GXGetTexObjHeight(st.sp10);
@@ -1954,8 +1954,8 @@ void fn_800A7C94(void *arg0) {
         r22[2] = t;
         r22[3] = tmp16;
         for (;;) {
-            r24 = fn_8000CEE4(0x200);
-            adj = (s16)(fn_8000CEE4(st.sp30 + 0x260) - ((u32)st.sp30 >> 1));
+            r24 = Rand_Range(0x200);
+            adj = (s16)(Rand_Range(st.sp30 + 0x260) - ((u32)st.sp30 >> 1));
             r22[0] += adj;
             r22[1] += r24;
             r22[2] += adj;
@@ -1978,7 +1978,7 @@ void fn_800A7C94(void *arg0) {
         *(s32 *)((u8 *)r23 + 0x44) = r30;
         *(void **)((u8 *)r23 + 0x30) = r25;
         *(f32 *)((u8 *)r23 + 0x3C) = lbl_80369B30;
-        *(f32 *)((u8 *)r23 + 0x40) = (*(f32 *)((u8 *)r23 + 0x3C) / lbl_80369B34) * (f32)fn_8000CEE4(0x8000);
+        *(f32 *)((u8 *)r23 + 0x40) = (*(f32 *)((u8 *)r23 + 0x3C) / lbl_80369B34) * (f32)Rand_Range(0x8000);
         r29 += 1;
         r22 += 4;
     } while (r29 < 0x20);
@@ -1997,7 +1997,7 @@ void fn_800A7EC0(void) {
 void fn_800A7EC4(void *arg0) {
     void *Process_Create(void *, void *);
     void fn_8006EEFC(void *, s32);
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_800C42AC(s32);
     void *fn_8022C414(void (*)(void), s32, s32, s32);
     void Ui_LoadAtlasTex(s32, void *, u16);
@@ -2045,7 +2045,7 @@ void fn_800A7EC4(void *arg0) {
     count = 0;
     cur = (u8 *)arr;
     while (count < 0x20) {
-        span = fn_8000CEE4(8) + 2;
+        span = Rand_Range(8) + 2;
         Ui_LoadAtlasTex(unk30, sp10, span);
         a = GXGetTexObjWidth(sp10);
         b = GXGetTexObjHeight(sp10);
@@ -2056,10 +2056,10 @@ void fn_800A7EC4(void *arg0) {
         M2C_FIELD(cur, u16 *, 4) = sp30;
         M2C_FIELD(cur, u16 *, 6) = sp32;
 recompute:
-        dy = fn_8000CEE4(0x200);
+        dy = Rand_Range(0x200);
         scan = (u8 *)arr;
         idx = 0;
-        dx = fn_8000CEE4(span + 0x260) - (span >> 1);
+        dx = Rand_Range(span + 0x260) - (span >> 1);
         M2C_FIELD(cur, s16 *, 0) += dx;
         M2C_FIELD(cur, s16 *, 2) += dy;
         M2C_FIELD(cur, s16 *, 4) += dx;
@@ -2081,7 +2081,7 @@ recompute:
         M2C_FIELD(obj, u32 *, 0x44) = span;
         M2C_FIELD(obj, void **, 0x30) = res;
         M2C_FIELD(obj, f32 *, 0x3C) = lbl_80369B30;
-        M2C_FIELD(obj, f32 *, 0x40) = (M2C_FIELD(obj, f32 *, 0x3C) / lbl_80369B34) * (f32) fn_8000CEE4(0x8000);
+        M2C_FIELD(obj, f32 *, 0x40) = (M2C_FIELD(obj, f32 *, 0x3C) / lbl_80369B34) * (f32) Rand_Range(0x8000);
         count++;
         cur += 8;
     }

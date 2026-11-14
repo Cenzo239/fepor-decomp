@@ -828,7 +828,7 @@ void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
-    u16 fn_8000CEE4(s32);
+    u16 Rand_Range(s32);
     void fn_8000D3EC(u32, void *);
     void fn_8001CC48(void *, u32);
     s32 Affinity_FromName(u32);
@@ -956,7 +956,7 @@ void fn_8001AC18(void) {
         *(u16 *)((u8 *)rec + 0x5A) = (ptr[0] << 8) + ptr[1];
         h = (ptr[2] << 8) + ptr[3];
         if (h == 0) {
-            h = fn_8000CEE4(0x16E);
+            h = Rand_Range(0x16E);
         }
         *(u16 *)((u8 *)rec + 0x58) = h;
 

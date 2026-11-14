@@ -190,8 +190,8 @@ void fn_800174A8(void *arg0, s32 arg1) {
 }
 
 void fn_8001753C(s16 *arg0) {
-    s16 fn_8000CEE4(M2C_UNK);
-    *arg0 = fn_8000CEE4(0xE4C);
+    s16 Rand_Range(M2C_UNK);
+    *arg0 = Rand_Range(0xE4C);
 }
 
 void fn_80017570(s32 arg0)

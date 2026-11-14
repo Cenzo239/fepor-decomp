@@ -1536,7 +1536,7 @@ void fn_8012B488(s32 arg0) {
 
 #pragma use_lmw_stmw on
 void fn_8012B554(void *arg0) {
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8007ADC8(s32);
     void *fn_8007BD30(s32, void *, s32, s32, s32, s32, void *);
     void **fn_8007C3F8(void);
@@ -1570,7 +1570,7 @@ void fn_8012B554(void *arg0) {
                 p += 0x20;
                 i += 1;
             }
-            count = fn_8000CEE4(count);
+            count = Rand_Range(count);
             p = (u8 *)list;
             i = 0;
             for (; fn_8007C400() > i; ) {
@@ -1610,7 +1610,7 @@ void fn_8012B554(void *arg0) {
                 p += 0x20;
                 i += 1;
             }
-            count = fn_8000CEE4(count);
+            count = Rand_Range(count);
             p = (u8 *)list;
             i = 0;
             for (; fn_8007C400() > i; ) {
@@ -1659,7 +1659,7 @@ void fn_8012B7DC(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void Process_ClearFunc(void *);
-    s32 fn_8000CEE4(s32);
+    s32 Rand_Range(s32);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
     void Ui_CreateMenu(void *, void *, s32);
     void fn_8007ADC8(s32);
@@ -1871,7 +1871,7 @@ void fn_8012B7DC(void *arg0) {
                         p += 0x20;
                         i += 1;
                     }
-                    count = fn_8000CEE4(count);
+                    count = Rand_Range(count);
                     p = (u8 *)list;
                     i = 0;
                     for (; fn_8007C400() > i; ) {
@@ -1912,7 +1912,7 @@ void fn_8012B7DC(void *arg0) {
                         p += 0x20;
                         i += 1;
                     }
-                    count = fn_8000CEE4(count);
+                    count = Rand_Range(count);
                     p = (u8 *)list;
                     i = 0;
                     for (; fn_8007C400() > i; ) {

@@ -6025,7 +6025,7 @@ void fn_800BB0E8(void) {
     void fn_800BBE9C(void);
     void fn_800BBE1C(void);
     void fn_800BBD9C(void);
-    void fn_8000CEE4(void);
+    void Rand_Range(void);
     void fn_800BBD44(void);
     void fn_800BBD20(void);
     void fn_800BBCFC(void);
@@ -6107,7 +6107,7 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x48B, fn_800BBE9C, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x498, fn_800BBE1C, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x4A5, fn_800BBD9C, 2);
-    Script_RegisterCommand(lbl_8026F728 + 0x4B2, fn_8000CEE4, 1);
+    Script_RegisterCommand(lbl_8026F728 + 0x4B2, Rand_Range, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x4B9, fn_800BBD44, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x4C4, fn_800BBD20, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x4D2, fn_800BBCFC, 2);
