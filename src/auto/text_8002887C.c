@@ -3668,7 +3668,7 @@ extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_SetColorByte(u8);
 extern "C" void fn_80090990(void *);
-extern "C" void fn_800323BC(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawBag(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
