@@ -405,42 +405,43 @@ void fn_80096418(s16 arg0) {
     *idx = saved2;
 }
 
+/* Load model/gfx (mode 8) for the units stored in event slots 0-2. */
 void Event_LoadSlotUnitGfx(void) {
     void fn_8017F9A8(void);
     void fn_8004FC70(u32, s32);
     extern u8 gEventSlots[];
-    u32 a;
-    u32 b;
-    u32 c;
-    void *p;
+    u32 unit0;
+    u32 unit1;
+    u32 unit2;
+    void *slot;
 
     fn_8017F9A8();
-    p = *(void **)gEventSlots;
-    if (p != NULL) {
-        a = *(u32 *)((u8 *)p + 0x280);
+    slot = *(void **)gEventSlots;
+    if (slot != NULL) {
+        unit0 = *(u32 *)((u8 *)slot + 0x280);
     } else {
-        a = 0U;
+        unit0 = 0U;
     }
-    p = *(void **)(gEventSlots + 0x14);
-    if (p != NULL) {
-        b = *(u32 *)((u8 *)p + 0x280);
+    slot = *(void **)(gEventSlots + 0x14);
+    if (slot != NULL) {
+        unit1 = *(u32 *)((u8 *)slot + 0x280);
     } else {
-        b = 0U;
+        unit1 = 0U;
     }
-    p = *(void **)(gEventSlots + 0x28);
-    if (p != NULL) {
-        c = *(u32 *)((u8 *)p + 0x280);
+    slot = *(void **)(gEventSlots + 0x28);
+    if (slot != NULL) {
+        unit2 = *(u32 *)((u8 *)slot + 0x280);
     } else {
-        c = 0U;
+        unit2 = 0U;
     }
-    if (a != 0U) {
-        fn_8004FC70(a, 8);
+    if (unit0 != 0U) {
+        fn_8004FC70(unit0, 8);
     }
-    if (b != 0U) {
-        fn_8004FC70(b, 8);
+    if (unit1 != 0U) {
+        fn_8004FC70(unit1, 8);
     }
-    if (c != 0U) {
-        fn_8004FC70(c, 8);
+    if (unit2 != 0U) {
+        fn_8004FC70(unit2, 8);
     }
 }
 
