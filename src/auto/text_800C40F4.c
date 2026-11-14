@@ -19047,7 +19047,8 @@ void fn_800FAD94(void) {
     // a very basic version without calling any other functions:
 }
 
-void AiCmd_SeekLabelNoOk(void *arg0)
+/* Find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC; does not set gAiCmdOk. */
+void AiCmd_SeekLabelNoOk(void *unit)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
@@ -19059,7 +19060,7 @@ void AiCmd_SeekLabelNoOk(void *arg0)
     u8 *obj;
     u8 *entry;
 
-    obj = (u8 *)arg0;
+    obj = (u8 *)unit;
     index = 0;
 
     count = *(s32 *)(gAiCmd + 0x10);
