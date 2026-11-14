@@ -2410,51 +2410,51 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
 }
 
 char *Unit_FormatAttrFlags(u16 *arg0) {
-    extern char lbl_802CA4BC[];
+    extern char gAttrFlagsStr[];
     extern char gDataStr[];
     char *buf;
     u16 *p;
 
     p = arg0;
-    buf = lbl_802CA4BC;
+    buf = gAttrFlagsStr;
     buf[0] = 0;
     if (*p & 1) {
         strcat(buf, gDataStr + 0xD4);
     }
     if (*p & 2) {
-        strcat(lbl_802CA4BC, gDataStr + 0xD8);
+        strcat(gAttrFlagsStr, gDataStr + 0xD8);
     }
     if (*p & 4) {
-        strcat(lbl_802CA4BC, gDataStr + 0xDC);
+        strcat(gAttrFlagsStr, gDataStr + 0xDC);
     }
     if (*p & 8) {
-        strcat(lbl_802CA4BC, gDataStr + 0xE4);
+        strcat(gAttrFlagsStr, gDataStr + 0xE4);
     }
     if (*p & 0x10) {
-        strcat(lbl_802CA4BC, gDataStr + 0xE8);
+        strcat(gAttrFlagsStr, gDataStr + 0xE8);
     }
     if (*p & 0x20) {
-        strcat(lbl_802CA4BC, gDataStr + 0xEE);
+        strcat(gAttrFlagsStr, gDataStr + 0xEE);
     }
     if (*p & 0x40) {
-        strcat(lbl_802CA4BC, gDataStr + 0xF4);
+        strcat(gAttrFlagsStr, gDataStr + 0xF4);
     }
     if (*p & 0x80) {
-        strcat(lbl_802CA4BC, gDataStr + 0xF8);
+        strcat(gAttrFlagsStr, gDataStr + 0xF8);
     }
     if (*p & 0x100) {
-        strcat(lbl_802CA4BC, gDataStr + 0xFC);
+        strcat(gAttrFlagsStr, gDataStr + 0xFC);
     }
     if (*p & 0x200) {
-        strcat(lbl_802CA4BC, gDataStr + 0x100);
+        strcat(gAttrFlagsStr, gDataStr + 0x100);
     }
     if (*p & 0x400) {
-        strcat(lbl_802CA4BC, gDataStr + 0x106);
+        strcat(gAttrFlagsStr, gDataStr + 0x106);
     }
     if (*p & 0x800) {
-        strcat(lbl_802CA4BC, gDataStr + 0x10E);
+        strcat(gAttrFlagsStr, gDataStr + 0x10E);
     }
-    return lbl_802CA4BC;
+    return gAttrFlagsStr;
 }
 
 /* OR one map-move SFX category bit into *flags from the category name (mage, fly, …). */
