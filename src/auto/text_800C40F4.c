@@ -12891,7 +12891,7 @@ void Camera_SetTransition(void *arg0, s32 arg1, f32 farg0, f32 farg1, s32 arg2) 
     }
 }
 
-void fn_800E8AF0(void *arg0) {
+void Camera_UpdateTransition(void *arg0) {
     f64 fn_80238638(f64);
 
     if (M2C_FIELD(arg0, s32 *, 0x120) > 0) {
