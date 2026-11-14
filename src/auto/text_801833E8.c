@@ -6557,7 +6557,7 @@ extern "C" void fn_80194178(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u32 UnitRef_GetValue(void *);
     void Item_Clear(void *);
-    void fn_800947E0(void *);
+    void Unit_CompactItems(void *);
     void TalkUi_ShowMsg(s32);
     u32 Ui_FindChild(void *, s32, s32);
     void fn_80143570(void *);
@@ -6615,7 +6615,7 @@ extern "C" void fn_80194178(void *arg0) {
         }
         Item_Clear(temp_r31);
         if (temp_r30 != NULL) {
-            fn_800947E0(temp_r30);
+            Unit_CompactItems(temp_r30);
             fn_80143784(temp_r29, temp_r30);
             Mu_StartBlend(temp_r30, 0, 2, 0);
         } else {

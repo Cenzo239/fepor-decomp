@@ -936,10 +936,10 @@ void UnitInv_GetSlot(void *arg0) {
 }
 
 void UnitInv_Refresh(void *arg0) {
-    void fn_800947E0(void *);
+    void Unit_CompactItems(void *);
     void *x = *(void **)((u8 *)arg0 + 0x58);
     if (x != NULL) {
-        fn_800947E0(x);
+        Unit_CompactItems(x);
     }
 }
 

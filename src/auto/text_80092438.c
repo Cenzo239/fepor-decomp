@@ -1356,7 +1356,7 @@ s32 fn_80094768(void *arg0)
     return 0;
 }
 
-void fn_800947E0(s32 arg0) {
+void Unit_CompactItems(s32 arg0) {
     u32 sp40;
     u32 sp38;
     u32 sp30;
@@ -1438,26 +1438,26 @@ void fn_800947E0(s32 arg0) {
 void fn_800949A4(void *arg0, s8 arg1) {
     void *Unit_GetHeldItemSlot(void);
     void Item_Clear(void *);
-    void fn_800947E0(void *);
+    void Unit_CompactItems(void *);
     s32 t;
 
     if (arg1 < 4) {
         Item_Clear(Unit_GetHeldItemSlot());
-        fn_800947E0(arg0);
+        Unit_CompactItems(arg0);
         return;
     }
     t = (arg1 - 4) * 8;
     Item_Clear((u8 *)arg0 + t + 0x1EC);
-    fn_800947E0(arg0);
+    Unit_CompactItems(arg0);
 }
 
 s32 fn_80094A08(s32 arg0) {
     u8 Item_DecUses();
     M2C_UNK Unit_GetItemSlot();
-    M2C_UNK fn_800947E0(s32);
+    M2C_UNK Unit_CompactItems(s32);
     Unit_GetItemSlot();
     if (Item_DecUses() != 0) {
-        fn_800947E0(arg0);
+        Unit_CompactItems(arg0);
         return 1;
     }
     return 0;

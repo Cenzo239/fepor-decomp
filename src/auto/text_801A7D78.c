@@ -825,7 +825,7 @@ void BattleUnit_Apply(void *arg0) {
         Item_Copy(bu->item, bu->itemSrc);
         Item_SetUses(bu->item, (u8)bu->itemUses);
         Unit_SetHeldItem(bu->unit, bu->itemSlot, bu->item);
-        fn_800947E0(bu->unit);
+        Unit_CompactItems(bu->unit);
         unit = bu->unit;
         M2C_FIELD(unit, u8 *, 0x20C) = bu->unk20C[0];
         M2C_FIELD(unit, u8 *, 0x20D) = bu->unk20C[1];

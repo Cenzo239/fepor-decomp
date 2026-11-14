@@ -6330,7 +6330,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
 
 s32 Unit_SendAllItemsToConvoy(u8 arg0) {
     u32 *Unit_GetItemSlot(void *, s32);
-    void fn_800947E0(void *);
+    void Unit_CompactItems(void *);
     void Convoy_AddItem(void *, u32 *);
     void Item_Clear(u32 *);
     extern u8 gUnits[];
@@ -6356,7 +6356,7 @@ s32 Unit_SendAllItemsToConvoy(u8 arg0) {
         }
         var_r28 += 1;
     } while (var_r28 < 8);
-    fn_800947E0(var_r30);
+    Unit_CompactItems(var_r30);
     return 1;
 }
 
