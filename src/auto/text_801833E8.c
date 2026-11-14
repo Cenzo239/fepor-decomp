@@ -11013,7 +11013,7 @@ void fn_8019DB68(void) {
     void fn_8019F914(void);
     void fn_8019FA50(void);
     void fn_8019EC0C(void);
-    void fn_801A1F38(void);
+    void Map_GetScaledHeight(void);
     void fn_801A1E6C(void);
     void fn_8019E690(void);
     void fn_8019E668(void);
@@ -11100,7 +11100,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x518, fn_8019F914, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x526, fn_8019FA50, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x534, fn_8019EC0C, 3);
-    Script_RegisterCommand(lbl_8027AD98 + 0x542, fn_801A1F38, 2);
+    Script_RegisterCommand(lbl_8027AD98 + 0x542, Map_GetScaledHeight, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x553, fn_801A1E6C, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x560, fn_8019E690, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x56E, fn_8019E668, 1);
@@ -12879,7 +12879,7 @@ s32 fn_801A1E6C(s8 arg0, s8 arg1) {
     return (s32)(f * (f32)scale);
 }
 
-s32 fn_801A1F38(s8 arg0, s8 arg1) {
+s32 Map_GetScaledHeight(s8 arg0, s8 arg1) {
     void *Process_Find(void *);
     f32 Map_SampleHeight(void *, f32, f32);
     extern u16 E_EventState_script[];
