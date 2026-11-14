@@ -3979,9 +3979,9 @@ s32 fn_8016B538(void *arg0, void *arg1, void *arg2) {
 
 #pragma cplusplus reset
 void fn_8016B5E8(void) {
-    M2C_UNK fn_8004327C();
+    M2C_UNK Map_ClearDispCache();
     Map_Get();
-    fn_8004327C();
+    Map_ClearDispCache();
 }
 
 void fn_8016B60C(void) {
@@ -4129,7 +4129,7 @@ void fn_8016BA5C(void *arg0) {
 
 void fn_8016BADC(void *arg0) {
     void Map_Get(void);
-    void fn_8004327C(void);
+    void Map_ClearDispCache(void);
     void Face_ClearSlot(void *);
     void *fn_8003A114(void *);
     void *Face_Create(void *, s32);
@@ -4160,7 +4160,7 @@ void fn_8016BADC(void *arg0) {
     obj = (Obj *)arg0;
     if (obj->flag == 0) {
         Map_Get();
-        fn_8004327C();
+        Map_ClearDispCache();
         obj40 = obj->unk40;
         if (obj40 != NULL) {
             *(u32 *)((char *)obj40 + 0x2C) = 0;

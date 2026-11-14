@@ -7028,7 +7028,7 @@ void fn_800431EC(s32 unused, s32 arg1) {
     GXInitTexObjLOD(arg1, 0, 0, 0, 0, 0, lbl_80368EE4, lbl_80368EE4, lbl_80368EE4);
 }
 
-void fn_8004327C(void) {
+void Map_ClearDispCache(void) {
     void Process_UnlinkByKey(void *);
     void fn_800C4588(void *);
     void Heap_Free(void *);
