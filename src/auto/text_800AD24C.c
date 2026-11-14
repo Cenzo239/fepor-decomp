@@ -1870,41 +1870,7 @@ s32 Sound_LoadPack(s32 arg0) {
     return 1;
 }
 #pragma global_optimizer reset
-s32 fn_800B2CCC(void) {
-    s32 *p;
-    s32 i;
-    s32 n;
-
-    p = (s32 *)lbl_80319A68;
-    for (i = 0, n = 0; i < 2; i++, n += 7) {
-        if (*p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        if (*++p != 0) {
-            return 0;
-        }
-        p++;
-    }
-    return n | 1;
-}
+s32 fn_800B2CCC(void) { s32 *p=(s32 *)lbl_80319A68; s32 i; for(i=0;i<16;p++,i++) { if(*p !=0) return 0; } return 1; }
 
 s32 fn_800B2D94(void) {
     lbl_80319A68[0] = 2;
@@ -4431,12 +4397,12 @@ s32 fn_800B850C(s32 arg0, s8 arg1, s16 arg2) {
 }
 
 s32 fn_800B8534(void) {
-    extern u8 gBattleHitTbl[];
+    extern u8 lbl_802EFDB8[];
     u8 *p;
     u8 *q;
     s32 i;
 
-    p = gBattleHitTbl;
+    p = lbl_802EFDB8;
     p[0x61] = 0;
     q = p;
     p[0x60] = 0;
@@ -7464,36 +7430,17 @@ loop_1:
 
 #pragma use_lmw_stmw on
 s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
-    s32 var_r30;
-    u32 temp_r31;
-    s32 var_r29;
-    s32 addr;
-    u8 v;
-
-    if ((s8)*(u8 *)arg1 == 0) {
-        return 0;
-    }
-    temp_r31 = fn_8000D598(arg1);
-    var_r29 = arg0;
-    var_r30 = 0;
-loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, arg1) == 0)) {
-
-    } else {
-        var_r30 += 1;
-        var_r29 += 4;
-        if (var_r30 >= 0x60) {
-            var_r30 = -1;
-        } else {
-            goto loop_1;
-        }
-    }
-    if (var_r30 < 0) {
-        return 0;
-    }
-    addr = arg0 + (var_r30 >> 3);
-    v = *(u8 *)(addr + 0x300);
-    return (v & (1 << (var_r30 & 7))) != 0;
+ s32 i; u32 hash; s32 row; u8 *p;
+ if (*(s8 *)arg1 == 0) return 0;
+ hash=fn_8000D598(arg1); row=arg0; i=0;
+ do {
+ if(hash==*(u32 *)(row+0x180) && Str_Cmp(*(s32 *)row,arg1)==0) { break; }
+ i++; row+=4;
+ if(i>=0x60) { i=-1; break; }
+ } while(1);
+ if(i<0) return 0;
+ p=(u8 *)arg0; p+=i>>3;
+ return (p[0x300] & (1<<(i&7)))!=0;
 }
 #pragma use_lmw_stmw reset
 void fn_800BDDCC(void *arg0, s32 arg1) {
