@@ -3707,7 +3707,7 @@ void fn_8007AF48(void *arg0)
     s32 v64;
     s32 v68;
 
-    scale = lbl_803693D4;
+    scale = 0.0f;
     entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x60)];
     *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
         0,
