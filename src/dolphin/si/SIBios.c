@@ -555,7 +555,7 @@ out:
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
-BOOL fn_8023B270(BOOL enable) {
+BOOL SIEnablePollingInterrupt(BOOL enable) {
     BOOL enabled;
     BOOL rc;
     u32 reg;
@@ -592,7 +592,7 @@ BOOL SIRegisterPollingHandler(void *handler) {
     for (i = 0; i < 4; i++) {
         if (lbl_8033E3E8[i] == 0) {
             lbl_8033E3E8[i] = (u32)handler;
-            fn_8023B270(TRUE);
+            SIEnablePollingInterrupt(TRUE);
             OSRestoreInterrupts(enabled);
             return TRUE;
         }
@@ -603,7 +603,7 @@ BOOL SIRegisterPollingHandler(void *handler) {
 
 s32 fn_8023B3D4(u32 arg0) {
     M2C_UNK OSRestoreInterrupts(s32);
-    M2C_UNK fn_8023B270(M2C_UNK);
+    M2C_UNK SIEnablePollingInterrupt(M2C_UNK);
     extern u32 lbl_8033E3E8[4];
     s32 temp_r31;
     s32 var_ctr;
@@ -634,7 +634,7 @@ loop_1:
             }
         }
         if (var_r4_2 == 4) {
-            fn_8023B270(0);
+            SIEnablePollingInterrupt(0);
         }
         OSRestoreInterrupts(temp_r31);
         return 1;
