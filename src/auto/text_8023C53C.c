@@ -15639,7 +15639,7 @@ void *Sound_MixSampleBuffers(void *arg0, void *arg1) {
     return arg0;
 }
 
-void fn_802643C0(s32 *arg0, u8 *arg1, s32 arg2)
+void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
 {
     extern f32 lbl_8036C3E0;
     extern f32 lbl_8036C3E4;
@@ -15873,7 +15873,7 @@ void fn_802643C0(s32 *arg0, u8 *arg1, s32 arg2)
 
 void Sound_ProcessAux(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
     void Sound_MixSampleBuffers(s32, s32, f32, f32);
-    void fn_802643C0(s32, void *, s32);
+    void Sound_ProcessAuxChannel(s32, void *, s32);
     extern f32 lbl_8036C3A8;
     extern f32 lbl_8036C3AC;
     extern f32 lbl_8036C3E8;
@@ -15889,13 +15889,13 @@ void Sound_ProcessAux(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
                 temp_f1 = lbl_8036C3E8 * temp_f2;
                 Sound_MixSampleBuffers(arg0, arg1, temp_f1, lbl_8036C3AC - temp_f1);
             }
-            fn_802643C0(arg0, arg3, 0);
+            Sound_ProcessAuxChannel(arg0, arg3, 0);
             break;
         case 1:
-            fn_802643C0(arg1, arg3, 1);
+            Sound_ProcessAuxChannel(arg1, arg3, 1);
             break;
         case 2:
-            fn_802643C0(arg2, arg3, 2);
+            Sound_ProcessAuxChannel(arg2, arg3, 2);
             break;
         }
     }
