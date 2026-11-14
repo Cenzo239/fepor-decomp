@@ -10751,7 +10751,7 @@ void fn_8019D360(void *arg0) {
     }
 }
 
-void fn_8019D388(void *arg0) {
+void Mu_WaitAnimTick(void *arg0) {
     u8 Pad_IsButton(void *, s32);
     u8 fn_8004BF80(void *);
     void fn_800056A0(s32);
