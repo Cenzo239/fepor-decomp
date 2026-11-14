@@ -891,7 +891,7 @@ void OSSetArenaLo(s32 arg0) {
 }
 
 extern u32 __OSArenaLo_80366F30;
-u32 fn_80204DE0(u32 arg0, u32 arg1) {
+u32 OSAllocFromArenaLo(u32 arg0, u32 arg1) {
     u32 temp_r0;
     u32 temp_r4;
     u32 temp_r5;
@@ -1505,7 +1505,7 @@ void __OSGetExecParams(s32 *arg0) {
 
 #pragma peephole off
 s32 DVDGetAppLoaderOffset(void) {
-    u32 fn_80204DE0(u32, u32);
+    u32 OSAllocFromArenaLo(u32, u32);
     void fn_8020EB10(void *, u32, s32, s32, s32, s32);
     s32 fn_8020EF60(void *);
     s32 fn_8020F40C(void);
@@ -1519,7 +1519,7 @@ s32 DVDGetAppLoaderOffset(void) {
         return sAppLoaderOffset;
     }
     if (*(s32 *)0x800030F4 != 0) {
-        buf = fn_80204DE0(0x40, 0x20);
+        buf = OSAllocFromArenaLo(0x40, 0x20);
         fn_8020EB10(sp8, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
         while (fn_8020EF60(sp8) != 0) {
             if (fn_8020F40C() == 0) {
@@ -1542,7 +1542,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void OSSetArenaLo(void *);
     void ICInvalidateRange(void *, s32);
     void ICFlashInvalidate(void);
-    u32 fn_80204DE0(u32, u32);
+    u32 OSAllocFromArenaLo(u32, u32);
     void fn_80206658(u32, s32, s32);
     void fn_802067E0(s32);
     void fn_8020681C(u32, s32, s32);
@@ -1595,14 +1595,14 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     s32 var_r27;
 
     OSDisableInterrupts();
-    temp_r31 = fn_80204DE0(0x1C, 1);
+    temp_r31 = OSAllocFromArenaLo(0x1C, 1);
     *(s32 *)temp_r31 = 1;
     *(s32 *)(temp_r31 + 4) = arg1;
     *(s32 *)(temp_r31 + 0xC) = arg2;
     *(s32 *)(temp_r31 + 0x10) = arg3;
     *(s32 *)(temp_r31 + 0x14) = arg4;
     if (arg4 == 0) {
-        *(u32 *)(temp_r31 + 0x18) = fn_80204DE0(0x2000, 1);
+        *(u32 *)(temp_r31 + 0x18) = OSAllocFromArenaLo(0x2000, 1);
         fn_80206658(*(u32 *)(temp_r31 + 0x18), arg5, arg6);
     }
     DVDInit();
@@ -1636,7 +1636,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         }
     }
 
-    temp_r30 = fn_80204DE0(0x20, 0x20);
+    temp_r30 = OSAllocFromArenaLo(0x20, 0x20);
     fn_8020681C(temp_r30, 0x20, DVDGetAppLoaderOffset());
     {
         s32 off = DVDGetAppLoaderOffset() + 0x20;
@@ -1656,7 +1656,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
                 goto bi2_ready;
             }
             if (*(s32 *)0x800030F4 != 0) {
-                temp_r3 = fn_80204DE0(0x40, 0x20);
+                temp_r3 = OSAllocFromArenaLo(0x40, 0x20);
                 fn_8020EB10(sp5C, temp_r3, 0x40, *(s32 *)0x800030F4, 0, 0);
                 while (fn_8020EF60(sp5C) != 0) {
                     if (fn_8020F40C() == 0)
@@ -1671,7 +1671,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         }
         *(s32 *)(temp_r31 + 8) = var_r27;
         ((SetupFn)*(void **)(temp_r30 + 0x10))(&spC0, &spC4, &spC8);
-        temp_r3 = fn_80204DE0(0x1C, 1);
+        temp_r3 = OSAllocFromArenaLo(0x1C, 1);
         memcpy((void *)temp_r3, (void *)temp_r31, 0x1C);
         *(u32 *)0x800030F0 = temp_r3;
         spC0((void *)OSReport, (void *)0x80000000);
@@ -1686,7 +1686,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         }
 
         temp_r28 = spC8();
-        temp_r3 = fn_80204DE0(0x1C, 1);
+        temp_r3 = OSAllocFromArenaLo(0x1C, 1);
         memcpy((void *)temp_r3, (void *)temp_r31, 0x1C);
         *(u32 *)0x800030F0 = temp_r3;
         *(s32 *)0xCC003024 = 7;
