@@ -231,13 +231,13 @@ void abort(void) {
     extern void (*__atexit_funcs[])(void);
     extern void (*__console_exit)(void);
 
-    void fn_802340D8(s32);
+    void signal_raise(s32);
     void __begin_critical_region(s32);
     void __end_critical_region(s32);
     void __kill_critical_regions(void);
     void _ExitProcess(void);
 
-    fn_802340D8(1);
+    signal_raise(1);
 
     __aborting = 1;
 
@@ -2417,7 +2417,7 @@ s32 fn_80234048(void *isc, s32 ch, s32 act)
     }
 }
 
-s32 fn_802340D8(s32 arg0) {
+s32 signal_raise(s32 arg0) {
     extern void (*__signal_funcs[])(s32);
     extern s32 __begin_critical_region(s32);
     extern s32 __end_critical_region(s32);
