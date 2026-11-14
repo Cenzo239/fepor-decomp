@@ -78,7 +78,7 @@ void fn_80120DD4(void *arg0, s32 arg1) {
     }
 }
 
-void fn_80120E4C(void *arg0) {
+void Obj_EaseTintProc(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
 
