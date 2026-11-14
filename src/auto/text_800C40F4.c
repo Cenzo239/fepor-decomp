@@ -11244,7 +11244,7 @@ u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     s32 sp8;
 
     if ((*(u32 *)((char *)arg0 + 0xE8)) != 0) {
-        fn_80057EDC();
+        GActor_UnlinkNodeLink();
         *(u32 *)((char *)arg0 + 0xE8) = 0;
     }
     if ((arg1 == 0) || (arg2 == 0)) {
@@ -11483,7 +11483,7 @@ u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
 
     // Check if E8 field is non-zero
     if (*(u32 *)((char *)arg0 + 0xE8) != 0) {
-        fn_80057EDC();
+        GActor_UnlinkNodeLink();
         *(u32 *)((char *)arg0 + 0xE8) = 0;
     }
     

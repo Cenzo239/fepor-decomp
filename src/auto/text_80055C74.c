@@ -1018,7 +1018,7 @@ void fn_80057E98(void *arg0, s32 arg1, s32 arg2) {
 }
 
 extern u8 Proc_GActorNodeLink[16];
-void fn_80057EDC(void) {
+void GActor_UnlinkNodeLink(void) {
     Process_UnlinkByKey(&Proc_GActorNodeLink);
 }
 

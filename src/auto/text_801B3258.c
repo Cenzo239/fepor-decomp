@@ -7878,7 +7878,7 @@ void fn_801C77A4(void) {
 
 void GActor_FreeTexWork(void *arg0) {
     void Process_UnlinkByKey(void *);
-    void fn_80057EDC(void);
+    void GActor_UnlinkNodeLink(void);
     void fn_8005376C(void);
     void fn_800C4588(void *);
     void fn_8005FA14(void *, s32);
@@ -7893,7 +7893,7 @@ void GActor_FreeTexWork(void *arg0) {
     base = (s32)LightFade_script;
     Process_UnlinkByKey((void *)(base + 0x54));
     Process_UnlinkByKey((void *)(base + 0x7c));
-    fn_80057EDC();
+    GActor_UnlinkNodeLink();
     Process_UnlinkByKey((void *)(base + 0x24));
     fn_8005376C();
     ptr = *(void ***)((u8 *)arg0 + 0x30);
