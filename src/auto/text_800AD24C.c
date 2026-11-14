@@ -5998,7 +5998,7 @@ void fn_800BB0E8(void) {
     void fn_800BC204(void);
     void Unit_SetItemDroppable(void);
     void fn_800BC0A4(void);
-    void fn_800BBFD0(void);
+    void Unit_SendAllItemsToConvoy(void);
     void fn_800BBF04(void);
     void fn_800BCC34(void);
     void fn_800BCC14(void);
@@ -6079,8 +6079,8 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x378, fn_800BC204, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x387, Unit_SetItemDroppable, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x397, fn_800BC0A4, 2);
-    Script_RegisterCommand(lbl_8026F728 + 0x3AC, fn_800BBFD0, 1);
-    Script_RegisterCommand(lbl_8026F728 + 0x3BF, fn_800BBFD0, 1);
+    Script_RegisterCommand(lbl_8026F728 + 0x3AC, Unit_SendAllItemsToConvoy, 1);
+    Script_RegisterCommand(lbl_8026F728 + 0x3BF, Unit_SendAllItemsToConvoy, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x3DA, fn_800BBF04, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x3F2, fn_800BCC34, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x3FC, fn_800BCC14, 1);
@@ -6328,7 +6328,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_800BBFD0(u8 arg0) {
+s32 Unit_SendAllItemsToConvoy(u8 arg0) {
     u32 *Unit_GetItemSlot(void *, s32);
     void fn_800947E0(void *);
     void fn_800C35C4(void *, u32 *);
