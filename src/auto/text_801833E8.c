@@ -12067,7 +12067,7 @@ s32 ScriptCmd_EventMapFlags(s32 arg0) {
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
     s32 Map_Get(void);
-    void fn_8004496C(s32, u8);
+    void Map_ReloadTileFlags(s32, u8);
     extern u16 E_EventState_script[];
     extern u8 gBattleState[];
     extern s32 gUiInputFlags;
@@ -12094,11 +12094,11 @@ s32 ScriptCmd_EventMapFlags(s32 arg0) {
     if (arg0 != 0) {
         ((u8 *)v)[0x36] = 1;
         gUiInputFlags &= 0xFFFFEFFF;
-        fn_8004496C(Map_Get(), 1);
+        Map_ReloadTileFlags(Map_Get(), 1);
     } else {
         ((u8 *)v)[0x36] = 0;
         gUiInputFlags |= 0x1000;
-        fn_8004496C(Map_Get(), 0);
+        Map_ReloadTileFlags(Map_Get(), 0);
     }
     return 1;
 }
@@ -13234,7 +13234,7 @@ void fn_801A26CC(void *arg0) {
     extern s32 gUiInputFlags;
     s32 fn_80040824(void *);
     void *Map_Get(void);
-    void fn_8004496C(void *, s32);
+    void Map_ReloadTileFlags(void *, s32);
     void fn_8004DC54(s32);
     u8 *obj;
 
@@ -13243,7 +13243,7 @@ void fn_801A26CC(void *arg0) {
     if (obj[0x36] == 0) {
         gUiInputFlags &= ~0x1000;
         if ((u8)fn_80040824(arg0) != 0) {
-            fn_8004496C(Map_Get(), 1);
+            Map_ReloadTileFlags(Map_Get(), 1);
             fn_8004DC54(1);
         }
     }

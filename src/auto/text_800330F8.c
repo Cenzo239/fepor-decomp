@@ -7758,7 +7758,7 @@ extern u8 gBattleMap[];
 }
 #pragma global_optimizer on
 
-void fn_8004496C(void *arg0, u8 arg1) {
+void Map_ReloadTileFlags(void *arg0, u8 arg1) {
     void fn_80023A4C(void *);
     void fn_80023B80(void *);
     void fn_80045604(void *);
