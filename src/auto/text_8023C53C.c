@@ -4466,18 +4466,19 @@ s32 fn_8024B7DC(s32 arg0) {
     return var_r31;
 }
 
-void Sound_SetDistanceVol(s32 arg0, s32 arg1, s32 arg2) {
+/* Map distance into synth vol param 0x1F (inverted 80..16000 -> 16383..0) and enable flag 0x4F. */
+void Sound_SetDistanceVol(s32 handle, s32 enable, s32 distance) {
 #pragma dont_inline on
-    if (arg1 == 1) {
+    if (enable == 1) {
         Audio_Lock();
-        Sound_SetParamU16(arg0, 0x1F, (s32)(16383.0f * (1.0f - (f32)(u32)(arg2 - 0x50) / 15920.0f)));
+        Sound_SetParamU16(handle, 0x1F, (s32)(16383.0f * (1.0f - (f32)(u32)(distance - 0x50) / 15920.0f)));
         Audio_Unlock();
         Audio_Lock();
-        Sound_SetParamU8(arg0, 0x4F, 0x7F);
+        Sound_SetParamU8(handle, 0x4F, 0x7F);
         Audio_Unlock();
     } else {
         Audio_Lock();
-        Sound_SetParamU8(arg0, 0x4F, 0);
+        Sound_SetParamU8(handle, 0x4F, 0);
         Audio_Unlock();
     }
 }
