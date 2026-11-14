@@ -10774,7 +10774,7 @@ s32 fn_80178664(void) {
     return 0;
 }
 
-s32 fn_8017866C(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_SetCmd80OrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
