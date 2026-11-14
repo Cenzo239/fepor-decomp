@@ -12683,7 +12683,8 @@ extern s32 lbl_801B1C80;
 extern s32 lbl_801B1C84;
 extern s32 lbl_801B1C88;
 extern s32 lbl_801B1C8C;
-s32 ScriptCmd_EventSepia(s32 arg0) {
+/* Ensure E_EventState exists; enable or disable the E_Sepia overlay process. */
+s32 ScriptCmd_EventSepia(s32 enable) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     void Process_UnlinkByKey(void *);
@@ -12692,11 +12693,11 @@ s32 ScriptCmd_EventSepia(s32 arg0) {
     extern u16 E_Sepia_script[];
     extern u16 gBattleState[];
     void *p;
-    void *v;
+    void *state;
 
     p = Process_Find(E_EventState_script);
     if (p != NULL) {
-        v = p;
+        state = p;
     } else {
         p = Process_Create(E_EventState_script, fn_800C0658());
         M2C_FIELD(p, s8 *, 0x30) = 1;
@@ -12708,12 +12709,12 @@ s32 ScriptCmd_EventSepia(s32 arg0) {
         M2C_FIELD(p, s32 *, 0x3C) = 1;
         M2C_FIELD(p, s8 *, 0x37) = 0;
         M2C_FIELD(p, s8 *, 0x38) = 0;
-        v = p;
+        state = p;
     }
-    if (v != NULL) {
-        M2C_FIELD(v, s8 *, 0x37) = (s8)arg0;
-        if ((u8)M2C_FIELD(v, u8 *, 0x37) == 1) {
-            Process_Create(E_Sepia_script, (s32)v);
+    if (state != NULL) {
+        M2C_FIELD(state, s8 *, 0x37) = (s8)enable;
+        if ((u8)M2C_FIELD(state, u8 *, 0x37) == 1) {
+            Process_Create(E_Sepia_script, (s32)state);
         } else {
             Process_UnlinkByKey(E_Sepia_script);
         }
