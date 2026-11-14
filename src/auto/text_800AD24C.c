@@ -7737,11 +7737,12 @@ void fn_800BE068(void *arg0) {
     } while (i < 0x18);
 }
 
-void EventFlag_Reset(s32 *arg0) {
+void EventFlag_Reset(s32 *flags) {
+    /* Clear all 0x60 event-flag name/hash slots and the 12-byte occupancy bitset at +0x300. */
     s32 *p;
     s32 i;
 
-    p = arg0;
+    p = flags;
     for (i = 0; i < 6; i++) {
         p[0] = 0;
         p[0x60] = 0;
@@ -7778,18 +7779,18 @@ void EventFlag_Reset(s32 *arg0) {
         p += 16;
     }
 
-    ((u8 *)arg0)[0x300] = 0;
-    ((u8 *)arg0)[0x301] = 0;
-    ((u8 *)arg0)[0x302] = 0;
-    ((u8 *)arg0)[0x303] = 0;
-    ((u8 *)arg0)[0x304] = 0;
-    ((u8 *)arg0)[0x305] = 0;
-    ((u8 *)arg0)[0x306] = 0;
-    ((u8 *)arg0)[0x307] = 0;
-    ((u8 *)arg0)[0x308] = 0;
-    ((u8 *)arg0)[0x309] = 0;
-    ((u8 *)arg0)[0x30A] = 0;
-    ((u8 *)arg0)[0x30B] = 0;
+    ((u8 *)flags)[0x300] = 0;
+    ((u8 *)flags)[0x301] = 0;
+    ((u8 *)flags)[0x302] = 0;
+    ((u8 *)flags)[0x303] = 0;
+    ((u8 *)flags)[0x304] = 0;
+    ((u8 *)flags)[0x305] = 0;
+    ((u8 *)flags)[0x306] = 0;
+    ((u8 *)flags)[0x307] = 0;
+    ((u8 *)flags)[0x308] = 0;
+    ((u8 *)flags)[0x309] = 0;
+    ((u8 *)flags)[0x30A] = 0;
+    ((u8 *)flags)[0x30B] = 0;
 }
 
 #pragma global_optimizer off
