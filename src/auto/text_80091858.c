@@ -48,7 +48,7 @@ extern f32 lbl_803697E4;
 void ProcessQueue_Clear(void) {
     void Process_UnlinkByKey(void *);
     extern u32 gProcessQueue[8];
-    extern u8 lbl_80289A38[];
+    extern u8 E_CmdPlate_script[];
     extern s32 gProcessQueueCount;
     s32 i;
 
@@ -56,7 +56,7 @@ void ProcessQueue_Clear(void) {
     for (i = 0; i < 8; i++) {
         gProcessQueue[i] = 0;
     }
-    Process_UnlinkByKey(lbl_80289A38);
+    Process_UnlinkByKey(E_CmdPlate_script);
 }
 
 void ProcessQueue_SetPriorities(void) {
