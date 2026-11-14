@@ -3776,6 +3776,7 @@ s32 fn_800B7410(void) {
     return 1;
 }
 
+/* Serialize all units and icon slots into a new gUnitSaveBuf. */
 s32 ScriptCmd_SaveUnits(void) {
     void Unit_WriteAll(void *);
     void Icon_WriteSlots(void *, void *);
@@ -3795,20 +3796,20 @@ s32 ScriptCmd_SaveUnits(void) {
         void *vtbl;
     } w;
     u8 *pw;
-    void *p;
+    void *buf;
 
-    p = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0);
+    buf = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0);
     pw = (u8 *)&w;
     *(void **)(pw + 16) = gStreamBaseVtbl;
     *(void **)(pw + 4) = NULL;
     *(void **)pw = NULL;
     *(u32 *)(pw + 8) = 0;
     pw[12] = 0;
-    gUnitSaveBuf = (s32)p;
+    gUnitSaveBuf = (s32)buf;
     *(void **)(pw + 16) = gMemStreamVtbl;
     pw[12] = 0;
-    *(void **)pw = p;
-    *(void **)(pw + 4) = p;
+    *(void **)pw = buf;
+    *(void **)(pw + 4) = buf;
     *(u32 *)(pw + 8) = 0x100000;
     Unit_WriteAll(pw);
     Icon_WriteSlots(gIconSlots, &w);
