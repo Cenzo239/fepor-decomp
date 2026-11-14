@@ -293,7 +293,7 @@ void Battle_SetupVsCurrentTarget(void *proc) {
     }
 }
 
-void fn_800AD84C(void *arg0) {
+void Battle_SetupHealTarget(void *arg0) {
 void *TargetList_GetCurrent(void *);
 void *UnitRef_GetUnit(void);
 void fn_801A7218(void *, void *, s32);
