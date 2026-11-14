@@ -1,9 +1,9 @@
-extern u16 lbl_8026D8D8;
+extern u16 gMenuCmdStrings;
 extern u16 gUiClassNames[];
 //extern u16 gUnits[];
 extern u16 gSoundSys[4976];
 extern f32 lbl_80369CB4;
-extern u16 lbl_8026D8D8;
+extern u16 gMenuCmdStrings;
 extern u8 __TRKThreadQueue[8];
 extern u8* __TRKWritequeue;
 extern u8* __TRKReadqueue;

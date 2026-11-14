@@ -1,6 +1,6 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
-  extern u8 lbl_8026D8D8[];
+  extern u8 gMenuCmdStrings[];
   extern void* lbl_803674E8;
   extern f32 lbl_803696C8;
   
@@ -57,7 +57,7 @@
       void fn_801E047C(void *, s32);
       
       if (Card_GetResult() != 0) {
-          DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
+          DebugPrint((const char *)(gMenuCmdStrings + 0x178));
           return;
       }
       fn_801E047C(&gSaveDataBase, arg0);
@@ -78,7 +78,7 @@ void fn_8009EAB4(s32 arg0) {
     s32 b;
 
     if (Card_GetResult() != 0) {
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
+        DebugPrint((const char *)(gMenuCmdStrings + 0x178));
         return;
     }
     a = (s8)(s32)*(f32 *)(gBattleState + 0x524);
@@ -101,7 +101,7 @@ void fn_8009EAB4(s32 arg0) {
       s8 v;
   
       if (Card_GetResult() != 0) {
-          DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
+          DebugPrint((const char *)(gMenuCmdStrings + 0x178));
           return;
       }
       v = (s8)(s32)*(f32 *)(gBattleState + 0x524);
@@ -123,7 +123,7 @@ void fn_8009EC5C(s32 arg0) {
     s8 v;
 
     if (Card_GetResult() != 0) {
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x178));
+        DebugPrint((const char *)(gMenuCmdStrings + 0x178));
         return;
     }
     v = (s8)(s32)*(f32 *)(gBattleState + 0x524);

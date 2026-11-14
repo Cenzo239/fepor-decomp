@@ -1,6 +1,6 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
-extern u8 lbl_8026D8D8[];
+extern u8 gMenuCmdStrings[];
 extern void* lbl_803674E8;
 extern f32 lbl_803696C8;
 
@@ -67,58 +67,58 @@ void fn_8009ED1C(void) {
     s32 i;
 
     if (Card_GetResult() == 0 || Card_GetResult() == -0x42) {
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
-        base = lbl_8026D8D8;
+        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+        base = gMenuCmdStrings;
         i = 0;
         do {
             DebugPrint((const char *)(base + 0x1C6), i);
             obj = Save_GetSmallSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
             } else if (*((u8 *)obj + 0x60) == 1) {
                 b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
             } else {
                 b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
             }
             i += 1;
         } while (i < 6);
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
-        base = lbl_8026D8D8;
+        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+        base = gMenuCmdStrings;
         i = 0;
         do {
             DebugPrint((const char *)(base + 0x220), i);
             obj = fn_801E2324(&gSaveDataBase, i);
             if (obj == NULL) {
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x227));
+                DebugPrint((const char *)(gMenuCmdStrings + 0x227));
             } else {
                 b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x209), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
             }
             i += 1;
         } while (i < 5);
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
-        base = lbl_8026D8D8;
+        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+        base = gMenuCmdStrings;
         i = 0;
         do {
             DebugPrint((const char *)(base + 0x23D), i);
             obj = Save_GetLargeSlot(&gSaveDataBase, i);
             if (fn_801E434C(obj) == 0) {
                 b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x1CD), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
             } else if (*((u8 *)obj + 0x60) == 1) {
                 b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x1EC), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
             } else {
                 b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(lbl_8026D8D8 + 0x244), b, fn_801E417C(obj), lbl_8026D8D8);
+                DebugPrint((const char *)(gMenuCmdStrings + 0x244), b, fn_801E417C(obj), gMenuCmdStrings);
             }
             i += 1;
         } while (i < 2);
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x198));
-        DebugPrint((const char *)(lbl_8026D8D8 + 0x25B), fn_801E2458(&gSaveDataBase), lbl_8026D8D8);
+        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+        DebugPrint((const char *)(gMenuCmdStrings + 0x25B), fn_801E2458(&gSaveDataBase), gMenuCmdStrings);
     }
     SaveData_Release(&gSaveDataBase);
 }
