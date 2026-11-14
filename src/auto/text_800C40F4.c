@@ -18769,7 +18769,8 @@ void Ai_Cmd_TryHashedStatus(void *unit) {
     }
 }
 
-void AiCmd_ChanceTryHashedStatus(void *arg0) {
+void AiCmd_ChanceTryHashedStatus(void *unit) {
+    /* On chance: run hashed status action on units matching cmd filter; advance AI PC. */
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
@@ -18779,18 +18780,18 @@ void AiCmd_ChanceTryHashedStatus(void *arg0) {
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
     u8 *obj;
-    u8 *state;
-    void (*cb)(void *);
-    void *tmp;
+    u8 *cmd;
+    void (*filter)(void *);
+    void *entry;
 
-    obj = (u8 *)arg0;
-    state = (u8 *)gAiCmd;
+    obj = (u8 *)unit;
+    cmd = (u8 *)gAiCmd;
 
-    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
-        cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
-            : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
-        tmp = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
-        fn_801AA064(obj, tmp, cb);
+    if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
+        filter = *(u32 *)(cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
+            : (*(s32 *)(cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
+        entry = Hash_Lookup(*(void **)((u8 *)gAiCmd + 0x18));
+        fn_801AA064(obj, entry, filter);
     }
 
     if (gAiCmdIsAlt == 0) {
