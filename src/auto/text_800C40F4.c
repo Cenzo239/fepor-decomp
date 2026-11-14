@@ -17163,7 +17163,7 @@ return gAiState[0x21c];
 
 #pragma use_lmw_stmw reset
 
-void fn_800F488C(void *arg0, void *arg1) {
+void AiEval_ApplyUnitScore(void *arg0, void *arg1) {
     u8 Allegiance_Compare(void *, void *);
     u8 fn_800F7E78(void *, void *);
     struct {
