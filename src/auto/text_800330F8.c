@@ -10603,7 +10603,7 @@ void fn_8004BF24(void *arg0)
     }
 }
 
-s32 fn_8004BF80(void *arg0) {
+s32 Mu_IsAnimDone(void *arg0) {
     void *fn_80060664(void *);
     void *ret;
     u8 *sub;

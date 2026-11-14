@@ -975,8 +975,8 @@ void fn_801854D8(void *arg0) {
 }
 
 void fn_801857F0(void *arg0) {
-    u8 fn_8004BF80(s32);
-    if (fn_8004BF80(M2C_FIELD(arg0, s32 *, 0x30)) != 0) {
+    u8 Mu_IsAnimDone(s32);
+    if (Mu_IsAnimDone(M2C_FIELD(arg0, s32 *, 0x30)) != 0) {
         Process_ClearFunc(arg0);
     }
 }
@@ -1633,7 +1633,7 @@ void fn_801877C4(void *arg0) {
     f32 fn_80023430(void *, f32, f32);
     void fn_80025624(void *, s32);
     f32 Unit_GetAngleTo(void *);
-    u8 fn_8004BF80(void *);
+    u8 Mu_IsAnimDone(void *);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
     void fn_8004FE98(void *, s32);
@@ -1767,7 +1767,7 @@ void fn_801877C4(void *arg0) {
         Process_ClearFunc(arg0);
         return;
     }
-    if (fn_8004BF80(*(void **)((u8 *)arg0 + 0x30)) != 0) {
+    if (Mu_IsAnimDone(*(void **)((u8 *)arg0 + 0x30)) != 0) {
         fn_800056A0(0);
         Process_ClearFunc(arg0);
     }
@@ -2948,8 +2948,8 @@ after_extra:
 #pragma opt_strength_reduction on
 
 void fn_8018C964(void *arg0) {
-    u8 fn_8004BF80(s32);
-    if (fn_8004BF80(M2C_FIELD(arg0, s32 *, 0x30)) != 0) {
+    u8 Mu_IsAnimDone(s32);
+    if (Mu_IsAnimDone(M2C_FIELD(arg0, s32 *, 0x30)) != 0) {
         Process_ClearFunc(arg0);
     }
 }
@@ -10753,7 +10753,7 @@ void fn_8019D360(void *arg0) {
 
 void Mu_WaitAnimTick(void *arg0) {
     u8 Pad_IsButton(void *, s32);
-    u8 fn_8004BF80(void *);
+    u8 Mu_IsAnimDone(void *);
     void fn_800056A0(s32);
     void Process_ClearFunc(void *);
     void *obj;
@@ -10767,12 +10767,12 @@ void Mu_WaitAnimTick(void *arg0) {
             *p31 |= 0x80;
             *(u8 *)((u8 *)arg0 + 0x34) = 1;
         }
-        if (fn_8004BF80(*(void **)((u8 *)arg0 + 0x30))) {
+        if (Mu_IsAnimDone(*(void **)((u8 *)arg0 + 0x30))) {
             fn_800056A0(0);
             *(u8 *)((u8 *)arg0 + 0x34) = 1;
         }
     } else {
-        if (fn_8004BF80(obj)) {
+        if (Mu_IsAnimDone(obj)) {
             Process_ClearFunc(arg0);
         }
     }
@@ -12269,8 +12269,8 @@ void fn_801A0C3C(void *arg0, u32 arg1) {
 }
 
 void fn_801A0C68(void *arg0) {
-    u8 fn_8004BF80(s32);
-    if (fn_8004BF80(M2C_FIELD(arg0, s32 *, 0x54)) != 0) {
+    u8 Mu_IsAnimDone(s32);
+    if (Mu_IsAnimDone(M2C_FIELD(arg0, s32 *, 0x54)) != 0) {
         Process_ClearFunc(arg0);
     }
 }

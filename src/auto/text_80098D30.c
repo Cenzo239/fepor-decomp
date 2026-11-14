@@ -217,7 +217,7 @@ void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
 void fn_8017F70C(void *,void *); void FloatAnim_Start(void *,s32,void *); void fn_8017F040(void *,s32,void *);
 void Mu_StartBlend(void *,s32,s32,s32); void Mu_StartTransfer(void *,s32,s32,s32); void fn_8017F474(void *,void *);
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
-u8 fn_8004BF80(void *); void Process_ClearFunc(void *);
+u8 Mu_IsAnimDone(void *); void Process_ClearFunc(void *);
 extern u8 gEventUiSeCues[]; extern void *gPadInput;
 Word3 posC, tmpC, posA, tmpA, posB, tmpB;
 void *self=arg0;
@@ -329,7 +329,7 @@ M2C_FIELD(self,u8 *,0x43)=0;
 }
 }
 }
-if(fn_8004BF80(unit)) {Mu_StartBlend(unit,8,4,0); Process_ClearFunc(self);}
+if(Mu_IsAnimDone(unit)) {Mu_StartBlend(unit,8,4,0); Process_ClearFunc(self);}
 }
 
 void fn_8009991C(void *arg0) {
