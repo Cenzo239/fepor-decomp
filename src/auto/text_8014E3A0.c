@@ -1,6 +1,6 @@
 /* Functions from 0x8014E3A0 to 0x801620BC, found by decomp-toolkit. */
 #include "common.h"
-extern u32 *lbl_80367140;
+extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef struct { s32 c0, c1, c2, c3; } Color4;
 typedef struct { s32 c3, c2, c1, c0; } Color4rev;

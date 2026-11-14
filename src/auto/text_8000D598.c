@@ -13,7 +13,7 @@ extern u16 jumptable_80283AE8[];
 
 extern f64 lbl_80368C28;
 
-extern u16 lbl_80367140;
+extern u16 gPrim2D;
 
 extern void *(*lbl_80366DA0)(s32);
 extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
@@ -1363,9 +1363,11 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
 
 #pragma cplusplus on
 extern "C" void fn_800116F0(void *arg0) {
+#pragma scheduling off
     void PSMTXScale(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80368BDC;
+    extern f64 lbl_80368C28;
     struct Obj {
         virtual s32 v0() = 0;
         virtual s32 v1() = 0;
@@ -1386,10 +1388,15 @@ extern "C" void fn_800116F0(void *arg0) {
     };
     u8 sp8[0x30];
     f32 inv_h;
+    s32 t;
+    Obj *obj = (Obj *)arg0;
 
-    inv_h = lbl_80368BDC / (f32)((Obj *)arg0)->v10();
-    PSMTXScale(sp8, lbl_80368BDC / (f32)((Obj *)arg0)->v9(), inv_h, lbl_80368BDC);
+    t = obj->v10();
+    inv_h = lbl_80368BDC / (f32)t;
+    t = obj->v9();
+    PSMTXScale(sp8, lbl_80368BDC / (f32)t, inv_h, lbl_80368BDC);
     fn_80224E50(sp8, 0x21, 1);
+#pragma scheduling reset
 }
 #pragma cplusplus reset
 void fn_800117B0(void *arg0) {

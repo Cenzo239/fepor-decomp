@@ -282,4 +282,4 @@ extern f32 lbl_803691A0;
 extern f32 lbl_80369184;
 extern f64 lbl_80369190;
 extern f32 lbl_80369188;
-extern void* lbl_80367140;
+extern void* gPrim2D;

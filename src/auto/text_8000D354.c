@@ -13,7 +13,7 @@ extern u16 jumptable_80283AE8[];
 
 extern f64 lbl_80368C28;
 
-extern u16 lbl_80367140;
+extern u16 gPrim2D;
 
 extern void *(*lbl_80366DA0)(s32);
 extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;

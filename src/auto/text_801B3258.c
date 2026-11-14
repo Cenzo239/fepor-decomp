@@ -11683,7 +11683,7 @@ void fn_801CFC80(void *arg0, s32 arg1) {
     *(u32 *)((u8 *)arg0 + 8) |= 2;
 }
 
-extern void *lbl_80367140;
+extern void *gPrim2D;
 #pragma global_optimizer off
 void fn_801CFCB4(s8 *a) {
     s32 c = 3;
