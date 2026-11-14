@@ -1448,7 +1448,7 @@ void fn_80036984(s32 arg0, s32 arg1) {
 
 #pragma opt_strength_reduction off
 #pragma global_optimizer off
-void fn_80036998(void *arg0, s32 arg1) {
+void Unit_AddSupportPoints(void *arg0, s32 arg1) {
     u8 fn_80036B20(void *, s32);
     u8 *target;
     s32 offset;

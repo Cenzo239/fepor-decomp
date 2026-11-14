@@ -1235,7 +1235,7 @@ void fn_8001520C(void *arg0, u8 arg1) {
 }
 
 void fn_80015234(void **arg0) {
-    void fn_80036998(void *, s32);
+    void Unit_AddSupportPoints(void *, s32);
     s32 fn_80036A24(void *);
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
@@ -1252,7 +1252,7 @@ void fn_80015234(void **arg0) {
                     *(u32 *)((u8 *)temp_r31 + 0x190) == *(u32 *)((u8 *)var_r30 + 0x190) &&
                     fn_80036A24(var_r30) < 5 &&
                     fn_80036A24(temp_r31) < 5) {
-                    fn_80036998(var_r30, var_r29);
+                    Unit_AddSupportPoints(var_r30, var_r29);
                 }
             }
         }
