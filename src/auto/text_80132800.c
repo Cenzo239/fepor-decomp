@@ -7572,7 +7572,7 @@ void List_Erase(ListIter *ret, List *list, ListIter *it) {
 }
 
 #pragma cplusplus on
-extern "C" void List_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
+extern "C" void List_Insert(void *outNode, void *list, void *posRef, void *value) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void fprintf(void *, void *, ...);
@@ -7597,28 +7597,29 @@ extern "C" void List_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
     Node *node;
     Node *pos;
     Node *n;
-    void *list;
+    void *listPtr;
 
-    list = (s32 *)arg1 + 1;
+    // Allocate a node, copy *value into it, and splice it into the list before *posRef.
+    listPtr = (s32 *)list + 1;
     node = (Node *)Heap_Alloc(0xC);
     if (node == 0) {
         fprintf(__files + 0xA0, List_allocFailMsg, __files);
         abort();
     }
     {
-        Holder h(list, node);
+        Holder h(listPtr, node);
         if (&h.node->value != 0) {
-            h.node->value = *(s32 *)arg3;
+            h.node->value = *(s32 *)value;
         }
-        pos = *(Node **)arg2;
+        pos = *(Node **)posRef;
         n = h.node;
         h.node = 0;
         pos->prev->next = n;
         n->prev = pos->prev;
         pos->prev = n;
         n->next = pos;
-        (*(s32 *)arg1)++;
-        *(void **)arg0 = n;
+        (*(s32 *)list)++;
+        *(void **)outNode = n;
     }
 }
 #pragma cplusplus reset
