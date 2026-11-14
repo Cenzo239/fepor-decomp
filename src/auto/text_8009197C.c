@@ -344,7 +344,7 @@ void fn_8009204C(void *arg0, void *arg1) {
         *(u8*)((u8*)temp_r31 + 0x9) = *(u8*)((u8*)arg1 + 0x3C);
         *(s32*)((u8*)temp_r31 + 0xAC) = temp_r3;
         if (*(u32*)((u8*)arg1 + 0x40)) {
-            fn_8007B990();
+            Face_ClearSlot();
         }
         if (*(u32*)((u8*)arg1 + 0x44)) {
             fn_800616A0();

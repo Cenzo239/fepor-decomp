@@ -313,7 +313,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A894;
@@ -410,7 +410,7 @@ loop_test:
         t = *(s16 *)((u8 *)info + 0x1E);
         dh = (s16)(y1 - y0);
         fn_8007B4D8((s16)(dw >> 1), (s16)(dh + t), 0x7F, obj, y0, dw);
-        fn_8007B990(obj);
+        Face_ClearSlot(obj);
     }
 
     Prim2D_Begin();
@@ -792,7 +792,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void *fn_8003A064(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *, s32, s32);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A8A0;
@@ -896,7 +896,7 @@ loop_test:
         fn_8007B4D8((s16)(dw >> 1),
                     (s16)(dh + *(s16 *)((u8 *)info + 0x1E)),
                     0xFF, obj, self->unk14, dw);
-        fn_8007B990(obj);
+        Face_ClearSlot(obj);
     }
 
     Prim2D_Begin();
@@ -4130,7 +4130,7 @@ void fn_8016BA5C(void *arg0) {
 void fn_8016BADC(void *arg0) {
     void Map_Get(void);
     void fn_8004327C(void);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_800C4588(void *);
@@ -4166,7 +4166,7 @@ void fn_8016BADC(void *arg0) {
             *(u32 *)((char *)obj40 + 0x2C) = 0;
             tmp = obj->unk54;
             if (tmp != NULL) {
-                fn_8007B990(tmp);
+                Face_ClearSlot(tmp);
                 obj->unk54 = NULL;
             }
             tmp = *(void **)((char *)obj->unk40 + 0x2C);
@@ -4195,7 +4195,7 @@ void fn_8016BADC(void *arg0) {
 void fn_8016BBB8(void *self) {
     void Process_Goto(void *, s32);
     void *fn_8003A114(void *);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void *fn_8007BA4C(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     f32 Math_Ease(s32, f32, f32, f32, f32);
@@ -4275,7 +4275,7 @@ void fn_8016BBB8(void *self) {
             }
         case0_after:
             if (*(void **)((u8 *)self + 0x54) != 0) {
-                fn_8007B990(*(void **)((u8 *)self + 0x54));
+                Face_ClearSlot(*(void **)((u8 *)self + 0x54));
                 *(void **)((u8 *)self + 0x54) = 0;
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);
@@ -4320,7 +4320,7 @@ void fn_8016BBB8(void *self) {
             *(s16 *)((u8 *)self + 0x50) = (s16)(*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 4) - lbl_8036AA48);
             *(s16 *)((u8 *)self + 0x52) = (s16)*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 8);
             if (*(void **)((u8 *)self + 0x54) != 0) {
-                fn_8007B990(*(void **)((u8 *)self + 0x54));
+                Face_ClearSlot(*(void **)((u8 *)self + 0x54));
                 *(void **)((u8 *)self + 0x54) = 0;
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);
@@ -4353,7 +4353,7 @@ void fn_8016BBB8(void *self) {
             *(s16 *)((u8 *)self + 0x50) = (s16)(*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 4) - lbl_8036AA48);
             *(s16 *)((u8 *)self + 0x52) = (s16)*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 8);
             if (*(void **)((u8 *)self + 0x54) != 0) {
-                fn_8007B990(*(void **)((u8 *)self + 0x54));
+                Face_ClearSlot(*(void **)((u8 *)self + 0x54));
                 *(void **)((u8 *)self + 0x54) = 0;
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);

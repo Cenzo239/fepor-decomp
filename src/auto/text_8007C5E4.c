@@ -426,7 +426,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     void fn_800616A0(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007DD78(void *);
     void fn_801A7218(void *, void *, s32);
@@ -538,7 +538,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
 
     tmp = *(void **)((u8 *)info + 0x5C);
     if (tmp != NULL) {
-        fn_8007B990(tmp);
+        Face_ClearSlot(tmp);
     }
     *(void **)((u8 *)info + 0x5C) = fn_8007BA4C(fn_8003A114(*(void **)((u8 *)info + 0x58)), 0);
 
@@ -784,7 +784,7 @@ block_5:
 extern u8 gBattleState[1400];
 void fn_8007DF6C(void *arg0) {
     void fn_8004BE88(s32, s32);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void fn_800616A0(void *);
     void fn_800C4588(void *);
     void *temp_r31;
@@ -797,7 +797,7 @@ void fn_8007DF6C(void *arg0) {
 
     temp = *(void **)((u8 *)temp_r31 + 0x5C);
     if (temp != NULL) {
-        fn_8007B990(temp);
+        Face_ClearSlot(temp);
     }
     temp = *(void **)((u8 *)temp_r31 + 0x60);
     if (temp != NULL) {

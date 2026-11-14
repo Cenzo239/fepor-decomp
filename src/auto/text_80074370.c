@@ -3948,7 +3948,7 @@ void fn_8007B4D8(s32 arg0,s32 arg1,u32 a2,void *a3) {
 
 #pragma opt_common_subs reset
 #pragma global_optimizer reset
-void fn_8007B990(void *arg0) {
+void Face_ClearSlot(void *arg0) {
     extern void *gFaceSlots[];
     void Process_Unlink(void *);
 

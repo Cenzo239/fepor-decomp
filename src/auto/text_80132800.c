@@ -2936,7 +2936,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A61C;
     extern f32 lbl_8036A624;
@@ -3029,7 +3029,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
         t = *(s16 *)((u8 *)info + 0x1E);
         dh = (s16)(y1 - y0);
         fn_8007B4D8((s16)(dw >> 1), (s16)(dh + t), 0x7F, obj, y0, dw);
-        fn_8007B990(obj);
+        Face_ClearSlot(obj);
     }
 
     Prim2D_Begin();
@@ -3156,7 +3156,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void *fn_8003A114(void *);
     void *fn_8007BA4C(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
-    void fn_8007B990(void *);
+    void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
     extern f32 lbl_8036A61C;
     extern f32 lbl_8036A624;
@@ -3238,7 +3238,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
         t = *(s16 *)((u8 *)info + 0x1E);
         dh = (s16)(y1 - y0);
         fn_8007B4D8((s16)(dw >> 1), (s16)(dh + t), 0x7F, obj, y0, dw);
-        fn_8007B990(obj);
+        Face_ClearSlot(obj);
     }
 
     Prim2D_Begin();
@@ -8910,7 +8910,7 @@ void Text_Draw(s16,s16,s32,void *,...);
 void *fn_8003A064(void *); void *fn_8003A114(void *);
 void *fn_8007BA4C(void *,s32);
 void fn_8007B4D8(s16,s16,s32,void *);
-void fn_8007B990(void *);
+void Face_ClearSlot(void *);
 extern f32 lbl_8036A770,lbl_8036A75C,lbl_8036A760,lbl_8036A758,lbl_8036A748;
 extern f32 lbl_80367098[];
 extern u8 lbl_80276B3C[];
@@ -9022,7 +9022,7 @@ s16 mid = (s16)(a + ((s16)(M2C_FIELD(self, s16 *, 0xe) - a) >> 1));
 }
 Prim2D_Begin(); Prim2D_AddZ(lbl_8036A748); Prim2D_PrepareTex();
 if (M2C_FIELD(self, s32 *, 0x11c) == 2) cy += *(s16 *)(*(u8 **)(sprite + 0x34) + 0x1e);
-fn_8007B4D8(cx, cy, 0x7f, sprite); fn_8007B990(sprite);
+fn_8007B4D8(cx, cy, 0x7f, sprite); Face_ClearSlot(sprite);
 }
 }
 Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
