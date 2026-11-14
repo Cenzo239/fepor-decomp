@@ -3641,7 +3641,7 @@ void fn_80249E3C(s32 arg0) {
     lbl_803689BC = (s32)sum;
 }
 
-s32 fn_802488C8(u16, u8, u8, s32, u8, u8, u8, u8, s32, s32, s32, s32, s32, s32, s32, s32);
+s32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8, s32, s32, s32, s32, s32, s32, s32, s32);
 s32 fn_8024A34C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
     u8 *obj;
