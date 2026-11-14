@@ -2310,19 +2310,12 @@ s32 fn_80116580(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_801165B4(void *arg0, void *arg1) {
-    void fn_80199318(void *, void *);
-    void String_Init(void *, char *, void *);
-    u8 sp8[0x14];
-    void *self;
-    void *temp_r4;
-
-    self = arg0;
-    temp_r4 = *(void **)((u8 *)arg1 + 0x11C);
-    if (temp_r4 != NULL) {
-        fn_80199318(self, temp_r4);
-        return;
-    }
-    String_Init(self, (char *)gActorXmlStrs + 0x1C, sp8);
+void fn_80199318(void *, void *);
+void String_Init(void *, char *, void *);
+u8 sp8[0x14];
+register void *self = arg0;
+void *v = *(void **)((u8 *)arg1 + 0x11C);
+if (v) { fn_80199318(self, v); } else { String_Init(self, (char *)gActorXmlStrs + 0x1C, sp8); }
 }
 #pragma use_lmw_stmw off
 s32 fn_80116604(void *arg0) {
@@ -3304,17 +3297,17 @@ void fn_80118B7C(void *arg0) {
 
 void fn_80118C1C(void) {
     void fn_800A6AE4(void);
-    void Map_RefreshUnitMap(void *);
+    void fn_8002297C(void *);
     void fn_800C1060(s32);
-    extern u8 gBattleMap[];
-    extern u8 gMapBlendMode;
+    extern u8 lbl_802CA518[];
+    extern u8 lbl_80367289;
     u8 flag;
     u8 temp;
 
     fn_800A6AE4();
-    Map_RefreshUnitMap(gBattleMap);
+    fn_8002297C(lbl_802CA518);
     flag = 1;
-    temp = (u8)(gMapBlendMode - 1);
+    temp = (u8)(lbl_80367289 - 1);
     if (((u32)((flag | ~temp) - ((u32)(flag - temp) >> 1)) >> 31) == 0) {
         flag = 0;
     }
@@ -3993,19 +3986,19 @@ void fn_8011A4E4(s32 arg0) {
 }
 
 void fn_8011AB38(void *arg0) {
-    s32 Archive_Load();
-    u8 FileCache_IsReady();
+    s32 fn_8003FCCC();
+    u8 fn_8005BA10();
     s32 fn_80161FB8();
     M2C_UNK fn_80162054();
     fn_801620AC();
-    if (FileCache_IsReady() != 0) {
+    if (fn_8005BA10() != 0) {
         if (fn_80161FB8() == 0) {
             return;
         }
         fn_80162054();
         fn_801620AC();
-        M2C_FIELD((short)arg0, s32 *, 0x40) = Archive_Load();
-        Process_ClearFunc(arg0);
+        M2C_FIELD((short)arg0, s32 *, 0x40) = fn_8003FCCC();
+        fn_8000C188(arg0);
     }
 }
 
@@ -4387,47 +4380,41 @@ s32 fn_8011B578(void) {
 
 #pragma cplusplus on
 extern "C" void fn_8011B580(void *arg0, void *arg1) {
-    void fn_8008C1D8(s32, s32, s32, s32, s32);
-    struct Obj {
-        u8 pad[4];
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual void v12() = 0;
-        virtual void v13() = 0;
-        virtual void v14() = 0;
-        virtual void v15() = 0;
-        virtual void v16() = 0;
-        virtual void v17() = 0;
-        virtual void v18() = 0;
-        virtual void v19() = 0;
-        virtual s16 v20() = 0;
-        virtual void v21() = 0;
-        virtual void v22() = 0;
-        virtual void v23() = 0;
-        virtual void v24() = 0;
-        virtual void v25() = 0;
-        virtual void v26() = 0;
-        virtual void v27() = 0;
-        virtual void v28() = 0;
-        virtual void v29() = 0;
-    };
-    s8 temp_r31;
-    void *r30;
-
-    r30 = arg1;
-    temp_r31 = *(u8 *)((u8 *)arg1 + 0x60);
-    ((Obj *)arg0)->v29();
-    fn_8008C1D8(0, 0, 0, temp_r31 * ((Obj *)*(void **)((u8 *)r30 + 0x3C))->v20() + 0x20, 2);
+void fn_8008C1D8(s32,s32,s32,s32,s32);
+struct Obj { u8 pad[4]; virtual void v0()=0;
+virtual void v1()=0;
+virtual void v2()=0;
+virtual void v3()=0;
+virtual void v4()=0;
+virtual void v5()=0;
+virtual void v6()=0;
+virtual void v7()=0;
+virtual void v8()=0;
+virtual void v9()=0;
+virtual void v10()=0;
+virtual void v11()=0;
+virtual void v12()=0;
+virtual void v13()=0;
+virtual void v14()=0;
+virtual void v15()=0;
+virtual void v16()=0;
+virtual void v17()=0;
+virtual void v18()=0;
+virtual void v19()=0;
+virtual s16 v20()=0;
+virtual void v21()=0;
+virtual void v22()=0;
+virtual void v23()=0;
+virtual void v24()=0;
+virtual void v25()=0;
+virtual void v26()=0;
+virtual void v27()=0;
+virtual void v28()=0;
+virtual void v29()=0; };
+s32 value=*(s8 *)((u8 *)arg1+0x60);
+s32 count=value;
+((Obj *)arg0)->v29();
+fn_8008C1D8(0,0,0,count*((Obj *)*(void **)((u8 *)arg1+0x3C))->v20()+0x20,2);
 }
 #pragma cplusplus reset
 void fn_8011B5FC(void *arg0, void *arg1) {
