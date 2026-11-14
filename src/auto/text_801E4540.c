@@ -2766,7 +2766,7 @@ void fn_801E9D3C(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_801E9D68(void) {
+void Battle_ReloadMapLayers(void) {
     extern u8 gTabMenuStrings[];
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
