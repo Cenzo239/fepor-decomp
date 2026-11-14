@@ -1478,6 +1478,7 @@ void __stdio_atexit(void) {
 }
 
 #pragma use_lmw_stmw on
+/* Format args into dest with fmt; null-terminate and return written length. */
 s32 sprintf(char *dest, const char *fmt, ...) {
     va_list args;
     __OutStr out;
