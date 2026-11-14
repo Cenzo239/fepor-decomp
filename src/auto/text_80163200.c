@@ -4492,7 +4492,7 @@ void fn_8016C1EC(void *arg0) {
 void fn_8016C3C8(void *arg0) {
     void Allegiance_FillMask(s32, u8 *);
     u8 Map_IsInViewBounds(void *, u8, u8);
-    void *fn_80037710(void *);
+    void *Unit_FindDisposLeader(void *);
     void *fn_800377D8(void *);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -4617,7 +4617,7 @@ void fn_8016C3C8(void *arg0) {
                                 (kind == 3 && *(u8 *)cur == 2) ||
                                 (kind == 1 && *(u8 *)cur == 3) ||
                                 (kind == 2 && *(u8 *)cur == 4)) {
-                                if (unit == fn_80037710(unit)) {
+                                if (unit == Unit_FindDisposLeader(unit)) {
                                     *(void **)((u8 *)cur + 0x2C) = unit;
                                 }
                                 *(s32 *)((u8 *)cur + 0xC) = *(s32 *)((u8 *)cur + 0xC) + 1;
@@ -4653,7 +4653,7 @@ void fn_8016C3C8(void *arg0) {
                             if (next != NULL) {
                                 *(void **)((u8 *)next + 0x34) = ins;
                             }
-                            if (unit == fn_80037710(unit)) {
+                            if (unit == Unit_FindDisposLeader(unit)) {
                                 *(void **)((u8 *)ins + 0x2C) = unit;
                             }
                             counts[0]++;
@@ -4682,7 +4682,7 @@ void fn_8016C3C8(void *arg0) {
                             if (next != NULL) {
                                 *(void **)((u8 *)next + 0x34) = ins;
                             }
-                            if (unit == fn_80037710(unit)) {
+                            if (unit == Unit_FindDisposLeader(unit)) {
                                 *(void **)((u8 *)ins + 0x2C) = unit;
                             }
                             counts[1]++;
@@ -4711,7 +4711,7 @@ void fn_8016C3C8(void *arg0) {
                             if (next != NULL) {
                                 *(void **)((u8 *)next + 0x34) = ins;
                             }
-                            if (unit == fn_80037710(unit)) {
+                            if (unit == Unit_FindDisposLeader(unit)) {
                                 *(void **)((u8 *)ins + 0x2C) = unit;
                             }
                             counts[2]++;
@@ -4740,7 +4740,7 @@ void fn_8016C3C8(void *arg0) {
                             if (next != NULL) {
                                 *(void **)((u8 *)next + 0x34) = ins;
                             }
-                            if (unit == fn_80037710(unit)) {
+                            if (unit == Unit_FindDisposLeader(unit)) {
                                 *(void **)((u8 *)ins + 0x2C) = unit;
                             }
                             counts[3]++;

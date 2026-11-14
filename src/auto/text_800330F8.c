@@ -1975,7 +1975,7 @@ void fn_8003712C(void *arg0) {
     }
 }
 
-void *fn_80037710(u8 *arg0) {
+void *Unit_FindDisposLeader(u8 *arg0) {
     void Allegiance_FillMask(s32, void *);
     extern u8 gUnits[];
     u8 sp8[8];

@@ -2277,13 +2277,13 @@ void Unit_WriteAll(s32 arg0) {
 }
 
 s32 fn_80016A9C(s32 arg0) {
-    s32 fn_80037710(s32);
+    s32 Unit_FindDisposLeader(s32);
     extern u32 gUnitLists[];
     u32 v;
 
     v = gUnitLists[arg0 * 3];
     if (v != 0U) {
-        return fn_80037710(v);
+        return Unit_FindDisposLeader(v);
     }
     return 0;
 }
