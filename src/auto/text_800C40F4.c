@@ -22148,7 +22148,7 @@ s32 Ai_FindLowestCostAllyTile(s32 arg0, s16 *outX, s16 *outY) {
     return best != 0x7FFF;
 }
 #pragma use_lmw_stmw reset
-void fn_80102334(s32 a0, s32 a1, s32 a2, s32 a3) {
+void Ai_FindEscapeTile(s32 a0, s32 a1, s32 a2, s32 a3) {
     extern void Ai_FindActionTile(s32, s32, s32, s32, s32);
     Ai_FindActionTile(a0, a1, 0x2C, a2, a3);
 }
