@@ -10537,7 +10537,7 @@ void fn_8014595C(void *arg0) {
     }
 }
 
-void fn_80145A1C(void *arg0) {
+void BgmVol_FadeInProcess(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
