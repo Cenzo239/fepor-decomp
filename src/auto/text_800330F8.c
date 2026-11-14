@@ -12390,25 +12390,26 @@ void fn_80052B54(void *arg0) {
     *(s32 *)((char *)*temp_r31 + 0x8) |= 0x2000;
 }
 
-void MapObj_LerpPosProc(u8 *arg0) {
+void MapObj_LerpPosProc(u8 *proc) {
+    /* Advance map-object position lerp by one frame; clear when duration is reached. */
     f32 Math_Lerp(f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036908C;
-    f32 temp_f30;
-    f32 temp_f31;
-    f32 temp_f1;
-    u8 *temp_r4;
+    f32 x;
+    f32 y;
+    f32 z;
+    u8 *owner;
 
-    *(f32 *)(arg0 + 0x50) = *(f32 *)(arg0 + 0x50) + lbl_8036908C;
-    temp_f30 = Math_Lerp(*(f32 *)(arg0 + 0x34), *(f32 *)(arg0 + 0x40), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
-    temp_f31 = Math_Lerp(*(f32 *)(arg0 + 0x38), *(f32 *)(arg0 + 0x44), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
-    temp_f1 = Math_Lerp(*(f32 *)(arg0 + 0x3C), *(f32 *)(arg0 + 0x48), *(f32 *)(arg0 + 0x4C), *(f32 *)(arg0 + 0x50));
-    temp_r4 = *(u8 **)(arg0 + 0x30);
-    *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0xC) = temp_f30;
-    *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0x10) = temp_f31;
-    *(f32 *)(*(u8 **)(temp_r4 + 0x30) + 0x14) = temp_f1;
-    if (*(f32 *)(arg0 + 0x50) >= *(f32 *)(arg0 + 0x4C)) {
-        Process_ClearFunc(arg0);
+    *(f32 *)(proc + 0x50) = *(f32 *)(proc + 0x50) + lbl_8036908C;
+    x = Math_Lerp(*(f32 *)(proc + 0x34), *(f32 *)(proc + 0x40), *(f32 *)(proc + 0x4C), *(f32 *)(proc + 0x50));
+    y = Math_Lerp(*(f32 *)(proc + 0x38), *(f32 *)(proc + 0x44), *(f32 *)(proc + 0x4C), *(f32 *)(proc + 0x50));
+    z = Math_Lerp(*(f32 *)(proc + 0x3C), *(f32 *)(proc + 0x48), *(f32 *)(proc + 0x4C), *(f32 *)(proc + 0x50));
+    owner = *(u8 **)(proc + 0x30);
+    *(f32 *)(*(u8 **)(owner + 0x30) + 0xC) = x;
+    *(f32 *)(*(u8 **)(owner + 0x30) + 0x10) = y;
+    *(f32 *)(*(u8 **)(owner + 0x30) + 0x14) = z;
+    if (*(f32 *)(proc + 0x50) >= *(f32 *)(proc + 0x4C)) {
+        Process_ClearFunc(proc);
     }
 }
 
