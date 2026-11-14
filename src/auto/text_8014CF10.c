@@ -433,13 +433,10 @@ s32 BattleState_IsPhaseZero(void *arg0) {
 }
 #pragma scheduling on
 s32 fn_8014D8DC(void *arg0) {
-    u8 temp_r0;
-
-    temp_r0 = M2C_FIELD(arg0, u8 *, 0x10);
-    if ((temp_r0 >= 9U) || (temp_r0 == 0)) {
-        return 1;
-    }
-    return 0;
+    u8 phase = *((u8 *)arg0 + 0x10);
+    s32 result = 0;
+    if (phase >= 9 || phase == 0) result = 1;
+    return result;
 }
 
 void fn_8014D8FC(void *arg0) {
