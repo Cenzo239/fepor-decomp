@@ -2431,7 +2431,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
 void TabMenu_ClearSelectedStatus(void *arg0) {
     void Status_Clear(void *, u8);
     void ScriptCtx_Begin(void *);
-    void fn_80013A6C(void *);
+    void ScriptCtx_Push(void *);
     void fn_800138F4(void);
     void Event_StartByName(void *, void *);
     extern u8 gBattleState[];
@@ -2456,8 +2456,8 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     }
     Status_Clear(gBattleState + 0x84, *(u8 *)node[2]);
     ScriptCtx_Begin(gTabMenuStrings + 0x1C7);
-    fn_80013A6C(*(void **)((u8 *)node[2] + 0x10));
-    fn_80013A6C(*(void **)((u8 *)node[2] + 0x14));
+    ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x10));
+    ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x14));
     fn_800138F4();
     Event_StartByName(gTabMenuStrings + 0x1D6, arg0);
 }

@@ -252,7 +252,7 @@ u32 fn_800138F4(u32 arg0, u32 arg1) {
 }
 
 #pragma scheduling off
-void fn_80013A6C(s32 arg0) {
+void ScriptCtx_Push(s32 arg0) {
     extern void *lbl_80367180;
     extern s32 lbl_80367188;
     s32 **slot;
