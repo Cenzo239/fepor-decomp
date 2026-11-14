@@ -13831,7 +13831,7 @@ void FloatAnim_Update(void *arg0) {
     }
 }
 
-void fn_8017E2AC(void *arg0) {
+void FloatAnim_SnapEnd(void *arg0) {
     f32 temp = *(f32*)((u8*)arg0 + 0x44);
     *(f32*)((u8*)*(void**)((u8*)arg0 + 0x30) + 0x4) = temp;
 }
