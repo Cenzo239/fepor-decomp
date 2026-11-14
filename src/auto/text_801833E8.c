@@ -372,10 +372,10 @@ void MuEvent_Create(s32 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void MuDead_Start(s32 arg0, s32 arg1) {
-    extern u8 lbl_80295DF0[];
+    extern u8 E_MuDead_script[];
     void *Process_CreateEx(u8 *, s32);
     s32 *obj;
-    obj = (s32 *)Process_CreateEx(lbl_80295DF0, arg1);
+    obj = (s32 *)Process_CreateEx(E_MuDead_script, arg1);
     obj[0x30 / 4] = arg0;
 }
 
