@@ -3648,7 +3648,7 @@ s32 Sound_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
     s32 ret;
 
     ret = -1;
-    obj = (u8 *)fn_802509D8(arg0);
+    obj = (u8 *)Sound_FindEntry(arg0);
     if (obj != NULL) {
         if ((u8)arg1 == 0xff) {
             arg1 = obj[8];
@@ -3681,13 +3681,13 @@ s32 Sound_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 }
 
 s32 fn_8024A430(u16 arg0) {
-    void *fn_802509D8();
+    void *Sound_FindEntry();
     s32 fn_80256738(u8, u8, s32, M2C_UNK, s32 *);
     s32 sp8;
     s32 temp_r31;
     void *temp_r3;
 
-    temp_r3 = fn_802509D8();
+    temp_r3 = Sound_FindEntry();
     if (temp_r3 == NULL) {
         return 0;
     }
@@ -6059,7 +6059,7 @@ s32 fn_802509C8(u16 *arg0, u16 *arg1) {
     return *arg0 - *arg1;
 }
 
-int fn_802509D8(int arg0)
+int Sound_FindEntry(int arg0)
 {
     extern u8 lbl_803596E4[12];
 
