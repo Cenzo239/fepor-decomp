@@ -8631,30 +8631,7 @@ done:
     return count;
 }
 
-void *fn_80046EB8(void *arg0, void *arg1) {
-    s32 n;
-    s32 i;
-    s32 off;
-    u8 *base;
-
-    if (arg1 == 0) {
-        return 0;
-    }
-
-    n = *(s16 *)((u8 *)arg0 + 6) - 1;
-    i = n + 1;
-    off = n * 0xB4;
-    for (; i != 0; i--) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        if (arg1 == *(void **)(base + off + 0x10)) {
-            return base + n * 0xB4;
-        }
-        off -= 0xB4;
-        n -= 1;
-    }
-
-    return 0;
-}
+void *fn_80046EB8(void *arg0,void *arg1) { u8 *base; s32 i; if(arg1==0)return 0; for(i=*(s16*)((u8*)arg0+6)-1;i>=0;i--) {base=*(u8**)((u8*)arg0+0x14); if(arg1==*(void**)(base+i*0xB4+0x10))return base+i*0xB4;} return 0; }
 
 s32 Map_FindObjNear(void *arg0, s32 arg1) {
     void **temp_r7;
@@ -10181,32 +10158,7 @@ return (char *)lbl_802EFFC8;
 }
 
 #pragma opt_strength_reduction off
-char *fn_8004B078(void *arg0, s32 arg1)
-{
-    void sprintf(void *, void *, ...);
-    extern u8 lbl_8026A9B0[];
-    extern u8 lbl_802EFFC8[];
-
-    u8 *fmt;
-    u8 *address;
-    void *value;
-    u8 b;
-
-    fmt = lbl_8026A9B0;
-    address = (u8 *)arg0 + arg1;
-    value = *(void **)((u8 *)arg0 + 4);
-    b = address[0xC];
-
-    sprintf(
-        lbl_802EFFC8,
-        fmt + 0xAD,
-        fmt + 0xA8,
-        value,
-        b
-    );
-
-    return (char *)lbl_802EFFC8;
-}
+char *fn_8004B078(void *arg0,s32 arg1) { void sprintf(void *,void *,...); extern u8 lbl_8026A9B0[]; extern u8 lbl_802EFFC8[]; u32 address=(u32)arg0+arg1; sprintf(lbl_802EFFC8,lbl_8026A9B0+0xAD,lbl_8026A9B0+0xA8,*(void**)((u8*)arg0+4),((u8*)address)[12]); return (char*)lbl_802EFFC8; }
 #pragma opt_strength_reduction on
 void *fn_8004B0C8(void *arg0) {
     void sprintf(void *, void *, ...);
