@@ -1206,7 +1206,7 @@ void GActor_StopNodeLink(s32 arg0) {
     Process_Goto(arg0, 0);
 }
 
-void fn_80058910(void *arg0, u8 arg1) {
+void GActor_SetNodeLinkActive(void *arg0, u8 arg1) {
     M2C_UNK fn_8005EA14(s32);
     M2C_UNK fn_8005EB80(s32, M2C_UNK);
     if (arg1 != 0) {

@@ -11255,7 +11255,7 @@ u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     sp8 = lbl_80369F38;
     GActor_SetNodeLinkParam(*(u32 *)((char *)arg0 + 0xE8), &sp8);
     if (arg3 != 0) {
-        fn_80058910(*(u32 *)((char *)arg0 + 0xE8), 1);
+        GActor_SetNodeLinkActive(*(u32 *)((char *)arg0 + 0xE8), 1);
     }
     return *(u32 *)((char *)arg0 + 0xE8);
 }
@@ -11506,7 +11506,7 @@ u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     
     // Conditional call
     if (arg3 != 0) {
-        fn_80058910(r5, 1);
+        GActor_SetNodeLinkActive(r5, 1);
     }
     
     return *(u32 *)((char *)arg0 + 0xE8);
