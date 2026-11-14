@@ -863,7 +863,7 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 }
 
 #pragma opt_common_subs off
-void fn_801A4A88(u8 *obj, s32 a1) {
+void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     s32 fn_8003B2D0(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);

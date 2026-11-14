@@ -299,7 +299,7 @@ void *UnitRef_GetUnit(void);
 void fn_801A7218(void *, void *, s32);
 void Battle_QueueDeathAnim(void *);
 s8 Unit_GetMaxHp(void *);
-void fn_801A4A88(void *, s8);
+void Battle_ApplyHpDelta(void *, s8);
 void fn_8019B704(void *, s32);
 extern u8 gTargetList[];
 extern u8 gBattle[];
@@ -321,7 +321,7 @@ if(diff>Unit_GetMaxHp(eac)) diff=Unit_GetMaxHp(eac);
 if(diff<1) diff=1;
 neg=-diff;
 *((u8*)arg0+0x3B)=(u32)(neg|diff)>>31;
-fn_801A4A88(gBattle,(s8)neg);
+Battle_ApplyHpDelta(gBattle,(s8)neg);
 fn_8019B704(arg0,0);
 }
 
@@ -456,7 +456,7 @@ void Battle_SetupTargetSelect(s32 parent) {
     void fn_8019B83C(s32, s32);
     void fn_8019B8A0(s32, s32);
     void Battle_QueueDeathAnim(void *);
-    void fn_801A4A88(void *, s8);
+    void Battle_ApplyHpDelta(void *, s8);
     void Battle_SetupUnit(void *, u8 *, s32);
     extern u8 gTargetList[];
     extern u8 gBattle[];
@@ -470,7 +470,7 @@ void Battle_SetupTargetSelect(s32 parent) {
     Battle_QueueDeathAnim(gBattle);
     hpDelta = *(s8 *)((u8 *)entry + 1);
     if (hpDelta != 0) {
-        fn_801A4A88(gBattle, hpDelta);
+        Battle_ApplyHpDelta(gBattle, hpDelta);
     }
     if (!(*(s32 *)((u8 *)unit + 0x1A0) & 0x010000DC)) {
         switch (*(s8 *)((u8 *)entry + 0)) {

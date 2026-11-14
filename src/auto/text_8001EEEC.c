@@ -3221,12 +3221,12 @@ void fn_80025FC8(void) {
 void fn_80025FF0(void *arg0) {
     M2C_UNK fn_8019B704(void *, M2C_UNK);
     M2C_UNK Battle_QueueDeathAnim(M2C_UNK *);
-    M2C_UNK fn_801A4A88(M2C_UNK *, M2C_UNK);
+    M2C_UNK Battle_ApplyHpDelta(M2C_UNK *, M2C_UNK);
     M2C_UNK Battle_SetupUnit(M2C_UNK *, s32, M2C_UNK);
     extern M2C_UNK gBattle[];
     Battle_SetupUnit(gBattle, M2C_FIELD(arg0, s32 *, 0x30), -1);
     Battle_QueueDeathAnim(gBattle);
-    fn_801A4A88(gBattle, -0xA);
+    Battle_ApplyHpDelta(gBattle, -0xA);
     fn_8019B704(arg0, 0);
 }
 
