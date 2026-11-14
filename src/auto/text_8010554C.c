@@ -3758,18 +3758,19 @@ outer_cmp:
 }
 #pragma use_lmw_stmw reset
 
-u8 Ai_TryEscapeMove(s32 arg0) {
+u8 Ai_TryEscapeMove(s32 unit) {
+    /* Move unit to an escape tile; if it is the scripted escape point, commit escape action. */
     u8 Ai_FindEscapeTile(s32, s32, s16 *, s16 *);
     extern u8 gAiState[];
     extern u8 gUiContext[];
-    s16 spA;
-    s16 sp8;
+    s16 x;
+    s16 y;
 
-    if (Ai_FindEscapeTile(arg0, 0, &spA, &sp8) != 0) {
-        Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
+    if (Ai_FindEscapeTile(unit, 0, &x, &y) != 0) {
+        Ai_SetUnitMoveTo(unit, x, y, 1, 0xFFFF, 1, 0, -1);
         if ((gAiState[0x21C] != 0)) {
-            if ((spA == (s8) gUiContext[0xD]) && (sp8 == (s8) gUiContext[0xE])) {
-                Ai_SetDecision(0x2C, 0, (s8) spA, (s8) sp8, -1, 0, 0);
+            if ((x == (s8) gUiContext[0xD]) && (y == (s8) gUiContext[0xE])) {
+                Ai_SetDecision(0x2C, 0, (s8) x, (s8) y, -1, 0, 0);
             }
         }
         return gAiState[0x21C];
