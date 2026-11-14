@@ -2711,27 +2711,36 @@ s32 fn_80247F60(void *arg0) {
     return *(s32 *)((u8 *) lbl_8034BED0 + (var_r4 << 6) + (M2C_FIELD(arg0, u8 *, 0x123) << 2));
 }
 
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
 void fn_80247F94(void *arg0) {
-    s32 temp_r5;
-    s32 temp_r7;
+    u32 hi;
+    u32 lo;
+    u32 zero;
+    u32 a;
+    u32 b;
 
-    temp_r7 = M2C_FIELD(arg0, s32 *, 0x118);
-    temp_r5 = M2C_FIELD(arg0, s32 *, 0x114) & 0x20000;
-    if ((((temp_r7 & 0x20000) ^ 0) | (temp_r5 ^ 0)) == 0) {
-        if ((u8) M2C_FIELD(arg0, u8 *, 0x133) == 1) {
-            if ((((temp_r7 & 0x1000) ^ 0) | (temp_r5 ^ 0)) == 0) {
-                M2C_FIELD(arg0, s32 *, 0x140) = 0;
-            } else {
-                M2C_FIELD(arg0, s32 *, 0x140) = (s32) M2C_FIELD(arg0, s32 *, 0x138);
-            }
-        } else {
-            M2C_FIELD(arg0, s32 *, 0x140) = (s32) M2C_FIELD(arg0, s32 *, 0x138);
-        }
-        M2C_FIELD(arg0, s32 *, 0x13C) = (s32) (M2C_FIELD(arg0, u8 *, 0x132) << 0x10);
+    hi = *(u32 *)((char *)arg0 + 0x114);
+    zero = 0;
+    lo = *(u32 *)((char *)arg0 + 0x118);
+    a = hi & zero;
+    b = lo & 0x20000;
+    if (((b ^ zero) | (a ^ zero)) != 0) {
+        return;
     }
+    if (*(u8 *)((char *)arg0 + 0x133) == 1) {
+        if ((((lo & 0x1000) ^ zero) | (a ^ zero)) == 0) {
+            *(u32 *)((char *)arg0 + 0x140) = zero;
+        } else {
+            *(u32 *)((char *)arg0 + 0x140) = *(u32 *)((char *)arg0 + 0x138);
+        }
+    } else {
+        *(u32 *)((char *)arg0 + 0x140) = *(u32 *)((char *)arg0 + 0x138);
+    }
+    *(u32 *)((char *)arg0 + 0x13C) = (u32)*(u8 *)((char *)arg0 + 0x132) << 16;
 }
-
-#pragma global_optimizer on
+#pragma global_optimizer reset
+#pragma opt_strength_reduction reset
 s32 Sound_RemapVoiceKey(u8 key, u8 group, u8 channel, s32 isMaster, s32 *status) {
     /* Find active synth voices on group/channel and retune them to key; return new VID or -1. */
     void fn_80255B20(void *);
@@ -8274,6 +8283,7 @@ restart:
     return isMaster ? vid : sv->unkF4;
 }
 
+#pragma peephole off
 s32 Sound_LookupVid(u32 arg0) {
     extern VidList *vidListRoot;
     VidList *vl;
@@ -8292,7 +8302,6 @@ s32 Sound_LookupVid(u32 arg0) {
     check:
         if (vl != NULL)
             goto loop;
-        goto done;
     set_null:
         vl = NULL;
     done:
@@ -8302,7 +8311,7 @@ s32 Sound_LookupVid(u32 arg0) {
     }
     return -1;
 }
-
+#pragma peephole on
 int fn_80256000(u32 arg0)
 {
     extern void *vidListRoot;
@@ -13885,35 +13894,31 @@ void fn_80261BA0(s32 arg0) {
     *(u32 *)(ptr + 0x24) = value;
 }
 
-void fn_80261BC8(s32 arg0, u32 arg1)
+void fn_80261BC8(s32 arg0, u16 arg1)
 {
     extern u8 *gSoundVoices;
     extern u8 lbl_80368AD0;
-
     u8 *entry;
-    u32 value;
-    u32 index;
+    u8 *p;
+    u8 index;
+    u32 cur;
 
-    entry = gSoundVoices + (arg0 * 0xF8);
-
-    if ((u16)arg1 >= 0x4000) {
+    entry = gSoundVoices + arg0 * 0xF8;
+    if (arg1 >= 0x4000) {
         arg1 = 0x3FFF;
     }
-
     index = *(u8 *)(entry + 0xE8);
-    value = (u16)arg1 << 4;
-
     if (index != 0xFF) {
-        if (*(u32 *)(entry + 0x38 + index * 4) == value) {
+        p = entry + (index << 2);
+        cur = *(u32 *)(p + 0x38);
+        if (cur == ((u32)arg1 << 4)) {
             return;
         }
     }
-
-    index = lbl_80368AD0;
-
-    *(u32 *)(entry + 0x38 + index * 4) = value;
-    *(u32 *)(entry + 0x24 + index * 4) |= 0x8;
-
+    p = entry + (lbl_80368AD0 << 2);
+    *(u32 *)(p + 0x38) = (u32)arg1 << 4;
+    p = entry + (lbl_80368AD0 << 2);
+    *(u32 *)(p + 0x24) = *(u32 *)(p + 0x24) | 8;
     *(u8 *)(entry + 0xE8) = lbl_80368AD0;
 }
 
@@ -15356,11 +15361,11 @@ s32 fn_8026386C(
 }
 
 void fn_80263C94(u8 arg0, void *arg1, void *arg2) {
-    M2C_UNK fn_802648CC(s32, s32, s32, void *);
+    M2C_UNK Sound_ProcessAux(s32, s32, s32, void *);
     switch ((s32) arg0) {                           /* irregular */
     case 0:
         if ((u8) M2C_FIELD(arg2, u8 *, 0x1C4) == 0) {
-            fn_802648CC(M2C_FIELD(arg1, s32 *, 0), M2C_FIELD(arg1, s32 *, 4), M2C_FIELD(arg1, s32 *, 8), arg2);
+            Sound_ProcessAux(M2C_FIELD(arg1, s32 *, 0), M2C_FIELD(arg1, s32 *, 4), M2C_FIELD(arg1, s32 *, 8), arg2);
         }
         /* fallthrough */
     case 1:
@@ -15866,7 +15871,7 @@ void fn_802643C0(s32 *arg0, u8 *arg1, s32 arg2)
     *(f32 *)(arg1 + 0x190 + channel * 4) = src_value[0];
 }
 
-void fn_802648CC(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
+void Sound_ProcessAux(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
     void fn_8026423C(s32, s32, f32, f32);
     void fn_802643C0(s32, void *, s32);
     extern f32 lbl_8036C3A8;
