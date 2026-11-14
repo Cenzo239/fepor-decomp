@@ -2807,32 +2807,33 @@ void fn_800CAE38(void) {
     }
 }
 
-void BattleScene_InitSides(void *arg0) {
+void BattleScene_InitSides(void *scene) {
+    /* Seed left/right allegiance and status flags from gBattle, or from the replay cache. */
     u8 Status_Test(void *, s32);
     extern u8 gBattleReplayActive;
     extern void *gBattleReplayScene;
     extern u32 gBattle[];
-    void *tmp;
+    void *faction;
 
     if (gBattleReplayActive != 0) {
-        M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(gBattleReplayScene, s32 *, 0x164);
-        M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(gBattleReplayScene, s32 *, 0x2CC);
+        M2C_FIELD(scene, s32 *, 0x68) = M2C_FIELD(gBattleReplayScene, s32 *, 0x164);
+        M2C_FIELD(scene, s32 *, 0x6c) = M2C_FIELD(gBattleReplayScene, s32 *, 0x2CC);
         return;
     }
-    tmp = M2C_FIELD(gBattle, void **, 0x190);
-    M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(tmp, u8 *, 8);
-    tmp = M2C_FIELD(gBattle, void **, 0x470);
-    M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(tmp, u8 *, 8);
+    faction = M2C_FIELD(gBattle, void **, 0x190);
+    M2C_FIELD(scene, s32 *, 0x68) = M2C_FIELD(faction, u8 *, 8);
+    faction = M2C_FIELD(gBattle, void **, 0x470);
+    M2C_FIELD(scene, s32 *, 0x6c) = M2C_FIELD(faction, u8 *, 8);
     if (!(M2C_FIELD(gBattle, u32 *, 0xCAC) & 0x20000000)) {
-        M2C_FIELD(arg0, s32 *, 0x274) = 1;
+        M2C_FIELD(scene, s32 *, 0x274) = 1;
     } else {
-        M2C_FIELD(arg0, s32 *, 0x274) = 0;
+        M2C_FIELD(scene, s32 *, 0x274) = 0;
     }
     if (Status_Test((u8 *)gBattle + 0x1BC, 0x5C) != 0) {
-        M2C_FIELD(arg0, u8 *, 0x70) = 1;
+        M2C_FIELD(scene, u8 *, 0x70) = 1;
     }
     if (Status_Test((u8 *)gBattle + 0x49C, 0x5C) != 0) {
-        M2C_FIELD(arg0, u8 *, 0x71) = 1;
+        M2C_FIELD(scene, u8 *, 0x71) = 1;
     }
 }
 
