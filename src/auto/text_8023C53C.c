@@ -8,6 +8,17 @@ typedef struct SynthMessageQueue { u8 pad[0x444]; u32 slots[4]; } SynthMessageQu
 typedef struct SynthMsgSlot { u8 pad[0x444]; u32 value; } SynthMsgSlot;
 typedef struct SampleKey { s32 data; u16 id; u16 type; u16 ref; u16 pad; } SampleKey;
 typedef struct SoundKeyEntry { u16 id; s8 key; u8 pan; s16 volume; u16 pad; } SoundKeyEntry;
+/* 10-byte bank table entry looked up by Sound_FindEntry / used by Sound_Start. */
+typedef struct SoundEntry {
+    u16 id;
+    u16 progId;
+    u8 group;
+    u8 channel;
+    u8 volume;
+    u8 pan;
+    u8 key;
+    u8 flags;
+} SoundEntry;
 typedef struct AudioTableRange { u16 count; u16 start; } AudioTableRange;
 typedef struct AudioTableEntry { s32 data; u16 id; u16 ref; } AudioTableEntry;
 typedef struct SynthVmState { u8 pad[0xAC]; s32 regs[16]; } SynthVmState;
