@@ -3027,7 +3027,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
 s32 atoi(char *str) {
     extern s32 lbl_803687F0;
     extern s32 fn_80234048();
-    extern u32 fn_8023567C(s32, s32, s32 (*)(), void *, s32 *, s32 *, s32 *);
+    extern u32 __strtoul(s32, s32, s32 (*)(), void *, s32 *, s32 *, s32 *);
     u32 value;
     s32 overflow;
     s32 negative;
@@ -3036,7 +3036,7 @@ s32 atoi(char *str) {
 
     isc.NextChar = str;
     isc.NullCharDetected = 0;
-    value = fn_8023567C(10, 0x7FFFFFFF, fn_80234048, &isc, &count, &negative, &overflow);
+    value = __strtoul(10, 0x7FFFFFFF, fn_80234048, &isc, &count, &negative, &overflow);
     if (overflow || (!negative && value > 0x7FFFFFFF) || (negative && value > 0x80000000)) {
         value = negative ? 0x80000000 : 0x7FFFFFFF;
         lbl_803687F0 = 0x22;
@@ -3050,7 +3050,7 @@ s32 atoi(char *str) {
 extern u8 lbl_8029E8A8[];
 extern u8 lbl_8029EAA8[];
 #pragma use_lmw_stmw on
-u32 fn_8023567C(s32 base, s32 max_width, s32 (*ReadProc)(void *, s32, s32), void *ReadProcArg,
+u32 __strtoul(s32 base, s32 max_width, s32 (*ReadProc)(void *, s32, s32), void *ReadProcArg,
                 s32 *chars_scanned, s32 *negative, s32 *overflow) {
     u32 limit;
     u32 value;
