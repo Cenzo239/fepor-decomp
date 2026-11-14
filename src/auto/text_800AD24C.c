@@ -7794,7 +7794,8 @@ s32 Talk_MatchesStoredPair(void *entry) {
     return 0;
 }
 #pragma global_optimizer on
-void Event_StartTalkByIndex(s32 arg0, s32 arg1) {
+/* Find the index-th kind-0xE (talk) event, spawn E_Event_script on it, clear run-flag and UI input. */
+void Event_StartTalkByIndex(s32 index, s32 parent) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void EventFlag_Clear(void *, void *);
@@ -7805,22 +7806,22 @@ void Event_StartTalkByIndex(s32 arg0, s32 arg1) {
     s32 count;
     u8 *entry;
     s32 kind;
-    void *tmp;
+    void *proc;
 
     entry = Event_NextEntry(0);
     count = 0;
     kind = 0xE;
     while (entry != 0) {
         if (entry[0xC] == kind) {
-            if (count++ == arg0) {
+            if (count++ == index) {
                 break;
             }
         }
         entry = Event_NextEntry(entry);
     }
     gTalkState[0xA] = 0;
-    tmp = Process_CreateChild(E_Event_script, arg1);
-    *(void **)((u8 *)tmp + 0x30) = entry;
+    proc = Process_CreateChild(E_Event_script, parent);
+    *(void **)((u8 *)proc + 0x30) = entry;
     EventFlag_Clear((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
     gUiInputFlags &= ~1;
 }
