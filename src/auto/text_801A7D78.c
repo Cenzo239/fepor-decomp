@@ -327,10 +327,10 @@ void fn_801A895C(void *arg0, void *arg1) {
 
 extern u8 gBattleHitTbl[104];
 extern u16 gBattle[1634];
-u8 fn_8000CD88(s16);
+u8 Rand_TrueHit(s16);
 u8 Rand_Chance(s16);
 s32 Battle_RollHitResult(void *arg0) {
-    u8 fn_8000CD88(s16);
+    u8 Rand_TrueHit(s16);
     u8 Rand_Chance(s16);
     extern u8 gBattleHitTbl[104];
     extern u16 gBattle[1634];
@@ -356,7 +356,7 @@ s32 Battle_RollHitResult(void *arg0) {
         return 0x51;
     }
 
-    if (fn_8000CD88(*(s16 *)((u8 *)arg0 + 0x2A2)) == 0) {
+    if (Rand_TrueHit(*(s16 *)((u8 *)arg0 + 0x2A2)) == 0) {
         return 0x52;
     }
 

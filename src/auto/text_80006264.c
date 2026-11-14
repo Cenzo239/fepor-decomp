@@ -25,12 +25,16 @@ s32 fn_80006264(register u32 *a, register u32 *b, register u32 n) {
 }
 
 #pragma opt_strength_reduction off
-void fn_80006298(u32 *dst, u32 val, u32 n) {
-    n >>= 2;
-    dst--;
+void fn_80006298(u32 *dst, u32 val, u32 n)
+{
+    u32 words;
+
+    words = n >> 2;
+    dst = dst - 1;
     do {
-        *++dst = val;
-    } while (--n);
+        dst = dst + 1;
+        *dst = val;
+    } while ((words = words - 1) != 0);
 }
 #pragma opt_strength_reduction reset
 void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) {
@@ -4256,7 +4260,7 @@ void fn_8000CD80(s32 arg0) {
     lbl_80367158 = arg0;
 }
 
-s32 fn_8000CD88(s32 arg0) {
+s32 Rand_TrueHit(s32 arg0) {
     extern u16 lbl_80367150;
     u16 *st;
     s32 s0;
@@ -4338,34 +4342,37 @@ s32 Rand_Chance(s32 arg0) {
     return (scaled / 65536) < arg0;
 }
 
-s32 Rand_Range(s32 arg0) {
+s32 Rand_Range(s32 arg0)
+{
     extern u16 lbl_80367150;
     u16 *st;
     s32 s0;
     s32 s1;
     s32 s2;
     s32 t4;
-    s32 combined;
-    u16 t6;
+    s32 t6;
+    s32 prod;
 
     st = &lbl_80367150;
-    s0 = st[0];
-    s2 = st[2];
-    s1 = st[1];
-    t4 = (s2 * 2) & 0xFFFE;
-    combined = (s1 << 11) + (s0 >> 5);
-    st[2] = t4;
-    t6 = (u16)combined;
+    s0 = lbl_80367150;
+    s2 = *(u16 *)((u8 *)st + 4);
+    s1 = *(u16 *)((u8 *)st + 2);
+    t4 = (s2 << 1) & 0xFFFE;
+    t6 = (s1 << 11) + (s0 >> 5);
+    *(u16 *)((u8 *)st + 4) = t4;
+    t6 = (u16)t6;
     if (s1 & 0x8000) {
-        st[2] = t4 + 1;
+        *(u16 *)((u8 *)st + 4) = t4 + 1;
     }
-    t6 ^= st[2];
-    s1 = st[1];
-    s0 = st[0];
-    st[2] = s1;
-    st[1] = s0;
-    st[0] = t6;
-    return (arg0 * t6) / 65536;
+    t6 ^= *(u16 *)((u8 *)st + 4);
+    s1 = *(u16 *)((u8 *)st + 2);
+    s0 = lbl_80367150;
+    t6 = (u16)t6;
+    *(u16 *)((u8 *)st + 4) = s1;
+    prod = arg0 * t6;
+    *(u16 *)((u8 *)st + 2) = s0;
+    lbl_80367150 = t6;
+    return prod / 65536;
 }
 
 void fn_8000CF4C(u32 arg0) {
