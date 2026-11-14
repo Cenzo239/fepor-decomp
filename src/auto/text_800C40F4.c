@@ -17163,7 +17163,8 @@ return gAiState[0x21c];
 
 #pragma use_lmw_stmw reset
 
-void AiEval_ApplyUnitScore(void *arg0, void *arg1) {
+/* Evaluate combat vs target; add score if hostile, subtract otherwise. */
+void AiEval_ApplyUnitScore(void *eval, void *target) {
     u8 Allegiance_Compare(void *, void *);
     u8 Battle_EvalTargetScore(void *, void *);
     struct {
@@ -17173,21 +17174,21 @@ void AiEval_ApplyUnitScore(void *arg0, void *arg1) {
         void *unit;
         s32 score;
     } result;
-    u8 *p4;
-    s32 same;
+    u8 *entry;
+    s32 hostile;
 
-    same = ((u8)Allegiance_Compare(*(void **)(*(u8 **)((u8 *)arg0 + 8) + 0x190),
-                           *(void **)((u8 *)arg1 + 0x190)) == 1);
-    p4 = *(u8 **)((u8 *)arg0 + 4);
-    result.x = p4[0];
-    result.y = p4[1];
-    result.unit = arg1;
-    result.item = *(u16 *)(*(u8 **)((u8 *)arg0 + 0xC) + 2);
-    if (Battle_EvalTargetScore(*(void **)((u8 *)arg0 + 8), &result)) {
-        if ((u8)same != 0) {
-            *(s32 *)(*(u8 **)((u8 *)arg0 + 0xC) + 8) += result.score;
+    hostile = ((u8)Allegiance_Compare(*(void **)(*(u8 **)((u8 *)eval + 8) + 0x190),
+                           *(void **)((u8 *)target + 0x190)) == 1);
+    entry = *(u8 **)((u8 *)eval + 4);
+    result.x = entry[0];
+    result.y = entry[1];
+    result.unit = target;
+    result.item = *(u16 *)(*(u8 **)((u8 *)eval + 0xC) + 2);
+    if (Battle_EvalTargetScore(*(void **)((u8 *)eval + 8), &result)) {
+        if ((u8)hostile != 0) {
+            *(s32 *)(*(u8 **)((u8 *)eval + 0xC) + 8) += result.score;
         } else {
-            *(s32 *)(*(u8 **)((u8 *)arg0 + 0xC) + 8) -= result.score;
+            *(s32 *)(*(u8 **)((u8 *)eval + 0xC) + 8) -= result.score;
         }
     }
 }
