@@ -243,8 +243,8 @@ void fn_800AD6AC(void *arg0) {
 }
 
 void fn_800AD700(void *arg0) {
-    void BattleState_SetCamPos(void *, f32, f32);
-    extern u8 gBattleState[];
+    void fn_8014CBD8(void *, f32, f32);
+    extern u8 lbl_80330708[];
     struct {
         u8 pad[0x19E];
         s8 x;
@@ -252,7 +252,7 @@ void fn_800AD700(void *arg0) {
     } *u;
 
     u = *(void **)((u8 *)arg0 + 0x30);
-    BattleState_SetCamPos(gBattleState, (f32)u->y, (f32)u->x);
+    fn_8014CBD8(lbl_80330708, (f32)u->y, (f32)u->x);
 }
 
 /* Apply prior battle, bump win/battle stats if needed, then setup and calc vs current target. */
@@ -3454,32 +3454,15 @@ u8 fn_800B6DF0(void) {
 }
 
 s32 fn_800B6E00(s32 arg0) {
-    void BMapMain_Goto(s32, void *);
-    void GfxEnt_UnlinkByName(void *);
-    void Process_UnlinkByKey(void *);
-    extern u8 gBattleState[];
-    extern u8 lbl_8026ECB8[];
-    struct { u8 pad[0x54]; u8 f54; } *p;
-    s32 var;
-
-    var = 0;
-    switch (arg0) {
-    case 1:
-        var = 5;
-        break;
-    case 2:
-        var = 6;
-        break;
-    case 3:
-        var = 7;
-        break;
-    }
-    p = (void *)gBattleState;
-    p->f54 = (u8)var;
-    BMapMain_Goto(2, p);
-    GfxEnt_UnlinkByName(lbl_8026ECB8 + 0x98b);
-    Process_UnlinkByKey(Proc_CpPhaseMain);
-    return 1;
+ void BMapMain_Goto(s32); void GfxEnt_UnlinkByName(void *); void Process_UnlinkByKey(void *);
+ extern u8 gBattleState[]; extern u8 lbl_8026ECB8[];
+ u8 var=0;
+ switch(arg0) {case 1: var=5; break; case 2: var=6; break; case 3: var=7; break;}
+ gBattleState[0x54]=var;
+ BMapMain_Goto(2);
+ GfxEnt_UnlinkByName(lbl_8026ECB8+0x98b);
+ Process_UnlinkByKey(Proc_CpPhaseMain);
+ return 1;
 }
 
 s32 fn_800B6E8C(s32 mode, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
