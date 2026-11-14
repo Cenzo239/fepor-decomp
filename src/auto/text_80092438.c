@@ -1480,7 +1480,7 @@ s32 fn_80094A54(s32 arg0, s32 arg1)
   return temp_r31;
 }
 
-s32 fn_80094C10(s32 arg0, void *arg1) {
+s32 Unit_TryEquipItem(s32 arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
     s8 Unit_GetActiveItemSlot(s32);
     u8 fn_80093708(s32, u32);
