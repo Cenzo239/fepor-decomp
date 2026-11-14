@@ -1579,7 +1579,8 @@ void CardLink_UpdateScanWait(void *proc) {
     }
 }
 
-void CardLink_UpdateConfirmPrompt(void *arg0) {
+/* CardLink confirm prompt: A shows the result message and ends; B dismisses and jumps to 0x63. */
+void CardLink_UpdateConfirmPrompt(void *proc) {
     s32 Msg_Expand(void *);
     void MsgBox_Init(void *, s32, s32, s32, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -1587,23 +1588,23 @@ void CardLink_UpdateConfirmPrompt(void *arg0) {
     void Process_Goto(void *, s32);
     extern void *gPadInput;
     extern u16 gCardLinkStr[18];
-    s32 temp_r3;
+    s32 held;
     s32 pressed;
-    void *temp_r5;
+    void *msgBox;
 
-    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (pressed & 0x100) {
         Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x5A, 0x64);
-        MsgBox_Init(*(void **)((u8 *)arg0 + 0x50), Msg_Expand((u8 *)&gCardLinkStr + 0x121), 0, 0, 0);
-        Process_ClearFunc(arg0);
+        MsgBox_Init(*(void **)((u8 *)proc + 0x50), Msg_Expand((u8 *)&gCardLinkStr + 0x121), 0, 0, 0);
+        Process_ClearFunc(proc);
         return;
     }
     if (pressed & 0x200) {
         Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x111, 0x64);
-        temp_r5 = *(void **)((u8 *)arg0 + 0x50);
-        *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
-        Process_Goto(arg0, 0x63);
+        msgBox = *(void **)((u8 *)proc + 0x50);
+        *(s16 *)((u8 *)msgBox + 2) = 0xC8;
+        Process_Goto(proc, 0x63);
     }
 }
 
