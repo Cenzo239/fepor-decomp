@@ -81,7 +81,7 @@ s32 fn_801EAA88(void) {
     return Process_Find(&E_BMapAuxiliaryProc) != 0;
 }
 
-void *fn_801EAABC(char *arg0, void *arg1) {
+void *BMapAuxiliary_Create(char *arg0, void *arg1) {
     extern u8 gUnitLists[];
     extern char lbl_8027EE08[];
     s32 fn_80015680(void *);

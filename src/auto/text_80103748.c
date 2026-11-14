@@ -217,7 +217,7 @@ s32 fn_80103A74(void) {
     M2C_UNK fn_800C992C(M2C_UNK *, void *, s32);
     M2C_UNK String_Destroy(M2C_UNK *, M2C_UNK);
     M2C_UNK String_Init(M2C_UNK *, void *, M2C_UNK *);
-    M2C_UNK fn_801EAABC(M2C_UNK, s32);
+    M2C_UNK BMapAuxiliary_Create(M2C_UNK, s32);
     s32 strlen(void *);
     extern u8 lbl_802734D0[];
     extern u8 gBattleState[];
@@ -231,7 +231,7 @@ s32 fn_80103A74(void) {
     fn_800C992C(&spC, &lbl_802734D0[0x157], strlen((u8 *)lbl_802734D0 + 0x157));
     fn_800A8400();
     Process_Goto(temp_r31, 0);
-    fn_801EAABC(String_CStr(&spC), temp_r31);
+    BMapAuxiliary_Create(String_CStr(&spC), temp_r31);
     String_Destroy(&spC, -1);
     return 6;
 }
