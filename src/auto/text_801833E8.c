@@ -10979,7 +10979,7 @@ void fn_8019DB68(void) {
     void fn_8019ED74(void);
     void fn_8019ECB4(void);
     void fn_8019EAF4(void);
-    void fn_801A0298(void);
+    void ScriptCmd_EventMapFlags(void);
     void fn_801A0258(void);
     void fn_801A01D8(void);
     void fn_801A016C(void);
@@ -11066,7 +11066,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x369, fn_8019ED74, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x371, fn_8019ECB4, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x37A, fn_8019EAF4, 2);
-    Script_RegisterCommand(lbl_8027AD98 + 0x38B, fn_801A0298, 1);
+    Script_RegisterCommand(lbl_8027AD98 + 0x38B, ScriptCmd_EventMapFlags, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x396, fn_801A0258, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x39F, fn_801A01D8, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3AA, fn_801A016C, 3);
@@ -12062,7 +12062,7 @@ s32 fn_801A0258(void) {
     return 1;
 }
 
-s32 fn_801A0298(s32 arg0) {
+s32 ScriptCmd_EventMapFlags(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
