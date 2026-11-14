@@ -8300,7 +8300,7 @@ s32 fn_800C04B0(s32 arg0, u8 (*arg1)(void *)) {
     return count;
 }
 
-void fn_800C054C(void *arg0) {
+void Event_DispatchMatching(void *arg0) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, void *);
     void EventFlag_Clear(void *, void *);
