@@ -8075,13 +8075,14 @@ s32 fn_80140B04(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_ClearPanelChildren(void *arg0) {
+extern "C" void Ui_ClearPanelChildren(void *self) {
+    /* Release refcounted children on the panel dtor list and clear the list. */
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
     };
     typedef struct {
-        u32 unk0;
+        u32 size;
         ListNode node;
     } DtorList;
     typedef struct Owner {
@@ -8097,29 +8098,29 @@ extern "C" void Ui_ClearPanelChildren(void *arg0) {
     ListNode *spC;
     u8 sp8[4];
     ListNode *end;
-    Owner *a0;
+    Owner *owner;
     Obj *obj;
 
-    a0 = (Owner *)arg0;
-    if (arg0 != NULL) {
-        if (arg0 != NULL) {
-            while (a0->list.unk0 != 0) {
-                obj = (Obj *)a0->list.node.prev->val;
+    owner = (Owner *)self;
+    if (self != NULL) {
+        if (self != NULL) {
+            while (owner->list.size != 0) {
+                obj = (Obj *)owner->list.node.prev->val;
                 if (obj != NULL) {
                     if (--obj->refcount == 0 && obj != NULL) {
                         obj->destroy(1);
                     }
                 }
-                found = a0->list.node.prev;
-                List_Erase(ret, &a0->list, &found);
+                found = owner->list.node.prev;
+                List_Erase(ret, &owner->list, &found);
             }
-            if (&a0->list != NULL) {
-                if (&a0->list != NULL) {
-                    if (&a0->list != NULL) {
-                        end = &a0->list.node;
+            if (&owner->list != NULL) {
+                if (&owner->list != NULL) {
+                    if (&owner->list != NULL) {
+                        end = &owner->list.node;
                         sp10 = end;
                         spC = end->next;
-                        List_EraseRange(sp8, &a0->list, &spC, &sp10);
+                        List_EraseRange(sp8, &owner->list, &spC, &sp10);
                     }
                 }
             }
