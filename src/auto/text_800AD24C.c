@@ -5965,7 +5965,7 @@ void fn_800BB0E8(void) {
     void fn_800BCE64(void);
     void fn_800BCA38(void);
     void fn_800BD284(void);
-    void fn_800BD1A4(void);
+    void ScriptCmd_UnitRescue(void);
     void fn_800BD10C(void);
     void fn_800BC9D4(void);
     void fn_800BC970(void);
@@ -6046,7 +6046,7 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x232, fn_800BCE64, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x23F, fn_800BCA38, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x253, fn_800BD284, 1);
-    Script_RegisterCommand(lbl_8026F728 + 0x25F, fn_800BD1A4, 2);
+    Script_RegisterCommand(lbl_8026F728 + 0x25F, ScriptCmd_UnitRescue, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x26A, fn_800BD10C, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x27A, fn_800BC9D4, 2);
     Script_RegisterCommand(lbl_8026F728 + 0x28D, fn_800BC970, 2);
@@ -7098,7 +7098,7 @@ s32 fn_800BD10C(u8 arg0) {
     return 1;
 }
 
-s32 fn_800BD1A4(u8 arg0, u8 arg1) {
+s32 ScriptCmd_UnitRescue(u8 arg0, u8 arg1) {
     void Unit_SetMapPos(void *, s8, u8);
     void fn_8003EA84(void *, void *);
     void Map_RefreshUnitMap(void *);
