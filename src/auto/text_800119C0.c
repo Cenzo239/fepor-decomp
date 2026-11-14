@@ -1664,21 +1664,22 @@ void fn_8001598C(void)
     } while (i <= 0x9F);
 }
 
-void E_DispLoadWhole_Wait(void *arg0) {
+/* Tick E_DispLoadWhole: clear when all units' display resources are ready, or after timeout. */
+void E_DispLoadWhole_Wait(void *proc) {
     void Process_ClearFunc(void *);
     void Allegiance_FillMask(s32, u8 *, s32);
     u8 Unit_IsDisplayReady(void *);
     extern u8 gUnits[];
-    u8 sp8[8];
-    s32 temp;
+    u8 allegMask[8];
+    s32 ticks;
     s32 i;
     u8 *unit;
-    u8 *sub;
-    u8 ok;
+    u8 *allegInfo;
+    u8 ready;
 
-    temp = *(s32 *)((u8 *)arg0 + 0x60);
-    *(s32 *)((u8 *)arg0 + 0x60) = temp + 1;
-    Allegiance_FillMask(5, sp8, temp);
+    ticks = *(s32 *)((u8 *)proc + 0x60);
+    *(s32 *)((u8 *)proc + 0x60) = ticks + 1;
+    Allegiance_FillMask(5, allegMask, ticks);
     i = 1;
     do {
         if ((u8)i != 0) {
@@ -1687,20 +1688,20 @@ void E_DispLoadWhole_Wait(void *arg0) {
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0) {
-            sub = *(u8 **)(unit + 0x190);
-            if (sp8[sub[8]] != 0) {
+            allegInfo = *(u8 **)(unit + 0x190);
+            if (allegMask[allegInfo[8]] != 0) {
                 if (Unit_IsDisplayReady(unit) == 0) {
-                    ok = 0;
+                    ready = 0;
                     goto after;
                 }
             }
         }
         i += 1;
     } while (i <= 0x9F);
-    ok = 1;
+    ready = 1;
 after:
-    if (ok != 0 || *(s32 *)((u8 *)arg0 + 0x60) > 0x4650) {
-        Process_ClearFunc(arg0);
+    if (ready != 0 || *(s32 *)((u8 *)proc + 0x60) > 0x4650) {
+        Process_ClearFunc(proc);
     }
 }
 
