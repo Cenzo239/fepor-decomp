@@ -12062,7 +12062,8 @@ s32 fn_801A0258(void) {
     return 1;
 }
 
-s32 ScriptCmd_EventMapFlags(s32 arg0) {
+/* Ensure E_EventState exists; enable or disable map tile-flag overlay. */
+s32 ScriptCmd_EventMapFlags(s32 enable) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658();
@@ -12073,11 +12074,11 @@ s32 ScriptCmd_EventMapFlags(s32 arg0) {
     extern s32 gUiInputFlags;
 
     void *p;
-    void *v;
+    void *state;
 
     p = Process_Find(E_EventState_script);
     if (p != NULL) {
-        v = p;
+        state = p;
     } else {
         p = Process_Create(E_EventState_script, fn_800C0658());
         ((u8 *)p)[0x30] = 1;
@@ -12089,14 +12090,14 @@ s32 ScriptCmd_EventMapFlags(s32 arg0) {
         ((u32 *)((u8 *)p + 0x3C))[0] = 1;
         ((u8 *)p)[0x37] = 0;
         ((u8 *)p)[0x38] = 0;
-        v = p;
+        state = p;
     }
-    if (arg0 != 0) {
-        ((u8 *)v)[0x36] = 1;
+    if (enable != 0) {
+        ((u8 *)state)[0x36] = 1;
         gUiInputFlags &= 0xFFFFEFFF;
         Map_ReloadTileFlags(Map_Get(), 1);
     } else {
-        ((u8 *)v)[0x36] = 0;
+        ((u8 *)state)[0x36] = 0;
         gUiInputFlags |= 0x1000;
         Map_ReloadTileFlags(Map_Get(), 0);
     }
