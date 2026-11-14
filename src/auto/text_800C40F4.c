@@ -17568,7 +17568,7 @@ M2C_FIELD(arg1,s32 *,8)=score;
 #pragma use_lmw_stmw on
 #pragma fp_contract off
 s32 fn_800F6B10(void *arg0, u8 arg1) {
-void **fn_801A7FF4(void *);
+void **BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
 s32 fn_80230BCC(s32);
 u8 fn_8001DD54(void *, void *);
@@ -17619,7 +17619,7 @@ extern f64 lbl_8036A088;
     base = (u8 *)gBattle;
     unit2 = base + 0x2E0;
     var_r31 = 0;
-    list = fn_801A7FF4(unit2);
+    list = BattleUnit_GetWeaponSlot(unit2);
     uy = unit2[0x19F];
     ux = unit2[0x19E];
     by = ((u8 *)gBattle)[0x19F];
@@ -17645,9 +17645,9 @@ extern f64 lbl_8036A088;
         in_range = 1;
     }
     if (in_range != 0) {
-        if (*fn_801A7FF4(unit2) != 0) {
+        if (*BattleUnit_GetWeaponSlot(unit2) != 0) {
             flag = (s32)(*(s16 *)(base + 0x29C) + 4) <= *(s16 *)(unit2 + 0x29C);
-            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(unit2));
+            temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(unit2));
             flag_u8 = flag | (u8)((*(u64 *)temp_r3 & 0x20ULL) != 0);
             var_r31 = *(s16 *)(unit2 + 0x298) - *(s16 *)(base + 0x29A);
             if (var_r31 < 0) {
@@ -17682,7 +17682,7 @@ extern f64 lbl_8036A088;
             temp_r31 = fn_800F8344(gBattle);
             arg0 = (void *)((s16)fn_800F833C(temp_r31) + 4);
             flag2 = (s16)fn_800F833C(temp_r30) >= (s32)arg0;
-            temp_ret = fn_800F8328(Item_GetFlagsPtr(fn_801A7FF4(temp_r30)), 0x20ULL);
+            temp_ret = fn_800F8328(Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(temp_r30)), 0x20ULL);
             flag_u8 = flag2 | (u8)(temp_ret != 0);
             var_r25 = (s16)fn_800F8320(temp_r30) - (s16)fn_800F8318(temp_r31);
             if (var_r25 < 0) {
@@ -17712,7 +17712,7 @@ extern f64 lbl_8036A088;
     return var_r31;
 }
 s32 fn_800F6F94(void *arg0, u8 arg1) {
-void *fn_801A7FF4(void *);
+void *BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
 f32 fn_800F738C(s32,f32);
 u8 fn_800F73EC(void *,void *,void *);
@@ -17753,7 +17753,7 @@ extern f64 lbl_8036A098;
 
     base = (u8 *)gBattle;
     temp_r29 = *(s16 *)(base + 0x29C) >= (s32)(*(s16 *)(base + 0x57C) + 4);
-    temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(base));
+    temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(base));
     temp_r4 = temp_r29 | (u8)((*(u64 *)temp_r3 & 0x20ULL) != 0);
     var_r30 = *(s16 *)((u8 *)gBattle + 0x298) - *(s16 *)(base + 0x57A);
     if (var_r30 < 0) {
@@ -17785,11 +17785,11 @@ extern f64 lbl_8036A098;
             temp_r29_2 = fn_800F834C(gBattle);
             temp_r30 = fn_800F8344(gBattle);
             var_r27 = 0;
-            if (fn_800F73EC(temp_r29_2, temp_r30, fn_801A7FF4(temp_r30)) != 0) {
-                if (fn_800F8350(fn_801A7FF4(temp_r30)) != 0) {
+            if (fn_800F73EC(temp_r29_2, temp_r30, BattleUnit_GetWeaponSlot(temp_r30)) != 0) {
+                if (fn_800F8350(BattleUnit_GetWeaponSlot(temp_r30)) != 0) {
                     temp_r27 = fn_800F833C(temp_r30);
                     temp_r27_2 = temp_r27 >= (s32)(fn_800F833C(temp_r29_2) + 4);
-                    temp_ret = fn_800F8328(Item_GetFlagsPtr(fn_801A7FF4(temp_r30)), 0x20ULL);
+                    temp_ret = fn_800F8328(Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(temp_r30)), 0x20ULL);
                     arg1 = temp_r27_2 | (u8) (temp_ret != 0);
                     temp_r27_3 = fn_800F8320(temp_r30);
                     var_r27 = temp_r27_3 - fn_800F8318(temp_r29_2);

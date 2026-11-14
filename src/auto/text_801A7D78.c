@@ -74,7 +74,7 @@ int fn_801A7FA4(void *arg0)
     return (int)arg0;
 }
 
-u16 *fn_801A7FF4(void *arg0) {
+u16 *BattleUnit_GetWeaponSlot(void *arg0) {
     s8 temp = ((s8 *)arg0)[0x2C8 / sizeof(s8)];
     if (temp <= 0) {
         return &lbl_80367218;

@@ -836,7 +836,7 @@ void Battle_SelectWeapon(void *arg0)
     extern void fn_801A96FC(void *);
     extern void fn_801A601C(void *, void *, void *, s32);
     extern void BattleAnim_Queue(void *, s32, s32);
-    extern void *fn_801A7FF4(void *);
+    extern void *BattleUnit_GetWeaponSlot(void *);
     extern void BattleUnit_GainWpnExp(void *, void *);
     extern void fn_801A8010(void *);
 
@@ -852,7 +852,7 @@ void Battle_SelectWeapon(void *arg0)
 
     BattleAnim_Queue(obj + 0x8A0, 0x54, 0);
 
-    BattleUnit_GainWpnExp(obj, fn_801A7FF4(obj));
+    BattleUnit_GainWpnExp(obj, BattleUnit_GetWeaponSlot(obj));
 
     fn_801A8010(obj);
 }
@@ -1361,7 +1361,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     s8 Unit_GetMaxHp(void *);
     u8 Unit_HasHitBlockStatus(void *);
     u8 Status_Test(void *, s32);
-    void **fn_801A7FF4(void *);
+    void **BattleUnit_GetWeaponSlot(void *);
     void fn_801A8010(void *);
     extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
@@ -1472,7 +1472,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
             ok = Rand_Chance(half);
         }
         if (ok != 0) {
-            p = *fn_801A7FF4(arg1);
+            p = *BattleUnit_GetWeaponSlot(arg1);
             if (p != NULL) {
                 hp = *(u8 *)((u8 *)p + 0x13);
             } else {
@@ -1576,7 +1576,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(u8 *)((u8 *)arg1 + 0x2CC) = 1;
     }
 
-    bits = Item_GetFlagsPtr(fn_801A7FF4(arg1));
+    bits = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(arg1));
     if ((*bits & 0x800ULL) != 0 && Unit_HasHitBlockStatus(arg2) == 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4E, 0);
         *(u8 *)((u8 *)arg2 + 0x1A4) =
@@ -1681,7 +1681,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
     }
 
-    bits = Item_GetFlagsPtr(fn_801A7FF4(arg1));
+    bits = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(arg1));
     if ((*bits & 0x10ULL) != 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4C, 0);
         *(s16 *)((u8 *)arg1 + 0x2AC) = *(s16 *)((u8 *)arg1 + 0x2AA);
@@ -1925,7 +1925,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 Status_Test(void *, s32);
     void fn_801A55D4(void *, void *, void *, s32);
     void fn_801A601C(void *, void *, void *, s32);
-    void *fn_801A7FF4(void *);
+    void *BattleUnit_GetWeaponSlot(void *);
     void fn_801A8010(void *);
     void BattleUnit_GainWpnExp(void *, void *);
     u8 Battle_RollHitResult(void *);
@@ -1959,18 +1959,18 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     unit = arg1;
     foe = arg2;
     *(u8 *)((u8 *)unit + 0x2CB) = 0;
-    if (*(u32 *)fn_801A7FF4(unit) != 0
+    if (*(u32 *)BattleUnit_GetWeaponSlot(unit) != 0
         && ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) == 0
         && (*(u8 *)((u8 *)unit + 0x1A5) & 7) == 0
         && Status_Test((u8 *)unit + 0x1BC, 0x60) == 0) {
         lim = 1;
-        if ((*Item_GetFlagsPtr(fn_801A7FF4(unit)) & 0x20ULL) != 0) {
+        if ((*Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(unit)) & 0x20ULL) != 0) {
             lim = 2;
         }
         add = 0;
         lv = 0;
-        if (*(u32 *)fn_801A7FF4(unit) != 0) {
-            lv = ((u8 *)fn_801A7FF4(unit))[4];
+        if (*(u32 *)BattleUnit_GetWeaponSlot(unit) != 0) {
+            lv = ((u8 *)BattleUnit_GetWeaponSlot(unit))[4];
         }
         tbl = gBattleHitTbl;
         g = (u8 *)gBattle;
@@ -2031,7 +2031,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 }
             }
         }
-        BattleUnit_GainWpnExp(unit, fn_801A7FF4(unit));
+        BattleUnit_GainWpnExp(unit, BattleUnit_GetWeaponSlot(unit));
         *(u8 *)((u8 *)unit + 0x2CC) = 0;
         *(s16 *)((u8 *)unit + 0x2CE) = 0;
         for (i = 0; i < lim; ) {
@@ -2112,14 +2112,14 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
             if (ok != 0) {
                 break;
             }
-            if (*(u32 *)fn_801A7FF4(unit) == 0) {
+            if (*(u32 *)BattleUnit_GetWeaponSlot(unit) == 0) {
                 break;
             }
             i++;
         }
         if (*(u8 *)((u8 *)unit + 0x2CC) != 0
             && *(s16 *)((u8 *)unit + 0x2CE) >= 2
-            && *(u32 *)fn_801A7FF4(foe) != 0) {
+            && *(u32 *)BattleUnit_GetWeaponSlot(foe) != 0) {
             tmp = *(s16 *)((u8 *)unit + 0x2CE);
             *(s16 *)((u8 *)unit + 0x2CE) = (s16)((s32)tmp / 2);
             if (*(s16 *)((u8 *)unit + 0x2CE) > 0x7F) {
@@ -2180,7 +2180,7 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
     void Status_Set(s32, s32);
     void Status_Clear(s32, s32);
     u8 fn_801A3F14(s32);
-    void *fn_801A7FF4(s32);
+    void *BattleUnit_GetWeaponSlot(s32);
     void fn_801A85F4(s32);
     u8 Unit_ClearEventStatuses(s32);
     void fn_801A949C(s32);
@@ -2240,14 +2240,14 @@ void Battle_ProcessStatusAnims(s32 battle, u8 skillId, u8 skillParam) {
         Status_Clear(defStatus, 0x41);
         BattleAnim_Queue(self + 0x8A0, 0x35, 0);
     }
-    if (Status_Test(defStatus, 0x29) != 0 && *(u32 *)fn_801A7FF4(self + 0x2E0) != 0) {
+    if (Status_Test(defStatus, 0x29) != 0 && *(u32 *)BattleUnit_GetWeaponSlot(self + 0x2E0) != 0) {
         BattleAnim_Queue(self + 0x8A0, 0x36, 0);
     }
     if (*(s32 *)(self + 0xCA8) >= 2) {
-        if ((*Item_GetFlagsPtr(fn_801A7FF4(self)) & 0x4000000040ULL) != 0) {
+        if ((*Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(self)) & 0x4000000040ULL) != 0) {
             fn_801A85F4(self);
         }
-        if ((*Item_GetFlagsPtr(fn_801A7FF4(self + 0x2E0)) & 0x4000000040ULL) != 0) {
+        if ((*Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(self + 0x2E0)) & 0x4000000040ULL) != 0) {
             fn_801A85F4(self + 0x2E0);
         }
     }
@@ -2283,7 +2283,7 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     void fn_800340F0(void *);
     void Unit_SetMapPos(void *, s8, s8);
     void fn_801A601C(void *, void *, s32, s32);
-    void *fn_801A7FF4(void *);
+    void *BattleUnit_GetWeaponSlot(void *);
     void fn_801A94B0(void *);
     void fn_801A9600(void *, void *);
     void fn_801A96FC(void *, s8);
@@ -2333,10 +2333,10 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
         fn_801A9600(var_r30, var_r29);
         temp_r3 = Item_GetFlagsPtr(var_r29);
         if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
-            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r30));
+            temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(var_r30));
             if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
                 *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
-                fn_801A7FF4((u8 *)var_r30 + 0x2E0);
+                BattleUnit_GetWeaponSlot((u8 *)var_r30 + 0x2E0);
                 Item_Clear();
             }
         }
@@ -2347,10 +2347,10 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
     fn_801A9600(var_r30, var_r31);
     temp_r3 = Item_GetFlagsPtr(var_r31);
     if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x1000) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
-        temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r30));
+        temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(var_r30));
         if (((((M2C_FIELD(temp_r3, s32 *, 4) & 0x4F) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 0) ^ 0)) != 0)) {
             *(u32 *)((char *)var_r30 + 0xCAC) |= 0x200;
-            fn_801A7FF4((char *)var_r30 + 0x2E0);
+            BattleUnit_GetWeaponSlot((char *)var_r30 + 0x2E0);
             Item_Clear();
         }
     }
@@ -2361,15 +2361,15 @@ void fn_801A6FB4(void *arg0, void *arg1, void *arg2) {
 void fn_801A7528(void *arg0, void *arg1) {
  void *Item_GetFlagsPtr(void *);
  void Item_Clear(void);
- void *fn_801A7FF4(void *);
+ void *BattleUnit_GetWeaponSlot(void *);
  void fn_801A9600(void *,void *);
  void *item=arg1;
  void *battle=arg0;
  fn_801A9600(battle,item);
  if((*(u64 *)Item_GetFlagsPtr(item)&0x1000ULL)!=0) {
- if((*(u64 *)Item_GetFlagsPtr(fn_801A7FF4(battle))&0x4FULL)!=0) {
+ if((*(u64 *)Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(battle))&0x4FULL)!=0) {
  *(u32 *)((u8 *)battle+0xcac)|=0x200;
- fn_801A7FF4((u8 *)battle+0x2e0);
+ BattleUnit_GetWeaponSlot((u8 *)battle+0x2e0);
  Item_Clear();
  }
  }
@@ -2381,7 +2381,7 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     void Map_SelectRangeBuffer(void *, s32);
     void fn_800340F0(s32);
     void Unit_SetMapPos(s32, s8, s8);
-    void *fn_801A7FF4(s32);
+    void *BattleUnit_GetWeaponSlot(s32);
     void fn_801A94B0(s32);
     void fn_801A9600(s32, void *);
     void fn_801A96FC(s32, s8);
@@ -2461,10 +2461,10 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
         fn_801A9600(self, temp_r30);
         temp_r3 = Item_GetFlagsPtr(temp_r30);
         if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
-            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(self));
+            temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(self));
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(self + 0xCAC) |= 0x200;
-                fn_801A7FF4(self + 0x2E0);
+                BattleUnit_GetWeaponSlot(self + 0x2E0);
                 Item_Clear();
             }
         }
@@ -2495,7 +2495,7 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void Map_SelectRangeBuffer(void *, s32);
     void fn_800340F0(s32);
     void Unit_SetMapPos(s32, s8, s8);
-    void *fn_801A7FF4(s32);
+    void *BattleUnit_GetWeaponSlot(s32);
     void fn_801A94B0(s32);
     void fn_801A9600(s32, void *);
     void fn_801A96FC(s32, s8);
@@ -2547,10 +2547,10 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
         fn_801A9600(var_r29, temp_r28);
         temp_r3 = Item_GetFlagsPtr(temp_r28);
         if ((*(u64 *)temp_r3 & 0x1000ULL) != 0) {
-            temp_r3 = Item_GetFlagsPtr(fn_801A7FF4(var_r29));
+            temp_r3 = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(var_r29));
             if ((*(u64 *)temp_r3 & 0x4FULL) != 0) {
                 *(u32 *)(var_r29 + 0xCAC) |= 0x200;
-                fn_801A7FF4(var_r29 + 0x2E0);
+                BattleUnit_GetWeaponSlot(var_r29 + 0x2E0);
                 Item_Clear();
             }
         }
