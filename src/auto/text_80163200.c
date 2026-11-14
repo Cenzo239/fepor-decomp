@@ -423,22 +423,24 @@ loop_test:
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
-    struct { s16 x; s16 y; } sp8;
-    s16 temp;
-    s16 var0;
+    s16 sp8[2];
     s16 var5;
-
+    s16 var0;
+    s32 temp;
     temp = *(s16 *)((u8 *)arg1 + 0x4C);
-    if (temp < 0) {
+    if ((s16)temp < 0) {
         var0 = 0;
         var5 = 0;
     } else {
+        s32 stride = *(s16 *)((u8 *)arg1 + 0x54);
+        temp = (s16)temp & 3;
         var5 = *(s16 *)((u8 *)arg1 + 0x64);
-        var0 = (s16)(*(s16 *)((u8 *)arg1 + 0x54) * (temp & 3) + *(s16 *)((u8 *)arg1 + 0x66));
+        temp *= stride;
+        var0 = temp + *(s16 *)((u8 *)arg1 + 0x66);
     }
-    sp8.x = var5;
-    sp8.y = var0;
-    *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
+    sp8[0] = var5;
+    sp8[1] = var0;
+    *arg0 = *fn_8013F748(arg1, &spC, sp8);
 }
 
 void fn_80163E50(void *arg0) {
@@ -1638,35 +1640,25 @@ f32 fn_801660C4(s32 arg0, s32 arg1, u16 arg2, u8 arg3) {
 }
 
 u32 fn_8016614C(void *arg0, s32 arg1) {
-    extern u8 gBattleState[];
-    s32 tmp;
-    u32 var_r6;
-    u32 temp;
-    u8 flag;
-
-    tmp = (s32)arg0 + (arg1 << 2);
-    var_r6 = *(u32 *)(tmp + 0x14);
-    if (arg1 == 2) {
-        return var_r6;
-    }
-    if (arg1 == 3) {
-        arg1 = 2;
-    }
-    flag = gBattleState[0xA6];
-    if (flag == 1) {
-        tmp = (s32)arg0 + (arg1 << 2);
-        temp = *(u32 *)(tmp + 0x24);
-        if (temp != 0U) {
-            var_r6 = temp;
-        }
-    } else if (flag == 2) {
-        tmp = (s32)arg0 + (arg1 << 2);
-        temp = *(u32 *)(tmp + 0x30);
-        if (temp != 0U) {
-            var_r6 = temp;
-        }
-    }
-    return var_r6;
+ extern u8 gBattleState[];
+ u32 *tmp;
+ u32 var_r6, temp;
+ u8 flag;
+ tmp=(u32 *)arg0+arg1;
+ var_r6=tmp[5];
+ if(arg1==2) return var_r6;
+ if(arg1==3) arg1=2;
+ flag=gBattleState[0xA6];
+ if(flag==1) {
+ arg0=(void *)((u32 *)arg0+arg1);
+ temp=((u32 *)arg0)[9];
+ if(temp) var_r6=temp;
+ } else if(flag==2) {
+ arg0=(void *)((u32 *)arg0+arg1);
+ temp=((u32 *)arg0)[12];
+ if(temp) var_r6=temp;
+ }
+ return var_r6;
 }
 
 u8 fn_801661CC(void *arg0) {
@@ -1696,40 +1688,20 @@ void fn_80166228(void) {
 }
 
 void Chapter_LoadScript(void) {
-    extern u8 lbl_802778A8[];
-
-    void *fn_80019F04(void);
-    void sprintf(char *, const char *, ...);
-    void ScriptCmd_CmLoadScript(char *);
-    void *Archive_Load(char *);
-    void FileCache_OrFlags(char *, s32);
-
-    char buffer[0x20];
-    u8 *obj;
-
-    obj = (u8 *)fn_80019F04();
-
-    sprintf(
-        buffer,
-        (char *)(lbl_802778A8 + 0xCE),
-        *(u32 *)(obj + 8)
-    );
-
-    ScriptCmd_CmLoadScript(buffer);
-
-    if (*(u32 *)(obj + 0x0C) == 0U) {
-        lbl_803680E8 = (void *)0;
-    } else {
-        sprintf(
-            buffer,
-            (char *)(lbl_802778A8 + 0xDD),
-            *(u32 *)(obj + 0x0C)
-        );
-
-        lbl_803680E8 = Archive_Load(buffer);
-    }
-
-    FileCache_OrFlags(buffer, 4);
+ extern u8 lbl_802778A8[];
+ void *fn_80019F04(void); void sprintf(char *,const char *,...);
+ void ScriptCmd_CmLoadScript(char *); void *Archive_Load(char *);
+ void FileCache_OrFlags(char *,s32);
+ char buffer[0x20]; u8 *obj;
+ obj=(u8 *)fn_80019F04();
+ sprintf(buffer,(char *)(lbl_802778A8+0xCE),*(u32 *)(obj+8));
+ ScriptCmd_CmLoadScript(buffer);
+ if(*(u32 *)(obj+0xC)==0U) { lbl_803680E8=(void *)0; }
+ else {
+ sprintf(buffer,(char *)(lbl_802778A8+0xDD),*(u32 *)(obj+0xC));
+ lbl_803680E8=Archive_Load(buffer);
+ FileCache_OrFlags(buffer,4);
+ }
 }
 
 void *fn_801662F0(void **arg0) {
@@ -10720,24 +10692,15 @@ void *fn_801784C8(void) {
 
 #pragma scheduling off
 s32 fn_801784D8(void) {
-    u8 fn_801EAA88(void);
-    s32 fn_80015680(void *);
-    u8 fn_8014D8DC(void *);
-    extern u8 gUnitLists[];
-    extern u8 gBattleState[];
-    s32 r31;
-
-    r31 = 0;
-    if (fn_801EAA88() == 0) {
-        r31 = fn_80015680(gUnitLists);
-        r31 += fn_80015680(gUnitLists + 0x3C);
-    }
-    if (r31 <= 1) {
-        if (fn_8014D8DC(gBattleState) == 0) {
-            return 2;
-        }
-    }
-    return 0;
+ u8 fn_801EAA88(void); s32 fn_80015680(void *); u8 fn_8014D8DC(void *);
+ extern u8 gUnitLists[]; extern u8 gBattleState[];
+ s32 result;
+ s32 count=0;
+ if(fn_801EAA88()==0) count=fn_80015680(gUnitLists);
+ count+=fn_80015680(gUnitLists+0x3C);
+ if(count<=1 && fn_8014D8DC(gBattleState)==0) result=2;
+ else result=0;
+ return result;
 }
 
 #pragma scheduling reset
@@ -14411,7 +14374,7 @@ void fn_8017F5C8(void *arg0) {
 
 void fn_8017F5EC(void *arg0) {
     s32 fn_8006D948(void *);
-    void Process_AttachFunc(void *, void *);
+    void fn_80059208(void *, void *);
     extern u16 lbl_802788B8[];
     extern f32 lbl_8036AC88;
     
@@ -14419,7 +14382,7 @@ void fn_8017F5EC(void *arg0) {
     *(u16 *)((u8 *)arg0 + 0x40) = 0xFF;
     *(s32 *)((u8 *)arg0 + 0x34) = fn_8006D948((u8 *)lbl_802788B8 + 0x122);
     *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036AC88;
-    Process_AttachFunc((void *)0x8017F650, arg0);
+    fn_80059208((void *)0x8017F650, arg0);
 }
 
 void fn_8017F650(void *arg0) {
