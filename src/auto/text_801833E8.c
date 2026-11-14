@@ -10751,35 +10751,36 @@ void fn_8019D360(void *arg0) {
     }
 }
 
-void Mu_WaitAnimTick(void *arg0) {
+/* Wait for the unit's map anim to finish; pad buttons can skip or cancel. */
+void Mu_WaitAnimTick(void *proc) {
     u8 Pad_IsButton(void *, s32);
     u8 Mu_IsAnimDone(void *);
     void fn_800056A0(s32);
     void Process_ClearFunc(void *);
-    void *obj;
-    u32 *p31;
+    void *unit;
+    u32 *modelFlags;
 
-    obj = *(void **)((u8 *)arg0 + 0x30);
-    p31 = (u32 *)((u8 *)obj + 0x1C);
+    unit = *(void **)((u8 *)proc + 0x30);
+    modelFlags = (u32 *)((u8 *)unit + 0x1C);
 
-    if (*(u8 *)((u8 *)arg0 + 0x34) == 0) {
-        if (Pad_IsButton(p31, 2)) {
-            *p31 |= 0x80;
-            *(u8 *)((u8 *)arg0 + 0x34) = 1;
+    if (*(u8 *)((u8 *)proc + 0x34) == 0) {
+        if (Pad_IsButton(modelFlags, 2)) {
+            *modelFlags |= 0x80;
+            *(u8 *)((u8 *)proc + 0x34) = 1;
         }
-        if (Mu_IsAnimDone(*(void **)((u8 *)arg0 + 0x30))) {
+        if (Mu_IsAnimDone(*(void **)((u8 *)proc + 0x30))) {
             fn_800056A0(0);
-            *(u8 *)((u8 *)arg0 + 0x34) = 1;
+            *(u8 *)((u8 *)proc + 0x34) = 1;
         }
     } else {
-        if (Mu_IsAnimDone(obj)) {
-            Process_ClearFunc(arg0);
+        if (Mu_IsAnimDone(unit)) {
+            Process_ClearFunc(proc);
         }
     }
 
-    if (*(u8 *)((u8 *)arg0 + 0x34) == 1) {
-        if (Pad_IsButton(p31, 8)) {
-            *p31 |= 0x40;
+    if (*(u8 *)((u8 *)proc + 0x34) == 1) {
+        if (Pad_IsButton(modelFlags, 8)) {
+            *modelFlags |= 0x40;
         }
     }
 }
