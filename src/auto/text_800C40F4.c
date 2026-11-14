@@ -4946,7 +4946,7 @@ void *fn_800E7E4C(void *, void *);
 void fn_800E7C94(void *, void *, s32, f32);
 void fn_800D06BC(void *);
 void fn_800CFDDC(void *);
-void *fn_800E7EA0(void *);
+void *UiObj_FindEnabledCamera(void *);
 void *fn_800E7DA4(void *, void *);
 void fn_800DBBC8(f32 *, f32 *);
 void Heap_Free(void *);
@@ -5041,7 +5041,7 @@ fn_800D06BC(obj);
 if (gBattleReplayActive != 0) {
 fn_800CFDDC(obj);
 }
-cam = fn_800E7EA0(*(void **)((u8 *)obj + 4));
+cam = UiObj_FindEnabledCamera(*(void **)((u8 *)obj + 4));
 String_Init(&sp4C, lbl_802704F8 + 0x315, &sp18);
 found = fn_800E7DA4(*(void **)((u8 *)obj + 4), &sp4C);
 String_Destroy(&sp4C, -1);
@@ -12647,7 +12647,7 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
   extern "C" void ObjList_Init(void *);
   extern "C" s32 ObjList_Get(void *, s32);
 extern "C" u8 Camera_IsEnabled(void *);
-extern "C" s32 fn_800E7EA0(void *arg0) {
+extern "C" s32 UiObj_FindEnabledCamera(void *arg0) {
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
