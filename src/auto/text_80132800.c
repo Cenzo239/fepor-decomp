@@ -2314,31 +2314,32 @@ void *fn_801363C4(void *arg0, s16 arg1) {
 }
 
 #pragma global_optimizer off
-void fn_80136430(void *arg0) {
-    s16 t;
-    s16 dx;
-    s16 dy;
-    s16 vE;
-    s16 vA;
-    s16 v10;
-    s16 twelve;
-    s16 vC;
-    s16 five;
-
-    vC = *(s16 *)((u8 *)arg0 + 0xC);
-    five = 5;
-    v10 = *(s16 *)((u8 *)arg0 + 0x10);
-    twelve = 0xC;
-    vA = *(s16 *)((u8 *)arg0 + 0xA);
-    vE = *(s16 *)((u8 *)arg0 + 0xE);
-    dy = (s16)(v10 - vC);
-    *(s16 *)((u8 *)arg0 + 0x12) = five;
-    dx = (s16)(vE - vA);
-    t = dy - 0xC;
-    *(s16 *)((u8 *)arg0 + 0x14) = twelve;
-    dx = dx - 5;
-    *(s16 *)((u8 *)arg0 + 0x16) = dx;
-    *(s16 *)((u8 *)arg0 + 0x18) = t;
+void fn_80136430(void *arg0)
+{
+  s16 t;
+  s16 dx;
+  s16 dy;
+  s16 vE;
+  char new_var;
+  s16 vA;
+  s16 twelve;
+  s16 v10;
+  s16 five;
+  s16 vC;
+  vC = *((s16 *) (((u8 *) arg0) + 0xC));
+  five = 5;
+  v10 = *((s16 *) (((u8 *) arg0) + 0x10));
+  twelve = 0xC;
+  vA = *((s16 *) (((u8 *) arg0) + 0xA));
+  vE = *((s16 *) (((u8 *) arg0) + 0xE));
+  dy = (s16) (v10 - vC);
+  *((s16 *) (((u8 *) arg0) + 0x12)) = five & 0xFF;
+  dx = (s16) (vE - vA);
+  t = dy - 0xC;
+  *((s16 *) (((u8 *) arg0) + 0x14)) = twelve;
+  dx = dx - 5;
+  new_var = (*((s16 *) (((u8 *) arg0) + 0x18)) = t);
+  *((s16 *) (((u8 *) arg0) + 0x16)) = dx;
 }
 #pragma global_optimizer reset
 s16 fn_80136474(void *arg0) {
@@ -3660,22 +3661,30 @@ void fn_80138D14(void *arg0) {
 }
 
 void fn_80138D44(void *arg0) {
-    s16 t0e, t0a, t10, t0c;
-    s16 dx, dy;
+    s16 t;
+    s16 dx;
+    s16 dy;
+    s16 vE;
+    s16 vA;
+    s16 v10;
+    s16 twelve;
+    s16 vC;
+    s16 five;
 
-    t0c = *(s16 *)((u8 *)arg0 + 0xC);
-    t10 = *(s16 *)((u8 *)arg0 + 0x10);
-    t0a = *(s16 *)((u8 *)arg0 + 0xA);
-    t0e = *(s16 *)((u8 *)arg0 + 0xE);
-
-    dy = (s16)(t10 - t0c);
-    *(s16 *)((u8 *)arg0 + 0x12) = 3;
-    dx = (s16)(t0e - t0a);
-    dy = (s16)(dy - 5);
-    *(s16 *)((u8 *)arg0 + 0x14) = 5;
-    dx = (s16)(dx - 3);
+    vC = *(s16 *)((u8 *)arg0 + 0xC);
+    five = 3;
+    v10 = *(s16 *)((u8 *)arg0 + 0x10);
+    twelve = 5;
+    vA = *(s16 *)((u8 *)arg0 + 0xA);
+    vE = *(s16 *)((u8 *)arg0 + 0xE);
+    dy = (s16)(v10 - vC);
+    *(s16 *)((u8 *)arg0 + 0x12) = five;
+    dx = (s16)(vE - vA);
+    t = dy - 5;
+    *(s16 *)((u8 *)arg0 + 0x14) = twelve;
+    dx = dx - 3;
+    *(s16 *)((u8 *)arg0 + 0x18) = t;
     *(s16 *)((u8 *)arg0 + 0x16) = dx;
-    *(s16 *)((u8 *)arg0 + 0x18) = dy;
 }
 
 void fn_80138D88(void *arg0) {
@@ -6082,50 +6091,28 @@ void fn_8013CE7C(void *arg0) {
 }
 
 void fn_8013CED0(void *arg0, void *arg1) {
-    extern u8 gUiMenuDrawVtbl[];
-    extern u8 lbl_802920E0[];
-    extern u8 lbl_80291DA0[];
-    extern f32 lbl_8036A6B8;
-    void *vt1;
-    void *vt2;
-    void *vt3;
-    s16 a;
-    s16 b;
-    s16 c;
-    s16 d;
-    s16 z;
-    s16 e;
-    s16 g;
-    f32 f;
-
-    vt1 = gUiMenuDrawVtbl;
-    vt2 = lbl_802920E0;
-    a = 0x80;
-    *(void **)((u8 *)arg0 + 4) = vt1;
-    b = 0x9C;
-    c = 0x160;
-    *(void **)arg0 = arg1;
-    d = 0x88;
-    z = 0;
-    f = lbl_8036A6B8;
-    *(void **)((u8 *)arg0 + 4) = vt2;
-    vt3 = lbl_80291DA0;
-    e = 0x20;
-    g = 4;
-    *(s16 *)((u8 *)arg0 + 8) = a;
-    *(s16 *)((u8 *)arg0 + 0xA) = b;
-    *(s16 *)((u8 *)arg0 + 0xC) = c;
-    *(s16 *)((u8 *)arg0 + 0xE) = d;
-    *(s16 *)((u8 *)arg0 + 0x10) = z;
-    *(s16 *)((u8 *)arg0 + 0x12) = z;
-    *(s16 *)((u8 *)arg0 + 0x14) = z;
-    *(s16 *)((u8 *)arg0 + 0x16) = z;
-    *(f32 *)((u8 *)arg0 + 0x18) = f;
-    *(s16 *)((u8 *)arg0 + 0x1C) = e;
-    *(s16 *)((u8 *)arg0 + 0x1E) = g;
-    *(void **)((u8 *)arg0 + 4) = vt3;
-    *(s32 *)((u8 *)arg0 + 0x20) = z;
-    *(s8 *)((u8 *)arg0 + 0x24) = z;
+extern u8 gUiMenuDrawVtbl[], lbl_802920E0[], lbl_80291DA0[];
+extern f32 lbl_8036A6B8;
+u8 *p=arg0;
+f32 f;
+*(void **)(p+4)=gUiMenuDrawVtbl;
+*(void **)p=arg1;
+f=lbl_8036A6B8;
+*(void **)(p+4)=lbl_802920E0;
+*(s16 *)(p+8)=0x80;
+*(s16 *)(p+10)=0x9c;
+*(s16 *)(p+12)=0x160;
+*(s16 *)(p+14)=0x88;
+*(s16 *)(p+16)=0;
+*(s16 *)(p+18)=0;
+*(s16 *)(p+20)=0;
+*(s16 *)(p+22)=0;
+*(f32 *)(p+24)=f;
+*(s16 *)(p+28)=0x20;
+*(s16 *)(p+30)=4;
+*(void **)(p+4)=lbl_80291DA0;
+*(s32 *)(p+32)=0;
+*(s8 *)(p+36)=0;
 }
 
 #pragma cplusplus on
@@ -6224,7 +6211,11 @@ void fn_8013D13C(void) {
 void fn_8013D140(void *arg0) {
     M2C_UNK Prim2D_SetAlphaByte(M2C_UNK);
     M2C_UNK Ui_DrawAtlasLCorner(M2C_UNK, M2C_UNK, M2C_UNK);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 4), M2C_UNK (**)(), 0x80)();
+    void (**vtable)(void *);
+    void (*method)(void *);
+    vtable = *(void (***)(void *))((u8 *)arg0 + 4);
+    method = vtable[32];
+    method(arg0);
     Ui_DrawAtlasLCorner(0, 0, 0x10);
     Prim2D_Begin();
     Prim2D_SetAlphaByte(0x80);
@@ -6970,12 +6961,16 @@ extern "C" s16 fn_8013E684(void *arg0, void *arg1) {
         virtual void v33() = 0;
         virtual s16 v34() = 0;
     };
-    s32 sum;
+    struct Arg1 {
+        u8 pad[0x60];
+        s8 field_60;
+    };
     s16 temp;
+    s32 sum;
 
     temp = ((Obj *)arg0)->v34();
-    sum = (s32)temp + *(s8 *)((u8 *)arg1 + 0x60);
-    sum = sum - 1;
+    sum = (s32)temp + ((Arg1 *)arg1)->field_60;
+    sum -= 1;
     return (s16)(sum / (s32)temp);
 }
 #pragma cplusplus reset
@@ -7498,15 +7493,11 @@ s32 fn_8013FBD4(s32 arg0) {
 }
 
 void fn_8013FBDC(s16 *dst, s16 *src) {
-    s16 dx = dst[0];
-    s16 sx = src[0];
-    s16 sy = src[1];
-    s16 dy;
-    dx = (s16)(dx + sx);
-    dst[0] = dx;
-    dy = dst[1];
-    dy = (s16)(dy + sy);
-    dst[1] = dy;
+    s32 dx = dst[0];
+    s32 sx = src[0];
+    s32 sy = src[1];
+    dst[0] = sx + dx;
+    dst[1] = sy + dst[1];
 }
 
 void fn_8013FC00(s16 *dst, s16 *src)
@@ -7539,7 +7530,7 @@ void fn_8013FC14(s16 *dst, s16 *src)
 #pragma scheduling off
 void fn_8013FC28(s32 *dst, s32 *src, s16 *off) {
     s16 local[2];
-    s16 b, y, x, a;
+    s16 a, b, x, y;
 
     *(s32 *)local = *src;
     a = off[0];
@@ -7626,35 +7617,13 @@ extern "C" void List_Insert(void *outNode, void *list, void *posRef, void *value
 
 #pragma cplusplus on
 extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-    };
-    void *self = arg0;
-    void *flag;
-    Obj *p;
-    Obj *q;
-
-    flag = *(void **)((u8 *)arg0 + 0x34);
-    if (flag != NULL) {
-        p = *(Obj **)((u8 *)*(void **)((u8 *)self + 0x38) + 8);
-    } else {
-        p = (Obj *)0;
-    }
-    if (p != 0) {
-        if (flag != NULL) {
-            q = *(Obj **)((u8 *)*(void **)((u8 *)self + 0x38) + 8);
-        } else {
-            q = (Obj *)0;
-        }
-        q->v7();
-    }
+struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; };
+void *self=arg0;
+void *flag=*(void **)((u8 *)arg0+0x34);
+Obj *p;
+Obj *q;
+if(flag) { p=*(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8); } else p=0;
+if(p) { q=flag ? *(Obj **)((u8 *)*(void **)((u8 *)self+0x38)+8):0; q->v7(); }
 }
 
 #pragma cplusplus on
@@ -7712,57 +7681,37 @@ void fn_8013FEF0(void) {
 }
 
 void Ui_BringChildToFront(void *arg0, void *arg1) {
-    void List_Erase(void *, void *, void *);
-    void List_Insert(void *, void *, void *, void *);
-
-    u8 *self;
-    u8 *sentinel;
-    u8 *node;
-    void *found;
-    void *end;
-    void *key;
-    u32 temp14;
-    u32 tempC;
-
-    self = (u8 *)arg0;
-    key = arg1;
-
-    if (key != NULL) {
-        sentinel = self + 0x38;
-        node = *(u8 **)(self + 0x3C);
-
-        while (1) {
-            node = *(u8 **)(node + 4);
-
-            if (node == sentinel) {
-                break;
-            }
-
-            if (*(void **)(node + 8) == key) {
-                break;
-            }
-        }
-
-        if (node != sentinel) {
-            found = node;
-
-            List_Erase(
-                &temp14,
-                self + 0x34,
-                &found
-            );
-
-            end = sentinel;
-
-            List_Insert(
-                &tempC,
-                self + 0x34,
-                &end,
-                &key
-            );
-        }
-    }
+void List_Erase(void *,void *,void *);
+void List_Insert(void *,void *,void *,void *);
+u8 *self;
+void *found;
+u32 temp14;
+void *end;
+u32 tempC;
+void *key;
+u8 *sentinel;
+u8 *node;
+self=(u8 *)arg0;
+key=arg1;
+if(arg1!=0) {
+sentinel=self+0x38;
+node=*(u8 **)(sentinel+4);
+goto check;
+for(;;) {
+node=*(u8 **)(node+4);
+check:
+if(node!=sentinel) {
+if(*(void **)(node+8)!=arg1) continue;
 }
+break;
+}
+if(node!=sentinel) {
+found=node;
+List_Erase(&temp14,self+0x34,&found);
+end=sentinel;
+List_Insert(&tempC,self+0x34,&end,&key);
+}
+}}
 
 #pragma cplusplus on
 extern "C" void *Ui_FindChild(void *arg0, s16 arg1, u8 arg2) {
@@ -8133,42 +8082,20 @@ extern "C" void Ui_ClearPanelChildren(void *self) {
 #pragma cplusplus reset
 
 void fn_80140D98(void *arg0) {
-    extern f32 lbl_8036A730;
-    extern f64 lbl_8036A738;
-    f32 var_f2;
-    f32 temp_f4;
-    f32 temp_f3;
-    s32 temp_r0;
-    u32 temp_r7;
-    void *var_r3;
-    void *var_r4;
-
-    (void)lbl_8036A738;
-    temp_r7 = *(u32 *)((u8 *)arg0 + 0x34);
-    if (temp_r7 != 0U) {
-        var_r4 = *(void **)(*(u8 **)((u8 *)arg0 + 0x38) + 8);
-    } else {
-        var_r4 = NULL;
-    }
-    temp_f4 = (f32)(*(s16 *)((u8 *)var_r4 + 0x24) + 1);
-    temp_f3 = (f32)(*(s16 *)((u8 *)arg0 + 0x28) + 1);
-    temp_r0 = *(s32 *)((u8 *)arg0 + 0x40);
-    switch (temp_r0) {
-    case 0:
-        var_f2 = (lbl_8036A730 / temp_f4) * (temp_f4 - temp_f3);
-        break;
-    case 1:
-        var_f2 = temp_f3 * (lbl_8036A730 / temp_f4);
-        break;
-    default:
-        break;
-    }
-    if (temp_r7 != 0U) {
-        var_r3 = *(void **)(*(u8 **)((u8 *)arg0 + 0x38) + 8);
-    } else {
-        var_r3 = NULL;
-    }
-    *(f32 *)((u8 *)var_r3 + 0x2C) = var_f2;
+extern f32 lbl_8036A730;
+extern f64 lbl_8036A738;
+f32 var_f2; f32 temp_f3; f32 temp_f4;
+s32 temp_r0; u32 temp_r7; void *var_r3; void *var_r4;
+(void)lbl_8036A738;
+temp_r7=*(u32*)((u8*)arg0+0x34);
+if(temp_r7!=0U) var_r4=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r4=NULL;
+temp_f4=(f32)(*(s16*)((u8*)var_r4+0x24)+1);
+temp_f3=(f32)(*(s16*)((u8*)arg0+0x28)+1);
+temp_r0=*(s32*)((u8*)arg0+0x40);
+switch(temp_r0) {case 0: var_f2=(lbl_8036A730/temp_f4)*(temp_f4-temp_f3); break;
+case 1: { f32 scale=lbl_8036A730/temp_f4; var_f2=scale; var_f2*=temp_f3; }; break; default: break;}
+if(temp_r7!=0U) var_r3=*(void**)(*(u8**)((u8*)arg0+0x38)+8); else var_r3=NULL;
+*(f32*)((u8*)var_r3+0x2C)=var_f2;
 }
 
 void fn_80141040(void)
@@ -8435,12 +8362,24 @@ void fn_80142018(Vec2s *out, void *arg0) {
 }
 
 #pragma scheduling off
-void fn_8014203C(void *arg0, Vec2s *size) {
-    s16 *p = (s16 *)((u8 *)arg0 + 0xA);
-    s16 w = size->x;
-    s16 h = size->y;
-    p[2] = p[0] + w;
-    p[3] = p[1] + h;
+void fn_8014203C(void *arg0, Vec2s *size)
+{
+  s16 xa;
+  s16 *new_var;
+  s16 w;
+  s16 *new_var2;
+  s16 h;
+  xa = *((s16 *) (((u8 *) arg0) + 0xA));
+  if ((!size->y) && (!size->y))
+  {
+    if (!arg0)
+    {
+    }
+  }
+  w = size->x;
+  h = size->y;
+  *((s16 *) (((u8 *) arg0) + 0xE)) = xa + w;
+  *((s16 *) (((u8 *) arg0) + 0x10)) = (*(new_var = &(*(new_var2 = (s16 *) (((u8 *) arg0) + 0xC))))) + h;
 }
 #pragma scheduling on
 int fn_80142060(void *arg0) {
@@ -9205,40 +9144,30 @@ void fn_80143784(void **arg0, void *arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_801439F0(void *arg0, s32 arg1, s32 arg2) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual void v4() = 0;
-        virtual void v5() = 0;
-        virtual void v6() = 0;
-        virtual void v7() = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual s32 v12() = 0;
-    };
-    extern u32 lbl_8036C4E8;
-    extern u32 lbl_8036C4EC;
-    void fn_80144EAC(void *, void *, void *, void *);
-    u32 pair[2];
-    void *entry;
-    u32 result;
-    s32 index;
-    void *base;
-
-    index = ((Obj *)arg0)->v12();
-    if (index != 12) {
-        pair[0] = lbl_8036C4E8;
-        pair[1] = lbl_8036C4EC;
-        base = (u8 *)arg0 + index * 12 + 0x90;
-        pair[0] = arg1;
-        pair[1] = arg2;
-        entry = (u8 *)base + 4;
-        fn_80144EAC(&result, base, &entry, pair);
-    }
+ struct Obj { virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0; virtual s32 v12()=0; };
+ extern u32 lbl_8036C4E8; extern u32 lbl_8036C4EC;
+ void fn_80144EAC(void *,void *,void *,void *);
+ u32 pair[2]; void *entry; u32 result; s32 index; void *base;
+ index=((Obj *)arg0)->v12();
+ if(index!=12) {
+ 
+ pair[0]=lbl_8036C4E8; pair[1]=lbl_8036C4EC;
+ index*=12;
+ base=(u8 *)arg0+index+0x90;
+ pair[0]=arg1; pair[1]=arg2; entry=(u8 *)base+4;
+ fn_80144EAC(&result,base,&entry,pair);
+ }
 }
 #pragma cplusplus on
 extern "C" void *ListWidget_GetSelected(void *arg0) {
@@ -10353,32 +10282,17 @@ void fn_801453F0(void) {
 }
 
 void fn_80145488(void) {
-    void Process_UnlinkByKey(void *);
-    void *Process_Create(void *, s32);
-    extern u8 gBgmVolFadeProcs[];
-    extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
-    extern f32 lbl_8036A77C;
-    extern f64 lbl_8036A780;
-    s32 base;
-    void *temp_r3;
-    f32 b;
-    f32 a;
-
-    (void)lbl_8036A780;
-    base = (s32)gBgmVolFadeProcs;
-    Process_UnlinkByKey((void *)(base + 0x28));
-    Process_UnlinkByKey((void *)(base + 0x3C));
-    Process_UnlinkByKey((void *)(base + 0x50));
-    Process_UnlinkByKey((void *)(base + 0x64));
-    Process_UnlinkByKey((void *)(base + 0x78));
-    Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = Process_Create((void *)(base + 0x78), 3);
-    a = gBgmVolTimerZero;
-    b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)gBgmVol;
+ void Process_UnlinkByKey(void *); void *Process_Create(void *,s32);
+ extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
+ extern f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
+ s32 base=(s32)gBgmVolFadeProcs; f32 *proc;
+ Process_UnlinkByKey((void *)(base+0x28)); Process_UnlinkByKey((void *)(base+0x3C));
+ Process_UnlinkByKey((void *)(base+0x50)); Process_UnlinkByKey((void *)(base+0x64));
+ Process_UnlinkByKey((void *)(base+0x78)); Process_UnlinkByKey((void *)(base+0x8C));
+ proc=Process_Create((void *)(base+0x78),3);
+ { f32 a=gBgmVolTimerZero; f32 b=lbl_8036A77C;
+ proc[12]=a; proc[13]=b; }
+ proc[14]=(f32)(u32)gBgmVol;
 }
 
 void fn_80145520(void) {
@@ -10486,18 +10400,16 @@ void fn_801457B4(void) {
     extern u8 gBgmQuietVol;
     extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
-    void *temp_r3;
-    f32 a;
-    f32 b;
-
+    f32 *p;
+    f32 a, b;
     Process_UnlinkByKey(gBgmVolFadeProcs);
     Process_UnlinkByKey(lbl_8029256C);
-    temp_r3 = Process_Create(lbl_8029256C, 3);
-    a = gBgmVolTimerZero;
+    p = Process_Create(lbl_8029256C, 3);
     b = lbl_8036A77C;
-    *(f32 *)((u8 *)temp_r3 + 0x30) = a;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmQuietVol;
+    a = gBgmVolTimerZero;
+    p[12] = a;
+    p[13] = b;
+    p[14] = (f32)(u32)gBgmQuietVol;
 }
 
 void BgmVol_FadeInProcess3(void *proc) {
@@ -10664,64 +10576,30 @@ void fn_80145E9C(void) {
 }
 
 void *fn_80145EBC(void *arg0) {
-    extern u8 lbl_80276BC8[];
-
-    void *Hash_Lookup(void *);
-    s32 Str_Cmp(void *, void *);
-
-    s32 count;
-    u8 *entry;
-    s32 index;
-    s32 *table;
-
-    table = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x94);
-    entry = (u8 *)(table + 1);
-    count = *table;
-    index = 0;
-    while (index < count) {
-        if (*(void **)entry != NULL) {
-            if (Str_Cmp(*(void **)entry, arg0) == 0) {
-                return entry;
-            }
-        }
-        index += 1;
-        entry += 8;
-    }
-
-    return NULL;
+ extern u8 lbl_80276BC8[];
+ void *Hash_Lookup(void *); s32 Str_Cmp(void *,void *);
+ s32 count; u8 *entry; s32 index; u8 *table;
+ table=Hash_Lookup(lbl_80276BC8+0x94);
+ entry=table; count=*(s32 *)entry; entry+=4; index=0;
+ while(index<count) {
+ if(*(void **)entry && Str_Cmp(*(void **)entry,arg0)==0) return entry;
+ index++; entry+=8;
+ }
+ return NULL;
 }
 
 s32 fn_80145F58(void *arg0, void **arg1) {
-    extern u8 lbl_80276BC8[];
-    void *Hash_Lookup(void *);
-    s32 Str_Cmp(void *, void *);
-
-    s32 count;
-    u8 *entry;
-    s32 matches;
-    s32 index;
-    u8 *table;
-
-#pragma scheduling off
-    table = (u8 *)Hash_Lookup(lbl_80276BC8 + 0x9D);
-    entry = table + 4;
-    count = *(s32 *)table;
-#pragma scheduling reset
-    matches = 0;
-    index = 0;
-
-    while (index < count) {
-        if (*(void **)entry != NULL) {
-            if (Str_Cmp(*(void **)entry, arg0) == 0) {
-                *arg1 = entry;
-                arg1++;
-                matches++;
-            }
-        }
-        index++;
-        entry += 0x10;
-    }
-    return matches;
+ extern u8 lbl_80276BC8[];
+ void *Hash_Lookup(void *); s32 Str_Cmp(void *, void *);
+ s32 count; u8 *entry; s32 matches; s32 index; u8 *table;
+ table=Hash_Lookup(lbl_80276BC8+0x9D);
+ entry=table+4;
+ count=*((s32 *)(table=entry)-1);
+ matches=0; index=0;
+ while(index<count) {
+ if(*(void **)entry && Str_Cmp(*(void **)entry,arg0)==0) { *arg1++=entry; matches++; }
+ index++; entry+=0x10;
+ } return matches;
 }
 
 s32 fn_80146AE4(void) {
@@ -11159,12 +11037,11 @@ s32 SeCue_PlayAt(void *, s32, f32, f32, f32);
 
 #pragma scheduling off
 s32 SeCue_PlayAtPos(void *arg0, f32 *arg1, s32 arg2) {
-    s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
-    f32 x, y, z;
-    x = arg1[0];
-    y = arg1[1];
-    z = arg1[2];
-    return SeCue_PlayAt(arg0, x, y, z, arg2);
+ s32 SeCue_PlayAt(void *, f32, f32, f32, s32);
+ f32 z = arg1[2];
+ f32 y = arg1[1];
+ f32 x = arg1[0];
+ return SeCue_PlayAt(arg0, x, y, z, arg2);
 }
 #pragma scheduling reset
 s32 SeCue_PlayAt(void *arg0, s32 arg1, f32 farg0, f32 farg1, f32 farg2) {
@@ -11783,19 +11660,12 @@ after_search:
 
 void fn_8014876C(void *arg0, s8 arg1, s32 arg2) {
     extern f32 gMsPerFrame;
-    s32 temp;
-    s16 var_r6;
-    s16 a2;
-
-    a2 = (s16)arg2;
-    temp = (s32)((f32)a2 / gMsPerFrame);
-    var_r6 = (s16)temp;
-    if (var_r6 <= 0) {
-        var_r6 = 1;
-    }
-    M2C_FIELD(arg0, u8 *, 0x28) = (u8)M2C_FIELD(arg0, u8 *, 0x16);
+    s32 temp = (s32)((f32)(s16)arg2 / gMsPerFrame);
+    s16 frames = temp;
+    if (frames <= 0) frames = 1;
+    M2C_FIELD(arg0, u8 *, 0x28) = M2C_FIELD(arg0, u8 *, 0x16);
     M2C_FIELD(arg0, s8 *, 0x29) = arg1;
-    M2C_FIELD(arg0, s16 *, 0x2E) = var_r6;
+    M2C_FIELD(arg0, s16 *, 0x2E) = frames;
     M2C_FIELD(arg0, s16 *, 0x2C) = 0;
 }
 
