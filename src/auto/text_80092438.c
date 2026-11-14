@@ -1296,15 +1296,16 @@ done:
     return (u8)(lim < result);
 }
 
-s32 Unit_CanEquipItem(void *arg0, void *arg1) {
+/* True if unit may equip itemData: flag 0x200 needs status 9; else allow when +0x1A5 high nibble is 0, deny on flags 2/4, else allow. */
+s32 Unit_CanEquipItem(void *unit, void *itemData) {
     u8 Status_Test(void *, s32);
     u64 flags;
 
-    flags = *(u64 *)((u8 *)arg1 + 0x38);
+    flags = *(u64 *)((u8 *)itemData + 0x38);
     if (flags & 0x200) {
-        return (u8)Status_Test((u8 *)arg0 + 0x1BC, 9) != 0;
+        return (u8)Status_Test((u8 *)unit + 0x1BC, 9) != 0;
     }
-    if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
+    if (((*(u8 *)((u8 *)unit + 0x1A5) >> 4) & 7) == 0) {
         return 1;
     }
     if (flags & 2) {
