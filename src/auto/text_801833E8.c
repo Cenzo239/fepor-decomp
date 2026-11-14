@@ -10980,7 +10980,7 @@ void fn_8019DB68(void) {
     void Map_SelectObjAt(void);
     void fn_8019F230(void);
     void fn_8019ED74(void);
-    void fn_8019ECB4(void);
+    void Map_OpenObjAt(void);
     void fn_8019EAF4(void);
     void ScriptCmd_EventMapFlags(void);
     void fn_801A0258(void);
@@ -11067,7 +11067,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x356, Map_SelectObjAt, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x360, fn_8019F230, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x369, fn_8019ED74, 3);
-    Script_RegisterCommand(lbl_8027AD98 + 0x371, fn_8019ECB4, 3);
+    Script_RegisterCommand(lbl_8027AD98 + 0x371, Map_OpenObjAt, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x37A, fn_8019EAF4, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x38B, ScriptCmd_EventMapFlags, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x396, fn_801A0258, 2);
@@ -11394,7 +11394,7 @@ s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
     return 1;
 }
 
-s32 fn_8019ECB4(s32 arg0, s32 arg1, s32 arg2) {
+s32 Map_OpenObjAt(s32 arg0, s32 arg1, s32 arg2) {
     s32 Map_Get(void);
     void *fn_80046F14(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
