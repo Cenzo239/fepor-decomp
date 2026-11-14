@@ -7794,7 +7794,7 @@ s32 Talk_MatchesStoredPair(void *entry) {
     return 0;
 }
 #pragma global_optimizer on
-void fn_800BE658(s32 arg0, s32 arg1) {
+void Event_StartTalkByIndex(s32 arg0, s32 arg1) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void EventFlag_Clear(void *, void *);

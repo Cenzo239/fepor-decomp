@@ -5059,7 +5059,7 @@ void fn_801C0A28(void *arg0) {
     fn_8016A5AC(*(s32 *)((char *)arg0 + 0x18));
     fn_8013FEF0();
     fn_8014876C(gFxChannels, 0x46, 0x2EE);
-    fn_800BE658(fn_801D2AAC(temp_r31), arg0);
+    Event_StartTalkByIndex(fn_801D2AAC(temp_r31), arg0);
 }
 
 void fn_801C0A9C(void *arg0) {
