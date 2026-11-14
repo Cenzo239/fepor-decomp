@@ -6305,7 +6305,8 @@ s32 fn_800BBE9C(u8 arg0, s32 arg1) {
     return 1;
 }
 
-s32 Unit_SendItemToConvoy(u8 arg0, s32 arg1) {
+s32 Unit_SendItemToConvoy(u8 unitId, s32 slotIndex) {
+    /* Move one item from a unit slot into the convoy (when battle state allows), then remove it from the unit. */
     u32 *Unit_GetItemSlot(void *, s32);
     void Unit_RemoveItem(void *, s8);
     void Convoy_AddItem(void *, u32 *);
@@ -6313,26 +6314,26 @@ s32 Unit_SendItemToConvoy(u8 arg0, s32 arg1) {
     extern u8 gUnits[];
     extern u8 gConvoy[];
     extern u8 gBattleState[];
-    u32 *temp_r3;
-    void *var_r31;
+    u32 *slot;
+    void *unit;
 
-    if (arg0 != 0) {
-        var_r31 = gUnits + ((arg0 - 1) * 0x280);
+    if (unitId != 0) {
+        unit = gUnits + ((unitId - 1) * 0x280);
     } else {
-        var_r31 = NULL;
+        unit = NULL;
     }
-    if ((var_r31 == NULL) || (*(u32 *)((u8 *)var_r31 + 0x188) == 0U)) {
+    if ((unit == NULL) || (*(u32 *)((u8 *)unit + 0x188) == 0U)) {
         return 0;
     }
     if (fn_8014D8DC(gBattleState) == 0) {
         return 0;
     }
-    temp_r3 = Unit_GetItemSlot(var_r31, arg1);
-    if (*temp_r3 == 0U) {
+    slot = Unit_GetItemSlot(unit, slotIndex);
+    if (*slot == 0U) {
         return 0;
     }
-    Convoy_AddItem(gConvoy, temp_r3);
-    Unit_RemoveItem(var_r31, (s8)arg1);
+    Convoy_AddItem(gConvoy, slot);
+    Unit_RemoveItem(unit, (s8)slotIndex);
     return 1;
 }
 
