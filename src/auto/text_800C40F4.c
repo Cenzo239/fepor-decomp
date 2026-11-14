@@ -12647,7 +12647,8 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
   extern "C" void ObjList_Init(void *);
   extern "C" s32 ObjList_Get(void *, s32);
 extern "C" u8 Camera_IsEnabled(void *);
-extern "C" s32 UiObj_FindEnabledCamera(void *arg0) {
+/* Return the first enabled Camera child under obj, or 0 if none. */
+extern "C" s32 UiObj_FindEnabledCamera(void *obj) {
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -12665,16 +12666,16 @@ extern "C" s32 UiObj_FindEnabledCamera(void *arg0) {
     extern char gUiClassNames[];
     u8 list[0x18];
     s32 count;
-    s32 item;
+    s32 camera;
     s32 i;
 
     ObjList_Init(list);
-    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
+    count = ((Obj *)obj)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        item = ObjList_Get(list, i);
-        if (Camera_IsEnabled((void *)item)) {
+        camera = ObjList_Get(list, i);
+        if (Camera_IsEnabled((void *)camera)) {
             ObjList_Destroy(list, -1);
-            return item;
+            return camera;
         }
     }
     ObjList_Destroy(list, -1);
