@@ -1503,7 +1503,7 @@ void DVDReset(void) {
     ResumeFromHere_803685C0 = 0;
 }
 
-s32 fn_8020EF60(void *arg0) {
+s32 DVDGetCommandBlockStatus(void *arg0) {
     s32 temp_r0;
     s32 var_r31;
 
