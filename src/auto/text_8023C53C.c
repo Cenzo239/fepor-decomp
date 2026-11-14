@@ -5630,13 +5630,13 @@ s32 AudioGroup_Unregister(u16 id, s32 arg1) {
 
 s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
     s32 i;
-    u16 *entry;
+    u8 *entry;
     u16 temp;
     
     for (i = 0; i < lbl_80368A08; i++) {
-        entry = &lbl_803548B8 + (i * 0xC);
-        if (arg0 == *entry) {
-            entry[2] = entry[2] + 1;
+        entry = (u8 *)lbl_803548B8 + (i * 0xC);
+        if (arg0 == *(u16 *)entry) {
+            *(u16 *)(entry + 4) = *(u16 *)(entry + 4) + 1;
             return 0;
         }
     }
@@ -5650,11 +5650,11 @@ s32 fn_8024FE1C(u16 arg0, void *arg1, u16 arg2) {
     temp = lbl_80368A08;
     lbl_80368A08 = temp + 1;
     
-    entry = &lbl_803548B8 + (temp * 0xC);
-    entry[0] = arg0;
-    entry[1] = arg2;
-    entry[4] = (u32)arg1;
-    entry[2] = 1;
+    entry = (u8 *)lbl_803548B8 + (temp * 0xC);
+    *(u16 *)entry = arg0;
+    *(u16 *)(entry + 2) = arg2;
+    *(void **)(entry + 8) = arg1;
+    *(u16 *)(entry + 4) = 1;
     
     if (arg2 > 0) {
         u32 count = arg2 >> 3;
