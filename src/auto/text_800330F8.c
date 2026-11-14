@@ -1473,7 +1473,7 @@ void Unit_AddSupportPoints(void *arg0, s32 arg1) {
 }
 #pragma global_optimizer reset
 #pragma opt_strength_reduction reset
-s32 fn_80036A24(u8 *arg0)
+s32 Unit_GetSupportRankTotal(u8 *arg0)
 {
   u8 *table;
   u8 *entry;

@@ -15490,7 +15490,7 @@ extern "C" void fn_80181354(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" s32 fn_80036A24(s32, s16);
+extern "C" s32 Unit_GetSupportRankTotal(s32, s16);
 extern "C" void fn_80157700(s32, s16, u8, s32);
 extern "C" void fn_80157930(s32, s32, s16, s16, s32, s32);
 extern "C" void fn_8018179C(void *arg0) {
@@ -15504,7 +15504,7 @@ extern "C" void fn_8018179C(void *arg0) {
     ((Obj *)arg0)->v2();
     fn_80157930(0, 0, (s16)(M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA)), (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)), 0xE6, 0x10);
     y = (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC)) + 2;
-    fn_80157700(0, y, 5 - fn_80036A24(M2C_FIELD(arg0, s32 *, 0x48), (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC))), 0x10);
+    fn_80157700(0, y, 5 - Unit_GetSupportRankTotal(M2C_FIELD(arg0, s32 *, 0x48), (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC))), 0x10);
 }
 
 #pragma use_lmw_stmw on
