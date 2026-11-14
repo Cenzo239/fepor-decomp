@@ -11988,7 +11988,7 @@ void Stream_WriteU8(void *arg0, s8 arg1) {
     *(*pp)++ = arg1;
 }
 
-s32 fn_8017A600(void *arg0, void *arg1) {
+s32 Stream_LoadFile(void *arg0, void *arg1) {
     void *fn_801FFD74(void *, void *);
     s32 fn_801FFD54(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
