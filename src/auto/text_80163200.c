@@ -1474,7 +1474,7 @@ void *fn_80165B40(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void *fn_80165BAC(void *arg0, void *arg1, void *arg2) {
+void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
     s32 Map_Get(void);
     void fn_80041514(s32, void *);
     void Xml_GetNamedValue(void *, void *, void *);
