@@ -5523,7 +5523,7 @@ int fn_801C18E4(void *arg0) {
 }
 
 void fn_801C18FC(s32 arg0) {
-    void fn_8000A388(void *, void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *, void *);
     extern void fn_801C19E4(void *, s32);
     extern u8 lbl_80297FF8[];
     extern s8 lbl_80368280;
@@ -5533,12 +5533,12 @@ void fn_801C18FC(s32 arg0) {
     c = &lbl_80368280;
     lbl_80368280 = -1;
     *(s32 *)((char *)c + 4) = (s32)((f32)arg0 / lbl_8036B328);
-    fn_8000A388(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, c);
+    GfxEnt_ForEachKey(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, c);
 }
 
 void fn_801C1970(s8 arg0, s32 arg1)
 {
-    void fn_8000A388(void *, void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *, void *);
     extern void fn_801C19E4(void *, s32);
     extern u8 lbl_80297FF8[];
     extern s8 lbl_80368280;
@@ -5548,7 +5548,7 @@ void fn_801C1970(s8 arg0, s32 arg1)
     lbl_80368280 = arg0;
     temp = (f32)arg1 / lbl_8036B328;
     *(s32 *)((char *)&lbl_80368280 + 4) = (s32)temp;
-    fn_8000A388(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, &lbl_80368280);
+    GfxEnt_ForEachKey(lbl_80297FF8, (void *)fn_801C19E4, &lbl_80368280, &lbl_80368280);
 }
 
 void fn_801C19E4(u8 *arg0, u8 *arg1) {

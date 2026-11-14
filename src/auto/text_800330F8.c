@@ -12739,7 +12739,7 @@ void fn_800536E4(void *arg0, void *arg1) {
 
 void *fn_800536FC(u16 arg0) {
     void fn_80053750(void *, void *);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     extern u8 lbl_80285990[];
     struct {
         u16 value;
@@ -12749,7 +12749,7 @@ void *fn_800536FC(u16 arg0) {
 
     data.value = arg0;
     data.result = NULL;
-    fn_8000A388(lbl_80285990, fn_80053750, &data);
+    GfxEnt_ForEachKey(lbl_80285990, fn_80053750, &data);
     if (data.result != NULL) {
         return data.result;
     }
@@ -12837,7 +12837,7 @@ void fn_80053E9C(void *arg0) {
 
 void fn_80053F08(void *arg0) {
     void fn_800536E4(void *, void *);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void Process_ClearFunc(void *);
     extern u8 lbl_80285990[];
     struct {
@@ -12847,7 +12847,7 @@ void fn_80053F08(void *arg0) {
 
     data.value = arg0;
     data.result = NULL;
-    fn_8000A388(lbl_80285990, fn_800536E4, &data);
+    GfxEnt_ForEachKey(lbl_80285990, fn_800536E4, &data);
     if (data.result == NULL) {
         Process_ClearFunc(arg0);
     }

@@ -2291,7 +2291,7 @@ void fn_8000A358(s32 arg0) {
     fn_800C4638(arg0, lbl_80267C70 + 0x3A, 0);
 }
 
-void fn_8000A388(u32 arg0, void (*arg1)(void *, s32), s32 arg2) {
+void GfxEnt_ForEachKey(u32 arg0, void (*arg1)(void *, s32), s32 arg2) {
     extern u8 gGfxEnts[];
     u8 *var_r31;
     s32 var_r30;

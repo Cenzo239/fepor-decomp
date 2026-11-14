@@ -13765,7 +13765,7 @@ s32 FloatAnim_IsActive(void) {
 /* Start a process that lerps target's float at +4 by amount (duration from amount). */
 void FloatAnim_Start(void *target, s32 amount, void *parent) {
     void FloatAnim_UnlinkSame(void *, u32);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void Process_Goto(void *, s32);
     void *Process_Create(void *, void *);
     s32 duration;
@@ -13773,7 +13773,7 @@ void FloatAnim_Start(void *target, s32 amount, void *parent) {
     void *proc;
 
     if (target != NULL) {
-        fn_8000A388(E_FloatAnim_script, FloatAnim_UnlinkSame, target);
+        GfxEnt_ForEachKey(E_FloatAnim_script, FloatAnim_UnlinkSame, target);
         proc = Process_Create(E_FloatAnim_script, parent);
         M2C_FIELD(proc, void **, 0x30) = target;
         M2C_FIELD(proc, f32 *, 0x40) = M2C_FIELD(M2C_FIELD(proc, void **, 0x30), f32 *, 4);

@@ -476,7 +476,7 @@ void fn_80183EAC(s32 arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
 }
 
 void *MoveAnim_BindMapPath(void *unit, void *parent) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void MoveAnim_MatchUnit(void *, void *);
     void *Process_CreateChild(void *, void *);
     void *fn_800C45B8(s32, void *, s32);
@@ -498,7 +498,7 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
     path = BattleMap_GetPath(gBattleMap);
     search[12] = unit;
     search[13] = 0;
-    fn_8000A388(gMoveAnimClass, MoveAnim_MatchUnit, search);
+    GfxEnt_ForEachKey(gMoveAnimClass, MoveAnim_MatchUnit, search);
     anim = search[13];
     if (anim == 0) {
         anim = Process_CreateChild(gMoveAnimClass, parent);
@@ -554,14 +554,14 @@ void *MoveAnim_BindMapPath(void *unit, void *parent) {
 #pragma use_lmw_stmw on
 /* Find or create a MoveAnim for unit and append the given path steps. */
 void *MoveAnim_BindPath(void *unit, u8 *path, u16 flagsIn, void *parent) {
-void fn_8000A388(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
+void GfxEnt_ForEachKey(void *,void *,void *); void MoveAnim_MatchUnit(void *,void *);
 void *Process_CreateChild(void *,void *); void *fn_800C45B8(s32,void *,s32);
 void Unit_SetModelAlpha(void *,s32); void MoveAnim_BuildPathHeights(void *);
 extern u8 gMoveAnimClass[],MoveAnim_str[];
 void *search[14];
 u8 *anim; s32 i; u8 *p; s32 count; s32 tile; u8 flags;
 search[12]=unit; search[13]=0;
-fn_8000A388(gMoveAnimClass,MoveAnim_MatchUnit,search);
+GfxEnt_ForEachKey(gMoveAnimClass,MoveAnim_MatchUnit,search);
 anim=search[13];
 if(anim==0) {
 anim=Process_CreateChild(gMoveAnimClass,parent);
@@ -588,7 +588,7 @@ anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
 #pragma opt_common_subs reset
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 lbl_80295B64[];
@@ -602,7 +602,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
-    fn_8000A388(lbl_80295B64, MuFade_UnlinkSame, sp8);
+    GfxEnt_ForEachKey(lbl_80295B64, MuFade_UnlinkSame, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
@@ -619,7 +619,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 }
 
 void fn_80184618(s32 arg0, u32 arg1) {
- void fn_8000A388(void *, void *, void *);
+ void GfxEnt_ForEachKey(void *, void *, void *);
  void *Process_Create(void *, u32);
  void MuFade_UnlinkSame(void *, void *);
  extern u8 E_MuFlag_script[];
@@ -628,14 +628,14 @@ void fn_80184618(s32 arg0, u32 arg1) {
  s32 value=arg0;
  void *p;
  *(s32 *)(sp8+0x30)=value;
- fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, sp8);
+ GfxEnt_ForEachKey(E_MuFlag_script, MuFade_UnlinkSame, sp8);
  if (!parent) parent=3;
  p=Process_Create(E_MuFlag_script, parent);
  *(s32 *)((u8 *)p+0x30)=value;
 }
 
 void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
@@ -648,7 +648,7 @@ void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
 
     var_r31 = arg3;
     M2C_FIELD(spC, void **, 0x30) = (void *)arg0;
-    fn_8000A388(lbl_80295AC0, MuFade_UnlinkSame, spC);
+    GfxEnt_ForEachKey(lbl_80295AC0, MuFade_UnlinkSame, spC);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
@@ -677,7 +677,7 @@ s32 fn_80184750(s32 arg0, s32 arg1, struct Unit* unit, s32 arg3, s32 arg4, s32 a
 }
 
 void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     f32 fn_8004BDA8(f32, f32, f32);
     void MuFade_UnlinkSame(void *, void *);
@@ -693,7 +693,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     b = lbl_8036ACD8 + (f32)arg2;
     temp_f31 = fn_8004BDA8(a, b, lbl_8036ACD8);
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -710,7 +710,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
 void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
     /* Fade unit facing (0x15C) toward target unit; snap if frames<=0. */
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     f32 Unit_GetAngleTo(void);
     void MuFade_UnlinkSame(void *, void *);
@@ -724,7 +724,7 @@ void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
     }
     angle = Unit_GetAngleTo();
     M2C_FIELD(sp8, void **, 0x30) = unit;
-    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (angle == ((f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -741,7 +741,7 @@ void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
 
 void *Unit_FadeFacing(void *unit, s32 frames, s32 priority, f32 angle) {
     /* Fade unit facing (0x15C) toward angle; snap if frames<=0. */
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
@@ -749,7 +749,7 @@ void *Unit_FadeFacing(void *unit, s32 frames, s32 priority, f32 angle) {
     void *proc;
 
     M2C_FIELD(sp8, void **, 0x30) = unit;
-    fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (angle == ((f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -765,7 +765,7 @@ void *Unit_FadeFacing(void *unit, s32 frames, s32 priority, f32 angle) {
 }
 
 void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuTransfer_script[];
@@ -775,7 +775,7 @@ void Mu_StartTransfer(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
 
     var_r31 = arg3;
     M2C_FIELD(sp8, void **, 0x30) = (void *)arg0;
-    fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
+    GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
@@ -799,7 +799,7 @@ void MuFade_UnlinkSame(void *arg0, void *arg1) {
     }
 }
 void fn_801850A8(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
@@ -811,7 +811,7 @@ void fn_801850A8(void *arg0) {
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x30);
     M2C_FIELD(spC, void **, 0x30) = temp_r30;
-    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, spC);
+    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, spC);
     temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
     M2C_FIELD(temp_r3, void **, 0x30) = temp_r30;
     M2C_FIELD(temp_r3, s32 *, 0x3C) = 0x10;
@@ -829,7 +829,7 @@ void fn_801850A8(void *arg0) {
 /* Play an SE at the bound unit, then start an E_MuFlash tint (palette 0xB, duration 8). */
 void MuFlash_StartWithSe(void *proc) {
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
@@ -848,7 +848,7 @@ void MuFlash_StartWithSe(void *proc) {
                 *(f32 *)((u8 *)unitSe + 0xC));
     unit = *(void **)((u8 *)proc + 0x30);
     *(void **)(key + 0x30) = unit;
-    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, key);
+    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, key);
     flash = Process_CreateEx(E_MuFlash_script, proc);
     *(void **)((u8 *)flash + 0x30) = unit;
     *(s32 *)((u8 *)flash + 0x3C) = 8;
@@ -872,7 +872,7 @@ void fn_80185244(void *arg0) {
 
 #pragma opt_strength_reduction off
 void fn_80185280(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void Process_Goto(void *, s32);
     void *Process_CreateEx(void *, s32);
     u8 fn_8004C0F0(void *);
@@ -905,9 +905,9 @@ void fn_80185280(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, sp40);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if ((s32)lvl > 0x14) {
             if ((s32)lvl > 0x28) {
@@ -983,7 +983,7 @@ void fn_801857F0(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80185830(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void Process_Goto(void *, s32);
     void *Process_CreateEx(void *, s32);
     void *Process_Create(void *, s32);
@@ -1027,7 +1027,7 @@ void fn_80185830(void *arg0) {
             r29 = (s32)*(void **)((u8 *)self + 0x30);
             r28 = self;
             *(s32 *)(sp78 + 0x30) = r29;
-            fn_8000A388(base + 0x40, MuFade_UnlinkSame, sp78);
+            GfxEnt_ForEachKey(base + 0x40, MuFade_UnlinkSame, sp78);
             if ((u32)self == 0U) {
                 r28 = (void *)3;
             }
@@ -1037,9 +1037,9 @@ void fn_80185830(void *arg0) {
             if (fn_8004C0F0(r28) != 0) {
                 z -= 0x40;
                 *(void **)(sp40 + 0x30) = r28;
-                fn_8000A388(base + z, MuFade_UnlinkSame, sp40);
+                GfxEnt_ForEachKey(base + z, MuFade_UnlinkSame, sp40);
                 *(void **)(sp8 + 0x30) = r28;
-                fn_8000A388(base + 0x20, MuFade_UnlinkSame, sp8);
+                GfxEnt_ForEachKey(base + 0x20, MuFade_UnlinkSame, sp8);
                 lvl = *(u8 *)((u8 *)fn_800508C4(r28) + 9);
                 if ((s32)lvl > 0x14) {
                     if ((s32)lvl > 0x28) {
@@ -1125,7 +1125,7 @@ s32 fn_80185B94(void *arg0) {
 /* On pad button 0, start an E_MuFlash tint for the bound unit and clear this process func. */
 void MuFlash_StartOnButton(void *proc) {
     u8 Pad_IsButton(void *, s32);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
@@ -1141,7 +1141,7 @@ void MuFlash_StartOnButton(void *proc) {
     }
     unit = *(void **)((u8 *)proc + 0x30);
     *(void **)(key + 0x30) = unit;
-    fn_8000A388(E_MuFlash_script, MuFade_UnlinkSame, key);
+    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, key);
     flash = Process_CreateEx(E_MuFlash_script, 0);
     *(void **)((u8 *)flash + 0x30) = unit;
     *(s32 *)((u8 *)flash + 0x3C) = 0x10;
@@ -1260,7 +1260,7 @@ void fn_801863BC(void *arg0) {
 }
 
 void fn_801863F8(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     u8 fn_8004C0F0(s32);
     s32 fn_8004FE90(s32, u8);
@@ -1297,9 +1297,9 @@ void fn_801863F8(void *arg0) {
     temp_r30 = *(s32 *)((u8 *)arg0 + 0x34);
     if (fn_8004C0F0(temp_r30) != 0) {
         sp70 = temp_r30;
-        fn_8000A388(&E_MuBlend_script, &MuFade_UnlinkSame, &sp40);
+        GfxEnt_ForEachKey(&E_MuBlend_script, &MuFade_UnlinkSame, &sp40);
         sp38 = temp_r30;
-        fn_8000A388(&E_MuTransfer_script, &MuFade_UnlinkSame, &sp8);
+        GfxEnt_ForEachKey(&E_MuTransfer_script, &MuFade_UnlinkSame, &sp8);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r30) + 9);
         if ((s32) temp_r3 > 0x14) {
             if ((s32) temp_r3 > 0x28) {
@@ -1336,7 +1336,7 @@ void fn_801863F8(void *arg0) {
 #pragma opt_strength_reduction off
 /* Clear prior E_MuBlend/E_MuTransfer procs for the unit, scale hit count by class level, then start E_MuBlend mode 0. */
 void Event_StartMuBlend(void *proc) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
@@ -1366,9 +1366,9 @@ void Event_StartMuBlend(void *proc) {
     hitCount += 1;
     if (fn_8004C0F0(unit) != 0) {
         *(void **)(blendKey + 0x30) = unit;
-        fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, blendKey);
         *(void **)(transferKey + 0x30) = unit;
-        fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, transferKey);
         {
             u8 level = *(u8 *)((u8 *)fn_800508C4(unit) + 9);
             if ((s32)level > 0x14) {
@@ -1440,7 +1440,7 @@ void fn_80186E10(void *arg0) {
 #pragma opt_strength_reduction on
 
 void fn_8018715C(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     f32 Unit_GetAngleTo(void *);
     void MuFade_UnlinkSame(void *, void *);
@@ -1461,7 +1461,7 @@ void fn_8018715C(void *arg0) {
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x68) = temp_r30;
-        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
+        GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
             temp_r3 = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
@@ -1475,7 +1475,7 @@ void fn_8018715C(void *arg0) {
     if (check) {
         temp_f31 = Unit_GetAngleTo(temp_r30);
         *(void **)(sp + 0x30) = temp_r30;
-        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp);
+        GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
             temp_r3 = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)temp_r3 + 0x30) = temp_r30;
@@ -1512,7 +1512,7 @@ void fn_801872CC(void *arg0)
 }
 
 void fn_80187344(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     u8 fn_8004C0F0(u32);
     void fn_8004FE90(u32, u8);
@@ -1546,9 +1546,9 @@ void fn_80187344(void *arg0) {
     temp_r29 = *(u32 *)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(temp_r29) != 0) {
         spB0.val = temp_r29;
-        fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, &spB0);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, &spB0);
         sp78.val = temp_r29;
-        fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, &sp78);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, &sp78);
         temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
         if ((s32)temp_r3 > 0x14) {
             if ((s32)temp_r3 > 0x28) {
@@ -1585,9 +1585,9 @@ void fn_80187344(void *arg0) {
         var_r28 = 0x10;
         if (fn_8004C0F0(temp_r29) != 0) {
             sp40.val = temp_r29;
-            fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, &sp40);
+            GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, &sp40);
             sp8.val = temp_r29;
-            fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, &sp8);
+            GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, &sp8);
             temp_r3 = *(u8 *)((u8 *)fn_800508C4(temp_r29) + 9);
             if ((s32)temp_r3 > 0x14) {
                 if ((s32)temp_r3 > 0x28) {
@@ -1626,7 +1626,7 @@ void fn_80187344(void *arg0) {
 #pragma global_optimizer off
 void fn_801877C4(void *arg0) {
     void fn_800056A0(s32);
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void Process_ClearFunc(void *);
     void *Process_CreateEx(void *, void *);
     void *Process_Create(void *, s32);
@@ -1694,9 +1694,9 @@ void fn_801877C4(void *arg0) {
             count += 1;
             if (fn_8004C0F0(obj) != 0) {
                 *(void **)(sp7C + 0x30) = obj;
-                fn_8000A388(base + (z - 0x40), MuFade_UnlinkSame, sp7C);
+                GfxEnt_ForEachKey(base + (z - 0x40), MuFade_UnlinkSame, sp7C);
                 *(void **)(sp44 + 0x30) = obj;
-                fn_8000A388(base + 0x20, MuFade_UnlinkSame, sp44);
+                GfxEnt_ForEachKey(base + 0x20, MuFade_UnlinkSame, sp44);
                 {
                     u8 lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
                     if ((s32)lvl > 0x14) {
@@ -1725,7 +1725,7 @@ void fn_801877C4(void *arg0) {
             count = (s32)*(void **)((u8 *)arg0 + 0x34);
             obj = arg0;
             *(s32 *)(spC + 0x30) = count;
-            fn_8000A388(base + 0xC0, MuFade_UnlinkSame, spC);
+            GfxEnt_ForEachKey(base + 0xC0, MuFade_UnlinkSame, spC);
             if (arg0 == 0) {
                 obj = (void *)3;
             }
@@ -1775,7 +1775,7 @@ void fn_801877C4(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_80187D70(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
     f32 Unit_GetAngleTo(void *);
     f32 fn_8004BDA8(void *, f32, f32);
@@ -1805,7 +1805,7 @@ void fn_80187D70(void *arg0) {
         if (temp_r4 != NULL) {
             f = Unit_GetAngleTo(unit);
             *(void **)(sp + 0x68) = unit;
-            fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
+            GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
             if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
                 node = Process_CreateEx(&E_MuFade_script, arg0);
                 *(void **)((u8 *)node + 0x30) = unit;
@@ -1820,7 +1820,7 @@ void fn_80187D70(void *arg0) {
         unit = *(void **)((u8 *)arg0 + 0x30);
         f = fn_8004BDA8(unit, lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
         *(void **)(sp + 0x30) = unit;
-        fn_8000A388(&E_MuFade_script, MuFade_UnlinkSame, sp);
+        GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
             node = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)node + 0x30) = unit;
@@ -1844,7 +1844,7 @@ void fn_80187D70(void *arg0) {
 #pragma opt_strength_reduction off
 #pragma optimization_level 2
 void fn_80187FBC(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
@@ -1877,9 +1877,9 @@ void fn_80187FBC(void *arg0) {
     obj = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18) + 0x34);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, sp40);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if (lvl > 0x14) {
             if (lvl > 0x28) {
@@ -2166,7 +2166,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
 }
 
 void MoveAnim_StartFlagFoot(void *anim) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     void fn_8004BE88(void *, s32);
     void fn_8004FC70(void *, s32);
@@ -2192,7 +2192,7 @@ void MoveAnim_StartFlagFoot(void *anim) {
     unit = *(void **)((u8 *)self + 0x30);
     prio = self;
     *(void **)(flagKey + 0x30) = unit;
-    fn_8000A388(E_MuFlag_script, MuFade_UnlinkSame, flagKey);
+    GfxEnt_ForEachKey(E_MuFlag_script, MuFade_UnlinkSame, flagKey);
     if (!self) {
         prio = (void *)3;
     }
@@ -2201,7 +2201,7 @@ void MoveAnim_StartFlagFoot(void *anim) {
     unit2 = *(void **)((u8 *)self + 0x30);
     prio2 = self;
     *(void **)(footKey + 0x30) = unit2;
-    fn_8000A388(E_MuFoot_script, MuFade_UnlinkSame, footKey);
+    GfxEnt_ForEachKey(E_MuFoot_script, MuFade_UnlinkSame, footKey);
     if (!self) {
         prio2 = (void *)3;
     }
@@ -2855,7 +2855,7 @@ void fn_8018C680(void *arg0)
 
 #pragma opt_strength_reduction off
 void fn_8018C6C0(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
@@ -2888,9 +2888,9 @@ void fn_8018C6C0(void *arg0) {
     kind = *(s32 *)((u8 *)arg0 + 0x38);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(E_MuBlend_script, MuFade_UnlinkSame, sp40);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
         {
             s32 lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
             if (lvl > 0x14) {
@@ -13384,7 +13384,7 @@ extern f32 lbl_8036ACEC;
 extern f32 lbl_8036AD04;
 extern f32 lbl_8036ACF0;
 
-void *fn_8000A388(u32*, u32*, void*);
+void *GfxEnt_ForEachKey(u32*, u32*, void*);
 void *Process_CreateEx(u32*, s32);
 u8 fn_8004C0F0(s32);
 void *fn_8004FE90(s32, u8);

@@ -1026,7 +1026,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 GActor_FindNode(s32, s32);
     void DebugPrint(const char *, ...);
     void fn_800056A0(s32);
-    void fn_8000A388(void *, void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, s32);
     void *Process_Create(void *, s32);
     void GActor_InitNodeLink(void *, s32, s32, s32);
     void GActor_UnlinkNodeLinkSame(void);
@@ -1038,7 +1038,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         DebugPrint((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
         fn_800056A0(0);
     }
-    fn_8000A388(Proc_GActorNodeLink, GActor_UnlinkNodeLinkSame, arg0);
+    GfxEnt_ForEachKey(Proc_GActorNodeLink, GActor_UnlinkNodeLinkSame, arg0);
     temp_r31 = Process_Create(Proc_GActorNodeLink, arg3);
     GActor_InitNodeLink(temp_r31, arg0, arg1, arg2);
     return (s32)temp_r31;
