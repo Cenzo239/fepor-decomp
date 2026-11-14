@@ -8670,15 +8670,16 @@ s32 Map_FindObjNear(void *arg0, s32 arg1) {
 s32 Map_FindObjAtXY(void *arg0, s32 arg1, s32 arg2)
 {
   s32 i;
+  s32 offset;
   u8 *entry;
   s32 base;
   s32 count;
   u8 ok;
   count = *((s16 *) (((u8 *) arg0) + 0x6));
-  for (i = count - 1; i >= 0; i--)
+  for (i = count - 1, offset = i * 0xB4; i >= 0; offset -= 0xB4, i--)
   {
     base = *((s32 *) (((u8 *) arg0) + 0x14));
-    entry = ((u8 *) base) + (i * 0xB4);
+    entry = ((u8 *) base) + offset;
     {
       s32 flags = *((s32 *) (((u8 *) (*((s32 *) (entry + 0x10)))) + 0xBC));
       if (!(flags & 0x90))
@@ -10439,8 +10440,8 @@ s32 fn_8004BAC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void fn_8004BC48(void *arg0, s32 arg1) {
-    s16 Stream_ReadU16(s32);
-    M2C_UNK Stream_ReadU8(s32);
+    s16 fn_8017A9B0(s32);
+    M2C_UNK fn_8017A9DC(s32);
     extern f32 lbl_80368FCC;
     M2C_FIELD(arg0, s8 *, 3) = 0;
     M2C_FIELD(arg0, s16 *, 0x15C) = 0;
@@ -10452,9 +10453,9 @@ void fn_8004BC48(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, f32 *, 0x174) = (f32) lbl_80368FCC;
     M2C_FIELD(arg0, f32 *, 0x178) = (f32) lbl_80368FCC;
     M2C_FIELD(arg0, s32 *, 0x17C) = 0;
-    M2C_FIELD(arg0, s16 *, 0x15C) = Stream_ReadU16(arg1);
-    Stream_ReadU8(arg1);
-    Stream_ReadU8(arg1);
+    M2C_FIELD(arg0, s16 *, 0x15C) = fn_8017A9B0(arg1);
+    fn_8017A9DC(arg1);
+    fn_8017A9DC(arg1);
 }
 
 void fn_8004BCCC(void *arg0, s32 arg1) {
@@ -10553,11 +10554,11 @@ s32 Mu_IsAnimDone(void *arg0) {
 }
 
 u8 fn_8004C00C(void *arg0) {
-    extern f32 lbl_80368FC4;
-    if ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19E)) != (M2C_FIELD(arg0, f32 *, 4) + M2C_FIELD(arg0, f32 *, 0x10))) {
-        return 1U;
-    }
-    return (u8) ((lbl_80368FC4 + (f32) (s8) M2C_FIELD(arg0, u8 *, 0x19F)) != (M2C_FIELD(arg0, f32 *, 8) + M2C_FIELD(arg0, f32 *, 0x14)));
+ extern f32 lbl_80368FC4;
+ { f32 x=(s8)M2C_FIELD(arg0,u8 *,0x19E);
+ if(lbl_80368FC4+x != M2C_FIELD(arg0,f32 *,4)+M2C_FIELD(arg0,f32 *,0x10)) return 1; }
+ { f32 y=(s8)M2C_FIELD(arg0,u8 *,0x19F);
+ return (u8)(lbl_80368FC4+y != M2C_FIELD(arg0,f32 *,8)+M2C_FIELD(arg0,f32 *,0x14)); }
 }
 
 void fn_8004C0A0(void *arg0) {
@@ -11880,41 +11881,29 @@ void Unit_SetWorldXY(void *arg0, f32 farg0, f32 farg1) {
 }
 
 #pragma peephole off
-void fn_80050E14(void)
-{
-    extern u8 *lbl_803672CC;
-    s32 i;
-    s32 offset;
-    s32 tableOffset;
-    s32 n;
-    u8 *obj;
-    u8 *table;
-    u8 *base;
-
-    obj = lbl_803672CC;
-    if (obj == 0) {
-        return;
-    }
-
-    i = 0;
-    *(s32 *)(obj + 0x14) = i;
-    offset = i;
-    tableOffset = i;
-
-    for (; i < (n = *(s32 *)(obj + 0x18)); ) {
-        base = *(u8 **)obj;
-        i += 1;
-        table = *(u8 **)(obj + 4);
-        *(u32 *)(table + tableOffset) = (u32)base + offset;
-        offset += 0x14;
-        tableOffset += 4;
-    }
-
-    table = *(u8 **)(obj + 4);
-    *(u32 *)(table + (n * 4)) = 0;
-    *(void **)(obj + 8) = *(void **)(obj + 4);
-    *(s32 *)(obj + 0xC) = 0;
-    *(s32 *)(obj + 0x10) = 0;
+void fn_80050E14(void) {
+ extern u8 *lbl_803672CC;
+ s32 i, offset, tableOffset, n;
+ u8 *obj, *table, *base;
+ obj=lbl_803672CC;
+ if (!obj) return;
+ *(s32 *)(obj+0x14)=0;
+ i=*(s32 *)(obj+0x14);
+ offset=i;
+ tableOffset=i;
+ while(i<(n=*(s32 *)(obj+0x18))) {
+ base=*(u8 **)obj;
+ i++;
+ table=*(u8 **)(obj+4);
+ *(u32 *)(table+tableOffset)=(u32)base+offset;
+ offset+=20;
+ tableOffset+=4;
+ }
+ table=*(u8 **)(obj+4);
+ *(u32 *)(table+n*4)=0;
+ *(void **)(obj+8)=*(void **)(obj+4);
+ *(s32 *)(obj+12)=0;
+ *(s32 *)(obj+16)=0;
 }
 #pragma peephole on
 void fn_80050E80(void)
