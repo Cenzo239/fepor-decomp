@@ -260,14 +260,14 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
 s32 fn_80091F70(s32 arg0, s32 arg1) {
     s32 Game_GetState();
     s32 fn_8001C914(s32, s32);
-    void *fn_8001C9BC(s32);
+    void *Item_GetUfx(s32);
     u8 var_r0;
     u8 var_r0_2;
     void *temp_r3;
     void *temp_r3_2;
 
     if (Game_GetState() == 0x10) {
-        temp_r3 = fn_8001C9BC(arg1);
+        temp_r3 = Item_GetUfx(arg1);
         if (temp_r3 == NULL) {
             var_r0 = 0;
         } else if ((u32) M2C_FIELD(temp_r3, u32 *, 0) == 0U) {
@@ -280,7 +280,7 @@ s32 fn_80091F70(s32 arg0, s32 arg1) {
         }
         return fn_8001C914(arg0, arg1);
     }
-    temp_r3_2 = fn_8001C9BC(arg1);
+    temp_r3_2 = Item_GetUfx(arg1);
     if (temp_r3_2 == NULL) {
         var_r0_2 = 0;
     } else if ((u32) M2C_FIELD(temp_r3_2, u32 *, 0) == 0U) {

@@ -1845,7 +1845,7 @@ u32 fn_8001C914(void *arg0, void *arg1) {
     return (*(u32 (**)(void *, void *))obj)(arg0, arg1);
 }
 
-u32 fn_8001C9BC(void *arg0) {
+u32 Item_GetUfx(void *arg0) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
     u32 Res_GetByName(void *);

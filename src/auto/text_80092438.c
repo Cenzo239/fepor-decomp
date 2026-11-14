@@ -909,7 +909,7 @@ u8 fn_800934CC(void *arg0, void *arg1) {
 u8 fn_800939FC(void *arg0, void *arg1) {
     s32 Game_GetState(void);
     u8 fn_8001C914(void *, void *);
-    void *fn_8001C9BC(void *);
+    void *Item_GetUfx(void *);
     u8 fn_800940B0(void *, void *);
     u8 Status_Test(void *, s32);
     struct { unsigned ok : 8; unsigned result : 8; } t;
@@ -929,7 +929,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     bit = flags & 8;
     if (bit) {
         if (Game_GetState() == 0x10) {
-            rec = fn_8001C9BC(arg1);
+            rec = Item_GetUfx(arg1);
             if (rec == NULL) {
                 var_r0 = 0;
             } else if (*(u32 *)rec == 0) {
@@ -942,7 +942,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
             }
             return fn_8001C914(arg0, arg1);
         }
-        rec = fn_8001C9BC(arg1);
+        rec = Item_GetUfx(arg1);
         if (rec == NULL) {
             var_r0 = 0;
         } else if (*(u32 *)rec == 0) {
