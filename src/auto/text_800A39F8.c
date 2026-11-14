@@ -1399,23 +1399,12 @@ s32 fn_800A6630(s32 arg0) {
 }
 
 s32 fn_800A66B4(void) {
-    s32 fn_801044E0(s32);
-    extern u8 gUiContext[];
-    extern u8 gMapBlendMode;
-    u32 c;
-    u32 t;
-    u32 v;
-
-    c = 1;
-    t = (u8)(gMapBlendMode - 1);
-    v = (c | ~t) - ((1 - t) >> 1);
-    if ((v >> 31) == 0) {
-        c = 0;
-    }
-    if ((u8)c == 0) {
-        return 0;
-    }
-    return fn_801044E0(*(s32 *)gUiContext + 0x1A4);
+ s32 fn_801044E0(s32);
+ extern u8 gUiContext[],gMapBlendMode;
+ u8 valid=1;
+ if (!((u32)(u8)(gMapBlendMode-1)<=(u32)valid)) valid=0;
+ if(!valid) return 0;
+ return fn_801044E0(*(s32 *)gUiContext+0x1A4);
 }
 
 s32 fn_800A6720(s32 arg0) {
@@ -2411,25 +2400,14 @@ void fn_800A8AE4(s32 arg0) {
 }
 
 void fn_800A8B18(void *arg0) {
-    void FileCache_Load(void *);
-    void fn_8006EEFC(void *, void *);
-    s32 fn_80005E2C(s32);
-    void Process_Goto(void *, s32);
-    extern u8 gOptionsStr[];
-    extern u8 lbl_803677FC;
-    void *self;
-
-    self = arg0;
-    FileCache_Load(gOptionsStr + 0x58);
-    fn_8006EEFC((u8 *)self + 0x30, gOptionsStr + 0x62);
-    *(s32 *)((u8 *)self + 0x34) = 0;
-    ((u8 *)self)[0x38] = 0;
-    if (lbl_803677FC == 0) {
-        if (fn_80005E2C(0) == 0) {
-            Process_Goto(self, 1);
-            lbl_803677FC = 1;
-        }
-    }
+ void FileCache_Load(void *); void fn_8006EEFC(void *, void *); s32 fn_80005E2C(s32); void Process_Goto(void *, s32);
+ extern u8 gOptionsStr[]; extern u8 lbl_803677FC;
+ FileCache_Load(gOptionsStr + 0x58);
+ fn_8006EEFC((u8 *)arg0 + 0x30, gOptionsStr + 0x62);
+ *(s32 *)((u8 *)arg0 + 0x34) = 0;
+ ((u8 *)arg0)[0x38] = 0;
+ if (lbl_803677FC == 0 && fn_80005E2C(0) == 0) Process_Goto(arg0, 1);
+ lbl_803677FC = 1;
 }
 
 void fn_800A8BA0(void) {
@@ -2588,8 +2566,8 @@ void fn_800A8FE8(void *arg0) {
 
 void fn_800A904C(s32 arg0) {
     M2C_UNK fn_800A5D1C(void *, s32, M2C_UNK);
-    extern M2C_UNK gOptionsStr;
-    fn_800A5D1C(&gOptionsStr + 0xA3, arg0 != 0, 0);
+    extern M2C_UNK lbl_8026E470;
+    fn_800A5D1C(&lbl_8026E470 + 0xA3, arg0 != 0, 0);
 }
 
 extern u8 lbl_8028C870[16];
