@@ -6141,7 +6141,7 @@ int fn_80250B58(void *arg0, u32 *arg1)
     void fn_8026146C(s32 *);
     void fn_8026147C(u32 *, s32);
     void fn_802552F8(void *);
-    void fn_802554A4(void *, s32);
+    void Sound_SetSynthVoiceState(void *, s32);
 
     u8 *voice;
     u32 flags;
@@ -6255,7 +6255,7 @@ int fn_80250B58(void *arg0, u32 *arg1)
     }
 
     fn_802552F8(arg0);
-    fn_802554A4(arg0, 1);
+    Sound_SetSynthVoiceState(arg0, 1);
 
     return 1;
 }
@@ -7990,7 +7990,7 @@ void Sound_DeactivateSynthVoice(void *voice) {
     }
 }
 
-void fn_802554A4(void *arg0, s32 arg1) {
+void Sound_SetSynthVoiceState(void *arg0, s32 arg1) {
     extern s32 gSynthIdleList;
     extern s32 gSynthSchedList;
     extern s32 gSynthTimeHi;
@@ -8912,7 +8912,7 @@ void fn_802567B0(void *arg0) {
     void *temp_r6;
     void *temp_r6_2;
 
-    fn_802554A4(arg0, 2);
+    Sound_SetSynthVoiceState(arg0, 2);
     
     // Load base address and offset
     temp_r3 = &lbl_80359710 + 0x800 + ((*(s32*)((char*)arg0 + 0xF4) << 2) & 0x3FC);
@@ -9008,7 +9008,7 @@ s32 fn_80256C14(u8 arg0)
     void fn_80255B20(void *);
     s32 Sound_IsHwVoiceActive(s32);
     void fn_802618E4(int);
-    void fn_802554A4(void *, s32);
+    void Sound_SetSynthVoiceState(void *, s32);
     void fn_80256054(void *, u8);
 
     s32 index;
@@ -9083,7 +9083,7 @@ s32 fn_80256C14(u8 arg0)
         fn_802618E4(index);
 
         voice = (u8 *)gSynthVoices + offset;
-        fn_802554A4(voice, 2);
+        Sound_SetSynthVoiceState(voice, 2);
     }
 
     voice = (u8 *)gSynthVoices + offset;
@@ -9098,7 +9098,7 @@ s32 fn_80256C14(u8 arg0)
 int fn_80256DD8(int arg0) {
     u32 Sound_IsHwVoiceActive(void);
     void fn_802618E4(s32);
-    void fn_802554A4(void *, s32);
+    void Sound_SetSynthVoiceState(void *, s32);
     extern u8 lbl_80359710[];
     extern s32 gSynthVoices;
     extern u16 lbl_80368A4C;
@@ -9130,7 +9130,7 @@ int fn_80256DD8(int arg0) {
         voice = (u8 *)gSynthVoices + off;
         *(s32 *)(voice + 0xF4) = arg0;
         voice = (u8 *)gSynthVoices + off;
-        fn_802554A4(voice, 2);
+        Sound_SetSynthVoiceState(voice, 2);
 
         id = *(s32 *)(voice + 0xF4);
         node = base + 0x800;
@@ -9208,7 +9208,7 @@ int fn_80256DD8(int arg0) {
 
 void fn_80256FF0(Fn80256FF0Arg arg0) {
     void fn_80255B20(void *);
-    void fn_802554A4(void *, s32);
+    void Sound_SetSynthVoiceState(void *, s32);
     void fn_8024C5CC(s32);
     void fn_802618E4(s32);
     extern u8 lbl_80359710[];
@@ -9245,7 +9245,7 @@ void fn_80256FF0(Fn80256FF0Arg arg0) {
         *(s32 *)(voice + 0x118) = t118;
         *(s32 *)(voice + 0x114) = t114;
         *(s32 *)(voice + 0x110) = 0;
-        fn_802554A4(voice, 2);
+        Sound_SetSynthVoiceState(voice, 2);
 
         id = *(s32 *)(voice + 0xF4);
         node = base + 0x800;
@@ -11574,62 +11574,53 @@ void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *ar
     }
 }
 #pragma fp_contract on
-void fn_8025D9A4(u16 *arg0, u32 arg1)
+void fn_8025D9A4(u16 *arg0, s32 arg1)
 {
-    extern s32 lbl_80368ABC;
+    extern void *lbl_80368ABC;
     extern u8 gSoundReady;
 
     void Audio_Lock(void);
     void Audio_Unlock(void);
     void fn_8024A6F8(u32);
 
-    u8 *current;
     u8 *next;
-    u8 *previous;
-    u32 flags;
-    u32 handle;
-    u32 i;
+    u8 *current;
 
-    current = (u8 *)lbl_80368ABC;
-
+    current = lbl_80368ABC;
     while (current != 0) {
         next = *(u8 **)current;
+        {
+            u16 *p = arg0;
+            s32 i;
 
-        for (i = 0; i < arg1; i++) {
-            if (*(u16 *)(current + 0x40) == arg0[i * 5]) {
-                if (gSoundReady != 0) {
-                    Audio_Lock();
-
-                    flags = *(u32 *)(current + 0xC);
-
-                    if (flags & 0x10000) {
-                        next = *(u8 **)current;
-                        previous = *(u8 **)(current + 4);
-
-                        if (next != 0) {
-                            *(u8 **)(next + 4) = previous;
+            for (i = arg1; i > 0; i--) {
+                if (*(u16 *)(current + 0x40) == *p) {
+                    if (gSoundReady != 0) {
+                        Audio_Lock();
+                        if (*(u32 *)(current + 0xC) & 0x10000) {
+                            if (*(void **)current != 0) {
+                                *(void **)((u8 *)*(void **)current + 4) = *(void **)(current + 4);
+                            }
+                            if (*(void **)(current + 4) != 0) {
+                                *(void **)*(void **)(current + 4) = *(void **)current;
+                            } else {
+                                lbl_80368ABC = *(void **)current;
+                            }
+                            *(u32 *)(current + 0xC) &= 0xFFFF;
+                            {
+                                u32 handle = *(u32 *)(current + 0x38);
+                                if (handle + 0x10000 != 0xFFFF) {
+                                    fn_8024A6F8(handle);
+                                }
+                            }
                         }
-
-                        if (previous != 0) {
-                            *(u8 **)previous = next;
-                        } else {
-                            lbl_80368ABC = (s32)next;
-                        }
-
-                        *(u32 *)(current + 0xC) &= 0xFFFF;
-
-                        handle = *(u32 *)(current + 0x38);
-
-                        if (handle != 0xFFFFFFFF) {
-                            fn_8024A6F8(handle);
-                        }
+                        Audio_Unlock();
                     }
-
-                    Audio_Unlock();
+                    break;
                 }
+                p = (u16 *)((u8 *)p + 0xa);
             }
         }
-
         current = next;
     }
 }
