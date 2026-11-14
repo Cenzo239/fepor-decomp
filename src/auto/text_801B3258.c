@@ -17834,7 +17834,8 @@ void fn_801E2084(s32 arg0) {
     fn_801E1CB4(&gSaveDataBase, arg0);
 }
 
-void SaveData_StartOpenSeq(void *arg0) {
+/* Free any prior save buffer, alloc a new one, then init it or start E_OpenSeq. */
+void SaveData_StartOpenSeq(void *parent) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
     extern s32 gUiInputFlags;
@@ -17846,11 +17847,11 @@ void SaveData_StartOpenSeq(void *arg0) {
     void SaveData_Init(void **);
     void *Process_CreateChild(void *, void *);
 
-    void *ptr;
-    void *obj;
+    void *buf;
+    void *child;
     void *arg;
 
-    arg = arg0;
+    arg = parent;
 
     if (gSaveDataBase != (int)NULL) {
         DebugPrint((char *)(gSaveStrings + 0x122));
@@ -17859,15 +17860,15 @@ void SaveData_StartOpenSeq(void *arg0) {
     }
 
     DebugPrint((char *)(gSaveStrings + 0x16D));
-    ptr = fn_800C4604(0, -0x26000, gSaveStrings + 0x14E, 0);
-    gSaveDataBase = ptr;
+    buf = fn_800C4604(0, -0x26000, gSaveStrings + 0x14E, 0);
+    gSaveDataBase = buf;
 
     if (gUiInputFlags & 0x10) {
         SaveData_Init(&gSaveDataBase);
     } else {
-        obj = Process_CreateChild(gProc_E_OpenSeq, arg);
-        *(void **)((u8 *)obj + 0x54) = gSaveDataBase;
-        *(s32 *)((u8 *)obj + 0x60) = 1;
+        child = Process_CreateChild(gProc_E_OpenSeq, arg);
+        *(void **)((u8 *)child + 0x54) = gSaveDataBase;
+        *(s32 *)((u8 *)child + 0x60) = 1;
     }
 }
 
