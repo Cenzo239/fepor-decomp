@@ -2499,7 +2499,7 @@ void Sound_FadeFromZero(void *arg0, u8 arg1) {
     *(u8 *)((char *)arg0 + 0x60) = 0;
 }
 
-void fn_80109CE8(void *arg0) {
+void Sound_FadeVolProc(void *arg0) {
     f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
     M2C_UNK Process_ClearFunc(void *);
     void *temp_r31;
