@@ -18,12 +18,12 @@ struct Unit {
     /* 0x188 */ void* person; /* Person_GetByPid; +0x50 support table, +0x54 affinity */
     /* 0x18C */ void* job; /* Job_GetByJid */
     /* 0x190 */ void* unk190; /* +0x8 = allegiance; compared for same-army checks */
-    /* 0x194 */ void* unk194;
+    /* 0x194 */ void* rescuePartner; /* other unit while rescuing / being rescued */
     /* 0x198 */ u8 index; /* deployment/script unit id; UnitGetByPos return */
     /* 0x199 */ u8 unk199[5];
     /* 0x19E */ s8 mapX;
     /* 0x19F */ s8 mapY;
-    /* 0x1A0 */ u32 stateFlags; /* bit0: skip idle spin; 0x010000FC: not drawable; bit 0x1C: gone/dead */
+    /* 0x1A0 */ u32 stateFlags; /* bit0: skip idle spin; bit1: rescuer; bit2: rescuee; 0x010000FC: not drawable; bit 0x1C: gone/dead */
     /* 0x1A4 */ u8 unk1A4[4];
     /* 0x1A8 */ s8 hp;
     /* 0x1A9 */ u8 unk1A9[0x13];
