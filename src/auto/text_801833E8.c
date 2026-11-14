@@ -10990,7 +10990,7 @@ void fn_8019DB68(void) {
     void fn_801A0208(void);
     void ScriptCmd_EventSetSavedByte(void);
     void fn_801A1B58(void);
-    void fn_801A1A90(void);
+    void ScriptCmd_EventSepia(void);
     void fn_801A25FC(void);
     void fn_801A0060(void);
     void fn_8019FFBC(void);
@@ -11077,7 +11077,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x3C0, fn_801A0208, 6);
     Script_RegisterCommand(lbl_8027AD98 + 0x3C7, ScriptCmd_EventSetSavedByte, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3CF, fn_801A1B58, 1);
-    Script_RegisterCommand(lbl_8027AD98 + 0x3D9, fn_801A1A90, 1);
+    Script_RegisterCommand(lbl_8027AD98 + 0x3D9, ScriptCmd_EventSepia, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3E2, fn_801A25FC, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3F1, fn_801A0060, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x3FE, fn_8019FFBC, 3);
@@ -12683,7 +12683,7 @@ extern s32 lbl_801B1C80;
 extern s32 lbl_801B1C84;
 extern s32 lbl_801B1C88;
 extern s32 lbl_801B1C8C;
-s32 fn_801A1A90(s32 arg0) {
+s32 ScriptCmd_EventSepia(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     void Process_UnlinkByKey(void *);
