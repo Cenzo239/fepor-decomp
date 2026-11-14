@@ -28,7 +28,7 @@ void UiPanel_PollSkip(u16 *arg0) {
     extern void *gPadInput;
     extern u8 lbl_80274CE0[];
     extern u32 gUiInputFlags;
-    extern u8 lbl_80290200[];
+    extern u8 gUiTooltipProc[];
     s32 buttons;
     void *obj;
     u8 flag;
@@ -41,7 +41,7 @@ void UiPanel_PollSkip(u16 *arg0) {
             if (gUiInputFlags & 3) {
                 flag = 0;
             } else {
-                obj = Process_Find(lbl_80290200);
+                obj = Process_Find(gUiTooltipProc);
                 if (obj == NULL) {
                     flag = 0;
                 } else {
@@ -96,7 +96,7 @@ void fn_80120E4C(void *arg0) {
 void fn_80120F0C(void) {
     extern u16 gUiPanelFlags;
     extern u32 lbl_80367110;
-    extern u8 lbl_80290200[];
+    extern u8 gUiTooltipProc[];
 
     void *Process_Find(void *);
     void fn_8000C60C(void);
@@ -113,7 +113,7 @@ void fn_80120F0C(void) {
     lbl_80367110 |= 2;
 
     if (!(a & 0x40)) {
-        if (Process_Find(lbl_80290200) != NULL) {
+        if (Process_Find(gUiTooltipProc) != NULL) {
             if (lbl_80367110 & 3) {
                 fn_8000C60C();
             } else {
@@ -133,11 +133,11 @@ void fn_80120F94(void)
     void Process_ClearFunc(void);
     extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
-    extern u8 lbl_80290200[];
+    extern u8 gUiTooltipProc[];
     void *p;
 
     if ((gUiPanelFlags & 0x0040) == 0) {
-        p = Process_Find(lbl_80290200);
+        p = Process_Find(gUiTooltipProc);
         if (p != NULL) {
             if ((gUiInputFlags & 3) != 0) {
                 Process_Unlink();
@@ -156,14 +156,14 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *fn_8007C378(void *);
     void strcpy(char *, char *);
     u8 Text_MeasureWidth(void *, s32, f32);
-    extern u8 lbl_80290200[];
+    extern u8 gUiTooltipProc[];
     extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
     void *obj;
     f32 scale;
     s32 n;
 
-    obj = Process_Find(lbl_80290200);
+    obj = Process_Find(gUiTooltipProc);
     if (obj) {
         if (*(void **)((u8 *)obj + 0x44) == arg0) {
             if (*(s16 *)((u8 *)obj + 0x48) == arg1) {
@@ -177,7 +177,7 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     if (gUiPanelFlags & 0x40) {
         return;
     }
-    obj = Process_Create(lbl_80290200, arg3);
+    obj = Process_Create(gUiTooltipProc, arg3);
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
