@@ -12128,7 +12128,8 @@ s32 fn_801A0400(s32 arg0) {
     return 1;
 }
 
-s32 ScriptCmd_UnitTransform(u8 arg0, u8 arg1) {
+s32 ScriptCmd_UnitTransform(u8 unitId, u8 wantTransformed) {
+    /* Immediately transform or untransform unitId to match wantTransformed (status 9). */
     void Unit_ApplyTransform(void *);
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
@@ -12136,18 +12137,18 @@ s32 ScriptCmd_UnitTransform(u8 arg0, u8 arg1) {
     extern u8 gUnits[];
     void *unit;
 
-    if (arg0 != 0) {
-        unit = gUnits + (arg0 - 1) * 0x280;
+    if (unitId != 0) {
+        unit = gUnits + (unitId - 1) * 0x280;
     } else {
         unit = NULL;
     }
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    if (arg1 != 0 && Status_Test((u8 *)unit + 0x1BC, 9) != 0) {
+    if (wantTransformed != 0 && Status_Test((u8 *)unit + 0x1BC, 9) != 0) {
         return 0;
     }
-    if (arg1 == 0 && Status_Test((u8 *)unit + 0x1BC, 9) == 0) {
+    if (wantTransformed == 0 && Status_Test((u8 *)unit + 0x1BC, 9) == 0) {
         return 0;
     }
     Unit_ApplyTransform(unit);
