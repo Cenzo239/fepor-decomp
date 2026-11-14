@@ -297,7 +297,7 @@ static inline const u32 *StrMin(const u32 *a, const u32 *b) {
   /* list object helpers (construct, destroy, get item) */
   void ObjList_Init(void *);
   /* ObjList_Destroy declared at definition */
-  void fn_800E8A88(void *, f32);
+  void Camera_SetTransitionDecay(void *, f32);
 s32 Str_Cmp(); /* strcmp */
 
 /* std::equal on chars */
@@ -12239,7 +12239,7 @@ extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
     }
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        fn_800E8A88((void *)ObjList_Get(list, i), farg0);
+        Camera_SetTransitionDecay((void *)ObjList_Get(list, i), farg0);
     }
     ObjList_Destroy(list, -1);
 }
@@ -12864,7 +12864,7 @@ void *fn_800E89EC(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_800E8A88(void *arg0, f32 farg0) {
+void Camera_SetTransitionDecay(void *arg0, f32 farg0) {
     extern f32 lbl_80369F7C;
     M2C_FIELD(arg0, f32 *, 0x110) = (f32) (lbl_80369F7C * farg0);
     M2C_FIELD(arg0, s32 *, 0x120) = 0x3C;
