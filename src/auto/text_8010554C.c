@@ -128,7 +128,7 @@ s32 fn_801055B0(s32 arg0) {
 
 void fn_80105624(s32 arg0) {
     void *fn_800285C0(void *);
-    void fn_8001EDB8(void *, s32);
+    void Item_GetKeyFlags(void *, s32);
     void fn_80026770(void *, void *);
     void fn_800319E8(s32);
     extern struct {
@@ -146,14 +146,14 @@ void fn_80105624(s32 arg0) {
 
     gUiContext.unk8 = 0xA;
     temp = fn_800285C0(&gUiContext);
-    fn_8001EDB8(&sp8, *(s32 *)temp);
+    Item_GetKeyFlags(&sp8, *(s32 *)temp);
     fn_80026770(&gUiContext, &sp8);
     fn_800319E8(arg0);
 }
 
 s32 fn_8010568C(s32 arg0) {
     void fn_8001EDA0(u8 *);
-    void fn_8001EDB8(u8 *);
+    void Item_GetKeyFlags(u8 *);
     void fn_8002A784(s32, u8 *);
     u8 Status_Test(s32, s32);
     extern s32 gTargetList[];
@@ -161,7 +161,7 @@ s32 fn_8010568C(s32 arg0) {
     u32 spC;
     u32 sp8;
 
-    fn_8001EDB8((u8 *)&spC);
+    Item_GetKeyFlags((u8 *)&spC);
     *(u8 *)&sp10 = *(u8 *)&spC;
     if (Status_Test(arg0 + 0x1BC, 0x3C) != 0) {
         fn_8001EDA0((u8 *)&sp10);
@@ -2124,13 +2124,17 @@ void *Sound_Create(s32 arg0, u32 arg1) {
     extern u8 lbl_8028F390[];
     void *tbl;
     void *result;
+    s32 a0;
 
+    a0 = arg0;
     tbl = lbl_8028F390;
-    if (arg1 == 0U) {
+    if (arg1 != 0U) {
+
+    } else {
         arg1 = 3U;
     }
     result = Process_Create(tbl, arg1);
-    fn_80109F88(result, arg0);
+    fn_80109F88(result, a0);
     return result;
 }
 

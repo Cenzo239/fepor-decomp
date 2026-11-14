@@ -355,7 +355,7 @@ void fn_8009204C(void *arg0, void *arg1) {
 
 s32 fn_80092198(u8 *arg0, s32 arg1) {
 u8 Status_Test(u8 *, s32);
-void fn_8001EDB8(u8 *, s32);
+void Item_GetKeyFlags(u8 *, s32);
 u8 sp8; s32 result; u8 mask; u8 *p; s32 slot;
 mask=arg1; p=arg0;
 if(Status_Test(p+0x1BC,0x5B)) result=-2;
@@ -364,7 +364,7 @@ else {
 for(result=0;result<4;result++,p+=8) {
 slot=*(s32*)(p+0x1EC);
 if(!((u32)(-slot|slot)>>31)) break;
-fn_8001EDB8(&sp8,slot);
+Item_GetKeyFlags(&sp8,slot);
 switch((u8)(sp8 & mask)) {case 0: break; default: goto done;}
 }
 result=-1;
@@ -374,7 +374,7 @@ done: return result;
 
 s32 fn_8009226C(u8 *arg0, u8 *arg1) {
     u8 Status_Test(u8 *, s32);
-    void fn_8001EDB8(u8 *, s32);
+    void Item_GetKeyFlags(u8 *, s32);
     u8 sp8;
     s32 i;
     u8 *p;
@@ -390,7 +390,7 @@ s32 fn_8009226C(u8 *arg0, u8 *arg1) {
         if (*(u32 *)(p + 0x1EC) == 0) {
             break;
         }
-        fn_8001EDB8(&sp8, *(s32 *)(p + 0x1EC));
+        Item_GetKeyFlags(&sp8, *(s32 *)(p + 0x1EC));
         if ((u8)(sp8 & *arg1) != 0) {
             return i;
         }
@@ -401,7 +401,7 @@ s32 fn_8009226C(u8 *arg0, u8 *arg1) {
 
 void fn_8009233C(u8 *arg0, u8 *arg1) {
     u8 Status_Test(u8 *, s32);
-    void fn_8001EDB8(u8 *, s32);
+    void Item_GetKeyFlags(u8 *, s32);
     u8 sp8;
     s32 i;
     u8 *p;
@@ -425,7 +425,7 @@ void fn_8009233C(u8 *arg0, u8 *arg1) {
         if (*(u32 *)(p + 0x1EC) == 0) {
             break;
         }
-        fn_8001EDB8(&sp8, *(s32 *)(p + 0x1EC));
+        Item_GetKeyFlags(&sp8, *(s32 *)(p + 0x1EC));
         i++;
         p += 8;
         flags |= sp8;

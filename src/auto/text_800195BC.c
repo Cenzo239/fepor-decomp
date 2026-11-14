@@ -2803,7 +2803,7 @@ void fn_8001EDA0(u8 *arg0) {
     }
 }
 
-void fn_8001EDB8(u8 *out, void *key) {
+void Item_GetKeyFlags(u8 *out, void *key) {
     void *Item_GetByIid(void *);
     extern u8 gDataStr[];
     s32 flags;
