@@ -1629,12 +1629,12 @@ s32 fn_801660A8(void) {
 }
 
 f32 fn_801660C4(s32 arg0, s32 arg1, u16 arg2, u8 arg3) {
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern f32 lbl_8036A8D8;
     s32 t;
 
     t = arg0 + (s32)(arg2 / 10) - arg1;
-    return (f32)fn_80238638((lbl_8036A8D8 * (f32)t) / (f32)arg3);
+    return (f32)sin((lbl_8036A8D8 * (f32)t) / (f32)arg3);
 }
 
 u32 fn_8016614C(void *arg0, s32 arg1) {
@@ -14125,7 +14125,7 @@ void fn_8017E8C0(void *arg0) {
     s32 fn_800981D0();
     M2C_UNK fn_8017EE3C(u32, u8, M2C_UNK, s32, s32, M2C_UNK, f32, f32);
     M2C_UNK fn_802380D0(f32);
-    M2C_UNK fn_80238638();
+    M2C_UNK sin();
     extern f32 lbl_8036AC2C;
     extern f32 lbl_8036AC30;
     extern f32 lbl_8036AC34;
@@ -14174,7 +14174,7 @@ void fn_8017E8C0(void *arg0) {
             M2C_FIELD(arg0, u8 *, 0x41) = (u8) (M2C_FIELD(arg0, u8 *, 0x41) + 1);
             temp_r4_2 = M2C_FIELD(arg0, u8 *, 0x42);
             temp_f31 = Math_Lerp(temp_r4_2, (lbl_8036AC34 * (f32) temp_r4_2) / lbl_8036AC40, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, u8 *, 0x41));
-            fn_80238638();
+            sin();
             fn_802380D0(temp_f31);
             if ((u8) M2C_FIELD(arg0, u8 *, 0x41) >= (u8) M2C_FIELD(arg0, u8 *, 0x42)) {
                 M2C_FIELD(arg0, u8 *, 0x42) = 0U;

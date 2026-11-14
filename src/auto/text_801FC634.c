@@ -197,7 +197,7 @@ void fn_801FCCA0(void *self) {
     void *Heap_AllocRaw(s32);
     u32 Rand_Next(void);
     f64 fn_802380D0(f32);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     f64 fn_80237E90(f32);
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
@@ -296,7 +296,7 @@ void fn_801FCCA0(void *self) {
         *(f32 *)(b + 0x3C) = *(f32 *)(b + 0x34);
         *(f32 *)(b + 0x40) = *(f32 *)(b + 0x38);
         *(f32 *)(b + 0x34) = f26 * (f32)fn_802380D0(f24 * (f32)*(s16 *)(b + 0x44)) + f27;
-        *(f32 *)(b + 0x38) = f28 * (f32)fn_80238638(f24 * (f32)*(s16 *)(b + 0x46)) + f29;
+        *(f32 *)(b + 0x38) = f28 * (f32)sin(f24 * (f32)*(s16 *)(b + 0x46)) + f29;
         *(s16 *)(b + 0x44) = *(s16 *)(b + 0x44) + (s8)b[0x48];
         *(s16 *)(b + 0x46) = *(s16 *)(b + 0x46) + (s8)b[0x49];
         if (*(s16 *)(b + 0x44) >= 0x4000) {
@@ -334,7 +334,7 @@ void fn_801FCCA0(void *self) {
         if (b[0x4A] != 0) {
             t = lbl_8036BB20 * f22;
             f22 = (f32)fn_802380D0(t);
-            f23 = (f32)fn_80238638(t);
+            f23 = (f32)sin(t);
             Prim2D_Begin();
             Prim2D_SetTransform(gFloatZero, gFloatZero, lbl_8036BB24, gFloatOne);
             Prim2D_SetTex(0, 0);
@@ -356,7 +356,7 @@ void fn_801FCCA0(void *self) {
                 p->life--;
                 t = (f32)fn_802380D0(lbl_8036BB20 * (f32)p->ang);
                 dx = (f32)p->spd * t * lbl_8036BB34;
-                t = (f32)fn_80238638(lbl_8036BB20 * (f32)p->ang);
+                t = (f32)sin(lbl_8036BB20 * (f32)p->ang);
                 dy = (f32)p->spd * t * lbl_8036BB34;
                 p->x += dx;
                 p->y += dy;
@@ -386,7 +386,7 @@ void fn_801FD3B4(void *arg0) {
     u32 Rand_Next(void);
     f64 fn_80237E90(f32);
     f64 fn_802380D0(f32);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern void *gFallingParticleTex;
     extern f32 lbl_8036BAD8, gFloatZero, gFloatOne, lbl_8036BAE4;
     extern f32 lbl_8036BAE8, lbl_8036BAEC, lbl_8036BB04, lbl_8036BB08;
@@ -406,7 +406,7 @@ void fn_801FD3B4(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x3C) = *(f32 *)((u8 *)arg0 + 0x34);
     *(f32 *)((u8 *)arg0 + 0x40) = *(f32 *)((u8 *)arg0 + 0x38);
     *(f32 *)((u8 *)arg0 + 0x34) = lbl_8036BAE8 * (f32)fn_802380D0(lbl_8036BB0C * (f32)*(s16 *)((u8 *)arg0 + 0x44)) + lbl_8036BAEC;
-    *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036BB14 * (f32)fn_80238638(lbl_8036BB0C * (f32)*(s16 *)((u8 *)arg0 + 0x46)) + lbl_8036BB10;
+    *(f32 *)((u8 *)arg0 + 0x38) = lbl_8036BB14 * (f32)sin(lbl_8036BB0C * (f32)*(s16 *)((u8 *)arg0 + 0x46)) + lbl_8036BB10;
     *(s16 *)((u8 *)arg0 + 0x44) = *(s16 *)((u8 *)arg0 + 0x44) + (s8)*((u8 *)arg0 + 0x48);
     *(s16 *)((u8 *)arg0 + 0x46) = *(s16 *)((u8 *)arg0 + 0x46) + (s8)*((u8 *)arg0 + 0x49);
     if (*(s16 *)((u8 *)arg0 + 0x44) >= 0x4000) {
@@ -447,7 +447,7 @@ void fn_801FD3B4(void *arg0) {
     if (*((u8 *)arg0 + 0x4A) != 0) {
         f32 a = lbl_8036BB20 * ang;
         f32 c = (f32)fn_802380D0(a);
-        f32 s = (f32)fn_80238638(a);
+        f32 s = (f32)sin(a);
         Prim2D_Begin();
         Prim2D_SetTransform(gFloatZero, gFloatZero, lbl_8036BB24, gFloatOne);
         Prim2D_SetTex(0, 0);
@@ -470,7 +470,7 @@ void fn_801FD3B4(void *arg0) {
             *(s16 *)((u8 *)p + 0xE) += 1;
             *(s16 *)((u8 *)p + 0xC) -= 1;
             fx = (f32)fn_802380D0(lbl_8036BB20 * (f32)*((u8 *)p + 8));
-            fy = (f32)fn_80238638(lbl_8036BB20 * (f32)*((u8 *)p + 8));
+            fy = (f32)sin(lbl_8036BB20 * (f32)*((u8 *)p + 8));
             *(f32 *)p += (f32)*((u8 *)p + 9) * fx * lbl_8036BB34;
             *(f32 *)((u8 *)p + 4) += (f32)*((u8 *)p + 9) * fy * lbl_8036BB34;
             *((u8 *)p + 8) = (u8)(*((u8 *)p + 8) + (s8)((Rand_Next() % 9) - 4));

@@ -6332,7 +6332,7 @@ void fn_801C36E8(void *arg0) {
     s64 __div2i(s64, s64);
     s64 fn_8022C9FC(s64, s64);
     f32 fn_8022CB78(s64);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern s8 lbl_80368288;
     extern s8 lbl_80368294;
     extern s16 lbl_8036828C[4];
@@ -6608,7 +6608,7 @@ void fn_801C36E8(void *arg0) {
     Prim2D_PrepareTex();
 
     c = fn_8022CB78(fn_8022C9FC(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x7D0)) / lbl_8036B3C8;
-    d = lbl_8036B37C * (f32)fn_80238638(lbl_8036B3CC * (lbl_8036B3BC * c));
+    d = lbl_8036B37C * (f32)sin(lbl_8036B3CC * (lbl_8036B3BC * c));
     b = (f32)(*(s16 *)((u8 *)self + 0x146) - 8) + d;
     a = (f32)(*(s16 *)((u8 *)self + 0x144) - 0x24);
     *(s32 *)color = *Ui_GetColor(1);

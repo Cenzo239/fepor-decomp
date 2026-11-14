@@ -212,7 +212,7 @@ void fn_8012835C(s32 arg0, s32 arg1, s32 arg2) {
 
 void fn_801283D4(void *arg0) {
     u32 OSGetTick(f32);
-    f64 fn_80238638(u32, u32, s32, f32, f32);
+    f64 sin(u32, u32, s32, f32, f32);
     extern f32 lbl_80367068;
     extern f32 lbl_8036A3D4;
     extern f64 lbl_8036A3D8;
@@ -281,7 +281,7 @@ void fn_801283D4(void *arg0) {
     temp_r6 = M2C_FIELD(arg0, s32 *, 0x38);
     temp_r0 = *(u32 *)0x800000F8 / 4000;
     temp_f4 = M2C_FIELD(arg0, f32 *, 0x3C);
-    temp_f2_2 = (temp_f4 * (f32) fn_80238638(temp_r3_2 / temp_r0, MULTU_HI(0x10624DD3, ((u32) *(u32 *)0x800000F8 >> 2U)), temp_r6, lbl_8036A3F0 * ((f32) ((temp_r3_2 / temp_r0) % temp_r6) / (f32) temp_r6), lbl_8036A3F0)) - (lbl_8036A3F4 * temp_f4);
+    temp_f2_2 = (temp_f4 * (f32) sin(temp_r3_2 / temp_r0, MULTU_HI(0x10624DD3, ((u32) *(u32 *)0x800000F8 >> 2U)), temp_r6, lbl_8036A3F0 * ((f32) ((temp_r3_2 / temp_r0) % temp_r6) / (f32) temp_r6), lbl_8036A3F0)) - (lbl_8036A3F4 * temp_f4);
     M2C_FIELD(temp_r31, f32 *, 0x40) = (f32) ((temp_f2_2 * (temp_f1_5 / var_f4)) + M2C_FIELD(arg0, f32 *, 0x30));
     M2C_FIELD(temp_r31, f32 *, 0x44) = (f32) ((temp_f2_2 * temp_f30) + M2C_FIELD(arg0, f32 *, 0x34));
 }
@@ -308,7 +308,7 @@ void fn_80128618(void *arg0) {
 }
 
 void fn_80128630(void *arg0) {
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     u32 OSGetTick(void);
     extern f32 lbl_8036A3F0;
     void *obj;
@@ -324,7 +324,7 @@ void fn_80128630(void *arg0) {
     ms = OSGetTick() / ((*(u32 *)0x800000F8 >> 2) / 1000);
     period = *(s32 *)((u8 *)arg0 + 0x38);
     rem = ms % period;
-    wave = (f32)fn_80238638(((f32)rem / (f32)period) * lbl_8036A3F0);
+    wave = (f32)sin(((f32)rem / (f32)period) * lbl_8036A3F0);
     scale = *(f32 *)((u8 *)arg0 + 0x3C);
     y = *(f32 *)((u8 *)arg0 + 0x34);
     x = *(f32 *)((u8 *)arg0 + 0x30);
@@ -1413,7 +1413,7 @@ void fn_8012AF4C(void *arg0) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     f64 fn_802380D0(f32);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern f32 gTileCenter;
     extern f32 lbl_8036A420;
     extern f32 gAlphaOpaque;
@@ -1448,7 +1448,7 @@ void fn_8012AF4C(void *arg0) {
     x = (f32)sub->bx;
 
     z += Math_Lerp(lbl_8036A420, lbl_8036A460, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40));
-    x = (lbl_8036A46C * (f32)fn_80238638((f32)*(s32 *)((u8 *)self + 0x40))) + x;
+    x = (lbl_8036A46C * (f32)sin((f32)*(s32 *)((u8 *)self + 0x40))) + x;
     y = (lbl_8036A46C * (f32)fn_802380D0((f32)*(s32 *)((u8 *)self + 0x40))) + y;
 
     PSMTXScale(sp98, lbl_8036A470, lbl_8036A470, lbl_8036A470);

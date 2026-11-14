@@ -7326,10 +7326,10 @@ void fn_800DBF38(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
 }
 
 void fn_800DBF84(void *arg0) {
-    f64 fn_80238638(f64);
+    f64 sin(f64);
 
     if (M2C_FIELD(arg0, s32 *, 0x5C) > 0) {
-        M2C_FIELD(arg0, f32 *, 0x68) = M2C_FIELD(arg0, f32 *, 0x4C) * (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x58));
+        M2C_FIELD(arg0, f32 *, 0x68) = M2C_FIELD(arg0, f32 *, 0x4C) * (f32)sin(M2C_FIELD(arg0, f32 *, 0x58));
         M2C_FIELD(arg0, f32 *, 0x58) += M2C_FIELD(arg0, f32 *, 0x50);
         M2C_FIELD(arg0, f32 *, 0x4C) += M2C_FIELD(arg0, f32 *, 0x54);
         if (M2C_FIELD(arg0, f32 *, 0x4C) < 0.0f) {
@@ -12892,16 +12892,16 @@ void Camera_SetTransition(void *arg0, s32 arg1, f32 farg0, f32 farg1, s32 arg2) 
 }
 
 void Camera_UpdateTransition(void *arg0) {
-    f64 fn_80238638(f64);
+    f64 sin(f64);
 
     if (M2C_FIELD(arg0, s32 *, 0x120) > 0) {
         if (M2C_FIELD(arg0, u8 *, 0x124) != 0) {
             M2C_FIELD(arg0, f32 *, 0x11C) =
-                M2C_FIELD(arg0, f32 *, 0x108) * (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x114));
+                M2C_FIELD(arg0, f32 *, 0x108) * (f32)sin(M2C_FIELD(arg0, f32 *, 0x114));
             M2C_FIELD(arg0, f32 *, 0x118) = 0.0f;
         } else {
             M2C_FIELD(arg0, f32 *, 0x118) =
-                M2C_FIELD(arg0, f32 *, 0x108) * (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x114));
+                M2C_FIELD(arg0, f32 *, 0x108) * (f32)sin(M2C_FIELD(arg0, f32 *, 0x114));
             M2C_FIELD(arg0, f32 *, 0x11C) = 0.0f;
         }
         M2C_FIELD(arg0, f32 *, 0x114) += M2C_FIELD(arg0, f32 *, 0x10C);
@@ -16469,7 +16469,7 @@ void fn_800F2174(void *arg0)
     void Ui_PlaySeCue(void *, s32);
     void fn_8014CAD4(void *, f32, f32);
     f64 fn_802380D0(f32);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern u8 lbl_80272CE8[];
     extern u8 lbl_80272D08[];
     extern u8 gBattleMap[];
@@ -16639,7 +16639,7 @@ void fn_800F2174(void *arg0)
                     f28 = (f32)(s8)stick[2] / lbl_8036A04C;
                     f29 = (f32)(s8)stick[3] / lbl_8036A04C;
                     f27 = (f32)fn_802380D0(f26);
-                    f2 = (f32)fn_80238638(f26);
+                    f2 = (f32)sin(f26);
                     f1 = (f27 * f28) - (f2 * f29);
                     f28 = f31 - ((f2 * f28) + (f27 * f29));
                     f29 = f30 + f1;
@@ -16672,7 +16672,7 @@ void fn_800F2174(void *arg0)
                 f29 = (f32)(s8)stick[2] / lbl_8036A054;
                 f28 = (f32)(s8)stick[3] / lbl_8036A054;
                 f27 = (f32)fn_802380D0(f26);
-                f2 = (f32)fn_80238638(f26);
+                f2 = (f32)sin(f26);
                 f1 = (f27 * f29) - (f2 * f28);
                 f28 = f31 - ((f2 * f29) + (f27 * f28));
                 f29 = f30 + f1;

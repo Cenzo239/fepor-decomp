@@ -2675,7 +2675,7 @@ void fn_8018B884(void *arg0) {
 }
 
 void fn_8018B89C(void *arg0) {
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036ACEC;
     void *self;
@@ -2689,7 +2689,7 @@ void fn_8018B89C(void *arg0) {
     *(s32 *)((u8 *)self + 0x40) += 1;
     *(f32 *)((u8 *)self + 0x44) =
         *(f32 *)((u8 *)self + 0x44) + *(f32 *)((u8 *)self + 0x34);
-    d = fn_80238638(*(f32 *)((u8 *)self + 0x44));
+    d = sin(*(f32 *)((u8 *)self + 0x44));
     cos_s = (f32)d;
     scale = *(f32 *)((u8 *)self + 0x3C);
     p = *(void **)((u8 *)self + 0x30);
@@ -3553,7 +3553,7 @@ void* Ui_GetColor(u8 arg0) {
         temp_r0 = temp_r6 >> 2; 
         if (temp_r0 != 0) {
             // Reconstruct the floating-point operation in assembly
-            f32 result = lbl_8036AD74 * ((lbl_8036AD78 * (f32)fn_80238638(temp_r3 / temp_r0, 
+            f32 result = lbl_8036AD74 * ((lbl_8036AD78 * (f32)sin(temp_r3 / temp_r0, 
                     0x57619F1, 
                     (temp_r6 >> 2) * 0x10624DD3, 
                     temp_r6, 
@@ -3577,7 +3577,7 @@ void* Ui_GetColor(u8 arg0) {
         temp_r0 = temp_r6 >> 2; 
         if (temp_r0 != 0) {
             // Reconstruct the floating-point operation
-            f32 result = lbl_8036AD80 * ((lbl_8036AD78 * (f32)fn_80238638(temp_r3 / temp_r0, 
+            f32 result = lbl_8036AD80 * ((lbl_8036AD78 * (f32)sin(temp_r3 / temp_r0, 
                     0x57619F1,
                     (temp_r6 >> 2) * 0x10624DD3,
                     temp_r6,
@@ -8221,7 +8221,7 @@ void fn_80197A78(void *arg0, s32 arg1)
 #pragma cplusplus on
 extern "C" void fn_80197F5C(void *arg0) {
 void fn_80123300(void *,s32); void fn_801232F4(void *,f32,f32); void Ui_PlaySeCue(void *,s32);
-f64 fn_80238638(f64);
+f64 sin(f64);
 extern void *gGame;
 extern u8 lbl_8027A780[];
 extern f32 lbl_8036AE88,lbl_8036AE8C,lbl_8036AEA0,lbl_8036AEA4;
@@ -8259,7 +8259,7 @@ if((*(s32 *)(self+0x88))==(*(s32 *)(self+0x84))) (*(s32 *)(self+0x8C))=-1;
 }
 }
 if((*(s32 *)(self+0x6C))!=2 && (*(s32 *)(self+0x98))==0) {
-wave=lbl_8036AEA0*(f32)fn_80238638((f32)*(s32 *)(owner+0x44) * *(f32 *)((u8 *)gGame+0xD4));
+wave=lbl_8036AEA0*(f32)sin((f32)*(s32 *)(owner+0x44) * *(f32 *)((u8 *)gGame+0xD4));
 if(wave<lbl_8036AE88) wave*=lbl_8036AEA4;
 (*(u8 *)(self+0x52))=64;(*(u8 *)(self+0x51))=64;(*(u8 *)(self+0x50))=64;(*(u8 *)(self+0x53))=(s8)(s32)wave;
 }

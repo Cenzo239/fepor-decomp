@@ -65,7 +65,7 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
     u16 **fn_8006EDD8(s32, s32);
     Color *Ui_GetColor(s32);
     f64 fn_802380D0(f32);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern Arr9 lbl_8026C824;
     extern Arr9 lbl_8026C848;
     extern u8 gUiStrings[];
@@ -199,9 +199,9 @@ void fn_8007F844(s32 arg0, f32 fx, f32 fy, f32 fz) {
                 } else {
                     ang1 = k31 - k28 * (k29 * ((f32)(j + 1) / (f32)arg0));
                 }
-                s0 = (f32)fn_80238638(ang0);
+                s0 = (f32)sin(ang0);
                 c0 = (f32)fn_802380D0(ang0);
-                s1 = (f32)fn_80238638(ang1);
+                s1 = (f32)sin(ang1);
                 c1 = (f32)fn_802380D0(ang1);
                 if (i == 0) {
                     sp24 = lbl_80369410;

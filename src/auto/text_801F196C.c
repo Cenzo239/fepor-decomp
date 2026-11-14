@@ -1100,7 +1100,7 @@ void fn_801F3E60(void *arg0) {
     void fn_801F52A8(s32, s16 *);
     void fn_8022C9FC(s32, s32);
     f32 fn_8022CB78(void);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     extern s32 OSGetTime(void);
     extern void __div2i(s32, s32);
     extern u8 gOptionsStrs[];
@@ -1373,7 +1373,7 @@ void fn_801F3E60(void *arg0) {
     (void)fn_80152010; (void)fn_801E3570; (void)Person_GetByPid;
     (void)Msg_ResolveName; (void)Ui_DrawCaptionBar; (void)fn_8008AB7C;
     (void)Ui_DrawRouteIconEx; (void)fn_8022C9FC; (void)fn_8022CB78;
-    (void)fn_80238638; (void)OSGetTime; (void)__div2i;
+    (void)sin; (void)OSGetTime; (void)__div2i;
     (void)lbl_803683E0; (void)lbl_803683E4; (void)gSystemSave;
 }
 #pragma use_lmw_stmw reset

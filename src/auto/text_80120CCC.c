@@ -1318,7 +1318,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 
 void fn_8012323C(void *arg0) {
     extern f32 lbl_8036A2DC;
-    f64 fn_80238638(f64);
+    f64 sin(f64);
     extern f64 lbl_8036A2E0;
     extern f32 lbl_8036A2E8;
     register f32 halfpi;
@@ -1327,10 +1327,10 @@ void fn_8012323C(void *arg0) {
     f32 sin_v;
 
     if (M2C_FIELD(arg0, s32 *, 0x90) > 0) {
-        cos_v = (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x84));
+        cos_v = (f32)sin(M2C_FIELD(arg0, f32 *, 0x84));
         halfpi = lbl_8036A2DC;
         M2C_FIELD(arg0, f32 *, 0x88) = M2C_FIELD(arg0, f32 *, 0x78) * cos_v;
-        sin_v = (f32)fn_80238638(halfpi + M2C_FIELD(arg0, f32 *, 0x84));
+        sin_v = (f32)sin(halfpi + M2C_FIELD(arg0, f32 *, 0x84));
         clamp = lbl_8036A2E8;
         M2C_FIELD(arg0, f32 *, 0x8C) = (f32)(lbl_8036A2E0 * (f64)(M2C_FIELD(arg0, f32 *, 0x78) * sin_v));
         M2C_FIELD(arg0, f32 *, 0x84) = M2C_FIELD(arg0, f32 *, 0x84) + M2C_FIELD(arg0, f32 *, 0x7C);
@@ -2581,7 +2581,7 @@ void fn_80125AE0(void *arg0)
 {
   u8 fn_800AA188(void);
   void Math_Lerp(f32, f32, f32, f32);
-  f64 fn_80238638(void);
+  f64 sin(void);
   void *Map_Get(void);
   extern f32 lbl_8036A30C;
   extern f32 lbl_8036A398;
@@ -2607,7 +2607,7 @@ void fn_80125AE0(void *arg0)
       *((f32 *) (((char *) arg0) + 0x4C)) = a - limit;
     }
     Math_Lerp(lbl_8036A30C, lbl_8036A39C, lbl_8036A398, *((f32 *) (((char *) arg0) + 0x4C)));
-    x = (f32) fn_80238638();
+    x = (f32) sin();
     new_var = lbl_8036A3A0 + x;
     t = new_var;
     t = (*((f32 *) (((char *) arg0) + 0x30))) * t;

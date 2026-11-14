@@ -2441,7 +2441,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     s64 __div2i(s64, s64);
     s64 fn_8022C9FC(s64, s64);
     f32 fn_8022CB78(s64);
-    f64 fn_80238638(f32);
+    f64 sin(f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2476,7 +2476,7 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     phase = fn_8022CB78(fn_8022C9FC(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x5DC)) / lbl_803696F8;
     if ((u8)alpha == 0) alpha = lo;
     else {
-        s = (f32)fn_80238638(lbl_803696FC * phase);
+        s = (f32)sin(lbl_803696FC * phase);
         alpha = (s32)(lbl_80369700 * (((f32)(u8)hi - (f32)(u8)lo) * (lbl_80369704 + s)) + (f32)(u8)lo);
     }
     Ui_LoadAtlasTex(handle, sp.buf, 0x43);

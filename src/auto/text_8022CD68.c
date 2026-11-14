@@ -3789,7 +3789,7 @@ s32 fn_80236D88(f64 *arg0, f64 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
 }
 
 #pragma global_optimizer reset
-f64 fn_80238638(f64 farg0) {
+f64 sin(f64 farg0) {
     f64 sp10[2];
     f64 sp8;
     s32 temp_r0;
@@ -4177,8 +4177,8 @@ f32 fn_80238A0C(void) {
 }
 
 f32 sinf(void) {
-    f64 fn_80238638();
-    return (f32) fn_80238638();
+    f64 sin();
+    return (f32) sin();
 }
 
 f32 cosf(void) {
