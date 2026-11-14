@@ -1073,7 +1073,7 @@ end:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-s16 fn_8013432C(void *arg0) {
+s16 Ui_CountPageItems(void *arg0) {
     s16 count;
     u8 *ptr;
 
