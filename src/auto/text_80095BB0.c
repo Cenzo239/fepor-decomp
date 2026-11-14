@@ -477,14 +477,14 @@ s32 fn_80096B80(void) {
 
 s32 fn_80096C18(void)
 {
-  extern u8 gBattle[];
-  extern u8 gEventSlots[];
+  extern u8 lbl_80330EAC[];
+  extern u8 lbl_803120C0[];
   extern u8 *lbl_80367504;
   u8 *new_var[2];
   extern f32 lbl_803697BC;
-  if ((*((u32 *) (gBattle + 0xCAC))) & 0x100)
+  if ((*((u32 *) (lbl_80330EAC + 0xCAC))) & 0x100)
   {
-    new_var[0] = gEventSlots + 0x14;
+    new_var[0] = lbl_803120C0 + 0x14;
   }
   else
     if (lbl_80367504 != NULL)
@@ -697,50 +697,24 @@ s32 Event_GetCmdKind(s32 arg0) {
 }
 
 s32 fn_80097168(s32 arg0) {
-    typedef struct {
-        u8 pad[0x8A0];
-        s16 idx;
-    } Scr;
-    extern Scr gBattle;
-    Scr *s;
-    s16 saved;
-    s32 count;
-    s16 n;
-    s32 c;
-
-    s = &gBattle;
-    count = 0;
-    saved = s->idx;
-    s->idx = arg0;
-    s->idx = (s16)arg0 + 1;
-
-    for (;;) {
-        n = s->idx;
-        c = *((u8 *)s + 0x8A0 + (n << 2) + 4);
-        if (c == 0x23) {
-            break;
-        }
-        if (c < 0x23) {
-            if (c == 0) {
-            } else if (c < 0) {
-                break;
-            } else if (c >= 0x20) {
-            } else {
-                break;
-            }
-        } else if (c < 0x50) {
-            if (c >= 0x25) {
-                break;
-            }
-        } else if (c < 0x53) {
-            count++;
-        } else {
-            break;
-        }
-        s->idx = n + 1;
-    }
-    s->idx = saved;
-    return count;
+ extern u8 gBattle[];
+ s16 *s = (s16 *)(gBattle + 0x8A0);
+ s32 count=0;
+ s16 saved=*s;
+ *s=arg0;
+ *s=(s16)arg0+1;
+ for (;;) {
+ s32 c=((u8 *)s)[(*s << 2)+4];
+ switch(c) {
+ case 0: case 0x20: case 0x21: case 0x22: case 0x24: goto done;
+ case 0x50: case 0x51: case 0x52: count++; break;
+ default: break;
+ }
+ ++*s;
+ }
+done:
+ *s=saved;
+ return count;
 }
 
 void fn_800973F0(void *arg0, s32 arg1)
