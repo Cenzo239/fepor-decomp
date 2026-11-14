@@ -121,7 +121,7 @@ void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5);
 s32 Sound_LookupVid();
 extern void func_80013934(s32 arg0);
 extern s32 gSynthVoices;
-extern u16 lbl_803548B8;
+extern u8 lbl_803548B8[1536];
 extern u16 lbl_80368A08;
 extern u16 lbl_8035A510[];
 extern u16 lbl_8035D118[256];
