@@ -19515,7 +19515,7 @@ s32 Ai_ExecUnit(void *arg0) {
     void fn_80037814(void);
     void Unit_IsLowHp(void *);
     u8 Ai_GetFactionBehavior(void *);
-    void fn_8018256C(void *);
+    void Ai_BehaviorNop(void *);
     void Ai_TryApproachIke(void *);
     void fn_80182AC4(void *);
     void fn_80182A0C(void *);
@@ -19551,7 +19551,7 @@ s32 Ai_ExecUnit(void *arg0) {
         fn_8018286C(arg0);
         break;
     case 0:
-        fn_8018256C(arg0);
+        Ai_BehaviorNop(arg0);
         break;
     }
     return 1;

@@ -16104,7 +16104,7 @@ void fn_80182514(u32 *arg0, ListNode **arg1, List *arg2)
 }
 
 #pragma opt_common_subs reset
-s32 fn_8018256C(void) {
+s32 Ai_BehaviorNop(void) {
     return 1;
 }
 
