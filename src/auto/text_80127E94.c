@@ -657,29 +657,30 @@ void fn_801298FC(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
-void ModelList_FadeInProcess(void *arg0) {
+/* Fade each listed model from transparent to opaque over 60 frames, then clear the process. */
+void ModelList_FadeInProcess(void *proc) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Model_SetAlpha(void *, s32);
     void Process_ClearFunc(void *);
     extern f64 lbl_8036A418;
-    extern f32 lbl_8036A420;
+    extern f32 gZeroF;
     extern f32 gAlphaOpaque;
     extern f32 gModelListFadeDuration;
-    u8 *p;
+    u8 *walk;
     s32 i;
-    u8 *node;
+    u8 *model;
 
-    M2C_FIELD(arg0, s32 *, 0x54) = M2C_FIELD(arg0, s32 *, 0x54) + 1;
-    p = (u8 *)arg0;
+    M2C_FIELD(proc, s32 *, 0x54) = M2C_FIELD(proc, s32 *, 0x54) + 1;
+    walk = (u8 *)proc;
     i = 0;
-    while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
-        node = *(u8 **)(p + 0x30) + 0x14;
-        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, gAlphaOpaque, gModelListFadeDuration, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
-        p += 4;
+    while (i < M2C_FIELD(proc, s32 *, 0x50)) {
+        model = *(u8 **)(walk + 0x30) + 0x14;
+        Model_SetAlpha(model, (s32)Math_Lerp(gZeroF, gAlphaOpaque, gModelListFadeDuration, (f32)M2C_FIELD(proc, s32 *, 0x54)));
+        walk += 4;
         i += 1;
     }
-    if (M2C_FIELD(arg0, s32 *, 0x54) == 0x3C) {
-        Process_ClearFunc(arg0);
+    if (M2C_FIELD(proc, s32 *, 0x54) == 0x3C) {
+        Process_ClearFunc(proc);
     }
 }
 #pragma use_lmw_stmw off
