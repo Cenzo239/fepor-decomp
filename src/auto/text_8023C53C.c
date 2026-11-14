@@ -3653,42 +3653,43 @@ void fn_80249E3C(s32 arg0) {
 }
 
 s32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8, s32, s32, s32, s32, s32, s32, s32, s32);
-s32 Sound_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+/* Look up a sound by id and start it; 0xFF key/vol/pan use the SoundEntry defaults. */
+s32 Sound_Start(s32 soundId, s32 key, s32 volume, s32 pan, s32 a4, s32 a5)
 {
-    u8 *obj;
-    s32 ret;
+    SoundEntry *entry;
+    s32 handle;
 
-    ret = -1;
-    obj = (u8 *)Sound_FindEntry(arg0);
-    if (obj != NULL) {
-        if ((u8)arg1 == 0xff) {
-            arg1 = obj[8];
+    handle = -1;
+    entry = (SoundEntry *)Sound_FindEntry(soundId);
+    if (entry != NULL) {
+        if ((u8)key == 0xff) {
+            key = entry->key;
         }
-        if ((u8)arg2 == 0xff) {
-            arg2 = obj[6];
+        if ((u8)volume == 0xff) {
+            volume = entry->volume;
         }
-        if ((u8)arg3 == 0xff) {
-            arg3 = obj[7];
+        if ((u8)pan == 0xff) {
+            pan = entry->pan;
         }
-        ret = fn_802488C8(
-            *(u16 *)(obj + 2),
-            obj[5],
-            obj[4],
-            (arg0 & 0xffff) | 0x80000000,
-            (u8)(arg1 | 0x80),
-            arg2,
-            arg3,
+        handle = fn_802488C8(
+            entry->progId,
+            entry->channel,
+            entry->group,
+            (soundId & 0xffff) | 0x80000000,
+            (u8)(key | 0x80),
+            volume,
+            pan,
             0xff,
             0xff,
             0,
             0,
             0xff,
-            obj[9],
+            entry->flags,
             0,
-            arg4,
-            arg5);
+            a4,
+            a5);
     }
-    return ret;
+    return handle;
 }
 
 s32 fn_8024A430(u16 arg0) {
