@@ -8075,7 +8075,7 @@ s32 fn_80140B04(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80140CC8(void *arg0) {
+extern "C" void Ui_ClearPanelChildren(void *arg0) {
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
