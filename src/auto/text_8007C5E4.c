@@ -898,7 +898,7 @@ void UnitInfo_DrawNamePlate(void *panel)
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTex(s32, s32);
     u8 Status_Test(void *, s32);
-    u8 fn_8001512C(void *);
+    u8 UnitList_CmdIsAvailable(void *);
     void *Msg_Expand(void *);
     void strcpy(void *, void *);
     void strcat(void *, void *);
@@ -940,13 +940,13 @@ void UnitInfo_DrawNamePlate(void *panel)
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
     if (Status_Test((u8 *)*(void **)((u8 *)panel + 0x58) + 0x1BC, 0) != 0) {
-        if (fn_8001512C(faction0) != 0) {
+        if (UnitList_CmdIsAvailable(faction0) != 0) {
             strcpy(buf, Msg_Expand(gUiStrings + 0x218));
             strcat(buf, gUiStrings + 0x221);
             strcat(buf, Msg_ExpandMmTag(faction0));
             fn_8001003C((s32)(y + lbl_803694CC), (s32)(lbl_803694D0 + x), 1, 1, 0, buf, lbl_80369430, lbl_80369418);
         }
-        if (fn_8001512C(faction3) != 0) {
+        if (UnitList_CmdIsAvailable(faction3) != 0) {
             strcpy(buf, Msg_Expand(gUiStrings + 0x223));
             strcat(buf, gUiStrings + 0x221);
             strcat(buf, Msg_ExpandMmTag(faction3));
@@ -954,7 +954,7 @@ void UnitInfo_DrawNamePlate(void *panel)
         }
     } else {
         kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
-        if (fn_8001512C(fn_8014C5A8(gBattleState, kind)) != 0) {
+        if (UnitList_CmdIsAvailable(fn_8014C5A8(gBattleState, kind)) != 0) {
             kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
             switch (kind) {
             case 0:

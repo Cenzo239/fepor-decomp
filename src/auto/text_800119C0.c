@@ -1190,7 +1190,7 @@ void *Msg_ExpandMmTag(void *ctrl) {
     }
 }
 
-s32 fn_8001512C(u8 *arg0) {
+s32 UnitList_CmdIsAvailable(u8 *arg0) {
     u8 fn_8014D8BC(void *);
     extern u8 gBattleState[];
     extern u32 gUnitLists[];
