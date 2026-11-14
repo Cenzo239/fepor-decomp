@@ -2353,7 +2353,7 @@ s32 Item_DecUses(void *item) {
     return 0;
 }
 
-s32 fn_8001D780(void *arg0, void *arg1)
+s32 Item_SetByName(void *arg0, void *arg1)
 {
     void *Res_GetByName(void *);
     void Icon_FreeSlot(void *, s32);

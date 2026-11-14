@@ -16800,7 +16800,7 @@ if((gAiState[1]&2)||(M2C_FIELD(self,u32 *,0x254)&0x3000000)){
 Map_FillLayer((void *)a,5,-1);Map_SelectRangeBuffer((void *)a,5);
 M2C_FIELD(a,u16 **,0x14190)[(s8)self[0x19E]+((s8)self[0x19F]<<6)]=0;
 }else Map_BuildUnitMoveRange(self,5,-1);
-Item_Init(&weapon);fn_8001D780(&weapon,arg1);
+Item_Init(&weapon);Item_SetByName(&weapon,arg1);
 result.item=M2C_FIELD(weapon.ptr,u16 *,14);
 Allegiance_FillMask(1,flags);
 map=gBattleMap;

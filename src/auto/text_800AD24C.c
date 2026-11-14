@@ -5571,7 +5571,7 @@ s32 fn_800BA638(s32 arg0) {
 
 s32 ScriptCmd_GiveItem(u8 arg0, s32 arg1) {
     void Item_Init(void *);
-    void fn_8001D780(void *, s32);
+    void Item_SetByName(void *, s32);
     void Item_Clone(void *, void *);
     void Item_Destroy(void *, s32);
     s32 fn_800C0658(void);
@@ -5590,7 +5590,7 @@ s32 ScriptCmd_GiveItem(u8 arg0, s32 arg1) {
         return 0;
     }
     Item_Init(sp10);
-    fn_8001D780(sp10, arg1);
+    Item_SetByName(sp10, arg1);
     Item_Clone(sp8, sp10);
     Unit_OfferItem(var_r31, sp8, fn_800C0658());
     Item_Destroy(sp8, -1);
@@ -6627,7 +6627,7 @@ u8 fn_800BC684(u8 arg0) {
 
 s32 fn_800BC6E8(u8 arg0, s32 arg1, s32 arg2) {
     void *Unit_GetItemSlot(void *, s32);
-    void fn_8001D780(void *, s32);
+    void Item_SetByName(void *, s32);
     extern u8 gUnits[];
     void *unit;
 
@@ -6639,7 +6639,7 @@ s32 fn_800BC6E8(u8 arg0, s32 arg1, s32 arg2) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    fn_8001D780(Unit_GetItemSlot(unit, arg1), arg2);
+    Item_SetByName(Unit_GetItemSlot(unit, arg1), arg2);
     return 1;
 }
 
