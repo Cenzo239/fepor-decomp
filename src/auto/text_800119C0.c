@@ -725,7 +725,7 @@ s32 fn_80014398(void *arg0) {
     if (Res_GetByName(temp_r31) == 0U) {
         return 1;
     }
-    fn_800C08AC(temp_r31, arg0);
+    Event_StartByName(temp_r31, arg0);
     return 0;
 }
 

@@ -1909,7 +1909,7 @@ void fn_8002D39C(void) {
 
 #pragma global_optimizer off
 void fn_8002D3A0(void *arg0) {
-    void fn_800C08AC(void *, void *);
+    void Event_StartByName(void *, void *);
     typedef struct {
         u8 pad[0x54];
         u8 mode;
@@ -1930,7 +1930,7 @@ void fn_8002D3A0(void *arg0) {
         str = Battle_str + 0x160;
         break;
     }
-    fn_800C08AC(str, arg0);
+    Event_StartByName(str, arg0);
 }
 #pragma global_optimizer reset
 void fn_8002D420(s32 arg0) {

@@ -7,7 +7,7 @@ extern struct {
     u32 *pad8;
     u32 padC;
 } gCardLinkProc;
-extern void* fn_800C08AC(void *, s32, void *);
+extern void* Event_StartByName(void *, s32, void *);
 
 extern f32 lbl_8036B910;
 extern f32 lbl_8036B914;
@@ -2922,7 +2922,7 @@ void fn_801F87E0(void) {
 void fn_801F8850(s32 arg0) {
     extern u16 StaffRoll_str[];
 
-    fn_800C08AC((u8 *)StaffRoll_str + 0x20E, arg0, StaffRoll_str);
+    Event_StartByName((u8 *)StaffRoll_str + 0x20E, arg0, StaffRoll_str);
 }
 
 #pragma global_optimizer off
@@ -2959,7 +2959,7 @@ void fn_801F892C(void) {
 void fn_801F894C(s32 arg0) {
     extern u16 StaffRoll_str[];
 
-    fn_800C08AC((u8 *)StaffRoll_str + 0x24D, arg0, StaffRoll_str);
+    Event_StartByName((u8 *)StaffRoll_str + 0x24D, arg0, StaffRoll_str);
 }
 
 void fn_801F897C(void) {

@@ -2689,7 +2689,7 @@ extern "C" void fn_80169414(s32 arg0) {
     void BgmVol_FadeOut(s32);
     void fn_80013A90(void *);
     void fn_800138F4(void);
-    void fn_800C08AC(void *, s32);
+    void Event_StartByName(void *, s32);
     extern u8 gBattleState[];
     extern u8 lbl_80277BC0[];
 
@@ -2697,7 +2697,7 @@ extern "C" void fn_80169414(s32 arg0) {
     BgmVol_FadeOut(0);
     fn_80013A90(lbl_80277BC0 + 0x85);
     fn_800138F4();
-    fn_800C08AC(lbl_80277BC0 + 0x9d, arg0);
+    Event_StartByName(lbl_80277BC0 + 0x9d, arg0);
 }
 
 #pragma cplusplus reset

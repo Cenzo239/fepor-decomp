@@ -8526,7 +8526,7 @@ void fn_800C0818(u8 flag) {
     }
 }
 
-void fn_800C08AC(void *arg0, void *arg1)
+void Event_StartByName(void *arg0, void *arg1)
 {
     extern u8 E_Event_script[];
     extern u8 gMapEventFlagNames[];

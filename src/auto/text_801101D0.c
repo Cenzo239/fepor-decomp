@@ -2860,14 +2860,14 @@ void fn_80117D20(s32 arg0) {
     void BattleState_LoadMap(void *, s32);
     void fn_80013A90(void *);
     void fn_800138F4(void);
-    void fn_800C08AC(void *, s32);
+    void Event_StartByName(void *, s32);
     extern s32 gBattleState[];
     extern u8 lbl_80274508[];
 
     BattleState_LoadMap(gBattleState, 0);
     fn_80013A90(lbl_80274508 + 0x138);
     fn_800138F4();
-    fn_800C08AC(lbl_80274508 + 0x150, arg0);
+    Event_StartByName(lbl_80274508 + 0x150, arg0);
 }
 
 BOOL fn_80117D80(s32 arg0, s32 arg1)

@@ -2433,7 +2433,7 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     void fn_80013A90(void *);
     void fn_80013A6C(void *);
     void fn_800138F4(void);
-    void fn_800C08AC(void *, void *);
+    void Event_StartByName(void *, void *);
     extern u8 gBattleState[];
     extern u8 gTabMenuStrings[];
     void **node;
@@ -2459,7 +2459,7 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x10));
     fn_80013A6C(*(void **)((u8 *)node[2] + 0x14));
     fn_800138F4();
-    fn_800C08AC(gTabMenuStrings + 0x1D6, arg0);
+    Event_StartByName(gTabMenuStrings + 0x1D6, arg0);
 }
 
 void fn_801E96D0(void *arg0, void *arg1) {
