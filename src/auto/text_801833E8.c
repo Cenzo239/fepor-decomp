@@ -10952,7 +10952,7 @@ void fn_8019DB68(void) {
     void fn_801A0A10(void);
     void fn_801A0B20(void);
     void fn_801A094C(void);
-    void fn_801A087C(void);
+    void MuEvent_StartForUnit(void);
     void fn_801A06EC(void);
     void fn_801A0434(void);
     void ScriptCmd_UnitTransform(void);
@@ -11039,7 +11039,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x1E2, fn_801A0A10, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x1EB, fn_801A0B20, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x1F5, fn_801A094C, 1);
-    Script_RegisterCommand(lbl_8027AD98 + 0x1FE, fn_801A087C, 1);
+    Script_RegisterCommand(lbl_8027AD98 + 0x1FE, MuEvent_StartForUnit, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x20A, fn_801A06EC, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x215, fn_801A0434, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x223, ScriptCmd_UnitTransform, 2);
@@ -12164,7 +12164,7 @@ void fn_801A06CC(void) {
     Unit_ApplyTransform();
 }
 
-s32 fn_801A087C(u8 arg0) {
+s32 MuEvent_StartForUnit(u8 arg0) {
     extern u32 gUiInputFlags;
     extern u8 gUnits[];
     extern u8 Proc_MuEventInst[];
