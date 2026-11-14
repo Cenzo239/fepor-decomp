@@ -352,38 +352,30 @@ s32 fn_8005B8E8(void) {
     return 1;
 }
 
-s32 fn_8005B918(void) {
+s32 fn_8005B918(s32 arg0) {
     void *fn_800C45B8(s32, void *, s32);
     s32 fn_8020CD64(s32, void *);
     s32 fn_8020CE24(void *, void *);
     void fn_8020CEC8(void *);
-    void Str_CopyPad(void *, s32, s32, s32);
+    void Str_CopyPad(void *, s32, s32);
     extern void *lbl_803672F4;
     extern u8 lbl_8026B330[];
-    u8 iter[0x18];
+    u8 iter[0xC];
     s32 out[3];
     void *p;
-    void *existing;
-    s32 flag;
-
-    existing = lbl_803672F4;
-    if (existing != NULL) {
-        return 0;
-    }
-    if (fn_8020CD64((s32)existing, iter) == 0) {
-        return 0;
-    }
+    s32 flag, name;
+    if (lbl_803672F4 != NULL) return 0;
+    if (fn_8020CD64(arg0, iter) == 0) return 0;
     p = fn_800C45B8(-0x4004, lbl_8026B330 + 5, 0);
-    if (p != NULL) {
-        *(u32 *)((u8 *)p + 0x4000) = 0;
-        lbl_803672F4 = p;
-    }
+    if (p != NULL) { *(u32 *)((u8 *)p + 0x4000) = 0; }
+    lbl_803672F4 = p;
     while (fn_8020CE24(iter, out) != 0) {
         p = lbl_803672F4;
-        flag = (out[1] != 0);
-        ((u8 *)p)[(*(u32 *)((u8 *)p + 0x4000) << 6) + 0x3f] = (u8)flag;
-        Str_CopyPad((u8 *)p + (*(u32 *)((u8 *)p + 0x4000) << 6), out[2], 0x3e, flag);
-        *(u32 *)((u8 *)p + 0x4000) = *(u32 *)((u8 *)p + 0x4000) + 1;
+        name = out[2];
+        flag = out[1] != 0;
+        ((u8 *)p)[(*(u32 *)((u8 *)p + 0x4000) << 6) + 0x3f] = flag;
+        Str_CopyPad((u8 *)p + (*(u32 *)((u8 *)p + 0x4000) << 6), name, 0x3e);
+        *(u32 *)((u8 *)p + 0x4000) += 1;
     }
     fn_8020CEC8(iter);
     return 1;
@@ -4136,15 +4128,14 @@ s32 fn_800653C8(void ***arg0, u16 *out) {
 #pragma global_optimizer off
 s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     void **mid;
-    u8 *base;
     u8 *entry;
-    u8 *walk;
+    u16 lim;
     u16 *table;
     u16 offset;
-    u16 lim;
+    u8 *base;
+    u8 *walk;
     s32 tmp;
     s32 best;
-    s32 i;
     s32 j;
     s32 index;
     s32 diff1;
@@ -4153,18 +4144,19 @@ s32 fn_80065484(void ***arg0, s32 arg1, u16 arg2) {
     u16 n;
     u16 v;
     u16 count;
+    s32 i;
 
-    if (arg0 == NULL) {
+    if ((u32)arg0 == 0) {
         base = NULL;
     } else {
         mid = *arg0;
-        if (mid != NULL) {
+        if ((u32)mid != 0) {
             base = (u8 *)*mid;
         } else {
             base = NULL;
         }
     }
-    if (base == NULL) {
+    if ((u32)base == 0) {
         return -1;
     }
 
