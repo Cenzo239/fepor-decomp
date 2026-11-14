@@ -293,36 +293,42 @@ void Battle_SetupVsCurrentTarget(void *proc) {
     }
 }
 
-void Battle_SetupHealTarget(void *arg0) {
-void *TargetList_GetCurrent(void *);
-void *UnitRef_GetUnit(void);
-void fn_801A7218(void *, void *, s32);
-void Battle_QueueDeathAnim(void *);
-s8 Unit_GetMaxHp(void *);
-void Battle_ApplyHpDelta(void *, s8);
-void fn_8019B704(void *, s32);
-extern u8 gTargetList[];
-extern u8 gBattle[];
-void *p;
-void *eac;
-s32 diff;
-s32 neg;
-void *f740;
-u8 div;
-p=TargetList_GetCurrent(gTargetList);
-f740=UnitRef_GetUnit();
-fn_801A7218(gBattle,f740,-1);
-Battle_QueueDeathAnim(gBattle);
-div=*((u8*)p+3);
-eac=gBattle;
-diff=*(s16*)((u8*)arg0+0x34)-*(s16*)((u8*)eac+0x29A);
-diff/=div;
-if(diff>Unit_GetMaxHp(eac)) diff=Unit_GetMaxHp(eac);
-if(diff<1) diff=1;
-neg=-diff;
-*((u8*)arg0+0x3B)=(u32)(neg|diff)>>31;
-Battle_ApplyHpDelta(gBattle,(s8)neg);
-fn_8019B704(arg0,0);
+/* Setup gBattle for healing the current target from proc HP, then open MapSelect. */
+void Battle_SetupHealTarget(void *proc) {
+    void *TargetList_GetCurrent(void *);
+    void *UnitRef_GetUnit(void);
+    void fn_801A7218(void *, void *, s32);
+    void Battle_QueueDeathAnim(void *);
+    s8 Unit_GetMaxHp(void *);
+    void Battle_ApplyHpDelta(void *, s8);
+    void fn_8019B704(void *, s32);
+    extern u8 gTargetList[];
+    extern u8 gBattle[];
+    void *entry;
+    void *battle;
+    s32 heal;
+    s32 negHeal;
+    void *target;
+    u8 div;
+
+    entry = TargetList_GetCurrent(gTargetList);
+    target = UnitRef_GetUnit();
+    fn_801A7218(gBattle, target, -1);
+    Battle_QueueDeathAnim(gBattle);
+    div = *((u8 *)entry + 3);
+    battle = gBattle;
+    heal = *(s16 *)((u8 *)proc + 0x34) - *(s16 *)((u8 *)battle + 0x29A);
+    heal /= div;
+    if (heal > Unit_GetMaxHp(battle)) {
+        heal = Unit_GetMaxHp(battle);
+    }
+    if (heal < 1) {
+        heal = 1;
+    }
+    negHeal = -heal;
+    *((u8 *)proc + 0x3B) = (u32)(negHeal | heal) >> 31;
+    Battle_ApplyHpDelta(gBattle, (s8)negHeal);
+    fn_8019B704(proc, 0);
 }
 
 void fn_800AD92C(s32 arg0) {
