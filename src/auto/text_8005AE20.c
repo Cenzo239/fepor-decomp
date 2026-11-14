@@ -705,17 +705,17 @@ s32 FileCache_GetSize(char *name) {
 
 s32 fn_8005C368(u32 arg0)
 {
-    extern u8 gFileCache[];
+    extern u8 lbl_802F04E0[];
     u8 *found;
     unsigned long j;
     u8 *e;
     unsigned ctr;
 
-    e = gFileCache;
+    e = lbl_802F04E0;
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if (*(u32 *)(e + 0x38) == arg0) {
-            found = gFileCache + j * 0x7C;
+            found = lbl_802F04E0 + j * 0x7C;
             goto done;
         }
         e += 0x7C;
@@ -820,7 +820,7 @@ void fn_8005CBC8(void) {
 #pragma global_optimizer off
 void *fn_8005CEC0(void) {
     void fn_8005C8D8(s32);
-    extern u8 gFileCache[];
+    extern u8 lbl_802F04E0[];
     u8 *e;
     s32 i;
     s32 j;
@@ -828,11 +828,11 @@ void *fn_8005CEC0(void) {
     u8 *base;
 
     i = 0;
-    base = gFileCache;
+    base = lbl_802F04E0;
     e = base;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*e == 0) {
-            return gFileCache + i * 0x7C;
+            return lbl_802F04E0 + i * 0x7C;
         }
         e += 0x7C;
         i += 1;
@@ -841,7 +841,7 @@ void *fn_8005CEC0(void) {
     j = 0;
     for (ctr = 0x400; ctr > 0; ctr--) {
         if ((s8)*base == 0) {
-            return gFileCache + j * 0x7C;
+            return lbl_802F04E0 + j * 0x7C;
         }
         base += 0x7C;
         j += 1;
@@ -857,21 +857,18 @@ void FileCache_ReleaseByName(char *name) {
 
 #pragma global_optimizer off
 void FileCache_ReleaseByKey(u32 arg0) {
-    void FileCache_Release(void *);
-    extern u8 gFileCache[];
-    u8 *e;
-    s32 i;
-    u8 *found;
-
-    for (i = 0, e = gFileCache; i < 0x400; i++, e += 0x7C) {
-        if (*(u32 *)(e + 0x38) == arg0) {
-            found = gFileCache + i * 0x7C;
-            goto done;
-        }
-    }
-    found = 0;
-done:
-    FileCache_Release(found);
+ void FileCache_Release(void *);
+ extern u8 gFileCache[];
+ u8 *found=0;
+ u8 *e;
+ u32 i;
+ for (e=gFileCache,i=0;i<1024;e+=124,++i) {
+ if (*(u32 *)(e+56)==arg0) {
+ found=gFileCache+124*i;
+ break;
+ }
+ }
+ FileCache_Release(found);
 }
 #pragma global_optimizer reset
 /* Drop one ref on a file-cache entry; when the count hits zero, cancel loads, wait, and free it. */
@@ -2296,16 +2293,13 @@ void Model_SetColor(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 
 #pragma opt_strength_reduction off
 s32 Pad_IsActive(u8 *arg0) {
-    s32 i;
-    for (i = 0; i < 2; i++, arg0 += 4) {
-        if (*(u16 *)(arg0 + 0x7C) != 0xFFFF) {
-            return 1;
-        }
-        if (*(u16 *)(arg0 + 0x7E) != 0xFFFF) {
-            return 1;
-        }
-    }
-    return 0;
+ u16 *p = (u16 *)arg0;
+ s32 i;
+ for (i=0;i<2;i++,p+=2) {
+ if (p[62] != 65535) return 1;
+ if (p[63] != 65535) return 1;
+ }
+ return 0;
 }
 #pragma opt_strength_reduction reset
 static inline u32 GetListField44(void *p) {
@@ -2714,9 +2708,9 @@ s32 GActor_FindNode(void *arg0, void *name) {
     goto check;
 body:
     node = *(void **)((u8 *)cur + 0x40);
-    if (node != NULL) {
-        goto search;
-    }
+    if (node == NULL) goto next;
+    else goto search;
+next:
     cur = *(void **)((u8 *)cur + 4);
 check:
     if (cur != NULL) {
@@ -3759,16 +3753,16 @@ M2C_UNK fn_80063954(char *arg0) {
 
 #pragma inline_depth(0)
 void *fn_800639B4(void *arg0) {
-    M2C_UNK fn_8005C82C(char *, s32);
-    void fn_80063A14(void *);
-    void *temp_r31;
-
-    temp_r31 = (void *)fn_8005C82C(arg0, 0);
-    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
-        fn_80063A14(temp_r31);
-        FileCache_MarkRelocated(arg0);
-    }
-    return temp_r31;
+ void fn_80063A14(void *);
+ void *result;
+ s32 flags;
+ result = (void *)fn_8005C82C(arg0, 0);
+ flags = FileCache_GetFlags(arg0);
+ if ((flags & 0x4000) == 0) {
+ fn_80063A14(result);
+ FileCache_MarkRelocated(arg0);
+ }
+ return result;
 }
 extern f32 lbl_803691E4;
 extern f32 lbl_8036920C;
@@ -4275,57 +4269,22 @@ check:
 }
 
 void *fn_80065634(void ***arg0, s32 arg1) {
-    void **mid;
-    u8 *base;
-    u16 lim;
-    s32 tmp;
-    s32 count;
-    s32 index;
-
-    if (arg0 == NULL) {
-        base = NULL;
-    } else {
-        mid = *arg0;
-        if (mid != NULL) {
-            base = (u8 *)*mid;
-        } else {
-            base = NULL;
-        }
-    }
-
-    if (base == NULL) {
-        return NULL;
-    }
-
-#pragma global_optimizer off
-    tmp = 0x10000 - 1;
-    count = *(u16 *)base;
-    index = 0;
-    lim = (u16)tmp;
-
-    while (count > 0) {
-        u16 offset;
-        s32 diff1;
-        s32 diff2;
-        s32 mask;
-        u8 *entry;
-
-        offset = *(u16 *)((u8 *)*(void **)(base + 4) + index);
-        diff1 = (s32)offset - (s32)lim;
-        diff2 = (s32)lim - (s32)offset;
-        mask = ~(diff1 | diff2) >> 31;
-        entry = (u8 *)(((s32)base + (s32)offset) & ~mask);
-
-        if (*(u16 *)entry == arg1) {
-            return entry;
-        }
-
-        index += 2;
-        count--;
-    }
-
-    return NULL;
-#pragma global_optimizer on
+ void **mid;
+ u8 *base;
+ s32 count;
+ s32 index;
+ if(arg0==NULL) base=NULL;
+ else { mid=*arg0; if(mid!=NULL) base=(u8 *)*mid; else base=NULL; }
+ if(base==NULL) return NULL;
+ count=*(u16 *)base;
+ index=0;
+ while(count>0) {
+ u16 offset=*(u16 *)((u8 *)*(void **)(base+4)+index);
+ u8 *entry=(u8 *)((u32)(base+offset) & -(s32)(offset != (u16)-1));
+ if(*(u16 *)entry==arg1) return entry;
+ index+=2; count--;
+ }
+ return NULL;
 }
 
 #pragma optimization_level 2
@@ -5839,23 +5798,15 @@ void fn_80069C7C(void) {
 
 #pragma global_optimizer off
 void fn_80069C98(void) {
-    void fn_802238A8(s32);
-    void fn_802238CC(s32);
-    extern s32 gMaterialStageIds[];
-    extern u8 lbl_80367304;
-    s32 *p;
-    s32 i;
-
-    if (lbl_80367304 != 0) {
-        i = 0;
-        p = gMaterialStageIds;
-        do {
-            fn_802238CC(*p);
-            i += 1;
-            p += 1;
-        } while (i < 8);
-        fn_802238A8(0);
-    }
+ void fn_802238A8(s32);
+ void fn_802238CC(s32);
+ extern s32 gMaterialStageIds[];
+ extern u8 lbl_80367304;
+ s32 *p;
+ s32 i;
+ if (!lbl_80367304) return;
+ for(p=gMaterialStageIds,i=0;i<8;i++,p++) fn_802238CC(*p);
+ fn_802238A8(0);
 }
 #pragma global_optimizer off
 void *fn_80069CFC(void) {
@@ -7460,26 +7411,19 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2)
 }
 #pragma global_optimizer off
 void fn_8006F10C(s32 arg0, s32 arg1) {
-    extern u8 lbl_80311CA8[];
-    s32 fn_800C0658(void);
-    void Ui_CreateMenu(void *, s32, s32);
-    struct Row { s32 a; s32 b; s32 c; s32 d; };
-    struct Ent { void *a; void *b; void *c; };
-    u8 *base;
-    struct Row *table;
-    struct Ent *entries;
-
-    base = lbl_80311CA8;
-    table = (struct Row *)(base + 0x4C);
-    entries = (struct Ent *)(base + 0x6C);
-
-    entries->a = table;
-    table->b = arg0;
-    entries->b = &table->c;
-    table->d = arg1;
-    entries->c = 0;
-
-    Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
+ extern u8 lbl_80311CA8[];
+ s32 fn_800C0658(void);
+ void Ui_CreateMenu(void *,s32,s32);
+ u8 *base=lbl_80311CA8;
+ s32 *table=(s32 *)(base+0x4c);
+ void **entries=(void **)(base+0x6c);
+ *entries++=table;
+ table[1]=arg0;
+ table+=2;
+ *entries++=table;
+ table[1]=arg1;
+ *entries=0;
+ Ui_CreateMenu(base+0x80,fn_800C0658(),0);
 }
 #pragma global_optimizer reset
 s32 fn_8006F2B8(s32 arg0, s32 arg1) {
@@ -7806,7 +7750,9 @@ extern "C" void fn_80070B3C(void *arg0, void *arg1) {
         p = (Ent *)GfxEnt_Get(g->ids[i]);
         if (p->level >= 4) {
             p->y = g->obj->v17() + 0x90;
-            p->y += (p->level - 4) * g->obj->v20();
+            s32 step = g->obj->v20();
+            step *= p->level - 4;
+            p->y += step;
         }
     }
 }
