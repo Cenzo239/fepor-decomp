@@ -10291,8 +10291,8 @@ void fn_801452A8(void) {
 }
 
 void fn_801452C8(void) {
-    M2C_UNK fn_800B2F20();
-    fn_800B2F20();
+    M2C_UNK Sound_HasId();
+    Sound_HasId();
 }
 
 void fn_801452E8(void) {

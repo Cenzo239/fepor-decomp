@@ -1966,7 +1966,7 @@ s32 fn_800B2E78(void) {
     return count;
 }
 
-s32 fn_800B2F20(s32 arg0) {
+s32 Sound_HasId(s32 arg0) {
 extern u8 gSoundIdSlots[];
 s32 i;
 u8 *p = gSoundIdSlots;
