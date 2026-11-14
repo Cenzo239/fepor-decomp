@@ -578,7 +578,7 @@ BOOL fn_8023B270(BOOL enable) {
     return rc;
 }
 
-BOOL fn_8023B308(void *handler) {
+BOOL SIRegisterPollingHandler(void *handler) {
     BOOL enabled;
     int i;
 

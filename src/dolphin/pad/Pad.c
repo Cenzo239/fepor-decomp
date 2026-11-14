@@ -695,7 +695,7 @@ void fn_802135EC(s32 arg0, OSContext *context)
 }
 
 u32 fn_8021364C(u32 arg0) {
-    void fn_8023B308(void (*)(void));
+    void SIRegisterPollingHandler(void (*)(void));
     void fn_8023B3D4(void (*)(void));
     void fn_802135EC(void);
     extern u32 lbl_80368688;
@@ -704,7 +704,7 @@ u32 fn_8021364C(u32 arg0) {
     prev = lbl_80368688;
     lbl_80368688 = arg0;
     if (arg0 != 0) {
-        fn_8023B308(fn_802135EC);
+        SIRegisterPollingHandler(fn_802135EC);
     } else {
         fn_8023B3D4(fn_802135EC);
     }
