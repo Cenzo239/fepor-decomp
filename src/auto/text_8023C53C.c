@@ -3642,7 +3642,7 @@ void fn_80249E3C(s32 arg0) {
 }
 
 s32 fn_802488C8(u16, u8, u8, s32, u8, s32, s32, u8, s32, s32, s32, s32, s32, s32, s32, s32);
-s32 fn_8024A34C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+s32 Sound_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
     u8 *obj;
     s32 ret;
@@ -4439,14 +4439,14 @@ s32 fn_8024B714(s32 arg0) {
 }
 
 s32 Snd_Start(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 fn_8024A34C(s32, s32, s32, s32, s32, u8);
+    s32 Sound_Start(s32, s32, s32, s32, s32, u8);
     void Audio_Lock(void);
     void Audio_Unlock(void);
     extern u8 lbl_8034CB64[];
     s32 temp;
 
     Audio_Lock();
-    temp = fn_8024A34C(arg0, 0xFF, arg1, arg2, arg3, lbl_8034CB64[((arg3 & 0xFF) << 1) + 1]);
+    temp = Sound_Start(arg0, 0xFF, arg1, arg2, arg3, lbl_8034CB64[((arg3 & 0xFF) << 1) + 1]);
     Audio_Unlock();
     return temp;
 }
@@ -11616,7 +11616,7 @@ s32 fn_8025DAA0(
 }
 
 void fn_8025DBF4(void) {
-    s32 fn_8024A34C(u16, u8, s32, s32, u8, s32);
+    s32 Sound_Start(u16, u8, s32, s32, u8, s32);
     s32 fn_8024A430(u16);
     void Sound_SetParamU8(s32, s32, s32);
     void Sound_SetParamU16(s32, s32, s32);
@@ -11708,7 +11708,7 @@ void fn_8025DBF4(void) {
                         n++;
                     }
                 }
-                handle = fn_8024A34C(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
+                handle = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
                                      (*(u32 *)(voice + 0xC) >> 4) & 1);
                 *(s32 *)(voice + 0x38) = handle;
                 if (handle == -1) {
@@ -11864,7 +11864,7 @@ void fn_8025DBF4(void) {
                     n++;
                 }
             }
-            handle = fn_8024A34C(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
+            handle = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
                                  (*(u32 *)(voice + 0xC) >> 4) & 1);
             *(s32 *)(voice + 0x38) = handle;
             if (handle == -1) {
@@ -11984,7 +11984,7 @@ void fn_8025E4E8(void) {
     void fn_8024A6F8(u32);
     void fn_8025D328(void *, f32 *, f32 *, f32 *, f32 *, f32 *, f32 *);
     s32 fn_8025DAA0(void *, f32, f32, f32, f32, f32, f32);
-    s32 fn_8024A34C(u16, u8, s32, s32, u8, s32);
+    s32 Sound_Start(u16, u8, s32, s32, u8, s32);
     s32 fn_8024B7DC(s32);
     void Sound_SetParamU8(s32, u8, u8);
     void Sound_SetParamU16(s32, u8, u16);
@@ -12099,7 +12099,7 @@ void fn_8025E4E8(void) {
                             n++;
                         }
                     }
-                    handle = fn_8024A34C(*(u16 *)(node + 0x40), vel, 0x7F, 0x40, *(u8 *)(node + 0x42), (flags >> 4) & 1);
+                    handle = Sound_Start(*(u16 *)(node + 0x40), vel, 0x7F, 0x40, *(u8 *)(node + 0x42), (flags >> 4) & 1);
                     *(s32 *)(node + 0x38) = handle;
                     if (handle == -1) {
                         flags = *(u32 *)(node + 0xC);
