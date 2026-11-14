@@ -1480,26 +1480,27 @@ s32 fn_80094A54(s32 arg0, s32 arg1)
   return temp_r31;
 }
 
-s32 Unit_TryEquipItem(s32 arg0, void *arg1) {
+s32 Unit_TryEquipItem(s32 unit, void *item) {
+    /* If the unit has no equipped item and may use this weapon, mark the item equipped (bit7) and return 1. */
     u64 *Item_GetFlagsPtr(void *);
     s8 Unit_GetActiveItemSlot(s32);
     u8 fn_80093708(s32, u32);
-    struct { u8 pad[5]; u8 bit7 : 1; u8 rest : 7; } *p;
+    struct { u8 pad[5]; u8 equipped : 1; u8 rest : 7; } *p;
 
-    if (arg1 == NULL || *(u32 *)arg1 == 0) {
+    if (item == NULL || *(u32 *)item == 0) {
         return 0;
     }
-    if ((*Item_GetFlagsPtr(arg1) & 1ULL) == 0) {
+    if ((*Item_GetFlagsPtr(item) & 1ULL) == 0) {
         return 0;
     }
-    if (Unit_GetActiveItemSlot(arg0) >= 0) {
+    if (Unit_GetActiveItemSlot(unit) >= 0) {
         return 0;
     }
-    if (fn_80093708(arg0, *(u32 *)arg1) == 0) {
+    if (fn_80093708(unit, *(u32 *)item) == 0) {
         return 0;
     }
-    p = arg1;
-    p->bit7 = 1;
+    p = item;
+    p->equipped = 1;
     return 1;
 }
 
