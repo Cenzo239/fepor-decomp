@@ -3203,7 +3203,7 @@ s32 __write_console(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     s32 OSGetConsoleType();
     M2C_UNK fn_8022B530(s32, s32, s32 *, s32);
     s32 InitializeUART(M2C_UNK);
-    s32 fn_8023A9D4(s32, s32);
+    s32 WriteUARTN(s32, s32);
     extern s32 lbl_803687F8;
     s32 var_r3;
 
@@ -3218,7 +3218,7 @@ s32 __write_console(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
         if (var_r3 != 0) {
             return 1;
         }
-        if (fn_8023A9D4(arg1, *arg2) != 0) {
+        if (WriteUARTN(arg1, *arg2) != 0) {
             *arg2 = 0;
             return 1;
         }
