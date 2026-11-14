@@ -1664,7 +1664,7 @@ void fn_8001598C(void)
     } while (i <= 0x9F);
 }
 
-void fn_80015A2C(void *arg0) {
+void E_DispLoadWhole_Wait(void *arg0) {
     void Process_ClearFunc(void *);
     void Allegiance_FillMask(s32, u8 *, s32);
     u8 fn_8004F128(void *);
