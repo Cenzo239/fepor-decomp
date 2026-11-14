@@ -76,9 +76,9 @@ void fn_801EAA38(s32 arg0) {
     Ui_CreateMenu(tmp, arg0, 0);
 }
 
-extern u16 E_BMapAuxiliaryProc[10];
+extern u16 Proc_BMapAuxiliary[10];
 s32 fn_801EAA88(void) {
-    return Process_Find(&E_BMapAuxiliaryProc) != 0;
+    return Process_Find(&Proc_BMapAuxiliary) != 0;
 }
 
 void *BMapAuxiliary_Create(char *arg0, void *arg1) {
@@ -100,9 +100,9 @@ void *BMapAuxiliary_Create(char *arg0, void *arg1) {
     }
 
     if (arg1 != NULL) {
-        obj = Process_CreateChild(E_BMapAuxiliaryProc, arg1);
+        obj = Process_CreateChild(Proc_BMapAuxiliary, arg1);
     } else {
-        obj = Process_Create(E_BMapAuxiliaryProc, arg1);
+        obj = Process_Create(Proc_BMapAuxiliary, arg1);
     }
 
     if (obj != NULL) {
