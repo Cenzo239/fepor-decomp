@@ -1036,7 +1036,7 @@ void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
 {
     extern void *gPrim2D;
     extern f32 lbl_80368B98;
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     void *p;
     f32 t0, t1, t2, t3;
 
@@ -1050,7 +1050,7 @@ void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
         c98 = lbl_80368B98;
         p = *(void **)((u8 *)p + 0xC);
         t2 = c + e;
-        c94 = lbl_80368B94;
+        c94 = gFloat1;
         p = *(void **)((u8 *)p + 4);
         t3 = d + f;
 
@@ -1120,7 +1120,7 @@ void Prim2D_SetUvRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     extern void *gPrim2D;
     extern f32 lbl_80368B98;
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     u8 *ptr;
     f32 constant2;
     f32 sum_x;
@@ -1130,7 +1130,7 @@ void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg3 = arg1 + arg3;
     arg2 = lbl_80368B98;
     ptr = *(u8 **)(ptr + 0xC);
-    constant2 = lbl_80368B94;
+    constant2 = gFloat1;
     ptr = *(u8 **)(ptr + 0x4);
 
     *(f32 *)(ptr + 0x10) = arg0;
@@ -1205,7 +1205,7 @@ void Prim2D_EndPrim(void) {
 void Prim2D_AddPrim(u8 arg0) {
     extern void *gPrim2D;
     extern f32 lbl_80368B98;
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     extern char lbl_80267C70[];
     s32 fn_80006AF4(void *);
     s32 fn_80006264(void *, void *, s32);
@@ -1332,7 +1332,7 @@ void Prim2D_AddPrim(u8 arg0) {
             void *e;
             u8 *p;
             z = 0;
-            f1 = lbl_80368B94;
+            f1 = gFloat1;
             ctx = gPrim2D;
             f0 = lbl_80368B98;
             e = *(void **)((u8 *)*(void **)((u8 *)ctx + 0xC) + 4);
@@ -1591,7 +1591,7 @@ void fn_80008C24(void *arg0, void *arg1, u8 *arg2, f32 farg0, f32 farg1, f32 far
     void fn_80222644(void *, s32, u16, u16, u16, u32, u32, u32);
     void fn_80222C50(void *, u32);
     void fn_80224E50(void *, u16, u32);
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     extern f32 lbl_80368BB8;
     s32 sp7C;
     s32 sp78;
@@ -1638,7 +1638,7 @@ void fn_80008C24(void *arg0, void *arg1, u8 *arg2, f32 farg0, f32 farg1, f32 far
     temp_r28 = fn_80011010(-1);
     temp_r3 = fn_80005C40();
     temp_r5 = *(u16 *)((char *)temp_r3 + 0x1E);
-    PSMTXScale(&sp3C, temp_r5, lbl_80368B94 / (f32) temp_r5, lbl_80368B94 / (f32) *(u16 *)((char *)temp_r3 + 0x20), lbl_80368B94);
+    PSMTXScale(&sp3C, temp_r5, gFloat1 / (f32) temp_r5, gFloat1 / (f32) *(u16 *)((char *)temp_r3 + 0x20), gFloat1);
     fn_80224E50(&sp3C, 0x1E, 1);
     temp_f18 = lbl_80368BB8;
 loop_2:
@@ -1850,7 +1850,7 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     u8 sp8[0x30];
     u16 temp_r31;
     u8 var_r30;
@@ -1882,9 +1882,9 @@ void fn_80009728(u32 arg0, void *arg1, s32 arg2, s32 arg3) {
             fn_80222CF0(arg2, arg3);
         }
         fn_80222C50(arg1, 0);
-        temp_f31 = lbl_80368B94 / (f32)(u16)GXGetTexObjHeight(arg1);
-        temp_f1 = lbl_80368B94 / (f32)(u16)GXGetTexObjWidth(arg1);
-        PSMTXScale(sp8, temp_f1, temp_f31, lbl_80368B94);
+        temp_f31 = gFloat1 / (f32)(u16)GXGetTexObjHeight(arg1);
+        temp_f1 = gFloat1 / (f32)(u16)GXGetTexObjWidth(arg1);
+        PSMTXScale(sp8, temp_f1, temp_f31, gFloat1);
         fn_80224E50(sp8, 0x1E, 1);
         GXSetNumChans(1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -2019,7 +2019,7 @@ void fn_80009C20(
     float arg7
 )
 {
-    extern float lbl_80368B94;
+    extern float gFloat1;
     extern float lbl_80368B98;
     extern float lbl_80368B9C;
 
@@ -2035,7 +2035,7 @@ void fn_80009C20(
 
     PSMTXTrans(matrix0, arg0, arg1);
 
-    PSMTXScale(matrix1, arg5, arg6, lbl_80368B94);
+    PSMTXScale(matrix1, arg5, arg6, gFloat1);
 
     PSMTXRotRad(matrix2, 0x5A, lbl_80368B9C * arg7);
 
@@ -2058,15 +2058,15 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXCopy(void *, void *);
-    extern f32 lbl_80368B94;
+    extern f32 gFloat1;
     extern u16 gPrim2D;
     f32 tmp[12];
     f32 mtx[12];
 
-    if (lbl_80368B94 == arg3) {
+    if (gFloat1 == arg3) {
         PSMTXTrans(mtx, arg0, arg1, arg2);
     } else {
-        PSMTXScale(tmp, arg3, arg3, lbl_80368B94);
+        PSMTXScale(tmp, arg3, arg3, gFloat1);
         PSMTXTrans(mtx, arg0, arg1, arg2);
         PSMTXConcat(mtx, tmp, mtx);
     }
@@ -2252,7 +2252,7 @@ void *fn_8000A2A8(u32 arg0)
 {
   extern void *(*lbl_80366DA0)(u32);
   extern u16 gPrim2D;
-  extern f32 lbl_80368B94;
+  extern f32 gFloat1;
   extern f32 lbl_80368B98;
   extern f32 lbl_80368BB8;
   u32 n;
@@ -2268,7 +2268,7 @@ void *fn_8000A2A8(u32 arg0)
   n = arg0 & (~7);
   p = lbl_80366DA0(n);
   *((void **) (&gPrim2D)) = p;
-  f2 = lbl_80368B94;
+  f2 = gFloat1;
   new_var = ((u8 *) (*((void **) (&gPrim2D)))) + 4;
   f1 = lbl_80368BB8;
   *((void **) p) = p;
@@ -3353,7 +3353,7 @@ s32 fn_8000B82C(void) {
 }
 
 extern void *(*lbl_80366DA0)(s32);
-extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
+extern f32 gFloat1, lbl_80368BB8, lbl_80368B98;
 extern u32 gProcessOpcodeTables[9];
 void Process_RunScript(void *arg0) {
     extern u32 gProcessOpcodeTables[9];

@@ -16,7 +16,7 @@ extern f64 lbl_80368C28;
 extern u16 gPrim2D;
 
 extern void *(*lbl_80366DA0)(s32);
-extern f32 lbl_80368B94, lbl_80368BB8, lbl_80368B98;
+extern f32 gFloat1, lbl_80368BB8, lbl_80368B98;
 extern u32 gProcessOpcodeTables[9];
 
 extern void *fn_8000A738(void *, s32);
