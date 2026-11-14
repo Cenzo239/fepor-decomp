@@ -2120,7 +2120,7 @@ s32 fn_800B34B0(u8 *arg0) {
     void DCFlushRange(void *, u32);
     void fn_80258D74(u8 *(*)(s32, u32), s32);
     u8 Sound_PushGroup(s32, u16, s32, s32, s32);
-    u8 *fn_800B3F8C(s32, u32);
+    u8 *Sound_CopyLoadChunk(s32, u32);
     extern u8 gSoundSys[];
     extern void *gSoundLoadBuf;
     extern s32 lbl_8036780C;
@@ -2173,7 +2173,7 @@ stored:
         u8 *p = gSoundSys;
         if (*(u32 *)(p + 0x444) == 0) {
             *(u32 *)(p + 0x444) = *(u32 *)(p + 0x448);
-            fn_80258D74(fn_800B3F8C, 0x20000);
+            fn_80258D74(Sound_CopyLoadChunk, 0x20000);
         }
     }
     {
@@ -2265,7 +2265,7 @@ s32 fn_800B36D8(s32 arg0) {
     return 1;
 }
 
-u8 *fn_800B3F8C(s32 arg0, u32 arg1) {
+u8 *Sound_CopyLoadChunk(s32 arg0, u32 arg1) {
 extern u8 gSoundSys[];
 extern void *gSoundLoadBuf;
 void fn_800062EC(u8 *, u8 *, u32);
