@@ -10615,22 +10615,23 @@ void fn_80145C5C(void *arg0) {
     }
 }
 
-void BgmQuietVol_FadeInProcess(void *arg0) {
+/* Ease gBgmQuietVol up to 100 over the process duration; snap and clear if UI skips. */
+void BgmQuietVol_FadeInProcess(void *proc) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
     extern u8 gBgmQuietVol;
-    u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
+    u8 startVol = M2C_FIELD(proc, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
         gBgmQuietVol = 100;
-        Process_ClearFunc(arg0);
+        Process_ClearFunc(proc);
         return;
     }
-    M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    gBgmQuietVol = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
-    if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
-        Process_ClearFunc(arg0);
+    M2C_FIELD(proc, f32 *, 0x30) += 1.0f;
+    gBgmQuietVol = Math_Ease(0, startVol, 100.0f, M2C_FIELD(proc, f32 *, 0x30), M2C_FIELD(proc, f32 *, 0x34));
+    if (M2C_FIELD(proc, f32 *, 0x30) >= M2C_FIELD(proc, f32 *, 0x34)) {
+        Process_ClearFunc(proc);
     }
 }
 
