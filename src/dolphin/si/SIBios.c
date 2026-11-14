@@ -579,6 +579,7 @@ BOOL SIEnablePollingInterrupt(BOOL enable) {
 }
 
 BOOL SIRegisterPollingHandler(void *handler) {
+    /* Register an SI polling handler; enables RDST interrupt if a free slot is found. */
     BOOL enabled;
     int i;
 
