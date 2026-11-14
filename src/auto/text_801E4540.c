@@ -2428,7 +2428,8 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
-void TabMenu_ClearSelectedStatus(void *arg0) {
+/* Clear the status under the tab-menu cursor and run its clear event. */
+void TabMenu_ClearSelectedStatus(void *menu) {
     void Status_Clear(void *, u8);
     void ScriptCtx_Begin(void *);
     void ScriptCtx_Push(void *);
@@ -2438,11 +2439,11 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     extern u8 gTabMenuStrings[];
     void **node;
     s8 idx;
-    u8 t;
+    u8 cursor;
 
-    t = *(u8 *)((u8 *)arg0 + 0x33);
-    node = *(void ***)((u8 *)arg0 + 0x58);
-    idx = (s8)t;
+    cursor = *(u8 *)((u8 *)menu + 0x33);
+    node = *(void ***)((u8 *)menu + 0x58);
+    idx = (s8)cursor;
     if (idx >= 0) {
         while (idx > 0) {
             node = (void **)node[1];
@@ -2459,7 +2460,7 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x10));
     ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x14));
     ScriptCtx_Call();
-    Event_StartByName(gTabMenuStrings + 0x1D6, arg0);
+    Event_StartByName(gTabMenuStrings + 0x1D6, menu);
 }
 
 void fn_801E96D0(void *arg0, void *arg1) {
