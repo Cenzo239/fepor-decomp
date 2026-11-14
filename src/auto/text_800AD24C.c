@@ -8467,7 +8467,7 @@ void ScriptCmd_BMapSuspend(void) {
     extern u8 Proc_BMapBGMCtrl[];
     extern u8 Proc_BMapPlph[];
     extern u8 gMapEventFlagNames[];
-    extern u8 lbl_80320080[];
+    extern u8 gEventWorkSuspend[];
     void *Process_Find(void *);
     void *Process_FindByName(void *);
     void *Process_CreateChild(void *, void *);
@@ -8497,7 +8497,7 @@ void ScriptCmd_BMapSuspend(void) {
     }
     gBMapPlphSaved = saved;
     GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
-    EventWork_Set(lbl_80320080);
+    EventWork_Set(gEventWorkSuspend);
     EventLock_Inc();
 }
 
