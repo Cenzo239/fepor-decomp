@@ -3091,7 +3091,7 @@ void fn_80079F44(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x38) = 0;
 }
 
-void fn_80079F50(void *arg0) {
+void Face_BlinkWaitProc(void *arg0) {
     void Process_Goto(void *, s32);
     u32 Rand_Next();
     void fn_8007A524(void *, s32, s32);
