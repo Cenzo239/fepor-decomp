@@ -6376,36 +6376,37 @@ void fn_8025106C(void *arg0, u32 *arg1)
     }
 }
 
-void Sound_CmdVolume(void *arg0, u32 *arg1) {
+/* Synth seq cmd: set or add voice volume (0..0x7F), store fine byte, apply if active. */
+void Sound_CmdVolume(void *voice, u32 *cmd) {
     M2C_UNK fn_80250B58(void *, u32 *);
     u32 fn_802575A0(void *);
     M2C_UNK fn_80260174(u8, u8, u8);
-    u16 temp_r3_2;
-    u16 var_r0;
-    u32 temp_r3;
+    u16 volume;
+    u16 clamped;
+    u32 word;
 
-    temp_r3 = *arg1;
-    if ((temp_r3 >> 0x18U) == 0) {
-        M2C_FIELD(arg0, u16 *, 0x12E) = (u16) (M2C_FIELD(arg0, u16 *, 0x12E) + (s8) (u8) (temp_r3 >> 8U));
+    word = *cmd;
+    if ((word >> 0x18U) == 0) {
+        M2C_FIELD(voice, u16 *, 0x12E) = (u16)(M2C_FIELD(voice, u16 *, 0x12E) + (s8)(u8)(word >> 8U));
     } else {
-        M2C_FIELD(arg0, u16 *, 0x12E) = (u16) (M2C_FIELD(arg0, u8 *, 0x131) + (s8) (u8) (temp_r3 >> 8U));
+        M2C_FIELD(voice, u16 *, 0x12E) = (u16)(M2C_FIELD(voice, u8 *, 0x131) + (s8)(u8)(word >> 8U));
     }
-    temp_r3_2 = M2C_FIELD(arg0, u16 *, 0x12E);
-    if ((s16) temp_r3_2 < 0) {
-        var_r0 = 0;
+    volume = M2C_FIELD(voice, u16 *, 0x12E);
+    if ((s16)volume < 0) {
+        clamped = 0;
     } else {
-        var_r0 = 0x7F;
-        if (temp_r3_2 <= 0x7FU) {
-            var_r0 = temp_r3_2;
+        clamped = 0x7F;
+        if (volume <= 0x7FU) {
+            clamped = volume;
         }
     }
-    M2C_FIELD(arg0, u16 *, 0x12E) = var_r0;
-    M2C_FIELD(arg0, s8 *, 0x130) = (s8) ((u32) *arg1 >> 0x10U);
-    if (fn_802575A0(arg0) != 0U) {
-        fn_80260174(M2C_FIELD(arg0, u8 *, 0x121), M2C_FIELD(arg0, u8 *, 0x122), (u8) M2C_FIELD(arg0, u16 *, 0x12E));
+    M2C_FIELD(voice, u16 *, 0x12E) = clamped;
+    M2C_FIELD(voice, s8 *, 0x130) = (s8)((u32)*cmd >> 0x10U);
+    if (fn_802575A0(voice) != 0U) {
+        fn_80260174(M2C_FIELD(voice, u8 *, 0x121), M2C_FIELD(voice, u8 *, 0x122), (u8)M2C_FIELD(voice, u16 *, 0x12E));
     }
-    *arg1 = 4;
-    fn_80250B58(arg0, arg1);
+    *cmd = 4;
+    fn_80250B58(voice, cmd);
 }
 
 void fn_802514D0(void *arg0, s32 arg1) {
