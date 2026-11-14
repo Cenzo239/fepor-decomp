@@ -7098,32 +7098,33 @@ s32 fn_800BD10C(u8 arg0) {
     return 1;
 }
 
-s32 ScriptCmd_UnitRescue(u8 arg0, u8 arg1) {
+/* Script: have rescuerId carry rescueeId (place beside, link, refresh map). */
+s32 ScriptCmd_UnitRescue(u8 rescuerId, u8 rescueeId) {
     void Unit_SetMapPos(void *, s8, u8);
     void Unit_Rescue(void *, void *);
     void Map_RefreshUnitMap(void *);
     extern u8 gBattleMap[];
-    void *var_r31;
-    void *var_r30;
+    void *rescuer;
+    void *rescuee;
 
-    if (arg0 != 0) {
-        var_r31 = (u8 *)gUnits + ((arg0 - 1) * 0x280);
+    if (rescuerId != 0) {
+        rescuer = (u8 *)gUnits + ((rescuerId - 1) * 0x280);
     } else {
-        var_r31 = NULL;
+        rescuer = NULL;
     }
-    if (var_r31 == NULL || *(u32 *)((u8 *)var_r31 + 0x188) == 0U) {
+    if (rescuer == NULL || *(u32 *)((u8 *)rescuer + 0x188) == 0U) {
         return 0;
     }
-    if (arg1 != 0) {
-        var_r30 = (u8 *)gUnits + ((arg1 - 1) * 0x280);
+    if (rescueeId != 0) {
+        rescuee = (u8 *)gUnits + ((rescueeId - 1) * 0x280);
     } else {
-        var_r30 = NULL;
+        rescuee = NULL;
     }
-    if (var_r30 == NULL || *(u32 *)((u8 *)var_r30 + 0x188) == 0U) {
+    if (rescuee == NULL || *(u32 *)((u8 *)rescuee + 0x188) == 0U) {
         return 0;
     }
-    Unit_SetMapPos(var_r30, (s8)(*(u8 *)((u8 *)var_r31 + 0x19E) + 1), *(u8 *)((u8 *)var_r31 + 0x19F));
-    Unit_Rescue(var_r31, var_r30);
+    Unit_SetMapPos(rescuee, (s8)(*(u8 *)((u8 *)rescuer + 0x19E) + 1), *(u8 *)((u8 *)rescuer + 0x19F));
+    Unit_Rescue(rescuer, rescuee);
     Map_RefreshUnitMap(&gBattleMap);
     return 1;
 }
