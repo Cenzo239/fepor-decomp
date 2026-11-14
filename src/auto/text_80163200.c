@@ -13805,7 +13805,7 @@ void FloatAnim_UnlinkSame(void *arg0, u32 arg1) {
     }
 }
 
-void fn_8017E1E4(void *arg0) {
+void FloatAnim_Update(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
