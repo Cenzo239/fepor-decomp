@@ -1386,7 +1386,7 @@ s32 fn_801FFD5C(void) {
     return 0;
 }
 
-s32 fn_801FFD64(void) {
+s32 File_Read(void) {
     return 0;
 }
 

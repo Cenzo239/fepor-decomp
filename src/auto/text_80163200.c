@@ -11992,7 +11992,7 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     void *File_Open(void *, void *);
     s32 File_Seek(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
-    void fn_801FFD64(void *, s32, s32, void *);
+    void File_Read(void *, s32, s32, void *);
     void fn_801FFD6C(void *);
     extern u8 gFileOpenModes[];
     void *out;
@@ -12008,7 +12008,7 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     File_Seek(temp_r31, 0, 0);
     *(void **)out = fn_800C4638(temp_r30, gFileOpenModes + 3, 0);
     *((u8 *)out + 0xC) = 1;
-    fn_801FFD64(*(void **)out, 1, temp_r30, temp_r31);
+    File_Read(*(void **)out, 1, temp_r30, temp_r31);
     fn_801FFD6C(temp_r31);
     return temp_r30;
 }
