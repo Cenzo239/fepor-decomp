@@ -3737,14 +3737,15 @@ load:
     }
 }
 
-u32 *Process_Find(u32 arg0) {
+/* Find the first process whose code pointer matches `code`. */
+Process *Process_Find(u32 code) {
     extern u8 gProcesses[];
     u32 *p = (u32 *)gProcesses;
     s32 i;
 
-    for (i = 0; i < 256; i++, p += 0x1C) {
-        if (*p == arg0) {
-            return p;
+    for (i = 0; i < PROCESS_POOL_COUNT; i++, p += 0x1C) {
+        if (*p == code) {
+            return (Process *)p;
         }
     }
     return NULL;
