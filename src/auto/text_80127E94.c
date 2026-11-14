@@ -516,7 +516,7 @@ void MapObj_StartLinkedFadeIn(void *arg0) {
     void fn_80044450(void *, s32);
     void fn_80016180(void);
     void fn_800498A4(void *, void *, s32);
-    void *fn_80046F14(void *, s32, s32, u32, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
     u8 MapObj_IsHidden(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
@@ -537,7 +537,7 @@ void MapObj_StartLinkedFadeIn(void *arg0) {
     temp = *(void **)((u8 *)self + 0x30);
     y = *(s8 *)((u8 *)temp + 1);
     cam = Map_Get();
-    if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0)) != NULL && MapObj_IsHidden(temp)) {
+    if ((temp = Map_FindObjNear(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0)) != NULL && MapObj_IsHidden(temp)) {
         if (self != NULL) {
             entry = Process_CreateChild(E_MapObjFadeIn_script, self);
         } else {
@@ -575,7 +575,7 @@ void MapObj_StartLinkedFadeOut(void *arg0) {
     void fn_80044450(void *, s32);
     void fn_80016180(void);
     void fn_800498A4(void *, void *, s32);
-    void *fn_80046F14(void *, s32, s32, u32, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
     u8 MapObj_IsVisible(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
@@ -596,7 +596,7 @@ void MapObj_StartLinkedFadeOut(void *arg0) {
     temp = *(void **)((u8 *)self + 0x30);
     y = *(s8 *)((u8 *)temp + 1);
     cam = Map_Get();
-    if ((temp = fn_80046F14(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0x10)) != NULL && MapObj_IsVisible(temp)) {
+    if ((temp = Map_FindObjNear(cam, *(s8 *)((u8 *)temp + 0), y, 0x800, 0x10)) != NULL && MapObj_IsVisible(temp)) {
         if (self != NULL) {
             entry = Process_CreateChild(E_MapObjFadeOut_script, self);
         } else {
@@ -1348,7 +1348,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, s32);
     void Map_Get(void);
-    void *fn_80046F14(s32, s32, u32, u32);
+    void *Map_FindObjNear(s32, s32, u32, u32);
     s32 Map_FindObjAt(s8, s8, u32, u32);
     void BattleState_SetCamPos(void *, f32, f32);
 
@@ -1357,7 +1357,7 @@ void fn_8012ADAC(s32 arg0, s32 arg1, u32 arg2) {
     void *r6;
 
     Map_Get();
-    t30 = fn_80046F14(arg0, arg1, 0xA00, 0);
+    t30 = Map_FindObjNear(arg0, arg1, 0xA00, 0);
     if (t30 == NULL) {
         fn_800056A0(0);
         return;

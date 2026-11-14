@@ -8656,7 +8656,7 @@ void *fn_80046EB8(void *arg0, void *arg1) {
     return 0;
 }
 
-s32 fn_80046F14(void *arg0, s32 arg1) {
+s32 Map_FindObjNear(void *arg0, s32 arg1) {
     void **temp_r7;
     s32 var_r9;
     void *temp_r5;

@@ -11396,7 +11396,7 @@ s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
 
 s32 Map_OpenObjAt(s32 arg0, s32 arg1, s32 arg2) {
     s32 Map_Get(void);
-    void *fn_80046F14(void *, s32, s32, u32, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
     void MapObjEvent_Push(void *, s32, s32, s32, s32);
     void fn_80049D08(void *);
@@ -11408,7 +11408,7 @@ s32 Map_OpenObjAt(s32 arg0, s32 arg1, s32 arg2) {
     u8 *temp;
 
     (void)arg0;
-    temp = (u8 *)fn_80046F14((void *)Map_Get(), arg1, arg2, 0xa00, 0x10);
+    temp = (u8 *)Map_FindObjNear((void *)Map_Get(), arg1, arg2, 0xa00, 0x10);
     if (temp == NULL) {
         fn_800056A0(0);
         return 0;
@@ -11634,7 +11634,7 @@ s32 Map_ShowObjAt(s32 x, s32 y) {
     void MapObjEvent_Remove(void *, s32, s32, s32);
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void MapObj_FadeIn(void *, s32);
-    void *fn_80046F14(void *, s32, s32, u32, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
     s32 Map_CollectLinkedObjs(void *, void *, s32 *);
     u8 MapObj_IsVisible(void *);
     void MapObj_Show(void *, s32);
@@ -11663,7 +11663,7 @@ s32 Map_ShowObjAt(s32 x, s32 y) {
         MapObj_FadeIn(obj, 0);
     }
     {
-        void *obj = fn_80046F14((void *)Map_Get(), x, y, 0x800, 0);
+        void *obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
         if (obj != NULL) {
             count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
             p = linked;
@@ -11691,7 +11691,7 @@ s32 Map_HideObjAt(s32 x, s32 y) {
     void MapObjEvent_Push(void *, s32, s32, s32, s32);
     void *MapObjEvent_Find(void *, s32, s32, s32);
     void MapObj_FadeOut(void *, s32);
-    void *fn_80046F14(void *, s32, s32, u32, s32);
+    void *Map_FindObjNear(void *, s32, s32, u32, s32);
     s32 Map_CollectLinkedObjs(void *, void *, s32 *);
     u8 MapObj_IsHidden(void *);
     void MapObj_Hide(void *, s32);
@@ -11720,7 +11720,7 @@ s32 Map_HideObjAt(s32 x, s32 y) {
         MapObj_FadeOut(obj, 0);
     }
     {
-        void *obj = fn_80046F14((void *)Map_Get(), x, y, 0x800, 0);
+        void *obj = Map_FindObjNear((void *)Map_Get(), x, y, 0x800, 0);
         if (obj != NULL) {
             count = Map_CollectLinkedObjs((void *)Map_Get(), obj, linked);
             p = linked;
