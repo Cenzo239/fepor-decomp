@@ -2031,7 +2031,7 @@ extern f32 lbl_80368EAC;
 extern f32 lbl_80368EB0;
 extern f32 lbl_80368EB4;
 extern f64 lbl_80368EB8;
-f32 fn_80037818(void *arg0,u8 arg1) {
+f32 Unit_CalcBaseGoldCost(void *arg0,u8 arg1) {
     u8 value;
     u8 Status_Test(s32,s32);
     f32 result;

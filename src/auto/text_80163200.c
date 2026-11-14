@@ -13136,7 +13136,7 @@ void fn_8017C478(void *arg0) {
 }
 
 void fn_8017C4BC(void *arg0) {
-    f32 fn_80037818(s32, u8);
+    f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 fn_800386B0(s32);
     u8 fn_8003D13C(s32);
     u8 Status_Test(s32, s32);
@@ -13181,7 +13181,7 @@ void fn_8017C4BC(void *arg0) {
         if (next == 0) {
             cost = 0;
         } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
             if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                 cost = (s16)((cost * 10) / 7);
             }
@@ -13203,7 +13203,7 @@ void fn_8017C4BC(void *arg0) {
         if (next == 0) {
             cost = 0;
         } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
             if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                 cost = (s16)((cost * 10) / 7);
             }
@@ -13230,7 +13230,7 @@ void fn_8017C4BC(void *arg0) {
         if (next == 0) {
             cost = 0;
         } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
             if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                 cost = (s16)((cost * 10) / 7);
             }
@@ -13257,7 +13257,7 @@ void fn_8017C4BC(void *arg0) {
         if (next == 0) {
             cost = 0;
         } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
             if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                 cost = (s16)((cost * 10) / 7);
             }
@@ -13280,7 +13280,7 @@ void fn_8017C4BC(void *arg0) {
             if (next == 0) {
                 cost = 0;
             } else {
-                cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+                cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
                 if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                     cost = (s16)((cost * 10) / 7);
                 }
@@ -13306,7 +13306,7 @@ void fn_8017C4BC(void *arg0) {
                 if (next == 0) {
                     cost = 0;
                 } else {
-                    cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+                    cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
                     if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                         cost = (s16)((cost * 10) / 7);
                     }
@@ -13336,7 +13336,7 @@ void fn_8017C4BC(void *arg0) {
             if (next == 0) {
                 cost = 0;
             } else {
-                cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+                cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
                 if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                     cost = (s16)((cost * 10) / 7);
                 }
@@ -13525,7 +13525,7 @@ void fn_8017D4B8(s32 *arg0, void *arg1) {
 }
 
 s16 fn_8017D52C(void *arg0, s16 arg1) {
-    f32 fn_80037818(s32, u8);
+    f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 Status_Test(s32, M2C_UNK);
     extern f32 lbl_8036ABD8;
     s32 temp_r31;
@@ -13535,7 +13535,7 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     if (arg1 == 0) {
         var_r30 = 0;
     } else {
-        var_r30 = (s16) (lbl_8036ABD8 + fn_80037818(temp_r31, (u8) arg1));
+        var_r30 = (s16) (lbl_8036ABD8 + Unit_CalcBaseGoldCost(temp_r31, (u8) arg1));
         if (Status_Test(temp_r31 + 0x1BC, 0x4B) != 0) {
             var_r30 = (s16) ((var_r30 * 0xA) / 7);
         }
@@ -13550,7 +13550,7 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
 }
 
 s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
-    f32 fn_80037818(s32, u8);
+    f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 Status_Test(s32, s32);
     extern f32 lbl_8036ABD8;
     s16 var_r31;
@@ -13560,7 +13560,7 @@ s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
     if (arg1 == 0) {
         return 0;
     }
-    var_r31 = (s16)(lbl_8036ABD8 + fn_80037818(temp_r30, (u8)arg1));
+    var_r31 = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(temp_r30, (u8)arg1));
     if (Status_Test(temp_r30 + 0x1BC, 0x4B) != 0) {
         var_r31 = (s16)((var_r31 * 10) / 7);
     }
@@ -13574,7 +13574,7 @@ s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
 }
 
 u32 Ui_CanAffordNextGoldCost(void *panel) {
-    f32 fn_80037818(s32, u8);
+    f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 fn_8003D13C(s32);
     u8 Status_Test(s32, s32);
     extern f32 lbl_8036ABD8;
@@ -13599,7 +13599,7 @@ u32 Ui_CanAffordNextGoldCost(void *panel) {
         if (next == 0) {
             cost = 0;
         } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
+            cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unit, (u8)next));
             if (Status_Test(unit + 0x1BC, 0x4B) != 0) {
                 cost = (s16)((cost * 10) / 7);
             }
