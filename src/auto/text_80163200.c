@@ -16160,7 +16160,7 @@ s32 fn_80182670(void *arg0) {
     return 1;
 }
 
-s32 fn_80182704(void *arg0) {
+s32 Ai_TryMoveToFactionPos(void *arg0) {
     struct Obj {
         u8 pad0[0x236];
         u8 unk236;
