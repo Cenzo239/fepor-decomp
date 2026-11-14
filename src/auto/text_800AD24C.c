@@ -9767,7 +9767,7 @@ u16 fn_800AF704(s32 arg0) {
 void Fx_SetVolume(s32 arg0, u16 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
-    void fn_8024D3C4(void *, u16);
+    void Sound_SetVolume(void *, u16);
     u8 *sys;
     u8 *entry;
     u16 nest;
@@ -9781,9 +9781,9 @@ void Fx_SetVolume(s32 arg0, u16 arg1) {
                 *(s32 *)((u8 *)gSoundSys + 0x128) = OSDisableInterrupts();
             }
             *(u16 *)(sys + 0x124) = *(u16 *)(sys + 0x124) + 1;
-            fn_8024D3C4(*(void **)(entry + 0x50), *(u16 *)(entry + 0x1C));
+            Sound_SetVolume(*(void **)(entry + 0x50), *(u16 *)(entry + 0x1C));
             if (*(u16 *)(entry + 0x1E) == 2) {
-                fn_8024D3C4(*(void **)(entry + 0xD8), *(u16 *)(entry + 0x1C));
+                Sound_SetVolume(*(void **)(entry + 0xD8), *(u16 *)(entry + 0x1C));
             }
             nest = *(u16 *)(sys + 0x124);
             if (nest != 0) {
