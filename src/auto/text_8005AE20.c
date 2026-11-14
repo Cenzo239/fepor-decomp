@@ -5172,13 +5172,10 @@ void *Light_GetChannel(s32 arg0) {
 
 #pragma scheduling off
 void fn_80067460(void *arg0) {
-    extern u8 lbl_80311B04[];
-    extern void *lbl_80366DDC;
-
-    if (arg0 == 0) {
-        arg0 = lbl_80311B04;
-        lbl_80366DDC = arg0;
-    }
+ extern u8 lbl_80311B04[];
+ extern void *lbl_80366DDC;
+ if (arg0 == 0) arg0 = lbl_80311B04;
+ lbl_80366DDC = arg0;
 }
 #pragma scheduling reset
 s32 fn_80067478(void) {
@@ -6493,9 +6490,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(s32 arg0)
-{
-    u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
+void fn_8006D53C(register s32 arg0) {
+    register u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
 
