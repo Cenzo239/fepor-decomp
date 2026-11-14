@@ -8107,8 +8107,8 @@ void fn_80045B9C(void *arg0) {
     temp_r31 = Fog_GetColor();
     fn_80067480();
     M2C_FIELD(temp_r31, u8 *, 0) = (u8) lbl_8036728C;
-    M2C_FIELD(temp_r31, f32 *, 4) = (f32) (lbl_80368EF4 * ((f32) (s8) lbl_8036728D * M2C_FIELD(arg0, f32 *, 0x6C)));
-    M2C_FIELD(temp_r31, f32 *, 8) = (f32) (lbl_80368EF4 * ((f32) (s8) lbl_8036728E * M2C_FIELD(arg0, f32 *, 0x6C)));
+    M2C_FIELD(temp_r31, f32 *, 4) = (f32) (5.0f * ((f32) (s8) lbl_8036728D * M2C_FIELD(arg0, f32 *, 0x6C)));
+    M2C_FIELD(temp_r31, f32 *, 8) = (f32) (5.0f * ((f32) (s8) lbl_8036728E * M2C_FIELD(arg0, f32 *, 0x6C)));
     M2C_FIELD(temp_r31, u8 *, 1) = (u8) M2C_FIELD(&lbl_80367290, u8 *, 0);
     M2C_FIELD(temp_r31, u8 *, 2) = (u8) M2C_FIELD(&lbl_80367290, u8 *, 1);
     M2C_FIELD(temp_r31, u8 *, 3) = (u8) M2C_FIELD(&lbl_80367290, u8 *, 2);
@@ -9285,10 +9285,10 @@ void fn_80048C5C(void *arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
-    void *Process_CreateChild(void *);
-    void *Process_Create(void *, s32);
-    void Model_SetColor(s32, u8, u8, u8);
-    void Model_SetAlpha(s32, u8);
+    void *fn_8000CAA0(void *);
+    void *fn_8000CAF0(void *, s32);
+    void fn_8005F7E0(s32, u8, u8, u8);
+    void fn_8005F7B0(s32, u8);
     extern u8 lbl_80285738[];
     s32 sp8;
     u8 b;
@@ -9299,14 +9299,14 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     if (arg3 == 0) {
         temp_r31 = arg0 + 0x14;
         sp8 = *(s32 *)arg2;
-        Model_SetColor(temp_r31, ((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2]);
-        Model_SetAlpha(temp_r31, ((u8 *)&sp8)[3]);
+        fn_8005F7E0(temp_r31, ((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2]);
+        fn_8005F7B0(temp_r31, ((u8 *)&sp8)[3]);
         return;
     }
     if (arg1 != 0U) {
-        var_r3 = Process_CreateChild(lbl_80285738);
+        var_r3 = fn_8000CAA0(lbl_80285738);
     } else {
-        var_r3 = Process_Create(lbl_80285738, 3);
+        var_r3 = fn_8000CAF0(lbl_80285738, 3);
     }
     b = ((u8 *)arg2)[1];
     a = ((u8 *)arg2)[0];
@@ -11156,15 +11156,15 @@ void fn_8004DDB8(s32 arg0) {
     extern u8 lbl_803672C0;
     extern f32 lbl_80368FC0;
     extern f32 lbl_80368FCC;
-    u8 *p;
     u8 c;
+    u8 *p;
     u8 flag;
 
     if (fn_80055D94(0x80) == 0) {
         c = 0x60;
         p = &lbl_803672C0;
-        flag = !!c;
-        lbl_803672C0 = c;
+        flag = 1;
+        p[0] = c;
         p[1] = c;
         p[2] = c;
         p[3] = c;
@@ -12339,7 +12339,7 @@ s32 fn_80052F9C(void *arg0) {
 }
 
 void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
-    f32 Math_Angle2D(f32, f32, f32, f32);
+    f32 fn_80059440(f32, f32, f32, f32);
     extern f32 lbl_8036909C;
     void *temp_r3;
     f32 *var_r4;
@@ -12349,7 +12349,7 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
 
     if (arg1 != NULL && arg2 != NULL) {
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
-            Math_Angle2D(arg1[0], arg1[1], arg2[0], arg2[1]);
+            fn_80059440(arg1[0], arg1[1], arg2[0], arg2[1]);
     }
 
     temp_r3 = *(void **)((u8 *)arg0 + 0x30);
