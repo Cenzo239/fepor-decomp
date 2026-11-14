@@ -634,7 +634,7 @@ void fn_80184618(s32 arg0, u32 arg1) {
  *(s32 *)((u8 *)p+0x30)=value;
 }
 
-void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
+void *Mu_StartFlash(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     s32 Mu_GetFlashColor(s32);
@@ -9264,7 +9264,7 @@ void Event_RunItemCmd(void *cmd) {
     void fn_8017F040(void *, s32, void *);
     void fn_8017F474(void *, void *);
     void fn_8017F70C(void *, void *);
-    void fn_80184688(s32, s32, s32, void *);
+    void Mu_StartFlash(s32, s32, s32, void *);
     void Mu_StartTransfer(s32, s32, s32, s32);
     void Mu_StartBlend(s32, s32, s32, s32);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
@@ -9366,7 +9366,7 @@ void Event_RunItemCmd(void *cmd) {
     } else {
         actor = 0;
     }
-    fn_80184688(actor, 1, 4, cmd);
+    Mu_StartFlash(actor, 1, 4, cmd);
     tmp = (s32)fn_80095934(0, kind, flags);
     if (tmp != 0) {
         fn_800983E0(&sp8, unit);
@@ -9785,7 +9785,7 @@ s32 MapSelect_Update(void *proc) {
     void SeCue_PlayAtPos(void *, void *, s32);
     void FloatAnim_Start(void *, s32, void *, s32);
     void fn_8017F040(void *, s32, void *);
-    void fn_80184688(s32, s32, s32, void *);
+    void Mu_StartFlash(s32, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     extern u8 MapSelect_str[];
     extern f32 gMapSelectCamZoom;
@@ -9849,7 +9849,7 @@ s32 MapSelect_Update(void *proc) {
             } else {
                 actor = 0;
             }
-            fn_80184688(actor, 1, 4, cmd);
+            Mu_StartFlash(actor, 1, 4, cmd);
             break;
         case 2:
         case 3:
@@ -9859,7 +9859,7 @@ s32 MapSelect_Update(void *proc) {
             } else {
                 actor = 0;
             }
-            fn_80184688(actor, 1, 0x20, cmd);
+            Mu_StartFlash(actor, 1, 0x20, cmd);
             break;
         }
         if (*(void **)((u8 *)cmd + 0x58) != NULL) {
@@ -9929,7 +9929,7 @@ void fn_8019BD8C(s32 arg0, s32 arg1) {
 }
 
 void fn_8019BDD4(void *arg0) {
-    void fn_80184688(s32, s32, s32, void *);
+    void Mu_StartFlash(s32, s32, s32, void *);
     s32 var_r3;
     u8 temp_r4;
     void *temp_r3;
@@ -9947,7 +9947,7 @@ void fn_8019BDD4(void *arg0) {
     } else {
         var_r3 = 0;
     }
-    fn_80184688(var_r3, 1, 0x20, arg0);
+    Mu_StartFlash(var_r3, 1, 0x20, arg0);
 }
 
 void fn_8019BE54(void *arg0, void *arg1)
@@ -10007,7 +10007,7 @@ check:
 s32 fn_8019BF5C(void *arg0) {
     void fn_80054C14(void *);
     u8 Pad_IsButton(void *, s32);
-    void fn_80184688(s32, s32, s32, void *);
+    void Mu_StartFlash(s32, s32, s32, void *);
     void *temp_r4;
     void *temp_r31;
     s32 temp_r30;
@@ -10019,7 +10019,7 @@ s32 fn_8019BF5C(void *arg0) {
     temp_r31 = *(void **)((u8 *)temp_r4 + 0x4C);
     temp_r30 = *(s32 *)((u8 *)temp_r4 + 0x50);
     if (temp_r3 != NULL && Pad_IsButton(temp_r3, 0) != 0) {
-        fn_80184688(temp_r30, 1, 0x20, temp_r31);
+        Mu_StartFlash(temp_r30, 1, 0x20, temp_r31);
         if (*(void **)((u8 *)temp_r31 + 0x58) != NULL) {
             temp_r3_flags = *(u8 *)((u8 *)temp_r31 + 0x40);
             if (!(temp_r3_flags & 4)) {
@@ -10549,7 +10549,7 @@ s32 MapSelect_UpdateTarget(void *proc) {
     M2C_UNK fn_80098524(void *);
     M2C_UNK FloatAnim_Start(void *, s32, void *);
     M2C_UNK fn_8017F040(void *, s32, void *);
-    M2C_UNK fn_80184688(s32, M2C_UNK, M2C_UNK, void *);
+    M2C_UNK Mu_StartFlash(s32, M2C_UNK, M2C_UNK, void *);
     extern f32 gMapSelectCamZoom;
     s32 pad;
     s32 height;
@@ -10585,7 +10585,7 @@ s32 MapSelect_UpdateTarget(void *proc) {
         } else {
             actor = 0;
         }
-        fn_80184688(actor, 1, 0x20, cmd);
+        Mu_StartFlash(actor, 1, 0x20, cmd);
         if (((M2C_UNK (*)(void *)) M2C_FIELD(cmd, M2C_UNK (**)(void *), 0x58)) != NULL) {
             flags = M2C_FIELD(cmd, u8 *, 0x40);
             if (!(flags & 4)) {

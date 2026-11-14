@@ -167,7 +167,7 @@ s32 Event_HandleItemCmd(void *arg0)
     void fn_800536CC(void *, void *);
     void fn_800536D8(void *, void *);
     void fn_8005306C(void *);
-    void fn_80184688(void *, s32, s32, void *);
+    void Mu_StartFlash(void *, s32, s32, void *);
     void fn_800983E0(void *, void *);
     void SeCue_PlayAtPos(void *, void *, s32);
     void fn_80025624(s32, s32);
@@ -241,7 +241,7 @@ s32 Event_HandleItemCmd(void *arg0)
                         } else {
                             p280 = NULL;
                         }
-                        fn_80184688(p280, 1, 0x20, self);
+                        Mu_StartFlash(p280, 1, 0x20, self);
                     }
                     return 0;
                 }
@@ -276,7 +276,7 @@ s32 Event_HandleItemCmd(void *arg0)
                 } else {
                     p280 = NULL;
                 }
-                fn_80184688(p280, 1, 2, self);
+                Mu_StartFlash(p280, 1, 2, self);
                 fn_800983E0(sp14, M2C_FIELD(self, void **, 0x3C));
                 sp8[0] = sp14[0];
                 sp8[1] = sp14[1];

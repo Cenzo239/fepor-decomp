@@ -1062,7 +1062,7 @@ void fn_8012A530(void *arg0) {
     void *Map_Get(void);
     void SeCue_PlayAt(void *, s32, f32, f32, f32);
     void BattleState_SetCamPos(void *, f32, f32);
-    void fn_80184688(void *, s32, s32, s32);
+    void Mu_StartFlash(void *, s32, s32, s32);
     void Mu_StartTransfer(void *, s32, s32, s32);
     void Mu_StartBlend(void *, s32, s32, s32);
     void PSMTXConcat(void *, void *, void *);
@@ -1202,7 +1202,7 @@ void fn_8012A530(void *arg0) {
             if (unit != 0) {
                 Mu_StartBlend(unit, 9, 8, 0);
                 Mu_StartTransfer(unit, 0, 8, 0);
-                fn_80184688(unit, 1, 2, 0);
+                Mu_StartFlash(unit, 1, 2, 0);
             }
         }
     }

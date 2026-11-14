@@ -128,7 +128,7 @@ void fn_80099094(void *arg0)
   void fn_800536D8(void *, void *);
   s32 new_var;
   void fn_8005306C(void *);
-  void fn_80184688(void *, s32, s32, void *);
+  void Mu_StartFlash(void *, s32, s32, void *);
   void fn_800983E0(void *, void *);
   void SeCue_PlayAtPos(void *, void *, s32);
   void fn_80025624(s32, s32);
@@ -168,7 +168,7 @@ void fn_80099094(void *arg0)
       fn_800536D8(temp_r29_2, *((void **) (*((void **) (((u8 *) self) + 0x3C)))));
       fn_8005306C(temp_r29_2);
     }
-    fn_80184688(get_280((void **) (*((void **) (((u8 *) self) + 0x3C)))), 1, 2, self);
+    Mu_StartFlash(get_280((void **) (*((void **) (((u8 *) self) + 0x3C)))), 1, 2, self);
     fn_800983E0(sp14, *((void **) (((u8 *) self) + 0x3C)));
     sp8[0] = sp14[0];
     sp8[1] = sp14[1];
@@ -191,7 +191,7 @@ void fn_80099094(void *arg0)
     {
       Mu_StartBlend(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 9, 2, 0);
       Mu_StartTransfer(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 8, 8, 0);
-      fn_80184688(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 1, 2, self);
+      Mu_StartFlash(get_280((void **) (*((void **) (((u8 *) self) + 0x38)))), 1, 2, self);
     }
     fn_8018CFA4(0xF, 6, 2, 0, self);
     temp_r3 = Effect_Create(gEventUiSeCues + 0x119, self);
@@ -212,7 +212,7 @@ void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
 void fn_8017DF54(void *,void *,void *);
 void *fn_80095934(void *,s32,s32); void *Effect_Create(void *,void *);
 void fn_800536CC(void *,void *); void fn_800536D8(void *,void *); void fn_8005306C(void *);
-void fn_80184688(void *,s32,s32,void *); void fn_800983E0(void *,void *);
+void Mu_StartFlash(void *,s32,s32,void *); void fn_800983E0(void *,void *);
 void SeCue_PlayAtPos(void *,void *,s32); void fn_80025624(void *,s32);
 void fn_8017F70C(void *,void *); void FloatAnim_Start(void *,s32,void *); void fn_8017F040(void *,s32,void *);
 void Mu_StartBlend(void *,s32,s32,s32); void Mu_StartTransfer(void *,s32,s32,s32); void fn_8017F474(void *,void *);
@@ -251,7 +251,7 @@ fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
 fn_800536D8(p,*M2C_FIELD(self,void ***,0x3c));
 fn_8005306C(p);
 }
-fn_80184688(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
+Mu_StartFlash(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
 fn_800983E0(&tmpA,M2C_FIELD(self,void **,0x3c));
 posA=tmpA;
 SeCue_PlayAtPos(gEventUiSeCues+0xe3,&posA,100);
@@ -266,7 +266,7 @@ amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x38),f32 *,12);
 if(amount) {
 FloatAnim_Start(M2C_FIELD(self,void **,0x38),amount,self);
 if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F040(M2C_FIELD(self,void **,0x38),amount,self);
-fn_80184688(get_280(M2C_FIELD(self,void ***,0x38)),1,32,self);
+Mu_StartFlash(get_280(M2C_FIELD(self,void ***,0x38)),1,32,self);
 }
 } else {
 s32 value;
@@ -286,7 +286,7 @@ fn_800536CC(p,*M2C_FIELD(self,void ***,0x38));
 fn_800536D8(p,*M2C_FIELD(self,void ***,0x3c));
 fn_8005306C(p);
 }
-fn_80184688(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
+Mu_StartFlash(get_280(M2C_FIELD(self,void ***,0x3c)),1,2,self);
 fn_800983E0(&tmpB,M2C_FIELD(self,void **,0x3c));
 posB=tmpB;
 SeCue_PlayAtPos(gEventUiSeCues+0xe3,&posB,100);
@@ -634,7 +634,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
     void **fn_800984FC(void **);
     void Mu_StartBlend(void *, s32, s32, s32);
     void Mu_StartTransfer(void *, s32, s32, s32);
-    void fn_80184688(void *, s32, s32, void *);
+    void Mu_StartFlash(void *, s32, s32, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
     void fn_80025624(s32, s32);
     void fn_8017E2BC(void);
@@ -740,7 +740,7 @@ void fn_8009A0A4(void *arg0, s16 arg1) {
             }
             Mu_StartBlend(temp_r3_3, 9, 2, 0);
             Mu_StartTransfer(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 8, 8, 0);
-            fn_80184688(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
+            Mu_StartFlash(get_280(M2C_FIELD(arg0, void ***, 0x3C)), 1, 2, arg0);
         }
         break;
     }
