@@ -7747,7 +7747,7 @@ s32 fn_800BE2F4(void) {
     return 0;
 }
 #pragma global_optimizer off
-s32 fn_800BE57C(void *arg0) {
+s32 Talk_MatchesStoredPair(void *arg0) {
     void Event_GetString(void *, u32);
     void *Person_GetByPid(void);
     void *Person_Get(s32);
