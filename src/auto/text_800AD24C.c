@@ -8761,7 +8761,7 @@ void fn_800C0F94(void) {
     void fn_800C4588(void *);
     extern u8 lbl_8028D588[];
     extern u8 lbl_8028D560[];
-    extern void *lbl_80320030[];
+    extern void *gMapBlendBufs[];
     void *zero;
     void **p;
     s32 i;
@@ -8770,7 +8770,7 @@ void fn_800C0F94(void) {
     Process_UnlinkByKey(lbl_8028D560);
     i = 0;
     zero = NULL;
-    p = lbl_80320030;
+    p = gMapBlendBufs;
     do {
         fn_800C4588(*p);
         *p = zero;
@@ -8867,7 +8867,7 @@ void Map_SyncBlendBuffers(void *arg0) {
     void fn_800062EC(s32, s32, u32);
     void DCFlushRange(void *, u32);
     void fn_800C1BDC();
-    extern s32 lbl_80320030[];
+    extern s32 gMapBlendBufs[];
     extern s32 lbl_8036785C;
     s32 temp_r29;
     s32 var_r28;
@@ -8875,8 +8875,8 @@ void Map_SyncBlendBuffers(void *arg0) {
     var_r28 = 1;
     M2C_FIELD(arg0, s32 *, 0x60) = 0;
     do {
-        temp_r29 = lbl_80320030[(lbl_8036785C + var_r28) % 3];
-        fn_800062EC(temp_r29, lbl_80320030[lbl_8036785C], 0x2000);
+        temp_r29 = gMapBlendBufs[(lbl_8036785C + var_r28) % 3];
+        fn_800062EC(temp_r29, gMapBlendBufs[lbl_8036785C], 0x2000);
         DCFlushRange((void *)temp_r29, 0x2000);
         var_r28 += 1;
     } while (var_r28 < 3);
@@ -9051,7 +9051,7 @@ void fn_800C1E24(void) {
     M2C_UNK GXInitTexObjLOD(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, f32, f32, f32);
     extern M2C_UNK lbl_8026FDC0;
     extern M2C_UNK lbl_8031FFD0;
-    extern s32 lbl_80320030;
+    extern s32 gMapBlendBufs;
     extern s32 lbl_80367850;
     extern s32 lbl_80367854;
     extern s32 lbl_80367858;
@@ -9061,7 +9061,7 @@ void fn_800C1E24(void) {
     s32 *var_r30;
     s32 var_r28;
 
-    var_r30 = &lbl_80320030;
+    var_r30 = &gMapBlendBufs;
     var_r29 = &lbl_8031FFD0;
     var_r28 = 0;
     lbl_80367850 = 0x4000;
