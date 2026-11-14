@@ -201,7 +201,10 @@ extern u32 lbl_803670C8;
 extern u32 lbl_800000F8;
 
 extern s32 lbl_80368B30;
-extern s32 lbl_80368B44;
+  extern u32 lbl_80368B38;
+  extern s32 lbl_80368B3C;
+  extern u8 lbl_80368B44;
+
 
 extern u16 lbl_802A1E10[4];
 extern u16 lbl_8034CBB4[288];
