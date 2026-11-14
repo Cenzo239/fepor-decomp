@@ -1966,15 +1966,18 @@ s32 fn_800B2E78(void) {
     return count;
 }
 
-s32 Sound_HasId(s32 arg0) {
-extern u8 gSoundIdSlots[];
-s32 i;
-u8 *p = gSoundIdSlots;
-arg0=(u8)arg0+1;
-for(i=0;i<16;p++,i++) {
-if(*p==(u8)arg0) return 1;
-}
-return 0;
+/* Return 1 if sound id is present in gSoundIdSlots (stored as id+1). */
+s32 Sound_HasId(s32 id) {
+    extern u8 gSoundIdSlots[];
+    s32 i;
+    u8 *p = gSoundIdSlots;
+    id = (u8)id + 1;
+    for (i = 0; i < 16; p++, i++) {
+        if (*p == (u8)id) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 extern u16 lbl_80319A18[];
