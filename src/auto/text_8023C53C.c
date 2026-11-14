@@ -9557,24 +9557,25 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     f32 scale;
     f32 factor;
     f32 tval;
+    f32 frac;
     u32 pitch;
     u32 hi;
     u32 rate;
 
     pitch = (u32)arg1;
-    if (pitch == 0xFFFFFFFFU) {
+    if ((u32)(arg1 + 0x10000) == 0xFFFFU) {
         pitch = 0x40005622;
     }
     hi = pitch >> 24;
     factor = lbl_8036C278;
     if (arg0 != hi) {
-        scale = (f32)(pitch & 0xFFFFFF);
+        frac = (f32)(pitch & 0xFFFFFF);
         if (hi < arg0) {
             tval = lbl_8029F5F8[arg0 - hi];
         } else {
             tval = lbl_8029F7F8[hi - arg0];
         }
-        scale = scale * tval;
+        scale = frac * tval;
     } else {
         scale = (f32)(pitch & 0xFFFFFF);
     }
