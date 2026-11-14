@@ -15889,7 +15889,7 @@ void fn_800F07C0(void) {
     f32 fn_80023430(void *, f32, f32);
     void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8014C5A8(void *, s32);
-    u8 fn_8014D8BC(void *);
+    u8 BattleState_IsPhaseZero(void *);
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     extern void *lbl_803678E8;
@@ -15902,7 +15902,7 @@ void fn_800F07C0(void) {
     f32 f30;
     f32 f31;
 
-    if (fn_8014D8BC(gBattleState) != 0) {
+    if (BattleState_IsPhaseZero(gBattleState) != 0) {
         if (lbl_803678E8 != NULL) {
             r31 = lbl_803678E8;
             data = fn_8014C5A8(gBattleState, 0);
@@ -15938,13 +15938,13 @@ void fn_800F07C0(void);
 
 void fn_800F09A8(s32 arg0) {
     void *fn_80052B54(char *, s32);
-    u8 fn_8014D8BC(void *);
+    u8 BattleState_IsPhaseZero(void *);
     extern u8 gBattleState[];
     extern char lbl_80272D08[];
     extern u32 lbl_803678E8;
     extern u32 lbl_803678EC;
 
-    if (fn_8014D8BC(gBattleState)) {
+    if (BattleState_IsPhaseZero(gBattleState)) {
         lbl_803678E8 = (u32)fn_80052B54(lbl_80272D08 + 0x1D, arg0);
         lbl_803678EC = (u32)fn_80052B54(lbl_80272D08 + 0x2A, arg0);
         M2C_FIELD(M2C_FIELD(lbl_803678E8, void **, 0x30), u32 *, 8) |= 0x164;

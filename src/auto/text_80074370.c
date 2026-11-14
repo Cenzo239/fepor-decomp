@@ -1642,7 +1642,7 @@ s32 fn_80076F80(void) {
     extern u8 gBattleState[];
     u8 Status_Test(void *, s32);
     s32 fn_80015680(u8 *);
-    u8 fn_8014D8BC(u8 *);
+    u8 BattleState_IsPhaseZero(u8 *);
 
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
@@ -1650,7 +1650,7 @@ s32 fn_80076F80(void) {
     if (fn_80015680(gUnitLists + 0x24) == 0) {
         return 3;
     }
-    return (fn_8014D8BC(gBattleState) == 0) ? 3 : 0;
+    return (BattleState_IsPhaseZero(gBattleState) == 0) ? 3 : 0;
 }
 
 void fn_80077008(void) {
@@ -1687,7 +1687,7 @@ s32 fn_800770CC(void) {
     extern u8 gBattleState[];
     u8 Status_Test(void *, s32);
     s32 fn_80015680(u8 *);
-    u8 fn_8014D8BC(u32 *);
+    u8 BattleState_IsPhaseZero(u32 *);
 
     if (Status_Test(*(u8 **)gUiContext + 0x1BC, 0) == 0) {
         return 3;
@@ -1695,7 +1695,7 @@ s32 fn_800770CC(void) {
     if (fn_80015680(gUnitLists) <= 1) {
         return 3;
     }
-    return (fn_8014D8BC((u32 *)gBattleState) == 0) ? 3 : 0;
+    return (BattleState_IsPhaseZero((u32 *)gBattleState) == 0) ? 3 : 0;
 }
 
 void fn_80077150(void) {

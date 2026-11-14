@@ -424,7 +424,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     }
 }
 
-s32 fn_8014D8BC(void *arg0) {
+s32 BattleState_IsPhaseZero(void *arg0) {
     u8 v;
     s32 ret;
 

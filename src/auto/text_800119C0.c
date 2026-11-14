@@ -1191,14 +1191,14 @@ void *Msg_ExpandMmTag(void *ctrl) {
 }
 
 s32 UnitList_CmdIsAvailable(u8 *arg0) {
-    u8 fn_8014D8BC(void *);
+    u8 BattleState_IsPhaseZero(void *);
     extern u8 gBattleState[];
     extern u32 gUnitLists[];
     s32 count;
     void *node;
     s32 kind;
 
-    if ((u8)fn_8014D8BC(gBattleState) == 0) {
+    if ((u8)BattleState_IsPhaseZero(gBattleState) == 0) {
         return 0;
     }
     kind = arg0[1];
