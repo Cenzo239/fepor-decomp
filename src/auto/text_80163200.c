@@ -10684,7 +10684,7 @@ s32 fn_8017838C(void) {
     return temp_r4 ? 0 : 2;
 }
 
-s32 fn_801783CC(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_ConfirmListCmd82(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
