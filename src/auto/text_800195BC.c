@@ -2409,13 +2409,14 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     return 1;
 }
 
-char *Unit_FormatAttrFlags(u16 *arg0) {
+char *Unit_FormatAttrFlags(u16 *flags) {
+    /* Concatenate gDataStr attribute labels for each set bit in *flags into gAttrFlagsStr. */
     extern char gAttrFlagsStr[];
     extern char gDataStr[];
     char *buf;
     u16 *p;
 
-    p = arg0;
+    p = flags;
     buf = gAttrFlagsStr;
     buf[0] = 0;
     if (*p & 1) {
