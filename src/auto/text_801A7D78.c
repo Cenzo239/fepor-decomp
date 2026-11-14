@@ -135,7 +135,7 @@ void fn_801A8268(void *arg0) {
     s32 Unit_GetMagAtk(void *);
     s32 Unit_GetCarryWtLimit(void *);
     s32 UnitRef_GetName(void *);
-    s32 fn_8001D8A8(void *);
+    s32 Unit_FormatAttrFlags(void *);
     extern u8 lbl_8027B650[];
     extern u16 lbl_80367218;
     s8 g, e, f, d, c, b, a;
@@ -240,9 +240,9 @@ void fn_801A8268(void *arg0) {
                 ret, b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
     DebugPrint((const char *)(lbl_8027B650 + 0x114),
-                fn_8001D8A8((u8 *)arg0 + 0x2AE));
+                Unit_FormatAttrFlags((u8 *)arg0 + 0x2AE));
     DebugPrint((const char *)(lbl_8027B650 + 0x121),
-                fn_8001D8A8((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
+                Unit_FormatAttrFlags((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
     DebugPrint((const char *)(lbl_8027B650 + 0x12E));
 }
 void fn_801A859C(void *arg0) {

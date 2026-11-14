@@ -2409,7 +2409,7 @@ s32 UnitRef_Set(void *arg0, void *arg1) {
     return 1;
 }
 
-char *fn_8001D8A8(u16 *arg0) {
+char *Unit_FormatAttrFlags(u16 *arg0) {
     extern char lbl_802CA4BC[];
     extern char gDataStr[];
     char *buf;
