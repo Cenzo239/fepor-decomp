@@ -7990,6 +7990,59 @@ void Sound_DeactivateSynthVoice(void *voice) {
     }
 }
 
+void fn_802554A4(void *arg0, s32 arg1) {
+    extern s32 gSynthIdleList;
+    extern s32 gSynthSchedList;
+    extern s32 gSynthTimeHi;
+    extern s32 gSynthTimeLo;
+    void *prev;
+    void *next;
+    s32 state;
+    u64 schedTime;
+
+    state = *(s32 *)((u8 *)arg0 + 0x4C);
+    if (state == arg1) {
+        return;
+    }
+
+    if (state == 0) {
+        prev = *(void **)((u8 *)arg0 + 0x40);
+        if (prev == NULL) {
+            gSynthIdleList = (s32)*(void **)((u8 *)arg0 + 0x3C);
+        } else {
+            *(void **)((u8 *)prev + 0x3C) = *(void **)((u8 *)arg0 + 0x3C);
+        }
+        next = *(void **)((u8 *)arg0 + 0x3C);
+        if (next != NULL) {
+            *(void **)((u8 *)next + 0x40) = *(void **)((u8 *)arg0 + 0x40);
+        }
+    }
+
+    if (arg1 == 2) {
+        schedTime = *(u64 *)((u8 *)arg0 + 0x98);
+        if (schedTime != 0) {
+            if (schedTime != 0xFFFFFFFFFFFFFFFFULL) {
+                prev = *(void **)((u8 *)arg0 + 0x48);
+                if (prev == NULL) {
+                    gSynthSchedList = (s32)*(void **)((u8 *)arg0 + 0x44);
+                } else {
+                    *(void **)((u8 *)prev + 0x44) = *(void **)((u8 *)arg0 + 0x44);
+                }
+                next = *(void **)((u8 *)arg0 + 0x44);
+                if (next != NULL) {
+                    *(void **)((u8 *)next + 0x48) = *(void **)((u8 *)arg0 + 0x48);
+                }
+            }
+            *(s32 *)((u8 *)arg0 + 0x9C) = 0;
+            *(s32 *)((u8 *)arg0 + 0x98) = 0;
+            *(u64 *)((u8 *)arg0 + 0xA0) = *(u64 *)&gSynthTimeHi;
+            *(u64 *)((u8 *)arg0 + 0x114) &= ~0x40004ULL;
+        }
+    }
+
+    *(s32 *)((u8 *)arg0 + 0x4C) = arg1;
+}
+
 s32 fn_802555A0(
     u16 arg0, u8 arg1, u32 arg2, u32 arg3,
     u32 arg4, u8 arg5, u8 arg6, u8 arg7,
