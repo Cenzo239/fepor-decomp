@@ -814,7 +814,7 @@ void fn_80122314(void *arg0) {
     }
 }
 
-void fn_80122450(void *arg0) {
+void TalkUi_SpawnKeyWait2(void *arg0) {
     void *Process_CreateChild(void *);
     void *fn_80109180(s32, u32);
     void Sound_FadeFromZero(void *, u8);
