@@ -1168,7 +1168,7 @@ void fn_80186028(void *arg0) {
     *temp_r3 &= 0xFFFFFFBF;
 }
 
-void fn_80186080(void *arg0) {
+void Mu_HideAtTile(void *arg0) {
     void fn_80050C50(void *, f32, f32, f32);
     void Unit_SetModelAlpha(void *, s32);
     void fn_8004BE88(void *, s32);
