@@ -3872,7 +3872,7 @@ extern "C" void UnitInfo_DrawCombat(void *win, void *slot) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_80032A74(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawItems(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     extern u32 gUiContext[];
