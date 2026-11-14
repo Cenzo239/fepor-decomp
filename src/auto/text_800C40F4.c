@@ -18154,8 +18154,9 @@ void AiCmd_SeekLabelB(void *arg0)
     gAiCmdOk = 1;
 }
 
-void AiCmd_SeekLabel(void *arg0)
+void AiCmd_SeekLabel(void *unit)
 {
+    /* Find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC. */
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiCmdOk;
@@ -18167,7 +18168,7 @@ void AiCmd_SeekLabel(void *arg0)
     long count;
     u8 *obj;
 
-    obj = (u8 *)arg0;
+    obj = (u8 *)unit;
     index = 0;
 
     count = *(s32 *)(gAiCmd + 0x10);
