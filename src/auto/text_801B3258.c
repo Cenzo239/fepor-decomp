@@ -18862,33 +18862,34 @@ u32 fn_801E417C(void *arg0) {
     return size;
 }
 
-s32 Save_BumpVersionChecksum(void *arg0) {
+s32 Save_BumpVersionChecksum(void *slot) {
+    /* Stamp SAVE_VER_20050201 on a valid FE8J slot (and payload header) and recompute CRC32. */
     void *fn_800C4638(s32, void *, s32);
     void Crc32_InitTable(void);
     u32 Crc32_Calc(void *, void *, s32);
     void fn_800C4588(void *);
     void DebugPrint(char *, ...);
     extern u8 gSaveStrings[];
-    void *buf;
-    u8 *p;
+    void *crcTable;
+    u8 *payload;
     u32 ver;
 
-    if ((u32)(*(u32 *)((u8 *)arg0 + 0x40) + 0xB9BB0000) != 0x384AU) {
+    if ((u32)(*(u32 *)((u8 *)slot + 0x40) + 0xB9BB0000) != 0x384AU) {
         return 0;
     }
-    ver = 0x20050201U;
-    p = (u8 *)arg0 + 0x70;
-    *(u32 *)((u8 *)arg0 + 0x44) = ver;
-    if (p) {
-        if ((u32)(*(u32 *)p + 0xB9BB0000) == 0x384AU) {
-            *(u32 *)(p + 4) = ver;
+    ver = SAVE_VER_20050201;
+    payload = (u8 *)slot + SAVE_SLOT_PAYLOAD_OFF;
+    *(u32 *)((u8 *)slot + 0x44) = ver;
+    if (payload) {
+        if ((u32)(*(u32 *)payload + 0xB9BB0000) == 0x384AU) {
+            *(u32 *)(payload + 4) = ver;
         }
     }
-    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+    crcTable = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
     Crc32_InitTable();
-    *(u32 *)((u8 *)arg0 + 0x50) = Crc32_Calc(buf, p, *(s32 *)((u8 *)arg0 + 0x4C) - 0x70);
-    fn_800C4588(buf);
-    DebugPrint((char *)(gSaveStrings + 0x1E9), *(u32 *)((u8 *)arg0 + 0x50));
+    *(u32 *)((u8 *)slot + 0x50) = Crc32_Calc(crcTable, payload, *(s32 *)((u8 *)slot + 0x4C) - SAVE_SLOT_PAYLOAD_OFF);
+    fn_800C4588(crcTable);
+    DebugPrint((char *)(gSaveStrings + 0x1E9), *(u32 *)((u8 *)slot + 0x50));
     return 1;
 }
 
