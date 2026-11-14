@@ -17273,7 +17273,7 @@ if(best)fn_800FB96C(ctx[8],(s8)bestX,(s8)bestY,best,best[0x19E],best[0x19F],(s8)
 return gAiState[0x21C];
 }
 
-s32 fn_800F4D78(void *arg0, void *arg1, void **arg2) {
+s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
     s32 fn_80230BCC(s32);
     u8 fn_8001DD54(void *, void *);
     s8 Unit_GetMov(void *);

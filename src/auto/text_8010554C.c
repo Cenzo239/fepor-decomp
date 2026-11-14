@@ -3072,7 +3072,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009339C(void *);
     void fn_800951D0(void *, s32);
-    u8 fn_800F4D78(void *, void *, void **);
+    u8 Unit_IsInMovAttackRange(void *, void *, void **);
     u8 fn_800F7E9C(void *, s8, s8, void *);
     void fn_800FB96C(s32, s8, s8, void *, u8, u8, s8, s32, s32);
     void fn_800FDDBC(s8, s8, u8, u8, s32);
@@ -3133,7 +3133,7 @@ loop_slot:
                 }
                 if (unit->unk188 != 0) {
                     if (flags[((u8 *)unit->unk190)[8]] != 0) {
-                        if (fn_800F4D78(arg0, unit, item) != 0) {
+                        if (Unit_IsInMovAttackRange(arg0, unit, item) != 0) {
                             if ((unit->unk1A0 & 0x010000DC) == 0) {
                                 u8 temp_r3_2 = unit->unk19E;
                                 u8 var_r5 = 0;
