@@ -157,7 +157,7 @@ extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 UnitRef_GetUnit(u32);
 extern "C" void UnitInfo_DrawStatus(s32);
-extern "C" void fn_80033108(void *arg0, void *arg1) {
+extern "C" void UnitInfo_Draw(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
