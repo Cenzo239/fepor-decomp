@@ -1476,7 +1476,7 @@ void *BattleTerrain_Dtor(void *arg0, s16 arg1) {
 
 void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
     s32 Map_Get(void);
-    void fn_80041514(s32, void *);
+    void Map_LoadTerrain(s32, void *);
     void Xml_GetNamedValue(void *, void *, void *);
     void *String_CStr(void *);
     void String_Destroy(void *, s16);
@@ -1516,7 +1516,7 @@ void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
     String_AssignCStr(&sp18, a2, strlen((char *)a2));
     String_Destroy(&spC, -1);
     temp = String_CStr(&sp18);
-    fn_80041514(Map_Get(), temp);
+    Map_LoadTerrain(Map_Get(), temp);
     gBattleTerrainReady = 1;
     String_Destroy(&sp18, -1);
     return self;
@@ -1527,7 +1527,7 @@ void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
 /* Construct a BattleTerrain: base strings, load map path, parse param.dbx room/foot fields. */
 void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     s32 Map_Get(void);
-    void fn_80041514(s32, void *);
+    void Map_LoadTerrain(s32, void *);
     void *Heap_Alloc(s32);
     void Xml_GetNamedValue(void *, void *, void *);
     void Xml_Destroy(void *, s32);
@@ -1580,7 +1580,7 @@ void *BattleTerrain_Create(void *arg0, void *arg1, void *arg2, void *arg3) {
     String_Destroy(&name_bt, -1);
     *(void **)((u8 *)self + 0x40) = BattleTerrain_Vtbl;
     xml = String_CStr(path);
-    fn_80041514(Map_Get(), xml);
+    Map_LoadTerrain(Map_Get(), xml);
     host = (void *)0;
     gBattleTerrainReady = 1;
     destroyed_path = 0;

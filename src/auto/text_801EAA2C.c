@@ -2087,7 +2087,7 @@ void fn_801EE76C(void *arg0) {
     void fn_8004084C(void);
     void *Map_Get(void);
     void *String_CStr(void *);
-    void fn_80041514(void *, void *);
+    void Map_LoadTerrain(void *, void *);
     void String_ConcatCStr(void *, void *, char *);
     void *Xml_ParseFile(void *, void *, void *);
     void String_Destroy(void *, s32);
@@ -2226,7 +2226,7 @@ use30708:
     fn_800408A8(1);
     fn_8004084C();
     r29 = Map_Get();
-    fn_80041514(r29, String_CStr(&sp24));
+    Map_LoadTerrain(r29, String_CStr(&sp24));
 
     flag27 = 0;
     flag26 = 0;

@@ -6450,7 +6450,7 @@ void Map_DecodeHeaderFlags(void *map) {
     }
 }
 
-void fn_80041514(void *arg0, char *arg1)
+void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
     s32 strlen(char *);
