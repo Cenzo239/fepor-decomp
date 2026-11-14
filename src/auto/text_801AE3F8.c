@@ -292,7 +292,7 @@ void fn_801AE9A4(void *arg0) {
     }
 }
 
-void fn_801AEA58(void *arg0) {
+void FShop_OnCapacityHelp(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_BringChildToFront(void *, s32);
     void TalkUi_ShowMsg(void *);
