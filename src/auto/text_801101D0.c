@@ -5468,7 +5468,7 @@ void fn_8011D6F4(s32 arg0) {
 }
 
 extern u16 TalkUi_str[];
-extern u16 lbl_8032FE04[];
+extern u16 gTalkUiLastMsg[];
 extern u16 gUiPanelProc[];
 void TalkUi_ShowMsg(void *arg0) {
     s32 DebugPrint(const char *, ...);
@@ -5490,7 +5490,7 @@ void TalkUi_ShowMsg(void *arg0) {
 
     DebugPrint((char *)TalkUi_str + 0x35, arg0);
     result = Msg_Expand(arg0);
-    Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
+    Str_CopyPad(gTalkUiLastMsg, arg0, 0x1E);
     obj = Process_Find(gUiPanelProc);
     UiPanel_ClearShowFlags(&gUiPanelFlags);
     fn_8000C5E0(obj);
@@ -5526,7 +5526,7 @@ void fn_8011D87C(void *arg0)
 
     result = Msg_Expand(arg0);
 
-    Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
+    Str_CopyPad(gTalkUiLastMsg, arg0, 0x1E);
 
     obj = (u8 *)Process_Find(gUiPanelProc);
     *(void **)(obj + 0x30) = result;
