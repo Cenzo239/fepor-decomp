@@ -10392,7 +10392,7 @@ extern "C" void fn_801CD2AC(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void *fn_801CD318(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelE(void *arg0, s16 arg1) {
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
