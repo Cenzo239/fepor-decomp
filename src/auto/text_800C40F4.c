@@ -18809,7 +18809,7 @@ void fn_800FA600(void *arg0) {
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 Rand_Range(s32);
-    void fn_8018D4CC(void *, void (*)(void *));
+    void Ai_TryStealAction(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
@@ -18826,7 +18826,7 @@ void fn_800FA600(void *arg0) {
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         flag = gAiState;
         flag[1] |= 2;
-        fn_8018D4CC(obj, cb);
+        Ai_TryStealAction(obj, cb);
         flag[1] &= ~2;
     }
 
@@ -18841,7 +18841,7 @@ void fn_800FA6CC(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
-    void fn_8018D4CC(void *, void (*)(void *));
+    void Ai_TryStealAction(void *, void (*)(void *));
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
@@ -18855,7 +18855,7 @@ void fn_800FA6CC(void *arg0) {
     if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
         cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
-        fn_8018D4CC(obj, cb);
+        Ai_TryStealAction(obj, cb);
     }
 
     if (gAiCmdIsAlt == 0) {

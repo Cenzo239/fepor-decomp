@@ -3312,7 +3312,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-u8 fn_8018D4CC(void *arg0, s32 arg1) {
+u8 Ai_TryStealAction(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
