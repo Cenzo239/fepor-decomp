@@ -14,7 +14,8 @@ struct Unit {
     /* 0xB0 */ u8 unkB0[0x40];
     /* 0xF0 */ u8 unkF0[0x10];
     /* 0x100 */ u8 unk100[0x40];
-    /* 0x140 */ u8 unk140[0x48];
+    /* 0x140 */ u8 unk140[0x44];
+    /* 0x184 */ void* listNext; /* next unit in gUnitLists allegiance chain */
     /* 0x188 */ void* person; /* Person_GetByPid; +0x50 support table, +0x54 affinity */
     /* 0x18C */ void* job; /* Job_GetByJid */
     /* 0x190 */ void* unk190; /* +0x8 = allegiance; compared for same-army checks */
