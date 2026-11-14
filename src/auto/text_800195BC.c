@@ -2446,11 +2446,11 @@ void Unit_OrMSfxFlag(u16 *flags, char *name) {
 }
 
 u8 fn_8001DD04(void) {
-    s8 fn_8003AFA0();
+    s8 Unit_GetMagAtk();
     s8 temp_r3;
     u8 var_r3;
 
-    temp_r3 = fn_8003AFA0();
+    temp_r3 = Unit_GetMagAtk();
     var_r3 = (u8) ((s32) (((u32) temp_r3 >> 0x1FU) + temp_r3) >> 1);
     if (var_r3 < 5U) {
         var_r3 = 5;
@@ -2467,7 +2467,7 @@ u8 fn_8001DD54(void *arg0, s32 arg1) {
 
     var_r3 = M2C_FIELD(arg0, u8 *, 0x1E);
     if (var_r3 == 0xFF) {
-        temp_r3 = fn_8003AFA0(arg1);
+        temp_r3 = Unit_GetMagAtk(arg1);
         var_r3 = (u8) ((s32) (((u32) temp_r3 >> 0x1FU) + temp_r3) >> 1);
         if (var_r3 < 5U) {
             var_r3 = 5;

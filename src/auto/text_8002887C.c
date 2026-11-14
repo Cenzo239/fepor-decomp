@@ -3537,7 +3537,7 @@ void fn_80031D28(s32 arg0) {
     void **fn_800285C0(void *);
     void fn_8002AD04(void *, void *, void *);
     s32 Item_GetHealAmount(void *);
-    s32 fn_8003AFA0(void *);
+    s32 Unit_GetMagAtk(void *);
     void fn_8002EB54(void *, s32);
     extern void *gUiContext[6];
     extern u8 lbl_80367265;
@@ -3557,7 +3557,7 @@ void fn_80031D28(s32 arg0) {
     ret = fn_800285C0(gUiContext);
     ctx = lbl_802EFD0C;
     *(s32 *)(ctx + 0xC) = Item_GetHealAmount(*ret);
-    *(s32 *)(ctx + 0xC) = *(s32 *)(ctx + 0xC) + (s8)fn_8003AFA0(gUiContext[0]);
+    *(s32 *)(ctx + 0xC) = *(s32 *)(ctx + 0xC) + (s8)Unit_GetMagAtk(gUiContext[0]);
     fn_8002EB54(lbl_802EFD0C, arg0);
 }
 

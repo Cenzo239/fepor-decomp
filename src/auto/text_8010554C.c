@@ -4689,7 +4689,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetActiveItemSlot(void *);
     s8 Unit_GetMov(void *);
-    s8 fn_8003AFA0(void *);
+    s8 Unit_GetMagAtk(void *);
     s8 Unit_CalcHitRate(void *, void *);
     u8 fn_800934CC(void *, void *);
     u64 *Item_GetFlagsPtr(void *);
@@ -4894,10 +4894,10 @@ ok_done:
             if (ciff < 5) {
                 continue;
             }
-            if ((s32)bestRank > (s32)(ciff + fn_8003AFA0(unit))) {
+            if ((s32)bestRank > (s32)(ciff + Unit_GetMagAtk(unit))) {
                 continue;
             }
-            bestRank = (u8)(ciff + fn_8003AFA0(unit));
+            bestRank = (u8)(ciff + Unit_GetMagAtk(unit));
             bestX = chosenX;
             bestY = chosenY;
             best = unit;

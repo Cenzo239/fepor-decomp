@@ -2917,7 +2917,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 Unit_GetHp(void *);
     s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetStr(void *);
-    s32 fn_8003AFA0(void *);
+    s32 Unit_GetMagAtk(void *);
     s32 Unit_GetMag(void *);
     s32 fn_8003AF28(void *);
     s32 Unit_GetSkl(void *);
@@ -2985,7 +2985,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     idx = Unit_GetCarryWtLimit(unit);
     self->v9(0xC, 0x42, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
-    idx = fn_8003AFA0(unit);
+    idx = Unit_GetMagAtk(unit);
     self->v9(0xC, 0x62, lbl_802767E0 + 0x55, Unit_GetMag(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4E]);
     idx = fn_8003AF28(unit);
@@ -3141,7 +3141,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void Prim2D_ScissorFromRect(void *);
     s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetStr(void *);
-    s32 fn_8003AFA0(void *);
+    s32 Unit_GetMagAtk(void *);
     s32 Unit_GetMag(void *);
     s32 fn_8003AF28(void *);
     s32 Unit_GetSkl(void *);
@@ -3201,7 +3201,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     idx = Unit_GetCarryWtLimit(unit);
     self->v9(0xC, 0x29, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
-    idx = fn_8003AFA0(unit);
+    idx = Unit_GetMagAtk(unit);
     self->v9(0xC, 0x48, lbl_802767E0 + 0x55, Unit_GetMag(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4E]);
     idx = fn_8003AF28(unit);

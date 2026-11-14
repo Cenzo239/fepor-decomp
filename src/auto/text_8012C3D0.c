@@ -3113,7 +3113,7 @@ s32 fn_80131C78(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5)
             // fall through
             break;
         case 2:
-            return fn_8003AFA0(param_4);
+            return Unit_GetMagAtk(param_4);
         case 3:
             // fall through  
             break;
@@ -3146,7 +3146,7 @@ s32 fn_80131C78(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5)
 
 s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
     s32 Unit_GetCarryWtLimit(void *);
-    s32 fn_8003AFA0(void *);
+    s32 Unit_GetMagAtk(void *);
     s32 fn_8003AF28(void *);
     s32 fn_8003AEB0(void *);
     s32 fn_8003ACF8(void *);
@@ -3161,7 +3161,7 @@ s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
     case 1:
         return (s8)Unit_GetCarryWtLimit(p);
     case 2:
-        return (s8)fn_8003AFA0(p);
+        return (s8)Unit_GetMagAtk(p);
     case 3:
         return (s8)fn_8003AF28(p);
     case 4:

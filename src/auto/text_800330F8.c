@@ -3549,7 +3549,7 @@ s8 fn_8003AF28(void *arg0) {
 }
 
 #pragma global_optimizer off
-s8 fn_8003AFA0(void *arg0) {
+s8 Unit_GetMagAtk(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
     void fn_80165E90(void *, void *);
@@ -4535,7 +4535,7 @@ void* fn_8003CE88(void* arg0, s32 arg1, void* arg2) {
 }
 
 u8 Unit_CalcHitRate(void *arg0, void *arg1) {
-    s32 fn_8003AFA0(void *);
+    s32 Unit_GetMagAtk(void *);
     s32 fn_8003A778(void *);
     s32 fn_8003AF28(void *);
     u8 Unit_GetDistance(void *, void *);
@@ -4543,7 +4543,7 @@ u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 u;
     s32 v;
 
-    t = (s8)fn_8003AFA0(arg0);
+    t = (s8)Unit_GetMagAtk(arg0);
     t = (t - (s8)fn_8003A778(arg1)) * 5;
     u = (s8)fn_8003AF28(arg0);
     v = t + u + 0x1E - ((u8)Unit_GetDistance(arg0, arg1) << 1);
