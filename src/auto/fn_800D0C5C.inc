@@ -29,7 +29,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     void fn_800E7C94(void *, void *, s32, f32);
     void fn_800BEEF4(void *);
     void fn_800CDEB0(void *);
-    void fn_800E76E0(void *, f32);
+    void UiObj_SetCamerasTransitionDecay(void *, f32);
     void fn_800CAD4C(void *, s32, s32);
     void fn_800CA990(void *);
     s32 fn_800CD590(void *);

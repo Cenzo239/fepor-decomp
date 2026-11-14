@@ -113,7 +113,7 @@ extern "C" void fn_80110228(void *arg0) {
     void fn_800E4FE8(void *, void *, char *);
     s32 fn_800E5200(void *, s32, s32, f32);
     u8 fn_800E5248(void *, s32);
-    void fn_800E76E0(void *, f32);
+    void UiObj_SetCamerasTransitionDecay(void *, f32);
     void UiObj_SetCamerasTransition(void *, s32, s32, f32);
     void fn_80111740(void *);
     void fn_80151894(void *);
@@ -260,7 +260,7 @@ extern "C" void fn_80110228(void *arg0) {
         UiObj_SetCamerasTransition(*(void **)((u8 *)self + 0xAC), 0, -1, *(f32 *)((u8 *)gGame + 0xA0));
     }
     if ((u8)fn_800E5248(self, 0x21) != 0) {
-        fn_800E76E0(*(void **)((u8 *)self + 0xAC), *(f32 *)((u8 *)gGame + 0x98));
+        UiObj_SetCamerasTransitionDecay(*(void **)((u8 *)self + 0xAC), *(f32 *)((u8 *)gGame + 0x98));
     }
 
     if ((u8)fn_800E5248(self, 0x2B) != 0) {

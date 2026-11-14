@@ -26,7 +26,7 @@
     void fn_800E7C94(void *, void *, s32, f32);
     void fn_800BEEF4(void *);
     void fn_800CDEB0(void *);
-    void fn_800E76E0(void *, f32);
+    void UiObj_SetCamerasTransitionDecay(void *, f32);
     void fn_800CAD4C(void *, s32, s32);
     void fn_800CA990(void *);
     s32 fn_800CD590(void *);
@@ -228,7 +228,7 @@
             break;
         case 5:
             if (--(*(s32 *)((u8 *)self + 0x10)) <= 0) {
-                fn_800E76E0(*(void **)((u8 *)self + 4), *(f32 *)((u8 *)gGame + 0x98));
+                UiObj_SetCamerasTransitionDecay(*(void **)((u8 *)self + 4), *(f32 *)((u8 *)gGame + 0x98));
                 sub = *(u32 *)((u8 *)self + 0x210);
                 if (sub <= 0xDU) {
                     switch (sub) {
@@ -687,7 +687,7 @@
                 *(s32 *)((u8 *)self + 0x18) = 2;
             }
             if ((u8)fn_800CD630(self) && *(s32 *)((u8 *)self + 0x18) != 0) {
-                fn_800E76E0(*(void **)((u8 *)self + 4), *(f32 *)((u8 *)gGame + 0x98));
+                UiObj_SetCamerasTransitionDecay(*(void **)((u8 *)self + 4), *(f32 *)((u8 *)gGame + 0x98));
                 if (*(s32 *)((u8 *)self + 0x218) == 0)
                     fn_800CF27C(self, *(s32 *)((u8 *)gGame + 0x190), 0);
                 if ((u8)fn_8011388C(*(void **)((u8 *)self + 0x9C))) {

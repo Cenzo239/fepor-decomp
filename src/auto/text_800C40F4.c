@@ -12212,7 +12212,7 @@ void fn_800E76D8(void *arg0, s8 arg1) {
 
 #pragma cplusplus on
 #pragma dont_inline on
-extern "C" void fn_800E76E0(void *arg0, f32 farg0) {
+extern "C" void UiObj_SetCamerasTransitionDecay(void *arg0, f32 farg0) {
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;

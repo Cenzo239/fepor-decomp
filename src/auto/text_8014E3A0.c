@@ -1038,7 +1038,7 @@ void Camera_ApplyPadControls(void *arg0) {
     /* Apply pad buttons 9-B / 1E-21 to the camera object using gGame axis rates. */
     void *fn_800536FC(u16);
     s32 Pad_IsButton(void *, s32);
-    void fn_800E76E0(void *, f32);
+    void UiObj_SetCamerasTransitionDecay(void *, f32);
     void UiObj_SetCamerasTransition(void *, s32, s32, f32);
     extern void *gGame;
     void *camera;
@@ -1149,7 +1149,7 @@ void Camera_ApplyPadControls(void *arg0) {
         pressed = 0;
     }
     if ((u8)pressed != 0) {
-        fn_800E76E0(camera, *(f32 *)((u8 *)gGame + 0x98));
+        UiObj_SetCamerasTransitionDecay(camera, *(f32 *)((u8 *)gGame + 0x98));
     }
     *(s32 *)((u8 *)arg0 + 0xC0) = *(s32 *)((u8 *)arg0 + 0xC0) + 1;
 }
