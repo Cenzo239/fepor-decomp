@@ -1378,7 +1378,7 @@ s32 fn_801FFD00(const char *fmt, ...) {
     return 0;
 }
 
-s32 fn_801FFD54(void) {
+s32 File_Seek(void) {
     return 0;
 }
 

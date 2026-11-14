@@ -11990,7 +11990,7 @@ void Stream_WriteU8(void *arg0, s8 arg1) {
 
 s32 Stream_LoadFile(void *arg0, void *arg1) {
     void *File_Open(void *, void *);
-    s32 fn_801FFD54(void *, s32, s32);
+    s32 File_Seek(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
     void fn_801FFD64(void *, s32, s32, void *);
     void fn_801FFD6C(void *);
@@ -12004,8 +12004,8 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     if (temp_r31 == NULL) {
         return 0;
     }
-    temp_r30 = fn_801FFD54(temp_r31, 0, 2);
-    fn_801FFD54(temp_r31, 0, 0);
+    temp_r30 = File_Seek(temp_r31, 0, 2);
+    File_Seek(temp_r31, 0, 0);
     *(void **)out = fn_800C4638(temp_r30, gFileOpenModes + 3, 0);
     *((u8 *)out + 0xC) = 1;
     fn_801FFD64(*(void **)out, 1, temp_r30, temp_r31);
