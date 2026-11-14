@@ -2777,11 +2777,11 @@ s32 fn_800CAD4C(void *arg0, s32 arg1, u8 arg2) {
 
 void fn_800CADF8(void) {
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     void *object;
 
     if (gBattleReplayActive != 0) {
-        object = *(void **)((u8 *)lbl_8036787C + 0x440);
+        object = *(void **)((u8 *)gBattleReplayScene + 0x440);
 
         if (object != NULL) {
             fn_801481CC(object, 0xFA);
@@ -2791,13 +2791,13 @@ void fn_800CADF8(void) {
 
 void fn_800CAE38(void) {
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80145FE8(void);
     void *object;
 
     if (gBattleReplayActive != 0) {
-        object = *(void **)((u8 *)lbl_8036787C + 0x440);
+        object = *(void **)((u8 *)gBattleReplayScene + 0x440);
         if (object != NULL) {
             Fx_StartSlot(1, object, 0x64, 1);
         }
@@ -2810,13 +2810,13 @@ void fn_800CAE38(void) {
 void BattleScene_InitSides(void *arg0) {
     u8 Status_Test(void *, s32);
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern u32 gBattle[];
     void *tmp;
 
     if (gBattleReplayActive != 0) {
-        M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(lbl_8036787C, s32 *, 0x164);
-        M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(lbl_8036787C, s32 *, 0x2CC);
+        M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(gBattleReplayScene, s32 *, 0x164);
+        M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(gBattleReplayScene, s32 *, 0x2CC);
         return;
     }
     tmp = M2C_FIELD(gBattle, void **, 0x190);
@@ -2839,7 +2839,7 @@ void BattleScene_InitSides(void *arg0) {
 void fn_800CAF74(void *arg0) {
     extern char lbl_802704F8[];
     extern u8 gBattleReplayActive;
-    extern u8 *lbl_8036787C;
+    extern u8 *gBattleReplayScene;
     extern u32 gBattle[];
     void String_Init(String *, char *, void *);
     String *String_AssignCStr(String *, char *, u32);
@@ -2854,7 +2854,7 @@ void fn_800CAF74(void *arg0) {
 
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
     if (gBattleReplayActive != 0) {
-        char *p = (char *)lbl_8036787C + 0x268;
+        char *p = (char *)gBattleReplayScene + 0x268;
         String_AssignCStr(&str, p, strlen(p));
     } else if ((u8 *)gBattle + 0x56C != 0) {
         void *obj = *(void **)((u8 *)gBattle + 0x56C);
@@ -2883,7 +2883,7 @@ void fn_800CB070(String *arg0) {
     s32 UnitRef_GetName(void);
     extern char lbl_802704F8[];
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern u32 gBattle[];
     char buf[0x40];
     String str;
@@ -2896,7 +2896,7 @@ void fn_800CB070(String *arg0) {
     out = arg0;
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
     if (gBattleReplayActive != 0) {
-        tmp = (u32)((char *)lbl_8036787C + 0x100);
+        tmp = (u32)((char *)gBattleReplayScene + 0x100);
         String_AssignCStr(&str, (char *)tmp, strlen((char *)tmp));
     } else {
         slot = (u8 **)((u8 *)gBattle + 0x28C);
@@ -2921,7 +2921,7 @@ void *fn_800CB27C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
     extern u8 gBattleReplayActive;
-    extern u8 *lbl_8036787C;
+    extern u8 *gBattleReplayScene;
     extern u32 gBattle[];
     u8 *base;
     void **slot;
@@ -2931,7 +2931,7 @@ void *fn_800CB27C(void) {
     u64 bits;
 
     if (gBattleReplayActive != 0) {
-        p = (s8 *)((u8 *)lbl_8036787C + 0x1A8);
+        p = (s8 *)((u8 *)gBattleReplayScene + 0x1A8);
         if (*p != 0) {
             return p;
         }
@@ -2973,7 +2973,7 @@ void fn_800CB484(void *arg0, void *arg1)
     void String_Init(void *, char *, void *);
     void fn_800CB65C(void *, void *, void *, void *, void *);
     void *String_Destroy(void *, s16);
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern u8 gBattleReplayActive;
     extern char lbl_802704F8[];
 
@@ -2984,7 +2984,7 @@ void fn_800CB484(void *arg0, void *arg1)
     void *scratch8;
 
     if (gBattleReplayActive != 0) {
-        String_Init(arg0, (char *)lbl_8036787C + 0x2D0, &scratch10);
+        String_Init(arg0, (char *)gBattleReplayScene + 0x2D0, &scratch10);
     } else {
         ptr = *(char ***)((u8 *)gBattle + 0x74C);
         if (ptr == NULL) {
@@ -3008,7 +3008,7 @@ void fn_800CB538(void *arg0, void *arg1)
     void String_Init(void *, char *, void *);
     void fn_800CB65C(void *, void *, void *, void *, void *);
 
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern u8 gBattleReplayActive;
 
     String temp;
@@ -3017,7 +3017,7 @@ void fn_800CB538(void *arg0, void *arg1)
     void *scratch8;
 
     if (gBattleReplayActive != 0) {
-        String_Init(arg0, (char *)lbl_8036787C + 0x168, &scratchC);
+        String_Init(arg0, (char *)gBattleReplayScene + 0x168, &scratchC);
     } else {
         source = **(char ***)((u8 *)gBattle + 0x46C);
 
@@ -3040,7 +3040,7 @@ void fn_800CB5CC(void *arg0, void *arg1)
     void String_Init(void *, char *, void *);
     void fn_800CB65C(void *, void *, void *, void *, void *);
 
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern u8 gBattleReplayActive;
 
     String temp;
@@ -3049,7 +3049,7 @@ void fn_800CB5CC(void *arg0, void *arg1)
     void *scratch8;
 
     if (gBattleReplayActive != 0) {
-        String_Init(arg0, (char *)lbl_8036787C, &scratchC);
+        String_Init(arg0, (char *)gBattleReplayScene, &scratchC);
     } else {
         source = **(char ***)((u8 *)gBattle + 0x18C);
 
@@ -4199,7 +4199,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     extern void *lbl_8028DAA4[];
     extern u32 gBattle[];
     extern u8 gBattleReplayActive;
-    extern u8 *lbl_8036787C;
+    extern u8 *gBattleReplayScene;
 
     void *self = arg0;
     s16 *stream = *(s16 **)((u8 *)self + 0x1FC);
@@ -4217,7 +4217,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     void *tmp;
 
     if (gBattleReplayActive != 0) {
-        g = lbl_8036787C;
+        g = gBattleReplayScene;
         r26 = 0;
         r17 = 0;
         r20 = 0;
@@ -4955,7 +4955,7 @@ extern f32 lbl_80369DC8;
 extern f32 lbl_80369DD0;
 extern void *gGame;
 extern u8 gBattleReplayActive;
-extern void *lbl_8036787C;
+extern void *gBattleReplayScene;
 extern void *lbl_80367888;
 struct VObj {
 u8 pad[0x40];
@@ -5050,9 +5050,9 @@ if (found != NULL) {
 ((VObj *)found)->v11(*(f32 *)((u8 *)gGame + 0x24), *(f32 *)((u8 *)gGame + 0x28), *(f32 *)((u8 *)gGame + 0x2C));
 }
 if (*(u8 *)((u8 *)obj + 0x187) != 0) {
-if (lbl_8036787C != NULL && *(s32 *)((u8 *)lbl_8036787C + 0x444) != 2) {
-Heap_Free(lbl_8036787C);
-lbl_8036787C = NULL;
+if (gBattleReplayScene != NULL && *(s32 *)((u8 *)gBattleReplayScene + 0x444) != 2) {
+Heap_Free(gBattleReplayScene);
+gBattleReplayScene = NULL;
 }
 if (gGameScene != NULL) {
 GameScene_Destroy(gGameScene, 1);
@@ -5117,8 +5117,8 @@ extern "C" void fn_800D5818(s32 arg0) {
 #pragma cplusplus reset
 
 void fn_800D588C(s32 arg0) {
-    extern s32 lbl_8036787C;
-    lbl_8036787C = arg0;
+    extern s32 gBattleReplayScene;
+    gBattleReplayScene = arg0;
 }
 
 void fn_800D5894(void **arg0) {

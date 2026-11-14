@@ -101,7 +101,7 @@
     extern f32 lbl_80369E20;
     extern void *lbl_80367884;
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern char lbl_802704F8[];
 
     u8 str0[12], str1[12], str2[12], str3[12], str4[12];
@@ -1013,7 +1013,7 @@
         && *(u8 *)((u8 *)self + 0x195) == 0
         && (fn_800D3590(gPadInput) & 0x1000) != 0) {
         *(u8 *)((u8 *)self + 0x187) = 1;
-        *(s32 *)((u8 *)lbl_8036787C + 0x444) = 0;
+        *(s32 *)((u8 *)gBattleReplayScene + 0x444) = 0;
         fn_800DA330();
         fn_800CADF8(self);
     }

@@ -104,7 +104,7 @@ extern "C" s32 fn_800D0C5C_REMOVED(void *arg0) {
     extern f32 lbl_80369E20;
     extern void *lbl_80367884;
     extern u8 gBattleReplayActive;
-    extern void *lbl_8036787C;
+    extern void *gBattleReplayScene;
     extern char lbl_802704F8[];
 
     u8 str0[12], str1[12], str2[12], str3[12], str4[12];
