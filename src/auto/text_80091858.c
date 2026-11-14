@@ -60,18 +60,19 @@ void fn_80091858(void) {
 }
 
 void ProcessQueue_SetPriorities(void) {
+    /* Assign increasing +0x28 priorities to queued processes (newest first), then clear the queue count. */
     extern void *gProcessQueue[];
     extern s32 gProcessQueueCount;
-    s32 val;
+    s32 priority;
     s32 i;
 
     if (gProcessQueueCount == 0) {
         return;
     }
-    val = 0x14;
+    priority = 0x14;
     for (i = gProcessQueueCount - 1; i >= 0; i--) {
-        *(s16 *)((u8 *)gProcessQueue[i] + 0x28) = val;
-        val += 4;
+        *(s16 *)((u8 *)gProcessQueue[i] + 0x28) = priority;
+        priority += 4;
     }
     gProcessQueueCount = 0;
 }
