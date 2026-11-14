@@ -3734,28 +3734,17 @@ void fn_8007B044(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern void *gFaceSlots[];
-    extern f64 lbl_803693C8;
     extern f32 lbl_803693D4;
     extern f32 lbl_803693EC;
     void *entry;
     s32 idx;
-    f32 fa;
-    f32 fb;
-
-    fa = lbl_803693D4;
-    fb = lbl_803693EC;
+    f32 frame = (f32)*(s32 *)((u8 *)arg0 + 0x68);
+    f32 duration = (f32)*(s32 *)((u8 *)arg0 + 0x64);
     entry = gFaceSlots[*(s32 *)((u8 *)arg0 + 0x60)];
-    *((s8 *)((u8 *)entry + 0x42)) = (s8)Math_Ease(
-        0, fa, fb,
-        (f32)*(s32 *)((u8 *)arg0 + 0x68),
-        (f32)*(s32 *)((u8 *)arg0 + 0x64));
+    *(s8 *)((u8 *)entry + 0x42) = (s8)Math_Ease(0, 0.0f, 255.0f, frame, duration);
     idx = *(s32 *)((u8 *)arg0 + 0x64);
-    if (idx == *(s32 *)((u8 *)arg0 + 0x68)) {
-        Process_ClearFunc(arg0);
-    } else {
-        idx = *(s32 *)((u8 *)arg0 + 0x68);
-        *(s32 *)((u8 *)arg0 + 0x68) = idx + 1;
-    }
+    if (idx == *(s32 *)((u8 *)arg0 + 0x68)) Process_ClearFunc(arg0);
+    else *(s32 *)((u8 *)arg0 + 0x68) = *(s32 *)((u8 *)arg0 + 0x68) + 1;
 }
 
 void fn_8007B104(void *arg0) {
