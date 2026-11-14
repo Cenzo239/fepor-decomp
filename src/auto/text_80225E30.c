@@ -47,7 +47,7 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
-static u32 lbl_803392E8[8];
+static u32 sFaceResAddrs[8];
 static u32 lbl_80339308[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
@@ -273,8 +273,8 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
     s32 error;
     u32 size;
     void *base;
-    s32 i;
     u32 *srcWords;
+    s32 i;
     s32 *endian;
     u32 rev;
     u32 word;
@@ -282,7 +282,6 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
     u32 position;
     u32 remaining;
     s32 result;
-    u32 off;
 
     base = buffer;
     srcWords = words;
@@ -314,8 +313,7 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
         if (size == 1) {
             *((u8 *)base + (position + 0x10)) = *src;
         } else {
-            off = position + 0x10;
-            fn_80003488((u8 *)base + off, src, size);
+            fn_80003488(&((u8 *)base)[position + 0x10], src, size);
         }
 
         *(u32 *)((u8 *)base + 0xC) = *(u32 *)((u8 *)base + 0xC) + size;

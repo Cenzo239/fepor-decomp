@@ -64,7 +64,7 @@ typedef struct __GXFifoObj {
     u8 bind_gp;
 } __GXFifoObj;
 
-static u32 lbl_803392E8[8];
+static u32 sFaceResAddrs[8];
 static u32 lbl_80339308[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];

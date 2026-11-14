@@ -35,7 +35,7 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
-static u32 lbl_803392E8[8];
+static u32 sFaceResAddrs[8];
 static u32 lbl_80339308[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
@@ -362,7 +362,7 @@ s64 OSGetTime(void) {
         hi2 = __mftbu();
     } while (hi != hi2);
 
-    return ((s64)hi << 32) | lo;
+    return ((s64)hi << 32) | (s64)lo;
 }
 
 s32 OSGetTick(void) {

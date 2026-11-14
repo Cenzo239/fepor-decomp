@@ -46,7 +46,7 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
-static u32 lbl_803392E8[8];
+static u32 sFaceResAddrs[8];
 static u32 lbl_80339308[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
@@ -490,6 +490,28 @@ s32 fn_80202D1C(f32 *src, f32 *inv) {
     } while (i < 4);
     return 1;
 }
+
+f32 fn_8020310C(void) {
+    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f0, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f1, $f3, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_merge11 $f12, $f1, $f1 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f13, $f5, $f5, $f5 */);
+    M2C_ERROR(/* unknown instruction: ps_merge00 $f13, $f13, $f13 */);
+    M2C_ERROR(/* unknown instruction: ps_div $f13, $f12, $f13 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f0, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f2, $f1, $f5, $f4 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f6, $f0, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f3, $f1, $f7, $f6 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f8, $f0, $f8 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f2, $f2, $f2, $f2 */);
+    M2C_ERROR(/* unknown instruction: ps_madd $f9, $f1, $f9, $f8 */);
+    M2C_ERROR(/* unknown instruction: ps_sum1 $f2, $f3, $f2, $f3 */);
+    M2C_ERROR(/* unknown instruction: ps_sum0 $f3, $f9, $f9, $f9 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f2, $f2, $f13 */);
+    M2C_ERROR(/* unknown instruction: ps_mul $f3, $f3, $f13 */);
+    return M2C_ERROR(/* psq_l unimplemented */);
+}
+
 void fn_80203184(void) {
     M2C_ERROR(/* unknown instruction: ps_add $f6, $f2, $f4 */);
     M2C_ERROR(/* unknown instruction: ps_add $f7, $f3, $f5 */);

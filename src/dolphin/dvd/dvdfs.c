@@ -82,7 +82,7 @@ u8 ErrorCode2Num(s32);
 extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
-static u32 lbl_803392E8[8];
+static u32 sFaceResAddrs[8];
 static u32 lbl_80339308[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
@@ -2143,12 +2143,12 @@ void VIWaitForRetrace(void) {
     enabled = OSDisableInterrupts();
     previous = lbl_80368604;
     OSSleepThread((void *)&lbl_8036860C);
-    if (previous != lbl_80368604) {
+    if (previous == lbl_80368604) {
+    } else {
         OSRestoreInterrupts(enabled);
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma peephole on
 void VIConfigure(void *arg0) {
     BOOL OSDisableInterrupts(void);
     void OSRestoreInterrupts(BOOL);
