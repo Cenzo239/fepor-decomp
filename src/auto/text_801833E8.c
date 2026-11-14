@@ -1169,7 +1169,7 @@ void fn_80186028(void *arg0) {
 }
 
 void Mu_HideAtTile(void *arg0) {
-    void fn_80050C50(void *, f32, f32, f32);
+    void Unit_SetWorldXY(void *, f32, f32, f32);
     void Unit_SetModelAlpha(void *, s32);
     void fn_8004BE88(void *, s32);
     void Process_Goto(void *, s32);
@@ -1180,7 +1180,7 @@ void Mu_HideAtTile(void *arg0) {
     switch (flags) {
     case 0:
     case 1:
-        fn_80050C50(*(void **)((u8 *)arg0 + 0x30),
+        Unit_SetWorldXY(*(void **)((u8 *)arg0 + 0x30),
                     lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x3C),
                     lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x40),
                     lbl_8036ACD8);
@@ -1405,7 +1405,7 @@ void Event_StartMuBlend(void *proc) {
 
 void fn_80186E10(void *arg0) {
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-    void fn_80050C50(void *, f32, f32);
+    void Unit_SetWorldXY(void *, f32, f32);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036ACF8;
@@ -1430,7 +1430,7 @@ void fn_80186E10(void *arg0) {
     f31 = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)p30 + 4), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
     p30 = *(void **)((u8 *)arg0 + 0x30);
     tmp = Math_EaseOutPow(2, *(f32 *)((u8 *)arg0 + 0x3C), *(f32 *)((u8 *)p30 + 8), lbl_8036ACF4, *(f32 *)((u8 *)arg0 + 0x44));
-    fn_80050C50(*(void **)((u8 *)arg0 + 0x34), f31, tmp);
+    Unit_SetWorldXY(*(void **)((u8 *)arg0 + 0x34), f31, tmp);
     Model_SetAlpha(r31, (u8)r30);
     if (*(f32 *)((u8 *)arg0 + 0x44) == lbl_8036ACF4) {
         Process_ClearFunc(arg0);
@@ -1917,7 +1917,7 @@ void fn_80187FBC(void *arg0) {
 #pragma opt_strength_reduction on
 
 void fn_8018820C(void *arg0) {
-    M2C_UNK fn_80050C50(s32, f32, f32);
+    M2C_UNK Unit_SetWorldXY(s32, f32, f32);
     f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32, f32);
     extern f32 lbl_8036ACD8;
     extern f32 lbl_8036AD0C;
@@ -1929,7 +1929,7 @@ void fn_8018820C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x60) = (s32) (M2C_FIELD(arg0, s32 *, 0x60) + 1);
     temp_f31 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
     temp_f1 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
-    fn_80050C50(M2C_FIELD(temp_r31, s32 *, 0x34), temp_f31, temp_f1);
+    Unit_SetWorldXY(M2C_FIELD(temp_r31, s32 *, 0x34), temp_f31, temp_f1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x60) >= 8) {
         Process_ClearFunc(arg0);
     }

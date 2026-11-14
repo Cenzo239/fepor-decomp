@@ -1797,7 +1797,7 @@ void fn_80015D54(void)
 
 void fn_80015DEC(void) {
     void Allegiance_FillMask(s32, void *);
-    void fn_80050C50(f32, f32, f32);
+    void Unit_SetWorldXY(f32, f32, f32);
     extern u8 gUnits[];
     extern f32 lbl_80368C78;
     u8 sp8[8];
@@ -1813,7 +1813,7 @@ void fn_80015DEC(void) {
             unit = NULL;
         }
         if ((*(u32 *)((u8 *)unit + 0x188) != 0) && (sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0)) {
-            fn_80050C50(lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 4), lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 8), lbl_80368C78);
+            Unit_SetWorldXY(lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 4), lbl_80368C78 + (f32)(s32)*(f32 *)((u8 *)unit + 8), lbl_80368C78);
         }
         i += 1;
     } while (i <= 0x9F);

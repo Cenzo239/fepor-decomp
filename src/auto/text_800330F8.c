@@ -2333,7 +2333,7 @@ u8 Unit_GetDistance(void *a, void *b) {
 }
 #pragma global_optimizer reset
 void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
-    void fn_80050C50(void *, f32, f32);
+    void Unit_SetWorldXY(void *, f32, f32);
     extern f32 lbl_80368EC0;
     void *child;
     f32 fx;
@@ -2347,7 +2347,7 @@ void Unit_SetMapPos(void *arg0, s8 arg1, s8 arg2) {
         fx = lbl_80368EC0 + (f32)arg1;
         *(s8 *)((u8 *)child + 0x19F) = arg2;
         fy = lbl_80368EC0 + (f32)arg2;
-        fn_80050C50(child, fx, fy);
+        Unit_SetWorldXY(child, fx, fy);
     }
 }
 
@@ -11943,7 +11943,7 @@ void fn_80050BF4(void *arg0, s32 arg1)
     Model_SetAlpha(r31, ((u8 *)&sp8)[3]);
 }
 
-void fn_80050C50(void *arg0, f32 farg0, f32 farg1) {
+void Unit_SetWorldXY(void *arg0, f32 farg0, f32 farg1) {
     f32 Map_SampleHeightRaw(void *);
     extern u8 gBattleMap[];
 
