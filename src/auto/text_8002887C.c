@@ -2648,7 +2648,7 @@ s32 fn_8002EA74(void) {
     return 0;
 }
 
-void fn_8002EA7C(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
+void Ui_CalcSlideFadeIn(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     s32 var_r31;
 
