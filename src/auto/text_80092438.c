@@ -1296,7 +1296,7 @@ done:
     return (u8)(lim < result);
 }
 
-s32 fn_80094614(void *arg0, void *arg1) {
+s32 Unit_CanEquipItem(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     u64 flags;
 

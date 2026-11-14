@@ -725,7 +725,7 @@ void fn_801A949C(void *arg0) {
 #pragma opt_common_subs off
 void fn_801A9600(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
-    u8 fn_80094614(void *, void *);
+    u8 Unit_CanEquipItem(void *, void *);
     void Item_Clear(void *);
     void *fn_80037C20(void *);
     extern u16 lbl_80367218;
@@ -752,7 +752,7 @@ void fn_801A9600(void *arg0, void *arg1) {
         } else {
             sel = (u8 *)arg0 + 0x284;
         }
-        if (fn_80094614((*(void **)sel, arg0), *(void **)sel) == 0) {
+        if (Unit_CanEquipItem((*(void **)sel, arg0), *(void **)sel) == 0) {
             Item_Clear((u8 *)arg0 + 0x284);
         }
     }
