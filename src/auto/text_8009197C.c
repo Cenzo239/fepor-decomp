@@ -353,23 +353,40 @@ void fn_8009204C(void *arg0, void *arg1) {
     fn_800C4588(temp_r31);
 }
 
-s32 Unit_FindKeyItemSlot(u8 *arg0, s32 arg1) {
-u8 Status_Test(u8 *, s32);
-void Item_GetKeyFlags(u8 *, s32);
-u8 sp8; s32 result; u8 mask; u8 *p; s32 slot;
-mask=arg1; p=arg0;
-if(Status_Test(p+0x1BC,0x5B)) result=-2;
-else if(Status_Test(p+0x1BC,0x50) && *(s32*)(gBattleState+0x18)>=0x32) result=-2;
-else {
-for(result=0;result<4;result++,p+=8) {
-slot=*(s32*)(p+0x1EC);
-if(!((u32)(-slot|slot)>>31)) break;
-Item_GetKeyFlags(&sp8,slot);
-switch((u8)(sp8 & mask)) {case 0: break; default: goto done;}
-}
-result=-1;
-}
-done: return result;
+/* Find first 0x1EC item slot matching key mask; -2 if status-blocked, -1 if none. */
+s32 Unit_FindKeyItemSlot(u8 *unit, s32 keyMask) {
+    u8 Status_Test(u8 *, s32);
+    void Item_GetKeyFlags(u8 *, s32);
+    u8 flags;
+    s32 result;
+    u8 mask;
+    u8 *p;
+    s32 item;
+
+    mask = keyMask;
+    p = unit;
+    if (Status_Test(p + 0x1BC, 0x5B)) {
+        result = -2;
+    } else if (Status_Test(p + 0x1BC, 0x50) && *(s32 *)(gBattleState + 0x18) >= 0x32) {
+        result = -2;
+    } else {
+        for (result = 0; result < 4; result++, p += 8) {
+            item = *(s32 *)(p + 0x1EC);
+            if (!((u32)(-item | item) >> 31)) {
+                break;
+            }
+            Item_GetKeyFlags(&flags, item);
+            switch ((u8)(flags & mask)) {
+            case 0:
+                break;
+            default:
+                goto done;
+            }
+        }
+        result = -1;
+    }
+done:
+    return result;
 }
 
 s32 fn_8009226C(u8 *arg0, u8 *arg1) {
