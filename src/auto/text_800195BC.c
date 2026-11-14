@@ -1781,14 +1781,14 @@ void strcpy(void *, s32);
 void strcat(void *, void *);
 void *Res_GetByName(void *);
 extern void *gItemUfxCache;
-extern u8 lbl_802CA4FC[], gDataStr[];
+extern u8 gItemUfxPath[], gDataStr[];
 void *obj;
 if(gItemUfxCache != arg1) {
 gItemUfxCache=arg1;
-strcpy(lbl_802CA4FC,*(s32 *)arg1);
-strcat(lbl_802CA4FC,gDataStr+0x3C);
+strcpy(gItemUfxPath,*(s32 *)arg1);
+strcat(gItemUfxPath,gDataStr+0x3C);
 }
-obj=Res_GetByName(lbl_802CA4FC);
+obj=Res_GetByName(gItemUfxPath);
 if(obj==0) {
 (*(void (**)(void *))((u8 *)obj+0xC))(arg2);
 }
@@ -1799,17 +1799,17 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
     void fn_802343E0(void *, void *);
     u32 fn_8000D354(void *);
     extern void *gItemUfxCache;
-    extern u8 lbl_802CA4FC[];
+    extern u8 gItemUfxPath[];
     extern u8 gDataStr[];
     void (*cb)(void *);
     u32 ret;
 
     if (gItemUfxCache != arg1) {
         gItemUfxCache = arg1;
-        fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
-        fn_802343E0(lbl_802CA4FC, gDataStr + 0x3C);
+        fn_80234450(gItemUfxPath, *(s32 *)arg1);
+        fn_802343E0(gItemUfxPath, gDataStr + 0x3C);
     }
-    ret = fn_8000D354(lbl_802CA4FC);
+    ret = fn_8000D354(gItemUfxPath);
     if (ret == 0) {
         cb = *(void (**)(void *))((u8 *)ret + 0x8);
         if (cb != NULL) {
@@ -1826,16 +1826,16 @@ u32 Item_CallUfx(void *arg0, void *arg1) {
     void strcat(void *, void *);
     void *Res_GetByName(void *);
     extern void *gItemUfxCache;
-    extern u8 lbl_802CA4FC[];
+    extern u8 gItemUfxPath[];
     extern u8 gDataStr[];
     void *obj;
 
     if (gItemUfxCache != arg1) {
         gItemUfxCache = arg1;
-        strcpy(lbl_802CA4FC, *(s32 *)arg1);
-        strcat(lbl_802CA4FC, gDataStr + 0x3C);
+        strcpy(gItemUfxPath, *(s32 *)arg1);
+        strcat(gItemUfxPath, gDataStr + 0x3C);
     }
-    obj = Res_GetByName(lbl_802CA4FC);
+    obj = Res_GetByName(gItemUfxPath);
     if (obj == 0) {
         obj = 0;
     }
@@ -1850,16 +1850,16 @@ u32 Item_GetUfx(void *arg0) {
     void strcat(void *, void *);
     u32 Res_GetByName(void *);
     extern void *gItemUfxCache;
-    extern u8 lbl_802CA4FC[];
+    extern u8 gItemUfxPath[];
     extern u8 gDataStr[];
     u32 ret;
 
     if (gItemUfxCache != arg0) {
         gItemUfxCache = arg0;
-        strcpy(lbl_802CA4FC, *(s32 *)arg0);
-        strcat(lbl_802CA4FC, gDataStr + 0x3C);
+        strcpy(gItemUfxPath, *(s32 *)arg0);
+        strcat(gItemUfxPath, gDataStr + 0x3C);
     }
-    ret = Res_GetByName(lbl_802CA4FC);
+    ret = Res_GetByName(gItemUfxPath);
     if (ret == 0) {
         return 0;
     }
