@@ -1471,8 +1471,8 @@ void Unit_AddSupportPoints(void *arg0, s32 arg1) {
         target[0x214] = *(table + offset + 0xE) + 1;
     }
 }
-#pragma global_optimizer reset
 #pragma opt_strength_reduction reset
+#pragma global_optimizer reset
 s32 Unit_GetSupportRankTotal(u8 *arg0)
 {
   u8 *table;
@@ -4714,7 +4714,7 @@ void Unit_Promote(void *arg0) {
     Unit_SetHp(self, (s8)Unit_GetMaxHp(self));
 }
 
-s32 fn_8003D538(s32 arg0) {
+s32 Unit_CanPromote(s32 arg0) {
     u8 Status_Test(s32, s32);
     void *Res_GetByName(void *);
     void *tmp;

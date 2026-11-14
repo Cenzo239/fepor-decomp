@@ -7785,8 +7785,8 @@ s32 fn_80196704(s32 arg0) {
 }
 
 void fn_80196794(void) {
-    M2C_UNK fn_8003D538();
-    fn_8003D538();
+    M2C_UNK Unit_CanPromote();
+    Unit_CanPromote();
 }
 
 void fn_801967B4(void *arg0) {
