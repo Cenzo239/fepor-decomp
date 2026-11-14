@@ -699,22 +699,16 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
 
 void fn_801221E4(s32 arg0)
 {
-    void UiPanel_PollSkip(u16 *);
-    void fn_80120C2C(void);
-    void Process_ClearFunc(s32);
-    extern u16 gUiPanelFlags;
-    extern u32 gUiInputFlags;
-
-    UiPanel_PollSkip(&gUiPanelFlags);
-    fn_80120C2C();
-
-    if (gUiPanelFlags & 0x0200) {
-        return;
-    }
-    if ((gUiInputFlags & 3) == 0) {
-        return;
-    }
-    Process_ClearFunc(arg0);
+void UiPanel_PollSkip(u16 *);
+void fn_80120C2C(void);
+void Process_ClearFunc(s32);
+extern u16 gUiPanelFlags;
+extern u32 gUiInputFlags;
+UiPanel_PollSkip(&gUiPanelFlags);
+fn_80120C2C();
+if ((gUiPanelFlags & 0x200) != 0 || (gUiInputFlags & 3) != 0) {
+Process_ClearFunc(arg0);
+}
 }
 
 void fn_80122238(void *arg0)
