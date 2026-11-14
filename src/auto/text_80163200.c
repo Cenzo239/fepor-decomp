@@ -2503,18 +2503,15 @@ void fn_80168F54(s32 arg0) {
 }
 
 void fn_801690B0(s32 arg0) {
-    void Process_Goto(s32, s32);
-    void Ui_UpdatePanelWidgets(s32);
-    extern void *gPadInput;
-    s32 *p;
-    s32 temp;
-
-    p = gPadInput;
-    temp = p[2];
-    if (temp & (temp ^ p[1]) & 0x200) {
-        Process_Goto(arg0, 1);
-    }
-    Ui_UpdatePanelWidgets(arg0);
+ void Process_Goto(s32, s32);
+ void Ui_UpdatePanelWidgets(s32);
+ extern void *gPadInput;
+ u32 temp;
+ u32 *p;
+ p = gPadInput;
+ temp = p[2];
+ if ((temp ^ p[1]) & temp & 0x200) Process_Goto(arg0, 1);
+ Ui_UpdatePanelWidgets(arg0);
 }
 
 #pragma cplusplus on
