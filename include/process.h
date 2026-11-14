@@ -10,7 +10,7 @@ typedef struct Process {
     void (*destructor)(struct Process *); /* +0x08 */
     void (*post)(struct Process *);      /* +0x0C after-func callback */
     void (*func)(struct Process *);      /* +0x10 */
-    void *unk_14;                        /* +0x14 */
+    char *name;                          /* +0x14 */
     struct Process *parent;              /* +0x18 */
     struct Process *child;               /* +0x1C */
     struct Process *prev;                /* +0x20 */
