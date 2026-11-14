@@ -7334,21 +7334,76 @@ u8 fn_800BD610(s32 arg0) {
     return *(u8 *)((u8 *)temp_r3 + 0x198);
 }
 
-s32 ScriptCmd_UnitSet(u8 id,s32 mid,s32 val) {
-extern u16 gUnits[]; void fn_8003868C(void*,s32); void Unit_SetHp(void*,s32); void Unit_SetDisposId(void*,u8);
-u8 *unit;
-if(id!=0) unit=(u8*)gUnits+(id-1)*0x280; else unit=0;
-if(unit==0 || *(u32*)(unit+0x188)==0) return 0;
-switch(mid) {
-case 1: case 2: case 3: case 4: case 5: case 9: case 10: case 11: case 12: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 24: case 25: case 27: case 28: case 29: case 30: case 31: case 32: case 33: case 34: case 35: case 36: case 37: return 0;
-case 0: unit[0x19A]=val; break;
-case 6: fn_8003868C(unit,val); break;
-case 7: unit[0x19C]=val; break;
-case 8: Unit_SetHp(unit,val); break;
-case 13: *(s16*)(unit+0x228)=val; break;
-case 0x26: Unit_SetDisposId(unit,(u8)val); break;
-}
-return val;
+/* Script UnitSet: write member mid on unit id (level/exp/gauge/HP/dispos); unsupported mids return 0. */
+s32 ScriptCmd_UnitSet(u8 id, s32 mid, s32 val) {
+    extern u16 gUnits[];
+    void fn_8003868C(void *, s32);
+    void Unit_SetHp(void *, s32);
+    void Unit_SetDisposId(void *, u8);
+    u8 *unit;
+
+    if (id != 0) {
+        unit = (u8 *)gUnits + (id - 1) * 0x280;
+    } else {
+        unit = 0;
+    }
+    if (unit == 0 || *(u32 *)(unit + 0x188) == 0) {
+        return 0;
+    }
+    switch (mid) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 27:
+    case 28:
+    case 29:
+    case 30:
+    case 31:
+    case 32:
+    case 33:
+    case 34:
+    case 35:
+    case 36:
+    case 37:
+        return 0;
+    case 0:
+        unit[0x19A] = val;
+        break;
+    case 6:
+        fn_8003868C(unit, val);
+        break;
+    case 7:
+        unit[0x19C] = val;
+        break;
+    case 8:
+        Unit_SetHp(unit, val);
+        break;
+    case 13:
+        *(s16 *)(unit + 0x228) = val;
+        break;
+    case 0x26:
+        Unit_SetDisposId(unit, (u8)val);
+        break;
+    }
+    return val;
 }
 
 void fn_800BDA9C(u8 *arg0, void *arg1)
