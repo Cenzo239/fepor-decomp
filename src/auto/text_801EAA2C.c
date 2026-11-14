@@ -464,7 +464,7 @@ void fn_801EB72C(void *arg0) {
     void fn_800A8478(void);
     void fn_8018DB4C(void);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     extern u8 lbl_803671C0;
 
     while (lbl_803671C0 != 0) {
@@ -473,7 +473,7 @@ void fn_801EB72C(void *arg0) {
     fn_800A8478();
     fn_8018DB4C();
     if (Ui_FindChild(arg0, 0x40, 0) != NULL) {
-        fn_80140210(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
+        Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
     }
 }
 

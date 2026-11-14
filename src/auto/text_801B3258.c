@@ -2864,7 +2864,7 @@ void Ui_HandleUnitManageCursorInput(void *panel) {
     void UiCtx_BindUnit(void *, u32);
     u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     void fn_801694AC(u32, void *);
@@ -2912,7 +2912,7 @@ void Ui_HandleUnitManageCursorInput(void *panel) {
             slidePos[0] = 0x260;
             slidePos[1] = savedY;
             Ui_SlideWidgetChild(panel, sidePanel, slidePos, 0);
-            fn_80140210(panel, M2C_FIELD(panel, void **, 0x50), 0);
+            Ui_CloseChildAnim(panel, M2C_FIELD(panel, void **, 0x50), 0);
             invPanel = M2C_FIELD(panel, void **, 0x60);
             M2C_FIELD(invPanel, u8 *, 0x54) = 1;
             Process_Goto(panel, 0x11);
@@ -4094,7 +4094,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  void Process_Goto(void *,s32); void UiCtx_BindUnit(void *,u32);
  u8 fn_8003D13C(u32); void fn_80137EA0(void *,u32); void Ui_SetPortraitUnit(void *,u32);
  u32 Ui_ListGetSelected(void *); void Ui_UpdatePanelWidgets(void *);
- void fn_80140210(void *,void *,s32);
+ void Ui_CloseChildAnim(void *,void *,s32);
  void Ui_PlaySeCue(void *,s32); void fn_801694AC(u32,void *); void fn_801695BC(u32,void *,s32);
  void Ui_CreateMsgPopup(void *,void *,f32,f32); s16 Unit_GetGoldCost(u32,s32);
  extern u8 gUiUnitPanelStrings[]; extern u8 gUiContext[]; extern u8 gBattleState[];
@@ -4149,7 +4149,7 @@ extern "C" void Ui_HandleUnitHireCursorInput(void *arg0) {
  list=M2C_FIELD(arg0,void **,0x48);
  height=M2C_FIELD(list,s16 *,0x10)-M2C_FIELD(list,s16 *,0xC);
  Ui_SlideWidgetChild(arg0,list,Pair(M2C_FIELD(list,s16 *,0xA),-height),0);
- fn_80140210(arg0,M2C_FIELD(arg0,void **,0x50),0);
+ Ui_CloseChildAnim(arg0,M2C_FIELD(arg0,void **,0x50),0);
  Process_Goto(arg0,5);
  Ui_PlaySeCue(gUiUnitPanelStrings+0x10C,0x64);
  }
@@ -10995,14 +10995,14 @@ if(p){fn_801403F0();*(s32*)((char*)p+0x40)=0;*(s32*)((char*)p+0x44)=0;*(s32*)((c
 
 void fn_801CE2DC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void *self;
 
     self = arg0;
-    fn_80140210(self, Ui_FindChild(self, 3, 0), 0);
-    fn_80140210(self, Ui_FindChild(self, 2, 0), 0);
-    fn_80140210(self, Ui_FindChild(self, 1, 0), 0);
-    fn_80140210(self, Ui_FindChild(self, 0, 0), 1);
+    Ui_CloseChildAnim(self, Ui_FindChild(self, 3, 0), 0);
+    Ui_CloseChildAnim(self, Ui_FindChild(self, 2, 0), 0);
+    Ui_CloseChildAnim(self, Ui_FindChild(self, 1, 0), 0);
+    Ui_CloseChildAnim(self, Ui_FindChild(self, 0, 0), 1);
 }
 
 #pragma cplusplus on
@@ -11093,7 +11093,7 @@ void *Ui_FindChild(void *,s32,s32);
 s16 fn_801CF614(void *);
 void Ui_BringChildToFront(void *,void *);
 void Ui_AddChild(void *,void *);
-void fn_80140210(void *,void *,s32);
+void Ui_CloseChildAnim(void *,void *,s32);
 void fn_80140234(void *,void *,s32);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32);
@@ -11139,7 +11139,7 @@ if((s16)saved!=*(s16 *)((u8 *)a+0x3c)) {
   idx=fn_801CF614(a);
   addr=(s32)arg0+(idx<<2);
   if(c!=*(void **)(addr+0x48)) {
-   if(c!=0) fn_80140210(arg0,c,0);
+   if(c!=0) Ui_CloseChildAnim(arg0,c,0);
    idx=fn_801CF614(a);
    addr=(s32)arg0+(idx<<2);
    Ui_AddChild(arg0,*(void **)(addr+0x48));
@@ -13558,7 +13558,7 @@ void fn_801D3588(s32 arg0) {
 extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
     void Process_ClearFunc(void *);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void Ui_PlaySeCue(void *, s32);
     extern u32 gUiInputFlags;
     extern void *gPadInput;
@@ -13593,7 +13593,7 @@ extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
         t = *(s32 *)((char *)gPadInput + 4);
         if (t & (*(s32 *)((char *)gPadInput + 8) ^ t) & 0x300) {
             Ui_PlaySeCue(lbl_8027E148 + 0xA9, 0x64);
-            fn_80140210(arg0, Ui_FindChild(arg0, 0x10, 0), 0);
+            Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x10, 0), 0);
             Process_ClearFunc(arg0);
         }
     }

@@ -3285,7 +3285,7 @@ void fn_80118B7C(void *arg0) {
     void fn_8000C060(void *, void *);
     void Process_Goto(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     extern u8 lbl_803671C0;
     void *temp_r31;
 
@@ -3298,7 +3298,7 @@ void fn_80118B7C(void *arg0) {
     fn_8000C060(temp_r31, 0);
     Process_Goto(temp_r31, 0);
     if (Ui_FindChild(arg0, 0x40, 0) != NULL) {
-        fn_80140210(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
+        Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
     }
 }
 
@@ -3673,7 +3673,7 @@ void fn_801196A8(void *arg0) {
     void fn_8000C060(void *, void *);
     void Process_Goto(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void fn_80119738(void);
     void *temp_r31;
 
@@ -3683,7 +3683,7 @@ void fn_801196A8(void *arg0) {
     fn_8000C060(temp_r31, fn_80119738);
     Process_Goto(temp_r31, 1);
     if (Ui_FindChild(arg0, 0x40, 0) != NULL) {
-        fn_80140210(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
+        Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
     }
 }
 
@@ -3787,7 +3787,7 @@ void fn_8011A0CC(void *arg0) {
     void fn_8000C060(void *, void *);
     void Process_Goto(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void fn_80119738(void);
     extern u8 lbl_803671C0;
     extern s8 gUiContext[];
@@ -3802,7 +3802,7 @@ void fn_8011A0CC(void *arg0) {
     fn_8000C060(temp_r31, fn_80119738);
     Process_Goto(temp_r31, 1);
     if (Ui_FindChild(arg0, 0x40, 0) != NULL) {
-        fn_80140210(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
+        Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x40, 0), 1);
     }
     gUiContext[0xD] = -1;
     gUiContext[0xE] = -1;

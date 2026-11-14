@@ -7895,7 +7895,7 @@ void fn_8014017C(s32 arg0, void *arg1, void *arg2, s32 arg3) {
     fn_80140830(arg0, arg1, arg2, b, a, arg3);
 }
 
-void fn_80140210(void *arg0, void *arg1, void *arg2) {
+void Ui_CloseChildAnim(void *arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80140E58(void *, void *, void *, M2C_UNK);
     fn_80140E58(arg0, arg1, arg2, 1);
 }

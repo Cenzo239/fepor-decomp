@@ -1518,7 +1518,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     void TalkUi_ShowMsg(s32);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Ui_SetWidgetText(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
@@ -1695,7 +1695,7 @@ extern "C" void fn_801B14DC(void *arg0) {
                 return;
             }
             Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
-            fn_80140210(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
+            Ui_CloseChildAnim(arg0, *(void **)((u8 *)arg0 + 0x48), 0);
             obj = *(void **)((u8 *)arg0 + 0x48);
             if (obj != NULL) {
                 s32 n = *(s32 *)((u8 *)obj + 4) - 1;

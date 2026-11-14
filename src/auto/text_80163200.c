@@ -7365,7 +7365,7 @@ void Ui_RestoreUnitListAfterDetail(void *panel) {
     s16 UnitInv_FindFilledUp(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void Ui_BringChildToFront(void *, void *);
 
     void *unitList;
@@ -7397,7 +7397,7 @@ void Ui_RestoreUnitListAfterDetail(void *panel) {
     Ui_SlideWidgetChild(panel, child, slidePos, 0);
 
     child = Ui_FindChild(panel, 0x106, 0);
-    fn_80140210(panel, child, 0);
+    Ui_CloseChildAnim(panel, child, 0);
 
     Ui_BringChildToFront(panel, inv);
 }
@@ -9536,7 +9536,7 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
     void Ui_SetPortraitUnit(void *, u32);
     u32 Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
-    void fn_80140210(void *, void *, s32);
+    void Ui_CloseChildAnim(void *, void *, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     void fn_801694AC(u32, void *);
@@ -9597,7 +9597,7 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
             slidePos[0] = 0x260;
             slidePos[1] = savedY;
             Ui_SlideWidgetChild(panel, portrait, slidePos, 1);
-            fn_80140210(panel, *(void **)((u8 *)panel + 0x48), 0);
+            Ui_CloseChildAnim(panel, *(void **)((u8 *)panel + 0x48), 0);
             Process_Goto(panel, 6);
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1DD, 0x64);
         } else if ((btn & 0x800) && (unit)) {
