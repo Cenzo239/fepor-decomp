@@ -1190,7 +1190,8 @@ void *Msg_ExpandMmTag(void *ctrl) {
     }
 }
 
-s32 UnitList_CmdIsAvailable(u8 *arg0) {
+/* True if this unit-list command can run: phase 0, and the allegiance list is large enough. */
+s32 UnitList_CmdIsAvailable(u8 *cmd) {
     u8 BattleState_IsPhaseZero(void *);
     extern u8 gBattleState[];
     extern u32 gUnitLists[];
@@ -1201,7 +1202,7 @@ s32 UnitList_CmdIsAvailable(u8 *arg0) {
     if ((u8)BattleState_IsPhaseZero(gBattleState) == 0) {
         return 0;
     }
-    kind = arg0[1];
+    kind = cmd[1];
     switch (kind) {
     case 0:
         count = 0;
