@@ -1168,7 +1168,8 @@ void fn_80186028(void *arg0) {
     *temp_r3 &= 0xFFFFFFBF;
 }
 
-void Mu_HideAtTile(void *arg0) {
+/* Place the bound unit at tile (x+0.5,y+0.5) and hide it, or advance the process when flags&4. */
+void Mu_HideAtTile(void *proc) {
     void Unit_SetWorldXY(void *, f32, f32, f32);
     void Unit_SetModelAlpha(void *, s32);
     void Unit_FocusCamera(void *, s32);
@@ -1176,21 +1177,21 @@ void Mu_HideAtTile(void *arg0) {
     extern f32 gHalf;
     s32 flags;
 
-    flags = *(u16 *)((u8 *)arg0 + 0x38) & 5;
+    flags = *(u16 *)((u8 *)proc + 0x38) & 5;
     switch (flags) {
     case 0:
     case 1:
-        Unit_SetWorldXY(*(void **)((u8 *)arg0 + 0x30),
-                    gHalf + (f32)*(s32 *)((u8 *)arg0 + 0x3C),
-                    gHalf + (f32)*(s32 *)((u8 *)arg0 + 0x40),
+        Unit_SetWorldXY(*(void **)((u8 *)proc + 0x30),
+                    gHalf + (f32)*(s32 *)((u8 *)proc + 0x3C),
+                    gHalf + (f32)*(s32 *)((u8 *)proc + 0x40),
                     gHalf);
-        Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0);
-        if (*(u16 *)((u8 *)arg0 + 0x38) & 0x10) {
-            Unit_FocusCamera(*(void **)((u8 *)arg0 + 0x30), 0);
+        Unit_SetModelAlpha(*(void **)((u8 *)proc + 0x30), 0);
+        if (*(u16 *)((u8 *)proc + 0x38) & 0x10) {
+            Unit_FocusCamera(*(void **)((u8 *)proc + 0x30), 0);
         }
         break;
     case 4:
-        Process_Goto(arg0, 2);
+        Process_Goto(proc, 2);
         break;
     }
 }
