@@ -174,7 +174,7 @@ typedef struct FSTEntry {
 
 extern FSTEntry *FstStart_8036857C;
 extern char *FstStringStart_80368580;
-extern s32 lbl_80368588;
+extern s32 currentDirectory;
 
 #define entryIsDir(i) (((FstStart_8036857C[i].isDirAndStringOff & 0xFF000000) == 0) ? FALSE : TRUE)
 #define stringOff(i) (FstStart_8036857C[i].isDirAndStringOff & ~0xFF000000)
@@ -234,7 +234,7 @@ u32 fn_8020C3E0(char *path) {
     s32 dotted;
 
     original = path;
-    entry = (u32)lbl_80368588;
+    entry = (u32)currentDirectory;
 
     for (;;) {
         if (*path == 0) {
@@ -371,7 +371,7 @@ BOOL DVDConvertEntrynumToPath(s32 entrynum, char *path, u32 maxlen) {
 }
 
 BOOL fn_8020CA74(char *path, u32 maxlen) {
-    return DVDConvertEntrynumToPath((s32)lbl_80368588, path, maxlen);
+    return DVDConvertEntrynumToPath((s32)currentDirectory, path, maxlen);
 }
 
 s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {

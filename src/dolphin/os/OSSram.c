@@ -131,7 +131,7 @@ extern void* __OSSystemCallVectorEnd;
 #pragma use_lmw_stmw reset
 
 extern s32* FstStart_8036857C;
-extern s32 lbl_80368588;
+extern s32 currentDirectory;
 
 extern u16 Scb_803394;
 
