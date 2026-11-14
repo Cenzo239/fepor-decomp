@@ -16222,7 +16222,7 @@ s32 fn_8018286C(s32 arg0, s32 arg1) {
     return -1;
 }
 
-s32 fn_80182A0C(s32 arg0) {
+s32 Ai_TryCombatFiltered(s32 arg0) {
     u8 Ai_TryAttackAction(u8 *, s32);
     void Ai_SetUnitMoveTo(s32, s16, s16, s32, u16, s32, s32, s32);
     u8 Ai_FindLowestCostUnitTile(u8 *, s32, s16 *, s16 *);
