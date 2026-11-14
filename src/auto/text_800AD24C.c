@@ -426,11 +426,11 @@ void fn_800ADD04(void) {
     extern u8 gTargetList[];
     void *TargetList_GetCurrent(void *);
     u8 *UnitRef_GetUnit(void);
-    M2C_UNK fn_8010455C(void *, u8);
+    M2C_UNK Unit_DecSkillRanks(void *, u8);
     void *p;
 
     p = TargetList_GetCurrent(gTargetList);
-    fn_8010455C(UnitRef_GetUnit() + 0x1A4, M2C_FIELD(p, u8 *, 3));
+    Unit_DecSkillRanks(UnitRef_GetUnit() + 0x1A4, M2C_FIELD(p, u8 *, 3));
 }
 
 extern u8 gTargetList[];

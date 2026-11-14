@@ -757,7 +757,7 @@ s32 fn_801044FC(u8 *arg0) {
     return (b1 & 7) != 0;
 }
 
-void fn_8010455C(void *arg0, u8 arg1) {
+void Unit_DecSkillRanks(void *arg0, u8 arg1) {
     typedef struct {
         u8 hi:5;
         u8 cnt:3;
