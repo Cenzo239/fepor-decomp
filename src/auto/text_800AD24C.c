@@ -554,38 +554,21 @@ void fn_800AE278(s32 arg0) {
 }
 
 s32 fn_800AE328(s32 arg0) {
-    void fn_8003DDF8(void *, u8 *, u8 *);
-    void Unit_SeparateRescue(void *, u8, u8);
-    void fn_80183C6C(void *, s8, s8, s8, s8, s32);
-    void *Battle_GetActiveCombatant(void *);
-    extern u8 gBattle[];
-    u8 sp9;
-    u8 sp8;
-    void *temp_r31;
-    void *temp_r3;
-    void *temp_r3_2;
-    s8 a;
-    s8 b;
-    s8 c;
-    s8 d;
-
-    temp_r3 = Battle_GetActiveCombatant(gBattle);
-    if (temp_r3 == NULL) {
-        return 0;
-    }
-    if (!(*(s32 *)((u8 *)temp_r3 + 0x1A0) & 2)) {
-        return 0;
-    }
-    temp_r31 = *(void **)((u8 *)temp_r3 + 0x280);
-    fn_8003DDF8(temp_r31, &sp9, &sp8);
-    temp_r3_2 = *(void **)((u8 *)temp_r31 + 0x194);
-    a = (s8)sp9;
-    b = (s8)*(u8 *)((u8 *)temp_r3_2 + 0x19E);
-    c = (s8)*(u8 *)((u8 *)temp_r3_2 + 0x19F);
-    d = (s8)sp8;
-    fn_80183C6C(temp_r3_2, b, c, a, d, arg0);
-    Unit_SeparateRescue(temp_r31, sp9, sp8);
-    return 1;
+ void fn_8003DDF8(void *, s8 *, s8 *);
+ void Unit_SeparateRescue(void *, u8, u8);
+ void fn_80183C6C(void *, s32, s32, s32, s32, s32);
+ void *Battle_GetActiveCombatant(void *);
+ extern u8 gBattle[];
+ s8 x; s8 y; void *unit; void *obj; void *p;
+ obj=Battle_GetActiveCombatant(gBattle);
+ if(obj==NULL) return 0;
+ if(!(*(s32 *)((u8 *)obj+0x1A0)&2)) return 0;
+ unit=*(void **)((u8 *)obj+0x280);
+ fn_8003DDF8(unit,&x,&y);
+ p=*(void **)((u8 *)unit+0x194);
+ fn_80183C6C(p,*(s8 *)((u8 *)p+0x19E),*(s8 *)((u8 *)p+0x19F),x,y,arg0);
+ Unit_SeparateRescue(unit,(u8)x,(u8)y);
+ return 1;
 }
 
 void fn_800AE3DC(s32 arg0) {
@@ -5337,19 +5320,14 @@ void fn_800B9C14(void) {
     fn_800B9CD4(var);
 }
 
-void fn_800B9C38(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    void fn_800B9CD4(s32, s32, s32, s32, s32);
-    extern f32 lbl_80369D08;
-    extern f32 lbl_80369D0C;
-    extern f32 lbl_80369D10;
-    f32 scale;
-    f32 t1;
-    f32 t2;
-
-    scale = (f32)arg3 / lbl_80369D08;
-    t1 = (f32)arg1;
-    t2 = (f32)arg2;
-    fn_800B9CD4(arg0, (s32)(lbl_80369D0C - t1 * scale), (s32)(lbl_80369D10 - t2 * scale), arg4, arg5);
+void fn_800B9C38(s32 arg0,s32 arg1,s32 arg2,s32 arg3,s32 arg4,s32 arg5) {
+ void fn_800B9CD4(s32,s32,s32,s32,s32);
+ extern f32 lbl_80369D08; extern f32 lbl_80369D0C; extern f32 lbl_80369D10;
+ f32 scale; f32 x; f32 y;
+ scale=(f32)arg3/lbl_80369D08;
+ x=lbl_80369D0C-scale*(f32)arg1;
+ y=lbl_80369D10-scale*(f32)arg2;
+ fn_800B9CD4(arg0,(s32)x,(s32)y,arg4,arg5);
 }
 
 s32 fn_800B9EA8(u8* arg0, u8* arg1, s32 arg2)
@@ -7435,30 +7413,20 @@ s32 fn_800BDB9C(s32 arg0, s32 arg1) { u8 *p = (u8 *)(arg1 >> 3); p = arg0 + p; r
 
 #pragma use_lmw_stmw on
 void EventFlag_Clear(s32 arg0, s32 arg1) {
-    s32 var_r30;
-    u32 temp_r31;
-    s32 temp_r5;
-    s32 var_r29;
-
-    temp_r31 = fn_8000D598(arg1);
-    var_r29 = arg0;
-    var_r30 = 0;
-loop_1:
-    if ((temp_r31 == *(u32 *)(var_r29 + 0x180)) && (Str_Cmp(*(s32 *)var_r29, arg1) == 0)) {
-
-    } else {
-        var_r30 += 1;
-        var_r29 += 4;
-        if (var_r30 >= 0x60) {
-            var_r30 = -1;
-        } else {
-            goto loop_1;
-        }
-    }
-    if (var_r30 >= 0) {
-        temp_r5 = arg0 + (var_r30 >> 3);
-        *(u8 *)(temp_r5 + 0x300) = *(u8 *)(temp_r5 + 0x300) & ~(1 << (var_r30 & 7));
-    }
+ s32 i; u32 hash; s32 p; s32 walk;
+ hash=fn_8000D598(arg1); walk=arg0; i=0;
+ for (;;) {
+ if(hash==*(u32 *)(walk+0x180)) {
+ if(Str_Cmp(*(s32 *)walk,arg1)!=0) goto next;
+ goto found;
+ }
+next:
+ ++i; walk+=4;
+ if(i<0x60) continue;
+ i=-1; break;
+ }
+found:
+ if(i>=0) { p=arg0+(i>>3); *(u8 *)(p+0x300)=*(u8 *)(p+0x300)&~(1<<(i&7)); }
 }
 
 #pragma dont_inline on
