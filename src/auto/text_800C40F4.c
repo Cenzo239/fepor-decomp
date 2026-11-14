@@ -21212,8 +21212,8 @@ s32 fn_800FFEFC(s32 arg1, s16 *arg2, s16 *arg3) {
 }
 
 void fn_80100104(s32 a0, s32 a1, s32 a2, s32 a3) {
-    extern void fn_80102810(s32, s32, s32, s32, s32);
-    fn_80102810(a0, a1, 0x25, a2, a3);
+    extern void Ai_FindActionTile(s32, s32, s32, s32, s32);
+    Ai_FindActionTile(a0, a1, 0x25, a2, a3);
 }
 
 s32 fn_80100130(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -22149,8 +22149,8 @@ s32 Ai_FindLowestCostAllyTile(s32 arg0, s16 *outX, s16 *outY) {
 }
 #pragma use_lmw_stmw reset
 void fn_80102334(s32 a0, s32 a1, s32 a2, s32 a3) {
-    extern void fn_80102810(s32, s32, s32, s32, s32);
-    fn_80102810(a0, a1, 0x2C, a2, a3);
+    extern void Ai_FindActionTile(s32, s32, s32, s32, s32);
+    Ai_FindActionTile(a0, a1, 0x2C, a2, a3);
 }
 
 s32 fn_80102360(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
@@ -22285,7 +22285,7 @@ s32 fn_801025BC(void *arg0, s16 *arg1, s16 *arg2) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_80102810(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
+s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
     void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     u8 Allegiance_Compare(s32, s32);
