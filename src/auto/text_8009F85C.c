@@ -1093,7 +1093,7 @@ s32 fn_800A0BFC(s32 arg0, s32 arg1, void *arg2) {
 
 void *fn_800A0C44(void *unused, void *arg1) {
     s32 Map_Get(void *);
-    void *fn_80047178(s32, s32, s32);
+    void *Map_FindObjAtXY(s32, s32, s32);
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
     extern u8 gMenuCmdStrings[];
@@ -1106,7 +1106,7 @@ void *fn_800A0C44(void *unused, void *arg1) {
     x528 = (s32)*(f32 *)(gBattleState + 0x528);
     x524 = (s32)*(f32 *)(gBattleState + 0x524);
     ret = Map_Get(gBattleState);
-    tmp = fn_80047178(ret, (s8)x524, (s8)x528);
+    tmp = Map_FindObjAtXY(ret, (s8)x524, (s8)x528);
     *(u8 *)((u8 *)arg1 + 0x39) = 2;
     if (tmp == NULL) {
         return gMenuCmdStrings + 0x563;
@@ -1421,7 +1421,7 @@ void *fn_800A1718(void) {
 s32 fn_800A1728(void) {
     extern f32 gBattleState[];
     s32 Map_Get(void *);
-    s32 fn_80047178(s32, s32, s32);
+    s32 Map_FindObjAtXY(s32, s32, s32);
     s32 fn_80049D84(s32);
     s32 temp_r31;
     s32 temp_r30;
@@ -1429,13 +1429,13 @@ s32 fn_800A1728(void) {
 
     temp_r31 = (s32) gBattleState[0x14A];
     temp_r30 = (s32) gBattleState[0x149];
-    temp_r4 = (u8) fn_80049D84(fn_80047178(Map_Get(gBattleState), (s8) temp_r30, (s8) temp_r31));
+    temp_r4 = (u8) fn_80049D84(Map_FindObjAtXY(Map_Get(gBattleState), (s8) temp_r30, (s8) temp_r31));
     return (temp_r4 != 0) ? 0 : 2;
 }
 
 s32 fn_800A17A8(void) {
     s32 Map_Get(void *);
-    s32 fn_80047178(s32, s32, s32);
+    s32 Map_FindObjAtXY(s32, s32, s32);
     s32 fn_80049D08(void);
     extern f32 gBattleState[];
     s8 temp_r31;
@@ -1443,7 +1443,7 @@ s32 fn_800A17A8(void) {
 
     temp_r31 = (s8)gBattleState[0x14A];
     temp_r30 = (s8)gBattleState[0x149];
-    fn_80047178(Map_Get(gBattleState), temp_r30, temp_r31);
+    Map_FindObjAtXY(Map_Get(gBattleState), temp_r30, temp_r31);
     fn_80049D08();
     return 0;
 }
@@ -1457,7 +1457,7 @@ void *fn_800A1814(void) {
 s32 fn_800A1824(void) {
     extern f32 gBattleState[];
     s32 Map_Get(void *);
-    s32 fn_80047178(s32, s32, s32);
+    s32 Map_FindObjAtXY(s32, s32, s32);
     s32 fn_80049D84(s32);
     s32 temp_r31;
     s32 temp_r30;
@@ -1465,13 +1465,13 @@ s32 fn_800A1824(void) {
 
     temp_r31 = (s32) gBattleState[0x14A];
     temp_r30 = (s32) gBattleState[0x149];
-    temp_r4 = (u8) fn_80049D84(fn_80047178(Map_Get(gBattleState), (s8) temp_r30, (s8) temp_r31));
+    temp_r4 = (u8) fn_80049D84(Map_FindObjAtXY(Map_Get(gBattleState), (s8) temp_r30, (s8) temp_r31));
     return (temp_r4 != 0) ? 0 : 2;
 }
 
 s32 fn_800A18A4(void) {
     s32 Map_Get(void *);
-    s32 fn_80047178(s32, s32, s32);
+    s32 Map_FindObjAtXY(s32, s32, s32);
     s32 fn_80049D30(void);
     extern f32 gBattleState[];
     s8 temp_r31;
@@ -1479,7 +1479,7 @@ s32 fn_800A18A4(void) {
 
     temp_r31 = (s8)gBattleState[0x14A];
     temp_r30 = (s8)gBattleState[0x149];
-    fn_80047178(Map_Get(gBattleState), temp_r30, temp_r31);
+    Map_FindObjAtXY(Map_Get(gBattleState), temp_r30, temp_r31);
     fn_80049D30();
     return 0;
 }

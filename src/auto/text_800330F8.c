@@ -8689,7 +8689,7 @@ s32 fn_80046F14(void *arg0, s32 arg1) {
     return 1;
 }
 
-s32 fn_80047178(void *arg0, s32 arg1, s32 arg2)
+s32 Map_FindObjAtXY(void *arg0, s32 arg1, s32 arg2)
 {
   s32 i;
   u8 *entry;
