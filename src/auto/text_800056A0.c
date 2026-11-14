@@ -212,7 +212,7 @@ void Game_InitSystems(void) {
     extern u8 gUiIconDrawer[];
     extern u8 gItemIconDrawer[];
     extern u8 gBattleState[];
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     extern u8 gBgmVol;
     extern u8 lbl_80367AF6;
 
@@ -239,7 +239,7 @@ void Game_InitSystems(void) {
     Archive_Load(Game_str + 0xBD);
     Archive_Load(Game_str + 0xD1);
     fn_80147188(0);
-    lbl_80367AEC = 0x64;
+    gBgmQuietVol = 0x64;
     gBgmVol = 0x64;
     lbl_80367AF6 = 0;
     fn_80146AF0();

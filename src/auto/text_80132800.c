@@ -10482,7 +10482,7 @@ void fn_801457B4(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 lbl_8029256C[];
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     void *temp_r3;
@@ -10496,7 +10496,7 @@ void fn_801457B4(void) {
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEC;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmQuietVol;
 }
 
 void fn_8014589C(void *arg0) {
@@ -10619,16 +10619,16 @@ void fn_80145D1C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEC = 100;
+        gBgmQuietVol = 100;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEC = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmQuietVol = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10638,16 +10638,16 @@ void fn_80145DDC(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEC = 0x46;
+        gBgmQuietVol = 0x46;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEC = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmQuietVol = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10870,7 +10870,7 @@ void fn_80146F0C(void)
     extern u8 lbl_80276BC8[];
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AEA;
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     extern u8 gBgmVol;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
@@ -10919,7 +10919,7 @@ void fn_80146F0C(void)
 
     lbl_80367AE8 = 100;
     lbl_80367AEA = 100;
-    lbl_80367AEC = 100;
+    gBgmQuietVol = 100;
     gBgmVol = 100;
     lbl_80367AF0 = 100;
     lbl_80367AF1 = 100;
@@ -12149,7 +12149,7 @@ extern "C" void fn_801490C8(void *arg0) {
     s32 fn_8014953C(void);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
-    extern u8 lbl_80367AEC;
+    extern u8 gBgmQuietVol;
     extern u8 lbl_80367AED;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
@@ -12226,14 +12226,14 @@ extern "C" void fn_801490C8(void *arg0) {
                     self->flags &= ~8;
                 }
             }
-            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEC != lbl_80367AED || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
+            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || gBgmQuietVol != lbl_80367AED || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
                 if((void *)gFxChannels==self) {
- rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
+ rate=(u8)(rate*(gBgmQuietVol*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  } else {
  factor=lbl_80367AE8;
- rate=(u8)(lbl_80367AEC*rate/100);
+ rate=(u8)(gBgmQuietVol*rate/100);
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  }
                 self->prev = self->cur;
@@ -12253,12 +12253,12 @@ extern "C" void fn_801490C8(void *arg0) {
                     rate = fn_8014953C();
                 }
                 if((void *)gFxChannels==self) {
- rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
+ rate=(u8)(rate*(gBgmQuietVol*lbl_80367AF0)/10000);
  factor=lbl_80367AE8;
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  } else {
  factor=lbl_80367AE8;
- rate=(u8)(lbl_80367AEC*rate/100);
+ rate=(u8)(gBgmQuietVol*rate/100);
  self->unk_d=(u8)(rate*(factor*(self->cur*self->v19()))/1000000);
  }
                 ((DrawIface *)self)->Set(self->unk_d, self->unk_e, self->unk_10, (u16)self->unk_12);
