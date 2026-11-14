@@ -6328,35 +6328,36 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     return 1;
 }
 
-s32 Unit_SendAllItemsToConvoy(u8 arg0) {
+s32 Unit_SendAllItemsToConvoy(u8 unitId) {
+    /* Move every item on the unit into the convoy, clear those slots, then compact inventory. */
     u32 *Unit_GetItemSlot(void *, s32);
     void Unit_CompactItems(void *);
     void Convoy_AddItem(void *, u32 *);
     void Item_Clear(u32 *);
     extern u8 gUnits[];
     extern u8 gConvoy[];
-    void *var_r30;
-    u32 *temp_r3;
-    s32 var_r28;
+    void *unit;
+    u32 *slot;
+    s32 i;
 
-    if (arg0 != 0) {
-        var_r30 = gUnits + ((arg0 - 1) * 0x280);
+    if (unitId != 0) {
+        unit = gUnits + ((unitId - 1) * 0x280);
     } else {
-        var_r30 = NULL;
+        unit = NULL;
     }
-    if ((var_r30 == NULL) || (*(u32 *)((u8 *)var_r30 + 0x188) == 0U)) {
+    if ((unit == NULL) || (*(u32 *)((u8 *)unit + 0x188) == 0U)) {
         return 0;
     }
-    var_r28 = 0;
+    i = 0;
     do {
-        temp_r3 = Unit_GetItemSlot(var_r30, var_r28);
-        if ((temp_r3 != NULL) && (*temp_r3 != 0U)) {
-            Convoy_AddItem(gConvoy, temp_r3);
-            Item_Clear(temp_r3);
+        slot = Unit_GetItemSlot(unit, i);
+        if ((slot != NULL) && (*slot != 0U)) {
+            Convoy_AddItem(gConvoy, slot);
+            Item_Clear(slot);
         }
-        var_r28 += 1;
-    } while (var_r28 < 8);
-    Unit_CompactItems(var_r30);
+        i += 1;
+    } while (i < 8);
+    Unit_CompactItems(unit);
     return 1;
 }
 
