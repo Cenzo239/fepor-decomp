@@ -1819,6 +1819,7 @@ void fn_80015DEC(void) {
     } while (i <= 0x9F);
 }
 
+/* Draw map units (shadows/models/icons) for allegiances 0-3 unless suppressed by game flags. */
 void Unit_DrawAll(void) {
     void Allegiance_FillMask(s32, u8 *);
     void fn_8004B218(void);
@@ -1830,29 +1831,29 @@ void Unit_DrawAll(void) {
     u32 fn_80055D94(s32);
     extern u8 gUnits[];
     extern s32 gGameFlags;
-    u8 sp8[4];
-    u8 *pBase;
+    u8 allegMask[4];
+    u8 *units;
     s32 i;
-    u8 *entry;
-    u8 *sub;
+    u8 *unit;
+    u8 *faction;
 
     if (fn_80055D94(0x200) == 0U && !(gGameFlags & 2)) {
         fn_8004D370();
         fn_8004C108();
         fn_8004B218();
-        Allegiance_FillMask(3, sp8);
-        pBase = gUnits;
+        Allegiance_FillMask(3, allegMask);
+        units = gUnits;
         i = 1;
         do {
             if ((u8)i != 0) {
-                entry = pBase + ((u8)i - 1) * 0x280;
+                unit = units + ((u8)i - 1) * 0x280;
             } else {
-                entry = NULL;
+                unit = NULL;
             }
-            if (*(u32 *)(entry + 0x188) != 0U) {
-                sub = *(u8 **)(entry + 0x190);
-                if (sp8[sub[8]] != 0) {
-                    fn_8004D3A4(entry);
+            if (*(u32 *)(unit + 0x188) != 0U) {
+                faction = *(u8 **)(unit + 0x190);
+                if (allegMask[faction[8]] != 0) {
+                    fn_8004D3A4(unit);
                 }
             }
             i += 1;
