@@ -10994,7 +10994,7 @@ extern "C" void fn_80178AFC(void *unused, u8 *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80178B98(void *arg0, void *arg1) {
+extern "C" void Ui_LayoutChildGfxEntsX(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
