@@ -8435,7 +8435,7 @@ void ScriptCmd_BMapResume(void) {
     extern u32 gBMapMainSaved;
     extern u32 gBMapPlphSaved;
     extern u8 Proc_BMapPlph[];
-    extern u8 lbl_80320040[];
+    extern u8 gEventWork[];
     extern u8 E_Event_script[];
     void *obj;
     void *obj2;
@@ -8453,7 +8453,7 @@ void ScriptCmd_BMapResume(void) {
         obj2 = Process_CreateChild(Proc_BMapPlph, obj);
         *(u32 *)((u8 *)obj2 + 4) = gBMapPlphSaved;
     }
-    EventWork_Set(lbl_80320040);
+    EventWork_Set(gEventWork);
     Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
     EventLock_Dec();
 }
