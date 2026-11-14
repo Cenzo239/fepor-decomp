@@ -5958,7 +5958,7 @@ extern "C" void fn_8013CA2C(void *arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8013CCA0(void *arg0, void *arg1) {
+extern "C" void Ui_LayoutChildGfxEnts(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
