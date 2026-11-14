@@ -3278,7 +3278,7 @@ void fn_800315F8(void) {
     fn_8014CB14(gBattleState, *(void **)gUiContext);
 }
 
-void fn_80031668(void *arg0) {
+void MapUi_HandleMoveConfirm(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
     void Process_Goto(void *, s32);
     extern void *gPadInput;
