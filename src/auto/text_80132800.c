@@ -7572,7 +7572,7 @@ void List_Erase(ListIter *ret, List *list, ListIter *it) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8013FCE0(void *arg0, void *arg1, void *arg2, void *arg3) {
+extern "C" void List_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void fprintf(void *, void *, ...);
@@ -7712,7 +7712,7 @@ void fn_8013FEF0(void) {
 
 void Ui_BringChildToFront(void *arg0, void *arg1) {
     void List_Erase(void *, void *, void *);
-    void fn_8013FCE0(void *, void *, void *, void *);
+    void List_Insert(void *, void *, void *, void *);
 
     u8 *self;
     u8 *sentinel;
@@ -7753,7 +7753,7 @@ void Ui_BringChildToFront(void *arg0, void *arg1) {
 
             end = sentinel;
 
-            fn_8013FCE0(
+            List_Insert(
                 &tempC,
                 self + 0x34,
                 &end,
@@ -7851,7 +7851,7 @@ extern "C" void Ui_RemoveChild(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 void Ui_AddChild(void *arg0, void *arg1) {
-    void fn_8013FCE0(void *, void *, void *, void *);
+    void List_Insert(void *, void *, void *, void *);
     void *sp10;
     void *spC;
     void *sp8;
@@ -7875,7 +7875,7 @@ void Ui_AddChild(void *arg0, void *arg1) {
                 return;
             }
             sp10 = sentinel;
-            fn_8013FCE0(&spC, (u8 *)arg0 + 0x34, &sp10, &sp8);
+            List_Insert(&spC, (u8 *)arg0 + 0x34, &sp10, &sp8);
             if (sp8 != 0) {
                 *(u32 *)((u8 *)sp8 + 4) = *(u32 *)((u8 *)sp8 + 4) + 1;
             }
@@ -8400,7 +8400,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     extern f32 lbl_8036A740;
     void *Process_CreateChild(void *, s32, void *);
     void *Process_Create(void *, s32, void *);
-    void *fn_8013FCE0(void *, void *, void **, void **);
+    void *List_Insert(void *, void *, void **, void **);
     void *fn_80140B04(void *);
     void fn_80142060(void *);
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
@@ -8412,7 +8412,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     (void)lbl_8036A740;
     (void)Process_CreateChild;
     (void)Process_Create;
-    (void)fn_8013FCE0;
+    (void)List_Insert;
     (void)fn_80140B04;
     (void)fn_80142060;
     (void)Math_Ease;

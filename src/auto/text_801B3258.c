@@ -2557,7 +2557,7 @@ s32 fn_801BAC40(struct efUnit* arg0, s32 arg1)
 extern "C" void fn_801BADB0(void *arg0) {
     void *Heap_Alloc(s32);
     s32 Res_GetEntry(u8);
-    void fn_8013FCE0(void *, void *, void *, void *);
+    void List_Insert(void *, void *, void *, void *);
     void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
@@ -2667,7 +2667,7 @@ extern "C" void fn_801BADB0(void *arg0) {
         if ((((T *)id)->*call.ptmf)((s32)ctx) != 0) {
             sp10 = id;
             spC = listBase;
-            fn_8013FCE0(&sp8, (u8 *)obj68 + 0x68, &spC, &sp10);
+            List_Insert(&sp8, (u8 *)obj68 + 0x68, &spC, &sp10);
         }
     }
     Ui_AddChild(self, *(void **)((u8 *)self + 0x68));

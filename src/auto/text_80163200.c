@@ -14890,7 +14890,7 @@ extern "C" void fn_80180624(void *arg0) {
     u8 Unit_CountSupportPartners(void *);
     void List_EraseRange(void *, void *, s32 *, void **);
     void *Ui_ListGetSelected(void *);
-    void fn_8013FCE0(void *, void *, void **, void **);
+    void List_Insert(void *, void *, void **, void **);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_PlaySeCue(void *, s32);
@@ -14968,7 +14968,7 @@ extern "C" void fn_80180624(void *arg0) {
             if (fn_80037004(unit, idx) != 0) {
                 sp28 = fn_80037004(unit, idx);
                 spC = listHd;
-                fn_8013FCE0(&sp8, (void *)((s32)obj82 + 0x5C), &spC, &sp28);
+                List_Insert(&sp8, (void *)((s32)obj82 + 0x5C), &spC, &sp28);
             }
             i += 1;
         loop_test:
@@ -15035,7 +15035,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void List_EraseRange(void *, void *, void *, void *);
     void *fn_80037004(void *, u8);
     u8 Unit_CountSupportPartners(void *);
-    void fn_8013FCE0(void *, void *, void *, void *);
+    void List_Insert(void *, void *, void *, void *);
     void fn_80181DF0(void *, void *);
     extern u8 lbl_802955A8[];
     extern u8 gUnitLists[];
@@ -15194,7 +15194,7 @@ extern "C" void fn_80180AC8(void *arg0) {
                 if (fn_80037004(ret, i) != NULL) {
                     sp28 = fn_80037004(ret, i);
                     spC = link;
-                    fn_8013FCE0(&sp8, (u8 *)panel + 0x5C, &spC, &sp28);
+                    List_Insert(&sp8, (u8 *)panel + 0x5C, &spC, &sp28);
                 }
                 i = (u8)(i + 1);
             }

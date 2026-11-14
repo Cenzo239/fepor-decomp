@@ -2585,7 +2585,7 @@ void TabMenu_Init(void *menu) {
     void *fn_80057998(void *);
     void Process_AttachFunc(void (*)(void), void *);
     void *Heap_Alloc(s32);
-    void fn_8013FCE0(void *, void *, void **, void **);
+    void List_Insert(void *, void *, void **, void **);
     void fn_801E4CF8(void *);
     void TabMenu_Draw(void);
     void TabMenu_DrawHud(void);
@@ -2624,7 +2624,7 @@ void TabMenu_Init(void *menu) {
     for (i = 0; i < count; i += 1) {
         sp10 = entry;
         spC = listHead;
-        fn_8013FCE0(&sp8, (u8 *)menu + 0x50, &spC, &sp10);
+        List_Insert(&sp8, (u8 *)menu + 0x50, &spC, &sp10);
         entry = (u8 *)entry + 0x18;
     }
     *(u8 *)((u8 *)menu + 0x30) = gTabMenuDefaultTab;
