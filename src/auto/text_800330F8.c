@@ -4186,35 +4186,36 @@ s32 Unit_TickTransformGaugeFast(void *unit) {
     }
     return 0;
 }
-s32 Unit_TickTransformGaugeSlow(void *arg0) {
+/* Tick laguz transform gauge by +2 (or -1 if transformed); return 1 if it hit 0 or 0x14. */
+s32 Unit_TickTransformGaugeSlow(void *unit) {
     u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     s32 delta;
-    u8 temp;
-    u8 flag;
+    u8 gauge;
+    u8 transformed;
 
-    if (Status_Test((u8 *)arg0 + 0x1BC, 8) == 0) {
+    if (Status_Test((u8 *)unit + 0x1BC, 8) == 0) {
         return 0;
     }
-    if (Status_Test((u8 *)arg0 + 0x1BC, 0xA) != 0) {
+    if (Status_Test((u8 *)unit + 0x1BC, 0xA) != 0) {
         return 0;
     }
-    if (fn_80091D74(arg0) != 0) {
+    if (fn_80091D74(unit) != 0) {
         return 0;
     }
-    flag = Status_Test((u8 *)arg0 + 0x1BC, 9);
+    transformed = Status_Test((u8 *)unit + 0x1BC, 9);
     delta = 2;
-    if (flag != 0) {
+    if (transformed != 0) {
         delta = -1;
     }
-    *((u8 *)arg0 + 0x19C) = (u8)(*((u8 *)arg0 + 0x19C) + delta);
-    temp = *((u8 *)arg0 + 0x19C);
-    if ((s8)temp <= 0) {
-        *((u8 *)arg0 + 0x19C) = 0;
+    *((u8 *)unit + 0x19C) = (u8)(*((u8 *)unit + 0x19C) + delta);
+    gauge = *((u8 *)unit + 0x19C);
+    if ((s8)gauge <= 0) {
+        *((u8 *)unit + 0x19C) = 0;
         return 1;
     }
-    if ((s8)temp >= 0x14) {
-        *((u8 *)arg0 + 0x19C) = 0x14;
+    if ((s8)gauge >= 0x14) {
+        *((u8 *)unit + 0x19C) = 0x14;
         return 1;
     }
     return 0;
