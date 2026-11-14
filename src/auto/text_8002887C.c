@@ -2513,52 +2513,53 @@ void fn_8002E648(void) {
     fn_8014D3B4(gBattleState);
 }
 
-void Battle_StartCpPhase(s32 arg0) {
+/* Start the computer-player phase process for the current allegiance, if that side's phase slot is active. */
+void Battle_StartCpPhase(s32 parent) {
     void *BattleState_GetFactionInfo(void *, u8);
     void CpPhase_Start(s32);
     void CpPhase_StartAlt(s32);
     extern u8 gBattleState[];
-    u8 *base;
-    u8 *table;
-    void *ret;
-    s32 idx;
+    u8 *state;
+    u8 *phaseTable;
+    void *factionInfo;
+    s32 allegiance;
 
-    base = gBattleState;
-    table = base + 0x14;
-    idx = base[0x11];
-    if (table[idx] == 0) {
+    state = gBattleState;
+    phaseTable = state + 0x14;
+    allegiance = state[0x11];
+    if (phaseTable[allegiance] == 0) {
         return;
     }
-    ret = BattleState_GetFactionInfo(base, (u8)idx);
-    idx = base[0x11];
-    if (idx == 3) {
+    factionInfo = BattleState_GetFactionInfo(state, (u8)allegiance);
+    allegiance = state[0x11];
+    if (allegiance == 3) {
         goto case3;
     }
-    if (idx >= 3) {
+    if (allegiance >= 3) {
         goto end;
     }
-    if (idx == 0) {
+    if (allegiance == 0) {
         goto case0;
     }
-    if (idx >= 0) {
+    if (allegiance >= 0) {
         goto case12;
     }
     goto end;
 case0:
-    CpPhase_Start(arg0);
+    CpPhase_Start(parent);
     goto end;
 case3:
-    if (ret != NULL) {
-        if (*(u8 *)ret == 1) {
-            CpPhase_StartAlt(arg0);
+    if (factionInfo != NULL) {
+        if (*(u8 *)factionInfo == 1) {
+            CpPhase_StartAlt(parent);
         } else {
-            CpPhase_Start(arg0);
+            CpPhase_Start(parent);
         }
     }
     goto end;
 case12:
-    if (table[idx] == 2) {
-        CpPhase_StartAlt(arg0);
+    if (phaseTable[allegiance] == 2) {
+        CpPhase_StartAlt(parent);
     }
 end:
     return;
