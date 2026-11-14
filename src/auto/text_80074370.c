@@ -3258,7 +3258,7 @@ void fn_8007A2A0(void *arg0) {
 void fn_8007A2AC(void *arg0) {
     void Process_Goto(void *, s32);
     void Face_DrawEyes(void *, s32, s32);
-    s32 var_r31;
+    register s32 var_r31;
 
     var_r31 = 0;
     switch ((s16)*(s16 *)((u8 *)arg0 + 0x38)) {
