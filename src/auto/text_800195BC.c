@@ -1780,11 +1780,11 @@ void fn_8001C7F0(void *unused, void *arg1, void *arg2) {
 void strcpy(void *, s32);
 void strcat(void *, void *);
 void *Res_GetByName(void *);
-extern void *lbl_80367230;
+extern void *gItemUfxCache;
 extern u8 lbl_802CA4FC[], gDataStr[];
 void *obj;
-if(lbl_80367230 != arg1) {
-lbl_80367230=arg1;
+if(gItemUfxCache != arg1) {
+gItemUfxCache=arg1;
 strcpy(lbl_802CA4FC,*(s32 *)arg1);
 strcat(lbl_802CA4FC,gDataStr+0x3C);
 }
@@ -1798,14 +1798,14 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
     void fn_80234450(void *, s32);
     void fn_802343E0(void *, void *);
     u32 fn_8000D354(void *);
-    extern void *lbl_80367230;
+    extern void *gItemUfxCache;
     extern u8 lbl_802CA4FC[];
     extern u8 gDataStr[];
     void (*cb)(void *);
     u32 ret;
 
-    if (lbl_80367230 != arg1) {
-        lbl_80367230 = arg1;
+    if (gItemUfxCache != arg1) {
+        gItemUfxCache = arg1;
         fn_80234450(lbl_802CA4FC, *(s32 *)arg1);
         fn_802343E0(lbl_802CA4FC, gDataStr + 0x3C);
     }
@@ -1825,13 +1825,13 @@ u32 Item_CallUfx(void *arg0, void *arg1) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
     void *Res_GetByName(void *);
-    extern void *lbl_80367230;
+    extern void *gItemUfxCache;
     extern u8 lbl_802CA4FC[];
     extern u8 gDataStr[];
     void *obj;
 
-    if (lbl_80367230 != arg1) {
-        lbl_80367230 = arg1;
+    if (gItemUfxCache != arg1) {
+        gItemUfxCache = arg1;
         strcpy(lbl_802CA4FC, *(s32 *)arg1);
         strcat(lbl_802CA4FC, gDataStr + 0x3C);
     }
@@ -1849,13 +1849,13 @@ u32 Item_GetUfx(void *arg0) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
     u32 Res_GetByName(void *);
-    extern void *lbl_80367230;
+    extern void *gItemUfxCache;
     extern u8 lbl_802CA4FC[];
     extern u8 gDataStr[];
     u32 ret;
 
-    if (lbl_80367230 != arg0) {
-        lbl_80367230 = arg0;
+    if (gItemUfxCache != arg0) {
+        gItemUfxCache = arg0;
         strcpy(lbl_802CA4FC, *(s32 *)arg0);
         strcat(lbl_802CA4FC, gDataStr + 0x3C);
     }
