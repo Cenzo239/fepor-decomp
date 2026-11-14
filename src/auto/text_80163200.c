@@ -2106,49 +2106,26 @@ loop_3:
 
 #pragma dont_inline on
 void Ui_HideUnitInfoPopup(void *arg0) {
-    void Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_80277A20[];
-    extern s32 lbl_8036A938;
-    extern f32 lbl_8036A93C;
-    extern f32 lbl_8036A940;
-    extern f32 lbl_8036A92C;
-    s32 flags;
-    s32 mask;
-    s32 eight;
-    s32 cue;
-    u8 *base;
-    f32 f3;
-    f32 f2;
-    f32 f0;
-    f32 t;
-
-    flags = *(s32 *)arg0;
-    if (!(flags & 1)) {
-        mask = lbl_8036A938;
-        f3 = lbl_8036A93C;
-        eight = 8;
-        *(s32 *)arg0 = flags | mask;
-        f2 = lbl_8036A940;
-        base = lbl_80277A20;
-        f0 = lbl_8036A92C;
-        cue = 0x64;
-        t = *(f32 *)((u8 *)arg0 + 0xF4);
-        *(f32 *)((u8 *)arg0 + 0xFC) = t;
-        t = *(f32 *)((u8 *)arg0 + 0xF8);
-        *(f32 *)((u8 *)arg0 + 0x100) = t;
-        t = *(f32 *)((u8 *)arg0 + 0xDC);
-        *(f32 *)((u8 *)arg0 + 0x104) = f3 + t;
-        t = *(f32 *)((u8 *)arg0 + 0xE0);
-        *(f32 *)((u8 *)arg0 + 0x108) = f2 + t;
-        t = *(f32 *)((u8 *)arg0 + 0x10C);
-        *(f32 *)((u8 *)arg0 + 0x114) = t;
-        t = *(f32 *)((u8 *)arg0 + 0x110);
-        *(f32 *)((u8 *)arg0 + 0x118) = t;
-        *(f32 *)((u8 *)arg0 + 0x11C) = f0;
-        *(f32 *)((u8 *)arg0 + 0x120) = f0;
-        *(s32 *)((u8 *)arg0 + 0xCC) = eight;
-        Ui_PlaySeCue(base + 0x6C, cue);
-    }
+ void Ui_PlaySeCue(void *,s32);
+ extern u8 lbl_80277A20[]; extern s32 lbl_8036A938;
+ extern f32 lbl_8036A93C; extern f32 lbl_8036A940; extern f32 lbl_8036A92C;
+ s32 flags; s32 mask; s32 eight; u8 *base;
+ f32 zero; f32 t; f32 dy; f32 dx;
+ flags=*(s32 *)arg0;
+ if(!(flags&1)) {
+ mask=lbl_8036A938; dx=lbl_8036A93C; eight=8;
+ *(s32 *)arg0=flags|mask; dy=lbl_8036A940;
+ base=lbl_80277A20; zero=lbl_8036A92C;
+ t=*(f32 *)((u8 *)arg0+0xF4); *(f32 *)((u8 *)arg0+0xFC)=t;
+ t=*(f32 *)((u8 *)arg0+0xF8); *(f32 *)((u8 *)arg0+0x100)=t;
+ t=*(f32 *)((u8 *)arg0+0xDC); *(f32 *)((u8 *)arg0+0x104)=dx+t;
+ t=*(f32 *)((u8 *)arg0+0xE0); *(f32 *)((u8 *)arg0+0x108)=dy+t;
+ t=*(f32 *)((u8 *)arg0+0x10C); *(f32 *)((u8 *)arg0+0x114)=t;
+ t=*(f32 *)((u8 *)arg0+0x110); *(f32 *)((u8 *)arg0+0x118)=t;
+ *(f32 *)((u8 *)arg0+0x11C)=zero; *(f32 *)((u8 *)arg0+0x120)=zero;
+ *(s32 *)((u8 *)arg0+0xCC)=eight;
+ Ui_PlaySeCue(base+0x6C,0x64);
+ }
 }
 #pragma dont_inline reset
 
@@ -3095,30 +3072,22 @@ void fn_80169FC0(void *arg0) {
 }
 
 void fn_8016A028(void) {
-    char *strcpy(char *, char *);
-    void fn_8005C8B4(s32);
-    s32 fn_801620AC(void);
-    void fn_80162018(void);
-    extern u8 lbl_80277BC0[];
-    extern u8 gBattleState[];
-    char sp8[0x48];
-
-    fn_80162018();
-    fn_8005C8B4(fn_801620AC());
-    switch ((s32)gBattleState[0xA6]) {
-    case 3:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x103);
-        break;
-    case 0:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x117);
-        break;
-    case 1:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x12B);
-        /* fallthrough */
-    case 2:
-        fn_8005C8B4((s32)sp8);
-        break;
-    }
+char *strcpy(char *, char *);
+void fn_8005C8B4(s32);
+s32 fn_801620AC(void);
+void fn_80162018(void);
+extern u8 lbl_80277BC0[];
+extern u8 gBattleState[];
+char sp8[0x48];
+fn_80162018();
+fn_8005C8B4(fn_801620AC());
+switch ((s32)gBattleState[0xA6]) {
+case 0:
+case 3: strcpy(sp8, (char *)lbl_80277BC0 + 0x103); break;
+case 1: strcpy(sp8, (char *)lbl_80277BC0 + 0x117); break;
+case 2: strcpy(sp8, (char *)lbl_80277BC0 + 0x12B); break;
+}
+fn_8005C8B4((s32)sp8);
 }
 
 void fn_8016A0CC(void *arg0) {
