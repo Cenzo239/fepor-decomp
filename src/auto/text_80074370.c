@@ -2274,7 +2274,7 @@ void fn_8007812C(void) {
     Msg_Expand((u16*)((u8*)lbl_8026C0B8 + 0x4BE));
 }
 
-s32 fn_80078158(void) {
+s32 Ui_CanMapObjAttack(void) {
     extern u8 gUiContext[], gMapObjEventList[], gTargetList[];
     u8 Status_Test(void *, s32); void *MapObjEvent_Find(void *, s32, s32, s32); void fn_8002BD44(void *, void *);
     void *obj; void *entry;
