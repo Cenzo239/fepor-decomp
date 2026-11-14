@@ -2292,11 +2292,11 @@ void fn_8002DEB4(s32 arg0) {
 void fn_8002DF54(void) {
     M2C_UNK fn_80147188(M2C_UNK);
     extern s8 lbl_80367AEC;
-    extern s8 lbl_80367AEE;
+    extern s8 gBgmVol;
     extern s8 lbl_80367AF6;
     fn_80147188(0);
     lbl_80367AEC = 0x64;
-    lbl_80367AEE = 0x64;
+    gBgmVol = 0x64;
     lbl_80367AF6 = 0;
 }
 

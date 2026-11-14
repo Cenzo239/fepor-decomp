@@ -10328,7 +10328,7 @@ void fn_801453F0(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     s32 base;
@@ -10348,14 +10348,14 @@ void fn_801453F0(void) {
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)gBgmVol;
 }
 
 void fn_80145488(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     extern f64 lbl_8036A780;
@@ -10377,24 +10377,24 @@ void fn_80145488(void) {
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)(u32)gBgmVol;
 }
 
 void fn_80145520(void) {
 void Process_UnlinkByKey(void *); void *Process_Create(void *, s32);
-extern u8 lbl_80292558[]; extern u8 lbl_80367AEE;
+extern u8 lbl_80292558[]; extern u8 gBgmVol;
 extern f32 lbl_8036A778; extern f32 lbl_8036A77C;
 s32 base=(s32)lbl_80292558; f32 *p; f32 a,b;
 Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
 p=Process_Create((void*)(base+0x64),3);
-b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)lbl_80367AEE;
+b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
 }
 
 void BgmVol_FadeOut(s32 arg0) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f64 lbl_8036A788;
     extern f64 lbl_8036A780;
@@ -10413,20 +10413,20 @@ void BgmVol_FadeOut(s32 arg0) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     if (arg == 0) {
-        lbl_80367AEE = 0;
+        gBgmVol = 0;
         return;
     }
     temp_r3 = Process_Create((void *)(base + 0x50), 3);
     *(f32 *)((u8 *)temp_r3 + 0x30) = lbl_8036A778;
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 void fn_80145684(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     s32 base;
@@ -10446,14 +10446,14 @@ void fn_80145684(void) {
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 void fn_8014571C(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
     s32 base;
@@ -10473,7 +10473,7 @@ void fn_8014571C(void) {
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)lbl_80367AEE;
+    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
 
 void fn_801457B4(void) {
@@ -10502,16 +10502,16 @@ void fn_8014589C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 100;
+        gBgmVol = 100;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10521,16 +10521,16 @@ void fn_8014595C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 120;
+        gBgmVol = 120;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 120.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 120.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10540,16 +10540,16 @@ void fn_80145A1C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 100;
+        gBgmVol = 100;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10559,16 +10559,16 @@ void fn_80145ADC(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 0;
+        gBgmVol = 0;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 0.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 0.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10578,16 +10578,16 @@ void fn_80145B9C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 100;
+        gBgmVol = 100;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 100.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10597,16 +10597,16 @@ void fn_80145C5C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     u8 alpha = M2C_FIELD(arg0, f32 *, 0x38);
 
     if (gUiInputFlags & 3) {
-        lbl_80367AEE = 0x46;
+        gBgmVol = 0x46;
         Process_ClearFunc(arg0);
         return;
     }
     M2C_FIELD(arg0, f32 *, 0x30) += 1.0f;
-    lbl_80367AEE = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
+    gBgmVol = Math_Ease(0, alpha, 70.0f, M2C_FIELD(arg0, f32 *, 0x30), M2C_FIELD(arg0, f32 *, 0x34));
     if (M2C_FIELD(arg0, f32 *, 0x30) >= M2C_FIELD(arg0, f32 *, 0x34)) {
         Process_ClearFunc(arg0);
     }
@@ -10868,7 +10868,7 @@ void fn_80146F0C(void)
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AEA;
     extern u8 lbl_80367AEC;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
     extern u8 lbl_80367AF2;
@@ -10917,7 +10917,7 @@ void fn_80146F0C(void)
     lbl_80367AE8 = 100;
     lbl_80367AEA = 100;
     lbl_80367AEC = 100;
-    lbl_80367AEE = 100;
+    gBgmVol = 100;
     lbl_80367AF0 = 100;
     lbl_80367AF1 = 100;
     lbl_80367AF2 = 100;
@@ -12035,7 +12035,7 @@ extern "C" void fn_80148D54(void *arg0) {
     s32 fn_8014953C(void);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern u8 lbl_80367AEF;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
@@ -12111,8 +12111,8 @@ extern "C" void fn_80148D54(void *arg0) {
                     self->flags &= ~8;
                 }
             }
-            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEE != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
-                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
+            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || gBgmVol != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
+                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 self->prev = self->cur;
@@ -12131,7 +12131,7 @@ extern "C" void fn_80148D54(void *arg0) {
                 if (self->flags & 2) {
                     rate = fn_8014953C();
                 }
-                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
+                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 ((DrawIface *)self)->Set(self->unk_d, self->unk_e, self->unk_10, (u16)self->unk_12);

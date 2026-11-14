@@ -213,7 +213,7 @@ void Game_InitSystems(void) {
     extern u8 gItemIconDrawer[];
     extern u8 gBattleState[];
     extern u8 lbl_80367AEC;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern u8 lbl_80367AF6;
 
     Heap_AdjustExtent(0x100000);
@@ -240,7 +240,7 @@ void Game_InitSystems(void) {
     Archive_Load(Game_str + 0xD1);
     fn_80147188(0);
     lbl_80367AEC = 0x64;
-    lbl_80367AEE = 0x64;
+    gBgmVol = 0x64;
     lbl_80367AF6 = 0;
     fn_80146AF0();
     gBattleState[0xA1] = 0x40;
