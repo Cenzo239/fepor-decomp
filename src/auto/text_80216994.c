@@ -1161,7 +1161,7 @@ s32 __CARDGetFatBlock(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 0x88);
 }
 
-void fn_80219260(s32 chan, s32 result) {
+void __CARDUpdateFatCallback(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     void *memcpy(void *, const void *, u32);
     s32 __CARDPutControlBlock(void *, s32);
