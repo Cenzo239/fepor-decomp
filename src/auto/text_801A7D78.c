@@ -299,30 +299,31 @@ s32 Unit_ClearEventStatuses(s32 unit) {
     return 1;
 }
 
-void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
+/* For a non-item/non-kind-9 weapon slot: add wpn exp, OR rank-up into +0x2C6, debug-print the new exp. */
+void BattleUnit_GainWpnExp(void *unit, void *slotArg) {
     s32 Unit_AddWpnExp(void *);
     u8 Unit_GetWpnExp(void *, u8);
     s32 DebugPrint(const char *, ...);
     extern u8 gBattleDebugMsgs[];
     void *slot;
-    void *p;
+    void *item;
     u8 kind;
 
-    slot = arg1;
-    if ((arg1 = *(void **)arg1) == NULL) {
+    slot = slotArg;
+    if ((slotArg = *(void **)slotArg) == NULL) {
         return;
     }
-    kind = (arg1 != NULL) ? *(u8 *)((u8 *)arg1 + 0x12) : 0xC;
+    kind = (slotArg != NULL) ? *(u8 *)((u8 *)slotArg + 0x12) : 0xC;
     if (kind == 8) {
         return;
     }
-    kind = (arg1 != NULL) ? *(u8 *)((u8 *)arg1 + 0x12) : 0xC;
+    kind = (slotArg != NULL) ? *(u8 *)((u8 *)slotArg + 0x12) : 0xC;
     if (kind == 9) {
         return;
     }
-    *(u8 *)((u8 *)arg0 + 0x2C6) |= Unit_AddWpnExp(arg0);
+    *(u8 *)((u8 *)unit + 0x2C6) |= Unit_AddWpnExp(unit);
     DebugPrint((const char *)(gBattleDebugMsgs + 0x16A),
-                Unit_GetWpnExp(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
+                Unit_GetWpnExp(unit, ((item = *(void **)slot) != NULL) ? *(u8 *)((u8 *)item + 0x12) : 0xC));
 }
 
 extern u8 gBattleHitTbl[104];
