@@ -19511,7 +19511,7 @@ void Ai_SetDecision(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 ar
     gAiState[0x21C] = 1;
 }
 
-s32 fn_800FB9F8(void *arg0) {
+s32 Ai_ExecUnit(void *arg0) {
     void fn_80037814(void);
     void Unit_IsLowHp(void *);
     u8 fn_80017318(void *);
