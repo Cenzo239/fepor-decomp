@@ -822,6 +822,7 @@ void TCIntrruptHandler(s16 interrupt, OSContext *context)
     }
 }
 
+/* EXI external (device insert/remove) IRQ: mask channel IRQs, clear state bit 0x8, invoke extCallback. */
 void EXTIntrruptHandler(s16 interrupt, OSContext *context)
 {
     s32 chan;
