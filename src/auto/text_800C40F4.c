@@ -2617,7 +2617,8 @@ void *fn_800CA6C8(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void String_InitFromRange(void *arg0, char *begin, char *end) {
+/* Construct a String by copying the char range [begin, end); capacity is rounded up to 4. */
+void String_InitFromRange(String *str, char *begin, char *end) {
     s32 Heap_Alloc(s32);
     void fprintf(void *, const char *, ...);
     void abort(void);
@@ -2629,25 +2630,25 @@ void String_InitFromRange(void *arg0, char *begin, char *end) {
     char *buf;
     s32 len;
     char *b;
-    void *self;
+    String *self;
 
     b = begin;
-    self = arg0;
-    *(void **)((u8 *)arg0 + 8) = 0;
-    *(u32 *)((u8 *)arg0 + 0) = 0;
-    *(u32 *)((u8 *)arg0 + 4) = 0;
+    self = str;
+    str->data = 0;
+    str->size = 0;
+    str->cap = 0;
     if (b != end) {
         len = (s32)end - (s32)b;
-        *(u32 *)((u8 *)self + 4) = (len + 3) - (len & 3);
-        buf = (char *)Heap_Alloc(*(s32 *)((u8 *)self + 4) + 1);
+        self->cap = (len + 3) - (len & 3);
+        buf = (char *)Heap_Alloc((s32)self->cap + 1);
         if (buf == 0) {
             fprintf(__files + 0xA0, gStringErrorMsgs + 0x7C);
             abort();
         }
-        *(char **)((u8 *)self + 8) = buf;
-        memcpy(*(char **)((u8 *)self + 8), b, len);
-        *(u32 *)self = len;
-        *(u8 *)(*(char **)((u8 *)self + 8) + len) = gStringNulChar;
+        self->data = buf;
+        memcpy(self->data, b, len);
+        self->size = len;
+        *(u8 *)(self->data + len) = gStringNulChar;
     }
 }
 
