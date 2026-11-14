@@ -5963,39 +5963,37 @@ s32 fn_802509C8(u16 *arg0, u16 *arg1) {
 
 int fn_802509D8(int arg0)
 {
-    extern u16 lbl_803596E4;
-    extern u16 lbl_803548B8;
-    extern u16 lbl_80368A08;
+    extern u8 lbl_803596E4[12];
 
     void *Bsearch(void *, void *, s32, s32, s32 (*)(void *, void *));
-    s32 fn_802509C8(u16 *, u16 *);
+    s32 fn_802509C8(void *, void *);
 
-    u8 *entry;
-    void *result;
     s32 i;
+    u8 *entry;
+    u8 *key;
+    void *cmp;
+    void *result;
 
-    lbl_803596E4 = arg0;
-
+    key = lbl_803596E4;
     entry = (u8 *)&lbl_803548B8;
+    cmp = fn_802509C8;
     i = 0;
+    *(u16 *)key = (u16)arg0;
 
-    while (i < lbl_80368A08) {
+    while (i < (s32)lbl_80368A08) {
         result = Bsearch(
-            &lbl_803596E4,
+            key,
             *(void **)(entry + 8),
             *(u16 *)(entry + 2),
             0xA,
-            (s32 (*)(void *, void *))fn_802509C8
+            (s32 (*)(void *, void *))cmp
         );
-
         if (result != 0) {
             return (int)result;
         }
-
         entry += 0xC;
         i++;
     }
-
     return 0;
 }
 
