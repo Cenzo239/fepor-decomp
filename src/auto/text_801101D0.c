@@ -5875,7 +5875,7 @@ s32 fn_8011E12C(void *arg0) {
     void fn_80121D60(void *, void *);
     void Ui_SetTooltip(void *, s32, s32, void *);
     u8 fn_80109B24(void *);
-    void fn_80120DD4(void *, u8);
+    void Obj_StartTintEase(void *, u8);
     void fn_80122114(void *, u8);
     void fn_80122A2C(void *, u8);
     extern u16 gUiPanelFlags;
@@ -5989,7 +5989,7 @@ def:
                             } else {
                                 v = 0xFF;
                             }
-                            fn_80120DD4(*(void **)((u8 *)cur + 0x48), v);
+                            Obj_StartTintEase(*(void **)((u8 *)cur + 0x48), v);
                         } else {
                             if (self->unk58 != 0 && fn_80109B24(self->unk58) != 0
                                 && (u8)fn_80109B24(self->unk58) != 0xFF) {
@@ -5997,7 +5997,7 @@ def:
                             } else {
                                 v = 0xFF;
                             }
-                            fn_80120DD4(*(void **)((u8 *)cur + 0x48), (u8)(v - 0x4D));
+                            Obj_StartTintEase(*(void **)((u8 *)cur + 0x48), (u8)(v - 0x4D));
                         }
                     }
                     i += 1;

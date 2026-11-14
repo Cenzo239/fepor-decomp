@@ -61,7 +61,7 @@ void UiPanel_PollSkip(u16 *flags) {
     }
 }
 
-void fn_80120DD4(void *arg0, s32 arg1) {
+void Obj_StartTintEase(void *arg0, s32 arg1) {
     void *Process_Create(void *, s32);
     extern u8 lbl_8029023C[];
     u8 temp_r31;
