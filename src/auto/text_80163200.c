@@ -6507,7 +6507,8 @@ void fn_8016FE5C(void) {
     return;
 }
 
-void Ui_RefocusUnitListPanel(void *arg0) {
+void Ui_RefocusUnitListPanel(void *panel) {
+    /* Refresh the sub-menu, bring the stored child to front, set caption, and refresh MU/portrait. */
     void Process_RetreatStep(void *);
     void fn_80023FF4(void *);
     void Process_MarkActive(void *);
@@ -6520,30 +6521,30 @@ void Ui_RefocusUnitListPanel(void *arg0) {
     extern u32 gUiContext[];
     void *obj;
     s32 saved;
-    void *p;
-    void *q;
-    u32 ret;
+    void *unit;
+    void *portrait;
+    u32 caption;
 
-    obj = M2C_FIELD(arg0, void **, 0x5C);
+    obj = M2C_FIELD(panel, void **, 0x5C);
     Process_RetreatStep(obj);
     saved = M2C_FIELD(obj, s8 *, 0x62);
     fn_80023FF4(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
-    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
-    Ui_BringChildToFront(arg0, M2C_FIELD(arg0, s32 *, 0x40));
-    ret = Ui_FindChild(arg0, -0x1000, 0);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, (s32)((u8 *)gUiMsgStrings + 0x1FD));
+    Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
+    Ui_BringChildToFront(panel, M2C_FIELD(panel, s32 *, 0x40));
+    caption = Ui_FindChild(panel, -0x1000, 0);
+    if (caption != 0) {
+        Ui_SetWidgetText(caption, (s32)((u8 *)gUiMsgStrings + 0x1FD));
     }
-    p = M2C_FIELD(gUiContext, void **, 0);
-    if (p != NULL) {
-        Mu_StartBlend(p, 0, 4, 0);
+    unit = M2C_FIELD(gUiContext, void **, 0);
+    if (unit != NULL) {
+        Mu_StartBlend(unit, 0, 4, 0);
     }
-    p = M2C_FIELD(arg0, void **, 0x44);
-    if (p != NULL) {
-        q = M2C_FIELD(p, void **, 0x3C);
-        if (q != NULL) {
-            Ui_SetPortraitUnit(p, q);
+    portrait = M2C_FIELD(panel, void **, 0x44);
+    if (portrait != NULL) {
+        unit = M2C_FIELD(portrait, void **, 0x3C);
+        if (unit != NULL) {
+            Ui_SetPortraitUnit(portrait, unit);
         }
     }
 }
