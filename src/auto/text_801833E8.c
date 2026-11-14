@@ -11394,7 +11394,7 @@ s32 fn_8019EC0C(s32 arg0, s32 arg1, u8 arg2) {
     return 1;
 }
 
-s32 Map_OpenObjAt(s32 arg0, s32 arg1, s32 arg2) {
+s32 Map_OpenObjAt(s32 unused, s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjNear(void *, s32, s32, u32, s32);
     void fn_800056A0(s32);
@@ -11405,20 +11405,21 @@ s32 Map_OpenObjAt(s32 arg0, s32 arg1, s32 arg2) {
     void fn_80013864(void);
     extern u8 gMapObjEventList[];
     extern s32 gUiInputFlags;
-    u8 *temp;
+    u8 *obj;
 
-    (void)arg0;
-    temp = (u8 *)Map_FindObjNear((void *)Map_Get(), arg1, arg2, 0xa00, 0x10);
-    if (temp == NULL) {
+    (void)unused;
+    // Find a map object at/near (x,y), queue open event 0x24, and start its open anim (or cancel if UI flag 1).
+    obj = (u8 *)Map_FindObjNear((void *)Map_Get(), x, y, 0xa00, 0x10);
+    if (obj == NULL) {
         fn_800056A0(0);
         return 0;
     }
-    MapObjEvent_Push(gMapObjEventList, (s8)temp[0], (s8)temp[1], 0x24, 0);
+    MapObjEvent_Push(gMapObjEventList, (s8)obj[0], (s8)obj[1], 0x24, 0);
     if (gUiInputFlags & 1) {
-        fn_80049D08(temp);
+        fn_80049D08(obj);
         return 0;
     }
-    fn_800498A4(temp, fn_800C0658(), 0);
+    fn_800498A4(obj, fn_800C0658(), 0);
     fn_80013864();
     return 1;
 }
