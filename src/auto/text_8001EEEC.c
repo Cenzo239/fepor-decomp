@@ -3641,7 +3641,7 @@ s32 fn_80026A80(s32 arg0) {
     return 1;
 }
 
-s32 fn_80026AF4(s32 arg0) {
+s32 Battle_TryShowWeaponHelp(s32 arg0) {
     extern u16 gBattle[];
     u8 *base;
     u8 *second;
