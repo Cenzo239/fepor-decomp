@@ -12689,7 +12689,7 @@ s32 ScriptCmd_EventSepia(s32 arg0) {
     void Process_UnlinkByKey(void *);
     s32 fn_800C0658(void);
     extern u16 E_EventState_script[];
-    extern u16 lbl_80296F68[];
+    extern u16 E_Sepia_script[];
     extern u16 gBattleState[];
     void *p;
     void *v;
@@ -12713,9 +12713,9 @@ s32 ScriptCmd_EventSepia(s32 arg0) {
     if (v != NULL) {
         M2C_FIELD(v, s8 *, 0x37) = (s8)arg0;
         if ((u8)M2C_FIELD(v, u8 *, 0x37) == 1) {
-            Process_Create(lbl_80296F68, (s32)v);
+            Process_Create(E_Sepia_script, (s32)v);
         } else {
-            Process_UnlinkByKey(lbl_80296F68);
+            Process_UnlinkByKey(E_Sepia_script);
         }
     }
     return 1;
