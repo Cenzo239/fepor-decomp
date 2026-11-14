@@ -7747,31 +7747,32 @@ s32 fn_800BE2F4(void) {
     return 0;
 }
 #pragma global_optimizer off
-s32 Talk_MatchesStoredPair(void *arg0) {
+/* True if this talk entry's mode and persons match gTalkState (either order). */
+s32 Talk_MatchesStoredPair(void *entry) {
     void Event_GetString(void *, u32);
     void *Person_GetByPid(void);
     void *Person_Get(s32);
     extern s16 gTalkState[];
     void *obj;
-    void *v1;
-    void *v2;
-    void *v3;
-    void *v4;
+    void *personA;
+    void *personB;
+    void *statePerson0;
+    void *statePerson1;
 
-    obj = arg0;
+    obj = entry;
     if (gTalkState[0] != *(s16 *)((u8 *)obj + 0x18)) {
         return 0;
     }
     Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x14));
-    v1 = Person_GetByPid();
+    personA = Person_GetByPid();
     Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
-    v2 = Person_GetByPid();
-    v3 = Person_Get(gTalkState[3]);
-    v4 = Person_Get(gTalkState[4]);
-    if (v3 == v1 && v4 == v2) {
+    personB = Person_GetByPid();
+    statePerson0 = Person_Get(gTalkState[3]);
+    statePerson1 = Person_Get(gTalkState[4]);
+    if (statePerson0 == personA && statePerson1 == personB) {
         return 1;
     }
-    if (v3 == v2 && v4 == v1) {
+    if (statePerson0 == personB && statePerson1 == personA) {
         return 1;
     }
     return 0;
