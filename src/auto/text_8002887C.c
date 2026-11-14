@@ -3533,7 +3533,7 @@ void fn_80031CA0(s32 arg0) {
     fn_8002EB54(lbl_802EFD1C, arg0);
 }
 
-void fn_80031D28(s32 arg0) {
+void MapUi_BeginHealSelect(s32 arg0) {
     void **fn_800285C0(void *);
     void fn_8002AD04(void *, void *, void *);
     s32 Item_GetHealAmount(void *);
