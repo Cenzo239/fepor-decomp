@@ -1481,7 +1481,7 @@ void fn_8020681C(s32 arg0, s32 arg1, s32 arg2) {
     DVDReadAbsAsyncPrio(&sp14, arg0, arg1, arg2, 0, 0);
 loop_5:
     if (DVDGetCommandBlockStatus(&sp14) != 0) {
-        if (fn_8020F40C() == 0) {
+        if (DVDKeepAlive() == 0) {
             fn_802089A4(0);
         }
         goto loop_5;
@@ -1508,7 +1508,7 @@ s32 DVDGetAppLoaderOffset(void) {
     u32 OSAllocFromArenaLo(u32, u32);
     void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
     s32 DVDGetCommandBlockStatus(void *);
-    s32 fn_8020F40C(void);
+    s32 DVDKeepAlive(void);
     void fn_802089A4(s32);
     extern s32 sAppLoaderOffset;
 
@@ -1522,7 +1522,7 @@ s32 DVDGetAppLoaderOffset(void) {
         buf = OSAllocFromArenaLo(0x40, 0x20);
         DVDReadAbsAsyncPrio(sp8, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
         while (DVDGetCommandBlockStatus(sp8) != 0) {
-            if (fn_8020F40C() == 0) {
+            if (DVDKeepAlive() == 0) {
                 fn_802089A4(0);
             }
         }
@@ -1555,7 +1555,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_8020F058(s32);
     void fn_8020F068(void);
     u8 *fn_8020F404(void);
-    s32 fn_8020F40C(void);
+    s32 DVDKeepAlive(void);
     void fn_8020F504(void *);
     void fn_8021382C(s32);
     void fn_80213AEC(s32);
@@ -1615,7 +1615,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     OSEnableInterrupts();
 
     do {
-        if (fn_8020F40C() == 0)
+        if (DVDKeepAlive() == 0)
             fn_802089A4(0);
     } while (lbl_803684B0 != 1);
 
@@ -1629,7 +1629,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
             fn_80213B18(0);
             fn_8020ED90(spDC, 0);
             while (DVDGetCommandBlockStatus(spDC) != 0) {
-                if (fn_8020F40C() == 0)
+                if (DVDKeepAlive() == 0)
                     fn_802089A4(0);
             }
             fn_8021382C(0);
@@ -1659,7 +1659,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
                 temp_r3 = OSAllocFromArenaLo(0x40, 0x20);
                 DVDReadAbsAsyncPrio(sp5C, temp_r3, 0x40, *(s32 *)0x800030F4, 0, 0);
                 while (DVDGetCommandBlockStatus(sp5C) != 0) {
-                    if (fn_8020F40C() == 0)
+                    if (DVDKeepAlive() == 0)
                         fn_802089A4(0);
                 }
                 sAppLoaderOffset = *(s32 *)0x800030F4 + *(s32 *)(temp_r3 + 0x38);
@@ -1680,7 +1680,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         while (spC4(&spCC, &spD0, &spD4) != 0) {
             DVDReadAbsAsyncPrio(sp2C, (u32)spCC, spD0, spD4, 0, 0);
             while (DVDGetCommandBlockStatus(sp2C) != 0) {
-                if (fn_8020F40C() == 0)
+                if (DVDKeepAlive() == 0)
                     fn_802089A4(0);
             }
         }
@@ -1698,7 +1698,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         *(u8 *)0x800030E2 = 1;
         DVDReadAbsAsyncPrio(sp8C, 0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F, DVDGetAppLoaderOffset() + *(s32 *)(temp_r30 + 0x14) + 0x20, 0, 0);
         while (DVDGetCommandBlockStatus(sp8C) != 0) {
-            if (fn_8020F40C() == 0)
+            if (DVDKeepAlive() == 0)
                 fn_802089A4(0);
         }
         ICInvalidateRange((void *)0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F);

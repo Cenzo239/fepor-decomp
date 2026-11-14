@@ -1568,7 +1568,7 @@ s32 fn_8020F404(void) {
     return 0x80000000;
 }
 
-s32 fn_8020F40C(void)
+s32 DVDKeepAlive(void)
 {
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
