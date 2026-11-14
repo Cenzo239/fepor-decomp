@@ -61,8 +61,8 @@ void *fn_800A9638(void) {
 }
 
 s32 fn_800A9648(void) {
-    M2C_UNK fn_80006220(M2C_UNK);
-    fn_80006220(5);
+    M2C_UNK Game_SetState(M2C_UNK);
+    Game_SetState(5);
     return 5;
 }
 
@@ -72,7 +72,7 @@ void *fn_800A9670(void) {
 }
 
 s32 fn_800A9680(void) {
-    fn_80006220(5);
+    Game_SetState(5);
     return 5;
 }
 
@@ -228,7 +228,7 @@ void *fn_800A9AFC(void) {
 s32 fn_800A9B0C(void) {
     M2C_UNK fn_800EB884();
     fn_800EB884();
-    fn_80006220(3);
+    Game_SetState(3);
     return 5;
 }
 
@@ -309,7 +309,7 @@ void *fn_800A9C5C(void) {
 s32 fn_800A9C6C(s32 unused, void *arg1) {
     void fn_801FFD7C(s32);
     fn_801FFD7C(*(s32 *)((char *)arg1 + 0x18));
-    fn_80006220(3);
+    Game_SetState(3);
     return 5;
 }
 
@@ -321,7 +321,7 @@ void *fn_800A9C9C(void) {
 s32 fn_800A9CAC(void) {
     M2C_UNK fn_800EBACC(M2C_UNK, M2C_UNK);
     fn_800EBACC(0, 0);
-    fn_80006220(3);
+    Game_SetState(3);
     return 5;
 }
 
@@ -333,7 +333,7 @@ void *fn_800A9CE0(void) {
 s32 fn_800A9CF0(void) {
     M2C_UNK fn_800EBD78(M2C_UNK, M2C_UNK);
     fn_800EBD78(0, 0);
-    fn_80006220(3);
+    Game_SetState(3);
     return 5;
 }
 
@@ -346,7 +346,7 @@ s32 fn_800A9D34(void) {
     extern void *gPadInput;
     extern u8 lbl_80367701;
     extern s8 lbl_80367702;
-    fn_80006220(4);
+    Game_SetState(4);
     if ((u32) (M2C_FIELD(gPadInput, s32 *, 4) & 0x60) == 0x60) {
         lbl_80367701 ^= 1;
     }
@@ -362,7 +362,7 @@ void *fn_800A9D90(void) {
 }
 
 s32 fn_800A9DA0(void) {
-    fn_80006220(2);
+    Game_SetState(2);
     return 5;
 }
 
@@ -372,7 +372,7 @@ void *fn_800A9DC8(void) {
 }
 
 s32 fn_800A9DD8(void) {
-    fn_80006220(5);
+    Game_SetState(5);
     return 5;
 }
 
@@ -425,7 +425,7 @@ s32 fn_800AA078(void *arg0) {
         Battle_SetPhase(p, *(u8 *)((u8 *)unit + 0x3C));
     }
     gSystemSave[1] = 0x0123456789ABCDEFULL;
-    fn_80006220(0xA);
+    Game_SetState(0xA);
     return 5;
 }
 

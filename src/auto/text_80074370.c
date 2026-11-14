@@ -2669,9 +2669,9 @@ void fn_80078DF8(void) {
 }
 
 s32 fn_80078E24(void *arg0) {
-    s32 fn_80006220(s16);
+    s32 Game_SetState(s16);
     s32 temp_r3 = ((s32 *) arg0)[1];
-    fn_80006220((s16) (((u32) ((s32 *) temp_r3)[0]) >> 16));
+    Game_SetState((s16) (((u32) ((s32 *) temp_r3)[0]) >> 16));
     ((u8 **) arg0)[1] = (u8 *) ((s32 *) arg0)[1] + 4;
     return 1;
 }

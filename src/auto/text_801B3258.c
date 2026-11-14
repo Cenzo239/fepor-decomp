@@ -13853,7 +13853,7 @@ void fn_801D3D3C(void *arg0) {
  void sprintf(void *, void *, void *, void *);
  void fn_801DE3C4(void *);
  void fn_8008A290(s32, s32);
- void fn_80006220(s32);
+ void Game_SetState(s32);
  void Process_ClearFunc(void *);
  void Ui_OpenConfirmDialog(void *, s8, s8, s32, void *, s8, void *);
  void fn_801DE3BC(void *, s8);
@@ -13977,7 +13977,7 @@ void fn_801D3D3C(void *arg0) {
    Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
-   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
+   if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1b);
    Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
@@ -13993,7 +13993,7 @@ void fn_801D3D3C(void *arg0) {
    fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + 0x33e), *(s16 *)((u8 *)state + 0x340), 0, 1);
   } else {
    fn_8008A290(3, 0xfa);
-   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
+   if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1b);
    Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase);
   }
   break;
@@ -14007,7 +14007,7 @@ void fn_801D3D3C(void *arg0) {
   }
   if (flags_a & 0x200) {
    Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); fn_8008A290(3, 0xfa);
-   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
+   if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1b);
    Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase);
   }
   if (flags_b & 0x1000001) {
@@ -14036,7 +14036,7 @@ void fn_801D3D3C(void *arg0) {
   if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
   fn_801E1440(&gSaveDataBase, changed, *(s8 *)((u8 *)state + 0x19) != 0);
   fn_8008A290(3, 0xfa);
-  if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1a);
+  if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1a);
   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); break;
  case 0xd:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
@@ -14133,7 +14133,7 @@ void fn_801D3D3C(void *arg0) {
    Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); *(u8 *)((u8 *)state + 0x1a) = 0;
   } else if (flags_a & 0x200) {
    fn_8008A290(3, 0xfa);
-   if (*(u8 *)((u8 *)state + 0x10) != 1) fn_80006220(0x1b);
+   if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1b);
    Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   }
   break;
@@ -14363,7 +14363,7 @@ void fn_801D3D3C(void *arg0) {
   }
   break;
  case 0x87:
-  fn_8008A290(3, 0xfa); fn_80006220(0x1c);
+  fn_8008A290(3, 0xfa); Game_SetState(0x1c);
   fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0); break;
     case 0xc8:
     fn_801DBEA8(state, 1); *(s8 *)((u8 *)state + 0x12) = -1;
@@ -14433,7 +14433,7 @@ void fn_801D3D3C(void *arg0) {
   *(s32 *)state = 0xdc; fn_801DDDE8(0xa, arg0); break;
  case 0xdc:
   if (Card_GetResult() == 0) {
-   fn_8008A290(3, 0xfa); fn_80006220(0x1c);
+   fn_8008A290(3, 0xfa); Game_SetState(0x1c);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
@@ -14478,7 +14478,7 @@ void fn_801D3D3C(void *arg0) {
  case 0x145:
   if (Card_GetResult() == 0) {
    fn_801D8894((u8 *)state + 0x60);
-   fn_8008A290(3, 0xfa); fn_80006220(0x1d);
+   fn_8008A290(3, 0xfa); Game_SetState(0x1d);
    fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0);
   } else {
    Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);

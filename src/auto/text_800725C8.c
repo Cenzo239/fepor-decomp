@@ -196,12 +196,12 @@ void fn_80072A2C(void *arg0) {
 }
 
 void fn_80072A48(void) {
-    M2C_UNK fn_80006220(M2C_UNK);
+    M2C_UNK Game_SetState(M2C_UNK);
     M2C_UNK fn_8000BD98(void *);
     M2C_UNK fn_8002D780(M2C_UNK);
     extern u8 gSaveUiStrs[];
     extern u8 gMsgBox[];
-    fn_80006220(3);
+    Game_SetState(3);
     fn_8002D780(6);
     fn_8000BD98(gSaveUiStrs + 0x101);
     *(u16 *)(gMsgBox + 2) = 0xC8;
@@ -484,7 +484,7 @@ extern u8 gMapUiResult;
 extern u8 gSaveUiStrs[];
 extern u8 lbl_80286DA8[];
 extern u16 gMsgBox[124];
-extern void fn_80006220(s32);
+extern void Game_SetState(s32);
 extern void fn_8002D780(s32);
 extern void fn_8000BD98(void *);
 extern s32 Process_FindByName(void *);

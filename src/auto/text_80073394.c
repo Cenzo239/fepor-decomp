@@ -1,6 +1,6 @@
 /* Functions from 0x80073394 to 0x80073E70, found by decomp-toolkit. */
 #include "common.h"
-extern void fn_80006220(s32);
+extern void Game_SetState(s32);
 extern void fn_8002D780(s32);
 extern void* (*fn_80024398_ptr)(void*, s32, s32);
 extern void fn_8000BD98(void *);
@@ -13,7 +13,7 @@ void *fn_80073394(void) {
 
 s32 fn_800733A4(void) {
     extern u16 gSaveUiStrs[];
-    fn_80006220(3);
+    Game_SetState(3);
     fn_8002D780(6);
     fn_8000BD98((u8 *)gSaveUiStrs + 0x101);
     return 5;

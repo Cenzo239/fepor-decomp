@@ -2028,7 +2028,7 @@ void Battle_StartMapMain(void *parent) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
     void Process_Goto(void *, s32);
-    void fn_80006220(s32);
+    void Game_SetState(s32);
     void BattleState_LoadMap(void *, void *);
     void fn_801E379C(u32);
     void SaveData_Release(void *);
@@ -2042,7 +2042,7 @@ void Battle_StartMapMain(void *parent) {
     proc = Process_CreateChild(Proc_BMapMain, parent);
     Process_Goto(proc, 4);
     Process_Create(Proc_BMapBGMCtrl, proc);
-    fn_80006220(0x10);
+    Game_SetState(0x10);
     BattleState_LoadMap(gBattleState, gBattleState + 0x504);
     fn_801E379C(gSaveDataBase.unk4);
     SaveData_Release(&gSaveDataBase);
@@ -2060,13 +2060,13 @@ void fn_8002D72C(void *arg0) {
     extern u16 Proc_BMapMain[];
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
-    void fn_80006220(s32);
+    void Game_SetState(s32);
     void *r;
 
     r = Process_CreateChild(Proc_BMapMain, arg0);
     r = Process_Create(Proc_BMapBGMCtrl, r);
     r = Process_CreateChild(lbl_80284E5C, r);
-    fn_80006220(0x10);
+    Game_SetState(0x10);
 }
 
 extern u16 Proc_BMapMain[216];
@@ -2301,7 +2301,7 @@ void fn_8002DF54(void) {
 }
 
 void Battle_AdvancePhase(void) {
-    void fn_80006220(s32);
+    void Game_SetState(s32);
     void Allegiance_FillMask(s32, void *);
     void *Unit_FindByName(void *);
     void fn_80016C58(void);
@@ -2325,7 +2325,7 @@ void Battle_AdvancePhase(void) {
 
     /* Advance battle phase: clear turn state on active units, then bump phase. */
     if ((gBattleState[0x9F] >> 3) & 1) {
-        fn_80006220(0x20);
+        Game_SetState(0x20);
         return;
     }
     if (gBattleState[0x10] == 0x1C) {

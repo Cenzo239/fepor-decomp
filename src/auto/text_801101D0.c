@@ -2939,8 +2939,8 @@ void fn_80118170(void *arg0) {
 
 void fn_801181D0(void) {
     M2C_UNK fn_80006198();
-    M2C_UNK fn_80006220(M2C_UNK);
-    fn_80006220(0xE);
+    M2C_UNK Game_SetState(M2C_UNK);
+    Game_SetState(0xE);
     fn_80006198();
 }
 

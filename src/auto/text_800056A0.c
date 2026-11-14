@@ -467,7 +467,7 @@ s32 Game_GetState(void) {
     return *(u32 *)((u8 *)arg0 + 0x60);
 }
 
-void fn_80006220(s32 arg0) {
+void Game_SetState(s32 arg0) {
     extern u16 lbl_802832FC[];
     void *Process_Find(u16 *);
     s32 *obj;
