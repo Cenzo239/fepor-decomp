@@ -4097,12 +4097,12 @@ void fn_8016B9EC(void *arg0) {
     u16 FileCache_GetFlags(void *);
     void fn_8006EEFC(void *, void *);
     void Process_ClearFunc(void *);
-    void fn_8016E0E4(void *);
+    void MapOverlay_Draw(void *);
     extern u8 lbl_80277EA0[];
 
     if (FileCache_GetFlags(&lbl_80277EA0[0x78]) & 0x2000) {
         fn_8006EEFC((char *)arg0 + 0x38, (void *)((s32)lbl_80277EA0 + 0x78));
-        *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(fn_8016E0E4, arg0);
+        *(s32 *)((char *)arg0 + 0x60) = Process_AttachFunc(MapOverlay_Draw, arg0);
         Process_ClearFunc(arg0);
     }
 }
@@ -5434,7 +5434,7 @@ void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
 }
 #pragma use_lmw_stmw reset
 #pragma global_optimizer on
-void fn_8016E0E4(void *arg0) {
+void MapOverlay_Draw(void *arg0) {
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_EndPrim();
