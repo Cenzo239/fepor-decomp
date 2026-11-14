@@ -460,7 +460,7 @@ void fn_800061CC(void *arg0) {
     Process_Goto(arg0, (u8)*(u32 *)((u8 *)arg0 + 0x60));
 }
 
-s32 fn_800061F4(void) {
+s32 Game_GetState(void) {
     extern u16 lbl_802832FC[];
     void *Process_Find(u16 *);
     void *arg0 = Process_Find(lbl_802832FC);

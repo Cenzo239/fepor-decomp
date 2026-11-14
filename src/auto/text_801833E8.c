@@ -7757,7 +7757,7 @@ s32 fn_80196558(void *arg0, void *arg1) {
 
 s32 fn_80196704(s32 arg0) {
     void fn_80094A08(s32, s32);
-    s32 fn_800061F4(void);
+    s32 Game_GetState(void);
     void fn_801EDA88(s32, s32);
     void fn_801ED9DC(s32, s32);
     extern struct {
@@ -7772,7 +7772,7 @@ s32 fn_80196704(s32 arg0) {
 
     fn_80094A08(gUiContext.unk0, gUiContext.unkA);
     *(u32 *)(gBattle + 0xCAC) |= 0x2000;
-    if (fn_800061F4() == 0x10) {
+    if (Game_GetState() == 0x10) {
         fn_801EDA88(gUiContext.unk0, arg0);
     } else {
         fn_801ED9DC(gUiContext.unk0, arg0);

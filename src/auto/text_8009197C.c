@@ -245,15 +245,20 @@ block_19:
 
 #pragma global_optimizer off
 u8 Unit_CanUseItem(s32 arg0, void *arg1) {
-u8 fn_800940B0(s32, void *);
-u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
-if (flags & 5ULL) return fn_800940B0(arg0, arg1) != 0;
-if (flags & 0x18ULL) return fn_800940B0(arg0, arg1);
-return 0;
+    u8 fn_800940B0(s32, void *);
+    u32 z = 0;
+    u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+    if (flags & 5ULL) {
+        return fn_800940B0(arg0, arg1) != 0;
+    }
+    if (flags & 0x18ULL) {
+        return fn_800940B0(arg0, arg1);
+    }
+    return z;
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 s32 fn_80091F70(s32 arg0, s32 arg1) {
-    s32 fn_800061F4();
+    s32 Game_GetState();
     s32 fn_8001C914(s32, s32);
     void *fn_8001C9BC(s32);
     u8 var_r0;
@@ -261,7 +266,7 @@ s32 fn_80091F70(s32 arg0, s32 arg1) {
     void *temp_r3;
     void *temp_r3_2;
 
-    if (fn_800061F4() == 0x10) {
+    if (Game_GetState() == 0x10) {
         temp_r3 = fn_8001C9BC(arg1);
         if (temp_r3 == NULL) {
             var_r0 = 0;

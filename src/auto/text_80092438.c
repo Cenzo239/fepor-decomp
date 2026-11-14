@@ -907,7 +907,7 @@ u8 fn_800934CC(void *arg0, void *arg1) {
 }
 
 u8 fn_800939FC(void *arg0, void *arg1) {
-    s32 fn_800061F4(void);
+    s32 Game_GetState(void);
     u8 fn_8001C914(void *, void *);
     void *fn_8001C9BC(void *);
     u8 fn_800940B0(void *, void *);
@@ -928,7 +928,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
 
     bit = flags & 8;
     if (bit) {
-        if (fn_800061F4() == 0x10) {
+        if (Game_GetState() == 0x10) {
             rec = fn_8001C9BC(arg1);
             if (rec == NULL) {
                 var_r0 = 0;
