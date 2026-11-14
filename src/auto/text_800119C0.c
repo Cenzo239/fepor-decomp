@@ -245,7 +245,7 @@ s32 fn_800138BC(void *arg0) {
     return (s32)*stack;
 }
 
-u32 fn_800138F4(u32 arg0, u32 arg1) {
+u32 ScriptCtx_Call(u32 arg0, u32 arg1) {
     if (arg0 < 0x10000000)
         return (arg0 * 0x10000000) + (arg1 * 0x1000000);
     return 0;

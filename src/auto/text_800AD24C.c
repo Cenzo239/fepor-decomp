@@ -9267,7 +9267,7 @@ void fn_800C28CC(void) {
 }
 
 void fn_800C28EC(void) {
-    M2C_UNK fn_800138F4();
+    M2C_UNK ScriptCtx_Call();
     M2C_UNK ScriptCtx_Begin(void *);
     M2C_UNK ScriptCmd_CmLoadScript(void *);
     M2C_UNK fn_800AA1CC();
@@ -9275,7 +9275,7 @@ void fn_800C28EC(void) {
     fn_800AA1CC();
     ScriptCmd_CmLoadScript(lbl_80270000 + 0x26);
     ScriptCtx_Begin(lbl_80270000 + 0x37);
-    fn_800138F4();
+    ScriptCtx_Call();
 }
 
 void fn_800C2930(s32 arg0, s32 arg1) {

@@ -2432,7 +2432,7 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     void Status_Clear(void *, u8);
     void ScriptCtx_Begin(void *);
     void ScriptCtx_Push(void *);
-    void fn_800138F4(void);
+    void ScriptCtx_Call(void);
     void Event_StartByName(void *, void *);
     extern u8 gBattleState[];
     extern u8 gTabMenuStrings[];
@@ -2458,7 +2458,7 @@ void TabMenu_ClearSelectedStatus(void *arg0) {
     ScriptCtx_Begin(gTabMenuStrings + 0x1C7);
     ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x10));
     ScriptCtx_Push(*(void **)((u8 *)node[2] + 0x14));
-    fn_800138F4();
+    ScriptCtx_Call();
     Event_StartByName(gTabMenuStrings + 0x1D6, arg0);
 }
 
@@ -2755,7 +2755,7 @@ void *fn_801E9C70(void *arg0)
 void fn_801E9D0C(void) {
     extern u16 gTabMenuStrings[40];
     ScriptCtx_Begin(&gTabMenuStrings[0x244 / 2]);
-    fn_800138F4();
+    ScriptCtx_Call();
 }
 
 void fn_801E9D3C(s32 arg0) {
@@ -2772,7 +2772,7 @@ void Battle_ReloadMapLayers(void) {
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
     void ScriptCtx_Begin(void *);
-    void fn_800138F4(void);
+    void ScriptCtx_Call(void);
     void Map_RefreshUnitMap(void *);
 
     u8 *battle;
@@ -2788,13 +2788,13 @@ void Battle_ReloadMapLayers(void) {
     mask90 = *(u32 *)(battle + 0x90);
 
     ScriptCtx_Begin(gTabMenuStrings + 0x24C);
-    fn_800138F4();
+    ScriptCtx_Call();
     ScriptCtx_Begin(gTabMenuStrings + 0x253);
-    fn_800138F4();
+    ScriptCtx_Call();
     ScriptCtx_Begin(gTabMenuStrings + 0x25D);
-    fn_800138F4();
+    ScriptCtx_Call();
     ScriptCtx_Begin(gTabMenuStrings + 0x26C);
-    fn_800138F4();
+    ScriptCtx_Call();
     Map_RefreshUnitMap(gBattleMap);
 
     *(u32 *)(battle + 0x84) = *(u32 *)(battle + 0x84) | mask84;
