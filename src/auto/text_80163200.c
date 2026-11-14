@@ -10994,7 +10994,8 @@ extern "C" void fn_80178AFC(void *unused, u8 *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_LayoutChildGfxEntsX(void *arg0, void *arg1) {
+/* Space each child gfx ent evenly across parent width (v18); y = 0. */
+extern "C" void Ui_LayoutChildGfxEntsX(void *unused, void *group) {
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0;
@@ -11019,17 +11020,17 @@ extern "C" void Ui_LayoutChildGfxEntsX(void *arg0, void *arg1) {
     };
     void *GfxEnt_Get(u8);
     s32 i;
-    void *p;
-    s16 quot;
-    s16 a;
-    u8 *a1 = (u8 *)arg1;
+    void *ent;
+    s16 step;
+    s16 width;
+    u8 *g = (u8 *)group;
 
-    for (i = 0; i < (s8)a1[0x60]; i++) {
-        p = GfxEnt_Get(a1[0x40 + i]);
-        a = (*(Obj **)(a1 + 0x3C))->v18();
-        quot = (s16)(a / ((s8)a1[0x60] + 1));
-        *(s16 *)((u32)p + 0x30) = (i + 1) * quot + (*(Obj **)(a1 + 0x3C))->v16();
-        *(s16 *)((u32)p + 0x32) = 0;
+    for (i = 0; i < (s8)g[0x60]; i++) {
+        ent = GfxEnt_Get(g[0x40 + i]);
+        width = (*(Obj **)(g + 0x3C))->v18();
+        step = (s16)(width / ((s8)g[0x60] + 1));
+        *(s16 *)((u32)ent + 0x30) = (i + 1) * step + (*(Obj **)(g + 0x3C))->v16();
+        *(s16 *)((u32)ent + 0x32) = 0;
     }
 }
 #pragma cplusplus reset
