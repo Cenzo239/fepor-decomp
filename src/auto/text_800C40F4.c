@@ -17273,29 +17273,30 @@ if(best)fn_800FB96C(ctx[8],(s8)bestX,(s8)bestY,best,best[0x19E],best[0x19F],(s8)
 return gAiState[0x21C];
 }
 
-s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
+s32 Unit_IsInMovAttackRange(void *unit, void *target, void **itemSlot) {
+    /* True if Manhattan distance to target is within unit mov + item attack range. */
     s32 Abs(s32);
     u8 Item_GetRangeForUnit(void *, void *);
     s8 Unit_GetMov(void *);
-    u8 b;
-    u8 a;
+    u8 tx;
+    u8 ux;
     s32 dy;
     s32 dist;
-    u8 bonus;
-    s8 range;
+    u8 itemRange;
+    s8 mov;
 
-    b = M2C_FIELD(arg1, u8 *, 0x19E);
-    a = M2C_FIELD(arg0, u8 *, 0x19E);
-    dy = Abs((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
-    dist = Abs((s8)a - (s8)b);
+    tx = M2C_FIELD(target, u8 *, 0x19E);
+    ux = M2C_FIELD(unit, u8 *, 0x19E);
+    dy = Abs((s8)M2C_FIELD(unit, u8 *, 0x19F) - (s8)M2C_FIELD(target, u8 *, 0x19F));
+    dist = Abs((s8)ux - (s8)tx);
     dist = dist + dy;
-    if (*arg2 != NULL) {
-        bonus = (u8)Item_GetRangeForUnit(*arg2, arg0);
+    if (*itemSlot != NULL) {
+        itemRange = (u8)Item_GetRangeForUnit(*itemSlot, unit);
     } else {
-        bonus = 0;
+        itemRange = 0;
     }
-    range = Unit_GetMov(arg0);
-    return dist <= (range + bonus);
+    mov = Unit_GetMov(unit);
+    return dist <= (mov + itemRange);
 }
 
 #pragma use_lmw_stmw reset
