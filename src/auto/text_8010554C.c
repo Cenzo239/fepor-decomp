@@ -2499,16 +2499,22 @@ void Sound_FadeFromZero(void *arg0, u8 arg1) {
     *(u8 *)((char *)arg0 + 0x60) = 0;
 }
 
-void Sound_FadeVolProc(void *arg0) {
+/* Process tick: ease the sound object's volume byte (+0x60), then clear when done. */
+void Sound_FadeVolProc(void *proc) {
     f32 Math_Ease(M2C_UNK, f32, f32, f32, f32);
     M2C_UNK Process_ClearFunc(void *);
-    void *temp_r31;
+    void *sound;
 
-    temp_r31 = M2C_FIELD(arg0, void **, 0x30);
-    M2C_FIELD(arg0, s32 *, 0x34) = (s32) (M2C_FIELD(arg0, s32 *, 0x34) + 1);
-    M2C_FIELD(temp_r31, s8 *, 0x60) = (s8) Math_Ease(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) M2C_FIELD(arg0, s32 *, 0x34), (f32) M2C_FIELD(arg0, s32 *, 0x38));
-    if ((s32) M2C_FIELD(arg0, s32 *, 0x34) >= (s32) M2C_FIELD(arg0, s32 *, 0x38)) {
-        Process_ClearFunc(arg0);
+    sound = M2C_FIELD(proc, void **, 0x30);
+    M2C_FIELD(proc, s32 *, 0x34) = (s32)(M2C_FIELD(proc, s32 *, 0x34) + 1);
+    M2C_FIELD(sound, s8 *, 0x60) = (s8)Math_Ease(
+        0,
+        (f32)M2C_FIELD(proc, s32 *, 0x3C),
+        (f32)M2C_FIELD(proc, s32 *, 0x40),
+        (f32)M2C_FIELD(proc, s32 *, 0x34),
+        (f32)M2C_FIELD(proc, s32 *, 0x38));
+    if ((s32)M2C_FIELD(proc, s32 *, 0x34) >= (s32)M2C_FIELD(proc, s32 *, 0x38)) {
+        Process_ClearFunc(proc);
     }
 }
 
