@@ -5405,7 +5405,7 @@ void fn_8011D650(void) {
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void UiPanel_ClearShowFlags(u16 *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Process_Goto(void *, s32);
     void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
@@ -5416,7 +5416,7 @@ void fn_8011D650(void) {
 
     obj = Process_Find(gUiPanelProc);
     UiPanel_ClearShowFlags(&gUiPanelFlags);
-    fn_8000C5E0(obj);
+    Process_MarkActive(obj);
     *(s32 *)((u8 *)obj + 0x30) = *(s32 *)((u8 *)obj + 0x30) + 2;
     flags = gUiPanelFlags;
     flags &= ~0x10;
@@ -5439,7 +5439,7 @@ void fn_8011D6F4(s32 arg0) {
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void UiPanel_ClearShowFlags(u16 *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Process_Goto(void *, s32);
     void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
@@ -5450,7 +5450,7 @@ void fn_8011D6F4(s32 arg0) {
 
     obj = Process_Find(gUiPanelProc);
     UiPanel_ClearShowFlags(&gUiPanelFlags);
-    fn_8000C5E0(obj);
+    Process_MarkActive(obj);
     *(s32 *)((u8 *)obj + 0x30) = arg0;
     flags = gUiPanelFlags;
     flags &= ~0x10;
@@ -5478,7 +5478,7 @@ void TalkUi_ShowMsg(void *arg0) {
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void UiPanel_ClearShowFlags(u16 *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Process_Goto(void *, s32);
     void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
@@ -5493,7 +5493,7 @@ void TalkUi_ShowMsg(void *arg0) {
     Str_CopyPad(gTalkUiLastMsg, arg0, 0x1E);
     obj = Process_Find(gUiPanelProc);
     UiPanel_ClearShowFlags(&gUiPanelFlags);
-    fn_8000C5E0(obj);
+    Process_MarkActive(obj);
     *(void **)((u8 *)obj + 0x30) = result;
     flags = gUiPanelFlags;
     flags &= ~0x10;

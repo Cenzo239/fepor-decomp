@@ -6049,7 +6049,7 @@ void fn_8016F0C4(void *arg0) {
 }
 
 void fn_8016F0E8(void *arg0) {
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void fn_80023FF4(void *);
     register void *temp_r3;
     void *temp_r31;
@@ -6057,7 +6057,7 @@ void fn_8016F0E8(void *arg0) {
     s32 temp_r30;
 
     fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r30 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -6091,7 +6091,7 @@ void fn_8016F220(void *arg0)
     s32 temp_r31;
     
     fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -6130,13 +6130,13 @@ void fn_8016F32C(void *arg0) {
 }
 
 void fn_8016F378(void *arg0) {
-    M2C_UNK fn_8000C5E0(void *);
+    M2C_UNK Process_MarkActive(void *);
     M2C_UNK fn_80023FF4(void *);
     s32 temp_r31;
     void *temp_r3;
 
     fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -6172,13 +6172,13 @@ void fn_8016F484(void *arg0) {
 }
 
 void fn_8016F4D0(void *arg0) {
-    M2C_UNK fn_8000C5E0(void *);
+    M2C_UNK Process_MarkActive(void *);
     M2C_UNK fn_80023FF4(void *);
     s32 temp_r31;
     void *temp_r3;
 
     fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -6507,7 +6507,7 @@ void fn_8016FE5C(void) {
 void fn_8016FE60(void *arg0) {
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
@@ -6526,7 +6526,7 @@ void fn_8016FE60(void *arg0) {
     saved = M2C_FIELD(obj, s8 *, 0x62);
     fn_80023FF4(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
-    fn_8000C5E0(M2C_FIELD(arg0, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     Ui_BringChildToFront(arg0, M2C_FIELD(arg0, s32 *, 0x40));
     ret = Ui_FindChild(arg0, -0x1000, 0);
     if (ret != 0) {
@@ -7076,7 +7076,7 @@ void fn_80170E08(void *arg0) {
 
 void fn_80170E18(void *arg0) {
     void fn_8000A420(void *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void fn_80023FF4(void *);
     void Ui_SetWidgetText(s32, s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -7092,7 +7092,7 @@ void fn_80170E18(void *arg0) {
     *(s8 *)((u8 *)obj + 0x62) = saved;
     obj2 = *(void **)((u8 *)arg0 + 0x5C);
     if (!(*(u8 *)((u8 *)obj2 + 0x2C) & 2)) {
-        fn_8000C5E0(obj2);
+        Process_MarkActive(obj2);
     }
     fn_8000A420(obj2);
     ret = Ui_FindChild(arg0, -0x1000, 0);
@@ -7752,7 +7752,7 @@ void Ui_RestoreUnitListPanel(void *panel) {
     /* Refresh the sub-menu, reset the inventory panel, bring the unit list to front, and refresh unit/portrait/caption. */
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
@@ -7773,7 +7773,7 @@ void Ui_RestoreUnitListPanel(void *panel) {
     saved = M2C_FIELD(obj, s8 *, 0x62);
     fn_80023FF4(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
-    fn_8000C5E0(M2C_FIELD(panel, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
     obj = M2C_FIELD(panel, void **, 0x4C);
     zero = 0;
     saved = M2C_FIELD(panel, s32 *, 0x40);
@@ -7851,7 +7851,7 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
     /* Same as Ui_RestoreUnitListPanel: refresh sub-menu, reset inventory, refocus unit list/portrait/caption. */
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
-    void fn_8000C5E0(void *);
+    void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(s32, s32);
@@ -7872,7 +7872,7 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
     saved = M2C_FIELD(obj, s8 *, 0x62);
     fn_80023FF4(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
-    fn_8000C5E0(M2C_FIELD(panel, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
     obj = M2C_FIELD(panel, void **, 0x4C);
     zero = 0;
     saved = M2C_FIELD(panel, s32 *, 0x40);

@@ -3952,7 +3952,7 @@ void Process_DetachChild(void *arg0) {
     }
 }
 
-void fn_8000C5E0(void *arg0) {
+void Process_MarkActive(void *arg0) {
     void *temp_r4;
 
     if ((void *) M2C_FIELD(arg0, void **, 0x18) != NULL) {
