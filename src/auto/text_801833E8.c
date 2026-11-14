@@ -10985,7 +10985,7 @@ void fn_8019DB68(void) {
     void fn_801A016C(void);
     void fn_801A0100(void);
     void fn_801A0208(void);
-    void fn_801A1BF4(void);
+    void ScriptCmd_EventSetSavedByte(void);
     void fn_801A1B58(void);
     void fn_801A1A90(void);
     void fn_801A25FC(void);
@@ -11072,7 +11072,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x3AA, fn_801A016C, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x3B5, fn_801A0100, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x3C0, fn_801A0208, 6);
-    Script_RegisterCommand(lbl_8027AD98 + 0x3C7, fn_801A1BF4, 1);
+    Script_RegisterCommand(lbl_8027AD98 + 0x3C7, ScriptCmd_EventSetSavedByte, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3CF, fn_801A1B58, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3D9, fn_801A1A90, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x3E2, fn_801A25FC, 1);
@@ -12743,7 +12743,7 @@ s32 fn_801A1B58(s32 arg0) {
     return 1;
 }
 
-s32 fn_801A1BF4(s32 arg0) {
+s32 ScriptCmd_EventSetSavedByte(s32 arg0) {
     void *Process_Find(void *);
     void *Process_Create(void *, s32);
     s32 fn_800C0658(void);
