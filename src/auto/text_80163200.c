@@ -10741,7 +10741,7 @@ s32 fn_801784D8(void) {
 }
 
 #pragma scheduling reset
-s32 fn_80178558(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_SetCmd81OrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
