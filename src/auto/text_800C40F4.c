@@ -19657,7 +19657,8 @@ void fn_800FBF54(void) {
     p[0x1A0 / 4] |= 1;
 }
 
-void Ai_ConfirmBestMove(s32 arg0) {
+/* Find best move tile for the UI unit, confirm the action, and queue the AI move. */
+void Ai_ConfirmBestMove(s32 proc) {
     u8 Ai_FindBestMovePos(void *, s16 *, s16 *, u8);
     void Ui_ConfirmUnitAction(void *);
     void UiCtx_RefreshRangeSelect(void *);
@@ -19666,23 +19667,23 @@ void Ai_ConfirmBestMove(s32 arg0) {
     void Process_ClearFunc(s32);
     extern u8 gUiContext[];
     extern u8 gAiState[];
-    s16 spA;
-    s16 sp8;
+    s16 destY;
+    s16 destX;
     s32 saved;
     void *unit;
     u8 *ctx;
-    u8 *g;
+    u8 *ai;
 
-    saved = arg0;
+    saved = proc;
     ctx = gUiContext;
     unit = *(void **)ctx;
-    if (Ai_FindBestMovePos(unit, &spA, &sp8, ctx[0x11]) != 0) {
-        g = gAiState;
-        g[0x21C] = 0;
+    if (Ai_FindBestMovePos(unit, &destY, &destX, ctx[0x11]) != 0) {
+        ai = gAiState;
+        ai[0x21C] = 0;
         Ui_ConfirmUnitAction(ctx);
         UiCtx_RefreshRangeSelect(ctx);
-        Ai_SetUnitMoveTo(unit, spA, sp8, 1, 0xFFFF, 0, 0, -1);
-        if (g[0x21C] != 0) {
+        Ai_SetUnitMoveTo(unit, destY, destX, 1, 0xFFFF, 0, 0, -1);
+        if (ai[0x21C] != 0) {
             fn_800FF918(saved);
         }
     }
