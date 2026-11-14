@@ -5960,7 +5960,7 @@ void fn_800BB0E8(void) {
     void fn_800BD610(void);
     void fn_800BD5E0(void);
     void fn_800BD704(void);
-    void fn_800BD638(void);
+    void ScriptCmd_UnitSet(void);
     void fn_800BD470(void);
     void fn_800BD424(void);
     void fn_800BD5AC(void);
@@ -6041,7 +6041,7 @@ void fn_800BB0E8(void) {
     Script_RegisterCommand(lbl_8026F728 + 0x101, fn_800BD610, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x10F, fn_800BD5E0, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x11D, fn_800BD704, 2);
-    Script_RegisterCommand(lbl_8026F728 + 0x125, fn_800BD638, 3);
+    Script_RegisterCommand(lbl_8026F728 + 0x125, ScriptCmd_UnitSet, 3);
     Script_RegisterCommand(lbl_8026F728 + 0x12D, fn_800BD470, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x139, fn_800BD424, 1);
     Script_RegisterCommand(lbl_8026F728 + 0x146, fn_800BD5AC, 1);
@@ -7334,7 +7334,7 @@ u8 fn_800BD610(s32 arg0) {
     return *(u8 *)((u8 *)temp_r3 + 0x198);
 }
 
-s32 fn_800BD638(u8 id,s32 mid,s32 val) {
+s32 ScriptCmd_UnitSet(u8 id,s32 mid,s32 val) {
 extern u16 gUnits[]; void fn_8003868C(void*,s32); void Unit_SetHp(void*,s32); void Unit_SetDisposId(void*,u8);
 u8 *unit;
 if(id!=0) unit=(u8*)gUnits+(id-1)*0x280; else unit=0;
