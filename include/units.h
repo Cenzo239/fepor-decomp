@@ -21,8 +21,10 @@ struct Unit {
     /* 0x190 */ void* faction; /* +0x8 = allegiance; compared for same-army checks */
     /* 0x194 */ void* rescuePartner; /* other unit while rescuing / being rescued */
     /* 0x198 */ u8 index; /* deployment/script unit id; UnitGetByPos return */
-    /* 0x199 */ u8 unk199[3];
-    /* 0x19C */ s8 transformGauge; /* 0..0x14 laguz meter; status 8=laguz, 9=transformed dir, 0xA=locked */
+    /* 0x199 */ u8 unk199;
+    /* 0x19A */ u8 level; /* UnitSet mid 0; display level */
+    /* 0x19B */ u8 exp; /* UnitSet mid 6 via Unit_SetExp; 0..100 or 0xFF */
+    /* 0x19C */ s8 transformGauge; /* UnitSet mid 7; 0..0x14 laguz meter */
     /* 0x19D */ u8 unk19D;
     /* 0x19E */ s8 mapX;
     /* 0x19F */ s8 mapY;
