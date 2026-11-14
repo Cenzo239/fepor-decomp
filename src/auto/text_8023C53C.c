@@ -9537,8 +9537,33 @@ void fn_802576DC(void) {
     }
 }
 
-s32 fn_8025785C(u8 arg0, s32 arg1) {
-    return 0;
+s32 fn_8025785C(u8 arg0, s32 arg1)
+{
+    extern f32 lbl_8036C278;
+    extern f32 lbl_8029F5F8[];
+    extern f32 lbl_8029F7F8[];
+    f32 scale;
+    f32 factor;
+    u32 pitch;
+    u32 hi;
+
+    pitch = (u32)arg1;
+    if (pitch == 0xFFFFFFFFU) {
+        pitch = 0x40005622;
+    }
+    hi = pitch >> 24;
+    factor = lbl_8036C278;
+    if (arg0 != hi) {
+        scale = (f32)(pitch & 0xFFFFFF);
+        if (hi < arg0) {
+            scale *= lbl_8029F5F8[arg0 - hi];
+        } else {
+            scale *= lbl_8029F7F8[hi - arg0];
+        }
+    } else {
+        scale = (f32)(pitch & 0xFFFFFF);
+    }
+    return __cvt_fp2unsigned((factor * scale) / (f32)(*(u32 *)gSoundData));
 }
 
 s32 fn_80257820(u16 arg0) {
