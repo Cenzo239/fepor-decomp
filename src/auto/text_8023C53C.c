@@ -9554,6 +9554,7 @@ s32 fn_8025785C(u8 arg0, s32 arg1)
     extern f32 lbl_8036C278;
     extern f32 lbl_8029F5F8[];
     extern f32 lbl_8029F7F8[];
+    f64 pad;
     f32 scale;
     f32 factor;
     f32 tval;
