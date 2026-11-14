@@ -1395,20 +1395,20 @@ if(value!=0xFFFFFFFFu) Snd_SetParamU8(value,0x83,arg1);
 
 void fn_800B1C54(s32 arg0, s32 arg1)
 {
-    extern u8 gSoundSys[];
-    void Snd_SetParamU8(s32, s32, s32);
+    extern u8 lbl_80317338[];
+    void fn_8024B654(s32, s32, s32);
     u8 *sys;
     u8 *p;
     s32 off;
     u32 value;
 
-    sys = gSoundSys;
+    sys = lbl_80317338;
     off = arg0 * 0x14 + 6;
     p = *(u8 **)(sys + 0xF4);
     *(u16 *)(p + off) = (u8)arg1;
     value = *(u32 *)(*(u8 **)(sys + 0xF4) + off + 6);
     if (value != 0xFFFFFFFFu) {
-        Snd_SetParamU8((s32)value, 0xA, arg1);
+        fn_8024B654((s32)value, 0xA, arg1);
     }
 }
 
@@ -6281,22 +6281,15 @@ u32 fn_800BBE1C(u32 arg0, void *arg1)
     return (u8)Status_Test(entry + 0x1BC, result[0x18]);
 }
 
-s32 fn_800BBE9C(u8 arg0, s32 arg1) {
-    void Status_OrByName(void *);
-    extern u8 gUnits[];
-    void *unit;
-
-    (void)arg1;
-    if (arg0 != 0) {
-        unit = gUnits + (arg0 - 1) * 0x280;
-    } else {
-        unit = NULL;
-    }
-    if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
-        return 0;
-    }
-    Status_OrByName((u8 *)unit + 0x1BC);
-    return 1;
+s32 fn_800BBE9C(u8 arg0,s32 arg1) {
+ void Status_OrByName(void *,s32);
+ extern u8 gUnits[];
+ void *unit;
+ if(arg0) unit=gUnits+(arg0-1)*0x280;
+ else unit=NULL;
+ if(unit==NULL || *(u32 *)((u8 *)unit+0x188)==0) return 0;
+ Status_OrByName((u8 *)unit+0x1BC,arg1);
+ return 1;
 }
 
 s32 Unit_SendItemToConvoy(u8 unitId, s32 slotIndex) {
