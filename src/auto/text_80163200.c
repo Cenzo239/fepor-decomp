@@ -2935,10 +2935,10 @@ void fn_80169AF4(void *arg0) {
 
 void fn_80169B34(void *arg0) {
     M2C_UNK Process_DecRef(s32);
-    M2C_UNK fn_8013FEC0(void *);
+    M2C_UNK Ui_DecBusy(void *);
     M2C_UNK Process_ClearFunc(void *);
     Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Process_ClearFunc(arg0);
 }
 
@@ -2962,14 +2962,14 @@ void fn_80169BB4(void *arg0) {
 
 void fn_80169BF4(void *arg0) {
     M2C_UNK Process_DecRef(s32);
-    M2C_UNK fn_8013FEC0(void *);
+    M2C_UNK Ui_DecBusy(void *);
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
 
     Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -2986,14 +2986,14 @@ void fn_80169C54(void *arg0) {
 
 void fn_80169C94(void *arg0) {
     M2C_UNK Process_DecRef(s32);
-    M2C_UNK fn_8013FEC0(void *);
+    M2C_UNK Ui_DecBusy(void *);
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
 
     Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
     fn_80023FF4(temp_r3);
@@ -3030,7 +3030,7 @@ void fn_80169D58(void *arg0) {
     if (temp != NULL) {
         Process_RetreatStep(Sound_FindByName(temp));
     }
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Process_ClearFunc(arg0);
 }
 
@@ -3043,9 +3043,9 @@ void fn_80169DAC(void *arg0) {
 
 void fn_80169DEC(void *arg0) {
     M2C_UNK Process_DecRef(s32);
-    M2C_UNK fn_8013FEC0(void *);
+    M2C_UNK Ui_DecBusy(void *);
     Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Process_ClearFunc(arg0);
 }
 
@@ -6071,7 +6071,7 @@ void fn_8016F0E8(void *arg0) {
     temp_r30_2 = M2C_FIELD(temp_r31, s8 *, 0x62);
     fn_80023FF4(temp_r31);
     M2C_FIELD(temp_r31, s8 *, 0x62) = temp_r30_2;
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
     Process_ClearFunc(arg0);
 }
@@ -6101,7 +6101,7 @@ void Ui_CloseNestedMenu(void *arg0)
     fn_80023FF4(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
 
     temp_r3 = M2C_FIELD(gUiContext, void **, 0);
@@ -6146,7 +6146,7 @@ void fn_8016F378(void *arg0) {
     fn_80023FF4(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
     Process_ClearFunc(arg0);
 }
@@ -6188,7 +6188,7 @@ void fn_8016F4D0(void *arg0) {
     fn_80023FF4(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
     Process_ClearFunc(arg0);
 }
@@ -8124,7 +8124,7 @@ void fn_801734D8(void *arg0) {
     void fn_80143C9C(s32);
     void Process_CreateChild(void *, void *);
     void Process_ClearFunc(void *);
-    void fn_8013FEC0(void *);
+    void Ui_DecBusy(void *);
 
     extern u32 gUiContext[];
     extern u8 lbl_80294B10[0xA0];
@@ -8148,7 +8148,7 @@ void fn_801734D8(void *arg0) {
         }
     }
     fn_80143C9C(temp_r30);
-    fn_8013FEC0(arg0);
+    Ui_DecBusy(arg0);
     Process_CreateChild(lbl_80294B10, arg0);
     Process_ClearFunc(arg0);
 }

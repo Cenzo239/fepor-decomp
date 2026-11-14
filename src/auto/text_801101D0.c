@@ -2894,8 +2894,8 @@ BOOL fn_80117D80(s32 arg0, s32 arg1)
 
 void fn_80117F1C(void *arg0) {
     M2C_UNK Process_Goto(void *, u8);
-    M2C_UNK fn_8013FEC0();
-    fn_8013FEC0();
+    M2C_UNK Ui_DecBusy();
+    Ui_DecBusy();
     Process_Goto(arg0, M2C_FIELD(arg0, u8 *, 0x48));
 }
 
@@ -3012,7 +3012,7 @@ void fn_80118308(s32 arg0) {
 void fn_80118388(s32 arg0) {
     M2C_UNK Process_ClearFunc(s32);
     M2C_UNK fn_800A8400();
-    fn_8013FEC0();
+    Ui_DecBusy();
     fn_800A8400();
     Process_ClearFunc(arg0);
 }
@@ -3028,7 +3028,7 @@ void fn_801183C0(s32 arg0) {
 }
 
 void fn_80118404(s32 arg0) {
-    fn_8013FEC0();
+    Ui_DecBusy();
     fn_800A8400();
     Process_ClearFunc(arg0);
 }
@@ -3041,7 +3041,7 @@ void fn_8011843C(s32 arg0) {
 }
 
 void fn_80118470(s32 arg0) {
-    fn_8013FEC0();
+    Ui_DecBusy();
     fn_800A8400();
     Process_ClearFunc(arg0);
 }

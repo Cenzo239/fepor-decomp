@@ -7693,7 +7693,7 @@ extern "C" void fn_8013FE0C(void *arg0) {
 #pragma cplusplus reset
 
 #pragma cplusplus reset
-void fn_8013FEC0(void *arg0) {
+void Ui_DecBusy(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x30) = (u8) (M2C_FIELD(arg0, u8 *, 0x30) - 1);
 }
 

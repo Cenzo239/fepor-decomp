@@ -156,7 +156,7 @@ check:
 
 void fn_801EAC14(void *arg0) {
     M2C_UNK Process_Goto(void *, u8);
-    fn_8013FEC0();
+    Ui_DecBusy();
     Process_Goto(arg0, M2C_FIELD(arg0, u8 *, 0x54));
 }
 
@@ -229,7 +229,7 @@ void fn_801EAF34(s32 arg0) {
 void fn_801EAFB4(s32 arg0) {
     M2C_UNK Process_ClearFunc(s32);
     M2C_UNK fn_800A8400();
-    fn_8013FEC0();
+    Ui_DecBusy();
     fn_800A8400();
     Process_ClearFunc(arg0);
 }
@@ -244,7 +244,7 @@ void fn_801EAFEC(s32 arg0) {
 void fn_801EB020(s32 arg0) {
     M2C_UNK Process_ClearFunc(s32);
     M2C_UNK fn_800A8400();
-    fn_8013FEC0();
+    Ui_DecBusy();
     fn_800A8400();
     Process_ClearFunc(arg0);
 }
