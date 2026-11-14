@@ -581,35 +581,23 @@ s32 fn_800A4BC4(void) {
 }
 
 s32 fn_800A4C48(void) {
-    void fn_8020C79C(void);
-    extern u8 lbl_803123A0[];
-    u8 *p;
-
-    p = lbl_803123A0;
-    if (*(s32 *)(p + 0xA0) == 0) {
-        goto ret0;
-    }
-    if (p[0xA4] != 0) {
-        goto ret0;
-    }
-    if (p[0xA7] == 0) {
-        goto check_b0;
-    }
-    if (p[0xA5] != 1) {
-        goto clear_a5;
-    }
-    return 0;
+ void fn_8020C79C(void);
+ extern u8 lbl_803123A0[];
+ u8 *p=lbl_803123A0;
+ if (*(s32 *)(p+0xA0)==0) goto ret0;
+ if(p[0xA4]!=0) goto ret0;
+ if(p[0xA7]==0) goto clear_a5;
+ if(p[0xA5]!=1) goto check_b0;
+ return 0;
 clear_a5:
-    p[0xA5] = 0;
+ p[0xA5]=0;
 check_b0:
-    if (*(u32 *)(lbl_803123A0 + 0xB0) != 0U) {
-        goto ret0;
-    }
-    *(s32 *)(p + 0xA0) = 0;
-    fn_8020C79C();
-    return 1;
+ if(*(u32 *)(lbl_803123A0+0xB0)!=0) goto ret0;
+ *(s32 *)(p+0xA0)=0;
+ fn_8020C79C();
+ return 1;
 ret0:
-    return 0;
+ return 0;
 }
 
 #pragma use_lmw_stmw on
