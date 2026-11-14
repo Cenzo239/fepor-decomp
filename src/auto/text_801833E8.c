@@ -7712,7 +7712,7 @@ s32 fn_80196558(void *arg0, void *arg1) {
     s8 fn_8003AEB0(void *);
     s8 fn_8003AF28(void *);
     s8 fn_8003AFA0(void *);
-    s8 fn_8003B258();
+    s8 Unit_GetCarryWtLimit();
     s8 temp_r26;
     s8 temp_r27;
     s8 temp_r28;
@@ -7725,7 +7725,7 @@ s32 fn_80196558(void *arg0, void *arg1) {
     u8 var_r0;
 
     temp_r24 = M2C_FIELD(arg0, u8 *, 0x1A8);
-    temp_r26 = fn_8003B258();
+    temp_r26 = Unit_GetCarryWtLimit();
     temp_r27 = fn_8003AFA0(arg0);
     temp_r28 = fn_8003AF28(arg0);
     temp_r29 = fn_8003AEB0(arg0);

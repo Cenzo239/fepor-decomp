@@ -133,7 +133,7 @@ void fn_801A8268(void *arg0) {
     s32 fn_8003AEB0(void *);
     s32 fn_8003AF28(void *);
     s32 fn_8003AFA0(void *);
-    s32 fn_8003B258(void *);
+    s32 Unit_GetCarryWtLimit(void *);
     s32 UnitRef_GetName(void *);
     s32 fn_8001D8A8(void *);
     extern u8 lbl_8027B650[];
@@ -172,7 +172,7 @@ void fn_801A8268(void *arg0) {
     d = fn_8003AEB0(arg0);
     e = fn_8003AF28(arg0);
     f = fn_8003AFA0(arg0);
-    g = fn_8003B258(arg0);
+    g = Unit_GetCarryWtLimit(arg0);
     DebugPrint((const char *)(lbl_8027B650 + 0x57),
                 g, f, e, d, c, b, a);
 
@@ -512,7 +512,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     s8 fn_8003AEB0(void *);
     s8 fn_8003AF28(void *);
     s8 fn_8003AFA0(void *);
-    s8 fn_8003B258(void *);
+    s8 Unit_GetCarryWtLimit(void *);
     u8 fn_80092DC4(void *, void *);
     void fn_801A80D8(void *, s32 *, s32 *, s32 *);
     u8 Status_Test(void *, s32);
@@ -603,7 +603,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
                     (s16)(*(s16 *)((u8 *)self + 0x298) + fn_8003AFA0(self));
             } else {
                 *(s16 *)((u8 *)self + 0x298) =
-                    (s16)(*(s16 *)((u8 *)self + 0x298) + fn_8003B258(self));
+                    (s16)(*(s16 *)((u8 *)self + 0x298) + Unit_GetCarryWtLimit(self));
             }
         }
     } else {
@@ -619,7 +619,7 @@ void fn_801A8F80(void *arg0, void *arg1) {
     }
 
     tmp = (u8)Item_GetWt((u8 *)self + 0x28C);
-    diff = tmp - fn_8003B258(self);
+    diff = tmp - Unit_GetCarryWtLimit(self);
     if (diff < 0) {
         diff = 0;
     }

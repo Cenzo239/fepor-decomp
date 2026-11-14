@@ -3108,7 +3108,7 @@ s32 fn_80131C78(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5)
     // Jump table handling
     switch (param_5) {
         case 0:
-            return fn_8003B258(param_4);
+            return Unit_GetCarryWtLimit(param_4);
         case 1:
             // fall through
             break;
@@ -3145,7 +3145,7 @@ s32 fn_80131C78(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5)
 }
 
 s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
-    s32 fn_8003B258(void *);
+    s32 Unit_GetCarryWtLimit(void *);
     s32 fn_8003AFA0(void *);
     s32 fn_8003AF28(void *);
     s32 fn_8003AEB0(void *);
@@ -3159,7 +3159,7 @@ s32 fn_80131F70(void *arg0, void *arg1, u32 arg2) {
     case 0:
         return -(s32)*(u16 *)((u8 *)*(void **)((u8 *)p + 0x188) + 0x5A);
     case 1:
-        return (s8)fn_8003B258(p);
+        return (s8)Unit_GetCarryWtLimit(p);
     case 2:
         return (s8)fn_8003AFA0(p);
     case 3:

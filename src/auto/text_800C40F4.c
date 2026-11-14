@@ -19828,7 +19828,7 @@ void fn_800FC6B0(void *arg0) {
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     s8 fn_8003AFA0(void *);
-    s8 fn_8003B258(void *);
+    s8 Unit_GetCarryWtLimit(void *);
     u8 fn_8009339C(void *);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -19975,7 +19975,7 @@ void fn_800FC6B0(void *arg0) {
                 if ((*(u64 *)cb & 0x42ULL) != 0) {
                     val = val + (s8)fn_8003AFA0(unit);
                 } else {
-                    val = val + (s8)fn_8003B258(unit);
+                    val = val + (s8)Unit_GetCarryWtLimit(unit);
                 }
                 if ((u16)val != 0) {
                     fn_80100D18(unit, bestLo, 0);
@@ -20043,7 +20043,7 @@ void fn_800FC6B0(void *arg0) {
                 if ((*(u64 *)cb & 0x42ULL) != 0) {
                     val = val + (s8)fn_8003AFA0(unit);
                 } else {
-                    val = val + (s8)fn_8003B258(unit);
+                    val = val + (s8)Unit_GetCarryWtLimit(unit);
                 }
                 if ((u16)val != 0) {
                     fn_80100D18(unit, bestHi, 0);

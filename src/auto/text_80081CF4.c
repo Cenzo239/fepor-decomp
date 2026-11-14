@@ -359,7 +359,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     void fn_80087F50(s32, f32, f32);
-    s8 fn_8003B258(void *);
+    s8 Unit_GetCarryWtLimit(void *);
     s8 Unit_GetStr(void *);
     s8 fn_8003AFA0(void *);
     s8 Unit_GetMag(void *);
@@ -454,7 +454,7 @@ void fn_800832C0(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_PrepareTex();
 
     lim = (s8)M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), s8 *, 0x4D);
-    mx = fn_8003B258(arg0);
+    mx = Unit_GetCarryWtLimit(arg0);
     cur = Unit_GetStr(arg0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_803695CC);

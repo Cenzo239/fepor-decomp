@@ -3657,7 +3657,7 @@ s8 fn_8003AFA0(void *arg0) {
     return result;
 }
 #pragma global_optimizer on
-s8 fn_8003B258(void *arg0) {
+s8 Unit_GetCarryWtLimit(void *arg0) {
     s8 fn_80039408();
     s8 lim;
     void *p188;
@@ -4894,7 +4894,7 @@ s32 Unit_CanReceiveItem(s32 unit, void *item) {
     /* True if item is free, under CON wt limit, and unit has an empty item/held slot. */
     u64 *Item_GetFlagsPtr(void *);
     u8 Item_GetWt(void *);
-    s32 fn_8003B258(void);
+    s32 Unit_GetCarryWtLimit(void);
     s32 Unit_FindEmptyItemSlot(s32);
     s32 Unit_FindEmptyHeldSlot(s32);
     s8 lim;
@@ -4903,7 +4903,7 @@ s32 Unit_CanReceiveItem(s32 unit, void *item) {
     if (((*(u8 *)((u8 *)item + 5) >> 7) & 1) != 0) {
         code = 2;
     } else {
-        lim = (s8)fn_8003B258();
+        lim = (s8)Unit_GetCarryWtLimit();
         if ((s32)Item_GetWt(item) >= (s32)lim) {
             code = 1;
         } else {
@@ -4926,7 +4926,7 @@ end:
 s32 Unit_CheckReceiveItem(s32 arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Item_GetWt(void *);
-    s32 fn_8003B258(void);
+    s32 Unit_GetCarryWtLimit(void);
     s32 Unit_FindEmptyItemSlot(s32);
     s32 Unit_FindEmptyHeldSlot(s32);
     s8 lim;
@@ -4934,7 +4934,7 @@ s32 Unit_CheckReceiveItem(s32 arg0, void *arg1) {
     if (((*(u8 *)((u8 *)arg1 + 5) >> 7) & 1) != 0) {
         return 2;
     }
-    lim = (s8)fn_8003B258();
+    lim = (s8)Unit_GetCarryWtLimit();
     if ((s32)Item_GetWt(arg1) >= (s32)lim) {
         return 1;
     }

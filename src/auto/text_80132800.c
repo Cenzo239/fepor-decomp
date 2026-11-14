@@ -2915,7 +2915,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     void Prim2D_ScissorFromRect(void *);
     s32 Unit_GetMaxHp(void *);
     s32 Unit_GetHp(void *);
-    s32 fn_8003B258(void *);
+    s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetStr(void *);
     s32 fn_8003AFA0(void *);
     s32 Unit_GetMag(void *);
@@ -2982,7 +2982,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     idx = Unit_GetMaxHp(unit);
     self->v9(0xC, 0x22, lbl_802767E0 + 0x48, Unit_GetHp(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4C]);
-    idx = fn_8003B258(unit);
+    idx = Unit_GetCarryWtLimit(unit);
     self->v9(0xC, 0x42, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
     idx = fn_8003AFA0(unit);
@@ -3139,7 +3139,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
     void Prim2D_ScissorFromRect(void *);
-    s32 fn_8003B258(void *);
+    s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetStr(void *);
     s32 fn_8003AFA0(void *);
     s32 Unit_GetMag(void *);
@@ -3198,7 +3198,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     Prim2D_PrepareTex();
 
     unit = self->unk44;
-    idx = fn_8003B258(unit);
+    idx = Unit_GetCarryWtLimit(unit);
     self->v9(0xC, 0x29, lbl_802767E0 + 0x4E, Unit_GetStr(unit), idx,
              (s8)(*(u8 **)((u8 *)unit + 0x18C))[0x4D]);
     idx = fn_8003AFA0(unit);

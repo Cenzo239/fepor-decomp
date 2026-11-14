@@ -1357,7 +1357,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     s8 Unit_GetCon(void *);
     s8 fn_8003ACF8(void *);
     s8 fn_8003AF28(void *);
-    s8 fn_8003B258(void *);
+    s8 Unit_GetCarryWtLimit(void *);
     s8 Unit_GetMaxHp(void *);
     u8 Unit_HasHitBlockStatus(void *);
     u8 Status_Test(void *, s32);
@@ -1493,7 +1493,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 0x20) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x38) != 0) {
             tmp_s8 = Unit_GetCon(arg2);
-            if (Unit_GetCon(arg1) > tmp_s8 && fn_8003B258(arg1) >= 4
+            if (Unit_GetCon(arg1) > tmp_s8 && Unit_GetCarryWtLimit(arg1) >= 4
                 && Status_Test((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
                 half = fn_8003AF28(arg1);
                 if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
@@ -1508,7 +1508,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
         }
     } else {
     block_adept:
-        tmp_s8 = fn_8003B258(arg1);
+        tmp_s8 = Unit_GetCarryWtLimit(arg1);
         chance = tmp_s8 / 4;
         *(s16 *)((u8 *)arg1 + 0x2AA) =
             (s16)(*(s16 *)((u8 *)arg1 + 0x2AA) + (s16)chance);
