@@ -17098,7 +17098,7 @@ return gAiState[0x21C];
 #pragma opt_common_subs off
 #pragma opt_common_subs on
 u8 fn_800F43D8(s32 arg0,u8 arg1){
-extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],lbl_8028E6C8[],lbl_8028E6D8[];
+extern u8 gUiContext[],gBattleMap[],gAiState[],gMapObjEventList[],gTargetList[],lbl_80284E20[],gAiEval_UnitScoreVtbl[],lbl_8028E6D8[];
 extern char lbl_80272DB0[];
 u8 Status_Test(void *,s32);void Map_FillLayer(void *,s32,s32);void Map_SelectRangeBuffer(void *,s32);
 void Map_BuildUnitMoveRange(void *,s32,s32);s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
@@ -17142,7 +17142,7 @@ for(index=0;index<*(s32*)list;index++){
 point=TargetList_GetAt(list,index);result.pos.x=point[0];result.pos.y=point[1];
 ix=(s8)result.pos.x;iy=(s8)result.pos.y;
 eval.vtable=(void**)lbl_80284E20;id=gBattleMap[(s8)ix+((s8)iy<<6)+0xd];
-eval.vtable=(void**)lbl_8028E6C8;eval.entry=entry;eval.unit=self;eval.pos=&result.pos;result.score=0;
+eval.vtable=(void**)gAiEval_UnitScoreVtbl;eval.entry=entry;eval.unit=self;eval.pos=&result.pos;result.score=0;
 if(id){void *unit=0;if(id)unit=gUnits+(id-1)*0x280;((void(*)(void*,void*))eval.vtable[2])(&eval,unit);}
 fn_8002C6F4(&eval,(s8)ix,(s8)iy);
 if(result.score>score){bestToX=result.pos.x;score=result.score;bestToY=result.pos.y;bestX=(s16)x;bestItem=result.pos.id;bestY=(s16)y;}
