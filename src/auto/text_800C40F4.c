@@ -18107,7 +18107,7 @@ void fn_800F8364(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void fn_800F8390(void *arg0)
+void AiCmd_SeekLabelB(void *arg0)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
