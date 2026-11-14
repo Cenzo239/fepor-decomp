@@ -1504,7 +1504,7 @@ void __OSGetExecParams(s32 *arg0) {
 }
 
 #pragma peephole off
-s32 fn_802068D4(void) {
+s32 DVDGetAppLoaderOffset(void) {
     u32 fn_80204DE0(u32, u32);
     void fn_8020EB10(void *, u32, s32, s32, s32, s32);
     s32 fn_8020EF60(void *);
@@ -1546,7 +1546,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_80206658(u32, s32, s32);
     void fn_802067E0(s32);
     void fn_8020681C(u32, s32, s32);
-    s32 fn_802068D4(void);
+    s32 DVDGetAppLoaderOffset(void);
     void fn_80206888(void);
     void fn_802089A4(s32);
     void fn_8020EB10(void *, u32, s32, s32, s32, s32);
@@ -1637,9 +1637,9 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     }
 
     temp_r30 = fn_80204DE0(0x20, 0x20);
-    fn_8020681C(temp_r30, 0x20, fn_802068D4());
+    fn_8020681C(temp_r30, 0x20, DVDGetAppLoaderOffset());
     {
-        s32 off = fn_802068D4() + 0x20;
+        s32 off = DVDGetAppLoaderOffset() + 0x20;
         fn_8020681C(0x81200000, (*(s32 *)(temp_r30 + 0x14) + 0x1F) & ~0x1F, off);
     }
     ICInvalidateRange((void *)0x81200000, (*(s32 *)(temp_r30 + 0x14) + 0x1F) & ~0x1F);
@@ -1696,7 +1696,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         *(s32 *)0x812FDFF0 = arg2;
         *(s32 *)0x812FDFEC = arg3;
         *(u8 *)0x800030E2 = 1;
-        fn_8020EB10(sp8C, 0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F, fn_802068D4() + *(s32 *)(temp_r30 + 0x14) + 0x20, 0, 0);
+        fn_8020EB10(sp8C, 0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F, DVDGetAppLoaderOffset() + *(s32 *)(temp_r30 + 0x14) + 0x20, 0, 0);
         while (fn_8020EF60(sp8C) != 0) {
             if (fn_8020F40C() == 0)
                 fn_802089A4(0);
