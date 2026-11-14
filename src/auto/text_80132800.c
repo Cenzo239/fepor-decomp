@@ -10327,7 +10327,7 @@ return 0;
 void fn_801453F0(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
@@ -10336,7 +10336,7 @@ void fn_801453F0(void) {
     f32 b;
     f32 a;
 
-    base = (s32)lbl_80292558;
+    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
@@ -10354,7 +10354,7 @@ void fn_801453F0(void) {
 void fn_80145488(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
@@ -10365,7 +10365,7 @@ void fn_80145488(void) {
     f32 a;
 
     (void)lbl_8036A780;
-    base = (s32)lbl_80292558;
+    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
@@ -10382,9 +10382,9 @@ void fn_80145488(void) {
 
 void fn_80145520(void) {
 void Process_UnlinkByKey(void *); void *Process_Create(void *, s32);
-extern u8 lbl_80292558[]; extern u8 gBgmVol;
+extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
 extern f32 lbl_8036A778; extern f32 lbl_8036A77C;
-s32 base=(s32)lbl_80292558; f32 *p; f32 a,b;
+s32 base=(s32)gBgmVolFadeProcs; f32 *p; f32 a,b;
 Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
 p=Process_Create((void*)(base+0x64),3);
 b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
@@ -10393,7 +10393,7 @@ b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
 void BgmVol_FadeOut(s32 arg0) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f64 lbl_8036A788;
@@ -10404,7 +10404,7 @@ void BgmVol_FadeOut(s32 arg0) {
 
     (void)lbl_8036A788;
     (void)lbl_8036A780;
-    base = (s32)lbl_80292558;
+    base = (s32)gBgmVolFadeProcs;
     arg = arg0;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
@@ -10425,7 +10425,7 @@ void BgmVol_FadeOut(s32 arg0) {
 void fn_80145684(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
@@ -10434,7 +10434,7 @@ void fn_80145684(void) {
     f32 a;
     f32 b;
 
-    base = (s32)lbl_80292558;
+    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
@@ -10452,7 +10452,7 @@ void fn_80145684(void) {
 void fn_8014571C(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
     extern f32 lbl_8036A778;
     extern f32 lbl_8036A77C;
@@ -10461,7 +10461,7 @@ void fn_8014571C(void) {
     f32 a;
     f32 b;
 
-    base = (s32)lbl_80292558;
+    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
@@ -10479,7 +10479,7 @@ void fn_8014571C(void) {
 void fn_801457B4(void) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
-    extern u8 lbl_80292558[];
+    extern u8 gBgmVolFadeProcs[];
     extern u8 lbl_8029256C[];
     extern u8 lbl_80367AEC;
     extern f32 lbl_8036A778;
@@ -10488,7 +10488,7 @@ void fn_801457B4(void) {
     f32 a;
     f32 b;
 
-    Process_UnlinkByKey(lbl_80292558);
+    Process_UnlinkByKey(gBgmVolFadeProcs);
     Process_UnlinkByKey(lbl_8029256C);
     temp_r3 = Process_Create(lbl_8029256C, 3);
     a = lbl_8036A778;
