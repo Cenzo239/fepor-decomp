@@ -7722,7 +7722,7 @@ void fn_800BE228(s32 *arg0) {
 }
 
 #pragma global_optimizer off
-s32 fn_800BE2F4(void) {
+s32 Battle_CheckEndFlags(void) {
     u8 EventFlag_IsSet(void *, void *);
     void BMapMain_Goto(s32);
     void GfxEnt_UnlinkByName(void *);
