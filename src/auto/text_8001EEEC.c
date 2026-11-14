@@ -3337,7 +3337,7 @@ void fn_8002626C(void) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8002629C(s32 *arg0, s32 arg1) {
+void Event_BlessStartRoundSky(s32 *arg0, s32 arg1) {
 void *Item_GetByIid(void *); void fn_8002AD04(s32, void *); void *fn_8002F658(s32 *, s32); s32 fn_8003AFA0(s32); void fn_8019C0C0(s32, void *); void Battle_QueueDeathAnim(void *); void Battle_SetupUnit(void *, void *, s32); void fn_80026374(s32);
 extern u8 lbl_80268E40[]; extern s32 gTargetList[]; extern u8 gUiContext[]; extern u8 gBattle[];
 s32 *self; s32 other; s32 saved; u8 b3; u8 b2; s32 i; s32 three; void *entry; s32 val;

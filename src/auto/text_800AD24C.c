@@ -186,7 +186,7 @@ s32 Event_StartBless(s32 parent) {
 void Event_BlessNextUnit(EventBlessProc *proc) {
     void Process_Goto(void *, s32);
     void UiCtx_BeginMoveSelect(void *, void *);
-    void fn_8002629C(void *, void *);
+    void Event_BlessStartRoundSky(void *, void *);
     void fn_800264BC(void *, void *);
     extern u8 gUiContext[];
     s32 idx;
@@ -206,7 +206,7 @@ void Event_BlessNextUnit(EventBlessProc *proc) {
     if (proc->count >= 0xC) kind = 0;
     else kind = proc->kinds[idx];
     switch (kind) {
-    case 1: fn_8002629C(gUiContext, proc); break;
+    case 1: Event_BlessStartRoundSky(gUiContext, proc); break;
     case 2: fn_800264BC(gUiContext, proc); break;
     }
 }
