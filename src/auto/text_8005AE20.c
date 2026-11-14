@@ -7788,7 +7788,7 @@ void fn_8006FBE4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     Ui_CreateMenu(lbl_80311CB8, arg0, 0);
 }
 
-void fn_80070018(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+void MsgWin_OpenSingle(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     extern u32 lbl_80311CA8[];
     extern s8 lbl_80366DE8;
     extern u32 lbl_80367350[2];

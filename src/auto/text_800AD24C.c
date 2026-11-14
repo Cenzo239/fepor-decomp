@@ -4834,7 +4834,7 @@ s32 ScriptCmd_ShowMsg(u32 arg0) {
     char *Msg_Expand(void);
     char *strchr(char *, s32);
     void *Process_FindByName(void *);
-    void fn_80070018(void *, u32, s32, s32);
+    void MsgWin_OpenSingle(void *, u32, s32, s32);
     void fn_8006FBE4(void *, u32, s32, s32);
     void fn_80013864(void);
     void fn_80013874(void *);
@@ -4846,7 +4846,7 @@ s32 ScriptCmd_ShowMsg(u32 arg0) {
         return 0;
     }
     if (strchr(Msg_Expand(), 0xA) == NULL) {
-        fn_80070018(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        MsgWin_OpenSingle(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     } else {
         fn_8006FBE4(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     }
@@ -4868,24 +4868,24 @@ s32 fn_800B8F98(u32 arg0) {
     return 0;
 }
 
-extern void fn_80070018(u32 arg0, u32 arg1, u32 arg2);
+extern void MsgWin_OpenSingle(u32 arg0, u32 arg1, u32 arg2);
 s32 fn_800B8FFC(u32 arg0) {
-    M2C_UNK fn_80070018(s32, u32, s32, s32);
+    M2C_UNK MsgWin_OpenSingle(s32, u32, s32, s32);
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    fn_80070018(fn_800C0658(), arg0, 0, 0);
+    MsgWin_OpenSingle(fn_800C0658(), arg0, 0, 0);
     fn_80013864();
     return 0;
 }
 
-extern void fn_80070018(u32 arg0, u32 arg1, u32 arg2);
+extern void MsgWin_OpenSingle(u32 arg0, u32 arg1, u32 arg2);
 s32 fn_800B9060(u32 arg0) {
-    M2C_UNK fn_80070018(s32, u32, s32, s32);
+    M2C_UNK MsgWin_OpenSingle(s32, u32, s32, s32);
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    fn_80070018(fn_800C0658(), arg0, 0, 0);
+    MsgWin_OpenSingle(fn_800C0658(), arg0, 0, 0);
     fn_80013864();
     return 0;
 }
