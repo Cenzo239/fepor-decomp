@@ -3770,7 +3770,7 @@ s32 fn_800B7410(void) {
 }
 
 s32 fn_800B74AC(void) {
-    void fn_80016A3C(void *);
+    void Unit_WriteAll(void *);
     void Icon_WriteSlots(void *, void *);
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -3803,7 +3803,7 @@ s32 fn_800B74AC(void) {
     *(void **)pw = p;
     *(void **)(pw + 4) = p;
     *(u32 *)(pw + 8) = 0x100000;
-    fn_80016A3C(pw);
+    Unit_WriteAll(pw);
     Icon_WriteSlots(gIconSlots, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
@@ -3816,7 +3816,7 @@ s32 fn_800B74AC(void) {
 }
 
 s32 ScriptCmd_SaveUnitsClear(void) {
-void fn_80016A3C(void *);
+void Unit_WriteAll(void *);
 void fn_80016DE0(void);
 void Icon_WriteSlots(void *, void *);
 void *fn_800C4638(s32, void *, s32);
@@ -3842,7 +3842,7 @@ pw[12]=0;
 *(void **)pw=p;
 *(void **)(pw+4)=p;
 *(u32*)(pw+8)=0x100000;
-fn_80016A3C(pw);
+Unit_WriteAll(pw);
 Icon_WriteSlots(gIconSlots,&w);
 fn_80016DE0();
 w.vtbl=lbl_80284C98;

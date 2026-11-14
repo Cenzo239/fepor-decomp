@@ -16864,7 +16864,7 @@ do_copy:
 void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
-    void fn_80016A3C(void *);
+    void Unit_WriteAll(void *);
     void fn_80048C5C(void *);
     void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
@@ -16989,7 +16989,7 @@ loop:
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
-        fn_80016A3C(&w);
+        Unit_WriteAll(&w);
     }
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
@@ -17296,7 +17296,7 @@ void fn_801E14F4(void *arg0) {
 void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
-    void fn_80016A3C(void *);
+    void Unit_WriteAll(void *);
     void fn_80048C5C(void *);
     void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
@@ -17629,7 +17629,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
-        fn_80016A3C(&w);
+        Unit_WriteAll(&w);
     }
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
@@ -17657,7 +17657,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
 void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
-    void fn_80016A3C(void *);
+    void Unit_WriteAll(void *);
     void fn_80048C5C(void *);
     void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
@@ -17778,7 +17778,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     if (gBattleState[0x55] != 0) {
         fn_800167E4(&w);
     } else {
-        fn_80016A3C(&w);
+        Unit_WriteAll(&w);
     }
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);

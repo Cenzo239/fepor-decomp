@@ -2260,7 +2260,7 @@ void *fn_800169A8(void *arg0, s16 arg1)
     return arg0;
 }
 
-void fn_80016A3C(s32 arg0) {
+void Unit_WriteAll(s32 arg0) {
     extern void* gUnits;
     extern void Unit_Write(void*, s32);
 
