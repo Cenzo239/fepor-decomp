@@ -257,41 +257,42 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
     return z;
 }
 #pragma global_optimizer reset
-s32 Item_TryCallUfx(s32 arg0, s32 arg1) {
+/* If the item's _UFX resource allows the current game state, invoke it. */
+s32 Item_TryCallUfx(s32 unit, s32 item) {
     s32 Game_GetState();
     s32 Item_CallUfx(s32, s32);
     void *Item_GetUfx(s32);
-    u8 var_r0;
-    u8 var_r0_2;
-    void *temp_r3;
-    void *temp_r3_2;
+    u8 ok;
+    u8 okOther;
+    void *ufx;
+    void *ufxOther;
 
     if (Game_GetState() == 0x10) {
-        temp_r3 = Item_GetUfx(arg1);
-        if (temp_r3 == NULL) {
-            var_r0 = 0;
-        } else if ((u32) M2C_FIELD(temp_r3, u32 *, 0) == 0U) {
-            var_r0 = 0;
+        ufx = Item_GetUfx(item);
+        if (ufx == NULL) {
+            ok = 0;
+        } else if ((u32) M2C_FIELD(ufx, u32 *, 0) == 0U) {
+            ok = 0;
         } else {
-            var_r0 = M2C_FIELD(temp_r3, u8 *, 4);
+            ok = M2C_FIELD(ufx, u8 *, 4);
         }
-        if (var_r0 == 0) {
+        if (ok == 0) {
             return 0;
         }
-        return Item_CallUfx(arg0, arg1);
+        return Item_CallUfx(unit, item);
     }
-    temp_r3_2 = Item_GetUfx(arg1);
-    if (temp_r3_2 == NULL) {
-        var_r0_2 = 0;
-    } else if ((u32) M2C_FIELD(temp_r3_2, u32 *, 0) == 0U) {
-        var_r0_2 = 0;
+    ufxOther = Item_GetUfx(item);
+    if (ufxOther == NULL) {
+        okOther = 0;
+    } else if ((u32) M2C_FIELD(ufxOther, u32 *, 0) == 0U) {
+        okOther = 0;
     } else {
-        var_r0_2 = M2C_FIELD(temp_r3_2, u8 *, 5);
+        okOther = M2C_FIELD(ufxOther, u8 *, 5);
     }
-    if (var_r0_2 == 0) {
+    if (okOther == 0) {
         return 0;
     }
-    return Item_CallUfx(arg0, arg1);
+    return Item_CallUfx(unit, item);
 }
 
 void fn_8009204C(void *arg0, void *arg1) {
