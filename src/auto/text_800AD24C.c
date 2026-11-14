@@ -7790,7 +7790,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
     void *Process_CreateChild(void *, s32);
     void EventFlag_Clear(void *, void *);
     extern u8 gTalkState[];
-    extern u8 lbl_8028D4F8[];
+    extern u8 E_Event_script[];
     extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
     s32 count;
@@ -7810,7 +7810,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
         entry = Event_NextEntry(entry);
     }
     gTalkState[0xA] = 0;
-    tmp = Process_CreateChild(lbl_8028D4F8, arg1);
+    tmp = Process_CreateChild(E_Event_script, arg1);
     *(void **)((u8 *)tmp + 0x30) = entry;
     EventFlag_Clear((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
     gUiInputFlags &= ~1;
@@ -8305,7 +8305,7 @@ void Event_DispatchMatching(void *arg0) {
     void *Process_CreateChild(void *, void *);
     void EventFlag_Clear(void *, void *);
     void Process_ClearFunc(void *);
-    extern u8 lbl_8028D4F8[];
+    extern u8 E_Event_script[];
     extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
 
@@ -8319,7 +8319,7 @@ void Event_DispatchMatching(void *arg0) {
         if ((s32)(s8)((u8 *)entry)[0xC] == *(s32 *)((u8 *)self + 0x34)) {
             if (((u8 (*)(void *))*(void **)((u8 *)self + 0x38))(entry) != 0) {
                 saved = *(void **)((u8 *)self + 0x30);
-                tmp = Process_CreateChild(lbl_8028D4F8, self);
+                tmp = Process_CreateChild(E_Event_script, self);
                 *(void **)((u8 *)tmp + 0x30) = saved;
                 EventFlag_Clear((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
                 gUiInputFlags &= ~1;
@@ -8344,8 +8344,8 @@ void fn_800C0624(void *arg0) {
 int fn_800C0658(void) {
     unsigned int Process_Find(void *);
     int fn_801270A4(void);
-    extern u8 lbl_8028D4F8[];
-    if (Process_Find(lbl_8028D4F8) == 0U) {
+    extern u8 E_Event_script[];
+    if (Process_Find(E_Event_script) == 0U) {
         return fn_801270A4();
     }
 }
@@ -8367,7 +8367,7 @@ void fn_800C068C(void) {
     extern u32 lbl_8036784C;
     extern u8 lbl_80284AC8[];
     extern u8 lbl_80320040[];
-    extern u8 lbl_8028D4F8[];
+    extern u8 E_Event_script[];
     void *obj;
     void *obj2;
 
@@ -8385,7 +8385,7 @@ void fn_800C068C(void) {
         *(u32 *)((u8 *)obj2 + 4) = lbl_8036784C;
     }
     fn_800142D4(lbl_80320040);
-    Process_Goto(Process_CreateChild(lbl_8028D4F8, fn_801270A4()), 0);
+    Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
     fn_80018AE4();
 }
 
@@ -8432,7 +8432,7 @@ void fn_800C0750(void) {
 }
 
 void fn_800C0818(u8 flag) {
-    extern u8 lbl_8028D4F8[];
+    extern u8 E_Event_script[];
     extern u16 gBattleState[700];
     extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
@@ -8444,7 +8444,7 @@ void fn_800C0818(u8 flag) {
 
     void *obj;
 
-    obj = Process_Find(lbl_8028D4F8);
+    obj = Process_Find(E_Event_script);
     if (obj != 0) {
         if (flag != 0) {
             EventFlag_Clear((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
@@ -8458,7 +8458,7 @@ void fn_800C0818(u8 flag) {
 
 void fn_800C08AC(void *arg0, void *arg1)
 {
-    extern u8 lbl_8028D4F8[];
+    extern u8 E_Event_script[];
     extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
 
@@ -8472,7 +8472,7 @@ void fn_800C08AC(void *arg0, void *arg1)
     result = Res_GetByName(arg0);
 
     if (result != 0) {
-        entry = (u8 *)Process_CreateChild(lbl_8028D4F8, arg1);
+        entry = (u8 *)Process_CreateChild(E_Event_script, arg1);
 
         *(void **)(entry + 0x30) = result;
 
