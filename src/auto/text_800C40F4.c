@@ -15888,7 +15888,7 @@ void fn_800F0774(void) {
 }
 
 void fn_800F07C0(void) {
-    f32 fn_80023430(void *, f32, f32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
     void Effect_SetPos(void *, f32, f32, f32);
     void *fn_8014C5A8(void *, s32);
     u8 BattleState_IsPhaseZero(void *);
@@ -15916,7 +15916,7 @@ void fn_800F07C0(void) {
                 *(u32 *)((u8 *)obj + 8) &= ~0x10U;
                 f30 = lbl_8036A010 + (f32)(s8)data[2];
                 f31 = lbl_8036A010 + (f32)(s8)data[3];
-                Effect_SetPos(r31, f30, f31, fn_80023430(gBattleMap, f30, f31) - lbl_8036A014);
+                Effect_SetPos(r31, f30, f31, Map_SampleHeightRaw(gBattleMap, f30, f31) - lbl_8036A014);
             }
         }
         if (lbl_803678EC != NULL) {
@@ -15930,7 +15930,7 @@ void fn_800F07C0(void) {
                 *(u32 *)((u8 *)obj + 8) &= ~0x10U;
                 f31 = lbl_8036A010 + (f32)(s8)data[2];
                 f30 = lbl_8036A010 + (f32)(s8)data[3];
-                Effect_SetPos(r31, f31, f30, fn_80023430(gBattleMap, f31, f30) - lbl_8036A014);
+                Effect_SetPos(r31, f31, f30, Map_SampleHeightRaw(gBattleMap, f31, f30) - lbl_8036A014);
             }
         }
     }

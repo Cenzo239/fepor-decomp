@@ -1805,7 +1805,7 @@ f32 fn_800233D0(void *arg0, s8 arg1, s8 arg2, u8 arg3)
 }
 
 #pragma fp_contract on
-f32 fn_80023430(void *arg0, f32 x, f32 y) {
+f32 Map_SampleHeightRaw(void *arg0, f32 x, f32 y) {
     void fn_80203290(f32 *, f32 *, f32 *);
     extern u8 lbl_80268CE8[];
     extern f32 lbl_80368D88;

@@ -1630,7 +1630,7 @@ void fn_801877C4(void *arg0) {
     void Process_ClearFunc(void *);
     void *Process_CreateEx(void *, void *);
     void *Process_Create(void *, s32);
-    f32 fn_80023430(void *, f32, f32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
     void fn_80025624(void *, s32);
     f32 Unit_GetAngleTo(void *);
     u8 Mu_IsAnimDone(void *);
@@ -1742,7 +1742,7 @@ void fn_801877C4(void *arg0) {
             f32 t8;
             f31 = lbl_8036ACD8 + (f32)*(s8 *)((u8 *)arg0 + 0x3A);
             f30 = lbl_8036ACD8 + (f32)*(s8 *)((u8 *)arg0 + 0x3B);
-            f29 = fn_80023430(gBattleMap, f31, f30);
+            f29 = Map_SampleHeightRaw(gBattleMap, f31, f30);
             tmp = *(void **)((u8 *)arg0 + 0x30);
             t8 = *(f32 *)((u8 *)tmp + 8);
             f28 = Math_Angle2D(tmp, *(f32 *)((u8 *)tmp + 4), t8, f31, f30);
@@ -1937,7 +1937,7 @@ void fn_8018820C(void *arg0) {
 
 #pragma use_lmw_stmw on
 void MoveAnim_BuildPathHeights(void *arg0) {
-f32 fn_80023430(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
+f32 Map_SampleHeightRaw(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
 extern u8 gBattleMap[]; extern f32 lbl_8036ACD8,lbl_8036ACEC;
 u8 *self=arg0;
 PathHeightPoint *point; PathHeightPoint *anchor; u8 *dir;
@@ -1947,7 +1947,7 @@ f32 *pos=*(f32 **)(self+0x30);
 { PathHeightPoint *initial=*(PathHeightPoint **)(self+0x6C); point=initial; anchor=initial; }
 dir=*(u8 **)(self+0x54); x=(s32)pos[1]; y=(s32)pos[2]; offset=lbl_8036ACD8; zero=lbl_8036ACEC;
 for(count=0;count<128;count++,dir++,point++) {
-point->rawHeight=fn_80023430(gBattleMap,offset+(f32)x,offset+(f32)y);
+point->rawHeight=Map_SampleHeightRaw(gBattleMap,offset+(f32)x,offset+(f32)y);
 point->index=count; point->height=point->rawHeight;
 delta=point->height-anchor->height;
 if(delta<zero) {
@@ -2277,7 +2277,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     void QUATSlerp(void *,void *,void *,f32);
     void fn_80202640(void *,void *);
     void fn_802029C4(void *,void *,void *);
-    f32 fn_80023430(void *,f32,f32);
+    f32 Map_SampleHeightRaw(void *,f32,f32);
     extern u8 lbl_80278D70[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
@@ -2328,8 +2328,8 @@ void fn_8018A91C(void *arg0, f32 angle) {
                     *(f32 *)(self+0x5C)*=lbl_8036AD34;
                     *(f32 *)(self+0x60)*=lbl_8036AD34;
                 }
-                h1=fn_80023430(gBattleMap,*(f32 *)(self+0x40)+*(f32 *)(self+0x5C),*(f32 *)(self+0x44)+*(f32 *)(self+0x60));
-                h2=fn_80023430(gBattleMap,*(f32 *)(self+0x40)-*(f32 *)(self+0x5C),*(f32 *)(self+0x44)-*(f32 *)(self+0x60));
+                h1=Map_SampleHeightRaw(gBattleMap,*(f32 *)(self+0x40)+*(f32 *)(self+0x5C),*(f32 *)(self+0x44)+*(f32 *)(self+0x60));
+                h2=Map_SampleHeightRaw(gBattleMap,*(f32 *)(self+0x40)-*(f32 *)(self+0x5C),*(f32 *)(self+0x44)-*(f32 *)(self+0x60));
                 height=*(f32 *)(self+0x48);
                 h1=height-h1;
                 h2=height-h2;
@@ -12862,7 +12862,7 @@ s32 fn_801A1DB8(s32 arg0) {
 
 s32 ScriptCmd_GetScaledHeight(s8 arg0, s8 arg1) {
     void *Process_Find(void *);
-    f32 fn_80023430(void *, f32, f32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
     extern u16 E_EventState_script[];
     extern u8 gBattleMap[];
     void *temp;
@@ -12875,7 +12875,7 @@ s32 ScriptCmd_GetScaledHeight(s8 arg0, s8 arg1) {
     } else {
         scale = 1;
     }
-    f = fn_80023430(gBattleMap, (f32)arg0, (f32)arg1);
+    f = Map_SampleHeightRaw(gBattleMap, (f32)arg0, (f32)arg1);
     return (s32)(f * (f32)scale);
 }
 

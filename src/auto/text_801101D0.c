@@ -4081,7 +4081,7 @@ void fn_8011AE2C(void *arg0) {
 }
 
 void fn_8011AE6C(void *arg0) {
-    f32 fn_80023430(void *, f32, f32);
+    f32 Map_SampleHeightRaw(void *, f32, f32);
     extern u8 gBattleMap[];
     extern f32 lbl_8036A200;
     extern f32 lbl_8036A1F8;
@@ -4117,12 +4117,12 @@ void fn_8011AE6C(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x34) = *(f32 *)((u8 *)p + 4);
     p = *(void **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)p + 8);
-    *(f32 *)((u8 *)arg0 + 0x3C) = fn_80023430(gBattleMap,
+    *(f32 *)((u8 *)arg0 + 0x3C) = Map_SampleHeightRaw(gBattleMap,
         *(f32 *)((u8 *)arg0 + 0x34), *(f32 *)((u8 *)arg0 + 0x38));
     c = lbl_8036A200;
     *(f32 *)((u8 *)arg0 + 0x4C) = c + (f32)(s8)((u8 *)arg0)[0x58];
     *(f32 *)((u8 *)arg0 + 0x50) = c + (f32)(s8)((u8 *)arg0)[0x59];
-    *(f32 *)((u8 *)arg0 + 0x54) = fn_80023430(gBattleMap,
+    *(f32 *)((u8 *)arg0 + 0x54) = Map_SampleHeightRaw(gBattleMap,
         (f32)(s8)((u8 *)arg0)[0x58], (f32)(s8)((u8 *)arg0)[0x59]);
     c = lbl_8036A200;
     y = *(f32 *)((u8 *)arg0 + 0x38);
