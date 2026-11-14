@@ -10635,7 +10635,7 @@ void BgmQuietVol_FadeInProcess(void *proc) {
     }
 }
 
-void fn_80145DDC(void *arg0) {
+void BgmQuietVol_FadeQuietProcess(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
