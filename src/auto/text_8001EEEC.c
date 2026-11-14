@@ -3591,9 +3591,9 @@ s32 fn_800268A8(s32 arg0) {
 }
 
 void fn_80026994(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     extern u8 gUiContext[];
-    fn_8003BE50(*(void **)(gUiContext + 4));
+    Unit_ApplyTransform(*(void **)(gUiContext + 4));
 }
 
 s32 fn_800269C0(s32 arg0)
@@ -3619,9 +3619,9 @@ s32 fn_800269C0(s32 arg0)
 }
 
 void fn_80026A54(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     extern u8 gUiContext[24];
-    fn_8003BE50(*(void **)gUiContext);
+    Unit_ApplyTransform(*(void **)gUiContext);
 }
 
 s32 fn_80026A80(s32 arg0) {

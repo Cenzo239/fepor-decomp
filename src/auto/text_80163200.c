@@ -5885,7 +5885,7 @@ void fn_8016EC74(void *arg0) {
 }
 
 void fn_8016ECDC(void) {
-    M2C_UNK fn_8003BE50(void *);
+    M2C_UNK Unit_ApplyTransform(void *);
     register void *temp_r31;
     void *temp_r30;
     u8 fn_80091D74(void *);
@@ -5893,10 +5893,10 @@ void fn_8016ECDC(void) {
     temp_r30 = M2C_FIELD(&gUiContext, void **, 0);
     temp_r31 = M2C_FIELD(&gUiContext, void **, 4);
     if ((temp_r30 != NULL) && (M2C_FIELD((unsigned)temp_r30, s32 *, 0x1A0) & 0x800000) && (fn_80091D74(temp_r30) == 0)) {
-        fn_8003BE50(temp_r30);
+        Unit_ApplyTransform(temp_r30);
     }
     if ((temp_r31 != NULL) && (M2C_FIELD(temp_r31, s32 *, 0x1A0) & 0x800000) && (fn_80091D74(temp_r31) == 0)) {
-        fn_8003BE50(temp_r31);
+        Unit_ApplyTransform(temp_r31);
     }
 }
 
@@ -5938,8 +5938,8 @@ void fn_8016EE14(void *arg0) {
 }
 
 void fn_8016EE7C(void) {
-    void fn_8003BE50(void *);
-    fn_8003BE50(*(void **)gUiContext);
+    void Unit_ApplyTransform(void *);
+    Unit_ApplyTransform(*(void **)gUiContext);
 }
 
 void fn_8016EEA8(void *arg0) {

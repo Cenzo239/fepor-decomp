@@ -516,11 +516,11 @@ s32 fn_800ADEB0(s32 arg0, s32 arg1, s32 arg2) {
     return arg0 + ((arg1 & 0xFF) << 8) + ((arg2 & 0xFF) << 16);
 }
 
-extern void fn_8003BE50(void);
+extern void Unit_ApplyTransform(void);
 void fn_800AE1FC(void) {
     TargetList_GetCurrent(&gTargetList);
     UnitRef_GetUnit();
-    fn_8003BE50();
+    Unit_ApplyTransform();
     fn_8002F61C(&gTargetList);
 }
 

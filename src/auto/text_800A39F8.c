@@ -1363,9 +1363,9 @@ s32 fn_800A6510(s32 arg0) {
 }
 
 void fn_800A6578(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     extern u8 gUiContext[24];
-    fn_8003BE50(*(void **)gUiContext);
+    Unit_ApplyTransform(*(void **)gUiContext);
 }
 
 void fn_800A65A4(s32 arg0) {

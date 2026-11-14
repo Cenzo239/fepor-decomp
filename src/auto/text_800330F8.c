@@ -4139,7 +4139,7 @@ void Unit_ResetHeldFromClass(void *unit) {
     }
 }
 
-s32 fn_8003BE50(s32 arg0)
+s32 Unit_ApplyTransform(s32 arg0)
 {
     if (arg0 < 0)
     {
@@ -5355,7 +5355,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     s8 Unit_GetMaxHp(void *);
     void Unit_SetHp(void *, s8);
     u8 fn_80091D74(void *);
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     void fn_8004FE58(void *);
     void fn_8003C67C(void *);
     void fn_8003C4B0(void *, void *);
@@ -5609,7 +5609,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     fn_80095070(self, -1);
     Unit_SetHp(self, Unit_GetMaxHp(self));
     if (fn_80091D74(self) != 0 && Status_Test(&self->unk1BC, 9) == 0) {
-        fn_8003BE50(self);
+        Unit_ApplyTransform(self);
     }
     fn_8004FE58(self);
     t = src->unk67;

@@ -28,7 +28,7 @@ void fn_800725F8(s32 arg0) {
 
 #pragma global_optimizer off
 void fn_80072624(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     u8 fn_80091D74(void);
     extern u8 gUiContext[24];
     void *p;
@@ -36,12 +36,12 @@ void fn_80072624(void) {
 
     p = *(void **)gUiContext;
     if ((*(s32 *)((u8 *)p + 0x1A0) & 0x800000) && fn_80091D74() == 0) {
-        fn_8003BE50(*(void **)gUiContext);
+        Unit_ApplyTransform(*(void **)gUiContext);
     }
     base = gUiContext;
     p = *(void **)(base + 4);
     if ((*(s32 *)((u8 *)p + 0x1A0) & 0x800000) && fn_80091D74() == 0) {
-        fn_8003BE50(*(void **)(base + 4));
+        Unit_ApplyTransform(*(void **)(base + 4));
     }
 }
 #pragma global_optimizer on

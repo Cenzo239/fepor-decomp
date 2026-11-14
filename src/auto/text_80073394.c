@@ -239,11 +239,11 @@ s32 fn_80073834(s32 arg0, s32 arg1)
 }
 
 void fn_800739A8(void) {
-    M2C_UNK fn_8003BE50(void *);
+    M2C_UNK Unit_ApplyTransform(void *);
     u8 fn_80091D74();
     extern void *lbl_80367468;
     if ((M2C_FIELD(lbl_80367468, s32 *, 0x1A0) & 0x800000) && (fn_80091D74() == 0)) {
-        fn_8003BE50(lbl_80367468);
+        Unit_ApplyTransform(lbl_80367468);
     }
 }
 
@@ -336,11 +336,11 @@ void fn_80073C74(s32 arg0) {
 }
 
 void fn_80073CA4(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     void Unit_GetMov(void *);
     void fn_800F0A3C(void);
     extern u8 gUiContext[24];
-    fn_8003BE50(*(void **)gUiContext);
+    Unit_ApplyTransform(*(void **)gUiContext);
     Unit_GetMov(*(void **)gUiContext);
     fn_800F0A3C();
 }

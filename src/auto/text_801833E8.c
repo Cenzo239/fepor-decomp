@@ -6395,9 +6395,9 @@ void fn_80193E58(void) {
 }
 
 void fn_80193E5C(void) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     extern u8 gUiContext[];
-    fn_8003BE50(*(void **)(gUiContext + 4));
+    Unit_ApplyTransform(*(void **)(gUiContext + 4));
 }
 
 void fn_80193E88(void *arg0) {
@@ -12129,7 +12129,7 @@ s32 fn_801A0400(s32 arg0) {
 }
 
 s32 ScriptCmd_UnitTransform(u8 arg0, u8 arg1) {
-    void fn_8003BE50(void *);
+    void Unit_ApplyTransform(void *);
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
     u8 Status_Test(void *, s32);
@@ -12150,15 +12150,15 @@ s32 ScriptCmd_UnitTransform(u8 arg0, u8 arg1) {
     if (arg1 == 0 && Status_Test((u8 *)unit + 0x1BC, 9) == 0) {
         return 0;
     }
-    fn_8003BE50(unit);
+    Unit_ApplyTransform(unit);
     fn_8004E9D8(unit, 0);
     fn_80050C90(unit);
     return 1;
 }
 
 void fn_801A06CC(void) {
-    M2C_UNK fn_8003BE50();
-    fn_8003BE50();
+    M2C_UNK Unit_ApplyTransform();
+    Unit_ApplyTransform();
 }
 
 s32 fn_801A087C(u8 arg0) {
