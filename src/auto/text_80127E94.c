@@ -663,7 +663,7 @@ void ModelList_FadeInProcess(void *arg0) {
     void Process_ClearFunc(void *);
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
-    extern f32 lbl_8036A424;
+    extern f32 gAlphaOpaque;
     extern f32 lbl_8036A428;
     u8 *p;
     s32 i;
@@ -674,7 +674,7 @@ void ModelList_FadeInProcess(void *arg0) {
     i = 0;
     while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
         node = *(u8 **)(p + 0x30) + 0x14;
-        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
+        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, gAlphaOpaque, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
         p += 4;
         i += 1;
     }
@@ -755,7 +755,7 @@ void ModelList_FadeOutProcess(void *proc) {
     void Model_SetAlpha(void *, s32);
     void Process_ClearFunc(void *);
     extern f64 lbl_8036A418;
-    extern f32 lbl_8036A424;
+    extern f32 gAlphaOpaque;
     extern f32 lbl_8036A420;
     extern f32 lbl_8036A428;
     u8 *walk;
@@ -767,7 +767,7 @@ void ModelList_FadeOutProcess(void *proc) {
     i = 0;
     while (i < M2C_FIELD(proc, s32 *, 0x50)) {
         model = *(u8 **)(walk + 0x30) + 0x14;
-        Model_SetAlpha(model, (s32)Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A428, (f32)M2C_FIELD(proc, s32 *, 0x54)));
+        Model_SetAlpha(model, (s32)Math_Lerp(gAlphaOpaque, lbl_8036A420, lbl_8036A428, (f32)M2C_FIELD(proc, s32 *, 0x54)));
         walk += 4;
         i += 1;
     }
@@ -1415,7 +1415,7 @@ void fn_8012AF4C(void *arg0) {
     f64 fn_80238638(f32);
     extern f32 gTileCenter;
     extern f32 lbl_8036A420;
-    extern f32 lbl_8036A424;
+    extern f32 gAlphaOpaque;
     extern f32 lbl_8036A434;
     extern f32 lbl_8036A460;
     extern f32 lbl_8036A468;
@@ -1462,9 +1462,9 @@ void fn_8012AF4C(void *arg0) {
     PSMTXTrans(sp38, x, y, z);
     PSMTXConcat(sp38, sp8, (u8 *)node + 0x10);
 
-    Model_SetAlpha(node, Math_Lerp(lbl_8036A424, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    Model_SetAlpha(node, Math_Lerp(gAlphaOpaque, lbl_8036A420, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
     node = (u8 *)*(void **)((u8 *)self + 0x3C) + 0x14;
-    Model_SetAlpha(node, Math_Lerp(lbl_8036A420, lbl_8036A424, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
+    Model_SetAlpha(node, Math_Lerp(lbl_8036A420, gAlphaOpaque, lbl_8036A468, (f32)*(s32 *)((u8 *)self + 0x40)));
 
     if ((f32)*(s32 *)((u8 *)self + 0x40) >= lbl_8036A468) {
         Process_ClearFunc(self);
