@@ -53,9 +53,9 @@ void fn_80098BAC(void *arg0) {
 }
 
 void fn_80098BD8(void *arg0) {
-    void fn_801B61CC(void);
+    void Battle_TryStartGrowSeq(void);
     if (*(u8 *)((char *)arg0 + 0x34) != 2) {
-        fn_801B61CC();
+        Battle_TryStartGrowSeq();
     }
 }
 

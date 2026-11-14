@@ -426,7 +426,7 @@ s32 fn_801B6164(u32 arg0) {
     return 1;
 }
 
-s32 fn_801B61CC(u32 arg0) {
+s32 Battle_TryStartGrowSeq(u32 arg0) {
     void Process_CreateChild(void *, u32);
     void Process_Create(void *, s32);
     extern u8 lbl_80297B3C[];
@@ -11904,12 +11904,12 @@ void fn_801D041C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s32 *, 8) = (s32) (M2C_FIELD(arg0, s32 *, 8) | 4);
 }
 
-void fn_801D0444(s16 *arg0, s32 arg1) {
+void fn_801D0444(u8 *arg0, s32 arg1) {
     if (arg1 >= 3) {
         return;
     }
-    arg0 += arg1;
-    arg0[7] = 0;
+    arg0 += arg1 * 2;
+    *(s16 *)(arg0 + 0xe) = 0;
 }
 
 void fn_801D0460(void *arg0, s32 arg1) {
