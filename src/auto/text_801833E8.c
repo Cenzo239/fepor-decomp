@@ -7581,7 +7581,7 @@ void fn_80196078(void) {
     fn_8000D3EC(&lbl_8027A688[0xE1], &lbl_80296700[0x64]);
 }
 
-s32 fn_80196194(s32 arg0) {
+s32 Ui_OpenActiveWpnKindHelp(s32 arg0) {
     void **Unit_GetActiveItemPtr(void *);
     void fn_80092528(void *, u8);
     void fn_80094A08(s32, s32);
