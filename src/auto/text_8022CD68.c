@@ -3024,7 +3024,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
     return lbl_8036BE10;
 }
 
-s32 fn_802355BC(char *str) {
+s32 atoi(char *str) {
     extern s32 lbl_803687F0;
     extern s32 fn_80234048();
     extern u32 fn_8023567C(s32, s32, s32 (*)(), void *, s32 *, s32 *, s32 *);

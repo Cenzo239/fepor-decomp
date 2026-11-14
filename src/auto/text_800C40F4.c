@@ -1565,7 +1565,7 @@ void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
     M2C_UNK *String_CStr(void *);
     void Str_CopyPad(char *, const char *, s32);
-    s32 fn_802355BC(char *);
+    s32 atoi(char *);
     f64 fn_80234524(char *);
 
     typedef struct { u32 d[8]; } Val32;
@@ -1744,7 +1744,7 @@ case_int:
         }
 
         src = (char *)String_CStr(s);
-        val = fn_802355BC(src);
+        val = atoi(src);
         sp238 = *dv;
         ((s16 *)sp238.d)[idx] = (s16)val;
         *dv = sp238;
@@ -1754,7 +1754,7 @@ case_int:
 
     if (idx > 4) {
         src = (char *)String_CStr(s);
-        val = fn_802355BC(src);
+        val = atoi(src);
         sp1F8 = *dv;
         ((s16 *)sp1F8.d)[idx] = (s16)val;
         *dv = sp1F8;
@@ -1764,7 +1764,7 @@ case_int:
 
     if (idx != 0) {
         src = (char *)String_CStr(s);
-        val = fn_802355BC(src);
+        val = atoi(src);
         sp1B8 = *dv;
         sp1B8.d[idx] = (u32)val;
         *dv = sp1B8;
@@ -1773,7 +1773,7 @@ case_int:
     }
 
     src = (char *)String_CStr(s);
-    val = fn_802355BC(src);
+    val = atoi(src);
     dv->d[0] = (u32)val;
     dv->d[1] = 0;
     dv->d[2] = 0;
