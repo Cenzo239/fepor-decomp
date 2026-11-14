@@ -1272,7 +1272,7 @@ block_42:
     }
 }
 
-s32 fn_8023A964(void) {
+s32 InitializeUART(void) {
     u32 OSGetConsoleType(void);
     extern u32 lbl_80368808;
     extern u32 lbl_8036880C;
