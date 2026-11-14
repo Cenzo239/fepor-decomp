@@ -5609,7 +5609,7 @@ s32 fn_80068CFC(void *arg0, s32 arg1) {
     return 0;
 }
 
-void fn_80069010(s32 *arg0, void *arg1) {
+void GMaterial_SetCullMode(s32 *arg0, void *arg1) {
     M2C_UNK fn_8022100C(M2C_UNK);
     s32 temp_r0;
     s32 temp_r0_2;

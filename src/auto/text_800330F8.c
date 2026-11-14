@@ -10271,7 +10271,7 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
     void GXSetTevColorOp(s32, s32, s32, s32, s32, s32);
     void GXSetTevAlphaIn(s32, s32, s32, s32, s32);
     void GXSetTevAlphaOp(s32, s32, s32, s32, s32, s32);
-    void fn_80069010(s32, s32);
+    void GMaterial_SetCullMode(s32, s32);
     void fn_800690D4(s32, s32, void *);
     void GMaterial_SetupColor(s32, s32, s32, void *);
     // Set up one TEV stage from an atlas tex (or color-only), then apply material color.
@@ -10307,7 +10307,7 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
         GXSetTevAlphaIn(tevStage, 7, 4, 5, 7);
         GXSetTevAlphaOp(tevStage, 0, 0, 0, 1, 0);
     }
-    fn_80069010(mat, node);
+    GMaterial_SetCullMode(mat, node);
     fn_800690D4(mat, node, obj);
     GMaterial_SetupColor(mat, 0, node, obj);
     return 1;

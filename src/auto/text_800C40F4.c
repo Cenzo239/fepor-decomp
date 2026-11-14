@@ -15094,7 +15094,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *fn_80060664(void);
     void *Camera_GetViewMtx(void);
     void *Camera_Get(void);
-    void fn_80069010(void *, void *);
+    void GMaterial_SetCullMode(void *, void *);
     void fn_800690D4(void *, void *, void *);
     void fn_80069354(void *, void *, void *, void *, s32);
     void GMaterial_SetupColor(void *, void *, void *, void *);
@@ -15194,7 +15194,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     r26 = GMaterial_GetNode();
     r27 = *(void **)((u8 *)self + 0x14);
     fn_8006A384(sp22C);
-    fn_80069010(r24, r26);
+    GMaterial_SetCullMode(r24, r26);
     fn_800690D4(r24, r26, self);
     GMaterial_SetupColor(r24, r25v, r26, self);
     fn_80069354(r24, r25v, r26, r27, arg1s);
