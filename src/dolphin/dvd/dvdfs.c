@@ -370,7 +370,7 @@ BOOL DVDConvertEntrynumToPath(s32 entrynum, char *path, u32 maxlen) {
     return TRUE;
 }
 
-BOOL fn_8020CA74(char *path, u32 maxlen) {
+BOOL DVDGetCurrentDir(char *path, u32 maxlen) {
     return DVDConvertEntrynumToPath((s32)currentDirectory, path, maxlen);
 }
 
