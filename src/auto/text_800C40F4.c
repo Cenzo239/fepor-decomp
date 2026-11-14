@@ -12646,7 +12646,7 @@ extern "C" void fn_800E7E4C(void *arg0, void *arg1) {
 #pragma dont_inline on
   extern "C" void ObjList_Init(void *);
   extern "C" s32 ObjList_Get(void *, s32);
-extern "C" u8 fn_800E903C(void *);
+extern "C" u8 Camera_IsEnabled(void *);
 extern "C" s32 fn_800E7EA0(void *arg0) {
     struct Obj {
         u8 pad[0x10];
@@ -12672,7 +12672,7 @@ extern "C" s32 fn_800E7EA0(void *arg0) {
     count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
         item = ObjList_Get(list, i);
-        if (fn_800E903C((void *)item)) {
+        if (Camera_IsEnabled((void *)item)) {
             ObjList_Destroy(list, -1);
             return item;
         }
@@ -13030,7 +13030,7 @@ void fn_800E9020(u8 *arg0, f32 *arg1) {
     *(f32 *)(arg0 + 0xEC) = c;
 }
 
-u8 fn_800E903C(void *arg0) {
+u8 Camera_IsEnabled(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0xAC);
 }
 

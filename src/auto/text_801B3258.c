@@ -9477,7 +9477,7 @@ s32 CameraAnim_GetCamera(void *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
-    u8 fn_800E903C(void *);
+    u8 Camera_IsEnabled(void *);
     void fn_800DF6DC(void *, s32);
     void fn_800E7B80(s32, void *);
     void String_Destroy(void *, s32);
@@ -9534,7 +9534,7 @@ extern "C" void fn_801CAF94(void *arg0, s32 arg1, s8 arg2, s8 arg3, s32 arg4) {
     a1 = arg1;
     unk0 = self->unk0;
     if (self->unk6C != NULL) {
-        if (fn_800E903C(self->unk6C) == 0) {
+        if (Camera_IsEnabled(self->unk6C) == 0) {
             fn_800DF6DC(&sp2C, (s32)self->unk6C);
             fn_800E7B80(unk0, &sp2C);
             String_Destroy(&sp2C, -1);
