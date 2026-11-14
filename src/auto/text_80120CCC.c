@@ -78,19 +78,20 @@ void Obj_StartTintEase(void *arg0, s32 arg1) {
     }
 }
 
-void Obj_EaseTintProc(void *arg0) {
+/* Ease the target object's tint (+0x41) toward the end value; clear when done. */
+void Obj_EaseTintProc(void *proc) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
 
-    *(u8 *)((u8 *)arg0 + 0x36) = (u8)(*(u8 *)((u8 *)arg0 + 0x36) + 1);
-    *(s8 *)(*(u8 **)((u8 *)arg0 + 0x30) + 0x41) = (s8)Math_Ease(
+    *(u8 *)((u8 *)proc + 0x36) = (u8)(*(u8 *)((u8 *)proc + 0x36) + 1);
+    *(s8 *)(*(u8 **)((u8 *)proc + 0x30) + 0x41) = (s8)Math_Ease(
         0,
-        (f32)*(u8 *)((u8 *)arg0 + 0x34),
-        (f32)*(u8 *)((u8 *)arg0 + 0x35),
-        (f32)*(u8 *)((u8 *)arg0 + 0x36),
-        (f32)*(u8 *)((u8 *)arg0 + 0x37));
-    if (*(u8 *)((u8 *)arg0 + 0x36) == *(u8 *)((u8 *)arg0 + 0x37)) {
-        Process_ClearFunc(arg0);
+        (f32)*(u8 *)((u8 *)proc + 0x34),
+        (f32)*(u8 *)((u8 *)proc + 0x35),
+        (f32)*(u8 *)((u8 *)proc + 0x36),
+        (f32)*(u8 *)((u8 *)proc + 0x37));
+    if (*(u8 *)((u8 *)proc + 0x36) == *(u8 *)((u8 *)proc + 0x37)) {
+        Process_ClearFunc(proc);
     }
 }
 
