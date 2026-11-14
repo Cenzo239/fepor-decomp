@@ -2977,7 +2977,7 @@ void fn_800B5708(void) {
     void fn_800BA784(void);
     void fn_800BA75C(void);
     void fn_800BA638(void);
-    void fn_800BA69C(void);
+    void ScriptCmd_GiveItem(void);
     void fn_800BB0B4(void);
     void fn_800BB080(void);
     void fn_800BB04C(void);
@@ -3152,7 +3152,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x204, fn_800BA784, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x212, fn_800BA75C, 3);
     Script_RegisterCommand(lbl_8026ECB8 + 0x21D, fn_800BA638, 1);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x22A, fn_800BA69C, 2);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x22A, ScriptCmd_GiveItem, 2);
     Script_RegisterCommand(lbl_8026ECB8 + 0x22E, fn_800BB0B4, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x235, fn_800BB080, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x23C, fn_800BB04C, 1);
@@ -5569,7 +5569,7 @@ s32 fn_800BA638(s32 arg0) {
     return 0;
 }
 
-s32 fn_800BA69C(u8 arg0, s32 arg1) {
+s32 ScriptCmd_GiveItem(u8 arg0, s32 arg1) {
     void fn_8001C76C(void *);
     void fn_8001D780(void *, s32);
     void Item_Clone(void *, void *);
