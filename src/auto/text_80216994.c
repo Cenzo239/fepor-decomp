@@ -1162,26 +1162,27 @@ s32 __CARDGetFatBlock(void *arg0) {
 }
 
 void __CARDUpdateFatCallback(s32 chan, s32 result) {
+    /* On successful FAT write, flip currentFat between workArea+0x6000/0x8000 and run the async callback. */
     extern u16 __CARDBlock[];
     void *memcpy(void *, const void *, u32);
     s32 __CARDPutControlBlock(void *, s32);
     u8 *card;
-    u8 *base;
-    u8 *p6000;
-    u8 *p8000;
+    u8 *workArea;
+    u8 *fat0;
+    u8 *fat1;
     void (*callback)(s32, s32);
 
     card = (u8 *)__CARDBlock + chan * 0x110;
     if (result >= 0) {
-        base = *(u8 **)(card + 0x80);
-        p6000 = base + 0x6000;
-        p8000 = base + 0x8000;
-        if (*(u8 **)(card + 0x88) == p6000) {
-            *(u8 **)(card + 0x88) = p8000;
-            memcpy(p8000, p6000, 0x2000);
+        workArea = *(u8 **)(card + 0x80);
+        fat0 = workArea + 0x6000;
+        fat1 = workArea + 0x8000;
+        if (*(u8 **)(card + 0x88) == fat0) {
+            *(u8 **)(card + 0x88) = fat1;
+            memcpy(fat1, fat0, 0x2000);
         } else {
-            *(u8 **)(card + 0x88) = p6000;
-            memcpy(p6000, p8000, 0x2000);
+            *(u8 **)(card + 0x88) = fat0;
+            memcpy(fat0, fat1, 0x2000);
         }
     }
     if (*(u32 *)(card + 0xD0) == 0) {
