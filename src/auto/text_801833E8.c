@@ -359,7 +359,7 @@ void fn_80183A90(s32 arg0) {
     fn_8004FE98(arg0, 0);
 }
 
-void fn_80183AB4(s32 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void MuEvent_Create(s32 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *Process_CreateEx(void *, s32, s32);
     extern u8 lbl_80295D1C[];
     void *temp_r3;
@@ -9905,7 +9905,7 @@ void fn_8019BCC0(s32 arg0, s32 arg1, s32 arg2) {
 
 void fn_8019BD30(u8 *arg0) {
     s32 fn_80098110(void);
-    void fn_80183AB4(s32, u16, s32, s32, s32);
+    void MuEvent_Create(s32, u16, s32, s32, s32);
     s32 ret;
     u16 flags;
 
@@ -9914,7 +9914,7 @@ void fn_8019BD30(u8 *arg0) {
     if (arg0[0x5c] != 0) {
         flags |= 0x20;
     }
-    fn_80183AB4(ret, flags, (s8)arg0[0x5d], (s8)arg0[0x5e], (s32)arg0);
+    MuEvent_Create(ret, flags, (s8)arg0[0x5d], (s8)arg0[0x5e], (s32)arg0);
 }
 
 void fn_8019BD8C(s32 arg0, s32 arg1) {
@@ -12172,7 +12172,7 @@ s32 MuEvent_StartForUnit(u8 arg0) {
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
-    void fn_80183AB4(void *, s32, s32, s32, void *);
+    void MuEvent_Create(void *, s32, s32, s32, void *);
     void *obj;
     void *slot;
     void *arg;
@@ -12199,7 +12199,7 @@ s32 MuEvent_StartForUnit(u8 arg0) {
         }
         arg = Process_Create(Proc_MuEventInst, tmp);
     }
-    fn_80183AB4(obj, 4, -1, -1, arg);
+    MuEvent_Create(obj, 4, -1, -1, arg);
     return 1;
 }
 

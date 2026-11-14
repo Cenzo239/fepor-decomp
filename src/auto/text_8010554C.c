@@ -608,11 +608,11 @@ void Dispos_Apply(void *path, u32 defer, s32 mode) {
 #pragma use_lmw_stmw reset
 
 extern void Map_RefreshUnitMap(void* arg0);
-extern s32 fn_80183AB4(s32 arg0, s8 arg1, s8 arg2, void* arg3);
+extern s32 MuEvent_Create(s32 arg0, s8 arg1, s8 arg2, void* arg3);
 extern s32 MoveAnim_BindPath(void* arg0, u16 arg1, void* arg2);
 /* Bind move or warp anims for each dispos entry, then refresh the unit map. */
 void Dispos_StartMoveAnims(void *proc) {
-    void fn_80183AB4(void *, s32, s32, s32, void *);
+    void MuEvent_Create(void *, s32, s32, s32, void *);
     void MoveAnim_BindPath(void *, void *, u16, void *);
     void Map_RefreshUnitMap(void *);
     extern u8 gBattleMap[];
@@ -642,7 +642,7 @@ void Dispos_StartMoveAnims(void *proc) {
         unit = *(void **)((u8 *)entry + 4);
         if (unit != NULL) {
             if (*(u8 *)((u8 *)self + 0x60) == 3) {
-                fn_80183AB4(unit, 1, *(s8 *)((u8 *)entry + 0xA), *(s8 *)((u8 *)entry + 0xB), self);
+                MuEvent_Create(unit, 1, *(s8 *)((u8 *)entry + 0xA), *(s8 *)((u8 *)entry + 0xB), self);
             } else {
                 MoveAnim_BindPath(unit, (u8 *)entry + 0xC, flags, self);
             }
