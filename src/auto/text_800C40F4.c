@@ -11240,7 +11240,7 @@ void fn_800E4C1C(void *arg0) {
 }
 
 u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
-    extern s32 lbl_80369F38;
+    extern s32 gNodeLinkDefaultParam;
     s32 sp8;
 
     if ((*(u32 *)((char *)arg0 + 0xE8)) != 0) {
@@ -11252,7 +11252,7 @@ u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
         return 0;
     }
     *(u32 *)((char *)arg0 + 0xE8) = GActor_CreateNodeLink(*(s32 *)((char *)arg0 + 0xE0), arg1, arg2, 4);
-    sp8 = lbl_80369F38;
+    sp8 = gNodeLinkDefaultParam;
     GActor_SetNodeLinkParam(*(u32 *)((char *)arg0 + 0xE8), &sp8);
     if (arg3 != 0) {
         GActor_SetNodeLinkActive(*(u32 *)((char *)arg0 + 0xE8), 1);
@@ -11476,7 +11476,7 @@ void fn_800E56D8(void *arg0, s8 arg1) {
 }
 
 u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
-    extern s32 lbl_80369F38;
+    extern s32 gNodeLinkDefaultParam;
     u32 temp_r3;
     u32 r5;
     u32 r6;
@@ -11499,10 +11499,10 @@ u32 fn_800E574C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     *(u32 *)((char *)arg0 + 0xE8) = r5;
     
     // Update global
-    lbl_80369F38 = r5;
+    gNodeLinkDefaultParam = r5;
     
     // Call with r5 and address of global
-    GActor_SetNodeLinkParam(r5, &lbl_80369F38);
+    GActor_SetNodeLinkParam(r5, &gNodeLinkDefaultParam);
     
     // Conditional call
     if (arg3 != 0) {
