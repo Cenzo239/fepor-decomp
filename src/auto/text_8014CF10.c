@@ -577,13 +577,13 @@ void fn_8014DF68(void *arg0)
     extern void **gMsgDebugPtrs;
 
     extern void Process_Goto(void *, s32);
-    extern void fn_800BDBC8(void *, void *);
+    extern void EventFlag_Clear(void *, void *);
     extern void fn_8011D908(void *, void *);
 
     if (gMapUiResult == 9) {
         Process_Goto(arg0, 0x63);
     } else {
-        fn_800BDBC8(
+        EventFlag_Clear(
             (u8 *)gBattleState + 0xB4,
             lbl_80277238 + 0x79
         );
