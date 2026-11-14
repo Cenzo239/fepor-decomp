@@ -2088,25 +2088,18 @@ void fn_80109020(u8 *arg0) {
     }
 }
 
-s32 Sound_FindByName(s8 *arg0)
-{
-    extern s32 lbl_803679DC;
-    extern s8 *lbl_803679D8;
-    extern u8 lbl_8028F390[];
-    void fn_8011D484(s8 *);
-    void fn_8010913C(void);
-    void fn_8000BF6C(void *, void (*)(void));
-    s32 ret;
-
-    if (arg0[0] == 0x54 && arg0[1] == 0x42 && arg0[2] == 0x47 && arg0[3] == 0) {
-        fn_8011D484(arg0);
-    } else {
-        lbl_803679DC = 0;
-        lbl_803679D8 = arg0;
-        fn_8000BF6C(lbl_8028F390, fn_8010913C);
-    }
-    ret = lbl_803679DC;
-    return ret;
+s32 Sound_FindByName(s8 *arg0) {
+extern s32 lbl_803679DC; extern s8 *lbl_803679D8; extern u8 lbl_8028F390[];
+s32 fn_8011D484(s8 *); void fn_8010913C(void); void fn_8000BF6C(void *, void (*)(void));
+s32 ret;
+if(arg0[0]==0x54 && arg0[1]==0x42 && arg0[2]==0x47 && arg0[3]==0) {
+ret=fn_8011D484(arg0);
+} else {
+lbl_803679DC=0; lbl_803679D8=arg0;
+fn_8000BF6C(lbl_8028F390,fn_8010913C);
+ret=lbl_803679DC;
+}
+return ret;
 }
 
 void fn_8010913C(void *arg0) {
@@ -2444,16 +2437,15 @@ u8 fn_80109B48(void *arg0) {
 void fn_80109B54(void *arg0, f32 farg0) {
     extern f32 lbl_8036A140;
     void *p;
-    u32 byte;
+    f32 c;
 
     p = *(void **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)p + 8) = farg0;
-    farg0 = lbl_8036A140;
+    c = lbl_8036A140;
     p = *(void **)((u8 *)arg0 + 0x30);
-    byte = *(u8 *)((u8 *)p + 4);
-    *(f32 *)((u8 *)arg0 + 0x34) = (f32)byte;
+    *(f32 *)((u8 *)arg0 + 0x34) = (f32)*(u8 *)((u8 *)p + 4);
     p = *(void **)((u8 *)arg0 + 0x30);
-    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)arg0 + 0x34) / (farg0 * *(f32 *)((u8 *)p + 8));
+    *(f32 *)((u8 *)arg0 + 0x38) = *(f32 *)((u8 *)arg0 + 0x34) / (c * *(f32 *)((u8 *)p + 8));
 }
 
 f32 fn_80109BA8(void *arg0) {
