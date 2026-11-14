@@ -16282,7 +16282,7 @@ extern "C" void *Ui_DtorPanelD(void *arg0, s16 arg1) {
         void *sub78;
     };
     void Heap_Free(void *);
-    extern u8 lbl_80299D90[];
+    extern u8 gUiPanelDVtbl[];
     extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
@@ -16290,7 +16290,7 @@ extern "C" void *Ui_DtorPanelD(void *arg0, s16 arg1) {
 
     self = (Owner *)arg0;
     if (arg0) {
-        self->vtbl = lbl_80299D90;
+        self->vtbl = gUiPanelDVtbl;
         if (&self->sub78) {
             self->sub78 = gEmptyVtbl;
             ((Obj *)&self->sub78)->v2();
