@@ -2566,10 +2566,10 @@ void Ui_DrawPromptSprites(void *proc) {
     }
 }
 void fn_800A8F94(s32 arg0) {
-void *fn_80109180(void *, s32); void fn_80148618(void *, s32);
+void *Sound_Create(void *, s32); void fn_80148618(void *, s32);
 extern u8 gOptionsStr[]; extern f32 lbl_80369C08; extern f32 lbl_80369BA8;
 void *temp; f32 b; f32 a;
-temp = fn_80109180(gOptionsStr+0x96,arg0);
+temp = Sound_Create(gOptionsStr+0x96,arg0);
 a=lbl_80369C08; b=lbl_80369BA8;
 *(f32 *)((u8 *)temp+0x40)=a;
 *(f32 *)((u8 *)temp+0x44)=b;
@@ -2705,7 +2705,7 @@ void fn_800A92F0(void) {
 void fn_800A931C(s32 arg0) {
     void fn_8005BCD0(void);
     void FileCache_Load(void *);
-    void *fn_80109180(void *, s32);
+    void *Sound_Create(void *, s32);
     extern u8 gOptionsStr[];
     extern f32 lbl_80369BA8;
     extern f32 lbl_80369C08;
@@ -2716,7 +2716,7 @@ void fn_800A931C(s32 arg0) {
 
     FileCache_Load(gOptionsStr + 0x58);
     fn_8005BCD0();
-    temp_r3 = fn_80109180(gOptionsStr + 0x96, arg0);
+    temp_r3 = Sound_Create(gOptionsStr + 0x96, arg0);
     f0 = lbl_80369C08;
     f1 = lbl_80369BA8;
     *(f32 *)((u8 *)temp_r3 + 0x40) = f0;

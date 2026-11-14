@@ -2038,7 +2038,7 @@ void fn_8012C330(void *arg0) {
 
     idx = *(s32 *)((u8 *)arg0 + 0x30);
     arr = *(s32 **)((u8 *)arg0 + 0x3c);
-    lbl_80367A88 = fn_80109180(arr[idx], 0);
+    lbl_80367A88 = Sound_Create(arr[idx], 0);
 }
 #include "common.h"
 #include "structs.h"

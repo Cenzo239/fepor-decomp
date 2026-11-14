@@ -5675,7 +5675,7 @@ block_5:
 void fn_8011DD80(void *arg0)
 {
     void fn_800AA1CC(void *);
-    void fn_80109180(void *, void *);
+    void Sound_Create(void *, void *);
 
     extern u16 gUiPanelFlags;
     extern void *lbl_80367A5C;
@@ -5689,7 +5689,7 @@ void fn_8011DD80(void *arg0)
     ptr = lbl_80367A5C;
 
     if (ptr != 0) {
-        fn_80109180(ptr, arg0);
+        Sound_Create(ptr, arg0);
     }
 }
 

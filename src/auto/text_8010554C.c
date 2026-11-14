@@ -2019,12 +2019,12 @@ void fn_80108F38(void) {
 
 void fn_80108F58(void *arg0) {
     void fn_800AA1CC(void *);
-    void *fn_80109180(s32, void *);
+    void *Sound_Create(s32, void *);
     extern f32 lbl_8036A130;
     f32 f;
     void *p;
 
-    *(void **)((char *)arg0 + 0x34) = fn_80109180(*(s32 *)((char *)arg0 + 0x30), arg0);
+    *(void **)((char *)arg0 + 0x34) = Sound_Create(*(s32 *)((char *)arg0 + 0x30), arg0);
     f = lbl_8036A130;
     p = *(void **)((char *)arg0 + 0x34);
     *(f32 *)((char *)p + 0x38) = f;
@@ -2118,7 +2118,7 @@ void fn_8010913C(void *arg0) {
     }
 }
 
-void *fn_80109180(s32 arg0, u32 arg1) {
+void *Sound_Create(s32 arg0, u32 arg1) {
     void *Process_Create(void *, u32);
     void fn_80109F88(void *, s32);
     extern u8 lbl_8028F390[];

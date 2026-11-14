@@ -1061,7 +1061,7 @@ void fn_8012DFA8(void *arg0) {
     void fn_800C1F1C(void *, void *);
     void *fn_800C42AC(s32);
     void *Heap_Alloc(s32);
-    void fn_80109180(void *, void *);
+    void Sound_Create(void *, void *);
     void fn_801305F8(void *);
     void fn_801A7218(void *, void *, s32);
     extern void fn_8012F360;
@@ -1114,7 +1114,7 @@ void fn_8012DFA8(void *arg0) {
     FileCache_Load(gUiSelectMenuStrings + 0xC7);
     *(void **)(self + 0x40) = fn_8006D948(gUiSelectMenuStrings + 0x194);
     *(void **)(self + 0x30) = Archive_Load(gUiSelectMenuStrings + 0x1A8);
-    fn_80109180(gUiSelectMenuStrings + 0xBA, self);
+    Sound_Create(gUiSelectMenuStrings + 0xBA, self);
     self[0x61] = 0;
     mode = self[0x6C];
     switch (mode) {

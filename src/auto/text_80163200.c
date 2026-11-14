@@ -3202,7 +3202,7 @@ void fn_8016A1BC(void *arg0) {
     extern f32 lbl_8036A9CC;
     void *fn_8014D8FC(void *, void *);
     void fn_80109020(u32);
-    void fn_80109180(void *, void *);
+    void Sound_Create(void *, void *);
     void fn_80109A54(s32, f32);
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, void *, s32);
@@ -3223,7 +3223,7 @@ void fn_8016A1BC(void *arg0) {
     }
     if (temp_r31 != 0) {
         M2C_FIELD(p, s32 *, 0x40) = (s32)(u32)temp_r31;
-        fn_80109180(temp_r31, p);
+        Sound_Create(temp_r31, p);
         fn_80109A54(2, lbl_8036A9C8);
     }
     temp_r3 = Heap_Alloc(0x5C);
@@ -3402,7 +3402,7 @@ void fn_8016A5AC(void *arg0) {
 
 void fn_8016A5DC(void *arg0, void *arg1, f32 arg2) {
     M2C_UNK fn_80109020(void *);
-    s32 fn_80109180(void *, void *);
+    s32 Sound_Create(void *, void *);
     M2C_UNK fn_80109A54(s32, s32, f32);
     void *p;
 
@@ -3412,7 +3412,7 @@ void fn_8016A5DC(void *arg0, void *arg1, f32 arg2) {
     }
     if (arg1 != NULL) {
         M2C_FIELD(arg0, void **, 0x40) = arg1;
-        fn_80109A54(fn_80109180(arg1, arg0), 2, arg2);
+        fn_80109A54(Sound_Create(arg1, arg0), 2, arg2);
     }
 }
 

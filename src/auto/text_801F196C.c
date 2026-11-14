@@ -1622,7 +1622,7 @@ void fn_801F5BB0(void *arg0) {
 
 void fn_801F5C04(void *arg0) {
     void *fn_800C4638(s32, void *, s32);
-    void fn_80109180(void *, void *);
+    void Sound_Create(void *, void *);
     void *memset(void *, s32, s32);
     extern u16 gCardLinkStr[18];
     void *temp_r31;
@@ -1632,7 +1632,7 @@ void fn_801F5C04(void *arg0) {
     memset(temp_r31, 0, 0x1EA);
     *((s16 *)temp_r31) = (*(((s16 *)temp_r31) + 1) = 0);
     *(((s16 *)temp_r31) + 0xF) = 0;
-    fn_80109180((u8 *)&gCardLinkStr + 0x12B, arg0);
+    Sound_Create((u8 *)&gCardLinkStr + 0x12B, arg0);
 }
 
 void fn_801F5C88(void *arg0) {
@@ -1919,7 +1919,7 @@ void fn_801F6538(void) {
     extern u16 lbl_80280CF0[];
     fn_80147188(0xFA);
     Fx_StartSlot(0, (u8 *)lbl_80280CF0 + 0x33, 0x64, 1);
-    fn_80109180((u8 *)lbl_80280CF0 + 0x20, 0);
+    Sound_Create((u8 *)lbl_80280CF0 + 0x20, 0);
     fn_800A84A0();
     fn_8018DC98();
 }
@@ -3040,7 +3040,7 @@ void fn_801F8A98(void *arg0) {
     void fn_8006EEFC(void *, void *);
     void *fn_800A8A00(void *);
     void fn_80108FA8(void *);
-    void *fn_80109180(void *, void *);
+    void *Sound_Create(void *, void *);
     void fn_801FA8B4(void *, void *);
     void StaffRoll_ListInsertActor(void *, void *, void *, void *);
     void sprintf(void *, void *, ...);
@@ -3131,8 +3131,8 @@ void fn_801F8A98(void *arg0) {
         *(f32 *)((u8 *)self + 0x40) = f + (f32)(u32)((count - 5) * 0x50);
         *(s32 *)((u8 *)self + 0x48) = (s32)((*(f32 *)((u8 *)self + 0x40) / lim) * (f32)*(s32 *)((u8 *)self + 0x48));
         *(f32 *)((u8 *)self + 0x44) = *(f32 *)((u8 *)self + 0x40) / (f32)*(s32 *)((u8 *)self + 0x48);
-        fn_80109180(StaffRoll_str + 0x284, self);
-        *(void **)((u8 *)self + 0x4C) = fn_80109180(StaffRoll_str + 0x293, self);
+        Sound_Create(StaffRoll_str + 0x284, self);
+        *(void **)((u8 *)self + 0x4C) = Sound_Create(StaffRoll_str + 0x293, self);
     }
     fn_8006EEFC((u8 *)self + 0x50, lbl_8029B378[1]);
 }
@@ -3531,7 +3531,7 @@ void fn_801F94D8(void *arg0) {
 }
 void fn_801F99C4(void *arg0) {
     s32 fn_800A8A00(void *);
-    void *fn_80109180(void *, void *);
+    void *Sound_Create(void *, void *);
     void Sound_TweenParam(void *, s32, s32, f32, f32, f32);
     void Sound_FadeFromZero(void *, s32);
     void sprintf(void *, void *, ...);
@@ -3572,8 +3572,8 @@ void fn_801F99C4(void *arg0) {
     temp_r28 = StaffRoll_str + 0x259;
     sprintf(sp8, StaffRoll_str + 0x268, fn_800A8A00(*(void **)((u8 *)*(void **)((u8 *)var_r4 + 8) + 0x188)));
     sprintf(temp_r28, StaffRoll_str + 0x273, (s8)*(u8 *)((u8 *)temp_r29 + 0x54));
-    *(void **)((u8 *)temp_r31 + 0x58) = fn_80109180(sp8, temp_r29);
-    *(void **)((u8 *)temp_r31 + 0x5C) = fn_80109180(temp_r28, *(void **)((u8 *)temp_r31 + 0x58));
+    *(void **)((u8 *)temp_r31 + 0x58) = Sound_Create(sp8, temp_r29);
+    *(void **)((u8 *)temp_r31 + 0x5C) = Sound_Create(temp_r28, *(void **)((u8 *)temp_r31 + 0x58));
     temp_r4 = var_r30 * 2;
     f2 = lbl_8036BA18;
     temp_r3 = *(void **)((u8 *)temp_r31 + 0x58);
@@ -3695,7 +3695,7 @@ void fn_801F9DC0(u32 arg0) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_801F9E00(void *arg0) {
-    s32 fn_80109180(void *, void *);
+    s32 Sound_Create(void *, void *);
     void fn_8014DBE0(void *, s32, u8 *, u16 *, s32 *);
     s32 fn_8014DC04(void *);
     void fn_801FAA9C(void *, void *, s32, void *);
@@ -3793,8 +3793,8 @@ loop_check:
     obj->unk40 = f + (f32)(u32)(count << 6);
     obj->unk48 = (s32)((obj->unk40 / lim) * (f32)obj->unk48);
     obj->unk44 = obj->unk40 / (f32)obj->unk48;
-    fn_80109180(StaffRoll_str + 0x2F3, obj);
-    obj->unk4C = fn_80109180(StaffRoll_str + 0x301, obj);
+    Sound_Create(StaffRoll_str + 0x2F3, obj);
+    obj->unk4C = Sound_Create(StaffRoll_str + 0x301, obj);
 }
 
 #pragma global_optimizer off

@@ -816,7 +816,7 @@ void fn_80122314(void *arg0) {
 
 void TalkUi_SpawnKeyWait2(void *arg0) {
     void *Process_CreateChild(void *);
-    void *fn_80109180(s32, u32);
+    void *Sound_Create(s32, u32);
     void Sound_FadeFromZero(void *, u8);
     extern u32 gUiInputFlags;
     extern u8 gProc_TalkKeyWait2[];
@@ -833,7 +833,7 @@ void TalkUi_SpawnKeyWait2(void *arg0) {
         *(s16 *)((u8 *)entry + 0x34) = x;
         *(s16 *)((u8 *)entry + 0x36) = y;
         if (*(u32 *)((u8 *)entry + 0x30) != 0) {
-            *(void **)((u8 *)entry + 0x38) = fn_80109180(*(s32 *)((u8 *)entry + 0x30), 0);
+            *(void **)((u8 *)entry + 0x38) = Sound_Create(*(s32 *)((u8 *)entry + 0x30), 0);
             sub = *(void **)((u8 *)entry + 0x38);
             *(f32 *)((u8 *)sub + 0x40) = (f32)x;
             *(f32 *)((u8 *)sub + 0x44) = (f32)y;
@@ -1189,9 +1189,9 @@ void fn_80122E28(void *arg0, s16 arg1, s16 arg2) {
 }
 
 void fn_80122E34(void *arg0, u32 arg1) {
-    s32 fn_80109180(u32, void *);
+    s32 Sound_Create(u32, void *);
     if (arg1 != 0U) {
-        M2C_FIELD(arg0, s32 *, 0x64) = fn_80109180(arg1, arg0);
+        M2C_FIELD(arg0, s32 *, 0x64) = Sound_Create(arg1, arg0);
         return;
     }
     M2C_FIELD(arg0, s32 *, 0x64) = 0;
@@ -3395,11 +3395,11 @@ void fn_80127150(void *arg0) {
 
 void fn_80127170(s32 arg0) {
     void *Process_CreateChild(void *, s32);
-    void fn_80109180(void *, void *);
+    void Sound_Create(void *, void *);
     extern u8 lbl_80290504[];
     extern u8 gScriptCmdNames[];
 
-    fn_80109180(gScriptCmdNames + 0x493, Process_CreateChild(lbl_80290504, arg0));
+    Sound_Create(gScriptCmdNames + 0x493, Process_CreateChild(lbl_80290504, arg0));
 }
 
 void fn_80127594(void *arg0) {

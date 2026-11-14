@@ -5965,7 +5965,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
     void Process_ClearFunc(void *);
     void Process_Unlink(void);
     void *Sound_FindByName(void *);
-    void *fn_80109180(void *, s32);
+    void *Sound_Create(void *, s32);
     void fn_80109BB4(void *, s32);
     void Sound_FadeFromZero(void *, s32);
     s8 Fx_FindSlotByName(void *);
@@ -6080,7 +6080,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
                 p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
                 fn_80109BB4(p, 0x40);
                 *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
-                q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
+                q = Sound_Create(*(void **)((u8 *)st + 0x2C), 0);
                 Sound_FadeFromZero(q, 0x40);
                 row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
                 y = (f32)row[3];
@@ -6153,7 +6153,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
-        q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
+        q = Sound_Create(*(void **)((u8 *)st + 0x2C), 0);
         Sound_FadeFromZero(q, 0x40);
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
@@ -6176,7 +6176,7 @@ extern "C" void fn_801C2AD0(void *arg0) {
         p = Sound_FindByName(*(void **)((u8 *)st + 0x30));
         fn_80109BB4(p, 0x40);
         *(f32 *)((u8 *)p + 0x48) = lbl_8036B374;
-        q = fn_80109180(*(void **)((u8 *)st + 0x2C), 0);
+        q = Sound_Create(*(void **)((u8 *)st + 0x2C), 0);
         Sound_FadeFromZero(q, 0x40);
         row = (s16 *)(*(u8 **)((u8 *)st + 0xC) + off);
         y = (f32)row[3];
@@ -6211,7 +6211,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     /* Initialize scroll-list panel: clear state, load script, build texture paths, size list. */
     void *memset(void *, int, u32);
     s32 Archive_Load();
-    void fn_80109180(u32, void *);
+    void Sound_Create(u32, void *);
     u32 Sound_FindByName(u32);
     void fn_80147188(s32);
     void *Heap_Alloc(s32);
@@ -6252,7 +6252,7 @@ void Ui_InitScrollListPanel(void *arg0) {
     *(u8 **)(panel+12)=entry+4;
     *(s32 *)(panel+16)=0;
     off=*(s32 *)(panel+16)*8;
-    fn_80109180(*(u32 *)(*(u8 **)(panel+12)+off),arg0);
+    Sound_Create(*(u32 *)(*(u8 **)(panel+12)+off),arg0);
     *(u32 *)(panel+44)=*(u32 *)(*(u8 **)(panel+12)+off);
     entry=*(u8 **)(panel+12)+off;
     y=*(s16 *)(entry+6);
