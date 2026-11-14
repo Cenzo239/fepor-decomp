@@ -1043,7 +1043,7 @@ void fn_80075FE4(void) {
 
 s32 fn_80076010(void) {
     void *fn_800285C0(void *);
-    u8 fn_80091F70(void *, void *);
+    u8 Item_TryCallUfx(void *, void *);
     u8 fn_80093218(void *, void *);
     extern void *gUiContext[];
     void *item;
@@ -1062,7 +1062,7 @@ s32 fn_80076010(void) {
     if (var_r0 == 7) {
         return 3;
     }
-    if (fn_80091F70(temp_r31, temp_r30) != 0) {
+    if (Item_TryCallUfx(temp_r31, temp_r30) != 0) {
         return 0;
     }
     return fn_80093218(temp_r31, temp_r30) ? 2 : 3;

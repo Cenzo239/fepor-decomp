@@ -257,7 +257,7 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
     return z;
 }
 #pragma global_optimizer reset
-s32 fn_80091F70(s32 arg0, s32 arg1) {
+s32 Item_TryCallUfx(s32 arg0, s32 arg1) {
     s32 Game_GetState();
     s32 Item_CallUfx(s32, s32);
     void *Item_GetUfx(s32);

@@ -7504,7 +7504,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
     u32 *Item_GetFlagsPtr(u32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, void *);
-    u8 fn_80091F70(u32, u32);
+    u8 Item_TryCallUfx(u32, u32);
     extern u32 gUiContext[];
     void Ui_UpdatePanelWidgets(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -7581,7 +7581,7 @@ extern "C" void Ui_HandleMapCursorSelectInput(void *arg0) {
         btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && unit != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
-            if (fn_80091F70(gUiContext[0], *(u32 *)unit) == 0) {
+            if (Item_TryCallUfx(gUiContext[0], *(u32 *)unit) == 0) {
                 *(Vec2s *)&sp18 = ((Obj *)cursorWidget)->v10();
                 obj = Process_CreateChild(gUiMsgPopupProc, self);
                 *(f32 *)((u8 *)obj + 0x30) = (f32)*(s16 *)&sp18;
@@ -10405,7 +10405,7 @@ void *fn_80177B00(void) {
 }
 
 u8 fn_80177B10(void) {
-    u8 fn_80091F70(void *, void *);
+    u8 Item_TryCallUfx(void *, void *);
     extern u32 gUiContext[];
     u8 *p;
     void *base;
@@ -10423,7 +10423,7 @@ u8 fn_80177B10(void) {
         if (slot == 0) {
             break;
         }
-        if (fn_80091F70(base, slot) != 0) {
+        if (Item_TryCallUfx(base, slot) != 0) {
             found = 1;
             break;
         }
