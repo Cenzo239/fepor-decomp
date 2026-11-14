@@ -6507,7 +6507,7 @@ void fn_8016FE5C(void) {
     return;
 }
 
-void fn_8016FE60(void *arg0) {
+void Ui_RefocusUnitListPanel(void *arg0) {
     void fn_8000A420(void *);
     void fn_80023FF4(void *);
     void Process_MarkActive(void *);
