@@ -18769,7 +18769,7 @@ void Ai_Cmd_TryHashedStatus(void *unit) {
     }
 }
 
-void fn_800FA510(void *arg0) {
+void AiCmd_ChanceTryHashedStatus(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
