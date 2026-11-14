@@ -6646,39 +6646,40 @@ s32 fn_8006D948(s32 arg0) {
     return sp8;
 }
 
+/* True if s contains _pat_ (or, if pat is null, if s is _..._). Used by GActor_FindNode. */
 s32 Str_MatchUnderscoreTag(char *s, char *pat)
 {
-    char *m;
+    char *match;
     u8 c;
-    s8 t;
+    s8 ch;
 
     if (s == 0) {
         return 0;
     }
     if (pat != 0) {
-        m = 0;
+        match = 0;
         for (;;) {
             c = *(u8 *)s;
             if (*s == 0) {
                 return 0;
             }
-            if (m != 0) {
-                if (*s == *m) {
-                    if (m[1] == 0) {
+            if (match != 0) {
+                if (*s == *match) {
+                    if (match[1] == 0) {
                         if (s[1] == 0x5f) {
                             return 1;
                         }
                     }
                     s++;
-                    m++;
+                    match++;
                 } else {
-                    m = 0;
+                    match = 0;
                 }
             } else {
-                t = *s;
+                ch = *s;
                 s++;
-                if (t == 0x5f) {
-                    m = pat;
+                if (ch == 0x5f) {
+                    match = pat;
                 }
             }
         }
