@@ -584,7 +584,7 @@ void FileCache_WorkerThread(void) {
     void DCFlushRange(s32, s32);
     void FileCache_OnCancel(void *, s32);
     void FileCache_OnLoadDone(void *, s32);
-    void fn_8005D9A8(void *);
+    void FileCache_SpawnArchiveEntries(void *);
     void fn_800C4588(s32);
     void OSSleepThread(u8 *);
     extern u8 gFileCacheWorkQueue[];
@@ -615,7 +615,7 @@ loop:
             }
         } else {
             if (*(volatile u16 *)((u8 *)entry + 0x30) & 0x800) {
-                fn_8005D9A8(entry);
+                FileCache_SpawnArchiveEntries(entry);
             }
             *(volatile u16 *)((u8 *)entry + 0x30) |= 0x2000;
         }
@@ -629,7 +629,7 @@ loop:
             fn_800C4588(val);
         }
         if (*(u16 *)((u8 *)entry + 0x30) & 0x800) {
-            fn_8005D9A8(entry);
+            FileCache_SpawnArchiveEntries(entry);
         }
         *(u16 *)((u8 *)entry + 0x30) |= 0x2000;
         break;
@@ -644,23 +644,23 @@ check:
 }
 
 void FileCache_OnCancel(void *arg0, s32 arg1) {
-    void fn_8005D9A8(void *);
+    void FileCache_SpawnArchiveEntries(void *);
     void FileCache_ExpandBuffer(void *);
 
     if (*(volatile u16 *)((u8 *)arg0 + 0x30) & 0x400) {
         FileCache_ExpandBuffer(arg0);
     } else {
         if (*(volatile u16 *)((u8 *)arg0 + 0x30) & 0x800) {
-            fn_8005D9A8(arg0);
+            FileCache_SpawnArchiveEntries(arg0);
         }
         *(volatile u16 *)((u8 *)arg0 + 0x30) |= 0x2004;
     }
 }
 
 void FileCache_OnLoadDone(void *arg0) {
- void fn_8005D9A8(void *); void FileCache_ExpandBuffer(void *); u32 AramCache_Find(void); u8 AramCache_Request(void *,s32,s32,void *,void *); extern u8 FileCache_QueueAramDone[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
+ void FileCache_SpawnArchiveEntries(void *); void FileCache_ExpandBuffer(void *); u32 AramCache_Find(void); u8 AramCache_Request(void *,s32,s32,void *,void *); extern u8 FileCache_QueueAramDone[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
  if ((*flags&8)&&AramCache_Find()==0&&AramCache_Request(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),FileCache_QueueAramDone,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)FileCache_ExpandBuffer(arg0);}
- else {if(*flags&0x400){FileCache_ExpandBuffer(arg0);return;}if(*flags&0x800)fn_8005D9A8(arg0);*flags|=0x2000;}
+ else {if(*flags&0x400){FileCache_ExpandBuffer(arg0);return;}if(*flags&0x800)FileCache_SpawnArchiveEntries(arg0);*flags|=0x2000;}
 }
 
 s32 fn_8005C0AC(void *arg0, u8 *arg1) {
