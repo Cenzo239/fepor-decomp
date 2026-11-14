@@ -16144,7 +16144,7 @@ block_15:
     return 1;
 }
 
-s32 fn_80182670(void *arg0) {
+s32 Ai_TryMoveToSeekTile(void *arg0) {
     void fn_800FB96C(s32, s8, s8, s32, s8, s8, s32, s32, s32);
     u8 fn_801025BC(void *, s16 *, s16 *);
     extern u8 gAiState[];

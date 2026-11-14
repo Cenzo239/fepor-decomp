@@ -19520,7 +19520,7 @@ s32 Ai_ExecUnit(void *arg0) {
     void Ai_TryCombatHostiles(void *);
     void Ai_TryCombatFiltered(void *);
     void Ai_TryMoveToFactionPos(void *);
-    void fn_80182670(void *);
+    void Ai_TryMoveToSeekTile(void *);
     void Ai_TryHandleLowHpHeal(void *);
     void fn_8018286C(void *);
     u8 v;
@@ -19542,7 +19542,7 @@ s32 Ai_ExecUnit(void *arg0) {
         Ai_TryMoveToFactionPos(arg0);
         break;
     case 5:
-        fn_80182670(arg0);
+        Ai_TryMoveToSeekTile(arg0);
         break;
     case 6:
         Ai_TryHandleLowHpHeal(arg0);
