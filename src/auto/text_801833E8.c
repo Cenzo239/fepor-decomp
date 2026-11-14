@@ -6310,7 +6310,7 @@ void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_80193CFC(void *arg0, void *arg1, void *arg2, void *arg3) {
+extern "C" void ItemList_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void Item_Clone(void *, void *);
