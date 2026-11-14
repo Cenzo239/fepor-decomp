@@ -6268,7 +6268,7 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return arg0;
 }
 
-void fn_80193C3C(void **arg0, s32 *arg1, void **arg2, void **arg3) {
+void ItemList_EraseRange(void **arg0, s32 *arg1, void **arg2, void **arg3) {
     void Item_Destroy(void *, s32);
     void Heap_Free(void *);
     void **p_end;
