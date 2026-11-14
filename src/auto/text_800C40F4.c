@@ -1928,7 +1928,8 @@ void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
 
 #pragma use_lmw_stmw on
 #pragma auto_inline off
-void *Xml_Destroy(void *arg0, s16 arg1) {
+/* Destroy an Xml document: free each item's data and the item list, then the base String; free self if doFree > 0. */
+void *Xml_Destroy(void *arg0, s16 doFree) {
     void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     void *String_Destroy(void *, s16);
@@ -1966,7 +1967,7 @@ void *Xml_Destroy(void *arg0, s16 arg1) {
             }
         }
         String_Destroy(self, -1);
-        if (arg1 > 0) {
+        if (doFree > 0) {
             Heap_Free(self);
         }
     }
