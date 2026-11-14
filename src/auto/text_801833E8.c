@@ -12860,23 +12860,24 @@ s32 fn_801A1DB8(s32 arg0) {
     return 1;
 }
 
-s32 ScriptCmd_GetScaledHeight(s8 arg0, s8 arg1) {
+s32 ScriptCmd_GetScaledHeight(s8 x, s8 y) {
+    /* Return battle-map height at tile (x, y), scaled by E_EventState's scale (or 1). */
     void *Process_Find(void *);
     f32 Map_SampleHeightRaw(void *, f32, f32);
     extern u16 E_EventState_script[];
     extern u8 gBattleMap[];
-    void *temp;
+    void *state;
     s32 scale;
-    f32 f;
+    f32 height;
 
-    temp = Process_Find(E_EventState_script);
-    if (temp != NULL) {
-        scale = *(s32 *)((u8 *)temp + 0x3C);
+    state = Process_Find(E_EventState_script);
+    if (state != NULL) {
+        scale = *(s32 *)((u8 *)state + 0x3C);
     } else {
         scale = 1;
     }
-    f = Map_SampleHeightRaw(gBattleMap, (f32)arg0, (f32)arg1);
-    return (s32)(f * (f32)scale);
+    height = Map_SampleHeightRaw(gBattleMap, (f32)x, (f32)y);
+    return (s32)(height * (f32)scale);
 }
 
 /* Sample battle-map height at tile (x, y), scaled by E_EventState's scale (or 1). */
