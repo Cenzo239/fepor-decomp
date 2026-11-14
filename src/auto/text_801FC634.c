@@ -1394,7 +1394,7 @@ s32 fn_801FFD6C(void) {
     return 0;
 }
 
-s32 fn_801FFD74(void) {
+s32 File_Open(void) {
     return 0;
 }
 
@@ -2293,6 +2293,31 @@ void PSMTXConcat(f32* mtx, f32* vec, f32* out) {
     out[1] = mtx[3] * vec[0] + mtx[4] * vec[1] + mtx[5] * vec[2]; 
     out[2] = mtx[6] * vec[0] + mtx[7] * vec[1] + mtx[8] * vec[2];
     out[3] = mtx[9] * vec[0] + mtx[10] * vec[1] + mtx[11] * vec[2];
+}
+
+void fn_802020F0(f32 *src, f32 *dst) {
+    extern f32 lbl_8036BC3C;
+    f32 zero;
+    __vec2x32float__ a;
+    __vec2x32float__ b;
+    __vec2x32float__ c;
+    __vec2x32float__ d;
+    f32 t0;
+    f32 t1;
+    f32 t2;
+
+    zero = lbl_8036BC3C;
+    dst[11] = zero;
+    a = *(__vec2x32float__ *)(src + 0);
+    b = *(__vec2x32float__ *)(src + 4);
+    t0 = src[2];
+    t1 = src[6];
+    *(__vec2x32float__ *)(dst + 0) = a;
+    c = *(__vec2x32float__ *)(src + 8);
+    *(__vec2x32float__ *)(dst + 4) = b;
+    d = *(__vec2x32float__ *)(src + 0);
+    *(__vec2x32float__ *)(dst + 8) = c;
+    dst[10] = src[10];
 }
 
 s32 PSMTXInverse(void *arg0) {

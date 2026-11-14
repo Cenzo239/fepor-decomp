@@ -11877,7 +11877,7 @@ void *fn_8017A294(void *arg0, s16 arg1) {
 
 #pragma cplusplus on
 extern "C" void fn_8017A310(void *arg0, void *arg1) {
-    void *fn_801FFD74(void *, void *);
+    void *File_Open(void *, void *);
     void fn_801FFD5C(void *, s32, void *, void *);
     void fn_801FFD6C(void *);
     extern u8 gFileOpenModes[];
@@ -11888,7 +11888,7 @@ extern "C" void fn_8017A310(void *arg0, void *arg1) {
     };
     void *temp;
 
-    temp = fn_801FFD74(arg1, gFileOpenModes);
+    temp = File_Open(arg1, gFileOpenModes);
     fn_801FFD5C(*(void **)arg0, 1, ((Obj *)arg0)->v1(), temp);
     fn_801FFD6C(temp);
 }
@@ -11989,7 +11989,7 @@ void Stream_WriteU8(void *arg0, s8 arg1) {
 }
 
 s32 Stream_LoadFile(void *arg0, void *arg1) {
-    void *fn_801FFD74(void *, void *);
+    void *File_Open(void *, void *);
     s32 fn_801FFD54(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
     void fn_801FFD64(void *, s32, s32, void *);
@@ -12000,7 +12000,7 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     s32 temp_r30;
 
     out = arg0;
-    temp_r31 = fn_801FFD74(arg1, gFileOpenModes + 4);
+    temp_r31 = File_Open(arg1, gFileOpenModes + 4);
     if (temp_r31 == NULL) {
         return 0;
     }
