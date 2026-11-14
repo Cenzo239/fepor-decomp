@@ -4714,31 +4714,32 @@ void Unit_Promote(void *arg0) {
     Unit_SetHp(self, (s8)Unit_GetMaxHp(self));
 }
 
-s32 Unit_CanPromote(s32 arg0) {
+s32 Unit_CanPromote(s32 unit) {
+    /* True if unit can promote: no blocking statuses, promo class exists, level >= 10. */
     u8 Status_Test(s32, s32);
     void *Res_GetByName(void *);
-    void *tmp;
-    void *resolved;
+    void *promoName;
+    void *promoClass;
 
-    if (Status_Test(arg0 + 0x1BC, 2) != 0) {
+    if (Status_Test(unit + 0x1BC, 2) != 0) {
         return 0;
     }
-    if (Status_Test(arg0 + 0x1BC, 8) != 0) {
+    if (Status_Test(unit + 0x1BC, 8) != 0) {
         return 0;
     }
-    if (Status_Test(arg0 + 0x1BC, 0x4D) != 0) {
+    if (Status_Test(unit + 0x1BC, 0x4D) != 0) {
         return 0;
     }
-    tmp = *(void **)((u8 *)*(void **)(arg0 + 0x18C) + 0xC);
-    if (tmp != NULL) {
-        resolved = Res_GetByName(tmp);
+    promoName = *(void **)((u8 *)*(void **)(unit + 0x18C) + 0xC);
+    if (promoName != NULL) {
+        promoClass = Res_GetByName(promoName);
     } else {
-        resolved = NULL;
+        promoClass = NULL;
     }
-    if (resolved == NULL) {
+    if (promoClass == NULL) {
         return 0;
     }
-    return (s8)*(u8 *)(arg0 + 0x19A) >= 0xA;
+    return (s8)*(u8 *)(unit + 0x19A) >= 0xA;
 }
 
 #pragma opt_strength_reduction reset
