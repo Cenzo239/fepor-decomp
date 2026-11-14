@@ -837,7 +837,7 @@ void Battle_SelectWeapon(void *arg0)
     extern void fn_801A601C(void *, void *, void *, s32);
     extern void BattleAnim_Queue(void *, s32, s32);
     extern void *fn_801A7FF4(void *);
-    extern void fn_801A895C(void *, void *);
+    extern void BattleUnit_GainWpnExp(void *, void *);
     extern void fn_801A8010(void *);
 
     u8 *obj;
@@ -852,7 +852,7 @@ void Battle_SelectWeapon(void *arg0)
 
     BattleAnim_Queue(obj + 0x8A0, 0x54, 0);
 
-    fn_801A895C(obj, fn_801A7FF4(obj));
+    BattleUnit_GainWpnExp(obj, fn_801A7FF4(obj));
 
     fn_801A8010(obj);
 }
@@ -1927,7 +1927,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void fn_801A601C(void *, void *, void *, s32);
     void *fn_801A7FF4(void *);
     void fn_801A8010(void *);
-    void fn_801A895C(void *, void *);
+    void BattleUnit_GainWpnExp(void *, void *);
     u8 Battle_RollHitResult(void *);
     extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
@@ -2031,7 +2031,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 }
             }
         }
-        fn_801A895C(unit, fn_801A7FF4(unit));
+        BattleUnit_GainWpnExp(unit, fn_801A7FF4(unit));
         *(u8 *)((u8 *)unit + 0x2CC) = 0;
         *(s16 *)((u8 *)unit + 0x2CE) = 0;
         for (i = 0; i < lim; ) {

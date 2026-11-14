@@ -299,7 +299,7 @@ s32 Unit_ClearEventStatuses(s32 unit) {
     return 1;
 }
 
-void fn_801A895C(void *arg0, void *arg1) {
+void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
     s32 fn_800927EC(void *);
     u8 Unit_GetWpnExp(void *, u8);
     s32 DebugPrint(const char *, ...);
