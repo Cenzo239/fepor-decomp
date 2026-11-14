@@ -15,7 +15,7 @@ typedef struct {
 extern u8 D_802EF4C8[24];
 extern u8 gMapUiResult;
 s32 Ui_CreateMenu();
-void fn_8007A524(void *arg0, s32 arg1, s32 arg2);
+void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2);
 
 void fn_80074370(void *arg0) {
     extern s32 lbl_80367468;
@@ -2962,7 +2962,7 @@ void fn_80079B9C(void *arg1, void *arg2) {
 void fn_80079CD8(void *arg0) {
     M2C_UNK Process_Goto(void *, s32);
     u32 Rand_Next();
-    void fn_8007A524(void *, s32, s32);
+    void Face_DrawEyes(void *, s32, s32);
     s32 var_r31 = 0;
     s32 temp_r0 = M2C_FIELD(arg0, s16 *, 0x38);
     u32 temp_r3;
@@ -3012,8 +3012,8 @@ void fn_80079CD8(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
     }
 
-    fn_8007A524(arg0, 0, 7);
-    fn_8007A524(arg0, var_r31, 0xA);
+    Face_DrawEyes(arg0, 0, 7);
+    Face_DrawEyes(arg0, var_r31, 0xA);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16) (M2C_FIELD(arg0, s16 *, 0x38) + 1);
 }
 
@@ -3024,7 +3024,7 @@ void fn_80079E08(void *arg0) {
 void fn_80079E14(void *arg0) {
     void Process_Goto(void *, s32);
     u32 Rand_Next();
-    void fn_8007A524(void *, s32, s32);
+    void Face_DrawEyes(void *, s32, s32);
     s32 var_r31;
     s32 var_r0;
     u32 temp_r3;
@@ -3082,8 +3082,8 @@ void fn_80079E14(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
         break;
     }
-    fn_8007A524(arg0, var_r31, 7);
-    fn_8007A524(arg0, 0, 0xA);
+    Face_DrawEyes(arg0, var_r31, 7);
+    Face_DrawEyes(arg0, 0, 0xA);
     M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
 }
 
@@ -3094,12 +3094,12 @@ void fn_80079F44(void *arg0) {
 void Face_BlinkWaitProc(void *arg0) {
     void Process_Goto(void *, s32);
     u32 Rand_Next();
-    void fn_8007A524(void *, s32, s32);
+    void Face_DrawEyes(void *, s32, s32);
     s32 var_r0;
     u32 temp_r3;
 
-    fn_8007A524(arg0, 0, 7);
-    fn_8007A524(arg0, 0, 0xA);
+    Face_DrawEyes(arg0, 0, 7);
+    Face_DrawEyes(arg0, 0, 0xA);
     if ((s16) M2C_FIELD(arg0, s16 *, 0x36) != 5) {
         Process_Goto(arg0, 1);
         temp_r3 = Rand_Next() >> 0x10U;
@@ -3154,13 +3154,13 @@ void fn_8007A024(void *arg0) {
             var_r31 = 1;
         }
         Process_Goto(arg0, 1);
-        fn_8007A524(arg0, var_r31, 7);
-        fn_8007A524(arg0, var_r31, 0xA);
+        Face_DrawEyes(arg0, var_r31, 7);
+        Face_DrawEyes(arg0, var_r31, 0xA);
         M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
         return;
     }
-    fn_8007A524(arg0, 1, 7);
-    fn_8007A524(arg0, 1, 0xA);
+    Face_DrawEyes(arg0, 1, 7);
+    Face_DrawEyes(arg0, 1, 0xA);
     if ((s16)M2C_FIELD(arg0, s16 *, 0x36) != 4) {
         Process_Goto(arg0, 1);
         temp_r3 = Rand_Next();
@@ -3225,13 +3225,13 @@ H:
     goto B;
 B:
     Process_Goto(arg0, 1);
-    fn_8007A524(arg0, r31, 7);
-    fn_8007A524(arg0, r31, 10);
+    Face_DrawEyes(arg0, r31, 7);
+    Face_DrawEyes(arg0, r31, 10);
     *(s16 *)((u8 *)arg0 + 0x38) = *(s16 *)((u8 *)arg0 + 0x38) + 1;
     return;
 A:
-    fn_8007A524(arg0, 2, 7);
-    fn_8007A524(arg0, 2, 10);
+    Face_DrawEyes(arg0, 2, 7);
+    Face_DrawEyes(arg0, 2, 10);
     if (*(s16 *)((u8 *)arg0 + 0x36) != 3) {
         Process_Goto(arg0, 2);
     }
@@ -3243,7 +3243,7 @@ void fn_8007A2A0(void *arg0) {
 
 void fn_8007A2AC(void *arg0) {
     void Process_Goto(void *, s32);
-    void fn_8007A524(void *, s32, s32);
+    void Face_DrawEyes(void *, s32, s32);
     s32 var_r31;
 
     var_r31 = 0;
@@ -3272,15 +3272,15 @@ void fn_8007A2AC(void *arg0) {
         break;
     }
 
-    fn_8007A524(arg0, var_r31, 7);
-    fn_8007A524(arg0, var_r31, 0xA);
+    Face_DrawEyes(arg0, var_r31, 7);
+    Face_DrawEyes(arg0, var_r31, 0xA);
     *(s16 *)((u8 *)arg0 + 0x38) = (s16)(*(s16 *)((u8 *)arg0 + 0x38) + 1);
 }
 
 void fn_8007A368(void *arg0) {
     void Process_Goto(void *, s32);
     u32 Rand_Next(void);
-    void fn_8007A524(void *, s32, s32);
+    void Face_DrawEyes(void *, s32, s32);
     s16 unk36;
     s16 unk34;
     s32 val;
@@ -3288,8 +3288,8 @@ void fn_8007A368(void *arg0) {
 
     val = *(s32 *)((u8 *)arg0 + 0x3C);
     *(s32 *)((u8 *)arg0 + 0x3C) = val - 1;
-    fn_8007A524(arg0, 0, 7);
-    fn_8007A524(arg0, 0, 0xA);
+    Face_DrawEyes(arg0, 0, 7);
+    Face_DrawEyes(arg0, 0, 0xA);
     unk36 = *(s16 *)((u8 *)arg0 + 0x36);
     if (unk36 != 1) {
         Process_Goto(arg0, (u8)unk36);
@@ -3363,7 +3363,7 @@ void fn_8007A46C(void *p) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-void fn_8007A524(void *arg0, s32 arg1, s32 arg2) {
+void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     void **fn_8006EDD8(void *, s32);
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
