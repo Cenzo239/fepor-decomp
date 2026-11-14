@@ -3627,14 +3627,14 @@ s32 fn_800B7210(void)
 {
     void fn_800162B8(void);
     void fn_801A7CDC(void *);
-    void fn_80016DE0(void);
+    void Unit_ResetAll(void);
     void Map_RefreshUnitMap(void *);
     extern u8 gBattle[];
     extern u8 gBattleMap[];
 
     fn_800162B8();
     fn_801A7CDC(gBattle);
-    fn_80016DE0();
+    Unit_ResetAll();
     Map_RefreshUnitMap(gBattleMap);
     return 1;
 }
@@ -3667,7 +3667,7 @@ s32 fn_800B727C(void) {
 
 s32 fn_800B72CC(void) {
     void fn_800162B8(void);
-    void fn_80016DE0(void);
+    void Unit_ResetAll(void);
     void Map_RefreshUnitMap(void *);
     void fn_800BDED8(void *);
     void fn_800C32A4(void *);
@@ -3689,7 +3689,7 @@ s32 fn_800B72CC(void) {
     fn_801E38E0(sp, gUnitSaveBuf = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0));
     fn_800162B8();
     fn_801A7CDC(gBattle);
-    fn_80016DE0();
+    Unit_ResetAll();
     Map_RefreshUnitMap(gBattleMap);
     fn_800BDED8(gBattleState + 0xB4);
     fn_8010FF90(gMapObjEventList);
@@ -3817,7 +3817,7 @@ s32 fn_800B74AC(void) {
 
 s32 ScriptCmd_SaveUnitsClear(void) {
 void Unit_WriteAll(void *);
-void fn_80016DE0(void);
+void Unit_ResetAll(void);
 void Icon_WriteSlots(void *, void *);
 void *fn_800C4638(s32, void *, s32);
 void fn_800C4588(void *);
@@ -3844,7 +3844,7 @@ pw[12]=0;
 *(u32*)(pw+8)=0x100000;
 Unit_WriteAll(pw);
 Icon_WriteSlots(gIconSlots,&w);
-fn_80016DE0();
+Unit_ResetAll();
 w.vtbl=lbl_80284C98;
 w.vtbl=lbl_802842A4;
 if(w.owned!=0) {fn_800C4588(w.start);w.start=NULL;w.owned=0;}

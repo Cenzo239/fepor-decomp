@@ -303,7 +303,7 @@ void fn_8014D678(void *arg0) {
 
 void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     void *Hash_Lookup(void *);
-    void fn_80016DE0(void);
+    void Unit_ResetAll(void);
     void fn_8003F670(s32);
     s32 Archive_Load(void);
     void FileCache_OrFlags(void *, s32);
@@ -382,7 +382,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     fn_8003F670(temp_r28);
     fn_800BE068((u8 *)arg0 + 0xB4);
     fn_801A7CDC(gBattle);
-    fn_80016DE0();
+    Unit_ResetAll();
     fn_8010FF90(gMapObjEventList);
     fn_800C341C(gConvoy);
     fn_800C32A4(gIconSlots);
@@ -424,6 +424,7 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
     }
 }
 
+#pragma scheduling off
 s32 BattleState_IsPhaseZero(void *arg0) {
     u8 v;
     s32 ret;
@@ -437,7 +438,7 @@ s32 BattleState_IsPhaseZero(void *arg0) {
     }
     return ret;
 }
-
+#pragma scheduling on
 s32 fn_8014D8DC(void *arg0) {
     u8 temp_r0;
 

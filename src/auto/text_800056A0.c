@@ -311,7 +311,7 @@ void fn_80005F04(void)
     void fn_80016C58(void);
     void BattleState_SetCamPos(float, float);
     void Camera_SyncFromBattleState(void);
-    void fn_80016DE0(void);
+    void Unit_ResetAll(void);
 
     extern u8 gSaveDataBase;
     extern u8 gBattleState[];
@@ -397,7 +397,7 @@ void fn_80005F04(void)
     case 3:
         SaveData_Release(&gSaveDataBase);
         fn_801E379C(object);
-        fn_80016DE0();
+        Unit_ResetAll();
 
         state = (u8 *)Process_Find(gGameProc);
         *(s32 *)(state + 0x60) = 0xA;
@@ -416,8 +416,8 @@ void fn_80005F04(void)
 }
 
 void fn_800060F8(void) {
-    M2C_UNK fn_80016DE0();
-    fn_80016DE0();
+    M2C_UNK Unit_ResetAll();
+    Unit_ResetAll();
 }
 
 void fn_80006118(void)

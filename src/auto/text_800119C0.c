@@ -2429,7 +2429,7 @@ s32 fn_80016C58(s32 arg0)
     }
 }
 
-void fn_80016DE0(void) {
+void Unit_ResetAll(void) {
     M2C_UNK fn_80015718(M2C_UNK *, M2C_UNK *);
     M2C_UNK Unit_Clear(M2C_UNK *, s32);
     extern M2C_UNK gUnits;
