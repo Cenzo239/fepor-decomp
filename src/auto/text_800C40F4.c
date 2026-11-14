@@ -19667,8 +19667,8 @@ void Ai_ConfirmBestMove(s32 proc) {
     void Process_ClearFunc(s32);
     extern u8 gUiContext[];
     extern u8 gAiState[];
-    s16 destY;
     s16 destX;
+    s16 destY;
     s32 saved;
     void *unit;
     u8 *ctx;
@@ -19677,12 +19677,12 @@ void Ai_ConfirmBestMove(s32 proc) {
     saved = proc;
     ctx = gUiContext;
     unit = *(void **)ctx;
-    if (Ai_FindBestMovePos(unit, &destY, &destX, ctx[0x11]) != 0) {
+    if (Ai_FindBestMovePos(unit, &destX, &destY, ctx[0x11]) != 0) {
         ai = gAiState;
         ai[0x21C] = 0;
         Ui_ConfirmUnitAction(ctx);
         UiCtx_RefreshRangeSelect(ctx);
-        Ai_SetUnitMoveTo(unit, destY, destX, 1, 0xFFFF, 0, 0, -1);
+        Ai_SetUnitMoveTo(unit, destX, destY, 1, 0xFFFF, 0, 0, -1);
         if (ai[0x21C] != 0) {
             fn_800FF918(saved);
         }
