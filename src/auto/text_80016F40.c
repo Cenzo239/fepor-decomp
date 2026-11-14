@@ -132,7 +132,7 @@ s32 fn_800172D4(u8 *arg0) {
     return *(u8 *)((char *)temp_r3 + 2);
 }
 
-s32 fn_80017318(u8 *arg0) {
+s32 Ai_GetFactionBehavior(u8 *arg0) {
     u8 *p;
 
     p = BattleState_GetFactionInfo(gBattleState, *arg0);

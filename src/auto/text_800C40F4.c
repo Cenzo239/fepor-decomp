@@ -19514,7 +19514,7 @@ void Ai_SetDecision(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 ar
 s32 Ai_ExecUnit(void *arg0) {
     void fn_80037814(void);
     void Unit_IsLowHp(void *);
-    u8 fn_80017318(void *);
+    u8 Ai_GetFactionBehavior(void *);
     void fn_8018256C(void *);
     void Ai_TryApproachIke(void *);
     void fn_80182AC4(void *);
@@ -19527,7 +19527,7 @@ s32 Ai_ExecUnit(void *arg0) {
 
     fn_80037814();
     Unit_IsLowHp(arg0);
-    v = fn_80017318((u8 *)arg0 + 0x236);
+    v = Ai_GetFactionBehavior((u8 *)arg0 + 0x236);
     switch (v) {
     case 1:
         Ai_TryApproachIke(arg0);
@@ -20620,7 +20620,7 @@ s32 fn_800FE8E8(void *arg0, void *arg1) {
 #pragma opt_strength_reduction off
 s32 Battle_BuildUnitScoreList(void) {
     /* Score on-map faction units by position, status and inventory; fill the battle priority list and return its count. */
-    u8 fn_80017318(void *);
+    u8 Ai_GetFactionBehavior(void *);
     u8 Item_GetRangeForUnit(void *, void *);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
@@ -20672,7 +20672,7 @@ s32 Battle_BuildUnitScoreList(void) {
             && ((*(u16 *)((u8 *)unit + 0x1A4) >> 7) & 7) == 0
             && (*(u8 *)((u8 *)unit + 0x1A5) & 7) == 0
             && (*(u32 *)((u8 *)unit + 0x1A0) & 0x9D) == 0
-            && (fn_80102EA8(unit) == 0 || fn_80017318((u8 *)unit + 0x236) != 0)) {
+            && (fn_80102EA8(unit) == 0 || Ai_GetFactionBehavior((u8 *)unit + 0x236) != 0)) {
             dist = fn_800FCF48(*(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F));
             move = (s8)Unit_GetMov(unit);
             neg = -(move + dist);
@@ -20682,7 +20682,7 @@ s32 Battle_BuildUnitScoreList(void) {
                 result = scoreScratch + 0x578;
             } else if (Unit_HasLowHpAi(unit) != 0
                 && (*(u32 *)((u8 *)unit + 0x254) & 1)
-                && (fn_80102EA8(unit) == 0 || (u8)fn_80017318((u8 *)unit + 0x236) == 6)) {
+                && (fn_80102EA8(unit) == 0 || (u8)Ai_GetFactionBehavior((u8 *)unit + 0x236) == 6)) {
                 floorPtr = &scoreScratch;
                 if (scoreScratch < sUnitScoreFloorSpecial) {
                     floorPtr = &sUnitScoreFloorSpecial;
