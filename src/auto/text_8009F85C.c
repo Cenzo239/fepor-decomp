@@ -506,11 +506,11 @@ void *fn_800A0250(void) {
 }
 
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
-    void Process_FindByName(void *);
+    void fn_8000BCA4(void *);
     void fn_8018DC98(void);
     void fn_8018DCC0(void);
     extern u8 lbl_80366E24;
-    extern u8 gMenuCmdStrings[];
+    extern u8 lbl_8026D8D8[];
     u8 x = 2;
     u8 t;
 
@@ -521,7 +521,7 @@ s32 fn_800A0260(s32 a, s32 b, void *arg2) {
         *(u8 *)((char *)arg2 + 0x39) = x;
     }
     if (lbl_80366E24 != 0) {
-        Process_FindByName(gMenuCmdStrings + 0x3D0);
+        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
         fn_8018DCC0();
     } else {
         fn_8018DC98();
@@ -1893,18 +1893,7 @@ void fn_800A2410(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     return;
 }
 
-s32 fn_800A2624(void *arg0)
-{
-    void *Map_GetCursorUnit(void);
-    void *p;
-    s32 ret;
-
-    p = Map_GetCursorUnit();
-    p = *(void **)((u8 *)p + 0x18c);
-    ret = 0;
-    *(u16 *)((u8 *)arg0 + 4) = *(u16 *)((u8 *)p + 0x38);
-    return ret;
-}
+s32 fn_800A2624(void *arg0) { void *Map_GetCursorUnit(void); u16 value; void *p = Map_GetCursorUnit(); p = *(void **)((u8 *)p + 0x18C); value = *(u16 *)((u8 *)p + 0x38); ((u16 *)arg0)[2] = value; return 0; }
 
 char *fn_800A2660(void *arg0) {
     void *Job_Get(s16);
@@ -1971,15 +1960,9 @@ s32 fn_800A2748(void *arg0) {
 
 s32 fn_800A279C(void *arg0)
 {
-    void *Map_GetCursorUnit(void);
-    void *p;
-    u16 v;
-
-    p = Map_GetCursorUnit();
-    p = *(void **)((u8 *)p + 0x188);
-    v = *(u16 *)((u8 *)p + 0x18);
-    *(u16 *)((u8 *)arg0 + 4) = v;
-    return 0;
+ void *Map_GetCursorUnit(void);
+ void *p = Map_GetCursorUnit();
+ return (*(u16 *)((u8 *)arg0+4) = *(u16 *)((u8 *)*(void **)((u8 *)p+0x188)+0x18)), 0;
 }
 
 char *fn_800A27D8(void *arg0) {
@@ -2149,27 +2132,18 @@ s32 fn_800A2CC8(void) {
 }
 
 s32 fn_800A2CD0(void *a, void *b, s32 arg) {
-    void *Map_GetCursorUnit(void);
-    u8 Unit_CountSupportPartners(void);
-    u32 fn_80037004(void *, u8);
-    s32 Unit_GetSupportPartner(void *, u8);
-    void *obj;
-    void *p;
-    u8 value;
-
-    obj = Map_GetCursorUnit();
-    p = *(void **)((u8 *)obj + 0x188);
-    if (*(u32 *)((u8 *)p + 0x50) == 0) {
-        return 3;
-    }
-    value = (u8)arg;
-    if ((s32)(u8)Unit_CountSupportPartners() <= (s32)value) {
-        return 3;
-    }
-    if (fn_80037004(obj, value) == 0) {
-        return 3;
-    }
-    return (Unit_GetSupportPartner(obj, value) == 0) ? 2 : 0;
+ void *Map_GetCursorUnit(void);
+ u8 Unit_CountSupportPartners(void *);
+ u32 fn_80037004(void *, u8);
+ s32 Unit_GetSupportPartner(void *, u8);
+ void *obj; void *p; u8 value;
+ obj=Map_GetCursorUnit();
+ p=*(void **)((u8 *)obj+0x188);
+ if(*(u32 *)((u8 *)p+0x50)==0) return 3;
+ value=(u8)arg;
+ if((s32)(u8)Unit_CountSupportPartners(obj)<=(s32)value) return 3;
+ if(fn_80037004(obj,value)==0) return 3;
+ return Unit_GetSupportPartner(obj,value)==0?2:0;
 }
 
 void fn_800A2D78(s32 arg0, s32 arg1, void *arg2) {
@@ -2325,32 +2299,17 @@ s32 fn_800A320C(void) {
 }
 
 s32 fn_800A3278(void *a, void *b, void *arg) {
-    extern u8 gBattleState[];
-    extern u8 lbl_80367558;
-    void fn_800BDB54(void *, s32);
-    void fn_800BDB78(void *, s32);
-    u8 fn_800BDB9C(void *, s32);
-    s32 index;
-    void *base;
-    s32 col;
-    s32 row;
-
-    base = gBattleState + 0xb4;
-    row = (s8)lbl_80367558;
-    col = *((u8 *)arg + 0x3a);
-    index = col - 1;
-    index = (row << 4) + index;
-
-    if (*(u32 *)((u8 *)base + (index << 2)) == 0) {
-        return 0;
-    }
-
-    if (fn_800BDB9C(base, index)) {
-        fn_800BDB54(base, index);
-    } else {
-        fn_800BDB78(base, index);
-    }
-    return 0;
+ extern u8 gBattleState[]; extern u8 lbl_80367558;
+ void fn_800BDB54(void *,s32); void fn_800BDB78(void *,s32); u8 fn_800BDB9C(void *,s32);
+ s32 index; void *base; s32 row;
+ base=gBattleState+0xb4;
+ row=(s8)lbl_80367558 << 4;
+ index=*((u8 *)arg+0x3a)-1;
+ index=row+index;
+ if(*(u32 *)((u8 *)base+(index<<2))==0) return 0;
+ if(fn_800BDB9C(base,index)) fn_800BDB54(base,index);
+ else fn_800BDB78(base,index);
+ return 0;
 }
 
 char *fn_800A3490(void) {
