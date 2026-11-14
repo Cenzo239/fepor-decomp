@@ -5939,14 +5939,12 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
     extern u16 gSampleKeyCount;
     extern void *lbl_803689D0;
 
-    void *Bsearch(void *, void *, s32, s32, s32 (*)(void *, void *));
+    void *BSearch(void *, void *, s32, s32, s32 (*)(void *, void *));
     s32 fn_8025093C(void *, void *);
-
-    u8 *result;
 
     *(u16 *)(lbl_803596D8 + 4) = arg0;
 
-    result = Bsearch(
+    lbl_803689D0 = BSearch(
         lbl_803596D8,
         gSampleKeys,
         gSampleKeyCount,
@@ -5954,11 +5952,9 @@ s32 fn_8025094C(u16 arg0, u16 *arg1)
         fn_8025093C
     );
 
-    lbl_803689D0 = result;
-
-    if (result != 0) {
-        *arg1 = *(u16 *)(result + 6);
-        return *(s32 *)result;
+    if (lbl_803689D0 != 0) {
+        *arg1 = *(u16 *)((u8 *)lbl_803689D0 + 6);
+        return *(s32 *)lbl_803689D0;
     }
 
     return 0;
