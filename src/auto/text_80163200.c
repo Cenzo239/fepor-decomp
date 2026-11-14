@@ -6089,7 +6089,7 @@ void fn_8016F1D4(void *arg0) {
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
-void fn_8016F220(void *arg0)
+void Ui_CloseNestedMenu(void *arg0)
 {
     void *temp_r3;
     s32 temp_r31;
