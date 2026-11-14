@@ -8419,6 +8419,7 @@ int fn_800C0658(void) {
     }
 }
 
+/* Restore battle-map UI after BMapSuspend: reset UI, restore saved BMap procs, restart the event. */
 void ScriptCmd_BMapResume(void) {
     void UiCtx_Reset(void *);
     void MapUi_ClearOverlays(void);
@@ -8437,21 +8438,21 @@ void ScriptCmd_BMapResume(void) {
     extern u8 Proc_BMapPlph[];
     extern u8 gEventWork[];
     extern u8 E_Event_script[];
-    void *obj;
-    void *obj2;
+    void *bmapMain;
+    void *bmapPlph;
 
     UiCtx_Reset(gUiContext);
     MapUi_ClearOverlays();
     gUiInputFlags &= ~0x890;
-    obj = Process_Find(Proc_BMapMain);
+    bmapMain = Process_Find(Proc_BMapMain);
     if (gBMapMainSaved != 0) {
-        *(u32 *)((u8 *)obj + 4) = gBMapMainSaved;
+        *(u32 *)((u8 *)bmapMain + 4) = gBMapMainSaved;
     } else {
         Process_UnlinkByKey(Proc_BMapMain);
     }
     if (gBMapPlphSaved != 0) {
-        obj2 = Process_CreateChild(Proc_BMapPlph, obj);
-        *(u32 *)((u8 *)obj2 + 4) = gBMapPlphSaved;
+        bmapPlph = Process_CreateChild(Proc_BMapPlph, bmapMain);
+        *(u32 *)((u8 *)bmapPlph + 4) = gBMapPlphSaved;
     }
     EventWork_Set(gEventWork);
     Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
