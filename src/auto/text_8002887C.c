@@ -3278,7 +3278,8 @@ void fn_800315F8(void) {
     fn_8014CB14(gBattleState, *(void **)gUiContext);
 }
 
-void MapUi_HandleMoveConfirm(void *arg0) {
+/* Confirm cursor tile if reachable in the move-cost map (A), or cancel (B). */
+void MapUi_HandleMoveConfirm(void *proc) {
     void Ui_PlaySeCue(void *, s32);
     void Process_Goto(void *, s32);
     extern void *gPadInput;
@@ -3286,28 +3287,28 @@ void MapUi_HandleMoveConfirm(void *arg0) {
     extern u8 gBattleMap[];
     extern u8 gMapUiStrs[];
     extern u8 gMapUiResult;
-    s32 temp_r3;
+    s32 held;
     s32 pressed;
-    f32 f0;
-    f32 f1;
-    s16 *cell;
+    f32 cursorY;
+    f32 cursorX;
+    s16 *moveCost;
 
-    temp_r3 = *(s32 *)((u8 *)gPadInput + 4);
-    pressed = temp_r3 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r3);
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    pressed = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
     if (pressed & 0x100) {
-        f0 = gBattleState[0x528 / 4];
-        f1 = gBattleState[0x524 / 4];
-        cell = (s16 *)(gBattleMap + 0x610e);
-        if (cell[(s8)(s32)f1 + ((s8)(s32)f0 << 6)] >= 0) {
+        cursorY = gBattleState[0x528 / 4];
+        cursorX = gBattleState[0x524 / 4];
+        moveCost = (s16 *)(gBattleMap + 0x610e);
+        if (moveCost[(s8)(s32)cursorX + ((s8)(s32)cursorY << 6)] >= 0) {
             Ui_PlaySeCue(gMapUiStrs + 0xFC, 0x64);
             gMapUiResult = 5;
-            Process_Goto(arg0, 0x63);
+            Process_Goto(proc, 0x63);
             return;
         }
     }
     if (pressed & 0x200) {
         gMapUiResult = 9;
-        Process_Goto(arg0, 0x63);
+        Process_Goto(proc, 0x63);
     }
 }
 
