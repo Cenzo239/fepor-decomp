@@ -770,3 +770,28 @@ void fn_80267000(void) {
 
 }
 
+#pragma peephole on
+void fn_802673E0(s32 *arg0, s32 arg1)
+{
+    extern u32 OSDisableInterrupts(void);
+    extern void OSRestoreInterrupts(u32);
+    extern void __OSMaskInterrupts(u32);
+    extern s32 lbl_80368B40;
+    extern s32 lbl_80368B30;
+    s32 *out;
+    s32 cb;
+    u32 enabled;
+    s32 tmp;
+
+    out = arg0;
+    cb = arg1;
+    enabled = OSDisableInterrupts();
+    lbl_80368B40 = (s32)&lbl_80368B44;
+    tmp = lbl_80368B40;
+    *out = tmp;
+    lbl_80368B30 = cb;
+    __OSMaskInterrupts(0x18000U);
+    *(u32 *)0xCC006828 = 0;
+    OSRestoreInterrupts(enabled);
+}
+#pragma peephole reset
