@@ -3800,7 +3800,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_80094ABC(void *, void *);
     s32 fn_80093010(void *, void *);
-    void fn_800949A4(void *, s8);
+    void Unit_RemoveItem(void *, s8);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     extern u8 gBattleMap[];
     extern u8 gAiState[];
@@ -3939,7 +3939,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
         fn_8010F3F4(arg0, (s8)((u8 *)bestUnit)[0x19E], (s8)((u8 *)bestUnit)[0x19F], &sp12, &sp10);
         fn_80094ABC(arg0, bestItem);
         rem = (s8)fn_80093010(arg0, *bestItem);
-        fn_800949A4(bestUnit, bestSlot);
+        Unit_RemoveItem(bestUnit, bestSlot);
         sp8 = 0;
         fn_800FB96C(0x34, (s8)sp12, (s8)sp10, arg0, (s8)sp12, (s8)sp10, rem, 0, 0);
     }

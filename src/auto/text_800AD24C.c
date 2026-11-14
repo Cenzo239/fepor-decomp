@@ -6307,7 +6307,7 @@ s32 fn_800BBE9C(u8 arg0, s32 arg1) {
 
 s32 Unit_SendItemToConvoy(u8 arg0, s32 arg1) {
     u32 *Unit_GetItemSlot(void *, s32);
-    void fn_800949A4(void *, s8);
+    void Unit_RemoveItem(void *, s8);
     void Convoy_AddItem(void *, u32 *);
     u8 fn_8014D8DC(void *);
     extern u8 gUnits[];
@@ -6332,7 +6332,7 @@ s32 Unit_SendItemToConvoy(u8 arg0, s32 arg1) {
         return 0;
     }
     Convoy_AddItem(gConvoy, temp_r3);
-    fn_800949A4(var_r31, (s8)arg1);
+    Unit_RemoveItem(var_r31, (s8)arg1);
     return 1;
 }
 
@@ -6642,7 +6642,7 @@ s32 fn_800BC6E8(u8 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_800BC760(u8 arg0, s8 arg1) {
-    void fn_800949A4(void *, s32);
+    void Unit_RemoveItem(void *, s32);
     extern u8 gUnits[];
     void *unit;
 
@@ -6654,7 +6654,7 @@ s32 fn_800BC760(u8 arg0, s8 arg1) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    fn_800949A4(unit, arg1);
+    Unit_RemoveItem(unit, arg1);
     return 1;
 }
 

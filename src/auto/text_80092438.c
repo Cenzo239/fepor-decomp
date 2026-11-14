@@ -1435,7 +1435,7 @@ void Unit_CompactItems(s32 arg0) {
     Item_Destroy(&sp28, -1);
 }
 
-void fn_800949A4(void *arg0, s8 arg1) {
+void Unit_RemoveItem(void *arg0, s8 arg1) {
     void *Unit_GetHeldItemSlot(void);
     void Item_Clear(void *);
     void Unit_CompactItems(void *);

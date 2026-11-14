@@ -3488,7 +3488,7 @@ void fn_8002666C(void *arg0) {
 }
 
 void fn_80026678(void *arg0) {
-    void fn_800949A4(s32, u8);
+    void Unit_RemoveItem(s32, u8);
     void fn_80094ABC(s32, void *, s32, void *);
     void Battle_Apply(void *);
     extern u8 lbl_802EF4C8[];
@@ -3506,7 +3506,7 @@ void fn_80026678(void *arg0) {
     temp_r31 = *(s32 *)(lbl_802EF4C8 + 4);
     bf->flag = zero;
     fn_80094ABC(a0, temp_r4, zero, lbl_802EF4C8);
-    fn_800949A4(temp_r31, lbl_802EF4C8[0xA]);
+    Unit_RemoveItem(temp_r31, lbl_802EF4C8[0xA]);
     Battle_Apply(gBattle);
 }
 
