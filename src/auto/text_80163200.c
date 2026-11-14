@@ -7467,7 +7467,8 @@ extern "C" void Ui_ApplyFullHeal(void *proc) {
 }
 #pragma cplusplus reset
 
-void Ui_ConfirmItemUse(void *arg0) {
+void Ui_ConfirmItemUse(void *proc) {
+    /* Confirm using the inventory cursor item (dispatch action mode 4), or cancel back to the prior UI state. */
     void Process_Goto(void *, s32);
     void fn_800271C8(void *, void *);
     u32 MapCursor_GetItem(void *);
@@ -7475,29 +7476,29 @@ void Ui_ConfirmItemUse(void *arg0) {
     void Ui_SetWidgetText(s32, s32);
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    void *temp_r30;
-    s16 temp_r0;
-    u32 ret;
+    void *cursor;
+    s16 slot;
+    u32 widget;
 
     switch ((s32)((u8 *)gUiContext)[8]) {
     case 0x81:
-        temp_r30 = M2C_FIELD(arg0, void **, 0x4C);
-        if (MapCursor_GetItem(temp_r30) != 0) {
+        cursor = M2C_FIELD(proc, void **, 0x4C);
+        if (MapCursor_GetItem(cursor) != 0) {
             ((u8 *)gUiContext)[8] = 4;
             gUiContext[1] = gUiContext[0];
-            temp_r0 = M2C_FIELD(temp_r30, s16 *, 0x4C);
-            ((u8 *)gUiContext)[0xA] = (u8)temp_r0;
-            ((u8 *)gUiContext)[0x15] = (u8)temp_r0;
-            fn_800271C8(gUiContext, arg0);
+            slot = M2C_FIELD(cursor, s16 *, 0x4C);
+            ((u8 *)gUiContext)[0xA] = (u8)slot;
+            ((u8 *)gUiContext)[0x15] = (u8)slot;
+            fn_800271C8(gUiContext, proc);
         }
         break;
     case 0x80:
-        Process_Goto(arg0, 0x1A);
+        Process_Goto(proc, 0x1A);
         break;
     }
-    ret = Ui_FindChild(arg0, -0x1000, 0);
-    if (ret != 0) {
-        Ui_SetWidgetText(ret, (s32)((u8 *)gUiMsgStrings + 0x2E7));
+    widget = Ui_FindChild(proc, -0x1000, 0);
+    if (widget != 0) {
+        Ui_SetWidgetText(widget, (s32)((u8 *)gUiMsgStrings + 0x2E7));
     }
 }
 
