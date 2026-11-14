@@ -929,30 +929,31 @@ s32 ScriptCmd_EnemySelfDefenceCheck(void) {
     return count;
 }
 
+/* Count enemy units whose job JID is Priest, Bishop, or Saint. */
 s32 ScriptCmd_EnemyMonkCheck(void) {
     void DebugPrint(void *, ...);
     s32 Str_Cmp(void *, void *);
     extern u8 gWinCondCmdNames[];
     extern u8 gUnitLists[];
-    u8 *base;
+    u8 *names;
     void *next;
-    void *entry;
+    void *job;
     s32 count;
-    void *node;
+    void *unit;
 
     count = 0;
     DebugPrint(gWinCondCmdNames + 0x1E8);
-    node = *(void **)(gUnitLists + 0xC);
-    base = gWinCondCmdNames;
-    while (node != NULL) {
-        entry = *(void **)((u8 *)node + 0x18C);
-        next = *(void **)((u8 *)node + 0x184);
-        if (Str_Cmp(*(void **)entry, base + 0x1F1) == 0
-            || Str_Cmp(*(void **)entry, base + 0x1FC) == 0
-            || Str_Cmp(*(void **)entry, base + 0x207) == 0) {
+    unit = *(void **)(gUnitLists + 0xC);
+    names = gWinCondCmdNames;
+    while (unit != NULL) {
+        job = *(void **)((u8 *)unit + 0x18C);
+        next = *(void **)((u8 *)unit + 0x184);
+        if (Str_Cmp(*(void **)job, names + 0x1F1) == 0
+            || Str_Cmp(*(void **)job, names + 0x1FC) == 0
+            || Str_Cmp(*(void **)job, names + 0x207) == 0) {
             count += 1;
         }
-        node = next;
+        unit = next;
     }
     DebugPrint(gWinCondCmdNames + 0x214, count);
     return count;
