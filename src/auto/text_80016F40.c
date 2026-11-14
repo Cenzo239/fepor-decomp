@@ -1082,7 +1082,7 @@ s32 Camera_GetActive(void) {
     return gActiveCam;
 }
 
-void fn_80018AE4(void) {
+void EventLock_Dec(void) {
     extern u8 lbl_803671C0;
     lbl_803671C0 -= 1;
 }

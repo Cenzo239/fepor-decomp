@@ -47,7 +47,7 @@ extern f32 lbl_803697E4;
 
 void fn_80095850(void *arg0) {
     void *Camera_GetActive(void);
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void fn_80019384(void *, s32);
     extern f32 lbl_803697C0;
     void *temp;
@@ -56,7 +56,7 @@ void fn_80095850(void *arg0) {
     *(f32 *)((u8 *)temp + 8) = *(f32 *)((u8 *)arg0 + 0x30);
     fn_80019384(temp, *(s32 *)((u8 *)arg0 + 0x60));
     *(f32 *)((u8 *)temp + 0x70) = lbl_803697C0;
-    fn_80018AE4();
+    EventLock_Dec();
 }
 
 s32 fn_800958A4(s32 arg0) {

@@ -8428,7 +8428,7 @@ void ScriptCmd_BMapResume(void) {
     void fn_800142D4(void *);
     void *fn_801270A4(void);
     void Process_Goto(void *, s32);
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     extern u8 gUiContext[24];
     extern s32 gUiInputFlags;
     extern u8 Proc_BMapMain[];
@@ -8455,7 +8455,7 @@ void ScriptCmd_BMapResume(void) {
     }
     fn_800142D4(lbl_80320040);
     Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
-    fn_80018AE4();
+    EventLock_Dec();
 }
 
 /* Save BMapMain/BMapPlph state, ensure BMap exists, and switch context for an event. */
@@ -8577,8 +8577,8 @@ void fn_800C0924(void)
 }
 
 void fn_800C0980(void) {
-    M2C_UNK fn_80018AE4();
-    fn_80018AE4();
+    M2C_UNK EventLock_Dec();
+    EventLock_Dec();
 }
 
 void fn_800C09A0(void) {

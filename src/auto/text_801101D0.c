@@ -2970,11 +2970,11 @@ void fn_8011824C(s32 arg0) {
 }
 
 void fn_8011829C(void *arg0) {
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void Process_Goto(void *, s32);
     extern u8 gUiContext[];
 
-    fn_80018AE4();
+    EventLock_Dec();
     switch ((s32)gUiContext[8]) {
     case 0x81:
         Process_Goto(arg0, 0x13);
@@ -3279,7 +3279,7 @@ void fn_801186E4(void *arg0)
 }
 
 void fn_80118B7C(void *arg0) {
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void fn_800A8478(void);
     void fn_8018DB4C(void);
     void fn_8000C060(void *, void *);
@@ -3290,7 +3290,7 @@ void fn_80118B7C(void *arg0) {
     void *temp_r31;
 
     while (lbl_803671C0 != 0) {
-        fn_80018AE4();
+        EventLock_Dec();
     }
     fn_800A8478();
     fn_8018DB4C();
@@ -3781,7 +3781,7 @@ void fn_80119884(void *arg0) {
 }
 
 void fn_8011A0CC(void *arg0) {
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void fn_800A8478(void);
     void fn_8018DB4C(void);
     void fn_8000C060(void *, void *);
@@ -3794,7 +3794,7 @@ void fn_8011A0CC(void *arg0) {
     void *temp_r31;
 
     while (lbl_803671C0 != 0) {
-        fn_80018AE4();
+        EventLock_Dec();
     }
     fn_800A8478();
     fn_8018DB4C();

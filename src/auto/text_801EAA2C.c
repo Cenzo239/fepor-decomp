@@ -187,11 +187,11 @@ void fn_801EAE68(void *arg0) {
 }
 
 void fn_801EAEC8(void *arg0) {
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void Process_Goto(void *, s32);
     extern u8 gUiContext[];
 
-    fn_80018AE4();
+    EventLock_Dec();
     switch ((s32)gUiContext[8]) {
     case 0x81:
         Process_Goto(arg0, 0xB);
@@ -461,7 +461,7 @@ void fn_801EB294(void *arg0)
 }
 
 void fn_801EB72C(void *arg0) {
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void fn_800A8478(void);
     void fn_8018DB4C(void);
     void *Ui_FindChild(void *, s32, s32);
@@ -469,7 +469,7 @@ void fn_801EB72C(void *arg0) {
     extern u8 lbl_803671C0;
 
     while (lbl_803671C0 != 0) {
-        fn_80018AE4();
+        EventLock_Dec();
     }
     fn_800A8478();
     fn_8018DB4C();
@@ -509,7 +509,7 @@ void fn_801EBB00(void *arg0) {
     void Map_RefreshUnitMap(void *);
     void fn_80161F7C(void);
     void fn_8003F670(void *);
-    void fn_80018AE4(void);
+    void EventLock_Dec(void);
     void fn_80018B04(void);
     void String_Destroy(void *, s32);
     void Ui_DtorPanelBase(void *, s32);
@@ -535,7 +535,7 @@ void fn_801EBB00(void *arg0) {
     fn_80161F7C();
     fn_8003F670(*(void **)((u8 *)arg0 + 0x4C));
     goto end;
-    fn_80018AE4();
+    EventLock_Dec();
     if (lbl_803671C0 == 0) {
         if (arg0 == NULL) {
             return;
