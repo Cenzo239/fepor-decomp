@@ -891,7 +891,7 @@ fn_8001003C((s16)(right-width/2),(s16)(bottom),k2,0,0,labels.labels[0],lbl_80369
 /* Draw the unit-info name plate (faction label + unit name). */
 void UnitInfo_DrawNamePlate(void *panel)
 {
-    void *fn_8014C5A8(void *, s32);
+    void *BattleState_GetFactionInfo(void *, s32);
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -930,8 +930,8 @@ void UnitInfo_DrawNamePlate(void *panel)
     x = lbl_803694C0 + *(f32 *)((u8 *)panel + 0x18);
     y = *(f32 *)((u8 *)panel + 0x14);
     namePtr = (u8 *)*(void **)((u8 *)panel + 0x58) + 0x236;
-    faction0 = fn_8014C5A8(gBattleState, 0);
-    faction3 = fn_8014C5A8(gBattleState, 3);
+    faction0 = BattleState_GetFactionInfo(gBattleState, 0);
+    faction3 = BattleState_GetFactionInfo(gBattleState, 3);
     fn_800875B4(0xB3, 0, y, x, lbl_803694C4, lbl_803694C8);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036942C);
@@ -954,7 +954,7 @@ void UnitInfo_DrawNamePlate(void *panel)
         }
     } else {
         kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
-        if (UnitList_CmdIsAvailable(fn_8014C5A8(gBattleState, kind)) != 0) {
+        if (UnitList_CmdIsAvailable(BattleState_GetFactionInfo(gBattleState, kind)) != 0) {
             kind = *(u8 *)(*(u8 **)((u8 *)*(void **)((u8 *)panel + 0x58) + 0x190) + 8);
             switch (kind) {
             case 0:

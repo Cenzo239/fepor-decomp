@@ -137,7 +137,7 @@ void BattleState_Write(void *state, void *stream) {
     Stream_WritePad(stream, 8, 0);
 }
 
-s32* fn_8014C5A8(s32 arg0, u8 arg1) {
+s32* BattleState_GetFactionInfo(s32 arg0, u8 arg1) {
     if (arg1 == 0) {
         return (s32*)(arg0 + 0x94);
     }

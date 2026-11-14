@@ -178,7 +178,7 @@ s32 fn_8018361C(void) {
 }
 
 void fn_80183624(void **arg0) {
- u8 *fn_8014C5A8(void *,u8);
+ u8 *BattleState_GetFactionInfo(void *,u8);
  s32 *Ui_GetColor(u8);
  void Prim2D_SetColorPacked(s32 *);
  extern u8 gBattleState[],lbl_803681F0;
@@ -187,7 +187,7 @@ void fn_80183624(void **arg0) {
  u8 (*method)(void **);
  table=gBattleState; mode=3;
  if(lbl_803681F0==0x32) mode=0;
- temp=fn_8014C5A8(table,(u8)mode);
+ temp=BattleState_GetFactionInfo(table,(u8)mode);
  if(temp) {
  saved=*temp;
  method=*(u8 (**)(void **))((u8 *)*arg0+0x54);

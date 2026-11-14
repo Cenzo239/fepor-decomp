@@ -16327,7 +16327,7 @@ s32 Ai_UnitIsIke(s32 arg0) {
 
 void fn_80182EC8(s32 arg0) {
     void *Process_CreateChild(void *, s32);
-    s32 fn_8014C5A8(void *, s32);
+    s32 BattleState_GetFactionInfo(void *, s32);
     extern u8 lbl_80295788[];
     void *temp_r31;
     s32 var_r3;
@@ -16335,9 +16335,9 @@ void fn_80182EC8(s32 arg0) {
     if (((u8 *)gUiContext)[0x14] == 3) {
         temp_r31 = Process_CreateChild(lbl_80295788, arg0);
         if (((u8 *)gUiContext)[8] == 0x32) {
-            var_r3 = fn_8014C5A8(gBattleState, 0);
+            var_r3 = BattleState_GetFactionInfo(gBattleState, 0);
         } else {
-            var_r3 = fn_8014C5A8(gBattleState, 3);
+            var_r3 = BattleState_GetFactionInfo(gBattleState, 3);
         }
         *(s32 *)((u8 *)temp_r31 + 0x30) = var_r3;
     }

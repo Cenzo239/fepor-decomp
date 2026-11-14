@@ -3,7 +3,7 @@
 
 extern u16 gBattleState[700]; // 1400 bytes / 2 = 700 u16s
 
-void* fn_8014C5A8(u16 *, u8);
+void* BattleState_GetFactionInfo(u16 *, u8);
 extern u8 lbl_802841B0[16];
 
 
@@ -44,7 +44,7 @@ void *fn_80017010(u8 *arg0) {
     case 0:
     case 5:
     case 6: {
-        temp_r3 = fn_8014C5A8(gBattleState, temp_r4);
+        temp_r3 = BattleState_GetFactionInfo(gBattleState, temp_r4);
         if (temp_r3 == NULL) {
             var_r0 = 0;
         } else {
@@ -68,7 +68,7 @@ void *fn_80017010(u8 *arg0) {
         break;
     }
     case 3: {
-        temp_r3 = fn_8014C5A8(gBattleState, temp_r4);
+        temp_r3 = BattleState_GetFactionInfo(gBattleState, temp_r4);
         if (temp_r3 == NULL) {
             var_r0 = 0;
         } else {
@@ -104,17 +104,17 @@ void *Unit_FindIke(u8 *arg0) {
     void *Unit_FindByName(char *);
     extern char lbl_80268128[];
 
-    if (fn_8014C5A8(gBattleState, *arg0) == NULL) {
+    if (BattleState_GetFactionInfo(gBattleState, *arg0) == NULL) {
         return NULL;
     }
     return Unit_FindByName(lbl_80268128 + 0x4C);
 }
 
 s32 fn_80017290(u8 *arg0) {
-    void *fn_8014C5A8(void *, u8);
+    void *BattleState_GetFactionInfo(void *, u8);
     void *temp_r3;
 
-    temp_r3 = fn_8014C5A8(gBattleState, *arg0);
+    temp_r3 = BattleState_GetFactionInfo(gBattleState, *arg0);
     if (temp_r3 == NULL) {
         return -1;
     }
@@ -122,10 +122,10 @@ s32 fn_80017290(u8 *arg0) {
 }
 
 s32 fn_800172D4(u8 *arg0) {
-    void *fn_8014C5A8(void *, u8);
+    void *BattleState_GetFactionInfo(void *, u8);
     void *temp_r3;
 
-    temp_r3 = fn_8014C5A8(gBattleState, *arg0);
+    temp_r3 = BattleState_GetFactionInfo(gBattleState, *arg0);
     if (temp_r3 == NULL) {
         return -1;
     }
@@ -135,7 +135,7 @@ s32 fn_800172D4(u8 *arg0) {
 s32 fn_80017318(u8 *arg0) {
     u8 *p;
 
-    p = fn_8014C5A8(gBattleState, *arg0);
+    p = BattleState_GetFactionInfo(gBattleState, *arg0);
     if (p == NULL) {
         return 0;
     }

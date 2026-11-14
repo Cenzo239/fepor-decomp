@@ -2514,7 +2514,7 @@ void fn_8002E648(void) {
 }
 
 void Battle_StartCpPhase(s32 arg0) {
-    void *fn_8014C5A8(void *, u8);
+    void *BattleState_GetFactionInfo(void *, u8);
     void CpPhase_Start(s32);
     void CpPhase_StartAlt(s32);
     extern u8 gBattleState[];
@@ -2529,7 +2529,7 @@ void Battle_StartCpPhase(s32 arg0) {
     if (table[idx] == 0) {
         return;
     }
-    ret = fn_8014C5A8(base, (u8)idx);
+    ret = BattleState_GetFactionInfo(base, (u8)idx);
     idx = base[0x11];
     if (idx == 3) {
         goto case3;

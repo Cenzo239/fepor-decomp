@@ -15893,7 +15893,7 @@ void fn_800F0774(void) {
 void fn_800F07C0(void) {
     f32 Map_SampleHeightRaw(void *, f32, f32);
     void Effect_SetPos(void *, f32, f32, f32);
-    void *fn_8014C5A8(void *, s32);
+    void *BattleState_GetFactionInfo(void *, s32);
     u8 BattleState_IsPhaseZero(void *);
     extern u8 gBattleState[];
     extern u8 gBattleMap[];
@@ -15910,7 +15910,7 @@ void fn_800F07C0(void) {
     if (BattleState_IsPhaseZero(gBattleState) != 0) {
         if (lbl_803678E8 != NULL) {
             r31 = lbl_803678E8;
-            data = fn_8014C5A8(gBattleState, 0);
+            data = BattleState_GetFactionInfo(gBattleState, 0);
             if (data[0] != 3) {
                 obj = *(void **)((u8 *)r31 + 0x30);
                 *(u32 *)((u8 *)obj + 8) |= 0x10;
@@ -15924,7 +15924,7 @@ void fn_800F07C0(void) {
         }
         if (lbl_803678EC != NULL) {
             r31 = lbl_803678EC;
-            data = fn_8014C5A8(gBattleState, 3);
+            data = BattleState_GetFactionInfo(gBattleState, 3);
             if (data[0] != 3) {
                 obj = *(void **)((u8 *)r31 + 0x30);
                 *(u32 *)((u8 *)obj + 8) |= 0x10;
