@@ -98,7 +98,7 @@ void fn_80098E1C(s32 arg0) {
     void fn_80050BF4(s32, s32);
     void fn_800980D4(s32);
     u8 fn_80098568(void);
-    void fn_80183B24(s32, s32);
+    void MuDead_Start(s32, s32);
 
     s32 var_r31;
     s32 temp_r3;
@@ -110,7 +110,7 @@ void fn_80098E1C(s32 arg0) {
             fn_80050BF4(temp_r3, 0);
             fn_800980D4(var_r31);
             if (fn_80098568() != 0) {
-                fn_80183B24(temp_r3, arg0);
+                MuDead_Start(temp_r3, arg0);
             }
         }
         var_r31 += 1;

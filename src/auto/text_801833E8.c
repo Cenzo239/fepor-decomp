@@ -371,7 +371,7 @@ void MuEvent_Create(s32 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(s32 *)((u8 *)temp_r3 + 0x40) = arg3;
 }
 
-void fn_80183B24(s32 arg0, s32 arg1) {
+void MuDead_Start(s32 arg0, s32 arg1) {
     extern u8 lbl_80295DF0[];
     void *Process_CreateEx(u8 *, s32);
     s32 *obj;
@@ -10651,7 +10651,7 @@ void fn_8019D0F4(void *arg0)
 
 void fn_8019D150(void *arg0) {
     u8 fn_80098568(void **);
-    M2C_UNK fn_80183B24(s32, void *);
+    M2C_UNK MuDead_Start(s32, void *);
     s32 var_r3;
     s32 var_r3_2;
     void *temp_r3;
@@ -10664,7 +10664,7 @@ void fn_8019D150(void *arg0) {
         } else {
             var_r3 = 0;
         }
-        fn_80183B24(var_r3, arg0);
+        MuDead_Start(var_r3, arg0);
         return;
     }
     temp_r3_2 = *M2C_FIELD(arg0, void ***, 0x34);
@@ -12215,7 +12215,7 @@ s32 MuDead_StartForUnit(u8 arg0) {
     void *Process_Create(u8 *, s32);
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
-    void fn_80183B24(void *, void *);
+    void MuDead_Start(void *, void *);
     void *obj;
     void *slot;
     void *arg;
@@ -12242,7 +12242,7 @@ s32 MuDead_StartForUnit(u8 arg0) {
         }
         arg = Process_Create(Proc_MuEventInst, tmp);
     }
-    fn_80183B24(obj, arg);
+    MuDead_Start(obj, arg);
     return 1;
 }
 
