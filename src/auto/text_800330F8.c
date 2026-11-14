@@ -9602,9 +9602,9 @@ void fn_80049CB4(s32 arg0, void *arg1) {
 
 #pragma peephole off
 void fn_80049D08(void *arg0) {
-    extern f32 lbl_80368F2C;
-    void fn_8005FEE8(void *, f32);
-    fn_8005FEE8((char *)arg0 + 0x14, lbl_80368F2C);
+ extern f32 lbl_80368F2C;
+ void fn_8005FEE8(void *, f32);
+ fn_8005FEE8(&((u32*)arg0)[5], lbl_80368F2C);
 }
 #pragma peephole on
 void fn_80049D30(s32 arg0) {
@@ -10153,13 +10153,10 @@ s32 fn_8004AE28(s32 arg0, s32 arg1, s32 arg2)
 }
 
 s32 fn_8004AF30(u16 arg0) {
-    if (arg0 == 0xFFFF) {
-        return 0;
-    }
-    if (arg0 < 0x3E8) {
-        return 0;
-    }
-    return fn_80146B10();
+ s32 fn_80146B10(u32);
+ if(arg0 == 0xFFFF) return 0;
+ if(arg0 < 0x3E8) return 0;
+ return fn_80146B10(arg0);
 }
 
 #pragma peephole off
