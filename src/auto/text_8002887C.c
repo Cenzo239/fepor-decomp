@@ -3959,7 +3959,7 @@ extern "C" void UnitInfo_DrawStaff(void *win, void *slot) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_800907B8(void *);
+extern "C" void UnitInfo_DrawInventoryPanel(void *);
 extern "C" void UnitInfo_DrawInventory(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
@@ -3977,7 +3977,7 @@ extern "C" void UnitInfo_DrawInventory(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_800907B8((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        UnitInfo_DrawInventoryPanel((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();

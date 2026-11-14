@@ -95,7 +95,7 @@ void UnitInfo_DrawCombatStats(s32 arg0, s32 arg1, void* arg2, s32 arg3) {
     *((f32*)var_r5 + 1) = sp34;
 }
 
-void fn_800907B8(void *arg0) {
+void UnitInfo_DrawInventoryPanel(void *arg0) {
     void fn_8008BA80(void *, s32, s32, u8);
     void fn_8008BBF8(s32, s32, s32, s32, u8, s32);
     void fn_8008CD64(f32);
