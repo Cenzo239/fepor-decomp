@@ -2297,11 +2297,11 @@ void fn_8000A358(s32 arg0) {
 }
 
 void GfxEnt_ForEachKey(u32 arg0, void (*arg1)(void *, s32), s32 arg2) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *var_r31;
     s32 var_r30;
 
-    var_r31 = gGfxEnts;
+    var_r31 = gProcesses;
     var_r30 = 0;
     do {
         if (*(u32 *)var_r31 == arg0) {
@@ -2519,7 +2519,7 @@ s32 fn_8000A930(void *arg0) {
 
 s32 fn_8000A950(void *arg0)
 {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
 
     u8 *table;
     u8 *entry;
@@ -2529,7 +2529,7 @@ s32 fn_8000A950(void *arg0)
     s32 j;
     s32 equal;
 
-    table = gGfxEnts;
+    table = gProcesses;
     search = *(char **)(*(u8 **)((u8 *)arg0 + 4) + 4);
 
     for (i = 0; i < 0x80; i++) {
@@ -2593,7 +2593,7 @@ s32 fn_8000A950(void *arg0)
 
 s32 fn_8000AA60(void *arg0)
 {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     void Process_Unlink(void *);
 
     u8 *entry;
@@ -2603,7 +2603,7 @@ s32 fn_8000AA60(void *arg0)
     s32 i;
     s32 result;
 
-    entry = gGfxEnts;
+    entry = gProcesses;
     source = *(u8 **)(*(u8 **)((u8 *)arg0 + 4) + 4);
 
     for (i = 0; i < 0x80; i++) {
@@ -2680,7 +2680,7 @@ found:
 
 #pragma global_optimizer off
 s32 fn_8000AB90(void *arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *entry;
     u8 *source;
     u8 *a;
@@ -2697,7 +2697,7 @@ s32 fn_8000AB90(void *arg0) {
     p = *(u8 **)((u8 *)arg0 + 4);
     ctr = 0x80;
     source = *(u8 **)(p + 4);
-    entry = gGfxEnts;
+    entry = gProcesses;
     n = 0;
     for (; ctr != 0; ctr--) {
         if (*(u32 *)entry != 0) {
@@ -2786,7 +2786,7 @@ s32 fn_8000ACD8(void) {
 }
 
 s32 fn_8000ACE0(void *arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *p;
     u32 value;
     u32 zero;
@@ -2794,7 +2794,7 @@ s32 fn_8000ACE0(void *arg0) {
     s32 j;
 
     value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
-    p = gGfxEnts;
+    p = gProcesses;
     zero = 0;
     for (i = 0; i < 0x100; i++) {
         for (j = 0; j < 8; j++) {
@@ -2817,7 +2817,7 @@ s32 fn_8000ADA0(void *arg0) {
 }
 
 s32 fn_8000ADE4(void *arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *p;
     u32 value;
     s32 i;
@@ -2825,7 +2825,7 @@ s32 fn_8000ADE4(void *arg0) {
     s32 idx;
 
     value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
-    p = gGfxEnts;
+    p = gProcesses;
     idx = 0;
     for (i = 0; i < 0x100; i++) {
         for (j = 0; j < 8; j++) {
@@ -3166,14 +3166,14 @@ s32 fn_8000B4D4(void *arg0) {
 
 s32 fn_8000B4E8(void *arg0)
 {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     s32 Process_Unlink(void *);
 
     u8 *ptr;
     s32 i;
     s32 count;
 
-    ptr = gGfxEnts;
+    ptr = gProcesses;
     count = 0;
 
     for (i = 0; i < 0x20; i++) {
@@ -3227,14 +3227,14 @@ s32 fn_8000B4E8(void *arg0)
 
 s32 fn_8000B660(void *arg0)
 {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     s32 Process_Unlink(void *);
 
     u8 *ptr;
     s32 i;
     s32 count;
 
-    ptr = gGfxEnts;
+    ptr = gProcesses;
     count = 0;
 
     for (i = 0; i < 0x20; i++) {
@@ -3385,16 +3385,16 @@ void Process_RunScript(void *arg0) {
 }
 
 void *GfxEnt_Get(u8 arg0) {
-    extern u16 gGfxEnts[];
-    return (u8 *)gGfxEnts + arg0 * 0x70;
+    extern u16 gProcesses[];
+    return (u8 *)gProcesses + arg0 * 0x70;
 }
 
 u8 fn_8000B920(void *arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
 
     s32 offset;
 
-    offset = (s32)arg0 - (s32)gGfxEnts;
+    offset = (s32)arg0 - (s32)gProcesses;
     return (u8)(offset / 0x70);
 }
 
@@ -3523,7 +3523,7 @@ void fn_8000B9A4(void *arg0, void (*arg1)(void *)) {
 }
 
 void *Process_FindByName(u8 *arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *entry;
     u8 *a;
     u8 *b;
@@ -3534,7 +3534,7 @@ void *Process_FindByName(u8 *arg0) {
     s32 c1;
     s32 c2;
 
-    entry = gGfxEnts;
+    entry = gProcesses;
     for (n = 0; n < 0x80; n++) {
         if (*(u32 *)entry != 0) {
             a = *(u8 **)(entry + 0x14);
@@ -3594,12 +3594,12 @@ void *Process_FindByName(u8 *arg0) {
 #pragma optimization_level 4
 void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *var_r31;
     s32 var_r30;
     u8 *var_r29;
 
-    var_r31 = gGfxEnts;
+    var_r31 = gProcesses;
     var_r30 = 0;
     var_r29 = arg0;
     do {
@@ -3642,12 +3642,12 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
 }
 
 void fn_8000BE54(u32 arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *p;
     s32 i;
     s32 j;
 
-    p = gGfxEnts;
+    p = gProcesses;
     for (i = 0; i < 0x100; i++) {
         for (j = 0; j < 8; j++) {
             if (*(u32 *)p == arg0) {
@@ -3660,12 +3660,12 @@ void fn_8000BE54(u32 arg0) {
 }
 
 void Process_UnlinkByKey(u32 arg0) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     void Process_Unlink(void *);
     u8 *var_r31;
     s32 var_r30;
 
-    var_r31 = gGfxEnts;
+    var_r31 = gProcesses;
     var_r30 = 0;
     do {
         if (*(u32 *)var_r31 == arg0) {
@@ -3677,11 +3677,11 @@ void Process_UnlinkByKey(u32 arg0) {
 }
 
 void fn_8000BF6C(u32 arg0, void (*arg1)(void *)) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *var_r31;
     s32 var_r30;
 
-    var_r31 = gGfxEnts;
+    var_r31 = gProcesses;
     var_r30 = 0;
     do {
         if (*(u32 *)var_r31 == arg0) {
@@ -3693,11 +3693,11 @@ void fn_8000BF6C(u32 arg0, void (*arg1)(void *)) {
 }
 
 void fn_8000BFEC(void (*arg0)(void *)) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     u8 *var_r31;
     s32 var_r30;
 
-    var_r31 = gGfxEnts;
+    var_r31 = gProcesses;
     var_r30 = 0;
     do {
         if (*(u32 *)var_r31 != 0) {
@@ -3738,8 +3738,8 @@ load:
 }
 
 u32 *Process_Find(u32 arg0) {
-    extern u8 gGfxEnts[];
-    u32 *p = (u32 *)gGfxEnts;
+    extern u8 gProcesses[];
+    u32 *p = (u32 *)gProcesses;
     s32 i;
 
     for (i = 0; i < 256; i++, p += 0x1C) {
@@ -3920,7 +3920,7 @@ void Process_Free(s32 arg0) {
 void *fn_8000C540(void) {
     void Process_Unlink(void *);
     extern void **gProcessFreeTop;
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     void **p;
     void *result;
     u8 *entry;
@@ -3932,7 +3932,7 @@ void *fn_8000C540(void) {
         gProcessFreeTop = p + 1;
         return result;
     }
-    entry = gGfxEnts;
+    entry = gProcesses;
     for (i = 0x100; i != 0; i--) {
         if (*(void **)entry != NULL) {
             if ((entry[0x2C] & 0x10) != 0) {
@@ -4183,7 +4183,7 @@ extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
 extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
-    extern u8 gGfxEnts[];
+    extern u8 gProcesses[];
     extern u8 lbl_80283828[];
     extern void *lbl_80367148;
     u8 *base;
@@ -4194,7 +4194,7 @@ void fn_8000CC88(void) {
     u8 ff;
     u32 zero;
 
-    base = gGfxEnts;
+    base = gProcesses;
     p = base;
     q = (u8 **)(base + 0x7000);
     neg1 = -1;
@@ -4272,28 +4272,43 @@ s32 Rand_TrueHit(s32 arg0) {
     u16 t6;
     s32 scaled;
     s32 sum;
-    s32 i;
 
     st = &lbl_80367150;
-    sum = 0;
-    for (i = 0; i < 2; i++) {
-        s0 = lbl_80367150.a;
-        s2 = st->c;
-        s1 = st->b;
-        t4 = (s2 * 2) & 0xFFFE;
-        combined = (s1 << 11) + (s0 >> 5);
-        st->c = t4;
-        t6 = (u16)combined;
-        if (s1 & 0x8000) {
-            st->c = t4 + 1;
-        }
-        t6 ^= st->c;
-        st->c = st->b;
-        scaled = (u16)t6 * 100;
-        st->b = lbl_80367150.a;
-        lbl_80367150.a = t6;
-        sum += scaled / 65536;
+
+    s0 = lbl_80367150.a;
+    s2 = st->c;
+    s1 = st->b;
+    t4 = (s2 * 2) & 0xFFFE;
+    combined = (s1 << 11) + (s0 >> 5);
+    st->c = t4;
+    t6 = (u16)combined;
+    if (s1 & 0x8000) {
+        st->c = t4 + 1;
     }
+    t6 ^= st->c;
+    st->c = st->b;
+    scaled = (u16)t6 * 100;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
+    sum = scaled / 65536;
+
+    s0 = lbl_80367150.a;
+    s2 = st->c;
+    s1 = st->b;
+    t4 = (s2 * 2) & 0xFFFE;
+    combined = (s1 << 11) + (s0 >> 5);
+    st->c = t4;
+    t6 = (u16)combined;
+    if (s1 & 0x8000) {
+        st->c = t4 + 1;
+    }
+    t6 ^= st->c;
+    st->c = st->b;
+    scaled = (u16)t6 * 100;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
+    sum += scaled / 65536;
+
     return (sum / 2) < arg0;
 }
 
