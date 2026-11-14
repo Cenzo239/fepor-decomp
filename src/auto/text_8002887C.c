@@ -2070,7 +2070,7 @@ void fn_8002D72C(void *arg0) {
 }
 
 extern u16 Proc_BMapMain[216];
-void fn_8002D780(s32 arg0) {
+void BMapMain_Goto(s32 arg0) {
     void *Process_Find(void *);
     void Process_Goto(void *, u8);
 

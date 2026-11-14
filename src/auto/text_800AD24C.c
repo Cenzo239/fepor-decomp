@@ -3447,7 +3447,7 @@ u8 fn_800B6DF0(void) {
 }
 
 s32 fn_800B6E00(s32 arg0) {
-    void fn_8002D780(s32, void *);
+    void BMapMain_Goto(s32, void *);
     void fn_8000BD98(void *);
     void Process_UnlinkByKey(void *);
     extern u8 gBattleState[];
@@ -3469,7 +3469,7 @@ s32 fn_800B6E00(s32 arg0) {
     }
     p = (void *)gBattleState;
     p->f54 = (u8)var;
-    fn_8002D780(2, p);
+    BMapMain_Goto(2, p);
     fn_8000BD98(lbl_8026ECB8 + 0x98b);
     Process_UnlinkByKey(lbl_8028E7F8);
     return 1;
@@ -7724,7 +7724,7 @@ void fn_800BE228(s32 *arg0) {
 #pragma global_optimizer off
 s32 fn_800BE2F4(void) {
     u8 EventFlag_IsSet(void *, void *);
-    void fn_8002D780(s32);
+    void BMapMain_Goto(s32);
     void fn_8000BD98(void *);
     void Process_UnlinkByKey(void *);
     extern u8 lbl_8026FC78[];
@@ -7733,10 +7733,10 @@ s32 fn_800BE2F4(void) {
 
     obj = (u8 *)gBattleState + 0xB4;
     if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0) {
-        fn_8002D780(3);
+        BMapMain_Goto(3);
     }
     if (EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
-        fn_8002D780(1);
+        BMapMain_Goto(1);
     }
     if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0 ||
         EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
