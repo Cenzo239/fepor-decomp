@@ -8863,7 +8863,7 @@ s32 fn_800C1360(s32 arg0, s32 arg1, s32 arg2)
     return arg2;
 }
 
-void fn_800C14D0(void *arg0) {
+void Map_SyncBlendBuffers(void *arg0) {
     void fn_800062EC(s32, s32, u32);
     void DCFlushRange(void *, u32);
     void fn_800C1BDC();
