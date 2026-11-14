@@ -657,10 +657,33 @@ void FileCache_OnCancel(void *arg0, s32 arg1) {
     }
 }
 
-void FileCache_OnLoadDone(void *arg0) {
- void FileCache_SpawnArchiveEntries(void *); void FileCache_ExpandBuffer(void *); u32 AramCache_Find(void); u8 AramCache_Request(void *,s32,s32,void *,void *); extern u8 FileCache_QueueAramDone[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
- if ((*flags&8)&&AramCache_Find()==0&&AramCache_Request(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),FileCache_QueueAramDone,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)FileCache_ExpandBuffer(arg0);}
- else {if(*flags&0x400){FileCache_ExpandBuffer(arg0);return;}if(*flags&0x800)FileCache_SpawnArchiveEntries(arg0);*flags|=0x2000;}
+/* After DVD load: optionally start ARAM DMA (flag 8), else expand buffer / spawn archive children and mark load-done. */
+void FileCache_OnLoadDone(void *entry) {
+    void FileCache_SpawnArchiveEntries(void *);
+    void FileCache_ExpandBuffer(void *);
+    u32 AramCache_Find(void);
+    u8 AramCache_Request(void *, s32, s32, void *, void *);
+    extern u8 FileCache_QueueAramDone[];
+    volatile u16 *flags = (u16 *)((u8 *)entry + 0x30);
+
+    if ((*flags & 8) && AramCache_Find() == 0 &&
+        AramCache_Request(entry, *(s32 *)((u8 *)entry + 0x38), *(s32 *)((u8 *)entry + 0x3c),
+                          FileCache_QueueAramDone, entry)) {
+        *flags |= 0x80;
+        *(s32 *)((u8 *)entry + 0x6c) = *(s32 *)((u8 *)entry + 0x38);
+        if (*flags & 0x400) {
+            FileCache_ExpandBuffer(entry);
+        }
+    } else {
+        if (*flags & 0x400) {
+            FileCache_ExpandBuffer(entry);
+            return;
+        }
+        if (*flags & 0x800) {
+            FileCache_SpawnArchiveEntries(entry);
+        }
+        *flags |= 0x2000;
+    }
 }
 
 s32 fn_8005C0AC(void *arg0, u8 *arg1) {
