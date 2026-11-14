@@ -6376,7 +6376,7 @@ void fn_8025106C(void *arg0, u32 *arg1)
     }
 }
 
-void fn_802511F8(void *arg0, u32 *arg1) {
+void Sound_CmdVolume(void *arg0, u32 *arg1) {
     M2C_UNK fn_80250B58(void *, u32 *);
     u32 fn_802575A0(void *);
     M2C_UNK fn_80260174(u8, u8, u8);
