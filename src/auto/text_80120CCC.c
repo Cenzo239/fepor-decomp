@@ -842,7 +842,7 @@ void TalkUi_SpawnKeyWait2(void *arg0) {
     }
 }
 
-void fn_80122524(void *arg0) {
+void TalkUi_KeyWait2Proc(void *arg0) {
     void UiPanel_PollSkip(u16 *);
     u8 fn_80120C2C(void);
     void Ui_PlaySeCue(void *, s32);
