@@ -199,20 +199,15 @@ s32 fn_8014ACE8(s32 unused0, s32 unused1, s32 arg2) {
 }
 
 char *fn_8014AD34(void) {
-    void sprintf(void *, void *, ...);
-    extern char lbl_803306E8[];
-    extern u8 gSoundMenuStrings[];
-    extern u8 lbl_80367B0D;
-    extern u8 lbl_80367B0E;
-    s32 page;
-    s32 total;
-    void *fmt;
-
-    page = (s8)lbl_80367B0D + 1;
-    total = (s8)lbl_80367B0E;
-    fmt = gSoundMenuStrings + 0xF0;
-    sprintf(lbl_803306E8, fmt, page, total);
-    return lbl_803306E8;
+ void sprintf(void *, void *, ...);
+ extern char lbl_803306E8[];
+ extern u8 gSoundMenuStrings[];
+ extern u8 lbl_80367B0D;
+ extern u8 lbl_80367B0E;
+ s32 total = *(s8 *)&lbl_80367B0E;
+ s32 page = *(s8 *)&lbl_80367B0D;
+ sprintf(lbl_803306E8, gSoundMenuStrings + 0xF0, page + 1, total);
+ return lbl_803306E8;
 }
 
 s32 fn_8014AD88(void) {
