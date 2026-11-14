@@ -3560,7 +3560,7 @@ s32 ScriptCmd_seqini(void) {
     return 1;
 }
 
-void fn_80127AC4(void) {
+void MapUi_ClearOverlays(void) {
     extern u16 gScriptCmdNames[];
 
     GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x472);

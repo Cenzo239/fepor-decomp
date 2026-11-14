@@ -8421,7 +8421,7 @@ int fn_800C0658(void) {
 
 void ScriptCmd_BMapResume(void) {
     void UiCtx_Reset(void *);
-    void fn_80127AC4(void);
+    void MapUi_ClearOverlays(void);
     void *Process_Find(void *);
     void Process_UnlinkByKey(void *);
     void *Process_CreateChild(void *, void *);
@@ -8441,7 +8441,7 @@ void ScriptCmd_BMapResume(void) {
     void *obj2;
 
     UiCtx_Reset(gUiContext);
-    fn_80127AC4();
+    MapUi_ClearOverlays();
     gUiInputFlags &= ~0x890;
     obj = Process_Find(Proc_BMapMain);
     if (gBMapMainSaved != 0) {
