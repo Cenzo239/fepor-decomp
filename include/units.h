@@ -18,7 +18,7 @@ struct Unit {
     /* 0x184 */ void* listNext; /* next unit in gUnitLists allegiance chain */
     /* 0x188 */ void* person; /* Person_GetByPid; +0x50 support table, +0x54 affinity */
     /* 0x18C */ void* job; /* Job_GetByJid */
-    /* 0x190 */ void* unk190; /* +0x8 = allegiance; compared for same-army checks */
+    /* 0x190 */ void* faction; /* +0x8 = allegiance; compared for same-army checks */
     /* 0x194 */ void* rescuePartner; /* other unit while rescuing / being rescued */
     /* 0x198 */ u8 index; /* deployment/script unit id; UnitGetByPos return */
     /* 0x199 */ u8 unk199[3];
