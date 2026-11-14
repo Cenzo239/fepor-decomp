@@ -1298,7 +1298,7 @@ void *AramCache_Find(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_801ECECC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 AramCache_Request(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void *fn_801ED12C(s32);
     void *AramCache_InsertFree(void *, void *);
     s32 fn_8000D598(s32);
