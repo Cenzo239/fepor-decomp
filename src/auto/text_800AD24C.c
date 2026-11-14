@@ -6300,7 +6300,7 @@ s32 fn_800BBE9C(u8 arg0, s32 arg1) {
 s32 fn_800BBF04(u8 arg0, s32 arg1) {
     u32 *Unit_GetItemSlot(void *, s32);
     void fn_800949A4(void *, s8);
-    void fn_800C35C4(void *, u32 *);
+    void Convoy_AddItem(void *, u32 *);
     u8 fn_8014D8DC(void *);
     extern u8 gUnits[];
     extern u8 gConvoy[];
@@ -6323,7 +6323,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
     if (*temp_r3 == 0U) {
         return 0;
     }
-    fn_800C35C4(gConvoy, temp_r3);
+    Convoy_AddItem(gConvoy, temp_r3);
     fn_800949A4(var_r31, (s8)arg1);
     return 1;
 }
@@ -6331,7 +6331,7 @@ s32 fn_800BBF04(u8 arg0, s32 arg1) {
 s32 Unit_SendAllItemsToConvoy(u8 arg0) {
     u32 *Unit_GetItemSlot(void *, s32);
     void fn_800947E0(void *);
-    void fn_800C35C4(void *, u32 *);
+    void Convoy_AddItem(void *, u32 *);
     void Item_Clear(u32 *);
     extern u8 gUnits[];
     extern u8 gConvoy[];
@@ -6351,7 +6351,7 @@ s32 Unit_SendAllItemsToConvoy(u8 arg0) {
     do {
         temp_r3 = Unit_GetItemSlot(var_r30, var_r28);
         if ((temp_r3 != NULL) && (*temp_r3 != 0U)) {
-            fn_800C35C4(gConvoy, temp_r3);
+            Convoy_AddItem(gConvoy, temp_r3);
             Item_Clear(temp_r3);
         }
         var_r28 += 1;
