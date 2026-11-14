@@ -8157,7 +8157,7 @@ s32 fn_800BFECC(void *arg0)
     return *(void **)(unit + 0x188) == value;
 }
 
-s32 fn_800BFF30(s32 arg0) {
+s32 Event_StartCallerKind2(s32 arg0) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void *Event_GetString(void *, u32);
