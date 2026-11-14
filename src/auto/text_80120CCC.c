@@ -819,14 +819,14 @@ void TalkUi_SpawnKeyWait2(void *arg0) {
     void *fn_80109180(s32, u32);
     void Sound_FadeFromZero(void *, u8);
     extern u32 gUiInputFlags;
-    extern u8 lbl_802902AC[];
+    extern u8 gProc_TalkKeyWait2[];
     void *entry;
     s16 x;
     s16 y;
     void *sub;
 
     if ((gUiInputFlags & 3) == 0) {
-        entry = Process_CreateChild(lbl_802902AC);
+        entry = Process_CreateChild(gProc_TalkKeyWait2);
         y = *(s16 *)((u8 *)arg0 + 0x62);
         x = *(s16 *)((u8 *)arg0 + 0x60);
         *(u32 *)((u8 *)entry + 0x30) = *(u32 *)((u8 *)arg0 + 0x5C);
