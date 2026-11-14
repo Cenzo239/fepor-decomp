@@ -2807,7 +2807,7 @@ void fn_800CAE38(void) {
     }
 }
 
-void fn_800CAE9C(void *arg0) {
+void BattleScene_InitSides(void *arg0) {
     u8 Status_Test(void *, s32);
     extern u8 lbl_80367878;
     extern void *lbl_8036787C;
