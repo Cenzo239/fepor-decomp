@@ -2389,7 +2389,7 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     return p + 1;
 }
 
-s32 fn_80234048(void *isc, s32 ch, s32 act)
+s32 __StringRead(void *isc, s32 ch, s32 act)
 {
     char ret;
     __InStrCtrl *Iscp = (__InStrCtrl *)isc;
@@ -2693,7 +2693,7 @@ s32 strlen(const char* str) {
 
 void fn_80234524(s32 arg0) {
     f32 fn_802345B0(M2C_UNK, s32 (*)(), s32 *, M2C_UNK *, s32 *);
-    extern s32 fn_80234048();
+    extern s32 __StringRead();
     extern f64 lbl_80367070;
     extern f64 lbl_80367078;
     extern s32 lbl_803687F0;
@@ -2708,7 +2708,7 @@ void fn_80234524(s32 arg0) {
     sp10 = arg0;
     sp14 = 0;
 
-    temp_f1 = fn_802345B0(0x7FFFFFFF, fn_80234048, &sp10, &temp_r0, &spC);
+    temp_f1 = fn_802345B0(0x7FFFFFFF, __StringRead, &sp10, &temp_r0, &spC);
     temp_f2 = fabs(temp_f1);
 
     if ((spC != 0) || (temp_f1 != lbl_8036BE10 && ((temp_f2 < lbl_80367070) || (temp_f2 > lbl_80367078)))) {
@@ -3026,7 +3026,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
 
 s32 atoi(char *str) {
     extern s32 lbl_803687F0;
-    extern s32 fn_80234048();
+    extern s32 __StringRead();
     extern u32 __strtoul(s32, s32, s32 (*)(), void *, s32 *, s32 *, s32 *);
     u32 value;
     s32 overflow;
@@ -3036,7 +3036,7 @@ s32 atoi(char *str) {
 
     isc.NextChar = str;
     isc.NullCharDetected = 0;
-    value = __strtoul(10, 0x7FFFFFFF, fn_80234048, &isc, &count, &negative, &overflow);
+    value = __strtoul(10, 0x7FFFFFFF, __StringRead, &isc, &count, &negative, &overflow);
     if (overflow || (!negative && value > 0x7FFFFFFF) || (negative && value > 0x80000000)) {
         value = negative ? 0x80000000 : 0x7FFFFFFF;
         lbl_803687F0 = 0x22;
