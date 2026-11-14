@@ -4127,7 +4127,7 @@ void fn_8016BA5C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x38) = 0;
 }
 
-void fn_8016BADC(void *arg0) {
+void Jyokyo_Cleanup(void *arg0) {
     void Map_Get(void);
     void Map_ClearDispCache(void);
     void Face_ClearSlot(void *);
