@@ -4011,11 +4011,7 @@ s32 Unit_GetPhaseActCode(void *unit) {
 #pragma global_optimizer off
 void UiCtx_GetItemSlot(void *arg0) {
     void Unit_GetItemSlot(void *, s32);
-    s32 b;
-    void *p;
-    b = (s8)*((u8 *)arg0 + 0xA);
-    p = *(void **)arg0;
-    Unit_GetItemSlot(p, b);
+    Unit_GetItemSlot(*(void **)arg0, *(s8 *)((u8 *)arg0 + 0xA));
 }
 #pragma global_optimizer reset
 void fn_800285EC(void) {
