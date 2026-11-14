@@ -853,17 +853,18 @@ s32 ScriptCmd_PlayerEscapeCount(void) {
     return count;
 }
 
+/* Return 1 if every player/faction-5 unit has escaped (stateFlags 0x4000); else 0. */
 s32 ScriptCmd_PlayerEscapeCheck(void) {
     void DebugPrint(const char *, ...);
     void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 gWinCondCmdNames[];
     extern u8 gUnits[];
-    u8 buf[8];
+    u8 allegMask[8];
     u8 *unit;
     s32 i;
 
     DebugPrint((const char *)(gWinCondCmdNames + 0x19C));
-    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, buf);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, allegMask);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;
@@ -871,7 +872,7 @@ s32 ScriptCmd_PlayerEscapeCheck(void) {
             unit = NULL;
         }
         if (*(u32 *)(unit + 0x188) != 0
-            && buf[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0
+            && allegMask[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0
             && !(*(u32 *)(unit + 0x1A0) & 0x4000)) {
             return 0;
         }
