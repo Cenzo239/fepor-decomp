@@ -10390,22 +10390,23 @@ p=Process_Create((void*)(base+0x64),3);
 b=lbl_8036A77C; a=gBgmVolTimerZero; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
 }
 
-void BgmVol_FadeOut(s32 arg0) {
+/* Stop BGM volume fades; snap gBgmVol to 0, or start a fade-out over `frames` ticks. */
+void BgmVol_FadeOut(s32 frames) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
+    extern f32 lbl_8036A778;
     extern f64 lbl_8036A788;
     extern f64 lbl_8036A780;
     s32 base;
-    void *temp_r3;
+    void *proc;
     s32 arg;
 
     (void)lbl_8036A788;
     (void)lbl_8036A780;
     base = (s32)gBgmVolFadeProcs;
-    arg = arg0;
+    arg = frames;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
@@ -10416,10 +10417,10 @@ void BgmVol_FadeOut(s32 arg0) {
         gBgmVol = 0;
         return;
     }
-    temp_r3 = Process_Create((void *)(base + 0x50), 3);
-    *(f32 *)((u8 *)temp_r3 + 0x30) = gBgmVolTimerZero;
-    *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg;
-    *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
+    proc = Process_Create((void *)(base + 0x50), 3);
+    *(f32 *)((u8 *)proc + 0x30) = lbl_8036A778;
+    *(f32 *)((u8 *)proc + 0x34) = (f32)arg;
+    *(f32 *)((u8 *)proc + 0x38) = (f32)gBgmVol;
 }
 
 void fn_80145684(void) {
