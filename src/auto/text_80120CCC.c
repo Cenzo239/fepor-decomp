@@ -22,39 +22,40 @@ void UiPanel_ClearFlags(void *arg0) {
     gUiInputFlags &= 0xFFFFFFFD;
 }
 
-void UiPanel_PollSkip(u16 *arg0) {
+void UiPanel_PollSkip(u16 *flags) {
+    /* On B press, set skip bit if no blocking talk/tooltip and the hold counter is high enough. */
     u32 Process_FindByName(void *);
     void *Process_Find(void *);
     extern void *gPadInput;
     extern u8 gEventProcNames[];
     extern u32 gUiInputFlags;
     extern u8 gUiTooltipProc[];
-    s32 buttons;
-    void *obj;
-    u8 flag;
-    u8 v;
+    s32 held;
+    void *tip;
+    u8 blocked;
+    u8 alpha;
 
-    if (!(*arg0 & 8)) {
-        buttons = *(s32 *)((u8 *)gPadInput + 4);
-        if ((buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x200) &&
+    if (!(*flags & 8)) {
+        held = *(s32 *)((u8 *)gPadInput + 4);
+        if ((held & (*(s32 *)((u8 *)gPadInput + 8) ^ held) & 0x200) &&
             Process_FindByName(gEventProcNames + 0x34) == 0) {
             if (gUiInputFlags & 3) {
-                flag = 0;
+                blocked = 0;
             } else {
-                obj = Process_Find(gUiTooltipProc);
-                if (obj == NULL) {
-                    flag = 0;
+                tip = Process_Find(gUiTooltipProc);
+                if (tip == NULL) {
+                    blocked = 0;
                 } else {
-                    v = *(u8 *)((u8 *)obj + 0x50);
-                    if (v == 0 || v == 0xFF) {
-                        flag = 0;
+                    alpha = *(u8 *)((u8 *)tip + 0x50);
+                    if (alpha == 0 || alpha == 0xFF) {
+                        blocked = 0;
                     } else {
-                        flag = 1;
+                        blocked = 1;
                     }
                 }
             }
-            if (flag == 0 && arg0[1] >= 3) {
-                *arg0 |= 4;
+            if (blocked == 0 && flags[1] >= 3) {
+                *flags |= 4;
             }
         }
     }
