@@ -2510,7 +2510,7 @@ u8 fn_8001DD04(void) {
     return var_r3;
 }
 
-u8 fn_8001DD54(void *arg0, s32 arg1) {
+u8 Item_GetRangeForUnit(void *arg0, s32 arg1) {
     s8 temp_r3;
     u8 var_r3;
 

@@ -239,7 +239,7 @@ extern u32 gBattle[];
 extern u16 lbl_8028E090[];
 extern u16 lbl_8028E148[];
 
-s32 fn_8001DD54(void *, void *);
+s32 Item_GetRangeForUnit(void *, void *);
 void fn_801007A0(void *);
 
 static inline u8 GetItemKind(void *item) {
@@ -334,7 +334,7 @@ static inline u8 GetItemUnk1D(void *item) {
 
 static inline u8 GetItemDD54(void *item, void *unit) {
     if (item != NULL) {
-        return fn_8001DD54(item, unit);
+        return Item_GetRangeForUnit(item, unit);
     }
     return 0;
 }
@@ -16758,12 +16758,12 @@ if (!M2C_FIELD(unit,u32*,0x188) || !flags[M2C_FIELD(M2C_FIELD(unit,u8**,0x190),u
 a=unit[0x19E]; b=M2C_FIELD(arg0,u8*,0x19E);
 dy=Abs((s8)M2C_FIELD(arg0,u8*,0x19F)-(s8)unit[0x19F]);
 dist=Abs((s8)b-(s8)a)+dy;
-range=*weapon ? (u8)fn_8001DD54(*weapon,arg0):0;
+range=*weapon ? (u8)Item_GetRangeForUnit(*weapon,arg0):0;
 if(dist> range+(s8)Unit_GetMov(arg0) || (M2C_FIELD(unit,u32*,0x1A0)&0x10000DC)) continue;
 outside=0; cx=unit[0x19E]; cy=unit[0x19F];
 if((s8)cx<(s8)map[8] || (s8)map[10]-1<(s8)cx || (s8)cy<(s8)map[9] || (s8)map[11]-1<(s8)cy) outside=1;
 if(outside == 0) {
-r=*weapon ? (u8)fn_8001DD54(*weapon,unit):0;
+r=*weapon ? (u8)Item_GetRangeForUnit(*weapon,unit):0;
 t=*weapon ? M2C_FIELD(*weapon,u8*,0x1D):0;
 fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
 unit=gBattleMap;
@@ -16783,7 +16783,7 @@ u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 extern u8 gAiState[],gUiContext[],gBattleMap[];
 int Abs(int);
 void *Item_Destroy(void *,s16);
-u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 fn_8001DD54(void *,void *);
+u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
 struct {u8 x,y;u16 item;u8 *unit;s32 score;} result;
 struct {void *ptr;u32 state;} weapon;
@@ -16806,12 +16806,12 @@ if(!M2C_FIELD(unit,u32 *,0x188)||!flags[M2C_FIELD(M2C_FIELD(unit,u8 **,0x190),u8
 a=unit[0x19E];b=self[0x19E];
 dy=Abs((s8)self[0x19F]-(s8)unit[0x19F]);
 a=dy+Abs((s8)b-(s8)a);
-range=weapon.ptr?fn_8001DD54(weapon.ptr,self):0;
+range=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,self):0;
 if(a>range+(s8)Unit_GetMov(self) || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
 outside=0;cx=unit[0x19E];cy=unit[0x19F];
 if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
 if(outside)continue;
-r=weapon.ptr?fn_8001DD54(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
+r=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
 fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
 result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
@@ -17275,7 +17275,7 @@ return gAiState[0x21C];
 
 s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
     s32 Abs(s32);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     s8 Unit_GetMov(void *);
     u8 b;
     u8 a;
@@ -17290,7 +17290,7 @@ s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
     dist = Abs((s8)a - (s8)b);
     dist = dist + dy;
     if (*arg2 != NULL) {
-        bonus = (u8)fn_8001DD54(*arg2, arg0);
+        bonus = (u8)Item_GetRangeForUnit(*arg2, arg0);
     } else {
         bonus = 0;
     }
@@ -17318,7 +17318,7 @@ u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
     u8 fn_8009339C(void *);
     void Allegiance_FillMask(s32, u8 *);
     s8 Unit_GetMov(void *);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void fn_800FDDBC(s32, s32, u8, u8, s32);
     u8 fn_800F81B8(void *, void *);
     u8 Status_Test(void *, s32);
@@ -17383,7 +17383,7 @@ u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
             b = self[0x19E];
             dy = Abs((s8)self[0x19F] - (s8)unit[0x19F]);
             dist = Abs((s8)b - (s8)a) + dy;
-            range = *list ? (u8)fn_8001DD54(*list, self) : 0;
+            range = *list ? (u8)Item_GetRangeForUnit(*list, self) : 0;
             if (dist > (s8)Unit_GetMov(self) + range) {
                 continue;
             }
@@ -17399,7 +17399,7 @@ u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
             if (outside) {
                 continue;
             }
-            r = *list ? (u8)fn_8001DD54(*list, unit) : 0;
+            r = *list ? (u8)Item_GetRangeForUnit(*list, unit) : 0;
             t = *list ? *((u8 *)*list + 0x1D) : 0;
             fn_800FDDBC((s8)unit[0x19E], (s8)unit[0x19F], t, r, 6);
             result.unit = unit;
@@ -17573,7 +17573,7 @@ s32 fn_800F6B10(void *arg0, u8 arg1) {
 void **BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
 s32 Abs(s32);
-u8 fn_8001DD54(void *, void *);
+u8 Item_GetRangeForUnit(void *, void *);
 f32 fn_800F738C(s32, f32);
 s8 fn_800F8308(void *);
 s16 fn_800F8310(void *);
@@ -17637,7 +17637,7 @@ extern f64 lbl_8036A088;
     }
     lo = (u8)lo;
     if (wpn != 0) {
-        hi = (u8)fn_8001DD54(wpn, base);
+        hi = (u8)Item_GetRangeForUnit(wpn, base);
     } else {
         hi = 0;
     }
@@ -17948,7 +17948,7 @@ s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
 s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s32 fn_80230BBC(s32);
     void **Unit_GetActiveItemPtr(void *);
-    s32 fn_8001DD54(void *, void *);
+    s32 Item_GetRangeForUnit(void *, void *);
     void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
     u8 Allegiance_Compare(void *, void *);
@@ -17994,7 +17994,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
         goto fail;
     }
     if (inner != NULL) {
-        hi = (u8) fn_8001DD54(inner, unit);
+        hi = (u8) Item_GetRangeForUnit(inner, unit);
     } else {
         hi = 0;
     }
@@ -18358,7 +18358,7 @@ void fn_800F904C(void* arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) {
     u8 fn_8001D500(void **);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void **Unit_GetHeldItemSlot(void *, s8);
     s8 Unit_GetMov(void *);
@@ -19836,7 +19836,7 @@ void fn_800FC678(void) {
 void fn_800FC6B0(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u8 fn_8001D500(void *);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
     void fn_80022748(void *, void *);
     void fn_800227D0(void *, s32, s32);
@@ -19924,30 +19924,30 @@ void fn_800FC6B0(void *arg0) {
                     continue;
                 }
                 if (*slot != NULL) {
-                    r0v = fn_8001DD54(*slot, unit);
+                    r0v = Item_GetRangeForUnit(*slot, unit);
                 } else {
                     r0v = 0;
                 }
                 if (r0v > 1) {
                     if (bestHi != NULL) {
                         if (*bestHi != NULL) {
-                            r1v = fn_8001DD54(*bestHi, unit);
+                            r1v = Item_GetRangeForUnit(*bestHi, unit);
                         } else {
                             r1v = 0;
                         }
                         if (*slot != NULL) {
-                            r2v = fn_8001DD54(*slot, unit);
+                            r2v = Item_GetRangeForUnit(*slot, unit);
                         } else {
                             r2v = 0;
                         }
                         if (r2v <= r1v) {
                             if (*bestHi != NULL) {
-                                r1v = fn_8001DD54(*bestHi, unit);
+                                r1v = Item_GetRangeForUnit(*bestHi, unit);
                             } else {
                                 r1v = 0;
                             }
                             if (*slot != NULL) {
-                                r2v = fn_8001DD54(*slot, unit);
+                                r2v = Item_GetRangeForUnit(*slot, unit);
                             } else {
                                 r2v = 0;
                             }
@@ -20002,7 +20002,7 @@ void fn_800FC6B0(void *arg0) {
                         s8 uy = (s8)((u8 *)unit)[0x19F];
                         u8 rr;
                         if (*(void **)bestLo != NULL) {
-                            rr = fn_8001DD54(*(void **)bestLo, unit);
+                            rr = Item_GetRangeForUnit(*(void **)bestLo, unit);
                         } else {
                             rr = 0;
                         }
@@ -20070,7 +20070,7 @@ void fn_800FC6B0(void *arg0) {
                         s8 uy = (s8)((u8 *)unit)[0x19F];
                         u8 rr;
                         if (*(void **)bestHi != NULL) {
-                            rr = fn_8001DD54(*(void **)bestHi, unit);
+                            rr = Item_GetRangeForUnit(*(void **)bestHi, unit);
                         } else {
                             rr = 0;
                         }
@@ -20148,7 +20148,7 @@ u16 fn_800FCF48(s8 arg0, s8 arg1) {
 void fn_800FD774(void *arg0) {
     u8 Allegiance_Compare(void *, void *);
     u8 fn_8001D500(void *);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s32 Unit_GetActiveItemSlot(void *);
@@ -20229,30 +20229,30 @@ void fn_800FD774(void *arg0) {
                         }
                         if (fn_8009339C(unit) != 0) {
                             if (*slot != NULL) {
-                                v = fn_8001DD54(*slot, unit);
+                                v = Item_GetRangeForUnit(*slot, unit);
                             } else {
                                 v = 0;
                             }
                             if (v > 1) {
                                 if (slotLo != NULL) {
                                     if (*slotLo != NULL) {
-                                        a = fn_8001DD54(*slotLo, unit);
+                                        a = Item_GetRangeForUnit(*slotLo, unit);
                                     } else {
                                         a = 0;
                                     }
                                     if (*slot != NULL) {
-                                        b = fn_8001DD54(*slot, unit);
+                                        b = Item_GetRangeForUnit(*slot, unit);
                                     } else {
                                         b = 0;
                                     }
                                     if (b <= a) {
                                         if (*slotLo != NULL) {
-                                            a = fn_8001DD54(*slotLo, unit);
+                                            a = Item_GetRangeForUnit(*slotLo, unit);
                                         } else {
                                             a = 0;
                                         }
                                         if (*slot != NULL) {
-                                            b = fn_8001DD54(*slot, unit);
+                                            b = Item_GetRangeForUnit(*slot, unit);
                                         } else {
                                             b = 0;
                                         }
@@ -20618,7 +20618,7 @@ s32 fn_800FE8E8(void *arg0, void *arg1) {
 s32 Battle_BuildUnitScoreList(void) {
     /* Score on-map faction units by position, status and inventory; fill the battle priority list and return its count. */
     u8 fn_80017318(void *);
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void **Unit_GetHeldItemSlot(void *, s32);
     s8 Unit_GetMov(void *);
     u8 fn_800934CC(void *, void *);
@@ -20702,7 +20702,7 @@ s32 Battle_BuildUnitScoreList(void) {
                                 itemScore = 0xC8;
                             }
                         } else if ((*(u64 *)((u8 *)item + 0x38) & 3ULL) != 0) {
-                            if ((u8)fn_8001DD54(item, unit) > 1) {
+                            if ((u8)Item_GetRangeForUnit(item, unit) > 1) {
                                 if (itemScore > 0x190) {
                                     itemScore = 0x190;
                                 }
@@ -20845,7 +20845,7 @@ void Ai_SelectBestHeldWeapon(void) {
     extern u8 gAiState[];
     void **Unit_GetHeldItemSlot(void *, s32);
     s32 fn_8001D500(void **);
-    s32 fn_8001DD54(void *, void *);
+    s32 Item_GetRangeForUnit(void *, void *);
     s32 fn_8009339C(void *, void *);
     void fn_800951D0(void *, s32);
     void *unit;
@@ -20900,7 +20900,7 @@ L_one:
                 }
                 if (kind <= 1) {
                     if (item != NULL) {
-                        range = fn_8001DD54(item, unit);
+                        range = Item_GetRangeForUnit(item, unit);
                     } else {
                         range = 0;
                     }
@@ -21549,7 +21549,7 @@ s32 fn_80100CC8(void) {
 }
 
 void fn_80100D18(void *arg0, void **arg1, s16 arg2) {
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     M2C_UNK Map_FillAttackRange(M2C_UNK *, s8, s8, u8, u8);
     M2C_UNK Map_FillLayer(M2C_UNK *, M2C_UNK, s16);
     M2C_UNK fn_80022FCC(M2C_UNK *, s32);
@@ -21581,7 +21581,7 @@ void fn_80100D18(void *arg0, void **arg1, s16 arg2) {
         var_r0 = 0;
     }
     if (temp_r6 != NULL) {
-        var_r0_2 = fn_8001DD54(temp_r6, arg0);
+        var_r0_2 = Item_GetRangeForUnit(temp_r6, arg0);
     } else {
         var_r0_2 = 0;
     }
@@ -21631,7 +21631,7 @@ loop_22:
 }
 
 s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     s32 Abs(s32);
     s8 Unit_GetMov(void *);
     u8 b;
@@ -21645,7 +21645,7 @@ s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     dy = Abs((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
     dist = Abs((s8)a - (s8)b) + dy;
     if (*arg2 != NULL) {
-        bonus = (u8)fn_8001DD54(*arg2, arg1);
+        bonus = (u8)Item_GetRangeForUnit(*arg2, arg1);
     } else {
         bonus = 0;
     }

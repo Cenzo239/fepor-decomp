@@ -3066,7 +3066,7 @@ void fn_8010AEC8(void) {
 #pragma opt_strength_reduction off
 s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void Allegiance_FillMask(s32, void *);
-    s32 fn_8001DD54(void *, void *);
+    s32 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -3147,7 +3147,7 @@ loop_slot:
                                 if (var_r5 == 0) {
                                     u8 var_r0;
                                     if (*item != NULL) {
-                                        var_r0 = fn_8001DD54(*item, arg0);
+                                        var_r0 = Item_GetRangeForUnit(*item, arg0);
                                     } else {
                                         var_r0 = 0;
                                     }
@@ -3155,7 +3155,7 @@ loop_slot:
                                         u8 var_r0_2;
                                         u8 var_r0_3;
                                         if (*item != NULL) {
-                                            var_r0_2 = fn_8001DD54(*item, unit);
+                                            var_r0_2 = Item_GetRangeForUnit(*item, unit);
                                         } else {
                                             var_r0_2 = 0;
                                         }
@@ -4114,7 +4114,7 @@ s32 Unit_IsLowHp(void *unit) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *,void *);
+    s32 Item_GetRangeForUnit(void *,void *);
     void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 fn_8003A778(void *);
@@ -4150,7 +4150,7 @@ s32 fn_8010C674(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     x=*(s8 *)((u8 *)arg0+0x19e); y=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=(u8)-1;
     item=*Unit_GetHeldItemSlot(arg0,slot);
-    if(item) extra=fn_8001DD54(item,arg0); else extra=(u8)0;
+    if(item) extra=Item_GetRangeForUnit(item,arg0); else extra=(u8)0;
     range=Unit_GetMov(arg0)+(u8)extra;
     minX=x-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=y-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
@@ -4218,7 +4218,7 @@ void fn_8010CAAC(void) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *,void *);
+    s32 Item_GetRangeForUnit(void *,void *);
     void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_8010CF28(void *,void *,s16 *,s16 *);
@@ -4257,7 +4257,7 @@ s32 fn_8010CACC(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=0;
     item=*Unit_GetHeldItemSlot(arg0,slot);
-    if(item) extra=fn_8001DD54(item,arg0); else extra=0;
+    if(item) extra=Item_GetRangeForUnit(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
@@ -4461,7 +4461,7 @@ void fn_8010D364(void) {
 
 #pragma use_lmw_stmw on
 s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *, void *);
+    s32 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -4540,7 +4540,7 @@ s32 fn_8010D384(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     y = *(s8 *)((u8 *)arg0 + 0x19f);
     item = *weapon;
     if (item) {
-        extra = fn_8001DD54(item, arg0);
+        extra = Item_GetRangeForUnit(item, arg0);
     } else {
         extra = 0;
     }
@@ -4605,7 +4605,7 @@ ok_done:
 
             item = *weapon;
             if (item != NULL) {
-                wextra = fn_8001DD54(item, arg0);
+                wextra = Item_GetRangeForUnit(item, arg0);
             } else {
                 wextra = 0;
             }
@@ -4687,7 +4687,7 @@ ok_done:
 
 #pragma use_lmw_stmw on
 s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *, void *);
+    s32 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -4766,7 +4766,7 @@ s32 fn_8010D984(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     y = *(s8 *)((u8 *)arg0 + 0x19f);
     item = *weapon;
     if (item) {
-        extra = fn_8001DD54(item, arg0);
+        extra = Item_GetRangeForUnit(item, arg0);
     } else {
         extra = 0;
     }
@@ -4835,7 +4835,7 @@ ok_done:
 
             item = *weapon;
             if (item != NULL) {
-                wextra = fn_8001DD54(item, arg0);
+                wextra = Item_GetRangeForUnit(item, arg0);
             } else {
                 wextra = 0;
             }
@@ -4918,7 +4918,7 @@ ok_done:
 
 #pragma use_lmw_stmw reset
 s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *,void *);
+    s32 Item_GetRangeForUnit(void *,void *);
     void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); u8 fn_8003863C(void *); u8 fn_801044FC(void *);
@@ -4956,7 +4956,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=0;
     item=*Unit_GetHeldItemSlot(arg0,slot);
-    if(item) extra=fn_8001DD54(item,arg0); else extra=0;
+    if(item) extra=Item_GetRangeForUnit(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
@@ -5008,7 +5008,7 @@ s32 fn_8010DFC0(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 #pragma use_lmw_stmw on
 u32 fn_8010E3F0(void *arg0, s32 arg1) {
     u8 Allegiance_Compare(s32, s32);
-    u8 fn_8001DD54(void *);
+    u8 Item_GetRangeForUnit(void *);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void *Unit_GetHeldItemSlot(void *, s32);
@@ -5127,7 +5127,7 @@ u32 fn_8010E3F0(void *arg0, s32 arg1) {
                 id = map[rowOff + ((s8)xCur + 0xD)];
                 if (id == 0 || id == ((u8 *)self)[0x198]) {
                     if (*(u32 *)list != 0) {
-                        ok = fn_8001DD54(self);
+                        ok = Item_GetRangeForUnit(self);
                     } else {
                         ok = 0;
                     }
@@ -5238,7 +5238,7 @@ loop_inner_cmp:
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    u8 fn_8001DD54(void *, void *);
+    u8 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -5316,7 +5316,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     ax = (s8)*((u8 *)arg0 + 0x19e);
     ay = (s8)*((u8 *)arg0 + 0x19f);
     if (item != NULL) {
-        extra = (u8)fn_8001DD54(item, arg0);
+        extra = (u8)Item_GetRangeForUnit(item, arg0);
     } else {
         extra = 0;
     }
@@ -5355,7 +5355,7 @@ s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
                         if (*(u32 *)((u8 *)unit + 0x254) & 1) {
                             item = *itemSlot_store[0];
                             if (item != NULL) {
-                                extra2 = (u8)fn_8001DD54(item, arg0);
+                                extra2 = (u8)Item_GetRangeForUnit(item, arg0);
                             } else {
                                 extra2 = 0;
                             }
@@ -5432,7 +5432,7 @@ void fn_8010EF54(void) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
-    s32 fn_8001DD54(void *,void *);
+    s32 Item_GetRangeForUnit(void *,void *);
     void Map_FillLayer(void *,s32,s32); void Map_SelectRangeBuffer(void *,s32);
     void **Unit_GetHeldItemSlot(void *,s32);
     s8 Unit_GetMov(void *); s8 Unit_GetMaxHp(void *);
@@ -5472,7 +5472,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     startX=*(s8 *)((u8 *)arg0+0x19e); startY=*(s8 *)((u8 *)arg0+0x19f);
     best=NULL; rank=100;
     item=*Unit_GetHeldItemSlot(arg0,slot);
-    if(item) extra=fn_8001DD54(item,arg0); else extra=0;
+    if(item) extra=Item_GetRangeForUnit(item,arg0); else extra=0;
     range=(s8)Unit_GetMov(arg0); range+=(u8)extra;
     minX=startX-range; if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
     minY=startY-range; if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
