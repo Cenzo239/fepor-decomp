@@ -9268,13 +9268,13 @@ void fn_800C28CC(void) {
 
 void fn_800C28EC(void) {
     M2C_UNK fn_800138F4();
-    M2C_UNK fn_80013A90(void *);
+    M2C_UNK ScriptCtx_Begin(void *);
     M2C_UNK ScriptCmd_CmLoadScript(void *);
     M2C_UNK fn_800AA1CC();
     extern u8 lbl_80270000[];
     fn_800AA1CC();
     ScriptCmd_CmLoadScript(lbl_80270000 + 0x26);
-    fn_80013A90(lbl_80270000 + 0x37);
+    ScriptCtx_Begin(lbl_80270000 + 0x37);
     fn_800138F4();
 }
 

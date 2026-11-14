@@ -2858,14 +2858,14 @@ void fn_80117CCC(void) {
 
 void fn_80117D20(s32 arg0) {
     void BattleState_LoadMap(void *, s32);
-    void fn_80013A90(void *);
+    void ScriptCtx_Begin(void *);
     void fn_800138F4(void);
     void Event_StartByName(void *, s32);
     extern s32 gBattleState[];
     extern u8 lbl_80274508[];
 
     BattleState_LoadMap(gBattleState, 0);
-    fn_80013A90(lbl_80274508 + 0x138);
+    ScriptCtx_Begin(lbl_80274508 + 0x138);
     fn_800138F4();
     Event_StartByName(lbl_80274508 + 0x150, arg0);
 }

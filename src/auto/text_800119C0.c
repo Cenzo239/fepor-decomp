@@ -266,7 +266,7 @@ void fn_80013A6C(s32 arg0) {
 }
 
 #pragma scheduling reset
-s32 fn_80013A90(void *arg0) {
+s32 ScriptCtx_Begin(void *arg0) {
     extern s32 lbl_803671A4;
     extern s32 lbl_80367180;
     extern s32 lbl_8036718C;
