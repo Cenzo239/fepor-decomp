@@ -11,6 +11,21 @@ typedef struct {
     s32 unkC;
 } Struct_8014589C;
 
+/* Current Prim2D draw context (pointed to by gPrim2D) */
+typedef struct Prim2D {
+    u8 pad00[0x20];
+    u16 flags;       /* +0x20: bit 0x800 = custom mtx dirty/cleared on SetTransform */
+    u8 pad22;
+    u8 color;        /* +0x23 */
+    u8 alpha;        /* +0x24 */
+    u8 pad25[3];
+    f32 z;           /* +0x28 */
+    void *callback0; /* +0x2C */
+    void *callback1; /* +0x30 */
+    u8 pad34[0x2C];
+    f32 mtx[3][4];   /* +0x60 model matrix */
+} Prim2D;
+
 /* 2D sprite sheet / atlas for Prim2D cell draws */
 typedef struct SpriteSheet {
     u8 pad00[0x48];
