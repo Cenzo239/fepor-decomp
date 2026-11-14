@@ -27,7 +27,7 @@ extern u16 gUnkGlobalVar_803306E0[];
 extern u16 lbl_8036719C;
 extern u16 lbl_8036719E;
 extern u32 lbl_803671A0;
-extern u32 lbl_803671A8;
+extern u32 gCmScriptStatus;
 
 extern f32 lbl_8036AE88;
 extern f32 lbl_8036AE8C;

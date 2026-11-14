@@ -298,7 +298,7 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     extern s16 lbl_8036719E;
     extern s16 lbl_8036719C;
     extern u8 *lbl_803671A0;
-    extern s32 lbl_803671A8;
+    extern s32 gCmScriptStatus;
     void fn_8000D3EC(void *, void *);
     s16 index;
     s16 limit;
@@ -313,7 +313,7 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
     lbl_8036719E = next;
     entry = base + (index * 16);
     if (next > limit) {
-        lbl_803671A8 = 9;
+        gCmScriptStatus = 9;
         return 0;
     }
     *(void **)((u8 *)entry + 0) = arg0;
@@ -427,7 +427,7 @@ s32 ScriptCmd_CmFreeScript(void)
 {
     extern void *gCmScriptList;
     extern u16 gCmScriptUsed;
-    extern s32 lbl_803671A8;
+    extern s32 gCmScriptStatus;
     extern void fn_8000D1D0(void *);
     extern void fn_8005C7E8(void *);
 
@@ -440,14 +440,14 @@ s32 ScriptCmd_CmFreeScript(void)
     s32 offset;
 
     node = (u8 *)gCmScriptList;
-    lbl_803671A8 = 0;
+    gCmScriptStatus = 0;
 
     while ((next = *(u8 **)(node + 0x1C)) != 0) {
         node = next;
     }
 
     if (node == 0) {
-        lbl_803671A8 = 1;
+        gCmScriptStatus = 1;
         return 0;
     }
 
@@ -498,16 +498,16 @@ void fn_80013F48(void *arg0) {
 
 s32 fn_80013F6C(void *arg0, s32 arg1) {
     extern u8 lbl_80267E28[];
-    extern s32 lbl_803671A8;
+    extern s32 gCmScriptStatus;
     extern void *fn_800C4638(s32, void *, s32);
 
-    lbl_803671A8 = 0;
+    gCmScriptStatus = 0;
 
     M2C_FIELD(arg0, void **, 0) =
         fn_800C4638(arg1 << 2, lbl_80267E28, 0);
 
     if (M2C_FIELD(arg0, void **, 0) == NULL) {
-        lbl_803671A8 = 4;
+        gCmScriptStatus = 4;
         return 0;
     }
 
@@ -527,22 +527,22 @@ s32 fn_80014000(s32 arg0, s32 arg1) {
 void *fn_800C4638(s32, void *, s32);
 extern u8 lbl_80267E28[];
 extern s16 lbl_80367194, gCmScriptUsed, lbl_8036719C, lbl_8036719E;
-extern s32 lbl_803671A8, gCmScriptList;
+extern s32 gCmScriptStatus, gCmScriptList;
 extern void *lbl_80367198, *lbl_803671A0;
 void *temp;
 s32 size=arg0<<2;
-lbl_803671A8=0;
+gCmScriptStatus=0;
 gCmScriptList=0;
 lbl_80367194=arg0;
 gCmScriptUsed=0;
 temp=fn_800C4638(size,lbl_80267E28,0);
 lbl_80367198=temp;
-if(!temp) {lbl_803671A8=4;return 0;}
+if(!temp) {gCmScriptStatus=4;return 0;}
 lbl_8036719C=arg1;
 lbl_8036719E=0;
 temp=fn_800C4638(arg1<<4,lbl_80267E28,0);
 lbl_803671A0=temp;
-if(!temp) {lbl_803671A8=4;return 0;}
+if(!temp) {gCmScriptStatus=4;return 0;}
 return 1;
 }
 
@@ -550,7 +550,7 @@ void fn_800140B4(void *arg0, u8 arg1) {
     void fn_8000D3EC(void *, void *);
     extern u16 gCmScriptUsed;
     extern u16 lbl_80367194;
-    extern s32 lbl_803671A8;
+    extern s32 gCmScriptStatus;
 
     s32 i;
     s32 j;
@@ -584,7 +584,7 @@ void fn_800140B4(void *arg0, u8 arg1) {
     *(u16 *)(self + 0x20) = gCmScriptUsed;
     gCmScriptUsed = gCmScriptUsed + *(u16 *)(self + 0x22);
     if (gCmScriptUsed > lbl_80367194) {
-        lbl_803671A8 = 8;
+        gCmScriptStatus = 8;
         return;
     }
 
@@ -658,13 +658,13 @@ void fn_800140B4(void *arg0, u8 arg1) {
 }
 
 void fn_800142B0(s32 arg0) {
-    extern s32 lbl_803671A8;
-    lbl_803671A8 = arg0;
+    extern s32 gCmScriptStatus;
+    gCmScriptStatus = arg0;
 }
 
 s32 fn_800142B8(void) {
-    extern s32 lbl_803671A8;
-    return lbl_803671A8;
+    extern s32 gCmScriptStatus;
+    return gCmScriptStatus;
 }
 
 void fn_800142C0(s32 *arg0, s16 *arg1) {
@@ -2461,7 +2461,7 @@ void fn_80016DE0(void) {
 
 extern void* gCmScriptList;
 extern u16 gCmScriptUsed;
-extern s32 lbl_803671A8;
+extern s32 gCmScriptStatus;
 #include "common.h"
 extern u32 gUnitLists[];
 extern u32 gBattleState[];
