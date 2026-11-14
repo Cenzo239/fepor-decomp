@@ -16268,7 +16268,8 @@ void fn_801DF4A4(void *arg0, s32 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorPanelD(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorPanelD(void *self, s16 doFree) {
+    /* C++ destructor for UI panel D (gUiPanelDVtbl): destroy embeds, chain base vtors, optional free. */
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -16286,30 +16287,30 @@ extern "C" void *Ui_DtorPanelD(void *arg0, s16 arg1) {
     extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
-    Owner *self;
+    Owner *owner;
 
-    self = (Owner *)arg0;
-    if (arg0) {
-        self->vtbl = gUiPanelDVtbl;
-        if (&self->sub78) {
-            self->sub78 = gEmptyVtbl;
-            ((Obj *)&self->sub78)->v2();
+    owner = (Owner *)self;
+    if (self) {
+        owner->vtbl = gUiPanelDVtbl;
+        if (&owner->sub78) {
+            owner->sub78 = gEmptyVtbl;
+            ((Obj *)&owner->sub78)->v2();
         }
-        if (&self->sub50) {
-            self->sub50 = gEmptyVtbl;
-            ((Obj *)&self->sub50)->v2();
+        if (&owner->sub50) {
+            owner->sub50 = gEmptyVtbl;
+            ((Obj *)&owner->sub50)->v2();
         }
-        if (arg0) {
-            self->vtbl = lbl_80292230;
-            if (arg0) {
-                self->vtbl = lbl_8028FDB0;
+        if (self) {
+            owner->vtbl = lbl_80292230;
+            if (self) {
+                owner->vtbl = lbl_8028FDB0;
             }
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
