@@ -22,7 +22,9 @@ typedef struct Process {
     u8 lock_cnt;                         /* +0x2D */
     u8 pause;                            /* +0x2E */
     u8 pad_2F;
-    u8 pad_30[0x40];                     /* remainder to 0x70 */
+    u8 pad_30[0x30];                     /* +0x30 */
+    s32 waitCounter;                     /* +0x60 frame/tick wait (e.g. E_DispLoadWhole) */
+    u8 pad_64[0x0C];                     /* remainder to 0x70 */
 } Process;
 
 #define PROCESS_FLAG_ENDED       0x01
