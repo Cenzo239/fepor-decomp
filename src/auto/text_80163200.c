@@ -1456,7 +1456,7 @@ void fn_80165B1C(void) {
     Map_UpdateTransforms();
 }
 
-void *fn_80165B40(void *arg0, s16 arg1) {
+void *BattleTerrain_Dtor(void *arg0, s16 arg1) {
     void *Map_Get(void);
     void fn_80041254(void *);
     void fn_800DF724(void *, s32);
