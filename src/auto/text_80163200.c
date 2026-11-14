@@ -16200,7 +16200,7 @@ s32 Ai_TryMoveToFactionPos(void *arg0) {
     return 1;
 }
 
-s32 fn_8018286C(s32 arg0, s32 arg1) {
+s32 Ai_TryReactToIkeStatus(s32 arg0, s32 arg1) {
     if (arg0 < 0 || arg1 < 0) {
         return -1;
     }

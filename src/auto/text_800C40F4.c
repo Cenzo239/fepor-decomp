@@ -19522,7 +19522,7 @@ s32 Ai_ExecUnit(void *arg0) {
     void Ai_TryMoveToFactionPos(void *);
     void Ai_TryMoveToSeekTile(void *);
     void Ai_TryHandleLowHpHeal(void *);
-    void fn_8018286C(void *);
+    void Ai_TryReactToIkeStatus(void *);
     u8 v;
 
     fn_80037814();
@@ -19548,7 +19548,7 @@ s32 Ai_ExecUnit(void *arg0) {
         Ai_TryHandleLowHpHeal(arg0);
         break;
     case 7:
-        fn_8018286C(arg0);
+        Ai_TryReactToIkeStatus(arg0);
         break;
     case 0:
         Ai_BehaviorNop(arg0);
