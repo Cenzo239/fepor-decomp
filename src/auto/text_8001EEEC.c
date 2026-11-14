@@ -3671,7 +3671,7 @@ s32 fn_80026AF4(s32 arg0) {
     } else {
         var_r0 = 0xC;
     }
-    fn_800910D8((s8)(u8)var_r0, arg0, -1, -1, -1);
+    Ui_OpenWeaponKindHelp((s8)(u8)var_r0, arg0, -1, -1, -1);
     return 1;
 }
 

@@ -7585,7 +7585,7 @@ s32 fn_80196194(s32 arg0) {
     void **fn_80037D54(void *);
     void fn_80092528(void *, u8);
     void fn_80094A08(s32, s32);
-    void fn_800910D8(s8, s32, s32, s32, s32);
+    void Ui_OpenWeaponKindHelp(s8, s32, s32, s32, s32);
     extern u8 gUiContext[];
     extern u8 gBattle[];
     void *p;
@@ -7600,7 +7600,7 @@ s32 fn_80196194(s32 arg0) {
     fn_80094A08((s32)p, *(s8 *)&gUiContext[0xA]);
     *(u32 *)(gBattle + 0xCAC) |= 0x2000;
     kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
-    fn_800910D8((s8)kind, arg0, -1, -1, -1);
+    Ui_OpenWeaponKindHelp((s8)kind, arg0, -1, -1, -1);
     return 1;
 }
 
