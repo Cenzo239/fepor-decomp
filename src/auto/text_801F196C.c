@@ -3031,7 +3031,7 @@ void fn_801F8A18(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma opt_pointer_aliasing off
 void fn_801F8A98(void *arg0) {
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_800506E0(void *, s32, void *);
     void fn_800616A0(void *);
     void GActor_Finalize(void *);
@@ -3075,7 +3075,7 @@ void fn_801F8A98(void *arg0) {
     register s32 i;
 
     self = arg0;
-    fn_800152F8(1, 0, 0, 0, 0, 1, 1, 0, flags);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 1, 0, flags);
     i = 1;
     base = (u8 *)self + 0x34;
     do {

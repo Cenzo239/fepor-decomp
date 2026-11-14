@@ -826,7 +826,7 @@ s32 ScriptCmd_ShooterBulletCheck(void) {
 
 s32 ScriptCmd_PlayerEscapeCount(void) {
     void DebugPrint(const char *, ...);
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 gWinCondCmdNames[];
     extern u8 gUnits[];
     u8 buf[8];
@@ -836,7 +836,7 @@ s32 ScriptCmd_PlayerEscapeCount(void) {
 
     count = 0;
     DebugPrint((const char *)(gWinCondCmdNames + 0x19C));
-    fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;
@@ -854,7 +854,7 @@ s32 ScriptCmd_PlayerEscapeCount(void) {
 
 s32 ScriptCmd_PlayerEscapeCheck(void) {
     void DebugPrint(const char *, ...);
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     extern u8 gWinCondCmdNames[];
     extern u8 gUnits[];
     u8 buf[8];
@@ -862,7 +862,7 @@ s32 ScriptCmd_PlayerEscapeCheck(void) {
     s32 i;
 
     DebugPrint((const char *)(gWinCondCmdNames + 0x19C));
-    fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, buf);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, buf);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;
@@ -15869,7 +15869,7 @@ void fn_801DE474(void *arg0, void *arg1)
     void Prim2D_EndPrim(void);
     void *fn_8014C604(u8 *);
     void *Msg_ResolveName(u32);
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32);
     extern f32 lbl_8036B6C0;
     extern f32 lbl_8036B6C4;
     extern f32 lbl_8036B6C8;
@@ -16085,7 +16085,7 @@ void fn_801DE474(void *arg0, void *arg1)
     x_prev = 0;
     y_prev = 0;
     any = 0;
-    fn_800152F8(1, 0, 0, 0, 0, 1, 1, 0);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 1, 0);
     row_y = (s16)(ybase + gap);
     for (i = 1; i <= 0x9F; i++) {
         unit = gUnits + (i - 1) * 0x280;

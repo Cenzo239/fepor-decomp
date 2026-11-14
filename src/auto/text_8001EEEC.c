@@ -1493,7 +1493,7 @@ void fn_800227F8(void* arg0, s32 arg1)
 
 void Map_RefreshUnitMap(void *arg0)
 {
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_8001F140(void *);
     void Map_FillLayer(void *, s32, u8);
     s8 fn_8003A1C4(void *);
@@ -1533,7 +1533,7 @@ void Map_RefreshUnitMap(void *arg0)
     Map_FillLayer(self, 0, 0);
     Map_FillLayer(self, 2, (u8)(saved == 0));
     Map_FillLayer(self, 3, 0);
-    fn_800152F8(1, 0, 1, 1, 0, 0, 0, 0, buf1);
+    Allegiance_SetMask(1, 0, 1, 1, 0, 0, 0, 0, buf1);
 
     unit = 0;
     for (i = 0x9F; i >= 1; i--) {
@@ -1575,7 +1575,7 @@ void Map_RefreshUnitMap(void *arg0)
     }
 
     if (gBattleState[0x11] != 1) {
-        fn_800152F8(0, 1, 0, 0, 0, 0, 0, 0, buf2);
+        Allegiance_SetMask(0, 1, 0, 0, 0, 0, 0, 0, buf2);
         for (i = 0x9F; i > 0; i--) {
             s32 idx;
             if ((u8)i != 0) {
@@ -1608,7 +1608,7 @@ void Map_RefreshUnitMap(void *arg0)
             }
         }
     } else {
-        fn_800152F8(0, 1, 0, 0, 0, 0, 0, 0, buf3);
+        Allegiance_SetMask(0, 1, 0, 0, 0, 0, 0, 0, buf3);
         for (i = 0x9F; i > 0; i--) {
             s32 idx;
             if ((u8)i != 0) {

@@ -1258,7 +1258,7 @@ void fn_80015234(void **arg0) {
     }
 }
 
-void fn_800152F8(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6, s8 arg7, void *arg_sp8) {
+void Allegiance_SetMask(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6, s8 arg7, void *arg_sp8) {
     M2C_FIELD(arg_sp8, s8 *, 0) = arg0;
     M2C_FIELD(arg_sp8, s8 *, 1) = arg1;
     M2C_FIELD(arg_sp8, s8 *, 2) = arg2;
@@ -2140,7 +2140,7 @@ void fn_800167E4(void *arg0)
 {
     extern u8 gUnits[];
 
-    void fn_800152F8(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     s32 Status_Test(void *, s32);
     void Unit_MoveToList(void *, s32);
     void fn_80016F78(void *);
@@ -2169,7 +2169,7 @@ void fn_800167E4(void *arg0)
     base = gUnits;
     savedCount = 0;
 
-    fn_800152F8(0, 1, 1, 1, 0, 0, 0, 0, flags);
+    Allegiance_SetMask(0, 1, 1, 1, 0, 0, 0, 0, flags);
 
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {

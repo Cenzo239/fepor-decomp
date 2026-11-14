@@ -2307,7 +2307,7 @@ void *fn_801B2A80(u32 arg0) {
 
 void fn_801B2C58(void *arg0) {
     M2C_UNK Process_Goto(void *, M2C_UNK);
-    M2C_UNK fn_800152F8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, void *);
+    M2C_UNK Allegiance_SetMask(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, void *);
     u8 fn_80092F9C();
     s32 Convoy_FindEmpty(void *);
     M2C_UNK TalkUi_ShowMsg(s32);
@@ -2324,7 +2324,7 @@ void fn_801B2C58(void *arg0) {
     void *self = arg0;
 
     var_r30 = 0;
-    fn_800152F8(1, 0, 0, 0, 0, 1, 0, 0, sp10);
+    Allegiance_SetMask(1, 0, 0, 0, 0, 1, 0, 0, sp10);
     var_r29 = 1;
     for (;;) {
         if (var_r29 & 0xFF) {
