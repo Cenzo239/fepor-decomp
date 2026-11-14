@@ -1091,7 +1091,7 @@ s32 fn_800A0BFC(s32 arg0, s32 arg1, void *arg2) {
     return 0;
 }
 
-void *fn_800A0C44(void *unused, void *arg1) {
+void *MenuCmd_FormatCursorMapObjName(void *unused, void *arg1) {
     s32 Map_Get(void *);
     void *Map_FindObjAtXY(s32, s32, s32);
     void sprintf(void *, void *, ...);
