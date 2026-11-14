@@ -2690,30 +2690,31 @@ void fn_80130CDC(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 }
 
 extern u16 jumptable_802911EC[];
-s32 Ui_GetSelectMenuWpnExp(void *arg0, void *arg1, u32 arg2) {
+s32 Ui_GetSelectMenuWpnExp(void *menu, void *entry, u32 col) {
+    /* Select-menu column value: negated person sort key, or Unit_GetWpnExp for weapon types 0–7. */
     u8 Unit_GetWpnExp(void *, s32);
-    void *p;
+    void *unit;
 
-    p = *(void **)arg1;
-    switch (arg2) {
+    unit = *(void **)entry;
+    switch (col) {
     case 0:
-        return -(s32)*(u16 *)((u8 *)*(void **)((u8 *)p + 0x188) + 0x5A);
+        return -(s32)*(u16 *)((u8 *)*(void **)((u8 *)unit + 0x188) + 0x5A);
     case 1:
-        return (u8)Unit_GetWpnExp(p, 0);
+        return (u8)Unit_GetWpnExp(unit, 0);
     case 2:
-        return (u8)Unit_GetWpnExp(p, 1);
+        return (u8)Unit_GetWpnExp(unit, 1);
     case 3:
-        return (u8)Unit_GetWpnExp(p, 2);
+        return (u8)Unit_GetWpnExp(unit, 2);
     case 4:
-        return (u8)Unit_GetWpnExp(p, 3);
+        return (u8)Unit_GetWpnExp(unit, 3);
     case 5:
-        return (u8)Unit_GetWpnExp(p, 4);
+        return (u8)Unit_GetWpnExp(unit, 4);
     case 6:
-        return (u8)Unit_GetWpnExp(p, 5);
+        return (u8)Unit_GetWpnExp(unit, 5);
     case 7:
-        return (u8)Unit_GetWpnExp(p, 6);
+        return (u8)Unit_GetWpnExp(unit, 6);
     case 8:
-        return (u8)Unit_GetWpnExp(p, 7);
+        return (u8)Unit_GetWpnExp(unit, 7);
     default:
         return 0;
     }
