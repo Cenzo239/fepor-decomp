@@ -1953,13 +1953,13 @@ s32 fn_800B2DE4(s32 arg0, s32 arg1) {
 }
 
 s32 fn_800B2E78(void) {
-    extern u8 lbl_80319A58[16];
+    extern u8 gSoundIdSlots[16];
     s32 i;
     s32 count;
 
     count = 0;
     for (i = 0; i < 16; i++) {
-        if (lbl_80319A58[i] != 0) {
+        if (gSoundIdSlots[i] != 0) {
             count++;
         }
     }
@@ -1967,9 +1967,9 @@ s32 fn_800B2E78(void) {
 }
 
 s32 fn_800B2F20(s32 arg0) {
-extern u8 lbl_80319A58[];
+extern u8 gSoundIdSlots[];
 s32 i;
-u8 *p = lbl_80319A58;
+u8 *p = gSoundIdSlots;
 arg0=(u8)arg0+1;
 for(i=0;i<16;p++,i++) {
 if(*p==(u8)arg0) return 1;
@@ -2063,7 +2063,7 @@ loop_2:
 s32 fn_800B3194(void) {
     void fn_802590E0(void);
     extern u8 gSoundSys[];
-    extern u8 lbl_80319A58[16];
+    extern u8 gSoundIdSlots[16];
     u32 i;
 
     while (M2C_FIELD(gSoundSys, u32 *, 0xC4) != 0) {
@@ -2071,7 +2071,7 @@ s32 fn_800B3194(void) {
         M2C_FIELD(gSoundSys, u32 *, 0xC4)--;
     }
     for (i = 0; i < 16; i++) {
-        lbl_80319A58[i] = 0;
+        gSoundIdSlots[i] = 0;
     }
     if (M2C_FIELD(gSoundSys, u32 *, 0x444) != 0) {
         M2C_FIELD(gSoundSys, u32 *, 0x444) = 0;
@@ -8107,7 +8107,7 @@ s32 fn_800BF694(void) {
 s32 fn_800BF9D8(void)
 {
     extern u32 *gSoundSys;
-    extern s8 lbl_80319A58[];
+    extern s8 gSoundIdSlots[];
     extern s32 E_EventCaller_script[];
     s32 i;
     
@@ -8119,7 +8119,7 @@ s32 fn_800BF9D8(void)
     }
     
     for (i = 0; i < 16; i++) {
-        lbl_80319A58[i] = 0;
+        gSoundIdSlots[i] = 0;
     }
     
     if (gSoundSys[0x111] != 0) {
