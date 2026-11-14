@@ -3530,7 +3530,7 @@ s32 ScriptCmd_seqini(void) {
     void GfxEnt_UnlinkByName(void *);
     void fn_8008D988(void);
     void Map_HideMoveLimitView(void);
-    void fn_80091858(void);
+    void ProcessQueue_Clear(void);
     void fn_800162B8(void);
     extern u16 gScriptCmdNames[];
     extern volatile u32 gUiInputFlags;
@@ -3554,7 +3554,7 @@ s32 ScriptCmd_seqini(void) {
     GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     Map_HideMoveLimitView();
-    fn_80091858();
+    ProcessQueue_Clear();
     fn_800162B8();
     return 1;
 }
@@ -3570,7 +3570,7 @@ void fn_80127AC4(void) {
     GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     Map_HideMoveLimitView();
-    fn_80091858();
+    ProcessQueue_Clear();
     fn_800162B8();
 }
 

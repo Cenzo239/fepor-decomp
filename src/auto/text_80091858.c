@@ -45,7 +45,7 @@ extern f32 lbl_803697E4;
 
 #pragma scheduling reset
 
-void fn_80091858(void) {
+void ProcessQueue_Clear(void) {
     void Process_UnlinkByKey(void *);
     extern u32 gProcessQueue[8];
     extern u8 lbl_80289A38[];
