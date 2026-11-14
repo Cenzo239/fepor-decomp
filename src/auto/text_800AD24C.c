@@ -2265,18 +2265,22 @@ s32 fn_800B36D8(s32 arg0) {
     return 1;
 }
 
-u8 *Sound_CopyLoadChunk(s32 arg0, u32 arg1) {
-extern u8 gSoundSys[];
-extern void *gSoundLoadBuf;
-void fn_800062EC(u8 *, u8 *, u32);
-u8 *base=gSoundSys;
-u8 *dst=*(u8 **)(base+0x444);
-u8 *src=(u8*)gSoundLoadBuf+arg0;
-if((arg1 & 7)==0) fn_800062EC(dst,src,arg1);
-else {
-for(;arg1!=0;arg1--) *dst++=*src++;
-}
-return *(u8 **)(base+0x444);
+/* DVD callback: copy size bytes from gSoundLoadBuf+offset into the sound work buffer. */
+u8 *Sound_CopyLoadChunk(s32 offset, u32 size) {
+    extern u8 gSoundSys[];
+    extern void *gSoundLoadBuf;
+    void fn_800062EC(u8 *, u8 *, u32);
+    u8 *base = gSoundSys;
+    u8 *dst = *(u8 **)(base + 0x444);
+    u8 *src = (u8 *)gSoundLoadBuf + offset;
+    if ((size & 7) == 0) {
+        fn_800062EC(dst, src, size);
+    } else {
+        for (; size != 0; size--) {
+            *dst++ = *src++;
+        }
+    }
+    return *(u8 **)(base + 0x444);
 }
 
 #pragma global_optimizer on
