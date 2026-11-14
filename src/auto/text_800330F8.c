@@ -1975,32 +1975,33 @@ void fn_8003712C(void *arg0) {
     }
 }
 
-void *Unit_FindDisposLeader(u8 *arg0) {
+/* Return the first deployed unit with the same faction and disposId as unit, and state flags 0x100 set / 8 clear. */
+void *Unit_FindDisposLeader(u8 *unit) {
     void Allegiance_FillMask(s32, void *);
     extern u8 gUnits[];
-    u8 sp8[8];
-    u8 *sub;
-    u8 *unit;
+    u8 allegMask[8];
+    u8 *faction;
+    u8 *other;
     s32 i;
     u32 flags;
 
-    sub = NULL;
-    Allegiance_FillMask(5, sp8);
+    faction = NULL;
+    Allegiance_FillMask(5, allegMask);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
+            other = gUnits + ((u8)i - 1) * 0x280;
         } else {
-            unit = NULL;
+            other = NULL;
         }
-        if (*(u32 *)(unit + 0x188) != 0) {
-            sub = *(u8 **)(unit + 0x190);
-            if (sp8[*(u8 *)(sub + 8)] != 0) {
-                flags = *(u32 *)(unit + 0x1A0);
+        if (*(u32 *)(other + 0x188) != 0) {
+            faction = *(u8 **)(other + 0x190);
+            if (allegMask[*(u8 *)(faction + 8)] != 0) {
+                flags = *(u32 *)(other + 0x1A0);
                 if ((flags & 0x100) != 0) {
                     if ((flags & 8) == 0) {
-                        if (sub == *(u8 **)(arg0 + 0x190)) {
-                            if (arg0[0x199] == unit[0x199]) {
-                                return unit;
+                        if (faction == *(u8 **)(unit + 0x190)) {
+                            if (unit[0x199] == other[0x199]) {
+                                return other;
                             }
                         }
                     }
