@@ -2154,7 +2154,7 @@ void *String_Destroy(void *arg0, s16 arg1) {
 
 void *String_Init(void *arg0, char *arg1, void *arg2) {
     struct Tag { u8 b; };
-    void fn_800CA728(void *, char *, char *, void *, struct Tag);
+    void String_InitFromRange(void *, char *, char *, void *, struct Tag);
     void abort(void);
     void fprintf(void *, const char *, ...);
     u32 strlen(const char *);
@@ -2171,7 +2171,7 @@ void *String_Init(void *arg0, char *arg1, void *arg2) {
         abort();
     }
     home = copy;
-    fn_800CA728(arg0, arg1, arg1 + len, arg2, home);
+    String_InitFromRange(arg0, arg1, arg1 + len, arg2, home);
     return arg0;
 }
 
@@ -2179,14 +2179,14 @@ String_Copy(arg0, arg1)
 void *arg0;
 void *arg1;
 {
-    void fn_800CA728(void *, char *, char *, void *, void *);
+    void String_InitFromRange(void *, char *, char *, void *, void *);
     u8 sp[16];
     char *data;
 
     data = *(char **)((char *)arg1 + 8);
     *(u32 *)((char *)arg0 + 4) = *(u32 *)((char *)arg1 + 4);
     sp[0] = sp[4];
-    fn_800CA728(arg0, data, data + *(u32 *)arg1, sp + 8, sp);
+    String_InitFromRange(arg0, data, data + *(u32 *)arg1, sp + 8, sp);
     return (s32)arg0;
 }
 
@@ -2255,7 +2255,7 @@ M2C_FIELD(vec,u32 *,0)=capacity;
 #pragma use_lmw_stmw on
 void fn_800CA18C(void *vec, void *pos, u32 count, void *src)
 {
-    void fn_800CA728(void *, char *, char *, void *, void *);
+    void String_InitFromRange(void *, char *, char *, void *, void *);
     void fn_800CA644(void *, void *, void *);
     void fn_800CA59C(void *, u32, void *);
     void *Heap_Alloc(s32);
@@ -2318,7 +2318,7 @@ struct LocalState st;
 
                     st.pads[0x28] = tag;
 
-                    fn_800CA728(
+                    String_InitFromRange(
                         dst,
                         begin,
                         endptr,
@@ -2348,7 +2348,7 @@ struct LocalState st;
 
                     st.pads[0x20] = tag;
 
-                    fn_800CA728(
+                    String_InitFromRange(
                         dst,
                         begin,
                         endptr,
@@ -2381,7 +2381,7 @@ struct LocalState st;
 
                     st.pads[0x18] = tag;
 
-                    fn_800CA728(
+                    String_InitFromRange(
                         dst,
                         begin,
                         endptr,
@@ -2455,7 +2455,7 @@ struct LocalState st;
 
                 st.pads[0x10] = tag;
 
-                fn_800CA728(
+                String_InitFromRange(
                     dst,
                     begin,
                     endptr,
@@ -2484,7 +2484,7 @@ struct LocalState st;
 
                 st.pads[0x28] = tag;
 
-                fn_800CA728(
+                String_InitFromRange(
                     dst,
                     begin,
                     endptr,
@@ -2513,7 +2513,7 @@ struct LocalState st;
 
                 st.pads[0] = tag;
 
-                fn_800CA728(
+                String_InitFromRange(
                     dst,
                     begin,
                     endptr,
@@ -2617,7 +2617,7 @@ void *fn_800CA6C8(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void fn_800CA728(void *arg0, char *begin, char *end) {
+void String_InitFromRange(void *arg0, char *begin, char *end) {
     s32 Heap_Alloc(s32);
     void fprintf(void *, const char *, ...);
     void abort(void);
@@ -5594,7 +5594,7 @@ void fn_800D6878(u8 *arg0, u32 arg1) {
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
 {
     struct Tag { u8 b; } tag;
-    M2C_UNK fn_800CA728(u32 *, char *, char *, void *, struct Tag);
+    M2C_UNK String_InitFromRange(u32 *, char *, char *, void *, struct Tag);
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     extern char __files[];
@@ -5620,7 +5620,7 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4)
 
     p = (char *)arg1[2] + arg2;
 
-    fn_800CA728(arg0, p, p + len, arg4, tag);
+    String_InitFromRange(arg0, p, p + len, arg4, tag);
 
     return arg0;
 }
@@ -11824,7 +11824,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
 
 void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 {
-    void fn_800CA728(void *, char *, char *, void *, void *);
+    void String_InitFromRange(void *, char *, char *, void *, void *);
     void String_Resize(void *, u32, s32);
     void *fn_800C94F8(void *, u32, u32, u32, u32);
     void *Heap_Alloc(s32);
@@ -11886,12 +11886,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     begin = *(char **)((u8 *)src + 8);
                     endptr = begin + *(u32 *)src;
                     st.pads[0x28] = tag;
-                    fn_800CA728(dst, begin, endptr, &st.pads[0x44], &st.pads[0x28]);
+                    String_InitFromRange(dst, begin, endptr, &st.pads[0x44], &st.pads[0x28]);
                     *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)src + 0x10);
                     begin = *(char **)((u8 *)src + 0x14);
                     endptr = begin + *(u32 *)((u8 *)src + 0xC);
                     st.pads[0x20] = st.pads[0x24];
-                    fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x40], &st.pads[0x20]);
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x40], &st.pads[0x20]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)src + 0x18);
                 }
                 dst = (u8 *)dst + 0x1C;
@@ -11908,12 +11908,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
                     st.pads[0x18] = tag;
-                    fn_800CA728(dst, begin, endptr, &st.pads[0x3C], &st.pads[0x18]);
+                    String_InitFromRange(dst, begin, endptr, &st.pads[0x3C], &st.pads[0x18]);
                     *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
                     st.pads[0x10] = st.pads[0x14];
-                    fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
                 cur = (u8 *)cur + 0x1C;
@@ -11932,12 +11932,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
                     st.pads[8] = tag;
-                    fn_800CA728(dst, begin, endptr, &st.pads[0x34], &st.pads[8]);
+                    String_InitFromRange(dst, begin, endptr, &st.pads[0x34], &st.pads[8]);
                     *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
                     st.pads[0] = st.pads[4];
-                    fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x30], &st.pads[0]);
+                    String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x30], &st.pads[0]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
                 cur = (u8 *)cur + 0x1C;
@@ -12080,12 +12080,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
                 st.pads[0x10] = tag;
-                fn_800CA728(dst, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
+                String_InitFromRange(dst, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
                 *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
                 st.pads[8] = st.pads[0xC];
-                fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x34], &st.pads[8]);
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x34], &st.pads[8]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
             cur = (u8 *)cur + 0x1C;
@@ -12100,12 +12100,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 begin = *(char **)((u8 *)src + 8);
                 endptr = begin + *(u32 *)src;
                 st.pads[0] = tag;
-                fn_800CA728(dst, begin, endptr, &st.pads[0x30], &st.pads[0]);
+                String_InitFromRange(dst, begin, endptr, &st.pads[0x30], &st.pads[0]);
                 *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)src + 0x10);
                 begin = *(char **)((u8 *)src + 0x14);
                 endptr = begin + *(u32 *)((u8 *)src + 0xC);
                 st.pads[0x28] = st.pads[0x2C];
-                fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x44], &st.pads[0x28]);
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x44], &st.pads[0x28]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)src + 0x18);
             }
             dst = (u8 *)dst + 0x1C;
@@ -12120,12 +12120,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
                 st.pads[0x18] = tag;
-                fn_800CA728(dst, begin, endptr, &st.pads[0x3C], &st.pads[0x18]);
+                String_InitFromRange(dst, begin, endptr, &st.pads[0x3C], &st.pads[0x18]);
                 *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
                 st.pads[0x10] = st.pads[0x14];
-                fn_800CA728((u8 *)dst + 0xC, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
+                String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pads[0x38], &st.pads[0x10]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
             cur = (u8 *)cur + 0x1C;
