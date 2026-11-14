@@ -8001,30 +8001,31 @@ s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 Talk_MatchesUiPair(void *arg0) {
+/* True if this talk entry's persons match the UI unit pair (order or swapped). */
+s32 Talk_MatchesUiPair(void *entry) {
     void *Event_GetString(void *, u32);
     u8 EventFlag_IsSet(void *, void *);
     void *Person_GetByPid(void);
     extern u8 gUiContext[24];
-    void *v1;
-    void *v2;
-    void *a;
-    void *b;
+    void *personA;
+    void *personB;
+    void *uiPerson0;
+    void *uiPerson1;
 
     if (EventFlag_IsSet((u8 *)gBattleState + 0xB4,
-                    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x1A))) != 0) {
+                    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x1A))) != 0) {
         return 0;
     }
-    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14));
-    v1 = Person_GetByPid();
-    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x16));
-    v2 = Person_GetByPid();
-    a = *(void **)(*(u8 **)gUiContext + 0x188);
-    b = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
-    if (a == v1 && b == v2) {
+    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x14));
+    personA = Person_GetByPid();
+    Event_GetString(entry, (u16)*(s16 *)((u8 *)entry + 0x16));
+    personB = Person_GetByPid();
+    uiPerson0 = *(void **)(*(u8 **)gUiContext + 0x188);
+    uiPerson1 = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
+    if (uiPerson0 == personA && uiPerson1 == personB) {
         return 1;
     }
-    if (*(s16 *)((u8 *)arg0 + 0x18) != 0 && a == v2 && b == v1) {
+    if (*(s16 *)((u8 *)entry + 0x18) != 0 && uiPerson0 == personB && uiPerson1 == personA) {
         return 1;
     }
     return 0;
