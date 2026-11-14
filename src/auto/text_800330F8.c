@@ -157,24 +157,25 @@ extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_Begin(void);
 extern "C" s32 UnitRef_GetUnit(u32);
 extern "C" void UnitInfo_DrawStatus(s32);
-extern "C" void UnitInfo_Draw(void *arg0, void *arg1) {
+extern "C" void UnitInfo_Draw(void *win, void *slot) {
+    /* Draw the status unit-info panel for the unit in slot. */
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
         u8 pad[4];
-        virtual void v0(s32 *, s32 *, s32 *) = 0;
+        virtual void getPos(s32 *, s32 *, s32 *) = 0;
     };
     s32 x;
     s32 y;
     s32 alpha;
 
-    if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
-        ((Obj *)arg0)->v0(&x, &y, &alpha);
+    if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
+        ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        UnitInfo_DrawStatus(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        UnitInfo_DrawStatus(UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
