@@ -4835,7 +4835,7 @@ s32 ScriptCmd_ShowMsg(u32 arg0) {
     char *strchr(char *, s32);
     void *Process_FindByName(void *);
     void MsgWin_OpenSingle(void *, u32, s32, s32);
-    void fn_8006FBE4(void *, u32, s32, s32);
+    void MsgWin_OpenMulti(void *, u32, s32, s32);
     void fn_80013864(void);
     void fn_80013874(void *);
     extern u8 lbl_8026ECB8[];
@@ -4848,7 +4848,7 @@ s32 ScriptCmd_ShowMsg(u32 arg0) {
     if (strchr(Msg_Expand(), 0xA) == NULL) {
         MsgWin_OpenSingle(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     } else {
-        fn_8006FBE4(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        MsgWin_OpenMulti(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
     }
     fn_80013864();
     fn_80013874(lbl_80320060);

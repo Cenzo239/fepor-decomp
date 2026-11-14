@@ -7769,7 +7769,7 @@ s32 fn_8006F7F0(s32 arg0) {
     return var_r3;
 }
 
-void fn_8006FBE4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+void MsgWin_OpenMulti(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     extern u32 lbl_80311CB8[];
     extern s8 lbl_80366DE8;
     extern u32 lbl_80367350[2];
