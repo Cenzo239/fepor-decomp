@@ -1210,7 +1210,7 @@ s32 fn_80076494(void) {
 s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
 {
     u32 *Unit_GetHeldItemSlot(s32, s32);
-    u8 fn_8009339C(s32);
+    u8 fn_8009339C(s32, u32);
     void fn_8002BEFC(s32, u32);
     void fn_8002C034(s32, u32);
     extern u8 gUiContext[];
@@ -1221,7 +1221,7 @@ s32 fn_800764B8(s32 a0, s32 a1, u8 arg2)
     if (*entry == 0) {
         return 3;
     }
-    if (!fn_8009339C(*(s32 *)gUiContext)) {
+    if (!fn_8009339C(*(s32 *)gUiContext, *entry)) {
         return 2;
     }
     if (gUiContext[8] == 0x27) {
