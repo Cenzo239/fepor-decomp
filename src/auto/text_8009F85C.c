@@ -1097,7 +1097,7 @@ void *MenuCmd_FormatCursorMapObjName(void *unused, void *arg1) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
     extern u8 gMenuCmdStrings[];
-    extern u8 lbl_80312358[];
+    extern u8 sMenuMapObjNameBuf[];
     s32 x528;
     s32 x524;
     s32 ret;
@@ -1111,9 +1111,9 @@ void *MenuCmd_FormatCursorMapObjName(void *unused, void *arg1) {
     if (tmp == NULL) {
         return gMenuCmdStrings + 0x563;
     }
-    sprintf(lbl_80312358, gMenuCmdStrings + 0x575, **(s32 **)((u8 *)tmp + 0x10));
+    sprintf(sMenuMapObjNameBuf, gMenuCmdStrings + 0x575, **(s32 **)((u8 *)tmp + 0x10));
     *(u8 *)((u8 *)arg1 + 0x39) = 0;
-    return lbl_80312358;
+    return sMenuMapObjNameBuf;
 }
 
 extern s32 lbl_80367670;
