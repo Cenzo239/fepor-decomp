@@ -2,6 +2,20 @@
 #include "common.h"
 #include "global.h"
 
+typedef struct ListNode {
+    struct ListNode *prev;
+    struct ListNode *next;
+    void *val;
+} ListNode;
+
+typedef struct ListIter {
+    ListNode *node;
+} ListIter;
+
+typedef struct List {
+    s32 size;
+} List;
+
 
 static inline s32 CountUnitItemReferences(u8 *unit,u8 *target) {
 void **Unit_GetHeldItemSlot(void *,s32);
@@ -6271,11 +6285,11 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 void ItemList_EraseRange(void **arg0, s32 *arg1, void **arg2, void **arg3) {
     void Item_Destroy(void *, s32);
     void Heap_Free(void *);
-    void **p_end;
-    void **p_cur;
-    void *cur;
-    s32 *count;
     void **out;
+    s32 *count;
+    void **p_cur;
+    void **p_end;
+    void *cur;
     void *end;
     void *a;
     void *b;
