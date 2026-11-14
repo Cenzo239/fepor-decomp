@@ -4033,11 +4033,11 @@ void fn_8016B700(void) {
     Process_CreateChild(lbl_80294550, fn_800C0658());
 }
 
-extern u8 lbl_80294460[16];
+extern u8 E_Jyokyo_script[16];
 void fn_8016B730(s32 arg0) {
     void Process_CreateChild(void *, s32);
-    extern u8 lbl_80294460[16];
-    Process_CreateChild(lbl_80294460, arg0);
+    extern u8 E_Jyokyo_script[16];
+    Process_CreateChild(E_Jyokyo_script, arg0);
 }
 
 void fn_8016B75C(void) {
