@@ -13663,7 +13663,7 @@ void fn_80198F8C(s32 arg0, s32 arg1) {
 }
 
 void fn_80198FB0(void *arg0) {
-    u32 fn_800E4C5C(void *, u32, u32, u8);
+    u32 Actor_SetNodeLink(void *, u32, u32, u8);
     s32 fn_8001B9F4(void *);
     void GActor_SetNodeLinkParam(void *, void *);
     extern u32 lbl_802967E0[];
@@ -13674,7 +13674,7 @@ void fn_80198FB0(void *arg0) {
     u32 idx;
 
     idx = *(u32 *)((u8 *)arg0 + 0x124);
-    result = fn_800E4C5C(arg0, lbl_802967E0[idx], lbl_80296810[idx], 1);
+    result = Actor_SetNodeLink(arg0, lbl_802967E0[idx], lbl_80296810[idx], 1);
     p = *(void **)((u8 *)arg0 + 0x148);
     if (p != NULL) {
         sp8 = fn_8001B9F4(p);

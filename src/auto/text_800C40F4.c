@@ -11239,7 +11239,7 @@ void fn_800E4C1C(void *arg0) {
     }
 }
 
-u32 fn_800E4C5C(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
+u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
     extern s32 lbl_80369F38;
     s32 sp8;
 
