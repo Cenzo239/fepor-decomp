@@ -1276,7 +1276,7 @@ s32 fn_8012AA68(void *arg0) {
     return 1;
 }
 
-void fn_8012ABAC(void *arg0) {
+void MapObj_ToggleLinkedFade(void *arg0) {
     u8 MapObj_IsVisible(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
