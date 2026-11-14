@@ -12207,7 +12207,8 @@ s32 MuEvent_StartForUnit(u8 unitId) {
     return 1;
 }
 
-s32 MuDead_StartForUnit(u8 arg0) {
+s32 MuDead_StartForUnit(u8 unitId) {
+    /* Start E__MuDead for the unit at the given deployment index. */
     extern u32 gUiInputFlags;
     extern u8 gUnits[];
     extern u8 Proc_MuEventInst[];
@@ -12216,33 +12217,33 @@ s32 MuDead_StartForUnit(u8 arg0) {
     u32 fn_80127C48(void);
     s32 fn_800C0658(void);
     void MuDead_Start(void *, void *);
-    void *obj;
-    void *slot;
-    void *arg;
+    void *unit;
+    void *host;
+    void *parent;
     u32 tmp;
 
     if (gUiInputFlags & 1) {
         return 0;
     }
-    if (arg0 != 0) {
-        obj = gUnits + ((arg0 - 1) * 0x280);
+    if (unitId != 0) {
+        unit = gUnits + ((unitId - 1) * 0x280);
     } else {
-        obj = NULL;
+        unit = NULL;
     }
-    if (obj == NULL || *(u32 *)((u8 *)obj + 0x188) == 0) {
+    if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    slot = Process_Find(Proc_MuEventInst);
-    if (slot != NULL) {
-        arg = slot;
+    host = Process_Find(Proc_MuEventInst);
+    if (host != NULL) {
+        parent = host;
     } else {
         tmp = fn_80127C48();
         if (tmp == 0) {
             tmp = fn_800C0658();
         }
-        arg = Process_Create(Proc_MuEventInst, tmp);
+        parent = Process_Create(Proc_MuEventInst, tmp);
     }
-    MuDead_Start(obj, arg);
+    MuDead_Start(unit, parent);
     return 1;
 }
 
