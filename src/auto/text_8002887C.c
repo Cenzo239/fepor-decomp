@@ -3872,7 +3872,8 @@ extern "C" void UnitInfo_DrawCombat(void *win, void *slot) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void UnitInfo_DrawItems(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawItems(void *win, void *slot) {
+    /* Draw item/give unit-info for slot, marking slots the UI-context unit can receive. */
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     extern u32 gUiContext[];
@@ -3880,21 +3881,21 @@ extern "C" void UnitInfo_DrawItems(void *arg0, void *arg1) {
     s32 UnitRef_GetUnit(u32);
     struct Obj {
         u8 pad[4];
-        virtual void v0(s32 *, s32 *, s32 *) = 0;
+        virtual void getPos(s32 *, s32 *, s32 *) = 0;
     };
     s32 x;
     s32 y;
     s32 alpha;
-    s32 saved;
+    s32 uiUnit;
 
-    if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
-        ((Obj *)arg0)->v0(&x, &y, &alpha);
+    if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
+        ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        saved = gUiContext[0];
-        UnitInfo_DrawItemStats(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), saved);
+        uiUnit = gUiContext[0];
+        UnitInfo_DrawItemStats(UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)), uiUnit);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
