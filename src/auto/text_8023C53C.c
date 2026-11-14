@@ -15871,31 +15871,32 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     *(f32 *)(arg1 + 0x190 + channel * 4) = src_value[0];
 }
 
-void Sound_ProcessAux(s32 arg0, s32 arg1, s32 arg2, void *arg3) {
+/* Mix wet aux into ch0/ch1 if needed, then run aux FX on all three PCM channels. */
+void Sound_ProcessAux(s32 ch0, s32 ch1, s32 ch2, void *aux) {
     void Sound_MixSampleBuffers(s32, s32, f32, f32);
     void Sound_ProcessAuxChannel(s32, void *, s32);
     extern f32 lbl_8036C3A8;
     extern f32 lbl_8036C3AC;
     extern f32 lbl_8036C3E8;
-    f32 temp_f1;
-    f32 temp_f2;
+    f32 halfWet;
+    f32 wet;
     u8 i;
 
     for (i = 0; i < 3; i++) {
         switch (i) {
         case 0:
-            if (lbl_8036C3A8 != *(f32 *)((char *)arg3 + 0x1A8)) {
-                temp_f2 = *(f32 *)((char *)arg3 + 0x1A8);
-                temp_f1 = lbl_8036C3E8 * temp_f2;
-                Sound_MixSampleBuffers(arg0, arg1, temp_f1, lbl_8036C3AC - temp_f1);
+            if (lbl_8036C3A8 != *(f32 *)((char *)aux + 0x1A8)) {
+                wet = *(f32 *)((char *)aux + 0x1A8);
+                halfWet = lbl_8036C3E8 * wet;
+                Sound_MixSampleBuffers(ch0, ch1, halfWet, lbl_8036C3AC - halfWet);
             }
-            Sound_ProcessAuxChannel(arg0, arg3, 0);
+            Sound_ProcessAuxChannel(ch0, aux, 0);
             break;
         case 1:
-            Sound_ProcessAuxChannel(arg1, arg3, 1);
+            Sound_ProcessAuxChannel(ch1, aux, 1);
             break;
         case 2:
-            Sound_ProcessAuxChannel(arg2, arg3, 2);
+            Sound_ProcessAuxChannel(ch2, aux, 2);
             break;
         }
     }
