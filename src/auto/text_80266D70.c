@@ -317,52 +317,52 @@ s64 fn_80266D70(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return ((s64)old30 << 32) | (u32)old34;
 }
 
-int fn_80266D94(void *arg0)
+#pragma global_optimizer off
+void fn_80266D94(void *arg0)
 {
     extern u8 lbl_803669A0[];
-    extern u8 lbl_802A5198[];
-    extern u8 lbl_802A51A4[];
+    extern char lbl_802A5198[];
+    extern char lbl_802A51A4[];
+    void OSPanic(char *, s32, char *, ...);
+    void fn_80215F78(s32);
+    u32 fn_80215F40(void);
 
-    extern void OSPanic(const char *, int, const char *);
-    extern void fn_80215F78(int);
-    extern int fn_80215F40(void);
-
-    u8 *base;
+    u8 *p;
+    s32 index;
     u8 *entry;
-    int index;
 
-    base = lbl_803669A0;
-
-    if ((u8 *)arg0 == base + 0xA8) {
+    p = lbl_803669A0;
+    if ((u8 *)arg0 == p + 0xA8) {
         index = 0;
-    } else if ((u8 *)arg0 == base + 0x1A8) {
-        index = 1;
-    } else if ((u8 *)arg0 == base + 0x3A8) {
-        index = 2;
-    } else if ((u8 *)arg0 == base + 0x4A8) {
-        index = 3;
-    } else {
-        OSPanic(
-            (const char *)lbl_802A5198,
-            0xA9,
-            (const char *)lbl_802A51A4
-        );
-
-        entry = base - 0x100;
-
-        fn_80215F78(0xABBA);
-
-        if (fn_80215F40() == 0) {
-            fn_80215F78(*(int *)(entry + 0xF8));
-            fn_80215F40();
-        }
-
-        return -1;
+        goto found;
     }
-
-    return index;
+    p = p + 0x100;
+    if ((u8 *)arg0 == p + 0xA8) {
+        index = 1;
+        goto found;
+    }
+    if ((u8 *)arg0 == p + 0x1A8) {
+        index = 2;
+        goto found;
+    }
+    p = p + 0x100;
+    if ((u8 *)arg0 == p + 0x1A8) {
+        index = 3;
+        goto found;
+    }
+    OSPanic(lbl_802A5198, 0xA9, lbl_802A51A4);
+    index = -1;
+found:
+    entry = lbl_803669A0 + (index << 8);
+    fn_80215F78(0xABBA << 16);
+    if (fn_80215F40() == 0) {
+        fn_80215F78(*(s32 *)(entry + 0xF8));
+        if (fn_80215F40() == 0) {
+            return;
+        }
+    }
 }
-
+#pragma global_optimizer reset
 void fn_80266E70(void *arg0)
 {
     extern u8 lbl_803669A0[];
@@ -397,91 +397,3 @@ void fn_80266E70(void *arg0)
     fn_80265CB4(id, 0);
 }
 
-void fn_80266F18(void) {
-    gSoundData[0] = 1;
-    lbl_8036C368 = 0.0;
-}
-
-void fn_80266FFC(void) {
-
-}
-
-void fn_80267000(void) {
-
-}
-
-s32 fn_80267264(s32 arg0, s32 arg1) {
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-    void fn_8026765C(s32, s32, s32);
-    s32 arg0_local;
-    s32 arg1_local;
-    u32 enabled;
-    s32 base;
-
-    arg1_local = arg1;
-    arg0_local = arg0;
-    enabled = OSDisableInterrupts();
-    if (lbl_80368B38 & 0x10000) {
-        base = 0x1000;
-    } else {
-        base = 0;
-    }
-    fn_8026765C(base + 0x20000 - 0x2000, arg0_local, (arg1_local + 3) & ~3);
-    lbl_80368B3C = 0;
-    lbl_80368B44 = 0;
-    OSRestoreInterrupts(enabled);
-    return 0;
-}
-
-s32 fn_802672F0(void)
-{
-    extern u32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(u32);
-    extern void fn_802674D4(s32 *);
-    extern void fn_80267738(s32 *);
-
-    s32 sp8;
-    s32 irq;
-
-    lbl_80368B44 = 0;
-    if (lbl_80368B3C == 0) {
-        irq = OSDisableInterrupts();
-        fn_802674D4(&sp8);
-        if (sp8 & 1) {
-            fn_80267738(&sp8);
-            sp8 = (s32)((u32)sp8 & 0x1FFFFFFFU);
-            if (((u32)sp8 & 0x1F000000U) == 0x1F000000U) {
-                lbl_80368B38 = (u32)sp8;
-                lbl_80368B3C = (s32)((u32)sp8 & 0x7FFFU);
-                lbl_80368B44 = 1;
-            }
-        }
-        OSRestoreInterrupts(irq);
-    }
-    return lbl_80368B3C;
-}
-
-void fn_802673E0(s32 *arg0, s32 arg1)
-{
-    extern u32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(u32);
-    extern void __OSMaskInterrupts(u32);
-    extern s32 lbl_80368B40;
-    extern s32 lbl_80368B30;
-    s32 *out;
-    s32 cb;
-    u32 enabled;
-    s32 tmp;
-
-    out = arg0;
-    cb = arg1;
-    enabled = OSDisableInterrupts();
-    lbl_80368B40 = (s32)&lbl_80368B44;
-    tmp = lbl_80368B40;
-    *out = tmp;
-    lbl_80368B30 = cb;
-    __OSMaskInterrupts(0x18000U);
-    *(u32 *)0xCC006828 = 0;
-    OSRestoreInterrupts(enabled);
-}
