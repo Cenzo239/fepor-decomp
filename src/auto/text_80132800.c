@@ -11095,7 +11095,7 @@ extern "C" void fn_80147188(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8014746C(s8 arg0, s16 arg1) {
+extern "C" void SeCue_FadeOut(s8 arg0, s16 arg1) {
 struct Obj { u8 pad[8]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; };
 extern u8 gSeCueSlots[1344]; extern f32 gMsPerFrame;
 Anim *entry; s16 duration; u8 flags; s32 off; u8 *flags_ptr;

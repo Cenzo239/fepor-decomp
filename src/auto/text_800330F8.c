@@ -12645,7 +12645,7 @@ void fn_800535B0(void *arg0) {
     void *fn_8004AF30(u16);
     s32 fn_8005F8E4(void *, u16 *);
     s8 fn_80146BE4(void *);
-    void fn_8014746C(s8, s32);
+    void SeCue_FadeOut(s8, s32);
     extern u8 GActor_str[];
 
     u16 buf[0x40];
@@ -12673,7 +12673,7 @@ void fn_800535B0(void *arg0) {
                 slot = fn_80146BE4(unit);
                 if (slot >= 0) {
                     DebugPrint(strBase + 0x106, unit);
-                    fn_8014746C(slot, 0xFA);
+                    SeCue_FadeOut(slot, 0xFA);
                 }
             }
             p++;
