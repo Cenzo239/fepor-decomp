@@ -49,10 +49,10 @@ void fn_80091858(void) {
     void Process_UnlinkByKey(void *);
     extern u32 gProcessQueue[8];
     extern u8 lbl_80289A38[];
-    extern s32 lbl_803674F8;
+    extern s32 gProcessQueueCount;
     s32 i;
 
-    lbl_803674F8 = 0;
+    gProcessQueueCount = 0;
     for (i = 0; i < 8; i++) {
         gProcessQueue[i] = 0;
     }
@@ -61,18 +61,18 @@ void fn_80091858(void) {
 
 void fn_800918B0(void) {
     extern void *gProcessQueue[];
-    extern s32 lbl_803674F8;
+    extern s32 gProcessQueueCount;
     s32 val;
     s32 i;
 
-    if (lbl_803674F8 == 0) {
+    if (gProcessQueueCount == 0) {
         return;
     }
     val = 0x14;
-    for (i = lbl_803674F8 - 1; i >= 0; i--) {
+    for (i = gProcessQueueCount - 1; i >= 0; i--) {
         *(s16 *)((u8 *)gProcessQueue[i] + 0x28) = val;
         val += 4;
     }
-    lbl_803674F8 = 0;
+    gProcessQueueCount = 0;
 }
 

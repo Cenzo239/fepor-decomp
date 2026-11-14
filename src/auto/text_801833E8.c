@@ -13398,7 +13398,7 @@ void *fn_8005FEE8(void*, f32);
 s32 fn_80060440(s32);
 void *fn_800639B4();
 extern u16 gProcessQueue[];
-extern s32 lbl_803674F8;
+extern s32 gProcessQueueCount;
 extern u16 lbl_802968E8;
 extern u16 lbl_802797C0[6];
 extern u16 lbl_8036AE4C;

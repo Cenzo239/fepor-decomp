@@ -48,12 +48,12 @@ extern f32 lbl_803697E4;
 void fn_8009197C(void) {
     void Process_ClearFunc(u32);
     extern u32 gProcessQueue[];
-    extern s32 lbl_803674F8;
+    extern s32 gProcessQueueCount;
 
-    while (lbl_803674F8 != 0) {
-        if (lbl_803674F8 != 0) {
-            lbl_803674F8--;
-            Process_ClearFunc(gProcessQueue[lbl_803674F8]);
+    while (gProcessQueueCount != 0) {
+        if (gProcessQueueCount != 0) {
+            gProcessQueueCount--;
+            Process_ClearFunc(gProcessQueue[gProcessQueueCount]);
         }
     }
 }
@@ -61,12 +61,12 @@ void fn_8009197C(void) {
 void fn_800919D8(void) {
     M2C_UNK Process_ClearFunc(s32, s32);
     extern u32 gProcessQueue[];
-    extern s32 lbl_803674F8;
+    extern s32 gProcessQueueCount;
     s32 temp_r4;
 
-    if ((s32) lbl_803674F8 != 0) {
-        temp_r4 = lbl_803674F8 - 1;
-        lbl_803674F8 = temp_r4;
+    if ((s32) gProcessQueueCount != 0) {
+        temp_r4 = gProcessQueueCount - 1;
+        gProcessQueueCount = temp_r4;
         Process_ClearFunc(gProcessQueue[temp_r4], temp_r4);
     }
 }
