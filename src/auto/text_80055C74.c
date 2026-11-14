@@ -1017,9 +1017,9 @@ void fn_80057E98(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, f32 *, 0x3C) = (f32) arg2;
 }
 
-extern u8 lbl_80285B6C[16];
+extern u8 Proc_GActorNodeLink[16];
 void fn_80057EDC(void) {
-    Process_UnlinkByKey(&lbl_80285B6C);
+    Process_UnlinkByKey(&Proc_GActorNodeLink);
 }
 
 s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -1031,22 +1031,22 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_80058A0C(void *, s32, s32, s32);
     void fn_80057FD4(void);
     extern u8 lbl_8026AD80[];
-    extern u8 lbl_80285B6C[16];
+    extern u8 Proc_GActorNodeLink[16];
     void *temp_r31;
 
     if (GActor_FindNode(arg0, arg1) < 0 || GActor_FindNode(arg0, arg2) < 0) {
         DebugPrint((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
         fn_800056A0(0);
     }
-    fn_8000A388(lbl_80285B6C, fn_80057FD4, arg0);
-    temp_r31 = Process_Create(lbl_80285B6C, arg3);
+    fn_8000A388(Proc_GActorNodeLink, fn_80057FD4, arg0);
+    temp_r31 = Process_Create(Proc_GActorNodeLink, arg3);
     fn_80058A0C(temp_r31, arg0, arg1, arg2);
     return (s32)temp_r31;
 }
 
 void fn_80057FD4(void *arg0, u32 arg1) {
     if ((u32) M2C_FIELD(arg0, u32 *, 0x34) == arg1) {
-        Process_UnlinkByKey(&lbl_80285B6C);
+        Process_UnlinkByKey(&Proc_GActorNodeLink);
     }
 }
 
