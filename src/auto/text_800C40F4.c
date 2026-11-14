@@ -18111,7 +18111,7 @@ void fn_800F8390(void *arg0)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
 
     extern void *Res_GetByName(void *);
 
@@ -18151,14 +18151,14 @@ void fn_800F8390(void *arg0)
         }
     }
 
-    lbl_803678F0 = 1;
+    gAiCmdOk = 1;
 }
 
 void AiCmd_SeekLabel(void *arg0)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
 
     extern void *Res_GetByName(void *);
 
@@ -18198,7 +18198,7 @@ void AiCmd_SeekLabel(void *arg0)
         }
     }
 
-    lbl_803678F0 = 1;
+    gAiCmdOk = 1;
 }
 
 void fn_800F8538(void *arg0) {
@@ -19089,7 +19089,7 @@ void fn_800FB074(void *arg0)
 {
     extern s32 gAiCmdIsAlt;
     extern u8 *gAiCmd;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
     void *Hash_Lookup(void *);
     void *self;
     u8 *p;
@@ -19098,7 +19098,7 @@ void fn_800FB074(void *arg0)
     self = arg0;
     p = gAiCmd;
     cb = (u8 (*)(void *))Hash_Lookup(*(void **)(p + 0x14));
-    lbl_803678F0 = cb(*(void **)(p + 0x18));
+    gAiCmdOk = cb(*(void **)(p + 0x18));
     if (gAiCmdIsAlt == 0) {
         *(u8 *)((u8 *)self + 0x250) += 1;
     } else {
@@ -19285,7 +19285,7 @@ s32 fn_800FB60C(void *arg0) {
 u8 fn_800FB64C(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
@@ -19304,7 +19304,7 @@ u8 fn_800FB64C(void) {
     entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     gAiCmd = entry;
     off = obj[0x251] * 0x1C;
-    lbl_803678F0 = 0;
+    gAiCmdOk = 0;
     gAiCmdIsAlt = 1;
     entry += off;
     gAiCmd = entry;
@@ -19319,13 +19319,13 @@ u8 fn_800FB64C(void) {
     entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
     (*(void (**)(void *, void *))(entry + 4))(obj, entry);
 
-    return lbl_803678F0;
+    return gAiCmdOk;
 }
 
 u8 fn_800FB6FC(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
@@ -19344,7 +19344,7 @@ u8 fn_800FB6FC(void) {
     entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
-    lbl_803678F0 = 0;
+    gAiCmdOk = 0;
     gAiCmdIsAlt = 0;
     entry += off;
     gAiCmd = entry;
@@ -19359,13 +19359,13 @@ u8 fn_800FB6FC(void) {
     entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
     (*(void (**)(void *, void *))(entry + 4))(obj, entry);
 
-    return lbl_803678F0;
+    return gAiCmdOk;
 }
 
 u8 fn_800FB7A8(void) {
     extern u8 gUiContext[];
     extern u8 *gAiCmd;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     extern u8 lbl_80273000[];
@@ -19385,7 +19385,7 @@ u8 fn_800FB7A8(void) {
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
     gAiCmdIsAlt = 1;
-    lbl_803678F0 = 0;
+    gAiCmdOk = 0;
     entry += off;
     gAiCmd = entry;
     obj[0x260] = 0x10;
@@ -19400,13 +19400,13 @@ u8 fn_800FB7A8(void) {
     entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
     (*(void (**)(void *, void *))(entry + 4))(obj, entry);
 
-    return lbl_803678F0;
+    return gAiCmdOk;
 }
 
 u8 fn_800FB868(void) {
     extern u8 lbl_802EF4C8[];
     extern u8 *gAiCmd;
-    extern u8 lbl_803678F0;
+    extern u8 gAiCmdOk;
     extern s32 gAiCmdIsAlt;
     extern u8 lbl_8032B3C0[];
     extern u8 lbl_80273000[];
@@ -19425,7 +19425,7 @@ u8 fn_800FB868(void) {
     entry = lbl_80272F90;
     gAiCmd = entry;
     off = obj[0x250] * 0x1C;
-    lbl_803678F0 = 0;
+    gAiCmdOk = 0;
     gAiCmdIsAlt = 0;
     entry += off;
     gAiCmd = entry;
@@ -19440,7 +19440,7 @@ u8 fn_800FB868(void) {
     entry = (u8 *)fn_800FB918(lbl_80273000, lbl_80273000 + 0x1A0, &key, &flag);
     (*(void (**)(void *, void *))(entry + 4))(obj, entry);
 
-    return lbl_803678F0;
+    return gAiCmdOk;
 }
 
 void fn_800FB918(void *arg0, void *arg1, s32 *arg2) {
