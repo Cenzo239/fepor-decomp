@@ -18863,7 +18863,7 @@ void fn_800FA6CC(void *arg0) {
     }
 }
 
-void fn_800FA778(void *arg0) {
+void AiCmd_ChanceTryHeldItem(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
