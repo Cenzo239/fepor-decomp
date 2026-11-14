@@ -11863,39 +11863,16 @@ void Stream_WriteStr(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) + arg1);
 }
 
-void Stream_WriteS64(void *arg0, s32 arg1, u8 arg2, u8 arg3) {
-    u8 *temp_r4;
-    u8 *temp_r4_2;
-    u8 *temp_r4_3;
-    u8 *temp_r4_4;
-    u8 *temp_r4_5;
-    u8 *temp_r4_6;
-    u8 *temp_r4_7;
-    u8 *temp_r4_8;
-    temp_r4 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4 + 1);
-    *temp_r4 = (u8)(arg2 >> 0x18U);
-    temp_r4_2 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_2 + 1);
-    *temp_r4_2 = (u8)(arg2 >> 0x10U);
-    temp_r4_3 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_3 + 1);
-    *temp_r4_3 = (u8)(arg2 >> 8U);
-    temp_r4_4 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_4 + 1);
-    *temp_r4_4 = arg2;
-    temp_r4_5 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_5 + 1);
-    *temp_r4_5 = (((arg3 << 8) | (arg3 >> 0x18U)) & ~0xFFFFFF00) | (arg2 << 8);
-    temp_r4_6 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_6 + 1);
-    *temp_r4_6 = (((arg3 << 0x10) | (arg3 >> 0x10U)) & ~0xFFFF0000) | (arg2 << 0x10);
-    temp_r4_7 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_7 + 1);
-    *temp_r4_7 = (((arg3 << 0x18) | (arg3 >> 8U)) & ~0xFF000000) | (arg2 << 0x18);
-    temp_r4_8 = M2C_FIELD(arg0, u8 **, 4);
-    M2C_FIELD(arg0, u8 **, 4) = (u8 *)(temp_r4_8 + 1);
-    *temp_r4_8 = arg3;
+void Stream_WriteS64(u8 **arg0, unsigned long long arg1) {
+u8 **pp = &arg0[1];
+*(*pp)++ = arg1 >> 56;
+*(*pp)++ = arg1 >> 48;
+*(*pp)++ = arg1 >> 40;
+*(*pp)++ = arg1 >> 32;
+*(*pp)++ = arg1 >> 24;
+*(*pp)++ = arg1 >> 16;
+*(*pp)++ = arg1 >> 8;
+*(*pp)++ = arg1;
 }
 
 void Stream_WriteS32(u8 **arg0, u32 arg1) {
