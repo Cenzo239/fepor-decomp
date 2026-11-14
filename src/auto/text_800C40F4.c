@@ -19800,7 +19800,7 @@ s32 fn_800FC5F8(void) {
     return lbl_80367904;
 }
 
-void fn_800FC600(s32 arg0) {
+void CpPhase_Start(s32 arg0) {
     void Process_CreateChild(void *, s32);
     extern u8 Proc_CpPhaseMain[];
     extern u8 gAiState[];

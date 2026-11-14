@@ -2515,7 +2515,7 @@ void fn_8002E648(void) {
 
 void Battle_StartCpPhase(s32 arg0) {
     void *fn_8014C5A8(void *, u8);
-    void fn_800FC600(s32);
+    void CpPhase_Start(s32);
     void fn_800FC63C(s32);
     extern u8 gBattleState[];
     u8 *base;
@@ -2545,14 +2545,14 @@ void Battle_StartCpPhase(s32 arg0) {
     }
     goto end;
 case0:
-    fn_800FC600(arg0);
+    CpPhase_Start(arg0);
     goto end;
 case3:
     if (ret != NULL) {
         if (*(u8 *)ret == 1) {
             fn_800FC63C(arg0);
         } else {
-            fn_800FC600(arg0);
+            CpPhase_Start(arg0);
         }
     }
     goto end;
