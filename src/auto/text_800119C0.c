@@ -1234,29 +1234,30 @@ void fn_8001520C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s8 *, 3) = -1;
 }
 
-void UnitList_GainSupportPoints(void **arg0) {
+/* Walk a unit list and grant support points to same-faction partners under the rank cap. */
+void UnitList_GainSupportPoints(void **listHead) {
     void Unit_AddSupportPoints(void *, s32);
     s32 Unit_GetSupportRankTotal(void *);
     void *Unit_GetSupportPartner(void *, s32);
     u8 Unit_CountSupportPartners(void *);
-    void *temp_r31;
-    void *var_r30;
-    s32 var_r29;
+    void *partner;
+    void *unit;
+    s32 i;
 
-    var_r30 = *arg0;
-    while (var_r30 != NULL) {
-        if (*(u32 *)((u8 *)var_r30 + 0x188) != 0) {
-            for (var_r29 = 0; var_r29 < (s32)Unit_CountSupportPartners(var_r30); var_r29++) {
-                temp_r31 = Unit_GetSupportPartner(var_r30, var_r29);
-                if (temp_r31 != NULL &&
-                    *(u32 *)((u8 *)temp_r31 + 0x190) == *(u32 *)((u8 *)var_r30 + 0x190) &&
-                    Unit_GetSupportRankTotal(var_r30) < 5 &&
-                    Unit_GetSupportRankTotal(temp_r31) < 5) {
-                    Unit_AddSupportPoints(var_r30, var_r29);
+    unit = *listHead;
+    while (unit != NULL) {
+        if (*(u32 *)((u8 *)unit + 0x188) != 0) {
+            for (i = 0; i < (s32)Unit_CountSupportPartners(unit); i++) {
+                partner = Unit_GetSupportPartner(unit, i);
+                if (partner != NULL &&
+                    *(u32 *)((u8 *)partner + 0x190) == *(u32 *)((u8 *)unit + 0x190) &&
+                    Unit_GetSupportRankTotal(unit) < 5 &&
+                    Unit_GetSupportRankTotal(partner) < 5) {
+                    Unit_AddSupportPoints(unit, i);
                 }
             }
         }
-        var_r30 = *(void **)((u8 *)var_r30 + 0x184);
+        unit = *(void **)((u8 *)unit + 0x184);
     }
 }
 
