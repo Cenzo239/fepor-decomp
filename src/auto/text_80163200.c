@@ -1474,7 +1474,8 @@ void *BattleTerrain_Dtor(void *arg0, s16 arg1) {
     return arg0;
 }
 
-void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
+void *BattleTerrain_Ctor(void *self, void *owner, void *xml) {
+    /* Construct BattleTerrain from XML "terrain" path and load it into the map. */
     s32 Map_Get(void);
     void Map_LoadTerrain(s32, void *);
     void Xml_GetNamedValue(void *, void *, void *);
@@ -1494,32 +1495,32 @@ void *BattleTerrain_Ctor(void *arg0, void *arg1, void *arg2) {
         char *data;
     } String;
 
-    char sp24[0x24];
-    String sp18;
-    String spC;
-    u8 sp8[4];
-    void *self;
-    void *a2;
-    void *temp;
+    char valueBuf[0x24];
+    String pathStr;
+    String tagStr;
+    u8 scratch[4];
+    void *thisPtr;
+    void *node;
+    void *path;
 
-    self = arg0;
-    a2 = arg2;
-    fn_800DF7A0(arg0, arg1, arg2);
-    *(void **)((u8 *)self + 0x40) = BattleTerrain_Vtbl;
-    sp18.cap = 0;
-    sp18.size = 0;
-    sp18.data = 0;
-    sp18.cap = 0;
-    String_Init(&spC, BattleTerrain_Str + 0x2D, sp8);
-    Xml_GetNamedValue(sp24, a2, &spC);
-    a2 = sp24;
-    String_AssignCStr(&sp18, a2, strlen((char *)a2));
-    String_Destroy(&spC, -1);
-    temp = String_CStr(&sp18);
-    Map_LoadTerrain(Map_Get(), temp);
+    thisPtr = self;
+    node = xml;
+    fn_800DF7A0(self, owner, xml);
+    *(void **)((u8 *)thisPtr + 0x40) = BattleTerrain_Vtbl;
+    pathStr.cap = 0;
+    pathStr.size = 0;
+    pathStr.data = 0;
+    pathStr.cap = 0;
+    String_Init(&tagStr, BattleTerrain_Str + 0x2D, scratch);
+    Xml_GetNamedValue(valueBuf, node, &tagStr);
+    node = valueBuf;
+    String_AssignCStr(&pathStr, node, strlen((char *)node));
+    String_Destroy(&tagStr, -1);
+    path = String_CStr(&pathStr);
+    Map_LoadTerrain(Map_Get(), path);
     gBattleTerrainReady = 1;
-    String_Destroy(&sp18, -1);
-    return self;
+    String_Destroy(&pathStr, -1);
+    return thisPtr;
 }
 
 #pragma use_lmw_stmw on
