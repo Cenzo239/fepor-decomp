@@ -2158,7 +2158,7 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
     }
 }
 #pragma cplusplus reset
-void fn_80023FF4(void* arg0, s32 arg1, s32 arg2) {
+void Ui_RebuildListEntries(void* arg0, s32 arg1, s32 arg2) {
     s32 r3;
     s32 r4;
     s32 r5;

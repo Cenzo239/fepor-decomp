@@ -2963,7 +2963,7 @@ void fn_80169BB4(void *arg0) {
 void fn_80169BF4(void *arg0) {
     M2C_UNK Process_DecRef(s32);
     M2C_UNK Ui_DecBusy(void *);
-    M2C_UNK fn_80023FF4(void *);
+    M2C_UNK Ui_RebuildListEntries(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
@@ -2972,7 +2972,7 @@ void fn_80169BF4(void *arg0) {
     Ui_DecBusy(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s8 *, 0x62) = temp_r31;
     Process_ClearFunc(arg0);
 }
@@ -2987,7 +2987,7 @@ void fn_80169C54(void *arg0) {
 void fn_80169C94(void *arg0) {
     M2C_UNK Process_DecRef(s32);
     M2C_UNK Ui_DecBusy(void *);
-    M2C_UNK fn_80023FF4(void *);
+    M2C_UNK Ui_RebuildListEntries(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
@@ -2996,7 +2996,7 @@ void fn_80169C94(void *arg0) {
     Ui_DecBusy(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x50), s8 *, 0x62) = temp_r31;
     Process_ClearFunc(arg0);
 }
@@ -6054,7 +6054,7 @@ void fn_8016F0C4(void *arg0) {
 
 void fn_8016F0E8(void *arg0) {
     void Process_MarkActive(void *);
-    void fn_80023FF4(void *);
+    void Ui_RebuildListEntries(void *);
     register void *temp_r3;
     void *temp_r31;
     s32 temp_r30_2;
@@ -6064,12 +6064,12 @@ void fn_8016F0E8(void *arg0) {
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r30 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r30;
     temp_r31 = M2C_FIELD(arg0, void **, 0x60);
     Process_RetreatStep(temp_r31);
     temp_r30_2 = M2C_FIELD(temp_r31, s8 *, 0x62);
-    fn_80023FF4(temp_r31);
+    Ui_RebuildListEntries(temp_r31);
     M2C_FIELD(temp_r31, s8 *, 0x62) = temp_r30_2;
     Ui_DecBusy(arg0);
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
@@ -6098,7 +6098,7 @@ void Ui_CloseNestedMenu(void *arg0)
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_DecBusy(arg0);
@@ -6135,7 +6135,7 @@ void fn_8016F32C(void *arg0) {
 
 void fn_8016F378(void *arg0) {
     M2C_UNK Process_MarkActive(void *);
-    M2C_UNK fn_80023FF4(void *);
+    M2C_UNK Ui_RebuildListEntries(void *);
     s32 temp_r31;
     void *temp_r3;
 
@@ -6143,7 +6143,7 @@ void fn_8016F378(void *arg0) {
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_DecBusy(arg0);
@@ -6177,7 +6177,7 @@ void fn_8016F484(void *arg0) {
 
 void fn_8016F4D0(void *arg0) {
     M2C_UNK Process_MarkActive(void *);
-    M2C_UNK fn_80023FF4(void *);
+    M2C_UNK Ui_RebuildListEntries(void *);
     s32 temp_r31;
     void *temp_r3;
 
@@ -6185,7 +6185,7 @@ void fn_8016F4D0(void *arg0) {
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    fn_80023FF4(temp_r3);
+    Ui_RebuildListEntries(temp_r3);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
     Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
     Ui_DecBusy(arg0);
@@ -6511,7 +6511,7 @@ void fn_8016FE5C(void) {
 void Ui_RefocusUnitListPanel(void *panel) {
     /* Refresh the sub-menu, bring the stored child to front, set caption, and refresh MU/portrait. */
     void Process_RetreatStep(void *);
-    void fn_80023FF4(void *);
+    void Ui_RebuildListEntries(void *);
     void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -6529,7 +6529,7 @@ void Ui_RefocusUnitListPanel(void *panel) {
     obj = M2C_FIELD(panel, void **, 0x5C);
     Process_RetreatStep(obj);
     saved = M2C_FIELD(obj, s8 *, 0x62);
-    fn_80023FF4(obj);
+    Ui_RebuildListEntries(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
     Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
     Ui_BringChildToFront(panel, M2C_FIELD(panel, s32 *, 0x40));
@@ -7082,7 +7082,7 @@ void fn_80170E08(void *arg0) {
 void fn_80170E18(void *arg0) {
     void Process_RetreatStep(void *);
     void Process_MarkActive(void *);
-    void fn_80023FF4(void *);
+    void Ui_RebuildListEntries(void *);
     void Ui_SetWidgetText(s32, s32);
     u32 Ui_FindChild(void *, s32, s32);
     extern u16 gUiMsgStrings[];
@@ -7093,7 +7093,7 @@ void fn_80170E18(void *arg0) {
 
     obj = *(void **)((u8 *)arg0 + 0x5C);
     saved = *(s8 *)((u8 *)obj + 0x62);
-    fn_80023FF4(obj);
+    Ui_RebuildListEntries(obj);
     *(s8 *)((u8 *)obj + 0x62) = saved;
     obj2 = *(void **)((u8 *)arg0 + 0x5C);
     if (!(*(u8 *)((u8 *)obj2 + 0x2C) & 2)) {
@@ -7756,7 +7756,7 @@ extern "C" void fn_801723E8(void *arg0) {
 void Ui_RestoreUnitListPanel(void *panel) {
     /* Refresh the sub-menu, reset the inventory panel, bring the unit list to front, and refresh unit/portrait/caption. */
     void Process_RetreatStep(void *);
-    void fn_80023FF4(void *);
+    void Ui_RebuildListEntries(void *);
     void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -7776,7 +7776,7 @@ void Ui_RestoreUnitListPanel(void *panel) {
     obj = M2C_FIELD(panel, void **, 0x5C);
     Process_RetreatStep(obj);
     saved = M2C_FIELD(obj, s8 *, 0x62);
-    fn_80023FF4(obj);
+    Ui_RebuildListEntries(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
     Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
     obj = M2C_FIELD(panel, void **, 0x4C);
@@ -7855,7 +7855,7 @@ s32 fn_80172C68(void *arg0) {
 void Ui_ExitSubmenuToUnitList(void *panel) {
     /* Same as Ui_RestoreUnitListPanel: refresh sub-menu, reset inventory, refocus unit list/portrait/caption. */
     void Process_RetreatStep(void *);
-    void fn_80023FF4(void *);
+    void Ui_RebuildListEntries(void *);
     void Process_MarkActive(void *);
     void Ui_BringChildToFront(void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
@@ -7875,7 +7875,7 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
     obj = M2C_FIELD(panel, void **, 0x5C);
     Process_RetreatStep(obj);
     saved = M2C_FIELD(obj, s8 *, 0x62);
-    fn_80023FF4(obj);
+    Ui_RebuildListEntries(obj);
     M2C_FIELD(obj, s8 *, 0x62) = saved;
     Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
     obj = M2C_FIELD(panel, void **, 0x4C);

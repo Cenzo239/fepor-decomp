@@ -999,7 +999,7 @@ s32 fn_80075E04(void) {
 s32 fn_80075EB4(void *arg1, void *arg2) {
     M2C_UNK Process_CreateChild(M2C_UNK *, void *);
     void *Item_GetFlagsPtr();
-    M2C_UNK fn_80023FF4(void *);
+    M2C_UNK Ui_RebuildListEntries(void *);
     M2C_UNK UiCtx_GetItemSlot(M2C_UNK *);
     s8 Unit_GetActiveItemSlot(void *);
     M2C_UNK fn_80094CDC(void *, s8);
@@ -1026,7 +1026,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     }
     temp_r30_2 = M2C_FIELD(arg1, void **, 0x18);
     temp_r31 = M2C_FIELD(temp_r30_2, u8 *, 0x62);
-    fn_80023FF4(temp_r30_2);
+    Ui_RebuildListEntries(temp_r30_2);
     M2C_FIELD(temp_r30_2, u8 *, 0x62) = temp_r31;
     return 5;
 }
