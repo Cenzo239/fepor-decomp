@@ -3351,11 +3351,11 @@ entry=TargetList_GetAt(gTargetList,i); b3=((u8*)entry)[3]; b2=((u8*)entry)[2]; v
 Battle_SetupUnit(gBattle,*(void**)gUiContext,-1); Battle_QueueDeathAnim(gBattle); fn_8019C0C0(other,Event_StartRoundSky);
 }
 #pragma use_lmw_stmw reset
-extern u8 lbl_802847EC[16];
+extern u8 E_RoundSky_script[16];
 void Event_StartRoundSky(s32 arg0) {
     void Process_CreateChild(void *, s32);
-    extern u8 lbl_802847EC[16];
-    Process_CreateChild(lbl_802847EC, arg0);
+    extern u8 E_RoundSky_script[16];
+    Process_CreateChild(E_RoundSky_script, arg0);
 }
 
 s32 fn_800263A0(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
