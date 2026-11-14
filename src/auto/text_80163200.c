@@ -5434,7 +5434,8 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
 }
 #pragma use_lmw_stmw reset
 #pragma global_optimizer on
-void MapOverlay_Draw(void *arg0) {
+/* Draw the fullscreen map overlay: dim backdrop, then map and unit markers. */
+void MapOverlay_Draw(void *self) {
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     M2C_UNK Prim2D_SetRect(f32, f32, f32, f32);
     M2C_UNK Prim2D_EndPrim();
@@ -5452,7 +5453,7 @@ void MapOverlay_Draw(void *arg0) {
     extern f32 lbl_8036AB34;
     extern f32 lbl_8036AB38;
     Prim2D_Begin();
-    Prim2D_SetColorByte(M2C_FIELD(arg0, u8 *, 0x58));
+    Prim2D_SetColorByte(M2C_FIELD(self, u8 *, 0x58));
     Prim2D_SetTransform(lbl_8036AA34, lbl_8036AA34, lbl_8036AB2C, lbl_8036AAB4);
     Prim2D_PrepareTex();
     Prim2D_Begin();
@@ -5465,7 +5466,7 @@ void MapOverlay_Draw(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036AA34, lbl_8036AA34, lbl_8036AB30, lbl_8036AAB4);
     Prim2D_PrepareTex();
-    MapOverlay_DrawMapUnits(arg0, lbl_8036AB34, lbl_8036AB38);
+    MapOverlay_DrawMapUnits(self, lbl_8036AB34, lbl_8036AB38);
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFFU);
     Prim2D_PrepareTex();
