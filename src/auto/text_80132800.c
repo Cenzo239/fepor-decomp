@@ -10329,7 +10329,7 @@ void fn_801453F0(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
@@ -10344,7 +10344,7 @@ void fn_801453F0(void) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = Process_Create((void *)(base + 0x8C), 3);
-    a = lbl_8036A778;
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
@@ -10356,7 +10356,7 @@ void fn_80145488(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     extern f64 lbl_8036A780;
     s32 base;
@@ -10373,7 +10373,7 @@ void fn_80145488(void) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = Process_Create((void *)(base + 0x78), 3);
-    a = lbl_8036A778;
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
@@ -10383,11 +10383,11 @@ void fn_80145488(void) {
 void fn_80145520(void) {
 void Process_UnlinkByKey(void *); void *Process_Create(void *, s32);
 extern u8 gBgmVolFadeProcs[]; extern u8 gBgmVol;
-extern f32 lbl_8036A778; extern f32 lbl_8036A77C;
+extern f32 gBgmVolTimerZero; extern f32 lbl_8036A77C;
 s32 base=(s32)gBgmVolFadeProcs; f32 *p; f32 a,b;
 Process_UnlinkByKey((void*)(base+0x28)); Process_UnlinkByKey((void*)(base+0x3c)); Process_UnlinkByKey((void*)(base+0x50)); Process_UnlinkByKey((void*)(base+0x64)); Process_UnlinkByKey((void*)(base+0x78)); Process_UnlinkByKey((void*)(base+0x8c));
 p=Process_Create((void*)(base+0x64),3);
-b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
+b=lbl_8036A77C; a=gBgmVolTimerZero; p[12]=a; p[13]=b; p[14]=(f32)gBgmVol;
 }
 
 void BgmVol_FadeOut(s32 arg0) {
@@ -10395,7 +10395,7 @@ void BgmVol_FadeOut(s32 arg0) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f64 lbl_8036A788;
     extern f64 lbl_8036A780;
     s32 base;
@@ -10417,7 +10417,7 @@ void BgmVol_FadeOut(s32 arg0) {
         return;
     }
     temp_r3 = Process_Create((void *)(base + 0x50), 3);
-    *(f32 *)((u8 *)temp_r3 + 0x30) = lbl_8036A778;
+    *(f32 *)((u8 *)temp_r3 + 0x30) = gBgmVolTimerZero;
     *(f32 *)((u8 *)temp_r3 + 0x34) = (f32)arg;
     *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmVol;
 }
@@ -10427,7 +10427,7 @@ void fn_80145684(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
@@ -10442,7 +10442,7 @@ void fn_80145684(void) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = Process_Create((void *)(base + 0x3C), 3);
-    a = lbl_8036A778;
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
@@ -10454,7 +10454,7 @@ void fn_8014571C(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     s32 base;
     void *temp_r3;
@@ -10469,7 +10469,7 @@ void fn_8014571C(void) {
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
     temp_r3 = Process_Create((void *)(base + 0x28), 3);
-    a = lbl_8036A778;
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
@@ -10482,7 +10482,7 @@ void fn_801457B4(void) {
     extern u8 gBgmVolFadeProcs[];
     extern u8 lbl_8029256C[];
     extern u8 lbl_80367AEC;
-    extern f32 lbl_8036A778;
+    extern f32 gBgmVolTimerZero;
     extern f32 lbl_8036A77C;
     void *temp_r3;
     f32 a;
@@ -10491,7 +10491,7 @@ void fn_801457B4(void) {
     Process_UnlinkByKey(gBgmVolFadeProcs);
     Process_UnlinkByKey(lbl_8029256C);
     temp_r3 = Process_Create(lbl_8029256C, 3);
-    a = lbl_8036A778;
+    a = gBgmVolTimerZero;
     b = lbl_8036A77C;
     *(f32 *)((u8 *)temp_r3 + 0x30) = a;
     *(f32 *)((u8 *)temp_r3 + 0x34) = b;
