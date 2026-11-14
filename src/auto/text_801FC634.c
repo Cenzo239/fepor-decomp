@@ -194,7 +194,7 @@ void fn_801FCC68(s32 arg0) {
 #pragma use_lmw_stmw on
 void fn_801FCCA0(void *self) {
     typedef struct { f32 x, y; u8 ang, spd, pad, rnd; s16 life, age; } Part;
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     u32 Rand_Next(void);
     f64 fn_802380D0(f32);
     f64 fn_80238638(f32);
@@ -235,7 +235,7 @@ void fn_801FCCA0(void *self) {
     u8 *b;
     u16 zero;
 
-    parts = (Part *)fn_800C42AC(0x4000);
+    parts = (Part *)Heap_AllocRaw(0x4000);
     *(void **)((u8 *)self + 0x30) = parts;
     zero = 0;
     off = 0;

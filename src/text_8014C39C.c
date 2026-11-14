@@ -23,7 +23,7 @@ extern u8 lbl_80367B0C;
 extern u8 lbl_80367B0D;
 
 void Heap_FreeRaw(s32);
-s32 fn_800C42AC(s32);
+s32 Heap_AllocRaw(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off

@@ -1059,7 +1059,7 @@ void fn_8012DFA8(void *arg0) {
     s32 fn_800639B4(void);
     void *fn_8006D948(void *);
     void fn_800C1F1C(void *, void *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *Heap_Alloc(s32);
     void Sound_Create(void *, void *);
     void fn_801305F8(void *);
@@ -1159,7 +1159,7 @@ void fn_8012DFA8(void *arg0) {
         Process_Goto(self, 0);
         return;
     }
-    *(void **)(self + 0x3C) = fn_800C42AC(self[0x61] * 0x24);
+    *(void **)(self + 0x3C) = Heap_AllocRaw(self[0x61] * 0x24);
     slot = *(u8 **)(self + 0x3C);
     mode = self[0x6C];
     switch (mode) {
@@ -1324,7 +1324,7 @@ void fn_8012DFA8(void *arg0) {
 
     if (self[0x6C] == 4) {
         self[0x6D] = 1;
-        *(void **)(self + 0x38) = fn_800C42AC(4);
+        *(void **)(self + 0x38) = Heap_AllocRaw(4);
         entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;
@@ -1348,7 +1348,7 @@ void fn_8012DFA8(void *arg0) {
         self[0x63] = 0;
     } else {
         self[0x6D] = 8;
-        *(void **)(self + 0x38) = fn_800C42AC(0x20);
+        *(void **)(self + 0x38) = Heap_AllocRaw(0x20);
         entry = Heap_Alloc(0x50);
         if (entry != NULL) {
             *(void **)((u8 *)entry + 0x4C) = lbl_80291404;

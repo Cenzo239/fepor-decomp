@@ -443,7 +443,7 @@ void *fn_80019F3C(void *arg0, s16 arg1) {
 void fn_80019FC4(void)
 {
     u8 *Hash_Lookup(char *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     s32 fn_8001EB44(u32);
     s32 Item_GetKindFromIid(u32);
@@ -477,7 +477,7 @@ void fn_80019FC4(void)
     data += 4;
 
     records = fn_8022C414(
-        fn_800C42AC(count * 0x48 + 0x10),
+        Heap_AllocRaw(count * 0x48 + 0x10),
         fn_8001A5D0,
         0,
         0x48,
@@ -734,7 +734,7 @@ void fn_8001A5D0(void *arg0) {
 #pragma use_lmw_stmw on
 void fn_8001A5E4(void) {
     u8 *Hash_Lookup(char *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     void fn_8001CC48(void *, u32);
     void Status_OrByName(void *, u32);
@@ -761,7 +761,7 @@ void fn_8001A5E4(void) {
     ptr = data + 4;
     count = (data[0] << 24) + ((data[1] << 16) + (data[2] << 8) + data[3]);
     lbl_803671D8 = count;
-    rec = fn_8022C414(fn_800C42AC(count * 0x64 + 0x10), fn_800A89C0, 0, 0x64, count);
+    rec = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A89C0, 0, 0x64, count);
     lbl_803671DC = rec;
     base = lbl_80268510;
     for (i = 0; i < lbl_803671D8; i++) {
@@ -826,7 +826,7 @@ void fn_8001A5E4(void) {
 #pragma use_lmw_stmw reset
 void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     u16 Rand_Range(s32);
     void fn_8000D3EC(u32, void *);
@@ -851,7 +851,7 @@ void fn_8001AC18(void) {
     ptr = data + 4;
     count = (data[0] << 24) + ((data[1] << 16) + (data[2] << 8) + data[3]);
     lbl_803671D0 = count;
-    rec = fn_8022C414(fn_800C42AC(count * 0x64 + 0x10), fn_800A8A2C, 0, 0x64, count);
+    rec = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A8A2C, 0, 0x64, count);
     lbl_803671D4 = rec;
 
     for (i = 0; i < lbl_803671D0; i++) {
@@ -1015,7 +1015,7 @@ void fn_8001B134(void) {
     void fn_8001B9DC(void *);
     void fn_8003B844(void *, s32);
     void fn_8005B820(void);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void fn_800C4588(s32);
     void fn_8017A7D4(void *, void *);
     void *fn_8017A950(void *);
@@ -1091,7 +1091,7 @@ void fn_8001B134(void) {
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_803671F8 = n;
-    rec = fn_8022C414(fn_800C42AC(n * 0x14 + 0x10), fn_8001B9DC, 0, 0x14, n);
+    rec = fn_8022C414(Heap_AllocRaw(n * 0x14 + 0x10), fn_8001B9DC, 0, 0x14, n);
     lbl_803671F4 = rec;
     for (i = 0; i < lbl_803671F8; i++) {
         if (src == 0) {
@@ -1147,7 +1147,7 @@ void fn_8001B134(void) {
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_80367200 = n;
-    rec = fn_8022C414(fn_800C42AC(n * 0xC + 0x10), 0, 0, 0xC, n);
+    rec = fn_8022C414(Heap_AllocRaw(n * 0xC + 0x10), 0, 0, 0xC, n);
     lbl_803671FC = rec;
     for (i = 0; i < lbl_80367200; i++) {
         if (src == 0) {

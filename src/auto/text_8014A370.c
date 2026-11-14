@@ -100,7 +100,7 @@ void *fn_8014A4E8(void) {
 }
 
 void Heap_FreeRaw(s32);
-s32 fn_800C42AC(s32);
+s32 Heap_AllocRaw(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
@@ -108,7 +108,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
 {
     extern u16 gSoundMenuStrings[];
     void Heap_FreeRaw(s32);
-    s32 fn_800C42AC(s32);
+    s32 Heap_AllocRaw(s32);
     void *Archive_Load(void *);
     void Ui_CreateMenu(void *, s32, s32);
     s32 var_r11;
@@ -123,7 +123,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
     Heap_FreeRaw(lbl_80367B00);
     lbl_80367B00 = 0;
     var_ctr = 0x60;
-    lbl_80367B00 = fn_800C42AC(0x1800);
+    lbl_80367B00 = Heap_AllocRaw(0x1800);
     var_r11 = 0;
     for (; var_ctr != 0; var_ctr--) {
         *(s32 *)(lbl_80367B00 + var_r11) = 0;
@@ -203,7 +203,7 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
     lbl_80367B08 = 0;
     Heap_FreeRaw(lbl_80367B00);
     lbl_80367B00 = 0;
-    lbl_80367B00 = fn_800C42AC(0x1800);
+    lbl_80367B00 = Heap_AllocRaw(0x1800);
 
     off = 0;
     ctr = 0x60;

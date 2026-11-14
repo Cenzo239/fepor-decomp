@@ -1077,7 +1077,7 @@ void fn_800A5CF4(void) {
 void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
     void *Process_Create(void *, M2C_UNK);
     u16 FileCache_Probe();
-    s32 fn_800C42AC(M2C_UNK);
+    s32 Heap_AllocRaw(M2C_UNK);
     M2C_UNK fn_80147188(M2C_UNK);
     M2C_UNK fn_801C9724();
     M2C_UNK Str_CopyPad(s32, void *, M2C_UNK);
@@ -1089,7 +1089,7 @@ void fn_800A5D1C(void *arg0, s8 arg1, s32 arg2) {
         arg0 = lbl_8026E1B0 + 0x4A;
     }
     temp_r31 = Process_Create(lbl_8028C678, 5);
-    M2C_FIELD(temp_r31, s32 *, 0x5C) = fn_800C42AC(0x100);
+    M2C_FIELD(temp_r31, s32 *, 0x5C) = Heap_AllocRaw(0x100);
     Str_CopyPad(M2C_FIELD(temp_r31, s32 *, 0x5C), arg0, 0xFE);
     M2C_FIELD(temp_r31, s8 *, 0x54) = arg1;
     M2C_FIELD(temp_r31, s32 *, 0x58) = arg2;
@@ -1895,7 +1895,7 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
 void fn_800A7C94(void *arg0) {
     void *Process_Create(void *, void *);
     void fn_8006EEFC(void **, s32);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void *, void *, s32, s32);
     s32 Rand_Range(s32);
     void Ui_LoadAtlasTex(void *, void *, u16);
@@ -1936,7 +1936,7 @@ void fn_800A7C94(void *arg0) {
     fn_8006EEFC((void **)((u8 *)r25 + 0x30), st.spC);
     r26 = *(void **)((u8 *)r25 + 0x30);
     r27 = 0x64;
-    r28 = fn_8022C414(fn_800C42AC(0x110), (void *)fn_800A7EC0, NULL, 8, 0x20);
+    r28 = fn_8022C414(Heap_AllocRaw(0x110), (void *)fn_800A7EC0, NULL, 8, 0x20);
     r29 = 0;
     r22 = (s16 *)r28;
     do {
@@ -1998,7 +1998,7 @@ void fn_800A7EC4(void *arg0) {
     void *Process_Create(void *, void *);
     void fn_8006EEFC(void *, s32);
     s32 Rand_Range(s32);
-    void fn_800C42AC(s32);
+    void Heap_AllocRaw(s32);
     void *fn_8022C414(void (*)(void), s32, s32, s32);
     void Ui_LoadAtlasTex(s32, void *, u16);
     u16 GXGetTexObjWidth(void *);
@@ -2040,7 +2040,7 @@ void fn_800A7EC4(void *arg0) {
     fn_8006EEFC((u8 *)res + 0x30, lbl_80369B28);
     unk30 = M2C_FIELD(res, s32 *, 0x30);
     retry = 0x64;
-    fn_800C42AC(0x110);
+    Heap_AllocRaw(0x110);
     arr = fn_8022C414(fn_800A7EC0, 0, 8, 0x20);
     count = 0;
     cur = (u8 *)arr;

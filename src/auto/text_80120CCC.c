@@ -2209,7 +2209,7 @@ void fn_80125130(void *arg0) {
     void *Process_Create(void *, void *);
     void *Map_Get(void);
     void *fn_8006D948(void *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *Heap_Alloc(s32);
     void Fx_AllocSlot(void *, s32, s32);
     void fn_8012600C(void *, s32);
@@ -2293,8 +2293,8 @@ void fn_80125130(void *arg0) {
     M2C_FIELD(arr, s32 *, 0x18) = 0x7D0;
     n = M2C_FIELD(arr, s32 *, 0x18);
     bytes = n << 5;
-    M2C_FIELD(arr, void **, 0) = fn_8022C414(fn_800C42AC(bytes + 0x10), fn_8012600C, NULL, 0x20, n);
-    M2C_FIELD(arr, void **, 4) = fn_800C42AC((M2C_FIELD(arr, s32 *, 0x18) + 1) * 4);
+    M2C_FIELD(arr, void **, 0) = fn_8022C414(Heap_AllocRaw(bytes + 0x10), fn_8012600C, NULL, 0x20, n);
+    M2C_FIELD(arr, void **, 4) = Heap_AllocRaw((M2C_FIELD(arr, s32 *, 0x18) + 1) * 4);
     DCFlushRange(M2C_FIELD(arr, void **, 0), bytes);
     DCFlushRange(M2C_FIELD(arr, void **, 4), (M2C_FIELD(arr, s32 *, 0x18) + 1) * 4);
 

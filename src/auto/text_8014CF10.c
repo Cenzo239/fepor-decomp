@@ -23,7 +23,7 @@ extern u8 lbl_80367B0C;
 extern u8 lbl_80367B0D;
 
 void Heap_FreeRaw(s32);
-s32 fn_800C42AC(s32);
+s32 Heap_AllocRaw(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
 
@@ -616,7 +616,7 @@ void MsgDebug_Init(void) {
     void DebugPrint(void *, void *, ...);
     void *fn_8000D1B4(s32);
     u8 Id_GetKind(void);
-    s32 fn_800C42AC(s32);
+    s32 Heap_AllocRaw(s32);
     char *Msg_Expand(void *);
     s32 strlen(char *);
     extern u8 lbl_80277238[];
@@ -661,8 +661,8 @@ void MsgDebug_Init(void) {
         }
         i += 1;
     } while (i < 0x2800);
-    gMsgDebugPtrs = (u32 *)fn_800C42AC(gMsgDebugCount << 2);
-    gMsgDebugKinds = (u8 *)fn_800C42AC(gMsgDebugCount);
+    gMsgDebugPtrs = (u32 *)Heap_AllocRaw(gMsgDebugCount << 2);
+    gMsgDebugKinds = (u8 *)Heap_AllocRaw(gMsgDebugCount);
     gMsgDebugCount = 0;
     entryIdx = 0;
     do {

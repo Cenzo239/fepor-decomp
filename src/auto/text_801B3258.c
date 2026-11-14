@@ -6885,7 +6885,7 @@ void fn_801C5B80(void *arg0) {
     s32 Str_Cmp(void *, void *);
     void fn_800056A0(s32);
     void *Heap_Alloc(s32);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void (*)(void *), void *, s32, s32);
     void DCFlushRange(void *, u32);
     void *GActor_Create(void);
@@ -6992,8 +6992,8 @@ void fn_801C5B80(void *arg0) {
     *(s32 *)((u8 *)ctrl + 0x18) = 0x10;
     count = *(s32 *)((u8 *)ctrl + 0x18);
     tmp = count * 0xA8;
-    *(void **)((u8 *)ctrl + 0x0) = fn_8022C414(fn_800C42AC(tmp + 0x10), fn_801C7BF8, NULL, 0xA8, count);
-    *(void **)((u8 *)ctrl + 0x4) = fn_800C42AC((*(s32 *)((u8 *)ctrl + 0x18) + 1) << 2);
+    *(void **)((u8 *)ctrl + 0x0) = fn_8022C414(Heap_AllocRaw(tmp + 0x10), fn_801C7BF8, NULL, 0xA8, count);
+    *(void **)((u8 *)ctrl + 0x4) = Heap_AllocRaw((*(s32 *)((u8 *)ctrl + 0x18) + 1) << 2);
     DCFlushRange(*(void **)((u8 *)ctrl + 0x0), (u32)tmp);
     DCFlushRange(*(void **)((u8 *)ctrl + 0x4), (u32)((*(s32 *)((u8 *)ctrl + 0x18) + 1) << 2));
     {

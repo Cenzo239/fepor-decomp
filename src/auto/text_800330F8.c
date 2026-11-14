@@ -6468,7 +6468,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     f32 fn_8001B84C(void *);
     s32 fn_8001B8E0(void *);
     void *Bin_ReadU32(void *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void fn_80061824(void *);
     s32 fn_80065EE8(void *);
     s32 fn_8006CE14(void *);
@@ -6634,7 +6634,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         }
         Map_DecodeHeaderFlags(arg0);
         cursor = Hash_Lookup(lbl_8026A660 + 0x186);
-        M2C_FIELD(arg0, void **, 0x10) = fn_800C42AC(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
+        M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -8154,7 +8154,7 @@ void fn_80045D50(void *arg0, void *arg1) {
     void GActor_Finalize(void *);
     void fn_80061824(void *);
     u8 fn_80068CFC(void *, void *);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -8200,7 +8200,7 @@ void fn_80045D50(void *arg0, void *arg1) {
 
     self = arg0;
     sp8 = Hash_Lookup(arg1);
-    *(void **)((u8 *)self + 0x14) = fn_800C42AC(*(s16 *)((u8 *)self + 6) * 0xB4);
+    *(void **)((u8 *)self + 0x14) = Heap_AllocRaw(*(s16 *)((u8 *)self + 6) * 0xB4);
     i = 0;
     ent = *(u8 **)((u8 *)self + 0x14);
     f28v = lbl_80368EE4;
@@ -12053,7 +12053,7 @@ void fn_80050E80(void)
 void Map_InitGfx(void) {
     void *fn_8006D948(void *);
     void *Heap_Alloc(s32);
-    void *fn_800C42AC(s32);
+    void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void (*)(void *, s32), void *, s32, s32);
     void DCFlushRange(void *, u32);
     void *GXGetTexBufferSize(s32, s32, s32, s32, s32);
@@ -12099,9 +12099,9 @@ void Map_InitGfx(void) {
     *(s32 *)(a + 0x18) = 0x40;
     c = *(s32 *)(a + 0x18);
     b = c * 0x14;
-    *(s32 *)(a + 0) = (s32)fn_8022C414(fn_800C42AC(b + 0x10),
+    *(s32 *)(a + 0) = (s32)fn_8022C414(Heap_AllocRaw(b + 0x10),
                     (void (*)(void *, s32))fn_80052B44, NULL, 0x14, c);
-    *(s32 *)(a + 4) = (s32)fn_800C42AC((*(s32 *)(a + 0x18) + 1) * 4);
+    *(s32 *)(a + 4) = (s32)Heap_AllocRaw((*(s32 *)(a + 0x18) + 1) * 4);
     DCFlushRange((void *)*(s32 *)(a + 0), (u32)b);
     DCFlushRange((void *)*(s32 *)(a + 4),
                  (u32)((*(s32 *)(a + 0x18) + 1) * 4));

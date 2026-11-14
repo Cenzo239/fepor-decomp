@@ -423,7 +423,7 @@ void Heap_Free(void) {
     fn_800C4588();
 }
 
-s32 fn_800C42AC(s32 arg0) {
+s32 Heap_AllocRaw(s32 arg0) {
     s32 fn_800C5A48(s32, s32);
     extern s32 lbl_80367870;
     return fn_800C5A48(lbl_80367870, arg0) + 0x20;
