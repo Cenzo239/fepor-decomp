@@ -8300,7 +8300,8 @@ s32 fn_800C04B0(s32 arg0, u8 (*arg1)(void *)) {
     return count;
 }
 
-void Event_DispatchMatching(void *arg0) {
+void Event_DispatchMatching(void *proc) {
+    /* Walk the event list for the next entry matching kind+predicate, start E_Event, clear gf_canceled. */
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, void *);
     void EventFlag_Clear(void *, void *);
@@ -8312,15 +8313,15 @@ void Event_DispatchMatching(void *arg0) {
     void *self;
     void *saved;
     void *entry;
-    void *tmp;
+    void *child;
 
-    self = arg0;
+    self = proc;
     while ((entry = *(void **)((u8 *)self + 0x30)) != 0) {
         if ((s32)(s8)((u8 *)entry)[0xC] == *(s32 *)((u8 *)self + 0x34)) {
             if (((u8 (*)(void *))*(void **)((u8 *)self + 0x38))(entry) != 0) {
                 saved = *(void **)((u8 *)self + 0x30);
-                tmp = Process_CreateChild(E_Event_script, self);
-                *(void **)((u8 *)tmp + 0x30) = saved;
+                child = Process_CreateChild(E_Event_script, self);
+                *(void **)((u8 *)child + 0x30) = saved;
                 EventFlag_Clear((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
                 gUiInputFlags &= ~1;
                 *(void **)((u8 *)self + 0x30) = Event_NextEntry(*(void **)((u8 *)self + 0x30));
