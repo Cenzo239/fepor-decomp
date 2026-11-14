@@ -3659,20 +3659,7 @@ void fn_8007AD6C(void *arg0) {
     }
 }
 
-void fn_8007ADC8(s32 index) {
-    extern void *gFaceSlots[];
-    void Process_Unlink(void *);
-    void **base;
-    void *p;
-
-    base = gFaceSlots;
-    p = base[index];
-    if (p == NULL) {
-        return;
-    }
-    Process_Unlink(p);
-    base[index] = NULL;
-}
+void fn_8007ADC8(s32 index) { extern void *gFaceSlots[]; void Process_Unlink(void *); void **base=gFaceSlots; void *p=base[index]; if(p!=NULL) Process_Unlink(p); base[index]=NULL; }
 
 /* Ease the face slot's tint (+0x41) toward the target; clear when the frame count finishes. */
 void Face_EaseTintProc(void *proc)
@@ -4087,15 +4074,15 @@ void fn_8007C34C(void) {
 
 #pragma peephole off
 void fn_8007C378(void) {
-    void *Res_GetByName();
-    void Msg_Expand(u32);
+    u32 fn_8000D354();
+    void fn_8000E0E4(u32);
     extern u8 lbl_8026C640[];
-    void *x;
+    u32 x;
 
-    x = Res_GetByName();
-    switch ((u32)x) {
+    x = fn_8000D354();
+    switch (x) {
     case 0:
-        Msg_Expand(*(u32 *)((u8 *)Res_GetByName(lbl_8026C640 + 0xEF) + 4));
+        fn_8000E0E4(*(u32 *)((u8 *)fn_8000D354(lbl_8026C640 + 0xEF) + 4));
         break;
     }
 }
