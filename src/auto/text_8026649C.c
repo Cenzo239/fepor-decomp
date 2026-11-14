@@ -520,80 +520,95 @@ s32 fn_80266904(s32 channel, void *input, void *callback, void *outputCallback)
     }
     return ret;
 }
-#pragma peephole reset
-#pragma use_lmw_stmw reset
-int GBAWrite(int arg0, u32 arg1, void *arg2)
-{
+#pragma peephole off
+#pragma scheduling off
+s32 GBAWrite(s32 chan, void *input, void *callback) {
     extern u8 lbl_803669A0[];
-
-    extern void *memcpy(void *dest, const void *src, u32 size);
-    extern int fn_80266CFC(int channel, int command, int inputLength,
-                            void *callback, void *outputCallback);
-    extern int fn_80266B6C(int channel);
-    extern void fn_80266B38(void);
-    extern void fn_802668D4(void);
-
+    extern void *memcpy(void *, const void *, u32);
+    extern s32 fn_80266CFC(s32, s32, s32, void *);
+    extern void fn_80266B6C(s32);
+    void fn_80266B38(void);
+    void fn_802668D4(void);
     u8 *entry;
-    int result;
+    s32 ret;
+    s32 chan_s;
+    void *in;
+    void *cb;
+
+    chan_s = chan;
+    in = input;
+    cb = callback;
+    entry = lbl_803669A0 + (chan_s << 8);
+    if (*(u32 *)(entry + 0x1C) != 0) {
+        ret = 2;
+    } else {
+        *entry = 0x15;
+        memcpy(entry + 1, in, 4);
+        *(void **)(entry + 0x18) = in;
+        *(void **)(entry + 0x14) = cb;
+        *(void **)(entry + 0x1C) = fn_80266B38;
+        ret = fn_80266CFC(chan_s, 5, 1, fn_802668D4);
+    }
+    if (ret != 0) {
+    } else {
+        fn_80266B6C(chan_s);
+    }
+    return ret;
+}
+#pragma scheduling on
+#pragma peephole on
+void fn_80266A5C(s32 arg0, s32 arg1, void *arg2)
+{
+    typedef struct OSContext {
+        u32 gpr[32];
+        u32 cr;
+        u32 lr;
+        u32 ctr;
+        u32 xer;
+        f64 fpr[32];
+        u32 fpscr_pad;
+        u32 fpscr;
+        u32 srr0;
+        u32 srr1;
+        u16 mode;
+        u16 state;
+        u32 gqr[8];
+        u32 psf_pad;
+        f64 psf[32];
+    } OSContext;
+    void OSClearContext(OSContext *);
+    void OSSetCurrentContext(OSContext *);
+    extern u8 lbl_803669A0[];
+    extern s32 lbl_80368B2C;
+
+    OSContext ctx;
+    u8 *entry;
+    void (*cb)(s32);
+    void (*cb2)(s32, s32);
 
     entry = lbl_803669A0 + (arg0 << 8);
 
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        return 2;
-    }
-
-    entry[0] = 0x15;
-    memcpy(entry + 1, &arg1, 4);
-
-    *(u32 *)(entry + 0x18) = arg1;
-    *(void **)(entry + 0x14) = arg2;
-    *(void (**)(void))(entry + 0x1C) = fn_80266B38;
-
-    result = fn_80266CFC(
-        arg0,
-        5,
-        1,
-        fn_802668D4,
-        fn_80266B38
-    );
-
-    if (result != 0) {
-        return result;
-    }
-
-    return fn_80266B6C(arg0);
-}
-
-void fn_80266A5C(s32 arg0, s32 arg1, M2C_UNK *arg2) {
-    M2C_UNK OSClearContext(M2C_UNK *);
-    M2C_UNK OSSetCurrentContext(M2C_UNK *);
-    extern M2C_UNK lbl_803669A0;
-    extern s32 lbl_80368B2C;
-    M2C_UNK sp18;
-    M2C_UNK (*temp_r12)(s32);
-    M2C_UNK (*temp_r12_2)(s32, s32);
-    void *temp_r31;
-
-    temp_r31 = &lbl_803669A0 + (arg0 << 8);
-    if ((s32) lbl_80368B2C == 0) {
-        if (arg1 & 0xF) {
-            M2C_FIELD(temp_r31, s32 *, 0x20) = 1;
+    if (lbl_80368B2C == 0) {
+        if ((arg1 & 0xF) != 0) {
+            *(s32 *)(entry + 0x20) = 1;
         } else {
-            M2C_FIELD(temp_r31, s32 *, 0x20) = 0;
+            *(s32 *)(entry + 0x20) = 0;
         }
-        temp_r12 = M2C_FIELD(temp_r31, M2C_UNK (**)(s32), 0x38);
-        if (temp_r12 != NULL) {
-            M2C_FIELD(temp_r31, M2C_UNK (**)(s32), 0x38) = NULL;
-            temp_r12(arg0);
+
+        cb = *(void (**)(s32))(entry + 0x38);
+        if (cb != 0) {
+            *(u32 *)(entry + 0x38) = 0;
+            cb(arg0);
         }
-        if (((M2C_UNK (*)(s32, s32)) M2C_FIELD(temp_r31, M2C_UNK (**)(s32, s32), 0x1C)) != NULL) {
-            OSClearContext(&sp18);
-            OSSetCurrentContext(&sp18);
-            temp_r12_2 = M2C_FIELD(temp_r31, M2C_UNK (**)(s32, s32), 0x1C);
-            M2C_FIELD(temp_r31, M2C_UNK (**)(s32, s32), 0x1C) = NULL;
-            temp_r12_2(arg0, M2C_FIELD(temp_r31, s32 *, 0x20));
-            OSClearContext(&sp18);
-            OSSetCurrentContext(arg2);
+
+        if (*(u32 *)(entry + 0x1C) != 0) {
+            OSClearContext(&ctx);
+            OSSetCurrentContext(&ctx);
+            cb2 = *(void (**)(s32, s32))(entry + 0x1C);
+            *(u32 *)(entry + 0x1C) = 0;
+            cb2(arg0, *(s32 *)(entry + 0x20));
+            OSClearContext(&ctx);
+            OSSetCurrentContext((OSContext *)arg2);
         }
     }
 }
@@ -730,162 +745,15 @@ s32 fn_80266CFC(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 }
 #pragma peephole reset
 #pragma use_lmw_stmw reset
-s64 fn_80266D70(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    extern u8 lbl_803669A0[];
-    u8 *p;
-    s32 old30;
-    s32 old34;
-
-    p = lbl_803669A0 + (arg0 << 8);
-    old30 = *(s32 *)(p + 0x30);
-    old34 = *(s32 *)(p + 0x34);
-    *(s32 *)(p + 0x34) = arg3;
-    *(s32 *)(p + 0x30) = arg2;
-    return ((s64)old30 << 32) | (u32)old34;
-}
-
-int fn_80266D94(void *arg0)
-{
-    extern u8 lbl_803669A0[];
-    extern u8 lbl_802A5198[];
-    extern u8 lbl_802A51A4[];
-
-    extern void OSPanic(const char *, int, const char *);
-    extern void fn_80215F78(int);
-    extern int fn_80215F40(void);
-
-    u8 *base;
-    u8 *entry;
-    int index;
-
-    base = lbl_803669A0;
-
-    if ((u8 *)arg0 == base + 0xA8) {
-        index = 0;
-    } else if ((u8 *)arg0 == base + 0x1A8) {
-        index = 1;
-    } else if ((u8 *)arg0 == base + 0x3A8) {
-        index = 2;
-    } else if ((u8 *)arg0 == base + 0x4A8) {
-        index = 3;
-    } else {
-        OSPanic(
-            (const char *)lbl_802A5198,
-            0xA9,
-            (const char *)lbl_802A51A4
-        );
-
-        entry = base - 0x100;
-
-        fn_80215F78(0xABBA);
-
-        if (fn_80215F40() == 0) {
-            fn_80215F78(*(int *)(entry + 0xF8));
-            fn_80215F40();
-        }
-
-        return -1;
-    }
-
-    return index;
-}
-
-void fn_80266E70(u32 arg0) {
-    // Simple placeholder - I will fix this by getting a working base
-}
-
-void fn_80266F18(void) {
-    gSoundData[0] = 1;
-    lbl_8036C368 = 0.0;
-}
-
-void fn_80266FFC(void) {
-
-}
-
-void fn_80267000(void) {
-
-}
 
 #pragma global_optimizer off
-s32 fn_80267264(s32 arg0, s32 arg1) {
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
-    void fn_8026765C(s32, s32, s32);
-    s32 arg0_local;
-    s32 arg1_local;
-    u32 enabled;
-    s32 base;
-
-    arg1_local = arg1;
-    arg0_local = arg0;
-    enabled = OSDisableInterrupts();
-    if (lbl_80368B38 & 0x10000) {
-        base = 0x1000;
-    } else {
-        base = 0;
-    }
-    fn_8026765C(base + 0x20000 - 0x2000, arg0_local, (arg1_local + 3) & ~3);
-    lbl_80368B3C = 0;
-    lbl_80368B44 = 0;
-    OSRestoreInterrupts(enabled);
-    return 0;
-}
 
 #pragma peephole on
-s32 fn_802672F0(void)
-{
-    extern u32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(u32);
-    extern void fn_802674D4(s32 *);
-    extern void fn_80267738(s32 *);
 
-    s32 sp8;
-    s32 irq;
-
-    lbl_80368B44 = 0;
-    if (lbl_80368B3C == 0) {
-        irq = OSDisableInterrupts();
-        fn_802674D4(&sp8);
-        if (sp8 & 1) {
-            fn_80267738(&sp8);
-            sp8 = (s32)((u32)sp8 & 0x1FFFFFFFU);
-            if (((u32)sp8 & 0x1F000000U) == 0x1F000000U) {
-                lbl_80368B38 = (u32)sp8;
-                lbl_80368B3C = (s32)((u32)sp8 & 0x7FFFU);
-                lbl_80368B44 = 1;
-            }
-        }
-        OSRestoreInterrupts(irq);
-    }
-    return lbl_80368B3C;
-}
 #pragma peephole reset
 
 #pragma global_optimizer reset
 
 #pragma peephole on
-void fn_802673E0(s32 *arg0, s32 arg1)
-{
-    extern u32 OSDisableInterrupts(void);
-    extern void OSRestoreInterrupts(u32);
-    extern void __OSMaskInterrupts(u32);
-    extern s32 lbl_80368B40;
-    extern s32 lbl_80368B30;
-    s32 *out;
-    s32 cb;
-    u32 enabled;
-    s32 tmp;
 
-    out = arg0;
-    cb = arg1;
-    enabled = OSDisableInterrupts();
-    lbl_80368B40 = (s32)&lbl_80368B44;
-    tmp = lbl_80368B40;
-    *out = tmp;
-    lbl_80368B30 = cb;
-    __OSMaskInterrupts(0x18000U);
-    *(u32 *)0xCC006828 = 0;
-    OSRestoreInterrupts(enabled);
-}
 #pragma peephole reset
