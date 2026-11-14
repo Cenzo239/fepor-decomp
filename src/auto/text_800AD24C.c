@@ -9764,7 +9764,8 @@ u16 Fx_GetFlags(s32 arg0) {
     return *(u16 *)(*(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C);
 }
 
-void Fx_SetVolume(s32 arg0, u16 arg1) {
+void Fx_SetVolume(s32 slot, u16 volume) {
+    /* Store FX channel volume; if the channel is active, apply it to its voice handle(s). */
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void Sound_SetVolume(void *, u16);
@@ -9773,9 +9774,9 @@ void Fx_SetVolume(s32 arg0, u16 arg1) {
     u16 nest;
 
     sys = (u8 *)gSoundSys;
-    entry = *(u8 **)(sys + 0xF8) + arg0 * 0x13C;
+    entry = *(u8 **)(sys + 0xF8) + slot * 0x13C;
     if (*(u16 *)entry != 0) {
-        *(u16 *)(entry + 0x1C) = arg1;
+        *(u16 *)(entry + 0x1C) = volume;
         if (*(u16 *)entry & 8) {
             if (*(u16 *)(sys + 0x124) == 0) {
                 *(s32 *)((u8 *)gSoundSys + 0x128) = OSDisableInterrupts();
