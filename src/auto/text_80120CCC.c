@@ -1054,22 +1054,16 @@ void fn_801229F8(void *arg0) {
 }
 
 void fn_80122A2C(void *arg0, u8 arg1) {
-    u8 z;
     s32 index;
     s32 count;
-    void **slot;
-    u8 *buf;
-
-    z = 0;
+    u8 **slot;
     index = (s8)*(u8 *)((u8 *)arg0 + 0x47);
     count = (s8)*(u8 *)((u8 *)arg0 + 0x45);
     index %= count;
     arg0 = (u8 *)arg0 + (index << 2);
-    slot = *(void ***)((u8 *)arg0 + 0x30);
-    buf = *(u8 **)((u8 *)slot + 0x40);
-    *(u8 **)((u8 *)slot + 0x40) = buf + 1;
-    *buf = arg1;
-    *(*(u8 **)((u8 *)slot + 0x40)) = z;
+    slot = *(u8 ***)((u8 *)arg0 + 0x30);
+    *slot[16]++ = arg1;
+    *slot[16] = 0;
 }
 
 void fn_80122A74(s32 unused, s16 *p) {
