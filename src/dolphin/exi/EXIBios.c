@@ -388,7 +388,7 @@ s32 EXIDma(s32 chan, void *buffer, s32 length, s32 type, void *callback)
 }
 
 s32 fn_80204410(void);
-u32 fn_80203AAC(void);
+u32 OSGetConsoleType(void);
 s32 EXISync(s32 arg0) {
     EXIControl *exi;
     s32 ret;
@@ -450,7 +450,7 @@ wait:
             }
         }
         if (fn_80204410() == 0xFF &&
-            (fn_80203AAC() & 0xF0000000) != 0x20000000 &&
+            (OSGetConsoleType() & 0xF0000000) != 0x20000000 &&
             exi->immLen == 4 &&
             (__EXIRegs[arg0 * 5] & 0x0E000000) == 0 &&
             *(u16 *)0x800030E6 == 0x8200) {
@@ -1273,7 +1273,7 @@ block_42:
 }
 
 s32 fn_8023A964(void) {
-    u32 fn_80203AAC(void);
+    u32 OSGetConsoleType(void);
     extern u32 lbl_80368808;
     extern u32 lbl_8036880C;
     extern u32 lbl_80368810;
@@ -1284,7 +1284,7 @@ s32 fn_8023A964(void) {
     if ((u32)(lbl_80368814 + 0x5A010000) == 0x5AU) {
         return 0;
     }
-    if ((fn_80203AAC() & 0x10000000) == 0) {
+    if ((OSGetConsoleType() & 0x10000000) == 0) {
         lbl_80368810 = 0;
         return 2;
     }

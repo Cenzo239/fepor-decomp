@@ -274,7 +274,7 @@ s32 __DBIsExceptionMarked(u8 arg0) {
 void DBPrintf(u8 level, char *fmt, ...) {
 }
 
-u32 fn_80203AAC(void) {
+u32 OSGetConsoleType(void) {
     extern void *BootInfo_80368458;
     
     if (BootInfo_80368458 == NULL || *(u32*)((char*)BootInfo_80368458 + 0x2C) == 0) {
