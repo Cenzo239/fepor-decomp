@@ -656,7 +656,7 @@ void Dispos_StartMoveAnims(void *proc) {
 }
 
 void fn_80106690(void *arg0) {
-    s32 fn_8004F128(void *);
+    s32 Unit_IsDisplayReady(void *);
     void Process_ClearFunc(void *);
     void *entry;
     s32 count;
@@ -672,7 +672,7 @@ void fn_80106690(void *arg0) {
         while (count < *(u8 *)((u8 *)arg0 + 0x63)) {
             p = *(void **)((u8 *)entry + 4);
             if (p != NULL) {
-                if ((u8)fn_8004F128(p) == 0) {
+                if ((u8)Unit_IsDisplayReady(p) == 0) {
                     return;
                 }
             }

@@ -11505,7 +11505,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
 }
 #pragma use_lmw_stmw reset
 
-s32 fn_8004F128(void *arg0) {
+s32 Unit_IsDisplayReady(void *arg0) {
 #pragma opt_common_subs off
   void fn_800056A0(s32);
  void DebugPrint(void *, ...);

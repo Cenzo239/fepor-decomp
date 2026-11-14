@@ -1667,7 +1667,7 @@ void fn_8001598C(void)
 void E_DispLoadWhole_Wait(void *arg0) {
     void Process_ClearFunc(void *);
     void Allegiance_FillMask(s32, u8 *, s32);
-    u8 fn_8004F128(void *);
+    u8 Unit_IsDisplayReady(void *);
     extern u8 gUnits[];
     u8 sp8[8];
     s32 temp;
@@ -1689,7 +1689,7 @@ void E_DispLoadWhole_Wait(void *arg0) {
         if (*(u32 *)(unit + 0x188) != 0) {
             sub = *(u8 **)(unit + 0x190);
             if (sp8[sub[8]] != 0) {
-                if (fn_8004F128(unit) == 0) {
+                if (Unit_IsDisplayReady(unit) == 0) {
                     ok = 0;
                     goto after;
                 }
