@@ -100,7 +100,7 @@
     extern f32 lbl_80369E1C;
     extern f32 lbl_80369E20;
     extern void *lbl_80367884;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern void *lbl_8036787C;
     extern char lbl_802704F8[];
 
@@ -208,7 +208,7 @@
             (*(u32 *)((u8 *)self + 0xC))++;
             break;
         case 3:
-            if (lbl_80367878 == 0) {
+            if (gBattleReplayActive == 0) {
                 String_Init(str3, lbl_802704F8 + 0x563, &sc3);
                 fn_800E7C94(*(void **)((u8 *)self + 4), str3, 1, *(f32 *)((u8 *)gGame + 0x64));
                 String_Destroy(str3, -1);
@@ -445,7 +445,7 @@
         case 21:
             if ((u8)fn_800E5248(*(void **)((u8 *)self + 0x9C), 0)) {
                 if (*(s32 *)((u8 *)self + 0x18) != 0) {
-                    if (*(s32 *)((u8 *)self + 0x21C) != 3 && lbl_80367878 == 0)
+                    if (*(s32 *)((u8 *)self + 0x21C) != 3 && gBattleReplayActive == 0)
                         fn_800CDEB0(self);
                     else
                         *(s32 *)((u8 *)self + 0x224) = -0x1A0A;
@@ -673,7 +673,7 @@
                 String_Destroy(strU, -1);
             }
             if ((u8)fn_80113894(*(void **)((u8 *)self + 0x9C)) && *(s32 *)((u8 *)self + 0x18) != 2) {
-                if (lbl_80367878 != 0)
+                if (gBattleReplayActive != 0)
                     fn_801968CC2(*(void **)((u8 *)self + 0xB0), -*(s32 *)((u8 *)self + 0x224));
                 else
                     fn_801968CC2(*(void **)((u8 *)self + 0xB0), *(s32 *)((u8 *)self + 0x220));
@@ -790,7 +790,7 @@
         case 40:
             if ((u8)fn_80115AF0(*(void **)((u8 *)self + 0x9C)) == 0) {
                 fn_800CF500(self, (u8 *)self + 0xDC, NULL);
-                if (lbl_80367878 == 0) {
+                if (gBattleReplayActive == 0) {
                     String_Init(str5, lbl_802704F8 + 0x563, &sc5);
                     fn_800E7C94(*(void **)((u8 *)self + 4), str5, 4, *(f32 *)((u8 *)gGame + 0x68));
                     String_Destroy(str5, -1);
@@ -1009,7 +1009,7 @@
         }
     }
 
-    if (lbl_80367878 != 0
+    if (gBattleReplayActive != 0
         && *(u8 *)((u8 *)self + 0x195) == 0
         && (fn_800D3590(gPadInput) & 0x1000) != 0) {
         *(u8 *)((u8 *)self + 0x187) = 1;

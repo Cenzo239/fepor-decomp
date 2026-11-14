@@ -2776,11 +2776,11 @@ s32 fn_800CAD4C(void *arg0, s32 arg1, u8 arg2) {
 }
 
 void fn_800CADF8(void) {
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern void *lbl_8036787C;
     void *object;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         object = *(void **)((u8 *)lbl_8036787C + 0x440);
 
         if (object != NULL) {
@@ -2790,13 +2790,13 @@ void fn_800CADF8(void) {
 }
 
 void fn_800CAE38(void) {
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern void *lbl_8036787C;
     void Fx_StartSlot(s32, void *, s32, s32);
     void *fn_80145FE8(void);
     void *object;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         object = *(void **)((u8 *)lbl_8036787C + 0x440);
         if (object != NULL) {
             Fx_StartSlot(1, object, 0x64, 1);
@@ -2809,12 +2809,12 @@ void fn_800CAE38(void) {
 
 void BattleScene_InitSides(void *arg0) {
     u8 Status_Test(void *, s32);
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern void *lbl_8036787C;
     extern u32 gBattle[];
     void *tmp;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         M2C_FIELD(arg0, s32 *, 0x68) = M2C_FIELD(lbl_8036787C, s32 *, 0x164);
         M2C_FIELD(arg0, s32 *, 0x6c) = M2C_FIELD(lbl_8036787C, s32 *, 0x2CC);
         return;
@@ -2838,7 +2838,7 @@ void BattleScene_InitSides(void *arg0) {
 
 void fn_800CAF74(void *arg0) {
     extern char lbl_802704F8[];
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern u8 *lbl_8036787C;
     extern u32 gBattle[];
     void String_Init(String *, char *, void *);
@@ -2853,7 +2853,7 @@ void fn_800CAF74(void *arg0) {
     u8 scratch;
 
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         char *p = (char *)lbl_8036787C + 0x268;
         String_AssignCStr(&str, p, strlen(p));
     } else if ((u8 *)gBattle + 0x56C != 0) {
@@ -2882,7 +2882,7 @@ void fn_800CB070(String *arg0) {
     s32 strlen(char *);
     s32 UnitRef_GetName(void);
     extern char lbl_802704F8[];
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern void *lbl_8036787C;
     extern u32 gBattle[];
     char buf[0x40];
@@ -2895,7 +2895,7 @@ void fn_800CB070(String *arg0) {
 
     out = arg0;
     String_Init(&str, lbl_802704F8 + 0x1B0, &scratch);
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         tmp = (u32)((char *)lbl_8036787C + 0x100);
         String_AssignCStr(&str, (char *)tmp, strlen((char *)tmp));
     } else {
@@ -2920,7 +2920,7 @@ void fn_800CB070(String *arg0) {
 void *fn_800CB27C(void) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Status_Test(void *, s32);
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern u8 *lbl_8036787C;
     extern u32 gBattle[];
     u8 *base;
@@ -2930,7 +2930,7 @@ void *fn_800CB27C(void) {
     s8 *p;
     u64 bits;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         p = (s8 *)((u8 *)lbl_8036787C + 0x1A8);
         if (*p != 0) {
             return p;
@@ -2974,7 +2974,7 @@ void fn_800CB484(void *arg0, void *arg1)
     void fn_800CB65C(void *, void *, void *, void *, void *);
     void *String_Destroy(void *, s16);
     extern void *lbl_8036787C;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern char lbl_802704F8[];
 
     String temp;
@@ -2983,7 +2983,7 @@ void fn_800CB484(void *arg0, void *arg1)
     void *scratchC;
     void *scratch8;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         String_Init(arg0, (char *)lbl_8036787C + 0x2D0, &scratch10);
     } else {
         ptr = *(char ***)((u8 *)gBattle + 0x74C);
@@ -3009,14 +3009,14 @@ void fn_800CB538(void *arg0, void *arg1)
     void fn_800CB65C(void *, void *, void *, void *, void *);
 
     extern void *lbl_8036787C;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
 
     String temp;
     char *source;
     void *scratchC;
     void *scratch8;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         String_Init(arg0, (char *)lbl_8036787C + 0x168, &scratchC);
     } else {
         source = **(char ***)((u8 *)gBattle + 0x46C);
@@ -3041,14 +3041,14 @@ void fn_800CB5CC(void *arg0, void *arg1)
     void fn_800CB65C(void *, void *, void *, void *, void *);
 
     extern void *lbl_8036787C;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
 
     String temp;
     char *source;
     void *scratchC;
     void *scratch8;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         String_Init(arg0, (char *)lbl_8036787C, &scratchC);
     } else {
         source = **(char ***)((u8 *)gBattle + 0x18C);
@@ -3313,7 +3313,7 @@ extern "C" void fn_800CC3D8(void *arg0, s32 arg1) {
     u32 strlen(const char *);
     extern char lbl_802704F8[];
     extern void *gGame;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
 s32 fn_80165B14(void *);
 extern u32 gBattle[];
     String str80, str74, str68, str5C, str50, str44, str38, str2C, str20;
@@ -3334,7 +3334,7 @@ str68.size=0;str68.data=0;str68.cap=0;
 if(*(void **)((u8 *)self+0x80)&&fn_80165B14(*(void **)((u8 *)self+0x80))){
 String_Destroy(&str68,-1);String_Destroy(&str74,-1);String_Destroy(&str80,-1);return;
 }
-if(lbl_80367878)String_Assign(&str80,(String *)(*(u8 **)((u8 *)self+0x1DC)+arg1*12),0,-1);
+if(gBattleReplayActive)String_Assign(&str80,(String *)(*(u8 **)((u8 *)self+0x1DC)+arg1*12),0,-1);
 else {obj=*(void **)((u8 *)gBattle+0xCB4);String_AssignCStr(&str80,(char *)obj,strlen((char *)obj));}
     ((Host *)*(void **)((u8 *)self + 4))->v6((char *)lbl_802704F8 + 0x30F, (char *)lbl_802704F8 + 0x315);
     ((Host *)*(void **)((u8 *)self + 4))->v6((char *)lbl_802704F8 + 0x31A, (char *)lbl_802704F8 + 0x320);
@@ -4198,7 +4198,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     extern void *lbl_8028DA94[];
     extern void *lbl_8028DAA4[];
     extern u32 gBattle[];
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern u8 *lbl_8036787C;
 
     void *self = arg0;
@@ -4216,7 +4216,7 @@ extern "C" void fn_800CF5B8(void *arg0) {
     u8 *row;
     void *tmp;
 
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         g = lbl_8036787C;
         r26 = 0;
         r17 = 0;
@@ -4817,14 +4817,14 @@ s32 fn_800D3590(void *arg0) {
 #pragma inline_depth(0)
 /* Destroy a GameScene: release child objects, strings, and optionally free the scene itself. */
 extern "C" void *GameScene_Destroy(u8 *self, s16 doFree) {
-extern u8 lbl_80367878; extern u8 *gGame;
+extern u8 gBattleReplayActive; extern u8 *gGame;
 void *fn_800D6314(void *,s16); void fn_801C777C(); void fn_8005C7E8(void *); void fn_80040854(int); void fn_8004084C(void *); void BinTree_Destroy(void *,void *); void Heap_Free(void *);
 struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(int); };
  void *game; Obj *child;
 if(self) {
 fn_801C777C();
 child=*(Obj **)(self+4); if(child)child->v1(1); *(void **)(self+4)=0;
-if(!lbl_80367878) { game=gGame; if(game){String_Destroy((u8 *)game+0x1A8,-1);String_Destroy((u8 *)game+0x19C,-1);String_Destroy(game,-1);Heap_Free(game);}}
+if(!gBattleReplayActive) { game=gGame; if(game){String_Destroy((u8 *)game+0x1A8,-1);String_Destroy((u8 *)game+0x19C,-1);String_Destroy(game,-1);Heap_Free(game);}}
 if(*(void **)(self+116))fn_8005C7E8(*(void **)(self+116));
 if(*(void **)(self+120))fn_8005C7E8(*(void **)(self+120));
 if(*(void **)(self+124))fn_8005C7E8(*(void **)(self+124));
@@ -4833,7 +4833,7 @@ if(*(void **)(self+836))fn_8005C7E8(*(void **)(self+836));
 if(*(void **)(self+840))fn_8005C7E8(*(void **)(self+840));
 if(*(void **)(self+844))fn_8005C7E8(*(void **)(self+844));
 if(*(void **)(self+0))fn_8005C7E8(*(void **)(self+0));
-if(!lbl_80367878){fn_80040854(0);fn_8004084C(*(void **)(self+0x27C));}
+if(!gBattleReplayActive){fn_80040854(0);fn_8004084C(*(void **)(self+0x27C));}
 if(self+512)if(self+512)fn_800D6314(self+512,0);
 if(self+496)if(self+496)fn_800CA6C8(self+496,0);
 if(self+480)if(self+480)if(*(void **)(self+484))BinTree_Destroy(self+480,*(void **)(self+484));
@@ -4954,7 +4954,7 @@ extern void *gGameScene;
 extern f32 lbl_80369DC8;
 extern f32 lbl_80369DD0;
 extern void *gGame;
-extern u8 lbl_80367878;
+extern u8 gBattleReplayActive;
 extern void *lbl_8036787C;
 extern void *lbl_80367888;
 struct VObj {
@@ -5035,7 +5035,7 @@ String_Destroy(&sp40, -1);
 }
 }
 fn_800D06BC(obj);
-if (lbl_80367878 != 0) {
+if (gBattleReplayActive != 0) {
 fn_800CFDDC(obj);
 }
 cam = fn_800E7EA0(*(void **)((u8 *)obj + 4));
@@ -5076,13 +5076,13 @@ extern "C" void fn_800D5784(s32 arg0) {
     extern s32 lbl_80367884;
     extern s32 lbl_80367888;
     extern u8 lbl_8036788C;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     s32 temp;
 
     DebugPrint(lbl_802704F8 + 0x8B2);
     gGameScene = 0;
     lbl_8036788C = 1;
-    if (lbl_80367878 != 0) {
+    if (gBattleReplayActive != 0) {
         temp = Process_CreateChild(lbl_8028DA48, arg0);
     } else {
         temp = Process_CreateChild(lbl_80284668, arg0);
@@ -5102,12 +5102,12 @@ extern "C" void fn_800D5818(s32 arg0) {
     extern s32 lbl_80367884;
     extern s32 lbl_80367888;
     extern u8 lbl_8036788C;
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
 
     DebugPrint(lbl_802704F8 + 0x8BF);
     gGameScene = 0;
     lbl_8036788C = 0;
-    lbl_80367878 = 0;
+    gBattleReplayActive = 0;
     lbl_80367884 = Process_CreateChild(lbl_80284668, arg0);
     lbl_80367888 = Process_Create(lbl_8028DA70, lbl_80367884);
 }
@@ -6965,14 +6965,14 @@ void fn_800DB110(void *arg0) {
     void *fn_800D9B10(void *);
     void Process_CreateChild(void *, void *);
     extern char lbl_802711B0[];
-    extern u8 lbl_80367878;
+    extern u8 gBattleReplayActive;
     extern s32 lbl_803678B8;
     extern u8 lbl_8028DDF8[];
     void *tmp;
     u8 *fog;
 
     DebugPrint(lbl_802711B0 + 0x263);
-    lbl_80367878 = 1;
+    gBattleReplayActive = 1;
     fog = Fog_GetColor();
     *fog = 0;
     tmp = Heap_Alloc(0x90);
