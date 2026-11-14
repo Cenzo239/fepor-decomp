@@ -19047,7 +19047,7 @@ void fn_800FAD94(void) {
     // a very basic version without calling any other functions:
 }
 
-void fn_800FAEA4(void *arg0)
+void AiCmd_SeekLabelNoOk(void *arg0)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
