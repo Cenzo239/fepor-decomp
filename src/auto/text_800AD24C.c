@@ -3619,8 +3619,8 @@ u8 fn_800B719C(u8 arg0) {
 }
 
 u8 fn_800B7200(void) {
-    extern u8 lbl_8031FFC0[];
-    return lbl_8031FFC0[0xa];
+    extern u8 gTalkState[];
+    return gTalkState[0xa];
 }
 
 s32 fn_800B7210(void)
@@ -6776,13 +6776,13 @@ s32 fn_800BCA38(u8 arg0, s32 arg1) {
 }
 
 s16 fn_800BCADC(void) {
-    extern u8 lbl_8031FFC0[];
-    return *(s16 *)((char *)lbl_8031FFC0 + 2);
+    extern u8 gTalkState[];
+    return *(s16 *)((char *)gTalkState + 2);
 }
 
 s16 fn_800BCAEC(void) {
-    extern u8 lbl_8031FFC0[];
-    return *(s16 *)((char *)lbl_8031FFC0 + 0);
+    extern u8 gTalkState[];
+    return *(s16 *)((char *)gTalkState + 0);
 }
 
 u8 fn_800BCAFC(void) {
@@ -7462,14 +7462,11 @@ loop_1:
 
 #pragma use_lmw_stmw on
 s32 EventFlag_IsSet(s32 arg0, s32 arg1) {
-    s32 fn_8000D598(s32);
-    s32 Str_Cmp(s32, s32);
     s32 var_r30;
     u32 temp_r31;
     s32 var_r29;
-    s32 bit;
     s32 addr;
-    u8 bits;
+    u8 v;
 
     if ((s8)*(u8 *)arg1 == 0) {
         return 0;
@@ -7492,10 +7489,9 @@ loop_1:
     if (var_r30 < 0) {
         return 0;
     }
-    bit = var_r30 & 7;
     addr = arg0 + (var_r30 >> 3);
-    bits = *(u8 *)(addr + 0x300);
-    return (bits & (1 << bit)) != 0;
+    v = *(u8 *)(addr + 0x300);
+    return (v & (1 << (var_r30 & 7))) != 0;
 }
 #pragma use_lmw_stmw reset
 void fn_800BDDCC(void *arg0, s32 arg1) {
@@ -7755,7 +7751,7 @@ s32 fn_800BE57C(void *arg0) {
     void Event_GetString(void *, u32);
     void *Person_GetByPid(void);
     void *Person_Get(s32);
-    extern s16 lbl_8031FFC0[];
+    extern s16 gTalkState[];
     void *obj;
     void *v1;
     void *v2;
@@ -7763,15 +7759,15 @@ s32 fn_800BE57C(void *arg0) {
     void *v4;
 
     obj = arg0;
-    if (lbl_8031FFC0[0] != *(s16 *)((u8 *)obj + 0x18)) {
+    if (gTalkState[0] != *(s16 *)((u8 *)obj + 0x18)) {
         return 0;
     }
     Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x14));
     v1 = Person_GetByPid();
     Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
     v2 = Person_GetByPid();
-    v3 = Person_Get(lbl_8031FFC0[3]);
-    v4 = Person_Get(lbl_8031FFC0[4]);
+    v3 = Person_Get(gTalkState[3]);
+    v4 = Person_Get(gTalkState[4]);
     if (v3 == v1 && v4 == v2) {
         return 1;
     }
@@ -7785,7 +7781,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void fn_800BDBC8(void *, void *);
-    extern u8 lbl_8031FFC0[];
+    extern u8 gTalkState[];
     extern u8 lbl_8028D4F8[];
     extern u8 lbl_8026FC78[];
     extern s32 gUiInputFlags;
@@ -7805,7 +7801,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
         }
         entry = Event_NextEntry(entry);
     }
-    lbl_8031FFC0[0xA] = 0;
+    gTalkState[0xA] = 0;
     tmp = Process_CreateChild(lbl_8028D4F8, arg1);
     *(void **)((u8 *)tmp + 0x30) = entry;
     fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
@@ -7857,7 +7853,7 @@ s32 fn_800BE800(s32 arg0) {
     void *Event_NextEntry(void *);
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
-    extern u8 lbl_8031FFC0[];
+    extern u8 gTalkState[];
     u8 *entry;
     s32 count;
     s32 kind;
@@ -7873,7 +7869,7 @@ s32 fn_800BE800(s32 arg0) {
         }
         entry = Event_NextEntry(entry);
     }
-    lbl_8031FFC0[0xa] = 1;
+    gTalkState[0xa] = 1;
     fn_80013778(0, entry);
     return fn_80013880() != 0;
 }
