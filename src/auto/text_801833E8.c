@@ -803,7 +803,7 @@ void fn_801850A8(void *arg0) {
     void *Process_CreateEx(void *, void *);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u8 E_MuFlash_script[];
+    extern u8 E_MuColorChange_script[];
     u8 spC[0x34];
     u32 sp8;
     void *temp_r30;
@@ -811,8 +811,8 @@ void fn_801850A8(void *arg0) {
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x30);
     M2C_FIELD(spC, void **, 0x30) = temp_r30;
-    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, spC);
-    temp_r3 = Process_CreateEx(E_MuFlash_script, arg0);
+    GfxEnt_ForEachKey(E_MuColorChange_script, MuFade_UnlinkSame, spC);
+    temp_r3 = Process_CreateEx(E_MuColorChange_script, arg0);
     M2C_FIELD(temp_r3, void **, 0x30) = temp_r30;
     M2C_FIELD(temp_r3, s32 *, 0x3C) = 0x10;
     sp8 = Mu_GetFlashColor(0xC);
@@ -834,7 +834,7 @@ void MuFlash_StartWithSe(void *proc) {
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 MoveAnim_str[];
-    extern u8 E_MuFlash_script[];
+    extern u8 E_MuColorChange_script[];
     u8 key[0x34];
     u32 color;
     void *unit;
@@ -848,8 +848,8 @@ void MuFlash_StartWithSe(void *proc) {
                 *(f32 *)((u8 *)unitSe + 0xC));
     unit = *(void **)((u8 *)proc + 0x30);
     *(void **)(key + 0x30) = unit;
-    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, key);
-    flash = Process_CreateEx(E_MuFlash_script, proc);
+    GfxEnt_ForEachKey(E_MuColorChange_script, MuFade_UnlinkSame, key);
+    flash = Process_CreateEx(E_MuColorChange_script, proc);
     *(void **)((u8 *)flash + 0x30) = unit;
     *(s32 *)((u8 *)flash + 0x3C) = 8;
     color = Mu_GetFlashColor(0xB);
@@ -1130,7 +1130,7 @@ void MuFlash_StartOnButton(void *proc) {
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     void Process_ClearFunc(void *);
-    extern u8 E_MuFlash_script[];
+    extern u8 E_MuColorChange_script[];
     u8 key[0x44];
     u32 color;
     void *unit;
@@ -1141,8 +1141,8 @@ void MuFlash_StartOnButton(void *proc) {
     }
     unit = *(void **)((u8 *)proc + 0x30);
     *(void **)(key + 0x30) = unit;
-    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, key);
-    flash = Process_CreateEx(E_MuFlash_script, 0);
+    GfxEnt_ForEachKey(E_MuColorChange_script, MuFade_UnlinkSame, key);
+    flash = Process_CreateEx(E_MuColorChange_script, 0);
     *(void **)((u8 *)flash + 0x30) = unit;
     *(s32 *)((u8 *)flash + 0x3C) = 0x10;
     color = Mu_GetFlashColor(0);
@@ -13451,7 +13451,7 @@ typedef struct {
     void *unk0;
     void *unk4;
 } unk_struct_80193CFC;
-extern u8 E_MuFlash_script[0x80];
+extern u8 E_MuColorChange_script[0x80];
 #include "global.h"
 extern u16 E_MuFade_script[36];
 extern f32 lbl_8036ACE0;
