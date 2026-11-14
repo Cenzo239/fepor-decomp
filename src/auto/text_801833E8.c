@@ -7581,26 +7581,27 @@ void fn_80196078(void) {
     fn_8000D3EC(&lbl_8027A688[0xE1], &lbl_80296700[0x64]);
 }
 
-s32 Ui_OpenActiveWpnKindHelp(s32 arg0) {
+/* Advance UI unit's active weapon rank, then open weapon-kind help under parent. */
+s32 Ui_OpenActiveWpnKindHelp(s32 parent) {
     void **Unit_GetActiveItemPtr(void *);
     void fn_80092528(void *, u8);
     void fn_80094A08(s32, s32);
     void Ui_OpenWeaponKindHelp(s8, s32, s32, s32, s32);
     extern u8 gUiContext[];
     extern u8 gBattle[];
-    void *p;
+    void *unit;
     void **slot;
-    void *obj;
+    void *item;
     u8 kind;
 
-    p = *(void **)gUiContext;
-    slot = Unit_GetActiveItemPtr(p);
-    kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
-    fn_80092528(p, kind);
-    fn_80094A08((s32)p, *(s8 *)&gUiContext[0xA]);
+    unit = *(void **)gUiContext;
+    slot = Unit_GetActiveItemPtr(unit);
+    kind = ((item = *slot) != NULL) ? ((u8 *)item)[0x12] : 0xC;
+    fn_80092528(unit, kind);
+    fn_80094A08((s32)unit, *(s8 *)&gUiContext[0xA]);
     *(u32 *)(gBattle + 0xCAC) |= 0x2000;
-    kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
-    Ui_OpenWeaponKindHelp((s8)kind, arg0, -1, -1, -1);
+    kind = ((item = *slot) != NULL) ? ((u8 *)item)[0x12] : 0xC;
+    Ui_OpenWeaponKindHelp((s8)kind, parent, -1, -1, -1);
     return 1;
 }
 
