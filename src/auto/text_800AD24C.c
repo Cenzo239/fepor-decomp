@@ -61,7 +61,7 @@ typedef struct {
 } EventBlessProc;
 extern s32 fn_80010710(u8* arg0);
   extern s32 gUnitRef;
-  extern s32 lbl_8028D544[];
+  extern s32 E_EventCaller_script[];
   extern s32 lbl_80319A68[];
   void Battle_ClearPhaseBannerChild(void *);
   void Battle_DrawPhaseBanner(void *);
@@ -2512,7 +2512,7 @@ s32 fn_800B4A84(void* arg0, s32 arg1, s32 arg2) {
     s32 r31_2 = (s32)arg1;
     s32 r31_3 = (r31_2 & 0x7F);
     s32 r31_5 = r31_2 >> 7;
-    s32 r31_4 = lbl_8028D544[r31_3];
+    s32 r31_4 = E_EventCaller_script[r31_3];
     if (r31_4 == 0) {
         *(u16*)arg0 = lbl_8028D0FC[(s32)(r31_5)];
     } else {
@@ -8060,7 +8060,7 @@ check:
     if (found == 0) {
         return 0;
     }
-    obj = Process_CreateChild(lbl_8028D544, arg0);
+    obj = Process_CreateChild(E_EventCaller_script, arg0);
     *(s32 *)((u8 *)obj + 0x34) = 0xF;
     *(s32 *)((u8 *)obj + 0x38) = (s32)fn_800BF694;
     return 1;
@@ -8089,7 +8089,7 @@ check:
     if (found == 0) {
         return 0;
     }
-    obj = Process_CreateChild(lbl_8028D544, arg0);
+    obj = Process_CreateChild(E_EventCaller_script, arg0);
     *(s32 *)((u8 *)obj + 0x34) = 0x7;
     *(s32 *)((u8 *)obj + 0x38) = (s32)fn_800BF694;
     return 1;
@@ -8103,7 +8103,7 @@ s32 fn_800BF9D8(void)
 {
     extern u32 *gSoundSys;
     extern s8 lbl_80319A58[];
-    extern s32 lbl_8028D544[];
+    extern s32 E_EventCaller_script[];
     s32 i;
     
     void fn_802C7610(void);
@@ -8186,7 +8186,7 @@ check:
     if (found == 0) {
         return 0;
     }
-    obj = Process_CreateChild(lbl_8028D544, arg0);
+    obj = Process_CreateChild(E_EventCaller_script, arg0);
     *(s32 *)((u8 *)obj + 0x34) = 2;
     *(s32 *)((u8 *)obj + 0x38) = (s32)fn_800C0190;
     return 1;
