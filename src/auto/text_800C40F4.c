@@ -18954,7 +18954,7 @@ void fn_800FA8F0(void *arg0) {
     }
 }
 
-void fn_800FA984(void *arg0) {
+void AiCmd_ChanceTryAttack(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
