@@ -426,7 +426,7 @@ found:
 s32 ScriptCmd_CmFreeScript(void)
 {
     extern void *gCmScriptList;
-    extern u16 lbl_80367196;
+    extern u16 gCmScriptUsed;
     extern s32 lbl_803671A8;
     extern void fn_8000D1D0(void *);
     extern void fn_8005C7E8(void *);
@@ -451,7 +451,7 @@ s32 ScriptCmd_CmFreeScript(void)
         return 0;
     }
 
-    lbl_80367196 -= *(u16 *)(node + 0x22);
+    gCmScriptUsed -= *(u16 *)(node + 0x22);
 
     offset = 0;
 
@@ -526,7 +526,7 @@ s32 fn_80013F6C(void *arg0, s32 arg1) {
 s32 fn_80014000(s32 arg0, s32 arg1) {
 void *fn_800C4638(s32, void *, s32);
 extern u8 lbl_80267E28[];
-extern s16 lbl_80367194, lbl_80367196, lbl_8036719C, lbl_8036719E;
+extern s16 lbl_80367194, gCmScriptUsed, lbl_8036719C, lbl_8036719E;
 extern s32 lbl_803671A8, gCmScriptList;
 extern void *lbl_80367198, *lbl_803671A0;
 void *temp;
@@ -534,7 +534,7 @@ s32 size=arg0<<2;
 lbl_803671A8=0;
 gCmScriptList=0;
 lbl_80367194=arg0;
-lbl_80367196=0;
+gCmScriptUsed=0;
 temp=fn_800C4638(size,lbl_80267E28,0);
 lbl_80367198=temp;
 if(!temp) {lbl_803671A8=4;return 0;}
@@ -548,7 +548,7 @@ return 1;
 
 void fn_800140B4(void *arg0, u8 arg1) {
     void fn_8000D3EC(void *, void *);
-    extern u16 lbl_80367196;
+    extern u16 gCmScriptUsed;
     extern u16 lbl_80367194;
     extern s32 lbl_803671A8;
 
@@ -581,9 +581,9 @@ void fn_800140B4(void *arg0, u8 arg1) {
     if (*(u32 *)(self + 0x28) != 0) {
         *(u32 *)(self + 0x28) = *(u32 *)(self + 0x28) + (u32)self;
     }
-    *(u16 *)(self + 0x20) = lbl_80367196;
-    lbl_80367196 = lbl_80367196 + *(u16 *)(self + 0x22);
-    if (lbl_80367196 > lbl_80367194) {
+    *(u16 *)(self + 0x20) = gCmScriptUsed;
+    gCmScriptUsed = gCmScriptUsed + *(u16 *)(self + 0x22);
+    if (gCmScriptUsed > lbl_80367194) {
         lbl_803671A8 = 8;
         return;
     }
@@ -2460,7 +2460,7 @@ void fn_80016DE0(void) {
 #include "common.h"
 
 extern void* gCmScriptList;
-extern u16 lbl_80367196;
+extern u16 gCmScriptUsed;
 extern s32 lbl_803671A8;
 #include "common.h"
 extern u32 gUnitLists[];
