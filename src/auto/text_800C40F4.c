@@ -19657,7 +19657,7 @@ void fn_800FBF54(void) {
     p[0x1A0 / 4] |= 1;
 }
 
-void fn_800FBF70(s32 arg0) {
+void Ai_ConfirmBestMove(s32 arg0) {
     u8 fn_80102360(void *, s16 *, s16 *, u8);
     void Ui_ConfirmUnitAction(void *);
     void UiCtx_RefreshRangeSelect(void *);
