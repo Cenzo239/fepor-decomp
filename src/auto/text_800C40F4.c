@@ -19809,7 +19809,7 @@ void CpPhase_Start(s32 arg0) {
     gAiState[1] = 8;
 }
 
-void fn_800FC63C(s32 arg0) {
+void CpPhase_StartAlt(s32 arg0) {
     void Process_CreateChild(void *, s32);
     extern u8 Proc_CpPhaseMain[];
     extern u8 gAiState[];
