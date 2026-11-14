@@ -18595,7 +18595,8 @@ void fn_800F9E64(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void AiCmd_ChanceTryAttackFallback(void *arg0) {
+/* On chance: try attack AI with cmd unit filter (primary then alternate scorer); advance AI PC. */
+void AiCmd_ChanceTryAttackFallback(void *unit) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
@@ -18605,17 +18606,17 @@ void AiCmd_ChanceTryAttackFallback(void *arg0) {
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
     u8 *obj;
-    u8 *state;
-    void (*cb)(void *);
+    u8 *cmd;
+    void (*filter)(void *);
 
-    obj = (u8 *)arg0;
-    state = (u8 *)gAiCmd;
+    obj = (u8 *)unit;
+    cmd = (u8 *)gAiCmd;
 
-    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
-        cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
-            : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
-        if (fn_800F51A0(cb, 0xF) == 0) {
-            fn_800F4E3C(cb, 0xF);
+    if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
+        filter = *(u32 *)(cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
+            : (*(s32 *)(cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
+        if (fn_800F51A0(filter, 0xF) == 0) {
+            fn_800F4E3C(filter, 0xF);
         }
     }
 
