@@ -527,7 +527,7 @@ s32 fn_80075108(s32 arg0, s32 arg1, s32 arg2) {
 s32 fn_80075178(void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
     s32 Unit_GetItemSlot(s32, u8);
-    u8 fn_8003DBA8(s32, s32, M2C_UNK *);
+    u8 Unit_CheckReceiveItem(s32, s32, M2C_UNK *);
     M2C_UNK fn_80166AE8(s32, s16, s32, void *);
     extern M2C_UNK lbl_8026C0B8;
     extern M2C_UNK gUiContext;
@@ -540,7 +540,7 @@ s32 fn_80075178(void *arg1, void *arg2) {
 
     if ((u8) M2C_FIELD(arg2, u8 *, 0x39) != 0) {
         var_r27 = NULL;
-        temp_r3 = fn_8003DBA8(M2C_FIELD(&gUiContext, s32 *, 0), Unit_GetItemSlot(M2C_FIELD(&gUiContext, s32 *, 4), M2C_FIELD(arg2, u8 *, 0x3A)), &gUiContext);
+        temp_r3 = Unit_CheckReceiveItem(M2C_FIELD(&gUiContext, s32 *, 0), Unit_GetItemSlot(M2C_FIELD(&gUiContext, s32 *, 4), M2C_FIELD(arg2, u8 *, 0x3A)), &gUiContext);
         switch ((s32) temp_r3) {                    /* irregular */
         case 1:
             var_r27 = &lbl_8026C0B8 + 0x1B3;

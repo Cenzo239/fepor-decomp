@@ -4923,7 +4923,7 @@ end:
     return code == 0;
 }
 
-s32 fn_8003DBA8(s32 arg0, void *arg1) {
+s32 Unit_CheckReceiveItem(s32 arg0, void *arg1) {
     u64 *Item_GetFlagsPtr(void *);
     u8 Item_GetWt(void *);
     s32 fn_8003B258(void);
