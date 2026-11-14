@@ -47,27 +47,27 @@ extern f32 lbl_803697E4;
 
 void fn_8009197C(void) {
     void Process_ClearFunc(u32);
-    extern u32 lbl_803120A0[];
+    extern u32 gProcessQueue[];
     extern s32 lbl_803674F8;
 
     while (lbl_803674F8 != 0) {
         if (lbl_803674F8 != 0) {
             lbl_803674F8--;
-            Process_ClearFunc(lbl_803120A0[lbl_803674F8]);
+            Process_ClearFunc(gProcessQueue[lbl_803674F8]);
         }
     }
 }
 
 void fn_800919D8(void) {
     M2C_UNK Process_ClearFunc(s32, s32);
-    extern u32 lbl_803120A0[];
+    extern u32 gProcessQueue[];
     extern s32 lbl_803674F8;
     s32 temp_r4;
 
     if ((s32) lbl_803674F8 != 0) {
         temp_r4 = lbl_803674F8 - 1;
         lbl_803674F8 = temp_r4;
-        Process_ClearFunc(lbl_803120A0[temp_r4], temp_r4);
+        Process_ClearFunc(gProcessQueue[temp_r4], temp_r4);
     }
 }
 

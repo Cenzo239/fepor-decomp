@@ -47,20 +47,20 @@ extern f32 lbl_803697E4;
 
 void fn_80091858(void) {
     void Process_UnlinkByKey(void *);
-    extern u32 lbl_803120A0[8];
+    extern u32 gProcessQueue[8];
     extern u8 lbl_80289A38[];
     extern s32 lbl_803674F8;
     s32 i;
 
     lbl_803674F8 = 0;
     for (i = 0; i < 8; i++) {
-        lbl_803120A0[i] = 0;
+        gProcessQueue[i] = 0;
     }
     Process_UnlinkByKey(lbl_80289A38);
 }
 
 void fn_800918B0(void) {
-    extern void *lbl_803120A0[];
+    extern void *gProcessQueue[];
     extern s32 lbl_803674F8;
     s32 val;
     s32 i;
@@ -70,7 +70,7 @@ void fn_800918B0(void) {
     }
     val = 0x14;
     for (i = lbl_803674F8 - 1; i >= 0; i--) {
-        *(s16 *)((u8 *)lbl_803120A0[i] + 0x28) = val;
+        *(s16 *)((u8 *)gProcessQueue[i] + 0x28) = val;
         val += 4;
     }
     lbl_803674F8 = 0;
