@@ -18804,7 +18804,7 @@ void fn_800FA5D4(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void fn_800FA600(void *arg0) {
+void AiCmd_ChanceTrySteal(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
