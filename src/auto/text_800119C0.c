@@ -384,15 +384,16 @@ void ScriptCmd_CmWakeupScripts(void) {
     }
 }
 
-s32 ScriptCmd_CmSleepScript(char *arg0) {
-    void Hash_Remove(u32);
+s32 ScriptCmd_CmSleepScript(char *name) {
+    /* Mark a CM script sleeping (by name, or the last one) and unregister its hashed command names. */
+    void Hash_Remove(void *);
     extern void *gCmScriptList;
     void *node;
     void *last;
     s32 i;
-    u32 **list;
+    u32 **entries;
 
-    if (arg0 == NULL || *arg0 == 0) {
+    if (name == NULL || *name == 0) {
         last = gCmScriptList;
         while (M2C_FIELD(last, void **, 0x1C) != NULL) {
             last = M2C_FIELD(last, void **, 0x1C);
@@ -403,21 +404,21 @@ s32 ScriptCmd_CmSleepScript(char *arg0) {
         }
     } else {
         for (node = gCmScriptList; node != NULL; node = M2C_FIELD(node, void **, 0x1C)) {
-            if (Str_Cmp((u8 *)node + 4, arg0) == 0) {
+            if (Str_Cmp((u8 *)node + 4, name) == 0) {
                 goto found;
             }
         }
         return 0;
     }
 found:
-    M2C_FIELD(node, u8 *, 3) = 0x53;
+    M2C_FIELD(node, u8 *, 3) = 'S';
     for (i = 0; ; i++) {
-        list = M2C_FIELD(node, u32 ***, 0x28);
-        if (list[i] == NULL) {
+        entries = M2C_FIELD(node, u32 ***, 0x28);
+        if (entries[i] == NULL) {
             break;
         }
-        if (*list[i] != 0) {
-            Hash_Remove(*list[i]);
+        if (*entries[i] != 0) {
+            Hash_Remove((void *)*entries[i]);
         }
     }
     return 1;
@@ -2261,16 +2262,16 @@ void *fn_800169A8(void *arg0, s16 arg1)
 }
 
 void Unit_WriteAll(s32 arg0) {
-    extern void* gUnits;
-    extern void Unit_Write(void*, s32);
+    extern u8 gUnits[];
+    void Unit_Write(void *, s32);
+    u8 *var_r31;
+    s32 var_r30;
 
-    void* var_r31 = &gUnits;
-    s32 var_r30 = 0;
-    do {
+    var_r31 = gUnits;
+    for (var_r30 = 0; var_r30 < 0x9F; var_r30++) {
         Unit_Write(var_r31, arg0);
-        var_r30 += 1;
-        var_r31 = (char*)var_r31 + 0x280;
-    } while (var_r30 < 0x9F);
+        var_r31 += 0x280;
+    }
 }
 
 s32 fn_80016A9C(s32 arg0) {
