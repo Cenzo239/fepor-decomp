@@ -1503,7 +1503,7 @@ s32 fn_80231E74(char *dest, s32 dest_len, const char *fmt, ...) {
 }
 
 #pragma use_lmw_stmw reset
-s32 fn_80231F48(char *s, const char *fmt, va_list args) {
+s32 vsprintf(char *s, const char *fmt, va_list args) {
     __OutStr out;
     s32 n;
     u32 idx;
