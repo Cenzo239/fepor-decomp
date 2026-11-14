@@ -9764,7 +9764,7 @@ u16 fn_800AF704(s32 arg0) {
     return *(u16 *)(*(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C);
 }
 
-void fn_800AF71C(s32 arg0, u16 arg1) {
+void Fx_SetVolume(s32 arg0, u16 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void fn_8024D3C4(void *, u16);

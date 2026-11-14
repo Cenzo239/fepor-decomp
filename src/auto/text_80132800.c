@@ -12287,7 +12287,7 @@ void fn_801497D4(void *arg0) {
 }
 
 void fn_801497FC(void *arg0) {
-    fn_800AF71C(*(s8*)((uintptr_t)arg0 + 4));
+    Fx_SetVolume(*(s8*)((uintptr_t)arg0 + 4));
 }
 
 #pragma cplusplus on
