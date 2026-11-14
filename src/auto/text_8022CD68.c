@@ -3199,7 +3199,7 @@ check:
     (*rp)(rpa, c, 1);
     return value;
 }
-s32 fn_80235A7C(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
+s32 __write_console(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     s32 fn_80203AAC();
     M2C_UNK fn_8022B530(s32, s32, s32 *, s32);
     s32 fn_8023A964(M2C_UNK);
