@@ -664,7 +664,7 @@ void ModelList_FadeInProcess(void *arg0) {
     extern f64 lbl_8036A418;
     extern f32 lbl_8036A420;
     extern f32 gAlphaOpaque;
-    extern f32 lbl_8036A428;
+    extern f32 gModelListFadeDuration;
     u8 *p;
     s32 i;
     u8 *node;
@@ -674,7 +674,7 @@ void ModelList_FadeInProcess(void *arg0) {
     i = 0;
     while (i < M2C_FIELD(arg0, s32 *, 0x50)) {
         node = *(u8 **)(p + 0x30) + 0x14;
-        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, gAlphaOpaque, lbl_8036A428, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
+        Model_SetAlpha(node, (s32)Math_Lerp(lbl_8036A420, gAlphaOpaque, gModelListFadeDuration, (f32)M2C_FIELD(arg0, s32 *, 0x54)));
         p += 4;
         i += 1;
     }
@@ -757,7 +757,7 @@ void ModelList_FadeOutProcess(void *proc) {
     extern f64 lbl_8036A418;
     extern f32 gAlphaOpaque;
     extern f32 lbl_8036A420;
-    extern f32 lbl_8036A428;
+    extern f32 gModelListFadeDuration;
     u8 *walk;
     s32 i;
     u8 *model;
@@ -767,7 +767,7 @@ void ModelList_FadeOutProcess(void *proc) {
     i = 0;
     while (i < M2C_FIELD(proc, s32 *, 0x50)) {
         model = *(u8 **)(walk + 0x30) + 0x14;
-        Model_SetAlpha(model, (s32)Math_Lerp(gAlphaOpaque, lbl_8036A420, lbl_8036A428, (f32)M2C_FIELD(proc, s32 *, 0x54)));
+        Model_SetAlpha(model, (s32)Math_Lerp(gAlphaOpaque, lbl_8036A420, gModelListFadeDuration, (f32)M2C_FIELD(proc, s32 *, 0x54)));
         walk += 4;
         i += 1;
     }
