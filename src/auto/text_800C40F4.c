@@ -19658,7 +19658,7 @@ void fn_800FBF54(void) {
 }
 
 void Ai_ConfirmBestMove(s32 arg0) {
-    u8 fn_80102360(void *, s16 *, s16 *, u8);
+    u8 Ai_FindBestMovePos(void *, s16 *, s16 *, u8);
     void Ui_ConfirmUnitAction(void *);
     void UiCtx_RefreshRangeSelect(void *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
@@ -19676,7 +19676,7 @@ void Ai_ConfirmBestMove(s32 arg0) {
     saved = arg0;
     ctx = gUiContext;
     unit = *(void **)ctx;
-    if (fn_80102360(unit, &spA, &sp8, ctx[0x11]) != 0) {
+    if (Ai_FindBestMovePos(unit, &spA, &sp8, ctx[0x11]) != 0) {
         g = gAiState;
         g[0x21C] = 0;
         Ui_ConfirmUnitAction(ctx);
@@ -22157,7 +22157,7 @@ void Ai_FindEscapeTile(s32 a0, s32 a1, s32 a2, s32 a3) {
     Ai_FindActionTile(a0, a1, 0x2C, a2, a3);
 }
 
-s32 fn_80102360(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
+s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     s16 temp_r14, temp_r15;
     s32 temp_r21, temp_r23, temp_r24, temp_r25, temp_r26, temp_r4, temp_r5;
     
