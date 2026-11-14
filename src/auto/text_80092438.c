@@ -215,7 +215,7 @@ done2:
     b = fn_8001CFA8(result2);
     return (u8)a != (u8)b;
 }
-s32 fn_800927EC(void *arg0, void *arg1) {
+s32 Unit_AddWpnExp(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     s8 fn_8001CBA0(void *);
     u32 fn_8001CFA8(u8);

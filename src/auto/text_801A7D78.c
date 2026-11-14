@@ -300,7 +300,7 @@ s32 Unit_ClearEventStatuses(s32 unit) {
 }
 
 void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
-    s32 fn_800927EC(void *);
+    s32 Unit_AddWpnExp(void *);
     u8 Unit_GetWpnExp(void *, u8);
     s32 DebugPrint(const char *, ...);
     extern u8 lbl_8027B650[];
@@ -320,7 +320,7 @@ void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
     if (kind == 9) {
         return;
     }
-    *(u8 *)((u8 *)arg0 + 0x2C6) |= fn_800927EC(arg0);
+    *(u8 *)((u8 *)arg0 + 0x2C6) |= Unit_AddWpnExp(arg0);
     DebugPrint((const char *)(lbl_8027B650 + 0x16A),
                 Unit_GetWpnExp(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
 }
