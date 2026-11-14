@@ -4100,15 +4100,12 @@ void fn_8007C378(void) {
     }
 }
 #pragma peephole reset
-void fn_8007C3BC(void) {
-    extern u8 lbl_8026C640[];
-    unsigned int Res_GetByName();
-
-    switch ((unsigned int)Res_GetByName()) {
-    case 0U:
-        Res_GetByName(lbl_8026C640 + 0xEF);
-        break;
-    }
+void *fn_8007C3BC(void *arg0) {
+ extern u8 lbl_8026C640[];
+ void *Res_GetByName(void *);
+ void *result=Res_GetByName(arg0);
+ if(result) return result;
+ else return Res_GetByName(lbl_8026C640+0xEF);
 }
 
 s32 fn_8007C3F8(void) {
