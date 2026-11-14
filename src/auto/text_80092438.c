@@ -908,7 +908,7 @@ u8 fn_800934CC(void *arg0, void *arg1) {
 
 u8 fn_800939FC(void *arg0, void *arg1) {
     s32 Game_GetState(void);
-    u8 fn_8001C914(void *, void *);
+    u8 Item_CallUfx(void *, void *);
     void *Item_GetUfx(void *);
     u8 fn_800940B0(void *, void *);
     u8 Status_Test(void *, s32);
@@ -940,7 +940,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
             if (var_r0 == 0) {
                 return 0;
             }
-            return fn_8001C914(arg0, arg1);
+            return Item_CallUfx(arg0, arg1);
         }
         rec = Item_GetUfx(arg1);
         if (rec == NULL) {
@@ -953,7 +953,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
         if (var_r0 == 0) {
             return 0;
         }
-        return fn_8001C914(arg0, arg1);
+        return Item_CallUfx(arg0, arg1);
     }
     if (flags & 5) {
         t.ok = 1;

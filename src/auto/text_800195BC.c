@@ -1821,7 +1821,7 @@ s32 fn_8001C878(void *unused, void *arg1, void *arg2) {
     return 1;
 }
 
-u32 fn_8001C914(void *arg0, void *arg1) {
+u32 Item_CallUfx(void *arg0, void *arg1) {
     void strcpy(void *, s32);
     void strcat(void *, void *);
     void *Res_GetByName(void *);

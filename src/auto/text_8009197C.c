@@ -259,7 +259,7 @@ u8 Unit_CanUseItem(s32 arg0, void *arg1) {
 #pragma global_optimizer reset
 s32 fn_80091F70(s32 arg0, s32 arg1) {
     s32 Game_GetState();
-    s32 fn_8001C914(s32, s32);
+    s32 Item_CallUfx(s32, s32);
     void *Item_GetUfx(s32);
     u8 var_r0;
     u8 var_r0_2;
@@ -278,7 +278,7 @@ s32 fn_80091F70(s32 arg0, s32 arg1) {
         if (var_r0 == 0) {
             return 0;
         }
-        return fn_8001C914(arg0, arg1);
+        return Item_CallUfx(arg0, arg1);
     }
     temp_r3_2 = Item_GetUfx(arg1);
     if (temp_r3_2 == NULL) {
@@ -291,7 +291,7 @@ s32 fn_80091F70(s32 arg0, s32 arg1) {
     if (var_r0_2 == 0) {
         return 0;
     }
-    return fn_8001C914(arg0, arg1);
+    return Item_CallUfx(arg0, arg1);
 }
 
 void fn_8009204C(void *arg0, void *arg1) {

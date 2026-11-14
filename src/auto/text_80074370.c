@@ -2034,7 +2034,7 @@ void fn_80077B80(void) {
 }
 
 s32 fn_80077BAC(void) {
-    u8 fn_8001C914(s32, u32);
+    u8 Item_CallUfx(s32, u32);
     u32 *Unit_GetHeldItemSlot(s32, s32);
     u8 fn_8009326C(s32);
     extern u8 gUiContext[];
@@ -2058,7 +2058,7 @@ body:
     if (fn_8009326C(obj) == 0) {
         goto next;
     }
-    if (fn_8001C914(*(s32 *)p, *entry) == 0) {
+    if (Item_CallUfx(*(s32 *)p, *entry) == 0) {
         goto next;
     }
     return 0;
