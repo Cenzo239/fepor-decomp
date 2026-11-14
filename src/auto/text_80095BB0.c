@@ -446,33 +446,23 @@ void Event_LoadSlotUnitGfx(void) {
 }
 
 s32 fn_80096B80(void) {
-    extern u8 gBattle[];
-    void fn_800340E4(void *);
-    s16 *idx;
-    s32 result;
-    s16 saved;
-
-    result = 0;
-    saved = *(s16 *)(gBattle + 0x8a0);
-    idx = (s16 *)(gBattle + 0x8a0);
-    fn_800340E4(idx);
-    for (;;) {
-        s32 c;
-        c = ((u8 *)idx)[4 + *idx * 4];
-        switch (c) {
-        case 0x52:
-            result = 1;
-            break;
-        case 0:
-            break;
-        default:
-            (*idx)++;
-            continue;
-        }
-        break;
-    }
-    *idx = saved;
-    return result;
+ extern u8 gBattle[]; void fn_800340E4(void *);
+ s32 saved; s32 result; s16 *idx;
+ result=0;
+ idx=(s16 *)(gBattle+0x8a0);
+ saved=*idx;
+ fn_800340E4(idx);
+ for(;;) {
+ s32 c=((u8 *)idx)[4+*idx*4];
+ switch(c) {
+ case 0x52: result=1; break;
+ case 0: break;
+ default: ++*idx; continue;
+ }
+ break;
+ }
+ *idx=saved;
+ return result;
 }
 
 s32 fn_80096C18(void)
