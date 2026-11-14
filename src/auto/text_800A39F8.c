@@ -2315,16 +2315,7 @@ u8 *fn_800A87D4(void *arg0) {
     return lbl_80312A80;
 }
 
-s32 fn_800A883C(void *arg0, s32 arg1) {
-    u8 val;
-    u8 *p = &val;
-    if (arg1 == 0) {
-        *p = (*(u8 *)((u8 *)arg0 + 0x43) >> 4) & 0xF;
-    } else {
-        *p = *(u8 *)((u8 *)arg0 + 0x43) & 0xF;
-    }
-    return *p << 24;
-}
+s32 fn_800A883C(void *arg0, s32 arg1) { u8 val; u8 *p = &val; u32 n; if (arg1 == 0) n = (*(u8 *)((u8 *)arg0 + 0x43) >> 4) & 15; else n = *(u8 *)((u8 *)arg0 + 0x43) & 15; *p = n; return *p << 24; }
 
 s32 fn_800A886C(u8 *arg0) {
     switch (*arg0) {
