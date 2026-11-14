@@ -2418,7 +2418,7 @@ s32 fn_80234048(void *isc, s32 ch, s32 act)
 }
 
 s32 fn_802340D8(s32 arg0) {
-    extern void (*lbl_8033E170[])(s32);
+    extern void (*__signal_funcs[])(s32);
     extern s32 __begin_critical_region(s32);
     extern s32 __end_critical_region(s32);
     extern void exit(s32);
@@ -2428,9 +2428,9 @@ s32 fn_802340D8(s32 arg0) {
         return -1;
     }
     __begin_critical_region(4);
-    func = lbl_8033E170[arg0 - 1];
+    func = __signal_funcs[arg0 - 1];
     if (func != (void (*)(s32))1) {
-        lbl_8033E170[arg0 - 1] = 0;
+        __signal_funcs[arg0 - 1] = 0;
     }
     __end_critical_region(4);
     if ((func == (void (*)(s32))1) || ((func == 0) && (arg0 == 1))) {
