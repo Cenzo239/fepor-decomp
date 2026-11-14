@@ -2648,18 +2648,19 @@ s32 fn_8002EA74(void) {
     return 0;
 }
 
-void Ui_CalcSlideFadeIn(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
+void Ui_CalcSlideFadeIn(s32 *frame, s32 *outY, s32 *outX, s32 *outAlpha) {
+    /* Ease slide-in: Y from -64 to 0 and alpha 0 to 255 over 8 frames; X stays 0. */
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    s32 var_r31;
+    s32 t;
 
-    *arg2 = 0;
-    var_r31 = *arg0;
-    var_r31 = var_r31 + 1;
-    if (var_r31 > 8) {
-        var_r31 = 8;
+    *outX = 0;
+    t = *frame;
+    t = t + 1;
+    if (t > 8) {
+        t = 8;
     }
-    *arg1 = (s32)Math_Ease(6, -64.0f, 0.0f, (f32)var_r31, 8.0f);
-    *arg3 = (s32)Math_Ease(0, 0.0f, 255.0f, (f32)var_r31, 8.0f);
+    *outY = (s32)Math_Ease(6, -64.0f, 0.0f, (f32)t, 8.0f);
+    *outAlpha = (s32)Math_Ease(0, 0.0f, 255.0f, (f32)t, 8.0f);
 }
 
 #pragma cplusplus on
