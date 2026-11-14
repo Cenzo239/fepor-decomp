@@ -2766,6 +2766,7 @@ void fn_801E9D3C(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+/* Reload four map resources and refresh the unit map, preserving unit bitmasks. */
 void Battle_ReloadMapLayers(void) {
     extern u8 gTabMenuStrings[];
     extern u8 gBattleState[];
@@ -2774,17 +2775,17 @@ void Battle_ReloadMapLayers(void) {
     void fn_800138F4(void);
     void Map_RefreshUnitMap(void *);
 
-    u8 *base;
-    u32 v84;
-    u32 v90;
-    u32 v8c;
-    u32 v88;
+    u8 *battle;
+    u32 mask84;
+    u32 mask90;
+    u32 mask8c;
+    u32 mask88;
 
-    base = gBattleState;
-    v84 = *(u32 *)(base + 0x84);
-    v88 = *(u32 *)(base + 0x88);
-    v8c = *(u32 *)(base + 0x8C);
-    v90 = *(u32 *)(base + 0x90);
+    battle = gBattleState;
+    mask84 = *(u32 *)(battle + 0x84);
+    mask88 = *(u32 *)(battle + 0x88);
+    mask8c = *(u32 *)(battle + 0x8C);
+    mask90 = *(u32 *)(battle + 0x90);
 
     fn_80013A90(gTabMenuStrings + 0x24C);
     fn_800138F4();
@@ -2796,10 +2797,10 @@ void Battle_ReloadMapLayers(void) {
     fn_800138F4();
     Map_RefreshUnitMap(gBattleMap);
 
-    *(u32 *)(base + 0x84) = *(u32 *)(base + 0x84) | v84;
-    *(u32 *)(base + 0x88) = *(u32 *)(base + 0x88) | v88;
-    *(u32 *)(base + 0x8C) = *(u32 *)(base + 0x8C) | v8c;
-    *(u32 *)(base + 0x90) = *(u32 *)(base + 0x90) | v90;
+    *(u32 *)(battle + 0x84) = *(u32 *)(battle + 0x84) | mask84;
+    *(u32 *)(battle + 0x88) = *(u32 *)(battle + 0x88) | mask88;
+    *(u32 *)(battle + 0x8C) = *(u32 *)(battle + 0x8C) | mask8c;
+    *(u32 *)(battle + 0x90) = *(u32 *)(battle + 0x90) | mask90;
 }
 #pragma global_optimizer on
 #pragma use_lmw_stmw reset
