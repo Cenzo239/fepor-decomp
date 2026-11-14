@@ -3960,7 +3960,7 @@ extern "C" void UnitInfo_DrawStaff(void *win, void *slot) {
 
 #pragma cplusplus on
 extern "C" void fn_800907B8(void *);
-extern "C" void fn_80032C80(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawInventory(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
