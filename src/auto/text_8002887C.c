@@ -937,7 +937,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
     }
 }
 
-void fn_8002BD44(void *arg0, void *arg1)
+void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
 {
     extern u8 gMapObjEventList[];
     extern u8 lbl_80284E20[];
@@ -3103,7 +3103,7 @@ void fn_8002F788(s32 arg0) {
 void fn_8002F82C(s32 arg0) {
     void Map_ShowMoveLimitView(void);
     void Process_CreateChild(void *, s32);
-    void fn_8002BD44(void *, s32);
+    void MapObj_BuildAttackTargetList(void *, s32);
     void fn_8002EB54(void *, s32);
     extern void *gUiContext[6];
     extern u8 lbl_802850C0[];
@@ -3119,7 +3119,7 @@ void fn_8002F82C(s32 arg0) {
         Process_CreateChild(lbl_802850C0, arg0);
         return;
     }
-    fn_8002BD44(p[0], 0);
+    MapObj_BuildAttackTargetList(p[0], 0);
     if ((s8)lbl_80367280 == 0) {
         *(void **)(lbl_802EFDA0 + 4) = lbl_80285050;
         *(void **)(lbl_802EFDA0 + 4) = lbl_802853EC;
@@ -3130,7 +3130,7 @@ void fn_8002F82C(s32 arg0) {
 }
 
 void fn_8002FA54(void) {
-    void fn_8002BD44(void *, s32);
+    void MapObj_BuildAttackTargetList(void *, s32);
     void TargetList_GetAt(void *, s32);
     s32 UnitRef_GetUnit(void);
     void fn_8014CB14(void *, s32);
@@ -3140,7 +3140,7 @@ void fn_8002FA54(void) {
     s32 *p;
     s32 tmp;
 
-    fn_8002BD44(*(void **)gUiContext, 0);
+    MapObj_BuildAttackTargetList(*(void **)gUiContext, 0);
     p = (s32 *)gTargetList;
     if (*p != 0) {
         TargetList_GetAt(p, 0);
