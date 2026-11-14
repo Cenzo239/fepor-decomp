@@ -8001,7 +8001,7 @@ s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 fn_800BF494(void *arg0) {
+s32 Talk_MatchesUiPair(void *arg0) {
     void *fn_800C273C(void *, u32);
     u8 fn_800BDD08(void *, void *);
     void *Person_GetByPid(void);
