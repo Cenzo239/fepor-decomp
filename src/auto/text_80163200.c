@@ -13639,7 +13639,7 @@ extern "C" void *Ui_DtorGoldCostPanel(void *arg0, s16 arg1) {
         void *sub6c;
     };
     void Heap_Free(void *);
-    extern u8 lbl_80295448[];
+    extern u8 gUiGoldCostPanelVtbl[];
     extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
@@ -13647,7 +13647,7 @@ extern "C" void *Ui_DtorGoldCostPanel(void *arg0, s16 arg1) {
 
     self = (Owner *)arg0;
     if (arg0 != NULL) {
-        self->vtbl = lbl_80295448;
+        self->vtbl = gUiGoldCostPanelVtbl;
         if (&self->sub6c != NULL) {
             self->sub6c = gEmptyVtbl;
             ((Obj *)&self->sub6c)->v2();
