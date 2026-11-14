@@ -4923,7 +4923,8 @@ end:
     return code == 0;
 }
 
-s32 Unit_CheckReceiveItem(s32 arg0, void *arg1) {
+s32 Unit_CheckReceiveItem(s32 unit, void *item) {
+    /* Status for giving item to unit: 0 ok, 1 over weight, 2 locked, 3 no free slot. */
     u64 *Item_GetFlagsPtr(void *);
     u8 Item_GetWt(void *);
     s32 Unit_GetCarryWtLimit(void);
@@ -4931,19 +4932,19 @@ s32 Unit_CheckReceiveItem(s32 arg0, void *arg1) {
     s32 Unit_FindEmptyHeldSlot(s32);
     s8 lim;
 
-    if (((*(u8 *)((u8 *)arg1 + 5) >> 7) & 1) != 0) {
+    if (((*(u8 *)((u8 *)item + 5) >> 7) & 1) != 0) {
         return 2;
     }
     lim = (s8)Unit_GetCarryWtLimit();
-    if ((s32)Item_GetWt(arg1) >= (s32)lim) {
+    if ((s32)Item_GetWt(item) >= (s32)lim) {
         return 1;
     }
-    if ((*Item_GetFlagsPtr(arg1) & 5ULL) != 0) {
-        if (Unit_FindEmptyHeldSlot(arg0) < 0) {
+    if ((*Item_GetFlagsPtr(item) & 5ULL) != 0) {
+        if (Unit_FindEmptyHeldSlot(unit) < 0) {
             return 3;
         }
     } else {
-        if (Unit_FindEmptyItemSlot(arg0) < 0) {
+        if (Unit_FindEmptyItemSlot(unit) < 0) {
             return 3;
         }
     }
