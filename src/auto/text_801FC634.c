@@ -1618,7 +1618,7 @@ void fn_802003FC(void) {
 
 M2C_UNK Process_Create(s32 *, s32, s16 *, s16 *, s32 *, s32 *);
 void fn_80200494(void) {
-    extern s32 lbl_8029B780[];
+    extern s32 E_FaceResMan_script[];
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -1627,7 +1627,7 @@ void fn_80200494(void) {
         lbl_80339328[i] = 0;
         lbl_80339338[i] = 0;
     }
-    Process_Create(lbl_8029B780, 2, lbl_80339338, lbl_80339328, (s32 *)lbl_80339308, (s32 *)lbl_803392E8);
+    Process_Create(E_FaceResMan_script, 2, lbl_80339338, lbl_80339328, (s32 *)lbl_80339308, (s32 *)lbl_803392E8);
 }
 
 #pragma use_lmw_stmw reset
