@@ -1478,7 +1478,7 @@ void fn_80206808(void) {
 void fn_8020681C(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp14;
     
-    fn_8020EB10(&sp14, arg0, arg1, arg2, 0, 0);
+    DVDReadAbsAsyncPrio(&sp14, arg0, arg1, arg2, 0, 0);
 loop_5:
     if (fn_8020EF60(&sp14) != 0) {
         if (fn_8020F40C() == 0) {
@@ -1506,7 +1506,7 @@ void __OSGetExecParams(s32 *arg0) {
 #pragma peephole off
 s32 DVDGetAppLoaderOffset(void) {
     u32 OSAllocFromArenaLo(u32, u32);
-    void fn_8020EB10(void *, u32, s32, s32, s32, s32);
+    void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
     s32 fn_8020EF60(void *);
     s32 fn_8020F40C(void);
     void fn_802089A4(s32);
@@ -1520,7 +1520,7 @@ s32 DVDGetAppLoaderOffset(void) {
     }
     if (*(s32 *)0x800030F4 != 0) {
         buf = OSAllocFromArenaLo(0x40, 0x20);
-        fn_8020EB10(sp8, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
+        DVDReadAbsAsyncPrio(sp8, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
         while (fn_8020EF60(sp8) != 0) {
             if (fn_8020F40C() == 0) {
                 fn_802089A4(0);
@@ -1549,7 +1549,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     s32 DVDGetAppLoaderOffset(void);
     void fn_80206888(void);
     void fn_802089A4(s32);
-    void fn_8020EB10(void *, u32, s32, s32, s32, s32);
+    void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
     void fn_8020ED90(void *, s32);
     s32 fn_8020EF60(void *);
     void fn_8020F058(s32);
@@ -1657,7 +1657,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
             }
             if (*(s32 *)0x800030F4 != 0) {
                 temp_r3 = OSAllocFromArenaLo(0x40, 0x20);
-                fn_8020EB10(sp5C, temp_r3, 0x40, *(s32 *)0x800030F4, 0, 0);
+                DVDReadAbsAsyncPrio(sp5C, temp_r3, 0x40, *(s32 *)0x800030F4, 0, 0);
                 while (fn_8020EF60(sp5C) != 0) {
                     if (fn_8020F40C() == 0)
                         fn_802089A4(0);
@@ -1678,7 +1678,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         OSSetArenaLo((void *)temp_r3);
 
         while (spC4(&spCC, &spD0, &spD4) != 0) {
-            fn_8020EB10(sp2C, (u32)spCC, spD0, spD4, 0, 0);
+            DVDReadAbsAsyncPrio(sp2C, (u32)spCC, spD0, spD4, 0, 0);
             while (fn_8020EF60(sp2C) != 0) {
                 if (fn_8020F40C() == 0)
                     fn_802089A4(0);
@@ -1696,7 +1696,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         *(s32 *)0x812FDFF0 = arg2;
         *(s32 *)0x812FDFEC = arg3;
         *(u8 *)0x800030E2 = 1;
-        fn_8020EB10(sp8C, 0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F, DVDGetAppLoaderOffset() + *(s32 *)(temp_r30 + 0x14) + 0x20, 0, 0);
+        DVDReadAbsAsyncPrio(sp8C, 0x81300000, (*(s32 *)(temp_r30 + 0x18) + 0x1F) & ~0x1F, DVDGetAppLoaderOffset() + *(s32 *)(temp_r30 + 0x14) + 0x20, 0, 0);
         while (fn_8020EF60(sp8C) != 0) {
             if (fn_8020F40C() == 0)
                 fn_802089A4(0);

@@ -377,7 +377,7 @@ BOOL DVDGetCurrentDir(char *path, u32 maxlen) {
 
 s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     M2C_UNK OSPanic(M2C_UNK *, M2C_UNK, M2C_UNK *);
-    M2C_UNK fn_8020EB10(void *, s32, s32, s32, M2C_UNK *, s32);
+    M2C_UNK DVDReadAbsAsyncPrio(void *, s32, s32, s32, M2C_UNK *, s32);
     extern M2C_UNK fn_8020CBF8;
     extern M2C_UNK lbl_8029CFE8;
     extern M2C_UNK lbl_80366F60;
@@ -391,7 +391,7 @@ s32 fn_8020CB38(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
         OSPanic(&lbl_80366F60, 0x2F4, &lbl_8029CFE8);
     }
     M2C_FIELD(arg0, s32 *, 0x38) = arg4;
-    fn_8020EB10(arg0, arg1, arg2, M2C_FIELD(arg0, s32 *, 0x30) + arg3, &fn_8020CBF8, arg5);
+    DVDReadAbsAsyncPrio(arg0, arg1, arg2, M2C_FIELD(arg0, s32 *, 0x30) + arg3, &fn_8020CBF8, arg5);
     return 1;
 }
 
@@ -1422,7 +1422,7 @@ void fn_8020E4B8(u32 arg0) {
     fn_8020BF58(fn_8020D27C);
 }
 
-s32 fn_8020EB10(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, s32 arg5)
+s32 DVDReadAbsAsyncPrio(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, s32 arg5)
 {
     void DCInvalidateRange(void *, u32);
     u32 OSDisableInterrupts(void);
