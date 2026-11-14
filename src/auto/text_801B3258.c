@@ -1147,7 +1147,7 @@ s32 ScriptCmd_AchieveSet(s32 arg0, s32 arg1) {
 u8 fn_801B78A8(void *arg0) {
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
-    u8 fn_800BDD08(void *, u8 *);
+    u8 EventFlag_IsSet(void *, u8 *);
     u8 *Event_GetString(void *, u16);
     extern u8 gBattleState[];
     extern s32 lbl_80368250;
@@ -1156,7 +1156,7 @@ u8 fn_801B78A8(void *arg0) {
 
     var_r31 = 0;
     temp_r3 = Event_GetString(arg0, (u16)M2C_FIELD(arg0, s16 *, 0x14));
-    if (((s8)*temp_r3 != 0) && (fn_800BDD08(gBattleState + 0xB4, temp_r3) == 0)) {
+    if (((s8)*temp_r3 != 0) && (EventFlag_IsSet(gBattleState + 0xB4, temp_r3) == 0)) {
         return 0;
     }
     fn_80013778(0, arg0);

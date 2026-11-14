@@ -4045,13 +4045,13 @@ void fn_800286C8(void *arg0) {
 }
 
 void fn_80028724(void) {
-u8 fn_800BDD08(void *, void *);
+u8 EventFlag_IsSet(void *, void *);
 void fn_80146AF0(void);
 void Fx_FadeIn(void *, s32);
 void fn_8014876C(void *, s32, s32);
 extern u8 lbl_80268E40[], gFxChannels[], gBattleState[];
 register u8 *buf = gFxChannels;
-if (!fn_800BDD08(gBattleState + 0xB4, lbl_80268E40 + 0x21E)) {
+if (!EventFlag_IsSet(gBattleState + 0xB4, lbl_80268E40 + 0x21E)) {
 fn_80146AF0(); Fx_FadeIn(buf,1000); fn_8014876C(buf,100,1000);
 }
 }

@@ -2158,7 +2158,7 @@ extern "C" void fn_8002DA30(void)
     s32 fn_80015680(void *);
     void *fn_8014CA54(void *, s32);
     void *fn_80234198(void *, void *);
-    u8 fn_800BDD08(void *, void *, void *);
+    u8 EventFlag_IsSet(void *, void *, void *);
     s32 Str_Cmp(s32, void *);
     void fn_80148980(void *, s32);
     void Fx_StartSlot(s32, void *, s32, s32);
@@ -2228,7 +2228,7 @@ extern "C" void fn_8002DA30(void)
     }
 
     base = gBattleState;
-    if (fn_800BDD08((u8 *)base + 0xB4, Battle_str + 0x26D, base) == 0) {
+    if (EventFlag_IsSet((u8 *)base + 0xB4, Battle_str + 0x26D, base) == 0) {
         ok = 0;
         obj = &gFxChannels;
         if (obj->flag & 1) {
