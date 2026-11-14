@@ -17301,7 +17301,7 @@ s32 fn_800F4D78(void *arg0, void *arg1, void **arg2) {
 #pragma opt_strength_reduction reset
 
 #pragma use_lmw_stmw on
-u8 fn_800F5504(u8 (*arg0)(void *), u8 arg1) {
+u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
     extern u8 gAiState[];
     extern u8 gUiContext[];
     extern u8 gBattleMap[];
@@ -18933,7 +18933,7 @@ void fn_800FA8F0(void *arg0) {
     extern s32 gAiCmdIsAlt;
 
     s32 Rand_Range(s32);
-    u8 fn_800F5504(u8 (*)(void *), u8);
+    u8 Ai_TryAttackAction(u8 (*)(void *), u8);
     u8 fn_800FB3AC(void *);
     u8 fn_800FB334(void *);
 
@@ -18944,7 +18944,7 @@ void fn_800FA8F0(void *arg0) {
     state = (u8 *)gAiCmd;
 
     if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
-        fn_800F5504(*(s32 *)(state + 0x10) != 0 ? fn_800FB334 : fn_800FB3AC, 0xF);
+        Ai_TryAttackAction(*(s32 *)(state + 0x10) != 0 ? fn_800FB334 : fn_800FB3AC, 0xF);
     }
 
     if (gAiCmdIsAlt == 0) {
@@ -18959,7 +18959,7 @@ void AiCmd_ChanceTryAttack(void *arg0) {
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
     s32 Rand_Range(s32);
-    void fn_800F5504(void (*)(void *), s32);
+    void Ai_TryAttackAction(void (*)(void *), s32);
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
@@ -18976,7 +18976,7 @@ void AiCmd_ChanceTryAttack(void *arg0) {
             : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
         flag = gAiState;
         flag[1] |= 2;
-        fn_800F5504(cb, 0xF);
+        Ai_TryAttackAction(cb, 0xF);
         flag[1] &= ~2;
     }
 
@@ -19001,7 +19001,7 @@ void fn_800FAA7C(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
-    void fn_800F5504(s32, s32);
+    void Ai_TryAttackAction(s32, s32);
     s32 Ai_UnitIsHostileToActive(void *);
     s32 Ai_UnitNameInCmdList(void *);
     s32 Ai_UnitHostileNotInCmdList(void *);
@@ -19012,7 +19012,7 @@ void fn_800FAA7C(void *arg0) {
     state = (u8 *)gAiCmd;
 
     if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
-        fn_800F5504(
+        Ai_TryAttackAction(
             (s32)(*(u32 *)(state + 0x14) == 0
                       ? Ai_UnitIsHostileToActive
                       : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList)),

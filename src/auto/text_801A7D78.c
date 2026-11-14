@@ -1029,8 +1029,8 @@ s32 fn_801AA034(void) {
 }
 
 void fn_801AA03C(s32 unused, s32 arg1) {
-    void fn_800F5504(s32, s32);
-    fn_800F5504(arg1, 0x15);
+    void Ai_TryAttackAction(s32, s32);
+    Ai_TryAttackAction(arg1, 0x15);
 }
 
 #pragma optimization_level 2
