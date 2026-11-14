@@ -17838,7 +17838,7 @@ void SaveData_StartOpenSeq(void *arg0) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
     extern s32 gUiInputFlags;
-    extern u8 lbl_80299DE8[];
+    extern u8 gProc_E_OpenSeq[];
 
     void DebugPrint(const char *, ...);
     void fn_800C4588(void *);
@@ -17865,7 +17865,7 @@ void SaveData_StartOpenSeq(void *arg0) {
     if (gUiInputFlags & 0x10) {
         fn_801E3014(&gSaveDataBase);
     } else {
-        obj = Process_CreateChild(lbl_80299DE8, arg);
+        obj = Process_CreateChild(gProc_E_OpenSeq, arg);
         *(void **)((u8 *)obj + 0x54) = gSaveDataBase;
         *(s32 *)((u8 *)obj + 0x60) = 1;
     }
@@ -18472,7 +18472,7 @@ void fn_801E3118(s32 *arg0, s32 arg1, u8 arg2) {
     void fn_801E3014(s32 *);
     void *Process_CreateChild(void *, s32);
     extern u8 gSaveStrings[];
-    extern u8 lbl_80299DE8[];
+    extern u8 gProc_E_OpenSeq[];
     extern s32 gUiInputFlags;
     void *p;
 
@@ -18481,7 +18481,7 @@ void fn_801E3118(s32 *arg0, s32 arg1, u8 arg2) {
     if (gUiInputFlags & 0x10) {
         fn_801E3014(arg0);
     } else {
-        p = Process_CreateChild(lbl_80299DE8, arg1);
+        p = Process_CreateChild(gProc_E_OpenSeq, arg1);
         *(s32 *)((u8 *)p + 0x54) = *arg0;
         *(u32 *)((u8 *)p + 0x60) = arg2;
     }
