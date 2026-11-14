@@ -12891,25 +12891,26 @@ void Camera_SetTransition(void *arg0, s32 arg1, f32 farg0, f32 farg1, s32 arg2) 
     }
 }
 
-void Camera_UpdateTransition(void *arg0) {
+/* Advance camera sine transition: write offset on X or Y, decay amplitude, tick timer. */
+void Camera_UpdateTransition(void *cam) {
     f64 sin(f64);
 
-    if (M2C_FIELD(arg0, s32 *, 0x120) > 0) {
-        if (M2C_FIELD(arg0, u8 *, 0x124) != 0) {
-            M2C_FIELD(arg0, f32 *, 0x11C) =
-                M2C_FIELD(arg0, f32 *, 0x108) * (f32)sin(M2C_FIELD(arg0, f32 *, 0x114));
-            M2C_FIELD(arg0, f32 *, 0x118) = 0.0f;
+    if (M2C_FIELD(cam, s32 *, 0x120) > 0) {
+        if (M2C_FIELD(cam, u8 *, 0x124) != 0) {
+            M2C_FIELD(cam, f32 *, 0x11C) =
+                M2C_FIELD(cam, f32 *, 0x108) * (f32)sin(M2C_FIELD(cam, f32 *, 0x114));
+            M2C_FIELD(cam, f32 *, 0x118) = 0.0f;
         } else {
-            M2C_FIELD(arg0, f32 *, 0x118) =
-                M2C_FIELD(arg0, f32 *, 0x108) * (f32)sin(M2C_FIELD(arg0, f32 *, 0x114));
-            M2C_FIELD(arg0, f32 *, 0x11C) = 0.0f;
+            M2C_FIELD(cam, f32 *, 0x118) =
+                M2C_FIELD(cam, f32 *, 0x108) * (f32)sin(M2C_FIELD(cam, f32 *, 0x114));
+            M2C_FIELD(cam, f32 *, 0x11C) = 0.0f;
         }
-        M2C_FIELD(arg0, f32 *, 0x114) += M2C_FIELD(arg0, f32 *, 0x10C);
-        M2C_FIELD(arg0, f32 *, 0x108) += M2C_FIELD(arg0, f32 *, 0x110);
-        if (M2C_FIELD(arg0, f32 *, 0x108) < 0.0f) {
-            M2C_FIELD(arg0, f32 *, 0x108) = 0.0f;
+        M2C_FIELD(cam, f32 *, 0x114) += M2C_FIELD(cam, f32 *, 0x10C);
+        M2C_FIELD(cam, f32 *, 0x108) += M2C_FIELD(cam, f32 *, 0x110);
+        if (M2C_FIELD(cam, f32 *, 0x108) < 0.0f) {
+            M2C_FIELD(cam, f32 *, 0x108) = 0.0f;
         }
-        M2C_FIELD(arg0, s32 *, 0x120)--;
+        M2C_FIELD(cam, s32 *, 0x120)--;
     }
 }
 
