@@ -1028,7 +1028,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_800056A0(s32);
     void fn_8000A388(void *, void *, s32);
     void *Process_Create(void *, s32);
-    void fn_80058A0C(void *, s32, s32, s32);
+    void GActor_InitNodeLink(void *, s32, s32, s32);
     void fn_80057FD4(void);
     extern u8 lbl_8026AD80[];
     extern u8 Proc_GActorNodeLink[16];
@@ -1040,7 +1040,7 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
     fn_8000A388(Proc_GActorNodeLink, fn_80057FD4, arg0);
     temp_r31 = Process_Create(Proc_GActorNodeLink, arg3);
-    fn_80058A0C(temp_r31, arg0, arg1, arg2);
+    GActor_InitNodeLink(temp_r31, arg0, arg1, arg2);
     return (s32)temp_r31;
 }
 
@@ -1249,7 +1249,7 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
 #pragma scheduling reset
-void fn_80058A0C(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void GActor_InitNodeLink(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
     // Just setting the first field to make sure we have a valid compile
     *(u16*)((char*)arg0 + 0x34) = (u16)arg1;
 }
