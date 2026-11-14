@@ -3034,6 +3034,7 @@ s32 atoi(char *str) {
     s32 count;
     __InStrCtrl isc;
 
+    // Parse a decimal C string to s32; clamp to INT_MIN/INT_MAX and set errno=ERANGE on overflow.
     isc.NextChar = str;
     isc.NullCharDetected = 0;
     value = __strtoul(10, 0x7FFFFFFF, __StringRead, &isc, &count, &negative, &overflow);
