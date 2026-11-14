@@ -7100,7 +7100,7 @@ s32 fn_800BD10C(u8 arg0) {
 
 s32 ScriptCmd_UnitRescue(u8 arg0, u8 arg1) {
     void Unit_SetMapPos(void *, s8, u8);
-    void fn_8003EA84(void *, void *);
+    void Unit_Rescue(void *, void *);
     void Map_RefreshUnitMap(void *);
     extern u8 gBattleMap[];
     void *var_r31;
@@ -7123,7 +7123,7 @@ s32 ScriptCmd_UnitRescue(u8 arg0, u8 arg1) {
         return 0;
     }
     Unit_SetMapPos(var_r30, (s8)(*(u8 *)((u8 *)var_r31 + 0x19E) + 1), *(u8 *)((u8 *)var_r31 + 0x19F));
-    fn_8003EA84(var_r31, var_r30);
+    Unit_Rescue(var_r31, var_r30);
     Map_RefreshUnitMap(&gBattleMap);
     return 1;
 }

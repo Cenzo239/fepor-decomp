@@ -5316,7 +5316,7 @@ void Unit_SeparateRescue(void *arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)partner + 0x1A0) |= 1;
 }
 
-void fn_8003EA84(void *arg0, void *arg1) {
+void Unit_Rescue(void *arg0, void *arg1) {
     Unit_SetMapPos(arg1, *(u8*)((u8*)arg0 + 0x19F), *(u8*)((u8*)arg0 + 0x19E));
     *(s32*)((u8*)arg0 + 0x1A0) |= 2;
     *(s32*)((u8*)arg1 + 0x1A0) |= 4;
