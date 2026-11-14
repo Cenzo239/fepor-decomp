@@ -2428,7 +2428,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     return var_r8;
 }
 
-void fn_801E960C(void *arg0) {
+void TabMenu_ClearSelectedStatus(void *arg0) {
     void Status_Clear(void *, u8);
     void fn_80013A90(void *);
     void fn_80013A6C(void *);
