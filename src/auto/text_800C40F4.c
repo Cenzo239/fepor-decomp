@@ -18699,7 +18699,7 @@ void fn_800FA2B4(void *arg0) {
     }
 }
 
-void fn_800FA360(void *arg0) {
+void AiCmd_ChanceTryOnagerFallback(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
