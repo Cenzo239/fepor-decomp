@@ -10442,7 +10442,7 @@ u8 fn_80177B10(void) {
     return ret;
 }
 
-s32 fn_80177BA8(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_SetCmd86OrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
