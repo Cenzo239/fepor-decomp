@@ -3133,7 +3133,7 @@ void fn_800B5708(void) {
     void fn_8014C6B8(void);
     void fn_800B6F10(void);
     void Card_GetResult(void);
-    void fn_800C0750(void);
+    void ScriptCmd_BMapSuspend(void);
     void fn_800C068C(void);
     void fn_801E4540(void);
     void fn_800B6E00(void);
@@ -3309,7 +3309,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x922, fn_8014C6B8, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x927, fn_800B6F10, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x92D, Card_GetResult, 0);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x936, fn_800C0750, 0);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x936, ScriptCmd_BMapSuspend, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x943, fn_800C068C, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x94F, fn_801E4540, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x95E, fn_800B6E00, 1);
@@ -8458,7 +8458,7 @@ void fn_800C068C(void) {
     fn_80018AE4();
 }
 
-void fn_800C0750(void) {
+void ScriptCmd_BMapSuspend(void) {
     extern s32 gUiInputFlags;
     extern s32 lbl_80367848;
     extern s32 lbl_8036784C;
