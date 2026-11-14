@@ -26,7 +26,7 @@ void UiPanel_PollSkip(u16 *arg0) {
     u32 Process_FindByName(void *);
     void *Process_Find(void *);
     extern void *gPadInput;
-    extern u8 lbl_80274CE0[];
+    extern u8 gEventProcNames[];
     extern u32 gUiInputFlags;
     extern u8 gUiTooltipProc[];
     s32 buttons;
@@ -37,7 +37,7 @@ void UiPanel_PollSkip(u16 *arg0) {
     if (!(*arg0 & 8)) {
         buttons = *(s32 *)((u8 *)gPadInput + 4);
         if ((buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x200) &&
-            Process_FindByName(lbl_80274CE0 + 0x34) == 0) {
+            Process_FindByName(gEventProcNames + 0x34) == 0) {
             if (gUiInputFlags & 3) {
                 flag = 0;
             } else {
