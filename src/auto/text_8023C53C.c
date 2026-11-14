@@ -88,7 +88,7 @@ extern u8 gSoundData[]; char lbl_80282B20[];
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
-extern s32 lbl_803687F8;
+extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
 extern s32 gSynthTimeLo;
@@ -9707,6 +9707,44 @@ slotMap[*idPtr]=255;
 }
 else Sound_SetVoiceStreamParams(callId,0,0);
 return -1;
+}
+
+int fn_80258488(u32 arg0)
+{
+    extern u8 gSoundStreamCtrl[];
+    u8 *ctrl;
+    u8 *slotMap;
+    u8 slot;
+    s32 offset;
+    u8 *entry;
+    void (*cb)(s32, void *);
+
+    if ((u32)(arg0 + 0x10000) == 0xFFFFU) {
+        return 0;
+    }
+
+    ctrl = gSoundStreamCtrl;
+    slotMap = ctrl + 0xB08;
+    slot = slotMap[(u8)arg0];
+    if (slot == 0xFF) {
+        return 0;
+    }
+
+    offset = slot * 0x2C;
+    entry = ctrl + offset;
+    if (*(u16 *)(entry + 0x1A) != ((arg0 >> 8) & 0xFFFF)) {
+        return 0;
+    }
+
+    cb = *(void (**)(s32, void *))(ctrl + 0xB4C);
+    if (cb != NULL) {
+        cb(2, entry + 0x18);
+    }
+
+    entry = gSoundStreamCtrl + offset;
+    entry[8] = 0;
+    slotMap[entry[0xB]] = 0xFF;
+    return 0;
 }
 
 void Sound_SeekStreamPos(void *arg0, u32 arg1) {

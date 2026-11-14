@@ -35,7 +35,7 @@ extern u8 __close_all[];
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 Ecb_8033E188[192];u16 *D_80256B30;
-extern s32 lbl_803687F8;
+extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
 extern s32 gSynthTimeLo;
@@ -3204,15 +3204,15 @@ s32 __write_console(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     M2C_UNK fn_8022B530(s32, s32, s32 *, s32);
     s32 InitializeUART(M2C_UNK);
     s32 WriteUARTN(s32, s32);
-    extern s32 lbl_803687F8;
+    extern s32 UART_Initialized;
     s32 var_r3;
 
     if (!(OSGetConsoleType() & 0x20000000)) {
         var_r3 = 0;
-        if ((s32) lbl_803687F8 == 0) {
+        if ((s32) UART_Initialized == 0) {
             var_r3 = InitializeUART(0xE100);
             if (var_r3 == 0) {
-                lbl_803687F8 = 1;
+                UART_Initialized = 1;
             }
         }
         if (var_r3 != 0) {

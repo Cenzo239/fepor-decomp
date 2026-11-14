@@ -26,7 +26,7 @@ typedef struct EXIControl {
 extern EXIControl Ecb_8033E188[3];
 s32 EXIGetID(s32 chan, u32 dev, u32 *id);
 u16 *D_80256B30;
-extern s32 lbl_803687F8;
+extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
 extern s32 gSynthTimeLo;

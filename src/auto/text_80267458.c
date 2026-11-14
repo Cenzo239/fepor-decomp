@@ -4,7 +4,7 @@
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
 extern u16 *D_80256B30;
-extern s32 lbl_803687F8;
+extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
 extern s32 gSynthTimeLo;
