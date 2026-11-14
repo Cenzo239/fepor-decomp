@@ -757,7 +757,8 @@ s32 fn_801044FC(u8 *arg0) {
     return (b1 & 7) != 0;
 }
 
-void Unit_DecSkillRanks(void *arg0, u8 arg1) {
+/* Decrement packed skill-rank counters: mode 1 ticks all combat ranks, mode 0 ticks rank slot 5 only. */
+void Unit_DecSkillRanks(void *ranks, u8 mode) {
     typedef struct {
         u8 hi:5;
         u8 cnt:3;
@@ -767,8 +768,8 @@ void Unit_DecSkillRanks(void *arg0, u8 arg1) {
     u16 h;
     s32 v;
 
-    p = (u8 *)arg0;
-    switch ((s32)arg1) {
+    p = (u8 *)ranks;
+    switch ((s32)mode) {
     case 1:
         b = p[0];
         v = (b >> 5U) & 7;
@@ -780,25 +781,25 @@ void Unit_DecSkillRanks(void *arg0, u8 arg1) {
         if (v != 0) {
             *(u16 *)p = (u16)((h & ~0x380) | (((v - 1) << 7) & 0x380));
         }
-        p = (u8 *)arg0;
+        p = (u8 *)ranks;
         b = p[1];
         v = (b >> 4U) & 7;
         if (v != 0) {
             p[1] = (u8)((b & ~0x70) | (((v - 1) << 4) & 0x70));
         }
-        p = (u8 *)arg0;
+        p = (u8 *)ranks;
         b = p[0];
         v = (b >> 2U) & 7;
         if (v != 0) {
             p[0] = (u8)((b & ~0x1C) | (((v - 1) << 2) & 0x1C));
         }
-        p = (u8 *)arg0;
+        p = (u8 *)ranks;
         b = p[2];
         v = (b >> 5U) & 7;
         if (v != 0) {
             p[2] = (u8)((b & ~0xE0) | (((v - 1) << 5) & 0xE0));
         }
-        p = (u8 *)arg0;
+        p = (u8 *)ranks;
         b = p[2];
         v = (b >> 2U) & 7;
         if (v != 0) {
@@ -806,7 +807,7 @@ void Unit_DecSkillRanks(void *arg0, u8 arg1) {
         }
         return;
     case 0:
-        p = (u8 *)arg0;
+        p = (u8 *)ranks;
         b = p[1];
         v = b & 7;
         if (v != 0) {
