@@ -329,7 +329,7 @@ extern u8 gBattleHitTbl[104];
 extern u16 gBattle[1634];
 u8 fn_8000CD88(s16);
 u8 Rand_Chance(s16);
-s32 fn_801A8A28(void *arg0) {
+s32 Battle_RollHitResult(void *arg0) {
     u8 fn_8000CD88(s16);
     u8 Rand_Chance(s16);
     extern u8 gBattleHitTbl[104];

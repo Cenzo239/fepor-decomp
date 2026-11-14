@@ -1928,7 +1928,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     void *fn_801A7FF4(void *);
     void fn_801A8010(void *);
     void fn_801A895C(void *, void *);
-    u8 fn_801A8A28(void *);
+    u8 Battle_RollHitResult(void *);
     extern u8 gBattleHitTbl[];
     extern u16 gBattle[];
 
@@ -2051,7 +2051,7 @@ void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
                 *(s16 *)((u8 *)unit + 0x2AA) = 0;
             }
             *(s16 *)((u8 *)unit + 0x2AC) = 0;
-            *(u8 *)((u8 *)unit + 0x295) = fn_801A8A28(unit);
+            *(u8 *)((u8 *)unit + 0x295) = Battle_RollHitResult(unit);
             kind = *(u8 *)((u8 *)unit + 0x295);
             switch (kind) {
             case 0x52:
