@@ -164,7 +164,7 @@ void UnitInfo_DrawItemStats(void *arg0, s32 arg1) {
     } while (var_r31 < 4);
 }
 
-void fn_80090990(void *arg0) {
+void UnitInfo_DrawBagPanel(void *arg0) {
     u8 sp8;
     s32 var_r29;
     u8 *var_r28;

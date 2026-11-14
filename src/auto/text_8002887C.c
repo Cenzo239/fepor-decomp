@@ -3667,7 +3667,7 @@ extern "C" void Prim2D_Begin(void);
 extern "C" void Prim2D_PrepareTex(void);
 extern "C" void Prim2D_SetTransform(f32, f32, f32, f32);
 extern "C" void Prim2D_SetColorByte(u8);
-extern "C" void fn_80090990(void *);
+extern "C" void UnitInfo_DrawBagPanel(void *);
 extern "C" void UnitInfo_DrawBag(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
@@ -3685,7 +3685,7 @@ extern "C" void UnitInfo_DrawBag(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090990((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        UnitInfo_DrawBagPanel((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
