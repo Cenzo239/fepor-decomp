@@ -8432,7 +8432,7 @@ void fn_800C068C(void) {
     extern u8 gUiContext[24];
     extern s32 gUiInputFlags;
     extern u8 Proc_BMapMain[];
-    extern u32 lbl_80367848;
+    extern u32 gBMapMainSaved;
     extern u32 lbl_8036784C;
     extern u8 Proc_BMapPlph[];
     extern u8 lbl_80320040[];
@@ -8444,8 +8444,8 @@ void fn_800C068C(void) {
     fn_80127AC4();
     gUiInputFlags &= ~0x890;
     obj = Process_Find(Proc_BMapMain);
-    if (lbl_80367848 != 0) {
-        *(u32 *)((u8 *)obj + 4) = lbl_80367848;
+    if (gBMapMainSaved != 0) {
+        *(u32 *)((u8 *)obj + 4) = gBMapMainSaved;
     } else {
         Process_UnlinkByKey(Proc_BMapMain);
     }
@@ -8460,7 +8460,7 @@ void fn_800C068C(void) {
 
 void ScriptCmd_BMapSuspend(void) {
     extern s32 gUiInputFlags;
-    extern s32 lbl_80367848;
+    extern s32 gBMapMainSaved;
     extern s32 lbl_8036784C;
     extern u8 Proc_BMapMain[];
     extern u8 Proc_BMapBGMCtrl[];
@@ -8484,7 +8484,7 @@ void ScriptCmd_BMapSuspend(void) {
     } else {
         val = 0;
     }
-    lbl_80367848 = val;
+    gBMapMainSaved = val;
     if (temp == 0) {
         Process_Create(Proc_BMapBGMCtrl, Process_CreateChild(Proc_BMapMain, Process_FindByName(gMapEventFlagNames + 0x138)));
     }
