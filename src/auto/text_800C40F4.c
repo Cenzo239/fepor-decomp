@@ -2624,7 +2624,7 @@ void String_InitFromRange(void *arg0, char *begin, char *end) {
     void *memcpy(void *, const void *, u32);
     extern char __files[];
     extern char gStringErrorMsgs[];
-    extern u8 lbl_80366E42;
+    extern u8 gStringNulChar;
 
     char *buf;
     s32 len;
@@ -2647,7 +2647,7 @@ void String_InitFromRange(void *arg0, char *begin, char *end) {
         *(char **)((u8 *)self + 8) = buf;
         memcpy(*(char **)((u8 *)self + 8), b, len);
         *(u32 *)self = len;
-        *(u8 *)(*(char **)((u8 *)self + 8) + len) = lbl_80366E42;
+        *(u8 *)(*(char **)((u8 *)self + 8) + len) = gStringNulChar;
     }
 }
 
