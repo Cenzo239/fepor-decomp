@@ -2987,7 +2987,7 @@ void fn_8011829C(void *arg0) {
 
 void fn_80118308(s32 arg0) {
     void Msg_Expand(void *);
-    void fn_80018AF4(void);
+    void EventLock_Inc(void);
     void Ui_CreateMenu(void *, s32, s32);
     void fn_8011A2FC(void);
     void *fn_8013BFFC(void);
@@ -2998,7 +2998,7 @@ void fn_80118308(s32 arg0) {
     u32 result;
 
     fn_8011A2FC();
-    fn_80018AF4();
+    EventLock_Inc();
     Msg_Expand(lbl_80274508 + 0x17C);
     tmp = fn_8013BFFC();
     *((u8 *)tmp + 0x24) = 1;
@@ -3885,7 +3885,7 @@ void fn_8011A2FC(s32 arg0) {
 }
 
 void fn_8011A470(s32 arg0) {
-    void fn_80018AF4(void);
+    void EventLock_Inc(void);
     void fn_800A8450(void);
     void fn_8011A2FC(s32);
     void fn_8011A4E4(s32);
@@ -3896,7 +3896,7 @@ void fn_8011A470(s32 arg0) {
     u32 temp;
 
     if (lbl_803671C0 == 0) {
-        fn_80018AF4();
+        EventLock_Inc();
     }
     fn_800A8450();
     fn_8011A4E4(arg0);

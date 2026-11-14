@@ -1087,7 +1087,7 @@ void EventLock_Dec(void) {
     lbl_803671C0 -= 1;
 }
 
-void fn_80018AF4(void) {
+void EventLock_Inc(void) {
     lbl_803671C0 += 1;
 }
 

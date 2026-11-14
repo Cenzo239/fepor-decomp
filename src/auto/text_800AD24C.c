@@ -8474,7 +8474,7 @@ void ScriptCmd_BMapSuspend(void) {
     void *Process_Create(void *, void *);
     void GfxEnt_UnlinkByName(void *);
     void fn_800142D4(void *);
-    void fn_80018AF4(void);
+    void EventLock_Inc(void);
     void *proc;
     s32 saved;
 
@@ -8498,7 +8498,7 @@ void ScriptCmd_BMapSuspend(void) {
     gBMapPlphSaved = saved;
     GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
     fn_800142D4(lbl_80320080);
-    fn_80018AF4();
+    EventLock_Inc();
 }
 
 void fn_800C0818(u8 flag) {
@@ -8601,11 +8601,11 @@ void fn_800C09E4(s32 arg0) {
 
 void fn_800C0A24(void *arg0) {
     void fn_80013778(s32, void *);
-    void fn_80018AF4(void);
+    void EventLock_Inc(void);
     extern u32 gUiInputFlags;
 
     fn_80013778(0, *(void **)((u8 *)arg0 + 0x30));
-    fn_80018AF4();
+    EventLock_Inc();
 
     gUiInputFlags &= ~0x4;
 }
