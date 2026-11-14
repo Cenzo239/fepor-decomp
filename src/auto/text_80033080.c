@@ -12,7 +12,7 @@ void Item_Destroy(void);
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 void fn_80033080(void) {
-    void *fn_8001C76C(void *);
+    void *Item_Init(void *);
     void __register_global_object(void *, void (*)(void), void *);
     u8 *base;
     void **slot0;
@@ -29,7 +29,7 @@ void fn_80033080(void) {
     *slot1 = vt;
     *slot0 = vt;
     *slot1 = lbl_80285424;
-    __register_global_object(fn_8001C76C(&lbl_80367278), Item_Destroy, base + 0xdc);
+    __register_global_object(Item_Init(&lbl_80367278), Item_Destroy, base + 0xdc);
 }
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset

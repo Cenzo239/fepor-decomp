@@ -85,8 +85,8 @@ s32 fn_800AD284(s32 arg0, s16 arg1) {
 }
 
 s32 fn_800AD2DC(s32 arg0) {
-    M2C_UNK fn_8001C76C(s32);
-    fn_8001C76C(arg0 + 4);
+    M2C_UNK Item_Init(s32);
+    Item_Init(arg0 + 4);
     return arg0;
 }
 
@@ -5570,7 +5570,7 @@ s32 fn_800BA638(s32 arg0) {
 }
 
 s32 ScriptCmd_GiveItem(u8 arg0, s32 arg1) {
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     void fn_8001D780(void *, s32);
     void Item_Clone(void *, void *);
     void Item_Destroy(void *, s32);
@@ -5589,7 +5589,7 @@ s32 ScriptCmd_GiveItem(u8 arg0, s32 arg1) {
     if ((var_r31 == NULL) || (*(u32 *)((u8 *)var_r31 + 0x188) == 0U)) {
         return 0;
     }
-    fn_8001C76C(sp10);
+    Item_Init(sp10);
     fn_8001D780(sp10, arg1);
     Item_Clone(sp8, sp10);
     Unit_OfferItem(var_r31, sp8, fn_800C0658());

@@ -3905,7 +3905,7 @@ extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
 }
 #pragma cplusplus reset
 void fn_8018EBC0(void *arg0, s32 arg1) {
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     s32 UnitRef_GetName(void *);
     void UnitRef_Set(void *, s32);
     void Item_Destroy(void *, s32);
@@ -3920,7 +3920,7 @@ void fn_8018EBC0(void *arg0, s32 arg1) {
     s16 half;
     s32 x;
     s32 w;
-    fn_8001C76C(sp8);
+    Item_Init(sp8);
     UnitRef_Set(sp8, *(s32 *)((u8 *)arg0 + 0x40));
     y = *(s16 *)((u8 *)arg0 + 0x44);
     half = (s16)((0x1C - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);

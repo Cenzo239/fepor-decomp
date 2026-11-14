@@ -6,7 +6,7 @@
 extern "C" void fn_80073E70(void) {
 #pragma use_lmw_stmw on
 #pragma opt_propagation off
-    void *fn_8001C76C(void *);
+    void *Item_Init(void *);
     void *Item_Destroy(void *, s16);
     void __register_global_object(s32, s32, void *);
 
@@ -283,7 +283,7 @@ extern "C" void fn_80073E70(void) {
     *(void **)(records + 0x98) = pool + 0x13C;
     record98->table = table875C0;
     lbl_80367464 = table87510;
-    object = fn_8001C76C(lbl_8036746C);
+    object = Item_Init(lbl_8036746C);
     __register_global_object((s32)object, (s32)Item_Destroy, records + 0xA8);
 
     table8748C = lbl_8028748C;

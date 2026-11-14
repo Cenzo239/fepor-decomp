@@ -55,7 +55,7 @@ void *fn_801A7F5C(void *arg0) {
 int fn_801A7FA4(void *arg0)
 {
     void fn_80016F78(void *);
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     void BattleUnit_Reset(void *);
 
     u8 *ptr;
@@ -64,8 +64,8 @@ int fn_801A7FA4(void *arg0)
 
     fn_80016F78(arg0);
 
-    fn_8001C76C(ptr + 0x284);
-    fn_8001C76C(ptr + 0x28C);
+    Item_Init(ptr + 0x284);
+    Item_Init(ptr + 0x28C);
 
     *(u16 *)(ptr + 0x2AE) = 0;
 

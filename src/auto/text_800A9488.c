@@ -1,11 +1,11 @@
 /* Functions from 0x800A9488 to 0x800AD1F4, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
-extern "C" void fn_8001C76C(void *);
+extern "C" void Item_Init(void *);
 extern "C" void Item_Destroy(void *, s32);
 struct ItemABA {
     u32 unk0, unk4;
-    ItemABA() { fn_8001C76C(this); }
+    ItemABA() { Item_Init(this); }
     ~ItemABA() { Item_Destroy(this, -1); }
 };
 #pragma cplusplus reset
@@ -1275,7 +1275,7 @@ void fn_800AB73C(void) {
 }
 
 void fn_800AB75C(void *arg0) {
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     void *Item_Copy(void *, void *);
     void *Item_Destroy(void *, s32);
     void fn_800ABA3C(void *);
@@ -1297,7 +1297,7 @@ void fn_800AB75C(void *arg0) {
                                   + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 9))->flag = 0;
     ((Entry9Bits *)(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3E) << 7)
                                   + ((s8)*(u8 *)((u8 *)self + 0x3F) << 4) + 9))->flag = 0;
-    fn_8001C76C(sp8);
+    Item_Init(sp8);
     Item_Copy(sp8, lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
                                  + ((s8)*(u8 *)((u8 *)self + 0x3D) << 4) + 4);
     Item_Copy(lbl_80312ACC + ((s8)*(u8 *)((u8 *)self + 0x3C) << 7)
@@ -1342,7 +1342,7 @@ extern "C" void *Item_Copy(void *, void *);
 extern "C" void Item_Clear(void *);
 #pragma cplusplus off
 void fn_800ABA3C(void) {
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     void Item_Clear(void *);
     void Item_Destroy(void *, s32);
     extern u8 lbl_80312ACC[];
@@ -1355,7 +1355,7 @@ void fn_800ABA3C(void) {
         u8 *dst;
         s32 i;
         u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item_Init(a[0]); Item_Init(a[1]); Item_Init(a[2]); Item_Init(a[3]);
 
         q = a[0];
         for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
@@ -1381,7 +1381,7 @@ void fn_800ABA3C(void) {
         u8 *dst;
         s32 i;
         u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item_Init(a[0]); Item_Init(a[1]); Item_Init(a[2]); Item_Init(a[3]);
 
         q = a[0];
         for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
@@ -1407,7 +1407,7 @@ void fn_800ABA3C(void) {
         u8 *dst;
         s32 i;
         u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item_Init(a[0]); Item_Init(a[1]); Item_Init(a[2]); Item_Init(a[3]);
 
         q = a[0];
         for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);
@@ -1433,7 +1433,7 @@ void fn_800ABA3C(void) {
         u8 *dst;
         s32 i;
         u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item_Init(a[0]); Item_Init(a[1]); Item_Init(a[2]); Item_Init(a[3]);
 
         q = a[0];
         for(i=0,p=q;i<4;i++,p+=8) Item_Clear(p);

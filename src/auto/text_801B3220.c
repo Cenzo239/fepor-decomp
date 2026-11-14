@@ -4,11 +4,11 @@
 
 void fn_801B3220(void) {
     void *__register_global_object(void *, void (*)(void), void *);
-    void *fn_8001C76C(void *);
+    void *Item_Init(void *);
     void Item_Destroy(void);
     extern u8 lbl_80331C60[];
     extern u8 gUnitRef;
 
-    __register_global_object(fn_8001C76C(&gUnitRef), Item_Destroy, lbl_80331C60);
+    __register_global_object(Item_Init(&gUnitRef), Item_Destroy, lbl_80331C60);
 }
 __declspec(section ".ctors") static void (*const lbl_80267B10)(void) = fn_801B3220;

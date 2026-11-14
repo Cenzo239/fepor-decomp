@@ -1751,7 +1751,7 @@ void *Item_Clone(void *arg0, void *arg1) {
     return arg0;
 }
 
-void *fn_8001C76C(void *arg0) {
+void *Item_Init(void *arg0) {
     void Icon_FreeSlot(void *, s32);
     extern u8 gIconSlots[];
     typedef struct {

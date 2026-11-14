@@ -5638,13 +5638,13 @@ void Item_Destroy(void);
 extern u8 lbl_8032BDDC[];
 M2C_UNK *fn_8010FA2C(void *arg0) {
     s32 Item_Get(s32 arg0);
-    M2C_UNK *fn_8001C76C(M2C_UNK *);
+    M2C_UNK *Item_Init(M2C_UNK *);
     M2C_UNK Item_SetUses(M2C_UNK *, u8);
     M2C_UNK UnitRef_Set(M2C_UNK *, s32);
     M2C_UNK *__register_global_object(M2C_UNK *, M2C_UNK *, M2C_UNK *);
 
     if ((s8) lbl_803679E0 == 0) {
-        __register_global_object(fn_8001C76C(&lbl_803679E4), (M2C_UNK *)Item_Destroy, (M2C_UNK *)lbl_8032BDDC);
+        __register_global_object(Item_Init(&lbl_803679E4), (M2C_UNK *)Item_Destroy, (M2C_UNK *)lbl_8032BDDC);
         lbl_803679E0 = 1;
     }
     UnitRef_Set(&lbl_803679E4, Item_Get(M2C_FIELD(arg0, u8 *, 4)));

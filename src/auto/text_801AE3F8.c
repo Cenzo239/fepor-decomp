@@ -2451,7 +2451,7 @@ void Ui_CreateMainListPanel(void *self) {
 void *Ui_ConfirmChild_Ctor(void *arg0) {
     extern u8 lbl_80291758[];
     void fn_80134E48(void *);
-    void fn_8001C76C(void *);
+    void Item_Init(void *);
     s16 w;
     s16 h;
     s16 w8;
@@ -2460,7 +2460,7 @@ void *Ui_ConfirmChild_Ctor(void *arg0) {
     *(void **)arg0 = lbl_80291758;
     *(u32 *)((u8 *)arg0 + 0x4C) = 0;
     ((u8 *)arg0)[0x50] = 1;
-    fn_8001C76C((u8 *)arg0 + 0x60);
+    Item_Init((u8 *)arg0 + 0x60);
 
     w = (s16)(*(s16 *)((u8 *)arg0 + 0x10) - *(s16 *)((u8 *)arg0 + 0x0C));
     h = (s16)(*(s16 *)((u8 *)arg0 + 0x0E) - *(s16 *)((u8 *)arg0 + 0x0A));

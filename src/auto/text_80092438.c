@@ -1378,14 +1378,14 @@ void Unit_CompactItems(s32 arg0) {
     u32 *var_r23;
     u32 *var_r31;
 
-    fn_8001C76C(&sp28);
-    fn_8001C76C(&sp30);
-    fn_8001C76C(&sp38);
-    fn_8001C76C(&sp40);
-    fn_8001C76C(&sp8);
-    fn_8001C76C(&sp10);
-    fn_8001C76C(&sp18);
-    fn_8001C76C(&sp20);
+    Item_Init(&sp28);
+    Item_Init(&sp30);
+    Item_Init(&sp38);
+    Item_Init(&sp40);
+    Item_Init(&sp8);
+    Item_Init(&sp10);
+    Item_Init(&sp18);
+    Item_Init(&sp20);
     var_r20 = &sp28;
     var_r31 = &sp8;
     var_r23 = var_r20;
@@ -1466,13 +1466,13 @@ s32 fn_80094A08(s32 arg0) {
 s32 fn_80094A54(s32 arg0, s32 arg1)
 {
   M2C_UNK Item_Destroy(M2C_UNK *, M2C_UNK);
-  M2C_UNK fn_8001C76C(M2C_UNK *);
+  M2C_UNK Item_Init(M2C_UNK *);
   M2C_UNK *new_var;
   M2C_UNK fn_8001D780(M2C_UNK *, s32);
   s32 fn_80094ABC(s32, M2C_UNK *);
   M2C_UNK sp8;
   short temp_r31;
-  fn_8001C76C(&sp8);
+  Item_Init(&sp8);
   fn_8001D780(&sp8, arg1);
   new_var = &sp8;
   temp_r31 = fn_80094ABC(arg0, new_var);
