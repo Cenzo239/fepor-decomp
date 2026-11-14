@@ -340,7 +340,7 @@ void fn_8009204C(void *arg0, void *arg1) {
     }
     temp_r5 = *(s32*)((u8*)temp_r31 + 0x5C);
     if (temp_r5 != 0) {
-        fn_8004BE88(temp_r3, 1);
+        Unit_FocusCamera(temp_r3, 1);
         *(u8*)((u8*)temp_r31 + 0x9) = *(u8*)((u8*)arg1 + 0x3C);
         *(s32*)((u8*)temp_r31 + 0xAC) = temp_r3;
         if (*(u32*)((u8*)arg1 + 0x40)) {

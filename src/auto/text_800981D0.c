@@ -147,7 +147,7 @@ void fn_80098524(void **arg0) {
         var = NULL;
     }
     if (var != NULL) {
-        fn_8004BE88(var, 0);
+        Unit_FocusCamera(var, 0);
     }
 }
 

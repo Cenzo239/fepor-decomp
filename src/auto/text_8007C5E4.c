@@ -783,7 +783,7 @@ block_5:
 
 extern u8 gBattleState[1400];
 void fn_8007DF6C(void *arg0) {
-    void fn_8004BE88(s32, s32);
+    void Unit_FocusCamera(s32, s32);
     void Face_ClearSlot(void *);
     void fn_800616A0(void *);
     void fn_800C4588(void *);
@@ -791,7 +791,7 @@ void fn_8007DF6C(void *arg0) {
     void *temp;
 
     temp_r31 = *(void **)((u8 *)arg0 + 0x30);
-    fn_8004BE88(*(s32 *)((u8 *)temp_r31 + 0x58), 1);
+    Unit_FocusCamera(*(s32 *)((u8 *)temp_r31 + 0x58), 1);
     gBattleState[0xA8] = *(u8 *)((u8 *)temp_r31 + 0x9);
     *(s32 *)(gBattleState + 0xAC) = *(s32 *)((u8 *)temp_r31 + 0x58);
 

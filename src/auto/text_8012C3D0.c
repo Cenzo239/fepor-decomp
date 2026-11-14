@@ -723,7 +723,7 @@ void fn_8012D55C(void *arg0) {
 void fn_8012D6A4(void *arg0) {
     void Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void TextBanner_SetString(void *, s32);
     void fn_80057860(void *, s32);
     void fn_80057E6C(void *);
@@ -915,7 +915,7 @@ void fn_8012D6A4(void *arg0) {
                 Ui_PlaySeCue(gUiSelectMenuStrings + 0x186, 0x64);
             }
         } else {
-            fn_8004BE88(item, 1);
+            Unit_FocusCamera(item, 1);
             Process_Goto(self, 0);
         }
     }

@@ -10573,7 +10573,7 @@ f32 Unit_GetAngleTo(void *arg0, void *arg1) {
     return Math_Angle2D(y0, *(f32 *)((char *)arg0 + 8), y1, x1);
 }
 
-void fn_8004BE88(void *arg0, u8 arg1) {
+void Unit_FocusCamera(void *arg0, u8 arg1) {
     void fn_8001885C(void);
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gBattleState[];

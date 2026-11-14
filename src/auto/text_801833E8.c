@@ -1171,7 +1171,7 @@ void fn_80186028(void *arg0) {
 void Mu_HideAtTile(void *arg0) {
     void Unit_SetWorldXY(void *, f32, f32, f32);
     void Unit_SetModelAlpha(void *, s32);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void Process_Goto(void *, s32);
     extern f32 lbl_8036ACD8;
     s32 flags;
@@ -1186,7 +1186,7 @@ void Mu_HideAtTile(void *arg0) {
                     lbl_8036ACD8);
         Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0);
         if (*(u16 *)((u8 *)arg0 + 0x38) & 0x10) {
-            fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
+            Unit_FocusCamera(*(void **)((u8 *)arg0 + 0x30), 0);
         }
         break;
     case 4:
@@ -1199,7 +1199,7 @@ void fn_80186260(void *arg0) {
     s32 fn_8005F894(void *, s32);
     void fn_8005FEE8(void *, f32);
     void Process_Goto(void *, s32);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void *node;
     s32 val;
 
@@ -1216,7 +1216,7 @@ void fn_80186260(void *arg0) {
             break;
         }
         if (*(u16 *)((u8 *)arg0 + 0x38) & 0x10) {
-            fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
+            Unit_FocusCamera(*(void **)((u8 *)arg0 + 0x30), 0);
         }
     }
 }
@@ -2168,7 +2168,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
 void MoveAnim_StartFlagFoot(void *anim) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void fn_8004FC70(void *, s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuFlag_script[];
@@ -2184,7 +2184,7 @@ void MoveAnim_StartFlagFoot(void *anim) {
     /* Optional camera/SFX prep, then restart E_MuFlag and E_MuFoot for this map unit. */
     self = anim;
     if (*(u16 *)((u8 *)self + 0x52) & 0x40) {
-        fn_8004BE88(*(void **)((u8 *)self + 0x30), 0);
+        Unit_FocusCamera(*(void **)((u8 *)self + 0x30), 0);
     }
     if (*(u16 *)((u8 *)self + 0x52) & 0x100) {
         fn_8004FC70(*(void **)((u8 *)self + 0x30), 0xF);
@@ -10796,13 +10796,13 @@ void fn_8019D458(void *arg0) {
 
 void fn_8019D4B4(void *arg0) {
     void *Camera_GetActive(void);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     extern f32 gMapSelectCamZoom;
     void *tmp;
 
     tmp = Camera_GetActive();
     *(f32 *)((u8 *)tmp + 0x70) = gMapSelectCamZoom;
-    fn_8004BE88(*(void **)((u8 *)arg0 + 0x30), 0);
+    Unit_FocusCamera(*(void **)((u8 *)arg0 + 0x30), 0);
 }
 
 void fn_8019D4F4(void *arg0) {

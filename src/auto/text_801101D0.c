@@ -2840,7 +2840,7 @@ void fn_80117CCC(void) {
     void fn_800163F8(void);
     void fn_80016180(void);
     void *Unit_FindByName(void *);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void Camera_SyncFromBattleState(void);
     extern s32 gBattleState[];
     extern u8 lbl_80274508[];
@@ -2851,7 +2851,7 @@ void fn_80117CCC(void) {
     fn_80016180();
     temp_r3 = Unit_FindByName(lbl_80274508 + 0x130);
     if (temp_r3 != 0) {
-        fn_8004BE88(temp_r3, 0);
+        Unit_FocusCamera(temp_r3, 0);
         Camera_SyncFromBattleState();
     }
 }

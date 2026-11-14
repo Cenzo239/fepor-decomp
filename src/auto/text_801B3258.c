@@ -467,7 +467,7 @@ s32 fn_801B61CC(u32 arg0) {
 
 void fn_801B6290(void *arg0) {
     u8 fn_800AA188(void);
-    void fn_8004BE88(void *, s32);
+    void Unit_FocusCamera(void *, s32);
     void Process_Goto(void *, s32);
     extern u8 gBattle[];
     u8 byte;
@@ -501,7 +501,7 @@ void fn_801B6290(void *arg0) {
             }
         }
         if (obj != NULL) {
-            fn_8004BE88(obj, 0);
+            Unit_FocusCamera(obj, 0);
         }
     } else {
         Process_Goto(arg0, 0);
