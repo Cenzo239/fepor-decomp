@@ -1029,7 +1029,8 @@ s16 UnitInv_FindEmptyLow(void *arg0) {
     return ret;
 }
 
-s16 UnitInv_FindEmpty(void *arg0) {
+/* First empty item slot in the range selected by inv+0x60&3 (1:0-3, 2:4-7, 3:0-7), or -1. */
+s16 UnitInv_FindEmpty(void *inv) {
     u32 *Unit_GetItemSlot(s32, s8);
     void *self;
     s32 i;
@@ -1038,7 +1039,7 @@ s16 UnitInv_FindEmpty(void *arg0) {
     s32 start;
     s32 result;
 
-    self = arg0;
+    self = inv;
     switch (*(u32 *)((u8 *)self + 0x60) & 3) {
     case 1:
         start = 0;
