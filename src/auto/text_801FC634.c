@@ -45,7 +45,7 @@ extern u8 lbl_802820B8[];
 extern u32 lbl_80368448;
 
 static u32 sFaceResAddrs[8];
-static u32 lbl_80339308[8];
+static u32 sFaceResIds[8];
 static s16 lbl_80339328[8];
 static s16 lbl_80339338[8];
 
@@ -1581,7 +1581,7 @@ void fn_802001F8(u32 arg0, s32 arg1) {
     for (i = 0; i < 8; i++) {
         if (sFaceResAddrs[i] >= arg0 && arg0 + arg1 > sFaceResAddrs[i]) {
             FileCache_ReleaseSlot(&sFaceResAddrs[i]);
-            lbl_80339308[i] = 0;
+            sFaceResIds[i] = 0;
         }
     }
 }
@@ -1593,7 +1593,7 @@ void fn_80200270(void *arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        if (*p == lbl_80339308[i]) {
+        if (*p == sFaceResIds[i]) {
             lbl_80339328[i] = 2;
             lbl_80339338[i]--;
             return;
@@ -1610,7 +1610,7 @@ void fn_802003FC(void) {
         if (sFaceResAddrs[i] != 0 && lbl_80339338[i] == 0) {
             if (--lbl_80339328[i] == 0) {
                 FileCache_ReleaseSlot(&sFaceResAddrs[i]);
-                lbl_80339308[i] = 0;
+                sFaceResIds[i] = 0;
             }
         }
     }
@@ -1623,11 +1623,11 @@ void fn_80200494(void) {
 
     for (i = 0; i < 8; i++) {
         sFaceResAddrs[i] = 0;
-        lbl_80339308[i] = 0;
+        sFaceResIds[i] = 0;
         lbl_80339328[i] = 0;
         lbl_80339338[i] = 0;
     }
-    Process_Create(E_FaceResMan_script, 2, lbl_80339338, lbl_80339328, (s32 *)lbl_80339308, (s32 *)sFaceResAddrs);
+    Process_Create(E_FaceResMan_script, 2, lbl_80339338, lbl_80339328, (s32 *)sFaceResIds, (s32 *)sFaceResAddrs);
 }
 
 #pragma use_lmw_stmw reset
