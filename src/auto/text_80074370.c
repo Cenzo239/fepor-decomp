@@ -122,7 +122,7 @@ void *fn_8007486C(void *unused, void *arg1)
 void fn_800748E8(void) {
     u64 *Item_GetFlagsPtr(void *);
     void *Unit_GetItemSlot(void *, s32);
-    s32 UnitRef_GetName(void);
+    s32 UnitRef_GetName(void *);
     void sprintf(void *, char *, ...);
     void fn_8000D864(s32, void *);
     void Msg_Expand(char *);
@@ -134,24 +134,23 @@ void fn_800748E8(void) {
     s32 index;
     void *result;
     void *obj;
-    u8 value;
-
-    index = (s8)gUiContext[0xA];
-    if (index == 4) {
-        result = &lbl_8036746C;
-    } else {
-        result = Unit_GetItemSlot(lbl_80367468,
-            ((*Item_GetFlagsPtr(&lbl_8036746C) & 5ULL) ? 0 : 4) + index);
+    u64 flags;
+    void *unit;
+    s32 offset;
+    index = gUiContext[0xA];
+    index = (s8)index;
+    if (index == 4) result = &lbl_8036746C;
+    else {
+        flags = *Item_GetFlagsPtr(&lbl_8036746C);
+        unit = lbl_80367468;
+        offset = (flags & 5ULL) ? 0 : 4;
+        result = Unit_GetItemSlot(unit, offset + index);
     }
     obj = *(void **)result;
-    if (obj != NULL) {
-        value = *((u8 *)obj + 0x15);
-    } else {
-        value = 0;
-    }
-    sprintf(lbl_80312010, lbl_8026C0B8 + 0x122, (u8)value + 0x60, UnitRef_GetName());
-    fn_8000D864(0, lbl_80312010);
-    Msg_Expand(lbl_8026C0B8 + 0x12B);
+    if(obj) index=*((u8 *)obj+0x15); else index=0;
+    sprintf(lbl_80312010,lbl_8026C0B8+0x122,(u8)index+0x60,UnitRef_GetName(result));
+    fn_8000D864(0,lbl_80312010);
+    Msg_Expand(lbl_8026C0B8+0x12B);
 }
 
 void fn_800749D4(void) {
@@ -4002,34 +4001,14 @@ void fn_8007BC3C(s32 a, s32 b, s32 c, s32 d, s32 e)
 {
     void fn_8007BD30(s8, s32, s32, s32, s32, s32, s32);
     extern void *gFaceSlots[];
-    void **p;
-    void **q;
-    s32 n;
-
-    p = gFaceSlots;
-    if (*p == NULL) {
-        n = 0;
-    } else {
-        q = p + 1;
-        if (p[1] == NULL) {
-            n = 1;
-        } else if (*++q == NULL) {
-            n = 2;
-        } else if (*++q == NULL) {
-            n = 3;
-        } else if (*++q == NULL) {
-            n = 4;
-        } else if (*++q == NULL) {
-            n = 5;
-        } else if (*++q == NULL) {
-            n = 6;
-        } else if (q[1] == NULL) {
-            n = 7;
-        } else {
-            n = -1;
-        }
+    void **p = gFaceSlots;
+    s32 n, i;
+    for(i=0; i<8; i++,p++) {
+        if(*p == NULL) { n=i; goto found; }
     }
-    fn_8007BD30((s8)n, a, b, c, d, 0, e);
+    n=-1;
+found:
+    fn_8007BD30((s8)n,a,b,c,d,0,e);
 }
 
 void fn_8007C018(void *arg0) {
