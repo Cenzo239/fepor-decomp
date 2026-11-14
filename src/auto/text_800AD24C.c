@@ -8157,24 +8157,25 @@ s32 fn_800BFECC(void *arg0)
     return *(void **)(unit + 0x188) == value;
 }
 
-s32 Event_StartCallerKind2(s32 arg0) {
+/* If any kind-2 event entry has its flag set, start E_EventCaller under parent and return 1. */
+s32 Event_StartCallerKind2(s32 parent) {
     void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void *Event_GetString(void *, u32);
     u8 EventFlag_IsSet(void *, void *);
     s32 EventEntry_FlagIsSet(s32);
     u8 *entry;
-    u8 *base;
+    u8 *flagBase;
     u8 found;
-    void *obj;
+    void *proc;
     s32 kind;
 
     kind = 2;
     entry = Event_NextEntry(0);
-    base = (u8 *)gBattleState + 0xB4;
+    flagBase = (u8 *)gBattleState + 0xB4;
     while (entry != 0) {
         if (entry[0xC] == kind) {
-            if (EventFlag_IsSet(base, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14))) != 0) {
+            if (EventFlag_IsSet(flagBase, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14))) != 0) {
                 found = 1;
                 goto check;
             }
@@ -8186,9 +8187,9 @@ check:
     if (found == 0) {
         return 0;
     }
-    obj = Process_CreateChild(E_EventCaller_script, arg0);
-    *(s32 *)((u8 *)obj + 0x34) = 2;
-    *(s32 *)((u8 *)obj + 0x38) = (s32)EventEntry_FlagIsSet;
+    proc = Process_CreateChild(E_EventCaller_script, parent);
+    *(s32 *)((u8 *)proc + 0x34) = 2;
+    *(s32 *)((u8 *)proc + 0x38) = (s32)EventEntry_FlagIsSet;
     return 1;
 }
 
