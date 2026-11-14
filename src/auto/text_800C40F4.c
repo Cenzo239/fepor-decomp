@@ -18154,7 +18154,7 @@ void fn_800F8390(void *arg0)
     lbl_803678F0 = 1;
 }
 
-void fn_800F8464(void *arg0)
+void AiCmd_SeekLabel(void *arg0)
 {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
