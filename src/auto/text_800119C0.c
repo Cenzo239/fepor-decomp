@@ -327,13 +327,13 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
 
 #pragma scheduling reset
 u32 Event_NextEntry(void *arg0) {
-    extern void *lbl_80367190;
+    extern void *gCmScriptList;
     void *owner;
     void *p;
     u32 ret;
 
     if (arg0 == NULL) {
-        return **(u32 **)((u8 *)lbl_80367190 + 0x28);
+        return **(u32 **)((u8 *)gCmScriptList + 0x28);
     }
     owner = *(void **)((u8 *)arg0 + 8);
     ret = (*(u32 **)((u8 *)owner + 0x28))[*(s16 *)((u8 *)arg0 + 0x10) + 1];
@@ -352,7 +352,7 @@ u32 Event_NextEntry(void *arg0) {
 }
 
 void ScriptCmd_CmWakeupScripts(void) {
-    extern void *lbl_80367190;
+    extern void *gCmScriptList;
     void fn_8000D3EC(void *, void *);
 
     void *name;
@@ -360,7 +360,7 @@ void ScriptCmd_CmWakeupScripts(void) {
     void *entry;
     u8 *node;
 
-    node = (u8 *)lbl_80367190;
+    node = (u8 *)gCmScriptList;
     while (node != NULL) {
         if ((s32)node[0] == 'c' && (s32)node[1] == 'm' &&
             (s32)node[2] == 'b' && (s32)node[3] == 'S') {
@@ -386,14 +386,14 @@ void ScriptCmd_CmWakeupScripts(void) {
 
 s32 ScriptCmd_CmSleepScript(char *arg0) {
     void fn_8000D1D0(u32);
-    extern void *lbl_80367190;
+    extern void *gCmScriptList;
     void *node;
     void *last;
     s32 i;
     u32 **list;
 
     if (arg0 == NULL || *arg0 == 0) {
-        last = lbl_80367190;
+        last = gCmScriptList;
         while (M2C_FIELD(last, void **, 0x1C) != NULL) {
             last = M2C_FIELD(last, void **, 0x1C);
         }
@@ -402,7 +402,7 @@ s32 ScriptCmd_CmSleepScript(char *arg0) {
             return 0;
         }
     } else {
-        for (node = lbl_80367190; node != NULL; node = M2C_FIELD(node, void **, 0x1C)) {
+        for (node = gCmScriptList; node != NULL; node = M2C_FIELD(node, void **, 0x1C)) {
             if (Str_Cmp((u8 *)node + 4, arg0) == 0) {
                 goto found;
             }
@@ -425,7 +425,7 @@ found:
 
 s32 ScriptCmd_CmFreeScript(void)
 {
-    extern void *lbl_80367190;
+    extern void *gCmScriptList;
     extern u16 lbl_80367196;
     extern s32 lbl_803671A8;
     extern void fn_8000D1D0(void *);
@@ -439,7 +439,7 @@ s32 ScriptCmd_CmFreeScript(void)
     void *target;
     s32 offset;
 
-    node = (u8 *)lbl_80367190;
+    node = (u8 *)gCmScriptList;
     lbl_803671A8 = 0;
 
     while ((next = *(u8 **)(node + 0x1C)) != 0) {
@@ -471,7 +471,7 @@ s32 ScriptCmd_CmFreeScript(void)
         offset += 4;
     }
 
-    head = (u8 *)lbl_80367190;
+    head = (u8 *)gCmScriptList;
 
     if (head != node) {
         prev = head;
@@ -527,12 +527,12 @@ s32 fn_80014000(s32 arg0, s32 arg1) {
 void *fn_800C4638(s32, void *, s32);
 extern u8 lbl_80267E28[];
 extern s16 lbl_80367194, lbl_80367196, lbl_8036719C, lbl_8036719E;
-extern s32 lbl_803671A8, lbl_80367190;
+extern s32 lbl_803671A8, gCmScriptList;
 extern void *lbl_80367198, *lbl_803671A0;
 void *temp;
 s32 size=arg0<<2;
 lbl_803671A8=0;
-lbl_80367190=0;
+gCmScriptList=0;
 lbl_80367194=arg0;
 lbl_80367196=0;
 temp=fn_800C4638(size,lbl_80267E28,0);
@@ -2459,7 +2459,7 @@ void fn_80016DE0(void) {
 #include "common.h"
 #include "common.h"
 
-extern void* lbl_80367190;
+extern void* gCmScriptList;
 extern u16 lbl_80367196;
 extern s32 lbl_803671A8;
 #include "common.h"

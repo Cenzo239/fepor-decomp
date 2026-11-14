@@ -8201,11 +8201,11 @@ void EventEntry_FlagIsSet(void *arg0) {
 }
 
 u32 fn_800C02D4(void *arg0) {
-    extern void *lbl_80367190;
+    extern void *gCmScriptList;
     u32 ret;
 
     if (arg0 == NULL) {
-        return **(u32 **)((u8 *)lbl_80367190 + 0x28);
+        return **(u32 **)((u8 *)gCmScriptList + 0x28);
     }
     
     ret = (*(u32 **)((u8 *)*(void **)((u8 *)arg0 + 8) + 0x28))[*(s16 *)((u8 *)arg0 + 0x10) + 1];
