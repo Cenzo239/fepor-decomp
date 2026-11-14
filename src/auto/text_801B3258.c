@@ -1148,14 +1148,14 @@ u8 fn_801B78A8(void *arg0) {
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
     u8 fn_800BDD08(void *, u8 *);
-    u8 *fn_800C273C(void *, u16);
+    u8 *Event_GetString(void *, u16);
     extern u8 gBattleState[];
     extern s32 lbl_80368250;
     u8 *temp_r3;
     u8 var_r31;
 
     var_r31 = 0;
-    temp_r3 = fn_800C273C(arg0, (u16)M2C_FIELD(arg0, s16 *, 0x14));
+    temp_r3 = Event_GetString(arg0, (u16)M2C_FIELD(arg0, s16 *, 0x14));
     if (((s8)*temp_r3 != 0) && (fn_800BDD08(gBattleState + 0xB4, temp_r3) == 0)) {
         return 0;
     }

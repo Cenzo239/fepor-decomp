@@ -7746,7 +7746,7 @@ s32 fn_800BE2F4(void) {
 }
 #pragma global_optimizer off
 s32 fn_800BE57C(void *arg0) {
-    void fn_800C273C(void *, u32);
+    void Event_GetString(void *, u32);
     void *Person_GetByPid(void);
     void *Person_Get(s32);
     extern s16 lbl_8031FFC0[];
@@ -7760,9 +7760,9 @@ s32 fn_800BE57C(void *arg0) {
     if (lbl_8031FFC0[0] != *(s16 *)((u8 *)obj + 0x18)) {
         return 0;
     }
-    fn_800C273C(obj, (u16)*(s16 *)((u8 *)obj + 0x14));
+    Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x14));
     v1 = Person_GetByPid();
-    fn_800C273C(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
+    Event_GetString(obj, (u16)*(s16 *)((u8 *)obj + 0x16));
     v2 = Person_GetByPid();
     v3 = Person_Get(lbl_8031FFC0[3]);
     v4 = Person_Get(lbl_8031FFC0[4]);
@@ -7808,7 +7808,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
 
 void fn_800BE728(s32 arg0) {
     void *fn_80013B60(void *);
-    void fn_800C273C(void *, u32);
+    void Event_GetString(void *, u32);
     u8 *entry;
     s32 count;
     s32 kind;
@@ -7824,7 +7824,7 @@ void fn_800BE728(s32 arg0) {
         }
         entry = fn_80013B60(entry);
     }
-    fn_800C273C(entry, (u16)*(s16 *)(entry + 0x16));
+    Event_GetString(entry, (u16)*(s16 *)(entry + 0x16));
 }
 
 s16 fn_800BE798(s32 arg0) {
@@ -7876,7 +7876,7 @@ extern u8 lbl_80317334[];
 extern s32 lbl_80368320;
 void fn_800BE890(s32 arg0) {
     void *fn_80013B60(void *);
-    s32 fn_800C273C(void *, u32);
+    s32 Event_GetString(void *, u32);
     s32 fn_800BDD08(void *, s32, void *);
     u8 *entry;
     s32 count;
@@ -7893,7 +7893,7 @@ void fn_800BE890(s32 arg0) {
         }
         entry = fn_80013B60(entry);
     }
-    fn_800BDD08((u8 *)gBattleState + 0xb4, fn_800C273C(entry, (u16)*(s16 *)(entry + 0x14)), gBattleState);
+    fn_800BDD08((u8 *)gBattleState + 0xb4, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14)), gBattleState);
 }
 
 s32 fn_800BE914(void)
@@ -8002,7 +8002,7 @@ s32 fn_800BF32C(void* arg0, void* arg1, s32 arg2) {
 }
 
 s32 Talk_MatchesUiPair(void *arg0) {
-    void *fn_800C273C(void *, u32);
+    void *Event_GetString(void *, u32);
     u8 fn_800BDD08(void *, void *);
     void *Person_GetByPid(void);
     extern u8 gUiContext[24];
@@ -8012,12 +8012,12 @@ s32 Talk_MatchesUiPair(void *arg0) {
     void *b;
 
     if (fn_800BDD08((u8 *)gBattleState + 0xB4,
-                    fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x1A))) != 0) {
+                    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x1A))) != 0) {
         return 0;
     }
-    fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14));
+    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14));
     v1 = Person_GetByPid();
-    fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x16));
+    Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x16));
     v2 = Person_GetByPid();
     a = *(void **)(*(u8 **)gUiContext + 0x188);
     b = *(void **)(*(u8 **)(gUiContext + 4) + 0x188);
@@ -8127,7 +8127,7 @@ s32 fn_800BFECC(void *arg0)
 {
     extern u8 gBattle[];
 
-    extern void fn_800C273C(void *, u32);
+    extern void Event_GetString(void *, u32);
     extern void *Person_GetByPid(void);
     extern void *Battle_GetActiveCombatant(void *);
 
@@ -8137,7 +8137,7 @@ s32 fn_800BFECC(void *arg0)
 
     index = *(s16 *)((u8 *)arg0 + 0x14);
 
-    fn_800C273C(arg0, (u16)index);
+    Event_GetString(arg0, (u16)index);
 
     value = Person_GetByPid();
 
@@ -8153,7 +8153,7 @@ s32 fn_800BFECC(void *arg0)
 s32 fn_800BFF30(s32 arg0) {
     void *fn_80013B60(void *);
     void *Process_CreateChild(void *, s32);
-    void *fn_800C273C(void *, u32);
+    void *Event_GetString(void *, u32);
     u8 fn_800BDD08(void *, void *);
     s32 fn_800C0190(s32);
     u8 *entry;
@@ -8167,7 +8167,7 @@ s32 fn_800BFF30(s32 arg0) {
     base = (u8 *)gBattleState + 0xB4;
     while (entry != 0) {
         if (entry[0xC] == kind) {
-            if (fn_800BDD08(base, fn_800C273C(entry, (u16)*(s16 *)(entry + 0x14))) != 0) {
+            if (fn_800BDD08(base, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14))) != 0) {
                 found = 1;
                 goto check;
             }
@@ -8187,11 +8187,11 @@ check:
 
 extern s32 lbl_80367FCC;
 void fn_800C0190(void *arg0) {
-    void *fn_800C273C(void *, u16);
+    void *Event_GetString(void *, u16);
     void fn_800BDD08(void *, void *, void *);
     extern u16 gBattleState[700];
 
-    fn_800BDD08((u8 *)gBattleState + 0xB4, fn_800C273C(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14)), gBattleState);
+    fn_800BDD08((u8 *)gBattleState + 0xB4, Event_GetString(arg0, (u16)*(s16 *)((u8 *)arg0 + 0x14)), gBattleState);
 }
 
 u32 fn_800C02D4(void *arg0) {
@@ -9167,7 +9167,7 @@ int fn_800C221C(void* arg0, void* arg1, u32 arg2)
     return 1;
 }
 
-s32 fn_800C273C(void *arg0, u16 arg1) {
+s32 Event_GetString(void *arg0, u16 arg1) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 8), s32 *, 0x24) + arg1;
 }
 
