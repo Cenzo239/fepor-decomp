@@ -349,19 +349,20 @@ void Status_Clear(s32 *arg0, u8 arg1) {
     *p |= 1 << n;
 }
 
-void Status_OrByName(s32 *arg0, s32 arg1) {
+/* Set the status bit whose Res entry name matches name (ids 0..0x61). */
+void Status_OrByName(s32 *bits, s32 name) {
     s32 *Res_GetEntry(u8);
     s32 Str_Cmp(s32, s32);
     u8 i;
     u32 *p;
     s32 n;
 
-    if (arg1 != 0) {
+    if (name != 0) {
         for (i = 0; i < 0x62; i++) {
-            if (Str_Cmp(arg1, *Res_GetEntry(i)) == 0) {
+            if (Str_Cmp(name, *Res_GetEntry(i)) == 0) {
                 n = i;
                 if (n >= 0) {
-                    p = (u32 *)arg0;
+                    p = (u32 *)bits;
                     while (n >= 32) {
                         p++;
                         n -= 32;
