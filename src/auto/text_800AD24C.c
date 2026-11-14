@@ -7723,23 +7723,24 @@ void fn_800BE228(s32 *arg0) {
 
 #pragma global_optimizer off
 s32 Battle_CheckEndFlags(void) {
+    /* If chapter-end event flags are set, jump BMapMain and tear down CP phase gfx. */
     u8 EventFlag_IsSet(void *, void *);
     void BMapMain_Goto(s32);
     void GfxEnt_UnlinkByName(void *);
     void Process_UnlinkByKey(void *);
     extern u8 gMapEventFlagNames[];
     extern u8 Proc_CpPhaseMain[];
-    void *obj;
+    void *flags;
 
-    obj = (u8 *)gBattleState + 0xB4;
-    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0xF9) != 0) {
+    flags = (u8 *)gBattleState + 0xB4;
+    if (EventFlag_IsSet(flags, gMapEventFlagNames + 0xF9) != 0) {
         BMapMain_Goto(3);
     }
-    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0x105) != 0) {
+    if (EventFlag_IsSet(flags, gMapEventFlagNames + 0x105) != 0) {
         BMapMain_Goto(1);
     }
-    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0xF9) != 0 ||
-        EventFlag_IsSet(obj, gMapEventFlagNames + 0x105) != 0) {
+    if (EventFlag_IsSet(flags, gMapEventFlagNames + 0xF9) != 0 ||
+        EventFlag_IsSet(flags, gMapEventFlagNames + 0x105) != 0) {
         GfxEnt_UnlinkByName(gMapEventFlagNames + 0x111);
         Process_UnlinkByKey(Proc_CpPhaseMain);
         return 1;
