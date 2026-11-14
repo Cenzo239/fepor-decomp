@@ -19517,7 +19517,7 @@ s32 Ai_ExecUnit(void *arg0) {
     u8 Ai_GetFactionBehavior(void *);
     void Ai_BehaviorNop(void *);
     void Ai_TryApproachIke(void *);
-    void fn_80182AC4(void *);
+    void Ai_TryCombatHostiles(void *);
     void fn_80182A0C(void *);
     void fn_80182704(void *);
     void fn_80182670(void *);
@@ -19533,7 +19533,7 @@ s32 Ai_ExecUnit(void *arg0) {
         Ai_TryApproachIke(arg0);
         break;
     case 2:
-        fn_80182AC4(arg0);
+        Ai_TryCombatHostiles(arg0);
         break;
     case 3:
         fn_80182A0C(arg0);
