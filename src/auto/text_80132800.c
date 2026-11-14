@@ -7324,7 +7324,7 @@ extern "C" void fn_8013F0F0(void *arg0, void *arg1) {
         virtual void destroy(s32) = 0;
         s32 refcount;
     };
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     u32 ret;
     void *found;
     u8 *sentinel;
@@ -7339,7 +7339,7 @@ extern "C" void fn_8013F0F0(void *arg0, void *arg1) {
         if (node != sentinel) {
             found = node;
             *(s32 *)((u8 *)arg1 + 0x38) = 0;
-            fn_8013FC68(&ret, (u8 *)arg0 + 0x3C, &found);
+            List_Erase(&ret, (u8 *)arg0 + 0x3C, &found);
             if (arg1 != NULL) {
                 if (--((Obj *)arg1)->refcount == 0) {
                     if (arg1 != NULL) {
@@ -7554,7 +7554,7 @@ void fn_8013FC64(void) {
 
 }
 
-void fn_8013FC68(ListIter *ret, List *list, ListIter *it) {
+void List_Erase(ListIter *ret, List *list, ListIter *it) {
     ListNode *node = it->node;
     ListNode *next = node->next;
     ListNode *prev = node->prev;
@@ -7710,7 +7710,7 @@ void fn_8013FEF0(void) {
 }
 
 void Ui_BringChildToFront(void *arg0, void *arg1) {
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_8013FCE0(void *, void *, void *, void *);
 
     u8 *self;
@@ -7744,7 +7744,7 @@ void Ui_BringChildToFront(void *arg0, void *arg1) {
         if (node != sentinel) {
             found = node;
 
-            fn_8013FC68(
+            List_Erase(
                 &temp14,
                 self + 0x34,
                 &found
@@ -7823,7 +7823,7 @@ extern "C" void Ui_RemoveChild(void *arg0, void *arg1) {
         virtual void destroy(s32) = 0;
         s32 refcount;
     };
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void *found;
     u32 ret;
     u8 *node;
@@ -7837,7 +7837,7 @@ extern "C" void Ui_RemoveChild(void *arg0, void *arg1) {
         }
         if (node != sentinel) {
             found = node;
-            fn_8013FC68(&ret, (u8 *)arg0 + 0x34, &found);
+            List_Erase(&ret, (u8 *)arg0 + 0x34, &found);
             if (arg1 != NULL) {
                 if (--((Obj *)arg1)->refcount == 0) {
                     if (arg1 != NULL) {
@@ -7945,7 +7945,7 @@ extern "C" void *Ui_DtorPanelBase(void *self, s16 doFree) {
         u8 pad[0x34];
         DtorList list;
     } Owner;
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
     void Heap_Free(void *);
 
@@ -7968,7 +7968,7 @@ extern "C" void *Ui_DtorPanelBase(void *self, s16 doFree) {
                 }
             }
             found = owner->list.node.prev;
-            fn_8013FC68(ret, &owner->list, &found);
+            List_Erase(ret, &owner->list, &found);
         }
         if (&owner->list != NULL) {
             if (&owner->list != NULL) {
@@ -8008,7 +8008,7 @@ extern "C" void fn_801405E0(void *arg0) {
         u8 pad[0x34];
         DtorList list;
     } Owner;
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
 
     void *found;
@@ -8031,7 +8031,7 @@ extern "C" void fn_801405E0(void *arg0) {
                     }
                 }
                 found = a0->list.node.prev;
-                fn_8013FC68(ret, &a0->list, &found);
+                List_Erase(ret, &a0->list, &found);
             }
             if (&a0->list != NULL) {
                 if (&a0->list != NULL) {
@@ -8088,7 +8088,7 @@ extern "C" void Ui_ClearPanelChildren(void *arg0) {
         u8 pad[0x34];
         DtorList list;
     } Owner;
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
 
     void *found;
@@ -8111,7 +8111,7 @@ extern "C" void Ui_ClearPanelChildren(void *arg0) {
                     }
                 }
                 found = a0->list.node.prev;
-                fn_8013FC68(ret, &a0->list, &found);
+                List_Erase(ret, &a0->list, &found);
             }
             if (&a0->list != NULL) {
                 if (&a0->list != NULL) {
@@ -8187,7 +8187,7 @@ extern "C" void fn_801411AC(void *arg0) {
         u8 pad[0x34];
         DtorList list;
     } Owner;
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
 
     void *found;
@@ -8210,7 +8210,7 @@ extern "C" void fn_801411AC(void *arg0) {
                     }
                 }
                 found = a0->list.node.prev;
-                fn_8013FC68(ret, &a0->list, &found);
+                List_Erase(ret, &a0->list, &found);
             }
             if (&a0->list != NULL) {
                 if (&a0->list != NULL) {
@@ -8241,7 +8241,7 @@ void fn_80141630(void *arg0, s32 arg1) {
     extern f32 lbl_8036A730;
     extern f32 lbl_8036A740;
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    void *fn_8013FC68(void *, s32, void **);
+    void *List_Erase(void *, s32, void **);
     void *fn_80140B04(s32);
     void fn_801418A0(void *);
     char buf[0x40];
@@ -8249,7 +8249,7 @@ void fn_80141630(void *arg0, s32 arg1) {
     (void)lbl_8036A730;
     (void)lbl_8036A740;
     (void)Math_Ease;
-    (void)fn_8013FC68;
+    (void)List_Erase;
     (void)fn_80140B04;
     (void)fn_801418A0;
     (void)buf;
@@ -8272,7 +8272,7 @@ extern "C" void fn_801418A0(void *arg0) {
         u8 pad[0x34];
         DtorList list;
     } Owner;
-    void fn_8013FC68(void *, void *, void *);
+    void List_Erase(void *, void *, void *);
     void fn_80136F2C(void *, void *, void *, void *);
 
     void *found;
@@ -8295,7 +8295,7 @@ extern "C" void fn_801418A0(void *arg0) {
                     }
                 }
                 found = a0->list.node.prev;
-                fn_8013FC68(ret, &a0->list, &found);
+                List_Erase(ret, &a0->list, &found);
             }
             if (&a0->list != NULL) {
                 if (&a0->list != NULL) {
