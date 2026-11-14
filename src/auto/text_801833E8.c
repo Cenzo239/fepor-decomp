@@ -639,7 +639,7 @@ void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
     void *Process_Create(void *, u32);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
-    extern u8 lbl_80295AC0[];
+    extern u8 E_MuFlash_script[];
     u8 spC[0x44];
     u32 sp8;
     u32 var_r31;
@@ -648,11 +648,11 @@ void *fn_80184688(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
 
     var_r31 = arg3;
     M2C_FIELD(spC, void **, 0x30) = (void *)arg0;
-    GfxEnt_ForEachKey(lbl_80295AC0, MuFade_UnlinkSame, spC);
+    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, spC);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = Process_Create(lbl_80295AC0, var_r31);
+    temp_r3 = Process_Create(E_MuFlash_script, var_r31);
     M2C_FIELD(temp_r3, s32 *, 0x30) = arg0;
     M2C_FIELD(temp_r3, s32 *, 0x40) = arg2;
     sp8 = Mu_GetFlashColor(arg1);
