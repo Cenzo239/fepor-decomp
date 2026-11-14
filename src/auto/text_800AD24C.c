@@ -3654,14 +3654,14 @@ s32 fn_800B727C(void) {
     void fn_801E3654(void *, s32);
     void fn_800C4588(s32);
     extern u8 gBattleState[];
-    extern s32 lbl_80367840;
+    extern s32 gUnitSaveBuf;
     u8 sp[0x78];
 
     fn_800BDED8(gBattleState + 0xB4);
     fn_800162B8();
-    fn_801E3654(sp, lbl_80367840);
-    fn_800C4588(lbl_80367840);
-    lbl_80367840 = 0;
+    fn_801E3654(sp, gUnitSaveBuf);
+    fn_800C4588(gUnitSaveBuf);
+    gUnitSaveBuf = 0;
     return 1;
 }
 
@@ -3683,10 +3683,10 @@ s32 fn_800B72CC(void) {
     extern u8 gMapObjEventList[];
     extern u8 gBattleState[];
     extern u8 gBattle[];
-    extern s32 lbl_80367840;
+    extern s32 gUnitSaveBuf;
     u8 sp[0x70];
 
-    fn_801E38E0(sp, lbl_80367840 = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0));
+    fn_801E38E0(sp, gUnitSaveBuf = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0));
     fn_800162B8();
     fn_801A7CDC(gBattle);
     fn_80016DE0();
@@ -3706,7 +3706,7 @@ s32 fn_800B7378(void) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
     extern u8 gIconSlots[];
-    extern s32 lbl_80367840;
+    extern s32 gUnitSaveBuf;
     struct {
         s32 handle;
         u8 pad4[8];
@@ -3716,13 +3716,13 @@ s32 fn_800B7378(void) {
     } obj;
 
     fn_800162B8();
-    fn_8017A7D4(&obj, lbl_80367840);
+    fn_8017A7D4(&obj, gUnitSaveBuf);
     fn_80016628(&obj);
     fn_800C2930(gIconSlots, &obj);
     fn_800163F8();
     fn_80016180();
-    fn_800C4588(lbl_80367840);
-    lbl_80367840 = 0;
+    fn_800C4588(gUnitSaveBuf);
+    gUnitSaveBuf = 0;
     obj.vtbl = lbl_802842B8;
     obj.vtbl = lbl_802842A4;
     if (obj.owned) {
@@ -3741,7 +3741,7 @@ s32 fn_800B7410(void) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_802842B8[];
     extern u8 gIconSlots[];
-    extern s32 lbl_80367840;
+    extern s32 gUnitSaveBuf;
     struct {
         s32 handle;
         u8 pad4[8];
@@ -3751,14 +3751,14 @@ s32 fn_800B7410(void) {
     } obj;
 
     fn_800162B8();
-    fn_8017A7D4(&obj, lbl_80367840);
+    fn_8017A7D4(&obj, gUnitSaveBuf);
     fn_80016628(&obj);
     fn_800C2930(gIconSlots, &obj);
     fn_80023DC0();
     fn_800163F8();
     fn_80016180();
-    fn_800C4588(lbl_80367840);
-    lbl_80367840 = 0;
+    fn_800C4588(gUnitSaveBuf);
+    gUnitSaveBuf = 0;
     obj.vtbl = lbl_802842B8;
     obj.vtbl = lbl_802842A4;
     if (obj.owned) {
@@ -3778,7 +3778,7 @@ s32 fn_800B74AC(void) {
     extern u8 lbl_802842A4[];
     extern u8 lbl_80284C98[];
     extern u8 gIconSlots[];
-    extern s32 lbl_80367840;
+    extern s32 gUnitSaveBuf;
     struct {
         void *start;
         void *cur;
@@ -3797,7 +3797,7 @@ s32 fn_800B74AC(void) {
     *(void **)pw = NULL;
     *(u32 *)(pw + 8) = 0;
     pw[12] = 0;
-    lbl_80367840 = (s32)p;
+    gUnitSaveBuf = (s32)p;
     *(void **)(pw + 16) = lbl_80284C98;
     pw[12] = 0;
     *(void **)pw = p;
@@ -3825,7 +3825,7 @@ extern u8 lbl_8026ECB8[];
 extern u8 lbl_802842A4[];
 extern u8 lbl_80284C98[];
 extern u8 gIconSlots[];
-extern s32 lbl_80367840;
+extern s32 gUnitSaveBuf;
 struct { void *start; void *cur; u32 size; u8 owned; u8 pad[3]; void *vtbl; } w;
 u8 *pw;
 void *p;
@@ -3836,7 +3836,7 @@ pw=(u8*)&w;
 *(void **)pw=NULL;
 *(u32*)(pw+8)=0;
 pw[12]=0;
-lbl_80367840=(s32)p;
+gUnitSaveBuf=(s32)p;
 *(void **)(pw+16)=lbl_80284C98;
 pw[12]=0;
 *(void **)pw=p;
