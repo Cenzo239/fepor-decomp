@@ -11095,26 +11095,47 @@ extern "C" void fn_80147188(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void SeCue_FadeOut(s8 arg0, s16 arg1) {
-struct Obj { u8 pad[8]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; };
-extern u8 gSeCueSlots[1344]; extern f32 gMsPerFrame;
-Anim *entry; s16 duration; u8 flags; s32 off; u8 *flags_ptr;
-if(arg0<0)return;
-off=arg0*0x30;
-flags_ptr=(u8*)((s32)gSeCueSlots+off);
-flags=*(flags_ptr+=0xc);
-if(!(flags&1))return;
-if(arg1<=0){((Obj*)(gSeCueSlots+off))->v2();return;}
-if(!(flags&8)){
-duration=(s16)(s32)((f32)arg1/gMsPerFrame);
-if(duration<=0)duration=1;
-entry=(Anim*)((u32)gSeCueSlots+off);
-entry->start=entry->cur;
-entry->end=0;
-entry->frames=duration;
-entry->frame=0;
-*flags_ptr|=8;
-}
+/* Fade an active SE cue slot to silence over durationMs (immediate stop if <= 0). */
+extern "C" void SeCue_FadeOut(s8 slot, s16 durationMs) {
+    struct Obj {
+        u8 pad[8];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+    };
+    extern u8 gSeCueSlots[1344];
+    extern f32 gMsPerFrame;
+    Anim *entry;
+    s16 duration;
+    u8 flags;
+    s32 off;
+    u8 *flags_ptr;
+
+    if (slot < 0) {
+        return;
+    }
+    off = slot * 0x30;
+    flags_ptr = (u8 *)((s32)gSeCueSlots + off);
+    flags = *(flags_ptr += 0xc);
+    if (!(flags & 1)) {
+        return;
+    }
+    if (durationMs <= 0) {
+        ((Obj *)(gSeCueSlots + off))->v2();
+        return;
+    }
+    if (!(flags & 8)) {
+        duration = (s16)(s32)((f32)durationMs / gMsPerFrame);
+        if (duration <= 0) {
+            duration = 1;
+        }
+        entry = (Anim *)((u32)gSeCueSlots + off);
+        entry->start = entry->cur;
+        entry->end = 0;
+        entry->frames = duration;
+        entry->frame = 0;
+        *flags_ptr |= 8;
+    }
 }
 #pragma cplusplus reset
 
