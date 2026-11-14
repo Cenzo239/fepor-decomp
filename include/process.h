@@ -31,4 +31,6 @@ typedef struct Process {
 #define PROCESS_FLAG_LOCKED      0x02
 #define PROCESS_FLAG_SYNC_PARENT 0x04 /* wait while parent->lock_cnt != 0 */
 
+#define PROCESS_POOL_COUNT 256
+
 #endif
