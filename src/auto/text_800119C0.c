@@ -326,7 +326,7 @@ s32 Script_RegisterCommand(void *arg0, void *arg1, u8 arg2)
 }
 
 #pragma scheduling reset
-u32 fn_80013B60(void *arg0) {
+u32 Event_NextEntry(void *arg0) {
     extern void *lbl_80367190;
     void *owner;
     void *p;

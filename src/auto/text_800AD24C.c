@@ -7782,7 +7782,7 @@ s32 fn_800BE57C(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_800BE658(s32 arg0, s32 arg1) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void fn_800BDBC8(void *, void *);
     extern u8 lbl_8031FFC0[];
@@ -7794,7 +7794,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
     s32 kind;
     void *tmp;
 
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     count = 0;
     kind = 0xE;
     while (entry != 0) {
@@ -7803,7 +7803,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
                 break;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     lbl_8031FFC0[0xA] = 0;
     tmp = Process_CreateChild(lbl_8028D4F8, arg1);
@@ -7813,14 +7813,14 @@ void fn_800BE658(s32 arg0, s32 arg1) {
 }
 
 void fn_800BE728(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void Event_GetString(void *, u32);
     u8 *entry;
     s32 count;
     s32 kind;
 
     kind = 0xE;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     count = 0;
     while (entry != 0) {
         if (entry[0xC] == kind) {
@@ -7828,19 +7828,19 @@ void fn_800BE728(s32 arg0) {
                 break;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     Event_GetString(entry, (u16)*(s16 *)(entry + 0x16));
 }
 
 s16 fn_800BE798(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     u8 *entry;
     s32 count;
     s32 kind;
 
     kind = 0xE;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     count = 0;
     while (entry != 0) {
         if (entry[0xC] == kind) {
@@ -7848,13 +7848,13 @@ s16 fn_800BE798(s32 arg0) {
                 break;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     return *(s16 *)(entry + 0x18);
 }
 
 s32 fn_800BE800(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void fn_80013778(s32, void *);
     s32 fn_80013880(void);
     extern u8 lbl_8031FFC0[];
@@ -7863,7 +7863,7 @@ s32 fn_800BE800(s32 arg0) {
     s32 kind;
 
     kind = 0xE;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     count = 0;
     while (entry != 0) {
         if (entry[0xC] == kind) {
@@ -7871,7 +7871,7 @@ s32 fn_800BE800(s32 arg0) {
                 break;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     lbl_8031FFC0[0xa] = 1;
     fn_80013778(0, entry);
@@ -7881,7 +7881,7 @@ s32 fn_800BE800(s32 arg0) {
 extern u8 lbl_80317334[];
 extern s32 lbl_80368320;
 void fn_800BE890(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     s32 Event_GetString(void *, u32);
     s32 EventFlag_IsSet(void *, s32, void *);
     u8 *entry;
@@ -7889,7 +7889,7 @@ void fn_800BE890(s32 arg0) {
     s32 kind;
 
     kind = 0xE;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     count = 0;
     while (entry != 0) {
         if (entry[0xC] == kind) {
@@ -7897,27 +7897,27 @@ void fn_800BE890(s32 arg0) {
                 break;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     EventFlag_IsSet((u8 *)gBattleState + 0xb4, Event_GetString(entry, (u16)*(s16 *)(entry + 0x14)), gBattleState);
 }
 
 s32 fn_800BE914(void)
 {
-  void *fn_80013B60(void *);
+  void *Event_NextEntry(void *);
   u8 *entry;
   s32 count;
   int new_var;
   count = 0;
   new_var = 0xE;
-  entry = (u8 *) fn_80013B60(0);
+  entry = (u8 *) Event_NextEntry(0);
   while (entry != 0)
   {
     if (entry[0xC] == new_var)
     {
       count++;
     }
-    entry = (u8 *) fn_80013B60(entry);
+    entry = (u8 *) Event_NextEntry(entry);
   }
 
   return count;
@@ -8038,7 +8038,7 @@ s32 Talk_MatchesUiPair(void *entry) {
 }
 
 s32 fn_800BF574(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     s32 fn_800BF694(void);
     u8 *entry;
@@ -8047,13 +8047,13 @@ s32 fn_800BF574(s32 arg0) {
     s32 kind;
 
     kind = 0xF;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     while (entry != 0) {
         if (entry[0xC] == kind) {
             found = 1;
             goto check;
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     found = 0;
 check:
@@ -8067,7 +8067,7 @@ check:
 }
 
 s32 fn_800BF604(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     s32 fn_800BF694(void);
     u8 *entry;
@@ -8076,13 +8076,13 @@ s32 fn_800BF604(s32 arg0) {
     s32 kind;
 
     kind = 0x7;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     while (entry != 0) {
         if (entry[0xC] == kind) {
             found = 1;
             goto check;
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     found = 0;
 check:
@@ -8158,7 +8158,7 @@ s32 fn_800BFECC(void *arg0)
 }
 
 s32 fn_800BFF30(s32 arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, s32);
     void *Event_GetString(void *, u32);
     u8 EventFlag_IsSet(void *, void *);
@@ -8170,7 +8170,7 @@ s32 fn_800BFF30(s32 arg0) {
     s32 kind;
 
     kind = 2;
-    entry = fn_80013B60(0);
+    entry = Event_NextEntry(0);
     base = (u8 *)gBattleState + 0xB4;
     while (entry != 0) {
         if (entry[0xC] == kind) {
@@ -8179,7 +8179,7 @@ s32 fn_800BFF30(s32 arg0) {
                 goto check;
             }
         }
-        entry = fn_80013B60(entry);
+        entry = Event_NextEntry(entry);
     }
     found = 0;
 check:
@@ -8258,29 +8258,29 @@ s32 fn_800C03DC(void *arg0)
 
 s32 fn_800C044C(s32 arg0)
 {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     u8 *entry;
     s32 count;
 
     count = 0;
-    entry = (u8 *)fn_80013B60(0);
+    entry = (u8 *)Event_NextEntry(0);
     while (entry != 0) {
         if ((s8)entry[0xC] == arg0) {
             count++;
         }
-        entry = (u8 *)fn_80013B60(entry);
+        entry = (u8 *)Event_NextEntry(entry);
     }
     return count;
 }
 
 s32 fn_800C04B0(s32 arg0, u8 (*arg1)(void *)) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
 
     s32 count;
     u8 *entry;
 
     count = 0;
-    entry = (u8 *)fn_80013B60(0);
+    entry = (u8 *)Event_NextEntry(0);
 
     while (entry != 0) {
         if ((s8)entry[0xC] == arg0) {
@@ -8289,14 +8289,14 @@ s32 fn_800C04B0(s32 arg0, u8 (*arg1)(void *)) {
             }
         }
 
-        entry = (u8 *)fn_80013B60(entry);
+        entry = (u8 *)Event_NextEntry(entry);
     }
 
     return count;
 }
 
 void fn_800C054C(void *arg0) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     void *Process_CreateChild(void *, void *);
     void fn_800BDBC8(void *, void *);
     void Process_ClearFunc(void *);
@@ -8318,22 +8318,22 @@ void fn_800C054C(void *arg0) {
                 *(void **)((u8 *)tmp + 0x30) = saved;
                 fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
                 gUiInputFlags &= ~1;
-                *(void **)((u8 *)self + 0x30) = fn_80013B60(*(void **)((u8 *)self + 0x30));
+                *(void **)((u8 *)self + 0x30) = Event_NextEntry(*(void **)((u8 *)self + 0x30));
                 if (*(void **)((u8 *)self + 0x30) == 0) {
                     goto destroy;
                 }
                 return;
             }
         }
-        *(void **)((u8 *)self + 0x30) = fn_80013B60(*(void **)((u8 *)self + 0x30));
+        *(void **)((u8 *)self + 0x30) = Event_NextEntry(*(void **)((u8 *)self + 0x30));
     }
 destroy:
     Process_ClearFunc(self);
 }
 
 void fn_800C0624(void *arg0) {
-    s32 fn_80013B60(M2C_UNK);
-    M2C_FIELD(arg0, s32 *, 0x30) = fn_80013B60(0);
+    s32 Event_NextEntry(M2C_UNK);
+    M2C_FIELD(arg0, s32 *, 0x30) = Event_NextEntry(0);
 }
 
 int fn_800C0658(void) {
@@ -9100,7 +9100,7 @@ s32 fn_800C1F1C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 }
 
 char *fn_800C2048(s8 arg0, s8 arg1) {
-    void *fn_80013B60(void *);
+    void *Event_NextEntry(void *);
     u8 EventFlag_IsSet(void *, char *);
     s32 Str_Cmp(char *, char *);
     u8 cont;
@@ -9109,7 +9109,7 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
     void *node;
     char *base;
 
-    for (node = fn_80013B60(NULL); node != NULL; node = fn_80013B60(node)) {
+    for (node = Event_NextEntry(NULL); node != NULL; node = Event_NextEntry(node)) {
         if ((s32) M2C_FIELD(node, u8 *, 0xC) == 5 && arg0 == M2C_FIELD(node, s16 *, 0x14) && arg1 == M2C_FIELD(node, s16 *, 0x16)) {
             if (EventFlag_IsSet((u8 *) gBattleState + 0xB4, M2C_FIELD(M2C_FIELD(node, void **, 8), char **, 0x24) + (u16) M2C_FIELD(node, s16 *, 0x1A)) == 0) {
                 p = M2C_FIELD(node, u8 **, 4);
