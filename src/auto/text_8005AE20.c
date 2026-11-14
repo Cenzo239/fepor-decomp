@@ -7665,8 +7665,9 @@ void fn_8006F6A4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
 }
 
 #pragma cplusplus on
+/* Begin Prim2D for a UiWin: transform, fade-tinted color, and lock/pause alpha. */
 extern "C"
-void UiWin_SetupPrim2D(void *arg0, void *arg1) {
+void UiWin_SetupPrim2D(void *unused, void *win) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -7704,22 +7705,22 @@ void UiWin_SetupPrim2D(void *arg0, void *arg1) {
     };
     extern f32 lbl_803692E0;
     extern f32 lbl_803692F8;
-    s32 flag;
-    s32 val;
+    s32 idle;
+    s32 alpha;
 
     Prim2D_Begin();
-    Prim2D_SetTransform((f32)M2C_FIELD(arg1, s16 *, 0x30), (f32)M2C_FIELD(arg1, s16 *, 0x32),
-                M2C_FIELD(arg1, Model **, 0x3C)->v25(), lbl_803692E0);
-    Prim2D_SetColorByte((s32)(lbl_803692F8 * UiWin_GetFade(arg1)));
-    flag = 0;
-    if ((u8)M2C_FIELD(arg1, u8 *, 0x2D) == 0 && (u8)M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
-        flag = 1;
+    Prim2D_SetTransform((f32)M2C_FIELD(win, s16 *, 0x30), (f32)M2C_FIELD(win, s16 *, 0x32),
+                M2C_FIELD(win, Model **, 0x3C)->v25(), lbl_803692E0);
+    Prim2D_SetColorByte((s32)(lbl_803692F8 * UiWin_GetFade(win)));
+    idle = 0;
+    if ((u8)M2C_FIELD(win, u8 *, 0x2D) == 0 && (u8)M2C_FIELD(win, u8 *, 0x2E) == 0) {
+        idle = 1;
     }
-    val = 0x58;
-    if ((u8)flag != 0) {
-        val = 0x80;
+    alpha = 0x58;
+    if ((u8)idle != 0) {
+        alpha = 0x80;
     }
-    Prim2D_SetAlphaByte((u8)val);
+    Prim2D_SetAlphaByte((u8)alpha);
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
