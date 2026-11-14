@@ -136,7 +136,7 @@ void fn_801A8268(void *arg0) {
     s32 Unit_GetCarryWtLimit(void *);
     s32 UnitRef_GetName(void *);
     s32 Unit_FormatAttrFlags(void *);
-    extern u8 lbl_8027B650[];
+    extern u8 gBattleDebugMsgs[];
     extern u16 lbl_80367218;
     s8 g, e, f, d, c, b, a;
     s8 t;
@@ -151,19 +151,19 @@ void fn_801A8268(void *arg0) {
     void *slot;
 
     p = *(void **)((u8 *)arg0 + 0x188);
-    DebugPrint((const char *)(lbl_8027B650 + 0x1D),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x1D),
                 Msg_ResolveName(p), *(void **)p);
     p = *(void **)((u8 *)arg0 + 0x18C);
-    DebugPrint((const char *)(lbl_8027B650 + 0x29),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x29),
                 fn_800A8978(p), *(void **)p);
 
     v1a8 = *(s8 *)((u8 *)arg0 + 0x1A8);
     v19a = *(s8 *)((u8 *)arg0 + 0x19A);
     t = Unit_GetMaxHp(arg0);
-    DebugPrint((const char *)(lbl_8027B650 + 0x35),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x35),
                 v19a, fn_800386B0(arg0), v1a8, t);
 
-    DebugPrint((const char *)(lbl_8027B650 + 0x49),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x49),
                 *(s8 *)((u8 *)arg0 + 0x19E), *(s8 *)((u8 *)arg0 + 0x19F));
 
     a = fn_8003A778(arg0);
@@ -173,16 +173,16 @@ void fn_801A8268(void *arg0) {
     e = fn_8003AF28(arg0);
     f = Unit_GetMagAtk(arg0);
     g = Unit_GetCarryWtLimit(arg0);
-    DebugPrint((const char *)(lbl_8027B650 + 0x57),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x57),
                 g, f, e, d, c, b, a);
 
-    DebugPrint((const char *)(lbl_8027B650 + 0x82),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x82),
                 *(s16 *)((u8 *)arg0 + 0x298), *(s16 *)((u8 *)arg0 + 0x29A),
                 *(s16 *)((u8 *)arg0 + 0x29C), *(s16 *)((u8 *)arg0 + 0x29E));
-    DebugPrint((const char *)(lbl_8027B650 + 0xA3),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xA3),
                 *(s16 *)((u8 *)arg0 + 0x2A0), *(s16 *)((u8 *)arg0 + 0x2A4),
                 *(s16 *)((u8 *)arg0 + 0x2A6));
-    DebugPrint((const char *)(lbl_8027B650 + 0xC0),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xC0),
                 *(s16 *)((u8 *)arg0 + 0x2A2), *(s16 *)((u8 *)arg0 + 0x2A8));
 
     flag = *((u8 *)arg0 + 0x2C8);
@@ -209,10 +209,10 @@ void fn_801A8268(void *arg0) {
     } else {
         base = (u8 *)arg0 + 0x284;
     }
-    DebugPrint((const char *)(lbl_8027B650 + 0xD9),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xD9),
                 UnitRef_GetName(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    DebugPrint((const char *)(lbl_8027B650 + 0xEC),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xEC),
                 *(s16 *)((u8 *)arg0 + 0x2C2), *(s16 *)((u8 *)arg0 + 0x2C4));
 
     flag = *((u8 *)arg0 + 0x2C8);
@@ -236,14 +236,14 @@ void fn_801A8268(void *arg0) {
     }
     b26 = (u8)tmp;
     ret = UnitRef_GetName(slot);
-    DebugPrint((const char *)(lbl_8027B650 + 0x100),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x100),
                 ret, b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    DebugPrint((const char *)(lbl_8027B650 + 0x114),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x114),
                 Unit_FormatAttrFlags((u8 *)arg0 + 0x2AE));
-    DebugPrint((const char *)(lbl_8027B650 + 0x121),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x121),
                 Unit_FormatAttrFlags((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
-    DebugPrint((const char *)(lbl_8027B650 + 0x12E));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x12E));
 }
 void fn_801A859C(void *arg0) {
     s8 temp;
@@ -303,7 +303,7 @@ void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
     s32 Unit_AddWpnExp(void *);
     u8 Unit_GetWpnExp(void *, u8);
     s32 DebugPrint(const char *, ...);
-    extern u8 lbl_8027B650[];
+    extern u8 gBattleDebugMsgs[];
     void *slot;
     void *p;
     u8 kind;
@@ -321,7 +321,7 @@ void BattleUnit_GainWpnExp(void *arg0, void *arg1) {
         return;
     }
     *(u8 *)((u8 *)arg0 + 0x2C6) |= Unit_AddWpnExp(arg0);
-    DebugPrint((const char *)(lbl_8027B650 + 0x16A),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x16A),
                 Unit_GetWpnExp(arg0, ((p = *(void **)slot) != NULL) ? *(u8 *)((u8 *)p + 0x12) : 0xC));
 }
 
