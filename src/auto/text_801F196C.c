@@ -1542,7 +1542,8 @@ void CardLink_ApplyBonus(void *proc) {
     Process_UnlinkByKey(&gCardLinkProc);
 }
 
-void CardLink_UpdateScanWait(void *arg0) {
+/* While waiting on a card-link scan: end when status is 2, or cancel on B. */
+void CardLink_UpdateScanWait(void *proc) {
     void *Process_Find(void *);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
@@ -1550,30 +1551,30 @@ void CardLink_UpdateScanWait(void *arg0) {
     void Process_UnlinkByKey(void *);
     extern void *gPadInput;
     extern u16 gCardLinkStr[18];
-    void *tmp;
-    s32 var_r0;
-    s32 temp_r4_2;
-    void *temp_r5;
+    void *cardProc;
+    s32 status;
+    s32 buttons;
+    void *msgBox;
 
-    tmp = Process_Find(&gCardLinkProc);
-    if (tmp == NULL) {
-        var_r0 = 0;
+    cardProc = Process_Find(&gCardLinkProc);
+    if (cardProc == NULL) {
+        status = 0;
     } else {
-        var_r0 = *(u8 *)((u8 *)tmp + 0x4C);
+        status = *(u8 *)((u8 *)cardProc + 0x4C);
     }
-    if (var_r0 == 2) {
-        *(u8 *)((u8 *)arg0 + 0x54) = 0;
-        temp_r5 = *(void **)((u8 *)arg0 + 0x50);
-        *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
-        Process_ClearFunc(arg0);
+    if (status == 2) {
+        *(u8 *)((u8 *)proc + 0x54) = 0;
+        msgBox = *(void **)((u8 *)proc + 0x50);
+        *(s16 *)((u8 *)msgBox + 2) = 0xC8;
+        Process_ClearFunc(proc);
         return;
     }
-    temp_r4_2 = *(s32 *)((u8 *)gPadInput + 4);
-    if ((temp_r4_2 & (*(s32 *)((u8 *)gPadInput + 8) ^ temp_r4_2) & 0x200) != 0) {
+    buttons = *(s32 *)((u8 *)gPadInput + 4);
+    if ((buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons) & 0x200) != 0) {
         Ui_PlaySeCue((u8 *)&gCardLinkStr + 0x111, 0x64);
-        temp_r5 = *(void **)((u8 *)arg0 + 0x50);
-        *(s16 *)((u8 *)temp_r5 + 2) = 0xC8;
-        Process_Goto(arg0, 0);
+        msgBox = *(void **)((u8 *)proc + 0x50);
+        *(s16 *)((u8 *)msgBox + 2) = 0xC8;
+        Process_Goto(proc, 0);
         Process_UnlinkByKey(&gCardLinkProc);
     }
 }
