@@ -2914,8 +2914,8 @@ s32 fn_80117F98(void *arg0) {
         return 0;
     }
     
-    // Call fn_8000A420
-    fn_8000A420(arg0);
+    // Call Process_RetreatStep
+    Process_RetreatStep(arg0);
     
     // If we've reached here, the check is passed and we return M2C_FIELD(arg0, u32 *, 0x18)
     return M2C_FIELD(arg0, u32 *, 0x18);
