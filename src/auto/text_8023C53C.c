@@ -9712,39 +9712,29 @@ return -1;
 int fn_80258488(u32 arg0)
 {
     extern u8 gSoundStreamCtrl[];
-    u8 *ctrl;
-    u8 *slotMap;
-    u8 slot;
     s32 offset;
+    u8 *slotMap;
+    u8 *ctrl;
+    u8 slot;
     u8 *entry;
-    void (*cb)(s32, void *);
 
-    if ((u32)(arg0 + 0x10000) == 0xFFFFU) {
-        return 0;
+    if ((u32)(arg0 + 0x10000) != 0xFFFFU) {
+        ctrl = gSoundStreamCtrl;
+        slotMap = ctrl + 0xB08;
+        slot = slotMap[(u8)arg0];
+        if (slot != 0xFF) {
+            offset = slot * 0x2C;
+            entry = ctrl + offset;
+            if (*(u16 *)(entry + 0x1A) == (u16)(arg0 >> 8)) {
+                if (*(u32 *)(ctrl + 0xB4C) != 0) {
+                    (*(void (**)(s32, void *))(ctrl + 0xB4C))(2, entry + 0x18);
+                }
+                entry = gSoundStreamCtrl + offset;
+                entry[8] = 0;
+                slotMap[entry[0xB]] = 0xFF;
+            }
+        }
     }
-
-    ctrl = gSoundStreamCtrl;
-    slotMap = ctrl + 0xB08;
-    slot = slotMap[(u8)arg0];
-    if (slot == 0xFF) {
-        return 0;
-    }
-
-    offset = slot * 0x2C;
-    entry = ctrl + offset;
-    if (*(u16 *)(entry + 0x1A) != ((arg0 >> 8) & 0xFFFF)) {
-        return 0;
-    }
-
-    cb = *(void (**)(s32, void *))(ctrl + 0xB4C);
-    if (cb != NULL) {
-        cb(2, entry + 0x18);
-    }
-
-    entry = gSoundStreamCtrl + offset;
-    entry[8] = 0;
-    slotMap[entry[0xB]] = 0xFF;
-    return 0;
 }
 
 void Sound_SeekStreamPos(void *arg0, u32 arg1) {
@@ -12086,12 +12076,14 @@ u8 Sound_IsReady(void) {
     return gSoundReady;
 }
 
-void fn_8025ED88(f32 *arg0, f32 *arg1, f32 *arg2) {
-    arg2[0] = (arg0[0x24] + (arg0[8] * arg1[8])) + ((arg0[0] * arg1[0]) + (arg0[4] * arg1[4]));
-    arg2[1] = (arg0[0x28] + (arg0[0x14] * arg1[8])) + ((arg0[0xC] * arg1[0]) + (arg0[0x10] * arg1[4]));
-    arg2[2] = (arg0[0x2C] + (arg0[0x20] * arg1[8])) + ((arg0[0x18] * arg1[0]) + (arg0[0x1C] * arg1[4]));
+#pragma fp_contract off
+void fn_8025ED88(f32 *m, f32 *v, f32 *out)
+{
+    out[0] = ((m[0] * v[0] + m[1] * v[1]) + m[2] * v[2]) + m[9];
+    out[1] = ((m[3] * v[0] + m[4] * v[1]) + m[5] * v[2]) + m[10];
+    out[2] = ((m[6] * v[0] + m[7] * v[1]) + m[8] * v[2]) + m[11];
 }
-
+#pragma fp_contract reset
 void fn_8025EE34(f32 *arg0) {
     extern f32 lbl_8036C330;
     extern f64 lbl_8036C338;
@@ -14989,26 +14981,24 @@ void fn_802632DC(void)
     extern u32 lbl_80368B14;
     extern void (*lbl_80368B24)(void);
 
-    extern void fn_80213760(void *arg0, s32 arg1);
-    extern u32 OSGetTick(void);
-    extern u32 OSEnableInterrupts(void);
-    extern u32 OSDisableInterrupts(void);
+    void fn_80213760(void *arg0, s32 arg1);
+    u32 OSGetTick(void);
+    BOOL OSEnableInterrupts(void);
+    BOOL OSDisableInterrupts(void);
 
-    u32 index;
-    u32 address;
+    s32 index;
+    u32 tick;
+    u32 flag18;
 
-    index = lbl_80368B20 + 1;
-    index = (index + 1) & 0xFF;
-    index = (index >> 1) + (index & 1);
-    index &= 0xFF;
+    index = (lbl_80368B20 + 1) % 4;
     lbl_80368B20 = (u8)index;
+    fn_80213760((void *)(lbl_80368B1C + 0x80000000 + (u8)index * 0x280), 0x280);
 
-    address = (lbl_80368B1C + 0x80000000) + index * 0x280;
-    fn_80213760((void *)address, 0x280);
+    tick = OSGetTick();
+    flag18 = lbl_80368B18;
+    lbl_80368B0C = tick;
 
-    lbl_80368B0C = OSGetTick();
-
-    if (lbl_80368B18 != 0) {
+    if (flag18 != 0) {
         if (lbl_80368B10 == 0) {
             lbl_80368B10 = 1;
             OSEnableInterrupts();
@@ -15016,7 +15006,7 @@ void fn_802632DC(void)
             OSDisableInterrupts();
             lbl_80368B10 = 0;
         }
-
+    } else {
         lbl_80368B14 = 1;
     }
 }
@@ -16431,16 +16421,39 @@ void fn_802658B0(void)
     gSoundData[1] = 0;
 }
 
-s32 fn_802659EC(s32 arg0) {
-    if (arg0 < 0) {
-        return -1;
-    }
-    if (arg0 == 0) {
-        return 0;
-    }
-    return 1;
-}
+#pragma scheduling off
+void fn_802659EC(s32 arg0, s32 arg1)
+{
+    extern u8 lbl_803669A0[];
+    s32 fn_80265638(s32, s32, void *);
+    void fn_80265A94(s32, s32);
 
+    u8 *entry;
+    u8 *queue;
+    s32 result;
+    void (*callback)(s32, s32);
+
+    result = arg1;
+    entry = lbl_803669A0 + (arg0 << 8);
+    queue = entry + 0x40;
+
+    if (result == 0) {
+        result = fn_80265638(arg0, *(s32 *)(queue + 0x10), fn_80265A94);
+    }
+
+    if (result != 0) {
+        *(u32 *)(queue + 0x2C) = 0;
+        *(u32 *)(queue + 0x28) = 0;
+        callback = *(void (**)(s32, s32))(queue + 0x14);
+        if (callback != 0) {
+            *(u32 *)(queue + 0x14) = 0;
+            callback(arg0, result);
+        }
+    }
+
+    *(s32 *)(entry + 0x20) = result;
+}
+#pragma scheduling on
 void fn_80265A94(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
