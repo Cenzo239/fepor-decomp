@@ -13555,7 +13555,8 @@ void fn_801D3588(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
+extern "C" void Ui_HandleOverlayDismissInput(void *proc) {
+    /* Tick child 0x10 each frame; on A/B play SE, close-animate it, and clear this callback. */
     void Process_ClearFunc(void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_CloseChildAnim(void *, void *, s32);
@@ -13563,7 +13564,7 @@ extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
     extern u32 gUiInputFlags;
     extern void *gPadInput;
     extern u8 gBattleUiStrings[];
-    struct Obj {
+    struct Widget {
         virtual void v0() = 0;
         virtual void v1() = 0;
         virtual void v2() = 0;
@@ -13573,28 +13574,28 @@ extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
         virtual void v6() = 0;
         virtual void v7(void *) = 0;
     };
-    u8 gate;
-    unsigned long t;
+    u8 inputLocked;
+    unsigned long held;
     s32 flags;
 
     if (gUiInputFlags & 3) {
-        Process_ClearFunc(arg0);
+        Process_ClearFunc(proc);
         return;
     }
-    ((Obj *)Ui_FindChild(arg0, 0x10, 0))->v7(arg0);
-    gate = 0;
+    ((Widget *)Ui_FindChild(proc, 0x10, 0))->v7(proc);
+    inputLocked = 0;
     flags = gUiInputFlags;
     if (flags & 0x10) {
         if (!(flags & 0x20)) {
-            gate = 1;
+            inputLocked = 1;
         }
     }
-    if (gate == 0) {
-        t = *(s32 *)((char *)gPadInput + 4);
-        if (t & (*(s32 *)((char *)gPadInput + 8) ^ t) & 0x300) {
+    if (inputLocked == 0) {
+        held = *(s32 *)((char *)gPadInput + 4);
+        if (held & (*(s32 *)((char *)gPadInput + 8) ^ held) & 0x300) {
             Ui_PlaySeCue(gBattleUiStrings + 0xA9, 0x64);
-            Ui_CloseChildAnim(arg0, Ui_FindChild(arg0, 0x10, 0), 0);
-            Process_ClearFunc(arg0);
+            Ui_CloseChildAnim(proc, Ui_FindChild(proc, 0x10, 0), 0);
+            Process_ClearFunc(proc);
         }
     }
 }
