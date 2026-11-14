@@ -1077,42 +1077,43 @@ s32 fn_80230BCC(s32 arg0) {
     return (temp_r4 ^ arg0) - temp_r4;
 }
 
-s32 __flush_buffer(void *arg0, s32 *arg1) {
+/* Write any pending FILE buffer bytes via write_proc, then reset buffer pointers. */
+s32 __flush_buffer(void *stream, s32 *nbytes) {
     typedef struct {
         void *handle;       /* 0x00 */
         u8 pad0[0x14];
-        u32 pos;            /* 0x18 */
+        u32 position;       /* 0x18 file offset */
         u32 buffer;         /* 0x1C */
-        u32 buf_end;        /* 0x20 */
-        u32 buf_ptr;        /* 0x24 */
-        u32 position;       /* 0x28 */
-        u32 mode;           /* 0x2C */
+        u32 buffer_end;     /* 0x20 */
+        u32 buffer_ptr;     /* 0x24 */
+        u32 buffer_length;  /* 0x28 */
+        u32 buffer_alignment; /* 0x2C */
         u8 pad1[4];
-        u32 ungetc;         /* 0x34 */
+        u32 saved_position; /* 0x34 */
         u8 pad2[8];
         s32 (*write_proc)(void *, u32, u32 *, u32);  /* 0x40 */
         u8 pad3[4];
-        u32 field_48;       /* 0x48 */
-    } File;
-    File *file = (File *)arg0;
-    u32 n = file->buf_ptr - file->buffer;
+        u32 ref_con;        /* 0x48 */
+    } FILE;
+    FILE *file = (FILE *)stream;
+    u32 n = file->buffer_ptr - file->buffer;
     s32 result;
 
     if (n != 0) {
-        file->position = n;
-        result = file->write_proc(file->handle, file->buffer, &file->position, file->field_48);
-        if (arg1 != NULL) {
-            *arg1 = file->position;
+        file->buffer_length = n;
+        result = file->write_proc(file->handle, file->buffer, &file->buffer_length, file->ref_con);
+        if (nbytes != NULL) {
+            *nbytes = file->buffer_length;
         }
         if (result != 0) {
             return result;
         }
-        file->pos += file->position;
+        file->position += file->buffer_length;
     }
-    file->buf_ptr = file->buffer;
-    file->position = file->buf_end;
-    file->position = file->position - (file->pos & file->mode);
-    file->ungetc = file->pos;
+    file->buffer_ptr = file->buffer;
+    file->buffer_length = file->buffer_end;
+    file->buffer_length = file->buffer_length - (file->position & file->buffer_alignment);
+    file->saved_position = file->position;
     return 0;
 }
 
