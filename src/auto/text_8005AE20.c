@@ -6956,15 +6956,30 @@ done:
 #pragma use_lmw_stmw reset
 
 void fn_8006E478(void) {
-void OSReport(char *, ...); void fn_8006DDDC(void); void OSPanic(char *, int, char *); void fn_8021F168(u8 *, void *, void *, void *, void *); u32 fn_8021F4DC(void);
-extern char DEMOInit_str[]; extern s32 lbl_80367330; extern u32 gDemoStatHangLimit,lbl_80367338,lbl_80367340; extern u8 lbl_8036733C,lbl_80367344;
-u8 sp9; u8 pad[3]; void *sp8; u32 result, count;
-if((s8)lbl_8036733C==0){lbl_80367338=0;lbl_8036733C=1;}
-if((s8)lbl_80367344==0){lbl_80367340=0;lbl_80367344=1;}
-lbl_80367330++;
-fn_8021F168(&sp9,&sp8,&sp8,&sp8,&sp8);
-result=fn_8021F4DC();
-if(sp9!=0 && result==lbl_80367340){count=lbl_80367338+1;lbl_80367338=count;if(count>=gDemoStatHangLimit){OSReport(DEMOInit_str+0x126);fn_8006DDDC();OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);}}else{lbl_80367340=result;lbl_80367338=0;}
+    void OSReport(char *, ...);
+    void fn_8006DDDC(void);
+    void OSPanic(char *, int, char *, ...);
+    void fn_8021F168(u8 *, void *, void *, void *, void *);
+    u32 fn_8021F4DC(void);
+    extern char DEMOInit_str[];
+    extern s32 lbl_80367330;
+    extern u32 gDemoStatHangLimit, lbl_80367338, lbl_80367340;
+    extern u8 lbl_8036733C, lbl_80367344;
+    u8 sp9;
+    u8 sp8;
+    u32 result, count;
+    if ((s8)lbl_8036733C == 0) { lbl_80367338=0; lbl_8036733C=1; }
+    if ((s8)lbl_80367344 == 0) { lbl_80367340=0; lbl_80367344=1; }
+    lbl_80367330++;
+    fn_8021F168(&sp9,&sp8,&sp8,&sp8,&sp8);
+    result=fn_8021F4DC();
+    if(sp9 != 0 && result == lbl_80367340) {
+        count=lbl_80367338+1; lbl_80367338=count;
+        if(count>=gDemoStatHangLimit) {
+            OSReport(DEMOInit_str+0x126); fn_8006DDDC();
+            OSPanic(DEMOInit_str+1,0x326,DEMOInit_str+0x15b);
+        }
+    } else { lbl_80367340=result; lbl_80367338=0; }
 }
 
 extern s32 gDemoStatEnable;
@@ -7023,70 +7038,42 @@ s32 fn_8006E658(void) {
     return DEMORmode;
 }
 
-void fn_8006E660(void)
-{
-    extern s32 gDemoStatEnable;
-    extern void *DemoCurrentBuffer;
-    extern void *DemoFrameBuffer1;
-    extern void *DemoFrameBuffer2;
-    extern s32 gDvdCheckSnapshot;
-    extern u32 gGameFlags;
-    extern u8 lbl_80366DE0;
-
-    void fn_8006DFD8(void);
-    void GXSetZMode(s32, s32, s32);
-    void fn_8022462C(s32);
-    void GXCopyDisp(void *, s32);
-    void fn_8022097C(void);
-    void fn_8009E870(void);
-    u32 fn_80211690(void);
-    void VISetNextFrameBuffer(void *);
-    void fn_80211614(s32);
-    void VIFlush(void);
-    void VIWaitForRetrace(void);
-
-    void *cur;
-    void *ten;
-
-    if (gDemoStatEnable != 0) {
-        fn_8006DFD8();
-    } else {
-        GXSetZMode(1, 3, 1);
-        fn_8022462C(1);
-        GXCopyDisp(DemoCurrentBuffer, 1);
-        fn_8022097C();
-        fn_8009E870();
-
-        if ((u32)gDvdCheckSnapshot != fn_80211690()) {
-            if (!(gGameFlags & 8)) {
-                gGameFlags |= 4;
-            }
-        }
-
-        VISetNextFrameBuffer(DemoCurrentBuffer);
-
-        if (lbl_80366DE0 != 0) {
-            fn_80211614(0);
-            lbl_80366DE0 = 0;
-        }
-
-        VIFlush();
-
-        if (gGameFlags & 1) {
-            if (!(gGameFlags & 4)) {
-                VIWaitForRetrace();
-            }
-            gGameFlags &= ~4;
-        }
-        VIWaitForRetrace();
-
-        ten = DemoFrameBuffer1;
-        cur = DemoCurrentBuffer;
-        if (cur == ten) {
-            cur = DemoFrameBuffer2;
-            DemoCurrentBuffer = cur;
-        }
-    }
+void fn_8006E660(void) {
+extern s32 gDemoStatEnable;
+extern void *DemoCurrentBuffer;
+extern void *DemoFrameBuffer1;
+extern void *DemoFrameBuffer2;
+extern s32 gDvdCheckSnapshot;
+extern u32 gGameFlags;
+extern u8 lbl_80366DE0;
+void fn_8006DFD8(void);
+void GXSetZMode(s32,s32,s32);
+void fn_8022462C(s32);
+void GXCopyDisp(void *,s32);
+void fn_8022097C(void);
+void fn_8009E870(void);
+u32 fn_80211690(void);
+void VISetNextFrameBuffer(void *);
+void fn_80211614(s32);
+void VIFlush(void);
+void VIWaitForRetrace(void);
+void *next;
+void *cur;
+if(gDemoStatEnable) fn_8006DFD8();
+else {
+GXSetZMode(1,3,1); fn_8022462C(1); GXCopyDisp(DemoCurrentBuffer,1);
+fn_8022097C(); fn_8009E870();
+if((u32)gDvdCheckSnapshot != fn_80211690()) { if(!(gGameFlags&8)) gGameFlags|=4; }
+VISetNextFrameBuffer(DemoCurrentBuffer);
+if(lbl_80366DE0) { fn_80211614(0); lbl_80366DE0=0; }
+VIFlush();
+if(gGameFlags&1) { if(!(gGameFlags&4)) VIWaitForRetrace(); gGameFlags &= ~4; }
+VIWaitForRetrace();
+cur=DemoCurrentBuffer;
+next=DemoFrameBuffer1;
+if(cur==next) next=DemoFrameBuffer2;
+DemoCurrentBuffer=next;
+}
 }
 
 #pragma global_optimizer off
