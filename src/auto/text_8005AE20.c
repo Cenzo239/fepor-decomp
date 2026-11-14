@@ -658,8 +658,8 @@ void FileCache_OnCancel(void *arg0, s32 arg1) {
 }
 
 void FileCache_OnLoadDone(void *arg0) {
- void fn_8005D9A8(void *); void fn_8005DE84(void *); u32 AramCache_Find(void); u8 AramCache_Request(void *,s32,s32,void *,void *); extern u8 fn_8005DFB8[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
- if ((*flags&8)&&AramCache_Find()==0&&AramCache_Request(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),fn_8005DFB8,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)fn_8005DE84(arg0);}
+ void fn_8005D9A8(void *); void fn_8005DE84(void *); u32 AramCache_Find(void); u8 AramCache_Request(void *,s32,s32,void *,void *); extern u8 FileCache_QueueAramDone[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
+ if ((*flags&8)&&AramCache_Find()==0&&AramCache_Request(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),FileCache_QueueAramDone,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)fn_8005DE84(arg0);}
  else {if(*flags&0x400){fn_8005DE84(arg0);return;}if(*flags&0x800)fn_8005D9A8(arg0);*flags|=0x2000;}
 }
 
@@ -1347,7 +1347,7 @@ void fn_8005DF60(void *arg0, s32 arg1) {
     fn_8020AEC4(gFileCacheWorkThreadQueue);
 }
 
-void fn_8005DFB8(void *arg0) {
+void FileCache_QueueAramDone(void *arg0) {
     void fn_8020AEC4(u8 *);
     extern u8 gFileCacheWorkQueue[];
     extern volatile u8 gFileCacheWorkWrite;
