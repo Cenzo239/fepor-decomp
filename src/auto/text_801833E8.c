@@ -8709,7 +8709,7 @@ void* fn_80199508(void* arg0, s16 arg1) {
         String_Destroy((u8*)arg0 + 0x138, -1);
         String_Destroy((u8*)arg0 + 0x12C, -1);
         String_Destroy((u8*)arg0 + 0x118, -1);
-        fn_800E5F84(arg0, 0);
+        Actor_Dtor(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
         }

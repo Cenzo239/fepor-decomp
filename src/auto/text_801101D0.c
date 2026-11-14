@@ -2714,7 +2714,7 @@ void fn_80116FE8(void)
 void *fn_801179DC(void *arg0, s16 arg1) {
     void BinTree_Destroy(void *, void *);
     void String_Destroy(void *, s32);
-    void fn_800E5F84(void *, s32);
+    void Actor_Dtor(void *, s32);
     void Heap_Free(void *);
     extern u16 lbl_8028F6C8[];
     u8 *p;
@@ -2730,7 +2730,7 @@ void *fn_801179DC(void *arg0, s16 arg1) {
         String_Destroy(p + 0x16C, -1);
         String_Destroy(p + 0x160, -1);
         String_Destroy(p + 0x154, -1);
-        fn_800E5F84(arg0, 0);
+        Actor_Dtor(arg0, 0);
         if (arg1 > 0) {
             Heap_Free(arg0);
         }

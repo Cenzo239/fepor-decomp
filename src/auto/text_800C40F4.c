@@ -11610,7 +11610,7 @@ void fn_800E5DEC(void) {
     }
 }
 
-void *fn_800E5F84(void *arg0, s16 arg1) {
+void *Actor_Dtor(void *arg0, s16 arg1) {
     void fn_800DDC2C(void *, void *);
     void *fn_800E6D68(void *, s16);
     void String_Destroy(void *, s32);
