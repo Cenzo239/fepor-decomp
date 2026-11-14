@@ -2438,7 +2438,7 @@ void fn_8002E408(s32 arg0) {
     }
 }
 
-void fn_8002E444(void) {
+void Battle_FocusCamOnStatus0Unit(void) {
     u8 Status_Test(void *, s32);
     void BattleState_SetCamPos(void *, f32, f32);
     extern struct {
