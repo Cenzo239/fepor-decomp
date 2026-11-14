@@ -17834,7 +17834,7 @@ void fn_801E2084(s32 arg0) {
     fn_801E1CB4(&gSaveDataBase, arg0);
 }
 
-void fn_801E20C4(void *arg0) {
+void SaveData_StartOpenSeq(void *arg0) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
     extern s32 gUiInputFlags;
