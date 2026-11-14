@@ -8245,7 +8245,7 @@ void fn_80141630(void *arg0, s32 arg1) {
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
     void *List_Erase(void *, s32, void **);
     void *fn_80140B04(s32);
-    void fn_801418A0(void *);
+    void Ui_ClearPanelChildrenEx(void *);
     char buf[0x40];
 
     (void)lbl_8036A730;
@@ -8253,7 +8253,7 @@ void fn_80141630(void *arg0, s32 arg1) {
     (void)Math_Ease;
     (void)List_Erase;
     (void)fn_80140B04;
-    (void)fn_801418A0;
+    (void)Ui_ClearPanelChildrenEx;
     (void)buf;
 
     (void)arg0;
@@ -8261,7 +8261,7 @@ void fn_80141630(void *arg0, s32 arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801418A0(void *arg0) {
+extern "C" void Ui_ClearPanelChildrenEx(void *arg0) {
     struct Obj {
         virtual void destroy(s32) = 0;
         s32 refcount;
@@ -8401,7 +8401,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     void *fn_80140B04(void *);
     void fn_80142060(void *);
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
-    void fn_801418A0(void *);
+    void Ui_ClearPanelChildrenEx(void *);
     char buf[0x50];
 
     (void)lbl_80292258;
@@ -8413,7 +8413,7 @@ void *fn_80141D94(s32 arg0, void *arg1, u8 arg2, u8 arg3) {
     (void)fn_80140B04;
     (void)fn_80142060;
     (void)Math_Ease;
-    (void)fn_801418A0;
+    (void)Ui_ClearPanelChildrenEx;
     (void)buf;
 
     (void)arg0;
