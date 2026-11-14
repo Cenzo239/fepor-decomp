@@ -4152,7 +4152,7 @@ s32 fn_8003BE50(s32 arg0)
 }
 
 #pragma global_optimizer off
-s32 fn_8003BF5C(void *arg0) {
+s32 Unit_TickTransformGaugeFast(void *arg0) {
     u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     s32 adj;
