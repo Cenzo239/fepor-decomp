@@ -1617,7 +1617,7 @@ void fn_802003FC(void) {
 }
 
 M2C_UNK Process_Create(s32 *, s32, s16 *, s16 *, s32 *, s32 *);
-void fn_80200494(void) {
+void FaceResMan_Init(void) {
     extern s32 E_FaceResMan_script[];
     s32 i;
 

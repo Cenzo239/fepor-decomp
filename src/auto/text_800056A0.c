@@ -207,7 +207,7 @@ void Game_InitSystems(void) {
     void fn_80146AF0(void);
     void fn_80147188(s32);
     void fn_801A2AC4(void);
-    void fn_80200494(void);
+    void FaceResMan_Init(void);
     extern u8 Game_str[];
     extern u8 gUiIconDrawer[];
     extern u8 gItemIconDrawer[];
@@ -229,7 +229,7 @@ void Game_InitSystems(void) {
     fn_801A2AC4();
     fn_8007C408();
     fn_8007C34C();
-    fn_80200494();
+    FaceResMan_Init();
     fn_8005BCAC();
     fn_800110B8();
     fn_8008CD9C();
