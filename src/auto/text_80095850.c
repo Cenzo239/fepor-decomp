@@ -59,12 +59,5 @@ void fn_80095850(void *arg0) {
     EventLock_Dec();
 }
 
-s32 fn_800958A4(s32 arg0) {
-    extern u8 gBattle[];
-    u8 *base;
-    u32 t;
-    base = gBattle;
-    t = (u32)(-arg0 | arg0);
-    return *(s32 *)(base + ((t >> 29) & 4) + 0xCBC);
-}
+s32 fn_800958A4(s32 arg0) { extern u8 gBattle[]; s32 *p = (s32 *)gBattle; p += (arg0 != 0); return p[0x32F]; }
 
