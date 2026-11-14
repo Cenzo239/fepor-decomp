@@ -4009,7 +4009,7 @@ s32 Unit_GetPhaseActCode(void *unit) {
 }
 
 #pragma global_optimizer off
-void fn_800285C0(void *arg0) {
+void UiCtx_GetItemSlot(void *arg0) {
     void Unit_GetItemSlot(void *, s32);
     s32 b;
     void *p;

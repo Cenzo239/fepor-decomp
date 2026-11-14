@@ -3314,7 +3314,7 @@ void MapUi_HandleMoveConfirm(void *proc) {
 }
 
 void fn_80031748(s32 arg0) {
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void fn_8002A084(void *, void *, void *);
     void fn_8002EB54(void *, s32);
     extern void *gUiContext[6];
@@ -3324,7 +3324,7 @@ void fn_80031748(s32 arg0) {
     extern u8 lbl_802EFD7C[];
     void **ret;
 
-    ret = fn_800285C0(gUiContext);
+    ret = UiCtx_GetItemSlot(gUiContext);
     fn_8002A084(gUiContext[0], *ret, gUiContext);
     if ((s8)lbl_8036726E == 0) {
         *(void **)(lbl_802EFD7C + 4) = lbl_80285050;
@@ -3337,12 +3337,12 @@ void fn_80031748(s32 arg0) {
 void fn_800317D4(s32 arg0) {
     extern u16 gUiContext[];
     extern u16 lbl_802EFCB8[];
-    s32 *fn_800285C0(void *);
+    s32 *UiCtx_GetItemSlot(void *);
     void fn_8002A8CC(s32, s32);
     void fn_8002EB54(void *, s32);
     s32 *temp;
 
-    temp = fn_800285C0(gUiContext);
+    temp = UiCtx_GetItemSlot(gUiContext);
     fn_8002A8CC(*(s32 *)gUiContext, *temp);
     fn_8002EB54(lbl_802EFCB8, arg0);
 }
@@ -3450,7 +3450,7 @@ void fn_80031A70(s32 arg0) {
 }
 
 void fn_80031AEC(s32 arg0) {
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void fn_8002AA34(void *, void *, void *);
     void fn_8002EB54(void *, s32);
     extern void *gUiContext[6];
@@ -3460,7 +3460,7 @@ void fn_80031AEC(s32 arg0) {
     extern u8 lbl_802EFD34[];
     void **ret;
 
-    ret = fn_800285C0(gUiContext);
+    ret = UiCtx_GetItemSlot(gUiContext);
     fn_8002AA34(gUiContext[0], *ret, gUiContext);
     if ((s8)lbl_80367268 == 0) {
         *(void **)(lbl_802EFD34 + 4) = lbl_80285050;
@@ -3473,12 +3473,12 @@ void fn_80031AEC(s32 arg0) {
 void fn_80031B78(s32 arg0) {
     extern u16 gUiContext[];
     extern u16 lbl_802EFCB8[];
-    s32 *fn_800285C0(void *);
+    s32 *UiCtx_GetItemSlot(void *);
     void fn_8002AB9C(s32, s32);
     void fn_8002EB54(void *, s32);
     s32 *temp;
 
-    temp = fn_800285C0(gUiContext);
+    temp = UiCtx_GetItemSlot(gUiContext);
     fn_8002AB9C(*(s32 *)gUiContext, *temp);
     fn_8002EB54(lbl_802EFCB8, arg0);
 }
@@ -3534,7 +3534,7 @@ void fn_80031CA0(s32 arg0) {
 }
 
 void MapUi_BeginHealSelect(s32 arg0) {
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void fn_8002AD04(void *, void *, void *);
     s32 Item_GetHealAmount(void *);
     s32 Unit_GetMagAtk(void *);
@@ -3547,14 +3547,14 @@ void MapUi_BeginHealSelect(s32 arg0) {
     void **ret;
     u8 *ctx;
 
-    ret = fn_800285C0(gUiContext);
+    ret = UiCtx_GetItemSlot(gUiContext);
     fn_8002AD04(gUiContext[0], *ret, gUiContext);
     if ((s8)sHealInfoInited == 0) {
         *(void **)(gHealInfoWin + 4) = lbl_80285050;
         *(void **)(gHealInfoWin + 4) = gHealInfoVtbl;
         sHealInfoInited = 1;
     }
-    ret = fn_800285C0(gUiContext);
+    ret = UiCtx_GetItemSlot(gUiContext);
     ctx = gHealInfoWin;
     *(s32 *)(ctx + 0xC) = Item_GetHealAmount(*ret);
     *(s32 *)(ctx + 0xC) = *(s32 *)(ctx + 0xC) + (s8)Unit_GetMagAtk(gUiContext[0]);

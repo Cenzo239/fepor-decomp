@@ -64,7 +64,7 @@ void fn_800726A8(s32 arg0) {
 }
 
 void fn_80072740(s32 arg0) {
-    s32 *fn_800285C0(void *);
+    s32 *UiCtx_GetItemSlot(void *);
     void fn_8001C878(s32, s32, s32);
     extern struct {
         s32 unk0;
@@ -75,7 +75,7 @@ void fn_80072740(s32 arg0) {
     } gUiContext;
     s32 *temp;
 
-    temp = fn_800285C0(&gUiContext);
+    temp = UiCtx_GetItemSlot(&gUiContext);
     fn_8001C878(gUiContext.unk0, *temp, arg0);
 }
 
@@ -93,7 +93,7 @@ void fn_8007278C(void) {
 
 void fn_800727E0(void) {
     extern u16 gUiContext[12];
-    fn_800285C0(gUiContext);
+    UiCtx_GetItemSlot(gUiContext);
     UnitRef_GetName();
     fn_80091A1C();
 }

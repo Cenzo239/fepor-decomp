@@ -181,7 +181,7 @@ s32 fn_801A2F54(s32 arg0) {
     void Battle_SetupUnit(void *, s32, s32);
     void Battle_SelectWeapon(void *, u8);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -190,7 +190,7 @@ s32 fn_801A2F54(s32 arg0) {
     Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &MapAnim_HealNonEnemyUnits);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), arg0, &MapAnim_HealNonEnemyUnits);
     return 0;
 }
 
@@ -300,7 +300,7 @@ s32 fn_801A32F8(s32 arg0) {
     void Battle_SetupPair(void *, void *, void *);
     void Battle_SelectWeapon(void *, u8);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -311,7 +311,7 @@ s32 fn_801A32F8(s32 arg0) {
     base = (u8 *)gBattle;
     ((struct { u8 hi:3; u8 lo:5; } *)(base + 0x486))->hi = 7;
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, 0);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), arg0, 0);
     return 0;
 }
 
@@ -324,7 +324,7 @@ s32 Battle_StartMapHitAnimPlain(s32 parent) {
     u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -338,7 +338,7 @@ s32 Battle_StartMapHitAnimPlain(s32 parent) {
         Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), parent, 0);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), parent, 0);
     return 0;
 }
 
@@ -351,7 +351,7 @@ s32 Battle_StartMapHitAnimB(s32 parent) {
     u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -368,7 +368,7 @@ s32 Battle_StartMapHitAnimB(s32 parent) {
         Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), parent, 0);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), parent, 0);
     return 0;
 }
 
@@ -381,7 +381,7 @@ s32 Battle_StartMapHitAnim(s32 parent) {
     u8 Unit_HasHitBlockStatus(void *);
     void Battle_SetAttackHit(void *, s32);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, s32);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -398,7 +398,7 @@ s32 Battle_StartMapHitAnim(s32 parent) {
         Battle_SetAttackHit(gBattle, 0);
     }
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), parent, 0);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), parent, 0);
     return 0;
 }
 
@@ -413,7 +413,7 @@ s32 fn_801A36A0(s32 arg0) {
     void Battle_SetupPair(void *, void *, void *);
     void Battle_SelectWeapon(void *, u8);
     void fn_80036150(void *);
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
     extern u16 gBattle[];
@@ -422,7 +422,7 @@ s32 fn_801A36A0(s32 arg0) {
     Battle_SetupPair(gBattle, *(void **)gUiContext, *(void **)((u8 *)gUiContext + 4));
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A372C);
+    MapAnim_DispatchByIid(*UiCtx_GetItemSlot(gUiContext), arg0, &fn_801A372C);
     return 0;
 }
 

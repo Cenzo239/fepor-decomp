@@ -780,10 +780,10 @@ void fn_800758A4(void) {
 
 s32 fn_800758D0(void) {
     u64 *Item_GetFlagsPtr(void *);
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     extern u8 gUiContext[];
 
-    if (*Item_GetFlagsPtr(fn_800285C0(gUiContext)) & 0x20000000000ULL) {
+    if (*Item_GetFlagsPtr(UiCtx_GetItemSlot(gUiContext)) & 0x20000000000ULL) {
         return 2;
     }
     return 0;
@@ -854,7 +854,7 @@ extern "C" s32 fn_80075930(void *arg0, void *arg1, void *arg2) {
 
 s32 fn_800759E8(void) {
     u64 *Item_GetFlagsPtr(void *);
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     void fn_8002C194(void *, u8);
     extern u8 gUiContext[];
     extern s32 gTargetList[];
@@ -869,7 +869,7 @@ s32 fn_800759E8(void) {
     if (gTargetList[0] == 0) {
         return 3;
     }
-    if (*Item_GetFlagsPtr(fn_800285C0(gUiContext)) & 0x200ULL) {
+    if (*Item_GetFlagsPtr(UiCtx_GetItemSlot(gUiContext)) & 0x200ULL) {
         return 2;
     }
     return 0;
@@ -951,11 +951,11 @@ void fn_80075BD8(void) {
 
 s32 fn_80075C04(void) {
     u64 *Item_GetFlagsPtr(void *);
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     extern u8 gUiContext[];
     void *item;
 
-    item = fn_800285C0(gUiContext);
+    item = UiCtx_GetItemSlot(gUiContext);
     if (!((*(u8 *)((char *)item + 5) >> 7) & 1)) {
         return 3;
     }
@@ -977,14 +977,14 @@ void fn_80075DD8(void) {
 
 s32 fn_80075E04(void) {
     u64 *Item_GetFlagsPtr(void *);
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     u8 Unit_CanUseItem(void *, void *);
     extern void *gUiContext[];
     void *item;
     void *temp_r31;
     void *temp_r30;
 
-    item = fn_800285C0(gUiContext);
+    item = UiCtx_GetItemSlot(gUiContext);
     temp_r31 = *(void **)item;
     temp_r30 = gUiContext[0];
     if ((*(u8 *)((char *)item + 5) >> 7) & 1) {
@@ -1000,7 +1000,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
     M2C_UNK Process_CreateChild(M2C_UNK *, void *);
     void *Item_GetFlagsPtr();
     M2C_UNK fn_80023FF4(void *);
-    M2C_UNK fn_800285C0(M2C_UNK *);
+    M2C_UNK UiCtx_GetItemSlot(M2C_UNK *);
     s8 Unit_GetActiveItemSlot(void *);
     M2C_UNK fn_80094CDC(void *, s8);
     M2C_UNK Ui_PlaySeCue(void *, M2C_UNK);
@@ -1021,7 +1021,7 @@ s32 fn_80075EB4(void *arg1, void *arg2) {
         temp_r30 = M2C_FIELD(arg1, void **, 0x18);
         M2C_FIELD(temp_r30, s8 *, 0x62) = Unit_GetActiveItemSlot(M2C_FIELD(&gUiContext, void **, 0));
     }
-    if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (fn_800285C0(&gUiContext), temp_r3 = Item_GetFlagsPtr(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
+    if ((M2C_FIELD(M2C_FIELD(&gUiContext, void **, 0), s32 *, 0x1A0) & 0x800000) || (UiCtx_GetItemSlot(&gUiContext), temp_r3 = Item_GetFlagsPtr(), (((((M2C_FIELD(temp_r3, s32 *, 4) & 0) ^ 0) | ((M2C_FIELD(temp_r3, s32 *, 0) & 1) ^ 0)) == 0) == 0))) {
         Process_CreateChild(&lbl_802872B0, M2C_FIELD(arg1, void **, 0x18));
     }
     temp_r30_2 = M2C_FIELD(arg1, void **, 0x18);
@@ -1042,7 +1042,7 @@ void fn_80075FE4(void) {
 }
 
 s32 fn_80076010(void) {
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     u8 Item_TryCallUfx(void *, void *);
     u8 fn_80093218(void *, void *);
     extern void *gUiContext[];
@@ -1051,7 +1051,7 @@ s32 fn_80076010(void) {
     void *temp_r30;
     u8 var_r0;
 
-    item = fn_800285C0(gUiContext);
+    item = UiCtx_GetItemSlot(gUiContext);
     temp_r30 = *(void **)item;
     temp_r31 = gUiContext[0];
     if (temp_r30 != NULL) {
@@ -4168,7 +4168,7 @@ void fn_8007C4D4(void *arg0, s32 arg1) {
 extern u16 gUiContext[12];
 extern s32 gTargetList[];
 extern void *Item_GetFlagsPtr(void);
-extern void *fn_800285C0(void *);
+extern void *UiCtx_GetItemSlot(void *);
 extern u16 lbl_8026C0B8[];
 #include "global.h"
 extern u8 D_802EF4C8[24];

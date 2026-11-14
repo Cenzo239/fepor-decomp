@@ -127,7 +127,7 @@ s32 fn_801055B0(s32 arg0) {
 }
 
 void fn_80105624(s32 arg0) {
-    void *fn_800285C0(void *);
+    void *UiCtx_GetItemSlot(void *);
     void Item_GetKeyFlags(void *, s32);
     void fn_80026770(void *, void *);
     void fn_800319E8(s32);
@@ -145,7 +145,7 @@ void fn_80105624(s32 arg0) {
     void *temp;
 
     gUiContext.unk8 = 0xA;
-    temp = fn_800285C0(&gUiContext);
+    temp = UiCtx_GetItemSlot(&gUiContext);
     Item_GetKeyFlags(&sp8, *(s32 *)temp);
     fn_80026770(&gUiContext, &sp8);
     fn_800319E8(arg0);
