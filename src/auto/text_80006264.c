@@ -2312,7 +2312,7 @@ void GfxEnt_ForEachKey(u32 arg0, void (*arg1)(void *, s32), s32 arg2) {
     } while (var_r30 < 0x100);
 }
 
-void fn_8000A3F8(void *arg0) {
+void Process_DecRef(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x2E) = (u8) (M2C_FIELD(arg0, u8 *, 0x2E) - 1);
 }
 
@@ -4261,54 +4261,40 @@ void fn_8000CD80(s32 arg0) {
 }
 
 s32 Rand_TrueHit(s32 arg0) {
-    extern u16 lbl_80367150;
-    u16 *st;
+    struct RandSt { u16 a; u16 b; u16 c; };
+    extern struct RandSt lbl_80367150;
+    struct RandSt *st;
     s32 s0;
     s32 s1;
     s32 s2;
     s32 t4;
+    s32 combined;
     u16 t6;
     s32 scaled;
     s32 sum;
+    s32 i;
 
     st = &lbl_80367150;
-    s0 = st[0];
-    s2 = *(st + 2);
-    s1 = *(st + 1);
-    t4 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    *(st + 2) = t4;
-    if (s1 & 0x8000) {
-        *(st + 2) = t4 + 1;
+    sum = 0;
+    for (i = 0; i < 2; i++) {
+        s0 = lbl_80367150.a;
+        s2 = st->c;
+        s1 = st->b;
+        t4 = (s2 * 2) & 0xFFFE;
+        combined = (s1 << 11) + (s0 >> 5);
+        st->c = t4;
+        t6 = (u16)combined;
+        if (s1 & 0x8000) {
+            st->c = t4 + 1;
+        }
+        t6 ^= st->c;
+        st->c = st->b;
+        scaled = (u16)t6 * 100;
+        st->b = lbl_80367150.a;
+        lbl_80367150.a = t6;
+        sum += scaled / 65536;
     }
-    t6 ^= *(st + 2);
-    s2 = *(st + 1);
-    s0 = st[0];
-    *(st + 2) = s2;
-    scaled = (u16)t6 * 100;
-    *(st + 1) = s0;
-    st[0] = t6;
-    sum = scaled / 65536;
-
-    s1 = s0;
-    s0 = t6;
-    t4 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    *(st + 2) = t4;
-    if (s1 & 0x8000) {
-        *(st + 2) = t4 + 1;
-    }
-    t6 ^= *(st + 2);
-    s2 = *(st + 1);
-    s0 = st[0];
-    *(st + 2) = s2;
-    scaled = (u16)t6 * 100;
-    *(st + 1) = s0;
-    st[0] = t6;
-    sum += scaled / 65536;
-
-    sum = sum / 2;
-    return sum < arg0;
+    return (sum / 2) < arg0;
 }
 
 s32 Rand_Chance(s32 arg0) {

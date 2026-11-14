@@ -2745,11 +2745,11 @@ void fn_80169550(void *arg0) {
 void fn_80169580(void) {
     extern u8 lbl_80277BC0[];
     u32 Process_FindByName(void *);
-    void fn_8000A3F8(void);
+    void Process_DecRef(void);
     void fn_8013FEE0(void);
     fn_8013FEE0();
     if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
-        fn_8000A3F8();
+        Process_DecRef();
     }
 }
 
@@ -2766,11 +2766,11 @@ void fn_801695BC(s32 arg0, s32 arg1, s32 arg2) {
 void fn_80169604(void) {
     extern u8 lbl_80277BC0[];
     u32 Process_FindByName(void *);
-    void fn_8000A3F8(void);
+    void Process_DecRef(void);
     void fn_8013FEE0(void);
     fn_8013FEE0();
     if (Process_FindByName(lbl_80277BC0 + 0xBE) != 0) {
-        fn_8000A3F8();
+        Process_DecRef();
     }
 }
 
@@ -2934,10 +2934,10 @@ void fn_80169AF4(void *arg0) {
 }
 
 void fn_80169B34(void *arg0) {
-    M2C_UNK fn_8000A3F8(s32);
+    M2C_UNK Process_DecRef(s32);
     M2C_UNK fn_8013FEC0(void *);
     M2C_UNK Process_ClearFunc(void *);
-    fn_8000A3F8(M2C_FIELD(arg0, s32 *, 0x4C));
+    Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
     fn_8013FEC0(arg0);
     Process_ClearFunc(arg0);
 }
@@ -2961,14 +2961,14 @@ void fn_80169BB4(void *arg0) {
 }
 
 void fn_80169BF4(void *arg0) {
-    M2C_UNK fn_8000A3F8(s32);
+    M2C_UNK Process_DecRef(s32);
     M2C_UNK fn_8013FEC0(void *);
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
 
-    fn_8000A3F8(M2C_FIELD(arg0, s32 *, 0x4C));
+    Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
     fn_8013FEC0(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
@@ -2985,14 +2985,14 @@ void fn_80169C54(void *arg0) {
 }
 
 void fn_80169C94(void *arg0) {
-    M2C_UNK fn_8000A3F8(s32);
+    M2C_UNK Process_DecRef(s32);
     M2C_UNK fn_8013FEC0(void *);
     M2C_UNK fn_80023FF4(void *);
     M2C_UNK Process_ClearFunc(void *);
     s32 temp_r31;
     void *temp_r3;
 
-    fn_8000A3F8(M2C_FIELD(arg0, s32 *, 0x4C));
+    Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
     fn_8013FEC0(arg0);
     temp_r3 = M2C_FIELD(arg0, void **, 0x50);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
@@ -3025,7 +3025,7 @@ void fn_80169D58(void *arg0) {
     void Process_RetreatStep(void *);
     void *temp;
 
-    fn_8000A3F8(M2C_FIELD(arg0, void **, 0x4C));
+    Process_DecRef(M2C_FIELD(arg0, void **, 0x4C));
     temp = M2C_FIELD(arg0, void **, 0x40);
     if (temp != NULL) {
         Process_RetreatStep(Sound_FindByName(temp));
@@ -3042,9 +3042,9 @@ void fn_80169DAC(void *arg0) {
 }
 
 void fn_80169DEC(void *arg0) {
-    M2C_UNK fn_8000A3F8(s32);
+    M2C_UNK Process_DecRef(s32);
     M2C_UNK fn_8013FEC0(void *);
-    fn_8000A3F8(M2C_FIELD(arg0, s32 *, 0x4C));
+    Process_DecRef(M2C_FIELD(arg0, s32 *, 0x4C));
     fn_8013FEC0(arg0);
     Process_ClearFunc(arg0);
 }
@@ -6060,7 +6060,7 @@ void fn_8016F0E8(void *arg0) {
     s32 temp_r30_2;
     s32 temp_r30;
 
-    fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
+    Process_DecRef(M2C_FIELD(arg0, void **, 0x5C));
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r30 = M2C_FIELD(temp_r3, s8 *, 0x62);
@@ -6094,7 +6094,7 @@ void Ui_CloseNestedMenu(void *arg0)
     void *temp_r3;
     s32 temp_r31;
     
-    fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
+    Process_DecRef(M2C_FIELD(arg0, void **, 0x5C));
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
@@ -6139,7 +6139,7 @@ void fn_8016F378(void *arg0) {
     s32 temp_r31;
     void *temp_r3;
 
-    fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
+    Process_DecRef(M2C_FIELD(arg0, void **, 0x5C));
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
@@ -6181,7 +6181,7 @@ void fn_8016F4D0(void *arg0) {
     s32 temp_r31;
     void *temp_r3;
 
-    fn_8000A3F8(M2C_FIELD(arg0, void **, 0x5C));
+    Process_DecRef(M2C_FIELD(arg0, void **, 0x5C));
     Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
     temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
     temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);

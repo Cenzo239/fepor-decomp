@@ -1651,10 +1651,10 @@ void fn_800893E0(void *arg0)
 
 #pragma scheduling reset
 void fn_80089424(s32 arg0) {
-    M2C_UNK fn_8000A3F8(s32);
+    M2C_UNK Process_DecRef(s32);
     s32 fn_8000A418();
     if (fn_8000A418() != 0) {
-        fn_8000A3F8(arg0);
+        Process_DecRef(arg0);
     }
 }
 
