@@ -3199,33 +3199,34 @@ check:
     (*rp)(rpa, c, 1);
     return value;
 }
-s32 __write_console(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
-    s32 OSGetConsoleType();
+/* MSL console write: on non-TDEV, init/write EXI UART then always hand off to GDEV path. */
+s32 __write_console(s32 handle, s32 buffer, s32 *count, s32 ref) {
+    s32 OSGetConsoleType(void);
     M2C_UNK fn_8022B530(s32, s32, s32 *, s32);
     s32 InitializeUART(M2C_UNK);
     s32 WriteUARTN(s32, s32);
     extern s32 UART_Initialized;
-    s32 var_r3;
+    s32 err;
 
     if (!(OSGetConsoleType() & 0x20000000)) {
-        var_r3 = 0;
+        err = 0;
         if ((s32) UART_Initialized == 0) {
-            var_r3 = InitializeUART(0xE100);
-            if (var_r3 == 0) {
+            err = InitializeUART(0xE100);
+            if (err == 0) {
                 UART_Initialized = 1;
             }
         }
-        if (var_r3 != 0) {
+        if (err != 0) {
             return 1;
         }
-        if (WriteUARTN(arg1, *arg2) != 0) {
-            *arg2 = 0;
+        if (WriteUARTN(buffer, *count) != 0) {
+            *count = 0;
             return 1;
         }
         goto block_8;
     }
 block_8:
-    fn_8022B530(arg0, arg1, arg2, arg3);
+    fn_8022B530(handle, buffer, count, ref);
     return 0;
 }
 
