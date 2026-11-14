@@ -2568,9 +2568,9 @@ end:
 void fn_8002E738(s32 arg0) {
     M2C_UNK Process_CreateChild(void *, s32);
     extern u8 gBattleState[];
-    extern u8 lbl_80284AC8[];
+    extern u8 Proc_BMapPlph[];
     if (gBattleState[gBattleState[0x11] + 0x14] == 1) {
-        Process_CreateChild(lbl_80284AC8, arg0);
+        Process_CreateChild(Proc_BMapPlph, arg0);
     }
 }
 
