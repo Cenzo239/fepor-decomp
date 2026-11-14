@@ -3533,7 +3533,8 @@ void fn_80031CA0(s32 arg0) {
     fn_8002EB54(lbl_802EFD1C, arg0);
 }
 
-void MapUi_BeginHealSelect(s32 arg0) {
+/* Build heal staff targets, store heal amount (item + Mag), open heal info select. */
+void MapUi_BeginHealSelect(s32 parent) {
     void **UiCtx_GetItemSlot(void *);
     void fn_8002AD04(void *, void *, void *);
     s32 Item_GetHealAmount(void *);
@@ -3544,21 +3545,21 @@ void MapUi_BeginHealSelect(s32 arg0) {
     extern u8 lbl_80285050[];
     extern u8 gHealInfoVtbl[];
     extern u8 gHealInfoWin[];
-    void **ret;
-    u8 *ctx;
+    void **itemSlot;
+    u8 *win;
 
-    ret = UiCtx_GetItemSlot(gUiContext);
-    fn_8002AD04(gUiContext[0], *ret, gUiContext);
+    itemSlot = UiCtx_GetItemSlot(gUiContext);
+    fn_8002AD04(gUiContext[0], *itemSlot, gUiContext);
     if ((s8)sHealInfoInited == 0) {
         *(void **)(gHealInfoWin + 4) = lbl_80285050;
         *(void **)(gHealInfoWin + 4) = gHealInfoVtbl;
         sHealInfoInited = 1;
     }
-    ret = UiCtx_GetItemSlot(gUiContext);
-    ctx = gHealInfoWin;
-    *(s32 *)(ctx + 0xC) = Item_GetHealAmount(*ret);
-    *(s32 *)(ctx + 0xC) = *(s32 *)(ctx + 0xC) + (s8)Unit_GetMagAtk(gUiContext[0]);
-    fn_8002EB54(gHealInfoWin, arg0);
+    itemSlot = UiCtx_GetItemSlot(gUiContext);
+    win = gHealInfoWin;
+    *(s32 *)(win + 0xC) = Item_GetHealAmount(*itemSlot);
+    *(s32 *)(win + 0xC) = *(s32 *)(win + 0xC) + (s8)Unit_GetMagAtk(gUiContext[0]);
+    fn_8002EB54(gHealInfoWin, parent);
 }
 
 void fn_80031DF8(s32 arg0) {
