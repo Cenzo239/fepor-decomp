@@ -3771,7 +3771,7 @@ s32 fn_800B7410(void) {
 
 s32 fn_800B74AC(void) {
     void fn_80016A3C(void *);
-    void fn_800C2980(void *, void *);
+    void Icon_WriteSlots(void *, void *);
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     extern u8 lbl_8026ECB8[];
@@ -3804,7 +3804,7 @@ s32 fn_800B74AC(void) {
     *(void **)(pw + 4) = p;
     *(u32 *)(pw + 8) = 0x100000;
     fn_80016A3C(pw);
-    fn_800C2980(gIconSlots, &w);
+    Icon_WriteSlots(gIconSlots, &w);
     w.vtbl = lbl_80284C98;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
@@ -3818,7 +3818,7 @@ s32 fn_800B74AC(void) {
 s32 ScriptCmd_SaveUnitsClear(void) {
 void fn_80016A3C(void *);
 void fn_80016DE0(void);
-void fn_800C2980(void *, void *);
+void Icon_WriteSlots(void *, void *);
 void *fn_800C4638(s32, void *, s32);
 void fn_800C4588(void *);
 extern u8 lbl_8026ECB8[];
@@ -3843,7 +3843,7 @@ pw[12]=0;
 *(void **)(pw+4)=p;
 *(u32*)(pw+8)=0x100000;
 fn_80016A3C(pw);
-fn_800C2980(gIconSlots,&w);
+Icon_WriteSlots(gIconSlots,&w);
 fn_80016DE0();
 w.vtbl=lbl_80284C98;
 w.vtbl=lbl_802842A4;
@@ -9210,7 +9210,7 @@ void fn_800C2930(s32 arg0, s32 arg1) {
     Stream_Read(arg1, 0x480, arg0);
 }
 
-void fn_800C2980(s32 arg0, s32 arg1) {
+void Icon_WriteSlots(s32 arg0, s32 arg1) {
     M2C_UNK Stream_Write(s32, s32, s32);
     M2C_UNK fn_801A7CDC(void *);
     extern u8 gBattle[];

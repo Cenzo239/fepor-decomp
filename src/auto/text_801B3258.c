@@ -16866,7 +16866,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_800167E4(void *);
     void fn_80016A3C(void *);
     void fn_80048C5C(void *);
-    void fn_800C2980(void *, void *);
+    void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -16994,7 +16994,7 @@ loop:
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, gSaveStrings + 0x163);
-    fn_800C2980(gIconSlots, &w);
+    Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
@@ -17298,7 +17298,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_800167E4(void *);
     void fn_80016A3C(void *);
     void fn_80048C5C(void *);
-    void fn_800C2980(void *, void *);
+    void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
     void Card_RequestWrite(void *, s32, s32, s32, void *);
@@ -17634,7 +17634,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, gSaveStrings + 0x163);
-    fn_800C2980(gIconSlots, &w);
+    Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
@@ -17659,7 +17659,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_800167E4(void *);
     void fn_80016A3C(void *);
     void fn_80048C5C(void *);
-    void fn_800C2980(void *, void *);
+    void Icon_WriteSlots(void *, void *);
     void fn_800C33C0(void *, void *);
     void fn_800C4588(void *);
     void fn_8010FBA8(void *, void *);
@@ -17783,7 +17783,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     fn_8017A38C(&w, gSaveStrings + 0x15E);
     fn_800C33C0(gConvoy, &w);
     fn_8017A38C(&w, gSaveStrings + 0x163);
-    fn_800C2980(gIconSlots, &w);
+    Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = lbl_80284C98;
