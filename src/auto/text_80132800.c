@@ -10500,7 +10500,7 @@ void fn_801457B4(void) {
     *(f32 *)((u8 *)temp_r3 + 0x38) = (f32)gBgmQuietVol;
 }
 
-void fn_8014589C(void *arg0) {
+void BgmVol_FadeInProcess3(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
