@@ -8458,6 +8458,7 @@ void fn_800C068C(void) {
     fn_80018AE4();
 }
 
+/* Save BMapMain/BMapPlph state, ensure BMap exists, and switch context for an event. */
 void ScriptCmd_BMapSuspend(void) {
     extern s32 gUiInputFlags;
     extern s32 gBMapMainSaved;
@@ -8474,27 +8475,27 @@ void ScriptCmd_BMapSuspend(void) {
     void GfxEnt_UnlinkByName(void *);
     void fn_800142D4(void *);
     void fn_80018AF4(void);
-    void *temp;
-    s32 val;
+    void *proc;
+    s32 saved;
 
     gUiInputFlags |= 0x10;
-    temp = Process_Find(Proc_BMapMain);
-    if (temp != 0) {
-        val = *(s32 *)((u8 *)temp + 4);
+    proc = Process_Find(Proc_BMapMain);
+    if (proc != 0) {
+        saved = *(s32 *)((u8 *)proc + 4);
     } else {
-        val = 0;
+        saved = 0;
     }
-    gBMapMainSaved = val;
-    if (temp == 0) {
+    gBMapMainSaved = saved;
+    if (proc == 0) {
         Process_Create(Proc_BMapBGMCtrl, Process_CreateChild(Proc_BMapMain, Process_FindByName(gMapEventFlagNames + 0x138)));
     }
-    temp = Process_Find(Proc_BMapPlph);
-    if (temp != 0) {
-        val = *(s32 *)((u8 *)temp + 4);
+    proc = Process_Find(Proc_BMapPlph);
+    if (proc != 0) {
+        saved = *(s32 *)((u8 *)proc + 4);
     } else {
-        val = 0;
+        saved = 0;
     }
-    gBMapPlphSaved = val;
+    gBMapPlphSaved = saved;
     GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
     fn_800142D4(lbl_80320080);
     fn_80018AF4();
