@@ -14303,7 +14303,8 @@ s32 Crc32_Calc(s32 arg0, s32 arg1, s32 arg2) {
     return var_r9 ^ -1;
 }
 
-void Crc32_InitTable(u32 *arg0) {
+/* Build a 256-entry reflected CRC-32 table (poly 0xEDB88320). */
+void Crc32_InitTable(u32 *table) {
     u32 i;
     u32 j;
     u32 c;
@@ -14317,7 +14318,7 @@ void Crc32_InitTable(u32 *arg0) {
                 c >>= 1;
             }
         }
-        *arg0++ = c;
+        *table++ = c;
     }
 }
 
