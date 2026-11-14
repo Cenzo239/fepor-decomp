@@ -8420,7 +8420,7 @@ int fn_800C0658(void) {
 }
 
 void ScriptCmd_BMapResume(void) {
-    void fn_8002846C(void *);
+    void UiCtx_Reset(void *);
     void fn_80127AC4(void);
     void *Process_Find(void *);
     void Process_UnlinkByKey(void *);
@@ -8440,7 +8440,7 @@ void ScriptCmd_BMapResume(void) {
     void *obj;
     void *obj2;
 
-    fn_8002846C(gUiContext);
+    UiCtx_Reset(gUiContext);
     fn_80127AC4();
     gUiInputFlags &= ~0x890;
     obj = Process_Find(Proc_BMapMain);

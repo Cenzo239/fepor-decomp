@@ -3961,7 +3961,7 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     gBattleMap.unitMap[x + (y << 6)] = 0;
 }
 #pragma peephole reset
-void fn_8002846C(void *arg0) {
+void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
     M2C_FIELD(arg0, s32 *, 0) = 0;
     M2C_FIELD(arg0, s8 *, 0xB) = -1;
