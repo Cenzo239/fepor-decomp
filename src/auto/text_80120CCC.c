@@ -3525,6 +3525,7 @@ s32 ScriptCmd_bmsini(void) {
 }
 
 s32 ScriptCmd_seqini(void) {
+    /* Init sequence: set UI flags, jump map proc, unlink overlay gfx, clear move/queue/units. */
     void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
     void GfxEnt_UnlinkByName(void *);
@@ -3534,17 +3535,17 @@ s32 ScriptCmd_seqini(void) {
     void fn_800162B8(void);
     extern u16 gScriptCmdNames[];
     extern volatile u32 gUiInputFlags;
-    void *obj;
+    void *proc;
     u32 flags;
 
-    obj = (u8 *)gScriptCmdNames + 0x479;
+    proc = (u8 *)gScriptCmdNames + 0x479;
     flags = gUiInputFlags | 0x890;
     gUiInputFlags = flags;
     flags &= ~0x20;
     gUiInputFlags = flags;
-    obj = Process_FindByName(obj);
-    if (obj != NULL) {
-        Process_Goto(obj, 4);
+    proc = Process_FindByName(proc);
+    if (proc != NULL) {
+        Process_Goto(proc, 4);
     }
     GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x472);
     GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x50c);
