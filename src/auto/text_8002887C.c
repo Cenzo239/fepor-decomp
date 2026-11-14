@@ -3876,7 +3876,7 @@ extern "C" void UnitInfo_DrawItems(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     extern u32 gUiContext[];
-    void fn_80090874(s32, s32);
+    void UnitInfo_DrawItemStats(s32, s32);
     s32 UnitRef_GetUnit(u32);
     struct Obj {
         u8 pad[4];
@@ -3894,7 +3894,7 @@ extern "C" void UnitInfo_DrawItems(void *arg0, void *arg1) {
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
         saved = gUiContext[0];
-        fn_80090874(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), saved);
+        UnitInfo_DrawItemStats(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), saved);
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();

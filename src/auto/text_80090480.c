@@ -123,7 +123,7 @@ void fn_800907B8(void *arg0) {
     } while (i < 4);
 }
 
-void fn_80090874(void *arg0, s32 arg1) {
+void UnitInfo_DrawItemStats(void *arg0, s32 arg1) {
     s32 var_r29;
     u8 *var_r28;
     void *var_r27;
