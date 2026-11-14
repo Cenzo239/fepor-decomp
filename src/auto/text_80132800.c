@@ -7578,7 +7578,7 @@ extern "C" void List_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fprintf(void *, void *, ...);
     void abort(void);
     extern char __files[];
-    extern char lbl_80276A80[];
+    extern char List_allocFailMsg[];
     struct Node {
         Node *prev;
         Node *next;
@@ -7602,7 +7602,7 @@ extern "C" void List_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
     list = (s32 *)arg1 + 1;
     node = (Node *)Heap_Alloc(0xC);
     if (node == 0) {
-        fprintf(__files + 0xA0, lbl_80276A80, __files);
+        fprintf(__files + 0xA0, List_allocFailMsg, __files);
         abort();
     }
     {
