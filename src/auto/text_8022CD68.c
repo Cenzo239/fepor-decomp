@@ -1306,7 +1306,7 @@ s32 fseek(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
-    extern s32 lbl_803687F0;
+    extern s32 errno;
     s32 __flush_buffer(void *, s32 *);
     typedef struct {
         u8 pad[4];
@@ -1344,7 +1344,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
     offset = arg1;
 
     if (s4->mode != 1 || M2C_FIELD(arg0, u8 *, 0xA) != 0) {
-        lbl_803687F0 = 0x28;
+        errno = 0x28;
         return -1;
     }
 
@@ -1352,7 +1352,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
         if (__flush_buffer((void *)arg0, 0) != 0) {
             M2C_FIELD(arg0, u8 *, 0xA) = 1;
             M2C_FIELD(arg0, s32 *, 0x28) = 0;
-            lbl_803687F0 = 0x28;
+            errno = 0x28;
             return -1;
         }
     }
@@ -1363,7 +1363,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
         adj = 0;
         if ((s4->mode != 1 && s4->mode != 2) || M2C_FIELD(arg0, u8 *, 0xA) != 0) {
             result = -1;
-            lbl_803687F0 = 0x28;
+            errno = 0x28;
         } else if (b8->mode == 0) {
             result = M2C_FIELD(arg0, s32 *, 0x18);
         } else {
@@ -1405,7 +1405,7 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
             if (seek_proc(M2C_FIELD(arg0, s32 *, 0), &offset, whence, M2C_FIELD(arg0, s32 *, 0x48)) != 0) {
                 M2C_FIELD(arg0, u8 *, 0xA) = 1;
                 M2C_FIELD(arg0, s32 *, 0x28) = 0;
-                lbl_803687F0 = 0x28;
+                errno = 0x28;
                 return -1;
             }
         }
@@ -2696,7 +2696,7 @@ void fn_80234524(s32 arg0) {
     extern s32 __StringRead();
     extern f64 lbl_80367070;
     extern f64 lbl_80367078;
-    extern s32 lbl_803687F0;
+    extern s32 errno;
     extern f64 lbl_8036BE10;
     s32 sp14;
     s32 sp10;
@@ -2712,7 +2712,7 @@ void fn_80234524(s32 arg0) {
     temp_f2 = fabs(temp_f1);
 
     if ((spC != 0) || (temp_f1 != lbl_8036BE10 && ((temp_f2 < lbl_80367070) || (temp_f2 > lbl_80367078)))) {
-        lbl_803687F0 = 0x22;
+        errno = 0x22;
     }
 }
 
@@ -3025,7 +3025,7 @@ f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, 
 }
 
 s32 atoi(char *str) {
-    extern s32 lbl_803687F0;
+    extern s32 errno;
     extern s32 __StringRead();
     extern u32 __strtoul(s32, s32, s32 (*)(), void *, s32 *, s32 *, s32 *);
     u32 value;
@@ -3039,7 +3039,7 @@ s32 atoi(char *str) {
     value = __strtoul(10, 0x7FFFFFFF, __StringRead, &isc, &count, &negative, &overflow);
     if (overflow || (!negative && value > 0x7FFFFFFF) || (negative && value > 0x80000000)) {
         value = negative ? 0x80000000 : 0x7FFFFFFF;
-        lbl_803687F0 = 0x22;
+        errno = 0x22;
     } else if (negative) {
         value = -value;
     }
@@ -3427,7 +3427,7 @@ f64 fn_802360C4(f64 farg0, f64 farg1) {
     f64 fn_80238378(s32, f64);
     extern f64 lbl_80282CD0[];
     extern f32 lbl_80367068;
-    extern s32 lbl_803687F0;
+    extern s32 errno;
     extern f64 lbl_8036BEA8;
     extern f64 lbl_8036BEB0;
     extern f64 lbl_8036BEB8;
@@ -3450,7 +3450,7 @@ f64 fn_802360C4(f64 farg0, f64 farg1) {
     }
     (void)lbl_80282CD0;
     (void)lbl_80367068;
-    (void)lbl_803687F0;
+    (void)errno;
     (void)lbl_8036BEB0;
     (void)lbl_8036BEB8;
     (void)fn_80238A9C;
@@ -4012,7 +4012,7 @@ void fmod(void) {
 }
 
 f64 fn_802387E8(f64 x) {
-    extern s32 lbl_803687F0;
+    extern s32 errno;
     extern f64 lbl_8036C188;
     u32 r;
     u32 s1;
@@ -4034,7 +4034,7 @@ f64 fn_802387E8(f64 x) {
     pad = 0;
 
     if ((u32)((ix0 & 0x7FF00000) + 0x80100000) == 0U) {
-        lbl_803687F0 = 0x21;
+        errno = 0x21;
         return x * x + x;
     }
     if (ix0 <= 0) {
@@ -4043,7 +4043,7 @@ f64 fn_802387E8(f64 x) {
         }
         if (ix0 < 0) {
             f32 *nanp = (f32 *)0x80367068;
-            lbl_803687F0 = 0x21;
+            errno = 0x21;
             return *nanp;
         }
     }
