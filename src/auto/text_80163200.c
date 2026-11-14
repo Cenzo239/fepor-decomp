@@ -5247,7 +5247,7 @@ void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_PrepareTex();
 }
 #pragma use_lmw_stmw reset
-void fn_8016DBA4(void *arg0, f32 farg0, f32 farg1) {
+void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_SetQuadMax(f32, f32, f32, f32);
@@ -5442,7 +5442,7 @@ void MapOverlay_Draw(void *arg0) {
     M2C_UNK Prim2D_SetColorByte(u8);
     M2C_UNK Prim2D_SetTransform(f32, f32, f32, f32);
     M2C_UNK Prim2D_SetTex(M2C_UNK, M2C_UNK);
-    M2C_UNK fn_8016DBA4(void *, f32, f32);
+    M2C_UNK MapOverlay_DrawMapUnits(void *, f32, f32);
     extern f32 lbl_8036AA34;
     extern f32 lbl_8036AAB4;
     extern f32 lbl_8036AB24;
@@ -5465,7 +5465,7 @@ void MapOverlay_Draw(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_8036AA34, lbl_8036AA34, lbl_8036AB30, lbl_8036AAB4);
     Prim2D_PrepareTex();
-    fn_8016DBA4(arg0, lbl_8036AB34, lbl_8036AB38);
+    MapOverlay_DrawMapUnits(arg0, lbl_8036AB34, lbl_8036AB38);
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFFU);
     Prim2D_PrepareTex();
@@ -5500,7 +5500,7 @@ void fn_8016E1B4(void *arg0) {
     void *fn_8014D8FC(void *);
     void fn_8016CD1C(void *, f32, f32);
     void fn_8016D5A8(void *, f32, f32);
-    void fn_8016DBA4(void *, f32, f32);
+    void MapOverlay_DrawMapUnits(void *, f32, f32);
     u32 *Ui_GetColor(s32);
     void fn_801DDE88(s32, s32, s32);
     void strcat(void *, void *);
@@ -5557,7 +5557,7 @@ void fn_8016E1B4(void *arg0) {
     Prim2D_Begin();
     Prim2D_SetColorByte((u8)(0xFF - *(u8 *)((u8 *)self + 0x59)));
     Prim2D_PrepareTex();
-    fn_8016DBA4(self, lbl_8036AB3C, lbl_8036AB40);
+    MapOverlay_DrawMapUnits(self, lbl_8036AB3C, lbl_8036AB40);
     Prim2D_Begin();
     Prim2D_SetColorByte(*(u8 *)((u8 *)self + 0x58));
     Prim2D_PrepareTex();
