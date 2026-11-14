@@ -12390,7 +12390,7 @@ void fn_80052B54(void *arg0) {
     *(s32 *)((char *)*temp_r31 + 0x8) |= 0x2000;
 }
 
-void fn_80052EBC(u8 *arg0) {
+void MapObj_LerpPosProc(u8 *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern f32 lbl_8036908C;
