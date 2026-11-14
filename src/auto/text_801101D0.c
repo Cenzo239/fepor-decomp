@@ -3286,10 +3286,10 @@ void fn_80118B7C(void *arg0) {
     void Process_Goto(void *, s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_CloseChildAnim(void *, void *, s32);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     void *temp_r31;
 
-    while (lbl_803671C0 != 0) {
+    while (gEventLockDepth != 0) {
         EventLock_Dec();
     }
     fn_800A8478();
@@ -3789,11 +3789,11 @@ void fn_8011A0CC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_CloseChildAnim(void *, void *, s32);
     void fn_80119738(void);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     extern s8 gUiContext[];
     void *temp_r31;
 
-    while (lbl_803671C0 != 0) {
+    while (gEventLockDepth != 0) {
         EventLock_Dec();
     }
     fn_800A8478();
@@ -3891,11 +3891,11 @@ void fn_8011A470(s32 arg0) {
     void fn_8011A4E4(s32);
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, u8 *);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     extern u8 lbl_80274508[];
     u32 temp;
 
-    if (lbl_803671C0 == 0) {
+    if (gEventLockDepth == 0) {
         EventLock_Inc();
     }
     fn_800A8450();

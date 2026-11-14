@@ -124,7 +124,7 @@ enum IdKind {
 #define GX_INDEX16     3
 
 /* Global variables from the original game code */
-extern u8 lbl_803671C0;
+extern u8 gEventLockDepth;
 extern u8 lbl_80366DB0;
 extern s32 gActiveCam;
 extern u8 gActiveCamIndex;

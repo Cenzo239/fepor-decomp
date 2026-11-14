@@ -7707,7 +7707,7 @@ void fn_8013FEE0(void) {
 }
 
 void fn_8013FEF0(void) {
-    lbl_803671C0 += 1;
+    gEventLockDepth += 1;
 }
 
 void Ui_BringChildToFront(void *arg0, void *arg1) {

@@ -466,9 +466,9 @@ void fn_801EB72C(void *arg0) {
     void fn_8018DB4C(void);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_CloseChildAnim(void *, void *, s32);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
 
-    while (lbl_803671C0 != 0) {
+    while (gEventLockDepth != 0) {
         EventLock_Dec();
     }
     fn_800A8478();
@@ -485,11 +485,11 @@ void fn_801EB7A8(s32 arg0) {
     void fn_801EB98C(s32);
     u32 Ui_FindChild(s32, s32, s32);
     void Ui_SetWidgetText(u32, u8 *);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     extern u16 lbl_8027EE08[];
     u32 temp;
 
-    if (lbl_803671C0 == 0) {
+    if (gEventLockDepth == 0) {
         EventLock_Inc();
     }
     fn_800A8450();
@@ -515,7 +515,7 @@ void fn_801EBB00(void *arg0) {
     void Ui_DtorPanelBase(void *, s32);
     extern u8 gUnitLists[];
     extern u8 gBattleMap[];
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     void *iter;
     void *next;
     u32 flags;
@@ -536,7 +536,7 @@ void fn_801EBB00(void *arg0) {
     fn_8003F670(*(void **)((u8 *)arg0 + 0x4C));
     goto end;
     EventLock_Dec();
-    if (lbl_803671C0 == 0) {
+    if (gEventLockDepth == 0) {
         if (arg0 == NULL) {
             return;
         }

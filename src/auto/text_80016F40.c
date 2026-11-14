@@ -1083,24 +1083,24 @@ s32 Camera_GetActive(void) {
 }
 
 void EventLock_Dec(void) {
-    extern u8 lbl_803671C0;
-    lbl_803671C0 -= 1;
+    extern u8 gEventLockDepth;
+    gEventLockDepth -= 1;
 }
 
 void EventLock_Inc(void) {
-    lbl_803671C0 += 1;
+    gEventLockDepth += 1;
 }
 
 void fn_80018B04(void) {
     u8 temp = lbl_80366DB0;
-    lbl_803671C0 = temp;
+    gEventLockDepth = temp;
     lbl_80366DB0 = 0xFF;
 }
 
 void fn_80018B18(void) {
     extern u8 lbl_80366DB0;
-    extern u8 lbl_803671C0;
-    lbl_80366DB0 = lbl_803671C0;
+    extern u8 gEventLockDepth;
+    lbl_80366DB0 = gEventLockDepth;
 }
 
 #pragma cplusplus on
@@ -1234,7 +1234,7 @@ extern "C" void fn_80018B24(void) {
 extern "C" void fn_80018E0C(void)
 {
     void Ui_PlaySeCue(void *, s32);
-    extern u8 lbl_803671C0;
+    extern u8 gEventLockDepth;
     extern u8 gActiveCamIndex;
     extern s32 gActiveCam;
     extern u8 lbl_802CA2C8[];
@@ -1243,7 +1243,7 @@ extern "C" void fn_80018E0C(void)
     s32 index;
 
     base = lbl_802CA2C8;
-    if (lbl_803671C0 == 0) {
+    if (gEventLockDepth == 0) {
         index = (gActiveCamIndex + 1) % 2;
         gActiveCamIndex = index;
         switch (index) {
@@ -1335,7 +1335,7 @@ extern "C" void Camera_InitSlots(void) {
         *(f32 *)((u8 *)saved + 0x18) = f1;
         *(f32 *)((u8 *)saved + 0xC) = f1;
         *((u8 *)saved + 0x24) = 1;
-        lbl_803671C0 = 0;
+        gEventLockDepth = 0;
         lbl_803671C1 = 0;
         *(f32 *)((u8 *)saved + 0x40) = lbl_80368C88;
         *(f32 *)((u8 *)saved + 0x4C) = lbl_80368C88;
@@ -1368,7 +1368,7 @@ extern "C" void Camera_InitSlots(void) {
         *(f32 *)((u8 *)saved + 0x18) = f1;
         *(f32 *)((u8 *)saved + 0xC) = f1;
         *((u8 *)saved + 0x24) = 1;
-        lbl_803671C0 = 0;
+        gEventLockDepth = 0;
         lbl_803671C1 = 0;
         *(f32 *)((u8 *)saved + 0x40) = lbl_80368C88;
         *(f32 *)((u8 *)saved + 0x4C) = lbl_80368C88;
@@ -1401,7 +1401,7 @@ extern "C" void Camera_InitSlots(void) {
         *(f32 *)((u8 *)saved + 0x18) = f1;
         *(f32 *)((u8 *)saved + 0xC) = f1;
         *((u8 *)saved + 0x24) = 1;
-        lbl_803671C0 = 0;
+        gEventLockDepth = 0;
         lbl_803671C1 = 0;
         *(f32 *)((u8 *)saved + 0x40) = lbl_80368C88;
         *(f32 *)((u8 *)saved + 0x4C) = lbl_80368C88;
@@ -1431,7 +1431,7 @@ extern "C" void Camera_InitSlots(void) {
     *(f32 *)((u8 *)slot + 0x18) = f1;
     *(f32 *)((u8 *)slot + 0xC) = f1;
     *((u8 *)slot + 0x24) = 1;
-    lbl_803671C0 = 0;
+    gEventLockDepth = 0;
     lbl_803671C1 = 0;
     *(f32 *)((u8 *)slot + 0x40) = lbl_80368C88;
     *(f32 *)((u8 *)slot + 0x4C) = lbl_80368C88;
@@ -1482,7 +1482,7 @@ static inline void fn_80018F08_init(u8 *base, u8 *slot) {
     *(f32 *)(slot + 0x18) = f1;
     *(f32 *)(slot + 0xC) = f1;
     slot[0x24] = 1;
-    lbl_803671C0 = 0;
+    gEventLockDepth = 0;
     lbl_803671C1 = 0;
     *(f32 *)(slot + 0x40) = lbl_80368C88;
     *(f32 *)(slot + 0x4C) = lbl_80368C88;
