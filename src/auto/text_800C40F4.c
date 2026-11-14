@@ -19511,7 +19511,8 @@ void Ai_SetDecision(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 ar
     gAiState[0x21C] = 1;
 }
 
-s32 Ai_ExecUnit(void *arg0) {
+/* Run one unit's AI: refresh low-HP state, then dispatch by faction behavior. */
+s32 Ai_ExecUnit(void *unit) {
     void fn_80037814(void);
     void Unit_IsLowHp(void *);
     u8 Ai_GetFactionBehavior(void *);
@@ -19523,35 +19524,35 @@ s32 Ai_ExecUnit(void *arg0) {
     void Ai_TryMoveToSeekTile(void *);
     void Ai_TryHandleLowHpHeal(void *);
     void Ai_TryReactToIkeStatus(void *);
-    u8 v;
+    u8 behavior;
 
     fn_80037814();
-    Unit_IsLowHp(arg0);
-    v = Ai_GetFactionBehavior((u8 *)arg0 + 0x236);
-    switch (v) {
+    Unit_IsLowHp(unit);
+    behavior = Ai_GetFactionBehavior((u8 *)unit + 0x236);
+    switch (behavior) {
     case 1:
-        Ai_TryApproachIke(arg0);
+        Ai_TryApproachIke(unit);
         break;
     case 2:
-        Ai_TryCombatHostiles(arg0);
+        Ai_TryCombatHostiles(unit);
         break;
     case 3:
-        Ai_TryCombatFiltered(arg0);
+        Ai_TryCombatFiltered(unit);
         break;
     case 4:
-        Ai_TryMoveToFactionPos(arg0);
+        Ai_TryMoveToFactionPos(unit);
         break;
     case 5:
-        Ai_TryMoveToSeekTile(arg0);
+        Ai_TryMoveToSeekTile(unit);
         break;
     case 6:
-        Ai_TryHandleLowHpHeal(arg0);
+        Ai_TryHandleLowHpHeal(unit);
         break;
     case 7:
-        Ai_TryReactToIkeStatus(arg0);
+        Ai_TryReactToIkeStatus(unit);
         break;
     case 0:
-        Ai_BehaviorNop(arg0);
+        Ai_BehaviorNop(unit);
         break;
     }
     return 1;
