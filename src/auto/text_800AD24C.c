@@ -8863,23 +8863,24 @@ s32 fn_800C1360(s32 arg0, s32 arg1, s32 arg2)
     return arg2;
 }
 
-void Map_SyncBlendBuffers(void *arg0) {
+void Map_SyncBlendBuffers(void *proc) {
+    /* Copy the current map-blend buffer into the other two slots, rebuild the blend mask, and advance the ring index. */
     void fn_800062EC(s32, s32, u32);
     void DCFlushRange(void *, u32);
     void fn_800C1BDC();
     extern s32 gMapBlendBufs[];
     extern s32 gMapBlendBufIndex;
-    s32 temp_r29;
-    s32 var_r28;
+    s32 dst;
+    s32 i;
 
-    var_r28 = 1;
-    M2C_FIELD(arg0, s32 *, 0x60) = 0;
+    i = 1;
+    M2C_FIELD(proc, s32 *, 0x60) = 0;
     do {
-        temp_r29 = gMapBlendBufs[(gMapBlendBufIndex + var_r28) % 3];
-        fn_800062EC(temp_r29, gMapBlendBufs[gMapBlendBufIndex], 0x2000);
-        DCFlushRange((void *)temp_r29, 0x2000);
-        var_r28 += 1;
-    } while (var_r28 < 3);
+        dst = gMapBlendBufs[(gMapBlendBufIndex + i) % 3];
+        fn_800062EC(dst, gMapBlendBufs[gMapBlendBufIndex], 0x2000);
+        DCFlushRange((void *)dst, 0x2000);
+        i += 1;
+    } while (i < 3);
     fn_800C1BDC();
     gMapBlendBufIndex += 1;
     gMapBlendBufIndex %= 3;
