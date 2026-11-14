@@ -814,30 +814,31 @@ void fn_80122314(void *arg0) {
     }
 }
 
-void TalkUi_SpawnKeyWait2(void *arg0) {
+void TalkUi_SpawnKeyWait2(void *talk) {
+    /* Spawn E_TalkKeyWait2 at the talk cursor and fade its sound in from silence. */
     void *Process_CreateChild(void *);
     void *Sound_Create(s32, u32);
     void Sound_FadeFromZero(void *, u8);
     extern u32 gUiInputFlags;
     extern u8 gProc_TalkKeyWait2[];
-    void *entry;
+    void *proc;
     s16 x;
     s16 y;
-    void *sub;
+    void *sound;
 
     if ((gUiInputFlags & 3) == 0) {
-        entry = Process_CreateChild(gProc_TalkKeyWait2);
-        y = *(s16 *)((u8 *)arg0 + 0x62);
-        x = *(s16 *)((u8 *)arg0 + 0x60);
-        *(u32 *)((u8 *)entry + 0x30) = *(u32 *)((u8 *)arg0 + 0x5C);
-        *(s16 *)((u8 *)entry + 0x34) = x;
-        *(s16 *)((u8 *)entry + 0x36) = y;
-        if (*(u32 *)((u8 *)entry + 0x30) != 0) {
-            *(void **)((u8 *)entry + 0x38) = Sound_Create(*(s32 *)((u8 *)entry + 0x30), 0);
-            sub = *(void **)((u8 *)entry + 0x38);
-            *(f32 *)((u8 *)sub + 0x40) = (f32)x;
-            *(f32 *)((u8 *)sub + 0x44) = (f32)y;
-            Sound_FadeFromZero(*(void **)((u8 *)entry + 0x38), 8);
+        proc = Process_CreateChild(gProc_TalkKeyWait2);
+        y = *(s16 *)((u8 *)talk + 0x62);
+        x = *(s16 *)((u8 *)talk + 0x60);
+        *(u32 *)((u8 *)proc + 0x30) = *(u32 *)((u8 *)talk + 0x5C);
+        *(s16 *)((u8 *)proc + 0x34) = x;
+        *(s16 *)((u8 *)proc + 0x36) = y;
+        if (*(u32 *)((u8 *)proc + 0x30) != 0) {
+            *(void **)((u8 *)proc + 0x38) = Sound_Create(*(s32 *)((u8 *)proc + 0x30), 0);
+            sound = *(void **)((u8 *)proc + 0x38);
+            *(f32 *)((u8 *)sound + 0x40) = (f32)x;
+            *(f32 *)((u8 *)sound + 0x44) = (f32)y;
+            Sound_FadeFromZero(*(void **)((u8 *)proc + 0x38), 8);
         }
     }
 }
