@@ -405,7 +405,7 @@ void fn_8012CCA4(void *arg0)
             Heap_Free((void *)array[i]);
         }
 
-        fn_800C426C(*(void **)(object + 0x38));
+        Heap_FreeRaw(*(void **)(object + 0x38));
     }
 
     if (object[0x61] != 0) {
@@ -416,7 +416,7 @@ void fn_8012CCA4(void *arg0)
             fn_800616A0((void *)array[i + 1]);
         }
 
-        fn_800C426C(*(void **)(object + 0x3C));
+        Heap_FreeRaw(*(void **)(object + 0x3C));
     }
 
     fn_80056A04(*(void **)(object + 0x50), 1);

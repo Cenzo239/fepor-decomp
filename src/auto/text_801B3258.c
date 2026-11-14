@@ -6684,7 +6684,7 @@ void fn_801C4468(s32 arg0) {
 
 void fn_801C44A4(void *arg0) {
     void fn_800616A0();
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     s32 i;
     s32 offset;
@@ -6704,13 +6704,13 @@ void fn_801C44A4(void *arg0) {
         ptr = *(void **)work;
         if (ptr != NULL) {
             if (ptr != NULL) {
-                fn_800C426C((u8 *)ptr - 0x10);
+                Heap_FreeRaw((u8 *)ptr - 0x10);
             }
             *(void **)work = NULL;
         }
         ptr = *(void **)((u8 *)work + 4);
         if (ptr != NULL) {
-            fn_800C426C(ptr);
+            Heap_FreeRaw(ptr);
             *(void **)((u8 *)work + 4) = NULL;
         }
         Heap_Free(work);
@@ -7058,7 +7058,7 @@ void fn_801C6008(s32 arg0) {
 }
 
 void fn_801C6044(u8 *arg0) {
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     u8 *work;
     void *ptr;
@@ -7068,13 +7068,13 @@ void fn_801C6044(u8 *arg0) {
         ptr = *(void **)work;
         if (ptr != NULL) {
             if (ptr != NULL) {
-                fn_800C426C((u8 *)ptr - 0x10);
+                Heap_FreeRaw((u8 *)ptr - 0x10);
             }
             *(void **)work = NULL;
         }
         ptr = *(void **)(work + 4);
         if (ptr != NULL) {
-            fn_800C426C(ptr);
+            Heap_FreeRaw(ptr);
             *(void **)(work + 4) = NULL;
         }
         Heap_Free(work);

@@ -1585,13 +1585,13 @@ void fn_80123C2C(void *arg0) {
 
 void fn_80123CA0(void *arg0) {
     void fn_8006D8E8(s32);
-    void fn_800C426C(s32);
+    void Heap_FreeRaw(s32);
     void fn_801479C4(u8 *, s32);
     extern u8 lbl_80274F74[];
 
-    fn_800C426C(*(s32 *)((u8 *)arg0 + 0x64));
-    fn_800C426C(*(s32 *)((u8 *)arg0 + 0x60));
-    fn_800C426C(*(s32 *)((u8 *)arg0 + 0x5C));
+    Heap_FreeRaw(*(s32 *)((u8 *)arg0 + 0x64));
+    Heap_FreeRaw(*(s32 *)((u8 *)arg0 + 0x60));
+    Heap_FreeRaw(*(s32 *)((u8 *)arg0 + 0x5C));
     fn_8006D8E8(*(s32 *)((u8 *)arg0 + 0x58));
     fn_801479C4(lbl_80274F74 + 0x72, 0xFA);
 }
@@ -1909,7 +1909,7 @@ void fn_80124424(void *self) {
 void fn_801248E4(void *arg0) {
     extern u8 lbl_80274F74[];
 
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     void fn_801479C4(void *, s32);
     void fn_8006D8E8(void *);
@@ -1926,7 +1926,7 @@ void fn_801248E4(void *arg0) {
 
         if (ptr != NULL) {
             if (ptr != NULL) {
-                fn_800C426C((u8 *)ptr - 0x10);
+                Heap_FreeRaw((u8 *)ptr - 0x10);
             }
             *(void **)data = NULL;
         }
@@ -1934,7 +1934,7 @@ void fn_801248E4(void *arg0) {
         ptr = *(void **)(data + 4);
 
         if (ptr != NULL) {
-            fn_800C426C(ptr);
+            Heap_FreeRaw(ptr);
             *(void **)(data + 4) = NULL;
         }
 

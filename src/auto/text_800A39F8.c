@@ -1106,7 +1106,7 @@ void fn_800A5DC4(void *arg0)
     void fn_800A4FF8(void);
     void fn_8009E638(void);
     void fn_801C9714(void);
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void *fn_8006E658(void);
     void fn_80221824(u8, void *, s32, void *);
     extern u8 gBattleState[];
@@ -1142,7 +1142,7 @@ void fn_800A5DC4(void *arg0)
     fn_800A4FF8();
     fn_8009E638();
     fn_801C9714();
-    fn_800C426C(*(void **)((u8 *)arg0 + 0x5C));
+    Heap_FreeRaw(*(void **)((u8 *)arg0 + 0x5C));
     if (gGameFlags & 0x40) {
         temp_r3 = fn_8006E658();
         var_r9 = (u8 *)&spC;
@@ -1903,7 +1903,7 @@ void fn_800A7C94(void *arg0) {
     s16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     extern u8 lbl_8028C7F8[];
     extern u8 lbl_8028C814[];
     extern s32 lbl_80369B2C;
@@ -1984,7 +1984,7 @@ void fn_800A7C94(void *arg0) {
     } while (r29 < 0x20);
 cleanup:
     if (r28 != NULL)
-        fn_800C426C((u8 *)r28 - 0x10);
+        Heap_FreeRaw((u8 *)r28 - 0x10);
 }
 #pragma opt_peephole reset
 #pragma opt_common_subs reset
@@ -2005,7 +2005,7 @@ void fn_800A7EC4(void *arg0) {
     s16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void fn_800A7EC0(void);
     extern u8 lbl_8028C7F8[];
     extern u8 lbl_8028C814[];
@@ -2087,7 +2087,7 @@ recompute:
     }
 cleanup:
     if (arr != NULL) {
-        fn_800C426C((u8 *)arr - 0x10);
+        Heap_FreeRaw((u8 *)arr - 0x10);
     }
 }
 #pragma use_lmw_stmw reset

@@ -22,7 +22,7 @@ extern f64 lbl_8036A7E8;
 extern u8 lbl_80367B0C;
 extern u8 lbl_80367B0D;
 
-void fn_800C426C(s32);
+void Heap_FreeRaw(s32);
 s32 fn_800C42AC(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
@@ -537,7 +537,7 @@ void fn_8014DE70(s32 arg0) {
 
 #pragma global_optimizer off
 void fn_8014DEA8(void) {
-    void fn_800C426C(s32);
+    void Heap_FreeRaw(s32);
     void fn_8005B918(char *);
     u8 fn_8005B888(s32);
     s32 fn_8005B8AC(s32);
@@ -553,8 +553,8 @@ void fn_8014DEA8(void) {
     char buffer[0x20];
     s32 i;
 
-    fn_800C426C(gMsgDebugKinds);
-    fn_800C426C(gMsgDebugPtrs);
+    Heap_FreeRaw(gMsgDebugKinds);
+    Heap_FreeRaw(gMsgDebugPtrs);
     gMsgDebugCount = 0;
     gMsgDebugPtrs = 0;
     fn_8005B918((char *)lbl_80277238 + 0x28);

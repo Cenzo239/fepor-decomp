@@ -510,7 +510,7 @@ void fn_801FDA08(void *arg0) {
     extern u8 gFallingParticleTex;
 
     FileCache_ReleaseSlot(&gFallingParticleTex);
-    fn_800C426C(*(void **)((u8 *)arg0 + 0x30));
+    Heap_FreeRaw(*(void **)((u8 *)arg0 + 0x30));
 }
 
 extern s32 lbl_803679F0;
@@ -1468,7 +1468,7 @@ void fn_801FFF08(s32 arg0) {
 #pragma optimization_level 2
 /* Convert any 2004-12-16 saves (MDST layouts) to the current format; repeat until none left. */
 void Save_MigrateLegacy(void) {
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void *fn_800C4638(s32, void *, s32);
     void *Save_GetLargeSlot(s32 *, s32);
     void *Save_GetSmallSlot(s32 *, s32);
@@ -1517,7 +1517,7 @@ void Save_MigrateLegacy(void) {
                         Save_BumpVersionChecksum((void *)j);
                         smallOk = 1;
                     }
-                    fn_800C426C(smallBuf);
+                    Heap_FreeRaw(smallBuf);
                     break;
                 default:
                     smallOk = 0;
@@ -1555,7 +1555,7 @@ void Save_MigrateLegacy(void) {
                         Save_BumpVersionChecksum(largeSlot);
                         largeOk = 1;
                     }
-                    fn_800C426C(largeBuf);
+                    Heap_FreeRaw(largeBuf);
                     break;
                 default:
                     largeOk = 0;

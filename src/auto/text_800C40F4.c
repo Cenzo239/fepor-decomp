@@ -413,7 +413,7 @@ s32 fn_800C4240(s32 arg0) {
     return fn_800C5A48(lbl_80367870, arg0) + 0x20;
 }
 
-void fn_800C426C(void) {
+void Heap_FreeRaw(void) {
     M2C_UNK fn_800C4588();
     fn_800C4588();
 }
@@ -1929,7 +1929,7 @@ void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
 #pragma use_lmw_stmw on
 #pragma auto_inline off
 void *Xml_Destroy(void *arg0, s16 arg1) {
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     void *String_Destroy(void *, s16);
 
@@ -1950,7 +1950,7 @@ void *Xml_Destroy(void *arg0, s16 arg1) {
                 item = NULL;
             }
             if (*(u32 *)((u8 *)item + 4) != 0) {
-                fn_800C426C((u8 *)*(u32 *)((u8 *)item + 4) - 0x10);
+                Heap_FreeRaw((u8 *)*(u32 *)((u8 *)item + 4) - 0x10);
             }
             Heap_Free(item);
             i += 1;

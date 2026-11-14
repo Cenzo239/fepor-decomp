@@ -22,7 +22,7 @@ extern f64 lbl_8036A7E8;
 extern u8 lbl_80367B0C;
 extern u8 lbl_80367B0D;
 
-void fn_800C426C(s32);
+void Heap_FreeRaw(s32);
 s32 fn_800C42AC(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);

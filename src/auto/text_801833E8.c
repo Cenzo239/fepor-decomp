@@ -7086,12 +7086,12 @@ void *EventArrow_Get(s32 arg0) {
 }
 
 void fn_801950CC(void *arg0) {
-    M2C_UNK fn_800C426C(s32);
+    M2C_UNK Heap_FreeRaw(s32);
     u32 temp_r3;
 
     temp_r3 = M2C_FIELD(arg0, u32 *, 0x30);
     if (temp_r3 != 0U) {
-        fn_800C426C(temp_r3 - 0x10);
+        Heap_FreeRaw(temp_r3 - 0x10);
     }
 }
 

@@ -99,7 +99,7 @@ void *fn_8014A4E8(void) {
     return (char *)gSoundMenuStrings + 0xDE;
 }
 
-void fn_800C426C(s32);
+void Heap_FreeRaw(s32);
 s32 fn_800C42AC(s32);
 void *Archive_Load(void *);
 void Ui_CreateMenu(void *, s32, s32);
@@ -107,7 +107,7 @@ void Ui_CreateMenu(void *, s32, s32);
 s32 fn_8014A4F8(s32 arg0, s32 arg1)
 {
     extern u16 gSoundMenuStrings[];
-    void fn_800C426C(s32);
+    void Heap_FreeRaw(s32);
     s32 fn_800C42AC(s32);
     void *Archive_Load(void *);
     void Ui_CreateMenu(void *, s32, s32);
@@ -120,7 +120,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
 
     (void)arg0;
     lbl_80367B08 = 1;
-    fn_800C426C(lbl_80367B00);
+    Heap_FreeRaw(lbl_80367B00);
     lbl_80367B00 = 0;
     var_ctr = 0x60;
     lbl_80367B00 = fn_800C42AC(0x1800);
@@ -201,7 +201,7 @@ s32 fn_8014A70C(s32 arg0, s32 arg1)
 
     (void)arg0;
     lbl_80367B08 = 0;
-    fn_800C426C(lbl_80367B00);
+    Heap_FreeRaw(lbl_80367B00);
     lbl_80367B00 = 0;
     lbl_80367B00 = fn_800C42AC(0x1800);
 

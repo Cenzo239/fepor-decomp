@@ -11996,7 +11996,7 @@ void fn_80050E80(void)
     void fn_800162B8(void);
     void fn_800616A0(void *);
     void fn_800C4588(void *);
-    void fn_800C426C(void *);
+    void Heap_FreeRaw(void *);
     void Heap_Free(void *);
     void fn_8006D8E8(void *);
     extern u8 lbl_802EFFE8[];
@@ -12033,13 +12033,13 @@ void fn_80050E80(void)
         a = *(void **)p;
         if (a != 0) {
             if (a != 0) {
-                fn_800C426C((u8 *)a - 0x10);
+                Heap_FreeRaw((u8 *)a - 0x10);
             }
             *(void **)p = 0;
         }
         a = *(void **)((u8 *)p + 4);
         if (a != 0) {
-            fn_800C426C(a);
+            Heap_FreeRaw(a);
             *(void **)((u8 *)p + 4) = 0;
         }
         Heap_Free(p);
