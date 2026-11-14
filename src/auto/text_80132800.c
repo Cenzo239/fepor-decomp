@@ -12263,11 +12263,11 @@ extern "C" void fn_801490C8(void *arg0) {
 
 #pragma cplusplus reset
 s8 fn_80149734(void) {
-    s32 fn_800AF704(s32);
+    s32 Fx_GetFlags(s32);
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if (fn_800AF704(i) == 0U) {
+        if (Fx_GetFlags(i) == 0U) {
             return (s8)i;
         }
     }
@@ -12346,12 +12346,12 @@ void fn_80149918(void *arg0) {
 }
 
 s32 fn_80149940(void *arg0) {
-    s32 fn_800AF704(s32);
-    return fn_800AF704(*(s8 *)((char *)arg0 + 4)) != 0;
+    s32 Fx_GetFlags(s32);
+    return Fx_GetFlags(*(s8 *)((char *)arg0 + 4)) != 0;
 }
 
 s32 fn_80149974(void *arg0) {
-    return (fn_800AF704(*(s8 *)((u8 *)arg0 + 4)) >> 1) & 1;
+    return (Fx_GetFlags(*(s8 *)((u8 *)arg0 + 4)) >> 1) & 1;
 }
 
 s8 fn_801499A0(void) {

@@ -9760,7 +9760,7 @@ extern u16 gSoundSys[];
 
 extern u16 gSoundSys[4976];
 
-u16 fn_800AF704(s32 arg0) {
+u16 Fx_GetFlags(s32 arg0) {
     return *(u16 *)(*(u8 **)((u8 *)gSoundSys + 0xF8) + arg0 * 0x13C);
 }
 
