@@ -4830,7 +4830,8 @@ s32 fn_800B8EBC(void) {
     return 1;
 }
 
-s32 ScriptCmd_ShowMsg(u32 arg0) {
+/* Open a message window for msgPtr; multi-line if expanded text has a newline. */
+s32 ScriptCmd_ShowMsg(u32 msgPtr) {
     char *Msg_Expand(void);
     char *strchr(char *, s32);
     void *Process_FindByName(void *);
@@ -4842,13 +4843,13 @@ s32 ScriptCmd_ShowMsg(u32 arg0) {
     extern u8 lbl_80320060[];
     extern s32 gUiInputFlags;
 
-    if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
+    if ((msgPtr < 0x80000000U) || (msgPtr >= 0x81800000U)) {
         return 0;
     }
     if (strchr(Msg_Expand(), 0xA) == NULL) {
-        MsgWin_OpenSingle(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        MsgWin_OpenSingle(Process_FindByName(lbl_8026ECB8 + 0xA3C), msgPtr, 0, 0);
     } else {
-        MsgWin_OpenMulti(Process_FindByName(lbl_8026ECB8 + 0xA3C), arg0, 0, 0);
+        MsgWin_OpenMulti(Process_FindByName(lbl_8026ECB8 + 0xA3C), msgPtr, 0, 0);
     }
     fn_80013864();
     fn_80013874(lbl_80320060);
