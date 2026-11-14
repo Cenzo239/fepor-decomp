@@ -1510,13 +1510,13 @@ s32 DVDGetAppLoaderOffset(void) {
     s32 fn_8020EF60(void *);
     s32 fn_8020F40C(void);
     void fn_802089A4(s32);
-    extern s32 lbl_803684B4;
+    extern s32 sAppLoaderOffset;
 
     u8 sp8[0x38];
     u32 buf;
 
-    if (lbl_803684B4 != 0) {
-        return lbl_803684B4;
+    if (sAppLoaderOffset != 0) {
+        return sAppLoaderOffset;
     }
     if (*(s32 *)0x800030F4 != 0) {
         buf = fn_80204DE0(0x40, 0x20);
@@ -1526,11 +1526,11 @@ s32 DVDGetAppLoaderOffset(void) {
                 fn_802089A4(0);
             }
         }
-        lbl_803684B4 = *(s32 *)0x800030F4 + *(s32 *)(buf + 0x38);
+        sAppLoaderOffset = *(s32 *)0x800030F4 + *(s32 *)(buf + 0x38);
     } else {
-        lbl_803684B4 = 0x2440;
+        sAppLoaderOffset = 0x2440;
     }
-    return lbl_803684B4;
+    return sAppLoaderOffset;
 }
 #pragma peephole off
 void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
@@ -1565,7 +1565,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     int OSReport(void *msg, ...);
     extern s32 __OSIsGcam;
     extern s32 lbl_803684B0;
-    extern s32 lbl_803684B4;
+    extern s32 sAppLoaderOffset;
     extern char lbl_8029C2D8[];
 
     typedef void (*CB0)(void *, void *);
@@ -1652,7 +1652,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     if (var_r0 != 0) {
         var_r27 = arg0;
         if ((u32)(var_r27 + 0x10000) == 0xFFFFU) {
-            if (lbl_803684B4 != 0) {
+            if (sAppLoaderOffset != 0) {
                 goto bi2_ready;
             }
             if (*(s32 *)0x800030F4 != 0) {
@@ -1662,12 +1662,12 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
                     if (fn_8020F40C() == 0)
                         fn_802089A4(0);
                 }
-                lbl_803684B4 = *(s32 *)0x800030F4 + *(s32 *)(temp_r3 + 0x38);
+                sAppLoaderOffset = *(s32 *)0x800030F4 + *(s32 *)(temp_r3 + 0x38);
             } else {
-                lbl_803684B4 = 0x2440;
+                sAppLoaderOffset = 0x2440;
             }
         bi2_ready:
-            var_r27 = lbl_803684B4 + *(s32 *)(temp_r30 + 0x14) + 0x20;
+            var_r27 = sAppLoaderOffset + *(s32 *)(temp_r30 + 0x14) + 0x20;
         }
         *(s32 *)(temp_r31 + 8) = var_r27;
         ((SetupFn)*(void **)(temp_r30 + 0x10))(&spC0, &spC4, &spC8);
