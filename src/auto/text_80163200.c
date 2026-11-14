@@ -11988,7 +11988,8 @@ void Stream_WriteU8(void *arg0, s8 arg1) {
     *(*pp)++ = arg1;
 }
 
-s32 Stream_LoadFile(void *arg0, void *arg1) {
+s32 Stream_LoadFile(void *stream, void *path) {
+    /* Open path for reading, alloc a buffer, read the whole file into the stream. */
     void *File_Open(void *, void *);
     s32 File_Seek(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
@@ -11996,21 +11997,21 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     void File_Close(void *);
     extern u8 gFileOpenModes[];
     void *out;
-    void *temp_r31;
-    s32 temp_r30;
+    void *fp;
+    s32 size;
 
-    out = arg0;
-    temp_r31 = File_Open(arg1, gFileOpenModes + 4);
-    if (temp_r31 == NULL) {
+    out = stream;
+    fp = File_Open(path, gFileOpenModes + 4);
+    if (fp == NULL) {
         return 0;
     }
-    temp_r30 = File_Seek(temp_r31, 0, 2);
-    File_Seek(temp_r31, 0, 0);
-    *(void **)out = fn_800C4638(temp_r30, gFileOpenModes + 3, 0);
+    size = File_Seek(fp, 0, 2);
+    File_Seek(fp, 0, 0);
+    *(void **)out = fn_800C4638(size, gFileOpenModes + 3, 0);
     *((u8 *)out + 0xC) = 1;
-    File_Read(*(void **)out, 1, temp_r30, temp_r31);
-    File_Close(temp_r31);
-    return temp_r30;
+    File_Read(*(void **)out, 1, size, fp);
+    File_Close(fp);
+    return size;
 }
 
 s32 fn_8017A6C4(void *arg0, void *arg1) {
