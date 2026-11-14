@@ -5609,34 +5609,35 @@ s32 fn_80068CFC(void *arg0, s32 arg1) {
     return 0;
 }
 
-void GMaterial_SetCullMode(s32 *arg0, void *arg1) {
+/* Set GX cull mode from material mirror flag (0x1000) and node cull bits (0x1800). */
+void GMaterial_SetCullMode(s32 *mat, void *node) {
     M2C_UNK fn_8022100C(M2C_UNK);
-    s32 temp_r0;
-    s32 temp_r0_2;
+    s32 cullBits;
+    s32 cullBits2;
 
-    if (*arg0 & 0x1000) {
-        temp_r0 = M2C_FIELD(arg1, u16 *, 8) & 0x1800;
-        switch (temp_r0) {                          /* switch 1; irregular */
-        case 0x800:                                 /* switch 1 */
+    if (*mat & 0x1000) {
+        cullBits = M2C_FIELD(node, u16 *, 8) & 0x1800;
+        switch (cullBits) {
+        case 0x800:
             fn_8022100C(2);
             return;
-        case 0x1000:                                /* switch 1 */
+        case 0x1000:
             fn_8022100C(1);
             return;
-        case 0x1800:                                /* switch 1 */
+        case 0x1800:
             fn_8022100C(3);
             return;
         }
     } else {
-        temp_r0_2 = M2C_FIELD(arg1, u16 *, 8) & 0x1800;
-        switch (temp_r0_2) {                        /* switch 2; irregular */
-        case 0x800:                                 /* switch 2 */
+        cullBits2 = M2C_FIELD(node, u16 *, 8) & 0x1800;
+        switch (cullBits2) {
+        case 0x800:
             fn_8022100C(1);
             return;
-        case 0x1000:                                /* switch 2 */
+        case 0x1000:
             fn_8022100C(2);
             return;
-        case 0x1800:                                /* switch 2 */
+        case 0x1800:
             fn_8022100C(0);
             return;
         }
