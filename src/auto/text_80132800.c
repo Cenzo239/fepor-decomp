@@ -1073,37 +1073,38 @@ end:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-s16 Ui_CountPageItems(void *arg0) {
+s16 Ui_CountPageItems(void *panel) {
+    /* Count nonempty item cells (9 slots) on the list panel's current page. */
     s16 count;
-    u8 *ptr;
+    u8 *page;
 
     count = 0;
-    ptr = *(u8 **)((u8 *)arg0 + 0x50) + *(u32 *)((u8 *)arg0 + 0x4c) * 0x48;
-    if (*(u32 *)(ptr + 0) != 0) {
+    page = *(u8 **)((u8 *)panel + 0x50) + *(u32 *)((u8 *)panel + 0x4c) * 0x48;
+    if (*(u32 *)(page + 0) != 0) {
         count = 1;
     }
-    if (*(u32 *)(ptr + 8) != 0) {
+    if (*(u32 *)(page + 8) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x10) != 0) {
+    if (*(u32 *)(page + 0x10) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x18) != 0) {
+    if (*(u32 *)(page + 0x18) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x20) != 0) {
+    if (*(u32 *)(page + 0x20) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x28) != 0) {
+    if (*(u32 *)(page + 0x28) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x30) != 0) {
+    if (*(u32 *)(page + 0x30) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x38) != 0) {
+    if (*(u32 *)(page + 0x38) != 0) {
         count += 1;
     }
-    if (*(u32 *)(ptr + 0x40) != 0) {
+    if (*(u32 *)(page + 0x40) != 0) {
         count += 1;
     }
     return count;
