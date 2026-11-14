@@ -3288,7 +3288,7 @@ void fn_8007A2AC(void *arg0) {
 
     Face_DrawEyes(arg0, var_r31, 7);
     Face_DrawEyes(arg0, var_r31, 0xA);
-    *(s16 *)((u8 *)arg0 + 0x38) = (s16)(*(s16 *)((u8 *)arg0 + 0x38) + 1);
+    ++*(s16 *)((u8 *)arg0 + 0x38);
 }
 
 void fn_8007A368(void *arg0) {
