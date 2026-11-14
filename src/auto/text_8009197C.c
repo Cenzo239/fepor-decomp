@@ -353,7 +353,7 @@ void fn_8009204C(void *arg0, void *arg1) {
     fn_800C4588(temp_r31);
 }
 
-s32 fn_80092198(u8 *arg0, s32 arg1) {
+s32 Unit_FindKeyItemSlot(u8 *arg0, s32 arg1) {
 u8 Status_Test(u8 *, s32);
 void Item_GetKeyFlags(u8 *, s32);
 u8 sp8; s32 result; u8 mask; u8 *p; s32 slot;

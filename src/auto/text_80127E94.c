@@ -380,7 +380,7 @@ u8 fn_80129104(void *arg0) {
     extern Tbl lbl_802909F8[];
     extern u8 gAiState[];
     s32 fn_801001F0();
-    s32 fn_80092198();
+    s32 Unit_FindKeyItemSlot();
     u8 fn_80093218(void *, u32);
     Tbl *e;
     u32 k;
@@ -397,7 +397,7 @@ u8 fn_80129104(void *arg0) {
                 break;
             }
             t = fn_801001F0(M2C_FIELD(p, u32 *, 0x1ec));
-            if ((u8) t != 0 && i == fn_80092198(arg0, t)) {
+            if ((u8) t != 0 && i == Unit_FindKeyItemSlot(arg0, t)) {
                 k = M2C_FIELD(p, u32 *, 0x1ec);
                 if (fn_80093218(arg0, k) != 0) {
                     e = lbl_802909F8;
