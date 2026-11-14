@@ -6362,7 +6362,7 @@ extern "C" void ItemList_Insert(void *arg0, void *arg1, void *arg2, void *arg3) 
 }
 #pragma cplusplus reset
 
-int fn_80193DC0(void *arg0) {
+int ItemList_Init(void *arg0) {
     u32 *ptr;
 
     ptr = (u32 *)((u8 *)arg0 + 0x4);
