@@ -3029,7 +3029,7 @@ void fn_800B5708(void) {
     void fn_800B8D54(void);
     void fn_800B8D34(void);
     void fn_800B8F98(void);
-    void fn_800B8ED0(void);
+    void ScriptCmd_ShowMsg(void);
     void fn_800B8EBC(void);
     void fn_800B8CB0(void);
     void fn_800B8C34(void);
@@ -3204,7 +3204,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x493, fn_800B8D54, 4);
     Script_RegisterCommand(lbl_8026ECB8 + 0x4A0, fn_800B8D34, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x4AD, fn_800B8F98, 1);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x4BC, fn_800B8ED0, 1);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x4BC, ScriptCmd_ShowMsg, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x4BF, fn_800B8EBC, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x4C3, fn_800B8CB0, 6);
     Script_RegisterCommand(lbl_8026ECB8 + 0x4CD, fn_800B8C34, 5);
@@ -4830,7 +4830,7 @@ s32 fn_800B8EBC(void) {
     return 1;
 }
 
-s32 fn_800B8ED0(u32 arg0) {
+s32 ScriptCmd_ShowMsg(u32 arg0) {
     char *Msg_Expand(void);
     char *strchr(char *, s32);
     void *Process_FindByName(void *);
