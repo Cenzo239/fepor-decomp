@@ -612,7 +612,8 @@ void Unit_SetSkillRank(void *arg0, u32 arg1, s32 arg2) {
     }
 }
 
-s32 Unit_GetSkillRank(void *arg0, u32 arg1) {
+/* Return the packed weapon-rank nibble for kind (0-15); 0 if unused, -1 if out of range. */
+s32 Unit_GetSkillRank(void *ranks, u32 kind) {
     struct { u8 hi:3; u8 lo:5; } *p;
     struct { u16 hi:6; u16 mid:3; u16 lo:7; } *h;
     struct { u8 hi:1; u8 mid:3; u8 lo:4; } *q;
@@ -621,23 +622,23 @@ s32 Unit_GetSkillRank(void *arg0, u32 arg1) {
     struct { u8 hi:3; u8 lo:5; } *t;
     struct { u8 a:3; u8 b:3; u8 c:2; } *u;
 
-    switch (arg1) {
+    switch (kind) {
     case 0:
-        p = arg0;
+        p = ranks;
         return p->hi;
     case 1:
         return 0;
     case 2:
-        h = arg0;
+        h = ranks;
         return h->mid;
     case 3:
-        q = (void *)((u8 *)arg0 + 1);
+        q = (void *)((u8 *)ranks + 1);
         return q->mid;
     case 4:
-        r = arg0;
+        r = ranks;
         return r->b;
     case 5:
-        s = (void *)((u8 *)arg0 + 1);
+        s = (void *)((u8 *)ranks + 1);
         return s->lo;
     case 6:
         return 0;
@@ -656,10 +657,10 @@ s32 Unit_GetSkillRank(void *arg0, u32 arg1) {
     case 13:
         return 0;
     case 14:
-        t = (void *)((u8 *)arg0 + 2);
+        t = (void *)((u8 *)ranks + 2);
         return t->hi;
     case 15:
-        u = (void *)((u8 *)arg0 + 2);
+        u = (void *)((u8 *)ranks + 2);
         return u->b;
     }
     return -1;
