@@ -3599,12 +3599,12 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
     var_r29 = arg0;
     do {
         if (*(u32 *)var_r31 != 0) {
-            s32 c1;
             u8 *a;
             u8 *b;
+            s32 c1;
             s32 c2;
-            s32 s2;
             s32 s1;
+            s32 s2;
             s32 d;
 
             a = *(u8 **)(var_r31 + 0x14);
@@ -3615,8 +3615,8 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
                 d = s1 - s2;
                 goto check;
             }
-            a = a + 1;
-            b = b + 1;
+            a += 1;
+            b += 1;
         load:
             c1 = *a;
             c2 = *b;
@@ -4503,7 +4503,7 @@ typedef struct HashKey {
     u32 h2;
 } HashKey;
 
-s32 fn_8000D1D0(s8 *str) {
+s32 Hash_Remove(s8 *str) {
     extern u8 lbl_802ADB20[];
     HashKey key;
     u32 **bucket;

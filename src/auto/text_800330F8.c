@@ -6041,7 +6041,7 @@ label_1:
 
 #pragma use_lmw_stmw on
 void fn_8003FED8(u8 *arg0) {
-void fn_8000D1D0(void *);
+void Hash_Remove(void *);
 u32 *p30;
 u32 j;
 u8 *p29;
@@ -6070,7 +6070,7 @@ for(i=0;i<count;i++) {
 if(*p28==*scan) break;
 scan++;
 }
-fn_8000D1D0(da);
+Hash_Remove(da);
 p28+=2; j++;
 }
 arg0[0x1F]=0;

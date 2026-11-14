@@ -385,7 +385,7 @@ void ScriptCmd_CmWakeupScripts(void) {
 }
 
 s32 ScriptCmd_CmSleepScript(char *arg0) {
-    void fn_8000D1D0(u32);
+    void Hash_Remove(u32);
     extern void *gCmScriptList;
     void *node;
     void *last;
@@ -417,7 +417,7 @@ found:
             break;
         }
         if (*list[i] != 0) {
-            fn_8000D1D0(*list[i]);
+            Hash_Remove(*list[i]);
         }
     }
     return 1;
@@ -428,7 +428,7 @@ s32 ScriptCmd_CmFreeScript(void)
     extern void *gCmScriptList;
     extern u16 gCmScriptUsed;
     extern s32 gCmScriptStatus;
-    extern void fn_8000D1D0(void *);
+    extern void Hash_Remove(void *);
     extern void fn_8005C7E8(void *);
 
     u8 *node;
@@ -465,7 +465,7 @@ s32 ScriptCmd_CmFreeScript(void)
         target = *(void **)entry;
 
         if (target != 0) {
-            fn_8000D1D0(target);
+            Hash_Remove(target);
         }
 
         offset += 4;
