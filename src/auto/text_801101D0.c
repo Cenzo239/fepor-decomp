@@ -5407,7 +5407,7 @@ void fn_8011D650(void) {
     void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
@@ -5422,7 +5422,7 @@ void fn_8011D650(void) {
     flags &= ~0x10;
     gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
         if (!(gUiPanelFlags & 0x10)) {
@@ -5441,7 +5441,7 @@ void fn_8011D6F4(s32 arg0) {
     void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
@@ -5456,7 +5456,7 @@ void fn_8011D6F4(s32 arg0) {
     flags &= ~0x10;
     gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
         if (!(gUiPanelFlags & 0x10)) {
@@ -5480,7 +5480,7 @@ void TalkUi_ShowMsg(void *arg0) {
     void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     void fn_8011DED8(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
@@ -5499,7 +5499,7 @@ void TalkUi_ShowMsg(void *arg0) {
     flags &= ~0x10;
     gUiPanelFlags = flags;
     Process_Goto(obj, 1);
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
         fn_8011DED8(obj);
         if (!(gUiPanelFlags & 0x10)) {
@@ -5542,7 +5542,7 @@ void UiPanel_Create(void *owner, void *parent) {
     void UiPanel_ClearFlags(void *);
     void *Process_CreateEx(void *, void *);
     void fn_8012205C(void *);
-    void fn_80120CFC(void *);
+    void UiPanel_PollSkip(void *);
     void fn_8011DED8(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
@@ -5577,7 +5577,7 @@ void UiPanel_Create(void *owner, void *parent) {
     panel[0x62] = 1;
     fn_8012205C(lbl_8032BDE8);
     panel[0x66] = 1;
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     if (gUiInputFlags & 1) {
         fn_8011DED8(panel);
         if (!(gUiPanelFlags & 0x10)) {
@@ -6323,12 +6323,12 @@ void fn_80120354(void *);
 
 void fn_80120304(void *arg0)
 {
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     u8 fn_8008A59C(void);
     void fn_80120354(void *);
     extern u16 gUiPanelFlags;
 
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
 
     if (*((u8 *)arg0 + 0x63) == 0 || (u8)fn_8008A59C() == 0) {
         fn_80120354(arg0);

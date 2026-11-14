@@ -22,7 +22,7 @@ void UiPanel_ClearFlags(void *arg0) {
     gUiInputFlags &= 0xFFFFFFFD;
 }
 
-void fn_80120CFC(u16 *arg0) {
+void UiPanel_PollSkip(u16 *arg0) {
     u32 Process_FindByName(void *);
     void *Process_Find(void *);
     extern void *gPadInput;
@@ -697,13 +697,13 @@ void fn_80122170(void *arg0, void *arg1, u16 arg2) {
 
 void fn_801221E4(s32 arg0)
 {
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     void fn_80120C2C(void);
     void Process_ClearFunc(s32);
     extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
 
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     fn_80120C2C();
 
     if (gUiPanelFlags & 0x0200) {
@@ -775,11 +775,11 @@ void fn_80122314(void *arg0) {
     extern u16 gUiPanelFlags;
     extern u32 gUiInputFlags;
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void fn_80120CFC(void *);
+    void UiPanel_PollSkip(void *);
     s32 cur;
     s32 total;
 
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     M2C_FIELD(arg0, s32 *, 0x34)++;
     cur = M2C_FIELD(arg0, s32 *, 0x34);
     total = M2C_FIELD(arg0, s32 *, 0x38);
@@ -842,7 +842,7 @@ void fn_80122450(void *arg0) {
 }
 
 void fn_80122524(void *arg0) {
-    void fn_80120CFC(u16 *);
+    void UiPanel_PollSkip(u16 *);
     u8 fn_80120C2C(void);
     void Ui_PlaySeCue(void *, s32);
     void fn_80109BB4(s32, s32);
@@ -853,7 +853,7 @@ void fn_80122524(void *arg0) {
     extern u32 *gPadInput;
     u32 temp;
 
-    fn_80120CFC(&gUiPanelFlags);
+    UiPanel_PollSkip(&gUiPanelFlags);
     if (fn_80120C2C() != 0 || (gUiPanelFlags & 4)) {
         Ui_PlaySeCue(lbl_80274D60 + 0x3D, 0x64);
         if (*(u32 *)((u8 *)arg0 + 0x30) != 0) {
@@ -1017,7 +1017,7 @@ void fn_8012282C(struct efUnit* arg0)
             return;
         }
         
-        // Additional logic for handling the units, similar to fn_80120CFC
+        // Additional logic for handling the units, similar to UiPanel_PollSkip
         // but with additional checks and assignments
         
         // Placeholder structure that matches the target assembly
