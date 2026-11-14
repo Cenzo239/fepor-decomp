@@ -4171,7 +4171,7 @@ extern "C" void Ui_LayoutUnitPanel(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_AddChild(void *, void *);
-    void fn_80140234(void *, void *, s32);
+    void Ui_OpenChildAnim(void *, void *, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     void Ui_SetWidgetText(u32, s32);
     extern u8 gUiUnitPanelStrings[];
@@ -4227,7 +4227,7 @@ extern "C" void Ui_LayoutUnitPanel(void *arg0) {
         Ui_AddChild(panel, child);
     }
     if (Ui_GetWorldScale(child) < 1.0f) {
-        fn_80140234(panel, child, 0);
+        Ui_OpenChildAnim(panel, child, 0);
     }
     if ((child = Ui_FindChild(panel, 0x103, 0)) == 0) {
         child = *(void **)((u8 *)panel + 0x54);
@@ -11094,7 +11094,7 @@ s16 fn_801CF614(void *);
 void Ui_BringChildToFront(void *,void *);
 void Ui_AddChild(void *,void *);
 void Ui_CloseChildAnim(void *,void *,s32);
-void fn_80140234(void *,void *,s32);
+void Ui_OpenChildAnim(void *,void *,s32);
 u8 Ui_IsUnitInfoPopupOpen(void *);
 void Ui_ShowUnitInfoText(void *,s32,f32,f32);
 void Ui_OpenUnitInfoText(void *,void *,s32,f32,f32);
@@ -11145,7 +11145,7 @@ if((s16)saved!=*(s16 *)((u8 *)a+0x3c)) {
    Ui_AddChild(arg0,*(void **)(addr+0x48));
    idx=fn_801CF614(a);
    addr=(s32)arg0+(idx<<2);
-   fn_80140234(arg0,*(void **)(addr+0x48),1);
+   Ui_OpenChildAnim(arg0,*(void **)(addr+0x48),1);
    Ui_BringChildToFront(arg0,a);
   }
  }
@@ -11201,7 +11201,7 @@ extern "C" void fn_801CEC68(void *arg0) {
     void *fn_801CD0D0(void *,s16,s16,s16,s32);
     void Ui_AddChild(void *,void *);
     void Ui_BringChildToFront(void *,void *);
-    void fn_80140234(void *,void *,s32);
+    void Ui_OpenChildAnim(void *,void *,s32);
     void fn_801CDE2C(void *,s32);
     extern u8 gUiContext[];
     extern void *lbl_8028FDB0[],*lbl_80292230[],*lbl_80298498[],*lbl_80298678[];
@@ -11318,10 +11318,10 @@ extern "C" void fn_801CEC68(void *arg0) {
     *(s16 *)(*(u8 **)(self+0x48)+0x24)=4;
     Ui_AddChild(self,*(void **)(self+0x48));
     Ui_BringChildToFront(self,*(void **)(self+0x40));
-    fn_80140234(self,p,0);
-    fn_80140234(self,*(void **)(self+0x40),0);
-    fn_80140234(self,*(void **)(self+0x44),0);
-    fn_80140234(self,*(void **)(self+0x48),1);
+    Ui_OpenChildAnim(self,p,0);
+    Ui_OpenChildAnim(self,*(void **)(self+0x40),0);
+    Ui_OpenChildAnim(self,*(void **)(self+0x44),0);
+    Ui_OpenChildAnim(self,*(void **)(self+0x48),1);
 }
 #pragma cplusplus reset
 
@@ -13604,7 +13604,7 @@ void fn_801D36B8(void *arg0) {
     void *Heap_Alloc(s32);
     void *fn_801D3860(void *, s32, s32, s32);
     void Ui_AddChild(void *, void *);
-    void fn_80140234(void *, void *, s32);
+    void Ui_OpenChildAnim(void *, void *, s32);
     extern s32 gUiInputFlags;
     void *obj;
 
@@ -13617,7 +13617,7 @@ void fn_801D36B8(void *arg0) {
         *(u32 *)((u8 *)obj + 0x34) |= 0x10;
         *(s16 *)((u8 *)obj + 0x24) = 8;
         Ui_AddChild(arg0, obj);
-        fn_80140234(arg0, obj, 1);
+        Ui_OpenChildAnim(arg0, obj, 1);
     }
 }
 

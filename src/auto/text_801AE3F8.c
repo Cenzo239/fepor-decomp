@@ -1715,7 +1715,7 @@ void Ui_ShowConfirmChild(void *panel) {
     u32 Ui_FindChild();
     void Ui_AddChild(void *, void *);
     f32 Ui_GetWorldScale(void *);
-    void fn_80140234(void *, void *, s32);
+    void Ui_OpenChildAnim(void *, void *, s32);
     void Ui_BringChildToFront(void *, void *);
     void TalkUi_ShowMsg(void *);
     void Ui_SetWidgetText(u32, s32);
@@ -1732,7 +1732,7 @@ void Ui_ShowConfirmChild(void *panel) {
         Ui_AddChild(panel, child);
     }
     if (lbl_8036B0A8 != Ui_GetWorldScale(child)) {
-        fn_80140234(panel, child, 0);
+        Ui_OpenChildAnim(panel, child, 0);
     }
     Ui_BringChildToFront(panel, child);
     TalkUi_ShowMsg(*(void **)((u8 *)*(void **)((u8 *)panel + 0x6C) + 0x14));
@@ -1762,7 +1762,7 @@ void Ui_CreateConfirmChild(void *self) {
     void *Ui_ConfirmChild_Ctor(void *, s32, s32, s32, s32, s32);
     void Ui_ConfirmChild_BindItem(void *, void *);
     void Ui_AddChild(void *, void *);
-    void fn_80140234(void *, void *, s32);
+    void Ui_OpenChildAnim(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32, void *);
     void Ui_SetWidgetText(u32, s32);
     extern u8 gUnitRef;
@@ -1786,7 +1786,7 @@ void Ui_CreateConfirmChild(void *self) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x48) + 0x24) = 8;
     Ui_ConfirmChild_BindItem(*(void **)((u8 *)self + 0x48), &gUnitRef);
     Ui_AddChild(self, *(void **)((u8 *)self + 0x48));
-    fn_80140234(self, *(void **)((u8 *)self + 0x48), 0);
+    Ui_OpenChildAnim(self, *(void **)((u8 *)self + 0x48), 0);
     msgTable = *(void **)((u8 *)self + 0x6C);
     text = *(s32 *)((u8 *)msgTable + 0x74);
     widget = Ui_FindChild(self, -0x1000, 0, msgTable);

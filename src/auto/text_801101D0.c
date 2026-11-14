@@ -3879,7 +3879,7 @@ void fn_8011A2FC(s32 arg0) {
             *(u32*)(temp_r31 + 0x34) = temp_r5;
             
             Ui_AddChild(arg0, (void*)temp_r31, temp_r5);
-            fn_80140234(arg0, (void*)temp_r31, 1);
+            Ui_OpenChildAnim(arg0, (void*)temp_r31, 1);
         }
     }
 }
