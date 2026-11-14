@@ -1276,7 +1276,8 @@ s32 fn_8012AA68(void *arg0) {
     return 1;
 }
 
-void MapObj_ToggleLinkedFade(void *arg0) {
+/* Fade the map object at +0x30 out if visible, else in; collect linked objs into the fade process. */
+void MapObj_ToggleLinkedFade(void *proc) {
     u8 MapObj_IsVisible(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, s32);
@@ -1284,28 +1285,28 @@ void MapObj_ToggleLinkedFade(void *arg0) {
     s32 Map_CollectLinkedObjs(void *, void *, void *);
     extern u8 E_MapObjFadeOut_script[];
     extern u8 E_MapObjFadeIn_script[];
-    void *saved;
-    u8 *entry;
-    void *result;
+    void *mapObj;
+    u8 *fadeProc;
+    void *map;
 
-    if ((u8)MapObj_IsVisible(*(void **)((u8 *)arg0 + 0x30)) != 0) {
-        saved = *(void **)((u8 *)arg0 + 0x30);
-        if (arg0 != NULL) {
-            entry = (u8 *)Process_CreateChild(E_MapObjFadeOut_script, arg0);
+    if ((u8)MapObj_IsVisible(*(void **)((u8 *)proc + 0x30)) != 0) {
+        mapObj = *(void **)((u8 *)proc + 0x30);
+        if (proc != NULL) {
+            fadeProc = (u8 *)Process_CreateChild(E_MapObjFadeOut_script, proc);
         } else {
-            entry = (u8 *)Process_Create(E_MapObjFadeOut_script, 3);
+            fadeProc = (u8 *)Process_Create(E_MapObjFadeOut_script, 3);
         }
-        result = Map_Get();
-        *(s32 *)(entry + 0x50) = Map_CollectLinkedObjs(result, saved, entry + 0x30);
+        map = Map_Get();
+        *(s32 *)(fadeProc + 0x50) = Map_CollectLinkedObjs(map, mapObj, fadeProc + 0x30);
     } else {
-        saved = *(void **)((u8 *)arg0 + 0x30);
-        if (arg0 != NULL) {
-            entry = (u8 *)Process_CreateChild(E_MapObjFadeIn_script, arg0);
+        mapObj = *(void **)((u8 *)proc + 0x30);
+        if (proc != NULL) {
+            fadeProc = (u8 *)Process_CreateChild(E_MapObjFadeIn_script, proc);
         } else {
-            entry = (u8 *)Process_Create(E_MapObjFadeIn_script, 3);
+            fadeProc = (u8 *)Process_Create(E_MapObjFadeIn_script, 3);
         }
-        result = Map_Get();
-        *(s32 *)(entry + 0x50) = Map_CollectLinkedObjs(result, saved, entry + 0x30);
+        map = Map_Get();
+        *(s32 *)(fadeProc + 0x50) = Map_CollectLinkedObjs(map, mapObj, fadeProc + 0x30);
     }
 }
 
