@@ -634,33 +634,34 @@ void fn_80184618(s32 arg0, u32 arg1) {
  *(s32 *)((u8 *)p+0x30)=value;
 }
 
-void *Mu_StartFlash(s32 arg0, s32 arg1, s32 arg2, u32 arg3) {
+/* Unlink any existing E_MuFlash for this unit, then start a new flash (palette index, duration). */
+void *Mu_StartFlash(s32 unit, s32 colorIdx, s32 duration, u32 priority) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
     s32 Mu_GetFlashColor(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuFlash_script[];
-    u8 spC[0x44];
-    u32 sp8;
-    u32 var_r31;
-    void *temp_r3;
+    u8 key[0x44];
+    u32 color;
+    u32 prio;
+    void *proc;
     u8 *p;
 
-    var_r31 = arg3;
-    M2C_FIELD(spC, void **, 0x30) = (void *)arg0;
-    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, spC);
-    if (var_r31 == 0U) {
-        var_r31 = 3U;
+    prio = priority;
+    M2C_FIELD(key, void **, 0x30) = (void *)unit;
+    GfxEnt_ForEachKey(E_MuFlash_script, MuFade_UnlinkSame, key);
+    if (prio == 0U) {
+        prio = 3U;
     }
-    temp_r3 = Process_Create(E_MuFlash_script, var_r31);
-    M2C_FIELD(temp_r3, s32 *, 0x30) = arg0;
-    M2C_FIELD(temp_r3, s32 *, 0x40) = arg2;
-    sp8 = Mu_GetFlashColor(arg1);
-    p = temp_r3;
-    p[0x38] = ((u8 *)&sp8)[0];
-    p[0x39] = ((u8 *)&sp8)[1];
-    p[0x3A] = ((u8 *)&sp8)[2];
-    p[0x3B] = ((u8 *)&sp8)[3];
+    proc = Process_Create(E_MuFlash_script, prio);
+    M2C_FIELD(proc, s32 *, 0x30) = unit;
+    M2C_FIELD(proc, s32 *, 0x40) = duration;
+    color = Mu_GetFlashColor(colorIdx);
+    p = proc;
+    p[0x38] = ((u8 *)&color)[0];
+    p[0x39] = ((u8 *)&color)[1];
+    p[0x3A] = ((u8 *)&color)[2];
+    p[0x3B] = ((u8 *)&color)[3];
     return p;
 }
 
