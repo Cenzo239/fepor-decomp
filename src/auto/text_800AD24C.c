@@ -7737,7 +7737,7 @@ void fn_800BE068(void *arg0) {
     } while (i < 0x18);
 }
 
-void fn_800BE228(s32 *arg0) {
+void EventFlag_Reset(s32 *arg0) {
     s32 *p;
     s32 i;
 
