@@ -425,6 +425,7 @@ found:
 
 s32 ScriptCmd_CmFreeScript(void)
 {
+    /* Free the last loaded CM script: unregister its names, unlink it, and release its file. */
     extern void *gCmScriptList;
     extern u16 gCmScriptUsed;
     extern s32 gCmScriptStatus;
@@ -436,7 +437,7 @@ s32 ScriptCmd_CmFreeScript(void)
     u8 *next;
     u8 *head;
     void *entry;
-    void *target;
+    void *name;
     s32 offset;
 
     node = (u8 *)gCmScriptList;
@@ -462,10 +463,10 @@ s32 ScriptCmd_CmFreeScript(void)
             break;
         }
 
-        target = *(void **)entry;
+        name = *(void **)entry;
 
-        if (target != 0) {
-            Hash_Remove(target);
+        if (name != 0) {
+            Hash_Remove(name);
         }
 
         offset += 4;
