@@ -1070,7 +1070,7 @@ s32 fn_80230BBC(s32 arg0) {
     return (temp_r4 ^ arg0) - temp_r4;
 }
 
-s32 fn_80230BCC(s32 arg0) {
+s32 Abs(s32 arg0) {
     s32 temp_r4;
 
     temp_r4 = arg0 >> 0x1F;

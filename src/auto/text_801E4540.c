@@ -1687,7 +1687,7 @@ void fn_801E7FC0(void *arg0) {
 
 void fn_801E80B4(void *arg0) {
     u8 fn_801E8B38(void *, void *, s8);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
     void fn_80057860(void *, s16);
@@ -1758,7 +1758,7 @@ void fn_801E80B4(void *arg0) {
     t = *p33;
     if (old33 != (s8)t) {
         if (fn_801E8B38(arg0, p33, old33) != 0) {
-            if (fn_80230BCC((s32)(old33 - (s8)*p33)) <= 2) {
+            if (Abs((s32)(old33 - (s8)*p33)) <= 2) {
                 pos = *(s16 *)((u8 *)arg0 + 0x36);
                 tgt = *(s16 *)((u8 *)arg0 + 0x38);
                 if (pos == tgt) {
@@ -2163,7 +2163,7 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
 void fn_801E8D34(void *arg0) {
     s32 fn_801E9410(void);
     u8 fn_801E85A4(void *, s32);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
     void fn_80057860(void *, s16);
@@ -2230,7 +2230,7 @@ void fn_801E8D34(void *arg0) {
 
     if (old32 != (s8)*(u8 *)((u8 *)arg0 + 0x32)) {
         if (fn_801E85A4(arg0, *(u8 *)((u8 *)arg0 + 0x32))) {
-            if (fn_80230BCC(old32 - (s8)*(u8 *)((u8 *)arg0 + 0x32)) == 1) {
+            if (Abs(old32 - (s8)*(u8 *)((u8 *)arg0 + 0x32)) == 1) {
                 *(s16 *)((u8 *)arg0 + 0x3A) = 0x10;
                 pos = *(s16 *)((u8 *)arg0 + 0x36);
                 tgt = *(s16 *)((u8 *)arg0 + 0x38);

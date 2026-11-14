@@ -3796,7 +3796,7 @@ u8 Ai_TrySeekHealer(void *arg0) {
     void **Unit_GetItemSlot(void *, s32);
     void *Item_GetByIid(void *);
     s8 Unit_GetMaxHp(void *);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void fn_8010F3F4(void *, s8, s8, s16 *, s16 *);
     void fn_80094ABC(void *, void *);
     s32 fn_80093010(void *, void *);
@@ -3901,8 +3901,8 @@ u8 Ai_TrySeekHealer(void *arg0) {
                                     other = cand;
                                 }
                                 rem = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                                distA = fn_80230BCC(rem - hi);
-                                distB = fn_80230BCC(rem - lo);
+                                distA = Abs(rem - hi);
+                                distB = Abs(rem - lo);
                                 if (distB > distA) {
                                     goto set_other;
                                 }
@@ -3956,7 +3956,7 @@ s32 Ai_TryUseHealItem(void *arg0) {
     s8 Unit_GetMaxHp(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     void fn_801025BC(void *, s16 *, s16 *);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     extern u8 lbl_80273B40[];
     extern u8 gAiState[];
     s16 sp12;
@@ -4014,8 +4014,8 @@ loop:
                     slot = best;
                 }
                 valBest = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                a = fn_80230BCC((s8)(valBest - (s8)valCur));
-                if (fn_80230BCC((s8)(valBest - (s8)temp)) > a) {
+                a = Abs((s8)(valBest - (s8)valCur));
+                if (Abs((s8)(valBest - (s8)temp)) > a) {
                     chosen = slot;
                 }
             } else if (*(u8 *)((u8 *)slot + 4) > *(u8 *)((u8 *)best + 4)) {

@@ -1668,7 +1668,7 @@ void fn_801877C4(void *arg0) {
     s8 SeCue_PlayAt(void *, s32, f32, f32, f32);
     void MuFade_UnlinkSame(void *, void *);
     void fn_8018CFA4(s32, s32, s32, s32, void *);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     extern u8 MoveAnim_str[];
     extern u8 E_MuBlend_script[];
     extern u8 gBattleMap[];
@@ -1763,8 +1763,8 @@ void fn_801877C4(void *arg0) {
             t8 = *(f32 *)((u8 *)tmp + 8);
             f28 = Math_Angle2D(tmp, *(f32 *)((u8 *)tmp + 4), t8, f31, f30);
         }
-        count = fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3A) - (s32)*(s8 *)((u8 *)arg0 + 0x38));
-        count += fn_80230BCC((s32)*(s8 *)((u8 *)arg0 + 0x3B) - (s32)*(s8 *)((u8 *)arg0 + 0x39));
+        count = Abs((s32)*(s8 *)((u8 *)arg0 + 0x3A) - (s32)*(s8 *)((u8 *)arg0 + 0x38));
+        count += Abs((s32)*(s8 *)((u8 *)arg0 + 0x3B) - (s32)*(s8 *)((u8 *)arg0 + 0x39));
         msg = MoveAnim_str + 0x371;
         if (count >= 2) {
             msg = MoveAnim_str + 0x360;
@@ -1797,7 +1797,7 @@ void fn_80187D70(void *arg0) {
     f32 fn_8004BDA8(void *, f32, f32);
     void fn_8004FC70(void *, s32);
     void GActor_RequestRes(void *);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
     extern u8 MoveAnim_str[];
@@ -1846,8 +1846,8 @@ void fn_80187D70(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x38) = *(u8 *)((u8 *)arg0 + 0x3A);
         *(u8 *)((u8 *)arg0 + 0x39) = *(u8 *)((u8 *)arg0 + 0x3B);
     }
-    sum = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
-    if ((sum = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39)) + sum, sum >= 2)) {
+    sum = Abs((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
+    if ((sum = Abs((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39)) + sum, sum >= 2)) {
         base = MoveAnim_str;
         msg = base + 0x360;
     } else {
@@ -6282,45 +6282,29 @@ void *fn_80193BB8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return arg0;
 }
 
-void ItemList_EraseRange(void **arg0, s32 *arg1, void **arg2, void **arg3) {
+void ItemList_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     void Item_Destroy(void *, s32);
     void Heap_Free(void *);
-    void **out;
-    s32 *count;
-    void **p_cur;
-    void **p_end;
-    void *cur;
-    void *end;
-    void *a;
-    void *b;
+    ListNode *first = start->node;
+    ListNode *last = end->node;
+    ListNode *a;
+    ListNode *node;
 
-    p_end = arg3;
-    p_cur = arg2;
-    cur = *arg2;
-    count = arg1;
-    out = arg0;
-    end = *arg3;
-    if (cur == end) {
-        *out = end;
+    if (first == last) {
+        ret->node = last;
         return;
     }
-    a = *(void **)end;
-    b = *(void **)cur;
-    *(void **)((u8 *)b + 4) = *(void **)((u8 *)a + 4);
-    *(void **)(*(void **)((u8 *)a + 4)) = *(void **)cur;
-
-    goto check;
-    do {
-        Item_Destroy((u8 *)*p_cur + 8, -1);
-        cur = *p_cur;
-        *p_cur = *(void **)((u8 *)cur + 4);
-        Heap_Free(cur);
-        *count -= 1;
-    check:
-        cur = *p_cur;
-        end = *p_end;
-    } while (cur != end);
-    *out = end;
+    a = last->prev;
+    first->prev->next = a->next;
+    a->next->prev = first->prev;
+    while (start->node != end->node) {
+        Item_Destroy(&start->node->val, -1);
+        node = start->node;
+        start->node = node->next;
+        Heap_Free(node);
+        list->size--;
+    }
+    ret->node = end->node;
 }
 
 #pragma cplusplus on

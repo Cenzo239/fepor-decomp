@@ -1165,7 +1165,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void Prim2D_BindTexture(s32, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void sprintf(char *, char *, ...);
     s32 strlen(char *);
     extern s32 lbl_8026C7DC[];
@@ -1208,7 +1208,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     gap[3] = widths[3];
 
     if (arg0 != 0) {
-        abs_val = fn_80230BCC(arg0);
+        abs_val = Abs(arg0);
         saved = gUiAtlas;
         Prim2D_Begin();
         Prim2D_BindTexture(saved, 0x29, 0x11);

@@ -55,7 +55,7 @@ void fn_8008F4BC(void *arg0) {
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_SetTex(s32, s32);
     void Prim2D_PrepareTex(void);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Game_GetFrameCount(void);
@@ -91,7 +91,7 @@ void fn_8008F4BC(void *arg0) {
     t = lbl_8036977C + x0;
     cur = t;
     idx = 1;
-    count = fn_80230BCC(0xF);
+    count = Abs(0xF);
     zero = gZeroF;
     step = (x1 - cur) / (f32)count;
     nstep = -step;
@@ -123,7 +123,7 @@ void fn_8008F4BC(void *arg0) {
 
     idx = 0x11;
     cur = lbl_8036977C + y0;
-    count = fn_80230BCC(0xF);
+    count = Abs(0xF);
     zero = gZeroF;
     step = (y1 - cur) / (f32)count;
     nstep = -step;
@@ -155,7 +155,7 @@ void fn_8008F4BC(void *arg0) {
 
     cur = x1;
     idx = 1;
-    count = fn_80230BCC(0xF);
+    count = Abs(0xF);
     zero = gZeroF;
     step = (t - x1) / (f32)count;
     nstep = -step;
@@ -187,7 +187,7 @@ void fn_8008F4BC(void *arg0) {
 
     cur = y1;
     idx = 0x11;
-    count = fn_80230BCC(0xF);
+    count = Abs(0xF);
     zero = gZeroF;
     step = ((lbl_8036977C + y0) - y1) / (f32)count;
     nstep = -step;

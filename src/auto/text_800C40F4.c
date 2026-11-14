@@ -16756,8 +16756,8 @@ for(id=1;id<=159;id++){
 unit=(u8)id ? gUnits+((u8)id-1)*0x280:0;
 if (!M2C_FIELD(unit,u32*,0x188) || !flags[M2C_FIELD(M2C_FIELD(unit,u8**,0x190),u8*,8)]) continue;
 a=unit[0x19E]; b=M2C_FIELD(arg0,u8*,0x19E);
-dy=fn_80230BCC((s8)M2C_FIELD(arg0,u8*,0x19F)-(s8)unit[0x19F]);
-dist=fn_80230BCC((s8)b-(s8)a)+dy;
+dy=Abs((s8)M2C_FIELD(arg0,u8*,0x19F)-(s8)unit[0x19F]);
+dist=Abs((s8)b-(s8)a)+dy;
 range=*weapon ? (u8)fn_8001DD54(*weapon,arg0):0;
 if(dist> range+(s8)Unit_GetMov(arg0) || (M2C_FIELD(unit,u32*,0x1A0)&0x10000DC)) continue;
 outside=0; cx=unit[0x19E]; cy=unit[0x19F];
@@ -16781,7 +16781,7 @@ t=p[13]; if(!t || t==M2C_FIELD(arg0,u8*,0x198))return 1;
 
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 extern u8 gAiState[],gUiContext[],gBattleMap[];
-int fn_80230BCC(int);
+int Abs(int);
 void *Item_Destroy(void *,s16);
 u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 fn_8001DD54(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -16804,8 +16804,8 @@ for(id=1;id<=159;id++){
 u8 *unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
 if(!M2C_FIELD(unit,u32 *,0x188)||!flags[M2C_FIELD(M2C_FIELD(unit,u8 **,0x190),u8 *,8)]||!arg0(unit))continue;
 a=unit[0x19E];b=self[0x19E];
-dy=fn_80230BCC((s8)self[0x19F]-(s8)unit[0x19F]);
-a=dy+fn_80230BCC((s8)b-(s8)a);
+dy=Abs((s8)self[0x19F]-(s8)unit[0x19F]);
+a=dy+Abs((s8)b-(s8)a);
 range=weapon.ptr?fn_8001DD54(weapon.ptr,self):0;
 if(a>range+(s8)Unit_GetMov(self) || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
 outside=0;cx=unit[0x19E];cy=unit[0x19F];
@@ -17274,7 +17274,7 @@ return gAiState[0x21C];
 }
 
 s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     u8 fn_8001DD54(void *, void *);
     s8 Unit_GetMov(void *);
     u8 b;
@@ -17286,8 +17286,8 @@ s32 Unit_IsInMovAttackRange(void *arg0, void *arg1, void **arg2) {
 
     b = M2C_FIELD(arg1, u8 *, 0x19E);
     a = M2C_FIELD(arg0, u8 *, 0x19E);
-    dy = fn_80230BCC((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
-    dist = fn_80230BCC((s8)a - (s8)b);
+    dy = Abs((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
+    dist = Abs((s8)a - (s8)b);
     dist = dist + dy;
     if (*arg2 != NULL) {
         bonus = (u8)fn_8001DD54(*arg2, arg0);
@@ -17310,7 +17310,7 @@ u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
     extern u8 gBattleMap[];
     extern u8 gUnits[];
     extern char lbl_80272DB0[];
-    int fn_80230BCC(int);
+    int Abs(int);
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
@@ -17381,8 +17381,8 @@ u8 Ai_TryAttackAction(u8 (*arg0)(void *), u8 arg1) {
             }
             a = unit[0x19E];
             b = self[0x19E];
-            dy = fn_80230BCC((s8)self[0x19F] - (s8)unit[0x19F]);
-            dist = fn_80230BCC((s8)b - (s8)a) + dy;
+            dy = Abs((s8)self[0x19F] - (s8)unit[0x19F]);
+            dist = Abs((s8)b - (s8)a) + dy;
             range = *list ? (u8)fn_8001DD54(*list, self) : 0;
             if (dist > (s8)Unit_GetMov(self) + range) {
                 continue;
@@ -17572,7 +17572,7 @@ M2C_FIELD(arg1,s32 *,8)=score;
 s32 fn_800F6B10(void *arg0, u8 arg1) {
 void **BattleUnit_GetWeaponSlot(void *);
 void *Item_GetFlagsPtr(void *);
-s32 fn_80230BCC(s32);
+s32 Abs(s32);
 u8 fn_8001DD54(void *, void *);
 f32 fn_800F738C(s32, f32);
 s8 fn_800F8308(void *);
@@ -17626,8 +17626,8 @@ extern f64 lbl_8036A088;
     ux = unit2[0x19E];
     by = ((u8 *)gBattle)[0x19F];
     bx = ((u8 *)gBattle)[0x19E];
-    dy = fn_80230BCC((s8)by - (s8)uy);
-    dist = fn_80230BCC((s8)bx - (s8)ux);
+    dy = Abs((s8)by - (s8)uy);
+    dist = Abs((s8)bx - (s8)ux);
     wpn = *list;
     list = (void **)(dist + dy);
     if (wpn != 0) {
@@ -21632,7 +21632,7 @@ loop_22:
 
 s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     u8 fn_8001DD54(void *, void *);
-    s32 fn_80230BCC(s32);
+    s32 Abs(s32);
     s8 Unit_GetMov(void *);
     u8 b;
     u8 a;
@@ -21642,8 +21642,8 @@ s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
 
     b = M2C_FIELD(arg1, u8 *, 0x19E);
     a = M2C_FIELD(arg0, u8 *, 0x19E);
-    dy = fn_80230BCC((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
-    dist = fn_80230BCC((s8)a - (s8)b) + dy;
+    dy = Abs((s8)M2C_FIELD(arg0, u8 *, 0x19F) - (s8)M2C_FIELD(arg1, u8 *, 0x19F));
+    dist = Abs((s8)a - (s8)b) + dy;
     if (*arg2 != NULL) {
         bonus = (u8)fn_8001DD54(*arg2, arg1);
     } else {
