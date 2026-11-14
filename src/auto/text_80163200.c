@@ -2686,7 +2686,7 @@ extern "C" void fn_80169394(void) {
 
 extern "C" void fn_80169414(s32 arg0) {
     void BattleState_LoadMap(void *, s32);
-    void fn_801455B8(s32);
+    void BgmVol_FadeOut(s32);
     void fn_80013A90(void *);
     void fn_800138F4(void);
     void fn_800C08AC(void *, s32);
@@ -2694,7 +2694,7 @@ extern "C" void fn_80169414(s32 arg0) {
     extern u8 lbl_80277BC0[];
 
     BattleState_LoadMap(gBattleState, 0);
-    fn_801455B8(0);
+    BgmVol_FadeOut(0);
     fn_80013A90(lbl_80277BC0 + 0x85);
     fn_800138F4();
     fn_800C08AC(lbl_80277BC0 + 0x9d, arg0);
@@ -3210,7 +3210,7 @@ void fn_8016A1BC(void *arg0) {
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *);
     void GfxEnt_UnlinkByName(void *);
-    void fn_801455B8(s32);
+    void BgmVol_FadeOut(s32);
     void Fx_StartSlot(s32, void *, s32, s32);
     s32 strlen(void *);
     void *p = arg0;
@@ -3283,7 +3283,7 @@ void fn_8016A1BC(void *arg0) {
     GfxEnt_UnlinkByName(lbl_80277BC0 + 0x50);
     lbl_80367AE0 = 0;
     if (!(gUiInputFlags & 0x10)) {
-        fn_801455B8(0);
+        BgmVol_FadeOut(0);
         Fx_StartSlot(0, lbl_80277BC0 + 0x140, 0x64, 1);
     }
 }

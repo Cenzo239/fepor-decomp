@@ -10390,7 +10390,7 @@ p=Process_Create((void*)(base+0x64),3);
 b=lbl_8036A77C; a=lbl_8036A778; p[12]=a; p[13]=b; p[14]=(f32)lbl_80367AEE;
 }
 
-void fn_801455B8(s32 arg0) {
+void BgmVol_FadeOut(s32 arg0) {
     void Process_UnlinkByKey(void *);
     void *Process_Create(void *, s32);
     extern u8 lbl_80292558[];
