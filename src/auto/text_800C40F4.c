@@ -11610,7 +11610,8 @@ void fn_800E5DEC(void) {
     }
 }
 
-void *Actor_Dtor(void *arg0, s16 arg1) {
+/* Destroy an actor: unlink GActor nodes, nested member, strings, then base; free if asked. */
+void *Actor_Dtor(void *self, s16 freeHeap) {
     void fn_800DDC2C(void *, void *);
     void *fn_800E6D68(void *, s16);
     void String_Destroy(void *, s32);
@@ -11618,34 +11619,34 @@ void *Actor_Dtor(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     extern void *gActorVtbl[];
     extern void *lbl_8028DED0[];
-    void *p;
+    void *node;
 
-    if (arg0 != NULL) {
-        M2C_FIELD(arg0, void ***, 0x40) = gActorVtbl;
-        p = M2C_FIELD(arg0, void **, 0xe0);
-        if (p != NULL) {
-            fn_800DDC2C(M2C_FIELD(arg0, void **, 0xdc), p);
+    if (self != NULL) {
+        M2C_FIELD(self, void ***, 0x40) = gActorVtbl;
+        node = M2C_FIELD(self, void **, 0xe0);
+        if (node != NULL) {
+            fn_800DDC2C(M2C_FIELD(self, void **, 0xdc), node);
         }
-        p = M2C_FIELD(arg0, void **, 0xe4);
-        if (p != NULL) {
-            fn_800DDC2C(M2C_FIELD(arg0, void **, 0xdc), p);
+        node = M2C_FIELD(self, void **, 0xe4);
+        if (node != NULL) {
+            fn_800DDC2C(M2C_FIELD(self, void **, 0xdc), node);
         }
-        if ((u32)arg0 + 0xf4 != 0) {
-            if ((s32)arg0 + 0xf4 != 0) {
-                fn_800E6D68((u8 *)arg0 + 0xf4, 0);
+        if ((u32)self + 0xf4 != 0) {
+            if ((s32)self + 0xf4 != 0) {
+                fn_800E6D68((u8 *)self + 0xf4, 0);
             }
         }
-        String_Destroy((u8 *)arg0 + 0xbc, -1);
-        String_Destroy((u8 *)arg0 + 0xb0, -1);
-        if (arg0 != NULL) {
-            M2C_FIELD(arg0, void ***, 0x40) = lbl_8028DED0;
-            fn_800DF724(arg0, 0);
+        String_Destroy((u8 *)self + 0xbc, -1);
+        String_Destroy((u8 *)self + 0xb0, -1);
+        if (self != NULL) {
+            M2C_FIELD(self, void ***, 0x40) = lbl_8028DED0;
+            fn_800DF724(self, 0);
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (freeHeap > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 
 void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
