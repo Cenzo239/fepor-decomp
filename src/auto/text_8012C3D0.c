@@ -2690,7 +2690,7 @@ void fn_80130CDC(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
 }
 
 extern u16 jumptable_802911EC[];
-s32 fn_80131020(void *arg0, void *arg1, u32 arg2) {
+s32 Ui_GetSelectMenuWpnExp(void *arg0, void *arg1, u32 arg2) {
     u8 Unit_GetWpnExp(void *, s32);
     void *p;
 
