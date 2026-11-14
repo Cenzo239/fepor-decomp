@@ -4127,6 +4127,7 @@ void fn_8016BA5C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x38) = 0;
 }
 
+/* One-shot E_Jyokyo teardown: clear map disp, refresh face, free nodes/cache, unlink process. */
 void Jyokyo_Cleanup(void *arg0) {
     void Map_Get(void);
     void Map_ClearDispCache(void);
@@ -4141,51 +4142,51 @@ void Jyokyo_Cleanup(void *arg0) {
     void fn_8005376C(void);
     typedef struct {
         u8 pad[0x34];
-        u8 flag;
+        u8 done;
         u8 pad35[3];
-        void *unk38;
-        void *unk3C;
-        void *unk40;
+        void *fileSlot;
+        void *nodeList;
+        void *unit;
         u8 pad44[0x10];
-        void *unk54;
+        void *face;
         u8 pad58[8];
-        void *unk60;
-    } Obj;
-    Obj *obj;
+        void *proc;
+    } Jyokyo;
+    Jyokyo *self;
     void *node;
     void *next;
-    void *obj40;
+    void *unit;
     void *tmp;
 
-    obj = (Obj *)arg0;
-    if (obj->flag == 0) {
+    self = (Jyokyo *)arg0;
+    if (self->done == 0) {
         Map_Get();
         Map_ClearDispCache();
-        obj40 = obj->unk40;
-        if (obj40 != NULL) {
-            *(u32 *)((char *)obj40 + 0x2C) = 0;
-            tmp = obj->unk54;
+        unit = self->unit;
+        if (unit != NULL) {
+            *(u32 *)((char *)unit + 0x2C) = 0;
+            tmp = self->face;
             if (tmp != NULL) {
                 Face_ClearSlot(tmp);
-                obj->unk54 = NULL;
+                self->face = NULL;
             }
-            tmp = *(void **)((char *)obj->unk40 + 0x2C);
+            tmp = *(void **)((char *)self->unit + 0x2C);
             if (tmp != NULL) {
-                obj->unk54 = Face_Create(fn_8003A114(tmp), 0);
+                self->face = Face_Create(fn_8003A114(tmp), 0);
             }
         }
-        for (node = obj->unk3C; node != NULL; node = next) {
+        for (node = self->nodeList; node != NULL; node = next) {
             next = *(void **)((char *)node + 0x38);
             fn_800C4588(node);
         }
-        Process_Unlink(obj->unk60);
-        if (obj->unk38 != NULL) {
-            FileCache_ReleaseSlot(&obj->unk38);
+        Process_Unlink(self->proc);
+        if (self->fileSlot != NULL) {
+            FileCache_ReleaseSlot(&self->fileSlot);
         }
         fn_801DE074();
         fn_801457B4();
         fn_8005376C();
-        obj->flag = 1;
+        self->done = 1;
     }
 }
 
