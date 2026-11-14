@@ -2275,17 +2275,32 @@ void fn_8007812C(void) {
 }
 
 s32 Ui_CanMapObjAttack(void) {
+    /* Menu check for type-7 map-obj attack: hide if no targets, grey if event flag off. */
     extern u8 gUiContext[], gMapObjEventList[], gTargetList[];
-    u8 Status_Test(void *, s32); void *MapObjEvent_Find(void *, s32, s32, s32); void MapObj_BuildAttackTargetList(void *, void *);
-    void *obj; void *entry;
-    if (*(s8 *)(gUiContext + 0x12)) return 3;
-    obj = *(void **)gUiContext;
-    if (!Status_Test((u8 *)obj + 0x1BC, 0x4F)) return 3;
-    entry = MapObjEvent_Find(gMapObjEventList, *(u8 *)((u8 *)obj + 0x19E), *(u8 *)((u8 *)obj + 0x19F), 7);
-    if (!entry) return 3;
-    MapObj_BuildAttackTargetList(*(void **)gUiContext, entry);
-    if (*(s32 *)gTargetList == 0) return 3;
-    if (*(u8 *)((u8 *)entry + 5) == 0) return 2;
+    u8 Status_Test(void *, s32);
+    void *MapObjEvent_Find(void *, s32, s32, s32);
+    void MapObj_BuildAttackTargetList(void *, void *);
+    void *unit;
+    void *event;
+
+    if (*(s8 *)(gUiContext + 0x12)) {
+        return 3;
+    }
+    unit = *(void **)gUiContext;
+    if (!Status_Test((u8 *)unit + 0x1BC, 0x4F)) {
+        return 3;
+    }
+    event = MapObjEvent_Find(gMapObjEventList, *(u8 *)((u8 *)unit + 0x19E), *(u8 *)((u8 *)unit + 0x19F), 7);
+    if (!event) {
+        return 3;
+    }
+    MapObj_BuildAttackTargetList(*(void **)gUiContext, event);
+    if (*(s32 *)gTargetList == 0) {
+        return 3;
+    }
+    if (*(u8 *)((u8 *)event + 5) == 0) {
+        return 2;
+    }
     return 0;
 }
 
