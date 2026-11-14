@@ -3337,18 +3337,50 @@ void fn_8002626C(void) {
 }
 
 #pragma use_lmw_stmw on
-void Event_BlessStartRoundSky(s32 *arg0, s32 arg1) {
-void *Item_GetByIid(void *); void fn_8002AD04(s32, void *); void *TargetList_GetAt(s32 *, s32); s32 Unit_GetMagAtk(s32); void fn_8019C0C0(s32, void *); void Battle_QueueDeathAnim(void *); void Battle_SetupUnit(void *, void *, s32); void Event_StartRoundSky(s32);
-extern u8 lbl_80268E40[]; extern s32 gTargetList[]; extern u8 gUiContext[]; extern u8 gBattle[];
-s32 *self; s32 other; s32 saved; u8 b3; u8 b2; s32 i; s32 three; void *entry; s32 val;
-self=arg0; other=arg1; saved=*self;
-fn_8002AD04(saved,Item_GetByIid(lbl_80268E40+0x1A6));
-i=0; three=3;
-while(i<gTargetList[0]) {
-entry=TargetList_GetAt(gTargetList,i); b3=((u8*)entry)[3]; b2=((u8*)entry)[2]; val=Unit_GetMagAtk(*self);
-((u8*)entry)[0]=three; i+=1; ((u8*)entry)[1]=(u8)val; ((u8*)entry)[2]=b2; ((u8*)entry)[3]=b3;
-}
-Battle_SetupUnit(gBattle,*(void**)gUiContext,-1); Battle_QueueDeathAnim(gBattle); fn_8019C0C0(other,Event_StartRoundSky);
+void Event_BlessStartRoundSky(s32 *ctx, s32 parent) {
+    /* Bless kind-1: fill target hits with unit MAG, queue death anim, start E_RoundSky. */
+    void *Item_GetByIid(void *);
+    void fn_8002AD04(s32, void *);
+    void *TargetList_GetAt(s32 *, s32);
+    s32 Unit_GetMagAtk(s32);
+    void fn_8019C0C0(s32, void *);
+    void Battle_QueueDeathAnim(void *);
+    void Battle_SetupUnit(void *, void *, s32);
+    void Event_StartRoundSky(s32);
+    extern u8 lbl_80268E40[];
+    extern s32 gTargetList[];
+    extern u8 gUiContext[];
+    extern u8 gBattle[];
+    s32 *self;
+    s32 other;
+    s32 unit;
+    u8 b3;
+    u8 b2;
+    s32 i;
+    s32 hitKind;
+    void *entry;
+    s32 mag;
+
+    self = ctx;
+    other = parent;
+    unit = *self;
+    fn_8002AD04(unit, Item_GetByIid(lbl_80268E40 + 0x1A6));
+    i = 0;
+    hitKind = 3;
+    while (i < gTargetList[0]) {
+        entry = TargetList_GetAt(gTargetList, i);
+        b3 = ((u8 *)entry)[3];
+        b2 = ((u8 *)entry)[2];
+        mag = Unit_GetMagAtk(*self);
+        ((u8 *)entry)[0] = hitKind;
+        i += 1;
+        ((u8 *)entry)[1] = (u8)mag;
+        ((u8 *)entry)[2] = b2;
+        ((u8 *)entry)[3] = b3;
+    }
+    Battle_SetupUnit(gBattle, *(void **)gUiContext, -1);
+    Battle_QueueDeathAnim(gBattle);
+    fn_8019C0C0(other, Event_StartRoundSky);
 }
 #pragma use_lmw_stmw reset
 extern u8 E_RoundSky_script[16];
