@@ -3050,43 +3050,44 @@ void *fn_80131B24(s32 arg0, s32 arg1) {
     }
 }
 
-void Ui_GetSelectMenuCombatIconRect(s32 unused, s32 arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5)
+/* Write the atlas left/top/right/bottom for select-menu combat icon index 0-4. */
+void Ui_GetSelectMenuCombatIconRect(s32 unused, s32 index, s32 *left, s32 *top, s32 *right, s32 *bottom)
 {
-  switch (arg1)
+  switch (index)
   {
     case 0:
-      *arg2 = 0;
-      *arg3 = 0;
-      *arg4 = 0x30;
-      *arg5 = 0x14;
+      *left = 0;
+      *top = 0;
+      *right = 0x30;
+      *bottom = 0x14;
       return;
 
     case 1:
-      *arg2 = 0;
-      *arg3 = 0x104;
-      *arg4 = 0x30;
-      *arg5 = 0x118;
+      *left = 0;
+      *top = 0x104;
+      *right = 0x30;
+      *bottom = 0x118;
       return;
 
     case 2:
-      *arg2 = 0;
-      *arg3 = 0x118;
-      *arg4 = 0x30;
-      *arg5 = 0x12C;
+      *left = 0;
+      *top = 0x118;
+      *right = 0x30;
+      *bottom = 0x12C;
       return;
 
     case 3:
-      *arg2 = 0;
-      *arg3 = 0x12C;
-      *arg4 = 0x30;
-      *arg5 = 0x140;
+      *left = 0;
+      *top = 0x12C;
+      *right = 0x30;
+      *bottom = 0x140;
       return;
 
     case 4:
-      *arg2 = 0;
-      *arg3 = 0x140;
-      *arg4 = 0x30;
-      *arg5 = 0x154;
+      *left = 0;
+      *top = 0x140;
+      *right = 0x30;
+      *bottom = 0x154;
       return;
   }
 }
