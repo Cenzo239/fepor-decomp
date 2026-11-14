@@ -255,12 +255,12 @@ u32 ScriptCtx_Call(u32 arg0, u32 arg1) {
 void ScriptCtx_Push(s32 arg0) {
     extern void *lbl_80367180;
     extern s32 lbl_80367188;
-    s32 **slot;
     s32 *cursor;
+    void *obj;
 
-    slot = (s32 **)((u8 *)lbl_80367180 + 0x18);
-    cursor = *slot;
-    *slot = (s32 *)((u8 *)cursor + 4);
+    obj = lbl_80367180;
+    cursor = *(s32 **)((u8 *)obj + 0x18);
+    *(s32 **)((u8 *)obj + 0x18) = (s32 *)((u8 *)cursor + 4);
     *cursor = arg0;
     lbl_80367188 += 1;
 }
@@ -676,7 +676,7 @@ void fn_800142C0(s32 *arg0, s16 *arg1) {
     *arg1 = lbl_8036719E;
 }
 
-s32 fn_800142D4(s32 arg0) {
+s32 EventWork_Set(s32 arg0) {
     extern s32 lbl_803671A4;
 
     s32 oldValue;

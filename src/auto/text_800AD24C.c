@@ -8425,7 +8425,7 @@ void ScriptCmd_BMapResume(void) {
     void *Process_Find(void *);
     void Process_UnlinkByKey(void *);
     void *Process_CreateChild(void *, void *);
-    void fn_800142D4(void *);
+    void EventWork_Set(void *);
     void *fn_801270A4(void);
     void Process_Goto(void *, s32);
     void EventLock_Dec(void);
@@ -8453,7 +8453,7 @@ void ScriptCmd_BMapResume(void) {
         obj2 = Process_CreateChild(Proc_BMapPlph, obj);
         *(u32 *)((u8 *)obj2 + 4) = gBMapPlphSaved;
     }
-    fn_800142D4(lbl_80320040);
+    EventWork_Set(lbl_80320040);
     Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
     EventLock_Dec();
 }
@@ -8473,7 +8473,7 @@ void ScriptCmd_BMapSuspend(void) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
     void GfxEnt_UnlinkByName(void *);
-    void fn_800142D4(void *);
+    void EventWork_Set(void *);
     void EventLock_Inc(void);
     void *proc;
     s32 saved;
@@ -8497,7 +8497,7 @@ void ScriptCmd_BMapSuspend(void) {
     }
     gBMapPlphSaved = saved;
     GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
-    fn_800142D4(lbl_80320080);
+    EventWork_Set(lbl_80320080);
     EventLock_Inc();
 }
 
