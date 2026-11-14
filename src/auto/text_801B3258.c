@@ -9341,7 +9341,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
     void fn_8017A310(void *, char *);
     extern char lbl_8027DAB0[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     struct Str { u32 size; u32 cap; char *data; };
     struct WObj {
         u8 pad[0x10];
@@ -9424,7 +9424,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
         *(u32 *)arg0 = 0;
         *(u32 *)((u8 *)arg0 + 8) = 0;
         *(u8 *)((u8 *)arg0 + 0xC) = 0;
-        *(void **)((u8 *)arg0 + 0x10) = lbl_80284C98;
+        *(void **)((u8 *)arg0 + 0x10) = gMemStreamVtbl;
         *(void **)copy = fn_800C4638(0x8000, (char *)lbl_8027DAB0 + 0xC8, 0);
         *(void **)((u8 *)copy + 4) = *(void **)copy;
         *(u32 *)((u8 *)copy + 8) = 0x8000;
@@ -16880,7 +16880,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
@@ -16977,7 +16977,7 @@ loop:
     w.start = NULL;
     w.size = 0;
     w.owned = 0;
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.owned = 0;
     w.start = p;
     w.cur = p;
@@ -16998,7 +16998,7 @@ loop:
     Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
         fn_800C4588(w.start);
@@ -17310,7 +17310,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
@@ -17617,7 +17617,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     w.cur = NULL;
     w.start = NULL;
     w.size = 0;
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.owned = 0;
     w.start = p;
     w.cur = p;
@@ -17638,7 +17638,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
         fn_800C4588(w.start);
@@ -17669,7 +17669,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
     extern u8 gMapObjEventList[];
@@ -17766,7 +17766,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     w.start = NULL;
     w.size = 0;
     w.owned = 0;
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.owned = 0;
     w.start = p;
     w.cur = p;
@@ -17787,7 +17787,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     Icon_WriteSlots(gIconSlots, &w);
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
         fn_800C4588(w.start);

@@ -3783,7 +3783,7 @@ s32 ScriptCmd_SaveUnits(void) {
     void fn_800C4588(void *);
     extern u8 lbl_8026ECB8[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
     struct {
@@ -3805,14 +3805,14 @@ s32 ScriptCmd_SaveUnits(void) {
     *(u32 *)(pw + 8) = 0;
     pw[12] = 0;
     gUnitSaveBuf = (s32)p;
-    *(void **)(pw + 16) = lbl_80284C98;
+    *(void **)(pw + 16) = gMemStreamVtbl;
     pw[12] = 0;
     *(void **)pw = p;
     *(void **)(pw + 4) = p;
     *(u32 *)(pw + 8) = 0x100000;
     Unit_WriteAll(pw);
     Icon_WriteSlots(gIconSlots, &w);
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
         fn_800C4588(w.start);
@@ -3831,7 +3831,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
     void fn_800C4588(void *);
     extern u8 lbl_8026ECB8[];
     extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
+    extern u8 gMemStreamVtbl[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
     struct { void *start; void *cur; u32 size; u8 owned; u8 pad[3]; void *vtbl; } w;
@@ -3846,7 +3846,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
     *(u32 *)(pw + 8) = 0;
     pw[12] = 0;
     gUnitSaveBuf = (s32)p;
-    *(void **)(pw + 16) = lbl_80284C98;
+    *(void **)(pw + 16) = gMemStreamVtbl;
     pw[12] = 0;
     *(void **)pw = p;
     *(void **)(pw + 4) = p;
@@ -3854,7 +3854,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
     Unit_WriteAll(pw);
     Icon_WriteSlots(gIconSlots, &w);
     Unit_ResetAll();
-    w.vtbl = lbl_80284C98;
+    w.vtbl = gMemStreamVtbl;
     w.vtbl = lbl_802842A4;
     if (w.owned != 0) {
         fn_800C4588(w.start);
