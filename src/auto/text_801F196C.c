@@ -1579,7 +1579,7 @@ void CardLink_UpdateScanWait(void *proc) {
     }
 }
 
-void fn_801F5AEC(void *arg0) {
+void CardLink_UpdateConfirmPrompt(void *arg0) {
     s32 Msg_Expand(void *);
     void MsgBox_Init(void *, s32, s32, s32, s32);
     void Ui_PlaySeCue(void *, s32);
