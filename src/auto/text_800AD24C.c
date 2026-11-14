@@ -8433,7 +8433,7 @@ void fn_800C068C(void) {
     extern s32 gUiInputFlags;
     extern u8 Proc_BMapMain[];
     extern u32 gBMapMainSaved;
-    extern u32 lbl_8036784C;
+    extern u32 gBMapPlphSaved;
     extern u8 Proc_BMapPlph[];
     extern u8 lbl_80320040[];
     extern u8 E_Event_script[];
@@ -8449,9 +8449,9 @@ void fn_800C068C(void) {
     } else {
         Process_UnlinkByKey(Proc_BMapMain);
     }
-    if (lbl_8036784C != 0) {
+    if (gBMapPlphSaved != 0) {
         obj2 = Process_CreateChild(Proc_BMapPlph, obj);
-        *(u32 *)((u8 *)obj2 + 4) = lbl_8036784C;
+        *(u32 *)((u8 *)obj2 + 4) = gBMapPlphSaved;
     }
     fn_800142D4(lbl_80320040);
     Process_Goto(Process_CreateChild(E_Event_script, fn_801270A4()), 0);
@@ -8461,7 +8461,7 @@ void fn_800C068C(void) {
 void ScriptCmd_BMapSuspend(void) {
     extern s32 gUiInputFlags;
     extern s32 gBMapMainSaved;
-    extern s32 lbl_8036784C;
+    extern s32 gBMapPlphSaved;
     extern u8 Proc_BMapMain[];
     extern u8 Proc_BMapBGMCtrl[];
     extern u8 Proc_BMapPlph[];
@@ -8494,7 +8494,7 @@ void ScriptCmd_BMapSuspend(void) {
     } else {
         val = 0;
     }
-    lbl_8036784C = val;
+    gBMapPlphSaved = val;
     GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
     fn_800142D4(lbl_80320080);
     fn_80018AF4();
