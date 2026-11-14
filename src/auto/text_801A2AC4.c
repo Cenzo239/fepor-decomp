@@ -194,6 +194,7 @@ s32 fn_801A2F54(s32 arg0) {
     return 0;
 }
 
+/* Full-heal units on allegiance mask mode 2 (non-foe factions) and clear +0x1A4 status bits. */
 void MapAnim_HealNonEnemyUnits(void) {
     void Allegiance_FillMask(s32, void *);
     s32 Unit_GetMaxHp(void *);
@@ -201,11 +202,11 @@ void MapAnim_HealNonEnemyUnits(void) {
     void fn_80104480(void *);
     extern u8 gUnits[];
     extern u8 gBattle[];
-    u8 sp8[8];
+    u8 allegMask[8];
     void *unit;
     s32 i;
 
-    Allegiance_FillMask(2, sp8);
+    Allegiance_FillMask(2, allegMask);
     for (i = 1; i <= 0x9F; i++) {
         if ((u8)i != 0) {
             unit = gUnits + ((u8)i - 1) * 0x280;
@@ -213,7 +214,7 @@ void MapAnim_HealNonEnemyUnits(void) {
             unit = NULL;
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
-            sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
+            allegMask[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
             Unit_SetHp(unit, (s8)Unit_GetMaxHp(unit));
             fn_80104480((u8 *)unit + 0x1A4);
         }
