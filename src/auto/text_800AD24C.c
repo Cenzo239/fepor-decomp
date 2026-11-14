@@ -5868,18 +5868,11 @@ s32 fn_800BAE4C(s32 arg0, s32 arg1) {
 }
 
 s32 fn_800BAEAC(void) {
-    void *Process_FindByName(void *);
-    extern u16 gUiPanelFlags;
-    extern u8 lbl_8026ECB8[];
-    void *p;
-    s32 flags;
-
-    p = Process_FindByName(lbl_8026ECB8 + 0xA50);
-    if (p == NULL) {
-        return 0;
-    }
-    flags = gUiPanelFlags;
-    return (flags & 0x10) == 0;
+ void *Process_FindByName(void *);
+ extern u16 gUiPanelFlags;
+ extern u8 lbl_8026ECB8[];
+ if (Process_FindByName(lbl_8026ECB8+0xA50)==NULL) return 0;
+ return (u32)__cntlzw(gUiPanelFlags & 0x10) >> 5;
 }
 
 s32 fn_800BAEF8(void) {
@@ -7462,14 +7455,7 @@ void fn_800BDB78(s32 arg0, s32 arg1) {
     *(u8 *)(addr + 0x300) = v | bit;
 }
 
-s32 fn_800BDB9C(s32 arg0, s32 arg1) {
-    s32 addr;
-    u8 *p;
-
-    addr = arg0 + (arg1 >> 3);
-    p = (u8 *)addr;
-    return (p[0x300] & (1 << (arg1 & 7))) != 0;
-}
+s32 fn_800BDB9C(s32 arg0, s32 arg1) { u8 *p = (u8 *)(arg1 >> 3); p = arg0 + p; return (p[0x300] & (1U << (arg1 & 7))) != 0; }
 
 #pragma use_lmw_stmw on
 void EventFlag_Clear(s32 arg0, s32 arg1) {
