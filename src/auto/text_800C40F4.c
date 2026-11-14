@@ -18804,7 +18804,9 @@ void fn_800FA5D4(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void AiCmd_ChanceTrySteal(void *arg0) {
+void AiCmd_ChanceTrySteal(void *unit)
+{
+    /* On chance: try steal AI actions with cmd unit filter; forces AI flag bit 2 for the try, then advances AI PC. */
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiState[];
@@ -18813,21 +18815,21 @@ void AiCmd_ChanceTrySteal(void *arg0) {
     void Ai_UnitIsHostileToActive(void *);
     void Ai_UnitNameInCmdList(void *);
     void Ai_UnitHostileNotInCmdList(void *);
-    u8 *state;
+    u8 *cmd;
     u8 *obj;
-    void (*cb)(void *);
-    u8 *flag;
+    void (*filter)(void *);
+    u8 *aiState;
 
-    obj = (u8 *)arg0;
-    state = (u8 *)gAiCmd;
+    obj = (u8 *)unit;
+    cmd = (u8 *)gAiCmd;
 
-    if (Rand_Range(0x64) <= *(s32 *)(state + 4)) {
-        cb = *(u32 *)(state + 0x14) == 0 ? Ai_UnitIsHostileToActive
-            : (*(s32 *)(state + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
-        flag = gAiState;
-        flag[1] |= 2;
-        Ai_TryStealAction(obj, cb);
-        flag[1] &= ~2;
+    if (Rand_Range(0x64) <= *(s32 *)(cmd + 4)) {
+        filter = *(u32 *)(cmd + 0x14) == 0 ? Ai_UnitIsHostileToActive
+            : (*(s32 *)(cmd + 0x10) != 0 ? Ai_UnitHostileNotInCmdList : Ai_UnitNameInCmdList);
+        aiState = gAiState;
+        aiState[1] |= 2;
+        Ai_TryStealAction(obj, filter);
+        aiState[1] &= ~2;
     }
 
     if (gAiCmdIsAlt == 0) {
