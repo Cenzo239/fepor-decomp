@@ -3134,7 +3134,7 @@ void fn_800B5708(void) {
     void fn_800B6F10(void);
     void Card_GetResult(void);
     void ScriptCmd_BMapSuspend(void);
-    void fn_800C068C(void);
+    void ScriptCmd_BMapResume(void);
     void fn_801E4540(void);
     void fn_800B6E00(void);
     void fn_800B6A70(void);
@@ -3310,7 +3310,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x927, fn_800B6F10, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x92D, Card_GetResult, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x936, ScriptCmd_BMapSuspend, 0);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x943, fn_800C068C, 0);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x943, ScriptCmd_BMapResume, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x94F, fn_801E4540, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x95E, fn_800B6E00, 1);
     Script_RegisterCommand(lbl_8026ECB8 + 0x969, fn_800B6A70, 0);
@@ -8419,7 +8419,7 @@ int fn_800C0658(void) {
     }
 }
 
-void fn_800C068C(void) {
+void ScriptCmd_BMapResume(void) {
     void fn_8002846C(void *);
     void fn_80127AC4(void);
     void *Process_Find(void *);
