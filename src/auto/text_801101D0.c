@@ -3332,7 +3332,7 @@ void fn_80118C84(void *arg0) {
     u8 Allegiance_CompareIds(s32, u8);
     void Map_RefreshUnitMap(u8 *);
     void UiCtx_BindUnit(u8 *, void *);
-    void *fn_8002F658(void *, s32);
+    void *TargetList_GetAt(void *, s32);
     void Map_HideMoveLimitView(void);
     void Map_ShowMoveLimitView(void);
     void fn_800A6AAC(void);
@@ -3417,7 +3417,7 @@ void fn_80118C84(void *arg0) {
             } else {
             search1:
                 for (i = 0; i < *(s32 *)gTargetList; i++) {
-                    p = fn_8002F658(gTargetList, i);
+                    p = TargetList_GetAt(gTargetList, i);
                     if ((s8)sel_x == (s8)*(u8 *)p && (s8)sel_y == (s8)*((u8 *)p + 1)) {
                         found = 1;
                         break;
@@ -3517,7 +3517,7 @@ void fn_80118C84(void *arg0) {
             } else {
             search2:
                 for (i = 0; i < *(s32 *)gTargetList; i++) {
-                    p = fn_8002F658(gTargetList, i);
+                    p = TargetList_GetAt(gTargetList, i);
                     if ((s8)sel_x == (s8)*(u8 *)p && (s8)sel_y == (s8)*((u8 *)p + 1)) {
                         found = 1;
                         break;
@@ -3552,7 +3552,7 @@ void fn_80118C84(void *arg0) {
             } else {
             search3:
                 for (i = 0; i < *(s32 *)gTargetList; i++) {
-                    p = fn_8002F658(gTargetList, i);
+                    p = TargetList_GetAt(gTargetList, i);
                     if ((s8)sel_x == (s8)*(u8 *)p && (s8)sel_y == (s8)*((u8 *)p + 1)) {
                         found = 1;
                         break;
@@ -3606,7 +3606,7 @@ void fn_80118C84(void *arg0) {
             } else {
             search4:
                 for (i = 0; i < *(s32 *)gTargetList; i++) {
-                    p = fn_8002F658(gTargetList, i);
+                    p = TargetList_GetAt(gTargetList, i);
                     if ((s8)sel_x == (s8)*(u8 *)p && (s8)sel_y == (s8)*((u8 *)p + 1)) {
                         found = 1;
                         break;
@@ -3695,7 +3695,7 @@ void fn_80119738(void *arg0) {
 
 #pragma use_lmw_stmw on
 void fn_80119768(void) {
-    void *fn_8002F658(s32 *, s32);
+    void *TargetList_GetAt(s32 *, s32);
     M2C_UNK fn_8004A864(s32 *);
     M2C_UNK Map_SetupColorGx();
     M2C_UNK fn_802245D8(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -3720,8 +3720,8 @@ void fn_80119768(void) {
     t28 = (s8) gUiContext[0xD];
     t29 = (s8) gUiContext[0xE];
     for (i = 0; i < *(s32 *) gTargetList; i++) {
-        b0 = *(u8 *) fn_8002F658((s32 *) gTargetList, i);
-        b1 = *((u8 *) fn_8002F658((s32 *) gTargetList, i) + 1);
+        b0 = *(u8 *) TargetList_GetAt((s32 *) gTargetList, i);
+        b1 = *((u8 *) TargetList_GetAt((s32 *) gTargetList, i) + 1);
         id = gBattleMap[0xD + (s8) b0 + ((s8) b1 << 6)];
         if (id == 0) {
             goto sound;
@@ -4834,7 +4834,7 @@ s32 fn_8011C000(void) {
 }
 
 s32 fn_8011C2B8(void *arg0) {
-    void *fn_8002F658(s32 *, s32);
+    void *TargetList_GetAt(s32 *, s32);
     extern s32 gTargetList;
     s16 temp_r4_2;
     s16 var_r30;
@@ -4856,7 +4856,7 @@ s32 fn_8011C2B8(void *arg0) {
     var_r28 = 0;
 loop_16:
     if (var_r28 < (s32) gTargetList) {
-        temp_r3 = fn_8002F658(&gTargetList, var_r28);
+        temp_r3 = TargetList_GetAt(&gTargetList, var_r28);
         if (arg0 != temp_r3) {
             temp_r6 = M2C_FIELD(temp_r3, u8 *, 1);
             temp_r4 = M2C_FIELD(arg0, u8 *, 1);
@@ -4904,7 +4904,7 @@ block_14:
 }
 
 s32 fn_8011C404(void *arg0) {
-    void *fn_8002F658(s32 *, s32);
+    void *TargetList_GetAt(s32 *, s32);
     extern u16 gTargetList[1004];
     s16 temp_r4;
     s16 var_r30;
@@ -4926,7 +4926,7 @@ s32 fn_8011C404(void *arg0) {
     var_r28 = 0;
 loop_16:
     if (var_r28 < (s32) gTargetList[0]) {
-        temp_r3 = fn_8002F658((s32 *)gTargetList, var_r28);
+        temp_r3 = TargetList_GetAt((s32 *)gTargetList, var_r28);
         if (arg0 != temp_r3) {
             temp_r7 = M2C_FIELD(temp_r3, u8 *, 0);
             temp_r8 = M2C_FIELD(arg0, u8 *, 0);

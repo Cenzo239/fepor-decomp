@@ -3301,7 +3301,7 @@ void fn_80026194(s32 arg0) {
 }
 
 void fn_80026204(void) {
-    void fn_8002F658(s32 *, s32);
+    void TargetList_GetAt(s32 *, s32);
     void *UnitRef_GetUnit(void);
     extern s32 gTargetList[];
     s32 i;
@@ -3309,7 +3309,7 @@ void fn_80026204(void) {
     s32 flags;
 
     for (i = 0; i < gTargetList[0]; i++) {
-        fn_8002F658(gTargetList, i);
+        TargetList_GetAt(gTargetList, i);
         obj = UnitRef_GetUnit();
         flags = *(s32 *)((u8 *)obj + 0x1A0);
         *(s32 *)((u8 *)obj + 0x1A0) = flags & ~1;
@@ -3338,14 +3338,14 @@ void fn_8002626C(void) {
 
 #pragma use_lmw_stmw on
 void Event_BlessStartRoundSky(s32 *arg0, s32 arg1) {
-void *Item_GetByIid(void *); void fn_8002AD04(s32, void *); void *fn_8002F658(s32 *, s32); s32 fn_8003AFA0(s32); void fn_8019C0C0(s32, void *); void Battle_QueueDeathAnim(void *); void Battle_SetupUnit(void *, void *, s32); void fn_80026374(s32);
+void *Item_GetByIid(void *); void fn_8002AD04(s32, void *); void *TargetList_GetAt(s32 *, s32); s32 fn_8003AFA0(s32); void fn_8019C0C0(s32, void *); void Battle_QueueDeathAnim(void *); void Battle_SetupUnit(void *, void *, s32); void fn_80026374(s32);
 extern u8 lbl_80268E40[]; extern s32 gTargetList[]; extern u8 gUiContext[]; extern u8 gBattle[];
 s32 *self; s32 other; s32 saved; u8 b3; u8 b2; s32 i; s32 three; void *entry; s32 val;
 self=arg0; other=arg1; saved=*self;
 fn_8002AD04(saved,Item_GetByIid(lbl_80268E40+0x1A6));
 i=0; three=3;
 while(i<gTargetList[0]) {
-entry=fn_8002F658(gTargetList,i); b3=((u8*)entry)[3]; b2=((u8*)entry)[2]; val=fn_8003AFA0(*self);
+entry=TargetList_GetAt(gTargetList,i); b3=((u8*)entry)[3]; b2=((u8*)entry)[2]; val=fn_8003AFA0(*self);
 ((u8*)entry)[0]=three; i+=1; ((u8*)entry)[1]=(u8)val; ((u8*)entry)[2]=b2; ((u8*)entry)[3]=b3;
 }
 Battle_SetupUnit(gBattle,*(void**)gUiContext,-1); Battle_QueueDeathAnim(gBattle); fn_8019C0C0(other,fn_80026374);
@@ -3416,7 +3416,7 @@ void fn_80026544(s32 arg0) {
 void fn_80026570(void *arg0) {
     void Battle_SetupUnit(void *, void *, s32);
     void Battle_QueueDeathAnim(void *);
-    void *fn_8002F658(s32 *, s32);
+    void *TargetList_GetAt(s32 *, s32);
     void *UnitRef_GetUnit(void);
     void fn_8019C070(void *, void (*)(void));
     void Process_Goto(void *, s32);
@@ -3435,7 +3435,7 @@ void fn_80026570(void *arg0) {
         Battle_QueueDeathAnim(gBattle);
         return;
     }
-    fn_8002F658(p, idx);
+    TargetList_GetAt(p, idx);
     obj = UnitRef_GetUnit();
     Battle_SetupUnit(gBattle, obj, -1);
     Battle_QueueDeathAnim(gBattle);

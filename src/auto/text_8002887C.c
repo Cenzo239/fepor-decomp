@@ -3007,7 +3007,7 @@ void *TargetList_GetCurrent(s32 *arg0) {
     return (void *)((char *)arg0 + idx * 0x14 + 8);
 }
 
-void *fn_8002F658(s32 *arg0, s32 arg1) {
+void *TargetList_GetAt(s32 *arg0, s32 arg1) {
     if (arg1 >= (s32)*arg0) {
         return NULL;
     }
@@ -3131,7 +3131,7 @@ void fn_8002F82C(s32 arg0) {
 
 void fn_8002FA54(void) {
     void fn_8002BD44(void *, s32);
-    void fn_8002F658(void *, s32);
+    void TargetList_GetAt(void *, s32);
     s32 UnitRef_GetUnit(void);
     void fn_8014CB14(void *, s32);
     extern u8 gUiContext[];
@@ -3143,7 +3143,7 @@ void fn_8002FA54(void) {
     fn_8002BD44(*(void **)gUiContext, 0);
     p = (s32 *)gTargetList;
     if (*p != 0) {
-        fn_8002F658(p, 0);
+        TargetList_GetAt(p, 0);
         tmp = UnitRef_GetUnit();
         fn_8014CB14(gBattleState, tmp);
     }

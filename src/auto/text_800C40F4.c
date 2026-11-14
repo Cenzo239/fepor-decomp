@@ -17007,7 +17007,7 @@ void Map_FillLayer(void *,s32,s32);void Map_SelectRangeBuffer(void *,s32);void M
 s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);void fn_8002F728(void *);
 s32 fn_80110030(void *);void fn_800FDF38(s16,s16,s32,s32,s32);
-void fn_8002C530(void *,s32);void *fn_8002F658(void *,s32);
+void fn_8002C530(void *,s32);void *TargetList_GetAt(void *,s32);
 void *UnitRef_GetUnit(void *);u8 Allegiance_Compare(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
 u8 *ctx;
@@ -17069,7 +17069,7 @@ if(*(s32 *)list){
 u8 bx=(u8)x,by=(u8)y;
 count=0;
 for(index=0;index<*(s32 *)list;index++){
-unit=UnitRef_GetUnit(fn_8002F658(list,index));
+unit=UnitRef_GetUnit(TargetList_GetAt(list,index));
 if(Allegiance_Compare(M2C_FIELD(self,void **,0x190),M2C_FIELD(unit,void **,0x190))==1)count++;else count--;
 }
 if(count>0&&count>best){bestX=bx;bestY=by;best=count;}
@@ -17100,7 +17100,7 @@ u8 Status_Test(void *,s32);void Map_FillLayer(void *,s32,s32);void Map_SelectRan
 void Map_BuildUnitMoveRange(void *,s32,s32);s8 Unit_GetMov(void *);u8 Map_IsAiTerrainBlocked(s8,s8);
 void *MapObjEvent_Find(void *,s8,s8,s32);void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);void fn_800FDDBC(s8,s8,u8,u8,s32);
-void Map_ClipRangeByFacing(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *fn_8002F658(void *,s32);
+void Map_ClipRangeByFacing(void *,u8,u8,u8);void fn_8002C47C(void *,s8);void *TargetList_GetAt(void *,s32);
 void fn_8002C6F4(void *,s8,s8);void fn_800FB96C(u8,s8,s8,void *,s8,s8,s8,s32,s32);
 u8 *map,*ctx; s32 rowOffset;u8 *row; s32 xmin,xmax,ymax;
 s32 callback; F43Eval eval; F43Range pred; struct {F43Pos pos;s32 pad;s32 score;} result;
@@ -17135,7 +17135,7 @@ fn_8002C47C(&pred,(s8)item[0x1d]);
 list=gTargetList;
 if(*(s32*)list){result.pos.id=entry[4];
 for(index=0;index<*(s32*)list;index++){
-point=fn_8002F658(list,index);result.pos.x=point[0];result.pos.y=point[1];
+point=TargetList_GetAt(list,index);result.pos.x=point[0];result.pos.y=point[1];
 ix=(s8)result.pos.x;iy=(s8)result.pos.y;
 eval.vtable=(void**)lbl_80284E20;id=gBattleMap[(s8)ix+((s8)iy<<6)+0xd];
 eval.vtable=(void**)lbl_8028E6C8;eval.entry=entry;eval.unit=self;eval.pos=&result.pos;result.score=0;
@@ -17203,7 +17203,7 @@ void *MapObjEvent_Find(void *,s8,s8,s32);
 void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);
 void fn_800FDDBC(s8,s8,u8,u8,s32);void Map_ClipRangeByFacing(void *,u8,u8,u8);
-void fn_8002C530(void *,s8);void *fn_8002F658(void *,s32);
+void fn_8002C530(void *,s8);void *TargetList_GetAt(void *,s32);
 u8 fn_800F7E78(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
 u8 *ctx;
@@ -17255,7 +17255,7 @@ list=gTargetList;
 if(*(s32 *)list){
 result.x=x;result.y=y;result.item=entry[4];
 for(index=0;index<*(s32 *)list;index++){
-id=M2C_FIELD(fn_8002F658(list,index),u8 *,2);
+id=M2C_FIELD(TargetList_GetAt(list,index),u8 *,2);
 result.unit=id?gUnits+(id-1)*0x280:0;
 if(fn_800F7E78(self,&result)&&result.score>score){
 bestX=result.x;score=result.score;bestY=result.y;bestItem=result.item;best=result.unit;

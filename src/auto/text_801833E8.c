@@ -3199,7 +3199,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
-    void fn_8002F658(void *, s32);
+    void TargetList_GetAt(void *, s32);
     void *UnitRef_GetUnit(void);
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
@@ -3247,7 +3247,7 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     fn_8002C47C(&obj, 0);
     i = 0;
     while (i < gTargetList[0]) {
-        fn_8002F658(gTargetList, i);
+        TargetList_GetAt(gTargetList, i);
         unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
@@ -3318,7 +3318,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     void fn_8002F728(void *);
     void fn_8002C47C(void *, s32);
-    void fn_8002F658(void *, s32);
+    void TargetList_GetAt(void *, s32);
     void *UnitRef_GetUnit(void);
     u8 fn_8003DC80(void *, void *);
     void **Unit_GetItemSlot(void *, s32);
@@ -3378,7 +3378,7 @@ u8 fn_8018D4CC(void *arg0, s32 arg1) {
     fn_8002C47C(&obj, 0);
     i = 0;
     while (i < gTargetList[0]) {
-        fn_8002F658(gTargetList, i);
+        TargetList_GetAt(gTargetList, i);
         unit = UnitRef_GetUnit();
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
@@ -9969,7 +9969,7 @@ void fn_8019BE54(void *arg0, void *arg1)
 
 #pragma global_optimizer off
 void fn_8019BEA4(void *arg0) {
-    void fn_8002F658(s32 *, s32);
+    void TargetList_GetAt(s32 *, s32);
     void *UnitRef_GetUnit(void);
     void fn_80053658(void *, s32, void *);
     void fn_80053680(void *, void *);
@@ -9984,7 +9984,7 @@ void fn_8019BEA4(void *arg0) {
     i = 0;
     goto check;
 loop:
-    fn_8002F658(table, i);
+    TargetList_GetAt(table, i);
     item = UnitRef_GetUnit();
     obj = Effect_Create((u8 *)arg0 + 0x41, arg0);
     if (obj) {
