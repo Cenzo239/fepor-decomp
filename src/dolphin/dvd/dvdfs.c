@@ -370,6 +370,7 @@ BOOL DVDConvertEntrynumToPath(s32 entrynum, char *path, u32 maxlen) {
     return TRUE;
 }
 
+/* Build an absolute path for the current DVD directory into path. */
 BOOL DVDGetCurrentDir(char *path, u32 maxlen) {
     return DVDConvertEntrynumToPath((s32)currentDirectory, path, maxlen);
 }
