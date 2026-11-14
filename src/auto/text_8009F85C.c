@@ -1667,19 +1667,7 @@ s32 fn_800A1C74(s32 arg0, s32 arg1, void *arg2) {
 }
 
 #pragma opt_strength_reduction off
-s32 fn_800A1CB4(void)
-{
-    void *Map_GetCursorUnit(void);
-    void *p;
-    s32 two;
-    s32 v;
-
-    p = Map_GetCursorUnit();
-    p = *(void **)((u8 *)p + 0x188);
-    two = 1 + 1;
-    v = *(s32 *)((u8 *)p + 0x50);
-    return two & -(v == 0);
-}
+s32 fn_800A1CB4(void) { void *Map_GetCursorUnit(void); void *p = Map_GetCursorUnit(); p = *(void **)((u8 *)p + 0x188); return *(s32 *)((u8 *)p + 0x50) == 0 ? 2 : 0; }
 #pragma opt_strength_reduction on
 void *fn_800A1CF0(void) {
     extern u16 gMenuCmdStrings[];
