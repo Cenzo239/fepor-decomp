@@ -25,7 +25,9 @@ struct Unit {
     /* 0x19E */ s8 mapX;
     /* 0x19F */ s8 mapY;
     /* 0x1A0 */ u32 stateFlags; /* bit0: skip idle spin; bit1: rescuer; bit2: rescuee; 0x010000FC: not drawable; bit 0x1C: gone/dead */
-    /* 0x1A4 */ u8 unk1A4[4];
+    /* 0x1A4 */ u8 unk1A4;
+    /* 0x1A5 */ u8 statusNibbles; /* low3 / high3 ((v>>4)&7); high gates item flags 2/4 in Unit_CanEquipItem */
+    /* 0x1A6 */ u8 unk1A6[2];
     /* 0x1A8 */ s8 hp;
     /* 0x1A9 */ u8 unk1A9[0x13];
     /* 0x1BC */ u32 statusBits[4]; /* Status_Test bitset */
