@@ -1234,7 +1234,7 @@ void fn_8001520C(void *arg0, u8 arg1) {
     M2C_FIELD(arg0, s8 *, 3) = -1;
 }
 
-void fn_80015234(void **arg0) {
+void UnitList_GainSupportPoints(void **arg0) {
     void Unit_AddSupportPoints(void *, s32);
     s32 Unit_GetSupportRankTotal(void *);
     void *Unit_GetSupportPartner(void *, s32);
