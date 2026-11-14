@@ -664,19 +664,10 @@ void fn_800931E4(s32 arg0, u8 arg1, s32 arg2) {
     Item_Copy(arg0 + (arg1 << 3) + 0x1CC, arg2);
 }
 
-s32 fn_80093218(void *arg1) {
-    s32 r4;
-    s32 r6;
-
-    r6 = *(s32 *)((u8 *)arg1 + 0x38);
-    r4 = *(s32 *)((u8 *)arg1 + 0x3c);
-    if ((r4 & 8) == 0) {
-        return 0;
-    }
-    if ((r6 & 0x100) == 0) {
-        return 0;
-    }
-    return 1;
+s32 fn_80093218(void *arg0, void *arg1) {
+ u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+ if ((flags & 8ULL) == 0) return 0;
+ return (flags & 0x10000000000ULL) == 0;
 }
 
 u8 fn_8009326C(void *arg0, void *arg1) {
