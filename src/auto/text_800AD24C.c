@@ -7727,20 +7727,20 @@ s32 fn_800BE2F4(void) {
     void BMapMain_Goto(s32);
     void GfxEnt_UnlinkByName(void *);
     void Process_UnlinkByKey(void *);
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern u8 Proc_CpPhaseMain[];
     void *obj;
 
     obj = (u8 *)gBattleState + 0xB4;
-    if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0) {
+    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0xF9) != 0) {
         BMapMain_Goto(3);
     }
-    if (EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
+    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0x105) != 0) {
         BMapMain_Goto(1);
     }
-    if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0 ||
-        EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
-        GfxEnt_UnlinkByName(lbl_8026FC78 + 0x111);
+    if (EventFlag_IsSet(obj, gMapEventFlagNames + 0xF9) != 0 ||
+        EventFlag_IsSet(obj, gMapEventFlagNames + 0x105) != 0) {
+        GfxEnt_UnlinkByName(gMapEventFlagNames + 0x111);
         Process_UnlinkByKey(Proc_CpPhaseMain);
         return 1;
     }
@@ -7784,7 +7784,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
     void fn_800BDBC8(void *, void *);
     extern u8 gTalkState[];
     extern u8 lbl_8028D4F8[];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
     s32 count;
     u8 *entry;
@@ -7805,7 +7805,7 @@ void fn_800BE658(s32 arg0, s32 arg1) {
     gTalkState[0xA] = 0;
     tmp = Process_CreateChild(lbl_8028D4F8, arg1);
     *(void **)((u8 *)tmp + 0x30) = entry;
-    fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
+    fn_800BDBC8((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
     gUiInputFlags &= ~1;
 }
 
@@ -8299,7 +8299,7 @@ void fn_800C054C(void *arg0) {
     void fn_800BDBC8(void *, void *);
     void Process_ClearFunc(void *);
     extern u8 lbl_8028D4F8[];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
 
     void *self;
@@ -8314,7 +8314,7 @@ void fn_800C054C(void *arg0) {
                 saved = *(void **)((u8 *)self + 0x30);
                 tmp = Process_CreateChild(lbl_8028D4F8, self);
                 *(void **)((u8 *)tmp + 0x30) = saved;
-                fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
+                fn_800BDBC8((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
                 gUiInputFlags &= ~1;
                 *(void **)((u8 *)self + 0x30) = Event_NextEntry(*(void **)((u8 *)self + 0x30));
                 if (*(void **)((u8 *)self + 0x30) == 0) {
@@ -8389,7 +8389,7 @@ void fn_800C0750(void) {
     extern u8 Proc_BMapMain[];
     extern u8 Proc_BMapBGMCtrl[];
     extern u8 lbl_80284AC8[];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern u8 lbl_80320080[];
     void *Process_Find(void *);
     void *Process_FindByName(void *);
@@ -8410,7 +8410,7 @@ void fn_800C0750(void) {
     }
     lbl_80367848 = val;
     if (temp == 0) {
-        Process_Create(Proc_BMapBGMCtrl, Process_CreateChild(Proc_BMapMain, Process_FindByName(lbl_8026FC78 + 0x138)));
+        Process_Create(Proc_BMapBGMCtrl, Process_CreateChild(Proc_BMapMain, Process_FindByName(gMapEventFlagNames + 0x138)));
     }
     temp = Process_Find(lbl_80284AC8);
     if (temp != 0) {
@@ -8419,7 +8419,7 @@ void fn_800C0750(void) {
         val = 0;
     }
     lbl_8036784C = val;
-    GfxEnt_UnlinkByName(lbl_8026FC78 + 0xE3);
+    GfxEnt_UnlinkByName(gMapEventFlagNames + 0xE3);
     fn_800142D4(lbl_80320080);
     fn_80018AF4();
 }
@@ -8427,7 +8427,7 @@ void fn_800C0750(void) {
 void fn_800C0818(u8 flag) {
     extern u8 lbl_8028D4F8[];
     extern u16 gBattleState[700];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
     void Process_Unlink(void *);
@@ -8440,7 +8440,7 @@ void fn_800C0818(u8 flag) {
     obj = Process_Find(lbl_8028D4F8);
     if (obj != 0) {
         if (flag != 0) {
-            fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
+            fn_800BDBC8((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
             gUiInputFlags &= ~1;
             fn_80089650(0, 0);
             fn_8008A290(0, 0);
@@ -8452,7 +8452,7 @@ void fn_800C0818(u8 flag) {
 void fn_800C08AC(void *arg0, void *arg1)
 {
     extern u8 lbl_8028D4F8[];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
 
     extern void *Res_GetByName(void *);
@@ -8471,7 +8471,7 @@ void fn_800C08AC(void *arg0, void *arg1)
 
         fn_800BDBC8(
             (u8 *)gBattleState + 0xB4,
-            lbl_8026FC78 + 0x11C
+            gMapEventFlagNames + 0x11C
         );
 
         gUiInputFlags &= ~1;
@@ -8481,7 +8481,7 @@ void fn_800C08AC(void *arg0, void *arg1)
 void fn_800C0924(void)
 {
     extern u16 gBattleState[700];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
 
     extern void fn_800BDBC8(void *, void *);
@@ -8490,7 +8490,7 @@ void fn_800C0924(void)
 
     fn_800BDBC8(
         (u8 *)gBattleState + 0xB4,
-        lbl_8026FC78 + 0x11C
+        gMapEventFlagNames + 0x11C
     );
 
     gUiInputFlags &= ~1;
@@ -8576,7 +8576,7 @@ s32 fn_800C0AE0(void)
 s32 fn_800C0AF4(void) {
     extern u8 lbl_8028D4D0[];
     extern u16 gBattleState[700];
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
     extern s32 gUiInputFlags;
     u8 EventFlag_IsSet(void *, void *);
     void *Process_Find(void *);
@@ -8586,14 +8586,14 @@ s32 fn_800C0AF4(void) {
     void fn_8008A290(s32, s32);
 
     if (!(gUiInputFlags & 1)) {
-        if (EventFlag_IsSet((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C) == 0
+        if (EventFlag_IsSet((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C) == 0
             && Process_Find(lbl_8028D4D0) == 0) {
             return 0;
         }
     }
 
     Process_UnlinkByKey(lbl_8028D4D0);
-    fn_800BDBC8((u8 *)gBattleState + 0xB4, lbl_8026FC78 + 0x11C);
+    fn_800BDBC8((u8 *)gBattleState + 0xB4, gMapEventFlagNames + 0x11C);
     gUiInputFlags &= ~1;
     fn_80089650(0, 0);
     fn_8008A290(0, 0);
@@ -8610,11 +8610,11 @@ void fn_800C0BAC(s32 arg0) {
 void fn_800C0BD8(void)
 {
     extern s32 gUiInputFlags;
-    extern u8 lbl_8026FC78[];
+    extern u8 gMapEventFlagNames[];
 
     fn_800BDC68(
         (u8 *)gBattleState + 0xB4,
-        lbl_8026FC78 + 0x11C
+        gMapEventFlagNames + 0x11C
     );
 
     gUiInputFlags |= 1;
