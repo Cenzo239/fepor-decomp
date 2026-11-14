@@ -1365,7 +1365,7 @@ s32 fn_800B1B24(s32 arg0)
 void fn_800B1B80(s32 arg0, s16 arg1)
 {
     extern u8 gSoundSys[];
-    extern void fn_8024B828(s32, s32, s32);
+    extern void Sound_SetDistanceVol(s32, s32, s32);
 
     u8 *base;
     s32 value;
@@ -1375,11 +1375,11 @@ void fn_800B1B80(s32 arg0, s16 arg1)
 
     if ((u32)value + 0x10000 != 0xFFFFU) {
         if (arg1 == 0) {
-            fn_8024B828(value, 0, 0);
+            Sound_SetDistanceVol(value, 0, 0);
         } else if (arg1 >= 0x3E80) {
-            fn_8024B828(value, 0, 0);
+            Sound_SetDistanceVol(value, 0, 0);
         } else {
-            fn_8024B828(value, 1, arg1);
+            Sound_SetDistanceVol(value, 1, arg1);
         }
     }
 }
