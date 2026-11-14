@@ -1542,7 +1542,7 @@ void CardLink_ApplyBonus(void *proc) {
     Process_UnlinkByKey(&gCardLinkProc);
 }
 
-void fn_801F5A28(void *arg0) {
+void CardLink_UpdateScanWait(void *arg0) {
     void *Process_Find(void *);
     void Process_ClearFunc(void *);
     void Process_Goto(void *, s32);
