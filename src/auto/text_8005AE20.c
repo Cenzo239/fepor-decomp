@@ -5191,12 +5191,10 @@ void fn_80067480(void)
 
 #pragma peephole off
 void fn_800675C8(void *arg0) {
-    extern u8 lbl_80311AF8[];
-    extern void *lbl_80366DD4;
-
-    if (arg0 == NULL) {
-        lbl_80366DD4 = lbl_80311AF8;
-    }
+ extern u8 lbl_80311AF8[];
+ extern void *lbl_80366DD4;
+ if (arg0 == 0) arg0 = lbl_80311AF8;
+ lbl_80366DD4 = arg0;
 }
 #pragma peephole on
 s32 Fog_GetColor(void) {
