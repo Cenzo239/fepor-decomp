@@ -11616,12 +11616,12 @@ void *fn_800E5F84(void *arg0, s16 arg1) {
     void String_Destroy(void *, s32);
     void fn_800DF724(void *, s32);
     void Heap_Free(void *);
-    extern void *lbl_8028E1A8[];
+    extern void *gActorVtbl[];
     extern void *lbl_8028DED0[];
     void *p;
 
     if (arg0 != NULL) {
-        M2C_FIELD(arg0, void ***, 0x40) = lbl_8028E1A8;
+        M2C_FIELD(arg0, void ***, 0x40) = gActorVtbl;
         p = M2C_FIELD(arg0, void **, 0xe0);
         if (p != NULL) {
             fn_800DDC2C(M2C_FIELD(arg0, void **, 0xdc), p);
@@ -11695,7 +11695,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     void fn_800E574C(void *, char *, u8, s32, s32, s32, f32);
     void fn_800E5418(void *, String *);
     u32 strlen(char *);
-    extern u8 lbl_8028E1A8[];
+    extern u8 gActorVtbl[];
     extern char lbl_802720E0[];
     extern f32 lbl_80369F3C;
     extern f32 lbl_80369F58;
@@ -11727,7 +11727,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     f32 zero;
 
     fn_800DBBE4(self);
-    self->vtbl = (void *)lbl_8028E1A8;
+    self->vtbl = (void *)gActorVtbl;
     self->strB0.size = 0;
     self->strB0.cap = 0;
     self->strB0.data = 0;
