@@ -2053,7 +2053,8 @@ void fn_80009C20(
     *(u16 *)((u8 *)gPrim2D + 0x20) &= ~(1 << 10);
 }
 
-void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+/* Build XY(Z) translate and optional uniform scale into gPrim2D's matrix; store z and clear flag 0x800. */
+void Prim2D_SetTransform(f32 x, f32 y, f32 z, f32 scale) {
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
     void PSMTXConcat(void *, void *, void *);
@@ -2063,15 +2064,15 @@ void Prim2D_SetTransform(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     f32 tmp[12];
     f32 mtx[12];
 
-    if (gFloat1 == arg3) {
-        PSMTXTrans(mtx, arg0, arg1, arg2);
+    if (gFloat1 == scale) {
+        PSMTXTrans(mtx, x, y, z);
     } else {
-        PSMTXScale(tmp, arg3, arg3, gFloat1);
-        PSMTXTrans(mtx, arg0, arg1, arg2);
+        PSMTXScale(tmp, scale, scale, gFloat1);
+        PSMTXTrans(mtx, x, y, z);
         PSMTXConcat(mtx, tmp, mtx);
     }
     PSMTXCopy(mtx, (*(u8 **)&gPrim2D) + 0x60);
-    *(f32 *)((*(u8 **)&gPrim2D) + 0x28) = arg2;
+    *(f32 *)((*(u8 **)&gPrim2D) + 0x28) = z;
     *(u16 *)((*(u8 **)&gPrim2D) + 0x20) &= ~0x800;
 }
 
