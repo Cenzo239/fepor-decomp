@@ -13549,28 +13549,29 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     return var_r30;
 }
 
-s16 Unit_GetGoldCost(s32 arg0, s16 arg1) {
+/* Gold cost for qty after base calc, status 0x4B markup (*10/7), and 0xB half-price. */
+s16 Unit_GetGoldCost(s32 unit, s16 qty) {
     f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 Status_Test(s32, s32);
     extern f32 lbl_8036ABD8;
-    s16 var_r31;
-    s32 temp_r30;
+    s16 cost;
+    s32 unitTmp;
 
-    temp_r30 = arg0;
-    if (arg1 == 0) {
+    unitTmp = unit;
+    if (qty == 0) {
         return 0;
     }
-    var_r31 = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(temp_r30, (u8)arg1));
-    if (Status_Test(temp_r30 + 0x1BC, 0x4B) != 0) {
-        var_r31 = (s16)((var_r31 * 10) / 7);
+    cost = (s16)(lbl_8036ABD8 + Unit_CalcBaseGoldCost(unitTmp, (u8)qty));
+    if (Status_Test(unitTmp + 0x1BC, 0x4B) != 0) {
+        cost = (s16)((cost * 10) / 7);
     }
-    if (Status_Test(temp_r30 + 0x1BC, 0xB) != 0) {
-        var_r31 = (s16)((s32)(((u32)var_r31 >> 31) + var_r31) >> 1);
+    if (Status_Test(unitTmp + 0x1BC, 0xB) != 0) {
+        cost = (s16)((s32)(((u32)cost >> 31) + cost) >> 1);
     }
-    if (var_r31 < 1) {
-        var_r31 = 1;
+    if (cost < 1) {
+        cost = 1;
     }
-    return var_r31;
+    return cost;
 }
 
 u32 Ui_CanAffordNextGoldCost(void *panel) {
