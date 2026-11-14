@@ -445,8 +445,9 @@ void fn_8014D8FC(void *arg0) {
 }
 
 s32 fn_8014DA68(void) {
-    extern u8 gBattleState[];
-    return ((gBattleState[0x9F] >> 7) & 1) ? 1 : 0;
+ extern u8 gBattleState[];
+ unsigned int flag = (gBattleState[0x9F] >> 7) & 1;
+ return (unsigned int)(-flag | flag) >> 31;
 }
 
 void fn_8014DBE0(u8 *base, s32 idx, u8 *out0, u16 *out1, s32 *out2) {
