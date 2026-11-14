@@ -426,41 +426,42 @@ s32 fn_801B6164(u32 arg0) {
     return 1;
 }
 
-s32 Battle_TryStartGrowSeq(u32 arg0) {
+s32 Battle_TryStartGrowSeq(u32 parent) {
+    /* If battle has exp/level-up/max-level flags, start E_GrowSeq (standalone or as child). */
     void Process_CreateChild(void *, u32);
     void Process_Create(void *, s32);
     extern u8 Proc_E_GrowSeq[];
     extern u8 gBattle[];
     u32 flags;
-    u32 bit4;
-    u8 a;
-    u8 b;
+    u32 maxLevelBit;
+    u8 leveledUp;
+    u8 shouldStart;
 
     flags = *(u32 *)((u8 *)gBattle + 0xCAC);
-    bit4 = flags & 0x10;
+    maxLevelBit = flags & 0x10;
     if ((flags >> 4) & 1) {
-        a = 0;
+        leveledUp = 0;
     } else if (flags & 0x800) {
-        a = 1;
+        leveledUp = 1;
     } else {
-        a = 0;
+        leveledUp = 0;
     }
-    if (a != 0) {
-        b = 1;
+    if (leveledUp != 0) {
+        shouldStart = 1;
     } else if (flags & 0x400) {
-        b = 1;
-    } else if (bit4 != 0) {
-        b = 1;
+        shouldStart = 1;
+    } else if (maxLevelBit != 0) {
+        shouldStart = 1;
     } else {
-        b = 0;
+        shouldStart = 0;
     }
-    if (b == 0) {
+    if (shouldStart == 0) {
         return 0;
     }
-    if (arg0 == 0) {
+    if (parent == 0) {
         Process_Create(Proc_E_GrowSeq, 3);
     } else {
-        Process_CreateChild(Proc_E_GrowSeq, arg0);
+        Process_CreateChild(Proc_E_GrowSeq, parent);
     }
     return 1;
 }
