@@ -2122,7 +2122,7 @@ s32 fn_800B34B0(u8 *arg0) {
     u8 Sound_PushGroup(s32, u16, s32, s32, s32);
     u8 *fn_800B3F8C(s32, u32);
     extern u8 gSoundSys[];
-    extern void *lbl_80367814;
+    extern void *gSoundLoadBuf;
     extern s32 lbl_8036780C;
     extern u8 Sound_str[];
     u8 *base;
@@ -2137,7 +2137,7 @@ s32 fn_800B34B0(u8 *arg0) {
     if (*(u32 *)(base + 0xE0) >= 8) {
         return 0;
     }
-    lbl_80367814 = NULL;
+    gSoundLoadBuf = NULL;
     handle = fn_800B4A84(base + 0x142, 2, 0);
     if (handle == 0) {
         buffer = 0;
@@ -2165,7 +2165,7 @@ s32 fn_800B34B0(u8 *arg0) {
         }
     }
 stored:
-    lbl_80367814 = (void *)buffer;
+    gSoundLoadBuf = (void *)buffer;
     if (buffer == 0) {
         return 0;
     }
@@ -2195,8 +2195,8 @@ stored:
             }
         }
     }
-    if (lbl_80367814 != NULL) {
-        fn_800C4588((s32)lbl_80367814);
+    if (gSoundLoadBuf != NULL) {
+        fn_800C4588((s32)gSoundLoadBuf);
     }
     *(u32 *)((u8 *)counter_ptr + *(u32 *)(base + 0xE0) * 4) = 0;
     return 1;
@@ -2267,11 +2267,11 @@ s32 fn_800B36D8(s32 arg0) {
 
 u8 *fn_800B3F8C(s32 arg0, u32 arg1) {
 extern u8 gSoundSys[];
-extern void *lbl_80367814;
+extern void *gSoundLoadBuf;
 void fn_800062EC(u8 *, u8 *, u32);
 u8 *base=gSoundSys;
 u8 *dst=*(u8 **)(base+0x444);
-u8 *src=(u8*)lbl_80367814+arg0;
+u8 *src=(u8*)gSoundLoadBuf+arg0;
 if((arg1 & 7)==0) fn_800062EC(dst,src,arg1);
 else {
 for(;arg1!=0;arg1--) *dst++=*src++;
