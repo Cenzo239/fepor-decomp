@@ -19787,19 +19787,19 @@ s32 fn_800FC5F8(void) {
 
 void fn_800FC600(s32 arg0) {
     void Process_CreateChild(void *, s32);
-    extern u8 lbl_8028E7F8[];
+    extern u8 Proc_CpPhaseMain[];
     extern u8 gAiState[];
 
-    Process_CreateChild(lbl_8028E7F8, arg0);
+    Process_CreateChild(Proc_CpPhaseMain, arg0);
     gAiState[1] = 8;
 }
 
 void fn_800FC63C(s32 arg0) {
     void Process_CreateChild(void *, s32);
-    extern u8 lbl_8028E7F8[];
+    extern u8 Proc_CpPhaseMain[];
     extern u8 gAiState[];
 
-    Process_CreateChild(lbl_8028E7F8, arg0);
+    Process_CreateChild(Proc_CpPhaseMain, arg0);
     gAiState[1] = 1;
 }
 

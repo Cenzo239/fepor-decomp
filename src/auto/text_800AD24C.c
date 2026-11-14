@@ -3399,7 +3399,7 @@ s32 fn_800B6C6C(s32 arg0) {
     return 1;
 }
 
-extern u8 lbl_8028E7F8[];
+extern u8 Proc_CpPhaseMain[];
 s32 fn_800B6CD8(u32 arg0) {
     void OSReport(void *, ...);
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
@@ -3471,7 +3471,7 @@ s32 fn_800B6E00(s32 arg0) {
     p->f54 = (u8)var;
     BMapMain_Goto(2, p);
     GfxEnt_UnlinkByName(lbl_8026ECB8 + 0x98b);
-    Process_UnlinkByKey(lbl_8028E7F8);
+    Process_UnlinkByKey(Proc_CpPhaseMain);
     return 1;
 }
 
@@ -7728,7 +7728,7 @@ s32 fn_800BE2F4(void) {
     void GfxEnt_UnlinkByName(void *);
     void Process_UnlinkByKey(void *);
     extern u8 lbl_8026FC78[];
-    extern u8 lbl_8028E7F8[];
+    extern u8 Proc_CpPhaseMain[];
     void *obj;
 
     obj = (u8 *)gBattleState + 0xB4;
@@ -7741,7 +7741,7 @@ s32 fn_800BE2F4(void) {
     if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0 ||
         EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
         GfxEnt_UnlinkByName(lbl_8026FC78 + 0x111);
-        Process_UnlinkByKey(lbl_8028E7F8);
+        Process_UnlinkByKey(Proc_CpPhaseMain);
         return 1;
     }
     return 0;
