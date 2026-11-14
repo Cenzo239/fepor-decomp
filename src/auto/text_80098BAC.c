@@ -63,7 +63,7 @@ void MapUi_Init(void *proc) {
     /* Clear map-UI state, spawn unit processes, resolve cursor map-obj and mode. */
     u32 Map_Get();
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
-    void fn_80096AB8();
+    void Event_LoadSlotUnitGfx();
     void fn_800979FC();
     void fn_80097AB4();
     u32 Event_GetSlotUnit(s32);
@@ -108,6 +108,6 @@ void MapUi_Init(void *proc) {
         M2C_FIELD(proc, s8 *, 0x34) = 2;
     }
     fn_800979FC();
-    fn_80096AB8();
+    Event_LoadSlotUnitGfx();
 }
 

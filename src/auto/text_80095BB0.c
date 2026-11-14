@@ -405,7 +405,7 @@ void fn_80096418(s16 arg0) {
     *idx = saved2;
 }
 
-void fn_80096AB8(void) {
+void Event_LoadSlotUnitGfx(void) {
     void fn_8017F9A8(void);
     void fn_8004FC70(u32, s32);
     extern u8 gEventSlots[];
