@@ -3641,37 +3641,38 @@ s32 fn_80026A80(s32 arg0) {
     return 1;
 }
 
-s32 Battle_TryShowWeaponHelp(s32 arg0) {
+/* If a living player combatant has weapon-help flagged, open its weapon-kind help; else 0. */
+s32 Battle_TryShowWeaponHelp(s32 parent) {
     extern u16 gBattle[];
-    u8 *base;
-    u8 *second;
-    u8 *selected;
-    s32 var_r0;
-    void *temp_r4;
+    u8 *left;
+    u8 *right;
+    u8 *bu;
+    s32 wpnType;
+    void *item;
 
-    selected = NULL;
-    base = (u8 *)gBattle;
-    second = base + 0x2E0;
+    bu = NULL;
+    left = (u8 *)gBattle;
+    right = left + 0x2E0;
 
-    if (*(u8 *)((u8 *)(*(void **)(base + 0x190)) + 8) == 0 && *(u8 *)(base + 0x2C6) != 0) {
-        selected = base;
+    if (*(u8 *)((u8 *)(*(void **)(left + 0x190)) + 8) == 0 && *(u8 *)(left + 0x2C6) != 0) {
+        bu = left;
     }
-    if ((*(u32 *)((u8 *)gBattle + 0xCAC) & 1) == 0 && *(u8 *)((u8 *)(*(void **)(second + 0x190)) + 8) == 0 && *(u8 *)(second + 0x2C6) != 0) {
-        selected = second;
+    if ((*(u32 *)((u8 *)gBattle + 0xCAC) & 1) == 0 && *(u8 *)((u8 *)(*(void **)(right + 0x190)) + 8) == 0 && *(u8 *)(right + 0x2C6) != 0) {
+        bu = right;
     }
-    if (selected == NULL) {
+    if (bu == NULL) {
         return 0;
     }
-    if ((s8)*(u8 *)(selected + 0x1A8) == 0) {
+    if ((s8)*(u8 *)(bu + 0x1A8) == 0) {
         return 0;
     }
-    temp_r4 = *(void **)(selected + 0x28C);
-    if (temp_r4 != NULL) {
-        var_r0 = *(u8 *)((u8 *)temp_r4 + 0x12);
+    item = *(void **)(bu + 0x28C);
+    if (item != NULL) {
+        wpnType = *(u8 *)((u8 *)item + 0x12);
     } else {
-        var_r0 = 0xC;
+        wpnType = 0xC;
     }
-    Ui_OpenWeaponKindHelp((s8)(u8)var_r0, arg0, -1, -1, -1);
+    Ui_OpenWeaponKindHelp((s8)(u8)wpnType, parent, -1, -1, -1);
     return 1;
 }
 
