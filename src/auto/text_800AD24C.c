@@ -8162,7 +8162,7 @@ s32 fn_800BFF30(s32 arg0) {
     void *Process_CreateChild(void *, s32);
     void *Event_GetString(void *, u32);
     u8 EventFlag_IsSet(void *, void *);
-    s32 fn_800C0190(s32);
+    s32 EventEntry_FlagIsSet(s32);
     u8 *entry;
     u8 *base;
     u8 found;
@@ -8188,12 +8188,12 @@ check:
     }
     obj = Process_CreateChild(E_EventCaller_script, arg0);
     *(s32 *)((u8 *)obj + 0x34) = 2;
-    *(s32 *)((u8 *)obj + 0x38) = (s32)fn_800C0190;
+    *(s32 *)((u8 *)obj + 0x38) = (s32)EventEntry_FlagIsSet;
     return 1;
 }
 
 extern s32 lbl_80367FCC;
-void fn_800C0190(void *arg0) {
+void EventEntry_FlagIsSet(void *arg0) {
     void *Event_GetString(void *, u16);
     void EventFlag_IsSet(void *, void *, void *);
     extern u16 gBattleState[700];
