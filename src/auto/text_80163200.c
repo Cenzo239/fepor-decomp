@@ -7467,7 +7467,7 @@ extern "C" void Ui_ApplyFullHeal(void *proc) {
 }
 #pragma cplusplus reset
 
-void fn_80171D04(void *arg0) {
+void Ui_ConfirmItemUse(void *arg0) {
     void Process_Goto(void *, s32);
     void fn_800271C8(void *, void *);
     u32 MapCursor_GetItem(void *);
