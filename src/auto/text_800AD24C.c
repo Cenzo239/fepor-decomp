@@ -3095,7 +3095,7 @@ void fn_800B5708(void) {
     void fn_80089524(void);
     void fn_800894F8(void);
     void ScriptCmd_SaveUnitsClear(void);
-    void fn_800B74AC(void);
+    void ScriptCmd_SaveUnits(void);
     void fn_800B7410(void);
     void fn_800B7378(void);
     void fn_800B7210(void);
@@ -3271,7 +3271,7 @@ void fn_800B5708(void) {
     Script_RegisterCommand(lbl_8026ECB8 + 0x75F, fn_800894F8, 0);
     Script_RegisterWinCondCommands();
     Script_RegisterCommand(lbl_8026ECB8 + 0x76E, ScriptCmd_SaveUnitsClear, 0);
-    Script_RegisterCommand(lbl_8026ECB8 + 0x778, fn_800B74AC, 0);
+    Script_RegisterCommand(lbl_8026ECB8 + 0x778, ScriptCmd_SaveUnits, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x78F, fn_800B7410, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x798, fn_800B7378, 0);
     Script_RegisterCommand(lbl_8026ECB8 + 0x7AB, fn_800B7210, 0);
@@ -3776,7 +3776,7 @@ s32 fn_800B7410(void) {
     return 1;
 }
 
-s32 fn_800B74AC(void) {
+s32 ScriptCmd_SaveUnits(void) {
     void Unit_WriteAll(void *);
     void Icon_WriteSlots(void *, void *);
     void *fn_800C4638(s32, void *, s32);
