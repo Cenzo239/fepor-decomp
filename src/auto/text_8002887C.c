@@ -3543,22 +3543,22 @@ void MapUi_BeginHealSelect(s32 arg0) {
     extern u8 lbl_80367265;
     extern u8 lbl_80285050[];
     extern u8 lbl_802851A8[];
-    extern u8 lbl_802EFD0C[];
+    extern u8 gHealInfoWin[];
     void **ret;
     u8 *ctx;
 
     ret = fn_800285C0(gUiContext);
     fn_8002AD04(gUiContext[0], *ret, gUiContext);
     if ((s8)lbl_80367265 == 0) {
-        *(void **)(lbl_802EFD0C + 4) = lbl_80285050;
-        *(void **)(lbl_802EFD0C + 4) = lbl_802851A8;
+        *(void **)(gHealInfoWin + 4) = lbl_80285050;
+        *(void **)(gHealInfoWin + 4) = lbl_802851A8;
         lbl_80367265 = 1;
     }
     ret = fn_800285C0(gUiContext);
-    ctx = lbl_802EFD0C;
+    ctx = gHealInfoWin;
     *(s32 *)(ctx + 0xC) = Item_GetHealAmount(*ret);
     *(s32 *)(ctx + 0xC) = *(s32 *)(ctx + 0xC) + (s8)Unit_GetMagAtk(gUiContext[0]);
-    fn_8002EB54(lbl_802EFD0C, arg0);
+    fn_8002EB54(gHealInfoWin, arg0);
 }
 
 void fn_80031DF8(s32 arg0) {
