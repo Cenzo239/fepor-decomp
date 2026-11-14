@@ -3769,7 +3769,7 @@ u8 Ai_TryEscapeMove(s32 arg0) {
         Ai_SetUnitMoveTo(arg0, spA, sp8, 1, 0xFFFF, 1, 0, -1);
         if ((gAiState[0x21C] != 0)) {
             if ((spA == (s8) gUiContext[0xD]) && (sp8 == (s8) gUiContext[0xE])) {
-                fn_800FB9C0(0x2C, 0, (s8) spA, (s8) sp8, -1, 0, 0);
+                Ai_SetDecision(0x2C, 0, (s8) spA, (s8) sp8, -1, 0, 0);
             }
         }
         return gAiState[0x21C];

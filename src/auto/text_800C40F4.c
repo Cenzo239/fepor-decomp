@@ -19477,7 +19477,7 @@ void fn_800FB96C(s8 arg0, s8 arg1, s8 arg2, s32 arg3, s8 arg4, s8 arg5, s8 arg6,
     gAiState[0x21C] = 1;
 }
 
-void fn_800FB9C0(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6) {
+void Ai_SetDecision(s8 arg0, s32 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5, s8 arg6) {
     extern u8 gUiContext[24];
     extern u8 gAiState[544];
 
