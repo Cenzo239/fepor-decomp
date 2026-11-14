@@ -10242,7 +10242,7 @@ void *fn_8017761C(void) {
     return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
-s32 fn_80177784(s32 arg0, void *arg1, void *arg2) {
+s32 Ui_SetCmd87OrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
