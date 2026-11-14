@@ -5388,12 +5388,12 @@ void fn_8011D5EC(void) {
     extern u8 gUiPanelProc[];
     extern u16 gUiPanelFlags;
     void *Process_Find(void *);
-    void fn_80120CCC(u16 *);
+    void UiPanel_ClearShowFlags(u16 *);
     void Process_Goto(void *, s32);
     u8 *obj;
 
     obj = Process_Find(gUiPanelProc);
-    fn_80120CCC(&gUiPanelFlags);
+    UiPanel_ClearShowFlags(&gUiPanelFlags);
     *(u32 *)(obj + 0x30) = *(u32 *)(obj + 0x30) + 2;
     gUiPanelFlags &= ~0x10;
     Process_Goto(obj, 1);
@@ -5404,7 +5404,7 @@ void fn_8011D650(void) {
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
-    void fn_80120CCC(u16 *);
+    void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
     void fn_80120CFC(u16 *);
@@ -5415,7 +5415,7 @@ void fn_8011D650(void) {
     u32 flags;
 
     obj = Process_Find(gUiPanelProc);
-    fn_80120CCC(&gUiPanelFlags);
+    UiPanel_ClearShowFlags(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = *(s32 *)((u8 *)obj + 0x30) + 2;
     flags = gUiPanelFlags;
@@ -5438,7 +5438,7 @@ void fn_8011D6F4(s32 arg0) {
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
-    void fn_80120CCC(u16 *);
+    void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
     void fn_80120CFC(u16 *);
@@ -5449,7 +5449,7 @@ void fn_8011D6F4(s32 arg0) {
     u32 flags;
 
     obj = Process_Find(gUiPanelProc);
-    fn_80120CCC(&gUiPanelFlags);
+    UiPanel_ClearShowFlags(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(s32 *)((u8 *)obj + 0x30) = arg0;
     flags = gUiPanelFlags;
@@ -5477,7 +5477,7 @@ void TalkUi_ShowMsg(void *arg0) {
     extern u16 gUiPanelFlags;
     extern s32 gUiInputFlags;
     void *Process_Find(void *);
-    void fn_80120CCC(u16 *);
+    void UiPanel_ClearShowFlags(u16 *);
     void fn_8000C5E0(void *);
     void Process_Goto(void *, s32);
     void fn_80120CFC(u16 *);
@@ -5492,7 +5492,7 @@ void TalkUi_ShowMsg(void *arg0) {
     result = Msg_Expand(arg0);
     Str_CopyPad(lbl_8032FE04, arg0, 0x1E);
     obj = Process_Find(gUiPanelProc);
-    fn_80120CCC(&gUiPanelFlags);
+    UiPanel_ClearShowFlags(&gUiPanelFlags);
     fn_8000C5E0(obj);
     *(void **)((u8 *)obj + 0x30) = result;
     flags = gUiPanelFlags;

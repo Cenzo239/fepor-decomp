@@ -10,7 +10,7 @@ typedef struct {
 extern f32 lbl_8036A30C;
 volatile f32 GXRegs_8036A30C[0x800] : 0xCC010000;
 
-void fn_80120CCC(u16 *arg0) {
+void UiPanel_ClearShowFlags(u16 *arg0) {
     *arg0 &= ~0x130;
 }
 
