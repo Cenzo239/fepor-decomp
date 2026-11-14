@@ -9537,6 +9537,10 @@ void fn_802576DC(void) {
     }
 }
 
+s32 fn_8025785C(u8 arg0, s32 arg1) {
+    return 0;
+}
+
 s32 fn_80257820(u16 arg0) {
     extern f32 lbl_8036C268;
     return (s32) (lbl_8036C268 * (f32) arg0);
