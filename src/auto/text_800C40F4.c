@@ -12212,7 +12212,8 @@ void fn_800E76D8(void *arg0, s8 arg1) {
 
 #pragma cplusplus on
 #pragma dont_inline on
-extern "C" void UiObj_SetCamerasTransitionDecay(void *arg0, f32 farg0) {
+/* Find each Camera child under obj and set its transition decay rate. */
+extern "C" void UiObj_SetCamerasTransitionDecay(void *obj, f32 decay) {
     struct Obj {
         u8 pad[0x10];
         virtual void v0() = 0;
@@ -12233,13 +12234,13 @@ extern "C" void UiObj_SetCamerasTransitionDecay(void *arg0, f32 farg0) {
     s32 i;
 
     ObjList_Init(list);
-    if (M2C_FIELD(arg0, u8 *, 0x3C) == 0) {
+    if (M2C_FIELD(obj, u8 *, 0x3C) == 0) {
         ObjList_Destroy(list, -1);
         return;
     }
-    count = ((Obj *)arg0)->v10(list, gUiClassNames + 0x16, 0);
+    count = ((Obj *)obj)->v10(list, gUiClassNames + 0x16, 0);
     for (i = 0; i < count; i++) {
-        Camera_SetTransitionDecay((void *)ObjList_Get(list, i), farg0);
+        Camera_SetTransitionDecay((void *)ObjList_Get(list, i), decay);
     }
     ObjList_Destroy(list, -1);
 }
