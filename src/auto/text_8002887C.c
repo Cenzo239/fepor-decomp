@@ -3691,7 +3691,7 @@ extern "C" void fn_800323BC(void *arg0, void *arg1) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
-extern "C" void fn_80090AA4(s32, s32);
+extern "C" void UnitInfo_DrawHealStats(s32, s32);
 extern "C" void UnitInfo_DrawHeal(void *arg0, void *arg1) {
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
@@ -3709,7 +3709,7 @@ extern "C" void UnitInfo_DrawHeal(void *arg0, void *arg1) {
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        fn_80090AA4(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
+        UnitInfo_DrawHealStats(UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)), M2C_FIELD(arg0, s32 *, 0xC));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
