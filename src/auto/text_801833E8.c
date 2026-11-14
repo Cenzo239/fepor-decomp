@@ -6310,7 +6310,8 @@ void ItemList_EraseRange(void **arg0, s32 *arg1, void **arg2, void **arg3) {
 }
 
 #pragma cplusplus on
-extern "C" void ItemList_Insert(void *arg0, void *arg1, void *arg2, void *arg3) {
+/* Clone item into a new node and insert it before pos in the item list. */
+extern "C" void ItemList_Insert(void *outNode, void *list, void *posRef, void *item) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
     void Item_Clone(void *, void *);
@@ -6336,28 +6337,28 @@ extern "C" void ItemList_Insert(void *arg0, void *arg1, void *arg2, void *arg3) 
     Node *node;
     Node *pos;
     Node *n;
-    void *list;
+    void *listPtr;
 
-    list = (s32 *)arg1 + 1;
+    listPtr = (s32 *)list + 1;
     node = (Node *)Heap_Alloc(0x10);
     if (node == 0) {
         fprintf(__files + 0xA0, lbl_80279DF0 + 0x51F, __files);
         abort();
     }
     {
-        Holder h(list, node);
+        Holder h(listPtr, node);
         if (&h.node->value[0] != 0) {
-            Item_Clone(&h.node->value[0], arg3);
+            Item_Clone(&h.node->value[0], item);
         }
-        pos = *(Node **)arg2;
+        pos = *(Node **)posRef;
         n = h.node;
         h.node = 0;
         pos->prev->next = n;
         n->prev = pos->prev;
         pos->prev = n;
         n->next = pos;
-        (*(s32 *)arg1)++;
-        *(void **)arg0 = n;
+        (*(s32 *)list)++;
+        *(void **)outNode = n;
     }
 }
 #pragma cplusplus reset
