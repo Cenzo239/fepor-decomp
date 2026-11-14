@@ -12032,14 +12032,14 @@ s32 fn_8017A6C4(void *arg0, void *arg1) {
 
 void *fn_8017A764(void *arg0, void *arg1) {
     void *Hash_Lookup(void *);
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
     void *self;
     void *temp;
     s32 zero;
 
     self = arg0;
-    *(void **)((u8 *)self + 0x10) = lbl_802842A4;
+    *(void **)((u8 *)self + 0x10) = gStreamBaseVtbl;
     zero = 0;
     *(s32 *)((u8 *)self + 4) = zero;
     *(s32 *)((u8 *)self + 0) = zero;
@@ -12055,9 +12055,9 @@ void *fn_8017A764(void *arg0, void *arg1) {
 }
 
 void fn_8017A7D4(void *arg0, s32 arg1) {
- extern u8 lbl_802842A4[],lbl_802842B8[];
+ extern u8 gStreamBaseVtbl[],lbl_802842B8[];
  u32 *p=(u32*)arg0;
- p[4]=(u32)lbl_802842A4;
+ p[4]=(u32)gStreamBaseVtbl;
  p[2]=p[0]=p[1]=0;
  *((u8*)arg0+12)=0;
  p[4]=(u32)lbl_802842B8;

@@ -9340,7 +9340,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
     void Stream_Write(void *, s32, char *);
     void fn_8017A310(void *, char *);
     extern char lbl_8027DAB0[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     struct Str { u32 size; u32 cap; char *data; };
     struct WObj {
@@ -9417,7 +9417,7 @@ extern "C" void fn_801CA814(void *arg0, void *arg1) {
     len = strlen(&lbl_8027DAB0[0xC4]);
     fn_800C992C(&sp2C, (char *)lbl_8027DAB0 + 0xC4, len);
     if ((arg0 = Heap_Alloc(0x14)) != 0) {
-        *(void **)((u8 *)arg0 + 0x10) = lbl_802842A4;
+        *(void **)((u8 *)arg0 + 0x10) = gStreamBaseVtbl;
         copy = (u8 *)arg0 + i;
         copy = (u8 *)copy - i;
         *(u32 *)((u8 *)arg0 + 4) = 0;
@@ -16879,7 +16879,7 @@ void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
@@ -16972,7 +16972,7 @@ loop:
     slot[0x65] = 8;
     slot[0x66] = gBattleState[0xA6];
 
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     w.cur = NULL;
     w.start = NULL;
     w.size = 0;
@@ -16999,7 +16999,7 @@ loop:
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = gMemStreamVtbl;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     if (w.owned != 0) {
         fn_800C4588(w.start);
         w.start = NULL;
@@ -17309,7 +17309,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
@@ -17613,7 +17613,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
 
     p = best + 0xB8;
     w.owned = 0;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     w.cur = NULL;
     w.start = NULL;
     w.size = 0;
@@ -17639,7 +17639,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = gMemStreamVtbl;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     if (w.owned != 0) {
         fn_800C4588(w.start);
         w.start = NULL;
@@ -17668,7 +17668,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_8017A38C(void *, void *);
     void fn_801E3CA8(void *);
     extern u8 gSaveStrings[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     extern u8 gConvoy[];
     extern u8 gIconSlots[];
@@ -17761,7 +17761,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     best[0x66] = gBattleState[0xA6];
 
     p = best + 0xB8;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     w.cur = NULL;
     w.start = NULL;
     w.size = 0;
@@ -17788,7 +17788,7 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     fn_8017A38C(&w, gSaveStrings + 0x168);
     fn_8010FBA8(gMapObjEventList, &w);
     w.vtbl = gMemStreamVtbl;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     if (w.owned != 0) {
         fn_800C4588(w.start);
         w.start = NULL;
@@ -18936,7 +18936,7 @@ s32 fn_801E434C(void *arg0) {
 extern u8 lbl_80299E10[];
 extern u8 gSystemSave[];
 #include "global.h"
-extern u16 lbl_802842A4[5];
+extern u16 gStreamBaseVtbl[5];
 extern u16 lbl_802842B8[6];
 extern s16 *gUiUnitPanelStrings;
 

@@ -420,13 +420,13 @@ void *fn_80019F04(int arg0) {
 
 void *fn_80019F3C(void *arg0, s16 arg1) {
     extern u8 lbl_802842B8[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     s32 temp_r30;
 
     if (arg0 != NULL) {
         *(void **)((char *)arg0 + 0x10) = lbl_802842B8;
         if (arg0 != NULL) {
-            *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+            *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
             if (*(u8 *)((char *)arg0 + 0xC) != 0) {
                 fn_800C4588(*(s32 *)((char *)arg0));
                 *(s32 *)((char *)arg0) = 0;
@@ -1023,7 +1023,7 @@ void fn_8001B134(void) {
     void *fn_8022C414(void *, void *, s32, s32, s32);
     extern char lbl_80268510[];
     extern u8 lbl_802842B8[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern void *lbl_803671E8;
     extern void *lbl_803671EC;
     extern void *lbl_803671F0;
@@ -1181,7 +1181,7 @@ void fn_8001B134(void) {
     lbl_80367208 = fn_8017A950(&tmp);
     tmp.vt = lbl_802842B8;
     lbl_80367204 = tmp.unk4;
-    tmp.vt = lbl_802842A4;
+    tmp.vt = gStreamBaseVtbl;
     if (tmp.flag != 0) {
         fn_800C4588((s32)tmp.ptr);
         tmp.ptr = 0;
@@ -1310,14 +1310,14 @@ s32 fn_8001B95C(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 8);
 }
 
-extern u8 lbl_802842A4[];
+extern u8 gStreamBaseVtbl[];
 void *fn_8001B964(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     void fn_800C4588(s32);
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
 
     if (arg0 != NULL) {
-        *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+        *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
         if (*(u8 *)((char *)arg0 + 0xC) != 0) {
             fn_800C4588(*(s32 *)arg0);
             *(s32 *)arg0 = 0;

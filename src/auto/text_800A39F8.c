@@ -2649,7 +2649,7 @@ void fn_800A9174(void) {
     extern f32 lbl_80369C0C;
     extern f32 gOptionsIdentityScale;
     extern u8 lbl_802842B8[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     struct {
         void *ptr;
         u8 *cur;
@@ -2671,7 +2671,7 @@ void fn_800A9174(void) {
     Prim2D_PrepareTex();
     fn_8001003C(0xb8, 0x190, 1, 0, 1, gOptionsStr + 0xc2, a, b, gOptionsIdentityScale, lbl_80369BA8);
     tmp.vt = lbl_802842B8;
-    tmp.vt = lbl_802842A4;
+    tmp.vt = gStreamBaseVtbl;
     if (tmp.flag != 0) {
         fn_800C4588(tmp.ptr);
         tmp.ptr = 0;
@@ -2733,4 +2733,4 @@ extern f32 lbl_80369BA8;
 extern f32 lbl_80369C0C;
 extern f32 gOptionsIdentityScale;
 extern u8 lbl_802842B8[];
-extern u8 lbl_802842A4[];
+extern u8 gStreamBaseVtbl[];

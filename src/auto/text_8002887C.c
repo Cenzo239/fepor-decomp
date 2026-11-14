@@ -332,13 +332,13 @@ void fn_80029784(void) {
 
 void *fn_800297C0(void *arg0, s16 arg1) {
     extern u8 gMemStreamVtbl[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     s32 temp_r30;
 
     if (arg0 != NULL) {
         *(void **)((char *)arg0 + 0x10) = gMemStreamVtbl;
         if (arg0 != NULL) {
-            *(void **)((char *)arg0 + 0x10) = lbl_802842A4;
+            *(void **)((char *)arg0 + 0x10) = gStreamBaseVtbl;
             if (*(u8 *)((char *)arg0 + 0xC) != 0) {
                 fn_800C4588(*(s32 *)((char *)arg0));
                 *(s32 *)((char *)arg0) = 0;

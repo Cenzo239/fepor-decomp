@@ -3710,7 +3710,7 @@ s32 fn_800B7378(void) {
     M2C_UNK fn_80016628(void *);
     M2C_UNK fn_800C2930(void *, void *);
     M2C_UNK fn_8017A7D4(void *, s32);
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
@@ -3731,7 +3731,7 @@ s32 fn_800B7378(void) {
     fn_800C4588(gUnitSaveBuf);
     gUnitSaveBuf = 0;
     obj.vtbl = lbl_802842B8;
-    obj.vtbl = lbl_802842A4;
+    obj.vtbl = gStreamBaseVtbl;
     if (obj.owned) {
         fn_800C4588(obj.handle);
         obj.handle = 0;
@@ -3745,7 +3745,7 @@ s32 fn_800B7410(void) {
     M2C_UNK fn_800C2930(void *, void *);
     M2C_UNK fn_8017A7D4(void *, s32);
     M2C_UNK fn_80023DC0();
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 lbl_802842B8[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
@@ -3767,7 +3767,7 @@ s32 fn_800B7410(void) {
     fn_800C4588(gUnitSaveBuf);
     gUnitSaveBuf = 0;
     obj.vtbl = lbl_802842B8;
-    obj.vtbl = lbl_802842A4;
+    obj.vtbl = gStreamBaseVtbl;
     if (obj.owned) {
         fn_800C4588(obj.handle);
         obj.handle = 0;
@@ -3782,7 +3782,7 @@ s32 ScriptCmd_SaveUnits(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     extern u8 lbl_8026ECB8[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
@@ -3799,7 +3799,7 @@ s32 ScriptCmd_SaveUnits(void) {
 
     p = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0);
     pw = (u8 *)&w;
-    *(void **)(pw + 16) = lbl_802842A4;
+    *(void **)(pw + 16) = gStreamBaseVtbl;
     *(void **)(pw + 4) = NULL;
     *(void **)pw = NULL;
     *(u32 *)(pw + 8) = 0;
@@ -3813,7 +3813,7 @@ s32 ScriptCmd_SaveUnits(void) {
     Unit_WriteAll(pw);
     Icon_WriteSlots(gIconSlots, &w);
     w.vtbl = gMemStreamVtbl;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     if (w.owned != 0) {
         fn_800C4588(w.start);
         w.start = NULL;
@@ -3830,7 +3830,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
     extern u8 lbl_8026ECB8[];
-    extern u8 lbl_802842A4[];
+    extern u8 gStreamBaseVtbl[];
     extern u8 gMemStreamVtbl[];
     extern u8 gIconSlots[];
     extern s32 gUnitSaveBuf;
@@ -3840,7 +3840,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
 
     p = fn_800C4638(0xA000, lbl_8026ECB8 + 0x996, 0);
     pw = (u8 *)&w;
-    *(void **)(pw + 16) = lbl_802842A4;
+    *(void **)(pw + 16) = gStreamBaseVtbl;
     *(void **)(pw + 4) = NULL;
     *(void **)pw = NULL;
     *(u32 *)(pw + 8) = 0;
@@ -3855,7 +3855,7 @@ s32 ScriptCmd_SaveUnitsClear(void) {
     Icon_WriteSlots(gIconSlots, &w);
     Unit_ResetAll();
     w.vtbl = gMemStreamVtbl;
-    w.vtbl = lbl_802842A4;
+    w.vtbl = gStreamBaseVtbl;
     if (w.owned != 0) {
         fn_800C4588(w.start);
         w.start = NULL;
