@@ -18107,8 +18107,9 @@ void fn_800F8364(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void AiCmd_SeekLabelB(void *arg0)
+void AiCmd_SeekLabelB(void *unit)
 {
+    /* Same as AiCmd_SeekLabel: find AI table label (opcode 0, id == gAiCmd+0x10) and store its index as the unit's AI PC. */
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
     extern u8 gAiCmdOk;
@@ -18117,13 +18118,13 @@ void AiCmd_SeekLabelB(void *arg0)
 
     long index;
     u8 *entry;
-    long count;
+    long labelId;
     u8 *obj;
 
-    obj = (u8 *)arg0;
+    obj = (u8 *)unit;
     index = 0;
 
-    count = *(s32 *)(gAiCmd + 0x10);
+    labelId = *(s32 *)(gAiCmd + 0x10);
 
     if (gAiCmdIsAlt == 0) {
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x238));
@@ -18131,9 +18132,9 @@ void AiCmd_SeekLabelB(void *arg0)
         entry = (u8 *)Res_GetByName(*(void **)(obj + 0x23C));
     }
 
-    if (count) {
+    if (labelId) {
         while (*(s32 *)entry != 0 ||
-               *(s32 *)(entry + 0xC) != count) {
+               *(s32 *)(entry + 0xC) != labelId) {
             entry += 0x1C;
             index++;
         }
