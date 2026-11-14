@@ -7575,15 +7575,28 @@ void fn_80253BCC(SynthVmState *arg0, void *arg1) {
     }
 }
 #pragma opt_strength_reduction on
-void fn_80253E10(void *arg0, u32 *arg1) {
-    u32 temp_r4;
-    s32 temp_r4_2;
+void fn_80253E10(SynthVmState *arg0, u32 *arg1) {
+    extern s32 lbl_8034CB74[];
+    u32 val;
+    u8 idx;
 
-    temp_r4 = *arg1;
-    if ((u8)(temp_r4 >> 0x10U) == 0) {
-        *(u32 *)((char *)arg0 + 0xAC) = *(u32 *)((char *)arg0 + 0xF8);
+    val = *arg1;
+    if ((u8)(val >> 16) == 0) {
+        idx = (val >> 8) & 0x1F;
+        val = *(u32 *)(*(u8 **)((u8 *)arg0 + 0xF8) + 8);
+        if (idx < 16) {
+            arg0->regs[idx] = (s32)val;
+        } else {
+            lbl_8034CB74[idx - 16] = (s32)val;
+        }
     } else {
-        *(u32 *)((char *)arg0 + 0xAC) = *(u32 *)((char *)arg0 + 0x108);
+        idx = (val >> 8) & 0x1F;
+        val = *(u32 *)((u8 *)arg0 + 0x108);
+        if (idx < 16) {
+            arg0->regs[idx] = (s32)val;
+        } else {
+            lbl_8034CB74[idx - 16] = (s32)val;
+        }
     }
 }
 
