@@ -13625,7 +13625,8 @@ u32 Ui_CanAffordNextGoldCost(void *panel) {
 }
 
 #pragma cplusplus on
-extern "C" void *Ui_DtorGoldCostPanel(void *arg0, s16 arg1) {
+extern "C" void *Ui_DtorGoldCostPanel(void *self, s16 doFree) {
+    /* C++ destructor for gold-cost UI panel (gUiGoldCostPanelVtbl): destroy embeds, chain base vtors, optional free. */
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -13643,30 +13644,30 @@ extern "C" void *Ui_DtorGoldCostPanel(void *arg0, s16 arg1) {
     extern u8 gEmptyVtbl[];
     extern u8 lbl_80292230[];
     extern u8 lbl_8028FDB0[];
-    Owner *self;
+    Owner *owner;
 
-    self = (Owner *)arg0;
-    if (arg0 != NULL) {
-        self->vtbl = gUiGoldCostPanelVtbl;
-        if (&self->sub6c != NULL) {
-            self->sub6c = gEmptyVtbl;
-            ((Obj *)&self->sub6c)->v2();
+    owner = (Owner *)self;
+    if (self != NULL) {
+        owner->vtbl = gUiGoldCostPanelVtbl;
+        if (&owner->sub6c != NULL) {
+            owner->sub6c = gEmptyVtbl;
+            ((Obj *)&owner->sub6c)->v2();
         }
-        if (&self->sub44 != NULL) {
-            self->sub44 = gEmptyVtbl;
-            ((Obj *)&self->sub44)->v2();
+        if (&owner->sub44 != NULL) {
+            owner->sub44 = gEmptyVtbl;
+            ((Obj *)&owner->sub44)->v2();
         }
-        if (arg0 != NULL) {
-            self->vtbl = lbl_80292230;
-            if (arg0 != NULL) {
-                self->vtbl = lbl_8028FDB0;
+        if (self != NULL) {
+            owner->vtbl = lbl_80292230;
+            if (self != NULL) {
+                owner->vtbl = lbl_8028FDB0;
             }
         }
-        if (arg1 > 0) {
-            Heap_Free(arg0);
+        if (doFree > 0) {
+            Heap_Free(self);
         }
     }
-    return arg0;
+    return self;
 }
 #pragma cplusplus reset
 
