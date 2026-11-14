@@ -919,28 +919,29 @@ s32 fn_800A0804(void) {
 }
 
 void *MenuCmd_GetCursorMapObjLabel(void) {
+    /* Label for the map object under the battle cursor: hidden, visible, or neither. */
     s32 Map_Get(void *);
     s32 Map_FindObjAt(s32, s32, s32, s32, s32);
     u8 MapObj_IsVisible(s32);
     u8 MapObj_IsHidden(void);
     extern u8 gBattleState[];
     extern u16 gMenuCmdStrings[];
-    f32 f31;
-    f32 f30;
-    s32 r31;
-    s32 tmp;
+    f32 cy;
+    f32 cx;
+    s32 obj;
+    s32 map;
 
-    f31 = *(f32 *)(gBattleState + 0x538);
-    f30 = *(f32 *)(gBattleState + 0x534);
-    tmp = Map_Get(gBattleState);
-    r31 = Map_FindObjAt(tmp, (s32)f30, (s32)f31, 0x800, 0x10);
-    if (r31 != 0) {
+    cy = *(f32 *)(gBattleState + 0x538);
+    cx = *(f32 *)(gBattleState + 0x534);
+    map = Map_Get(gBattleState);
+    obj = Map_FindObjAt(map, (s32)cx, (s32)cy, 0x800, 0x10);
+    if (obj != 0) {
         if (MapObj_IsHidden() != 0) {
             return (u8 *)gMenuCmdStrings + 0x4FC;
         }
     }
-    if ((u32)r31 != 0) {
-        if (MapObj_IsVisible(r31) != 0) {
+    if ((u32)obj != 0) {
+        if (MapObj_IsVisible(obj) != 0) {
             return (u8 *)gMenuCmdStrings + 0x509;
         }
     }
