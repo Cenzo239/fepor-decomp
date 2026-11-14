@@ -5470,7 +5470,8 @@ void fn_8011D6F4(s32 arg0) {
 extern u16 TalkUi_str[];
 extern u16 gTalkUiLastMsg[];
 extern u16 gUiPanelProc[];
-void TalkUi_ShowMsg(void *arg0) {
+/* Expand msg, show it on the UI panel, then finish sync or yield. */
+void TalkUi_ShowMsg(void *msg) {
     s32 DebugPrint(const char *, ...);
     void *Msg_Expand(void *);
     void Str_CopyPad(void *, const void *, s32);
@@ -5484,26 +5485,26 @@ void TalkUi_ShowMsg(void *arg0) {
     void UiPanel_Finish(void *);
     void Process_Unlink(void *);
     void fn_80013864(void);
-    void *result;
-    void *obj;
+    void *expanded;
+    void *panel;
     u32 flags;
 
-    DebugPrint((char *)TalkUi_str + 0x35, arg0);
-    result = Msg_Expand(arg0);
-    Str_CopyPad(gTalkUiLastMsg, arg0, 0x1E);
-    obj = Process_Find(gUiPanelProc);
+    DebugPrint((char *)TalkUi_str + 0x35, msg);
+    expanded = Msg_Expand(msg);
+    Str_CopyPad(gTalkUiLastMsg, msg, 0x1E);
+    panel = Process_Find(gUiPanelProc);
     UiPanel_ClearShowFlags(&gUiPanelFlags);
-    Process_MarkActive(obj);
-    *(void **)((u8 *)obj + 0x30) = result;
+    Process_MarkActive(panel);
+    *(void **)((u8 *)panel + 0x30) = expanded;
     flags = gUiPanelFlags;
     flags &= ~0x10;
     gUiPanelFlags = flags;
-    Process_Goto(obj, 1);
+    Process_Goto(panel, 1);
     UiPanel_PollSkip(&gUiPanelFlags);
     if (gUiInputFlags & 3) {
-        UiPanel_Finish(obj);
+        UiPanel_Finish(panel);
         if (!(gUiPanelFlags & 0x10)) {
-            Process_Unlink(obj);
+            Process_Unlink(panel);
         }
     } else {
         fn_80013864();
