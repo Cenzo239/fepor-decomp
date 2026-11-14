@@ -426,17 +426,10 @@ void fn_8014D698(void *arg0, u8 arg1, u8 arg2, s32 arg3, u8 arg4) {
 
 #pragma scheduling off
 s32 BattleState_IsPhaseZero(void *arg0) {
-    u8 v;
-    s32 ret;
-
-    v = *(u8 *)((u8 *)arg0 + 0x10);
-    ret = 0;
-    if (v < 9U) {
-        if (v == 0U) {
-            ret = 1;
-        }
-    }
-    return ret;
+    u8 phase = *((u8 *)arg0 + 0x10);
+    s32 result = 0;
+    if (phase >= 9 || phase == 0) result = 1;
+    return result;
 }
 #pragma scheduling on
 s32 fn_8014D8DC(void *arg0) {
