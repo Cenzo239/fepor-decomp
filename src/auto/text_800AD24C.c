@@ -8868,21 +8868,21 @@ void Map_SyncBlendBuffers(void *arg0) {
     void DCFlushRange(void *, u32);
     void fn_800C1BDC();
     extern s32 gMapBlendBufs[];
-    extern s32 lbl_8036785C;
+    extern s32 gMapBlendBufIndex;
     s32 temp_r29;
     s32 var_r28;
 
     var_r28 = 1;
     M2C_FIELD(arg0, s32 *, 0x60) = 0;
     do {
-        temp_r29 = gMapBlendBufs[(lbl_8036785C + var_r28) % 3];
-        fn_800062EC(temp_r29, gMapBlendBufs[lbl_8036785C], 0x2000);
+        temp_r29 = gMapBlendBufs[(gMapBlendBufIndex + var_r28) % 3];
+        fn_800062EC(temp_r29, gMapBlendBufs[gMapBlendBufIndex], 0x2000);
         DCFlushRange((void *)temp_r29, 0x2000);
         var_r28 += 1;
     } while (var_r28 < 3);
     fn_800C1BDC();
-    lbl_8036785C += 1;
-    lbl_8036785C %= 3;
+    gMapBlendBufIndex += 1;
+    gMapBlendBufIndex %= 3;
 }
 
 void fn_800C15A8(void) {
@@ -8903,7 +8903,7 @@ void fn_800C15A8(void) {
     void GXSetTevOrder(s32, s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
-    extern s32 lbl_8036785C;
+    extern s32 gMapBlendBufIndex;
     extern f32 lbl_80369D28;
     extern f32 lbl_80369D44;
     extern f32 lbl_80369D48;
@@ -8933,7 +8933,7 @@ void fn_800C15A8(void) {
     r31 = GMaterial_AllocTevStage();
     r30 = GMaterial_AllocTexCoord();
     r29 = GMaterial_AllocTexMap();
-    fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), r29);
+    fn_80222C50(lbl_8031FFD0 + (gMapBlendBufIndex << 5), r29);
     r28 = GMaterial_AllocMtx();
     fn_80224E50(sp8, r28, 1);
     fn_802201A8(r30, 1, 0, r28, 0, 0x7D);
@@ -8967,7 +8967,7 @@ s32 Map_SetupBlendTev(void) {
     void fn_80224E50(void *, s32, s32);
     extern u8 lbl_8031FFD0[];
     extern u8 gMapBlendMode;
-    extern s32 lbl_8036785C;
+    extern s32 gMapBlendBufIndex;
     extern s32 lbl_80369D20;
     extern f32 lbl_80369D28;
     extern f32 lbl_80369D44;
@@ -9003,7 +9003,7 @@ s32 Map_SetupBlendTev(void) {
     texCoord = GMaterial_AllocTexCoord();
     texMap = GMaterial_AllocTexMap();
     mtxId = GMaterial_AllocMtx();
-    fn_80222C50(lbl_8031FFD0 + (lbl_8036785C << 5), texMap);
+    fn_80222C50(lbl_8031FFD0 + (gMapBlendBufIndex << 5), texMap);
     fn_80224E50(mtxOut, mtxId, 1);
     fn_802201A8(texCoord, 1, 0, mtxId, 0, 0x7D);
     GXSetTevOrder(tevStage, texCoord, texMap, 4);
@@ -9055,7 +9055,7 @@ void fn_800C1E24(void) {
     extern s32 lbl_80367850;
     extern s32 lbl_80367854;
     extern s32 lbl_80367858;
-    extern s32 lbl_8036785C;
+    extern s32 gMapBlendBufIndex;
     extern f32 lbl_80369D28;
     M2C_UNK *var_r29;
     s32 *var_r30;
@@ -9067,7 +9067,7 @@ void fn_800C1E24(void) {
     lbl_80367850 = 0x4000;
     lbl_80367854 = 0x80;
     lbl_80367858 = 0x80;
-    lbl_8036785C = 0;
+    gMapBlendBufIndex = 0;
     do {
         *var_r30 = fn_800C4638(0x2000, &lbl_8026FDC0 + 0x53, 0);
         fn_80222644(var_r29, *var_r30, 0x80, 0x80, 0, 0, 0, 0);
