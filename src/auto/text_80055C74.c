@@ -1022,7 +1022,8 @@ void fn_80057EDC(void) {
     Process_UnlinkByKey(&Proc_GActorNodeLink);
 }
 
-s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+/* Create a process that links two named nodes on a GActor; assert if either is missing. */
+s32 GActor_CreateNodeLink(s32 actor, s32 nodeNameA, s32 nodeNameB, s32 parent) {
     s32 GActor_FindNode(s32, s32);
     void DebugPrint(const char *, ...);
     void fn_800056A0(s32);
@@ -1032,16 +1033,16 @@ s32 GActor_CreateNodeLink(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     void GActor_UnlinkNodeLinkSame(void);
     extern u8 lbl_8026AD80[];
     extern u8 Proc_GActorNodeLink[16];
-    void *temp_r31;
+    void *link;
 
-    if (GActor_FindNode(arg0, arg1) < 0 || GActor_FindNode(arg0, arg2) < 0) {
-        DebugPrint((const char *)lbl_8026AD80 + 0xD0, arg1, arg2);
+    if (GActor_FindNode(actor, nodeNameA) < 0 || GActor_FindNode(actor, nodeNameB) < 0) {
+        DebugPrint((const char *)lbl_8026AD80 + 0xD0, nodeNameA, nodeNameB);
         fn_800056A0(0);
     }
-    GfxEnt_ForEachKey(Proc_GActorNodeLink, GActor_UnlinkNodeLinkSame, arg0);
-    temp_r31 = Process_Create(Proc_GActorNodeLink, arg3);
-    GActor_InitNodeLink(temp_r31, arg0, arg1, arg2);
-    return (s32)temp_r31;
+    GfxEnt_ForEachKey(Proc_GActorNodeLink, GActor_UnlinkNodeLinkSame, actor);
+    link = Process_Create(Proc_GActorNodeLink, parent);
+    GActor_InitNodeLink(link, actor, nodeNameA, nodeNameB);
+    return (s32)link;
 }
 
 void GActor_UnlinkNodeLinkSame(void *arg0, u32 arg1) {
