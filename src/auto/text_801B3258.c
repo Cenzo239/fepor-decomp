@@ -429,7 +429,7 @@ s32 fn_801B6164(u32 arg0) {
 s32 Battle_TryStartGrowSeq(u32 arg0) {
     void Process_CreateChild(void *, u32);
     void Process_Create(void *, s32);
-    extern u8 lbl_80297B3C[];
+    extern u8 Proc_E_GrowSeq[];
     extern u8 gBattle[];
     u32 flags;
     u32 bit4;
@@ -458,9 +458,9 @@ s32 Battle_TryStartGrowSeq(u32 arg0) {
         return 0;
     }
     if (arg0 == 0) {
-        Process_Create(lbl_80297B3C, 3);
+        Process_Create(Proc_E_GrowSeq, 3);
     } else {
-        Process_CreateChild(lbl_80297B3C, arg0);
+        Process_CreateChild(Proc_E_GrowSeq, arg0);
     }
     return 1;
 }
