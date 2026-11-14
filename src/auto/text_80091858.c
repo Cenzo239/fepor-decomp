@@ -59,7 +59,7 @@ void fn_80091858(void) {
     Process_UnlinkByKey(lbl_80289A38);
 }
 
-void fn_800918B0(void) {
+void ProcessQueue_SetPriorities(void) {
     extern void *gProcessQueue[];
     extern s32 gProcessQueueCount;
     s32 val;
