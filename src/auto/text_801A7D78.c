@@ -329,16 +329,17 @@ extern u8 gBattleHitTbl[104];
 extern u16 gBattle[1634];
 u8 Rand_TrueHit(s16);
 u8 Rand_Chance(s16);
-s32 Battle_RollHitResult(void *arg0) {
+/* Decide this strike's outcome: 0x50 hit, 0x51 crit, 0x52 miss (forced flags, triangle crit, then 2RN hit / 1RN crit). */
+s32 Battle_RollHitResult(void *unit) {
     u8 Rand_TrueHit(s16);
     u8 Rand_Chance(s16);
     extern u8 gBattleHitTbl[104];
     extern u16 gBattle[1634];
     u8 flags;
-    u8 *base;
+    u8 *hitTbl;
 
-    base = gBattleHitTbl;
-    flags = base[base[0x60]];
+    hitTbl = gBattleHitTbl;
+    flags = hitTbl[hitTbl[0x60]];
 
     if (flags & 1) {
         return 0x50;
@@ -350,17 +351,17 @@ s32 Battle_RollHitResult(void *arg0) {
         return 0x52;
     }
 
-    if (*(u8 *)((u8 *)arg0 + 0x2CA) != 0) {
-        *(u8 *)((u8 *)arg0 + 0x2CA) = 0;
+    if (*(u8 *)((u8 *)unit + 0x2CA) != 0) {
+        *(u8 *)((u8 *)unit + 0x2CA) = 0;
         *(u32 *)((u8 *)gBattle + 0xCAC) |= 0x1000;
         return 0x51;
     }
 
-    if (Rand_TrueHit(*(s16 *)((u8 *)arg0 + 0x2A2)) == 0) {
+    if (Rand_TrueHit(*(s16 *)((u8 *)unit + 0x2A2)) == 0) {
         return 0x52;
     }
 
-    return (Rand_Chance(*(s16 *)((u8 *)arg0 + 0x2A8)) != 0) + 0x50;
+    return (Rand_Chance(*(s16 *)((u8 *)unit + 0x2A8)) != 0) + 0x50;
 }
 
 void fn_801A8AF4(void *arg0) {
