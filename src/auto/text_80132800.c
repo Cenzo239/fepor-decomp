@@ -2365,7 +2365,7 @@ extern "C" void *Ui_DtorUnitPanel(void *self, s16 doFree) {
         u8 pad80[0x24];
         void *subA4;
     } Owner;
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiUnitPanelVtbl[];
@@ -2397,7 +2397,7 @@ extern "C" void *Ui_DtorUnitPanel(void *self, s16 doFree) {
                         end = &owner->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &owner->list, &spC, &sp10);
+                        List_EraseRange(sp8, &owner->list, &spC, &sp10);
                     }
                 }
             }
@@ -2435,7 +2435,7 @@ extern "C" void *Ui_DtorUnitPanelMid(void *self, s16 doFree) {
         u8 pad80[0x24];
         void *subA4;
     } Owner;
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
     void fn_8013F2A4(void *, s32);
     void Heap_Free(void *);
     extern u8 gUiUnitPanelMidVtbl[];
@@ -2464,7 +2464,7 @@ extern "C" void *Ui_DtorUnitPanelMid(void *self, s16 doFree) {
                     end = &owner->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_80136F2C(sp8, &owner->list, &spC, &sp10);
+                    List_EraseRange(sp8, &owner->list, &spC, &sp10);
                 }
             }
         }
@@ -2729,7 +2729,7 @@ s32 fn_80136F24(void) {
     return 6;
 }
 
-void fn_80136F2C(ListIter *ret, List *list, ListIter *start, ListIter *end)
+void List_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *end)
 {
   ListNode *first;
   ListNode *last;
@@ -7946,7 +7946,7 @@ extern "C" void *Ui_DtorPanelBase(void *self, s16 doFree) {
         DtorList list;
     } Owner;
     void List_Erase(void *, void *, void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
     void Heap_Free(void *);
 
     void *found;
@@ -7976,7 +7976,7 @@ extern "C" void *Ui_DtorPanelBase(void *self, s16 doFree) {
                     end = &owner->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_80136F2C(sp8, &owner->list, &spC, &sp10);
+                    List_EraseRange(sp8, &owner->list, &spC, &sp10);
                 }
             }
         }
@@ -8009,7 +8009,7 @@ extern "C" void fn_801405E0(void *arg0) {
         DtorList list;
     } Owner;
     void List_Erase(void *, void *, void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
 
     void *found;
     u8 ret[4];
@@ -8039,7 +8039,7 @@ extern "C" void fn_801405E0(void *arg0) {
                         end = &a0->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                        List_EraseRange(sp8, &a0->list, &spC, &sp10);
                     }
                 }
             }
@@ -8089,7 +8089,7 @@ extern "C" void Ui_ClearPanelChildren(void *arg0) {
         DtorList list;
     } Owner;
     void List_Erase(void *, void *, void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
 
     void *found;
     u8 ret[4];
@@ -8119,7 +8119,7 @@ extern "C" void Ui_ClearPanelChildren(void *arg0) {
                         end = &a0->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                        List_EraseRange(sp8, &a0->list, &spC, &sp10);
                     }
                 }
             }
@@ -8188,7 +8188,7 @@ extern "C" void fn_801411AC(void *arg0) {
         DtorList list;
     } Owner;
     void List_Erase(void *, void *, void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
 
     void *found;
     u8 ret[4];
@@ -8218,7 +8218,7 @@ extern "C" void fn_801411AC(void *arg0) {
                         end = &a0->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                        List_EraseRange(sp8, &a0->list, &spC, &sp10);
                     }
                 }
             }
@@ -8273,7 +8273,7 @@ extern "C" void fn_801418A0(void *arg0) {
         DtorList list;
     } Owner;
     void List_Erase(void *, void *, void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
 
     void *found;
     u8 ret[4];
@@ -8303,7 +8303,7 @@ extern "C" void fn_801418A0(void *arg0) {
                         end = &a0->list.node;
                         sp10 = end;
                         spC = end->next;
-                        fn_80136F2C(sp8, &a0->list, &spC, &sp10);
+                        List_EraseRange(sp8, &a0->list, &spC, &sp10);
                     }
                 }
             }

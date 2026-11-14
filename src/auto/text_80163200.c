@@ -14877,7 +14877,7 @@ extern "C" void fn_80180624(void *arg0) {
     void Process_ClearFunc(void *);
     void *fn_80037004(void *, u8);
     u8 Unit_CountSupportPartners(void *);
-    void fn_80136F2C(void *, void *, s32 *, void **);
+    void List_EraseRange(void *, void *, s32 *, void **);
     void *Ui_ListGetSelected(void *);
     void fn_8013FCE0(void *, void *, void **, void **);
     void Ui_UpdatePanelWidgets(void *);
@@ -14949,7 +14949,7 @@ extern "C" void fn_80180624(void *arg0) {
             listHd = (u8 *)obj82 + 0x60;
             sp24 = listHd;
             sp20 = *(s32 *)((u8 *)obj82 + 0x64);
-            fn_80136F2C(&sp1C, (void *)((u32)obj82 + 0x5Cu), &sp20, &sp24);
+            List_EraseRange(&sp1C, (void *)((u32)obj82 + 0x5Cu), &sp20, &sp24);
             i = 0;
             goto loop_test;
         loop:
@@ -15021,7 +15021,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     void Ui_AddChild(void *, void *);
     void fn_80142060(void *);
     void *Ui_ListGetSelected(void *);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
     void *fn_80037004(void *, u8);
     u8 Unit_CountSupportPartners(void *);
     void fn_8013FCE0(void *, void *, void *, void *);
@@ -15177,7 +15177,7 @@ extern "C" void fn_80180AC8(void *arg0) {
             link = (u8 *)panel + 0x60;
             sp24 = link;
             sp20 = *(void **)((u8 *)panel + 0x64);
-            fn_80136F2C(&sp1C, (u8 *)panel + 0x5C, &sp20, &sp24);
+            List_EraseRange(&sp1C, (u8 *)panel + 0x5C, &sp20, &sp24);
             i = 0;
             while (i < Unit_CountSupportPartners(ret)) {
                 if (fn_80037004(ret, i) != NULL) {
@@ -15692,7 +15692,7 @@ typedef struct ListOwner {
 ListOwner *fn_80181CA4(ListOwner *arg0, s16 arg1) {
     M2C_UNK fn_8013F2A4(void *, s32);
     M2C_UNK Heap_Free(void *);
-    M2C_UNK fn_80136F2C(void *, List *, ListNode **, ListNode **);
+    M2C_UNK List_EraseRange(void *, List *, ListNode **, ListNode **);
     extern u8 lbl_802956B8[];
     ListNode *sp10;
     ListNode *spC;
@@ -15707,7 +15707,7 @@ ListOwner *fn_80181CA4(ListOwner *arg0, s16 arg1) {
                     end = &arg0->list.node;
                     sp10 = end;
                     spC = end->next;
-                    fn_80136F2C(sp8, &arg0->list, &spC, &sp10);
+                    List_EraseRange(sp8, &arg0->list, &spC, &sp10);
                 }
             }
         }

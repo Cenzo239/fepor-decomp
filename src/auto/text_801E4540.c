@@ -2523,7 +2523,7 @@ void fn_801E9864(void *arg0)
     void fn_8003F670(void *);
     void fn_8006D8E8(void *);
     void fn_80056A04(void *, s32);
-    void fn_80136F2C(void *, void *, void *, void *);
+    void List_EraseRange(void *, void *, void *, void *);
     Owner *self;
     s16 *p68;
     void *obj;
@@ -2555,7 +2555,7 @@ void fn_801E9864(void *arg0)
                 if (&self->list != NULL) {
                     sp10 = &self->node;
                     spC = self->next;
-                    fn_80136F2C(sp8, &self->list, &spC, &sp10);
+                    List_EraseRange(sp8, &self->list, &spC, &sp10);
                 }
             }
         }
