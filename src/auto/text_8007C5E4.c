@@ -427,7 +427,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     void Face_ClearSlot(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_8007DD78(void *);
     void fn_801A7218(void *, void *, s32);
     extern u8 gUnitLists[];
@@ -540,7 +540,7 @@ void UnitInfo_AdvanceCursor(void *arg0) {
     if (tmp != NULL) {
         Face_ClearSlot(tmp);
     }
-    *(void **)((u8 *)info + 0x5C) = fn_8007BA4C(fn_8003A114(*(void **)((u8 *)info + 0x58)), 0);
+    *(void **)((u8 *)info + 0x5C) = Face_Create(fn_8003A114(*(void **)((u8 *)info + 0x58)), 0);
 
     tmp = *(void **)((u8 *)info + 0x60);
     if (tmp != NULL) {

@@ -2934,7 +2934,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
     s32 Unit_GetCon(void *);
     s32 fn_800388C8(void *);
     void *fn_8003A114(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
@@ -3015,7 +3015,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A624);
         Prim2D_PrepareTex();
-        obj = fn_8007BA4C(fn_8003A114(unit), 0x100);
+        obj = Face_Create(fn_8003A114(unit), 0x100);
         lim = 0x130;
         register mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
@@ -3154,7 +3154,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
     s32 fn_8003A778(void *);
     s32 Unit_GetRes(void *);
     void *fn_8003A114(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
@@ -3225,7 +3225,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
         Prim2D_AddZ(lbl_8036A624);
         Prim2D_PrepareTex();
         lim = 0x130;
-        obj = fn_8007BA4C(fn_8003A114(unit), 0x100);
+        obj = Face_Create(fn_8003A114(unit), 0x100);
         mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
         *(u16 *)((u8 *)obj + 0x46) |= (u16)(mid < lim);
@@ -8908,7 +8908,7 @@ void *Msg_Expand(void *);
 s32 Text_MeasureWidth(void *,s32,f32);
 void Text_Draw(s16,s16,s32,void *,...);
 void *fn_8003A064(void *); void *fn_8003A114(void *);
-void *fn_8007BA4C(void *,s32);
+void *Face_Create(void *,s32);
 void fn_8007B4D8(s16,s16,s32,void *);
 void Face_ClearSlot(void *);
 extern f32 lbl_8036A770,lbl_8036A75C,lbl_8036A760,lbl_8036A758,lbl_8036A748;
@@ -9012,8 +9012,8 @@ s16 cx = (M2C_FIELD(self, s16 *, 0x8c) + (s16)(M2C_FIELD(self, s16 *, 0x16) - M2
 s16 cy = M2C_FIELD(self, s16 *, 0x8e) + (s16)(M2C_FIELD(self, s16 *, 0x18) - M2C_FIELD(self, s16 *, 0x14));
 s32 mode = M2C_FIELD(self, s32 *, 0x11c);
 u8 *sprite;
-if (mode == 1 || mode == 2) sprite = (u8 *)fn_8007BA4C(fn_8003A064(*(void **)(selected + 4)), 0x100);
-else sprite = (u8 *)fn_8007BA4C(fn_8003A114(*(void **)(selected + 4)), 0x100);
+if (mode == 1 || mode == 2) sprite = (u8 *)Face_Create(fn_8003A064(*(void **)(selected + 4)), 0x100);
+else sprite = (u8 *)Face_Create(fn_8003A114(*(void **)(selected + 4)), 0x100);
 {
 s16 a = M2C_FIELD(self, s16 *, 0xa);
 s16 mid = (s16)(a + ((s16)(M2C_FIELD(self, s16 *, 0xe) - a) >> 1));

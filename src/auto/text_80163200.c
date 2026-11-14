@@ -311,7 +311,7 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A114(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_8007B4D8(s16, s16, s32, void *, s16, s16);
     void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
@@ -396,7 +396,7 @@ loop_test:
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A894);
         Prim2D_PrepareTex();
-        obj = fn_8007BA4C(fn_8003A114(*(void **)&self->unk58), 0x100);
+        obj = Face_Create(fn_8003A114(*(void **)&self->unk58), 0x100);
         lim = 0x130;
         mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
@@ -790,7 +790,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void Prim2D_ScissorFromRect(void *);
     u32 *Unit_GetItemSlot(s32, s32);
     void *fn_8003A064(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_8007B4D8(s32, s32, s32, void *, s32, s32);
     void Face_ClearSlot(void *);
     void Prim2D_ClearCallbacks(void);
@@ -884,7 +884,7 @@ loop_test:
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A8A4);
         Prim2D_PrepareTex();
-        obj = fn_8007BA4C(fn_8003A064(*(void **)&self->unk58), 0x100);
+        obj = Face_Create(fn_8003A064(*(void **)&self->unk58), 0x100);
         thresh = 0x130;
         mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) = (u16)(*(u16 *)((u8 *)obj + 0x46) & ~1);
@@ -4132,7 +4132,7 @@ void fn_8016BADC(void *arg0) {
     void fn_8004327C(void);
     void Face_ClearSlot(void *);
     void *fn_8003A114(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void fn_800C4588(void *);
     void Process_Unlink(void *);
     void FileCache_ReleaseSlot(void *);
@@ -4171,7 +4171,7 @@ void fn_8016BADC(void *arg0) {
             }
             tmp = *(void **)((char *)obj->unk40 + 0x2C);
             if (tmp != NULL) {
-                obj->unk54 = fn_8007BA4C(fn_8003A114(tmp), 0);
+                obj->unk54 = Face_Create(fn_8003A114(tmp), 0);
             }
         }
         for (node = obj->unk3C; node != NULL; node = next) {
@@ -4196,7 +4196,7 @@ void fn_8016BBB8(void *self) {
     void Process_Goto(void *, s32);
     void *fn_8003A114(void *);
     void Face_ClearSlot(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern void *gPadInput;
@@ -4280,7 +4280,7 @@ void fn_8016BBB8(void *self) {
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);
             if (tex != 0) {
-                *(void **)((u8 *)self + 0x54) = fn_8007BA4C(fn_8003A114(tex), 0);
+                *(void **)((u8 *)self + 0x54) = Face_Create(fn_8003A114(tex), 0);
             }
             Ui_PlaySeCue((u8 *)lbl_80277EA0 + 0x8A, 0x64);
             *(u32 *)((u8 *)self + 0x30) &= ~0x10u;
@@ -4325,7 +4325,7 @@ void fn_8016BBB8(void *self) {
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);
             if (tex != 0) {
-                *(void **)((u8 *)self + 0x54) = fn_8007BA4C(fn_8003A114(tex), 0);
+                *(void **)((u8 *)self + 0x54) = Face_Create(fn_8003A114(tex), 0);
             }
             Ui_PlaySeCue((u8 *)lbl_80277EA0 + 0xB7, 0x64);
         } else if (stick & 0x04000004) {
@@ -4358,7 +4358,7 @@ void fn_8016BBB8(void *self) {
             }
             tex = *(void **)((u8 *)*(void **)((u8 *)self + 0x40) + 0x2C);
             if (tex != 0) {
-                *(void **)((u8 *)self + 0x54) = fn_8007BA4C(fn_8003A114(tex), 0);
+                *(void **)((u8 *)self + 0x54) = Face_Create(fn_8003A114(tex), 0);
             }
             Ui_PlaySeCue((u8 *)lbl_80277EA0 + 0xB7, 0x64);
         }

@@ -3974,7 +3974,7 @@ void fn_8007B9EC(void *arg0) {
     }
 }
 
-s32 fn_8007BA4C(s32 arg0) {
+s32 Face_Create(s32 arg0) {
     s32 sp30;
     s32 *var_r29;
     u32 r28;

@@ -2656,7 +2656,7 @@ void fn_8008B2B0(s32 arg0, s32 arg1, u8 arg2, s32 arg3, s32 arg4) {
 #pragma use_lmw_stmw on
 void fn_8008B464(void *self, s32 x, s32 y) {
     void *fn_8003A114(void *);
-    void *fn_8007BA4C(void *, s32);
+    void *Face_Create(void *, s32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
     u16 GXGetTexObjHeight(void *);
@@ -2705,7 +2705,7 @@ void fn_8008B464(void *self, s32 x, s32 y) {
     void *name;
     void *cls;
 
-    tex = fn_8007BA4C(fn_8003A114(self), 0);
+    tex = Face_Create(fn_8003A114(self), 0);
     handle = gUiAtlas;
     cls = *(void **)((u8 *)self + 0x18C);
     name = *(void **)((u8 *)self + 0x188);
