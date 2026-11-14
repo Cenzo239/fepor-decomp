@@ -10953,7 +10953,7 @@ void fn_8019DB68(void) {
     void fn_801A087C(void);
     void fn_801A06EC(void);
     void fn_801A0434(void);
-    void fn_801A05F4(void);
+    void ScriptCmd_UnitTransform(void);
     void fn_801A147C(void);
     void fn_801A19D8(void);
     void fn_801A1960(void);
@@ -11040,7 +11040,7 @@ void fn_8019DB68(void) {
     Script_RegisterCommand(lbl_8027AD98 + 0x1FE, fn_801A087C, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x20A, fn_801A06EC, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x215, fn_801A0434, 2);
-    Script_RegisterCommand(lbl_8027AD98 + 0x223, fn_801A05F4, 2);
+    Script_RegisterCommand(lbl_8027AD98 + 0x223, ScriptCmd_UnitTransform, 2);
     Script_RegisterCommand(lbl_8027AD98 + 0x238, fn_801A147C, 3);
     Script_RegisterCommand(lbl_8027AD98 + 0x24D, fn_801A19D8, 1);
     Script_RegisterCommand(lbl_8027AD98 + 0x254, fn_801A1960, 1);
@@ -12128,7 +12128,7 @@ s32 fn_801A0400(s32 arg0) {
     return 1;
 }
 
-s32 fn_801A05F4(u8 arg0, u8 arg1) {
+s32 ScriptCmd_UnitTransform(u8 arg0, u8 arg1) {
     void fn_8003BE50(void *);
     void fn_8004E9D8(void *, s32);
     void fn_80050C90(void *);
