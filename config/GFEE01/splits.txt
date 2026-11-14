@@ -545,7 +545,10 @@ auto/text_8023C53C.c:
 	.text       start:0x8023C53C end:0x8026649C
 
 auto/text_8026649C.c:
-	.text       start:0x8026649C end:0x80266D70
+	.text       start:0x8026649C end:0x80266A5C
+
+auto/text_80266A5C.c:
+	.text       start:0x80266A5C end:0x80266D70
 
 auto/text_80266D70.c:
 	.text       start:0x80266D70 end:0x80267458
