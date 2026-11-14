@@ -7990,7 +7990,8 @@ void Sound_DeactivateSynthVoice(void *voice) {
     }
 }
 
-void Sound_SetSynthVoiceState(void *arg0, s32 arg1) {
+/* Set synth voice run-state; unlink from idle when leaving 0, clear schedule when entering 2. */
+void Sound_SetSynthVoiceState(void *voice, s32 newState) {
     extern s32 gSynthIdleList;
     extern s32 gSynthSchedList;
     extern s32 gSynthTimeHi;
@@ -8000,47 +8001,47 @@ void Sound_SetSynthVoiceState(void *arg0, s32 arg1) {
     s32 state;
     u64 schedTime;
 
-    state = *(s32 *)((u8 *)arg0 + 0x4C);
-    if (state == arg1) {
+    state = *(s32 *)((u8 *)voice + 0x4C);
+    if (state == newState) {
         return;
     }
 
     if (state == 0) {
-        prev = *(void **)((u8 *)arg0 + 0x40);
+        prev = *(void **)((u8 *)voice + 0x40);
         if (prev == NULL) {
-            gSynthIdleList = (s32)*(void **)((u8 *)arg0 + 0x3C);
+            gSynthIdleList = (s32)*(void **)((u8 *)voice + 0x3C);
         } else {
-            *(void **)((u8 *)prev + 0x3C) = *(void **)((u8 *)arg0 + 0x3C);
+            *(void **)((u8 *)prev + 0x3C) = *(void **)((u8 *)voice + 0x3C);
         }
-        next = *(void **)((u8 *)arg0 + 0x3C);
+        next = *(void **)((u8 *)voice + 0x3C);
         if (next != NULL) {
-            *(void **)((u8 *)next + 0x40) = *(void **)((u8 *)arg0 + 0x40);
+            *(void **)((u8 *)next + 0x40) = *(void **)((u8 *)voice + 0x40);
         }
     }
 
-    if (arg1 == 2) {
-        schedTime = *(u64 *)((u8 *)arg0 + 0x98);
+    if (newState == 2) {
+        schedTime = *(u64 *)((u8 *)voice + 0x98);
         if (schedTime != 0) {
             if (schedTime != 0xFFFFFFFFFFFFFFFFULL) {
-                prev = *(void **)((u8 *)arg0 + 0x48);
+                prev = *(void **)((u8 *)voice + 0x48);
                 if (prev == NULL) {
-                    gSynthSchedList = (s32)*(void **)((u8 *)arg0 + 0x44);
+                    gSynthSchedList = (s32)*(void **)((u8 *)voice + 0x44);
                 } else {
-                    *(void **)((u8 *)prev + 0x44) = *(void **)((u8 *)arg0 + 0x44);
+                    *(void **)((u8 *)prev + 0x44) = *(void **)((u8 *)voice + 0x44);
                 }
-                next = *(void **)((u8 *)arg0 + 0x44);
+                next = *(void **)((u8 *)voice + 0x44);
                 if (next != NULL) {
-                    *(void **)((u8 *)next + 0x48) = *(void **)((u8 *)arg0 + 0x48);
+                    *(void **)((u8 *)next + 0x48) = *(void **)((u8 *)voice + 0x48);
                 }
             }
-            *(s32 *)((u8 *)arg0 + 0x9C) = 0;
-            *(s32 *)((u8 *)arg0 + 0x98) = 0;
-            *(u64 *)((u8 *)arg0 + 0xA0) = *(u64 *)&gSynthTimeHi;
-            *(u64 *)((u8 *)arg0 + 0x114) &= ~0x40004ULL;
+            *(s32 *)((u8 *)voice + 0x9C) = 0;
+            *(s32 *)((u8 *)voice + 0x98) = 0;
+            *(u64 *)((u8 *)voice + 0xA0) = *(u64 *)&gSynthTimeHi;
+            *(u64 *)((u8 *)voice + 0x114) &= ~0x40004ULL;
         }
     }
 
-    *(s32 *)((u8 *)arg0 + 0x4C) = arg1;
+    *(s32 *)((u8 *)voice + 0x4C) = newState;
 }
 
 s32 fn_802555A0(
