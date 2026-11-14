@@ -13555,7 +13555,7 @@ void fn_801D3588(s32 arg0) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_801D35E0(void *arg0) {
+extern "C" void Ui_HandleOverlayDismissInput(void *arg0) {
     void Process_ClearFunc(void *);
     void *Ui_FindChild(void *, s32, s32);
     void fn_80140210(void *, void *, s32);
