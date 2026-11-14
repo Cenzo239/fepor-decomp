@@ -10615,7 +10615,7 @@ void fn_80145C5C(void *arg0) {
     }
 }
 
-void fn_80145D1C(void *arg0) {
+void BgmQuietVol_FadeInProcess(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern s32 gUiInputFlags;
