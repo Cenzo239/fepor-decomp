@@ -1819,7 +1819,7 @@ void fn_80015DEC(void) {
     } while (i <= 0x9F);
 }
 
-void fn_80015ED4(void) {
+void Unit_DrawAll(void) {
     void Allegiance_FillMask(s32, u8 *);
     void fn_8004B218(void);
     void fn_8004B984(void);
