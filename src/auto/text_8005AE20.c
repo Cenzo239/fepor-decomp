@@ -7666,7 +7666,7 @@ void fn_8006F6A4(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
 
 #pragma cplusplus on
 extern "C"
-void fn_8006F710(void *arg0, void *arg1) {
+void UiWin_SetupPrim2D(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
