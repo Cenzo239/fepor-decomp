@@ -10774,22 +10774,23 @@ s32 fn_80178664(void) {
     return 0;
 }
 
-s32 Ui_SetCmd80OrShowLockMsg(s32 arg0, void *arg1, void *arg2) {
+/* If the menu entry is locked, show a popup; otherwise set UI command 0x80. */
+s32 Ui_SetCmd80OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
     extern u32 gUiContext[];
-    void *obj;
+    void *popup;
     f32 x;
     f32 y;
 
-    if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
-        x = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + *(s16 *)((u8 *)arg2 + 0x30));
-        y = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + *(s16 *)((u8 *)arg2 + 0x32));
-        obj = Process_CreateChild(gUiMsgPopupProc, arg1);
-        *(f32 *)((u8 *)obj + 0x30) = x;
-        *(f32 *)((u8 *)obj + 0x34) = y;
-        *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x5D6;
+    if (*(u8 *)((u8 *)entry + 0x39) == 2) {
+        x = (f32)(*(s16 *)((u8 *)parent + 0x30) + *(s16 *)((u8 *)entry + 0x30));
+        y = (f32)(*(s16 *)((u8 *)parent + 0x32) + *(s16 *)((u8 *)entry + 0x32));
+        popup = Process_CreateChild(gUiMsgPopupProc, parent);
+        *(f32 *)((u8 *)popup + 0x30) = x;
+        *(f32 *)((u8 *)popup + 0x34) = y;
+        *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x5D6;
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x80;
