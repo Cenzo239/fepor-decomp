@@ -5329,7 +5329,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     void *Res_GetByName(void *);
     void fn_80104410(void *);
     void Unit_SetMapPos(void *, u8, u8);
-    void fn_80105DAC(void *, void *);
+    void Status_OrByName(void *, void *);
     s32 Str_Cmp(void *, void *);
     u8 Status_Test(void *, s32);
     void *fn_80028854(void);
@@ -5486,7 +5486,7 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     walk = src;
     for (i = 0; i < 5; i++) {
         if (walk->unk48[0] != 0) {
-            fn_80105DAC(&self->unk1BC, walk->unk48[0]);
+            Status_OrByName(&self->unk1BC, walk->unk48[0]);
         }
         walk = (struct Src *)((u8 *)walk + 4);
     }

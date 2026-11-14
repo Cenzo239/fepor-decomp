@@ -349,7 +349,7 @@ void Status_Clear(s32 *arg0, u8 arg1) {
     *p |= 1 << n;
 }
 
-void fn_80105DAC(s32 *arg0, s32 arg1) {
+void Status_OrByName(s32 *arg0, s32 arg1) {
     s32 *Res_GetEntry(u8);
     s32 Str_Cmp(s32, s32);
     u8 i;

@@ -737,7 +737,7 @@ void fn_8001A5E4(void) {
     void *fn_800C42AC(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
     void fn_8001CC48(void *, u32);
-    void fn_80105DAC(void *, u32);
+    void Status_OrByName(void *, u32);
     u8 Status_Test(void *, s32);
     void Status_Clear(void *, s32);
     void Unit_OrMSfxFlag(void *, u32);
@@ -785,15 +785,15 @@ void fn_8001A5E4(void) {
         fn_8001CC48(rec + 0x2C, v);
         *(u32 *)(rec + 0x34) = v;
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_80105DAC(rec + 0x1C, v);
+        Status_OrByName(rec + 0x1C, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_80105DAC(rec + 0x1C, v);
+        Status_OrByName(rec + 0x1C, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_80105DAC(rec + 0x1C, v);
+        Status_OrByName(rec + 0x1C, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_80105DAC(rec + 0x1C, v);
+        Status_OrByName(rec + 0x1C, v);
         if (ptr == NULL) { v = 0; } else { v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]); ptr += 4; }
-        fn_80105DAC(rec + 0x1C, v);
+        Status_OrByName(rec + 0x1C, v);
         if (Status_Test(rec + 0x1C, 3) == 0) {
             Status_Clear(rec + 0x1C, 0x44);
         }
@@ -816,7 +816,7 @@ void fn_8001A5E4(void) {
         rec[0x5E] = ptr[34]; rec[0x5F] = ptr[35]; rec[0x60] = ptr[36]; rec[0x61] = ptr[37];
         rec[0x62] = ptr[38]; rec[0x63] = ptr[39];
         if (fn_80234198(id, base + 0x7B) != 0) {
-            fn_80105DAC(rec + 0x1C, (u32)(base + 0x7E));
+            Status_OrByName(rec + 0x1C, (u32)(base + 0x7E));
         }
         fn_8000D3EC(*(u32 *)(rec + 0x0), rec);
         ptr = (u8 *)(((u32)(ptr + 0x2B)) & ~3);
@@ -832,7 +832,7 @@ void fn_8001AC18(void) {
     void fn_8000D3EC(u32, void *);
     void fn_8001CC48(void *, u32);
     s32 Affinity_FromName(u32);
-    void fn_80105DAC(void *, u32);
+    void Status_OrByName(void *, u32);
     void fn_800A8A2C(void *);
     extern char lbl_80268510[];
     extern s32 lbl_803671D0;
@@ -919,7 +919,7 @@ void fn_8001AC18(void) {
             v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]);
             ptr += 4;
         }
-        fn_80105DAC((u8 *)rec + 0x40, v);
+        Status_OrByName((u8 *)rec + 0x40, v);
 
         if (ptr == NULL) {
             v = 0;
@@ -927,7 +927,7 @@ void fn_8001AC18(void) {
             v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]);
             ptr += 4;
         }
-        fn_80105DAC((u8 *)rec + 0x40, v);
+        Status_OrByName((u8 *)rec + 0x40, v);
 
         if (ptr == NULL) {
             v = 0;
@@ -935,7 +935,7 @@ void fn_8001AC18(void) {
             v = (ptr[0] << 24) + ((ptr[1] << 16) + (ptr[2] << 8) + ptr[3]);
             ptr += 4;
         }
-        fn_80105DAC((u8 *)rec + 0x40, v);
+        Status_OrByName((u8 *)rec + 0x40, v);
 
         if (ptr == NULL) {
             v = 0;

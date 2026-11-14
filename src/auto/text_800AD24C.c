@@ -6274,7 +6274,7 @@ u32 fn_800BBE1C(u32 arg0, void *arg1)
 }
 
 s32 fn_800BBE9C(u8 arg0, s32 arg1) {
-    void fn_80105DAC(void *);
+    void Status_OrByName(void *);
     extern u8 gUnits[];
     void *unit;
 
@@ -6287,7 +6287,7 @@ s32 fn_800BBE9C(u8 arg0, s32 arg1) {
     if (unit == NULL || *(u32 *)((u8 *)unit + 0x188) == 0) {
         return 0;
     }
-    fn_80105DAC((u8 *)unit + 0x1BC);
+    Status_OrByName((u8 *)unit + 0x1BC);
     return 1;
 }
 
