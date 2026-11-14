@@ -81,7 +81,8 @@ s32 fn_801EAA88(void) {
     return Process_Find(&Proc_BMapAuxiliary) != 0;
 }
 
-void *BMapAuxiliary_Create(char *arg0, void *arg1) {
+/* Create BMapAuxiliaryProc with name; child of parent if non-NULL. Requires units on list 5. */
+void *BMapAuxiliary_Create(char *name, void *parent) {
     extern u8 gUnitLists[];
     extern char lbl_8027EE08[];
     s32 fn_80015680(void *);
@@ -99,10 +100,10 @@ void *BMapAuxiliary_Create(char *arg0, void *arg1) {
         return NULL;
     }
 
-    if (arg1 != NULL) {
-        obj = Process_CreateChild(Proc_BMapAuxiliary, arg1);
+    if (parent != NULL) {
+        obj = Process_CreateChild(Proc_BMapAuxiliary, parent);
     } else {
-        obj = Process_Create(Proc_BMapAuxiliary, arg1);
+        obj = Process_Create(Proc_BMapAuxiliary, parent);
     }
 
     if (obj != NULL) {
@@ -111,8 +112,8 @@ void *BMapAuxiliary_Create(char *arg0, void *arg1) {
         *(s32 *)((u8 *)obj + 0x4C) = 0;
     }
 
-    len = strlen(arg0);
-    String_AssignCStr((u8 *)obj + 0x40, arg0, len);
+    len = strlen(name);
+    String_AssignCStr((u8 *)obj + 0x40, name, len);
     return obj;
 }
 
