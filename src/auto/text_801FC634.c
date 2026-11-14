@@ -1390,7 +1390,7 @@ s32 File_Read(void) {
     return 0;
 }
 
-s32 fn_801FFD6C(void) {
+s32 File_Close(void) {
     return 0;
 }
 

@@ -11879,7 +11879,7 @@ void *fn_8017A294(void *arg0, s16 arg1) {
 extern "C" void fn_8017A310(void *arg0, void *arg1) {
     void *File_Open(void *, void *);
     void fn_801FFD5C(void *, s32, void *, void *);
-    void fn_801FFD6C(void *);
+    void File_Close(void *);
     extern u8 gFileOpenModes[];
     struct Obj {
         u8 pad[0x10];
@@ -11890,7 +11890,7 @@ extern "C" void fn_8017A310(void *arg0, void *arg1) {
 
     temp = File_Open(arg1, gFileOpenModes);
     fn_801FFD5C(*(void **)arg0, 1, ((Obj *)arg0)->v1(), temp);
-    fn_801FFD6C(temp);
+    File_Close(temp);
 }
 #pragma cplusplus reset
 
@@ -11993,7 +11993,7 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     s32 File_Seek(void *, s32, s32);
     void *fn_800C4638(s32, void *, s32);
     void File_Read(void *, s32, s32, void *);
-    void fn_801FFD6C(void *);
+    void File_Close(void *);
     extern u8 gFileOpenModes[];
     void *out;
     void *temp_r31;
@@ -12009,7 +12009,7 @@ s32 Stream_LoadFile(void *arg0, void *arg1) {
     *(void **)out = fn_800C4638(temp_r30, gFileOpenModes + 3, 0);
     *((u8 *)out + 0xC) = 1;
     File_Read(*(void **)out, 1, temp_r30, temp_r31);
-    fn_801FFD6C(temp_r31);
+    File_Close(temp_r31);
     return temp_r30;
 }
 
