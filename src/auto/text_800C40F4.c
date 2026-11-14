@@ -17165,7 +17165,7 @@ return gAiState[0x21c];
 
 void AiEval_ApplyUnitScore(void *arg0, void *arg1) {
     u8 Allegiance_Compare(void *, void *);
-    u8 fn_800F7E78(void *, void *);
+    u8 Battle_EvalTargetScore(void *, void *);
     struct {
         u8 x;
         u8 y;
@@ -17183,7 +17183,7 @@ void AiEval_ApplyUnitScore(void *arg0, void *arg1) {
     result.y = p4[1];
     result.unit = arg1;
     result.item = *(u16 *)(*(u8 **)((u8 *)arg0 + 0xC) + 2);
-    if (fn_800F7E78(*(void **)((u8 *)arg0 + 8), &result)) {
+    if (Battle_EvalTargetScore(*(void **)((u8 *)arg0 + 8), &result)) {
         if ((u8)same != 0) {
             *(s32 *)(*(u8 **)((u8 *)arg0 + 0xC) + 8) += result.score;
         } else {
@@ -17208,7 +17208,7 @@ void *Item_GetByIid(void *);void *Item_Get(u8);
 void fn_8002F728(void *);u8 Item_GetMaxRange(void *);
 void fn_800FDDBC(s8,s8,u8,u8,s32);void Map_ClipRangeByFacing(void *,u8,u8,u8);
 void fn_8002C530(void *,s8);void *TargetList_GetAt(void *,s32);
-u8 fn_800F7E78(void *,void *);
+u8 Battle_EvalTargetScore(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
 u8 *ctx;
 s32 xmin,ymax;
@@ -17261,7 +17261,7 @@ result.x=x;result.y=y;result.item=entry[4];
 for(index=0;index<*(s32 *)list;index++){
 id=M2C_FIELD(TargetList_GetAt(list,index),u8 *,2);
 result.unit=id?gUnits+(id-1)*0x280:0;
-if(fn_800F7E78(self,&result)&&result.score>score){
+if(Battle_EvalTargetScore(self,&result)&&result.score>score){
 bestX=result.x;score=result.score;bestY=result.y;bestItem=result.item;best=result.unit;
 }
 }
@@ -18047,7 +18047,7 @@ fail:
     return dist;
 }
 #pragma use_lmw_stmw reset
-s32 fn_800F7E78(void) {
+s32 Battle_EvalTargetScore(void) {
     M2C_UNK fn_800F75F8();
     fn_800F75F8();
     return 1;
