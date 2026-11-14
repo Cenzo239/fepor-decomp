@@ -6089,35 +6089,36 @@ void fn_8016F1D4(void *arg0) {
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, -0x1000, 0));
 }
 
-void Ui_CloseNestedMenu(void *arg0)
+/* Pop a nested UI menu: rebuild the parent list, retreat a step, restore MU blend and portrait, then clear this process. */
+void Ui_CloseNestedMenu(void *panel)
 {
-    void *temp_r3;
-    s32 temp_r31;
+    void *obj;
+    s32 savedFocus;
     
-    Process_DecRef(M2C_FIELD(arg0, void **, 0x5C));
-    Process_MarkActive(M2C_FIELD(arg0, void **, 0x5C));
-    temp_r3 = M2C_FIELD(arg0, void **, 0x5C);
-    temp_r31 = M2C_FIELD(temp_r3, s8 *, 0x62);
-    Ui_RebuildListEntries(temp_r3);
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s8 *, 0x62) = temp_r31;
-    Process_RetreatStep(M2C_FIELD(arg0, s32 *, 0x60));
-    Ui_DecBusy(arg0);
-    Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 0x100, 0));
+    Process_DecRef(M2C_FIELD(panel, void **, 0x5C));
+    Process_MarkActive(M2C_FIELD(panel, void **, 0x5C));
+    obj = M2C_FIELD(panel, void **, 0x5C);
+    savedFocus = M2C_FIELD(obj, s8 *, 0x62);
+    Ui_RebuildListEntries(obj);
+    M2C_FIELD(M2C_FIELD(panel, void **, 0x5C), s8 *, 0x62) = savedFocus;
+    Process_RetreatStep(M2C_FIELD(panel, s32 *, 0x60));
+    Ui_DecBusy(panel);
+    Ui_BringChildToFront(panel, Ui_FindChild(panel, 0x100, 0));
 
-    temp_r3 = M2C_FIELD(gUiContext, void **, 0);
-    if (temp_r3 != NULL) {
-        Mu_StartBlend(temp_r3, 0, 4, 0);
+    obj = M2C_FIELD(gUiContext, void **, 0);
+    if (obj != NULL) {
+        Mu_StartBlend(obj, 0, 4, 0);
     }
 
-    temp_r3 = M2C_FIELD(arg0, void **, 0x44);
-    if (temp_r3 != NULL) {
-        void *temp_r4 = M2C_FIELD(temp_r3, void **, 0x3C);
-        if (temp_r4 != NULL) {
-            Ui_SetPortraitUnit(temp_r3, temp_r4);
+    obj = M2C_FIELD(panel, void **, 0x44);
+    if (obj != NULL) {
+        void *unit = M2C_FIELD(obj, void **, 0x3C);
+        if (unit != NULL) {
+            Ui_SetPortraitUnit(obj, unit);
         }
     }
 
-    Process_ClearFunc(arg0);
+    Process_ClearFunc(panel);
 }
 
 void fn_8016F2EC(void *arg0) {
