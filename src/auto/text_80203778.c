@@ -1504,6 +1504,7 @@ void __OSGetExecParams(s32 *arg0) {
 }
 
 #pragma peephole off
+/* Return disc offset of the apploader (cached); default 0x2440 when BI2 has none. */
 s32 DVDGetAppLoaderOffset(void) {
     u32 OSAllocFromArenaLo(u32, u32);
     void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
@@ -1512,7 +1513,7 @@ s32 DVDGetAppLoaderOffset(void) {
     void __OSHotReset(s32);
     extern s32 sAppLoaderOffset;
 
-    u8 sp8[0x38];
+    u8 cmd[0x38];
     u32 buf;
 
     if (sAppLoaderOffset != 0) {
@@ -1520,8 +1521,8 @@ s32 DVDGetAppLoaderOffset(void) {
     }
     if (*(s32 *)0x800030F4 != 0) {
         buf = OSAllocFromArenaLo(0x40, 0x20);
-        DVDReadAbsAsyncPrio(sp8, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
-        while (DVDGetCommandBlockStatus(sp8) != 0) {
+        DVDReadAbsAsyncPrio(cmd, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
+        while (DVDGetCommandBlockStatus(cmd) != 0) {
             if (DVDKeepAlive() == 0) {
                 __OSHotReset(0);
             }
