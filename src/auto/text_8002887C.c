@@ -2513,7 +2513,7 @@ void fn_8002E648(void) {
     fn_8014D3B4(gBattleState);
 }
 
-void fn_8002E670(s32 arg0) {
+void Battle_StartCpPhase(s32 arg0) {
     void *fn_8014C5A8(void *, u8);
     void fn_800FC600(s32);
     void fn_800FC63C(s32);
