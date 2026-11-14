@@ -951,6 +951,26 @@ void fn_8024338C(void *arg0, s16 *arg1) {
     (void)lbl_80282FD8;
 }
 
+s32 fn_80243A34(void) {
+    M2C_UNK OSRegisterVersion(s32, M2C_UNK *);
+    extern M2C_UNK lbl_8033E460;
+    extern s32 lbl_803670B0;
+    extern s32 lbl_80368954;
+    OSRegisterVersion(lbl_803670B0, &lbl_8033E460);
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x100) = 0xE0000000;
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x104) = 0xE0002000;
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x108) = 0xE0002800;
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x10C) = 0xE0000000;
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x110) = 0xE0002A00;
+    M2C_FIELD(&lbl_8033E460, s32 *, 0x114) = 0xE0003480;
+    M2C_ERROR(/* unknown instruction: mtspr GQR2, $r3 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR3, $r3 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR4, $r3 */);
+    M2C_ERROR(/* unknown instruction: mtspr GQR5, $r3 */);
+    lbl_80368954 = 1;
+    return 1;
+}
+
 #pragma use_lmw_stmw on
 u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     s32 fn_80243E84(void *);
@@ -4318,52 +4338,44 @@ u16 fn_8024B594(s32 arg0, s32 arg1) {
     return *(u16 *)(lbl_8034BDD0 + ((arg0 & 0xFF) << 5) + ((arg1 & 0xFF) << 1));
 }
 
-s32 fn_8024B5B0(u32 arg0) {
-    extern void *gKeyedVoices;
-    s32 i;
-    void *r5;
-    void *r6;
+s32 fn_8024B5B0(u32 arg0)
+{
+    extern SynthVoice *gKeyedVoices;
+    SynthVoice *head;
+    SynthVoice *sv;
+    VidList *vl;
+    s32 n;
 
-    i = 8;
-loop_1:
-    r6 = gKeyedVoices;
-loop_18:
-    if (r6 == NULL) {
-        i -= 1;
-        if (i == 0) {
-            return -1;
-        }
-        goto loop_1;
-    }
-    r5 = *(void**)((u8*)r6 + 0xE64);
-loop_6:
-    if (r5 == NULL) {
-        r5 = *(void**)((u8*)r6 + 0xE68);
-loop_11:
-        if (r5 == NULL) {
-            r5 = *(void**)((u8*)r6 + 0xE6C);
-loop_16:
-            if (r5 == NULL) {
-                r6 = *(void**)((u8*)r6);
-                goto loop_18;
+    head = gKeyedVoices;
+    n = 8;
+    do {
+        sv = head;
+        while (sv != NULL) {
+            vl = *(VidList **)((u8 *)sv + 0xE64);
+            while (vl != NULL) {
+                if (vl->vid == arg0) {
+                    return (s32)sv->vid;
+                }
+                vl = vl->next;
             }
-            if (*(u32*)((u8*)r5 + 8) == arg0) {
-                return *(s32*)((u8*)r6 + 0xC);
+            vl = *(VidList **)((u8 *)sv + 0xE68);
+            while (vl != NULL) {
+                if (vl->vid == arg0) {
+                    return (s32)sv->vid;
+                }
+                vl = vl->next;
             }
-            r5 = *(void**)((u8*)r5);
-            goto loop_16;
+            vl = *(VidList **)((u8 *)sv + 0xE6C);
+            while (vl != NULL) {
+                if (vl->vid == arg0) {
+                    return (s32)sv->vid;
+                }
+                vl = vl->next;
+            }
+            sv = sv->next;
         }
-        if (*(u32*)((u8*)r5 + 8) == arg0) {
-            return *(s32*)((u8*)r6 + 0xC);
-        }
-        r5 = *(void**)((u8*)r5);
-        goto loop_11;
-    }
-    if (*(u32*)((u8*)r5 + 8) == arg0) {
-        return *(s32*)((u8*)r6 + 0xC);
-    }
-    r5 = *(void**)((u8*)r5);
-    goto loop_6;
+    } while (--n != 0);
+    return -1;
 }
 
 s32 Snd_SetParamU8(s32 arg0, s32 arg1, s32 arg2) {
@@ -5975,10 +5987,10 @@ int fn_802509D8(int arg0)
     void *result;
 
     key = lbl_803596E4;
-    entry = (u8 *)&lbl_803548B8;
+    entry = lbl_803548B8;
     cmp = fn_802509C8;
     i = 0;
-    *(u16 *)key = (u16)arg0;
+    *(u16 *)key = arg0;
 
     while (i < (s32)lbl_80368A08) {
         result = Bsearch(
@@ -7746,59 +7758,37 @@ void fn_802551F0(void *arg0, u32 arg1) {
 
 void fn_802552F8(void *arg0)
 {
-    extern s32 gSynthSchedList;
+    void *iter;
+    void *prev;
+    void *p;
 
-    u8 *voice;
-    u8 *current;
-    u8 *previous;
-    u8 *oldPrevious;
-    u32 currentHigh;
-    u32 currentLow;
-    u32 voiceHigh;
-    u32 voiceLow;
-
-    voice = (u8 *)arg0;
-    current = (u8 *)gSynthSchedList;
-    previous = 0;
-
-    while (current != 0) {
-        currentLow = *(u32 *)(current + 0x9C);
-        voiceLow = *(u32 *)(voice + 0x9C);
-        currentHigh = *(u32 *)(current + 0x98);
-        voiceHigh = *(u32 *)(voice + 0x98);
-
-        if (currentHigh > voiceHigh ||
-            (currentHigh == voiceHigh && currentLow >= voiceLow)) {
-            break;
-        }
-
-        previous = current;
-        current = *(u8 **)(current + 0x44);
+    iter = (void *)gSynthSchedList;
+    prev = NULL;
+    while (iter != NULL && *(u64 *)((u8 *)iter + 0x98) < *(u64 *)((u8 *)arg0 + 0x98)) {
+        prev = iter;
+        iter = *(void **)((u8 *)iter + 0x44);
     }
 
-    if (current == 0) {
-        if (previous == 0) {
-            gSynthSchedList = (s32)voice;
-            *(u8 **)(voice + 0x44) = 0;
-            *(u8 **)(voice + 0x48) = 0;
+    if (iter == NULL) {
+        if (prev == NULL) {
+            gSynthSchedList = (s32)arg0;
+            *(void **)((u8 *)arg0 + 0x44) = NULL;
+            *(void **)((u8 *)arg0 + 0x48) = NULL;
         } else {
-            *(u8 **)(previous + 0x44) = voice;
-            *(u8 **)(voice + 0x48) = previous;
-            *(u8 **)(voice + 0x44) = 0;
+            *(void **)((u8 *)prev + 0x44) = arg0;
+            *(void **)((u8 *)arg0 + 0x48) = prev;
+            *(void **)((u8 *)arg0 + 0x44) = NULL;
         }
     } else {
-        *(u8 **)(voice + 0x44) = current;
-
-        oldPrevious = *(u8 **)(current + 0x48);
-        *(u8 **)(voice + 0x48) = oldPrevious;
-
-        if (oldPrevious != 0) {
-            *(u8 **)(oldPrevious + 0x44) = voice;
+        *(void **)((u8 *)arg0 + 0x44) = iter;
+        p = *(void **)((u8 *)iter + 0x48);
+        *(void **)((u8 *)arg0 + 0x48) = p;
+        if (p != NULL) {
+            *(void **)((u8 *)(*(void **)((u8 *)iter + 0x48)) + 0x44) = arg0;
         } else {
-            gSynthSchedList = (s32)voice;
+            gSynthSchedList = (s32)arg0;
         }
-
-        *(u8 **)(current + 0x48) = voice;
+        *(void **)((u8 *)iter + 0x48) = arg0;
     }
 }
 
@@ -10755,26 +10745,27 @@ s32 fn_8025C99C(void *arg0, s32 arg1)
 }
 
 #pragma use_lmw_stmw reset
-void fn_8025C9E0(void *arg0, u8 arg1) {
+void fn_8025C9E0(void *arg0, u8 arg1)
+{
     void fn_8025CA80(void);
     extern u8 gSoundStudios[];
-    void *temp_r0;
-    u8 *temp_r4;
+    u8 *base;
+    void *node;
 
     if (((u8 *)arg0)[0xF0] != 0) {
         fn_8025CA80();
-        *(s32 *)((char *)arg0 + 0x24) |= 0x20;
+        *(u32 *)((u8 *)arg0 + 0x24) |= 0x20;
     }
+
     ((u8 *)arg0)[0xF1] = 0;
-    temp_r4 = gSoundStudios + arg1 * 0xBC;
-    temp_r0 = *(void **)(temp_r4 + 0x48);
-    *(void **)((char *)arg0 + 0xC) = temp_r0;
-    if (temp_r0 != NULL) {
-        *(void **)((char *)temp_r0 + 0x10) = arg0;
+    base = gSoundStudios + arg1 * 0xBC;
+    node = *(void **)(base += 0x48);
+    *(void **)((u8 *)arg0 + 0xC) = node;
+    if (node != 0) {
+        *(void **)((u8 *)*(void **)((u8 *)arg0 + 0xC) + 0x10) = arg0;
     }
-    *(s32 *)((char *)arg0 + 0x10) = 0;
-    temp_r4 = temp_r4 + 0x48;
-    *(void **)temp_r4 = arg0;
+    *(void **)((u8 *)arg0 + 0x10) = 0;
+    *(void **)base = arg0;
     ((u8 *)arg0)[0xF2] = 0;
     ((u8 *)arg0)[0xF0] = 1;
     ((u8 *)arg0)[0xF3] = arg1;
