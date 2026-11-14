@@ -2417,29 +2417,30 @@ s32 fn_80234048(void *isc, s32 ch, s32 act)
     }
 }
 
-s32 signal_raise(s32 arg0) {
+/* MSL raise: run the handler for sig (1..6), honoring SIG_IGN/SIG_DFL. */
+s32 signal_raise(s32 sig) {
     extern void (*__signal_funcs[])(s32);
     extern s32 __begin_critical_region(s32);
     extern s32 __end_critical_region(s32);
     extern void exit(s32);
-    void (*func)(s32);
+    void (*handler)(s32);
 
-    if ((arg0 < 1) || (arg0 > 6)) {
+    if ((sig < 1) || (sig > 6)) {
         return -1;
     }
     __begin_critical_region(4);
-    func = __signal_funcs[arg0 - 1];
-    if (func != (void (*)(s32))1) {
-        __signal_funcs[arg0 - 1] = 0;
+    handler = __signal_funcs[sig - 1];
+    if (handler != (void (*)(s32))1) {
+        __signal_funcs[sig - 1] = 0;
     }
     __end_critical_region(4);
-    if ((func == (void (*)(s32))1) || ((func == 0) && (arg0 == 1))) {
+    if ((handler == (void (*)(s32))1) || ((handler == 0) && (sig == 1))) {
         return 0;
     }
-    if (func == 0) {
+    if (handler == 0) {
         exit(0);
     }
-    func(arg0);
+    handler(sig);
     return 0;
 }
 
