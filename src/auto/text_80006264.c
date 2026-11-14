@@ -3587,7 +3587,7 @@ void *Process_FindByName(u8 *arg0) {
 }
 
 #pragma optimization_level 4
-void fn_8000BD98(u8 *arg0) {
+void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
     extern u8 gGfxEnts[];
     u8 *var_r31;

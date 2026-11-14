@@ -2852,7 +2852,7 @@ void fn_801260D4(void) {
 
 void fn_801260E4(void *arg0) {
     void fn_80013F48(void *);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
     void Str_CopyPad(void *, void *, s32);
@@ -2864,7 +2864,7 @@ void fn_801260E4(void *arg0) {
 
     self = (s32)arg0;
     fn_80013F48(lbl_80320060);
-    fn_8000BD98(gScriptCmdNames + 0x15B);
+    GfxEnt_UnlinkByName(gScriptCmdNames + 0x15B);
     if (Res_GetByName((void *)(self + 0x30)) != 0) {
         temp = (s32)Process_Create(lbl_80290480, 2);
         Str_CopyPad((void *)(temp + 0x30), (void *)(self + 0x30), 0x20);
@@ -2895,7 +2895,7 @@ void fn_801261AC(s32 arg0) {
 #pragma global_optimizer off
 void fn_80126204(void) {
     void fn_80013F48(void *);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
     void Str_CopyPad(void *, void *, s32);
@@ -2905,7 +2905,7 @@ void fn_80126204(void) {
     s32 temp;
 
     fn_80013F48(lbl_80320060);
-    fn_8000BD98(gScriptCmdNames + 0x15B);
+    GfxEnt_UnlinkByName(gScriptCmdNames + 0x15B);
     if (Res_GetByName(gScriptCmdNames + 0x16A) != 0) {
         temp = (s32)Process_Create(lbl_80290480, 2);
         Str_CopyPad((void *)(temp + 0x30), gScriptCmdNames + 0x16A, 0x20);
@@ -3526,7 +3526,7 @@ s32 ScriptCmd_bmsini(void) {
 s32 ScriptCmd_seqini(void) {
     void *Process_FindByName(void *);
     void Process_Goto(void *, s32);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void fn_8008D988(void);
     void Map_HideMoveLimitView(void);
     void fn_80091858(void);
@@ -3545,12 +3545,12 @@ s32 ScriptCmd_seqini(void) {
     if (obj != NULL) {
         Process_Goto(obj, 4);
     }
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x472);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x50c);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0xe0);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x467);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x472);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x50c);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0xe0);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x467);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x15b);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     Map_HideMoveLimitView();
     fn_80091858();
@@ -3561,12 +3561,12 @@ s32 ScriptCmd_seqini(void) {
 void fn_80127AC4(void) {
     extern u16 gScriptCmdNames[];
 
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x472);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x50c);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0xe0);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x467);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x15b);
-    fn_8000BD98((u8 *)gScriptCmdNames + 0x513);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x472);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x50c);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0xe0);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x467);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x15b);
+    GfxEnt_UnlinkByName((u8 *)gScriptCmdNames + 0x513);
     fn_8008D988();
     Map_HideMoveLimitView();
     fn_80091858();
@@ -3590,7 +3590,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
     extern u8 lbl_80290480[16];
     extern u8 lbl_80320060[];
 
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void *Res_GetByName(void *);
     void *Process_Create(void *, s32);
     void Str_CopyPad(void *, void *, s32);
@@ -3598,7 +3598,7 @@ s32 ScriptCmd_TutorialCall(void *arg0) {
     void *result;
     u8 *obj;
 
-    fn_8000BD98(gScriptCmdNames + 0x15B);
+    GfxEnt_UnlinkByName(gScriptCmdNames + 0x15B);
     result = Res_GetByName(arg0);
     if (result == NULL) {
         return 0;

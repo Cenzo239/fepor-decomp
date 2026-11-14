@@ -1022,7 +1022,7 @@ void *fn_800A0AA8(void) {
 s32 fn_800A0AB8(void) {
     extern u8 lbl_8026D8D8[];
     BMapMain_Goto(1);
-    fn_8000BD98(lbl_8026D8D8 + 0x531);
+    GfxEnt_UnlinkByName(lbl_8026D8D8 + 0x531);
     return 6;
 }
 

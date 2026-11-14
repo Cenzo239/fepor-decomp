@@ -3,7 +3,7 @@
 extern void Game_SetState(s32);
 extern void BMapMain_Goto(s32);
 extern void* (*fn_80024398_ptr)(void*, s32, s32);
-extern void fn_8000BD98(void *);
+extern void GfxEnt_UnlinkByName(void *);
 s32 Msg_Expand(void *);
 
 void *fn_80073394(void) {
@@ -15,7 +15,7 @@ s32 fn_800733A4(void) {
     extern u16 gSaveUiStrs[];
     Game_SetState(3);
     BMapMain_Goto(6);
-    fn_8000BD98((u8 *)gSaveUiStrs + 0x101);
+    GfxEnt_UnlinkByName((u8 *)gSaveUiStrs + 0x101);
     return 5;
 }
 

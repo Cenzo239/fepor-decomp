@@ -3208,7 +3208,7 @@ void fn_8016A1BC(void *arg0) {
     void Ui_AddChild(void *, void *, s32);
     u32 Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void fn_801455B8(s32);
     void Fx_StartSlot(s32, void *, s32, s32);
     s32 strlen(void *);
@@ -3279,7 +3279,7 @@ void fn_8016A1BC(void *arg0) {
         Ui_SetWidgetText(lbl_80277BC0 + 0xF0);
     }
     gUiInputFlags &= 0xFFFFFFFE;
-    fn_8000BD98(lbl_80277BC0 + 0x50);
+    GfxEnt_UnlinkByName(lbl_80277BC0 + 0x50);
     lbl_80367AE0 = 0;
     if (!(gUiInputFlags & 0x10)) {
         fn_801455B8(0);

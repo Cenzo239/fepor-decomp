@@ -197,24 +197,24 @@ void fn_80072A2C(void *arg0) {
 
 void fn_80072A48(void) {
     M2C_UNK Game_SetState(M2C_UNK);
-    M2C_UNK fn_8000BD98(void *);
+    M2C_UNK GfxEnt_UnlinkByName(void *);
     M2C_UNK BMapMain_Goto(M2C_UNK);
     extern u8 gSaveUiStrs[];
     extern u8 gMsgBox[];
     Game_SetState(3);
     BMapMain_Goto(6);
-    fn_8000BD98(gSaveUiStrs + 0x101);
+    GfxEnt_UnlinkByName(gSaveUiStrs + 0x101);
     *(u16 *)(gMsgBox + 2) = 0xC8;
 }
 
 void fn_80072A94(void) {
-    M2C_UNK fn_8000BD98(void *);
+    M2C_UNK GfxEnt_UnlinkByName(void *);
     M2C_UNK fn_8008A290(M2C_UNK, M2C_UNK);
     M2C_UNK fn_801480D8(M2C_UNK);
     extern u8 gSaveUiStrs[];
     fn_801480D8(0xBB8);
     fn_8008A290(3, 0x7D0);
-    fn_8000BD98(gSaveUiStrs + 0x10C);
+    GfxEnt_UnlinkByName(gSaveUiStrs + 0x10C);
 }
 
 void fn_80072AD4(void *arg0) {
@@ -486,7 +486,7 @@ extern u8 lbl_80286DA8[];
 extern u16 gMsgBox[124];
 extern void Game_SetState(s32);
 extern void BMapMain_Goto(s32);
-extern void fn_8000BD98(void *);
+extern void GfxEnt_UnlinkByName(void *);
 extern s32 Process_FindByName(void *);
 extern void Process_CreateChild(void *, s32);
 extern void fn_80023DE8(void);

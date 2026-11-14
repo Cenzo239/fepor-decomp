@@ -3448,7 +3448,7 @@ u8 fn_800B6DF0(void) {
 
 s32 fn_800B6E00(s32 arg0) {
     void BMapMain_Goto(s32, void *);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void Process_UnlinkByKey(void *);
     extern u8 gBattleState[];
     extern u8 lbl_8026ECB8[];
@@ -3470,7 +3470,7 @@ s32 fn_800B6E00(s32 arg0) {
     p = (void *)gBattleState;
     p->f54 = (u8)var;
     BMapMain_Goto(2, p);
-    fn_8000BD98(lbl_8026ECB8 + 0x98b);
+    GfxEnt_UnlinkByName(lbl_8026ECB8 + 0x98b);
     Process_UnlinkByKey(lbl_8028E7F8);
     return 1;
 }
@@ -4547,11 +4547,11 @@ s32 fn_800B870C(u32 arg0) {
 }
 
 s32 fn_800B874C(u32 arg0) {
-    M2C_UNK fn_8000BD98();
+    M2C_UNK GfxEnt_UnlinkByName();
     if ((arg0 < 0x80000000U) || (arg0 >= 0x81800000U)) {
         return 0;
     }
-    fn_8000BD98();
+    GfxEnt_UnlinkByName();
     return 0;
 }
 
@@ -7725,7 +7725,7 @@ void fn_800BE228(s32 *arg0) {
 s32 fn_800BE2F4(void) {
     u8 EventFlag_IsSet(void *, void *);
     void BMapMain_Goto(s32);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void Process_UnlinkByKey(void *);
     extern u8 lbl_8026FC78[];
     extern u8 lbl_8028E7F8[];
@@ -7740,7 +7740,7 @@ s32 fn_800BE2F4(void) {
     }
     if (EventFlag_IsSet(obj, lbl_8026FC78 + 0xF9) != 0 ||
         EventFlag_IsSet(obj, lbl_8026FC78 + 0x105) != 0) {
-        fn_8000BD98(lbl_8026FC78 + 0x111);
+        GfxEnt_UnlinkByName(lbl_8026FC78 + 0x111);
         Process_UnlinkByKey(lbl_8028E7F8);
         return 1;
     }
@@ -8395,7 +8395,7 @@ void fn_800C0750(void) {
     void *Process_FindByName(void *);
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
-    void fn_8000BD98(void *);
+    void GfxEnt_UnlinkByName(void *);
     void fn_800142D4(void *);
     void fn_80018AF4(void);
     void *temp;
@@ -8419,7 +8419,7 @@ void fn_800C0750(void) {
         val = 0;
     }
     lbl_8036784C = val;
-    fn_8000BD98(lbl_8026FC78 + 0xE3);
+    GfxEnt_UnlinkByName(lbl_8026FC78 + 0xE3);
     fn_800142D4(lbl_80320080);
     fn_80018AF4();
 }
