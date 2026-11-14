@@ -203,7 +203,7 @@ static SIAlarm lbl_8033E2C8[4];
 static s64 TypeTime[4];
 static s64 XferTime[4];
 static void *TypeCallback[4][4];
-static u32 lbl_8033E3E8[4];
+static u32 PollingHandler[4];
 static BOOL InputBufferValid[4];
 static u32 InputBuffer[4][2];
 static volatile u32 InputBufferVcount[4];
@@ -584,14 +584,14 @@ BOOL SIRegisterPollingHandler(void *handler) {
 
     enabled = OSDisableInterrupts();
     for (i = 0; i < 4; i++) {
-        if ((void *)lbl_8033E3E8[i] == handler) {
+        if ((void *)PollingHandler[i] == handler) {
             OSRestoreInterrupts(enabled);
             return TRUE;
         }
     }
     for (i = 0; i < 4; i++) {
-        if (lbl_8033E3E8[i] == 0) {
-            lbl_8033E3E8[i] = (u32)handler;
+        if (PollingHandler[i] == 0) {
+            PollingHandler[i] = (u32)handler;
             SIEnablePollingInterrupt(TRUE);
             OSRestoreInterrupts(enabled);
             return TRUE;
@@ -604,7 +604,7 @@ BOOL SIRegisterPollingHandler(void *handler) {
 s32 fn_8023B3D4(u32 arg0) {
     M2C_UNK OSRestoreInterrupts(s32);
     M2C_UNK SIEnablePollingInterrupt(M2C_UNK);
-    extern u32 lbl_8033E3E8[4];
+    extern u32 PollingHandler[4];
     s32 temp_r31;
     s32 var_ctr;
     s32 var_r4;
@@ -614,16 +614,16 @@ s32 fn_8023B3D4(u32 arg0) {
 
     var_ctr = 4;
     temp_r31 = OSDisableInterrupts();
-    var_r3 = lbl_8033E3E8;
+    var_r3 = PollingHandler;
     var_r4 = 0;
 loop_1:
     if ((u32) *var_r3 == arg0) {
-        lbl_8033E3E8[var_r4] = 0U;
+        PollingHandler[var_r4] = 0U;
         var_r4_2 = 0;
-        if ((u32) M2C_FIELD(lbl_8033E3E8, u32 *, 0) == 0U) {
-            temp_r3 = lbl_8033E3E8 + 4;
+        if ((u32) M2C_FIELD(PollingHandler, u32 *, 0) == 0U) {
+            temp_r3 = PollingHandler + 4;
             var_r4_2 = 1;
-            if ((u32) M2C_FIELD(lbl_8033E3E8, u32 *, 4) == 0U) {
+            if ((u32) M2C_FIELD(PollingHandler, u32 *, 4) == 0U) {
                 var_r4_2 = 2;
                 if ((u32) M2C_FIELD(temp_r3, u32 *, 4) == 0U) {
                     var_r4_2 = 3;
