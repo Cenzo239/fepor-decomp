@@ -3091,39 +3091,40 @@ void fn_80079F44(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x38) = 0;
 }
 
-void Face_BlinkWaitProc(void *arg0) {
+void Face_BlinkWaitProc(void *proc) {
+    /* Draw both eye layers; unless blink-held, jump to state 1 and roll a random wait timer. */
     void Process_Goto(void *, s32);
     u32 Rand_Next();
     void Face_DrawEyes(void *, s32, s32);
-    s32 var_r0;
-    u32 temp_r3;
+    s32 wait;
+    u32 rnd;
 
-    Face_DrawEyes(arg0, 0, 7);
-    Face_DrawEyes(arg0, 0, 0xA);
-    if ((s16) M2C_FIELD(arg0, s16 *, 0x36) != 5) {
-        Process_Goto(arg0, 1);
-        temp_r3 = Rand_Next() >> 0x10U;
-        switch ((s16) M2C_FIELD(arg0, s16 *, 0x34)) {
+    Face_DrawEyes(proc, 0, 7);
+    Face_DrawEyes(proc, 0, 0xA);
+    if ((s16) M2C_FIELD(proc, s16 *, 0x36) != 5) {
+        Process_Goto(proc, 1);
+        rnd = Rand_Next() >> 0x10U;
+        switch ((s16) M2C_FIELD(proc, s16 *, 0x34)) {
         case 3:
-            var_r0 = ((s32) temp_r3 >> 7) + 0x12C;
+            wait = ((s32) rnd >> 7) + 0x12C;
             break;
         case 1:
-            var_r0 = ((s32) temp_r3 >> 7) + 0x1E;
+            wait = ((s32) rnd >> 7) + 0x1E;
             break;
         case 2:
-            var_r0 = ((s32) temp_r3 >> 0xA) + 1;
+            wait = ((s32) rnd >> 0xA) + 1;
             break;
         case 4:
-            var_r0 = 1;
+            wait = 1;
             break;
         case 5:
-            var_r0 = 0x7FFFFFFF;
+            wait = 0x7FFFFFFF;
             break;
         default:
-            var_r0 = 1;
+            wait = 1;
             break;
         }
-        M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
+        M2C_FIELD(proc, s32 *, 0x3C) = wait;
     }
 }
 
