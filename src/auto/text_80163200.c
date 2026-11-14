@@ -13805,29 +13805,30 @@ void FloatAnim_UnlinkSame(void *arg0, u32 arg1) {
     }
 }
 
-void FloatAnim_Update(void *arg0) {
+/* Advance FloatAnim: tick, lerp target's float at +4, play rise SE on odd frames, clear when duration elapses. */
+void FloatAnim_Update(void *proc) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Ui_PlaySeCue(void *, s32);
     void Process_ClearFunc(void *);
     extern u8 lbl_802788B8[];
-    void *temp_r31;
-    s32 temp;
+    void *self;
+    s32 tick;
 
-    temp_r31 = arg0;
-    *(s32 *)((u8 *)temp_r31 + 0x34) = *(s32 *)((u8 *)temp_r31 + 0x34) + 1;
-    *(f32 *)((u8 *)*(void **)((u8 *)temp_r31 + 0x30) + 4) = Math_Lerp(
-        *(f32 *)((u8 *)temp_r31 + 0x40),
-        *(f32 *)((u8 *)temp_r31 + 0x44),
-        (f32)*(s32 *)((u8 *)temp_r31 + 0x38),
-        (f32)*(s32 *)((u8 *)temp_r31 + 0x34));
-    if (*(f32 *)((u8 *)temp_r31 + 0x44) > *(f32 *)((u8 *)temp_r31 + 0x40)) {
-        temp = *(s32 *)((u8 *)temp_r31 + 0x34);
-        if (temp & 1) {
+    self = proc;
+    *(s32 *)((u8 *)self + 0x34) = *(s32 *)((u8 *)self + 0x34) + 1;
+    *(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 4) = Math_Lerp(
+        *(f32 *)((u8 *)self + 0x40),
+        *(f32 *)((u8 *)self + 0x44),
+        (f32)*(s32 *)((u8 *)self + 0x38),
+        (f32)*(s32 *)((u8 *)self + 0x34));
+    if (*(f32 *)((u8 *)self + 0x44) > *(f32 *)((u8 *)self + 0x40)) {
+        tick = *(s32 *)((u8 *)self + 0x34);
+        if (tick & 1) {
             Ui_PlaySeCue(lbl_802788B8 + 0x10E, 0x64);
         }
     }
-    if (*(s32 *)((u8 *)temp_r31 + 0x34) >= *(s32 *)((u8 *)temp_r31 + 0x38)) {
-        Process_ClearFunc(temp_r31);
+    if (*(s32 *)((u8 *)self + 0x34) >= *(s32 *)((u8 *)self + 0x38)) {
+        Process_ClearFunc(self);
     }
 }
 
