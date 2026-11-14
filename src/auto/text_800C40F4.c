@@ -18595,7 +18595,7 @@ void fn_800F9E64(void *arg0) {
     M2C_FIELD(arg0, u8 *, 0x251) = (u8) (M2C_FIELD(arg0, u8 *, 0x251) + 1);
 }
 
-void fn_800FA0E4(void *arg0) {
+void AiCmd_ChanceTryAttackFallback(void *arg0) {
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
     s32 Rand_Range(s32);
