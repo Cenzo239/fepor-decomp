@@ -185,16 +185,16 @@ s32 fn_801A2F54(s32 arg0) {
     void MapAnim_DispatchByIid(void *, s32, void *);
     extern u16 gUiContext[];
     extern u16 gBattle[];
-    extern void fn_801A2FE0;
+    extern void MapAnim_HealNonEnemyUnits;
 
     Battle_SetupUnit(gBattle, *(s32 *)gUiContext, -1);
     Battle_SelectWeapon(gBattle, *(u8 *)((u8 *)gUiContext + 0xA));
     fn_80036150(gBattle);
-    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &fn_801A2FE0);
+    MapAnim_DispatchByIid(*fn_800285C0(gUiContext), arg0, &MapAnim_HealNonEnemyUnits);
     return 0;
 }
 
-void fn_801A2FE0(void) {
+void MapAnim_HealNonEnemyUnits(void) {
     void Allegiance_FillMask(s32, void *);
     s32 Unit_GetMaxHp(void *);
     void Unit_SetHp(void *, s8);
@@ -864,24 +864,25 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 
 #pragma opt_common_subs off
 void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
-    void fn_80034068(void *, s32, s32);
+    void BattleAnim_Queue(void *, s32, s32);
     s32 orig;
-    s32 ret;
     s32 b;
 
     orig = obj[0x1A8];
-    ret = fn_800AA76C((s8)orig, (s8)fn_8003B2D0(obj), (s8)a1);
-    b = obj[0x1A8];
-    a1 = (s8)ret;
+    {
+        s32 t = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
+        b = obj[0x1A8];
+        a1 = (s8)t;
+    }
     Unit_SetHp(obj, a1 + (s8)b);
-    fn_80034068(obj + 0x8A0, 0x20, 0);
-    fn_80034068(obj + 0x8A0, 0x9, a1);
-    fn_80034068(obj + 0x8A0, 0x50, 0);
+    BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
+    BattleAnim_Queue(obj + 0x8A0, 0x9, a1);
+    BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
     if ((s8)obj[0x1A8] <= 0) {
-        fn_80034068(obj + 0x8A0, 0xB, 0);
+        BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
     }
 }
 #pragma opt_common_subs reset
