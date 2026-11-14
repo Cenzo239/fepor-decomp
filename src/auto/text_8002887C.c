@@ -2439,6 +2439,7 @@ void fn_8002E408(s32 arg0) {
 }
 
 void Battle_FocusCamOnStatus0Unit(void) {
+    /* On player phase (when battle flag 0x9E bit6 is clear), focus the camera on the first unit with status bit 0. */
     u8 Status_Test(void *, s32);
     void BattleState_SetCamPos(void *, f32, f32);
     extern struct {
@@ -2447,16 +2448,16 @@ void Battle_FocusCamOnStatus0Unit(void) {
         s32 unk8;
     } gUnitLists[];
     extern u8 gBattleState[];
-    void *p;
+    void *unit;
 
     if (gBattleState[0x11] == 0 && !((gBattleState[0x9E] >> 6) & 1)) {
-        for (p = gUnitLists[gBattleState[0x11]].head; p != NULL; p = *(void **)((u8 *)p + 0x184)) {
-            if (Status_Test((u8 *)p + 0x1BC, 0)) {
+        for (unit = gUnitLists[gBattleState[0x11]].head; unit != NULL; unit = *(void **)((u8 *)unit + 0x184)) {
+            if (Status_Test((u8 *)unit + 0x1BC, 0)) {
                 break;
             }
         }
-        if (p != NULL) {
-            BattleState_SetCamPos(gBattleState, (s8)*((u8 *)p + 0x19E), (s8)*((u8 *)p + 0x19F));
+        if (unit != NULL) {
+            BattleState_SetCamPos(gBattleState, (s8)*((u8 *)unit + 0x19E), (s8)*((u8 *)unit + 0x19F));
         }
     }
 }
