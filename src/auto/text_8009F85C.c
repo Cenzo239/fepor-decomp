@@ -1091,28 +1091,29 @@ s32 fn_800A0BFC(s32 arg0, s32 arg1, void *arg2) {
     return 0;
 }
 
-void *MenuCmd_FormatCursorMapObjName(void *unused, void *arg1) {
+/* Format the name of the map object under the battle cursor; disable item if none. */
+void *MenuCmd_FormatCursorMapObjName(void *unused, void *item) {
     s32 Map_Get(void *);
     void *Map_FindObjAtXY(s32, s32, s32);
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];
     extern u8 gMenuCmdStrings[];
     extern u8 sMenuMapObjNameBuf[];
-    s32 x528;
-    s32 x524;
-    s32 ret;
-    void *tmp;
+    s32 cursorY;
+    s32 cursorX;
+    s32 map;
+    void *obj;
 
-    x528 = (s32)*(f32 *)(gBattleState + 0x528);
-    x524 = (s32)*(f32 *)(gBattleState + 0x524);
-    ret = Map_Get(gBattleState);
-    tmp = Map_FindObjAtXY(ret, (s8)x524, (s8)x528);
-    *(u8 *)((u8 *)arg1 + 0x39) = 2;
-    if (tmp == NULL) {
+    cursorY = (s32)*(f32 *)(gBattleState + 0x528);
+    cursorX = (s32)*(f32 *)(gBattleState + 0x524);
+    map = Map_Get(gBattleState);
+    obj = Map_FindObjAtXY(map, (s8)cursorX, (s8)cursorY);
+    *(u8 *)((u8 *)item + 0x39) = 2;
+    if (obj == NULL) {
         return gMenuCmdStrings + 0x563;
     }
-    sprintf(sMenuMapObjNameBuf, gMenuCmdStrings + 0x575, **(s32 **)((u8 *)tmp + 0x10));
-    *(u8 *)((u8 *)arg1 + 0x39) = 0;
+    sprintf(sMenuMapObjNameBuf, gMenuCmdStrings + 0x575, **(s32 **)((u8 *)obj + 0x10));
+    *(u8 *)((u8 *)item + 0x39) = 0;
     return sMenuMapObjNameBuf;
 }
 
