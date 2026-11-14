@@ -1281,7 +1281,7 @@ void fn_801EC7B8(void) {
 }
 
 extern void *gAramUsedList;
-void *fn_801ECE40(s32 arg0) {
+void *AramCache_Find(s32 arg0) {
     extern void *gAramUsedList;
     void *node;
     u32 id;

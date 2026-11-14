@@ -658,8 +658,8 @@ void FileCache_OnCancel(void *arg0, s32 arg1) {
 }
 
 void FileCache_OnLoadDone(void *arg0) {
- void fn_8005D9A8(void *); void fn_8005DE84(void *); u32 fn_801ECE40(void); u8 fn_801ECECC(void *,s32,s32,void *,void *); extern u8 fn_8005DFB8[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
- if ((*flags&8)&&fn_801ECE40()==0&&fn_801ECECC(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),fn_8005DFB8,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)fn_8005DE84(arg0);}
+ void fn_8005D9A8(void *); void fn_8005DE84(void *); u32 AramCache_Find(void); u8 fn_801ECECC(void *,s32,s32,void *,void *); extern u8 fn_8005DFB8[]; volatile u16 *flags=(u16*)((u8*)arg0+0x30);
+ if ((*flags&8)&&AramCache_Find()==0&&fn_801ECECC(arg0,*(s32*)((u8*)arg0+0x38),*(s32*)((u8*)arg0+0x3c),fn_8005DFB8,arg0)) {*flags|=0x80;*(s32*)((u8*)arg0+0x6c)=*(s32*)((u8*)arg0+0x38);if(*flags&0x400)fn_8005DE84(arg0);}
  else {if(*flags&0x400){fn_8005DE84(arg0);return;}if(*flags&0x800)fn_8005D9A8(arg0);*flags|=0x2000;}
 }
 
@@ -6469,7 +6469,8 @@ void fn_8006D52C(s32 arg0) {
     *(volatile u32 *)0 = gqr;
 }
 
-void fn_8006D53C(s32 arg0) {
+void fn_8006D53C(s32 arg0)
+{
     u32 gqr = ((u32)arg0 << 16) + (u32)arg0;
     *(volatile u32 *)0 = gqr;
 }
