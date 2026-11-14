@@ -3960,24 +3960,25 @@ extern "C" void UnitInfo_DrawStaff(void *win, void *slot) {
 
 #pragma cplusplus on
 extern "C" void UnitInfo_DrawInventoryPanel(void *);
-extern "C" void UnitInfo_DrawInventory(void *arg0, void *arg1) {
+extern "C" void UnitInfo_DrawInventory(void *win, void *slot) {
+    /* Draw unit-info inventory panel (affiliation strip + held items) for the slot unit. */
     extern f32 gUnitInfoDrawScale;
     extern f32 gUnitInfoDrawDepth;
     struct Obj {
         u8 pad[4];
-        virtual void v0(s32 *, s32 *, s32 *) = 0;
+        virtual void getPos(s32 *, s32 *, s32 *) = 0;
     };
     s32 x;
     s32 y;
     s32 alpha;
 
-    if (M2C_FIELD(arg1, u32 *, 0x40) != 0) {
-        ((Obj *)arg0)->v0(&x, &y, &alpha);
+    if (M2C_FIELD(slot, u32 *, 0x40) != 0) {
+        ((Obj *)win)->getPos(&x, &y, &alpha);
         Prim2D_Begin();
         Prim2D_SetTransform((f32)(x + 0x20), (f32)(y + 0x30), gUnitInfoDrawScale, gUnitInfoDrawDepth);
         Prim2D_SetColorByte((u8)alpha);
         Prim2D_PrepareTex();
-        UnitInfo_DrawInventoryPanel((void *)UnitRef_GetUnit(M2C_FIELD(arg1, u32 *, 0x40)));
+        UnitInfo_DrawInventoryPanel((void *)UnitRef_GetUnit(M2C_FIELD(slot, u32 *, 0x40)));
         Prim2D_Begin();
         Prim2D_SetColorByte(0xFF);
         Prim2D_PrepareTex();
