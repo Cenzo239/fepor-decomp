@@ -4186,7 +4186,7 @@ s32 Unit_TickTransformGaugeFast(void *unit) {
     }
     return 0;
 }
-s32 fn_8003C038(void *arg0) {
+s32 Unit_TickTransformGaugeSlow(void *arg0) {
     u8 Status_Test(void *, s32);
     u8 fn_80091D74(void *);
     s32 delta;

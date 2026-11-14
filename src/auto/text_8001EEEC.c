@@ -3598,7 +3598,7 @@ void fn_80026994(void) {
 
 s32 fn_800269C0(s32 arg0)
 {
-    u8 fn_8003C038(void *);
+    u8 Unit_TickTransformGaugeSlow(void *);
     void fn_80183BE4(void *, s32);
     extern u8 gUiContext[];
     extern u8 gBattle[];
@@ -3611,7 +3611,7 @@ s32 fn_800269C0(s32 arg0)
     if ((s8)*(u8 *)((u8 *)temp_r31 + 0x1A8) == 0) {
         return 0;
     }
-    if (fn_8003C038(temp_r31) == 0) {
+    if (Unit_TickTransformGaugeSlow(temp_r31) == 0) {
         return 0;
     }
     fn_80183BE4(temp_r31, arg0);
@@ -3625,7 +3625,7 @@ void fn_80026A54(void) {
 }
 
 s32 fn_80026A80(s32 arg0) {
-    u8 fn_8003C038(void *);
+    u8 Unit_TickTransformGaugeSlow(void *);
     void fn_80183BE4(void *, s32);
     extern u8 gUiContext[];
     void *temp_r31;
@@ -3634,7 +3634,7 @@ s32 fn_80026A80(s32 arg0) {
     if ((s8)*(u8 *)((u8 *)temp_r31 + 0x1A8) == 0) {
         return 0;
     }
-    if (fn_8003C038(temp_r31) == 0) {
+    if (Unit_TickTransformGaugeSlow(temp_r31) == 0) {
         return 0;
     }
     fn_80183BE4(temp_r31, arg0);
