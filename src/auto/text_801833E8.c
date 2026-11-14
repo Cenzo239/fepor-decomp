@@ -682,16 +682,16 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     f32 fn_8004BDA8(f32, f32, f32);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
     u8 sp8[0x34];
     f32 temp_f31;
     void *temp_r3;
     f32 a;
     f32 b;
 
-    a = lbl_8036ACD8 + (f32)arg1;
-    b = lbl_8036ACD8 + (f32)arg2;
-    temp_f31 = fn_8004BDA8(a, b, lbl_8036ACD8);
+    a = gHalf + (f32)arg1;
+    b = gHalf + (f32)arg2;
+    temp_f31 = fn_8004BDA8(a, b, gHalf);
     M2C_FIELD(sp8, void **, 0x30) = arg0;
     GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
@@ -1173,7 +1173,7 @@ void Mu_HideAtTile(void *arg0) {
     void Unit_SetModelAlpha(void *, s32);
     void Unit_FocusCamera(void *, s32);
     void Process_Goto(void *, s32);
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
     s32 flags;
 
     flags = *(u16 *)((u8 *)arg0 + 0x38) & 5;
@@ -1181,9 +1181,9 @@ void Mu_HideAtTile(void *arg0) {
     case 0:
     case 1:
         Unit_SetWorldXY(*(void **)((u8 *)arg0 + 0x30),
-                    lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x3C),
-                    lbl_8036ACD8 + (f32)*(s32 *)((u8 *)arg0 + 0x40),
-                    lbl_8036ACD8);
+                    gHalf + (f32)*(s32 *)((u8 *)arg0 + 0x3C),
+                    gHalf + (f32)*(s32 *)((u8 *)arg0 + 0x40),
+                    gHalf);
         Unit_SetModelAlpha(*(void **)((u8 *)arg0 + 0x30), 0);
         if (*(u16 *)((u8 *)arg0 + 0x38) & 0x10) {
             Unit_FocusCamera(*(void **)((u8 *)arg0 + 0x30), 0);
@@ -1657,7 +1657,7 @@ void fn_801877C4(void *arg0) {
     extern u8 E_MuBlend_script[];
     extern u8 gBattleMap[];
     extern void *gPadInput;
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036AD08;
@@ -1740,8 +1740,8 @@ void fn_801877C4(void *arg0) {
             Process_Create(base + 0x238, (s32)arg0);
         } else {
             f32 t8;
-            f31 = lbl_8036ACD8 + (f32)*(s8 *)((u8 *)arg0 + 0x3A);
-            f30 = lbl_8036ACD8 + (f32)*(s8 *)((u8 *)arg0 + 0x3B);
+            f31 = gHalf + (f32)*(s8 *)((u8 *)arg0 + 0x3A);
+            f30 = gHalf + (f32)*(s8 *)((u8 *)arg0 + 0x3B);
             f29 = Map_SampleHeightRaw(gBattleMap, f31, f30);
             tmp = *(void **)((u8 *)arg0 + 0x30);
             t8 = *(f32 *)((u8 *)tmp + 8);
@@ -1786,7 +1786,7 @@ void fn_80187D70(void *arg0) {
     extern u16 E_MuFade_script[36];
     extern u8 MoveAnim_str[];
     extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
 
     u8 sp[0x70];
     void *unit;
@@ -1818,7 +1818,7 @@ void fn_80187D70(void *arg0) {
         fn_8004FC70(*(void **)((u8 *)arg0 + 0x34), 9);
     } else {
         unit = *(void **)((u8 *)arg0 + 0x30);
-        f = fn_8004BDA8(unit, lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
+        f = fn_8004BDA8(unit, gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
         *(void **)(sp + 0x30) = unit;
         GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
@@ -1919,7 +1919,7 @@ void fn_80187FBC(void *arg0) {
 void fn_8018820C(void *arg0) {
     M2C_UNK Unit_SetWorldXY(s32, f32, f32);
     f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32, f32);
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
     extern f32 lbl_8036AD0C;
     f32 temp_f1;
     f32 temp_f31;
@@ -1927,8 +1927,8 @@ void fn_8018820C(void *arg0) {
 
     temp_r31 = M2C_FIELD(arg0, void **, 0x18);
     M2C_FIELD(arg0, s32 *, 0x60) = (s32) (M2C_FIELD(arg0, s32 *, 0x60) + 1);
-    temp_f31 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
-    temp_f1 = Math_EaseOutPow(2, lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), lbl_8036ACD8 + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), lbl_8036ACD8);
+    temp_f31 = Math_EaseOutPow(2, gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x38), gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3A), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), gHalf);
+    temp_f1 = Math_EaseOutPow(2, gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x39), gHalf + (f32) (s8) M2C_FIELD(temp_r31, u8 *, 0x3B), lbl_8036AD0C, (f32) M2C_FIELD(arg0, s32 *, 0x60), gHalf);
     Unit_SetWorldXY(M2C_FIELD(temp_r31, s32 *, 0x34), temp_f31, temp_f1);
     if ((s32) M2C_FIELD(arg0, s32 *, 0x60) >= 8) {
         Process_ClearFunc(arg0);
@@ -1938,14 +1938,14 @@ void fn_8018820C(void *arg0) {
 #pragma use_lmw_stmw on
 void MoveAnim_BuildPathHeights(void *arg0) {
 f32 Map_SampleHeightRaw(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
-extern u8 gBattleMap[]; extern f32 lbl_8036ACD8,lbl_8036ACEC;
+extern u8 gBattleMap[]; extern f32 gHalf,lbl_8036ACEC;
 u8 *self=arg0;
 PathHeightPoint *point; PathHeightPoint *anchor; u8 *dir;
 s32 i; s32 x,y,count; f32 delta,offset,zero;
 if(*(u16 *)(self+0x52)&0x8000) {
 f32 *pos=*(f32 **)(self+0x30);
 { PathHeightPoint *initial=*(PathHeightPoint **)(self+0x6C); point=initial; anchor=initial; }
-dir=*(u8 **)(self+0x54); x=(s32)pos[1]; y=(s32)pos[2]; offset=lbl_8036ACD8; zero=lbl_8036ACEC;
+dir=*(u8 **)(self+0x54); x=(s32)pos[1]; y=(s32)pos[2]; offset=gHalf; zero=lbl_8036ACEC;
 for(count=0;count<128;count++,dir++,point++) {
 point->rawHeight=Map_SampleHeightRaw(gBattleMap,offset+(f32)x,offset+(f32)y);
 point->index=count; point->height=point->rawHeight;
@@ -2082,7 +2082,7 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
     extern u8 gBattleState[];
     extern u8 gSeCueSlots[];
     extern void *gPadInput;
-    extern f32 lbl_8036AD18, lbl_8036ACF8, lbl_8036AD08, lbl_8036AD1C, lbl_8036ACD8;
+    extern f32 lbl_8036AD18, lbl_8036ACF8, lbl_8036AD08, lbl_8036AD1C, gHalf;
     f32 duration;
 
 
@@ -2127,13 +2127,13 @@ void MoveAnim_Update(void *anim, f32 scaleArg) {
         Process_ClearFunc(anim);
     }
     {
-        f32 x = Math_Lerp(lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x40),
-                          lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x42),
+        f32 x = Math_Lerp(gHalf + (f32)(s8)M2C_FIELD(anim, u8 *, 0x40),
+                          gHalf + (f32)(s8)M2C_FIELD(anim, u8 *, 0x42),
                           duration, M2C_FIELD(anim, f32 *, 0x3C));
         f32 y;
         f32 z;
-        y = Math_Lerp(lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x41),
-                      lbl_8036ACD8 + (f32)(s8)M2C_FIELD(anim, u8 *, 0x43),
+        y = Math_Lerp(gHalf + (f32)(s8)M2C_FIELD(anim, u8 *, 0x41),
+                      gHalf + (f32)(s8)M2C_FIELD(anim, u8 *, 0x43),
                       duration, M2C_FIELD(anim, f32 *, 0x3C));
         z = Math_Lerp(M2C_FIELD(anim, f32 *, 0x44), M2C_FIELD(anim, f32 *, 0x48), duration,
                       M2C_FIELD(anim, f32 *, 0x3C));
@@ -2281,7 +2281,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     extern u8 lbl_80278D70[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
-    extern const f32 lbl_8036ACD8,lbl_8036ACEC,lbl_8036AD2C,lbl_8036AD30,lbl_8036AD34,lbl_8036AD38;
+    extern const f32 gHalf,lbl_8036ACEC,lbl_8036AD2C,lbl_8036AD30,lbl_8036AD34,lbl_8036AD38;
     f32 matrix[12];
     u32 angles[4];
     f32 q1[4],q2[4],qout[4];
@@ -2306,7 +2306,7 @@ void fn_8018A91C(void *arg0, f32 angle) {
     axis[0]=*(u32 *)(data+0x9C);axis[1]=*(u32 *)(data+0xA0);axis[2]=*(u32 *)(data+0xA4);
     fn_80203320(q1,axis,lbl_8036AD30*angle);
     fn_80203320(q2,axis,lbl_8036AD30*angle2);
-    QUATSlerp(q1,q2,qout,lbl_8036ACD8);
+    QUATSlerp(q1,q2,qout,gHalf);
     fn_80202640(matrix,qout);
     vec[0]=*(u32 *)(data+0xA8);vec[1]=*(u32 *)(data+0xAC);vec[2]=*(u32 *)(data+0xB0);
     fn_802029C4(matrix,vec,vec);
@@ -2452,7 +2452,7 @@ void fn_8018B060(void *arg0) {
     f32 Math_EaseInPow(s32, f32, f32, f32, f32);
     f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f64 lbl_8036ACE0;
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036AD00;
     extern f32 lbl_8036AD3C;
@@ -2483,7 +2483,7 @@ void fn_8018B060(void *arg0) {
                       (f32)*(s32 *)((u8 *)self + 0x54), (f32)*(s32 *)((u8 *)self + 0x50));
     f30 = Math_Lerp(*(f32 *)((u8 *)self + 0x3C), *(f32 *)((u8 *)self + 0x48),
                       (f32)*(s32 *)((u8 *)self + 0x54), (f32)*(s32 *)((u8 *)self + 0x50));
-    half = lbl_8036ACD8 * (f32)*(s32 *)((u8 *)self + 0x54);
+    half = gHalf * (f32)*(s32 *)((u8 *)self + 0x54);
     temp = *(s32 *)((u8 *)self + 0x50);
     if ((f32)(s32)temp < half) {
         f30 += Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)(s32)temp);
@@ -13453,7 +13453,7 @@ extern u8 E_MuFlash_script[0x80];
 #include "global.h"
 extern u16 E_MuFade_script[36];
 extern f32 lbl_8036ACE0;
-extern f32 lbl_8036ACD8;
+extern f32 gHalf;
 extern f32 lbl_8036ACE8;
 #include "common.h"
 #include "global.h"
