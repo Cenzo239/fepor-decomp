@@ -278,82 +278,7 @@ void fn_8005B73C(void *arg0) {
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
 }
 
-s32 fn_8005B760(s32 arg0) {
-    switch ((unsigned int)(arg0 - 10)) {
-    case 0:
-    case 16:
-    default:
-        return 0x1A;
-    case 14:
-        return 0x18;
-    case 15:
-        return 0x19;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 17:
-    case 18:
-    case 19:
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-    case 24:
-    case 25:
-    case 26:
-    case 27:
-    case 28:
-    case 29:
-    case 30:
-    case 31:
-    case 32:
-    case 33:
-    case 34:
-    case 35:
-    case 36:
-    case 37:
-    case 38:
-    case 39:
-    case 40:
-    case 41:
-    case 42:
-    case 43:
-    case 44:
-    case 45:
-    case 46:
-    case 47:
-    case 48:
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
-    case 55:
-    case 56:
-    case 57:
-    case 58:
-    case 59:
-    case 60:
-    case 61:
-    case 62:
-    case 63:
-    case 64:
-    case 65:
-    case 66:
-        return 0;
-    }
-}
+s32 fn_8005B760(s32 arg0) { switch ((u32)(arg0-10)) {case 0: goto L26;case 1: goto L0;case 2: goto L0;case 3: goto L0;case 4: goto L0;case 5: goto L0;case 6: goto L0;case 7: goto L0;case 8: goto L0;case 9: goto L0;case 10: goto L0;case 11: goto L0;case 12: goto L0;case 13: goto L0;case 14: goto L24;case 15: goto L25;case 16: goto L26;case 17: goto L0;case 18: goto L0;case 19: goto L0;case 20: goto L0;case 21: goto L0;case 22: goto L0;case 23: goto L0;case 24: goto L0;case 25: goto L0;case 26: goto L0;case 27: goto L0;case 28: goto L0;case 29: goto L0;case 30: goto L0;case 31: goto L0;case 32: goto L0;case 33: goto L0;case 34: goto L0;case 35: goto L0;case 36: goto L0;case 37: goto L0;case 38: goto L0;case 39: goto L0;case 40: goto L0;case 41: goto L0;case 42: goto L0;case 43: goto L0;case 44: goto L0;case 45: goto L0;case 46: goto L0;case 47: goto L0;case 48: goto L0;case 49: goto L0;case 50: goto L0;case 51: goto L0;case 52: goto L0;case 53: goto L0;case 54: goto L0;case 55: goto L0;case 56: goto L0;case 57: goto L0;case 58: goto L0;case 59: goto L0;case 60: goto L0;case 61: goto L0;case 62: goto L0;case 63: goto L0;case 64: goto L0;case 65: goto L0;case 66: goto L0;default: goto L26;} L26:return 26; L24:return 24; L25:return 25; L0:return 0;}
 
 u8 fn_8005B7A4(u8 *s) {
 extern u32 lbl_802F03A8[0x4D];
@@ -7831,19 +7756,7 @@ s32 fn_800704F0(s32 arg0, s32 arg1, s32 arg2)
 }
 
 extern u16 lbl_80286860[];
-void fn_800708B0(void *arg0, void *arg1) {
-    void *Process_Find(void *);
-    void fn_8018DC58(void);
-    extern u16 lbl_80286860[];
-    extern u8 lbl_80366DE9;
-    void *p;
-
-    p = *(void **)((u8 *)arg1 + 0x18);
-    if (p == Process_Find(&lbl_80286860)) {
-        fn_8018DC58();
-        *(s8 *)&lbl_80366DE9 = -1;
-    }
-}
+void fn_800708B0(void *arg0, void *arg1) { void *Process_Find(void *); void fn_8018DC58(void); extern u16 lbl_80286860[]; extern u8 lbl_80366DE9; void *p; p=*(void **)((u8*)arg1+0x18); if(p==Process_Find(&lbl_80286860)) fn_8018DC58(); *(s8*)&lbl_80366DE9=-1; }
 
 #pragma cplusplus on
 extern "C" void *GfxEnt_Get(u8);
