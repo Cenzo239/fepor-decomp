@@ -11239,25 +11239,26 @@ void Actor_ClearNodeLink(void *arg0) {
     }
 }
 
-u32 Actor_SetNodeLink(void *arg0, u32 arg1, u32 arg2, u8 arg3) {
+/* Replace the actor's GActor node-link between two named nodes; set default params and optionally activate. */
+u32 Actor_SetNodeLink(void *actor, u32 nodeNameA, u32 nodeNameB, u8 activate) {
     extern s32 gNodeLinkDefaultParam;
-    s32 sp8;
+    s32 param;
 
-    if ((*(u32 *)((char *)arg0 + 0xE8)) != 0) {
+    if ((*(u32 *)((char *)actor + 0xE8)) != 0) {
         GActor_UnlinkNodeLink();
-        *(u32 *)((char *)arg0 + 0xE8) = 0;
+        *(u32 *)((char *)actor + 0xE8) = 0;
     }
-    if ((arg1 == 0) || (arg2 == 0)) {
-        *(u32 *)((char *)arg0 + 0xE8) = 0;
+    if ((nodeNameA == 0) || (nodeNameB == 0)) {
+        *(u32 *)((char *)actor + 0xE8) = 0;
         return 0;
     }
-    *(u32 *)((char *)arg0 + 0xE8) = GActor_CreateNodeLink(*(s32 *)((char *)arg0 + 0xE0), arg1, arg2, 4);
-    sp8 = gNodeLinkDefaultParam;
-    GActor_SetNodeLinkParam(*(u32 *)((char *)arg0 + 0xE8), &sp8);
-    if (arg3 != 0) {
-        GActor_SetNodeLinkActive(*(u32 *)((char *)arg0 + 0xE8), 1);
+    *(u32 *)((char *)actor + 0xE8) = GActor_CreateNodeLink(*(s32 *)((char *)actor + 0xE0), nodeNameA, nodeNameB, 4);
+    param = gNodeLinkDefaultParam;
+    GActor_SetNodeLinkParam(*(u32 *)((char *)actor + 0xE8), &param);
+    if (activate != 0) {
+        GActor_SetNodeLinkActive(*(u32 *)((char *)actor + 0xE8), 1);
     }
-    return *(u32 *)((char *)arg0 + 0xE8);
+    return *(u32 *)((char *)actor + 0xE8);
 }
 
 void fn_800E4E3C(void *arg0) {
