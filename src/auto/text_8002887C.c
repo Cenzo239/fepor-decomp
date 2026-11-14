@@ -3185,7 +3185,7 @@ void MapUi_HandleRangeConfirm(void *proc) {
 }
 
 void fn_8002FBA8(s32 arg0) {
-    void *fn_80037D54(void *);
+    void *Unit_GetActiveItemPtr(void *);
     void fn_8002BEFC(void *, void *);
     void fn_8002C034(void *, void *);
     void fn_8002EB54(void *, s32);
@@ -3196,9 +3196,9 @@ void fn_8002FBA8(s32 arg0) {
     extern u8 lbl_802853EC[];
 
     if (gUiContext[8] == 0x27) {
-        fn_8002BEFC(*(void **)gUiContext, *(void **)fn_80037D54(*(void **)gUiContext));
+        fn_8002BEFC(*(void **)gUiContext, *(void **)Unit_GetActiveItemPtr(*(void **)gUiContext));
     } else {
-        fn_8002C034(*(void **)gUiContext, *(void **)fn_80037D54(*(void **)gUiContext));
+        fn_8002C034(*(void **)gUiContext, *(void **)Unit_GetActiveItemPtr(*(void **)gUiContext));
     }
     if ((s8)lbl_80367275 == 0) {
         *(void **)(lbl_802EFD88 + 4) = lbl_80285050;
@@ -4023,9 +4023,9 @@ extern "C" void fn_80032DB4(void *arg0, void *arg1) {
 }
 #pragma cplusplus reset
 void fn_80032F50(void) {
-    void fn_80037D54(void *);
+    void Unit_GetActiveItemPtr(void *);
     extern u8 gUiContext[24];
-    fn_80037D54(*(void **)gUiContext);
+    Unit_GetActiveItemPtr(*(void **)gUiContext);
 }
 
 s32 fn_80032F7C(s32 arg0, void *arg1) {

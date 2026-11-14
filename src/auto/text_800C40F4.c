@@ -16745,7 +16745,7 @@ u8 *arg0; u8 flags[8]; void **weapon; u8 *map; u8 *unit; s32 row; u8 *p; s32 id;
 if ((M2C_FIELD(arg,u16*,0x1A4)>>7 & 7) || (M2C_FIELD(arg,u8*,0x1A5)&7) || (M2C_FIELD(arg,u32*,0x1A0)&0x9D)) return 0;
 arg0=arg;
 Map_BuildUnitMoveRange(arg0,5,-1);
-weapon=(void **)fn_80037D54(arg0); if (!weapon || !*weapon) return 0;
+weapon=(void **)Unit_GetActiveItemPtr(arg0); if (!weapon || !*weapon) return 0;
 Allegiance_FillMask(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
@@ -17942,7 +17942,7 @@ s32 fn_800F7994(s32 arg0, s8 arg1, s8 arg2) {
 #pragma use_lmw_stmw on
 s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s32 fn_80230BBC(s32);
-    void **fn_80037D54(void *);
+    void **Unit_GetActiveItemPtr(void *);
     s32 fn_8001DD54(void *, void *);
     void *Terrain_GetEntry(u8);
     u8 Status_Test(s32, u32);
@@ -17975,7 +17975,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     unit = M2C_FIELD(arg3, u8 **, 4);
     dist = fn_80230BBC((s8) M2C_FIELD(unit, u8 *, 0x19F) - arg2);
     dist = dist + fn_80230BBC((s8) M2C_FIELD(unit, u8 *, 0x19E) - arg1);
-    temp = fn_80037D54(unit);
+    temp = Unit_GetActiveItemPtr(unit);
     if (temp == NULL) {
         goto fail;
     }

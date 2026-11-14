@@ -126,7 +126,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     void Prim2D_Begin(void);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     u8 Item_GetMaxRange(void);
-    u32 fn_80037D54(void *);
+    u32 Unit_GetActiveItemPtr(void *);
     u16 **fn_8006EDD8(s32, s32);
     void fn_80081E68(void *, void *, f32, f32);
     Color *Ui_GetColor(s32);
@@ -185,7 +185,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (((u8)arg1 == 1) && (fn_80037D54(arg0) == 0)) {
+    if (((u8)arg1 == 1) && (Unit_GetActiveItemPtr(arg0) == 0)) {
         fn_8001003C((s32)(lbl_80369524 + (lbl_803695C0 + x)), (s32)(lbl_803695C0 + y), 2, 0, 0, gUiStrings + 0x2DF, lbl_80369430, lbl_80369418);
     } else if (Str_Cmp(gUiStrings + 0x2EF, gUiStrings + 0x2E4) == 0) {
         if (val == 0) {
@@ -206,7 +206,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (((u8)arg1 == 1) && (fn_80037D54(arg0) == 0)) {
+    if (((u8)arg1 == 1) && (Unit_GetActiveItemPtr(arg0) == 0)) {
         fn_8001003C((s32)(lbl_80369524 + (lbl_803695A8 + x)), (s32)(lbl_803695C0 + y), 2, 0, 0, gUiStrings + 0x2DF, lbl_80369430, lbl_80369418);
     } else if (Str_Cmp(gUiStrings + 0x2F6, gUiStrings + 0x2E4) == 0) {
         if (val == 0) {
@@ -246,7 +246,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (((u8)arg1 == 1) && (fn_80037D54(arg0) == 0)) {
+    if (((u8)arg1 == 1) && (Unit_GetActiveItemPtr(arg0) == 0)) {
         fn_8001003C((s32)(lbl_80369524 + (lbl_803695C0 + x)), (s32)(lbl_803695B4 + y), 2, 0, 0, gUiStrings + 0x2DF, lbl_80369430, lbl_80369418);
     } else if (Str_Cmp(gUiStrings + 0x304, gUiStrings + 0x2E4) == 0) {
         if (val == 0) {
@@ -295,7 +295,7 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    if (((u8)arg1 == 1) && (fn_80037D54(arg0) == 0)) {
+    if (((u8)arg1 == 1) && (Unit_GetActiveItemPtr(arg0) == 0)) {
         fn_8001003C((s32)(lbl_80369524 + (lbl_80369594 + x)), (s32)(lbl_803695B4 + y), 2, 0, 0, gUiStrings + 0x2DF, lbl_80369430, lbl_80369418);
     } else if (Str_Cmp(gUiStrings + 0x2E4, gUiStrings + 0x2E4) == 0) {
         if ((s16)b == (s16)a) {

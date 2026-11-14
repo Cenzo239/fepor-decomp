@@ -123,10 +123,10 @@ void fn_80072810(void) {
 #pragma global_optimizer on
 void fn_8007285C(void) {
     void UnitRef_GetName(void);
-    void fn_80037D54(void *);
+    void Unit_GetActiveItemPtr(void *);
     void fn_80091A1C(void);
     extern u8 gUiContext[];
-    fn_80037D54(*(void **)gUiContext);
+    Unit_GetActiveItemPtr(*(void **)gUiContext);
     UnitRef_GetName();
     fn_80091A1C();
 }

@@ -1,17 +1,17 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
 static inline s32 get_4F128_id(void *arg0) {
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  s32 value=M2C_FIELD(arg0,s8 *,0x16C);
  if(value>=0)return value;
- return fn_8004ABD4(fn_80037D54(arg0),0);
+ return fn_8004ABD4(Unit_GetActiveItemPtr(arg0),0);
 }
 static inline void *get_4F128_resource(void *arg0,s32 value) {
   void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  u8 fn_8004AF74(void *,u8);
  void *fn_8004B078(void *,s32);
@@ -2187,7 +2187,7 @@ s32 fn_80037CCC(void *arg0) {
     return -1;
 }
 
-void *fn_80037D54(void *arg0) {
+void *Unit_GetActiveItemPtr(void *arg0) {
     s8 index;
     if ((((u8)M2C_FIELD(arg0, u8 *, 0x1D1) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1CC) != 0) index = 0;
     else if ((((u8)M2C_FIELD(arg0, u8 *, 0x1D9) >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1D4) != 0) index = 1;
@@ -3682,7 +3682,7 @@ s8 Unit_GetCarryWtLimit(void *arg0) {
     return var_r3;
 }
 
-void *fn_80037D54(void *);
+void *Unit_GetActiveItemPtr(void *);
 void *fn_80037C20(void *);
 s8 Unit_GetMaxHp(void *arg0)
 {
@@ -3706,7 +3706,7 @@ s8 Unit_GetMaxHp(void *arg0)
     }
 
     var_r6 = 0;
-    slot = fn_80037D54(arg0);
+    slot = Unit_GetActiveItemPtr(arg0);
     if (slot != NULL) {
         var_r6 = (s8)*(u8 *)((char *)*(void **)slot + 0x1F);
     }
@@ -11392,7 +11392,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_800056A0(s32);
     void DebugPrint(void *, ...);
     void *Res_GetByName(void *);
-    void *fn_80037D54(void *);
+    void *Unit_GetActiveItemPtr(void *);
     s32 fn_8004ABD4(void *, s32);
     void *fn_8004B078(void *, s32);
     s32 fn_8004B0C8(void *);
@@ -11510,7 +11510,7 @@ s32 fn_8004F128(void *arg0) {
   void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  u8 fn_8004AF74(void *,u8);
  void *fn_8004B078(void *,s32);
@@ -11549,17 +11549,17 @@ default: res=fn_8004B078(res,0);break;
 }
 
 static inline s32 get_4F5EC_id(void *arg0) {
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  s32 value=M2C_FIELD(arg0,s8 *,0x16C);
  if(value>=0) return value;
- return fn_8004ABD4(fn_80037D54(arg0),0);
+ return fn_8004ABD4(Unit_GetActiveItemPtr(arg0),0);
 }
 static inline void *get_4F5EC_resource(void *arg0) {
  void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  u8 fn_8004AF74(void *,u8);
  void *fn_8004B078(void *,s32);
@@ -11608,7 +11608,7 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
- void *fn_80037D54(void *);
+ void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
  u8 fn_8004AF74(void *,u8);
  void *fn_8004B078(void *,s32);
@@ -11707,7 +11707,7 @@ void fn_8004FE98(s32 arg0, s8 arg1) {
     if (unit->unk3 & 2) {
         var_r28 = unit->unk16C;
         if (var_r28 < 0) {
-            var_r28 = (s8)fn_8004ABD4((void **)fn_80037D54((void *)arg0), 0);
+            var_r28 = (s8)fn_8004ABD4((void **)Unit_GetActiveItemPtr((void *)arg0), 0);
         }
         var_r27 = unit->unk18C;
         if (unit->unk3 & 4) {
@@ -11753,7 +11753,7 @@ void fn_8004FE98(s32 arg0, s8 arg1) {
         temp_r30 = (u8 *)arg0 + 0x1C;
         var_r3_3 = unit->unk16C;
         if (var_r3_3 < 0) {
-            var_r3_3 = (s8)fn_8004ABD4((void **)fn_80037D54((void *)arg0), 0);
+            var_r3_3 = (s8)fn_8004ABD4((void **)Unit_GetActiveItemPtr((void *)arg0), 0);
         }
         var_r26 = unit->unk18C;
         if (unit->unk3 & 4) {

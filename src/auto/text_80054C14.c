@@ -116,7 +116,7 @@ void *fn_800A88E0(u32);
 
 #pragma global_optimizer on
 
-void *fn_80037D54(void *);
+void *Unit_GetActiveItemPtr(void *);
 void *fn_80037C20(void *);
 
 #pragma opt_peephole off

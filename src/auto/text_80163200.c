@@ -4843,7 +4843,7 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
     void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     s32 UnitRef_GetName(void);
-    void **fn_80037D54(void *);
+    void **Unit_GetActiveItemPtr(void *);
     s8 fn_8003A1E0(void *);
     s8 Unit_GetMov(void *);
     s8 Unit_GetMaxHp(void *);
@@ -4990,8 +4990,8 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
             if (*(void **)((u8 *)unit + 0x18C) != NULL) {
                 fn_8001003C((s32)(lbl_8036AAC8 + fx), (s32)(lbl_8036AACC + fy), 1, 1, 0, fn_800A8978(*(void **)((u8 *)unit + 0x18C)), lbl_8036AAB4, lbl_8036AA34);
             }
-            if (fn_80037D54(unit) != NULL) {
-                o = *fn_80037D54(unit);
+            if (Unit_GetActiveItemPtr(unit) != NULL) {
+                o = *Unit_GetActiveItemPtr(unit);
                 if (o != NULL) {
                     rank = *((u8 *)o + 0x15);
                 } else {
@@ -10477,7 +10477,7 @@ void *fn_80177CA4(void) {
 
 u8 fn_80177CB4(void) {
     u32 fn_80037C20(s32);
-    u32 fn_80037D54(s32);
+    u32 Unit_GetActiveItemPtr(s32);
     u8 Status_Test(s32, s32);
     u32 var_r31;
     s32 temp_r30;
@@ -10490,7 +10490,7 @@ u8 fn_80177CB4(void) {
         var_r31 = (u32)(-(s32)temp | temp) >> 31;
     } else {
         var_r31 = 0;
-        if (fn_80037D54(temp_r30) != 0 || fn_80037C20(temp_r30) != 0) {
+        if (Unit_GetActiveItemPtr(temp_r30) != 0 || fn_80037C20(temp_r30) != 0) {
             var_r31 = 1;
         }
     }

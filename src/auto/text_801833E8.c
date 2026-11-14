@@ -7582,7 +7582,7 @@ void fn_80196078(void) {
 }
 
 s32 fn_80196194(s32 arg0) {
-    void **fn_80037D54(void *);
+    void **Unit_GetActiveItemPtr(void *);
     void fn_80092528(void *, u8);
     void fn_80094A08(s32, s32);
     void Ui_OpenWeaponKindHelp(s8, s32, s32, s32, s32);
@@ -7594,7 +7594,7 @@ s32 fn_80196194(s32 arg0) {
     u8 kind;
 
     p = *(void **)gUiContext;
-    slot = fn_80037D54(p);
+    slot = Unit_GetActiveItemPtr(p);
     kind = ((obj = *slot) != NULL) ? ((u8 *)obj)[0x12] : 0xC;
     fn_80092528(p, kind);
     fn_80094A08((s32)p, *(s8 *)&gUiContext[0xA]);
@@ -7605,7 +7605,7 @@ s32 fn_80196194(s32 arg0) {
 }
 
 s32 fn_80196268(void *arg0) {
-    void *fn_80037D54(void *);
+    void *Unit_GetActiveItemPtr(void *);
     s32 Unit_GetWpnExp(void *, s32);
     s32 fn_80092C50(void *, s32, s32);
     s32 fn_8001CFA8(s32);
@@ -7617,7 +7617,7 @@ s32 fn_80196268(void *arg0) {
     s32 v1;
     s32 v2;
 
-    slot = fn_80037D54(arg0);
+    slot = Unit_GetActiveItemPtr(arg0);
     if (slot != NULL) {
         obj = *(void **)slot;
         if (obj == NULL) {
