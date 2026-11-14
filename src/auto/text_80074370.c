@@ -3207,46 +3207,26 @@ void fn_8007A198(void *arg0) {
 }
 
 void fn_8007A1A4(void *arg0) {
-    s32 r31;
-    s32 v;
-
-    if (*(s16 *)((u8 *)arg0 + 0x38) > 5) goto A;
-    v = *(s16 *)((u8 *)arg0 + 0x38);
-    r31 = 0;
-    if (v == 9) goto B;
-    if (v >= 9) goto C;
-    if (v >= 3) goto D;
-    if (v >= 0) goto E;
-    goto B;
-D:
-    if (v >= 6) goto F;
-    goto G;
-C:
-    if (v >= 0xB) goto B;
-    goto H;
-F:
-    r31 = 1;
-    goto B;
-G:
-    r31 = 2;
-    goto B;
-E:
-    r31 = 1;
-    goto B;
-H:
-    r31 = 1;
-    goto B;
-B:
-    Process_Goto(arg0, 1);
-    Face_DrawEyes(arg0, r31, 7);
-    Face_DrawEyes(arg0, r31, 10);
-    *(s16 *)((u8 *)arg0 + 0x38) = *(s16 *)((u8 *)arg0 + 0x38) + 1;
-    return;
-A:
-    Face_DrawEyes(arg0, 2, 7);
-    Face_DrawEyes(arg0, 2, 10);
-    if (*(s16 *)((u8 *)arg0 + 0x36) != 3) {
-        Process_Goto(arg0, 2);
+    void Process_Goto(void *, s32);
+    void Face_DrawEyes(void *, s32, s32);
+    s32 frame;
+    if (*(s16 *)((u8 *)arg0 + 0x38) <= 5) {
+        frame = 0;
+        switch (*(s16 *)((u8 *)arg0 + 0x38)) {
+        case 0: case 1: case 2: frame = 1; break;
+        case 3: case 4: case 5: frame = 2; break;
+        case 6: case 7: case 8: frame = 1; break;
+        case 9: break;
+        case 10: Process_Goto(arg0,1); break;
+        default: break;
+        }
+        Face_DrawEyes(arg0,frame,7);
+        Face_DrawEyes(arg0,frame,10);
+        ++*(s16 *)((u8 *)arg0 + 0x38);
+    } else {
+        Face_DrawEyes(arg0,2,7);
+        Face_DrawEyes(arg0,2,10);
+        if (*(s16 *)((u8 *)arg0+0x36) != 3) Process_Goto(arg0,2);
     }
 }
 
