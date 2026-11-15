@@ -9561,10 +9561,8 @@ void fn_80049D08(void *arg0) {
 }
 #pragma peephole on
 void fn_80049D30(s32 arg0) {
-    extern f32 lbl_80368EE4;
-    s32 temp_r3 = arg0 + 0x14;
-    void *temp_r0 = (void *)arg0;
-    fn_8005FEE8(temp_r3, lbl_80368EE4);
+    void fn_8005FEE8(s32, f32);
+    fn_8005FEE8(arg0 + 0x14, 0.0f);
 }
 
 s32 MapObj_IsVisible(void *arg0) {
