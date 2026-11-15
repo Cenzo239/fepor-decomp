@@ -1416,9 +1416,9 @@ void fn_80220A34(u32 arg0) {
 
 extern u16 *__peReg;
 void fn_80220A54(u8 arg0) {
-    u16 temp = __peReg[1];  // Access offset 2 (u16) which is the second u16 in the pointer
-    temp = (temp & ~0x10) | ((arg0 << 4) & 0x10);
-    __peReg[1] = temp;
+    u32 val = __peReg[1];
+    val = __rlwimi(val, arg0, 4, 27, 27);
+    __peReg[1] = val;
 }
 
 void fn_80220A6C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
