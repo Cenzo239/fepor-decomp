@@ -1402,9 +1402,8 @@ void fn_802209FC(void) {
 }
 
 void fn_80220A20(s32 arg0, u8 arg1) {
-    void *__peReg;
-    u16 val = (arg1 << 8) | (arg0 & 0xFFFFFF00);
-    M2C_FIELD(__peReg, u16 *, 0x0) = val;
+    extern volatile u16 *__peReg;
+    __peReg[3] = (arg0 << 8) | arg1;
 }
 
 void fn_80220A34(u32 arg0) {
