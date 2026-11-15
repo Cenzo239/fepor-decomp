@@ -870,23 +870,24 @@ s32 fn_80133FA4(void *arg0) {
 void Item_Copy(void *);
 void Ui_ConfirmChild_BindItem(void *arg0, void *arg1) {
  s32 positive=5; s32 negative=-5;
+ u8 *self=(u8*)arg0;
  Item_Copy((u8 *)arg0+0x60);
- M2C_FIELD(arg0,s8 *,84)=0;
- M2C_FIELD(arg0,s8 *,83)=0;
- M2C_FIELD(arg0,s8 *,82)=0;
- M2C_FIELD(arg0,s8 *,81)=0;
- M2C_FIELD(arg0,s8 *,81)=fn_8001C084(arg1);
- M2C_FIELD(arg0,s8 *,82)=fn_8001C040(arg1);
- M2C_FIELD(arg0,s8 *,83)=fn_8001BFFC(arg1);
- M2C_FIELD(arg0,s8 *,84)=fn_8001BFB8(arg1);
- M2C_FIELD(arg0,s8 *,85)=positive;
- M2C_FIELD(arg0,s8 *,89)=negative;
- M2C_FIELD(arg0,s8 *,86)=positive;
- M2C_FIELD(arg0,s8 *,90)=negative;
- M2C_FIELD(arg0,s8 *,87)=3;
- M2C_FIELD(arg0,s8 *,91)=-3;
- M2C_FIELD(arg0,s8 *,88)=positive;
- M2C_FIELD(arg0,s8 *,92)=negative;
+ M2C_FIELD(self,s8 *,84)=0;
+ M2C_FIELD(self,s8 *,83)=0;
+ M2C_FIELD(self,s8 *,82)=0;
+ M2C_FIELD(self,s8 *,81)=0;
+ M2C_FIELD(self,s8 *,81)=fn_8001C084(arg1);
+ M2C_FIELD(self,s8 *,82)=fn_8001C040(arg1);
+ M2C_FIELD(self,s8 *,83)=fn_8001BFFC(arg1);
+ M2C_FIELD(self,s8 *,84)=fn_8001BFB8(arg1);
+ M2C_FIELD(self,s8 *,85)=positive;
+ M2C_FIELD(self,s8 *,89)=negative;
+ M2C_FIELD(self,s8 *,86)=positive;
+ M2C_FIELD(self,s8 *,90)=negative;
+ M2C_FIELD(self,s8 *,87)=3;
+ M2C_FIELD(self,s8 *,91)=-3;
+ M2C_FIELD(self,s8 *,88)=positive;
+ M2C_FIELD(self,s8 *,92)=negative;
 }
 
 #pragma use_lmw_stmw on
@@ -1026,48 +1027,15 @@ done:
 }
 
 extern "C" void fn_80134280(void *arg0) {
-    s32 Item_GetByIid(u32);
-    s32 off;
-    s16 count;
-    s32 i;
-    s16 lim;
-    s32 limit;
-    void *base;
-    s32 unk;
-    u32 *p;
-
-    off = *(s32 *)((u8 *)arg0 + 0x4C);
-    count = 0;
-    i = 3;
-    off *= 0x48;
-    lim = *(s16 *)((u8 *)arg0 + 0x3E);
-    base = *(void **)((u8 *)arg0 + 0x50);
-    unk = 0;
-    limit = lim;
-    p = (u32 *)((u8 *)base + off);
-    for (; i != 0; i--) {
-        if (*p != 0) {
-            if (count++ == limit) {
-                goto end;
-            }
-        }
-        p += 2;
-        if (*p != 0) {
-            if (count++ == limit) {
-                goto end;
-            }
-        }
-        p += 2;
-        if (*p != 0) {
-            if (count++ == limit) {
-                goto end;
-            }
-        }
-        unk += 2;
-        p += 2;
-    }
-end:
-    Item_GetByIid(*p);
+s32 Item_GetByIid(u32);
+s32 off = *(s32 *)((u8*)arg0+0x4C)*0x48;
+s16 count=0;
+u16 lim=*(u16*)((u8*)arg0+0x3E);
+u32 *p=(u32*)(*(u8**)((u8*)arg0+0x50)+off);
+for(s32 i=0;i<9;i++,p+=2) {
+if(*p && count++==(s16)lim) break;
+}
+Item_GetByIid(*p);
 }
 
 #pragma cplusplus reset
@@ -2597,36 +2565,18 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
 
 #pragma cplusplus on
 extern "C" s32 fn_80136CD4(void *arg0) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3() = 0;
-        virtual s16 v4() = 0;
-        virtual s16 v5() = 0;
-        u8 pad[4];
-        s32 kind;
-        u8 pad2[0xC];
-        f32 scale;
-    };
-    Obj *self;
-    s16 v;
-
-    self = (Obj *)arg0;
-    switch (self->kind) {
-    case 0:
-    case 1:
-        v = self->v5();
-        break;
-    case 2:
-    case 3:
-        v = self->v4();
-        break;
-    default:
-        v = (s16)(s32)arg0;
-        break;
-    }
-    return (s32)(self->scale * (f32)v);
+ struct Obj {
+ virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+ virtual s16 v4()=0; virtual s16 v5()=0;
+ u8 pad[4]; s32 kind; u8 pad2[0xC]; f32 scale;
+ };
+ Obj *self=(Obj *)arg0;
+ s16 v;
+ switch(*(s32 *)((u8 *)arg0+8)) {
+ case 0: case 1: v=self->v5(); break;
+ case 2: case 3: v=self->v4(); break;
+ }
+ return (s32)(self->scale * (f32)v);
 }
 #pragma cplusplus reset
 s32 fn_80136D78(void) {
@@ -2708,22 +2658,25 @@ extern "C" s32 fn_80136E80(void *arg0) {
         f32 scale;
     };
     s32 kind;
+    Obj *self;
     s32 result;
 
     kind = *(s32 *)((u8 *)arg0 + 8);
+    self = (Obj *)arg0;
+
     switch (kind) {
     case 0:
     case 1:
-        result = ((Obj *)arg0)->v4();
+        result = self->v4();
         break;
     case 2:
     case 3:
-        result = ((Obj *)arg0)->v5();
+        result = self->v5();
         break;
     default:
         break;
     }
-    return (s32)(((Obj *)arg0)->scale * (f32)(s16)result);
+    return (s32)(self->scale * (f32)(s16)result);
 }
 #pragma cplusplus reset
 
@@ -7321,20 +7274,20 @@ extern "C" void fn_8013F0F0(void *arg0, void *arg1) {
         s32 refcount;
     };
     void List_Erase(void *, void *, void *);
-    u32 ret;
     void *found;
-    u8 *sentinel;
+    u32 ret;
     u8 *node;
+    u8 *sentinel;
 
     if (arg1 != NULL) {
         sentinel = (u8 *)arg0 + 0x40;
-        node = *(u8 **)((u8 *)arg0 + 0x44);
+        node = *(u8 **)(sentinel + 4);
         while (node != sentinel && *(void **)(node + 8) != arg1) {
             node = *(u8 **)(node + 4);
         }
         if (node != sentinel) {
-            found = node;
             *(s32 *)((u8 *)arg1 + 0x38) = 0;
+            found = node;
             List_Erase(&ret, (u8 *)arg0 + 0x3C, &found);
             if (arg1 != NULL) {
                 if (--((Obj *)arg1)->refcount == 0) {
