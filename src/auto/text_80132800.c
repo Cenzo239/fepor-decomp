@@ -4937,37 +4937,33 @@ extern "C" void Ui_ListSetCursor(void *arg0, s16 arg1) {
 void fn_8013B064(void *arg0, void *arg1) {
     void fn_800506E0(void *, s32, void *);
     void GActor_Finalize(void *);
-    void fn_800616A0(void);
+    void fn_800616A0(void *);
     void *GActor_Create(void);
     s32 fn_800639B4(void);
     void fn_8013BAD4(void *, void *, void *, void *);
-    void *self;
-    void *other;
-    void *sp14;
-    void *sp10;
-    void *spC;
-    void *sp8;
-
-    other = arg1;
-    self = arg0;
-    sp10 = other;
-    sp14 = NULL;
-    goto body;
-    do {
-        fn_800616A0();
-    body:
-        sp14 = GActor_Create();
-        *(s32 *)((u8 *)sp14 + 4) = (s32)other + 0x1C;
-        *(u32 *)sp14 = *(u32 *)sp14 | 0x50028400;
-        fn_800506E0(other, 0, sp14);
-        *(s32 *)((u8 *)sp14 + 0x44) = fn_800639B4();
-        GActor_Finalize(sp14);
-        spC = (u8 *)self + 0x74;
-        fn_8013BAD4(&sp8, (u8 *)self + 0x70, &spC, &sp10);
-    } while (0);
-    if (sp14 != NULL) {
-        fn_800616A0();
+    struct Entry {
+        void *unit;
+        void *actor;
+        
+    };
+    struct Entry entry;
+    void *end;
+    void *result;
+    entry.unit = arg1;
+    entry.actor = 0;
+    if (entry.actor) fn_800616A0(entry.actor);
+    entry.actor = GActor_Create();
+    *(void **)((u8 *)entry.actor + 4) = (u8 *)arg1 + 0x1C;
+    {
+        void *actor = entry.actor;
+        *(u32 *)actor |= 0x50028400;
+        fn_800506E0(arg1, 0, actor);
     }
+    *(s32 *)((u8 *)entry.actor + 0x44) = fn_800639B4();
+    GActor_Finalize(entry.actor);
+    end = (u8 *)arg0 + 0x74;
+    fn_8013BAD4(&result, (u8 *)arg0 + 0x70, &end, &entry);
+    if (entry.actor) fn_800616A0(entry.actor);
 }
 
 void fn_8013B120(void) {
