@@ -1435,9 +1435,8 @@ void fn_80220A6C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 
 extern u16* __peReg;
 void fn_80220AD0(u8 arg0) {
-    u16 val = __peReg[1];
-    val &= ~8;
-    val |= (arg0 & 1) << 3;
+    u32 val = __peReg[1];
+    val = __rlwimi(val, arg0, 3, 28, 28);
     __peReg[1] = val;
 }
 
