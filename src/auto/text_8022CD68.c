@@ -2675,12 +2675,15 @@ void strcpy(s32 arg0, s32 arg1) {
     }
 }
 
-s32 strlen(const char* str) {
-    const char* s = str - 1;
+s32 strlen(const char *str) {
+    const u8 *s = (const u8 *)str - 1;
+    s32 length = -1;
+    u32 c;
     do {
-        s++;
-    } while (*s != '\0');
-    return (s - str);
+        c = *++s;
+        ++length;
+    } while (c != 0);
+    return length;
 }
 
 void fn_80234524(s32 arg0) {
