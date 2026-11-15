@@ -1917,10 +1917,10 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
     void *Hash_Lookup(void *);
     void *p;
     s32 a;
-    s32 sum;
-    s32 b;
+        s32 b;
     s32 c;
     s32 d;
+ s32 sum;
 
     arg0 = Hash_Lookup(arg0);
     p = *(void **)((u8 *)arg0 + 0x14);
@@ -1930,7 +1930,7 @@ void fn_80108BD0(void *arg0, s32 x, s32 y, s32 w) {
     *(s16 *)((u8 *)p + 0x8) = a;
     c = sum - 4;
     d = y + 0x72;
-    sum = sum - 0x32;
+    sum -= 0x32;
     *(s16 *)((u8 *)p + 0xA) = b;
     a = x + 0x32;
     *(s16 *)((u8 *)p + 0xC) = c;
@@ -5737,15 +5737,14 @@ restart:
     n = *(s32 *)((u8 *)arg0 + 0x200);
     walk = (u8 *)arg0;
     i = 0;
-    if (n > 0) {
-        do {
+    for (; i < n; i++) {
             if (arg1 == (s8)walk[0] && arg2 == (s8)walk[1] && (arg3 == 0 || arg3 == walk[2])) {
                 u8 *dst = (u8 *)arg0 + (i << 3);
                 s32 j = i;
                 while (j < *(s32 *)((u8 *)arg0 + 0x200) - 1) {
                     u8 *src;
+                    src = (u8 *)arg0 + ((j + 1) << 3);
                     j = j + 1;
-                    src = (u8 *)arg0 + (j << 3);
                     dst[0] = src[0];
                     dst[1] = src[1];
                     dst[2] = src[2];
@@ -5760,8 +5759,6 @@ restart:
                 goto restart;
             }
             walk = walk + 8;
-            i = i + 1;
-        } while (--n != 0);
     }
 }
 
@@ -5866,44 +5863,11 @@ done:
 
 #pragma peephole off
 s32 fn_80110094(void) {
-    extern u32 lbl_8032BD5C[32];
-    u32 *p = lbl_8032BD5C;
-    s32 ret;
-
-    p[0] = 0;
-    ret = 1;
-    p[1] = 0;
-    p[2] = 0;
-    p[3] = 0;
-    p[4] = 0;
-    p[5] = 0;
-    p[6] = 0;
-    p[7] = 0;
-    p[8] = 0;
-    p[9] = 0;
-    p[10] = 0;
-    p[11] = 0;
-    p[12] = 0;
-    p[13] = 0;
-    p[14] = 0;
-    p[15] = 0;
-    p[16] = 0;
-    p[17] = 0;
-    p[18] = 0;
-    p[19] = 0;
-    p[20] = 0;
-    p[21] = 0;
-    p[22] = 0;
-    p[23] = 0;
-    p[24] = 0;
-    p[25] = 0;
-    p[26] = 0;
-    p[27] = 0;
-    p[28] = 0;
-    p[29] = 0;
-    p[30] = 0;
-    p[31] = 0;
-    return ret;
+extern u32 lbl_8032BD5C[32];
+u32 *p=lbl_8032BD5C;
+p[0]=0;
+p[31] = p[30] = p[29] = p[28] = p[27] = p[26] = p[25] = p[24] = p[23] = p[22] = p[21] = p[20] = p[19] = p[18] = p[17] = p[16] = p[15] = p[14] = p[13] = p[12] = p[11] = p[10] = p[9] = p[8] = p[7] = p[6] = p[5] = p[4] = p[3] = p[2] = p[1] = 0;
+return 1;
 }
 #pragma peephole reset
 #include "global.h"
