@@ -5042,52 +5042,57 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 }
 #pragma cplusplus reset
 
-void fn_8013B254(void *arg0) {
-    s16 zero;
-    s16 x0;
-    s16 x1;
-    s16 y0;
-    s16 y1;
-    s32 dx;
-    s16 dy;
-    s16 a;
-    s16 c;
-    s16 e;
-    s16 new_a;
-    void *q;
-    void *p;
-
-    zero = 0;
-    M2C_FIELD(arg0, s16 *, 0x64) = (s16)(M2C_FIELD(arg0, s16 *, 0x64) + 8);
-
-    x0 = M2C_FIELD(arg0, s16 *, 0x12);
-    x1 = M2C_FIELD(arg0, s16 *, 0x16);
-    M2C_FIELD(arg0, s16 *, 0x92) = (s16)(((s16)(x1 - x0) >> 1) - 0x20);
-    M2C_FIELD(arg0, s16 *, 0x94) = zero;
-    M2C_FIELD(arg0, s16 *, 0x96) = zero;
-
-    x0 = M2C_FIELD(arg0, s16 *, 0x12);
-    x1 = M2C_FIELD(arg0, s16 *, 0x16);
-    y0 = M2C_FIELD(arg0, s16 *, 0x14);
-    dx = (s16)(x1 - x0);
-    y1 = M2C_FIELD(arg0, s16 *, 0x18);
-    dy = y1 - y0;
-    M2C_FIELD(arg0, s16 *, 0xBA) = (s16)((dx >> 1) - 0x20);
-    M2C_FIELD(arg0, s16 *, 0xBC) = dy;
-    M2C_FIELD(arg0, s16 *, 0xBE) = zero;
-
-    q = M2C_FIELD(arg0, void **, 0x48);
-    M2C_FIELD(q, s32 *, 0x48) = zero;
-    p = M2C_FIELD(arg0, void **, 0x48);
-    a = M2C_FIELD(p, s16 *, 0xA);
-    e = M2C_FIELD(p, s16 *, 0xE);
-    new_a = (s16)(a - 0x20);
-    c = M2C_FIELD(p, s16 *, 0xC);
-    M2C_FIELD(p, s16 *, 0xE) = (s16)(new_a + (s16)(e - a));
-    M2C_FIELD(p, s16 *, 0xA) = new_a;
-    x0 = M2C_FIELD(p, s16 *, 0xC);
-    x1 = M2C_FIELD(p, s16 *, 0x10);
-    M2C_FIELD(p, s16 *, 0x10) = (s16)(c + (s16)(x1 - x0));
+void fn_8013B254(void *arg0)
+{
+  s16 top;
+  s16 zero;
+  s16 x0;
+  s16 x1;
+  s16 y0;
+  void *child;
+  s16 y1;
+  s32 dx;
+  s16 *left_ptr;
+  s16 left;
+  s16 dy;
+  s16 a;
+  s16 c;
+  s16 e;
+  s16 new_a;
+  void *q;
+  void *p;
+  zero = 0;
+  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
+  left = *((s16 *) (((s8 *) arg0) + 0x12));
+  x0 = left;
+  x1 = *((s16 *) (((s8 *) arg0) + 0x16));
+  *((s16 *) (((s8 *) arg0) + 0x92)) = (s16) ((((s16) (x1 - x0)) >> 1) - 0x20);
+  *((s16 *) (((s8 *) arg0) + 0x94)) = zero;
+  left_ptr = &(*((s16 *) (((s8 *) arg0) + 0x12)));
+  *((s16 *) (((s8 *) arg0) + 0x96)) = zero;
+  x0 = *left_ptr;
+  x1 = *((s16 *) (((s8 *) arg0) + 0x16));
+  y0 = *((s16 *) (((s8 *) arg0) + 0x14));
+  dx = (s16) (x1 - x0);
+  y1 = *((s16 *) (((s8 *) arg0) + 0x18));
+  dy = y1 - y0;
+  *((s16 *) (((s8 *) arg0) + 0xBA)) = (s16) ((dx >> 1) - 0x20);
+  *((s16 *) (((s8 *) arg0) + 0xBC)) = dy;
+  *((s16 *) (((s8 *) arg0) + 0xBE)) = zero;
+  q = *((void **) (((s8 *) arg0) + 0x48));
+  *((s32 *) (((s8 *) q) + 0x48)) = zero;
+  p = *((void **) (((s8 *) arg0) + 0x48));
+  a = *((s16 *) (((s8 *) p) + 0xA));
+  e = *((s16 *) (((s8 *) p) + 0xE));
+  top = *((s16 *) (((s8 *) p) + 0xC));
+  new_a = (s16) (a - 0x20);
+  c = top;
+  *((s16 *) (((s8 *) p) + 0xE)) = (s16) (new_a + ((s16) (e - a)));
+  *((s16 *) (((s8 *) p) + 0xA)) = new_a;
+  x0 = *((s16 *) (((s8 *) p) + 0xC));
+  child = p;
+  x1 = *((s16 *) (((s8 *) child) + 0x10));
+  *((s16 *) (((s8 *) child) + 0x10)) = (s16) (c + ((s16) (x1 - x0)));
 }
 
 void fn_8013B308(void) {
@@ -7219,48 +7224,32 @@ void *fn_8013EFCC(void *arg0, s16 arg1) {
 
 #pragma cplusplus on
 extern "C" void *fn_8013F038(void *arg0, s16 arg1, u8 arg2) {
-    struct Item {
-        virtual ~Item();
-        virtual void *find(s16, u8);
-        u8 pad[4];
-        s16 id;
+    struct Item { virtual ~Item(); virtual void *find(s16, u8); u8 pad[4]; s16 id; };
+    struct Node { Node *next; void *pad; Item *item; };
+    struct Iter {
+        Node *node;
+        Iter(Node *n) : node(n) {}
+        Iter(const Iter &other) : node(other.node) {}
+        ~Iter() {}
     };
-    struct Node {
-        Node *next;
-        void *pad;
-        Item *item;
-    };
-    Node *slots[8];
-    Node *it;
-    Node *head;
-    Item *res;
-    Item *item;
-
-    it = (Node *)((char *)arg0 + 0x40);
-    slots[0] = it;
-    res = (Item *)0;
-    slots[1] = it;
-    slots[2] = it;
-    head = *(Node **)((char *)arg0 + 0x44);
-    slots[3] = it;
-    slots[4] = head;
-    slots[5] = head;
-    slots[6] = head;
-    slots[7] = head;
-
-    while (it != head) {
-        item = it->next->item;
-        if (arg1 == item->id) {
-            res = item;
-            break;
-        }
-        if (arg2 != 0) {
+    Iter begin((Node *)((char *)arg0 + 0x40));
+    Iter first(begin);
+    Iter current(first);
+    Iter it(current);
+    Iter end(*(Node **)((char *)arg0 + 0x44));
+    Iter last(end);
+    Iter finish(last);
+    Iter stop(finish);
+    Node *cursor = it.node;
+    Item *res = 0;
+    while (cursor != stop.node) {
+        Item *item = cursor->next->item;
+        if (arg1 == item->id) { res = item; break; }
+        if (arg2) {
             res = (Item *)item->find(arg1, arg2);
-            if (res != 0) {
-                break;
-            }
+            if (res) break;
         }
-        it = it->next;
+        cursor = cursor->next;
     }
     return res;
 }
@@ -7668,55 +7657,33 @@ List_Insert(&tempC,self+0x34,&end,&key);
 
 #pragma cplusplus on
 extern "C" void *Ui_FindChild(void *arg0, s16 arg1, u8 arg2) {
-    struct Item {
-        virtual ~Item();
-        virtual void *find(s16, u8);
-        u8 pad[4];
-        s16 id;
+    struct Item { virtual ~Item(); virtual void *find(s16, u8); u8 pad[4]; s16 id; };
+    struct Node { Node *next; void *pad; Item *item; };
+    struct Iter {
+        Node *node;
+        Iter(Node *n) : node(n) {}
+        Iter(const Iter &other) : node(other.node) {}
+        ~Iter() {}
     };
-    struct Node {
-        Node *next;
-        void *pad;
-        Item *item;
-    };
-    struct Bundle {
-        Node *a, *b, *c, *d;
-    };
-    Node *it;
-    Node *head;
-    Item *res;
-    Item *item;
-    Bundle b0;
-    Bundle b1;
-
-    it = (Node *)((char *)arg0 + 0x38);
-    b0.a = it;
-    res = (Item *)0;
-    b0.b = it;
-    b0.c = it;
-    head = *(Node **)((char *)arg0 + 0x3C);
-    b0.d = it;
-    b1.a = head;
-    b1.b = head;
-    b1.c = head;
-    b1.d = head;
-
-    while (it != head) {
-        item = it->next->item;
-        if (arg1 == item->id) {
-            res = item;
-            break;
-        }
-        if (arg2 != 0) {
+    Node *cursor = (Node *)((char *)arg0 + 0x38);
+    Iter begin(cursor);
+    Iter first(begin);
+    Iter current(first);
+    Iter it(current);
+    Iter end(*(Node **)((char *)arg0 + 0x3C));
+    Iter last(end);
+    Iter finish(last);
+    Iter stop(finish);
+    Item *res = 0;
+    while (cursor != stop.node) {
+        Item *item = cursor->next->item;
+        if (arg1 == item->id) { res = item; break; }
+        if (arg2) {
             res = (Item *)item->find(arg1, arg2);
-            if (res != 0) {
-                break;
-            }
+            if (res) break;
         }
-        it = it->next;
+        cursor = cursor->next;
     }
-    (void)b0;
-    (void)b1;
     return res;
 }
 #pragma cplusplus reset
