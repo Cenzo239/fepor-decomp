@@ -1408,16 +1408,10 @@ void fn_80220A20(s32 arg0, u8 arg1) {
 
 void fn_80220A34(u32 arg0) {
     extern u8 *__peReg;
-    u32 value;
-    u32 one;
-
-    value = 0;
-    value |= (u32)__peReg & 3;
-    one = 1;
-    value |= (one << 2) & 4;
-    value |= arg0 & 3;
-
-    *(u16 *)(__peReg + 0x8) = (u16)value;
+    u32 value = 0;
+    value = __rlwimi(value, arg0, 0, 30, 31);
+    value = __rlwimi(value, 1, 2, 29, 29);
+    *(u16 *)(__peReg + 8) = value;
 }
 
 extern u16 *__peReg;
