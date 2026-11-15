@@ -1449,10 +1449,9 @@ void fn_80220AE8(u8 arg0, u8 arg1) {
 }
 
 void fn_80220B0C(u8 arg0) {
-    u16 val = *__peReg;
-    val &= ~4;
-    val |= (arg0 << 2) & 4;
-    *__peReg = val;
+    u32 val = __peReg[1];
+    val = __rlwimi(val, arg0, 2, 29, 29);
+    __peReg[1] = val;
 }
 
 void fn_80220B24(u8 arg0, s32 arg1, s32 arg2) {
