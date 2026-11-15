@@ -2285,24 +2285,29 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     }
 
     cont = 1;
-    if (c == 'h') {
+    switch (c) {
+    case 'h':
         f.size = 2;
         if ((s8)p[1] == 'h') {
             f.size = 1;
             c = (s8)p[1];
             p += 1;
         }
-    } else if (c == 'l') {
+    break;
+    case 'l':
         f.size = 3;
         if ((s8)p[1] == 'l') {
             f.size = 4;
             c = (s8)p[1];
             p += 1;
         }
-    } else if (c == 'L') {
+    break;
+    case 'L':
         f.size = 5;
-    } else {
+        break;
+    default:
         cont = 0;
+        break;
     }
     if (cont != 0) {
         c = (s8)*++p;
@@ -2312,6 +2317,10 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
     switch (c) {
     case 'd':
     case 'i':
+    case 'o':
+    case 'u':
+    case 'x':
+    case 'X':
         if (f.size == 5) {
             f.conv = 0xFF;
         } else if (f.prec_set == 0) {
@@ -2320,27 +2329,14 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
             f.just = 1;
         }
         break;
-    case 'o':
-    case 'u':
-    case 'x':
-    case 'X':
-        if (f.size == 2 || f.size == 4) {
-            f.conv = 0xFF;
-        } else if (f.prec_set == 0) {
-            f.precision = 6;
-        }
-        break;
     case 'f':
     case 'F':
     case 'e':
     case 'E':
-    case 'g':
-    case 'G':
-        if (f.prec_set == 0) {
-            f.precision = 6;
-        }
-        if (f.size == 2 || f.size == 4 || f.size == 1) {
+        if (f.size == 2 || f.size == 4) {
             f.conv = 0xFF;
+        } else if (f.prec_set == 0) {
+            f.precision = 6;
         }
         break;
     case 'a':
@@ -2351,6 +2347,12 @@ char *parse_format_80233B44(char *format, void *ap, void *out)
         if (f.size == 2 || f.size == 4 || f.size == 1) {
             f.conv = 0xFF;
         }
+        break;
+    case 'g':
+    case 'G':
+        if (f.precision == 0) f.precision = 1;
+        if (f.size == 2 || f.size == 4 || f.size == 1) f.conv = 0xFF;
+        else if (f.prec_set == 0) f.precision = 6;
         break;
     case 'p':
         f.conv = 'x';
@@ -3460,13 +3462,12 @@ f64 fn_802360C4(f64 farg0, f64 farg1) {
 }
 
 f64 fn_802380A8(f64 farg0, f64 farg1) {
-    f64 sp10;
-    f64 sp8;                                        /* compiler-managed */
-
-    sp8 = farg0;
-    sp10 = farg1;
-    sp8 = (M2C_BITWISE(s32, sp10) & ~0x7FFFFFFF) | (M2C_BITWISE(s32, sp8) & 0x7FFFFFFF);
-    return M2C_BITWISE(f64, sp8);
+    f64 y;
+    f64 x;
+    x = farg0;
+    y = farg1;
+    *(u32*)&x = (*(u32*)&x & 0x7FFFFFFF) | (*(u32*)&y & 0x80000000);
+    return x;
 }
 
 void fn_802380D0(void* arg0, s32 arg1, s32 arg2) {
