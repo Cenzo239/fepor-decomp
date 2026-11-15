@@ -96,36 +96,17 @@ void Obj_EaseTintProc(void *proc) {
 }
 
 void fn_80120F0C(void) {
-    extern u16 gUiPanelFlags;
-    extern u32 lbl_80367110;
-    extern u8 gUiTooltipProc[];
-
-    void *Process_Find(void *);
-    void fn_8000C60C(void);
-    void Process_ClearFunc(void);
-
-    u16 b;
-    u16 a;
-    u16 *p;
-
-    p = &gUiPanelFlags;
-    a = gUiPanelFlags;
-    b = *(u16 *)((s8 *)p + 2);
-
-    lbl_80367110 |= 2;
-
-    if (!(a & 0x40)) {
-        if (Process_Find(gUiTooltipProc) != NULL) {
-            if (lbl_80367110 & 3) {
-                fn_8000C60C();
-            } else {
-                Process_ClearFunc();
-            }
-        }
-    }
-
-    gUiPanelFlags = a;
-    *(u16 *)((s8 *)p + 2) = b;
+extern u16 gUiPanelFlags; extern u32 gUiInputFlags; extern u8 gUiTooltipProc[];
+void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(void);
+u16 saved[2];
+u16 *p=&gUiPanelFlags;
+saved[1]=p[1]; saved[0]=gUiPanelFlags;
+gUiInputFlags |= 2;
+if(!(saved[0]&0x40)) {
+if(Process_Find(gUiTooltipProc)!=0) {
+if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
+}}
+gUiPanelFlags=saved[0]; p[1]=saved[1];
 }
 
 void fn_80120F94(void)
@@ -154,18 +135,17 @@ void fn_80120F94(void)
 void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     void *Process_Find(void *);
     void Process_Unlink(void *);
-    void *Process_Create(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     void *fn_8007C378(void *);
     void strcpy(char *, char *);
     u8 Text_MeasureWidth(void *, s32, f32);
-    extern u8 gUiTooltipProc[];
+    extern u8 lbl_80290200[];
     extern u16 gUiPanelFlags;
     extern f32 lbl_8036A268;
     void *obj;
     f32 scale;
-    s32 n;
 
-    obj = Process_Find(gUiTooltipProc);
+    obj = Process_Find(lbl_80290200);
     if (obj) {
         if (*(void **)((u8 *)obj + 0x44) == arg0) {
             if (*(s16 *)((u8 *)obj + 0x48) == arg1) {
@@ -179,14 +159,13 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     if (gUiPanelFlags & 0x40) {
         return;
     }
-    obj = Process_Create(gUiTooltipProc, arg3);
+    obj = fn_8000CAF0(lbl_80290200, arg3);
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
     scale = lbl_8036A268;
-    n = -1;
     *(s16 *)((u8 *)obj + 0x4A) = arg2;
-    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, n, scale);
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, -1, scale);
 }
 #pragma global_optimizer reset
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
@@ -312,26 +291,24 @@ void fn_801213EC(void *arg0) {
 #pragma opt_unroll off
 #pragma opt_common_subs off
 void fn_80121414(void) {
-    extern u8 lbl_8032BDE8[];
-    s32 i;
-    s32 ctr;
-
-    i = 0;
-    *(u32 *)(lbl_8032BDE8 + 0x4000) = i;
-    *(u32 *)(lbl_8032BDE8 + 0x4004) = i;
-    *(u8 *)(lbl_8032BDE8 + 0x400C) = i;
-    for (ctr = 0x20; ctr != 0; ctr--) {
-        lbl_8032BDE8[(u8)(i + 0x100) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x101) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x102) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x103) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x104) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x105) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x106) << 6] = 0;
-        lbl_8032BDE8[(u8)(i + 0x107) << 6] = 0;
-        i += 8;
-    }
-}
+extern u8 lbl_8032BDE8[];
+u32 i;
+s32 ctr;
+i=0;
+*(u32 *)(lbl_8032BDE8+0x4000)=i;
+*(u32 *)(lbl_8032BDE8+0x4004)=i;
+lbl_8032BDE8[0x400c]=i;
+for(;i<256;) {
+lbl_8032BDE8[(u8)(i+0x100)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x101)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x102)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x103)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x104)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x105)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x106)<<6]=0;
+lbl_8032BDE8[(u8)(i+0x107)<<6]=0;
+i+=8;
+}}
 #pragma opt_common_subs reset
 #pragma opt_unroll reset
 void fn_80121630(void* arg0)
@@ -1123,17 +1100,12 @@ void *fn_80122CE0(void *arg0)
   do
   {
     p = fn_800C42D8(0x44);
- do { if (p == NULL) { break; } *((u8 *) p) = new_var; *((void **) (((u8 *) p) + 0x40)) = p; } while (0);
+ if (p != NULL) { *((u8 *)p) = new_var; *((void **)((u8 *)p + 0x40)) = p; }
     i += 1;
-    if (i != 0)
-    {
-      *((void **) (((u8 *) walk) + 0x30)) = p;
-    }
+    *((void **) (((u8 *) walk) + 0x30)) = p;
     walk = ((u8 *) walk) + 4;
   }
   while (i < 5);
-  a++;
-  a--;
   return self;
 }
 
@@ -1307,7 +1279,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 
 void fn_8012323C(void *arg0) {
     extern f32 lbl_8036A2DC;
-    f64 sin(f64);
+    f64 fn_80238638(f64);
     extern f64 lbl_8036A2E0;
     extern f32 lbl_8036A2E8;
     register f32 halfpi;
@@ -1316,10 +1288,10 @@ void fn_8012323C(void *arg0) {
     f32 sin_v;
 
     if (M2C_FIELD(arg0, s32 *, 0x90) > 0) {
-        cos_v = (f32)sin(M2C_FIELD(arg0, f32 *, 0x84));
+        cos_v = (f32)fn_80238638(M2C_FIELD(arg0, f32 *, 0x84));
         halfpi = lbl_8036A2DC;
         M2C_FIELD(arg0, f32 *, 0x88) = M2C_FIELD(arg0, f32 *, 0x78) * cos_v;
-        sin_v = (f32)sin(halfpi + M2C_FIELD(arg0, f32 *, 0x84));
+        sin_v = (f32)fn_80238638(halfpi + M2C_FIELD(arg0, f32 *, 0x84));
         clamp = lbl_8036A2E8;
         M2C_FIELD(arg0, f32 *, 0x8C) = (f32)(lbl_8036A2E0 * (f64)(M2C_FIELD(arg0, f32 *, 0x78) * sin_v));
         M2C_FIELD(arg0, f32 *, 0x84) = M2C_FIELD(arg0, f32 *, 0x84) + M2C_FIELD(arg0, f32 *, 0x7C);
@@ -2586,9 +2558,9 @@ void fn_80125AE0(void *arg0)
   double new_var;
   if (fn_800AA188() != 0)
   {
+    limit = lbl_8036A398;
     a = *((f32 *) (((char *) arg0) + 0x4C));
     b = *((f32 *) (((char *) arg0) + 0x34));
-    limit = lbl_8036A398;
     *((f32 *) (((char *) arg0) + 0x4C)) = a + b;
     a = *((f32 *) (((char *) arg0) + 0x4C));
     if (a >= limit)
@@ -2772,31 +2744,24 @@ void fn_80125EB8(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80125F3C(void *arg0) {
-    void *Map_Get(void);
-    void fn_80046360(void *, s32, void *, s32, s32, s32);
-    void *fn_8006D948(void *);
-    s32 fn_80125BB0(void);
-    extern u8 lbl_80274F74[];
-    extern f32 lbl_8036A30C;
-    extern f32 lbl_8036A35C;
-    extern f32 lbl_8036A3B8;
-
-    f32 f2;
-    f32 f1;
-    f32 f0;
-
-    f2 = lbl_8036A30C;
-    f1 = lbl_8036A35C;
-    f0 = lbl_8036A3B8;
-    *(f32 *)((u8 *)arg0 + 0x4C) = f2;
-    *(f32 *)((u8 *)arg0 + 0x50) = f2;
-    *(f32 *)((u8 *)arg0 + 0x34) = f1;
-    *(f32 *)((u8 *)arg0 + 0x38) = f1;
-    *(f32 *)((u8 *)arg0 + 0x3C) = f0;
-    *(f32 *)((u8 *)arg0 + 0x40) = f2;
-    *((u8 *)arg0 + 0x49) = 0;
-    *(void **)((u8 *)arg0 + 0x54) = fn_8006D948(lbl_80274F74 + 0x84);
-    fn_80046360(Map_Get(), 0, (void *)fn_80125BB0, 0, 0x80, 0x8000);
+void *Map_Get(void); void fn_80046360(void *,s32,void *,s32,s32,s32);
+void *fn_8006D948(void *); s32 fn_80125BB0(void);
+extern u8 lbl_80274F74[]; extern f32 lbl_8036A30C,lbl_8036A35C,lbl_8036A3B8;
+f32 f0;
+f32 f1;
+f32 f2;
+f2=lbl_8036A30C;
+*(f32 *)((u8 *)arg0+0x4c)=f2;
+*(f32 *)((u8 *)arg0+0x50)=f2;
+f1=lbl_8036A35C;
+*(f32 *)((u8 *)arg0+0x34)=f1;
+*(f32 *)((u8 *)arg0+0x38)=f1;
+f0=lbl_8036A3B8;
+*(f32 *)((u8 *)arg0+0x3c)=f0;
+*(f32 *)((u8 *)arg0+0x40)=f2;
+*((u8 *)arg0+0x49)=0;
+*(void **)((u8 *)arg0+0x54)=fn_8006D948(lbl_80274F74+0x84);
+fn_80046360(Map_Get(),0,(void *)fn_80125BB0,0,0x80,0x8000);
 }
 #pragma global_optimizer reset
 void fn_80125FC8(void *arg0) {
