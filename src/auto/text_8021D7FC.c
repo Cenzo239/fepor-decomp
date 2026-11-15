@@ -1458,24 +1458,19 @@ void fn_80220B0C(u8 arg0) {
 }
 
 void fn_80220B24(u8 arg0, s32 arg1, s32 arg2) {
-    u16 val = 0;
-    val |= (arg0 & 1) << 0;   // bit 0
-    val |= (arg1 & 7) << 1;   // bits 1-3
-    val |= (arg2 & 1) << 4;   // bit 4
+    u32 val = 0;
+    val = __rlwimi(val, (u32)arg0, 0, 31, 31);
+    val = __rlwimi(val, arg1, 1, 28, 30);
+    val = __rlwimi(val, arg2, 4, 27, 27);
     *__peReg = val;
 }
 
 void fn_80220B44(u16 arg0, s32 arg1, s32 *arg2) {
-    u32 temp;
-    u16 a = arg0 & 0xFFFF;
-    s32 b = arg1 & 0xFFF;
-    
-    temp = 0xC8000000 | (a << 2);
-    temp &= ~0x3FF000;
-    temp |= (b << 12);
-    temp &= ~0xC00000;
-    temp |= 0x400000;
-    *arg2 = *(s32*)temp;
+    u32 addr = 0xC8000000;
+    addr = __rlwimi(addr, arg0, 2, 20, 29);
+    addr = __rlwimi(addr, arg1, 12, 10, 19);
+    addr = __rlwimi(addr, 1, 22, 8, 9);
+    *arg2 = *(s32 *)addr;
 }
 
 s32 fn_80220B68(s32 arg0) {
