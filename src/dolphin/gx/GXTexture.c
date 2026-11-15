@@ -423,7 +423,7 @@ u8 fn_80222AA8(void *arg0) {
 
 u8 fn_80222AC0(u32 *arg0) {
     extern M2C_UNK lbl_80367050;
-    return *(&lbl_80367050 + (((u32) *arg0 >> 5U) & 7));
+    return ((u8 *)&lbl_80367050)[(*arg0 >> 5) & 7];
 }
 
 void fn_80222AD4(void* obj, void* obj2, s32 arg2)
