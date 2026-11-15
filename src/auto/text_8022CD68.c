@@ -2485,24 +2485,14 @@ loop_3:
 }
 
 void *strchr(void *arg0, u8 arg1) {
-    u8 temp_r4;
-    void *var_r3;
-
-    var_r3 = arg0;
-loop_2:
-    temp_r4 = *(u8*)var_r3;
-    if (temp_r4 == 0) {
-        if (arg1 != 0) {
-            return NULL;
-        }
-        /* Duplicate return node #6. Try simplifying control flow for better match */
-        return var_r3;
+    u8 *p = (u8 *)arg0 - 1;
+    u32 needle = arg1;
+    u32 c;
+    while ((c = *++p) != 0) {
+        if (c == needle) return p;
     }
-    if (temp_r4 != arg1) {
-        var_r3 = (u8*)var_r3 + 1;
-        goto loop_2;
-    }
-    return var_r3;
+    if (needle == 0) return p;
+    return NULL;
 }
 
 s32 Str_NCmp(u8 *arg0, u8 *arg1, u32 arg2) {
