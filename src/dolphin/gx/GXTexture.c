@@ -857,14 +857,9 @@ void fn_802237BC(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void fn_802238A8(u8 arg0) {
-    u16* gxData = (u16*)__GXData;
-    u16 temp = gxData[0x102];
-    temp = (temp & ~0x7000) | ((arg0 << 16) & 0x7000);
-    gxData[0x102] = temp;
-    
-    temp = gxData[0x2D6];
-    temp = temp | 0x6;
-    gxData[0x2D6] = temp;
+    u32 *gxData = (u32 *)__GXData;
+    gxData[0x204 / 4] = __rlwimi(gxData[0x204 / 4], (u32)arg0, 16, 13, 15);
+    gxData[0x5AC / 4] |= 6;
 }
 
 void fn_802238CC(s32 arg0) {
