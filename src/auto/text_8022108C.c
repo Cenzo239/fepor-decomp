@@ -258,33 +258,13 @@ void fn_8022142C(u32 arg0) {
     M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC), 0, 12, 18, 19);
 }
 
-void fn_80221450(u32 arg0)
-{
-    u8 *gx;
-    u32 value;
-    u32 flag0;
-    u32 flag1;
-
-    gx = (u8 *)__GXData;
-
-    flag0 = ((arg0 & 1) == 1);
-    flag1 = ((arg0 & 2) == 2);
-
-    value = *(u32 *)(gx + 0x1EC);
-    value = (value & ~1U) | flag0;
-    *(u32 *)(gx + 0x1EC) = value;
-
-    value = *(u32 *)(gx + 0x1EC);
-    value = (value & ~2U) | (flag1 << 1);
-    *(u32 *)(gx + 0x1EC) = value;
-
-    value = *(u32 *)(gx + 0x1FC);
-    value = (value & ~1U) | flag0;
-    *(u32 *)(gx + 0x1FC) = value;
-
-    value = *(u32 *)(gx + 0x1FC);
-    value = (value & ~2U) | (flag1 << 1);
-    *(u32 *)(gx + 0x1FC) = value;
+void fn_80221450(u32 arg0) {
+    u8 flag0 = ((arg0 & 1) == 1);
+    u8 flag1 = ((arg0 & 2) == 2);
+    M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), flag0, 0, 31, 31);
+    M2C_FIELD(__GXData, u32 *, 0x1EC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1EC), flag1, 1, 30, 30);
+    M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC), flag0, 0, 31, 31);
+    M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC), flag1, 1, 30, 30);
 }
 
 #pragma use_lmw_stmw on
