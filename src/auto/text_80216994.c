@@ -2714,14 +2714,12 @@ s32 CARDCreateAsync(s32 chan, char *name, u32 size, void *fileInfo, void *callba
 }
 #pragma use_lmw_stmw reset
 
-void fn_8021C3D8(s32 arg0) {
-    s32 CARDCreateAsync(void *arg0);
-    void fn_80217C64(s32 arg0);
-    void fn_80216998(s32, s32);
-
-    if (CARDCreateAsync(fn_80216998) >= 0) {
-        fn_80217C64(arg0);
-    }
+s32 fn_8021C3D8(s32 chan, char *name, u32 size, void *fileInfo) {
+ s32 fn_80217C64(s32);
+ void fn_80216998(s32,s32);
+ s32 result = CARDCreateAsync(chan,name,size,fileInfo,fn_80216998);
+ if (result < 0) return result;
+ return fn_80217C64(chan);
 }
 
 void fn_8021C5D8(s32 chan, s32 result)
