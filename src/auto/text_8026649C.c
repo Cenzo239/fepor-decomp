@@ -422,48 +422,37 @@ void fn_80266774(s32 arg0) {
     *(u8 *)(*(void **)(entry + 0x14)) = entry[0x9] & 0x3A;
 }
 
-#pragma peephole off
-s32 fn_802667D4(s32 channel, void *input, void *callback, void *outputCallback) {
+#pragma global_optimizer off
+s32 fn_802667D4(s32 arg0, void *input, void *callback, void *outputCallback) {
     extern u8 lbl_803669A0[];
     extern int fn_80266CFC(int, int, int, void *);
-    u8 *entry = lbl_803669A0 + (channel << 8);
+    u8 *entry = lbl_803669A0 + (arg0 << 8);
 
-    if (*(u32 *)(entry + 0x1C) != 0U) {
+    if (*(u32 *)(entry + 0x1C) != 0) {
         return 2;
     }
-    *entry = 0x14;
+    entry[0] = 0x14;
     *(void **)(entry + 0x18) = input;
     *(void **)(entry + 0x14) = callback;
     *(void **)(entry + 0x1C) = outputCallback;
-    return fn_80266CFC(channel, 1, 5, (void *)fn_80266774);
+    return fn_80266CFC(arg0, 1, 5, fn_80266774);
 }
-
-#pragma peephole off
+#pragma global_optimizer on
 void fn_80266840(s32 chan, s32 arg1, s32 arg2) {
-    extern u8 lbl_803669A0[];
-    extern s32 fn_80266CFC(s32, s32, s32, void *);
-    extern void fn_80266B6C(s32);
-    void fn_80266774(void);
-    void fn_80266B38(void);
-    u8 *entry;
-    s32 ret;
-    s32 chan_s;
-
-    chan_s = chan;
-    entry = lbl_803669A0 + (chan_s << 8);
-    if (*(u32 *)(entry + 0x1C) != 0) {
-        ret = 2;
-    } else {
-        *entry = 0x14;
-        *(s32 *)(entry + 0x18) = arg1;
-        *(s32 *)(entry + 0x14) = arg2;
-        *(void **)(entry + 0x1C) = fn_80266B38;
-        ret = fn_80266CFC(chan_s, 1, 5, fn_80266774);
-    }
-    if (ret != 0) {
-        return;
-    }
-    fn_80266B6C(chan_s);
+extern u8 lbl_803669A0[];
+extern s32 fn_80266CFC(s32,s32,s32,void*);
+extern void fn_80266B6C(s32);
+void fn_80266774(void);
+void fn_80266B38(void);
+u8 *entry;
+s32 ret;
+s32 chan_s=chan;
+entry=lbl_803669A0+(chan_s<<8);
+if (*(u32*)(entry+0x1C)) ret=2;
+else { *entry=0x14; *(s32*)(entry+0x18)=arg1; *(s32*)(entry+0x14)=arg2;
+*(void**)(entry+0x1C)=fn_80266B38;
+ret=fn_80266CFC(chan_s,1,5,fn_80266774); }
+if (ret != 0) { } else { fn_80266B6C(chan_s); }
 }
 #pragma peephole on
 
