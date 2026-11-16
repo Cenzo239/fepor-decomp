@@ -1296,6 +1296,39 @@ void L2GlobalInvalidate(void) {
         DBPrintf(">>> L2 INVALIDATE : SHOULD NEVER HAPPEN\n");
 }
 
+#pragma peephole off
+void DMAErrorHandler(u8 error, void *context, ...) {
+    u32 hid2;
+    void *ctx;
+    char *strings;
+
+    ctx = context;
+    strings = (char *)lbl_8029BBB0;
+    hid2 = (u32)PPCMfhid2();
+    OSReport(strings + 0x2C);
+    OSReport(strings + 0x44, hid2, *(u32 *)((u8 *)ctx + 0x19C));
+    if ((hid2 & 0x00F00000) == 0 || (*(u32 *)((u8 *)ctx + 0x19C) & 0x00200000) == 0) {
+        OSReport(strings + 0x60);
+        OSDumpContext(ctx);
+        PPCHalt();
+    }
+    OSReport(strings + 0x90);
+    OSReport(strings + 0xCC);
+    if ((hid2 & 0x00800000) != 0) {
+        OSReport(strings + 0x104);
+    }
+    if ((hid2 & 0x00400000) != 0) {
+        OSReport(strings + 0x144);
+    }
+    if ((hid2 & 0x00200000) != 0) {
+        OSReport(strings + 0x170);
+    }
+    if ((hid2 & 0x00100000) != 0) {
+        OSReport(strings + 0x190);
+    }
+    PPCMthid2(hid2);
+}
+#pragma peephole on
 void __OSCacheInit(void) {
  u32 PPCMfl2cr(void);
  void ICEnable(void);
