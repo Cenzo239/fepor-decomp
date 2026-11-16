@@ -392,6 +392,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSResetSW_state.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram.c"),
             Object(NonMatching, "dolphin/os/OSSram_unlock.c"),
+            Object(NonMatching, "dolphin/os/OSSram_tail.c"),
             Object(NonMatching, "dolphin/os/OSThread.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSThreadQueue.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSTime.c", mw_version="GC/1.2.5n"),
