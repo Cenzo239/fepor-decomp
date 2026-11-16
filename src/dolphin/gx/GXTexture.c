@@ -824,11 +824,24 @@ void __GXSetTmemConfig(u32 nTmemConfig)
 }
 
 void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, u8 arg_sp8, s32 arg_spC) {
-    *(u8 *)0xCC008000 = 0x61;
-    *((u32 *)0xCC008000 + 1) = arg0 | ((arg1 & 3) << 24) | ((arg2 & 3) << 26) | ((arg3 & 7) << 29) |
-                         ((arg_spC & 1) << 22) | ((arg4 & 0x1F) << 19) | ((arg5 & 0xF) << 16) |
-                         ((arg6 & 7) << 13) | ((arg7 & 3) << 11) | ((arg_sp8 & 1) << 10);
-    *(u16 *)__GXData = 0;
+u8 flag=arg_sp8;
+u32 mode=arg_spC;
+u16 *gx;
+u32 value=0;
+value=__rlwimi(value,arg1,0,30,31);
+value=__rlwimi(value,arg2,2,28,29);
+value=__rlwimi(value,arg3,4,25,27);
+gx=__GXData;
+value=__rlwimi(value,mode,7,23,24);
+value=__rlwimi(value,arg4,9,19,22);
+value=__rlwimi(value,arg5,13,16,18);
+value=__rlwimi(value,arg6,16,13,15);
+value=__rlwimi(value,flag,19,12,12);
+*(u8*)0xCC008000=0x61;
+value=__rlwimi(value,arg7,20,11,11);
+value=__rlwimi(value,arg0+0x10,24,0,7);
+*(u32*)0xCC008000=value;
+gx[1]=0;
 }
 
 void fn_80223678(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
@@ -1037,8 +1050,28 @@ void GXSetTevColorOp(u32 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
     *(u16 *)(gx + 2) = 0;
 }
 
-u16* GXSetTevAlphaOp(s32 arg0) {
-    return __GXData + 0x388 + (arg0 * 0x10);
+void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    u8 cmd;
+    u16 *gx;
+    u32 *stage;
+    u32 value;
+
+    stage = (u32 *)((u8 *)__GXData + (arg0 << 2));
+    value = stage[0x170 / 4];
+    value = __rlwimi(value, arg1, 18, 13, 13);
+    if (arg1 <= 1) {
+        value = __rlwimi(__rlwimi(value, arg3, 20, 10, 11), arg2, 16, 14, 15);
+    } else {
+        value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
+    }
+    cmd = 0x61;
+    gx = __GXData;
+    GXWGFifo.u8 = cmd;
+    value = __rlwimi(value, arg4, 19, 12, 12);
+    value = __rlwimi(value, arg5, 22, 8, 9);
+    GXWGFifo.u32 = value;
+    stage[0x170 / 4] = value;
+    gx[1] = 0;
 }
 
 void GXSetTevColor(s32 id, u32 *color)
@@ -1072,51 +1105,63 @@ void GXSetTevColor(s32 id, u32 *color)
     gx[1] = 0;
 }
 
-void fn_80223C14(void* arg0) {
-    u32* sp = (u32*)arg0;
-    s32 v1 = sp[7];
-    s32 v2 = v1 & 0x7F;
-    
-    if (v2 == 0x3F) {
-        if (sp[1] < 0x65) {
-            v2 = 0;
-        } else {
-            v2 = 0x3E;
-        }
-    } else if (v2 > 0x50) {
-        v2 = 0x7F;
-    } else if (sp[1] < 0x68) {
-        v2 = 0x50;
-    } else {
-        v2 = 0x51;
-    }
-    
-    sp[7] = (sp[7] & ~0x7F) | v2;
+void fn_80223C14(s32 arg0, u32 *arg1) {
+    u8 cmd;
+    u16 *gx;
+    u32 a;
+    u32 b;
+    u32 v;
+    u32 id;
+
+    a = arg1[0];
+    id = arg0 << 1;
+    b = arg1[1];
+    cmd = 0x61;
+    v = (id + 0xe0) << 24;
+    gx = __GXData;
+    v = __rlwimi(v, a, 16, 21, 31);
+    GXWGFifo.u8 = cmd;
+    v = __rlwimi(v, b, 12, 9, 19);
+    GXWGFifo.u32 = v;
+    v = (id + 0xe1) << 24;
+    v = __rlwimi(v, b, 16, 21, 31);
+    GXWGFifo.u8 = cmd;
+    v = __rlwimi(v, a, 12, 9, 19);
+    GXWGFifo.u32 = v;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = v;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = v;
+    gx[1] = 0;
 }
 
-void fn_80223C78(s32 arg0, u32 *arg1) {
-    s32 r5_val = arg0 << 1;
-    u32 r9_val = *arg1;
-    
-    // Store the first value as an address calculation
-    *(u8*)((r5_val + 0xE0) | (((u32)__GXData) & ~0xFF)) = 0x61;
-    
-    // Store second value
-    *(u32*)0xCC008000 = r9_val;
-    
-    // Store with index (0xE1)
-    *(u32*)0xCC008000 = ((r5_val + 0xE1) << 24) | (r9_val >> 8);
-    
-    // Clear __GXData
-    *(u16*)__GXData = 0;
-    
-    // Store final value with 0x61
-    *(u8*)0xCC008000 = 0x61;
-    
-    // Final store with 0x0 
-    *(u32*)0xCC008000 = 0;
-    
-    return;
+void fn_80223C78(s32 id, u32 *color)
+{
+    u32 idx;
+    u32 c;
+    u32 val;
+    u8 cmd;
+    u16 *gx;
+
+    idx = id << 1;
+    c = color[0];
+    val = idx + 0xE0;
+    gx = __GXData;
+    val = val << 24;
+    cmd = 0x61;
+    val = __rlwimi(val, c, 8, 24, 31);
+    GXWGFifo.u8 = cmd;
+    val = __rlwimi(val, c, 12, 12, 19);
+    val = __rlwimi(val, 8, 20, 8, 11);
+    GXWGFifo.u32 = val;
+    val = idx + 0xE1;
+    val = val << 24;
+    val = __rlwimi(val, c, 24, 24, 31);
+    GXWGFifo.u8 = cmd;
+    val = __rlwimi(val, c, 28, 12, 19);
+    val = __rlwimi(val, 8, 20, 8, 11);
+    GXWGFifo.u32 = val;
+    gx[1] = 0;
 }
 
 void fn_80223CDC(s32 arg0, s32 arg1) {
@@ -1165,13 +1210,27 @@ void GXSetTevSwapMode(s32 arg0, s32 arg1, s32 arg2) {
     *(u16 *)(gx + 2) = 0;
 }
 
-void GXSetTevSwapModeTable(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4, f32 farg5) {
-    M2C_FIELD(arg0, f32 *, 0x10) = farg0;
-    M2C_FIELD(arg0, f32 *, 0x14) = farg1;
-    M2C_FIELD(arg0, f32 *, 0x18) = farg2;
-    M2C_FIELD(arg0, f32 *, 0x1C) = farg3;
-    M2C_FIELD(arg0, f32 *, 0x20) = farg4;
-    M2C_FIELD(arg0, f32 *, 0x24) = farg5;
+void GXSetTevSwapModeTable(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    u8 *gx;
+    s32 idx2;
+    u32 *reg;
+    u32 *reg2;
+    u8 cmd;
+
+    idx2 = arg0 << 1;
+    gx = (u8 *)__GXData;
+    reg = (u32 *)(gx + idx2 * 4 + 0x1B0);
+    *reg = __rlwimi(*reg, arg1, 0, 30, 31);
+    reg2 = (u32 *)(gx + (idx2 + 1) * 4 + 0x1B0);
+    *reg = __rlwimi(*reg, arg2, 2, 28, 29);
+    cmd = 0x61;
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = *reg;
+    *reg2 = __rlwimi(*reg2, arg3, 0, 30, 31);
+    *reg2 = __rlwimi(*reg2, arg4, 2, 28, 29);
+    GXWGFifo.u8 = cmd;
+    GXWGFifo.u32 = *reg2;
+    *(u16 *)(gx + 2) = 0;
 }
 
 void fn_80223E5C(s32 arg0,u8 arg1,s32 arg2,s32 arg3,u8 arg4) {
