@@ -414,38 +414,27 @@ u32 fn_802216E0(f32 scale) {
  return result;
 }
 
-void GXSetCopyClear(u8 *arg0, u32 arg1)
-{
-    volatile u8 *fifo;
-    u32 value;
-    u8 *gx;
+void GXSetCopyClear(u8 *clear, u32 z) {
+    u32 val;
 
-    fifo = (volatile u8 *)0xCC008000;
-    gx = (u8 *)__GXData;
+    val = 0;
+    val = __rlwimi(val, clear[0], 0, 24, 31);
+    val = __rlwimi(val, clear[3], 8, 16, 23);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = __rlwimi(val, 0x4F, 24, 0, 7);
 
-    value = 0;
-    value |= arg0[0];
-    value |= (u32)arg0[3] << 8;
-    value |= 0x4F000000;
+    val = 0;
+    val = __rlwimi(val, clear[2], 0, 24, 31);
+    val = __rlwimi(val, clear[1], 8, 16, 23);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = __rlwimi(val, 0x50, 24, 0, 7);
 
-    *fifo = 0x61;
-    *(volatile u32 *)fifo = value;
+    val = 0;
+    val = __rlwimi(val, z, 0, 8, 31);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = __rlwimi(val, 0x51, 24, 0, 7);
 
-    value = 0;
-    value |= arg0[2];
-    value |= (u32)arg0[1] << 8;
-    value |= 0x50000000;
-
-    *fifo = 0x61;
-    *(volatile u32 *)fifo = value;
-
-    value = arg1 & 0x00FFFFFF;
-    value |= 0x51000000;
-
-    *fifo = 0x61;
-    *(volatile u32 *)fifo = value;
-
-    *(u16 *)(gx + 2) = 0;
+    __GXData[1] = 0;
 }
 
 #pragma use_lmw_stmw on
