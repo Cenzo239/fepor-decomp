@@ -12,47 +12,31 @@ extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; for(;;) { if(*++a!=*++b) goto different; if(!--n) break; } return 0; different: return 1; }
+s32 fn_80006264(u32 *a,u32 *b,u32 n) { a--; n>>=2; b--; do { if(*++a!=*++b) goto different; } while(--n); return 0; different: return 1; }
 
-#pragma opt_strength_reduction on
-void fn_80006298(u32 *dst, u32 val, u32 n) {
-    n >>= 2;
-    dst--;
-    do {
-        *++dst = val;
-    } while (--n);
-}
-#pragma opt_strength_reduction on
-void fn_800062B0(u32 *dst, u32 val, u32 n) {
-    n >>= 3;
-    dst--;
-    do {
-        *++dst = val;
-        *++dst = val;
-    } while (--n);
-}
+#pragma opt_unroll off
+void fn_80006298(u32 *dst, u32 val, u32 n) { n >>= 2; --dst; do { *++dst = val; } while (--n != 0); }
+#pragma optimize_for_size on
+void fn_800062B0(u32 *arg0, u32 arg1, u32 arg2) { u32 count = arg2 >> 3; arg0--; do { arg0[1]=arg1; arg0++; arg0[1]=arg1; arg0++; } while (--count); }
+#pragma optimize_for_size reset
 void fn_800062CC(u32 *dst, u32 *src, u32 n) {
+    register u32 tmp;
     dst--;
     n >>= 2;
     src--;
     do {
-        *++dst = *++src;
+        tmp = *++src;
+        *++dst = tmp;
     } while (--n);
 }
-
-#pragma global_optimizer off
-#pragma opt_strength_reduction off
+#pragma global_optimizer reset
 void fn_800062EC(u32 *dst, u32 *src, u32 n) {
-    dst = dst - 1;
-    n = n >> 3;
-    src = src - 1;
+    dst--;
+    n >>= 3;
+    src--;
     do {
-        dst[1] = src[1];
-        dst += 1;
-        src += 1;
-        dst[1] = src[1];
-        dst += 1;
-        src += 1;
+        *++dst = *++src;
+        *++dst = *++src;
     } while (--n);
 }
 #pragma global_optimizer on
@@ -248,19 +232,13 @@ s32 fn_80006650(s16 *arg0, s16 *arg1) {
 }
 
 void fn_800066B4(s32 hi, u32 lo, s32 *hours, s32 *mins, s32 *secs) {
-    s32 __div2i(s32, s32, s32, s32);
-    s32 *s;
-    s32 *h;
-    s32 *m;
+    unsigned long long __div2i(s32, u32, s32, u32);
     u32 total;
 
-    m = mins;
-    h = hours;
-    s = secs;
     total = (u32)__div2i(hi, lo, 0, *(u32 *)0x800000F8 >> 2);
-    *s = total % 60;
-    *m = (total / 60) % 60;
-    *h = total / 3600;
+    *secs = (s32)(total % 60);
+    *mins = (s32)((total / 60) % 60);
+    *hours = (s32)(total / 3600);
 }
 
 void fn_80006754(void)
@@ -1023,31 +1001,31 @@ void Prim2D_SetRectUv(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f)
     extern f32 lbl_80368B98;
     extern f32 gFloat1;
     void *p;
-    f32 t0, t1, t2, t3;
+    f32 t0;
+    f32 t1;
+    f32 c98;
+    f32 t2;
+    f32 c94;
+    f32 t3;
 
     p = gPrim2D;
     t0 = a + e;
     t1 = b + f;
-    {
-        f32 c98;
-        f32 c94;
+    c98 = lbl_80368B98;
+    p = *(void **)((u8 *)p + 0xC);
+    t2 = c + e;
+    c94 = gFloat1;
+    p = *(void **)((u8 *)p + 4);
+    t3 = d + f;
 
-        c98 = lbl_80368B98;
-        p = *(void **)((u8 *)p + 0xC);
-        t2 = c + e;
-        c94 = gFloat1;
-        p = *(void **)((u8 *)p + 4);
-        t3 = d + f;
-
-        *(f32 *)((u8 *)p + 0x10) = a;
-        *(f32 *)((u8 *)p + 0x20) = t0;
-        *(f32 *)((u8 *)p + 0x14) = b;
-        *(f32 *)((u8 *)p + 0x24) = t1;
-        *(f32 *)((u8 *)p + 0x1C) = c98;
-        *(f32 *)((u8 *)p + 0x18) = c98;
-        *(f32 *)((u8 *)p + 0x2C) = c94;
-        *(f32 *)((u8 *)p + 0x28) = c94;
-    }
+    *(f32 *)((u8 *)p + 0x10) = a;
+    *(f32 *)((u8 *)p + 0x20) = t0;
+    *(f32 *)((u8 *)p + 0x14) = b;
+    *(f32 *)((u8 *)p + 0x24) = t1;
+    *(f32 *)((u8 *)p + 0x1C) = c98;
+    *(f32 *)((u8 *)p + 0x18) = c98;
+    *(f32 *)((u8 *)p + 0x2C) = c94;
+    *(f32 *)((u8 *)p + 0x28) = c94;
 
     p = *(void **)((u8 *)gPrim2D + 0xC);
     p = *(void **)((u8 *)p + 4);
@@ -1103,19 +1081,19 @@ void Prim2D_SetUvRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 #pragma global_optimizer off
 #pragma scheduling off
 void Prim2D_SetRect(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    extern void *gPrim2D;
+    extern void *lbl_80367140;
     extern f32 lbl_80368B98;
-    extern f32 gFloat1;
+    extern f32 lbl_80368B94;
     u8 *ptr;
     f32 constant2;
     f32 sum_x;
 
-    ptr = (u8 *)gPrim2D;
+    ptr = (u8 *)lbl_80367140;
     sum_x = arg0 + arg2;
     arg3 = arg1 + arg3;
     arg2 = lbl_80368B98;
     ptr = *(u8 **)(ptr + 0xC);
-    constant2 = gFloat1;
+    constant2 = lbl_80368B94;
     ptr = *(u8 **)(ptr + 0x4);
 
     *(f32 *)(ptr + 0x10) = arg0;
@@ -2162,15 +2140,17 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
         *(u16 *)(*(u8 **)&gPrim2D + 0x20) | flags;
 }
 
+#pragma global_optimizer off
 void Prim2D_SetTex(void *arg0, u32 arg1) {
     void fn_80006298(void *, s32, u32);
     extern u16 gPrim2D;
-    u8 *g;
     u32 *src;
-    u32 a;
     u32 b;
+    u32 a;
+    u8 *g;
+    u32 tmp;
 
-    if (arg0 != NULL) {
+    if (arg0) {
         g = *(u8 **)&gPrim2D;
         src = (u32 *)arg0;
         a = src[0];
@@ -2193,15 +2173,15 @@ void Prim2D_SetTex(void *arg0, u32 arg1) {
         fn_80006298(*(u8 **)&gPrim2D + 0x34, 0, 0x2C);
         if ((arg1 & 3) == 0) {
             arg1 &= 0xFFFC;
-            arg1 |= 2;
-            arg1 &= 0xFFFF;
+            tmp = arg1 | 2;
+            arg1 = tmp & 0xFFFF;
         }
     }
     (*(u8 **)&gPrim2D)[0x22] = 0xFF;
     *(u16 *)(*(u8 **)&gPrim2D + 0x20) &= 0xFFFF7B0C;
     *(u16 *)(*(u8 **)&gPrim2D + 0x20) |= arg1;
 }
-
+#pragma global_optimizer reset
 void Prim2D_PrepareTex(void) {
     extern u16 gPrim2D;
     *(u8 *)(*(u8 **)&gPrim2D + 0xa8) = 2;
@@ -2459,8 +2439,6 @@ void fn_8000A860(void) {
     s32 sp10;
     s32 spC;
     s32 sp8;
-    u32 *pADA;
-    s32 *p838;
     s32 i;
 
     sp10 = 1;
@@ -2469,23 +2447,17 @@ void fn_8000A860(void) {
     Prim2D_SetTransform(lbl_80368BCC, lbl_80368BCC, lbl_80368BD0, lbl_80368BD4);
     Prim2D_PrepareTex();
 
-    pADA = lbl_802ADADC;
-    i = 0;
-    p838 = lbl_802838C8;
-    while (i < 8) {
-        if (pADA[0] == 0) {
+    for (i = 0; i < 8; i++) {
+        if (lbl_802ADADC[i] == 0) {
             break;
         }
         sp8 = lbl_80368BC8;
-        fn_8014BB58(0, spC * 8, &sp8, p838[0]);
+        fn_8014BB58(0, spC << 3, &sp8, lbl_802838C8[i]);
         {
             s32 old = spC;
             spC = old + 1;
-            fn_8000A454(pADA[0], &sp10, &spC, old);
+            fn_8000A454(lbl_802ADADC[i], &sp10, &spC, old);
         }
-        i += 1;
-        p838 += 1;
-        pADA += 1;
     }
 }
 
@@ -2763,18 +2735,22 @@ s32 fn_8000ACD8(void) {
     return 0;
 }
 
+#pragma global_optimizer off
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 s32 fn_8000ACE0(void *arg0) {
     extern u8 gProcesses[];
-    u8 *p;
-    u32 value;
-    u32 zero;
-    s32 i;
+    register u8 *p;
+    register u32 value;
+    register u32 zero;
+    register s32 i;
     s32 j;
 
     value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
+    i = 0;
     p = gProcesses;
-    zero = 0;
-    for (i = 0; i < 0x100; i++) {
+    zero = i;
+    for (; i < 0x100; i++) {
         for (j = 0; j < 8; j++) {
             if (*(u32 *)p == value) {
                 *(u32 *)(p + 0x10) = zero;
@@ -2786,7 +2762,9 @@ s32 fn_8000ACE0(void *arg0) {
     *(u8 **)((u8 *)arg0 + 4) = *(u8 **)((u8 *)arg0 + 4) + 8;
     return 1;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
+#pragma global_optimizer reset
 s32 fn_8000ADA0(void *arg0) {
     s32 Process_UnlinkByKey(s32);
     Process_UnlinkByKey(((s32 **) arg0)[1][1]);
@@ -3573,70 +3551,77 @@ void *Process_FindByName(u8 *arg0) {
 void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
     extern u8 gProcesses[];
-    u8 *var_r31;
-    s32 var_r30;
-    u8 *var_r29;
+    u8 *entry;
+    s32 n;
+    u8 *name;
+    u8 *a;
+    u8 *b;
+    u32 raw1;
+    u32 raw2;
+    s32 c1;
+    s32 c2;
+    u32 diff;
 
-    var_r31 = gProcesses;
-    var_r30 = 0;
-    var_r29 = arg0;
+    entry = gProcesses;
+    n = 0;
+    name = arg0;
     do {
-        if (*(u32 *)var_r31 != 0) {
-            u8 *a;
-            u8 *b;
-            s32 c1;
-            s32 c2;
-            s32 s1;
-            s32 s2;
-            s32 d;
-
-            a = *(u8 **)(var_r31 + 0x14);
-            b = var_r29;
-            goto load;
-        compare:
-            if ((s8)c1 != (s8)c2) {
-                d = s1 - s2;
-                goto check;
+        if (*(u32 *)entry != 0) {
+            a = *(u8 **)(entry + 0x14);
+            b = name;
+            goto ld;
+        cmp:
+            if ((s8)raw1 != (s8)raw2) {
+                diff = (u32)(c1 - c2);
+                goto done;
             }
             a += 1;
             b += 1;
-        load:
-            c1 = *a;
-            c2 = *b;
-            s1 = (s8)c1;
-            s2 = (s8)c2;
-            if ((s1 | s2) != 0) {
-                goto compare;
+        ld:
+            raw1 = *a;
+            raw2 = *b;
+            c1 = (s8)raw1;
+            c2 = (s8)raw2;
+            if ((c1 | c2) != 0) {
+                goto cmp;
             }
-            d = 0;
-        check:
-            if ((u32)d == 0) {
-                Process_Unlink(var_r31);
+            diff = 0;
+        done:
+            if (diff == 0) {
+                Process_Unlink(entry);
             }
         }
-        var_r30 += 1;
-        var_r31 += 0x70;
-    } while (var_r30 < 0x100);
+        n += 1;
+        entry += 0x70;
+    } while (n < 0x100);
 }
 
+#pragma global_optimizer off
 void fn_8000BE54(u32 arg0) {
     extern u8 gProcesses[];
     u8 *p;
     s32 i;
     s32 j;
+    s32 n;
 
     p = gProcesses;
-    for (i = 0; i < 0x100; i++) {
+    n = 0;
+    for (i = 0; i < 0x20; i++) {
         for (j = 0; j < 8; j++) {
             if (*(u32 *)p == arg0) {
                 *(u32 *)(p + 0x10) = 0;
             }
             p += 0x70;
         }
-        i += 7;
+        n += 7;
+        p += 0;
+    }
+    switch (n) {
+    default:
+        break;
     }
 }
-
+#pragma global_optimizer reset
 void Process_UnlinkByKey(u32 arg0) {
     extern u8 gProcesses[];
     void Process_Unlink(void *);
@@ -4294,14 +4279,43 @@ s32 Rand_TrueHit(s32 arg0) {
 s32 Rand_Chance(s32 arg0) {
     struct RandSt { u16 a; u16 b; u16 c; };
     extern struct RandSt lbl_80367150;
-    struct RandSt *st;
-    s32 s0;
+    s32 scaled;
+    u16 t6;
+    s32 t4;
     s32 s1;
     s32 s2;
-    s32 t4;
-    s32 combined;
+    s32 s0;
+    struct RandSt *st;
+
+    st = &lbl_80367150;
+    s0 = lbl_80367150.a;
+    s2 = st->c;
+    s1 = st->b;
+    t4 = (s2 * 2) & 0xFFFE;
+    t6 = (u16)((s1 << 11) + (s0 >> 5));
+    st->c = t4;
+    if (s1 & 0x8000) {
+        st->c = t4 + 1;
+    }
+    t6 ^= st->c;
+    st->c = st->b;
+    scaled = (u16)t6 * 100;
+    st->b = lbl_80367150.a;
+    lbl_80367150.a = t6;
+    return (scaled / 65536) < arg0;
+}
+
+s32 Rand_Range(s32 arg0) {
+    struct RandSt { u16 a; u16 b; u16 c; };
+    extern struct RandSt lbl_80367150;
+    s32 prod;
     u16 t6;
-    s32 scaled;
+    s32 combined;
+    s32 t4;
+    s32 s1;
+    s32 s2;
+    s32 s0;
+    struct RandSt *st;
 
     st = &lbl_80367150;
     s0 = lbl_80367150.a;
@@ -4316,42 +4330,9 @@ s32 Rand_Chance(s32 arg0) {
     }
     t6 ^= st->c;
     st->c = st->b;
-    scaled = (u16)t6 * 100;
+    prod = (u16)t6 * arg0;
     st->b = lbl_80367150.a;
     lbl_80367150.a = t6;
-    return (scaled / 65536) < arg0;
-}
-
-s32 Rand_Range(s32 arg0)
-{
-    extern u16 lbl_80367150;
-    u16 *st;
-    s32 s0;
-    s32 s1;
-    s32 s2;
-    s32 t4;
-    s32 t6;
-    s32 prod;
-
-    st = &lbl_80367150;
-    s0 = lbl_80367150;
-    s2 = *(u16 *)((u8 *)st + 4);
-    s1 = *(u16 *)((u8 *)st + 2);
-    t4 = (s2 << 1) & 0xFFFE;
-    t6 = (s1 << 11) + (s0 >> 5);
-    *(u16 *)((u8 *)st + 4) = t4;
-    t6 = (u16)t6;
-    if (s1 & 0x8000) {
-        *(u16 *)((u8 *)st + 4) = t4 + 1;
-    }
-    t6 ^= *(u16 *)((u8 *)st + 4);
-    s1 = *(u16 *)((u8 *)st + 2);
-    s0 = lbl_80367150;
-    t6 = (u16)t6;
-    *(u16 *)((u8 *)st + 4) = s1;
-    prod = arg0 * t6;
-    *(u16 *)((u8 *)st + 2) = s0;
-    lbl_80367150 = t6;
     return prod / 65536;
 }
 
